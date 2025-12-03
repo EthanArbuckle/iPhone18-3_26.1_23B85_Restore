@@ -5,30 +5,30 @@
 - (id)urlForVisualScanning;
 - (int)_readyForAutoFillRequest;
 - (unint64_t)discoveredDevices;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_activated;
 - (void)_bluetoothAddressChanged;
 - (void)_cleanup;
-- (void)_completedWithError:(id)a3;
-- (void)_discoveryChanged:(id)a3;
-- (void)_discoveryFound:(id)a3;
-- (void)_discoveryLost:(id)a3;
+- (void)_completedWithError:(id)error;
+- (void)_discoveryChanged:(id)changed;
+- (void)_discoveryFound:(id)found;
+- (void)_discoveryLost:(id)lost;
 - (void)_discoveryStart;
-- (void)_serviceHandleReceivedContextRequest:(id)a3 handler:(id)a4;
-- (void)_serviceHandleReceivedCredentialRequest:(id)a3 handler:(id)a4;
-- (void)_serviceHandleReceivedRequest:(id)a3 handler:(id)a4;
+- (void)_serviceHandleReceivedContextRequest:(id)request handler:(id)handler;
+- (void)_serviceHandleReceivedCredentialRequest:(id)request handler:(id)handler;
+- (void)_serviceHandleReceivedRequest:(id)request handler:(id)handler;
 - (void)_serviceHidePIN;
-- (void)_serviceSessionEnded:(id)a3 withError:(id)a4;
-- (void)_serviceSessionStarted:(id)a3;
+- (void)_serviceSessionEnded:(id)ended withError:(id)error;
+- (void)_serviceSessionStarted:(id)started;
 - (void)_serviceStart;
 - (void)_systemMonitorStart;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setBundleID:(id)a3;
-- (void)setFixedPIN:(id)a3;
-- (void)setShowPINHandlerEx:(id)a3;
-- (void)setUrlString:(id)a3;
+- (void)setBundleID:(id)d;
+- (void)setFixedPIN:(id)n;
+- (void)setShowPINHandlerEx:(id)ex;
+- (void)setUrlString:(id)string;
 - (void)startRequestingAutoFill;
 - (void)stopRequestingAutoFill;
 - (void)updateURLForVisualScanning;
@@ -149,24 +149,24 @@ LABEL_6:
   self->_devices = 0;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SFRemoteAutoFillService_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v8 = 0;
   if (CFPrefs_GetInt64() || self->_unitTesting)
   {
@@ -176,7 +176,7 @@ LABEL_6:
     }
 
     self->_activateCalled = 1;
-    v5 = _Block_copy(v4);
+    v5 = _Block_copy(completionCopy);
     activateCompletion = self->_activateCompletion;
     self->_activateCompletion = v5;
 
@@ -187,7 +187,7 @@ LABEL_6:
 
   else
   {
-    [(SFRemoteAutoFillService *)&v8 _activateWithCompletion:v4, &v9, v10];
+    [(SFRemoteAutoFillService *)&v8 _activateWithCompletion:completionCopy, &v9, v10];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -249,7 +249,7 @@ uint64_t __37__SFRemoteAutoFillService_invalidate__block_invoke(uint64_t a1)
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A768];
-  v7 = a1;
+  selfCopy = self;
   *a2 = *MEMORY[0x1E696A578];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
   v9 = v8;
@@ -261,7 +261,7 @@ uint64_t __37__SFRemoteAutoFillService_invalidate__block_invoke(uint64_t a1)
 
   *a3 = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:a3 forKeys:a2 count:1];
-  v12 = [v5 errorWithDomain:v6 code:v7 userInfo:v11];
+  v12 = [v5 errorWithDomain:v6 code:selfCopy userInfo:v11];
   LogPrintF();
 }
 
@@ -272,15 +272,15 @@ uint64_t __37__SFRemoteAutoFillService_invalidate__block_invoke(uint64_t a1)
     [SFRemoteAutoFillService stopRequestingAutoFill];
   }
 
-  v3 = [(SFSession *)self->_session peer];
-  if (v3)
+  peer = [(SFSession *)self->_session peer];
+  if (peer)
   {
     if (gLogCategory_SFRemoteAutoFillService <= 30 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
     {
       [SFRemoteAutoFillService stopRequestingAutoFill];
     }
 
-    [(SFService *)self->_service sendToPeer:v3 flags:0 object:&unk_1F1D7D290];
+    [(SFService *)self->_service sendToPeer:peer flags:0 object:&unk_1F1D7D290];
   }
 
   [(SFService *)self->_service setNeedsSetup:0];
@@ -297,7 +297,7 @@ uint64_t __37__SFRemoteAutoFillService_invalidate__block_invoke(uint64_t a1)
 
 - (void)updateURLForVisualScanning
 {
-  v1 = [a1 absoluteString];
+  absoluteString = [self absoluteString];
   LogPrintF();
 }
 
@@ -324,9 +324,9 @@ uint64_t __53__SFRemoteAutoFillService_updateURLForVisualScanning__block_invoke(
   return result;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if ([(SFService *)self->_service needsSetup])
   {
     if (gLogCategory_SFRemoteAutoFillService <= 60 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
@@ -348,10 +348,10 @@ uint64_t __53__SFRemoteAutoFillService_updateURLForVisualScanning__block_invoke(
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    objc_storeStrong(&v7->_bundleID, a3);
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_bundleID, d);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -362,43 +362,43 @@ void __39__SFRemoteAutoFillService_setBundleID___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)setFixedPIN:(id)a3
+- (void)setFixedPIN:(id)n
 {
-  v7 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_fixedPIN, a3);
-  service = v5->_service;
+  nCopy = n;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_fixedPIN, n);
+  service = selfCopy->_service;
   if (service)
   {
-    [(SFService *)service setFixedPIN:v5->_fixedPIN];
+    [(SFService *)service setFixedPIN:selfCopy->_fixedPIN];
   }
 
-  [(SFRemoteAutoFillService *)v5 updateURLForVisualScanning];
-  objc_sync_exit(v5);
+  [(SFRemoteAutoFillService *)selfCopy updateURLForVisualScanning];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setShowPINHandlerEx:(id)a3
+- (void)setShowPINHandlerEx:(id)ex
 {
-  aBlock = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  aBlock = ex;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = _Block_copy(aBlock);
-  showPINHandlerEx = v4->_showPINHandlerEx;
-  v4->_showPINHandlerEx = v5;
+  showPINHandlerEx = selfCopy->_showPINHandlerEx;
+  selfCopy->_showPINHandlerEx = v5;
 
-  service = v4->_service;
+  service = selfCopy->_service;
   if (service)
   {
-    [(SFService *)service setShowPINHandlerEx:v4->_showPINHandlerEx];
+    [(SFService *)service setShowPINHandlerEx:selfCopy->_showPINHandlerEx];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if ([(SFService *)self->_service needsSetup])
   {
     if (gLogCategory_SFRemoteAutoFillService <= 60 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
@@ -420,10 +420,10 @@ void __39__SFRemoteAutoFillService_setBundleID___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    objc_storeStrong(&v7->_urlString, a3);
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_urlString, string);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -434,26 +434,26 @@ void __40__SFRemoteAutoFillService_setUrlString___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_completedWithError:(id)a3
+- (void)_completedWithError:(id)error
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
     if (gLogCategory_SFRemoteAutoFillService <= 60)
     {
-      if (gLogCategory_SFRemoteAutoFillService != -1 || (v5 = _LogCategory_Initialize(), v4 = v8, v5))
+      if (gLogCategory_SFRemoteAutoFillService != -1 || (v5 = _LogCategory_Initialize(), errorCopy = v8, v5))
       {
         [SFRemoteAutoFillService _completedWithError:];
-        v4 = v8;
+        errorCopy = v8;
       }
     }
 
     errorHandler = self->_errorHandler;
     if (errorHandler)
     {
-      errorHandler[2](errorHandler, v4);
-      v4 = v8;
+      errorHandler[2](errorHandler, errorCopy);
+      errorCopy = v8;
     }
   }
 
@@ -461,7 +461,7 @@ void __40__SFRemoteAutoFillService_setUrlString___block_invoke(uint64_t a1)
   if (receivedCredentialsHandler)
   {
     (receivedCredentialsHandler)[2](receivedCredentialsHandler, self->_receivedUsername, self->_receivedPassword, v8);
-    v4 = v8;
+    errorCopy = v8;
   }
 }
 
@@ -769,10 +769,10 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)_serviceHandleReceivedContextRequest:(id)a3 handler:(id)a4
+- (void)_serviceHandleReceivedContextRequest:(id)request handler:(id)handler
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFRemoteAutoFillService <= 50 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
   {
     [SFRemoteAutoFillService _serviceHandleReceivedContextRequest:handler:];
@@ -826,13 +826,13 @@ LABEL_16:
     v15 = NSErrorWithOSStatusF();
   }
 
-  v6[2](v6, 1, v15, v8);
+  handlerCopy[2](handlerCopy, 1, v15, v8);
 }
 
-- (void)_serviceHandleReceivedCredentialRequest:(id)a3 handler:(id)a4
+- (void)_serviceHandleReceivedCredentialRequest:(id)request handler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFRemoteAutoFillService <= 50 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
   {
     [SFRemoteAutoFillService _serviceHandleReceivedCredentialRequest:handler:];
@@ -873,15 +873,15 @@ LABEL_16:
     v9 = NSErrorWithOSStatusF();
   }
 
-  v6[2](v6, 1, v9, MEMORY[0x1E695E0F8]);
+  handlerCopy[2](handlerCopy, 1, v9, MEMORY[0x1E695E0F8]);
   [(SFRemoteAutoFillService *)self _completedWithError:v9];
 }
 
-- (void)_serviceHandleReceivedRequest:(id)a3 handler:(id)a4
+- (void)_serviceHandleReceivedRequest:(id)request handler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v17 = 0;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFRemoteAutoFillService <= 50 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
@@ -891,12 +891,12 @@ LABEL_16:
 
   if (Int64Ranged == 3)
   {
-    [(SFRemoteAutoFillService *)self _serviceHandleReceivedCredentialRequest:v6 handler:v7];
+    [(SFRemoteAutoFillService *)self _serviceHandleReceivedCredentialRequest:requestCopy handler:handlerCopy];
   }
 
   else if (Int64Ranged == 1)
   {
-    [(SFRemoteAutoFillService *)self _serviceHandleReceivedContextRequest:v6 handler:v7];
+    [(SFRemoteAutoFillService *)self _serviceHandleReceivedContextRequest:requestCopy handler:handlerCopy];
   }
 
   else
@@ -920,7 +920,7 @@ LABEL_16:
     v19[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v15 = [v9 errorWithDomain:v10 code:-6735 userInfo:v14];
-    (*(v7 + 2))(v7, 0, v15, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15, 0);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -943,18 +943,18 @@ LABEL_16:
   }
 }
 
-- (void)_serviceSessionEnded:(id)a3 withError:(id)a4
+- (void)_serviceSessionEnded:(id)ended withError:(id)error
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  if (self->_session == v12)
+  endedCopy = ended;
+  errorCopy = error;
+  v7 = endedCopy;
+  if (self->_session == endedCopy)
   {
-    if (v12)
+    if (endedCopy)
     {
       if (gLogCategory_SFRemoteAutoFillService <= 30)
       {
-        if (gLogCategory_SFRemoteAutoFillService != -1 || (v8 = _LogCategory_Initialize(), v7 = v12, v8))
+        if (gLogCategory_SFRemoteAutoFillService != -1 || (v8 = _LogCategory_Initialize(), v7 = endedCopy, v8))
         {
           [SFRemoteAutoFillService _serviceSessionEnded:v7 withError:?];
         }
@@ -964,8 +964,8 @@ LABEL_16:
     sessionEndedHandler = self->_sessionEndedHandler;
     if (sessionEndedHandler)
     {
-      v10 = [(SFSession *)v12 peer];
-      sessionEndedHandler[2](sessionEndedHandler, v10);
+      peer = [(SFSession *)endedCopy peer];
+      sessionEndedHandler[2](sessionEndedHandler, peer);
     }
 
     session = self->_session;
@@ -978,15 +978,15 @@ LABEL_16:
   }
 }
 
-- (void)_serviceSessionStarted:(id)a3
+- (void)_serviceSessionStarted:(id)started
 {
-  v5 = a3;
-  v6 = v5;
+  startedCopy = started;
+  v6 = startedCopy;
   if (self->_session)
   {
     if (gLogCategory_SFRemoteAutoFillService <= 60)
     {
-      v10 = v5;
+      v10 = startedCopy;
       if (gLogCategory_SFRemoteAutoFillService != -1 || (v7 = _LogCategory_Initialize(), v6 = v10, v7))
       {
         [(SFRemoteAutoFillService *)v6 _serviceSessionStarted:?];
@@ -998,18 +998,18 @@ LABEL_13:
 
   else
   {
-    v10 = v5;
+    v10 = startedCopy;
     if (gLogCategory_SFRemoteAutoFillService <= 30 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
     {
       [SFRemoteAutoFillService _serviceSessionStarted:v10];
     }
 
-    objc_storeStrong(&self->_session, a3);
+    objc_storeStrong(&self->_session, started);
     sessionStartedHandler = self->_sessionStartedHandler;
     if (sessionStartedHandler)
     {
-      v9 = [v10 peer];
-      sessionStartedHandler[2](sessionStartedHandler, v9);
+      peer = [v10 peer];
+      sessionStartedHandler[2](sessionStartedHandler, peer);
     }
 
     v6 = v10;
@@ -1156,16 +1156,16 @@ LABEL_13:
   return -6745;
 }
 
-- (void)_discoveryFound:(id)a3
+- (void)_discoveryFound:(id)found
 {
-  v11 = a3;
-  v4 = [v11 identifier];
+  foundCopy = found;
+  identifier = [foundCopy identifier];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_discovery && v4 && [v11 deviceActionType] == 22)
+  if (self->_discovery && identifier && [foundCopy deviceActionType] == 22)
   {
     if (gLogCategory_SFRemoteAutoFillService <= 10 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
     {
-      v10 = v11;
+      v10 = foundCopy;
       LogPrintF();
     }
 
@@ -1179,7 +1179,7 @@ LABEL_13:
       devices = self->_devices;
     }
 
-    [(NSMutableDictionary *)devices setObject:v11 forKeyedSubscript:v4, v10];
+    [(NSMutableDictionary *)devices setObject:foundCopy forKeyedSubscript:identifier, v10];
     if (self->_discoveredDevicesChanged)
     {
       [(NSMutableDictionary *)self->_devices count];
@@ -1189,20 +1189,20 @@ LABEL_13:
   }
 }
 
-- (void)_discoveryLost:(id)a3
+- (void)_discoveryLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 identifier];
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4 && self->_discovery && [v8 deviceActionType] == 22)
+  if (identifier && self->_discovery && [lostCopy deviceActionType] == 22)
   {
     if (gLogCategory_SFRemoteAutoFillService <= 10 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
     {
-      v7 = v8;
+      v7 = lostCopy;
       LogPrintF();
     }
 
-    [(NSMutableDictionary *)self->_devices removeObjectForKey:v4, v7];
+    [(NSMutableDictionary *)self->_devices removeObjectForKey:identifier, v7];
     if (self->_discoveredDevicesChanged)
     {
       [(NSMutableDictionary *)self->_devices count];
@@ -1212,14 +1212,14 @@ LABEL_13:
   }
 }
 
-- (void)_discoveryChanged:(id)a3
+- (void)_discoveryChanged:(id)changed
 {
-  v5 = a3;
-  v4 = [v5 identifier];
+  changedCopy = changed;
+  identifier = [changedCopy identifier];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4 && self->_discovery && [v5 deviceActionType] == 22)
+  if (identifier && self->_discovery && [changedCopy deviceActionType] == 22)
   {
-    [(NSMutableDictionary *)self->_devices setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_devices setObject:changedCopy forKeyedSubscript:identifier];
   }
 }
 
@@ -1228,9 +1228,9 @@ LABEL_13:
   systemMonitor = self->_systemMonitor;
   if (systemMonitor)
   {
-    v4 = [(CUSystemMonitor *)systemMonitor bluetoothAddressData];
+    bluetoothAddressData = [(CUSystemMonitor *)systemMonitor bluetoothAddressData];
     systemBTAddress = self->_systemBTAddress;
-    self->_systemBTAddress = v4;
+    self->_systemBTAddress = bluetoothAddressData;
 
     if (gLogCategory_SFRemoteAutoFillService <= 30 && (gLogCategory_SFRemoteAutoFillService != -1 || _LogCategory_Initialize()))
     {

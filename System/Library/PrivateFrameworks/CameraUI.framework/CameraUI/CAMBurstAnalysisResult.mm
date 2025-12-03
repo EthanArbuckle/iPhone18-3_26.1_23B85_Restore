@@ -1,34 +1,34 @@
 @interface CAMBurstAnalysisResult
-- (CAMBurstAnalysisResult)initWithIdentifier:(id)a3 allAssetIdentifiers:(id)a4 goodAssetIdentifiers:(id)a5 bestAssetIdentifier:(id)a6;
+- (CAMBurstAnalysisResult)initWithIdentifier:(id)identifier allAssetIdentifiers:(id)identifiers goodAssetIdentifiers:(id)assetIdentifiers bestAssetIdentifier:(id)assetIdentifier;
 - (id)description;
 @end
 
 @implementation CAMBurstAnalysisResult
 
-- (CAMBurstAnalysisResult)initWithIdentifier:(id)a3 allAssetIdentifiers:(id)a4 goodAssetIdentifiers:(id)a5 bestAssetIdentifier:(id)a6
+- (CAMBurstAnalysisResult)initWithIdentifier:(id)identifier allAssetIdentifiers:(id)identifiers goodAssetIdentifiers:(id)assetIdentifiers bestAssetIdentifier:(id)assetIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  assetIdentifiersCopy = assetIdentifiers;
+  assetIdentifierCopy = assetIdentifier;
   v25.receiver = self;
   v25.super_class = CAMBurstAnalysisResult;
   v14 = [(CAMBurstAnalysisResult *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [identifiersCopy copy];
     allAssetIdentifiers = v14->_allAssetIdentifiers;
     v14->_allAssetIdentifiers = v17;
 
-    v19 = [v12 copy];
+    v19 = [assetIdentifiersCopy copy];
     goodAssetIdentifiers = v14->_goodAssetIdentifiers;
     v14->_goodAssetIdentifiers = v19;
 
-    v21 = [v13 copy];
+    v21 = [assetIdentifierCopy copy];
     bestAssetIdentifier = v14->_bestAssetIdentifier;
     v14->_bestAssetIdentifier = v21;
 
@@ -42,11 +42,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CAMBurstAnalysisResult *)self identifier];
-  v6 = [(CAMBurstAnalysisResult *)self allAssetIdentifiers];
-  v7 = [(CAMBurstAnalysisResult *)self goodAssetIdentifiers];
-  v8 = [(CAMBurstAnalysisResult *)self bestAssetIdentifier];
-  v9 = [v3 stringWithFormat:@"<%@ identifier:%@, allAssetIidentifiers:%@, goodAssetIdentifiers:%@, bestAssetIdentifiers:%@>", v4, v5, v6, v7, v8];
+  identifier = [(CAMBurstAnalysisResult *)self identifier];
+  allAssetIdentifiers = [(CAMBurstAnalysisResult *)self allAssetIdentifiers];
+  goodAssetIdentifiers = [(CAMBurstAnalysisResult *)self goodAssetIdentifiers];
+  bestAssetIdentifier = [(CAMBurstAnalysisResult *)self bestAssetIdentifier];
+  v9 = [v3 stringWithFormat:@"<%@ identifier:%@, allAssetIidentifiers:%@, goodAssetIdentifiers:%@, bestAssetIdentifiers:%@>", v4, identifier, allAssetIdentifiers, goodAssetIdentifiers, bestAssetIdentifier];
 
   return v9;
 }

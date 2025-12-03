@@ -1,11 +1,11 @@
 @interface UIDOMHTMLOptGroupSelectedItem
-- (UIDOMHTMLOptGroupSelectedItem)initWithHTMLOptGroupNode:(id)a3;
+- (UIDOMHTMLOptGroupSelectedItem)initWithHTMLOptGroupNode:(id)node;
 - (void)dealloc;
 @end
 
 @implementation UIDOMHTMLOptGroupSelectedItem
 
-- (UIDOMHTMLOptGroupSelectedItem)initWithHTMLOptGroupNode:(id)a3
+- (UIDOMHTMLOptGroupSelectedItem)initWithHTMLOptGroupNode:(id)node
 {
   v7.receiver = self;
   v7.super_class = UIDOMHTMLOptGroupSelectedItem;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(UIDOMHTMLOptGroupSelectedItem *)v4 set_node:a3];
+    [(UIDOMHTMLOptGroupSelectedItem *)v4 set_node:node];
   }
 
   return v5;

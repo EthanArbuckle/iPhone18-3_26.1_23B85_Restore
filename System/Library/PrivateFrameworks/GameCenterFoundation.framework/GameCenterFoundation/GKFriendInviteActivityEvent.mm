@@ -1,13 +1,13 @@
 @interface GKFriendInviteActivityEvent
-+ (id)metricsFieldsForStage:(unint64_t)a3 hostApp:(id)a4;
-+ (id)stringForStage:(unint64_t)a3;
++ (id)metricsFieldsForStage:(unint64_t)stage hostApp:(id)app;
++ (id)stringForStage:(unint64_t)stage;
 @end
 
 @implementation GKFriendInviteActivityEvent
 
-+ (id)metricsFieldsForStage:(unint64_t)a3 hostApp:(id)a4
++ (id)metricsFieldsForStage:(unint64_t)stage hostApp:(id)app
 {
-  if (a4)
+  if (app)
   {
     v5 = sub_227A724EC();
     v7 = v6;
@@ -20,16 +20,16 @@
   }
 
   swift_getObjCClassMetadata();
-  sub_227A2561C(a3, v5, v7);
+  sub_227A2561C(stage, v5, v7);
 
   v8 = sub_227A7240C();
 
   return v8;
 }
 
-+ (id)stringForStage:(unint64_t)a3
++ (id)stringForStage:(unint64_t)stage
 {
-  sub_227A25CB4(a3);
+  sub_227A25CB4(stage);
   v3 = sub_227A724BC();
 
   return v3;

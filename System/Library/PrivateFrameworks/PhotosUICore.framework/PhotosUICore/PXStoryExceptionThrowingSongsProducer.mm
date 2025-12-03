@@ -1,16 +1,16 @@
 @interface PXStoryExceptionThrowingSongsProducer
 - (PXStoryExceptionThrowingSongsProducer)init;
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
 - (unint64_t)logContext;
-- (void)setLogContext:(unint64_t)a3;
+- (void)setLogContext:(unint64_t)context;
 @end
 
 @implementation PXStoryExceptionThrowingSongsProducer
 
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
-  v6 = self;
+  v5 = _Block_copy(handler);
+  selfCopy = self;
   _Block_release(v5);
   result = sub_1A524E6E4();
   __break(1u);
@@ -24,11 +24,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLogContext:(unint64_t)a3
+- (void)setLogContext:(unint64_t)context
 {
   v5 = OBJC_IVAR___PXStoryExceptionThrowingSongsProducer_logContext;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = context;
 }
 
 - (PXStoryExceptionThrowingSongsProducer)init

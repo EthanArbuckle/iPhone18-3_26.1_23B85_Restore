@@ -3,15 +3,15 @@
 + (TSCKApplicationPropertiesProvider)tsck_sharedPropertiesProvider;
 - (double)activityAuthorCacheAuditTimeInterval;
 - (double)activityAuthorCacheCleanAuthorDuringAuditMinimumTimeInterval;
-- (unint64_t)activityStreamPruningThresholdWithDocumentRoot:(id)a3;
-- (unint64_t)operationStoragePruningThresholdWithDocumentRoot:(id)a3;
+- (unint64_t)activityStreamPruningThresholdWithDocumentRoot:(id)root;
+- (unint64_t)operationStoragePruningThresholdWithDocumentRoot:(id)root;
 @end
 
 @implementation TSCKApplicationDelegate
 
 + (TSCKApplicationDelegate)tsck_sharedDelegate
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSCKApplicationDelegate;
   v2 = objc_msgSendSuper2(&v4, sel_sharedDelegate);
 
@@ -20,14 +20,14 @@
 
 + (TSCKApplicationPropertiesProvider)tsck_sharedPropertiesProvider
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___TSCKApplicationDelegate;
   v2 = objc_msgSendSuper2(&v4, sel_sharedPropertiesProvider);
 
   return v2;
 }
 
-- (unint64_t)operationStoragePruningThresholdWithDocumentRoot:(id)a3
+- (unint64_t)operationStoragePruningThresholdWithDocumentRoot:(id)root
 {
   objc_opt_class();
   v6 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v3, v4, v5);
@@ -48,7 +48,7 @@
   return v15;
 }
 
-- (unint64_t)activityStreamPruningThresholdWithDocumentRoot:(id)a3
+- (unint64_t)activityStreamPruningThresholdWithDocumentRoot:(id)root
 {
   objc_opt_class();
   v6 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v3, v4, v5);

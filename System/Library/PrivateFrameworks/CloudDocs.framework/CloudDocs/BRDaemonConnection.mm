@@ -1,37 +1,37 @@
 @interface BRDaemonConnection
 + (id)cloudDocsAppSupportURL;
-+ (id)cloudDocsAppSupportURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)cloudDocsAppSupportURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)cloudDocsCachesURL;
-+ (id)cloudDocsCachesURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)cloudDocsCachesURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)defaultConnection;
-+ (id)defaultConnectionForPersonaID:(id)a3;
++ (id)defaultConnectionForPersonaID:(id)d;
 + (id)defaultConnectionIfExists;
-+ (id)defaultConnectionIfExistsForPersonaID:(id)a3;
++ (id)defaultConnectionIfExistsForPersonaID:(id)d;
 + (id)homeDirectoryURL;
-+ (id)homeDirectoryURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)homeDirectoryURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)mobileDocumentsURL;
-+ (id)mobileDocumentsURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)mobileDocumentsURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)secondaryConnection;
-+ (id)secondaryConnectionForPersonaID:(id)a3;
++ (id)secondaryConnectionForPersonaID:(id)d;
 + (id)secondaryConnectionIfExists;
-+ (id)secondaryConnectionIfExistsForPersonaID:(id)a3;
++ (id)secondaryConnectionIfExistsForPersonaID:(id)d;
 + (id)syncedDesktopURL;
-+ (id)syncedDesktopURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)syncedDesktopURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)syncedDocumentsURL;
-+ (id)syncedDocumentsURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)syncedDocumentsURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (id)syncedRootURLs;
-+ (id)syncedRootURLsForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4;
++ (id)syncedRootURLsForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch;
 + (void)clearURLCache;
-+ (void)clearURLCacheForPersonaID:(id)a3;
++ (void)clearURLCacheForPersonaID:(id)d;
 + (void)initialize;
 + (void)invalidateCachedURLProperties;
-+ (void)invalidateCachedURLPropertiesForPersonaID:(id)a3;
++ (void)invalidateCachedURLPropertiesForPersonaID:(id)d;
 - (id)initUsingUserLocalDaemon;
 - (id)initUsingUserLocalDaemonTokenService;
 - (id)newFPFSSyncProxy;
 - (id)newSyncProxy;
 - (id)newSyncTokenProxy;
-- (void)_setupAndResumeForPersonaID:(id)a3;
+- (void)_setupAndResumeForPersonaID:(id)d;
 - (void)newFPFSSyncProxy;
 - (void)newSyncProxy;
 - (void)newSyncTokenProxy;
@@ -41,7 +41,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v3 = dispatch_queue_attr_make_with_autorelease_frequency(v2, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -109,9 +109,9 @@
   if (v2)
   {
     v2->_isUsingTokenService = 1;
-    v4 = [MEMORY[0x1E69DF068] sharedManager];
-    v5 = [v4 br_currentPersonaID];
-    [(BRDaemonConnection *)v3 _setupAndResumeForPersonaID:v5];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+    [(BRDaemonConnection *)v3 _setupAndResumeForPersonaID:br_currentPersonaID];
   }
 
   return v3;
@@ -129,9 +129,9 @@
 
 + (id)defaultConnection
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 br_currentPersonaID];
-  v5 = [a1 defaultConnectionForPersonaID:v4];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+  v5 = [self defaultConnectionForPersonaID:br_currentPersonaID];
 
   return v5;
 }
@@ -143,9 +143,9 @@
   v2 = [(BRDaemonConnection *)&v6 initWithMachServiceName:@"com.apple.bird" options:0];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DF068] sharedManager];
-    v4 = [v3 br_currentPersonaID];
-    [(BRDaemonConnection *)v2 _setupAndResumeForPersonaID:v4];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+    [(BRDaemonConnection *)v2 _setupAndResumeForPersonaID:br_currentPersonaID];
   }
 
   return v2;
@@ -154,25 +154,25 @@
 + (id)mobileDocumentsURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 mobileDocumentsURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self mobileDocumentsURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
 
 + (id)defaultConnectionIfExists
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 br_currentPersonaID];
-  v5 = [a1 defaultConnectionIfExistsForPersonaID:v4];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+  v5 = [self defaultConnectionIfExistsForPersonaID:br_currentPersonaID];
 
   return v5;
 }
 
 + (id)secondaryConnectionIfExists
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 br_currentPersonaID];
-  v5 = [a1 secondaryConnectionIfExistsForPersonaID:v4];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+  v5 = [self secondaryConnectionIfExistsForPersonaID:br_currentPersonaID];
 
   return v5;
 }
@@ -187,9 +187,9 @@
   return [[BRXPCSyncProxy alloc] initWithXPCObject:self];
 }
 
-- (void)_setupAndResumeForPersonaID:(id)a3
+- (void)_setupAndResumeForPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (self->_uuid)
   {
     [(BRDaemonConnection *)self _setUUID:?];
@@ -219,7 +219,7 @@
   v9 = __50__BRDaemonConnection__setupAndResumeForPersonaID___block_invoke_2;
   v10 = &unk_1E7A16B20;
   objc_copyWeak(&v12, &location);
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
   [(BRDaemonConnection *)self setInvalidationHandler:&v7];
   [(BRDaemonConnection *)self resume:v7];
@@ -279,9 +279,9 @@ void __50__BRDaemonConnection__setupAndResumeForPersonaID___block_invoke_3(uint6
   }
 }
 
-+ (id)defaultConnectionIfExistsForPersonaID:(id)a3
++ (id)defaultConnectionIfExistsForPersonaID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -293,9 +293,9 @@ void __50__BRDaemonConnection__setupAndResumeForPersonaID___block_invoke_3(uint6
   v8[1] = 3221225472;
   v8[2] = __60__BRDaemonConnection_defaultConnectionIfExistsForPersonaID___block_invoke;
   v8[3] = &unk_1E7A15518;
-  v9 = v3;
+  v9 = dCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = dCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -314,9 +314,9 @@ uint64_t __60__BRDaemonConnection_defaultConnectionIfExistsForPersonaID___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)defaultConnectionForPersonaID:(id)a3
++ (id)defaultConnectionForPersonaID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -328,9 +328,9 @@ uint64_t __60__BRDaemonConnection_defaultConnectionIfExistsForPersonaID___block_
   v8[1] = 3221225472;
   v8[2] = __52__BRDaemonConnection_defaultConnectionForPersonaID___block_invoke;
   v8[3] = &unk_1E7A15518;
-  v9 = v3;
+  v9 = dCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = dCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -364,9 +364,9 @@ void __52__BRDaemonConnection_defaultConnectionForPersonaID___block_invoke(uint6
   }
 }
 
-+ (id)secondaryConnectionIfExistsForPersonaID:(id)a3
++ (id)secondaryConnectionIfExistsForPersonaID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -378,9 +378,9 @@ void __52__BRDaemonConnection_defaultConnectionForPersonaID___block_invoke(uint6
   v8[1] = 3221225472;
   v8[2] = __62__BRDaemonConnection_secondaryConnectionIfExistsForPersonaID___block_invoke;
   v8[3] = &unk_1E7A15518;
-  v9 = v3;
+  v9 = dCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = dCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -399,9 +399,9 @@ uint64_t __62__BRDaemonConnection_secondaryConnectionIfExistsForPersonaID___bloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)secondaryConnectionForPersonaID:(id)a3
++ (id)secondaryConnectionForPersonaID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -413,9 +413,9 @@ uint64_t __62__BRDaemonConnection_secondaryConnectionIfExistsForPersonaID___bloc
   v8[1] = 3221225472;
   v8[2] = __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke;
   v8[3] = &unk_1E7A15518;
-  v9 = v3;
+  v9 = dCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = dCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -451,9 +451,9 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 
 + (id)secondaryConnection
 {
-  v3 = [MEMORY[0x1E69DF068] sharedManager];
-  v4 = [v3 br_currentPersonaID];
-  v5 = [a1 secondaryConnectionForPersonaID:v4];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  br_currentPersonaID = [mEMORY[0x1E69DF068] br_currentPersonaID];
+  v5 = [self secondaryConnectionForPersonaID:br_currentPersonaID];
 
   return v5;
 }
@@ -468,21 +468,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return [[BRXPCSyncProxy alloc] initWithXPCObject:self];
 }
 
-+ (id)homeDirectoryURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)homeDirectoryURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_homeDirectoryURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(1, v6, v4);
+    _preComputeURLSForPersona(1, v6, switchCopy);
     v7 = [g_homeDirectoryURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -491,21 +491,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)mobileDocumentsURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)mobileDocumentsURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_mobileDocumentsURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(0, v6, v4);
+    _preComputeURLSForPersona(0, v6, switchCopy);
     v7 = [g_mobileDocumentsURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -514,21 +514,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)cloudDocsAppSupportURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)cloudDocsAppSupportURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_cloudDocsAppSupportURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(1, v6, v4);
+    _preComputeURLSForPersona(1, v6, switchCopy);
     v7 = [g_cloudDocsAppSupportURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -537,21 +537,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)cloudDocsCachesURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)cloudDocsCachesURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_cloudDocsCachesURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(1, v6, v4);
+    _preComputeURLSForPersona(1, v6, switchCopy);
     v7 = [g_cloudDocsCachesURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -560,21 +560,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)syncedDesktopURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)syncedDesktopURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_syncedDesktopURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(1, v6, v4);
+    _preComputeURLSForPersona(1, v6, switchCopy);
     v7 = [g_syncedDesktopURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -583,21 +583,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)syncedDocumentsURLForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)syncedDocumentsURLForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_syncedDocumentsURLForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(1, v6, v4);
+    _preComputeURLSForPersona(1, v6, switchCopy);
     v7 = [g_syncedDocumentsURLForPersona objectForKeyedSubscript:v6];
   }
 
@@ -606,21 +606,21 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
   return v7;
 }
 
-+ (id)syncedRootURLsForPersonaID:(id)a3 needsPersonaSwitch:(BOOL)a4
++ (id)syncedRootURLsForPersonaID:(id)d needsPersonaSwitch:(BOOL)switch
 {
-  v4 = a4;
-  v5 = @"__defaultPersonaID__";
-  if (a3)
+  switchCopy = switch;
+  dCopy = @"__defaultPersonaID__";
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
-  v6 = v5;
+  v6 = dCopy;
   [gCacheLock lock];
   v7 = [g_syncedRootURLsForPersona objectForKeyedSubscript:v6];
   if (!v7)
   {
-    _preComputeURLSForPersona(0, v6, v4);
+    _preComputeURLSForPersona(0, v6, switchCopy);
     v7 = [g_syncedRootURLsForPersona objectForKeyedSubscript:v6];
   }
 
@@ -632,7 +632,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)homeDirectoryURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 homeDirectoryURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self homeDirectoryURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -640,7 +640,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)syncedDesktopURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 syncedDesktopURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self syncedDesktopURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -648,7 +648,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)syncedDocumentsURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 syncedDocumentsURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self syncedDocumentsURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -656,7 +656,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)syncedRootURLs
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 syncedRootURLsForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self syncedRootURLsForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -664,7 +664,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)cloudDocsAppSupportURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 cloudDocsAppSupportURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self cloudDocsAppSupportURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -672,7 +672,7 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (id)cloudDocsCachesURL
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  v4 = [a1 cloudDocsCachesURLForPersonaID:v3 needsPersonaSwitch:0];
+  v4 = [self cloudDocsCachesURLForPersonaID:v3 needsPersonaSwitch:0];
 
   return v4;
 }
@@ -680,30 +680,30 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (void)invalidateCachedURLProperties
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  [a1 invalidateCachedURLPropertiesForPersonaID:v3];
+  [self invalidateCachedURLPropertiesForPersonaID:v3];
 }
 
-+ (void)invalidateCachedURLPropertiesForPersonaID:(id)a3
++ (void)invalidateCachedURLPropertiesForPersonaID:(id)d
 {
   v3 = gCacheLock;
-  v4 = a3;
+  dCopy = d;
   [v3 lock];
-  v5 = [g_homeDirectoryURLForPersona objectForKeyedSubscript:v4];
+  v5 = [g_homeDirectoryURLForPersona objectForKeyedSubscript:dCopy];
   [v5 removeAllCachedResourceValues];
 
-  v6 = [g_mobileDocumentsURLForPersona objectForKeyedSubscript:v4];
+  v6 = [g_mobileDocumentsURLForPersona objectForKeyedSubscript:dCopy];
   [v6 removeAllCachedResourceValues];
 
-  v7 = [g_cloudDocsAppSupportURLForPersona objectForKeyedSubscript:v4];
+  v7 = [g_cloudDocsAppSupportURLForPersona objectForKeyedSubscript:dCopy];
   [v7 removeAllCachedResourceValues];
 
-  v8 = [g_cloudDocsCachesURLForPersona objectForKeyedSubscript:v4];
+  v8 = [g_cloudDocsCachesURLForPersona objectForKeyedSubscript:dCopy];
   [v8 removeAllCachedResourceValues];
 
-  v9 = [g_syncedDocumentsURLForPersona objectForKeyedSubscript:v4];
+  v9 = [g_syncedDocumentsURLForPersona objectForKeyedSubscript:dCopy];
   [v9 removeAllCachedResourceValues];
 
-  v10 = [g_syncedDesktopURLForPersona objectForKeyedSubscript:v4];
+  v10 = [g_syncedDesktopURLForPersona objectForKeyedSubscript:dCopy];
 
   [v10 removeAllCachedResourceValues];
   v11 = gCacheLock;
@@ -714,22 +714,22 @@ void __54__BRDaemonConnection_secondaryConnectionForPersonaID___block_invoke(uin
 + (void)clearURLCache
 {
   v3 = [MEMORY[0x1E696AEC0] br_currentPersonaIDWithIsDataSeparated:0];
-  [a1 clearURLCacheForPersonaID:v3];
+  [self clearURLCacheForPersonaID:v3];
 }
 
-+ (void)clearURLCacheForPersonaID:(id)a3
++ (void)clearURLCacheForPersonaID:(id)d
 {
   v4 = gCacheLock;
-  v5 = a3;
+  dCopy = d;
   [v4 lock];
-  [a1 invalidateCachedURLPropertiesForPersonaID:v5];
-  [g_homeDirectoryURLForPersona removeObjectForKey:v5];
-  [g_mobileDocumentsURLForPersona removeObjectForKey:v5];
-  [g_cloudDocsAppSupportURLForPersona removeObjectForKey:v5];
-  [g_cloudDocsCachesURLForPersona removeObjectForKey:v5];
-  [g_syncedDocumentsURLForPersona removeObjectForKey:v5];
-  [g_syncedDesktopURLForPersona removeObjectForKey:v5];
-  [g_syncedRootURLsForPersona removeObjectForKey:v5];
+  [self invalidateCachedURLPropertiesForPersonaID:dCopy];
+  [g_homeDirectoryURLForPersona removeObjectForKey:dCopy];
+  [g_mobileDocumentsURLForPersona removeObjectForKey:dCopy];
+  [g_cloudDocsAppSupportURLForPersona removeObjectForKey:dCopy];
+  [g_cloudDocsCachesURLForPersona removeObjectForKey:dCopy];
+  [g_syncedDocumentsURLForPersona removeObjectForKey:dCopy];
+  [g_syncedDesktopURLForPersona removeObjectForKey:dCopy];
+  [g_syncedRootURLsForPersona removeObjectForKey:dCopy];
 
   v6 = gCacheLock;
 

@@ -12,10 +12,10 @@
 
 - (uint64_t)px_isInReadWriteCloudLibrary
 {
-  v1 = [a1 photoLibrary];
-  if ([v1 isCloudPhotoLibraryEnabled])
+  photoLibrary = [self photoLibrary];
+  if ([photoLibrary isCloudPhotoLibraryEnabled])
   {
-    v2 = [v1 isReadOnlyCloudPhotoLibrary] ^ 1;
+    v2 = [photoLibrary isReadOnlyCloudPhotoLibrary] ^ 1;
   }
 
   else
@@ -28,35 +28,35 @@
 
 - (uint64_t)px_isRecentsCollection
 {
-  if ([a1 px_isRecentlyViewedCollection] & 1) != 0 || (objc_msgSend(a1, "px_isRecentlyEditedCollection"))
+  if ([self px_isRecentlyViewedCollection] & 1) != 0 || (objc_msgSend(self, "px_isRecentlyEditedCollection"))
   {
     return 1;
   }
 
-  return [a1 px_isRecentlySharedCollection];
+  return [self px_isRecentlySharedCollection];
 }
 
 - (uint64_t)px_isUserCreated
 {
-  if ([a1 px_isRegularAlbum])
+  if ([self px_isRegularAlbum])
   {
-    return [a1 isTransient] ^ 1;
+    return [self isTransient] ^ 1;
   }
 
-  if ([a1 px_isRegularFolder])
+  if ([self px_isRegularFolder])
   {
-    return [a1 isTransient] ^ 1;
+    return [self isTransient] ^ 1;
   }
 
-  if ([a1 px_isUserSmartAlbum])
+  if ([self px_isUserSmartAlbum])
   {
-    return [a1 isTransient] ^ 1;
+    return [self isTransient] ^ 1;
   }
 
-  result = [a1 px_isProject];
+  result = [self px_isProject];
   if (result)
   {
-    return [a1 isTransient] ^ 1;
+    return [self isTransient] ^ 1;
   }
 
   return result;
@@ -64,48 +64,48 @@
 
 - (uint64_t)px_allowsMoveToPersonalLibrary
 {
-  if ([a1 px_isRecentlyDeletedSmartAlbum])
+  if ([self px_isRecentlyDeletedSmartAlbum])
   {
     return 0;
   }
 
   else
   {
-    return [a1 px_isRecoveredSmartAlbum] ^ 1;
+    return [self px_isRecoveredSmartAlbum] ^ 1;
   }
 }
 
 - (uint64_t)px_allowsMoveToSharedLibrary
 {
-  if ([a1 px_isRecentlyDeletedSmartAlbum])
+  if ([self px_isRecentlyDeletedSmartAlbum])
   {
     return 0;
   }
 
   else
   {
-    return [a1 px_isRecoveredSmartAlbum] ^ 1;
+    return [self px_isRecoveredSmartAlbum] ^ 1;
   }
 }
 
 - (uint64_t)px_canRearrangeContent
 {
-  if ([a1 canPerformEditOperation:5] & 1) != 0 || (objc_msgSend(a1, "px_isMediaTypesFolder") & 1) != 0 || (objc_msgSend(a1, "px_isUtilitiesFolder"))
+  if ([self canPerformEditOperation:5] & 1) != 0 || (objc_msgSend(self, "px_isMediaTypesFolder") & 1) != 0 || (objc_msgSend(self, "px_isUtilitiesFolder"))
   {
     return 1;
   }
 
-  return [a1 px_isBookmarksFolder];
+  return [self px_isBookmarksFolder];
 }
 
 - (uint64_t)px_allowsKeyAssetDisplay
 {
-  if ([a1 px_isRegularAlbum] & 1) != 0 || (objc_msgSend(a1, "px_isSharedAlbum") & 1) != 0 || (objc_msgSend(a1, "px_isFavoritesSmartAlbum") & 1) != 0 || (objc_msgSend(a1, "px_isRecentsSmartAlbum") & 1) != 0 || (objc_msgSend(a1, "px_isRegularFolder") & 1) != 0 || (objc_msgSend(a1, "px_isMacSyncedAlbum"))
+  if ([self px_isRegularAlbum] & 1) != 0 || (objc_msgSend(self, "px_isSharedAlbum") & 1) != 0 || (objc_msgSend(self, "px_isFavoritesSmartAlbum") & 1) != 0 || (objc_msgSend(self, "px_isRecentsSmartAlbum") & 1) != 0 || (objc_msgSend(self, "px_isRegularFolder") & 1) != 0 || (objc_msgSend(self, "px_isMacSyncedAlbum"))
   {
     return 1;
   }
 
-  return [a1 px_isMacSyncedFacesFolder];
+  return [self px_isMacSyncedFacesFolder];
 }
 
 @end

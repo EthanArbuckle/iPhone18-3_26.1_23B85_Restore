@@ -1,12 +1,12 @@
 @interface EnhancedCellularCallPerformanceController
-- (id)_extractFilePaths:(id)a3;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (id)_extractFilePaths:(id)paths;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation EnhancedCellularCallPerformanceController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   CFPreferencesAppSynchronize(@"com.apple.Diagnostics");
   keyExistsAndHasValidFormat = 0;
@@ -19,9 +19,9 @@
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(EnhancedCellularCallPerformanceController *)self copyForSyncing];
+    copyForSyncing = [(EnhancedCellularCallPerformanceController *)self copyForSyncing];
     *buf = 67109376;
-    v9 = v6;
+    v9 = copyForSyncing;
     v10 = 1024;
     v11 = keyExistsAndHasValidFormat;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Copying for syncing: %d, exists: %d", buf, 0xEu);
@@ -30,21 +30,21 @@
 
 - (void)start
 {
-  v2 = [(EnhancedCellularCallPerformanceController *)self result];
-  [v2 setStatusCode:&off_100004240];
+  result = [(EnhancedCellularCallPerformanceController *)self result];
+  [result setStatusCode:&off_100004240];
 
   WISServerConsolidateDeviceDiagnostics();
 }
 
-- (id)_extractFilePaths:(id)a3
+- (id)_extractFilePaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v22 = +[NSMutableArray array];
-  v5 = [v4 objectForKeyedSubscript:kWisDiagnosticsFileArray];
+  v5 = [pathsCopy objectForKeyedSubscript:kWisDiagnosticsFileArray];
   if (!v5)
   {
-    v15 = [(EnhancedCellularCallPerformanceController *)self result];
-    [v15 setStatusCode:&off_100004288];
+    result = [(EnhancedCellularCallPerformanceController *)self result];
+    [result setStatusCode:&off_100004288];
 
     v16 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -58,8 +58,8 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [(EnhancedCellularCallPerformanceController *)self result];
-    [v17 setStatusCode:&off_1000042A0];
+    result2 = [(EnhancedCellularCallPerformanceController *)self result];
+    [result2 setStatusCode:&off_1000042A0];
 
     v16 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -72,8 +72,8 @@
 
   if (![v5 count])
   {
-    v18 = [(EnhancedCellularCallPerformanceController *)self result];
-    [v18 setStatusCode:&off_1000042B8];
+    result3 = [(EnhancedCellularCallPerformanceController *)self result];
+    [result3 setStatusCode:&off_1000042B8];
 
     v16 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_24:
   {
     v8 = v7;
     v20 = v5;
-    v21 = v4;
+    v21 = pathsCopy;
     v9 = *v24;
     v10 = 1;
     do
@@ -120,8 +120,8 @@ LABEL_24:
 
         else
         {
-          v14 = [(EnhancedCellularCallPerformanceController *)self result];
-          [v14 setStatusCode:&off_1000042D0];
+          result4 = [(EnhancedCellularCallPerformanceController *)self result];
+          [result4 setStatusCode:&off_1000042D0];
 
           v13 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -143,14 +143,14 @@ LABEL_24:
     if (v10)
     {
       v5 = v20;
-      v4 = v21;
+      pathsCopy = v21;
       goto LABEL_26;
     }
 
     v6 = v22;
     v22 = 0;
     v5 = v20;
-    v4 = v21;
+    pathsCopy = v21;
   }
 
 LABEL_25:

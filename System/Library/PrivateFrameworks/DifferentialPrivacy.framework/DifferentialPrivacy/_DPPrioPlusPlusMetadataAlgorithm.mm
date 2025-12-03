@@ -1,20 +1,20 @@
 @interface _DPPrioPlusPlusMetadataAlgorithm
-+ (id)initializeWithDimensionality:(unint64_t)a3;
-- (_DPPrioPlusPlusMetadataAlgorithm)initWithDimensionality:(unint64_t)a3;
-- (id)randomize:(id)a3;
++ (id)initializeWithDimensionality:(unint64_t)dimensionality;
+- (_DPPrioPlusPlusMetadataAlgorithm)initWithDimensionality:(unint64_t)dimensionality;
+- (id)randomize:(id)randomize;
 - (void)dealloc;
 @end
 
 @implementation _DPPrioPlusPlusMetadataAlgorithm
 
-+ (id)initializeWithDimensionality:(unint64_t)a3
++ (id)initializeWithDimensionality:(unint64_t)dimensionality
 {
-  v3 = [[a1 alloc] initWithDimensionality:a3];
+  v3 = [[self alloc] initWithDimensionality:dimensionality];
 
   return v3;
 }
 
-- (_DPPrioPlusPlusMetadataAlgorithm)initWithDimensionality:(unint64_t)a3
+- (_DPPrioPlusPlusMetadataAlgorithm)initWithDimensionality:(unint64_t)dimensionality
 {
   v10.receiver = self;
   v10.super_class = _DPPrioPlusPlusMetadataAlgorithm;
@@ -25,8 +25,8 @@
     goto LABEL_8;
   }
 
-  v4->_dimension = a3;
-  if (a3 && (2 * nextPowerOfTwo(a3 + 1)) <= 0x100000)
+  v4->_dimension = dimensionality;
+  if (dimensionality && (2 * nextPowerOfTwo(dimensionality + 1)) <= 0x100000)
   {
     v8 = prio_memory_alloc(v5[1]);
     v5[2] = v8;
@@ -68,22 +68,22 @@ LABEL_9:
   [(_DPPrioPlusPlusMetadataAlgorithm *)&v3 dealloc];
 }
 
-- (id)randomize:(id)a3
+- (id)randomize:(id)randomize
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_DPPrioPlusPlusMetadataAlgorithm *)self dimension];
-  v6 = prio_share_length(v5);
+  randomizeCopy = randomize;
+  dimension = [(_DPPrioPlusPlusMetadataAlgorithm *)self dimension];
+  v6 = prio_share_length(dimension);
   v7 = [MEMORY[0x277CBEB28] dataWithLength:4 * v6];
-  v8 = [v7 mutableBytes];
-  v9 = [v4 bytes];
-  if (v5)
+  mutableBytes = [v7 mutableBytes];
+  bytes = [randomizeCopy bytes];
+  if (dimension)
   {
-    v10 = v8;
-    v11 = v5;
+    v10 = mutableBytes;
+    v11 = dimension;
     while (1)
     {
-      v13 = *v9++;
+      v13 = *bytes++;
       v12 = v13;
       if (v13 >= 2)
       {
@@ -109,19 +109,19 @@ LABEL_9:
   else
   {
 LABEL_5:
-    prio_encode(v5, v8, v6, [(_DPPrioPlusPlusMetadataAlgorithm *)self prioMemory]);
+    prio_encode(dimension, mutableBytes, v6, [(_DPPrioPlusPlusMetadataAlgorithm *)self prioMemory]);
     v14 = +[_DPPrioSeedablePRNG generateSeed];
     v15 = [_DPPrioSeedablePRNG randomDataFromSeed:v14 length:v6];
     v16 = v15;
     if (v15)
     {
-      share_array_prng(v8, [v15 bytes], v6);
+      share_array_prng(mutableBytes, [v15 bytes], v6);
       v21[0] = @"share1";
       v21[1] = @"share2";
       v22[0] = v7;
       v22[1] = v14;
       v21[2] = @"dimensionality";
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v5];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:dimension];
       v22[2] = v17;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
     }

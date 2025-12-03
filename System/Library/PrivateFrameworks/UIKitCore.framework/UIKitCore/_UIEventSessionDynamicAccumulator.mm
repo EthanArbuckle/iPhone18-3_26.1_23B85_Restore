@@ -1,17 +1,17 @@
 @interface _UIEventSessionDynamicAccumulator
-+ (id)accumulatorWithName:(id)a3 depth:(unint64_t)a4 block:(id)a5 delegate:(id)a6 allowedActionSourceTypes:(id)a7;
++ (id)accumulatorWithName:(id)name depth:(unint64_t)depth block:(id)block delegate:(id)delegate allowedActionSourceTypes:(id)types;
 - (_UIEventSessionDynamicAccumulatorDelegate)delegate;
-- (void)performIncreaseWithActions:(id)a3;
+- (void)performIncreaseWithActions:(id)actions;
 @end
 
 @implementation _UIEventSessionDynamicAccumulator
 
-+ (id)accumulatorWithName:(id)a3 depth:(unint64_t)a4 block:(id)a5 delegate:(id)a6 allowedActionSourceTypes:(id)a7
++ (id)accumulatorWithName:(id)name depth:(unint64_t)depth block:(id)block delegate:(id)delegate allowedActionSourceTypes:(id)types
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
+  nameCopy = name;
+  blockCopy = block;
+  typesCopy = types;
+  delegateCopy = delegate;
   if (os_variant_has_internal_diagnostics())
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIEventSessionActionAnalytics", &accumulatorWithName_depth_block_delegate_allowedActionSourceTypes____s_category);
@@ -26,15 +26,15 @@
     }
   }
 
-  v16 = [a1 accumulatorWithName:v12 depthRange:a4 block:0 allowedActionSourceTypes:{v13, v14}];
-  objc_storeWeak(v16 + 8, v15);
+  v16 = [self accumulatorWithName:nameCopy depthRange:depth block:0 allowedActionSourceTypes:{blockCopy, typesCopy}];
+  objc_storeWeak(v16 + 8, delegateCopy);
 
   return v16;
 }
 
-- (void)performIncreaseWithActions:(id)a3
+- (void)performIncreaseWithActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   if (os_variant_has_internal_diagnostics())
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIEventSessionActionAnalytics", &performIncreaseWithActions____s_category);
@@ -49,34 +49,34 @@
     }
   }
 
-  v5 = [(_UIEventSessionAccumulator *)self block];
-  v6 = (v5)[2](v5, v4);
+  block = [(_UIEventSessionAccumulator *)self block];
+  v6 = (block)[2](block, actionsCopy);
 
   if (v6)
   {
-    v7 = [(_UIEventSessionDynamicAccumulator *)self delegate];
+    delegate = [(_UIEventSessionDynamicAccumulator *)self delegate];
 
-    if (v7)
+    if (delegate)
     {
-      v8 = [MEMORY[0x1E696AD60] string];
-      v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count") + 3}];
+      string = [MEMORY[0x1E696AD60] string];
+      v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(actionsCopy, "count") + 3}];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __64___UIEventSessionDynamicAccumulator_performIncreaseWithActions___block_invoke;
       v17[3] = &unk_1E710AF28;
-      v18 = v8;
+      v18 = string;
       v19 = v9;
-      v20 = v4;
+      v20 = actionsCopy;
       v10 = v9;
-      v11 = v8;
+      v11 = string;
       [v20 enumerateObjectsWithOptions:2 usingBlock:v17];
       [v10 setObject:v11 forKey:@"Sequence"];
-      v12 = [(_UIEventSessionAccumulator *)self name];
-      [v10 setObject:v12 forKey:@"Action"];
+      name = [(_UIEventSessionAccumulator *)self name];
+      [v10 setObject:name forKey:@"Action"];
 
-      v13 = [(_UIEventSessionDynamicAccumulator *)self delegate];
-      v14 = [(_UIEventSessionAccumulator *)self name];
-      [v13 writeEventWithFields:v10 andName:v14];
+      delegate2 = [(_UIEventSessionDynamicAccumulator *)self delegate];
+      name2 = [(_UIEventSessionAccumulator *)self name];
+      [delegate2 writeEventWithFields:v10 andName:name2];
     }
   }
 }

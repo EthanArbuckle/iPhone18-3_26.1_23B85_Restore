@@ -1,24 +1,24 @@
 @interface NRCoreAnalyticsReporter
-+ (void)reportAbortPairingClient:(id)a3 reason:(id)a4;
-+ (void)reportDeviceIsPairedTelemetry:(id)a3;
-+ (void)reportDeviceSwitchTelemetryWithCollectionHistory:(id)a3;
-+ (void)reportMigrationWithDeviceHistory:(id)a3 andError:(id)a4;
-+ (void)reportNetworkRelayPairingResultWithAuthMethod:(unint64_t)a3 resultError:(id)a4 timeElapsed:(double)a5;
-+ (void)reportPairingFailureWithReportString:(id)a3;
++ (void)reportAbortPairingClient:(id)client reason:(id)reason;
++ (void)reportDeviceIsPairedTelemetry:(id)telemetry;
++ (void)reportDeviceSwitchTelemetryWithCollectionHistory:(id)history;
++ (void)reportMigrationWithDeviceHistory:(id)history andError:(id)error;
++ (void)reportNetworkRelayPairingResultWithAuthMethod:(unint64_t)method resultError:(id)error timeElapsed:(double)elapsed;
++ (void)reportPairingFailureWithReportString:(id)string;
 + (void)reportPairingSuccess;
-+ (void)reportUnpairReason:(unint64_t)a3;
++ (void)reportUnpairReason:(unint64_t)reason;
 + (void)reportXPCReconnectSuccess;
-+ (void)sendEvent:(id)a3;
-+ (void)sendReport:(id)a3 withEvent:(id)a4;
++ (void)sendEvent:(id)event;
++ (void)sendReport:(id)report withEvent:(id)event;
 @end
 
 @implementation NRCoreAnalyticsReporter
 
-+ (void)sendReport:(id)a3 withEvent:(id)a4
++ (void)sendReport:(id)report withEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  reportCopy = report;
+  eventCopy = event;
+  if (!eventCopy)
   {
     v7 = nr_daemon_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -28,7 +28,7 @@
       v9 = nr_daemon_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_100100C74(v5, v9);
+        sub_100100C74(reportCopy, v9);
       }
     }
   }
@@ -42,9 +42,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v5;
+      v14 = reportCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = eventCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[NRCoreAnalyticsReporter] Sending Event: %@ - %@", &v13, 0x16u);
     }
   }
@@ -52,10 +52,10 @@
   AnalyticsSendEvent();
 }
 
-+ (void)sendEvent:(id)a3
++ (void)sendEvent:(id)event
 {
-  v3 = a3;
-  if (!v3)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v4 = nr_daemon_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
@@ -79,7 +79,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = eventCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[NRCoreAnalyticsReporter] Sending Event: %@", &v10, 0xCu);
     }
   }
@@ -87,7 +87,7 @@
   AnalyticsSendEvent();
 }
 
-+ (void)reportUnpairReason:(unint64_t)a3
++ (void)reportUnpairReason:(unint64_t)reason
 {
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -100,7 +100,7 @@
       *buf = 136315394;
       *&buf[4] = "+[NRCoreAnalyticsReporter reportUnpairReason:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = reason;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[NRCoreAnalyticsReporter] %s: Reason: %lu", buf, 0x16u);
     }
   }
@@ -125,24 +125,24 @@
     v9 = qword_1001B38A0;
   }
 
-  v12 = [NSNumber numberWithInteger:a3];
-  v13 = [v9 objectForKeyedSubscript:v12];
+  v12 = [NSNumber numberWithInteger:reason];
+  reason = [v9 objectForKeyedSubscript:v12];
 
-  if (!v13)
+  if (!reason)
   {
-    v13 = [NSString stringWithFormat:@"missingUnpairReason%ld", a3];
+    reason = [NSString stringWithFormat:@"missingUnpairReason%ld", reason];
   }
 
-  v16[1] = v13;
+  v16[1] = reason;
   v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  [a1 sendEvent:v14];
+  [self sendEvent:v14];
 }
 
-+ (void)reportAbortPairingClient:(id)a3 reason:(id)a4
++ (void)reportAbortPairingClient:(id)client reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  reasonCopy = reason;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -154,16 +154,16 @@
       *buf = 136315650;
       v19 = "+[NRCoreAnalyticsReporter reportAbortPairingClient:reason:]";
       v20 = 2112;
-      v21 = v6;
+      v21 = clientCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[NRCoreAnalyticsReporter] %s: Client: %@; Reason: %@", buf, 0x20u);
     }
   }
 
-  v11 = [v6 lastPathComponent];
-  v12 = [NSString stringWithFormat:@"%@", v7];
-  v13 = [NSString stringWithFormat:@"pairingAborted.%@.%@", v11, v12];
+  lastPathComponent = [clientCopy lastPathComponent];
+  reasonCopy = [NSString stringWithFormat:@"%@", reasonCopy];
+  v13 = [NSString stringWithFormat:@"pairingAborted.%@.%@", lastPathComponent, reasonCopy];
 
   v16[0] = @"eventType";
   v14 = [@"com.apple.bluetoothregistry." stringByAppendingString:@"pairFailure"];
@@ -172,7 +172,7 @@
   v17[1] = v13;
   v15 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  [a1 sendEvent:v15];
+  [self sendEvent:v15];
 }
 
 + (void)reportXPCReconnectSuccess
@@ -197,7 +197,7 @@
   v9[1] = @"xpcReconnectSuccess";
   v7 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-  [a1 sendEvent:v7];
+  [self sendEvent:v7];
 }
 
 + (void)reportPairingSuccess
@@ -220,12 +220,12 @@
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
 
-  [a1 sendEvent:v7];
+  [self sendEvent:v7];
 }
 
-+ (void)reportPairingFailureWithReportString:(id)a3
++ (void)reportPairingFailureWithReportString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -237,7 +237,7 @@
       *buf = 136315394;
       v14 = "+[NRCoreAnalyticsReporter reportPairingFailureWithReportString:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = stringCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[NRCoreAnalyticsReporter] %s: %@", buf, 0x16u);
     }
   }
@@ -247,30 +247,30 @@
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v10 = [v9 mutableCopy];
 
-  if (v4)
+  if (stringCopy)
   {
-    [v10 setObject:v4 forKeyedSubscript:@"errorReason"];
+    [v10 setObject:stringCopy forKeyedSubscript:@"errorReason"];
   }
 
-  [a1 sendEvent:v10];
+  [self sendEvent:v10];
 }
 
-+ (void)reportDeviceSwitchTelemetryWithCollectionHistory:(id)a3
++ (void)reportDeviceSwitchTelemetryWithCollectionHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   v5 = _NRIsAutomated();
-  [v4 deviceCollection];
+  [historyCopy deviceCollection];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v52 = v58 = 0u;
-  v6 = [v52 allPairingIDs];
-  v53 = [v6 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  allPairingIDs = [v52 allPairingIDs];
+  v53 = [allPairingIDs countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v53)
   {
     v40 = v5;
-    v41 = a1;
-    v42 = v4;
+    selfCopy = self;
+    v42 = historyCopy;
     v44 = 0;
     v7 = 0;
     v8 = 0;
@@ -284,7 +284,7 @@
     v47 = NRDevicePropertyHWModelString;
     v11 = 0.0;
     v45 = NRDevicePropertyLastInactiveDate;
-    obj = v6;
+    obj = allPairingIDs;
     do
     {
       for (i = 0; i != v53; i = i + 1)
@@ -296,37 +296,37 @@
 
         v13 = [v52 objectForKeyedSubscript:*(*(&v55 + 1) + 8 * i)];
         v14 = [v13 objectForKeyedSubscript:v50];
-        v15 = [v14 value];
+        value = [v14 value];
 
         v16 = [v13 objectForKeyedSubscript:v49];
-        v17 = [v16 value];
+        value2 = [v16 value];
 
-        if (!v17 || [v17 BOOLValue])
+        if (!value2 || [value2 BOOLValue])
         {
           v18 = [v13 objectForKeyedSubscript:v48];
           [v18 value];
           v19 = v54 = v7;
 
           v20 = [v13 objectForKeyedSubscript:v47];
-          v21 = [v20 value];
+          value3 = [v20 value];
 
-          v22 = v15;
+          v22 = value;
           v23 = [v13 objectForKeyedSubscript:v46];
-          v24 = [v23 value];
+          value4 = [v23 value];
 
           v25 = [v13 objectForKeyedSubscript:v45];
-          v26 = [v25 value];
+          value5 = [v25 value];
 
-          [v24 timeIntervalSinceDate:v26];
+          [value4 timeIntervalSinceDate:value5];
           v11 = v27;
 
           v8 = v22;
-          v9 = v21;
+          v9 = value3;
           v10 = v19;
           v7 = v54;
         }
 
-        if (v15 && [v15 BOOLValue])
+        if (value && [value BOOLValue])
         {
           ++v44;
         }
@@ -344,11 +344,11 @@
 
     if (v10)
     {
-      v4 = v42;
+      historyCopy = v42;
       if (v9)
       {
         v28 = [v52 count];
-        v29 = [v42 switchIndex];
+        switchIndex = [v42 switchIndex];
         v59[0] = @"isAutomated";
         v30 = [NSNumber numberWithBool:v40];
         v60[0] = v30;
@@ -374,15 +374,15 @@
         v34 = [NSNumber numberWithUnsignedInteger:v7];
         v60[6] = v34;
         v59[7] = @"switchCounter";
-        v35 = [NSNumber numberWithUnsignedInt:v29];
+        v35 = [NSNumber numberWithUnsignedInt:switchIndex];
         v60[7] = v35;
         v59[8] = @"preSwitchDwellTimeSeconds";
         v36 = [NSNumber numberWithDouble:v11];
         v60[8] = v36;
         v37 = [NSDictionary dictionaryWithObjects:v60 forKeys:v59 count:9];
 
-        v4 = v42;
-        [v41 sendReport:@"com.apple.nanoregistry.switch-report" withEvent:v37];
+        historyCopy = v42;
+        [selfCopy sendReport:@"com.apple.nanoregistry.switch-report" withEvent:v37];
 LABEL_26:
 
         goto LABEL_27;
@@ -391,10 +391,10 @@ LABEL_26:
 
     else
     {
-      v4 = v42;
+      historyCopy = v42;
     }
 
-    a1 = v41;
+    self = selfCopy;
   }
 
   else
@@ -413,7 +413,7 @@ LABEL_26:
     v37 = nr_framework_log();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      sub_100100D30(a1, v37);
+      sub_100100D30(self, v37);
     }
 
     goto LABEL_26;
@@ -422,94 +422,94 @@ LABEL_26:
 LABEL_27:
 }
 
-+ (void)reportDeviceIsPairedTelemetry:(id)a3
++ (void)reportDeviceIsPairedTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   v5 = _NRIsAutomated();
-  v6 = [v4 paired];
-  v7 = [v4 activeDevice];
+  paired = [telemetryCopy paired];
+  activeDevice = [telemetryCopy activeDevice];
 
-  v8 = [v7 objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
-  v9 = [v8 value];
+  v8 = [activeDevice objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
+  value = [v8 value];
 
-  v10 = [v7 objectForKeyedSubscript:NRDevicePropertyHWModelString];
-  v11 = [v10 value];
+  v10 = [activeDevice objectForKeyedSubscript:NRDevicePropertyHWModelString];
+  value2 = [v10 value];
 
-  if (![(__CFString *)v9 length])
+  if (![(__CFString *)value length])
   {
 
-    v9 = @"none";
+    value = @"none";
   }
 
-  if (![(__CFString *)v11 length])
+  if (![(__CFString *)value2 length])
   {
 
-    v11 = @"none";
+    value2 = @"none";
   }
 
   v15[0] = @"isAutomated";
   v12 = [NSNumber numberWithBool:v5];
   v16[0] = v12;
   v15[1] = @"isPaired";
-  v13 = [NSNumber numberWithBool:v6];
+  v13 = [NSNumber numberWithBool:paired];
   v16[1] = v13;
-  v16[2] = v9;
+  v16[2] = value;
   v15[2] = @"watchBuild";
   v15[3] = @"watchHW";
-  v16[3] = v11;
+  v16[3] = value2;
   v14 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:4];
 
-  [a1 sendReport:@"com.apple.nanoregistry.isPaired" withEvent:v14];
+  [self sendReport:@"com.apple.nanoregistry.isPaired" withEvent:v14];
 }
 
-+ (void)reportMigrationWithDeviceHistory:(id)a3 andError:(id)a4
++ (void)reportMigrationWithDeviceHistory:(id)history andError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 deviceCollection];
-  v8 = [v7 activeDevice];
+  errorCopy = error;
+  historyCopy = history;
+  deviceCollection = [historyCopy deviceCollection];
+  activeDevice = [deviceCollection activeDevice];
 
   v9 = +[NRDataCollector sharedInstance];
   v61 = _NRIsAutomated();
-  v10 = [v6 deviceCollection];
-  v62 = [v10 count];
+  deviceCollection2 = [historyCopy deviceCollection];
+  v62 = [deviceCollection2 count];
 
-  v11 = [v6 switchIndex];
+  switchIndex = [historyCopy switchIndex];
   v12 = objc_alloc_init(NSMutableDictionary);
   v13 = &NRPairedDeviceRegistryPairedDeviceDidChangeCapabilitiesDarwinNotification_ptr;
-  if (v8)
+  if (activeDevice)
   {
-    v14 = [v8 objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
-    v59 = [v14 value];
+    v14 = [activeDevice objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
+    value = [v14 value];
 
-    v15 = [v8 objectForKeyedSubscript:NRDevicePropertyHWModelString];
-    v16 = [v15 value];
+    v15 = [activeDevice objectForKeyedSubscript:NRDevicePropertyHWModelString];
+    value2 = [v15 value];
 
-    v17 = [v8 objectForKeyedSubscript:NRDevicePropertyBuildType];
-    v18 = [v17 value];
+    v17 = [activeDevice objectForKeyedSubscript:NRDevicePropertyBuildType];
+    value3 = [v17 value];
 
-    v19 = [v8 objectForKeyedSubscript:NRDevicePropertyMaxPairingCompatibilityVersion];
+    v19 = [activeDevice objectForKeyedSubscript:NRDevicePropertyMaxPairingCompatibilityVersion];
     [v19 value];
-    v20 = v58 = v11;
+    v20 = v58 = switchIndex;
     v21 = v9;
     v22 = v12;
-    v23 = [v20 integerValue];
+    integerValue = [v20 integerValue];
 
-    v24 = [v8 objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
-    v25 = [v24 value];
-    v26 = [v25 integerValue];
+    v24 = [activeDevice objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
+    value4 = [v24 value];
+    integerValue2 = [value4 integerValue];
 
-    v27 = v59;
-    if (!v59)
+    v27 = value;
+    if (!value)
     {
       v27 = @"Nil";
     }
 
     v68[0] = @"watchBuild";
     v68[1] = @"watchHW";
-    if (v16)
+    if (value2)
     {
-      v28 = v16;
+      v28 = value2;
     }
 
     else
@@ -519,9 +519,9 @@ LABEL_27:
 
     v69[0] = v27;
     v69[1] = v28;
-    if (v18)
+    if (value3)
     {
-      v29 = v18;
+      v29 = value3;
     }
 
     else
@@ -532,68 +532,68 @@ LABEL_27:
     v69[2] = v29;
     v68[2] = @"watchBuildtype";
     v68[3] = @"watchMaxPairingVersion";
-    v30 = v23;
+    v30 = integerValue;
     v12 = v22;
     v9 = v21;
     v13 = &NRPairedDeviceRegistryPairedDeviceDidChangeCapabilitiesDarwinNotification_ptr;
     v31 = [NSNumber numberWithInteger:v30];
     v69[3] = v31;
     v68[4] = @"watchPairingType";
-    v32 = [NSNumber numberWithInteger:v26];
+    v32 = [NSNumber numberWithInteger:integerValue2];
     v69[4] = v32;
     v33 = [NSDictionary dictionaryWithObjects:v69 forKeys:v68 count:5];
     [v12 addEntriesFromDictionary:v33];
 
-    v11 = v58;
+    switchIndex = v58;
   }
 
-  v34 = [v5 domain];
-  v35 = [v5 code];
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  if (v5)
+  if (errorCopy)
   {
     v66[0] = @"hasError";
     v36 = [NSNumber numberWithBool:1];
     v37 = v36;
     v38 = @"Nil";
-    if (v34)
+    if (domain)
     {
-      v38 = v34;
+      v38 = domain;
     }
 
     v67[0] = v36;
     v67[1] = v38;
     v66[1] = @"errorDomain";
     v66[2] = @"errorCode";
-    v39 = [NSNumber numberWithInteger:v35];
+    v39 = [NSNumber numberWithInteger:code];
     v67[2] = v39;
     v40 = [v13[127] dictionaryWithObjects:v67 forKeys:v66 count:3];
     [v12 addEntriesFromDictionary:v40];
   }
 
-  v41 = v11;
+  v41 = switchIndex;
   v42 = [v9 getValueForKey:@"btPairingRetryCount"];
   v43 = v12;
-  v44 = [v42 intValue];
+  intValue = [v42 intValue];
 
   v45 = [v9 getValueForKey:@"migrationAttemptCounter"];
-  v46 = [v45 intValue];
+  intValue2 = [v45 intValue];
 
   v47 = +[NRConnectivityPublisher sharedConnectivityPublisher];
-  v48 = [v47 dropoutCounter];
+  dropoutCounter = [v47 dropoutCounter];
   [v9 getValueForKey:@"migrationIDSDisconnectCount"];
-  v49 = v60 = v34;
-  v50 = v48 - [v49 intValue];
+  v49 = v60 = domain;
+  v50 = dropoutCounter - [v49 intValue];
 
   [v9 setValue:&off_100186DD8 forKey:@"migrationIDSDisconnectCount"];
   v64[0] = @"isAutomated";
   v51 = [NSNumber numberWithBool:v61];
   v65[0] = v51;
   v64[1] = @"bluetoothRetryCount";
-  v52 = [NSNumber numberWithInteger:v44];
+  v52 = [NSNumber numberWithInteger:intValue];
   v65[1] = v52;
   v64[2] = @"attemptCount";
-  v53 = [NSNumber numberWithInteger:v46];
+  v53 = [NSNumber numberWithInteger:intValue2];
   v65[2] = v53;
   v64[3] = @"lossOfIDSConnectivityCount";
   v54 = [NSNumber numberWithInteger:v50];
@@ -607,27 +607,27 @@ LABEL_27:
   v57 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:6];
   [v43 addEntriesFromDictionary:v57];
 
-  [a1 sendReport:@"com.apple.nanoregistry.migration-report" withEvent:v43];
+  [self sendReport:@"com.apple.nanoregistry.migration-report" withEvent:v43];
 }
 
-+ (void)reportNetworkRelayPairingResultWithAuthMethod:(unint64_t)a3 resultError:(id)a4 timeElapsed:(double)a5
++ (void)reportNetworkRelayPairingResultWithAuthMethod:(unint64_t)method resultError:(id)error timeElapsed:(double)elapsed
 {
-  v19 = a4;
+  errorCopy = error;
   v8 = _NRIsAutomated();
   v9 = [NSMutableDictionary alloc];
   v10 = [NSNumber numberWithBool:v8];
-  v11 = [NSNumber numberWithUnsignedInteger:a3];
-  v12 = [NSNumber numberWithBool:v19 != 0];
-  v13 = [NSNumber numberWithDouble:a5];
+  v11 = [NSNumber numberWithUnsignedInteger:method];
+  v12 = [NSNumber numberWithBool:errorCopy != 0];
+  v13 = [NSNumber numberWithDouble:elapsed];
   v14 = [v9 initWithObjectsAndKeys:{v10, @"isAutomated", v11, @"authMethod", v12, @"hasError", v13, @"duration", 0}];
 
-  if (v19)
+  if (errorCopy)
   {
-    v15 = [v19 domain];
-    v16 = -[v19 code];
-    if (v15)
+    domain = [errorCopy domain];
+    v16 = -[errorCopy code];
+    if (domain)
     {
-      v17 = v15;
+      v17 = domain;
     }
 
     else
@@ -640,7 +640,7 @@ LABEL_27:
     [v14 setObject:v18 forKeyedSubscript:@"errorCode"];
   }
 
-  [a1 sendReport:@"com.apple.nanoregistry.networkrelaypairing-report" withEvent:v14];
+  [self sendReport:@"com.apple.nanoregistry.networkrelaypairing-report" withEvent:v14];
 }
 
 @end

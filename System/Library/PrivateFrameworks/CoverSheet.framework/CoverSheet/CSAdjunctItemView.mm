@@ -1,24 +1,24 @@
 @interface CSAdjunctItemView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CGSize)sizeToMimic;
 - (CSAdjunctItemHosting)contentHost;
-- (CSAdjunctItemView)initWithRecipe:(int64_t)a3;
+- (CSAdjunctItemView)initWithRecipe:(int64_t)recipe;
 - (PLPlatterView)platterView;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_setPlatterView:(id)a3;
+- (void)_setPlatterView:(id)view;
 - (void)_updateSizeToMimic;
 - (void)layoutSubviews;
-- (void)setContentHost:(id)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setSizeToMimic:(CGSize)a3;
+- (void)setContentHost:(id)host;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setSizeToMimic:(CGSize)mimic;
 @end
 
 @implementation CSAdjunctItemView
 
-- (CSAdjunctItemView)initWithRecipe:(int64_t)a3
+- (CSAdjunctItemView)initWithRecipe:(int64_t)recipe
 {
   v7.receiver = self;
   v7.super_class = CSAdjunctItemView;
@@ -26,16 +26,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_recipe = a3;
+    v4->_recipe = recipe;
     [(CSAdjunctItemView *)v4 setClipsToBounds:1];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   WeakRetained = objc_loadWeakRetained(&self->_contentHost);
   [WeakRetained preferredContentSize];
   v7 = v6;
@@ -78,19 +78,19 @@
   [(CSAdjunctItemView *)&v3 layoutSubviews];
 }
 
-- (void)setContentHost:(id)a3
+- (void)setContentHost:(id)host
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_contentHost);
   v6 = WeakRetained;
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    v7 = [WeakRetained view];
-    [v7 removeFromSuperview];
+    view = [WeakRetained view];
+    [view removeFromSuperview];
 
-    objc_storeWeak(&self->_contentHost, v4);
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v4 platterView], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    objc_storeWeak(&self->_contentHost, hostCopy);
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([hostCopy platterView], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
       self->_isContentHostPlatterView = 1;
@@ -104,27 +104,27 @@
       v9 = [objc_alloc(MEMORY[0x277D3D328]) initWithRecipe:self->_recipe];
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v4 usesBackgroundView];
+        usesBackgroundView = [hostCopy usesBackgroundView];
       }
 
       else
       {
-        v10 = 1;
+        usesBackgroundView = 1;
       }
 
-      [v9 setUsesBackgroundView:v10];
+      [v9 setUsesBackgroundView:usesBackgroundView];
       [v9 setMaterialGroupNameBase:self->_materialGroupNameBase];
       [v9 _setContinuousCornerRadius:18.0];
       [(CSAdjunctItemView *)self _setPlatterView:v9];
       if (objc_opt_respondsToSelector())
       {
         [v9 _continuousCornerRadius];
-        [v4 setContainerCornerRadius:?];
+        [hostCopy setContainerCornerRadius:?];
       }
 
-      v11 = [v9 customContentView];
-      v12 = [v4 view];
-      [v11 addSubview:v12];
+      customContentView = [v9 customContentView];
+      view2 = [hostCopy view];
+      [customContentView addSubview:view2];
 
       if (objc_opt_respondsToSelector())
       {
@@ -132,8 +132,8 @@
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v13 = [v4 requiredVisualStyleCategories];
-        v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        requiredVisualStyleCategories = [hostCopy requiredVisualStyleCategories];
+        v14 = [requiredVisualStyleCategories countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v14)
         {
           v15 = v14;
@@ -145,18 +145,18 @@
             {
               if (*v21 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(requiredVisualStyleCategories);
               }
 
-              v18 = [*(*(&v20 + 1) + 8 * v17) integerValue];
-              v19 = [v9 visualStylingProviderForCategory:v18];
-              [v4 setVisualStylingProvider:v19 forCategory:v18];
+              integerValue = [*(*(&v20 + 1) + 8 * v17) integerValue];
+              v19 = [v9 visualStylingProviderForCategory:integerValue];
+              [hostCopy setVisualStylingProvider:v19 forCategory:integerValue];
 
               ++v17;
             }
 
             while (v15 != v17);
-            v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+            v15 = [requiredVisualStyleCategories countByEnumeratingWithState:&v20 objects:v24 count:16];
           }
 
           while (v15);
@@ -169,11 +169,11 @@
   }
 }
 
-- (void)setSizeToMimic:(CGSize)a3
+- (void)setSizeToMimic:(CGSize)mimic
 {
-  if (self->_sizeToMimic.width != a3.width || self->_sizeToMimic.height != a3.height)
+  if (self->_sizeToMimic.width != mimic.width || self->_sizeToMimic.height != mimic.height)
   {
-    self->_sizeToMimic = a3;
+    self->_sizeToMimic = mimic;
     [(CSAdjunctItemView *)self _updateSizeToMimic];
     [(CSAdjunctItemView *)self invalidateIntrinsicContentSize];
 
@@ -181,12 +181,12 @@
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_materialGroupNameBase] & 1) == 0)
+  baseCopy = base;
+  if (([baseCopy isEqualToString:self->_materialGroupNameBase] & 1) == 0)
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
+    objc_storeStrong(&self->_materialGroupNameBase, base);
     if (!self->_isContentHostPlatterView)
     {
       WeakRetained = objc_loadWeakRetained(&self->_platterView);
@@ -197,37 +197,37 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CSAdjunctItemView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSAdjunctItemView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSAdjunctItemView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSAdjunctItemView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(CSAdjunctItemView *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(CSAdjunctItemView *)self succinctDescriptionBuilder];
   WeakRetained = objc_loadWeakRetained(&self->_platterView);
-  v6 = [v4 appendObject:WeakRetained withName:@"platterView"];
+  v6 = [succinctDescriptionBuilder appendObject:WeakRetained withName:@"platterView"];
 
   v7 = MTStringFromMaterialRecipe();
-  [v4 appendString:v7 withName:@"materialRecipe"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"materialRecipe"];
 
-  v8 = [v4 appendObject:self->_materialGroupNameBase withName:@"materialGroupBaseName"];
+  v8 = [succinctDescriptionBuilder appendObject:self->_materialGroupNameBase withName:@"materialGroupBaseName"];
   v9 = objc_loadWeakRetained(&self->_contentHost);
-  v10 = [v4 appendObject:v9 withName:@"contentHost"];
+  v10 = [succinctDescriptionBuilder appendObject:v9 withName:@"contentHost"];
 
-  v11 = [v4 appendBool:self->_isContentHostPlatterView withName:@"isContentHostPlatterView"];
-  v12 = [v4 appendSize:@"sizeToMimic" withName:{self->_sizeToMimic.width, self->_sizeToMimic.height}];
+  v11 = [succinctDescriptionBuilder appendBool:self->_isContentHostPlatterView withName:@"isContentHostPlatterView"];
+  v12 = [succinctDescriptionBuilder appendSize:@"sizeToMimic" withName:{self->_sizeToMimic.width, self->_sizeToMimic.height}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)_updateSizeToMimic
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)_setPlatterView:(id)a3
+- (void)_setPlatterView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_platterView);
   if (WeakRetained != obj)
   {

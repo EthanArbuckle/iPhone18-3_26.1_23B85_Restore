@@ -1,12 +1,12 @@
 @interface SUClipCornersImageModifier
-- (BOOL)isEqual:(id)a3;
-- (CGPath)_copyClippingPathForRect:(CGRect)a3;
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
+- (BOOL)isEqual:(id)equal;
+- (CGPath)_copyClippingPathForRect:(CGRect)rect;
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
 @end
 
 @implementation SUClipCornersImageModifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -14,31 +14,31 @@
     return 0;
   }
 
-  v5 = [(SUClipCornersImageModifier *)self corners];
-  if ([a3 corners] != v5)
+  corners = [(SUClipCornersImageModifier *)self corners];
+  if ([equal corners] != corners)
   {
     return 0;
   }
 
   [(SUClipCornersImageModifier *)self cornerRadius];
   v7 = v6;
-  [a3 cornerRadius];
+  [equal cornerRadius];
   return v7 == v8;
 }
 
-- (void)drawBeforeImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawBeforeImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a3);
-  v11 = [(SUClipCornersImageModifier *)self _copyClippingPathForRect:x, y, width, height];
-  if (v11)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  CGContextSaveGState(context);
+  height = [(SUClipCornersImageModifier *)self _copyClippingPathForRect:x, y, width, height];
+  if (height)
   {
-    v12 = v11;
-    CGContextAddPath(a3, v11);
-    CGContextClip(a3);
+    v12 = height;
+    CGContextAddPath(context, height);
+    CGContextClip(context);
     CGPathRelease(v12);
   }
 
@@ -51,22 +51,22 @@
   if (v13)
   {
     v14 = v13;
-    CGContextAddPath(a3, v13);
+    CGContextAddPath(context, v13);
 
     CGPathRelease(v14);
   }
 }
 
-- (CGPath)_copyClippingPathForRect:(CGRect)a3
+- (CGPath)_copyClippingPathForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   Mutable = CGPathCreateMutable();
   [(SUClipCornersImageModifier *)self cornerRadius];
   v10 = v9;
-  v11 = [(SUClipCornersImageModifier *)self corners];
+  corners = [(SUClipCornersImageModifier *)self corners];
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -88,7 +88,7 @@
   v26.size.width = width;
   v26.size.height = height;
   v15 = CGRectGetMinY(v26);
-  if ((v11 & 8) != 0)
+  if ((corners & 8) != 0)
   {
     CGPathAddArc(Mutable, 0, MaxX - v10, v10 + v15, v10, 4.71238898, 6.28318531, 0);
   }
@@ -108,7 +108,7 @@
   v28.size.width = width;
   v28.size.height = height;
   MaxY = CGRectGetMaxY(v28);
-  if ((v11 & 2) != 0)
+  if ((corners & 2) != 0)
   {
     CGPathAddArc(Mutable, 0, v16 - v10, MaxY - v10, v10, 0.0, 1.57079633, 0);
   }
@@ -128,7 +128,7 @@
   v30.size.width = width;
   v30.size.height = height;
   v19 = CGRectGetMaxY(v30);
-  if (v11)
+  if (corners)
   {
     CGPathAddArc(Mutable, 0, v10 + MinX, v19 - v10, v10, 1.57079633, 3.14159265, 0);
   }
@@ -148,7 +148,7 @@
   v32.size.width = width;
   v32.size.height = height;
   v21 = CGRectGetMinY(v32);
-  if ((v11 & 4) != 0)
+  if ((corners & 4) != 0)
   {
     CGPathAddArc(Mutable, 0, v10 + v20, v10 + v21, v10, 3.14159265, 4.71238898, 0);
   }

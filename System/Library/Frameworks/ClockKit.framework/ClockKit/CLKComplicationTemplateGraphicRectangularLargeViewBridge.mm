@@ -1,13 +1,13 @@
 @interface CLKComplicationTemplateGraphicRectangularLargeViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularLargeViewBridge
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"content"])
+  if ([key isEqualToString:@"content"])
   {
     return @"contentData";
   }
@@ -18,14 +18,14 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicRectangularLargeImage alloc];
-  v6 = [(CLKComplicationTemplateGraphicRectangularLargeViewBridge *)self headerTextProvider];
-  v7 = [v4 objectForKeyedSubscript:@"contentData"];
+  headerTextProvider = [(CLKComplicationTemplateGraphicRectangularLargeViewBridge *)self headerTextProvider];
+  v7 = [providersCopy objectForKeyedSubscript:@"contentData"];
 
-  v8 = [(CLKComplicationTemplateGraphicRectangularLargeImage *)v5 initWithTextProvider:v6 imageProvider:v7];
+  v8 = [(CLKComplicationTemplateGraphicRectangularLargeImage *)v5 initWithTextProvider:headerTextProvider imageProvider:v7];
   [(CLKComplicationTemplate *)v8 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 
   return v8;

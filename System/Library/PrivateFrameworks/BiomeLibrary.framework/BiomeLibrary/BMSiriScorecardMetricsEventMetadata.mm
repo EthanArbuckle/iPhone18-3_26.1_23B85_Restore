@@ -1,38 +1,38 @@
 @interface BMSiriScorecardMetricsEventMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriScorecardMetricsEventMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriScorecardMetricsEventMetadata)initWithOddId:(id)a3 deviceAggregationId:(id)a4 userAggregationId:(id)a5 eventTimestampInMSSince1970:(id)a6 timeInterval:(id)a7 userAggregationIdRotationTimestampInMs:(id)a8 userAggregationIdExpirationTimestampInMs:(id)a9 eventOrigin:(id)a10 isLongLivedIDUploadDisabled:(id)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriScorecardMetricsEventMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriScorecardMetricsEventMetadata)initWithOddId:(id)id deviceAggregationId:(id)aggregationId userAggregationId:(id)userAggregationId eventTimestampInMSSince1970:(id)since1970 timeInterval:(id)interval userAggregationIdRotationTimestampInMs:(id)ms userAggregationIdExpirationTimestampInMs:(id)inMs eventOrigin:(id)self0 isLongLivedIDUploadDisabled:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriScorecardMetricsEventMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
-    v7 = [v5 oddId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    oddId = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
+    oddId2 = [v5 oddId];
+    v8 = oddId2;
+    if (oddId == oddId2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
-      v10 = [v5 oddId];
-      v11 = [v9 isEqual:v10];
+      oddId3 = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
+      oddId4 = [v5 oddId];
+      v11 = [oddId3 isEqual:oddId4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
-    v14 = [v5 deviceAggregationId];
-    v15 = v14;
-    if (v13 == v14)
+    deviceAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
+    deviceAggregationId2 = [v5 deviceAggregationId];
+    v15 = deviceAggregationId2;
+    if (deviceAggregationId == deviceAggregationId2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
-      v17 = [v5 deviceAggregationId];
-      v18 = [v16 isEqual:v17];
+      deviceAggregationId3 = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
+      deviceAggregationId4 = [v5 deviceAggregationId];
+      v18 = [deviceAggregationId3 isEqual:deviceAggregationId4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
-    v20 = [v5 userAggregationId];
-    v21 = v20;
-    if (v19 == v20)
+    userAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
+    userAggregationId2 = [v5 userAggregationId];
+    v21 = userAggregationId2;
+    if (userAggregationId == userAggregationId2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
-      v23 = [v5 userAggregationId];
-      v24 = [v22 isEqual:v23];
+      userAggregationId3 = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
+      userAggregationId4 = [v5 userAggregationId];
+      v24 = [userAggregationId3 isEqual:userAggregationId4];
 
       if (!v24)
       {
@@ -90,25 +90,25 @@
         goto LABEL_44;
       }
 
-      v25 = [(BMSiriScorecardMetricsEventMetadata *)self eventTimestampInMSSince1970];
-      if (v25 != [v5 eventTimestampInMSSince1970])
+      eventTimestampInMSSince1970 = [(BMSiriScorecardMetricsEventMetadata *)self eventTimestampInMSSince1970];
+      if (eventTimestampInMSSince1970 != [v5 eventTimestampInMSSince1970])
       {
         goto LABEL_44;
       }
     }
 
-    v26 = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
-    v27 = [v5 timeInterval];
-    v28 = v27;
-    if (v26 == v27)
+    timeInterval = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
+    timeInterval2 = [v5 timeInterval];
+    v28 = timeInterval2;
+    if (timeInterval == timeInterval2)
     {
     }
 
     else
     {
-      v29 = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
-      v30 = [v5 timeInterval];
-      v31 = [v29 isEqual:v30];
+      timeInterval3 = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
+      timeInterval4 = [v5 timeInterval];
+      v31 = [timeInterval3 isEqual:timeInterval4];
 
       if (!v31)
       {
@@ -130,8 +130,8 @@
 
           if (-[BMSiriScorecardMetricsEventMetadata hasIsLongLivedIDUploadDisabled](self, "hasIsLongLivedIDUploadDisabled") && [v5 hasIsLongLivedIDUploadDisabled])
           {
-            v35 = [(BMSiriScorecardMetricsEventMetadata *)self isLongLivedIDUploadDisabled];
-            v12 = v35 ^ [v5 isLongLivedIDUploadDisabled] ^ 1;
+            isLongLivedIDUploadDisabled = [(BMSiriScorecardMetricsEventMetadata *)self isLongLivedIDUploadDisabled];
+            v12 = isLongLivedIDUploadDisabled ^ [v5 isLongLivedIDUploadDisabled] ^ 1;
 LABEL_45:
 
             goto LABEL_46;
@@ -154,9 +154,9 @@ LABEL_46:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
-  v4 = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
-  v5 = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
+  oddId = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
+  deviceAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
+  userAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
   if ([(BMSiriScorecardMetricsEventMetadata *)self hasEventTimestampInMSSince1970])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriScorecardMetricsEventMetadata eventTimestampInMSSince1970](self, "eventTimestampInMSSince1970")}];
@@ -167,8 +167,8 @@ LABEL_46:
     v6 = 0;
   }
 
-  v7 = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
-  v8 = [v7 jsonDictionary];
+  timeInterval = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
+  jsonDictionary = [timeInterval jsonDictionary];
 
   if ([(BMSiriScorecardMetricsEventMetadata *)self hasUserAggregationIdRotationTimestampInMs])
   {
@@ -211,86 +211,86 @@ LABEL_46:
   }
 
   v34[0] = @"oddId";
-  v11 = v3;
-  if (!v3)
+  null = oddId;
+  if (!oddId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v11;
-  v35[0] = v11;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"deviceAggregationId";
-  v12 = v4;
-  if (!v4)
+  null2 = deviceAggregationId;
+  if (!deviceAggregationId)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v12;
-  v35[1] = v12;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"userAggregationId";
-  v13 = v5;
-  if (!v5)
+  null3 = userAggregationId;
+  if (!userAggregationId)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v3;
-  v26 = v13;
-  v35[2] = v13;
+  v31 = oddId;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"eventTimestampInMSSince1970";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v4;
-  v25 = v14;
-  v35[3] = v14;
+  v30 = deviceAggregationId;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"timeInterval";
-  v15 = v8;
-  if (!v8)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v5;
-  v35[4] = v15;
+  v29 = userAggregationId;
+  v35[4] = null5;
   v34[5] = @"userAggregationIdRotationTimestampInMs";
-  v16 = v33;
+  null6 = v33;
   if (!v33)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v17 = v6;
-  v35[5] = v16;
+  v35[5] = null6;
   v34[6] = @"userAggregationIdExpirationTimestampInMs";
-  v18 = v32;
+  null7 = v32;
   if (!v32)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v8;
-  v35[6] = v18;
+  v19 = jsonDictionary;
+  v35[6] = null7;
   v34[7] = @"eventOrigin";
-  v20 = v9;
+  null8 = v9;
   if (!v9)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v20;
+  v35[7] = null8;
   v34[8] = @"isLongLivedIDUploadDisabled";
-  v21 = v10;
+  null9 = v10;
   if (!v10)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v21;
+  v35[8] = null9;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
   if (v10)
   {
@@ -362,30 +362,30 @@ LABEL_47:
   return v22;
 }
 
-- (BMSiriScorecardMetricsEventMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriScorecardMetricsEventMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v112[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"oddId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"oddId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceAggregationId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceAggregationId"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v21 = 0;
           goto LABEL_62;
         }
 
-        v89 = self;
-        v25 = a4;
+        selfCopy = self;
+        errorCopy = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v109 = *MEMORY[0x1E696A578];
@@ -396,8 +396,8 @@ LABEL_4:
         v11 = v29;
         v10 = 0;
         v21 = 0;
-        *v25 = [v26 initWithDomain:v30 code:2 userInfo:v29];
-        self = v89;
+        *errorCopy = [v26 initWithDomain:v30 code:2 userInfo:v29];
+        self = selfCopy;
         goto LABEL_61;
       }
 
@@ -409,14 +409,14 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"userAggregationId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationId"];
     v93 = v8;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v28 = 0;
           v21 = 0;
@@ -432,7 +432,7 @@ LABEL_4:
         v32 = [v91 initWithDomain:v31 code:2 userInfo:v12];
         v28 = 0;
         v21 = 0;
-        *a4 = v32;
+        *error = v32;
 LABEL_60:
 
         v8 = v93;
@@ -449,15 +449,15 @@ LABEL_61:
       v90 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"eventTimestampInMSSince1970"];
-    v84 = a4;
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMSSince1970"];
+    errorCopy2 = error;
     v85 = v11;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v92 = 0;
           v21 = 0;
@@ -466,8 +466,8 @@ LABEL_61:
 
         v80 = v7;
         v39 = v9;
-        v40 = self;
-        v41 = a4;
+        selfCopy2 = self;
+        errorCopy3 = error;
         v42 = objc_alloc(MEMORY[0x1E696ABC0]);
         v43 = *MEMORY[0x1E698F240];
         v105 = *MEMORY[0x1E696A578];
@@ -484,8 +484,8 @@ LABEL_61:
         v86 = v47;
         v92 = 0;
         v21 = 0;
-        *v41 = [v42 initWithDomain:v48 code:2 userInfo:?];
-        self = v40;
+        *errorCopy3 = [v42 initWithDomain:v48 code:2 userInfo:?];
+        self = selfCopy2;
         v9 = v39;
         v7 = v80;
         goto LABEL_57;
@@ -499,13 +499,13 @@ LABEL_61:
       v92 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"timeInterval"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"timeInterval"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v84)
+        if (!errorCopy2)
         {
           v21 = 0;
           goto LABEL_58;
@@ -515,17 +515,17 @@ LABEL_61:
         v83 = v10;
         v49 = *MEMORY[0x1E698F240];
         v103 = *MEMORY[0x1E696A578];
-        v50 = self;
+        selfCopy3 = self;
         v51 = objc_alloc(MEMORY[0x1E696AEC0]);
         v70 = objc_opt_class();
         v52 = v51;
-        self = v50;
+        self = selfCopy3;
         v86 = [v52 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v70, @"timeInterval"];
         v104 = v86;
         v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v104 forKeys:&v103 count:1];
         v54 = v49;
         v10 = v83;
-        *v84 = [v81 initWithDomain:v54 code:2 userInfo:v53];
+        *errorCopy2 = [v81 initWithDomain:v54 code:2 userInfo:v53];
 
         v21 = 0;
         v19 = v13;
@@ -545,10 +545,10 @@ LABEL_59:
       v20 = v94;
       if (v20)
       {
-        if (v84)
+        if (errorCopy2)
         {
           v20 = v20;
-          *v84 = v20;
+          *errorCopy2 = v20;
         }
 
         v21 = 0;
@@ -566,7 +566,7 @@ LABEL_59:
       v86 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"userAggregationIdRotationTimestampInMs"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdRotationTimestampInMs"];
     v82 = v10;
     v76 = v15;
     if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -574,7 +574,7 @@ LABEL_59:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v84)
+        if (!errorCopy2)
         {
           v79 = 0;
           v21 = 0;
@@ -586,11 +586,11 @@ LABEL_59:
         v55 = objc_alloc(MEMORY[0x1E696ABC0]);
         v56 = *MEMORY[0x1E698F240];
         v101 = *MEMORY[0x1E696A578];
-        v57 = self;
+        selfCopy4 = self;
         v58 = objc_alloc(MEMORY[0x1E696AEC0]);
         v71 = objc_opt_class();
         v59 = v58;
-        self = v57;
+        self = selfCopy4;
         v78 = [v59 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v71, @"userAggregationIdRotationTimestampInMs"];
         v102 = v78;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
@@ -598,7 +598,7 @@ LABEL_59:
         v10 = v82;
         v79 = 0;
         v21 = 0;
-        *v84 = [v55 initWithDomain:v60 code:2 userInfo:v17];
+        *errorCopy2 = [v55 initWithDomain:v60 code:2 userInfo:v17];
         v7 = v14;
         v18 = v73;
 LABEL_55:
@@ -618,9 +618,9 @@ LABEL_56:
       v79 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"userAggregationIdExpirationTimestampInMs"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"userAggregationIdExpirationTimestampInMs"];
     v7 = v14;
-    v87 = self;
+    selfCopy5 = self;
     if (v17)
     {
       objc_opt_class();
@@ -635,7 +635,7 @@ LABEL_56:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v84)
+          if (!errorCopy2)
           {
             v78 = 0;
             v21 = 0;
@@ -653,7 +653,7 @@ LABEL_56:
           v64 = [v63 initWithDomain:v62 code:2 userInfo:v33];
           v78 = 0;
           v21 = 0;
-          *v84 = v64;
+          *errorCopy2 = v64;
           goto LABEL_54;
         }
 
@@ -667,14 +667,14 @@ LABEL_56:
       v18 = v73;
     }
 
-    v33 = [v6 objectForKeyedSubscript:@"eventOrigin"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"eventOrigin"];
     v77 = v12;
     if (v33 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!v84)
+        if (!errorCopy2)
         {
           v34 = 0;
           v21 = 0;
@@ -690,7 +690,7 @@ LABEL_56:
         v66 = [v74 initWithDomain:v65 code:2 userInfo:v35];
         v34 = 0;
         v21 = 0;
-        *v84 = v66;
+        *errorCopy2 = v66;
         goto LABEL_53;
       }
 
@@ -702,13 +702,13 @@ LABEL_56:
       v34 = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"isLongLivedIDUploadDisabled"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"isLongLivedIDUploadDisabled"];
     if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v84)
+        if (errorCopy2)
         {
           v75 = objc_alloc(MEMORY[0x1E696ABC0]);
           v72 = *MEMORY[0x1E698F240];
@@ -716,7 +716,7 @@ LABEL_56:
           v67 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"isLongLivedIDUploadDisabled"];
           v96 = v67;
           v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-          *v84 = [v75 initWithDomain:v72 code:2 userInfo:v68];
+          *errorCopy2 = [v75 initWithDomain:v72 code:2 userInfo:v68];
         }
 
         v36 = 0;
@@ -732,15 +732,15 @@ LABEL_56:
       v36 = 0;
     }
 
-    v21 = [(BMSiriScorecardMetricsEventMetadata *)v87 initWithOddId:v93 deviceAggregationId:v82 userAggregationId:v90 eventTimestampInMSSince1970:v92 timeInterval:v86 userAggregationIdRotationTimestampInMs:v79 userAggregationIdExpirationTimestampInMs:v78 eventOrigin:v34 isLongLivedIDUploadDisabled:v36];
-    v87 = v21;
+    v21 = [(BMSiriScorecardMetricsEventMetadata *)selfCopy5 initWithOddId:v93 deviceAggregationId:v82 userAggregationId:v90 eventTimestampInMSSince1970:v92 timeInterval:v86 userAggregationIdRotationTimestampInMs:v79 userAggregationIdExpirationTimestampInMs:v78 eventOrigin:v34 isLongLivedIDUploadDisabled:v36];
+    selfCopy5 = v21;
 LABEL_53:
 
     v10 = v82;
     v12 = v77;
 LABEL_54:
 
-    self = v87;
+    self = selfCopy5;
     goto LABEL_55;
   }
 
@@ -751,15 +751,15 @@ LABEL_54:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v21 = 0;
     goto LABEL_63;
   }
 
-  v88 = self;
-  v22 = a4;
+  selfCopy6 = self;
+  errorCopy4 = error;
   v23 = objc_alloc(MEMORY[0x1E696ABC0]);
   v24 = *MEMORY[0x1E698F240];
   v111 = *MEMORY[0x1E696A578];
@@ -768,8 +768,8 @@ LABEL_54:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v112 forKeys:&v111 count:1];
   v8 = 0;
   v21 = 0;
-  *v22 = [v23 initWithDomain:v24 code:2 userInfo:v9];
-  self = v88;
+  *errorCopy4 = [v23 initWithDomain:v24 code:2 userInfo:v9];
+  self = selfCopy6;
 LABEL_62:
 
 LABEL_63:
@@ -781,14 +781,14 @@ LABEL_63:
 {
   v3 = objc_opt_new();
   [(BMSiriScorecardMetricsEventMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_oddId)
   {
     PBDataWriterWriteStringField();
@@ -813,7 +813,7 @@ LABEL_63:
   if (self->_timeInterval)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriScorecardMetricsEventMetadataTimeInterval *)self->_timeInterval writeTo:v4];
+    [(BMSiriScorecardMetricsEventMetadataTimeInterval *)self->_timeInterval writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -842,9 +842,9 @@ LABEL_63:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v58.receiver = self;
   v58.super_class = BMSiriScorecardMetricsEventMetadata;
   v5 = [(BMEventBase *)&v58 init];
@@ -853,12 +853,12 @@ LABEL_63:
     goto LABEL_106;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -869,18 +869,18 @@ LABEL_63:
       while (1)
       {
         LOBYTE(v59[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v59[0] & 0x7F) << v7;
@@ -898,9 +898,9 @@ LABEL_63:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -924,18 +924,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v59[0]) = 0;
-              v28 = [v4 position] + 1;
-              if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+              v28 = [fromCopy position] + 1;
+              if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
               {
-                v30 = [v4 data];
-                [v30 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v27 = (((v59[0] & 0x7F) << v25) | v27);
@@ -953,7 +953,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v31 = 0;
             }
@@ -1015,18 +1015,18 @@ LABEL_82:
           while (1)
           {
             LOBYTE(v59[0]) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 = (((v59[0] & 0x7F) << v32) | v34);
@@ -1044,7 +1044,7 @@ LABEL_82:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v31 = 0;
           }
@@ -1066,7 +1066,7 @@ LABEL_91:
           goto LABEL_105;
         }
 
-        v45 = [[BMSiriScorecardMetricsEventMetadataTimeInterval alloc] initByReadFrom:v4];
+        v45 = [[BMSiriScorecardMetricsEventMetadataTimeInterval alloc] initByReadFrom:fromCopy];
         if (!v45)
         {
           goto LABEL_105;
@@ -1090,18 +1090,18 @@ LABEL_91:
             while (1)
             {
               LOBYTE(v59[0]) = 0;
-              v42 = [v4 position] + 1;
-              if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+              v42 = [fromCopy position] + 1;
+              if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
               {
-                v44 = [v4 data];
-                [v44 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v41 = (((v59[0] & 0x7F) << v39) | v41);
@@ -1119,7 +1119,7 @@ LABEL_91:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v31 = 0;
             }
@@ -1142,18 +1142,18 @@ LABEL_96:
             while (1)
             {
               LOBYTE(v59[0]) = 0;
-              v50 = [v4 position] + 1;
-              if (v50 >= [v4 position] && (v51 = objc_msgSend(v4, "position") + 1, v51 <= objc_msgSend(v4, "length")))
+              v50 = [fromCopy position] + 1;
+              if (v50 >= [fromCopy position] && (v51 = objc_msgSend(fromCopy, "position") + 1, v51 <= objc_msgSend(fromCopy, "length")))
               {
-                v52 = [v4 data];
-                [v52 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+                data5 = [fromCopy data];
+                [data5 getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v49 |= (v59[0] & 0x7F) << v47;
@@ -1171,7 +1171,7 @@ LABEL_96:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v53 = 0;
             }
@@ -1192,18 +1192,18 @@ LABEL_102:
             while (1)
             {
               LOBYTE(v59[0]) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:v59 range:{objc_msgSend(v4, "position"), 1}];
+                data6 = [fromCopy data];
+                [data6 getBytes:v59 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v59[0] & 0x7F) << v16;
@@ -1221,7 +1221,7 @@ LABEL_102:
               }
             }
 
-            v22 = (v18 != 0) & ~[v4 hasError];
+            v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_98:
             v5->_isLongLivedIDUploadDisabled = v22;
             break;
@@ -1231,13 +1231,13 @@ LABEL_98:
       }
 
 LABEL_103:
-      v55 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v55 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_105:
     v56 = 0;
@@ -1255,97 +1255,97 @@ LABEL_106:
 - (NSString)description
 {
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v3 = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
-  v4 = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
-  v5 = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
+  oddId = [(BMSiriScorecardMetricsEventMetadata *)self oddId];
+  deviceAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self deviceAggregationId];
+  userAggregationId = [(BMSiriScorecardMetricsEventMetadata *)self userAggregationId];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriScorecardMetricsEventMetadata eventTimestampInMSSince1970](self, "eventTimestampInMSSince1970")}];
-  v7 = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
+  timeInterval = [(BMSiriScorecardMetricsEventMetadata *)self timeInterval];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriScorecardMetricsEventMetadata userAggregationIdRotationTimestampInMs](self, "userAggregationIdRotationTimestampInMs")}];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMSiriScorecardMetricsEventMetadata userAggregationIdExpirationTimestampInMs](self, "userAggregationIdExpirationTimestampInMs")}];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriScorecardMetricsEventMetadata eventOrigin](self, "eventOrigin")}];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriScorecardMetricsEventMetadata isLongLivedIDUploadDisabled](self, "isLongLivedIDUploadDisabled")}];
-  v12 = [v14 initWithFormat:@"BMSiriScorecardMetricsEventMetadata with oddId: %@, deviceAggregationId: %@, userAggregationId: %@, eventTimestampInMSSince1970: %@, timeInterval: %@, userAggregationIdRotationTimestampInMs: %@, userAggregationIdExpirationTimestampInMs: %@, eventOrigin: %@, isLongLivedIDUploadDisabled: %@", v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v14 initWithFormat:@"BMSiriScorecardMetricsEventMetadata with oddId: %@, deviceAggregationId: %@, userAggregationId: %@, eventTimestampInMSSince1970: %@, timeInterval: %@, userAggregationIdRotationTimestampInMs: %@, userAggregationIdExpirationTimestampInMs: %@, eventOrigin: %@, isLongLivedIDUploadDisabled: %@", oddId, deviceAggregationId, userAggregationId, v6, timeInterval, v8, v9, v10, v11];
 
   return v12;
 }
 
-- (BMSiriScorecardMetricsEventMetadata)initWithOddId:(id)a3 deviceAggregationId:(id)a4 userAggregationId:(id)a5 eventTimestampInMSSince1970:(id)a6 timeInterval:(id)a7 userAggregationIdRotationTimestampInMs:(id)a8 userAggregationIdExpirationTimestampInMs:(id)a9 eventOrigin:(id)a10 isLongLivedIDUploadDisabled:(id)a11
+- (BMSiriScorecardMetricsEventMetadata)initWithOddId:(id)id deviceAggregationId:(id)aggregationId userAggregationId:(id)userAggregationId eventTimestampInMSSince1970:(id)since1970 timeInterval:(id)interval userAggregationIdRotationTimestampInMs:(id)ms userAggregationIdExpirationTimestampInMs:(id)inMs eventOrigin:(id)self0 isLongLivedIDUploadDisabled:(id)self1
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v18 = a6;
-  v29 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  idCopy = id;
+  aggregationIdCopy = aggregationId;
+  userAggregationIdCopy = userAggregationId;
+  since1970Copy = since1970;
+  intervalCopy = interval;
+  msCopy = ms;
+  inMsCopy = inMs;
+  originCopy = origin;
+  disabledCopy = disabled;
   v33.receiver = self;
   v33.super_class = BMSiriScorecardMetricsEventMetadata;
   v23 = [(BMEventBase *)&v33 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v23->_oddId, a3);
-    objc_storeStrong(&v23->_deviceAggregationId, a4);
-    objc_storeStrong(&v23->_userAggregationId, a5);
-    if (v18)
+    objc_storeStrong(&v23->_oddId, id);
+    objc_storeStrong(&v23->_deviceAggregationId, aggregationId);
+    objc_storeStrong(&v23->_userAggregationId, userAggregationId);
+    if (since1970Copy)
     {
       v23->_hasEventTimestampInMSSince1970 = 1;
-      v24 = [v18 unsignedLongLongValue];
+      unsignedLongLongValue = [since1970Copy unsignedLongLongValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedLongLongValue = 0;
       v23->_hasEventTimestampInMSSince1970 = 0;
     }
 
-    v23->_eventTimestampInMSSince1970 = v24;
-    objc_storeStrong(&v23->_timeInterval, a7);
-    if (v19)
+    v23->_eventTimestampInMSSince1970 = unsignedLongLongValue;
+    objc_storeStrong(&v23->_timeInterval, interval);
+    if (msCopy)
     {
       v23->_hasUserAggregationIdRotationTimestampInMs = 1;
-      v25 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue2 = [msCopy unsignedLongLongValue];
     }
 
     else
     {
-      v25 = 0;
+      unsignedLongLongValue2 = 0;
       v23->_hasUserAggregationIdRotationTimestampInMs = 0;
     }
 
-    v23->_userAggregationIdRotationTimestampInMs = v25;
-    if (v20)
+    v23->_userAggregationIdRotationTimestampInMs = unsignedLongLongValue2;
+    if (inMsCopy)
     {
       v23->_hasUserAggregationIdExpirationTimestampInMs = 1;
-      v26 = [v20 unsignedLongLongValue];
+      unsignedLongLongValue3 = [inMsCopy unsignedLongLongValue];
     }
 
     else
     {
-      v26 = 0;
+      unsignedLongLongValue3 = 0;
       v23->_hasUserAggregationIdExpirationTimestampInMs = 0;
     }
 
-    v23->_userAggregationIdExpirationTimestampInMs = v26;
-    if (v21)
+    v23->_userAggregationIdExpirationTimestampInMs = unsignedLongLongValue3;
+    if (originCopy)
     {
       v23->_hasEventOrigin = 1;
-      v27 = [v21 intValue];
+      intValue = [originCopy intValue];
     }
 
     else
     {
       v23->_hasEventOrigin = 0;
-      v27 = -1;
+      intValue = -1;
     }
 
-    v23->_eventOrigin = v27;
-    if (v22)
+    v23->_eventOrigin = intValue;
+    if (disabledCopy)
     {
       v23->_hasIsLongLivedIDUploadDisabled = 1;
-      v23->_isLongLivedIDUploadDisabled = [v22 BOOLValue];
+      v23->_isLongLivedIDUploadDisabled = [disabledCopy BOOLValue];
     }
 
     else
@@ -1423,9 +1423,9 @@ id __46__BMSiriScorecardMetricsEventMetadata_columns__block_invoke(uint64_t a1, 
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1433,8 +1433,8 @@ id __46__BMSiriScorecardMetricsEventMetadata_columns__block_invoke(uint64_t a1, 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriScorecardMetricsEventMetadata alloc] initByReadFrom:v7];
     v4 = v8;

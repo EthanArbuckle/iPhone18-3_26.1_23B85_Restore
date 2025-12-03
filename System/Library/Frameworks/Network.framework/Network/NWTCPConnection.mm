@@ -1,8 +1,8 @@
 @interface NWTCPConnection
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
-+ (id)stringFromNWTCPConnectionState:(int64_t)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
++ (id)stringFromNWTCPConnectionState:(int64_t)state;
 - (BOOL)TFOSucceeded;
-- (BOOL)fillOutTCPConnectionInfo:(tcp_connection_info *)a3;
+- (BOOL)fillOutTCPConnectionInfo:(tcp_connection_info *)info;
 - (BOOL)isMultipath;
 - (BOOL)startInternal;
 - (NSData)metadata;
@@ -13,19 +13,19 @@
 - (NWEndpoint)localAddress;
 - (NWEndpoint)remoteAddress;
 - (NWPath)connectedPath;
-- (NWTCPConnection)initWithAcceptedInternalConnection:(id)a3;
-- (NWTCPConnection)initWithEndpoint:(id)a3 parameters:(id)a4 delegate:(id)a5;
+- (NWTCPConnection)initWithAcceptedInternalConnection:(id)connection;
+- (NWTCPConnection)initWithEndpoint:(id)endpoint parameters:(id)parameters delegate:(id)delegate;
 - (NWTCPConnection)initWithUpgradeForConnection:(NWTCPConnection *)connection;
 - (NWTCPConnectionAuthenticationDelegate)delegate;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (int)multipathPrimarySubflowInterfaceIndex;
 - (unint64_t)multipathConnectedSubflowCount;
 - (unint64_t)multipathSubflowCount;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleIdentityRequestWithMetadata:(id)a3 completionHandler:(id)a4;
-- (void)handlePeerCertificateTrustEvaluationWithMetadata:(id)a3 trust:(id)a4 completionHandler:(id)a5;
+- (void)handleIdentityRequestWithMetadata:(id)metadata completionHandler:(id)handler;
+- (void)handlePeerCertificateTrustEvaluationWithMetadata:(id)metadata trust:(id)trust completionHandler:(id)handler;
 - (void)readMinimumLength:(NSUInteger)minimum maximumLength:(NSUInteger)maximum completionHandler:(void *)completion;
 - (void)setupEventHandler;
 - (void)write:(NSData *)data completionHandler:(void *)completion;
@@ -34,34 +34,34 @@
 
 @implementation NWTCPConnection
 
-+ (id)stringFromNWTCPConnectionState:(int64_t)a3
++ (id)stringFromNWTCPConnectionState:(int64_t)state
 {
-  if (a3 >= 6)
+  if (state >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INVALID(%ld)", a3];
+    state = [MEMORY[0x1E696AEC0] stringWithFormat:@"INVALID(%ld)", state];
   }
 
   else
   {
-    v4 = off_1E6A2BBB0[a3];
+    state = off_1E6A2BBB0[state];
   }
 
-  return v4;
+  return state;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"state"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"hasBetterPath") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"viable"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"state"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"hasBetterPath") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"viable"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NWTCPConnection;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
@@ -76,8 +76,8 @@
 
 - (NSData)metadata
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_copy_metadata(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_copy_metadata(internalConnection);
 
   if (v3)
   {
@@ -96,8 +96,8 @@
 
 - (NSDictionary)TCPInfo
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_copy_tcp_info(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_copy_tcp_info(internalConnection);
 
   if (v3)
   {
@@ -114,8 +114,8 @@
 
 - (NSDictionary)multipathSubflowSwitchCounts
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_multipath_copy_subflow_counts(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_multipath_copy_subflow_counts(internalConnection);
 
   if (v3)
   {
@@ -150,8 +150,8 @@ uint64_t __47__NWTCPConnection_multipathSubflowSwitchCounts__block_invoke(uint64
 - (int)multipathPrimarySubflowInterfaceIndex
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_copy_connected_path(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_copy_connected_path(internalConnection);
 
   if (v3)
   {
@@ -187,46 +187,46 @@ uint64_t __47__NWTCPConnection_multipathSubflowSwitchCounts__block_invoke(uint64
 
 - (unint64_t)multipathConnectedSubflowCount
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  subflow_count = nw_connection_multipath_get_subflow_count(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  subflow_count = nw_connection_multipath_get_subflow_count(internalConnection);
 
   return subflow_count;
 }
 
 - (unint64_t)multipathSubflowCount
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  subflow_count = nw_connection_multipath_get_subflow_count(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  subflow_count = nw_connection_multipath_get_subflow_count(internalConnection);
 
   return subflow_count;
 }
 
 - (BOOL)isMultipath
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_uses_multipath(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_uses_multipath(internalConnection);
 
   return v3;
 }
 
 - (BOOL)TFOSucceeded
 {
-  v2 = [(NWTCPConnection *)self internalConnection];
-  v3 = nw_connection_used_tfo(v2);
+  internalConnection = [(NWTCPConnection *)self internalConnection];
+  v3 = nw_connection_used_tfo(internalConnection);
 
   return v3;
 }
 
-- (BOOL)fillOutTCPConnectionInfo:(tcp_connection_info *)a3
+- (BOOL)fillOutTCPConnectionInfo:(tcp_connection_info *)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (info)
   {
-    v3 = a3;
-    v4 = [(NWTCPConnection *)self internalConnection];
-    LOBYTE(v3) = nw_connection_fillout_tcp_connection_info(v4, v3);
+    infoCopy = info;
+    internalConnection = [(NWTCPConnection *)self internalConnection];
+    LOBYTE(infoCopy) = nw_connection_fillout_tcp_connection_info(internalConnection, infoCopy);
 
-    return v3;
+    return infoCopy;
   }
 
   v6 = __nwlog_obj();
@@ -313,20 +313,20 @@ LABEL_19:
 {
   objc_initWeak(&location, self);
   [(NWTCPConnection *)self setupEventHandler];
-  v3 = [(NWTCPConnection *)self parameters];
-  v4 = [v3 enableTLS];
+  parameters = [(NWTCPConnection *)self parameters];
+  enableTLS = [parameters enableTLS];
 
-  if (v4)
+  if (enableTLS)
   {
-    v5 = [(NWTCPConnection *)self internalConnection];
-    v6 = nw_connection_copy_parameters(v5);
+    internalConnection = [(NWTCPConnection *)self internalConnection];
+    v6 = nw_connection_copy_parameters(internalConnection);
 
     v7 = nw_protocol_boringssl_copy_definition();
     v8 = nw_parameters_copy_protocol_options_for_definition(v6, v7);
 
     v9 = v8;
-    v10 = [(NWTCPConnection *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [v10 shouldEvaluateTrustForConnection:self]))
+    delegate = [(NWTCPConnection *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [delegate shouldEvaluateTrustForConnection:self]))
     {
       verify_block[0] = MEMORY[0x1E69E9820];
       verify_block[1] = 3221225472;
@@ -344,7 +344,7 @@ LABEL_19:
       objc_destroyWeak(&v18);
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [v10 shouldProvideIdentityForConnection:self]))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [delegate shouldProvideIdentityForConnection:self]))
     {
       challenge_block[0] = MEMORY[0x1E69E9820];
       challenge_block[1] = 3221225472;
@@ -363,8 +363,8 @@ LABEL_19:
     }
   }
 
-  v13 = [(NWTCPConnection *)self internalConnection];
-  nw_connection_start(v13);
+  internalConnection2 = [(NWTCPConnection *)self internalConnection];
+  nw_connection_start(internalConnection2);
 
   objc_destroyWeak(&location);
   return 1;
@@ -426,29 +426,29 @@ void __32__NWTCPConnection_startInternal__block_invoke_50(uint64_t a1, void *a2,
 - (void)setupEventHandler
 {
   objc_initWeak(&location, self);
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __36__NWTCPConnection_setupEventHandler__block_invoke;
   handler[3] = &unk_1E6A3D280;
   objc_copyWeak(&v11, &location);
-  nw_connection_set_state_changed_handler(v3, handler);
+  nw_connection_set_state_changed_handler(internalConnection, handler);
 
-  v4 = [(NWTCPConnection *)self internalConnection];
+  internalConnection2 = [(NWTCPConnection *)self internalConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__NWTCPConnection_setupEventHandler__block_invoke_38;
   v8[3] = &unk_1E6A2D770;
   objc_copyWeak(&v9, &location);
-  nw_connection_set_viability_changed_handler(v4, v8);
+  nw_connection_set_viability_changed_handler(internalConnection2, v8);
 
-  v5 = [(NWTCPConnection *)self internalConnection];
+  internalConnection3 = [(NWTCPConnection *)self internalConnection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__NWTCPConnection_setupEventHandler__block_invoke_40;
   v6[3] = &unk_1E6A2D770;
   objc_copyWeak(&v7, &location);
-  nw_connection_set_better_path_available_handler(v5, v6);
+  nw_connection_set_better_path_available_handler(internalConnection3, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
@@ -565,12 +565,12 @@ void __36__NWTCPConnection_setupEventHandler__block_invoke_40(uint64_t a1, uint6
   }
 }
 
-- (void)handleIdentityRequestWithMetadata:(id)a3 completionHandler:(id)a4
+- (void)handleIdentityRequestWithMetadata:(id)metadata completionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWTCPConnection *)self delegate];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  delegate = [(NWTCPConnection *)self delegate];
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v9 = gLogObj;
@@ -587,9 +587,9 @@ void __36__NWTCPConnection_setupEventHandler__block_invoke_40(uint64_t a1, uint6
   v11[2] = __71__NWTCPConnection_handleIdentityRequestWithMetadata_completionHandler___block_invoke;
   v11[3] = &unk_1E6A2BB40;
   objc_copyWeak(&v13, buf);
-  v10 = v7;
+  v10 = handlerCopy;
   v12 = v10;
-  [v8 provideIdentityForConnection:self completionHandler:v11];
+  [delegate provideIdentityForConnection:self completionHandler:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -620,16 +620,16 @@ void __71__NWTCPConnection_handleIdentityRequestWithMetadata_completionHandler__
   }
 }
 
-- (void)handlePeerCertificateTrustEvaluationWithMetadata:(id)a3 trust:(id)a4 completionHandler:(id)a5
+- (void)handlePeerCertificateTrustEvaluationWithMetadata:(id)metadata trust:(id)trust completionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  metadataCopy = metadata;
+  trustCopy = trust;
+  handlerCopy = handler;
+  if (metadataCopy)
   {
     objc_initWeak(&location, self);
-    v11 = [(NWTCPConnection *)self delegate];
+    delegate = [(NWTCPConnection *)self delegate];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -637,7 +637,7 @@ void __71__NWTCPConnection_handleIdentityRequestWithMetadata_completionHandler__
     handler[3] = &unk_1E6A2BAF0;
     v13 = v12;
     v29 = v13;
-    sec_protocol_metadata_access_peer_certificate_chain(v8, handler);
+    sec_protocol_metadata_access_peer_certificate_chain(metadataCopy, handler);
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v14 = gLogObj;
@@ -659,8 +659,8 @@ void __71__NWTCPConnection_handleIdentityRequestWithMetadata_completionHandler__
       v25[2] = __92__NWTCPConnection_handlePeerCertificateTrustEvaluationWithMetadata_trust_completionHandler___block_invoke_34;
       v25[3] = &unk_1E6A2BB18;
       objc_copyWeak(&v27, &location);
-      v26 = v10;
-      [v11 evaluateTrustForConnection:self peerCertificateChain:v13 completionHandler:v25];
+      v26 = handlerCopy;
+      [delegate evaluateTrustForConnection:self peerCertificateChain:v13 completionHandler:v25];
 
       objc_destroyWeak(&v27);
     }
@@ -792,12 +792,12 @@ void __92__NWTCPConnection_handlePeerCertificateTrustEvaluationWithMetadata_trus
 
 - (void)writeClose
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    nw_connection_send(v4, 0, &__block_literal_global_6_44667, 1, &__block_literal_global_24512);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    nw_connection_send(internalConnection2, 0, &__block_literal_global_6_44667, 1, &__block_literal_global_24512);
   }
 }
 
@@ -805,28 +805,28 @@ void __92__NWTCPConnection_handlePeerCertificateTrustEvaluationWithMetadata_trus
 {
   v6 = data;
   v7 = completion;
-  v8 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v8)
+  if (internalConnection)
   {
     if (v6)
     {
-      v9 = [(NSData *)v6 _createDispatchData];
+      _createDispatchData = [(NSData *)v6 _createDispatchData];
     }
 
     else
     {
-      v9 = 0;
+      _createDispatchData = 0;
     }
 
-    v12 = [(NWTCPConnection *)self internalConnection];
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
     completiona[0] = MEMORY[0x1E69E9820];
     completiona[1] = 3221225472;
     completiona[2] = __43__NWTCPConnection_write_completionHandler___block_invoke;
     completiona[3] = &unk_1E6A39D90;
     v16 = v7;
     v11 = v7;
-    nw_connection_send(v12, v9, &__block_literal_global_44658, 1, completiona);
+    nw_connection_send(internalConnection2, _createDispatchData, &__block_literal_global_44658, 1, completiona);
   }
 
   else
@@ -842,7 +842,7 @@ void __92__NWTCPConnection_handlePeerCertificateTrustEvaluationWithMetadata_trus
     v13[2] = __43__NWTCPConnection_write_completionHandler___block_invoke_2;
     v13[3] = &unk_1E6A3CE48;
     v14 = v7;
-    v9 = v7;
+    _createDispatchData = v7;
     dispatch_async(v10, v13);
 
     v11 = v14;
@@ -872,11 +872,11 @@ void __43__NWTCPConnection_write_completionHandler___block_invoke_2(uint64_t a1)
   v5 = maximum;
   v6 = minimum;
   v8 = completion;
-  v9 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v9)
+  if (internalConnection)
   {
-    v10 = [(NWTCPConnection *)self internalConnection];
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___block_invoke;
@@ -884,7 +884,7 @@ void __43__NWTCPConnection_write_completionHandler___block_invoke_2(uint64_t a1)
     v11 = &v17;
     v17 = v8;
     v12 = v8;
-    nw_connection_receive_internal(v10, 0, v6, v5, v16);
+    nw_connection_receive_internal(internalConnection2, 0, v6, v5, v16);
   }
 
   else
@@ -894,7 +894,7 @@ void __43__NWTCPConnection_write_completionHandler___block_invoke_2(uint64_t a1)
       dispatch_once(&NWCopyInternalQueue_init_once, &__block_literal_global_66536);
     }
 
-    v10 = NWCopyInternalQueue_nwQueue;
+    internalConnection2 = NWCopyInternalQueue_nwQueue;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___block_invoke_2;
@@ -902,7 +902,7 @@ void __43__NWTCPConnection_write_completionHandler___block_invoke_2(uint64_t a1)
     v11 = &v15;
     v15 = v8;
     v13 = v8;
-    dispatch_async(v10, v14);
+    dispatch_async(internalConnection2, v14);
   }
 }
 
@@ -964,24 +964,24 @@ void __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___b
 {
   if ([(NWTCPConnection *)self state]!= NWTCPConnectionStateCancelled)
   {
-    v3 = [(NWTCPConnection *)self internalConnection];
+    internalConnection = [(NWTCPConnection *)self internalConnection];
 
-    if (v3)
+    if (internalConnection)
     {
-      v4 = [(NWTCPConnection *)self internalConnection];
-      nw_connection_cancel(v4);
+      internalConnection2 = [(NWTCPConnection *)self internalConnection];
+      nw_connection_cancel(internalConnection2);
     }
   }
 }
 
 - (NSData)txtRecord
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    v5 = nw_connection_copy_host_endpoint(v4);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    v5 = nw_connection_copy_host_endpoint(internalConnection2);
 
     if (v5)
     {
@@ -1019,71 +1019,71 @@ void __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___b
 
 - (NWEndpoint)remoteAddress
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    v5 = nw_connection_copy_connected_remote_endpoint(v4);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    v5 = nw_connection_copy_connected_remote_endpoint(internalConnection2);
 
     if (v5)
     {
-      v3 = [NWEndpoint endpointWithInternalEndpoint:v5];
+      internalConnection = [NWEndpoint endpointWithInternalEndpoint:v5];
     }
 
     else
     {
-      v3 = 0;
+      internalConnection = 0;
     }
   }
 
-  return v3;
+  return internalConnection;
 }
 
 - (NWEndpoint)localAddress
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    v5 = nw_connection_copy_connected_local_endpoint(v4);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    v5 = nw_connection_copy_connected_local_endpoint(internalConnection2);
 
     if (v5)
     {
-      v3 = [NWEndpoint endpointWithInternalEndpoint:v5];
+      internalConnection = [NWEndpoint endpointWithInternalEndpoint:v5];
     }
 
     else
     {
-      v3 = 0;
+      internalConnection = 0;
     }
   }
 
-  return v3;
+  return internalConnection;
 }
 
 - (NWPath)connectedPath
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    v5 = nw_connection_copy_connected_path(v4);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    v5 = nw_connection_copy_connected_path(internalConnection2);
 
     if (v5)
     {
-      v3 = [[NWPath alloc] initWithPath:v5];
+      internalConnection = [[NWPath alloc] initWithPath:v5];
     }
 
     else
     {
-      v3 = 0;
+      internalConnection = 0;
     }
   }
 
-  return v3;
+  return internalConnection;
 }
 
 - (NSString)privateDescription
@@ -1100,17 +1100,17 @@ void __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___b
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v7 appendString:@"{"];
-  v8 = [(NWTCPConnection *)self parameters];
-  [v7 appendPrettyObject:v8 withName:@"parameters" indent:v5 showFullContent:v4];
+  parameters = [(NWTCPConnection *)self parameters];
+  [v7 appendPrettyObject:parameters withName:@"parameters" indent:v5 showFullContent:contentCopy];
 
-  v9 = [(NWTCPConnection *)self endpoint];
-  [v7 appendPrettyObject:v9 withName:@"endpoint" indent:v5 showFullContent:v4];
+  endpoint = [(NWTCPConnection *)self endpoint];
+  [v7 appendPrettyObject:endpoint withName:@"endpoint" indent:v5 showFullContent:contentCopy];
 
   [v7 appendString:@"\n}"];
   return v7;
@@ -1118,12 +1118,12 @@ void __69__NWTCPConnection_readMinimumLength_maximumLength_completionHandler___b
 
 - (void)dealloc
 {
-  v3 = [(NWTCPConnection *)self internalConnection];
+  internalConnection = [(NWTCPConnection *)self internalConnection];
 
-  if (v3)
+  if (internalConnection)
   {
-    v4 = [(NWTCPConnection *)self internalConnection];
-    nw_connection_cancel(v4);
+    internalConnection2 = [(NWTCPConnection *)self internalConnection];
+    nw_connection_cancel(internalConnection2);
 
     [(NWTCPConnection *)self setInternalConnection:0];
   }
@@ -1219,9 +1219,9 @@ LABEL_60:
     goto LABEL_82;
   }
 
-  v6 = [(NWTCPConnection *)v4 endpoint];
+  endpoint = [(NWTCPConnection *)v4 endpoint];
 
-  if (!v6)
+  if (!endpoint)
   {
     v38 = __nwlog_obj();
     *buf = 136446210;
@@ -1295,15 +1295,15 @@ LABEL_60:
     goto LABEL_59;
   }
 
-  v7 = [(NWTCPConnection *)v5 parameters];
+  parameters = [(NWTCPConnection *)v5 parameters];
 
-  if (v7)
+  if (parameters)
   {
-    v8 = [(NWTCPConnection *)v5 endpoint];
-    v9 = [v8 internalEndpoint];
-    v10 = [(NWTCPConnection *)v5 parameters];
-    v11 = [v10 internalParameters];
-    v12 = nw_connection_create(v9, v11);
+    endpoint2 = [(NWTCPConnection *)v5 endpoint];
+    internalEndpoint = [endpoint2 internalEndpoint];
+    parameters2 = [(NWTCPConnection *)v5 parameters];
+    internalParameters = [parameters2 internalParameters];
+    v12 = nw_connection_create(internalEndpoint, internalParameters);
 
     if (v12)
     {
@@ -1321,22 +1321,22 @@ LABEL_60:
         v15 = NWCopyInternalQueue_nwQueue;
         nw_connection_set_queue(v12, v15);
 
-        v16 = [(NWTCPConnection *)v5 endpoint];
+        endpoint3 = [(NWTCPConnection *)v5 endpoint];
         endpoint = v14->_endpoint;
-        v14->_endpoint = v16;
+        v14->_endpoint = endpoint3;
 
-        v18 = [(NWTCPConnection *)v5 parameters];
+        parameters3 = [(NWTCPConnection *)v5 parameters];
         parameters = v14->_parameters;
-        v14->_parameters = v18;
+        v14->_parameters = parameters3;
 
-        v20 = [(NWTCPConnection *)v5 delegate];
-        objc_storeWeak(&v14->_delegate, v20);
+        delegate = [(NWTCPConnection *)v5 delegate];
+        objc_storeWeak(&v14->_delegate, delegate);
 
         objc_storeStrong(&v14->_internalConnection, v12);
         v14->_state = 1;
         [(NWTCPConnection *)v14 startInternal];
         self = v14;
-        v21 = self;
+        selfCopy = self;
         goto LABEL_27;
       }
 
@@ -1482,7 +1482,7 @@ LABEL_24:
           if (!v23)
           {
 LABEL_26:
-            v21 = 0;
+            selfCopy = 0;
 LABEL_27:
 
             goto LABEL_28;
@@ -1600,19 +1600,19 @@ LABEL_82:
     free(v34);
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_28:
 
-  return v21;
+  return selfCopy;
 }
 
-- (NWTCPConnection)initWithEndpoint:(id)a3 parameters:(id)a4 delegate:(id)a5
+- (NWTCPConnection)initWithEndpoint:(id)endpoint parameters:(id)parameters delegate:(id)delegate
 {
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  delegateCopy = delegate;
+  if (!endpointCopy)
   {
     v35 = __nwlog_obj();
     *buf = 136446210;
@@ -1699,7 +1699,7 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if (!v10)
+  if (!parametersCopy)
   {
     v40 = __nwlog_obj();
     *buf = 136446210;
@@ -1785,8 +1785,8 @@ LABEL_71:
   if (v12)
   {
     v13 = v12;
-    v14 = [v10 copyCParameters];
-    v15 = nw_parameters_copy_default_protocol_stack(v14);
+    copyCParameters = [parametersCopy copyCParameters];
+    v15 = nw_parameters_copy_default_protocol_stack(copyCParameters);
     v16 = nw_protocol_stack_copy_transport_protocol(v15);
 
     if (!v16)
@@ -1795,10 +1795,10 @@ LABEL_71:
       nw_protocol_stack_set_transport_protocol(v15, options);
     }
 
-    nw_parameters_set_indefinite(v14);
-    nw_parameters_set_no_opaque_proxy(v14, 1);
-    v18 = [v9 internalEndpoint];
-    v19 = nw_connection_create(v18, v14);
+    nw_parameters_set_indefinite(copyCParameters);
+    nw_parameters_set_no_opaque_proxy(copyCParameters, 1);
+    internalEndpoint = [endpointCopy internalEndpoint];
+    v19 = nw_connection_create(internalEndpoint, copyCParameters);
 
     if (v19)
     {
@@ -1810,20 +1810,20 @@ LABEL_71:
       v20 = NWCopyInternalQueue_nwQueue;
       nw_connection_set_queue(v19, v20);
 
-      objc_storeStrong(&v13->_endpoint, a3);
-      v21 = [[NWParameters alloc] initWithParameters:v14];
+      objc_storeStrong(&v13->_endpoint, endpoint);
+      v21 = [[NWParameters alloc] initWithParameters:copyCParameters];
       parameters = v13->_parameters;
       v13->_parameters = v21;
 
       objc_storeStrong(&v13->_internalConnection, v19);
-      objc_storeWeak(&v13->_delegate, v11);
+      objc_storeWeak(&v13->_delegate, delegateCopy);
       v13->_state = 1;
       [(NWTCPConnection *)v13 startInternal];
       v23 = v13;
       goto LABEL_22;
     }
 
-    v52 = v11;
+    v52 = delegateCopy;
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v24 = gLogObj;
@@ -1918,7 +1918,7 @@ LABEL_27:
     {
 LABEL_21:
       v23 = 0;
-      v11 = v52;
+      delegateCopy = v52;
 LABEL_22:
 
       goto LABEL_23;
@@ -2012,11 +2012,11 @@ LABEL_23:
   return v23;
 }
 
-- (NWTCPConnection)initWithAcceptedInternalConnection:(id)a3
+- (NWTCPConnection)initWithAcceptedInternalConnection:(id)connection
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     v20 = __nwlog_obj();
     *buf = 136446210;
@@ -2170,8 +2170,8 @@ LABEL_44:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_internalConnection, a3);
-  v8 = v5;
+  objc_storeStrong(&v6->_internalConnection, connection);
+  v8 = connectionCopy;
   v9 = v8[1];
 
   v10 = [NWEndpoint endpointWithInternalEndpoint:v9];

@@ -1,31 +1,31 @@
 @interface NTKCFaceDetailPigmentEditOptionCell
-- (BOOL)_isReloadCollectionRequired:(id)a3 selectedOptions:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (NTKCFaceDetailPigmentEditOptionCell)initWithCollection:(id)a3 forFaceView:(id)a4 face:(id)a5;
-- (id)_configurationFromCollection:(id)a3 selectedOptions:(id)a4;
-- (id)_dequeueCellForIndexPath:(id)a3;
+- (BOOL)_isReloadCollectionRequired:(id)required selectedOptions:(id)options;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (NTKCFaceDetailPigmentEditOptionCell)initWithCollection:(id)collection forFaceView:(id)view face:(id)face;
+- (id)_configurationFromCollection:(id)collection selectedOptions:(id)options;
+- (id)_dequeueCellForIndexPath:(id)path;
 - (id)_dividerImage;
-- (id)_imageForIndexPath:(id)a3;
-- (id)_indexPathForEditOptionIndex:(int64_t)a3;
+- (id)_imageForIndexPath:(id)path;
+- (id)_indexPathForEditOptionIndex:(int64_t)index;
 - (id)_plusImage;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)optionAtIndex:(unint64_t)a3;
-- (int64_t)_editOptionIndexForIndexPath:(id)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)optionAtIndex:(unint64_t)index;
+- (int64_t)_editOptionIndexForIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_setupFromCollection;
-- (void)addCellTapped:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)modifiedColor:(id)a3;
+- (void)addCellTapped:(id)tapped;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)modifiedColor:(id)color;
 - (void)selectLastColor;
 @end
 
 @implementation NTKCFaceDetailPigmentEditOptionCell
 
-- (NTKCFaceDetailPigmentEditOptionCell)initWithCollection:(id)a3 forFaceView:(id)a4 face:(id)a5
+- (NTKCFaceDetailPigmentEditOptionCell)initWithCollection:(id)collection forFaceView:(id)view face:(id)face
 {
   v27.receiver = self;
   v27.super_class = NTKCFaceDetailPigmentEditOptionCell;
-  v5 = [(NTKCFaceDetailEditOptionCell *)&v27 initWithCollection:a3 forFaceView:a4 face:a5];
+  v5 = [(NTKCFaceDetailEditOptionCell *)&v27 initWithCollection:collection forFaceView:view face:face];
   if (v5)
   {
     v6 = +[NTKPigmentEditOptionArray array];
@@ -36,13 +36,13 @@
     previouslySelectedColors = v5->_previouslySelectedColors;
     v5->_previouslySelectedColors = v8;
 
-    v10 = [(NTKCFaceDetailEditOptionCell *)v5 layout];
-    v11 = [(NTKCFaceDetailPigmentEditOptionCell *)v5 _dividerImage];
-    [v11 size];
+    layout = [(NTKCFaceDetailEditOptionCell *)v5 layout];
+    _dividerImage = [(NTKCFaceDetailPigmentEditOptionCell *)v5 _dividerImage];
+    [_dividerImage size];
     v13 = v12;
     v15 = v14;
 
-    [v10 itemSize];
+    [layout itemSize];
     v17 = v16;
     v19 = v18;
     [(NTKCFaceDetailEditOptionCell *)v5 swatchFrame];
@@ -52,76 +52,76 @@
     v5->_dividerSwatchRect.origin.y = v22;
     v5->_dividerSwatchRect.size.width = v13;
     v5->_dividerSwatchRect.size.height = v15;
-    v23 = [(NTKCFaceDetailEditOptionCell *)v5 collectionView];
+    collectionView = [(NTKCFaceDetailEditOptionCell *)v5 collectionView];
     v24 = objc_opt_class();
     v25 = +[_NTKCFaceDetailPigmentAddCell reuseIdentifier];
-    [v23 registerClass:v24 forCellWithReuseIdentifier:v25];
+    [collectionView registerClass:v24 forCellWithReuseIdentifier:v25];
   }
 
   return v5;
 }
 
-- (void)modifiedColor:(id)a3
+- (void)modifiedColor:(id)color
 {
   v15[1] = *MEMORY[0x277D85DE8];
   editingModifiedColors = self->_editingModifiedColors;
-  v5 = a3;
-  [(NTKPigmentEditOptionArray *)editingModifiedColors addPigment:v5];
-  v6 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration indexOfColor:v5];
+  colorCopy = color;
+  [(NTKPigmentEditOptionArray *)editingModifiedColors addPigment:colorCopy];
+  v6 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration indexOfColor:colorCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-    v8 = [v7 count];
+    editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+    v8 = [editableColors count];
 
-    v9 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
-    v10 = v6 >= v8 && v9;
+    hasSeparator = [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
+    v10 = v6 >= v8 && hasSeparator;
     v11 = [MEMORY[0x277CCAA70] indexPathForItem:v6 + v10 inSection:0];
     if (v11)
     {
       v12 = v11;
-      v13 = [(NTKCFaceDetailEditOptionCell *)self collectionView];
+      collectionView = [(NTKCFaceDetailEditOptionCell *)self collectionView];
       v15[0] = v12;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-      [v13 reloadItemsAtIndexPaths:v14];
+      [collectionView reloadItemsAtIndexPaths:v14];
     }
   }
 }
 
 - (void)selectLastColor
 {
-  v3 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v4 = [v3 mode];
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  mode = [collection mode];
 
-  v5 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v10 = [v5 slot];
+  collection2 = [(NTKCFaceDetailEditOptionCell *)self collection];
+  slot = [collection2 slot];
 
-  v6 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors];
-  if (v6)
+  numberOfColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors];
+  if (numberOfColors)
   {
-    v7 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration colorAtIndex:v6 - 1];
+    v7 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration colorAtIndex:numberOfColors - 1];
   }
 
   else
   {
-    v8 = [(NTKCFaceDetailEditOptionCell *)self face];
-    v7 = [v8 defaultOptionForCustomEditMode:v4 slot:v10];
+    face = [(NTKCFaceDetailEditOptionCell *)self face];
+    v7 = [face defaultOptionForCustomEditMode:mode slot:slot];
   }
 
-  v9 = [(NTKCFaceDetailEditOptionCell *)self face];
-  [v9 selectOption:v7 forCustomEditMode:v4 slot:v10];
+  face2 = [(NTKCFaceDetailEditOptionCell *)self face];
+  [face2 selectOption:v7 forCustomEditMode:mode slot:slot];
 }
 
-- (id)optionAtIndex:(unint64_t)a3
+- (id)optionAtIndex:(unint64_t)index
 {
-  v5 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v6 = [v5 options];
-  v7 = [v6 objectAtIndex:a3];
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  options = [collection options];
+  v7 = [options objectAtIndex:index];
 
   if ([v7 conformsToProtocol:&unk_28A87B948])
   {
-    v8 = [v7 pigmentEditOption];
-    v9 = [(NTKPigmentEditOptionArray *)self->_editingModifiedColors pigmentForPigment:v8];
+    pigmentEditOption = [v7 pigmentEditOption];
+    v9 = [(NTKPigmentEditOptionArray *)self->_editingModifiedColors pigmentForPigment:pigmentEditOption];
   }
 
   else
@@ -137,34 +137,34 @@
   v10.receiver = self;
   v10.super_class = NTKCFaceDetailPigmentEditOptionCell;
   [(NTKCFaceDetailEditOptionCell *)&v10 _setupFromCollection];
-  v3 = [(NTKCFaceDetailEditOptionCell *)self selectedOptions];
-  v4 = [v3 objectForKeyedSubscript:&unk_284182EA8];
+  selectedOptions = [(NTKCFaceDetailEditOptionCell *)self selectedOptions];
+  v4 = [selectedOptions objectForKeyedSubscript:&unk_284182EA8];
 
   if ([v4 conformsToProtocol:&unk_28A87B948])
   {
-    v5 = [v4 pigmentEditOption];
-    [(NTKPigmentEditOptionArray *)self->_editingModifiedColors addPigment:v5];
-    [(NTKPigmentEditOptionArray *)self->_previouslySelectedColors addPigment:v5];
+    pigmentEditOption = [v4 pigmentEditOption];
+    [(NTKPigmentEditOptionArray *)self->_editingModifiedColors addPigment:pigmentEditOption];
+    [(NTKPigmentEditOptionArray *)self->_previouslySelectedColors addPigment:pigmentEditOption];
   }
 
-  v6 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v7 = [(NTKCFaceDetailEditOptionCell *)self selectedOptions];
-  v8 = [(NTKCFaceDetailPigmentEditOptionCell *)self _configurationFromCollection:v6 selectedOptions:v7];
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  selectedOptions2 = [(NTKCFaceDetailEditOptionCell *)self selectedOptions];
+  v8 = [(NTKCFaceDetailPigmentEditOptionCell *)self _configurationFromCollection:collection selectedOptions:selectedOptions2];
   configuration = self->_configuration;
   self->_configuration = v8;
 }
 
-- (id)_configurationFromCollection:(id)a3 selectedOptions:(id)a4
+- (id)_configurationFromCollection:(id)collection selectedOptions:(id)options
 {
   v44 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v27 = a4;
+  collectionCopy = collection;
+  optionsCopy = options;
   v28 = objc_opt_new();
-  v30 = [v27 objectForKeyedSubscript:&unk_284182EA8];
+  v30 = [optionsCopy objectForKeyedSubscript:&unk_284182EA8];
   v5 = v30;
   if ([v30 conformsToProtocol:&unk_28A87B948])
   {
-    v6 = [v30 pigmentEditOption];
+    pigmentEditOption = [v30 pigmentEditOption];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __84__NTKCFaceDetailPigmentEditOptionCell__configurationFromCollection_selectedOptions___block_invoke;
@@ -176,9 +176,9 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v8 = [v29 options];
+    options = [collectionCopy options];
     v9 = 0;
-    v10 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    v10 = [options countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v10)
     {
       v11 = *v38;
@@ -188,61 +188,61 @@
         {
           if (*v38 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(options);
           }
 
           v13 = *(*(&v37 + 1) + 8 * i);
           if ([v13 conformsToProtocol:&unk_28A87B948])
           {
-            v14 = [v13 pigmentEditOption];
-            if ([v14 isEqualIgnoringFraction:v6])
+            pigmentEditOption2 = [v13 pigmentEditOption];
+            if ([pigmentEditOption2 isEqualIgnoringFraction:pigmentEditOption])
             {
-              v7[2](v7, v6, 1);
+              v7[2](v7, pigmentEditOption, 1);
               v9 = 1;
             }
 
             else
             {
-              v15 = [(NTKPigmentEditOptionArray *)self->_previouslySelectedColors containsPigment:v14];
+              v15 = [(NTKPigmentEditOptionArray *)self->_previouslySelectedColors containsPigment:pigmentEditOption2];
               v16 = v7[2];
               if (v15)
               {
-                v16(v7, v14, 1);
+                v16(v7, pigmentEditOption2, 1);
               }
 
               else
               {
-                v16(v7, v14, 0);
+                v16(v7, pigmentEditOption2, 0);
               }
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v10 = [options countByEnumeratingWithState:&v37 objects:v43 count:16];
       }
 
       while (v10);
     }
 
-    if (!((v6 == 0) | v9 & 1))
+    if (!((pigmentEditOption == 0) | v9 & 1))
     {
-      v7[2](v7, v6, 1);
+      v7[2](v7, pigmentEditOption, 1);
     }
 
     v33 = 0;
     v34 = &v33;
     v35 = 0x2020000000;
     v36 = 0;
-    v17 = [(NTKCFaceDetailEditOptionCell *)self face];
-    v18 = [v17 supportsPigmentUI];
+    face = [(NTKCFaceDetailEditOptionCell *)self face];
+    supportsPigmentUI = [face supportsPigmentUI];
 
-    if (v18)
+    if (supportsPigmentUI)
     {
-      v19 = [(NTKCFaceDetailEditOptionCell *)self face];
-      v20 = [v19 pigmentOptionProvider];
-      v21 = [(NTKCFaceDetailEditOptionCell *)self collection];
-      v22 = [v21 slot];
-      v23 = [v20 availableColorsForSlot:v22];
+      face2 = [(NTKCFaceDetailEditOptionCell *)self face];
+      pigmentOptionProvider = [face2 pigmentOptionProvider];
+      collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+      slot = [collection slot];
+      v23 = [pigmentOptionProvider availableColorsForSlot:slot];
 
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
@@ -293,42 +293,42 @@ uint64_t __84__NTKCFaceDetailPigmentEditOptionCell__configurationFromCollection_
   return result;
 }
 
-- (int64_t)_editOptionIndexForIndexPath:(id)a3
+- (int64_t)_editOptionIndexForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-  v7 = [v6 count];
+  pathCopy = path;
+  item = [pathCopy item];
+  editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+  v7 = [editableColors count];
 
   configuration = self->_configuration;
-  if (v5 >= v7)
+  if (item >= v7)
   {
-    v12 = [(NTKFaceEditColorPickerConfiguration *)configuration hasSeparator];
-    v13 = v12 && v5 == v7;
-    if (v13 || (v5 = v5 - v7 - v12, -[NTKFaceEditColorPickerConfiguration nonEditableColors](self->_configuration, "nonEditableColors"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 count], v14, v5 >= v15))
+    hasSeparator = [(NTKFaceEditColorPickerConfiguration *)configuration hasSeparator];
+    v13 = hasSeparator && item == v7;
+    if (v13 || (item = item - v7 - hasSeparator, -[NTKFaceEditColorPickerConfiguration nonEditableColors](self->_configuration, "nonEditableColors"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 count], v14, item >= v15))
     {
       v11 = 0;
       goto LABEL_11;
     }
 
-    v9 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
+    nonEditableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
   }
 
   else
   {
-    v9 = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
+    nonEditableColors = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
   }
 
-  v10 = v9;
-  v11 = [v9 objectAtIndexedSubscript:v5];
+  v10 = nonEditableColors;
+  v11 = [nonEditableColors objectAtIndexedSubscript:item];
 
 LABEL_11:
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0x7FFFFFFFFFFFFFFFLL;
-  v16 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v17 = [v16 options];
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  options = [collection options];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __68__NTKCFaceDetailPigmentEditOptionCell__editOptionIndexForIndexPath___block_invoke;
@@ -336,7 +336,7 @@ LABEL_11:
   v18 = v11;
   v22 = v18;
   v23 = &v24;
-  [v17 enumerateObjectsUsingBlock:v21];
+  [options enumerateObjectsUsingBlock:v21];
 
   v19 = v25[3];
   _Block_object_dispose(&v24, 8);
@@ -370,20 +370,20 @@ LABEL_5:
   }
 }
 
-- (id)_indexPathForEditOptionIndex:(int64_t)a3
+- (id)_indexPathForEditOptionIndex:(int64_t)index
 {
-  v5 = [(NTKCFaceDetailEditOptionCell *)self collection];
-  v6 = [v5 options];
-  v7 = [v6 count];
+  collection = [(NTKCFaceDetailEditOptionCell *)self collection];
+  options = [collection options];
+  v7 = [options count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = [(NTKCFaceDetailPigmentEditOptionCell *)self optionAtIndex:a3];
+    v8 = [(NTKCFaceDetailPigmentEditOptionCell *)self optionAtIndex:index];
     v9 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration indexOfColor:v8];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -393,11 +393,11 @@ LABEL_5:
     else
     {
       v11 = v9;
-      v12 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-      v13 = [v12 count];
+      editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+      v13 = [editableColors count];
 
-      v14 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
-      v15 = v11 >= v13 && v14;
+      hasSeparator = [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
+      v15 = v11 >= v13 && hasSeparator;
       v10 = [MEMORY[0x277CCAA70] indexPathForItem:v11 + v15 inSection:0];
     }
   }
@@ -405,84 +405,84 @@ LABEL_5:
   return v10;
 }
 
-- (id)_imageForIndexPath:(id)a3
+- (id)_imageForIndexPath:(id)path
 {
-  v4 = [a3 item];
-  v5 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-  v6 = [v5 count];
+  item = [path item];
+  editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+  v6 = [editableColors count];
 
   configuration = self->_configuration;
-  if (v4 < v6)
+  if (item < v6)
   {
-    v8 = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
+    editableColors2 = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
 LABEL_3:
-    v9 = v8;
-    v10 = [v8 objectAtIndexedSubscript:v4];
+    v9 = editableColors2;
+    v10 = [editableColors2 objectAtIndexedSubscript:item];
 
     v11 = [(NTKPigmentEditOptionArray *)self->_editingModifiedColors pigmentForPigment:v10];
 
-    v12 = [(NTKCFaceDetailEditOptionCell *)self faceView];
-    v13 = [v12 swatchImageForColorOption:v11];
+    faceView = [(NTKCFaceDetailEditOptionCell *)self faceView];
+    v13 = [faceView swatchImageForColorOption:v11];
 
     goto LABEL_13;
   }
 
-  v14 = [(NTKFaceEditColorPickerConfiguration *)configuration hasSeparator];
-  if (v14 && v4 == v6)
+  hasSeparator = [(NTKFaceEditColorPickerConfiguration *)configuration hasSeparator];
+  if (hasSeparator && item == v6)
   {
-    v18 = [(NTKCFaceDetailPigmentEditOptionCell *)self _dividerImage];
+    _dividerImage = [(NTKCFaceDetailPigmentEditOptionCell *)self _dividerImage];
   }
 
   else
   {
-    v4 = v4 - v6 - v14;
-    v16 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
-    v17 = [v16 count];
+    item = item - v6 - hasSeparator;
+    nonEditableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
+    v17 = [nonEditableColors count];
 
-    if (v4 < v17)
+    if (item < v17)
     {
-      v8 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
+      editableColors2 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
       goto LABEL_3;
     }
 
-    v18 = [(NTKCFaceDetailPigmentEditOptionCell *)self _plusImage];
+    _dividerImage = [(NTKCFaceDetailPigmentEditOptionCell *)self _plusImage];
   }
 
-  v13 = v18;
+  v13 = _dividerImage;
 LABEL_13:
 
   return v13;
 }
 
-- (id)_dequeueCellForIndexPath:(id)a3
+- (id)_dequeueCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-  v7 = [v6 count];
+  pathCopy = path;
+  item = [pathCopy item];
+  editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+  v7 = [editableColors count];
 
-  v8 = v5 <= v7;
-  v9 = v5 - v7;
+  v8 = item <= v7;
+  v9 = item - v7;
   if (v8)
   {
-    [(NTKCFaceDetailEditOptionCell *)&v18 _dequeueCellForIndexPath:v4, v17.receiver, v17.super_class, self, NTKCFaceDetailPigmentEditOptionCell];
+    [(NTKCFaceDetailEditOptionCell *)&v18 _dequeueCellForIndexPath:pathCopy, v17.receiver, v17.super_class, self, NTKCFaceDetailPigmentEditOptionCell];
     goto LABEL_5;
   }
 
   v10 = v9 - [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
-  v11 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
-  v12 = [v11 count];
+  nonEditableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration nonEditableColors];
+  v12 = [nonEditableColors count];
 
   if (v10 < v12)
   {
-    [(NTKCFaceDetailEditOptionCell *)&v17 _dequeueCellForIndexPath:v4, self, NTKCFaceDetailPigmentEditOptionCell, v18.receiver, v18.super_class];
+    [(NTKCFaceDetailEditOptionCell *)&v17 _dequeueCellForIndexPath:pathCopy, self, NTKCFaceDetailPigmentEditOptionCell, v18.receiver, v18.super_class];
     v13 = LABEL_5:;
     goto LABEL_7;
   }
 
-  v14 = [(NTKCFaceDetailEditOptionCell *)self collectionView];
+  collectionView = [(NTKCFaceDetailEditOptionCell *)self collectionView];
   v15 = +[_NTKCFaceDetailPigmentAddCell reuseIdentifier];
-  v13 = [v14 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v4];
+  v13 = [collectionView dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
   [(NTKCFaceDetailEditOptionCell *)self _setupCell:v13];
   [v13 setDelegate:self];
@@ -491,34 +491,34 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)_isReloadCollectionRequired:(id)a3 selectedOptions:(id)a4
+- (BOOL)_isReloadCollectionRequired:(id)required selectedOptions:(id)options
 {
-  v4 = self;
-  v5 = [(NTKCFaceDetailPigmentEditOptionCell *)self _configurationFromCollection:a3 selectedOptions:a4];
-  LOBYTE(v4) = [v5 isEqual:v4->_configuration];
+  selfCopy = self;
+  v5 = [(NTKCFaceDetailPigmentEditOptionCell *)self _configurationFromCollection:required selectedOptions:options];
+  LOBYTE(selfCopy) = [v5 isEqual:selfCopy->_configuration];
 
-  return v4 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors:a3];
+  v5 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors:view];
   v6 = v5 + [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
   return v6 + [(NTKFaceEditColorPickerConfiguration *)self->_configuration canAddColors];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(NTKCFaceDetailPigmentEditOptionCell *)self _dequeueCellForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(NTKCFaceDetailPigmentEditOptionCell *)self _dequeueCellForIndexPath:pathCopy];
   [v6 setStyle:0];
-  v7 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
-  v8 = [v7 count];
+  editableColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration editableColors];
+  v8 = [editableColors count];
 
-  v9 = [v5 item];
+  item = [pathCopy item];
   if ([(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator])
   {
-    v10 = v9 == v8;
+    v10 = item == v8;
   }
 
   else
@@ -534,31 +534,31 @@ LABEL_7:
   return v6;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors];
-  v9 = v8 + [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
-  if ([v7 item] != v9)
+  viewCopy = view;
+  pathCopy = path;
+  numberOfColors = [(NTKFaceEditColorPickerConfiguration *)self->_configuration numberOfColors];
+  v9 = numberOfColors + [(NTKFaceEditColorPickerConfiguration *)self->_configuration hasSeparator];
+  if ([pathCopy item] != v9)
   {
     v10.receiver = self;
     v10.super_class = NTKCFaceDetailPigmentEditOptionCell;
-    [(NTKCFaceDetailEditOptionCell *)&v10 collectionView:v6 didSelectItemAtIndexPath:v7];
+    [(NTKCFaceDetailEditOptionCell *)&v10 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   configuration = self->_configuration;
-  v7 = a5;
-  v8 = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
-  v9 = [v8 count];
+  pathCopy = path;
+  editableColors = [(NTKFaceEditColorPickerConfiguration *)configuration editableColors];
+  v9 = [editableColors count];
 
-  v10 = [v7 item];
+  item = [pathCopy item];
   if (v9)
   {
-    v11 = v10 == v9;
+    v11 = item == v9;
   }
 
   else
@@ -574,8 +574,8 @@ LABEL_7:
 
   else
   {
-    v12 = [(NTKCFaceDetailEditOptionCell *)self layout];
-    [v12 itemSize];
+    layout = [(NTKCFaceDetailEditOptionCell *)self layout];
+    [layout itemSize];
     width = v13;
     height = v15;
   }
@@ -587,10 +587,10 @@ LABEL_7:
   return result;
 }
 
-- (void)addCellTapped:(id)a3
+- (void)addCellTapped:(id)tapped
 {
-  v4 = [(NTKCFaceDetailEditOptionCell *)self delegate];
-  [v4 pigmentEditOptionCellDidSelectAddOption:self];
+  delegate = [(NTKCFaceDetailEditOptionCell *)self delegate];
+  [delegate pigmentEditOptionCellDidSelectAddOption:self];
 }
 
 - (id)_dividerImage

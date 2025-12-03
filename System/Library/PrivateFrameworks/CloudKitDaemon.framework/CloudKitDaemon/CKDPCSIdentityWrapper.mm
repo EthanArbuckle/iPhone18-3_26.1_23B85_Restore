@@ -1,5 +1,5 @@
 @interface CKDPCSIdentityWrapper
-- (CKDPCSIdentityWrapper)initWithIdentitySet:(_PCSIdentitySetData *)a3 withPrimaryServiceName:(id)a4;
+- (CKDPCSIdentityWrapper)initWithIdentitySet:(_PCSIdentitySetData *)set withPrimaryServiceName:(id)name;
 - (NSString)identityString;
 - (void)dealloc;
 @end
@@ -8,40 +8,40 @@
 
 - (NSString)identityString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_identityString)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_identityString)
   {
-    v5 = objc_msgSend_primaryServiceName(v2, v3, v4);
-    v8 = objc_msgSend_identitySet(v2, v6, v7);
+    v5 = objc_msgSend_primaryServiceName(selfCopy, v3, v4);
+    v8 = objc_msgSend_identitySet(selfCopy, v6, v7);
     v9 = CKBasicStringForIdentitySet(v5, v8);
-    identityString = v2->_identityString;
-    v2->_identityString = v9;
+    identityString = selfCopy->_identityString;
+    selfCopy->_identityString = v9;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v11 = v2->_identityString;
+  v11 = selfCopy->_identityString;
 
   return v11;
 }
 
-- (CKDPCSIdentityWrapper)initWithIdentitySet:(_PCSIdentitySetData *)a3 withPrimaryServiceName:(id)a4
+- (CKDPCSIdentityWrapper)initWithIdentitySet:(_PCSIdentitySetData *)set withPrimaryServiceName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CKDPCSIdentityWrapper;
   v8 = [(CKDPCSIdentityWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_identitySet = a3;
-    if (a3)
+    v8->_identitySet = set;
+    if (set)
     {
-      CFRetain(a3);
+      CFRetain(set);
     }
 
-    objc_storeStrong(&v9->_primaryServiceName, a4);
+    objc_storeStrong(&v9->_primaryServiceName, name);
   }
 
   return v9;

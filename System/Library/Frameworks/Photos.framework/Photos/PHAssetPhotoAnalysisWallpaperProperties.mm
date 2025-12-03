@@ -1,24 +1,24 @@
 @interface PHAssetPhotoAnalysisWallpaperProperties
 + (id)propertiesToFetch;
-- (PHAssetPhotoAnalysisWallpaperProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotoAnalysisWallpaperProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetPhotoAnalysisWallpaperProperties
 
-- (PHAssetPhotoAnalysisWallpaperProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotoAnalysisWallpaperProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v22.receiver = self;
   v22.super_class = PHAssetPhotoAnalysisWallpaperProperties;
   v10 = [(PHAssetPhotoAnalysisWallpaperProperties *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v12 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v13 = @"photoAnalysisAttributes.wallpaperPropertiesTimestamp";
     }
@@ -28,7 +28,7 @@
       v13 = @"wallpaperPropertiesTimestamp";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"photoAnalysisAttributes.wallpaperPropertiesVersion";
     }
@@ -48,14 +48,14 @@
       v15 = @"photoAnalysisAttributes.wallpaperPropertiesData";
     }
 
-    v16 = [v8 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     wallpaperPropertiesTimestamp = v11->_wallpaperPropertiesTimestamp;
     v11->_wallpaperPropertiesTimestamp = v16;
 
-    v18 = [v8 objectForKeyedSubscript:v14];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v14];
     v11->_wallpaperPropertiesVersion = [v18 unsignedLongLongValue];
 
-    v19 = [v8 objectForKeyedSubscript:v15];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v15];
     wallpaperPropertiesData = v11->_wallpaperPropertiesData;
     v11->_wallpaperPropertiesData = v19;
   }

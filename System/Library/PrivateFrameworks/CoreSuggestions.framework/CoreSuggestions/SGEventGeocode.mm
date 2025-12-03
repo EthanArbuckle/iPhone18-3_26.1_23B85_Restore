@@ -1,33 +1,33 @@
 @interface SGEventGeocode
-+ (BOOL)isGeocodeCandidate:(id)a3;
-+ (BOOL)isGeocodeCandidateLocation:(id)a3 forEvent:(id)a4;
-+ (BOOL)locationIsAirport:(id)a3;
-+ (BOOL)locationIsGeocoded:(id)a3;
++ (BOOL)isGeocodeCandidate:(id)candidate;
++ (BOOL)isGeocodeCandidateLocation:(id)location forEvent:(id)event;
++ (BOOL)locationIsAirport:(id)airport;
++ (BOOL)locationIsGeocoded:(id)geocoded;
 + (id)_serialQueue;
-+ (id)addressStringFromPIRStructuredAddress:(id)a3;
-+ (id)appendToAddress:(id)a3 addressComponentToAppend:(id)a4 withSeparator:(id)a5;
-+ (id)dateForUTCDate:(id)a3 withTimeZone:(id)a4;
-+ (id)geocodeEvent:(id)a3;
-+ (id)pirResultFromData:(id)a3 withDistance:(double)a4 fromCoordinates:(id)a5;
-+ (id)pirResultWithHighestScoreFromData:(id)a3;
-+ (id)poiCategoriesFromString:(id)a3;
-+ (void)geocodeAddress:(id)a3 withCallback:(id)a4;
-+ (void)geocodeAddressUsingPIR:(id)a3 withCallback:(id)a4;
-+ (void)geocodeAddressWithCanonicalSearch:(id)a3 withCallback:(id)a4;
-+ (void)geocodeEvent:(id)a3 withCallback:(id)a4;
-+ (void)geocodeLocation:(id)a3 usingMode:(unint64_t)a4 withGeoFilters:(id)a5 withCallback:(id)a6;
-+ (void)geocodePOIWithName:(id)a3 ofTypes:(id)a4 inRegion:(id)a5 withCallback:(id)a6;
++ (id)addressStringFromPIRStructuredAddress:(id)address;
++ (id)appendToAddress:(id)address addressComponentToAppend:(id)append withSeparator:(id)separator;
++ (id)dateForUTCDate:(id)date withTimeZone:(id)zone;
++ (id)geocodeEvent:(id)event;
++ (id)pirResultFromData:(id)data withDistance:(double)distance fromCoordinates:(id)coordinates;
++ (id)pirResultWithHighestScoreFromData:(id)data;
++ (id)poiCategoriesFromString:(id)string;
++ (void)geocodeAddress:(id)address withCallback:(id)callback;
++ (void)geocodeAddressUsingPIR:(id)r withCallback:(id)callback;
++ (void)geocodeAddressWithCanonicalSearch:(id)search withCallback:(id)callback;
++ (void)geocodeEvent:(id)event withCallback:(id)callback;
++ (void)geocodeLocation:(id)location usingMode:(unint64_t)mode withGeoFilters:(id)filters withCallback:(id)callback;
++ (void)geocodePOIWithName:(id)name ofTypes:(id)types inRegion:(id)region withCallback:(id)callback;
 @end
 
 @implementation SGEventGeocode
 
-+ (id)poiCategoriesFromString:(id)a3
++ (id)poiCategoriesFromString:(id)string
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   context = objc_autoreleasePoolPush();
-  v27 = v3;
-  v4 = [v3 componentsSeparatedByString:{@", "}];
+  v27 = stringCopy;
+  v4 = [stringCopy componentsSeparatedByString:{@", "}];
   v5 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
@@ -114,29 +114,29 @@ LABEL_21:
   return v23;
 }
 
-+ (void)geocodeEvent:(id)a3 withCallback:(id)a4
++ (void)geocodeEvent:(id)event withCallback:(id)callback
 {
-  v6 = a4;
-  v7 = [a1 geocodeEvent:a3];
+  callbackCopy = callback;
+  v7 = [self geocodeEvent:event];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__SGEventGeocode_geocodeEvent_withCallback___block_invoke;
   v9[3] = &unk_1E7EFB0F0;
-  v10 = v6;
-  v8 = v6;
+  v10 = callbackCopy;
+  v8 = callbackCopy;
   [v7 wait:v9];
 }
 
-+ (id)geocodeEvent:(id)a3
++ (id)geocodeEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __31__SGEventGeocode_geocodeEvent___block_invoke;
   v9[3] = &unk_1E7EFB0C8;
-  v10 = v5;
-  v11 = a1;
-  v6 = v5;
+  v10 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   v7 = [SGFuture futureForObject:v6 withKey:a2 onCreate:v9];
 
   return v7;
@@ -709,29 +709,29 @@ LABEL_102:
   v52 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)dateForUTCDate:(id)a3 withTimeZone:(id)a4
++ (id)dateForUTCDate:(id)date withTimeZone:(id)zone
 {
   v5 = MEMORY[0x1E695DEE8];
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v8 = [v5 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
   v10 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
   [v9 setTimeZone:v10];
 
-  v11 = [v9 components:1048828 fromDate:v7];
+  v11 = [v9 components:1048828 fromDate:dateCopy];
 
-  [v11 setTimeZone:v6];
+  [v11 setTimeZone:zoneCopy];
   v12 = [v9 dateFromComponents:v11];
 
   return v12;
 }
 
-+ (void)geocodeLocation:(id)a3 usingMode:(unint64_t)a4 withGeoFilters:(id)a5 withCallback:(id)a6
++ (void)geocodeLocation:(id)location usingMode:(unint64_t)mode withGeoFilters:(id)filters withCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  locationCopy = location;
+  filtersCopy = filters;
+  callbackCopy = callback;
   v57[0] = 0;
   v57[1] = v57;
   v57[2] = 0x3032000000;
@@ -780,29 +780,29 @@ LABEL_102:
   v43[3] = __Block_byref_object_copy__1359;
   v43[4] = __Block_byref_object_dispose__1360;
   v44 = 0;
-  v13 = [a1 locationIsAirport:v10];
+  v13 = [self locationIsAirport:locationCopy];
   v14 = v13;
-  v15 = v13;
-  if (a4)
+  modeCopy = v13;
+  if (mode)
   {
-    v15 = a4;
+    modeCopy = mode;
   }
 
-  switch(v15)
+  switch(modeCopy)
   {
     case 1uLL:
       if (v13)
       {
         v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v22 = [v10 geocodeAirportCode];
-        v16 = [v21 initWithFormat:@"%@ airport", v22];
+        geocodeAirportCode = [locationCopy geocodeAirportCode];
+        geocodeAddress2 = [v21 initWithFormat:@"%@ airport", geocodeAirportCode];
       }
 
       else
       {
-        v22 = [v10 geocodeLabel];
-        v28 = [v10 geocodeAddress];
-        v16 = commaSeparated(v22, v28);
+        geocodeAirportCode = [locationCopy geocodeLabel];
+        geocodeAddress = [locationCopy geocodeAddress];
+        geocodeAddress2 = commaSeparated(geocodeAirportCode, geocodeAddress);
       }
 
       v29 = objc_opt_class();
@@ -817,29 +817,29 @@ LABEL_102:
       v38[5] = v47;
       v38[6] = v45;
       v38[7] = v43;
-      v38[9] = a1;
-      v37 = v10;
+      v38[9] = self;
+      v37 = locationCopy;
       v38[8] = v57;
       v39 = v14;
-      v38[0] = v12;
-      [v29 geocodeAddress:v16 withCallback:v36];
+      v38[0] = callbackCopy;
+      [v29 geocodeAddress:geocodeAddress2 withCallback:v36];
       v26 = &v37;
       v27 = v38;
       break;
     case 2uLL:
       if (v13)
       {
-        v19 = [v10 geocodeAirportCode];
-        [v10 geocodeLabel];
+        geocodeAirportCode2 = [locationCopy geocodeAirportCode];
+        [locationCopy geocodeLabel];
       }
 
       else
       {
-        v19 = [v10 geocodeLabel];
-        [v10 geocodeAddress];
+        geocodeAirportCode2 = [locationCopy geocodeLabel];
+        [locationCopy geocodeAddress];
       }
       v20 = ;
-      v16 = commaSeparated(v19, v20);
+      geocodeAddress2 = commaSeparated(geocodeAirportCode2, v20);
 
       v18 = v41;
       v41[0] = MEMORY[0x1E69E9820];
@@ -848,7 +848,7 @@ LABEL_102:
       v41[3] = &unk_1E7EFAFB0;
       v41[7] = v55;
       v42 = v14;
-      v25 = v11;
+      v25 = filtersCopy;
       v41[4] = v25;
       v41[8] = v53;
       v41[9] = v49;
@@ -857,12 +857,12 @@ LABEL_102:
       v41[12] = v45;
       v41[13] = v43;
       v41[14] = v57;
-      v41[5] = v10;
-      v41[6] = v12;
-      [a1 geocodePOIWithName:v16 ofTypes:v25 inRegion:0 withCallback:v41];
+      v41[5] = locationCopy;
+      v41[6] = callbackCopy;
+      [self geocodePOIWithName:geocodeAddress2 ofTypes:v25 inRegion:0 withCallback:v41];
       goto LABEL_15;
     case 3uLL:
-      v16 = [v10 geocodeAddress];
+      geocodeAddress2 = [locationCopy geocodeAddress];
       v17 = objc_opt_class();
       v18 = v40;
       v40[0] = MEMORY[0x1E69E9820];
@@ -877,11 +877,11 @@ LABEL_102:
       v40[12] = v45;
       v40[13] = v43;
       v40[14] = v57;
-      v40[4] = v10;
-      v40[5] = v11;
-      v40[15] = a1;
-      v40[6] = v12;
-      [v17 geocodeAddress:v16 withCallback:v40];
+      v40[4] = locationCopy;
+      v40[5] = filtersCopy;
+      v40[15] = self;
+      v40[6] = callbackCopy;
+      [v17 geocodeAddress:geocodeAddress2 withCallback:v40];
 LABEL_15:
       v26 = (v18 + 4);
       v27 = (v18 + 5);
@@ -891,15 +891,15 @@ LABEL_15:
       if (v13)
       {
         v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v24 = [v10 geocodeAirportCode];
-        v16 = [v23 initWithFormat:@"%@ airport", v24];
+        geocodeAirportCode3 = [locationCopy geocodeAirportCode];
+        geocodeAddress2 = [v23 initWithFormat:@"%@ airport", geocodeAirportCode3];
       }
 
       else
       {
-        v24 = [v10 geocodeLabel];
-        v30 = [v10 geocodeAddress];
-        v16 = commaSeparated(v24, v30);
+        geocodeAirportCode3 = [locationCopy geocodeLabel];
+        geocodeAddress3 = [locationCopy geocodeAddress];
+        geocodeAddress2 = commaSeparated(geocodeAirportCode3, geocodeAddress3);
       }
 
       v31 = objc_opt_class();
@@ -915,10 +915,10 @@ LABEL_15:
       v34[6] = v45;
       v34[7] = v43;
       v34[8] = v57;
-      v33 = v10;
+      v33 = locationCopy;
       v35 = v14;
-      v34[0] = v12;
-      [v31 geocodeAddressWithCanonicalSearch:v16 withCallback:v32];
+      v34[0] = callbackCopy;
+      [v31 geocodeAddressWithCanonicalSearch:geocodeAddress2 withCallback:v32];
       v26 = &v33;
       v27 = v34;
       break;
@@ -1530,11 +1530,11 @@ LABEL_10:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)pirResultWithHighestScoreFromData:(id)a3
++ (id)pirResultWithHighestScoreFromData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[SGAspireResult alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[SGAspireResult alloc] initWithData:dataCopy];
 
   v6 = sgEventsLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1546,54 +1546,54 @@ LABEL_10:
 
   if ([(SGAspireResult *)v5 hasGeoList])
   {
-    v7 = [(SGAspireResult *)v5 geoList];
-    v8 = [v7 pois];
-    v9 = [v8 copy];
+    geoList = [(SGAspireResult *)v5 geoList];
+    pois = [geoList pois];
+    v9 = [pois copy];
 
     if ([v9 count])
     {
-      v10 = [v9 firstObject];
-      if ([v10 hasTitle])
+      firstObject = [v9 firstObject];
+      if ([firstObject hasTitle])
       {
-        v23 = [v10 title];
+        title = [firstObject title];
       }
 
       else
       {
-        v23 = 0;
+        title = 0;
       }
 
-      if ([v10 hasPrefGeocode])
+      if ([firstObject hasPrefGeocode])
       {
-        v12 = [v10 prefGeocode];
+        prefGeocode = [firstObject prefGeocode];
       }
 
       else
       {
-        v12 = 0;
+        prefGeocode = 0;
       }
 
-      if ([v10 hasAddress])
+      if ([firstObject hasAddress])
       {
-        v13 = [v10 address];
+        address = [firstObject address];
       }
 
       else
       {
-        v13 = 0;
+        address = 0;
       }
 
-      v14 = [a1 addressStringFromPIRStructuredAddress:{v13, v7}];
+      v14 = [self addressStringFromPIRStructuredAddress:{address, geoList}];
       v15 = [SGPIRResult alloc];
       v16 = MEMORY[0x1E696AD98];
-      [v12 lat];
+      [prefGeocode lat];
       v17 = [v16 numberWithDouble:?];
       v18 = MEMORY[0x1E696AD98];
-      [v12 lng];
+      [prefGeocode lng];
       v19 = [v18 numberWithDouble:?];
-      v11 = [(SGPIRResult *)v15 initWithLabel:v23 address:v14 latitude:v17 longitude:v19 timezone:0];
+      v11 = [(SGPIRResult *)v15 initWithLabel:title address:v14 latitude:v17 longitude:v19 timezone:0];
 
-      v7 = v22;
+      geoList = v22;
     }
 
     else
@@ -1612,11 +1612,11 @@ LABEL_10:
   return v11;
 }
 
-+ (id)pirResultFromData:(id)a3 withDistance:(double)a4 fromCoordinates:(id)a5
++ (id)pirResultFromData:(id)data withDistance:(double)distance fromCoordinates:(id)coordinates
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[SGAspireResult alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[SGAspireResult alloc] initWithData:dataCopy];
   v8 = sgEventsLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1629,10 +1629,10 @@ LABEL_10:
   if ([(SGAspireResult *)v7 hasGeoList])
   {
     v33 = v7;
-    v34 = v6;
-    v32 = [(SGAspireResult *)v7 geoList];
-    v9 = [v32 pois];
-    v10 = [v9 copy];
+    v34 = dataCopy;
+    geoList = [(SGAspireResult *)v7 geoList];
+    pois = [geoList pois];
+    v10 = [pois copy];
 
     v40 = 0u;
     v41 = 0u;
@@ -1658,38 +1658,38 @@ LABEL_10:
           v17 = *(*(&v38 + 1) + 8 * i);
           if ([v17 hasPrefGeocode])
           {
-            v18 = [v17 prefGeocode];
-            v19 = v18;
-            if (v18)
+            prefGeocode = [v17 prefGeocode];
+            v19 = prefGeocode;
+            if (prefGeocode)
             {
-              [v18 lat];
+              [prefGeocode lat];
               [v19 lng];
               GEOMapPointForCoordinate();
               GEOMetersBetweenMapPoints();
-              if (v20 <= a4)
+              if (v20 <= distance)
               {
                 if ([v17 hasTitle])
                 {
-                  v21 = [v17 title];
+                  title = [v17 title];
                 }
 
                 else
                 {
-                  v21 = 0;
+                  title = 0;
                 }
 
                 v37 = v14;
                 if ([v17 hasAddress])
                 {
-                  v22 = [v17 address];
+                  address = [v17 address];
                 }
 
                 else
                 {
-                  v22 = 0;
+                  address = 0;
                 }
 
-                v23 = [a1 addressStringFromPIRStructuredAddress:v22];
+                v23 = [self addressStringFromPIRStructuredAddress:address];
                 v24 = [SGPIRResult alloc];
                 v25 = MEMORY[0x1E696AD98];
                 [v19 lat];
@@ -1697,7 +1697,7 @@ LABEL_10:
                 v27 = MEMORY[0x1E696AD98];
                 [v19 lng];
                 v28 = [v27 numberWithDouble:?];
-                v29 = [(SGPIRResult *)v24 initWithLabel:v21 address:v23 latitude:v26 longitude:v28 timezone:0];
+                v29 = [(SGPIRResult *)v24 initWithLabel:title address:v23 latitude:v26 longitude:v28 timezone:0];
 
                 v14 = v29;
                 v11 = v35;
@@ -1723,7 +1723,7 @@ LABEL_10:
     }
 
     v7 = v33;
-    v6 = v34;
+    dataCopy = v34;
   }
 
   else
@@ -1736,33 +1736,33 @@ LABEL_10:
   return v14;
 }
 
-+ (id)addressStringFromPIRStructuredAddress:(id)a3
++ (id)addressStringFromPIRStructuredAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy)
   {
-    v6 = [v4 subThroughfare];
-    v7 = [a1 appendToAddress:0 addressComponentToAppend:v6 withSeparator:&stru_1F385B250];
+    subThroughfare = [addressCopy subThroughfare];
+    v7 = [self appendToAddress:0 addressComponentToAppend:subThroughfare withSeparator:&stru_1F385B250];
 
-    v8 = [v5 thoroughfare];
-    v9 = [a1 appendToAddress:v7 addressComponentToAppend:v8 withSeparator:@" "];
+    thoroughfare = [v5 thoroughfare];
+    v9 = [self appendToAddress:v7 addressComponentToAppend:thoroughfare withSeparator:@" "];
 
-    v10 = [v5 locality];
-    v11 = [a1 appendToAddress:v9 addressComponentToAppend:v10 withSeparator:{@", "}];
+    locality = [v5 locality];
+    v11 = [self appendToAddress:v9 addressComponentToAppend:locality withSeparator:{@", "}];
 
-    v12 = [v5 administrativeArea];
-    v13 = [a1 appendToAddress:v11 addressComponentToAppend:v12 withSeparator:{@", "}];
+    administrativeArea = [v5 administrativeArea];
+    v13 = [self appendToAddress:v11 addressComponentToAppend:administrativeArea withSeparator:{@", "}];
 
-    v14 = [v5 country];
-    v15 = [a1 appendToAddress:v13 addressComponentToAppend:v14 withSeparator:{@", "}];
+    country = [v5 country];
+    v15 = [self appendToAddress:v13 addressComponentToAppend:country withSeparator:{@", "}];
 
-    v16 = [v5 postCode];
+    postCode = [v5 postCode];
 
-    if (v16 && v15 && [v15 length])
+    if (postCode && v15 && [v15 length])
     {
-      v17 = [v5 postCode];
-      v18 = [v15 stringByAppendingFormat:@", %@", v17];
+      postCode2 = [v5 postCode];
+      v18 = [v15 stringByAppendingFormat:@", %@", postCode2];
 
       v15 = v18;
     }
@@ -1776,54 +1776,54 @@ LABEL_10:
   return v15;
 }
 
-+ (id)appendToAddress:(id)a3 addressComponentToAppend:(id)a4 withSeparator:(id)a5
++ (id)appendToAddress:(id)address addressComponentToAppend:(id)append withSeparator:(id)separator
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7 || ![v7 length])
+  addressCopy = address;
+  appendCopy = append;
+  separatorCopy = separator;
+  if (!addressCopy || ![addressCopy length])
   {
-    if (!v8 || ![v8 length])
+    if (!appendCopy || ![appendCopy length])
     {
       v11 = 0;
       goto LABEL_14;
     }
 
-    if (!v7)
+    if (!addressCopy)
     {
       goto LABEL_11;
     }
   }
 
-  if ([v7 length])
+  if ([addressCopy length])
   {
-    if (v8 && [v8 length])
+    if (appendCopy && [appendCopy length])
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@%@", v7, v9, v8];
+      appendCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@%@", addressCopy, separatorCopy, appendCopy];
     }
 
     else
     {
-      v10 = v7;
+      appendCopy = addressCopy;
     }
   }
 
   else
   {
 LABEL_11:
-    v10 = v8;
+    appendCopy = appendCopy;
   }
 
-  v11 = v10;
+  v11 = appendCopy;
 LABEL_14:
 
   return v11;
 }
 
-+ (void)geocodeAddressUsingPIR:(id)a3 withCallback:(id)a4
++ (void)geocodeAddressUsingPIR:(id)r withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  rCopy = r;
+  callbackCopy = callback;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -1846,10 +1846,10 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = __54__SGEventGeocode_geocodeAddressUsingPIR_withCallback___block_invoke;
   v11[3] = &unk_1E7EFAF88;
-  v12 = v7;
-  v13 = a1;
-  v10 = v7;
-  [v8 geocodeAddress:v6 withTimeout:v11 completionHandler:10.0];
+  v12 = callbackCopy;
+  selfCopy = self;
+  v10 = callbackCopy;
+  [v8 geocodeAddress:rCopy withTimeout:v11 completionHandler:10.0];
 }
 
 void __54__SGEventGeocode_geocodeAddressUsingPIR_withCallback___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1887,42 +1887,42 @@ uint64_t __54__SGEventGeocode_geocodeAddressUsingPIR_withCallback___block_invoke
   return (*(v3 + 16))(v3, v4);
 }
 
-+ (void)geocodePOIWithName:(id)a3 ofTypes:(id)a4 inRegion:(id)a5 withCallback:(id)a6
++ (void)geocodePOIWithName:(id)name ofTypes:(id)types inRegion:(id)region withCallback:(id)callback
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v9;
+  nameCopy = name;
+  typesCopy = types;
+  regionCopy = region;
+  callbackCopy = callback;
+  v13 = nameCopy;
   v14 = objc_autoreleasePoolPush();
-  v15 = [MEMORY[0x1E69A2208] sharedService];
-  v16 = [v15 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   objc_autoreleasePoolPop(v14);
-  if (v11)
+  if (regionCopy)
   {
-    [v16 setMapRegion:v11];
+    [defaultTraits setMapRegion:regionCopy];
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E69A2328]) initWithCategoriesToInclude:v10 categoriesToExclude:0];
+  v17 = [objc_alloc(MEMORY[0x1E69A2328]) initWithCategoriesToInclude:typesCopy categoriesToExclude:0];
   v18 = [objc_alloc(MEMORY[0x1E69A2498]) initWithResultTypes:2];
   v19 = objc_autoreleasePoolPush();
   [MEMORY[0x1E69A2208] sharedService];
-  v20 = v25 = v10;
+  v20 = v25 = typesCopy;
   v30[0] = v17;
   v30[1] = v18;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
-  v22 = [v20 ticketForSearchQuery:v13 filters:v21 maxResults:5 traits:v16];
+  v22 = [v20 ticketForSearchQuery:v13 filters:v21 maxResults:5 traits:defaultTraits];
 
   objc_autoreleasePoolPop(v19);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __67__SGEventGeocode_geocodePOIWithName_ofTypes_inRegion_withCallback___block_invoke;
   v27[3] = &unk_1E7EFAF38;
-  v28 = v12;
-  v29 = a1;
-  v23 = v12;
+  v28 = callbackCopy;
+  selfCopy = self;
+  v23 = callbackCopy;
   [v22 submitWithHandler:v27 networkActivity:0];
 
   v24 = *MEMORY[0x1E69E9840];
@@ -1960,27 +1960,27 @@ void __67__SGEventGeocode_geocodePOIWithName_ofTypes_inRegion_withCallback___blo
   }
 }
 
-+ (void)geocodeAddressWithCanonicalSearch:(id)a3 withCallback:(id)a4
++ (void)geocodeAddressWithCanonicalSearch:(id)search withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  callbackCopy = callback;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v11 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   objc_autoreleasePoolPop(v9);
   v12 = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x1E69A2208] sharedService];
-  v14 = [v13 ticketForCanonicalLocationSearchQueryString:v6 traits:v11];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  v14 = [mEMORY[0x1E69A2208]2 ticketForCanonicalLocationSearchQueryString:searchCopy traits:defaultTraits];
 
   objc_autoreleasePoolPop(v12);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65__SGEventGeocode_geocodeAddressWithCanonicalSearch_withCallback___block_invoke;
   v16[3] = &unk_1E7EFAF38;
-  v18 = a1;
-  v15 = v7;
+  selfCopy = self;
+  v15 = callbackCopy;
   v17 = v15;
   [v14 submitWithHandler:v16 networkActivity:0];
 
@@ -2019,27 +2019,27 @@ void __65__SGEventGeocode_geocodeAddressWithCanonicalSearch_withCallback___block
   }
 }
 
-+ (void)geocodeAddress:(id)a3 withCallback:(id)a4
++ (void)geocodeAddress:(id)address withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  callbackCopy = callback;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v11 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   objc_autoreleasePoolPop(v9);
   v12 = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x1E69A2208] sharedService];
-  v14 = [v13 ticketForSearchQuery:v6 completionItem:0 maxResults:5 traits:v11];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  v14 = [mEMORY[0x1E69A2208]2 ticketForSearchQuery:addressCopy completionItem:0 maxResults:5 traits:defaultTraits];
 
   objc_autoreleasePoolPop(v12);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__SGEventGeocode_geocodeAddress_withCallback___block_invoke;
   v16[3] = &unk_1E7EFAF38;
-  v18 = a1;
-  v15 = v7;
+  selfCopy = self;
+  v15 = callbackCopy;
   v17 = v15;
   [v14 submitWithHandler:v16 networkActivity:0];
 
@@ -2078,16 +2078,16 @@ void __46__SGEventGeocode_geocodeAddress_withCallback___block_invoke_2(uint64_t 
   }
 }
 
-+ (BOOL)isGeocodeCandidate:(id)a3
++ (BOOL)isGeocodeCandidate:(id)candidate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  candidateCopy = candidate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 geocodeLocations];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  geocodeLocations = [candidateCopy geocodeLocations];
+  v6 = [geocodeLocations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2098,17 +2098,17 @@ void __46__SGEventGeocode_geocodeAddress_withCallback___block_invoke_2(uint64_t 
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(geocodeLocations);
         }
 
-        if ([a1 isGeocodeCandidateLocation:*(*(&v13 + 1) + 8 * i) forEvent:v4])
+        if ([self isGeocodeCandidateLocation:*(*(&v13 + 1) + 8 * i) forEvent:candidateCopy])
         {
           v10 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [geocodeLocations countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -2125,17 +2125,17 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)isGeocodeCandidateLocation:(id)a3 forEvent:(id)a4
++ (BOOL)isGeocodeCandidateLocation:(id)location forEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 locationIsGeocoded:v6];
-  if (!v8 || ([v6 geocodeAirportCode], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  locationCopy = location;
+  eventCopy = event;
+  v8 = [self locationIsGeocoded:locationCopy];
+  if (!v8 || ([locationCopy geocodeAirportCode], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
-    v10 = [v6 geocodeAddress];
+    geocodeAddress = [locationCopy geocodeAddress];
 
-    if (!v10)
+    if (!geocodeAddress)
     {
       v13 = sgEventsLogHandle();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2146,9 +2146,9 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v14 = [v7 loggingIdentifier];
+      loggingIdentifier = [eventCopy loggingIdentifier];
       v20 = 138543362;
-      v21 = v14;
+      v21 = loggingIdentifier;
       v15 = "SGEventGeocode isGeocodeCandidateLocation: Returning NO, event has no address. [SGEvent (%{public}@)]";
 LABEL_17:
       _os_log_debug_impl(&dword_1BA729000, v13, OS_LOG_TYPE_DEBUG, v15, &v20, 0xCu);
@@ -2158,11 +2158,11 @@ LABEL_17:
 
     if (v8)
     {
-      v11 = [v7 geocodeStartTimeZone];
-      if (v11 || ([v6 geocodeIsStart] & 1) == 0)
+      geocodeStartTimeZone = [eventCopy geocodeStartTimeZone];
+      if (geocodeStartTimeZone || ([locationCopy geocodeIsStart] & 1) == 0)
       {
-        v12 = [v7 geocodeEndTimeZone];
-        if (v12)
+        geocodeEndTimeZone = [eventCopy geocodeEndTimeZone];
+        if (geocodeEndTimeZone)
         {
 
 LABEL_13:
@@ -2172,16 +2172,16 @@ LABEL_13:
             goto LABEL_14;
           }
 
-          v14 = [v7 loggingIdentifier];
+          loggingIdentifier = [eventCopy loggingIdentifier];
           v20 = 138543362;
-          v21 = v14;
+          v21 = loggingIdentifier;
           v15 = "SGEventGeocode isGeocodeCandidateLocation: Returning NO, nothing to work with. [SGEvent (%{public}@)]";
           goto LABEL_17;
         }
 
-        v16 = [v6 geocodeIsEnd];
+        geocodeIsEnd = [locationCopy geocodeIsEnd];
 
-        if ((v16 & 1) == 0)
+        if ((geocodeIsEnd & 1) == 0)
         {
           goto LABEL_13;
         }
@@ -2196,22 +2196,22 @@ LABEL_15:
   return v17;
 }
 
-+ (BOOL)locationIsGeocoded:(id)a3
++ (BOOL)locationIsGeocoded:(id)geocoded
 {
-  v3 = a3;
-  [v3 geocodeLatitude];
-  [v3 geocodeLongitude];
+  geocodedCopy = geocoded;
+  [geocodedCopy geocodeLatitude];
+  [geocodedCopy geocodeLongitude];
 
   return 1;
 }
 
-+ (BOOL)locationIsAirport:(id)a3
++ (BOOL)locationIsAirport:(id)airport
 {
-  v4 = a3;
-  v5 = [v4 geocodeAirportCode];
-  if (v5)
+  airportCopy = airport;
+  geocodeAirportCode = [airportCopy geocodeAirportCode];
+  if (geocodeAirportCode)
   {
-    v6 = [a1 locationIsGeocoded:v4];
+    v6 = [self locationIsGeocoded:airportCopy];
   }
 
   else

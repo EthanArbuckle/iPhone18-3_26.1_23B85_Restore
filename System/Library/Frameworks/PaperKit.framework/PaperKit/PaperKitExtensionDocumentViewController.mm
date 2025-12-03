@@ -1,5 +1,5 @@
 @interface PaperKitExtensionDocumentViewController
-- (_TtC8PaperKit39PaperKitExtensionDocumentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit39PaperKitExtensionDocumentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -9,13 +9,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PaperKitExtensionDocumentViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PaperKitExtensionDocumentViewController.viewWillLayoutSubviews()();
 }
 
@@ -28,7 +28,7 @@
   PaperKitExtensionDocumentViewController.adjustScaleAndInterpageSpacing()();
 }
 
-- (_TtC8PaperKit39PaperKitExtensionDocumentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit39PaperKitExtensionDocumentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

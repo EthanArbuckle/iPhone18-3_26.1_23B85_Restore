@@ -1,22 +1,22 @@
 @interface PKNearbyPeerPaymentSenderViewController
-- (PKNearbyPeerPaymentSenderViewController)initWithContext:(int64_t)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5;
-- (PKNearbyPeerPaymentSenderViewController)initWithUserInfo:(id)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5;
+- (PKNearbyPeerPaymentSenderViewController)initWithContext:(int64_t)context screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction;
+- (PKNearbyPeerPaymentSenderViewController)initWithUserInfo:(id)info screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction;
 - (void)applicationDidBecomeActive;
 - (void)debugViewTapped;
 - (void)invalidate;
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PKNearbyPeerPaymentSenderViewController
 
-- (PKNearbyPeerPaymentSenderViewController)initWithUserInfo:(id)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5
+- (PKNearbyPeerPaymentSenderViewController)initWithUserInfo:(id)info screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction
 {
-  v6 = _Block_copy(a4);
-  v7 = _Block_copy(a5);
+  v6 = _Block_copy(action);
+  v7 = _Block_copy(dismissAction);
   v8 = sub_1BE052244();
   v9 = swift_allocObject();
   *(v9 + 16) = v6;
@@ -29,31 +29,31 @@
 
 - (void)applicationDidBecomeActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD9B9A64();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD9BA254();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1BD9BA890(a3, &selRef_viewDidAppear_);
+  selfCopy = self;
+  sub_1BD9BA890(appear, &selRef_viewDidAppear_);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1BD9BA890(a3, &selRef_viewDidDisappear_);
+  selfCopy = self;
+  sub_1BD9BA890(disappear, &selRef_viewDidDisappear_);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD9BAA40();
 }
 
@@ -69,19 +69,19 @@
   __swift_destroy_boxed_opaque_existential_0(v6);
 }
 
-- (void)peerPaymentIdentityManager:(id)a3 didUpdateProfileAppearanceData:(id)a4
+- (void)peerPaymentIdentityManager:(id)manager didUpdateProfileAppearanceData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD38EACC(v7);
+  managerCopy = manager;
+  dataCopy = data;
+  selfCopy = self;
+  sub_1BD38EACC(dataCopy);
   v9 = OBJC_IVAR___PKNearbyPeerPaymentSenderViewController_monitor;
   swift_beginAccess();
-  sub_1BD0EE8CC(v8 + v9, v12);
+  sub_1BD0EE8CC(selfCopy + v9, v12);
   v10 = v13;
   v11 = v14;
   __swift_project_boxed_opaque_existential_1(v12, v13);
-  (*(v11 + 96))(v7, v10, v11);
+  (*(v11 + 96))(dataCopy, v10, v11);
 
   __swift_destroy_boxed_opaque_existential_0(v12);
 }
@@ -98,10 +98,10 @@
   __swift_destroy_boxed_opaque_existential_0(v6);
 }
 
-- (PKNearbyPeerPaymentSenderViewController)initWithContext:(int64_t)a3 screenEdgeSwipeAction:(id)a4 dismissAction:(id)a5
+- (PKNearbyPeerPaymentSenderViewController)initWithContext:(int64_t)context screenEdgeSwipeAction:(id)action dismissAction:(id)dismissAction
 {
-  _Block_copy(a4);
-  _Block_copy(a5);
+  _Block_copy(action);
+  _Block_copy(dismissAction);
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;

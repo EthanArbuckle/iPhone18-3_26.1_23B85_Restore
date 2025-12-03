@@ -1,14 +1,14 @@
 @interface DRSTeamDampeningConfiguration
-+ (id)teamIdToTeamDampeningConfigFromPlistDirectoryPath:(id)a3 errorOut:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (DRSTeamDampeningConfiguration)initWithDefaultConfiguration:(id)a3 issueCategoryToConfigurationDict:(id)a4;
-- (DRSTeamDampeningConfiguration)initWithPlistDict:(id)a3;
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3 teamID:(id)a4;
-- (id)_initWithTeamDampeningConfigMO_ON_MOC_QUEUE:(id)a3;
-- (id)configurationForIssueCategory:(id)a3;
++ (id)teamIdToTeamDampeningConfigFromPlistDirectoryPath:(id)path errorOut:(id *)out;
+- (BOOL)isEqual:(id)equal;
+- (DRSTeamDampeningConfiguration)initWithDefaultConfiguration:(id)configuration issueCategoryToConfigurationDict:(id)dict;
+- (DRSTeamDampeningConfiguration)initWithPlistDict:(id)dict;
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context teamID:(id)d;
+- (id)_initWithTeamDampeningConfigMO_ON_MOC_QUEUE:(id)e;
+- (id)configurationForIssueCategory:(id)category;
 - (id)debugDescription;
 - (id)jsonCompatibleDictRepresentation;
-- (void)updateIssueCategoryConfig:(id)a3 newConfig:(id)a4;
+- (void)updateIssueCategoryConfig:(id)config newConfig:(id)newConfig;
 @end
 
 @implementation DRSTeamDampeningConfiguration
@@ -16,29 +16,29 @@
 - (id)jsonCompatibleDictRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+  defaultConfiguration = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
 
-  if (v4)
+  if (defaultConfiguration)
   {
-    v5 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-    v6 = [v5 jsonCompatibleDictRepresentation];
-    [v3 setObject:v6 forKeyedSubscript:kDRSDMDefaultConfigKey];
+    defaultConfiguration2 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+    jsonCompatibleDictRepresentation = [defaultConfiguration2 jsonCompatibleDictRepresentation];
+    [v3 setObject:jsonCompatibleDictRepresentation forKeyedSubscript:kDRSDMDefaultConfigKey];
   }
 
-  v7 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-  v8 = [v7 count];
+  issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+  v8 = [issueCategoryToConfigurationDict count];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    v10 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    issueCategoryToConfigurationDict2 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__DRSTeamDampeningConfiguration_jsonCompatibleDictRepresentation__block_invoke;
     v13[3] = &unk_27899FDD0;
-    v14 = v9;
-    v11 = v9;
-    [v10 enumerateKeysAndObjectsUsingBlock:v13];
+    v14 = dictionary;
+    v11 = dictionary;
+    [issueCategoryToConfigurationDict2 enumerateKeysAndObjectsUsingBlock:v13];
 
     [v3 setObject:v11 forKeyedSubscript:kDRSDMIssueCategoryDictKey];
   }
@@ -55,30 +55,30 @@ void __65__DRSTeamDampeningConfiguration_jsonCompatibleDictRepresentation__block
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+  string = [MEMORY[0x277CCAB68] string];
+  defaultConfiguration = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
 
-  if (v4)
+  if (defaultConfiguration)
   {
-    v5 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-    v6 = [v5 debugDescription];
-    [v3 appendFormat:@"Default config:\n%@\n%@", @"==========================", v6];
+    defaultConfiguration2 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+    v6 = [defaultConfiguration2 debugDescription];
+    [string appendFormat:@"Default config:\n%@\n%@", @"==========================", v6];
   }
 
-  v7 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+  issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
 
-  if (v7)
+  if (issueCategoryToConfigurationDict)
   {
-    v8 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+    issueCategoryToConfigurationDict2 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__DRSTeamDampeningConfiguration_debugDescription__block_invoke;
     v10[3] = &unk_27899FDD0;
-    v11 = v3;
-    [v8 enumerateKeysAndObjectsUsingBlock:v10];
+    v11 = string;
+    [issueCategoryToConfigurationDict2 enumerateKeysAndObjectsUsingBlock:v10];
   }
 
-  return v3;
+  return string;
 }
 
 void __49__DRSTeamDampeningConfiguration_debugDescription__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -89,9 +89,9 @@ void __49__DRSTeamDampeningConfiguration_debugDescription__block_invoke(uint64_t
   [v4 appendFormat:@"%@:\n%@\n%@", v5, @"==========================", v6];
 }
 
-- (DRSTeamDampeningConfiguration)initWithPlistDict:(id)a3
+- (DRSTeamDampeningConfiguration)initWithPlistDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -101,10 +101,10 @@ void __49__DRSTeamDampeningConfiguration_debugDescription__block_invoke(uint64_t
   v25[2] = __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke;
   v25[3] = &unk_27899FDF8;
   v25[4] = &v26;
-  [v4 enumerateKeysAndObjectsUsingBlock:v25];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v25];
   if (*(v27 + 24) != 1)
   {
-    v5 = [v4 objectForKeyedSubscript:kDRSDMDefaultConfigKey];
+    v5 = [dictCopy objectForKeyedSubscript:kDRSDMDefaultConfigKey];
     if (v5)
     {
       objc_opt_class();
@@ -119,7 +119,7 @@ void __49__DRSTeamDampeningConfiguration_debugDescription__block_invoke(uint64_t
         }
 
 LABEL_20:
-        v6 = 0;
+        selfCopy = 0;
 LABEL_30:
 
         goto LABEL_31;
@@ -147,7 +147,7 @@ LABEL_19:
       v7 = 0;
     }
 
-    v9 = [v4 objectForKeyedSubscript:kDRSDMIssueCategoryDictKey];
+    v9 = [dictCopy objectForKeyedSubscript:kDRSDMIssueCategoryDictKey];
     if (v9)
     {
       objc_opt_class();
@@ -164,7 +164,7 @@ LABEL_19:
         goto LABEL_27;
       }
 
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       *buf = 0;
       v22 = buf;
       v23 = 0x2020000000;
@@ -174,7 +174,7 @@ LABEL_19:
       v18[2] = __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke_430;
       v18[3] = &unk_27899FBE8;
       v20 = buf;
-      v11 = v10;
+      v11 = dictionary;
       v19 = v11;
       [v9 enumerateKeysAndObjectsUsingBlock:v18];
       v12 = v22[24];
@@ -199,7 +199,7 @@ LABEL_19:
       if (v12)
       {
 LABEL_27:
-        v6 = 0;
+        selfCopy = 0;
 LABEL_29:
 
         goto LABEL_30;
@@ -212,7 +212,7 @@ LABEL_29:
     }
 
     self = [(DRSTeamDampeningConfiguration *)self initWithDefaultConfiguration:v7 issueCategoryToConfigurationDict:v14];
-    v6 = self;
+    selfCopy = self;
     goto LABEL_29;
   }
 
@@ -223,11 +223,11 @@ LABEL_29:
     _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamDampeningFromPlistFailure", "Malformed team dampening plist", buf, 2u);
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_31:
 
   _Block_object_dispose(&v26, 8);
-  return v6;
+  return selfCopy;
 }
 
 void __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -262,24 +262,24 @@ void __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke_430(ui
   }
 }
 
-+ (id)teamIdToTeamDampeningConfigFromPlistDirectoryPath:(id)a3 errorOut:(id *)a4
++ (id)teamIdToTeamDampeningConfigFromPlistDirectoryPath:(id)path errorOut:(id *)out
 {
   v73 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (out)
   {
-    *a4 = 0;
+    *out = 0;
   }
 
-  if (!v5)
+  if (!pathCopy)
   {
     goto LABEL_18;
   }
 
   v65 = 0;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6 isDirectory:&v65];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6 isDirectory:&v65];
 
   if ((v8 & 1) == 0)
   {
@@ -298,9 +298,9 @@ void __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke_430(ui
   if (v65)
   {
     v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v64 = 0;
-    v11 = [v10 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:0 options:0 error:&v64];
+    v11 = [defaultManager2 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:0 options:0 error:&v64];
     v12 = v64;
 
     if (v12)
@@ -308,19 +308,19 @@ void __51__DRSTeamDampeningConfiguration_initWithPlistDict___block_invoke_430(ui
       v13 = DPLogHandle_DampeningManagerError();
       if (os_signpost_enabled(v13))
       {
-        v14 = [v12 localizedDescription];
+        localizedDescription = [v12 localizedDescription];
         *buf = 138543618;
         v67 = v6;
         v68 = 2114;
-        v69 = v14;
+        v69 = localizedDescription;
         _os_signpost_emit_with_name_impl(&dword_232906000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CouldNotEnumeratePlistDirectory", "Could not enumerate plist directory %{public}@ due to error: %{public}@", buf, 0x16u);
       }
 
-      if (a4)
+      if (out)
       {
         v15 = v12;
         v16 = 0;
-        *a4 = v12;
+        *out = v12;
       }
 
       else
@@ -333,10 +333,10 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v53 = a4;
+    outCopy = out;
     v55 = v9;
     v56 = v6;
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -348,10 +348,10 @@ LABEL_53:
     {
 LABEL_38:
 
-      v16 = v18;
+      v16 = dictionary;
       v9 = v55;
       v6 = v56;
-      v43 = v18;
+      v43 = dictionary;
       v12 = 0;
       v11 = v54;
 LABEL_52:
@@ -362,7 +362,7 @@ LABEL_52:
     v21 = v20;
     v22 = *v61;
     v57 = v19;
-    v58 = v18;
+    v58 = dictionary;
 LABEL_21:
     v23 = 0;
     while (1)
@@ -378,9 +378,9 @@ LABEL_21:
         v25 = DPLogHandle_DampeningManager();
         if (os_signpost_enabled(v25))
         {
-          v26 = [v24 path];
+          path = [v24 path];
           *buf = 138543362;
-          v67 = v26;
+          v67 = path;
           v27 = v25;
           v28 = "SkippingPlistSubDir";
 LABEL_35:
@@ -390,8 +390,8 @@ LABEL_35:
 
       else
       {
-        v29 = [v24 pathExtension];
-        v30 = [v29 isEqualToString:@"plist"];
+        pathExtension = [v24 pathExtension];
+        v30 = [pathExtension isEqualToString:@"plist"];
 
         if (v30)
         {
@@ -406,8 +406,8 @@ LABEL_35:
             v44 = DPLogHandle_DampeningManagerError();
             if (os_signpost_enabled(v44))
             {
-              v45 = [v24 path];
-              v46 = v45;
+              path2 = [v24 path];
+              v46 = path2;
               v47 = @"Unknown";
               if (v25)
               {
@@ -415,7 +415,7 @@ LABEL_35:
               }
 
               *buf = 138543618;
-              v67 = v45;
+              v67 = path2;
               v68 = 2114;
               v69 = v47;
               _os_signpost_emit_with_name_impl(&dword_232906000, v44, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PlistLoadingError", "Failed to load %{public}@ due to error: %{public}@", buf, 0x16u);
@@ -426,9 +426,9 @@ LABEL_35:
             v12 = 0;
             v11 = v54;
             v48 = v57;
-            if (v53)
+            if (outCopy)
             {
-              *v53 = 0;
+              *outCopy = 0;
             }
 
             goto LABEL_51;
@@ -443,15 +443,15 @@ LABEL_35:
             v12 = 0;
             if (os_signpost_enabled(v49))
             {
-              v50 = [v24 path];
+              path3 = [v24 path];
               *buf = 138543362;
-              v67 = v50;
+              v67 = path3;
               _os_signpost_emit_with_name_impl(&dword_232906000, v49, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamDampeningConfigPlistProcessingError", "Failed to intialize team dampening configuration from %{public}@", buf, 0xCu);
             }
 
-            if (v53)
+            if (outCopy)
             {
-              *v53 = _dampeningManagerError(@"Invalid plist dictionary");
+              *outCopy = _dampeningManagerError(@"Invalid plist dictionary");
             }
 
             v11 = v54;
@@ -464,26 +464,26 @@ LABEL_51:
           }
 
           v36 = v35;
-          v37 = [v24 path];
-          v38 = [v37 lastPathComponent];
-          v39 = [v38 stringByDeletingPathExtension];
+          path4 = [v24 path];
+          lastPathComponent = [path4 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
           v40 = DPLogHandle_DampeningManager();
           if (os_signpost_enabled(v40))
           {
-            v41 = [v24 path];
+            path5 = [v24 path];
             v42 = [(DRSTeamDampeningConfiguration *)v36 debugDescription];
             *buf = 138543874;
-            v67 = v41;
+            v67 = path5;
             v68 = 2114;
-            v69 = v39;
+            v69 = stringByDeletingPathExtension;
             v70 = 2114;
             v71 = v42;
             _os_signpost_emit_with_name_impl(&dword_232906000, v40, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "IncludingPlistTeamIDConfig", "Path: %{public}@\nTeamID: %{public}@\nConfig:\n%{public}@", buf, 0x20u);
           }
 
-          v18 = v58;
-          [v58 setObject:v36 forKeyedSubscript:v39];
+          dictionary = v58;
+          [v58 setObject:v36 forKeyedSubscript:stringByDeletingPathExtension];
 
           v19 = v57;
           v22 = v32;
@@ -495,9 +495,9 @@ LABEL_51:
           v25 = DPLogHandle_DampeningManager();
           if (os_signpost_enabled(v25))
           {
-            v26 = [v24 path];
+            path = [v24 path];
             *buf = 138543362;
-            v67 = v26;
+            v67 = path;
             v27 = v25;
             v28 = "SkippingNonPlistFile";
             goto LABEL_35;
@@ -526,7 +526,7 @@ LABEL_51:
     _os_signpost_emit_with_name_impl(&dword_232906000, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PlistDirectoryNotDirectory", "Plist directory %{public}@ is not a directory", buf, 0xCu);
   }
 
-  if (!a4)
+  if (!out)
   {
 LABEL_18:
     v16 = 0;
@@ -535,7 +535,7 @@ LABEL_18:
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Plist directory path '%@' is not a directory", v6];
   _dampeningManagerError(v9);
-  *a4 = v16 = 0;
+  *out = v16 = 0;
 LABEL_54:
 
 LABEL_55:
@@ -544,28 +544,28 @@ LABEL_55:
   return v16;
 }
 
-- (void)updateIssueCategoryConfig:(id)a3 newConfig:(id)a4
+- (void)updateIssueCategoryConfig:(id)config newConfig:(id)newConfig
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-  v8 = v7;
-  if (v9)
+  newConfigCopy = newConfig;
+  configCopy = config;
+  issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+  v8 = issueCategoryToConfigurationDict;
+  if (newConfigCopy)
   {
-    [v7 setObject:v9 forKeyedSubscript:v6];
+    [issueCategoryToConfigurationDict setObject:newConfigCopy forKeyedSubscript:configCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [issueCategoryToConfigurationDict removeObjectForKey:configCopy];
   }
 }
 
-- (DRSTeamDampeningConfiguration)initWithDefaultConfiguration:(id)a3 issueCategoryToConfigurationDict:(id)a4
+- (DRSTeamDampeningConfiguration)initWithDefaultConfiguration:(id)configuration issueCategoryToConfigurationDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  configurationCopy = configuration;
+  dictCopy = dict;
+  if (configurationCopy | dictCopy)
   {
     v16.receiver = self;
     v16.super_class = DRSTeamDampeningConfiguration;
@@ -573,14 +573,14 @@ LABEL_55:
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_defaultConfiguration, a3);
-      v13 = [v8 mutableCopy];
+      objc_storeStrong(&v11->_defaultConfiguration, configuration);
+      v13 = [dictCopy mutableCopy];
       issueCategoryToConfigurationDict = v12->_issueCategoryToConfigurationDict;
       v12->_issueCategoryToConfigurationDict = v13;
     }
 
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -592,33 +592,33 @@ LABEL_55:
       _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamDampeningConfigurationFailure", "Default configuration and issue category configuration dictionary cannot both be nil", buf, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)configurationForIssueCategory:(id)a3
+- (id)configurationForIssueCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  categoryCopy = category;
+  issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+  defaultConfiguration = [issueCategoryToConfigurationDict objectForKeyedSubscript:categoryCopy];
 
-  if (!v6)
+  if (!defaultConfiguration)
   {
-    v6 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+    defaultConfiguration = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
   }
 
-  return v6;
+  return defaultConfiguration;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v13 = 1;
       goto LABEL_20;
@@ -628,12 +628,12 @@ LABEL_55:
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-      if (v7 && (v8 = v7, [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+      defaultConfiguration = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+      if (defaultConfiguration && (v8 = defaultConfiguration, [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
       {
-        v10 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-        v11 = [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration];
-        v12 = [v10 isEqual:v11];
+        defaultConfiguration2 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+        defaultConfiguration3 = [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration];
+        v12 = [defaultConfiguration2 isEqual:defaultConfiguration3];
 
         if ((v12 & 1) == 0)
         {
@@ -643,31 +643,31 @@ LABEL_55:
 
       else
       {
-        v14 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-        if (v14)
+        defaultConfiguration4 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+        if (defaultConfiguration4)
         {
           goto LABEL_17;
         }
 
-        v15 = [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration];
+        defaultConfiguration5 = [(DRSTeamDampeningConfiguration *)v6 defaultConfiguration];
 
-        if (v15)
+        if (defaultConfiguration5)
         {
           goto LABEL_18;
         }
       }
 
-      v16 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-      if (v16)
+      issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+      if (issueCategoryToConfigurationDict)
       {
-        v17 = v16;
-        v18 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
+        v17 = issueCategoryToConfigurationDict;
+        issueCategoryToConfigurationDict2 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
 
-        if (v18)
+        if (issueCategoryToConfigurationDict2)
         {
-          v19 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-          v20 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
-          v21 = [v19 isEqualToDictionary:v20];
+          issueCategoryToConfigurationDict3 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+          issueCategoryToConfigurationDict4 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
+          v21 = [issueCategoryToConfigurationDict3 isEqualToDictionary:issueCategoryToConfigurationDict4];
 
           if (v21)
           {
@@ -678,12 +678,12 @@ LABEL_55:
         }
       }
 
-      v14 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
-      if (!v14)
+      defaultConfiguration4 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+      if (!defaultConfiguration4)
       {
-        v23 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
+        issueCategoryToConfigurationDict5 = [(DRSTeamDampeningConfiguration *)v6 issueCategoryToConfigurationDict];
 
-        if (!v23)
+        if (!issueCategoryToConfigurationDict5)
         {
 LABEL_22:
           v13 = 1;
@@ -709,17 +709,17 @@ LABEL_20:
   return v13;
 }
 
-- (id)_initWithTeamDampeningConfigMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithTeamDampeningConfigMO_ON_MOC_QUEUE:(id)e
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 defaultConfiguration];
+  eCopy = e;
+  defaultConfiguration = [eCopy defaultConfiguration];
 
-  if (v5)
+  if (defaultConfiguration)
   {
     v6 = [DRSDampeningConfiguration alloc];
-    v7 = [v4 defaultConfiguration];
-    v23 = [(DRSDampeningConfiguration *)v6 _initWithMO_ON_MOC_QUEUE:v7];
+    defaultConfiguration2 = [eCopy defaultConfiguration];
+    v23 = [(DRSDampeningConfiguration *)v6 _initWithMO_ON_MOC_QUEUE:defaultConfiguration2];
   }
 
   else
@@ -732,8 +732,8 @@ LABEL_20:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v4 categoryConfigurations];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  categoryConfigurations = [eCopy categoryConfigurations];
+  v10 = [categoryConfigurations countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -745,7 +745,7 @@ LABEL_20:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(categoryConfigurations);
         }
 
         v14 = *(*(&v25 + 1) + 8 * v13);
@@ -759,20 +759,20 @@ LABEL_20:
             _os_signpost_emit_with_name_impl(&dword_232906000, v20, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamDampeningConfigurationMOInitFailure", "Failed to initialize team dampening configuration from persistence", buf, 2u);
           }
 
-          v19 = 0;
+          selfCopy = 0;
           v18 = v23;
           goto LABEL_18;
         }
 
         v16 = v15;
-        v17 = [v14 identifier];
-        [v8 setObject:v16 forKeyedSubscript:v17];
+        identifier = [v14 identifier];
+        [v8 setObject:v16 forKeyedSubscript:identifier];
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [categoryConfigurations countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v11)
       {
         continue;
@@ -790,25 +790,25 @@ LABEL_20:
 
   v18 = v23;
   self = [(DRSTeamDampeningConfiguration *)self initWithDefaultConfiguration:v23 issueCategoryToConfigurationDict:v8];
-  v19 = self;
+  selfCopy = self;
 LABEL_18:
 
   v21 = *MEMORY[0x277D85DE8];
-  return v19;
+  return selfCopy;
 }
 
-- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)a3 teamID:(id)a4
+- (id)_ON_MOC_QUEUE_moRepresentationInContext:(id)context teamID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[DRSTeamDampeningConfigurationMO alloc] initWithContext:v6];
-  [(DRSTeamDampeningConfigurationMO *)v8 setTeamID:v7];
-  v9 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+  contextCopy = context;
+  dCopy = d;
+  v8 = [[DRSTeamDampeningConfigurationMO alloc] initWithContext:contextCopy];
+  [(DRSTeamDampeningConfigurationMO *)v8 setTeamID:dCopy];
+  defaultConfiguration = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
 
-  if (v9)
+  if (defaultConfiguration)
   {
-    v10 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
-    v11 = [v10 _ON_MOC_QUEUE_moRepresentationInContext:v6 identifier:@"defaultConfiguration"];
+    defaultConfiguration2 = [(DRSTeamDampeningConfiguration *)self defaultConfiguration];
+    v11 = [defaultConfiguration2 _ON_MOC_QUEUE_moRepresentationInContext:contextCopy identifier:@"defaultConfiguration"];
     [(DRSTeamDampeningConfigurationMO *)v8 setDefaultConfiguration:v11];
   }
 
@@ -816,17 +816,17 @@ LABEL_18:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v12 = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
+  issueCategoryToConfigurationDict = [(DRSTeamDampeningConfiguration *)self issueCategoryToConfigurationDict];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __80__DRSTeamDampeningConfiguration__ON_MOC_QUEUE_moRepresentationInContext_teamID___block_invoke;
   v17[3] = &unk_27899FE20;
-  v13 = v6;
+  v13 = contextCopy;
   v18 = v13;
   v20 = &v21;
   v14 = v8;
   v19 = v14;
-  [v12 enumerateKeysAndObjectsUsingBlock:v17];
+  [issueCategoryToConfigurationDict enumerateKeysAndObjectsUsingBlock:v17];
 
   if (v22[3])
   {

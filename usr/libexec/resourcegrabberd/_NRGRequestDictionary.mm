@@ -1,8 +1,8 @@
 @interface _NRGRequestDictionary
 - (_NRGRequestDictionary)init;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _NRGRequestDictionary
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -40,10 +40,10 @@
   block[1] = 3221225472;
   block[2] = sub_10000EE78;
   block[3] = &unk_100020698;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -52,34 +52,34 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EF8C;
   block[3] = &unk_1000205F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
   dispatch_barrier_sync(queue, block);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F038;
   v7[3] = &unk_100020648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_barrier_sync(queue, v7);
 }
 

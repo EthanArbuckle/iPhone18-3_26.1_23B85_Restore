@@ -1,6 +1,6 @@
 @interface SystemProperties
 + (id)sharedInstance;
-+ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)a3;
++ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)class;
 - (BOOL)carrierBuild;
 - (BOOL)carrierSeedBuild;
 - (BOOL)customerBuild;
@@ -15,10 +15,10 @@
 - (SystemProperties)init;
 - (id)description;
 - (void)buildVariant;
-- (void)setCarrierSeedBuildOverride:(id)a3;
-- (void)setInternalBuildDisabledByOverride:(BOOL)a3;
-- (void)setNpiDeviceOverride:(id)a3;
-- (void)setSeedBuildOverride:(id)a3;
+- (void)setCarrierSeedBuildOverride:(id)override;
+- (void)setInternalBuildDisabledByOverride:(BOOL)override;
+- (void)setNpiDeviceOverride:(id)override;
+- (void)setSeedBuildOverride:(id)override;
 @end
 
 @implementation SystemProperties
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __34__SystemProperties_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_instancePred != -1)
   {
     dispatch_once(&sharedInstance_instancePred, block);
@@ -47,16 +47,16 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)a3
++ (int)systemPropertiesDeviceClassFromMGQDeviceClass:(int)class
 {
-  if ((a3 - 1) > 0xB)
+  if ((class - 1) > 0xB)
   {
     return -1;
   }
 
   else
   {
-    return dword_24188AC68[a3 - 1];
+    return dword_24188AC68[class - 1];
   }
 }
 
@@ -65,13 +65,13 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   productName = self->_productName;
   v36 = v3;
-  v4 = [(SystemProperties *)self deviceClassString];
+  deviceClassString = [(SystemProperties *)self deviceClassString];
   productVersion = self->_productVersion;
   productType = self->_productType;
   buildPlatform = self->_buildPlatform;
   v31 = buildPlatform;
   buildVersion = self->_buildVersion;
-  v6 = [(SystemProperties *)self buildVariant];
+  buildVariant = [(SystemProperties *)self buildVariant];
   if (self->_basebandCapability)
   {
     v7 = "yes";
@@ -121,8 +121,8 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
       basebandFirmwareVersion = @"Unknown FW Version";
     }
 
-    v25 = [v12 initWithFormat:@"(%@)", basebandFirmwareVersion];
-    v26 = [v10 initWithFormat:@"%@ %@", basebandChipset, v25];
+    basebandFirmwareVersion = [v12 initWithFormat:@"(%@)", basebandFirmwareVersion];
+    v26 = [v10 initWithFormat:@"%@ %@", basebandChipset, basebandFirmwareVersion];
   }
 
   else
@@ -130,8 +130,8 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
     v26 = @"No baseband";
   }
 
-  v37 = v6;
-  v38 = v4;
+  v37 = buildVariant;
+  v38 = deviceClassString;
   if ([(NSString *)self->_wifiChipset length])
   {
     wifiChipset = self->_wifiChipset;
@@ -218,12 +218,12 @@ uint64_t __34__SystemProperties_sharedInstance__block_invoke(uint64_t a1)
     serialNumber = @"redacted";
   }
 
-  v23 = [v36 initWithFormat:@"ProductName = %@, ProductClass = %@, ProductType = %@, ProductVersion = %@, BuildVersion = %@, BuildPlatform = %@, BuildVariant = %@, basebandCapability = %s, dualSIMCapable = %s, dualSIMEnabled = %s, Baseband Chipset = %@, WiFi Chipset = %@, InternalBuild = %s, FactoryBuild = %s, VendorBuild = %s, CarrierBuild = %s, SeedBuild = %s, CarrierSeedBuild = %s, CustomerSeedBuild = %s, DeviceSerialNumber = %@", productName, v38, productType, productVersion, buildVersion, v31, v37, v29, v28, v27, v26, wifiChipset, v15, v16, v17, v18, v19, v20, v21, serialNumber];
+  serialNumber = [v36 initWithFormat:@"ProductName = %@, ProductClass = %@, ProductType = %@, ProductVersion = %@, BuildVersion = %@, BuildPlatform = %@, BuildVariant = %@, basebandCapability = %s, dualSIMCapable = %s, dualSIMEnabled = %s, Baseband Chipset = %@, WiFi Chipset = %@, InternalBuild = %s, FactoryBuild = %s, VendorBuild = %s, CarrierBuild = %s, SeedBuild = %s, CarrierSeedBuild = %s, CustomerSeedBuild = %s, DeviceSerialNumber = %@", productName, v38, productType, productVersion, buildVersion, v31, v37, v29, v28, v27, v26, wifiChipset, v15, v16, v17, v18, v19, v20, v21, serialNumber];
   if (v30)
   {
   }
 
-  return v23;
+  return serialNumber;
 }
 
 - (SystemProperties)init
@@ -502,14 +502,14 @@ LABEL_50:
 
 - (BOOL)customerSeedBuild
 {
-  v3 = [(SystemProperties *)self seedBuild];
-  if (v3)
+  seedBuild = [(SystemProperties *)self seedBuild];
+  if (seedBuild)
   {
 
-    LOBYTE(v3) = [(SystemProperties *)self customerBuild];
+    LOBYTE(seedBuild) = [(SystemProperties *)self customerBuild];
   }
 
-  return v3;
+  return seedBuild;
 }
 
 - (BOOL)carrierBuild
@@ -588,62 +588,62 @@ LABEL_50:
   return v4;
 }
 
-- (void)setInternalBuildDisabledByOverride:(BOOL)a3
+- (void)setInternalBuildDisabledByOverride:(BOOL)override
 {
-  if (self->_internalBuildDisabledByOverride != a3)
+  if (self->_internalBuildDisabledByOverride != override)
   {
-    self->_internalBuildDisabledByOverride = a3;
+    self->_internalBuildDisabledByOverride = override;
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
     MEMORY[0x2821F96F8]();
   }
 }
 
-- (void)setCarrierSeedBuildOverride:(id)a3
+- (void)setCarrierSeedBuildOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   p_carrierSeedBuildOverride = &self->_carrierSeedBuildOverride;
-  if (self->_carrierSeedBuildOverride != v5)
+  if (self->_carrierSeedBuildOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_carrierSeedBuildOverride, a3);
+    v8 = overrideCopy;
+    objc_storeStrong(p_carrierSeedBuildOverride, override);
     self->_internalBuildDisabledByOverride = [(NSNumber *)self->_carrierSeedBuildOverride BOOLValue];
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
 
-    v5 = v8;
+    overrideCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_carrierSeedBuildOverride, v5);
+  MEMORY[0x2821F96F8](p_carrierSeedBuildOverride, overrideCopy);
 }
 
-- (void)setSeedBuildOverride:(id)a3
+- (void)setSeedBuildOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   p_seedBuildOverride = &self->_seedBuildOverride;
-  if (self->_seedBuildOverride != v5)
+  if (self->_seedBuildOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_seedBuildOverride, a3);
+    v8 = overrideCopy;
+    objc_storeStrong(p_seedBuildOverride, override);
     buildVariant = self->_buildVariant;
     self->_buildVariant = 0;
 
-    v5 = v8;
+    overrideCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_seedBuildOverride, v5);
+  MEMORY[0x2821F96F8](p_seedBuildOverride, overrideCopy);
 }
 
-- (void)setNpiDeviceOverride:(id)a3
+- (void)setNpiDeviceOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   npiDeviceOverride = self->_npiDeviceOverride;
   p_npiDeviceOverride = &self->_npiDeviceOverride;
-  if (npiDeviceOverride != v5)
+  if (npiDeviceOverride != overrideCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_npiDeviceOverride, a3);
-    v5 = v8;
+    v8 = overrideCopy;
+    objc_storeStrong(p_npiDeviceOverride, override);
+    overrideCopy = v8;
   }
 }
 
@@ -719,14 +719,14 @@ LABEL_50:
 
 - (void)buildVariant
 {
-  if ([a1 internalBuild])
+  if ([self internalBuild])
   {
     v6 = *a2;
     *a2 = @"Internal";
 
-    v7 = [a1 carrierBuild];
-    v8 = [a1 seedBuild];
-    if (v8)
+    carrierBuild = [self carrierBuild];
+    seedBuild = [self seedBuild];
+    if (seedBuild)
     {
       v9 = @"Seed";
     }
@@ -736,14 +736,14 @@ LABEL_50:
       v9 = 0;
     }
 
-    if (v7)
+    if (carrierBuild)
     {
       v10 = [*a2 stringByAppendingString:@"Carrier"];
       v11 = *a2;
       *a2 = v10;
     }
 
-    if (v8)
+    if (seedBuild)
     {
       v12 = *a2;
       v13 = v9;
@@ -756,12 +756,12 @@ LABEL_16:
 
   else
   {
-    if ([a1 carrierBuild])
+    if ([self carrierBuild])
     {
       v14 = @"Carrier";
     }
 
-    else if ([a1 vendorBuild])
+    else if ([self vendorBuild])
     {
       v14 = @"Vendor";
     }
@@ -771,11 +771,11 @@ LABEL_16:
       v14 = @"Customer";
     }
 
-    v15 = [a1 seedBuild];
+    seedBuild2 = [self seedBuild];
     v16 = *a2;
     *a2 = v14;
 
-    if (v15)
+    if (seedBuild2)
     {
       v12 = *a2;
       v13 = @"Seed";

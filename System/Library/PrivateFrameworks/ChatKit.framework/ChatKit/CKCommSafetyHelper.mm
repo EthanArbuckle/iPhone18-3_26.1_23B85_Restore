@@ -1,7 +1,7 @@
 @interface CKCommSafetyHelper
-+ (BOOL)shouldDisableTranscriptCapabilitiesForCKFileTransfer:(id)a3;
-+ (BOOL)shouldDisableTranscriptCapabilitiesForFileTransfer:(id)a3;
-+ (BOOL)shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:(int64_t)a3;
++ (BOOL)shouldDisableTranscriptCapabilitiesForCKFileTransfer:(id)transfer;
++ (BOOL)shouldDisableTranscriptCapabilitiesForFileTransfer:(id)transfer;
++ (BOOL)shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:(int64_t)state;
 + (id)defaultLanguageForCountryPairings;
 + (id)validLanguageCountryPairings;
 + (id)waysToGetHelpURL;
@@ -13,20 +13,20 @@
 {
   v2 = +[CKCommSafetyHelper validLanguageCountryPairings];
   v3 = +[CKCommSafetyHelper defaultLanguageForCountryPairings];
-  v4 = [MEMORY[0x1E69A7FC8] sharedManager];
-  v5 = [v4 enablementGroup];
+  mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+  enablementGroup = [mEMORY[0x1E69A7FC8] enablementGroup];
 
-  if (v5 == 2)
+  if (enablementGroup == 2)
   {
     v6 = @"https://apple.com/go/child-safety/re/";
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69A7FC8] sharedManager];
-    v8 = [v7 childIsYoungAgeGroup];
+    mEMORY[0x1E69A7FC8]2 = [MEMORY[0x1E69A7FC8] sharedManager];
+    childIsYoungAgeGroup = [mEMORY[0x1E69A7FC8]2 childIsYoungAgeGroup];
 
-    if (v8)
+    if (childIsYoungAgeGroup)
     {
       v6 = @"https://www.apple.com/go/child-safety/rc-u13/";
     }
@@ -37,40 +37,40 @@
     }
   }
 
-  v9 = [MEMORY[0x1E698DC80] sharedInstance];
-  v10 = [v9 primaryAuthKitAccount];
-  if (v10)
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
-    v11 = [v9 appleIDCountryCodeForAccount:v10];
-    v12 = [v11 lowercaseString];
+    v11 = [mEMORY[0x1E698DC80] appleIDCountryCodeForAccount:primaryAuthKitAccount];
+    lowercaseString = [v11 lowercaseString];
   }
 
   else
   {
-    v12 = 0;
+    lowercaseString = 0;
   }
 
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v13 languageCode];
-  v15 = [v14 lowercaseString];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
+  lowercaseString2 = [languageCode lowercaseString];
 
-  if (v12 && v15)
+  if (lowercaseString && lowercaseString2)
   {
-    v16 = [v2 objectForKey:v12];
+    v16 = [v2 objectForKey:lowercaseString];
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 containsObject:v15];
+      v18 = [v16 containsObject:lowercaseString2];
       v19 = MEMORY[0x1E696AEC0];
       if (v18)
       {
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v15, v12];
+        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", lowercaseString2, lowercaseString];
       }
 
       else
       {
-        v21 = [v3 objectForKey:v12];
-        v20 = [v19 stringWithFormat:@"%@-%@", v21, v12];
+        v21 = [v3 objectForKey:lowercaseString];
+        v20 = [v19 stringWithFormat:@"%@-%@", v21, lowercaseString];
       }
 
       v6 = [(__CFString *)v6 stringByAppendingString:v20];
@@ -153,13 +153,13 @@
   return v2;
 }
 
-+ (BOOL)shouldDisableTranscriptCapabilitiesForFileTransfer:(id)a3
++ (BOOL)shouldDisableTranscriptCapabilitiesForFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  transferCopy = transfer;
+  v5 = transferCopy;
+  if (transferCopy)
   {
-    v6 = [a1 shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:{objc_msgSend(v4, "commSafetySensitive")}];
+    v6 = [self shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:{objc_msgSend(transferCopy, "commSafetySensitive")}];
   }
 
   else
@@ -180,13 +180,13 @@
   return v6;
 }
 
-+ (BOOL)shouldDisableTranscriptCapabilitiesForCKFileTransfer:(id)a3
++ (BOOL)shouldDisableTranscriptCapabilitiesForCKFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  transferCopy = transfer;
+  v5 = transferCopy;
+  if (transferCopy)
   {
-    v6 = [a1 shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:{objc_msgSend(v4, "commSafetySensitive")}];
+    v6 = [self shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:{objc_msgSend(transferCopy, "commSafetySensitive")}];
   }
 
   else
@@ -207,19 +207,19 @@
   return v6;
 }
 
-+ (BOOL)shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:(int64_t)a3
++ (BOOL)shouldDisableTranscriptCapabilitiesForTransferWithCommSafetyState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E69A7FC8] sharedManager];
-  v5 = [v4 enablementGroup];
+  mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+  enablementGroup = [mEMORY[0x1E69A7FC8] enablementGroup];
 
-  if (v5 == 2)
+  if (enablementGroup == 2)
   {
-    return a3 == 1;
+    return state == 1;
   }
 
-  if (v5 == 1)
+  if (enablementGroup == 1)
   {
-    return (a3 - 1) < 2;
+    return (state - 1) < 2;
   }
 
   return 0;

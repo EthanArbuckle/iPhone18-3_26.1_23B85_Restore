@@ -1,7 +1,7 @@
 @interface ULTimer
 - (BOOL)isTimerSourceNil;
 - (ULTimer)init;
-- (ULTimer)initWithInterval:(double)a3 repeats:(BOOL)a4 queue:(id)a5 block:(id)a6;
+- (ULTimer)initWithInterval:(double)interval repeats:(BOOL)repeats queue:(id)queue block:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -10,12 +10,12 @@
 
 - (void)invalidate
 {
-  v3 = [(ULTimer *)self timerSource];
+  timerSource = [(ULTimer *)self timerSource];
 
-  if (v3)
+  if (timerSource)
   {
-    v4 = [(ULTimer *)self timerSource];
-    dispatch_source_cancel(v4);
+    timerSource2 = [(ULTimer *)self timerSource];
+    dispatch_source_cancel(timerSource2);
 
     [(ULTimer *)self setTimerSource:0];
   }
@@ -36,22 +36,22 @@
   objc_exception_throw(v2);
 }
 
-- (ULTimer)initWithInterval:(double)a3 repeats:(BOOL)a4 queue:(id)a5 block:(id)a6
+- (ULTimer)initWithInterval:(double)interval repeats:(BOOL)repeats queue:(id)queue block:(id)block
 {
-  v7 = a4;
-  v10 = a5;
-  v11 = a6;
+  repeatsCopy = repeats;
+  queueCopy = queue;
+  blockCopy = block;
   v29.receiver = self;
   v29.super_class = ULTimer;
   v12 = [(ULTimer *)&v29 init];
   if (v12)
   {
-    v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v10);
+    v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
     [(ULTimer *)v12 setTimerSource:v13];
 
-    v14 = a3 * 1000000000.0;
+    v14 = interval * 1000000000.0;
     v15 = dispatch_time(0, v14);
-    if (v7)
+    if (repeatsCopy)
     {
       v16 = v14;
     }
@@ -61,19 +61,19 @@
       v16 = -1;
     }
 
-    v17 = [(ULTimer *)v12 timerSource];
-    dispatch_source_set_timer(v17, v15, v16, 0x989680uLL);
+    timerSource = [(ULTimer *)v12 timerSource];
+    dispatch_source_set_timer(timerSource, v15, v16, 0x989680uLL);
 
     objc_initWeak(&location, v12);
-    v18 = [(ULTimer *)v12 timerSource];
+    timerSource2 = [(ULTimer *)v12 timerSource];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __54__ULTimer_init__initWithInterval_repeats_queue_block___block_invoke;
     v24 = &unk_2798D56A8;
-    v25 = v11;
-    v27 = v7;
+    v25 = blockCopy;
+    v27 = repeatsCopy;
     objc_copyWeak(&v26, &location);
-    dispatch_source_set_event_handler(v18, &v21);
+    dispatch_source_set_event_handler(timerSource2, &v21);
 
     v19 = [(ULTimer *)v12 timerSource:v21];
     dispatch_activate(v19);
@@ -97,8 +97,8 @@ void __54__ULTimer_init__initWithInterval_repeats_queue_block___block_invoke(uin
 
 - (BOOL)isTimerSourceNil
 {
-  v2 = [(ULTimer *)self timerSource];
-  v3 = v2 == 0;
+  timerSource = [(ULTimer *)self timerSource];
+  v3 = timerSource == 0;
 
   return v3;
 }

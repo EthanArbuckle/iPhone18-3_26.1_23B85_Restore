@@ -1,11 +1,11 @@
 @interface SportsFavoritesSyncViewController
-- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)doConfirmationAction;
 - (void)doDeferAction;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -14,24 +14,24 @@
 
 - (void)doConfirmationAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_21935D778(2, sub_21935E540, 0);
 }
 
 - (void)doDeferAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_21935D778(3, sub_21935E538, 1);
 }
 
-- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7NewsUI233SportsFavoritesSyncViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -45,20 +45,20 @@
   v2 = v4.receiver;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
   sub_21935D9D8();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_21935E3CC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_21935E0B8(a3);
+  selfCopy = self;
+  sub_21935E0B8(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_21935E1E0(a3);
+  selfCopy = self;
+  sub_21935E1E0(disappear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -68,14 +68,14 @@
   [(SportsFavoritesSyncViewController *)&v2 viewWillLayoutSubviews];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(SportsFavoritesSyncViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(SportsFavoritesSyncViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_21935E3CC();
 }
 

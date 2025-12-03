@@ -1,36 +1,36 @@
 @interface TSWPTOCPartitioner
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5;
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally;
 - (CGRect)totalPartitionFrame;
 - (TSWPTOCInfo)info;
-- (TSWPTOCPartitioner)initWithInfo:(id)a3;
-- (id)hintForLayout:(id)a3;
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7;
+- (TSWPTOCPartitioner)initWithInfo:(id)info;
+- (id)hintForLayout:(id)layout;
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished;
 @end
 
 @implementation TSWPTOCPartitioner
 
-- (TSWPTOCPartitioner)initWithInfo:(id)a3
+- (TSWPTOCPartitioner)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = TSWPTOCPartitioner;
   v5 = [(TSWPTOCPartitioner *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_info, v4);
+    objc_storeWeak(&v5->_info, infoCopy);
   }
 
   return v6;
 }
 
-- (id)nextLayoutForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextLayoutForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a4;
-  v13 = a5;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  hintCopy = hint;
   objc_opt_class();
   v14 = TSUDynamicCast();
 
@@ -77,9 +77,9 @@
   v32 = objc_msgSend_info(self, v30, v31);
   IsVertical_maxSize = objc_msgSend_initWithInfo_initialCharIndex_textIsVertical_maxSize_(v29, v33, v32, v19, v24, v25, height);
 
-  if (a7)
+  if (finished)
   {
-    *a7 = objc_msgSend_isLastLayoutInTOC(IsVertical_maxSize, v35, v36);
+    *finished = objc_msgSend_isLastLayoutInTOC(IsVertical_maxSize, v35, v36);
   }
 
   return IsVertical_maxSize;
@@ -98,10 +98,10 @@
   return result;
 }
 
-- (id)nextHintForSize:(CGSize)a3 parentLayout:(id)a4 previousHint:(id)a5 horizontally:(BOOL)a6 outFinished:(BOOL *)a7
+- (id)nextHintForSize:(CGSize)size parentLayout:(id)layout previousHint:(id)hint horizontally:(BOOL)horizontally outFinished:(BOOL *)finished
 {
   v7 = MEMORY[0x277D81150];
-  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPTOCPartitioner nextHintForSize:parentLayout:previousHint:horizontally:outFinished:]", a5, a6, a7, a3.width, a3.height);
+  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPTOCPartitioner nextHintForSize:parentLayout:previousHint:horizontally:outFinished:]", hint, horizontally, finished, size.width, size.height);
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPTOCPartitioner.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v11, v8, v10, 71, 0, "unsupported method");
 
@@ -109,10 +109,10 @@
   return 0;
 }
 
-- (BOOL)didHint:(id)a3 syncWithNextHint:(id)a4 horizontally:(BOOL)a5
+- (BOOL)didHint:(id)hint syncWithNextHint:(id)nextHint horizontally:(BOOL)horizontally
 {
-  v6 = a4;
-  v7 = a3;
+  nextHintCopy = nextHint;
+  hintCopy = hint;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -143,9 +143,9 @@
   return v16;
 }
 
-- (id)hintForLayout:(id)a3
+- (id)hintForLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   v4 = TSUDynamicCast();
 

@@ -3,26 +3,26 @@
 - (TVCollectionViewLockupCellDelegate)delegate;
 - (UIEdgeInsets)_additionalFocusableContentInsets;
 - (UIEdgeInsets)_focusableContentMargins;
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
-- (_TVCollectionViewLockupCell)initWithFrame:(CGRect)a3;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
+- (_TVCollectionViewLockupCell)initWithFrame:(CGRect)frame;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)_selectingView;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)layeredImageContainerLayer;
 - (void)_handleSelect;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setDelegate:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _TVCollectionViewLockupCell
 
-- (_TVCollectionViewLockupCell)initWithFrame:(CGRect)a3
+- (_TVCollectionViewLockupCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVCollectionViewLockupCell;
-  v3 = [(TVContainerCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVContainerCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__handleSelect];
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -56,10 +56,10 @@
 - (BOOL)_isFocusedOrParentOfFocusedHierarchyAndSelectingViewIsPoster
 {
   v3 = [MEMORY[0x277D75518] focusSystemForEnvironment:self];
-  v4 = [v3 focusedItem];
-  if (v4 && ([(_TVCollectionViewLockupCell *)self _selectingView], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
+  focusedItem = [v3 focusedItem];
+  if (focusedItem && ([(_TVCollectionViewLockupCell *)self _selectingView], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    if (v4 == self)
+    if (focusedItem == self)
     {
       v9 = 1;
     }
@@ -67,8 +67,8 @@
     else
     {
       v7 = MEMORY[0x277D75518];
-      v8 = [(_TVCollectionViewLockupCell *)self _selectingView];
-      v9 = [v7 environment:v8 containsEnvironment:v4];
+      _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+      v9 = [v7 environment:_selectingView containsEnvironment:focusedItem];
     }
   }
 
@@ -80,23 +80,23 @@
   return v9;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
   if ([(_TVCollectionViewLockupCell *)self _isFocusedOrParentOfFocusedHierarchyAndSelectingViewIsPoster])
   {
-    v8 = [(_TVCollectionViewLockupCell *)self _selectingView];
-    v9 = [MEMORY[0x277CBEB18] array];
+    _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v8 preferredFocusEnvironments];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    preferredFocusEnvironments = [_selectingView preferredFocusEnvironments];
+    v11 = [preferredFocusEnvironments countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -107,18 +107,18 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(preferredFocusEnvironments);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v12 = [preferredFocusEnvironments countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v12);
@@ -129,10 +129,10 @@
   {
     v21.receiver = self;
     v21.super_class = _TVCollectionViewLockupCell;
-    v9 = [(_TVCollectionViewLockupCell *)&v21 focusItemsInRect:x, y, width, height];
+    array = [(_TVCollectionViewLockupCell *)&v21 focusItemsInRect:x, y, width, height];
   }
 
-  return v9;
+  return array;
 }
 
 - (UIEdgeInsets)_additionalFocusableContentInsets
@@ -145,11 +145,11 @@
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
-  v3 = [(_TVCollectionViewLockupCell *)self _selectingView];
-  v4 = v3;
-  if (v3)
+  _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+  v4 = _selectingView;
+  if (_selectingView)
   {
-    [v3 cellMetrics];
+    [_selectingView cellMetrics];
   }
 
   else
@@ -250,15 +250,15 @@ LABEL_6:
   return result;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = _TVCollectionViewLockupCell;
-  [(TVContainerCollectionViewCell *)&v17 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
-  v8 = [v6 nextFocusedView];
-  if (v8 == self)
+  [(TVContainerCollectionViewCell *)&v17 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
+  nextFocusedView = [contextCopy nextFocusedView];
+  if (nextFocusedView == self)
   {
     objc_initWeak(&location, self);
     v11 = MEMORY[0x277D85DD0];
@@ -266,7 +266,7 @@ LABEL_6:
     v13 = __80___TVCollectionViewLockupCell_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
     v14 = &unk_279D6E890;
     objc_copyWeak(&v15, &location);
-    [v7 addCoordinatedFocusingAnimations:0 completion:&v11];
+    [coordinatorCopy addCoordinatedFocusingAnimations:0 completion:&v11];
     v10 = [(_TVCollectionViewLockupCell *)self superview:v11];
     [v10 bringSubviewToFront:self];
 
@@ -286,16 +286,16 @@ LABEL_6:
   v15.receiver = self;
   v15.super_class = _TVCollectionViewLockupCell;
   [(TVContainerCollectionViewCell *)&v15 prepareForReuse];
-  v3 = [(_TVCollectionViewLockupCell *)self contentView];
-  [TVMLUtilities disassociateIKViewElementsRecursivelyFromView:v3];
+  contentView = [(_TVCollectionViewLockupCell *)self contentView];
+  [TVMLUtilities disassociateIKViewElementsRecursivelyFromView:contentView];
 
-  v4 = [(_TVCollectionViewLockupCell *)self _selectingView];
-  v5 = v4;
-  if (v4)
+  _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+  v5 = _selectingView;
+  if (_selectingView)
   {
     v6 = MEMORY[0x277CBEB18];
-    v7 = [v4 layer];
-    v8 = [v6 arrayWithObject:v7];
+    layer = [_selectingView layer];
+    v8 = [v6 arrayWithObject:layer];
 
     if ([v8 count])
     {
@@ -306,11 +306,11 @@ LABEL_6:
         [v8 removeObject:v10];
         [v10 clearHasBeenCommitted];
         [v10 removeAllAnimations];
-        v11 = [v10 sublayers];
-        v12 = v11;
-        if (v11)
+        sublayers = [v10 sublayers];
+        v12 = sublayers;
+        if (sublayers)
         {
-          v13 = v11;
+          v13 = sublayers;
         }
 
         else
@@ -345,44 +345,44 @@ LABEL_6:
   return v4;
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
-  v7 = [(_TVCollectionViewLockupCell *)self _selectingView];
-  v8 = v7;
-  if (v7)
+  contextCopy = context;
+  _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+  v8 = _selectingView;
+  if (_selectingView)
   {
-    v9 = [v7 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [_selectingView _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
 LABEL_3:
-    v10 = v9;
+    focusAnimationConfiguration = v9;
     goto LABEL_6;
   }
 
-  v11 = [(_TVCollectionViewLockupCell *)self layeredImageContainerLayer];
+  layeredImageContainerLayer = [(_TVCollectionViewLockupCell *)self layeredImageContainerLayer];
 
-  if (!v11)
+  if (!layeredImageContainerLayer)
   {
     v15.receiver = self;
     v15.super_class = _TVCollectionViewLockupCell;
-    v9 = [(TVContainerCollectionViewCell *)&v15 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v9 = [(TVContainerCollectionViewCell *)&v15 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
     goto LABEL_3;
   }
 
-  v12 = [(_TVCollectionViewLockupCell *)self layeredImageContainerLayer];
-  v13 = [v12 configuration];
-  v10 = [v13 focusAnimationConfiguration];
+  layeredImageContainerLayer2 = [(_TVCollectionViewLockupCell *)self layeredImageContainerLayer];
+  configuration = [layeredImageContainerLayer2 configuration];
+  focusAnimationConfiguration = [configuration focusAnimationConfiguration];
 
 LABEL_6:
 
-  return v10;
+  return focusAnimationConfiguration;
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_TVCollectionViewLockupCell *)self _selectingView];
-  [v5 selectionMarginsForSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _selectingView = [(_TVCollectionViewLockupCell *)self _selectingView];
+  [_selectingView selectionMarginsForSize:{width, height}];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -408,10 +408,10 @@ LABEL_6:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(_TVCollectionViewLockupCell *)self contentView];
-    v4 = [v3 subviews];
+    contentView = [(_TVCollectionViewLockupCell *)self contentView];
+    subviews = [contentView subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -422,7 +422,7 @@ LABEL_6:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v12 + 1) + 8 * i);
@@ -433,7 +433,7 @@ LABEL_6:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -466,10 +466,10 @@ LABEL_12:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(_TVCollectionViewLockupCell *)self contentView];
-    v4 = [v3 subviews];
+    contentView = [(_TVCollectionViewLockupCell *)self contentView];
+    subviews = [contentView subviews];
 
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -480,7 +480,7 @@ LABEL_12:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
@@ -490,7 +490,7 @@ LABEL_12:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -498,9 +498,9 @@ LABEL_12:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = _TVCollectionViewLockupCell;
@@ -509,10 +509,10 @@ LABEL_12:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(_TVCollectionViewLockupCell *)self contentView];
-  v6 = [v5 subviews];
+  contentView = [(_TVCollectionViewLockupCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -524,20 +524,20 @@ LABEL_12:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 setHighlighted:v3];
+          [v11 setHighlighted:highlightedCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);

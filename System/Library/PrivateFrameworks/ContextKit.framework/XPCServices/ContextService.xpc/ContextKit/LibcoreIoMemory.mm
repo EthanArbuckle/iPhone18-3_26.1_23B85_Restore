@@ -1,18 +1,18 @@
 @interface LibcoreIoMemory
-+ (int)peekIntWithLong:(int64_t)a3 withBoolean:(BOOL)a4;
-+ (int64_t)peekLongWithLong:(int64_t)a3 withBoolean:(BOOL)a4;
-+ (signed)peekShortWithLong:(int64_t)a3 withBoolean:(BOOL)a4;
-+ (void)pokeIntWithLong:(int64_t)a3 withInt:(int)a4 withBoolean:(BOOL)a5;
-+ (void)pokeLongWithLong:(int64_t)a3 withLong:(int64_t)a4 withBoolean:(BOOL)a5;
-+ (void)pokeShortWithLong:(int64_t)a3 withShort:(signed __int16)a4 withBoolean:(BOOL)a5;
++ (int)peekIntWithLong:(int64_t)long withBoolean:(BOOL)boolean;
++ (int64_t)peekLongWithLong:(int64_t)long withBoolean:(BOOL)boolean;
++ (signed)peekShortWithLong:(int64_t)long withBoolean:(BOOL)boolean;
++ (void)pokeIntWithLong:(int64_t)long withInt:(int)int withBoolean:(BOOL)boolean;
++ (void)pokeLongWithLong:(int64_t)long withLong:(int64_t)withLong withBoolean:(BOOL)boolean;
++ (void)pokeShortWithLong:(int64_t)long withShort:(signed __int16)short withBoolean:(BOOL)boolean;
 @end
 
 @implementation LibcoreIoMemory
 
-+ (int)peekIntWithLong:(int64_t)a3 withBoolean:(BOOL)a4
++ (int)peekIntWithLong:(int64_t)long withBoolean:(BOOL)boolean
 {
-  result = *a3;
-  if (a4)
+  result = *long;
+  if (boolean)
   {
     return JavaLangInteger_reverseBytesWithInt_(result);
   }
@@ -20,10 +20,10 @@
   return result;
 }
 
-+ (int64_t)peekLongWithLong:(int64_t)a3 withBoolean:(BOOL)a4
++ (int64_t)peekLongWithLong:(int64_t)long withBoolean:(BOOL)boolean
 {
-  result = *a3;
-  if (a4)
+  result = *long;
+  if (boolean)
   {
     return JavaLangLong_reverseBytesWithLong_(result);
   }
@@ -31,10 +31,10 @@
   return result;
 }
 
-+ (signed)peekShortWithLong:(int64_t)a3 withBoolean:(BOOL)a4
++ (signed)peekShortWithLong:(int64_t)long withBoolean:(BOOL)boolean
 {
-  v4 = *a3;
-  if (a4)
+  v4 = *long;
+  if (boolean)
   {
     LOWORD(v4) = JavaLangShort_reverseBytesWithShort_(v4);
   }
@@ -42,37 +42,37 @@
   return v4;
 }
 
-+ (void)pokeIntWithLong:(int64_t)a3 withInt:(int)a4 withBoolean:(BOOL)a5
++ (void)pokeIntWithLong:(int64_t)long withInt:(int)int withBoolean:(BOOL)boolean
 {
-  v5 = a4;
-  if (a5)
+  intCopy = int;
+  if (boolean)
   {
-    v5 = JavaLangInteger_reverseBytesWithInt_(a4);
+    intCopy = JavaLangInteger_reverseBytesWithInt_(int);
   }
 
-  *a3 = v5;
+  *long = intCopy;
 }
 
-+ (void)pokeLongWithLong:(int64_t)a3 withLong:(int64_t)a4 withBoolean:(BOOL)a5
++ (void)pokeLongWithLong:(int64_t)long withLong:(int64_t)withLong withBoolean:(BOOL)boolean
 {
-  v5 = a4;
-  if (a5)
+  withLongCopy = withLong;
+  if (boolean)
   {
-    v5 = JavaLangLong_reverseBytesWithLong_(a4);
+    withLongCopy = JavaLangLong_reverseBytesWithLong_(withLong);
   }
 
-  *a3 = v5;
+  *long = withLongCopy;
 }
 
-+ (void)pokeShortWithLong:(int64_t)a3 withShort:(signed __int16)a4 withBoolean:(BOOL)a5
++ (void)pokeShortWithLong:(int64_t)long withShort:(signed __int16)short withBoolean:(BOOL)boolean
 {
-  v5 = a4;
-  if (a5)
+  shortCopy = short;
+  if (boolean)
   {
-    v5 = JavaLangShort_reverseBytesWithShort_(a4);
+    shortCopy = JavaLangShort_reverseBytesWithShort_(short);
   }
 
-  *a3 = v5;
+  *long = shortCopy;
 }
 
 @end

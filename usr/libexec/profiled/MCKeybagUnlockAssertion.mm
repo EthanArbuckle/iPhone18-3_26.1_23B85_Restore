@@ -22,14 +22,14 @@
 
 + (void)holdAssertion
 {
-  v2 = [a1 assertionHoldQueue];
-  dispatch_async(v2, &stru_10011CEE8);
+  assertionHoldQueue = [self assertionHoldQueue];
+  dispatch_async(assertionHoldQueue, &stru_10011CEE8);
 }
 
 + (void)releaseAssertion
 {
-  v2 = [a1 assertionHoldQueue];
-  dispatch_sync(v2, &stru_10011CF18);
+  assertionHoldQueue = [self assertionHoldQueue];
+  dispatch_sync(assertionHoldQueue, &stru_10011CF18);
 }
 
 - (MCKeybagUnlockAssertion)init

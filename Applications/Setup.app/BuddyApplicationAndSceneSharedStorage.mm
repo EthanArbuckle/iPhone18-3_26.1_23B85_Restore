@@ -1,13 +1,13 @@
 @interface BuddyApplicationAndSceneSharedStorage
 + (SetupController)setupController;
-+ (void)ensureSetupControllerWithFactoryBlock:(id)a3;
++ (void)ensureSetupControllerWithFactoryBlock:(id)block;
 @end
 
 @implementation BuddyApplicationAndSceneSharedStorage
 
 + (SetupController)setupController
 {
-  oslog[2] = a1;
+  oslog[2] = self;
   oslog[1] = a2;
   if (!qword_1003A7050)
   {
@@ -29,12 +29,12 @@
   return v4;
 }
 
-+ (void)ensureSetupControllerWithFactoryBlock:(id)a3
++ (void)ensureSetupControllerWithFactoryBlock:(id)block
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, block);
   if (!qword_1003A7050)
   {
     v3 = (*(location[0] + 2))();

@@ -1,7 +1,7 @@
 @interface PRQuickActionsEditingReticleView
 - (PRQuickActionsEditingReticleView)init;
 - (void)layoutSubviews;
-- (void)setShowsEmptyView:(BOOL)a3;
+- (void)setShowsEmptyView:(BOOL)view;
 @end
 
 @implementation PRQuickActionsEditingReticleView
@@ -26,8 +26,8 @@
     v2->_reticleView = v5;
 
     [(PREditingReticleView *)v2->_reticleView setAutoresizingMask:18];
-    v7 = [(BSUIVibrancyEffectView *)v2->_vibrancyView contentView];
-    [v7 addSubview:v2->_reticleView];
+    contentView = [(BSUIVibrancyEffectView *)v2->_vibrancyView contentView];
+    [contentView addSubview:v2->_reticleView];
 
     v8 = MEMORY[0x1E69DCAB8];
     v9 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
@@ -39,8 +39,8 @@
 
     v12 = v2->_plusImageView;
     v13 = MEMORY[0x1E69DC888];
-    v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v15 = [v14 objectForKey:@"PRReticleBorderColor"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v15 = [standardUserDefaults objectForKey:@"PRReticleBorderColor"];
     v16 = v15;
     if (!v15)
     {
@@ -53,26 +53,26 @@
 
     [(UIImageView *)v2->_plusImageView setContentMode:1];
     [(UIImageView *)v2->_plusImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(BSUIVibrancyEffectView *)v2->_vibrancyView contentView];
-    [v18 addSubview:v2->_plusImageView];
+    contentView2 = [(BSUIVibrancyEffectView *)v2->_vibrancyView contentView];
+    [contentView2 addSubview:v2->_plusImageView];
 
     [(UIImageView *)v2->_plusImageView setHidden:1];
     v29 = MEMORY[0x1E696ACD8];
-    v33 = [(UIImageView *)v2->_plusImageView heightAnchor];
-    v32 = [(PRQuickActionsEditingReticleView *)v2 heightAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32 multiplier:0.5];
+    heightAnchor = [(UIImageView *)v2->_plusImageView heightAnchor];
+    heightAnchor2 = [(PRQuickActionsEditingReticleView *)v2 heightAnchor];
+    v31 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.5];
     v36[0] = v31;
-    v30 = [(UIImageView *)v2->_plusImageView widthAnchor];
-    v28 = [(PRQuickActionsEditingReticleView *)v2 widthAnchor];
-    v19 = [v30 constraintEqualToAnchor:v28 multiplier:0.5];
+    widthAnchor = [(UIImageView *)v2->_plusImageView widthAnchor];
+    widthAnchor2 = [(PRQuickActionsEditingReticleView *)v2 widthAnchor];
+    v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.5];
     v36[1] = v19;
-    v20 = [(UIImageView *)v2->_plusImageView centerYAnchor];
-    v21 = [(PRQuickActionsEditingReticleView *)v2 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor = [(UIImageView *)v2->_plusImageView centerYAnchor];
+    centerYAnchor2 = [(PRQuickActionsEditingReticleView *)v2 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v36[2] = v22;
-    v23 = [(UIImageView *)v2->_plusImageView centerXAnchor];
-    v24 = [(PRQuickActionsEditingReticleView *)v2 centerXAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(UIImageView *)v2->_plusImageView centerXAnchor];
+    centerXAnchor2 = [(PRQuickActionsEditingReticleView *)v2 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36[3] = v25;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
     [v29 activateConstraints:v26];
@@ -92,12 +92,12 @@
   [(PREditingReticleView *)self->_reticleView setOutlineBorderCornerRadius:v4 * 0.5];
 }
 
-- (void)setShowsEmptyView:(BOOL)a3
+- (void)setShowsEmptyView:(BOOL)view
 {
-  if (self->_showsEmptyView != a3)
+  if (self->_showsEmptyView != view)
   {
-    self->_showsEmptyView = a3;
-    [(UIImageView *)self->_plusImageView setHidden:!a3];
+    self->_showsEmptyView = view;
+    [(UIImageView *)self->_plusImageView setHidden:!view];
   }
 }
 

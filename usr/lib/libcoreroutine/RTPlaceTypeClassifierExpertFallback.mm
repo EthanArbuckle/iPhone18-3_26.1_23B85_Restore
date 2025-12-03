@@ -1,21 +1,21 @@
 @interface RTPlaceTypeClassifierExpertFallback
-- (RTPlaceTypeClassifierExpertFallback)initWithDistanceCalculator:(id)a3 learnedLocationStore:(id)a4 locationManager:(id)a5 mapServiceManager:(id)a6 visitManager:(id)a7 placeTypeClassifierMetricsCalculator:(id)a8;
-- (id)classifyWithError:(id *)a3;
-- (id)updatePlace:(id)a3;
+- (RTPlaceTypeClassifierExpertFallback)initWithDistanceCalculator:(id)calculator learnedLocationStore:(id)store locationManager:(id)manager mapServiceManager:(id)serviceManager visitManager:(id)visitManager placeTypeClassifierMetricsCalculator:(id)metricsCalculator;
+- (id)classifyWithError:(id *)error;
+- (id)updatePlace:(id)place;
 @end
 
 @implementation RTPlaceTypeClassifierExpertFallback
 
-- (RTPlaceTypeClassifierExpertFallback)initWithDistanceCalculator:(id)a3 learnedLocationStore:(id)a4 locationManager:(id)a5 mapServiceManager:(id)a6 visitManager:(id)a7 placeTypeClassifierMetricsCalculator:(id)a8
+- (RTPlaceTypeClassifierExpertFallback)initWithDistanceCalculator:(id)calculator learnedLocationStore:(id)store locationManager:(id)manager mapServiceManager:(id)serviceManager visitManager:(id)visitManager placeTypeClassifierMetricsCalculator:(id)metricsCalculator
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v27 = a6;
-  v26 = a7;
-  v18 = a8;
-  v25 = v18;
-  if (!v15)
+  calculatorCopy = calculator;
+  storeCopy = store;
+  managerCopy = manager;
+  serviceManagerCopy = serviceManager;
+  visitManagerCopy = visitManager;
+  metricsCalculatorCopy = metricsCalculator;
+  v25 = metricsCalculatorCopy;
+  if (!calculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v16)
+  if (!storeCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -43,7 +43,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v17)
+  if (!managerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v27)
+  if (!serviceManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v26)
+  if (!visitManagerCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -82,7 +82,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v18)
+  if (!metricsCalculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -94,7 +94,7 @@ LABEL_22:
 
 LABEL_23:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_24;
   }
 
@@ -104,22 +104,22 @@ LABEL_23:
   p_isa = &v19->super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_distanceCalculator, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
-    objc_storeStrong(p_isa + 6, a8);
+    objc_storeStrong(&v19->_distanceCalculator, calculator);
+    objc_storeStrong(p_isa + 2, store);
+    objc_storeStrong(p_isa + 3, manager);
+    objc_storeStrong(p_isa + 4, serviceManager);
+    objc_storeStrong(p_isa + 5, visitManager);
+    objc_storeStrong(p_isa + 6, metricsCalculator);
   }
 
   self = p_isa;
-  v21 = self;
+  selfCopy = self;
 LABEL_24:
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)classifyWithError:(id *)a3
+- (id)classifyWithError:(id *)error
 {
   v171[1] = *MEMORY[0x277D85DE8];
   v146 = 0;
@@ -135,7 +135,7 @@ LABEL_24:
   v144 = __Block_byref_object_dispose__81;
   v145 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
+  learnedLocationStore = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
   v136[0] = MEMORY[0x277D85DD0];
   v136[1] = 3221225472;
   v136[2] = __57__RTPlaceTypeClassifierExpertFallback_classifyWithError___block_invoke;
@@ -144,7 +144,7 @@ LABEL_24:
   v139 = &v140;
   v7 = v5;
   v137 = v7;
-  [v6 fetchLocationOfInterestVisitedLastWithHandler:v136];
+  [learnedLocationStore fetchLocationOfInterestVisitedLastWithHandler:v136];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -156,11 +156,11 @@ LABEL_24:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_64];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -248,7 +248,7 @@ LABEL_8:
     v122 = __Block_byref_object_dispose__81;
     v123 = 0;
     dispatch_group_enter(v34);
-    v35 = [(RTPlaceTypeClassifierExpertFallback *)self locationManager];
+    locationManager = [(RTPlaceTypeClassifierExpertFallback *)self locationManager];
     v114[0] = MEMORY[0x277D85DD0];
     v114[1] = 3221225472;
     v114[2] = __57__RTPlaceTypeClassifierExpertFallback_classifyWithError___block_invoke_3;
@@ -257,10 +257,10 @@ LABEL_8:
     v117 = &v165;
     v36 = v34;
     v115 = v36;
-    [v35 fetchCurrentLocationWithHandler:v114];
+    [locationManager fetchCurrentLocationWithHandler:v114];
 
     dispatch_group_enter(v36);
-    v37 = [(RTPlaceTypeClassifierExpertFallback *)self visitManager];
+    visitManager = [(RTPlaceTypeClassifierExpertFallback *)self visitManager];
     v38 = objc_alloc(MEMORY[0x277D01340]);
     v39 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
     v40 = [MEMORY[0x277CBEB98] setWithObject:&unk_28459E340];
@@ -273,7 +273,7 @@ LABEL_8:
     v113 = &v130;
     v42 = v36;
     v111 = v42;
-    [v37 fetchStoredVisitsWithOptions:v41 handler:v110];
+    [visitManager fetchStoredVisitsWithOptions:v41 handler:v110];
 
     dispatch_group_wait(v42, 0xFFFFFFFFFFFFFFFFLL);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -307,10 +307,10 @@ LABEL_8:
     v51 = *(v125 + 5);
     if (v51 || (v52 = v166[5]) == 0)
     {
-      if (a3)
+      if (error)
       {
         v33 = 0;
-        *a3 = v51;
+        *error = v51;
 LABEL_60:
 
         _Block_object_dispose(&v118, 8);
@@ -331,33 +331,33 @@ LABEL_60:
         goto LABEL_28;
       }
 
-      v78 = [v131[5] location];
-      if (!v78)
+      location = [v131[5] location];
+      if (!location)
       {
         goto LABEL_28;
       }
 
-      v79 = [v131[5] exit];
-      v80 = v79 == 0;
+      exit = [v131[5] exit];
+      v80 = exit == 0;
 
       if (!v80)
       {
         goto LABEL_28;
       }
 
-      v81 = [(RTPlaceTypeClassifierExpertFallback *)self distanceCalculator];
+      distanceCalculator = [(RTPlaceTypeClassifierExpertFallback *)self distanceCalculator];
       v82 = v166[5];
-      v83 = [v131[5] location];
+      location2 = [v131[5] location];
       v109 = 0;
-      [v81 distanceFromLocation:v82 toLocation:v83 error:&v109];
+      [distanceCalculator distanceFromLocation:v82 toLocation:location2 error:&v109];
       v85 = v84;
       v86 = v109;
 
       if (v85 < 250.0)
       {
-        v87 = [v131[5] location];
+        location3 = [v131[5] location];
 
-        v53 = v87;
+        v53 = location3;
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -386,8 +386,8 @@ LABEL_60:
       if (v53)
       {
 LABEL_28:
-        v54 = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
-        v98 = [v54 predicateForObjectsFromCurrentDevice];
+        learnedLocationStore2 = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
+        predicateForObjectsFromCurrentDevice = [learnedLocationStore2 predicateForObjectsFromCurrentDevice];
 
         v55 = dispatch_semaphore_create(0);
         v103 = 0;
@@ -396,10 +396,10 @@ LABEL_28:
         v106 = __Block_byref_object_copy__81;
         v107 = __Block_byref_object_dispose__81;
         v108 = 0;
-        v56 = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
+        learnedLocationStore3 = [(RTPlaceTypeClassifierExpertFallback *)self learnedLocationStore];
         v101 = v55;
         v102 = COERCE_DOUBLE(v53);
-        [v56 fetchPlacesWithinDistance:250.0 location:? predicate:? handler:?];
+        [learnedLocationStore3 fetchPlacesWithinDistance:250.0 location:? predicate:? handler:?];
 
         v8 = v101;
         v97 = [MEMORY[0x277CBEAA8] now];
@@ -414,11 +414,11 @@ LABEL_28:
         v59 = v58;
         v95 = objc_opt_new();
         v60 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_64];
-        v61 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v62 = [v61 filteredArrayUsingPredicate:v60];
-        v63 = [v62 firstObject];
+        callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+        v62 = [callStackSymbols2 filteredArrayUsingPredicate:v60];
+        firstObject2 = [v62 firstObject];
 
-        [v95 submitToCoreAnalytics:v63 type:1 duration:v59];
+        [v95 submitToCoreAnalytics:firstObject2 type:1 duration:v59];
         v64 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v64, OS_LOG_TYPE_FAULT))
         {
@@ -480,22 +480,22 @@ LABEL_33:
         if (v77 || !v104[5])
         {
           v33 = 0;
-          if (a3)
+          if (error)
           {
-            *a3 = v77;
+            *error = v77;
           }
         }
 
         else
         {
-          v92 = [(RTPlaceTypeClassifierExpertFallback *)self placeTypeClassifierMetricsCalculator];
+          placeTypeClassifierMetricsCalculator = [(RTPlaceTypeClassifierExpertFallback *)self placeTypeClassifierMetricsCalculator];
           v153 = v104[5];
           v93 = [MEMORY[0x277CBEA60] arrayWithObjects:&v153 count:1];
-          [v92 storeMetricsData:v93 source:18];
+          [placeTypeClassifierMetricsCalculator storeMetricsData:v93 source:18];
 
-          if (a3)
+          if (error)
           {
-            *a3 = 0;
+            *error = 0;
           }
 
           v152 = v104[5];
@@ -507,10 +507,10 @@ LABEL_33:
         goto LABEL_60;
       }
 
-      if (a3)
+      if (error)
       {
         v33 = 0;
-        *a3 = 0;
+        *error = 0;
         goto LABEL_60;
       }
     }
@@ -520,9 +520,9 @@ LABEL_33:
   }
 
   v33 = 0;
-  if (a3)
+  if (error)
   {
-    *a3 = v32;
+    *error = v32;
   }
 
 LABEL_61:
@@ -743,107 +743,107 @@ void __57__RTPlaceTypeClassifierExpertFallback_classifyWithError___block_invoke_
   }
 }
 
-- (id)updatePlace:(id)a3
+- (id)updatePlace:(id)place
 {
-  v3 = a3;
-  if (v3)
+  placeCopy = place;
+  if (placeCopy)
   {
-    v99 = [MEMORY[0x277CBEAA8] date];
-    v98 = [v99 dateByAddingTimeInterval:4838400.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v98 = [date dateByAddingTimeInterval:4838400.0];
     v96 = objc_alloc(MEMORY[0x277D01060]);
-    v69 = [v3 mapItem];
-    v67 = [v69 address];
-    v94 = [v67 identifier];
-    v65 = [v3 mapItem];
-    v63 = [v65 address];
-    v92 = [v63 geoAddressData];
-    v61 = [v3 mapItem];
-    v59 = [v61 address];
-    v90 = [v59 subPremises];
-    v58 = [v3 mapItem];
-    v57 = [v58 address];
-    v88 = [v57 subThoroughfare];
-    v56 = [v3 mapItem];
-    v55 = [v56 address];
-    v86 = [v55 thoroughfare];
-    v54 = [v3 mapItem];
-    v53 = [v54 address];
-    v82 = [v53 subLocality];
-    v52 = [v3 mapItem];
-    v51 = [v52 address];
-    v84 = [v51 locality];
-    v50 = [v3 mapItem];
-    v49 = [v50 address];
-    v80 = [v49 subAdministrativeArea];
-    v48 = [v3 mapItem];
-    v47 = [v48 address];
-    v78 = [v47 administrativeArea];
-    v46 = [v3 mapItem];
-    v45 = [v46 address];
-    v76 = [v45 administrativeAreaCode];
-    v44 = [v3 mapItem];
-    v43 = [v44 address];
-    v73 = [v43 postalCode];
-    v42 = [v3 mapItem];
-    v41 = [v42 address];
-    v71 = [v41 country];
-    v40 = [v3 mapItem];
-    v39 = [v40 address];
-    v32 = [v39 countryCode];
-    v38 = [v3 mapItem];
-    v37 = [v38 address];
-    v29 = [v37 inlandWater];
-    v36 = [v3 mapItem];
-    v35 = [v36 address];
-    v28 = [v35 ocean];
-    v34 = [v3 mapItem];
-    v33 = [v34 address];
-    v4 = [v33 areasOfInterest];
-    v31 = [v3 mapItem];
-    v30 = [v31 address];
-    v5 = [v30 isIsland];
-    v6 = [v3 mapItem];
-    v7 = [v6 address];
-    v8 = [v7 iso3166CountryCode];
-    v9 = [v3 mapItem];
-    v10 = [v9 address];
-    v11 = [v10 iso3166SubdivisionCode];
-    LOBYTE(v26) = v5;
-    v97 = [v96 initWithIdentifier:v94 geoAddressData:v92 subPremises:v90 subThoroughfare:v88 thoroughfare:v86 subLocality:v82 locality:v84 subAdministrativeArea:v80 administrativeArea:v78 administrativeAreaCode:v76 postalCode:v73 country:v71 countryCode:v32 inlandWater:v29 ocean:v28 areasOfInterest:v4 isIsland:v26 creationDate:v99 expirationDate:v98 iso3166CountryCode:v8 iso3166SubdivisionCode:v11];
+    mapItem = [placeCopy mapItem];
+    address = [mapItem address];
+    identifier = [address identifier];
+    mapItem2 = [placeCopy mapItem];
+    address2 = [mapItem2 address];
+    geoAddressData = [address2 geoAddressData];
+    mapItem3 = [placeCopy mapItem];
+    address3 = [mapItem3 address];
+    subPremises = [address3 subPremises];
+    mapItem4 = [placeCopy mapItem];
+    address4 = [mapItem4 address];
+    subThoroughfare = [address4 subThoroughfare];
+    mapItem5 = [placeCopy mapItem];
+    address5 = [mapItem5 address];
+    thoroughfare = [address5 thoroughfare];
+    mapItem6 = [placeCopy mapItem];
+    address6 = [mapItem6 address];
+    subLocality = [address6 subLocality];
+    mapItem7 = [placeCopy mapItem];
+    address7 = [mapItem7 address];
+    locality = [address7 locality];
+    mapItem8 = [placeCopy mapItem];
+    address8 = [mapItem8 address];
+    subAdministrativeArea = [address8 subAdministrativeArea];
+    mapItem9 = [placeCopy mapItem];
+    address9 = [mapItem9 address];
+    administrativeArea = [address9 administrativeArea];
+    mapItem10 = [placeCopy mapItem];
+    address10 = [mapItem10 address];
+    administrativeAreaCode = [address10 administrativeAreaCode];
+    mapItem11 = [placeCopy mapItem];
+    address11 = [mapItem11 address];
+    postalCode = [address11 postalCode];
+    mapItem12 = [placeCopy mapItem];
+    address12 = [mapItem12 address];
+    country = [address12 country];
+    mapItem13 = [placeCopy mapItem];
+    address13 = [mapItem13 address];
+    countryCode = [address13 countryCode];
+    mapItem14 = [placeCopy mapItem];
+    address14 = [mapItem14 address];
+    inlandWater = [address14 inlandWater];
+    mapItem15 = [placeCopy mapItem];
+    address15 = [mapItem15 address];
+    ocean = [address15 ocean];
+    mapItem16 = [placeCopy mapItem];
+    address16 = [mapItem16 address];
+    areasOfInterest = [address16 areasOfInterest];
+    mapItem17 = [placeCopy mapItem];
+    address17 = [mapItem17 address];
+    isIsland = [address17 isIsland];
+    mapItem18 = [placeCopy mapItem];
+    address18 = [mapItem18 address];
+    iso3166CountryCode = [address18 iso3166CountryCode];
+    mapItem19 = [placeCopy mapItem];
+    address19 = [mapItem19 address];
+    iso3166SubdivisionCode = [address19 iso3166SubdivisionCode];
+    LOBYTE(v26) = isIsland;
+    v97 = [v96 initWithIdentifier:identifier geoAddressData:geoAddressData subPremises:subPremises subThoroughfare:subThoroughfare thoroughfare:thoroughfare subLocality:subLocality locality:locality subAdministrativeArea:subAdministrativeArea administrativeArea:administrativeArea administrativeAreaCode:administrativeAreaCode postalCode:postalCode country:country countryCode:countryCode inlandWater:inlandWater ocean:ocean areasOfInterest:areasOfInterest isIsland:v26 creationDate:date expirationDate:v98 iso3166CountryCode:iso3166CountryCode iso3166SubdivisionCode:iso3166SubdivisionCode];
 
     v74 = objc_alloc(MEMORY[0x277D011A0]);
-    v91 = [v3 mapItem];
-    v95 = [v91 identifier];
-    v89 = [v3 mapItem];
-    v93 = [v89 name];
-    v87 = [v3 mapItem];
-    v12 = [v87 category];
-    v85 = [v3 mapItem];
-    v13 = [v85 categoryMUID];
-    v83 = [v3 mapItem];
-    v70 = [v83 location];
-    v81 = [v3 mapItem];
-    v66 = [v81 mapItemPlaceType];
-    v79 = [v3 mapItem];
-    v64 = [v79 muid];
-    v77 = [v3 mapItem];
-    v62 = [v77 resultProviderID];
-    v72 = [v3 mapItem];
-    v60 = [v72 geoMapItemHandle];
-    v68 = [v3 mapItem];
-    v14 = [v68 geoMapItemIdentifier];
-    v15 = [v3 mapItem];
-    v16 = [v15 extendedAttributes];
-    v17 = [v3 mapItem];
-    v18 = [v17 displayLanguage];
-    v19 = [v3 mapItem];
-    LOBYTE(v27) = [v19 disputed];
-    v75 = [v74 initWithIdentifier:v95 name:v93 category:v12 categoryMUID:v13 address:v97 location:v70 source:0x20000 mapItemPlaceType:v66 muid:v64 resultProviderID:v62 geoMapItemHandle:v60 geoMapItemIdentifier:v14 creationDate:v99 expirationDate:v98 extendedAttributes:v16 displayLanguage:v18 disputed:v27];
+    mapItem20 = [placeCopy mapItem];
+    identifier2 = [mapItem20 identifier];
+    mapItem21 = [placeCopy mapItem];
+    name = [mapItem21 name];
+    mapItem22 = [placeCopy mapItem];
+    category = [mapItem22 category];
+    mapItem23 = [placeCopy mapItem];
+    categoryMUID = [mapItem23 categoryMUID];
+    mapItem24 = [placeCopy mapItem];
+    location = [mapItem24 location];
+    mapItem25 = [placeCopy mapItem];
+    mapItemPlaceType = [mapItem25 mapItemPlaceType];
+    mapItem26 = [placeCopy mapItem];
+    muid = [mapItem26 muid];
+    mapItem27 = [placeCopy mapItem];
+    resultProviderID = [mapItem27 resultProviderID];
+    mapItem28 = [placeCopy mapItem];
+    geoMapItemHandle = [mapItem28 geoMapItemHandle];
+    mapItem29 = [placeCopy mapItem];
+    geoMapItemIdentifier = [mapItem29 geoMapItemIdentifier];
+    mapItem30 = [placeCopy mapItem];
+    extendedAttributes = [mapItem30 extendedAttributes];
+    mapItem31 = [placeCopy mapItem];
+    displayLanguage = [mapItem31 displayLanguage];
+    mapItem32 = [placeCopy mapItem];
+    LOBYTE(v27) = [mapItem32 disputed];
+    v75 = [v74 initWithIdentifier:identifier2 name:name category:category categoryMUID:categoryMUID address:v97 location:location source:0x20000 mapItemPlaceType:mapItemPlaceType muid:muid resultProviderID:resultProviderID geoMapItemHandle:geoMapItemHandle geoMapItemIdentifier:geoMapItemIdentifier creationDate:date expirationDate:v98 extendedAttributes:extendedAttributes displayLanguage:displayLanguage disputed:v27];
 
     v20 = [RTLearnedPlace alloc];
-    v21 = [v3 identifier];
-    v22 = [v3 customLabel];
-    v23 = [(RTLearnedPlace *)v20 initWithIdentifier:v21 type:1 typeSource:8 mapItem:v75 customLabel:v22 creationDate:v99 expirationDate:v98];
+    identifier3 = [placeCopy identifier];
+    customLabel = [placeCopy customLabel];
+    v23 = [(RTLearnedPlace *)v20 initWithIdentifier:identifier3 type:1 typeSource:8 mapItem:v75 customLabel:customLabel creationDate:date expirationDate:v98];
   }
 
   else

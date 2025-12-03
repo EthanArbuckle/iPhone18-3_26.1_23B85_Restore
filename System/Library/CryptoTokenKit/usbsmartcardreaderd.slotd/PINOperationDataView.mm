@@ -1,6 +1,6 @@
 @interface PINOperationDataView
-- (PINOperationDataView)initWithData:(id)a3;
-- (PINOperationDataView)initWithLength:(unint64_t)a3;
+- (PINOperationDataView)initWithData:(id)data;
+- (PINOperationDataView)initWithLength:(unint64_t)length;
 - (unsigned)lengthByte;
 - (unsigned)nodeAddressByte;
 - (unsigned)protocolControlByte;
@@ -8,18 +8,18 @@
 
 @implementation PINOperationDataView
 
-- (PINOperationDataView)initWithLength:(unint64_t)a3
+- (PINOperationDataView)initWithLength:(unint64_t)length
 {
   v4.receiver = self;
   v4.super_class = PINOperationDataView;
-  return [(TKDataView *)&v4 initWithLength:a3];
+  return [(TKDataView *)&v4 initWithLength:length];
 }
 
-- (PINOperationDataView)initWithData:(id)a3
+- (PINOperationDataView)initWithData:(id)data
 {
   v4.receiver = self;
   v4.super_class = PINOperationDataView;
-  return [(TKDataView *)&v4 initWithData:a3];
+  return [(TKDataView *)&v4 initWithData:data];
 }
 
 - (unsigned)nodeAddressByte

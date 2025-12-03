@@ -1,49 +1,49 @@
 @interface MTLLegacySVTexture
-- (MTLLegacySVTexture)initWithTexture:(id)a3 heap:(id)a4 device:(id)a5;
-- (MTLLegacySVTexture)initWithTextureView:(id)a3 parentBuffer:(id)a4 heap:(id)a5 device:(id)a6;
-- (MTLLegacySVTexture)initWithTextureView:(id)a3 parentTexture:(id)a4 heap:(id)a5 device:(id)a6;
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6;
-- (id)newTextureViewWithDescriptor:(id)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8;
+- (MTLLegacySVTexture)initWithTexture:(id)texture heap:(id)heap device:(id)device;
+- (MTLLegacySVTexture)initWithTextureView:(id)view parentBuffer:(id)buffer heap:(id)heap device:(id)device;
+- (MTLLegacySVTexture)initWithTextureView:(id)view parentTexture:(id)texture heap:(id)heap device:(id)device;
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice;
+- (id)newTextureViewWithDescriptor:(id)descriptor;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index;
 @end
 
 @implementation MTLLegacySVTexture
 
-- (MTLLegacySVTexture)initWithTexture:(id)a3 heap:(id)a4 device:(id)a5
+- (MTLLegacySVTexture)initWithTexture:(id)texture heap:(id)heap device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MTLLegacySVTexture;
-  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:a3 parent:a5 heap:a4];
+  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:texture parent:device heap:heap];
   InitResourceIdentifier(v5);
   return v5;
 }
 
-- (MTLLegacySVTexture)initWithTextureView:(id)a3 parentBuffer:(id)a4 heap:(id)a5 device:(id)a6
+- (MTLLegacySVTexture)initWithTextureView:(id)view parentBuffer:(id)buffer heap:(id)heap device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MTLLegacySVTexture;
-  v6 = [(MTLToolsTexture *)&v8 initWithBaseObject:a3 parent:a6 buffer:a4];
+  v6 = [(MTLToolsTexture *)&v8 initWithBaseObject:view parent:device buffer:buffer];
   InitResourceIdentifier(v6);
   return v6;
 }
 
-- (MTLLegacySVTexture)initWithTextureView:(id)a3 parentTexture:(id)a4 heap:(id)a5 device:(id)a6
+- (MTLLegacySVTexture)initWithTextureView:(id)view parentTexture:(id)texture heap:(id)heap device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MTLLegacySVTexture;
-  v6 = [(MTLToolsTexture *)&v8 initWithBaseObject:a3 parent:a6 parentTexture:a4];
+  v6 = [(MTLToolsTexture *)&v8 initWithBaseObject:view parent:device parentTexture:texture];
   InitResourceIdentifier(v6);
   return v6;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3
+- (id)newTextureViewWithPixelFormat:(unint64_t)format
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format];
   if (result)
   {
     v5 = result;
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3 textureType:a4 levels:a5.location slices:a5.length, a6.location, a6.length];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format textureType:type levels:levels.location slices:levels.length, slices.location, slices.length];
   if (result)
   {
     v8 = result;
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3 textureType:a4 levels:a5.location slices:a5.length swizzle:a6.location, a6.length, *&a7];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format textureType:type levels:levels.location slices:levels.length swizzle:slices.location, slices.length, *&swizzle];
   if (result)
   {
     v9 = result;
@@ -83,9 +83,9 @@
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3 resourceIndex:a4];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format resourceIndex:index];
   if (result)
   {
     v6 = result;
@@ -97,9 +97,9 @@
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3 textureType:a4 levels:a5.location slices:a5.length resourceIndex:a6.location, a6.length, a7];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format textureType:type levels:levels.location slices:levels.length resourceIndex:slices.location, slices.length, index];
   if (result)
   {
     v9 = result;
@@ -111,9 +111,9 @@
   return result;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:a3 textureType:a4 levels:a5.location slices:a5.length swizzle:a6.location resourceIndex:a6.length, *&a7, a8];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithPixelFormat:format textureType:type levels:levels.location slices:levels.length swizzle:slices.location resourceIndex:slices.length, *&swizzle, index];
   if (result)
   {
     v10 = result;
@@ -125,9 +125,9 @@
   return result;
 }
 
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newCompressedTextureViewWithPixelFormat:a3 textureType:a4 level:a5 slice:a6];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newCompressedTextureViewWithPixelFormat:format textureType:type level:level slice:slice];
   if (result)
   {
     v8 = result;
@@ -139,9 +139,9 @@
   return result;
 }
 
-- (id)newTextureViewWithDescriptor:(id)a3
+- (id)newTextureViewWithDescriptor:(id)descriptor
 {
-  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithDescriptor:a3];
+  result = [(MTLToolsObject *)self->super.super.super._baseObject newTextureViewWithDescriptor:descriptor];
   if (result)
   {
     v5 = result;

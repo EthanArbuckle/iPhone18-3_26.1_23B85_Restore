@@ -1,8 +1,8 @@
 @interface ClimateFanButton
 - (NSUUID)trackerUUID;
 - (_TtC7Climate16ClimateFanButton)init;
-- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)a3;
-- (void)siblingDidUpdateWithProgress:(double)a3;
+- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)increasing;
+- (void)siblingDidUpdateWithProgress:(double)progress;
 @end
 
 @implementation ClimateFanButton
@@ -34,17 +34,17 @@
   return result;
 }
 
-- (void)siblingDidUpdateWithProgress:(double)a3
+- (void)siblingDidUpdateWithProgress:(double)progress
 {
-  v4 = self;
-  sub_10009CF40(a3);
+  selfCopy = self;
+  sub_10009CF40(progress);
 }
 
-- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)a3
+- (void)siblingDidStopSlidingWithWasIncreasing:(BOOL)increasing
 {
   *(self + OBJC_IVAR____TtC7Climate16ClimateFanButton_shouldIgnoreCarUpdates) = 0;
   v3 = *(self + OBJC_IVAR____TtC7Climate16ClimateFanButton_fan);
-  v4 = self;
+  selfCopy = self;
   sub_10009BE64([v3 fanLevel]);
 }
 

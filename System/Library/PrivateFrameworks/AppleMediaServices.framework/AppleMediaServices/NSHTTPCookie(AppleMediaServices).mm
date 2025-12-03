@@ -18,16 +18,16 @@
 
 - (uint64_t)ams_isCookieValidForBag
 {
-  v2 = [a1 domain];
-  v3 = [v2 containsString:@".apple.com"];
+  domain = [self domain];
+  v3 = [domain containsString:@".apple.com"];
 
   if (v3)
   {
-    v4 = [a1 name];
-    if ([v4 isEqualToString:@"itspod"])
+    name = [self name];
+    if ([name isEqualToString:@"itspod"])
     {
-      v5 = [a1 value];
-      v6 = [v5 isEqualToString:@"100"];
+      value = [self value];
+      v6 = [value isEqualToString:@"100"];
 
       v7 = v6 ^ 1;
     }
@@ -49,21 +49,21 @@
 
 - (uint64_t)ams_isDeleted
 {
-  v1 = [a1 expiresDate];
-  v2 = [MEMORY[0x1E695DF00] distantPast];
-  v3 = [v1 isEqualToDate:v2];
+  expiresDate = [self expiresDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v3 = [expiresDate isEqualToDate:distantPast];
 
   return v3;
 }
 
 - (BOOL)ams_isExpired
 {
-  v2 = [a1 expiresDate];
-  if (v2)
+  expiresDate = [self expiresDate];
+  if (expiresDate)
   {
-    v3 = [a1 expiresDate];
+    expiresDate2 = [self expiresDate];
     v4 = [MEMORY[0x1E695DF00] now];
-    v5 = [v3 compare:v4] != 1;
+    v5 = [expiresDate2 compare:v4] != 1;
   }
 
   else
@@ -76,12 +76,12 @@
 
 + (id)ams_cookieByMarkingCookieAsDeleted:()AppleMediaServices
 {
-  v3 = [a3 properties];
-  v4 = [v3 mutableCopy];
+  properties = [a3 properties];
+  v4 = [properties mutableCopy];
 
   [v4 setObject:0 forKeyedSubscript:*MEMORY[0x1E695AAC8]];
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695AAD8]];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [v4 setObject:distantPast forKeyedSubscript:*MEMORY[0x1E695AAD8]];
 
   v6 = [objc_alloc(objc_opt_class()) initWithProperties:v4];
 
@@ -90,49 +90,49 @@
 
 - (uint64_t)_domainMatchesURL:()AppleMediaServices
 {
-  v4 = [a3 host];
-  v5 = v4;
-  if (v4 && ([v4 hasPrefix:@"."] & 1) == 0)
+  host = [a3 host];
+  v5 = host;
+  if (host && ([host hasPrefix:@"."] & 1) == 0)
   {
     v6 = [@"." stringByAppendingString:v5];
 
     v5 = v6;
   }
 
-  v7 = [v5 lowercaseString];
-  v8 = [a1 domain];
-  v9 = [v8 lowercaseString];
-  v10 = [v7 hasSuffix:v9];
+  lowercaseString = [v5 lowercaseString];
+  domain = [self domain];
+  lowercaseString2 = [domain lowercaseString];
+  v10 = [lowercaseString hasSuffix:lowercaseString2];
 
   return v10;
 }
 
 - (uint64_t)_pathMatchesURL:()AppleMediaServices
 {
-  v5 = [a3 path];
-  if (![(__CFString *)v5 length])
+  path = [a3 path];
+  if (![(__CFString *)path length])
   {
 
-    v5 = @"/";
+    path = @"/";
   }
 
-  v6 = [a1 path];
-  if (([v6 isEqualToString:v5] & 1) == 0)
+  path2 = [self path];
+  if (([path2 isEqualToString:path] & 1) == 0)
   {
-    v8 = [a1 path];
-    v9 = [(__CFString *)v5 hasPrefix:v8];
-    if (v9 && ([a1 path], v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "hasSuffix:", @"/") & 1) != 0))
+    path3 = [self path];
+    v9 = [(__CFString *)path hasPrefix:path3];
+    if (v9 && ([self path], v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "hasSuffix:", @"/") & 1) != 0))
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [a1 path];
-      if ([(__CFString *)v5 hasPrefix:v10])
+      path4 = [self path];
+      if ([(__CFString *)path hasPrefix:path4])
       {
-        v11 = [a1 path];
-        v12 = -[__CFString substringFromIndex:](v5, "substringFromIndex:", [v11 length]);
+        path5 = [self path];
+        v12 = -[__CFString substringFromIndex:](path, "substringFromIndex:", [path5 length]);
         v7 = [v12 hasPrefix:@"/"];
 
         if ((v9 & 1) == 0)
@@ -166,45 +166,45 @@ LABEL_14:
 - (uint64_t)_httpOnlyMatchesURL:()AppleMediaServices
 {
   v4 = a3;
-  if ([a1 isHTTPOnly])
+  if ([self isHTTPOnly])
   {
-    v5 = [v4 ams_isHTTP];
+    ams_isHTTP = [v4 ams_isHTTP];
   }
 
   else
   {
-    v5 = 1;
+    ams_isHTTP = 1;
   }
 
-  return v5;
+  return ams_isHTTP;
 }
 
 - (uint64_t)_secureOnlyMatchesURL:()AppleMediaServices
 {
   v4 = a3;
-  if ([a1 isSecure])
+  if ([self isSecure])
   {
-    v5 = [v4 ams_isSecure];
+    ams_isSecure = [v4 ams_isSecure];
   }
 
   else
   {
-    v5 = 1;
+    ams_isSecure = 1;
   }
 
-  return v5;
+  return ams_isSecure;
 }
 
 - (uint64_t)ams_isEqualToCookie:()AppleMediaServices
 {
   v5 = a3;
-  v6 = [a1 domain];
-  v7 = [v5 domain];
-  if ([v6 isEqualToString:v7])
+  domain = [self domain];
+  domain2 = [v5 domain];
+  if ([domain isEqualToString:domain2])
   {
-    v8 = [a1 path];
-    v9 = [v5 path];
-    if (![v8 isEqualToString:v9])
+    path = [self path];
+    path2 = [v5 path];
+    if (![path isEqualToString:path2])
     {
       v12 = 0;
 LABEL_29:
@@ -212,12 +212,12 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v10 = [a1 portList];
-    if (v10 || ([v5 portList], (v59 = objc_claimAutoreleasedReturnValue()) != 0))
+    portList = [self portList];
+    if (portList || ([v5 portList], (v59 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v11 = [a1 portList];
-      v3 = [v5 portList];
-      if (![v11 isEqual:v3])
+      portList2 = [self portList];
+      portList3 = [v5 portList];
+      if (![portList2 isEqual:portList3])
       {
         v12 = 0;
 LABEL_25:
@@ -225,7 +225,7 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v58 = v11;
+      v58 = portList2;
       v61 = 1;
     }
 
@@ -235,51 +235,51 @@ LABEL_25:
       v61 = 0;
     }
 
-    v13 = [a1 name];
-    v14 = [v5 name];
-    v60 = v13;
-    v15 = v13;
-    v16 = v14;
-    if (![v15 isEqualToString:v14])
+    name = [self name];
+    name2 = [v5 name];
+    v60 = name;
+    v15 = name;
+    v16 = name2;
+    if (![v15 isEqualToString:name2])
     {
       v12 = 0;
       goto LABEL_20;
     }
 
-    v17 = v3;
-    v18 = [a1 value];
-    v19 = [v5 value];
-    v57 = v18;
-    v20 = v18;
-    v21 = v19;
-    if (![v20 isEqualToString:v19] || (v56 = v16, v22 = objc_msgSend(a1, "version"), v23 = v22 == objc_msgSend(v5, "version"), v16 = v56, !v23))
+    v17 = portList3;
+    value = [self value];
+    value2 = [v5 value];
+    v57 = value;
+    v20 = value;
+    v21 = value2;
+    if (![v20 isEqualToString:value2] || (v56 = v16, v22 = objc_msgSend(self, "version"), v23 = v22 == objc_msgSend(v5, "version"), v16 = v56, !v23))
     {
 
       v12 = 0;
       if ((v61 & 1) == 0)
       {
 LABEL_26:
-        if (!v10)
+        if (!portList)
         {
         }
 
         goto LABEL_29;
       }
 
-      v3 = v17;
+      portList3 = v17;
       goto LABEL_24;
     }
 
     v55 = v21;
-    [a1 expiresDate];
-    v54 = v3 = v17;
+    [self expiresDate];
+    v54 = portList3 = v17;
     if (v54 || ([v5 expiresDate], (v49 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v52 = v17;
-      v24 = [a1 expiresDate];
-      v25 = [v5 expiresDate];
-      v51 = v24;
-      if (([v24 isEqual:v25] & 1) == 0)
+      expiresDate = [self expiresDate];
+      expiresDate2 = [v5 expiresDate];
+      v51 = expiresDate;
+      if (([expiresDate isEqual:expiresDate2] & 1) == 0)
       {
 
         if (!v54)
@@ -287,20 +287,20 @@ LABEL_26:
         }
 
         v12 = 0;
-        v3 = v52;
+        portList3 = v52;
         if ((v61 & 1) == 0)
         {
           goto LABEL_26;
         }
 
 LABEL_24:
-        v11 = v58;
+        portList2 = v58;
         goto LABEL_25;
       }
 
-      v48 = v25;
+      v48 = expiresDate2;
       v50 = 1;
-      v3 = v52;
+      portList3 = v52;
     }
 
     else
@@ -309,8 +309,8 @@ LABEL_24:
       v50 = 0;
     }
 
-    v27 = [a1 isSessionOnly];
-    if (v27 != [v5 isSessionOnly] || (v28 = objc_msgSend(a1, "isHTTPOnly"), v28 != objc_msgSend(v5, "isHTTPOnly")) || (v29 = objc_msgSend(a1, "isSecure"), v29 != objc_msgSend(v5, "isSecure")))
+    isSessionOnly = [self isSessionOnly];
+    if (isSessionOnly != [v5 isSessionOnly] || (v28 = objc_msgSend(self, "isHTTPOnly"), v28 != objc_msgSend(v5, "isHTTPOnly")) || (v29 = objc_msgSend(self, "isSecure"), v29 != objc_msgSend(v5, "isSecure")))
     {
       v12 = 0;
       v30 = v59;
@@ -339,14 +339,14 @@ LABEL_65:
       goto LABEL_66;
     }
 
-    [a1 sameSitePolicy];
+    [self sameSitePolicy];
     v53 = v16 = v56;
     if (v53 || ([v5 sameSitePolicy], (v41 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v31 = [a1 sameSitePolicy];
-      v46 = [v5 sameSitePolicy];
-      v47 = v31;
-      if (![v31 isEqual:v46])
+      sameSitePolicy = [self sameSitePolicy];
+      sameSitePolicy2 = [v5 sameSitePolicy];
+      v47 = sameSitePolicy;
+      if (![sameSitePolicy isEqual:sameSitePolicy2])
       {
         v12 = 0;
         goto LABEL_61;
@@ -361,13 +361,13 @@ LABEL_65:
       v44 = 0;
     }
 
-    v45 = [a1 comment];
-    if (v45 || ([v5 comment], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+    comment = [self comment];
+    if (comment || ([v5 comment], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v32 = [a1 comment];
-      v42 = [v5 comment];
-      v43 = v32;
-      if (![v32 isEqual:v42])
+      comment2 = [self comment];
+      comment3 = [v5 comment];
+      v43 = comment2;
+      if (![comment2 isEqual:comment3])
       {
         v12 = 0;
         goto LABEL_57;
@@ -382,14 +382,14 @@ LABEL_65:
       v40 = 0;
     }
 
-    v39 = [a1 commentURL];
-    if (v39 || ([v5 commentURL], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
+    commentURL = [self commentURL];
+    if (commentURL || ([v5 commentURL], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v33 = [a1 commentURL];
-      v34 = [v5 commentURL];
-      v12 = [v33 isEqual:v34];
+      commentURL2 = [self commentURL];
+      commentURL3 = [v5 commentURL];
+      v12 = [commentURL2 isEqual:commentURL3];
 
-      if (v39)
+      if (commentURL)
       {
 
         v16 = v56;
@@ -413,8 +413,8 @@ LABEL_65:
     if ((v40 & 1) == 0)
     {
 LABEL_58:
-      v35 = v45;
-      if (!v45)
+      v35 = comment;
+      if (!comment)
       {
 
         v35 = 0;
@@ -458,17 +458,17 @@ LABEL_30:
 - (uint64_t)ams_isEquivalent:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = [v4 domain];
-  if ([v5 isEqualToString:v6])
+  domain = [self domain];
+  domain2 = [v4 domain];
+  if ([domain isEqualToString:domain2])
   {
-    v7 = [a1 name];
-    v8 = [v4 name];
-    if ([v7 isEqualToString:v8])
+    name = [self name];
+    name2 = [v4 name];
+    if ([name isEqualToString:name2])
     {
-      v9 = [a1 path];
-      v10 = [v4 path];
-      v11 = [v9 isEqualToString:v10];
+      path = [self path];
+      path2 = [v4 path];
+      v11 = [path isEqualToString:path2];
     }
 
     else
@@ -488,9 +488,9 @@ LABEL_30:
 - (uint64_t)ams_matchesURL:()AppleMediaServices
 {
   v4 = a3;
-  if ([a1 _domainMatchesURL:v4] && objc_msgSend(a1, "_pathMatchesURL:", v4) && objc_msgSend(a1, "_secureOnlyMatchesURL:", v4))
+  if ([self _domainMatchesURL:v4] && objc_msgSend(self, "_pathMatchesURL:", v4) && objc_msgSend(self, "_secureOnlyMatchesURL:", v4))
   {
-    v5 = [a1 _httpOnlyMatchesURL:v4];
+    v5 = [self _httpOnlyMatchesURL:v4];
   }
 
   else
@@ -504,17 +504,17 @@ LABEL_30:
 - (uint64_t)ams_shouldReplaceCookie:()AppleMediaServices
 {
   v4 = a3;
-  if (![a1 ams_isEquivalent:v4])
+  if (![self ams_isEquivalent:v4])
   {
 LABEL_7:
     LOBYTE(v11) = 0;
     goto LABEL_9;
   }
 
-  v5 = [a1 expiresDate];
-  if (!v5 || (v6 = v5, [v4 expiresDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7) || (objc_msgSend(a1, "expiresDate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "expiresDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "compare:", v9), v9, v8, (v10 + 1) >= 3))
+  expiresDate = [self expiresDate];
+  if (!expiresDate || (v6 = expiresDate, [v4 expiresDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7) || (objc_msgSend(self, "expiresDate"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "expiresDate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "compare:", v9), v9, v8, (v10 + 1) >= 3))
   {
-    if (([a1 ams_isExpired] & 1) == 0)
+    if (([self ams_isExpired] & 1) == 0)
     {
       LOBYTE(v11) = [v4 ams_isExpired];
       goto LABEL_9;
@@ -531,29 +531,29 @@ LABEL_9:
 
 - (id)hashedDescription
 {
-  v2 = [MEMORY[0x1E696AD60] stringWithFormat:@"<NSHTTPCookie: %p {", a1];
-  v3 = [a1 name];
-  [v2 appendFormat:@"\n  name = %@, ", v3];
+  v2 = [MEMORY[0x1E696AD60] stringWithFormat:@"<NSHTTPCookie: %p {", self];
+  name = [self name];
+  [v2 appendFormat:@"\n  name = %@, ", name];
 
-  v4 = [a1 domain];
-  [v2 appendFormat:@"\n  domain = %@, ", v4];
+  domain = [self domain];
+  [v2 appendFormat:@"\n  domain = %@, ", domain];
 
-  v5 = [a1 path];
-  [v2 appendFormat:@"\n  path = %@, ", v5];
+  path = [self path];
+  [v2 appendFormat:@"\n  path = %@, ", path];
 
-  v6 = [a1 expiresDate];
-  [v2 appendFormat:@"\n  expires = %@, ", v6];
+  expiresDate = [self expiresDate];
+  [v2 appendFormat:@"\n  expires = %@, ", expiresDate];
 
-  v7 = [a1 isSecure];
+  isSecure = [self isSecure];
   v8 = @"false";
-  if (v7)
+  if (isSecure)
   {
     v8 = @"true";
   }
 
   [v2 appendFormat:@"\n  isSecure = %@, ", v8];
-  v9 = [a1 value];
-  v10 = AMSHashIfNeeded(v9);
+  value = [self value];
+  v10 = AMSHashIfNeeded(value);
   [v2 appendFormat:@"\n  value = %@, ", v10];
 
   [v2 appendString:@"\n}>"];

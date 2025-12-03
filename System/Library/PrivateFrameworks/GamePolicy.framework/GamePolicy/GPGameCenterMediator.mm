@@ -1,29 +1,29 @@
 @interface GPGameCenterMediator
 + (void)launchApp;
-+ (void)launchOverlayForGameBundleId:(id)a3;
++ (void)launchOverlayForGameBundleId:(id)id;
 @end
 
 @implementation GPGameCenterMediator
 
-+ (void)launchOverlayForGameBundleId:(id)a3
++ (void)launchOverlayForGameBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   GKDaemonProxyClass = getGKDaemonProxyClass();
-  v5 = [getGKLocalPlayerClass() local];
-  v7 = [GKDaemonProxyClass proxyForPlayer:v5];
+  local = [getGKLocalPlayerClass() local];
+  v7 = [GKDaemonProxyClass proxyForPlayer:local];
 
-  v6 = [v7 utilityService];
-  [v6 launchOverlayForGameBundleId:v3];
+  utilityService = [v7 utilityService];
+  [utilityService launchOverlayForGameBundleId:idCopy];
 }
 
 + (void)launchApp
 {
   GKDaemonProxyClass = getGKDaemonProxyClass();
-  v3 = [getGKLocalPlayerClass() local];
-  v5 = [GKDaemonProxyClass proxyForPlayer:v3];
+  local = [getGKLocalPlayerClass() local];
+  v5 = [GKDaemonProxyClass proxyForPlayer:local];
 
-  v4 = [v5 utilityService];
-  [v4 launchApp];
+  utilityService = [v5 utilityService];
+  [utilityService launchApp];
 }
 
 @end

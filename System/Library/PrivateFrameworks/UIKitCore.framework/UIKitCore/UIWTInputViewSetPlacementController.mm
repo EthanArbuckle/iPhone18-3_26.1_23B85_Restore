@@ -1,88 +1,88 @@
 @interface UIWTInputViewSetPlacementController
 - (id)_inputWindowController;
 - (id)_keyboardTrackingCoordinator;
-- (void)_postNotificationsForType:(unint64_t)a3 from:(CGRect)a4 to:(CGRect)a5 forStart:(BOOL)a6;
-- (void)_postNotificationsForType:(unint64_t)a3 onScreenFrame:(CGRect)a4 forStart:(BOOL)a5;
-- (void)animateTrackingElementsFromStart:(CGRect)a3 toEnd:(CGRect)a4 forShow:(BOOL)a5;
+- (void)_postNotificationsForType:(unint64_t)type from:(CGRect)from to:(CGRect)to forStart:(BOOL)start;
+- (void)_postNotificationsForType:(unint64_t)type onScreenFrame:(CGRect)frame forStart:(BOOL)start;
+- (void)animateTrackingElementsFromStart:(CGRect)start toEnd:(CGRect)end forShow:(BOOL)show;
 @end
 
 @implementation UIWTInputViewSetPlacementController
 
-- (void)animateTrackingElementsFromStart:(CGRect)a3 toEnd:(CGRect)a4 forShow:(BOOL)a5
+- (void)animateTrackingElementsFromStart:(CGRect)start toEnd:(CGRect)end forShow:(BOOL)show
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  showCopy = show;
+  height = end.size.height;
+  width = end.size.width;
+  y = end.origin.y;
+  x = end.origin.x;
+  v10 = start.size.height;
+  v11 = start.size.width;
+  v12 = start.origin.y;
+  v13 = start.origin.x;
   v15 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
-  v16 = [v15 showsInvisibleKeyboardBehindWTUI];
+  showsInvisibleKeyboardBehindWTUI = [v15 showsInvisibleKeyboardBehindWTUI];
 
-  if ((v16 & 1) == 0)
+  if ((showsInvisibleKeyboardBehindWTUI & 1) == 0)
   {
-    v17 = [(UIWTInputViewSetPlacementController *)self _keyboardTrackingCoordinator];
-    [v17 animateTrackingElementsFromStart:v5 toEnd:v13 duration:v12 forShow:{v11, v10, x, y, width, height, _UISheetTransitionDuration()}];
+    _keyboardTrackingCoordinator = [(UIWTInputViewSetPlacementController *)self _keyboardTrackingCoordinator];
+    [_keyboardTrackingCoordinator animateTrackingElementsFromStart:showCopy toEnd:v13 duration:v12 forShow:{v11, v10, x, y, width, height, _UISheetTransitionDuration()}];
   }
 }
 
 - (id)_keyboardTrackingCoordinator
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 scene];
+  scene = [v2 scene];
 
-  v4 = [UIKeyboardTrackingCoordinator trackingCoordinatorForScene:v3];
+  v4 = [UIKeyboardTrackingCoordinator trackingCoordinatorForScene:scene];
 
   return v4;
 }
 
-- (void)_postNotificationsForType:(unint64_t)a3 from:(CGRect)a4 to:(CGRect)a5 forStart:(BOOL)a6
+- (void)_postNotificationsForType:(unint64_t)type from:(CGRect)from to:(CGRect)to forStart:(BOOL)start
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v17 = [(UIWTInputViewSetPlacementController *)self _inputWindowController];
+  startCopy = start;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v11 = from.size.height;
+  v12 = from.size.width;
+  v13 = from.origin.y;
+  v14 = from.origin.x;
+  _inputWindowController = [(UIWTInputViewSetPlacementController *)self _inputWindowController];
   v16 = objc_alloc_init(UIInputViewSetNotificationInfo);
   [(UIInputViewSetNotificationInfo *)v16 populateStartInfoWithFrame:v14, v13, v12, v11];
   [(UIInputViewSetNotificationInfo *)v16 populateEndInfoWithFrame:x, y, width, height];
   [(UIInputViewSetNotificationInfo *)v16 addKeyboardNotificationDebuggingInfo:@"WTWritingToolsViewController"];
   [(UIInputViewSetNotificationInfo *)v16 setForWritingToolsSheet:1];
-  if (v6)
+  if (startCopy)
   {
-    [v17 postStartNotifications:a3 withInfo:v16];
-    [v17 keyboardMoveOfType:a3 info:v16];
+    [_inputWindowController postStartNotifications:type withInfo:v16];
+    [_inputWindowController keyboardMoveOfType:type info:v16];
   }
 
   else
   {
-    [v17 postEndNotifications:a3 withInfo:v16];
+    [_inputWindowController postEndNotifications:type withInfo:v16];
   }
 }
 
-- (void)_postNotificationsForType:(unint64_t)a3 onScreenFrame:(CGRect)a4 forStart:(BOOL)a5
+- (void)_postNotificationsForType:(unint64_t)type onScreenFrame:(CGRect)frame forStart:(BOOL)start
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  startCopy = start;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIWTInputViewSetPlacementController.m" lineNumber:81 description:@"Invalid arguments."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWTInputViewSetPlacementController.m" lineNumber:81 description:@"Invalid arguments."];
   }
 
-  v18 = [(UIWTInputViewSetPlacementController *)self _inputWindowController];
-  if (a3 == 2)
+  _inputWindowController = [(UIWTInputViewSetPlacementController *)self _inputWindowController];
+  if (type == 2)
   {
     v12 = 0.0;
   }
@@ -92,7 +92,7 @@
     v12 = height;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v13 = y + height;
   }
@@ -102,7 +102,7 @@
     v13 = y;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v14 = y;
   }
@@ -112,7 +112,7 @@
     v14 = y + height;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v15 = height;
   }
@@ -122,20 +122,20 @@
     v15 = 0.0;
   }
 
-  [(UIWTInputViewSetPlacementController *)self _postNotificationsForType:a3 from:v5 to:x forStart:v13, width, v12, x, v14, width, v15];
+  [(UIWTInputViewSetPlacementController *)self _postNotificationsForType:type from:startCopy to:x forStart:v13, width, v12, x, v14, width, v15];
 }
 
 - (id)_inputWindowController
 {
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 existingContainerRootController];
-  if (!v5)
+  existingContainerRootController = [v4 existingContainerRootController];
+  if (!existingContainerRootController)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIWTInputViewSetPlacementController.m" lineNumber:94 description:@"Missing input window."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWTInputViewSetPlacementController.m" lineNumber:94 description:@"Missing input window."];
   }
 
-  return v5;
+  return existingContainerRootController;
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface VKCMRCDataDetectorElement
 - (CGRect)boundingBox;
 - (CGRect)rectForMrcActionInPresentingViewController;
-- (CGRect)sourceRectForPopoverActionPicker:(id)a3;
+- (CGRect)sourceRectForPopoverActionPicker:(id)picker;
 - (UIMenu)mrcMenu;
 - (UIViewController)presentingViewControllerForMrcAction;
-- (VKCMRCDataDetectorElement)initWithBarcodeObservation:(id)a3 action:(id)a4;
-- (VKCMRCDataDetectorElement)initWithCoder:(id)a3;
+- (VKCMRCDataDetectorElement)initWithBarcodeObservation:(id)observation action:(id)action;
+- (VKCMRCDataDetectorElement)initWithCoder:(id)coder;
 - (VKCMRCDataDetectorElementDelegate)delegate;
 - (id)boundingQuads;
 - (id)debugMenu;
-- (id)presentingViewControllerForAction:(id)a3;
+- (id)presentingViewControllerForAction:(id)action;
 - (id)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VKCMRCDataDetectorElement
 
-- (VKCMRCDataDetectorElement)initWithBarcodeObservation:(id)a3 action:(id)a4
+- (VKCMRCDataDetectorElement)initWithBarcodeObservation:(id)observation action:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  observationCopy = observation;
+  actionCopy = action;
   v20.receiver = self;
   v20.super_class = VKCMRCDataDetectorElement;
   v9 = [(VKCBaseDataDetectorElement *)&v20 init];
   if (v9)
   {
-    if (!v8)
+    if (!actionCopy)
     {
       [VKAssert handleFailedAssertWithCondition:"action" functionName:"[VKCMRCDataDetectorElement initWithBarcodeObservation:action:]" simulateCrash:0 showAlert:0 format:@"init for a Barcode Observtation, but there is no action"];
     }
 
-    objc_storeStrong(v9 + 15, a3);
-    v10 = [v7 vkQuad];
+    objc_storeStrong(v9 + 15, observation);
+    vkQuad = [observationCopy vkQuad];
     v11 = *(v9 + 13);
-    *(v9 + 13) = v10;
+    *(v9 + 13) = vkQuad;
 
-    v12 = [v9 quad];
-    [v12 boundingBox];
+    quad = [v9 quad];
+    [quad boundingBox];
     *(v9 + 19) = v13;
     *(v9 + 20) = v14;
     *(v9 + 21) = v15;
@@ -46,13 +46,13 @@
     *(v9 + 184) = *MEMORY[0x1E695F050];
     *(v9 + 200) = v17;
     v18 = *(v9 + 12) | 0x200000;
-    if (!v8)
+    if (!actionCopy)
     {
       v18 = 0;
     }
 
     *(v9 + 12) = v18;
-    objc_storeStrong(v9 + 16, a4);
+    objc_storeStrong(v9 + 16, action);
     [*(v9 + 16) setDelegate:v9];
     [v9 createChildrenIfNecessary];
   }
@@ -60,20 +60,20 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(VKCMRCDataDetectorElement *)self barcodeObservation];
-  [v4 encodeObject:v5 forKey:@"BCO"];
+  coderCopy = coder;
+  barcodeObservation = [(VKCMRCDataDetectorElement *)self barcodeObservation];
+  [coderCopy encodeObject:barcodeObservation forKey:@"BCO"];
 
-  v6 = [(VKCMRCDataDetectorElement *)self scannerResult];
-  [v4 encodeObject:v6 forKey:@"Action"];
+  scannerResult = [(VKCMRCDataDetectorElement *)self scannerResult];
+  [coderCopy encodeObject:scannerResult forKey:@"Action"];
 }
 
-- (VKCMRCDataDetectorElement)initWithCoder:(id)a3
+- (VKCMRCDataDetectorElement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BCO"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BCO"];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -92,7 +92,7 @@
 
   v7 = v6;
   _Block_object_dispose(&v12, 8);
-  v8 = [v4 decodeObjectOfClass:v6 forKey:@"Action"];
+  v8 = [coderCopy decodeObjectOfClass:v6 forKey:@"Action"];
   v9 = [(VKCMRCDataDetectorElement *)self initWithBarcodeObservation:v5 action:v8];
 
   return v9;
@@ -117,9 +117,9 @@
   v28 = v5;
   [v4 enumerateObjectsUsingBlock:v27];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(VKCMRCDataDetectorElement *)self barcodeObservation];
-  v8 = [v7 payloadStringValue];
-  v9 = [v6 stringWithFormat:@"%@", v8];
+  barcodeObservation = [(VKCMRCDataDetectorElement *)self barcodeObservation];
+  payloadStringValue = [barcodeObservation payloadStringValue];
+  v9 = [v6 stringWithFormat:@"%@", payloadStringValue];
   v10 = v31[5];
   v31[5] = v9;
 
@@ -127,16 +127,16 @@
   [v5 addObject:v11];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(VKCMRCDataDetectorElement *)self barcodeObservation];
-  v14 = [v13 symbology];
-  v15 = [v12 stringWithFormat:@"%@", v14];
+  barcodeObservation2 = [(VKCMRCDataDetectorElement *)self barcodeObservation];
+  symbology = [barcodeObservation2 symbology];
+  v15 = [v12 stringWithFormat:@"%@", symbology];
   v16 = v31[5];
   v31[5] = v15;
 
   v17 = [MEMORY[0x1E69DC628] vk_itemWithTitle:@"Symbology" subtitle:v31[5]];
   [v5 addObject:v17];
 
-  v18 = [(VKCMRCDataDetectorElement *)self boundingQuads];
+  boundingQuads = [(VKCMRCDataDetectorElement *)self boundingQuads];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __38__VKCMRCDataDetectorElement_debugMenu__block_invoke_2;
@@ -144,12 +144,12 @@
   v26 = &v30;
   v19 = v5;
   v25 = v19;
-  [v18 enumerateObjectsUsingBlock:v24];
+  [boundingQuads enumerateObjectsUsingBlock:v24];
 
-  v20 = [(VKCMRCDataDetectorElement *)self barcodeAction];
-  v21 = [v20 actionIcon];
+  barcodeAction = [(VKCMRCDataDetectorElement *)self barcodeAction];
+  actionIcon = [barcodeAction actionIcon];
 
-  v22 = [MEMORY[0x1E69DCC60] vk_menuWithItems:v19 title:@"MRC" subtitle:0 image:v21];
+  v22 = [MEMORY[0x1E69DCC60] vk_menuWithItems:v19 title:@"MRC" subtitle:0 image:actionIcon];
 
   _Block_object_dispose(&v30, 8);
 
@@ -184,12 +184,12 @@ void __38__VKCMRCDataDetectorElement_debugMenu__block_invoke_2(uint64_t a1, void
 
 - (UIMenu)mrcMenu
 {
-  v2 = [(VKCMRCDataDetectorElement *)self barcodeAction];
+  barcodeAction = [(VKCMRCDataDetectorElement *)self barcodeAction];
   v3 = MEMORY[0x1E69DCC60];
-  v4 = [v2 contentPreviewString];
-  v5 = [v2 actionIcon];
-  v6 = [v2 menuElements];
-  v7 = [v3 menuWithTitle:v4 image:v5 identifier:0 options:1 children:v6];
+  contentPreviewString = [barcodeAction contentPreviewString];
+  actionIcon = [barcodeAction actionIcon];
+  menuElements = [barcodeAction menuElements];
+  v7 = [v3 menuWithTitle:contentPreviewString image:actionIcon identifier:0 options:1 children:menuElements];
 
   return v7;
 }
@@ -200,11 +200,11 @@ void __38__VKCMRCDataDetectorElement_debugMenu__block_invoke_2(uint64_t a1, void
   boundingQuads = self->_boundingQuads;
   if (!boundingQuads)
   {
-    v4 = [(VKCMRCDataDetectorElement *)self quad];
-    v5 = v4;
-    if (v4)
+    quad = [(VKCMRCDataDetectorElement *)self quad];
+    v5 = quad;
+    if (quad)
     {
-      v9[0] = v4;
+      v9[0] = quad;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
       v7 = self->_boundingQuads;
       self->_boundingQuads = v6;
@@ -225,15 +225,15 @@ void __38__VKCMRCDataDetectorElement_debugMenu__block_invoke_2(uint64_t a1, void
 
 - (id)stringValue
 {
-  v2 = [(VKCMRCDataDetectorElement *)self dataDetectorTypes];
+  dataDetectorTypes = [(VKCMRCDataDetectorElement *)self dataDetectorTypes];
 
-  return VKMUIStringForDDTypes(v2);
+  return VKMUIStringForDDTypes(dataDetectorTypes);
 }
 
-- (id)presentingViewControllerForAction:(id)a3
+- (id)presentingViewControllerForAction:(id)action
 {
-  v3 = [(VKCMRCDataDetectorElement *)self presentingViewControllerForMrcAction];
-  if (!v3)
+  presentingViewControllerForMrcAction = [(VKCMRCDataDetectorElement *)self presentingViewControllerForMrcAction];
+  if (!presentingViewControllerForMrcAction)
   {
     v4 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -242,23 +242,23 @@ void __38__VKCMRCDataDetectorElement_debugMenu__block_invoke_2(uint64_t a1, void
       _os_log_impl(&dword_1B4335000, v4, OS_LOG_TYPE_INFO, "Using the key window's root view controller for BCSAction's presenting view controller.", v7, 2u);
     }
 
-    v5 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
-    v3 = [v5 rootViewController];
+    _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+    presentingViewControllerForMrcAction = [_applicationKeyWindow rootViewController];
   }
 
-  return v3;
+  return presentingViewControllerForMrcAction;
 }
 
-- (CGRect)sourceRectForPopoverActionPicker:(id)a3
+- (CGRect)sourceRectForPopoverActionPicker:(id)picker
 {
-  v4 = [(VKCMRCDataDetectorElement *)self delegate];
+  delegate = [(VKCMRCDataDetectorElement *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(VKCMRCDataDetectorElement *)self delegate];
-    v6 = [(VKCMRCDataDetectorElement *)self barcodeAction];
-    v7 = [(VKCMRCDataDetectorElement *)self presentingViewControllerForAction:v6];
-    [v5 rectForMrcActionInViewController:v7];
+    delegate2 = [(VKCMRCDataDetectorElement *)self delegate];
+    barcodeAction = [(VKCMRCDataDetectorElement *)self barcodeAction];
+    v7 = [(VKCMRCDataDetectorElement *)self presentingViewControllerForAction:barcodeAction];
+    [delegate2 rectForMrcActionInViewController:v7];
     v9 = v8;
     v11 = v10;
     v13 = v12;

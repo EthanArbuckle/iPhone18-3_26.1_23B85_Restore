@@ -28,8 +28,8 @@
 
 - (id)performAction
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImportConcurrentAction.m" lineNumber:43 description:@"Subclassers to implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportConcurrentAction.m" lineNumber:43 description:@"Subclassers to implement"];
 
   return 0;
 }

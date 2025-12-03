@@ -1,7 +1,7 @@
 @interface WLKSiriBestPlayablesResponse
 - (WLKSiriBestPlayablesResponse)init;
-- (WLKSiriBestPlayablesResponse)initWithDictionary:(id)a3;
-- (id)playableForStatsID:(id)a3;
+- (WLKSiriBestPlayablesResponse)initWithDictionary:(id)dictionary;
+- (id)playableForStatsID:(id)d;
 @end
 
 @implementation WLKSiriBestPlayablesResponse
@@ -13,23 +13,23 @@
   return 0;
 }
 
-- (WLKSiriBestPlayablesResponse)initWithDictionary:(id)a3
+- (WLKSiriBestPlayablesResponse)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = WLKSiriBestPlayablesResponse;
   v5 = [(WLKSiriBestPlayablesResponse *)&v32 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v23 = v5;
     v5->_dictionary = v6;
 
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v24 = v4;
-    v8 = [v4 wlk_dictionaryForKey:@"data"];
+    v24 = dictionaryCopy;
+    v8 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v9 = [WLKChannelsResponse parseChannelsFromPayload:v8];
     v28 = 0u;
     v29 = 0u;
@@ -87,18 +87,18 @@
     playablesByID = v23->_playablesByID;
     v23->_playablesByID = v19;
 
-    v4 = v24;
+    dictionaryCopy = v24;
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (id)playableForStatsID:(id)a3
+- (id)playableForStatsID:(id)d
 {
-  v4 = a3;
-  v5 = [(WLKSiriBestPlayablesResponse *)self playablesByID];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  playablesByID = [(WLKSiriBestPlayablesResponse *)self playablesByID];
+  v6 = [playablesByID objectForKey:dCopy];
 
   return v6;
 }

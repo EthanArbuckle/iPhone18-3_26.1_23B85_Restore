@@ -1,16 +1,16 @@
 @interface PGFeatureExtractorCLIPprint
-- (id)_floatArrayFromSceneprint:(id)a3;
+- (id)_floatArrayFromSceneprint:(id)sceneprint;
 - (id)featureNames;
-- (id)featureValuesForAssets:(id)a3 error:(id *)a4;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)featureValuesForAssets:(id)assets error:(id *)error;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorCLIPprint
 
-- (id)featureValuesForAssets:(id)a3 error:(id *)a4
+- (id)featureValuesForAssets:(id)assets error:(id *)error
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetsCopy = assets;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -30,32 +30,32 @@
   v22 = &unk_278886098;
   v26 = &v28;
   v27 = &v34;
-  v8 = v6;
+  v8 = assetsCopy;
   v23 = v8;
-  v24 = self;
+  selfCopy = self;
   v9 = v7;
   v25 = v9;
   v10 = _Block_copy(&v19);
-  v11 = [MEMORY[0x277D267E8] analysisService];
+  analysisService = [MEMORY[0x277D267E8] analysisService];
   dispatch_group_enter(v9);
   v40 = *MEMORY[0x277D26830];
   v41[0] = &unk_284484278;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
-  v13 = [v11 requestSceneprintProcessingForAssets:v8 withOptions:v12 progressHandler:0 andCompletionHandler:v10];
+  v13 = [analysisService requestSceneprintProcessingForAssets:v8 withOptions:v12 progressHandler:0 andCompletionHandler:v10];
 
   v14 = dispatch_time(0, 10000000000);
   dispatch_group_wait(v9, v14);
   if (!v35[5])
   {
-    [v11 cancelRequest:v13];
+    [analysisService cancelRequest:v13];
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v29[5];
     if (v15)
     {
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -168,20 +168,20 @@ LABEL_17:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  entityCopy = entity;
+  v7 = entityCopy;
+  if (entityCopy)
   {
-    v14[0] = v6;
+    v14[0] = entityCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    v9 = [(PGFeatureExtractorCLIPprint *)self featureValuesForAssets:v8 error:a4];
+    v9 = [(PGFeatureExtractorCLIPprint *)self featureValuesForAssets:v8 error:error];
     if (v9)
     {
-      v10 = [v7 localIdentifier];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      localIdentifier = [v7 localIdentifier];
+      v11 = [v9 objectForKeyedSubscript:localIdentifier];
     }
 
     else
@@ -200,24 +200,24 @@ LABEL_17:
   return v11;
 }
 
-- (id)_floatArrayFromSceneprint:(id)a3
+- (id)_floatArrayFromSceneprint:(id)sceneprint
 {
-  v3 = a3;
-  v4 = [v3 elementType];
-  if (v4 == 2)
+  sceneprintCopy = sceneprint;
+  elementType = [sceneprintCopy elementType];
+  if (elementType == 2)
   {
     v7 = objc_alloc_init(MEMORY[0x277D22C68]);
-    v8 = [v3 descriptorData];
-    v9 = [v8 bytes];
+    descriptorData = [sceneprintCopy descriptorData];
+    bytes = [descriptorData bytes];
 
-    [v7 appendDoubles:v9 count:{objc_msgSend(v3, "elementCount")}];
+    [v7 appendDoubles:bytes count:{objc_msgSend(sceneprintCopy, "elementCount")}];
   }
 
-  else if (v4 == 1)
+  else if (elementType == 1)
   {
     v5 = objc_alloc(MEMORY[0x277D22C40]);
-    v6 = [v3 descriptorData];
-    v7 = [v5 initWithData:v6];
+    descriptorData2 = [sceneprintCopy descriptorData];
+    v7 = [v5 initWithData:descriptorData2];
   }
 
   else

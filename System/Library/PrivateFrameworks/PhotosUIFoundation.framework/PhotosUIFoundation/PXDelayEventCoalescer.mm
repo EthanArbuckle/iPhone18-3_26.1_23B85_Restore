@@ -1,6 +1,6 @@
 @interface PXDelayEventCoalescer
 - (PXDelayEventCoalescer)init;
-- (PXDelayEventCoalescer)initWithDelay:(double)a3;
+- (PXDelayEventCoalescer)initWithDelay:(double)delay;
 - (void)_handleTimer;
 - (void)inputEvent;
 @end
@@ -78,17 +78,17 @@ void __37__PXDelayEventCoalescer__handleTimer__block_invoke(uint64_t a1)
   [WeakRetained _handleTimer];
 }
 
-- (PXDelayEventCoalescer)initWithDelay:(double)a3
+- (PXDelayEventCoalescer)initWithDelay:(double)delay
 {
   v4.receiver = self;
   v4.super_class = PXDelayEventCoalescer;
-  return [(PXEventCoalescer *)&v4 initWithInterval:a3];
+  return [(PXEventCoalescer *)&v4 initWithInterval:delay];
 }
 
 - (PXDelayEventCoalescer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:141 description:{@"%s is not available as initializer", "-[PXDelayEventCoalescer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:141 description:{@"%s is not available as initializer", "-[PXDelayEventCoalescer init]"}];
 
   abort();
 }

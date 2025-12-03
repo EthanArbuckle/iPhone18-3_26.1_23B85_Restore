@@ -1,32 +1,32 @@
 @interface ASSearchTask
-- (ASSearchTask)initWithQuery:(id)a3;
+- (ASSearchTask)initWithQuery:(id)query;
 - (id)description;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
 @end
 
 @implementation ASSearchTask
 
-- (ASSearchTask)initWithQuery:(id)a3
+- (ASSearchTask)initWithQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v8.receiver = self;
   v8.super_class = ASSearchTask;
   v5 = [(ASTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASSearchTask *)v5 setQuery:v4];
+    [(ASSearchTask *)v5 setQuery:queryCopy];
   }
 
   return v6;
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 < 0xD && ((0x1F0Fu >> a3) & 1) != 0)
+  if (status < 0xD && ((0x1F0Fu >> status) & 1) != 0)
   {
-    result = qword_24A14DBE8[a3];
+    result = qword_24A14DBE8[status];
   }
 
   else
@@ -40,7 +40,7 @@
       v10 = 138412546;
       v11 = v8;
       v12 = 1024;
-      v13 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_24A0AC000, v5, v6, "%@: Unknown status code (%d)", &v10, 0x12u);
     }
 
@@ -62,8 +62,8 @@
     v11.receiver = self;
     v11.super_class = ASSearchTask;
     v6 = [(ASTask *)&v11 description];
-    v7 = [(ASSearchTask *)self query];
-    v8 = [v5 stringWithFormat:@"%@, query = %@", v6, v7];
+    query = [(ASSearchTask *)self query];
+    v8 = [v5 stringWithFormat:@"%@, query = %@", v6, query];
   }
 
   else

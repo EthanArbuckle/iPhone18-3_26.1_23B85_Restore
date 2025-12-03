@@ -1,33 +1,33 @@
 @interface ABCPbSigGrantRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSigRequest:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSigRequest:(id)request;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSigGrantRequest
 
-- (void)addSigRequest:(id)a3
+- (void)addSigRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   sigRequests = self->_sigRequests;
-  v8 = v4;
+  v8 = requestCopy;
   if (!sigRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sigRequests;
     self->_sigRequests = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     sigRequests = self->_sigRequests;
   }
 
-  [(NSMutableArray *)sigRequests addObject:v4];
+  [(NSMutableArray *)sigRequests addObject:requestCopy];
 }
 
 - (NSString)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ABCPbSigGrantRequest;
   v4 = [(ABCPbSigGrantRequest *)&v8 description];
-  v5 = [(ABCPbSigGrantRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSigGrantRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,23 +45,23 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ver];
-    [v3 setObject:v4 forKey:@"ver"];
+    [dictionary setObject:v4 forKey:@"ver"];
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
-    [v3 setObject:deviceModel forKey:@"device_model"];
+    [dictionary setObject:deviceModel forKey:@"device_model"];
   }
 
   buildPlatform = self->_buildPlatform;
   if (buildPlatform)
   {
-    [v3 setObject:buildPlatform forKey:@"build_platform"];
+    [dictionary setObject:buildPlatform forKey:@"build_platform"];
   }
 
   if ([(NSMutableArray *)self->_sigRequests count])
@@ -86,8 +86,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -96,18 +96,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"sig_request"];
+    [dictionary setObject:v7 forKey:@"sig_request"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     ver = self->_ver;
@@ -159,19 +159,19 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_ver;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_ver;
+    *(toCopy + 36) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_deviceModel)
   {
-    [v4 setDeviceModel:?];
+    [toCopy setDeviceModel:?];
   }
 
   if (self->_buildPlatform)
@@ -182,10 +182,10 @@
   if ([(ABCPbSigGrantRequest *)self sigRequestsCount])
   {
     [v9 clearSigRequests];
-    v5 = [(ABCPbSigGrantRequest *)self sigRequestsCount];
-    if (v5)
+    sigRequestsCount = [(ABCPbSigGrantRequest *)self sigRequestsCount];
+    if (sigRequestsCount)
     {
-      v6 = v5;
+      v6 = sigRequestsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ABCPbSigGrantRequest *)self sigRequestAtIndex:i];
@@ -195,10 +195,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -206,11 +206,11 @@
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v7 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_buildPlatform copyWithZone:a3];
+  v9 = [(NSString *)self->_buildPlatform copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
@@ -234,7 +234,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * v15) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * v15) copyWithZone:{zone, v19}];
         [v6 addSigRequest:v16];
 
         ++v15;
@@ -251,24 +251,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_ver != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_ver != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -276,13 +276,13 @@ LABEL_13:
   }
 
   deviceModel = self->_deviceModel;
-  if (deviceModel | *(v4 + 2) && ![(NSString *)deviceModel isEqual:?])
+  if (deviceModel | *(equalCopy + 2) && ![(NSString *)deviceModel isEqual:?])
   {
     goto LABEL_13;
   }
 
   buildPlatform = self->_buildPlatform;
-  if (buildPlatform | *(v4 + 1))
+  if (buildPlatform | *(equalCopy + 1))
   {
     if (![(NSString *)buildPlatform isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_13:
   }
 
   sigRequests = self->_sigRequests;
-  if (sigRequests | *(v4 + 3))
+  if (sigRequests | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)sigRequests isEqual:?];
   }
@@ -323,18 +323,18 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSMutableArray *)self->_sigRequests hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[9])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[9])
   {
-    self->_ver = v4[8];
+    self->_ver = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ABCPbSigGrantRequest *)self setDeviceModel:?];
   }

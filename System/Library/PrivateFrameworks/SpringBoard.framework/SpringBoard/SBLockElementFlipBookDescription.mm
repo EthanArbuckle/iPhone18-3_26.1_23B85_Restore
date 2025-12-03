@@ -1,45 +1,45 @@
 @interface SBLockElementFlipBookDescription
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
 - (CGRect)captureBounds;
 - (NSArray)states;
-- (SBLockElementFlipBookDescription)initWithViewProvider:(id)a3 lockView:(id)a4;
-- (id)allowedNextStatesForState:(id)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (SBLockElementFlipBookDescription)initWithViewProvider:(id)provider lockView:(id)view;
+- (id)allowedNextStatesForState:(id)state;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation SBLockElementFlipBookDescription
 
-- (SBLockElementFlipBookDescription)initWithViewProvider:(id)a3 lockView:(id)a4
+- (SBLockElementFlipBookDescription)initWithViewProvider:(id)provider lockView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = SBLockElementFlipBookDescription;
   v8 = [(SBLockElementFlipBookDescription *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_viewProvider, v6);
-    objc_storeStrong(&v9->_lockView, a4);
+    objc_storeWeak(&v8->_viewProvider, providerCopy);
+    objc_storeStrong(&v9->_lockView, view);
     objc_storeStrong(&v9->_currentState, SBLockElementFlipBookStateSleep);
   }
 
   return v9;
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
-  v4 = a4;
-  if ([v4 isEqual:SBLockElementFlipBookStateError] & 1) != 0 || (objc_msgSend(v4, "isEqual:", SBLockElementFlipBookStateErrorScaled) & 1) != 0 || (objc_msgSend(v4, "isEqual:", SBLockElementFlipBookStateUnlockedSecure))
+  stateCopy = state;
+  if ([stateCopy isEqual:SBLockElementFlipBookStateError] & 1) != 0 || (objc_msgSend(stateCopy, "isEqual:", SBLockElementFlipBookStateErrorScaled) & 1) != 0 || (objc_msgSend(stateCopy, "isEqual:", SBLockElementFlipBookStateUnlockedSecure))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqual:SBLockElementFlipBookStateUnlockedScaledSecure];
+    v5 = [stateCopy isEqual:SBLockElementFlipBookStateUnlockedScaledSecure];
   }
 
   return v5;
@@ -69,11 +69,11 @@
   return v2;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqual:SBLockElementFlipBookStateSleep])
+  stateCopy = state;
+  if ([stateCopy isEqual:SBLockElementFlipBookStateSleep])
   {
     v38 = SBLockElementFlipBookStateSleep;
     v39 = SBLockElementFlipBookStateLocked;
@@ -87,7 +87,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateLocked])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateLocked])
   {
     v32 = SBLockElementFlipBookStateSleep;
     v33 = SBLockElementFlipBookStateLocked;
@@ -102,7 +102,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateLockedScaled])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateLockedScaled])
   {
     v26 = SBLockElementFlipBookStateSleep;
     v27 = SBLockElementFlipBookStateLocked;
@@ -115,7 +115,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateUnlockedSecure])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateUnlockedSecure])
   {
     v24 = SBLockElementFlipBookStateUnlockedSecure;
     v25 = SBLockElementFlipBookStateUnlocked;
@@ -126,7 +126,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateUnlocked])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateUnlocked])
   {
     v21 = SBLockElementFlipBookStateSleep;
     v22 = SBLockElementFlipBookStateLocked;
@@ -137,7 +137,7 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateUnlockedScaledSecure])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateUnlockedScaledSecure])
   {
     v19 = SBLockElementFlipBookStateUnlockedScaledSecure;
     v20 = SBLockElementFlipBookStateUnlockedScaled;
@@ -146,7 +146,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateUnlockedScaled])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateUnlockedScaled])
   {
     v13 = SBLockElementFlipBookStateSleep;
     v14 = SBLockElementFlipBookStateLocked;
@@ -159,7 +159,7 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateError])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateError])
   {
     v11 = SBLockElementFlipBookStateError;
     v12 = SBLockElementFlipBookStateLocked;
@@ -168,7 +168,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if ([v3 isEqual:SBLockElementFlipBookStateErrorScaled])
+  if ([stateCopy isEqual:SBLockElementFlipBookStateErrorScaled])
   {
     v9 = SBLockElementFlipBookStateErrorScaled;
     v10 = SBLockElementFlipBookStateLockedScaled;
@@ -183,30 +183,30 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 isEqual:SBLockElementFlipBookStateSleep];
-  if (![v11 isEqual:@"hidden"] || !objc_msgSend(v12, "isEqual:", @"presented"))
+  fromCopy = from;
+  toCopy = to;
+  sequenceCopy = sequence;
+  stateCopy = state;
+  v13 = [fromCopy isEqual:SBLockElementFlipBookStateSleep];
+  if (![sequenceCopy isEqual:@"hidden"] || !objc_msgSend(stateCopy, "isEqual:", @"presented"))
   {
-    if (![v11 isEqual:@"presented"] || !objc_msgSend(v12, "isEqual:", @"hidden"))
+    if (![sequenceCopy isEqual:@"presented"] || !objc_msgSend(stateCopy, "isEqual:", @"hidden"))
     {
-      if ([v11 isEqual:@"presented"] && objc_msgSend(v12, "isEqual:", @"presented"))
+      if ([sequenceCopy isEqual:@"presented"] && objc_msgSend(stateCopy, "isEqual:", @"presented"))
       {
         if ((v13 & 1) == 0)
         {
-          v13 = [v10 isEqual:SBLockElementFlipBookStateSleep] ^ 1;
+          v13 = [toCopy isEqual:SBLockElementFlipBookStateSleep] ^ 1;
           goto LABEL_17;
         }
       }
 
-      else if ([v11 isEqual:@"hidden"] && objc_msgSend(v12, "isEqual:", @"hidden"))
+      else if ([sequenceCopy isEqual:@"hidden"] && objc_msgSend(stateCopy, "isEqual:", @"hidden"))
       {
-        LOBYTE(v13) = [v10 isEqual:SBLockElementFlipBookStateSleep];
+        LOBYTE(v13) = [toCopy isEqual:SBLockElementFlipBookStateSleep];
         goto LABEL_17;
       }
 
@@ -214,7 +214,7 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    v14 = [MEMORY[0x277CBEB98] setWithObjects:{v9, v10, 0}];
+    v14 = [MEMORY[0x277CBEB98] setWithObjects:{fromCopy, toCopy, 0}];
     v15 = [MEMORY[0x277CBEB98] setWithObjects:{SBLockElementFlipBookStateError, SBLockElementFlipBookStateErrorScaled, 0}];
     v13 = [v14 intersectsSet:v15] ^ 1;
 
@@ -228,7 +228,7 @@ LABEL_9:
     v17[2] = SBLockElementFlipBookStateLockedScaled;
     v17[3] = SBLockElementFlipBookStateUnlockedSecure;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
-    LOBYTE(v13) = [v14 containsObject:v10];
+    LOBYTE(v13) = [v14 containsObject:toCopy];
 LABEL_8:
   }
 
@@ -237,13 +237,13 @@ LABEL_17:
   return v13;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-  v9 = v6;
+  v9 = stateCopy;
   if ([v9 isEqual:SBLockElementFlipBookStateSleep])
   {
     v10 = 0;
@@ -316,8 +316,8 @@ LABEL_17:
   v16[3] = &unk_2783B9188;
   v16[4] = self;
   v17 = v21;
-  v18 = v7;
-  v13 = v7;
+  v18 = completionCopy;
+  v13 = completionCopy;
   v14 = v21;
   v15 = WeakRetained;
   [v12 perform:v19 finalCompletion:v16];
@@ -393,13 +393,13 @@ void __60__SBLockElementFlipBookDescription_resetToState_completion___block_invo
   dispatch_after(v2, MEMORY[0x277D85CD0], block);
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_viewProvider);
-  v9 = v6;
+  v9 = stateCopy;
   if ([v9 isEqual:SBLockElementFlipBookStateSleep])
   {
     v10 = 0;
@@ -472,8 +472,8 @@ void __60__SBLockElementFlipBookDescription_resetToState_completion___block_invo
   v16[3] = &unk_2783B9188;
   v16[4] = self;
   v17 = v21;
-  v18 = v7;
-  v13 = v7;
+  v18 = completionCopy;
+  v13 = completionCopy;
   v14 = v21;
   v15 = WeakRetained;
   [v12 perform:v19 finalCompletion:v16];

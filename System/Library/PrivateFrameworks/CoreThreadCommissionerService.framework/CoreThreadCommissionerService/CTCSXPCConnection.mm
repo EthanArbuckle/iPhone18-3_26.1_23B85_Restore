@@ -1,25 +1,25 @@
 @interface CTCSXPCConnection
-- (CTCSXPCConnection)initWithXpcConnection:(id)a3 uuid:(id)a4;
+- (CTCSXPCConnection)initWithXpcConnection:(id)connection uuid:(id)uuid;
 - (NSXPCConnection)xpcConnection;
 - (unsigned)numberOfBlocksQueued;
 - (void)dealloc;
-- (void)setNumberOfBlocksQueued:(unsigned __int16)a3;
+- (void)setNumberOfBlocksQueued:(unsigned __int16)queued;
 @end
 
 @implementation CTCSXPCConnection
 
-- (CTCSXPCConnection)initWithXpcConnection:(id)a3 uuid:(id)a4
+- (CTCSXPCConnection)initWithXpcConnection:(id)connection uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  uuidCopy = uuid;
   v13.receiver = self;
   v13.super_class = CTCSXPCConnection;
   v8 = [(CTCSXPCConnection *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_xpcConnection, v6);
-    objc_storeStrong(&v9->_uuid, a4);
+    objc_storeWeak(&v8->_xpcConnection, connectionCopy);
+    objc_storeStrong(&v9->_uuid, uuid);
     v10 = dispatch_queue_create("CTCSXPCConnection Thread Safe Property Queue", &_dispatch_queue_attr_concurrent);
     threadSafeQueue = v9->_threadSafeQueue;
     v9->_threadSafeQueue = v10;
@@ -49,7 +49,7 @@
   return v3;
 }
 
-- (void)setNumberOfBlocksQueued:(unsigned __int16)a3
+- (void)setNumberOfBlocksQueued:(unsigned __int16)queued
 {
   threadSafeQueue = self->_threadSafeQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -57,7 +57,7 @@
   v4[2] = sub_100012944;
   v4[3] = &unk_100078C88;
   v4[4] = self;
-  v5 = a3;
+  queuedCopy = queued;
   dispatch_barrier_async(threadSafeQueue, v4);
 }
 

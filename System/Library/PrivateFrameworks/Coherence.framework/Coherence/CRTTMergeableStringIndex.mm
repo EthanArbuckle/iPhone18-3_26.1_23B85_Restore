@@ -1,57 +1,57 @@
 @interface CRTTMergeableStringIndex
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needToFinalizeTimestamps;
-- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTimestamp:(id)a3 affinity:(unint64_t)a4 renameGeneration:(int64_t)a5;
-- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTopoID:(TopoID *)a3 affinity:(unint64_t)a4 renameGeneration:(int64_t)a5 maxCounter:(int64_t)a6;
+- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTimestamp:(id)timestamp affinity:(unint64_t)affinity renameGeneration:(int64_t)generation;
+- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTopoID:(TopoID *)d affinity:(unint64_t)affinity renameGeneration:(int64_t)generation maxCounter:(int64_t)counter;
 - (id).cxx_construct;
 - (id)_objCRenameSequence;
 - (id)description;
-- (id)finalizedInContext:(id)a3;
-- (id)renamed:(id)a3;
+- (id)finalizedInContext:(id)context;
+- (id)renamed:(id)renamed;
 - (void)dealloc;
 @end
 
 @implementation CRTTMergeableStringIndex
 
-- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTopoID:(TopoID *)a3 affinity:(unint64_t)a4 renameGeneration:(int64_t)a5 maxCounter:(int64_t)a6
+- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTopoID:(TopoID *)d affinity:(unint64_t)affinity renameGeneration:(int64_t)generation maxCounter:(int64_t)counter
 {
   v16.receiver = self;
   v16.super_class = _TtC9Coherence24CRTTMergeableStringIndex;
   v10 = [(CRTTMergeableStringIndex *)&v16 init];
   v11 = v10;
-  v12 = *a3->replica.uuid;
-  v13 = *&a3->replica.index;
+  v12 = *d->replica.uuid;
+  v13 = *&d->replica.index;
   *&v10->_index.replica.index = v13;
   *v10->_index.replica.uuid = v12;
-  v10->_maxCounter = a6;
-  v10->_affinity = a4;
-  v10->_renameGeneration = a5;
+  v10->_maxCounter = counter;
+  v10->_affinity = affinity;
+  v10->_renameGeneration = generation;
   if (v13)
   {
-    v14 = [(CRTTMergeableStringIndex *)v10 _objCRenameSequence];
-    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:v14];
+    _objCRenameSequence = [(CRTTMergeableStringIndex *)v10 _objCRenameSequence];
+    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:_objCRenameSequence];
   }
 
   return v11;
 }
 
-- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTimestamp:(id)a3 affinity:(unint64_t)a4 renameGeneration:(int64_t)a5
+- (_TtC9Coherence24CRTTMergeableStringIndex)initWithTimestamp:(id)timestamp affinity:(unint64_t)affinity renameGeneration:(int64_t)generation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  timestampCopy = timestamp;
   v13.receiver = self;
   v13.super_class = _TtC9Coherence24CRTTMergeableStringIndex;
   v9 = [(CRTTMergeableStringIndex *)&v13 init];
-  Coherence_namespace::TopoID::TopoID(&v14, v8);
+  Coherence_namespace::TopoID::TopoID(&v14, timestampCopy);
   *v9->_index.replica.uuid = v14;
   *&v9->_index.replica.index = v15;
-  v9->_renameGeneration = a5;
+  v9->_renameGeneration = generation;
   v9->_maxCounter = -1;
-  v9->_affinity = a4;
+  v9->_affinity = affinity;
   if (v9->_index.replica.index)
   {
-    v10 = [(CRTTMergeableStringIndex *)v9 _objCRenameSequence];
-    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:v10];
+    _objCRenameSequence = [(CRTTMergeableStringIndex *)v9 _objCRenameSequence];
+    [_TtC9Coherence19CRGlobalContextObjC retainObjCSequence:_objCRenameSequence];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -64,8 +64,8 @@
   [(CRTTMergeableStringIndex *)self index];
   if (v6)
   {
-    v3 = [(CRTTMergeableStringIndex *)self _objCRenameSequence];
-    [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:v3];
+    _objCRenameSequence = [(CRTTMergeableStringIndex *)self _objCRenameSequence];
+    [_TtC9Coherence19CRGlobalContextObjC releaseObjCSequence:_objCRenameSequence];
   }
 
   v5.receiver = self;
@@ -83,56 +83,56 @@
   return result;
 }
 
-- (id)finalizedInContext:(id)a3
+- (id)finalizedInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(CRTTMergeableStringIndex *)self needToFinalizeTimestamps])
   {
-    v5 = [(CRTTMergeableStringIndex *)self _objCRenameSequence];
-    v6 = [_TtC9Coherence19CRGlobalContextObjC renameObjCSequence:v5 after:self->_maxCounter in:v4];
-    v7 = [(CRTTMergeableStringIndex *)self renamed:v6];
+    _objCRenameSequence = [(CRTTMergeableStringIndex *)self _objCRenameSequence];
+    v6 = [_TtC9Coherence19CRGlobalContextObjC renameObjCSequence:_objCRenameSequence after:self->_maxCounter in:contextCopy];
+    selfCopy = [(CRTTMergeableStringIndex *)self renamed:v6];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)renamed:(id)a3
+- (id)renamed:(id)renamed
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[CRTTMergeableStringIndex needToFinalizeTimestamps](self, "needToFinalizeTimestamps") && ((v5 = -[CRTTMergeableStringIndex renameGeneration](self, "renameGeneration"), v5 < [v4 generation]) || (objc_msgSend(v4, "hasLocalRenames") & 1) != 0))
+  renamedCopy = renamed;
+  if (-[CRTTMergeableStringIndex needToFinalizeTimestamps](self, "needToFinalizeTimestamps") && ((v5 = -[CRTTMergeableStringIndex renameGeneration](self, "renameGeneration"), v5 < [renamedCopy generation]) || (objc_msgSend(renamedCopy, "hasLocalRenames") & 1) != 0))
   {
     v6 = Coherence_namespace::TopoID::objc(&self->_index);
-    v7 = [v4 renamed:v6];
+    v7 = [renamedCopy renamed:v6];
 
     if (v7)
     {
       v8 = [_TtC9Coherence24CRTTMergeableStringIndex alloc];
       Coherence_namespace::TopoID::TopoID(v13, v7);
-      v9 = -[CRTTMergeableStringIndex initWithTopoID:affinity:renameGeneration:maxCounter:](v8, "initWithTopoID:affinity:renameGeneration:maxCounter:", v13, self->_affinity, [v4 generation], self->_maxCounter);
+      selfCopy = -[CRTTMergeableStringIndex initWithTopoID:affinity:renameGeneration:maxCounter:](v8, "initWithTopoID:affinity:renameGeneration:maxCounter:", v13, self->_affinity, [renamedCopy generation], self->_maxCounter);
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v10 = v9;
+    selfCopy2 = selfCopy;
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return selfCopy2;
 }
 
 - (id)_objCRenameSequence
@@ -144,14 +144,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(CRTTMergeableStringIndex *)self index];
     if (v5)
     {

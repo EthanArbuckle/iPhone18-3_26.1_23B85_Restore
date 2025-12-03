@@ -1,15 +1,15 @@
 @interface PXSearchCPAnalyticsSession
-+ (id)_bucketedTimeInterval:(double)a3;
-+ (id)_cappedSearchCount:(unint64_t)a3;
-+ (id)_stringForActionType:(unint64_t)a3;
-+ (id)_stringForResultType:(unint64_t)a3;
-+ (id)_stringForSessionBeginType:(unint64_t)a3;
-- (PXSearchCPAnalyticsSession)initWithBeginType:(unint64_t)a3;
++ (id)_bucketedTimeInterval:(double)interval;
++ (id)_cappedSearchCount:(unint64_t)count;
++ (id)_stringForActionType:(unint64_t)type;
++ (id)_stringForResultType:(unint64_t)type;
++ (id)_stringForSessionBeginType:(unint64_t)type;
+- (PXSearchCPAnalyticsSession)initWithBeginType:(unint64_t)type;
 - (void)_logSuccess;
 - (void)endAndInvalidateSession;
-- (void)logActiveSearch:(id)a3;
-- (void)logAssetAction:(unint64_t)a3 inResult:(unint64_t)a4;
-- (void)logEnteredCollectionResult:(unint64_t)a3;
+- (void)logActiveSearch:(id)search;
+- (void)logAssetAction:(unint64_t)action inResult:(unint64_t)result;
+- (void)logEnteredCollectionResult:(unint64_t)result;
 - (void)logNoSearchResultsFound;
 - (void)logOneUpInTopAssets;
 - (void)logSearchNextTokenSuggestionTapped;
@@ -25,15 +25,15 @@
   if ([(PXSearchCPAnalyticsSession *)self isValid]&& ![(PXSearchCPAnalyticsSession *)self successful])
   {
     [(PXSearchCPAnalyticsSession *)self setSuccessful:1];
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4;
 
     [(PXSearchCPAnalyticsSession *)self startTime];
     [(PXSearchCPAnalyticsSession *)self setTimeIntervalSuccess:v5 - v6];
-    v7 = [(PXSearchCPAnalyticsSession *)self numberOfSearches];
+    numberOfSearches = [(PXSearchCPAnalyticsSession *)self numberOfSearches];
 
-    [(PXSearchCPAnalyticsSession *)self setNumberOfSearchesUntilFirstSuccess:v7];
+    [(PXSearchCPAnalyticsSession *)self setNumberOfSearchesUntilFirstSuccess:numberOfSearches];
   }
 }
 
@@ -87,21 +87,21 @@
   }
 }
 
-- (void)logEnteredCollectionResult:(unint64_t)a3
+- (void)logEnteredCollectionResult:(unint64_t)result
 {
   if ([(PXSearchCPAnalyticsSession *)self isValid])
   {
     [(PXSearchCPAnalyticsSession *)self timeIntervalFirstEnteredCollection];
     if (v5 == 0.0)
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      [v6 systemUptime];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo systemUptime];
       v8 = v7;
 
       [(PXSearchCPAnalyticsSession *)self startTime];
       [(PXSearchCPAnalyticsSession *)self setTimeIntervalFirstEnteredCollection:v8 - v9];
       [(PXSearchCPAnalyticsSession *)self setNumberOfSearchesUntilFirstEnteredCollection:[(PXSearchCPAnalyticsSession *)self numberOfSearches]];
-      [(PXSearchCPAnalyticsSession *)self setFirstEnteredCollectionResultType:a3];
+      [(PXSearchCPAnalyticsSession *)self setFirstEnteredCollectionResultType:result];
 
       [(PXSearchCPAnalyticsSession *)self _logSuccess];
     }
@@ -112,8 +112,8 @@
 {
   if ([(PXSearchCPAnalyticsSession *)self isValid])
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4;
 
     [(PXSearchCPAnalyticsSession *)self startTime];
@@ -129,15 +129,15 @@
   }
 }
 
-- (void)logAssetAction:(unint64_t)a3 inResult:(unint64_t)a4
+- (void)logAssetAction:(unint64_t)action inResult:(unint64_t)result
 {
   if ([(PXSearchCPAnalyticsSession *)self isValid])
   {
     [(PXSearchCPAnalyticsSession *)self timeIntervalFirstAssetAction];
     if (v7 == 0.0)
     {
-      v8 = [MEMORY[0x1E696AE30] processInfo];
-      [v8 systemUptime];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo systemUptime];
       [(PXSearchCPAnalyticsSession *)self setTimeIntervalFirstAssetAction:?];
 
       [(PXSearchCPAnalyticsSession *)self setNumberOfSearchesUntilFirstAssetAction:[(PXSearchCPAnalyticsSession *)self numberOfSearches]];
@@ -146,28 +146,28 @@
 
     if (![(PXSearchCPAnalyticsSession *)self firstAssetActionType])
     {
-      [(PXSearchCPAnalyticsSession *)self setFirstAssetActionType:a3];
+      [(PXSearchCPAnalyticsSession *)self setFirstAssetActionType:action];
     }
 
     if (![(PXSearchCPAnalyticsSession *)self firstAssetActionResultType])
     {
 
-      [(PXSearchCPAnalyticsSession *)self setFirstAssetActionResultType:a4];
+      [(PXSearchCPAnalyticsSession *)self setFirstAssetActionResultType:result];
     }
   }
 }
 
-- (void)logActiveSearch:(id)a3
+- (void)logActiveSearch:(id)search
 {
-  v7 = a3;
+  searchCopy = search;
   if ([(PXSearchCPAnalyticsSession *)self isValid])
   {
-    v4 = [(PXSearchCPAnalyticsSession *)self lastActiveSearch];
-    v5 = [v7 isEqual:v4];
+    lastActiveSearch = [(PXSearchCPAnalyticsSession *)self lastActiveSearch];
+    v5 = [searchCopy isEqual:lastActiveSearch];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [v7 copy];
+      v6 = [searchCopy copy];
       [(PXSearchCPAnalyticsSession *)self setLastActiveSearch:v6];
 
       [(PXSearchCPAnalyticsSession *)self setNumberOfSearches:[(PXSearchCPAnalyticsSession *)self numberOfSearches]+ 1];
@@ -180,8 +180,8 @@
   v35 = *MEMORY[0x1E69E9840];
   if ([(PXSearchCPAnalyticsSession *)self isValid])
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    [v3 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5 = v4;
 
     v21 = [PXSearchCPAnalyticsSession _stringForSessionBeginType:[(PXSearchCPAnalyticsSession *)self beginType]];
@@ -259,7 +259,7 @@
   }
 }
 
-- (PXSearchCPAnalyticsSession)initWithBeginType:(unint64_t)a3
+- (PXSearchCPAnalyticsSession)initWithBeginType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = PXSearchCPAnalyticsSession;
@@ -267,19 +267,19 @@
   v5 = v4;
   if (v4)
   {
-    v4->_beginType = a3;
+    v4->_beginType = type;
     v4->_isValid = 1;
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v5->_startTime = v7;
   }
 
   return v5;
 }
 
-+ (id)_cappedSearchCount:(unint64_t)a3
++ (id)_cappedSearchCount:(unint64_t)count
 {
-  if (a3 <= 0x1E)
+  if (count <= 0x1E)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v3];
   }
@@ -292,33 +292,33 @@
   return v5;
 }
 
-+ (id)_bucketedTimeInterval:(double)a3
++ (id)_bucketedTimeInterval:(double)interval
 {
   v3 = &unk_1F190BEA8;
   v4 = &unk_1F190BEC0;
   v5 = &unk_1F190BED8;
   v6 = &unk_1F190BF08;
-  if (a3 < 60.0)
+  if (interval < 60.0)
   {
     v6 = &unk_1F190BEF0;
   }
 
-  if (a3 >= 30.0)
+  if (interval >= 30.0)
   {
     v5 = v6;
   }
 
-  if (a3 >= 10.0)
+  if (interval >= 10.0)
   {
     v4 = v5;
   }
 
-  if (a3 >= 5.0)
+  if (interval >= 5.0)
   {
     v3 = v4;
   }
 
-  if (a3 == 0.0)
+  if (interval == 0.0)
   {
     return &unk_1F190BE90;
   }
@@ -329,42 +329,42 @@
   }
 }
 
-+ (id)_stringForResultType:(unint64_t)a3
++ (id)_stringForResultType:(unint64_t)type
 {
-  if (a3 - 1 > 7)
+  if (type - 1 > 7)
   {
     return @"none";
   }
 
   else
   {
-    return off_1E7737AE0[a3 - 1];
+    return off_1E7737AE0[type - 1];
   }
 }
 
-+ (id)_stringForActionType:(unint64_t)a3
++ (id)_stringForActionType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return @"none";
   }
 
   else
   {
-    return off_1E7737AC0[a3 - 1];
+    return off_1E7737AC0[type - 1];
   }
 }
 
-+ (id)_stringForSessionBeginType:(unint64_t)a3
++ (id)_stringForSessionBeginType:(unint64_t)type
 {
-  if (a3 - 1 > 9)
+  if (type - 1 > 9)
   {
     return @"none";
   }
 
   else
   {
-    return off_1E7737A70[a3 - 1];
+    return off_1E7737A70[type - 1];
   }
 }
 

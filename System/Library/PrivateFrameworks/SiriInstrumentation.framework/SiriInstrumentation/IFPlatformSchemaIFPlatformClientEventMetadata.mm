@@ -1,26 +1,26 @@
 @interface IFPlatformSchemaIFPlatformClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithDictionary:(id)a3;
-- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithDictionary:(id)dictionary;
+- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFPlatformSchemaIFPlatformClientEventMetadata
 
-- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithDictionary:(id)a3
+- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFPlatformSchemaIFPlatformClientEventMetadata;
   v5 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ifSessionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ifSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(IFPlatformSchemaIFPlatformClientEventMetadata *)v5 setIfSessionId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"postingSpanId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"postingSpanId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithJSON:(id)a3
+- (IFPlatformSchemaIFPlatformClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_ifSessionId)
   {
-    v4 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    ifSessionId = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+    dictionaryRepresentation = [ifSessionId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"ifSessionId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"ifSessionId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"ifSessionId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"ifSessionId"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IFPlatformSchemaIFPlatformClientEventMetadata postingSpanId](self, "postingSpanId")}];
-    [v3 setObject:v7 forKeyedSubscript:@"postingSpanId"];
+    [dictionary setObject:v7 forKeyedSubscript:@"postingSpanId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
-  v6 = [v4 ifSessionId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  ifSessionId = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+  ifSessionId2 = [equalCopy ifSessionId];
+  v7 = ifSessionId2;
+  if ((ifSessionId != 0) == (ifSessionId2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
-  if (v8)
+  ifSessionId3 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+  if (ifSessionId3)
   {
-    v9 = v8;
-    v10 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
-    v11 = [v4 ifSessionId];
-    v12 = [v10 isEqual:v11];
+    v9 = ifSessionId3;
+    ifSessionId4 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+    ifSessionId5 = [equalCopy ifSessionId];
+    v12 = [ifSessionId4 isEqual:ifSessionId5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[24] & 1))
+  if ((*&self->_has & 1) != (equalCopy[24] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     postingSpanId = self->_postingSpanId;
-    if (postingSpanId != [v4 postingSpanId])
+    if (postingSpanId != [equalCopy postingSpanId])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+  toCopy = to;
+  ifSessionId = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
 
-  if (v4)
+  if (ifSessionId)
   {
-    v5 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
+    ifSessionId2 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFPlatformSchemaIFPlatformClientEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFPlatformSchemaIFPlatformClientEventMetadata *)self ifSessionId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFPlatformSchemaIFPlatformClientEventMetadata *)self deleteIfSessionId];
   }

@@ -9,32 +9,32 @@
 
 - (id)spgConfigFile
 {
-  v1 = [a1 resourcePath];
-  v2 = [v1 stringByAppendingPathComponent:@"SPG.json"];
+  resourcePath = [self resourcePath];
+  v2 = [resourcePath stringByAppendingPathComponent:@"SPG.json"];
 
   return v2;
 }
 
 - (id)startOfSpeechDetectorConfigFile
 {
-  v1 = [a1 resourcePath];
-  v2 = [v1 stringByAppendingPathComponent:@"sos-options.json"];
+  resourcePath = [self resourcePath];
+  v2 = [resourcePath stringByAppendingPathComponent:@"sos-options.json"];
 
   return v2;
 }
 
 - (id)languageDetectorConfigFile
 {
-  v2 = [a1 resourcePath];
-  v3 = [a1 dictionary];
-  if (!v3)
+  resourcePath = [self resourcePath];
+  dictionary = [self dictionary];
+  if (!dictionary)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [a1 dictionary];
-  v6 = [v5 objectForKeyedSubscript:@"detector-config"];
+  dictionary4 = dictionary;
+  dictionary2 = [self dictionary];
+  v6 = [dictionary2 objectForKeyedSubscript:@"detector-config"];
   if (!v6)
   {
 
@@ -43,8 +43,8 @@
   }
 
   v7 = v6;
-  v8 = [a1 dictionary];
-  v9 = [v8 objectForKeyedSubscript:@"detector-config"];
+  dictionary3 = [self dictionary];
+  v9 = [dictionary3 objectForKeyedSubscript:@"detector-config"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -55,27 +55,27 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v4 = [a1 dictionary];
-  v11 = [v4 objectForKeyedSubscript:@"detector-config"];
+  dictionary4 = [self dictionary];
+  v11 = [dictionary4 objectForKeyedSubscript:@"detector-config"];
 LABEL_7:
 
 LABEL_8:
-  v12 = [v2 stringByAppendingPathComponent:v11];
+  v12 = [resourcePath stringByAppendingPathComponent:v11];
 
   return v12;
 }
 
 - (id)languageDetectorSupportedLocale
 {
-  v2 = [a1 dictionary];
-  if (!v2)
+  dictionary = [self dictionary];
+  if (!dictionary)
   {
     goto LABEL_5;
   }
 
-  v3 = v2;
-  v4 = [a1 dictionary];
-  v5 = [v4 objectForKeyedSubscript:@"supported-locales"];
+  dictionary4 = dictionary;
+  dictionary2 = [self dictionary];
+  v5 = [dictionary2 objectForKeyedSubscript:@"supported-locales"];
   if (!v5)
   {
 
@@ -84,8 +84,8 @@ LABEL_8:
   }
 
   v6 = v5;
-  v7 = [a1 dictionary];
-  v8 = [v7 objectForKeyedSubscript:@"supported-locales"];
+  dictionary3 = [self dictionary];
+  v8 = [dictionary3 objectForKeyedSubscript:@"supported-locales"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -96,8 +96,8 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v3 = [a1 dictionary];
-  v10 = [v3 objectForKeyedSubscript:@"supported-locales"];
+  dictionary4 = [self dictionary];
+  v10 = [dictionary4 objectForKeyedSubscript:@"supported-locales"];
 LABEL_7:
 
 LABEL_8:

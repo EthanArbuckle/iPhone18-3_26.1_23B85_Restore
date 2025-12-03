@@ -1,40 +1,40 @@
 @interface NTKSnowglobeColors
-- (NTKSnowglobeColors)initWithPalette:(id)a3;
-- (id)_backgroundObjectColorsFromColors:(id)a3 randoms:(id)a4;
-- (id)backgroundColorsForRandoms:(id)a3;
+- (NTKSnowglobeColors)initWithPalette:(id)palette;
+- (id)_backgroundObjectColorsFromColors:(id)colors randoms:(id)randoms;
+- (id)backgroundColorsForRandoms:(id)randoms;
 @end
 
 @implementation NTKSnowglobeColors
 
-- (NTKSnowglobeColors)initWithPalette:(id)a3
+- (NTKSnowglobeColors)initWithPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   v22.receiver = self;
   v22.super_class = NTKSnowglobeColors;
   v5 = [(NTKSnowglobeColors *)&v22 init];
   if (v5)
   {
-    v6 = [v4 backlightColor];
+    backlightColor = [paletteCopy backlightColor];
     backlightColor = v5->_backlightColor;
-    v5->_backlightColor = v6;
+    v5->_backlightColor = backlightColor;
 
-    v8 = [v4 background];
+    background = [paletteCopy background];
     backgroundColor = v5->_backgroundColor;
-    v5->_backgroundColor = v8;
+    v5->_backgroundColor = background;
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
-      v11 = [v10 fromPalette];
-      v12 = [v10 toPalette];
-      v13 = [v11 backgroundObjectColors];
+      v10 = paletteCopy;
+      fromPalette = [v10 fromPalette];
+      toPalette = [v10 toPalette];
+      backgroundObjectColors = [fromPalette backgroundObjectColors];
       backgroundObjectColorFrom = v5->_backgroundObjectColorFrom;
-      v5->_backgroundObjectColorFrom = v13;
+      v5->_backgroundObjectColorFrom = backgroundObjectColors;
 
-      v15 = [v12 backgroundObjectColors];
+      backgroundObjectColors2 = [toPalette backgroundObjectColors];
       backgroundObjectColorTo = v5->_backgroundObjectColorTo;
-      v5->_backgroundObjectColorTo = v15;
+      v5->_backgroundObjectColorTo = backgroundObjectColors2;
 
       [v10 transitionFraction];
       v18 = v17;
@@ -44,10 +44,10 @@
 
     else
     {
-      v19 = [v4 backgroundObjectColors];
-      objc_storeStrong(&v5->_backgroundObjectColorFrom, v19);
+      backgroundObjectColors3 = [paletteCopy backgroundObjectColors];
+      objc_storeStrong(&v5->_backgroundObjectColorFrom, backgroundObjectColors3);
       v20 = v5->_backgroundObjectColorTo;
-      v5->_backgroundObjectColorTo = v19;
+      v5->_backgroundObjectColorTo = backgroundObjectColors3;
 
       v5->_backgroundObjectColorTransitionFraction = 0.0;
     }
@@ -56,19 +56,19 @@
   return v5;
 }
 
-- (id)backgroundColorsForRandoms:(id)a3
+- (id)backgroundColorsForRandoms:(id)randoms
 {
-  v4 = a3;
+  randomsCopy = randoms;
   [(NTKSnowglobeColors *)self backgroundObjectColorTransitionFraction];
   v6 = v5;
-  v7 = [(NTKSnowglobeColors *)self backgroundObjectColorFrom];
-  v8 = [(NTKSnowglobeColors *)self backgroundObjectColorTo];
+  backgroundObjectColorFrom = [(NTKSnowglobeColors *)self backgroundObjectColorFrom];
+  backgroundObjectColorTo = [(NTKSnowglobeColors *)self backgroundObjectColorTo];
   [(NTKSnowglobeColors *)self backgroundObjectColorTransitionFraction];
   v10 = v9;
-  v11 = [(NTKSnowglobeColors *)self _backgroundObjectColorsFromColors:v7 randoms:v4];
+  v11 = [(NTKSnowglobeColors *)self _backgroundObjectColorsFromColors:backgroundObjectColorFrom randoms:randomsCopy];
   if (v10 != 0.0)
   {
-    v12 = [(NTKSnowglobeColors *)self _backgroundObjectColorsFromColors:v8 randoms:v4];
+    v12 = [(NTKSnowglobeColors *)self _backgroundObjectColorsFromColors:backgroundObjectColorTo randoms:randomsCopy];
     v13 = objc_opt_new();
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -89,27 +89,27 @@
   return v11;
 }
 
-- (id)_backgroundObjectColorsFromColors:(id)a3 randoms:(id)a4
+- (id)_backgroundObjectColorsFromColors:(id)colors randoms:(id)randoms
 {
-  v5 = a3;
-  v6 = a4;
+  colorsCopy = colors;
+  randomsCopy = randoms;
   v7 = objc_opt_new();
-  if ([v6 count])
+  if ([randomsCopy count])
   {
     v8 = 0;
     do
     {
-      v9 = [v6 objectAtIndexedSubscript:v8];
-      v10 = [v9 unsignedIntegerValue];
-      v11 = v10 % [v5 count];
+      v9 = [randomsCopy objectAtIndexedSubscript:v8];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
+      v11 = unsignedIntegerValue % [colorsCopy count];
 
-      v12 = [v5 objectAtIndexedSubscript:v11];
+      v12 = [colorsCopy objectAtIndexedSubscript:v11];
       [v7 addObject:v12];
 
       ++v8;
     }
 
-    while (v8 < [v6 count]);
+    while (v8 < [randomsCopy count]);
   }
 
   return v7;

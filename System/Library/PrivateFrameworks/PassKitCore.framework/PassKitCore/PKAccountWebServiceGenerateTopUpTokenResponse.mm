@@ -1,26 +1,26 @@
 @interface PKAccountWebServiceGenerateTopUpTokenResponse
-- (PKAccountWebServiceGenerateTopUpTokenResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5;
+- (PKAccountWebServiceGenerateTopUpTokenResponse)initWithData:(id)data account:(id)account request:(id)request;
 @end
 
 @implementation PKAccountWebServiceGenerateTopUpTokenResponse
 
-- (PKAccountWebServiceGenerateTopUpTokenResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5
+- (PKAccountWebServiceGenerateTopUpTokenResponse)initWithData:(id)data account:(id)account request:(id)request
 {
-  v7 = a4;
+  accountCopy = account;
   v16.receiver = self;
   v16.super_class = PKAccountWebServiceGenerateTopUpTokenResponse;
-  v8 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v8 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v9 = v8;
   if (v8)
   {
-    v10 = [(PKWebServiceResponse *)v8 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v8 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = jSONObject;
       v12 = [PKAppleBalanceInStoreTopUpToken alloc];
-      v13 = [v7 accountIdentifier];
-      v14 = [(PKAppleBalanceInStoreTopUpToken *)v12 initWithDictionary:v11 accountIdentifier:v13];
+      accountIdentifier = [accountCopy accountIdentifier];
+      v14 = [(PKAppleBalanceInStoreTopUpToken *)v12 initWithDictionary:v11 accountIdentifier:accountIdentifier];
 
       if (PKVerifySignatureForInStoreTopUpToken(v14))
       {

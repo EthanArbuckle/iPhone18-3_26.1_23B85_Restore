@@ -6,7 +6,7 @@
 - (uint64_t)_removeBackingsWithDeviceIDs:(uint64_t)result;
 - (uint64_t)updateBackingCachedPropertiesByDeviceID:(uint64_t)result;
 - (void)dealloc;
-- (void)initWithSourceInfoDictionaries:(void *)a3 commonSettings:;
+- (void)initWithSourceInfoDictionaries:(void *)dictionaries commonSettings:;
 @end
 
 @implementation FigCaptureSourceBackingsProvider
@@ -187,7 +187,7 @@ LABEL_12:
 
 LABEL_19:
   v78 = 0;
-  v61 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = [+[BWFigCaptureDeviceVendor sharedCaptureDeviceVendor](BWFigCaptureDeviceVendor "sharedCaptureDeviceVendor")];
   v11 = [MEMORY[0x1E695DF70] arrayWithArray:v10];
   [v11 removeObject:0x1F21702D0];
@@ -195,8 +195,8 @@ LABEL_19:
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v12 = [gCaptureSourceBackings sourceBackings];
-  v13 = [v12 countByEnumeratingWithState:&v74 objects:v80 count:16];
+  sourceBackings = [gCaptureSourceBackings sourceBackings];
+  v13 = [sourceBackings countByEnumeratingWithState:&v74 objects:v80 count:16];
   if (v13)
   {
     v14 = v13;
@@ -207,7 +207,7 @@ LABEL_19:
       {
         if (*v75 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(sourceBackings);
         }
 
         v17 = *(*(&v74 + 1) + 8 * i);
@@ -219,7 +219,7 @@ LABEL_19:
           {
             if (dword_1EB58DF60)
             {
-              v19 = v12;
+              v19 = sourceBackings;
               v20 = v10;
               v21 = v11;
               LODWORD(v68) = 0;
@@ -250,15 +250,15 @@ LABEL_19:
               fig_log_call_emit_and_clean_up_after_send_and_compose();
               v11 = v21;
               v10 = v20;
-              v12 = v19;
+              sourceBackings = v19;
             }
 
-            [v61 addObject:{v18, v58, v60}];
+            [array addObject:{v18, v58, v60}];
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v74 objects:v80 count:16];
+      v14 = [sourceBackings countByEnumeratingWithState:&v74 objects:v80 count:16];
     }
 
     while (v14);
@@ -313,7 +313,7 @@ LABEL_19:
     }
   }
 
-  if ([v61 count])
+  if ([array count])
   {
     [FigCaptureSourceBackingsProvider _removeBackingsWithDeviceIDs:?];
   }
@@ -363,7 +363,7 @@ LABEL_19:
 
       if (v36)
       {
-        v37 = [v61 count];
+        v37 = [array count];
         *type = 136315394;
         v63 = "cs_getBackingsForBuiltInCameras";
         v64 = 1024;
@@ -412,7 +412,7 @@ LABEL_66:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -465,21 +465,21 @@ uint64_t __46__FigCaptureSourceBackingsProvider_initialize__block_invoke(uint64_
   [(FigCaptureSourceBackingsProvider *)&v3 dealloc];
 }
 
-- (void)initWithSourceInfoDictionaries:(void *)a3 commonSettings:
+- (void)initWithSourceInfoDictionaries:(void *)dictionaries commonSettings:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = FigCaptureSourceBackingsProvider;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(FigCaptureSourceBackingsProvider *)v5 _addBackingsForSourceInfoDictionaries:a2];
-    v5[2] = [[FigCaptureSourceCommonSettings alloc] initWithCommonSettingsDictionary:a3];
+    v5[2] = [[FigCaptureSourceCommonSettings alloc] initWithCommonSettingsDictionary:dictionaries];
   }
 
   return v5;
@@ -549,9 +549,9 @@ LABEL_11:
   {
     v1 = result;
     FigSimpleMutexCheckIsLockedOnThisThread();
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v3 = *(v1 + 8);
-    v11 = OUTLINED_FUNCTION_55_8(v2, v4, v5, v6, v7, v8, v9, v10, v42, v45, v48, v51, v54, v57, v60, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v95, v97, v99, v101, v103, v105, v107);
+    v11 = OUTLINED_FUNCTION_55_8(array, v4, v5, v6, v7, v8, v9, v10, v42, v45, v48, v51, v54, v57, v60, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v95, v97, v99, v101, v103, v105, v107);
     if (v11)
     {
       v19 = v11;
@@ -576,7 +576,7 @@ LABEL_11:
               *(v1 + 24) = 0;
             }
 
-            v23 = [v2 addObject:v22];
+            v23 = [array addObject:v22];
           }
 
           ++v21;
@@ -602,7 +602,7 @@ LABEL_11:
           OUTLINED_FUNCTION_49_7();
           if (!v33)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(array);
           }
 
           v34 = [*(v1 + 8) removeObject:*(8 * v32++)];

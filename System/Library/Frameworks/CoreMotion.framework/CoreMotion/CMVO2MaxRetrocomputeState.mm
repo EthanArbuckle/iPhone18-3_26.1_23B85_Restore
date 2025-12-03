@@ -1,25 +1,25 @@
 @interface CMVO2MaxRetrocomputeState
-- (CMVO2MaxRetrocomputeState)initWithCoder:(id)a3;
-- (CMVO2MaxRetrocomputeState)initWithStatus:(int64_t)a3 startDate:(id)a4 endDate:(id)a5 meanDelta:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMVO2MaxRetrocomputeState)initWithCoder:(id)coder;
+- (CMVO2MaxRetrocomputeState)initWithStatus:(int64_t)status startDate:(id)date endDate:(id)endDate meanDelta:(id)delta;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMVO2MaxRetrocomputeState
 
-- (CMVO2MaxRetrocomputeState)initWithStatus:(int64_t)a3 startDate:(id)a4 endDate:(id)a5 meanDelta:(id)a6
+- (CMVO2MaxRetrocomputeState)initWithStatus:(int64_t)status startDate:(id)date endDate:(id)endDate meanDelta:(id)delta
 {
   v12.receiver = self;
   v12.super_class = CMVO2MaxRetrocomputeState;
   v10 = [(CMVO2MaxRetrocomputeState *)&v12 init];
   if (v10)
   {
-    v10->_startDate = a4;
-    v10->_endDate = a5;
-    v10->_meanDelta = a6;
-    v10->_status = a3;
+    v10->_startDate = date;
+    v10->_endDate = endDate;
+    v10->_meanDelta = delta;
+    v10->_status = status;
   }
 
   return v10;
@@ -32,7 +32,7 @@
   [(CMVO2MaxRetrocomputeState *)&v3 dealloc];
 }
 
-- (CMVO2MaxRetrocomputeState)initWithCoder:(id)a3
+- (CMVO2MaxRetrocomputeState)initWithCoder:(id)coder
 {
   v22.receiver = self;
   v22.super_class = CMVO2MaxRetrocomputeState;
@@ -40,24 +40,24 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kMetMinuteDataCodingKeyStartDate");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kMetMinuteDataCodingKeyStartDate");
     v4->_startDate = objc_msgSend_copy(v7, v8, v9);
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"kMetMinuteDataCodingKeyEndDate");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"kMetMinuteDataCodingKeyEndDate");
     v4->_endDate = objc_msgSend_copy(v12, v13, v14);
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"kMetMinuteDataCodingKeyMeanDelta");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"kMetMinuteDataCodingKeyMeanDelta");
     v4->_meanDelta = objc_msgSend_copy(v17, v18, v19);
-    v4->_status = objc_msgSend_decodeInt64ForKey_(a3, v20, @"kMetMinuteDataCodingKeyStatus");
+    v4->_status = objc_msgSend_decodeInt64ForKey_(coder, v20, @"kMetMinuteDataCodingKeyStatus");
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   status = self->_status;
   startDate = self->_startDate;
   endDate = self->_endDate;
@@ -66,14 +66,14 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStatus_startDate_endDate_meanDelta_, status);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_startDate, @"kMetMinuteDataCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->_endDate, @"kMetMinuteDataCodingKeyEndDate");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->_meanDelta, @"kMetMinuteDataCodingKeyMeanDelta");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_startDate, @"kMetMinuteDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->_endDate, @"kMetMinuteDataCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->_meanDelta, @"kMetMinuteDataCodingKeyMeanDelta");
   status = self->_status;
 
-  objc_msgSend_encodeInt64_forKey_(a3, v7, status, @"kMetMinuteDataCodingKeyStatus");
+  objc_msgSend_encodeInt64_forKey_(coder, v7, status, @"kMetMinuteDataCodingKeyStatus");
 }
 
 - (id)description

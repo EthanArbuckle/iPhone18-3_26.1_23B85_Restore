@@ -1,22 +1,22 @@
 @interface ETService
-- (ETService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
-- (id)dateWithElapsedTimeData:(id)a3;
-- (id)getDescriptionForTimeSyncSourceType:(unsigned __int8)a3;
+- (ETService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
+- (id)dateWithElapsedTimeData:(id)data;
+- (id)getDescriptionForTimeSyncSourceType:(unsigned __int8)type;
 - (void)extractTime;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation ETService
 
-- (ETService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (ETService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = ETService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -36,9 +36,9 @@
   v8 = v3;
   v4 = [NSArray arrayWithObjects:&v8 count:1];
 
-  v5 = [(ClientService *)self peripheral];
-  v6 = [(ClientService *)self service];
-  [v5 discoverCharacteristics:v4 forService:v6];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v4 forService:service];
 }
 
 - (void)stop
@@ -48,13 +48,13 @@
   [(ClientService *)&v2 stop];
 }
 
-- (id)dateWithElapsedTimeData:(id)a3
+- (id)dateWithElapsedTimeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v34 = 0;
   v33 = 0;
   v32 = 0;
-  v5 = [DataInputStream inputStreamWithData:v4 byteOrder:1];
+  v5 = [DataInputStream inputStreamWithData:dataCopy byteOrder:1];
   v6 = 1.0;
   if ([v5 readUint8:&v34])
   {
@@ -65,13 +65,13 @@
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v28 = v26;
-        v29 = [(ClientService *)self peripheral];
-        v30 = [v29 name];
+        peripheral = [(ClientService *)self peripheral];
+        name = [peripheral name];
         v31 = self->_lastTimeSyncFlags;
         *buf = 141558787;
         v36 = 1752392040;
         v37 = 2113;
-        v38 = v30;
+        v38 = name;
         v39 = 1024;
         *v40 = v34;
         *&v40[4] = 1024;
@@ -91,8 +91,8 @@
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       v19 = v18;
-      v20 = [(ClientService *)self peripheral];
-      v21 = [v20 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
       lastTimeSyncTimeValue = self->_lastTimeSyncTimeValue;
       v23 = v33;
       lastTimeSyncTimestamp = self->_lastTimeSyncTimestamp;
@@ -100,7 +100,7 @@
       *buf = 141559811;
       v36 = 1752392040;
       v37 = 2113;
-      v38 = v21;
+      v38 = name2;
       v39 = 2048;
       *v40 = v23;
       *&v40[8] = 2048;
@@ -126,8 +126,8 @@ LABEL_14:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(ClientService *)self peripheral];
-    v12 = [v11 name];
+    peripheral3 = [(ClientService *)self peripheral];
+    name3 = [peripheral3 name];
     v13 = self->_lastTimeSyncTimeValue;
     v14 = v33;
     v15 = self->_lastTimeSyncTimestamp;
@@ -135,7 +135,7 @@ LABEL_14:
     *buf = 141559811;
     v36 = 1752392040;
     v37 = 2113;
-    v38 = v12;
+    v38 = name3;
     v39 = 2048;
     *v40 = v14;
     *&v40[8] = 2048;
@@ -157,11 +157,11 @@ LABEL_15:
   return v17;
 }
 
-- (id)getDescriptionForTimeSyncSourceType:(unsigned __int8)a3
+- (id)getDescriptionForTimeSyncSourceType:(unsigned __int8)type
 {
-  if (a3 < 8u)
+  if (type < 8u)
   {
-    return off_1000BDC20[a3];
+    return off_1000BDC20[type];
   }
 
   v4 = qword_1000DDBC8;
@@ -179,20 +179,20 @@ LABEL_15:
   lastTimeSyncTimestamp = self->_lastTimeSyncTimestamp;
   self->_lastTimeSyncTimestamp = v3;
 
-  v5 = [(ETService *)self currentElapsedTimeCharacteristic];
-  v6 = [v5 value];
-  v7 = [DataInputStream inputStreamWithData:v6 byteOrder:1];
+  currentElapsedTimeCharacteristic = [(ETService *)self currentElapsedTimeCharacteristic];
+  value = [currentElapsedTimeCharacteristic value];
+  v7 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(ClientService *)self peripheral];
-    v11 = [v10 name];
+    peripheral = [(ClientService *)self peripheral];
+    name = [peripheral name];
     *buf = 141558531;
     v36 = 1752392040;
     v37 = 2113;
-    v38 = v11;
+    v38 = name;
     v39 = 2112;
     v40 = v7;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ETS for peripheral %{private, mask.hash}@ data received rawDataBytes %@", buf, 0x20u);
@@ -209,12 +209,12 @@ LABEL_15:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(ClientService *)self peripheral];
-      v15 = [v14 name];
+      peripheral2 = [(ClientService *)self peripheral];
+      name2 = [peripheral2 name];
       *buf = 141558531;
       v36 = 1752392040;
       v37 = 2113;
-      v38 = v15;
+      v38 = name2;
       v39 = 1024;
       LODWORD(v40) = v34;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ETS for peripheral %{private, mask.hash}@ data received, flags %d", buf, 0x1Cu);
@@ -232,15 +232,15 @@ LABEL_15:
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v17 = v16;
-          v18 = [(ClientService *)self peripheral];
-          v19 = [v18 name];
+          peripheral3 = [(ClientService *)self peripheral];
+          name3 = [peripheral3 name];
           lastTimeSyncTimeValue = self->_lastTimeSyncTimeValue;
           v21 = self->_lastTimeSyncTimestamp;
           v22 = [(ETService *)self getDescriptionForTimeSyncSourceType:HIBYTE(v32)];
           *buf = 141559299;
           v36 = 1752392040;
           v37 = 2113;
-          v38 = v19;
+          v38 = name3;
           v39 = 2048;
           v40 = lastTimeSyncTimeValue;
           v41 = 2112;
@@ -257,8 +257,8 @@ LABEL_15:
 
   if ([v7 readUint8:&v31 + 1] && (v31 & 0x100) != 0)
   {
-    v23 = [(ETService *)self currentElapsedTimeCharacteristic];
-    [v23 properties];
+    currentElapsedTimeCharacteristic2 = [(ETService *)self currentElapsedTimeCharacteristic];
+    [currentElapsedTimeCharacteristic2 properties];
   }
 
   if ([v7 readUint8:&v31])
@@ -268,9 +268,9 @@ LABEL_15:
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [(ClientService *)self peripheral];
-      v27 = [v26 name];
-      v28 = v27;
+      peripheral4 = [(ClientService *)self peripheral];
+      name4 = [peripheral4 name];
+      v28 = name4;
       *buf = 141558787;
       v36 = 1752392040;
       if (v31)
@@ -294,7 +294,7 @@ LABEL_15:
         v30 = "N";
       }
 
-      v38 = v27;
+      v38 = name4;
       v39 = 2080;
       v40 = v29;
       v41 = 2080;
@@ -304,12 +304,12 @@ LABEL_15:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -320,13 +320,13 @@ LABEL_15:
 
   else
   {
-    v22 = v8;
+    v22 = serviceCopy;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v8 characteristics];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    characteristics = [serviceCopy characteristics];
+    v12 = [characteristics countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -338,51 +338,51 @@ LABEL_15:
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(characteristics);
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v18 = [(ETService *)self currentElapsedTimeCharacteristic];
-          if (v18)
+          currentElapsedTimeCharacteristic = [(ETService *)self currentElapsedTimeCharacteristic];
+          if (currentElapsedTimeCharacteristic)
           {
           }
 
           else
           {
-            v19 = [v17 UUID];
+            uUID = [v17 UUID];
             v20 = [CBUUID UUIDWithString:v15];
-            v21 = [v19 isEqual:v20];
+            v21 = [uUID isEqual:v20];
 
             if (v21)
             {
               [(ETService *)self setCurrentElapsedTimeCharacteristic:v17];
-              [v23 readValueForCharacteristic:v17];
+              [peripheralCopy readValueForCharacteristic:v17];
               if (([v17 properties] & 0x10) != 0 || (objc_msgSend(v17, "properties") & 0x20) != 0)
               {
-                [v23 setNotifyValue:1 forCharacteristic:v17];
+                [peripheralCopy setNotifyValue:1 forCharacteristic:v17];
               }
             }
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [characteristics countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
     }
 
     [(ClientService *)self notifyDidStart];
-    v9 = 0;
-    v8 = v22;
+    errorCopy = 0;
+    serviceCopy = v22;
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -393,21 +393,21 @@ LABEL_15:
 
   else
   {
-    v12 = [(ETService *)self currentElapsedTimeCharacteristic];
+    currentElapsedTimeCharacteristic = [(ETService *)self currentElapsedTimeCharacteristic];
 
-    if (v12 == v9)
+    if (currentElapsedTimeCharacteristic == characteristicCopy)
     {
       [(ETService *)self extractTime];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))

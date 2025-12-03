@@ -1,47 +1,47 @@
 @interface CAAPIHandler
-- (CAAPIHandler)initWithURLString:(id)a3 queue:(id)a4 responseHandler:(id)a5;
+- (CAAPIHandler)initWithURLString:(id)string queue:(id)queue responseHandler:(id)handler;
 - (void)cancel;
 - (void)fetchAPI;
 @end
 
 @implementation CAAPIHandler
 
-- (CAAPIHandler)initWithURLString:(id)a3 queue:(id)a4 responseHandler:(id)a5
+- (CAAPIHandler)initWithURLString:(id)string queue:(id)queue responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  queueCopy = queue;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = CAAPIHandler;
   v11 = [(CAAPIHandler *)&v20 init];
   if (!v11)
   {
 LABEL_4:
-    v13 = 0;
+    apiURL = 0;
     goto LABEL_5;
   }
 
-  v12 = [NSURL URLWithString:v8];
+  v12 = [NSURL URLWithString:stringCopy];
   [(CAAPIHandler *)v11 setApiURL:v12];
 
-  v13 = [(CAAPIHandler *)v11 apiURL];
+  apiURL = [(CAAPIHandler *)v11 apiURL];
 
-  if (v13)
+  if (apiURL)
   {
-    v14 = [(CAAPIHandler *)v11 apiURL];
-    v15 = [v14 scheme];
-    v16 = [v15 compare:@"https" options:1];
+    apiURL2 = [(CAAPIHandler *)v11 apiURL];
+    scheme = [apiURL2 scheme];
+    v16 = [scheme compare:@"https" options:1];
 
     if (!v16)
     {
       v18 = objc_alloc_init(NSOperationQueue);
       [(CAAPIHandler *)v11 setOpQueue:v18];
 
-      v19 = [(CAAPIHandler *)v11 opQueue];
-      [v19 setUnderlyingQueue:v9];
+      opQueue = [(CAAPIHandler *)v11 opQueue];
+      [opQueue setUnderlyingQueue:queueCopy];
 
-      [(CAAPIHandler *)v11 setResponseHandler:v10];
-      v13 = v11;
+      [(CAAPIHandler *)v11 setResponseHandler:handlerCopy];
+      apiURL = v11;
       goto LABEL_5;
     }
 
@@ -50,13 +50,13 @@ LABEL_4:
 
 LABEL_5:
 
-  return v13;
+  return apiURL;
 }
 
 - (void)cancel
 {
-  v2 = [(CAAPIHandler *)self dataTask];
-  [v2 cancel];
+  dataTask = [(CAAPIHandler *)self dataTask];
+  [dataTask cancel];
 }
 
 - (void)fetchAPI
@@ -66,28 +66,28 @@ LABEL_5:
   [v3 setURLCache:0];
   [v3 setURLCredentialStorage:0];
   [v3 set_alternativeServicesStorage:0];
-  v4 = [(CAAPIHandler *)self opQueue];
-  v5 = [NSURLSession sessionWithConfiguration:v3 delegate:0 delegateQueue:v4];
+  opQueue = [(CAAPIHandler *)self opQueue];
+  v5 = [NSURLSession sessionWithConfiguration:v3 delegate:0 delegateQueue:opQueue];
 
-  v6 = [(CAAPIHandler *)self apiURL];
+  apiURL = [(CAAPIHandler *)self apiURL];
   if ([(CAAPIHandler *)self timeoutSeconds])
   {
-    v7 = [(CAAPIHandler *)self timeoutSeconds];
+    timeoutSeconds = [(CAAPIHandler *)self timeoutSeconds];
   }
 
   else
   {
-    v7 = 60.0;
+    timeoutSeconds = 60.0;
   }
 
-  v8 = [NSMutableURLRequest requestWithURL:v6 cachePolicy:4 timeoutInterval:v7];
+  v8 = [NSMutableURLRequest requestWithURL:apiURL cachePolicy:4 timeoutInterval:timeoutSeconds];
 
   [v8 setValue:@"application/captive+json" forHTTPHeaderField:@"Accept"];
-  v9 = [(CAAPIHandler *)self userAgent];
-  [v8 setValue:v9 forHTTPHeaderField:@"User-Agent"];
+  userAgent = [(CAAPIHandler *)self userAgent];
+  [v8 setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-  v10 = [(CAAPIHandler *)self interfaceName];
-  [v8 setBoundInterfaceIdentifier:v10];
+  interfaceName = [(CAAPIHandler *)self interfaceName];
+  [v8 setBoundInterfaceIdentifier:interfaceName];
 
   objc_initWeak(&location, self);
   v13 = _NSConcreteStackBlock;
@@ -98,8 +98,8 @@ LABEL_5:
   v11 = [v5 dataTaskWithRequest:v8 completionHandler:&v13];
   [(CAAPIHandler *)self setDataTask:v11, v13, v14, v15, v16];
 
-  v12 = [(CAAPIHandler *)self dataTask];
-  [v12 resume];
+  dataTask = [(CAAPIHandler *)self dataTask];
+  [dataTask resume];
 
   [v5 finishTasksAndInvalidate];
   objc_destroyWeak(&v17);

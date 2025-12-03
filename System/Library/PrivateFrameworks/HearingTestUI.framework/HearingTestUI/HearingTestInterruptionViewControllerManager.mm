@@ -1,7 +1,7 @@
 @interface HearingTestInterruptionViewControllerManager
 - (_TtC13HearingTestUI44HearingTestInterruptionViewControllerManager)init;
-- (void)fitNoiseCheckCancelled:(id)a3;
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4;
+- (void)fitNoiseCheckCancelled:(id)cancelled;
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status;
 @end
 
 @implementation HearingTestInterruptionViewControllerManager
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)fitNoiseCheckCompleted:(id)a3 status:(unint64_t)a4
+- (void)fitNoiseCheckCompleted:(id)completed status:(unint64_t)status
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -31,12 +31,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_20CE075C4(a4);
+  completedCopy = completed;
+  selfCopy = self;
+  sub_20CE075C4(status);
 }
 
-- (void)fitNoiseCheckCancelled:(id)a3
+- (void)fitNoiseCheckCancelled:(id)cancelled
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -46,9 +46,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_20CE06844(v5);
+  cancelledCopy = cancelled;
+  selfCopy = self;
+  sub_20CE06844(cancelledCopy);
 }
 
 @end

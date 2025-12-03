@@ -1,35 +1,35 @@
 @interface CPApplicationLauncher
-- (BOOL)_acquireAssertionForBundleID:(id)a3;
-- (BOOL)_sessionAlreadyAuthorizingOrAuthorizedForPiP:(id)a3;
-- (CPApplicationLauncher)initWithSpatialApplicationManager:(id)a3;
+- (BOOL)_acquireAssertionForBundleID:(id)d;
+- (BOOL)_sessionAlreadyAuthorizingOrAuthorizedForPiP:(id)p;
+- (CPApplicationLauncher)initWithSpatialApplicationManager:(id)manager;
 - (NSString)placementSceneIdentifier;
-- (id)_authorizationForActivitySession:(id)a3;
-- (id)_authorizationsForBundleID:(id)a3;
-- (id)_openApplicationOptionsForActivitySession:(id)a3 options:(int64_t)a4;
-- (id)_sessionIDForActivity:(id)a3;
-- (void)_authorizePiPForActivity:(id)a3 withCompletion:(id)a4;
-- (void)_handleStateTransitionForAuthorization:(id)a3 activitySession:(id)a4 state:(int64_t)a5;
-- (void)_insertAuth:(id)a3 completion:(id)a4 forSessionID:(id)a5;
-- (void)_insertBKSAssertion:(id)a3 forBundleID:(id)a4;
-- (void)_invalidateBKSAssertionForBundleID:(id)a3;
-- (void)_launchAndAcquireAssertionIfNecessaryForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5;
-- (void)_launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5;
-- (void)_launchApplicationForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5;
-- (void)_revokeAndRemoveAuthForSessionID:(id)a3;
-- (void)_revokeAuthorizations:(id)a3;
-- (void)_validatePiPStartedFor:(id)a3 bundleID:(id)a4;
-- (void)authorizePiPForActivity:(id)a3 withCompletion:(id)a4;
-- (void)launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5;
-- (void)revokeBackgroundAuthorizationForBundleID:(id)a3;
-- (void)revokeBackgroundAuthorizationForSession:(id)a3;
-- (void)setPlacementSceneIdentifier:(id)a3;
+- (id)_authorizationForActivitySession:(id)session;
+- (id)_authorizationsForBundleID:(id)d;
+- (id)_openApplicationOptionsForActivitySession:(id)session options:(int64_t)options;
+- (id)_sessionIDForActivity:(id)activity;
+- (void)_authorizePiPForActivity:(id)activity withCompletion:(id)completion;
+- (void)_handleStateTransitionForAuthorization:(id)authorization activitySession:(id)session state:(int64_t)state;
+- (void)_insertAuth:(id)auth completion:(id)completion forSessionID:(id)d;
+- (void)_insertBKSAssertion:(id)assertion forBundleID:(id)d;
+- (void)_invalidateBKSAssertionForBundleID:(id)d;
+- (void)_launchAndAcquireAssertionIfNecessaryForActivitySession:(id)session options:(int64_t)options completion:(id)completion;
+- (void)_launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion;
+- (void)_launchApplicationForActivitySession:(id)session options:(int64_t)options completion:(id)completion;
+- (void)_revokeAndRemoveAuthForSessionID:(id)d;
+- (void)_revokeAuthorizations:(id)authorizations;
+- (void)_validatePiPStartedFor:(id)for bundleID:(id)d;
+- (void)authorizePiPForActivity:(id)activity withCompletion:(id)completion;
+- (void)launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion;
+- (void)revokeBackgroundAuthorizationForBundleID:(id)d;
+- (void)revokeBackgroundAuthorizationForSession:(id)session;
+- (void)setPlacementSceneIdentifier:(id)identifier;
 @end
 
 @implementation CPApplicationLauncher
 
-- (CPApplicationLauncher)initWithSpatialApplicationManager:(id)a3
+- (CPApplicationLauncher)initWithSpatialApplicationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = CPApplicationLauncher;
   v5 = [(CPApplicationLauncher *)&v19 init];
@@ -55,7 +55,7 @@
     featureFlags = v5->_featureFlags;
     v5->_featureFlags = v14;
 
-    v16 = [[CPApplicationLauncherSwift alloc] initWithSpatialApplicationManager:v4];
+    v16 = [[CPApplicationLauncherSwift alloc] initWithSpatialApplicationManager:managerCopy];
     newApplicationLauncher = v5->_newApplicationLauncher;
     v5->_newApplicationLauncher = v16;
   }
@@ -65,82 +65,82 @@
 
 - (NSString)placementSceneIdentifier
 {
-  v3 = [(CPApplicationLauncher *)self featureFlags];
-  v4 = [v3 newApplicationLauncherEnabled];
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v4)
+  if (newApplicationLauncherEnabled)
   {
-    v5 = [(CPApplicationLauncherSwift *)self->_newApplicationLauncher placementSceneIdentifier];
+    placementSceneIdentifier = [(CPApplicationLauncherSwift *)self->_newApplicationLauncher placementSceneIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    placementSceneIdentifier = 0;
   }
 
-  return v5;
+  return placementSceneIdentifier;
 }
 
-- (void)setPlacementSceneIdentifier:(id)a3
+- (void)setPlacementSceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(CPApplicationLauncher *)self featureFlags];
-  v5 = [v4 newApplicationLauncherEnabled];
+  identifierCopy = identifier;
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v5)
+  if (newApplicationLauncherEnabled)
   {
-    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher setPlacementSceneIdentifier:v6];
+    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher setPlacementSceneIdentifier:identifierCopy];
   }
 }
 
-- (void)launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5
+- (void)launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CPApplicationLauncher *)self featureFlags];
-  v11 = [v10 newApplicationLauncherEnabled];
+  sessionCopy = session;
+  completionCopy = completion;
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v11)
+  if (newApplicationLauncherEnabled)
   {
-    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher launchAppForActivitySession:v8 options:a4 completion:v9];
+    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher launchAppForActivitySession:sessionCopy options:options completion:completionCopy];
   }
 
   else
   {
-    v12 = [(CPApplicationLauncher *)self workQueue];
+    workQueue = [(CPApplicationLauncher *)self workQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __72__CPApplicationLauncher_launchAppForActivitySession_options_completion___block_invoke;
     v13[3] = &unk_1E7A45A60;
     v13[4] = self;
-    v14 = v8;
-    v16 = a4;
-    v15 = v9;
-    dispatch_async(v12, v13);
+    v14 = sessionCopy;
+    optionsCopy = options;
+    v15 = completionCopy;
+    dispatch_async(workQueue, v13);
   }
 }
 
-- (void)revokeBackgroundAuthorizationForBundleID:(id)a3
+- (void)revokeBackgroundAuthorizationForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self featureFlags];
-  v6 = [v5 newApplicationLauncherEnabled];
+  dCopy = d;
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v6)
+  if (newApplicationLauncherEnabled)
   {
-    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher revokeBackgroundAuthorizationForBundleID:v4];
+    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher revokeBackgroundAuthorizationForBundleID:dCopy];
   }
 
   else
   {
-    v7 = [(CPApplicationLauncher *)self workQueue];
+    workQueue = [(CPApplicationLauncher *)self workQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__CPApplicationLauncher_revokeBackgroundAuthorizationForBundleID___block_invoke;
     v8[3] = &unk_1E7A45A88;
-    v9 = v4;
-    v10 = self;
-    dispatch_async(v7, v8);
+    v9 = dCopy;
+    selfCopy = self;
+    dispatch_async(workQueue, v8);
   }
 }
 
@@ -193,27 +193,27 @@ void __66__CPApplicationLauncher_revokeBackgroundAuthorizationForBundleID___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)revokeBackgroundAuthorizationForSession:(id)a3
+- (void)revokeBackgroundAuthorizationForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self featureFlags];
-  v6 = [v5 newApplicationLauncherEnabled];
+  sessionCopy = session;
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v6)
+  if (newApplicationLauncherEnabled)
   {
-    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher revokeBackgroundAuthorizationForSession:v4];
+    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher revokeBackgroundAuthorizationForSession:sessionCopy];
   }
 
   else
   {
-    v7 = [(CPApplicationLauncher *)self workQueue];
+    workQueue = [(CPApplicationLauncher *)self workQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__CPApplicationLauncher_revokeBackgroundAuthorizationForSession___block_invoke;
     v8[3] = &unk_1E7A45A88;
-    v9 = v4;
-    v10 = self;
-    dispatch_async(v7, v8);
+    v9 = sessionCopy;
+    selfCopy = self;
+    dispatch_async(workQueue, v8);
   }
 }
 
@@ -263,45 +263,45 @@ void __65__CPApplicationLauncher_revokeBackgroundAuthorizationForSession___block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5
+- (void)_launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  sessionCopy = session;
+  completionCopy = completion;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v11 = [v8 activity];
-  v12 = [v11 metadata];
-  v13 = [v12 context];
-  v14 = [v13 typedIdentifier];
-  v15 = [v14 isEqualToString:*MEMORY[0x1E69D8F70]];
+  activity = [sessionCopy activity];
+  metadata = [activity metadata];
+  context = [metadata context];
+  typedIdentifier = [context typedIdentifier];
+  v15 = [typedIdentifier isEqualToString:*MEMORY[0x1E69D8F70]];
 
   if (v15)
   {
-    v16 = [(CPApplicationLauncher *)self _sessionIDForActivity:v8];
+    v16 = [(CPApplicationLauncher *)self _sessionIDForActivity:sessionCopy];
     v17 = objc_alloc(MEMORY[0x1E69BCB58]);
-    v18 = [v8 activity];
-    v19 = [v18 bundleIdentifier];
+    activity2 = [sessionCopy activity];
+    bundleIdentifier = [activity2 bundleIdentifier];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __73__CPApplicationLauncher__launchAppForActivitySession_options_completion___block_invoke;
     v24 = &unk_1E7A45AD8;
-    v25 = self;
-    v26 = v8;
-    v20 = [v17 initWithActivitySessionIdentifier:v16 appBundleIdentifier:v19 stateTransitionHandler:&v21];
+    selfCopy = self;
+    v26 = sessionCopy;
+    v20 = [v17 initWithActivitySessionIdentifier:v16 appBundleIdentifier:bundleIdentifier stateTransitionHandler:&v21];
 
-    [(CPApplicationLauncher *)self _insertAuth:v20 completion:v9 forSessionID:v16, v21, v22, v23, v24, v25];
+    [(CPApplicationLauncher *)self _insertAuth:v20 completion:completionCopy forSessionID:v16, v21, v22, v23, v24, selfCopy];
   }
 
   else
   {
 LABEL_4:
-    [(CPApplicationLauncher *)self _launchAndAcquireAssertionIfNecessaryForActivitySession:v8 options:a4 completion:v9];
+    [(CPApplicationLauncher *)self _launchAndAcquireAssertionIfNecessaryForActivitySession:sessionCopy options:options completion:completionCopy];
   }
 }
 
@@ -339,29 +339,29 @@ void __73__CPApplicationLauncher__launchAppForActivitySession_options_completion
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_launchApplicationForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5
+- (void)_launchApplicationForActivitySession:(id)session options:(int64_t)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  completionCopy = completion;
+  sessionCopy = session;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [v9 activity];
-  v12 = [v11 representativeBundleIdentifier];
+  activity = [sessionCopy activity];
+  representativeBundleIdentifier = [activity representativeBundleIdentifier];
 
-  v13 = [(CPApplicationLauncher *)self _openApplicationOptionsForActivitySession:v9 options:a4];
+  v13 = [(CPApplicationLauncher *)self _openApplicationOptionsForActivitySession:sessionCopy options:options];
 
-  v14 = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__CPApplicationLauncher__launchApplicationForActivitySession_options_completion___block_invoke;
   v17[3] = &unk_1E7A45B28;
   v17[4] = self;
-  v18 = v12;
-  v19 = v8;
-  v15 = v8;
-  v16 = v12;
-  [v14 openApplication:v16 withOptions:v13 completion:v17];
+  v18 = representativeBundleIdentifier;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = representativeBundleIdentifier;
+  [serviceWithDefaultShellEndpoint openApplication:v16 withOptions:v13 completion:v17];
 }
 
 void __81__CPApplicationLauncher__launchApplicationForActivitySession_options_completion___block_invoke(id *a1, void *a2, void *a3)
@@ -420,14 +420,14 @@ uint64_t __81__CPApplicationLauncher__launchApplicationForActivitySession_option
   return result;
 }
 
-- (id)_openApplicationOptionsForActivitySession:(id)a3 options:(int64_t)a4
+- (id)_openApplicationOptionsForActivitySession:(id)session options:(int64_t)options
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
-  if (v4)
+  optionsCopy = options;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
+  if (optionsCopy)
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E699F8E8]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E699F8E8]];
   }
 
   else
@@ -441,24 +441,24 @@ uint64_t __81__CPApplicationLauncher__launchApplicationForActivitySession_option
   return v8;
 }
 
-- (void)_launchAndAcquireAssertionIfNecessaryForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5
+- (void)_launchAndAcquireAssertionIfNecessaryForActivitySession:(id)session options:(int64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  sessionCopy = session;
+  completionCopy = completion;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__CPApplicationLauncher__launchAndAcquireAssertionIfNecessaryForActivitySession_options_completion___block_invoke;
   v13[3] = &unk_1E7A45B50;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  [(CPApplicationLauncher *)self _launchApplicationForActivitySession:v12 options:a4 completion:v13];
+  v14 = sessionCopy;
+  v15 = completionCopy;
+  optionsCopy = options;
+  v11 = completionCopy;
+  v12 = sessionCopy;
+  [(CPApplicationLauncher *)self _launchApplicationForActivitySession:v12 options:options completion:v13];
 }
 
 uint64_t __100__CPApplicationLauncher__launchAndAcquireAssertionIfNecessaryForActivitySession_options_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -517,51 +517,51 @@ LABEL_11:
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (id)_sessionIDForActivity:(id)a3
+- (id)_sessionIDForActivity:(id)activity
 {
-  v3 = [a3 UUID];
-  v4 = [v3 UUIDString];
+  uUID = [activity UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)_insertBKSAssertion:(id)a3 forBundleID:(id)a4
+- (void)_insertBKSAssertion:(id)assertion forBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  assertionCopy = assertion;
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6 && [v7 length])
+  if (assertionCopy && [dCopy length])
   {
-    v9 = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    bundleIDToAssertionMap = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
+    [bundleIDToAssertionMap setObject:assertionCopy forKeyedSubscript:dCopy];
   }
 
   else
   {
-    v9 = CPDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    bundleIDToAssertionMap = CPDefaultLog();
+    if (os_log_type_enabled(bundleIDToAssertionMap, OS_LOG_TYPE_ERROR))
     {
       [CPApplicationLauncher _insertBKSAssertion:forBundleID:];
     }
   }
 }
 
-- (void)_invalidateBKSAssertionForBundleID:(id)a3
+- (void)_invalidateBKSAssertionForBundleID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v4 length])
+  if ([dCopy length])
   {
-    v6 = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    bundleIDToAssertionMap = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
+    v7 = [bundleIDToAssertionMap objectForKeyedSubscript:dCopy];
 
-    v8 = CPDefaultLog();
-    v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
+    bundleIDToAssertionMap2 = CPDefaultLog();
+    v9 = os_log_type_enabled(bundleIDToAssertionMap2, OS_LOG_TYPE_INFO);
     if (v7)
     {
       if (v9)
@@ -569,13 +569,13 @@ LABEL_11:
         v11 = 136315394;
         v12 = "[CPApplicationLauncher _invalidateBKSAssertionForBundleID:]";
         v13 = 2112;
-        v14 = v4;
-        _os_log_impl(&dword_1AEB26000, v8, OS_LOG_TYPE_INFO, "%s Removing process assertion for %@", &v11, 0x16u);
+        v14 = dCopy;
+        _os_log_impl(&dword_1AEB26000, bundleIDToAssertionMap2, OS_LOG_TYPE_INFO, "%s Removing process assertion for %@", &v11, 0x16u);
       }
 
       [v7 invalidate];
-      v8 = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
-      [v8 removeObjectForKey:v4];
+      bundleIDToAssertionMap2 = [(CPApplicationLauncher *)self bundleIDToAssertionMap];
+      [bundleIDToAssertionMap2 removeObjectForKey:dCopy];
     }
 
     else if (v9)
@@ -583,8 +583,8 @@ LABEL_11:
       v11 = 136315394;
       v12 = "[CPApplicationLauncher _invalidateBKSAssertionForBundleID:]";
       v13 = 2112;
-      v14 = v4;
-      _os_log_impl(&dword_1AEB26000, v8, OS_LOG_TYPE_INFO, "%s No existing process assertion for %@", &v11, 0x16u);
+      v14 = dCopy;
+      _os_log_impl(&dword_1AEB26000, bundleIDToAssertionMap2, OS_LOG_TYPE_INFO, "%s No existing process assertion for %@", &v11, 0x16u);
     }
   }
 
@@ -600,25 +600,25 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_acquireAssertionForBundleID:(id)a3
+- (BOOL)_acquireAssertionForBundleID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [CPProcessAssertion processAssertionWithBundleIdentifier:v4];
-  v7 = [v6 acquire];
-  if (v7)
+  v6 = [CPProcessAssertion processAssertionWithBundleIdentifier:dCopy];
+  acquire = [v6 acquire];
+  if (acquire)
   {
-    [(CPApplicationLauncher *)self _insertBKSAssertion:v6 forBundleID:v4];
+    [(CPApplicationLauncher *)self _insertBKSAssertion:v6 forBundleID:dCopy];
     v8 = CPDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 136315394;
       v12 = "[CPApplicationLauncher _acquireAssertionForBundleID:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = dCopy;
       _os_log_impl(&dword_1AEB26000, v8, OS_LOG_TYPE_INFO, "%s Acquired assertion for %@", &v11, 0x16u);
     }
   }
@@ -633,35 +633,35 @@ LABEL_11:
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v7;
+  return acquire;
 }
 
-- (void)_validatePiPStartedFor:(id)a3 bundleID:(id)a4
+- (void)_validatePiPStartedFor:(id)for bundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  forCopy = for;
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  v10 = [sessionIDtoAuthMap objectForKeyedSubscript:forCopy];
 
-  v11 = [v10 state];
+  state = [v10 state];
   v12 = CPDefaultLog();
   v13 = v12;
-  if (v11 == 3)
+  if (state == 3)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v15 = 136315394;
       v16 = "[CPApplicationLauncher _validatePiPStartedFor:bundleID:]";
       v17 = 2112;
-      v18 = v7;
+      v18 = dCopy;
       _os_log_impl(&dword_1AEB26000, v13, OS_LOG_TYPE_INFO, "%s [PiP] %@ started pip successfully", &v15, 0x16u);
     }
 
-    [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:v6 success:1 error:0];
+    [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:forCopy success:1 error:0];
   }
 
   else
@@ -671,57 +671,57 @@ LABEL_11:
       [CPApplicationLauncher _validatePiPStartedFor:bundleID:];
     }
 
-    [(CPApplicationLauncher *)self _invalidateBKSAssertionForBundleID:v7];
-    [(CPApplicationLauncher *)self _revokeAndRemoveAuthForSessionID:v6];
+    [(CPApplicationLauncher *)self _invalidateBKSAssertionForBundleID:dCopy];
+    [(CPApplicationLauncher *)self _revokeAndRemoveAuthForSessionID:forCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleStateTransitionForAuthorization:(id)a3 activitySession:(id)a4 state:(int64_t)a5
+- (void)_handleStateTransitionForAuthorization:(id)authorization activitySession:(id)session state:(int64_t)state
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  authorizationCopy = authorization;
+  sessionCopy = session;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (a5 > 2)
+  if (state > 2)
   {
-    if (a5 == 3)
+    if (state == 3)
     {
-      v11 = [v8 activitySessionIdentifier];
-      [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:v11 success:1 error:0];
+      activitySessionIdentifier = [authorizationCopy activitySessionIdentifier];
+      [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:activitySessionIdentifier success:1 error:0];
     }
 
     else
     {
-      if (a5 != 4 && a5 != 5)
+      if (state != 4 && state != 5)
       {
         goto LABEL_11;
       }
 
-      v11 = [v8 activitySessionIdentifier];
-      [(CPApplicationLauncher *)self _revokeAndRemoveAuthForSessionID:v11];
+      activitySessionIdentifier = [authorizationCopy activitySessionIdentifier];
+      [(CPApplicationLauncher *)self _revokeAndRemoveAuthForSessionID:activitySessionIdentifier];
     }
 
     goto LABEL_14;
   }
 
-  if (a5 < 2)
+  if (state < 2)
   {
     goto LABEL_14;
   }
 
-  if (a5 == 2)
+  if (state == 2)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activitySession_state___block_invoke;
     v15[3] = &unk_1E7A45B78;
     v15[4] = self;
-    v16 = v8;
-    [(CPApplicationLauncher *)self _launchAndAcquireAssertionIfNecessaryForActivitySession:v9 options:1 completion:v15];
+    v16 = authorizationCopy;
+    [(CPApplicationLauncher *)self _launchAndAcquireAssertionIfNecessaryForActivitySession:sessionCopy options:1 completion:v15];
 
     goto LABEL_14;
   }
@@ -730,11 +730,11 @@ LABEL_11:
   v12 = CPDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     *buf = 136315650;
     v18 = "[CPApplicationLauncher _handleStateTransitionForAuthorization:activitySession:state:]";
     v19 = 2112;
-    v20 = v8;
+    v20 = authorizationCopy;
     v21 = 2112;
     v22 = v13;
     _os_log_impl(&dword_1AEB26000, v12, OS_LOG_TYPE_INFO, "%s [PiP] Got unexpected auth state %@ for authorization %@", buf, 0x20u);
@@ -777,15 +777,15 @@ void __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activity
   [v2 _validatePiPStartedFor:v4 bundleID:v3];
 }
 
-- (void)_revokeAndRemoveAuthForSessionID:(id)a3
+- (void)_revokeAndRemoveAuthForSessionID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  v7 = [sessionIDtoAuthMap objectForKeyedSubscript:dCopy];
 
   if (v7)
   {
@@ -797,32 +797,32 @@ void __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activity
       v14 = 2112;
       v15 = v7;
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_1AEB26000, v8, OS_LOG_TYPE_INFO, "%s [PiP] Revoking and removing auth %@ sessionID %@", &v12, 0x20u);
     }
 
     [v7 revoke];
-    v9 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-    [v9 removeObjectForKey:v4];
+    sessionIDtoAuthMap2 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+    [sessionIDtoAuthMap2 removeObjectForKey:dCopy];
   }
 
   v10 = [CPError errorWithCode:23];
-  [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:v4 success:0 error:v10];
+  [(CPApplicationLauncher *)self _invokeAndDequeueCompletionForSessionID:dCopy success:0 error:v10];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_insertAuth:(id)a3 completion:(id)a4 forSessionID:(id)a5
+- (void)_insertAuth:(id)auth completion:(id)completion forSessionID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  completionCopy = completion;
+  dCopy = d;
+  authCopy = auth;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  v13 = [v12 objectForKeyedSubscript:v9];
+  sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  v13 = [sessionIDtoAuthMap objectForKeyedSubscript:dCopy];
 
   if (v13)
   {
@@ -834,34 +834,34 @@ void __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activity
       v21 = 2112;
       v22 = v13;
       v23 = 2112;
-      v24 = v9;
+      v24 = dCopy;
       _os_log_impl(&dword_1AEB26000, v14, OS_LOG_TYPE_INFO, "%s [PiP] Revoking and removing auth %@ sessionID %@", &v19, 0x20u);
     }
 
     [v13 revoke];
   }
 
-  v15 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  [v15 setObject:v10 forKeyedSubscript:v9];
+  sessionIDtoAuthMap2 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  [sessionIDtoAuthMap2 setObject:authCopy forKeyedSubscript:dCopy];
 
-  if (v8)
+  if (completionCopy)
   {
-    v16 = _Block_copy(v8);
-    v17 = [(CPApplicationLauncher *)self sessionIDtoCompletionMap];
-    [v17 setObject:v16 forKeyedSubscript:v9];
+    v16 = _Block_copy(completionCopy);
+    sessionIDtoCompletionMap = [(CPApplicationLauncher *)self sessionIDtoCompletionMap];
+    [sessionIDtoCompletionMap setObject:v16 forKeyedSubscript:dCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_sessionAlreadyAuthorizingOrAuthorizedForPiP:(id)a3
+- (BOOL)_sessionAlreadyAuthorizingOrAuthorizedForPiP:(id)p
 {
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  pCopy = p;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  v7 = [sessionIDtoAuthMap objectForKeyedSubscript:pCopy];
 
   if (v7)
   {
@@ -876,27 +876,27 @@ void __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activity
   return v8;
 }
 
-- (void)_authorizePiPForActivity:(id)a3 withCompletion:(id)a4
+- (void)_authorizePiPForActivity:(id)activity withCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  activityCopy = activity;
+  completionCopy = completion;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(CPApplicationLauncher *)self _sessionIDForActivity:v6];
+  v9 = [(CPApplicationLauncher *)self _sessionIDForActivity:activityCopy];
   if ([(CPApplicationLauncher *)self _sessionAlreadyAuthorizingOrAuthorizedForPiP:v9])
   {
-    v7[2](v7, v9 != 0, 0);
+    completionCopy[2](completionCopy, v9 != 0, 0);
   }
 
   else
   {
-    v10 = [v6 activity];
-    v11 = [v10 metadata];
-    v12 = [v11 context];
-    v13 = [v12 typedIdentifier];
-    v14 = [v13 isEqualToString:@"CPGroupActivityWatchTogetherContext"];
+    activity = [activityCopy activity];
+    metadata = [activity metadata];
+    context = [metadata context];
+    typedIdentifier = [context typedIdentifier];
+    v14 = [typedIdentifier isEqualToString:@"CPGroupActivityWatchTogetherContext"];
 
     if (v14)
     {
@@ -906,29 +906,29 @@ void __86__CPApplicationLauncher__handleStateTransitionForAuthorization_activity
         *buf = 136315394;
         v30 = "[CPApplicationLauncher _authorizePiPForActivity:withCompletion:]";
         v31 = 2112;
-        v32 = v6;
+        v32 = activityCopy;
         _os_log_impl(&dword_1AEB26000, v15, OS_LOG_TYPE_INFO, "%s [PiP] Requesting PiP auth for activity session %@", buf, 0x16u);
       }
 
       v16 = objc_alloc(MEMORY[0x1E69BCB58]);
-      v17 = [v6 activity];
-      v18 = [v17 bundleIdentifier];
+      activity2 = [activityCopy activity];
+      bundleIdentifier = [activity2 bundleIdentifier];
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block_invoke;
       v26 = &unk_1E7A45AD8;
-      v27 = self;
+      selfCopy = self;
       v19 = v9;
       v28 = v19;
-      v20 = [v16 initWithActivitySessionIdentifier:v19 appBundleIdentifier:v18 stateTransitionHandler:&v23];
+      v20 = [v16 initWithActivitySessionIdentifier:v19 appBundleIdentifier:bundleIdentifier stateTransitionHandler:&v23];
 
-      [(CPApplicationLauncher *)self _insertAuth:v20 completion:v7 forSessionID:v19, v23, v24, v25, v26, v27];
+      [(CPApplicationLauncher *)self _insertAuth:v20 completion:completionCopy forSessionID:v19, v23, v24, v25, v26, selfCopy];
     }
 
     else
     {
       v21 = [CPError errorWithCode:23];
-      (v7)[2](v7, 0, v21);
+      (completionCopy)[2](completionCopy, 0, v21);
     }
   }
 
@@ -989,48 +989,48 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
   }
 }
 
-- (void)authorizePiPForActivity:(id)a3 withCompletion:(id)a4
+- (void)authorizePiPForActivity:(id)activity withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPApplicationLauncher *)self featureFlags];
-  v9 = [v8 newApplicationLauncherEnabled];
+  activityCopy = activity;
+  completionCopy = completion;
+  featureFlags = [(CPApplicationLauncher *)self featureFlags];
+  newApplicationLauncherEnabled = [featureFlags newApplicationLauncherEnabled];
 
-  if (v9)
+  if (newApplicationLauncherEnabled)
   {
-    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher authorizePiPForActivitySession:v6 completion:v7];
+    [(CPApplicationLauncherSwift *)self->_newApplicationLauncher authorizePiPForActivitySession:activityCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(CPApplicationLauncher *)self workQueue];
+    workQueue = [(CPApplicationLauncher *)self workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__CPApplicationLauncher_authorizePiPForActivity_withCompletion___block_invoke;
     block[3] = &unk_1E7A45BC8;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
-    dispatch_async(v10, block);
+    v12 = activityCopy;
+    v13 = completionCopy;
+    dispatch_async(workQueue, block);
   }
 }
 
-- (id)_authorizationsForBundleID:(id)a3
+- (id)_authorizationsForBundleID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CPApplicationLauncher *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(CPApplicationLauncher *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-  v8 = [v7 allValues];
+  sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+  allValues = [sessionIDtoAuthMap allValues];
 
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1041,12 +1041,12 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 appBundleIdentifier];
-        v15 = [v14 isEqualToString:v4];
+        appBundleIdentifier = [v13 appBundleIdentifier];
+        v15 = [appBundleIdentifier isEqualToString:dCopy];
 
         if (v15)
         {
@@ -1054,7 +1054,7 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -1066,13 +1066,13 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
   return v16;
 }
 
-- (id)_authorizationForActivitySession:(id)a3
+- (id)_authorizationForActivitySession:(id)session
 {
-  v4 = [(CPApplicationLauncher *)self _sessionIDForActivity:a3];
+  v4 = [(CPApplicationLauncher *)self _sessionIDForActivity:session];
   if (v4)
   {
-    v5 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+    v6 = [sessionIDtoAuthMap objectForKeyedSubscript:v4];
   }
 
   else
@@ -1083,17 +1083,17 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
   return v6;
 }
 
-- (void)_revokeAuthorizations:(id)a3
+- (void)_revokeAuthorizations:(id)authorizations
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  authorizationsCopy = authorizations;
+  if ([authorizationsCopy count])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v4;
+    v5 = authorizationsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
     if (v6)
     {
@@ -1112,20 +1112,20 @@ void __65__CPApplicationLauncher__authorizePiPForActivity_withCompletion___block
           v11 = CPDefaultLog();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [v10 activitySessionIdentifier];
+            activitySessionIdentifier = [v10 activitySessionIdentifier];
             *buf = 136315650;
             v21 = "[CPApplicationLauncher _revokeAuthorizations:]";
             v22 = 2112;
             v23 = v10;
             v24 = 2112;
-            v25 = v12;
+            v25 = activitySessionIdentifier;
             _os_log_impl(&dword_1AEB26000, v11, OS_LOG_TYPE_INFO, "%s [PiP] Revoking and removing auth %@ sessionID %@", buf, 0x20u);
           }
 
           [v10 revoke];
-          v13 = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
+          sessionIDtoAuthMap = [(CPApplicationLauncher *)self sessionIDtoAuthMap];
           v14 = [(CPApplicationLauncher *)self _sessionIDForAuthorization:v10];
-          [v13 removeObjectForKey:v14];
+          [sessionIDtoAuthMap removeObjectForKey:v14];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];

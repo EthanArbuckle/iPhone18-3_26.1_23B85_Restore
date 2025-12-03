@@ -46,49 +46,49 @@
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [gUserLdcmParams wetPollingIntervalSec];
+      wetPollingIntervalSec = [gUserLdcmParams wetPollingIntervalSec];
       *buf = 134217984;
-      v19 = v6;
+      v19 = wetPollingIntervalSec;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  wetPollingIntervalSec = %lld \n", buf, 0xCu);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [gUserLdcmParams dryPollingIntervalSec];
+      dryPollingIntervalSec = [gUserLdcmParams dryPollingIntervalSec];
       *buf = 134217984;
-      v19 = v7;
+      v19 = dryPollingIntervalSec;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  dryPollingIntervalSec = %lld \n", buf, 0xCu);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [gUserLdcmParams ldcmArbiterRetrySec];
+      ldcmArbiterRetrySec = [gUserLdcmParams ldcmArbiterRetrySec];
       *buf = 134217984;
-      v19 = v8;
+      v19 = ldcmArbiterRetrySec;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  ldcmArbiterRetrySec = %lld \n", buf, 0xCu);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [gUserLdcmParams ldcmStartMeasurementsDelayMs];
+      ldcmStartMeasurementsDelayMs = [gUserLdcmParams ldcmStartMeasurementsDelayMs];
       *buf = 134217984;
-      v19 = v9;
+      v19 = ldcmStartMeasurementsDelayMs;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  ldcmStartMeasurementsDelayMs = %lld \n", buf, 0xCu);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [gUserLdcmParams ldcmStartMeasurementsRetryMs];
+      ldcmStartMeasurementsRetryMs = [gUserLdcmParams ldcmStartMeasurementsRetryMs];
       *buf = 134217984;
-      v19 = v10;
+      v19 = ldcmStartMeasurementsRetryMs;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  ldcmStartMeasurementsRetryMs = %lld \n", buf, 0xCu);
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [gUserLdcmParams minDryReadings];
+      minDryReadings = [gUserLdcmParams minDryReadings];
       *buf = 134217984;
-      v19 = v11;
+      v19 = minDryReadings;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "  minDryReadings = %lld \n", buf, 0xCu);
     }
 

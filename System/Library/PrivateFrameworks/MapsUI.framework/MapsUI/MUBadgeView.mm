@@ -1,11 +1,11 @@
 @interface MUBadgeView
-- (MUBadgeView)initWithCoder:(id)a3;
+- (MUBadgeView)initWithCoder:(id)coder;
 - (NSString)badgeString;
 @end
 
 @implementation MUBadgeView
 
-- (MUBadgeView)initWithCoder:(id)a3
+- (MUBadgeView)initWithCoder:(id)coder
 {
   result = sub_1C584FD00();
   __break(1u);
@@ -15,11 +15,11 @@
 - (NSString)badgeString
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___MUBadgeView_label);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_1C584F660();
   }
 

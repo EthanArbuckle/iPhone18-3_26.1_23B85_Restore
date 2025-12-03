@@ -56,8 +56,8 @@
     [(LPImageViewStyle *)v2->_imageStyle setFixedSize:v9];
 
     [(LPImageViewStyle *)v2->_imageStyle setFilter:4];
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(LPImageViewStyle *)v2->_imageStyle setMaskColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(LPImageViewStyle *)v2->_imageStyle setMaskColor:labelColor];
 
     v11 = v2;
   }

@@ -1,6 +1,6 @@
 @interface _HMFNetworkBrowser
 + (id)logCategory;
-- (_HMFNetworkBrowser)initWithQueue:(id)a3 domain:(id)a4 serviceType:(id)a5 updateBlock:(id)a6;
+- (_HMFNetworkBrowser)initWithQueue:(id)queue domain:(id)domain serviceType:(id)type updateBlock:(id)block;
 - (id)shortDescription;
 - (id)startBrowsing;
 - (id)stopBrowsing;
@@ -10,34 +10,34 @@
 
 @implementation _HMFNetworkBrowser
 
-- (_HMFNetworkBrowser)initWithQueue:(id)a3 domain:(id)a4 serviceType:(id)a5 updateBlock:(id)a6
+- (_HMFNetworkBrowser)initWithQueue:(id)queue domain:(id)domain serviceType:(id)type updateBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  domainCopy = domain;
+  typeCopy = type;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = _HMFNetworkBrowser;
   v14 = [(_HMFNetworkBrowser *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_domain, a4);
-    objc_storeStrong(&v15->_serviceType, a5);
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_domain, domain);
+    objc_storeStrong(&v15->_serviceType, type);
+    v16 = _Block_copy(blockCopy);
     updateBlock = v15->_updateBlock;
     v15->_updateBlock = v16;
 
-    v18 = v10;
-    if (!v10)
+    v18 = queueCopy;
+    if (!queueCopy)
     {
       v19 = HMFDispatchQueueName(v15, 0);
-      a5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v18 = dispatch_queue_create(v19, a5);
+      type = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+      v18 = dispatch_queue_create(v19, type);
     }
 
     objc_storeStrong(&v15->_workQueue, v18);
-    if (!v10)
+    if (!queueCopy)
     {
     }
   }
@@ -63,9 +63,9 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_HMFNetworkBrowser *)self serviceType];
-  v5 = [(_HMFNetworkBrowser *)self domain];
-  v6 = [v3 stringWithFormat:@"Browser(%@.%@)", v4, v5];
+  serviceType = [(_HMFNetworkBrowser *)self serviceType];
+  domain = [(_HMFNetworkBrowser *)self domain];
+  v6 = [v3 stringWithFormat:@"Browser(%@.%@)", serviceType, domain];
 
   return v6;
 }
@@ -73,21 +73,21 @@
 - (id)startBrowsing
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_HMFNetworkBrowser *)self nw_browser];
+  nw_browser = [(_HMFNetworkBrowser *)self nw_browser];
 
-  if (v3)
+  if (nw_browser)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy2 = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = HMFGetLogIdentifier(v5);
-      v8 = [(_HMFNetworkBrowser *)v5 serviceType];
+      v7 = HMFGetLogIdentifier(selfCopy2);
+      serviceType = [(_HMFNetworkBrowser *)selfCopy2 serviceType];
       *buf = 138543618;
       *&buf[4] = v7;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = serviceType;
       _os_log_impl(&dword_22ADEC000, v6, OS_LOG_TYPE_INFO, "%{public}@Browser already started for %@", buf, 0x16u);
 
 LABEL_7:
@@ -97,9 +97,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(_HMFNetworkBrowser *)self serviceType];
-  v10 = [(_HMFNetworkBrowser *)self domain];
-  v11 = [(_HMFNetworkBrowser *)self workQueue];
+  serviceType2 = [(_HMFNetworkBrowser *)self serviceType];
+  domain = [(_HMFNetworkBrowser *)self domain];
+  workQueue = [(_HMFNetworkBrowser *)self workQueue];
   objc_initWeak(&location, self);
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
@@ -109,14 +109,14 @@ LABEL_7:
   v12 = _Block_copy(buf);
   objc_destroyWeak(v29);
   objc_destroyWeak(&location);
-  v13 = v9;
-  v14 = v10;
-  v15 = v11;
+  v13 = serviceType2;
+  v14 = domain;
+  v15 = workQueue;
   v16 = v12;
-  v17 = [v9 UTF8String];
-  v18 = [v14 UTF8String];
+  uTF8String = [serviceType2 UTF8String];
+  uTF8String2 = [v14 UTF8String];
 
-  bonjour_service = nw_browse_descriptor_create_bonjour_service(v17, v18);
+  bonjour_service = nw_browse_descriptor_create_bonjour_service(uTF8String, uTF8String2);
   nw_browse_descriptor_set_include_txt_record(bonjour_service, 1);
   v20 = nw_browser_create(bonjour_service, 0);
   nw_browser_set_queue(v20, v15);
@@ -125,16 +125,16 @@ LABEL_7:
   nw_browser_start(v20);
 
   [(_HMFNetworkBrowser *)self setNw_browser:v20];
-  v21 = [(_HMFNetworkBrowser *)self nw_browser];
+  nw_browser2 = [(_HMFNetworkBrowser *)self nw_browser];
 
-  if (v21)
+  if (nw_browser2)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy2 = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = HMFGetLogIdentifier(v5);
+      v7 = HMFGetLogIdentifier(selfCopy2);
       *buf = 138543362;
       *&buf[4] = v7;
       _os_log_impl(&dword_22ADEC000, v6, OS_LOG_TYPE_DEBUG, "%{public}@Browser started", buf, 0xCu);
@@ -159,12 +159,12 @@ LABEL_9:
 
 - (void)stop
 {
-  v3 = [(_HMFNetworkBrowser *)self nw_browser];
+  nw_browser = [(_HMFNetworkBrowser *)self nw_browser];
 
-  if (v3)
+  if (nw_browser)
   {
-    v4 = [(_HMFNetworkBrowser *)self nw_browser];
-    nw_browser_cancel(v4);
+    nw_browser2 = [(_HMFNetworkBrowser *)self nw_browser];
+    nw_browser_cancel(nw_browser2);
 
     [(_HMFNetworkBrowser *)self setNw_browser:0];
   }
@@ -175,11 +175,11 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
   [(_HMFNetworkBrowser *)self stop];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = HMFGetLogIdentifier(v4);
+    v6 = HMFGetLogIdentifier(selfCopy);
     v10 = 138543362;
     v11 = v6;
     _os_log_impl(&dword_22ADEC000, v5, OS_LOG_TYPE_DEBUG, "%{public}@Browser stopped", &v10, 0xCu);

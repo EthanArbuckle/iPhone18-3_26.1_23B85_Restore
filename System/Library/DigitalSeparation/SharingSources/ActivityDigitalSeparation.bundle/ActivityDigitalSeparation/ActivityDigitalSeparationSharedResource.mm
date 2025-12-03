@@ -16,7 +16,7 @@
 - (NSArray)participants
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC25ActivityDigitalSeparation39ActivityDigitalSeparationSharedResource_digitalSeparationFriends);
-  v3 = self;
+  selfCopy = self;
 
   sub_15E8(v4);
 

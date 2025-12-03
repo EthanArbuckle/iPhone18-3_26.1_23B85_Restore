@@ -1,26 +1,26 @@
 @interface ATXPBDigestOnboardingLoggingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)digestOnboardingOutcomeAsString:(int)a3;
-- (id)entrySourceAsString:(int)a3;
-- (id)finalUIShownAsString:(int)a3;
-- (int)StringAsDigestOnboardingOutcome:(id)a3;
-- (int)StringAsEntrySource:(id)a3;
-- (int)StringAsFinalUIShown:(id)a3;
+- (id)digestOnboardingOutcomeAsString:(int)string;
+- (id)entrySourceAsString:(int)string;
+- (id)finalUIShownAsString:(int)string;
+- (int)StringAsDigestOnboardingOutcome:(id)outcome;
+- (int)StringAsEntrySource:(id)source;
+- (int)StringAsFinalUIShown:(id)shown;
 - (int)digestOnboardingOutcome;
 - (int)entrySource;
 - (int)finalUIShown;
 - (unint64_t)hash;
-- (void)addDeliveryTimes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDidSelectShowMore:(BOOL)a3;
-- (void)setHasDigestOnboardingOutcome:(BOOL)a3;
-- (void)setHasEntrySource:(BOOL)a3;
-- (void)setHasFinalUIShown:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDeliveryTimes:(id)times;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDidSelectShowMore:(BOOL)more;
+- (void)setHasDigestOnboardingOutcome:(BOOL)outcome;
+- (void)setHasEntrySource:(BOOL)source;
+- (void)setHasFinalUIShown:(BOOL)shown;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBDigestOnboardingLoggingEvent
@@ -38,9 +38,9 @@
   }
 }
 
-- (void)setHasEntrySource:(BOOL)a3
+- (void)setHasEntrySource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -53,35 +53,35 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)entrySourceAsString:(int)a3
+- (id)entrySourceAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C25F8[a3];
+    v4 = off_1E80C25F8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsEntrySource:(id)a3
+- (int)StringAsEntrySource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OnboardingSuggestion"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"OnboardingSuggestion"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Settings"])
+  else if ([sourceCopy isEqualToString:@"Settings"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([sourceCopy isEqualToString:@"Total"])
   {
     v4 = 2;
   }
@@ -107,9 +107,9 @@
   }
 }
 
-- (void)setHasDigestOnboardingOutcome:(BOOL)a3
+- (void)setHasDigestOnboardingOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -122,40 +122,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)digestOnboardingOutcomeAsString:(int)a3
+- (id)digestOnboardingOutcomeAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2610[a3];
+    v4 = off_1E80C2610[string];
   }
 
   return v4;
 }
 
-- (int)StringAsDigestOnboardingOutcome:(id)a3
+- (int)StringAsDigestOnboardingOutcome:(id)outcome
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Dismiss"])
+  outcomeCopy = outcome;
+  if ([outcomeCopy isEqualToString:@"Dismiss"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Defer"])
+  else if ([outcomeCopy isEqualToString:@"Defer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Complete"])
+  else if ([outcomeCopy isEqualToString:@"Complete"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([outcomeCopy isEqualToString:@"Total"])
   {
     v4 = 3;
   }
@@ -181,9 +181,9 @@
   }
 }
 
-- (void)setHasFinalUIShown:(BOOL)a3
+- (void)setHasFinalUIShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 8;
   }
@@ -196,40 +196,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)finalUIShownAsString:(int)a3
+- (id)finalUIShownAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2630[a3];
+    v4 = off_1E80C2630[string];
   }
 
   return v4;
 }
 
-- (int)StringAsFinalUIShown:(id)a3
+- (int)StringAsFinalUIShown:(id)shown
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Introduction"])
+  shownCopy = shown;
+  if ([shownCopy isEqualToString:@"Introduction"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AppPicker"])
+  else if ([shownCopy isEqualToString:@"AppPicker"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Scheduler"])
+  else if ([shownCopy isEqualToString:@"Scheduler"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([shownCopy isEqualToString:@"Total"])
   {
     v4 = 3;
   }
@@ -242,9 +242,9 @@
   return v4;
 }
 
-- (void)setHasDidSelectShowMore:(BOOL)a3
+- (void)setHasDidSelectShowMore:(BOOL)more
 {
-  if (a3)
+  if (more)
   {
     v3 = 16;
   }
@@ -257,22 +257,22 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addDeliveryTimes:(id)a3
+- (void)addDeliveryTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   deliveryTimes = self->_deliveryTimes;
-  v8 = v4;
+  v8 = timesCopy;
   if (!deliveryTimes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_deliveryTimes;
     self->_deliveryTimes = v6;
 
-    v4 = v8;
+    timesCopy = v8;
     deliveryTimes = self->_deliveryTimes;
   }
 
-  [(NSMutableArray *)deliveryTimes addObject:v4];
+  [(NSMutableArray *)deliveryTimes addObject:timesCopy];
 }
 
 - (id)description
@@ -281,20 +281,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBDigestOnboardingLoggingEvent;
   v4 = [(ATXPBDigestOnboardingLoggingEvent *)&v8 description];
-  v5 = [(ATXPBDigestOnboardingLoggingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBDigestOnboardingLoggingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sessionUUID = self->_sessionUUID;
   if (sessionUUID)
   {
-    [v3 setObject:sessionUUID forKey:@"sessionUUID"];
+    [dictionary setObject:sessionUUID forKey:@"sessionUUID"];
   }
 
   has = self->_has;
@@ -388,10 +388,10 @@ LABEL_19:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionUUID)
   {
     PBDataWriterWriteStringField();
@@ -484,21 +484,21 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_sessionUUID)
   {
-    [v4 setSessionUUID:?];
-    v4 = v10;
+    [toCopy setSessionUUID:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 7) = self->_entrySource;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 7) = self->_entrySource;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -517,8 +517,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 6) = self->_digestOnboardingOutcome;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 6) = self->_digestOnboardingOutcome;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -529,8 +529,8 @@ LABEL_6:
     }
 
 LABEL_19:
-    *(v4 + 1) = *&self->_timeTaken;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_timeTaken;
+    *(toCopy + 52) |= 1u;
     if ((*&self->_has & 0x10) == 0)
     {
       goto LABEL_9;
@@ -540,8 +540,8 @@ LABEL_19:
   }
 
 LABEL_18:
-  *(v4 + 8) = self->_finalUIShown;
-  *(v4 + 52) |= 8u;
+  *(toCopy + 8) = self->_finalUIShown;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if (has)
   {
@@ -552,18 +552,18 @@ LABEL_7:
   if ((has & 0x10) != 0)
   {
 LABEL_8:
-    *(v4 + 48) = self->_didSelectShowMore;
-    *(v4 + 52) |= 0x10u;
+    *(toCopy + 48) = self->_didSelectShowMore;
+    *(toCopy + 52) |= 0x10u;
   }
 
 LABEL_9:
   if ([(ATXPBDigestOnboardingLoggingEvent *)self deliveryTimesCount])
   {
     [v10 clearDeliveryTimes];
-    v6 = [(ATXPBDigestOnboardingLoggingEvent *)self deliveryTimesCount];
-    if (v6)
+    deliveryTimesCount = [(ATXPBDigestOnboardingLoggingEvent *)self deliveryTimesCount];
+    if (deliveryTimesCount)
     {
-      v7 = v6;
+      v7 = deliveryTimesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ATXPBDigestOnboardingLoggingEvent *)self deliveryTimesAtIndex:i];
@@ -573,11 +573,11 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionUUID copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -663,7 +663,7 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v5 addDeliveryTimes:v14];
       }
 
@@ -676,16 +676,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   sessionUUID = self->_sessionUUID;
-  if (sessionUUID | *(v4 + 5))
+  if (sessionUUID | *(equalCopy + 5))
   {
     if (![(NSString *)sessionUUID isEqual:?])
     {
@@ -695,59 +695,59 @@ LABEL_7:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_entrySource != *(v4 + 7))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_entrySource != *(equalCopy + 7))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_digestOnboardingOutcome != *(v4 + 6))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_digestOnboardingOutcome != *(equalCopy + 6))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_finalUIShown != *(v4 + 8))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_finalUIShown != *(equalCopy + 8))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_timeTaken != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_timeTaken != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_26;
     }
@@ -757,27 +757,27 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ((*(v4 + 52) & 0x10) == 0)
+  if ((*(equalCopy + 52) & 0x10) == 0)
   {
     goto LABEL_29;
   }
 
   if (self->_didSelectShowMore)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_29;
   }
 
 LABEL_26:
   deliveryTimes = self->_deliveryTimes;
-  if (deliveryTimes | *(v4 + 2))
+  if (deliveryTimes | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)deliveryTimes isEqual:?];
   }
@@ -882,21 +882,21 @@ LABEL_13:
   return v6 ^ v3 ^ v7 ^ v8 ^ v12 ^ v13 ^ [(NSMutableArray *)self->_deliveryTimes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(ATXPBDigestOnboardingLoggingEvent *)self setSessionUUID:?];
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) != 0)
   {
-    self->_entrySource = *(v4 + 7);
+    self->_entrySource = *(fromCopy + 7);
     *&self->_has |= 4u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -909,14 +909,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_digestOnboardingOutcome = *(v4 + 6);
+  self->_digestOnboardingOutcome = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -929,9 +929,9 @@ LABEL_6:
   }
 
 LABEL_19:
-  self->_finalUIShown = *(v4 + 8);
+  self->_finalUIShown = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -944,12 +944,12 @@ LABEL_7:
   }
 
 LABEL_20:
-  self->_timeTaken = *(v4 + 1);
+  self->_timeTaken = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 52) & 0x10) != 0)
+  if ((*(fromCopy + 52) & 0x10) != 0)
   {
 LABEL_8:
-    self->_didSelectShowMore = *(v4 + 48);
+    self->_didSelectShowMore = *(fromCopy + 48);
     *&self->_has |= 0x10u;
   }
 
@@ -958,7 +958,7 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

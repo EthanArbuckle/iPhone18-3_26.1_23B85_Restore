@@ -1,14 +1,14 @@
 @interface SLWebAuthController
 - (SLWebAuthController)init;
-- (SLWebAuthController)initWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5;
-- (SLWebAuthController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4;
-- (SLWebAuthController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_extensionItemForAccount:(id)a3 accountDescription:(id)a4 username:(id)a5 youTube:(BOOL)a6;
+- (SLWebAuthController)initWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block;
+- (SLWebAuthController)initWithAccountDescription:(id)description presentationBlock:(id)block;
+- (SLWebAuthController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_extensionItemForAccount:(id)account accountDescription:(id)description username:(id)username youTube:(BOOL)tube;
 - (id)_init;
-- (void)_commonInitializationWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 accountDescription:(id)a6 youTube:(BOOL)a7 presentationBlock:(id)a8;
+- (void)_commonInitializationWithAccount:(id)account accountStore:(id)store username:(id)username accountDescription:(id)description youTube:(BOOL)tube presentationBlock:(id)block;
 - (void)_didInstantiateRemoteViewController;
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4 extensionCompletion:(id)a5;
-- (void)_extensionRequestDidCompleteWithTokens:(id)a3 extensionCompletion:(id)a4;
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error extensionCompletion:(id)completion;
+- (void)_extensionRequestDidCompleteWithTokens:(id)tokens extensionCompletion:(id)completion;
 - (void)_presentInternetOfflineError;
 - (void)_presentUsernameMismatchAlert;
 - (void)loadView;
@@ -16,44 +16,44 @@
 
 @implementation SLWebAuthController
 
-- (SLWebAuthController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4
+- (SLWebAuthController)initWithAccountDescription:(id)description presentationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = SLWebAuthController;
   v8 = [(SLWebAuthController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(SLWebAuthController *)v8 _commonInitializationWithAccount:0 accountStore:0 username:0 accountDescription:v6 youTube:0 presentationBlock:v7];
+    [(SLWebAuthController *)v8 _commonInitializationWithAccount:0 accountStore:0 username:0 accountDescription:descriptionCopy youTube:0 presentationBlock:blockCopy];
   }
 
   return v9;
 }
 
-- (SLWebAuthController)initWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5
+- (SLWebAuthController)initWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SLWebAuthController;
   v11 = [(SLWebAuthController *)&v14 initWithNibName:0 bundle:0];
   if (v11)
   {
-    v12 = [v8 accountDescription];
-    [(SLWebAuthController *)v11 _commonInitializationWithAccount:v8 accountStore:v9 username:0 accountDescription:v12 youTube:0 presentationBlock:v10];
+    accountDescription = [accountCopy accountDescription];
+    [(SLWebAuthController *)v11 _commonInitializationWithAccount:accountCopy accountStore:storeCopy username:0 accountDescription:accountDescription youTube:0 presentationBlock:blockCopy];
   }
 
   return v11;
 }
 
-- (SLWebAuthController)initWithNibName:(id)a3 bundle:(id)a4
+- (SLWebAuthController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SLWebAuthController;
-  v4 = [(SLWebAuthController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SLWebAuthController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -77,29 +77,29 @@
   return [(SLWebAuthController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (id)_extensionItemForAccount:(id)a3 accountDescription:(id)a4 username:(id)a5 youTube:(BOOL)a6
+- (id)_extensionItemForAccount:(id)account accountDescription:(id)description username:(id)username youTube:(BOOL)tube
 {
-  v7 = a6;
-  v11 = a5;
-  v12 = a4;
+  tubeCopy = tube;
+  usernameCopy = username;
+  descriptionCopy = description;
   _SLLog(v6, 5, @"SLWebAuthController initializing for description %@ username %@");
   v13 = objc_alloc_init(MEMORY[0x1E696ABE0]);
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithObject:v12 forKey:{@"description", v12, v11}];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithObject:descriptionCopy forKey:{@"description", descriptionCopy, usernameCopy}];
 
-  if (a3)
+  if (account)
   {
-    [v14 setObject:v11 forKeyedSubscript:@"username"];
+    [v14 setObject:usernameCopy forKeyedSubscript:@"username"];
   }
 
-  if (v7)
+  if (tubeCopy)
   {
     [v14 setObject:@"YES" forKeyedSubscript:@"youTube"];
   }
 
   v15 = MEMORY[0x1E696ACC8];
-  v16 = [(SLWebAuthController *)self _webClient];
+  _webClient = [(SLWebAuthController *)self _webClient];
   v21 = 0;
-  v17 = [v15 archivedDataWithRootObject:v16 requiringSecureCoding:1 error:&v21];
+  v17 = [v15 archivedDataWithRootObject:_webClient requiringSecureCoding:1 error:&v21];
   v18 = v21;
   [v14 setObject:v17 forKeyedSubscript:@"webClient"];
 
@@ -114,18 +114,18 @@
   return v13;
 }
 
-- (void)_commonInitializationWithAccount:(id)a3 accountStore:(id)a4 username:(id)a5 accountDescription:(id)a6 youTube:(BOOL)a7 presentationBlock:(id)a8
+- (void)_commonInitializationWithAccount:(id)account accountStore:(id)store username:(id)username accountDescription:(id)description youTube:(BOOL)tube presentationBlock:(id)block
 {
-  v10 = a7;
+  tubeCopy = tube;
   v41[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v32 = a4;
-  v17 = a5;
-  v18 = a6;
-  v33 = a8;
-  objc_storeStrong(&self->_account, a3);
-  objc_storeStrong(&self->_accountStore, a4);
-  v19 = MEMORY[0x1C6917BF0](v33);
+  accountCopy = account;
+  storeCopy = store;
+  usernameCopy = username;
+  descriptionCopy = description;
+  blockCopy = block;
+  objc_storeStrong(&self->_account, account);
+  objc_storeStrong(&self->_accountStore, store);
+  v19 = MEMORY[0x1C6917BF0](blockCopy);
   presentationBlock = self->_presentationBlock;
   self->_presentationBlock = v19;
 
@@ -136,9 +136,9 @@
 
   [(SLWebAuthController *)self setModalPresentationStyle:0];
   v21 = MEMORY[0x1E696ABD0];
-  v22 = [(SLWebAuthController *)self _extentionIdentifier];
+  _extentionIdentifier = [(SLWebAuthController *)self _extentionIdentifier];
   v40 = 0;
-  v23 = [v21 extensionWithIdentifier:v22 error:&v40];
+  v23 = [v21 extensionWithIdentifier:_extentionIdentifier error:&v40];
   v31 = v40;
   extension = self->_extension;
   self->_extension = v23;
@@ -158,22 +158,22 @@
   v35[3] = &unk_1E8175BC0;
   objc_copyWeak(&v36, &location);
   [(NSExtension *)self->_extension set_requestPostCompletionBlockWithItems:v35];
-  if (v16)
+  if (accountCopy)
   {
-    v25 = [v16 username];
+    username = [accountCopy username];
 
-    v26 = [v16 accountDescription];
+    accountDescription = [accountCopy accountDescription];
 
-    v18 = v26;
-    v17 = v25;
+    descriptionCopy = accountDescription;
+    usernameCopy = username;
   }
 
-  if (!v18)
+  if (!descriptionCopy)
   {
-    v18 = &stru_1F41EC300;
+    descriptionCopy = &stru_1F41EC300;
   }
 
-  v27 = [(SLWebAuthController *)self _extensionItemForAccount:v16 accountDescription:v18 username:v17 youTube:v10];
+  v27 = [(SLWebAuthController *)self _extensionItemForAccount:accountCopy accountDescription:descriptionCopy username:usernameCopy youTube:tubeCopy];
   v28 = self->_extension;
   v41[0] = v27;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
@@ -290,38 +290,38 @@ void __123__SLWebAuthController__commonInitializationWithAccount_accountStore_us
   {
     [(UIViewController *)serviceViewController willMoveToParentViewController:self];
     [(SLWebAuthController *)self addChildViewController:self->_serviceViewController];
-    v4 = [(SLWebAuthController *)self view];
-    v5 = [(UIViewController *)self->_serviceViewController view];
-    [v4 addSubview:v5];
+    view = [(SLWebAuthController *)self view];
+    view2 = [(UIViewController *)self->_serviceViewController view];
+    [view addSubview:view2];
 
-    v6 = [(SLWebAuthController *)self view];
-    v7 = [(UIViewController *)self->_serviceViewController view];
-    [v6 bringSubviewToFront:v7];
+    view3 = [(SLWebAuthController *)self view];
+    view4 = [(UIViewController *)self->_serviceViewController view];
+    [view3 bringSubviewToFront:view4];
 
     [(UIViewController *)self->_serviceViewController didMoveToParentViewController:self];
-    v8 = [(UIViewController *)self->_serviceViewController view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view5 = [(UIViewController *)self->_serviceViewController view];
+    [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = MEMORY[0x1E696ACD8];
     v26 = @"serviceView";
-    v11 = [(UIViewController *)self->_serviceViewController view];
-    v27[0] = v11;
+    view6 = [(UIViewController *)self->_serviceViewController view];
+    v27[0] = view6;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v13 = [v10 constraintsWithVisualFormat:@"H:|[serviceView]|" options:0 metrics:0 views:v12];
     [v9 addObjectsFromArray:v13];
 
     v14 = MEMORY[0x1E696ACD8];
     v24 = @"serviceView";
-    v15 = [(UIViewController *)self->_serviceViewController view];
-    v25 = v15;
+    view7 = [(UIViewController *)self->_serviceViewController view];
+    v25 = view7;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v17 = [v14 constraintsWithVisualFormat:@"V:|[serviceView]|" options:0 metrics:0 views:v16];
     [v9 addObjectsFromArray:v17];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v9];
-    v18 = [(SLWebAuthController *)self view];
-    [v18 setNeedsLayout];
+    view8 = [(SLWebAuthController *)self view];
+    [view8 setNeedsLayout];
 
     presentationBlock = self->_presentationBlock;
     if (presentationBlock)
@@ -351,24 +351,24 @@ void __58__SLWebAuthController__didInstantiateRemoteViewController__block_invoke
   v6.receiver = self;
   v6.super_class = SLWebAuthController;
   [(SLWebAuthController *)&v6 loadView];
-  v3 = [(SLWebAuthController *)self view];
-  [v3 setOpaque:0];
+  view = [(SLWebAuthController *)self view];
+  [view setOpaque:0];
 
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [(SLWebAuthController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view2 = [(SLWebAuthController *)self view];
+  [view2 setBackgroundColor:clearColor];
 }
 
-- (void)_extensionRequestDidCompleteWithTokens:(id)a3 extensionCompletion:(id)a4
+- (void)_extensionRequestDidCompleteWithTokens:(id)tokens extensionCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   self->_extensionRequestDidComplete = 1;
-  if (a3)
+  if (tokens)
   {
-    v8 = [a3 objectAtIndexedSubscript:0];
-    v9 = [v8 attachments];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    v8 = [tokens objectAtIndexedSubscript:0];
+    attachments = [v8 attachments];
+    v10 = [attachments objectAtIndexedSubscript:0];
 
     v11 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -376,7 +376,7 @@ void __58__SLWebAuthController__didInstantiateRemoteViewController__block_invoke
     block[2] = __82__SLWebAuthController__extensionRequestDidCompleteWithTokens_extensionCompletion___block_invoke_2;
     block[3] = &unk_1E8175900;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v16 = v7;
     v12 = v10;
     dispatch_async(v11, block);
@@ -389,7 +389,7 @@ void __58__SLWebAuthController__didInstantiateRemoteViewController__block_invoke
     v17[2] = __82__SLWebAuthController__extensionRequestDidCompleteWithTokens_extensionCompletion___block_invoke;
     v17[3] = &unk_1E81759A0;
     v17[4] = self;
-    v18 = v6;
+    v18 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v17);
   }
 }
@@ -640,25 +640,25 @@ void __82__SLWebAuthController__extensionRequestDidCompleteWithTokens_extensionC
   [*(a1 + 56) _dismissAndCompleteWithIdentity:v5 error:*(*(*(a1 + 80) + 8) + 40) extensionCompletion:*(a1 + 64)];
 }
 
-- (void)_dismissAndCompleteWithIdentity:(id)a3 error:(id)a4 extensionCompletion:(id)a5
+- (void)_dismissAndCompleteWithIdentity:(id)identity error:(id)error extensionCompletion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  errorCopy = error;
+  completionCopy = completion;
   _SLLog(v5, 5, @"SLWebAuthController will dismiss");
-  v12 = [(SLWebAuthController *)self presentingViewController];
+  presentingViewController = [(SLWebAuthController *)self presentingViewController];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81__SLWebAuthController__dismissAndCompleteWithIdentity_error_extensionCompletion___block_invoke;
   v16[3] = &unk_1E8175CB0;
-  v17 = v10;
-  v18 = v9;
-  v19 = self;
-  v20 = v11;
-  v13 = v9;
-  v14 = v10;
-  v15 = v11;
-  [v12 dismissViewControllerAnimated:1 completion:v16];
+  v17 = errorCopy;
+  v18 = identityCopy;
+  selfCopy = self;
+  v20 = completionCopy;
+  v13 = identityCopy;
+  v14 = errorCopy;
+  v15 = completionCopy;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v16];
 }
 
 void __81__SLWebAuthController__dismissAndCompleteWithIdentity_error_extensionCompletion___block_invoke(uint64_t *a1)
@@ -724,8 +724,8 @@ void __81__SLWebAuthController__dismissAndCompleteWithIdentity_error_extensionCo
   v7 = [v6 localizedStringForKey:@"_EMAIL_MISMATCH_OK" value:&stru_1F41EC300 table:@"Localizable"];
   v8 = *MEMORY[0x1E695EE78];
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v10 = [v9 resourceURL];
-  v11 = [v14 dictionaryWithObjectsAndKeys:{v2, v13, v4, v5, v7, v8, v10, *MEMORY[0x1E695EE90], 0}];
+  resourceURL = [v9 resourceURL];
+  v11 = [v14 dictionaryWithObjectsAndKeys:{v2, v13, v4, v5, v7, v8, resourceURL, *MEMORY[0x1E695EE90], 0}];
 
   v17 = 0;
   v18 = &v17;
@@ -769,8 +769,8 @@ void __52__SLWebAuthController__presentUsernameMismatchAlert__block_invoke(uint6
   v18[2] = v7;
   v17[3] = *MEMORY[0x1E695EE90];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v9 = [v8 resourceURL];
-  v18[3] = v9;
+  resourceURL = [v8 resourceURL];
+  v18[3] = resourceURL;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
   v13 = 0;

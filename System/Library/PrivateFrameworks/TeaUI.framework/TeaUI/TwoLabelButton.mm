@@ -1,5 +1,5 @@
 @interface TwoLabelButton
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TwoLabelButton.layoutSubviews()();
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
+  stopCopy = stop;
   v9.super.isa = self;
   isa = v9.super.isa;
   v9._attr = 0;

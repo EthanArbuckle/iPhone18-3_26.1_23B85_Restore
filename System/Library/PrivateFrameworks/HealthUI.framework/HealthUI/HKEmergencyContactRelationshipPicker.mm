@@ -1,9 +1,9 @@
 @interface HKEmergencyContactRelationshipPicker
 - (HKEmergencyContactRelationshipPicker)init;
 - (HKEmergencyContactRelationshipPickerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_cancelTapped:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_cancelTapped:(id)tapped;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -134,46 +134,46 @@
   v8.receiver = self;
   v8.super_class = HKEmergencyContactRelationshipPicker;
   [(HKTableViewController *)&v8 viewDidLoad];
-  v3 = [(HKEmergencyContactRelationshipPicker *)self tableView];
-  [v3 setEstimatedRowHeight:52.0];
+  tableView = [(HKEmergencyContactRelationshipPicker *)self tableView];
+  [tableView setEstimatedRowHeight:52.0];
 
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelTapped_];
-  v5 = [(HKEmergencyContactRelationshipPicker *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(HKEmergencyContactRelationshipPicker *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"emergency_contact_relationship" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   [(HKEmergencyContactRelationshipPicker *)self setTitle:v7];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"reuseIdentifier"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_labels, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [v7 textLabel];
-  [v9 setText:v8];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_labels, "objectAtIndexedSubscript:", [pathCopy row]);
+  textLabel = [v7 textLabel];
+  [textLabel setText:v8];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   tokens = self->_tokens;
-  v7 = [v5 row];
+  v7 = [pathCopy row];
 
   v8 = [(NSArray *)tokens objectAtIndexedSubscript:v7];
   [WeakRetained emergencyContactRelationshipPicker:self didChooseRelationshipNamed:v8];
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained emergencyContactRelationshipPickerDidCancel:self];

@@ -1,7 +1,7 @@
 @interface NFCVASResponse
 - (NFCVASResponse)init;
-- (NFCVASResponse)initWithStatus:(int64_t)a3 data:(id)a4 mobileToken:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NFCVASResponse)initWithStatus:(int64_t)status data:(id)data mobileToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NFCVASResponse
@@ -15,25 +15,25 @@
   return v5;
 }
 
-- (NFCVASResponse)initWithStatus:(int64_t)a3 data:(id)a4 mobileToken:(id)a5
+- (NFCVASResponse)initWithStatus:(int64_t)status data:(id)data mobileToken:(id)token
 {
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  tokenCopy = token;
   v14.receiver = self;
   v14.super_class = NFCVASResponse;
   v11 = [(NFCVASResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_status = a3;
-    objc_storeStrong(&v11->_vasData, a4);
-    objc_storeStrong(&v12->_mobileToken, a5);
+    v11->_status = status;
+    objc_storeStrong(&v11->_vasData, data);
+    objc_storeStrong(&v12->_mobileToken, token);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   status = self->_status;

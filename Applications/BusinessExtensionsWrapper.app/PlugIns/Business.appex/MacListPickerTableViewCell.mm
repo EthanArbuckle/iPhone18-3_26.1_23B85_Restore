@@ -1,15 +1,15 @@
 @interface MacListPickerTableViewCell
-- (_TtC8Business26MacListPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC8Business26MacListPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 @end
 
 @implementation MacListPickerTableViewCell
 
-- (_TtC8Business26MacListPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8Business26MacListPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1000AC06C();
+    identifier = sub_1000AC06C();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_100064F64(a3, a4, v6);
+  return sub_100064F64(style, identifier, v6);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_1000ABAEC();
   v5 = *(v4 - 8);
@@ -29,7 +29,7 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000ABACC();
-  v10 = self;
+  selfCopy = self;
   sub_1000663F0(v9);
 
   (*(v5 + 8))(v9, v4);

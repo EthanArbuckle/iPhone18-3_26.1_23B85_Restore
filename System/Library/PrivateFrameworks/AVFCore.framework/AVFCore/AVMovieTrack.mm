@@ -33,9 +33,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(AVAssetTrack *)self trackID];
-  v7 = [(AVAssetTrack *)self mediaType];
-  v8 = [v3 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@>", v5, self, v6, v7];
+  trackID = [(AVAssetTrack *)self trackID];
+  mediaType = [(AVAssetTrack *)self mediaType];
+  v8 = [v3 stringWithFormat:@"<%@: %p, trackID = %d, mediaType = %@>", v5, self, trackID, mediaType];
 
   return v8;
 }

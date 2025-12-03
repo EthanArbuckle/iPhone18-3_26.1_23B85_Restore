@@ -9,36 +9,36 @@
 
 - (id)bk_effectiveTitle
 {
-  v3 = [(MPMediaItem *)self albumTitle];
-  if ([v3 length])
+  albumTitle = [(MPMediaItem *)self albumTitle];
+  if ([albumTitle length])
   {
-    v4 = v3;
+    title = albumTitle;
   }
 
   else
   {
-    v4 = [(MPMediaItem *)self title];
+    title = [(MPMediaItem *)self title];
   }
 
-  v5 = v4;
+  v5 = title;
 
   return v5;
 }
 
 - (id)bk_effectiveAuthor
 {
-  v3 = [(MPMediaItem *)self albumArtist];
-  if ([v3 length])
+  albumArtist = [(MPMediaItem *)self albumArtist];
+  if ([albumArtist length])
   {
-    v4 = v3;
+    artist = albumArtist;
   }
 
   else
   {
-    v4 = [(MPMediaItem *)self artist];
+    artist = [(MPMediaItem *)self artist];
   }
 
-  v5 = v4;
+  v5 = artist;
 
   return v5;
 }
@@ -56,13 +56,13 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MPMediaItem *)self title];
-  v6 = [(MPMediaItem *)self artist];
+  title = [(MPMediaItem *)self title];
+  artist = [(MPMediaItem *)self artist];
   v7 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyStoreID];
   v8 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyStorePlaylistID];
   v9 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyPurchaseHistoryID];
   v10 = [(MPMediaItem *)self valueForProperty:MPMediaItemPropertyStoreRedownloadParameters];
-  v11 = [NSString stringWithFormat:@"<%@(%p) title:%@ author:%@ storeItemAdamID:%@ storePlaylistAdamID:%@ purchaseHistoryID:%@ params:%@>", v4, self, v5, v6, v7, v8, v9, v10];
+  v11 = [NSString stringWithFormat:@"<%@(%p) title:%@ author:%@ storeItemAdamID:%@ storePlaylistAdamID:%@ purchaseHistoryID:%@ params:%@>", v4, self, title, artist, v7, v8, v9, v10];
 
   return v11;
 }

@@ -2,16 +2,16 @@
 - (NSArray)identifiers;
 - (NSString)frequencyString;
 - (NSString)operatingHours;
-- (TransitSchedulesDepartureInfoProvider)initWithTransitLine:(id)a3 timeZone:(id)a4 referenceDate:(id)a5;
+- (TransitSchedulesDepartureInfoProvider)initWithTransitLine:(id)line timeZone:(id)zone referenceDate:(id)date;
 - (TransitSchedulesDepartureInfoProviderDelegate)delegate;
 - (id)_operatingHoursDescriptionFromDepartureSequence;
 - (id)_operatingHoursDescriptionFromTransitLine;
-- (id)_operatingHoursStringForTimeRanges:(id)a3;
+- (id)_operatingHoursStringForTimeRanges:(id)ranges;
 - (void)_invalidateFrequencyString;
 - (void)_invalidateOperatingHours;
-- (void)configureCell:(id)a3 forIndexPath:(id)a4 withIdentifier:(id)a5;
-- (void)setDepartureSequence:(id)a3;
-- (void)setTransitLine:(id)a3;
+- (void)configureCell:(id)cell forIndexPath:(id)path withIdentifier:(id)identifier;
+- (void)setDepartureSequence:(id)sequence;
+- (void)setTransitLine:(id)line;
 @end
 
 @implementation TransitSchedulesDepartureInfoProvider
@@ -33,10 +33,10 @@
 
 - (id)_operatingHoursDescriptionFromTransitLine
 {
-  v3 = [(GEOTransitLine *)self->_transitLine operatingHours];
-  if (-[GEOTransitLine departureTimeDisplayStyle](self->_transitLine, "departureTimeDisplayStyle") == 3 && [v3 count])
+  operatingHours = [(GEOTransitLine *)self->_transitLine operatingHours];
+  if (-[GEOTransitLine departureTimeDisplayStyle](self->_transitLine, "departureTimeDisplayStyle") == 3 && [operatingHours count])
   {
-    v4 = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursStringForTimeRanges:v3];
+    v4 = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursStringForTimeRanges:operatingHours];
   }
 
   else
@@ -47,26 +47,26 @@
   return v4;
 }
 
-- (id)_operatingHoursStringForTimeRanges:(id)a3
+- (id)_operatingHoursStringForTimeRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   if (qword_10195F088 != -1)
   {
     dispatch_once(&qword_10195F088, &stru_1016519F8);
   }
 
   [qword_10195F080 setTimeZone:self->_timeZone];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  firstObject = [rangesCopy firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
     v7 = qword_10195F080;
-    v8 = [v5 startDate];
-    v9 = [v7 stringFromDate:v8];
+    startDate = [firstObject startDate];
+    v9 = [v7 stringFromDate:startDate];
 
     v10 = qword_10195F080;
-    v11 = [v6 endDate];
-    v12 = [v10 stringFromDate:v11];
+    endDate = [v6 endDate];
+    v12 = [v10 stringFromDate:endDate];
 
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"[Transit Schedule] Operating hours with separator" value:@"localized string not found" table:0];
@@ -97,26 +97,26 @@ LABEL_2:
 LABEL_10:
     if (self->_transitLine)
     {
-      v9 = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursDescriptionFromTransitLine];
-      if ([v9 length])
+      _operatingHoursDescriptionFromTransitLine = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursDescriptionFromTransitLine];
+      if ([_operatingHoursDescriptionFromTransitLine length])
       {
-        objc_storeStrong(p_operatingHours, v9);
+        objc_storeStrong(p_operatingHours, _operatingHoursDescriptionFromTransitLine);
       }
     }
 
     goto LABEL_2;
   }
 
-  v6 = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursDescriptionFromDepartureSequence];
-  if (![v6 length])
+  _operatingHoursDescriptionFromDepartureSequence = [(TransitSchedulesDepartureInfoProvider *)self _operatingHoursDescriptionFromDepartureSequence];
+  if (![_operatingHoursDescriptionFromDepartureSequence length])
   {
 
     goto LABEL_10;
   }
 
   v7 = *p_operatingHours;
-  *p_operatingHours = v6;
-  v8 = v6;
+  *p_operatingHours = _operatingHoursDescriptionFromDepartureSequence;
+  v8 = _operatingHoursDescriptionFromDepartureSequence;
 
   v3 = *p_operatingHours;
 LABEL_3:
@@ -161,40 +161,40 @@ LABEL_3:
   self->_frequencyString = 0;
 }
 
-- (void)setDepartureSequence:(id)a3
+- (void)setDepartureSequence:(id)sequence
 {
-  v6 = a3;
+  sequenceCopy = sequence;
   if (([(GEOTransitDepartureSequence *)self->_departureSequence isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_departureSequence, a3);
+    objc_storeStrong(&self->_departureSequence, sequence);
     [(TransitSchedulesDepartureInfoProvider *)self _invalidateOperatingHours];
     [(TransitSchedulesDepartureInfoProvider *)self _invalidateFrequencyString];
-    v5 = [(TransitSchedulesDepartureInfoProvider *)self delegate];
-    [v5 updatedDepartureInfoProvider:self];
+    delegate = [(TransitSchedulesDepartureInfoProvider *)self delegate];
+    [delegate updatedDepartureInfoProvider:self];
   }
 }
 
-- (void)setTransitLine:(id)a3
+- (void)setTransitLine:(id)line
 {
-  v7 = a3;
-  v5 = [(GEOTransitLine *)self->_transitLine muid];
-  if (v5 != [v7 muid])
+  lineCopy = line;
+  muid = [(GEOTransitLine *)self->_transitLine muid];
+  if (muid != [lineCopy muid])
   {
-    objc_storeStrong(&self->_transitLine, a3);
+    objc_storeStrong(&self->_transitLine, line);
     [(TransitSchedulesDepartureInfoProvider *)self _invalidateOperatingHours];
-    v6 = [(TransitSchedulesDepartureInfoProvider *)self delegate];
-    [v6 updatedDepartureInfoProvider:self];
+    delegate = [(TransitSchedulesDepartureInfoProvider *)self delegate];
+    [delegate updatedDepartureInfoProvider:self];
   }
 }
 
-- (void)configureCell:(id)a3 forIndexPath:(id)a4 withIdentifier:(id)a5
+- (void)configureCell:(id)cell forIndexPath:(id)path withIdentifier:(id)identifier
 {
-  v18 = a3;
-  v7 = a5;
+  cellCopy = cell;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = identifierCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -213,14 +213,14 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    v11 = v18;
+    v11 = cellCopy;
     if ([v10 isEqualToString:@"DepartureInfoSectionCellFrequencyIdentifier"])
     {
       v12 = +[NSBundle mainBundle];
       v13 = [v12 localizedStringForKey:@"[Transit Schedules] Frequency" value:@"localized string not found" table:0];
       [v11 setTitle:v13];
 
-      v14 = [(TransitSchedulesDepartureInfoProvider *)self frequencyString];
+      frequencyString = [(TransitSchedulesDepartureInfoProvider *)self frequencyString];
     }
 
     else
@@ -237,11 +237,11 @@ LABEL_12:
       v16 = [v15 localizedStringForKey:@"[Transit Schedules] Operating Hours" value:@"localized string not found" table:0];
       [v11 setTitle:v16];
 
-      v14 = [(TransitSchedulesDepartureInfoProvider *)self operatingHours];
+      frequencyString = [(TransitSchedulesDepartureInfoProvider *)self operatingHours];
     }
 
-    v17 = v14;
-    [v11 setContent:v14];
+    v17 = frequencyString;
+    [v11 setContent:frequencyString];
 
     goto LABEL_11;
   }
@@ -252,16 +252,16 @@ LABEL_13:
 - (NSArray)identifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(TransitSchedulesDepartureInfoProvider *)self frequencyString];
-  v5 = [v4 length];
+  frequencyString = [(TransitSchedulesDepartureInfoProvider *)self frequencyString];
+  v5 = [frequencyString length];
 
   if (v5)
   {
     [v3 addObject:@"DepartureInfoSectionCellFrequencyIdentifier"];
   }
 
-  v6 = [(TransitSchedulesDepartureInfoProvider *)self operatingHours];
-  v7 = [v6 length];
+  operatingHours = [(TransitSchedulesDepartureInfoProvider *)self operatingHours];
+  v7 = [operatingHours length];
 
   if (v7)
   {
@@ -271,20 +271,20 @@ LABEL_13:
   return v3;
 }
 
-- (TransitSchedulesDepartureInfoProvider)initWithTransitLine:(id)a3 timeZone:(id)a4 referenceDate:(id)a5
+- (TransitSchedulesDepartureInfoProvider)initWithTransitLine:(id)line timeZone:(id)zone referenceDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lineCopy = line;
+  zoneCopy = zone;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = TransitSchedulesDepartureInfoProvider;
   v12 = [(TransitSchedulesDepartureInfoProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transitLine, a3);
-    objc_storeStrong(&v13->_timeZone, a4);
-    objc_storeStrong(&v13->_date, a5);
+    objc_storeStrong(&v12->_transitLine, line);
+    objc_storeStrong(&v13->_timeZone, zone);
+    objc_storeStrong(&v13->_date, date);
   }
 
   return v13;

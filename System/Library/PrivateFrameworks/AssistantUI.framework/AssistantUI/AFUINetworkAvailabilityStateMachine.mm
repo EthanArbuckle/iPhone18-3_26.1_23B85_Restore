@@ -1,14 +1,14 @@
 @interface AFUINetworkAvailabilityStateMachine
-- (AFUINetworkAvailabilityStateMachine)initWithDelegate:(id)a3;
+- (AFUINetworkAvailabilityStateMachine)initWithDelegate:(id)delegate;
 - (AFUINetworkAvailabilityStateMachineDelegate)delegate;
 - (id)_stateMachine;
-- (id)stateMachine:(id)a3 descriptionForEvent:(int64_t)a4;
+- (id)stateMachine:(id)machine descriptionForEvent:(int64_t)event;
 - (int64_t)_state;
 - (void)_intializeDelegateStateWithoutBlocking;
-- (void)_performTransitionForEvent:(int64_t)a3;
-- (void)_siriNetworkAvailabilityDidChange:(unint64_t)a3;
+- (void)_performTransitionForEvent:(int64_t)event;
+- (void)_siriNetworkAvailabilityDidChange:(unint64_t)change;
 - (void)siriNetworkAvailabilityDidChange;
-- (void)stateMachine:(id)a3 didTransitionFromState:(int64_t)a4 forEvent:(int64_t)a5;
+- (void)stateMachine:(id)machine didTransitionFromState:(int64_t)state forEvent:(int64_t)event;
 @end
 
 @implementation AFUINetworkAvailabilityStateMachine
@@ -126,16 +126,16 @@ void __77__AFUINetworkAvailabilityStateMachine__intializeDelegateStateWithoutBlo
   return WeakRetained;
 }
 
-- (AFUINetworkAvailabilityStateMachine)initWithDelegate:(id)a3
+- (AFUINetworkAvailabilityStateMachine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = AFUINetworkAvailabilityStateMachine;
   v5 = [(AFUINetworkAvailabilityStateMachine *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(AFUINetworkAvailabilityStateMachine *)v5 setDelegate:v4];
+    [(AFUINetworkAvailabilityStateMachine *)v5 setDelegate:delegateCopy];
     [(AFUINetworkAvailabilityStateMachine *)v6 _intializeDelegateStateWithoutBlocking];
     v7 = objc_alloc_init(MEMORY[0x277CEC5D0]);
     radioPreferences = v6->_radioPreferences;
@@ -154,9 +154,9 @@ void __77__AFUINetworkAvailabilityStateMachine__intializeDelegateStateWithoutBlo
   [(AFUINetworkAvailabilityStateMachine *)self _siriNetworkAvailabilityDidChange:v3];
 }
 
-- (void)_siriNetworkAvailabilityDidChange:(unint64_t)a3
+- (void)_siriNetworkAvailabilityDidChange:(unint64_t)change
 {
-  if (a3 <= 3)
+  if (change <= 3)
   {
     [(AFUINetworkAvailabilityStateMachine *)self _performTransitionForEvent:?];
   }
@@ -164,19 +164,19 @@ void __77__AFUINetworkAvailabilityStateMachine__intializeDelegateStateWithoutBlo
 
 - (int64_t)_state
 {
-  v2 = [(AFUINetworkAvailabilityStateMachine *)self _stateMachine];
-  v3 = [v2 state];
+  _stateMachine = [(AFUINetworkAvailabilityStateMachine *)self _stateMachine];
+  state = [_stateMachine state];
 
-  return v3;
+  return state;
 }
 
-- (void)stateMachine:(id)a3 didTransitionFromState:(int64_t)a4 forEvent:(int64_t)a5
+- (void)stateMachine:(id)machine didTransitionFromState:(int64_t)state forEvent:(int64_t)event
 {
-  v7 = [a3 state];
-  if (v7 != a4)
+  state = [machine state];
+  if (state != state)
   {
-    v8 = v7;
-    v9 = [(AFUINetworkAvailabilityStateMachine *)self delegate];
+    v8 = state;
+    delegate = [(AFUINetworkAvailabilityStateMachine *)self delegate];
     if (v8 > 3)
     {
       v10 = 0;
@@ -187,53 +187,53 @@ void __77__AFUINetworkAvailabilityStateMachine__intializeDelegateStateWithoutBlo
       v10 = qword_2414948D8[v8];
     }
 
-    v11 = v9;
-    [v9 _updateSiriAvailability:v10];
+    v11 = delegate;
+    [delegate _updateSiriAvailability:v10];
   }
 }
 
-- (id)stateMachine:(id)a3 descriptionForEvent:(int64_t)a4
+- (id)stateMachine:(id)machine descriptionForEvent:(int64_t)event
 {
-  if ((a4 - 1) > 2)
+  if ((event - 1) > 2)
   {
     return @"SRSiriAvailabilityEventConnectionAvailable";
   }
 
   else
   {
-    return off_278CD6B38[a4 - 1];
+    return off_278CD6B38[event - 1];
   }
 }
 
-- (void)_performTransitionForEvent:(int64_t)a3
+- (void)_performTransitionForEvent:(int64_t)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(AFUINetworkAvailabilityStateMachine *)self _state];
-    if ((a3 - 1) > 2)
+    _state = [(AFUINetworkAvailabilityStateMachine *)self _state];
+    if ((event - 1) > 2)
     {
       v8 = @"SRSiriAvailabilityEventConnectionAvailable";
     }
 
     else
     {
-      v8 = off_278CD6B38[a3 - 1];
+      v8 = off_278CD6B38[event - 1];
     }
 
     v10 = 136315650;
     v11 = "[AFUINetworkAvailabilityStateMachine _performTransitionForEvent:]";
     v12 = 2048;
-    v13 = v7;
+    v13 = _state;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s from state %ld; event %@", &v10, 0x20u);
   }
 
-  v9 = [(AFUINetworkAvailabilityStateMachine *)self _stateMachine];
-  [v9 performTransitionForEvent:a3];
+  _stateMachine = [(AFUINetworkAvailabilityStateMachine *)self _stateMachine];
+  [_stateMachine performTransitionForEvent:event];
 }
 
 @end

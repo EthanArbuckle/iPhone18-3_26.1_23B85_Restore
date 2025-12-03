@@ -1,11 +1,11 @@
 @interface CNPosterSetupAvatarPreviewViewWrapper
 - (UIViewController)hostingController;
 - (_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper)init;
-- (_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper)initWithImageData:(id)a3 cropRect:(CGRect)a4 imageType:(unint64_t)a5 delegate:(id)a6;
-- (void)setCropRect:(CGRect)a3;
-- (void)setHostingController:(id)a3;
-- (void)setImageData:(id)a3;
-- (void)setImageType:(unint64_t)a3;
+- (_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper)initWithImageData:(id)data cropRect:(CGRect)rect imageType:(unint64_t)type delegate:(id)delegate;
+- (void)setCropRect:(CGRect)rect;
+- (void)setHostingController:(id)controller;
+- (void)setImageData:(id)data;
+- (void)setImageType:(unint64_t)type;
 @end
 
 @implementation CNPosterSetupAvatarPreviewViewWrapper
@@ -17,18 +17,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
   v5 = OBJC_IVAR____TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper_hostingController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper)initWithImageData:(id)a3 cropRect:(CGRect)a4 imageType:(unint64_t)a5 delegate:(id)a6
+- (_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper)initWithImageData:(id)data cropRect:(CGRect)rect imageType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a3;
+  dataCopy = data;
   swift_unknownObjectRetain();
   v7 = sub_199DF71FC();
   v9 = v8;
@@ -39,10 +39,10 @@
   return v10;
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   v6 = sub_199DF71FC();
   v8 = v7;
 
@@ -56,7 +56,7 @@
   sub_199A9EF34(v6, v8);
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
   swift_getKeyPath();
   swift_getKeyPath();
@@ -64,7 +64,7 @@
   sub_199DF842C();
 }
 
-- (void)setImageType:(unint64_t)a3
+- (void)setImageType:(unint64_t)type
 {
   swift_getKeyPath();
   swift_getKeyPath();

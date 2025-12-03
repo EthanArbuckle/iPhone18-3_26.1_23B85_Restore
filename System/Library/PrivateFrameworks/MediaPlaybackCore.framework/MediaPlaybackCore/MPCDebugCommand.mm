@@ -1,8 +1,8 @@
 @interface MPCDebugCommand
-- (MPCDebugCommand)initWithMediaRemoteCommandType:(unsigned int)a3;
+- (MPCDebugCommand)initWithMediaRemoteCommandType:(unsigned int)type;
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setSubsystemRevisions:(id)a3;
-- (void)setSupportedSubsystems:(id)a3;
+- (void)setSubsystemRevisions:(id)revisions;
+- (void)setSupportedSubsystems:(id)subsystems;
 @end
 
 @implementation MPCDebugCommand
@@ -53,15 +53,15 @@ void __49__MPCDebugCommand__mediaRemoteCommandInfoOptions__block_invoke(uint64_t
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)setSubsystemRevisions:(id)a3
+- (void)setSubsystemRevisions:(id)revisions
 {
-  v4 = a3;
+  revisionsCopy = revisions;
   subsystemRevisions = self->_subsystemRevisions;
-  if (subsystemRevisions != v4)
+  if (subsystemRevisions != revisionsCopy)
   {
-    v8 = v4;
-    subsystemRevisions = [subsystemRevisions isEqual:v4];
-    v4 = v8;
+    v8 = revisionsCopy;
+    subsystemRevisions = [subsystemRevisions isEqual:revisionsCopy];
+    revisionsCopy = v8;
     if ((subsystemRevisions & 1) == 0)
     {
       v6 = [v8 copy];
@@ -69,22 +69,22 @@ void __49__MPCDebugCommand__mediaRemoteCommandInfoOptions__block_invoke(uint64_t
       self->_subsystemRevisions = v6;
 
       subsystemRevisions = [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
-      v4 = v8;
+      revisionsCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](subsystemRevisions, v4);
+  MEMORY[0x1EEE66BB8](subsystemRevisions, revisionsCopy);
 }
 
-- (void)setSupportedSubsystems:(id)a3
+- (void)setSupportedSubsystems:(id)subsystems
 {
-  v4 = a3;
+  subsystemsCopy = subsystems;
   supportedSubsystems = self->_supportedSubsystems;
-  if (supportedSubsystems != v4)
+  if (supportedSubsystems != subsystemsCopy)
   {
-    v8 = v4;
-    supportedSubsystems = [supportedSubsystems isEqual:v4];
-    v4 = v8;
+    v8 = subsystemsCopy;
+    supportedSubsystems = [supportedSubsystems isEqual:subsystemsCopy];
+    subsystemsCopy = v8;
     if ((supportedSubsystems & 1) == 0)
     {
       v6 = [v8 copy];
@@ -92,18 +92,18 @@ void __49__MPCDebugCommand__mediaRemoteCommandInfoOptions__block_invoke(uint64_t
       self->_supportedSubsystems = v6;
 
       supportedSubsystems = [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
-      v4 = v8;
+      subsystemsCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](supportedSubsystems, v4);
+  MEMORY[0x1EEE66BB8](supportedSubsystems, subsystemsCopy);
 }
 
-- (MPCDebugCommand)initWithMediaRemoteCommandType:(unsigned int)a3
+- (MPCDebugCommand)initWithMediaRemoteCommandType:(unsigned int)type
 {
   v8.receiver = self;
   v8.super_class = MPCDebugCommand;
-  v3 = [(MPRemoteCommand *)&v8 initWithMediaRemoteCommandType:*&a3];
+  v3 = [(MPRemoteCommand *)&v8 initWithMediaRemoteCommandType:*&type];
   v4 = v3;
   if (v3)
   {

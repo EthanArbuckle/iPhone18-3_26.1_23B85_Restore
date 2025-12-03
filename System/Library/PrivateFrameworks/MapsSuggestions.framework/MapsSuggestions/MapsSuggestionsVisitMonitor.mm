@@ -1,23 +1,23 @@
 @interface MapsSuggestionsVisitMonitor
 - (BOOL)isInVisit;
 - (CLVisit)latestVisit;
-- (MapsSuggestionsVisitMonitor)initWithLocationUpdater:(id)a3 startInVisit:(BOOL)a4;
+- (MapsSuggestionsVisitMonitor)initWithLocationUpdater:(id)updater startInVisit:(BOOL)visit;
 - (NSString)uniqueName;
-- (void)didEnterVisit:(id)a3;
-- (void)didLeaveVisit:(id)a3;
+- (void)didEnterVisit:(id)visit;
+- (void)didLeaveVisit:(id)visit;
 - (void)didLoseLocationPermission;
-- (void)didUpdateLocation:(id)a3;
+- (void)didUpdateLocation:(id)location;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation MapsSuggestionsVisitMonitor
 
-- (MapsSuggestionsVisitMonitor)initWithLocationUpdater:(id)a3 startInVisit:(BOOL)a4
+- (MapsSuggestionsVisitMonitor)initWithLocationUpdater:(id)updater startInVisit:(BOOL)visit
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  updaterCopy = updater;
+  if (updaterCopy)
   {
     v22.receiver = self;
     v22.super_class = MapsSuggestionsVisitMonitor;
@@ -25,11 +25,11 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_locationUpdater, a3);
+      objc_storeStrong(&v8->_locationUpdater, updater);
       latestVisit = v9->_latestVisit;
       v9->_latestVisit = 0;
 
-      v9->_isInVisit = a4;
+      v9->_isInVisit = visit;
       objc_initWeak(location, v9);
       v11 = [[MapsSuggestionsSimpleTrigger alloc] initWithName:@"onVisitEnter"];
       onEnterTrigger = v9->_onEnterTrigger;
@@ -53,7 +53,7 @@
     }
 
     self = v9;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -72,10 +72,10 @@
       _os_log_impl(&dword_1C5126000, v18, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a location updater", location, 0x26u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 uint64_t __68__MapsSuggestionsVisitMonitor_initWithLocationUpdater_startInVisit___block_invoke(uint64_t a1)
@@ -117,10 +117,10 @@ uint64_t __68__MapsSuggestionsVisitMonitor_initWithLocationUpdater_startInVisit_
 
 - (CLVisit)latestVisit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_latestVisit;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_latestVisit;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -149,39 +149,39 @@ uint64_t __68__MapsSuggestionsVisitMonitor_initWithLocationUpdater_startInVisit_
 
 - (BOOL)isInVisit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isInVisit = v2->_isInVisit;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isInVisit = selfCopy->_isInVisit;
+  objc_sync_exit(selfCopy);
 
   return isInVisit;
 }
 
-- (void)didEnterVisit:(id)a3
+- (void)didEnterVisit:(id)visit
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 hasArrivalDate];
+  visitCopy = visit;
+  hasArrivalDate = [visitCopy hasArrivalDate];
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (v6)
+  if (hasArrivalDate)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v10 = 136315394;
       v11 = "[MapsSuggestionsVisitMonitor didEnterVisit:]";
       v12 = 2112;
-      *v13 = v5;
+      *v13 = visitCopy;
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "%s %@", &v10, 0x16u);
     }
 
-    v9 = self;
-    objc_sync_enter(v9);
-    objc_storeStrong(&v9->_latestVisit, a3);
-    v9->_isInVisit = 1;
-    objc_sync_exit(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_latestVisit, visit);
+    selfCopy->_isInVisit = 1;
+    objc_sync_exit(selfCopy);
 
-    [(MapsSuggestionsSimpleTrigger *)v9->_onEnterTrigger fire];
+    [(MapsSuggestionsSimpleTrigger *)selfCopy->_onEnterTrigger fire];
   }
 
   else
@@ -201,11 +201,11 @@ uint64_t __68__MapsSuggestionsVisitMonitor_initWithLocationUpdater_startInVisit_
   }
 }
 
-- (void)didLeaveVisit:(id)a3
+- (void)didLeaveVisit:(id)visit
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 hasArrivalDate] & 1) == 0)
+  visitCopy = visit;
+  if (([visitCopy hasArrivalDate] & 1) == 0)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -228,10 +228,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v5 hasDepartureDate];
+  hasDepartureDate = [visitCopy hasDepartureDate];
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if ((v6 & 1) == 0)
+  if ((hasDepartureDate & 1) == 0)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -255,17 +255,17 @@ LABEL_11:
     v11 = 136315394;
     v12 = "[MapsSuggestionsVisitMonitor didLeaveVisit:]";
     v13 = 2112;
-    *v14 = v5;
+    *v14 = visitCopy;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "%s %@", &v11, 0x16u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  objc_storeStrong(&v9->_latestVisit, a3);
-  v9->_isInVisit = 0;
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_latestVisit, visit);
+  selfCopy->_isInVisit = 0;
+  objc_sync_exit(selfCopy);
 
-  [(MapsSuggestionsSimpleTrigger *)v9->_onExitTrigger fire];
+  [(MapsSuggestionsSimpleTrigger *)selfCopy->_onExitTrigger fire];
 LABEL_12:
 }
 
@@ -278,19 +278,19 @@ LABEL_12:
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "Lost our permission to have locations; wiping what we know.", v6, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  latestVisit = v4->_latestVisit;
-  v4->_latestVisit = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  latestVisit = selfCopy->_latestVisit;
+  selfCopy->_latestVisit = 0;
 
-  v4->_isInVisit = 0;
-  objc_sync_exit(v4);
+  selfCopy->_isInVisit = 0;
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  locationCopy = location;
   if (MapsSuggestionsLoggingIsVerbose())
   {
     v4 = GEOFindOrCreateLog();
@@ -299,7 +299,7 @@ LABEL_12:
       v5 = 136315394;
       v6 = "[MapsSuggestionsVisitMonitor didUpdateLocation:]";
       v7 = 2112;
-      v8 = v3;
+      v8 = locationCopy;
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "%s %@", &v5, 0x16u);
     }
   }

@@ -1,49 +1,49 @@
 @interface SUPurchaseManager
-- (BOOL)_issuePurchaseRequestForPurchases:(id)a3;
-- (BOOL)_needsAuthenticationForPurchases:(id)a3;
-- (BOOL)addPurchaseBatch:(id)a3;
-- (BOOL)itemIdentifierIsPurchased:(unint64_t)a3;
-- (BOOL)itemIdentifierIsPurchasing:(unint64_t)a3;
+- (BOOL)_issuePurchaseRequestForPurchases:(id)purchases;
+- (BOOL)_needsAuthenticationForPurchases:(id)purchases;
+- (BOOL)addPurchaseBatch:(id)batch;
+- (BOOL)itemIdentifierIsPurchased:(unint64_t)purchased;
+- (BOOL)itemIdentifierIsPurchasing:(unint64_t)purchasing;
 - (SUPurchaseManager)init;
-- (id)_accountDSIDForPurchase:(id)a3;
-- (id)_downloadManagerForDownloadKind:(id)a3;
-- (id)_newDictionaryForWebScriptValue:(id)a3 inContext:(OpaqueJSContext *)a4;
-- (id)_newExternalDownloadWithDictionary:(id)a3;
-- (id)_newExternalDownloadWithDownloadDictionary:(id)a3;
-- (id)_newExternalDownloadWithItemDictionary:(id)a3;
-- (id)_newPurchaseBatchForPurchases:(id)a3;
-- (id)copyPurchaseForScriptObject:(id)a3 inContext:(OpaqueJSContext *)a4;
-- (id)newPurchaseBatchForItems:(id)a3 offers:(id)a4;
+- (id)_accountDSIDForPurchase:(id)purchase;
+- (id)_downloadManagerForDownloadKind:(id)kind;
+- (id)_newDictionaryForWebScriptValue:(id)value inContext:(OpaqueJSContext *)context;
+- (id)_newExternalDownloadWithDictionary:(id)dictionary;
+- (id)_newExternalDownloadWithDownloadDictionary:(id)dictionary;
+- (id)_newExternalDownloadWithItemDictionary:(id)dictionary;
+- (id)_newPurchaseBatchForPurchases:(id)purchases;
+- (id)copyPurchaseForScriptObject:(id)object inContext:(OpaqueJSContext *)context;
+- (id)newPurchaseBatchForItems:(id)items offers:(id)offers;
 - (int64_t)numberOfPendingPurchases;
-- (void)_dialogDidFinish:(id)a3;
-- (void)_enqueueContinuations:(id)a3;
-- (void)_enqueueExternalDownload:(id)a3;
-- (void)_enqueuePurchases:(id)a3;
+- (void)_dialogDidFinish:(id)finish;
+- (void)_enqueueContinuations:(id)continuations;
+- (void)_enqueueExternalDownload:(id)download;
+- (void)_enqueuePurchases:(id)purchases;
 - (void)_performNextAction;
-- (void)_removePurchaseRequest:(id)a3;
-- (void)_schedulePurchaseCallback:(id)a3 forPurchases:(id)a4;
-- (void)_showDialogsForErrors:(id)a3;
-- (void)_startContinuations:(id)a3;
-- (void)_startPurchases:(id)a3;
-- (void)addExternalDownloads:(id)a3 withOptions:(id)a4 inContext:(OpaqueJSContext *)a5;
-- (void)addFuturePurchase:(id)a3;
-- (void)addPurchasedItemIdentifier:(unint64_t)a3;
-- (void)addPurchasedItemIdentifiers:(id)a3;
+- (void)_removePurchaseRequest:(id)request;
+- (void)_schedulePurchaseCallback:(id)callback forPurchases:(id)purchases;
+- (void)_showDialogsForErrors:(id)errors;
+- (void)_startContinuations:(id)continuations;
+- (void)_startPurchases:(id)purchases;
+- (void)addExternalDownloads:(id)downloads withOptions:(id)options inContext:(OpaqueJSContext *)context;
+- (void)addFuturePurchase:(id)purchase;
+- (void)addPurchasedItemIdentifier:(unint64_t)identifier;
+- (void)addPurchasedItemIdentifiers:(id)identifiers;
 - (void)beginUpdates;
-- (void)cancelFuturePurchase:(id)a3;
-- (void)continuation:(id)a3 failedWithError:(id)a4;
-- (void)continuationFinished:(id)a3;
+- (void)cancelFuturePurchase:(id)purchase;
+- (void)continuation:(id)continuation failedWithError:(id)error;
+- (void)continuationFinished:(id)finished;
 - (void)dealloc;
 - (void)endUpdates;
-- (void)enqueueScriptPurchases:(id)a3;
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5;
-- (void)purchaseRequest:(id)a3 purchaseDidFail:(id)a4 withError:(id)a5;
-- (void)purchaseRequest:(id)a3 purchaseDidSucceed:(id)a4;
-- (void)purchaseRequest:(id)a3 purchaseDidSucceedWithResponse:(id)a4;
-- (void)purchaseScriptObject:(id)a3 withOptions:(id)a4 inContext:(OpaqueJSContext *)a5;
-- (void)removePurchasedItemIdentifier:(unint64_t)a3;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
+- (void)enqueueScriptPurchases:(id)purchases;
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info;
+- (void)purchaseRequest:(id)request purchaseDidFail:(id)fail withError:(id)error;
+- (void)purchaseRequest:(id)request purchaseDidSucceed:(id)succeed;
+- (void)purchaseRequest:(id)request purchaseDidSucceedWithResponse:(id)response;
+- (void)purchaseScriptObject:(id)object withOptions:(id)options inContext:(OpaqueJSContext *)context;
+- (void)removePurchasedItemIdentifier:(unint64_t)identifier;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
 @end
 
 @implementation SUPurchaseManager
@@ -67,19 +67,19 @@
 - (void)dealloc
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D4938] sharedConfig];
-  v4 = [v3 shouldLog];
-  if ([v3 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v5 &= 2u;
   }
@@ -143,7 +143,7 @@
   [(SUPurchaseManager *)&v17 dealloc];
 }
 
-- (void)addFuturePurchase:(id)a3
+- (void)addFuturePurchase:(id)purchase
 {
   futurePurchases = self->_futurePurchases;
   if (!futurePurchases)
@@ -152,8 +152,8 @@
     self->_futurePurchases = futurePurchases;
   }
 
-  [(NSMutableSet *)futurePurchases addObject:a3];
-  if ([a3 valueForDownloadProperty:*MEMORY[0x1E69D4BF0]])
+  [(NSMutableSet *)futurePurchases addObject:purchase];
+  if ([purchase valueForDownloadProperty:*MEMORY[0x1E69D4BF0]])
   {
     v6 = SSGetUnsignedLongLongFromValue();
 
@@ -161,23 +161,23 @@
   }
 }
 
-- (BOOL)addPurchaseBatch:(id)a3
+- (BOOL)addPurchaseBatch:(id)batch
 {
-  if ([objc_msgSend(a3 "errors")])
+  if ([objc_msgSend(batch "errors")])
   {
-    -[SUPurchaseManager _showDialogsForErrors:](self, "_showDialogsForErrors:", [a3 errors]);
+    -[SUPurchaseManager _showDialogsForErrors:](self, "_showDialogsForErrors:", [batch errors]);
   }
 
-  v5 = [objc_msgSend(a3 "continuations")];
+  v5 = [objc_msgSend(batch "continuations")];
   v6 = v5 != 0;
   if (v5)
   {
-    -[SUPurchaseManager _enqueueContinuations:](self, "_enqueueContinuations:", [a3 continuations]);
+    -[SUPurchaseManager _enqueueContinuations:](self, "_enqueueContinuations:", [batch continuations]);
   }
 
-  if ([objc_msgSend(a3 "validPurchases")])
+  if ([objc_msgSend(batch "validPurchases")])
   {
-    -[SUPurchaseManager _enqueuePurchases:](self, "_enqueuePurchases:", [a3 validPurchases]);
+    -[SUPurchaseManager _enqueuePurchases:](self, "_enqueuePurchases:", [batch validPurchases]);
     v6 = 1;
   }
 
@@ -185,24 +185,24 @@
   return v6;
 }
 
-- (void)addPurchasedItemIdentifier:(unint64_t)a3
+- (void)addPurchasedItemIdentifier:(unint64_t)identifier
 {
   if (!self->_purchasedIdentifiers)
   {
     self->_purchasedIdentifiers = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
 
-  v5 = [MEMORY[0x1E696AD98] numberWithItemIdentifier:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithItemIdentifier:identifier];
   if (([(NSMutableSet *)self->_purchasedIdentifiers containsObject:v5]& 1) == 0)
   {
     [(NSMutableSet *)self->_purchasedIdentifiers addObject:v5];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v6 postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
+    [defaultCenter postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
   }
 }
 
-- (void)addPurchasedItemIdentifiers:(id)a3
+- (void)addPurchasedItemIdentifiers:(id)identifiers
 {
   purchasedIdentifiers = self->_purchasedIdentifiers;
   if (!purchasedIdentifiers)
@@ -212,12 +212,12 @@
   }
 
   v6 = [(NSMutableSet *)purchasedIdentifiers count];
-  [(NSMutableSet *)self->_purchasedIdentifiers unionSet:a3];
+  [(NSMutableSet *)self->_purchasedIdentifiers unionSet:identifiers];
   if ([(NSMutableSet *)self->_purchasedIdentifiers count]> v6)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v7 postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
+    [defaultCenter postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
   }
 }
 
@@ -233,18 +233,18 @@
   }
 }
 
-- (void)cancelFuturePurchase:(id)a3
+- (void)cancelFuturePurchase:(id)purchase
 {
-  v5 = a3;
-  if ([a3 valueForDownloadProperty:*MEMORY[0x1E69D4BF0]])
+  purchaseCopy = purchase;
+  if ([purchase valueForDownloadProperty:*MEMORY[0x1E69D4BF0]])
   {
     [(SUPurchaseManager *)self removePurchasedItemIdentifier:SSGetUnsignedLongLongFromValue()];
   }
 
-  [(SUPurchaseManager *)self _removePlaceholdersForPurchase:a3];
+  [(SUPurchaseManager *)self _removePlaceholdersForPurchase:purchase];
   futurePurchases = self->_futurePurchases;
 
-  [(NSMutableSet *)futurePurchases removeObject:a3];
+  [(NSMutableSet *)futurePurchases removeObject:purchase];
 }
 
 - (void)endUpdates
@@ -265,15 +265,15 @@
   }
 }
 
-- (BOOL)itemIdentifierIsPurchased:(unint64_t)a3
+- (BOOL)itemIdentifierIsPurchased:(unint64_t)purchased
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithItemIdentifier:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithItemIdentifier:purchased];
   LOBYTE(self) = [(NSMutableSet *)self->_purchasedIdentifiers containsObject:v4];
 
   return self;
 }
 
-- (BOOL)itemIdentifierIsPurchasing:(unint64_t)a3
+- (BOOL)itemIdentifierIsPurchasing:(unint64_t)purchasing
 {
   v26 = *MEMORY[0x1E69E9840];
   v20 = 0u;
@@ -296,12 +296,12 @@
           objc_enumerationMutation(purchaseRequests);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) purchases];
+        purchases = [*(*(&v20 + 1) + 8 * i) purchases];
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v11 = [purchases countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           v12 = v11;
@@ -312,18 +312,18 @@
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(purchases);
               }
 
               [*(*(&v16 + 1) + 8 * j) valueForDownloadProperty:v8];
-              if (SSGetUnsignedLongLongFromValue() == a3)
+              if (SSGetUnsignedLongLongFromValue() == purchasing)
               {
                 LOBYTE(v5) = 1;
                 return v5;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v12 = [purchases countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v12)
             {
               continue;
@@ -344,11 +344,11 @@
   return v5;
 }
 
-- (id)newPurchaseBatchForItems:(id)a3 offers:(id)a4
+- (id)newPurchaseBatchForItems:(id)items offers:(id)offers
 {
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v7 = [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self purchaseBatchForItems:a3]) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v7 = [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self purchaseBatchForItems:items]) == 0)
   {
-    v7 = [[SUPurchaseBatch alloc] initWithItems:a3 offers:a4];
+    v7 = [[SUPurchaseBatch alloc] initWithItems:items offers:offers];
   }
 
   [(SUPurchaseBatch *)v7 setPurchaseManager:self];
@@ -391,42 +391,42 @@
   return v5;
 }
 
-- (void)removePurchasedItemIdentifier:(unint64_t)a3
+- (void)removePurchasedItemIdentifier:(unint64_t)identifier
 {
   if (self->_purchasedIdentifiers)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithItemIdentifier:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithItemIdentifier:identifier];
     if ([(NSMutableSet *)self->_purchasedIdentifiers containsObject:v4])
     {
       [(NSMutableSet *)self->_purchasedIdentifiers removeObject:v4];
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-      [v5 postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
+      [defaultCenter postNotificationName:@"SUPurchasedItemIdentifiersChangedNotification" object:self];
     }
   }
 }
 
-- (void)eventMonitor:(id)a3 receivedEventWithName:(id)a4 userInfo:(id)a5
+- (void)eventMonitor:(id)monitor receivedEventWithName:(id)name userInfo:(id)info
 {
   v64 = *MEMORY[0x1E69E9840];
-  if (![a4 isEqualToString:*MEMORY[0x1E69D4C30]])
+  if (![name isEqualToString:*MEMORY[0x1E69D4C30]])
   {
     return;
   }
 
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -448,23 +448,23 @@
     }
   }
 
-  v13 = [a5 objectForKey:{@"response", v55}];
+  v13 = [info objectForKey:{@"response", v55}];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v36 = [MEMORY[0x1E69D4938] sharedConfig];
-    v37 = [v36 shouldLog];
-    if ([v36 shouldLogToDisk])
+    mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+    if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
     {
-      v38 = v37 | 2;
+      v38 = shouldLog2 | 2;
     }
 
     else
     {
-      v38 = v37;
+      v38 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v36 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v38 &= 2u;
     }
@@ -501,19 +501,19 @@ LABEL_44:
   v17 = [v14 unarchivedObjectOfClasses:objc_msgSend(v15 fromData:"setWithObjects:" error:{v16, objc_opt_class(), 0), v13, &v59}];
   if (v59)
   {
-    v18 = [MEMORY[0x1E69D4938] sharedConfig];
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+    if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog3 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog3;
     }
 
-    if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v20 &= 2u;
     }
@@ -544,22 +544,22 @@ LABEL_44:
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v44 = [MEMORY[0x1E69D4938] sharedConfig];
-    v45 = [v44 shouldLog];
-    if ([v44 shouldLogToDisk])
+    mEMORY[0x1E69D4938]4 = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog4 = [mEMORY[0x1E69D4938]4 shouldLog];
+    if ([mEMORY[0x1E69D4938]4 shouldLogToDisk])
     {
-      v46 = v45 | 2;
+      v46 = shouldLog4 | 2;
     }
 
     else
     {
-      v46 = v45;
+      v46 = shouldLog4;
     }
 
-    v47 = [v44 OSLogObject];
+    oSLogObject = [mEMORY[0x1E69D4938]4 OSLogObject];
     if (isKindOfClass)
     {
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v48 = v46;
       }
@@ -584,7 +584,7 @@ LABEL_44:
 
     else
     {
-      if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v50 = v46;
       }
@@ -611,19 +611,19 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v25 = [MEMORY[0x1E69D4938] sharedConfig];
-  v26 = [v25 shouldLog];
-  if ([v25 shouldLogToDisk])
+  mEMORY[0x1E69D4938]5 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog5 = [mEMORY[0x1E69D4938]5 shouldLog];
+  if ([mEMORY[0x1E69D4938]5 shouldLogToDisk])
   {
-    v27 = v26 | 2;
+    v27 = shouldLog5 | 2;
   }
 
   else
   {
-    v27 = v26;
+    v27 = shouldLog5;
   }
 
-  if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]5 OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v27 &= 2u;
   }
@@ -650,27 +650,27 @@ LABEL_44:
 
   if (![v17 error])
   {
-    v53 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v53 postNotificationName:@"SUPurchaseFinishedNotification" object:{objc_msgSend(v17, "purchase")}];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SUPurchaseFinishedNotification" object:{objc_msgSend(v17, "purchase")}];
     v54 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v17, @"SUPurchaseNotificationKeyPurchaseResponse", 0}];
-    [v53 postNotificationName:@"SUPurchaseRequestDidSucceedNotification" object:self userInfo:v54];
+    [defaultCenter postNotificationName:@"SUPurchaseRequestDidSucceedNotification" object:self userInfo:v54];
 
     return;
   }
 
-  v32 = [MEMORY[0x1E69D4938] sharedConfig];
-  v33 = [v32 shouldLog];
-  if ([v32 shouldLogToDisk])
+  mEMORY[0x1E69D4938]6 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog6 = [mEMORY[0x1E69D4938]6 shouldLog];
+  if ([mEMORY[0x1E69D4938]6 shouldLogToDisk])
   {
-    v34 = v33 | 2;
+    v34 = shouldLog6 | 2;
   }
 
   else
   {
-    v34 = v33;
+    v34 = shouldLog6;
   }
 
-  if (!os_log_type_enabled([v32 OSLogObject], OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]6 OSLogObject], OS_LOG_TYPE_ERROR))
   {
     v34 &= 2u;
   }
@@ -685,9 +685,9 @@ LABEL_44:
   }
 }
 
-- (void)_dialogDidFinish:(id)a3
+- (void)_dialogDidFinish:(id)finish
 {
-  if (self->_showingErrorDialogs && ![+[SUDialogManager numberOfPendingDialogs:a3]])
+  if (self->_showingErrorDialogs && ![+[SUDialogManager numberOfPendingDialogs:finish]])
   {
     self->_showingErrorDialogs = 0;
 
@@ -695,37 +695,37 @@ LABEL_44:
   }
 }
 
-- (void)continuation:(id)a3 failedWithError:(id)a4
+- (void)continuation:(id)continuation failedWithError:(id)error
 {
-  [(NSMutableSet *)self->_inflightContinuations removeObject:a3, a4];
+  [(NSMutableSet *)self->_inflightContinuations removeObject:continuation, error];
 
   [(SUPurchaseManager *)self _performNextAction];
 }
 
-- (void)continuationFinished:(id)a3
+- (void)continuationFinished:(id)finished
 {
-  -[SUPurchaseManager _enqueuePurchases:](self, "_enqueuePurchases:", [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(a3, "purchase"), 0}]);
-  [(NSMutableSet *)self->_inflightContinuations removeObject:a3];
+  -[SUPurchaseManager _enqueuePurchases:](self, "_enqueuePurchases:", [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(finished, "purchase"), 0}]);
+  [(NSMutableSet *)self->_inflightContinuations removeObject:finished];
 
   [(SUPurchaseManager *)self _performNextAction];
 }
 
-- (void)purchaseRequest:(id)a3 purchaseDidFail:(id)a4 withError:(id)a5
+- (void)purchaseRequest:(id)request purchaseDidFail:(id)fail withError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = [MEMORY[0x1E69D4938] sharedConfig];
-  v9 = [v8 shouldLog];
-  if ([v8 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_ERROR))
   {
     v10 &= 2u;
   }
@@ -735,7 +735,7 @@ LABEL_44:
     v17 = 138412546;
     v18 = objc_opt_class();
     v19 = 2112;
-    v20 = a5;
+    errorCopy = error;
     LODWORD(v16) = 22;
     v15 = &v17;
     v11 = _os_log_send_and_compose_impl();
@@ -749,47 +749,47 @@ LABEL_44:
     }
   }
 
-  if ([a4 valueForDownloadProperty:{*MEMORY[0x1E69D4BF0], v15}])
+  if ([fail valueForDownloadProperty:{*MEMORY[0x1E69D4BF0], v15}])
   {
     [(SUPurchaseManager *)self removePurchasedItemIdentifier:SSGetUnsignedLongLongFromValue()];
   }
 
-  [(SUPurchaseManager *)self _removePlaceholdersForPurchase:a4];
-  if ([a5 code] == 9990)
+  [(SUPurchaseManager *)self _removePlaceholdersForPurchase:fail];
+  if ([error code] == 9990)
   {
-    v14 = [a4 tidHeaders];
+    tidHeaders = [fail tidHeaders];
   }
 
   else
   {
-    v14 = 0;
+    tidHeaders = 0;
   }
 
-  [(SUPurchaseManager *)self setTidHeaders:v14];
-  if (a5)
+  [(SUPurchaseManager *)self setTidHeaders:tidHeaders];
+  if (error)
   {
-    a5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a5, @"SUPurchaseNotificationKeyError", 0}];
+    error = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{error, @"SUPurchaseNotificationKeyError", 0}];
   }
 
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-- (void)purchaseRequest:(id)a3 purchaseDidSucceed:(id)a4
+- (void)purchaseRequest:(id)request purchaseDidSucceed:(id)succeed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -810,23 +810,23 @@ LABEL_44:
   }
 }
 
-- (void)purchaseRequest:(id)a3 purchaseDidSucceedWithResponse:(id)a4
+- (void)purchaseRequest:(id)request purchaseDidSucceedWithResponse:(id)response
 {
   v12 = *MEMORY[0x1E69E9840];
-  [(SUPurchaseManager *)self setTidHeaders:0, a4];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  [(SUPurchaseManager *)self setTidHeaders:0, response];
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -847,32 +847,32 @@ LABEL_44:
   }
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = self;
-    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didFinishPurchaseRequest:a3 withError:a4];
+    selfCopy = self;
+    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didFinishPurchaseRequest:request withError:error];
   }
 
-  [(SUPurchaseManager *)self _removePurchaseRequest:a3];
+  [(SUPurchaseManager *)self _removePurchaseRequest:request];
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = self;
-    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didFinishPurchaseRequest:a3 withError:0];
+    selfCopy = self;
+    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didFinishPurchaseRequest:finish withError:0];
   }
 
-  [(SUPurchaseManager *)self _removePurchaseRequest:a3];
+  [(SUPurchaseManager *)self _removePurchaseRequest:finish];
 }
 
-- (id)_accountDSIDForPurchase:(id)a3
+- (id)_accountDSIDForPurchase:(id)purchase
 {
-  v5 = [a3 valueForDownloadProperty:*MEMORY[0x1E69D4BC8]];
-  if (![v5 isEqualToString:*MEMORY[0x1E69D4AF8]] || (v6 = objc_msgSend(a3, "valueForDownloadProperty:", *MEMORY[0x1E69D4BF0]), v7 = objc_msgSend(MEMORY[0x1E69635E0], "applicationProxyForItemID:", v6), !objc_msgSend(objc_msgSend(v7, "applicationDSID"), "integerValue")) || (result = objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(objc_msgSend(v7, "applicationDSID"), "integerValue"))) == 0)
+  v5 = [purchase valueForDownloadProperty:*MEMORY[0x1E69D4BC8]];
+  if (![v5 isEqualToString:*MEMORY[0x1E69D4AF8]] || (v6 = objc_msgSend(purchase, "valueForDownloadProperty:", *MEMORY[0x1E69D4BF0]), v7 = objc_msgSend(MEMORY[0x1E69635E0], "applicationProxyForItemID:", v6), !objc_msgSend(objc_msgSend(v7, "applicationDSID"), "integerValue")) || (result = objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", objc_msgSend(objc_msgSend(v7, "applicationDSID"), "integerValue"))) == 0)
   {
 
     return [(SUPurchaseManager *)self accountDSID];
@@ -881,7 +881,7 @@ LABEL_44:
   return result;
 }
 
-- (id)_downloadManagerForDownloadKind:(id)a3
+- (id)_downloadManagerForDownloadKind:(id)kind
 {
   v19 = *MEMORY[0x1E69E9840];
   observedDownloadManagers = self->_observedDownloadManagers;
@@ -934,7 +934,7 @@ LABEL_5:
   }
 
 LABEL_13:
-  v11 = [(SUQueueSessionManager *)self->_queueSessionManager beginDownloadManagerSessionForDownloadKind:a3];
+  v11 = [(SUQueueSessionManager *)self->_queueSessionManager beginDownloadManagerSessionForDownloadKind:kind];
   if (v11)
   {
     v10 = v11;
@@ -944,7 +944,7 @@ LABEL_16:
     return v10;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{a3, 0}];
+  v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{kind, 0}];
   v10 = [(SUQueueSessionManager *)self->_queueSessionManager beginDownloadManagerSessionWithDownloadKinds:v12];
 
   if (v10)
@@ -955,7 +955,7 @@ LABEL_16:
   return v10;
 }
 
-- (void)_enqueueContinuations:(id)a3
+- (void)_enqueueContinuations:(id)continuations
 {
   pendingContinuations = self->_pendingContinuations;
   if (!pendingContinuations)
@@ -964,16 +964,16 @@ LABEL_16:
     self->_pendingContinuations = pendingContinuations;
   }
 
-  [(NSMutableArray *)pendingContinuations addObjectsFromArray:a3];
+  [(NSMutableArray *)pendingContinuations addObjectsFromArray:continuations];
 }
 
-- (void)_enqueueExternalDownload:(id)a3
+- (void)_enqueueExternalDownload:(id)download
 {
-  [a3 valueForProperty:*MEMORY[0x1E69D4BF0]];
+  [download valueForProperty:*MEMORY[0x1E69D4BF0]];
   v5 = SSGetUnsignedLongLongFromValue();
   [(SUPurchaseManager *)self addPurchasedItemIdentifier:v5];
-  v6 = -[SUPurchaseManager _downloadManagerForDownloadKind:](self, "_downloadManagerForDownloadKind:", [a3 valueForProperty:*MEMORY[0x1E69D4BC8]]);
-  v7 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+  v6 = -[SUPurchaseManager _downloadManagerForDownloadKind:](self, "_downloadManagerForDownloadKind:", [download valueForProperty:*MEMORY[0x1E69D4BC8]]);
+  v7 = [MEMORY[0x1E695DEC8] arrayWithObject:download];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__SUPurchaseManager__enqueueExternalDownload___block_invoke;
@@ -998,14 +998,14 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   }
 }
 
-- (void)_enqueuePurchases:(id)a3
+- (void)_enqueuePurchases:(id)purchases
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [purchases countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1018,7 +1018,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
@@ -1048,7 +1048,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       }
 
       while (v6 != v9);
-      v13 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v13 = [purchases countByEnumeratingWithState:&v15 objects:v19 count:16];
       v6 = v13;
     }
 
@@ -1062,13 +1062,13 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
     self->_pendingPurchases = pendingPurchases;
   }
 
-  [(NSMutableArray *)pendingPurchases addObjectsFromArray:a3];
+  [(NSMutableArray *)pendingPurchases addObjectsFromArray:purchases];
 }
 
-- (BOOL)_issuePurchaseRequestForPurchases:(id)a3
+- (BOOL)_issuePurchaseRequestForPurchases:(id)purchases
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E69D49A0]) initWithPurchases:a3];
+  v5 = [objc_alloc(MEMORY[0x1E69D49A0]) initWithPurchases:purchases];
   [v5 setDelegate:self];
   [v5 setShouldValidatePurchases:0];
   purchaseRequests = self->_purchaseRequests;
@@ -1087,7 +1087,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [purchases countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1099,7 +1099,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -1115,7 +1115,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
         }
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [purchases countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -1127,16 +1127,16 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   return [v5 start];
 }
 
-- (BOOL)_needsAuthenticationForPurchases:(id)a3
+- (BOOL)_needsAuthenticationForPurchases:(id)purchases
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4890] defaultStore];
-  v5 = [v4 activeAccount];
+  defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+  activeAccount = [defaultStore activeAccount];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [purchases countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1148,18 +1148,18 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 accountIdentifier];
-          v12 = v5;
-          if (v11)
+          accountIdentifier = [v10 accountIdentifier];
+          v12 = activeAccount;
+          if (accountIdentifier)
           {
-            v12 = [v4 accountWithUniqueIdentifier:?];
+            v12 = [defaultStore accountWithUniqueIdentifier:?];
           }
 
           if (!v12 || ![v12 isAuthenticated])
@@ -1172,7 +1172,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [purchases countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1182,7 +1182,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
     }
   }
 
-  return [v4 isExpired];
+  return [defaultStore isExpired];
 }
 
 - (void)_performNextAction
@@ -1212,16 +1212,16 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   }
 }
 
-- (void)_removePurchaseRequest:(id)a3
+- (void)_removePurchaseRequest:(id)request
 {
-  [a3 setDelegate:0];
-  [(NSMutableArray *)self->_purchaseRequests removeObject:a3];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [request setDelegate:0];
+  [(NSMutableArray *)self->_purchaseRequests removeObject:request];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v5 postNotificationName:@"SSPurchaseRequestsChangedNotification" object:self];
+  [defaultCenter postNotificationName:@"SSPurchaseRequestsChangedNotification" object:self];
 }
 
-- (void)_showDialogsForErrors:(id)a3
+- (void)_showDialogsForErrors:(id)errors
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = +[SUDialogManager sharedInstance];
@@ -1229,7 +1229,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [errors countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1241,14 +1241,14 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(errors);
         }
 
         [(SUDialogManager *)v5 presentDialogForError:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [errors countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -1257,7 +1257,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   self->_showingErrorDialogs = [(SUDialogManager *)v5 numberOfPendingDialogs]> 0;
 }
 
-- (void)_startContinuations:(id)a3
+- (void)_startContinuations:(id)continuations
 {
   inflightContinuations = self->_inflightContinuations;
   if (!inflightContinuations)
@@ -1266,18 +1266,18 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
     self->_inflightContinuations = inflightContinuations;
   }
 
-  [(NSMutableSet *)inflightContinuations addObjectsFromArray:a3];
-  [a3 makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
+  [(NSMutableSet *)inflightContinuations addObjectsFromArray:continuations];
+  [continuations makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
 
-  [a3 makeObjectsPerformSelector:sel_start];
+  [continuations makeObjectsPerformSelector:sel_start];
 }
 
-- (void)_startPurchases:(id)a3
+- (void)_startPurchases:(id)purchases
 {
   v17 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self willAddPurchases:a3];
+    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self willAddPurchases:purchases];
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1285,7 +1285,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1297,7 +1297,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(purchases);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -1316,7 +1316,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [purchases countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1330,7 +1330,7 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
     {
       if (objc_opt_respondsToSelector())
       {
-        [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self failedToAddPurchases:a3];
+        [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self failedToAddPurchases:purchases];
       }
 
       goto LABEL_20;
@@ -1343,20 +1343,20 @@ void __46__SUPurchaseManager__enqueueExternalDownload___block_invoke(uint64_t a1
 
   if (objc_opt_respondsToSelector())
   {
-    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didAddPurchases:a3];
+    [(SUPurchaseManagerDelegate *)self->_delegate purchaseManager:self didAddPurchases:purchases];
   }
 
 LABEL_20:
   [(SUPurchaseManager *)self _performNextAction];
 }
 
-- (void)addExternalDownloads:(id)a3 withOptions:(id)a4 inContext:(OpaqueJSContext *)a5
+- (void)addExternalDownloads:(id)downloads withOptions:(id)options inContext:(OpaqueJSContext *)context
 {
-  v9 = JSObjectCopyPropertyNames(a5, [a3 JSObject]);
+  v9 = JSObjectCopyPropertyNames(context, [downloads JSObject]);
   if (v9)
   {
     v10 = v9;
-    v20 = a4;
+    optionsCopy = options;
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     Count = JSPropertyNameArrayGetCount(v10);
     if (Count >= 1)
@@ -1365,7 +1365,7 @@ LABEL_20:
       for (i = 0; i != v13; ++i)
       {
         v15 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-        v16 = -[SUPurchaseManager _newDictionaryForWebScriptValue:inContext:](self, "_newDictionaryForWebScriptValue:inContext:", [a3 webScriptValueAtIndex:i], a5);
+        v16 = -[SUPurchaseManager _newDictionaryForWebScriptValue:inContext:](self, "_newDictionaryForWebScriptValue:inContext:", [downloads webScriptValueAtIndex:i], context);
         if (v16)
         {
           v17 = v16;
@@ -1390,15 +1390,15 @@ LABEL_20:
   }
 }
 
-- (id)copyPurchaseForScriptObject:(id)a3 inContext:(OpaqueJSContext *)a4
+- (id)copyPurchaseForScriptObject:(id)object inContext:(OpaqueJSContext *)context
 {
-  v7 = [a3 safeValueForKey:@"actionParams"];
+  v7 = [object safeValueForKey:@"actionParams"];
   if (![v7 length])
   {
     return 0;
   }
 
-  [a3 safeValueForKey:@"itemType"];
+  [object safeValueForKey:@"itemType"];
   v8 = SSDownloadKindForItemKind();
   v9 = 0x1E69D49E8;
   if (([v8 isEqualToString:*MEMORY[0x1E69D4AF0]] & 1) == 0 && !objc_msgSend(v8, "isEqualToString:", *MEMORY[0x1E69D4B08]))
@@ -1409,100 +1409,100 @@ LABEL_20:
   v10 = objc_alloc_init(*v9);
   [v10 setBuyParameters:v7];
   [v10 setValue:v8 forDownloadProperty:*MEMORY[0x1E69D4BC8]];
-  v11 = [(SUPurchaseManager *)self tidHeaders];
-  if (v11)
+  tidHeaders = [(SUPurchaseManager *)self tidHeaders];
+  if (tidHeaders)
   {
-    [v10 setTidHeaders:v11];
+    [v10 setTidHeaders:tidHeaders];
   }
 
-  v12 = [a3 safeValueForKey:@"artworkURL"];
+  v12 = [object safeValueForKey:@"artworkURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v12 forDownloadProperty:*MEMORY[0x1E69D4C10]];
   }
 
-  v13 = [a3 safeValueForKey:@"artistName"];
+  v13 = [object safeValueForKey:@"artistName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v13 forDownloadProperty:*MEMORY[0x1E69D4B58]];
   }
 
-  v14 = [a3 safeValueForKey:@"bundleId"];
+  v14 = [object safeValueForKey:@"bundleId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v14 forDownloadProperty:*MEMORY[0x1E69D4B68]];
   }
 
-  v15 = [a3 safeValueForKey:@"collectionName"];
+  v15 = [object safeValueForKey:@"collectionName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v15 forDownloadProperty:*MEMORY[0x1E69D4B78]];
   }
 
-  if ([a3 safeValueForKey:@"itemId"])
+  if ([object safeValueForKey:@"itemId"])
   {
     [v10 setValue:objc_msgSend(MEMORY[0x1E696AD98] forDownloadProperty:{"numberWithItemIdentifier:", SSGetUnsignedLongLongFromValue()), *MEMORY[0x1E69D4BF0]}];
   }
 
-  v16 = [a3 safeValueForKey:*MEMORY[0x1E69D4CC8]];
+  v16 = [object safeValueForKey:*MEMORY[0x1E69D4CC8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v16 forDownloadProperty:*MEMORY[0x1E69D4C00]];
   }
 
-  v17 = [a3 safeValueForKey:*MEMORY[0x1E69D4CD0]];
+  v17 = [object safeValueForKey:*MEMORY[0x1E69D4CD0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v17 forDownloadProperty:*MEMORY[0x1E69D4C08]];
   }
 
-  v18 = [a3 safeValueForKey:*MEMORY[0x1E69D4D10]];
+  v18 = [object safeValueForKey:*MEMORY[0x1E69D4D10]];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v18 BOOLValue])
   {
     v19 = [v10 valueForDownloadProperty:*MEMORY[0x1E69D4BF0]];
     [v10 setValue:v19 forDownloadProperty:*MEMORY[0x1E69D4BF8]];
   }
 
-  v20 = [a3 safeValueForKey:@"seasonNumber"];
+  v20 = [object safeValueForKey:@"seasonNumber"];
   if (objc_opt_respondsToSelector())
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v20, "integerValue")}];
     [v10 setValue:v21 forDownloadProperty:*MEMORY[0x1E69D4BD8]];
   }
 
-  v22 = [a3 safeValueForKey:@"seriesName"];
+  v22 = [object safeValueForKey:@"seriesName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v22 forDownloadProperty:*MEMORY[0x1E69D4BE0]];
   }
 
-  v23 = [a3 safeValueForKey:@"software-type"];
+  v23 = [object safeValueForKey:@"software-type"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v23 forDownloadProperty:*MEMORY[0x1E69D4BE8]];
   }
 
-  v24 = [a3 safeValueForKey:@"title"];
+  v24 = [object safeValueForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v10 setValue:v24 forDownloadProperty:*MEMORY[0x1E69D4C18]];
   }
 
-  v25 = [a3 safeValueForKey:@"networkConstraints"];
+  v25 = [object safeValueForKey:@"networkConstraints"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (a4 && (isKindOfClass & 1) != 0)
+  if (context && (isKindOfClass & 1) != 0)
   {
-    v27 = [v25 copyArrayOrDictionaryWithContext:a4];
+    v27 = [v25 copyArrayOrDictionaryWithContext:context];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1515,13 +1515,13 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [a3 safeValueForKey:@"allowedToneStyles"];
+    v29 = [object safeValueForKey:@"allowedToneStyles"];
     objc_opt_class();
     v30 = objc_opt_isKindOfClass();
     v31 = 0;
-    if (a4 && (v30 & 1) != 0)
+    if (context && (v30 & 1) != 0)
     {
-      v31 = [v29 copyArrayOrDictionaryWithContext:a4];
+      v31 = [v29 copyArrayOrDictionaryWithContext:context];
     }
 
     objc_opt_class();
@@ -1551,25 +1551,25 @@ LABEL_20:
   return v10;
 }
 
-- (void)enqueueScriptPurchases:(id)a3
+- (void)enqueueScriptPurchases:(id)purchases
 {
-  v4 = [(SUPurchaseManager *)self _newPurchaseBatchForPurchases:a3];
+  v4 = [(SUPurchaseManager *)self _newPurchaseBatchForPurchases:purchases];
   [(SUPurchaseManager *)self addPurchaseBatch:v4];
 }
 
-- (void)purchaseScriptObject:(id)a3 withOptions:(id)a4 inContext:(OpaqueJSContext *)a5
+- (void)purchaseScriptObject:(id)object withOptions:(id)options inContext:(OpaqueJSContext *)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  [a3 webScriptValueAtIndex:0];
+  [object webScriptValueAtIndex:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{a3, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{object, 0}];
   }
 
   else
   {
-    v9 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v9 = [object copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
   }
 
   v10 = v9;
@@ -1595,7 +1595,7 @@ LABEL_20:
             objc_enumerationMutation(v10);
           }
 
-          v16 = [(SUPurchaseManager *)self copyPurchaseForScriptObject:*(*(&v18 + 1) + 8 * v15) inContext:a5];
+          v16 = [(SUPurchaseManager *)self copyPurchaseForScriptObject:*(*(&v18 + 1) + 8 * v15) inContext:context];
           if (v16)
           {
             v17 = v16;
@@ -1614,7 +1614,7 @@ LABEL_20:
 
     if ([v11 count])
     {
-      [(SUPurchaseManager *)self _addBatchForPurchases:v11 options:a4];
+      [(SUPurchaseManager *)self _addBatchForPurchases:v11 options:options];
     }
   }
 
@@ -1637,13 +1637,13 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
   [*(a1 + 32) addPurchaseBatch:v3];
 }
 
-- (id)_newDictionaryForWebScriptValue:(id)a3 inContext:(OpaqueJSContext *)a4
+- (id)_newDictionaryForWebScriptValue:(id)value inContext:(OpaqueJSContext *)context
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a3 copyArrayOrDictionaryWithContext:a4];
+    return [value copyArrayOrDictionaryWithContext:context];
   }
 
   else
@@ -1651,7 +1651,7 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = SUScriptPropertyListFromString(a3);
+      v7 = SUScriptPropertyListFromString(value);
 
       return v7;
     }
@@ -1663,24 +1663,24 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
   }
 }
 
-- (id)_newExternalDownloadWithDictionary:(id)a3
+- (id)_newExternalDownloadWithDictionary:(id)dictionary
 {
-  if ([a3 objectForKey:@"type"])
+  if ([dictionary objectForKey:@"type"])
   {
 
-    return [(SUPurchaseManager *)self _newExternalDownloadWithItemDictionary:a3];
+    return [(SUPurchaseManager *)self _newExternalDownloadWithItemDictionary:dictionary];
   }
 
   else
   {
 
-    return [(SUPurchaseManager *)self _newExternalDownloadWithDownloadDictionary:a3];
+    return [(SUPurchaseManager *)self _newExternalDownloadWithDownloadDictionary:dictionary];
   }
 }
 
-- (id)_newExternalDownloadWithDownloadDictionary:(id)a3
+- (id)_newExternalDownloadWithDownloadDictionary:(id)dictionary
 {
-  v3 = [objc_alloc(MEMORY[0x1E69D48E8]) initWithDictionary:a3];
+  v3 = [objc_alloc(MEMORY[0x1E69D48E8]) initWithDictionary:dictionary];
   if ([v3 kind])
   {
     v4 = [objc_alloc(MEMORY[0x1E69D48C0]) initWithDownloadMetadata:v3];
@@ -1694,10 +1694,10 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
   return v4;
 }
 
-- (id)_newExternalDownloadWithItemDictionary:(id)a3
+- (id)_newExternalDownloadWithItemDictionary:(id)dictionary
 {
   v4 = +[SUItemDataSource sharedDataSource];
-  result = [v4 newItemWithItemDictionary:a3];
+  result = [v4 newItemWithItemDictionary:dictionary];
   if (result)
   {
     v6 = result;
@@ -1709,25 +1709,25 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
   return result;
 }
 
-- (id)_newPurchaseBatchForPurchases:(id)a3
+- (id)_newPurchaseBatchForPurchases:(id)purchases
 {
-  v5 = [(SUPurchaseManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [(SUPurchaseManagerDelegate *)v5 purchaseManager:self purchaseBatchForPurchases:a3]) == 0)
+  delegate = [(SUPurchaseManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [(SUPurchaseManagerDelegate *)delegate purchaseManager:self purchaseBatchForPurchases:purchases]) == 0)
   {
     v6 = objc_alloc_init(SUPurchaseBatch);
-    [(SUPurchaseBatch *)v6 setValidPurchases:a3];
+    [(SUPurchaseBatch *)v6 setValidPurchases:purchases];
   }
 
   [(SUPurchaseBatch *)v6 setPurchaseManager:self];
   return v6;
 }
 
-- (void)_schedulePurchaseCallback:(id)a3 forPurchases:(id)a4
+- (void)_schedulePurchaseCallback:(id)callback forPurchases:(id)purchases
 {
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  if ([a4 count] < 2)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  if ([purchases count] < 2)
   {
-    v12 = [a4 firstObject];
+    firstObject = [purchases firstObject];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3052000000;
@@ -1740,29 +1740,29 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
     v24 = __Block_byref_object_copy__29;
     v25 = __Block_byref_object_dispose__29;
     v26 = 0;
-    v13 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __79__SUPurchaseManager_SUScriptAdditions___schedulePurchaseCallback_forPurchases___block_invoke_2;
     v20[3] = &unk_1E8165FB0;
-    v20[4] = v12;
-    v20[5] = a3;
-    v20[6] = v7;
+    v20[4] = firstObject;
+    v20[5] = callback;
+    v20[6] = defaultCenter;
     v20[7] = &v28;
     v20[8] = &v21;
-    v14 = [v7 addObserverForName:@"SUPurchaseFailedNotification" object:0 queue:v13 usingBlock:v20];
+    v14 = [defaultCenter addObserverForName:@"SUPurchaseFailedNotification" object:0 queue:mainQueue usingBlock:v20];
     v29[5] = v14;
-    v15 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __79__SUPurchaseManager_SUScriptAdditions___schedulePurchaseCallback_forPurchases___block_invoke_3;
     v19[3] = &unk_1E8165FB0;
-    v19[4] = v12;
-    v19[5] = a3;
-    v19[6] = v7;
+    v19[4] = firstObject;
+    v19[5] = callback;
+    v19[6] = defaultCenter;
     v19[7] = &v28;
     v19[8] = &v21;
-    v16 = [v7 addObserverForName:@"SUPurchaseFinishedNotification" object:0 queue:v15 usingBlock:v19];
+    v16 = [defaultCenter addObserverForName:@"SUPurchaseFinishedNotification" object:0 queue:mainQueue2 usingBlock:v19];
     v22[5] = v16;
     v17 = v29[5];
     v18 = v22[5];
@@ -1771,23 +1771,23 @@ void __70__SUPurchaseManager_SUScriptAdditions___addBatchForPurchases_options___
 
   else
   {
-    v8 = [(SUPurchaseManager *)self numberOfPendingPurchases];
+    numberOfPendingPurchases = [(SUPurchaseManager *)self numberOfPendingPurchases];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3052000000;
     v31 = __Block_byref_object_copy__29;
     v32 = __Block_byref_object_dispose__29;
     v33 = 0;
-    v9 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue3 = [MEMORY[0x1E696ADC8] mainQueue];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __79__SUPurchaseManager_SUScriptAdditions___schedulePurchaseCallback_forPurchases___block_invoke;
     v27[3] = &unk_1E8165F88;
     v27[6] = &v28;
-    v27[7] = v8;
-    v27[4] = a3;
-    v27[5] = v7;
-    v10 = [v7 addObserverForName:@"SSPurchaseRequestsChangedNotification" object:self queue:v9 usingBlock:v27];
+    v27[7] = numberOfPendingPurchases;
+    v27[4] = callback;
+    v27[5] = defaultCenter;
+    v10 = [defaultCenter addObserverForName:@"SSPurchaseRequestsChangedNotification" object:self queue:mainQueue3 usingBlock:v27];
     v29[5] = v10;
     v11 = v10;
   }

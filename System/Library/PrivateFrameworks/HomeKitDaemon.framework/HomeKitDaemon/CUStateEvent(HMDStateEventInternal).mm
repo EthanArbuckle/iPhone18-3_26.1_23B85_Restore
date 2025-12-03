@@ -7,8 +7,8 @@
 - (void)completedWithError:()HMDStateEventInternal
 {
   v8 = a3;
-  v4 = [a1 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HMDStateEventCompletionKey"];
+  userInfo = [self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HMDStateEventCompletionKey"];
 
   v6 = _Block_copy(v5);
   v7 = v6;

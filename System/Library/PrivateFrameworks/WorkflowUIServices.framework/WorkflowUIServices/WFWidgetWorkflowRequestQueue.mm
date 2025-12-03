@@ -1,9 +1,9 @@
 @interface WFWidgetWorkflowRequestQueue
 - (WFWidgetWorkflowRequestQueue)init;
-- (void)_requeueFailedRequest:(id)a3;
+- (void)_requeueFailedRequest:(id)request;
 - (void)fetchNextQueuedItem;
-- (void)getWidgetWorkflowWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5;
+- (void)getWidgetWorkflowWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit completionHandler:(id)handler;
 @end
 
 @implementation WFWidgetWorkflowRequestQueue
@@ -12,9 +12,9 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(WFWidgetWorkflowRequestQueue *)self isHandlingRequest];
+  isHandlingRequest = [(WFWidgetWorkflowRequestQueue *)self isHandlingRequest];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!isHandlingRequest)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -23,15 +23,15 @@
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(WFWidgetWorkflowRequestQueue *)self requests];
-    v6 = [v5 firstObject];
+    requests = [(WFWidgetWorkflowRequestQueue *)self requests];
+    firstObject = [requests firstObject];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (firstObject)
     {
       os_unfair_lock_lock(&self->_lock);
-      v7 = [(WFWidgetWorkflowRequestQueue *)self requests];
-      [v7 removeObjectAtIndex:0];
+      requests2 = [(WFWidgetWorkflowRequestQueue *)self requests];
+      [requests2 removeObjectAtIndex:0];
 
       [(WFWidgetWorkflowRequestQueue *)self setHandlingRequest:1];
       os_unfair_lock_unlock(&self->_lock);
@@ -39,44 +39,44 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v23 = v6;
+        v23 = firstObject;
         _os_log_impl(&dword_1C830A000, v8, OS_LOG_TYPE_DEFAULT, "Handling request: %@", buf, 0xCu);
       }
 
-      if ([v6 type])
+      if ([firstObject type])
       {
-        if ([v6 type] != 1)
+        if ([firstObject type] != 1)
         {
 LABEL_14:
 
           goto LABEL_15;
         }
 
-        v9 = [MEMORY[0x1E69E0938] standardClient];
-        v10 = [v6 identifier];
-        v11 = [v6 limit];
+        standardClient = [MEMORY[0x1E69E0938] standardClient];
+        identifier = [firstObject identifier];
+        limit = [firstObject limit];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke_2;
         v15[3] = &unk_1E8307FF8;
         v17 = v4;
-        v16 = v6;
-        [v9 getWidgetWorkflowsInCollectionWithIdentifier:v10 limit:v11 completion:v15];
+        v16 = firstObject;
+        [standardClient getWidgetWorkflowsInCollectionWithIdentifier:identifier limit:limit completion:v15];
 
         v12 = v17;
       }
 
       else
       {
-        v13 = [MEMORY[0x1E69E0938] standardClient];
-        v14 = [v6 identifier];
+        standardClient2 = [MEMORY[0x1E69E0938] standardClient];
+        identifier2 = [firstObject identifier];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke_97;
         v18[3] = &unk_1E8307FD0;
         v20 = v4;
-        v19 = v6;
-        [v13 getWidgetWorkflowWithIdentifier:v14 completion:v18];
+        v19 = firstObject;
+        [standardClient2 getWidgetWorkflowWithIdentifier:identifier2 completion:v18];
 
         v12 = v20;
       }
@@ -145,18 +145,18 @@ void __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke(uint64
   [*(a1 + 32) fetchNextQueuedItem];
 }
 
-- (void)_requeueFailedRequest:(id)a3
+- (void)_requeueFailedRequest:(id)request
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = [WFWidgetWorkflowFetchRequest alloc];
-  v6 = [v4 type];
-  v7 = [v4 identifier];
-  v8 = [v4 limit];
-  v9 = [v4 retryCount];
-  v10 = [v4 completionHandler];
+  type = [requestCopy type];
+  identifier = [requestCopy identifier];
+  limit = [requestCopy limit];
+  retryCount = [requestCopy retryCount];
+  completionHandler = [requestCopy completionHandler];
 
-  v11 = [(WFWidgetWorkflowFetchRequest *)v5 initWithFetchType:v6 identifier:v7 limit:v8 retryCount:v9 + 1 completionHandler:v10];
+  v11 = [(WFWidgetWorkflowFetchRequest *)v5 initWithFetchType:type identifier:identifier limit:limit retryCount:retryCount + 1 completionHandler:completionHandler];
   v12 = [(WFWidgetWorkflowRequestQueue *)self log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,29 +166,29 @@ void __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke(uint64
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v13 = [(WFWidgetWorkflowRequestQueue *)self requests];
-  [v13 insertObject:v11 atIndex:0];
+  requests = [(WFWidgetWorkflowRequestQueue *)self requests];
+  [requests insertObject:v11 atIndex:0];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)a3 limit:(unint64_t)a4 completionHandler:(id)a5
+- (void)getWidgetWorkflowsInCollectionWithIdentifier:(id)identifier limit:(unint64_t)limit completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isEqualToString:@"MyShortcuts"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"MyShortcuts"])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v8;
+    v10 = identifierCopy;
   }
 
   v11 = v10;
-  v12 = [[WFWidgetWorkflowFetchRequest alloc] initWithFetchType:1 identifier:v11 limit:a4 retryCount:0 completionHandler:v9];
+  v12 = [[WFWidgetWorkflowFetchRequest alloc] initWithFetchType:1 identifier:v11 limit:limit retryCount:0 completionHandler:handlerCopy];
 
   v13 = [(WFWidgetWorkflowRequestQueue *)self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -199,19 +199,19 @@ void __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke(uint64
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v14 = [(WFWidgetWorkflowRequestQueue *)self requests];
-  [v14 addObject:v12];
+  requests = [(WFWidgetWorkflowRequestQueue *)self requests];
+  [requests addObject:v12];
 
   os_unfair_lock_unlock(&self->_lock);
   [(WFWidgetWorkflowRequestQueue *)self fetchNextQueuedItem];
 }
 
-- (void)getWidgetWorkflowWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getWidgetWorkflowWithIdentifier:(id)identifier completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[WFWidgetWorkflowFetchRequest alloc] initWithFetchType:0 identifier:v7 limit:1 retryCount:0 completionHandler:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v8 = [[WFWidgetWorkflowFetchRequest alloc] initWithFetchType:0 identifier:identifierCopy limit:1 retryCount:0 completionHandler:handlerCopy];
 
   v9 = [(WFWidgetWorkflowRequestQueue *)self log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -222,8 +222,8 @@ void __51__WFWidgetWorkflowRequestQueue_fetchNextQueuedItem__block_invoke(uint64
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(WFWidgetWorkflowRequestQueue *)self requests];
-  [v10 addObject:v8];
+  requests = [(WFWidgetWorkflowRequestQueue *)self requests];
+  [requests addObject:v8];
 
   os_unfair_lock_unlock(&self->_lock);
   [(WFWidgetWorkflowRequestQueue *)self fetchNextQueuedItem];

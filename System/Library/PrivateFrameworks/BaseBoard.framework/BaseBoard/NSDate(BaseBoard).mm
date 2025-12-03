@@ -10,7 +10,7 @@
   if (v5)
   {
     v6 = v5;
-    [a1 timeIntervalSinceReferenceDate];
+    [self timeIntervalSinceReferenceDate];
     at = v7;
     if (CFCalendarAddComponents(v6, &at, 0, "d", a3))
     {

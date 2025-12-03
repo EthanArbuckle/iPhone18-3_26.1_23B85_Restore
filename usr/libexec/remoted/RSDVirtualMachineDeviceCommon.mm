@@ -1,9 +1,9 @@
 @interface RSDVirtualMachineDeviceCommon
-- ($53DFC3DD9429D54544A2B2B9F14ED761)optionsForService:(SEL)a3;
+- ($53DFC3DD9429D54544A2B2B9F14ED761)optionsForService:(SEL)service;
 - (const)local_address;
 - (const)remote_address;
-- (int)connectVsock:(unsigned int)a3;
-- (int)listenVsock:(char *)a3 port:(char *)a4;
+- (int)connectVsock:(unsigned int)vsock;
+- (int)listenVsock:(char *)vsock port:(char *)port;
 - (unsigned)interface_index;
 @end
 
@@ -30,7 +30,7 @@
   return result;
 }
 
-- ($53DFC3DD9429D54544A2B2B9F14ED761)optionsForService:(SEL)a3
+- ($53DFC3DD9429D54544A2B2B9F14ED761)optionsForService:(SEL)service
 {
   memset(retstr, 170, sizeof($53DFC3DD9429D54544A2B2B9F14ED761));
   v6.receiver = self;
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (int)listenVsock:(char *)a3 port:(char *)a4
+- (int)listenVsock:(char *)vsock port:(char *)port
 {
   v6 = socket(40, 1, 1);
   if (v6 == -1)
@@ -93,11 +93,11 @@ LABEL_14:
     return -1;
   }
 
-  asprintf(a4, "%d", *&v14.sa_data[2]);
+  asprintf(port, "%d", *&v14.sa_data[2]);
   return v7;
 }
 
-- (int)connectVsock:(unsigned int)a3
+- (int)connectVsock:(unsigned int)vsock
 {
   v5 = socket(40, 1, 1);
   if (v5 == -1)
@@ -124,7 +124,7 @@ LABEL_14:
   }
 
   *&v12.sa_len = 10252;
-  *&v12.sa_data[2] = a3;
+  *&v12.sa_data[2] = vsock;
   *&v12.sa_data[6] = 2;
   if (connect(v6, &v12, 0xCu) == -1 && *__error() != 36)
   {
@@ -143,9 +143,9 @@ LABEL_13:
   if (os_log_type_enabled(qword_1000646A8, OS_LOG_TYPE_INFO))
   {
     *&v12.sa_data[10] = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = a3;
+    vsockCopy = vsock;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@> connect(2) succeeded to %u", &v12.sa_data[10], 0x12u);
   }
 

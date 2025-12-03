@@ -1,78 +1,78 @@
 @interface MBCKBackupEngine
-+ (BOOL)_shouldRemoveSnapshotAfterError:(id)a3;
-+ (BOOL)_startOTABackupWithAccount:(id)a3 error:(id *)a4;
-+ (BOOL)_stopOTABackupWithAccount:(id)a3 error:(id *)a4;
-- (BOOL)_handleSkippedFilesWithError:(id *)a3;
-- (BOOL)_notifyPluginsOfBackupEnded:(id)a3 error:(id *)a4;
++ (BOOL)_shouldRemoveSnapshotAfterError:(id)error;
++ (BOOL)_startOTABackupWithAccount:(id)account error:(id *)error;
++ (BOOL)_stopOTABackupWithAccount:(id)account error:(id *)error;
+- (BOOL)_handleSkippedFilesWithError:(id *)error;
+- (BOOL)_notifyPluginsOfBackupEnded:(id)ended error:(id *)error;
 - (BOOL)_shouldBackupUsingFSEvents;
-- (BOOL)_shouldSimulateCancelationForState:(id)a3;
-- (BOOL)_verifySnapshotWithError:(id *)a3;
-- (BOOL)cancelWithError:(id)a3;
-- (BOOL)checkIfBackupHasKeybagWithUUID:(id)a3;
-- (BOOL)commitSnapshotWithError:(id *)a3;
-- (BOOL)createVolumeSnapshots:(id *)a3;
-- (BOOL)fileScanner:(id)a3 isFileAddedOrModified:(id)a4;
-- (BOOL)findChangesWithError:(id *)a3;
-- (BOOL)finishBackupWithError:(id *)a3;
-- (BOOL)prepareToUploadChangesWithError:(id *)a3;
-- (BOOL)reserveQuotaWithError:(id *)a3;
-- (BOOL)runWithError:(id *)a3;
-- (BOOL)setUpWithError:(id *)a3;
+- (BOOL)_shouldSimulateCancelationForState:(id)state;
+- (BOOL)_verifySnapshotWithError:(id *)error;
+- (BOOL)cancelWithError:(id)error;
+- (BOOL)checkIfBackupHasKeybagWithUUID:(id)d;
+- (BOOL)commitSnapshotWithError:(id *)error;
+- (BOOL)createVolumeSnapshots:(id *)snapshots;
+- (BOOL)fileScanner:(id)scanner isFileAddedOrModified:(id)modified;
+- (BOOL)findChangesWithError:(id *)error;
+- (BOOL)finishBackupWithError:(id *)error;
+- (BOOL)prepareToUploadChangesWithError:(id *)error;
+- (BOOL)reserveQuotaWithError:(id *)error;
+- (BOOL)runWithError:(id *)error;
+- (BOOL)setUpWithError:(id *)error;
 - (BOOL)shouldCancelTranscription;
 - (BOOL)shouldCancelVerification;
-- (BOOL)synchronizeFileListsWithError:(id *)a3;
-- (BOOL)uploadAssetsWithError:(id *)a3;
-- (BOOL)uploadChangesWithError:(id *)a3;
-- (BOOL)uploadDomainRecords:(id *)a3;
-- (MBCKBackupEngine)initWithReason:(int64_t)a3 settingsContext:(id)a4 debugContext:(id)a5 serviceManager:(id)a6;
-- (MBCKBackupEngine)initWithReason:(int64_t)a3 settingsContext:(id)a4 debugContext:(id)a5 serviceManager:(id)a6 domainManager:(id)a7;
+- (BOOL)synchronizeFileListsWithError:(id *)error;
+- (BOOL)uploadAssetsWithError:(id *)error;
+- (BOOL)uploadChangesWithError:(id *)error;
+- (BOOL)uploadDomainRecords:(id *)records;
+- (MBCKBackupEngine)initWithReason:(int64_t)reason settingsContext:(id)context debugContext:(id)debugContext serviceManager:(id)manager;
+- (MBCKBackupEngine)initWithReason:(int64_t)reason settingsContext:(id)context debugContext:(id)debugContext serviceManager:(id)manager domainManager:(id)domainManager;
 - (NSString)description;
 - (NSString)pendingSnapshotID;
-- (id)_createDomainTranscriberForAPFSSnapshots:(id)a3 error:(id *)a4;
+- (id)_createDomainTranscriberForAPFSSnapshots:(id)snapshots error:(id *)error;
 - (id)_fetchPreviousBackupFSEventState;
-- (id)fileScanner:(id)a3 didFindFile:(id)a4;
+- (id)fileScanner:(id)scanner didFindFile:(id)file;
 - (id)powerAssertionName;
-- (int64_t)_snapshotFormatForAccount:(id)a3 previousSnapshot:(id)a4 error:(id *)a5;
+- (int64_t)_snapshotFormatForAccount:(id)account previousSnapshot:(id)snapshot error:(id *)error;
 - (void)_finishCollectingTelemetry;
 - (void)_handleStateTransition;
 - (void)_releaseLockAssertion;
-- (void)_saveLastPendingSnapshotSize:(unint64_t)a3;
+- (void)_saveLastPendingSnapshotSize:(unint64_t)size;
 - (void)_saveNextBackupFSEventState;
-- (void)_sendTelemetryForStateChange:(unint64_t)a3 start:(id)a4 end:(id)a5;
+- (void)_sendTelemetryForStateChange:(unint64_t)change start:(id)start end:(id)end;
 - (void)_tearDown;
-- (void)cleanUpAfterError:(id)a3;
+- (void)cleanUpAfterError:(id)error;
 - (void)dealloc;
 - (void)makeStateTransition;
 - (void)resumeWatchdogIfNeeded;
-- (void)setBackupState:(unint64_t)a3;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)setBackupState:(unint64_t)state;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 @end
 
 @implementation MBCKBackupEngine
 
-- (MBCKBackupEngine)initWithReason:(int64_t)a3 settingsContext:(id)a4 debugContext:(id)a5 serviceManager:(id)a6 domainManager:(id)a7
+- (MBCKBackupEngine)initWithReason:(int64_t)reason settingsContext:(id)context debugContext:(id)debugContext serviceManager:(id)manager domainManager:(id)domainManager
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 account];
-  if (!v16)
+  contextCopy = context;
+  debugContextCopy = debugContext;
+  managerCopy = manager;
+  domainManagerCopy = domainManager;
+  account = [contextCopy account];
+  if (!account)
   {
     __assert_rtn("[MBCKBackupEngine initWithReason:settingsContext:debugContext:serviceManager:domainManager:]", "MBCKBackupEngine.m", 120, "account");
   }
 
-  v17 = v16;
+  v17 = account;
   v29.receiver = self;
   v29.super_class = MBCKBackupEngine;
-  v18 = [(MBCKEngine *)&v29 initWithSettingsContext:v12 debugContext:v13 domainManager:v15];
+  v18 = [(MBCKEngine *)&v29 initWithSettingsContext:contextCopy debugContext:debugContextCopy domainManager:domainManagerCopy];
   v19 = v18;
   if (v18)
   {
-    [(MBCKEngine *)v18 setServiceManager:v14];
+    [(MBCKEngine *)v18 setServiceManager:managerCopy];
     [(MBCKBackupEngine *)v19 setBackupState:1];
-    v19->_backupReason = a3;
+    v19->_backupReason = reason;
     v20 = objc_alloc_init(MBCKProperties);
     [(MBCKEngine *)v19 setProperties:v20];
 
@@ -96,23 +96,23 @@
   return v19;
 }
 
-- (MBCKBackupEngine)initWithReason:(int64_t)a3 settingsContext:(id)a4 debugContext:(id)a5 serviceManager:(id)a6
+- (MBCKBackupEngine)initWithReason:(int64_t)reason settingsContext:(id)context debugContext:(id)debugContext serviceManager:(id)manager
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 account];
-  if (!v13)
+  contextCopy = context;
+  debugContextCopy = debugContext;
+  managerCopy = manager;
+  account = [contextCopy account];
+  if (!account)
   {
     __assert_rtn("[MBCKBackupEngine initWithReason:settingsContext:debugContext:serviceManager:]", "MBCKBackupEngine.m", 141, "account");
   }
 
-  v14 = v13;
+  v14 = account;
   v15 = [MBDomainManager alloc];
-  v16 = [v14 persona];
-  v17 = [(MBDomainManager *)v15 initWithPersona:v16];
+  persona = [v14 persona];
+  v17 = [(MBDomainManager *)v15 initWithPersona:persona];
 
-  v18 = [(MBCKBackupEngine *)self initWithReason:a3 settingsContext:v10 debugContext:v11 serviceManager:v12 domainManager:v17];
+  v18 = [(MBCKBackupEngine *)self initWithReason:reason settingsContext:contextCopy debugContext:debugContextCopy serviceManager:managerCopy domainManager:v17];
   return v18;
 }
 
@@ -120,8 +120,8 @@
 {
   [(MBCKBackupEngine *)self _releaseLockAssertion];
   [(MBCKBackupEngine *)self _unmountSnapshotsAndRemoveThem:1];
-  v3 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-  [v3 close:0];
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  [pendingSnapshotDB close:0];
 
   v4.receiver = self;
   v4.super_class = MBCKBackupEngine;
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)setBackupState:(unint64_t)a3
+- (void)setBackupState:(unint64_t)state
 {
-  self->_backupState = a3;
+  self->_backupState = state;
   v4 = MBCKStringForBackupState();
   backupStateDescription = self->_backupStateDescription;
   self->_backupStateDescription = v4;
@@ -168,21 +168,21 @@
   }
 }
 
-- (BOOL)cancelWithError:(id)a3
+- (BOOL)cancelWithError:(id)error
 {
   v7.receiver = self;
   v7.super_class = MBCKBackupEngine;
-  v4 = [(MBCKEngine *)&v7 cancelWithError:a3];
+  v4 = [(MBCKEngine *)&v7 cancelWithError:error];
   if (!v4)
   {
-    v5 = [(MBCKBackupEngine *)self cacheDeleteRequest];
-    [v5 cancel];
+    cacheDeleteRequest = [(MBCKBackupEngine *)self cacheDeleteRequest];
+    [cacheDeleteRequest cancel];
   }
 
   return v4;
 }
 
-+ (BOOL)_shouldRemoveSnapshotAfterError:(id)a3
++ (BOOL)_shouldRemoveSnapshotAfterError:(id)error
 {
   if (!MBIsInternalInstall())
   {
@@ -191,40 +191,40 @@
 
   v4 = +[MBBehaviorOptions sharedOptions];
   v5 = v4;
-  if (a3)
+  if (error)
   {
-    v6 = [v4 shouldKeepFileSystemSnapshotAfterBackupFailure];
+    shouldKeepFileSystemSnapshotAfterBackupFailure = [v4 shouldKeepFileSystemSnapshotAfterBackupFailure];
   }
 
   else
   {
-    v6 = [v4 shouldKeepFileSystemSnapshotAfterBackupSuccess];
+    shouldKeepFileSystemSnapshotAfterBackupFailure = [v4 shouldKeepFileSystemSnapshotAfterBackupSuccess];
   }
 
-  v7 = v6 ^ 1;
+  v7 = shouldKeepFileSystemSnapshotAfterBackupFailure ^ 1;
 
   return v7;
 }
 
-- (void)cleanUpAfterError:(id)a3
+- (void)cleanUpAfterError:(id)error
 {
-  v4 = a3;
-  if ([MBError isCKError:v4 withCode:25])
+  errorCopy = error;
+  if ([MBError isCKError:errorCopy withCode:25])
   {
-    v5 = [(MBCKEngine *)self device];
-    v6 = [(MBCKEngine *)self ckOperationTracker];
-    v7 = [(MBCKEngine *)self persona];
-    MBResetPendingSnapshot(v5, v6, v7);
+    device = [(MBCKEngine *)self device];
+    ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+    persona = [(MBCKEngine *)self persona];
+    MBResetPendingSnapshot(device, ckOperationTracker, persona);
   }
 
-  v8 = [(MBCKEngine *)self ckOperationTracker];
-  [v8 drain];
+  ckOperationTracker2 = [(MBCKEngine *)self ckOperationTracker];
+  [ckOperationTracker2 drain];
 
-  -[MBCKBackupEngine _unmountSnapshotsAndRemoveThem:](self, "_unmountSnapshotsAndRemoveThem:", [objc_opt_class() _shouldRemoveSnapshotAfterError:v4]);
+  -[MBCKBackupEngine _unmountSnapshotsAndRemoveThem:](self, "_unmountSnapshotsAndRemoveThem:", [objc_opt_class() _shouldRemoveSnapshotAfterError:errorCopy]);
   v9 = self->_currentSnapshot;
   if ([(MBCKBackupEngine *)self backupState]== 3)
   {
-    v10 = [MBError isResumableCacheRefreshError:v4];
+    v10 = [MBError isResumableCacheRefreshError:errorCopy];
     if (!v9)
     {
       goto LABEL_13;
@@ -242,8 +242,8 @@
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(MBCKEngine *)self cache];
-    v12 = [v11 removeAllOrphanedItemsForSnapshot:v9];
+    cache = [(MBCKEngine *)self cache];
+    v12 = [cache removeAllOrphanedItemsForSnapshot:v9];
 
     if (v12)
     {
@@ -262,10 +262,10 @@
 LABEL_13:
   v15.receiver = self;
   v15.super_class = MBCKBackupEngine;
-  [(MBCKEngine *)&v15 cleanUpAfterError:v4, v14];
+  [(MBCKEngine *)&v15 cleanUpAfterError:errorCopy, v14];
 }
 
-- (BOOL)runWithError:(id *)a3
+- (BOOL)runWithError:(id *)error
 {
   if ([(MBEngine *)self backupPolicy]== 1)
   {
@@ -280,62 +280,62 @@ LABEL_13:
   }
 
   [(MBCKBackupEngine *)self makeStateTransition];
-  v6 = [(MBEngine *)self isCanceled];
-  if (v5 && v6)
+  isCanceled = [(MBEngine *)self isCanceled];
+  if (v5 && isCanceled)
   {
     [v5 cancelSync];
   }
 
   [(MBCKBackupEngine *)self _tearDown];
-  v7 = [(MBCKEngine *)self hasError];
-  if (v7)
+  hasError = [(MBCKEngine *)self hasError];
+  if (hasError)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(MBCKEngine *)self engineError];
-      v10 = [MBError loggableDescriptionForError:v9];
-      v11 = [(MBCKEngine *)self engineError];
+      engineError = [(MBCKEngine *)self engineError];
+      v10 = [MBError loggableDescriptionForError:engineError];
+      engineError2 = [(MBCKEngine *)self engineError];
       *buf = 138543618;
       v25 = v10;
       v26 = 2112;
-      v27 = v11;
+      v27 = engineError2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "=cloud-backup= Backup failed: %{public}@, %@", buf, 0x16u);
 
-      v12 = [(MBCKEngine *)self engineError];
-      v13 = [MBError loggableDescriptionForError:v12];
+      engineError3 = [(MBCKEngine *)self engineError];
+      v13 = [MBError loggableDescriptionForError:engineError3];
       [(MBCKEngine *)self engineError];
       v23 = v22 = v13;
       _MBLog();
     }
 
-    v14 = [(MBCKEngine *)self engineError];
-    v15 = v14;
-    if (a3)
+    engineError4 = [(MBCKEngine *)self engineError];
+    v15 = engineError4;
+    if (error)
     {
-      v16 = v14;
-      *a3 = v15;
+      v16 = engineError4;
+      *error = v15;
     }
 
     v17 = [(MBCKEngine *)self persona:v22];
-    v18 = [v17 volumeMountPoint];
+    volumeMountPoint = [v17 volumeMountPoint];
     v19 = [NSNumber numberWithUnsignedLongLong:MBFreeDiskSpaceForVolume()];
-    v20 = [(MBCKBackupEngine *)self telemetry];
-    [v20 setFreeDiskSpace:v19];
+    telemetry = [(MBCKBackupEngine *)self telemetry];
+    [telemetry setFreeDiskSpace:v19];
   }
 
-  return v7 ^ 1;
+  return hasError ^ 1;
 }
 
 - (void)_tearDown
 {
-  v3 = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
 
-  if (v3)
+  if (pendingSnapshotDB)
   {
-    v4 = [(MBCKBackupEngine *)self pendingSnapshotDB];
+    pendingSnapshotDB2 = [(MBCKBackupEngine *)self pendingSnapshotDB];
     v8 = 0;
-    [v4 close:&v8];
+    [pendingSnapshotDB2 close:&v8];
     v5 = v8;
 
     if (v5)
@@ -358,15 +358,15 @@ LABEL_13:
 - (void)_handleStateTransition
 {
   v3 = +[NSDate date];
-  v4 = [(MBCKEngine *)self cache];
-  [v4 beginBatch];
+  cache = [(MBCKEngine *)self cache];
+  [cache beginBatch];
 
   switch([(MBCKBackupEngine *)self backupState])
   {
     case 1uLL:
       [(MBCKBackupEngine *)self setBackupState:2];
-      v5 = [(MBCKEngine *)self multistateRetryStrategy];
-      [v5 reset];
+      multistateRetryStrategy = [(MBCKEngine *)self multistateRetryStrategy];
+      [multistateRetryStrategy reset];
 
       v39[0] = _NSConcreteStackBlock;
       v39[1] = 3221225472;
@@ -404,8 +404,8 @@ LABEL_13:
       goto LABEL_19;
     case 5uLL:
       [(MBCKBackupEngine *)self setBackupState:13];
-      v7 = [(MBCKBackupEngine *)self telemetry];
-      [v7 _startCollectingWiFiQualityMeasurements];
+      telemetry = [(MBCKBackupEngine *)self telemetry];
+      [telemetry _startCollectingWiFiQualityMeasurements];
 
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
@@ -433,8 +433,8 @@ LABEL_13:
       [(MBCKEngine *)self performRetryablePhase:v28];
       if ([(MBCKEngine *)self isFinished])
       {
-        v9 = [(MBCKEngine *)self engineError];
-        v10 = [MBError isCancelledError:v9];
+        engineError = [(MBCKEngine *)self engineError];
+        v10 = [MBError isCancelledError:engineError];
 
         if (v10)
         {
@@ -448,11 +448,11 @@ LABEL_11:
         [(MBCKEngine *)self setIsFinished:1];
         [(MBCKEngine *)self setEngineError:0];
         [(MBCKBackupEngine *)self setEstimator:0];
-        v8 = MBGetDefaultLog();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        telemetry2 = MBGetDefaultLog();
+        if (os_log_type_enabled(telemetry2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Backup finished successfully", buf, 2u);
+          _os_log_impl(&_mh_execute_header, telemetry2, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Backup finished successfully", buf, 2u);
           _MBLog();
         }
 
@@ -463,13 +463,13 @@ LABEL_20:
       backupReason = self->_backupReason;
       if (MBBackupReasonIsScheduled())
       {
-        v12 = [(MBCKEngine *)self engineError];
-        v13 = [MBError isXPCActivityDeferredError:v12];
+        engineError2 = [(MBCKEngine *)self engineError];
+        v13 = [MBError isXPCActivityDeferredError:engineError2];
 
         if (v13)
         {
-          v14 = [(MBCKEngine *)self engineError];
-          v15 = [MBError errorWithCode:223 error:v14 format:@"Backup canceled (deferred)"];
+          engineError3 = [(MBCKEngine *)self engineError];
+          v15 = [MBError errorWithCode:223 error:engineError3 format:@"Backup canceled (deferred)"];
           [(MBCKEngine *)self setEngineError:v15];
         }
       }
@@ -500,25 +500,25 @@ LABEL_20:
         _MBLog();
       }
 
-      v22 = [(MBCKBackupEngine *)self attemptSummary];
-      [v22 trackDuration:v16 forEngineState:v20];
+      attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+      [attemptSummary trackDuration:v16 forEngineState:v20];
 
       [(MBCKBackupEngine *)self _sendTelemetryForStateChange:[(MBCKBackupEngine *)self backupState] start:v3 end:v18];
       if ([(MBCKEngine *)self isFinished])
       {
         if ([(MBCKBackupEngine *)self backupState]>= 3 && [(MBCKBackupEngine *)self backupState]!= 8)
         {
-          v23 = [(MBCKEngine *)self engineError];
-          [(MBCKBackupEngine *)self _notifyPluginsOfBackupEnded:v23 error:0];
+          engineError4 = [(MBCKEngine *)self engineError];
+          [(MBCKBackupEngine *)self _notifyPluginsOfBackupEnded:engineError4 error:0];
         }
 
         [(MBCKBackupEngine *)self _finishCollectingTelemetry:v26];
-        v24 = [(MBCKEngine *)self progressModel];
-        [v24 ended];
+        progressModel = [(MBCKEngine *)self progressModel];
+        [progressModel ended];
       }
 
-      v25 = [(MBCKEngine *)self cache];
-      [v25 flush];
+      cache2 = [(MBCKEngine *)self cache];
+      [cache2 flush];
 
       return;
     case 8uLL:
@@ -570,22 +570,22 @@ LABEL_19:
       v31[3] = &unk_1003BC400;
       v31[4] = self;
       [(MBCKEngine *)self performRetryablePhase:v31];
-      v8 = [(MBCKBackupEngine *)self telemetry];
-      [v8 _stopCollectingWiFiQualityMeasurements];
+      telemetry2 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry2 _stopCollectingWiFiQualityMeasurements];
       goto LABEL_6;
     default:
       __assert_rtn("[MBCKBackupEngine _handleStateTransition]", "MBCKBackupEngine.m", 277, "0");
   }
 }
 
-- (BOOL)_shouldSimulateCancelationForState:(id)a3
+- (BOOL)_shouldSimulateCancelationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (MBIsInternalInstall() && ![(MBCKEngine *)self isFinished])
   {
     v6 = +[MBBehaviorOptions sharedOptions];
-    v7 = [v6 engineStateToCancelBackupAfter];
-    v5 = [v7 isEqualToString:v4];
+    engineStateToCancelBackupAfter = [v6 engineStateToCancelBackupAfter];
+    v5 = [engineStateToCancelBackupAfter isEqualToString:stateCopy];
   }
 
   else
@@ -606,48 +606,48 @@ LABEL_19:
   [(MBCKEngine *)&v4 makeStateTransition];
 }
 
-- (int64_t)_snapshotFormatForAccount:(id)a3 previousSnapshot:(id)a4 error:(id *)a5
+- (int64_t)_snapshotFormatForAccount:(id)account previousSnapshot:(id)snapshot error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  accountCopy = account;
+  snapshotCopy = snapshot;
   if ([(MBCKBackupEngine *)self backupState]!= 2)
   {
     __assert_rtn("[MBCKBackupEngine _snapshotFormatForAccount:previousSnapshot:error:]", "MBCKBackupEngine.m", 463, "self.backupState == kMBCKBackupStateSetup");
   }
 
-  v10 = [MBBackupCloudFormatPolicy snapshotFormatForAccount:v8 previousSnapshot:v9 error:a5];
+  v10 = [MBBackupCloudFormatPolicy snapshotFormatForAccount:accountCopy previousSnapshot:snapshotCopy error:error];
 
   return v10;
 }
 
-- (BOOL)setUpWithError:(id *)a3
+- (BOOL)setUpWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 474, "error");
   }
 
-  v5 = [(MBCKEngine *)self serviceManager];
-  if (!v5)
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  if (!serviceManager)
   {
     __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 476, "serviceManager");
   }
 
-  v6 = v5;
-  v7 = [(MBCKEngine *)self serviceAccount];
-  if (!v7)
+  v6 = serviceManager;
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  if (!serviceAccount)
   {
     __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 478, "serviceAccount");
   }
 
-  v8 = v7;
-  v9 = [(MBEngine *)self domainManager];
+  v8 = serviceAccount;
+  domainManager = [(MBEngine *)self domainManager];
 
-  if (v9)
+  if (domainManager)
   {
     v209 = 0;
-    v10 = [(MBCKEngine *)self persona];
-    v11 = [v10 getBooleanValueForKey:@"HasDeferredDiscountingQuota" keyExists:&v209];
+    persona = [(MBCKEngine *)self persona];
+    v11 = [persona getBooleanValueForKey:@"HasDeferredDiscountingQuota" keyExists:&v209];
 
     if (v209 && v11)
     {
@@ -668,10 +668,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(MBCKBackupEngine *)self cacheDeleteRequest];
-    if (v15)
+    cacheDeleteRequest = [(MBCKBackupEngine *)self cacheDeleteRequest];
+    if (cacheDeleteRequest)
     {
-      [(MBCKBackupEngine *)self setCacheDeleteRequest:v15];
+      [(MBCKBackupEngine *)self setCacheDeleteRequest:cacheDeleteRequest];
     }
 
     else
@@ -680,30 +680,30 @@ LABEL_19:
       [(MBCKBackupEngine *)self setCacheDeleteRequest:v19];
     }
 
-    v20 = [(MBCKBackupEngine *)self cacheDeleteRequest];
+    cacheDeleteRequest2 = [(MBCKBackupEngine *)self cacheDeleteRequest];
 
-    if (v20)
+    if (cacheDeleteRequest2)
     {
-      v21 = [(MBCKBackupEngine *)self cacheDeleteRequest];
-      v22 = [v21 purge];
+      cacheDeleteRequest3 = [(MBCKBackupEngine *)self cacheDeleteRequest];
+      purge = [cacheDeleteRequest3 purge];
 
       v23 = MBGetDefaultLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v211 = v22;
+        v211 = purge;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "=cloud-backup= CacheDelete purged %llu bytes", buf, 0xCu);
-        v178 = v22;
+        v178 = purge;
         _MBLog();
       }
     }
 
     v207.receiver = self;
     v207.super_class = MBCKBackupEngine;
-    if (![(MBCKEngine *)&v207 setUpWithError:a3, v178])
+    if (![(MBCKEngine *)&v207 setUpWithError:error, v178])
     {
 LABEL_49:
-      LOBYTE(v41) = 0;
+      LOBYTE(cache2) = 0;
       goto LABEL_50;
     }
 
@@ -716,23 +716,23 @@ LABEL_49:
     if ([v8 isEnabled])
     {
       v25 = +[MBManagedPolicy sharedPolicy];
-      v26 = [v25 checkIfCloudBackupIsAllowed:a3];
+      v26 = [v25 checkIfCloudBackupIsAllowed:error];
 
       if (v26)
       {
-        v27 = [(MBCKEngine *)self ckOperationTracker];
-        if (!v27)
+        ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+        if (!ckOperationTracker)
         {
           __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 522, "tracker");
         }
 
-        v28 = v27;
-        v29 = [v27 ckOperationPolicy];
-        v30 = [v29 cellularAccess];
+        v28 = ckOperationTracker;
+        ckOperationPolicy = [ckOperationTracker ckOperationPolicy];
+        cellularAccess = [ckOperationPolicy cellularAccess];
 
-        if (v30)
+        if (cellularAccess)
         {
-          if ([v30 allowsExpensiveNetworkAccess])
+          if ([cellularAccess allowsExpensiveNetworkAccess])
           {
             v31 = 2;
           }
@@ -742,49 +742,49 @@ LABEL_49:
             v31 = 1;
           }
 
-          v32 = [(MBCKBackupEngine *)self telemetry];
-          [v32 setAllowedCellularCost:v31];
+          telemetry = [(MBCKBackupEngine *)self telemetry];
+          [telemetry setAllowedCellularCost:v31];
         }
 
-        v33 = [v6 networkConnectivity];
+        networkConnectivity = [v6 networkConnectivity];
         v35 = v34;
-        v36 = [(MBCKBackupEngine *)self telemetry];
-        [v36 setNetworkConnectivityAtStart:{v33, v35}];
+        telemetry2 = [(MBCKBackupEngine *)self telemetry];
+        [telemetry2 setNetworkConnectivityAtStart:{networkConnectivity, v35}];
 
         v37 = MBGetChargingType();
-        v38 = [(MBCKBackupEngine *)self telemetry];
-        [v38 setChargingType:v37];
+        telemetry3 = [(MBCKBackupEngine *)self telemetry];
+        [telemetry3 setChargingType:v37];
 
-        v39 = [(MBCKEngine *)self cache];
-        if (!v39)
+        cache = [(MBCKEngine *)self cache];
+        if (!cache)
         {
           __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 533, "cache");
         }
 
-        v40 = v39;
+        v40 = cache;
         v206 = 0;
-        LODWORD(v41) = [MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:v28 state:&v206 error:a3];
+        LODWORD(cache2) = [MBCKKeyBag validateAndRepairInvalidKeyBagReferencesFromDeviceRecordWithTracker:v28 state:&v206 error:error];
         v42 = v206;
-        if (!v41)
+        if (!cache2)
         {
           goto LABEL_86;
         }
 
-        v199 = v30;
-        v43 = [(MBCKBackupEngine *)self attemptSummary];
-        [v43 trackKeyBagValidationState:v42];
+        v199 = cellularAccess;
+        attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+        [attemptSummary trackKeyBagValidationState:v42];
 
         [(MBCKBackupEngine *)self setKeyBagValidationState:v42];
-        v44 = [MBCKAccount fetchAccountWithOperationTracker:v28 cache:v40 create:1 error:a3];
+        v44 = [MBCKAccount fetchAccountWithOperationTracker:v28 cache:v40 create:1 error:error];
         if (!v44)
         {
-          if (!*a3)
+          if (!*error)
           {
             __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 549, "*error != nil");
           }
 
           v51 = 0;
-          LOBYTE(v41) = 0;
+          LOBYTE(cache2) = 0;
           goto LABEL_85;
         }
 
@@ -803,12 +803,12 @@ LABEL_49:
 
         if ([v40 invalidated])
         {
-          v47 = [v6 openCacheWithAccount:v8 accessType:1 error:a3];
+          v47 = [v6 openCacheWithAccount:v8 accessType:1 error:error];
 
           if (!v47)
           {
             v40 = 0;
-            LOBYTE(v41) = 0;
+            LOBYTE(cache2) = 0;
             v51 = v45;
             goto LABEL_84;
           }
@@ -821,14 +821,14 @@ LABEL_49:
           v47 = v40;
         }
 
-        if ([v45 fetchDevicesWithOperationTracker:v28 error:{a3, v179}])
+        if ([v45 fetchDevicesWithOperationTracker:v28 error:{error, v179}])
         {
-          if (![(MBCKEngine *)self handleCancelation:a3])
+          if (![(MBCKEngine *)self handleCancelation:error])
           {
             v197 = v28;
-            v52 = [(MBCKEngine *)self context];
-            v53 = [v52 backupUDID];
-            v54 = [v45 backupsDisabledFromAnotherDeviceForUUID:v53];
+            context = [(MBCKEngine *)self context];
+            backupUDID = [context backupUDID];
+            v54 = [v45 backupsDisabledFromAnotherDeviceForUUID:backupUDID];
 
             if (!v54)
             {
@@ -840,37 +840,37 @@ LABEL_49:
 
             v55 = self->_backupReason;
             IsManual = MBBackupReasonIsManual();
-            v41 = MBGetDefaultLog();
-            v57 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
+            cache2 = MBGetDefaultLog();
+            v57 = os_log_type_enabled(cache2, OS_LOG_TYPE_DEFAULT);
             if (IsManual)
             {
               if (v57)
               {
-                v58 = [(MBCKEngine *)self context];
-                v59 = [v58 backupUDID];
+                context2 = [(MBCKEngine *)self context];
+                backupUDID2 = [context2 backupUDID];
                 *buf = 138412290;
-                v211 = v59;
-                _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Disabled from another device triggered manually. Resetting the cache - cached device:%@", buf, 0xCu);
+                v211 = backupUDID2;
+                _os_log_impl(&_mh_execute_header, cache2, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Disabled from another device triggered manually. Resetting the cache - cached device:%@", buf, 0xCu);
 
-                v60 = [(MBCKEngine *)self context];
-                v180 = [v60 backupUDID];
+                context3 = [(MBCKEngine *)self context];
+                backupUDID3 = [context3 backupUDID];
                 _MBLog();
               }
 
-              v195 = [v6 resetCacheWithAccount:v8 error:a3];
-              v40 = [v6 openCacheWithAccount:v8 accessType:1 error:a3];
+              v195 = [v6 resetCacheWithAccount:v8 error:error];
+              v40 = [v6 openCacheWithAccount:v8 accessType:1 error:error];
 
               [(MBCKEngine *)self setCache:v40];
-              v41 = [(MBCKEngine *)self cache];
+              cache2 = [(MBCKEngine *)self cache];
               v28 = v197;
-              v61 = [MBCKAccount fetchAccountWithOperationTracker:v197 cache:v41 error:a3];
+              v61 = [MBCKAccount fetchAccountWithOperationTracker:v197 cache:cache2 error:error];
 
               v51 = v61;
-              LOBYTE(v41) = 0;
+              LOBYTE(cache2) = 0;
               if (v61)
               {
                 v42 = v198;
-                v30 = v199;
+                cellularAccess = v199;
                 if (!v195 || !v40)
                 {
                   goto LABEL_85;
@@ -881,13 +881,13 @@ LABEL_68:
                 v62 = v51;
                 [(MBCKEngine *)self context];
                 v64 = v63 = v28;
-                v65 = [v64 backupUDID];
+                backupUDID4 = [v64 backupUDID];
                 v196 = v62;
-                v66 = [v62 setupDeviceWithOperationTracker:v63 deviceUUID:v65 passcode:0 hasNewOTAKeyBag:&v204 error:a3];
+                v66 = [v62 setupDeviceWithOperationTracker:v63 deviceUUID:backupUDID4 passcode:0 hasNewOTAKeyBag:&v204 error:error];
 
                 if ([v40 invalidated])
                 {
-                  v67 = [v6 openCacheWithAccount:v8 accessType:1 error:a3];
+                  v67 = [v6 openCacheWithAccount:v8 accessType:1 error:error];
 
                   if (!v67)
                   {
@@ -899,64 +899,64 @@ LABEL_68:
                   v40 = v67;
                 }
 
-                v30 = v199;
-                v68 = [(MBCKBackupEngine *)self telemetry];
-                v69 = [v68 createdNewOTAKeybag];
+                cellularAccess = v199;
+                telemetry4 = [(MBCKBackupEngine *)self telemetry];
+                createdNewOTAKeybag = [telemetry4 createdNewOTAKeybag];
 
-                if ((v69 & 1) == 0)
+                if ((createdNewOTAKeybag & 1) == 0)
                 {
                   v70 = v204;
-                  v71 = [(MBCKBackupEngine *)self telemetry];
-                  [v71 setCreatedNewOTAKeybag:v70];
+                  telemetry5 = [(MBCKBackupEngine *)self telemetry];
+                  [telemetry5 setCreatedNewOTAKeybag:v70];
                 }
 
                 if ((v66 & 1) == 0)
                 {
                   v28 = v197;
-                  if (!*a3)
+                  if (!*error)
                   {
                     __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 612, "*error != nil");
                   }
 
-                  LOBYTE(v41) = 0;
+                  LOBYTE(cache2) = 0;
                   goto LABEL_121;
                 }
 
-                v72 = [(MBCKEngine *)self context];
-                v73 = [v72 backupUDID];
-                v74 = [v196 deviceForUUID:v73];
+                context4 = [(MBCKEngine *)self context];
+                backupUDID5 = [context4 backupUDID];
+                v74 = [v196 deviceForUUID:backupUDID5];
                 [(MBCKEngine *)self setDevice:v74];
 
-                v75 = [(MBCKEngine *)self device];
+                device = [(MBCKEngine *)self device];
 
-                if (!v75)
+                if (!device)
                 {
-                  v41 = MBGetDefaultLog();
-                  if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+                  cache2 = MBGetDefaultLog();
+                  if (os_log_type_enabled(cache2, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 0;
-                    _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "=cloud-backup= Could not find device after setup, failing backup attempt", buf, 2u);
+                    _os_log_impl(&_mh_execute_header, cache2, OS_LOG_TYPE_ERROR, "=cloud-backup= Could not find device after setup, failing backup attempt", buf, 2u);
                     _MBLog();
                   }
 
                   [MBError errorWithCode:204 format:@"Could not find device after setup"];
-                  *a3 = LOBYTE(v41) = 0;
+                  *error = LOBYTE(cache2) = 0;
                   goto LABEL_120;
                 }
 
-                v76 = [(MBCKEngine *)self context];
-                v77 = [v76 backupUDID];
+                context5 = [(MBCKEngine *)self context];
+                backupUDID6 = [context5 backupUDID];
                 v78 = MBDeviceUUID();
-                v79 = [v77 isEqualToString:v78];
+                v79 = [backupUDID6 isEqualToString:v78];
 
                 if (v79)
                 {
                   buf[0] = 0;
-                  v80 = [(MBCKEngine *)self device];
-                  v41 = [MBCKJournal journalForDevice:v80 cache:v40 engine:self];
+                  device2 = [(MBCKEngine *)self device];
+                  cache2 = [MBCKJournal journalForDevice:device2 cache:v40 engine:self];
 
                   v28 = v197;
-                  if ([v41 replayJournalResetOrDisableWithOperationTracker:v197 serviceManager:v6 disable:buf error:a3])
+                  if ([cache2 replayJournalResetOrDisableWithOperationTracker:v197 serviceManager:v6 disable:buf error:error])
                   {
                     if (buf[0] == 1)
                     {
@@ -964,11 +964,11 @@ LABEL_68:
                       v81 = @"Backups disabled from server action";
 LABEL_98:
                       v42 = v198;
-                      v30 = v199;
-                      *a3 = [MBError errorWithCode:204 format:v81];
+                      cellularAccess = v199;
+                      *error = [MBError errorWithCode:204 format:v81];
 LABEL_99:
 
-                      LOBYTE(v41) = 0;
+                      LOBYTE(cache2) = 0;
 LABEL_122:
                       v51 = v196;
                       goto LABEL_85;
@@ -981,14 +981,14 @@ LABEL_122:
                       goto LABEL_98;
                     }
 
-                    v86 = [v6 openCacheWithAccount:v8 accessType:1 error:a3];
+                    v86 = [v6 openCacheWithAccount:v8 accessType:1 error:error];
 
                     if (!v86)
                     {
                       v40 = 0;
                       v28 = v197;
                       v42 = v198;
-                      v30 = v199;
+                      cellularAccess = v199;
                       goto LABEL_99;
                     }
 
@@ -996,7 +996,7 @@ LABEL_122:
                     v40 = v86;
                   }
 
-                  v30 = v199;
+                  cellularAccess = v199;
                   if ([v40 invalidated])
                   {
                     __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 643, "!cache.invalidated");
@@ -1005,13 +1005,13 @@ LABEL_122:
 
                 else
                 {
-                  v30 = v199;
+                  cellularAccess = v199;
                 }
 
-                v87 = [(MBCKEngine *)self device];
-                v88 = [v87 shouldDeleteDevice];
+                device3 = [(MBCKEngine *)self device];
+                shouldDeleteDevice = [device3 shouldDeleteDevice];
 
-                if (v88)
+                if (shouldDeleteDevice)
                 {
                   v89 = MBGetDefaultLog();
                   if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
@@ -1021,9 +1021,9 @@ LABEL_122:
                     _MBLog();
                   }
 
-                  v90 = [(MBCKEngine *)self context];
-                  v91 = [v90 backupUDID];
-                  v92 = [v196 deleteDeviceWithOperationTracker:v197 deviceUUID:v91 error:a3];
+                  context6 = [(MBCKEngine *)self context];
+                  backupUDID7 = [context6 backupUDID];
+                  v92 = [v196 deleteDeviceWithOperationTracker:v197 deviceUUID:backupUDID7 error:error];
 
                   if (v92)
                   {
@@ -1035,18 +1035,18 @@ LABEL_122:
                       _MBLog();
                     }
 
-                    [v6 resetCacheWithAccount:v8 error:a3];
+                    [v6 resetCacheWithAccount:v8 error:error];
                     v203 = 0;
                     v94 = [v6 openCacheWithAccount:v8 accessType:1 error:&v203];
-                    v41 = v203;
+                    cache2 = v203;
 
                     [(MBCKEngine *)self setCache:v94];
                     [(MBCKEngine *)self setDevice:0];
                     v95 = [MBError errorWithCode:17 format:@"Device deleted, please retry"];
                     v96 = v95;
 
-                    LOBYTE(v41) = 0;
-                    *a3 = v95;
+                    LOBYTE(cache2) = 0;
+                    *error = v95;
                     v40 = v94;
                     goto LABEL_120;
                   }
@@ -1054,19 +1054,19 @@ LABEL_122:
                   goto LABEL_119;
                 }
 
-                v97 = [(MBCKEngine *)self device];
-                if ([v97 hasFetchedSnapshots])
+                device4 = [(MBCKEngine *)self device];
+                if ([device4 hasFetchedSnapshots])
                 {
                 }
 
                 else
                 {
-                  v98 = [(MBCKEngine *)self device];
-                  v99 = [v98 fetchSnapshotsWithOperationTracker:v197 error:a3];
+                  device5 = [(MBCKEngine *)self device];
+                  v99 = [device5 fetchSnapshotsWithOperationTracker:v197 error:error];
 
                   if ((v99 & 1) == 0)
                   {
-                    if (!*a3)
+                    if (!*error)
                     {
                       __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 662, "*error != nil");
                     }
@@ -1075,29 +1075,29 @@ LABEL_122:
                   }
                 }
 
-                v100 = [(MBCKEngine *)self device];
-                [v100 pinLatestGMSnapshotIfNeeded];
+                device6 = [(MBCKEngine *)self device];
+                [device6 pinLatestGMSnapshotIfNeeded];
 
-                v101 = [(MBCKEngine *)self device];
-                v102 = [v101 snapshots];
-                v103 = [v102 lastObject];
+                device7 = [(MBCKEngine *)self device];
+                snapshots = [device7 snapshots];
+                lastObject = [snapshots lastObject];
                 previousSnapshot = self->_previousSnapshot;
-                self->_previousSnapshot = v103;
+                self->_previousSnapshot = lastObject;
 
-                v105 = [(MBCKBackupEngine *)self _snapshotFormatForAccount:v8 previousSnapshot:self->_previousSnapshot error:a3];
+                v105 = [(MBCKBackupEngine *)self _snapshotFormatForAccount:v8 previousSnapshot:self->_previousSnapshot error:error];
                 if (v105 == -1)
                 {
 LABEL_119:
-                  LOBYTE(v41) = 0;
+                  LOBYTE(cache2) = 0;
 LABEL_120:
                   v28 = v197;
                   goto LABEL_121;
                 }
 
                 v106 = v105;
-                v107 = [(MBCKEngine *)self device];
-                v108 = [v107 snapshots];
-                v109 = [v108 count];
+                device8 = [(MBCKEngine *)self device];
+                snapshots2 = [device8 snapshots];
+                v109 = [snapshots2 count];
 
                 v192 = v106;
                 if (!v109)
@@ -1106,8 +1106,8 @@ LABEL_120:
                   goto LABEL_129;
                 }
 
-                v110 = [(MBCKEngine *)self device];
-                v111 = [v110 requiresFullBackupForAccount:v8];
+                device9 = [(MBCKEngine *)self device];
+                v111 = [device9 requiresFullBackupForAccount:v8];
 
                 if (v111)
                 {
@@ -1121,7 +1121,7 @@ LABEL_120:
                   goto LABEL_129;
                 }
 
-                v112 = MBSnapshotTypeForFormatTransition([(MBCKSnapshot *)self->_previousSnapshot snapshotFormat], v106, a3);
+                v112 = MBSnapshotTypeForFormatTransition([(MBCKSnapshot *)self->_previousSnapshot snapshotFormat], v106, error);
                 if (v112 != -1)
                 {
 LABEL_129:
@@ -1130,110 +1130,110 @@ LABEL_129:
                   {
                     v114 = MBStringForSnapshotType();
                     v115 = MBStringForSnapshotFormat();
-                    v116 = [(MBCKBackupEngine *)self telemetry];
-                    v117 = [v116 createdNewOTAKeybag];
+                    telemetry6 = [(MBCKBackupEngine *)self telemetry];
+                    createdNewOTAKeybag2 = [telemetry6 createdNewOTAKeybag];
                     *buf = 138412802;
                     v211 = v114;
                     v212 = 2112;
                     *v213 = v115;
                     *&v213[8] = 1024;
-                    *&v213[10] = v117;
+                    *&v213[10] = createdNewOTAKeybag2;
                     _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_INFO, "=cloud-backup= Setting up backup, type:%@ format:%@ hasNewOTAKeyBag:%d", buf, 0x1Cu);
 
                     v118 = MBStringForSnapshotType();
                     v119 = MBStringForSnapshotFormat();
-                    v120 = [(MBCKBackupEngine *)self telemetry];
-                    [v120 createdNewOTAKeybag];
+                    telemetry7 = [(MBCKBackupEngine *)self telemetry];
+                    [telemetry7 createdNewOTAKeybag];
                     _MBLog();
 
                     v106 = v192;
                   }
 
-                  v121 = [(MBCKBackupEngine *)self telemetry];
+                  telemetry8 = [(MBCKBackupEngine *)self telemetry];
                   v191 = v112;
-                  [v121 setSnapshotType:v112];
+                  [telemetry8 setSnapshotType:v112];
 
-                  v122 = [(MBCKBackupEngine *)self telemetry];
-                  [v122 setSnapshotFormat:v106];
+                  telemetry9 = [(MBCKBackupEngine *)self telemetry];
+                  [telemetry9 setSnapshotFormat:v106];
 
-                  v123 = [(MBCKBackupEngine *)self previousSnapshot];
-                  v124 = [v123 snapshotFormat];
-                  v125 = [(MBCKBackupEngine *)self telemetry];
-                  [v125 setPreviousSnapshotFormat:v124];
+                  previousSnapshot = [(MBCKBackupEngine *)self previousSnapshot];
+                  snapshotFormat = [previousSnapshot snapshotFormat];
+                  telemetry10 = [(MBCKBackupEngine *)self telemetry];
+                  [telemetry10 setPreviousSnapshotFormat:snapshotFormat];
 
                   v126 = +[MBBehaviorOptions sharedOptions];
-                  v127 = [v126 addRepairDomainToMBCKDevice];
+                  addRepairDomainToMBCKDevice = [v126 addRepairDomainToMBCKDevice];
 
-                  if ([v127 length])
+                  if ([addRepairDomainToMBCKDevice length])
                   {
-                    v128 = [(MBCKEngine *)self device];
-                    v129 = [v128 hmacKey];
-                    v130 = MBDomainHMACForDomainName(v127, v129);
+                    device10 = [(MBCKEngine *)self device];
+                    hmacKey = [device10 hmacKey];
+                    v130 = MBDomainHMACForDomainName(addRepairDomainToMBCKDevice, hmacKey);
 
-                    v131 = [(MBCKEngine *)self device];
-                    [v131 addRepairDomainHMAC:v130];
+                    device11 = [(MBCKEngine *)self device];
+                    [device11 addRepairDomainHMAC:v130];
                   }
 
-                  v190 = v127;
+                  v190 = addRepairDomainToMBCKDevice;
                   v132 = MBOperationGroupNamePrefixForBackup(self->_previousSnapshot, v106);
                   [v197 setGroupNamePrefix:v132];
 
                   v202 = 0;
-                  v133 = [(MBCKEngine *)self device];
-                  v134 = [(MBCKBackupEngine *)self backupReason];
-                  v135 = [(MBEngine *)self backupPolicy];
-                  v136 = [(MBCKEngine *)self persona];
+                  device12 = [(MBCKEngine *)self device];
+                  backupReason = [(MBCKBackupEngine *)self backupReason];
+                  backupPolicy = [(MBEngine *)self backupPolicy];
+                  persona2 = [(MBCKEngine *)self persona];
                   v137 = v106;
-                  v138 = v136;
-                  v41 = MBCreateOrResumePendingSnapshot(v133, v191, v137, v134, v135, v40, v136, v197, &v202, a3);
+                  v138 = persona2;
+                  cache2 = MBCreateOrResumePendingSnapshot(device12, v191, v137, backupReason, backupPolicy, v40, persona2, v197, &v202, error);
 
-                  if (!v41)
+                  if (!cache2)
                   {
                     v139 = 0;
 LABEL_154:
                     v42 = v198;
-                    v30 = v199;
+                    cellularAccess = v199;
 
                     v28 = v197;
                     goto LABEL_122;
                   }
 
-                  v139 = v41;
-                  objc_storeStrong(&self->_currentSnapshot, v41);
-                  v140 = [(MBCKBackupEngine *)self pluginNotifier];
+                  v139 = cache2;
+                  objc_storeStrong(&self->_currentSnapshot, cache2);
+                  pluginNotifier = [(MBCKBackupEngine *)self pluginNotifier];
                   v201 = 0;
-                  v141 = [v140 notifyPluginsOfStartingBackupWithError:&v201];
+                  v141 = [pluginNotifier notifyPluginsOfStartingBackupWithError:&v201];
                   v142 = v201;
 
                   if (v141)
                   {
-                    v143 = [(MBCKBackupEngine *)self pluginNotifier];
+                    pluginNotifier2 = [(MBCKBackupEngine *)self pluginNotifier];
                     v200 = v142;
-                    v144 = [v143 notifyPluginsOfPreparingBackupWithError:&v200];
+                    v144 = [pluginNotifier2 notifyPluginsOfPreparingBackupWithError:&v200];
                     v189 = v200;
 
                     if (v144)
                     {
-                      v145 = [(MBCKSnapshot *)self->_currentSnapshot commitID];
-                      v146 = [(MBCKBackupEngine *)self attemptSummary];
-                      [v146 setCommitID:v145];
+                      commitID = [(MBCKSnapshot *)self->_currentSnapshot commitID];
+                      attemptSummary2 = [(MBCKBackupEngine *)self attemptSummary];
+                      [attemptSummary2 setCommitID:commitID];
 
-                      v147 = [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
-                      v148 = [(MBCKBackupEngine *)self attemptSummary];
-                      [v148 setSnapshotFormat:v147];
+                      snapshotFormat2 = [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
+                      attemptSummary3 = [(MBCKBackupEngine *)self attemptSummary];
+                      [attemptSummary3 setSnapshotFormat:snapshotFormat2];
 
-                      v149 = [(MBCKSnapshot *)self->_currentSnapshot type];
-                      v150 = [(MBCKBackupEngine *)self attemptSummary];
-                      [v150 setSnapshotType:v149];
+                      type = [(MBCKSnapshot *)self->_currentSnapshot type];
+                      attemptSummary4 = [(MBCKBackupEngine *)self attemptSummary];
+                      [attemptSummary4 setSnapshotType:type];
 
-                      v151 = [(MBCKSnapshot *)self->_previousSnapshot commitID];
-                      v152 = [(MBCKBackupEngine *)self attemptSummary];
-                      [v152 setPreviousSnapshotCommitID:v151];
+                      commitID2 = [(MBCKSnapshot *)self->_previousSnapshot commitID];
+                      attemptSummary5 = [(MBCKBackupEngine *)self attemptSummary];
+                      [attemptSummary5 setPreviousSnapshotCommitID:commitID2];
 
                       [(MBCKSnapshot *)self->_currentSnapshot setCameraRollBackupState:[(MBCKBackupEngine *)self cameraRollBackupState]];
-                      v153 = [(MBCKEngine *)self ckOperationPolicy];
-                      v154 = [v153 cellularAccess];
-                      [(MBCKSnapshot *)self->_currentSnapshot setIsBackupAllowedOnCellular:v154 != 0];
+                      ckOperationPolicy2 = [(MBCKEngine *)self ckOperationPolicy];
+                      cellularAccess2 = [ckOperationPolicy2 cellularAccess];
+                      [(MBCKSnapshot *)self->_currentSnapshot setIsBackupAllowedOnCellular:cellularAccess2 != 0];
 
                       if ([(MBEngine *)self backupPolicy]== 1)
                       {
@@ -1247,18 +1247,18 @@ LABEL_154:
                       {
                         if (v156)
                         {
-                          v157 = [v139 commitID];
+                          commitID3 = [v139 commitID];
                           v184 = v202;
                           v158 = MBStringForSnapshotType();
                           v159 = MBStringForSnapshotFormat();
                           [(MBCKSnapshot *)self->_previousSnapshot snapshotFormat];
                           v160 = MBStringForSnapshotFormat();
-                          v185 = [(MBCKBackupEngine *)self telemetry];
-                          v183 = [v185 createdNewOTAKeybag];
+                          telemetry11 = [(MBCKBackupEngine *)self telemetry];
+                          createdNewOTAKeybag3 = [telemetry11 createdNewOTAKeybag];
                           [v139 backupPolicy];
                           v161 = MBStringForBackupPolicy();
                           *buf = 138413826;
-                          v211 = v157;
+                          v211 = commitID3;
                           v212 = 1024;
                           *v213 = v184;
                           *&v213[4] = 2112;
@@ -1268,18 +1268,18 @@ LABEL_154:
                           v216 = 2112;
                           *v217 = v160;
                           *&v217[8] = 1024;
-                          *&v217[10] = v183;
+                          *&v217[10] = createdNewOTAKeybag3;
                           v218 = 2112;
                           v219 = v161;
                           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Finished setting up backup for %@ isResumed:%d type:%@ format:%@ previousFormat:%@ hasNewOTAKeyBag:%d policy:%@", buf, 0x40u);
 
-                          v186 = [v139 commitID];
+                          commitID4 = [v139 commitID];
                           v162 = MBStringForSnapshotType();
                           v163 = MBStringForSnapshotFormat();
                           [(MBCKSnapshot *)self->_previousSnapshot snapshotFormat];
                           v164 = MBStringForSnapshotFormat();
-                          v165 = [(MBCKBackupEngine *)self telemetry];
-                          [v165 createdNewOTAKeybag];
+                          telemetry12 = [(MBCKBackupEngine *)self telemetry];
+                          [telemetry12 createdNewOTAKeybag];
                           [v139 backupPolicy];
                           v182 = MBStringForBackupPolicy();
                           _MBLog();
@@ -1288,16 +1288,16 @@ LABEL_154:
 
                       else if (v156)
                       {
-                        v169 = [v139 commitID];
+                        commitID5 = [v139 commitID];
                         v187 = v202;
                         v170 = MBStringForSnapshotType();
                         v171 = MBStringForSnapshotFormat();
-                        v193 = [(MBCKBackupEngine *)self telemetry];
-                        v172 = [v193 createdNewOTAKeybag];
+                        telemetry13 = [(MBCKBackupEngine *)self telemetry];
+                        createdNewOTAKeybag4 = [telemetry13 createdNewOTAKeybag];
                         [v139 backupPolicy];
                         v173 = MBStringForBackupPolicy();
                         *buf = 138413570;
-                        v211 = v169;
+                        v211 = commitID5;
                         v212 = 1024;
                         *v213 = v187;
                         *&v213[4] = 2112;
@@ -1305,22 +1305,22 @@ LABEL_154:
                         v214 = 2112;
                         v215 = v171;
                         v216 = 1024;
-                        *v217 = v172;
+                        *v217 = createdNewOTAKeybag4;
                         *&v217[4] = 2112;
                         *&v217[6] = v173;
                         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Finished setting up backup for initial snapshot %@ isResumed:%d type:%@ format:%@ hasNewOTAKeyBag:%d policy:%@", buf, 0x36u);
 
-                        v194 = [v139 commitID];
+                        commitID6 = [v139 commitID];
                         v174 = MBStringForSnapshotType();
                         v175 = MBStringForSnapshotFormat();
-                        v176 = [(MBCKBackupEngine *)self telemetry];
-                        [v176 createdNewOTAKeybag];
+                        telemetry14 = [(MBCKBackupEngine *)self telemetry];
+                        [telemetry14 createdNewOTAKeybag];
                         [v139 backupPolicy];
                         v181 = MBStringForBackupPolicy();
                         _MBLog();
                       }
 
-                      LOBYTE(v41) = 1;
+                      LOBYTE(cache2) = 1;
                       v142 = v189;
                       goto LABEL_153;
                     }
@@ -1350,17 +1350,17 @@ LABEL_154:
                   }
 
                   v168 = v142;
-                  LOBYTE(v41) = 0;
-                  *a3 = v142;
+                  LOBYTE(cache2) = 0;
+                  *error = v142;
 LABEL_153:
 
                   goto LABEL_154;
                 }
 
 LABEL_88:
-                LOBYTE(v41) = 0;
+                LOBYTE(cache2) = 0;
                 v28 = v197;
-                v30 = v199;
+                cellularAccess = v199;
 LABEL_121:
                 v42 = v198;
                 goto LABEL_122;
@@ -1372,11 +1372,11 @@ LABEL_121:
               if (v57)
               {
                 *buf = 0;
-                _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Resetting the cache since the backup was disabled from another device", buf, 2u);
+                _os_log_impl(&_mh_execute_header, cache2, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Resetting the cache since the backup was disabled from another device", buf, 2u);
                 _MBLog();
               }
 
-              [v6 resetCacheWithAccount:v8 error:a3];
+              [v6 resetCacheWithAccount:v8 error:error];
               v205 = 0;
               v40 = [v6 openCacheWithAccount:v8 accessType:1 error:&v205];
               v82 = v205;
@@ -1386,15 +1386,15 @@ LABEL_121:
               v83 = [MBError errorWithCode:204 format:@"Backups disabled from another device"];
               v84 = v83;
 
-              LOBYTE(v41) = 0;
-              *a3 = v83;
+              LOBYTE(cache2) = 0;
+              *error = v83;
               v51 = v45;
               v28 = v197;
             }
 
 LABEL_84:
             v42 = v198;
-            v30 = v199;
+            cellularAccess = v199;
 LABEL_85:
 
 LABEL_86:
@@ -1402,12 +1402,12 @@ LABEL_86:
           }
         }
 
-        else if (!*a3)
+        else if (!*error)
         {
           __assert_rtn("[MBCKBackupEngine setUpWithError:]", "MBCKBackupEngine.m", 565, "*error != nil");
         }
 
-        LOBYTE(v41) = 0;
+        LOBYTE(cache2) = 0;
         v51 = v45;
         v40 = v47;
         goto LABEL_84;
@@ -1451,32 +1451,32 @@ LABEL_86:
   }
 
   [MBError errorWithCode:v18 format:v17];
-  *a3 = LOBYTE(v41) = 0;
+  *error = LOBYTE(cache2) = 0;
 LABEL_50:
 
-  return v41;
+  return cache2;
 }
 
-- (BOOL)checkIfBackupHasKeybagWithUUID:(id)a3
+- (BOOL)checkIfBackupHasKeybagWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MBCKEngine *)self device];
-  v6 = [v5 keybagManager];
-  v7 = [v6 hasKeybagWithUUID:v4];
+  dCopy = d;
+  device = [(MBCKEngine *)self device];
+  keybagManager = [device keybagManager];
+  v7 = [keybagManager hasKeybagWithUUID:dCopy];
 
   return v7;
 }
 
-- (BOOL)synchronizeFileListsWithError:(id *)a3
+- (BOOL)synchronizeFileListsWithError:(id *)error
 {
-  v5 = [(MBCKEngine *)self persona];
-  v6 = [v5 snapshotDatabaseDirectory];
-  v7 = [(MBCKBackupEngine *)self previousSnapshot];
-  v8 = [(MBCKBackupEngine *)self currentSnapshot];
-  v9 = [(MBCKEngine *)self device];
-  v10 = [(MBCKEngine *)self ckOperationTracker];
-  v11 = [(MBCKBackupEngine *)self attemptSummary];
-  v12 = MBSynchronizeSnapshotDirectoryForBackup(v6, v7, v8, v9, v10, v11, a3);
+  persona = [(MBCKEngine *)self persona];
+  snapshotDatabaseDirectory = [persona snapshotDatabaseDirectory];
+  previousSnapshot = [(MBCKBackupEngine *)self previousSnapshot];
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  device = [(MBCKEngine *)self device];
+  ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+  v12 = MBSynchronizeSnapshotDirectoryForBackup(snapshotDatabaseDirectory, previousSnapshot, currentSnapshot, device, ckOperationTracker, attemptSummary, error);
 
   if (v12)
   {
@@ -1486,19 +1486,19 @@ LABEL_50:
   return v12 != 0;
 }
 
-- (BOOL)createVolumeSnapshots:(id *)a3
+- (BOOL)createVolumeSnapshots:(id *)snapshots
 {
-  v5 = [(MBCKEngine *)self persona];
-  if (!v5)
+  persona = [(MBCKEngine *)self persona];
+  if (!persona)
   {
     __assert_rtn("[MBCKBackupEngine createVolumeSnapshots:]", "MBCKBackupEngine.m", 779, "persona");
   }
 
-  v34 = a3;
-  v36 = v5;
-  v6 = [v5 volumesToBackUp];
+  snapshotsCopy = snapshots;
+  v36 = persona;
+  volumesToBackUp = [persona volumesToBackUp];
   v38 = 0;
-  v7 = [MBFSEventState stateForVolumeMountPoints:v6 error:&v38];
+  v7 = [MBFSEventState stateForVolumeMountPoints:volumesToBackUp error:&v38];
   v8 = v38;
 
   if (!v7)
@@ -1537,9 +1537,9 @@ LABEL_11:
   v32 = v7;
 
   v13 = [MBAppManager alloc];
-  v14 = [(MBCKEngine *)self context];
-  v15 = [v14 mobileInstallation];
-  v16 = [(MBAppManager *)v13 initWithMobileInstallation:v15];
+  context = [(MBCKEngine *)self context];
+  mobileInstallation = [context mobileInstallation];
+  v16 = [(MBAppManager *)v13 initWithMobileInstallation:mobileInstallation];
   appManager = self->super.super._appManager;
   self->super.super._appManager = v16;
 
@@ -1547,28 +1547,28 @@ LABEL_11:
   mountedSnapshotTracker = self->_mountedSnapshotTracker;
   self->_mountedSnapshotTracker = v18;
 
-  v20 = [(MBCKEngine *)self serviceAccount];
-  v21 = [(MBEngine *)self appManager];
-  v22 = [(MBEngine *)self domainManager];
-  v31 = [(MBCKEngine *)self serviceManager];
-  v30 = [(MBCKBackupEngine *)self backupReason];
-  v23 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
-  v24 = [(MBCKEngine *)self device];
-  v25 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-  v26 = [(MBCKBackupEngine *)self currentSnapshot];
-  v27 = [(MBCKBackupEngine *)self previousSnapshot];
-  v28 = [(MBCKBackupEngine *)self attemptSummary];
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  appManager = [(MBEngine *)self appManager];
+  domainManager = [(MBEngine *)self domainManager];
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  backupReason = [(MBCKBackupEngine *)self backupReason];
+  mountedSnapshotTracker = [(MBCKBackupEngine *)self mountedSnapshotTracker];
+  device = [(MBCKEngine *)self device];
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  previousSnapshot = [(MBCKBackupEngine *)self previousSnapshot];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_10006F638;
   v37[3] = &unk_1003BC8B8;
   v37[4] = self;
-  v35 = MBCreateVolumeSnapshots(v20, v21, v22, v31, v30, v23, v24, v25, v26, v27, v28, v34, v37);
+  v35 = MBCreateVolumeSnapshots(serviceAccount, appManager, domainManager, serviceManager, backupReason, mountedSnapshotTracker, device, pendingSnapshotDB, currentSnapshot, previousSnapshot, attemptSummary, snapshotsCopy, v37);
 
   return v35;
 }
 
-- (void)_saveLastPendingSnapshotSize:(unint64_t)a3
+- (void)_saveLastPendingSnapshotSize:(unint64_t)size
 {
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1576,38 +1576,38 @@ LABEL_11:
     *buf = 138543618;
     v9 = @"LastPendingSnapshotSize";
     v10 = 2048;
-    v11 = a3;
+    sizeCopy = size;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Saving %{public}@: %llu", buf, 0x16u);
     _MBLog();
   }
 
-  v6 = [(MBCKEngine *)self persona];
-  v7 = [NSNumber numberWithUnsignedLongLong:a3];
-  [v6 setPreferencesValue:v7 forKey:@"LastPendingSnapshotSize"];
+  persona = [(MBCKEngine *)self persona];
+  v7 = [NSNumber numberWithUnsignedLongLong:size];
+  [persona setPreferencesValue:v7 forKey:@"LastPendingSnapshotSize"];
 }
 
-+ (BOOL)_startOTABackupWithAccount:(id)a3 error:(id *)a4
++ (BOOL)_startOTABackupWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKBackupEngine _startOTABackupWithAccount:error:]", "MBCKBackupEngine.m", 819, "account");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("+[MBCKBackupEngine _startOTABackupWithAccount:error:]", "MBCKBackupEngine.m", 820, "error");
   }
 
-  v6 = v5;
+  v6 = accountCopy;
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v5 persona];
-  v8 = [v7 volumesToBackUp];
+  persona = [accountCopy persona];
+  volumesToBackUp = [persona volumesToBackUp];
 
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v9 = [volumesToBackUp countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1618,23 +1618,23 @@ LABEL_11:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(volumesToBackUp);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v13 error:a4];
+        v14 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v13 error:error];
         if (!v14)
         {
           v17 = MBGetDefaultLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v18 = *a4;
+            v18 = *error;
             *buf = 138543618;
             v26 = v13;
             v27 = 2112;
             v28 = v18;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to fetch the volume UUID for %{public}@: %@", buf, 0x16u);
-            v20 = *a4;
+            v20 = *error;
             _MBLog();
           }
 
@@ -1646,7 +1646,7 @@ LABEL_11:
         [MBKeyBag startOTABackupForVolumeUUID:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v10 = [volumesToBackUp countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v10)
       {
         continue;
@@ -1662,28 +1662,28 @@ LABEL_15:
   return v16;
 }
 
-+ (BOOL)_stopOTABackupWithAccount:(id)a3 error:(id *)a4
++ (BOOL)_stopOTABackupWithAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  accountCopy = account;
+  if (!accountCopy)
   {
     __assert_rtn("+[MBCKBackupEngine _stopOTABackupWithAccount:error:]", "MBCKBackupEngine.m", 834, "account");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("+[MBCKBackupEngine _stopOTABackupWithAccount:error:]", "MBCKBackupEngine.m", 835, "error");
   }
 
-  v6 = v5;
+  v6 = accountCopy;
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v5 persona];
-  v8 = [v7 volumesToBackUp];
+  persona = [accountCopy persona];
+  volumesToBackUp = [persona volumesToBackUp];
 
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v9 = [volumesToBackUp countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1694,23 +1694,23 @@ LABEL_15:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(volumesToBackUp);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v13 error:a4];
+        v14 = [MBFileSystemManager volumeUUIDWithVolumeMountPoint:v13 error:error];
         if (!v14)
         {
           v17 = MBGetDefaultLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v18 = *a4;
+            v18 = *error;
             *buf = 138543618;
             v26 = v13;
             v27 = 2112;
             v28 = v18;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to fetch the volume UUID for %{public}@: %@", buf, 0x16u);
-            v20 = *a4;
+            v20 = *error;
             _MBLog();
           }
 
@@ -1722,7 +1722,7 @@ LABEL_15:
         [MBKeyBag stopOTABackupForVolumeUUID:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v10 = [volumesToBackUp countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v10)
       {
         continue;
@@ -1738,28 +1738,28 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)findChangesWithError:(id *)a3
+- (BOOL)findChangesWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 848, "error");
   }
 
-  v3 = a3;
-  v5 = [(MBCKEngine *)self serviceAccount];
-  if (!v5)
+  errorCopy = error;
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  if (!serviceAccount)
   {
     __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 850, "serviceAccount");
   }
 
-  v6 = v5;
-  v7 = [(MBCKEngine *)self persona];
-  if (!v7)
+  v6 = serviceAccount;
+  persona = [(MBCKEngine *)self persona];
+  if (!persona)
   {
     __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 852, "persona");
   }
 
-  v8 = v7;
+  v8 = persona;
   v9 = self->super.super._domainManager;
   if (!v9)
   {
@@ -1774,8 +1774,8 @@ LABEL_15:
   }
 
   v12 = v11;
-  v164 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-  if (!v164)
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  if (!pendingSnapshotDB)
   {
     __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 858, "pendingSnapshotDB");
   }
@@ -1783,7 +1783,7 @@ LABEL_15:
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = v3;
+    v14 = errorCopy;
     v15 = v13;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -1792,59 +1792,59 @@ LABEL_15:
     }
 
     _MBLog();
-    v3 = v14;
+    errorCopy = v14;
   }
 
   v163 = v12;
-  if ([(MBCKEngine *)self handleCancelation:v3])
+  if ([(MBCKEngine *)self handleCancelation:errorCopy])
   {
     v16 = 0;
     goto LABEL_183;
   }
 
-  v165 = v3;
+  v165 = errorCopy;
   [(MBCKSnapshot *)v12 snapshotFormat];
   if (MBSnapshotFormatContainsManifests())
   {
-    v17 = [(MBCKEngine *)self cache];
-    v18 = [v17 removeAllFilesMissingEncryptionKeys];
+    cache = [(MBCKEngine *)self cache];
+    removeAllFilesMissingEncryptionKeys = [cache removeAllFilesMissingEncryptionKeys];
 
-    v169 = v18;
-    if (v18)
+    _fetchPreviousBackupFSEventState = removeAllFilesMissingEncryptionKeys;
+    if (removeAllFilesMissingEncryptionKeys)
     {
       v19 = MBGetDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v192 = v18;
+        *v192 = removeAllFilesMissingEncryptionKeys;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "=cloud-backup= Could not remove all missing encryption keys from the cache: %@", buf, 0xCu);
         _MBLog();
       }
 
       v16 = 0;
-      *v165 = v18;
+      *v165 = removeAllFilesMissingEncryptionKeys;
       goto LABEL_182;
     }
   }
 
-  v20 = [(MBCKBackupEngine *)self telemetry];
-  [v20 setBackupFileCount:&off_1003E0CF0];
+  telemetry = [(MBCKBackupEngine *)self telemetry];
+  [telemetry setBackupFileCount:&off_1003E0CF0];
 
-  v21 = [(MBCKBackupEngine *)self telemetry];
-  [v21 setBackupDirectoryCount:&off_1003E0CF0];
+  telemetry2 = [(MBCKBackupEngine *)self telemetry];
+  [telemetry2 setBackupDirectoryCount:&off_1003E0CF0];
 
-  v22 = [(MBCKBackupEngine *)self telemetry];
-  v23 = [v22 domainsWithMissingEncryptionKeys];
-  [v23 removeAllObjects];
+  telemetry3 = [(MBCKBackupEngine *)self telemetry];
+  domainsWithMissingEncryptionKeys = [telemetry3 domainsWithMissingEncryptionKeys];
+  [domainsWithMissingEncryptionKeys removeAllObjects];
 
   if ([(MBCKBackupEngine *)self _shouldBackupUsingFSEvents])
   {
-    v169 = [(MBCKBackupEngine *)self _fetchPreviousBackupFSEventState];
+    _fetchPreviousBackupFSEventState = [(MBCKBackupEngine *)self _fetchPreviousBackupFSEventState];
   }
 
   else
   {
-    v169 = 0;
+    _fetchPreviousBackupFSEventState = 0;
   }
 
   v158 = v8;
@@ -1878,8 +1878,8 @@ LABEL_15:
         objc_enumerationMutation(obj);
       }
 
-      v29 = [*(*(&v185 + 1) + 8 * v28) name];
-      if (!v169)
+      name = [*(*(&v185 + 1) + 8 * v28) name];
+      if (!_fetchPreviousBackupFSEventState)
       {
         goto LABEL_46;
       }
@@ -1888,8 +1888,8 @@ LABEL_15:
       v184 = 0;
       if (MBSnapshotFormatContainsManifests())
       {
-        v30 = [(MBCKEngine *)self cache];
-        v31 = [v30 hasDomainBeenBackedUp:v29 backedUp:&v184];
+        cache2 = [(MBCKEngine *)self cache];
+        v31 = [cache2 hasDomainBeenBackedUp:name backedUp:&v184];
 
         if (v31)
         {
@@ -1900,13 +1900,13 @@ LABEL_15:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              *v192 = v29;
+              *v192 = name;
               *&v192[8] = 2112;
               v193 = v31;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Failed to determine whether domain %@ has been backed up:%@", buf, 0x16u);
             }
 
-            v147 = *&v29;
+            v147 = *&name;
             v152 = v31;
             _MBLog();
           }
@@ -1916,8 +1916,8 @@ LABEL_15:
       v183 = 0;
       if (MBSnapshotFormatContainsFileLists())
       {
-        v34 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-        v35 = [v34 isDomainInPreviousSnapshot:v29 outResult:&v183 error:v165];
+        pendingSnapshotDB2 = [(MBCKBackupEngine *)self pendingSnapshotDB];
+        v35 = [pendingSnapshotDB2 isDomainInPreviousSnapshot:name outResult:&v183 error:v165];
 
         if (!v35)
         {
@@ -1937,11 +1937,11 @@ LABEL_15:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            *v192 = v29;
+            *v192 = name;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "=cloud-backup= Forcing a scan on new domain %@", buf, 0xCu);
           }
 
-          v147 = *&v29;
+          v147 = *&name;
           _MBLog();
         }
 
@@ -1953,13 +1953,13 @@ LABEL_46:
       v38 = 1;
 LABEL_48:
       v39 = [(MBCKEngine *)self device:*&v147];
-      v40 = [v39 shouldRepairDomain:v29];
+      v40 = [v39 shouldRepairDomain:name];
 
       if (v40)
       {
-        v41 = [(MBCKEngine *)self device];
-        v42 = [v41 hmacKey];
-        v43 = MBDomainHMACForDomainName(v29, v42);
+        device = [(MBCKEngine *)self device];
+        hmacKey = [device hmacKey];
+        v43 = MBDomainHMACForDomainName(name, hmacKey);
         [v166 addObject:v43];
 
         v44 = MBGetDefaultLog();
@@ -1978,11 +1978,11 @@ LABEL_48:
 
       else if (v38)
       {
-        [v168 markUnmodifiedDomain:v29];
+        [v168 markUnmodifiedDomain:name];
         goto LABEL_57;
       }
 
-      [v168 markModifiedDomain:v29];
+      [v168 markModifiedDomain:name];
 LABEL_57:
 
       ++v28;
@@ -2004,13 +2004,13 @@ LABEL_62:
 
   if ([v166 count])
   {
-    v46 = [(MBCKEngine *)self device];
-    [v46 setDomainHMACsToRepairOnDisk:v166];
+    device2 = [(MBCKEngine *)self device];
+    [device2 setDomainHMACsToRepairOnDisk:v166];
   }
 
   v6 = v156;
   v8 = v158;
-  if (v169)
+  if (_fetchPreviousBackupFSEventState)
   {
     Current = CFAbsoluteTimeGetCurrent();
     v182[0] = _NSConcreteStackBlock;
@@ -2018,7 +2018,7 @@ LABEL_62:
     v182[2] = sub_1000713D4;
     v182[3] = &unk_1003BC8B8;
     v182[4] = self;
-    [MBFSEventCollector markModificationsWith:v168 since:v169 domainManager:v10 persona:v158 cancellationHandler:v182];
+    [MBFSEventCollector markModificationsWith:v168 since:_fetchPreviousBackupFSEventState domainManager:v10 persona:v158 cancellationHandler:v182];
     v48 = CFAbsoluteTimeGetCurrent() - Current;
     v49 = MBGetDefaultLog();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -2035,8 +2035,8 @@ LABEL_62:
       _MBLog();
     }
 
-    v51 = [(MBCKBackupEngine *)self telemetry];
-    [v51 setFseventDuration:v48];
+    telemetry4 = [(MBCKBackupEngine *)self telemetry];
+    [telemetry4 setFseventDuration:v48];
   }
 
   obj = [v168 unmodifiedDomainNames];
@@ -2062,31 +2062,31 @@ LABEL_62:
     _MBLog();
   }
 
-  v29 = [v168 modifiedDomainNames];
+  name = [v168 modifiedDomainNames];
   v55 = MBGetDefaultLog();
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
     v56 = v55;
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
     {
-      v57 = [v29 count];
+      v57 = [name count];
       *buf = 134218498;
       *v192 = v57;
       *&v192[8] = 2048;
       v193 = v162;
       v194 = 2112;
-      v195 = v29;
+      v195 = name;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Modified domains: (%lu/%lu) %@", buf, 0x20u);
     }
 
     v152 = v162;
-    v153 = v29;
-    v148 = [v29 count];
+    v153 = name;
+    v148 = [name count];
     _MBLog();
   }
 
   v58 = [obj count];
-  if (&v58[[v29 count]] != v162)
+  if (&v58[[name count]] != v162)
   {
     __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 953, "unmodifiedDomainNames.count + modifiedDomainNames.count == enabledDomainsCount");
   }
@@ -2097,16 +2097,16 @@ LABEL_62:
     goto LABEL_88;
   }
 
-  v59 = [(MBCKEngine *)self cache];
-  v60 = [v59 markAllFileChangesAsDeleted];
+  cache3 = [(MBCKEngine *)self cache];
+  markAllFileChangesAsDeleted = [cache3 markAllFileChangesAsDeleted];
 
-  if (v60)
+  if (markAllFileChangesAsDeleted)
   {
     v61 = MBGetDefaultLog();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *v192 = v60;
+      *v192 = markAllFileChangesAsDeleted;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to mark file changes as deleted: %@", buf, 0xCu);
       goto LABEL_86;
     }
@@ -2114,10 +2114,10 @@ LABEL_62:
     goto LABEL_87;
   }
 
-  v62 = [(MBCKEngine *)self cache];
-  v60 = [v62 markFileChangesAsUnmodifiedForDomainNames:obj];
+  cache4 = [(MBCKEngine *)self cache];
+  markAllFileChangesAsDeleted = [cache4 markFileChangesAsUnmodifiedForDomainNames:obj];
 
-  if (!v60)
+  if (!markAllFileChangesAsDeleted)
   {
 LABEL_88:
     v64 = objc_opt_new();
@@ -2125,8 +2125,8 @@ LABEL_88:
     v179 = 0u;
     v180 = 0u;
     v181 = 0u;
-    v29 = v29;
-    v65 = [v29 countByEnumeratingWithState:&v178 objects:v190 count:16];
+    name = name;
+    v65 = [name countByEnumeratingWithState:&v178 objects:v190 count:16];
     if (v65)
     {
       v66 = v65;
@@ -2137,28 +2137,28 @@ LABEL_88:
         {
           if (*v179 != v67)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(name);
           }
 
-          v69 = [(MBDomainManager *)self->super.super._domainManager domainForName:*(*(&v178 + 1) + 8 * i), v148, v152, v153];
-          if (!v69)
+          v153 = [(MBDomainManager *)self->super.super._domainManager domainForName:*(*(&v178 + 1) + 8 * i), v148, v152, v153];
+          if (!v153)
           {
             __assert_rtn("[MBCKBackupEngine findChangesWithError:]", "MBCKBackupEngine.m", 977, "domain");
           }
 
-          v70 = v69;
-          [v64 addObject:v69];
+          v70 = v153;
+          [v64 addObject:v153];
         }
 
-        v66 = [v29 countByEnumeratingWithState:&v178 objects:v190 count:16];
+        v66 = [name countByEnumeratingWithState:&v178 objects:v190 count:16];
       }
 
       while (v66);
     }
 
     v71 = +[MBBehaviorOptions sharedOptions];
-    v72 = [v71 domainsToSendInvalidChecksumRegex];
-    v73 = [v72 length];
+    domainsToSendInvalidChecksumRegex = [v71 domainsToSendInvalidChecksumRegex];
+    v73 = [domainsToSendInvalidChecksumRegex length];
 
     if (v73)
     {
@@ -2181,8 +2181,8 @@ LABEL_88:
               objc_enumerationMutation(v74);
             }
 
-            v79 = [*(*(&v174 + 1) + 8 * j) name];
-            v80 = MBShouldSendInvalidChecksumForDomain(v79);
+            name2 = [*(*(&v174 + 1) + 8 * j) name];
+            v80 = MBShouldSendInvalidChecksumForDomain(name2);
 
             if (v80)
             {
@@ -2210,11 +2210,11 @@ LABEL_107:
       goto LABEL_132;
     }
 
-    v81 = [v158 volumeMountPoint];
-    v82 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
-    v83 = [v82 snapshotMountPointForVolumeMountPoint:v81];
+    volumeMountPoint = [v158 volumeMountPoint];
+    mountedSnapshotTracker = [(MBCKBackupEngine *)self mountedSnapshotTracker];
+    v83 = [mountedSnapshotTracker snapshotMountPointForVolumeMountPoint:volumeMountPoint];
 
-    v84 = [MBiCloudDrivePlugin backUpiCloudDriveDatabaseManifestForUserVolume:v81 snapshotMountPoint:v83];
+    v84 = [MBiCloudDrivePlugin backUpiCloudDriveDatabaseManifestForUserVolume:volumeMountPoint snapshotMountPoint:v83];
     v85 = MBGetDefaultLog();
     v86 = v85;
     if (v84)
@@ -2253,7 +2253,7 @@ LABEL_107:
     _MBLog();
 LABEL_121:
 
-    v89 = [MBiCloudDrivePlugin backUpFPFSDatabaseManifestForUserVolume:v81 snapshotMountPoint:v83];
+    v89 = [MBiCloudDrivePlugin backUpFPFSDatabaseManifestForUserVolume:volumeMountPoint snapshotMountPoint:v83];
 
     v90 = MBGetDefaultLog();
     v91 = v90;
@@ -2305,8 +2305,8 @@ LABEL_180:
     }
 
     v96 = [MBSkippedFileTracker alloc];
-    v97 = [v8 skippedFileRecordsPlistPath];
-    v98 = [(MBSkippedFileTracker *)v96 initWithPlistPath:v97];
+    skippedFileRecordsPlistPath = [v8 skippedFileRecordsPlistPath];
+    v98 = [(MBSkippedFileTracker *)v96 initWithPlistPath:skippedFileRecordsPlistPath];
     [(MBCKBackupEngine *)self setSkippedFileTracker:v98];
 
     [v64 sortUsingComparator:&stru_1003BC8D8];
@@ -2327,8 +2327,8 @@ LABEL_180:
       _MBLog();
     }
 
-    v102 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
-    v103 = [(MBCKBackupEngine *)self _createDomainTranscriberForAPFSSnapshots:v102 error:v165];
+    mountedSnapshotTracker2 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
+    v103 = [(MBCKBackupEngine *)self _createDomainTranscriberForAPFSSnapshots:mountedSnapshotTracker2 error:v165];
 
     if (!v103)
     {
@@ -2340,12 +2340,12 @@ LABEL_179:
     }
 
     v104 = objc_opt_new();
-    v105 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-    v106 = [(MBCKEngine *)self progressModel];
+    pendingSnapshotDB3 = [(MBCKBackupEngine *)self pendingSnapshotDB];
+    progressModel = [(MBCKEngine *)self progressModel];
     v173 = 0;
     v160 = v103;
     v159 = v104;
-    LOBYTE(v104) = [v103 scanDomains:v64 pendingSnapshotDB:v105 progress:v106 summary:v104 error:&v173];
+    LOBYTE(v104) = [v103 scanDomains:v64 pendingSnapshotDB:pendingSnapshotDB3 progress:progressModel summary:v104 error:&v173];
     v107 = v173;
 
     if ((v104 & 1) == 0)
@@ -2355,8 +2355,8 @@ LABEL_179:
       if ([MBError isError:v107 withCode:209])
       {
         [MBCKEncryptionManager trackMissingEncryptionKeyForAccount:v156];
-        v121 = [(MBCKBackupEngine *)self attemptSummary];
-        [v121 trackDomainTranscription:v159];
+        attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+        [attemptSummary trackDomainTranscription:v159];
       }
 
       v122 = v107;
@@ -2400,9 +2400,9 @@ LABEL_179:
       goto LABEL_158;
     }
 
-    v115 = [(MBCKEngine *)self cache];
+    cache5 = [(MBCKEngine *)self cache];
     v170 = 0;
-    v116 = [v115 countFilesMissingEncryptionKeysWithError:&v170];
+    v116 = [cache5 countFilesMissingEncryptionKeysWithError:&v170];
     v111 = v170;
 
     if (v116)
@@ -2451,11 +2451,11 @@ LABEL_158:
           v154 = v111;
           +[NSDate timeIntervalSinceReferenceDate];
           v125 = v124;
-          v155 = [(MBCKSnapshot *)self->_previousSnapshot commitID];
+          commitID = [(MBCKSnapshot *)self->_previousSnapshot commitID];
           [(MBCKSnapshot *)self->_currentSnapshot type];
           IsFull = MBSnapshotTypeIsFull();
-          v127 = [(MBCKBackupEngine *)self previousSnapshot];
-          v128 = MBSnapshotsAreTransitioningFormats(v127, self->_currentSnapshot);
+          previousSnapshot = [(MBCKBackupEngine *)self previousSnapshot];
+          v128 = MBSnapshotsAreTransitioningFormats(previousSnapshot, self->_currentSnapshot);
 
           if ((IsFull & 1) != 0 || v128)
           {
@@ -2478,14 +2478,14 @@ LABEL_158:
               _MBLog();
             }
 
-            v155 = 0;
+            commitID = 0;
           }
 
           v131 = [(MBCKEngine *)self device:*&v151];
-          v132 = [(MBEngine *)self appManager];
-          v133 = [v164 updateDomainListInPlaceholderDomainWithDevice:v131 appManager:v132 error:v165];
+          appManager = [(MBEngine *)self appManager];
+          v133 = [pendingSnapshotDB updateDomainListInPlaceholderDomainWithDevice:v131 appManager:appManager error:v165];
 
-          if (!v133 || ([(MBCKEngine *)self device], v134 = objc_claimAutoreleasedReturnValue(), v135 = MBCopyAssetsToUploadIntoPendingSnapshotDB(v164, v155, v134, v165), v134, !v135))
+          if (!v133 || ([(MBCKEngine *)self device], v134 = objc_claimAutoreleasedReturnValue(), v135 = MBCopyAssetsToUploadIntoPendingSnapshotDB(pendingSnapshotDB, commitID, v134, v165), v134, !v135))
           {
 
             v16 = 0;
@@ -2513,16 +2513,16 @@ LABEL_158:
             _MBLog();
           }
 
-          v140 = [(MBCKBackupEngine *)self attemptSummary];
-          [v140 setAssetCopyDuration:v137];
+          attemptSummary2 = [(MBCKBackupEngine *)self attemptSummary];
+          [attemptSummary2 setAssetCopyDuration:v137];
 
           v141 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v64 count]);
-          v142 = [(MBCKBackupEngine *)self telemetry];
-          [v142 setScannedDomainsCount:v141];
+          telemetry5 = [(MBCKBackupEngine *)self telemetry];
+          [telemetry5 setScannedDomainsCount:v141];
 
           v143 = [NSNumber numberWithUnsignedLong:v162];
-          v144 = [(MBCKBackupEngine *)self telemetry];
-          [v144 setEnabledDomainsCount:v143];
+          telemetry6 = [(MBCKBackupEngine *)self telemetry];
+          [telemetry6 setEnabledDomainsCount:v143];
 
           v10 = v157;
           v8 = v158;
@@ -2530,9 +2530,9 @@ LABEL_158:
           v111 = v154;
         }
 
-        v145 = [(MBCKBackupEngine *)self attemptSummary];
+        attemptSummary3 = [(MBCKBackupEngine *)self attemptSummary];
         v118 = v159;
-        [v145 trackDomainTranscription:v159];
+        [attemptSummary3 trackDomainTranscription:v159];
 
         v16 = 1;
 LABEL_178:
@@ -2551,7 +2551,7 @@ LABEL_178:
   if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *v192 = v60;
+    *v192 = markAllFileChangesAsDeleted;
     _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to mark file changes as unmodified: %@", buf, 0xCu);
 LABEL_86:
     _MBLog();
@@ -2559,8 +2559,8 @@ LABEL_86:
 
 LABEL_87:
 
-  v63 = v60;
-  *v165 = v60;
+  v63 = markAllFileChangesAsDeleted;
+  *v165 = markAllFileChangesAsDeleted;
 
   v16 = 0;
 LABEL_181:
@@ -2571,22 +2571,22 @@ LABEL_183:
   return v16;
 }
 
-- (BOOL)reserveQuotaWithError:(id *)a3
+- (BOOL)reserveQuotaWithError:(id *)error
 {
-  v5 = [(MBCKEngine *)self persona];
-  if (!v5)
+  persona = [(MBCKEngine *)self persona];
+  if (!persona)
   {
     __assert_rtn("[MBCKBackupEngine reserveQuotaWithError:]", "MBCKBackupEngine.m", 1112, "persona");
   }
 
-  v6 = [(MBCKEngine *)self ckOperationTracker];
-  if (!v6)
+  ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+  if (!ckOperationTracker)
   {
     __assert_rtn("[MBCKBackupEngine reserveQuotaWithError:]", "MBCKBackupEngine.m", 1114, "tracker");
   }
 
-  v7 = [(MBCKBackupEngine *)self currentSnapshot];
-  if (!v7)
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  if (!currentSnapshot)
   {
     __assert_rtn("[MBCKBackupEngine reserveQuotaWithError:]", "MBCKBackupEngine.m", 1116, "currentSnapshot");
   }
@@ -2596,17 +2596,17 @@ LABEL_183:
   v63 = &v62;
   v64 = 0x2020000000;
   v65 = 0;
-  [v7 snapshotFormat];
+  [currentSnapshot snapshotFormat];
   if (MBSnapshotFormatContainsManifests())
   {
-    v9 = [(MBCKEngine *)self cache];
+    cache = [(MBCKEngine *)self cache];
     v59[0] = _NSConcreteStackBlock;
     v59[1] = 3221225472;
     v59[2] = sub_100071CE4;
     v59[3] = &unk_1003BC900;
     v60 = v8;
     v61 = &v62;
-    v10 = [v9 summarizeFileChangesGroupByDomain:v59];
+    v10 = [cache summarizeFileChangesGroupByDomain:v59];
 
     if (v10)
     {
@@ -2619,10 +2619,10 @@ LABEL_183:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v12 = v10;
-        *a3 = v10;
+        *error = v10;
       }
 
       v13 = 0;
@@ -2633,14 +2633,14 @@ LABEL_183:
 
   else
   {
-    v15 = [(MBCKBackupEngine *)self pendingSnapshotDB];
+    pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_100071D64;
     v56[3] = &unk_1003BC928;
     v57 = v8;
     v58 = &v62;
-    v16 = [v15 fetchQuotaReservationByDomain:a3 block:v56];
+    v16 = [pendingSnapshotDB fetchQuotaReservationByDomain:error block:v56];
 
     if ((v16 & 1) == 0)
     {
@@ -2648,9 +2648,9 @@ LABEL_183:
     }
   }
 
-  v17 = [v7 type];
+  type = [currentSnapshot type];
   IsFull = MBSnapshotTypeIsFull();
-  if (v17)
+  if (type)
   {
     v19 = IsFull;
   }
@@ -2664,74 +2664,74 @@ LABEL_183:
   if (v19 != 1 || v20)
   {
     v23 = [NSNumber numberWithUnsignedLongLong:v20];
-    v24 = [(MBCKBackupEngine *)self telemetry];
-    [v24 setBackupTotalSize:v23];
+    telemetry = [(MBCKBackupEngine *)self telemetry];
+    [telemetry setBackupTotalSize:v23];
 
     v25 = [NSNumber numberWithUnsignedLongLong:v63[3]];
     [v8 setObject:v25 forKeyedSubscript:@"_TotalSize"];
 
-    [v5 setPreferencesValue:v8 forKey:@"PreflightSizing"];
+    [persona setPreferencesValue:v8 forKey:@"PreflightSizing"];
     v26 = v63[3];
-    v27 = [(MBCKBackupEngine *)self attemptSummary];
-    [v27 setTotalQuotaReservation:v26];
+    attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+    [attemptSummary setTotalQuotaReservation:v26];
 
     v28 = MBDeviceName();
-    v29 = [(MBCKEngine *)self device];
-    [v29 setDeviceName:v28];
+    device = [(MBCKEngine *)self device];
+    [device setDeviceName:v28];
 
     [(MBCKBackupEngine *)self _saveLastPendingSnapshotSize:v63[3]];
     v30 = v63[3];
-    v31 = [(MBCKEngine *)self device];
-    [v31 setPendingSnapshotQuotaReserved:v30];
+    device2 = [(MBCKEngine *)self device];
+    [device2 setPendingSnapshotQuotaReserved:v30];
 
-    v32 = [(MBCKSnapshot *)self->_currentSnapshot type];
-    v33 = [(MBCKEngine *)self device];
-    [v33 setPendingSnapshotType:v32];
+    type2 = [(MBCKSnapshot *)self->_currentSnapshot type];
+    device3 = [(MBCKEngine *)self device];
+    [device3 setPendingSnapshotType:type2];
 
-    v34 = [(MBCKSnapshot *)self->_currentSnapshot backupPolicy];
-    v35 = [(MBCKEngine *)self device];
-    [v35 setPendingSnapshotBackupPolicy:v34];
+    backupPolicy = [(MBCKSnapshot *)self->_currentSnapshot backupPolicy];
+    device4 = [(MBCKEngine *)self device];
+    [device4 setPendingSnapshotBackupPolicy:backupPolicy];
 
-    v36 = [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
-    v37 = [(MBCKEngine *)self device];
-    [v37 setPendingSnapshotFormat:v36];
+    snapshotFormat = [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
+    device5 = [(MBCKEngine *)self device];
+    [device5 setPendingSnapshotFormat:snapshotFormat];
 
-    v38 = [(MBCKEngine *)self device];
-    v39 = [v38 domainHMACsToRepairOnDisk];
-    v40 = [v39 count] == 0;
+    device6 = [(MBCKEngine *)self device];
+    domainHMACsToRepairOnDisk = [device6 domainHMACsToRepairOnDisk];
+    v40 = [domainHMACsToRepairOnDisk count] == 0;
 
-    v41 = [(MBCKEngine *)self device];
+    device7 = [(MBCKEngine *)self device];
     if (v40)
     {
-      [v41 setPendingRepairedDomainHMACs:0];
+      [device7 setPendingRepairedDomainHMACs:0];
     }
 
     else
     {
-      v42 = [v41 domainHMACsToRepairOnDisk];
-      v43 = [(MBCKEngine *)self device];
-      [v43 setPendingRepairedDomainHMACs:v42];
+      domainHMACsToRepairOnDisk2 = [device7 domainHMACsToRepairOnDisk];
+      device8 = [(MBCKEngine *)self device];
+      [device8 setPendingRepairedDomainHMACs:domainHMACsToRepairOnDisk2];
     }
 
-    v44 = [(MBCKEngine *)self device];
-    [v44 setPendingSnapshot:0];
+    device9 = [(MBCKEngine *)self device];
+    [device9 setPendingSnapshot:0];
 
-    v45 = [(MBCKEngine *)self device];
-    v46 = [v45 saveWithOperationTracker:v6 error:a3];
+    device10 = [(MBCKEngine *)self device];
+    v46 = [device10 saveWithOperationTracker:ckOperationTracker error:error];
 
     if (v46)
     {
-      v47 = [(MBCKEngine *)self device];
-      v48 = [v47 deviceName];
-      [(MBCKSnapshot *)self->_currentSnapshot setDeviceName:v48];
+      device11 = [(MBCKEngine *)self device];
+      deviceName = [device11 deviceName];
+      [(MBCKSnapshot *)self->_currentSnapshot setDeviceName:deviceName];
 
       currentSnapshot = self->_currentSnapshot;
-      v50 = [(MBCKEngine *)self device];
-      [v50 setPendingSnapshot:currentSnapshot];
+      device12 = [(MBCKEngine *)self device];
+      [device12 setPendingSnapshot:currentSnapshot];
 
-      v51 = [(MBCKBackupEngine *)self pluginNotifier];
+      pluginNotifier = [(MBCKBackupEngine *)self pluginNotifier];
       v55 = 0;
-      LOBYTE(currentSnapshot) = [v51 notifyPluginsOfPreparedBackupWithError:&v55];
+      LOBYTE(currentSnapshot) = [pluginNotifier notifyPluginsOfPreparedBackupWithError:&v55];
       v14 = v55;
 
       if (currentSnapshot)
@@ -2749,11 +2749,11 @@ LABEL_183:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v53 = v14;
         v13 = 0;
-        *a3 = v14;
+        *error = v14;
         goto LABEL_39;
       }
 
@@ -2778,11 +2778,11 @@ LABEL_39:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v14 = MBStringForSnapshotType();
-      v22 = [v14 localizedCapitalizedString];
-      *a3 = [MBError errorWithCode:205 format:@"%@ backup has a reserved quota size of 0", v22];
+      localizedCapitalizedString = [v14 localizedCapitalizedString];
+      *error = [MBError errorWithCode:205 format:@"%@ backup has a reserved quota size of 0", localizedCapitalizedString];
 
       goto LABEL_27;
     }
@@ -2796,13 +2796,13 @@ LABEL_40:
   return v13;
 }
 
-- (BOOL)_handleSkippedFilesWithError:(id *)a3
+- (BOOL)_handleSkippedFilesWithError:(id *)error
 {
-  v5 = [(MBCKBackupEngine *)self skippedFileTracker];
-  v6 = [v5 skippedFilesCount];
-  if (v6)
+  skippedFileTracker = [(MBCKBackupEngine *)self skippedFileTracker];
+  skippedFilesCount = [skippedFileTracker skippedFilesCount];
+  if (skippedFilesCount)
   {
-    v7 = v6;
+    v7 = skippedFilesCount;
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -2812,15 +2812,15 @@ LABEL_40:
       _MBLog();
     }
 
-    v9 = [(MBCKEngine *)self persona];
-    v10 = [v5 skippedFilesPlistValue];
-    [v9 setPreferencesValue:v10 forKey:@"SkippedFilesFromBackup"];
+    persona = [(MBCKEngine *)self persona];
+    skippedFilesPlistValue = [skippedFileTracker skippedFilesPlistValue];
+    [persona setPreferencesValue:skippedFilesPlistValue forKey:@"SkippedFilesFromBackup"];
 
-    v11 = [(MBCKEngine *)self persona];
-    v12 = [v11 skippedFileRecordsPlistPath];
+    persona2 = [(MBCKEngine *)self persona];
+    skippedFileRecordsPlistPath = [persona2 skippedFileRecordsPlistPath];
 
     v42 = 0;
-    v13 = [v5 writeSkippedFilesToPlistWithError:&v42];
+    v13 = [skippedFileTracker writeSkippedFilesToPlistWithError:&v42];
     v14 = v42;
     if ((v13 & 1) == 0)
     {
@@ -2832,7 +2832,7 @@ LABEL_40:
         _MBLog();
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -2843,7 +2843,7 @@ LABEL_40:
 
     if (v7 >= 0xB)
     {
-      if (!a3)
+      if (!error)
       {
 LABEL_27:
 
@@ -2853,7 +2853,7 @@ LABEL_27:
 
       v15 = [MBError errorWithCode:100 format:@"Too many skipped files during scanning (%llu > %llu)", v7, 10];
 LABEL_14:
-      *a3 = v15;
+      *error = v15;
       goto LABEL_27;
     }
 
@@ -2861,13 +2861,13 @@ LABEL_14:
     v40 = v19;
     if (![(MBDomainManager *)v19 containsDomainName:@"SkippedFilesDomain"])
     {
-      v20 = [(MBCKEngine *)self persona];
-      v21 = [v20 volumeMountPoint];
-      v22 = [v12 stringByDeletingLastPathComponent];
-      v23 = [MBDomain skippedFilesDomainWithVolumeMountPoint:v21 rootPath:v22];
+      persona3 = [(MBCKEngine *)self persona];
+      volumeMountPoint = [persona3 volumeMountPoint];
+      stringByDeletingLastPathComponent = [skippedFileRecordsPlistPath stringByDeletingLastPathComponent];
+      v23 = [MBDomain skippedFilesDomainWithVolumeMountPoint:volumeMountPoint rootPath:stringByDeletingLastPathComponent];
 
-      v24 = [v12 lastPathComponent];
-      v25 = [NSSet setWithObject:v24];
+      lastPathComponent = [skippedFileRecordsPlistPath lastPathComponent];
+      v25 = [NSSet setWithObject:lastPathComponent];
       [v23 setRelativePathsToBackupAndRestore:v25];
 
       v19 = v40;
@@ -2878,29 +2878,29 @@ LABEL_14:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = v12;
+      v45 = skippedFileRecordsPlistPath;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Scanning the skipped files plist (%@) from the live filesystem", buf, 0xCu);
       _MBLog();
     }
 
-    v27 = [(MBCKBackupEngine *)self _createDomainTranscriberForAPFSSnapshots:0 error:a3];
+    v27 = [(MBCKBackupEngine *)self _createDomainTranscriberForAPFSSnapshots:0 error:error];
     if (v27)
     {
       v38 = [(MBDomainManager *)v19 domainForName:@"SkippedFilesDomain"];
       v43 = v38;
       v28 = [NSArray arrayWithObjects:&v43 count:1];
-      v29 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-      v30 = [(MBCKEngine *)self progressModel];
+      pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+      progressModel = [(MBCKEngine *)self progressModel];
       v41 = v14;
       v37 = v27;
-      v31 = [v27 scanDomains:v28 pendingSnapshotDB:v29 progress:v30 summary:0 error:&v41];
+      v31 = [v27 scanDomains:v28 pendingSnapshotDB:pendingSnapshotDB progress:progressModel summary:0 error:&v41];
       v39 = v41;
 
       if (v31)
       {
         v32 = [NSNumber numberWithUnsignedLongLong:v7];
-        v33 = [(MBCKBackupEngine *)self telemetry];
-        [v33 setSkippedFilesCount:v32];
+        telemetry = [(MBCKBackupEngine *)self telemetry];
+        [telemetry setSkippedFilesCount:v32];
 
         goto LABEL_9;
       }
@@ -2917,20 +2917,20 @@ LABEL_14:
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v35 = v39;
-        *a3 = v39;
+        *error = v39;
       }
     }
 
     goto LABEL_27;
   }
 
-  v16 = [(MBCKEngine *)self persona];
-  [v16 setPreferencesValue:0 forKey:@"SkippedFilesFromBackup"];
+  persona4 = [(MBCKEngine *)self persona];
+  [persona4 setPreferencesValue:0 forKey:@"SkippedFilesFromBackup"];
 
-  [v5 writeSkippedFilesToPlistWithError:0];
+  [skippedFileTracker writeSkippedFilesToPlistWithError:0];
 LABEL_9:
   v17 = 1;
 LABEL_28:
@@ -2938,7 +2938,7 @@ LABEL_28:
   return v17;
 }
 
-- (BOOL)prepareToUploadChangesWithError:(id *)a3
+- (BOOL)prepareToUploadChangesWithError:(id *)error
 {
   v5 = self->_currentSnapshot;
   if (!v5)
@@ -2947,13 +2947,13 @@ LABEL_28:
   }
 
   v6 = v5;
-  if ([(MBCKEngine *)self handleCancelation:a3])
+  if ([(MBCKEngine *)self handleCancelation:error])
   {
     goto LABEL_33;
   }
 
   [(MBCKBackupEngine *)self _releaseLockAssertion];
-  if (![(MBCKBackupEngine *)self _handleSkippedFilesWithError:a3])
+  if (![(MBCKBackupEngine *)self _handleSkippedFilesWithError:error])
   {
     goto LABEL_33;
   }
@@ -2962,21 +2962,21 @@ LABEL_28:
   if (MBSnapshotFormatContainsManifests())
   {
     v7 = objc_opt_new();
-    v8 = [(MBCKEngine *)self cache];
+    cache = [(MBCKEngine *)self cache];
     v64[0] = _NSConcreteStackBlock;
     v64[1] = 3221225472;
     v64[2] = sub_100072AD8;
     v64[3] = &unk_1003BC450;
     v9 = v7;
     v65 = v9;
-    v10 = [v8 enumerateChangedDomainNames:v64];
+    v10 = [cache enumerateChangedDomainNames:v64];
 
     if (v10)
     {
-      if (a3)
+      if (error)
       {
         v11 = v10;
-        *a3 = v10;
+        *error = v10;
       }
 
       v12 = MBGetDefaultLog();
@@ -2991,21 +2991,21 @@ LABEL_28:
       goto LABEL_33;
     }
 
-    v13 = [(MBCKEngine *)self cache];
-    v14 = [(MBCKSnapshot *)self->_currentSnapshot snapshotID];
+    cache2 = [(MBCKEngine *)self cache];
+    snapshotID = [(MBCKSnapshot *)self->_currentSnapshot snapshotID];
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
     v63[2] = sub_100072AFC;
     v63[3] = &unk_1003BC450;
     v63[4] = self;
-    v15 = [v13 enumerateDomainNamesOfPendingSnapshot:v14 domainCallback:v63];
+    v15 = [cache2 enumerateDomainNamesOfPendingSnapshot:snapshotID domainCallback:v63];
 
     if (v15)
     {
-      if (a3)
+      if (error)
       {
         v16 = v15;
-        *a3 = v15;
+        *error = v15;
       }
 
       v17 = MBGetDefaultLog();
@@ -3020,20 +3020,20 @@ LABEL_28:
       goto LABEL_33;
     }
 
-    v18 = [(MBEngine *)self domainManager];
-    if (!v18)
+    domainManager = [(MBEngine *)self domainManager];
+    if (!domainManager)
     {
       __assert_rtn("[MBCKBackupEngine prepareToUploadChangesWithError:]", "MBCKBackupEngine.m", 1293, "domainManager");
     }
 
-    v19 = [v9 allObjects];
+    allObjects = [v9 allObjects];
     v61[0] = _NSConcreteStackBlock;
     v61[1] = 3221225472;
     v61[2] = sub_100072BF0;
     v61[3] = &unk_1003BC950;
-    v45 = v18;
+    v45 = domainManager;
     v62 = v45;
-    obj = [v19 sortedArrayUsingComparator:v61];
+    obj = [allObjects sortedArrayUsingComparator:v61];
 
     v57 = 0;
     v58 = &v57;
@@ -3047,7 +3047,7 @@ LABEL_28:
     v50 = &v49;
     v51 = 0x2020000000;
     v52 = 0;
-    v20 = [(MBCKEngine *)self cache];
+    cache3 = [(MBCKEngine *)self cache];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_100072C7C;
@@ -3056,7 +3056,7 @@ LABEL_28:
     v48[5] = &v57;
     v48[6] = &v53;
     v48[7] = &v49;
-    v21 = [v20 summarizeFileChanges:v48];
+    v21 = [cache3 summarizeFileChanges:v48];
 
     v46 = [NSByteCountFormatter stringFromByteCount:v54[3] countStyle:0];
     v44 = v21;
@@ -3095,10 +3095,10 @@ LABEL_28:
 
     if (v44)
     {
-      if (a3)
+      if (error)
       {
         v29 = v44;
-        *a3 = v44;
+        *error = v44;
       }
     }
 
@@ -3121,8 +3121,8 @@ LABEL_28:
   {
     v57 = 0;
     v53 = 0;
-    v30 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-    v31 = [v30 fetchPendingUploadSizeInBytes:&v57 assetCount:&v53 error:a3];
+    pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+    v31 = [pendingSnapshotDB fetchPendingUploadSizeInBytes:&v57 assetCount:&v53 error:error];
 
     if (!v31)
     {
@@ -3148,8 +3148,8 @@ LABEL_33:
       _MBLog();
     }
 
-    v34 = [(MBCKEngine *)self progressModel];
-    [v34 willTransferItemsWithSize:v57 count:v53];
+    progressModel = [(MBCKEngine *)self progressModel];
+    [progressModel willTransferItemsWithSize:v57 count:v53];
   }
 
   v35 = [(MBCKEngine *)self progressModel:v38];
@@ -3161,7 +3161,7 @@ LABEL_34:
   return v36;
 }
 
-- (BOOL)uploadAssetsWithError:(id *)a3
+- (BOOL)uploadAssetsWithError:(id *)error
 {
   [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
   if (!MBSnapshotFormatContainsFileLists())
@@ -3169,49 +3169,49 @@ LABEL_34:
     return 1;
   }
 
-  v5 = [(MBEngine *)self domainManager];
-  v6 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-  v7 = [(MBCKEngine *)self device];
-  v8 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
-  v9 = [(MBCKEngine *)self ckOperationTracker];
-  v10 = [(MBEngine *)self settingsContext];
-  v11 = [v10 plugins];
-  v12 = [(MBCKBackupEngine *)self attemptSummary];
+  domainManager = [(MBEngine *)self domainManager];
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  device = [(MBCKEngine *)self device];
+  mountedSnapshotTracker = [(MBCKBackupEngine *)self mountedSnapshotTracker];
+  ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+  settingsContext = [(MBEngine *)self settingsContext];
+  plugins = [settingsContext plugins];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100072E80;
   v15[3] = &unk_1003BC8B8;
   v15[4] = self;
-  v13 = MBUploadAssetsForBackup(v5, v6, v7, v8, v9, v11, v12, a3, v15);
+  v13 = MBUploadAssetsForBackup(domainManager, pendingSnapshotDB, device, mountedSnapshotTracker, ckOperationTracker, plugins, attemptSummary, error, v15);
 
   return v13;
 }
 
-- (BOOL)uploadChangesWithError:(id *)a3
+- (BOOL)uploadChangesWithError:(id *)error
 {
   [(MBCKSnapshot *)self->_currentSnapshot snapshotFormat];
   if (MBSnapshotFormatContainsManifests())
   {
-    v110 = a3;
-    if (!a3)
+    errorCopy = error;
+    if (!error)
     {
       __assert_rtn("[MBCKBackupEngine uploadChangesWithError:]", "MBCKBackupEngine.m", 1370, "error");
     }
 
-    v114 = [(MBCKEngine *)self serviceManager];
-    if (!v114)
+    serviceManager = [(MBCKEngine *)self serviceManager];
+    if (!serviceManager)
     {
       __assert_rtn("[MBCKBackupEngine uploadChangesWithError:]", "MBCKBackupEngine.m", 1372, "serviceManager");
     }
 
-    v120 = [(MBCKEngine *)self ckOperationTracker];
-    if (!v120)
+    ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+    if (!ckOperationTracker)
     {
       __assert_rtn("[MBCKBackupEngine uploadChangesWithError:]", "MBCKBackupEngine.m", 1374, "tracker");
     }
 
-    v113 = [(MBCKEngine *)self serviceAccount];
-    if (!v113)
+    serviceAccount = [(MBCKEngine *)self serviceAccount];
+    if (!serviceAccount)
     {
       __assert_rtn("[MBCKBackupEngine uploadChangesWithError:]", "MBCKBackupEngine.m", 1376, "serviceAccount");
     }
@@ -3276,33 +3276,33 @@ LABEL_34:
 
           v15 = *(*(&v207 + 1) + 8 * j);
           v16 = objc_autoreleasePoolPush();
-          v17 = [v15 manifestID];
-          v18 = [v15 domainName];
+          manifestID = [v15 manifestID];
+          domainName = [v15 domainName];
           v19 = MBGetDefaultLog();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            *&buf[4] = v17;
+            *&buf[4] = manifestID;
             *&buf[12] = 2112;
-            *&buf[14] = v18;
+            *&buf[14] = domainName;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Reclaiming quota from pending items for manifest %{public}@ (%@)", buf, 0x16u);
-            v104 = v17;
-            v106 = v18;
+            v104 = manifestID;
+            v106 = domainName;
             _MBLog();
           }
 
-          v20 = [(MBCKEngine *)self cache];
+          cache = [(MBCKEngine *)self cache];
           v206[0] = _NSConcreteStackBlock;
           v206[1] = 3221225472;
           v206[2] = sub_100074378;
           v206[3] = &unk_1003BC9A0;
           v206[4] = v211;
-          v21 = [v20 summarizeCloudFilesPendingDeleteForManifestID:v17 callback:v206];
+          v21 = [cache summarizeCloudFilesPendingDeleteForManifestID:manifestID callback:v206];
 
           v22 = dispatch_group_create();
           dispatch_group_enter(v22);
-          v23 = [v120 startBatchDelete];
-          [v23 setRetryWhenNetworkDisconnected:0];
+          startBatchDelete = [ckOperationTracker startBatchDelete];
+          [startBatchDelete setRetryWhenNetworkDisconnected:0];
           dispatch_group_enter(v22);
           v204[0] = _NSConcreteStackBlock;
           v204[1] = 3221225472;
@@ -3310,19 +3310,19 @@ LABEL_34:
           v204[3] = &unk_1003BC0B0;
           v24 = v22;
           v205 = v24;
-          [v15 deletePendingCloudFilesWithBatchDelete:v23 completion:v204];
+          [v15 deletePendingCloudFilesWithBatchDelete:startBatchDelete completion:v204];
           v199[0] = _NSConcreteStackBlock;
           v199[1] = 3221225472;
           v199[2] = sub_100074398;
           v199[3] = &unk_1003BC9C8;
-          v25 = v17;
+          v25 = manifestID;
           v200 = v25;
-          v26 = v18;
+          v26 = domainName;
           v201 = v26;
-          v202 = self;
+          selfCopy = self;
           v27 = v24;
           v203 = v27;
-          [v120 finishBatchDelete:v23 completion:v199];
+          [ckOperationTracker finishBatchDelete:startBatchDelete completion:v199];
           MBGroupWaitForever();
 
           objc_autoreleasePoolPop(v16);
@@ -3334,7 +3334,7 @@ LABEL_34:
       while (v13);
     }
 
-    v117 = [v120 startBatchSave];
+    startBatchSave = [ckOperationTracker startBatchSave];
     v195 = 0;
     v196 = &v195;
     v197 = 0x2020000000;
@@ -3380,17 +3380,17 @@ LABEL_34:
       _MBLog();
     }
 
-    v31 = [v114 openCacheWithAccount:v113 accessType:2 cached:0 error:v110];
+    v31 = [serviceManager openCacheWithAccount:serviceAccount accessType:2 cached:0 error:errorCopy];
     if (!v31)
     {
       v71 = MBGetDefaultLog();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_FAULT))
       {
-        v76 = *v110;
+        v76 = *errorCopy;
         *buf = 138412290;
         *&buf[4] = v76;
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_FAULT, "=cloud-backup= Failed to open readonly cache %@", buf, 0xCu);
-        v105 = *v110;
+        v105 = *errorCopy;
         _MBLog();
       }
 
@@ -3468,7 +3468,7 @@ LABEL_31:
           v147 = buf;
           v40 = obja;
           v145 = v40;
-          v146 = v117;
+          v146 = startBatchSave;
           v148 = &v162;
           v149 = &v195;
           v150 = &v158;
@@ -3531,10 +3531,10 @@ LABEL_31:
             v143 = 0u;
             v140 = 0u;
             v141 = 0u;
-            v49 = [(MBCKSnapshot *)self->_currentSnapshot manifestsByDomainName];
-            v50 = [v49 allValues];
+            manifestsByDomainName = [(MBCKSnapshot *)self->_currentSnapshot manifestsByDomainName];
+            allValues = [manifestsByDomainName allValues];
 
-            v51 = [v50 countByEnumeratingWithState:&v140 objects:v220 count:16];
+            v51 = [allValues countByEnumeratingWithState:&v140 objects:v220 count:16];
             if (v51)
             {
               v52 = *v141;
@@ -3544,22 +3544,22 @@ LABEL_31:
                 {
                   if (*v141 != v52)
                   {
-                    objc_enumerationMutation(v50);
+                    objc_enumerationMutation(allValues);
                   }
 
-                  v54 = [*(*(&v140 + 1) + 8 * k) fileUploadError];
-                  if (v54)
+                  fileUploadError = [*(*(&v140 + 1) + 8 * k) fileUploadError];
+                  if (fileUploadError)
                   {
                     *(v172 + 24) = 0;
                     v55 = v182[5];
-                    v182[5] = v54;
+                    v182[5] = fileUploadError;
 
                     v32 = v112;
                     goto LABEL_56;
                   }
                 }
 
-                v51 = [v50 countByEnumeratingWithState:&v140 objects:v220 count:16];
+                v51 = [allValues countByEnumeratingWithState:&v140 objects:v220 count:16];
                 v32 = v112;
                 if (v51)
                 {
@@ -3644,9 +3644,9 @@ LABEL_56:
     if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      *&buf[4] = v117;
+      *&buf[4] = startBatchSave;
       _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_INFO, "=cloud-backup= Waiting for %{public}@ to complete", buf, 0xCu);
-      v104 = v117;
+      v104 = startBatchSave;
       _MBLog();
     }
 
@@ -3660,22 +3660,22 @@ LABEL_56:
     v136 = &v195;
     v70 = v32;
     v128 = v70;
-    v129 = self;
-    v130 = v120;
-    v131 = v114;
-    v132 = v113;
+    selfCopy2 = self;
+    v130 = ckOperationTracker;
+    v131 = serviceManager;
+    v132 = serviceAccount;
     v137 = &v171;
     v138 = &v175;
     v139 = &v181;
     v71 = v69;
     v133 = v71;
-    [v130 finishBatchSave:v117 completion:v127];
-    v72 = [v117 throughputEstimator];
-    v73 = [v72 throughputs];
-    v74 = [(MBCKBackupEngine *)self telemetry];
-    [v74 setThroughputs:v73];
+    [v130 finishBatchSave:startBatchSave completion:v127];
+    throughputEstimator = [startBatchSave throughputEstimator];
+    throughputs = [throughputEstimator throughputs];
+    telemetry = [(MBCKBackupEngine *)self telemetry];
+    [telemetry setThroughputs:throughputs];
 
-    if ([(MBCKEngine *)self handleCancelation:v110])
+    if ([(MBCKEngine *)self handleCancelation:errorCopy])
     {
       v75 = 0;
     }
@@ -3702,14 +3702,14 @@ LABEL_56:
             }
 
             v81 = [(MBCKSnapshot *)self->_currentSnapshot manifestForDomainName:*(*(&v123 + 1) + 8 * m), v104, v106, v107, v108, *&v109];
-            v82 = [v81 fileUploadError];
+            fileUploadError2 = [v81 fileUploadError];
 
-            if (v82)
+            if (fileUploadError2)
             {
               *(v172 + 24) = 0;
-              v83 = [v81 fileUploadError];
+              fileUploadError3 = [v81 fileUploadError];
               v84 = v182[5];
-              v182[5] = v83;
+              v182[5] = fileUploadError3;
 
               goto LABEL_83;
             }
@@ -3743,25 +3743,25 @@ LABEL_83:
             }
 
             sub_10012F338(@"success is false and uploadError and retryError are both nil", v97, v98, v99, v100, v101, v102, v103, v104);
-            *v110 = v75 = 0;
+            *errorCopy = v75 = 0;
             goto LABEL_95;
           }
         }
 
-        *v110 = v85;
+        *errorCopy = v85;
       }
 
-      v86 = [NSNumber numberWithUnsignedLongLong:v188[3], v104];
-      v87 = [(MBCKBackupEngine *)self telemetry];
-      [v87 setQueuedSize:v86];
+      v104 = [NSNumber numberWithUnsignedLongLong:v188[3], v104];
+      telemetry2 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry2 setQueuedSize:v104];
 
       v88 = [NSNumber numberWithUnsignedLongLong:v196[3] + v192[3]];
-      v89 = [(MBCKBackupEngine *)self telemetry];
-      [v89 setQueuedFileCount:v88];
+      telemetry3 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry3 setQueuedFileCount:v88];
 
-      v90 = [(MBCKEngine *)self cache];
+      cache2 = [(MBCKEngine *)self cache];
       v122 = 0;
-      v91 = [v90 countFilesMissingEncryptionKeysWithError:&v122];
+      v91 = [cache2 countFilesMissingEncryptionKeysWithError:&v122];
       v92 = v122;
 
       if (v91)
@@ -3776,14 +3776,14 @@ LABEL_83:
         }
 
         [MBError errorWithCode:209 format:@"Found %llu files with missing encryption keys during upload", v91];
-        *v110 = v75 = 0;
+        *errorCopy = v75 = 0;
       }
 
       else if (v92)
       {
         v94 = v92;
         v75 = 0;
-        *v110 = v92;
+        *errorCopy = v92;
       }
 
       else
@@ -3811,10 +3811,10 @@ LABEL_96:
   return v75 & 1;
 }
 
-- (BOOL)uploadDomainRecords:(id *)a3
+- (BOOL)uploadDomainRecords:(id *)records
 {
-  v5 = [(MBCKBackupEngine *)self currentSnapshot];
-  [v5 snapshotFormat];
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  [currentSnapshot snapshotFormat];
   v6 = MBSnapshotFormatContainsFileLists();
 
   if (!v6)
@@ -3822,21 +3822,21 @@ LABEL_96:
     return 1;
   }
 
-  v7 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-  v8 = [(MBCKEngine *)self device];
-  v9 = [v8 hmacKey];
-  v10 = [(MBCKEngine *)self device];
-  v11 = [v10 assetIDPrefix];
-  v12 = [(MBCKEngine *)self ckOperationTracker];
-  v13 = [(MBCKBackupEngine *)self attemptSummary];
-  v14 = MBUploadDomainRecordsForBackup(v7, v9, v11, v12, v13, a3);
+  pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+  device = [(MBCKEngine *)self device];
+  hmacKey = [device hmacKey];
+  device2 = [(MBCKEngine *)self device];
+  assetIDPrefix = [device2 assetIDPrefix];
+  ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+  v14 = MBUploadDomainRecordsForBackup(pendingSnapshotDB, hmacKey, assetIDPrefix, ckOperationTracker, attemptSummary, records);
 
   return v14;
 }
 
-- (BOOL)commitSnapshotWithError:(id *)a3
+- (BOOL)commitSnapshotWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKBackupEngine commitSnapshotWithError:]", "MBCKBackupEngine.m", 1703, "error");
   }
@@ -3844,13 +3844,13 @@ LABEL_96:
   v5 = self->_currentSnapshot;
   if (v5)
   {
-    v6 = [(MBCKEngine *)self device];
-    v7 = [(MBCKEngine *)self ckOperationTracker];
-    v8 = [(MBCKBackupEngine *)self pendingSnapshotDB];
-    v9 = [(MBEngine *)self appManager];
-    v10 = [(MBCKEngine *)self properties];
-    v11 = [(MBCKBackupEngine *)self attemptSummary];
-    v12 = MBCommitSnapshot(v5, v6, v7, v8, v9, v10, v11, a3);
+    device = [(MBCKEngine *)self device];
+    ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+    pendingSnapshotDB = [(MBCKBackupEngine *)self pendingSnapshotDB];
+    appManager = [(MBEngine *)self appManager];
+    properties = [(MBCKEngine *)self properties];
+    attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+    v12 = MBCommitSnapshot(v5, device, ckOperationTracker, pendingSnapshotDB, appManager, properties, attemptSummary, error);
 
     if (v12)
     {
@@ -3870,62 +3870,62 @@ LABEL_96:
   else
   {
     [MBError errorWithCode:205 format:@"Attempting to commit a snapshot that doesn't exist"];
-    *a3 = v14 = 0;
+    *error = v14 = 0;
   }
 
   return v14;
 }
 
-- (BOOL)_verifySnapshotWithError:(id *)a3
+- (BOOL)_verifySnapshotWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKBackupEngine _verifySnapshotWithError:]", "MBCKBackupEngine.m", 1730, "error");
   }
 
-  v5 = [(MBEngine *)self backupPolicy];
-  v6 = [(MBCKBackupEngine *)self backupReason];
-  v7 = [(MBCKBackupEngine *)self attemptSummary];
-  v8 = [v7 snapshotFormat];
-  v9 = [(MBCKEngine *)self serviceAccount];
-  LOBYTE(v5) = [MBBackupSnapshotIntegrityVerifier shouldRunVerifierWithBackupPolicy:v5 backupReason:v6 snapshotFormat:v8 account:v9];
+  backupPolicy = [(MBEngine *)self backupPolicy];
+  backupReason = [(MBCKBackupEngine *)self backupReason];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+  snapshotFormat = [attemptSummary snapshotFormat];
+  serviceAccount = [(MBCKEngine *)self serviceAccount];
+  LOBYTE(backupPolicy) = [MBBackupSnapshotIntegrityVerifier shouldRunVerifierWithBackupPolicy:backupPolicy backupReason:backupReason snapshotFormat:snapshotFormat account:serviceAccount];
 
-  v10 = [(MBCKBackupEngine *)self telemetry];
-  v11 = v10;
-  if (v5)
+  telemetry = [(MBCKBackupEngine *)self telemetry];
+  v11 = telemetry;
+  if (backupPolicy)
   {
-    v37 = a3;
-    [v10 setSnapshotVerificationEnabled:1];
+    errorCopy = error;
+    [telemetry setSnapshotVerificationEnabled:1];
 
-    v12 = [(MBCKBackupEngine *)self attemptSummary];
-    [v12 setSnapshotVerificationRan:1];
+    attemptSummary2 = [(MBCKBackupEngine *)self attemptSummary];
+    [attemptSummary2 setSnapshotVerificationRan:1];
 
-    v13 = [(MBCKBackupEngine *)self telemetry];
-    [v13 setSnapshotVerificationStatus:@"CANCELLED"];
+    telemetry2 = [(MBCKBackupEngine *)self telemetry];
+    [telemetry2 setSnapshotVerificationStatus:@"CANCELLED"];
 
     v43 = 0.0;
     v14 = [[MBBackupSnapshotIntegrityVerifier alloc] initWithDelegate:self];
-    v15 = [(MBCKEngine *)self ckOperationTracker];
-    v39 = [(MBCKBackupEngine *)self _scannerMode];
-    v38 = [(MBEngine *)self enginePolicy];
-    v16 = [(MBCKBackupEngine *)self mountedSnapshotTracker];
-    v17 = [(MBEngine *)self domainManager];
-    v18 = [(MBCKEngine *)self device];
-    v19 = [v18 recordID];
-    v20 = [(MBCKEngine *)self device];
-    v21 = [v20 hmacKey];
-    v22 = [(MBCKBackupEngine *)self attemptSummary];
+    ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+    _scannerMode = [(MBCKBackupEngine *)self _scannerMode];
+    enginePolicy = [(MBEngine *)self enginePolicy];
+    mountedSnapshotTracker = [(MBCKBackupEngine *)self mountedSnapshotTracker];
+    domainManager = [(MBEngine *)self domainManager];
+    device = [(MBCKEngine *)self device];
+    recordID = [device recordID];
+    device2 = [(MBCKEngine *)self device];
+    hmacKey = [device2 hmacKey];
+    attemptSummary3 = [(MBCKBackupEngine *)self attemptSummary];
     v41 = v14;
     v42 = 0;
     v23 = v14;
-    v24 = v15;
-    LOBYTE(v15) = [(MBBackupSnapshotIntegrityVerifier *)v23 verifySnapshotAfterCommitWithOperationTracker:v15 scanMode:v39 enginePolicy:v38 snapshotTracker:v16 domainManager:v17 deviceRecordID:v19 hmacKey:v21 backupAttemptSummary:v22 duration:&v43 error:&v42];
+    v24 = ckOperationTracker;
+    LOBYTE(ckOperationTracker) = [(MBBackupSnapshotIntegrityVerifier *)v23 verifySnapshotAfterCommitWithOperationTracker:ckOperationTracker scanMode:_scannerMode enginePolicy:enginePolicy snapshotTracker:mountedSnapshotTracker domainManager:domainManager deviceRecordID:recordID hmacKey:hmacKey backupAttemptSummary:attemptSummary3 duration:&v43 error:&v42];
     v40 = v42;
 
-    if (v15)
+    if (ckOperationTracker)
     {
-      v25 = [(MBCKBackupEngine *)self telemetry];
-      [v25 setSnapshotVerificationStatus:@"PASS"];
+      telemetry3 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry3 setSnapshotVerificationStatus:@"PASS"];
       v26 = v40;
     }
 
@@ -3943,26 +3943,26 @@ LABEL_96:
           _MBLog();
         }
 
-        v30 = [(MBCKBackupEngine *)self telemetry];
-        [v30 setSnapshotVerificationStatus:@"FAIL"];
+        telemetry4 = [(MBCKBackupEngine *)self telemetry];
+        [telemetry4 setSnapshotVerificationStatus:@"FAIL"];
 
         v31 = +[MBTapToRadar sharedInstance];
-        v32 = [(MBCKEngine *)self persona];
-        [v31 reportBackupVerificationFailure:v40 persona:v32];
+        persona = [(MBCKEngine *)self persona];
+        [v31 reportBackupVerificationFailure:v40 persona:persona];
 
         v33 = v40;
         v28 = 0;
-        *v37 = v40;
+        *errorCopy = v40;
         goto LABEL_12;
       }
 
-      v25 = [(MBCKBackupEngine *)self telemetry];
-      [v25 setSnapshotVerificationCancellationError:v40];
+      telemetry3 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry3 setSnapshotVerificationCancellationError:v40];
     }
 
     v34 = v43;
-    v35 = [(MBCKBackupEngine *)self telemetry];
-    [v35 setSnapshotVerificationDuration:v34];
+    telemetry5 = [(MBCKBackupEngine *)self telemetry];
+    [telemetry5 setSnapshotVerificationDuration:v34];
 
     v28 = 1;
 LABEL_12:
@@ -3970,17 +3970,17 @@ LABEL_12:
     return v28;
   }
 
-  [v10 setSnapshotVerificationEnabled:0];
+  [telemetry setSnapshotVerificationEnabled:0];
 
-  v27 = [(MBCKBackupEngine *)self attemptSummary];
-  [v27 setSnapshotVerificationRan:0];
+  attemptSummary4 = [(MBCKBackupEngine *)self attemptSummary];
+  [attemptSummary4 setSnapshotVerificationRan:0];
 
   return 1;
 }
 
-- (BOOL)finishBackupWithError:(id *)a3
+- (BOOL)finishBackupWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBCKBackupEngine finishBackupWithError:]", "MBCKBackupEngine.m", 1775, "error");
   }
@@ -3988,13 +3988,13 @@ LABEL_12:
   v5 = [(MBCKBackupEngine *)self _verifySnapshotWithError:?];
   if (v5)
   {
-    if ([(MBCKBackupEngine *)self _notifyPluginsOfBackupEnded:0 error:a3])
+    if ([(MBCKBackupEngine *)self _notifyPluginsOfBackupEnded:0 error:error])
     {
       -[MBCKBackupEngine _unmountSnapshotsAndRemoveThem:](self, "_unmountSnapshotsAndRemoveThem:", [objc_opt_class() _shouldRemoveSnapshotAfterError:0]);
-      v6 = [(MBCKEngine *)self cache];
-      v7 = [v6 size];
-      v8 = [(MBCKBackupEngine *)self telemetry];
-      [v8 setCacheSize:v7];
+      cache = [(MBCKEngine *)self cache];
+      v7 = [cache size];
+      telemetry = [(MBCKBackupEngine *)self telemetry];
+      [telemetry setCacheSize:v7];
 
       LOBYTE(v5) = 1;
     }
@@ -4018,16 +4018,16 @@ LABEL_12:
 
 - (void)resumeWatchdogIfNeeded
 {
-  v3 = [(MBCKBackupEngine *)self lastWatchdogResume];
+  lastWatchdogResume = [(MBCKBackupEngine *)self lastWatchdogResume];
 
-  if (!v3)
+  if (!lastWatchdogResume)
   {
     v4 = +[NSDate date];
     [(MBCKBackupEngine *)self setLastWatchdogResume:v4];
   }
 
-  v5 = [(MBCKBackupEngine *)self lastWatchdogResume];
-  [v5 timeIntervalSinceNow];
+  lastWatchdogResume2 = [(MBCKBackupEngine *)self lastWatchdogResume];
+  [lastWatchdogResume2 timeIntervalSinceNow];
   v7 = v6;
 
   v8 = -v7;
@@ -4041,23 +4041,23 @@ LABEL_12:
     v9 = +[NSDate date];
     [(MBCKBackupEngine *)self setLastWatchdogResume:v9];
 
-    v10 = [(MBEngine *)self watchdog];
-    [v10 resume];
+    watchdog = [(MBEngine *)self watchdog];
+    [watchdog resume];
   }
 }
 
-- (BOOL)_notifyPluginsOfBackupEnded:(id)a3 error:(id *)a4
+- (BOOL)_notifyPluginsOfBackupEnded:(id)ended error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MBCKBackupEngine *)self pluginNotifier];
+  endedCopy = ended;
+  pluginNotifier = [(MBCKBackupEngine *)self pluginNotifier];
   v19 = 0;
-  v8 = [v7 notifyPluginsOfEndingBackupWithError:&v19];
+  v8 = [pluginNotifier notifyPluginsOfEndingBackupWithError:&v19];
   v9 = v19;
   v10 = v9;
   if (v8)
   {
     v18 = v9;
-    v11 = [v7 notifyPluginsOfEndedBackup:v6 error:&v18];
+    v11 = [pluginNotifier notifyPluginsOfEndedBackup:endedCopy error:&v18];
     v12 = v18;
 
     if (v11)
@@ -4077,7 +4077,7 @@ LABEL_14:
       _MBLog();
     }
 
-    if (!a4)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_14;
@@ -4096,12 +4096,12 @@ LABEL_14:
     _MBLog();
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_12:
     v16 = v10;
     v13 = 0;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_15;
   }
 
@@ -4111,52 +4111,52 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)fileScanner:(id)a3 isFileAddedOrModified:(id)a4
+- (BOOL)fileScanner:(id)scanner isFileAddedOrModified:(id)modified
 {
-  v5 = a4;
-  v6 = [(MBCKEngine *)self cache];
-  v7 = [MBCKFile fileWithMBFile:v5 cache:v6];
+  modifiedCopy = modified;
+  cache = [(MBCKEngine *)self cache];
+  v7 = [MBCKFile fileWithMBFile:modifiedCopy cache:cache];
 
-  LOBYTE(v6) = [v7 changeType] - 1 < 2;
-  return v6;
+  LOBYTE(cache) = [v7 changeType] - 1 < 2;
+  return cache;
 }
 
-- (id)fileScanner:(id)a3 didFindFile:(id)a4
+- (id)fileScanner:(id)scanner didFindFile:(id)file
 {
-  v5 = a4;
-  v6 = [(MBCKEngine *)self cache];
-  v7 = [MBCKFile fileWithMBFile:v5 cache:v6];
+  fileCopy = file;
+  cache = [(MBCKEngine *)self cache];
+  v7 = [MBCKFile fileWithMBFile:fileCopy cache:cache];
 
   [(MBCKSnapshot *)self->_currentSnapshot type];
   IsFull = MBSnapshotTypeIsFull();
-  v9 = [v7 changeTypeForFullBackup:IsFull];
+  encryptionKey = [v7 changeTypeForFullBackup:IsFull];
   if (IsFull)
   {
-    v10 = MBGetDefaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    keyBagValidationState = MBGetDefaultLog();
+    if (os_log_type_enabled(keyBagValidationState, OS_LOG_TYPE_INFO))
     {
-      v11 = [v5 domain];
-      v12 = [v5 relativePath];
+      domain = [fileCopy domain];
+      relativePath = [fileCopy relativePath];
       *buf = 134218498;
-      v66 = v9;
+      v66 = encryptionKey;
       v67 = 2112;
-      v68 = v11;
+      v68 = domain;
       v69 = 2112;
-      *v70 = v12;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "=cloud-backup= Detected change type %lu for %@:%@ during full backup", buf, 0x20u);
+      *v70 = relativePath;
+      _os_log_impl(&_mh_execute_header, keyBagValidationState, OS_LOG_TYPE_INFO, "=cloud-backup= Detected change type %lu for %@:%@ during full backup", buf, 0x20u);
 
-      v13 = [v5 domain];
-      [v5 relativePath];
-      v55 = v53 = v13;
-      v51 = v9;
+      domain2 = [fileCopy domain];
+      [fileCopy relativePath];
+      v55 = v53 = domain2;
+      v51 = encryptionKey;
       _MBLog();
     }
 
 LABEL_9:
 
-    if (v9)
+    if (encryptionKey)
     {
-      v18 = v9 == 3;
+      v18 = encryptionKey == 3;
     }
 
     else
@@ -4172,62 +4172,62 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  v10 = [(MBCKBackupEngine *)self keyBagValidationState];
-  if (![v10 requiresEncryptionKeyRepair]|| v9)
+  keyBagValidationState = [(MBCKBackupEngine *)self keyBagValidationState];
+  if (![keyBagValidationState requiresEncryptionKeyRepair]|| encryptionKey)
   {
     goto LABEL_9;
   }
 
-  v9 = [v7 encryptionKey];
-  if (!v9)
+  encryptionKey = [v7 encryptionKey];
+  if (!encryptionKey)
   {
 
     goto LABEL_27;
   }
 
-  v14 = [(MBCKEngine *)self device];
-  v15 = [v14 keybagManager];
-  v16 = [v7 encryptionKey];
-  v17 = [v15 hasKeybagForEncryptionKey:v16];
+  device = [(MBCKEngine *)self device];
+  keybagManager = [device keybagManager];
+  encryptionKey2 = [v7 encryptionKey];
+  v17 = [keybagManager hasKeybagForEncryptionKey:encryptionKey2];
 
   if (v17)
   {
-    v9 = 0;
+    encryptionKey = 0;
     goto LABEL_27;
   }
 
   v19 = MBGetDefaultLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v7 domain];
-    v21 = [v7 relativePath];
-    v22 = [v7 encryptionKey];
+    domain3 = [v7 domain];
+    relativePath2 = [v7 relativePath];
+    encryptionKey3 = [v7 encryptionKey];
     *buf = 138412802;
-    v66 = v20;
+    v66 = domain3;
     v67 = 2112;
-    v68 = v21;
+    v68 = relativePath2;
     v69 = 2048;
-    *v70 = [v22 length];
+    *v70 = [encryptionKey3 length];
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "=cloud-backup= Found file requiring encryption key repair %@:%@ (sz: %llu)", buf, 0x20u);
 
-    v23 = [v7 domain];
-    v24 = [v7 relativePath];
-    v25 = [v7 encryptionKey];
-    v53 = v24;
-    v55 = [v25 length];
-    v51 = v23;
+    domain4 = [v7 domain];
+    relativePath3 = [v7 relativePath];
+    encryptionKey4 = [v7 encryptionKey];
+    v53 = relativePath3;
+    v55 = [encryptionKey4 length];
+    v51 = domain4;
     _MBLog();
   }
 
-  v26 = [(MBCKBackupEngine *)self attemptSummary];
-  [v26 setEncryptionKeysPendingRepairCount:{objc_msgSend(v26, "encryptionKeysPendingRepairCount") + 1}];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+  [attemptSummary setEncryptionKeysPendingRepairCount:{objc_msgSend(attemptSummary, "encryptionKeysPendingRepairCount") + 1}];
 
-  v9 = 2;
+  encryptionKey = 2;
 LABEL_18:
   v27 = [(MBCKEngine *)self serviceAccount:v51];
-  v28 = [(MBCKEngine *)self device];
+  device2 = [(MBCKEngine *)self device];
   v64 = 0;
-  v29 = [v7 fetchEncryptionKeyWithAccount:v27 device:v28 error:&v64];
+  v29 = [v7 fetchEncryptionKeyWithAccount:v27 device:device2 error:&v64];
   v30 = v64;
 
   if ((v29 & 1) == 0)
@@ -4235,41 +4235,41 @@ LABEL_18:
     v31 = MBGetDefaultLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v61 = [v5 inodeNumber];
-      v32 = [v5 size];
+      inodeNumber = [fileCopy inodeNumber];
+      v32 = [fileCopy size];
       v63 = v30;
-      v33 = [v5 protectionClass];
-      v34 = [v5 domain];
-      v35 = [v34 name];
-      v36 = [v5 relativePath];
+      protectionClass = [fileCopy protectionClass];
+      domain5 = [fileCopy domain];
+      name = [domain5 name];
+      relativePath4 = [fileCopy relativePath];
       *buf = 134219522;
-      v66 = v61;
+      v66 = inodeNumber;
       v67 = 2048;
       v68 = v32;
       v69 = 1024;
-      *v70 = v33;
+      *v70 = protectionClass;
       *&v70[4] = 2048;
-      *&v70[6] = v9;
+      *&v70[6] = encryptionKey;
       v71 = 2112;
-      v72 = v35;
+      v72 = name;
       v73 = 2112;
-      v74 = v36;
+      v74 = relativePath4;
       v75 = 2112;
       v76 = v63;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to fetch encryption key for inode:%llu, sz:%lld, pc:%d, changeType:%lu, (%@:%@): %@", buf, 0x44u);
 
-      v62 = [v5 inodeNumber];
-      v37 = [v5 size];
-      v38 = [v5 protectionClass];
-      v39 = [v5 domain];
-      v40 = [v39 name];
-      v59 = [v5 relativePath];
+      inodeNumber2 = [fileCopy inodeNumber];
+      v37 = [fileCopy size];
+      protectionClass2 = [fileCopy protectionClass];
+      domain6 = [fileCopy domain];
+      name2 = [domain6 name];
+      relativePath5 = [fileCopy relativePath];
       v60 = v63;
-      v57 = v9;
-      v58 = v40;
+      v57 = encryptionKey;
+      v58 = name2;
       v54 = v37;
-      v56 = v38;
-      v52 = v62;
+      v56 = protectionClass2;
+      v52 = inodeNumber2;
       _MBLog();
 
       v30 = v63;
@@ -4277,33 +4277,33 @@ LABEL_18:
 
     if ([MBError isError:v30 withCode:209])
     {
-      v41 = [(MBCKBackupEngine *)self telemetry];
-      [v41 _countMissingEncryptionKeyForFile:v7];
+      telemetry = [(MBCKBackupEngine *)self telemetry];
+      [telemetry _countMissingEncryptionKeyForFile:v7];
     }
   }
 
-  v42 = [v7 isDirectory];
-  v43 = [(MBCKBackupEngine *)self telemetry];
-  v44 = v43;
-  if (v42)
+  isDirectory = [v7 isDirectory];
+  telemetry2 = [(MBCKBackupEngine *)self telemetry];
+  v44 = telemetry2;
+  if (isDirectory)
   {
-    v45 = [v43 backupDirectoryCount];
-    v46 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v45 integerValue] + 1);
-    v47 = [(MBCKBackupEngine *)self telemetry];
-    [v47 setBackupDirectoryCount:v46];
+    backupDirectoryCount = [telemetry2 backupDirectoryCount];
+    v46 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [backupDirectoryCount integerValue] + 1);
+    telemetry3 = [(MBCKBackupEngine *)self telemetry];
+    [telemetry3 setBackupDirectoryCount:v46];
   }
 
   else
   {
-    v45 = [v43 backupFileCount];
-    v46 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v45 integerValue] + 1);
-    v47 = [(MBCKBackupEngine *)self telemetry];
-    [v47 setBackupFileCount:v46];
+    backupDirectoryCount = [telemetry2 backupFileCount];
+    v46 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [backupDirectoryCount integerValue] + 1);
+    telemetry3 = [(MBCKBackupEngine *)self telemetry];
+    [telemetry3 setBackupFileCount:v46];
   }
 
 LABEL_27:
   v48 = [(MBCKEngine *)self cache:v51];
-  v49 = [v48 fileSeen:v7 changeType:v9];
+  v49 = [v48 fileSeen:v7 changeType:encryptionKey];
 
   return v49;
 }
@@ -4333,67 +4333,67 @@ LABEL_27:
   return [(MBCKEngine *)self handleCancelation:0];
 }
 
-- (id)_createDomainTranscriberForAPFSSnapshots:(id)a3 error:(id *)a4
+- (id)_createDomainTranscriberForAPFSSnapshots:(id)snapshots error:(id *)error
 {
-  v34 = a3;
-  v6 = [(MBCKEngine *)self persona];
-  if (!v6)
+  snapshotsCopy = snapshots;
+  persona = [(MBCKEngine *)self persona];
+  if (!persona)
   {
     __assert_rtn("[MBCKBackupEngine _createDomainTranscriberForAPFSSnapshots:error:]", "MBCKBackupEngine.m", 1976, "persona");
   }
 
-  v7 = v6;
-  v8 = [(MBCKBackupEngine *)self currentSnapshot];
-  if (!v8)
+  v7 = persona;
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  if (!currentSnapshot)
   {
     __assert_rtn("[MBCKBackupEngine _createDomainTranscriberForAPFSSnapshots:error:]", "MBCKBackupEngine.m", 1979, "currentSnapshot");
   }
 
-  v9 = v8;
-  v10 = [(MBCKBackupEngine *)self currentSnapshot];
-  v11 = [v10 commitID];
+  v9 = currentSnapshot;
+  currentSnapshot2 = [(MBCKBackupEngine *)self currentSnapshot];
+  commitID = [currentSnapshot2 commitID];
 
-  if (!v11)
+  if (!commitID)
   {
     __assert_rtn("[MBCKBackupEngine _createDomainTranscriberForAPFSSnapshots:error:]", "MBCKBackupEngine.m", 1982, "currentSnapshotCommitID");
   }
 
   v35 = 0;
-  v12 = [_TtC7backupd11MBVolumeMap createOrLoadForPersona:v7 outLoadType:&v35 error:a4];
+  v12 = [_TtC7backupd11MBVolumeMap createOrLoadForPersona:v7 outLoadType:&v35 error:error];
   if (v12)
   {
     v13 = [_TtC7backupd11MBVolumeMap loadTypeToStringWithLoadType:v35];
-    v14 = [(MBCKBackupEngine *)self attemptSummary];
-    [v14 setVolumeMapLoadType:v13];
+    attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+    [attemptSummary setVolumeMapLoadType:v13];
 
     if ([v9 snapshotFormat] == 3)
     {
-      v15 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v15 = self;
+      selfCopy = self;
     }
 
-    v16 = v15;
+    v16 = selfCopy;
     v32 = [MBDomainTranscriber alloc];
-    v31 = [v7 snapshotDatabaseDirectory];
-    v30 = [(MBCKBackupEngine *)self _scannerMode];
-    v29 = [(MBEngine *)self enginePolicy];
+    snapshotDatabaseDirectory = [v7 snapshotDatabaseDirectory];
+    _scannerMode = [(MBCKBackupEngine *)self _scannerMode];
+    enginePolicy = [(MBEngine *)self enginePolicy];
     v17 = v9;
-    v18 = [v9 snapshotFormat];
+    snapshotFormat = [v9 snapshotFormat];
     [(MBCKEngine *)self device];
     v19 = v33 = v7;
-    v20 = [(MBCKBackupEngine *)self keyBagValidationState];
-    v21 = v11;
-    v22 = [v20 requiresEncryptionKeyRepair];
-    v23 = [(MBCKBackupEngine *)self attemptSummary];
-    LOBYTE(v28) = v22;
-    v11 = v21;
-    v24 = v18;
+    keyBagValidationState = [(MBCKBackupEngine *)self keyBagValidationState];
+    v21 = commitID;
+    requiresEncryptionKeyRepair = [keyBagValidationState requiresEncryptionKeyRepair];
+    attemptSummary2 = [(MBCKBackupEngine *)self attemptSummary];
+    LOBYTE(v28) = requiresEncryptionKeyRepair;
+    commitID = v21;
+    v24 = snapshotFormat;
     v9 = v17;
-    v25 = [(MBDomainTranscriber *)v32 initWithPendingCommitID:v21 snapshotDatabaseDirectory:v31 scanMode:v30 enginePolicy:v29 snapshotFormat:v24 device:v19 volumeMap:v12 shouldRepairEncryptionKeys:v28 snapshotTracker:v34 attemptSummary:v23 compatibilityDelegate:v16 delegate:self];
+    v25 = [(MBDomainTranscriber *)v32 initWithPendingCommitID:v21 snapshotDatabaseDirectory:snapshotDatabaseDirectory scanMode:_scannerMode enginePolicy:enginePolicy snapshotFormat:v24 device:v19 volumeMap:v12 shouldRepairEncryptionKeys:v28 snapshotTracker:snapshotsCopy attemptSummary:attemptSummary2 compatibilityDelegate:v16 delegate:self];
 
     v7 = v33;
   }
@@ -4410,9 +4410,9 @@ LABEL_27:
     }
 
     v25 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
@@ -4422,9 +4422,9 @@ LABEL_27:
 - (BOOL)_shouldBackupUsingFSEvents
 {
   v3 = _os_feature_enabled_impl();
-  v4 = [(MBCKSnapshot *)self->_currentSnapshot type];
+  type = [(MBCKSnapshot *)self->_currentSnapshot type];
   result = 0;
-  if (v3 && v4 == 1)
+  if (v3 && type == 1)
   {
     if (MBSnapshotsAreTransitioningFormats(self->_previousSnapshot, self->_currentSnapshot))
     {
@@ -4448,10 +4448,10 @@ LABEL_12:
 
     else
     {
-      v9 = [(MBCKBackupEngine *)self keyBagValidationState];
-      v10 = [v9 requiresEncryptionKeyRepair];
+      keyBagValidationState = [(MBCKBackupEngine *)self keyBagValidationState];
+      requiresEncryptionKeyRepair = [keyBagValidationState requiresEncryptionKeyRepair];
 
-      if (!v10)
+      if (!requiresEncryptionKeyRepair)
       {
         return 1;
       }
@@ -4475,8 +4475,8 @@ LABEL_12:
 
 - (id)_fetchPreviousBackupFSEventState
 {
-  v2 = [(MBCKEngine *)self persona];
-  v3 = [v2 copyPreferencesValueForKey:@"FSEventState" class:objc_opt_class()];
+  persona = [(MBCKEngine *)self persona];
+  v3 = [persona copyPreferencesValueForKey:@"FSEventState" class:objc_opt_class()];
 
   v4 = [[MBFSEventState alloc] initWithDictionaryRepresentation:v3];
   v5 = MBGetDefaultLog();
@@ -4503,18 +4503,18 @@ LABEL_12:
     _MBLog();
   }
 
-  v5 = [(MBCKEngine *)self persona];
-  v6 = [(MBFSEventState *)v3 dictionaryRepresentation];
-  [v5 setPreferencesValue:v6 forKey:@"FSEventState"];
+  persona = [(MBCKEngine *)self persona];
+  dictionaryRepresentation = [(MBFSEventState *)v3 dictionaryRepresentation];
+  [persona setPreferencesValue:dictionaryRepresentation forKey:@"FSEventState"];
 }
 
-- (void)_sendTelemetryForStateChange:(unint64_t)a3 start:(id)a4 end:(id)a5
+- (void)_sendTelemetryForStateChange:(unint64_t)change start:(id)start end:(id)end
 {
-  v8 = a5;
-  v9 = a4;
-  [MBCKStatusReporter reportBackupStateChangeForEngine:self state:a3 start:v9 end:v8];
-  [MBPowerLog reportBackupStateChangeForEngine:self state:a3 start:v9 end:v8];
-  [MBTelemetry sendBackupEngineStateChangeStatus:self state:a3 start:v9 end:v8];
+  endCopy = end;
+  startCopy = start;
+  [MBCKStatusReporter reportBackupStateChangeForEngine:self state:change start:startCopy end:endCopy];
+  [MBPowerLog reportBackupStateChangeForEngine:self state:change start:startCopy end:endCopy];
+  [MBTelemetry sendBackupEngineStateChangeStatus:self state:change start:startCopy end:endCopy];
 }
 
 - (void)_finishCollectingTelemetry
@@ -4522,95 +4522,95 @@ LABEL_12:
   [(MBCKBackupEngine *)self backupReason];
   if (MBBackupReasonIsScheduled())
   {
-    v3 = [(MBCKEngine *)self ckOperationTracker];
-    v4 = [v3 ckOperationPolicy];
-    v5 = [v4 cellularAccess];
+    ckOperationTracker = [(MBCKEngine *)self ckOperationTracker];
+    ckOperationPolicy = [ckOperationTracker ckOperationPolicy];
+    cellularAccess = [ckOperationPolicy cellularAccess];
 
-    if (v5)
+    if (cellularAccess)
     {
       +[MBCKManager inexpensiveCellularBalance];
       v6 = [NSNumber numberWithDouble:?];
-      v7 = [(MBCKBackupEngine *)self telemetry];
-      [v7 setRemainingCellularBalance:v6];
+      telemetry = [(MBCKBackupEngine *)self telemetry];
+      [telemetry setRemainingCellularBalance:v6];
     }
   }
 
-  v8 = [(MBCKBackupEngine *)self estimator];
-  [v8 progressAtLastUpdate];
+  estimator = [(MBCKBackupEngine *)self estimator];
+  [estimator progressAtLastUpdate];
   if (v9 > 0.0)
   {
-    v10 = [v8 minutesRemaining];
-    if (v10 != -1)
+    minutesRemaining = [estimator minutesRemaining];
+    if (minutesRemaining != -1)
     {
-      v11 = [NSNumber numberWithUnsignedInteger:v10];
-      v12 = [(MBCKBackupEngine *)self telemetry];
-      [v12 setMinutesRemaining:v11];
+      v11 = [NSNumber numberWithUnsignedInteger:minutesRemaining];
+      telemetry2 = [(MBCKBackupEngine *)self telemetry];
+      [telemetry2 setMinutesRemaining:v11];
     }
   }
 
-  v13 = [(MBCKEngine *)self serviceManager];
-  v14 = [v13 networkConnectivity];
+  serviceManager = [(MBCKEngine *)self serviceManager];
+  networkConnectivity = [serviceManager networkConnectivity];
   v16 = v15;
-  v17 = [(MBCKBackupEngine *)self telemetry];
-  [v17 setNetworkConnectivityAtFinish:{v14, v16}];
+  telemetry3 = [(MBCKBackupEngine *)self telemetry];
+  [telemetry3 setNetworkConnectivityAtFinish:{networkConnectivity, v16}];
 
-  v18 = [(MBCKEngine *)self engineError];
-  v19 = [(MBCKBackupEngine *)self attemptSummary];
-  [v19 setError:v18];
+  engineError = [(MBCKEngine *)self engineError];
+  attemptSummary = [(MBCKBackupEngine *)self attemptSummary];
+  [attemptSummary setError:engineError];
 
-  v20 = [(MBCKEngine *)self cache];
-  v21 = [v20 size];
-  v22 = [v21 unsignedLongLongValue];
-  v23 = [(MBCKBackupEngine *)self attemptSummary];
-  [v23 setLegacyCacheSize:v22];
+  cache = [(MBCKEngine *)self cache];
+  v21 = [cache size];
+  unsignedLongLongValue = [v21 unsignedLongLongValue];
+  attemptSummary2 = [(MBCKBackupEngine *)self attemptSummary];
+  [attemptSummary2 setLegacyCacheSize:unsignedLongLongValue];
 
   v45 = 0;
-  v24 = [(MBCKEngine *)self persona];
-  v25 = [v24 snapshotDatabaseDirectory];
+  persona = [(MBCKEngine *)self persona];
+  snapshotDatabaseDirectory = [persona snapshotDatabaseDirectory];
   v44 = 0;
-  v26 = MBCalculateDiskUsageForSnapshotDirectory(v25, &v45, &v44);
+  v26 = MBCalculateDiskUsageForSnapshotDirectory(snapshotDatabaseDirectory, &v45, &v44);
   v27 = v44;
 
   if (v26 < 0)
   {
-    v30 = MBGetDefaultLog();
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    attemptSummary4 = MBGetDefaultLog();
+    if (os_log_type_enabled(attemptSummary4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v47 = v27;
-      _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to calculate disk usage for snapshot directory: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, attemptSummary4, OS_LOG_TYPE_ERROR, "=cloud-backup= Failed to calculate disk usage for snapshot directory: %@", buf, 0xCu);
       _MBLog();
     }
   }
 
   else
   {
-    v28 = [(MBCKBackupEngine *)self attemptSummary];
-    [v28 setSnapshotDirectorySize:v26];
+    attemptSummary3 = [(MBCKBackupEngine *)self attemptSummary];
+    [attemptSummary3 setSnapshotDirectorySize:v26];
 
     v29 = v45;
-    v30 = [(MBCKBackupEngine *)self attemptSummary];
-    [v30 setSnapshotDirectoryCloneSize:v29];
+    attemptSummary4 = [(MBCKBackupEngine *)self attemptSummary];
+    [attemptSummary4 setSnapshotDirectoryCloneSize:v29];
   }
 
   v31 = MBPeakProcessMemoryUsage();
-  v32 = [(MBCKBackupEngine *)self attemptSummary];
-  [v32 setPeakMemoryUsage:v31];
+  attemptSummary5 = [(MBCKBackupEngine *)self attemptSummary];
+  [attemptSummary5 setPeakMemoryUsage:v31];
 
   if (MBIsInternalInstall())
   {
-    v33 = [(MBCKBackupEngine *)self attemptSummary];
-    v34 = [v33 commitID];
+    attemptSummary6 = [(MBCKBackupEngine *)self attemptSummary];
+    commitID = [attemptSummary6 commitID];
 
-    if (v34)
+    if (commitID)
     {
-      v35 = [(MBCKBackupEngine *)self attemptSummary];
-      v36 = [(MBCKEngine *)self persona];
-      v37 = [v36 snapshotDatabaseDirectory];
-      v38 = [(MBCKBackupEngine *)self attemptSummary];
-      v39 = [v38 commitID];
+      attemptSummary7 = [(MBCKBackupEngine *)self attemptSummary];
+      persona2 = [(MBCKEngine *)self persona];
+      snapshotDatabaseDirectory2 = [persona2 snapshotDatabaseDirectory];
+      attemptSummary8 = [(MBCKBackupEngine *)self attemptSummary];
+      commitID2 = [attemptSummary8 commitID];
       v43 = 0;
-      v40 = MBAppendAttemptSummaryToPlist(v35, v37, v39, &v43);
+      v40 = MBAppendAttemptSummaryToPlist(attemptSummary7, snapshotDatabaseDirectory2, commitID2, &v43);
       v41 = v43;
 
       if ((v40 & 1) == 0 && !dword_100421634 && !atomic_fetch_add_explicit(&dword_100421634, 1u, memory_order_relaxed))
@@ -4630,28 +4630,28 @@ LABEL_12:
 
 - (NSString)pendingSnapshotID
 {
-  v2 = [(MBCKBackupEngine *)self currentSnapshot];
-  v3 = [v2 snapshotID];
+  currentSnapshot = [(MBCKBackupEngine *)self currentSnapshot];
+  snapshotID = [currentSnapshot snapshotID];
 
-  return v3;
+  return snapshotID;
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v6 = a3;
+    progressCopy = progress;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "=cloud-backup= BYClientDaemonCloudSyncProtocol sync progress: %f", buf, 0xCu);
     _MBLog();
   }
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
-  v3 = a3;
-  v4 = [v3 count];
+  errorsCopy = errors;
+  v4 = [errorsCopy count];
   v5 = MBGetDefaultLog();
   v6 = v5;
   if (v4)
@@ -4659,7 +4659,7 @@ LABEL_12:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v8 = v3;
+      v8 = errorsCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "=cloud-backup= BYClientDaemonCloudSyncProtocol syncCompletedWithErrors: %@", buf, 0xCu);
 LABEL_6:
       _MBLog();

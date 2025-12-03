@@ -1,14 +1,14 @@
 @interface PKDashboardUpcomingPassInformationPresenter
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardUpcomingPassInformationPresenter)init;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)_configureCell:(id)a3 withEventMetadata:(id)a4;
-- (void)_configureCell:(id)a3 withGenericMetadata:(id)a4;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)_configureCell:(id)cell withEventMetadata:(id)metadata;
+- (void)_configureCell:(id)cell withGenericMetadata:(id)metadata;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardUpcomingPassInformationPresenter
@@ -39,46 +39,46 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"dashboardUpcomingPassInformationEntryItemCellReuseIdentifier" forIndexPath:v8];
-  [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"dashboardUpcomingPassInformationEntryItemCellReuseIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (BOOL)canSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (BOOL)canSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v6 = [a3 entry];
-  LOBYTE(self) = [(PKDashboardUpcomingPassInformationPresenter *)self canLaunchDetailsViewForEntry:v6];
+  entry = [item entry];
+  LOBYTE(self) = [(PKDashboardUpcomingPassInformationPresenter *)self canLaunchDetailsViewForEntry:entry];
 
   return self;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v8 = a6;
-  v9 = a3;
+  controllerCopy = controller;
+  itemCopy = item;
   v10 = [PKUpcomingPassInformationDetailsDataSource alloc];
-  v11 = [v9 entry];
-  v12 = [v9 pass];
-  v13 = [v9 passStateProvider];
-  v14 = [v9 tileFactory];
+  entry = [itemCopy entry];
+  pass = [itemCopy pass];
+  passStateProvider = [itemCopy passStateProvider];
+  tileFactory = [itemCopy tileFactory];
 
-  v16 = [(PKUpcomingPassInformationDetailsDataSource *)v10 initWithEntry:v11 pass:v12 passStateProvider:v13 tileFactory:v14];
+  v16 = [(PKUpcomingPassInformationDetailsDataSource *)v10 initWithEntry:entry pass:pass passStateProvider:passStateProvider tileFactory:tileFactory];
   v15 = [[PKUpcomingPassInformationDetailsViewController alloc] initWithDataSource:v16];
-  [v8 pushViewController:v15 animated:1];
+  [controllerCopy pushViewController:v15 animated:1];
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:self->_sampleCell forItem:a3 inCollectionView:a4 forIndexPath:a6];
+  [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:self->_sampleCell forItem:item inCollectionView:view forIndexPath:path];
   sampleCell = self->_sampleCell;
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
-  v10 = a5 + v9 * -2.0;
+  v10 = width + v9 * -2.0;
 
   [(PKPassInformationDashboardCollectionViewCell *)sampleCell sizeThatFits:v10, 1.79769313e308];
   result.height = v12;
@@ -86,85 +86,85 @@
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v13 = a3;
-  v8 = [a4 entry];
-  v9 = [v8 metadata];
-  v10 = [v9 name];
-  [v13 setTitle:v10];
+  cellCopy = cell;
+  entry = [item entry];
+  metadata = [entry metadata];
+  name = [metadata name];
+  [cellCopy setTitle:name];
 
-  [v13 setShowsDisclosureView:{-[PKDashboardUpcomingPassInformationPresenter canLaunchDetailsViewForEntry:](self, "canLaunchDetailsViewForEntry:", v8)}];
-  v11 = [v9 type];
-  if (v11 == 1)
+  [cellCopy setShowsDisclosureView:{-[PKDashboardUpcomingPassInformationPresenter canLaunchDetailsViewForEntry:](self, "canLaunchDetailsViewForEntry:", entry)}];
+  type = [metadata type];
+  if (type == 1)
   {
-    v12 = [v9 eventMetadata];
-    [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:v13 withEventMetadata:v12];
+    eventMetadata = [metadata eventMetadata];
+    [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:cellCopy withEventMetadata:eventMetadata];
   }
 
-  else if (!v11)
+  else if (!type)
   {
-    [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:v13 withGenericMetadata:v9];
+    [(PKDashboardUpcomingPassInformationPresenter *)self _configureCell:cellCopy withGenericMetadata:metadata];
   }
 }
 
-- (void)_configureCell:(id)a3 withGenericMetadata:(id)a4
+- (void)_configureCell:(id)cell withGenericMetadata:(id)metadata
 {
-  v5 = a4;
-  v6 = a3;
-  v10 = [v5 date];
-  v7 = [v5 timeZone];
+  metadataCopy = metadata;
+  cellCopy = cell;
+  date = [metadataCopy date];
+  timeZone = [metadataCopy timeZone];
 
-  v8 = PKMediumDateString(v10, v7);
-  [v6 setSecondaryText:v8];
+  v8 = PKMediumDateString(date, timeZone);
+  [cellCopy setSecondaryText:v8];
 
-  v9 = PKTimeStringFromDate(v10, v7);
-  [v6 setTertiaryText:v9];
+  v9 = PKTimeStringFromDate(date, timeZone);
+  [cellCopy setTertiaryText:v9];
 }
 
-- (void)_configureCell:(id)a3 withEventMetadata:(id)a4
+- (void)_configureCell:(id)cell withEventMetadata:(id)metadata
 {
-  v30 = a4;
-  v5 = a3;
-  v6 = [v30 semantics];
-  v7 = [v30 date];
-  if (v7)
+  metadataCopy = metadata;
+  cellCopy = cell;
+  semantics = [metadataCopy semantics];
+  date = [metadataCopy date];
+  if (date)
   {
-    v8 = v7;
+    dateValue = date;
   }
 
   else
   {
-    v9 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
-    v8 = [v9 dateValue];
+    v9 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC58]];
+    dateValue = [v9 dateValue];
 
-    if (!v8)
+    if (!dateValue)
     {
-      v10 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
-      v11 = [v10 eventDateInfoValue];
-      v8 = [v11 date];
+      v10 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBCB8]];
+      eventDateInfoValue = [v10 eventDateInfoValue];
+      dateValue = [eventDateInfoValue date];
     }
   }
 
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
-  v13 = [v12 dateValue];
+  v12 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBC50]];
+  dateValue2 = [v12 dateValue];
 
-  v14 = [v30 timeZone];
-  v15 = v14;
-  if (v14)
+  timeZone = [metadataCopy timeZone];
+  v15 = timeZone;
+  if (timeZone)
   {
-    v16 = v14;
+    timeZoneValue = timeZone;
   }
 
   else
   {
-    v17 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
-    v16 = [v17 timeZoneValue];
+    v17 = [semantics objectForKeyedSubscript:*MEMORY[0x1E69BBF88]];
+    timeZoneValue = [v17 timeZoneValue];
   }
 
-  if (!v8)
+  if (!dateValue)
   {
-    if ([v30 isUndetermined])
+    if ([metadataCopy isUndetermined])
     {
       v21 = PKLocalizedTicketingString(&cfstr_LabelDateTbd.isa);
       v22 = @"LABEL_TIME_TBD";
@@ -172,7 +172,7 @@
 
     else
     {
-      if (![v30 isUnannounced])
+      if (![metadataCopy isUnannounced])
       {
         v21 = 0;
         v27 = 0;
@@ -187,46 +187,46 @@
     goto LABEL_34;
   }
 
-  v18 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-  [v18 setTimeZone:v16];
-  v19 = [v18 isDate:v8 inSameDayAsDate:v13];
-  if (!v13 || (v19 & 1) != 0)
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  [autoupdatingCurrentCalendar setTimeZone:timeZoneValue];
+  v19 = [autoupdatingCurrentCalendar isDate:dateValue inSameDayAsDate:dateValue2];
+  if (!dateValue2 || (v19 & 1) != 0)
   {
-    if (!v16 || (v23 = -[NSTimeZone secondsFromGMT](v16, "secondsFromGMT"), [MEMORY[0x1E695DFE8] localTimeZone], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "secondsFromGMT"), v24, v23 == v25))
+    if (!timeZoneValue || (v23 = -[NSTimeZone secondsFromGMT](timeZoneValue, "secondsFromGMT"), [MEMORY[0x1E695DFE8] localTimeZone], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "secondsFromGMT"), v24, v23 == v25))
     {
-      v26 = PKMediumDateString(v8, v16);
-      v21 = PKRelativeDateStringWithFullDateForUnits(v8, 8206, 0, v26);
+      v26 = PKMediumDateString(dateValue, timeZoneValue);
+      v21 = PKRelativeDateStringWithFullDateForUnits(dateValue, 8206, 0, v26);
 
       goto LABEL_22;
     }
 
-    v20 = PKMediumDateString(v8, v16);
+    v20 = PKMediumDateString(dateValue, timeZoneValue);
   }
 
   else
   {
-    v20 = PKDateRangeStringFromDateToDate(v8, v13, 0, 1, 0, v16);
+    v20 = PKDateRangeStringFromDateToDate(dateValue, dateValue2, 0, 1, 0, timeZoneValue);
   }
 
   v21 = v20;
 LABEL_22:
-  if (([v30 ignoreTimeComponents] & 1) == 0)
+  if (([metadataCopy ignoreTimeComponents] & 1) == 0)
   {
-    if ([v30 isUndetermined])
+    if ([metadataCopy isUndetermined])
     {
       v28 = @"LABEL_TIME_TBD";
     }
 
-    else if ([v30 isUnannounced])
+    else if ([metadataCopy isUnannounced])
     {
       v28 = @"LABEL_TIME_TBA";
     }
 
     else
     {
-      if (![v30 isAllDay])
+      if (![metadataCopy isAllDay])
       {
-        v29 = PKTimeStringFromDate(v8, v16);
+        v29 = PKTimeStringFromDate(dateValue, timeZoneValue);
         goto LABEL_32;
       }
 
@@ -243,28 +243,28 @@ LABEL_32:
 LABEL_33:
 
 LABEL_34:
-  [v5 setSecondaryText:v21];
-  [v5 setTertiaryText:v27];
+  [cellCopy setSecondaryText:v21];
+  [cellCopy setTertiaryText:v27];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v15 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v15 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }

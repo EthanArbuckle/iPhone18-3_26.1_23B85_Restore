@@ -8,7 +8,7 @@
 - (id)plVideoCodecFourCharCodeString
 {
   v18 = *MEMORY[0x1E69E9840];
-  [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:a1];
+  [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -30,12 +30,12 @@
         v6 = *(*(&v13 + 1) + 8 * i);
         if ([v6 isEnabled])
         {
-          v8 = [v6 formatDescriptions];
-          if ([v8 count])
+          formatDescriptions = [v6 formatDescriptions];
+          if ([formatDescriptions count])
           {
-            v9 = [v8 firstObject];
+            firstObject = [formatDescriptions firstObject];
 
-            MediaSubType = CMFormatDescriptionGetMediaSubType(v9);
+            MediaSubType = CMFormatDescriptionGetMediaSubType(firstObject);
             v12[0] = HIBYTE(MediaSubType);
             v12[1] = BYTE2(MediaSubType);
             v12[2] = BYTE1(MediaSubType);
@@ -72,7 +72,7 @@ LABEL_14:
 - (id)plVideoCodecName
 {
   v15 = *MEMORY[0x1E69E9840];
-  [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:a1];
+  [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -94,13 +94,13 @@ LABEL_14:
         v6 = *(*(&v10 + 1) + 8 * i);
         if ([v6 isEnabled])
         {
-          v7 = [v6 formatDescriptions];
-          if ([v7 count])
+          formatDescriptions = [v6 formatDescriptions];
+          if ([formatDescriptions count])
           {
-            v8 = [v7 firstObject];
+            firstObject = [formatDescriptions firstObject];
 
-            CMFormatDescriptionGetMediaType(v8);
-            CMFormatDescriptionGetMediaSubType(v8);
+            CMFormatDescriptionGetMediaType(firstObject);
+            CMFormatDescriptionGetMediaSubType(firstObject);
             MTCopyStringsForMediaTypeAndSubType();
           }
 

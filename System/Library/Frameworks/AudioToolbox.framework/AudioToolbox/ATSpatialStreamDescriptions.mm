@@ -1,6 +1,6 @@
 @interface ATSpatialStreamDescriptions
 - (ATSpatialStreamDescriptions)init;
-- (ATSpatialStreamDescriptions)initWithFlatIOFormat:(id)a3 type:(int64_t)a4;
+- (ATSpatialStreamDescriptions)initWithFlatIOFormat:(id)format type:(int64_t)type;
 - (NSArray)streamParameters;
 - (id)description;
 @end
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (ATSpatialStreamDescriptions)initWithFlatIOFormat:(id)a3 type:(int64_t)a4
+- (ATSpatialStreamDescriptions)initWithFlatIOFormat:(id)format type:(int64_t)type
 {
   v64 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  formatCopy = format;
   v54.receiver = self;
   v54.super_class = ATSpatialStreamDescriptions;
   v8 = [(ATSpatialStreamDescriptions *)&v54 init];
@@ -27,8 +27,8 @@
     goto LABEL_44;
   }
 
-  v8->_type = a4;
-  objc_storeStrong(&v8->_flatFormat, a3);
+  v8->_type = type;
+  objc_storeStrong(&v8->_flatFormat, format);
   v10 = objc_opt_new();
   streamParameters = v9->_streamParameters;
   v9->_streamParameters = v10;
@@ -79,16 +79,16 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v16 = [(AVAudioFormat *)v9->_flatFormat channelCount];
-  v17 = v16;
-  if (v16 <= 1)
+  channelCount = [(AVAudioFormat *)v9->_flatFormat channelCount];
+  v17 = channelCount;
+  if (channelCount <= 1)
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = v16;
+    v14 = channelCount;
   }
 
   if (v14 <= 0)
@@ -99,10 +99,10 @@ LABEL_49:
     __break(1u);
   }
 
-  v18 = [(AVAudioFormat *)v9->_flatFormat streamDescription];
-  v19 = *v18;
-  v20 = *(v18 + 16);
-  v53 = *(v18 + 32);
+  streamDescription = [(AVAudioFormat *)v9->_flatFormat streamDescription];
+  v19 = *streamDescription;
+  v20 = *(streamDescription + 16);
+  v53 = *(streamDescription + 32);
   v51 = v19;
   v52 = v20;
   if (v17 >= 2)
@@ -198,7 +198,7 @@ LABEL_47:
         v45 = v9->_type;
         v46 = [(AVAudioFormat *)v9->_streamFormat description];
         v47 = v46;
-        v48 = [v46 UTF8String];
+        uTF8String = [v46 UTF8String];
         *buf = 136315906;
         *&buf[4] = "ATSpatialParameters.mm";
         *&buf[12] = 1024;
@@ -206,7 +206,7 @@ LABEL_47:
         *&buf[18] = 1024;
         *&buf[20] = v45;
         *&buf[24] = 2080;
-        *&buf[26] = v48;
+        *&buf[26] = uTF8String;
         _os_log_impl(&dword_1B9A08000, v44, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: could not create stream params for type %d, format %s!", buf, 0x22u);
       }
 
@@ -225,8 +225,8 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v34 = [v33 format];
-    v35 = [v34 isEqual:v9->_streamFormat];
+    format = [v33 format];
+    v35 = [format isEqual:v9->_streamFormat];
 
     if ((v35 & 1) == 0)
     {
@@ -254,10 +254,10 @@ LABEL_48:
     v37 = v9->_type;
     v38 = [(AVAudioFormat *)v9->_flatFormat description];
     v39 = v38;
-    v40 = [v38 UTF8String];
+    uTF8String2 = [v38 UTF8String];
     v41 = [(AVAudioFormat *)v9->_streamFormat description];
     v42 = v41;
-    v43 = [v41 UTF8String];
+    uTF8String3 = [v41 UTF8String];
     *buf = 136316674;
     *&buf[4] = "ATSpatialParameters.mm";
     *&buf[12] = 1024;
@@ -267,9 +267,9 @@ LABEL_48:
     *&buf[28] = 1024;
     *&buf[30] = v37;
     *&buf[34] = 2080;
-    *&buf[36] = v40;
+    *&buf[36] = uTF8String2;
     v60 = 2080;
-    v61 = v43;
+    v61 = uTF8String3;
     v62 = 1024;
     v63 = v14;
     _os_log_impl(&dword_1B9A08000, p_super, OS_LOG_TYPE_DEBUG, "%25s:%-5d streamdescs@%p: type %d, flat format %s, stream format %s, #streams %d", buf, 0x3Cu);
@@ -298,8 +298,8 @@ LABEL_44:
     v5 = [(NSMutableArray *)self->_streamParameters objectAtIndex:i];
     if ([v5 isEnabled])
     {
-      v6 = [v5 identifier];
-      [v3 appendFormat:@"%@", v6];
+      identifier = [v5 identifier];
+      [v3 appendFormat:@"%@", identifier];
     }
 
     else

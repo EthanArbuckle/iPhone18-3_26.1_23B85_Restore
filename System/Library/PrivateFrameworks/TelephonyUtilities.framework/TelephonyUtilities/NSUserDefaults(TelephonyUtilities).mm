@@ -33,11 +33,11 @@
 - (uint64_t)BOOLForKey:()TelephonyUtilities withDefault:
 {
   v6 = a3;
-  v7 = [a1 objectForKey:v6];
+  v7 = [self objectForKey:v6];
 
   if (v7)
   {
-    a4 = [a1 BOOLForKey:v6];
+    a4 = [self BOOLForKey:v6];
   }
 
   return a4;

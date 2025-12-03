@@ -1,20 +1,20 @@
 @interface NCNotificationDestinationsRegistry
-- (BOOL)hasActiveDestinationsForRequest:(id)a3;
-- (BOOL)isRegisteredDestination:(id)a3;
+- (BOOL)hasActiveDestinationsForRequest:(id)request;
+- (BOOL)isRegisteredDestination:(id)destination;
 - (NCNotificationDestinationsRegistry)init;
 - (NSArray)registeredDestinations;
-- (id)_destinationsForRequestDestinations:(id)a3 inDestinationDict:(id)a4;
-- (id)destinationIdentifiersForRequestDestinations:(id)a3;
-- (id)destinationsForRequestDestinations:(id)a3;
-- (id)readyDestinationsForRequestDestinations:(id)a3;
+- (id)_destinationsForRequestDestinations:(id)destinations inDestinationDict:(id)dict;
+- (id)destinationIdentifiersForRequestDestinations:(id)destinations;
+- (id)destinationsForRequestDestinations:(id)destinations;
+- (id)readyDestinationsForRequestDestinations:(id)destinations;
 - (unint64_t)count;
-- (void)registerDestination:(id)a3;
-- (void)registerDestination:(id)a3 forIdentifier:(id)a4;
-- (void)setDestination:(id)a3 enabled:(BOOL)a4;
-- (void)setDestination:(id)a3 ready:(BOOL)a4;
-- (void)setDestinationWithIdentifier:(id)a3 enabled:(BOOL)a4;
-- (void)unregisterDestination:(id)a3;
-- (void)unregisterDestinationForIdentifier:(id)a3;
+- (void)registerDestination:(id)destination;
+- (void)registerDestination:(id)destination forIdentifier:(id)identifier;
+- (void)setDestination:(id)destination enabled:(BOOL)enabled;
+- (void)setDestination:(id)destination ready:(BOOL)ready;
+- (void)setDestinationWithIdentifier:(id)identifier enabled:(BOOL)enabled;
+- (void)unregisterDestination:(id)destination;
+- (void)unregisterDestinationForIdentifier:(id)identifier;
 @end
 
 @implementation NCNotificationDestinationsRegistry
@@ -42,24 +42,24 @@
   return v2;
 }
 
-- (void)registerDestination:(id)a3
+- (void)registerDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(NCNotificationDestinationsRegistry *)self registerDestination:v4 forIdentifier:v5];
+  destinationCopy = destination;
+  identifier = [destinationCopy identifier];
+  [(NCNotificationDestinationsRegistry *)self registerDestination:destinationCopy forIdentifier:identifier];
 }
 
-- (void)registerDestination:(id)a3 forIdentifier:(id)a4
+- (void)registerDestination:(id)destination forIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v9 = [v8 objectForKey:v7];
+  destinationCopy = destination;
+  identifierCopy = identifier;
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v9 = [destinations objectForKey:identifierCopy];
 
   if (v9)
   {
-    if (([v9 isEqual:v6] & 1) == 0)
+    if (([v9 isEqual:destinationCopy] & 1) == 0)
     {
       v10 = NCUILogDispatch;
       if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
@@ -72,15 +72,15 @@
         v21 = 138543874;
         v22 = v13;
         v23 = 2114;
-        v24 = v7;
+        v24 = identifierCopy;
         v25 = 2114;
         v26 = v15;
         _os_log_impl(&dword_270A33000, v11, OS_LOG_TYPE_DEFAULT, "Replacing destination %{public}@ for identifier %{public}@ with destination %{public}@", &v21, 0x20u);
       }
 
-      v16 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-      v17 = [v6 identifier];
-      [v16 removeObjectForKey:v17];
+      activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+      identifier = [destinationCopy identifier];
+      [activeDestinations removeObjectForKey:identifier];
       goto LABEL_8;
     }
   }
@@ -90,44 +90,44 @@
     v18 = NCUILogDispatch;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = v18;
+      activeDestinations = v18;
       v19 = objc_opt_class();
-      v17 = NSStringFromClass(v19);
+      identifier = NSStringFromClass(v19);
       v21 = 138543618;
-      v22 = v17;
+      v22 = identifier;
       v23 = 2114;
-      v24 = v7;
-      _os_log_impl(&dword_270A33000, v16, OS_LOG_TYPE_DEFAULT, "Registering destination %{public}@ for identifier %{public}@", &v21, 0x16u);
+      v24 = identifierCopy;
+      _os_log_impl(&dword_270A33000, activeDestinations, OS_LOG_TYPE_DEFAULT, "Registering destination %{public}@ for identifier %{public}@", &v21, 0x16u);
 LABEL_8:
     }
   }
 
-  v20 = [(NCNotificationDestinationsRegistry *)self destinations];
-  [v20 setObject:v6 forKey:v7];
+  destinations2 = [(NCNotificationDestinationsRegistry *)self destinations];
+  [destinations2 setObject:destinationCopy forKey:identifierCopy];
 }
 
-- (BOOL)isRegisteredDestination:(id)a3
+- (BOOL)isRegisteredDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v6 = [v5 allValues];
-  v7 = [v6 containsObject:v4];
+  destinationCopy = destination;
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  allValues = [destinations allValues];
+  v7 = [allValues containsObject:destinationCopy];
 
   return v7;
 }
 
-- (void)unregisterDestination:(id)a3
+- (void)unregisterDestination:(id)destination
 {
-  v4 = [a3 identifier];
-  [(NCNotificationDestinationsRegistry *)self unregisterDestinationForIdentifier:v4];
+  identifier = [destination identifier];
+  [(NCNotificationDestinationsRegistry *)self unregisterDestinationForIdentifier:identifier];
 }
 
-- (void)unregisterDestinationForIdentifier:(id)a3
+- (void)unregisterDestinationForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v6 = [destinations objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -140,41 +140,41 @@ LABEL_8:
       v14 = 138543618;
       v15 = v10;
       v16 = 2114;
-      v17 = v4;
+      v17 = identifierCopy;
       _os_log_impl(&dword_270A33000, v8, OS_LOG_TYPE_DEFAULT, "Unregistering destination %{public}@ for identifier %{public}@", &v14, 0x16u);
     }
 
-    v11 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
-    [v11 removeObjectForKey:v4];
+    readyDestinations = [(NCNotificationDestinationsRegistry *)self readyDestinations];
+    [readyDestinations removeObjectForKey:identifierCopy];
 
-    v12 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-    [v12 removeObjectForKey:v4];
+    activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+    [activeDestinations removeObjectForKey:identifierCopy];
 
-    v13 = [(NCNotificationDestinationsRegistry *)self destinations];
-    [v13 removeObjectForKey:v4];
+    destinations2 = [(NCNotificationDestinationsRegistry *)self destinations];
+    [destinations2 removeObjectForKey:identifierCopy];
   }
 }
 
-- (BOOL)hasActiveDestinationsForRequest:(id)a3
+- (BOOL)hasActiveDestinationsForRequest:(id)request
 {
-  v4 = [a3 requestDestinations];
-  v5 = [(NCNotificationDestinationsRegistry *)self destinationsForRequestDestinations:v4];
+  requestDestinations = [request requestDestinations];
+  v5 = [(NCNotificationDestinationsRegistry *)self destinationsForRequestDestinations:requestDestinations];
 
-  LOBYTE(v4) = [v5 count] != 0;
-  return v4;
+  LOBYTE(requestDestinations) = [v5 count] != 0;
+  return requestDestinations;
 }
 
-- (id)destinationIdentifiersForRequestDestinations:(id)a3
+- (id)destinationIdentifiersForRequestDestinations:(id)destinations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_new();
-  v6 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+  activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = destinationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -190,7 +190,7 @@ LABEL_8:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v6 objectForKey:{v12, v15}];
+        v13 = [activeDestinations objectForKey:{v12, v15}];
         if (v13)
         {
           [v5 addObject:v12];
@@ -206,30 +206,30 @@ LABEL_8:
   return v5;
 }
 
-- (id)destinationsForRequestDestinations:(id)a3
+- (id)destinationsForRequestDestinations:(id)destinations
 {
-  v4 = a3;
-  v5 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-  v6 = [(NCNotificationDestinationsRegistry *)self _destinationsForRequestDestinations:v4 inDestinationDict:v5];
+  destinationsCopy = destinations;
+  activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+  v6 = [(NCNotificationDestinationsRegistry *)self _destinationsForRequestDestinations:destinationsCopy inDestinationDict:activeDestinations];
 
   return v6;
 }
 
-- (void)setDestination:(id)a3 enabled:(BOOL)a4
+- (void)setDestination:(id)destination enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v9 = [v8 objectForKey:v7];
+  destinationCopy = destination;
+  identifier = [destinationCopy identifier];
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v9 = [destinations objectForKey:identifier];
 
-  if (([v9 isEqual:v6] & 1) == 0)
+  if (([v9 isEqual:destinationCopy] & 1) == 0)
   {
     v10 = NCUILogDispatch;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_ERROR))
     {
-      if (v4)
+      if (enabledCopy)
       {
         v11 = "enable";
       }
@@ -251,33 +251,33 @@ LABEL_8:
       v21 = 2114;
       v22 = v16;
       v23 = 2114;
-      v24 = v7;
+      v24 = identifier;
       _os_log_error_impl(&dword_270A33000, v12, OS_LOG_TYPE_ERROR, "Tried to %{public}s destination %{public}@ but %{public}@ is registered for identifier %{public}@", &v17, 0x2Au);
     }
   }
 
-  [(NCNotificationDestinationsRegistry *)self setDestinationWithIdentifier:v7 enabled:v4];
+  [(NCNotificationDestinationsRegistry *)self setDestinationWithIdentifier:identifier enabled:enabledCopy];
 }
 
-- (void)setDestinationWithIdentifier:(id)a3 enabled:(BOOL)a4
+- (void)setDestinationWithIdentifier:(id)identifier enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v8 = [v7 objectForKey:v6];
+  identifierCopy = identifier;
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v8 = [destinations objectForKey:identifierCopy];
 
-  v9 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-  v10 = [v9 objectForKey:v6];
+  activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+  v10 = [activeDestinations objectForKey:identifierCopy];
 
-  if (v10 || !v4)
+  if (v10 || !enabledCopy)
   {
     if (v10)
     {
-      if (!v4)
+      if (!enabledCopy)
       {
-        v17 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-        [v17 removeObjectForKey:v6];
+        activeDestinations2 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+        [activeDestinations2 removeObjectForKey:identifierCopy];
 
         v18 = NCUILogDispatch;
         if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
@@ -296,8 +296,8 @@ LABEL_8:
 
   else
   {
-    v11 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-    [v11 setObject:v8 forKey:v6];
+    activeDestinations3 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+    [activeDestinations3 setObject:v8 forKey:identifierCopy];
 
     v12 = NCUILogDispatch;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
@@ -316,35 +316,35 @@ LABEL_9:
 
 - (NSArray)registeredDestinations
 {
-  v2 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v3 = [v2 allValues];
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  allValues = [destinations allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (unint64_t)count
 {
-  v2 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v3 = [v2 count];
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v3 = [destinations count];
 
   return v3;
 }
 
-- (void)setDestination:(id)a3 ready:(BOOL)a4
+- (void)setDestination:(id)destination ready:(BOOL)ready
 {
-  v4 = a4;
+  readyCopy = ready;
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(NCNotificationDestinationsRegistry *)self destinations];
-  v9 = [v8 objectForKey:v7];
+  destinationCopy = destination;
+  identifier = [destinationCopy identifier];
+  destinations = [(NCNotificationDestinationsRegistry *)self destinations];
+  v9 = [destinations objectForKey:identifier];
 
-  if (([v9 isEqual:v6] & 1) == 0)
+  if (([v9 isEqual:destinationCopy] & 1) == 0)
   {
     v10 = NCUILogDispatch;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_ERROR))
     {
-      if (v4)
+      if (readyCopy)
       {
         v24 = "set ready";
       }
@@ -366,21 +366,21 @@ LABEL_9:
       v34 = 2114;
       v35 = v29;
       v36 = 2114;
-      v37 = v7;
+      v37 = identifier;
       _os_log_error_impl(&dword_270A33000, v25, OS_LOG_TYPE_ERROR, "Tried to %{public}s for destination %{public}@ but %{public}@ is registered for identifier %{public}@", &v30, 0x2Au);
     }
   }
 
-  v11 = [(NCNotificationDestinationsRegistry *)self activeDestinations];
-  v12 = [v11 objectForKey:v7];
+  activeDestinations = [(NCNotificationDestinationsRegistry *)self activeDestinations];
+  v12 = [activeDestinations objectForKey:identifier];
 
-  v13 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
-  v14 = [v13 objectForKey:v7];
+  readyDestinations = [(NCNotificationDestinationsRegistry *)self readyDestinations];
+  v14 = [readyDestinations objectForKey:identifier];
 
-  if (!v14 && v4 && v12)
+  if (!v14 && readyCopy && v12)
   {
-    v15 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
-    [v15 setObject:v6 forKey:v7];
+    readyDestinations2 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
+    [readyDestinations2 setObject:destinationCopy forKey:identifier];
 
     v16 = NCUILogDispatch;
     if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
@@ -398,10 +398,10 @@ LABEL_12:
 
   else if (v14)
   {
-    if (!v4)
+    if (!readyCopy)
     {
-      v21 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
-      [v21 removeObjectForKey:v7];
+      readyDestinations3 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
+      [readyDestinations3 removeObjectForKey:identifier];
 
       v22 = NCUILogDispatch;
       if (os_log_type_enabled(NCUILogDispatch, OS_LOG_TYPE_DEFAULT))
@@ -418,26 +418,26 @@ LABEL_12:
   }
 }
 
-- (id)readyDestinationsForRequestDestinations:(id)a3
+- (id)readyDestinationsForRequestDestinations:(id)destinations
 {
-  v4 = a3;
-  v5 = [(NCNotificationDestinationsRegistry *)self readyDestinations];
-  v6 = [(NCNotificationDestinationsRegistry *)self _destinationsForRequestDestinations:v4 inDestinationDict:v5];
+  destinationsCopy = destinations;
+  readyDestinations = [(NCNotificationDestinationsRegistry *)self readyDestinations];
+  v6 = [(NCNotificationDestinationsRegistry *)self _destinationsForRequestDestinations:destinationsCopy inDestinationDict:readyDestinations];
 
   return v6;
 }
 
-- (id)_destinationsForRequestDestinations:(id)a3 inDestinationDict:(id)a4
+- (id)_destinationsForRequestDestinations:(id)destinations inDestinationDict:(id)dict
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  destinationsCopy = destinations;
+  dictCopy = dict;
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = destinationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -452,7 +452,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
+        v13 = [dictCopy objectForKey:{*(*(&v15 + 1) + 8 * i), v15}];
         if (v13)
         {
           [v7 addObject:v13];

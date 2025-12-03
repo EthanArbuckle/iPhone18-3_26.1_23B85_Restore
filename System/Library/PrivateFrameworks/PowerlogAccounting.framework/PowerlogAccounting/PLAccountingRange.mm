@@ -1,28 +1,28 @@
 @interface PLAccountingRange
-+ (PLAccountingRange)rangeWithStartDate:(id)a3 withEndDate:(id)a4;
++ (PLAccountingRange)rangeWithStartDate:(id)date withEndDate:(id)endDate;
 + (id)emptyRange;
-- (BOOL)containsDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)overlaps:(id)a3;
-- (PLAccountingRange)initWithStartDate:(id)a3 withEndDate:(id)a4;
+- (BOOL)containsDate:(id)date;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)overlaps:(id)overlaps;
+- (PLAccountingRange)initWithStartDate:(id)date withEndDate:(id)endDate;
 - (double)length;
 - (id)description;
-- (id)intersect:(id)a3;
+- (id)intersect:(id)intersect;
 @end
 
 @implementation PLAccountingRange
 
 - (double)length
 {
-  v3 = [(PLAccountingRange *)self startDate];
-  if (v3)
+  startDate = [(PLAccountingRange *)self startDate];
+  if (startDate)
   {
-    v4 = [(PLAccountingRange *)self endDate];
-    if (v4)
+    endDate = [(PLAccountingRange *)self endDate];
+    if (endDate)
     {
-      v5 = [(PLAccountingRange *)self endDate];
-      v6 = [(PLAccountingRange *)self startDate];
-      [v5 timeIntervalSinceDate:v6];
+      endDate2 = [(PLAccountingRange *)self endDate];
+      startDate2 = [(PLAccountingRange *)self startDate];
+      [endDate2 timeIntervalSinceDate:startDate2];
       v8 = v7;
     }
 
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __31__PLAccountingRange_emptyRange__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (emptyRange_onceToken != -1)
   {
     dispatch_once(&emptyRange_onceToken, block);
@@ -57,11 +57,11 @@
   return v2;
 }
 
-- (PLAccountingRange)initWithStartDate:(id)a3 withEndDate:(id)a4
+- (PLAccountingRange)initWithStartDate:(id)date withEndDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (dateCopy | endDateCopy)
   {
     v15.receiver = self;
     v15.super_class = PLAccountingRange;
@@ -69,15 +69,15 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_startDate, a3);
-      if (v7)
+      objc_storeStrong(&v9->_startDate, date);
+      if (dateCopy)
       {
-        v11 = [v8 laterDate:v7];
+        v11 = [endDateCopy laterDate:dateCopy];
       }
 
       else
       {
-        v11 = v8;
+        v11 = endDateCopy;
       }
 
       endDate = v10->_endDate;
@@ -85,29 +85,29 @@
     }
 
     self = v10;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (PLAccountingRange)rangeWithStartDate:(id)a3 withEndDate:(id)a4
++ (PLAccountingRange)rangeWithStartDate:(id)date withEndDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PLAccountingRange alloc] initWithStartDate:v6 withEndDate:v5];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v7 = [[PLAccountingRange alloc] initWithStartDate:dateCopy withEndDate:endDateCopy];
 
   return v7;
 }
 
-- (id)intersect:(id)a3
+- (id)intersect:(id)intersect
 {
-  v4 = a3;
+  intersectCopy = intersect;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -123,12 +123,12 @@
 
     if (intersect__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, otherRange=%@", self, v4];
+      intersectCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, otherRange=%@", self, intersectCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange intersect:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:42];
+      [v7 logMessage:intersectCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:42];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -138,9 +138,9 @@
     }
   }
 
-  v12 = [(PLAccountingRange *)self endDate];
-  v13 = [v4 startDate];
-  [v12 timeIntervalSinceDate:v13];
+  endDate = [(PLAccountingRange *)self endDate];
+  startDate = [intersectCopy startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v15 = v14;
 
   if (v15 < 0.0)
@@ -169,9 +169,9 @@
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"self ends before otherRange"];
     v18 = MEMORY[0x277D3F178];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-    v20 = [v19 lastPathComponent];
+    lastPathComponent2 = [v19 lastPathComponent];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange intersect:]"];
-    [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:46];
+    [v18 logMessage:v17 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:46];
 
     v22 = PLLogCommon();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -182,13 +182,13 @@
 LABEL_22:
 
 LABEL_23:
-    v32 = [objc_opt_class() emptyRange];
+    emptyRange = [objc_opt_class() emptyRange];
     goto LABEL_24;
   }
 
-  v23 = [v4 endDate];
-  v24 = [(PLAccountingRange *)self startDate];
-  [v23 timeIntervalSinceDate:v24];
+  endDate2 = [intersectCopy endDate];
+  startDate2 = [(PLAccountingRange *)self startDate];
+  [endDate2 timeIntervalSinceDate:startDate2];
   v26 = v25;
 
   if (v26 < 0.0)
@@ -217,9 +217,9 @@ LABEL_23:
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"otherRange ends before self"];
     v28 = MEMORY[0x277D3F178];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-    v30 = [v29 lastPathComponent];
+    lastPathComponent3 = [v29 lastPathComponent];
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange intersect:]"];
-    [v28 logMessage:v17 fromFile:v30 fromFunction:v31 fromLineNumber:52];
+    [v28 logMessage:v17 fromFile:lastPathComponent3 fromFunction:v31 fromLineNumber:52];
 
     v22 = PLLogCommon();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -230,13 +230,13 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  v34 = [(PLAccountingRange *)self startDate];
-  v35 = [v4 startDate];
-  v36 = [v34 laterDate:v35];
-  v37 = [(PLAccountingRange *)self endDate];
-  v38 = [v4 endDate];
-  v39 = [v37 earlierDate:v38];
-  v32 = [PLAccountingRange rangeWithStartDate:v36 withEndDate:v39];
+  startDate3 = [(PLAccountingRange *)self startDate];
+  startDate4 = [intersectCopy startDate];
+  v36 = [startDate3 laterDate:startDate4];
+  endDate3 = [(PLAccountingRange *)self endDate];
+  endDate4 = [intersectCopy endDate];
+  v39 = [endDate3 earlierDate:endDate4];
+  emptyRange = [PLAccountingRange rangeWithStartDate:v36 withEndDate:v39];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -253,12 +253,12 @@ LABEL_23:
 
     if (intersect__classDebugEnabled_28 == 1)
     {
-      v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"intersectionRange=%@", v32];
+      v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"intersectionRange=%@", emptyRange];
       v42 = MEMORY[0x277D3F178];
       v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-      v44 = [v43 lastPathComponent];
+      lastPathComponent4 = [v43 lastPathComponent];
       v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange intersect:]"];
-      [v42 logMessage:v41 fromFile:v44 fromFunction:v45 fromLineNumber:59];
+      [v42 logMessage:v41 fromFile:lastPathComponent4 fromFunction:v45 fromLineNumber:59];
 
       v46 = PLLogCommon();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -270,7 +270,7 @@ LABEL_23:
 
 LABEL_24:
 
-  return v32;
+  return emptyRange;
 }
 
 uint64_t __31__PLAccountingRange_intersect___block_invoke(uint64_t a1)
@@ -301,9 +301,9 @@ uint64_t __31__PLAccountingRange_intersect___block_invoke_29(uint64_t a1)
   return result;
 }
 
-- (BOOL)overlaps:(id)a3
+- (BOOL)overlaps:(id)overlaps
 {
-  v4 = a3;
+  overlapsCopy = overlaps;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -319,12 +319,12 @@ uint64_t __31__PLAccountingRange_intersect___block_invoke_29(uint64_t a1)
 
     if (overlaps__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, otherRange=%@", self, v4];
+      overlapsCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, otherRange=%@", self, overlapsCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange overlaps:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:64];
+      [v7 logMessage:overlapsCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:64];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -355,9 +355,9 @@ uint64_t __31__PLAccountingRange_intersect___block_invoke_29(uint64_t a1)
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"self is an EventPoint"];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent2 = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange overlaps:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:67];
+        [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:67];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -367,19 +367,19 @@ uint64_t __31__PLAccountingRange_intersect___block_invoke_29(uint64_t a1)
       }
     }
 
-    v20 = [(PLAccountingRange *)self startDate];
-    v21 = v4;
+    startDate = [(PLAccountingRange *)self startDate];
+    selfCopy = overlapsCopy;
 LABEL_26:
-    v32 = [(PLAccountingRange *)v21 containsDate:v20];
+    v32 = [(PLAccountingRange *)selfCopy containsDate:startDate];
     goto LABEL_27;
   }
 
-  [(PLAccountingRange *)v4 length];
+  [(PLAccountingRange *)overlapsCopy length];
   v23 = v22;
-  v24 = [MEMORY[0x277D3F180] debugEnabled];
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
   if (v23 == 0.0)
   {
-    if (v24)
+    if (debugEnabled)
     {
       v25 = objc_opt_class();
       v43[0] = MEMORY[0x277D85DD0];
@@ -397,9 +397,9 @@ LABEL_26:
         v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"otherRange is an EventPoint"];
         v27 = MEMORY[0x277D3F178];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-        v29 = [v28 lastPathComponent];
+        lastPathComponent3 = [v28 lastPathComponent];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange overlaps:]"];
-        [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:71];
+        [v27 logMessage:v26 fromFile:lastPathComponent3 fromFunction:v30 fromLineNumber:71];
 
         v31 = PLLogCommon();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -409,12 +409,12 @@ LABEL_26:
       }
     }
 
-    v20 = [(PLAccountingRange *)v4 startDate];
-    v21 = self;
+    startDate = [(PLAccountingRange *)overlapsCopy startDate];
+    selfCopy = self;
     goto LABEL_26;
   }
 
-  if (v24)
+  if (debugEnabled)
   {
     v34 = objc_opt_class();
     v42[0] = MEMORY[0x277D85DD0];
@@ -432,9 +432,9 @@ LABEL_26:
       v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"both are EventIntervals"];
       v36 = MEMORY[0x277D3F178];
       v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-      v38 = [v37 lastPathComponent];
+      lastPathComponent4 = [v37 lastPathComponent];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange overlaps:]"];
-      [v36 logMessage:v35 fromFile:v38 fromFunction:v39 fromLineNumber:75];
+      [v36 logMessage:v35 fromFile:lastPathComponent4 fromFunction:v39 fromLineNumber:75];
 
       v40 = PLLogCommon();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -444,8 +444,8 @@ LABEL_26:
     }
   }
 
-  v20 = [(PLAccountingRange *)self intersect:v4];
-  [v20 length];
+  startDate = [(PLAccountingRange *)self intersect:overlapsCopy];
+  [startDate length];
   v32 = v41 >= 1.0;
 LABEL_27:
 
@@ -480,14 +480,14 @@ uint64_t __30__PLAccountingRange_overlaps___block_invoke_47(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = [(PLAccountingRange *)self startDate];
-  if (!v6)
+  equalCopy = equal;
+  startDate = [(PLAccountingRange *)self startDate];
+  if (!startDate)
   {
-    v3 = [v5 startDate];
-    if (!v3)
+    startDate2 = [equalCopy startDate];
+    if (!startDate2)
     {
       v9 = 1;
 LABEL_6:
@@ -496,22 +496,22 @@ LABEL_6:
     }
   }
 
-  v7 = [v5 startDate];
-  v8 = [(PLAccountingRange *)self startDate];
-  v9 = [v7 isEqualToDate:v8];
+  startDate3 = [equalCopy startDate];
+  startDate4 = [(PLAccountingRange *)self startDate];
+  v9 = [startDate3 isEqualToDate:startDate4];
 
-  if (!v6)
+  if (!startDate)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  v10 = [(PLAccountingRange *)self endDate];
-  if (!v10)
+  endDate = [(PLAccountingRange *)self endDate];
+  if (!endDate)
   {
-    v3 = [v5 endDate];
-    if (!v3)
+    startDate2 = [equalCopy endDate];
+    if (!startDate2)
     {
       v13 = 1;
 LABEL_12:
@@ -520,11 +520,11 @@ LABEL_12:
     }
   }
 
-  v11 = [v5 endDate];
-  v12 = [(PLAccountingRange *)self endDate];
-  v13 = [v11 isEqualToDate:v12];
+  endDate2 = [equalCopy endDate];
+  endDate3 = [(PLAccountingRange *)self endDate];
+  v13 = [endDate2 isEqualToDate:endDate3];
 
-  if (!v10)
+  if (!endDate)
   {
     goto LABEL_12;
   }
@@ -545,9 +545,9 @@ void __31__PLAccountingRange_emptyRange__block_invoke(uint64_t a1)
   emptyRange_emptyRange = v4;
 }
 
-- (BOOL)containsDate:(id)a3
+- (BOOL)containsDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -563,12 +563,12 @@ void __31__PLAccountingRange_emptyRange__block_invoke(uint64_t a1)
 
     if (containsDate__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, date=%@", self, v4];
+      dateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"self=%@, date=%@", self, dateCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/PLAccountingRange.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingRange containsDate:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:99];
+      [v7 logMessage:dateCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:99];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -578,12 +578,12 @@ void __31__PLAccountingRange_emptyRange__block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(PLAccountingRange *)self startDate];
-  [v4 timeIntervalSinceDate:v12];
+  startDate = [(PLAccountingRange *)self startDate];
+  [dateCopy timeIntervalSinceDate:startDate];
   if (v13 >= -1.0)
   {
-    v15 = [(PLAccountingRange *)self endDate];
-    [v4 timeIntervalSinceDate:v15];
+    endDate = [(PLAccountingRange *)self endDate];
+    [dateCopy timeIntervalSinceDate:endDate];
     v14 = v16 <= 1.0;
   }
 
@@ -605,11 +605,11 @@ uint64_t __34__PLAccountingRange_containsDate___block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PLAccountingRange *)self startDate];
-  [v4 timeIntervalSince1970];
+  startDate = [(PLAccountingRange *)self startDate];
+  [startDate timeIntervalSince1970];
   v6 = v5;
-  v7 = [(PLAccountingRange *)self endDate];
-  [v7 timeIntervalSince1970];
+  endDate = [(PLAccountingRange *)self endDate];
+  [endDate timeIntervalSince1970];
   v9 = [v3 stringWithFormat:@"(%f->%f)", v6, v8];
 
   return v9;

@@ -1,17 +1,17 @@
 @interface _EARPeopleSuggesterConfig
-- (_EARPeopleSuggesterConfig)initWithContactsCount:(unsigned int)a3 bestContactsCount:(unsigned int)a4 bestContactsBonus:(unsigned int)a5;
+- (_EARPeopleSuggesterConfig)initWithContactsCount:(unsigned int)count bestContactsCount:(unsigned int)contactsCount bestContactsBonus:(unsigned int)bonus;
 @end
 
 @implementation _EARPeopleSuggesterConfig
 
-- (_EARPeopleSuggesterConfig)initWithContactsCount:(unsigned int)a3 bestContactsCount:(unsigned int)a4 bestContactsBonus:(unsigned int)a5
+- (_EARPeopleSuggesterConfig)initWithContactsCount:(unsigned int)count bestContactsCount:(unsigned int)contactsCount bestContactsBonus:(unsigned int)bonus
 {
   v9.receiver = self;
   v9.super_class = _EARPeopleSuggesterConfig;
   result = [(_EARPeopleSuggesterConfig *)&v9 init];
-  result->_contactsCount = a3;
-  result->_bestContactsCount = a4;
-  result->_bestContactsBonus = a5;
+  result->_contactsCount = count;
+  result->_bestContactsCount = contactsCount;
+  result->_bestContactsBonus = bonus;
   return result;
 }
 

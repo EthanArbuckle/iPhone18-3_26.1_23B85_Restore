@@ -1,8 +1,8 @@
 @interface _MKMultiPartLabelCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (_MKMultiPartLabelCacheKey)initWithAttributedString:(id)a3 size:(CGSize)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_MKMultiPartLabelCacheKey)initWithAttributedString:(id)string size:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -24,8 +24,8 @@
   v4 = objc_opt_class();
   [(_MKMultiPartLabelCacheKey *)self size];
   v5 = NSStringFromCGSize(v10);
-  v6 = [(_MKMultiPartLabelCacheKey *)self attributedString];
-  v7 = [v3 stringWithFormat:@"<%@:%p\nsize=%@\nattributedString =%@\n>", v4, self, v5, v6];
+  attributedString = [(_MKMultiPartLabelCacheKey *)self attributedString];
+  v7 = [v3 stringWithFormat:@"<%@:%p\nsize=%@\nattributedString =%@\n>", v4, self, v5, attributedString];
 
   return v7;
 }
@@ -88,31 +88,31 @@
   }
 
   v19 = v18 ^ v11;
-  v20 = [(_MKMultiPartLabelCacheKey *)self attributedString];
-  v21 = [v20 hash];
+  attributedString = [(_MKMultiPartLabelCacheKey *)self attributedString];
+  v21 = [attributedString hash];
 
   return v19 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     [(_MKMultiPartLabelCacheKey *)self size];
     v7 = v6;
     v9 = v8;
-    [v5 size];
+    [equalCopy size];
     if (v7 == v11 && v9 == v10)
     {
-      v14 = [(_MKMultiPartLabelCacheKey *)self attributedString];
-      if (v14 || ([v5 attributedString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      attributedString = [(_MKMultiPartLabelCacheKey *)self attributedString];
+      if (attributedString || ([equalCopy attributedString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v15 = [(_MKMultiPartLabelCacheKey *)self attributedString];
-        v16 = [v5 attributedString];
-        v13 = [v15 isEqual:v16];
+        attributedString2 = [(_MKMultiPartLabelCacheKey *)self attributedString];
+        attributedString3 = [equalCopy attributedString];
+        v13 = [attributedString2 isEqual:attributedString3];
 
-        if (v14)
+        if (attributedString)
         {
 LABEL_13:
 
@@ -135,7 +135,7 @@ LABEL_14:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   attributedString = self->_attributedString;
@@ -145,17 +145,17 @@ LABEL_14:
   return [v4 initWithAttributedString:attributedString size:{width, height}];
 }
 
-- (_MKMultiPartLabelCacheKey)initWithAttributedString:(id)a3 size:(CGSize)a4
+- (_MKMultiPartLabelCacheKey)initWithAttributedString:(id)string size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = _MKMultiPartLabelCacheKey;
   v8 = [(_MKMultiPartLabelCacheKey *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [stringCopy copy];
     attributedString = v8->_attributedString;
     v8->_attributedString = v9;
 

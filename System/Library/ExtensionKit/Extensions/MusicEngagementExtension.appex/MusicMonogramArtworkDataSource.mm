@@ -2,9 +2,9 @@
 + (MusicMonogramArtworkDataSource)sharedMonogramArtworkDataSource;
 + (OS_dispatch_queue)loadingQueue;
 - (MusicMonogramArtworkDataSource)init;
-- (void)_monogramImageForToken:(id)a3 fittingSize:(CGSize)a4 scale:(double)a5 completionHandler:(id)a6;
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
+- (void)_monogramImageForToken:(id)token fittingSize:(CGSize)size scale:(double)scale completionHandler:(id)handler;
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation MusicMonogramArtworkDataSource
@@ -63,21 +63,21 @@ void __46__MusicMonogramArtworkDataSource_loadingQueue__block_invoke(id a1)
   loadingQueue_loadingQueue = v1;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() loadingQueue];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  loadingQueue = [objc_opt_class() loadingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __88__MusicMonogramArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
   block[3] = &unk_1005D0BC8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = catalogCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = catalogCopy;
+  dispatch_async(loadingQueue, block);
 }
 
 void __88__MusicMonogramArtworkDataSource_loadRepresentationForArtworkCatalog_completionHandler___block_invoke(uint64_t a1)
@@ -110,27 +110,27 @@ void __88__MusicMonogramArtworkDataSource_loadRepresentationForArtworkCatalog_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)cancelLoadingRepresentationForArtworkCatalog:(id)a3
+- (void)cancelLoadingRepresentationForArtworkCatalog:(id)catalog
 {
   [(CNCancelable *)self->_cancelableRenderer cancel];
   cancelableRenderer = self->_cancelableRenderer;
   self->_cancelableRenderer = 0;
 }
 
-- (void)_monogramImageForToken:(id)a3 fittingSize:(CGSize)a4 scale:(double)a5 completionHandler:(id)a6
+- (void)_monogramImageForToken:(id)token fittingSize:(CGSize)size scale:(double)scale completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a6;
-  if (a5 <= 0.0)
+  height = size.height;
+  width = size.width;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if (scale <= 0.0)
   {
     v13 = +[UIScreen mainScreen];
     [v13 scale];
-    a5 = v14;
+    scale = v14;
   }
 
-  v15 = [v11 fullName];
+  fullName = [tokenCopy fullName];
   if (!self->_renderer)
   {
     v16 = [CNAvatarImageRenderer alloc];
@@ -145,14 +145,14 @@ void __88__MusicMonogramArtworkDataSource_loadRepresentationForArtworkCatalog_co
     height = width;
   }
 
-  v20 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:", [v11 rightToLeft], 0, height, height, a5);
-  v21 = [CNContact contactWithDisplayName:v15 emailOrPhoneNumber:0];
+  v20 = +[CNAvatarImageRenderingScope scopeWithPointSize:scale:rightToLeft:style:](CNAvatarImageRenderingScope, "scopeWithPointSize:scale:rightToLeft:style:", [tokenCopy rightToLeft], 0, height, height, scale);
+  v21 = [CNContact contactWithDisplayName:fullName emailOrPhoneNumber:0];
   v22 = self->_renderer;
   v25 = v21;
   v23 = [NSArray arrayWithObjects:&v25 count:1];
   v24 = [(CNAvatarImageRenderer *)v22 avatarImageForContacts:v23 scope:v20];
 
-  v12[2](v12, v24);
+  handlerCopy[2](handlerCopy, v24);
 }
 
 @end

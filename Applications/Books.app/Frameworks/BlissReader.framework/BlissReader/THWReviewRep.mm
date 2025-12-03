@@ -1,19 +1,19 @@
 @interface THWReviewRep
 - (BOOL)canExpand;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4;
-- (BOOL)controlContainer:(id)a3 allowTrackingContainedRep:(id)a4;
-- (BOOL)expandedHasContentForPanel:(int)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep;
+- (BOOL)controlContainer:(id)container allowTrackingContainedRep:(id)rep;
+- (BOOL)expandedHasContentForPanel:(int)panel;
 - (BOOL)expandedIsRelatedCanvasScrolling;
-- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)a3 flowMode:(BOOL)a4;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)controller flowMode:(BOOL)mode;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
-- (BOOL)isRelatedCanvasScrollingForScrollableCanvasController:(id)a3;
-- (BOOL)p_questionCanBeChecked:(id)a3;
-- (BOOL)pagedCanvasControllerDeferViewCreation:(id)a3;
-- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)a3;
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3;
+- (BOOL)isRelatedCanvasScrollingForScrollableCanvasController:(id)controller;
+- (BOOL)p_questionCanBeChecked:(id)checked;
+- (BOOL)pagedCanvasControllerDeferViewCreation:(id)creation;
+- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling;
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
 - (CALayer)pressableAnimationLayer;
@@ -22,92 +22,92 @@
 - (CGRect)pressableNaturalBounds;
 - (CGRect)rectForCompletion;
 - (CGSize)expandedMinimumContentSize;
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3;
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller;
 - (THAnimationController)animationController;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
-- (THWReviewRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3;
-- (double)contentsScaleForScrollableCanvasController:(id)a3;
-- (double)pagedCanvasController:(id)a3 adjustScale:(double)a4 andFrame:(CGRect *)a5;
-- (double)pagedCanvasControllerContentsScale:(id)a3;
+- (THWReviewRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller;
+- (double)contentsScaleForScrollableCanvasController:(id)controller;
+- (double)pagedCanvasController:(id)controller adjustScale:(double)scale andFrame:(CGRect *)frame;
+- (double)pagedCanvasControllerContentsScale:(id)scale;
 - (id)animationLayer;
-- (id)bookNavigatorForScrollableCanvasController:(id)a3;
-- (id)documentNavigatorForScrollableCanvasController:(id)a3;
-- (id)expandedAdditionalChildLayoutsForPanel:(int)a3;
-- (id)expandedChildInfosForPanel:(int)a3;
-- (id)expandedLayoutGeometryForLayout:(id)a3 inPanel:(int)a4 withWidth:(double)a5 insets:(UIEdgeInsets)a6;
+- (id)bookNavigatorForScrollableCanvasController:(id)controller;
+- (id)documentNavigatorForScrollableCanvasController:(id)controller;
+- (id)expandedAdditionalChildLayoutsForPanel:(int)panel;
+- (id)expandedChildInfosForPanel:(int)panel;
+- (id)expandedLayoutGeometryForLayout:(id)layout inPanel:(int)panel withWidth:(double)width insets:(UIEdgeInsets)insets;
 - (id)expandedRotationAnimationController;
 - (id)pAnimationLayer;
 - (id)pAnimationView;
 - (id)p_currentQuestion;
 - (id)p_currentScrollableCanvasController;
 - (id)p_dataController;
-- (id)p_matchingAnswerStateForQuestion:(id)a3 temporaryMOC:(id)a4;
-- (id)p_repForPage:(unint64_t)a3;
-- (id)p_repForQuestion:(id)a3;
+- (id)p_matchingAnswerStateForQuestion:(id)question temporaryMOC:(id)c;
+- (id)p_repForPage:(unint64_t)page;
+- (id)p_repForQuestion:(id)question;
 - (id)p_responseController;
-- (id)pagedCanvasController:(id)a3 infosToDisplayForPageRange:(_NSRange)a4;
-- (id)pagedCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
-- (id)reviewQuestion:(id)a3 cachedImageNamed:(id)a4;
-- (id)reviewQuestionDraggingHostView:(id)a3;
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6;
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4;
-- (id)scrollableCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
+- (id)pagedCanvasController:(id)controller infosToDisplayForPageRange:(_NSRange)range;
+- (id)pagedCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
+- (id)reviewQuestion:(id)question cachedImageNamed:(id)named;
+- (id)reviewQuestionDraggingHostView:(id)view;
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport;
+- (id)scrollableCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
 - (id)scrollableCanvasHost;
 - (id)shadowAnimationLayer;
 - (id)shadowPath;
 - (id)targetLayer;
-- (int)p_computeCheckButtonStateDisabled:(BOOL *)a3;
-- (int)p_evaluateAnswerToQuestion:(id)a3 updateScore:(BOOL)a4;
-- (int)reviewQuestion:(id)a3 radioStateForChoice:(unint64_t)a4 pressed:(BOOL)a5;
-- (int)reviewQuestionInitialState:(id)a3;
-- (unint64_t)pageCountForPagedCanvasController:(id)a3;
-- (unint64_t)reviewQuestion:(id)a3 placardForTarget:(unint64_t)a4;
-- (unint64_t)reviewQuestion:(id)a3 targetForPlacard:(unint64_t)a4;
-- (unsigned)expandedAlignmentForLayout:(id)a3 inPanel:(int)a4;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (int)p_computeCheckButtonStateDisabled:(BOOL *)disabled;
+- (int)p_evaluateAnswerToQuestion:(id)question updateScore:(BOOL)score;
+- (int)reviewQuestion:(id)question radioStateForChoice:(unint64_t)choice pressed:(BOOL)pressed;
+- (int)reviewQuestionInitialState:(id)state;
+- (unint64_t)pageCountForPagedCanvasController:(id)controller;
+- (unint64_t)reviewQuestion:(id)question placardForTarget:(unint64_t)target;
+- (unint64_t)reviewQuestion:(id)question targetForPlacard:(unint64_t)placard;
+- (unsigned)expandedAlignmentForLayout:(id)layout inPanel:(int)panel;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
 - (void)freeTransformDidEnd;
 - (void)freeTransformWillBegin;
 - (void)p_answersUpdated;
 - (void)p_checkAllAnswers;
-- (void)p_checkQuestionAnswer:(id)a3;
-- (void)p_clearQuestionAnswer:(id)a3;
+- (void)p_checkQuestionAnswer:(id)answer;
+- (void)p_clearQuestionAnswer:(id)answer;
 - (void)p_invalidateLayouts;
 - (void)p_refreshQuestions;
 - (void)p_relaxMinimizeInfosNextFrame;
 - (void)p_resetQuestions;
 - (void)p_updateButtonStates;
-- (void)p_updatePersitentQuestionIndex:(unint64_t)a3;
-- (void)p_updateQuestionIndex:(unint64_t)a3 animate:(BOOL)a4;
-- (void)pagedCanvasController:(id)a3 customizeLayerHost:(id)a4;
-- (void)pagedCanvasController:(id)a3 didScrollToPageIndex:(unint64_t)a4;
+- (void)p_updatePersitentQuestionIndex:(unint64_t)index;
+- (void)p_updateQuestionIndex:(unint64_t)index animate:(BOOL)animate;
+- (void)pagedCanvasController:(id)controller customizeLayerHost:(id)host;
+- (void)pagedCanvasController:(id)controller didScrollToPageIndex:(unint64_t)index;
 - (void)performanceModeChanged;
-- (void)queryScore:(id)a3;
-- (void)reparentAnimationLayerIfBackedByView:(id)a3;
-- (void)reparentTargetLayerIfBackedByView:(id)a3;
-- (void)reviewControls:(id)a3 buttonPressed:(int)a4;
-- (void)reviewQuestion:(id)a3 associatePlacard:(unint64_t)a4 withTarget:(unint64_t)a5;
-- (void)reviewQuestion:(id)a3 selectChoice:(unint64_t)a4;
-- (void)reviewQuestion:(id)a3 unassociateTargets:(id)a4;
-- (void)reviewQuestionInvalidateLayers:(id)a3;
-- (void)scrollableCanvasController:(id)a3 customizeLayerHost:(id)a4;
+- (void)queryScore:(id)score;
+- (void)reparentAnimationLayerIfBackedByView:(id)view;
+- (void)reparentTargetLayerIfBackedByView:(id)view;
+- (void)reviewControls:(id)controls buttonPressed:(int)pressed;
+- (void)reviewQuestion:(id)question associatePlacard:(unint64_t)placard withTarget:(unint64_t)target;
+- (void)reviewQuestion:(id)question selectChoice:(unint64_t)choice;
+- (void)reviewQuestion:(id)question unassociateTargets:(id)targets;
+- (void)reviewQuestionInvalidateLayers:(id)layers;
+- (void)scrollableCanvasController:(id)controller customizeLayerHost:(id)host;
 - (void)updateFromLayout;
 - (void)viewScaleDidChange;
-- (void)willBeginHandlingGesture:(id)a3;
-- (void)willReplaceContentsFromRep:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
+- (void)willReplaceContentsFromRep:(id)rep;
 @end
 
 @implementation THWReviewRep
 
-- (THWReviewRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWReviewRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v6.receiver = self;
   v6.super_class = THWReviewRep;
-  v4 = [(THWReviewRep *)&v6 initWithLayout:a3 canvas:a4];
+  v4 = [(THWReviewRep *)&v6 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     v4->_scrollableCanvasControllers = objc_alloc_init(NSMutableDictionary);
@@ -148,10 +148,10 @@
   {
     objc_opt_class();
     [(THWReviewRep *)self interactiveCanvasController];
-    v3 = [TSUDynamicCast() pressHandlerForPressableReps];
-    if (v3)
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:v3];
+      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:pressHandlerForPressableReps];
       self->_pressableHandler = v4;
       [(THWPressableRepGestureTargetHandler *)v4 setEnabledOnlyIfWidgetInteractionDisabledOnPage:1];
     }
@@ -160,7 +160,7 @@
   return self->_pressableHandler;
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
   v6.receiver = self;
   v6.super_class = THWReviewRep;
@@ -248,50 +248,50 @@
 {
   if ([(THWReviewRep *)self pressableHandler])
   {
-    v3 = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
+    widgetInteractionEnabled = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
   }
 
   else
   {
-    v3 = 1;
+    widgetInteractionEnabled = 1;
   }
 
   stageCanvasController = self->_stageCanvasController;
 
-  [(THWPagedCanvasController *)stageCanvasController setUserInteractionEnabled:v3];
+  [(THWPagedCanvasController *)stageCanvasController setUserInteractionEnabled:widgetInteractionEnabled];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v5.receiver = self;
   v5.super_class = THWReviewRep;
   [(THWReviewRep *)&v5 addAdditionalChildLayersToArray:?];
   if (self->_stageFillLayer)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_stageStrokeLayer)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 }
 
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep
 {
-  if (![(THWReviewRep *)self pressableHandler:a3])
+  if (![(THWReviewRep *)self pressableHandler:control])
   {
     return 1;
   }
 
-  v5 = [(THWReviewRep *)self pressableHandler];
+  pressableHandler = [(THWReviewRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v5 widgetInteractionEnabled];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionEnabled];
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  v6 = [a3 tag];
+  v6 = [control tag];
   if (v6 > 3)
   {
     if ((v6 - 4) >= 2)
@@ -329,14 +329,14 @@ LABEL_11:
       return;
     }
 
-    v7 = [a3 index];
-    [(NSMutableDictionary *)self->_scrollableCanvasControllers removeObjectForKey:[NSNumber numberWithUnsignedInteger:v7]];
+    index = [control index];
+    [(NSMutableDictionary *)self->_scrollableCanvasControllers removeObjectForKey:[NSNumber numberWithUnsignedInteger:index]];
     objc_opt_class();
-    v8 = [TSUDynamicCast() scrollableCanvasController];
-    [(NSMutableDictionary *)self->_scrollableCanvasControllers setObject:v8 forKeyedSubscript:[NSNumber numberWithUnsignedInteger:v7]];
-    [v8 setInstanceData:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v7)}];
-    [v8 setUpdateCanvasSizeOnLayout:1];
-    stageCanvasController = v8;
+    scrollableCanvasController = [TSUDynamicCast() scrollableCanvasController];
+    [(NSMutableDictionary *)self->_scrollableCanvasControllers setObject:scrollableCanvasController forKeyedSubscript:[NSNumber numberWithUnsignedInteger:index]];
+    [scrollableCanvasController setInstanceData:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", index)}];
+    [scrollableCanvasController setUpdateCanvasSizeOnLayout:1];
+    stageCanvasController = scrollableCanvasController;
     goto LABEL_11;
   }
 
@@ -348,19 +348,19 @@ LABEL_11:
   [(THWReviewRep *)self p_updateButtonStates];
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  if ([(THWReviewControlsRep *)self->_controlsRep layout:a3]== a3)
+  if ([(THWReviewControlsRep *)self->_controlsRep layout:control]== control)
   {
     self->_controlsRep = 0;
   }
 
-  else if ([a3 tag] == &dword_0 + 3)
+  else if ([control tag] == &dword_0 + 3)
   {
-    v6 = [a3 index];
-    [-[NSMutableDictionary objectForKeyedSubscript:](self->_scrollableCanvasControllers objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v6)), "setDelegate:", 0}];
+    index = [control index];
+    [-[NSMutableDictionary objectForKeyedSubscript:](self->_scrollableCanvasControllers objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", index)), "setDelegate:", 0}];
     scrollableCanvasControllers = self->_scrollableCanvasControllers;
-    v8 = [NSNumber numberWithUnsignedInteger:v6];
+    v8 = [NSNumber numberWithUnsignedInteger:index];
 
     [(NSMutableDictionary *)scrollableCanvasControllers removeObjectForKey:v8];
   }
@@ -385,51 +385,51 @@ LABEL_11:
   [-[THWReviewRep interactiveCanvasController](self "interactiveCanvasController")];
 }
 
-- (BOOL)controlContainer:(id)a3 allowTrackingContainedRep:(id)a4
+- (BOOL)controlContainer:(id)container allowTrackingContainedRep:(id)rep
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [a4 allowTrackingInControlContainer:a3];
+  return [rep allowTrackingInControlContainer:container];
 }
 
-- (unint64_t)pageCountForPagedCanvasController:(id)a3
+- (unint64_t)pageCountForPagedCanvasController:(id)controller
 {
-  if (self->_stageCanvasController != a3)
+  if (self->_stageCanvasController != controller)
   {
     return 0;
   }
 
-  v6 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  return [v6 numberOfStagePages];
+  return [layout numberOfStagePages];
 }
 
-- (id)pagedCanvasController:(id)a3 infosToDisplayForPageRange:(_NSRange)a4
+- (id)pagedCanvasController:(id)controller infosToDisplayForPageRange:(_NSRange)range
 {
-  if (self->_stageCanvasController != a3)
+  if (self->_stageCanvasController != controller)
   {
     return 0;
   }
 
-  length = a4.length;
-  location = a4.location;
-  v8 = [(THWReviewRep *)self layout];
+  length = range.length;
+  location = range.location;
+  layout = [(THWReviewRep *)self layout];
 
-  return [v8 infosForStagePages:{location, length}];
+  return [layout infosForStagePages:{location, length}];
 }
 
-- (void)p_updateQuestionIndex:(unint64_t)a3 animate:(BOOL)a4
+- (void)p_updateQuestionIndex:(unint64_t)index animate:(BOOL)animate
 {
-  v4 = a4;
-  if ([-[THWReviewRep layout](self "layout")] != a3)
+  animateCopy = animate;
+  if ([-[THWReviewRep layout](self "layout")] != index)
   {
     [-[THWReviewRep layout](self "layout")];
     if (self->_expandedRepController && [-[THWReviewRep layout](self "layout")])
     {
-      if (v4)
+      if (animateCopy)
       {
         [(THWExpandedRepController *)self->_expandedRepController expandedRepControllerAnimatePanel:0 withCrossFadeContent:1 backgroundLayout:1 duration:0.15];
       }
@@ -437,25 +437,25 @@ LABEL_11:
       [(THWExpandedRepController *)self->_expandedRepController expandedRepControllerInvalidateChildrenInPanel:0 invalidateWPAuto:0];
     }
 
-    [(THWReviewRep *)self p_updatePersitentQuestionIndex:a3];
+    [(THWReviewRep *)self p_updatePersitentQuestionIndex:index];
 
     [(THWReviewRep *)self p_updateButtonStates];
   }
 }
 
-- (void)pagedCanvasController:(id)a3 didScrollToPageIndex:(unint64_t)a4
+- (void)pagedCanvasController:(id)controller didScrollToPageIndex:(unint64_t)index
 {
-  [(THWReviewRep *)self p_updateQuestionIndex:a4 animate:0];
-  if ([objc_msgSend(-[THWReviewRep info](self "info")] == a4)
+  [(THWReviewRep *)self p_updateQuestionIndex:index animate:0];
+  if ([objc_msgSend(-[THWReviewRep info](self "info")] == index)
   {
 
     [(THWReviewRep *)self p_checkAllAnswers];
   }
 }
 
-- (id)pagedCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)pagedCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  if (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:a4])
+  if (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 0;
   }
@@ -463,60 +463,60 @@ LABEL_11:
   return [(THWReviewRep *)self pressableHandler];
 }
 
-- (void)pagedCanvasController:(id)a3 customizeLayerHost:(id)a4
+- (void)pagedCanvasController:(id)controller customizeLayerHost:(id)host
 {
   stageCanvasController = self->_stageCanvasController;
-  if (stageCanvasController == a3)
+  if (stageCanvasController == controller)
   {
     -[THWPagedCanvasController setPageIndex:animated:](stageCanvasController, "setPageIndex:animated:", [-[THWReviewRep layout](self "layout")], 0);
     [-[THWReviewRep layout](self "layout")];
     [objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController "interactiveCanvasController")];
-    [objc_msgSend(a4 "layer")];
+    [objc_msgSend(host "layer")];
     [objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController "interactiveCanvasController")];
     if ([(THWReviewRep *)self pressableHandler])
     {
-      v8 = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
+      widgetInteractionEnabled = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
     }
 
     else
     {
-      v8 = 1;
+      widgetInteractionEnabled = 1;
     }
 
     v9 = self->_stageCanvasController;
 
-    [(THWPagedCanvasController *)v9 setUserInteractionEnabled:v8];
+    [(THWPagedCanvasController *)v9 setUserInteractionEnabled:widgetInteractionEnabled];
   }
 }
 
-- (BOOL)pagedCanvasControllerDeferViewCreation:(id)a3
+- (BOOL)pagedCanvasControllerDeferViewCreation:(id)creation
 {
-  v3 = [(THWReviewRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (double)pagedCanvasControllerContentsScale:(id)a3
+- (double)pagedCanvasControllerContentsScale:(id)scale
 {
-  v3 = [-[THWReviewRep interactiveCanvasController](self interactiveCanvasController];
+  interactiveCanvasController = [-[THWReviewRep interactiveCanvasController](self interactiveCanvasController];
 
-  [v3 contentsScale];
+  [interactiveCanvasController contentsScale];
   return result;
 }
 
-- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)a3
+- (BOOL)pagedCanvasControllerIsRelatedCanvasScrolling:(id)scrolling
 {
-  v3 = [(THWReviewRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (double)pagedCanvasController:(id)a3 adjustScale:(double)a4 andFrame:(CGRect *)a5
+- (double)pagedCanvasController:(id)controller adjustScale:(double)scale andFrame:(CGRect *)frame
 {
-  if (a5)
+  if (frame)
   {
-    Width = CGRectGetWidth(*a5);
-    if (self->_stageCanvasController == a3)
+    Width = CGRectGetWidth(*frame);
+    if (self->_stageCanvasController == controller)
     {
       [-[THWReviewRep layout](self layout];
       Width = CGRectGetWidth(v12);
@@ -527,17 +527,17 @@ LABEL_11:
     {
       [objc_msgSend(-[THWReviewRep interactiveCanvasController](self "interactiveCanvasController")];
       TSDRoundedRectForScale();
-      *a5 = v13;
+      *frame = v13;
       return CGRectGetWidth(v13) / v10;
     }
   }
 
-  return a4;
+  return scale;
 }
 
-- (void)reviewControls:(id)a3 buttonPressed:(int)a4
+- (void)reviewControls:(id)controls buttonPressed:(int)pressed
 {
-  if (a4 == 2)
+  if (pressed == 2)
   {
     v9 = [(THWReviewRep *)self p_computeCheckButtonStateDisabled:0];
     if (v9)
@@ -550,27 +550,27 @@ LABEL_11:
 
       else
       {
-        v12 = [(THWReviewRep *)self p_currentQuestion];
+        p_currentQuestion = [(THWReviewRep *)self p_currentQuestion];
 
-        [(THWReviewRep *)self p_clearQuestionAnswer:v12];
+        [(THWReviewRep *)self p_clearQuestionAnswer:p_currentQuestion];
       }
     }
 
     else
     {
-      v11 = [(THWReviewRep *)self p_currentQuestion];
+      p_currentQuestion2 = [(THWReviewRep *)self p_currentQuestion];
 
-      [(THWReviewRep *)self p_checkQuestionAnswer:v11];
+      [(THWReviewRep *)self p_checkQuestionAnswer:p_currentQuestion2];
     }
   }
 
   else
   {
-    if (a4 == 1)
+    if (pressed == 1)
     {
-      v8 = [-[THWReviewRep layout](self layout];
+      layout = [-[THWReviewRep layout](self layout];
       v6 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex]+ 1;
-      if (v6 >= v8)
+      if (v6 >= layout)
       {
         return;
       }
@@ -580,18 +580,18 @@ LABEL_11:
 
     else
     {
-      if (a4)
+      if (pressed)
       {
         return;
       }
 
-      v5 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
-      if (!v5)
+      pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+      if (!pageIndex)
       {
         return;
       }
 
-      v6 = (v5 - 1);
+      v6 = (pageIndex - 1);
       stageCanvasController = self->_stageCanvasController;
     }
 
@@ -608,9 +608,9 @@ LABEL_11:
 
 - (id)pAnimationLayer
 {
-  v2 = [(THWReviewRep *)self pAnimationView];
+  pAnimationView = [(THWReviewRep *)self pAnimationView];
 
-  return [v2 layer];
+  return [pAnimationView layer];
 }
 
 - (id)animationLayer
@@ -624,15 +624,15 @@ LABEL_11:
   return result;
 }
 
-- (void)reparentAnimationLayerIfBackedByView:(id)a3
+- (void)reparentAnimationLayerIfBackedByView:(id)view
 {
-  v4 = [(THWReviewRep *)self pAnimationView];
-  if (v4)
+  pAnimationView = [(THWReviewRep *)self pAnimationView];
+  if (pAnimationView)
   {
-    v5 = v4;
-    v6 = [(TSDCanvasLayerHosting *)[(THWPagedCanvasController *)self->_stageCanvasController layerHost] subviewsController];
+    v5 = pAnimationView;
+    subviewsController = [(TSDCanvasLayerHosting *)[(THWPagedCanvasController *)self->_stageCanvasController layerHost] subviewsController];
     v7 = v5;
-    [v6 addSubviews:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
+    [subviewsController addSubviews:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
   }
 }
 
@@ -648,7 +648,7 @@ LABEL_11:
   return [(THWFreeTransformController *)v3 shadowLayer];
 }
 
-- (BOOL)shouldFadeOutAnimationLayer:(id)a3
+- (BOOL)shouldFadeOutAnimationLayer:(id)layer
 {
   if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] ftc] isFreeTransformInProgress])
   {
@@ -693,16 +693,16 @@ LABEL_11:
 
 - (CALayer)pressableAnimationLayer
 {
-  v2 = [(THWPagedCanvasController *)self->_stageCanvasController view];
+  view = [(THWPagedCanvasController *)self->_stageCanvasController view];
 
-  return [(UIView *)v2 layer];
+  return [(UIView *)view layer];
 }
 
 - (BOOL)wantsPressAnimation
 {
-  v2 = [(THWReviewRep *)self pressableHandler];
+  pressableHandler = [(THWReviewRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v2 widgetInteractionDisabledOnPage];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionDisabledOnPage];
 }
 
 - (BOOL)wantsPressAction
@@ -717,9 +717,9 @@ LABEL_11:
 
 - (CGRect)pressableNaturalBounds
 {
-  v2 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  [v2 stageFrame];
+  [layout stageFrame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -727,16 +727,16 @@ LABEL_11:
   return result;
 }
 
-- (void)queryScore:(id)a3
+- (void)queryScore:(id)score
 {
   [(THWReviewRep *)self layout];
   v4 = TSUProtocolCast();
   if (v4)
   {
     v5 = v4;
-    v6 = [v4 reviewSummaryCorrectCount];
-    v7 = [v5 reviewSummaryQuestionCount];
-    if (!a3)
+    reviewSummaryCorrectCount = [v4 reviewSummaryCorrectCount];
+    reviewSummaryQuestionCount = [v5 reviewSummaryQuestionCount];
+    if (!score)
     {
       return;
     }
@@ -744,19 +744,19 @@ LABEL_11:
 
   else
   {
-    v7 = 0.0;
-    v6 = 0.0;
-    if (!a3)
+    reviewSummaryQuestionCount = 0.0;
+    reviewSummaryCorrectCount = 0.0;
+    if (!score)
     {
       return;
     }
   }
 
-  v8 = [NSNumber numberWithDouble:v6];
-  v9 = [NSNumber numberWithDouble:v7];
-  v10 = *(a3 + 2);
+  v8 = [NSNumber numberWithDouble:reviewSummaryCorrectCount];
+  v9 = [NSNumber numberWithDouble:reviewSummaryQuestionCount];
+  v10 = *(score + 2);
 
-  v10(a3, v8, v9);
+  v10(score, v8, v9);
 }
 
 - (id)targetLayer
@@ -769,15 +769,15 @@ LABEL_11:
   return [(THWReviewRep *)self pAnimationLayer];
 }
 
-- (void)reparentTargetLayerIfBackedByView:(id)a3
+- (void)reparentTargetLayerIfBackedByView:(id)view
 {
-  v4 = [(THWReviewRep *)self pAnimationView];
-  if (v4)
+  pAnimationView = [(THWReviewRep *)self pAnimationView];
+  if (pAnimationView)
   {
-    v5 = v4;
-    v6 = [(TSDCanvasLayerHosting *)[(THWPagedCanvasController *)self->_stageCanvasController layerHost] subviewsController];
+    v5 = pAnimationView;
+    subviewsController = [(TSDCanvasLayerHosting *)[(THWPagedCanvasController *)self->_stageCanvasController layerHost] subviewsController];
     v7 = v5;
-    [v6 addSubviews:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
+    [subviewsController addSubviews:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v7, 1)}];
   }
 }
 
@@ -805,29 +805,29 @@ LABEL_11:
 
 - (BOOL)expandedIsRelatedCanvasScrolling
 {
-  v2 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v2 currentlyScrolling];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController currentlyScrolling];
 }
 
-- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)a3 flowMode:(BOOL)a4
+- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)controller flowMode:(BOOL)mode
 {
-  v5 = [(THWReviewRep *)self layout];
-  if (v5)
+  layout = [(THWReviewRep *)self layout];
+  if (layout)
   {
-    v6 = v5;
-    if ([v5 isExpandedOnly])
+    v6 = layout;
+    if ([layout isExpandedOnly])
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(layout) = 0;
     }
 
     else
     {
-      LOBYTE(v5) = ([v6 usePhoneLayout] | a4) ^ 1;
+      LOBYTE(layout) = ([v6 usePhoneLayout] | mode) ^ 1;
     }
   }
 
-  return v5;
+  return layout;
 }
 
 - (THAnimationController)animationController
@@ -845,36 +845,36 @@ LABEL_11:
   return result;
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  if (!a4 && [-[THWReviewRep layout](self layout])
+  if (!panel && [-[THWReviewRep layout](self layout])
   {
     return 1;
   }
 
-  return a5;
+  return default;
 }
 
 - (void)p_invalidateLayouts
 {
-  v3 = [(THWReviewRep *)self layout];
-  [v3 invalidateFrame];
-  [v3 invalidateChildren];
+  layout = [(THWReviewRep *)self layout];
+  [layout invalidateFrame];
+  [layout invalidateChildren];
   [-[THWReviewRep interactiveCanvasController](self "interactiveCanvasController")];
   [(THWPagedCanvasController *)[(THWReviewRep *)self stageCanvasController] invalidateLayoutsAndFrames];
-  v4 = [(THWPagedCanvasController *)[(THWReviewRep *)self stageCanvasController] interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasController *)[(THWReviewRep *)self stageCanvasController] interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v4 layoutIfNeeded];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layoutIfNeeded];
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  if (a3 == 1)
+  if (panel == 1)
   {
     return 1;
   }
 
-  if (a3)
+  if (panel)
   {
     return 0;
   }
@@ -884,15 +884,15 @@ LABEL_11:
     return 1;
   }
 
-  v5 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  return [v5 hasTitle];
+  return [layout hasTitle];
 }
 
-- (id)expandedLayoutGeometryForLayout:(id)a3 inPanel:(int)a4 withWidth:(double)a5 insets:(UIEdgeInsets)a6
+- (id)expandedLayoutGeometryForLayout:(id)layout inPanel:(int)panel withWidth:(double)width insets:(UIEdgeInsets)insets
 {
   v9 = [TSUProtocolCast() tag];
-  if (a4 != 1 || v9 != &dword_0 + 1)
+  if (panel != 1 || v9 != &dword_0 + 1)
   {
     return 0;
   }
@@ -904,7 +904,7 @@ LABEL_11:
   return v13;
 }
 
-- (unsigned)expandedAlignmentForLayout:(id)a3 inPanel:(int)a4
+- (unsigned)expandedAlignmentForLayout:(id)layout inPanel:(int)panel
 {
   if ([TSUProtocolCast() tag] == &dword_0 + 1)
   {
@@ -917,27 +917,27 @@ LABEL_11:
   }
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  if (a3)
+  if (panel)
   {
     return 0;
   }
 
   v5 = [objc_msgSend(-[THWReviewRep info](self "info")];
-  v6 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
   if ([-[THWReviewRep layout](self "layout")] && v5 >= 2)
   {
-    v7 = [(THWReviewRep *)self layout];
-    if (v6 >= v5)
+    layout = [(THWReviewRep *)self layout];
+    if (pageIndex >= v5)
     {
-      v8 = [v7 summaryTitleStorage];
+      summaryTitleStorage = [layout summaryTitleStorage];
     }
 
     else
     {
-      v8 = [v7 questionNumberStorageAtPageIndex:v6];
-      if (!v8)
+      summaryTitleStorage = [layout questionNumberStorageAtPageIndex:pageIndex];
+      if (!summaryTitleStorage)
       {
         return 0;
       }
@@ -946,30 +946,30 @@ LABEL_11:
 
   else
   {
-    v8 = [objc_msgSend(objc_msgSend(-[THWReviewRep info](self "info")];
-    if (!v8)
+    summaryTitleStorage = [objc_msgSend(objc_msgSend(-[THWReviewRep info](self "info")];
+    if (!summaryTitleStorage)
     {
       return 0;
     }
   }
 
-  return [NSArray arrayWithObject:v8];
+  return [NSArray arrayWithObject:summaryTitleStorage];
 }
 
-- (id)expandedAdditionalChildLayoutsForPanel:(int)a3
+- (id)expandedAdditionalChildLayoutsForPanel:(int)panel
 {
-  if (a3 != 1)
+  if (panel != 1)
   {
     return 0;
   }
 
-  v5 = [-[THWReviewRep layout](self layout];
-  if (!v5)
+  layout = [-[THWReviewRep layout](self layout];
+  if (!layout)
   {
     return 0;
   }
 
-  return [NSArray arrayWithObject:v5];
+  return [NSArray arrayWithObject:layout];
 }
 
 - (id)expandedRotationAnimationController
@@ -981,92 +981,92 @@ LABEL_11:
 
 - (CGSize)expandedMinimumContentSize
 {
-  v2 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  [v2 minimumContentSize];
+  [layout minimumContentSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if ([(THWReviewRep *)self isExpanded]&& [(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] canHandleGesture:a3]|| [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:a3])
+  if ([(THWReviewRep *)self isExpanded]&& [(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] canHandleGesture:gesture]|| [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 1;
   }
 
-  [a3 naturalLocationForRep:self];
+  [gesture naturalLocationForRep:self];
   v7 = v6;
   v9 = v8;
   [-[THWReviewRep layout](self "layout")];
   v12.x = v7;
   v12.y = v9;
   v10 = CGRectContainsPoint(v13, v12);
-  v11 = [a3 gestureKind];
-  return v11 == TSWPImmediateDoubleTap && v10;
+  gestureKind = [gesture gestureKind];
+  return gestureKind == TSWPImmediateDoubleTap && v10;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ((![(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] canHandleGesture:a3]|| ![(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] handleGesture:a3]) && (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:a3]|| ![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] handleGesture:a3]))
+  if ((![(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] canHandleGesture:gesture]|| ![(THWFreeTransformableRepGestureTargetHandler *)[(THWReviewRep *)self freeTransformableHandler] handleGesture:gesture]) && (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:gesture]|| ![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] handleGesture:gesture]))
   {
-    [a3 naturalLocationForRep:self];
+    [gesture naturalLocationForRep:self];
     v6 = v5;
     v8 = v7;
     [-[THWReviewRep layout](self "layout")];
     v13.x = v6;
     v13.y = v8;
     v9 = CGRectContainsPoint(v14, v13);
-    v10 = [a3 gestureKind];
-    if (v10 != TSWPImmediateDoubleTap || !v9)
+    gestureKind = [gesture gestureKind];
+    if (gestureKind != TSWPImmediateDoubleTap || !v9)
     {
       return 0;
     }
 
-    [a3 gestureState];
+    [gesture gestureState];
   }
 
   return 1;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWReviewRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWReviewRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
-- (id)reviewQuestion:(id)a3 cachedImageNamed:(id)a4
+- (id)reviewQuestion:(id)question cachedImageNamed:(id)named
 {
-  if (!a4)
+  if (!named)
   {
     return 0;
   }
 
-  v6 = [(NSMutableDictionary *)self->_cachedImages objectForKey:a4];
+  v6 = [(NSMutableDictionary *)self->_cachedImages objectForKey:named];
   if (!v6)
   {
-    v6 = [TSUImage imageNamed:a4 inBundle:THBundle()];
+    v6 = [TSUImage imageNamed:named inBundle:THBundle()];
     if (v6)
     {
-      [(NSMutableDictionary *)self->_cachedImages setObject:v6 forKey:a4];
+      [(NSMutableDictionary *)self->_cachedImages setObject:v6 forKey:named];
     }
   }
 
   return v6;
 }
 
-- (int)reviewQuestionInitialState:(id)a3
+- (int)reviewQuestionInitialState:(id)state
 {
-  v5 = [(THWReviewRep *)self p_responseController];
-  v6 = [objc_msgSend(a3 "questionLayout")];
-  v7 = [v5 newTemporateReviewResponseMOC];
-  v8 = [v5 responseForQuestionID:objc_msgSend(v6 temporaryMOC:{"questionID"), v7}];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  v6 = [objc_msgSend(state "questionLayout")];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v8 = [p_responseController responseForQuestionID:objc_msgSend(v6 temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
   if ([v8 userHasCheckedAnswer])
   {
     v9 = [(THWReviewRep *)self p_evaluateAnswerToQuestion:v6 updateScore:0];
@@ -1085,11 +1085,11 @@ LABEL_11:
   return v9;
 }
 
-- (void)reviewQuestion:(id)a3 selectChoice:(unint64_t)a4
+- (void)reviewQuestion:(id)question selectChoice:(unint64_t)choice
 {
-  v7 = [objc_msgSend(a3 "questionLayout")];
-  v8 = [(THWReviewRep *)self p_responseController];
-  v9 = [v8 responseForQuestionID:{objc_msgSend(v7, "questionID")}];
+  v7 = [objc_msgSend(question "questionLayout")];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  v9 = [p_responseController responseForQuestionID:{objc_msgSend(v7, "questionID")}];
   objc_opt_class();
   [v9 answerState];
   v10 = [objc_msgSend(TSUDynamicCast() "selectedChoices")];
@@ -1100,23 +1100,23 @@ LABEL_11:
 
   if ([v7 cardinality] == 2)
   {
-    if ([v10 containsIndex:a4])
+    if ([v10 containsIndex:choice])
     {
-      [v10 removeIndex:a4];
+      [v10 removeIndex:choice];
     }
 
     else
     {
-      [v10 addIndex:a4];
+      [v10 addIndex:choice];
     }
 
-    v11 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "questionLayout")];
+    v11 = [objc_msgSend(objc_msgSend(objc_msgSend(question "questionLayout")];
     if (v11)
     {
       v12 = v11;
       for (i = 0; i != v12; ++i)
       {
-        if (a4 != i && [a3 reviewQuestionStateForChoiceIndex:i] == 2)
+        if (choice != i && [question reviewQuestionStateForChoiceIndex:i] == 2)
         {
           [v10 removeIndex:i];
         }
@@ -1127,10 +1127,10 @@ LABEL_11:
   else
   {
     [v10 removeAllIndexes];
-    [v10 addIndex:a4];
+    [v10 addIndex:choice];
   }
 
-  [a3 setQuestionState:2];
+  [question setQuestionState:2];
   if ([v10 count])
   {
     v14 = objc_alloc_init(TSWReviewMultiChoiceAnswerState);
@@ -1148,27 +1148,27 @@ LABEL_11:
   v15[3] = &unk_45AE58;
   v15[4] = v9;
   v15[5] = v14;
-  [v8 mutateResponse:v9 block:v15];
+  [p_responseController mutateResponse:v9 block:v15];
 
   [(THWReviewRep *)self p_answersUpdated];
-  [a3 reviewQuestionAnswerUpdated];
-  [(THWReviewRep *)self reviewQuestionInvalidateLayers:a3];
+  [question reviewQuestionAnswerUpdated];
+  [(THWReviewRep *)self reviewQuestionInvalidateLayers:question];
 }
 
-- (int)reviewQuestion:(id)a3 radioStateForChoice:(unint64_t)a4 pressed:(BOOL)a5
+- (int)reviewQuestion:(id)question radioStateForChoice:(unint64_t)choice pressed:(BOOL)pressed
 {
-  v5 = a5;
-  v9 = [objc_msgSend(a3 "questionLayout")];
-  v10 = [(THWReviewRep *)self reviewQuestionResponseController:a3];
-  v11 = [v10 newTemporateReviewResponseMOC];
-  v12 = [v10 responseForQuestionID:objc_msgSend(v9 temporaryMOC:{"questionID"), v11}];
+  pressedCopy = pressed;
+  v9 = [objc_msgSend(question "questionLayout")];
+  v10 = [(THWReviewRep *)self reviewQuestionResponseController:question];
+  newTemporateReviewResponseMOC = [v10 newTemporateReviewResponseMOC];
+  v12 = [v10 responseForQuestionID:objc_msgSend(v9 temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
   objc_opt_class();
   [v12 answerState];
   v13 = TSUDynamicCast();
   v14 = v13;
-  if (v5)
+  if (pressedCopy)
   {
-    v15 = [v9 cardinality] != 2 || (objc_msgSend(objc_msgSend(v14, "selectedChoices"), "containsIndex:", a4) & 1) == 0;
+    v15 = [v9 cardinality] != 2 || (objc_msgSend(objc_msgSend(v14, "selectedChoices"), "containsIndex:", choice) & 1) == 0;
   }
 
   else if ([objc_msgSend(v13 "selectedChoices")])
@@ -1184,29 +1184,29 @@ LABEL_11:
   return v15;
 }
 
-- (void)reviewQuestionInvalidateLayers:(id)a3
+- (void)reviewQuestionInvalidateLayers:(id)layers
 {
-  v3 = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v3 invalidateLayers];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController invalidateLayers];
 }
 
-- (void)reviewQuestion:(id)a3 unassociateTargets:(id)a4
+- (void)reviewQuestion:(id)question unassociateTargets:(id)targets
 {
-  v7 = [objc_msgSend(a3 "questionLayout")];
-  v8 = [(THWReviewRep *)self p_responseController];
-  v9 = [v8 newTemporateReviewResponseMOC];
-  v10 = [v8 responseForQuestionID:{objc_msgSend(v7, "questionID")}];
-  v11 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:a3 temporaryMOC:v9];
+  v7 = [objc_msgSend(question "questionLayout")];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v10 = [p_responseController responseForQuestionID:{objc_msgSend(v7, "questionID")}];
+  v11 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:question temporaryMOC:newTemporateReviewResponseMOC];
   if (!v11)
   {
     v11 = objc_alloc_init(TSWReviewMatchingAnswerState);
   }
 
-  v12 = [a4 firstIndex];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [targets firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v12; i != 0x7FFFFFFFFFFFFFFFLL; i = [a4 indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [targets indexGreaterThanIndex:i])
     {
       v14 = [(TSWReviewMatchingAnswerState *)v11 placardForTarget:i];
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1216,7 +1216,7 @@ LABEL_11:
     }
   }
 
-  [a3 setQuestionState:2];
+  [question setQuestionState:2];
   v15 = [(NSArray *)[(TSWReviewMatchingAnswerState *)v11 placardToTargetMap] copy];
   v16 = objc_alloc_init(TSWReviewMatchingAnswerState);
   [(TSWReviewMatchingAnswerState *)v16 setPlacardToTargetMap:v15];
@@ -1226,42 +1226,42 @@ LABEL_11:
   v17[3] = &unk_45AE58;
   v17[4] = v10;
   v17[5] = v16;
-  [v8 mutateResponse:v10 block:v17];
+  [p_responseController mutateResponse:v10 block:v17];
 
   [(THWReviewRep *)self p_answersUpdated];
-  [a3 reviewQuestionAnswerUpdated];
-  [(THWReviewRep *)self reviewQuestionInvalidateLayers:a3];
-  [(THWReviewRep *)self reviewQuestionDidUpdateState:a3];
+  [question reviewQuestionAnswerUpdated];
+  [(THWReviewRep *)self reviewQuestionInvalidateLayers:question];
+  [(THWReviewRep *)self reviewQuestionDidUpdateState:question];
 }
 
-- (void)reviewQuestion:(id)a3 associatePlacard:(unint64_t)a4 withTarget:(unint64_t)a5
+- (void)reviewQuestion:(id)question associatePlacard:(unint64_t)placard withTarget:(unint64_t)target
 {
-  v9 = [objc_msgSend(a3 "questionLayout")];
-  v10 = [(THWReviewRep *)self p_responseController];
-  v11 = [v10 newTemporateReviewResponseMOC];
-  v12 = [v10 responseForQuestionID:{objc_msgSend(v9, "questionID")}];
-  v13 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:a3 temporaryMOC:v11];
+  v9 = [objc_msgSend(question "questionLayout")];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v12 = [p_responseController responseForQuestionID:{objc_msgSend(v9, "questionID")}];
+  v13 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:question temporaryMOC:newTemporateReviewResponseMOC];
   if (!v13)
   {
     v13 = objc_alloc_init(TSWReviewMatchingAnswerState);
   }
 
-  v14 = [(TSWReviewMatchingAnswerState *)v13 targetForPlacard:a4];
+  v14 = [(TSWReviewMatchingAnswerState *)v13 targetForPlacard:placard];
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (target != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(TSWReviewMatchingAnswerState *)v13 placardForTarget:a5];
+    v15 = [(TSWReviewMatchingAnswerState *)v13 placardForTarget:target];
   }
 
-  if (v14 != a5)
+  if (v14 != target)
   {
     if (v14 != 0x7FFFFFFFFFFFFFFFLL && v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(TSWReviewMatchingAnswerState *)v13 setTarget:v14 forPlacard:?];
     }
 
-    [(TSWReviewMatchingAnswerState *)v13 setTarget:a5 forPlacard:a4];
-    [a3 setQuestionState:2];
+    [(TSWReviewMatchingAnswerState *)v13 setTarget:target forPlacard:placard];
+    [question setQuestionState:2];
     v16 = [(NSArray *)[(TSWReviewMatchingAnswerState *)v13 placardToTargetMap] copy];
     v17 = objc_alloc_init(TSWReviewMatchingAnswerState);
     [(TSWReviewMatchingAnswerState *)v17 setPlacardToTargetMap:v16];
@@ -1271,23 +1271,23 @@ LABEL_11:
     v18[3] = &unk_45AE58;
     v18[4] = v12;
     v18[5] = v17;
-    [v10 mutateResponse:v12 block:v18];
+    [p_responseController mutateResponse:v12 block:v18];
   }
 
   [(THWReviewRep *)self p_answersUpdated];
-  [a3 reviewQuestionAnswerUpdated];
-  [(THWReviewRep *)self reviewQuestionInvalidateLayers:a3];
-  [(THWReviewRep *)self reviewQuestionDidUpdateState:a3];
+  [question reviewQuestionAnswerUpdated];
+  [(THWReviewRep *)self reviewQuestionInvalidateLayers:question];
+  [(THWReviewRep *)self reviewQuestionDidUpdateState:question];
 }
 
-- (id)reviewQuestionDraggingHostView:(id)a3
+- (id)reviewQuestionDraggingHostView:(id)view
 {
-  v3 = [(THWReviewRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewRep *)self interactiveCanvasController];
 
-  return [v3 canvasView];
+  return [interactiveCanvasController canvasView];
 }
 
-- (id)p_matchingAnswerStateForQuestion:(id)a3 temporaryMOC:(id)a4
+- (id)p_matchingAnswerStateForQuestion:(id)question temporaryMOC:(id)c
 {
   v4 = [-[THWReviewRep p_responseController](self "p_responseController")];
   objc_opt_class();
@@ -1296,13 +1296,13 @@ LABEL_11:
   return TSUDynamicCast();
 }
 
-- (unint64_t)reviewQuestion:(id)a3 placardForTarget:(unint64_t)a4
+- (unint64_t)reviewQuestion:(id)question placardForTarget:(unint64_t)target
 {
   v7 = [-[THWReviewRep p_responseController](self "p_responseController")];
-  v8 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:a3 temporaryMOC:v7];
+  v8 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:question temporaryMOC:v7];
   if (v8)
   {
-    v9 = [v8 placardForTarget:a4];
+    v9 = [v8 placardForTarget:target];
   }
 
   else
@@ -1313,13 +1313,13 @@ LABEL_11:
   return v9;
 }
 
-- (unint64_t)reviewQuestion:(id)a3 targetForPlacard:(unint64_t)a4
+- (unint64_t)reviewQuestion:(id)question targetForPlacard:(unint64_t)placard
 {
   v7 = [-[THWReviewRep p_responseController](self "p_responseController")];
-  v8 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:a3 temporaryMOC:v7];
+  v8 = [(THWReviewRep *)self p_matchingAnswerStateForQuestion:question temporaryMOC:v7];
   if (v8)
   {
-    v9 = [v8 targetForPlacard:a4];
+    v9 = [v8 targetForPlacard:placard];
   }
 
   else
@@ -1348,20 +1348,20 @@ LABEL_11:
 
 - (id)p_currentQuestion
 {
-  v3 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
-  v4 = [(THWReviewRep *)self info];
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  info = [(THWReviewRep *)self info];
 
-  return [v4 questionAtIndex:v3];
+  return [info questionAtIndex:pageIndex];
 }
 
-- (id)p_repForQuestion:(id)a3
+- (id)p_repForQuestion:(id)question
 {
-  [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_scrollableCanvasControllers objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(-[THWReviewRep info](self, "info"), "indexOfQuestion:", a3))), "interactiveCanvasController"), "repForLayout:", objc_msgSend(-[THWReviewRep layout](self, "layout"), "layoutForQuestion:", a3)}];
+  [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_scrollableCanvasControllers objectForKeyedSubscript:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", objc_msgSend(-[THWReviewRep info](self, "info"), "indexOfQuestion:", question))), "interactiveCanvasController"), "repForLayout:", objc_msgSend(-[THWReviewRep layout](self, "layout"), "layoutForQuestion:", question)}];
   objc_opt_class();
   return TSUClassAndProtocolCast();
 }
 
-- (id)p_repForPage:(unint64_t)a3
+- (id)p_repForPage:(unint64_t)page
 {
   v4 = [-[TSDInteractiveCanvasController layoutController](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController "interactiveCanvasController")];
   objc_opt_class();
@@ -1370,15 +1370,15 @@ LABEL_11:
   return TSUDynamicCast();
 }
 
-- (int)p_evaluateAnswerToQuestion:(id)a3 updateScore:(BOOL)a4
+- (int)p_evaluateAnswerToQuestion:(id)question updateScore:(BOOL)score
 {
-  v4 = a4;
+  scoreCopy = score;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_184338;
   v8[3] = &unk_45E468;
   v8[4] = [(THWReviewRep *)self p_repForQuestion:?];
-  return [a3 evaluateAnswerWithResponseController:-[THWReviewRep p_responseController](self updateScore:"p_responseController") choiceBlock:{v4, v8}];
+  return [question evaluateAnswerWithResponseController:-[THWReviewRep p_responseController](self updateScore:"p_responseController") choiceBlock:{scoreCopy, v8}];
 }
 
 - (void)p_updateButtonStates
@@ -1403,10 +1403,10 @@ LABEL_11:
   [(THWReviewControlsRep *)self->_controlsRep setNextButtonHidden:v6];
 }
 
-- (int)p_computeCheckButtonStateDisabled:(BOOL *)a3
+- (int)p_computeCheckButtonStateDisabled:(BOOL *)disabled
 {
-  v5 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
-  if (v5 == [objc_msgSend(-[THWReviewRep info](self "info")])
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  if (pageIndex == [objc_msgSend(-[THWReviewRep info](self "info")])
   {
     v6 = 0;
     LODWORD(v7) = 3;
@@ -1418,21 +1418,21 @@ LABEL_11:
     if (v7)
     {
       v8 = v7;
-      v9 = [v7 questionState];
-      v10 = v9;
+      questionState = [v7 questionState];
+      v10 = questionState;
       v6 = 0;
-      if (v9 <= 2)
+      if (questionState <= 2)
       {
-        if (v9 >= 2)
+        if (questionState >= 2)
         {
           LODWORD(v7) = 0;
           if (v10 == 2)
           {
             if (objc_opt_respondsToSelector())
             {
-              v11 = [v8 reviewQuestionIsAnswerCheckable];
+              reviewQuestionIsAnswerCheckable = [v8 reviewQuestionIsAnswerCheckable];
               LODWORD(v7) = 0;
-              v6 = v11 ^ 1;
+              v6 = reviewQuestionIsAnswerCheckable ^ 1;
             }
 
             else
@@ -1450,7 +1450,7 @@ LABEL_11:
         }
       }
 
-      else if ((v9 - 3) >= 3)
+      else if ((questionState - 3) >= 3)
       {
         LODWORD(v7) = 0;
         if (v10 == 6)
@@ -1473,22 +1473,22 @@ LABEL_11:
     }
   }
 
-  if (a3)
+  if (disabled)
   {
-    *a3 = v6;
+    *disabled = v6;
   }
 
   return v7;
 }
 
-- (BOOL)p_questionCanBeChecked:(id)a3
+- (BOOL)p_questionCanBeChecked:(id)checked
 {
-  v4 = [(THWReviewRep *)self p_responseController];
-  v5 = [v4 newTemporateReviewResponseMOC];
-  v6 = [v4 responseForQuestionID:objc_msgSend(a3 temporaryMOC:{"questionID"), v5}];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  newTemporateReviewResponseMOC = [p_responseController newTemporateReviewResponseMOC];
+  v6 = [p_responseController responseForQuestionID:objc_msgSend(checked temporaryMOC:{"questionID"), newTemporateReviewResponseMOC}];
   if (v6)
   {
-    if ([a3 type] == 2)
+    if ([checked type] == 2)
     {
       objc_opt_class();
       [v6 answerState];
@@ -1498,8 +1498,8 @@ LABEL_11:
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      v8 = [v7 numSelectedTargets];
-      if (v8 != [objc_msgSend(a3 "choices")])
+      numSelectedTargets = [v7 numSelectedTargets];
+      if (numSelectedTargets != [objc_msgSend(checked "choices")])
       {
         goto LABEL_6;
       }
@@ -1520,34 +1520,34 @@ LABEL_9:
   return v6;
 }
 
-- (void)p_checkQuestionAnswer:(id)a3
+- (void)p_checkQuestionAnswer:(id)answer
 {
-  v5 = [(THWReviewRep *)self p_responseController];
-  v6 = [v5 responseForQuestionID:{objc_msgSend(a3, "questionID")}];
+  p_responseController = [(THWReviewRep *)self p_responseController];
+  v6 = [p_responseController responseForQuestionID:{objc_msgSend(answer, "questionID")}];
   if ([objc_msgSend(v6 "answerState")])
   {
-    [-[THWReviewRep p_repForQuestion:](self p_repForQuestion:{a3), "setQuestionState:", -[THWReviewRep p_evaluateAnswerToQuestion:updateScore:](self, "p_evaluateAnswerToQuestion:updateScore:", a3, 1)}];
+    [-[THWReviewRep p_repForQuestion:](self p_repForQuestion:{answer), "setQuestionState:", -[THWReviewRep p_evaluateAnswerToQuestion:updateScore:](self, "p_evaluateAnswerToQuestion:updateScore:", answer, 1)}];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_184788;
     v7[3] = &unk_45AE00;
     v7[4] = v6;
-    [v5 mutateResponse:v6 block:v7];
+    [p_responseController mutateResponse:v6 block:v7];
     [(THWReviewRep *)self p_answersUpdated];
   }
 }
 
-- (void)p_clearQuestionAnswer:(id)a3
+- (void)p_clearQuestionAnswer:(id)answer
 {
-  v5 = [(THWReviewRep *)self p_responseController];
+  p_responseController = [(THWReviewRep *)self p_responseController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_184870;
   v7[3] = &unk_45AE00;
-  v8 = [v5 responseForQuestionID:{objc_msgSend(a3, "questionID")}];
-  [v5 mutateResponse:v8 block:v7];
-  [-[THWReviewRep p_repForQuestion:](self p_repForQuestion:{a3), "setQuestionState:", 1}];
-  v6 = [(THWReviewRep *)self p_repForQuestion:a3];
+  v8 = [p_responseController responseForQuestionID:{objc_msgSend(answer, "questionID")}];
+  [p_responseController mutateResponse:v8 block:v7];
+  [-[THWReviewRep p_repForQuestion:](self p_repForQuestion:{answer), "setQuestionState:", 1}];
+  v6 = [(THWReviewRep *)self p_repForQuestion:answer];
   [(THWReviewRep *)self p_answersUpdated];
   [v6 reviewQuestionAnswerUpdated];
 }
@@ -1555,20 +1555,20 @@ LABEL_9:
 - (void)p_answersUpdated
 {
   [objc_msgSend(-[THWReviewRep layout](self "layout")];
-  v3 = [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] canvas];
+  canvas = [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_stageCanvasController interactiveCanvasController] canvas];
 
-  [v3 invalidateLayers];
+  [canvas invalidateLayers];
 }
 
-- (void)p_updatePersitentQuestionIndex:(unint64_t)a3
+- (void)p_updatePersitentQuestionIndex:(unint64_t)index
 {
-  v5 = [(THWReviewRep *)self p_dataController];
+  p_dataController = [(THWReviewRep *)self p_dataController];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1849C8;
   v6[3] = &unk_45B298;
-  v6[5] = a3;
-  [v5 mutateReviewWidgetData:objc_msgSend(v5 block:{"reviewWidgetDataForWidgetID:", objc_msgSend(-[THWReviewRep info](self, "info"), "reviewID")), v6}];
+  v6[5] = index;
+  [p_dataController mutateReviewWidgetData:objc_msgSend(p_dataController block:{"reviewWidgetDataForWidgetID:", objc_msgSend(-[THWReviewRep info](self, "info"), "reviewID")), v6}];
 }
 
 - (void)p_refreshQuestions
@@ -1614,13 +1614,13 @@ LABEL_9:
 - (void)p_resetQuestions
 {
   [(THWPagedCanvasController *)self->_stageCanvasController setPageIndex:0 animated:[(THWPagedCanvasController *)self->_stageCanvasController pageIndex]< 3];
-  v3 = [(THWReviewRep *)self p_responseController];
+  p_responseController = [(THWReviewRep *)self p_responseController];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [-[THWReviewRep info](self info];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  info = [-[THWReviewRep info](self info];
+  v5 = [info countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1631,13 +1631,13 @@ LABEL_9:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(info);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = [(THWReviewRep *)self p_repForQuestion:v9];
         [v10 setQuestionState:1];
-        [v3 removeResponseForQuestionID:{objc_msgSend(v9, "questionID")}];
+        [p_responseController removeResponseForQuestionID:{objc_msgSend(v9, "questionID")}];
         if (v10)
         {
           v11 = v10;
@@ -1652,7 +1652,7 @@ LABEL_9:
         [v11 reviewQuestionAnswerUpdated];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [info countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1668,8 +1668,8 @@ LABEL_9:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [-[THWReviewRep info](self info];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  info = [-[THWReviewRep info](self info];
+  v4 = [info countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1680,7 +1680,7 @@ LABEL_9:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(info);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -1690,7 +1690,7 @@ LABEL_9:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [info countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1708,9 +1708,9 @@ LABEL_9:
   }
 }
 
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller
 {
-  [objc_msgSend(objc_msgSend(a3 "interactiveCanvasController")];
+  [objc_msgSend(objc_msgSend(controller "interactiveCanvasController")];
   v5 = 1.0;
   if (v3 <= 0.0)
   {
@@ -1732,17 +1732,17 @@ LABEL_9:
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport
 {
   objc_opt_class();
-  [a3 instanceData];
-  v6 = [TSUDynamicCast() unsignedIntegerValue];
-  v7 = [(THWReviewRep *)self layout];
+  [controller instanceData];
+  unsignedIntegerValue = [TSUDynamicCast() unsignedIntegerValue];
+  layout = [(THWReviewRep *)self layout];
 
-  return [v7 infosForScrollablePage:v6];
+  return [layout infosForScrollablePage:unsignedIntegerValue];
 }
 
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller
 {
   v3 = TSDEdgeInsetsZero[0];
   v4 = TSDEdgeInsetsZero[1];
@@ -1755,9 +1755,9 @@ LABEL_9:
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)scrollableCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
-  if (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:a4])
+  if (![(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 0;
   }
@@ -1767,51 +1767,51 @@ LABEL_9:
 
 - (id)scrollableCanvasHost
 {
-  v2 = [(THWReviewRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewRep *)self interactiveCanvasController];
 
-  return [v2 scrollableCanvasHost];
+  return [interactiveCanvasController scrollableCanvasHost];
 }
 
-- (double)contentsScaleForScrollableCanvasController:(id)a3
+- (double)contentsScaleForScrollableCanvasController:(id)controller
 {
-  v3 = [(THWReviewRep *)self canvas];
+  canvas = [(THWReviewRep *)self canvas];
 
-  [v3 contentsScale];
+  [canvas contentsScale];
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
   [-[THWReviewRep interactiveCanvasController](self interactiveCanvasController];
   v9 = TSUProtocolCast();
 
-  return [v9 actionForHyperlink:a4 inRep:a5 gesture:a6];
+  return [v9 actionForHyperlink:hyperlink inRep:rep gesture:gesture];
 }
 
-- (BOOL)isRelatedCanvasScrollingForScrollableCanvasController:(id)a3
+- (BOOL)isRelatedCanvasScrollingForScrollableCanvasController:(id)controller
 {
-  v3 = [(THWReviewRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWReviewRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (void)scrollableCanvasController:(id)a3 customizeLayerHost:(id)a4
+- (void)scrollableCanvasController:(id)controller customizeLayerHost:(id)host
 {
-  [a3 setupImmediatePressGestureWithSimultaneousGestures:{objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController, "interactiveCanvasController", a3, a4), "layerHost"), "asiOSCVC"), "panGestureRecognizers")}];
+  [controller setupImmediatePressGestureWithSimultaneousGestures:{objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](-[THWPagedCanvasController interactiveCanvasController](self->_stageCanvasController, "interactiveCanvasController", controller, host), "layerHost"), "asiOSCVC"), "panGestureRecognizers")}];
   if ([(THWReviewRep *)self pressableHandler])
   {
-    v6 = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
+    widgetInteractionEnabled = [(THWPressableRepGestureTargetHandler *)[(THWReviewRep *)self pressableHandler] widgetInteractionEnabled];
   }
 
   else
   {
-    v6 = 1;
+    widgetInteractionEnabled = 1;
   }
 
-  [a3 setUserInteractionEnabled:v6];
+  [controller setUserInteractionEnabled:widgetInteractionEnabled];
 }
 
-- (id)bookNavigatorForScrollableCanvasController:(id)a3
+- (id)bookNavigatorForScrollableCanvasController:(id)controller
 {
   objc_opt_class();
   [(THWReviewRep *)self interactiveCanvasController];
@@ -1820,7 +1820,7 @@ LABEL_9:
   return [v4 bookNavigator];
 }
 
-- (id)documentNavigatorForScrollableCanvasController:(id)a3
+- (id)documentNavigatorForScrollableCanvasController:(id)controller
 {
   objc_opt_class();
   [(THWReviewRep *)self interactiveCanvasController];
@@ -1831,9 +1831,9 @@ LABEL_9:
 
 - (id)p_currentScrollableCanvasController
 {
-  v3 = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
+  pageIndex = [(THWPagedCanvasController *)self->_stageCanvasController pageIndex];
   scrollableCanvasControllers = self->_scrollableCanvasControllers;
-  v5 = [NSNumber numberWithUnsignedInteger:v3];
+  v5 = [NSNumber numberWithUnsignedInteger:pageIndex];
 
   return [(NSMutableDictionary *)scrollableCanvasControllers objectForKeyedSubscript:v5];
 }
@@ -1841,17 +1841,17 @@ LABEL_9:
 - (void)freeTransformWillBegin
 {
   v3 = [+[TSUColor whiteColor](TSUColor "whiteColor")];
-  v4 = [(THWReviewRep *)self pAnimationView];
+  pAnimationView = [(THWReviewRep *)self pAnimationView];
 
-  [v4 setTsdBackgroundColor:v3];
+  [pAnimationView setTsdBackgroundColor:v3];
 }
 
 - (void)freeTransformDidEnd
 {
   v3 = [+[TSUColor clearColor](TSUColor "clearColor")];
-  v4 = [(THWReviewRep *)self pAnimationView];
+  pAnimationView = [(THWReviewRep *)self pAnimationView];
 
-  [v4 setTsdBackgroundColor:v3];
+  [pAnimationView setTsdBackgroundColor:v3];
 }
 
 - (BOOL)isFreeTransformInProgress
@@ -1863,9 +1863,9 @@ LABEL_9:
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (id)shadowPath
@@ -1877,9 +1877,9 @@ LABEL_9:
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THWReviewRep *)self layout];
+  layout = [(THWReviewRep *)self layout];
 
-  [v2 frameInParent];
+  [layout frameInParent];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

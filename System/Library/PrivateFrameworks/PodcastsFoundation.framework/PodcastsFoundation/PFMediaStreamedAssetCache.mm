@@ -1,13 +1,13 @@
 @interface PFMediaStreamedAssetCache
-- (BOOL)clearAndReturnError:(id *)a3;
-- (BOOL)completeAndReturnError:(id *)a3;
+- (BOOL)clearAndReturnError:(id *)error;
+- (BOOL)completeAndReturnError:(id *)error;
 - (NSString)pathExtension;
 - (PFMediaStreamedAssetCache)init;
-- (PFMediaStreamedAssetCache)initWithSourceURL:(id)a3;
-- (PFMediaStreamedAssetCache)initWithSourceURL:(id)a3 cacheLocation:(id)a4 purgeability:(int)a5;
+- (PFMediaStreamedAssetCache)initWithSourceURL:(id)l;
+- (PFMediaStreamedAssetCache)initWithSourceURL:(id)l cacheLocation:(id)location purgeability:(int)purgeability;
 - (id)cachedAssetURL;
 - (id)persistentFileURL;
-- (id)streamCacheURLAndReturnError:(id *)a3;
+- (id)streamCacheURLAndReturnError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (PFMediaStreamedAssetCache)initWithSourceURL:(id)a3
+- (PFMediaStreamedAssetCache)initWithSourceURL:(id)l
 {
   v4 = sub_1D9176C2C();
   v5 = *(v4 - 8);
@@ -34,7 +34,7 @@
   v11 = &v18 - v10;
   sub_1D9176B9C();
   v12 = sub_1D9176B1C();
-  v13 = [objc_opt_self() streamedMediaAssetURL];
+  streamedMediaAssetURL = [objc_opt_self() streamedMediaAssetURL];
   sub_1D9176B9C();
 
   v14 = sub_1D9176B1C();
@@ -46,7 +46,7 @@
   return v16;
 }
 
-- (PFMediaStreamedAssetCache)initWithSourceURL:(id)a3 cacheLocation:(id)a4 purgeability:(int)a5
+- (PFMediaStreamedAssetCache)initWithSourceURL:(id)l cacheLocation:(id)location purgeability:(int)purgeability
 {
   v6 = sub_1D9176C2C();
   v7 = *(*(v6 - 8) + 64);
@@ -56,7 +56,7 @@
   v12 = &v14 - v11;
   sub_1D9176B9C();
   sub_1D9176B9C();
-  return MediaStreamedAssetCache.init(sourceURL:cacheLocation:purgeability:)(v12, v9, a5);
+  return MediaStreamedAssetCache.init(sourceURL:cacheLocation:purgeability:)(v12, v9, purgeability);
 }
 
 - (id)cachedAssetURL
@@ -65,7 +65,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   MediaStreamedAssetCache.cachedAssetURL()(v6);
 
   v8 = sub_1D9176C2C();
@@ -82,7 +82,7 @@
   return v11;
 }
 
-- (id)streamCacheURLAndReturnError:(id *)a3
+- (id)streamCacheURLAndReturnError:(id *)error
 {
   v4 = sub_1D9176C2C();
   v5 = *(v4 - 8);
@@ -90,10 +90,10 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v15[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v9 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_phase);
-  v16 = self;
+  selfCopy = self;
   v10 = *(*v9 + *MEMORY[0x1E69E6B68] + 16);
   v11 = (*(*v9 + 48) + 3) & 0x1FFFFFFFCLL;
-  v12 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock((v9 + v11));
   sub_1D8E6A76C(v9 + v10, v8);
   os_unfair_lock_unlock((v9 + v11));
@@ -104,12 +104,12 @@
   return v13;
 }
 
-- (BOOL)completeAndReturnError:(id *)a3
+- (BOOL)completeAndReturnError:(id *)error
 {
   v3 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_phase);
   v4 = *(*v3 + *MEMORY[0x1E69E6B68] + 16);
   v5 = (*(*v3 + 48) + 3) & 0x1FFFFFFFCLL;
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v3 + v5));
   sub_1D8E6A754(v3 + v4);
   os_unfair_lock_unlock((v3 + v5));
@@ -117,12 +117,12 @@
   return 1;
 }
 
-- (BOOL)clearAndReturnError:(id *)a3
+- (BOOL)clearAndReturnError:(id *)error
 {
   v3 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_phase);
   v4 = *(*v3 + *MEMORY[0x1E69E6B68] + 16);
   v5 = (*(*v3 + 48) + 3) & 0x1FFFFFFFCLL;
-  v6 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v3 + v5));
   sub_1D8E68FE0(v3 + v4);
   os_unfair_lock_unlock((v3 + v5));
@@ -141,10 +141,10 @@
   v10 = &v19 - v9;
   v11 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_sourceURLMD5);
   v12 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_sourceURLMD5 + 8);
-  v13 = self;
+  selfCopy = self;
   sub_1D9176B3C();
-  v14 = *(v13 + OBJC_IVAR___PFMediaStreamedAssetCache_pathExtension);
-  v15 = *(v13 + OBJC_IVAR___PFMediaStreamedAssetCache_pathExtension + 8);
+  v14 = *(selfCopy + OBJC_IVAR___PFMediaStreamedAssetCache_pathExtension);
+  v15 = *(selfCopy + OBJC_IVAR___PFMediaStreamedAssetCache_pathExtension + 8);
   sub_1D9176B4C();
   v16 = *(v4 + 8);
   v16(v7, v3);
@@ -161,13 +161,13 @@
   v4 = *(self + OBJC_IVAR___PFMediaStreamedAssetCache_phase);
   v5 = *(*v4 + *MEMORY[0x1E69E6B68] + 16);
   v6 = (*(*v4 + 48) + 3) & 0x1FFFFFFFCLL;
-  v7 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v4 + v6));
   sub_1D8E69B90(v4 + v5);
   os_unfair_lock_unlock((v4 + v6));
 
-  v8.receiver = v7;
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [(PFMediaStreamedAssetCache *)&v8 dealloc];
 }

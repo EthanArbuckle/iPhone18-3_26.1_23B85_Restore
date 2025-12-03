@@ -1,26 +1,26 @@
 @interface GCOperation
 + (id)alloc;
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)_checkFinished:(BOOL)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)_checkFinished:(BOOL)finished;
 - (BOOL)_runSynchronouslyIfNeeded;
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5;
-- (GCOperation)initWithError:(id)a3;
-- (GCOperation)initWithResult:(id)a3;
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error;
+- (GCOperation)initWithError:(id)error;
+- (GCOperation)initWithResult:(id)result;
 - (id).cxx_construct;
 - (id)activate;
 - (id)debugDescription;
 - (id)initCancelled;
-- (id)initOnQueue:(id)a3 withOptions:(unsigned int)a4;
+- (id)initOnQueue:(id)queue withOptions:(unsigned int)options;
 - (id)startAsynchronously;
 - (void)_startAsynchronouslyIfNeeded;
-- (void)setAsyncBlock:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setSyncBlock:(id)a3;
+- (void)setAsyncBlock:(id)block;
+- (void)setLabel:(id)label;
+- (void)setSyncBlock:(id)block;
 @end
 
 @implementation GCOperation
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   if (__creatorFrameKey(void)::onceToken != -1)
   {
@@ -28,9 +28,9 @@
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v3);
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___GCOperation;
-  return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
 }
 
 + (id)alloc
@@ -41,18 +41,18 @@
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v2);
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___GCOperation;
   return objc_msgSendSuper2(&v5, sel_allocWithZone_, 0);
 }
 
-- (GCOperation)initWithResult:(id)a3
+- (GCOperation)initWithResult:(id)result
 {
-  v6 = a3;
-  if (!v6)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1408 description:{@"Invalid parameter not satisfying: %s", "result != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1408 description:{@"Invalid parameter not satisfying: %s", "result != nil"}];
   }
 
   v10.receiver = self;
@@ -61,20 +61,20 @@
   *(v7 + 2) = 0;
   v7[12] = -2;
   v7[12] = 2;
-  objc_storeStrong(v7 + 2, a3);
+  objc_storeStrong(v7 + 2, result);
   atomic_store(1u, v7 + 14);
   ContinuationList::drainContinuations_takesLock((v7 + 72), v7);
 
   return v7;
 }
 
-- (GCOperation)initWithError:(id)a3
+- (GCOperation)initWithError:(id)error
 {
-  v6 = a3;
-  if (!v6)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1421 description:{@"Invalid parameter not satisfying: %s", "error != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1421 description:{@"Invalid parameter not satisfying: %s", "error != nil"}];
   }
 
   v10.receiver = self;
@@ -83,7 +83,7 @@
   *(v7 + 2) = 0;
   v7[12] = -2;
   v7[12] = 1;
-  objc_storeStrong(v7 + 2, a3);
+  objc_storeStrong(v7 + 2, error);
   atomic_store(1u, v7 + 14);
   ContinuationList::drainContinuations_takesLock((v7 + 72), v7);
 
@@ -107,10 +107,10 @@
   return v2;
 }
 
-- (id)initOnQueue:(id)a3 withOptions:(unsigned int)a4
+- (id)initOnQueue:(id)queue withOptions:(unsigned int)options
 {
-  v4 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = GCFuture;
   v8 = [(GCFuture *)&v15 init];
@@ -124,18 +124,18 @@
   }
 
   *(v8 + 13) = pthread_getspecific(__creatorFrameKey(void)::key);
-  if ((v4 & 0x100) != 0)
+  if ((optionsCopy & 0x100) != 0)
   {
     *(v8 + 13) |= 1u;
   }
 
-  objc_storeStrong(v8 + 4, a3);
-  if ((v4 & 2) != 0)
+  objc_storeStrong(v8 + 4, queue);
+  if ((optionsCopy & 2) != 0)
   {
     v12 = *(v8 + 7);
     *(v8 + 7) = 0;
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       v11 = 0;
       goto LABEL_10;
@@ -151,7 +151,7 @@ LABEL_11:
   v10 = *(v8 + 7);
   *(v8 + 7) = v9;
 
-  if ((v4 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     goto LABEL_11;
   }
@@ -165,43 +165,43 @@ LABEL_12:
   return v8;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5.receiver = self;
   v5.super_class = GCOperation;
-  [(GCFuture *)&v5 setLabel:v4];
+  [(GCFuture *)&v5 setLabel:labelCopy];
   if (self->_continuations._continuations.tqh_last)
   {
-    [v4 UTF8String];
+    [labelCopy UTF8String];
     dispatch_queue_set_label_nocopy();
   }
 }
 
-- (void)setAsyncBlock:(id)a3
+- (void)setAsyncBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (atomic_load_explicit(&self->super._state + 2, memory_order_acquire))
   {
     [GCOperation setAsyncBlock:];
   }
 
-  v7 = v4;
-  v5 = [v4 copy];
+  v7 = blockCopy;
+  v5 = [blockCopy copy];
   targetQueue = self->_targetQueue;
   self->_targetQueue = v5;
 }
 
-- (void)setSyncBlock:(id)a3
+- (void)setSyncBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (atomic_load_explicit(&self->super._state + 2, memory_order_acquire))
   {
     [GCOperation setSyncBlock:];
   }
 
-  v7 = v4;
-  v5 = [v4 copy];
+  v7 = blockCopy;
+  v5 = [blockCopy copy];
   asyncBlock = self->_asyncBlock;
   self->_asyncBlock = v5;
 }
@@ -219,20 +219,20 @@ LABEL_12:
 
 - (id)startAsynchronously
 {
-  v3 = [(GCOperation *)self activate];
+  activate = [(GCOperation *)self activate];
   [(GCOperation *)self _startAsynchronouslyIfNeeded];
   return self;
 }
 
 - (void)_startAsynchronouslyIfNeeded
 {
-  *a1 = MEMORY[0x1E69E9820];
-  a1[1] = 3221225472;
-  a1[2] = __43__GCOperation__startAsynchronouslyIfNeeded__block_invoke;
-  a1[3] = &unk_1E8415218;
-  a1[5] = a2;
-  a1[4] = a3;
-  v7 = _Block_copy(a1);
+  *self = MEMORY[0x1E69E9820];
+  self[1] = 3221225472;
+  self[2] = __43__GCOperation__startAsynchronouslyIfNeeded__block_invoke;
+  self[3] = &unk_1E8415218;
+  self[5] = a2;
+  self[4] = a3;
+  v7 = _Block_copy(self);
   v8 = *(a4 + 64);
   if (*(a4 + 56))
   {
@@ -348,31 +348,31 @@ void __43__GCOperation__startAsynchronouslyIfNeeded__block_invoke_294(void *a1)
 
 - (BOOL)_runSynchronouslyIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if ((atomic_load_explicit((a1 + 14), memory_order_acquire) & 1) == 0)
+    if ((atomic_load_explicit((self + 14), memory_order_acquire) & 1) == 0)
     {
       [GCOperation _runSynchronouslyIfNeeded];
     }
 
     os_unfair_lock_lock_with_options();
-    if (*(a1 + 12) == 254)
+    if (*(self + 12) == 254)
     {
-      v2 = _Block_copy(*(a1 + 48));
+      v2 = _Block_copy(*(self + 48));
       v3 = v2 != 0;
       if (!v2)
       {
-        os_unfair_lock_unlock((a1 + 8));
-        [(GCOperation *)a1 _startAsynchronouslyIfNeeded];
+        os_unfair_lock_unlock((self + 8));
+        [(GCOperation *)self _startAsynchronouslyIfNeeded];
 LABEL_20:
 
         return v3;
       }
 
-      *(a1 + 12) = -1;
-      v4 = *(a1 + 32);
+      *(self + 12) = -1;
+      v4 = *(self + 32);
       v5 = v4;
-      if (*(a1 + 13))
+      if (*(self + 13))
       {
 
         v5 = 0;
@@ -380,33 +380,33 @@ LABEL_20:
 
       v6 = dispatch_queue_attr_make_initially_inactive(0);
       v7 = dispatch_queue_create(0, v6);
-      v8 = *(a1 + 88);
-      *(a1 + 88) = v7;
+      v8 = *(self + 88);
+      *(self + 88) = v7;
 
-      v9 = *(a1 + 88);
-      [*(a1 + 24) UTF8String];
+      v9 = *(self + 88);
+      [*(self + 24) UTF8String];
       dispatch_queue_set_label_nocopy();
-      dispatch_activate(*(a1 + 88));
+      dispatch_activate(*(self + 88));
       v10 = dispatch_get_current_queue();
-      v11 = *(a1 + 96);
-      *(a1 + 96) = v10;
+      v11 = *(self + 96);
+      *(self + 96) = v10;
 
-      *(a1 + 13) &= ~2u;
-      os_unfair_lock_unlock((a1 + 8));
+      *(self + 13) &= ~2u;
+      os_unfair_lock_unlock((self + 8));
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __40__GCOperation__runSynchronouslyIfNeeded__block_invoke;
       aBlock[3] = &unk_1E8415290;
       v12 = v5;
       v21 = v12;
-      v22 = a1;
+      selfCopy = self;
       v23 = v2;
       v13 = _Block_copy(aBlock);
-      v14 = *(a1 + 64);
-      if (!*(a1 + 56) && v14 == 21)
+      v14 = *(self + 64);
+      if (!*(self + 56) && v14 == 21)
       {
 LABEL_19:
-        dispatch_async_and_wait(*(a1 + 88), v13);
+        dispatch_async_and_wait(*(self + 88), v13);
 
         goto LABEL_20;
       }
@@ -415,7 +415,7 @@ LABEL_19:
       {
         if (v14 != 21)
         {
-          v17 = *(a1 + 68);
+          v17 = *(self + 68);
           v16 = dispatch_block_create_with_voucher_and_qos_class();
           goto LABEL_18;
         }
@@ -436,7 +436,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   return 0;
@@ -523,14 +523,14 @@ void __40__GCOperation__runSynchronouslyIfNeeded__block_invoke_2(void *a1)
   *(v6 + 40) = v5;
 }
 
-- (BOOL)_checkFinished:(BOOL)a3
+- (BOOL)_checkFinished:(BOOL)finished
 {
   if ((atomic_load_explicit(&self->super._state + 2, memory_order_acquire) & 1) == 0)
   {
     [GCOperation _startAsynchronouslyIfNeeded];
   }
 
-  if (a3)
+  if (finished)
   {
     if (![(GCOperation *)self _runSynchronouslyIfNeeded])
     {
@@ -574,13 +574,13 @@ void __40__GCOperation__runSynchronouslyIfNeeded__block_invoke_2(void *a1)
   return v5;
 }
 
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = GCOperation;
-  v10 = [(GCFuture *)&v13 _setState:a3 result:v8 error:v9];
+  v10 = [(GCFuture *)&v13 _setState:state result:resultCopy error:errorCopy];
   if (v10)
   {
     ContinuationList::drainContinuations_takesLock(&self->_qos, &self->super);

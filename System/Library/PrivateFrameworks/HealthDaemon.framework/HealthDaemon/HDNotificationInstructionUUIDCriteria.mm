@@ -1,26 +1,26 @@
 @interface HDNotificationInstructionUUIDCriteria
-- (BOOL)isEqual:(id)a3;
-- (HDNotificationInstructionUUIDCriteria)initWithCodableNotificationInstructionCriteria:(id)a3;
-- (HDNotificationInstructionUUIDCriteria)initWithCoder:(id)a3;
-- (HDNotificationInstructionUUIDCriteria)initWithMessageDictionary:(id)a3;
-- (HDNotificationInstructionUUIDCriteria)initWithUUID:(id)a3;
-- (id)_initWithUUID:(id)a1;
-- (id)_initWithUUIDString:(id)a1;
+- (BOOL)isEqual:(id)equal;
+- (HDNotificationInstructionUUIDCriteria)initWithCodableNotificationInstructionCriteria:(id)criteria;
+- (HDNotificationInstructionUUIDCriteria)initWithCoder:(id)coder;
+- (HDNotificationInstructionUUIDCriteria)initWithMessageDictionary:(id)dictionary;
+- (HDNotificationInstructionUUIDCriteria)initWithUUID:(id)d;
+- (id)_initWithUUID:(id)d;
+- (id)_initWithUUIDString:(id)string;
 - (id)codableCriteria;
 - (id)messageDictionary;
 @end
 
 @implementation HDNotificationInstructionUUIDCriteria
 
-- (HDNotificationInstructionUUIDCriteria)initWithUUID:(id)a3
+- (HDNotificationInstructionUUIDCriteria)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HDNotificationInstructionUUIDCriteria;
   v5 = [(HDNotificationInstructionUUIDCriteria *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     UUID = v5->_UUID;
     v5->_UUID = v6;
   }
@@ -28,56 +28,56 @@
   return v5;
 }
 
-- (id)_initWithUUID:(id)a1
+- (id)_initWithUUID:(id)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (d && v3)
   {
-    a1 = [a1 initWithUUID:v3];
-    v5 = a1;
+    d = [d initWithUUID:v3];
+    dCopy = d;
   }
 
   else
   {
-    v5 = 0;
+    dCopy = 0;
   }
 
-  return v5;
+  return dCopy;
 }
 
-- (id)_initWithUUIDString:(id)a1
+- (id)_initWithUUIDString:(id)string
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (string && v3)
   {
     v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
-    a1 = [(HDNotificationInstructionUUIDCriteria *)a1 _initWithUUID:v5];
+    string = [(HDNotificationInstructionUUIDCriteria *)string _initWithUUID:v5];
 
-    v6 = a1;
+    stringCopy = string;
   }
 
   else
   {
-    v6 = 0;
+    stringCopy = 0;
   }
 
-  return v6;
+  return stringCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = HDNotificationInstructionUUIDCriteria;
-  if (![(HDNotificationInstructionCriteria *)&v9 isEqual:v4])
+  if (![(HDNotificationInstructionCriteria *)&v9 isEqual:equalCopy])
   {
     goto LABEL_5;
   }
 
   UUID = self->_UUID;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (UUID == v6)
   {
     v7 = 1;
@@ -100,18 +100,18 @@ LABEL_7:
   return v7;
 }
 
-- (HDNotificationInstructionUUIDCriteria)initWithCoder:(id)a3
+- (HDNotificationInstructionUUIDCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
 
   v6 = [(HDNotificationInstructionUUIDCriteria *)self _initWithUUID:v5];
   return v6;
 }
 
-- (HDNotificationInstructionUUIDCriteria)initWithMessageDictionary:(id)a3
+- (HDNotificationInstructionUUIDCriteria)initWithMessageDictionary:(id)dictionary
 {
-  v4 = [a3 hk_safeStringForKeyPath:@"UUID" error:0];
+  v4 = [dictionary hk_safeStringForKeyPath:@"UUID" error:0];
   v5 = [(HDNotificationInstructionUUIDCriteria *)self _initWithUUIDString:v4];
 
   return v5;
@@ -121,8 +121,8 @@ LABEL_7:
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"UUID";
-  v2 = [(NSUUID *)self->_UUID UUIDString];
-  v7[0] = v2;
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v7[0] = uUIDString;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -130,20 +130,20 @@ LABEL_7:
   return v3;
 }
 
-- (HDNotificationInstructionUUIDCriteria)initWithCodableNotificationInstructionCriteria:(id)a3
+- (HDNotificationInstructionUUIDCriteria)initWithCodableNotificationInstructionCriteria:(id)criteria
 {
-  v4 = a3;
-  if ([v4 hasUUIDString])
+  criteriaCopy = criteria;
+  if ([criteriaCopy hasUUIDString])
   {
-    v5 = [v4 uUIDString];
+    uUIDString = [criteriaCopy uUIDString];
   }
 
   else
   {
-    v5 = 0;
+    uUIDString = 0;
   }
 
-  v6 = [(HDNotificationInstructionUUIDCriteria *)self _initWithUUIDString:v5];
+  v6 = [(HDNotificationInstructionUUIDCriteria *)self _initWithUUIDString:uUIDString];
 
   return v6;
 }
@@ -152,11 +152,11 @@ LABEL_7:
 {
   v6.receiver = self;
   v6.super_class = HDNotificationInstructionUUIDCriteria;
-  v3 = [(HDNotificationInstructionCriteria *)&v6 codableCriteria];
-  v4 = [(NSUUID *)self->_UUID UUIDString];
-  [v3 setUUIDString:v4];
+  codableCriteria = [(HDNotificationInstructionCriteria *)&v6 codableCriteria];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  [codableCriteria setUUIDString:uUIDString];
 
-  return v3;
+  return codableCriteria;
 }
 
 @end

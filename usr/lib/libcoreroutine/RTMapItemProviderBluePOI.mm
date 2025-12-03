@@ -1,43 +1,43 @@
 @interface RTMapItemProviderBluePOI
 + (NSArray)preferredAOICategories;
-- (BOOL)_hasMapItemInQueryResult:(id)a3 placeType:(unint64_t)a4;
-- (BOOL)_shouldPerformServerBluePOIForLocalBluePOIError:(id)a3;
-- (BOOL)chooseBestAoiInferredMapItem:(id *)a3 PoiInferredMapItem:(id *)a4 fromSortedAveragedResults:(id)a5 error:(id *)a6;
-- (BOOL)skipForOptions:(id)a3 error:(id *)a4;
-- (BOOL)sortedQueryResult:(id)a3 correspondsToAoi:(id)a4 poi:(id)a5;
-- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 motionActivityManager:(id)a12 parameters:(id)a13 placeInferenceQueryStore:(id)a14 platform:(id)a15;
-- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 motionActivityManager:(id)a12 placeInferenceQueryStore:(id)a13 platform:(id)a14;
-- (id)_adjustConfidencesOfTheSelectedResult:(id)a3 allQueryResults:(id)a4;
-- (id)_bestAOIFromAOIs:(id)a3;
-- (id)_bluePOIQueryFromFingerprint:(id)a3 fingerprintIdx:(unint64_t)a4 referenceLocationArray:(id)a5 selected:(BOOL)a6 endDate:(id)a7 totalAPsCount:(unint64_t *)a8 error:(id *)a9;
-- (id)_computeEarlyStopQueryResultFromResults:(id)a3 originalMaxNumberOfQueries:(unint64_t)a4 aoiConfidencePassThroughThreshold:(double)a5 poiConfidencePassThroughThreshold:(double)a6;
-- (id)_confidenceCoefficientsForAOI:(id)a3 AOIOccurenceCount:(unint64_t)a4 POIResults:(id)a5;
-- (id)_fetchAllFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (id)_filterByCategories:(id)a3 categories:(id)a4;
-- (id)_filterByConfidence:(id)a3 aoiConfidencePassThroughThreshold:(double)a4 aoiConfidenceConsiderThreshold:(double)a5 poiConfidencePassThroughThreshold:(double)a6 poiConfidenceConsiderThreshold:(double)a7 error:(id *)a8;
-- (id)_filterLessRelevantAOIsFromQueryResult:(id)a3;
-- (id)_filterOutEmptyFingerprintsFromFingerprints:(id)a3 endDate:(id)a4;
-- (id)_mapItemsFromBluePOIQuery:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (id)_mapItemsFromBluePOIServerQuery:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (id)_mapItemsWithFidelityPolicy:(unint64_t)a3 locations:(id)a4 accessPoints:(id)a5 referenceLocation:(id)a6 options:(id)a7 error:(id *)a8;
-- (id)_mapItemsWithinDistance:(double)a3 location:(id)a4 startDate:(id)a5 endDate:(id)a6 maxQueryAttemps:(unint64_t)a7 error:(id *)a8;
-- (id)_selectFingerprintsStartDate:(id)a3 endDate:(id)a4 maxQueryAttemps:(unint64_t)a5 isTimeWindowFallback:(BOOL *)a6 fingerprintsTotalOut:(unint64_t *)a7 fingerprintsNonZeroAPsTotalOut:(unint64_t *)a8 error:(id *)a9;
-- (id)_timeZoneFromLocation:(id)a3;
-- (id)bestQueryFromAggregatedQueries:(id)a3 error:(id *)a4;
-- (id)bestQueryFromSortedQueryResults:(id)a3 bestAoiInferredMapItem:(id)a4 bestPoiInferredMapItem:(id)a5 error:(id *)a6;
-- (id)bestQueryFromSortedQueryResults:(id)a3 bestInferredMapItem:(id)a4 error:(id *)a5;
-- (id)collapseDedupedInferredMapItems:(id)a3 inferredMapItemDeduperState:(id)a4 error:(id *)a5;
-- (id)dedupeQueryResults:(id)a3 error:(id *)a4;
-- (id)filterByDistance:(id)a3 location:(id)a4 thresholdForUnknownLabel:(double)a5 error:(id *)a6;
-- (id)getAllBluePOIQuerriesForStartDate:(id)a3 endDate:(id)a4 location:(id)a5 error:(id *)a6;
-- (id)inferredMapItemsFromPlist:(id)a3 error:(id *)a4;
-- (id)mapItemFromPlistDictionary:(id)a3;
-- (id)mapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 error:(id *)a8;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
-- (id)sortQueryResults:(id)a3 error:(id *)a4;
-- (id)sortedAveragedQueryResults:(id)a3 baseDuration:(double)a4 error:(id *)a5;
-- (unint64_t)numberOfRealtimeQueriesForInterval:(id)a3;
-- (void)_submitPerformanceMetricsForResults:(id)a3 noFingerprints:(BOOL)a4 originalMaxNumberOfQueries:(unint64_t)a5 aoiConfidencePassThroughThreshold:(double)a6 poiConfidencePassThroughThreshold:(double)a7 fingerprintsCount:(unint64_t)a8 zeroAccessPointsFingerprintsCount:(unint64_t)a9 nonZeroAccessPointsFingerprintsCount:(unint64_t)a10 queryCount:(unint64_t)a11 firstResultQueryCount:(unint64_t)a12 error:(id)a13 visitInterval:(double)a14 visitSource:(int64_t)a15;
+- (BOOL)_hasMapItemInQueryResult:(id)result placeType:(unint64_t)type;
+- (BOOL)_shouldPerformServerBluePOIForLocalBluePOIError:(id)error;
+- (BOOL)chooseBestAoiInferredMapItem:(id *)item PoiInferredMapItem:(id *)mapItem fromSortedAveragedResults:(id)results error:(id *)error;
+- (BOOL)skipForOptions:(id)options error:(id *)error;
+- (BOOL)sortedQueryResult:(id)result correspondsToAoi:(id)aoi poi:(id)poi;
+- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 motionActivityManager:(id)self2 parameters:(id)self3 placeInferenceQueryStore:(id)self4 platform:(id)self5;
+- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 motionActivityManager:(id)self2 placeInferenceQueryStore:(id)self3 platform:(id)self4;
+- (id)_adjustConfidencesOfTheSelectedResult:(id)result allQueryResults:(id)results;
+- (id)_bestAOIFromAOIs:(id)is;
+- (id)_bluePOIQueryFromFingerprint:(id)fingerprint fingerprintIdx:(unint64_t)idx referenceLocationArray:(id)array selected:(BOOL)selected endDate:(id)date totalAPsCount:(unint64_t *)count error:(id *)error;
+- (id)_computeEarlyStopQueryResultFromResults:(id)results originalMaxNumberOfQueries:(unint64_t)queries aoiConfidencePassThroughThreshold:(double)threshold poiConfidencePassThroughThreshold:(double)throughThreshold;
+- (id)_confidenceCoefficientsForAOI:(id)i AOIOccurenceCount:(unint64_t)count POIResults:(id)results;
+- (id)_fetchAllFingerprintsBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)_filterByCategories:(id)categories categories:(id)a4;
+- (id)_filterByConfidence:(id)confidence aoiConfidencePassThroughThreshold:(double)threshold aoiConfidenceConsiderThreshold:(double)considerThreshold poiConfidencePassThroughThreshold:(double)throughThreshold poiConfidenceConsiderThreshold:(double)confidenceConsiderThreshold error:(id *)error;
+- (id)_filterLessRelevantAOIsFromQueryResult:(id)result;
+- (id)_filterOutEmptyFingerprintsFromFingerprints:(id)fingerprints endDate:(id)date;
+- (id)_mapItemsFromBluePOIQuery:(id)query startDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)_mapItemsFromBluePOIServerQuery:(id)query startDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)_mapItemsWithFidelityPolicy:(unint64_t)policy locations:(id)locations accessPoints:(id)points referenceLocation:(id)location options:(id)options error:(id *)error;
+- (id)_mapItemsWithinDistance:(double)distance location:(id)location startDate:(id)date endDate:(id)endDate maxQueryAttemps:(unint64_t)attemps error:(id *)error;
+- (id)_selectFingerprintsStartDate:(id)date endDate:(id)endDate maxQueryAttemps:(unint64_t)attemps isTimeWindowFallback:(BOOL *)fallback fingerprintsTotalOut:(unint64_t *)out fingerprintsNonZeroAPsTotalOut:(unint64_t *)totalOut error:(id *)error;
+- (id)_timeZoneFromLocation:(id)location;
+- (id)bestQueryFromAggregatedQueries:(id)queries error:(id *)error;
+- (id)bestQueryFromSortedQueryResults:(id)results bestAoiInferredMapItem:(id)item bestPoiInferredMapItem:(id)mapItem error:(id *)error;
+- (id)bestQueryFromSortedQueryResults:(id)results bestInferredMapItem:(id)item error:(id *)error;
+- (id)collapseDedupedInferredMapItems:(id)items inferredMapItemDeduperState:(id)state error:(id *)error;
+- (id)dedupeQueryResults:(id)results error:(id *)error;
+- (id)filterByDistance:(id)distance location:(id)location thresholdForUnknownLabel:(double)label error:(id *)error;
+- (id)getAllBluePOIQuerriesForStartDate:(id)date endDate:(id)endDate location:(id)location error:(id *)error;
+- (id)inferredMapItemsFromPlist:(id)plist error:(id *)error;
+- (id)mapItemFromPlistDictionary:(id)dictionary;
+- (id)mapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options error:(id *)error;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
+- (id)sortQueryResults:(id)results error:(id *)error;
+- (id)sortedAveragedQueryResults:(id)results baseDuration:(double)duration error:(id *)error;
+- (unint64_t)numberOfRealtimeQueriesForInterval:(id)interval;
+- (void)_submitPerformanceMetricsForResults:(id)results noFingerprints:(BOOL)fingerprints originalMaxNumberOfQueries:(unint64_t)queries aoiConfidencePassThroughThreshold:(double)threshold poiConfidencePassThroughThreshold:(double)throughThreshold fingerprintsCount:(unint64_t)count zeroAccessPointsFingerprintsCount:(unint64_t)fingerprintsCount nonZeroAccessPointsFingerprintsCount:(unint64_t)self0 queryCount:(unint64_t)self1 firstResultQueryCount:(unint64_t)self2 error:(id)self3 visitInterval:(double)self4 visitSource:(int64_t)self5;
 @end
 
 @implementation RTMapItemProviderBluePOI
@@ -66,47 +66,47 @@ void __50__RTMapItemProviderBluePOI_preferredAOICategories__block_invoke()
   }
 }
 
-- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 motionActivityManager:(id)a12 placeInferenceQueryStore:(id)a13 platform:(id)a14
+- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 motionActivityManager:(id)self2 placeInferenceQueryStore:(id)self3 platform:(id)self4
 {
-  v32 = a14;
-  v29 = a13;
-  v27 = a12;
-  v26 = a11;
-  v25 = a10;
-  v23 = a9;
-  v24 = a8;
-  v35 = a7;
-  v22 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v31 = [[RTMapItemProviderBluePOIParameters alloc] initWithDefaultsManager:v20];
-  v34 = [(RTMapItemProviderBluePOI *)self initWithDefaultsManager:v20 bluePOIMetricManager:v19 bluePOIMonitor:v18 bluePOITileManager:v22 distanceCalculator:v35 fingerprintManager:v24 locationManager:v23 mapItemManager:v25 mapServiceManager:v26 motionActivityManager:v27 parameters:v31 placeInferenceQueryStore:v29 platform:v32];
+  platformCopy = platform;
+  storeCopy = store;
+  activityManagerCopy = activityManager;
+  serviceManagerCopy = serviceManager;
+  itemManagerCopy = itemManager;
+  locationManagerCopy = locationManager;
+  fingerprintManagerCopy = fingerprintManager;
+  calculatorCopy = calculator;
+  tileManagerCopy = tileManager;
+  monitorCopy = monitor;
+  metricManagerCopy = metricManager;
+  managerCopy = manager;
+  v31 = [[RTMapItemProviderBluePOIParameters alloc] initWithDefaultsManager:managerCopy];
+  v34 = [(RTMapItemProviderBluePOI *)self initWithDefaultsManager:managerCopy bluePOIMetricManager:metricManagerCopy bluePOIMonitor:monitorCopy bluePOITileManager:tileManagerCopy distanceCalculator:calculatorCopy fingerprintManager:fingerprintManagerCopy locationManager:locationManagerCopy mapItemManager:itemManagerCopy mapServiceManager:serviceManagerCopy motionActivityManager:activityManagerCopy parameters:v31 placeInferenceQueryStore:storeCopy platform:platformCopy];
 
   return v34;
 }
 
-- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)a3 bluePOIMetricManager:(id)a4 bluePOIMonitor:(id)a5 bluePOITileManager:(id)a6 distanceCalculator:(id)a7 fingerprintManager:(id)a8 locationManager:(id)a9 mapItemManager:(id)a10 mapServiceManager:(id)a11 motionActivityManager:(id)a12 parameters:(id)a13 placeInferenceQueryStore:(id)a14 platform:(id)a15
+- (RTMapItemProviderBluePOI)initWithDefaultsManager:(id)manager bluePOIMetricManager:(id)metricManager bluePOIMonitor:(id)monitor bluePOITileManager:(id)tileManager distanceCalculator:(id)calculator fingerprintManager:(id)fingerprintManager locationManager:(id)locationManager mapItemManager:(id)self0 mapServiceManager:(id)self1 motionActivityManager:(id)self2 parameters:(id)self3 placeInferenceQueryStore:(id)self4 platform:(id)self5
 {
   v55 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  obj = a4;
-  v20 = a4;
-  v39 = a5;
-  v21 = a5;
-  v40 = a6;
-  v22 = a7;
-  v51 = a8;
-  v50 = a9;
-  v49 = a10;
-  v48 = a11;
-  v47 = a12;
-  v46 = a13;
-  v45 = a14;
-  v23 = a15;
-  v42 = v23;
-  v43 = v20;
-  if (!v20)
+  managerCopy = manager;
+  obj = metricManager;
+  metricManagerCopy = metricManager;
+  monitorCopy = monitor;
+  monitorCopy2 = monitor;
+  tileManagerCopy = tileManager;
+  calculatorCopy = calculator;
+  fingerprintManagerCopy = fingerprintManager;
+  locationManagerCopy = locationManager;
+  itemManagerCopy = itemManager;
+  serviceManagerCopy = serviceManager;
+  activityManagerCopy = activityManager;
+  parametersCopy = parameters;
+  storeCopy = store;
+  platformCopy = platform;
+  v42 = platformCopy;
+  v43 = metricManagerCopy;
+  if (!metricManagerCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -116,23 +116,23 @@ void __50__RTMapItemProviderBluePOI_preferredAOICategories__block_invoke()
     }
 
     v31 = 0;
-    v25 = v40;
-    v24 = self;
+    v25 = tileManagerCopy;
+    selfCopy3 = self;
     goto LABEL_25;
   }
 
-  if (!v21)
+  if (!monitorCopy2)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v25 = v40;
-    v24 = self;
+    v25 = tileManagerCopy;
+    selfCopy3 = self;
     if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
 LABEL_24:
 
       v31 = 0;
 LABEL_25:
-      v26 = v44;
+      v26 = managerCopy;
       goto LABEL_50;
     }
 
@@ -143,12 +143,12 @@ LABEL_39:
     goto LABEL_24;
   }
 
-  v25 = v40;
-  v24 = self;
-  if (!v40)
+  v25 = tileManagerCopy;
+  selfCopy3 = self;
+  if (!tileManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v26 = v44;
+    v26 = managerCopy;
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_49;
@@ -161,8 +161,8 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  v26 = v44;
-  if (!v44)
+  v26 = managerCopy;
+  if (!managerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -175,7 +175,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v51)
+  if (!fingerprintManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -188,7 +188,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v50)
+  if (!locationManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -201,7 +201,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v49)
+  if (!itemManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -214,7 +214,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v48)
+  if (!serviceManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -227,7 +227,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v47)
+  if (!activityManagerCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -240,7 +240,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v46)
+  if (!parametersCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -253,7 +253,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v45)
+  if (!storeCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -266,7 +266,7 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  if (!v23)
+  if (!platformCopy)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -284,35 +284,35 @@ LABEL_49:
 
   v52.receiver = self;
   v52.super_class = RTMapItemProviderBluePOI;
-  v24 = [(RTMapItemProviderBase *)&v52 initWithDefaultsManager:v44 distanceCalculator:v22];
-  if (v24)
+  selfCopy3 = [(RTMapItemProviderBase *)&v52 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
+  if (selfCopy3)
   {
     v27 = [[RTInferredMapItemDeduper alloc] initWithDeduperFunction:&__block_literal_global_11];
-    inferredMapItemDeduper = v24->_inferredMapItemDeduper;
-    v24->_inferredMapItemDeduper = v27;
+    inferredMapItemDeduper = selfCopy3->_inferredMapItemDeduper;
+    selfCopy3->_inferredMapItemDeduper = v27;
 
-    if (v24->_inferredMapItemDeduper)
+    if (selfCopy3->_inferredMapItemDeduper)
     {
-      objc_storeStrong(&v24->_bluePOIMetricManager, obj);
-      objc_storeStrong(&v24->_bluePOIMonitor, v39);
-      objc_storeStrong(&v24->_bluePOITileManager, a6);
-      objc_storeStrong(&v24->_fingerprintManager, a8);
-      objc_storeStrong(&v24->_locationManager, a9);
-      objc_storeStrong(&v24->_mapItemManager, a10);
-      objc_storeStrong(&v24->_mapServiceManager, a11);
-      objc_storeStrong(&v24->_motionActivityManager, a12);
-      objc_storeStrong(&v24->_placeInferenceQueryStore, a14);
-      objc_storeStrong(&v24->_platform, a15);
-      objc_storeStrong(&v24->_parameters, a13);
-      v26 = v44;
+      objc_storeStrong(&selfCopy3->_bluePOIMetricManager, obj);
+      objc_storeStrong(&selfCopy3->_bluePOIMonitor, monitorCopy);
+      objc_storeStrong(&selfCopy3->_bluePOITileManager, tileManager);
+      objc_storeStrong(&selfCopy3->_fingerprintManager, fingerprintManager);
+      objc_storeStrong(&selfCopy3->_locationManager, locationManager);
+      objc_storeStrong(&selfCopy3->_mapItemManager, itemManager);
+      objc_storeStrong(&selfCopy3->_mapServiceManager, serviceManager);
+      objc_storeStrong(&selfCopy3->_motionActivityManager, activityManager);
+      objc_storeStrong(&selfCopy3->_placeInferenceQueryStore, store);
+      objc_storeStrong(&selfCopy3->_platform, platform);
+      objc_storeStrong(&selfCopy3->_parameters, parameters);
+      v26 = managerCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v29 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          parameters = v24->_parameters;
+          parameters = selfCopy3->_parameters;
           *buf = 138412290;
-          v54 = parameters;
+          parametersCopy2 = parameters;
           _os_log_impl(&dword_2304B3000, v29, OS_LOG_TYPE_INFO, "initialized RTMapItemProviderBluePOI with parameters: %@", buf, 0xCu);
         }
       }
@@ -332,8 +332,8 @@ LABEL_49:
   }
 
 LABEL_19:
-  v24 = v24;
-  v31 = v24;
+  selfCopy3 = selfCopy3;
+  v31 = selfCopy3;
 LABEL_50:
 
   return v31;
@@ -364,13 +364,13 @@ uint64_t __261__RTMapItemProviderBluePOI_initWithDefaultsManager_bluePOIMetricMa
   }
 }
 
-- (id)dedupeQueryResults:(id)a3 error:(id *)a4
+- (id)dedupeQueryResults:(id)results error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  resultsCopy = results;
+  if (resultsCopy)
   {
-    v8 = [[_RTMap alloc] initWithInput:v7];
+    v8 = [[_RTMap alloc] initWithInput:resultsCopy];
     v9 = [(_RTMap *)v8 withBlock:&__block_literal_global_18];
 
     v10 = objc_alloc_init(RTInferredMapItemDeduperState);
@@ -391,11 +391,11 @@ uint64_t __261__RTMapItemProviderBluePOI_initWithDefaultsManager_bluePOIMetricMa
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
         v15 = v13;
         v16 = 0;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -422,11 +422,11 @@ uint64_t __261__RTMapItemProviderBluePOI_initWithDefaultsManager_bluePOIMetricMa
         _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v19;
         v16 = 0;
-        *a4 = v19;
+        *error = v19;
 LABEL_29:
 
 LABEL_30:
@@ -437,9 +437,9 @@ LABEL_30:
     else
     {
       v22 = [v18 count];
-      if (v22 == [v7 count])
+      if (v22 == [resultsCopy count])
       {
-        v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+        v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
         if ([v18 count])
         {
           v36 = v12;
@@ -449,9 +449,9 @@ LABEL_30:
           {
             v24 = objc_alloc(MEMORY[0x277D011C0]);
             v25 = [v18 objectAtIndexedSubscript:v23];
-            v26 = [v7 objectAtIndexedSubscript:v23];
-            v27 = [v26 secondObject];
-            v28 = [v24 initWithFirstObject:v25 secondObject:v27];
+            v26 = [resultsCopy objectAtIndexedSubscript:v23];
+            secondObject = [v26 secondObject];
+            v28 = [v24 initWithFirstObject:v25 secondObject:secondObject];
 
             [v16 addObject:v28];
             ++v23;
@@ -485,10 +485,10 @@ LABEL_30:
       }
 
       v31 = v40;
-      if (a4)
+      if (error)
       {
         v31 = v40;
-        *a4 = v31;
+        *error = v31;
       }
     }
 
@@ -503,10 +503,10 @@ LABEL_30:
     _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queryResults", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"queryResults");
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -519,13 +519,13 @@ LABEL_31:
   return v16;
 }
 
-- (id)collapseDedupedInferredMapItems:(id)a3 inferredMapItemDeduperState:(id)a4 error:(id *)a5
+- (id)collapseDedupedInferredMapItems:(id)items inferredMapItemDeduperState:(id)state error:(id *)error
 {
   v95 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  itemsCopy = items;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (!itemsCopy)
   {
     v50 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -534,12 +534,12 @@ LABEL_31:
       _os_log_error_impl(&dword_2304B3000, v50, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: allDedupedInferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v51 = @"allDedupedInferredMapItems";
 LABEL_38:
       _RTErrorInvalidParameterCreate(v51);
-      *a5 = v49 = 0;
+      *error = v49 = 0;
       goto LABEL_50;
     }
 
@@ -548,7 +548,7 @@ LABEL_39:
     goto LABEL_50;
   }
 
-  if (!v9)
+  if (!stateCopy)
   {
     v52 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -557,7 +557,7 @@ LABEL_39:
       _os_log_error_impl(&dword_2304B3000, v52, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItemDeduperState", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v51 = @"inferredMapItemDeduperState";
       goto LABEL_38;
@@ -566,14 +566,14 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v68 = a5;
+  errorCopy = error;
   v11 = 0x277CBE000uLL;
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v13 = v8;
+  v13 = itemsCopy;
   v66 = [v13 countByEnumeratingWithState:&v82 objects:v94 count:16];
   if (v66)
   {
@@ -618,27 +618,27 @@ LABEL_39:
               }
 
               v24 = *(*(&v78 + 1) + 8 * i);
-              v25 = [v24 mapItem];
-              v26 = [v25 identifier];
+              mapItem = [v24 mapItem];
+              identifier = [mapItem identifier];
 
-              v27 = [v18 objectForKeyedSubscript:v26];
+              v27 = [v18 objectForKeyedSubscript:identifier];
 
               v28 = MEMORY[0x277CCABB0];
               if (v27)
               {
-                v29 = [v18 objectForKeyedSubscript:v26];
+                v29 = [v18 objectForKeyedSubscript:identifier];
                 [v29 doubleValue];
                 v31 = v30;
                 [v24 confidence];
                 v33 = [v28 numberWithDouble:v31 + v32];
-                [v18 setObject:v33 forKeyedSubscript:v26];
+                [v18 setObject:v33 forKeyedSubscript:identifier];
               }
 
               else
               {
                 [v24 confidence];
                 v29 = [v28 numberWithDouble:?];
-                [v18 setObject:v29 forKeyedSubscript:v26];
+                [v18 setObject:v29 forKeyedSubscript:identifier];
               }
             }
 
@@ -721,10 +721,10 @@ LABEL_39:
               v53 = v57;
 LABEL_46:
               v12 = v70;
-              if (v68)
+              if (errorCopy)
               {
                 v60 = v57;
-                *v68 = v57;
+                *errorCopy = v57;
               }
 
               v49 = 0;
@@ -776,11 +776,11 @@ LABEL_50:
   return v49;
 }
 
-- (id)sortedAveragedQueryResults:(id)a3 baseDuration:(double)a4 error:(id *)a5
+- (id)sortedAveragedQueryResults:(id)results baseDuration:(double)duration error:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (![v8 count])
+  resultsCopy = results;
+  if (![resultsCopy count])
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -789,7 +789,7 @@ LABEL_50:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: correctedQueryResults.count != 0", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = @"correctedQueryResults.count != 0";
       goto LABEL_11;
@@ -798,7 +798,7 @@ LABEL_50:
     goto LABEL_30;
   }
 
-  if (a4 < 0.0)
+  if (duration < 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -807,12 +807,12 @@ LABEL_50:
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: baseDuration >= 0", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v10 = @"baseDuration >= 0";
 LABEL_11:
       _RTErrorInvalidParameterCreate(v10);
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_48;
     }
 
@@ -822,15 +822,15 @@ LABEL_30:
   }
 
   aSelector = a2;
-  v69 = a5;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v75 = [MEMORY[0x277CBEB38] dictionary];
+  errorCopy = error;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v70 = v8;
-  obj = v8;
+  v70 = resultsCopy;
+  obj = resultsCopy;
   v73 = [obj countByEnumeratingWithState:&v85 objects:v98 count:16];
   if (v73)
   {
@@ -848,16 +848,16 @@ LABEL_30:
 
         v74 = v15;
         v16 = *(*(&v85 + 1) + 8 * v15);
-        v17 = [v16 secondObject];
-        [v17 duration];
+        secondObject = [v16 secondObject];
+        [secondObject duration];
         v19 = v18;
 
         v83 = 0u;
         v84 = 0u;
         v81 = 0u;
         v82 = 0u;
-        v76 = [v16 firstObject];
-        v20 = [v76 countByEnumeratingWithState:&v81 objects:v97 count:16];
+        firstObject = [v16 firstObject];
+        v20 = [firstObject countByEnumeratingWithState:&v81 objects:v97 count:16];
         if (v20)
         {
           v21 = v20;
@@ -868,27 +868,27 @@ LABEL_30:
             {
               if (*v82 != v22)
               {
-                objc_enumerationMutation(v76);
+                objc_enumerationMutation(firstObject);
               }
 
               v24 = *(*(&v81 + 1) + 8 * i);
               v25 = MEMORY[0x277CCABB0];
-              v26 = [v24 mapItem];
-              v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(v26, "muid")}];
+              mapItem = [v24 mapItem];
+              v27 = [v25 numberWithUnsignedInteger:{objc_msgSend(mapItem, "muid")}];
 
-              v28 = [v13 objectForKeyedSubscript:v27];
+              v28 = [dictionary objectForKeyedSubscript:v27];
 
               if (v28)
               {
-                v29 = [v13 objectForKeyedSubscript:v27];
+                mapItem2 = [dictionary objectForKeyedSubscript:v27];
                 v30 = objc_alloc(MEMORY[0x277CCA980]);
                 [v24 confidence];
                 v32 = v31;
-                v33 = [v16 secondObject];
-                [v33 duration];
-                v35 = [v30 initWithDouble:v32 * (v34 + a4)];
-                v36 = [v29 decimalNumberByAdding:v35];
-                [v13 setObject:v36 forKeyedSubscript:v27];
+                secondObject2 = [v16 secondObject];
+                [secondObject2 duration];
+                v35 = [v30 initWithDouble:v32 * (v34 + duration)];
+                v36 = [mapItem2 decimalNumberByAdding:v35];
+                [dictionary setObject:v36 forKeyedSubscript:v27];
               }
 
               else
@@ -896,17 +896,17 @@ LABEL_30:
                 v37 = objc_alloc(MEMORY[0x277CCA980]);
                 [v24 confidence];
                 v39 = v38;
-                v40 = [v16 secondObject];
-                [v40 duration];
-                v42 = [v37 initWithDouble:v39 * (v41 + a4)];
-                [v13 setObject:v42 forKeyedSubscript:v27];
+                secondObject3 = [v16 secondObject];
+                [secondObject3 duration];
+                v42 = [v37 initWithDouble:v39 * (v41 + duration)];
+                [dictionary setObject:v42 forKeyedSubscript:v27];
 
-                v29 = [v24 mapItem];
-                [v75 setObject:v29 forKeyedSubscript:v27];
+                mapItem2 = [v24 mapItem];
+                [dictionary2 setObject:mapItem2 forKeyedSubscript:v27];
               }
             }
 
-            v21 = [v76 countByEnumeratingWithState:&v81 objects:v97 count:16];
+            v21 = [firstObject countByEnumeratingWithState:&v81 objects:v97 count:16];
           }
 
           while (v21);
@@ -929,12 +929,12 @@ LABEL_30:
     v14 = 0.0;
   }
 
-  v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(dictionary, "count")}];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v44 = v13;
+  v44 = dictionary;
   v45 = [v44 countByEnumeratingWithState:&v77 objects:v96 count:16];
   if (v45)
   {
@@ -951,14 +951,14 @@ LABEL_30:
 
         v49 = *(*(&v77 + 1) + 8 * j);
         v50 = [v44 objectForKeyedSubscript:v49];
-        v51 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:{v14 + a4 * objc_msgSend(obj, "count")}];
+        v51 = [objc_alloc(MEMORY[0x277CCA980]) initWithDouble:{v14 + duration * objc_msgSend(obj, "count")}];
         v52 = [v50 decimalNumberByDividingBy:v51];
         [v52 doubleValue];
         v54 = v53;
 
         v55 = objc_alloc(MEMORY[0x277D01128]);
-        v56 = [v75 objectForKeyedSubscript:v49];
-        v57 = [v75 objectForKeyedSubscript:v49];
+        v56 = [dictionary2 objectForKeyedSubscript:v49];
+        v57 = [dictionary2 objectForKeyedSubscript:v49];
         v58 = [v55 initWithMapItem:v56 confidence:objc_msgSend(v57 source:{"source"), v54}];
 
         if (!v58)
@@ -981,12 +981,12 @@ LABEL_30:
             _os_log_error_impl(&dword_2304B3000, v64, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
           }
 
-          v8 = v70;
-          if (v69)
+          resultsCopy = v70;
+          if (errorCopy)
           {
             v65 = v60;
             v12 = 0;
-            *v69 = v60;
+            *errorCopy = v60;
           }
 
           else
@@ -1015,7 +1015,7 @@ LABEL_30:
   v89 = v59;
   v60 = [MEMORY[0x277CBEA60] arrayWithObjects:&v89 count:1];
   v12 = [v43 sortedArrayUsingDescriptors:v60];
-  v8 = v70;
+  resultsCopy = v70;
 LABEL_47:
 
 LABEL_48:
@@ -1023,12 +1023,12 @@ LABEL_48:
   return v12;
 }
 
-- (BOOL)chooseBestAoiInferredMapItem:(id *)a3 PoiInferredMapItem:(id *)a4 fromSortedAveragedResults:(id)a5 error:(id *)a6
+- (BOOL)chooseBestAoiInferredMapItem:(id *)item PoiInferredMapItem:(id *)mapItem fromSortedAveragedResults:(id)results error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = v9;
-  if (!a3)
+  resultsCopy = results;
+  v10 = resultsCopy;
+  if (!item)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1037,7 +1037,7 @@ LABEL_48:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outAoiInferredMapItem", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -1046,7 +1046,7 @@ LABEL_48:
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!mapItem)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1055,7 +1055,7 @@ LABEL_48:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outPoiInferredMapItem", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_30;
     }
@@ -1063,11 +1063,11 @@ LABEL_48:
     v21 = @"outPoiInferredMapItem";
 LABEL_29:
     _RTErrorInvalidParameterCreate(v21);
-    *a6 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_31;
   }
 
-  if (!v9)
+  if (!resultsCopy)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1076,7 +1076,7 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sortedAveragedResults", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v21 = @"sortedAveragedResults";
       goto LABEL_29;
@@ -1091,7 +1091,7 @@ LABEL_30:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v9;
+  v11 = resultsCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v12)
   {
@@ -1107,20 +1107,20 @@ LABEL_30:
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [v16 mapItem];
-        v18 = [v17 mapItemPlaceType];
+        mapItem = [v16 mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
-        if (v18 != 1)
+        if (mapItemPlaceType != 1)
         {
           v23 = v16;
-          *a4 = v16;
+          *mapItem = v16;
           goto LABEL_24;
         }
 
-        if (!*a3)
+        if (!*item)
         {
           v19 = v16;
-          *a3 = v16;
+          *item = v16;
         }
       }
 
@@ -1142,15 +1142,15 @@ LABEL_31:
   return v24;
 }
 
-- (id)sortQueryResults:(id)a3 error:(id *)a4
+- (id)sortQueryResults:(id)results error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  resultsCopy = results;
+  v7 = resultsCopy;
+  if (resultsCopy)
   {
     aSelector = a2;
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
@@ -1180,15 +1180,15 @@ LABEL_31:
           v13 = *(*(&v41 + 1) + 8 * v12);
           v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"confidence" ascending:{0, v33}];
           v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"mapItem" ascending:0 comparator:&__block_literal_global_68];
-          v16 = [v13 firstObject];
+          firstObject = [v13 firstObject];
           v51[0] = v14;
           v51[1] = v15;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-          v18 = [v16 sortedArrayUsingDescriptors:v17];
+          v18 = [firstObject sortedArrayUsingDescriptors:v17];
 
           v19 = objc_alloc(MEMORY[0x277D011C0]);
-          v20 = [v13 secondObject];
-          v21 = [v19 initWithFirstObject:v18 secondObject:v20];
+          secondObject = [v13 secondObject];
+          v21 = [v19 initWithFirstObject:v18 secondObject:secondObject];
 
           if (v21)
           {
@@ -1198,7 +1198,7 @@ LABEL_31:
           else
           {
             v22 = v8;
-            v23 = a4;
+            errorCopy = error;
             v24 = MEMORY[0x277CCA9B8];
             v49 = v36;
             v50 = @"sortedQueryResult was nil";
@@ -1216,11 +1216,11 @@ LABEL_31:
               _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
             }
 
-            a4 = v23;
-            if (v23)
+            error = errorCopy;
+            if (errorCopy)
             {
               v28 = v26;
-              *v23 = v26;
+              *errorCopy = v26;
             }
 
             v8 = v22;
@@ -1263,10 +1263,10 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queryResults", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"queryResults");
-      *a4 = v30 = 0;
+      *error = v30 = 0;
     }
 
     else
@@ -1313,12 +1313,12 @@ uint64_t __51__RTMapItemProviderBluePOI_sortQueryResults_error___block_invoke(ui
   }
 }
 
-- (id)bestQueryFromSortedQueryResults:(id)a3 bestInferredMapItem:(id)a4 error:(id *)a5
+- (id)bestQueryFromSortedQueryResults:(id)results bestInferredMapItem:(id)item error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  resultsCopy = results;
+  itemCopy = item;
+  if (!resultsCopy)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1327,7 +1327,7 @@ uint64_t __51__RTMapItemProviderBluePOI_sortQueryResults_error___block_invoke(ui
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sortedQueryResults", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -1336,7 +1336,7 @@ uint64_t __51__RTMapItemProviderBluePOI_sortQueryResults_error___block_invoke(ui
     goto LABEL_38;
   }
 
-  if (![v9 count])
+  if (![resultsCopy count])
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1345,7 +1345,7 @@ uint64_t __51__RTMapItemProviderBluePOI_sortQueryResults_error___block_invoke(ui
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sortedQueryResults.count > 0", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_39;
     }
@@ -1353,11 +1353,11 @@ uint64_t __51__RTMapItemProviderBluePOI_sortQueryResults_error___block_invoke(ui
     v29 = @"sortedQueryResults.count > 0";
 LABEL_38:
     _RTErrorInvalidParameterCreate(v29);
-    *a5 = v27 = 0;
+    *error = firstObject2 = 0;
     goto LABEL_47;
   }
 
-  if (!v10)
+  if (!itemCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1366,14 +1366,14 @@ LABEL_38:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: bestInferredMapItem", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v29 = @"bestInferredMapItem";
       goto LABEL_38;
     }
 
 LABEL_39:
-    v27 = 0;
+    firstObject2 = 0;
     goto LABEL_47;
   }
 
@@ -1382,7 +1382,7 @@ LABEL_39:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = v9;
+  v11 = resultsCopy;
   v44 = [v11 countByEnumeratingWithState:&v49 objects:v60 count:16];
   if (!v44)
   {
@@ -1406,22 +1406,22 @@ LABEL_41:
       _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v36 = v12;
-      v27 = 0;
-      *a5 = v12;
+      firstObject2 = 0;
+      *error = v12;
     }
 
     else
     {
-      v27 = 0;
+      firstObject2 = 0;
     }
 
     goto LABEL_46;
   }
 
-  v41 = v9;
+  v41 = resultsCopy;
   v12 = 0;
   obj = v11;
   v43 = *v50;
@@ -1439,8 +1439,8 @@ LABEL_41:
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v15 = [v14 firstObject];
-      v16 = [v15 countByEnumeratingWithState:&v45 objects:v59 count:16];
+      firstObject = [v14 firstObject];
+      v16 = [firstObject countByEnumeratingWithState:&v45 objects:v59 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1451,18 +1451,18 @@ LABEL_41:
           {
             if (*v46 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(firstObject);
             }
 
-            if ([(RTInferredMapItemDeduper *)self->_inferredMapItemDeduper inferredMapItem:*(*(&v45 + 1) + 8 * j) dedupesToInferredMapItem:v10 error:0])
+            if ([(RTInferredMapItemDeduper *)self->_inferredMapItemDeduper inferredMapItem:*(*(&v45 + 1) + 8 * j) dedupesToInferredMapItem:itemCopy error:0])
             {
               if (v12)
               {
-                v20 = [v14 secondObject];
-                [v20 duration];
+                secondObject = [v14 secondObject];
+                [secondObject duration];
                 v22 = v21;
-                v23 = [v12 secondObject];
-                [v23 duration];
+                secondObject2 = [v12 secondObject];
+                [secondObject2 duration];
                 v25 = v24;
 
                 if (v22 > v25)
@@ -1482,7 +1482,7 @@ LABEL_41:
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v45 objects:v59 count:16];
+          v17 = [firstObject countByEnumeratingWithState:&v45 objects:v59 count:16];
           if (v17)
           {
             continue;
@@ -1500,31 +1500,31 @@ LABEL_22:
 
   while (v44);
 
-  v9 = v41;
+  resultsCopy = v41;
   if (!v12)
   {
     goto LABEL_41;
   }
 
-  v27 = [v12 firstObject];
+  firstObject2 = [v12 firstObject];
 LABEL_46:
 
 LABEL_47:
 
-  return v27;
+  return firstObject2;
 }
 
-- (BOOL)sortedQueryResult:(id)a3 correspondsToAoi:(id)a4 poi:(id)a5
+- (BOOL)sortedQueryResult:(id)result correspondsToAoi:(id)aoi poi:(id)poi
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  resultCopy = result;
+  aoiCopy = aoi;
+  poiCopy = poi;
+  v11 = poiCopy;
+  if (!resultCopy)
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    firstObject = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_25;
     }
@@ -1532,14 +1532,14 @@ LABEL_47:
     *buf = 0;
     v25 = "Invalid parameter not satisfying: sortedQueryResult";
 LABEL_21:
-    _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, v25, buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, firstObject, OS_LOG_TYPE_ERROR, v25, buf, 2u);
     goto LABEL_25;
   }
 
-  if (!v9)
+  if (!aoiCopy)
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    firstObject = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_25;
     }
@@ -1549,10 +1549,10 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v10)
+  if (!poiCopy)
   {
-    v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    firstObject = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       v25 = "Invalid parameter not satisfying: bestPoiInferredMapItem";
@@ -1564,17 +1564,17 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v12 = [v8 firstObject];
-  v13 = [v12 firstObject];
+  firstObject = [resultCopy firstObject];
+  v12FirstObject = [firstObject firstObject];
 
-  if (!v13)
+  if (!v12FirstObject)
   {
     goto LABEL_25;
   }
 
   inferredMapItemDeduper = self->_inferredMapItemDeduper;
-  v15 = [v12 firstObject];
-  LODWORD(inferredMapItemDeduper) = [(RTInferredMapItemDeduper *)inferredMapItemDeduper inferredMapItem:v9 dedupesToInferredMapItem:v15 error:0];
+  v12FirstObject2 = [firstObject firstObject];
+  LODWORD(inferredMapItemDeduper) = [(RTInferredMapItemDeduper *)inferredMapItemDeduper inferredMapItem:aoiCopy dedupesToInferredMapItem:v12FirstObject2 error:0];
 
   if (!inferredMapItemDeduper)
   {
@@ -1585,13 +1585,13 @@ LABEL_25:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = v12;
-  v16 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  firstObject = firstObject;
+  v16 = [firstObject countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v16)
   {
     v17 = v16;
     v27 = 48;
-    v28 = self;
+    selfCopy = self;
     v18 = *v30;
 LABEL_8:
     v19 = 0;
@@ -1599,21 +1599,21 @@ LABEL_8:
     {
       if (*v30 != v18)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(firstObject);
       }
 
       v20 = *(*(&v29 + 1) + 8 * v19);
-      v21 = [v20 mapItem];
-      v22 = [v21 mapItemPlaceType];
+      mapItem = [v20 mapItem];
+      mapItemPlaceType = [mapItem mapItemPlaceType];
 
-      if (v22 != 1)
+      if (mapItemPlaceType != 1)
       {
         break;
       }
 
       if (v17 == ++v19)
       {
-        v17 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v17 = [firstObject countByEnumeratingWithState:&v29 objects:v34 count:16];
         if (v17)
         {
           goto LABEL_8;
@@ -1630,27 +1630,27 @@ LABEL_8:
       goto LABEL_25;
     }
 
-    v23 = [*(&v28->super.super.isa + v27) inferredMapItem:v11 dedupesToInferredMapItem:v24 error:0];
+    v23 = [*(&selfCopy->super.super.isa + v27) inferredMapItem:v11 dedupesToInferredMapItem:v24 error:0];
   }
 
   else
   {
 LABEL_14:
     v23 = 0;
-    v24 = v12;
+    v24 = firstObject;
   }
 
 LABEL_26:
   return v23;
 }
 
-- (id)bestQueryFromSortedQueryResults:(id)a3 bestAoiInferredMapItem:(id)a4 bestPoiInferredMapItem:(id)a5 error:(id *)a6
+- (id)bestQueryFromSortedQueryResults:(id)results bestAoiInferredMapItem:(id)item bestPoiInferredMapItem:(id)mapItem error:(id *)error
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  resultsCopy = results;
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  if (!resultsCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1659,7 +1659,7 @@ LABEL_26:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sortedQueryResults", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -1668,7 +1668,7 @@ LABEL_26:
     goto LABEL_29;
   }
 
-  if (![v11 count])
+  if (![resultsCopy count])
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1677,7 +1677,7 @@ LABEL_26:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: sortedQueryResults.count > 0", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -1685,11 +1685,11 @@ LABEL_26:
     v30 = @"sortedQueryResults.count > 0";
 LABEL_29:
     _RTErrorInvalidParameterCreate(v30);
-    *a6 = v28 = 0;
+    *error = firstObject = 0;
     goto LABEL_36;
   }
 
-  if (!(v12 | v13))
+  if (!(itemCopy | mapItemCopy))
   {
     v32 = MEMORY[0x277CCA9B8];
     v33 = *MEMORY[0x277D01448];
@@ -1709,32 +1709,32 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v36, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v37 = v35;
-      *a6 = v35;
+      *error = v35;
     }
 
 LABEL_35:
-    v28 = 0;
+    firstObject = 0;
     goto LABEL_36;
   }
 
-  v54 = v12;
-  if (v12 && v13)
+  v54 = itemCopy;
+  if (itemCopy && mapItemCopy)
   {
     aSelector = a2;
-    v53 = a6;
+    errorCopy = error;
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v14 = v11;
+    v14 = resultsCopy;
     v15 = [v14 countByEnumeratingWithState:&v57 objects:v61 count:16];
     if (v15)
     {
       v16 = v15;
-      v52 = v11;
+      v52 = resultsCopy;
       v17 = 0;
       v18 = *v58;
       do
@@ -1747,15 +1747,15 @@ LABEL_35:
           }
 
           v20 = *(*(&v57 + 1) + 8 * i);
-          if ([(RTMapItemProviderBluePOI *)self sortedQueryResult:v20 correspondsToAoi:v12 poi:v13, aSelector])
+          if ([(RTMapItemProviderBluePOI *)self sortedQueryResult:v20 correspondsToAoi:itemCopy poi:mapItemCopy, aSelector])
           {
             if (v17)
             {
-              v21 = [v20 secondObject];
-              [v21 duration];
+              secondObject = [v20 secondObject];
+              [secondObject duration];
               v23 = v22;
-              v24 = [v17 secondObject];
-              [v24 duration];
+              secondObject2 = [v17 secondObject];
+              [secondObject2 duration];
               v26 = v25;
 
               if (v23 > v26)
@@ -1765,7 +1765,7 @@ LABEL_35:
                 v17 = v27;
               }
 
-              v12 = v54;
+              itemCopy = v54;
             }
 
             else
@@ -1780,10 +1780,10 @@ LABEL_35:
 
       while (v16);
 
-      v11 = v52;
+      resultsCopy = v52;
       if (v17)
       {
-        v28 = [v17 firstObject];
+        firstObject = [v17 firstObject];
 LABEL_59:
 
         goto LABEL_36;
@@ -1795,7 +1795,7 @@ LABEL_59:
     }
 
     v56 = 0;
-    v44 = [(RTMapItemProviderBluePOI *)self bestQueryFromSortedQueryResults:v14 bestInferredMapItem:v12 error:&v56, aSelector];
+    aSelector = [(RTMapItemProviderBluePOI *)self bestQueryFromSortedQueryResults:v14 bestInferredMapItem:itemCopy error:&v56, aSelector];
     v17 = v56;
     if (v17)
     {
@@ -1809,42 +1809,42 @@ LABEL_59:
         v65 = v17;
         _os_log_error_impl(&dword_2304B3000, v45, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
 
-        v12 = v54;
+        itemCopy = v54;
       }
 
-      if (v53)
+      if (errorCopy)
       {
         v46 = v17;
-        v28 = 0;
-        *v53 = v17;
+        firstObject = 0;
+        *errorCopy = v17;
       }
 
       else
       {
-        v28 = 0;
+        firstObject = 0;
       }
     }
 
     else
     {
-      v28 = v44;
+      firstObject = aSelector;
     }
 
     goto LABEL_59;
   }
 
-  if (v12)
+  if (itemCopy)
   {
-    v39 = v12;
+    v39 = itemCopy;
   }
 
   else
   {
-    v39 = v13;
+    v39 = mapItemCopy;
   }
 
   v55 = 0;
-  v40 = [(RTMapItemProviderBluePOI *)self bestQueryFromSortedQueryResults:v11 bestInferredMapItem:v39 error:&v55];
+  v40 = [(RTMapItemProviderBluePOI *)self bestQueryFromSortedQueryResults:resultsCopy bestInferredMapItem:v39 error:&v55];
   v41 = v55;
   if (v41)
   {
@@ -1858,38 +1858,38 @@ LABEL_59:
       v65 = v41;
       _os_log_error_impl(&dword_2304B3000, v42, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
 
-      v12 = v54;
+      itemCopy = v54;
     }
 
-    if (a6)
+    if (error)
     {
       v43 = v41;
-      v28 = 0;
-      *a6 = v41;
+      firstObject = 0;
+      *error = v41;
     }
 
     else
     {
-      v28 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v28 = v40;
+    firstObject = v40;
   }
 
 LABEL_36:
 
-  return v28;
+  return firstObject;
 }
 
-- (id)bestQueryFromAggregatedQueries:(id)a3 error:(id *)a4
+- (id)bestQueryFromAggregatedQueries:(id)queries error:(id *)error
 {
   v119 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  queriesCopy = queries;
+  v7 = queriesCopy;
+  if (!queriesCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1898,12 +1898,12 @@ LABEL_36:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aggregatedQueries", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v30 = @"aggregatedQueries";
 LABEL_29:
       _RTErrorInvalidParameterCreate(v30);
-      *a4 = v28 = 0;
+      *error = v28 = 0;
       goto LABEL_107;
     }
 
@@ -1912,7 +1912,7 @@ LABEL_30:
     goto LABEL_107;
   }
 
-  if (![v6 count])
+  if (![queriesCopy count])
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1921,7 +1921,7 @@ LABEL_30:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aggregatedQueries.count > 0", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v30 = @"aggregatedQueries.count > 0";
       goto LABEL_29;
@@ -1930,8 +1930,8 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v99 = a4;
-  v100 = self;
+  errorCopy = error;
+  selfCopy = self;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO) && [v7 count])
   {
     v8 = 0;
@@ -1946,8 +1946,8 @@ LABEL_30:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v12 = NSStringFromSelector(a2);
-          v13 = [v10 secondObject];
-          [v13 duration];
+          secondObject = [v10 secondObject];
+          [secondObject duration];
           *buf = 138412802;
           v114 = v12;
           v115 = 2048;
@@ -1958,8 +1958,8 @@ LABEL_30:
         }
       }
 
-      v15 = [v10 firstObject];
-      v16 = [v15 count];
+      firstObject = [v10 firstObject];
+      v16 = [firstObject count];
 
       if (v16)
       {
@@ -1972,8 +1972,8 @@ LABEL_30:
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
               v19 = NSStringFromSelector(a2);
-              v20 = [v10 firstObject];
-              v21 = [v20 objectAtIndexedSubscript:v17];
+              firstObject2 = [v10 firstObject];
+              v21 = [firstObject2 objectAtIndexedSubscript:v17];
               *buf = 138412803;
               v114 = v19;
               v115 = 2048;
@@ -1985,8 +1985,8 @@ LABEL_30:
           }
 
           ++v17;
-          v22 = [v10 firstObject];
-          v23 = [v22 count];
+          firstObject3 = [v10 firstObject];
+          v23 = [firstObject3 count];
         }
 
         while (v17 < v23);
@@ -2000,16 +2000,16 @@ LABEL_30:
   }
 
   v112 = 0;
-  v24 = [(RTMapItemProviderBluePOI *)v100 dedupeQueryResults:v7 error:&v112];
+  v24 = [(RTMapItemProviderBluePOI *)selfCopy dedupeQueryResults:v7 error:&v112];
   v25 = v112;
   v26 = v25;
   if (v25)
   {
-    if (v99)
+    if (errorCopy)
     {
       v27 = v25;
       v28 = 0;
-      *v99 = v26;
+      *errorCopy = v26;
     }
 
     else
@@ -2035,8 +2035,8 @@ LABEL_30:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             v36 = NSStringFromSelector(a2);
-            v37 = [v34 secondObject];
-            [v37 duration];
+            secondObject2 = [v34 secondObject];
+            [secondObject2 duration];
             *buf = 138412802;
             v114 = v36;
             v115 = 2048;
@@ -2047,8 +2047,8 @@ LABEL_30:
           }
         }
 
-        v39 = [v34 firstObject];
-        v40 = [v39 count];
+        firstObject4 = [v34 firstObject];
+        v40 = [firstObject4 count];
 
         if (v40)
         {
@@ -2061,8 +2061,8 @@ LABEL_30:
               if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
               {
                 v43 = NSStringFromSelector(a2);
-                v44 = [v34 firstObject];
-                v45 = [v44 objectAtIndexedSubscript:v41];
+                firstObject5 = [v34 firstObject];
+                v45 = [firstObject5 objectAtIndexedSubscript:v41];
                 *buf = 138412803;
                 v114 = v43;
                 v115 = 2048;
@@ -2074,8 +2074,8 @@ LABEL_30:
             }
 
             ++v41;
-            v46 = [v34 firstObject];
-            v47 = [v46 count];
+            firstObject6 = [v34 firstObject];
+            v47 = [firstObject6 count];
           }
 
           while (v41 < v47);
@@ -2088,18 +2088,18 @@ LABEL_30:
       while (v32 < [v101 count]);
     }
 
-    [(RTMapItemProviderBluePOIParameters *)v100->_parameters baseDuration];
+    [(RTMapItemProviderBluePOIParameters *)selfCopy->_parameters baseDuration];
     v111 = 0;
-    v48 = [(RTMapItemProviderBluePOI *)v100 sortedAveragedQueryResults:v24 baseDuration:&v111 error:?];
+    v48 = [(RTMapItemProviderBluePOI *)selfCopy sortedAveragedQueryResults:v24 baseDuration:&v111 error:?];
     v49 = v111;
     v50 = v49;
     if (v49)
     {
-      if (v99)
+      if (errorCopy)
       {
         v51 = v49;
         v28 = 0;
-        *v99 = v50;
+        *errorCopy = v50;
       }
 
       else
@@ -2145,7 +2145,7 @@ LABEL_30:
       v109 = 0;
       v110 = 0;
       v108 = 0;
-      [(RTMapItemProviderBluePOI *)v100 chooseBestAoiInferredMapItem:&v110 PoiInferredMapItem:&v109 fromSortedAveragedResults:v48 error:&v108];
+      [(RTMapItemProviderBluePOI *)selfCopy chooseBestAoiInferredMapItem:&v110 PoiInferredMapItem:&v109 fromSortedAveragedResults:v48 error:&v108];
       v57 = v110;
       v58 = v109;
       v59 = v108;
@@ -2154,11 +2154,11 @@ LABEL_30:
       {
         v7 = v104;
         v24 = v102;
-        if (v99)
+        if (errorCopy)
         {
           v61 = v59;
           v28 = 0;
-          *v99 = v60;
+          *errorCopy = v60;
         }
 
         else
@@ -2190,17 +2190,17 @@ LABEL_30:
 
         v107 = 0;
         v24 = v102;
-        v98 = [(RTMapItemProviderBluePOI *)v100 sortQueryResults:v102 error:&v107];
+        v98 = [(RTMapItemProviderBluePOI *)selfCopy sortQueryResults:v102 error:&v107];
         v64 = v107;
         v65 = v64;
         if (v64)
         {
           v50 = 0;
-          if (v99)
+          if (errorCopy)
           {
             v66 = v64;
             v28 = 0;
-            *v99 = v65;
+            *errorCopy = v65;
           }
 
           else
@@ -2228,8 +2228,8 @@ LABEL_30:
                 if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
                 {
                   v72 = NSStringFromSelector(a2);
-                  v73 = [v70 secondObject];
-                  [v73 duration];
+                  secondObject3 = [v70 secondObject];
+                  [secondObject3 duration];
                   *buf = 138412802;
                   v114 = v72;
                   v115 = 2048;
@@ -2240,8 +2240,8 @@ LABEL_30:
                 }
               }
 
-              v75 = [v70 firstObject];
-              v76 = [v75 count];
+              firstObject7 = [v70 firstObject];
+              v76 = [firstObject7 count];
 
               if (v76)
               {
@@ -2254,8 +2254,8 @@ LABEL_30:
                     if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
                     {
                       v79 = NSStringFromSelector(a2);
-                      v80 = [v70 firstObject];
-                      v81 = [v80 objectAtIndexedSubscript:v77];
+                      firstObject8 = [v70 firstObject];
+                      v81 = [firstObject8 objectAtIndexedSubscript:v77];
                       *buf = 138412803;
                       v114 = v79;
                       v115 = 2048;
@@ -2267,8 +2267,8 @@ LABEL_30:
                   }
 
                   ++v77;
-                  v82 = [v70 firstObject];
-                  v83 = [v82 count];
+                  firstObject9 = [v70 firstObject];
+                  v83 = [firstObject9 count];
                 }
 
                 while (v77 < v83);
@@ -2283,18 +2283,18 @@ LABEL_30:
 
           v106 = 0;
           v58 = v96;
-          v84 = [(RTMapItemProviderBluePOI *)v100 bestQueryFromSortedQueryResults:v67 bestAoiInferredMapItem:v57 bestPoiInferredMapItem:v96 error:&v106, v94];
+          v84 = [(RTMapItemProviderBluePOI *)selfCopy bestQueryFromSortedQueryResults:v67 bestAoiInferredMapItem:v57 bestPoiInferredMapItem:v96 error:&v106, v94];
           v85 = v106;
           v86 = v85;
           if (v85)
           {
             v24 = v102;
             v60 = 0;
-            if (v99)
+            if (errorCopy)
             {
               v87 = v85;
               v28 = 0;
-              *v99 = v86;
+              *errorCopy = v86;
             }
 
             else
@@ -2362,16 +2362,16 @@ LABEL_107:
   return v28;
 }
 
-- (id)mapItemsFromLocations:(id)a3 accessPoints:(id)a4 startDate:(id)a5 endDate:(id)a6 options:(id)a7 error:(id *)a8
+- (id)mapItemsFromLocations:(id)locations accessPoints:(id)points startDate:(id)date endDate:(id)endDate options:(id)options error:(id *)error
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v46 = a5;
-  v47 = a6;
-  v48 = a7;
-  [v14 enumerateObjectsUsingBlock:&__block_literal_global_95_0];
-  [v13 enumerateObjectsUsingBlock:&__block_literal_global_99_0];
+  locationsCopy = locations;
+  pointsCopy = points;
+  dateCopy = date;
+  endDateCopy = endDate;
+  optionsCopy = options;
+  [pointsCopy enumerateObjectsUsingBlock:&__block_literal_global_95_0];
+  [locationsCopy enumerateObjectsUsingBlock:&__block_literal_global_99_0];
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -2385,7 +2385,7 @@ LABEL_107:
   v57 = __Block_byref_object_dispose__36;
   v58 = 0;
   v15 = dispatch_semaphore_create(0);
-  v16 = [(RTMapItemProviderBluePOI *)self mapServiceManager];
+  mapServiceManager = [(RTMapItemProviderBluePOI *)self mapServiceManager];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __95__RTMapItemProviderBluePOI_mapItemsFromLocations_accessPoints_startDate_endDate_options_error___block_invoke_100;
@@ -2394,7 +2394,7 @@ LABEL_107:
   v52 = &v53;
   v17 = v15;
   v50 = v17;
-  [v16 fetchMapItemsFromLocations:v13 accessPoints:v14 startDate:v46 endDate:v47 options:v48 handler:v49];
+  [mapServiceManager fetchMapItemsFromLocations:locationsCopy accessPoints:pointsCopy startDate:dateCopy endDate:endDateCopy options:optionsCopy handler:v49];
 
   v18 = v17;
   v19 = [MEMORY[0x277CBEAA8] now];
@@ -2406,11 +2406,11 @@ LABEL_107:
     v23 = v22;
     v24 = objc_opt_new();
     v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_430];
-    v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v27 = [v26 filteredArrayUsingPredicate:v25];
-    v28 = [v27 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+    firstObject = [v27 firstObject];
 
-    [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+    [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
     {
@@ -2452,12 +2452,12 @@ LABEL_8:
     v36 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v37 = [v13 firstObject];
-      v38 = [v14 count];
+      firstObject2 = [locationsCopy firstObject];
+      v38 = [pointsCopy count];
       v39 = [v60[5] count];
       v40 = v54[5];
       *buf = 138740739;
-      *&buf[4] = v37;
+      *&buf[4] = firstObject2;
       v66 = 2048;
       v67 = v38;
       v68 = 2048;
@@ -2469,9 +2469,9 @@ LABEL_8:
   }
 
   [v60[5] enumerateObjectsUsingBlock:&__block_literal_global_105];
-  if (a8)
+  if (error)
   {
-    *a8 = v54[5];
+    *error = v54[5];
   }
 
   v41 = [_RTMap alloc];
@@ -2576,39 +2576,39 @@ id __95__RTMapItemProviderBluePOI_mapItemsFromLocations_accessPoints_startDate_e
   return v7;
 }
 
-- (id)mapItemFromPlistDictionary:(id)a3
+- (id)mapItemFromPlistDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"name"];
-  v37 = [v3 objectForKey:@"category"];
-  v36 = [v3 objectForKey:@"categoryMUID"];
-  v5 = [v3 objectForKey:@"mapItemPlaceType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"name"];
+  v37 = [dictionaryCopy objectForKey:@"category"];
+  v36 = [dictionaryCopy objectForKey:@"categoryMUID"];
+  v5 = [dictionaryCopy objectForKey:@"mapItemPlaceType"];
   if (v5)
   {
-    v6 = [v3 objectForKey:@"mapItemPlaceType"];
-    v32 = [v6 intValue];
+    v6 = [dictionaryCopy objectForKey:@"mapItemPlaceType"];
+    intValue = [v6 intValue];
   }
 
   else
   {
-    v32 = 1000;
+    intValue = 1000;
   }
 
-  v7 = [v3 objectForKey:@"muid"];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [dictionaryCopy objectForKey:@"muid"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v3 objectForKey:@"resultProviderID"];
-  v34 = [v9 integerValue];
+  v9 = [dictionaryCopy objectForKey:@"resultProviderID"];
+  integerValue = [v9 integerValue];
 
-  v10 = [v3 objectForKey:@"latitude"];
+  v10 = [dictionaryCopy objectForKey:@"latitude"];
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [v3 objectForKey:@"longitude"];
+  v13 = [dictionaryCopy objectForKey:@"longitude"];
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v3 objectForKey:@"labelType"];
+  v16 = [dictionaryCopy objectForKey:@"labelType"];
   v33 = v16;
   if ([v16 caseInsensitiveCompare:@"unknown"])
   {
@@ -2628,49 +2628,49 @@ id __95__RTMapItemProviderBluePOI_mapItemsFromLocations_accessPoints_startDate_e
     v17 = 0;
   }
 
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = [v18 dateByAddingTimeInterval:4838400.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v19 = [date dateByAddingTimeInterval:4838400.0];
   v20 = objc_alloc(MEMORY[0x277D01060]);
-  v21 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   LOBYTE(v29) = 0;
-  v31 = [v20 initWithIdentifier:v21 geoAddressData:0 subPremises:0 subThoroughfare:0 thoroughfare:v4 subLocality:0 locality:0 subAdministrativeArea:0 administrativeArea:0 administrativeAreaCode:0 postalCode:0 country:0 countryCode:0 inlandWater:0 ocean:0 areasOfInterest:0 isIsland:v29 creationDate:v18 expirationDate:v19 iso3166CountryCode:0 iso3166SubdivisionCode:0];
+  v31 = [v20 initWithIdentifier:uUID geoAddressData:0 subPremises:0 subThoroughfare:0 thoroughfare:v4 subLocality:0 locality:0 subAdministrativeArea:0 administrativeArea:0 administrativeAreaCode:0 postalCode:0 country:0 countryCode:0 inlandWater:0 ocean:0 areasOfInterest:0 isIsland:v29 creationDate:date expirationDate:v19 iso3166CountryCode:0 iso3166SubdivisionCode:0];
 
-  v22 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:v18 longitude:v12 horizontalUncertainty:v15 date:1.0];
+  v22 = [objc_alloc(MEMORY[0x277D01160]) initWithLatitude:date longitude:v12 horizontalUncertainty:v15 date:1.0];
   v23 = [objc_alloc(MEMORY[0x277D011A8]) initWithAddressIdentifier:0 isMe:0 wifiConfidence:v17 wifiFingerprintLabelType:1.0];
   v24 = objc_alloc(MEMORY[0x277D011A0]);
   [MEMORY[0x277CCAD78] UUID];
   v26 = v25 = v4;
-  v27 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
   LOBYTE(v30) = 0;
-  v35 = [v24 initWithIdentifier:v26 name:v25 category:v37 categoryMUID:v36 address:v31 location:v22 source:0x4000 mapItemPlaceType:v32 muid:v8 resultProviderID:v34 geoMapItemHandle:v27 geoMapItemIdentifier:0 creationDate:v18 expirationDate:v19 extendedAttributes:v23 displayLanguage:0 disputed:v30];
+  v35 = [v24 initWithIdentifier:v26 name:v25 category:v37 categoryMUID:v36 address:v31 location:v22 source:0x4000 mapItemPlaceType:intValue muid:unsignedIntegerValue resultProviderID:integerValue geoMapItemHandle:data geoMapItemIdentifier:0 creationDate:date expirationDate:v19 extendedAttributes:v23 displayLanguage:0 disputed:v30];
 
   return v35;
 }
 
-- (id)inferredMapItemsFromPlist:(id)a3 error:(id *)a4
+- (id)inferredMapItemsFromPlist:(id)plist error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  plistCopy = plist;
   v27 = 1;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7 isDirectory:&v27];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:plistCopy isDirectory:&v27];
 
   if (v9 && (v27 & 1) == 0)
   {
-    v11 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v7];
+    v11 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:plistCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 objectForKey:@"Inferred Map Items"];
-      v14 = [MEMORY[0x277CBEB18] array];
+      plistCopy = [v11 objectForKey:@"Inferred Map Items"];
+      array = [MEMORY[0x277CBEB18] array];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __60__RTMapItemProviderBluePOI_inferredMapItemsFromPlist_error___block_invoke;
       v25[3] = &unk_2788C4A48;
       v25[4] = self;
-      v15 = v14;
+      v15 = array;
       v26 = v15;
-      [v13 enumerateObjectsUsingBlock:v25];
+      [plistCopy enumerateObjectsUsingBlock:v25];
       v16 = v26;
       v17 = v15;
 
@@ -2679,11 +2679,11 @@ id __95__RTMapItemProviderBluePOI_mapItemsFromLocations_accessPoints_startDate_e
 
     else
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to create dictionary from plist file, %@", v7];
+      plistCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to create dictionary from plist file, %@", plistCopy];
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277D01448];
       v32 = *MEMORY[0x277CCA450];
-      v33[0] = v13;
+      v33[0] = plistCopy;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
       v17 = [v18 errorWithDomain:v19 code:7 userInfo:v20];
 
@@ -2698,11 +2698,11 @@ id __95__RTMapItemProviderBluePOI_mapItemsFromLocations_accessPoints_startDate_e
         _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
         v22 = v17;
         v10 = 0;
-        *a4 = v17;
+        *error = v17;
       }
 
       else
@@ -2734,24 +2734,24 @@ void __60__RTMapItemProviderBluePOI_inferredMapItemsFromPlist_error___block_invo
   [*(a1 + 40) addObject:v8];
 }
 
-- (BOOL)_shouldPerformServerBluePOIForLocalBluePOIError:(id)a3
+- (BOOL)_shouldPerformServerBluePOIForLocalBluePOIError:(id)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 userInfo];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIError___block_invoke;
   v36[3] = &__block_descriptor_40_e25_v32__0__NSString_8_16_B24l;
   aSelector = a2;
   v36[4] = a2;
-  [v7 enumerateKeysAndObjectsUsingBlock:v36];
+  [userInfo enumerateKeysAndObjectsUsingBlock:v36];
 
-  [v6 flattenErrors];
-  obj = v28 = v6;
+  [errorCopy flattenErrors];
+  obj = v28 = errorCopy;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6 != 0;
+  v8 = errorCopy != 0;
   v34 = 0u;
   v35 = 0u;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v43 count:16];
@@ -2770,12 +2770,12 @@ void __60__RTMapItemProviderBluePOI_inferredMapItemsFromPlist_error___block_invo
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        v14 = [v13 userInfo];
-        v15 = [v14 objectForKey:v11];
+        userInfo2 = [v13 userInfo];
+        v15 = [userInfo2 objectForKey:v11];
         if (v15)
         {
-          v4 = [v13 userInfo];
-          v3 = [v4 objectForKey:v11];
+          userInfo3 = [v13 userInfo];
+          v3 = [userInfo3 objectForKey:v11];
           if ([v3 isEqual:&unk_28459CF90])
           {
             v16 = 1;
@@ -2785,8 +2785,8 @@ LABEL_17:
           }
         }
 
-        v17 = [v13 domain];
-        if ([v17 isEqualToString:@"NSURLErrorDomain"] && objc_msgSend(v13, "code") == -1009)
+        domain = [v13 domain];
+        if ([domain isEqualToString:@"NSURLErrorDomain"] && objc_msgSend(v13, "code") == -1009)
         {
           v16 = 1;
         }
@@ -2795,11 +2795,11 @@ LABEL_17:
         {
           v31 = v8;
           v18 = v3;
-          v19 = v4;
+          v19 = userInfo3;
           v20 = v10;
           v21 = v11;
-          v22 = [v13 domain];
-          if ([v22 isEqualToString:@"GEOErrorDomain"])
+          domain2 = [v13 domain];
+          if ([domain2 isEqualToString:@"GEOErrorDomain"])
           {
             v16 = [v13 code] == -2000;
           }
@@ -2811,7 +2811,7 @@ LABEL_17:
 
           v11 = v21;
           v10 = v20;
-          v4 = v19;
+          userInfo3 = v19;
           v3 = v18;
           v8 = v31;
         }
@@ -2882,15 +2882,15 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
   }
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
   v114 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   if ([(RTPlatform *)self->_platform internalInstall])
   {
-    v7 = [(RTMapItemProviderBluePOIParameters *)self->_parameters injectedPlistPath];
+    injectedPlistPath = [(RTMapItemProviderBluePOIParameters *)self->_parameters injectedPlistPath];
 
-    if (v7)
+    if (injectedPlistPath)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -2904,18 +2904,18 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
         }
       }
 
-      v10 = [(RTMapItemProviderBluePOIParameters *)self->_parameters injectedPlistPath];
+      injectedPlistPath2 = [(RTMapItemProviderBluePOIParameters *)self->_parameters injectedPlistPath];
       v105 = 0;
-      v11 = [(RTMapItemProviderBluePOI *)self inferredMapItemsFromPlist:v10 error:&v105];
+      v11 = [(RTMapItemProviderBluePOI *)self inferredMapItemsFromPlist:injectedPlistPath2 error:&v105];
       v12 = v105;
 
       if (v12)
       {
-        if (a4)
+        if (error)
         {
           v13 = v12;
           v14 = 0;
-          *a4 = v12;
+          *error = v12;
         }
 
         else
@@ -2933,25 +2933,25 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
     }
   }
 
-  v15 = [v6 locations];
-  if (!v15 || ([v6 accessPoints], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, !v16))
+  locations = [optionsCopy locations];
+  if (!locations || ([optionsCopy accessPoints], v16 = objc_claimAutoreleasedReturnValue(), v16, locations, !v16))
   {
-    v41 = [v6 startDate];
-    if (v41)
+    startDate = [optionsCopy startDate];
+    if (startDate)
     {
-      v42 = [v6 endDate];
-      if (v42)
+      endDate = [optionsCopy endDate];
+      if (endDate)
       {
-        v43 = [v6 startDate];
-        v44 = [v6 endDate];
-        v45 = [v43 isAfterDate:v44];
+        startDate2 = [optionsCopy startDate];
+        endDate2 = [optionsCopy endDate];
+        v45 = [startDate2 isAfterDate:endDate2];
 
         if (!v45)
         {
           v46 = objc_alloc(MEMORY[0x277CCA970]);
-          v47 = [v6 startDate];
-          v48 = [v6 endDate];
-          v11 = [v46 initWithStartDate:v47 endDate:v48];
+          startDate3 = [optionsCopy startDate];
+          endDate3 = [optionsCopy endDate];
+          v11 = [v46 initWithStartDate:startDate3 endDate:endDate3];
 
           v49 = [(RTMapItemProviderBluePOI *)self numberOfRealtimeQueriesForInterval:v11];
           v50 = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries]- v49;
@@ -2961,11 +2961,11 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
             if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
             {
               v52 = NSStringFromSelector(a2);
-              v53 = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries];
+              maxNumberOfQueries = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries];
               *buf = 138413058;
               *&buf[4] = v52;
               *&buf[12] = 2048;
-              *&buf[14] = v53;
+              *&buf[14] = maxNumberOfQueries;
               *&buf[22] = 2048;
               v107 = v49;
               v108 = 2048;
@@ -2974,12 +2974,12 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
             }
           }
 
-          [v6 distance];
+          [optionsCopy distance];
           v55 = v54;
-          v56 = [v6 location];
-          v57 = [v6 startDate];
-          v58 = [v6 endDate];
-          v14 = [(RTMapItemProviderBluePOI *)self _mapItemsWithinDistance:v56 location:v57 startDate:v58 endDate:v50 maxQueryAttemps:a4 error:v55];
+          location = [optionsCopy location];
+          startDate4 = [optionsCopy startDate];
+          endDate4 = [optionsCopy endDate];
+          v14 = [(RTMapItemProviderBluePOI *)self _mapItemsWithinDistance:location location:startDate4 startDate:endDate4 endDate:v50 maxQueryAttemps:error error:v55];
 
           if (!v14)
           {
@@ -2993,7 +2993,7 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
           [(RTMapItemProviderBluePOIParameters *)self->_parameters poiConfidencePassThroughThreshold];
           v64 = v63;
           [(RTMapItemProviderBluePOIParameters *)self->_parameters poiConfidenceConsiderThreshold];
-          v66 = [(RTMapItemProviderBluePOI *)self _filterByConfidence:v14 aoiConfidencePassThroughThreshold:a4 aoiConfidenceConsiderThreshold:v60 poiConfidencePassThroughThreshold:v62 poiConfidenceConsiderThreshold:v64 error:v65];
+          v66 = [(RTMapItemProviderBluePOI *)self _filterByConfidence:v14 aoiConfidencePassThroughThreshold:error aoiConfidenceConsiderThreshold:v60 poiConfidencePassThroughThreshold:v62 poiConfidenceConsiderThreshold:v64 error:v65];
 
           goto LABEL_48;
         }
@@ -3004,7 +3004,7 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       v14 = 0;
       goto LABEL_60;
@@ -3015,26 +3015,26 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
     v111 = @"requires a valid date range.";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
     [v79 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v11];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
     goto LABEL_59;
   }
 
   if (_os_feature_enabled_impl())
   {
     v17 = objc_opt_new();
-    v18 = [v6 location];
+    location2 = [optionsCopy location];
 
-    if (v18)
+    if (location2)
     {
-      v19 = [v6 location];
-      [v17 addObject:v19];
+      location3 = [optionsCopy location];
+      [v17 addObject:location3];
     }
 
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LODWORD(v107) = 0;
-    v20 = [v6 locations];
+    locations2 = [optionsCopy locations];
     v102[0] = MEMORY[0x277D85DD0];
     v102[1] = 3221225472;
     v102[2] = __54__RTMapItemProviderBluePOI_mapItemsWithOptions_error___block_invoke;
@@ -3042,17 +3042,17 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
     v104 = buf;
     v99 = v17;
     v103 = v99;
-    [v20 enumerateObjectsUsingBlock:v102];
+    [locations2 enumerateObjectsUsingBlock:v102];
 
-    v21 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-    v22 = [v21 requestCollectQueryEvent];
+    bluePOIMetricManager = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+    requestCollectQueryEvent = [bluePOIMetricManager requestCollectQueryEvent];
 
-    v23 = [(RTMapItemProviderBluePOI *)self bluePOIMonitor];
-    v24 = [v6 location];
-    v25 = [v6 accessPoints];
+    bluePOIMonitor = [(RTMapItemProviderBluePOI *)self bluePOIMonitor];
+    location4 = [optionsCopy location];
+    accessPoints = [optionsCopy accessPoints];
     v26 = *(*&buf[8] + 24);
     v101 = 0;
-    v27 = [v23 fetchLocalMapItemsFromReferenceLocation:v24 locations:v99 accessPoints:v25 signalEnv:v26 skipAggregation:objc_msgSend(v6 collectMetrics:"fidelityPolicy") == 64 error:{v22, &v101}];
+    v27 = [bluePOIMonitor fetchLocalMapItemsFromReferenceLocation:location4 locations:v99 accessPoints:accessPoints signalEnv:v26 skipAggregation:objc_msgSend(optionsCopy collectMetrics:"fidelityPolicy") == 64 error:{requestCollectQueryEvent, &v101}];
     v11 = v101;
 
     if (v11 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -3067,32 +3067,32 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
     }
 
     v29 = [(RTMapItemProviderBluePOI *)self _shouldPerformServerBluePOIForLocalBluePOIError:v11];
-    v30 = ([v6 fidelityPolicy] != 64) & v29;
-    if (v22)
+    v30 = ([optionsCopy fidelityPolicy] != 64) & v29;
+    if (requestCollectQueryEvent)
     {
-      v31 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-      [v31 setEventMetricsValue:@"unknown" forKey:@"appIdentifier"];
+      bluePOIMetricManager2 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+      [bluePOIMetricManager2 setEventMetricsValue:@"unknown" forKey:@"appIdentifier"];
 
-      v32 = [v6 clientIdentifier];
-      if (v32)
+      clientIdentifier = [optionsCopy clientIdentifier];
+      if (clientIdentifier)
       {
-        v33 = [v6 clientIdentifier];
-        v34 = [v33 hasPrefix:@"com.apple"];
+        clientIdentifier2 = [optionsCopy clientIdentifier];
+        v34 = [clientIdentifier2 hasPrefix:@"com.apple"];
 
         if (v34)
         {
-          v35 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-          v36 = [v6 clientIdentifier];
-          [v35 setEventMetricsValue:v36 forKey:@"appIdentifier"];
+          bluePOIMetricManager3 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+          clientIdentifier3 = [optionsCopy clientIdentifier];
+          [bluePOIMetricManager3 setEventMetricsValue:clientIdentifier3 forKey:@"appIdentifier"];
         }
       }
 
-      v37 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+      bluePOIMetricManager4 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
       v38 = [MEMORY[0x277CCABB0] numberWithBool:v30];
-      [v37 setEventMetricsValue:v38 forKey:@"serverFallback"];
+      [bluePOIMetricManager4 setEventMetricsValue:v38 forKey:@"serverFallback"];
 
-      v39 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-      [v39 stopCollectQueryEvent];
+      bluePOIMetricManager5 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+      [bluePOIMetricManager5 stopCollectQueryEvent];
     }
 
     _Block_object_dispose(buf, 8);
@@ -3110,17 +3110,17 @@ void __76__RTMapItemProviderBluePOI__shouldPerformServerBluePOIForLocalBluePOIEr
   }
 
   v67 = objc_alloc(MEMORY[0x277D011B0]);
-  v68 = [v6 useBackground];
+  useBackground = [optionsCopy useBackground];
   v69 = objc_opt_class();
   v70 = NSStringFromClass(v69);
-  v71 = [v6 clientIdentifier];
-  v72 = [v67 initWithUseBackgroundTraits:v68 analyticsIdentifier:v70 clientIdentifier:v71];
+  clientIdentifier4 = [optionsCopy clientIdentifier];
+  v72 = [v67 initWithUseBackgroundTraits:useBackground analyticsIdentifier:v70 clientIdentifier:clientIdentifier4];
 
-  v73 = [v6 fidelityPolicy];
-  v74 = [v6 locations];
-  v75 = [v6 accessPoints];
-  v76 = [v6 location];
-  v77 = [(RTMapItemProviderBluePOI *)self _mapItemsWithFidelityPolicy:v73 locations:v74 accessPoints:v75 referenceLocation:v76 options:v72 error:a4];
+  fidelityPolicy = [optionsCopy fidelityPolicy];
+  locations3 = [optionsCopy locations];
+  accessPoints2 = [optionsCopy accessPoints];
+  location5 = [optionsCopy location];
+  v77 = [(RTMapItemProviderBluePOI *)self _mapItemsWithFidelityPolicy:fidelityPolicy locations:locations3 accessPoints:accessPoints2 referenceLocation:location5 options:v72 error:error];
 
   if ([v27 count])
   {
@@ -3151,7 +3151,7 @@ LABEL_59:
   [(RTMapItemProviderBluePOIParameters *)self->_parameters poiConfidencePassThroughThreshold];
   v85 = v84;
   [(RTMapItemProviderBluePOIParameters *)self->_parameters poiConfidenceConsiderThreshold];
-  v66 = [(RTMapItemProviderBluePOI *)self _filterByConfidence:v40 aoiConfidencePassThroughThreshold:a4 aoiConfidenceConsiderThreshold:v81 poiConfidencePassThroughThreshold:v83 poiConfidenceConsiderThreshold:v85 error:v86];
+  v66 = [(RTMapItemProviderBluePOI *)self _filterByConfidence:v40 aoiConfidencePassThroughThreshold:error aoiConfidenceConsiderThreshold:v81 poiConfidencePassThroughThreshold:v83 poiConfidenceConsiderThreshold:v85 error:v86];
 
 LABEL_48:
   if (!v66)
@@ -3159,23 +3159,23 @@ LABEL_48:
     goto LABEL_56;
   }
 
-  v87 = [(RTMapItemProviderBluePOI *)self parameters];
-  v88 = [v87 aoiCategoriesToSuppressContainingPOIs];
-  v14 = [(RTMapItemProviderBluePOI *)self _filterByCategories:v66 categories:v88];
+  parameters = [(RTMapItemProviderBluePOI *)self parameters];
+  aoiCategoriesToSuppressContainingPOIs = [parameters aoiCategoriesToSuppressContainingPOIs];
+  v14 = [(RTMapItemProviderBluePOI *)self _filterByCategories:v66 categories:aoiCategoriesToSuppressContainingPOIs];
 
   if (v14)
   {
-    [v6 distance];
+    [optionsCopy distance];
     if (v89 > 0.0)
     {
-      v90 = [v6 location];
-      v91 = v90 == 0;
+      location6 = [optionsCopy location];
+      v91 = location6 == 0;
 
       if (!v91)
       {
-        v92 = [v6 location];
-        [v6 distance];
-        v93 = [(RTMapItemProviderBluePOI *)self filterByDistance:v14 location:v92 thresholdForUnknownLabel:a4 error:?];
+        location7 = [optionsCopy location];
+        [optionsCopy distance];
+        v93 = [(RTMapItemProviderBluePOI *)self filterByDistance:v14 location:location7 thresholdForUnknownLabel:error error:?];
 
         v14 = v93;
       }
@@ -3220,68 +3220,68 @@ void __54__RTMapItemProviderBluePOI_mapItemsWithOptions_error___block_invoke(uin
   [*(a1 + 32) addObject:v3];
 }
 
-- (id)_mapItemsWithFidelityPolicy:(unint64_t)a3 locations:(id)a4 accessPoints:(id)a5 referenceLocation:(id)a6 options:(id)a7 error:(id *)a8
+- (id)_mapItemsWithFidelityPolicy:(unint64_t)policy locations:(id)locations accessPoints:(id)points referenceLocation:(id)location options:(id)options error:(id *)error
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v13 count])
+  locationsCopy = locations;
+  pointsCopy = points;
+  locationCopy = location;
+  optionsCopy = options;
+  if ([locationsCopy count])
   {
     aSelector = a2;
-    v55 = v16;
-    v17 = [v13 firstObject];
-    v18 = [v17 timestamp];
+    v55 = optionsCopy;
+    firstObject = [locationsCopy firstObject];
+    timestamp = [firstObject timestamp];
 
-    v19 = [v13 lastObject];
-    v20 = [v19 timestamp];
+    lastObject = [locationsCopy lastObject];
+    timestamp2 = [lastObject timestamp];
 
-    [v20 timeIntervalSinceDate:v18];
+    [timestamp2 timeIntervalSinceDate:timestamp];
     v22 = v21;
     v52 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"date" ascending:1];
     v65 = v52;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
-    v24 = [v14 sortedArrayUsingDescriptors:v23];
+    v24 = [pointsCopy sortedArrayUsingDescriptors:v23];
 
-    v25 = [v24 firstObject];
-    v26 = [v25 date];
-    [v18 timeIntervalSinceDate:v26];
+    firstObject2 = [v24 firstObject];
+    date = [firstObject2 date];
+    [timestamp timeIntervalSinceDate:date];
     v28 = v27;
 
-    v29 = [v24 lastObject];
-    v30 = [v29 date];
-    [v18 timeIntervalSinceDate:v30];
+    lastObject2 = [v24 lastObject];
+    date2 = [lastObject2 date];
+    [timestamp timeIntervalSinceDate:date2];
     v32 = v31;
 
-    +[RTMapItemProviderBluePOIWiFiScanMetrics submitBluePOIWiFiScanMetricsWithFingerprintsCount:fingerprintsZeroAccessPointsCount:fingerprintsNonZeroAccessPointsCount:isFingerprintWindowFallback:timeIntervalSinceEarliestFingerprint:timeIntervalSinceLatestFingerprint:totalAccessPointsCount:visitInterval:visitSource:](RTMapItemProviderBluePOIWiFiScanMetrics, "submitBluePOIWiFiScanMetricsWithFingerprintsCount:fingerprintsZeroAccessPointsCount:fingerprintsNonZeroAccessPointsCount:isFingerprintWindowFallback:timeIntervalSinceEarliestFingerprint:timeIntervalSinceLatestFingerprint:totalAccessPointsCount:visitInterval:visitSource:", [v14 count], 0, objc_msgSend(v14, "count"), 0, objc_msgSend(v14, "count"), 1, v28, v32, v22);
-    if ([v14 count])
+    +[RTMapItemProviderBluePOIWiFiScanMetrics submitBluePOIWiFiScanMetricsWithFingerprintsCount:fingerprintsZeroAccessPointsCount:fingerprintsNonZeroAccessPointsCount:isFingerprintWindowFallback:timeIntervalSinceEarliestFingerprint:timeIntervalSinceLatestFingerprint:totalAccessPointsCount:visitInterval:visitSource:](RTMapItemProviderBluePOIWiFiScanMetrics, "submitBluePOIWiFiScanMetricsWithFingerprintsCount:fingerprintsZeroAccessPointsCount:fingerprintsNonZeroAccessPointsCount:isFingerprintWindowFallback:timeIntervalSinceEarliestFingerprint:timeIntervalSinceLatestFingerprint:totalAccessPointsCount:visitInterval:visitSource:", [pointsCopy count], 0, objc_msgSend(pointsCopy, "count"), 0, objc_msgSend(pointsCopy, "count"), 1, v28, v32, v22);
+    if ([pointsCopy count])
     {
       v33 = objc_opt_new();
       v34 = v33;
-      if (v15)
+      if (locationCopy)
       {
-        [v33 addObject:v15];
+        [v33 addObject:locationCopy];
       }
 
-      v51 = v15;
+      v51 = locationCopy;
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __111__RTMapItemProviderBluePOI__mapItemsWithFidelityPolicy_locations_accessPoints_referenceLocation_options_error___block_invoke;
       v57[3] = &unk_2788C8170;
       v35 = v34;
       v58 = v35;
-      [v13 enumerateObjectsUsingBlock:v57];
+      [locationsCopy enumerateObjectsUsingBlock:v57];
       v56 = 0;
-      v36 = [(RTMapItemProviderBluePOI *)self mapItemsFromLocations:v35 accessPoints:v14 startDate:v18 endDate:v20 options:v55 error:&v56];
+      v36 = [(RTMapItemProviderBluePOI *)self mapItemsFromLocations:v35 accessPoints:pointsCopy startDate:timestamp endDate:timestamp2 options:v55 error:&v56];
       v37 = v56;
       v38 = v37;
       if (v37)
       {
-        if (a8)
+        if (error)
         {
           v39 = v37;
-          *a8 = v38;
+          *error = v38;
         }
 
         v40 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -3309,38 +3309,38 @@ void __54__RTMapItemProviderBluePOI_mapItemsWithOptions_error___block_invoke(uin
 
     else
     {
-      if (!a8)
+      if (!error)
       {
         v41 = 0;
         goto LABEL_18;
       }
 
-      v51 = v15;
+      v51 = locationCopy;
       v44 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277D01448];
       v63 = *MEMORY[0x277CCA450];
       v64 = @"requires accessPoints.";
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
       [v44 errorWithDomain:v45 code:7 userInfo:v35];
-      *a8 = v41 = 0;
+      *error = v41 = 0;
     }
 
-    v15 = v51;
+    locationCopy = v51;
 LABEL_18:
 
-    v16 = v55;
+    optionsCopy = v55;
     goto LABEL_19;
   }
 
-  if (a8)
+  if (error)
   {
     v42 = MEMORY[0x277CCA9B8];
     v43 = *MEMORY[0x277D01448];
     v66 = *MEMORY[0x277CCA450];
     v67[0] = @"requires locations.";
-    v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-    [v42 errorWithDomain:v43 code:7 userInfo:v18];
-    *a8 = v41 = 0;
+    timestamp = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v67 forKeys:&v66 count:1];
+    [v42 errorWithDomain:v43 code:7 userInfo:timestamp];
+    *error = v41 = 0;
 LABEL_19:
 
     goto LABEL_20;
@@ -3361,20 +3361,20 @@ void __111__RTMapItemProviderBluePOI__mapItemsWithFidelityPolicy_locations_acces
   [*(a1 + 32) addObject:v5];
 }
 
-- (id)_filterOutEmptyFingerprintsFromFingerprints:(id)a3 endDate:(id)a4
+- (id)_filterOutEmptyFingerprintsFromFingerprints:(id)fingerprints endDate:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v7 = MEMORY[0x277CCAC30];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __80__RTMapItemProviderBluePOI__filterOutEmptyFingerprintsFromFingerprints_endDate___block_invoke;
   v16 = &unk_2788C8198;
-  v17 = v6;
-  v18 = self;
-  v8 = v6;
-  v9 = a3;
+  v17 = dateCopy;
+  selfCopy = self;
+  v8 = dateCopy;
+  fingerprintsCopy = fingerprints;
   v10 = [v7 predicateWithBlock:&v13];
-  v11 = [v9 filteredArrayUsingPredicate:{v10, v13, v14, v15, v16}];
+  v11 = [fingerprintsCopy filteredArrayUsingPredicate:{v10, v13, v14, v15, v16}];
 
   return v11;
 }
@@ -3391,10 +3391,10 @@ BOOL __80__RTMapItemProviderBluePOI__filterOutEmptyFingerprintsFromFingerprints_
   return v7;
 }
 
-- (unint64_t)numberOfRealtimeQueriesForInterval:(id)a3
+- (unint64_t)numberOfRealtimeQueriesForInterval:(id)interval
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  intervalCopy = interval;
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -3408,7 +3408,7 @@ BOOL __80__RTMapItemProviderBluePOI__filterOutEmptyFingerprintsFromFingerprints_
   v56 = __Block_byref_object_dispose__36;
   v57 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(RTMapItemProviderBluePOI *)self placeInferenceQueryStore];
+  placeInferenceQueryStore = [(RTMapItemProviderBluePOI *)self placeInferenceQueryStore];
   v45 = MEMORY[0x277D85DD0];
   v46 = 3221225472;
   v47 = __63__RTMapItemProviderBluePOI_numberOfRealtimeQueriesForInterval___block_invoke;
@@ -3417,7 +3417,7 @@ BOOL __80__RTMapItemProviderBluePOI__filterOutEmptyFingerprintsFromFingerprints_
   v51 = &v52;
   v7 = v5;
   v49 = v7;
-  [v6 fetchPlaceInferenceQueriesWithDateInterval:v44 ascending:1 limit:&unk_28459CFA8 handler:&v45];
+  [placeInferenceQueryStore fetchPlaceInferenceQueriesWithDateInterval:intervalCopy ascending:1 limit:&unk_28459CFA8 handler:&v45];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -3429,11 +3429,11 @@ BOOL __80__RTMapItemProviderBluePOI__filterOutEmptyFingerprintsFromFingerprints_
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_430];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -3496,22 +3496,22 @@ LABEL_8:
   else
   {
     v32 = [v59[5] objectAtIndexedSubscript:0];
-    v33 = [v32 sourceIdentifier];
-    v30 = v33 == @"com.apple.CoreRoutine.visitManager";
+    sourceIdentifier = [v32 sourceIdentifier];
+    v30 = sourceIdentifier == @"com.apple.CoreRoutine.visitManager";
 
     for (i = 1; i < [v59[5] count]; ++i)
     {
       v35 = [v59[5] objectAtIndexedSubscript:i];
-      v36 = [v35 sourceIdentifier];
-      v37 = v36 == @"com.apple.CoreRoutine.visitManager";
+      sourceIdentifier2 = [v35 sourceIdentifier];
+      v37 = sourceIdentifier2 == @"com.apple.CoreRoutine.visitManager";
 
       if (v37)
       {
         v38 = [v59[5] objectAtIndexedSubscript:i];
-        v39 = [v38 date];
+        date = [v38 date];
         v40 = [v59[5] objectAtIndexedSubscript:i - 1];
-        v41 = [v40 date];
-        [v39 timeIntervalSinceDate:v41];
+        date2 = [v40 date];
+        [date timeIntervalSinceDate:date2];
         v43 = v42 > 1.0;
 
         if (v43)
@@ -3545,15 +3545,15 @@ void __63__RTMapItemProviderBluePOI_numberOfRealtimeQueriesForInterval___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_bestAOIFromAOIs:(id)a3
+- (id)_bestAOIFromAOIs:(id)is
 {
   v63 = *MEMORY[0x277D85DE8];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v46 objects:v62 count:16];
+  isCopy = is;
+  v5 = [isCopy countByEnumeratingWithState:&v46 objects:v62 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3563,7 +3563,7 @@ void __63__RTMapItemProviderBluePOI_numberOfRealtimeQueriesForInterval___block_i
     v9 = *v47;
     v10 = 0.0;
     v11 = 0.0;
-    obj = v4;
+    obj = isCopy;
     while (2)
     {
       for (i = 0; i != v6; ++i)
@@ -3574,14 +3574,14 @@ void __63__RTMapItemProviderBluePOI_numberOfRealtimeQueriesForInterval___block_i
         }
 
         v13 = *(*(&v46 + 1) + 8 * i);
-        v14 = [objc_opt_class() preferredAOICategories];
-        v15 = [v13 mapItem];
-        v16 = [v15 category];
-        v17 = [v14 containsObject:v16];
+        preferredAOICategories = [objc_opt_class() preferredAOICategories];
+        mapItem = [v13 mapItem];
+        category = [mapItem category];
+        v17 = [preferredAOICategories containsObject:category];
 
         if (v17)
         {
-          v4 = obj;
+          isCopy = obj;
           v29 = v8;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
@@ -3635,7 +3635,7 @@ void __63__RTMapItemProviderBluePOI_numberOfRealtimeQueriesForInterval___block_i
         }
       }
 
-      v4 = obj;
+      isCopy = obj;
       v6 = [obj countByEnumeratingWithState:&v46 objects:v62 count:16];
       if (v6)
       {
@@ -3705,7 +3705,7 @@ LABEL_29:
         v58 = 2048;
         v59 = 0x3FECCCCCCCCCCCCDLL;
         v60 = 2112;
-        v61 = v4;
+        v61 = isCopy;
         _os_log_debug_impl(&dword_2304B3000, v33, OS_LOG_TYPE_DEBUG, "%@, %@, selecting higherOverlapConflictedAOI, %@, innerNestedAOI, %@, threshold, %f, AOIs, %@.", buf, 0x3Eu);
       }
     }
@@ -3721,17 +3721,17 @@ LABEL_35:
   return v31;
 }
 
-- (id)_filterLessRelevantAOIsFromQueryResult:(id)a3
+- (id)_filterLessRelevantAOIsFromQueryResult:(id)result
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  resultCopy = result;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(resultCopy, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(resultCopy, "count")}];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v3;
+  v6 = resultCopy;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v7)
   {
@@ -3749,17 +3749,17 @@ LABEL_35:
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 mapItem];
-        v14 = [v13 mapItemPlaceType];
+        mapItem = [v12 mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
         v15 = v4;
-        if (v14 != 1)
+        if (mapItemPlaceType != 1)
         {
-          v16 = [v12 mapItem];
-          v17 = [v16 mapItemPlaceType];
+          mapItem2 = [v12 mapItem];
+          mapItemPlaceType2 = [mapItem2 mapItemPlaceType];
 
           v15 = v5;
-          if (v17 != 2)
+          if (mapItemPlaceType2 != 2)
           {
             v18 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3829,15 +3829,15 @@ LABEL_35:
   return v22;
 }
 
-- (id)_fetchAllFingerprintsBetweenStartDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (id)_fetchAllFingerprintsBetweenStartDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v34 = 0;
-  v11 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
+  fingerprintManager = [(RTMapItemProviderBluePOI *)self fingerprintManager];
   v33 = 0;
-  v12 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:v9 endDate:v10 isTimeWindowFallback:&v34 settledState:2 fingerprintManager:v11 error:&v33];
+  v12 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:dateCopy endDate:endDateCopy isTimeWindowFallback:&v34 settledState:2 fingerprintManager:fingerprintManager error:&v33];
   v13 = v33;
 
   if (v13)
@@ -3857,10 +3857,10 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@, %@, fetching fingerprints from settled points encountered an error, %@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v16 = MEMORY[0x277CBEBF8];
@@ -3869,9 +3869,9 @@ LABEL_35:
   else
   {
     v32 = 0;
-    v17 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
+    fingerprintManager2 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
     v31 = 0;
-    v18 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:v9 endDate:v10 isTimeWindowFallback:&v32 settledState:1 fingerprintManager:v17 error:&v31];
+    v18 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:dateCopy endDate:endDateCopy isTimeWindowFallback:&v32 settledState:1 fingerprintManager:fingerprintManager2 error:&v31];
     v13 = v31;
 
     if (v13)
@@ -3891,10 +3891,10 @@ LABEL_35:
         _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "%@, %@, fetching fingerprints from unsettled points encountered an error, %@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v20 = v13;
-        *a5 = v13;
+        *error = v13;
       }
 
       v16 = MEMORY[0x277CBEBF8];
@@ -3913,13 +3913,13 @@ LABEL_35:
   return v16;
 }
 
-- (id)getAllBluePOIQuerriesForStartDate:(id)a3 endDate:(id)a4 location:(id)a5 error:(id *)a6
+- (id)getAllBluePOIQuerriesForStartDate:(id)date endDate:(id)endDate location:(id)location error:(id *)error
 {
   v99 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v77 = a5;
-  v12 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v10 endDate:v11];
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationCopy = location;
+  v12 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:endDateCopy];
   v13 = [(RTMapItemProviderBluePOI *)self numberOfRealtimeQueriesForInterval:v12];
   v14 = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries]- v13;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3928,24 +3928,24 @@ LABEL_35:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       NSStringFromSelector(a2);
-      v17 = v16 = a6;
-      v18 = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries];
+      v17 = v16 = error;
+      maxNumberOfQueries = [(RTMapItemProviderBluePOIParameters *)self->_parameters maxNumberOfQueries];
       *buf = 138413058;
       v92 = v17;
       v93 = 2048;
-      v94 = v18;
+      v94 = maxNumberOfQueries;
       v95 = 2048;
       v96 = v13;
       v97 = 2048;
       v98 = v14;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, maxNumberOfQueries, %lu, realtime usage, %lu, hindsight usage, %lu", buf, 0x2Au);
 
-      a6 = v16;
+      error = v16;
     }
   }
 
   v88 = 0;
-  v19 = [(RTMapItemProviderBluePOI *)self _fetchAllFingerprintsBetweenStartDate:v10 endDate:v11 error:&v88];
+  v19 = [(RTMapItemProviderBluePOI *)self _fetchAllFingerprintsBetweenStartDate:dateCopy endDate:endDateCopy error:&v88];
   v20 = v88;
   if (v20)
   {
@@ -3964,10 +3964,10 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "%@, %@, fetching all fingerprints encountered an error, %@", buf, 0x20u);
     }
 
-    if (a6)
+    if (error)
     {
       v22 = v20;
-      *a6 = v20;
+      *error = v20;
     }
 
     goto LABEL_16;
@@ -3977,12 +3977,12 @@ LABEL_35:
   {
 LABEL_16:
     v27 = MEMORY[0x277CBEBF8];
-    v28 = v77;
+    v28 = locationCopy;
     goto LABEL_45;
   }
 
   v87 = 0;
-  v23 = [(RTMapItemProviderBluePOI *)self _selectFingerprintsStartDate:v10 endDate:v11 maxQueryAttemps:v14 isTimeWindowFallback:0 fingerprintsTotalOut:0 fingerprintsNonZeroAPsTotalOut:0 error:&v87];
+  v23 = [(RTMapItemProviderBluePOI *)self _selectFingerprintsStartDate:dateCopy endDate:endDateCopy maxQueryAttemps:v14 isTimeWindowFallback:0 fingerprintsTotalOut:0 fingerprintsNonZeroAPsTotalOut:0 error:&v87];
   v71 = v87;
   v72 = v23;
   if (v71)
@@ -4002,26 +4002,26 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@, %@, fetching selected fingerprints encountered an error, %@", buf, 0x20u);
     }
 
-    if (a6)
+    if (error)
     {
       v25 = v71;
       v26 = v71;
-      *a6 = v71;
+      *error = v71;
       v27 = MEMORY[0x277CBEBF8];
-      v28 = v77;
+      v28 = locationCopy;
     }
 
     else
     {
       v27 = MEMORY[0x277CBEBF8];
-      v28 = v77;
+      v28 = locationCopy;
       v25 = v71;
     }
   }
 
   else
   {
-    v67 = a6;
+    errorCopy = error;
     v70 = v12;
     v29 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v23, "count")}];
     v83 = 0u;
@@ -4043,8 +4043,8 @@ LABEL_16:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v83 + 1) + 8 * i) identifier];
-          [v29 addObject:v35];
+          identifier = [*(*(&v83 + 1) + 8 * i) identifier];
+          [v29 addObject:identifier];
         }
 
         v32 = [v30 countByEnumeratingWithState:&v83 objects:v90 count:16];
@@ -4053,20 +4053,20 @@ LABEL_16:
       while (v32);
     }
 
-    v76 = v11;
+    v76 = endDateCopy;
 
     v74 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
-    v36 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v37 = objc_alloc(MEMORY[0x277D01160]);
-    [v77 latitude];
+    [locationCopy latitude];
     v39 = v38;
-    [v77 longitude];
+    [locationCopy longitude];
     v41 = v40;
-    [v77 horizontalUncertainty];
-    v43 = [v37 initWithLatitude:v10 longitude:objc_msgSend(v77 horizontalUncertainty:"referenceFrame") date:v39 referenceFrame:{v41, v42}];
+    [locationCopy horizontalUncertainty];
+    v43 = [v37 initWithLatitude:dateCopy longitude:objc_msgSend(locationCopy horizontalUncertainty:"referenceFrame") date:v39 referenceFrame:{v41, v42}];
     if (v43)
     {
-      [v36 addObject:v43];
+      [array addObject:v43];
     }
 
     v68 = v43;
@@ -4091,11 +4091,11 @@ LABEL_16:
           }
 
           v48 = *(*(&v79 + 1) + 8 * j);
-          v49 = [v48 identifier];
-          v50 = [v29 containsObject:v49];
+          identifier2 = [v48 identifier];
+          v50 = [v29 containsObject:identifier2];
           v78 = 0;
-          v51 = v36;
-          v52 = [(RTMapItemProviderBluePOI *)self _bluePOIQueryFromFingerprint:v48 fingerprintIdx:0 referenceLocationArray:v36 selected:v50 endDate:v76 totalAPsCount:0 error:&v78];
+          v51 = array;
+          v52 = [(RTMapItemProviderBluePOI *)self _bluePOIQueryFromFingerprint:v48 fingerprintIdx:0 referenceLocationArray:array selected:v50 endDate:v76 totalAPsCount:0 error:&v78];
           v53 = v78;
 
           if (v53)
@@ -4115,18 +4115,18 @@ LABEL_16:
               _os_log_error_impl(&dword_2304B3000, v55, OS_LOG_TYPE_ERROR, "%@, %@, fetching selected fingerprints encountered an error, %@", buf, 0x20u);
             }
 
-            if (v67)
+            if (errorCopy)
             {
               v56 = v53;
-              *v67 = v53;
+              *errorCopy = v53;
             }
 
             v27 = MEMORY[0x277CBEBF8];
-            v28 = v77;
+            v28 = locationCopy;
             v19 = v69;
             v25 = 0;
             v54 = v74;
-            v36 = v51;
+            array = v51;
             goto LABEL_43;
           }
 
@@ -4135,7 +4135,7 @@ LABEL_16:
             [v74 addObject:v52];
           }
 
-          v36 = v51;
+          array = v51;
         }
 
         v45 = [obj countByEnumeratingWithState:&v79 objects:v89 count:16];
@@ -4151,13 +4151,13 @@ LABEL_16:
     v54 = v74;
     v27 = v74;
     v25 = 0;
-    v28 = v77;
+    v28 = locationCopy;
     v19 = v69;
 LABEL_43:
 
     v12 = v70;
     v20 = 0;
-    v11 = v76;
+    endDateCopy = v76;
   }
 
 LABEL_45:
@@ -4165,22 +4165,22 @@ LABEL_45:
   return v27;
 }
 
-- (id)_selectFingerprintsStartDate:(id)a3 endDate:(id)a4 maxQueryAttemps:(unint64_t)a5 isTimeWindowFallback:(BOOL *)a6 fingerprintsTotalOut:(unint64_t *)a7 fingerprintsNonZeroAPsTotalOut:(unint64_t *)a8 error:(id *)a9
+- (id)_selectFingerprintsStartDate:(id)date endDate:(id)endDate maxQueryAttemps:(unint64_t)attemps isTimeWindowFallback:(BOOL *)fallback fingerprintsTotalOut:(unint64_t *)out fingerprintsNonZeroAPsTotalOut:(unint64_t *)totalOut error:(id *)error
 {
   v93[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v81 = 0;
-  v17 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
+  fingerprintManager = [(RTMapItemProviderBluePOI *)self fingerprintManager];
   v80 = 0;
-  v77 = v15;
-  v18 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:v15 endDate:v16 isTimeWindowFallback:&v81 settledState:2 fingerprintManager:v17 error:&v80];
+  v77 = dateCopy;
+  v18 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:dateCopy endDate:endDateCopy isTimeWindowFallback:&v81 settledState:2 fingerprintManager:fingerprintManager error:&v80];
   v19 = v80;
 
   if (!v19)
   {
-    v71 = a6;
-    v72 = a7;
+    fallbackCopy = fallback;
+    outCopy = out;
     aSelector = a2;
     v24 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"start" ascending:1];
     v93[0] = v24;
@@ -4188,23 +4188,23 @@ LABEL_45:
     v26 = [v18 sortedArrayUsingDescriptors:v25];
 
     v74 = [v26 count];
-    v27 = v16;
-    v28 = [(RTMapItemProviderBluePOI *)self _filterOutEmptyFingerprintsFromFingerprints:v26 endDate:v16];
+    v27 = endDateCopy;
+    v28 = [(RTMapItemProviderBluePOI *)self _filterOutEmptyFingerprintsFromFingerprints:v26 endDate:endDateCopy];
 
     v29 = [v28 count];
-    v30 = [v28 count] > a5;
+    v30 = [v28 count] > attemps;
     v31 = [v28 count];
-    if (v31 >= a5)
+    if (v31 >= attemps)
     {
-      v32 = a5;
+      attempsCopy = attemps;
     }
 
     else
     {
-      v32 = v31;
+      attempsCopy = v31;
     }
 
-    v18 = [v28 subarrayWithRange:{v30, v32}];
+    v18 = [v28 subarrayWithRange:{v30, attempsCopy}];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -4239,7 +4239,7 @@ LABEL_45:
 
     v34 = [MEMORY[0x277CBEB18] arrayWithArray:v18];
     v79 = 0;
-    if ([v18 count] >= a5)
+    if ([v18 count] >= attemps)
     {
       v39 = 0;
       v40 = 0;
@@ -4250,10 +4250,10 @@ LABEL_45:
     else
     {
       v70 = v29;
-      v35 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
+      fingerprintManager2 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
       v78 = 0;
-      v21 = v16;
-      v36 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:v77 endDate:v16 isTimeWindowFallback:&v79 settledState:1 fingerprintManager:v35 error:&v78];
+      v21 = endDateCopy;
+      v36 = [RTPOIHarvestUtilities fingerprintsBetweenStartDate:v77 endDate:endDateCopy isTimeWindowFallback:&v79 settledState:1 fingerprintManager:fingerprintManager2 error:&v78];
       v19 = v78;
 
       if (v19)
@@ -4273,10 +4273,10 @@ LABEL_45:
           _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "%@, %@, fetching fingerprints from unsettled points encountered an error, %@", buf, 0x20u);
         }
 
-        if (a9)
+        if (error)
         {
           v38 = v19;
-          *a9 = v19;
+          *error = v19;
         }
 
         v23 = MEMORY[0x277CBEBF8];
@@ -4291,19 +4291,19 @@ LABEL_43:
       v44 = [v36 sortedArrayUsingDescriptors:v43];
 
       v76 = [v44 count];
-      v45 = [(RTMapItemProviderBluePOI *)self _filterOutEmptyFingerprintsFromFingerprints:v44 endDate:v16];
+      v45 = [(RTMapItemProviderBluePOI *)self _filterOutEmptyFingerprintsFromFingerprints:v44 endDate:endDateCopy];
 
       v39 = [v45 count];
       v46 = [v45 count];
       v47 = [v18 count];
-      if (a5 - v47 > v46)
+      if (attemps - v47 > v46)
       {
         v48 = 1;
       }
 
       else
       {
-        v48 = v46 / (a5 - v47);
+        v48 = v46 / (attemps - v47);
       }
 
       if ([v45 count])
@@ -4311,7 +4311,7 @@ LABEL_43:
         v49 = 0;
         do
         {
-          if ([v34 count] >= a5)
+          if ([v34 count] >= attemps)
           {
             break;
           }
@@ -4359,19 +4359,19 @@ LABEL_43:
       v40 = v76;
     }
 
-    if (v71)
+    if (fallbackCopy)
     {
-      *v71 = (v81 | v79) & 1;
+      *fallbackCopy = (v81 | v79) & 1;
     }
 
-    if (v72)
+    if (outCopy)
     {
-      *v72 = v40 + v41;
+      *outCopy = v40 + v41;
     }
 
-    if (a8)
+    if (totalOut)
     {
-      *a8 = v39 + v29;
+      *totalOut = v39 + v29;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4412,11 +4412,11 @@ LABEL_43:
     _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@, %@, fetching fingerprints from settled points encountered an error, %@", buf, 0x20u);
   }
 
-  v21 = v16;
-  if (a9)
+  v21 = endDateCopy;
+  if (error)
   {
     v22 = v19;
-    *a9 = v19;
+    *error = v19;
   }
 
   v23 = MEMORY[0x277CBEBF8];
@@ -4425,16 +4425,16 @@ LABEL_44:
   return v23;
 }
 
-- (id)_bluePOIQueryFromFingerprint:(id)a3 fingerprintIdx:(unint64_t)a4 referenceLocationArray:(id)a5 selected:(BOOL)a6 endDate:(id)a7 totalAPsCount:(unint64_t *)a8 error:(id *)a9
+- (id)_bluePOIQueryFromFingerprint:(id)fingerprint fingerprintIdx:(unint64_t)idx referenceLocationArray:(id)array selected:(BOOL)selected endDate:(id)date totalAPsCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a6;
+  selectedCopy = selected;
   v87[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v68 = a5;
-  v16 = a7;
-  v17 = [(RTMapItemProviderBluePOI *)self fingerprintManager];
+  fingerprintCopy = fingerprint;
+  arrayCopy = array;
+  dateCopy = date;
+  fingerprintManager = [(RTMapItemProviderBluePOI *)self fingerprintManager];
   v70 = 0;
-  v18 = [RTPOIHarvestUtilities accessPointsForFingerprint:v15 endDate:v16 fingerprintManager:v17 error:&v70];
+  v18 = [RTPOIHarvestUtilities accessPointsForFingerprint:fingerprintCopy endDate:dateCopy fingerprintManager:fingerprintManager error:&v70];
 
   v19 = v70;
   if (v19)
@@ -4450,17 +4450,17 @@ LABEL_44:
       v73 = 2112;
       v74 = v53;
       v75 = 2112;
-      v76 = v15;
+      v76 = fingerprintCopy;
       v77 = 2112;
       v78 = v19;
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "%@, %@, fetching access points for fingerprint, %@, encountered an error, %@", buf, 0x2Au);
     }
 
-    if (a9)
+    if (error)
     {
       v21 = v19;
       v22 = 0;
-      *a9 = v19;
+      *error = v19;
     }
 
     else
@@ -4469,36 +4469,36 @@ LABEL_44:
     }
 
     v24 = v18;
-    v33 = v68;
+    v33 = arrayCopy;
   }
 
   else
   {
-    v61 = a4;
-    v60 = v11;
-    v64 = v15;
+    idxCopy = idx;
+    v60 = selectedCopy;
+    v64 = fingerprintCopy;
     v63 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"date" ascending:1];
     v87[0] = v63;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:1];
     v24 = [v18 sortedArrayUsingDescriptors:v23];
 
-    if (a8)
+    if (count)
     {
-      v25 = *a8;
-      *a8 = [v24 count] + v25;
+      v25 = *count;
+      *count = [v24 count] + v25;
     }
 
-    v26 = [(RTMapItemProviderBluePOI *)self parameters];
-    v27 = [v26 harvestParameters];
-    v28 = [(RTMapItemProviderBluePOI *)self locationManager];
+    parameters = [(RTMapItemProviderBluePOI *)self parameters];
+    harvestParameters = [parameters harvestParameters];
+    locationManager = [(RTMapItemProviderBluePOI *)self locationManager];
     v69 = 0;
-    v29 = [RTPOIHarvestUtilities locationsForAccessPoints:v24 harvestParameters:v27 locationManager:v28 error:&v69];
+    v29 = [RTPOIHarvestUtilities locationsForAccessPoints:v24 harvestParameters:harvestParameters locationManager:locationManager error:&v69];
     v30 = v69;
 
     if (v30)
     {
       v31 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-      v15 = v64;
+      fingerprintCopy = v64;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         v54 = objc_opt_class();
@@ -4515,11 +4515,11 @@ LABEL_44:
         _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "%@, %@, fetching access points for fingerprint, %@, encountered an error, %@", buf, 0x2Au);
       }
 
-      if (a9)
+      if (error)
       {
         v32 = v30;
         v22 = 0;
-        *a9 = v30;
+        *error = v30;
       }
 
       else
@@ -4527,25 +4527,25 @@ LABEL_44:
         v22 = 0;
       }
 
-      v33 = v68;
+      v33 = arrayCopy;
     }
 
     else
     {
-      v15 = v64;
-      v33 = v68;
+      fingerprintCopy = v64;
+      v33 = arrayCopy;
       if ([v29 count])
       {
-        v34 = [v68 arrayByAddingObjectsFromArray:v29];
+        v34 = [arrayCopy arrayByAddingObjectsFromArray:v29];
       }
 
       else
       {
-        v34 = v68;
+        v34 = arrayCopy;
       }
 
       v67 = v34;
-      v35 = v61;
+      v35 = idxCopy;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v36 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -4555,9 +4555,9 @@ LABEL_44:
           v62 = NSStringFromClass(v37);
           v59 = NSStringFromSelector(a2);
           v38 = (v35 + 1);
-          v58 = [v64 identifier];
+          identifier = [v64 identifier];
           aSelectora = [v64 start];
-          v39 = [aSelectora stringFromDate];
+          stringFromDate = [aSelectora stringFromDate];
           v40 = +[RTScenarioTriggerManager settledStateName:](RTScenarioTriggerManager, "settledStateName:", [v64 settledState]);
           v57 = [v24 count];
           v41 = [v67 count];
@@ -4567,12 +4567,12 @@ LABEL_44:
           v74 = v59;
           v75 = 2048;
           v76 = v38;
-          v33 = v68;
+          v33 = arrayCopy;
           v77 = 2112;
-          v78 = v58;
+          v78 = identifier;
           v79 = 2112;
-          v80 = v39;
-          v42 = v39;
+          v80 = stringFromDate;
+          v42 = stringFromDate;
           v81 = 2112;
           v82 = v40;
           v83 = 2048;
@@ -4581,22 +4581,22 @@ LABEL_44:
           v86 = v41;
           _os_log_impl(&dword_2304B3000, v36, OS_LOG_TYPE_INFO, "%@, %@, fingerprint, %lu, identifier, %@, start, %@, settled state, %@, number of accessPoints, %lu, number of locations, %lu", buf, 0x52u);
 
-          v15 = v64;
+          fingerprintCopy = v64;
         }
       }
 
       if ([v24 count])
       {
         v43 = [RTBluePOIQuery alloc];
-        v44 = [v15 identifier];
+        identifier2 = [fingerprintCopy identifier];
         v45 = [v33 objectAtIndexedSubscript:0];
-        v46 = [v64 settledState];
-        v47 = [v64 start];
+        settledState = [v64 settledState];
+        start = [v64 start];
         v48 = v43;
         v49 = v67;
-        v22 = [(RTBluePOIQuery *)v48 initWithIdentifier:v44 accessPoints:v24 locations:v67 referenceLocation:v45 settledState:v46 selectedToLabel:v60 date:v47];
+        v22 = [(RTBluePOIQuery *)v48 initWithIdentifier:identifier2 accessPoints:v24 locations:v67 referenceLocation:v45 settledState:settledState selectedToLabel:v60 date:start];
 
-        v15 = v64;
+        fingerprintCopy = v64;
       }
 
       else
@@ -4610,41 +4610,41 @@ LABEL_44:
   return v22;
 }
 
-- (id)_mapItemsFromBluePOIServerQuery:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6
+- (id)_mapItemsFromBluePOIServerQuery:(id)query startDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v10 = MEMORY[0x277D011B0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  queryCopy = query;
   v14 = [v10 alloc];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v17 = [v14 initWithUseBackgroundTraits:1 analyticsIdentifier:v16];
 
-  v18 = [v13 locations];
-  v19 = [v13 accessPoints];
+  locations = [queryCopy locations];
+  accessPoints = [queryCopy accessPoints];
 
   v24 = 0;
-  v20 = [(RTMapItemProviderBluePOI *)self mapItemsFromLocations:v18 accessPoints:v19 startDate:v12 endDate:v11 options:v17 error:&v24];
+  v20 = [(RTMapItemProviderBluePOI *)self mapItemsFromLocations:locations accessPoints:accessPoints startDate:dateCopy endDate:endDateCopy options:v17 error:&v24];
 
   v21 = v24;
-  if (a6)
+  if (error)
   {
     v22 = v21;
-    *a6 = v21;
+    *error = v21;
   }
 
   return v20;
 }
 
-- (id)_timeZoneFromLocation:(id)a3
+- (id)_timeZoneFromLocation:(id)location
 {
   v3 = MEMORY[0x277CE41F8];
-  v4 = a3;
+  locationCopy = location;
   v5 = [v3 alloc];
-  [v4 latitude];
+  [locationCopy latitude];
   v7 = v6;
-  [v4 longitude];
+  [locationCopy longitude];
   v9 = v8;
 
   v10 = [v5 initWithLatitude:v7 longitude:v9];
@@ -4653,43 +4653,43 @@ LABEL_44:
   return v11;
 }
 
-- (id)_mapItemsFromBluePOIQuery:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6
+- (id)_mapItemsFromBluePOIQuery:(id)query startDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v175[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v124 = v12;
-  v125 = v10;
-  v123 = v11;
+  queryCopy = query;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v124 = endDateCopy;
+  v125 = queryCopy;
+  v123 = dateCopy;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v51 = [(RTMapItemProviderBluePOI *)self _mapItemsFromBluePOIServerQuery:v10 startDate:v11 endDate:v12 error:a6];
+    v51 = [(RTMapItemProviderBluePOI *)self _mapItemsFromBluePOIServerQuery:queryCopy startDate:dateCopy endDate:endDateCopy error:error];
     goto LABEL_59;
   }
 
-  v119 = a6;
-  v126 = self;
-  v13 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-  v14 = [v13 requestCollectQueryEvent];
+  errorCopy = error;
+  selfCopy = self;
+  bluePOIMetricManager = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+  requestCollectQueryEvent = [bluePOIMetricManager requestCollectQueryEvent];
 
-  v120 = v14;
-  if (v14)
+  v120 = requestCollectQueryEvent;
+  if (requestCollectQueryEvent)
   {
-    v15 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
-    [v15 setEventMetricsValue:@"com.apple.CoreRoutine.internal" forKey:@"appIdentifier"];
+    bluePOIMetricManager2 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+    [bluePOIMetricManager2 setEventMetricsValue:@"com.apple.CoreRoutine.internal" forKey:@"appIdentifier"];
 
-    v16 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
+    bluePOIMetricManager3 = [(RTMapItemProviderBluePOI *)self bluePOIMetricManager];
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:3];
-    [v16 setEventMetricsValue:v17 forKey:@"queryType"];
+    [bluePOIMetricManager3 setEventMetricsValue:v17 forKey:@"queryType"];
 
     v18 = 1;
     v19 = MEMORY[0x277CBEC28];
     do
     {
-      v20 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
+      bluePOIMetricManager4 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"kRTBluePOIQueryEventHasResultWiFiChannel%lu", v18];
-      [v20 setEventMetricsValue:v19 forKey:v21];
+      [bluePOIMetricManager4 setEventMetricsValue:v19 forKey:v21];
 
       ++v18;
     }
@@ -4699,8 +4699,8 @@ LABEL_44:
     v168 = 0u;
     v165 = 0u;
     v166 = 0u;
-    v22 = [v125 accessPoints];
-    v23 = [v22 countByEnumeratingWithState:&v165 objects:v174 count:16];
+    accessPoints = [v125 accessPoints];
+    v23 = [accessPoints countByEnumeratingWithState:&v165 objects:v174 count:16];
     if (v23)
     {
       v24 = *v166;
@@ -4711,19 +4711,19 @@ LABEL_44:
         {
           if (*v166 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(accessPoints);
           }
 
           v27 = *(*(&v165 + 1) + 8 * i);
           if ([v27 channel] && objc_msgSend(v27, "channel") <= 0xD)
           {
-            v28 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
+            bluePOIMetricManager5 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
             v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"kRTBluePOIQueryEventHasResultWiFiChannel%lu", objc_msgSend(v27, "channel")];
-            [v28 setEventMetricsValue:v25 forKey:v29];
+            [bluePOIMetricManager5 setEventMetricsValue:v25 forKey:v29];
           }
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v165 objects:v174 count:16];
+        v23 = [accessPoints countByEnumeratingWithState:&v165 objects:v174 count:16];
       }
 
       while (v23);
@@ -4749,8 +4749,8 @@ LABEL_44:
   v151 = __Block_byref_object_dispose__36;
   v152 = 0;
   v30 = dispatch_semaphore_create(0);
-  v31 = [(RTMapItemProviderBluePOI *)v126 bluePOITileManager];
-  v32 = [v125 referenceLocation];
+  bluePOITileManager = [(RTMapItemProviderBluePOI *)selfCopy bluePOITileManager];
+  referenceLocation = [v125 referenceLocation];
   v141[0] = MEMORY[0x277D85DD0];
   v141[1] = 3221225472;
   v141[2] = __78__RTMapItemProviderBluePOI__mapItemsFromBluePOIQuery_startDate_endDate_error___block_invoke;
@@ -4762,7 +4762,7 @@ LABEL_44:
   v145 = &v147;
   v33 = v30;
   v143 = v33;
-  [v31 fetchBluePOITileAtLocation:v32 priority:3 validateTile:1 collectMetrics:v120 handler:v141];
+  [bluePOITileManager fetchBluePOITileAtLocation:referenceLocation priority:3 validateTile:1 collectMetrics:v120 handler:v141];
 
   v34 = v33;
   v35 = [MEMORY[0x277CBEAA8] now];
@@ -4780,11 +4780,11 @@ LABEL_23:
   v39 = v38;
   v40 = objc_opt_new();
   v41 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_430];
-  v42 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v43 = [v42 filteredArrayUsingPredicate:v41];
-  v44 = [v43 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v43 = [callStackSymbols filteredArrayUsingPredicate:v41];
+  firstObject = [v43 firstObject];
 
-  [v40 submitToCoreAnalytics:v44 type:1 duration:v39];
+  [v40 submitToCoreAnalytics:firstObject type:1 duration:v39];
   v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
   {
@@ -4815,10 +4815,10 @@ LABEL_24:
   }
 
   v53 = dispatch_semaphore_create(0);
-  v54 = [(RTMapItemProviderBluePOI *)v126 mapServiceManager];
-  v55 = [v122 referenceLocation];
-  v56 = [v122 locations];
-  v57 = [v122 accessPoints];
+  mapServiceManager = [(RTMapItemProviderBluePOI *)selfCopy mapServiceManager];
+  referenceLocation2 = [v122 referenceLocation];
+  locations = [v122 locations];
+  accessPoints2 = [v122 accessPoints];
   v58 = v160[5];
   v136[0] = MEMORY[0x277D85DD0];
   v136[1] = 3221225472;
@@ -4829,7 +4829,7 @@ LABEL_24:
   v140 = a2;
   v59 = v53;
   v137 = v59;
-  [v54 inferLocalBluePOIWithReferenceLocation:v55 locations:v56 accessPoints:v57 bluePOITile:v58 signalEnv:0 refreshAOI:1 handler:v136];
+  [mapServiceManager inferLocalBluePOIWithReferenceLocation:referenceLocation2 locations:locations accessPoints:accessPoints2 bluePOITile:v58 signalEnv:0 refreshAOI:1 handler:v136];
 
   v60 = v59;
   v61 = [MEMORY[0x277CBEAA8] now];
@@ -4844,11 +4844,11 @@ LABEL_24:
   v65 = v64;
   v66 = objc_opt_new();
   v67 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_430];
-  v68 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v69 = [v68 filteredArrayUsingPredicate:v67];
-  v70 = [v69 firstObject];
+  callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v69 = [callStackSymbols2 filteredArrayUsingPredicate:v67];
+  firstObject2 = [v69 firstObject];
 
-  [v66 submitToCoreAnalytics:v70 type:1 duration:v65];
+  [v66 submitToCoreAnalytics:firstObject2 type:1 duration:v65];
   v71 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v71, OS_LOG_TYPE_FAULT))
   {
@@ -4882,24 +4882,24 @@ LABEL_31:
     objc_storeStrong(v148 + 5, v74);
   }
 
-  v77 = v126;
+  v77 = selfCopy;
   if (!v148[5] || [v154[5] mostConfidentPOI] || objc_msgSend(v154[5], "mostConfidentAOI"))
   {
-    v78 = [(RTMapItemProviderBluePOI *)v126 mapItemManager];
+    mapItemManager = [(RTMapItemProviderBluePOI *)selfCopy mapItemManager];
     v79 = v154[5];
     v80 = v148 + 5;
     obj = v148[5];
-    v81 = [v78 mapItemsFromLocalBluePOIResult:v79 withConfidenceThreshold:&obj error:0.5];
+    v81 = [mapItemManager mapItemsFromLocalBluePOIResult:v79 withConfidenceThreshold:&obj error:0.5];
     objc_storeStrong(v80, obj);
 
-    if ([RTBluePOIHelper shouldFilterByBusinessHours:[(RTPlatform *)v126->_platform internalInstall]])
+    if ([RTBluePOIHelper shouldFilterByBusinessHours:[(RTPlatform *)selfCopy->_platform internalInstall]])
     {
       v82 = [[_RTMap alloc] initWithInput:v81];
       v131[0] = MEMORY[0x277D85DD0];
       v131[1] = 3221225472;
       v131[2] = __78__RTMapItemProviderBluePOI__mapItemsFromBluePOIQuery_startDate_endDate_error___block_invoke_220;
       v131[3] = &unk_2788C82A8;
-      v131[4] = v126;
+      v131[4] = selfCopy;
       v132 = v123;
       v133 = v124;
       v134 = &v147;
@@ -4915,11 +4915,11 @@ LABEL_31:
       v127[3] = &unk_2788C81E8;
       v128 = v123;
       v129 = v124;
-      v130 = v126;
+      v130 = selfCopy;
       v83 = [(_RTMap *)v84 withBlock:v127];
     }
 
-    v77 = v126;
+    v77 = selfCopy;
   }
 
   else
@@ -4945,23 +4945,23 @@ LABEL_31:
       _os_log_impl(&dword_2304B3000, v85, OS_LOG_TYPE_INFO, "%@, local inferred MapItems count, %@, error, %@", buf, 0x20u);
     }
 
-    v77 = v126;
+    v77 = selfCopy;
   }
 
   v89 = [(RTMapItemProviderBluePOI *)v77 _shouldPerformServerBluePOIForLocalBluePOIError:v148[5]];
   if (v120)
   {
-    v90 = [v154[5] mostConfidentPOI];
-    if (v90)
+    mostConfidentPOI = [v154[5] mostConfidentPOI];
+    if (mostConfidentPOI)
     {
-      v91 = [v154[5] poiConfidences];
+      poiConfidences = [v154[5] poiConfidences];
       v92 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v154[5], "mostConfidentPOI")}];
-      v93 = [v91 objectForKeyedSubscript:v92];
+      v93 = [poiConfidences objectForKeyedSubscript:v92];
       [v93 doubleValue];
       v95 = v94;
 
       v96 = v95 * 10000.0;
-      v77 = v126;
+      v77 = selfCopy;
     }
 
     else
@@ -4969,26 +4969,26 @@ LABEL_31:
       v96 = -10000.0;
     }
 
-    v97 = [(RTMapItemProviderBluePOI *)v77 bluePOIMetricManager];
-    v98 = [MEMORY[0x277CCABB0] numberWithBool:v90 != 0];
-    [v97 setEventMetricsValue:v98 forKey:@"preAggregatedInferenceAvailablePOI"];
+    bluePOIMetricManager6 = [(RTMapItemProviderBluePOI *)v77 bluePOIMetricManager];
+    v98 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentPOI != 0];
+    [bluePOIMetricManager6 setEventMetricsValue:v98 forKey:@"preAggregatedInferenceAvailablePOI"];
 
-    v99 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
+    bluePOIMetricManager7 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
     v100 = [MEMORY[0x277CCABB0] numberWithDouble:round(v96)];
-    [v99 setEventMetricsValue:v100 forKey:@"preAggregationConfidencePOI"];
+    [bluePOIMetricManager7 setEventMetricsValue:v100 forKey:@"preAggregationConfidencePOI"];
 
-    v101 = [v154[5] mostConfidentAOI];
-    v102 = v126;
-    if (v101)
+    mostConfidentAOI = [v154[5] mostConfidentAOI];
+    v102 = selfCopy;
+    if (mostConfidentAOI)
     {
-      v103 = [v154[5] aoiConfidences];
+      aoiConfidences = [v154[5] aoiConfidences];
       v104 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v154[5], "mostConfidentAOI")}];
-      v105 = [v103 objectForKeyedSubscript:v104];
+      v105 = [aoiConfidences objectForKeyedSubscript:v104];
       [v105 doubleValue];
       v107 = v106;
 
       v108 = v107 * 10000.0;
-      v102 = v126;
+      v102 = selfCopy;
     }
 
     else
@@ -4996,34 +4996,34 @@ LABEL_31:
       v108 = -10000.0;
     }
 
-    v109 = [(RTMapItemProviderBluePOI *)v102 bluePOIMetricManager];
-    v110 = [MEMORY[0x277CCABB0] numberWithBool:v101 != 0];
-    [v109 setEventMetricsValue:v110 forKey:@"preAggregatedInferenceAvailableAOI"];
+    bluePOIMetricManager8 = [(RTMapItemProviderBluePOI *)v102 bluePOIMetricManager];
+    v110 = [MEMORY[0x277CCABB0] numberWithBool:mostConfidentAOI != 0];
+    [bluePOIMetricManager8 setEventMetricsValue:v110 forKey:@"preAggregatedInferenceAvailableAOI"];
 
-    v111 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
+    bluePOIMetricManager9 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
     v112 = [MEMORY[0x277CCABB0] numberWithDouble:round(v108)];
-    [v111 setEventMetricsValue:v112 forKey:@"preAggregationConfidenceAOI"];
+    [bluePOIMetricManager9 setEventMetricsValue:v112 forKey:@"preAggregationConfidenceAOI"];
 
-    v113 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
+    bluePOIMetricManager10 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
     v114 = [MEMORY[0x277CCABB0] numberWithBool:v89];
-    [v113 setEventMetricsValue:v114 forKey:@"serverFallback"];
+    [bluePOIMetricManager10 setEventMetricsValue:v114 forKey:@"serverFallback"];
 
-    v115 = [(RTMapItemProviderBluePOI *)v126 bluePOIMetricManager];
-    [v115 stopCollectQueryEvent];
+    bluePOIMetricManager11 = [(RTMapItemProviderBluePOI *)selfCopy bluePOIMetricManager];
+    [bluePOIMetricManager11 stopCollectQueryEvent];
 
-    v77 = v126;
+    v77 = selfCopy;
   }
 
   if (v89)
   {
-    v116 = [(RTMapItemProviderBluePOI *)v77 _mapItemsFromBluePOIServerQuery:v122 startDate:v123 endDate:v124 error:v119];
+    v116 = [(RTMapItemProviderBluePOI *)v77 _mapItemsFromBluePOIServerQuery:v122 startDate:v123 endDate:v124 error:errorCopy];
   }
 
   else
   {
-    if (v119)
+    if (errorCopy)
     {
-      *v119 = v148[5];
+      *errorCopy = v148[5];
     }
 
     v116 = v83;
@@ -5227,22 +5227,22 @@ id __78__RTMapItemProviderBluePOI__mapItemsFromBluePOIQuery_startDate_endDate_er
   return v14;
 }
 
-- (id)_mapItemsWithinDistance:(double)a3 location:(id)a4 startDate:(id)a5 endDate:(id)a6 maxQueryAttemps:(unint64_t)a7 error:(id *)a8
+- (id)_mapItemsWithinDistance:(double)distance location:(id)location startDate:(id)date endDate:(id)endDate maxQueryAttemps:(unint64_t)attemps error:(id *)error
 {
   v173[1] = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (!v14)
+  locationCopy = location;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v17 = endDateCopy;
+  if (!locationCopy)
   {
-    if (a8)
+    if (error)
     {
       v21 = MEMORY[0x277CCA9B8];
       v172 = *MEMORY[0x277CCA450];
       v173[0] = @"requires a valid location.";
-      v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v173 forKeys:&v172 count:1];
-      v20 = [v21 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v19];
+      array = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v173 forKeys:&v172 count:1];
+      v20 = [v21 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:array];
       goto LABEL_9;
     }
 
@@ -5251,29 +5251,29 @@ LABEL_10:
     goto LABEL_53;
   }
 
-  if (v15 && v16 && ![v15 isAfterDate:v16])
+  if (dateCopy && endDateCopy && ![dateCopy isAfterDate:endDateCopy])
   {
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = objc_alloc(MEMORY[0x277D01160]);
-    [v14 latitude];
+    [locationCopy latitude];
     v25 = v24;
-    [v14 longitude];
+    [locationCopy longitude];
     v27 = v26;
-    [v14 horizontalUncertainty];
-    v29 = [v23 initWithLatitude:v15 longitude:objc_msgSend(v14 horizontalUncertainty:"referenceFrame") date:v25 referenceFrame:{v27, v28}];
+    [locationCopy horizontalUncertainty];
+    v29 = [v23 initWithLatitude:dateCopy longitude:objc_msgSend(locationCopy horizontalUncertainty:"referenceFrame") date:v25 referenceFrame:{v27, v28}];
     if (v29)
     {
-      [v19 addObject:v29];
+      [array addObject:v29];
     }
 
     v106 = v29;
-    [v17 timeIntervalSinceDate:v15];
+    [v17 timeIntervalSinceDate:dateCopy];
     v31 = v30;
     v157 = 0;
     v156 = 0;
     v155 = 0;
     v154 = 0;
-    v107 = [(RTMapItemProviderBluePOI *)self _selectFingerprintsStartDate:v15 endDate:v17 maxQueryAttemps:a7 isTimeWindowFallback:&v157 fingerprintsTotalOut:&v156 fingerprintsNonZeroAPsTotalOut:&v155 error:&v154];
+    v107 = [(RTMapItemProviderBluePOI *)self _selectFingerprintsStartDate:dateCopy endDate:v17 maxQueryAttemps:attemps isTimeWindowFallback:&v157 fingerprintsTotalOut:&v156 fingerprintsNonZeroAPsTotalOut:&v155 error:&v154];
     v108 = v154;
     if (v108)
     {
@@ -5296,18 +5296,18 @@ LABEL_10:
         _os_log_error_impl(&dword_2304B3000, v35, OS_LOG_TYPE_ERROR, "%@, %@, fetching fingerprints for BluePOI encountered an error, %@", buf, 0x20u);
       }
 
-      if (a8)
+      if (error)
       {
         v36 = v108;
-        *a8 = v108;
+        *error = v108;
       }
 
       v22 = MEMORY[0x277CBEBF8];
       goto LABEL_51;
     }
 
-    v104 = [MEMORY[0x277CBEB18] array];
-    v102 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v149 = 0;
     v150 = 0;
     v151 = &v150;
@@ -5347,17 +5347,17 @@ LABEL_10:
     v112[2] = __101__RTMapItemProviderBluePOI__mapItemsWithinDistance_location_startDate_endDate_maxQueryAttemps_error___block_invoke;
     v112[3] = &unk_2788C8210;
     v112[4] = self;
-    v90 = v19;
+    v90 = array;
     v113 = v90;
     v94 = v17;
     v114 = v94;
     v118 = &v146;
-    v103 = v102;
+    v103 = array3;
     v115 = v103;
-    v98 = v15;
+    v98 = dateCopy;
     v116 = v98;
     v119 = &v130;
-    v105 = v104;
+    v105 = array2;
     v117 = v105;
     v120 = &v126;
     v121 = &v140;
@@ -5375,10 +5375,10 @@ LABEL_10:
     v38 = *(*&buf[8] + 40);
     if (v38)
     {
-      if (a8)
+      if (error)
       {
         v22 = 0;
-        *a8 = v38;
+        *error = v38;
 LABEL_50:
 
         _Block_object_dispose(&v126, 8);
@@ -5441,11 +5441,11 @@ LABEL_51:
           }
 
           v89 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v37 endDate:v94];
-          v41 = [(RTMapItemProviderBluePOI *)self parameters];
-          v42 = [v41 harvestParameters];
-          v43 = [(RTMapItemProviderBluePOI *)self locationManager];
+          parameters = [(RTMapItemProviderBluePOI *)self parameters];
+          harvestParameters = [parameters harvestParameters];
+          locationManager = [(RTMapItemProviderBluePOI *)self locationManager];
           v111 = 0;
-          v86 = [RTPOIHarvestUtilities locationsInDateInterval:v89 harvestParameters:v42 locationManager:v43 error:&v111];
+          v86 = [RTPOIHarvestUtilities locationsInDateInterval:v89 harvestParameters:harvestParameters locationManager:locationManager error:&v111];
           v87 = v111;
 
           if (v87)
@@ -5462,10 +5462,10 @@ LABEL_51:
             }
 
             v84 = [RTBluePOIQuery alloc];
-            v92 = [MEMORY[0x277CCAD78] UUID];
-            v62 = [v86 firstObject];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            firstObject = [v86 firstObject];
             v63 = [MEMORY[0x277CBEAA8] now];
-            v85 = [(RTBluePOIQuery *)v84 initWithIdentifier:v92 accessPoints:0 locations:v86 referenceLocation:v62 settledState:0 selectedToLabel:1 date:v63];
+            v85 = [(RTBluePOIQuery *)v84 initWithIdentifier:uUID accessPoints:0 locations:v86 referenceLocation:firstObject settledState:0 selectedToLabel:1 date:v63];
 
             v110 = 0;
             v22 = [(RTMapItemProviderBluePOI *)self _mapItemsFromBluePOIQuery:v85 startDate:v98 endDate:v94 error:&v110];
@@ -5553,11 +5553,11 @@ LABEL_51:
           [v103 addObject:v54];
         }
 
-        if (a8 && [v103 count])
+        if (error && [v103 count])
         {
           v83 = 1;
           v55 = _RTSafeArray();
-          *a8 = _RTMultiErrorCreate();
+          *error = _RTMultiErrorCreate();
         }
 
         v56 = [(RTMapItemProviderBluePOI *)self _filterLessRelevantAOIsFromQueryResult:v53, v83];
@@ -5566,10 +5566,10 @@ LABEL_51:
         goto LABEL_50;
       }
 
-      if (a8 && [v103 count])
+      if (error && [v103 count])
       {
         v57 = _RTSafeArray();
-        *a8 = _RTMultiErrorCreate();
+        *error = _RTMultiErrorCreate();
       }
     }
 
@@ -5577,7 +5577,7 @@ LABEL_51:
     goto LABEL_50;
   }
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -5585,11 +5585,11 @@ LABEL_51:
   v18 = MEMORY[0x277CCA9B8];
   v170 = *MEMORY[0x277CCA450];
   v171 = @"requires a valid date range.";
-  v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
-  v20 = [v18 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v19];
+  array = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v171 forKeys:&v170 count:1];
+  v20 = [v18 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:array];
 LABEL_9:
   v22 = 0;
-  *a8 = v20;
+  *error = v20;
 LABEL_52:
 
 LABEL_53:
@@ -5756,49 +5756,49 @@ LABEL_31:
 LABEL_32:
 }
 
-- (id)_computeEarlyStopQueryResultFromResults:(id)a3 originalMaxNumberOfQueries:(unint64_t)a4 aoiConfidencePassThroughThreshold:(double)a5 poiConfidencePassThroughThreshold:(double)a6
+- (id)_computeEarlyStopQueryResultFromResults:(id)results originalMaxNumberOfQueries:(unint64_t)queries aoiConfidencePassThroughThreshold:(double)threshold poiConfidencePassThroughThreshold:(double)throughThreshold
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v8 count];
-  if (v10 >= a4)
+  resultsCopy = results;
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [resultsCopy count];
+  if (v10 >= queries)
   {
-    v11 = a4;
+    queriesCopy = queries;
   }
 
   else
   {
-    v11 = v10;
+    queriesCopy = v10;
   }
 
-  v12 = [v8 count];
-  if (v12 >= a4)
+  v12 = [resultsCopy count];
+  if (v12 >= queries)
   {
-    v13 = a4;
+    queriesCopy2 = queries;
   }
 
   else
   {
-    v13 = v12;
+    queriesCopy2 = v12;
   }
 
-  if (v13)
+  if (queriesCopy2)
   {
     v14 = 1;
     while (1)
     {
-      v15 = [v8 objectAtIndexedSubscript:v14 - 1];
-      [v9 addObject:v15];
-      v16 = [v15 firstObject];
-      v17 = [v16 objectAtIndex:0];
+      v15 = [resultsCopy objectAtIndexedSubscript:v14 - 1];
+      [array addObject:v15];
+      firstObject = [v15 firstObject];
+      v17 = [firstObject objectAtIndex:0];
 
-      v18 = [v17 mapItem];
-      v19 = [v18 mapItemPlaceType];
+      mapItem = [v17 mapItem];
+      mapItemPlaceType = [mapItem mapItemPlaceType];
 
       [v17 confidence];
       v21 = v20;
       parameters = self->_parameters;
-      if (v19 == 1)
+      if (mapItemPlaceType == 1)
       {
         [(RTMapItemProviderBluePOIParameters *)parameters aoiConfidencePassThroughThreshold];
       }
@@ -5813,117 +5813,117 @@ LABEL_32:
         break;
       }
 
-      v24 = [v8 count];
-      if (v24 >= a4)
+      v24 = [resultsCopy count];
+      if (v24 >= queries)
       {
-        v25 = a4;
+        queriesCopy3 = queries;
       }
 
       else
       {
-        v25 = v24;
+        queriesCopy3 = v24;
       }
 
-      if (v25 <= v14++)
+      if (queriesCopy3 <= v14++)
       {
         goto LABEL_19;
       }
     }
 
-    v11 = v14;
+    queriesCopy = v14;
   }
 
 LABEL_19:
-  if ([v9 count])
+  if ([array count])
   {
-    v27 = [(RTMapItemProviderBluePOI *)self bestQueryFromAggregatedQueries:v9 error:0];
+    null = [(RTMapItemProviderBluePOI *)self bestQueryFromAggregatedQueries:array error:0];
     v28 = objc_alloc(MEMORY[0x277D011C0]);
   }
 
   else
   {
     v28 = objc_alloc(MEMORY[0x277D011C0]);
-    v27 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-  v30 = [v28 initWithFirstObject:v27 secondObject:v29];
+  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:queriesCopy];
+  v30 = [v28 initWithFirstObject:null secondObject:v29];
 
   return v30;
 }
 
-- (void)_submitPerformanceMetricsForResults:(id)a3 noFingerprints:(BOOL)a4 originalMaxNumberOfQueries:(unint64_t)a5 aoiConfidencePassThroughThreshold:(double)a6 poiConfidencePassThroughThreshold:(double)a7 fingerprintsCount:(unint64_t)a8 zeroAccessPointsFingerprintsCount:(unint64_t)a9 nonZeroAccessPointsFingerprintsCount:(unint64_t)a10 queryCount:(unint64_t)a11 firstResultQueryCount:(unint64_t)a12 error:(id)a13 visitInterval:(double)a14 visitSource:(int64_t)a15
+- (void)_submitPerformanceMetricsForResults:(id)results noFingerprints:(BOOL)fingerprints originalMaxNumberOfQueries:(unint64_t)queries aoiConfidencePassThroughThreshold:(double)threshold poiConfidencePassThroughThreshold:(double)throughThreshold fingerprintsCount:(unint64_t)count zeroAccessPointsFingerprintsCount:(unint64_t)fingerprintsCount nonZeroAccessPointsFingerprintsCount:(unint64_t)self0 queryCount:(unint64_t)self1 firstResultQueryCount:(unint64_t)self2 error:(id)self3 visitInterval:(double)self4 visitSource:(int64_t)self5
 {
-  v21 = a4;
-  v23 = a3;
-  v24 = a13;
-  if (v21)
+  fingerprintsCopy = fingerprints;
+  resultsCopy = results;
+  errorCopy = error;
+  if (fingerprintsCopy)
   {
-    v25 = 0;
-    v26 = 1;
+    firstObject2 = 0;
+    unsignedIntegerValue = 1;
   }
 
   else
   {
-    v37 = a9;
-    v27 = a8;
-    v28 = [(RTMapItemProviderBluePOI *)self _computeEarlyStopQueryResultFromResults:v23 originalMaxNumberOfQueries:a5 aoiConfidencePassThroughThreshold:a6 poiConfidencePassThroughThreshold:a7];
-    v29 = [v28 firstObject];
-    v30 = [MEMORY[0x277CBEB68] null];
-    if (v29 == v30)
+    fingerprintsCountCopy = fingerprintsCount;
+    countCopy = count;
+    v28 = [(RTMapItemProviderBluePOI *)self _computeEarlyStopQueryResultFromResults:resultsCopy originalMaxNumberOfQueries:queries aoiConfidencePassThroughThreshold:threshold poiConfidencePassThroughThreshold:throughThreshold];
+    firstObject = [v28 firstObject];
+    null = [MEMORY[0x277CBEB68] null];
+    if (firstObject == null)
     {
-      v25 = 0;
+      firstObject2 = 0;
     }
 
     else
     {
-      v25 = [v28 firstObject];
+      firstObject2 = [v28 firstObject];
     }
 
-    v31 = [v28 secondObject];
-    v26 = [v31 unsignedIntegerValue];
+    secondObject = [v28 secondObject];
+    unsignedIntegerValue = [secondObject unsignedIntegerValue];
 
-    a8 = v27;
-    a9 = v37;
+    count = countCopy;
+    fingerprintsCount = fingerprintsCountCopy;
   }
 
-  v38 = v23;
+  v38 = resultsCopy;
   if ([v38 count])
   {
-    if (v21)
+    if (fingerprintsCopy)
     {
       [v38 firstObject];
-      v32 = a9;
-      v34 = v33 = a8;
-      v35 = [v34 firstObject];
+      fingerprintsCountCopy2 = fingerprintsCount;
+      v34 = v33 = count;
+      firstObject3 = [v34 firstObject];
 
-      a8 = v33;
-      a9 = v32;
+      count = v33;
+      fingerprintsCount = fingerprintsCountCopy2;
     }
 
     else
     {
-      v35 = [(RTMapItemProviderBluePOI *)self bestQueryFromAggregatedQueries:v38 error:0];
+      firstObject3 = [(RTMapItemProviderBluePOI *)self bestQueryFromAggregatedQueries:v38 error:0];
     }
   }
 
   else
   {
-    v35 = 0;
+    firstObject3 = 0;
   }
 
-  [RTMapItemProviderBluePOIPerformanceMetrics submitMetricsWithNonZeroAccessPointsFingerprintsCount:a10 zeroAccessPointsFingerprintsCount:a9 fingerprintsCount:a8 queryCount:a11 firstResultQueryCount:a12 results:v38 earlyStopQueryCount:a14 earlyStopQueryResult:v26 bestQueryResult:v25 error:v35 visitInterval:v24 visitSource:a15];
+  [RTMapItemProviderBluePOIPerformanceMetrics submitMetricsWithNonZeroAccessPointsFingerprintsCount:pointsFingerprintsCount zeroAccessPointsFingerprintsCount:fingerprintsCount fingerprintsCount:count queryCount:queryCount firstResultQueryCount:resultQueryCount results:v38 earlyStopQueryCount:interval earlyStopQueryResult:unsignedIntegerValue bestQueryResult:firstObject2 error:firstObject3 visitInterval:errorCopy visitSource:source];
 }
 
-- (BOOL)_hasMapItemInQueryResult:(id)a3 placeType:(unint64_t)a4
+- (BOOL)_hasMapItemInQueryResult:(id)result placeType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  resultCopy = result;
+  v6 = [resultCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5934,20 +5934,20 @@ LABEL_19:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resultCopy);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) mapItem];
-        v11 = [v10 mapItemPlaceType];
+        mapItem = [*(*(&v14 + 1) + 8 * i) mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
-        if (v11 == a4)
+        if (mapItemPlaceType == type)
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [resultCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -5963,23 +5963,23 @@ LABEL_11:
   return v12;
 }
 
-- (id)_adjustConfidencesOfTheSelectedResult:(id)a3 allQueryResults:(id)a4
+- (id)_adjustConfidencesOfTheSelectedResult:(id)result allQueryResults:(id)results
 {
   v81 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([(RTMapItemProviderBluePOI *)self _hasMapItemInQueryResult:v7 placeType:1])
+  resultCopy = result;
+  resultsCopy = results;
+  if ([(RTMapItemProviderBluePOI *)self _hasMapItemInQueryResult:resultCopy placeType:1])
   {
-    v57 = v7;
-    [RTMapItemProviderBluePOIPerformanceMetrics _mapItemDictionaryforResults:v8 placeType:2];
-    v56 = v55 = v8;
-    [RTMapItemProviderBluePOIPerformanceMetrics _mapItemDictionaryforResults:v8 placeType:1];
+    v57 = resultCopy;
+    [RTMapItemProviderBluePOIPerformanceMetrics _mapItemDictionaryforResults:resultsCopy placeType:2];
+    v56 = v55 = resultsCopy;
+    [RTMapItemProviderBluePOIPerformanceMetrics _mapItemDictionaryforResults:resultsCopy placeType:1];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v60 = v70 = 0u;
-    v9 = [v60 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v67 objects:v80 count:16];
+    allKeys = [v60 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v67 objects:v80 count:16];
     if (v10)
     {
       v11 = v10;
@@ -5992,7 +5992,7 @@ LABEL_11:
         {
           if (*v68 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v67 + 1) + 8 * i);
@@ -6008,7 +6008,7 @@ LABEL_11:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v67 objects:v80 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v67 objects:v80 count:16];
       }
 
       while (v11);
@@ -6029,13 +6029,13 @@ LABEL_11:
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
         v24 = NSStringFromSelector(a2);
-        v25 = [v61 unsignedIntegerValue];
+        unsignedIntegerValue = [v61 unsignedIntegerValue];
         *buf = 138413058;
         v73 = v23;
         v74 = 2112;
         v75 = v24;
         v76 = 2048;
-        v77 = v25;
+        v77 = unsignedIntegerValue;
         v78 = 2048;
         v79 = *&v12;
         _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_INFO, "%@, %@, AOI MUID with the largest number of occurrences, %lu, largest number of occurrences, %lu.", buf, 0x2Au);
@@ -6063,14 +6063,14 @@ LABEL_11:
           }
 
           v28 = *(*(&v63 + 1) + 8 * j);
-          v29 = [v28 mapItem];
-          v30 = [v29 mapItemPlaceType];
+          mapItem = [v28 mapItem];
+          mapItemPlaceType = [mapItem mapItemPlaceType];
 
-          if (v30 == 2)
+          if (mapItemPlaceType == 2)
           {
             v31 = MEMORY[0x277CCABB0];
-            v32 = [v28 mapItem];
-            v33 = [v31 numberWithUnsignedInteger:{objc_msgSend(v32, "muid")}];
+            mapItem2 = [v28 mapItem];
+            v33 = [v31 numberWithUnsignedInteger:{objc_msgSend(mapItem2, "muid")}];
 
             [v28 confidence];
             v35 = v34;
@@ -6088,7 +6088,7 @@ LABEL_11:
                 NSStringFromSelector(a2);
                 v42 = v19;
                 v43 = v20;
-                v44 = self;
+                selfCopy = self;
                 v46 = v45 = a2;
                 *buf = 138413059;
                 v73 = v41;
@@ -6101,7 +6101,7 @@ LABEL_11:
                 _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_INFO, "%@, %@, confidence for map item, %{sensitive}@, was changed to, %f.", buf, 0x2Au);
 
                 a2 = v45;
-                self = v44;
+                self = selfCopy;
                 v20 = v43;
                 v19 = v42;
                 v26 = v58;
@@ -6109,8 +6109,8 @@ LABEL_11:
             }
 
             v47 = objc_alloc(MEMORY[0x277D01128]);
-            v48 = [v28 mapItem];
-            v49 = [v47 initWithMapItem:v48 confidence:objc_msgSend(v28 source:{"source"), v38}];
+            mapItem3 = [v28 mapItem];
+            v49 = [v47 initWithMapItem:mapItem3 confidence:objc_msgSend(v28 source:{"source"), v38}];
 
             [v19 addObject:v49];
           }
@@ -6145,79 +6145,79 @@ LABEL_11:
       while (v62);
     }
 
-    v7 = v57;
-    v8 = v55;
+    resultCopy = v57;
+    resultsCopy = v55;
   }
 
   else
   {
-    v19 = v7;
+    v19 = resultCopy;
   }
 
   return v19;
 }
 
-- (id)_confidenceCoefficientsForAOI:(id)a3 AOIOccurenceCount:(unint64_t)a4 POIResults:(id)a5
+- (id)_confidenceCoefficientsForAOI:(id)i AOIOccurenceCount:(unint64_t)count POIResults:(id)results
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  resultsCopy = results;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v6 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [resultsCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
-    v11 = a4;
+    countCopy = count;
     v12 = *v21;
-    v13 = vcvtd_n_f64_u64(a4, 1uLL);
+    v13 = vcvtd_n_f64_u64(count, 1uLL);
     do
     {
       for (i = 0; i != v10; ++i)
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v6 objectForKeyedSubscript:v15];
+        v16 = [resultsCopy objectForKeyedSubscript:v15];
         v17 = [v16 count];
 
         if (v13 >= v17)
         {
-          v18 = [MEMORY[0x277CCABB0] numberWithDouble:v17 / v11];
-          [v7 setObject:v18 forKeyedSubscript:v15];
+          countCopy = [MEMORY[0x277CCABB0] numberWithDouble:v17 / countCopy];
+          [dictionary setObject:countCopy forKeyedSubscript:v15];
         }
 
         else
         {
-          [v7 setObject:&unk_2845A1958 forKeyedSubscript:v15];
+          [dictionary setObject:&unk_2845A1958 forKeyedSubscript:v15];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (id)filterByDistance:(id)a3 location:(id)a4 thresholdForUnknownLabel:(double)a5 error:(id *)a6
+- (id)filterByDistance:(id)distance location:(id)location thresholdForUnknownLabel:(double)label error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([v10 count])
+  distanceCopy = distance;
+  locationCopy = location;
+  if ([distanceCopy count])
   {
-    v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(distanceCopy, "count")}];
     v13 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_239];
-    v14 = [v10 filteredArrayUsingPredicate:v13];
+    v14 = [distanceCopy filteredArrayUsingPredicate:v13];
 
     if ([v14 count])
     {
@@ -6225,20 +6225,20 @@ LABEL_11:
     }
 
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241];
-    v16 = [v10 filteredArrayUsingPredicate:v15];
+    v16 = [distanceCopy filteredArrayUsingPredicate:v15];
 
     [(RTMapItemProviderBluePOIParameters *)self->_parameters poiDistanceThreshold];
     v33 = 0;
-    v17 = [(RTMapItemProviderBase *)self filterInferredMapItems:v16 byDistance:v11 fromLocation:0 andAppendSource:&v33 error:?];
+    v17 = [(RTMapItemProviderBase *)self filterInferredMapItems:v16 byDistance:locationCopy fromLocation:0 andAppendSource:&v33 error:?];
     v18 = v33;
 
     if (v18)
     {
-      if (a6)
+      if (error)
       {
         v19 = v18;
         v20 = 0;
-        *a6 = v18;
+        *error = v18;
       }
 
       else
@@ -6255,19 +6255,19 @@ LABEL_11:
       }
 
       v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_243];
-      v22 = [v10 filteredArrayUsingPredicate:v21];
+      v22 = [distanceCopy filteredArrayUsingPredicate:v21];
 
       v32 = 0;
-      v23 = [(RTMapItemProviderBase *)self filterInferredMapItems:v22 byDistance:v11 fromLocation:0 andAppendSource:&v32 error:a5];
+      v23 = [(RTMapItemProviderBase *)self filterInferredMapItems:v22 byDistance:locationCopy fromLocation:0 andAppendSource:&v32 error:label];
       v18 = v32;
 
       if (v18)
       {
-        if (a6)
+        if (error)
         {
           v24 = v18;
           v20 = 0;
-          *a6 = v18;
+          *error = v18;
         }
 
         else
@@ -6285,13 +6285,13 @@ LABEL_11:
           {
             v27 = objc_opt_class();
             v28 = NSStringFromClass(v27);
-            v31 = [v23 firstObject];
-            v29 = [v31 mapItem];
-            v30 = [v29 mapItemPlaceType];
+            firstObject = [v23 firstObject];
+            mapItem = [firstObject mapItem];
+            mapItemPlaceType = [mapItem mapItemPlaceType];
             *buf = 138412546;
             v35 = v28;
             v36 = 2048;
-            v37 = v30;
+            v37 = mapItemPlaceType;
             _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@, unknown label type, %ld", buf, 0x16u);
           }
 
@@ -6345,21 +6345,21 @@ BOOL __85__RTMapItemProviderBluePOI_filterByDistance_location_thresholdForUnknow
   return v4;
 }
 
-- (id)_filterByCategories:(id)a3 categories:(id)a4
+- (id)_filterByCategories:(id)categories categories:(id)a4
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  categoriesCopy = categories;
   v7 = a4;
-  if ([v6 count])
+  if ([categoriesCopy count])
   {
     aSelector = a2;
-    v26 = v6;
+    v26 = categoriesCopy;
     v27 = objc_opt_new();
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v8 = v6;
+    v8 = categoriesCopy;
     v9 = [v8 countByEnumeratingWithState:&v28 objects:v40 count:16];
     if (v9)
     {
@@ -6375,12 +6375,12 @@ BOOL __85__RTMapItemProviderBluePOI_filterByDistance_location_thresholdForUnknow
           }
 
           v13 = *(*(&v28 + 1) + 8 * i);
-          v14 = [v13 mapItem];
-          if ([v14 mapItemPlaceType] == 1)
+          mapItem = [v13 mapItem];
+          if ([mapItem mapItemPlaceType] == 1)
           {
-            v15 = [v13 mapItem];
-            v16 = [v15 category];
-            v17 = [v7 containsObject:v16];
+            mapItem2 = [v13 mapItem];
+            category = [mapItem2 category];
+            v17 = [v7 containsObject:category];
 
             if (v17)
             {
@@ -6409,7 +6409,7 @@ LABEL_15:
       {
         v20 = NSStringFromSelector(aSelector);
         v21 = [v27 count];
-        v22 = [v27 firstObject];
+        firstObject = [v27 firstObject];
         *buf = 138413059;
         v33 = v20;
         v34 = 2112;
@@ -6417,7 +6417,7 @@ LABEL_15:
         v36 = 2048;
         v37 = v21;
         v38 = 2117;
-        v39 = v22;
+        v39 = firstObject;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@, categories, %@, filteredMapItems count, %lu, filteredMapItem, %{sensitive}@", buf, 0x2Au);
       }
     }
@@ -6434,7 +6434,7 @@ LABEL_15:
 
     v18 = v23;
 
-    v6 = v26;
+    categoriesCopy = v26;
   }
 
   else
@@ -6445,19 +6445,19 @@ LABEL_15:
   return v18;
 }
 
-- (id)_filterByConfidence:(id)a3 aoiConfidencePassThroughThreshold:(double)a4 aoiConfidenceConsiderThreshold:(double)a5 poiConfidencePassThroughThreshold:(double)a6 poiConfidenceConsiderThreshold:(double)a7 error:(id *)a8
+- (id)_filterByConfidence:(id)confidence aoiConfidencePassThroughThreshold:(double)threshold aoiConfidenceConsiderThreshold:(double)considerThreshold poiConfidencePassThroughThreshold:(double)throughThreshold poiConfidenceConsiderThreshold:(double)confidenceConsiderThreshold error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  if ([v12 count])
+  confidenceCopy = confidence;
+  if ([confidenceCopy count])
   {
-    v40 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v40 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(confidenceCopy, "count")}];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v38 = v12;
-    v13 = v12;
+    v38 = confidenceCopy;
+    v13 = confidenceCopy;
     v14 = [v13 countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (!v14)
     {
@@ -6480,21 +6480,21 @@ LABEL_15:
         }
 
         v21 = *(*(&v42 + 1) + 8 * i);
-        v22 = [v21 mapItem];
-        v23 = [v22 mapItemPlaceType];
+        mapItem = [v21 mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
-        if (v23 == 1)
+        if (mapItemPlaceType == 1)
         {
           if (v19)
           {
             [v21 confidence];
-            if (v24 < a4)
+            if (v24 < threshold)
             {
               goto LABEL_19;
             }
 
             LOBYTE(v41) = 1;
-            v25 = a4;
+            confidenceConsiderThresholdCopy = threshold;
           }
 
           else
@@ -6505,31 +6505,31 @@ LABEL_15:
             }
 
             [v21 confidence];
-            if (v27 < a5)
+            if (v27 < considerThreshold)
             {
               goto LABEL_19;
             }
 
             LOBYTE(v41) = 1;
-            v25 = a5;
+            confidenceConsiderThresholdCopy = considerThreshold;
           }
         }
 
         else if (v18)
         {
           [v21 confidence];
-          if (v26 < a6)
+          if (v26 < throughThreshold)
           {
             goto LABEL_19;
           }
 
           BYTE4(v41) = 1;
-          v25 = a6;
+          confidenceConsiderThresholdCopy = throughThreshold;
         }
 
         else
         {
-          if ((v41 & 0x100000000) == 0 || ([v21 confidence], v28 < a7))
+          if ((v41 & 0x100000000) == 0 || ([v21 confidence], v28 < confidenceConsiderThreshold))
           {
 LABEL_19:
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -6547,7 +6547,7 @@ LABEL_19:
             *buf = 138412803;
             v47 = v30;
             v48 = 2048;
-            v49 = a4;
+            thresholdCopy2 = threshold;
             v50 = 2117;
             v51 = v21;
             v31 = v29;
@@ -6556,7 +6556,7 @@ LABEL_19:
           }
 
           BYTE4(v41) = 1;
-          v25 = a7;
+          confidenceConsiderThresholdCopy = confidenceConsiderThreshold;
         }
 
         [v40 addObject:v21];
@@ -6572,7 +6572,7 @@ LABEL_19:
           *buf = 138412803;
           v47 = v30;
           v48 = 2048;
-          v49 = v25;
+          thresholdCopy2 = confidenceConsiderThresholdCopy;
           v50 = 2117;
           v51 = v21;
           v31 = v29;
@@ -6584,10 +6584,10 @@ LABEL_26:
 LABEL_27:
 
 LABEL_28:
-        v33 = [v21 mapItem];
-        v34 = [v33 mapItemPlaceType];
-        v35 = v34 != 1;
-        v36 = v34 == 1;
+        mapItem2 = [v21 mapItem];
+        mapItemPlaceType2 = [mapItem2 mapItemPlaceType];
+        v35 = mapItemPlaceType2 != 1;
+        v36 = mapItemPlaceType2 == 1;
 
         v18 &= v36;
         v19 &= v35;
@@ -6598,7 +6598,7 @@ LABEL_28:
       {
 LABEL_30:
 
-        v12 = v38;
+        confidenceCopy = v38;
         goto LABEL_32;
       }
     }
@@ -6610,13 +6610,13 @@ LABEL_32:
   return v40;
 }
 
-- (BOOL)skipForOptions:(id)a3 error:(id *)a4
+- (BOOL)skipForOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 endDate];
-  v7 = [v5 startDate];
+  optionsCopy = options;
+  endDate = [optionsCopy endDate];
+  startDate = [optionsCopy startDate];
 
-  [v6 timeIntervalSinceDate:v7];
+  [endDate timeIntervalSinceDate:startDate];
   v9 = v8;
 
   [(RTMapItemProviderBluePOIParameters *)self->_parameters minVisitLength];

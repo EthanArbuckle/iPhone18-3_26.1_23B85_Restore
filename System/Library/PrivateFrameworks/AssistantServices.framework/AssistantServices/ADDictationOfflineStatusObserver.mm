@@ -1,28 +1,28 @@
 @interface ADDictationOfflineStatusObserver
-+ (id)_offlineDictationStatusStringToDictionary:(id)a3;
++ (id)_offlineDictationStatusStringToDictionary:(id)dictionary;
 + (id)sharedDictationOfflineStatusObserver;
 - (ADDictationOfflineStatusObserver)init;
 - (NSDictionary)offlineDictationStatus;
-- (void)_updateOfflineDictationStatus:(id)a3 error:(id)a4;
-- (void)fetchOfflineDictationStatusIgnoringCache:(BOOL)a3 asynchronously:(BOOL)a4;
-- (void)setOfflineDictationStatus:(id)a3;
+- (void)_updateOfflineDictationStatus:(id)status error:(id)error;
+- (void)fetchOfflineDictationStatusIgnoringCache:(BOOL)cache asynchronously:(BOOL)asynchronously;
+- (void)setOfflineDictationStatus:(id)status;
 @end
 
 @implementation ADDictationOfflineStatusObserver
 
-- (void)setOfflineDictationStatus:(id)a3
+- (void)setOfflineDictationStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   os_unfair_lock_lock(&unk_10058FF70);
-  objc_storeStrong(&self->_offlineDictationStatus, a3);
+  objc_storeStrong(&self->_offlineDictationStatus, status);
   os_unfair_lock_unlock(&unk_10058FF70);
   v6 = +[AFPreferences sharedPreferences];
-  v7 = [v6 offlineDictationStatus];
+  offlineDictationStatus = [v6 offlineDictationStatus];
 
-  if (([v7 isEqualToDictionary:v5] & 1) == 0)
+  if (([offlineDictationStatus isEqualToDictionary:statusCopy] & 1) == 0)
   {
     v8 = +[AFPreferences sharedPreferences];
-    [v8 setOfflineDictationStatus:v5];
+    [v8 setOfflineDictationStatus:statusCopy];
 
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -37,20 +37,20 @@
 - (NSDictionary)offlineDictationStatus
 {
   os_unfair_lock_lock(&unk_10058FF70);
-  v3 = self->_offlineDictationStatus;
+  offlineDictationStatus = self->_offlineDictationStatus;
   os_unfair_lock_unlock(&unk_10058FF70);
-  if (!v3)
+  if (!offlineDictationStatus)
   {
     v4 = +[AFPreferences sharedPreferences];
-    v3 = [v4 offlineDictationStatus];
+    offlineDictationStatus = [v4 offlineDictationStatus];
   }
 
-  return v3;
+  return offlineDictationStatus;
 }
 
-- (void)fetchOfflineDictationStatusIgnoringCache:(BOOL)a3 asynchronously:(BOOL)a4
+- (void)fetchOfflineDictationStatusIgnoringCache:(BOOL)cache asynchronously:(BOOL)asynchronously
 {
-  v4 = a4;
+  asynchronouslyCopy = asynchronously;
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -59,7 +59,7 @@
   objc_copyWeak(&v12, &location);
   v6 = objc_retainBlock(v11);
   v7 = v6;
-  if (v4)
+  if (asynchronouslyCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -79,24 +79,24 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateOfflineDictationStatus:(id)a3 error:(id)a4
+- (void)_updateOfflineDictationStatus:(id)status error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  errorCopy = error;
   v8 = AFSiriLogContextDaemon;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v13 = 136315394;
       v14 = "[ADDictationOfflineStatusObserver _updateOfflineDictationStatus:error:]";
       v15 = 2112;
-      v16 = v7;
+      v16 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Error getting offline dictation status. Error: %@", &v13, 0x16u);
     }
 
-    v9 = [v7 userInfo];
-    v10 = [v9 objectForKeyedSubscript:kAssetQueryResultKey];
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:kAssetQueryResultKey];
     v11 = [v10 isEqualToNumber:&off_100533860];
 
     if (v11)
@@ -119,12 +119,12 @@
       v13 = 136315394;
       v14 = "[ADDictationOfflineStatusObserver _updateOfflineDictationStatus:error:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = statusCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Received offline dictation status %@", &v13, 0x16u);
     }
 
-    v9 = [objc_opt_class() _offlineDictationStatusStringToDictionary:v6];
-    [(ADDictationOfflineStatusObserver *)self setOfflineDictationStatus:v9];
+    userInfo = [objc_opt_class() _offlineDictationStatusStringToDictionary:statusCopy];
+    [(ADDictationOfflineStatusObserver *)self setOfflineDictationStatus:userInfo];
   }
 }
 
@@ -143,16 +143,16 @@
   return v2;
 }
 
-+ (id)_offlineDictationStatusStringToDictionary:(id)a3
++ (id)_offlineDictationStatusStringToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   +[NSMutableDictionary dictionary];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A9B58;
   v8 = v7[3] = &unk_10051C210;
   v4 = v8;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   v5 = [NSDictionary dictionaryWithDictionary:v4];
 

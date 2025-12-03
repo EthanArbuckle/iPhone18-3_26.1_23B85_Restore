@@ -1,9 +1,9 @@
 @interface SFUnifiedTabBarMetrics
-+ (double)_maximumActiveItemWidthForSizeClass:(unint64_t)a3;
-+ (double)minimumActiveItemWidthForSizeClass:(unint64_t)a3;
-+ (double)minimumInactiveItemWidthForSizeClass:(unint64_t)a3;
-+ (id)_maximumActiveItemWidthDefaultsKeyForSizeClass:(unint64_t)a3;
-- (SFUnifiedTabBarMetrics)initWithTraitCollection:(id)a3;
++ (double)_maximumActiveItemWidthForSizeClass:(unint64_t)class;
++ (double)minimumActiveItemWidthForSizeClass:(unint64_t)class;
++ (double)minimumInactiveItemWidthForSizeClass:(unint64_t)class;
++ (id)_maximumActiveItemWidthDefaultsKeyForSizeClass:(unint64_t)class;
+- (SFUnifiedTabBarMetrics)initWithTraitCollection:(id)collection;
 - (UIEdgeInsets)squishedGlassInsets;
 - (double)maximumURLFieldWidthRatio;
 - (double)minimumActiveItemWidth;
@@ -11,17 +11,17 @@
 - (double)minimumInactiveItemWidth;
 - (void)_sizeClassDidChange;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setSizeClass:(unint64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setSizeClass:(unint64_t)class;
 @end
 
 @implementation SFUnifiedTabBarMetrics
 
-- (SFUnifiedTabBarMetrics)initWithTraitCollection:(id)a3
+- (SFUnifiedTabBarMetrics)initWithTraitCollection:(id)collection
 {
   v7.receiver = self;
   v7.super_class = SFUnifiedTabBarMetrics;
-  v3 = [(SFUnifiedBarMetrics *)&v7 initWithTraitCollection:a3];
+  v3 = [(SFUnifiedBarMetrics *)&v7 initWithTraitCollection:collection];
   v4 = v3;
   if (v3)
   {
@@ -34,19 +34,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v3 removeObserver:self forKeyPath:self->_maximumActiveItemWidthDefaultsKey context:&kvoContext];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults removeObserver:self forKeyPath:self->_maximumActiveItemWidthDefaultsKey context:&kvoContext];
 
   v4.receiver = self;
   v4.super_class = SFUnifiedTabBarMetrics;
   [(SFUnifiedTabBarMetrics *)&v4 dealloc];
 }
 
-- (void)setSizeClass:(unint64_t)a3
+- (void)setSizeClass:(unint64_t)class
 {
-  if (self->_sizeClass != a3)
+  if (self->_sizeClass != class)
   {
-    self->_sizeClass = a3;
+    self->_sizeClass = class;
     [(SFUnifiedTabBarMetrics *)self _sizeClassDidChange];
   }
 }
@@ -60,20 +60,20 @@
     objc_storeStrong(&self->_maximumActiveItemWidthDefaultsKey, v3);
     if (v6)
     {
-      v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-      [v4 removeObserver:self forKeyPath:v6 context:&kvoContext];
+      safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+      [safari_browserDefaults removeObserver:self forKeyPath:v6 context:&kvoContext];
     }
 
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v5 addObserver:self forKeyPath:v3 options:4 context:&kvoContext];
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults2 addObserver:self forKeyPath:v3 options:4 context:&kvoContext];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kvoContext == a6)
+  if (kvoContext == context)
   {
-    if ([a3 isEqualToString:{self->_maximumActiveItemWidthDefaultsKey, a4, a5}])
+    if ([path isEqualToString:{self->_maximumActiveItemWidthDefaultsKey, object, change}])
     {
       [objc_opt_class() _maximumActiveItemWidthForSizeClass:self->_sizeClass];
       self->_maximumActiveItemWidth = v7;
@@ -84,18 +84,18 @@
   {
     v8.receiver = self;
     v8.super_class = SFUnifiedTabBarMetrics;
-    [(SFUnifiedTabBarMetrics *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(SFUnifiedTabBarMetrics *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-+ (double)minimumActiveItemWidthForSizeClass:(unint64_t)a3
++ (double)minimumActiveItemWidthForSizeClass:(unint64_t)class
 {
-  if (a3 <= 3)
+  if (class <= 3)
   {
-    v3 = off_1E721B758[a3];
-    v4 = dbl_18BC3DAF0[a3];
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v5 safari_doubleForKey:*v3 defaultValue:v4];
+    v3 = off_1E721B758[class];
+    v4 = dbl_18BC3DAF0[class];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults safari_doubleForKey:*v3 defaultValue:v4];
     v7 = v6;
 
     return v7;
@@ -104,14 +104,14 @@
   return result;
 }
 
-+ (double)minimumInactiveItemWidthForSizeClass:(unint64_t)a3
++ (double)minimumInactiveItemWidthForSizeClass:(unint64_t)class
 {
-  if (a3 <= 3)
+  if (class <= 3)
   {
-    v3 = off_1E721B778[a3];
-    v4 = dbl_18BC3DB10[a3];
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v5 safari_doubleForKey:*v3 defaultValue:v4];
+    v3 = off_1E721B778[class];
+    v4 = dbl_18BC3DB10[class];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults safari_doubleForKey:*v3 defaultValue:v4];
     v7 = v6;
 
     return v7;
@@ -120,36 +120,36 @@
   return result;
 }
 
-+ (double)_maximumActiveItemWidthForSizeClass:(unint64_t)a3
++ (double)_maximumActiveItemWidthForSizeClass:(unint64_t)class
 {
-  v5 = [a1 _maximumActiveItemWidthDefaultsKeyForSizeClass:?];
-  if (a3 <= 3)
+  v5 = [self _maximumActiveItemWidthDefaultsKeyForSizeClass:?];
+  if (class <= 3)
   {
-    v6 = dbl_18BC3DB30[a3];
-    v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v7 safari_doubleForKey:v5 defaultValue:v6];
+    v6 = dbl_18BC3DB30[class];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults safari_doubleForKey:v5 defaultValue:v6];
     v3 = v8;
   }
 
   return v3;
 }
 
-+ (id)_maximumActiveItemWidthDefaultsKeyForSizeClass:(unint64_t)a3
++ (id)_maximumActiveItemWidthDefaultsKeyForSizeClass:(unint64_t)class
 {
-  if (a3 <= 3)
+  if (class <= 3)
   {
-    a1 = *off_1E721B798[a3];
+    self = *off_1E721B798[class];
   }
 
-  return a1;
+  return self;
 }
 
 - (double)minimumActiveItemWidth
 {
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v5 = v4;
 
     result = 360.0;
@@ -172,8 +172,8 @@
 
 - (double)minimumActiveItemWidthRatio
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v2 safari_doubleForKey:@"DebugUnifiedBarMinimumActiveTabWidthRatio" defaultValue:0.67];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults safari_doubleForKey:@"DebugUnifiedBarMinimumActiveTabWidthRatio" defaultValue:0.67];
   v4 = v3;
 
   return v4;
@@ -190,8 +190,8 @@
 
 - (double)maximumURLFieldWidthRatio
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3 > 1133.0;
 
   return dbl_18BC3DAE0[v4];

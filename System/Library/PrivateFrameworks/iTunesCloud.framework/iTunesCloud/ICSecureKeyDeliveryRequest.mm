@@ -1,28 +1,28 @@
 @interface ICSecureKeyDeliveryRequest
 - (ICSecureKeyDeliveryRequest)init;
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3;
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 contentKeyRequest:(id)a4;
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 resourceLoadingRequest:(id)a4;
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 serverPlaybackContextData:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context;
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context contentKeyRequest:(id)request;
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context resourceLoadingRequest:(id)request;
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context serverPlaybackContextData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)performWithResponseHandler:(id)a3;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICSecureKeyDeliveryRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6 = objc_alloc_init(ICSecureKeyDeliveryRequestOperation);
   [(ICSecureKeyDeliveryRequestOperation *)v6 setRequest:self];
-  [(ICSecureKeyDeliveryRequestOperation *)v6 setResponseHandler:v4];
+  [(ICSecureKeyDeliveryRequestOperation *)v6 setResponseHandler:handlerCopy];
 
   v5 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:self->_qualityOfService];
   [v5 addOperation:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -81,41 +81,41 @@
   v22[1] = v19;
   v21[2] = @"contentURI";
   contentURI = self->_contentURI;
-  v6 = contentURI;
+  null = contentURI;
   if (!contentURI)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v6;
-  v22[2] = v6;
+  v17 = null;
+  v22[2] = null;
   v21[3] = @"adamID";
   adamID = self->_adamID;
-  v8 = adamID;
+  null2 = adamID;
   if (!adamID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[3] = v8;
+  v22[3] = null2;
   v21[4] = @"certificateURL";
   certificateURL = self->_certificateURL;
-  v10 = certificateURL;
+  null3 = certificateURL;
   if (!certificateURL)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[4] = v10;
+  v22[4] = null3;
   v21[5] = @"keyServerURL";
   keyServerURL = self->_keyServerURL;
-  v12 = keyServerURL;
+  null4 = keyServerURL;
   if (!keyServerURL)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22[5] = v12;
+  v22[5] = null4;
   v21[6] = @"leaseActionType";
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->_leaseActionType];
   v22[6] = v13;
@@ -170,56 +170,56 @@ LABEL_16:
   return v15;
 }
 
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 serverPlaybackContextData:(id)a4
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context serverPlaybackContextData:(id)data
 {
-  v7 = a4;
-  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:a3];
+  dataCopy = data;
+  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_serverPlaybackContextData, a4);
+    objc_storeStrong(&v8->_serverPlaybackContextData, data);
   }
 
   return v9;
 }
 
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 contentKeyRequest:(id)a4
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context contentKeyRequest:(id)request
 {
-  v7 = a4;
-  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:a3];
+  requestCopy = request;
+  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contentKeyRequest, a4);
-    v10 = [v7 identifier];
+    objc_storeStrong(&v8->_contentKeyRequest, request);
+    identifier = [requestCopy identifier];
     contentURI = v9->_contentURI;
-    v9->_contentURI = v10;
+    v9->_contentURI = identifier;
   }
 
   return v9;
 }
 
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3 resourceLoadingRequest:(id)a4
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context resourceLoadingRequest:(id)request
 {
-  v7 = a4;
-  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:a3];
+  requestCopy = request;
+  v8 = [(ICSecureKeyDeliveryRequest *)self initWithRequestContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_resourceLoadingRequest, a4);
-    v10 = [v7 request];
-    v11 = [v10 URL];
-    v12 = [v11 absoluteString];
+    objc_storeStrong(&v8->_resourceLoadingRequest, request);
+    request = [requestCopy request];
+    v11 = [request URL];
+    absoluteString = [v11 absoluteString];
     contentURI = v9->_contentURI;
-    v9->_contentURI = v12;
+    v9->_contentURI = absoluteString;
   }
 
   return v9;
 }
 
-- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)a3
+- (ICSecureKeyDeliveryRequest)initWithRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICSecureKeyDeliveryRequest;
   v6 = [(ICSecureKeyDeliveryRequest *)&v9 init];
@@ -227,7 +227,7 @@ LABEL_16:
   if (v6)
   {
     v6->_qualityOfService = 25;
-    objc_storeStrong(&v6->_requestContext, a3);
+    objc_storeStrong(&v6->_requestContext, context);
   }
 
   return v7;

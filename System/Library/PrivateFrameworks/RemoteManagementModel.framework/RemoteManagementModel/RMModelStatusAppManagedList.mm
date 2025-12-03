@@ -1,11 +1,11 @@
 @interface RMModelStatusAppManagedList
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 name:(id)a6 externalVersionId:(id)a7 version:(id)a8 shortVersion:(id)a9 state:(id)a10 updateState:(id)a11 configState:(id)a12 reasons:(id)a13;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier name:(id)name externalVersionId:(id)id version:(id)version shortVersion:(id)shortVersion state:(id)self0 updateState:(id)self1 configState:(id)self2 reasons:(id)self3;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusAppManagedList
@@ -33,25 +33,25 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 name:(id)a6 externalVersionId:(id)a7 version:(id)a8 shortVersion:(id)a9 state:(id)a10 updateState:(id)a11 configState:(id)a12 reasons:(id)a13
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier name:(id)name externalVersionId:(id)id version:(id)version shortVersion:(id)shortVersion state:(id)self0 updateState:(id)self1 configState:(id)self2 reasons:(id)self3
 {
-  v32 = a13;
-  v31 = a12;
-  v30 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  reasonsCopy = reasons;
+  configStateCopy = configState;
+  updateStateCopy = updateState;
+  stateCopy = state;
+  shortVersionCopy = shortVersion;
+  versionCopy = version;
+  idCopy = id;
+  nameCopy = name;
+  declarationIdentifierCopy = declarationIdentifier;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v26 = objc_opt_new();
-  [v26 setStatusIdentifier:v25];
+  [v26 setStatusIdentifier:identifierCopy];
 
-  if (v24)
+  if (removedCopy)
   {
-    v27 = v24;
+    v27 = removedCopy;
   }
 
   else
@@ -59,30 +59,30 @@
     v27 = MEMORY[0x277CBEC28];
   }
 
-  [v26 setStatusRemoved:{v27, a3}];
+  [v26 setStatusRemoved:{v27, identifier}];
 
-  [v26 setStatusDeclarationIdentifier:v23];
-  [v26 setStatusName:v22];
+  [v26 setStatusDeclarationIdentifier:declarationIdentifierCopy];
+  [v26 setStatusName:nameCopy];
 
-  [v26 setStatusExternalVersionId:v21];
-  [v26 setStatusVersion:v20];
+  [v26 setStatusExternalVersionId:idCopy];
+  [v26 setStatusVersion:versionCopy];
 
-  [v26 setStatusShortVersion:v19];
-  [v26 setStatusState:v18];
+  [v26 setStatusShortVersion:shortVersionCopy];
+  [v26 setStatusState:stateCopy];
 
-  [v26 setStatusUpdateState:v30];
-  [v26 setStatusConfigState:v31];
+  [v26 setStatusUpdateState:updateStateCopy];
+  [v26 setStatusConfigState:configStateCopy];
 
-  [v26 setStatusReasons:v32];
+  [v26 setStatusReasons:reasonsCopy];
 
   return v26;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setStatusIdentifier:v3];
+  [v4 setStatusIdentifier:identifierCopy];
 
   return v4;
 }
@@ -125,12 +125,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusAppManagedList allowedStatusKeys];
   [v11 minusSet:v12];
@@ -138,10 +138,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"name" forKeyPath:@"statusName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"external-version-id" forKeyPath:@"statusExternalVersionId" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"version" forKeyPath:@"statusVersion" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"short-version" forKeyPath:@"statusShortVersion" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"state" forKeyPath:@"statusState" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"update-state" forKeyPath:@"statusUpdateState" isRequired:0 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"config-state" forKeyPath:@"statusConfigState" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5]))
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"name" forKeyPath:@"statusName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"external-version-id" forKeyPath:@"statusExternalVersionId" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"version" forKeyPath:@"statusVersion" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"short-version" forKeyPath:@"statusShortVersion" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"state" forKeyPath:@"statusState" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"update-state" forKeyPath:@"statusUpdateState" isRequired:0 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"config-state" forKeyPath:@"statusConfigState" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error]))
   {
-    LOWORD(v17) = a4;
-    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"reasons" forKeyPath:@"statusReasons" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v17 error:a5];
+    LOWORD(v17) = type;
+    v14 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"reasons" forKeyPath:@"statusReasons" classType:objc_opt_class() nested:0 isRequired:0 defaultValue:0 serializationType:v17 error:error];
   }
 
   else
@@ -152,62 +152,62 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusAppManagedList *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:v6 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusAppManagedList *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusAppManagedList *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusAppManagedList *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(RMModelStatusAppManagedList *)self statusDeclarationIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"declaration-identifier" value:v8 isRequired:0 defaultValue:0];
+  statusDeclarationIdentifier = [(RMModelStatusAppManagedList *)self statusDeclarationIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"declaration-identifier" value:statusDeclarationIdentifier isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelStatusAppManagedList *)self statusName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"name" value:v9 isRequired:0 defaultValue:0];
+  statusName = [(RMModelStatusAppManagedList *)self statusName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"name" value:statusName isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelStatusAppManagedList *)self statusExternalVersionId];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"external-version-id" value:v10 isRequired:0 defaultValue:0];
+  statusExternalVersionId = [(RMModelStatusAppManagedList *)self statusExternalVersionId];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"external-version-id" value:statusExternalVersionId isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelStatusAppManagedList *)self statusVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"version" value:v11 isRequired:0 defaultValue:0];
+  statusVersion = [(RMModelStatusAppManagedList *)self statusVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"version" value:statusVersion isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelStatusAppManagedList *)self statusShortVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"short-version" value:v12 isRequired:0 defaultValue:0];
+  statusShortVersion = [(RMModelStatusAppManagedList *)self statusShortVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"short-version" value:statusShortVersion isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelStatusAppManagedList *)self statusState];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:v13 isRequired:0 defaultValue:0];
+  statusState = [(RMModelStatusAppManagedList *)self statusState];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:statusState isRequired:0 defaultValue:0];
 
-  v14 = [(RMModelStatusAppManagedList *)self statusUpdateState];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"update-state" value:v14 isRequired:0 defaultValue:0];
+  statusUpdateState = [(RMModelStatusAppManagedList *)self statusUpdateState];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"update-state" value:statusUpdateState isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelStatusAppManagedList *)self statusConfigState];
+  statusConfigState = [(RMModelStatusAppManagedList *)self statusConfigState];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __56__RMModelStatusAppManagedList_serializePayloadWithType___block_invoke;
   v21[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v22 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"config-state" value:v15 dictSerializer:v21 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"config-state" value:statusConfigState dictSerializer:v21 isRequired:0 defaultValue:0];
 
-  v16 = [(RMModelStatusAppManagedList *)self statusReasons];
+  statusReasons = [(RMModelStatusAppManagedList *)self statusReasons];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __56__RMModelStatusAppManagedList_serializePayloadWithType___block_invoke_2;
   v19[3] = &__block_descriptor_34_e43___NSDictionary_16__0__RMModelStatusReason_8l;
-  v20 = a3;
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"reasons" value:v16 itemSerializer:v19 isRequired:0 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"reasons" value:statusReasons itemSerializer:v19 isRequired:0 defaultValue:0];
 
   v17 = [v5 copy];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v28.receiver = self;
   v28.super_class = RMModelStatusAppManagedList;
-  v4 = [(RMModelPayloadBase *)&v28 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v28 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

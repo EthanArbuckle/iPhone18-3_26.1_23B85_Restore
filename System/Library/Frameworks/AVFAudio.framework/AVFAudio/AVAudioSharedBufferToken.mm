@@ -1,12 +1,12 @@
 @interface AVAudioSharedBufferToken
-- (AVAudioSharedBufferToken)initWithCoder:(id)a3;
-- (AVAudioSharedBufferToken)initWithSurface:(__IOSurface *)a3 taskToken:(unsigned int)a4;
+- (AVAudioSharedBufferToken)initWithCoder:(id)coder;
+- (AVAudioSharedBufferToken)initWithSurface:(__IOSurface *)surface taskToken:(unsigned int)token;
 - (ObjectRef<__IOSurface)surface;
 - (_xpc_type_s)surfaceXPCType;
 - (_xpc_type_s)taskTokenXPCType;
 - (id).cxx_construct;
 - (mach_port)taskToken;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAudioSharedBufferToken
@@ -40,10 +40,10 @@
     self = mach_port_mod_refs(*MEMORY[0x1E69E9A60], m_mach_port, 0, 1);
     if (self)
     {
-      v4 = self;
+      selfCopy = self;
       exception = __cxa_allocate_exception(0x20uLL);
       v6 = &unk_1F384E358;
-      MEMORY[0x1BFAF55E0](exception, v4, &v6, "failed to add the send right");
+      MEMORY[0x1BFAF55E0](exception, selfCopy, &v6, "failed to add the send right");
     }
   }
 
@@ -87,18 +87,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 encodeXPCObject:IOSurfaceCreateXPCObject(self->surface.mCFObject) forKey:@"surface"];
+    [coder encodeXPCObject:IOSurfaceCreateXPCObject(self->surface.mCFObject) forKey:@"surface"];
     m_mach_port = self->taskToken.m_mach_port;
     v6 = xpc_mach_send_create();
     v7 = *MEMORY[0x1E69E9840];
 
-    [a3 encodeXPCObject:v6 forKey:@"token"];
+    [coder encodeXPCObject:v6 forKey:@"token"];
   }
 
   else
@@ -117,7 +117,7 @@
   }
 }
 
-- (AVAudioSharedBufferToken)initWithCoder:(id)a3
+- (AVAudioSharedBufferToken)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -129,7 +129,7 @@
     v6 = v5;
     if (v5)
     {
-      v7 = IOSurfaceLookupFromXPCObject([a3 decodeXPCObjectOfType:-[AVAudioSharedBufferToken surfaceXPCType](v5 forKey:{"surfaceXPCType"), @"surface"}]);
+      v7 = IOSurfaceLookupFromXPCObject([coder decodeXPCObjectOfType:-[AVAudioSharedBufferToken surfaceXPCType](v5 forKey:{"surfaceXPCType"), @"surface"}]);
       mCFObject = v6->surface.mCFObject;
       v6->surface.mCFObject = v7;
       if (mCFObject)
@@ -137,7 +137,7 @@
         CFRelease(mCFObject);
       }
 
-      [a3 decodeXPCObjectOfType:-[AVAudioSharedBufferToken taskTokenXPCType](v6 forKey:{"taskTokenXPCType"), @"token"}];
+      [coder decodeXPCObjectOfType:-[AVAudioSharedBufferToken taskTokenXPCType](v6 forKey:{"taskTokenXPCType"), @"token"}];
       v9 = xpc_mach_send_copy_right();
       m_mach_port = v6->taskToken.m_mach_port;
       v6->taskToken.m_mach_port = v9;
@@ -165,7 +165,7 @@
   return v6;
 }
 
-- (AVAudioSharedBufferToken)initWithSurface:(__IOSurface *)a3 taskToken:(unsigned int)a4
+- (AVAudioSharedBufferToken)initWithSurface:(__IOSurface *)surface taskToken:(unsigned int)token
 {
   v12.receiver = self;
   v12.super_class = AVAudioSharedBufferToken;
@@ -174,14 +174,14 @@
   if (v6)
   {
     mCFObject = v6->surface.mCFObject;
-    v7->surface.mCFObject = a3;
+    v7->surface.mCFObject = surface;
     if (mCFObject)
     {
       CFRelease(mCFObject);
     }
 
     m_mach_port = v7->taskToken.m_mach_port;
-    v7->taskToken.m_mach_port = a4;
+    v7->taskToken.m_mach_port = token;
     v11 = m_mach_port;
     caulk::mach::mach_port::~mach_port(&v11);
   }

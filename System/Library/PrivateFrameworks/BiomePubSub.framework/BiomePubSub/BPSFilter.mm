@@ -1,51 +1,51 @@
 @interface BPSFilter
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSFilter)initWithUpstream:(id)a3 isIncluded:(id)a4;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSFilter)initWithUpstream:(id)upstream isIncluded:(id)included;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSFilter
 
 - (id)nextEvent
 {
-  v3 = [(BPSFilter *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSFilter *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     do
     {
-      v5 = [(BPSFilter *)self isIncluded];
-      v6 = (v5)[2](v5, v4);
+      isIncluded = [(BPSFilter *)self isIncluded];
+      v6 = (isIncluded)[2](isIncluded, nextEvent);
 
       if (v6)
       {
         break;
       }
 
-      v7 = [(BPSFilter *)self upstream];
-      v8 = [v7 nextEvent];
+      upstream2 = [(BPSFilter *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v8;
+      nextEvent = nextEvent2;
     }
 
-    while (v8);
+    while (nextEvent2);
   }
 
-  return v4;
+  return nextEvent;
 }
 
 - (id)upstreamPublishers
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BPSFilter *)self upstream];
-  if (v3)
+  upstream = [(BPSFilter *)self upstream];
+  if (upstream)
   {
-    v4 = [(BPSFilter *)self upstream];
-    v8[0] = v4;
+    upstream2 = [(BPSFilter *)self upstream];
+    v8[0] = upstream2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
@@ -59,18 +59,18 @@
   return v5;
 }
 
-- (BPSFilter)initWithUpstream:(id)a3 isIncluded:(id)a4
+- (BPSFilter)initWithUpstream:(id)upstream isIncluded:(id)included
 {
-  v7 = a3;
-  v8 = a4;
+  upstreamCopy = upstream;
+  includedCopy = included;
   v14.receiver = self;
   v14.super_class = BPSFilter;
   v9 = [(BPSFilter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_upstream, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_upstream, upstream);
+    v11 = [includedCopy copy];
     isIncluded = v10->_isIncluded;
     v10->_isIncluded = v11;
   }
@@ -78,9 +78,9 @@
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -88,22 +88,22 @@
   }
 
   v6 = [_BPSFilterInner alloc];
-  v7 = [(BPSFilter *)self isIncluded];
-  v8 = [(_BPSFilterInner *)v6 initWithDownstream:v4 isIncluded:v7];
+  isIncluded = [(BPSFilter *)self isIncluded];
+  v8 = [(_BPSFilterInner *)v6 initWithDownstream:subscribeCopy isIncluded:isIncluded];
 
-  v9 = [(BPSFilter *)self upstream];
-  [v9 subscribe:v8];
+  upstream = [(BPSFilter *)self upstream];
+  [upstream subscribe:v8];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  publisherCopy = publisher;
+  upstreamsCopy = upstreams;
   v8 = [BPSFilter alloc];
-  v9 = [v7 objectAtIndexedSubscript:0];
+  v9 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v10 = [v6 isIncluded];
-  v11 = [(BPSFilter *)v8 initWithUpstream:v9 isIncluded:v10];
+  isIncluded = [publisherCopy isIncluded];
+  v11 = [(BPSFilter *)v8 initWithUpstream:v9 isIncluded:isIncluded];
 
   return v11;
 }
@@ -111,8 +111,8 @@
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSFilter *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSFilter *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

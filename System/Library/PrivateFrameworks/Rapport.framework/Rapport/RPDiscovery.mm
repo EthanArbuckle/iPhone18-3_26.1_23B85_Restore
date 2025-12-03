@@ -2,21 +2,21 @@
 - (BOOL)_ensureXPCStarted;
 - (NSArray)discoveredEndpoints;
 - (RPDiscovery)init;
-- (RPDiscovery)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (RPDiscovery)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_lostAllEndpoints;
 - (void)_scheduleRetry;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
-- (void)xpcDiscoveryChangedEndpoint:(id)a3;
-- (void)xpcDiscoveryFoundEndpoint:(id)a3;
-- (void)xpcDiscoveryLostEndpoint:(id)a3;
+- (void)setLabel:(id)label;
+- (void)xpcDiscoveryChangedEndpoint:(id)endpoint;
+- (void)xpcDiscoveryFoundEndpoint:(id)endpoint;
+- (void)xpcDiscoveryLostEndpoint:(id)endpoint;
 @end
 
 @implementation RPDiscovery
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (RPDiscovery)initWithCoder:(id)a3
+- (RPDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = RPDiscovery;
   v5 = [(RPDiscovery *)&v14 init];
@@ -54,7 +54,7 @@
       v6->_changeFlags = v15;
     }
 
-    v7 = v4;
+    v7 = coderCopy;
     if ([v7 containsValueForKey:@"ctlF"])
     {
       v6->_controlFlags = [v7 decodeInt64ForKey:@"ctlF"];
@@ -82,36 +82,36 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   changeFlags = self->_changeFlags;
-  v9 = v4;
+  v9 = coderCopy;
   if (changeFlags)
   {
-    [v4 encodeInt64:changeFlags forKey:@"chgF"];
-    v4 = v9;
+    [coderCopy encodeInt64:changeFlags forKey:@"chgF"];
+    coderCopy = v9;
   }
 
   controlFlags = self->_controlFlags;
   if (controlFlags)
   {
     [v9 encodeInt64:controlFlags forKey:@"ctlF"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   label = self->_label;
   if (label)
   {
     [v9 encodeObject:label forKey:@"label"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v9 encodeObject:serviceType forKey:@"st"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
@@ -129,7 +129,7 @@
   [(RPDiscovery *)&v4 dealloc];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v20 = 0;
   v21 = &v20;
@@ -143,20 +143,20 @@
   serviceType = self->_serviceType;
   NSAppendPrintF();
   objc_storeStrong(&v25, 0);
-  if (a3 <= 30)
+  if (level <= 30)
   {
     v5 = v21;
     obj = v21[5];
     v12 = [(NSMutableDictionary *)self->_endpointMap count:serviceType];
     NSAppendPrintF();
     objc_storeStrong(v5 + 5, obj);
-    if (a3 <= 20)
+    if (level <= 20)
     {
       v6 = v21;
       v17 = v21[5];
       NSAppendPrintF();
       objc_storeStrong(v6 + 5, v17);
-      if (a3 >= 11)
+      if (level >= 11)
       {
         v7 = 50;
       }
@@ -193,34 +193,34 @@ void __36__RPDiscovery_descriptionWithLevel___block_invoke(uint64_t a1)
   objc_storeStrong((v1 + 40), obj);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  activateCalled = v5->_activateCalled;
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activateCalled = selfCopy->_activateCalled;
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__RPDiscovery_activateWithCompletion___block_invoke;
   block[3] = &unk_1E7C92F60;
-  block[4] = v5;
-  v10 = v4;
+  block[4] = selfCopy;
+  v10 = completionCopy;
   v11 = activateCalled;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __38__RPDiscovery_activateWithCompletion___block_invoke(uint64_t a1)
@@ -296,12 +296,12 @@ LABEL_19:
   [v2 _activateWithCompletion:v6 reactivate:0];
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
+  reactivateCopy = reactivate;
+  completionCopy = completion;
   var0 = self->_ucat->var0;
-  if (!v4)
+  if (!reactivateCopy)
   {
     if (var0 > 30)
     {
@@ -369,16 +369,16 @@ LABEL_18:
     v19[1] = 3221225472;
     v19[2] = __50__RPDiscovery__activateWithCompletion_reactivate___block_invoke;
     v19[3] = &unk_1E7C93500;
-    v21 = v4;
+    v21 = reactivateCopy;
     v19[4] = self;
-    v12 = v6;
+    v12 = completionCopy;
     v20 = v12;
     v13 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v19];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__RPDiscovery__activateWithCompletion_reactivate___block_invoke_2;
     v16[3] = &unk_1E7C93528;
-    v18 = v4;
+    v18 = reactivateCopy;
     v16[4] = self;
     v17 = v12;
     [v13 xpcDiscoveryActivate:self completion:v16];
@@ -387,9 +387,9 @@ LABEL_18:
   else
   {
     [(RPDiscovery *)self _scheduleRetry];
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -976,22 +976,22 @@ LABEL_5:
 
 - (NSArray)discoveredEndpoints
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  endpointMap = v2->_endpointMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointMap = selfCopy->_endpointMap;
   if (endpointMap)
   {
-    v4 = [(NSMutableDictionary *)endpointMap allValues];
+    allValues = [(NSMutableDictionary *)endpointMap allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
 - (void)_lostAllEndpoints
@@ -1016,20 +1016,20 @@ LABEL_3:
 
 LABEL_5:
   v4 = _Block_copy(self->_lostHandler);
-  v5 = self;
-  objc_sync_enter(v5);
-  endpointMap = v5->_endpointMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointMap = selfCopy->_endpointMap;
   if (v4)
   {
-    v7 = [(NSMutableDictionary *)endpointMap allValues];
-    [(NSMutableDictionary *)v5->_endpointMap removeAllObjects];
-    objc_sync_exit(v5);
+    allValues = [(NSMutableDictionary *)endpointMap allValues];
+    [(NSMutableDictionary *)selfCopy->_endpointMap removeAllObjects];
+    objc_sync_exit(selfCopy);
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v7;
+    v8 = allValues;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -1058,77 +1058,77 @@ LABEL_5:
   else
   {
     [(NSMutableDictionary *)endpointMap removeAllObjects];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)xpcDiscoveryFoundEndpoint:(id)a3
+- (void)xpcDiscoveryFoundEndpoint:(id)endpoint
 {
-  v12 = a3;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v12;
-  endpointMap = v4->_endpointMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = endpointCopy;
+  endpointMap = selfCopy->_endpointMap;
   if (!endpointMap)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = v4->_endpointMap;
-    v4->_endpointMap = v7;
+    v8 = selfCopy->_endpointMap;
+    selfCopy->_endpointMap = v7;
 
-    endpointMap = v4->_endpointMap;
-    v5 = v12;
+    endpointMap = selfCopy->_endpointMap;
+    v5 = endpointCopy;
   }
 
-  v9 = [v5 identifier];
-  [(NSMutableDictionary *)endpointMap setObject:v12 forKeyedSubscript:v9];
+  identifier = [v5 identifier];
+  [(NSMutableDictionary *)endpointMap setObject:endpointCopy forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
-  v10 = _Block_copy(v4->_foundHandler);
+  objc_sync_exit(selfCopy);
+  v10 = _Block_copy(selfCopy->_foundHandler);
   v11 = v10;
   if (v10)
   {
-    (*(v10 + 2))(v10, v12);
+    (*(v10 + 2))(v10, endpointCopy);
   }
 }
 
-- (void)xpcDiscoveryLostEndpoint:(id)a3
+- (void)xpcDiscoveryLostEndpoint:(id)endpoint
 {
-  v9 = a3;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  endpointMap = v4->_endpointMap;
-  v6 = [v9 identifier];
-  [(NSMutableDictionary *)endpointMap setObject:0 forKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointMap = selfCopy->_endpointMap;
+  identifier = [endpointCopy identifier];
+  [(NSMutableDictionary *)endpointMap setObject:0 forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
-  v7 = _Block_copy(v4->_lostHandler);
+  objc_sync_exit(selfCopy);
+  v7 = _Block_copy(selfCopy->_lostHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, v9);
+    (*(v7 + 2))(v7, endpointCopy);
   }
 }
 
-- (void)xpcDiscoveryChangedEndpoint:(id)a3
+- (void)xpcDiscoveryChangedEndpoint:(id)endpoint
 {
-  v9 = a3;
+  endpointCopy = endpoint;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  endpointMap = v4->_endpointMap;
-  v6 = [v9 identifier];
-  [(NSMutableDictionary *)endpointMap setObject:v9 forKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointMap = selfCopy->_endpointMap;
+  identifier = [endpointCopy identifier];
+  [(NSMutableDictionary *)endpointMap setObject:endpointCopy forKeyedSubscript:identifier];
 
-  objc_sync_exit(v4);
-  v7 = _Block_copy(v4->_changedHandler);
+  objc_sync_exit(selfCopy);
+  v7 = _Block_copy(selfCopy->_changedHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, v9);
+    (*(v7 + 2))(v7, endpointCopy);
   }
 }
 

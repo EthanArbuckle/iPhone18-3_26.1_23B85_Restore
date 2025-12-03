@@ -1,16 +1,16 @@
 @interface HFNumberDependentLocalizableStringKey
-- (HFNumberDependentLocalizableStringKey)initWithKey:(id)a3;
-- (id)localizedStringWithArgumentBlock:(id)a3;
+- (HFNumberDependentLocalizableStringKey)initWithKey:(id)key;
+- (id)localizedStringWithArgumentBlock:(id)block;
 @end
 
 @implementation HFNumberDependentLocalizableStringKey
 
-- (HFNumberDependentLocalizableStringKey)initWithKey:(id)a3
+- (HFNumberDependentLocalizableStringKey)initWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = HFNumberDependentLocalizableStringKey;
-  v5 = [(HFLocalizableStringKey *)&v10 initWithKey:v4 argumentKeys:0];
+  v5 = [(HFLocalizableStringKey *)&v10 initWithKey:keyCopy argumentKeys:0];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -37,11 +37,11 @@ id __53__HFNumberDependentLocalizableStringKey_initWithKey___block_invoke(uint64
   return v12;
 }
 
-- (id)localizedStringWithArgumentBlock:(id)a3
+- (id)localizedStringWithArgumentBlock:(id)block
 {
-  v4 = [(HFLocalizableStringKey *)self stringLocalizationBlock];
+  stringLocalizationBlock = [(HFLocalizableStringKey *)self stringLocalizationBlock];
   v5 = [(HFLocalizableStringKey *)self key];
-  v6 = (v4)[2](v4, v5);
+  v6 = (stringLocalizationBlock)[2](stringLocalizationBlock, v5);
 
   return v6;
 }

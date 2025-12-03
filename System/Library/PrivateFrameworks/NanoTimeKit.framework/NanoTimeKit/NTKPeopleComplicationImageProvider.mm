@@ -1,7 +1,7 @@
 @interface NTKPeopleComplicationImageProvider
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NTKPeopleComplicationImageProvider)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NTKPeopleComplicationImageProvider
@@ -10,11 +10,11 @@
 {
   v5.receiver = self;
   v5.super_class = NTKPeopleComplicationImageProvider;
-  v2 = [(CLKImageProvider *)&v5 initPrivate];
-  v3 = v2;
-  if (v2)
+  initPrivate = [(CLKImageProvider *)&v5 initPrivate];
+  v3 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKImageProvider *)v2 setImageViewCreationHandler:&__block_literal_global_153];
+    [(CLKImageProvider *)initPrivate setImageViewCreationHandler:&__block_literal_global_153];
   }
 
   return v3;
@@ -27,20 +27,20 @@ NTKPeopleComplicationImageView *__42__NTKPeopleComplicationImageProvider_init__b
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v16 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       borderWidth = self->_borderWidth;
       [(NTKPeopleComplicationImageProvider *)v5 borderWidth];
       if (vabdd_f64(borderWidth, v7) >= 2.22044605e-16 || (fontSize = self->_fontSize, [(NTKPeopleComplicationImageProvider *)v5 fontSize], vabdd_f64(fontSize, v9) >= 2.22044605e-16))
@@ -51,16 +51,16 @@ NTKPeopleComplicationImageView *__42__NTKPeopleComplicationImageProvider_init__b
       else
       {
         profileImage = self->_profileImage;
-        v11 = [(NTKPeopleComplicationImageProvider *)v5 profileImage];
-        if ([(UIImage *)profileImage isEqual:v11])
+        profileImage = [(NTKPeopleComplicationImageProvider *)v5 profileImage];
+        if ([(UIImage *)profileImage isEqual:profileImage])
         {
           fullName = self->_fullName;
-          v13 = [(NTKPeopleComplicationImageProvider *)v5 fullName];
-          if ([(NSString *)fullName isEqualToString:v13])
+          fullName = [(NTKPeopleComplicationImageProvider *)v5 fullName];
+          if ([(NSString *)fullName isEqualToString:fullName])
           {
             nameAbbreviation = self->_nameAbbreviation;
-            v15 = [(NTKPeopleComplicationImageProvider *)v5 nameAbbreviation];
-            v16 = [(NSString *)nameAbbreviation isEqualToString:v15];
+            nameAbbreviation = [(NTKPeopleComplicationImageProvider *)v5 nameAbbreviation];
+            v16 = [(NSString *)nameAbbreviation isEqualToString:nameAbbreviation];
           }
 
           else
@@ -85,7 +85,7 @@ NTKPeopleComplicationImageView *__42__NTKPeopleComplicationImageProvider_init__b
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NTKPeopleComplicationImageProvider;
@@ -96,10 +96,10 @@ NTKPeopleComplicationImageView *__42__NTKPeopleComplicationImageProvider_init__b
     [v5 setBorderWidth:self->_borderWidth];
     [v6 setFontSize:self->_fontSize];
     [v6 setProfileImage:self->_profileImage];
-    v7 = [(NSString *)self->_fullName copyWithZone:a3];
+    v7 = [(NSString *)self->_fullName copyWithZone:zone];
     [v6 setFullName:v7];
 
-    v8 = [(NSString *)self->_nameAbbreviation copyWithZone:a3];
+    v8 = [(NSString *)self->_nameAbbreviation copyWithZone:zone];
     [v6 setNameAbbreviation:v8];
   }
 

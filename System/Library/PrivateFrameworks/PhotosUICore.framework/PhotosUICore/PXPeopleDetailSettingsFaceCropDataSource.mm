@@ -1,99 +1,99 @@
 @interface PXPeopleDetailSettingsFaceCropDataSource
 - (PXPeopleDetailSettingsFaceCropDataSource)init;
-- (id)imageAtIndexPath:(id)a3;
-- (id)nameAtIndexPath:(id)a3;
+- (id)imageAtIndexPath:(id)path;
+- (id)nameAtIndexPath:(id)path;
 - (unint64_t)numberOfAssets;
 @end
 
 @implementation PXPeopleDetailSettingsFaceCropDataSource
 
-- (id)nameAtIndexPath:(id)a3
+- (id)nameAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
-  v6 = [v4 row];
+  pathCopy = path;
+  fetchResult = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [fetchResult objectAtIndex:v6];
 
-  v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
-  v10 = [MEMORY[0x1E69787C8] fetchFacesForFaceCrop:v7 options:v9];
+  v10 = [MEMORY[0x1E69787C8] fetchFacesForFaceCrop:v7 options:librarySpecificFetchOptions];
   if ([v10 count])
   {
     v11 = [v10 objectAtIndex:0];
-    v12 = [MEMORY[0x1E6978980] fetchPersonWithFace:v11 options:v9];
+    v12 = [MEMORY[0x1E6978980] fetchPersonWithFace:v11 options:librarySpecificFetchOptions];
     if ([v12 count])
     {
       v13 = [v12 objectAtIndex:0];
-      v14 = [v13 name];
-      v15 = [v14 length];
+      name = [v13 name];
+      v15 = [name length];
 
       if (v15)
       {
-        v16 = [v13 name];
+        name2 = [v13 name];
       }
 
       else
       {
-        v16 = @"unnamed";
+        name2 = @"unnamed";
       }
     }
 
     else
     {
-      v16 = @"unnamed";
+      name2 = @"unnamed";
     }
   }
 
   else
   {
-    v16 = @"unnamed";
+    name2 = @"unnamed";
   }
 
-  return v16;
+  return name2;
 }
 
 - (unint64_t)numberOfAssets
 {
-  v2 = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
-  v3 = [v2 count];
+  fetchResult = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
+  v3 = [fetchResult count];
 
   return v3;
 }
 
-- (id)imageAtIndexPath:(id)a3
+- (id)imageAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__76549;
   v27 = __Block_byref_object_dispose__76550;
   v28 = 0;
-  v5 = [(PXPeopleDetailSettingsFaceCropDataSource *)self imagesIsolationQueue];
+  imagesIsolationQueue = [(PXPeopleDetailSettingsFaceCropDataSource *)self imagesIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PXPeopleDetailSettingsFaceCropDataSource_imageAtIndexPath___block_invoke;
   block[3] = &unk_1E7746448;
   v22 = &v23;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   v21 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(imagesIsolationQueue, block);
 
   v7 = v24[5];
   if (!v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v9 = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
-    v11 = [v10 resourceData];
-    v12 = [v8 initWithData:v11];
+    fetchResult = [(PXPeopleDetailSettingsFaceCropDataSource *)self fetchResult];
+    v10 = [fetchResult objectAtIndex:{objc_msgSend(v6, "row")}];
+    resourceData = [v10 resourceData];
+    v12 = [v8 initWithData:resourceData];
     v13 = v24[5];
     v24[5] = v12;
 
-    v14 = [(PXPeopleDetailSettingsFaceCropDataSource *)self imagesIsolationQueue];
+    imagesIsolationQueue2 = [(PXPeopleDetailSettingsFaceCropDataSource *)self imagesIsolationQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __61__PXPeopleDetailSettingsFaceCropDataSource_imageAtIndexPath___block_invoke_2;
@@ -101,7 +101,7 @@
     v17[4] = self;
     v19 = &v23;
     v18 = v6;
-    dispatch_sync(v14, v17);
+    dispatch_sync(imagesIsolationQueue2, v17);
 
     v7 = v24[5];
   }
@@ -136,9 +136,9 @@ void __61__PXPeopleDetailSettingsFaceCropDataSource_imageAtIndexPath___block_inv
   if (v2)
   {
     v3 = MEMORY[0x1E69787F0];
-    v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v5 = [v4 librarySpecificFetchOptions];
-    v6 = [v3 fetchFaceCropsWithOptions:v5];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
+    v6 = [v3 fetchFaceCropsWithOptions:librarySpecificFetchOptions];
     fetchResult = v2->_fetchResult;
     v2->_fetchResult = v6;
 

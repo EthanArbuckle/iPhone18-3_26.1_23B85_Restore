@@ -1,61 +1,61 @@
 @interface _LTLocalePair
-+ (_LTLocalePair)pairWithIdentifiers:(id)a3;
-+ (id)pairNamesForLocaleIdentifiers:(id)a3;
-+ (id)pairNamesForLocales:(id)a3;
-- (BOOL)isBidirectionalEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (_LTLocalePair)pairWithIdentifiers:(id)identifiers;
++ (id)pairNamesForLocaleIdentifiers:(id)identifiers;
++ (id)pairNamesForLocales:(id)locales;
+- (BOOL)isBidirectionalEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPassthrough;
 - (BOOL)isVariantPair;
-- (_LTLocalePair)initWithCoder:(id)a3;
-- (_LTLocalePair)initWithSourceLocale:(id)a3 targetLocale:(id)a4;
+- (_LTLocalePair)initWithCoder:(id)coder;
+- (_LTLocalePair)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale;
 - (id)canonicalIdentifier;
 - (id)canonicalLocalePair;
 - (id)combinedLocaleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)identifier;
-- (id)oppositeToLocale:(id)a3;
+- (id)oppositeToLocale:(id)locale;
 - (id)reversedPair;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTLocalePair
 
-- (_LTLocalePair)initWithSourceLocale:(id)a3 targetLocale:(id)a4
+- (_LTLocalePair)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  targetLocaleCopy = targetLocale;
   v13.receiver = self;
   v13.super_class = _LTLocalePair;
   v9 = [(_LTLocalePair *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sourceLocale, a3);
-    objc_storeStrong(&v10->_targetLocale, a4);
+    objc_storeStrong(&v9->_sourceLocale, locale);
+    objc_storeStrong(&v10->_targetLocale, targetLocale);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (_LTLocalePair)initWithCoder:(id)a3
+- (_LTLocalePair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _LTLocalePair;
   v5 = [(_LTLocalePair *)&v16 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEAF8];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceLocaleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceLocaleIdentifier"];
     v8 = [v6 localeWithLocaleIdentifier:v7];
     sourceLocale = v5->_sourceLocale;
     v5->_sourceLocale = v8;
 
     v10 = MEMORY[0x277CBEAF8];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetLocaleIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetLocaleIdentifier"];
     v12 = [v10 localeWithLocaleIdentifier:v11];
     targetLocale = v5->_targetLocale;
     v5->_targetLocale = v12;
@@ -66,20 +66,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceLocale = self->_sourceLocale;
-  v5 = a3;
-  v6 = [(NSLocale *)sourceLocale localeIdentifier];
-  [v5 encodeObject:v6 forKey:@"sourceLocaleIdentifier"];
+  coderCopy = coder;
+  localeIdentifier = [(NSLocale *)sourceLocale localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier forKey:@"sourceLocaleIdentifier"];
 
-  v7 = [(NSLocale *)self->_targetLocale localeIdentifier];
-  [v5 encodeObject:v7 forKey:@"targetLocaleIdentifier"];
+  localeIdentifier2 = [(NSLocale *)self->_targetLocale localeIdentifier];
+  [coderCopy encodeObject:localeIdentifier2 forKey:@"targetLocaleIdentifier"];
 }
 
-+ (_LTLocalePair)pairWithIdentifiers:(id)a3
++ (_LTLocalePair)pairWithIdentifiers:(id)identifiers
 {
-  v4 = [a3 componentsSeparatedByString:@"-"];
+  v4 = [identifiers componentsSeparatedByString:@"-"];
   if ([v4 count] == 2)
   {
     v5 = MEMORY[0x277CBEAF8];
@@ -93,7 +93,7 @@
     v11 = 0;
     if (v7 && v10)
     {
-      v11 = [[a1 alloc] initWithSourceLocale:v7 targetLocale:v10];
+      v11 = [[self alloc] initWithSourceLocale:v7 targetLocale:v10];
     }
   }
 
@@ -105,7 +105,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTLocalePair alloc];
   sourceLocale = self->_sourceLocale;
@@ -117,11 +117,11 @@
 - (id)combinedLocaleIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_LTLocalePair *)self sourceLocale];
-  v5 = [v4 _ltLocaleIdentifier];
-  v6 = [(_LTLocalePair *)self targetLocale];
-  v7 = [v6 _ltLocaleIdentifier];
-  v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  _ltLocaleIdentifier = [sourceLocale _ltLocaleIdentifier];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  _ltLocaleIdentifier2 = [targetLocale _ltLocaleIdentifier];
+  v8 = [v3 stringWithFormat:@"%@-%@", _ltLocaleIdentifier, _ltLocaleIdentifier2];
 
   return v8;
 }
@@ -129,17 +129,17 @@
 - (id)reversedPair
 {
   v3 = [_LTLocalePair alloc];
-  v4 = [(_LTLocalePair *)self targetLocale];
-  v5 = [(_LTLocalePair *)self sourceLocale];
-  v6 = [(_LTLocalePair *)v3 initWithSourceLocale:v4 targetLocale:v5];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  v6 = [(_LTLocalePair *)v3 initWithSourceLocale:targetLocale targetLocale:sourceLocale];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -149,14 +149,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_LTLocalePair *)self sourceLocale];
-      v7 = [(_LTLocalePair *)v5 sourceLocale];
-      if ([v6 _ltEqual:v7])
+      v5 = equalCopy;
+      sourceLocale = [(_LTLocalePair *)self sourceLocale];
+      sourceLocale2 = [(_LTLocalePair *)v5 sourceLocale];
+      if ([sourceLocale _ltEqual:sourceLocale2])
       {
-        v8 = [(_LTLocalePair *)self targetLocale];
-        v9 = [(_LTLocalePair *)v5 targetLocale];
-        v10 = [v8 _ltEqual:v9];
+        targetLocale = [(_LTLocalePair *)self targetLocale];
+        targetLocale2 = [(_LTLocalePair *)v5 targetLocale];
+        v10 = [targetLocale _ltEqual:targetLocale2];
       }
 
       else
@@ -174,18 +174,18 @@
   return v10;
 }
 
-- (BOOL)isBidirectionalEqual:(id)a3
+- (BOOL)isBidirectionalEqual:(id)equal
 {
-  v4 = a3;
-  if ([(_LTLocalePair *)self isEqual:v4])
+  equalCopy = equal;
+  if ([(_LTLocalePair *)self isEqual:equalCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(_LTLocalePair *)self reversedPair];
-    v5 = [v6 isEqual:v4];
+    reversedPair = [(_LTLocalePair *)self reversedPair];
+    v5 = [reversedPair isEqual:equalCopy];
   }
 
   return v5;
@@ -193,36 +193,36 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_LTLocalePair *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(_LTLocalePair *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)oppositeToLocale:(id)a3
+- (id)oppositeToLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [v4 _ltLocaleIdentifier];
-  v6 = [(_LTLocalePair *)self sourceLocale];
-  v7 = [v6 _ltLocaleIdentifier];
-  v8 = [v5 isEqualToString:v7];
+  localeCopy = locale;
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  _ltLocaleIdentifier2 = [sourceLocale _ltLocaleIdentifier];
+  v8 = [_ltLocaleIdentifier isEqualToString:_ltLocaleIdentifier2];
 
   if (v8)
   {
-    v9 = [(_LTLocalePair *)self targetLocale];
+    targetLocale = [(_LTLocalePair *)self targetLocale];
 LABEL_5:
-    v14 = v9;
+    v14 = targetLocale;
     goto LABEL_7;
   }
 
-  v10 = [v4 _ltLocaleIdentifier];
-  v11 = [(_LTLocalePair *)self targetLocale];
-  v12 = [v11 _ltLocaleIdentifier];
-  v13 = [v10 isEqualToString:v12];
+  _ltLocaleIdentifier3 = [localeCopy _ltLocaleIdentifier];
+  targetLocale2 = [(_LTLocalePair *)self targetLocale];
+  _ltLocaleIdentifier4 = [targetLocale2 _ltLocaleIdentifier];
+  v13 = [_ltLocaleIdentifier3 isEqualToString:_ltLocaleIdentifier4];
 
   if (v13)
   {
-    v9 = [(_LTLocalePair *)self sourceLocale];
+    targetLocale = [(_LTLocalePair *)self sourceLocale];
     goto LABEL_5;
   }
 
@@ -235,11 +235,11 @@ LABEL_7:
 - (id)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_LTLocalePair *)self sourceLocale];
-  v5 = [v4 localeIdentifier];
-  v6 = [(_LTLocalePair *)self targetLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  localeIdentifier = [sourceLocale localeIdentifier];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  localeIdentifier2 = [targetLocale localeIdentifier];
+  v8 = [v3 stringWithFormat:@"%@-%@", localeIdentifier, localeIdentifier2];
 
   return v8;
 }
@@ -247,12 +247,12 @@ LABEL_7:
 - (id)canonicalIdentifier
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(_LTLocalePair *)self sourceLocale];
-  v4 = [v3 _ltLocaleIdentifier];
-  v15[0] = v4;
-  v5 = [(_LTLocalePair *)self targetLocale];
-  v6 = [v5 _ltLocaleIdentifier];
-  v15[1] = v6;
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  _ltLocaleIdentifier = [sourceLocale _ltLocaleIdentifier];
+  v15[0] = _ltLocaleIdentifier;
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  _ltLocaleIdentifier2 = [targetLocale _ltLocaleIdentifier];
+  v15[1] = _ltLocaleIdentifier2;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 
   v8 = [v7 sortedArrayUsingSelector:sel_compare_];
@@ -268,8 +268,8 @@ LABEL_7:
 
 - (id)canonicalLocalePair
 {
-  v2 = [(_LTLocalePair *)self canonicalIdentifier];
-  v3 = [_LTLocalePair pairWithIdentifiers:v2];
+  canonicalIdentifier = [(_LTLocalePair *)self canonicalIdentifier];
+  v3 = [_LTLocalePair pairWithIdentifiers:canonicalIdentifier];
 
   return v3;
 }
@@ -279,20 +279,20 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTLocalePair *)self sourceLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [(_LTLocalePair *)self targetLocale];
-  v9 = [v8 localeIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: source:%@ target:%@>", v5, v7, v9];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  localeIdentifier = [sourceLocale localeIdentifier];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  localeIdentifier2 = [targetLocale localeIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: source:%@ target:%@>", v5, localeIdentifier, localeIdentifier2];
 
   return v10;
 }
 
 - (BOOL)isPassthrough
 {
-  v3 = [(_LTLocalePair *)self sourceLocale];
-  v4 = [(_LTLocalePair *)self targetLocale];
-  v5 = [v3 _ltEqual:v4];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  v5 = [sourceLocale _ltEqual:targetLocale];
 
   return v5;
 }
@@ -304,25 +304,25 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(_LTLocalePair *)self sourceLocale];
-  v5 = [v4 languageCode];
-  v6 = [(_LTLocalePair *)self targetLocale];
-  v7 = [v6 languageCode];
-  v8 = [v5 isEqualToString:v7];
+  sourceLocale = [(_LTLocalePair *)self sourceLocale];
+  languageCode = [sourceLocale languageCode];
+  targetLocale = [(_LTLocalePair *)self targetLocale];
+  languageCode2 = [targetLocale languageCode];
+  v8 = [languageCode isEqualToString:languageCode2];
 
   return v8;
 }
 
-+ (id)pairNamesForLocales:(id)a3
++ (id)pairNamesForLocales:(id)locales
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  localesCopy = locales;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = localesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -337,8 +337,8 @@ LABEL_7:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) _ltLocaleIdentifier];
-        [v5 addObject:v11];
+        _ltLocaleIdentifier = [*(*(&v15 + 1) + 8 * i) _ltLocaleIdentifier];
+        [array addObject:_ltLocaleIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -347,18 +347,18 @@ LABEL_7:
     while (v8);
   }
 
-  v12 = [a1 pairNamesForLocaleIdentifiers:v5];
+  v12 = [self pairNamesForLocaleIdentifiers:array];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)pairNamesForLocaleIdentifiers:(id)a3
++ (id)pairNamesForLocaleIdentifiers:(id)identifiers
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [a3 sortedArrayUsingSelector:sel_compare_];
-  v4 = [MEMORY[0x277CBEB18] array];
+  v3 = [identifiers sortedArrayUsingSelector:sel_compare_];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [v3 count];
   v26 = 0u;
   v27 = 0u;
@@ -402,7 +402,7 @@ LABEL_7:
               }
 
               v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v8, *(*(&v22 + 1) + 8 * j)];
-              [v4 addObject:v14];
+              [array addObject:v14];
             }
 
             v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -423,7 +423,7 @@ LABEL_7:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 @end

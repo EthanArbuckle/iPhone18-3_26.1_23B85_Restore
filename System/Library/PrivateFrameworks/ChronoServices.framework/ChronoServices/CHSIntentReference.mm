@@ -1,26 +1,26 @@
 @interface CHSIntentReference
 + (CHSIntentReference)new;
-+ (id)_decodeFromOPACK:(id)a3 error:(id *)a4;
-+ (id)_encodeToOPACK:(id)a3 error:(id *)a4;
-+ (id)_schemaDataFromIntent:(id)a3 error:(id *)a4;
-+ (id)referenceFromIntent:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_decodeFromOPACK:(id)k error:(id *)error;
++ (id)_encodeToOPACK:(id)k error:(id *)error;
++ (id)_schemaDataFromIntent:(id)intent error:(id *)error;
++ (id)referenceFromIntent:(id)intent error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (CHSIntentReference)init;
-- (CHSIntentReference)initWithBSXPCCoder:(id)a3;
-- (CHSIntentReference)initWithCoder:(id)a3;
-- (CHSIntentReference)initWithIntent:(id)a3;
-- (CHSIntentReference)initWithIntent:(id)a3 schemaData:(id)a4;
-- (CHSIntentReference)initWithIntentData:(id)a3 configData:(id)a4 schemaData:(id)a5 stableHash:(int64_t)a6;
+- (CHSIntentReference)initWithBSXPCCoder:(id)coder;
+- (CHSIntentReference)initWithCoder:(id)coder;
+- (CHSIntentReference)initWithIntent:(id)intent;
+- (CHSIntentReference)initWithIntent:(id)intent schemaData:(id)data;
+- (CHSIntentReference)initWithIntentData:(id)data configData:(id)configData schemaData:(id)schemaData stableHash:(int64_t)hash;
 - (INIntent)intent;
-- (id)_copyFillingInSchema:(id)a3;
+- (id)_copyFillingInSchema:(id)schema;
 - (id)_copyWithoutSchemaDataIfNecessary;
-- (id)_initWithGenericIntent:(id)a3 schemaData:(id)a4 error:(id *)p_isa;
-- (id)_initWithIntentInMemoryOnly:(id)a3;
+- (id)_initWithGenericIntent:(id)intent schemaData:(id)data error:(id *)p_isa;
+- (id)_initWithIntentInMemoryOnly:(id)only;
 - (id)_typedIntent;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSIntentReference
@@ -53,8 +53,8 @@
 
     if (!self->_partialSchemaData)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:146 description:@"Cannot rehydrate a partialized intent with missing schema data."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:146 description:@"Cannot rehydrate a partialized intent with missing schema data."];
 
       partialSchemaData = self->_partialSchemaData;
     }
@@ -127,13 +127,13 @@ LABEL_23:
 
 - (id)_typedIntent
 {
-  v2 = [(CHSIntentReference *)self intent];
-  if (v2)
+  intent = [(CHSIntentReference *)self intent];
+  if (intent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = intent;
     }
 
     else
@@ -154,81 +154,81 @@ LABEL_23:
 
 + (CHSIntentReference)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CHSIntentReference.m" lineNumber:34 description:@"+[CHSIntentReference new] is unavailable."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:34 description:@"+[CHSIntentReference new] is unavailable."];
 
   return 0;
 }
 
 - (CHSIntentReference)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:39 description:@"-[CHSIntentReference init] is unavailable."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:39 description:@"-[CHSIntentReference init] is unavailable."];
 
   return 0;
 }
 
-+ (id)referenceFromIntent:(id)a3 error:(id *)a4
++ (id)referenceFromIntent:(id)intent error:(id *)error
 {
-  v5 = a3;
-  v6 = [[CHSIntentReference alloc] _initWithGenericIntent:v5 schemaData:0 error:a4];
+  intentCopy = intent;
+  v6 = [[CHSIntentReference alloc] _initWithGenericIntent:intentCopy schemaData:0 error:error];
 
   return v6;
 }
 
-- (id)_initWithIntentInMemoryOnly:(id)a3
+- (id)_initWithIntentInMemoryOnly:(id)only
 {
-  v5 = a3;
+  onlyCopy = only;
   v9.receiver = self;
   v9.super_class = CHSIntentReference;
   v6 = [(CHSIntentReference *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inMemoryIntent, a3);
-    v7->_stableHash = [v5 _indexingHash];
+    objc_storeStrong(&v6->_inMemoryIntent, only);
+    v7->_stableHash = [onlyCopy _indexingHash];
   }
 
   return v7;
 }
 
-- (CHSIntentReference)initWithIntent:(id)a3
+- (CHSIntentReference)initWithIntent:(id)intent
 {
-  v4 = _genericiseIntent(a3);
+  v4 = _genericiseIntent(intent);
   v5 = [(CHSIntentReference *)self _initWithGenericIntent:v4 schemaData:0 error:0];
 
   return v5;
 }
 
-- (CHSIntentReference)initWithIntent:(id)a3 schemaData:(id)a4
+- (CHSIntentReference)initWithIntent:(id)intent schemaData:(id)data
 {
-  v6 = a4;
-  v7 = _genericiseIntent(a3);
-  v8 = [(CHSIntentReference *)self _initWithGenericIntent:v7 schemaData:v6 error:0];
+  dataCopy = data;
+  v7 = _genericiseIntent(intent);
+  v8 = [(CHSIntentReference *)self _initWithGenericIntent:v7 schemaData:dataCopy error:0];
 
   return v8;
 }
 
-- (id)_initWithGenericIntent:(id)a3 schemaData:(id)a4 error:(id *)p_isa
+- (id)_initWithGenericIntent:(id)intent schemaData:(id)data error:(id *)p_isa
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 _indexingHash];
-  if (v9)
+  intentCopy = intent;
+  dataCopy = data;
+  _indexingHash = [intentCopy _indexingHash];
+  if (dataCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v33 = 0;
-      v12 = [v8 _backingStoreData];
-      v13 = v12;
-      if (v12)
+      _backingStoreData = [intentCopy _backingStoreData];
+      v13 = _backingStoreData;
+      if (_backingStoreData)
       {
-        v14 = MEMORY[0x19A8C4E60](v12, 0, &v33);
+        v14 = MEMORY[0x19A8C4E60](_backingStoreData, 0, &v33);
         if (!v33)
         {
-          self = [(CHSIntentReference *)self initWithIntentData:0 configData:v14 schemaData:v9 stableHash:v10];
+          self = [(CHSIntentReference *)self initWithIntentData:0 configData:v14 schemaData:dataCopy stableHash:_indexingHash];
           p_isa = &self->super.isa;
           goto LABEL_20;
         }
@@ -262,7 +262,7 @@ LABEL_23:
         {
           v23 = objc_opt_class();
           v24 = NSStringFromClass(v23);
-          [(CHSIntentReference *)v24 _initWithGenericIntent:v8 schemaData:buf error:v22];
+          [(CHSIntentReference *)v24 _initWithGenericIntent:intentCopy schemaData:buf error:v22];
         }
 
         if (!p_isa)
@@ -292,10 +292,10 @@ LABEL_20:
     }
   }
 
-  v11 = [CHSIntentReference _encodeToOPACK:v8 error:p_isa];
+  v11 = [CHSIntentReference _encodeToOPACK:intentCopy error:p_isa];
   if (v11)
   {
-    self = [(CHSIntentReference *)self initWithIntentData:v11 configData:0 schemaData:0 stableHash:v10];
+    self = [(CHSIntentReference *)self initWithIntentData:v11 configData:0 schemaData:0 stableHash:_indexingHash];
     p_isa = &self->super.isa;
   }
 
@@ -309,18 +309,18 @@ LABEL_21:
   return p_isa;
 }
 
-- (CHSIntentReference)initWithIntentData:(id)a3 configData:(id)a4 schemaData:(id)a5 stableHash:(int64_t)a6
+- (CHSIntentReference)initWithIntentData:(id)data configData:(id)configData schemaData:(id)schemaData stableHash:(int64_t)hash
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = v14;
-  if (v12)
+  dataCopy = data;
+  configDataCopy = configData;
+  schemaDataCopy = schemaData;
+  v15 = schemaDataCopy;
+  if (dataCopy)
   {
-    if (v13)
+    if (configDataCopy)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:111 description:@"Can't specify split intent data along with unified intent data"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:111 description:@"Can't specify split intent data along with unified intent data"];
 
       if (!v15)
       {
@@ -328,24 +328,24 @@ LABEL_21:
       }
     }
 
-    else if (!v14)
+    else if (!schemaDataCopy)
     {
       goto LABEL_6;
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:112 description:@"Can't specify split condif data along with unified intent data"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:112 description:@"Can't specify split condif data along with unified intent data"];
   }
 
   else
   {
-    if (v13)
+    if (configDataCopy)
     {
       goto LABEL_6;
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:114 description:@"Must specify partial config data if not specifying unified intent data"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:114 description:@"Must specify partial config data if not specifying unified intent data"];
   }
 
 LABEL_6:
@@ -355,48 +355,48 @@ LABEL_6:
   v18 = v17;
   if (v17)
   {
-    v17->_stableHash = a6;
-    objc_storeStrong(&v17->_intentData, a3);
-    objc_storeStrong(&v18->_partialConfigData, a4);
-    objc_storeStrong(&v18->_partialSchemaData, a5);
+    v17->_stableHash = hash;
+    objc_storeStrong(&v17->_intentData, data);
+    objc_storeStrong(&v18->_partialConfigData, configData);
+    objc_storeStrong(&v18->_partialSchemaData, schemaData);
   }
 
   return v18;
 }
 
-- (id)_copyFillingInSchema:(id)a3
+- (id)_copyFillingInSchema:(id)schema
 {
-  v4 = a3;
-  v5 = v4;
+  schemaCopy = schema;
+  v5 = schemaCopy;
   if (self->_partialConfigData)
   {
-    if (self->_partialSchemaData == v4)
+    if (self->_partialSchemaData == schemaCopy)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = [[CHSIntentReference alloc] initWithIntentData:0 configData:self->_partialConfigData schemaData:v4 stableHash:self->_stableHash];
+      selfCopy = [[CHSIntentReference alloc] initWithIntentData:0 configData:self->_partialConfigData schemaData:schemaCopy stableHash:self->_stableHash];
     }
 
-    v9 = v6;
+    v9 = selfCopy;
   }
 
   else
   {
     v7 = [CHSIntentReference alloc];
-    v8 = [(CHSIntentReference *)self intent];
-    v9 = [(CHSIntentReference *)v7 initWithIntent:v8 schemaData:v5];
+    intent = [(CHSIntentReference *)self intent];
+    v9 = [(CHSIntentReference *)v7 initWithIntent:intent schemaData:v5];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -406,7 +406,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_stableHash == v5->_stableHash && (v6 = [(NSData *)self->_intentData length], v6 == [(NSData *)v5->_intentData length]) && (v7 = [(NSData *)self->_partialConfigData length], v7 == [(NSData *)v5->_partialConfigData length]))
       {
         inMemoryIntent = self->_inMemoryIntent;
@@ -448,11 +448,11 @@ LABEL_6:
   }
 }
 
-+ (id)_schemaDataFromIntent:(id)a3 error:(id *)a4
++ (id)_schemaDataFromIntent:(id)intent error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  intentCopy = intent;
+  if (!intentCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = 0;
 LABEL_4:
@@ -463,7 +463,7 @@ LABEL_4:
   }
 
   v22 = 0;
-  v11 = [v5 _copyWithoutBackingStoreData:&v22];
+  v11 = [intentCopy _copyWithoutBackingStoreData:&v22];
   v12 = v22;
   v21 = v12;
   v13 = [v11 widgetPlistableRepresentation:&v21];
@@ -505,11 +505,11 @@ LABEL_4:
     _os_log_impl(&dword_195EB2000, v19, OS_LOG_TYPE_DEFAULT, "Error extracting schema from intent: %{public}@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v7;
     v8 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -524,26 +524,26 @@ LABEL_5:
   return v8;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__CHSIntentReference_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E7453000;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:0 block:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   if (self->_inMemoryIntent)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:318 description:@"Cannot encode an in-memory representation of an intent."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:318 description:@"Cannot encode an in-memory representation of an intent."];
   }
 
   v5 = _unifiedIntentDataIfPossible(self);
@@ -558,40 +558,40 @@ LABEL_5:
   }
 
   v7 = partialConfigData;
-  [v9 encodeInt64:self->_stableHash forKey:@"stableHash"];
+  [coderCopy encodeInt64:self->_stableHash forKey:@"stableHash"];
   if (v5)
   {
-    [v9 encodeObject:v5 forKey:@"idata"];
+    [coderCopy encodeObject:v5 forKey:@"idata"];
   }
 
   if (v7)
   {
-    [v9 encodeObject:v7 forKey:@"pcdata"];
+    [coderCopy encodeObject:v7 forKey:@"pcdata"];
   }
 }
 
-- (CHSIntentReference)initWithCoder:(id)a3
+- (CHSIntentReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"stableHash"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idata"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pcdata"];
-  if (v5)
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeInt64ForKey:@"stableHash"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idata"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pcdata"];
+  if (selfCopy)
   {
-    self = [(CHSIntentReference *)self initWithIntentData:v6 configData:v7 schemaData:0 stableHash:v5];
-    v5 = self;
+    self = [(CHSIntentReference *)self initWithIntentData:v6 configData:v7 schemaData:0 stableHash:selfCopy];
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   if (self->_inMemoryIntent)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:349 description:@"Cannot encode an in-memory representation of an intent."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CHSIntentReference.m" lineNumber:349 description:@"Cannot encode an in-memory representation of an intent."];
   }
 
   v5 = _unifiedIntentDataIfPossible(self);
@@ -606,39 +606,39 @@ LABEL_5:
   }
 
   v7 = partialConfigData;
-  [v9 encodeInt64:self->_stableHash forKey:@"stableHash"];
+  [coderCopy encodeInt64:self->_stableHash forKey:@"stableHash"];
   if (v5)
   {
-    [v9 encodeObject:v5 forKey:@"idata"];
+    [coderCopy encodeObject:v5 forKey:@"idata"];
   }
 
   if (v7)
   {
-    [v9 encodeObject:v7 forKey:@"pcdata"];
+    [coderCopy encodeObject:v7 forKey:@"pcdata"];
   }
 }
 
-- (CHSIntentReference)initWithBSXPCCoder:(id)a3
+- (CHSIntentReference)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"stableHash"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idata"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pcdata"];
-  if (v5)
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeInt64ForKey:@"stableHash"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idata"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pcdata"];
+  if (selfCopy)
   {
-    self = [(CHSIntentReference *)self initWithIntentData:v6 configData:v7 schemaData:0 stableHash:v5];
-    v5 = self;
+    self = [(CHSIntentReference *)self initWithIntentData:v6 configData:v7 schemaData:0 stableHash:selfCopy];
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-+ (id)_encodeToOPACK:(id)a3 error:(id *)a4
++ (id)_encodeToOPACK:(id)k error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  kCopy = k;
   v23 = 0;
-  v6 = [v5 widgetPlistableRepresentation:&v23];
+  v6 = [kCopy widgetPlistableRepresentation:&v23];
   v7 = v23;
   v8 = [v6 mutableCopy];
 
@@ -684,11 +684,11 @@ LABEL_5:
   }
 
   v18 = 0;
-  if (a4 && v7)
+  if (error && v7)
   {
     v19 = v7;
     v18 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_13:
@@ -698,17 +698,17 @@ LABEL_13:
   return v18;
 }
 
-+ (id)_decodeFromOPACK:(id)a3 error:(id *)a4
++ (id)_decodeFromOPACK:(id)k error:(id *)error
 {
   v16 = 0;
   v5 = OPACKDecodeData();
   v6 = [v5 objectForKeyedSubscript:@"isAppIntent"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   if (v5)
   {
     v8 = 0x1E696E730;
-    if (!v7)
+    if (!bOOLValue)
     {
       v8 = 0x1E696E880;
     }
@@ -724,11 +724,11 @@ LABEL_13:
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CHSErrorDomain" code:6 userInfo:0];
     v11 = v12;
     v10 = 0;
-    if (a4 && v12)
+    if (error && v12)
     {
       v13 = v12;
       v10 = 0;
-      *a4 = v11;
+      *error = v11;
     }
   }
 

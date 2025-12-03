@@ -1,8 +1,8 @@
 @interface ClientIdentity
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
-- (ClientIdentity)initWithAuditToken:(id *)a3;
-- (ClientIdentity)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ClientIdentity)initWithAuditToken:(id *)token;
+- (ClientIdentity)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -16,12 +16,12 @@
   return self;
 }
 
-- (ClientIdentity)initWithCoder:(id)a3
+- (ClientIdentity)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v5 = a3;
-  v6 = [a3 decodeBytesForKey:@"auditToken" returnedLength:&v12];
+  coderCopy = coder;
+  v6 = [coder decodeBytesForKey:@"auditToken" returnedLength:&v12];
   if (v12 == 32)
   {
     v7 = v6[1];
@@ -30,20 +30,20 @@
     v11[0] = v13;
     v11[1] = v7;
     self = [(ClientIdentity *)self initWithAuditToken:v11];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_ErrorInvalidAu.isa);
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
-- (ClientIdentity)initWithAuditToken:(id *)a3
+- (ClientIdentity)initWithAuditToken:(id *)token
 {
   v48 = *MEMORY[0x277D85DE8];
   v42.receiver = self;
@@ -52,12 +52,12 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0[4];
-    *v4->_auditToken.val = *a3->var0;
+    v6 = *&token->var0[4];
+    *v4->_auditToken.val = *token->var0;
     *&v4->_auditToken.val[4] = v6;
     pidp = -1;
-    v7 = *&a3->var0[4];
-    *atoken.val = *a3->var0;
+    v7 = *&token->var0[4];
+    *atoken.val = *token->var0;
     *&atoken.val[4] = v7;
     audit_token_to_au32(&atoken, 0, 0, 0, 0, 0, &pidp, 0, 0);
     v8 = pidp;
@@ -69,27 +69,27 @@
     v5->_clientName = v9;
 
     v40[1] = 0;
-    v11 = *&a3->var0[4];
-    buffer = *a3->var0;
+    v11 = *&token->var0[4];
+    buffer = *token->var0;
     v46 = v11;
     CPCopyBundleIdentifierAndTeamFromAuditToken();
     v40[0] = 0;
-    v12 = *&a3->var0[4];
-    buffer = *a3->var0;
+    v12 = *&token->var0[4];
+    buffer = *token->var0;
     v46 = v12;
     v13 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:&buffer error:v40];
     v14 = v40[0];
-    v15 = [v13 teamIdentifier];
+    teamIdentifier = [v13 teamIdentifier];
     teamIdentifier = v5->_teamIdentifier;
-    v5->_teamIdentifier = v15;
+    v5->_teamIdentifier = teamIdentifier;
 
-    v17 = [v13 localizedName];
+    localizedName = [v13 localizedName];
     localizedName = v5->_localizedName;
-    v5->_localizedName = v17;
+    v5->_localizedName = localizedName;
 
-    v19 = [v13 bundleIdentifier];
+    bundleIdentifier = [v13 bundleIdentifier];
     bundleIdentifierShared = v5->_bundleIdentifierShared;
-    v5->_bundleIdentifierShared = v19;
+    v5->_bundleIdentifierShared = bundleIdentifier;
 
     if (!v5->_bundleIdentifierShared)
     {
@@ -114,9 +114,9 @@
           v23 = [MEMORY[0x277CBEBC0] fileURLWithPath:v22];
           v24 = _CFBundleCopyBundleURLForExecutableURL();
           v25 = [MEMORY[0x277CCA8D8] bundleWithURL:v24];
-          v26 = [v25 bundleIdentifier];
+          bundleIdentifier2 = [v25 bundleIdentifier];
           v27 = v5->_bundleIdentifierShared;
-          v5->_bundleIdentifierShared = v26;
+          v5->_bundleIdentifierShared = bundleIdentifier2;
         }
 
         else
@@ -185,13 +185,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(ClientIdentity *)self auditToken];
     memset(v12, 0, sizeof(v12));
     if (v5)
@@ -241,19 +241,19 @@
   v5 = [v3 initWithSuperclassDescription:v4];
 
   [v5 setKey:@"bundleIdentifier" withString:self->_bundleIdentifierShared];
-  v6 = [(ClientIdentity *)self applicationIdentifier];
-  [v5 setKey:@"applicationIdentifier" withString:v6];
+  applicationIdentifier = [(ClientIdentity *)self applicationIdentifier];
+  [v5 setKey:@"applicationIdentifier" withString:applicationIdentifier];
 
-  v7 = [(ClientIdentity *)self teamIdentifier];
-  [v5 setKey:@"teamIdentifier" withString:v7];
+  teamIdentifier = [(ClientIdentity *)self teamIdentifier];
+  [v5 setKey:@"teamIdentifier" withString:teamIdentifier];
 
-  v8 = [(ClientIdentity *)self clientName];
-  [v5 setKey:@"clientName" withString:v8];
+  clientName = [(ClientIdentity *)self clientName];
+  [v5 setKey:@"clientName" withString:clientName];
 
   [v5 setKey:@"pid" withProcessID:{-[ClientIdentity pid](self, "pid")}];
-  v9 = [v5 build];
+  build = [v5 build];
 
-  return v9;
+  return build;
 }
 
 @end

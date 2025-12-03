@@ -1,37 +1,37 @@
 @interface PRXAction
-+ (PRXAction)actionWithTitle:(id)a3 customColors:(id)a4 handler:(id)a5;
-+ (PRXAction)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
-+ (id)defaultDismissalActionForViewController:(id)a3;
-+ (id)dismissalConfirmationActionForViewController:(id)a3 withTitle:(id)a4 message:(id)a5 confirmButtonTitle:(id)a6 cancelButtonTitle:(id)a7;
-- (PRXAction)initWithTitle:(id)a3 style:(int64_t)a4 customColors:(id)a5 handler:(id)a6;
++ (PRXAction)actionWithTitle:(id)title customColors:(id)colors handler:(id)handler;
++ (PRXAction)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler;
++ (id)defaultDismissalActionForViewController:(id)controller;
++ (id)dismissalConfirmationActionForViewController:(id)controller withTitle:(id)title message:(id)message confirmButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle;
+- (PRXAction)initWithTitle:(id)title style:(int64_t)style customColors:(id)colors handler:(id)handler;
 - (UIButton)button;
 - (void)_callHandler;
-- (void)setButton:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)setButton:(id)button;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PRXAction
 
-- (PRXAction)initWithTitle:(id)a3 style:(int64_t)a4 customColors:(id)a5 handler:(id)a6
+- (PRXAction)initWithTitle:(id)title style:(int64_t)style customColors:(id)colors handler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  colorsCopy = colors;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PRXAction;
   v13 = [(PRXAction *)&v20 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v13->_style = a4;
-    v16 = MEMORY[0x2666F6B00](v12);
+    v13->_style = style;
+    v16 = MEMORY[0x2666F6B00](handlerCopy);
     handler = v13->_handler;
     v13->_handler = v16;
 
-    objc_storeStrong(&v13->_customColors, a5);
+    objc_storeStrong(&v13->_customColors, colors);
     v13->_enabled = 1;
     v18 = v13;
   }
@@ -39,21 +39,21 @@
   return v13;
 }
 
-+ (PRXAction)actionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
++ (PRXAction)actionWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTitle:v9 style:a4 customColors:0 handler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  v10 = [[self alloc] initWithTitle:titleCopy style:style customColors:0 handler:handlerCopy];
 
   return v10;
 }
 
-+ (PRXAction)actionWithTitle:(id)a3 customColors:(id)a4 handler:(id)a5
++ (PRXAction)actionWithTitle:(id)title customColors:(id)colors handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithTitle:v10 style:2 customColors:v9 handler:v8];
+  handlerCopy = handler;
+  colorsCopy = colors;
+  titleCopy = title;
+  v11 = [[self alloc] initWithTitle:titleCopy style:2 customColors:colorsCopy handler:handlerCopy];
 
   return v11;
 }
@@ -79,20 +79,20 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     WeakRetained = objc_loadWeakRetained(&self->_button);
-    [WeakRetained setEnabled:v4];
+    [WeakRetained setEnabled:enabledCopy];
   }
 }
 
-- (void)setButton:(id)a3
+- (void)setButton:(id)button
 {
-  obj = a3;
+  obj = button;
   WeakRetained = objc_loadWeakRetained(&self->_button);
 
   if (WeakRetained != obj)
@@ -119,28 +119,28 @@
   return WeakRetained;
 }
 
-+ (id)dismissalConfirmationActionForViewController:(id)a3 withTitle:(id)a4 message:(id)a5 confirmButtonTitle:(id)a6 cancelButtonTitle:(id)a7
++ (id)dismissalConfirmationActionForViewController:(id)controller withTitle:(id)title message:(id)message confirmButtonTitle:(id)buttonTitle cancelButtonTitle:(id)cancelButtonTitle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  objc_initWeak(&location, v12);
+  controllerCopy = controller;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  cancelButtonTitleCopy = cancelButtonTitle;
+  objc_initWeak(&location, controllerCopy);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __136__PRXAction_ViewControllerActions__dismissalConfirmationActionForViewController_withTitle_message_confirmButtonTitle_cancelButtonTitle___block_invoke;
   v23[3] = &unk_279ACC3F8;
   objc_copyWeak(&v28, &location);
-  v17 = v13;
+  v17 = titleCopy;
   v24 = v17;
-  v18 = v14;
+  v18 = messageCopy;
   v25 = v18;
-  v19 = v15;
+  v19 = buttonTitleCopy;
   v26 = v19;
-  v20 = v16;
+  v20 = cancelButtonTitleCopy;
   v27 = v20;
-  v21 = [a1 actionWithTitle:&stru_2873787A8 style:0 handler:v23];
+  v21 = [self actionWithTitle:&stru_2873787A8 style:0 handler:v23];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -181,16 +181,16 @@ void __136__PRXAction_ViewControllerActions__dismissalConfirmationActionForViewC
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-+ (id)defaultDismissalActionForViewController:(id)a3
++ (id)defaultDismissalActionForViewController:(id)controller
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  controllerCopy = controller;
+  objc_initWeak(&location, controllerCopy);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__PRXAction_ViewControllerActions__defaultDismissalActionForViewController___block_invoke;
   v7[3] = &unk_279ACC330;
   objc_copyWeak(&v8, &location);
-  v5 = [a1 actionWithTitle:&stru_2873787A8 style:0 handler:v7];
+  v5 = [self actionWithTitle:&stru_2873787A8 style:0 handler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 

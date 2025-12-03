@@ -1,39 +1,39 @@
 @interface AMAllowAmbientIdleTimerAttribute
 + (id)allowAmbientIdleTimer;
 + (id)allowAmbientIdleTimerForSleepFocus;
-- (AMAllowAmbientIdleTimerAttribute)initWithCoder:(id)a3;
-- (AMAllowAmbientIdleTimerAttribute)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AMAllowAmbientIdleTimerAttribute)initWithCoder:(id)coder;
+- (AMAllowAmbientIdleTimerAttribute)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initForSleepFocus:(BOOL)a3;
+- (id)initForSleepFocus:(BOOL)focus;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation AMAllowAmbientIdleTimerAttribute
 
 + (id)allowAmbientIdleTimer
 {
-  v2 = [[a1 alloc] initForSleepFocus:0];
+  v2 = [[self alloc] initForSleepFocus:0];
 
   return v2;
 }
 
 + (id)allowAmbientIdleTimerForSleepFocus
 {
-  v2 = [[a1 alloc] initForSleepFocus:1];
+  v2 = [[self alloc] initForSleepFocus:1];
 
   return v2;
 }
 
-- (id)initForSleepFocus:(BOOL)a3
+- (id)initForSleepFocus:(BOOL)focus
 {
   v5.receiver = self;
   v5.super_class = AMAllowAmbientIdleTimerAttribute;
   result = [(BLSAttribute *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = focus;
   }
 
   return result;
@@ -43,54 +43,54 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:self->_forSleepFocus withName:@"forSleepFocus" ifEqualTo:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_forSleepFocus];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_forSleepFocus];
+  v5 = [builder hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   forSleepFocus = self->_forSleepFocus;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__AMAllowAmbientIdleTimerAttribute_isEqual___block_invoke;
   v10[3] = &unk_278C73700;
-  v11 = v4;
-  v7 = v4;
+  v11 = equalCopy;
+  v7 = equalCopy;
   v8 = [v5 appendBool:forSleepFocus counterpart:v10];
   LOBYTE(forSleepFocus) = [v5 isEqual];
 
   return forSleepFocus;
 }
 
-- (AMAllowAmbientIdleTimerAttribute)initWithXPCDictionary:(id)a3
+- (AMAllowAmbientIdleTimerAttribute)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_BOOL(v4, [@"forSleepFocus" UTF8String]);
+  dictionaryCopy = dictionary;
+  v5 = xpc_dictionary_get_BOOL(dictionaryCopy, [@"forSleepFocus" UTF8String]);
 
   return [(AMAllowAmbientIdleTimerAttribute *)self initForSleepFocus:v5];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_BOOL(xdict, [@"forSleepFocus" UTF8String], self->_forSleepFocus);
 }
 
-- (AMAllowAmbientIdleTimerAttribute)initWithCoder:(id)a3
+- (AMAllowAmbientIdleTimerAttribute)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"forSleepFocus"];
+  v4 = [coder decodeBoolForKey:@"forSleepFocus"];
 
   return [(AMAllowAmbientIdleTimerAttribute *)self initForSleepFocus:v4];
 }

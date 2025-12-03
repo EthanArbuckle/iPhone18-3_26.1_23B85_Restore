@@ -1,16 +1,16 @@
 @interface SGSelfIdentification
-+ (id)processConversation:(id)a3 options:(unint64_t)a4;
-+ (id)processConversation:(id)a3 threadLength:(unint64_t)a4 options:(unint64_t)a5;
++ (id)processConversation:(id)conversation options:(unint64_t)options;
++ (id)processConversation:(id)conversation threadLength:(unint64_t)length options:(unint64_t)options;
 @end
 
 @implementation SGSelfIdentification
 
-+ (id)processConversation:(id)a3 options:(unint64_t)a4
++ (id)processConversation:(id)conversation options:(unint64_t)options
 {
   v6 = sgMap();
-  v7 = [a1 processConversation:v6 threadLength:0 options:a4 | 0x100];
+  0x100 = [self processConversation:v6 threadLength:0 options:options | 0x100];
 
-  return v7;
+  return 0x100;
 }
 
 SGTextMessageItem *__52__SGSelfIdentification_processConversation_options___block_invoke(uint64_t a1, void *a2)
@@ -52,27 +52,27 @@ SGTextMessageItem *__52__SGSelfIdentification_processConversation_options___bloc
   return v6;
 }
 
-+ (id)processConversation:(id)a3 threadLength:(unint64_t)a4 options:(unint64_t)a5
++ (id)processConversation:(id)conversation threadLength:(unint64_t)length options:(unint64_t)options
 {
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (![v9 count])
+  conversationCopy = conversation;
+  if (![conversationCopy count])
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:a1 file:@"SGSelfIdentification.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"conversation.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGSelfIdentification.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"conversation.count > 0"}];
   }
 
-  v46 = [v9 lastObject];
+  lastObject = [conversationCopy lastObject];
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
   v55 = __Block_byref_object_copy__7526;
   v56 = __Block_byref_object_dispose__7527;
   v57 = 0;
-  v10 = [v46 message];
-  v11 = [v10 isSent];
+  message = [lastObject message];
+  isSent = [message isSent];
 
-  if (v11)
+  if (isSent)
   {
     v12 = sgLogHandle();
     v45 = v12;
@@ -91,10 +91,10 @@ SGTextMessageItem *__52__SGSelfIdentification_processConversation_options___bloc
     v51[1] = 3221225472;
     v51[2] = __65__SGSelfIdentification_processConversation_threadLength_options___block_invoke;
     v51[3] = &__block_descriptor_48_e67___NSString_36__0_SGMSIPatternType__Q_8__NSString_16__NSString_24B32l;
-    v51[4] = a5;
-    v51[5] = a4;
+    v51[4] = options;
+    v51[5] = length;
     v14 = MEMORY[0x2383809F0](v51);
-    v15 = [v46 text];
+    text = [lastObject text];
     v16 = _PASNormalizeUnicodeStringMinimally();
 
     v17 = sgLogHandle();
@@ -133,27 +133,27 @@ SGTextMessageItem *__52__SGSelfIdentification_processConversation_options___bloc
     if (!v24)
     {
       v25 = [v43 regex2ForKey:@"NameRequest/F"];
-      for (i = [v9 count] - 2; ; --i)
+      for (i = [conversationCopy count] - 2; ; --i)
       {
-        v27 = [v9 count];
+        v27 = [conversationCopy count];
         v28 = v27 <= 3 ? 3 : v27;
         if (i < v28 - 3)
         {
           break;
         }
 
-        v29 = [v9 objectAtIndexedSubscript:i];
-        v30 = [v29 message];
-        if ([v30 isSent])
+        v29 = [conversationCopy objectAtIndexedSubscript:i];
+        message2 = [v29 message];
+        if ([message2 isSent])
         {
-          v31 = [v29 text];
+          text2 = [v29 text];
           v32 = _PASNormalizeUnicodeString();
           v33 = [v25 existsInString:v32];
 
           if (v33)
           {
-            v34 = [v33 hashId];
-            v35 = (v45[2].isa)(v45, *MEMORY[0x277D023D8], v34, v44, 0);
+            hashId = [v33 hashId];
+            v35 = (v45[2].isa)(v45, *MEMORY[0x277D023D8], hashId, v44, 0);
 
             if ([v35 length])
             {

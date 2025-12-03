@@ -1,15 +1,15 @@
 @interface SKUIExpandViewElement
-- (SKUIExpandViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIExpandViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIExpandViewElement
 
-- (SKUIExpandViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIExpandViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIExpandViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v14.receiver = self;
   v14.super_class = SKUIExpandViewElement;
-  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"open"];
+    v12 = [elementCopy getAttribute:@"open"];
     v11->_open = [v12 BOOLValue];
 
     v11->_previousIsOpen = v11->_open;
@@ -29,17 +29,17 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUIExpandViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     self->_previousIsOpen = self->_open;
-    self->_open = [(SKUIExpandViewElement *)v4 isOpen];
+    self->_open = [(SKUIExpandViewElement *)elementCopy isOpen];
   }
 
   [v6 setPreviousIsOpen:self->_previousIsOpen];

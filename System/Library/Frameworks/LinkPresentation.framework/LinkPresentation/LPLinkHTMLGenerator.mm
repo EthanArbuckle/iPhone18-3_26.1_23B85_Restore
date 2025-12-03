@@ -1,35 +1,35 @@
 @interface LPLinkHTMLGenerator
 - (DOMDocumentFragment)documentFragment;
-- (LPLinkHTMLGenerator)initWithMetadataLoadedFromURL:(id)a3 document:(id)a4;
-- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)a3 URL:(id)a4 document:(id)a5;
-- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)a3 document:(id)a4;
-- (LPLinkHTMLGenerator)initWithURL:(id)a3 document:(id)a4;
+- (LPLinkHTMLGenerator)initWithMetadataLoadedFromURL:(id)l document:(id)document;
+- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)properties URL:(id)l document:(id)document;
+- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)properties document:(id)document;
+- (LPLinkHTMLGenerator)initWithURL:(id)l document:(id)document;
 - (LPLinkHTMLGeneratorDelegate)delegate;
 - (LPPointUnit)rootWidth;
-- (id)_URLForImage:(id)a3;
-- (id)_URLForResource:(id)a3 withMIMEType:(id)a4;
+- (id)_URLForImage:(id)image;
+- (id)_URLForResource:(id)resource withMIMEType:(id)type;
 - (id)_createCaptionBar;
 - (id)_createMediaBottomCaptionBar;
 - (id)_createMediaComponent;
 - (id)_createMediaTopCaptionBar;
 - (id)_createQuoteComponent;
-- (id)_presentationOverrideBackgroundColorForProperties:(id)a3;
+- (id)_presentationOverrideBackgroundColorForProperties:(id)properties;
 - (void)_computePresentationPropertiesFromMetadata;
 - (void)_fetchMetadata;
 - (void)_rebuildView;
-- (void)_setPresentationProperties:(id)a3;
+- (void)_setPresentationProperties:(id)properties;
 - (void)clearCurrentLayout;
-- (void)setApplyCornerRadiusToLink:(BOOL)a3;
-- (void)setMetadata:(id)a3;
+- (void)setApplyCornerRadiusToLink:(BOOL)link;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation LPLinkHTMLGenerator
 
-- (LPLinkHTMLGenerator)initWithMetadataLoadedFromURL:(id)a3 document:(id)a4
+- (LPLinkHTMLGenerator)initWithMetadataLoadedFromURL:(id)l document:(id)document
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(LPLinkHTMLGenerator *)self initWithURL:v6 document:v7];
+  lCopy = l;
+  documentCopy = document;
+  v8 = [(LPLinkHTMLGenerator *)self initWithURL:lCopy document:documentCopy];
   v9 = v8;
   if (v8)
   {
@@ -40,30 +40,30 @@
   return v9;
 }
 
-- (LPLinkHTMLGenerator)initWithURL:(id)a3 document:(id)a4
+- (LPLinkHTMLGenerator)initWithURL:(id)l document:(id)document
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  documentCopy = document;
   v15.receiver = self;
   v15.super_class = LPLinkHTMLGenerator;
   v9 = [(LPLinkHTMLGenerator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_URL, a3);
+    objc_storeStrong(&v9->_URL, l);
     v10->_usesComputedPresentationProperties = 1;
     v10->_applyCornerRadiusToLink = 1;
     LPWebLock(v11, v12);
-    objc_storeStrong(&v10->_parentDocument, a4);
+    objc_storeStrong(&v10->_parentDocument, document);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)a3 document:(id)a4
+- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)properties document:(id)document
 {
-  v4 = [(LPLinkHTMLGenerator *)self initWithPresentationProperties:a3 URL:0 document:a4];
+  v4 = [(LPLinkHTMLGenerator *)self initWithPresentationProperties:properties URL:0 document:document];
   v5 = v4;
   if (v4)
   {
@@ -73,22 +73,22 @@
   return v5;
 }
 
-- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)a3 URL:(id)a4 document:(id)a5
+- (LPLinkHTMLGenerator)initWithPresentationProperties:(id)properties URL:(id)l document:(id)document
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  lCopy = l;
+  documentCopy = document;
   v17.receiver = self;
   v17.super_class = LPLinkHTMLGenerator;
   v11 = [(LPLinkHTMLGenerator *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_URL, a4);
+    objc_storeStrong(&v11->_URL, l);
     v12->_applyCornerRadiusToLink = 1;
     LPWebLock(v13, v14);
-    objc_storeStrong(&v12->_parentDocument, a5);
-    [(LPLinkHTMLGenerator *)v12 _setPresentationProperties:v8];
+    objc_storeStrong(&v12->_parentDocument, document);
+    [(LPLinkHTMLGenerator *)v12 _setPresentationProperties:propertiesCopy];
     v15 = v12;
   }
 
@@ -143,19 +143,19 @@ void __37__LPLinkHTMLGenerator__fetchMetadata__block_invoke_2(uint64_t a1)
     [(LPLinkHTMLGenerator *)self _rebuildView];
   }
 
-  v3 = [(DOMElement *)self->_rootElement ownerDocument];
-  v4 = [v3 createDocumentFragment];
+  ownerDocument = [(DOMElement *)self->_rootElement ownerDocument];
+  createDocumentFragment = [ownerDocument createDocumentFragment];
 
-  v5 = [v4 appendChild:self->_rootElement];
+  v5 = [createDocumentFragment appendChild:self->_rootElement];
 
-  return v4;
+  return createDocumentFragment;
 }
 
-- (void)setApplyCornerRadiusToLink:(BOOL)a3
+- (void)setApplyCornerRadiusToLink:(BOOL)link
 {
-  if (self->_applyCornerRadiusToLink != a3)
+  if (self->_applyCornerRadiusToLink != link)
   {
-    self->_applyCornerRadiusToLink = a3;
+    self->_applyCornerRadiusToLink = link;
     if (self->_everBuiltView)
     {
       [(LPLinkHTMLGenerator *)self _rebuildView];
@@ -163,52 +163,52 @@ void __37__LPLinkHTMLGenerator__fetchMetadata__block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)_URLForResource:(id)a3 withMIMEType:(id)a4
+- (id)_URLForResource:(id)resource withMIMEType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained linkHTMLGenerator:self URLForResource:v6 withMIMEType:v7];
-  v10 = [v9 absoluteString];
+  v9 = [WeakRetained linkHTMLGenerator:self URLForResource:resourceCopy withMIMEType:typeCopy];
+  absoluteString = [v9 absoluteString];
 
-  return v10;
+  return absoluteString;
 }
 
-- (id)_URLForImage:(id)a3
+- (id)_URLForImage:(id)image
 {
-  v4 = a3;
-  v5 = [v4 _alternateHTMLImageGenerator];
+  imageCopy = image;
+  _alternateHTMLImageGenerator = [imageCopy _alternateHTMLImageGenerator];
 
-  if (v5)
+  if (_alternateHTMLImageGenerator)
   {
-    v6 = [v4 _alternateHTMLImageGenerator];
-    v7 = v6[2]();
+    _alternateHTMLImageGenerator2 = [imageCopy _alternateHTMLImageGenerator];
+    v7 = _alternateHTMLImageGenerator2[2]();
 
-    v4 = v7;
+    imageCopy = v7;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (v9 = WeakRetained, v10 = objc_loadWeakRetained(&self->_delegate), v11 = objc_opt_respondsToSelector(), v10, v9, (v11 & 1) != 0))
   {
-    v12 = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v4 data];
-    v14 = [v4 MIMEType];
-    v15 = [v12 linkHTMLGenerator:self URLForResource:v13 withMIMEType:v14];
-    v16 = [v15 absoluteString];
+    mIMEType2 = objc_loadWeakRetained(&self->_delegate);
+    data = [imageCopy data];
+    mIMEType = [imageCopy MIMEType];
+    data2 = [mIMEType2 linkHTMLGenerator:self URLForResource:data withMIMEType:mIMEType];
+    absoluteString = [data2 absoluteString];
   }
 
   else
   {
     v17 = MEMORY[0x1E696AEC0];
-    v12 = [v4 MIMEType];
-    v13 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v14 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
-    v15 = [v4 data];
-    v18 = [v15 base64EncodedStringWithOptions:0];
-    v16 = [v17 stringWithFormat:@"data:%@base64, %@", v14, v18];;
+    mIMEType2 = [imageCopy MIMEType];
+    data = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    mIMEType = [mIMEType2 stringByAddingPercentEncodingWithAllowedCharacters:data];
+    data2 = [imageCopy data];
+    v18 = [data2 base64EncodedStringWithOptions:0];
+    absoluteString = [v17 stringWithFormat:@"data:%@base64, %@", mIMEType, v18];;
   }
 
-  return v16;
+  return absoluteString;
 }
 
 - (void)clearCurrentLayout
@@ -217,15 +217,15 @@ void __37__LPLinkHTMLGenerator__fetchMetadata__block_invoke_2(uint64_t a1)
   while ([(DOMElement *)self->_rootElement childElementCount])
   {
     rootElement = self->_rootElement;
-    v4 = [(DOMElement *)rootElement childNodes];
-    v5 = [v4 item:0];
+    childNodes = [(DOMElement *)rootElement childNodes];
+    v5 = [childNodes item:0];
     v6 = [(DOMElement *)rootElement removeChild:v5];
   }
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  objc_storeStrong(&self->_metadata, a3);
+  objc_storeStrong(&self->_metadata, metadata);
   [(LPLinkHTMLGenerator *)self _computePresentationPropertiesFromMetadata];
   if (self->_everBuiltView)
   {
@@ -243,72 +243,72 @@ void __37__LPLinkHTMLGenerator__fetchMetadata__block_invoke_2(uint64_t a1)
     [(LPLinkMetadataPresentationTransformer *)v4 setURL:self->_URL];
     [(LPLinkMetadataPresentationTransformer *)v4 setComplete:!self->_mayReceiveAdditionalMetadata];
     [(LPLinkMetadataPresentationTransformer *)v4 setAllowsTapToLoad:0];
-    v3 = [(LPLinkMetadataPresentationTransformer *)v4 presentationProperties];
-    [(LPLinkHTMLGenerator *)self _setPresentationProperties:v3];
+    presentationProperties = [(LPLinkMetadataPresentationTransformer *)v4 presentationProperties];
+    [(LPLinkHTMLGenerator *)self _setPresentationProperties:presentationProperties];
   }
 }
 
-- (void)_setPresentationProperties:(id)a3
+- (void)_setPresentationProperties:(id)properties
 {
-  v52 = a3;
+  propertiesCopy = properties;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v52 isPreliminary];
+    isPreliminary = [propertiesCopy isPreliminary];
   }
 
   else
   {
-    v4 = 0;
+    isPreliminary = 0;
   }
 
-  self->_isPreliminary = v4;
+  self->_isPreliminary = isPreliminary;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v52 style];
+    style = [propertiesCopy style];
   }
 
   else
   {
-    v5 = 0;
+    style = 0;
   }
 
-  self->_style = v5;
+  self->_style = style;
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v52 topCaption];
+    topCaption = [propertiesCopy topCaption];
   }
 
   else
   {
-    v6 = 0;
+    topCaption = 0;
   }
 
-  v51 = v6;
+  v51 = topCaption;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v52 bottomCaption];
+    bottomCaption = [propertiesCopy bottomCaption];
   }
 
   else
   {
-    v7 = 0;
+    bottomCaption = 0;
   }
 
-  v50 = v7;
+  v50 = bottomCaption;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v52 trailingTopCaption];
+    trailingTopCaption = [propertiesCopy trailingTopCaption];
   }
 
   else
   {
-    v8 = 0;
+    trailingTopCaption = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v52 trailingBottomCaption];
-    if (v6)
+    trailingBottomCaption = [propertiesCopy trailingBottomCaption];
+    if (topCaption)
     {
       goto LABEL_25;
     }
@@ -316,8 +316,8 @@ void __37__LPLinkHTMLGenerator__fetchMetadata__block_invoke_2(uint64_t a1)
 
   else
   {
-    v9 = 0;
-    if (v6)
+    trailingBottomCaption = 0;
+    if (topCaption)
     {
 LABEL_25:
       v12 = objc_alloc_init(LPCaptionBarPresentationProperties);
@@ -325,40 +325,40 @@ LABEL_25:
       self->_captionBar = v12;
 
       v14 = [(LPCaptionBarPresentationProperties *)self->_captionBar top];
-      v15 = [v14 leading];
-      [v15 setText:v6];
+      leading = [v14 leading];
+      [leading setText:topCaption];
 
-      v16 = [(LPCaptionBarPresentationProperties *)self->_captionBar bottom];
-      v17 = [v16 leading];
-      [v17 setText:v7];
+      bottom = [(LPCaptionBarPresentationProperties *)self->_captionBar bottom];
+      leading2 = [bottom leading];
+      [leading2 setText:bottomCaption];
 
       v18 = [(LPCaptionBarPresentationProperties *)self->_captionBar top];
-      v19 = [v18 trailing];
-      [v19 setText:v8];
+      trailing = [v18 trailing];
+      [trailing setText:trailingTopCaption];
 
-      v11 = [(LPCaptionBarPresentationProperties *)self->_captionBar bottom];
-      v20 = [v11 trailing];
-      [v20 setText:v9];
+      bottom2 = [(LPCaptionBarPresentationProperties *)self->_captionBar bottom];
+      trailing2 = [bottom2 trailing];
+      [trailing2 setText:trailingBottomCaption];
 
       goto LABEL_27;
     }
   }
 
-  if (v7 || v8 || v9)
+  if (bottomCaption || trailingTopCaption || trailingBottomCaption)
   {
     goto LABEL_25;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v52 captionBar];
-    v11 = self->_captionBar;
-    self->_captionBar = v10;
+    captionBar = [propertiesCopy captionBar];
+    bottom2 = self->_captionBar;
+    self->_captionBar = captionBar;
   }
 
   else
   {
-    v11 = self->_captionBar;
+    bottom2 = self->_captionBar;
     self->_captionBar = 0;
   }
 
@@ -366,169 +366,169 @@ LABEL_27:
 
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v52 icon];
-    if (v21)
+    icon = [propertiesCopy icon];
+    if (icon)
     {
-      [(LPCaptionBarPresentationProperties *)self->_captionBar setTrailingIcon:v21];
+      [(LPCaptionBarPresentationProperties *)self->_captionBar setTrailingIcon:icon];
     }
   }
 
   else
   {
-    v21 = 0;
+    icon = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v22 = [v52 mediaTopCaption];
+    mediaTopCaption = [propertiesCopy mediaTopCaption];
   }
 
   else
   {
-    v22 = 0;
+    mediaTopCaption = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v52 mediaBottomCaption];
+    mediaBottomCaption = [propertiesCopy mediaBottomCaption];
   }
 
   else
   {
-    v23 = 0;
+    mediaBottomCaption = 0;
   }
 
-  if (v22 | v23)
+  if (mediaTopCaption | mediaBottomCaption)
   {
     v24 = objc_alloc_init(LPCaptionBarPresentationProperties);
     mediaBottomCaptionBar = self->_mediaBottomCaptionBar;
     self->_mediaBottomCaptionBar = v24;
 
     v26 = [(LPCaptionBarPresentationProperties *)self->_mediaBottomCaptionBar top];
-    v27 = [v26 leading];
-    [v27 setText:v22];
+    leading3 = [v26 leading];
+    [leading3 setText:mediaTopCaption];
 
-    v28 = [(LPCaptionBarPresentationProperties *)self->_mediaBottomCaptionBar bottom];
-    v29 = [v28 leading];
-    [v29 setText:v23];
+    bottom3 = [(LPCaptionBarPresentationProperties *)self->_mediaBottomCaptionBar bottom];
+    leading4 = [bottom3 leading];
+    [leading4 setText:mediaBottomCaption];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v30 = [v52 mediaBottomCaptionBar];
-    v28 = self->_mediaBottomCaptionBar;
-    self->_mediaBottomCaptionBar = v30;
+    mediaBottomCaptionBar = [propertiesCopy mediaBottomCaptionBar];
+    bottom3 = self->_mediaBottomCaptionBar;
+    self->_mediaBottomCaptionBar = mediaBottomCaptionBar;
   }
 
   else
   {
-    v28 = self->_mediaBottomCaptionBar;
+    bottom3 = self->_mediaBottomCaptionBar;
     self->_mediaBottomCaptionBar = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v52 mediaTopCaptionBar];
+    mediaTopCaptionBar = [propertiesCopy mediaTopCaptionBar];
   }
 
   else
   {
-    v31 = 0;
+    mediaTopCaptionBar = 0;
   }
 
   mediaTopCaptionBar = self->_mediaTopCaptionBar;
-  self->_mediaTopCaptionBar = v31;
+  self->_mediaTopCaptionBar = mediaTopCaptionBar;
 
   if (objc_opt_respondsToSelector())
   {
-    v33 = [v52 quotedText];
+    quotedText = [propertiesCopy quotedText];
   }
 
   else
   {
-    v33 = 0;
+    quotedText = 0;
   }
 
   quotedText = self->_quotedText;
-  self->_quotedText = v33;
+  self->_quotedText = quotedText;
 
   if (objc_opt_respondsToSelector())
   {
-    v35 = [v52 image];
+    image = [propertiesCopy image];
   }
 
   else
   {
-    v35 = 0;
+    image = 0;
   }
 
   image = self->_image;
-  self->_image = v35;
+  self->_image = image;
 
   if (objc_opt_respondsToSelector())
   {
-    v37 = [v52 imageProperties];
+    imageProperties = [propertiesCopy imageProperties];
   }
 
   else
   {
-    v37 = 0;
+    imageProperties = 0;
   }
 
   imageProperties = self->_imageProperties;
-  self->_imageProperties = v37;
+  self->_imageProperties = imageProperties;
 
   style = self->_style;
-  v40 = [(LPCaptionBarPresentationProperties *)self->_captionBar trailingIcon];
-  v41 = v40;
-  if (!v40)
+  trailingIcon = [(LPCaptionBarPresentationProperties *)self->_captionBar trailingIcon];
+  leadingIcon = trailingIcon;
+  if (!trailingIcon)
   {
-    v41 = [(LPCaptionBarPresentationProperties *)self->_captionBar leadingIcon];
+    leadingIcon = [(LPCaptionBarPresentationProperties *)self->_captionBar leadingIcon];
   }
 
-  v42 = [LPTheme themeWithStyle:style icon:v41 platform:3 sizeClass:0 sizeClassParameters:0 hasButton:0 preferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
+  v42 = [LPTheme themeWithStyle:style icon:leadingIcon platform:3 sizeClass:0 sizeClassParameters:0 hasButton:0 preferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
   theme = self->_theme;
   self->_theme = v42;
 
-  if (!v40)
+  if (!trailingIcon)
   {
   }
 
-  v44 = [(LPLinkHTMLGenerator *)self _presentationOverrideBackgroundColorForProperties:v52];
+  v44 = [(LPLinkHTMLGenerator *)self _presentationOverrideBackgroundColorForProperties:propertiesCopy];
   v45 = v44;
   if (v44)
   {
-    v46 = v44;
+    backgroundColor = v44;
   }
 
   else
   {
-    v46 = [(LPTheme *)self->_theme backgroundColor];
+    backgroundColor = [(LPTheme *)self->_theme backgroundColor];
   }
 
   backgroundColor = self->_backgroundColor;
-  self->_backgroundColor = v46;
+  self->_backgroundColor = backgroundColor;
 
   if (objc_opt_respondsToSelector())
   {
-    v48 = [v52 dominantImageBackgroundColor];
+    dominantImageBackgroundColor = [propertiesCopy dominantImageBackgroundColor];
   }
 
   else
   {
-    v48 = 0;
+    dominantImageBackgroundColor = 0;
   }
 
   dominantImageBackgroundColor = self->_dominantImageBackgroundColor;
-  self->_dominantImageBackgroundColor = v48;
+  self->_dominantImageBackgroundColor = dominantImageBackgroundColor;
 }
 
-- (id)_presentationOverrideBackgroundColorForProperties:(id)a3
+- (id)_presentationOverrideBackgroundColorForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(LPTheme *)self->_theme mediaImage];
-  [v5 darkeningAmount];
-  v6 = presentationOverrideBackgroundColorForProperties(v4);
+  propertiesCopy = properties;
+  mediaImage = [(LPTheme *)self->_theme mediaImage];
+  [mediaImage darkeningAmount];
+  v6 = presentationOverrideBackgroundColorForProperties(propertiesCopy);
 
   return v6;
 }
@@ -536,22 +536,22 @@ LABEL_27:
 - (LPPointUnit)rootWidth
 {
   v3 = shouldUseSkinnyWidth(self->_style, self->_quotedText, self->_image, 0, 0);
-  v4 = [(LPLinkHTMLGenerator *)self theme];
-  v5 = [v4 captionBar];
-  v6 = [v5 minimumWidth];
-  [v6 value];
+  theme = [(LPLinkHTMLGenerator *)self theme];
+  captionBar = [theme captionBar];
+  minimumWidth = [captionBar minimumWidth];
+  [minimumWidth value];
   v8 = v7;
 
-  v9 = [(LPLinkHTMLGenerator *)self theme];
-  v10 = [v9 mediaTopCaptionBar];
-  v11 = [v10 minimumWidth];
-  [v11 value];
+  theme2 = [(LPLinkHTMLGenerator *)self theme];
+  mediaTopCaptionBar = [theme2 mediaTopCaptionBar];
+  minimumWidth2 = [mediaTopCaptionBar minimumWidth];
+  [minimumWidth2 value];
   v13 = v12;
 
-  v14 = [(LPLinkHTMLGenerator *)self theme];
-  v15 = [v14 mediaBottomCaptionBar];
-  v16 = [v15 minimumWidth];
-  [v16 value];
+  theme3 = [(LPLinkHTMLGenerator *)self theme];
+  mediaBottomCaptionBar = [theme3 mediaBottomCaptionBar];
+  minimumWidth3 = [mediaBottomCaptionBar minimumWidth];
+  [minimumWidth3 value];
   v18 = 300.0;
   if (v3)
   {
@@ -568,8 +568,8 @@ LABEL_27:
 - (id)_createCaptionBar
 {
   v3 = [LPEmailCompatibleHTMLCaptionBarComponent alloc];
-  v4 = [(LPTheme *)self->_theme captionBar];
-  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:v4 presentationProperties:self->_captionBar themePath:@"captionBar" generator:self];
+  captionBar = [(LPTheme *)self->_theme captionBar];
+  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:captionBar presentationProperties:self->_captionBar themePath:@"captionBar" generator:self];
 
   return v5;
 }
@@ -577,8 +577,8 @@ LABEL_27:
 - (id)_createMediaTopCaptionBar
 {
   v3 = [LPEmailCompatibleHTMLCaptionBarComponent alloc];
-  v4 = [(LPTheme *)self->_theme mediaTopCaptionBar];
-  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:v4 presentationProperties:self->_mediaTopCaptionBar themePath:@"mediaTopCaptionBar" generator:self];
+  mediaTopCaptionBar = [(LPTheme *)self->_theme mediaTopCaptionBar];
+  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:mediaTopCaptionBar presentationProperties:self->_mediaTopCaptionBar themePath:@"mediaTopCaptionBar" generator:self];
 
   return v5;
 }
@@ -586,8 +586,8 @@ LABEL_27:
 - (id)_createMediaBottomCaptionBar
 {
   v3 = [LPEmailCompatibleHTMLCaptionBarComponent alloc];
-  v4 = [(LPTheme *)self->_theme mediaBottomCaptionBar];
-  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:v4 presentationProperties:self->_mediaBottomCaptionBar themePath:@"mediaBottomCaptionBar" generator:self];
+  mediaBottomCaptionBar = [(LPTheme *)self->_theme mediaBottomCaptionBar];
+  v5 = [(LPEmailCompatibleHTMLCaptionBarComponent *)v3 initWithStyle:mediaBottomCaptionBar presentationProperties:self->_mediaBottomCaptionBar themePath:@"mediaBottomCaptionBar" generator:self];
 
   return v5;
 }
@@ -598,8 +598,8 @@ LABEL_27:
   {
     v3 = [LPEmailCompatibleHTMLImageComponent alloc];
     image = self->_image;
-    v5 = [(LPTheme *)self->_theme mediaImage];
-    v6 = [(LPEmailCompatibleHTMLImageComponent *)v3 initWithImage:image style:v5 themePath:@"mediaImage" generator:self];
+    mediaImage = [(LPTheme *)self->_theme mediaImage];
+    v6 = [(LPEmailCompatibleHTMLImageComponent *)v3 initWithImage:image style:mediaImage themePath:@"mediaImage" generator:self];
   }
 
   else
@@ -614,8 +614,8 @@ LABEL_27:
 {
   v3 = [LPEmailCompatibleHTMLQuoteComponent alloc];
   quotedText = self->_quotedText;
-  v5 = [(LPTheme *)self->_theme quotedText];
-  v6 = [(LPEmailCompatibleHTMLQuoteComponent *)v3 initWithText:quotedText style:v5 themePath:@"quotedText" generator:self];
+  quotedText = [(LPTheme *)self->_theme quotedText];
+  v6 = [(LPEmailCompatibleHTMLQuoteComponent *)v3 initWithText:quotedText style:quotedText themePath:@"quotedText" generator:self];
 
   return v6;
 }
@@ -625,9 +625,9 @@ LABEL_27:
   LPWebLock(self, a2);
   if (!self->_rootElement)
   {
-    v3 = [(LPLinkHTMLGenerator *)self _createRootElement];
+    _createRootElement = [(LPLinkHTMLGenerator *)self _createRootElement];
     rootElement = self->_rootElement;
-    self->_rootElement = v3;
+    self->_rootElement = _createRootElement;
   }
 
   v5 = [[LPCSSResolver alloc] initWithTheme:self->_theme];
@@ -635,7 +635,7 @@ LABEL_27:
   self->_cssResolver = v5;
 
   [(LPLinkHTMLGenerator *)self clearCurrentLayout];
-  v7 = [(LPCaptionBarPresentationProperties *)self->_captionBar hasAnyContent];
+  hasAnyContent = [(LPCaptionBarPresentationProperties *)self->_captionBar hasAnyContent];
   quotedText = self->_quotedText;
   image = self->_image;
   v10 = [[LPEmailCompatibleHTMLLinkComponent alloc] initWithURL:self->_URL generator:self];
@@ -645,44 +645,44 @@ LABEL_27:
   v20 = [[LPEmailCompatibleHTMLTableComponent alloc] initWithThemePath:@"emailBaseTable" generator:self];
   if (image)
   {
-    v12 = [(LPLinkHTMLGenerator *)self _createMediaComponent];
-    if (v12)
+    _createMediaComponent = [(LPLinkHTMLGenerator *)self _createMediaComponent];
+    if (_createMediaComponent)
     {
-      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:v12];
+      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:_createMediaComponent];
     }
   }
 
   if (quotedText)
   {
-    v13 = [(LPLinkHTMLGenerator *)self _createQuoteComponent];
-    if (v13)
+    _createQuoteComponent = [(LPLinkHTMLGenerator *)self _createQuoteComponent];
+    if (_createQuoteComponent)
     {
-      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:v13];
+      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:_createQuoteComponent];
     }
   }
 
-  if (v7)
+  if (hasAnyContent)
   {
     if ([(LPCaptionBarPresentationProperties *)self->_mediaTopCaptionBar hasAnyContent])
     {
-      v14 = [(LPLinkHTMLGenerator *)self _createMediaTopCaptionBar];
-      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:v14];
+      _createMediaTopCaptionBar = [(LPLinkHTMLGenerator *)self _createMediaTopCaptionBar];
+      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:_createMediaTopCaptionBar];
     }
 
     if ([(LPCaptionBarPresentationProperties *)self->_mediaBottomCaptionBar hasAnyContent])
     {
-      v15 = [(LPLinkHTMLGenerator *)self _createMediaBottomCaptionBar];
-      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:v15];
+      _createMediaBottomCaptionBar = [(LPLinkHTMLGenerator *)self _createMediaBottomCaptionBar];
+      [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:_createMediaBottomCaptionBar];
     }
 
-    v16 = [(LPLinkHTMLGenerator *)self _createCaptionBar];
-    [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:v16];
+    _createCaptionBar = [(LPLinkHTMLGenerator *)self _createCaptionBar];
+    [(LPEmailCompatibleHTMLTableComponent *)v20 addChildAsRow:_createCaptionBar];
   }
 
   [(LPHTMLComponent *)self->_linkComponent addChild:v20];
   v17 = self->_rootElement;
-  v18 = [(LPHTMLComponent *)self->_linkComponent element];
-  v19 = [(DOMElement *)v17 appendChild:v18];
+  element = [(LPHTMLComponent *)self->_linkComponent element];
+  v19 = [(DOMElement *)v17 appendChild:element];
 
   self->_everBuiltView = 1;
 }

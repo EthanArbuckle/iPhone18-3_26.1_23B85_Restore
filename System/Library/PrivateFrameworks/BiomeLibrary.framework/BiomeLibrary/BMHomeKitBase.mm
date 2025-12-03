@@ -1,39 +1,39 @@
 @interface BMHomeKitBase
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHomeKitBase)initWithAbsoluteTimestamp:(id)a3 duration:(id)a4 homeUniqueIdentifier:(id)a5 homeOccupancy:(id)a6 source:(id)a7 clientName:(id)a8 eventCorrelationIdentifier:(id)a9;
-- (BMHomeKitBase)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMHomeKitBase)initWithAbsoluteTimestamp:(id)timestamp duration:(id)duration homeUniqueIdentifier:(id)identifier homeOccupancy:(id)occupancy source:(id)source clientName:(id)name eventCorrelationIdentifier:(id)correlationIdentifier;
+- (BMHomeKitBase)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHomeKitBase
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMHomeKitBase *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMHomeKitBase *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMHomeKitBase *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMHomeKitBase *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -62,18 +62,18 @@
       }
     }
 
-    v16 = [(BMHomeKitBase *)self homeUniqueIdentifier];
-    v17 = [v5 homeUniqueIdentifier];
-    v18 = v17;
-    if (v16 == v17)
+    homeUniqueIdentifier = [(BMHomeKitBase *)self homeUniqueIdentifier];
+    homeUniqueIdentifier2 = [v5 homeUniqueIdentifier];
+    v18 = homeUniqueIdentifier2;
+    if (homeUniqueIdentifier == homeUniqueIdentifier2)
     {
     }
 
     else
     {
-      v19 = [(BMHomeKitBase *)self homeUniqueIdentifier];
-      v20 = [v5 homeUniqueIdentifier];
-      v21 = [v19 isEqual:v20];
+      homeUniqueIdentifier3 = [(BMHomeKitBase *)self homeUniqueIdentifier];
+      homeUniqueIdentifier4 = [v5 homeUniqueIdentifier];
+      v21 = [homeUniqueIdentifier3 isEqual:homeUniqueIdentifier4];
 
       if (!v21)
       {
@@ -93,25 +93,25 @@
         goto LABEL_27;
       }
 
-      v22 = [(BMHomeKitBase *)self homeOccupancy];
-      if (v22 != [v5 homeOccupancy])
+      homeOccupancy = [(BMHomeKitBase *)self homeOccupancy];
+      if (homeOccupancy != [v5 homeOccupancy])
       {
         goto LABEL_27;
       }
     }
 
-    v23 = [(BMHomeKitBase *)self source];
-    v24 = [v5 source];
-    v25 = v24;
-    if (v23 == v24)
+    source = [(BMHomeKitBase *)self source];
+    source2 = [v5 source];
+    v25 = source2;
+    if (source == source2)
     {
     }
 
     else
     {
-      v26 = [(BMHomeKitBase *)self source];
-      v27 = [v5 source];
-      v28 = [v26 isEqual:v27];
+      source3 = [(BMHomeKitBase *)self source];
+      source4 = [v5 source];
+      v28 = [source3 isEqual:source4];
 
       if (!v28)
       {
@@ -119,18 +119,18 @@
       }
     }
 
-    v29 = [(BMHomeKitBase *)self clientName];
-    v30 = [v5 clientName];
-    v31 = v30;
-    if (v29 == v30)
+    clientName = [(BMHomeKitBase *)self clientName];
+    clientName2 = [v5 clientName];
+    v31 = clientName2;
+    if (clientName == clientName2)
     {
     }
 
     else
     {
-      v32 = [(BMHomeKitBase *)self clientName];
-      v33 = [v5 clientName];
-      v34 = [v32 isEqual:v33];
+      clientName3 = [(BMHomeKitBase *)self clientName];
+      clientName4 = [v5 clientName];
+      v34 = [clientName3 isEqual:clientName4];
 
       if (!v34)
       {
@@ -142,18 +142,18 @@ LABEL_28:
       }
     }
 
-    v36 = [(BMHomeKitBase *)self eventCorrelationIdentifier];
-    v37 = [v5 eventCorrelationIdentifier];
-    if (v36 == v37)
+    eventCorrelationIdentifier = [(BMHomeKitBase *)self eventCorrelationIdentifier];
+    eventCorrelationIdentifier2 = [v5 eventCorrelationIdentifier];
+    if (eventCorrelationIdentifier == eventCorrelationIdentifier2)
     {
       v12 = 1;
     }
 
     else
     {
-      v38 = [(BMHomeKitBase *)self eventCorrelationIdentifier];
-      v39 = [v5 eventCorrelationIdentifier];
-      v12 = [v38 isEqual:v39];
+      eventCorrelationIdentifier3 = [(BMHomeKitBase *)self eventCorrelationIdentifier];
+      eventCorrelationIdentifier4 = [v5 eventCorrelationIdentifier];
+      v12 = [eventCorrelationIdentifier3 isEqual:eventCorrelationIdentifier4];
     }
 
     goto LABEL_28;
@@ -185,12 +185,12 @@ LABEL_29:
 - (id)jsonDictionary
 {
   v31[7] = *MEMORY[0x1E69E9840];
-  v3 = [(BMHomeKitBase *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMHomeKitBase *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMHomeKitBase *)self absoluteTimestamp];
-    [v5 timeIntervalSince1970];
+    absoluteTimestamp2 = [(BMHomeKitBase *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -212,7 +212,7 @@ LABEL_29:
     v9 = [v8 numberWithDouble:?];
   }
 
-  v10 = [(BMHomeKitBase *)self homeUniqueIdentifier];
+  homeUniqueIdentifier = [(BMHomeKitBase *)self homeUniqueIdentifier];
   if ([(BMHomeKitBase *)self hasHomeOccupancy])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMHomeKitBase homeOccupancy](self, "homeOccupancy")}];
@@ -223,81 +223,81 @@ LABEL_29:
     v11 = 0;
   }
 
-  v12 = [(BMHomeKitBase *)self source];
-  v13 = [(BMHomeKitBase *)self clientName];
-  v14 = [(BMHomeKitBase *)self eventCorrelationIdentifier];
+  source = [(BMHomeKitBase *)self source];
+  clientName = [(BMHomeKitBase *)self clientName];
+  eventCorrelationIdentifier = [(BMHomeKitBase *)self eventCorrelationIdentifier];
   v30[0] = @"absoluteTimestamp";
-  v15 = v6;
+  null = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v15;
-  v31[0] = v15;
+  v27 = null;
+  v31[0] = null;
   v30[1] = @"duration";
-  v16 = v9;
+  null2 = v9;
   if (!v9)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v16;
-  v31[1] = v16;
+  v26 = null2;
+  v31[1] = null2;
   v30[2] = @"homeUniqueIdentifier";
-  v17 = v10;
-  if (!v10)
+  null3 = homeUniqueIdentifier;
+  if (!homeUniqueIdentifier)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v29 = v6;
-  v25 = v17;
-  v31[2] = v17;
+  v25 = null3;
+  v31[2] = null3;
   v30[3] = @"homeOccupancy";
-  v18 = v11;
+  null4 = v11;
   if (!v11)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v28 = v9;
-  v31[3] = v18;
+  v31[3] = null4;
   v30[4] = @"source";
-  v19 = v12;
-  if (!v12)
+  null5 = source;
+  if (!source)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[4] = v19;
+  v31[4] = null5;
   v30[5] = @"clientName";
-  v20 = v13;
-  if (!v13)
+  null6 = clientName;
+  if (!clientName)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[5] = v20;
+  v31[5] = null6;
   v30[6] = @"eventCorrelationIdentifier";
-  v21 = v14;
-  if (!v14)
+  null7 = eventCorrelationIdentifier;
+  if (!eventCorrelationIdentifier)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[6] = v21;
+  v31[6] = null7;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:7];
-  if (v14)
+  if (eventCorrelationIdentifier)
   {
-    if (v13)
+    if (clientName)
     {
       goto LABEL_27;
     }
 
 LABEL_37:
 
-    if (v12)
+    if (source)
     {
       goto LABEL_28;
     }
@@ -305,13 +305,13 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (!v13)
+  if (!clientName)
   {
     goto LABEL_37;
   }
 
 LABEL_27:
-  if (v12)
+  if (source)
   {
     goto LABEL_28;
   }
@@ -323,7 +323,7 @@ LABEL_28:
   {
   }
 
-  if (v10)
+  if (homeUniqueIdentifier)
   {
     if (v28)
     {
@@ -359,23 +359,23 @@ LABEL_33:
   return v22;
 }
 
-- (BMHomeKitBase)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHomeKitBase)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v16 = [v6 objectForKeyedSubscript:@"duration"];
-    v50 = a4;
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+    errorCopy = error;
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v26 = 0;
           v25 = 0;
@@ -390,7 +390,7 @@ LABEL_9:
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
         v26 = 0;
         v25 = 0;
-        *v50 = [v29 initWithDomain:v30 code:2 userInfo:v17];
+        *errorCopy = [v29 initWithDomain:v30 code:2 userInfo:v17];
         goto LABEL_33;
       }
 
@@ -402,14 +402,14 @@ LABEL_9:
       v55 = 0;
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"homeUniqueIdentifier"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"homeUniqueIdentifier"];
     v51 = v7;
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v56 = 0;
           v25 = 0;
@@ -426,7 +426,7 @@ LABEL_9:
         v32 = [v57 initWithDomain:v31 code:2 userInfo:v18];
         v56 = 0;
         v25 = 0;
-        *v50 = v32;
+        *errorCopy = v32;
         goto LABEL_66;
       }
 
@@ -438,12 +438,12 @@ LABEL_9:
       v56 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"homeOccupancy"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"homeOccupancy"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v54 = 0;
 LABEL_18:
-      v19 = [v6 objectForKeyedSubscript:@"source"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"source"];
       v48 = v16;
       v49 = v8;
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -451,14 +451,14 @@ LABEL_18:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v50)
+          if (!errorCopy)
           {
             v52 = 0;
             v25 = 0;
             goto LABEL_30;
           }
 
-          v21 = self;
+          selfCopy3 = self;
           v53 = objc_alloc(MEMORY[0x1E696ABC0]);
           v36 = *MEMORY[0x1E698F240];
           v62 = *MEMORY[0x1E696A578];
@@ -468,10 +468,10 @@ LABEL_18:
           v37 = [v53 initWithDomain:v36 code:2 userInfo:v20];
           v52 = 0;
           v25 = 0;
-          *v50 = v37;
+          *errorCopy = v37;
 LABEL_29:
 
-          self = v21;
+          self = selfCopy3;
           v8 = v49;
 LABEL_30:
           v16 = v48;
@@ -493,14 +493,14 @@ LABEL_33:
         v52 = 0;
       }
 
-      v20 = [v6 objectForKeyedSubscript:@"clientName"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"clientName"];
       if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
-        v21 = self;
+        selfCopy3 = self;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v50)
+          if (!errorCopy)
           {
             v22 = 0;
             v25 = 0;
@@ -516,7 +516,7 @@ LABEL_33:
           v40 = [v38 initWithDomain:v39 code:2 userInfo:v23];
           v22 = 0;
           v25 = 0;
-          *v50 = v40;
+          *errorCopy = v40;
           goto LABEL_28;
         }
 
@@ -525,17 +525,17 @@ LABEL_33:
 
       else
       {
-        v21 = self;
+        selfCopy3 = self;
         v22 = 0;
       }
 
-      v23 = [v6 objectForKeyedSubscript:@"eventCorrelationIdentifier"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"eventCorrelationIdentifier"];
       if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v50)
+          if (errorCopy)
           {
             v47 = objc_alloc(MEMORY[0x1E696ABC0]);
             v46 = *MEMORY[0x1E698F240];
@@ -543,7 +543,7 @@ LABEL_33:
             v41 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"eventCorrelationIdentifier"];
             v59 = v41;
             v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-            *v50 = [v47 initWithDomain:v46 code:2 userInfo:v42];
+            *errorCopy = [v47 initWithDomain:v46 code:2 userInfo:v42];
           }
 
           v24 = 0;
@@ -559,8 +559,8 @@ LABEL_33:
         v24 = 0;
       }
 
-      v25 = [(BMHomeKitBase *)v21 initWithAbsoluteTimestamp:v49 duration:v55 homeUniqueIdentifier:v56 homeOccupancy:v54 source:v52 clientName:v22 eventCorrelationIdentifier:v24];
-      v21 = v25;
+      v25 = [(BMHomeKitBase *)selfCopy3 initWithAbsoluteTimestamp:v49 duration:v55 homeUniqueIdentifier:v56 homeOccupancy:v54 source:v52 clientName:v22 eventCorrelationIdentifier:v24];
+      selfCopy3 = v25;
 LABEL_28:
 
       goto LABEL_29;
@@ -573,7 +573,7 @@ LABEL_28:
       goto LABEL_18;
     }
 
-    if (a4)
+    if (error)
     {
       v33 = objc_alloc(MEMORY[0x1E696ABC0]);
       v34 = *MEMORY[0x1E698F240];
@@ -584,7 +584,7 @@ LABEL_28:
       v35 = [v33 initWithDomain:v34 code:2 userInfo:v19];
       v54 = 0;
       v25 = 0;
-      *v50 = v35;
+      *errorCopy = v35;
       goto LABEL_31;
     }
 
@@ -626,7 +626,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v25 = 0;
@@ -634,7 +634,7 @@ LABEL_6:
   }
 
   v43 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v44 = a4;
+  errorCopy2 = error;
   v45 = *MEMORY[0x1E698F240];
   v70 = *MEMORY[0x1E696A578];
   v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"absoluteTimestamp"];
@@ -642,7 +642,7 @@ LABEL_6:
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:1];
   v8 = 0;
   v25 = 0;
-  *v44 = [v43 initWithDomain:v45 code:2 userInfo:v16];
+  *errorCopy2 = [v43 initWithDomain:v45 code:2 userInfo:v16];
 LABEL_34:
 
 LABEL_35:
@@ -654,64 +654,64 @@ LABEL_35:
 {
   v3 = objc_opt_new();
   [(BMHomeKitBase *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasDuration)
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_homeUniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasHomeOccupancy)
   {
     homeOccupancy = self->_homeOccupancy;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_source)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_eventCorrelationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMHomeKitBase;
   v5 = [(BMEventBase *)&v37 init];
@@ -720,12 +720,12 @@ LABEL_35:
     goto LABEL_61;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -736,18 +736,18 @@ LABEL_35:
       while (1)
       {
         LOBYTE(v38) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v38 & 0x7F) << v7;
@@ -765,9 +765,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -779,18 +779,18 @@ LABEL_16:
         {
           v5->_hasRaw_absoluteTimestamp = 1;
           v38 = 0;
-          v18 = [v4 position] + 8;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 8;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v38 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 = v38;
@@ -802,18 +802,18 @@ LABEL_16:
         {
           v5->_hasDuration = 1;
           v38 = 0;
-          v28 = [v4 position] + 8;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 8, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 8;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 8, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:&v38 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 = v38;
@@ -869,18 +869,18 @@ LABEL_33:
           while (1)
           {
             LOBYTE(v38) = 0;
-            v23 = [v4 position] + 1;
-            if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+            v23 = [fromCopy position] + 1;
+            if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
             {
-              v25 = [v4 data];
-              [v25 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v22 |= (v38 & 0x7F) << v20;
@@ -898,7 +898,7 @@ LABEL_33:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v26 = 0;
           }
@@ -926,13 +926,13 @@ LABEL_52:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_58:
-      v34 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v34 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_60:
     v35 = 0;
@@ -950,39 +950,39 @@ LABEL_61:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMHomeKitBase *)self absoluteTimestamp];
+  absoluteTimestamp = [(BMHomeKitBase *)self absoluteTimestamp];
   v5 = MEMORY[0x1E696AD98];
   [(BMHomeKitBase *)self duration];
   v6 = [v5 numberWithDouble:?];
-  v7 = [(BMHomeKitBase *)self homeUniqueIdentifier];
+  homeUniqueIdentifier = [(BMHomeKitBase *)self homeUniqueIdentifier];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMHomeKitBase homeOccupancy](self, "homeOccupancy")}];
-  v9 = [(BMHomeKitBase *)self source];
-  v10 = [(BMHomeKitBase *)self clientName];
-  v11 = [(BMHomeKitBase *)self eventCorrelationIdentifier];
-  v12 = [v3 initWithFormat:@"BMHomeKitBase with absoluteTimestamp: %@, duration: %@, homeUniqueIdentifier: %@, homeOccupancy: %@, source: %@, clientName: %@, eventCorrelationIdentifier: %@", v4, v6, v7, v8, v9, v10, v11];
+  source = [(BMHomeKitBase *)self source];
+  clientName = [(BMHomeKitBase *)self clientName];
+  eventCorrelationIdentifier = [(BMHomeKitBase *)self eventCorrelationIdentifier];
+  v12 = [v3 initWithFormat:@"BMHomeKitBase with absoluteTimestamp: %@, duration: %@, homeUniqueIdentifier: %@, homeOccupancy: %@, source: %@, clientName: %@, eventCorrelationIdentifier: %@", absoluteTimestamp, v6, homeUniqueIdentifier, v8, source, clientName, eventCorrelationIdentifier];
 
   return v12;
 }
 
-- (BMHomeKitBase)initWithAbsoluteTimestamp:(id)a3 duration:(id)a4 homeUniqueIdentifier:(id)a5 homeOccupancy:(id)a6 source:(id)a7 clientName:(id)a8 eventCorrelationIdentifier:(id)a9
+- (BMHomeKitBase)initWithAbsoluteTimestamp:(id)timestamp duration:(id)duration homeUniqueIdentifier:(id)identifier homeOccupancy:(id)occupancy source:(id)source clientName:(id)name eventCorrelationIdentifier:(id)correlationIdentifier
 {
-  v15 = a3;
-  v16 = a4;
-  v26 = a5;
-  v17 = a6;
-  v25 = a7;
-  v18 = a8;
-  v19 = a9;
+  timestampCopy = timestamp;
+  durationCopy = duration;
+  identifierCopy = identifier;
+  occupancyCopy = occupancy;
+  sourceCopy = source;
+  nameCopy = name;
+  correlationIdentifierCopy = correlationIdentifier;
   v27.receiver = self;
   v27.super_class = BMHomeKitBase;
   v20 = [(BMEventBase *)&v27 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v15)
+    if (timestampCopy)
     {
       v20->_hasRaw_absoluteTimestamp = 1;
-      [v15 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -992,10 +992,10 @@ LABEL_61:
     }
 
     v20->_raw_absoluteTimestamp = v21;
-    if (v16)
+    if (durationCopy)
     {
       v20->_hasDuration = 1;
-      [v16 doubleValue];
+      [durationCopy doubleValue];
     }
 
     else
@@ -1005,23 +1005,23 @@ LABEL_61:
     }
 
     v20->_duration = v22;
-    objc_storeStrong(&v20->_homeUniqueIdentifier, a5);
-    if (v17)
+    objc_storeStrong(&v20->_homeUniqueIdentifier, identifier);
+    if (occupancyCopy)
     {
       v20->_hasHomeOccupancy = 1;
-      v23 = [v17 intValue];
+      intValue = [occupancyCopy intValue];
     }
 
     else
     {
       v20->_hasHomeOccupancy = 0;
-      v23 = -1;
+      intValue = -1;
     }
 
-    v20->_homeOccupancy = v23;
-    objc_storeStrong(&v20->_source, a7);
-    objc_storeStrong(&v20->_clientName, a8);
-    objc_storeStrong(&v20->_eventCorrelationIdentifier, a9);
+    v20->_homeOccupancy = intValue;
+    objc_storeStrong(&v20->_source, source);
+    objc_storeStrong(&v20->_clientName, name);
+    objc_storeStrong(&v20->_eventCorrelationIdentifier, correlationIdentifier);
   }
 
   return v20;
@@ -1074,9 +1074,9 @@ LABEL_61:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1084,8 +1084,8 @@ LABEL_61:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMHomeKitBase alloc] initByReadFrom:v7];
     v4 = v8;

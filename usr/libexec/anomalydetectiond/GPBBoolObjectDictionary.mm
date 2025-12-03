@@ -1,28 +1,28 @@
 @interface GPBBoolObjectDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInitialized;
-- (GPBBoolObjectDictionary)initWithDictionary:(id)a3;
-- (GPBBoolObjectDictionary)initWithObjects:(const void *)a3 forKeys:(const BOOL *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepCopyWithZone:(_NSZone *)a3;
+- (GPBBoolObjectDictionary)initWithDictionary:(id)dictionary;
+- (GPBBoolObjectDictionary)initWithObjects:(const void *)objects forKeys:(const BOOL *)keys count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepCopyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)computeSerializedSizeAsField:(id)a3;
+- (unint64_t)computeSerializedSizeAsField:(id)field;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)addEntriesFromDictionary:(id)a3;
+- (void)addEntriesFromDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)enumerateForTextFormat:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)enumerateForTextFormat:(id)format;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAll;
-- (void)removeObjectForKey:(BOOL)a3;
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4;
-- (void)setObject:(id)a3 forKey:(BOOL)a4;
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4;
+- (void)removeObjectForKey:(BOOL)key;
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key;
+- (void)setObject:(id)object forKey:(BOOL)key;
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field;
 @end
 
 @implementation GPBBoolObjectDictionary
 
-- (GPBBoolObjectDictionary)initWithObjects:(const void *)a3 forKeys:(const BOOL *)a4 count:(unint64_t)a5
+- (GPBBoolObjectDictionary)initWithObjects:(const void *)objects forKeys:(const BOOL *)keys count:(unint64_t)count
 {
   v16.receiver = self;
   v16.super_class = GPBBoolObjectDictionary;
@@ -30,7 +30,7 @@
   v9 = v8;
   if (v8)
   {
-    v10 = a5 == 0;
+    v10 = count == 0;
   }
 
   else
@@ -43,33 +43,33 @@
     values = v8->_values;
     do
     {
-      if (!*a3)
+      if (!*objects)
       {
         [NSException raise:NSInvalidArgumentException format:@"Attempting to add nil object to a Dictionary"];
       }
 
-      v13 = *a4++;
+      v13 = *keys++;
       v12 = v13;
 
-      v14 = *a3++;
+      v14 = *objects++;
       values[v12] = v14;
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
   return v9;
 }
 
-- (GPBBoolObjectDictionary)initWithDictionary:(id)a3
+- (GPBBoolObjectDictionary)initWithDictionary:(id)dictionary
 {
   v4 = [(GPBBoolObjectDictionary *)self initWithObjects:0 forKeys:0 count:0];
   v5 = v4;
-  if (a3 && v4)
+  if (dictionary && v4)
   {
-    v4->_values[0] = *(a3 + 2);
-    v5->_values[1] = *(a3 + 3);
+    v4->_values[0] = *(dictionary + 2);
+    v5->_values[1] = *(dictionary + 3);
   }
 
   return v5;
@@ -87,16 +87,16 @@
   [(GPBBoolObjectDictionary *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [GPBBoolObjectDictionary allocWithZone:a3];
+  v4 = [GPBBoolObjectDictionary allocWithZone:zone];
 
   return [(GPBBoolObjectDictionary *)v4 initWithDictionary:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v7) = 1;
   }
@@ -104,7 +104,7 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = self->_values[0], (v5 != 0) == (*(a3 + 2) == 0)) || (v6 = self->_values[1], (v6 != 0) == (*(a3 + 3) == 0)))
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = self->_values[0], (v5 != 0) == (*(equal + 2) == 0)) || (v6 = self->_values[1], (v6 != 0) == (*(equal + 3) == 0)))
     {
       LOBYTE(v7) = 0;
       return v7;
@@ -121,7 +121,7 @@
       v6 = self->_values[1];
     }
 
-    if (!v6 || (v7 = [v6 isEqual:*(a3 + 3)]) != 0)
+    if (!v6 || (v7 = [v6 isEqual:*(equal + 3)]) != 0)
     {
       LOBYTE(v7) = 1;
     }
@@ -174,38 +174,38 @@
   }
 }
 
-- (void)setGPBGenericValue:(id *)a3 forGPBGenericValueKey:(id *)a4
+- (void)setGPBGenericValue:(id *)value forGPBGenericValueKey:(id *)key
 {
-  v5 = (&self->super.isa + a4->var0);
+  v5 = (&self->super.isa + key->var0);
 
-  v5[2] = a3->var7;
+  v5[2] = value->var7;
 }
 
-- (void)enumerateForTextFormat:(id)a3
+- (void)enumerateForTextFormat:(id)format
 {
   if (self->_values[0])
   {
-    (*(a3 + 2))(a3, @"false");
+    (*(format + 2))(format, @"false");
   }
 
   if (self->_values[1])
   {
-    v5 = *(a3 + 2);
+    v5 = *(format + 2);
 
-    v5(a3, @"true");
+    v5(format, @"true");
   }
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v7 = 0;
   v5 = self->_values[0];
-  if (!v5 || ((*(a3 + 2))(a3, 0, v5, &v7), (v7 & 1) == 0))
+  if (!v5 || ((*(block + 2))(block, 0, v5, &v7), (v7 & 1) == 0))
   {
     v6 = self->_values[1];
     if (v6)
     {
-      (*(a3 + 2))(a3, 1, v6, &v7);
+      (*(block + 2))(block, 1, v6, &v7);
     }
   }
 }
@@ -225,7 +225,7 @@
   return v4;
 }
 
-- (id)deepCopyWithZone:(_NSZone *)a3
+- (id)deepCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(GPBBoolObjectDictionary);
   v6 = 0;
@@ -237,7 +237,7 @@
     v10 = values[v6];
     if (v10)
     {
-      v5->_values[v6] = [v10 copyWithZone:a3];
+      v5->_values[v6] = [v10 copyWithZone:zone];
     }
 
     v8 = 0;
@@ -248,12 +248,12 @@
   return v5;
 }
 
-- (unint64_t)computeSerializedSizeAsField:(id)a3
+- (unint64_t)computeSerializedSizeAsField:(id)field
 {
   v4 = 0;
   v5 = 0;
   v6 = 0;
-  v7 = *(*(a3 + 1) + 30);
+  v7 = *(*(field + 1) + 30);
   values = self->_values;
   v9 = 1;
   do
@@ -273,12 +273,12 @@
   }
 
   while ((v10 & 1) != 0);
-  return v6 + GPBComputeWireFormatTagSize(*(*(a3 + 1) + 16), 15) * v5;
+  return v6 + GPBComputeWireFormatTagSize(*(*(field + 1) + 16), 15) * v5;
 }
 
-- (void)writeToCodedOutputStream:(id)a3 asField:(id)a4
+- (void)writeToCodedOutputStream:(id)stream asField:(id)field
 {
-  v6 = *(a4 + 1);
+  v6 = *(field + 1);
   v7 = *(v6 + 30);
   Tag = GPBWireFormatMakeTag(*(v6 + 16), 2);
   v9 = 0;
@@ -290,11 +290,11 @@
     v13 = v12;
     if (values[v10])
     {
-      [a3 writeInt32NoTag:Tag];
+      [stream writeInt32NoTag:Tag];
       v14 = GPBComputeBoolSize(1);
-      [a3 writeInt32NoTag:{sub_10031C838(values[v10], v7) + v14}];
-      [a3 writeBool:1 value:v9 & 1];
-      sub_10031CA3C(a3, values[v10], v7);
+      [stream writeInt32NoTag:{sub_10031C838(values[v10], v7) + v14}];
+      [stream writeBool:1 value:v9 & 1];
+      sub_10031CA3C(stream, values[v10], v7);
     }
 
     v12 = 0;
@@ -305,12 +305,12 @@
   while ((v13 & 1) != 0);
 }
 
-- (void)addEntriesFromDictionary:(id)a3
+- (void)addEntriesFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = 0;
-    v5 = a3 + 16;
+    v5 = dictionary + 16;
     values = self->_values;
     v7 = 1;
     do
@@ -336,17 +336,17 @@
   }
 }
 
-- (void)setObject:(id)a3 forKey:(BOOL)a4
+- (void)setObject:(id)object forKey:(BOOL)key
 {
-  v4 = a4;
-  if (!a3)
+  keyCopy = key;
+  if (!object)
   {
     [NSException raise:NSInvalidArgumentException format:@"Attempting to add nil object to a Dictionary"];
   }
 
-  v7 = (&self->super.isa + v4);
+  v7 = (&self->super.isa + keyCopy);
 
-  v7[2] = a3;
+  v7[2] = object;
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -355,9 +355,9 @@
   }
 }
 
-- (void)removeObjectForKey:(BOOL)a3
+- (void)removeObjectForKey:(BOOL)key
 {
-  v3 = (&self->super.isa + a3);
+  v3 = (&self->super.isa + key);
 
   v3[2] = 0;
 }

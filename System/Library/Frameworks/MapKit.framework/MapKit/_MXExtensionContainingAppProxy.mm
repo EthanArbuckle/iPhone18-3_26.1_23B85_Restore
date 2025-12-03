@@ -1,18 +1,18 @@
 @interface _MXExtensionContainingAppProxy
-- (_MXExtensionContainingAppProxy)initWithContainingAppIdentifer:(id)a3;
+- (_MXExtensionContainingAppProxy)initWithContainingAppIdentifer:(id)identifer;
 @end
 
 @implementation _MXExtensionContainingAppProxy
 
-- (_MXExtensionContainingAppProxy)initWithContainingAppIdentifer:(id)a3
+- (_MXExtensionContainingAppProxy)initWithContainingAppIdentifer:(id)identifer
 {
-  v4 = a3;
+  identiferCopy = identifer;
   v13.receiver = self;
   v13.super_class = _MXExtensionContainingAppProxy;
   v5 = [(_MXExtensionContainingAppProxy *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identiferCopy copy];
     containingAppIdentifer = v5->_containingAppIdentifer;
     v5->_containingAppIdentifer = v6;
 

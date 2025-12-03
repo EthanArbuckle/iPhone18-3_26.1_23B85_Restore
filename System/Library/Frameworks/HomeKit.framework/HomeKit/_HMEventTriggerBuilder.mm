@@ -1,39 +1,39 @@
 @interface _HMEventTriggerBuilder
 + (void)initialize;
-- (BOOL)_with:(id)a3 addEvent:(id)a4;
-- (BOOL)_with:(id)a3 removeEvent:(id)a4;
+- (BOOL)_with:(id)_with addEvent:(id)event;
+- (BOOL)_with:(id)_with removeEvent:(id)event;
 - (BOOL)executeOnce;
 - (NSArray)endEvents;
 - (NSArray)events;
 - (NSPredicate)predicate;
-- (_HMEventTriggerBuilder)initWithContext:(id)a3 home:(id)a4;
-- (_HMEventTriggerBuilder)initWithEventTrigger:(id)a3;
+- (_HMEventTriggerBuilder)initWithContext:(id)context home:(id)home;
+- (_HMEventTriggerBuilder)initWithEventTrigger:(id)trigger;
 - (id)copyAsBuilder;
-- (void)_with:(id)a3 addEvent:(id)a4 completion:(id)a5;
-- (void)_with:(id)a3 removeEvent:(id)a4 completion:(id)a5;
-- (void)_with:(id)a3 setEvents:(id)a4;
-- (void)_with:(id)a3 updateEvents:(id)a4 completion:(id)a5;
-- (void)addEndEvent:(id)a3;
-- (void)addEndEvent:(id)a3 completionHandler:(id)a4;
-- (void)addEvent:(id)a3;
-- (void)addEvent:(id)a3 completionHandler:(id)a4;
-- (void)removeEndEvent:(id)a3;
-- (void)removeEndEvent:(id)a3 completionHandler:(id)a4;
-- (void)removeEvent:(id)a3;
-- (void)removeEvent:(id)a3 completionHandler:(id)a4;
-- (void)setExecuteOnce:(BOOL)a3;
-- (void)setPredicate:(id)a3;
-- (void)updateEndEvents:(id)a3 completionHandler:(id)a4;
-- (void)updateEvents:(id)a3 completionHandler:(id)a4;
-- (void)updatePredicate:(id)a3 completionHandler:(id)a4;
+- (void)_with:(id)_with addEvent:(id)event completion:(id)completion;
+- (void)_with:(id)_with removeEvent:(id)event completion:(id)completion;
+- (void)_with:(id)_with setEvents:(id)events;
+- (void)_with:(id)_with updateEvents:(id)events completion:(id)completion;
+- (void)addEndEvent:(id)event;
+- (void)addEndEvent:(id)event completionHandler:(id)handler;
+- (void)addEvent:(id)event;
+- (void)addEvent:(id)event completionHandler:(id)handler;
+- (void)removeEndEvent:(id)event;
+- (void)removeEndEvent:(id)event completionHandler:(id)handler;
+- (void)removeEvent:(id)event;
+- (void)removeEvent:(id)event completionHandler:(id)handler;
+- (void)setExecuteOnce:(BOOL)once;
+- (void)setPredicate:(id)predicate;
+- (void)updateEndEvents:(id)events completionHandler:(id)handler;
+- (void)updateEvents:(id)events completionHandler:(id)handler;
+- (void)updatePredicate:(id)predicate completionHandler:(id)handler;
 @end
 
 @implementation _HMEventTriggerBuilder
 
-- (void)_with:(id)a3 updateEvents:(id)a4 completion:(id)a5
+- (void)_with:(id)_with updateEvents:(id)events completion:(id)completion
 {
-  v8 = a5;
-  [(_HMEventTriggerBuilder *)self _with:a3 setEvents:a4];
+  completionCopy = completion;
+  [(_HMEventTriggerBuilder *)self _with:_with setEvents:events];
   if (self)
   {
     context = self->super.super.super._context;
@@ -45,18 +45,18 @@
   }
 
   v11 = context;
-  v10 = [(_HMContext *)v11 delegateCaller];
-  [v10 callCompletion:v8 error:0];
+  delegateCaller = [(_HMContext *)v11 delegateCaller];
+  [delegateCaller callCompletion:completionCopy error:0];
 }
 
-- (void)_with:(id)a3 removeEvent:(id)a4 completion:(id)a5
+- (void)_with:(id)_with removeEvent:(id)event completion:(id)completion
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  _withCopy = _with;
+  eventCopy = event;
+  completionCopy = completion;
+  if (eventCopy)
   {
-    v10 = [(_HMEventTriggerBuilder *)self _with:v19 removeEvent:v8];
+    v10 = [(_HMEventTriggerBuilder *)self _with:_withCopy removeEvent:eventCopy];
     if (self)
     {
       context = self->super.super.super._context;
@@ -68,11 +68,11 @@
     }
 
     v12 = context;
-    v13 = [(_HMContext *)v12 delegateCaller];
-    v14 = v13;
+    delegateCaller = [(_HMContext *)v12 delegateCaller];
+    delegateCaller2 = delegateCaller;
     if (v10)
     {
-      [v13 callCompletion:v9 error:0];
+      [delegateCaller callCompletion:completionCopy error:0];
       goto LABEL_11;
     }
 
@@ -93,25 +93,25 @@
     }
 
     v12 = v15;
-    v14 = [(_HMContext *)v12 delegateCaller];
+    delegateCaller2 = [(_HMContext *)v12 delegateCaller];
     v16 = MEMORY[0x1E696ABC0];
     v17 = 20;
   }
 
   v18 = [v16 hmErrorWithCode:v17];
-  [v14 callCompletion:v9 error:v18];
+  [delegateCaller2 callCompletion:completionCopy error:v18];
 
 LABEL_11:
 }
 
-- (void)_with:(id)a3 addEvent:(id)a4 completion:(id)a5
+- (void)_with:(id)_with addEvent:(id)event completion:(id)completion
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  _withCopy = _with;
+  eventCopy = event;
+  completionCopy = completion;
+  if (eventCopy)
   {
-    v10 = [(_HMEventTriggerBuilder *)self _with:v19 addEvent:v8];
+    v10 = [(_HMEventTriggerBuilder *)self _with:_withCopy addEvent:eventCopy];
     if (self)
     {
       context = self->super.super.super._context;
@@ -123,11 +123,11 @@ LABEL_11:
     }
 
     v12 = context;
-    v13 = [(_HMContext *)v12 delegateCaller];
-    v14 = v13;
+    delegateCaller = [(_HMContext *)v12 delegateCaller];
+    delegateCaller2 = delegateCaller;
     if (v10)
     {
-      [v13 callCompletion:v9 error:0];
+      [delegateCaller callCompletion:completionCopy error:0];
       goto LABEL_11;
     }
 
@@ -148,27 +148,27 @@ LABEL_11:
     }
 
     v12 = v15;
-    v14 = [(_HMContext *)v12 delegateCaller];
+    delegateCaller2 = [(_HMContext *)v12 delegateCaller];
     v16 = MEMORY[0x1E696ABC0];
     v17 = 20;
   }
 
   v18 = [v16 hmErrorWithCode:v17];
-  [v14 callCompletion:v9 error:v18];
+  [delegateCaller2 callCompletion:completionCopy error:v18];
 
 LABEL_11:
 }
 
-- (void)updateEndEvents:(id)a3 completionHandler:(id)a4
+- (void)updateEndEvents:(id)events completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventsCopy = events;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder updateEndEvents:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -185,22 +185,22 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_endEvents updateEvents:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_endEvents updateEvents:eventsCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateEvents:(id)a3 completionHandler:(id)a4
+- (void)updateEvents:(id)events completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventsCopy = events;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder updateEvents:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -217,22 +217,22 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_events updateEvents:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_events updateEvents:eventsCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEndEvent:(id)a3 completionHandler:(id)a4
+- (void)removeEndEvent:(id)event completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder removeEndEvent:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -249,22 +249,22 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_endEvents removeEvent:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_endEvents removeEvent:eventCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEvent:(id)a3 completionHandler:(id)a4
+- (void)removeEvent:(id)event completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder removeEvent:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -281,22 +281,22 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_events removeEvent:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_events removeEvent:eventCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEndEvent:(id)a3 completionHandler:(id)a4
+- (void)addEndEvent:(id)event completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder addEndEvent:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -313,22 +313,22 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_endEvents addEvent:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_endEvents addEvent:eventCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEvent:(id)a3 completionHandler:(id)a4
+- (void)addEvent:(id)event completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v6 = a4;
-  if (!v6)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder addEvent:completionHandler:]", @"completion"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -345,26 +345,26 @@ LABEL_11:
     objc_exception_throw(v14);
   }
 
-  v7 = v6;
-  [(_HMEventTriggerBuilder *)self _with:self->_events addEvent:v15 completion:v6];
+  v7 = handlerCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_events addEvent:eventCopy completion:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_with:(id)a3 setEvents:(id)a4
+- (void)_with:(id)_with setEvents:(id)events
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v26 = self;
+  _withCopy = _with;
+  eventsCopy = events;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
-  v8 = [v6 mutableCopy];
-  [v6 removeAllObjects];
+  v8 = [_withCopy mutableCopy];
+  [_withCopy removeAllObjects];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
@@ -391,11 +391,11 @@ LABEL_11:
         v15 = [v8 indexOfObject:v14];
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if (([v6 containsObject:v14] & 1) == 0)
+          if (([_withCopy containsObject:v14] & 1) == 0)
           {
-            if (v26)
+            if (selfCopy)
             {
-              context = v26->super.super.super._context;
+              context = selfCopy->super.super.super._context;
             }
 
             else
@@ -404,17 +404,17 @@ LABEL_11:
             }
 
             v17 = context;
-            v18 = v26;
+            v18 = selfCopy;
             [v14 __configureWithContext:v17 eventTrigger:v18];
 
-            [v6 addObject:v14];
+            [_withCopy addObject:v14];
           }
         }
 
         else
         {
           v19 = [v8 objectAtIndex:v15];
-          [v6 addObject:v19];
+          [_withCopy addObject:v19];
 
           [v8 removeObjectAtIndex:v15];
         }
@@ -457,22 +457,22 @@ LABEL_11:
     while (v22);
   }
 
-  os_unfair_lock_unlock(&v26->super.super.super._lock);
+  os_unfair_lock_unlock(&selfCopy->super.super.super._lock);
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_with:(id)a3 removeEvent:(id)a4
+- (BOOL)_with:(id)_with removeEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  _withCopy = _with;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
-  v8 = [v6 indexOfObject:v7];
+  v8 = [_withCopy indexOfObject:eventCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v6 objectAtIndex:v8];
+    v9 = [_withCopy objectAtIndex:v8];
     [v9 _unconfigure];
 
-    [v6 removeObjectAtIndex:v8];
+    [_withCopy removeObjectAtIndex:v8];
   }
 
   os_unfair_lock_unlock(&self->super.super.super._lock);
@@ -480,10 +480,10 @@ LABEL_11:
   return v8 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)_with:(id)a3 addEvent:(id)a4
+- (BOOL)_with:(id)_with addEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
+  _withCopy = _with;
+  eventCopy = event;
   os_unfair_lock_lock_with_options();
   v9 = objc_opt_class();
   if (v9 == objc_opt_class())
@@ -493,8 +493,8 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v4 = [v8 copy];
-  LOBYTE(v9) = [v7 containsObject:v4];
+  v4 = [eventCopy copy];
+  LOBYTE(v9) = [_withCopy containsObject:v4];
   if ((v9 & 1) == 0)
   {
     if (self)
@@ -502,10 +502,10 @@ LABEL_11:
       context = self->super.super.super._context;
 LABEL_5:
       v11 = context;
-      v12 = self;
-      [v4 __configureWithContext:v11 eventTrigger:v12];
+      selfCopy = self;
+      [v4 __configureWithContext:v11 eventTrigger:selfCopy];
 
-      [v7 addObject:v4];
+      [_withCopy addObject:v4];
       goto LABEL_6;
     }
 
@@ -520,15 +520,15 @@ LABEL_6:
   return v9 ^ 1;
 }
 
-- (void)removeEndEvent:(id)a3
+- (void)removeEndEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder removeEndEvent:]", @"event"];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -545,20 +545,20 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v12 = v4;
-  [(_HMEventTriggerBuilder *)self _with:self->_endEvents removeEvent:v4];
+  v12 = eventCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_endEvents removeEvent:eventCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder removeEvent:]", @"event"];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -575,20 +575,20 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v12 = v4;
-  [(_HMEventTriggerBuilder *)self _with:self->_events removeEvent:v4];
+  v12 = eventCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_events removeEvent:eventCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEndEvent:(id)a3
+- (void)addEndEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder addEndEvent:]", @"event"];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -605,20 +605,20 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v12 = v4;
-  [(_HMEventTriggerBuilder *)self _with:self->_endEvents addEvent:v4];
+  v12 = eventCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_endEvents addEvent:eventCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder addEvent:]", @"event"];
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -635,8 +635,8 @@ LABEL_6:
     objc_exception_throw(v11);
   }
 
-  v12 = v4;
-  [(_HMEventTriggerBuilder *)self _with:self->_events addEvent:v4];
+  v12 = eventCopy;
+  [(_HMEventTriggerBuilder *)self _with:self->_events addEvent:eventCopy];
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -658,18 +658,18 @@ LABEL_6:
   return v3;
 }
 
-- (void)updatePredicate:(id)a3 completionHandler:(id)a4
+- (void)updatePredicate:(id)predicate completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  if (!v6)
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMEventTriggerBuilder updatePredicate:completionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = v15;
-    v18 = v16;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -686,10 +686,10 @@ LABEL_6:
     objc_exception_throw(v21);
   }
 
-  v7 = v6;
-  if ([HMPredicateUtilities validatePredicate:v22])
+  v7 = handlerCopy;
+  if ([HMPredicateUtilities validatePredicate:predicateCopy])
   {
-    [(_HMEventTriggerBuilder *)self setPredicate:v22];
+    [(_HMEventTriggerBuilder *)self setPredicate:predicateCopy];
     if (self)
     {
       context = self->super.super.super._context;
@@ -701,8 +701,8 @@ LABEL_6:
     }
 
     v9 = context;
-    v10 = [(_HMContext *)v9 delegateCaller];
-    [v10 callCompletion:v7 error:0];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
+    [delegateCaller callCompletion:v7 error:0];
   }
 
   else
@@ -718,19 +718,19 @@ LABEL_6:
     }
 
     v9 = v11;
-    v10 = [(_HMContext *)v9 delegateCaller];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v10 callCompletion:v7 error:v12];
+    [delegateCaller callCompletion:v7 error:v12];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  v6 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [predicateCopy copy];
   predicate = self->_predicate;
   self->_predicate = v4;
 
@@ -746,10 +746,10 @@ LABEL_6:
   return v3;
 }
 
-- (void)setExecuteOnce:(BOOL)a3
+- (void)setExecuteOnce:(BOOL)once
 {
   os_unfair_lock_lock_with_options();
-  self->_executeOnce = a3;
+  self->_executeOnce = once;
 
   os_unfair_lock_unlock(&self->super.super.super._lock);
 }
@@ -765,34 +765,34 @@ LABEL_6:
 - (id)copyAsBuilder
 {
   v3 = [HMEventTriggerBuilder alloc];
-  v4 = self;
-  v5 = [(HMEventTriggerBuilder *)v3 initWithEventTrigger:v4];
+  selfCopy = self;
+  v5 = [(HMEventTriggerBuilder *)v3 initWithEventTrigger:selfCopy];
 
   return v5;
 }
 
-- (_HMEventTriggerBuilder)initWithEventTrigger:(id)a3
+- (_HMEventTriggerBuilder)initWithEventTrigger:(id)trigger
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 home];
-  v6 = [v5 context];
-  v7 = v6;
-  v8 = 0;
-  if (v5 && v6)
+  triggerCopy = trigger;
+  home = [triggerCopy home];
+  context = [home context];
+  v7 = context;
+  selfCopy = 0;
+  if (home && context)
   {
-    if ([v5 areAutomationBuildersSupported])
+    if ([home areAutomationBuildersSupported])
     {
-      v9 = [v5 context];
+      context2 = [home context];
       v45.receiver = self;
       v45.super_class = _HMEventTriggerBuilder;
-      v10 = [(_HMTriggerBuilder *)&v45 initWithContext:v9 home:v5];
+      v10 = [(_HMTriggerBuilder *)&v45 initWithContext:context2 home:home];
 
       if (v10)
       {
         v36 = v7;
-        v11 = [v4 recurrences];
-        [(_HMEventOrTimerTriggerBuilder *)v10 setRecurrences:v11];
+        recurrences = [triggerCopy recurrences];
+        [(_HMEventOrTimerTriggerBuilder *)v10 setRecurrences:recurrences];
 
         v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
         events = v10->_events;
@@ -807,8 +807,8 @@ LABEL_6:
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v16 = [v4 events];
-        v17 = [v16 countByEnumeratingWithState:&v41 objects:v47 count:16];
+        events = [triggerCopy events];
+        v17 = [events countByEnumeratingWithState:&v41 objects:v47 count:16];
         if (v17)
         {
           v18 = v17;
@@ -820,19 +820,19 @@ LABEL_6:
             {
               if (*v42 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(events);
               }
 
               v21 = [*(*(&v41 + 1) + 8 * v20) copy];
-              v22 = [v5 context];
-              [v21 __configureWithContext:v22 eventTrigger:v4];
+              context3 = [home context];
+              [v21 __configureWithContext:context3 eventTrigger:triggerCopy];
 
               [(NSMutableArray *)v10->_events addObject:v21];
               ++v20;
             }
 
             while (v18 != v20);
-            v18 = [v16 countByEnumeratingWithState:&v41 objects:v47 count:16];
+            v18 = [events countByEnumeratingWithState:&v41 objects:v47 count:16];
           }
 
           while (v18);
@@ -842,8 +842,8 @@ LABEL_6:
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v23 = [v4 endEvents];
-        v24 = [v23 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        endEvents = [triggerCopy endEvents];
+        v24 = [endEvents countByEnumeratingWithState:&v37 objects:v46 count:16];
         v25 = v35;
         if (v24)
         {
@@ -856,50 +856,50 @@ LABEL_6:
             {
               if (*v38 != v27)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(endEvents);
               }
 
               v29 = [*(*(&v37 + 1) + 8 * v28) copy];
-              v30 = [v5 context];
-              [v29 __configureWithContext:v30 eventTrigger:v4];
+              context4 = [home context];
+              [v29 __configureWithContext:context4 eventTrigger:triggerCopy];
 
               [*(&v10->super.super.super.super.isa + v25) addObject:v29];
               ++v28;
             }
 
             while (v26 != v28);
-            v26 = [v23 countByEnumeratingWithState:&v37 objects:v46 count:16];
+            v26 = [endEvents countByEnumeratingWithState:&v37 objects:v46 count:16];
           }
 
           while (v26);
         }
 
-        v31 = [v4 predicate];
+        predicate = [triggerCopy predicate];
         predicate = v10->_predicate;
-        v10->_predicate = v31;
+        v10->_predicate = predicate;
 
         v7 = v36;
       }
 
       self = v10;
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   v33 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
-- (_HMEventTriggerBuilder)initWithContext:(id)a3 home:(id)a4
+- (_HMEventTriggerBuilder)initWithContext:(id)context home:(id)home
 {
   v10.receiver = self;
   v10.super_class = _HMEventTriggerBuilder;
-  v4 = [(_HMTriggerBuilder *)&v10 initWithContext:a3 home:a4];
+  v4 = [(_HMTriggerBuilder *)&v10 initWithContext:context home:home];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -916,10 +916,10 @@ LABEL_6:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_class();
-    [a1 adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
+    [self adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
   }
 }
 

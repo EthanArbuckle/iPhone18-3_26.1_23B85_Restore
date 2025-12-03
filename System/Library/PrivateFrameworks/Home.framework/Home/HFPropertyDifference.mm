@@ -1,54 +1,54 @@
 @interface HFPropertyDifference
-+ (BOOL)object:(id)a3 isEqualToObject:(id)a4;
-+ (id)compareObjectA:(id)a3 toObjectB:(id)a4 key:(id)a5 priority:(unint64_t)a6;
-- (HFPropertyDifference)initWithObjectA:(id)a3 toObjectB:(id)a4 key:(id)a5 priority:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)object:(id)object isEqualToObject:(id)toObject;
++ (id)compareObjectA:(id)a toObjectB:(id)b key:(id)key priority:(unint64_t)priority;
+- (HFPropertyDifference)initWithObjectA:(id)a toObjectB:(id)b key:(id)key priority:(unint64_t)priority;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
 @end
 
 @implementation HFPropertyDifference
 
-- (HFPropertyDifference)initWithObjectA:(id)a3 toObjectB:(id)a4 key:(id)a5 priority:(unint64_t)a6
+- (HFPropertyDifference)initWithObjectA:(id)a toObjectB:(id)b key:(id)key priority:(unint64_t)priority
 {
-  v11 = a3;
-  v12 = a4;
+  aCopy = a;
+  bCopy = b;
   v16.receiver = self;
   v16.super_class = HFPropertyDifference;
-  v13 = [(HFDifference *)&v16 initWithKey:a5 priority:a6];
+  v13 = [(HFDifference *)&v16 initWithKey:key priority:priority];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_valueA, a3);
-    objc_storeStrong(&v14->_valueB, a4);
+    objc_storeStrong(&v13->_valueA, a);
+    objc_storeStrong(&v14->_valueB, b);
   }
 
   return v14;
 }
 
-+ (id)compareObjectA:(id)a3 toObjectB:(id)a4 key:(id)a5 priority:(unint64_t)a6
++ (id)compareObjectA:(id)a toObjectB:(id)b key:(id)key priority:(unint64_t)priority
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([a1 object:v10 isEqualToObject:v11])
+  aCopy = a;
+  bCopy = b;
+  keyCopy = key;
+  if ([self object:aCopy isEqualToObject:bCopy])
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [[a1 alloc] initWithObjectA:v10 toObjectB:v11 key:v12 priority:a6];
+    v13 = [[self alloc] initWithObjectA:aCopy toObjectB:bCopy key:keyCopy priority:priority];
   }
 
   return v13;
 }
 
-+ (BOOL)object:(id)a3 isEqualToObject:(id)a4
++ (BOOL)object:(id)object isEqualToObject:(id)toObject
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = v6;
+  objectCopy = object;
+  toObjectCopy = toObject;
+  v7 = objectCopy;
+  v8 = toObjectCopy;
   v9 = v8;
   if (v7 == v8)
   {
@@ -120,26 +120,26 @@ LABEL_17:
 {
   v11.receiver = self;
   v11.super_class = HFPropertyDifference;
-  v3 = [(HFDifference *)&v11 descriptionBuilder];
-  v4 = [(HFPropertyDifference *)self valueA];
+  descriptionBuilder = [(HFDifference *)&v11 descriptionBuilder];
+  valueA = [(HFPropertyDifference *)self valueA];
   if (_MergedGlobals_3 != -1)
   {
     dispatch_once(&_MergedGlobals_3, &__block_literal_global_70_2);
   }
 
   v5 = qword_280E023D8;
-  v6 = [v3 appendObject:v4 withName:v5];
+  v6 = [descriptionBuilder appendObject:valueA withName:v5];
 
-  v7 = [(HFPropertyDifference *)self valueB];
+  valueB = [(HFPropertyDifference *)self valueB];
   if (qword_280E023E0 != -1)
   {
     dispatch_once(&qword_280E023E0, &__block_literal_global_77);
   }
 
   v8 = qword_280E023E8;
-  v9 = [v3 appendObject:v7 withName:v8];
+  v9 = [descriptionBuilder appendObject:valueB withName:v8];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 void __42__HFPropertyDifference_descriptionBuilder__block_invoke_2()
@@ -154,11 +154,11 @@ void __42__HFPropertyDifference_descriptionBuilder__block_invoke_4()
   qword_280E023E8 = @"valueB";
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = HFPropertyDifference;
-  v4 = [(HFDifference *)&v11 copyWithZone:a3];
+  v4 = [(HFDifference *)&v11 copyWithZone:zone];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -173,11 +173,11 @@ void __42__HFPropertyDifference_descriptionBuilder__block_invoke_4()
 
   v7 = v6;
 
-  v8 = [(HFPropertyDifference *)self valueA];
-  [v7 setValueA:v8];
+  valueA = [(HFPropertyDifference *)self valueA];
+  [v7 setValueA:valueA];
 
-  v9 = [(HFPropertyDifference *)self valueB];
-  [v7 setValueB:v9];
+  valueB = [(HFPropertyDifference *)self valueB];
+  [v7 setValueB:valueB];
 
   return v7;
 }

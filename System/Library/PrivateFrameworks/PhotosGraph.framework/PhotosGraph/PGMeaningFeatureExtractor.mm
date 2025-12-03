@@ -1,21 +1,21 @@
 @interface PGMeaningFeatureExtractor
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4;
-+ (id)_labelsForVersion:(int64_t)a3;
-- (PGMeaningFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label;
++ (id)_labelsForVersion:(int64_t)version;
+- (PGMeaningFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGMeaningFeatureExtractor
 
-- (PGMeaningFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGMeaningFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v6 = [objc_opt_class() _labelsForVersion:a3];
+  v6 = [objc_opt_class() _labelsForVersion:version];
   v7 = +[PGMeaningFeatureExtractor name];
   v8 = +[PGGraphMomentNode meaningHierarchyOfMoment];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__PGMeaningFeatureExtractor_initWithVersion_error___block_invoke;
   v12[3] = &__block_descriptor_40_e42___NSString_24__0__PGGraphMeaningNode_8__16l;
-  v12[4] = a3;
+  v12[4] = version;
   v11.receiver = self;
   v11.super_class = PGMeaningFeatureExtractor;
   v9 = [(PGGraphFeatureExtractor *)&v11 initWithName:v7 featureNames:v6 relation:v8 labelForTargetBlock:v12];
@@ -32,20 +32,20 @@ id __51__PGMeaningFeatureExtractor_initWithVersion_error___block_invoke(uint64_t
   return v4;
 }
 
-+ (id)_labelProcessingForVersion:(int64_t)a3 label:(id)a4
++ (id)_labelProcessingForVersion:(int64_t)version label:(id)label
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 2)
+  labelCopy = label;
+  v7 = labelCopy;
+  if (version == 2)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [a1 prefix];
-    v8 = [v9 stringWithFormat:@"%@_%@", v10, v7];
+    prefix = [self prefix];
+    v8 = [v9 stringWithFormat:@"%@_%@", prefix, v7];
   }
 
-  else if (a3 == 1)
+  else if (version == 1)
   {
-    v8 = v6;
+    v8 = labelCopy;
   }
 
   else
@@ -56,10 +56,10 @@ id __51__PGMeaningFeatureExtractor_initWithVersion_error___block_invoke(uint64_t
   return v8;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
   v24[19] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (version == 2)
   {
     v23[0] = @"Activity";
     v23[1] = @"Hiking";
@@ -93,7 +93,7 @@ id __51__PGMeaningFeatureExtractor_initWithVersion_error___block_invoke(uint64_t
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     v24[0] = @"Activity";
     v24[1] = @"Beaching";
@@ -144,7 +144,7 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [a1 _labelProcessingForVersion:a3 label:{*(*(&v18 + 1) + 8 * i), v18}];
+        v15 = [self _labelProcessingForVersion:version label:{*(*(&v18 + 1) + 8 * i), v18}];
         [v9 addObject:v15];
       }
 

@@ -1,9 +1,9 @@
 @interface CRKPersonaMatchEnforcingClassKitFacade
 - (BOOL)isPersonaEligible;
-- (CRKPersonaMatchEnforcingClassKitFacade)initWithClassKitFacade:(id)a3;
+- (CRKPersonaMatchEnforcingClassKitFacade)initWithClassKitFacade:(id)facade;
 - (int64_t)nextAccountState;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startObserving;
 - (void)stopObserving;
 - (void)updateAccountState;
@@ -19,15 +19,15 @@
   [(CRKPersonaMatchEnforcingClassKitFacade *)&v3 dealloc];
 }
 
-- (CRKPersonaMatchEnforcingClassKitFacade)initWithClassKitFacade:(id)a3
+- (CRKPersonaMatchEnforcingClassKitFacade)initWithClassKitFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v9.receiver = self;
   v9.super_class = CRKPersonaMatchEnforcingClassKitFacade;
-  v5 = [(CRKClassKitFacadeDecoratorBase *)&v9 initWithClassKitFacade:v4];
+  v5 = [(CRKClassKitFacadeDecoratorBase *)&v9 initWithClassKitFacade:facadeCopy];
   if (v5)
   {
-    v6 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:v4];
+    v6 = [[CRKClassKitCurrentUserProvider alloc] initWithClassKitFacade:facadeCopy];
     currentUserProvider = v5->_currentUserProvider;
     v5->_currentUserProvider = v6;
 
@@ -40,28 +40,28 @@
 
 - (void)startObserving
 {
-  v3 = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
-  [v3 addObserver:self forKeyPath:@"currentUser" options:0 context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
+  currentUserProvider = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
+  [currentUserProvider addObserver:self forKeyPath:@"currentUser" options:0 context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
 
-  v4 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v4 addObserver:self forKeyPath:@"accountState" options:0 context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade addObserver:self forKeyPath:@"accountState" options:0 context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
 }
 
 - (void)stopObserving
 {
-  v3 = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
-  [v3 removeObserver:self forKeyPath:@"currentUser" context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
+  currentUserProvider = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
+  [currentUserProvider removeObserver:self forKeyPath:@"currentUser" context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
 
-  v4 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  [v4 removeObserver:self forKeyPath:@"accountState" context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  [underlyingClassKitFacade removeObserver:self forKeyPath:@"accountState" context:@"CRKPersonaMatchEnforcingClassKitFacadeObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"CRKPersonaMatchEnforcingClassKitFacadeObservationContext")
+  if (context == @"CRKPersonaMatchEnforcingClassKitFacadeObservationContext")
   {
 
-    [(CRKPersonaMatchEnforcingClassKitFacade *)self updateAccountState:a3];
+    [(CRKPersonaMatchEnforcingClassKitFacade *)self updateAccountState:path];
   }
 
   else
@@ -70,40 +70,40 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = CRKPersonaMatchEnforcingClassKitFacade;
-    [(CRKPersonaMatchEnforcingClassKitFacade *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRKPersonaMatchEnforcingClassKitFacade *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)updateAccountState
 {
-  v3 = [(CRKPersonaMatchEnforcingClassKitFacade *)self nextAccountState];
-  if ([(CRKPersonaMatchEnforcingClassKitFacade *)self modifiedAccountState]!= v3)
+  nextAccountState = [(CRKPersonaMatchEnforcingClassKitFacade *)self nextAccountState];
+  if ([(CRKPersonaMatchEnforcingClassKitFacade *)self modifiedAccountState]!= nextAccountState)
   {
 
-    [(CRKPersonaMatchEnforcingClassKitFacade *)self setModifiedAccountState:v3];
+    [(CRKPersonaMatchEnforcingClassKitFacade *)self setModifiedAccountState:nextAccountState];
   }
 }
 
 - (int64_t)nextAccountState
 {
-  v3 = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
-  v4 = [v3 accountState];
+  underlyingClassKitFacade = [(CRKClassKitFacadeDecoratorBase *)self underlyingClassKitFacade];
+  accountState = [underlyingClassKitFacade accountState];
 
-  if (v4 == 2 && ![(CRKPersonaMatchEnforcingClassKitFacade *)self isPersonaEligible])
+  if (accountState == 2 && ![(CRKPersonaMatchEnforcingClassKitFacade *)self isPersonaEligible])
   {
     return 0;
   }
 
-  return v4;
+  return accountState;
 }
 
 - (BOOL)isPersonaEligible
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
-  v3 = [v2 currentUser];
+  currentUserProvider = [(CRKPersonaMatchEnforcingClassKitFacade *)self currentUserProvider];
+  currentUser = [currentUserProvider currentUser];
 
-  if (v3 && [v3 requiresPersonaMatch] && (objc_msgSend(v3, "hasMatchingPersona") & 1) == 0)
+  if (currentUser && [currentUser requiresPersonaMatch] && (objc_msgSend(currentUser, "hasMatchingPersona") & 1) == 0)
   {
     if (_CRKLogASM_onceToken_29 != -1)
     {

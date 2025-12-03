@@ -1,5 +1,5 @@
 @interface HSPCSuggestedAutomationWrappingViewController
-- (HSPCSuggestedAutomationWrappingViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSuggestedAutomationWrappingViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
 - (id)hu_preloadContent;
 - (id)shouldSkip;
@@ -8,15 +8,15 @@
 
 @implementation HSPCSuggestedAutomationWrappingViewController
 
-- (HSPCSuggestedAutomationWrappingViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSuggestedAutomationWrappingViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[HSPCSuggestedAutomationsViewController alloc] initWithCoordinator:v7 config:v8];
+  coordinatorCopy = coordinator;
+  configCopy = config;
+  v9 = [[HSPCSuggestedAutomationsViewController alloc] initWithCoordinator:coordinatorCopy config:configCopy];
   [(HSPCSuggestedAutomationWrappingViewController *)self setMvvmController:v9];
   v10 = [PRXScrollableContentView alloc];
-  v11 = [(HSPCSuggestedAutomationsViewController *)v9 tableView];
-  v12 = [v10 initWithCardStyle:0 scrollView:v11];
+  tableView = [(HSPCSuggestedAutomationsViewController *)v9 tableView];
+  v12 = [v10 initWithCardStyle:0 scrollView:tableView];
 
   v26.receiver = self;
   v26.super_class = HSPCSuggestedAutomationWrappingViewController;
@@ -24,21 +24,21 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_config, a4);
-    objc_storeStrong(&v14->_coordinator, a3);
-    v25 = [v7 activeTuple];
-    v15 = [v25 accessoryCategoryOrPrimaryServiceType];
-    v16 = [v7 setupAccessoryDescription];
-    v17 = [v16 setupAccessoryPayload];
-    v18 = [v17 matterDeviceTypeID];
+    objc_storeStrong(&v13->_config, config);
+    objc_storeStrong(&v14->_coordinator, coordinator);
+    activeTuple = [coordinatorCopy activeTuple];
+    accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
+    setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
     HFLocalizedCategoryOrPrimaryServiceTypeString();
     v19 = v12;
-    v20 = v7;
-    v22 = v21 = v8;
+    v20 = coordinatorCopy;
+    v22 = v21 = configCopy;
     [(HSPCSuggestedAutomationWrappingViewController *)v14 setTitle:v22];
 
-    v8 = v21;
-    v7 = v20;
+    configCopy = v21;
+    coordinatorCopy = v20;
     v12 = v19;
 
     v23 = [(HSPCSuggestedAutomationWrappingViewController *)v14 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v14 futureSelector:"commitConfiguration"];
@@ -49,10 +49,10 @@
 
 - (id)commitConfiguration
 {
-  v2 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
-  v3 = [v2 commitConfiguration];
+  mvvmController = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+  commitConfiguration = [mvvmController commitConfiguration];
 
-  return v3;
+  return commitConfiguration;
 }
 
 - (void)viewDidLoad
@@ -60,38 +60,38 @@
   v5.receiver = self;
   v5.super_class = HSPCSuggestedAutomationWrappingViewController;
   [(HSPCSuggestedAutomationWrappingViewController *)&v5 viewDidLoad];
-  v3 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
-  [(HSPCSuggestedAutomationWrappingViewController *)self addChildViewController:v3];
+  mvvmController = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+  [(HSPCSuggestedAutomationWrappingViewController *)self addChildViewController:mvvmController];
 
-  v4 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
-  [v4 didMoveToParentViewController:self];
+  mvvmController2 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+  [mvvmController2 didMoveToParentViewController:self];
 }
 
 - (id)hu_preloadContent
 {
-  v2 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
-  v3 = [v2 hu_preloadContent];
+  mvvmController = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+  hu_preloadContent = [mvvmController hu_preloadContent];
 
-  return v3;
+  return hu_preloadContent;
 }
 
 - (id)shouldSkip
 {
-  v3 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+  mvvmController = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
-    v6 = [v5 shouldSkip];
+    mvvmController2 = [(HSPCSuggestedAutomationWrappingViewController *)self mvvmController];
+    shouldSkip = [mvvmController2 shouldSkip];
   }
 
   else
   {
-    v6 = [NAFuture futureWithResult:&__kCFBooleanFalse];
+    shouldSkip = [NAFuture futureWithResult:&__kCFBooleanFalse];
   }
 
-  return v6;
+  return shouldSkip;
 }
 
 @end

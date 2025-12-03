@@ -1,26 +1,26 @@
 @interface NRAlbertPairingReportWrapper
-- (NRAlbertPairingReportWrapper)initWithAlbertPairingReportData:(id)a3;
+- (NRAlbertPairingReportWrapper)initWithAlbertPairingReportData:(id)data;
 - (NSDictionary)xmlDictionary;
 - (__SecCertificate)_sharedPhoneCertificate;
 - (__SecIdentity)_copyPhoneIdentity;
 - (id)_phoneCertificateData;
-- (id)_signatureWithIdentity:(__SecIdentity *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_signatureWithIdentity:(__SecIdentity *)identity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRAlbertPairingReportWrapper
 
-- (NRAlbertPairingReportWrapper)initWithAlbertPairingReportData:(id)a3
+- (NRAlbertPairingReportWrapper)initWithAlbertPairingReportData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(NRAlbertPairingReportWrapper *)self init];
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 xmlDictionary];
-  v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:100 options:0 error:0];
+  xmlDictionary = [dataCopy xmlDictionary];
+  v7 = [NSPropertyListSerialization dataWithPropertyList:xmlDictionary format:100 options:0 error:0];
   pairingInfoXML = v5->_pairingInfoXML;
   v5->_pairingInfoXML = v7;
 
@@ -52,18 +52,18 @@ LABEL_17:
   queue = v5->_queue;
   v5->_queue = v10;
 
-  v12 = [(NRAlbertPairingReportWrapper *)v5 _phoneCertificateData];
+  _phoneCertificateData = [(NRAlbertPairingReportWrapper *)v5 _phoneCertificateData];
   phoneCertificate = v5->_phoneCertificate;
-  v5->_phoneCertificate = v12;
+  v5->_phoneCertificate = _phoneCertificateData;
 
-  v14 = [(NRAlbertPairingReportWrapper *)v5 _copyPhoneIdentity];
-  v15 = [(NRAlbertPairingReportWrapper *)v5 _signatureWithIdentity:v14];
+  _copyPhoneIdentity = [(NRAlbertPairingReportWrapper *)v5 _copyPhoneIdentity];
+  v15 = [(NRAlbertPairingReportWrapper *)v5 _signatureWithIdentity:_copyPhoneIdentity];
   phoneSignature = v5->_phoneSignature;
   v5->_phoneSignature = v15;
 
-  if (v14)
+  if (_copyPhoneIdentity)
   {
-    CFRelease(v14);
+    CFRelease(_copyPhoneIdentity);
   }
 
   if (!v5->_phoneCertificate || !v5->_phoneSignature)
@@ -115,13 +115,13 @@ LABEL_19:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pairingInfoXML = self->_pairingInfoXML;
-  v5 = a3;
-  [v5 encodeObject:pairingInfoXML forKey:@"PairingInfoXML"];
-  [v5 encodeObject:self->_phoneCertificate forKey:@"CompanionDeviceCertificate"];
-  [v5 encodeObject:self->_phoneSignature forKey:@"CompanionDeviceSignature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pairingInfoXML forKey:@"PairingInfoXML"];
+  [coderCopy encodeObject:self->_phoneCertificate forKey:@"CompanionDeviceCertificate"];
+  [coderCopy encodeObject:self->_phoneSignature forKey:@"CompanionDeviceSignature"];
 }
 
 - (__SecIdentity)_copyPhoneIdentity
@@ -159,10 +159,10 @@ LABEL_19:
 
 - (id)_phoneCertificateData
 {
-  v2 = [(NRAlbertPairingReportWrapper *)self _sharedPhoneCertificate];
-  if (v2)
+  _sharedPhoneCertificate = [(NRAlbertPairingReportWrapper *)self _sharedPhoneCertificate];
+  if (_sharedPhoneCertificate)
   {
-    v3 = SecCertificateCopyData(v2);
+    v3 = SecCertificateCopyData(_sharedPhoneCertificate);
     if (v3)
     {
       goto LABEL_11;
@@ -206,18 +206,18 @@ LABEL_11:
   return v3;
 }
 
-- (id)_signatureWithIdentity:(__SecIdentity *)a3
+- (id)_signatureWithIdentity:(__SecIdentity *)identity
 {
-  if (!a3 || (pairingInfoXML = self->_pairingInfoXML) == 0)
+  if (!identity || (pairingInfoXML = self->_pairingInfoXML) == 0)
   {
     v10 = 0;
     goto LABEL_15;
   }
 
   v5 = pairingInfoXML;
-  v6 = [(NSData *)v5 NRSHA256];
+  nRSHA256 = [(NSData *)v5 NRSHA256];
   privateKeyRef = 0;
-  if (SecIdentityCopyPrivateKey(a3, &privateKeyRef))
+  if (SecIdentityCopyPrivateKey(identity, &privateKeyRef))
   {
     v7 = nr_daemon_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -261,7 +261,7 @@ LABEL_7:
     {
       v15 = v14;
       v24 = 0;
-      v16 = SecKeyCreateSignature(privateKeyRef, kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA256, v6, &v24);
+      v16 = SecKeyCreateSignature(privateKeyRef, kSecKeyAlgorithmRSASignatureDigestPKCS1v15SHA256, nRSHA256, &v24);
       v11 = v16;
       if (v24 || !v16)
       {

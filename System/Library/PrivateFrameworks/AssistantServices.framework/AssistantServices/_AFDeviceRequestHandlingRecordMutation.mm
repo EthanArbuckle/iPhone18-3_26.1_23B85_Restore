@@ -1,5 +1,5 @@
 @interface _AFDeviceRequestHandlingRecordMutation
-- (_AFDeviceRequestHandlingRecordMutation)initWithBase:(id)a3;
+- (_AFDeviceRequestHandlingRecordMutation)initWithBase:(id)base;
 - (id)getRequestID;
 - (unint64_t)getDeviceRoles;
 @end
@@ -23,27 +23,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_requestID;
+    requestID = self->_requestID;
   }
 
   else
   {
-    v2 = [(AFDeviceRequestHandlingRecord *)self->_base requestID];
+    requestID = [(AFDeviceRequestHandlingRecord *)self->_base requestID];
   }
 
-  return v2;
+  return requestID;
 }
 
-- (_AFDeviceRequestHandlingRecordMutation)initWithBase:(id)a3
+- (_AFDeviceRequestHandlingRecordMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFDeviceRequestHandlingRecordMutation;
   v6 = [(_AFDeviceRequestHandlingRecordMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

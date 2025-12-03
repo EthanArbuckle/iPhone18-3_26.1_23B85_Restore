@@ -1,31 +1,31 @@
 @interface HearingAidUtils
 + (BOOL)isFitNoiseCheckDebugEnabled;
 + (BOOL)isHearingAidInternalEnabled;
-+ (id)getBluetoothDeviceFromAddressOrUUID:(id)a3;
++ (id)getBluetoothDeviceFromAddressOrUUID:(id)d;
 @end
 
 @implementation HearingAidUtils
 
-+ (id)getBluetoothDeviceFromAddressOrUUID:(id)a3
++ (id)getBluetoothDeviceFromAddressOrUUID:(id)d
 {
-  v3 = a3;
-  NSLog(&cfstr_HearingAidUtil.isa, v3);
-  v4 = [MEMORY[0x277CF3248] sharedInstance];
-  v5 = [v4 deviceFromAddressString:v3];
+  dCopy = d;
+  NSLog(&cfstr_HearingAidUtil.isa, dCopy);
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  v5 = [mEMORY[0x277CF3248] deviceFromAddressString:dCopy];
 
   if (([v5 connected] & 1) == 0)
   {
-    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
-    NSLog(&cfstr_HearingAidUtil_0.isa, v3);
-    v7 = [MEMORY[0x277CF3248] sharedInstance];
-    v8 = [v7 deviceFromIdentifier:v6];
+    v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
+    NSLog(&cfstr_HearingAidUtil_0.isa, dCopy);
+    mEMORY[0x277CF3248]2 = [MEMORY[0x277CF3248] sharedInstance];
+    v8 = [mEMORY[0x277CF3248]2 deviceFromIdentifier:v6];
 
     v5 = v8;
   }
 
   if (([v5 connected] & 1) == 0)
   {
-    NSLog(&cfstr_HearingAidUtil_1.isa, v3);
+    NSLog(&cfstr_HearingAidUtil_1.isa, dCopy);
   }
 
   return v5;

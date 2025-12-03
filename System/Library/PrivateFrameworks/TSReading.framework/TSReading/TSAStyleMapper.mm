@@ -1,18 +1,18 @@
 @interface TSAStyleMapper
-- (id)pTargetParentForStyle:(id)a3 withParentIdentifier:(id)a4;
+- (id)pTargetParentForStyle:(id)style withParentIdentifier:(id)identifier;
 @end
 
 @implementation TSAStyleMapper
 
-- (id)pTargetParentForStyle:(id)a3 withParentIdentifier:(id)a4
+- (id)pTargetParentForStyle:(id)style withParentIdentifier:(id)identifier
 {
-  result = [(TSSStylesheet *)self->super._targetStylesheet cascadedStyleWithIdentifier:a4];
+  result = [(TSSStylesheet *)self->super._targetStylesheet cascadedStyleWithIdentifier:identifier];
   if (result)
   {
     return result;
   }
 
-  result = String(a4);
+  result = String(identifier);
   if (!result)
   {
     return result;
@@ -21,10 +21,10 @@
   v8 = result;
   if ([result isEqualToString:TSWPTextPackageStringForPreset()])
   {
-    if (String(a4))
+    if (String(identifier))
     {
 LABEL_6:
-      result = [(TSSStylesheet *)self->super._targetStylesheet cascadedStyleWithIdentifier:a4 componentMask:13];
+      result = [(TSSStylesheet *)self->super._targetStylesheet cascadedStyleWithIdentifier:identifier componentMask:13];
       if (result)
       {
         return result;
@@ -70,7 +70,7 @@ LABEL_13:
 LABEL_14:
   v9.receiver = self;
   v9.super_class = TSAStyleMapper;
-  result = [(TSSStyleMapper *)&v9 pTargetParentForStyle:a3 withParentIdentifier:a4];
+  result = [(TSSStyleMapper *)&v9 pTargetParentForStyle:style withParentIdentifier:identifier];
   if (!result)
   {
     objc_opt_class();

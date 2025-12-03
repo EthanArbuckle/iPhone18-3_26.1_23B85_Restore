@@ -2,29 +2,29 @@
 + (id)requiredEntitlements;
 - (id)_profileManager;
 - (void)_clientMayAccessProfile:(void *)result;
-- (void)remote_fetchAvailableIdentifiersWithCompletion:(id)a3;
-- (void)remote_fetchForIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_requestAuthorizationToNewIdentifierToShareTypes:(id)a3 readTypes:(id)a4 completion:(id)a5;
-- (void)remote_requestAuthorizationToNewIdentifierWithCompletion:(id)a3;
+- (void)remote_fetchAvailableIdentifiersWithCompletion:(id)completion;
+- (void)remote_fetchForIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_requestAuthorizationToNewIdentifierToShareTypes:(id)types readTypes:(id)readTypes completion:(id)completion;
+- (void)remote_requestAuthorizationToNewIdentifierWithCompletion:(id)completion;
 @end
 
 @implementation HDHealthStoreProviderServer
 
 - (id)_profileManager
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 profile];
-    v2 = [v1 daemon];
-    v3 = [v2 profileManager];
+    profile = [self profile];
+    daemon = [profile daemon];
+    profileManager = [daemon profileManager];
   }
 
   else
   {
-    v3 = 0;
+    profileManager = 0;
   }
 
-  return v3;
+  return profileManager;
 }
 
 - (void)_clientMayAccessProfile:(void *)result
@@ -33,8 +33,8 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [v2 client];
-    v5 = [v4 _isAuthorizedToAccessProfile:v3];
+    client = [v2 client];
+    v5 = [client _isAuthorizedToAccessProfile:v3];
 
     return v5;
   }
@@ -42,46 +42,46 @@
   return result;
 }
 
-- (void)remote_fetchForIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchForIdentifier:(id)identifier completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 isPrimaryStoreIdentifier])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([identifierCopy isPrimaryStoreIdentifier])
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v7 = [(HDHealthStoreProviderServer *)self _profileManager];
-    v8 = [v11 profileIdentifier];
-    v9 = [v7 profileForIdentifier:v8];
+    _profileManager = [(HDHealthStoreProviderServer *)self _profileManager];
+    profileIdentifier = [identifierCopy profileIdentifier];
+    v9 = [_profileManager profileForIdentifier:profileIdentifier];
 
     if (v9 && ([(HDHealthStoreProviderServer *)self _clientMayAccessProfile:v9]& 1) != 0)
     {
-      v6[2](v6, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
     {
-      v10 = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
-      (v6)[2](v6, 0, v10);
+      hk_healthStoreUnavailableError = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
+      (completionCopy)[2](completionCopy, 0, hk_healthStoreUnavailableError);
     }
   }
 }
 
-- (void)remote_fetchAvailableIdentifiersWithCompletion:(id)a3
+- (void)remote_fetchAvailableIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDHealthStoreProviderServer *)self _profileManager];
-  v6 = [v5 allProfileIdentifiers];
+  completionCopy = completion;
+  _profileManager = [(HDHealthStoreProviderServer *)self _profileManager];
+  allProfileIdentifiers = [_profileManager allProfileIdentifiers];
 
-  v7 = [(HDStandardTaskServer *)self client];
-  v8 = [v7 hasEntitlement:*MEMORY[0x277CCC8B0]];
+  client = [(HDStandardTaskServer *)self client];
+  v8 = [client hasEntitlement:*MEMORY[0x277CCC8B0]];
 
   if (v8)
   {
-    v9 = v6;
+    v9 = allProfileIdentifiers;
   }
 
   else
@@ -91,12 +91,12 @@
     v12[2] = __78__HDHealthStoreProviderServer_remote_fetchAvailableIdentifiersWithCompletion___block_invoke;
     v12[3] = &unk_278615BC8;
     v12[4] = self;
-    v9 = [v6 hk_filter:v12];
+    v9 = [allProfileIdentifiers hk_filter:v12];
   }
 
   v10 = v9;
   v11 = [v9 hk_map:&__block_literal_global_19];
-  v4[2](v4, v11, 0);
+  completionCopy[2](completionCopy, v11, 0);
 }
 
 void *__78__HDHealthStoreProviderServer_remote_fetchAvailableIdentifiersWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -119,18 +119,18 @@ void *__78__HDHealthStoreProviderServer_remote_fetchAvailableIdentifiersWithComp
   return v7;
 }
 
-- (void)remote_requestAuthorizationToNewIdentifierWithCompletion:(id)a3
+- (void)remote_requestAuthorizationToNewIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = unimplementedError();
-  (*(a3 + 2))(v4, 0, v5);
+  (*(completion + 2))(completionCopy, 0, v5);
 }
 
-- (void)remote_requestAuthorizationToNewIdentifierToShareTypes:(id)a3 readTypes:(id)a4 completion:(id)a5
+- (void)remote_requestAuthorizationToNewIdentifierToShareTypes:(id)types readTypes:(id)readTypes completion:(id)completion
 {
-  v6 = a5;
+  completionCopy = completion;
   v7 = unimplementedError();
-  (*(a5 + 2))(v6, 0, v7);
+  (*(completion + 2))(completionCopy, 0, v7);
 }
 
 + (id)requiredEntitlements

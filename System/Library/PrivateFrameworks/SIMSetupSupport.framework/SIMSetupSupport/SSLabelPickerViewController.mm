@@ -1,34 +1,34 @@
 @interface SSLabelPickerViewController
 - (CTUserLabel)chosenLabel;
-- (SSLabelPickerViewController)initWithAssociatedPlanItem:(id)a3 initialLabel:(id)a4 predefinedUserLabels:(id)a5;
+- (SSLabelPickerViewController)initWithAssociatedPlanItem:(id)item initialLabel:(id)label predefinedUserLabels:(id)labels;
 - (id)customLabelRowValue;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_doneButtonTapped;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SSLabelPickerViewController
 
-- (SSLabelPickerViewController)initWithAssociatedPlanItem:(id)a3 initialLabel:(id)a4 predefinedUserLabels:(id)a5
+- (SSLabelPickerViewController)initWithAssociatedPlanItem:(id)item initialLabel:(id)label predefinedUserLabels:(id)labels
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  labelCopy = label;
+  labelsCopy = labels;
   v15.receiver = self;
   v15.super_class = SSLabelPickerViewController;
   v12 = [(OBTableWelcomeController *)&v15 initWithTitle:0 detailText:0 symbolName:0 adoptTableViewScrollView:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_associatedPlanItem, a3);
-    objc_storeStrong(&v13->_initialLabel, a4);
-    objc_storeStrong(&v13->_predefinedUserLabels, a5);
+    objc_storeStrong(&v12->_associatedPlanItem, item);
+    objc_storeStrong(&v13->_initialLabel, label);
+    objc_storeStrong(&v13->_predefinedUserLabels, labels);
   }
 
   return v13;
@@ -62,88 +62,88 @@
   }
 
   objc_storeStrong(&self->_chosenLabelIndexPath, v7);
-  v8 = [(OBBaseWelcomeController *)self navigationItem];
-  [v8 setRightBarButtonItem:0 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0 animated:0];
 
-  v9 = [(OBBaseWelcomeController *)self navigationItem];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped];
-  [v9 setLeftBarButtonItem:v10 animated:0];
+  [navigationItem2 setLeftBarButtonItem:v10 animated:0];
 
-  v11 = [(CTCellularPlanItem *)self->_associatedPlanItem phoneNumber];
-  v12 = [v11 length];
+  phoneNumber = [(CTCellularPlanItem *)self->_associatedPlanItem phoneNumber];
+  v12 = [phoneNumber length];
 
   associatedPlanItem = self->_associatedPlanItem;
   if (v12)
   {
-    v14 = [(CTCellularPlanItem *)associatedPlanItem phoneNumber];
-    v15 = [v14 formattedPhoneNumber];
+    phoneNumber2 = [(CTCellularPlanItem *)associatedPlanItem phoneNumber];
+    formattedPhoneNumber = [phoneNumber2 formattedPhoneNumber];
   }
 
   else
   {
-    v17 = [(CTCellularPlanItem *)associatedPlanItem carrierName];
-    v18 = [v17 length];
+    carrierName = [(CTCellularPlanItem *)associatedPlanItem carrierName];
+    v18 = [carrierName length];
 
     if (v18)
     {
       v19 = MEMORY[0x277CCACA8];
-      v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v20 = [v14 localizedStringForKey:@"TITLE_%@_PLAN" value:&stru_28753DF48 table:@"Localizable"];
-      v21 = [(CTCellularPlanItem *)self->_associatedPlanItem carrierName];
-      v16 = [v19 stringWithFormat:v20, v21];
+      phoneNumber2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v20 = [phoneNumber2 localizedStringForKey:@"TITLE_%@_PLAN" value:&stru_28753DF48 table:@"Localizable"];
+      carrierName2 = [(CTCellularPlanItem *)self->_associatedPlanItem carrierName];
+      v16 = [v19 stringWithFormat:v20, carrierName2];
 
       goto LABEL_11;
     }
 
-    v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v15 = [v14 localizedStringForKey:@"CELLULAR_PLAN_LABEL" value:&stru_28753DF48 table:@"Localizable"];
+    phoneNumber2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    formattedPhoneNumber = [phoneNumber2 localizedStringForKey:@"CELLULAR_PLAN_LABEL" value:&stru_28753DF48 table:@"Localizable"];
   }
 
-  v16 = v15;
+  v16 = formattedPhoneNumber;
 LABEL_11:
 
-  v22 = [(OBBaseWelcomeController *)self navigationItem];
-  [v22 setTitle:v16];
+  navigationItem3 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem3 setTitle:v16];
 
   v23 = objc_alloc(MEMORY[0x277D75B40]);
   v24 = [v23 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v24];
 
-  v25 = [(OBTableWelcomeController *)self tableView];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v26 = [(OBTableWelcomeController *)self tableView];
-  [v26 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v27 = [(OBTableWelcomeController *)self tableView];
-  v28 = [MEMORY[0x277D75348] clearColor];
-  [v27 setBackgroundColor:v28];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v29 = [(OBTableWelcomeController *)self tableView];
-  [v29 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v30 = [(OBTableWelcomeController *)self tableView];
-  [v30 setDelegate:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v31 = [(OBTableWelcomeController *)self tableView];
-  [v31 setScrollEnabled:1];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setScrollEnabled:1];
 
-  v32 = [(OBTableWelcomeController *)self tableView];
-  [v32 setAllowsMultipleSelection:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsMultipleSelection:0];
 
-  v33 = [(OBTableWelcomeController *)self tableView];
-  [v33 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v34 = [(OBTableWelcomeController *)self tableView];
-  [v34 layoutIfNeeded];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 layoutIfNeeded];
 
   [(SSLabelPickerViewController *)self setShouldAdjustScrollViewInsetForKeyboard:1];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SSLabelPickerViewController;
@@ -152,8 +152,8 @@ LABEL_11:
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SSLabelPickerViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(SSLabelPickerViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = SSLabelPickerViewController;
@@ -169,14 +169,14 @@ LABEL_11:
   if ([(NSIndexPath *)v3 section])
   {
     v4 = objc_alloc(MEMORY[0x277CF96F0]);
-    v5 = [(OBTableWelcomeController *)self tableView];
-    v6 = [(NSIndexPath *)v5 cellForRowAtIndexPath:v3];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    v6 = [(NSIndexPath *)tableView cellForRowAtIndexPath:v3];
 
-    v7 = [v6 editableTextField];
-    v8 = [v7 text];
-    v9 = [v4 initWithLabel:v8];
+    editableTextField = [v6 editableTextField];
+    text = [editableTextField text];
+    v9 = [v4 initWithLabel:text];
 
-    v3 = v5;
+    v3 = tableView;
   }
 
   else
@@ -189,27 +189,27 @@ LABEL_11:
 
 - (id)customLabelRowValue
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [(SSLabelPickerViewController *)self customLabelIndexPath];
-  v5 = [v3 cellForRowAtIndexPath:v4];
-  v6 = [v5 editableTextField];
-  v7 = [v6 text];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  customLabelIndexPath = [(SSLabelPickerViewController *)self customLabelIndexPath];
+  v5 = [tableView cellForRowAtIndexPath:customLabelIndexPath];
+  editableTextField = [v5 editableTextField];
+  text = [editableTextField text];
 
-  return v7;
+  return text;
 }
 
 - (void)_doneButtonTapped
 {
-  v3 = [(SSLabelPickerViewController *)self view];
-  [v3 endEditing:1];
+  view = [(SSLabelPickerViewController *)self view];
+  [view endEditing:1];
 
-  v5 = [(SSLabelPickerViewController *)self navigationController];
-  v4 = [v5 popViewControllerAnimated:1];
+  navigationController = [(SSLabelPickerViewController *)self navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -220,9 +220,9 @@ LABEL_11:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"CUSTOM_LABEL" value:&stru_28753DF48 table:@"Localizable"];
@@ -236,34 +236,34 @@ LABEL_11:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1000 reuseIdentifier:@"customlabel"];
     predefinedUserLabels = self->_predefinedUserLabels;
-    v8 = [(SSLabelPickerViewController *)self chosenLabel];
-    v9 = [(NSArray *)predefinedUserLabels containsObject:v8];
+    chosenLabel = [(SSLabelPickerViewController *)self chosenLabel];
+    v9 = [(NSArray *)predefinedUserLabels containsObject:chosenLabel];
 
-    v10 = [(NSIndexPath *)self->_chosenLabelIndexPath isEqual:v5];
+    v10 = [(NSIndexPath *)self->_chosenLabelIndexPath isEqual:pathCopy];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"TYPE_LABEL_HERE" value:&stru_28753DF48 table:@"Localizable"];
-    v13 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
-    [v13 setPlaceholder:v12];
+    editableTextField = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
+    [editableTextField setPlaceholder:v12];
 
-    v14 = [(CTUserLabel *)self->_customLabel label];
-    v15 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
-    [v15 setText:v14];
+    label = [(CTUserLabel *)self->_customLabel label];
+    editableTextField2 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
+    [editableTextField2 setText:label];
 
-    v16 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
-    [v16 setClearButtonMode:1];
+    editableTextField3 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
+    [editableTextField3 setClearButtonMode:1];
 
-    v17 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
-    [v17 setReturnKeyType:0];
+    editableTextField4 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
+    [editableTextField4 setReturnKeyType:0];
 
-    v18 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
-    [v18 setDelegate:self];
+    editableTextField5 = [(TSCellularPlanLabelTableViewCell *)v6 editableTextField];
+    [editableTextField5 setDelegate:self];
 
     [(TSCellularPlanLabelTableViewCell *)v6 setSelectionStyle:0];
     [(TSCellularPlanLabelTableViewCell *)v6 setTextFieldOffset:0.01];
@@ -278,8 +278,8 @@ LABEL_11:
       v19 = [(SSLabelPickerViewController *)self length]== 0;
     }
 
-    v27 = [(TSCellularPlanLabelTableViewCell *)v6 textLabel];
-    [v27 setEnabled:v19];
+    textLabel = [(TSCellularPlanLabelTableViewCell *)v6 textLabel];
+    [textLabel setEnabled:v19];
 
     if (!v9)
     {
@@ -300,7 +300,7 @@ LABEL_11:
 
   else
   {
-    v20 = [(NSIndexPath *)self->_chosenLabelIndexPath isEqual:v5];
+    v20 = [(NSIndexPath *)self->_chosenLabelIndexPath isEqual:pathCopy];
     v21 = [[TSCellularPlanLabelTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"label"];
     v6 = v21;
     if (v20)
@@ -315,27 +315,27 @@ LABEL_11:
 
     [(TSCellularPlanLabelTableViewCell *)v21 setAccessoryType:v22];
     v23 = self->_predefinedUserLabels;
-    v24 = [v5 row];
+    v24 = [pathCopy row];
 
     v25 = [(NSArray *)v23 objectAtIndexedSubscript:v24];
-    v26 = [v25 label];
-    [(TSCellularPlanLabelTableViewCell *)v6 setLabelWithNoBadge:v26];
+    label2 = [v25 label];
+    [(TSCellularPlanLabelTableViewCell *)v6 setLabelWithNoBadge:label2];
   }
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
     v9 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:1];
-    v10 = [v17 cellForRowAtIndexPath:v9];
-    v11 = [v10 editableTextField];
-    v12 = [v11 text];
-    v13 = [v12 length];
+    v10 = [viewCopy cellForRowAtIndexPath:v9];
+    editableTextField = [v10 editableTextField];
+    text = [editableTextField text];
+    v13 = [text length];
 
     if (!v13)
     {
@@ -347,27 +347,27 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if ([v6 section] == 1)
+  if ([pathCopy section] == 1)
   {
-    v7 = [(SSLabelPickerViewController *)self customLabelRowValue];
-    v8 = [v7 length];
+    customLabelRowValue = [(SSLabelPickerViewController *)self customLabelRowValue];
+    v8 = [customLabelRowValue length];
 
     if (v8)
     {
 LABEL_7:
-      objc_storeStrong(&self->_chosenLabelIndexPath, a4);
+      objc_storeStrong(&self->_chosenLabelIndexPath, path);
     }
   }
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v16 = [a3 text];
-  v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v5 = [v16 stringByTrimmingCharactersInSet:v4];
+  text = [editing text];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v5 = [text stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v5 length])
   {
@@ -394,13 +394,13 @@ LABEL_7:
     customLabel = self->_customLabel;
     self->_customLabel = v11;
 
-    v13 = [(SSLabelPickerViewController *)self customLabelIndexPath];
+    customLabelIndexPath = [(SSLabelPickerViewController *)self customLabelIndexPath];
     chosenLabelIndexPath = self->_chosenLabelIndexPath;
-    self->_chosenLabelIndexPath = v13;
+    self->_chosenLabelIndexPath = customLabelIndexPath;
   }
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 @end

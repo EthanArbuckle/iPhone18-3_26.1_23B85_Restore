@@ -1,44 +1,44 @@
 @interface KNMotionBackgroundFill
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3;
-- (KNMotionBackgroundFill)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (KNMotionBackgroundFill)initWithMotionBackgroundStyle:(id)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison;
+- (KNMotionBackgroundFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (KNMotionBackgroundFill)initWithMotionBackgroundStyle:(id)style;
 - (NSSet)referencedStyles;
 - (NSString)description;
 - (id)makeAlternateFillForDowngrading;
 - (id)referenceColor;
 - (unint64_t)hash;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 - (void)updateAlternateFillForDowngrading;
 @end
 
 @implementation KNMotionBackgroundFill
 
-- (KNMotionBackgroundFill)initWithMotionBackgroundStyle:(id)a3
+- (KNMotionBackgroundFill)initWithMotionBackgroundStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v11.receiver = self;
   v11.super_class = KNMotionBackgroundFill;
   v6 = [(KNMotionBackgroundFill *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_motionBackgroundStyle, a3);
+    objc_storeStrong(&v6->_motionBackgroundStyle, style);
     objc_msgSend_updateAlternateFillForDowngrading(v7, v8, v9);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7)
@@ -85,41 +85,41 @@
   objc_msgSend_setAlternateFillForDowngrading_(self, v4, v5);
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = objc_msgSend_alternateFillForDowngrading(self, a2, a4);
-  objc_msgSend_paintRect_inContext_(v10, v9, a4, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_alternateFillForDowngrading(self, a2, context);
+  objc_msgSend_paintRect_inContext_(v10, v9, context, x, y, width, height);
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = objc_msgSend_alternateFillForDowngrading(self, a2, a3);
-  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(v14, v13, a3, a5, v6, x, y, width, height);
+  fCopy = f;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v14 = objc_msgSend_alternateFillForDowngrading(self, a2, path);
+  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(v14, v13, path, context, fCopy, x, y, width, height);
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = objc_msgSend_alternateFillForDowngrading(self, a2, a4);
-  objc_msgSend_drawSwatchInRect_inContext_(v10, v9, a4, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_alternateFillForDowngrading(self, a2, context);
+  objc_msgSend_drawSwatchInRect_inContext_(v10, v9, context, x, y, width, height);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  v7 = objc_msgSend_alternateFillForDowngrading(self, a2, a3);
-  objc_msgSend_paintPath_inContext_(v7, v6, a3, a4);
+  v7 = objc_msgSend_alternateFillForDowngrading(self, a2, path);
+  objc_msgSend_paintPath_inContext_(v7, v6, path, context);
 }
 
 - (id)referenceColor
@@ -139,34 +139,34 @@
   return v6;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v10 = a3;
+  blockCopy = block;
   objc_opt_class();
   v6 = objc_msgSend_motionBackgroundStyle(self, v4, v5);
-  v7 = v10[2](v10, v6);
+  v7 = blockCopy[2](blockCopy, v6);
   v8 = TSUCheckedDynamicCast();
   objc_msgSend_setMotionBackgroundStyle_(self, v9, v8);
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [KNMotionBackgroundFill alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy);
 
   return v8;
 }
 
-- (KNMotionBackgroundFill)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (KNMotionBackgroundFill)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v19.receiver = self;
   v19.super_class = KNMotionBackgroundFill;
   v7 = [(KNMotionBackgroundFill *)&v19 init];
   if (v7)
   {
-    if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+    if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
     {
       v8 = *(google::protobuf::internal::ExtensionSet::GetMessage() + 24);
       v17[0] = MEMORY[0x277D85DD0];
@@ -175,7 +175,7 @@
       v17[3] = &unk_27A697E40;
       v9 = v7;
       v18 = v9;
-      v10 = v6;
+      v10 = unarchiverCopy;
       v12 = objc_opt_class();
       if (v8)
       {
@@ -187,7 +187,7 @@
         objc_msgSend_readReferenceMessage_class_protocol_completion_(v10, v11, MEMORY[0x277D80A18], v12, 0, v17);
       }
 
-      v14 = objc_msgSend_drawablesSpecificInstanceWithArchive_unarchiver_(MEMORY[0x277D80248], v13, a3, v10);
+      v14 = objc_msgSend_drawablesSpecificInstanceWithArchive_unarchiver_(MEMORY[0x277D80248], v13, archive, v10);
       objc_msgSend_setAlternateFillForDowngrading_(v9, v15, v14);
 
       v7 = v18;
@@ -207,9 +207,9 @@
   return v9;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v17 = a4;
+  archiverCopy = archiver;
   sub_275E1F138();
   v6 = google::protobuf::internal::ExtensionSet::MutableMessage();
   v8 = v6;
@@ -228,15 +228,15 @@
     *(v8 + 24) = v10;
   }
 
-  objc_msgSend_setStrongReference_message_(v17, v7, motionBackgroundStyle, v10);
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v17, v12, 200, a3);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v7, motionBackgroundStyle, v10);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v12, 200, archive);
   v15 = objc_msgSend_alternateFillForDowngrading(self, v13, v14);
-  objc_msgSend_saveToArchive_archiver_(v15, v16, a3, v17);
+  objc_msgSend_saveToArchive_archiver_(v15, v16, archive, archiverCopy);
 }
 
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison
 {
-  v4 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

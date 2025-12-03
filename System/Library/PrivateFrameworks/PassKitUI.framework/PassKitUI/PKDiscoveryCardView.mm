@@ -9,16 +9,16 @@
 + (double)expandedWidth;
 + (unint64_t)_effectiveScreenType;
 + (unint64_t)_effectiveScreenWidthType;
-+ (void)setPreviewConfiguration:(id *)a3;
++ (void)setPreviewConfiguration:(id *)configuration;
 - (CGSize)_miniCardImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryCardView)initWithArticleLayout:(id)a3 cardSizeType:(int64_t)a4;
-- (PKDiscoveryCardView)initWithArticleLayout:(id)a3 cardTemplateInformation:(id)a4 callToActionTappedOverride:(id)a5 isWelcomeCard:(BOOL)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryCardView)initWithArticleLayout:(id)layout cardSizeType:(int64_t)type;
+- (PKDiscoveryCardView)initWithArticleLayout:(id)layout cardTemplateInformation:(id)information callToActionTappedOverride:(id)override isWelcomeCard:(BOOL)card;
 - (PKDiscoveryCardViewDelegate)delegate;
 - (UIEdgeInsets)_currentContentInsets;
 - (UIEdgeInsets)safeAreaOverrideInsets;
 - (double)_yOffsetToHeadingLabel;
-- (id)_dismissButtonColorWithTraitCollection:(id)a3;
+- (id)_dismissButtonColorWithTraitCollection:(id)collection;
 - (id)_headingLabelFont;
 - (id)_headingLabelTextColor;
 - (id)_titleLabelFont;
@@ -29,21 +29,21 @@
 - (void)_updateForDisplayType;
 - (void)layoutSubviews;
 - (void)loadAndUploadImageData;
-- (void)setCallToActionTappedOverride:(id)a3;
-- (void)setCardSize:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDismissAction:(id)a3;
-- (void)setDisplayType:(int64_t)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (void)setCallToActionTappedOverride:(id)override;
+- (void)setCardSize:(int64_t)size;
+- (void)setDelegate:(id)delegate;
+- (void)setDismissAction:(id)action;
+- (void)setDisplayType:(int64_t)type;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation PKDiscoveryCardView
 
 + (double)expandedWidth
 {
-  v2 = [a1 _effectiveScreenType];
-  v3 = (&unk_1BE116410 + 8 * v2);
-  if (v2 >= 0x14)
+  _effectiveScreenType = [self _effectiveScreenType];
+  v3 = (&unk_1BE116410 + 8 * _effectiveScreenType);
+  if (_effectiveScreenType >= 0x14)
   {
     v3 = MEMORY[0x1E695F060];
   }
@@ -53,40 +53,40 @@
 
 + (double)expandedHeight
 {
-  v3 = [a1 usesMediumCards];
-  v4 = [a1 _effectiveScreenWidthType];
-  if (v4 <= 0xE)
+  usesMediumCards = [self usesMediumCards];
+  _effectiveScreenWidthType = [self _effectiveScreenWidthType];
+  if (_effectiveScreenWidthType <= 0xE)
   {
-    if (((1 << v4) & 0x7E00) != 0)
+    if (((1 << _effectiveScreenWidthType) & 0x7E00) != 0)
     {
 LABEL_5:
-      v5 = v3 == 0;
+      v5 = usesMediumCards == 0;
       result = 549.0;
       v7 = 559.0;
       goto LABEL_7;
     }
 
-    if (((1 << v4) & 0x1E) != 0)
+    if (((1 << _effectiveScreenWidthType) & 0x1E) != 0)
     {
-      v5 = v3 == 0;
+      v5 = usesMediumCards == 0;
       result = 492.0;
       v7 = 510.0;
       goto LABEL_7;
     }
 
-    if (((1 << v4) & 0x1E0) != 0)
+    if (((1 << _effectiveScreenWidthType) & 0x1E0) != 0)
     {
       goto LABEL_5;
     }
   }
 
   result = 0.0;
-  if (v4)
+  if (_effectiveScreenWidthType)
   {
     return result;
   }
 
-  v5 = v3 == 0;
+  v5 = usesMediumCards == 0;
   result = 422.0;
   v7 = 416.0;
 LABEL_7:
@@ -100,9 +100,9 @@ LABEL_7:
 
 + (CGSize)expandedSize
 {
-  [a1 expandedWidth];
+  [self expandedWidth];
   v4 = v3;
-  [a1 expandedHeight];
+  [self expandedHeight];
   v6 = v5;
   v7 = v4;
   result.height = v6;
@@ -112,11 +112,11 @@ LABEL_7:
 
 + (double)compressedWidth
 {
-  v2 = [a1 _effectiveScreenWidthType];
+  _effectiveScreenWidthType = [self _effectiveScreenWidthType];
   do
   {
-    v3 = v2;
-    v2 = 5;
+    v3 = _effectiveScreenWidthType;
+    _effectiveScreenWidthType = 5;
   }
 
   while (v3 > 8);
@@ -125,28 +125,28 @@ LABEL_7:
 
 + (double)compressedHeight
 {
-  v3 = [a1 usesMediumCards];
-  v4 = [a1 _effectiveScreenWidthType];
+  usesMediumCards = [self usesMediumCards];
+  _effectiveScreenWidthType = [self _effectiveScreenWidthType];
   result = 0.0;
-  if (v4 <= 4)
+  if (_effectiveScreenWidthType <= 4)
   {
-    if ((v4 - 2) >= 3)
+    if ((_effectiveScreenWidthType - 2) >= 3)
     {
-      if (v4)
+      if (_effectiveScreenWidthType)
       {
-        if (v4 != 1)
+        if (_effectiveScreenWidthType != 1)
         {
           return result;
         }
 
-        v6 = v3 == 0;
+        v6 = usesMediumCards == 0;
         result = 412.0;
         v7 = 285.0;
       }
 
       else
       {
-        v6 = v3 == 0;
+        v6 = usesMediumCards == 0;
         result = 354.0;
         v7 = 243.0;
       }
@@ -154,7 +154,7 @@ LABEL_7:
 
     else
     {
-      v6 = v3 == 0;
+      v6 = usesMediumCards == 0;
       result = 430.0;
       v7 = 300.0;
     }
@@ -162,28 +162,28 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if ((v4 - 9) < 6)
+  if ((_effectiveScreenWidthType - 9) < 6)
   {
-    v6 = v3 == 0;
+    v6 = usesMediumCards == 0;
     result = 460.0;
 LABEL_11:
     v7 = 330.0;
     goto LABEL_15;
   }
 
-  if ((v4 - 6) < 3)
+  if ((_effectiveScreenWidthType - 6) < 3)
   {
-    v6 = v3 == 0;
+    v6 = usesMediumCards == 0;
     result = 477.0;
     goto LABEL_11;
   }
 
-  if (v4 != 5)
+  if (_effectiveScreenWidthType != 5)
   {
     return result;
   }
 
-  v6 = v3 == 0;
+  v6 = usesMediumCards == 0;
   result = 460.0;
   v7 = 315.0;
 LABEL_15:
@@ -197,9 +197,9 @@ LABEL_15:
 
 + (CGSize)compressedSize
 {
-  [a1 compressedWidth];
+  [self compressedWidth];
   v4 = v3;
-  [a1 compressedHeight];
+  [self compressedHeight];
   v6 = v5;
   v7 = v4;
   result.height = v6;
@@ -209,17 +209,17 @@ LABEL_15:
 
 + (CGSize)miniCompressedSize
 {
-  [a1 compressedWidth];
+  [self compressedWidth];
   v3 = 120.0;
   result.height = v3;
   result.width = v2;
   return result;
 }
 
-+ (void)setPreviewConfiguration:(id *)a3
++ (void)setPreviewConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0;
-  qword_1EBDAAB58 = a3->var3;
+  v3 = *&configuration->var0;
+  qword_1EBDAAB58 = configuration->var3;
   previewConfiguration = v3;
 }
 
@@ -232,7 +232,7 @@ LABEL_15:
 
   else
   {
-    return MEMORY[0x1EEE247D8](a1, a2);
+    return MEMORY[0x1EEE247D8](self, a2);
   }
 }
 
@@ -262,21 +262,21 @@ LABEL_15:
   }
 }
 
-- (PKDiscoveryCardView)initWithArticleLayout:(id)a3 cardSizeType:(int64_t)a4
+- (PKDiscoveryCardView)initWithArticleLayout:(id)layout cardSizeType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:a4 displayType:0];
-  v8 = [(PKDiscoveryCardView *)self initWithArticleLayout:v6 cardTemplateInformation:v7 callToActionTappedOverride:0 isWelcomeCard:0];
+  layoutCopy = layout;
+  v7 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:type displayType:0];
+  v8 = [(PKDiscoveryCardView *)self initWithArticleLayout:layoutCopy cardTemplateInformation:v7 callToActionTappedOverride:0 isWelcomeCard:0];
 
   return v8;
 }
 
-- (PKDiscoveryCardView)initWithArticleLayout:(id)a3 cardTemplateInformation:(id)a4 callToActionTappedOverride:(id)a5 isWelcomeCard:(BOOL)a6
+- (PKDiscoveryCardView)initWithArticleLayout:(id)layout cardTemplateInformation:(id)information callToActionTappedOverride:(id)override isWelcomeCard:(BOOL)card
 {
   v96[3] = *MEMORY[0x1E69E9840];
-  v91 = a3;
-  v90 = a4;
-  v87 = a5;
+  layoutCopy = layout;
+  informationCopy = information;
+  overrideCopy = override;
   v95.receiver = self;
   v95.super_class = PKDiscoveryCardView;
   v11 = *MEMORY[0x1E695F058];
@@ -290,12 +290,12 @@ LABEL_15:
     goto LABEL_48;
   }
 
-  objc_storeStrong(&v15->_articleLayout, a3);
+  objc_storeStrong(&v15->_articleLayout, layout);
   v16->_priority = [(PKDiscoveryArticleLayout *)v16->_articleLayout priority];
-  v16->_isWelcomeCard = a6;
-  obj = [v91 mediumCard];
+  v16->_isWelcomeCard = card;
+  obj = [layoutCopy mediumCard];
   v17 = +[PKDiscoveryCardView usesMediumCards];
-  v18 = obj;
+  card = obj;
   if (obj)
   {
     v19 = v17;
@@ -308,37 +308,37 @@ LABEL_15:
 
   if (!v19)
   {
-    v18 = [v91 card];
+    card = [layoutCopy card];
   }
 
-  objc_storeStrong(&v16->_card, v18);
+  objc_storeStrong(&v16->_card, card);
   if (!v19)
   {
   }
 
-  v20 = [v91 miniCard];
+  miniCard = [layoutCopy miniCard];
   miniCard = v16->_miniCard;
-  v16->_miniCard = v20;
+  v16->_miniCard = miniCard;
 
-  v22 = [(PKMiniDiscoveryCard *)v16->_miniCard backgroundMedia];
+  backgroundMedia = [(PKMiniDiscoveryCard *)v16->_miniCard backgroundMedia];
   miniCardMedia = v16->_miniCardMedia;
-  v16->_miniCardMedia = v22;
+  v16->_miniCardMedia = backgroundMedia;
 
   v16->_largeCardTemplate = [(PKDiscoveryCard *)v16->_card largeCardTemplateType];
   v16->_miniCardTemplate = [(PKMiniDiscoveryCard *)v16->_miniCard miniCardTemplateType];
-  v24 = [v90 copy];
+  v24 = [informationCopy copy];
   cardTemplateInformation = v16->_cardTemplateInformation;
   v16->_cardTemplateInformation = v24;
 
-  v26 = [(PKDiscoveryCardView *)v16 _isLargeFormat];
-  v27 = [(PKDiscoveryCardView *)v16 _isMaskedDisplay];
+  _isLargeFormat = [(PKDiscoveryCardView *)v16 _isLargeFormat];
+  _isMaskedDisplay = [(PKDiscoveryCardView *)v16 _isMaskedDisplay];
   v28 = +[PKDiscoveryCardView _effectiveScreenType];
-  v88 = [(PKDiscoveryCard *)v16->_card backgroundMedia];
-  v83 = [(PKDiscoveryCard *)v16->_card backgroundMediaExpanded];
-  v81 = [(PKDiscoveryCard *)v16->_card backgroundMediaCropped];
-  if (!v27)
+  backgroundMedia2 = [(PKDiscoveryCard *)v16->_card backgroundMedia];
+  backgroundMediaExpanded = [(PKDiscoveryCard *)v16->_card backgroundMediaExpanded];
+  backgroundMediaCropped = [(PKDiscoveryCard *)v16->_card backgroundMediaCropped];
+  if (!_isMaskedDisplay)
   {
-    v31 = v83;
+    v31 = backgroundMediaExpanded;
 LABEL_15:
     if (v31)
     {
@@ -347,7 +347,7 @@ LABEL_15:
 
     else
     {
-      v30 = v88;
+      v30 = backgroundMedia2;
     }
 
     goto LABEL_18;
@@ -359,26 +359,26 @@ LABEL_15:
     LOBYTE(v29) = *(MEMORY[0x1E695F060] + 8) > 812.0;
   }
 
-  v30 = v88;
+  v30 = backgroundMedia2;
   if ((v29 & 1) == 0)
   {
-    v31 = v81;
+    v31 = backgroundMediaCropped;
     goto LABEL_15;
   }
 
 LABEL_18:
   objc_storeStrong(&v16->_largeCardMedia, v30);
   v32 = MEMORY[0x1E69DC888];
-  v33 = [(PKDiscoveryCard *)v16->_card backgroundColor];
-  v85 = [v32 pkui_colorWithPKColor:v33];
+  backgroundColor = [(PKDiscoveryCard *)v16->_card backgroundColor];
+  v85 = [v32 pkui_colorWithPKColor:backgroundColor];
 
   v34 = MEMORY[0x1E69DC888];
-  v35 = [(PKMiniDiscoveryCard *)v16->_miniCard backgroundColor];
-  v84 = [v34 pkui_colorWithPKColor:v35];
+  backgroundColor2 = [(PKMiniDiscoveryCard *)v16->_miniCard backgroundColor];
+  v84 = [v34 pkui_colorWithPKColor:backgroundColor2];
 
   if (v84)
   {
-    v36 = v26;
+    v36 = _isLargeFormat;
   }
 
   else
@@ -397,9 +397,9 @@ LABEL_18:
   }
 
   objc_storeStrong(&v16->_backgroundColor, v37);
-  v89 = [(PKDiscoveryCardView *)v16 layer];
-  [v89 setCornerCurve:*MEMORY[0x1E69796E8]];
-  [v89 setMasksToBounds:1];
+  layer = [(PKDiscoveryCardView *)v16 layer];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+  [layer setMasksToBounds:1];
   v38 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v11, v12, v13, v14}];
   miniCardBackgroundColorView = v16->_miniCardBackgroundColorView;
   v16->_miniCardBackgroundColorView = v38;
@@ -407,39 +407,39 @@ LABEL_18:
   [(UIView *)v16->_miniCardBackgroundColorView setContentMode:2];
   [(UIView *)v16->_miniCardBackgroundColorView setBackgroundColor:v16->_backgroundColor];
   [(PKDiscoveryCardView *)v16 addSubview:v16->_miniCardBackgroundColorView];
-  if (v26)
+  if (_isLargeFormat)
   {
-    v40 = [(PKDiscoveryCard *)v16->_card title];
-    v41 = [(PKDiscoveryCard *)v16->_card heading];
+    title = [(PKDiscoveryCard *)v16->_card title];
+    heading = [(PKDiscoveryCard *)v16->_card heading];
     [(UIView *)v16->_miniCardBackgroundColorView setHidden:1];
   }
 
   else
   {
-    v42 = [(PKMiniDiscoveryCard *)v16->_miniCard title];
-    v43 = [(PKMiniDiscoveryCard *)v16->_miniCard heading];
-    if ([v42 length])
+    title2 = [(PKMiniDiscoveryCard *)v16->_miniCard title];
+    heading2 = [(PKMiniDiscoveryCard *)v16->_miniCard heading];
+    if ([title2 length])
     {
-      v44 = v42;
+      title3 = title2;
     }
 
     else
     {
-      v44 = [(PKDiscoveryCard *)v16->_card title];
+      title3 = [(PKDiscoveryCard *)v16->_card title];
     }
 
-    v40 = v44;
-    if ([v43 length])
+    title = title3;
+    if ([heading2 length])
     {
-      v45 = v43;
+      heading3 = heading2;
     }
 
     else
     {
-      v45 = [(PKDiscoveryCard *)v16->_card heading];
+      heading3 = [(PKDiscoveryCard *)v16->_card heading];
     }
 
-    v41 = v45;
+    heading = heading3;
   }
 
   v46 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v11, v12, v13, v14}];
@@ -449,30 +449,30 @@ LABEL_18:
   [(UIImageView *)v16->_backgroundImageView setContentMode:2];
   [(UIImageView *)v16->_backgroundImageView setBackgroundColor:v16->_backgroundColor];
   [(PKDiscoveryCardView *)v16 addSubview:v16->_backgroundImageView];
-  v48 = !v27;
-  if (v48 | v26)
+  v48 = !_isMaskedDisplay;
+  if (v48 | _isLargeFormat)
   {
     v49 = +[PKDiscoveryCardView usesMediumCards];
-    if (!v41)
+    if (!heading)
     {
       goto LABEL_39;
     }
 
 LABEL_37:
-    if ([v41 length] != 0 && !v49)
+    if ([heading length] != 0 && !v49)
     {
       v50 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v11, v12, v13, v14}];
       headingLabel = v16->_headingLabel;
       v16->_headingLabel = v50;
 
-      [(UILabel *)v16->_headingLabel setText:v41];
+      [(UILabel *)v16->_headingLabel setText:heading];
       v52 = v16->_headingLabel;
-      v53 = [(PKDiscoveryCardView *)v16 _headingLabelFont];
-      [(UILabel *)v52 setFont:v53];
+      _headingLabelFont = [(PKDiscoveryCardView *)v16 _headingLabelFont];
+      [(UILabel *)v52 setFont:_headingLabelFont];
 
       v54 = v16->_headingLabel;
-      v55 = [(PKDiscoveryCardView *)v16 _headingLabelTextColor];
-      [(UILabel *)v54 setTextColor:v55];
+      _headingLabelTextColor = [(PKDiscoveryCardView *)v16 _headingLabelTextColor];
+      [(UILabel *)v54 setTextColor:_headingLabelTextColor];
 
       [(UILabel *)v16->_headingLabel setNumberOfLines:1];
       [(UILabel *)v16->_headingLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
@@ -483,45 +483,45 @@ LABEL_37:
   }
 
   v49 = 0;
-  if (v41)
+  if (heading)
   {
     goto LABEL_37;
   }
 
 LABEL_39:
-  if (v40 != 0 && !v49)
+  if (title != 0 && !v49)
   {
     v56 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v11, v12, v13, v14}];
     titleLabel = v16->_titleLabel;
     v16->_titleLabel = v56;
 
-    [(UILabel *)v16->_titleLabel setText:v40];
+    [(UILabel *)v16->_titleLabel setText:title];
     v58 = v16->_titleLabel;
-    v59 = [(PKDiscoveryCardView *)v16 _titleLabelFont];
-    [(UILabel *)v58 setFont:v59];
+    _titleLabelFont = [(PKDiscoveryCardView *)v16 _titleLabelFont];
+    [(UILabel *)v58 setFont:_titleLabelFont];
 
     v60 = v16->_titleLabel;
-    v61 = [(PKDiscoveryCardView *)v16 _titleLabelTextColor];
-    [(UILabel *)v60 setTextColor:v61];
+    _titleLabelTextColor = [(PKDiscoveryCardView *)v16 _titleLabelTextColor];
+    [(UILabel *)v60 setTextColor:_titleLabelTextColor];
 
     [(UILabel *)v16->_titleLabel setNumberOfLines:[(PKDiscoveryCardView *)v16 _titleLabelNumberOfLines]];
     [(UILabel *)v16->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     [(PKDiscoveryCardView *)v16 addSubview:v16->_titleLabel];
   }
 
-  v62 = [(PKDiscoveryCard *)v16->_card callToAction];
+  callToAction = [(PKDiscoveryCard *)v16->_card callToAction];
 
-  if (v62)
+  if (callToAction)
   {
     v63 = [PKDiscoveryCallToActionFooterView alloc];
-    v64 = [(PKDiscoveryCard *)v16->_card callToAction];
-    v65 = [(PKDiscoveryArticleLayout *)v16->_articleLayout itemIdentifier];
-    v66 = [(PKDiscoveryCallToActionFooterView *)v63 initWithCallToAction:v64 displayType:v48 itemIdentifier:v65];
+    callToAction2 = [(PKDiscoveryCard *)v16->_card callToAction];
+    itemIdentifier = [(PKDiscoveryArticleLayout *)v16->_articleLayout itemIdentifier];
+    v66 = [(PKDiscoveryCallToActionFooterView *)v63 initWithCallToAction:callToAction2 displayType:v48 itemIdentifier:itemIdentifier];
     ctaFooterView = v16->_ctaFooterView;
     v16->_ctaFooterView = v66;
 
     [(PKDiscoveryCardView *)v16 addSubview:v16->_ctaFooterView];
-    if ((v26 & 1) == 0)
+    if ((_isLargeFormat & 1) == 0)
     {
       [(PKDiscoveryCallToActionFooterView *)v16->_ctaFooterView setHidden:1];
     }
@@ -545,16 +545,16 @@ LABEL_39:
     v70 = 1;
   }
 
-  v71 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v72 = PKDiscoveryCardViewDismissImage();
-  [v71 setImage:v72];
+  [plainButtonConfiguration setImage:v72];
 
-  v73 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v71 primaryAction:v69];
+  v73 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v69];
   dismissButton = v16->_dismissButton;
   v16->_dismissButton = v73;
 
-  v75 = [(UIButton *)v16->_dismissButton traitOverrides];
-  [v75 setUserInterfaceStyle:v70];
+  traitOverrides = [(UIButton *)v16->_dismissButton traitOverrides];
+  [traitOverrides setUserInterfaceStyle:v70];
 
   [(UIButton *)v16->_dismissButton setAccessibilityIdentifier:*MEMORY[0x1E69B9708]];
   [(PKDiscoveryCardView *)v16 addSubview:v16->_dismissButton];
@@ -599,11 +599,11 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
   [v6 setNeedsLayout];
 }
 
-- (void)setDisplayType:(int64_t)a3
+- (void)setDisplayType:(int64_t)type
 {
-  if ([(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation displayType]!= a3)
+  if ([(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation displayType]!= type)
   {
-    v5 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:[(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation cardSize] displayType:a3];
+    v5 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:[(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation cardSize] displayType:type];
     cardTemplateInformation = self->_cardTemplateInformation;
     self->_cardTemplateInformation = v5;
 
@@ -613,11 +613,11 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
   }
 }
 
-- (void)setCardSize:(int64_t)a3
+- (void)setCardSize:(int64_t)size
 {
-  if ([(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation cardSize]!= a3)
+  if ([(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation cardSize]!= size)
   {
-    v5 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:a3 displayType:[(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation displayType]];
+    v5 = [[PKDiscoveryCardViewTemplateInformation alloc] initWithCardSize:size displayType:[(PKDiscoveryCardViewTemplateInformation *)self->_cardTemplateInformation displayType]];
     cardTemplateInformation = self->_cardTemplateInformation;
     self->_cardTemplateInformation = v5;
 
@@ -627,24 +627,24 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  [(PKDiscoveryCallToActionFooterView *)self->_ctaFooterView setDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  [(PKDiscoveryCallToActionFooterView *)self->_ctaFooterView setDelegate:delegateCopy];
 }
 
-- (void)setCallToActionTappedOverride:(id)a3
+- (void)setCallToActionTappedOverride:(id)override
 {
-  v7 = a3;
-  v4 = _Block_copy(v7);
+  overrideCopy = override;
+  v4 = _Block_copy(overrideCopy);
   callToActionTappedOverride = self->_callToActionTappedOverride;
   self->_callToActionTappedOverride = v4;
 
   ctaFooterView = self->_ctaFooterView;
   if (ctaFooterView)
   {
-    [(PKDiscoveryCallToActionFooterView *)ctaFooterView setCallToActionTappedOverride:v7];
+    [(PKDiscoveryCallToActionFooterView *)ctaFooterView setCallToActionTappedOverride:overrideCopy];
   }
 }
 
@@ -663,26 +663,26 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
   v141 = v15;
   v16 = v8 - (v11 + v15);
   v151 = v10 - (v13 + v17);
-  v18 = [(PKDiscoveryCardView *)self _isLargeFormat];
-  v19 = [(PKDiscoveryCardView *)self _isMaskedDisplay];
-  v20 = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
-  if (v20)
+  _isLargeFormat = [(PKDiscoveryCardView *)self _isLargeFormat];
+  _isMaskedDisplay = [(PKDiscoveryCardView *)self _isMaskedDisplay];
+  isWritingDirectionRTL = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
+  if (isWritingDirectionRTL)
   {
-    v21 = v20 == 1;
+    _shouldReverseLayoutDirection = isWritingDirectionRTL == 1;
   }
 
   else
   {
-    v21 = [(PKDiscoveryCardView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKDiscoveryCardView *)self _shouldReverseLayoutDirection];
   }
 
-  v146 = v21;
+  v146 = _shouldReverseLayoutDirection;
   memset(&slice, 0, sizeof(slice));
   remainder.origin.x = v12;
   remainder.origin.y = v14;
   remainder.size.width = v16;
   remainder.size.height = v151;
-  if (!self->_headingLabel && self->_miniCardTemplate == 2 && !v18)
+  if (!self->_headingLabel && self->_miniCardTemplate == 2 && !_isLargeFormat)
   {
     v22 = objc_alloc(MEMORY[0x1E69DCC10]);
     v23 = [v22 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -690,16 +690,16 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
     self->_headingLabel = v23;
 
     v25 = self->_headingLabel;
-    v26 = [(PKDiscoveryCardView *)self _headingLabelFont];
-    [(UILabel *)v25 setFont:v26];
+    _headingLabelFont = [(PKDiscoveryCardView *)self _headingLabelFont];
+    [(UILabel *)v25 setFont:_headingLabelFont];
 
     v27 = self->_headingLabel;
-    v28 = [(UILabel *)self->_titleLabel text];
-    [(UILabel *)v27 setText:v28];
+    text = [(UILabel *)self->_titleLabel text];
+    [(UILabel *)v27 setText:text];
 
     v29 = self->_headingLabel;
-    v30 = [(PKDiscoveryCardView *)self _headingLabelTextColor];
-    [(UILabel *)v29 setTextColor:v30];
+    _headingLabelTextColor = [(PKDiscoveryCardView *)self _headingLabelTextColor];
+    [(UILabel *)v29 setTextColor:_headingLabelTextColor];
 
     [(UILabel *)self->_headingLabel setNumberOfLines:1];
     [(PKDiscoveryCardView *)self addSubview:self->_headingLabel];
@@ -708,12 +708,12 @@ void __110__PKDiscoveryCardView_initWithArticleLayout_cardTemplateInformation_ca
   v142 = v16;
   v143 = v14;
   v144 = v12;
-  v31 = [(UILabel *)self->_titleLabel text];
-  v32 = [(UILabel *)self->_headingLabel text];
-  v33 = [v31 isEqual:v32];
+  text2 = [(UILabel *)self->_titleLabel text];
+  text3 = [(UILabel *)self->_headingLabel text];
+  v33 = [text2 isEqual:text3];
 
   [(UILabel *)self->_titleLabel setHidden:v33];
-  v34 = v18 || !v19;
+  v34 = _isLargeFormat || !_isMaskedDisplay;
   ctaFooterView = self->_ctaFooterView;
   v148 = v10;
   v149 = v8;
@@ -849,8 +849,8 @@ LABEL_16:
   v152 = v77;
   v145 = v78;
   v80 = v79;
-  v81 = [(UILabel *)self->_titleLabel text];
-  v82 = [v81 length];
+  text4 = [(UILabel *)self->_titleLabel text];
+  v82 = [text4 length];
 
   if (v146)
   {
@@ -897,13 +897,13 @@ LABEL_16:
         {
           v87 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
           [v87 setMaximumNumberOfLines:3];
-          v88 = [(UILabel *)self->_titleLabel text];
+          text5 = [(UILabel *)self->_titleLabel text];
           v153 = *MEMORY[0x1E69DB648];
           v162 = *MEMORY[0x1E69DB648];
-          v89 = [(PKDiscoveryCardView *)self _titleLabelFont];
-          v163[0] = v89;
+          _titleLabelFont = [(PKDiscoveryCardView *)self _titleLabelFont];
+          v163[0] = _titleLabelFont;
           v90 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v163 forKeys:&v162 count:1];
-          [v88 boundingRectWithSize:1 options:v90 attributes:v87 context:{v86, 3.40282347e38}];
+          [text5 boundingRectWithSize:1 options:v90 attributes:v87 context:{v86, 3.40282347e38}];
           v92 = v91;
 
           v93 = v150;
@@ -918,21 +918,21 @@ LABEL_16:
             width = v171.size.width;
             height = v171.size.height;
             [v87 setMaximumNumberOfLines:2];
-            v121 = [(UILabel *)self->_titleLabel text];
+            text6 = [(UILabel *)self->_titleLabel text];
             v160 = v153;
-            v122 = [(PKDiscoveryCardView *)self _titleLabelFont];
-            v161 = v122;
+            _titleLabelFont2 = [(PKDiscoveryCardView *)self _titleLabelFont];
+            v161 = _titleLabelFont2;
             v123 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v161 forKeys:&v160 count:1];
-            [v121 boundingRectWithSize:1 options:v123 attributes:v87 context:{v86, 3.40282347e38}];
+            [text6 boundingRectWithSize:1 options:v123 attributes:v87 context:{v86, 3.40282347e38}];
             v92 = v124;
 
             [v87 setMaximumNumberOfLines:1];
-            v125 = [(UILabel *)self->_titleLabel text];
+            text7 = [(UILabel *)self->_titleLabel text];
             v158 = v153;
-            v126 = [(PKDiscoveryCardView *)self _titleLabelFont];
-            v159 = v126;
+            _titleLabelFont3 = [(PKDiscoveryCardView *)self _titleLabelFont];
+            v159 = _titleLabelFont3;
             v127 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v159 forKeys:&v158 count:1];
-            [v125 boundingRectWithSize:1 options:v127 attributes:v87 context:{v86, 3.40282347e38}];
+            [text7 boundingRectWithSize:1 options:v127 attributes:v87 context:{v86, 3.40282347e38}];
             v129 = v128;
 
             v101 = self->_titleLabel;
@@ -1039,9 +1039,9 @@ LABEL_48:
     [(UILabel *)self->_titleLabel setFrame:v76, v152, v145, v80];
   }
 
-  v138 = [(PKDiscoveryCard *)self->_card callToAction];
+  callToAction = [(PKDiscoveryCard *)self->_card callToAction];
 
-  if (v138)
+  if (callToAction)
   {
     [(PKDiscoveryCallToActionFooterView *)self->_ctaFooterView sizeThatFits:v149, v148];
     PKContentAlignmentMake();
@@ -1050,9 +1050,9 @@ LABEL_48:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(PKDiscoveryCardView *)self _isMaskedDisplay:a3.width])
+  if ([(PKDiscoveryCardView *)self _isMaskedDisplay:fits.width])
   {
     if ([(PKDiscoveryCardView *)self _isLargeFormat])
     {
@@ -1078,11 +1078,11 @@ LABEL_48:
   return result;
 }
 
-- (void)setDismissAction:(id)a3
+- (void)setDismissAction:(id)action
 {
-  if (self->_dismissAction != a3)
+  if (self->_dismissAction != action)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(action);
     dismissAction = self->_dismissAction;
     self->_dismissAction = v4;
 
@@ -1135,18 +1135,18 @@ LABEL_48:
     return 3;
   }
 
-  v3 = [(PKDiscoveryCardView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(PKDiscoveryCardView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  if (self->_isWelcomeCard && !UIContentSizeCategoryIsAccessibilityCategory(v4))
+  if (self->_isWelcomeCard && !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v17 = 3;
   }
 
   else
   {
-    v5 = [(PKDiscoveryCardView *)self _titleLabelFont];
-    v6 = [(UILabel *)self->_titleLabel text];
+    _titleLabelFont = [(PKDiscoveryCardView *)self _titleLabelFont];
+    text = [(UILabel *)self->_titleLabel text];
     [(PKDiscoveryCardView *)self _currentContentInsets];
     v8 = v7;
     v10 = v9;
@@ -1168,12 +1168,12 @@ LABEL_48:
 
     v18 = *MEMORY[0x1E69DB648];
     v28 = *MEMORY[0x1E69DB648];
-    v29[0] = v5;
+    v29[0] = _titleLabelFont;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    [v6 boundingRectWithSize:1 options:v19 attributes:v13 context:{v12, 1.79769313e308}];
+    [text boundingRectWithSize:1 options:v19 attributes:v13 context:{v12, 1.79769313e308}];
     v21 = v20;
 
-    if (v21 >= v16 || (v17 = 1, [v13 setMaximumNumberOfLines:1], v26 = v18, v27 = v5, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v27, &v26, 1), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "boundingRectWithSize:options:attributes:context:", 1, v22, v13, v12, 1.79769313e308), v24 = v23, v22, v21 > v24))
+    if (v21 >= v16 || (v17 = 1, [v13 setMaximumNumberOfLines:1], v26 = v18, v27 = _titleLabelFont, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v27, &v26, 1), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(text, "boundingRectWithSize:options:attributes:context:", 1, v22, v13, v12, 1.79769313e308), v24 = v23, v22, v21 > v24))
     {
       v17 = 2;
     }
@@ -1202,7 +1202,7 @@ LABEL_48:
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -1231,11 +1231,11 @@ LABEL_48:
 
   else
   {
-    v7 = [(PKDiscoveryCardView *)self superview];
-    if (v7)
+    superview = [(PKDiscoveryCardView *)self superview];
+    if (superview)
     {
-      v8 = [(PKDiscoveryCardView *)self superview];
-      [v8 safeAreaInsets];
+      superview2 = [(PKDiscoveryCardView *)self superview];
+      [superview2 safeAreaInsets];
       top = v9;
       left = v11;
       bottom = v13;
@@ -1274,9 +1274,9 @@ LABEL_48:
 
 - (double)_yOffsetToHeadingLabel
 {
-  v2 = [(PKDiscoveryCardView *)self _isMaskedDisplay];
+  _isMaskedDisplay = [(PKDiscoveryCardView *)self _isMaskedDisplay];
   result = 0.0;
-  if (v2)
+  if (_isMaskedDisplay)
   {
     return 20.0;
   }
@@ -1286,8 +1286,8 @@ LABEL_48:
 
 - (void)loadAndUploadImageData
 {
-  v3 = [(PKDiscoveryCardView *)self _isMaskedDisplay];
-  if ([(PKDiscoveryCardView *)self _isLargeFormat]|| !v3)
+  _isMaskedDisplay = [(PKDiscoveryCardView *)self _isMaskedDisplay];
+  if ([(PKDiscoveryCardView *)self _isLargeFormat]|| !_isMaskedDisplay)
   {
     v5 = self->_largeCardMedia;
     v7 = *MEMORY[0x1E695F060];
@@ -1406,40 +1406,40 @@ LABEL_11:
 
 - (void)_updateForDisplayType
 {
-  v3 = [(PKDiscoveryCardView *)self _isLargeFormat];
-  v4 = [(PKDiscoveryCardView *)self _isMaskedDisplay];
-  v5 = v4;
-  if (v3)
+  _isLargeFormat = [(PKDiscoveryCardView *)self _isLargeFormat];
+  _isMaskedDisplay = [(PKDiscoveryCardView *)self _isMaskedDisplay];
+  v5 = _isMaskedDisplay;
+  if (_isLargeFormat)
   {
     titleLabel = self->_titleLabel;
-    v7 = [(PKDiscoveryCard *)self->_card title];
-    [(UILabel *)titleLabel setText:v7];
+    title = [(PKDiscoveryCard *)self->_card title];
+    [(UILabel *)titleLabel setText:title];
 
     v8 = self->_titleLabel;
-    v9 = [(PKDiscoveryCardView *)self _titleLabelFont];
-    [(UILabel *)v8 setFont:v9];
+    _titleLabelFont = [(PKDiscoveryCardView *)self _titleLabelFont];
+    [(UILabel *)v8 setFont:_titleLabelFont];
 
     v10 = self->_titleLabel;
-    v11 = [(PKDiscoveryCardView *)self _titleLabelTextColor];
-    [(UILabel *)v10 setTextColor:v11];
+    _titleLabelTextColor = [(PKDiscoveryCardView *)self _titleLabelTextColor];
+    [(UILabel *)v10 setTextColor:_titleLabelTextColor];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:[(PKDiscoveryCardView *)self _titleLabelNumberOfLines]];
     headingLabel = self->_headingLabel;
-    v13 = [(PKDiscoveryCard *)self->_card heading];
-    [(UILabel *)headingLabel setText:v13];
+    heading = [(PKDiscoveryCard *)self->_card heading];
+    [(UILabel *)headingLabel setText:heading];
 
     v14 = self->_headingLabel;
-    v15 = [(PKDiscoveryCardView *)self _headingLabelFont];
-    [(UILabel *)v14 setFont:v15];
+    _headingLabelFont = [(PKDiscoveryCardView *)self _headingLabelFont];
+    [(UILabel *)v14 setFont:_headingLabelFont];
 
     v16 = self->_headingLabel;
-    v17 = [(PKDiscoveryCardView *)self _headingLabelTextColor];
-    [(UILabel *)v16 setTextColor:v17];
+    _headingLabelTextColor = [(PKDiscoveryCardView *)self _headingLabelTextColor];
+    [(UILabel *)v16 setTextColor:_headingLabelTextColor];
 
     [(PKDiscoveryCallToActionFooterView *)self->_ctaFooterView setHidden:0];
     v18 = MEMORY[0x1E69DC888];
-    v19 = [(PKDiscoveryCard *)self->_card backgroundColor];
-    v20 = [v18 pkui_colorWithPKColor:v19];
+    backgroundColor = [(PKDiscoveryCard *)self->_card backgroundColor];
+    v20 = [v18 pkui_colorWithPKColor:backgroundColor];
     p_backgroundColor = &self->_backgroundColor;
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v20;
@@ -1447,79 +1447,79 @@ LABEL_11:
 
   else
   {
-    v23 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
-    v49 = v4;
-    if (v4)
+    backgroundColor2 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
+    v49 = _isMaskedDisplay;
+    if (_isMaskedDisplay)
     {
-      v24 = [(PKMiniDiscoveryCard *)self->_miniCard title];
-      v25 = [(PKMiniDiscoveryCard *)self->_miniCard heading];
+      title2 = [(PKMiniDiscoveryCard *)self->_miniCard title];
+      heading2 = [(PKMiniDiscoveryCard *)self->_miniCard heading];
       v26 = self->_titleLabel;
-      if ([v24 length])
+      if ([title2 length])
       {
-        [(UILabel *)v26 setText:v24];
+        [(UILabel *)v26 setText:title2];
       }
 
       else
       {
-        v30 = [(PKDiscoveryCard *)self->_card title];
-        [(UILabel *)v26 setText:v30];
+        title3 = [(PKDiscoveryCard *)self->_card title];
+        [(UILabel *)v26 setText:title3];
 
-        v23 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
+        backgroundColor2 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
       }
 
       v31 = self->_headingLabel;
-      if ([v25 length])
+      if ([heading2 length])
       {
-        [(UILabel *)v31 setText:v25];
+        [(UILabel *)v31 setText:heading2];
       }
 
       else
       {
-        v32 = [(PKDiscoveryCard *)self->_card heading];
-        [(UILabel *)v31 setText:v32];
+        heading3 = [(PKDiscoveryCard *)self->_card heading];
+        [(UILabel *)v31 setText:heading3];
 
-        v23 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
+        backgroundColor2 = &OBJC_IVAR___PKDiscoveryCardView__miniCard;
       }
     }
 
     else
     {
       v27 = self->_titleLabel;
-      v28 = [(PKDiscoveryCard *)self->_card title];
-      [(UILabel *)v27 setText:v28];
+      title4 = [(PKDiscoveryCard *)self->_card title];
+      [(UILabel *)v27 setText:title4];
 
       v29 = self->_headingLabel;
-      v24 = [(PKDiscoveryCard *)self->_card heading];
-      [(UILabel *)v29 setText:v24];
+      title2 = [(PKDiscoveryCard *)self->_card heading];
+      [(UILabel *)v29 setText:title2];
     }
 
     v33 = self->_titleLabel;
-    v34 = [(PKDiscoveryCardView *)self _titleLabelFont];
-    [(UILabel *)v33 setFont:v34];
+    _titleLabelFont2 = [(PKDiscoveryCardView *)self _titleLabelFont];
+    [(UILabel *)v33 setFont:_titleLabelFont2];
 
     v35 = self->_titleLabel;
-    v36 = [(PKDiscoveryCardView *)self _titleLabelTextColor];
-    [(UILabel *)v35 setTextColor:v36];
+    _titleLabelTextColor2 = [(PKDiscoveryCardView *)self _titleLabelTextColor];
+    [(UILabel *)v35 setTextColor:_titleLabelTextColor2];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:[(PKDiscoveryCardView *)self _titleLabelNumberOfLines]];
     v37 = self->_headingLabel;
-    v38 = [(PKDiscoveryCardView *)self _headingLabelFont];
-    [(UILabel *)v37 setFont:v38];
+    _headingLabelFont2 = [(PKDiscoveryCardView *)self _headingLabelFont];
+    [(UILabel *)v37 setFont:_headingLabelFont2];
 
     v39 = self->_headingLabel;
-    v40 = [(PKDiscoveryCardView *)self _headingLabelTextColor];
-    [(UILabel *)v39 setTextColor:v40];
+    _headingLabelTextColor2 = [(PKDiscoveryCardView *)self _headingLabelTextColor];
+    [(UILabel *)v39 setTextColor:_headingLabelTextColor2];
 
     [(PKDiscoveryCallToActionFooterView *)self->_ctaFooterView setHidden:1];
     v41 = MEMORY[0x1E69DC888];
-    v19 = [(PKMiniDiscoveryCard *)self->_miniCard backgroundColor];
-    backgroundColor = [v41 pkui_colorWithPKColor:v19];
+    backgroundColor = [(PKMiniDiscoveryCard *)self->_miniCard backgroundColor];
+    backgroundColor = [v41 pkui_colorWithPKColor:backgroundColor];
     v42 = backgroundColor;
     if (!backgroundColor)
     {
       v43 = MEMORY[0x1E69DC888];
-      v23 = [(PKDiscoveryCard *)self->_card backgroundColor];
-      v42 = [v43 pkui_colorWithPKColor:v23];
+      backgroundColor2 = [(PKDiscoveryCard *)self->_card backgroundColor];
+      v42 = [v43 pkui_colorWithPKColor:backgroundColor2];
     }
 
     p_backgroundColor = &self->_backgroundColor;
@@ -1533,7 +1533,7 @@ LABEL_11:
 
   [(UIImageView *)self->_backgroundImageView setBackgroundColor:*p_backgroundColor];
   [(UIView *)self->_miniCardBackgroundColorView setBackgroundColor:*p_backgroundColor];
-  [(UIView *)self->_miniCardBackgroundColorView setHidden:v3];
+  [(UIView *)self->_miniCardBackgroundColorView setHidden:_isLargeFormat];
   [(PKDiscoveryCardView *)self loadAndUploadImageData];
   [(PKDiscoveryCardView *)self setNeedsLayout];
   ctaFooterView = self->_ctaFooterView;
@@ -1543,7 +1543,7 @@ LABEL_11:
     if (_UISolariumFeatureFlagEnabled())
     {
       [(UIView *)self pkui_setMaskType:3];
-      if (!v3 && !self->_miniCardTemplate)
+      if (!_isLargeFormat && !self->_miniCardTemplate)
       {
         [(UIImageView *)self->_backgroundImageView pkui_setMaskType:3];
       }
@@ -1552,7 +1552,7 @@ LABEL_11:
     else
     {
       [(PKDiscoveryCardView *)self _setContinuousCornerRadius:14.0];
-      if (!v3 && !self->_miniCardTemplate)
+      if (!_isLargeFormat && !self->_miniCardTemplate)
       {
         [(UIImageView *)self->_backgroundImageView _setContinuousCornerRadius:14.0];
       }
@@ -1574,9 +1574,9 @@ LABEL_11:
 
   [(UIButton *)dismissButton setHidden:v46];
   v47 = self->_titleLabel;
-  v48 = [(PKDiscoveryCardView *)self _titleLabelNumberOfLines];
+  _titleLabelNumberOfLines = [(PKDiscoveryCardView *)self _titleLabelNumberOfLines];
 
-  [(UILabel *)v47 setNumberOfLines:v48];
+  [(UILabel *)v47 setNumberOfLines:_titleLabelNumberOfLines];
 }
 
 - (int64_t)_foregroundContentMode
@@ -1591,57 +1591,57 @@ LABEL_11:
   return result;
 }
 
-- (id)_dismissButtonColorWithTraitCollection:(id)a3
+- (id)_dismissButtonColorWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 userInterfaceStyle];
-  if (!v5 || v5 == 2)
+  collectionCopy = collection;
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  if (!userInterfaceStyle || userInterfaceStyle == 2)
   {
-    v6 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+    systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
     goto LABEL_6;
   }
 
-  if (v5 == 1)
+  if (userInterfaceStyle == 1)
   {
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    systemDarkGrayColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
 LABEL_6:
-    v7 = v6;
+    v7 = systemDarkGrayColor;
     goto LABEL_8;
   }
 
   v7 = 0;
 LABEL_8:
-  v8 = [(PKDiscoveryCardView *)self _foregroundContentMode];
-  if (v8 == 3)
+  _foregroundContentMode = [(PKDiscoveryCardView *)self _foregroundContentMode];
+  if (_foregroundContentMode == 3)
   {
-    v10 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
   else
   {
-    if (v8 != 1)
+    if (_foregroundContentMode != 1)
     {
       goto LABEL_17;
     }
 
-    v9 = [v4 userInterfaceStyle];
-    if (!v9 || v9 == 2)
+    userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
+    if (!userInterfaceStyle2 || userInterfaceStyle2 == 2)
     {
-      v10 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      systemGrayColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
     }
 
     else
     {
-      if (v9 != 1)
+      if (userInterfaceStyle2 != 1)
       {
         goto LABEL_17;
       }
 
-      v10 = [MEMORY[0x1E69DC888] systemLightGrayColor];
+      systemGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
     }
   }
 
-  v11 = v10;
+  v11 = systemGrayColor;
 
   v7 = v11;
 LABEL_17:
@@ -1651,41 +1651,41 @@ LABEL_17:
 
 - (id)_titleLabelTextColor
 {
-  v3 = [MEMORY[0x1E69DC888] systemBlackColor];
-  v4 = [(PKDiscoveryCardView *)self _foregroundContentMode];
-  if (v4 == 3)
+  systemBlackColor = [MEMORY[0x1E69DC888] systemBlackColor];
+  _foregroundContentMode = [(PKDiscoveryCardView *)self _foregroundContentMode];
+  if (_foregroundContentMode == 3)
   {
-    v5 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   }
 
   else
   {
-    if (v4 != 1)
+    if (_foregroundContentMode != 1)
     {
       goto LABEL_6;
     }
 
-    v5 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   }
 
-  v6 = v5;
+  v6 = systemGrayColor;
 
-  v3 = v6;
+  systemBlackColor = v6;
 LABEL_6:
 
-  return v3;
+  return systemBlackColor;
 }
 
 - (id)_headingLabelTextColor
 {
-  v2 = [(PKDiscoveryCardView *)self _foregroundContentMode];
-  v3 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
-  v4 = [v3 colorWithAlphaComponent:0.5];
+  _foregroundContentMode = [(PKDiscoveryCardView *)self _foregroundContentMode];
+  systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+  v4 = [systemDarkGrayColor colorWithAlphaComponent:0.5];
 
-  if (v2 == 1)
+  if (_foregroundContentMode == 1)
   {
-    v5 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-    v6 = [v5 colorWithAlphaComponent:0.5];
+    systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+    v6 = [systemLightGrayColor colorWithAlphaComponent:0.5];
 
     v4 = v6;
   }

@@ -1,43 +1,43 @@
 @interface PKPassSharePendingActivation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassSharePendingActivation:(id)a3;
-- (PKPassSharePendingActivation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassSharePendingActivation:(id)activation;
+- (PKPassSharePendingActivation)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassSharePendingActivation
 
-- (PKPassSharePendingActivation)initWithCoder:(id)a3
+- (PKPassSharePendingActivation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPassSharePendingActivation;
   v5 = [(PKPassSharePendingActivation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalInvitation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalInvitation"];
     originalInvitation = v5->_originalInvitation;
     v5->_originalInvitation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareIdentifier"];
     shareIdentifier = v5->_shareIdentifier;
     v5->_shareIdentifier = v8;
 
-    v5->_isWaitingOnUserAction = [v4 decodeBoolForKey:@"isWaitingOnUserAction"];
+    v5->_isWaitingOnUserAction = [coderCopy decodeBoolForKey:@"isWaitingOnUserAction"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalInvitation = self->_originalInvitation;
-  v5 = a3;
-  [v5 encodeObject:originalInvitation forKey:@"originalInvitation"];
-  [v5 encodeObject:self->_shareIdentifier forKey:@"shareIdentifier"];
-  [v5 encodeBool:self->_isWaitingOnUserAction forKey:@"isWaitingOnUserAction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalInvitation forKey:@"originalInvitation"];
+  [coderCopy encodeObject:self->_shareIdentifier forKey:@"shareIdentifier"];
+  [coderCopy encodeBool:self->_isWaitingOnUserAction forKey:@"isWaitingOnUserAction"];
 }
 
 - (id)description
@@ -68,11 +68,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_originalInvitation)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_shareIdentifier)
@@ -86,33 +86,33 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassSharePendingActivation *)self isEqualToPassSharePendingActivation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassSharePendingActivation *)self isEqualToPassSharePendingActivation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassSharePendingActivation:(id)a3
+- (BOOL)isEqualToPassSharePendingActivation:(id)activation
 {
-  v4 = a3;
-  if (!v4)
+  activationCopy = activation;
+  if (!activationCopy)
   {
     goto LABEL_15;
   }
 
   originalInvitation = self->_originalInvitation;
-  v6 = v4[2];
+  v6 = activationCopy[2];
   if (originalInvitation)
   {
     v7 = v6 == 0;
@@ -137,7 +137,7 @@
   }
 
   shareIdentifier = self->_shareIdentifier;
-  v9 = v4[3];
+  v9 = activationCopy[3];
   if (!shareIdentifier || !v9)
   {
     if (shareIdentifier == v9)
@@ -156,7 +156,7 @@ LABEL_15:
   }
 
 LABEL_13:
-  v10 = self->_isWaitingOnUserAction == *(v4 + 8);
+  v10 = self->_isWaitingOnUserAction == *(activationCopy + 8);
 LABEL_16:
 
   return v10;

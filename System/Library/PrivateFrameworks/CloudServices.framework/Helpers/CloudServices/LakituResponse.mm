@@ -1,32 +1,32 @@
 @interface LakituResponse
-- (LakituResponse)initWithError:(id)a3;
-- (LakituResponse)initWithResponseDictionary:(id)a3;
-- (LakituResponse)initWithURLResponse:(id)a3 data:(id)a4;
+- (LakituResponse)initWithError:(id)error;
+- (LakituResponse)initWithResponseDictionary:(id)dictionary;
+- (LakituResponse)initWithURLResponse:(id)response data:(id)data;
 - (NSString)requestUUID;
-- (id)_parsePlistFromData:(id)a3 error:(id *)a4;
+- (id)_parsePlistFromData:(id)data error:(id *)error;
 @end
 
 @implementation LakituResponse
 
-- (id)_parsePlistFromData:(id)a3 error:(id *)a4
+- (id)_parsePlistFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v6 = 0;
     goto LABEL_15;
   }
 
   v13 = 0;
-  v6 = [NSPropertyListSerialization propertyListWithData:v5 options:0 format:0 error:&v13];
+  v6 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v13];
   v7 = v13;
   v8 = v7;
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v11 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = CloudServicesLog();
@@ -49,9 +49,9 @@
 
     v10 = objc_alloc_init(NSMutableDictionary);
     [v10 setObject:@"Escrow response not a dictionary" forKeyedSubscript:NSLocalizedDescriptionKey];
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:@"EscrowProxyErrorDomain" code:500 userInfo:v10];
+      *error = [NSError errorWithDomain:@"EscrowProxyErrorDomain" code:500 userInfo:v10];
     }
 
 LABEL_13:
@@ -64,10 +64,10 @@ LABEL_15:
   return v6;
 }
 
-- (LakituResponse)initWithURLResponse:(id)a3 data:(id)a4
+- (LakituResponse)initWithURLResponse:(id)response data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v37.receiver = self;
   v37.super_class = LakituResponse;
   v9 = [(LakituResponse *)&v37 init];
@@ -76,12 +76,12 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v9->_httpResponse, a3);
-      v10 = [(NSHTTPURLResponse *)v9->_httpResponse statusCode];
-      if (v10 != 200)
+      objc_storeStrong(&v9->_httpResponse, response);
+      statusCode = [(NSHTTPURLResponse *)v9->_httpResponse statusCode];
+      if (statusCode != 200)
       {
-        v11 = v10;
-        v12 = [NSHTTPURLResponse localizedStringForStatusCode:v10];
+        v11 = statusCode;
+        v12 = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
         v13 = CloudServicesLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
@@ -92,8 +92,8 @@ LABEL_15:
         [v14 setObject:v12 forKeyedSubscript:NSLocalizedDescriptionKey];
         if (v11 == 503 || v11 == 429)
         {
-          v15 = [(NSHTTPURLResponse *)v9->_httpResponse allHeaderFields];
-          v16 = [v15 objectForKeyedSubscript:@"Retry-After"];
+          allHeaderFields = [(NSHTTPURLResponse *)v9->_httpResponse allHeaderFields];
+          v16 = [allHeaderFields objectForKeyedSubscript:@"Retry-After"];
 
           if (v16)
           {
@@ -130,7 +130,7 @@ LABEL_15:
     }
 
     v36 = 0;
-    v25 = [(LakituResponse *)v9 _parsePlistFromData:v8 error:&v36];
+    v25 = [(LakituResponse *)v9 _parsePlistFromData:dataCopy error:&v36];
     v26 = v36;
     v27 = v36;
     responseDictionary = v9->_responseDictionary;
@@ -141,7 +141,7 @@ LABEL_15:
       p_error = &v9->_error;
       if (-[NSError code](v9->_error, "code") != 503 && [*p_error code] != 429)
       {
-        v30 = [[NSString alloc] initWithData:v8 encoding:4];
+        v30 = [[NSString alloc] initWithData:dataCopy encoding:4];
         v31 = CloudServicesLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
@@ -174,31 +174,31 @@ LABEL_15:
   return v9;
 }
 
-- (LakituResponse)initWithError:(id)a3
+- (LakituResponse)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = LakituResponse;
   v6 = [(LakituResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
   }
 
   return v7;
 }
 
-- (LakituResponse)initWithResponseDictionary:(id)a3
+- (LakituResponse)initWithResponseDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = LakituResponse;
   v6 = [(LakituResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responseDictionary, a3);
+    objc_storeStrong(&v6->_responseDictionary, dictionary);
   }
 
   return v7;
@@ -206,9 +206,9 @@ LABEL_15:
 
 - (NSString)requestUUID
 {
-  v2 = [(LakituResponse *)self httpResponse];
-  v3 = [v2 allHeaderFields];
-  v4 = [v3 objectForKeyedSubscript:@"X-Apple-Request-UUID"];
+  httpResponse = [(LakituResponse *)self httpResponse];
+  allHeaderFields = [httpResponse allHeaderFields];
+  v4 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-Request-UUID"];
 
   return v4;
 }

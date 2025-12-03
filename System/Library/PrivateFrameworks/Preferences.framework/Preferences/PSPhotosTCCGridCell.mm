@@ -1,40 +1,40 @@
 @interface PSPhotosTCCGridCell
-- (PSPhotosTCCGridCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PSPhotosTCCGridCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PSPhotosTCCGridCell
 
-- (PSPhotosTCCGridCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSPhotosTCCGridCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v44[4] = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = PSPhotosTCCGridCell;
-  v35 = a4;
-  v36 = [(PSTableCell *)&v38 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v36 = [(PSTableCell *)&v38 initWithStyle:style reuseIdentifier:?];
   if (v36)
   {
-    v37 = [(PSPhotosTCCGridCell *)v36 contentView];
+    contentView = [(PSPhotosTCCGridCell *)v36 contentView];
     [(PSPhotosTCCGridCell *)v36 setTranslatesAutoresizingMaskIntoConstraints:0];
     v5 = objc_alloc_init(MEMORY[0x1E69DCF90]);
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v5 setAxis:1];
-    [v37 addSubview:v5];
+    [contentView addSubview:v5];
     v30 = MEMORY[0x1E696ACD8];
-    v34 = [v5 topAnchor];
-    v33 = [v37 topAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:16.0];
+    topAnchor = [v5 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v44[0] = v32;
-    v31 = [v5 leadingAnchor];
-    v6 = [v37 leadingAnchor];
-    v7 = [v31 constraintEqualToAnchor:v6 constant:16.0];
+    leadingAnchor = [v5 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v44[1] = v7;
-    v8 = [v37 trailingAnchor];
-    v9 = [v5 trailingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9 constant:16.0];
+    trailingAnchor = [contentView trailingAnchor];
+    trailingAnchor2 = [v5 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:16.0];
     v44[2] = v10;
-    v11 = [v37 bottomAnchor];
-    v12 = [v5 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:12.0];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [v5 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:12.0];
     v44[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:4];
     [v30 activateConstraints:v14];
@@ -59,12 +59,12 @@
     _Block_object_dispose(&v40, 8);
     if (v15)
     {
-      v17 = [v15 photoGridViewForSettings];
-      v18 = v17;
-      if (v17)
+      photoGridViewForSettings = [v15 photoGridViewForSettings];
+      v18 = photoGridViewForSettings;
+      if (photoGridViewForSettings)
       {
-        v19 = [v17 layer];
-        [v19 setCornerRadius:6.0];
+        layer = [photoGridViewForSettings layer];
+        [layer setCornerRadius:6.0];
 
         [v18 setClipsToBounds:1];
         [v5 addArrangedSubview:v18];
@@ -95,8 +95,8 @@
     v25 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     [v24 setFont:v25];
 
-    v26 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v24 setTextColor:v26];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v24 setTextColor:secondaryLabelColor];
 
     [v24 setNumberOfLines:0];
     if (!PhotosUICoreLibraryCore_0() || !getPXTCCSettingsGridSubtitleSymbolLoc())

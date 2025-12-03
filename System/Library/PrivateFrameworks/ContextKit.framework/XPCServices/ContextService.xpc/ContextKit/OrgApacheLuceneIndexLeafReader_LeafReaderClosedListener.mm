@@ -1,19 +1,19 @@
 @interface OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener
-- (OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener)initWithOrgApacheLuceneIndexLeafReader:(id)a3;
+- (OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener)initWithOrgApacheLuceneIndexLeafReader:(id)reader;
 - (void)dealloc;
-- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)a3;
+- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)reader;
 @end
 
 @implementation OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener
 
-- (OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener)initWithOrgApacheLuceneIndexLeafReader:(id)a3
+- (OrgApacheLuceneIndexLeafReader_LeafReaderClosedListener)initWithOrgApacheLuceneIndexLeafReader:(id)reader
 {
-  v4 = new_JavaLangRefWeakReference_initWithId_(a3);
+  v4 = new_JavaLangRefWeakReference_initWithId_(reader);
   JreStrongAssignAndConsume(&self->weakRef_, v4);
   return self;
 }
 
-- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (void)onCloseWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   weakRef = self->weakRef_;
   if (!weakRef)
@@ -24,7 +24,7 @@
   v6 = [(JavaLangRefReference *)weakRef get];
   if (v6)
   {
-    v7 = v6 == a3;
+    v7 = v6 == reader;
   }
 
   else

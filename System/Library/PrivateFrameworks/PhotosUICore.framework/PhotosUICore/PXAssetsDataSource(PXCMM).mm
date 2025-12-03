@@ -6,18 +6,18 @@
 
 - (uint64_t)aggregateMediaType
 {
-  v2 = [a1 numberOfSections];
-  if (v2 < 1)
+  numberOfSections = [self numberOfSections];
+  if (numberOfSections < 1)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = numberOfSections;
   v4 = 0;
   v5 = 0;
   for (i = 0; i != v3; ++i)
   {
-    v7 = [a1 numberOfItemsInSection:i];
+    v7 = [self numberOfItemsInSection:i];
     if (v7 < 1)
     {
 LABEL_11:
@@ -33,11 +33,11 @@ LABEL_11:
       v9 = 0;
       while (1)
       {
-        v12[0] = [a1 identifier];
+        v12[0] = [self identifier];
         v12[1] = i;
         v12[2] = v9;
         v12[3] = 0x7FFFFFFFFFFFFFFFLL;
-        v10 = [a1 assetAtItemIndexPath:v12];
+        v10 = [self assetAtItemIndexPath:v12];
         if ([v10 mediaType] == 1)
         {
           v4 = 1;

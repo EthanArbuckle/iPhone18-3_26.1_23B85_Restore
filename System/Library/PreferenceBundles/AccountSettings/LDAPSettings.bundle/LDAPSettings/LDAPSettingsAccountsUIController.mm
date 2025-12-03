@@ -2,29 +2,29 @@
 - (BOOL)haveEnoughValues;
 - (BOOL)validateAccount;
 - (id)_searchBaseSpecifiers;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
 - (id)accountSpecifiers;
 - (id)localizedAccountSetupTitleString;
 - (id)localizedConfirmSaveUnvalidatedAccountMessageString;
 - (id)localizedValidationFailureTitleString;
 - (id)newDefaultAccount;
-- (void)_updateDescriptionFromServer:(id)a3;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
-- (void)showConfirmationForDeletingAccount:(id)a3 completion:(id)a4;
+- (void)_updateDescriptionFromServer:(id)server;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
+- (void)showConfirmationForDeletingAccount:(id)account completion:(id)completion;
 @end
 
 @implementation LDAPSettingsAccountsUIController
 
 - (id)newDefaultAccount
 {
-  v2 = [(LDAPSettingsAccountsUIController *)self accountStore];
-  v3 = [v2 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierLDAP];
+  accountStore = [(LDAPSettingsAccountsUIController *)self accountStore];
+  v3 = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierLDAP];
 
   v4 = [[ACAccount alloc] initWithAccountType:v3];
-  v5 = [v3 supportedDataclasses];
-  v6 = [v5 mutableCopy];
+  supportedDataclasses = [v3 supportedDataclasses];
+  v6 = [supportedDataclasses mutableCopy];
 
   [v4 setProvisionedDataclasses:v6];
   v7 = [DAAccount daAccountSubclassWithBackingAccountInfo:v4];
@@ -42,14 +42,14 @@
   v6 = [PSSpecifier groupSpecifierWithName:v5];
   [v3 addObject:v6];
 
-  v7 = [(LDAPSettingsAccountsUIController *)self account];
-  v8 = [v7 searchSettings];
+  account = [(LDAPSettingsAccountsUIController *)self account];
+  searchSettings = [account searchSettings];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v8;
+  obj = searchSettings;
   v9 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
@@ -65,17 +65,17 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 searchDescription];
-        if (!v14)
+        searchDescription = [v13 searchDescription];
+        if (!searchDescription)
         {
           v15 = [NSBundle bundleForClass:objc_opt_class()];
-          v14 = [v15 localizedStringForKey:@"EMPTY_SEARCH_BASE" value:&stru_8300 table:@"LDAPAccountSetup"];
+          searchDescription = [v15 localizedStringForKey:@"EMPTY_SEARCH_BASE" value:&stru_8300 table:@"LDAPAccountSetup"];
         }
 
-        v16 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+        v16 = [PSSpecifier preferenceSpecifierNamed:searchDescription target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
         [v16 setProperty:v13 forKey:@"LDAPSettingsSearchSettingsKey"];
-        v17 = [(LDAPSettingsAccountsUIController *)self account];
-        [v16 setProperty:v17 forKey:@"LDAPSettingsAccountKey"];
+        account2 = [(LDAPSettingsAccountsUIController *)self account];
+        [v16 setProperty:account2 forKey:@"LDAPSettingsAccountKey"];
 
         [v3 addObject:v16];
       }
@@ -90,8 +90,8 @@
   v19 = [v18 localizedStringForKey:@"ADD_SEARCH_SETTINGS" value:&stru_8300 table:@"LDAPAccountSetup"];
   v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-  v21 = [(LDAPSettingsAccountsUIController *)self account];
-  [v20 setProperty:v21 forKey:@"LDAPSettingsAccountKey"];
+  account3 = [(LDAPSettingsAccountsUIController *)self account];
+  [v20 setProperty:account3 forKey:@"LDAPSettingsAccountKey"];
 
   [v3 addObject:v20];
 
@@ -108,18 +108,18 @@
     v5 = objc_opt_new();
     [(LDAPSettingsAccountsUIController *)self setSpecifiersToInsert:v5];
 
-    v6 = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
+    specifiersToInsert = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
     v7 = [v4 specifierForID:@"USE_SSL"];
-    [v6 addObject:v7];
+    [specifiersToInsert addObject:v7];
 
-    v8 = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
-    [v4 removeObjectsInArray:v8];
+    specifiersToInsert2 = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
+    [v4 removeObjectsInArray:specifiersToInsert2];
   }
 
   else
   {
-    v8 = [(LDAPSettingsAccountsUIController *)self _searchBaseSpecifiers];
-    [v4 addObjectsFromArray:v8];
+    specifiersToInsert2 = [(LDAPSettingsAccountsUIController *)self _searchBaseSpecifiers];
+    [v4 addObjectsFromArray:specifiersToInsert2];
   }
 
   v9 = &DAAccountDescriptionFromHostname_ptr;
@@ -134,20 +134,20 @@
       [v4 addObject:v10];
     }
 
-    v12 = [(LDAPSettingsAccountsUIController *)self accountIsManaged];
-    v13 = [(LDAPSettingsAccountsUIController *)self account];
-    v14 = v13;
-    if (v12)
+    accountIsManaged = [(LDAPSettingsAccountsUIController *)self accountIsManaged];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    v14 = account;
+    if (accountIsManaged)
     {
-      v15 = [v13 backingAccountInfo];
-      v16 = [v15 mcBackingProfile];
+      backingAccountInfo = [account backingAccountInfo];
+      mcBackingProfile = [backingAccountInfo mcBackingProfile];
 
-      if (v16)
+      if (mcBackingProfile)
       {
         v17 = [NSBundle bundleForClass:objc_opt_class()];
         v18 = [v17 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_8300 table:@"LDAPAccountSetup"];
-        v19 = [v16 friendlyName];
-        v20 = [NSString stringWithFormat:v18, v19];
+        friendlyName = [mcBackingProfile friendlyName];
+        v20 = [NSString stringWithFormat:v18, friendlyName];
 
         v21 = [(LDAPSettingsAccountsUIController *)self lastGroupSpecifierInSpecifiers:v4];
         if (!v21)
@@ -165,10 +165,10 @@
         [v21 setProperty:v20 forKey:PSFooterTextGroupKey];
       }
 
-      v45 = v16;
+      v45 = mcBackingProfile;
       v46 = v10;
-      v24 = [v10 identifier];
-      v25 = [NSSet setWithObjects:@"PASSWORD", @"DESCRIPTION", @"ENABLED", v24, 0];
+      identifier = [v10 identifier];
+      v25 = [NSSet setWithObjects:@"PASSWORD", @"DESCRIPTION", @"ENABLED", identifier, 0];
 
       v49 = 0u;
       v50 = 0u;
@@ -191,8 +191,8 @@
             }
 
             v32 = *(*(&v47 + 1) + 8 * i);
-            v33 = [v32 identifier];
-            if (([v25 containsObject:v33] & 1) == 0 && *&v32[OBJC_IVAR___PSSpecifier_cellType] != 1)
+            identifier2 = [v32 identifier];
+            if (([v25 containsObject:identifier2] & 1) == 0 && *&v32[OBJC_IVAR___PSSpecifier_cellType] != 1)
             {
               [v32 setProperty:&__kCFBooleanFalse forKey:v30];
             }
@@ -210,8 +210,8 @@
 
     else
     {
-      v34 = [v13 accountDescription];
-      [(LDAPSettingsAccountsUIController *)self setTitle:v34];
+      accountDescription = [account accountDescription];
+      [(LDAPSettingsAccountsUIController *)self setTitle:accountDescription];
 
       v35 = +[PSSpecifier emptyGroupSpecifier];
       [v4 addObject:v35];
@@ -247,56 +247,56 @@
 
 - (BOOL)validateAccount
 {
-  v3 = [(LDAPSettingsAccountsUIController *)self table];
-  v4 = [v3 firstResponder];
-  [v4 resignFirstResponder];
+  table = [(LDAPSettingsAccountsUIController *)self table];
+  firstResponder = [table firstResponder];
+  [firstResponder resignFirstResponder];
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"VERIFYING" value:&stru_8300 table:@"Localizable"];
   [(LDAPSettingsAccountsUIController *)self startValidationWithPrompt:v6];
 
-  v7 = [(LDAPSettingsAccountsUIController *)self account];
-  v8 = [(LDAPSettingsAccountsUIController *)self accountStore];
-  [v7 checkValidityOnAccountStore:v8 withConsumer:self inQueue:&_dispatch_main_q];
+  account = [(LDAPSettingsAccountsUIController *)self account];
+  accountStore = [(LDAPSettingsAccountsUIController *)self accountStore];
+  [account checkValidityOnAccountStore:accountStore withConsumer:self inQueue:&_dispatch_main_q];
 
   return 1;
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
+  if (validCopy)
   {
     if ([(LDAPSettingsAccountsUIController *)self accountNeedsAdd])
     {
-      v10 = [(LDAPSettingsAccountsUIController *)self account];
-      [v10 setEnabled:0 forDADataclass:1];
+      account = [(LDAPSettingsAccountsUIController *)self account];
+      [account setEnabled:0 forDADataclass:1];
 
-      v11 = [(LDAPSettingsAccountsUIController *)self account];
-      [v11 setEnabled:0 forDADataclass:2];
+      account2 = [(LDAPSettingsAccountsUIController *)self account];
+      [account2 setEnabled:0 forDADataclass:2];
 
-      v12 = [(LDAPSettingsAccountsUIController *)self account];
-      [v12 setEnabled:0 forDADataclass:4];
+      account3 = [(LDAPSettingsAccountsUIController *)self account];
+      [account3 setEnabled:0 forDADataclass:4];
 
-      v13 = [(LDAPSettingsAccountsUIController *)self account];
-      [v13 setEnabled:0 forDADataclass:16];
+      account4 = [(LDAPSettingsAccountsUIController *)self account];
+      [account4 setEnabled:0 forDADataclass:16];
 
-      v14 = [(LDAPSettingsAccountsUIController *)self account];
-      [v14 setEnabled:0 forDADataclass:32];
+      account5 = [(LDAPSettingsAccountsUIController *)self account];
+      [account5 setEnabled:0 forDADataclass:32];
 
-      v15 = [(LDAPSettingsAccountsUIController *)self account];
-      [v15 setEnabled:1 forDADataclass:8];
+      account6 = [(LDAPSettingsAccountsUIController *)self account];
+      [account6 setEnabled:1 forDADataclass:8];
 
       v16 = dispatch_semaphore_create(0);
       *&buf = 0;
       *(&buf + 1) = &buf;
       v35 = 0x2020000000;
       v36 = 1;
-      v17 = [(LDAPSettingsAccountsUIController *)self accountStore];
-      v18 = [(LDAPSettingsAccountsUIController *)self account];
-      v19 = [v18 backingAccountInfo];
+      accountStore = [(LDAPSettingsAccountsUIController *)self accountStore];
+      account7 = [(LDAPSettingsAccountsUIController *)self account];
+      backingAccountInfo = [account7 backingAccountInfo];
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1F24;
@@ -304,7 +304,7 @@
       p_buf = &buf;
       v20 = v16;
       v32 = v20;
-      [v17 canSaveAccount:v19 withCompletionHandler:v31];
+      [accountStore canSaveAccount:backingAccountInfo withCompletionHandler:v31];
 
       dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
       v21 = *(*(&buf + 1) + 24);
@@ -312,11 +312,11 @@
       {
         [(LDAPSettingsAccountsUIController *)self setAccountNeedsAdd:0];
         [(LDAPSettingsAccountsUIController *)self setValidatedSuccessfully:1];
-        v22 = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
-        [(LDAPSettingsAccountsUIController *)self insertContiguousSpecifiers:v22 afterSpecifierID:@"PASSWORD" animated:1];
+        specifiersToInsert = [(LDAPSettingsAccountsUIController *)self specifiersToInsert];
+        [(LDAPSettingsAccountsUIController *)self insertContiguousSpecifiers:specifiersToInsert afterSpecifierID:@"PASSWORD" animated:1];
 
-        v23 = [(LDAPSettingsAccountsUIController *)self _searchBaseSpecifiers];
-        [(LDAPSettingsAccountsUIController *)self insertContiguousSpecifiers:v23 afterSpecifierID:@"DESCRIPTION" animated:1];
+        _searchBaseSpecifiers = [(LDAPSettingsAccountsUIController *)self _searchBaseSpecifiers];
+        [(LDAPSettingsAccountsUIController *)self insertContiguousSpecifiers:_searchBaseSpecifiers afterSpecifierID:@"DESCRIPTION" animated:1];
       }
 
       else
@@ -344,14 +344,14 @@
     if (os_log_type_enabled(v24, v25))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_0, v24, v25, "validation failed with error %@", &buf, 0xCu);
     }
 
-    v26 = [(LDAPSettingsAccountsUIController *)self account];
-    v27 = [v26 useSSL];
+    account8 = [(LDAPSettingsAccountsUIController *)self account];
+    useSSL = [account8 useSSL];
 
-    if (v27)
+    if (useSSL)
     {
       [(LDAPSettingsAccountsUIController *)self showSSLFailureView];
       v28 = 0;
@@ -370,13 +370,13 @@
   [(LDAPSettingsAccountsUIController *)self hideProgressWithPrompt:v28];
   v30.receiver = self;
   v30.super_class = LDAPSettingsAccountsUIController;
-  [(LDAPSettingsAccountsUIController *)&v30 account:v8 isValid:v21 & v6 validationError:v9];
+  [(LDAPSettingsAccountsUIController *)&v30 account:accountCopy isValid:v21 & validCopy validationError:errorCopy];
 }
 
 - (BOOL)haveEnoughValues
 {
-  v3 = [(LDAPSettingsAccountsUIController *)self specifiers];
-  v4 = [v3 count];
+  specifiers = [(LDAPSettingsAccountsUIController *)self specifiers];
+  v4 = [specifiers count];
 
   if (qword_D0F8 == -1)
   {
@@ -389,12 +389,12 @@ LABEL_3:
       v21 = v4;
       while (1)
       {
-        v8 = [(LDAPSettingsAccountsUIController *)self specifiers];
-        v9 = [v8 objectAtIndexedSubscript:v5];
+        specifiers2 = [(LDAPSettingsAccountsUIController *)self specifiers];
+        v9 = [specifiers2 objectAtIndexedSubscript:v5];
 
         if (v5 == [(LDAPSettingsAccountsUIController *)self indexOfCurrentlyEditingCell])
         {
-          v10 = [(LDAPSettingsAccountsUIController *)self currentlyEditingCell];
+          currentlyEditingCell = [(LDAPSettingsAccountsUIController *)self currentlyEditingCell];
           v11 = v6[52];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -403,15 +403,15 @@ LABEL_3:
           }
 
           v12 = p_opt_class_meths[30];
-          v13 = [v9 identifier];
-          if (![(__objc2_meth_list *)v12 containsObject:v13])
+          identifier = [v9 identifier];
+          if (![(__objc2_meth_list *)v12 containsObject:identifier])
           {
             v19 = 1;
             goto LABEL_13;
           }
 
-          v14 = [v10 textField];
-          [v14 text];
+          textField = [currentlyEditingCell textField];
+          [textField text];
           v15 = p_opt_class_meths;
           v17 = v16 = v6;
           v18 = [v17 length];
@@ -423,17 +423,17 @@ LABEL_3:
 
         else
         {
-          v10 = [v9 identifier];
-          if (![v10 isEqualToString:@"HOST"])
+          currentlyEditingCell = [v9 identifier];
+          if (![currentlyEditingCell isEqualToString:@"HOST"])
           {
 LABEL_11:
             v19 = 1;
             goto LABEL_14;
           }
 
-          v13 = [(LDAPSettingsAccountsUIController *)self account];
-          v14 = [v13 host];
-          v18 = [v14 length];
+          identifier = [(LDAPSettingsAccountsUIController *)self account];
+          textField = [identifier host];
+          v18 = [textField length];
         }
 
         v19 = v18 != 0;
@@ -461,19 +461,19 @@ LABEL_14:
   return 0;
 }
 
-- (void)_updateDescriptionFromServer:(id)a3
+- (void)_updateDescriptionFromServer:(id)server
 {
-  v26 = a3;
-  v4 = [(LDAPSettingsAccountsUIController *)self account];
-  v5 = [v4 accountDescription];
-  if (v5)
+  serverCopy = server;
+  account = [(LDAPSettingsAccountsUIController *)self account];
+  accountDescription = [account accountDescription];
+  if (accountDescription)
   {
-    v6 = v5;
-    v7 = [(LDAPSettingsAccountsUIController *)self account];
-    v8 = [v7 accountDescription];
-    v9 = [(LDAPSettingsAccountsUIController *)self account];
-    v10 = [v9 host];
-    v11 = [v8 isEqualToString:v10];
+    v6 = accountDescription;
+    account2 = [(LDAPSettingsAccountsUIController *)self account];
+    accountDescription2 = [account2 accountDescription];
+    account3 = [(LDAPSettingsAccountsUIController *)self account];
+    host = [account3 host];
+    v11 = [accountDescription2 isEqualToString:host];
 
     if (!v11)
     {
@@ -486,32 +486,32 @@ LABEL_14:
   }
 
   v12 = DAAccountDescriptionFromHostname();
-  v13 = [(LDAPSettingsAccountsUIController *)self accountStore];
-  v14 = [v13 hasAccountWithDescription:v12];
+  accountStore = [(LDAPSettingsAccountsUIController *)self accountStore];
+  v14 = [accountStore hasAccountWithDescription:v12];
 
   if (v14)
   {
-    v15 = v26;
+    v15 = serverCopy;
 
     v12 = v15;
   }
 
-  v16 = [(LDAPSettingsAccountsUIController *)self account];
-  [v16 setAccountDescription:v12];
+  account4 = [(LDAPSettingsAccountsUIController *)self account];
+  [account4 setAccountDescription:v12];
 
-  v17 = [(LDAPSettingsAccountsUIController *)self specifiers];
-  v18 = [v17 count];
+  specifiers = [(LDAPSettingsAccountsUIController *)self specifiers];
+  v18 = [specifiers count];
 
   if (v18)
   {
     v19 = 0;
     while (1)
     {
-      v20 = [(LDAPSettingsAccountsUIController *)self specifiers];
-      v21 = [v20 objectAtIndexedSubscript:v19];
-      v22 = [v21 identifier];
+      specifiers2 = [(LDAPSettingsAccountsUIController *)self specifiers];
+      v21 = [specifiers2 objectAtIndexedSubscript:v19];
+      identifier = [v21 identifier];
 
-      if ([v22 isEqualToString:@"DESCRIPTION"])
+      if ([identifier isEqualToString:@"DESCRIPTION"])
       {
         break;
       }
@@ -522,9 +522,9 @@ LABEL_14:
       }
     }
 
-    v23 = [(LDAPSettingsAccountsUIController *)self table];
+    table = [(LDAPSettingsAccountsUIController *)self table];
     v24 = [(LDAPSettingsAccountsUIController *)self indexPathForIndex:v19];
-    v25 = [v23 cellForRowAtIndexPath:v24];
+    v25 = [table cellForRowAtIndexPath:v24];
 
     [v25 setValue:v12];
   }
@@ -534,63 +534,63 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(LDAPSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-  v10 = [v6 isEqualToString:v9];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v9 = [(LDAPSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+  v10 = [propertyCopy isEqualToString:v9];
 
-  if ([v8 isEqualToString:@"HOST"])
+  if ([identifier isEqualToString:@"HOST"])
   {
-    [(LDAPSettingsAccountsUIController *)self _updateDescriptionFromServer:v6];
-    v11 = [(LDAPSettingsAccountsUIController *)self account];
-    [v11 setHost:v6];
+    [(LDAPSettingsAccountsUIController *)self _updateDescriptionFromServer:propertyCopy];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    [account setHost:propertyCopy];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (!(v10 & 1 | (([v8 isEqualToString:@"DESCRIPTION"] & 1) == 0)))
+  if (!(v10 & 1 | (([identifier isEqualToString:@"DESCRIPTION"] & 1) == 0)))
   {
-    if (![v6 length])
+    if (![propertyCopy length])
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"DESCRIPTION_PLACEHOLDER" value:&stru_8300 table:@"LDAPAccountSetup"];
 
-      v6 = v13;
+      propertyCopy = v13;
     }
 
-    v11 = [(LDAPSettingsAccountsUIController *)self account];
-    [v11 setAccountDescription:v6];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    [account setAccountDescription:propertyCopy];
     goto LABEL_8;
   }
 
   v14.receiver = self;
   v14.super_class = LDAPSettingsAccountsUIController;
-  [(LDAPSettingsAccountsUIController *)&v14 setAccountProperty:v6 withSpecifier:v7];
+  [(LDAPSettingsAccountsUIController *)&v14 setAccountProperty:propertyCopy withSpecifier:specifierCopy];
 LABEL_9:
   [(LDAPSettingsAccountsUIController *)self updateDoneButton];
   [(LDAPSettingsAccountsUIController *)self setNeedsSave:1];
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [v7 identifier];
-  if ([v9 isEqualToString:@"ENABLED"])
+  propertyCopy = property;
+  specifierCopy = specifier;
+  bOOLValue = [propertyCopy BOOLValue];
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"ENABLED"])
   {
-    v10 = [(LDAPSettingsAccountsUIController *)self account];
-    [v10 setEnabled:v8 forDADataclass:8];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    [account setEnabled:bOOLValue forDADataclass:8];
   }
 
-  else if ([v9 isEqualToString:@"USE_SSL"])
+  else if ([identifier isEqualToString:@"USE_SSL"])
   {
-    v11 = [(LDAPSettingsAccountsUIController *)self account];
-    [v11 setUseSSL:v8];
+    account2 = [(LDAPSettingsAccountsUIController *)self account];
+    [account2 setUseSSL:bOOLValue];
 
     [(LDAPSettingsAccountsUIController *)self updateDoneButton];
   }
@@ -599,54 +599,54 @@ LABEL_9:
   {
     v12.receiver = self;
     v12.super_class = LDAPSettingsAccountsUIController;
-    [(LDAPSettingsAccountsUIController *)&v12 setAccountBooleanProperty:v6 withSpecifier:v7];
+    [(LDAPSettingsAccountsUIController *)&v12 setAccountBooleanProperty:propertyCopy withSpecifier:specifierCopy];
   }
 
   [(LDAPSettingsAccountsUIController *)self setNeedsSave:1];
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"ENABLED"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"ENABLED"])
   {
-    v6 = [(LDAPSettingsAccountsUIController *)self account];
-    v7 = [v6 enabledForDADataclass:8];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    useSSL = [account enabledForDADataclass:8];
 LABEL_5:
-    v8 = v7;
+    v8 = useSSL;
 
     v9 = [NSNumber numberWithBool:v8];
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"USE_SSL"])
+  if ([identifier isEqualToString:@"USE_SSL"])
   {
-    v6 = [(LDAPSettingsAccountsUIController *)self account];
-    v7 = [v6 useSSL];
+    account = [(LDAPSettingsAccountsUIController *)self account];
+    useSSL = [account useSSL];
     goto LABEL_5;
   }
 
   v12.receiver = self;
   v12.super_class = LDAPSettingsAccountsUIController;
-  v9 = [(LDAPSettingsAccountsUIController *)&v12 accountBooleanPropertyWithSpecifier:v4];
+  v9 = [(LDAPSettingsAccountsUIController *)&v12 accountBooleanPropertyWithSpecifier:specifierCopy];
 LABEL_7:
   v10 = v9;
 
   return v10;
 }
 
-- (void)showConfirmationForDeletingAccount:(id)a3 completion:(id)a4
+- (void)showConfirmationForDeletingAccount:(id)account completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"DELETE_ACCOUNT_WARNING"];
   v8 = [v6 localizedStringForKey:v7 value:&stru_8300 table:@"LDAPAccountSetup"];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  v11 = v10 & 0xFFFFFFFFFFFFFFFBLL;
+  v11 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = v12;
   if (v11 == 1)
@@ -668,7 +668,7 @@ LABEL_7:
 
   v19 = [NSBundle bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"DELETE_ACCOUNT" value:&stru_8300 table:@"LDAPAccountSetup"];
-  [(LDAPSettingsAccountsUIController *)self showConfirmationWithButtons:v18 title:v20 message:v8 destructive:1 completion:v5];
+  [(LDAPSettingsAccountsUIController *)self showConfirmationWithButtons:v18 title:v20 message:v8 destructive:1 completion:completionCopy];
 }
 
 - (id)localizedValidationFailureTitleString

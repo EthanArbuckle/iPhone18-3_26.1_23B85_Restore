@@ -1,17 +1,17 @@
 @interface PLModelMigrationAction_DeleteInvalidSocialGroups
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_DeleteInvalidSocialGroups
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [PLGraphLabel ensureLabelsAreUpdatedInContext:v6];
+  contextCopy = context;
+  [PLGraphLabel ensureLabelsAreUpdatedInContext:contextCopy];
   v7 = +[PLGraphNode fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"primaryLabelCode", 1000];
-  [v7 setPredicate:v8];
+  1000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"primaryLabelCode", 1000];
+  [v7 setPredicate:1000];
 
   v51 = 0;
   v52 = &v51;
@@ -30,7 +30,7 @@
   v47[1] = 3221225472;
   v47[2] = __96__PLModelMigrationAction_DeleteInvalidSocialGroups_performActionWithManagedObjectContext_error___block_invoke;
   v47[3] = &unk_1E7575B30;
-  v48 = v6;
+  v48 = contextCopy;
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __96__PLModelMigrationAction_DeleteInvalidSocialGroups_performActionWithManagedObjectContext_error___block_invoke_2;
@@ -57,8 +57,8 @@
 
     if (v16)
     {
-      v17 = [(PLModelMigrationActionCore *)self logger];
-      v18 = v17 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v18 = logger == 0;
 
       if (v18)
       {
@@ -133,8 +133,8 @@
 
     if (v24)
     {
-      v25 = [(PLModelMigrationActionCore *)self logger];
-      v26 = v25 == 0;
+      logger2 = [(PLModelMigrationActionCore *)self logger];
+      v26 = logger2 == 0;
 
       if (v26)
       {
@@ -205,10 +205,10 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
       v38 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v34 = 3;

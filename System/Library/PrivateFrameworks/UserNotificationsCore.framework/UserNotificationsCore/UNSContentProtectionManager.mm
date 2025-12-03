@@ -4,10 +4,10 @@
 - (UNSContentProtectionManager)init;
 - (int64_t)_queue_keyBagLockState;
 - (int64_t)observedState;
-- (void)_queue_adjustContentProtectionStateWithBlock:(id)a3;
-- (void)addContentProtectionObserver:(id)a3;
+- (void)_queue_adjustContentProtectionStateWithBlock:(id)block;
+- (void)addContentProtectionObserver:(id)observer;
 - (void)dealloc;
-- (void)removeContentProtectionObserver:(id)a3;
+- (void)removeContentProtectionObserver:(id)observer;
 @end
 
 @implementation UNSContentProtectionManager
@@ -15,8 +15,8 @@
 - (BOOL)isProtectedDataAvailable
 {
   dispatch_assert_queue_not_V2(self->_queue);
-  v3 = [(UNSContentProtectionManager *)self observedState];
-  return v3 == 4 || v3 == 1;
+  observedState = [(UNSContentProtectionManager *)self observedState];
+  return observedState == 4 || observedState == 1;
 }
 
 - (int64_t)observedState
@@ -142,18 +142,18 @@ uint64_t __35__UNSContentProtectionManager_init__block_invoke(uint64_t a1)
   [(UNSContentProtectionManager *)&v3 dealloc];
 }
 
-- (void)addContentProtectionObserver:(id)a3
+- (void)addContentProtectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__UNSContentProtectionManager_addContentProtectionObserver___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -174,9 +174,9 @@ uint64_t __60__UNSContentProtectionManager_addContentProtectionObserver___block_
   return result;
 }
 
-- (void)removeContentProtectionObserver:(id)a3
+- (void)removeContentProtectionObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -184,45 +184,45 @@ uint64_t __60__UNSContentProtectionManager_addContentProtectionObserver___block_
   v7[2] = __63__UNSContentProtectionManager_removeContentProtectionObserver___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
 - (BOOL)deviceUnlockedSinceBoot
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_queue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__UNSContentProtectionManager_deviceUnlockedSinceBoot__block_invoke;
   v5[3] = &unk_1E85D6E48;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(queue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_queue_adjustContentProtectionStateWithBlock:(id)a3
+- (void)_queue_adjustContentProtectionStateWithBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
   queue = self->_queue;
-  v5 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(queue);
-  v6 = [(UNSContentProtectionManager *)self _queue_observedState];
-  v5[2](v5);
+  _queue_observedState = [(UNSContentProtectionManager *)self _queue_observedState];
+  blockCopy[2](blockCopy);
 
-  v7 = [(UNSContentProtectionManager *)self _queue_observedState];
-  v8 = v7;
+  _queue_observedState2 = [(UNSContentProtectionManager *)self _queue_observedState];
+  v8 = _queue_observedState2;
   v9 = MEMORY[0x1E6983360];
-  if (!self->_unlockedSinceBoot && (v7 == 4 || v7 == 1))
+  if (!self->_unlockedSinceBoot && (_queue_observedState2 == 4 || _queue_observedState2 == 1))
   {
     v10 = *MEMORY[0x1E6983360];
     if (os_log_type_enabled(*MEMORY[0x1E6983360], OS_LOG_TYPE_DEFAULT))
@@ -241,21 +241,21 @@ uint64_t __60__UNSContentProtectionManager_addContentProtectionObserver___block_
   }
 
   v13 = v8 == 4 || v8 == 1;
-  v15 = v6 == 4 || v6 == 1;
+  v15 = _queue_observedState == 4 || _queue_observedState == 1;
   v16 = *v9;
   v17 = os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT);
   if (v15 == v13)
   {
     if (v17)
     {
-      if (v6 > 4)
+      if (_queue_observedState > 4)
       {
         v19 = @"unknown";
       }
 
       else
       {
-        v19 = off_1E85D70E0[v6];
+        v19 = off_1E85D70E0[_queue_observedState];
       }
 
       if (v8 > 4)
@@ -281,14 +281,14 @@ uint64_t __60__UNSContentProtectionManager_addContentProtectionObserver___block_
   {
     if (v17)
     {
-      if (v6 > 4)
+      if (_queue_observedState > 4)
       {
         v18 = @"unknown";
       }
 
       else
       {
-        v18 = off_1E85D70E0[v6];
+        v18 = off_1E85D70E0[_queue_observedState];
       }
 
       if (v8 > 4)

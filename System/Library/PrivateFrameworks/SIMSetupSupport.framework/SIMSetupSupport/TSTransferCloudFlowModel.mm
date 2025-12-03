@@ -1,15 +1,15 @@
 @interface TSTransferCloudFlowModel
 - (TSTransferCloudFlowModel)init;
-- (void)arePlansAvailable:(id)a3;
+- (void)arePlansAvailable:(id)available;
 - (void)clearCarrierSetupItemsCache;
-- (void)filterCarrierSetupItems:(id)a3;
-- (void)filterTransferPlans:(id)a3;
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4;
+- (void)filterCarrierSetupItems:(id)items;
+- (void)filterTransferPlans:(id)plans;
+- (void)getWebsheetInfo:(id)info completion:(id)completion;
 - (void)loadSimSetupInfo;
-- (void)requestCarrierSetups:(id)a3;
-- (void)requestCrossPlatformTransferPlanListWithCompletion:(id)a3;
-- (void)requestPlansWithCompletion:(id)a3;
-- (void)requestTransferPlans:(id)a3;
+- (void)requestCarrierSetups:(id)setups;
+- (void)requestCrossPlatformTransferPlanListWithCompletion:(id)completion;
+- (void)requestPlansWithCompletion:(id)completion;
+- (void)requestTransferPlans:(id)plans;
 @end
 
 @implementation TSTransferCloudFlowModel
@@ -21,25 +21,25 @@
   v2 = [(TSTransferCloudFlowModel *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     transferItems = v2->_transferItems;
-    v2->_transferItems = v3;
+    v2->_transferItems = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     transferPlans = v2->_transferPlans;
-    v2->_transferPlans = v5;
+    v2->_transferPlans = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     requireStoreVisitItems = v2->_requireStoreVisitItems;
-    v2->_requireStoreVisitItems = v7;
+    v2->_requireStoreVisitItems = array3;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storeVisitedMap = v2->_storeVisitedMap;
-    v2->_storeVisitedMap = v9;
+    v2->_storeVisitedMap = dictionary;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     transferableHiddenInCloudFlowItems = v2->_transferableHiddenInCloudFlowItems;
-    v2->_transferableHiddenInCloudFlowItems = v11;
+    v2->_transferableHiddenInCloudFlowItems = array4;
 
     [(TSTransferCloudFlowModel *)v2 loadSimSetupInfo];
   }
@@ -69,16 +69,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)arePlansAvailable:(id)a3
+- (void)arePlansAvailable:(id)available
 {
-  v4 = a3;
+  availableCopy = available;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__TSTransferCloudFlowModel_arePlansAvailable___block_invoke;
   v6[3] = &unk_279B45640;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = availableCopy;
   v6[4] = self;
   v7 = v5;
   [(TSTransferCloudFlowModel *)self requestPlansWithCompletion:v6];
@@ -175,19 +175,19 @@ LABEL_17:
   v26();
 }
 
-- (void)requestPlansWithCompletion:(id)a3
+- (void)requestPlansWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = MEMORY[0x2667315D0](v4);
+  v5 = MEMORY[0x2667315D0](completionCopy);
   v6 = dispatch_group_create();
   queryGroup = self->_queryGroup;
   self->_queryGroup = v6;
 
   v8 = +[TSUtilities isWifiAvailable];
   v9 = +[TSCoreTelephonyClientCache sharedInstance];
-  v10 = [v9 usingBootstrapDataService];
+  usingBootstrapDataService = [v9 usingBootstrapDataService];
 
   dispatch_group_enter(self->_queryGroup);
   v24[0] = MEMORY[0x277D85DD0];
@@ -197,13 +197,13 @@ LABEL_17:
   objc_copyWeak(&v25, &location);
   [(TSTransferCloudFlowModel *)self requestCrossPlatformTransferPlanListWithCompletion:v24];
   objc_destroyWeak(&v25);
-  if (v8 || (v10 & 1) == 0)
+  if (v8 || (usingBootstrapDataService & 1) == 0)
   {
     dispatch_group_enter(self->_queryGroup);
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-    if (v12)
+    if (aa_primaryAppleAccount)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
@@ -322,10 +322,10 @@ void __55__TSTransferCloudFlowModel_requestPlansWithCompletion___block_invoke_36
   }
 }
 
-- (void)requestTransferPlans:(id)a3
+- (void)requestTransferPlans:(id)plans
 {
-  v4 = a3;
-  if (v4)
+  plansCopy = plans;
+  if (plansCopy)
   {
     objc_initWeak(&location, self);
     v5 = +[TSCoreTelephonyClientCache sharedInstance];
@@ -334,7 +334,7 @@ void __55__TSTransferCloudFlowModel_requestPlansWithCompletion___block_invoke_36
     v14[2] = __49__TSTransferCloudFlowModel_requestTransferPlans___block_invoke;
     v14[3] = &unk_279B44E30;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = plansCopy;
     [v5 bootstrapPlanTransferUsingMessageSession:0 flowType:3 completion:v14];
 
     objc_destroyWeak(&v16);
@@ -491,13 +491,13 @@ LABEL_25:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterTransferPlans:(id)a3
+- (void)filterTransferPlans:(id)plans
 {
   v109 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plansCopy = plans;
   [(NSMutableArray *)self->_transferItems removeAllObjects];
   [(NSMutableArray *)self->_transferPlans removeAllObjects];
-  if (!v4)
+  if (!plansCopy)
   {
     v37 = _TSLogDomain();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -514,9 +514,9 @@ LABEL_25:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v69 = v4;
-  v5 = [v4 devices];
-  v75 = [v5 countByEnumeratingWithState:&v90 objects:v108 count:16];
+  v69 = plansCopy;
+  devices = [plansCopy devices];
+  v75 = [devices countByEnumeratingWithState:&v90 objects:v108 count:16];
   if (!v75)
   {
 
@@ -524,7 +524,7 @@ LABEL_25:
   }
 
   v6 = 0;
-  obj = v5;
+  obj = devices;
   v73 = *v91;
   do
   {
@@ -543,8 +543,8 @@ LABEL_25:
       v88 = 0u;
       v89 = 0u;
       v80 = v8;
-      v9 = [v8 remoteDisplayPlans];
-      v10 = [v9 countByEnumeratingWithState:&v86 objects:v107 count:16];
+      remoteDisplayPlans = [v8 remoteDisplayPlans];
+      v10 = [remoteDisplayPlans countByEnumeratingWithState:&v86 objects:v107 count:16];
       if (v10)
       {
         v11 = v10;
@@ -556,7 +556,7 @@ LABEL_25:
           {
             if (*v87 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(remoteDisplayPlans);
             }
 
             v14 = *(*(&v86 + 1) + 8 * v13);
@@ -565,22 +565,22 @@ LABEL_25:
               [(TSTransferCloudFlowModel *)self setIsActivationPolicyMismatch:1];
             }
 
-            v15 = [v14 plan];
+            plan = [v14 plan];
 
-            if (v15)
+            if (plan)
             {
-              v16 = [v14 plan];
+              plan2 = [v14 plan];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
 
               if (isKindOfClass)
               {
                 [(NSMutableArray *)self->_transferPlans addObject:v14];
-                v18 = [v14 plan];
-                v19 = [v18 transferAttributes];
-                v20 = [v19 transferCapability];
+                plan3 = [v14 plan];
+                transferAttributes = [plan3 transferAttributes];
+                transferCapability = [transferAttributes transferCapability];
 
-                if (v20 <= 6 && ((1 << v20) & 0x68) != 0)
+                if (transferCapability <= 6 && ((1 << transferCapability) & 0x68) != 0)
                 {
 LABEL_20:
                   v6 = 1;
@@ -591,9 +591,9 @@ LABEL_20:
                 {
                   if (!self->_transferIneligibleItems)
                   {
-                    v22 = [MEMORY[0x277CBEB18] array];
+                    array = [MEMORY[0x277CBEB18] array];
                     transferIneligibleItems = self->_transferIneligibleItems;
-                    self->_transferIneligibleItems = v22;
+                    self->_transferIneligibleItems = array;
                   }
 
                   v24 = _TSLogDomain();
@@ -621,9 +621,9 @@ LABEL_20:
                       v27 = _TSLogDomain();
                       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                       {
-                        v28 = [v14 identifier];
+                        identifier = [v14 identifier];
                         *buf = 138412546;
-                        v96 = v28;
+                        v96 = identifier;
                         v97 = 2080;
                         v98 = "[TSTransferCloudFlowModel filterTransferPlans:]";
                         _os_log_impl(&dword_262AA8000, v27, OS_LOG_TYPE_DEFAULT, "user explicitly notify having not visited store, plan (%@) is not able to transfer for now. @%s", buf, 0x16u);
@@ -663,9 +663,9 @@ LABEL_20:
                     transferableHiddenInCloudFlowItems = self->_transferableHiddenInCloudFlowItems;
                     if (!transferableHiddenInCloudFlowItems)
                     {
-                      v33 = [MEMORY[0x277CBEB18] array];
+                      array2 = [MEMORY[0x277CBEB18] array];
                       v34 = self->_transferableHiddenInCloudFlowItems;
-                      self->_transferableHiddenInCloudFlowItems = v33;
+                      self->_transferableHiddenInCloudFlowItems = array2;
 
                       transferableHiddenInCloudFlowItems = self->_transferableHiddenInCloudFlowItems;
                     }
@@ -687,24 +687,24 @@ LABEL_20:
                 goto LABEL_20;
               }
 
-              v18 = _TSLogDomain();
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              plan3 = _TSLogDomain();
+              if (os_log_type_enabled(plan3, OS_LOG_TYPE_ERROR))
               {
-                v29 = [v14 plan];
+                plan4 = [v14 plan];
                 *buf = 138412546;
-                v96 = v29;
+                v96 = plan4;
                 v97 = 2080;
                 v98 = "[TSTransferCloudFlowModel filterTransferPlans:]";
-                _os_log_error_impl(&dword_262AA8000, v18, OS_LOG_TYPE_ERROR, "[E]%@ is not a CTRemotePlan @%s", buf, 0x16u);
+                _os_log_error_impl(&dword_262AA8000, plan3, OS_LOG_TYPE_ERROR, "[E]%@ is not a CTRemotePlan @%s", buf, 0x16u);
               }
             }
 
             else
             {
-              v18 = _TSLogDomain();
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              plan3 = _TSLogDomain();
+              if (os_log_type_enabled(plan3, OS_LOG_TYPE_ERROR))
               {
-                [(TSTransferCloudFlowModel *)v105 filterTransferPlans:v18];
+                [(TSTransferCloudFlowModel *)v105 filterTransferPlans:plan3];
               }
             }
 
@@ -714,7 +714,7 @@ LABEL_25:
           }
 
           while (v11 != v13);
-          v36 = [v9 countByEnumeratingWithState:&v86 objects:v107 count:16];
+          v36 = [remoteDisplayPlans countByEnumeratingWithState:&v86 objects:v107 count:16];
           v11 = v36;
         }
 
@@ -776,86 +776,86 @@ LABEL_61:
       }
 
       v46 = [*(*(&v82 + 1) + 8 * v45) objectForKeyedSubscript:@"planItem"];
-      v47 = [v46 plan];
-      v48 = [v47 transferAttributes];
-      if (![v48 transferCapability])
+      plan5 = [v46 plan];
+      transferAttributes2 = [plan5 transferAttributes];
+      if (![transferAttributes2 transferCapability])
       {
         goto LABEL_88;
       }
 
-      v49 = [v47 transferAttributes];
-      if ([v49 transferCapability] == 1)
+      transferAttributes3 = [plan5 transferAttributes];
+      if ([transferAttributes3 transferCapability] == 1)
       {
         goto LABEL_87;
       }
 
-      v50 = [v47 transferAttributes];
-      if ([v50 transferCapability] == 13)
+      transferAttributes4 = [plan5 transferAttributes];
+      if ([transferAttributes4 transferCapability] == 13)
       {
         goto LABEL_86;
       }
 
-      v51 = [v47 transferAttributes];
-      if ([v51 transferCapability] == 9)
+      transferAttributes5 = [plan5 transferAttributes];
+      if ([transferAttributes5 transferCapability] == 9)
       {
         goto LABEL_85;
       }
 
-      v79 = v51;
-      v52 = [v47 transferAttributes];
-      if ([v52 transferCapability] == 7)
+      v79 = transferAttributes5;
+      transferAttributes6 = [plan5 transferAttributes];
+      if ([transferAttributes6 transferCapability] == 7)
       {
         goto LABEL_84;
       }
 
-      v53 = [v47 transferAttributes];
-      if ([v53 transferCapability] == 12)
+      transferAttributes7 = [plan5 transferAttributes];
+      if ([transferAttributes7 transferCapability] == 12)
       {
         goto LABEL_83;
       }
 
-      v76 = v53;
-      v54 = [v47 transferAttributes];
-      if ([v54 transferCapability] == 8)
+      v76 = transferAttributes7;
+      transferAttributes8 = [plan5 transferAttributes];
+      if ([transferAttributes8 transferCapability] == 8)
       {
         goto LABEL_82;
       }
 
-      v74 = v54;
-      v55 = [v47 transferAttributes];
-      if ([v55 transferCapability] == 14)
+      v74 = transferAttributes8;
+      transferAttributes9 = [plan5 transferAttributes];
+      if ([transferAttributes9 transferCapability] == 14)
       {
         goto LABEL_81;
       }
 
-      obja = v55;
-      v56 = [v47 transferAttributes];
-      if ([v56 transferCapability] == 15)
+      obja = transferAttributes9;
+      transferAttributes10 = [plan5 transferAttributes];
+      if ([transferAttributes10 transferCapability] == 15)
       {
         goto LABEL_80;
       }
 
-      v70 = v56;
-      v57 = [v47 transferAttributes];
-      if ([v57 transferCapability] == 16)
+      v70 = transferAttributes10;
+      transferAttributes11 = [plan5 transferAttributes];
+      if ([transferAttributes11 transferCapability] == 16)
       {
 
-        v56 = v70;
+        transferAttributes10 = v70;
 LABEL_80:
 
-        v55 = obja;
+        transferAttributes9 = obja;
 LABEL_81:
 
-        v54 = v74;
+        transferAttributes8 = v74;
 LABEL_82:
 
-        v53 = v76;
+        transferAttributes7 = v76;
 LABEL_83:
 
         v44 = v78;
 LABEL_84:
 
-        v51 = v79;
+        transferAttributes5 = v79;
 LABEL_85:
 
         v41 = v81;
@@ -867,41 +867,41 @@ LABEL_88:
 
       else
       {
-        v68 = v57;
-        v67 = [v47 transferAttributes];
-        if ([v67 transferCapability] == 17)
+        v68 = transferAttributes11;
+        transferAttributes12 = [plan5 transferAttributes];
+        if ([transferAttributes12 transferCapability] == 17)
         {
           v65 = 0;
         }
 
         else
         {
-          v64 = [v47 transferAttributes];
-          if ([v64 transferCapability] == 18)
+          transferAttributes13 = [plan5 transferAttributes];
+          if ([transferAttributes13 transferCapability] == 18)
           {
             v58 = 0;
           }
 
           else
           {
-            v66 = [v47 transferAttributes];
-            if ([v66 transferCapability] == 19)
+            transferAttributes14 = [plan5 transferAttributes];
+            if ([transferAttributes14 transferCapability] == 19)
             {
               v58 = 0;
             }
 
             else
             {
-              v63 = [v47 transferAttributes];
-              if ([v63 transferCapability] == 10)
+              transferAttributes15 = [plan5 transferAttributes];
+              if ([transferAttributes15 transferCapability] == 10)
               {
                 v58 = 0;
               }
 
               else
               {
-                v62 = [v47 transferAttributes];
-                v58 = [v62 transferCapability] != 20;
+                transferAttributes16 = [plan5 transferAttributes];
+                v58 = [transferAttributes16 transferCapability] != 20;
               }
             }
           }
@@ -946,16 +946,16 @@ LABEL_106:
 
   [(NSMutableArray *)self->_transferItems removeAllObjects];
 LABEL_109:
-  v4 = v69;
+  plansCopy = v69;
 LABEL_110:
 
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestCarrierSetups:(id)a3
+- (void)requestCarrierSetups:(id)setups
 {
-  v4 = a3;
-  if (v4)
+  setupsCopy = setups;
+  if (setupsCopy)
   {
     objc_initWeak(&location, self);
     v5 = +[TSCoreTelephonyClientCache sharedInstance];
@@ -965,7 +965,7 @@ LABEL_110:
     v14[3] = &unk_279B452E8;
     objc_copyWeak(&v16, &location);
     v14[4] = self;
-    v15 = v4;
+    v15 = setupsCopy;
     [v5 getCarrierSetupWithCompletion:v14];
 
     objc_destroyWeak(&v16);
@@ -1017,33 +1017,33 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)filterCarrierSetupItems:(id)a3
+- (void)filterCarrierSetupItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   transferPlans = self->_transferPlans;
-  v7 = [v5 plans];
-  [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:v7];
+  plans = [itemsCopy plans];
+  [(NSMutableArray *)transferPlans filteredPlansWithoutSODATether:plans];
 
-  if (v5)
+  if (itemsCopy)
   {
-    v8 = [v5 plans];
-    v9 = [v8 count];
+    plans2 = [itemsCopy plans];
+    v9 = [plans2 count];
 
     if (v9)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if ([TSFlowHelper hasTransferablePlanWithSameCarrierName:v5 transferablePlans:self->_transferItems inBuddy:1 matchingSODACarrierWebsheetTransferPlanIndex:v10])
+      if ([TSFlowHelper hasTransferablePlanWithSameCarrierName:itemsCopy transferablePlans:self->_transferItems inBuddy:1 matchingSODACarrierWebsheetTransferPlanIndex:v10])
       {
         [(TSTransferCloudFlowModel *)self clearCarrierSetupItemsCache];
       }
 
       else
       {
-        objc_storeStrong(&self->_carrierSetupItems, a3);
+        objc_storeStrong(&self->_carrierSetupItems, items);
       }
 
-      v11 = [TSFlowHelper getAccountMemberTransferablePlanWithSameCarrierName:v5 transferablePlans:self->_transferItems];
+      v11 = [TSFlowHelper getAccountMemberTransferablePlanWithSameCarrierName:itemsCopy transferablePlans:self->_transferItems];
 
       v21 = v11;
       v12 = [TSFlowHelper sortIndexesInDescending:v11];
@@ -1065,11 +1065,11 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+            unsignedIntegerValue = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
             v18 = _TSLogDomain();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:v17];
+              v19 = [(NSMutableArray *)self->_transferItems objectAtIndex:unsignedIntegerValue];
               *buf = 138412546;
               v27 = v19;
               v28 = 2080;
@@ -1077,7 +1077,7 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
               _os_log_impl(&dword_262AA8000, v18, OS_LOG_TYPE_DEFAULT, "Transferrable plan %@ will be removed from the list @%s", buf, 0x16u);
             }
 
-            [(NSMutableArray *)self->_transferItems removeObjectAtIndex:v17];
+            [(NSMutableArray *)self->_transferItems removeObjectAtIndex:unsignedIntegerValue];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -1096,16 +1096,16 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getWebsheetInfo:(id)a3 completion:(id)a4
+- (void)getWebsheetInfo:(id)info completion:(id)completion
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (infoCopy)
   {
     objc_initWeak(location, self);
-    v8 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v9 = [v8 count] > 1;
+    plans = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v9 = [plans count] > 1;
 
     if (v9)
     {
@@ -1116,22 +1116,22 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
       }
     }
 
-    v18 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-    v19 = [v18 count] == 0;
+    plans2 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+    v19 = [plans2 count] == 0;
 
     if (!v19)
     {
       v20 = +[TSCoreTelephonyClientCache sharedInstance];
-      v21 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
-      v22 = [v21 objectAtIndexedSubscript:0];
-      v23 = [v22 plan];
+      plans3 = [(CTDisplayPlanList *)self->_carrierSetupItems plans];
+      v22 = [plans3 objectAtIndexedSubscript:0];
+      plan = [v22 plan];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __55__TSTransferCloudFlowModel_getWebsheetInfo_completion___block_invoke;
       v26[3] = &unk_279B45310;
       objc_copyWeak(&v28, location);
-      v27 = v7;
-      [v20 getWebsheetInfoForPlan:v23 inBuddy:1 completion:v26];
+      v27 = completionCopy;
+      [v20 getWebsheetInfoForPlan:plan inBuddy:1 completion:v26];
 
       objc_destroyWeak(&v28);
     }
@@ -1149,7 +1149,7 @@ void __49__TSTransferCloudFlowModel_requestCarrierSetups___block_invoke(uint64_t
       _os_log_impl(&dword_262AA8000, v24, OS_LOG_TYPE_DEFAULT, "No carrier setup items @%s", location, 0xCu);
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1179,15 +1179,15 @@ void __55__TSTransferCloudFlowModel_getWebsheetInfo_completion___block_invoke(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestCrossPlatformTransferPlanListWithCompletion:(id)a3
+- (void)requestCrossPlatformTransferPlanListWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
-    v5 = MEMORY[0x2667315D0](v4);
+    v5 = MEMORY[0x2667315D0](completionCopy);
     v6 = +[TSCoreTelephonyClientCache sharedInstance];
-    v7 = [v6 getCoreTelephonyClient];
+    getCoreTelephonyClient = [v6 getCoreTelephonyClient];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __79__TSTransferCloudFlowModel_requestCrossPlatformTransferPlanListWithCompletion___block_invoke;
@@ -1195,7 +1195,7 @@ void __55__TSTransferCloudFlowModel_getWebsheetInfo_completion___block_invoke(ui
     objc_copyWeak(&v19, &location);
     v8 = v5;
     v18 = v8;
-    [v7 plansPendingCrossPlatformTransferWithCompletion:v17];
+    [getCoreTelephonyClient plansPendingCrossPlatformTransferWithCompletion:v17];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);

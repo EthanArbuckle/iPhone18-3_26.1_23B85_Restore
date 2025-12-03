@@ -1,6 +1,6 @@
 @interface JSPlatformUnavailableObject
 - (_TtC9JetEngine27JSPlatformUnavailableObject)init;
-- (id)lookup:(id)a3;
+- (id)lookup:(id)lookup;
 @end
 
 @implementation JSPlatformUnavailableObject
@@ -12,7 +12,7 @@
   return [(JSPlatformUnavailableObject *)&v3 init];
 }
 
-- (id)lookup:(id)a3
+- (id)lookup:(id)lookup
 {
   v3 = sub_1AB3899E0();
 

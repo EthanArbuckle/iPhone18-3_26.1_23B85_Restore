@@ -1,18 +1,18 @@
 @interface TIKeyboardFeatureSpecialization_es
-- (void)createInputManager:(id)a3;
+- (void)createInputManager:(id)manager;
 @end
 
 @implementation TIKeyboardFeatureSpecialization_es
 
-- (void)createInputManager:(id)a3
+- (void)createInputManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = TIKeyboardFeatureSpecialization_es;
-  [(TIKeyboardQuickTypeSpecialization *)&v8 createInputManager:a3];
-  v4 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v5 = [v4 locale];
+  [(TIKeyboardQuickTypeSpecialization *)&v8 createInputManager:manager];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  locale = [inputMode locale];
 
-  KB::InputManagerSpecialization_es::create(v5, v6);
+  KB::InputManagerSpecialization_es::create(locale, v6);
 }
 
 @end

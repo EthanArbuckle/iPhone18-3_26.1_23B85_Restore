@@ -3,30 +3,30 @@
 + (void)registerDefaultHandlers;
 + (void)registerSpecialCaseHandler;
 - (PLCacheDeleteRegistration)init;
-- (void)_processRemovedFiles:(id)a3 withCacheDeleteSupport:(id)a4 forLibraryURL:(id)a5;
+- (void)_processRemovedFiles:(id)files withCacheDeleteSupport:(id)support forLibraryURL:(id)l;
 - (void)_registerResourceDirectories;
-- (void)_replaceCameraWatcherWith:(id)a3;
-- (void)cameraWatcherDidChangeState:(id)a3;
-- (void)registerCacheDeleteSupport:(id)a3 withLibraryServicesManager:(id)a4;
-- (void)unregisterCacheDeleteSupport:(id)a3 withLibraryServicesManager:(id)a4;
+- (void)_replaceCameraWatcherWith:(id)with;
+- (void)cameraWatcherDidChangeState:(id)state;
+- (void)registerCacheDeleteSupport:(id)support withLibraryServicesManager:(id)manager;
+- (void)unregisterCacheDeleteSupport:(id)support withLibraryServicesManager:(id)manager;
 @end
 
 @implementation PLCacheDeleteRegistration
 
-- (void)_replaceCameraWatcherWith:(id)a3
+- (void)_replaceCameraWatcherWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   [(PFCameraViewfinderSessionWatcher *)self->_cameraWatcher stopWatching];
   cameraWatcher = self->_cameraWatcher;
-  self->_cameraWatcher = v4;
+  self->_cameraWatcher = withCopy;
 }
 
-- (void)cameraWatcherDidChangeState:(id)a3
+- (void)cameraWatcherDidChangeState:(id)state
 {
   queue = self->_queue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(queue) = [v5 isCameraRunning];
+  LOBYTE(queue) = [stateCopy isCameraRunning];
 
   if ((queue & 1) == 0 && self->_fileIDsAndPurgedPathsReceivedWhileCameraIsStreamingPerLibrary)
   {
@@ -57,23 +57,23 @@ void __57__PLCacheDeleteRegistration_cameraWatcherDidChangeState___block_invoke(
   [v6 markAsNotLocallyAvailableForResourcesWithFileIDsToPath:v5];
 }
 
-- (void)_processRemovedFiles:(id)a3 withCacheDeleteSupport:(id)a4 forLibraryURL:(id)a5
+- (void)_processRemovedFiles:(id)files withCacheDeleteSupport:(id)support forLibraryURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  filesCopy = files;
+  supportCopy = support;
+  lCopy = l;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__PLCacheDeleteRegistration__processRemovedFiles_withCacheDeleteSupport_forLibraryURL___block_invoke;
   v15[3] = &unk_1E7578100;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = filesCopy;
+  selfCopy = self;
+  v18 = supportCopy;
+  v19 = lCopy;
+  v12 = lCopy;
+  v13 = supportCopy;
+  v14 = filesCopy;
   dispatch_async(queue, v15);
 }
 
@@ -429,17 +429,17 @@ void __57__PLCacheDeleteRegistration__registerResourceDirectories__block_invoke_
   CacheDeleteEnumerateRemovedFilesInDirectories();
 }
 
-- (void)unregisterCacheDeleteSupport:(id)a3 withLibraryServicesManager:(id)a4
+- (void)unregisterCacheDeleteSupport:(id)support withLibraryServicesManager:(id)manager
 {
-  v5 = a4;
+  managerCopy = manager;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__PLCacheDeleteRegistration_unregisterCacheDeleteSupport_withLibraryServicesManager___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = managerCopy;
+  selfCopy = self;
+  v7 = managerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -473,20 +473,20 @@ void __85__PLCacheDeleteRegistration_unregisterCacheDeleteSupport_withLibrarySer
   }
 }
 
-- (void)registerCacheDeleteSupport:(id)a3 withLibraryServicesManager:(id)a4
+- (void)registerCacheDeleteSupport:(id)support withLibraryServicesManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  supportCopy = support;
+  managerCopy = manager;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__PLCacheDeleteRegistration_registerCacheDeleteSupport_withLibraryServicesManager___block_invoke;
   block[3] = &unk_1E75761B8;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = managerCopy;
+  selfCopy = self;
+  v14 = supportCopy;
+  v9 = supportCopy;
+  v10 = managerCopy;
   dispatch_async(queue, block);
 }
 
@@ -712,25 +712,25 @@ LABEL_36:
   v3 = [MEMORY[0x1E69BF2A0] wellKnownPhotoLibraryURLForIdentifier:1];
   v4 = [v2 openBundleAtLibraryURL:v3];
 
-  v5 = [v4 libraryServicesManager];
+  libraryServicesManager = [v4 libraryServicesManager];
   v14 = 0;
-  v6 = [v5 activate:&v14];
+  v6 = [libraryServicesManager activate:&v14];
   v7 = v14;
   v8 = v7;
-  if (v6 && (v7, v13 = 0, v9 = [v5 awaitLibraryState:7 error:&v13], v8 = v13, v9))
+  if (v6 && (v7, v13 = 0, v9 = [libraryServicesManager awaitLibraryState:7 error:&v13], v8 = v13, v9))
   {
-    v10 = [v5 databaseContext];
-    v11 = [v10 newShortLivedLibraryWithName:"CacheDelete UrgencySpecialCase"];
+    databaseContext = [libraryServicesManager databaseContext];
+    v11 = [databaseContext newShortLivedLibraryWithName:"CacheDelete UrgencySpecialCase"];
   }
 
   else
   {
-    v10 = PLResourceCachingGetLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    databaseContext = PLResourceCachingGetLog();
+    if (os_log_type_enabled(databaseContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v16 = v8;
-      _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Unable to photo library for CacheDelete: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, databaseContext, OS_LOG_TYPE_ERROR, "Unable to photo library for CacheDelete: %@", buf, 0xCu);
     }
 
     v11 = 0;
@@ -745,13 +745,13 @@ LABEL_36:
   aBlock[1] = 3221225472;
   aBlock[2] = __55__PLCacheDeleteRegistration_registerSpecialCaseHandler__block_invoke;
   aBlock[3] = &__block_descriptor_40_e45_____CFDictionary__20__0i8____CFDictionary__12l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__PLCacheDeleteRegistration_registerSpecialCaseHandler__block_invoke_41;
   v12[3] = &__block_descriptor_40_e45_____CFDictionary__20__0i8____CFDictionary__12l;
-  v12[4] = a1;
+  v12[4] = self;
   v4 = _Block_copy(v12);
   v5 = CacheDeleteRegister();
   v6 = PLResourceCachingGetLog();

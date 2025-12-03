@@ -1,11 +1,11 @@
 @interface THBookCoverDescription
-+ (THBookCoverDescription)descriptionWithURL:(id)a3;
-+ (THBookCoverDescription)descriptionWithURL:(id)a3 assetID:(id)a4;
-+ (id)displayNameFromFilePath:(id)a3;
-+ (id)summaryWithURL:(id)a3;
++ (THBookCoverDescription)descriptionWithURL:(id)l;
++ (THBookCoverDescription)descriptionWithURL:(id)l assetID:(id)d;
++ (id)displayNameFromFilePath:(id)path;
++ (id)summaryWithURL:(id)l;
 - (CGImageSource)embeddedArtImageSource;
 - (PFDContext)drmContext;
-- (THBookCoverDescription)initWithURL:(id)a3 assetID:(id)a4 summary:(id)a5;
+- (THBookCoverDescription)initWithURL:(id)l assetID:(id)d summary:(id)summary;
 - (id)bookBundleUrl;
 - (id)embeddedArtURL;
 - (void)dealloc;
@@ -13,26 +13,26 @@
 
 @implementation THBookCoverDescription
 
-- (THBookCoverDescription)initWithURL:(id)a3 assetID:(id)a4 summary:(id)a5
+- (THBookCoverDescription)initWithURL:(id)l assetID:(id)d summary:(id)summary
 {
   v10.receiver = self;
   v10.super_class = THBookCoverDescription;
   v8 = [(THBookCoverDescription *)&v10 init];
   if (v8)
   {
-    v8->mAsset = [[THAsset alloc] initWithURL:a3 assetID:a4];
-    v8->mBookSummary = a5;
+    v8->mAsset = [[THAsset alloc] initWithURL:l assetID:d];
+    v8->mBookSummary = summary;
   }
 
   return v8;
 }
 
-+ (id)summaryWithURL:(id)a3
++ (id)summaryWithURL:(id)l
 {
   v11 = 0;
-  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a3 path]))
+  if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [l path]))
   {
-    result = [a1 readEmbeddedArtPropertiesFromURL:a3 error:&v11];
+    result = [self readEmbeddedArtPropertiesFromURL:l error:&v11];
     if (result)
     {
       return result;
@@ -59,14 +59,14 @@
 - (PFDContext)drmContext
 {
   v3 = +[PFDContextManager sharedInstance];
-  v4 = [(NSURL *)[(THAsset *)self->mAsset url] path];
+  path = [(NSURL *)[(THAsset *)self->mAsset url] path];
 
-  return [(PFDContextManager *)v3 contextForArchive:v4];
+  return [(PFDContextManager *)v3 contextForArchive:path];
 }
 
-+ (THBookCoverDescription)descriptionWithURL:(id)a3
++ (THBookCoverDescription)descriptionWithURL:(id)l
 {
-  result = [a1 summaryWithURL:?];
+  result = [self summaryWithURL:?];
   if (result)
   {
     v5 = result;
@@ -75,31 +75,31 @@
     {
       v7 = [(THBookCoverDescription *)v5 objectForKey:kTHBookCoverInfoOPF];
       v10 = 0;
-      if (v7 && (v8 = v7, -[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [a3 path], &v10)) && v10 == 1)
+      if (v7 && (v8 = v7, -[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [l path], &v10)) && v10 == 1)
       {
-        v9 = +[NSString md5StringWithContentsOfFile:](NSString, "md5StringWithContentsOfFile:", [objc_msgSend(a3 URLByAppendingPathComponent:{v8), "path"}]);
+        v9 = +[NSString md5StringWithContentsOfFile:](NSString, "md5StringWithContentsOfFile:", [objc_msgSend(l URLByAppendingPathComponent:{v8), "path"}]);
       }
 
       else
       {
-        v9 = THUniqueIdForPath([a3 path]);
+        v9 = THUniqueIdForPath([l path]);
       }
 
       v6 = v9;
     }
 
-    return [[THBookCoverDescription alloc] initWithURL:a3 assetID:v6 summary:v5];
+    return [[THBookCoverDescription alloc] initWithURL:l assetID:v6 summary:v5];
   }
 
   return result;
 }
 
-+ (THBookCoverDescription)descriptionWithURL:(id)a3 assetID:(id)a4
++ (THBookCoverDescription)descriptionWithURL:(id)l assetID:(id)d
 {
-  result = [a1 summaryWithURL:?];
+  result = [self summaryWithURL:?];
   if (result)
   {
-    v7 = [[THBookCoverDescription alloc] initWithURL:a3 assetID:a4 summary:result];
+    v7 = [[THBookCoverDescription alloc] initWithURL:l assetID:d summary:result];
 
     return v7;
   }
@@ -107,9 +107,9 @@
   return result;
 }
 
-+ (id)displayNameFromFilePath:(id)a3
++ (id)displayNameFromFilePath:(id)path
 {
-  v3 = [objc_msgSend(a3 "lastPathComponent")];
+  v3 = [objc_msgSend(path "lastPathComponent")];
   v4 = [NSCharacterSet characterSetWithCharactersInString:@":/"];
 
   return [v3 tsu_stringByRemovingCharactersInSet:v4];
@@ -128,9 +128,9 @@
 
 - (id)bookBundleUrl
 {
-  v2 = [(THBookCoverDescription *)self asset];
+  asset = [(THBookCoverDescription *)self asset];
 
-  return [(THAsset *)v2 url];
+  return [(THAsset *)asset url];
 }
 
 - (id)embeddedArtURL
@@ -139,9 +139,9 @@
   if (result)
   {
     v4 = result;
-    v5 = [(THBookCoverDescription *)self bookBundleUrl];
+    bookBundleUrl = [(THBookCoverDescription *)self bookBundleUrl];
 
-    return [v5 URLByAppendingPathComponent:v4];
+    return [bookBundleUrl URLByAppendingPathComponent:v4];
   }
 
   return result;
@@ -149,16 +149,16 @@
 
 - (CGImageSource)embeddedArtImageSource
 {
-  v3 = [(THBookCoverDescription *)self drmContext];
-  v4 = [(THBookCoverDescription *)self embeddedArtURL];
-  if (v3)
+  drmContext = [(THBookCoverDescription *)self drmContext];
+  embeddedArtURL = [(THBookCoverDescription *)self embeddedArtURL];
+  if (drmContext)
   {
-    v5 = [(PFDContext *)v3 newImageSourceWithContentsOfURL:v4 error:0];
+    v5 = [(PFDContext *)drmContext newImageSourceWithContentsOfURL:embeddedArtURL error:0];
   }
 
   else
   {
-    v5 = CGImageSourceCreateWithURL(v4, 0);
+    v5 = CGImageSourceCreateWithURL(embeddedArtURL, 0);
   }
 
   return v5;

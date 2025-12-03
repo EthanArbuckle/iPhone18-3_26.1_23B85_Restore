@@ -1,6 +1,6 @@
 @interface OSLogEventBacktraceFrame
 - (NSUUID)imageUUID;
-- (OSLogEventBacktraceFrame)initWithUUIDBytes:(const char *)a3 andOffset:(unint64_t)a4;
+- (OSLogEventBacktraceFrame)initWithUUIDBytes:(const char *)bytes andOffset:(unint64_t)offset;
 - (void)dealloc;
 @end
 
@@ -25,15 +25,15 @@
   return result;
 }
 
-- (OSLogEventBacktraceFrame)initWithUUIDBytes:(const char *)a3 andOffset:(unint64_t)a4
+- (OSLogEventBacktraceFrame)initWithUUIDBytes:(const char *)bytes andOffset:(unint64_t)offset
 {
   v7.receiver = self;
   v7.super_class = OSLogEventBacktraceFrame;
   result = [(OSLogEventBacktraceFrame *)&v7 init];
   if (result)
   {
-    *result->_uuid = *a3;
-    result->_imageOffset = a4;
+    *result->_uuid = *bytes;
+    result->_imageOffset = offset;
   }
 
   return result;

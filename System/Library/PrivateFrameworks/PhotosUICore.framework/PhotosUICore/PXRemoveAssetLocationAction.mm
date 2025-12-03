@@ -1,18 +1,18 @@
 @interface PXRemoveAssetLocationAction
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 @end
 
 @implementation PXRemoveAssetLocationAction
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v6 = a3;
-  v10.receiver = a1;
+  assetCopy = asset;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___PXRemoveAssetLocationAction;
-  if (objc_msgSendSuper2(&v10, sel_canPerformOnAsset_inAssetCollection_, v6, a4))
+  if (objc_msgSendSuper2(&v10, sel_canPerformOnAsset_inAssetCollection_, assetCopy, collection))
   {
-    v7 = [v6 location];
-    v8 = v7 != 0;
+    location = [assetCopy location];
+    v8 = location != 0;
   }
 
   else

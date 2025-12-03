@@ -1,52 +1,52 @@
 @interface FMFLocation
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMoreRecentThan:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMoreRecentThan:(id)than;
 - (BOOL)isValid;
 - (CLLocationCoordinate2D)coordinate;
-- (FMFLocation)initWithCoder:(id)a3;
-- (FMFLocation)initWithDictionary:(id)a3 forHandle:(id)a4 maxLocatingInterval:(double)a5 TTL:(double)a6;
-- (FMFLocation)initWithLatitude:(double)a3 longitude:(double)a4;
+- (FMFLocation)initWithCoder:(id)coder;
+- (FMFLocation)initWithDictionary:(id)dictionary forHandle:(id)handle maxLocatingInterval:(double)interval TTL:(double)l;
+- (FMFLocation)initWithLatitude:(double)latitude longitude:(double)longitude;
 - (NSString)description;
 - (NSString)shortAddress;
 - (NSString)title;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)locationAge;
 - (id)locationShortAddressWithAge;
 - (id)locationShortAddressWithAgeIncludeLocating;
-- (int64_t)distanceThenNameCompare:(id)a3;
+- (int64_t)distanceThenNameCompare:(id)compare;
 - (unint64_t)hash;
-- (void)_updateLocation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetLocateInProgress:(id)a3;
+- (void)_updateLocation:(id)location;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetLocateInProgress:(id)progress;
 - (void)resetLocateInProgressTimer;
-- (void)setLocatingInProgress:(BOOL)a3;
-- (void)updateHandle:(id)a3;
-- (void)updateLocation:(id)a3;
-- (void)updateLocationForCache:(id)a3;
+- (void)setLocatingInProgress:(BOOL)progress;
+- (void)updateHandle:(id)handle;
+- (void)updateLocation:(id)location;
+- (void)updateLocationForCache:(id)cache;
 @end
 
 @implementation FMFLocation
 
-- (FMFLocation)initWithDictionary:(id)a3 forHandle:(id)a4 maxLocatingInterval:(double)a5 TTL:(double)a6
+- (FMFLocation)initWithDictionary:(id)dictionary forHandle:(id)handle maxLocatingInterval:(double)interval TTL:(double)l
 {
-  v10 = a3;
-  v11 = a4;
+  dictionaryCopy = dictionary;
+  handleCopy = handle;
   v12 = objc_alloc_init(objc_opt_class());
-  [(FMFLocation *)v12 setHandle:v11];
+  [(FMFLocation *)v12 setHandle:handleCopy];
 
-  [(FMFLocation *)v12 setMaxLocatingInterval:a5];
-  [(FMFLocation *)v12 setTTL:a6];
-  v13 = [v10 objectForKeyedSubscript:@"location"];
-  v14 = [MEMORY[0x277CBEB68] null];
-  v15 = v14;
-  if (v13 == v14)
+  [(FMFLocation *)v12 setMaxLocatingInterval:interval];
+  [(FMFLocation *)v12 setTTL:l];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"location"];
+  null = [MEMORY[0x277CBEB68] null];
+  v15 = null;
+  if (v13 == null)
   {
 
     goto LABEL_6;
   }
 
-  v16 = [v10 objectForKeyedSubscript:@"location"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"location"];
 
   if (!v16)
   {
@@ -62,8 +62,8 @@ LABEL_6:
   v89 = [v18 dateWithTimeIntervalSince1970:v19 / 1000.0];
   [(FMFLocation *)v12 setTimestamp:?];
   v20 = [v16 objectForKeyedSubscript:@"latitude"];
-  v21 = [MEMORY[0x277CBEB68] null];
-  if (v20 == v21)
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v20 == null2)
   {
     v22 = 0;
   }
@@ -74,8 +74,8 @@ LABEL_6:
   }
 
   v23 = [v16 objectForKeyedSubscript:@"longitude"];
-  v24 = [MEMORY[0x277CBEB68] null];
-  if (v23 == v24)
+  null3 = [MEMORY[0x277CBEB68] null];
+  if (v23 == null3)
   {
     v91 = 0;
   }
@@ -86,8 +86,8 @@ LABEL_6:
   }
 
   v25 = [v16 objectForKeyedSubscript:@"horizontalAccuracy"];
-  v26 = [MEMORY[0x277CBEB68] null];
-  if (v25 == v26)
+  null4 = [MEMORY[0x277CBEB68] null];
+  if (v25 == null4)
   {
     v27 = 0;
   }
@@ -122,16 +122,16 @@ LABEL_6:
   [(FMFLocation *)v12 setLocation:v43];
 
   [(FMFLocation *)v12 setActivityState:0];
-  v44 = [(FMFLocation *)v12 location];
-  [v44 coordinate];
+  location = [(FMFLocation *)v12 location];
+  [location coordinate];
   [(FMFLocation *)v12 setCoordinate:?];
 
   v45 = [v16 objectForKeyedSubscript:@"address"];
   v46 = 0x277CBE000uLL;
-  v47 = [MEMORY[0x277CBEB68] null];
-  v48 = v47;
+  null5 = [MEMORY[0x277CBEB68] null];
+  v48 = null5;
   v88 = v22;
-  if (v45 == v47)
+  if (v45 == null5)
   {
 
     v53 = 0;
@@ -152,8 +152,8 @@ LABEL_20:
   }
 
   v50 = [v49 objectForKeyedSubscript:@"locality"];
-  v51 = [MEMORY[0x277CBEB68] null];
-  if (v50 == v51)
+  null6 = [MEMORY[0x277CBEB68] null];
+  if (v50 == null6)
   {
     v52 = 0;
   }
@@ -164,8 +164,8 @@ LABEL_20:
   }
 
   v55 = [v49 objectForKeyedSubscript:@"stateCode"];
-  v56 = [MEMORY[0x277CBEB68] null];
-  if (v55 == v56)
+  null7 = [MEMORY[0x277CBEB68] null];
+  if (v55 == null7)
   {
     v54 = 0;
   }
@@ -176,9 +176,9 @@ LABEL_20:
   }
 
   v57 = [v49 objectForKeyedSubscript:@"administrativeArea"];
-  v58 = [MEMORY[0x277CBEB68] null];
-  v81 = self;
-  if (v57 == v58)
+  null8 = [MEMORY[0x277CBEB68] null];
+  selfCopy = self;
+  if (v57 == null8)
   {
     v84 = 0;
   }
@@ -189,8 +189,8 @@ LABEL_20:
   }
 
   v59 = [v49 objectForKeyedSubscript:@"formattedAddressLines"];
-  v60 = [MEMORY[0x277CBEB68] null];
-  if (v59 == v60)
+  null9 = [MEMORY[0x277CBEB68] null];
+  if (v59 == null9)
   {
     v53 = 0;
   }
@@ -213,11 +213,11 @@ LABEL_20:
     v46 = 0x277CBE000;
 
     v83 = 0;
-    self = v81;
+    self = selfCopy;
     goto LABEL_40;
   }
 
-  self = v81;
+  self = selfCopy;
   if (!v52)
   {
     if (v84)
@@ -246,9 +246,9 @@ LABEL_40:
   }
 
   v67 = [v16 objectForKeyedSubscript:@"labels"];
-  v68 = [*(v46 + 2920) null];
-  v69 = v68;
-  if (v67 == v68)
+  null10 = [*(v46 + 2920) null];
+  v69 = null10;
+  if (v67 == null10)
   {
 
     v70 = 0;
@@ -271,24 +271,24 @@ LABEL_40:
         goto LABEL_58;
       }
 
-      v82 = self;
-      v71 = [v70 firstObject];
-      v72 = [v71 objectForKeyedSubscript:@"label"];
-      v73 = [*(v46 + 2920) null];
-      v74 = v73;
-      if (v72 == v73)
+      selfCopy2 = self;
+      firstObject = [v70 firstObject];
+      v72 = [firstObject objectForKeyedSubscript:@"label"];
+      null11 = [*(v46 + 2920) null];
+      v74 = null11;
+      if (v72 == null11)
       {
       }
 
       else
       {
-        v75 = [v71 objectForKeyedSubscript:@"label"];
+        v75 = [firstObject objectForKeyedSubscript:@"label"];
 
         if (!v75)
         {
 LABEL_56:
 
-          self = v82;
+          self = selfCopy2;
           goto LABEL_57;
         }
 
@@ -324,10 +324,10 @@ LABEL_61:
   return v12;
 }
 
-- (FMFLocation)initWithLatitude:(double)a3 longitude:(double)a4
+- (FMFLocation)initWithLatitude:(double)latitude longitude:(double)longitude
 {
   v7 = objc_alloc_init(objc_opt_class());
-  v8 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:a3 longitude:a4];
+  v8 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
   [(FMFLocation *)v7 setLocationType:0];
   [(FMFLocation *)v7 setLocation:v8];
   [(FMFLocation *)v7 setActivityState:0];
@@ -339,22 +339,22 @@ LABEL_61:
 
 - (NSString)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = +[FMFLocationDateFormatter sharedInstance];
-  v51 = [(FMFLocation *)v2 handle];
-  if ([(FMFLocation *)v2 locationType])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  location4 = +[FMFLocationDateFormatter sharedInstance];
+  handle = [(FMFLocation *)selfCopy handle];
+  if ([(FMFLocation *)selfCopy locationType])
   {
-    if ([(FMFLocation *)v2 locationType]== 2)
+    if ([(FMFLocation *)selfCopy locationType]== 2)
     {
       v4 = @"live";
     }
 
     else
     {
-      v6 = [(FMFLocation *)v2 locationType];
+      locationType = [(FMFLocation *)selfCopy locationType];
       v4 = @"shallow";
-      if (v6 == 3)
+      if (locationType == 3)
       {
         v4 = @"stewie";
       }
@@ -363,21 +363,21 @@ LABEL_61:
 
   else
   {
-    v5 = [(FMFLocation *)v2 isLocatingInProgress];
+    isLocatingInProgress = [(FMFLocation *)selfCopy isLocatingInProgress];
     v4 = @"legacy";
-    if (v5)
+    if (isLocatingInProgress)
     {
       v4 = @"legacy in progress";
     }
   }
 
   v50 = v4;
-  v7 = [(FMFLocation *)v2 timestamp];
-  v47 = v3;
-  if (v7)
+  timestamp = [(FMFLocation *)selfCopy timestamp];
+  v47 = location4;
+  if (timestamp)
   {
-    v8 = [(FMFLocation *)v2 timestamp];
-    v49 = [v3 stringFromDate:v8];
+    timestamp2 = [(FMFLocation *)selfCopy timestamp];
+    v49 = [location4 stringFromDate:timestamp2];
   }
 
   else
@@ -385,41 +385,41 @@ LABEL_61:
     v49 = &stru_285D7AA10;
   }
 
-  v9 = 0x277CCA000;
+  longAddress2 = 0x277CCA000;
   v10 = MEMORY[0x277CCACA8];
-  [(FMFLocation *)v2 coordinate];
+  [(FMFLocation *)selfCopy coordinate];
   v12 = v11;
-  [(FMFLocation *)v2 coordinate];
+  [(FMFLocation *)selfCopy coordinate];
   v52 = [v10 stringWithFormat:@"%01.6lf°, %01.6lf°", v12, v13];
-  v14 = [(FMFLocation *)v2 location];
-  [v14 coordinate];
+  location = [(FMFLocation *)selfCopy location];
+  [location coordinate];
   v16 = v15;
-  [(FMFLocation *)v2 coordinate];
+  [(FMFLocation *)selfCopy coordinate];
   if (v16 != v17)
   {
 
     goto LABEL_16;
   }
 
-  v18 = [(FMFLocation *)v2 location];
-  [v18 coordinate];
+  location2 = [(FMFLocation *)selfCopy location];
+  [location2 coordinate];
   v20 = v19;
-  [(FMFLocation *)v2 coordinate];
+  [(FMFLocation *)selfCopy coordinate];
   v22 = v21;
 
   if (v20 != v22)
   {
 LABEL_16:
     v23 = MEMORY[0x277CCACA8];
-    [(FMFLocation *)v2 coordinate];
+    [(FMFLocation *)selfCopy coordinate];
     v25 = v24;
-    [(FMFLocation *)v2 coordinate];
+    [(FMFLocation *)selfCopy coordinate];
     v27 = v26;
-    v28 = [(FMFLocation *)v2 location];
-    [v28 coordinate];
+    location3 = [(FMFLocation *)selfCopy location];
+    [location3 coordinate];
     v30 = v29;
-    v3 = [(FMFLocation *)v2 location];
-    [v3 coordinate];
+    location4 = [(FMFLocation *)selfCopy location];
+    [location4 coordinate];
     v32 = [v23 stringWithFormat:@"%01.6lf°, %01.6lf°/%01.6lf°, %01.6lf°", v25, v27, v30, v31];
 
     v52 = v32;
@@ -428,12 +428,12 @@ LABEL_16:
   v33 = MEMORY[0x277CCACA8];
   v34 = objc_opt_class();
   v48 = NSStringFromClass(v34);
-  v35 = [(FMFLocation *)v2 label];
-  if (v35)
+  label = [(FMFLocation *)selfCopy label];
+  if (label)
   {
     v36 = MEMORY[0x277CCACA8];
-    v46 = [(FMFLocation *)v2 label];
-    v37 = [v36 stringWithFormat:@" - labl: '%@'", v46];
+    label2 = [(FMFLocation *)selfCopy label];
+    v37 = [v36 stringWithFormat:@" - labl: '%@'", label2];
   }
 
   else
@@ -441,12 +441,12 @@ LABEL_16:
     v37 = &stru_285D7AA10;
   }
 
-  v38 = [(FMFLocation *)v2 shortAddressString];
-  if (v38)
+  shortAddressString = [(FMFLocation *)selfCopy shortAddressString];
+  if (shortAddressString)
   {
     v39 = MEMORY[0x277CCACA8];
-    v3 = [(FMFLocation *)v2 shortAddressString];
-    v40 = [v39 stringWithFormat:@" - sadr: '%@'", v3];
+    location4 = [(FMFLocation *)selfCopy shortAddressString];
+    v40 = [v39 stringWithFormat:@" - sadr: '%@'", location4];
   }
 
   else
@@ -454,12 +454,12 @@ LABEL_16:
     v40 = &stru_285D7AA10;
   }
 
-  v41 = [(FMFLocation *)v2 longAddress];
-  if (v41)
+  longAddress = [(FMFLocation *)selfCopy longAddress];
+  if (longAddress)
   {
     v42 = MEMORY[0x277CCACA8];
-    v9 = [(FMFLocation *)v2 longAddress];
-    v43 = [v42 stringWithFormat:@" - ladr: '%@'", v9];
+    longAddress2 = [(FMFLocation *)selfCopy longAddress];
+    v43 = [v42 stringWithFormat:@" - ladr: '%@'", longAddress2];
   }
 
   else
@@ -467,75 +467,75 @@ LABEL_16:
     v43 = &stru_285D7AA10;
   }
 
-  v44 = [v33 stringWithFormat:@"%@(0x%lx): %@ - %@: {%@@%@}%@%@%@", v48, v2, v51, v50, v52, v49, v37, v40, v43];
-  if (v41)
+  v44 = [v33 stringWithFormat:@"%@(0x%lx): %@ - %@: {%@@%@}%@%@%@", v48, selfCopy, handle, v50, v52, v49, v37, v40, v43];
+  if (longAddress)
   {
   }
 
-  if (v38)
+  if (shortAddressString)
   {
   }
 
-  if (v35)
+  if (label)
   {
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v44;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(FMFLocation *)self handle];
-  [v4 setHandle:v5];
+  handle = [(FMFLocation *)self handle];
+  [v4 setHandle:handle];
 
   [v4 setLocationType:{-[FMFLocation locationType](self, "locationType")}];
-  v6 = [(FMFLocation *)self location];
-  [v4 setLocation:v6];
+  location = [(FMFLocation *)self location];
+  [v4 setLocation:location];
 
   [v4 setActivityState:{-[FMFLocation activityState](self, "activityState")}];
-  v7 = [(FMFLocation *)self label];
-  [v4 setLabel:v7];
+  label = [(FMFLocation *)self label];
+  [v4 setLabel:label];
 
-  v8 = [(FMFLocation *)self shortAddressString];
-  [v4 setShortAddressString:v8];
+  shortAddressString = [(FMFLocation *)self shortAddressString];
+  [v4 setShortAddressString:shortAddressString];
 
-  v9 = [(FMFLocation *)self longAddress];
-  [v4 setLongAddress:v9];
+  longAddress = [(FMFLocation *)self longAddress];
+  [v4 setLongAddress:longAddress];
 
-  v10 = [(FMFLocation *)self timestamp];
-  [v4 setTimestamp:v10];
+  timestamp = [(FMFLocation *)self timestamp];
+  [v4 setTimestamp:timestamp];
 
   [v4 setLocatingInProgress:{-[FMFLocation isLocatingInProgress](self, "isLocatingInProgress")}];
   [(FMFLocation *)self maxLocatingInterval];
   [v4 setMaxLocatingInterval:?];
   [(FMFLocation *)self TTL];
   [v4 setTTL:?];
-  v11 = [(FMFLocation *)self placemark];
-  [v4 setPlacemark:v11];
+  placemark = [(FMFLocation *)self placemark];
+  [v4 setPlacemark:placemark];
 
-  v12 = [v4 location];
-  [v12 coordinate];
+  location2 = [v4 location];
+  [location2 coordinate];
   [v4 setCoordinate:?];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(FMFLocation *)self handle];
-    v7 = [v6 serverId];
-    v8 = [v5 handle];
+    v5 = equalCopy;
+    handle = [(FMFLocation *)self handle];
+    serverId = [handle serverId];
+    handle2 = [v5 handle];
 
-    v9 = [v8 serverId];
-    v10 = [v7 isEqualToString:v9];
+    serverId2 = [handle2 serverId];
+    v10 = [serverId isEqualToString:serverId2];
   }
 
   else
@@ -548,17 +548,17 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(FMFLocation *)self handle];
-  v3 = [v2 serverId];
-  v4 = [v3 hash];
+  handle = [(FMFLocation *)self handle];
+  serverId = [handle serverId];
+  v4 = [serverId hash];
 
   return v4;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:protocol_getName(v4)];
+  protocolCopy = protocol;
+  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:protocol_getName(protocolCopy)];
   if ([v5 isEqualToString:@"MKAnnotation"])
   {
     v6 = 1;
@@ -568,109 +568,109 @@ LABEL_16:
   {
     v8.receiver = self;
     v8.super_class = FMFLocation;
-    v6 = [(FMFLocation *)&v8 conformsToProtocol:v4];
+    v6 = [(FMFLocation *)&v8 conformsToProtocol:protocolCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(FMFLocation *)v4 handle];
-  [v20 encodeObject:v5 forKey:@"handle"];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  handle = [(FMFLocation *)selfCopy handle];
+  [coderCopy encodeObject:handle forKey:@"handle"];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[FMFLocation locationType](v4, "locationType")}];
-  [v20 encodeObject:v6 forKey:@"locationType"];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[FMFLocation locationType](selfCopy, "locationType")}];
+  [coderCopy encodeObject:v6 forKey:@"locationType"];
 
-  v7 = [(FMFLocation *)v4 location];
-  [v20 encodeObject:v7 forKey:@"location"];
+  location = [(FMFLocation *)selfCopy location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[FMFLocation activityState](v4, "activityState")}];
-  [v20 encodeObject:v8 forKey:@"activityState"];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[FMFLocation activityState](selfCopy, "activityState")}];
+  [coderCopy encodeObject:v8 forKey:@"activityState"];
 
-  v9 = [(FMFLocation *)v4 label];
-  [v20 encodeObject:v9 forKey:@"label"];
+  label = [(FMFLocation *)selfCopy label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v10 = [(FMFLocation *)v4 shortAddressString];
-  [v20 encodeObject:v10 forKey:@"shortAddressString"];
+  shortAddressString = [(FMFLocation *)selfCopy shortAddressString];
+  [coderCopy encodeObject:shortAddressString forKey:@"shortAddressString"];
 
-  v11 = [(FMFLocation *)v4 longAddress];
-  [v20 encodeObject:v11 forKey:@"longAddress"];
+  longAddress = [(FMFLocation *)selfCopy longAddress];
+  [coderCopy encodeObject:longAddress forKey:@"longAddress"];
 
-  v12 = [(FMFLocation *)v4 timestamp];
-  [v20 encodeObject:v12 forKey:@"timestamp"];
+  timestamp = [(FMFLocation *)selfCopy timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[FMFLocation isLocatingInProgress](v4, "isLocatingInProgress")}];
-  [v20 encodeObject:v13 forKey:@"isLocatingInProgress"];
+  v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[FMFLocation isLocatingInProgress](selfCopy, "isLocatingInProgress")}];
+  [coderCopy encodeObject:v13 forKey:@"isLocatingInProgress"];
 
   v14 = MEMORY[0x277CCABB0];
-  [(FMFLocation *)v4 maxLocatingInterval];
+  [(FMFLocation *)selfCopy maxLocatingInterval];
   v15 = [v14 numberWithDouble:?];
-  [v20 encodeObject:v15 forKey:@"maxLocatingInterval"];
+  [coderCopy encodeObject:v15 forKey:@"maxLocatingInterval"];
 
   v16 = MEMORY[0x277CCABB0];
-  [(FMFLocation *)v4 TTL];
+  [(FMFLocation *)selfCopy TTL];
   v17 = [v16 numberWithDouble:?];
-  [v20 encodeObject:v17 forKey:@"TTL"];
+  [coderCopy encodeObject:v17 forKey:@"TTL"];
 
-  [(FMFLocation *)v4 coordinate];
-  [v20 encodeDouble:@"latitude" forKey:?];
-  [(FMFLocation *)v4 coordinate];
-  [v20 encodeDouble:@"longitude" forKey:v18];
-  v19 = [(FMFLocation *)v4 placemark];
-  [v20 encodeObject:v19 forKey:@"placemark"];
+  [(FMFLocation *)selfCopy coordinate];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
+  [(FMFLocation *)selfCopy coordinate];
+  [coderCopy encodeDouble:@"longitude" forKey:v18];
+  placemark = [(FMFLocation *)selfCopy placemark];
+  [coderCopy encodeObject:placemark forKey:@"placemark"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (FMFLocation)initWithCoder:(id)a3
+- (FMFLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
   [(FMFLocation *)v5 setHandle:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
   [(FMFLocation *)v5 setPlacemark:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationType"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationType"];
   -[FMFLocation setLocationType:](v5, "setLocationType:", [v8 integerValue]);
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
   [(FMFLocation *)v5 setLocation:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityState"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityState"];
   -[FMFLocation setActivityState:](v5, "setActivityState:", [v10 integerValue]);
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
   [(FMFLocation *)v5 setLabel:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortAddressString"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortAddressString"];
   [(FMFLocation *)v5 setShortAddressString:v12];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"longAddress"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"longAddress"];
   [(FMFLocation *)v5 setLongAddress:v13];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
   [(FMFLocation *)v5 setTimestamp:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isLocatingInProgress"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isLocatingInProgress"];
   -[FMFLocation setLocatingInProgress:](v5, "setLocatingInProgress:", [v15 BOOLValue]);
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxLocatingInterval"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxLocatingInterval"];
   [v16 doubleValue];
   [(FMFLocation *)v5 setMaxLocatingInterval:?];
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TTL"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TTL"];
   [v17 doubleValue];
   [(FMFLocation *)v5 setTTL:?];
 
-  [v4 decodeDoubleForKey:@"latitude"];
+  [coderCopy decodeDoubleForKey:@"latitude"];
   v19 = v18;
-  [v4 decodeDoubleForKey:@"longitude"];
+  [coderCopy decodeDoubleForKey:@"longitude"];
   v21 = v20;
 
   v22 = CLLocationCoordinate2DMake(v19, v21);
@@ -681,39 +681,39 @@ LABEL_16:
 
 - (NSString)shortAddress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FMFLocation *)v2 label];
-  if ([v3 length])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  label = [(FMFLocation *)selfCopy label];
+  if ([label length])
   {
-    [(FMFLocation *)v2 label];
+    [(FMFLocation *)selfCopy label];
   }
 
   else
   {
-    [(FMFLocation *)v2 shortAddressString];
+    [(FMFLocation *)selfCopy shortAddressString];
   }
   v4 = ;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (NSString)title
 {
-  v2 = [(FMFLocation *)self handle];
-  v3 = [v2 identifier];
+  handle = [(FMFLocation *)self handle];
+  identifier = [handle identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)locationAge
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FMFLocation *)v2 timestamp];
-  [v3 timeIntervalSinceNow];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  timestamp = [(FMFLocation *)selfCopy timestamp];
+  [timestamp timeIntervalSinceNow];
   if (v4 >= 0)
   {
     v5 = v4;
@@ -724,7 +724,7 @@ LABEL_16:
     v5 = -v4;
   }
 
-  if ([(FMFLocation *)v2 locationType]== 3)
+  if ([(FMFLocation *)selfCopy locationType]== 3)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"LOCATION_AGE_STEWIE" value:&stru_285D7AA10 table:@"Localizable-STEWIE"];
@@ -733,7 +733,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([(FMFLocation *)v2 locationType]== 2)
+  if ([(FMFLocation *)selfCopy locationType]== 2)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"LOCATION_AGE_LIVE" value:&stru_285D7AA10 table:0];
@@ -791,51 +791,51 @@ LABEL_22:
 LABEL_23:
 
 LABEL_14:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
 - (id)locationShortAddressWithAge
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FMFLocation *)v2 shortAddress];
-  v4 = [(FMFLocation *)v2 locationAge];
-  if ([v3 length] && objc_msgSend(v4, "length"))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shortAddress = [(FMFLocation *)selfCopy shortAddress];
+  locationAge = [(FMFLocation *)selfCopy locationAge];
+  if ([shortAddress length] && objc_msgSend(locationAge, "length"))
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"LOCATION_LABEL_WITH_AGE" value:&stru_285D7AA10 table:0];
-    v8 = [v5 stringWithFormat:v7, v3, v4];
+    v8 = [v5 stringWithFormat:v7, shortAddress, locationAge];
 
-    v3 = v8;
+    shortAddress = v8;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return shortAddress;
 }
 
 - (id)locationShortAddressWithAgeIncludeLocating
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(FMFLocation *)v2 isLocatingInProgress])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(FMFLocation *)selfCopy isLocatingInProgress])
   {
-    v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 localizedStringForKey:@"LOCATING" value:&stru_285D7AA10 table:0];
+    locationShortAddressWithAge = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v4 = [locationShortAddressWithAge localizedStringForKey:@"LOCATING" value:&stru_285D7AA10 table:0];
   }
 
   else
   {
-    v3 = [(FMFLocation *)v2 locationShortAddressWithAge];
-    if (![v3 length])
+    locationShortAddressWithAge = [(FMFLocation *)selfCopy locationShortAddressWithAge];
+    if (![locationShortAddressWithAge length])
     {
-      v7 = [(FMFLocation *)v2 location];
+      location = [(FMFLocation *)selfCopy location];
 
       [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v7)
+      if (location)
         v8 = {;
         [v8 localizedStringForKey:@"ADDRESS_UNAVAILABLE" value:&stru_285D7AA10 table:0];
       }
@@ -849,44 +849,44 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v4 = v3;
-    v3 = v4;
+    v4 = locationShortAddressWithAge;
+    locationShortAddressWithAge = v4;
   }
 
   v5 = v4;
 LABEL_6:
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)setLocatingInProgress:(BOOL)a3
+- (void)setLocatingInProgress:(BOOL)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   locatingInProgress = self->_locatingInProgress;
-  if (locatingInProgress != a3 && a3)
+  if (locatingInProgress != progress && progress)
   {
     [(FMFLocation *)self resetLocateInProgressTimer];
   }
 
-  self->_locatingInProgress = v3;
-  if (locatingInProgress != v3)
+  self->_locatingInProgress = progressCopy;
+  if (locatingInProgress != progressCopy)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"locatingInProgressChanged" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"locatingInProgressChanged" object:self];
   }
 }
 
-- (void)resetLocateInProgress:(id)a3
+- (void)resetLocateInProgress:(id)progress
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = LogCategory_Daemon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMFLocation *)self handle];
+    handle = [(FMFLocation *)self handle];
     v7 = 138412290;
-    v8 = v5;
+    v8 = handle;
     _os_log_impl(&dword_24A33F000, v4, OS_LOG_TYPE_DEFAULT, "resetLocateInProgress_fired: %@", &v7, 0xCu);
   }
 
@@ -904,13 +904,13 @@ LABEL_6:
     v5 = LogCategory_Daemon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FMFLocation *)self handle];
+      handle = [(FMFLocation *)self handle];
       *buf = 134218498;
       v12 = v4;
       v13 = 2112;
-      v14 = v6;
+      v14 = handle;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24A33F000, v5, OS_LOG_TYPE_DEFAULT, "resetLocateInProgressTimerForSeconds: %f forHandle: %@ location: %@", buf, 0x20u);
     }
 
@@ -935,16 +935,16 @@ void __41__FMFLocation_resetLocateInProgressTimer__block_invoke(uint64_t a1)
   [WeakRetained resetLocateInProgress:0];
 }
 
-- (int64_t)distanceThenNameCompare:(id)a3
+- (int64_t)distanceThenNameCompare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(FMFLocation *)self distance];
-  if (v5 <= 0.0 || ([v4 distance], v6 <= 0.0))
+  if (v5 <= 0.0 || ([compareCopy distance], v6 <= 0.0))
   {
     [(FMFLocation *)self distance];
     if (v17 <= 0.0)
     {
-      [v4 distance];
+      [compareCopy distance];
       if (v18 <= 0.0)
       {
         goto LABEL_11;
@@ -962,7 +962,7 @@ LABEL_8:
 
   [(FMFLocation *)self distance];
   v8 = v7;
-  [v4 distance];
+  [compareCopy distance];
   if (v8 < v9)
   {
     goto LABEL_8;
@@ -970,7 +970,7 @@ LABEL_8:
 
   [(FMFLocation *)self distance];
   v11 = v10;
-  [v4 distance];
+  [compareCopy distance];
   if (v11 > v12)
   {
     goto LABEL_10;
@@ -978,13 +978,13 @@ LABEL_8:
 
   [(FMFLocation *)self distance];
   v14 = v13;
-  [v4 distance];
+  [compareCopy distance];
   if (v14 != v15)
   {
 LABEL_11:
-    v19 = [(FMFLocation *)self handle];
-    v20 = [v4 handle];
-    v16 = [v19 prettyNameCompare:v20];
+    handle = [(FMFLocation *)self handle];
+    handle2 = [compareCopy handle];
+    v16 = [handle prettyNameCompare:handle2];
 
     goto LABEL_12;
   }
@@ -1004,69 +1004,69 @@ LABEL_12:
   return result;
 }
 
-- (void)_updateLocation:(id)a3
+- (void)_updateLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 location];
-  [(FMFLocation *)self setLocation:v5];
+  locationCopy = location;
+  location = [locationCopy location];
+  [(FMFLocation *)self setLocation:location];
 
-  -[FMFLocation setLocationType:](self, "setLocationType:", [v4 locationType]);
-  v6 = [v4 label];
-  [(FMFLocation *)self setLabel:v6];
+  -[FMFLocation setLocationType:](self, "setLocationType:", [locationCopy locationType]);
+  label = [locationCopy label];
+  [(FMFLocation *)self setLabel:label];
 
-  v7 = [v4 shortAddressString];
-  [(FMFLocation *)self setShortAddressString:v7];
+  shortAddressString = [locationCopy shortAddressString];
+  [(FMFLocation *)self setShortAddressString:shortAddressString];
 
-  v8 = [v4 longAddress];
-  [(FMFLocation *)self setLongAddress:v8];
+  longAddress = [locationCopy longAddress];
+  [(FMFLocation *)self setLongAddress:longAddress];
 
-  v9 = [v4 timestamp];
-  [(FMFLocation *)self setTimestamp:v9];
+  timestamp = [locationCopy timestamp];
+  [(FMFLocation *)self setTimestamp:timestamp];
 
-  -[FMFLocation setLocatingInProgress:](self, "setLocatingInProgress:", [v4 isLocatingInProgress]);
-  v10 = [v4 placemark];
+  -[FMFLocation setLocatingInProgress:](self, "setLocatingInProgress:", [locationCopy isLocatingInProgress]);
+  placemark = [locationCopy placemark];
 
-  [(FMFLocation *)self setPlacemark:v10];
+  [(FMFLocation *)self setPlacemark:placemark];
 }
 
-- (void)updateLocationForCache:(id)a3
+- (void)updateLocationForCache:(id)cache
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(FMFLocation *)v4 _updateLocation:v5];
-  objc_sync_exit(v4);
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FMFLocation *)selfCopy _updateLocation:cacheCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(FMFLocation *)v4 _updateLocation:v5];
-  [(CLLocation *)v4->_location coordinate];
-  [(FMFLocation *)v4 setCoordinate:?];
-  objc_sync_exit(v4);
+  locationCopy = location;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FMFLocation *)selfCopy _updateLocation:locationCopy];
+  [(CLLocation *)selfCopy->_location coordinate];
+  [(FMFLocation *)selfCopy setCoordinate:?];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateHandle:(id)a3
+- (void)updateHandle:(id)handle
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(FMFLocation *)v4 setHandle:v5];
-  objc_sync_exit(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FMFLocation *)selfCopy setHandle:handleCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isValid
 {
-  v3 = [(FMFLocation *)self timestamp];
-  if (!v3)
+  timestamp = [(FMFLocation *)self timestamp];
+  if (!timestamp)
   {
     return 1;
   }
 
-  v4 = v3;
+  v4 = timestamp;
   [(FMFLocation *)self TTL];
   v6 = v5;
 
@@ -1075,24 +1075,24 @@ LABEL_12:
     return 1;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [(FMFLocation *)self timestamp];
-  [v7 timeIntervalSinceDate:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  timestamp2 = [(FMFLocation *)self timestamp];
+  [date timeIntervalSinceDate:timestamp2];
   v10 = v9;
 
   [(FMFLocation *)self TTL];
   return v10 < v11;
 }
 
-- (BOOL)isMoreRecentThan:(id)a3
+- (BOOL)isMoreRecentThan:(id)than
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 timestamp], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[FMFLocation timestamp](self, "timestamp"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  thanCopy = than;
+  v5 = thanCopy;
+  if (thanCopy && ([thanCopy timestamp], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) && (-[FMFLocation timestamp](self, "timestamp"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [(FMFLocation *)self timestamp];
-    v9 = [v5 timestamp];
-    v10 = [v8 compare:v9] != -1;
+    timestamp = [(FMFLocation *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v10 = [timestamp compare:timestamp2] != -1;
   }
 
   else

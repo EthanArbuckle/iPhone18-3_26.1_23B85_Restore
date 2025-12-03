@@ -1,34 +1,34 @@
 @interface FHDatabaseClause
-- (FHDatabaseClause)initWithQuoteWrapOption:(id)a3 fieldName:(id)a4 expression:(id)a5 quoteWrapExpression:(BOOL)a6;
+- (FHDatabaseClause)initWithQuoteWrapOption:(id)option fieldName:(id)name expression:(id)expression quoteWrapExpression:(BOOL)wrapExpression;
 - (id)description;
 - (id)shortDescription;
 @end
 
 @implementation FHDatabaseClause
 
-- (FHDatabaseClause)initWithQuoteWrapOption:(id)a3 fieldName:(id)a4 expression:(id)a5 quoteWrapExpression:(BOOL)a6
+- (FHDatabaseClause)initWithQuoteWrapOption:(id)option fieldName:(id)name expression:(id)expression quoteWrapExpression:(BOOL)wrapExpression
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  optionCopy = option;
+  nameCopy = name;
+  expressionCopy = expression;
   v25.receiver = self;
   v25.super_class = FHDatabaseClause;
   v13 = [(FHDatabaseClause *)&v25 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [optionCopy copy];
     comparisonOperator = v13->_comparisonOperator;
     v13->_comparisonOperator = v14;
 
-    v16 = [v11 copy];
-    v17 = [v16 lowercaseString];
+    v16 = [nameCopy copy];
+    lowercaseString = [v16 lowercaseString];
     fieldName = v13->_fieldName;
-    v13->_fieldName = v17;
+    v13->_fieldName = lowercaseString;
 
-    if (a6)
+    if (wrapExpression)
     {
       v19 = MEMORY[0x277CCACA8];
-      v20 = [v12 copy];
+      v20 = [expressionCopy copy];
       v21 = [v19 stringWithFormat:@"'%@'", v20];
       expression = v13->_expression;
       v13->_expression = v21;
@@ -36,7 +36,7 @@
 
     else
     {
-      v23 = [v12 copy];
+      v23 = [expressionCopy copy];
       v20 = v13->_expression;
       v13->_expression = v23;
     }

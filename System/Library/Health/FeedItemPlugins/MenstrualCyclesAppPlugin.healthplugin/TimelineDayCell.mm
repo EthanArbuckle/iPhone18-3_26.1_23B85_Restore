@@ -4,8 +4,8 @@
 - (void)adaptToColorSchemeChanges;
 - (void)adaptToContentSizeChanges;
 - (void)adaptToHorizontalSizeChanges;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
@@ -13,27 +13,27 @@
 
 - (void)adaptToContentSizeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E03350C();
 }
 
 - (void)adaptToColorSchemeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E0336F4();
 }
 
 - (void)adaptToHorizontalSizeChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E03314C();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E0338D4(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_29E0338D4(attributesCopy);
 }
 
 - (void)layoutSubviews
@@ -72,12 +72,12 @@
   return v8;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_29E034A60(v6, v4);
+  finishedCopy = finished;
+  stopCopy = stop;
+  selfCopy = self;
+  sub_29E034A60(stopCopy, finishedCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface MRUVolumeBackgroundView
 - (BOOL)hasExpandedButtons;
-- (MRUVolumeBackgroundView)initWithFrame:(CGRect)a3;
+- (MRUVolumeBackgroundView)initWithFrame:(CGRect)frame;
 - (double)totalHorizontalSliderWidth;
 - (void)collapseExpandableButtons;
-- (void)expandButton:(id)a3;
+- (void)expandButton:(id)button;
 - (void)layoutSubviews;
 - (void)layoutSubviewsHorizontal;
 - (void)layoutSubviewsVertical;
-- (void)setShowConversationAwarenessButton:(BOOL)a3;
-- (void)setShowEnvironmentSlider:(BOOL)a3;
-- (void)setShowNowPlayingView:(BOOL)a3;
-- (void)setShowPrimaryListeningModeButton:(BOOL)a3;
-- (void)setShowSecondaryAssetView:(BOOL)a3;
-- (void)setShowSecondaryListeningModeButton:(BOOL)a3;
-- (void)setShowSpatialAudioModeButton:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setShowConversationAwarenessButton:(BOOL)button;
+- (void)setShowEnvironmentSlider:(BOOL)slider;
+- (void)setShowNowPlayingView:(BOOL)view;
+- (void)setShowPrimaryListeningModeButton:(BOOL)button;
+- (void)setShowSecondaryAssetView:(BOOL)view;
+- (void)setShowSecondaryListeningModeButton:(BOOL)button;
+- (void)setShowSpatialAudioModeButton:(BOOL)button;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisibility;
 @end
 
@@ -50,7 +50,7 @@
     }
   }
 
-  v5 = [(MRUVolumeBackgroundView *)self hasExpandedButtons];
+  hasExpandedButtons = [(MRUVolumeBackgroundView *)self hasExpandedButtons];
   v6 = 0.0;
   v7 = 1.0;
   if (!self->_showNowPlayingView)
@@ -74,7 +74,7 @@
 
     [(MRUOutputDeviceAssetView *)self->_secondaryAssetView setAlpha:v8];
     showPrimaryListeningModeButton = self->_showPrimaryListeningModeButton;
-    if (showPrimaryListeningModeButton && v5)
+    if (showPrimaryListeningModeButton && hasExpandedButtons)
     {
       v10 = ![(MediaControlsExpandableButton *)self->_primaryListeningModeButton isExpanded];
     }
@@ -92,7 +92,7 @@
 
     [(MediaControlsExpandableButton *)self->_primaryListeningModeButton setAlpha:v21];
     showSecondaryListeningModeButton = self->_showSecondaryListeningModeButton;
-    if (showSecondaryListeningModeButton && v5)
+    if (showSecondaryListeningModeButton && hasExpandedButtons)
     {
       v23 = ![(MediaControlsExpandableButton *)self->_secondaryListeningModeButton isExpanded];
     }
@@ -110,7 +110,7 @@
 
     [(MediaControlsExpandableButton *)self->_secondaryListeningModeButton setAlpha:v26];
     showSpatialAudioModeButton = self->_showSpatialAudioModeButton;
-    if (showSpatialAudioModeButton && v5)
+    if (showSpatialAudioModeButton && hasExpandedButtons)
     {
       v28 = ![(MediaControlsExpandableButton *)self->_spatialAudioModeButton isExpanded];
     }
@@ -129,7 +129,7 @@
 LABEL_63:
     [(MediaControlsExpandableButton *)self->_spatialAudioModeButton setAlpha:v29];
     showConversationAwarenessButton = self->_showConversationAwarenessButton;
-    if (showConversationAwarenessButton && v5)
+    if (showConversationAwarenessButton && hasExpandedButtons)
     {
       v34 = ![(MediaControlsExpandableButton *)self->_conversationAwarenessButton isExpanded];
     }
@@ -157,7 +157,7 @@ LABEL_63:
     [(MRUOutputDeviceAssetView *)self->_primaryAssetView setAlpha:1.0];
     [(MRUOutputDeviceAssetView *)self->_secondaryAssetView setAlpha:0.0];
     v24 = self->_showPrimaryListeningModeButton;
-    if (v24 && v5)
+    if (v24 && hasExpandedButtons)
     {
       v25 = ![(MediaControlsExpandableButton *)self->_primaryListeningModeButton isExpanded];
     }
@@ -180,7 +180,7 @@ LABEL_63:
     [(MediaControlsExpandableButton *)self->_primaryListeningModeButton setAlpha:v30];
     [(MediaControlsExpandableButton *)self->_secondaryListeningModeButton setAlpha:0.0];
     v31 = self->_showSpatialAudioModeButton;
-    if (v31 && v5)
+    if (v31 && hasExpandedButtons)
     {
       v32 = ![(MediaControlsExpandableButton *)self->_spatialAudioModeButton isExpanded];
     }
@@ -302,8 +302,8 @@ LABEL_69:
   [(MediaControlsExpandableButton *)self->_spatialAudioModeButton setAxis:0];
   [(MediaControlsExpandableButton *)self->_conversationAwarenessButton setAxis:0];
   [(MRUVolumeNowPlayingView *)self->_nowPlayingView setAxis:MRUIsSmallScreen() ^ 1];
-  v3 = [(MRUVolumeBackgroundView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MRUVolumeBackgroundView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
   v41 = v4;
 
@@ -569,11 +569,11 @@ LABEL_42:
   [(MRUVolumeNowPlayingView *)nowPlayingView setFrame:?];
 }
 
-- (MRUVolumeBackgroundView)initWithFrame:(CGRect)a3
+- (MRUVolumeBackgroundView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = MRUVolumeBackgroundView;
-  v3 = [(MRUVolumeBackgroundView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUVolumeBackgroundView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MRUOutputDeviceAssetView);
@@ -591,33 +591,33 @@ LABEL_42:
     v3->_nowPlayingView = v8;
 
     [(MRUVolumeBackgroundView *)v3 addSubview:v3->_nowPlayingView];
-    v10 = [[MediaControlsExpandableButton alloc] initForControlCenter];
+    initForControlCenter = [[MediaControlsExpandableButton alloc] initForControlCenter];
     primaryListeningModeButton = v3->_primaryListeningModeButton;
-    v3->_primaryListeningModeButton = v10;
+    v3->_primaryListeningModeButton = initForControlCenter;
 
     [(MediaControlsExpandableButton *)v3->_primaryListeningModeButton setMaximumExpandedSize:0.0, 226.0];
     [(MediaControlsExpandableButton *)v3->_primaryListeningModeButton setButtonImageSize:54.0, 54.0];
     [(MediaControlsExpandableButton *)v3->_primaryListeningModeButton setContentVerticalAlignment:1];
     [(MRUVolumeBackgroundView *)v3 addSubview:v3->_primaryListeningModeButton];
-    v12 = [[MediaControlsExpandableButton alloc] initForControlCenter];
+    initForControlCenter2 = [[MediaControlsExpandableButton alloc] initForControlCenter];
     secondaryListeningModeButton = v3->_secondaryListeningModeButton;
-    v3->_secondaryListeningModeButton = v12;
+    v3->_secondaryListeningModeButton = initForControlCenter2;
 
     [(MediaControlsExpandableButton *)v3->_secondaryListeningModeButton setMaximumExpandedSize:0.0, 226.0];
     [(MediaControlsExpandableButton *)v3->_secondaryListeningModeButton setButtonImageSize:54.0, 54.0];
     [(MediaControlsExpandableButton *)v3->_secondaryListeningModeButton setContentVerticalAlignment:1];
     [(MRUVolumeBackgroundView *)v3 addSubview:v3->_secondaryListeningModeButton];
-    v14 = [[MediaControlsExpandableButton alloc] initForControlCenter];
+    initForControlCenter3 = [[MediaControlsExpandableButton alloc] initForControlCenter];
     spatialAudioModeButton = v3->_spatialAudioModeButton;
-    v3->_spatialAudioModeButton = v14;
+    v3->_spatialAudioModeButton = initForControlCenter3;
 
     [(MediaControlsExpandableButton *)v3->_spatialAudioModeButton setMaximumExpandedSize:0.0, 226.0];
     [(MediaControlsExpandableButton *)v3->_spatialAudioModeButton setButtonImageSize:54.0, 54.0];
     [(MediaControlsExpandableButton *)v3->_spatialAudioModeButton setContentVerticalAlignment:1];
     [(MRUVolumeBackgroundView *)v3 addSubview:v3->_spatialAudioModeButton];
-    v16 = [[MediaControlsExpandableButton alloc] initForControlCenter];
+    initForControlCenter4 = [[MediaControlsExpandableButton alloc] initForControlCenter];
     conversationAwarenessButton = v3->_conversationAwarenessButton;
-    v3->_conversationAwarenessButton = v16;
+    v3->_conversationAwarenessButton = initForControlCenter4;
 
     [(MediaControlsExpandableButton *)v3->_conversationAwarenessButton setMaximumExpandedSize:0.0, 226.0];
     [(MediaControlsExpandableButton *)v3->_conversationAwarenessButton setButtonImageSize:54.0, 54.0];
@@ -637,8 +637,8 @@ LABEL_42:
   [(MediaControlsExpandableButton *)self->_conversationAwarenessButton setAxis:1];
   v3 = self->_showSecondaryAssetView && self->_showSpatialAudioModeButton;
   [(MRUVolumeNowPlayingView *)self->_nowPlayingView setAxis:v3];
-  v4 = [(MRUVolumeBackgroundView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(MRUVolumeBackgroundView *)self traitCollection];
+  [traitCollection displayScale];
   v47 = v5;
 
   MRUExpandedContentInsets();
@@ -807,12 +807,12 @@ LABEL_21:
   [(MediaControlsExpandableButton *)self->_secondaryListeningModeButton setFrame:?];
   if (self->_showSecondaryAssetView)
   {
-    v34 = [(MediaControlsExpandableButton *)self->_spatialAudioModeButton isExpanded];
+    isExpanded = [(MediaControlsExpandableButton *)self->_spatialAudioModeButton isExpanded];
     v33 = v40;
     v31 = v42;
     v32 = v48;
     v30 = MaxX;
-    if (v34)
+    if (isExpanded)
     {
       goto LABEL_34;
     }
@@ -915,70 +915,70 @@ LABEL_43:
   [(MRUVolumeNowPlayingView *)nowPlayingView setFrame:?];
 }
 
-- (void)setShowSecondaryAssetView:(BOOL)a3
+- (void)setShowSecondaryAssetView:(BOOL)view
 {
-  self->_showSecondaryAssetView = a3;
+  self->_showSecondaryAssetView = view;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowNowPlayingView:(BOOL)a3
+- (void)setShowNowPlayingView:(BOOL)view
 {
-  self->_showNowPlayingView = a3;
+  self->_showNowPlayingView = view;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowPrimaryListeningModeButton:(BOOL)a3
+- (void)setShowPrimaryListeningModeButton:(BOOL)button
 {
-  self->_showPrimaryListeningModeButton = a3;
+  self->_showPrimaryListeningModeButton = button;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowSecondaryListeningModeButton:(BOOL)a3
+- (void)setShowSecondaryListeningModeButton:(BOOL)button
 {
-  self->_showSecondaryListeningModeButton = a3;
+  self->_showSecondaryListeningModeButton = button;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowSpatialAudioModeButton:(BOOL)a3
+- (void)setShowSpatialAudioModeButton:(BOOL)button
 {
-  self->_showSpatialAudioModeButton = a3;
+  self->_showSpatialAudioModeButton = button;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowConversationAwarenessButton:(BOOL)a3
+- (void)setShowConversationAwarenessButton:(BOOL)button
 {
-  self->_showConversationAwarenessButton = a3;
+  self->_showConversationAwarenessButton = button;
   [(MRUVolumeBackgroundView *)self updateVisibility];
 
   [(MRUVolumeBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setShowEnvironmentSlider:(BOOL)a3
+- (void)setShowEnvironmentSlider:(BOOL)slider
 {
-  if (self->_showEnvironmentSlider != a3)
+  if (self->_showEnvironmentSlider != slider)
   {
-    self->_showEnvironmentSlider = a3;
+    self->_showEnvironmentSlider = slider;
     [(MRUVolumeBackgroundView *)self setNeedsLayout];
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUOutputDeviceAssetView *)self->_primaryAssetView setStylingProvider:v6];
     [(MRUOutputDeviceAssetView *)self->_secondaryAssetView setStylingProvider:v6];
     [(MRUVolumeNowPlayingView *)self->_nowPlayingView setStylingProvider:v6];
@@ -986,17 +986,17 @@ LABEL_43:
     [(MediaControlsExpandableButton *)self->_secondaryListeningModeButton setStylingProvider:v6];
     [(MediaControlsExpandableButton *)self->_spatialAudioModeButton setStylingProvider:v6];
     [(MediaControlsExpandableButton *)self->_conversationAwarenessButton setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)expandButton:(id)a3
+- (void)expandButton:(id)button
 {
-  v6 = a3;
-  [(MediaControlsExpandableButton *)v6 setExpanded:1];
+  buttonCopy = button;
+  [(MediaControlsExpandableButton *)buttonCopy setExpanded:1];
   p_primaryListeningModeButton = &self->_primaryListeningModeButton;
   primaryListeningModeButton = self->_primaryListeningModeButton;
-  if (primaryListeningModeButton == v6)
+  if (primaryListeningModeButton == buttonCopy)
   {
     primaryListeningModeButton = self->_secondaryListeningModeButton;
     p_primaryListeningModeButton = &self->_secondaryListeningModeButton;
@@ -1006,7 +1006,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_secondaryListeningModeButton == v6 || self->_spatialAudioModeButton == v6)
+  if (self->_secondaryListeningModeButton == buttonCopy || self->_spatialAudioModeButton == buttonCopy)
   {
     goto LABEL_6;
   }

@@ -1,25 +1,25 @@
 @interface CKScheduledSectionDateChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 @end
 
 @implementation CKScheduledSectionDateChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  height = a7.height;
-  width = a7.width;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  if (a4 < 1)
+  height = override.height;
+  width = override.width;
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v14 objectAtIndex:a4 - 1];
+    v16 = [itemsCopy objectAtIndex:index - 1];
   }
 
   v17 = +[CKUIBehavior sharedBehaviors];
@@ -28,29 +28,29 @@
 
   if (v16 && [v16 layoutType] == 26)
   {
-    v20 = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v19 bottomSpacing:0.0];
+    height = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v19 bottomSpacing:0.0];
   }
 
   else
   {
     v23.receiver = self;
     v23.super_class = CKScheduledSectionDateChatItem;
-    v20 = [(CKDateChatItem *)&v23 layoutItemSpacingWithEnvironment:v13 datasourceItemIndex:a4 allDatasourceItems:v14 supplementryItems:v15 sizeOverride:width, height];
+    height = [(CKDateChatItem *)&v23 layoutItemSpacingWithEnvironment:environmentCopy datasourceItemIndex:index allDatasourceItems:itemsCopy supplementryItems:supplementryItemsCopy sizeOverride:width, height];
   }
 
-  v21 = v20;
+  v21 = height;
 
   return v21;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = [MEMORY[0x1E69DC738] buttonWithType:1];
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 transcriptEmphasizedFontAttributes];
-  v9 = [v8 mutableCopy];
+  transcriptEmphasizedFontAttributes = [v7 transcriptEmphasizedFontAttributes];
+  v9 = [transcriptEmphasizedFontAttributes mutableCopy];
 
   [v9 removeObjectForKey:*MEMORY[0x1E69DB650]];
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);

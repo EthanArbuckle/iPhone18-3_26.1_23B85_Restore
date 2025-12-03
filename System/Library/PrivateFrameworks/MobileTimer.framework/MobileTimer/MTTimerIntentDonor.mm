@@ -1,28 +1,28 @@
 @interface MTTimerIntentDonor
-- (MTTimerIntentDonor)initWithStorage:(id)a3;
-- (void)_queue_donateCreateTimerIntent:(id)a3 source:(id)a4;
-- (void)source:(id)a3 didAddTimers:(id)a4;
-- (void)source:(id)a3 didFireTimer:(id)a4;
-- (void)source:(id)a3 didUpdateTimers:(id)a4;
+- (MTTimerIntentDonor)initWithStorage:(id)storage;
+- (void)_queue_donateCreateTimerIntent:(id)intent source:(id)source;
+- (void)source:(id)source didAddTimers:(id)timers;
+- (void)source:(id)source didFireTimer:(id)timer;
+- (void)source:(id)source didUpdateTimers:(id)timers;
 @end
 
 @implementation MTTimerIntentDonor
 
-- (MTTimerIntentDonor)initWithStorage:(id)a3
+- (MTTimerIntentDonor)initWithStorage:(id)storage
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storageCopy = storage;
   if (self)
   {
     v6 = MTLogForCategory(4);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@", &v15, 0xCu);
     }
 
-    objc_storeStrong(&self->_storage, a3);
+    objc_storeStrong(&self->_storage, storage);
     [(MTTimerStorage *)self->_storage registerObserver:self];
     v7 = [MEMORY[0x1E695DFA8] set];
     donatedTimerIDs = self->_donatedTimerIDs;
@@ -40,21 +40,21 @@
   return self;
 }
 
-- (void)source:(id)a3 didAddTimers:(id)a4
+- (void)source:(id)source didAddTimers:(id)timers
 {
-  v6 = a3;
-  v7 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 donatesIntent])
+  sourceCopy = source;
+  timersCopy = timers;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sourceCopy donatesIntent])
   {
-    v8 = [(MTTimerIntentDonor *)self serializer];
+    serializer = [(MTTimerIntentDonor *)self serializer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __42__MTTimerIntentDonor_source_didAddTimers___block_invoke;
     v9[3] = &unk_1E7B0C9A0;
     v9[4] = self;
-    v10 = v7;
-    v11 = v6;
-    [v8 performBlock:v9];
+    v10 = timersCopy;
+    v11 = sourceCopy;
+    [serializer performBlock:v9];
   }
 }
 
@@ -106,21 +106,21 @@ void __42__MTTimerIntentDonor_source_didAddTimers___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didUpdateTimers:(id)a4
+- (void)source:(id)source didUpdateTimers:(id)timers
 {
-  v6 = a3;
-  v7 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v6 donatesIntent])
+  sourceCopy = source;
+  timersCopy = timers;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sourceCopy donatesIntent])
   {
-    v8 = [(MTTimerIntentDonor *)self serializer];
+    serializer = [(MTTimerIntentDonor *)self serializer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__MTTimerIntentDonor_source_didUpdateTimers___block_invoke;
     v9[3] = &unk_1E7B0C9A0;
     v9[4] = self;
-    v10 = v7;
-    v11 = v6;
-    [v8 performBlock:v9];
+    v10 = timersCopy;
+    v11 = sourceCopy;
+    [serializer performBlock:v9];
   }
 }
 
@@ -181,18 +181,18 @@ void __45__MTTimerIntentDonor_source_didUpdateTimers___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didFireTimer:(id)a4
+- (void)source:(id)source didFireTimer:(id)timer
 {
-  v5 = a4;
-  v6 = [(MTTimerIntentDonor *)self serializer];
+  timerCopy = timer;
+  serializer = [(MTTimerIntentDonor *)self serializer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__MTTimerIntentDonor_source_didFireTimer___block_invoke;
   v8[3] = &unk_1E7B0C928;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBlock:v8];
+  v9 = timerCopy;
+  v7 = timerCopy;
+  [serializer performBlock:v8];
 }
 
 void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
@@ -218,18 +218,18 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queue_donateCreateTimerIntent:(id)a3 source:(id)a4
+- (void)_queue_donateCreateTimerIntent:(id)intent source:(id)source
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  sourceCopy = source;
   donatedTimerIDs = self->_donatedTimerIDs;
-  v9 = [v6 timerID];
-  LOBYTE(donatedTimerIDs) = [(NSMutableSet *)donatedTimerIDs containsObject:v9];
+  timerID = [intentCopy timerID];
+  LOBYTE(donatedTimerIDs) = [(NSMutableSet *)donatedTimerIDs containsObject:timerID];
 
   if ((donatedTimerIDs & 1) == 0)
   {
-    if ([v6 hasDefaultTitle])
+    if ([intentCopy hasDefaultTitle])
     {
       v10 = 0;
     }
@@ -237,12 +237,12 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
     else
     {
       v11 = objc_alloc(MEMORY[0x1E696EA50]);
-      v12 = [v6 displayTitle];
-      v10 = [v11 initWithSpokenPhrase:v12];
+      displayTitle = [intentCopy displayTitle];
+      v10 = [v11 initWithSpokenPhrase:displayTitle];
     }
 
     v13 = objc_alloc(MEMORY[0x1E696E7D0]);
-    [v6 duration];
+    [intentCopy duration];
     v14 = [v13 initWithLabel:v10 duration:0 type:?];
     [v14 _setExtensionBundleId:@"com.apple.mobiletimer-framework.MobileTimerIntents"];
     [v14 _setLaunchId:@"com.apple.mobiletimer"];
@@ -251,7 +251,7 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v34 = self;
+      selfCopy = self;
       v35 = 2114;
       v36 = v14;
       _os_log_impl(&dword_1B1F9F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Donating intent: %{public}@", buf, 0x16u);
@@ -259,11 +259,11 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
 
     v16 = [MEMORY[0x1E696B090] mtUserActivityWithActivityType:@"com.apple.clock.timer"];
     v31[0] = @"identifier";
-    v17 = [v14 identifier];
-    v18 = v17;
-    if (v17)
+    identifier = [v14 identifier];
+    v18 = identifier;
+    if (identifier)
     {
-      v19 = v17;
+      v19 = identifier;
     }
 
     else
@@ -282,7 +282,7 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
 
     v23 = [objc_alloc(MEMORY[0x1E696E7D8]) initWithCode:3 userActivity:v16];
     v24 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v14 response:v23];
-    [v24 mtSetIntentDonorFromSource:v7];
+    [v24 mtSetIntentDonorFromSource:sourceCopy];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __60__MTTimerIntentDonor__queue_donateCreateTimerIntent_source___block_invoke;
@@ -291,8 +291,8 @@ void __42__MTTimerIntentDonor_source_didFireTimer___block_invoke(uint64_t a1)
     v25 = v14;
     [v24 donateInteractionWithCompletion:v29];
     v26 = self->_donatedTimerIDs;
-    v27 = [v6 timerID];
-    [(NSMutableSet *)v26 addObject:v27];
+    timerID2 = [intentCopy timerID];
+    [(NSMutableSet *)v26 addObject:timerID2];
   }
 
   v28 = *MEMORY[0x1E69E9840];

@@ -1,7 +1,7 @@
 @interface WFAccountPickerParameter
 - (NSArray)possibleStates;
-- (WFAccountPickerParameter)initWithDefinition:(id)a3;
-- (id)accountWithName:(id)a3;
+- (WFAccountPickerParameter)initWithDefinition:(id)definition;
+- (id)accountWithName:(id)name;
 - (id)defaultSerializedRepresentation;
 - (void)dealloc;
 - (void)possibleStatesDidChange;
@@ -10,11 +10,11 @@
 
 @implementation WFAccountPickerParameter
 
-- (id)accountWithName:(id)a3
+- (id)accountWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
-  v6 = [v5 objectMatchingKey:@"localizedName" value:v4];
+  nameCopy = name;
+  accounts = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
+  v6 = [accounts objectMatchingKey:@"localizedName" value:nameCopy];
 
   return v6;
 }
@@ -24,8 +24,8 @@
   possibleStates = self->_possibleStates;
   if (!possibleStates)
   {
-    v4 = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
-    v5 = [v4 if_compactMap:&__block_literal_global_7879];
+    accounts = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
+    v5 = [accounts if_compactMap:&__block_literal_global_7879];
     v6 = self->_possibleStates;
     self->_possibleStates = v5;
 
@@ -56,13 +56,13 @@ id __42__WFAccountPickerParameter_possibleStates__block_invoke(uint64_t a1, void
 
 - (id)defaultSerializedRepresentation
 {
-  v2 = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
-  v3 = [v2 firstObject];
-  v4 = [v3 localizedName];
+  accounts = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
+  firstObject = [accounts firstObject];
+  localizedName = [firstObject localizedName];
 
-  if (v4)
+  if (localizedName)
   {
-    v5 = [MEMORY[0x277D7C928] serializedRepresentationFromValue:v4];
+    v5 = [MEMORY[0x277D7C928] serializedRepresentationFromValue:localizedName];
   }
 
   else
@@ -94,8 +94,8 @@ id __42__WFAccountPickerParameter_possibleStates__block_invoke(uint64_t a1, void
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  accounts = [(objc_class *)[(WFAccountPickerParameter *)self accountClass] accounts];
+  v4 = [accounts countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,14 +107,14 @@ id __42__WFAccountPickerParameter_possibleStates__block_invoke(uint64_t a1, void
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) refreshWithCompletionHandler:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -125,25 +125,25 @@ id __42__WFAccountPickerParameter_possibleStates__block_invoke(uint64_t a1, void
 
 - (void)dealloc
 {
-  v3 = [(WFAccountPickerParameter *)self accountClass];
-  v4 = [(WFAccountPickerParameter *)self observer];
-  [(objc_class *)v3 removeAccountObserver:v4];
+  accountClass = [(WFAccountPickerParameter *)self accountClass];
+  observer = [(WFAccountPickerParameter *)self observer];
+  [(objc_class *)accountClass removeAccountObserver:observer];
 
   v5.receiver = self;
   v5.super_class = WFAccountPickerParameter;
   [(WFAccountPickerParameter *)&v5 dealloc];
 }
 
-- (WFAccountPickerParameter)initWithDefinition:(id)a3
+- (WFAccountPickerParameter)initWithDefinition:(id)definition
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   v23.receiver = self;
   v23.super_class = WFAccountPickerParameter;
-  v5 = [(WFAccountPickerParameter *)&v23 initWithDefinition:v4];
+  v5 = [(WFAccountPickerParameter *)&v23 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AccountClass"];
+    v6 = [definitionCopy objectForKey:@"AccountClass"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

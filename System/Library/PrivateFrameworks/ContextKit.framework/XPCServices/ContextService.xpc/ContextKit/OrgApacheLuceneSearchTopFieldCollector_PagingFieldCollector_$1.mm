@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1
-- (OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1)initWithOrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector:(id)a3 withInt:(int)a4 withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)a5 withIntArray:(id)a6;
+- (OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1)initWithOrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector:(id)collector withInt:(int)int withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)array withIntArray:(id)intArray;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1
 
-- (OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1)initWithOrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector:(id)a3 withInt:(int)a4 withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)a5 withIntArray:(id)a6
+- (OrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector_$1)initWithOrgApacheLuceneSearchTopFieldCollector_PagingFieldCollector:(id)collector withInt:(int)int withOrgApacheLuceneSearchLeafFieldComparatorArray:(id)array withIntArray:(id)intArray
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->val$afterDoc_ = a4;
-  sub_100094EC0(self, a5, a6);
+  JreStrongAssign(&self->this$0_, collector);
+  self->val$afterDoc_ = int;
+  sub_100094EC0(self, array, intArray);
   return self;
 }
 

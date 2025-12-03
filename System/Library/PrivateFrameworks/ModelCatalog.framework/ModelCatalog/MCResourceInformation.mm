@@ -1,28 +1,28 @@
 @interface MCResourceInformation
-- (MCResourceInformation)initWithCoder:(id)a3;
+- (MCResourceInformation)initWithCoder:(id)coder;
 - (NSString)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MCResourceInformation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18E31F7C0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18E31F7C0(coderCopy);
 }
 
-- (MCResourceInformation)initWithCoder:(id)a3
+- (MCResourceInformation)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   ResourceInformation.init(coder:)();
   return result;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E31FDE0();
 
   v3 = sub_18E44EA8C();

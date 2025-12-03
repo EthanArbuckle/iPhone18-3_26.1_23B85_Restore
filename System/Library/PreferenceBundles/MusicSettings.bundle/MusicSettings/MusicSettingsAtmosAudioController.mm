@@ -1,16 +1,16 @@
 @interface MusicSettingsAtmosAudioController
 - (id)itemsFromParent;
-- (void)_displayDownloadsDialogIfNeededWithCompletion:(id)a3;
-- (void)listItemSelected:(id)a3;
-- (void)shouldSelectAtmosAlwaysOn:(id)a3 completion:(id)a4;
-- (void)shouldSelectAtmosAutomatic:(id)a3 completion:(id)a4;
+- (void)_displayDownloadsDialogIfNeededWithCompletion:(id)completion;
+- (void)listItemSelected:(id)selected;
+- (void)shouldSelectAtmosAlwaysOn:(id)on completion:(id)completion;
+- (void)shouldSelectAtmosAutomatic:(id)automatic completion:(id)completion;
 @end
 
 @implementation MusicSettingsAtmosAudioController
 
-- (void)shouldSelectAtmosAlwaysOn:(id)a3 completion:(id)a4
+- (void)shouldSelectAtmosAlwaysOn:(id)on completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ATMOS_ALWAYS_ON_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -24,7 +24,7 @@
   v25[2] = sub_4A9C;
   v25[3] = &unk_24F20;
   v25[4] = self;
-  v13 = v5;
+  v13 = completionCopy;
   v26 = v13;
   v14 = [UIAlertAction actionWithTitle:v12 style:1 handler:v25];
   [v10 addAction:v14];
@@ -35,30 +35,30 @@
   v20 = 3221225472;
   v21 = sub_4B38;
   v22 = &unk_24F20;
-  v23 = self;
+  selfCopy = self;
   v24 = v13;
   v17 = v13;
   v18 = [UIAlertAction actionWithTitle:v16 style:0 handler:&v19];
-  [v10 addAction:{v18, v19, v20, v21, v22, v23}];
+  [v10 addAction:{v18, v19, v20, v21, v22, selfCopy}];
 
   [(MusicSettingsAtmosAudioController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)shouldSelectAtmosAutomatic:(id)a3 completion:(id)a4
+- (void)shouldSelectAtmosAutomatic:(id)automatic completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4C68;
   v6[3] = &unk_24ED0;
-  v7 = a4;
-  v5 = v7;
+  completionCopy = completion;
+  v5 = completionCopy;
   [(MusicSettingsAtmosAudioController *)self _displayDownloadsDialogIfNeededWithCompletion:v6];
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MusicSettingsAtmosAudioController *)self specifierAtIndexPath:v4];
+  selectedCopy = selected;
+  v5 = [(MusicSettingsAtmosAudioController *)self specifierAtIndexPath:selectedCopy];
   v6 = [v5 propertyForKey:@"cellObject"];
   if (([v6 isChecked] & 1) == 0)
   {
@@ -66,8 +66,8 @@
     v15[1] = 3221225472;
     v15[2] = sub_4E38;
     v15[3] = &unk_24EA8;
-    v16 = v4;
-    v17 = self;
+    v16 = selectedCopy;
+    selfCopy = self;
     v7 = v5;
     v18 = v7;
     v8 = objc_retainBlock(v15);
@@ -96,17 +96,17 @@
 {
   v17.receiver = self;
   v17.super_class = MusicSettingsAtmosAudioController;
-  v3 = [(MusicSettingsAtmosAudioController *)&v17 itemsFromParent];
+  itemsFromParent = [(MusicSettingsAtmosAudioController *)&v17 itemsFromParent];
   v4 = OBJC_IVAR___PSViewController__specifier;
-  v5 = [*&self->PSListItemsController_opaque[OBJC_IVAR___PSViewController__specifier] properties];
+  properties = [*&self->PSListItemsController_opaque[OBJC_IVAR___PSViewController__specifier] properties];
   v6 = MusicSettingsShouldSelectAction;
-  v7 = [v5 objectForKeyedSubscript:MusicSettingsShouldSelectAction];
+  v7 = [properties objectForKeyedSubscript:MusicSettingsShouldSelectAction];
 
-  v8 = [*&self->PSListItemsController_opaque[v4] properties];
+  properties2 = [*&self->PSListItemsController_opaque[v4] properties];
   v9 = MusicSettingsDidSelectAction;
-  v10 = [v8 objectForKeyedSubscript:MusicSettingsDidSelectAction];
+  v10 = [properties2 objectForKeyedSubscript:MusicSettingsDidSelectAction];
 
-  v11 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+  v11 = [itemsFromParent subarrayWithRange:{1, objc_msgSend(itemsFromParent, "count") - 1}];
   if ([v11 count])
   {
     v12 = 0;
@@ -137,18 +137,18 @@
     while (v12 < [v11 count]);
   }
 
-  return v3;
+  return itemsFromParent;
 }
 
-- (void)_displayDownloadsDialogIfNeededWithCompletion:(id)a3
+- (void)_displayDownloadsDialogIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v6 = [v5 prefersSpatialDownloads];
+  prefersSpatialDownloads = [v5 prefersSpatialDownloads];
 
-  if (v6)
+  if (prefersSpatialDownloads)
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -165,7 +165,7 @@
     v24[1] = 3221225472;
     v24[2] = sub_53B8;
     v24[3] = &unk_24E58;
-    v14 = v4;
+    v14 = completionCopy;
     v25 = v14;
     v15 = [UIAlertAction actionWithTitle:v13 style:1 handler:v24];
     [v11 addAction:v15];

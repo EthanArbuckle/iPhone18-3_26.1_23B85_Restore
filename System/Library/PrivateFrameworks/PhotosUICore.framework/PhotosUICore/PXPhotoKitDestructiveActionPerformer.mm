@@ -1,20 +1,20 @@
 @interface PXPhotoKitDestructiveActionPerformer
-- (id)_assetsAllowedToExpunge:(id)a3;
+- (id)_assetsAllowedToExpunge:(id)expunge;
 - (int64_t)destructivePhotosAction;
-- (void)_logCompletionAnalyticsForAssets:(id)a3 withAction:(int64_t)a4;
-- (void)_performAction:(int64_t)a3 onAssets:(id)a4;
-- (void)_presentAllDuplicatesDeletionAlertWithCompletion:(id)a3;
-- (void)deletePhotosActionController:(id)a3 dismissConfirmationViewController:(id)a4;
-- (void)deletePhotosActionController:(id)a3 presentConfirmationViewController:(id)a4;
-- (void)getConfirmationMessage:(id *)a3 confirmationButtonTitle:(id *)a4 isDestructive:(BOOL *)a5;
+- (void)_logCompletionAnalyticsForAssets:(id)assets withAction:(int64_t)action;
+- (void)_performAction:(int64_t)action onAssets:(id)assets;
+- (void)_presentAllDuplicatesDeletionAlertWithCompletion:(id)completion;
+- (void)deletePhotosActionController:(id)controller dismissConfirmationViewController:(id)viewController;
+- (void)deletePhotosActionController:(id)controller presentConfirmationViewController:(id)viewController;
+- (void)getConfirmationMessage:(id *)message confirmationButtonTitle:(id *)title isDestructive:(BOOL *)destructive;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitDestructiveActionPerformer
 
-- (void)deletePhotosActionController:(id)a3 dismissConfirmationViewController:(id)a4
+- (void)deletePhotosActionController:(id)controller dismissConfirmationViewController:(id)viewController
 {
-  if (![(PXActionPerformer *)self dismissViewController:a4 completionHandler:0])
+  if (![(PXActionPerformer *)self dismissViewController:viewController completionHandler:0])
   {
     v4 = PLUIGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -25,9 +25,9 @@
   }
 }
 
-- (void)deletePhotosActionController:(id)a3 presentConfirmationViewController:(id)a4
+- (void)deletePhotosActionController:(id)controller presentConfirmationViewController:(id)viewController
 {
-  if (![(PXActionPerformer *)self presentViewController:a4])
+  if (![(PXActionPerformer *)self presentViewController:viewController])
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -42,15 +42,15 @@
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXPhotoKitDestructiveActionPerformer *)self destructivePhotosAction];
-  v5 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  if ((v4 - 5) <= 1)
+  destructivePhotosAction = [(PXPhotoKitDestructiveActionPerformer *)self destructivePhotosAction];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  if ((destructivePhotosAction - 5) <= 1)
   {
-    v6 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-    v7 = [v6 allKeys];
-    v8 = [v7 firstObject];
+    assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+    allKeys = [assetsByAssetCollection allKeys];
+    firstObject = [allKeys firstObject];
 
-    if (v8)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -58,34 +58,34 @@
         goto LABEL_4;
       }
 
-      v65 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v68 = objc_opt_class();
       v67 = NSStringFromClass(v68);
-      v69 = [v8 px_descriptionForAssertionMessage];
-      [v65 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:183 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v67, v69}];
+      px_descriptionForAssertionMessage = [firstObject px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:183 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v67, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v65 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v66 = objc_opt_class();
       v67 = NSStringFromClass(v66);
-      [v65 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:183 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v67}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:183 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v67}];
     }
 
 LABEL_4:
-    if (![v8 isTrashBin])
+    if (![firstObject isTrashBin])
     {
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v9 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-    v10 = [v9 allKeys];
-    v11 = [v10 firstObject];
+    assetsByAssetCollection2 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+    allKeys2 = [assetsByAssetCollection2 allKeys];
+    firstObject2 = [allKeys2 firstObject];
 
-    if (v11)
+    if (firstObject2)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -93,40 +93,40 @@ LABEL_21:
         goto LABEL_7;
       }
 
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v73 = objc_opt_class();
       v72 = NSStringFromClass(v73);
-      v74 = [v11 px_descriptionForAssertionMessage];
-      [v70 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:185 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v72, v74}];
+      px_descriptionForAssertionMessage2 = [firstObject2 px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:185 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.assetsByAssetCollection.allKeys.firstObject", v72, px_descriptionForAssertionMessage2}];
     }
 
     else
     {
-      v70 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v71 = objc_opt_class();
       v72 = NSStringFromClass(v71);
-      [v70 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:185 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v72}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:185 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.assetsByAssetCollection.allKeys.firstObject", v72}];
     }
 
 LABEL_7:
-    v12 = [v11 photoLibrary];
-    v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v12];
+    photoLibrary = [firstObject2 photoLibrary];
+    v13 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
-    v14 = [v13 exiting];
+    exiting = [v13 exiting];
 
-    v15 = [v13 hasSharedLibrary];
-    if (v14)
+    hasSharedLibrary = [v13 hasSharedLibrary];
+    if (exiting)
     {
-      v16 = [(PXPhotoKitDestructiveActionPerformer *)self _assetsAllowedToExpunge:v5];
-      v17 = [v5 count];
+      v16 = [(PXPhotoKitDestructiveActionPerformer *)self _assetsAllowedToExpunge:assets];
+      v17 = [assets count];
       v87 = v16;
       if (v17 != [v16 count])
       {
-        v18 = [v5 count];
+        v18 = [assets count];
         v103 = 0;
         v104[0] = 0;
         v102 = 0;
-        [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:v5 photosCount:v104 videosCount:&v103 othersCount:&v102];
+        [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:assets photosCount:v104 videosCount:&v103 othersCount:&v102];
         if (v104[0] == v18)
         {
           v19 = @"SHAREDLIBRARY_EXPUNGE_EXITING_TITLE_PHOTO";
@@ -186,9 +186,9 @@ LABEL_7:
           v99[2] = __66__PXPhotoKitDestructiveActionPerformer_performUserInteractionTask__block_invoke;
           v99[3] = &unk_1E7740CA8;
           v99[4] = self;
-          v101 = v4;
-          v5 = v31;
-          v100 = v5;
+          v101 = destructivePhotosAction;
+          assets = v31;
+          v100 = assets;
           v36 = v35;
           v19 = v34;
           v13 = v33;
@@ -242,7 +242,7 @@ LABEL_58:
 
     else
     {
-      if (!v15)
+      if (!hasSharedLibrary)
       {
 LABEL_19:
 
@@ -250,16 +250,16 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v24 = [(PXPhotoKitDestructiveActionPerformer *)self _assetsAllowedToExpunge:v5];
-      v25 = [v5 count];
+      v24 = [(PXPhotoKitDestructiveActionPerformer *)self _assetsAllowedToExpunge:assets];
+      v25 = [assets count];
       v87 = v24;
       if (v25 != [v24 count])
       {
-        v45 = [v5 count];
+        v45 = [assets count];
         v103 = 0;
         v104[0] = 0;
         v102 = 0;
-        [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:v5 photosCount:v104 videosCount:&v103 othersCount:&v102];
+        [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:assets photosCount:v104 videosCount:&v103 othersCount:&v102];
         if (v104[0] == v45)
         {
           v86 = @"SHAREDLIBRARY_EXPUNGE_UNOWNED_TITLE_PHOTO";
@@ -314,9 +314,9 @@ LABEL_20:
           v93[2] = __66__PXPhotoKitDestructiveActionPerformer_performUserInteractionTask__block_invoke_291;
           v93[3] = &unk_1E7740CA8;
           v93[4] = self;
-          v95 = v4;
-          v5 = v53;
-          v94 = v5;
+          v95 = destructivePhotosAction;
+          assets = v53;
+          v94 = assets;
           v56 = v55;
           v46 = v54;
           v52 = v78;
@@ -368,18 +368,18 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!destructivePhotosAction)
   {
-    v8 = [(PXAssetActionPerformer *)self selectionSnapshot];
-    v11 = [v8 dataSource];
+    firstObject = [(PXAssetActionPerformer *)self selectionSnapshot];
+    firstObject2 = [firstObject dataSource];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v8 dataSource];
-      v22 = [v21 containerCollection];
-      v23 = [v22 px_isAllLibraryDuplicatesSmartAlbum];
+      dataSource = [firstObject dataSource];
+      containerCollection = [dataSource containerCollection];
+      px_isAllLibraryDuplicatesSmartAlbum = [containerCollection px_isAllLibraryDuplicatesSmartAlbum];
 
-      if (v23 && PXDeduplicationEntireDuplicatesGroupsAreSelected(v8))
+      if (px_isAllLibraryDuplicatesSmartAlbum && PXDeduplicationEntireDuplicatesGroupsAreSelected(firstObject))
       {
         v88[0] = MEMORY[0x1E69E9820];
         v88[1] = 3221225472;
@@ -387,8 +387,8 @@ LABEL_20:
         v88[3] = &unk_1E773A7C8;
         v88[4] = self;
         v90 = 0;
-        v5 = v5;
-        v89 = v5;
+        assets = assets;
+        v89 = assets;
         [(PXPhotoKitDestructiveActionPerformer *)self _presentAllDuplicatesDeletionAlertWithCompletion:v88];
 
 LABEL_59:
@@ -402,7 +402,7 @@ LABEL_59:
   }
 
 LABEL_22:
-  [(PXPhotoKitDestructiveActionPerformer *)self _performAction:v4 onAssets:v5];
+  [(PXPhotoKitDestructiveActionPerformer *)self _performAction:destructivePhotosAction onAssets:assets];
 LABEL_23:
 }
 
@@ -428,12 +428,12 @@ uint64_t __66__PXPhotoKitDestructiveActionPerformer_performUserInteractionTask__
   }
 }
 
-- (void)_performAction:(int64_t)a3 onAssets:(id)a4
+- (void)_performAction:(int64_t)action onAssets:(id)assets
 {
-  v6 = a4;
+  assetsCopy = assets;
   v7 = [PXPhotoKitDeletePhotosActionController alloc];
-  v8 = [(PXActionPerformer *)self undoManager];
-  v9 = [(PXPhotoKitDeletePhotosActionController *)v7 initWithAction:a3 assets:v6 undoManager:v8 delegate:self];
+  undoManager = [(PXActionPerformer *)self undoManager];
+  v9 = [(PXPhotoKitDeletePhotosActionController *)v7 initWithAction:action assets:assetsCopy undoManager:undoManager delegate:self];
 
   [(PXPhotoKitDeletePhotosActionController *)v9 setShouldSkipDeleteConfirmation:[(PXPhotoKitAssetActionPerformer *)self shouldSkipUserConfirmation]];
   v16[0] = 0;
@@ -452,9 +452,9 @@ uint64_t __66__PXPhotoKitDestructiveActionPerformer_performUserInteractionTask__
   v11[3] = &unk_1E773A7A0;
   v13 = v16;
   v11[4] = self;
-  v10 = v6;
+  v10 = assetsCopy;
   v12 = v10;
-  v14 = a3;
+  actionCopy = action;
   [(PXPhotoKitDeletePhotosActionController *)v9 performWithWillDeleteHandler:v15 completionHandler:v11];
 
   _Block_object_dispose(v16, 8);
@@ -515,17 +515,17 @@ uint64_t __64__PXPhotoKitDestructiveActionPerformer__performAction_onAssets___bl
   return result;
 }
 
-- (void)_logCompletionAnalyticsForAssets:(id)a3 withAction:(int64_t)a4
+- (void)_logCompletionAnalyticsForAssets:(id)assets withAction:(int64_t)action
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v9)
   {
@@ -565,14 +565,14 @@ uint64_t __64__PXPhotoKitDestructiveActionPerformer__performAction_onAssets___bl
   v17 = MEMORY[0x1E6991E18];
   if (v15)
   {
-    if (a4 > 5)
+    if (action > 5)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = off_1E7738438[a4];
+      v18 = off_1E7738438[action];
     }
 
     v19 = v18;
@@ -656,23 +656,23 @@ LABEL_19:
   }
 }
 
-- (void)_presentAllDuplicatesDeletionAlertWithCompletion:(id)a3
+- (void)_presentAllDuplicatesDeletionAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PXLocalizedStringFromTable(@"DELETE_ALL_DUPLICATES_WARNING_TITLE", @"PhotosUICore");
   v6 = PXLocalizedStringFromTable(@"DELETE_ALL_DUPLICATES_WARNING_MESSAGE", @"PhotosUICore");
-  v7 = [(PXActionPerformer *)self presentationEnvironment];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__PXPhotoKitDestructiveActionPerformer__presentAllDuplicatesDeletionAlertWithCompletion___block_invoke;
   v14[3] = &unk_1E7740638;
   v15 = v5;
   v16 = v6;
-  v8 = v4;
+  v8 = completionCopy;
   v17 = v8;
   v9 = v6;
   v10 = v5;
-  v11 = [v7 presentAlertWithConfigurationHandler:v14];
+  v11 = [presentationEnvironment presentAlertWithConfigurationHandler:v14];
 
   if (!v11)
   {
@@ -711,16 +711,16 @@ void __89__PXPhotoKitDestructiveActionPerformer__presentAllDuplicatesDeletionAle
   [v4 addActionWithTitle:v6 style:0 action:v7];
 }
 
-- (id)_assetsAllowedToExpunge:(id)a3
+- (id)_assetsAllowedToExpunge:(id)expunge
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  expungeCopy = expunge;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(expungeCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = expungeCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -751,23 +751,23 @@ void __89__PXPhotoKitDestructiveActionPerformer__presentAllDuplicatesDeletionAle
   return v4;
 }
 
-- (void)getConfirmationMessage:(id *)a3 confirmationButtonTitle:(id *)a4 isDestructive:(BOOL *)a5
+- (void)getConfirmationMessage:(id *)message confirmationButtonTitle:(id *)title isDestructive:(BOOL *)destructive
 {
   v9 = [PXPhotoKitDeletePhotosActionController alloc];
-  v10 = [(PXPhotoKitDestructiveActionPerformer *)self destructivePhotosAction];
-  v11 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v12 = [(PXActionPerformer *)self undoManager];
-  v13 = [(PXPhotoKitDeletePhotosActionController *)v9 initWithAction:v10 assets:v11 undoManager:v12 delegate:self];
+  destructivePhotosAction = [(PXPhotoKitDestructiveActionPerformer *)self destructivePhotosAction];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  undoManager = [(PXActionPerformer *)self undoManager];
+  v13 = [(PXPhotoKitDeletePhotosActionController *)v9 initWithAction:destructivePhotosAction assets:assets undoManager:undoManager delegate:self];
 
-  [(PXPhotoKitDeletePhotosActionController *)v13 getConfirmationMessage:a3 destructiveButtonTitle:a4 cancelButtonTitle:0 isDestructiveBehavior:a5];
+  [(PXPhotoKitDeletePhotosActionController *)v13 getConfirmationMessage:message destructiveButtonTitle:title cancelButtonTitle:0 isDestructiveBehavior:destructive];
 }
 
 - (int64_t)destructivePhotosAction
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:44 description:{@"Method %s is a responsibility of subclass %@", "-[PXPhotoKitDestructiveActionPerformer destructivePhotosAction]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDestructiveActionPerformer.m" lineNumber:44 description:{@"Method %s is a responsibility of subclass %@", "-[PXPhotoKitDestructiveActionPerformer destructivePhotosAction]", v6}];
 
   abort();
 }

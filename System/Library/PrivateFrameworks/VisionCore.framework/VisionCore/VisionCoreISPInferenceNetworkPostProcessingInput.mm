@@ -1,5 +1,5 @@
 @interface VisionCoreISPInferenceNetworkPostProcessingInput
-- (VisionCoreISPInferenceNetworkPostProcessingInput)initWithInputImageBuffer:(__CVBuffer *)a3 inputImageOrientation:(unsigned int)a4 inferenceOutputNamedObjects:(id)a5;
+- (VisionCoreISPInferenceNetworkPostProcessingInput)initWithInputImageBuffer:(__CVBuffer *)buffer inputImageOrientation:(unsigned int)orientation inferenceOutputNamedObjects:(id)objects;
 - (void)dealloc;
 @end
 
@@ -13,17 +13,17 @@
   [(VisionCoreISPInferenceNetworkPostProcessingInput *)&v3 dealloc];
 }
 
-- (VisionCoreISPInferenceNetworkPostProcessingInput)initWithInputImageBuffer:(__CVBuffer *)a3 inputImageOrientation:(unsigned int)a4 inferenceOutputNamedObjects:(id)a5
+- (VisionCoreISPInferenceNetworkPostProcessingInput)initWithInputImageBuffer:(__CVBuffer *)buffer inputImageOrientation:(unsigned int)orientation inferenceOutputNamedObjects:(id)objects
 {
-  v9 = a5;
+  objectsCopy = objects;
   v12.receiver = self;
   v12.super_class = VisionCoreISPInferenceNetworkPostProcessingInput;
   v10 = [(VisionCoreISPInferenceNetworkPostProcessingInput *)&v12 init];
   if (v10)
   {
-    v10->_inputImageBuffer = CVPixelBufferRetain(a3);
-    v10->_inputImageOrientation = a4;
-    objc_storeStrong(&v10->_inferenceOutputNamedObjects, a5);
+    v10->_inputImageBuffer = CVPixelBufferRetain(buffer);
+    v10->_inputImageOrientation = orientation;
+    objc_storeStrong(&v10->_inferenceOutputNamedObjects, objects);
   }
 
   return v10;

@@ -1,14 +1,14 @@
 @interface stolenUSBLocalStorageClient
-- (id)loadVolumes:(id)a3 ofType:(id)a4 withError:(id *)a5;
+- (id)loadVolumes:(id)volumes ofType:(id)type withError:(id *)error;
 @end
 
 @implementation stolenUSBLocalStorageClient
 
-- (id)loadVolumes:(id)a3 ofType:(id)a4 withError:(id *)a5
+- (id)loadVolumes:(id)volumes ofType:(id)type withError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  volumesCopy = volumes;
+  typeCopy = type;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -40,12 +40,12 @@
   v18[3] = &unk_278FEDFE8;
   v18[4] = &v26;
   v18[5] = &v20;
-  [v12 addDisk:v8 fileSystemType:v9 reply:v18];
+  [v12 addDisk:volumesCopy fileSystemType:typeCopy reply:v18];
   if (v27[5] || ![v21[5] count])
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v27[5];
+      *error = v27[5];
     }
   }
 
@@ -58,9 +58,9 @@
       *buf = 136315906;
       v33 = "[stolenUSBLocalStorageClient loadVolumes:ofType:withError:]";
       v34 = 2112;
-      v35 = v8;
+      v35 = volumesCopy;
       v36 = 2112;
-      v37 = v9;
+      v37 = typeCopy;
       v38 = 2112;
       v39 = v17;
       _os_log_debug_impl(&dword_24A929000, v13, OS_LOG_TYPE_DEBUG, "%s:finish:%@:%@:%@", buf, 0x2Au);

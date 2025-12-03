@@ -1,28 +1,28 @@
 @interface PKAppleBalanceDirectTopUpConfigurationDenomination
-- (BOOL)isEqual:(id)a3;
-- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithCoder:(id)a3;
-- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithCoder:(id)coder;
+- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleBalanceDirectTopUpConfigurationDenomination
 
-- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithDictionary:(id)a3
+- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKAppleBalanceDirectTopUpConfigurationDenomination;
   v5 = [(PKAppleBalanceDirectTopUpConfigurationDenomination *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKDecimalNumberForKey:@"amount"];
+    v6 = [dictionaryCopy PKDecimalNumberForKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 PKStringForKey:@"currencyCode"];
+    v8 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v8;
   }
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithCoder:(id)a3
+- (PKAppleBalanceDirectTopUpConfigurationDenomination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppleBalanceDirectTopUpConfigurationDenomination *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v8;
   }
@@ -48,17 +48,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   amount = self->_amount;
-  v5 = a3;
-  [v5 encodeObject:amount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -66,7 +66,7 @@
   }
 
   amount = self->_amount;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (!amount || !v6)
   {
     if (amount == v6)
@@ -85,7 +85,7 @@ LABEL_10:
   }
 
 LABEL_5:
-  v7 = v4[2];
+  v7 = equalCopy[2];
   v8 = self->_currencyCode;
   v9 = v7;
   v10 = v9;
@@ -129,14 +129,14 @@ LABEL_13:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAppleBalanceDirectTopUpConfigurationDenomination allocWithZone:](PKAppleBalanceDirectTopUpConfigurationDenomination init];
-  v6 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   amount = v5->_amount;
   v5->_amount = v6;
 
-  v8 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v8 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v8;
 

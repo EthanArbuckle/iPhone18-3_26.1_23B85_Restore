@@ -7,38 +7,38 @@
 
 - (id)_co_alarm
 {
-  v1 = [a1 value];
+  value = [self value];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v1 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [value count])
   {
-    v2 = [objc_alloc(MEMORY[0x277D29720]) initWithEncodedDictionary:v1];
+    v2 = [objc_alloc(MEMORY[0x277D29720]) initWithEncodedDictionary:value];
     v3 = [v2 decodeObjectForKey:@"MTAlarms"];
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (id)co_alarm
 {
-  v1 = [a1 _co_alarm];
+  _co_alarm = [self _co_alarm];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 co_sanitizedHomeKitAlarm];
+    co_sanitizedHomeKitAlarm = [_co_alarm co_sanitizedHomeKitAlarm];
   }
 
   else
   {
-    v2 = 0;
+    co_sanitizedHomeKitAlarm = 0;
   }
 
-  return v2;
+  return co_sanitizedHomeKitAlarm;
 }
 
 @end

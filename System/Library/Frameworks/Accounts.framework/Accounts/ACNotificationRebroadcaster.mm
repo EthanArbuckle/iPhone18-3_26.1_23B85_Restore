@@ -1,7 +1,7 @@
 @interface ACNotificationRebroadcaster
 + (ACNotificationRebroadcaster)sharedRebroadcaster;
 - (ACNotificationRebroadcaster)init;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)_beginObservingAccountStoreDidChangeNotifications;
 - (void)_endObservingAccountStoreDidChangeNotifications;
 - (void)dealloc;
@@ -13,14 +13,14 @@
 {
   v3 = objc_autoreleasePoolPush();
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__ACNotificationRebroadcaster__beginObservingAccountStoreDidChangeNotifications__block_invoke;
   v8[3] = &unk_1E79755E0;
   objc_copyWeak(&v9, &location);
-  v6 = [v4 addObserverForName:@"ACDAccountStoreDidChangeNotification" object:0 queue:queue usingBlock:v8];
+  v6 = [defaultCenter addObserverForName:@"ACDAccountStoreDidChangeNotification" object:0 queue:queue usingBlock:v8];
   daemonAccountStoreDidChangeObserver = self->_daemonAccountStoreDidChangeObserver;
   self->_daemonAccountStoreDidChangeObserver = v6;
 
@@ -87,13 +87,13 @@ void __80__ACNotificationRebroadcaster__beginObservingAccountStoreDidChangeNotif
   }
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   v4 = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = [v7 userInfo];
-  [v5 postNotificationName:@"ACDAccountStoreDidChangeNotification" object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  userInfo = [changeCopy userInfo];
+  [defaultCenter postNotificationName:@"ACDAccountStoreDidChangeNotification" object:self userInfo:userInfo];
 
   objc_autoreleasePoolPop(v4);
 }
@@ -103,8 +103,8 @@ void __80__ACNotificationRebroadcaster__beginObservingAccountStoreDidChangeNotif
   v3 = objc_autoreleasePoolPush();
   if (self->_daemonAccountStoreDidChangeObserver)
   {
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 removeObserver:self->_daemonAccountStoreDidChangeObserver];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self->_daemonAccountStoreDidChangeObserver];
 
     daemonAccountStoreDidChangeObserver = self->_daemonAccountStoreDidChangeObserver;
     self->_daemonAccountStoreDidChangeObserver = 0;

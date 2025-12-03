@@ -1,8 +1,8 @@
 @interface MKUsageCounter
 + (id)sharedCounter;
-- (id)fieldNameForType:(unint64_t)a3;
-- (void)count:(unint64_t)a3;
-- (void)countUsageOfTypeIfNeeded:(unint64_t)a3;
+- (id)fieldNameForType:(unint64_t)type;
+- (void)count:(unint64_t)count;
+- (void)countUsageOfTypeIfNeeded:(unint64_t)needed;
 - (void)createCountedEventsSetIfNeeded;
 @end
 
@@ -37,18 +37,18 @@ void __31__MKUsageCounter_sharedCounter__block_invoke()
   sharedCounter_sharedCounter = v0;
 }
 
-- (void)countUsageOfTypeIfNeeded:(unint64_t)a3
+- (void)countUsageOfTypeIfNeeded:(unint64_t)needed
 {
   [(MKUsageCounter *)self createCountedEventsSetIfNeeded];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:needed];
   if (([(NSMutableSet *)self->_countedEventsSet containsObject:?]& 1) == 0)
   {
     [(NSMutableSet *)self->_countedEventsSet addObject:v5];
-    [(MKUsageCounter *)self count:a3];
+    [(MKUsageCounter *)self count:needed];
   }
 }
 
-- (void)count:(unint64_t)a3
+- (void)count:(unint64_t)count
 {
   v4 = GEOApplicationIdentifierOrProcessName();
   v3 = v4;
@@ -66,16 +66,16 @@ id __24__MKUsageCounter_count___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)fieldNameForType:(unint64_t)a3
+- (id)fieldNameForType:(unint64_t)type
 {
-  if (a3 > 0x39)
+  if (type > 0x39)
   {
     return @"nil";
   }
 
   else
   {
-    return off_1E76C8878[a3];
+    return off_1E76C8878[type];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface SpeedTestConfig
 - (SpeedTestConfig)init;
 - (void)dealloc;
-- (void)startDownloadTest:(id)a3;
+- (void)startDownloadTest:(id)test;
 @end
 
 @implementation SpeedTestConfig
@@ -46,9 +46,9 @@
   v7 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 downloadSize];
+    downloadSize = [v6 downloadSize];
     *buf = 134217984;
-    v21 = v8;
+    v21 = downloadSize;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.downloadSize: %lu", buf, 0xCu);
   }
 
@@ -57,9 +57,9 @@
   v9 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 testDuration];
+    testDuration = [v6 testDuration];
     *buf = 134217984;
-    v21 = v10;
+    v21 = testDuration;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.testDuration: %lu", buf, 0xCu);
   }
 
@@ -68,9 +68,9 @@
   v11 = DiagnosticsKitLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v6 interfaceType];
+    interfaceType = [v6 interfaceType];
     *buf = 67109120;
-    LODWORD(v21) = v12;
+    LODWORD(v21) = interfaceType;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "CellularThroughput: performanceTestWithConfig.interfaceType: %d", buf, 8u);
   }
 
@@ -100,9 +100,9 @@ LABEL_21:
   return v15;
 }
 
-- (void)startDownloadTest:(id)a3
+- (void)startDownloadTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   if (!self->performanceTest)
   {
     v5 = DiagnosticsKitLogHandleForCategory();
@@ -112,9 +112,9 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "CellularThroughput: NPTPerformanceTest instance nil, bailing out", buf, 2u);
     }
 
-    if (v4)
+    if (testCopy)
     {
-      v4[2](v4, @"NO");
+      testCopy[2](testCopy, @"NO");
     }
   }
 
@@ -127,9 +127,9 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "CellularThroughput: Download task already started", buf, 2u);
     }
 
-    if (v4)
+    if (testCopy)
     {
-      v4[2](v4, @"NO");
+      testCopy[2](testCopy, @"NO");
     }
   }
 
@@ -164,8 +164,8 @@ LABEL_21:
   v16[2] = sub_1000014F8;
   v16[3] = &unk_1000041B0;
   v17 = v12;
-  v18 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = testCopy;
   v19 = v14;
   v15 = v12;
   [(NPTPerformanceTest *)v13 startDownloadWithCompletion:v16];

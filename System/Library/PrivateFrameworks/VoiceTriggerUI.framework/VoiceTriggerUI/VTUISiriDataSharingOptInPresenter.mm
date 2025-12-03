@@ -2,18 +2,18 @@
 - (BOOL)shouldShowSiriDataSharingOptInView;
 - (VTUISiriDataSharingOptInPresentationDelegate)presentationDelegate;
 - (VTUISiriDataSharingOptInPresenter)init;
-- (id)_modalViewControllerForViewStyle:(int64_t)a3;
-- (id)_proximityViewForFrame:(CGRect)a3;
-- (id)dataSharingOptInTextWelcomeControllerForViewStyle:(int64_t)a3;
-- (id)dataSharingOptInViewForFrame:(CGRect)a3 viewStyle:(int64_t)a4;
+- (id)_modalViewControllerForViewStyle:(int64_t)style;
+- (id)_proximityViewForFrame:(CGRect)frame;
+- (id)dataSharingOptInTextWelcomeControllerForViewStyle:(int64_t)style;
+- (id)dataSharingOptInViewForFrame:(CGRect)frame viewStyle:(int64_t)style;
 - (void)_fetchSiriDataSharingEnabled;
 - (void)_requestDismissal;
-- (void)_setSiriDataSharingStatus:(int64_t)a3 forceDismissal:(BOOL)a4;
+- (void)_setSiriDataSharingStatus:(int64_t)status forceDismissal:(BOOL)dismissal;
 - (void)_userTappedDetailLinkText;
 - (void)_userTappedDismissButtonFromProxCard;
 - (void)_userTappedOptInToDataSharing;
 - (void)_userTappedOptOutOfDataSharing;
-- (void)didDismissFromViewController:(id)a3;
+- (void)didDismissFromViewController:(id)controller;
 - (void)tearDownPresentedViews;
 @end
 
@@ -80,33 +80,33 @@
   return v3 & 1;
 }
 
-- (id)dataSharingOptInViewForFrame:(CGRect)a3 viewStyle:(int64_t)a4
+- (id)dataSharingOptInViewForFrame:(CGRect)frame viewStyle:(int64_t)style
 {
-  switch(a4)
+  switch(style)
   {
     case 2:
       goto LABEL_4;
     case 1:
-      v5 = [(VTUISiriDataSharingOptInPresenter *)self _proximityViewForFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+      view = [(VTUISiriDataSharingOptInPresenter *)self _proximityViewForFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
       break;
     case 0:
 LABEL_4:
-      v4 = [(VTUISiriDataSharingOptInPresenter *)self _modalViewControllerForViewStyle:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-      v5 = [v4 view];
+      v4 = [(VTUISiriDataSharingOptInPresenter *)self _modalViewControllerForViewStyle:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+      view = [v4 view];
 
       break;
     default:
-      v5 = 0;
+      view = 0;
       break;
   }
 
-  return v5;
+  return view;
 }
 
-- (id)dataSharingOptInTextWelcomeControllerForViewStyle:(int64_t)a3
+- (id)dataSharingOptInTextWelcomeControllerForViewStyle:(int64_t)style
 {
   v5 = [(VTUISiriDataSharingOptInPresenter *)self _modalViewControllerForViewStyle:?];
-  if (a3 == 2)
+  if (style == 2)
   {
     [(VTUISiriDataSharingOptInPresenter *)self setSourceOfChange:2];
   }
@@ -183,9 +183,9 @@ void __65__VTUISiriDataSharingOptInPresenter__fetchSiriDataSharingEnabled__block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setSiriDataSharingStatus:(int64_t)a3 forceDismissal:(BOOL)a4
+- (void)_setSiriDataSharingStatus:(int64_t)status forceDismissal:(BOOL)dismissal
 {
-  self->_dataSharingOptInStatus = a3;
+  self->_dataSharingOptInStatus = status;
   objc_initWeak(&location, self);
   settingsQueue = self->_settingsQueue;
   v8[0] = MEMORY[0x277D85DD0];
@@ -193,8 +193,8 @@ void __65__VTUISiriDataSharingOptInPresenter__fetchSiriDataSharingEnabled__block
   v8[2] = __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDismissal___block_invoke;
   v8[3] = &unk_279E54380;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
-  v10 = a4;
+  v9[1] = status;
+  dismissalCopy = dismissal;
   dispatch_async(settingsQueue, v8);
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -293,16 +293,16 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_modalViewControllerForViewStyle:(int64_t)a3
+- (id)_modalViewControllerForViewStyle:(int64_t)style
 {
-  v4 = [[VTUISiriDataSharingOptInViewController alloc] initWithViewStyle:a3];
+  v4 = [[VTUISiriDataSharingOptInViewController alloc] initWithViewStyle:style];
   v5 = +[MGWrapper sharedMGWrapper];
-  v6 = [v5 isGMDevice];
+  isGMDevice = [v5 isGMDevice];
 
   v7 = +[MGWrapper sharedMGWrapper];
-  v8 = [v7 isDeviceIPad];
+  isDeviceIPad = [v7 isDeviceIPad];
 
-  if (v6)
+  if (isGMDevice)
   {
     v9 = @"DATA_SHARING_DETAIL_IPAD_GM";
   }
@@ -312,9 +312,9 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
     v9 = @"DATA_SHARING_DETAIL_IPAD";
   }
 
-  if ((v8 & 1) == 0)
+  if ((isDeviceIPad & 1) == 0)
   {
-    if (v6)
+    if (isGMDevice)
     {
       v10 = @"DATA_SHARING_DETAIL_IPHONE_GM";
     }
@@ -325,9 +325,9 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
     }
 
     v11 = +[MGWrapper sharedMGWrapper];
-    v12 = [v11 isDeviceVision];
+    isDeviceVision = [v11 isDeviceVision];
 
-    if (v12)
+    if (isDeviceVision)
     {
       v9 = @"DATA_SHARING_DETAIL_VISION";
     }
@@ -338,37 +338,37 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
     }
   }
 
-  v13 = [(VTUISiriDataSharingOptInViewController *)v4 headerView];
+  headerView = [(VTUISiriDataSharingOptInViewController *)v4 headerView];
   v14 = +[VTUIStringsHelper sharedStringsHelper];
   v15 = [v14 uiLocalizedStringForKey:v9];
-  [v13 setDetailText:v15];
+  [headerView setDetailText:v15];
 
-  v16 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v17 = +[VTUIStringsHelper sharedStringsHelper];
   v18 = [v17 uiLocalizedStringForKey:@"DATA_SHARING_DETAIL_LINK"];
-  [v16 setTitle:v18 forState:0];
+  [accessoryButton setTitle:v18 forState:0];
 
-  [v16 addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
-  v19 = [(VTUISiriDataSharingOptInViewController *)v4 headerView];
-  [v19 addAccessoryButton:v16];
+  [accessoryButton addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
+  headerView2 = [(VTUISiriDataSharingOptInViewController *)v4 headerView];
+  [headerView2 addAccessoryButton:accessoryButton];
 
-  v20 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v21 = +[VTUIStringsHelper sharedStringsHelper];
   v22 = [v21 uiLocalizedStringForKey:@"DATA_SHARING_CONFIRMATION_BUTTON_TITLE"];
-  [v20 setTitle:v22 forState:0];
+  [boldButton setTitle:v22 forState:0];
 
-  [v20 addTarget:self action:sel__userTappedOptInToDataSharing forControlEvents:64];
-  v23 = [(VTUISiriDataSharingOptInViewController *)v4 buttonTray];
-  [v23 addButton:v20];
+  [boldButton addTarget:self action:sel__userTappedOptInToDataSharing forControlEvents:64];
+  buttonTray = [(VTUISiriDataSharingOptInViewController *)v4 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v24 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v25 = +[VTUIStringsHelper sharedStringsHelper];
   v26 = [v25 uiLocalizedStringForKey:@"DATA_SHARING_DECLINE_BUTTON_TITLE"];
-  [v24 setTitle:v26 forState:0];
+  [linkButton setTitle:v26 forState:0];
 
-  [v24 addTarget:self action:sel__userTappedOptOutOfDataSharing forControlEvents:64];
-  v27 = [(VTUISiriDataSharingOptInViewController *)v4 buttonTray];
-  [v27 addButton:v24];
+  [linkButton addTarget:self action:sel__userTappedOptOutOfDataSharing forControlEvents:64];
+  buttonTray2 = [(VTUISiriDataSharingOptInViewController *)v4 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   objc_storeStrong(&self->_currentWelcomeController, v4);
   [(VTUISiriDataSharingOptInViewController *)self->_currentWelcomeController setDelegate:self];
@@ -376,23 +376,23 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
   return v4;
 }
 
-- (id)_proximityViewForFrame:(CGRect)a3
+- (id)_proximityViewForFrame:(CGRect)frame
 {
-  v4 = [[VTUIProximityDataSharingOptInView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [[VTUIProximityDataSharingOptInView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   currentProxView = self->_currentProxView;
   self->_currentProxView = v4;
 
-  v6 = [(VTUIProximityDataSharingOptInView *)self->_currentProxView dismissButton];
-  [v6 addTarget:self action:sel__userTappedDismissButtonFromProxCard forControlEvents:64];
+  dismissButton = [(VTUIProximityDataSharingOptInView *)self->_currentProxView dismissButton];
+  [dismissButton addTarget:self action:sel__userTappedDismissButtonFromProxCard forControlEvents:64];
 
-  v7 = [(VTUIProximityDataSharingOptInView *)self->_currentProxView shareButton];
-  [v7 addTarget:self action:sel__userTappedOptInToDataSharing forControlEvents:64];
+  shareButton = [(VTUIProximityDataSharingOptInView *)self->_currentProxView shareButton];
+  [shareButton addTarget:self action:sel__userTappedOptInToDataSharing forControlEvents:64];
 
-  v8 = [(VTUIProximityDataSharingOptInView *)self->_currentProxView notNowButton];
-  [v8 addTarget:self action:sel__userTappedOptOutOfDataSharing forControlEvents:64];
+  notNowButton = [(VTUIProximityDataSharingOptInView *)self->_currentProxView notNowButton];
+  [notNowButton addTarget:self action:sel__userTappedOptOutOfDataSharing forControlEvents:64];
 
-  v9 = [(VTUIProximityDataSharingOptInView *)self->_currentProxView aboutLink];
-  [v9 addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
+  aboutLink = [(VTUIProximityDataSharingOptInView *)self->_currentProxView aboutLink];
+  [aboutLink addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
 
   v10 = self->_currentProxView;
 
@@ -411,15 +411,15 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
 
   if (self->_currentProxView)
   {
-    v4 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+    presentationDelegate = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     v3 = v7;
     if (isKindOfClass)
     {
-      v6 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
-      [v7 setPresentingViewController:v6];
+      presentationDelegate2 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+      [v7 setPresentingViewController:presentationDelegate2];
 
       v3 = v7;
     }
@@ -470,13 +470,13 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
   }
 
   [(VTUISiriDataSharingOptInPresenter *)self _setSiriDataSharingStatus:3 forceDismissal:0];
-  v4 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+  presentationDelegate = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
-    [v6 siriDataSharingOptInViewDismissButtonTappedFromPresenter:self];
+    presentationDelegate2 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+    [presentationDelegate2 siriDataSharingOptInViewDismissButtonTappedFromPresenter:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -484,8 +484,8 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
 
 - (void)_requestDismissal
 {
-  v3 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
-  [v3 siriDataSharingOptInRequestsDismissalFromPresenter:self];
+  presentationDelegate = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+  [presentationDelegate siriDataSharingOptInRequestsDismissalFromPresenter:self];
 
   currentProxView = self->_currentProxView;
   self->_currentProxView = 0;
@@ -500,8 +500,8 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
   if (currentWelcomeController)
   {
     [(VTUISiriDataSharingOptInViewController *)currentWelcomeController setDelegate:0];
-    v4 = [(VTUISiriDataSharingOptInViewController *)self->_currentWelcomeController view];
-    [v4 removeFromSuperview];
+    view = [(VTUISiriDataSharingOptInViewController *)self->_currentWelcomeController view];
+    [view removeFromSuperview];
 
     v5 = self->_currentWelcomeController;
     self->_currentWelcomeController = 0;
@@ -516,21 +516,21 @@ void __78__VTUISiriDataSharingOptInPresenter__setSiriDataSharingStatus_forceDism
   }
 }
 
-- (void)didDismissFromViewController:(id)a3
+- (void)didDismissFromViewController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (!self->_dataSharingOptInStatus)
   {
     [(VTUISiriDataSharingOptInPresenter *)self _setSiriDataSharingStatus:3 forceDismissal:0];
   }
 
-  v4 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+  presentationDelegate = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
-    [v6 siriDataSharingOptInViewControllerDidDismissFromPresenter:self];
+    presentationDelegate2 = [(VTUISiriDataSharingOptInPresenter *)self presentationDelegate];
+    [presentationDelegate2 siriDataSharingOptInViewControllerDidDismissFromPresenter:self];
   }
 }
 

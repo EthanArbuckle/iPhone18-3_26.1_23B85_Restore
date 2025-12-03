@@ -1,31 +1,31 @@
 @interface SBWallpaperIconStyleCoordinator
-- (BOOL)_issueUpdates:(id)a3;
+- (BOOL)_issueUpdates:(id)updates;
 - (BOOL)isWallpaperDimmed;
 - (BOOL)shouldUseLargeHomeScreenIcons;
 - (BSColor)currentTintColor;
 - (PUIStylePickerHomeScreenConfiguration)currentStyleConfiguration;
-- (SBWallpaperIconStyleCoordinator)initWithWallpaperController:(id)a3 homeScreenDefaults:(id)a4;
+- (SBWallpaperIconStyleCoordinator)initWithWallpaperController:(id)controller homeScreenDefaults:(id)defaults;
 - (id)_enclosureAccentColor;
 - (id)_fetchPosterStyleState;
 - (id)_fetchStyleConfiguration;
 - (id)posterStyleState;
-- (void)_emitPowerLogForStyleUpdateWithConfiguration:(id)a3 styleState:(id)a4 oldConfiguration:(id)a5;
+- (void)_emitPowerLogForStyleUpdateWithConfiguration:(id)configuration styleState:(id)state oldConfiguration:(id)oldConfiguration;
 - (void)_fetchPosterStyleState;
 - (void)_notifyObserversOfUpdatedPostersStyleState;
 - (void)_postersStyleStateDidChange;
 - (void)_resetStateExpectingUpdates;
 - (void)_setupStateCapture;
-- (void)addIconStyleObserver:(id)a3;
+- (void)addIconStyleObserver:(id)observer;
 - (void)dealloc;
-- (void)fetchWallpaperProminentColor:(id)a3;
-- (void)removeIconStyleObserver:(id)a3;
-- (void)setCurrentStyleConfiguration:(id)a3;
-- (void)setCurrentTintColor:(id)a3;
-- (void)setShouldUseLargeHomeScreenIcons:(BOOL)a3;
-- (void)setWallpaperDimmed:(BOOL)a3;
+- (void)fetchWallpaperProminentColor:(id)color;
+- (void)removeIconStyleObserver:(id)observer;
+- (void)setCurrentStyleConfiguration:(id)configuration;
+- (void)setCurrentTintColor:(id)color;
+- (void)setShouldUseLargeHomeScreenIcons:(BOOL)icons;
+- (void)setWallpaperDimmed:(BOOL)dimmed;
 - (void)shouldUseLargeHomeScreenIcons;
-- (void)wallpaperDidChangeForVariant:(int64_t)a3;
-- (void)wallpaperWillChangeForVariant:(int64_t)a3;
+- (void)wallpaperDidChangeForVariant:(int64_t)variant;
+- (void)wallpaperWillChangeForVariant:(int64_t)variant;
 @end
 
 @implementation SBWallpaperIconStyleCoordinator
@@ -40,9 +40,9 @@
 
   if (self->_posterStyleState || ([(SBWallpaperIconStyleCoordinator *)self _postersStyleStateDidChange], self->_posterStyleState))
   {
-    v4 = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
+    _fetchStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
     v5 = self->_currentStyleConfiguration;
-    self->_currentStyleConfiguration = v4;
+    self->_currentStyleConfiguration = _fetchStyleConfiguration;
 
     currentStyleConfiguration = self->_currentStyleConfiguration;
 LABEL_5:
@@ -70,8 +70,8 @@ LABEL_6:
   if (v4)
   {
     v5 = v4;
-    v6 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
-    if ([v6 isEqualToState:v5])
+    _fetchPosterStyleState = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
+    if ([_fetchPosterStyleState isEqualToState:v5])
     {
       v7 = SBLogIconStyle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -85,8 +85,8 @@ LABEL_19:
     }
 
     posterStyleState = self->_posterStyleState;
-    self->_posterStyleState = v6;
-    v6 = v6;
+    self->_posterStyleState = _fetchPosterStyleState;
+    _fetchPosterStyleState = _fetchPosterStyleState;
 
     currentStyleConfiguration = self->_currentStyleConfiguration;
     self->_currentStyleConfiguration = 0;
@@ -101,22 +101,22 @@ LABEL_19:
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[_postersStyleStateDidChange] nil poster style state; fetching", &v18, 2u);
     }
 
-    v9 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
+    _fetchPosterStyleState2 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
     v10 = self->_posterStyleState;
-    self->_posterStyleState = v9;
+    self->_posterStyleState = _fetchPosterStyleState2;
 
-    v5 = v9;
+    v5 = _fetchPosterStyleState2;
     v11 = self->_currentStyleConfiguration;
     self->_currentStyleConfiguration = 0;
 
     v12 = self->_posterStyleState;
     v13 = SBLogIconStyle();
-    v6 = v13;
+    _fetchPosterStyleState = v13;
     if (!v12)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(SBWallpaperIconStyleCoordinator *)v6 _postersStyleStateDidChange];
+        [(SBWallpaperIconStyleCoordinator *)_fetchPosterStyleState _postersStyleStateDidChange];
       }
 
       goto LABEL_19;
@@ -125,7 +125,7 @@ LABEL_19:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v18) = 0;
-      _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[_postersStyleStateDidChange] populated", &v18, 2u);
+      _os_log_impl(&dword_21ED4E000, _fetchPosterStyleState, OS_LOG_TYPE_DEFAULT, "[_postersStyleStateDidChange] populated", &v18, 2u);
     }
   }
 
@@ -144,14 +144,14 @@ LABEL_20:
 
 - (id)_fetchPosterStyleState
 {
-  v2 = [(SBWallpaperController *)self->_wallpaperController currentHomeVariantStyleState];
+  currentHomeVariantStyleState = [(SBWallpaperController *)self->_wallpaperController currentHomeVariantStyleState];
   v3 = SBLogIconStyle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    [(SBWallpaperIconStyleCoordinator *)v2 _fetchPosterStyleState];
+    [(SBWallpaperIconStyleCoordinator *)currentHomeVariantStyleState _fetchPosterStyleState];
   }
 
-  return v2;
+  return currentHomeVariantStyleState;
 }
 
 - (void)_notifyObserversOfUpdatedPostersStyleState
@@ -160,16 +160,16 @@ LABEL_20:
   BSDispatchQueueAssertMain();
   if (!self->_posterStyleState)
   {
-    v3 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
+    _fetchPosterStyleState = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
     posterStyleState = self->_posterStyleState;
-    self->_posterStyleState = v3;
+    self->_posterStyleState = _fetchPosterStyleState;
   }
 
   if (!self->_currentStyleConfiguration)
   {
-    v5 = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
+    _fetchStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
     currentStyleConfiguration = self->_currentStyleConfiguration;
-    self->_currentStyleConfiguration = v5;
+    self->_currentStyleConfiguration = _fetchStyleConfiguration;
   }
 
   if (BSEqualObjects() && BSEqualObjects())
@@ -199,9 +199,9 @@ LABEL_20:
     v15 = 0u;
     v16 = 0u;
     v9 = [(NSHashTable *)self->_observers copy];
-    v10 = [v9 allObjects];
+    allObjects = [v9 allObjects];
 
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v11 = [allObjects countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -213,14 +213,14 @@ LABEL_20:
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v15 + 1) + 8 * v14++) iconStyleCoordinatorDidUpdate:self];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v12 = [allObjects countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v12);
@@ -251,12 +251,12 @@ LABEL_20:
   v4 = v3;
   _Block_object_dispose(&v33, 8);
   v5 = objc_alloc_init(v3);
-  v6 = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
-  v7 = [v6 iconStyle];
-  v8 = v7;
-  if (v7)
+  posterStyleState = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
+  iconStyle = [posterStyleState iconStyle];
+  v8 = iconStyle;
+  if (iconStyle)
   {
-    v9 = v7;
+    v9 = iconStyle;
   }
 
   else
@@ -266,11 +266,11 @@ LABEL_20:
 
   v10 = v9;
 
-  v11 = [v6 iconStyleVariant];
-  v12 = v11;
-  if (v11)
+  iconStyleVariant = [posterStyleState iconStyleVariant];
+  v12 = iconStyleVariant;
+  if (iconStyleVariant)
   {
-    v13 = v11;
+    v13 = iconStyleVariant;
   }
 
   else
@@ -282,27 +282,27 @@ LABEL_20:
 
   [v5 setStyleType:__PUIHomeScreenStyleTypeForTypeDescription(v10)];
   [v5 setStyleVariant:__PUIHomeScreenStyleVariantFromSBSHomeScreenIconStyleConfigurationVariantDescription(v14)];
-  v15 = [v6 lastUserSelectedVariantForStyleTypeOption];
+  lastUserSelectedVariantForStyleTypeOption = [posterStyleState lastUserSelectedVariantForStyleTypeOption];
 
-  if (v15)
+  if (lastUserSelectedVariantForStyleTypeOption)
   {
-    v16 = [v6 lastUserSelectedVariantForStyleTypeOption];
-    [v5 setLastUserSelectedVariantForStyleTypeOption:v16];
+    lastUserSelectedVariantForStyleTypeOption2 = [posterStyleState lastUserSelectedVariantForStyleTypeOption];
+    [v5 setLastUserSelectedVariantForStyleTypeOption:lastUserSelectedVariantForStyleTypeOption2];
   }
 
   if ([v10 isEqualToString:@"accent"])
   {
-    v17 = [v6 tintColorStyle];
+    tintColorStyle = [posterStyleState tintColorStyle];
 
-    if (v17)
+    if (tintColorStyle)
     {
-      v18 = [v6 tintColorStyle];
-      [v5 setAccentStyle:v18];
+      tintColorStyle2 = [posterStyleState tintColorStyle];
+      [v5 setAccentStyle:tintColorStyle2];
     }
 
     else
     {
-      v18 = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
+      tintColorStyle2 = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
       [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconUserInterfaceStyleVariation];
       v20 = v19;
       [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconUserInterfaceStyleLuminance];
@@ -312,19 +312,19 @@ LABEL_20:
       [v5 setVariation:v20];
       [v5 setLuminance:v22];
       [v5 setSaturation:v24];
-      [v5 setAccentColor:v18];
+      [v5 setAccentColor:tintColorStyle2];
     }
   }
 
-  v25 = [v6 tintSource];
-  [v5 setIconTintSource:_PUIHomeScreenIconTintSourceFromDescription(v25)];
+  tintSource = [posterStyleState tintSource];
+  [v5 setIconTintSource:_PUIHomeScreenIconTintSourceFromDescription(tintSource)];
 
-  v26 = [v6 suggestedTintColor];
+  suggestedTintColor = [posterStyleState suggestedTintColor];
 
-  if (v26)
+  if (suggestedTintColor)
   {
-    v27 = [v6 suggestedTintColor];
-    [v5 setSuggestedAccentColor:v27];
+    suggestedTintColor2 = [posterStyleState suggestedTintColor];
+    [v5 setSuggestedAccentColor:suggestedTintColor2];
   }
 
   if (self->_caseAccentColor)
@@ -332,18 +332,18 @@ LABEL_20:
     [v5 setCaseAccentColor:?];
   }
 
-  v28 = [v5 enclosureAccentColor];
-  if (!v28)
+  enclosureAccentColor = [v5 enclosureAccentColor];
+  if (!enclosureAccentColor)
   {
-    v29 = [(SBWallpaperIconStyleCoordinator *)self _enclosureAccentColor];
+    _enclosureAccentColor = [(SBWallpaperIconStyleCoordinator *)self _enclosureAccentColor];
 
-    if (!v29)
+    if (!_enclosureAccentColor)
     {
       goto LABEL_24;
     }
 
-    v28 = [(SBWallpaperIconStyleCoordinator *)self _enclosureAccentColor];
-    [v5 setEnclosureAccentColor:v28];
+    enclosureAccentColor = [(SBWallpaperIconStyleCoordinator *)self _enclosureAccentColor];
+    [v5 setEnclosureAccentColor:enclosureAccentColor];
   }
 
 LABEL_24:
@@ -357,9 +357,9 @@ LABEL_24:
   posterStyleState = self->_posterStyleState;
   if (!posterStyleState)
   {
-    v4 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
+    _fetchPosterStyleState = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
     v5 = self->_posterStyleState;
-    self->_posterStyleState = v4;
+    self->_posterStyleState = _fetchPosterStyleState;
 
     posterStyleState = self->_posterStyleState;
   }
@@ -369,14 +369,14 @@ LABEL_24:
   return v6;
 }
 
-- (SBWallpaperIconStyleCoordinator)initWithWallpaperController:(id)a3 homeScreenDefaults:(id)a4
+- (SBWallpaperIconStyleCoordinator)initWithWallpaperController:(id)controller homeScreenDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  controllerCopy = controller;
+  defaultsCopy = defaults;
+  v10 = defaultsCopy;
+  if (controllerCopy)
   {
-    if (v9)
+    if (defaultsCopy)
     {
       goto LABEL_3;
     }
@@ -399,8 +399,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_wallpaperController, a3);
-    objc_storeStrong(&v12->_homeScreenDefaults, a4);
+    objc_storeStrong(&v11->_wallpaperController, controller);
+    objc_storeStrong(&v12->_homeScreenDefaults, defaults);
     [(SBWallpaperIconStyleCoordinator *)v12 _setupObservers];
     v13 = SBLogIconStyle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -434,15 +434,15 @@ LABEL_3:
   [(SBWallpaperIconStyleCoordinator *)&v4 dealloc];
 }
 
-- (void)fetchWallpaperProminentColor:(id)a3
+- (void)fetchWallpaperProminentColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v5 = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
-    v6 = [v5 suggestedAccentColor];
+    currentStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
+    suggestedAccentColor = [currentStyleConfiguration suggestedAccentColor];
 
-    if (v6)
+    if (suggestedAccentColor)
     {
       v7 = SBLogIconStyle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -451,8 +451,8 @@ LABEL_3:
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[fetchWallpaperProminentColor] returning suggestedAccentColor w/o PaperBoardUI fetch...", buf, 2u);
       }
 
-      v8 = [v5 suggestedAccentColor];
-      v4[2](v4, v8);
+      suggestedAccentColor2 = [currentStyleConfiguration suggestedAccentColor];
+      colorCopy[2](colorCopy, suggestedAccentColor2);
     }
 
     else
@@ -463,9 +463,9 @@ LABEL_3:
       v10[2] = __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_invoke;
       v10[3] = &unk_2783BD378;
       v10[4] = self;
-      v11 = v4;
+      v11 = colorCopy;
       [(SBWallpaperController *)wallpaperController fetchWallpaperProminentColor:v10];
-      v8 = v11;
+      suggestedAccentColor2 = v11;
     }
   }
 }
@@ -500,58 +500,58 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
 
 - (BSColor)currentTintColor
 {
-  v2 = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
-  v3 = [v2 accentStyle];
-  v4 = [v3 luminanceAppliedColor];
-  v5 = [v4 BSColor];
+  currentStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
+  accentStyle = [currentStyleConfiguration accentStyle];
+  luminanceAppliedColor = [accentStyle luminanceAppliedColor];
+  bSColor = [luminanceAppliedColor BSColor];
 
-  return v5;
+  return bSColor;
 }
 
-- (void)setCurrentTintColor:(id)a3
+- (void)setCurrentTintColor:(id)color
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v5 = SBLogIconStyle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = colorCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[setCurrentTintColor] updating to tint color %{public}@", &v9, 0xCu);
   }
 
-  v6 = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
-  v7 = [v6 mutableCopy];
+  currentStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self currentStyleConfiguration];
+  v7 = [currentStyleConfiguration mutableCopy];
 
-  v8 = [v4 UIColor];
-  [v7 setAccentColor:v8];
+  uIColor = [colorCopy UIColor];
+  [v7 setAccentColor:uIColor];
 
   [(SBWallpaperIconStyleCoordinator *)self setCurrentStyleConfiguration:v7];
 }
 
 - (BOOL)isWallpaperDimmed
 {
-  v2 = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
-  v3 = [v2 isHomeScreenDimmed];
+  posterStyleState = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
+  isHomeScreenDimmed = [posterStyleState isHomeScreenDimmed];
 
-  return v3;
+  return isHomeScreenDimmed;
 }
 
-- (void)setWallpaperDimmed:(BOOL)a3
+- (void)setWallpaperDimmed:(BOOL)dimmed
 {
-  v3 = a3;
+  dimmedCopy = dimmed;
   v11 = *MEMORY[0x277D85DE8];
-  if ([(SBWallpaperIconStyleCoordinator *)self isWallpaperDimmed]!= a3)
+  if ([(SBWallpaperIconStyleCoordinator *)self isWallpaperDimmed]!= dimmed)
   {
     v5 = SBLogIconStyle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v10 = v3;
+      v10 = dimmedCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[setWallpaperDimmed] updating wallpaper dim to %{BOOL}u", buf, 8u);
     }
 
-    v6 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenAppearanceDimWithValue:v3];
+    v6 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenAppearanceDimWithValue:dimmedCopy];
     v8 = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
     [(SBWallpaperIconStyleCoordinator *)self _issueUpdates:v7];
@@ -560,8 +560,8 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
 
 - (BOOL)shouldUseLargeHomeScreenIcons
 {
-  v2 = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
-  v3 = [v2 iconSize];
+  posterStyleState = [(SBWallpaperIconStyleCoordinator *)self posterStyleState];
+  iconSize = [posterStyleState iconSize];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -584,27 +584,27 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     [SBWallpaperIconStyleCoordinator shouldUseLargeHomeScreenIcons];
   }
 
-  v5 = [v3 isEqualToString:*v4];
+  v5 = [iconSize isEqualToString:*v4];
 
   return v5;
 }
 
-- (void)setShouldUseLargeHomeScreenIcons:(BOOL)a3
+- (void)setShouldUseLargeHomeScreenIcons:(BOOL)icons
 {
-  v3 = a3;
+  iconsCopy = icons;
   v13 = *MEMORY[0x277D85DE8];
-  if ([(SBWallpaperIconStyleCoordinator *)self shouldUseLargeHomeScreenIcons]!= a3)
+  if ([(SBWallpaperIconStyleCoordinator *)self shouldUseLargeHomeScreenIcons]!= icons)
   {
     v5 = SBLogIconStyle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v12 = v3;
+      v12 = iconsCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[setshouldUseLargeHomeScreenIcons] updating shouldUseLargeHomeScreenIcons to %{BOOL}u", buf, 8u);
     }
 
     v6 = MEMORY[0x277D3E9C8];
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:iconsCopy];
     v8 = [v6 posterUpdateShouldUseLargeHomeScreenIcons:v7];
 
     v10 = v8;
@@ -613,10 +613,10 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
   }
 }
 
-- (void)setCurrentStyleConfiguration:(id)a3
+- (void)setCurrentStyleConfiguration:(id)configuration
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
     v46 = self->_currentStyleConfiguration;
@@ -624,16 +624,16 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v50 = v4;
+      v50 = configurationCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[setCurrentStyleConfiguration] updating to style configuration %{public}@", buf, 0xCu);
     }
 
-    v6 = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration styleType];
-    v7 = [v4 styleType];
-    v8 = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration styleVariant];
-    v9 = [v4 styleVariant];
-    v48 = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration accentStyle];
-    if (v7 == 3)
+    styleType = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration styleType];
+    styleType2 = [configurationCopy styleType];
+    styleVariant = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration styleVariant];
+    styleVariant2 = [configurationCopy styleVariant];
+    accentStyle = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration accentStyle];
+    if (styleType2 == 3)
     {
       v10 = SBLogIconStyle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -642,12 +642,12 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "[setCurrentStyleConfiguration] updating to a style type of accent", buf, 2u);
       }
 
-      v11 = [v4 accentStyle];
+      accentStyle2 = [configurationCopy accentStyle];
     }
 
     else
     {
-      if (v6 == 3)
+      if (styleType == 3)
       {
         v12 = SBLogIconStyle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -657,27 +657,27 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
         }
       }
 
-      v11 = 0;
+      accentStyle2 = 0;
     }
 
     v13 = objc_opt_new();
-    if (v6 != v7)
+    if (styleType != styleType2)
     {
-      if ((v7 - 1) > 4)
+      if ((styleType2 - 1) > 4)
       {
         v14 = @"auto";
       }
 
       else
       {
-        v14 = off_2783BD3C8[v7 - 1];
+        v14 = off_2783BD3C8[styleType2 - 1];
       }
 
       v15 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenIconUserInterfaceStyle:{v14, v46}];
       [v13 addObject:v15];
     }
 
-    if (v8 != v9)
+    if (styleVariant != styleVariant2)
     {
       v16 = MEMORY[0x277D3E9C8];
       v17 = _SBSHomeScreenIconStyleConfigurationVariantDescriptionFromPUIHomeScreenStyleVariant();
@@ -685,31 +685,31 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
       [v13 addObject:v18];
     }
 
-    v19 = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration lastUserSelectedVariantForStyleTypeOption];
-    v20 = [v4 lastUserSelectedVariantForStyleTypeOption];
+    lastUserSelectedVariantForStyleTypeOption = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration lastUserSelectedVariantForStyleTypeOption];
+    lastUserSelectedVariantForStyleTypeOption2 = [configurationCopy lastUserSelectedVariantForStyleTypeOption];
     v21 = BSEqualDictionaries();
 
-    v22 = v48;
+    v22 = accentStyle;
     if ((v21 & 1) == 0)
     {
       v23 = MEMORY[0x277D3E9C8];
-      v24 = [v4 lastUserSelectedVariantForStyleTypeOption];
-      v25 = [v23 posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:v24];
+      lastUserSelectedVariantForStyleTypeOption3 = [configurationCopy lastUserSelectedVariantForStyleTypeOption];
+      v25 = [v23 posterUpdateUserSelectedHomeScreenIconStyleVariantsForTypes:lastUserSelectedVariantForStyleTypeOption3];
       [v13 addObject:v25];
     }
 
-    v26 = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration iconTintSource];
-    v27 = [v4 iconTintSource];
-    if (v26 != v27)
+    iconTintSource = [(PUIStylePickerHomeScreenConfiguration *)self->_currentStyleConfiguration iconTintSource];
+    iconTintSource2 = [configurationCopy iconTintSource];
+    if (iconTintSource != iconTintSource2)
     {
-      if ((v27 - 1) > 3)
+      if ((iconTintSource2 - 1) > 3)
       {
         v28 = @"none";
       }
 
       else
       {
-        v28 = off_2783BD3F0[v27 - 1];
+        v28 = off_2783BD3F0[iconTintSource2 - 1];
       }
 
       v29 = [MEMORY[0x277D3E9C8] posterUpdateHomeScreenIconTintSource:v28];
@@ -722,29 +722,29 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     {
       v31 = SBLogIconStyle();
       v32 = os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (accentStyle2)
       {
         if (v32)
         {
           *buf = 138543362;
-          v50 = v11;
+          v50 = accentStyle2;
           _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEFAULT, "[setCurrentStyleConfiguration] updating poster style to %{public}@ ON POSTER", buf, 0xCu);
         }
 
         v33 = MEMORY[0x277D3E9C8];
         v34 = MEMORY[0x277CCABB0];
-        [v11 variation];
+        [accentStyle2 variation];
         v35 = [v34 numberWithDouble:?];
         v36 = MEMORY[0x277CCABB0];
-        [v11 saturation];
+        [accentStyle2 saturation];
         v37 = [v36 numberWithDouble:?];
         v38 = MEMORY[0x277CCABB0];
-        [v11 luminance];
+        [accentStyle2 luminance];
         v39 = [v38 numberWithDouble:?];
         if (v30)
         {
           v40 = MEMORY[0x277CCABB0];
-          [v11 alpha];
+          [accentStyle2 alpha];
           v41 = [v40 numberWithDouble:?];
           v42 = [v33 posterUpdateHomeScreenTintWithVariation:v35 saturation:v37 luminance:v39 alpha:v41];
           [v13 addObject:v42];
@@ -756,7 +756,7 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
           [v13 addObject:v43];
         }
 
-        v22 = v48;
+        v22 = accentStyle;
       }
 
       else
@@ -782,10 +782,10 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     }
 
     v44 = self->_caseAccentColor;
-    v45 = [v4 caseAccentColor];
-    if (v44 != v45)
+    caseAccentColor = [configurationCopy caseAccentColor];
+    if (v44 != caseAccentColor)
     {
-      objc_storeStrong(&self->_caseAccentColor, v45);
+      objc_storeStrong(&self->_caseAccentColor, caseAccentColor);
     }
 
     [(SBWallpaperIconStyleCoordinator *)self _issueUpdates:v13];
@@ -793,35 +793,35 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
   }
 }
 
-- (void)addIconStyleObserver:(id)a3
+- (void)addIconStyleObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_observers;
-    self->_observers = v5;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeIconStyleObserver:(id)a3
+- (void)removeIconStyleObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
-- (BOOL)_issueUpdates:(id)a3
+- (BOOL)_issueUpdates:(id)updates
 {
   wallpaperController = self->_wallpaperController;
   v11 = 0;
-  v5 = [(SBWallpaperController *)wallpaperController updateCurrentPosterWithUpdates:a3 error:&v11];
+  v5 = [(SBWallpaperController *)wallpaperController updateCurrentPosterWithUpdates:updates error:&v11];
   v6 = v11;
   v7 = SBLogIconStyle();
   v8 = v7;
@@ -853,20 +853,20 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
   *&v15[5] = *MEMORY[0x277D85DE8];
   p_posterStyleState = &self->_posterStyleState;
   v4 = self->_posterStyleState;
-  v5 = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
+  _fetchPosterStyleState = [(SBWallpaperIconStyleCoordinator *)self _fetchPosterStyleState];
   v6 = BSEqualObjects();
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(p_posterStyleState, v5);
+    objc_storeStrong(p_posterStyleState, _fetchPosterStyleState);
   }
 
   p_currentStyleConfiguration = &self->_currentStyleConfiguration;
   v8 = self->_currentStyleConfiguration;
-  v9 = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
+  _fetchStyleConfiguration = [(SBWallpaperIconStyleCoordinator *)self _fetchStyleConfiguration];
   v10 = BSEqualObjects();
   if ((v10 & 1) == 0)
   {
-    objc_storeStrong(p_currentStyleConfiguration, v9);
+    objc_storeStrong(p_currentStyleConfiguration, _fetchStyleConfiguration);
   }
 
   v11 = SBLogIconStyle();
@@ -885,7 +885,7 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138543362;
-      *v15 = v9;
+      *v15 = _fetchStyleConfiguration;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "[_resetStateExpectingUpdates] updatedStyleConfiguration: %{public}@", &v14, 0xCu);
     }
   }
@@ -896,7 +896,7 @@ void __64__SBWallpaperIconStyleCoordinator_fetchWallpaperProminentColor___block_
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = 138543362;
-      *v15 = v5;
+      *v15 = _fetchPosterStyleState;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_INFO, "[_resetStateExpectingUpdates] updatedPosterStyleState: %{public}@", &v14, 0xCu);
     }
   }
@@ -1615,7 +1615,7 @@ __CFString *__53__SBWallpaperIconStyleCoordinator__setupStateCapture__block_invo
   return v19;
 }
 
-- (void)wallpaperWillChangeForVariant:(int64_t)a3
+- (void)wallpaperWillChangeForVariant:(int64_t)variant
 {
   v4 = SBLogIconStyle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1631,7 +1631,7 @@ __CFString *__53__SBWallpaperIconStyleCoordinator__setupStateCapture__block_invo
   self->_currentStyleConfiguration = 0;
 }
 
-- (void)wallpaperDidChangeForVariant:(int64_t)a3
+- (void)wallpaperDidChangeForVariant:(int64_t)variant
 {
   v4 = SBLogIconStyle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1649,28 +1649,28 @@ __CFString *__53__SBWallpaperIconStyleCoordinator__setupStateCapture__block_invo
   [(SBWallpaperIconStyleCoordinator *)self _postersStyleStateDidChange];
 }
 
-- (void)_emitPowerLogForStyleUpdateWithConfiguration:(id)a3 styleState:(id)a4 oldConfiguration:(id)a5
+- (void)_emitPowerLogForStyleUpdateWithConfiguration:(id)configuration styleState:(id)state oldConfiguration:(id)oldConfiguration
 {
   v23[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  stateCopy = state;
+  oldConfigurationCopy = oldConfiguration;
   if (_emitPowerLogForStyleUpdateWithConfiguration_styleState_oldConfiguration__onceToken != -1)
   {
     [SBWallpaperIconStyleCoordinator _emitPowerLogForStyleUpdateWithConfiguration:styleState:oldConfiguration:];
   }
 
-  v10 = [v7 styleType];
-  v11 = [v7 styleVariant];
-  v12 = [v8 iconSize];
-  v13 = [v12 caseInsensitiveCompare:@"large"];
+  styleType = [configurationCopy styleType];
+  styleVariant = [configurationCopy styleVariant];
+  iconSize = [stateCopy iconSize];
+  v13 = [iconSize caseInsensitiveCompare:@"large"];
 
-  if (v9)
+  if (oldConfigurationCopy)
   {
-    if (v10 == 3 && [v9 styleType] == 3)
+    if (styleType == 3 && [oldConfigurationCopy styleType] == 3)
     {
-      v14 = [v7 accentColor];
-      v15 = [v9 accentColor];
+      accentColor = [configurationCopy accentColor];
+      accentColor2 = [oldConfigurationCopy accentColor];
       v16 = BSEqualObjects() ^ 1;
     }
 
@@ -1686,10 +1686,10 @@ __CFString *__53__SBWallpaperIconStyleCoordinator__setupStateCapture__block_invo
   }
 
   v22[0] = @"FilterType";
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:styleType];
   v23[0] = v17;
   v22[1] = @"Variant";
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:styleVariant];
   v23[1] = v18;
   v22[2] = @"Size";
   v19 = [MEMORY[0x277CCABB0] numberWithInt:v13 != 0];
@@ -1723,9 +1723,9 @@ uint64_t __108__SBWallpaperIconStyleCoordinator__emitPowerLogForStyleUpdateWithC
 
 - (void)shouldUseLargeHomeScreenIcons
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getPRIconUserInterfaceSizeLarge(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SBWallpaperIconStyleCoordinator.m" lineNumber:33 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SBWallpaperIconStyleCoordinator.m" lineNumber:33 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
@@ -1742,7 +1742,7 @@ uint64_t __108__SBWallpaperIconStyleCoordinator__emitPowerLogForStyleUpdateWithC
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "[_fetchPosterStyleState] %{public}@", &v2, 0xCu);
 }
 

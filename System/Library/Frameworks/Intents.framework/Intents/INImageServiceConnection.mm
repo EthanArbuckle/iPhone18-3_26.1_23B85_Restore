@@ -1,27 +1,27 @@
 @interface INImageServiceConnection
 + (id)sharedConnection;
-- (BOOL)accessBundleContentForBundleIdentifiers:(id)a3 withBlock:(id)a4 error:(id *)a5;
+- (BOOL)accessBundleContentForBundleIdentifiers:(id)identifiers withBlock:(id)block error:(id *)error;
 - (INImageServiceConnection)init;
 - (NSString)serviceIdentifier;
 - (id)_availableBundleIdentifiers;
 - (id)_localStorageCache;
-- (id)availableSchemasWithError:(id *)a3;
-- (id)fetchShareExtensionIntentForExtensionContextUUID:(id)a3;
-- (id)imageServiceSchemaURLsForBundleIdentifiers:(id)a3 error:(id *)a4;
-- (id)loadDataImageFromImage:(id)a3 scaledSize:(id)a4 error:(id *)a5;
-- (id)loadSchemasForBundleIdentifiers:(id)a3 error:(id *)a4;
-- (id)schemaURLsForBundleIdentifiers:(id)a3;
-- (id)securityScopedURLsForBundleIdentifiers:(id)a3 error:(id *)a4;
-- (id)serviceProxyWithErrorHandler:(id)a3;
-- (id)storeImage:(id)a3 scaled:(BOOL)a4 qualityOfService:(unsigned int)a5 storeType:(unint64_t)a6 error:(id *)a7;
-- (id)synchronousServiceProxyWithErrorHandler:(id)a3;
+- (id)availableSchemasWithError:(id *)error;
+- (id)fetchShareExtensionIntentForExtensionContextUUID:(id)d;
+- (id)imageServiceSchemaURLsForBundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)loadDataImageFromImage:(id)image scaledSize:(id)size error:(id *)error;
+- (id)loadSchemasForBundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)schemaURLsForBundleIdentifiers:(id)identifiers;
+- (id)securityScopedURLsForBundleIdentifiers:(id)identifiers error:(id *)error;
+- (id)serviceProxyWithErrorHandler:(id)handler;
+- (id)storeImage:(id)image scaled:(BOOL)scaled qualityOfService:(unsigned int)service storeType:(unint64_t)type error:(id *)error;
+- (id)synchronousServiceProxyWithErrorHandler:(id)handler;
 - (unint64_t)servicePriority;
 - (void)dealloc;
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5;
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6;
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4;
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4;
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion;
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion;
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion;
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier;
 @end
 
 @implementation INImageServiceConnection
@@ -147,20 +147,20 @@ void __45__INImageServiceConnection_serviceIdentifier__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v8 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     v12 = 136315650;
     v13 = "[INImageServiceConnection storeUserContext:forBundleIdentifier:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = contextCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s Storing UserContext:%@ for bundle:%@ over XPC in intents_helper", &v12, 0x20u);
   }
 
@@ -168,7 +168,7 @@ void __45__INImageServiceConnection_serviceIdentifier__block_invoke(uint64_t a1)
   v10 = v9;
   if (v9)
   {
-    [v9 storeUserContext:v6 forBundleIdentifier:v7];
+    [v9 storeUserContext:contextCopy forBundleIdentifier:identifierCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -191,31 +191,31 @@ void __65__INImageServiceConnection_storeUserContext_forBundleIdentifier___block
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)purgeImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)purgeImageWithIdentifier:(id)identifier completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v18 = "[INImageServiceConnection purgeImageWithIdentifier:completion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s Purging image with identifier %@ over XPC in intents_helper", buf, 0x16u);
   }
 
-  v9 = [(INImageServiceConnection *)self serviceProxyWithErrorHandler:v7];
+  v9 = [(INImageServiceConnection *)self serviceProxyWithErrorHandler:completionCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__INImageServiceConnection_purgeImageWithIdentifier_completion___block_invoke;
   v13[3] = &unk_1E7282858;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = identifierCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   [v9 purgeImageWithIdentifier:v11 completion:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -243,12 +243,12 @@ uint64_t __64__INImageServiceConnection_purgeImageWithIdentifier_completion___bl
   return MEMORY[0x1EEE66BB8](v5, v3);
 }
 
-- (void)retrieveImageWithIdentifier:(id)a3 completion:(id)a4
+- (void)retrieveImageWithIdentifier:(id)identifier completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = INSiriLogContextIntents;
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -256,12 +256,12 @@ uint64_t __64__INImageServiceConnection_purgeImageWithIdentifier_completion___bl
       *buf = 136315394;
       v21 = "[INImageServiceConnection retrieveImageWithIdentifier:completion:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = identifierCopy;
       _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s Retrieving image with identifier %@ over XPC in intents_helper", buf, 0x16u);
     }
 
-    v9 = [(INImageServiceConnection *)self _localStorageCache];
-    v10 = [v9 objectForKey:v6];
+    _localStorageCache = [(INImageServiceConnection *)self _localStorageCache];
+    v10 = [_localStorageCache objectForKey:identifierCopy];
 
     if (v10)
     {
@@ -273,11 +273,11 @@ uint64_t __64__INImageServiceConnection_purgeImageWithIdentifier_completion___bl
         v22 = 2112;
         v23 = v10;
         v24 = 2112;
-        v25 = v6;
+        v25 = identifierCopy;
         _os_log_impl(&dword_18E991000, v11, OS_LOG_TYPE_INFO, "%s Found image %@ in the local cache with identifier %@, returning it", buf, 0x20u);
       }
 
-      v7[2](v7, v10, 0);
+      completionCopy[2](completionCopy, v10, 0);
     }
 
     else
@@ -286,7 +286,7 @@ uint64_t __64__INImageServiceConnection_purgeImageWithIdentifier_completion___bl
       v18[1] = 3221225472;
       v18[2] = __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___block_invoke;
       v18[3] = &unk_1E7282710;
-      v12 = v7;
+      v12 = completionCopy;
       v19 = v12;
       v13 = [(INImageServiceConnection *)self serviceProxyWithErrorHandler:v18];
       v15[0] = MEMORY[0x1E69E9820];
@@ -294,7 +294,7 @@ uint64_t __64__INImageServiceConnection_purgeImageWithIdentifier_completion___bl
       v15[2] = __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___block_invoke_2;
       v15[3] = &unk_1E72835A8;
       v15[4] = self;
-      v16 = v6;
+      v16 = identifierCopy;
       v17 = v12;
       [v13 retrieveImageWithIdentifier:v16 completion:v15];
     }
@@ -320,18 +320,18 @@ void __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___blo
   }
 }
 
-- (id)storeImage:(id)a3 scaled:(BOOL)a4 qualityOfService:(unsigned int)a5 storeType:(unint64_t)a6 error:(id *)a7
+- (id)storeImage:(id)image scaled:(BOOL)scaled qualityOfService:(unsigned int)service storeType:(unint64_t)type error:(id *)error
 {
-  v40 = a4;
+  scaledCopy = scaled;
   v66 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  imageCopy = image;
   v10 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[INImageServiceConnection storeImage:scaled:qualityOfService:storeType:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = imageCopy;
     _os_log_impl(&dword_18E991000, v10, OS_LOG_TYPE_INFO, "%s Storing image %@ over XPC in intents_helper", buf, 0x16u);
   }
 
@@ -341,7 +341,7 @@ void __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___blo
     goto LABEL_11;
   }
 
-  v11 = [(INImageServiceConnection *)self _localStorageCache];
+  _localStorageCache = [(INImageServiceConnection *)self _localStorageCache];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -354,20 +354,20 @@ void __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___blo
   v53 = __Block_byref_object_copy__68261;
   v54 = __Block_byref_object_dispose__68262;
   v55 = 0;
-  v12 = [v11 mapTableRepresentation];
-  v13 = [v12 keyEnumerator];
-  v14 = [v13 allObjects];
+  mapTableRepresentation = [_localStorageCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __79__INImageServiceConnection_storeImage_scaled_qualityOfService_storeType_error___block_invoke;
   v45[3] = &unk_1E7282808;
   v48 = buf;
-  v15 = v11;
+  v15 = _localStorageCache;
   v46 = v15;
-  v16 = v9;
+  v16 = imageCopy;
   v47 = v16;
   v49 = &v50;
-  [v14 enumerateObjectsUsingBlock:v45];
+  [allObjects enumerateObjectsUsingBlock:v45];
 
   v17 = v51[5];
   if (v17)
@@ -390,7 +390,7 @@ void __67__INImageServiceConnection_retrieveImageWithIdentifier_completion___blo
       v19 = v17;
     }
 
-    v12 = v19;
+    mapTableRepresentation = v19;
   }
 
   _Block_object_dispose(&v50, 8);
@@ -402,21 +402,21 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v9 imageURL];
-      v21 = v20;
-      if (v20)
+      imageURL = [imageCopy imageURL];
+      v21 = imageURL;
+      if (imageURL)
       {
-        if ([v20 isFileURL])
+        if ([imageURL isFileURL])
         {
-          v22 = [MEMORY[0x1E696AC08] defaultManager];
-          v23 = [v21 path];
-          v24 = [v22 fileExistsAtPath:v23];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [v21 path];
+          v24 = [defaultManager fileExistsAtPath:path];
 
           if (v24)
           {
-            v25 = [v21 path];
-            v26 = v25;
-            [v25 fileSystemRepresentation];
+            path2 = [v21 path];
+            v26 = path2;
+            [path2 fileSystemRepresentation];
             v27 = *MEMORY[0x1E69E9BA8];
             v28 = *MEMORY[0x1E69E9BE0];
             v29 = sandbox_extension_issue_file();
@@ -424,7 +424,7 @@ LABEL_11:
             if (v29)
             {
               v30 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v29 length:strlen(v29) + 1];
-              [v9 _setSandboxExtensionData:v30];
+              [imageCopy _setSandboxExtensionData:v30];
             }
 
             else
@@ -433,13 +433,13 @@ LABEL_11:
               if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
               {
                 v36 = v31;
-                v37 = [v21 path];
+                path3 = [v21 path];
                 v38 = __error();
                 v39 = strerror(*v38);
                 *buf = 136315650;
                 *&buf[4] = "[INImageServiceConnection storeImage:scaled:qualityOfService:storeType:error:]";
                 *&buf[12] = 2112;
-                *&buf[14] = v37;
+                *&buf[14] = path3;
                 *&buf[22] = 2080;
                 v63 = v39;
                 _os_log_error_impl(&dword_18E991000, v36, OS_LOG_TYPE_ERROR, "%s Couldn't issue sandbox extension for '%@': %s", buf, 0x20u);
@@ -474,20 +474,20 @@ LABEL_11:
     v43[3] = &unk_1E7282830;
     v43[4] = buf;
     v43[5] = &v50;
-    [v32 storeImage:v9 scaled:v40 qualityOfService:a5 storeType:a6 completion:v43];
+    [v32 storeImage:imageCopy scaled:scaledCopy qualityOfService:service storeType:type completion:v43];
 
     if (*(*&buf[8] + 40) && !v51[5])
     {
-      v33 = [(INImageServiceConnection *)self _localStorageCache];
-      [v33 setObject:v9 forKey:*(*&buf[8] + 40)];
+      _localStorageCache2 = [(INImageServiceConnection *)self _localStorageCache];
+      [_localStorageCache2 setObject:imageCopy forKey:*(*&buf[8] + 40)];
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v51[5];
+      *error = v51[5];
     }
 
-    v12 = *(*&buf[8] + 40);
+    mapTableRepresentation = *(*&buf[8] + 40);
     _Block_object_dispose(&v50, 8);
 
     _Block_object_dispose(buf, 8);
@@ -495,7 +495,7 @@ LABEL_11:
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return mapTableRepresentation;
 }
 
 void __79__INImageServiceConnection_storeImage_scaled_qualityOfService_storeType_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -532,9 +532,9 @@ void __79__INImageServiceConnection_storeImage_scaled_qualityOfService_storeType
   *(v9 + 40) = v6;
 }
 
-- (id)fetchShareExtensionIntentForExtensionContextUUID:(id)a3
+- (id)fetchShareExtensionIntentForExtensionContextUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -547,7 +547,7 @@ void __79__INImageServiceConnection_storeImage_scaled_qualityOfService_storeType
   v8[2] = __77__INImageServiceConnection_fetchShareExtensionIntentForExtensionContextUUID___block_invoke_70;
   v8[3] = &unk_1E72827E0;
   v8[4] = &v9;
-  [v5 fetchShareExtensionIntentForExtensionContextUUID:v4 completion:v8];
+  [v5 fetchShareExtensionIntentForExtensionContextUUID:dCopy completion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -572,10 +572,10 @@ void __77__INImageServiceConnection_fetchShareExtensionIntentForExtensionContext
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)securityScopedURLsForBundleIdentifiers:(id)a3 error:(id *)a4
+- (id)securityScopedURLsForBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v19 = 0;
     v20 = &v19;
@@ -601,7 +601,7 @@ void __77__INImageServiceConnection_fetchShareExtensionIntentForExtensionContext
     v11[3] = &unk_1E7282738;
     v11[4] = &v13;
     v11[5] = &v19;
-    [v7 loadBundleURLsForBundleIdentifiers:v6 completion:v11];
+    [v7 loadBundleURLsForBundleIdentifiers:identifiersCopy completion:v11];
 
     v8 = v14[5];
     if (v8)
@@ -612,9 +612,9 @@ void __77__INImageServiceConnection_fetchShareExtensionIntentForExtensionContext
     else
     {
       v9 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v20[5];
+        *error = v20[5];
       }
     }
 
@@ -653,21 +653,21 @@ id __73__INImageServiceConnection_securityScopedURLsForBundleIdentifiers_error__
   return result;
 }
 
-- (BOOL)accessBundleContentForBundleIdentifiers:(id)a3 withBlock:(id)a4 error:(id *)a5
+- (BOOL)accessBundleContentForBundleIdentifiers:(id)identifiers withBlock:(id)block error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  if ([identifiersCopy count])
   {
     v9 = +[INBundleAccessManager sharedManager];
-    v10 = [v7 allObjects];
-    v11 = [v9 grantForBundleIdentifiers:v10 error:a5];
+    allObjects = [identifiersCopy allObjects];
+    v11 = [v9 grantForBundleIdentifiers:allObjects error:error];
 
     v12 = v11 != 0;
     if (v11)
     {
       [v11 acquire];
-      v8[2](v8);
+      blockCopy[2](blockCopy);
       [v11 relinquish];
     }
   }
@@ -680,23 +680,23 @@ id __73__INImageServiceConnection_securityScopedURLsForBundleIdentifiers_error__
   return v12;
 }
 
-- (id)loadSchemasForBundleIdentifiers:(id)a3 error:(id *)a4
+- (id)loadSchemasForBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
-  if (![v6 count])
+  identifiersCopy = identifiers;
+  if (![identifiersCopy count])
   {
     v11 = 0;
     goto LABEL_9;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 isReadableFileAtPath:@"/private/var/containers/Bundle/"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager isReadableFileAtPath:@"/private/var/containers/Bundle/"];
 
   if (v8)
   {
-    v9 = [(INImageServiceConnection *)self schemaURLsForBundleIdentifiers:v6];
+    v9 = [(INImageServiceConnection *)self schemaURLsForBundleIdentifiers:identifiersCopy];
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -705,13 +705,13 @@ id __73__INImageServiceConnection_securityScopedURLsForBundleIdentifiers_error__
   }
 
   v14 = 0;
-  v9 = [(INImageServiceConnection *)self imageServiceSchemaURLsForBundleIdentifiers:v6 error:&v14];
+  v9 = [(INImageServiceConnection *)self imageServiceSchemaURLsForBundleIdentifiers:identifiersCopy error:&v14];
   v10 = v14;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v12 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_8:
@@ -722,17 +722,17 @@ LABEL_9:
   return v11;
 }
 
-- (id)availableSchemasWithError:(id *)a3
+- (id)availableSchemasWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 isReadableFileAtPath:@"/private/var/containers/Bundle/"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager isReadableFileAtPath:@"/private/var/containers/Bundle/"];
 
   if (!v6)
   {
     v13 = 0;
     v8 = [(INImageServiceConnection *)self imageServiceSchemaURLsForBundleIdentifiers:0 error:&v13];
     v9 = v13;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -740,15 +740,15 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v7 = [(INImageServiceConnection *)self _availableBundleIdentifiers];
-  v8 = [(INImageServiceConnection *)self schemaURLsForBundleIdentifiers:v7];
+  _availableBundleIdentifiers = [(INImageServiceConnection *)self _availableBundleIdentifiers];
+  v8 = [(INImageServiceConnection *)self schemaURLsForBundleIdentifiers:_availableBundleIdentifiers];
 
   v9 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_5:
     v10 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
 LABEL_6:
@@ -757,9 +757,9 @@ LABEL_6:
   return v11;
 }
 
-- (id)imageServiceSchemaURLsForBundleIdentifiers:(id)a3 error:(id *)a4
+- (id)imageServiceSchemaURLsForBundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -778,7 +778,7 @@ LABEL_6:
   v15 = __Block_byref_object_copy__68261;
   v16 = __Block_byref_object_dispose__68262;
   v17 = 0;
-  if ([v6 count])
+  if ([identifiersCopy count])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -786,7 +786,7 @@ LABEL_6:
     v10[3] = &unk_1E7282738;
     v10[4] = &v12;
     v10[5] = &v19;
-    [v7 loadSchemaURLsForBundleIdentifiers:v6 completion:v10];
+    [v7 loadSchemaURLsForBundleIdentifiers:identifiersCopy completion:v10];
   }
 
   else
@@ -800,9 +800,9 @@ LABEL_6:
     [v7 loadSchemaURLsWithCompletion:v11];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v8 = [v13[5] if_compactMap:&__block_literal_global_58];
@@ -861,19 +861,19 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
   *a5 = v14;
 }
 
-- (id)schemaURLsForBundleIdentifiers:(id)a3
+- (id)schemaURLsForBundleIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v17 = v3;
+    v17 = identifiersCopy;
     v18 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v3;
+    obj = identifiersCopy;
     v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v4)
     {
@@ -896,15 +896,15 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
             v11 = MEMORY[0x1E695DFD8];
             if (v10)
             {
-              v12 = [v10 intentDefinitionURLs];
-              v13 = [v12 allValues];
-              v14 = [v11 setWithArray:v13];
+              intentDefinitionURLs = [v10 intentDefinitionURLs];
+              allValues = [intentDefinitionURLs allValues];
+              v14 = [v11 setWithArray:allValues];
             }
 
             else
             {
-              v12 = [_INVCIntentDefinitionManagerClass() intentDefinitionURLsForBundleID:v8];
-              v14 = [v11 setWithArray:v12];
+              intentDefinitionURLs = [_INVCIntentDefinitionManagerClass() intentDefinitionURLsForBundleID:v8];
+              v14 = [v11 setWithArray:intentDefinitionURLs];
             }
 
             if ([v14 count])
@@ -922,7 +922,7 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
       while (v5);
     }
 
-    v3 = v17;
+    identifiersCopy = v17;
   }
 
   else
@@ -960,8 +960,8 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
 
         v8 = *(*(&v30 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 bundleIdentifier];
-        [v2 addObject:v10];
+        bundleIdentifier = [v8 bundleIdentifier];
+        [v2 addObject:bundleIdentifier];
 
         objc_autoreleasePoolPop(v9);
       }
@@ -994,14 +994,14 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
 
         v16 = *(*(&v26 + 1) + 8 * j);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 containingBundleRecord];
-        v19 = [v18 bundleIdentifier];
-        v20 = [v2 containsObject:v19];
+        containingBundleRecord = [v16 containingBundleRecord];
+        bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
+        v20 = [v2 containsObject:bundleIdentifier2];
 
         if ((v20 & 1) == 0)
         {
-          v21 = [v16 bundleIdentifier];
-          [v2 addObject:v21];
+          bundleIdentifier3 = [v16 bundleIdentifier];
+          [v2 addObject:bundleIdentifier3];
         }
 
         objc_autoreleasePoolPop(v17);
@@ -1013,10 +1013,10 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
     while (v13);
   }
 
-  v22 = [_INVCIntentDefinitionManagerClass() allBundleIdentifiers];
-  if (v22)
+  allBundleIdentifiers = [_INVCIntentDefinitionManagerClass() allBundleIdentifiers];
+  if (allBundleIdentifiers)
   {
-    [v2 addObjectsFromArray:v22];
+    [v2 addObjectsFromArray:allBundleIdentifiers];
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -1024,61 +1024,61 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
   return v2;
 }
 
-- (void)filePathForImage:(id)a3 usingPortableImageLoader:(id)a4 completion:(id)a5
+- (void)filePathForImage:(id)image usingPortableImageLoader:(id)loader completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v9)
+    if (!loaderCopy)
     {
-      v9 = objc_alloc_init(INPortableImageLoader);
+      loaderCopy = objc_alloc_init(INPortableImageLoader);
     }
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__INImageServiceConnection_filePathForImage_usingPortableImageLoader_completion___block_invoke;
     v13[3] = &unk_1E7282710;
-    v11 = v10;
+    v11 = completionCopy;
     v14 = v11;
     v12 = [(INImageServiceConnection *)self serviceProxyWithErrorHandler:v13];
-    [v12 filePathForImage:v8 usingPortableImageLoader:v9 completion:v11];
+    [v12 filePathForImage:imageCopy usingPortableImageLoader:loaderCopy completion:v11];
   }
 }
 
-- (void)loadDataImageFromImage:(id)a3 usingPortableImageLoader:(id)a4 scaledSize:(id)a5 completion:(id)a6
+- (void)loadDataImageFromImage:(id)image usingPortableImageLoader:(id)loader scaledSize:(id)size completion:(id)completion
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v13)
+  var1 = size.var1;
+  var0 = size.var0;
+  imageCopy = image;
+  loaderCopy = loader;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v12)
+    if (!loaderCopy)
     {
-      v12 = objc_alloc_init(INPortableImageLoader);
+      loaderCopy = objc_alloc_init(INPortableImageLoader);
     }
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __98__INImageServiceConnection_loadDataImageFromImage_usingPortableImageLoader_scaledSize_completion___block_invoke;
     v16[3] = &unk_1E7282710;
-    v14 = v13;
+    v14 = completionCopy;
     v17 = v14;
     v15 = [(INImageServiceConnection *)self serviceProxyWithErrorHandler:v16];
-    [v15 loadDataImageForImage:v11 scaledWidth:v12 scaledHeight:v14 usingPortableImageLoader:var0 completion:var1];
+    [v15 loadDataImageForImage:imageCopy scaledWidth:loaderCopy scaledHeight:v14 usingPortableImageLoader:var0 completion:var1];
   }
 }
 
-- (id)serviceProxyWithErrorHandler:(id)a3
+- (id)serviceProxyWithErrorHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_connection;
-  v6 = [(NSXPCConnection *)self->_connection processIdentifier];
-  v7 = [(NSXPCConnection *)v5 serviceName];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
+  serviceName = [(NSXPCConnection *)v5 serviceName];
   connection = self->_connection;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -1086,8 +1086,8 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
   v19[3] = &unk_1E72826E8;
   v9 = v5;
   v20 = v9;
-  v22 = v6;
-  v10 = v4;
+  v22 = processIdentifier;
+  v10 = handlerCopy;
   v21 = v10;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v19];
   if ([v11 conformsToProtocol:&unk_1F0361998])
@@ -1102,7 +1102,7 @@ void __77__INImageServiceConnection_imageServiceSchemaURLsForBundleIdentifiers_e
     {
       v13 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A278];
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get a valid service proxy for service %@", v7];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to get a valid service proxy for service %@", serviceName];
       v24[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v13 errorWithDomain:@"IntentsErrorDomain" code:6000 userInfo:v15];
@@ -1146,20 +1146,20 @@ void __57__INImageServiceConnection_serviceProxyWithErrorHandler___block_invoke(
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronousServiceProxyWithErrorHandler:(id)a3
+- (id)synchronousServiceProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_connection;
-  v6 = [(NSXPCConnection *)self->_connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   connection = self->_connection;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__INImageServiceConnection_synchronousServiceProxyWithErrorHandler___block_invoke;
   v12[3] = &unk_1E72826E8;
-  v15 = v6;
+  v15 = processIdentifier;
   v13 = v5;
-  v14 = v4;
-  v8 = v4;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v5;
   v10 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
@@ -1191,12 +1191,12 @@ void __68__INImageServiceConnection_synchronousServiceProxyWithErrorHandler___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)loadDataImageFromImage:(id)a3 scaledSize:(id)a4 error:(id *)a5
+- (id)loadDataImageFromImage:(id)image scaledSize:(id)size error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  imageCopy = image;
   v10 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
@@ -1207,7 +1207,7 @@ void __68__INImageServiceConnection_synchronousServiceProxyWithErrorHandler___bl
     *buf = 136315906;
     *&buf[4] = "[INImageServiceConnection loadDataImageFromImage:scaledSize:error:]";
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = imageCopy;
     *&buf[22] = 2112;
     v29 = v13;
     LOWORD(v30) = 2112;
@@ -1240,11 +1240,11 @@ void __68__INImageServiceConnection_synchronousServiceProxyWithErrorHandler___bl
   v20[3] = &unk_1E72826C0;
   v20[4] = buf;
   v20[5] = &v22;
-  [v15 loadDataImageForImage:v9 scaledWidth:v16 scaledHeight:v20 usingPortableImageLoader:var0 completion:var1];
+  [v15 loadDataImageForImage:imageCopy scaledWidth:v16 scaledHeight:v20 usingPortableImageLoader:var0 completion:var1];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v23[5];
+    *error = v23[5];
   }
 
   v17 = *(*&buf[8] + 40);

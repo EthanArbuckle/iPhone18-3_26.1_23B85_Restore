@@ -2,7 +2,7 @@
 + (BOOL)isUnlocked;
 - (TKHostKeychainHandler)init;
 - (id)operations;
-- (void)accessKeychainWithBlock:(id)a3;
+- (void)accessKeychainWithBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -54,17 +54,17 @@
   return v5;
 }
 
-- (void)accessKeychainWithBlock:(id)a3
+- (void)accessKeychainWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000E368;
   v7[3] = &unk_100038C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 

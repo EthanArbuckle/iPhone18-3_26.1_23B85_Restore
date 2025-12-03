@@ -1,32 +1,32 @@
 @interface TPPBDictionaryMatchingRule
-- (BOOL)invertMatch:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matches:(id)a3 error:(id *)a4;
-- (BOOL)performAndMatch:(id)a3 error:(id *)a4;
-- (BOOL)performOrMatch:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)invertMatch:(id)match error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matches:(id)matches error:(id *)error;
+- (BOOL)performAndMatch:(id)match error:(id *)error;
+- (BOOL)performOrMatch:(id)match error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addAnd:(id)a3;
-- (void)addOr:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnd:(id)and;
+- (void)addOr:(id)or;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBDictionaryMatchingRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 52))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 52))
   {
-    self->_type = *(v4 + 12);
+    self->_type = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
@@ -34,7 +34,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -153,24 +153,24 @@
   return v6 ^ v7 ^ [(TPPBDictionaryMatchingRuleFieldExists *)self->_exists hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_type != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_type != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     v11 = 0;
@@ -178,13 +178,13 @@ LABEL_17:
   }
 
   ands = self->_ands;
-  if (ands | *(v4 + 1) && ![(NSMutableArray *)ands isEqual:?])
+  if (ands | *(equalCopy + 1) && ![(NSMutableArray *)ands isEqual:?])
   {
     goto LABEL_17;
   }
 
   ors = self->_ors;
-  if (ors | *(v4 + 5))
+  if (ors | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)ors isEqual:?])
     {
@@ -193,7 +193,7 @@ LABEL_17:
   }
 
   not = self->_not;
-  if (not | *(v4 + 4))
+  if (not | *(equalCopy + 4))
   {
     if (![(TPPBDictionaryMatchingRule *)not isEqual:?])
     {
@@ -202,7 +202,7 @@ LABEL_17:
   }
 
   match = self->_match;
-  if (match | *(v4 + 3))
+  if (match | *(equalCopy + 3))
   {
     if (![(TPPBDictionaryMatchingRuleFieldRegexMatch *)match isEqual:?])
     {
@@ -211,7 +211,7 @@ LABEL_17:
   }
 
   exists = self->_exists;
-  if (exists | *(v4 + 2))
+  if (exists | *(equalCopy + 2))
   {
     v11 = [(TPPBDictionaryMatchingRuleFieldExists *)exists isEqual:?];
   }
@@ -226,10 +226,10 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -257,7 +257,7 @@ LABEL_18:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v31 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v31 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addAnd:v12];
 
         ++v11;
@@ -290,7 +290,7 @@ LABEL_18:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v27 + 1) + 8 * v17) copyWithZone:{a3, v27}];
+        v18 = [*(*(&v27 + 1) + 8 * v17) copyWithZone:{zone, v27}];
         [v6 addOr:v18];
 
         ++v17;
@@ -303,15 +303,15 @@ LABEL_18:
     while (v15);
   }
 
-  v19 = [(TPPBDictionaryMatchingRule *)self->_not copyWithZone:a3];
+  v19 = [(TPPBDictionaryMatchingRule *)self->_not copyWithZone:zone];
   v20 = v6[4];
   v6[4] = v19;
 
-  v21 = [(TPPBDictionaryMatchingRuleFieldRegexMatch *)self->_match copyWithZone:a3];
+  v21 = [(TPPBDictionaryMatchingRuleFieldRegexMatch *)self->_match copyWithZone:zone];
   v22 = v6[3];
   v6[3] = v21;
 
-  v23 = [(TPPBDictionaryMatchingRuleFieldExists *)self->_exists copyWithZone:a3];
+  v23 = [(TPPBDictionaryMatchingRuleFieldExists *)self->_exists copyWithZone:zone];
   v24 = v6[2];
   v6[2] = v23;
 
@@ -319,23 +319,23 @@ LABEL_18:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_type;
-    *(v4 + 52) |= 1u;
+    toCopy[12] = self->_type;
+    *(toCopy + 52) |= 1u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if ([(TPPBDictionaryMatchingRule *)self andsCount])
   {
     [v14 clearAnds];
-    v5 = [(TPPBDictionaryMatchingRule *)self andsCount];
-    if (v5)
+    andsCount = [(TPPBDictionaryMatchingRule *)self andsCount];
+    if (andsCount)
     {
-      v6 = v5;
+      v6 = andsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(TPPBDictionaryMatchingRule *)self andAtIndex:i];
@@ -347,10 +347,10 @@ LABEL_18:
   if ([(TPPBDictionaryMatchingRule *)self orsCount])
   {
     [v14 clearOrs];
-    v9 = [(TPPBDictionaryMatchingRule *)self orsCount];
-    if (v9)
+    orsCount = [(TPPBDictionaryMatchingRule *)self orsCount];
+    if (orsCount)
     {
-      v10 = v9;
+      v10 = orsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(TPPBDictionaryMatchingRule *)self orAtIndex:j];
@@ -378,10 +378,10 @@ LABEL_18:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     type = self->_type;
@@ -473,7 +473,7 @@ LABEL_18:
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     type = self->_type;
@@ -487,7 +487,7 @@ LABEL_18:
       v5 = off_279DEDCC0[type];
     }
 
-    [v3 setObject:v5 forKey:@"type"];
+    [dictionary setObject:v5 forKey:@"type"];
   }
 
   if ([(NSMutableArray *)self->_ands count])
@@ -512,8 +512,8 @@ LABEL_18:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -522,7 +522,7 @@ LABEL_18:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"and"];
+    [dictionary setObject:v6 forKey:@"and"];
   }
 
   if ([(NSMutableArray *)self->_ors count])
@@ -547,8 +547,8 @@ LABEL_18:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -557,33 +557,33 @@ LABEL_18:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"or"];
+    [dictionary setObject:v13 forKey:@"or"];
   }
 
   not = self->_not;
   if (not)
   {
-    v21 = [(TPPBDictionaryMatchingRule *)not dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"not"];
+    dictionaryRepresentation3 = [(TPPBDictionaryMatchingRule *)not dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"not"];
   }
 
   match = self->_match;
   if (match)
   {
-    v23 = [(TPPBDictionaryMatchingRuleFieldRegexMatch *)match dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"match"];
+    dictionaryRepresentation4 = [(TPPBDictionaryMatchingRuleFieldRegexMatch *)match dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"match"];
   }
 
   exists = self->_exists;
   if (exists)
   {
-    v25 = [(TPPBDictionaryMatchingRuleFieldExists *)exists dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"exists"];
+    dictionaryRepresentation5 = [(TPPBDictionaryMatchingRuleFieldExists *)exists dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"exists"];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -592,87 +592,87 @@ LABEL_18:
   v8.receiver = self;
   v8.super_class = TPPBDictionaryMatchingRule;
   v4 = [(TPPBDictionaryMatchingRule *)&v8 description];
-  v5 = [(TPPBDictionaryMatchingRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBDictionaryMatchingRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addOr:(id)a3
+- (void)addOr:(id)or
 {
-  v4 = a3;
+  orCopy = or;
   ors = self->_ors;
-  v8 = v4;
+  v8 = orCopy;
   if (!ors)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ors;
     self->_ors = v6;
 
-    v4 = v8;
+    orCopy = v8;
     ors = self->_ors;
   }
 
-  [(NSMutableArray *)ors addObject:v4];
+  [(NSMutableArray *)ors addObject:orCopy];
 }
 
-- (void)addAnd:(id)a3
+- (void)addAnd:(id)and
 {
-  v4 = a3;
+  andCopy = and;
   ands = self->_ands;
-  v8 = v4;
+  v8 = andCopy;
   if (!ands)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ands;
     self->_ands = v6;
 
-    v4 = v8;
+    andCopy = v8;
     ands = self->_ands;
   }
 
-  [(NSMutableArray *)ands addObject:v4];
+  [(NSMutableArray *)ands addObject:andCopy];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AND_RULE"])
+  else if ([typeCopy isEqualToString:@"AND_RULE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OR_RULE"])
+  else if ([typeCopy isEqualToString:@"OR_RULE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"NOT_RULE"])
+  else if ([typeCopy isEqualToString:@"NOT_RULE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MATCH_RULE"])
+  else if ([typeCopy isEqualToString:@"MATCH_RULE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FIELD_EXISTS"])
+  else if ([typeCopy isEqualToString:@"FIELD_EXISTS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TRUE_RULE"])
+  else if ([typeCopy isEqualToString:@"TRUE_RULE"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"FALSE_RULE"])
+  else if ([typeCopy isEqualToString:@"FALSE_RULE"])
   {
     v4 = 7;
   }
@@ -698,25 +698,25 @@ LABEL_18:
   }
 }
 
-- (BOOL)invertMatch:(id)a3 error:(id *)a4
+- (BOOL)invertMatch:(id)match error:(id *)error
 {
-  v6 = a3;
+  matchCopy = match;
   v7 = [(TPPBDictionaryMatchingRule *)self not];
 
   if (v7)
   {
     v8 = [(TPPBDictionaryMatchingRule *)self not];
     v14 = 0;
-    v9 = [v8 matches:v6 error:&v14];
+    v9 = [v8 matches:matchCopy error:&v14];
     v10 = v14;
 
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v11 = v10;
         v12 = 0;
-        *a4 = v10;
+        *error = v10;
       }
 
       else
@@ -731,10 +731,10 @@ LABEL_18:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"CKKSMatcherError" code:2 description:@"No 'not' subrule present"];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -745,10 +745,10 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)performOrMatch:(id)a3 error:(id *)a4
+- (BOOL)performOrMatch:(id)match error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  matchCopy = match;
   v7 = [(TPPBDictionaryMatchingRule *)self ors];
   if (v7)
   {
@@ -779,15 +779,15 @@ LABEL_18:
 
             v16 = *(*(&v23 + 1) + 8 * i);
             v22 = 0;
-            v17 = [v16 matches:v6 error:&v22];
+            v17 = [v16 matches:matchCopy error:&v22];
             v18 = v22;
             v19 = v18 == 0;
             if (v18)
             {
-              if (a4)
+              if (error)
               {
                 v18 = v18;
-                *a4 = v18;
+                *error = v18;
               }
 
 LABEL_19:
@@ -814,7 +814,7 @@ LABEL_19:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_15:
     v19 = 0;
@@ -822,26 +822,26 @@ LABEL_15:
   }
 
   [MEMORY[0x277CCA9B8] errorWithDomain:@"CKKSMatcherError" code:2 description:@"No 'or' subrules present"];
-  *a4 = v19 = 0;
+  *error = v19 = 0;
 LABEL_20:
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (BOOL)performAndMatch:(id)a3 error:(id *)a4
+- (BOOL)performAndMatch:(id)match error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TPPBDictionaryMatchingRule *)self ands];
-  if (v7 && (v8 = v7, -[TPPBDictionaryMatchingRule ands](self, "ands"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8, v10))
+  matchCopy = match;
+  ands = [(TPPBDictionaryMatchingRule *)self ands];
+  if (ands && (v8 = ands, -[TPPBDictionaryMatchingRule ands](self, "ands"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8, v10))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(TPPBDictionaryMatchingRule *)self ands];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    ands2 = [(TPPBDictionaryMatchingRule *)self ands];
+    v12 = [ands2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -852,19 +852,19 @@ LABEL_20:
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(ands2);
           }
 
           v16 = *(*(&v22 + 1) + 8 * i);
           v21 = 0;
-          v17 = [v16 matches:v6 error:&v21];
+          v17 = [v16 matches:matchCopy error:&v21];
           v18 = v21;
           if (v18)
           {
-            if (a4)
+            if (error)
             {
               v18 = v18;
-              *a4 = v18;
+              *error = v18;
             }
 
             LOBYTE(v17) = 0;
@@ -877,7 +877,7 @@ LABEL_20:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [ands2 countByEnumeratingWithState:&v22 objects:v26 count:16];
         LOBYTE(v17) = 1;
         if (v13)
         {
@@ -896,10 +896,10 @@ LABEL_20:
 LABEL_20:
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"CKKSMatcherError" code:2 description:@"No 'and' subrules present"];
-    *a4 = LOBYTE(v17) = 0;
+    *error = LOBYTE(v17) = 0;
   }
 
   else
@@ -911,27 +911,27 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)matches:(id)a3 error:(id *)a4
+- (BOOL)matches:(id)matches error:(id *)error
 {
-  v6 = a3;
+  matchesCopy = matches;
   if ([(TPPBDictionaryMatchingRule *)self hasType])
   {
-    v7 = [(TPPBDictionaryMatchingRule *)self type];
-    if (v7 > 3)
+    type = [(TPPBDictionaryMatchingRule *)self type];
+    if (type > 3)
     {
-      if (v7 <= 5)
+      if (type <= 5)
       {
-        if (v7 == 4)
+        if (type == 4)
         {
-          v15 = [(TPPBDictionaryMatchingRule *)self match];
+          match = [(TPPBDictionaryMatchingRule *)self match];
 
-          if (v15)
+          if (match)
           {
-            v9 = [(TPPBDictionaryMatchingRule *)self match];
+            match2 = [(TPPBDictionaryMatchingRule *)self match];
             goto LABEL_22;
           }
 
-          if (a4)
+          if (error)
           {
             v10 = MEMORY[0x277CCA9B8];
             v11 = @"No 'match' subrule present";
@@ -943,19 +943,19 @@ LABEL_30:
 
         else
         {
-          v8 = [(TPPBDictionaryMatchingRule *)self exists];
+          exists = [(TPPBDictionaryMatchingRule *)self exists];
 
-          if (v8)
+          if (exists)
           {
-            v9 = [(TPPBDictionaryMatchingRule *)self exists];
+            match2 = [(TPPBDictionaryMatchingRule *)self exists];
 LABEL_22:
-            v16 = v9;
-            v13 = [v9 matches:v6 error:a4];
+            v16 = match2;
+            v13 = [match2 matches:matchesCopy error:error];
 
             goto LABEL_32;
           }
 
-          if (a4)
+          if (error)
           {
             v10 = MEMORY[0x277CCA9B8];
             v11 = @"No 'exists' subrule present";
@@ -968,13 +968,13 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (v7 == 6)
+      if (type == 6)
       {
         v13 = 1;
         goto LABEL_32;
       }
 
-      if (v7 == 7)
+      if (type == 7)
       {
         goto LABEL_31;
       }
@@ -982,20 +982,20 @@ LABEL_31:
       goto LABEL_17;
     }
 
-    switch(v7)
+    switch(type)
     {
       case 1:
-        v14 = [(TPPBDictionaryMatchingRule *)self performAndMatch:v6 error:a4];
+        v14 = [(TPPBDictionaryMatchingRule *)self performAndMatch:matchesCopy error:error];
         break;
       case 2:
-        v14 = [(TPPBDictionaryMatchingRule *)self performOrMatch:v6 error:a4];
+        v14 = [(TPPBDictionaryMatchingRule *)self performOrMatch:matchesCopy error:error];
         break;
       case 3:
-        v14 = [(TPPBDictionaryMatchingRule *)self invertMatch:v6 error:a4];
+        v14 = [(TPPBDictionaryMatchingRule *)self invertMatch:matchesCopy error:error];
         break;
       default:
 LABEL_17:
-        if (!a4)
+        if (!error)
         {
           goto LABEL_31;
         }
@@ -1009,7 +1009,7 @@ LABEL_17:
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_31;
   }
@@ -1020,7 +1020,7 @@ LABEL_9:
   v12 = 0;
 LABEL_10:
   [v10 errorWithDomain:@"CKKSMatcherError" code:v12 description:v11];
-  *a4 = v13 = 0;
+  *error = v13 = 0;
 LABEL_32:
 
   return v13;

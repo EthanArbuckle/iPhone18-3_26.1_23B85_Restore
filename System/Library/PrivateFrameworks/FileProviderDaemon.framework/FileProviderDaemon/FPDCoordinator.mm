@@ -1,26 +1,26 @@
 @interface FPDCoordinator
-+ (id)requestForClaimID:(id)a3;
-- (FPDCoordinator)initWithExtensionManager:(id)a3 callbackQueue:(id)a4;
++ (id)requestForClaimID:(id)d;
+- (FPDCoordinator)initWithExtensionManager:(id)manager callbackQueue:(id)queue;
 - (FPDExtensionManager)extensionManager;
-- (id)_readingIntentWithURL:(id)a3 materializeOption:(unint64_t)a4;
-- (void)coordinateAtURL:(id)a3 recursively:(BOOL)a4 request:(id)a5 handler:(id)a6;
-- (void)coordinateForCopyingFromURL:(id)a3 toURL:(id)a4 request:(id)a5 handler:(id)a6;
-- (void)coordinateForMovingFromURL:(id)a3 toURL:(id)a4 request:(id)a5 handler:(id)a6;
-- (void)coordinateForMovingFromURL:(id)a3 toURL:(id)a4 toTargetFolderURL:(id)a5 targetMaterializeOption:(unint64_t)a6 sourceMaterializeOption:(unint64_t)a7 request:(id)a8 handler:(id)a9;
+- (id)_readingIntentWithURL:(id)l materializeOption:(unint64_t)option;
+- (void)coordinateAtURL:(id)l recursively:(BOOL)recursively request:(id)request handler:(id)handler;
+- (void)coordinateForCopyingFromURL:(id)l toURL:(id)rL request:(id)request handler:(id)handler;
+- (void)coordinateForMovingFromURL:(id)l toURL:(id)rL request:(id)request handler:(id)handler;
+- (void)coordinateForMovingFromURL:(id)l toURL:(id)rL toTargetFolderURL:(id)uRL targetMaterializeOption:(unint64_t)option sourceMaterializeOption:(unint64_t)materializeOption request:(id)request handler:(id)handler;
 - (void)dealloc;
-- (void)resolveItem:(id)a3 completion:(id)a4;
-- (void)resolveItem:(id)a3 recursively:(BOOL)a4 request:(id)a5 andCoordinateWithHandler:(id)a6;
-- (void)startAccessingURLForAtomDuration:(id)a3;
+- (void)resolveItem:(id)item completion:(id)completion;
+- (void)resolveItem:(id)item recursively:(BOOL)recursively request:(id)request andCoordinateWithHandler:(id)handler;
+- (void)startAccessingURLForAtomDuration:(id)duration;
 - (void)stopAccessingAllURLs;
-- (void)stopAccessingURL:(id)a3;
+- (void)stopAccessingURL:(id)l;
 @end
 
 @implementation FPDCoordinator
 
-- (FPDCoordinator)initWithExtensionManager:(id)a3 callbackQueue:(id)a4
+- (FPDCoordinator)initWithExtensionManager:(id)manager callbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = FPDCoordinator;
   v8 = [(FPDCoordinator *)&v16 init];
@@ -30,13 +30,13 @@
     fileCoordinator = v8->_fileCoordinator;
     v8->_fileCoordinator = v9;
 
-    objc_storeStrong(&v8->_callbackQueue, a4);
+    objc_storeStrong(&v8->_callbackQueue, queue);
     v11 = objc_opt_new();
     coordinationQueue = v8->_coordinationQueue;
     v8->_coordinationQueue = v11;
 
-    [(NSOperationQueue *)v8->_coordinationQueue setUnderlyingQueue:v7];
-    objc_storeWeak(&v8->_extensionManager, v6);
+    [(NSOperationQueue *)v8->_coordinationQueue setUnderlyingQueue:queueCopy];
+    objc_storeWeak(&v8->_extensionManager, managerCopy);
     v13 = objc_opt_new();
     currentlyAccessedURLs = v8->_currentlyAccessedURLs;
     v8->_currentlyAccessedURLs = v13;
@@ -67,26 +67,26 @@
   [(FPDCoordinator *)&v5 dealloc];
 }
 
-- (void)startAccessingURLForAtomDuration:(id)a3
+- (void)startAccessingURLForAtomDuration:(id)duration
 {
-  v5 = a3;
+  durationCopy = duration;
   v4 = self->_currentlyAccessedURLs;
   objc_sync_enter(v4);
-  if ((-[NSMutableSet containsObject:](self->_currentlyAccessedURLs, "containsObject:", v5) & 1) == 0 && [v5 startAccessingSecurityScopedResource])
+  if ((-[NSMutableSet containsObject:](self->_currentlyAccessedURLs, "containsObject:", durationCopy) & 1) == 0 && [durationCopy startAccessingSecurityScopedResource])
   {
-    [(NSMutableSet *)self->_currentlyAccessedURLs addObject:v5];
+    [(NSMutableSet *)self->_currentlyAccessedURLs addObject:durationCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)stopAccessingURL:(id)a3
+- (void)stopAccessingURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v4 = self->_currentlyAccessedURLs;
   objc_sync_enter(v4);
-  [v5 stopAccessingSecurityScopedResource];
-  [(NSMutableSet *)self->_currentlyAccessedURLs removeObject:v5];
+  [lCopy stopAccessingSecurityScopedResource];
+  [(NSMutableSet *)self->_currentlyAccessedURLs removeObject:lCopy];
   objc_sync_exit(v4);
 }
 
@@ -130,21 +130,21 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resolveItem:(id)a3 recursively:(BOOL)a4 request:(id)a5 andCoordinateWithHandler:(id)a6
+- (void)resolveItem:(id)item recursively:(BOOL)recursively request:(id)request andCoordinateWithHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  requestCopy = request;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__FPDCoordinator_resolveItem_recursively_request_andCoordinateWithHandler___block_invoke;
   v14[3] = &unk_1E83BF478;
-  v15 = v10;
-  v16 = v11;
-  v17 = a4;
+  v15 = requestCopy;
+  v16 = handlerCopy;
+  recursivelyCopy = recursively;
   v14[4] = self;
-  v12 = v10;
-  v13 = v11;
-  [(FPDCoordinator *)self resolveItem:a3 completion:v14];
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  [(FPDCoordinator *)self resolveItem:item completion:v14];
 }
 
 void __75__FPDCoordinator_resolveItem_recursively_request_andCoordinateWithHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -169,48 +169,48 @@ void __75__FPDCoordinator_resolveItem_recursively_request_andCoordinateWithHandl
   }
 }
 
-- (void)resolveItem:(id)a3 completion:(id)a4
+- (void)resolveItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fileURL];
+  itemCopy = item;
+  completionCopy = completion;
+  fileURL = [itemCopy fileURL];
 
-  if (v8)
+  if (fileURL)
   {
-    v9 = [v6 fileURL];
-    [(FPDCoordinator *)self startAccessingURLForAtomDuration:v9];
+    fileURL2 = [itemCopy fileURL];
+    [(FPDCoordinator *)self startAccessingURLForAtomDuration:fileURL2];
 
-    v10 = [v6 fileURL];
-    v7[2](v7, v10, 0);
+    fileURL3 = [itemCopy fileURL];
+    completionCopy[2](completionCopy, fileURL3, 0);
   }
 
   else
   {
     v21 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_extensionManager);
-    v12 = [v6 itemID];
-    v10 = [WeakRetained domainFromItemID:v12 reason:&v21];
+    itemID = [itemCopy itemID];
+    fileURL3 = [WeakRetained domainFromItemID:itemID reason:&v21];
 
-    if (v10)
+    if (fileURL3)
     {
-      v13 = [v10 defaultBackend];
-      v14 = [v6 itemID];
+      defaultBackend = [fileURL3 defaultBackend];
+      itemID2 = [itemCopy itemID];
       v15 = +[FPDRequest requestForSelf];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __41__FPDCoordinator_resolveItem_completion___block_invoke;
       v18[3] = &unk_1E83BF4C8;
       v18[4] = self;
-      v19 = v6;
-      v20 = v7;
-      [v13 URLForItemID:v14 creatingPlaceholderIfMissing:1 ignoreAlternateContentsURL:1 forBookmarkResolution:0 request:v15 completionHandler:v18];
+      v19 = itemCopy;
+      v20 = completionCopy;
+      [defaultBackend URLForItemID:itemID2 creatingPlaceholderIfMissing:1 ignoreAlternateContentsURL:1 forBookmarkResolution:0 request:v15 completionHandler:v18];
     }
 
     else
     {
-      v16 = [v6 providerDomainID];
+      providerDomainID = [itemCopy providerDomainID];
       v17 = FPProviderNotFoundError();
-      (v7)[2](v7, 0, v17);
+      (completionCopy)[2](completionCopy, 0, v17);
     }
   }
 }
@@ -259,19 +259,19 @@ void __41__FPDCoordinator_resolveItem_completion___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)coordinateAtURL:(id)a3 recursively:(BOOL)a4 request:(id)a5 handler:(id)a6
+- (void)coordinateAtURL:(id)l recursively:(BOOL)recursively request:(id)request handler:(id)handler
 {
-  v8 = a4;
+  recursivelyCopy = recursively;
   v32[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  lCopy = l;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!lCopy)
   {
     [FPDCoordinator coordinateAtURL:a2 recursively:self request:? handler:?];
   }
 
-  if (v8)
+  if (recursivelyCopy)
   {
     v14 = 2;
   }
@@ -281,15 +281,15 @@ void __41__FPDCoordinator_resolveItem_completion___block_invoke_2(uint64_t a1)
     v14 = 1;
   }
 
-  v15 = [(FPDCoordinator *)self _readingIntentWithURL:v11 materializeOption:v14];
+  v15 = [(FPDCoordinator *)self _readingIntentWithURL:lCopy materializeOption:v14];
   v16 = fp_current_or_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    [FPDCoordinator coordinateAtURL:v8 recursively:v11 request:v16 handler:?];
+    [FPDCoordinator coordinateAtURL:recursivelyCopy recursively:lCopy request:v16 handler:?];
   }
 
-  v17 = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
-  registerClaim(v17, v12);
+  _nextClaimIdentifier = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
+  registerClaim(_nextClaimIdentifier, requestCopy);
   fileCoordinator = self->_fileCoordinator;
   v32[0] = v15;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
@@ -298,15 +298,15 @@ void __41__FPDCoordinator_resolveItem_completion___block_invoke_2(uint64_t a1)
   v26[1] = 3221225472;
   v26[2] = __62__FPDCoordinator_coordinateAtURL_recursively_request_handler___block_invoke;
   v26[3] = &unk_1E83BF4F0;
-  v27 = v17;
-  v28 = self;
+  v27 = _nextClaimIdentifier;
+  selfCopy = self;
   v29 = v15;
-  v30 = v11;
-  v31 = v13;
-  v21 = v13;
-  v22 = v11;
+  v30 = lCopy;
+  v31 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = lCopy;
   v23 = v15;
-  v24 = v17;
+  v24 = _nextClaimIdentifier;
   [(NSFileCoordinator *)fileCoordinator coordinateAccessWithIntents:v19 queue:coordinationQueue byAccessor:v26];
 
   v25 = *MEMORY[0x1E69E9840];
@@ -358,17 +358,17 @@ uint64_t __62__FPDCoordinator_coordinateAtURL_recursively_request_handler___bloc
   return [*(*(a1 + 40) + 16) releaseAccess:*(a1 + 48)];
 }
 
-- (void)coordinateForCopyingFromURL:(id)a3 toURL:(id)a4 request:(id)a5 handler:(id)a6
+- (void)coordinateForCopyingFromURL:(id)l toURL:(id)rL request:(id)request handler:(id)handler
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(FPDCoordinator *)self _readingIntentWithURL:v10 materializeOption:2];
-  v15 = [MEMORY[0x1E696ABF0] writingIntentWithURL:v11 options:0];
-  v16 = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
-  registerClaim(v16, v13);
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  requestCopy = request;
+  v14 = [(FPDCoordinator *)self _readingIntentWithURL:lCopy materializeOption:2];
+  v15 = [MEMORY[0x1E696ABF0] writingIntentWithURL:rLCopy options:0];
+  _nextClaimIdentifier = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
+  registerClaim(_nextClaimIdentifier, requestCopy);
 
   fileCoordinator = self->_fileCoordinator;
   v35[0] = v14;
@@ -379,19 +379,19 @@ uint64_t __62__FPDCoordinator_coordinateAtURL_recursively_request_handler___bloc
   v27[1] = 3221225472;
   v27[2] = __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___block_invoke;
   v27[3] = &unk_1E83BF518;
-  v28 = v16;
-  v29 = self;
-  v30 = v10;
-  v31 = v11;
+  v28 = _nextClaimIdentifier;
+  selfCopy = self;
+  v30 = lCopy;
+  v31 = rLCopy;
   v33 = v15;
-  v34 = v12;
+  v34 = handlerCopy;
   v32 = v14;
   v20 = v15;
   v21 = v14;
-  v22 = v12;
-  v23 = v11;
-  v24 = v10;
-  v25 = v16;
+  v22 = handlerCopy;
+  v23 = rLCopy;
+  v24 = lCopy;
+  v25 = _nextClaimIdentifier;
   [(NSFileCoordinator *)fileCoordinator coordinateAccessWithIntents:v18 queue:coordinationQueue byAccessor:v27];
 
   v26 = *MEMORY[0x1E69E9840];
@@ -432,11 +432,11 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
   }
 }
 
-- (id)_readingIntentWithURL:(id)a3 materializeOption:(unint64_t)a4
+- (id)_readingIntentWithURL:(id)l materializeOption:(unint64_t)option
 {
-  if (a4)
+  if (option)
   {
-    if (a4 == 2)
+    if (option == 2)
     {
       v5 = 131073;
     }
@@ -446,7 +446,7 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
       v5 = 1;
     }
 
-    v6 = [MEMORY[0x1E696ABF0] readingIntentWithURL:a3 options:v5];
+    v6 = [MEMORY[0x1E696ABF0] readingIntentWithURL:l options:v5];
   }
 
   else
@@ -457,21 +457,21 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
   return v6;
 }
 
-- (void)coordinateForMovingFromURL:(id)a3 toURL:(id)a4 toTargetFolderURL:(id)a5 targetMaterializeOption:(unint64_t)a6 sourceMaterializeOption:(unint64_t)a7 request:(id)a8 handler:(id)a9
+- (void)coordinateForMovingFromURL:(id)l toURL:(id)rL toTargetFolderURL:(id)uRL targetMaterializeOption:(unint64_t)option sourceMaterializeOption:(unint64_t)materializeOption request:(id)request handler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v39 = a9;
-  v17 = a8;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  handlerCopy = handler;
+  requestCopy = request;
   v18 = objc_opt_new();
-  v19 = [MEMORY[0x1E696ABF0] writingIntentWithURL:v14 options:2];
+  v19 = [MEMORY[0x1E696ABF0] writingIntentWithURL:lCopy options:2];
   [v18 addObject:v19];
-  v20 = [MEMORY[0x1E696ABF0] writingIntentWithURL:v15 options:8];
+  v20 = [MEMORY[0x1E696ABF0] writingIntentWithURL:rLCopy options:8];
   [v18 addObject:v20];
-  v21 = a6;
-  v22 = [(FPDCoordinator *)self _readingIntentWithURL:v16 materializeOption:a6];
+  optionCopy = option;
+  v22 = [(FPDCoordinator *)self _readingIntentWithURL:uRLCopy materializeOption:option];
   if (v22)
   {
     [v18 addObject:v22];
@@ -481,12 +481,12 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
   v23 = fp_current_or_default_log();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a7];
-    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
+    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:materializeOption];
+    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:optionCopy];
     *buf = 138413314;
-    v51 = v14;
+    v51 = lCopy;
     v52 = 2112;
-    v53 = v16;
+    v53 = uRLCopy;
     v54 = 2112;
     v55 = v38;
     v56 = 2112;
@@ -496,8 +496,8 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
     _os_log_debug_impl(&dword_1CEFC7000, v23, OS_LOG_TYPE_DEBUG, "[DEBUG] Request to coordinateForMoving %@ to %@; sourceMaterializeOption %@ targetMaterializeOption %@. Intents (%lu)", buf, 0x34u);
   }
 
-  v24 = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
-  registerClaim(v24, v17);
+  _nextClaimIdentifier = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
+  registerClaim(_nextClaimIdentifier, requestCopy);
 
   fileCoordinator = self->_fileCoordinator;
   coordinationQueue = self->_coordinationQueue;
@@ -505,22 +505,22 @@ void __68__FPDCoordinator_coordinateForCopyingFromURL_toURL_request_handler___bl
   v41[1] = 3221225472;
   v41[2] = __133__FPDCoordinator_coordinateForMovingFromURL_toURL_toTargetFolderURL_targetMaterializeOption_sourceMaterializeOption_request_handler___block_invoke;
   v41[3] = &unk_1E83BF540;
-  v42 = v24;
-  v43 = v14;
-  v44 = v15;
-  v45 = v16;
+  v42 = _nextClaimIdentifier;
+  v43 = lCopy;
+  v44 = rLCopy;
+  v45 = uRLCopy;
   v46 = v19;
   v47 = v20;
   v48 = v22;
-  v49 = v39;
+  v49 = handlerCopy;
   v37 = v22;
   v27 = v20;
   v28 = v19;
-  v29 = v39;
-  v30 = v16;
-  v31 = v15;
-  v32 = v14;
-  v33 = v24;
+  v29 = handlerCopy;
+  v30 = uRLCopy;
+  v31 = rLCopy;
+  v32 = lCopy;
+  v33 = _nextClaimIdentifier;
   [(NSFileCoordinator *)fileCoordinator coordinateAccessWithIntents:v40 queue:coordinationQueue byAccessor:v41];
 
   v34 = *MEMORY[0x1E69E9840];
@@ -551,18 +551,18 @@ void __133__FPDCoordinator_coordinateForMovingFromURL_toURL_toTargetFolderURL_ta
   }
 }
 
-- (void)coordinateForMovingFromURL:(id)a3 toURL:(id)a4 request:(id)a5 handler:(id)a6
+- (void)coordinateForMovingFromURL:(id)l toURL:(id)rL request:(id)request handler:(id)handler
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v13 = MEMORY[0x1E696ABF0];
-  v14 = a5;
-  v15 = [v13 writingIntentWithURL:v10 options:2];
-  v16 = [MEMORY[0x1E696ABF0] writingIntentWithURL:v11 options:8];
-  v17 = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
-  registerClaim(v17, v14);
+  requestCopy = request;
+  v15 = [v13 writingIntentWithURL:lCopy options:2];
+  v16 = [MEMORY[0x1E696ABF0] writingIntentWithURL:rLCopy options:8];
+  _nextClaimIdentifier = [MEMORY[0x1E696ABF8] _nextClaimIdentifier];
+  registerClaim(_nextClaimIdentifier, requestCopy);
 
   fileCoordinator = self->_fileCoordinator;
   v35[0] = v15;
@@ -573,18 +573,18 @@ void __133__FPDCoordinator_coordinateForMovingFromURL_toURL_toTargetFolderURL_ta
   v28[1] = 3221225472;
   v28[2] = __67__FPDCoordinator_coordinateForMovingFromURL_toURL_request_handler___block_invoke;
   v28[3] = &unk_1E83BF568;
-  v29 = v17;
-  v30 = v10;
-  v31 = v11;
+  v29 = _nextClaimIdentifier;
+  v30 = lCopy;
+  v31 = rLCopy;
   v32 = v15;
   v33 = v16;
-  v34 = v12;
+  v34 = handlerCopy;
   v21 = v16;
   v22 = v15;
-  v23 = v12;
-  v24 = v11;
-  v25 = v10;
-  v26 = v17;
+  v23 = handlerCopy;
+  v24 = rLCopy;
+  v25 = lCopy;
+  v26 = _nextClaimIdentifier;
   [(NSFileCoordinator *)fileCoordinator coordinateAccessWithIntents:v19 queue:coordinationQueue byAccessor:v28];
 
   v27 = *MEMORY[0x1E69E9840];
@@ -614,9 +614,9 @@ void __67__FPDCoordinator_coordinateForMovingFromURL_toURL_request_handler___blo
   }
 }
 
-+ (id)requestForClaimID:(id)a3
++ (id)requestForClaimID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (initRequestDictionary_onceToken != -1)
   {
     registerClaim_cold_1();
@@ -624,7 +624,7 @@ void __67__FPDCoordinator_coordinateForMovingFromURL_toURL_request_handler___blo
 
   v4 = requestPerClaimID;
   objc_sync_enter(v4);
-  v5 = [requestPerClaimID objectForKeyedSubscript:v3];
+  v5 = [requestPerClaimID objectForKeyedSubscript:dCopy];
   objc_sync_exit(v4);
 
   return v5;

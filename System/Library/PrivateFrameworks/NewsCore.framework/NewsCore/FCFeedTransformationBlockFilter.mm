@@ -1,20 +1,20 @@
 @interface FCFeedTransformationBlockFilter
-+ (id)blockFilterWithPredicate:(id)a3;
-- (id)transformFeedItems:(id)a3;
++ (id)blockFilterWithPredicate:(id)predicate;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationBlockFilter
 
-+ (id)blockFilterWithPredicate:(id)a3
++ (id)blockFilterWithPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = objc_opt_new();
-  [v4 setPredicate:v3];
+  [v4 setPredicate:predicateCopy];
 
   return v4;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v3 = MEMORY[0x1E696AE18];
   v8[0] = MEMORY[0x1E69E9820];
@@ -22,9 +22,9 @@
   v8[2] = __54__FCFeedTransformationBlockFilter_transformFeedItems___block_invoke;
   v8[3] = &unk_1E7C42A58;
   v8[4] = self;
-  v4 = a3;
+  itemsCopy = items;
   v5 = [v3 predicateWithBlock:v8];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [itemsCopy filteredArrayUsingPredicate:v5];
 
   return v6;
 }

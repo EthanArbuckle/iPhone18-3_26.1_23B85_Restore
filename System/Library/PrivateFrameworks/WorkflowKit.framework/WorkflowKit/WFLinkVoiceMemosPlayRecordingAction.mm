@@ -1,15 +1,15 @@
 @interface WFLinkVoiceMemosPlayRecordingAction
-- (id)localizedCategoryWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
 - (id)overrideLabelsByParameter;
 @end
 
 @implementation WFLinkVoiceMemosPlayRecordingAction
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"VoiceMemosSubcategoryRecordings", @"Recordings");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -17,24 +17,24 @@
 - (id)overrideLabelsByParameter
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFLinkVoiceMemosPlayRecordingAction *)self entityParameterName];
-  if (v3)
+  entityParameterName = [(WFLinkVoiceMemosPlayRecordingAction *)self entityParameterName];
+  if (entityParameterName)
   {
-    v4 = v3;
-    v5 = [(WFLinkEntityAction *)self entityName];
-    if (v5)
+    v4 = entityParameterName;
+    entityName = [(WFLinkEntityAction *)self entityName];
+    if (entityName)
     {
-      v6 = v5;
-      v7 = [(WFLinkEntityAction *)self entityName];
-      v8 = [v7 key];
+      v6 = entityName;
+      entityName2 = [(WFLinkEntityAction *)self entityName];
+      v8 = [entityName2 key];
       v9 = [v8 length];
 
       if (v9)
       {
-        v10 = [(WFLinkVoiceMemosPlayRecordingAction *)self entityParameterName];
-        v15 = v10;
-        v11 = [(WFLinkEntityAction *)self entityName];
-        v16[0] = v11;
+        entityParameterName2 = [(WFLinkVoiceMemosPlayRecordingAction *)self entityParameterName];
+        v15 = entityParameterName2;
+        entityName3 = [(WFLinkEntityAction *)self entityName];
+        v16[0] = entityName3;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
         goto LABEL_7;

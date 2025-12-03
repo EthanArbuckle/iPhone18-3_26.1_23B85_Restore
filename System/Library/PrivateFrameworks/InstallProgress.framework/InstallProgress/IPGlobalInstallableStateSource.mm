@@ -1,16 +1,16 @@
 @interface IPGlobalInstallableStateSource
 + (id)sharedAllAppStateSource;
-- (IPGlobalInstallableStateSource)initWithBehavior:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)globalStateSourceBehavior:(id)a3 stateSourceAvailableForIdentity:(id)a4 withGenerator:(id)a5;
-- (void)removeObserver:(id)a3;
+- (IPGlobalInstallableStateSource)initWithBehavior:(id)behavior;
+- (void)addObserver:(id)observer;
+- (void)globalStateSourceBehavior:(id)behavior stateSourceAvailableForIdentity:(id)identity withGenerator:(id)generator;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation IPGlobalInstallableStateSource
 
-- (IPGlobalInstallableStateSource)initWithBehavior:(id)a3
+- (IPGlobalInstallableStateSource)initWithBehavior:(id)behavior
 {
-  v5 = a3;
+  behaviorCopy = behavior;
   v11.receiver = self;
   v11.super_class = IPGlobalInstallableStateSource;
   v6 = [(IPGlobalInstallableStateSource *)&v11 init];
@@ -18,10 +18,10 @@
   if (v6)
   {
     v6->_ivarLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_behavior, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_behavior, behavior);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
   }
 
   return v7;
@@ -48,16 +48,16 @@ void __57__IPGlobalInstallableStateSource_sharedAllAppStateSource__block_invoke(
   sharedAllAppStateSource_sharedAllAppStateSource = v1;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__IPGlobalInstallableStateSource_addObserver___block_invoke;
   v6[3] = &unk_2797B1E00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   IPDoWithLock(&self->_ivarLock, v6);
 }
 
@@ -74,25 +74,25 @@ uint64_t __46__IPGlobalInstallableStateSource_addObserver___block_invoke(uint64_
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__IPGlobalInstallableStateSource_removeObserver___block_invoke;
   v6[3] = &unk_2797B1E00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   IPDoWithLock(&self->_ivarLock, v6);
 }
 
-- (void)globalStateSourceBehavior:(id)a3 stateSourceAvailableForIdentity:(id)a4 withGenerator:(id)a5
+- (void)globalStateSourceBehavior:(id)behavior stateSourceAvailableForIdentity:(id)identity withGenerator:(id)generator
 {
   v30 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  behaviorCopy = behavior;
+  identityCopy = identity;
+  generatorCopy = generator;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -126,7 +126,7 @@ uint64_t __46__IPGlobalInstallableStateSource_addObserver___block_invoke(uint64_
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = v9[2](v9);
+        v15 = generatorCopy[2](generatorCopy);
         [v14 globalInstallableStateSource:self stateSourceIsAvailable:v15];
 
         ++v13;

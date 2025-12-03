@@ -1,14 +1,14 @@
 @interface PSGWordBoundaryFSTGrammar
 + (id)sharedInstance;
 - (PSGWordBoundaryFSTGrammar)init;
-- (id)_getLMWrapper:(id)a3;
-- (id)_getPrimingToken:(void *)a3 transientTokenID:(unsigned int)a4;
-- (id)getOTAPathForProactiveBundle:(id)a3;
-- (id)triggerAttributesForContext:(id)a3 localeIdentifier:(id)a4;
-- (void)_createLanguageModel:(id)a3;
-- (void)_createLexicon:(id)a3;
+- (id)_getLMWrapper:(id)wrapper;
+- (id)_getPrimingToken:(void *)token transientTokenID:(unsigned int)d;
+- (id)getOTAPathForProactiveBundle:(id)bundle;
+- (id)triggerAttributesForContext:(id)context localeIdentifier:(id)identifier;
+- (void)_createLanguageModel:(id)model;
+- (void)_createLexicon:(id)lexicon;
 - (void)clearLMCache;
-- (void)warmUpForLocaleIdentifier:(id)a3 waitForCompletion:(BOOL)a4;
+- (void)warmUpForLocaleIdentifier:(id)identifier waitForCompletion:(BOOL)completion;
 @end
 
 @implementation PSGWordBoundaryFSTGrammar
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __43__PSGWordBoundaryFSTGrammar_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PSGWordBoundaryFSTGrammar sharedInstance]::_pasOnceToken5 != -1)
   {
     dispatch_once(&+[PSGWordBoundaryFSTGrammar sharedInstance]::_pasOnceToken5, block);
@@ -42,24 +42,24 @@
   [(NSCache *)self->_lmWrapperCache removeAllObjects];
 }
 
-- (void)warmUpForLocaleIdentifier:(id)a3 waitForCompletion:(BOOL)a4
+- (void)warmUpForLocaleIdentifier:(id)identifier waitForCompletion:(BOOL)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = psg_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_debug_impl(&dword_260D18000, v7, OS_LOG_TYPE_DEBUG, "[PSGWordBoundaryFSTGrammar] warming up for %@", &v12, 0xCu);
   }
 
-  v8 = [(PSGWordBoundaryFSTGrammar *)self _getLMWrapper:v6];
-  if (v4)
+  v8 = [(PSGWordBoundaryFSTGrammar *)self _getLMWrapper:identifierCopy];
+  if (completionCopy)
   {
     dispatch_sync(self->_lmWrapperQueue, &__block_literal_global);
-    v9 = [(NSCache *)self->_lmWrapperCache objectForKey:v6];
+    v9 = [(NSCache *)self->_lmWrapperCache objectForKey:identifierCopy];
 
     v8 = v9;
   }
@@ -75,13 +75,13 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)triggerAttributesForContext:(id)a3 localeIdentifier:(id)a4
+- (id)triggerAttributesForContext:(id)context localeIdentifier:(id)identifier
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v53 = a4;
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  contextCopy = context;
+  identifierCopy = identifier;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v7 = [contextCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (![v7 length])
   {
@@ -100,7 +100,7 @@
     _os_signpost_emit_with_name_impl(&dword_260D18000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PSGWordBoundaryFSTGrammar_initialization", &unk_260D2DE82, buf, 2u);
   }
 
-  v52 = [(PSGWordBoundaryFSTGrammar *)self _getLMWrapper:v53];
+  v52 = [(PSGWordBoundaryFSTGrammar *)self _getLMWrapper:identifierCopy];
   v12 = psg_default_log_handle();
   v13 = v12;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
@@ -109,10 +109,10 @@
     _os_signpost_emit_with_name_impl(&dword_260D18000, v13, OS_SIGNPOST_INTERVAL_END, v9, "PSGWordBoundaryFSTGrammar_initialization", &unk_260D2DE82, buf, 2u);
   }
 
-  v14 = [v52 langModel];
-  if (v14)
+  langModel = [v52 langModel];
+  if (langModel)
   {
-    v48 = [v52 lexicon];
+    lexicon = [v52 lexicon];
     v15 = psg_default_log_handle();
     spid = os_signpost_id_generate(v15);
 
@@ -128,7 +128,7 @@
     v55 = 0;
     v56 = 0;
     v18 = v7;
-    v50 = v53;
+    v50 = identifierCopy;
 
     v61 = 0;
     v62 = &v61;
@@ -165,12 +165,12 @@
         *&buf[16] = ___ZL12tokenizeTextPvS_P8NSStringS1__block_invoke;
         v71 = &unk_279ABCD28;
         v76 = SharedVocabulary;
-        v77 = v48;
+        v77 = lexicon;
         v78 = v23;
         v72 = &v61;
         v73 = v59;
         v74 = v57;
-        v75 = v14;
+        v75 = langModel;
         LMStreamTokenizerPushBytes();
         LMStreamTokenizerRelease();
         v24 = v62[6];
@@ -322,7 +322,7 @@ LABEL_54:
 LABEL_57:
         if ((*&v31[v40 - 4] & 0x80000000) != 0)
         {
-          v26 = [(PSGWordBoundaryFSTGrammar *)self _getPrimingToken:v14 transientTokenID:?];
+          v26 = [(PSGWordBoundaryFSTGrammar *)self _getPrimingToken:langModel transientTokenID:?];
         }
 
         else
@@ -352,7 +352,7 @@ LABEL_57:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&buf[4] = v53;
+    *&buf[4] = identifierCopy;
     _os_log_error_impl(&dword_260D18000, v27, OS_LOG_TYPE_ERROR, "Failed to create language model for locale: %@", buf, 0xCu);
   }
 
@@ -365,7 +365,7 @@ LABEL_66:
   return v26;
 }
 
-- (id)_getPrimingToken:(void *)a3 transientTokenID:(unsigned int)a4
+- (id)_getPrimingToken:(void *)token transientTokenID:(unsigned int)d
 {
   v19[4] = *MEMORY[0x277D85DE8];
   LMVocabularyGetSharedVocabulary();
@@ -398,8 +398,8 @@ LABEL_66:
     v19[0] = v8;
     v19[1] = v10;
     v18[2] = *MEMORY[0x277D22F30];
-    v11 = [MEMORY[0x277CBEB68] null];
-    v19[2] = v11;
+    null = [MEMORY[0x277CBEB68] null];
+    v19[2] = null;
     v18[3] = *MEMORY[0x277D22FF8];
     v16 = v6;
     v17 = StringForTokenID;
@@ -420,10 +420,10 @@ LABEL_11:
   return v13;
 }
 
-- (id)_getLMWrapper:(id)a3
+- (id)_getLMWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_lmWrapperCache objectForKey:v4];
+  wrapperCopy = wrapper;
+  v5 = [(NSCache *)self->_lmWrapperCache objectForKey:wrapperCopy];
   if (!v5)
   {
     lmWrapperQueue = self->_lmWrapperQueue;
@@ -432,7 +432,7 @@ LABEL_11:
     v8[2] = __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke;
     v8[3] = &unk_279ABCD78;
     v8[4] = self;
-    v9 = v4;
+    v9 = wrapperCopy;
     dispatch_async(lmWrapperQueue, v8);
   }
 
@@ -479,12 +479,12 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createLexicon:(id)a3
+- (void)_createLexicon:(id)lexicon
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lexiconCopy = lexicon;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v5 = CFLocaleCreate(0, v3);
+  v5 = CFLocaleCreate(0, lexiconCopy);
   CFDictionarySetValue(Mutable, *MEMORY[0x277D230E0], v5);
   v6 = LMLexiconCreate();
   if (!v6)
@@ -493,7 +493,7 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = lexiconCopy;
       _os_log_error_impl(&dword_260D18000, v7, OS_LOG_TYPE_ERROR, "Cannot create lexicon for %@ locale.", &v10, 0xCu);
     }
   }
@@ -505,12 +505,12 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_createLanguageModel:(id)a3
+- (void)_createLanguageModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v6 = CFLocaleCreate(0, v4);
+  v6 = CFLocaleCreate(0, modelCopy);
   CFDictionarySetValue(Mutable, *MEMORY[0x277D230E0], v6);
   v7 = *MEMORY[0x277CBED10];
   CFDictionarySetValue(Mutable, *MEMORY[0x277D23078], *MEMORY[0x277CBED10]);
@@ -518,9 +518,9 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
   CFDictionarySetValue(Mutable, *MEMORY[0x277D230D0], *MEMORY[0x277CBED28]);
   CFDictionarySetValue(Mutable, *MEMORY[0x277D23118], v7);
   CFDictionarySetValue(Mutable, *MEMORY[0x277D230E8], v8);
-  if ([(__CFString *)v4 hasPrefix:@"hi"])
+  if ([(__CFString *)modelCopy hasPrefix:@"hi"])
   {
-    v9 = [(PSGWordBoundaryFSTGrammar *)self getOTAPathForProactiveBundle:v4];
+    v9 = [(PSGWordBoundaryFSTGrammar *)self getOTAPathForProactiveBundle:modelCopy];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v9];
@@ -542,7 +542,7 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = modelCopy;
       _os_log_error_impl(&dword_260D18000, v12, OS_LOG_TYPE_ERROR, "Cannot create language model for %@ locale.", &v15, 0xCu);
     }
   }
@@ -554,10 +554,10 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)getOTAPathForProactiveBundle:(id)a3
+- (id)getOTAPathForProactiveBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = CFLocaleCreate(0, v3);
+  bundleCopy = bundle;
+  v4 = CFLocaleCreate(0, bundleCopy);
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -567,7 +567,7 @@ void __43__PSGWordBoundaryFSTGrammar__getLMWrapper___block_invoke(uint64_t a1)
   LDEnumerateAssetDataItems();
   if (!v10[5])
   {
-    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v3];
+    v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:bundleCopy];
     v6 = [v5 objectForKey:*MEMORY[0x277CBE6C8]];
 
     CFLocaleCreate(0, v6);

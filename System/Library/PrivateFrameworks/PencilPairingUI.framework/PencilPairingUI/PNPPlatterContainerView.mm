@@ -1,37 +1,37 @@
 @interface PNPPlatterContainerView
-- (CGAffineTransform)_dismissedTransformForEdge:(SEL)a3;
+- (CGAffineTransform)_dismissedTransformForEdge:(SEL)edge;
 - (CGAffineTransform)animationTranslation;
-- (CGRect)dismissedFrameForViewWithSize:(CGSize)a3 edge:(unint64_t)a4 inRect:(CGRect)a5;
-- (CGRect)presentedFrameForViewWithSize:(CGSize)a3 edge:(unint64_t)a4 inRect:(CGRect)a5;
-- (PNPPlatterContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_updateShadowForCenteredPlatter:(BOOL)a3;
+- (CGRect)dismissedFrameForViewWithSize:(CGSize)size edge:(unint64_t)edge inRect:(CGRect)rect;
+- (CGRect)presentedFrameForViewWithSize:(CGSize)size edge:(unint64_t)edge inRect:(CGRect)rect;
+- (PNPPlatterContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_updateShadowForCenteredPlatter:(BOOL)platter;
 - (void)initDimmingView;
 - (void)initEffectView;
 - (void)initShadowView;
 - (void)layoutSubviews;
-- (void)setAnimationTranslation:(CGAffineTransform *)a3;
-- (void)setContentView:(id)a3;
+- (void)setAnimationTranslation:(CGAffineTransform *)translation;
+- (void)setContentView:(id)view;
 @end
 
 @implementation PNPPlatterContainerView
 
-- (CGRect)presentedFrameForViewWithSize:(CGSize)a3 edge:(unint64_t)a4 inRect:(CGRect)a5
+- (CGRect)presentedFrameForViewWithSize:(CGSize)size edge:(unint64_t)edge inRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   UIRectCenteredIntegralRect();
   v13 = v11;
   v14 = v12;
-  if (a4 > 3)
+  if (edge > 3)
   {
     v18 = height - (v12 + 44.0);
-    if (a4 != 4)
+    if (edge != 4)
     {
       v18 = v10;
     }
 
-    if (a4 == 8)
+    if (edge == 8)
     {
       v16 = v10;
     }
@@ -41,7 +41,7 @@
       v16 = v18;
     }
 
-    if (a4 == 8)
+    if (edge == 8)
     {
       v17 = width - (v11 + 24.0);
     }
@@ -54,7 +54,7 @@
 
   else
   {
-    if (a4 == 2)
+    if (edge == 2)
     {
       v15 = 24.0;
     }
@@ -64,7 +64,7 @@
       v15 = v9;
     }
 
-    if (a4 == 1)
+    if (edge == 1)
     {
       v16 = 24.0;
     }
@@ -74,7 +74,7 @@
       v16 = v10;
     }
 
-    if (a4 == 1)
+    if (edge == 1)
     {
       v17 = v9;
     }
@@ -85,10 +85,10 @@
     }
   }
 
-  v19 = [MEMORY[0x277D75128] sharedApplication];
-  v20 = [v19 statusBarOrientation] - 3;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v20 = [mEMORY[0x277D75128] statusBarOrientation] - 3;
 
-  if (v20 <= 1 && (a4 == 4 || a4 == 1))
+  if (v20 <= 1 && (edge == 4 || edge == 1))
   {
     [(PNPPlatterContainerView *)self pencilOffset];
     v17 = v17 + v21;
@@ -96,10 +96,10 @@
 
   else
   {
-    v22 = [MEMORY[0x277D75128] sharedApplication];
-    v23 = [v22 statusBarOrientation] - 1;
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    v23 = [mEMORY[0x277D75128]2 statusBarOrientation] - 1;
 
-    if (v23 <= 1 && (a4 == 8 || a4 == 2))
+    if (v23 <= 1 && (edge == 8 || edge == 2))
     {
       [(PNPPlatterContainerView *)self pencilOffset];
       v16 = v16 + v24;
@@ -117,7 +117,7 @@
   return result;
 }
 
-- (CGAffineTransform)_dismissedTransformForEdge:(SEL)a3
+- (CGAffineTransform)_dismissedTransformForEdge:(SEL)edge
 {
   if (!a4)
   {
@@ -132,36 +132,36 @@
   return self;
 }
 
-- (CGRect)dismissedFrameForViewWithSize:(CGSize)a3 edge:(unint64_t)a4 inRect:(CGRect)a5
+- (CGRect)dismissedFrameForViewWithSize:(CGSize)size edge:(unint64_t)edge inRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  [(PNPPlatterContainerView *)self presentedFrameForViewWithSize:a3.width edge:a3.height inRect:a5.origin.x, a5.origin.y];
+  height = rect.size.height;
+  width = rect.size.width;
+  [(PNPPlatterContainerView *)self presentedFrameForViewWithSize:size.width edge:size.height inRect:rect.origin.x, rect.origin.y];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
   if (![(PNPPlatterContainerView *)self dismissUsingAlpha])
   {
-    if (a4 > 3)
+    if (edge > 3)
     {
-      if (a4 == 4)
+      if (edge == 4)
       {
         v12 = height + 24.0;
       }
 
-      else if (a4 == 8)
+      else if (edge == 8)
       {
         v10 = width + 24.0;
       }
     }
 
-    else if (a4 == 1)
+    else if (edge == 1)
     {
       v12 = v12 - (v16 + 48.0);
     }
 
-    else if (a4 == 2)
+    else if (edge == 2)
     {
       v10 = v10 - (v14 + 48.0);
     }
@@ -178,10 +178,10 @@
   return result;
 }
 
-- (void)_updateShadowForCenteredPlatter:(BOOL)a3
+- (void)_updateShadowForCenteredPlatter:(BOOL)platter
 {
   shadowView = self->_shadowView;
-  if (a3)
+  if (platter)
   {
     v5 = 0.0;
     [(PNPPlatterShadowView *)self->_shadowView setShadowRadius:0.0];
@@ -189,8 +189,8 @@
 
   else
   {
-    v6 = [MEMORY[0x277D75348] platterShadowColor];
-    [(PNPPlatterShadowView *)shadowView setShadowColor:v6];
+    platterShadowColor = [MEMORY[0x277D75348] platterShadowColor];
+    [(PNPPlatterShadowView *)shadowView setShadowColor:platterShadowColor];
 
     [(PNPPlatterShadowView *)self->_shadowView setShadowOffset:0.0, 0.0];
     [(PNPPlatterShadowView *)self->_shadowView setShadowRadius:30.0];
@@ -213,12 +213,12 @@
   *&v68.c = v63;
   v62 = *(MEMORY[0x277CBF2C0] + 32);
   *&v68.tx = v62;
-  v7 = [(PNPPlatterContainerView *)self presented];
-  v8 = [(PNPPlatterContainerView *)self edge];
+  presented = [(PNPPlatterContainerView *)self presented];
+  edge = [(PNPPlatterContainerView *)self edge];
   [(PNPPlatterContainerView *)self bounds];
-  if (v7)
+  if (presented)
   {
-    [(PNPPlatterContainerView *)self presentedFrameForViewWithSize:v8 edge:v4 inRect:v6, v9, v10, v11, v12];
+    [(PNPPlatterContainerView *)self presentedFrameForViewWithSize:edge edge:v4 inRect:v6, v9, v10, v11, v12];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -228,7 +228,7 @@
 
   else
   {
-    [(PNPPlatterContainerView *)self dismissedFrameForViewWithSize:v8 edge:v4 inRect:v6, v9, v10, v11, v12];
+    [(PNPPlatterContainerView *)self dismissedFrameForViewWithSize:edge edge:v4 inRect:v6, v9, v10, v11, v12];
     v14 = v22;
     v16 = v23;
     v18 = v24;
@@ -264,9 +264,9 @@
   v67 = v68;
   [(UIView *)v32 setTransform:&v67];
   [(UIView *)self->_contentViewContainerView setAlpha:v21];
-  v33 = [(PNPPlatterContainerView *)self contentView];
+  contentView = [(PNPPlatterContainerView *)self contentView];
   [(UIView *)self->_contentViewContainerView bounds];
-  [v33 setFrame:?];
+  [contentView setFrame:?];
 
   [(PNPPlatterContainerView *)self preferredCornerRadius];
   if (v34 == -1.0)
@@ -314,14 +314,14 @@
   if (!_UISolariumEnabled() || self->_dimmingState)
   {
     [(UIView *)self->_contentViewContainerView _setContinuousCornerRadius:v36];
-    v41 = [(PNPPlatterContainerView *)self edge];
-    v42 = [MEMORY[0x277D75348] platterStrokeColor];
-    v43 = [v42 CGColor];
-    v44 = [(UIView *)self->_contentViewContainerView layer];
-    [v44 setBorderColor:v43];
+    edge2 = [(PNPPlatterContainerView *)self edge];
+    platterStrokeColor = [MEMORY[0x277D75348] platterStrokeColor];
+    cGColor = [platterStrokeColor CGColor];
+    layer = [(UIView *)self->_contentViewContainerView layer];
+    [layer setBorderColor:cGColor];
 
-    v45 = v41 == 0;
-    v46 = v41 == 0;
+    v45 = edge2 == 0;
+    v46 = edge2 == 0;
     if (v45)
     {
       v47 = 0.0;
@@ -332,8 +332,8 @@
       v47 = 0.5;
     }
 
-    v48 = [(UIView *)self->_contentViewContainerView layer];
-    [v48 setBorderWidth:v47];
+    layer2 = [(UIView *)self->_contentViewContainerView layer];
+    [layer2 setBorderWidth:v47];
 
     [(PNPPlatterContainerView *)self _updateShadowForCenteredPlatter:v46];
   }
@@ -341,9 +341,9 @@
   dimmingView = self->_dimmingView;
   [(PNPPlatterContainerView *)self bounds];
   [(UIView *)dimmingView setFrame:?];
-  v50 = [(PNPPlatterContainerView *)self presented];
+  presented2 = [(PNPPlatterContainerView *)self presented];
   v51 = 0.0;
-  if (v50)
+  if (presented2)
   {
     dimmingState = self->_dimmingState;
     if (dimmingState == 1)
@@ -377,28 +377,28 @@
     {
 LABEL_29:
       [(UIVisualEffectView *)self->_effectView setHidden:1];
-      v55 = [MEMORY[0x277D75348] platterContainerColor];
-      [(UIView *)self->_contentViewContainerView setBackgroundColor:v55];
+      platterContainerColor = [MEMORY[0x277D75348] platterContainerColor];
+      [(UIView *)self->_contentViewContainerView setBackgroundColor:platterContainerColor];
     }
   }
 
   else
   {
     [(UIVisualEffectView *)self->_effectView setHidden:0];
-    v56 = [(PNPPlatterContainerView *)self traitCollection];
-    v57 = [v56 userInterfaceStyle];
+    traitCollection = [(PNPPlatterContainerView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v57 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v58 = [MEMORY[0x277D75348] clearColor];
-      [(UIVisualEffectView *)self->_effectView setBackgroundColor:v58];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIVisualEffectView *)self->_effectView setBackgroundColor:clearColor];
       v59 = 1203;
     }
 
     else
     {
-      v58 = [MEMORY[0x277D75348] systemWhiteColor];
-      v60 = [v58 colorWithAlphaComponent:0.9];
+      clearColor = [MEMORY[0x277D75348] systemWhiteColor];
+      v60 = [clearColor colorWithAlphaComponent:0.9];
       [(UIVisualEffectView *)self->_effectView setBackgroundColor:v60];
 
       v59 = 1200;
@@ -412,11 +412,11 @@ LABEL_29:
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)self->_contentView removeFromSuperview];
-  objc_storeStrong(&self->_contentView, a3);
+  objc_storeStrong(&self->_contentView, view);
   if (self->_contentView)
   {
     [(UIView *)self->_contentViewContainerView addSubview:?];
@@ -425,34 +425,34 @@ LABEL_29:
   [(PNPPlatterContainerView *)self setNeedsLayout];
 }
 
-- (void)setAnimationTranslation:(CGAffineTransform *)a3
+- (void)setAnimationTranslation:(CGAffineTransform *)translation
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_animationTranslation.a = *&a3->a;
+  v4 = *&translation->c;
+  v3 = *&translation->tx;
+  *&self->_animationTranslation.a = *&translation->a;
   *&self->_animationTranslation.c = v4;
   *&self->_animationTranslation.tx = v3;
   [(PNPPlatterContainerView *)self setNeedsLayout];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PNPPlatterContainerView *)self contentView];
-  [v8 convertPoint:self fromView:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  contentView = [(PNPPlatterContainerView *)self contentView];
+  [contentView convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PNPPlatterContainerView *)self contentView];
-  v14 = [v13 pointInside:v7 withEvent:{v10, v12}];
+  contentView2 = [(PNPPlatterContainerView *)self contentView];
+  v14 = [contentView2 pointInside:eventCopy withEvent:{v10, v12}];
 
   if (v14)
   {
     v17.receiver = self;
     v17.super_class = PNPPlatterContainerView;
-    v15 = [(PNPPlatterContainerView *)&v17 hitTest:v7 withEvent:x, y];
+    v15 = [(PNPPlatterContainerView *)&v17 hitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -463,11 +463,11 @@ LABEL_29:
   return v15;
 }
 
-- (PNPPlatterContainerView)initWithFrame:(CGRect)a3
+- (PNPPlatterContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PNPPlatterContainerView;
-  v3 = [(PNPPlatterContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PNPPlatterContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   *(v3 + 60) = 0xBFF0000000000000;
   v4 = MEMORY[0x277CBF2C0];
   v5 = *(MEMORY[0x277CBF2C0] + 16);
@@ -527,8 +527,8 @@ LABEL_29:
   effectView = self->_effectView;
   self->_effectView = v3;
 
-  v5 = [MEMORY[0x277D75348] systemWhiteColor];
-  v6 = [v5 colorWithAlphaComponent:0.8];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  v6 = [systemWhiteColor colorWithAlphaComponent:0.8];
   [(UIVisualEffectView *)self->_effectView setBackgroundColor:v6];
 
   [(UIView *)self->_contentViewContainerView addSubview:self->_effectView];

@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneUtilPackedPackedWriter
 - (uint64_t)flush;
-- (void)addWithLong:(int64_t)a3;
+- (void)addWithLong:(int64_t)long;
 - (void)dealloc;
 - (void)finish;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedWriter
 
-- (void)addWithLong:(int64_t)a3
+- (void)addWithLong:(int64_t)long
 {
   valueCount = self->super.valueCount_;
   if (valueCount != -1 && self->written_ >= valueCount)
@@ -30,7 +30,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, off);
   }
 
-  nextValues->buffer_[off] = a3;
+  nextValues->buffer_[off] = long;
   if (off + 1 == self->nextValues_->super.size_)
   {
     [OrgApacheLuceneUtilPackedPackedWriter flush]_0(self);
@@ -41,15 +41,15 @@
 
 - (uint64_t)flush
 {
-  v2 = *(a1 + 40);
-  if (!v2 || ([v2 encodeWithLongArray:*(a1 + 56) withInt:0 withByteArray:*(a1 + 48) withInt:0 withInt:*(a1 + 64)], (v3 = *(a1 + 32)) == 0) || (v4 = objc_msgSend(v3, "byteCountWithInt:withInt:withInt:", 2, *(a1 + 68), *(a1 + 20)), (v5 = *(a1 + 8)) == 0))
+  v2 = *(self + 40);
+  if (!v2 || ([v2 encodeWithLongArray:*(self + 56) withInt:0 withByteArray:*(self + 48) withInt:0 withInt:*(self + 64)], (v3 = *(self + 32)) == 0) || (v4 = objc_msgSend(v3, "byteCountWithInt:withInt:withInt:", 2, *(self + 68), *(self + 20)), (v5 = *(self + 8)) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  [v5 writeBytesWithByteArray:*(a1 + 48) withInt:v4];
-  result = JavaUtilArrays_fillWithLongArray_withLong_(*(a1 + 56), 0);
-  *(a1 + 68) = 0;
+  [v5 writeBytesWithByteArray:*(self + 48) withInt:v4];
+  result = JavaUtilArrays_fillWithLongArray_withLong_(*(self + 56), 0);
+  *(self + 68) = 0;
   return result;
 }
 

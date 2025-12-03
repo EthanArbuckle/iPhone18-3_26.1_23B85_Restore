@@ -11,9 +11,9 @@
   v2 = [(PHResourceChooserList *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     visitedKeys = v2->_visitedKeys;
-    v2->_visitedKeys = v3;
+    v2->_visitedKeys = array;
 
     sortDescriptor = v2->_sortDescriptor;
     v2->_sortDescriptor = 0;

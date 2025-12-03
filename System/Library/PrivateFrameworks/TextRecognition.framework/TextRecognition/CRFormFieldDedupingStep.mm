@@ -1,13 +1,13 @@
 @interface CRFormFieldDedupingStep
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormFieldDedupingStep
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  processCopy = process;
   v7 = CROSLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -23,7 +23,7 @@
   v34[3] = &unk_1E7BC2048;
   v9 = v24;
   v35 = v9;
-  [CRFormPostProcessingManager enumerateFieldsInFields:v6 filter:&__block_literal_global_287 block:v34];
+  [CRFormPostProcessingManager enumerateFieldsInFields:processCopy filter:&__block_literal_global_287 block:v34];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __67__CRFormFieldDedupingStep_process_externalFields_document_options___block_invoke_4;
@@ -33,7 +33,7 @@
   v11 = v8;
   v31 = v11;
   v33 = 1;
-  v12 = v6;
+  v12 = processCopy;
   v32 = v12;
   [CRFormPostProcessingManager enumerateFieldsInFields:v12 filter:&__block_literal_global_289 block:v29];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);

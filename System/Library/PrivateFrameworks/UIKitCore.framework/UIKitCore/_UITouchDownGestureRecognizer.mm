@@ -1,25 +1,25 @@
 @interface _UITouchDownGestureRecognizer
 - (BOOL)gestureIsStillValid;
-- (BOOL)locationIsMostlyInsideView:(CGPoint)a3;
-- (CGPoint)locationInView:(id)a3;
-- (_UITouchDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)locationIsMostlyInsideView:(CGPoint)view;
+- (CGPoint)locationInView:(id)view;
+- (_UITouchDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)activationDelayHandler;
 - (void)cancelActivationDelay;
 - (void)recognizeOrFailForCurrentLocation;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UITouchDownGestureRecognizer
 
-- (_UITouchDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UITouchDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UITouchDownGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -36,23 +36,23 @@
   self->_activationDelay = 0;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v16 = a3;
+  beganCopy = began;
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible && !self->_activationDelay)
   {
-    v5 = [v16 anyObject];
-    v6 = [(UIGestureRecognizer *)self view];
-    [v5 locationInView:v6];
+    anyObject = [beganCopy anyObject];
+    view = [(UIGestureRecognizer *)self view];
+    [anyObject locationInView:view];
     self->_locationInView.x = v7;
     self->_locationInView.y = v8;
 
     [(_UITouchDownGestureRecognizer *)self locationInView:0];
     self->_initialLocationInScreenSpace.x = v9;
     self->_initialLocationInScreenSpace.y = v10;
-    v11 = [(UIGestureRecognizer *)self view];
-    v12 = [v11 _containingScrollView];
-    v13 = dbl_18A681530[v12 == 0];
+    view2 = [(UIGestureRecognizer *)self view];
+    _containingScrollView = [view2 _containingScrollView];
+    v13 = dbl_18A681530[_containingScrollView == 0];
 
     v14 = [[UIDelayedAction alloc] initWithTarget:self action:sel_activationDelayHandler userInfo:0 delay:v13];
     activationDelay = self->_activationDelay;
@@ -60,12 +60,12 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   p_locationInView = &self->_locationInView;
-  v6 = [a3 anyObject];
-  v7 = [(UIGestureRecognizer *)self view];
-  [v6 locationInView:v7];
+  anyObject = [moved anyObject];
+  view = [(UIGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   p_locationInView->x = v8;
   p_locationInView->y = v9;
 
@@ -76,23 +76,23 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
+  endedCopy = ended;
   [(_UITouchDownGestureRecognizer *)self cancelActivationDelay];
-  v6 = [v5 anyObject];
+  anyObject = [endedCopy anyObject];
 
-  v7 = [(UIGestureRecognizer *)self view];
-  [v6 locationInView:v7];
+  view = [(UIGestureRecognizer *)self view];
+  [anyObject locationInView:view];
   self->_locationInView.x = v8;
   self->_locationInView.y = v9;
 
   [(_UITouchDownGestureRecognizer *)self recognizeOrFailForCurrentLocation];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(_UITouchDownGestureRecognizer *)self cancelActivationDelay:a3];
+  [(_UITouchDownGestureRecognizer *)self cancelActivationDelay:cancelled];
   self->_locationInView = *MEMORY[0x1E695EFF8];
   if ([(UIGestureRecognizer *)self state]> UIGestureRecognizerStatePossible)
   {
@@ -122,11 +122,11 @@
   self->_activationDelay = 0;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)self view];
-  [v5 convertPoint:v4 toView:{self->_locationInView.x, self->_locationInView.y}];
+  viewCopy = view;
+  view = [(UIGestureRecognizer *)self view];
+  [view convertPoint:viewCopy toView:{self->_locationInView.x, self->_locationInView.y}];
   v7 = v6;
   v9 = v8;
 
@@ -139,31 +139,31 @@
 
 - (BOOL)gestureIsStillValid
 {
-  v3 = [(UIGestureRecognizer *)self _activeTouchesEvent];
-  v4 = [v3 allTouches];
-  v5 = [v4 count];
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  allTouches = [_activeTouchesEvent allTouches];
+  v5 = [allTouches count];
 
   v13 = v5 <= 1 && ([(_UITouchDownGestureRecognizer *)self locationInView:0], v7 = v6, y = self->_initialLocationInScreenSpace.y, v10 = vabdd_f64(v9, self->_initialLocationInScreenSpace.x), [(_UITouchDownGestureRecognizer *)self allowableMovement], v10 <= v11) && ([(_UITouchDownGestureRecognizer *)self allowableMovement], vabdd_f64(v7, y) <= v12) && [(_UITouchDownGestureRecognizer *)self locationIsMostlyInsideView:self->_locationInView.x, self->_locationInView.y];
   return v13;
 }
 
-- (BOOL)locationIsMostlyInsideView:(CGPoint)a3
+- (BOOL)locationIsMostlyInsideView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIGestureRecognizer *)self view];
+  y = view.y;
+  x = view.x;
+  view = [(UIGestureRecognizer *)self view];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(UIGestureRecognizer *)self view];
-  v9 = v8;
+  view2 = [(UIGestureRecognizer *)self view];
+  v9 = view2;
   if (v7)
   {
-    v10 = [v8 pointMostlyInside:0 withEvent:{x, y}];
+    v10 = [view2 pointMostlyInside:0 withEvent:{x, y}];
   }
 
   else
   {
-    v10 = [v8 pointInside:0 forEvent:{x, y}];
+    v10 = [view2 pointInside:0 forEvent:{x, y}];
   }
 
   v11 = v10;

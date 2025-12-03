@@ -1,5 +1,5 @@
 @interface MUShareSheetPresenter
-- (MUShareSheetPresenter)initWithPlaceItem:(id)a3 presentationOptions:(id)a4;
+- (MUShareSheetPresenter)initWithPlaceItem:(id)item presentationOptions:(id)options;
 - (MUShareSheetPresenterDelegate)delegate;
 - (void)_present;
 - (void)present;
@@ -18,13 +18,13 @@
 {
   if (!self->_activityViewController)
   {
-    v3 = [(MUShareSheetPresenter *)self delegate];
+    delegate = [(MUShareSheetPresenter *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(MUShareSheetPresenter *)self delegate];
-      v6 = [v5 footerActivitiesForShareSheetPresenter:self];
+      delegate2 = [(MUShareSheetPresenter *)self delegate];
+      v6 = [delegate2 footerActivitiesForShareSheetPresenter:self];
     }
 
     else
@@ -42,17 +42,17 @@
     self->_activityViewController = v11;
   }
 
-  v13 = [(MUPresentationOptions *)self->_presentationOptions presentingViewController];
-  if (v13)
+  presentingViewController = [(MUPresentationOptions *)self->_presentationOptions presentingViewController];
+  if (presentingViewController)
   {
-    v24 = v13;
-    v14 = [MEMORY[0x1E696F3B8] sharedInstance];
-    v15 = [v14 userInterfaceIdiom];
+    v24 = presentingViewController;
+    mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+    userInterfaceIdiom = [mEMORY[0x1E696F3B8] userInterfaceIdiom];
 
-    if ((v15 & 0xFFFFFFFD) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFD) == 1)
     {
-      v16 = [v24 _popoverController];
-      if (v16)
+      _popoverController = [v24 _popoverController];
+      if (_popoverController)
       {
 
         v17 = 2;
@@ -71,36 +71,36 @@
       [(MUActivityViewController *)self->_activityViewController setModalPresentationStyle:v17];
     }
 
-    v18 = [(MUActivityViewController *)self->_activityViewController popoverPresentationController];
-    v19 = [(MUPresentationOptions *)self->_presentationOptions sourceItem];
+    popoverPresentationController = [(MUActivityViewController *)self->_activityViewController popoverPresentationController];
+    sourceItem = [(MUPresentationOptions *)self->_presentationOptions sourceItem];
 
     presentationOptions = self->_presentationOptions;
-    if (v19)
+    if (sourceItem)
     {
-      v21 = [(MUPresentationOptions *)presentationOptions sourceItem];
-      [v18 setSourceItem:v21];
+      sourceItem2 = [(MUPresentationOptions *)presentationOptions sourceItem];
+      [popoverPresentationController setSourceItem:sourceItem2];
     }
 
     else
     {
-      v22 = [(MUPresentationOptions *)presentationOptions sourceView];
+      sourceView = [(MUPresentationOptions *)presentationOptions sourceView];
 
-      if (!v22)
+      if (!sourceView)
       {
 LABEL_19:
-        [v18 setPermittedArrowDirections:15];
+        [popoverPresentationController setPermittedArrowDirections:15];
         [v24 presentViewController:self->_activityViewController animated:1 completion:0];
 
-        v13 = v24;
+        presentingViewController = v24;
         goto LABEL_20;
       }
 
-      v23 = [(MUPresentationOptions *)self->_presentationOptions sourceView];
-      [v18 setSourceView:v23];
+      sourceView2 = [(MUPresentationOptions *)self->_presentationOptions sourceView];
+      [popoverPresentationController setSourceView:sourceView2];
 
-      v21 = [(MUPresentationOptions *)self->_presentationOptions sourceView];
-      [v21 bounds];
-      [v18 setSourceRect:?];
+      sourceItem2 = [(MUPresentationOptions *)self->_presentationOptions sourceView];
+      [sourceItem2 bounds];
+      [popoverPresentationController setSourceRect:?];
     }
 
     goto LABEL_19;
@@ -111,13 +111,13 @@ LABEL_20:
 
 - (void)present
 {
-  v3 = [(MUShareSheetPresenter *)self delegate];
+  delegate = [(MUShareSheetPresenter *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MUShareSheetPresenter *)self delegate];
-    v6 = [v5 shareSheetPresenterRequestsOverridenActivityViewController:self];
+    delegate2 = [(MUShareSheetPresenter *)self delegate];
+    v6 = [delegate2 shareSheetPresenterRequestsOverridenActivityViewController:self];
     activityViewController = self->_activityViewController;
     self->_activityViewController = v6;
   }
@@ -125,18 +125,18 @@ LABEL_20:
   [(MUShareSheetPresenter *)self _present];
 }
 
-- (MUShareSheetPresenter)initWithPlaceItem:(id)a3 presentationOptions:(id)a4
+- (MUShareSheetPresenter)initWithPlaceItem:(id)item presentationOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = MUShareSheetPresenter;
   v9 = [(MUShareSheetPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_placeItem, a3);
-    objc_storeStrong(&v10->_presentationOptions, a4);
+    objc_storeStrong(&v9->_placeItem, item);
+    objc_storeStrong(&v10->_presentationOptions, options);
   }
 
   return v10;

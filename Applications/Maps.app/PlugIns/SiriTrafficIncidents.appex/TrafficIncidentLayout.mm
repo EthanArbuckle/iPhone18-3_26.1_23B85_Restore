@@ -1,84 +1,84 @@
 @interface TrafficIncidentLayout
-- (BOOL)isIncidentTypeDisplayedOnMap:(int)a3;
-- (BOOL)isIncidentTypeSupported:(int)a3;
+- (BOOL)isIncidentTypeDisplayedOnMap:(int)map;
+- (BOOL)isIncidentTypeSupported:(int)supported;
 - (BOOL)shouldInvalidateLayout;
-- (BOOL)shouldInvalidateLayoutForLocation:(id)a3;
-- (TrafficIncidentLayout)initWithCoder:(id)a3;
-- (TrafficIncidentLayout)initWithLayoutFormConfig:(id)a3 location:(id)a4;
-- (void)_populateLayoutFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)shouldInvalidateLayoutForLocation:(id)location;
+- (TrafficIncidentLayout)initWithCoder:(id)coder;
+- (TrafficIncidentLayout)initWithLayoutFormConfig:(id)config location:(id)location;
+- (void)_populateLayoutFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrafficIncidentLayout
 
-- (TrafficIncidentLayout)initWithLayoutFormConfig:(id)a3 location:(id)a4
+- (TrafficIncidentLayout)initWithLayoutFormConfig:(id)config location:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  locationCopy = location;
   v11.receiver = self;
   v11.super_class = TrafficIncidentLayout;
   v8 = [(TrafficIncidentLayout *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_layoutRequestLocation, a4);
-    [(TrafficIncidentLayout *)v9 _populateLayoutFields:v6];
+    objc_storeStrong(&v8->_layoutRequestLocation, location);
+    [(TrafficIncidentLayout *)v9 _populateLayoutFields:configCopy];
   }
 
   return v9;
 }
 
-- (TrafficIncidentLayout)initWithCoder:(id)a3
+- (TrafficIncidentLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TrafficIncidentLayout;
   v5 = [(TrafficIncidentLayout *)&v13 init];
   if (v5)
   {
-    v5->_incidentReportingEnabled = [v4 decodeBoolForKey:@"incidentReportingEnabled"];
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"layoutItems"];
+    v5->_incidentReportingEnabled = [coderCopy decodeBoolForKey:@"incidentReportingEnabled"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"layoutItems"];
     layoutItems = v5->_layoutItems;
     v5->_layoutItems = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutRequestLocation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutRequestLocation"];
     layoutRequestLocation = v5->_layoutRequestLocation;
     v5->_layoutRequestLocation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutRequestTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutRequestTime"];
     layoutRequestTime = v5->_layoutRequestTime;
     v5->_layoutRequestTime = v10;
 
-    v5->_layoutTimeToLive = [v4 decodeIntegerForKey:@"layoutTimeToLive"];
-    v5->_layoutFreshnessRadius = [v4 decodeIntegerForKey:@"layoutFreshnessRadius"];
+    v5->_layoutTimeToLive = [coderCopy decodeIntegerForKey:@"layoutTimeToLive"];
+    v5->_layoutFreshnessRadius = [coderCopy decodeIntegerForKey:@"layoutFreshnessRadius"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   incidentReportingEnabled = self->_incidentReportingEnabled;
-  v5 = a3;
-  [v5 encodeBool:incidentReportingEnabled forKey:@"incidentReportingEnabled"];
-  [v5 encodeObject:self->_layoutItems forKey:@"layoutItems"];
-  [v5 encodeObject:self->_layoutRequestLocation forKey:@"layoutRequestLocation"];
-  [v5 encodeObject:self->_layoutRequestTime forKey:@"layoutRequestTime"];
-  [v5 encodeInteger:self->_layoutTimeToLive forKey:@"layoutTimeToLive"];
-  [v5 encodeInteger:self->_layoutFreshnessRadius forKey:@"layoutFreshnessRadius"];
+  coderCopy = coder;
+  [coderCopy encodeBool:incidentReportingEnabled forKey:@"incidentReportingEnabled"];
+  [coderCopy encodeObject:self->_layoutItems forKey:@"layoutItems"];
+  [coderCopy encodeObject:self->_layoutRequestLocation forKey:@"layoutRequestLocation"];
+  [coderCopy encodeObject:self->_layoutRequestTime forKey:@"layoutRequestTime"];
+  [coderCopy encodeInteger:self->_layoutTimeToLive forKey:@"layoutTimeToLive"];
+  [coderCopy encodeInteger:self->_layoutFreshnessRadius forKey:@"layoutFreshnessRadius"];
 }
 
-- (void)_populateLayoutFields:(id)a3
+- (void)_populateLayoutFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   v5 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = v4;
-  v6 = [v4 layoutFields];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v19 = fieldsCopy;
+  layoutFields = [fieldsCopy layoutFields];
+  v7 = [layoutFields countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -90,30 +90,30 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(layoutFields);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * v10) name];
-        v12 = [v11 incidentField];
+        name = [*(*(&v20 + 1) + 8 * v10) name];
+        incidentField = [name incidentField];
 
-        if ([v12 hasDisplayIncidentOnMap])
+        if ([incidentField hasDisplayIncidentOnMap])
         {
-          v13 = [v12 displayIncidentOnMap];
+          displayIncidentOnMap = [incidentField displayIncidentOnMap];
         }
 
         else
         {
-          v13 = 1;
+          displayIncidentOnMap = 1;
         }
 
-        v14 = -[TrafficIncidentLayoutItem initWithTrafficIncidentType:displayOnMap:]([TrafficIncidentLayoutItem alloc], "initWithTrafficIncidentType:displayOnMap:", [v12 trafficType], v13);
+        v14 = -[TrafficIncidentLayoutItem initWithTrafficIncidentType:displayOnMap:]([TrafficIncidentLayoutItem alloc], "initWithTrafficIncidentType:displayOnMap:", [incidentField trafficType], displayIncidentOnMap);
         [(NSArray *)v5 addObject:v14];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [layoutFields countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -132,7 +132,7 @@
   self->_layoutFreshnessRadius = [v19 radius];
 }
 
-- (BOOL)isIncidentTypeDisplayedOnMap:(int)a3
+- (BOOL)isIncidentTypeDisplayedOnMap:(int)map
 {
   if (![(NSArray *)self->_layoutItems count])
   {
@@ -159,9 +159,9 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 incidentType] == a3)
+        if ([v10 incidentType] == map)
         {
-          v11 = [v10 displayIncidentOnMap];
+          displayIncidentOnMap = [v10 displayIncidentOnMap];
           goto LABEL_12;
         }
       }
@@ -176,13 +176,13 @@
     }
   }
 
-  v11 = 1;
+  displayIncidentOnMap = 1;
 LABEL_12:
 
-  return v11;
+  return displayIncidentOnMap;
 }
 
-- (BOOL)isIncidentTypeSupported:(int)a3
+- (BOOL)isIncidentTypeSupported:(int)supported
 {
   if (![(NSArray *)self->_layoutItems count])
   {
@@ -208,7 +208,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) incidentType] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) incidentType] == supported)
         {
           v10 = 1;
           goto LABEL_12;
@@ -234,23 +234,23 @@ LABEL_12:
 - (BOOL)shouldInvalidateLayout
 {
   v3 = +[MKLocationManager sharedLocationManager];
-  v4 = [v3 currentLocation];
-  LOBYTE(self) = [(TrafficIncidentLayout *)self shouldInvalidateLayoutForLocation:v4];
+  currentLocation = [v3 currentLocation];
+  LOBYTE(self) = [(TrafficIncidentLayout *)self shouldInvalidateLayoutForLocation:currentLocation];
 
   return self;
 }
 
-- (BOOL)shouldInvalidateLayoutForLocation:(id)a3
+- (BOOL)shouldInvalidateLayoutForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if (self->_layoutRequestLocation)
   {
     [(NSDate *)self->_layoutRequestTime timeIntervalSinceNow];
     v6 = v5;
-    v7 = [v4 latLng];
-    [v7 coordinate];
-    v8 = [(GEOLocation *)self->_layoutRequestLocation latLng];
-    [v8 coordinate];
+    latLng = [locationCopy latLng];
+    [latLng coordinate];
+    latLng2 = [(GEOLocation *)self->_layoutRequestLocation latLng];
+    [latLng2 coordinate];
     GEOCalculateDistance();
     v10 = v9;
 
@@ -276,7 +276,7 @@ LABEL_12:
       v18[0] = 67109378;
       v18[1] = v12;
       v19 = 2112;
-      v20 = self;
+      selfCopy = self;
       v14 = "TrafficIncidentLayout: shouldInvalidateLayout %d for %@";
       v15 = v13;
       v16 = 18;

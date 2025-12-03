@@ -1,21 +1,21 @@
 @interface HMDDeviceHandle
-+ (id)deviceHandleForDestination:(id)a3;
-+ (id)deviceHandleForDeviceIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deviceHandleForDestination:(id)destination;
++ (id)deviceHandleForDeviceIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGlobal;
 - (BOOL)isLocal;
-- (BOOL)matchesPushToken:(id)a3;
+- (BOOL)matchesPushToken:(id)token;
 - (HMDAccountHandle)accountHandle;
 - (HMDDeviceHandle)init;
-- (HMDDeviceHandle)initWithCoder:(id)a3;
-- (HMDDeviceHandle)initWithInternal:(id)a3;
+- (HMDDeviceHandle)initWithCoder:(id)coder;
+- (HMDDeviceHandle)initWithInternal:(id)internal;
 - (NSData)pushToken;
 - (NSString)destination;
 - (NSUUID)identifier;
 - (id)attributeDescriptions;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDDeviceHandle
@@ -29,30 +29,30 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDDeviceHandle *)self internal];
-  [v4 encodeObject:v5 forKey:@"HM.internal"];
+  coderCopy = coder;
+  internal = [(HMDDeviceHandle *)self internal];
+  [coderCopy encodeObject:internal forKey:@"HM.internal"];
 }
 
-- (HMDDeviceHandle)initWithCoder:(id)a3
+- (HMDDeviceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.internal"];
 
   v6 = [(HMDDeviceHandle *)self initWithInternal:v5];
   return v6;
 }
 
-- (BOOL)matchesPushToken:(id)a3
+- (BOOL)matchesPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(HMDDeviceHandle *)self internal];
+  tokenCopy = token;
+  internal = [(HMDDeviceHandle *)self internal];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = internal;
   }
 
   else
@@ -64,8 +64,8 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
 
   if (v7)
   {
-    v8 = [v7 pushToken];
-    v9 = [v8 isEqualToData:v4];
+    pushToken = [v7 pushToken];
+    v9 = [pushToken isEqualToData:tokenCopy];
   }
 
   else
@@ -78,11 +78,11 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
 
 - (NSData)pushToken
 {
-  v2 = [(HMDDeviceHandle *)self internal];
+  internal = [(HMDDeviceHandle *)self internal];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = internal;
   }
 
   else
@@ -94,64 +94,64 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
 
   if (v4)
   {
-    v5 = [v4 pushToken];
+    pushToken = [v4 pushToken];
   }
 
   else
   {
-    v5 = 0;
+    pushToken = 0;
   }
 
-  return v5;
+  return pushToken;
 }
 
 - (NSString)destination
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 destination];
+  internal = [(HMDDeviceHandle *)self internal];
+  destination = [internal destination];
 
-  return v3;
+  return destination;
 }
 
 - (HMDAccountHandle)accountHandle
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 accountHandle];
+  internal = [(HMDDeviceHandle *)self internal];
+  accountHandle = [internal accountHandle];
 
-  return v3;
+  return accountHandle;
 }
 
 - (BOOL)isGlobal
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 isGlobal];
+  internal = [(HMDDeviceHandle *)self internal];
+  isGlobal = [internal isGlobal];
 
-  return v3;
+  return isGlobal;
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 isLocal];
+  internal = [(HMDDeviceHandle *)self internal];
+  isLocal = [internal isLocal];
 
-  return v3;
+  return isLocal;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 identifier];
+  internal = [(HMDDeviceHandle *)self internal];
+  identifier = [internal identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)attributeDescriptions
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDDeviceHandle *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [v3 initWithName:@"Identifier" value:v5];
+  identifier = [(HMDDeviceHandle *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [v3 initWithName:@"Identifier" value:uUIDString];
   v19[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
   if ([(HMDDeviceHandle *)self isGlobal])
@@ -167,12 +167,12 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
   v9 = [v7 initWithName:@"Type" value:v8];
   v19[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDDeviceHandle *)self internal];
-  v12 = [v10 initWithName:@"Value" value:v11];
+  internal = [(HMDDeviceHandle *)self internal];
+  v12 = [v10 initWithName:@"Value" value:internal];
   v19[2] = v12;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(HMDDeviceHandle *)self accountHandle];
-  v15 = [v13 initWithName:@"Account Handle" value:v14 options:1 formatter:0];
+  accountHandle = [(HMDDeviceHandle *)self accountHandle];
+  v15 = [v13 initWithName:@"Account Handle" value:accountHandle options:1 formatter:0];
   v19[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:4];
 
@@ -184,18 +184,18 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDDeviceHandle *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDDeviceHandle *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -205,7 +205,7 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -216,9 +216,9 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDDeviceHandle *)self internal];
-      v8 = [(HMDDeviceHandle *)v6 internal];
-      v9 = [v7 isEqual:v8];
+      internal = [(HMDDeviceHandle *)self internal];
+      internal2 = [(HMDDeviceHandle *)v6 internal];
+      v9 = [internal isEqual:internal2];
     }
 
     else
@@ -232,36 +232,36 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(HMDDeviceHandle *)self internal];
-  v3 = [v2 hash];
+  internal = [(HMDDeviceHandle *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (HMDDeviceHandle)initWithInternal:(id)a3
+- (HMDDeviceHandle)initWithInternal:(id)internal
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  internalCopy = internal;
+  if (internalCopy)
   {
     v15.receiver = self;
     v15.super_class = HMDDeviceHandle;
     v5 = [(HMDDeviceHandle *)&v15 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [internalCopy copy];
       internal = v5->_internal;
       v5->_internal = v6;
     }
 
-    v8 = v5;
-    v9 = v8;
+    selfCopy = v5;
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -292,10 +292,10 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
   objc_exception_throw(v7);
 }
 
-+ (id)deviceHandleForDeviceIdentifier:(id)a3
++ (id)deviceHandleForDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[_HMDLocalDeviceHandle alloc] initWithDeviceIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[_HMDLocalDeviceHandle alloc] initWithDeviceIdentifier:identifierCopy];
 
   if (v4)
   {
@@ -310,14 +310,14 @@ uint64_t __39___HMDDeviceHandle_identifierNamespace__block_invoke()
   return v5;
 }
 
-+ (id)deviceHandleForDestination:(id)a3
++ (id)deviceHandleForDestination:(id)destination
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  destinationCopy = destination;
+  if (!destinationCopy)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -343,7 +343,7 @@ LABEL_12:
   if (!v5)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -351,7 +351,7 @@ LABEL_12:
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v4;
+      v23 = destinationCopy;
       v14 = "%{public}@Invalid device destination: %@";
       v15 = v12;
       v16 = OS_LOG_TYPE_INFO;
@@ -363,9 +363,9 @@ LABEL_12:
   }
 
   v6 = off_27971A290;
-  if ([_HMDLocalDeviceHandle isValidDestination:v4]|| (v6 = off_27971A288, [_HMDGlobalDeviceHandle isValidDestination:v4]))
+  if ([_HMDLocalDeviceHandle isValidDestination:destinationCopy]|| (v6 = off_27971A288, [_HMDGlobalDeviceHandle isValidDestination:destinationCopy]))
   {
-    v7 = [objc_alloc(*v6) initWithDestination:v4];
+    v7 = [objc_alloc(*v6) initWithDestination:destinationCopy];
     if (v7)
     {
       v8 = v7;

@@ -55,16 +55,16 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v9 = a4;
-  v10 = [v9 unsignedLongLongValue];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-  if (fsgetpath(v17, 0x400uLL, &v16, v10) < 0)
+  if (fsgetpath(v17, 0x400uLL, &v16, unsignedLongLongValue) < 0)
   {
     if (a6)
     {
-      v12 = [MEMORY[0x1E696ABC0] br_errorFromErrno];
-      v13 = v12;
+      br_errorFromErrno = [MEMORY[0x1E696ABC0] br_errorFromErrno];
+      v13 = br_errorFromErrno;
       v11 = 0;
-      *a6 = v12;
+      *a6 = br_errorFromErrno;
     }
 
     else
@@ -86,8 +86,8 @@
 - (id)brc_issueSandboxExtensionOfClass:()BRCPathAdditions error:
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = [a1 path];
-  [v7 fileSystemRepresentation];
+  path = [self path];
+  [path fileSystemRepresentation];
   v8 = sandbox_extension_issue_file();
 
   if (v8)
@@ -99,9 +99,9 @@
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *__error();
-    v12 = [a1 path];
+    path2 = [self path];
     v13 = __error();
-    v14 = [v10 br_errorWithPOSIXCode:v11 description:{@"couldn't issue sandbox extension %s for '%@': %s", a3, v12, strerror(*v13)}];
+    v14 = [v10 br_errorWithPOSIXCode:v11 description:{@"couldn't issue sandbox extension %s for '%@': %s", a3, path2, strerror(*v13)}];
 
     if (v14)
     {
@@ -144,24 +144,24 @@
 + (id)brc_ciconiaWorkDirForCurrentPersona
 {
   v21 = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E69DF068] sharedManager];
-  v1 = [v0 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v2 = [v1 br_personaID];
-  v3 = [v2 isEqual:@"__defaultPersonaID__"];
+  br_personaID = [currentPersona br_personaID];
+  v3 = [br_personaID isEqual:@"__defaultPersonaID__"];
 
   if (v3)
   {
-    v4 = _getCloudDocsAppSupportURL();
-    v5 = [v4 URLByAppendingPathComponent:@"ciconia"];
+    path = _getCloudDocsAppSupportURL();
+    v5 = [path URLByAppendingPathComponent:@"ciconia"];
     goto LABEL_14;
   }
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.iCloudDrive"];
-  v4 = [v7 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.iCloudDrive"];
+  path = [v7 path];
 
-  if (!v4)
+  if (!path)
   {
     [@"group.com.apple.iCloudDrive" UTF8String];
     v8 = container_create_or_lookup_path_for_current_user();
@@ -182,23 +182,23 @@
     }
 
     v9 = v8;
-    v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
+    path = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
     free(v9);
-    if (!v4)
+    if (!path)
     {
 LABEL_10:
       v12 = brc_bread_crumbs("+[NSURL(BRCPathAdditions) brc_ciconiaWorkDirForCurrentPersona]", 125);
       v13 = brc_default_log(0, 0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        +[(NSURL(BRCPathAdditions) *)v1];
+        +[(NSURL(BRCPathAdditions) *)currentPersona];
       }
 
-      v4 = 0;
+      path = 0;
     }
   }
 
-  v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+  v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
   v5 = [v14 URLByAppendingPathComponent:@"ciconia"];
 
 LABEL_14:
@@ -210,11 +210,11 @@ LABEL_14:
 + (id)brc_ciconiaDumpDirForCurrentPersona
 {
   v20 = *MEMORY[0x1E69E9840];
-  v0 = [MEMORY[0x1E69DF068] sharedManager];
-  v1 = [v0 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
-  v2 = [v1 br_personaID];
-  v3 = [v2 isEqual:@"__defaultPersonaID__"];
+  br_personaID = [currentPersona br_personaID];
+  v3 = [br_personaID isEqual:@"__defaultPersonaID__"];
 
   if (v3)
   {
@@ -224,18 +224,18 @@ LABEL_14:
 
   else
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.CloudDocs"];
-    v8 = [v7 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.CloudDocs"];
+    path = [v7 path];
 
-    if (!v8)
+    if (!path)
     {
       [@"group.com.apple.CloudDocs" UTF8String];
       v9 = container_create_or_lookup_path_for_current_user();
       if (v9)
       {
         v10 = v9;
-        v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
+        path = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
         free(v10);
       }
 
@@ -252,11 +252,11 @@ LABEL_14:
           _os_log_impl(&dword_1AE2A9000, v12, OS_LOG_TYPE_DEFAULT, "[WARNING] container_create_or_lookup_path_for_current_user() failed with %llu%@", buf, 0x16u);
         }
 
-        v8 = 0;
+        path = 0;
       }
     }
 
-    v4 = [v8 stringByAppendingPathComponent:@"Library/Application Support/CloudDocs"];
+    v4 = [path stringByAppendingPathComponent:@"Library/Application Support/CloudDocs"];
 
     v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
     v5 = [v13 URLByAppendingPathComponent:@"session/ciconia_diagnose"];
@@ -280,8 +280,8 @@ LABEL_14:
     *a4 = 0;
   }
 
-  v8 = [a1 path];
-  v9 = fstatat(-1, [v8 fileSystemRepresentation], &v18, 32);
+  path = [self path];
+  v9 = fstatat(-1, [path fileSystemRepresentation], &v18, 32);
 
   if (v9 < 0)
   {
@@ -292,9 +292,9 @@ LABEL_14:
 
     else
     {
-      v11 = [MEMORY[0x1E696ABC0] br_errorFromErrno];
-      v10 = v11 == 0;
-      if (v11)
+      br_errorFromErrno = [MEMORY[0x1E696ABC0] br_errorFromErrno];
+      v10 = br_errorFromErrno == 0;
+      if (br_errorFromErrno)
       {
         v12 = brc_bread_crumbs("[NSURL(BRCPathAdditions) brc_isDirectory:isExists:withError:]", 170);
         v13 = brc_default_log(0, 0);
@@ -311,7 +311,7 @@ LABEL_14:
 
           v22 = v17;
           v23 = 2112;
-          v24 = v11;
+          v24 = br_errorFromErrno;
           v25 = 2112;
           v26 = v12;
           _os_log_error_impl(&dword_1AE2A9000, v13, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
@@ -320,8 +320,8 @@ LABEL_14:
 
       if (a5)
       {
-        v14 = v11;
-        *a5 = v11;
+        v14 = br_errorFromErrno;
+        *a5 = br_errorFromErrno;
       }
     }
   }
@@ -346,8 +346,8 @@ LABEL_14:
 
 - (id)brc_appBundleID
 {
-  v1 = [a1 lastPathComponent];
-  v2 = extensionInFilename([v1 fileSystemRepresentation]);
+  lastPathComponent = [self lastPathComponent];
+  v2 = extensionInFilename([lastPathComponent fileSystemRepresentation]);
 
   if (v2)
   {
@@ -360,8 +360,8 @@ LABEL_14:
 
 - (id)brc_appContainerID
 {
-  v1 = [a1 lastPathComponent];
-  v2 = extensionInFilename([v1 fileSystemRepresentation]);
+  lastPathComponent = [self lastPathComponent];
+  v2 = extensionInFilename([lastPathComponent fileSystemRepresentation]);
 
   if (v2)
   {
@@ -376,7 +376,7 @@ LABEL_14:
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_fault_impl(&dword_1AE2A9000, log, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Unable to retrieve base path for current persona : %@%@", &v4, 0x16u);

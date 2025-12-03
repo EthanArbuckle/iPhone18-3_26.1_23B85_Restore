@@ -17,13 +17,13 @@
 
 - (uint64_t)Schema
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS14BiomeSQLParser6SchemaVGMd, &_sSDySS14BiomeSQLParser6SchemaVGMR);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -31,13 +31,13 @@
 
 - (uint64_t)SQLDataType
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS14BiomeSQLParser11SQLDataTypeOGMd, &_sSDySS14BiomeSQLParser11SQLDataTypeOGMR);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

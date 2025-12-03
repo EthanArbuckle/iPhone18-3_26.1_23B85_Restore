@@ -1,114 +1,114 @@
 @interface PXFeedAutoplayController
 - (BOOL)isContainerLayoutVisible;
 - (PXFeedAutoplayController)init;
-- (PXFeedAutoplayController)initWithContainerLayout:(id)a3 viewModel:(id)a4 itemLayoutDesiredPlayStateSetter:(id)a5;
-- (void)addItemLayout:(id)a3 withDisplayAsset:(id)a4;
+- (PXFeedAutoplayController)initWithContainerLayout:(id)layout viewModel:(id)model itemLayoutDesiredPlayStateSetter:(id)setter;
+- (void)addItemLayout:(id)layout withDisplayAsset:(id)asset;
 - (void)containerLayoutVisibleRectDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)removeItemLayout:(id)a3;
-- (void)setIsContainerLayoutVisible:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)removeItemLayout:(id)layout;
+- (void)setIsContainerLayoutVisible:(BOOL)visible;
 @end
 
 @implementation PXFeedAutoplayController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ViewModelObservationContext_222359 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewModelObservationContext_222359 != context)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXFeedAutoplayController.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedAutoplayController.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 4) != 0)
+  if ((changeCopy & 4) != 0)
   {
-    v14 = v9;
-    v10 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-    v11 = [v10 shouldPlayOnHover];
+    v14 = observableCopy;
+    inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+    shouldPlayOnHover = [inlinePlaybackController shouldPlayOnHover];
 
-    v9 = v14;
-    if (v11)
+    observableCopy = v14;
+    if (shouldPlayOnHover)
     {
-      v12 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-      [v12 invalidatePlayingRecords];
+      inlinePlaybackController2 = [(PXFeedAutoplayController *)self inlinePlaybackController];
+      [inlinePlaybackController2 invalidatePlayingRecords];
 
-      v9 = v14;
+      observableCopy = v14;
     }
   }
 }
 
-- (void)removeItemLayout:(id)a3
+- (void)removeItemLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
-  v9 = [v5 objectForKey:v4];
+  layoutCopy = layout;
+  playbackRecordsByItemLayout = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
+  v9 = [playbackRecordsByItemLayout objectForKey:layoutCopy];
 
-  v6 = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
-  [v6 removeObjectForKey:v4];
+  playbackRecordsByItemLayout2 = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
+  [playbackRecordsByItemLayout2 removeObjectForKey:layoutCopy];
 
-  v7 = [v9 displayAsset];
-  if (v7)
+  displayAsset = [v9 displayAsset];
+  if (displayAsset)
   {
-    v8 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-    [v8 checkInPlaybackRecordForDisplayAsset:v7];
+    inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+    [inlinePlaybackController checkInPlaybackRecordForDisplayAsset:displayAsset];
   }
 }
 
-- (void)addItemLayout:(id)a3 withDisplayAsset:(id)a4
+- (void)addItemLayout:(id)layout withDisplayAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-  [v7 displayScale];
-  v11 = [v8 checkOutPlaybackRecordForDisplayAsset:v6 mediaProvider:0 geometryReference:v7 spriteSize:*MEMORY[0x1E695F060] displayScale:{*(MEMORY[0x1E695F060] + 8), v9}];
+  assetCopy = asset;
+  layoutCopy = layout;
+  inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+  [layoutCopy displayScale];
+  v11 = [inlinePlaybackController checkOutPlaybackRecordForDisplayAsset:assetCopy mediaProvider:0 geometryReference:layoutCopy spriteSize:*MEMORY[0x1E695F060] displayScale:{*(MEMORY[0x1E695F060] + 8), v9}];
 
-  v10 = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
-  [v10 setObject:v11 forKey:v7];
+  playbackRecordsByItemLayout = [(PXFeedAutoplayController *)self playbackRecordsByItemLayout];
+  [playbackRecordsByItemLayout setObject:v11 forKey:layoutCopy];
 }
 
-- (void)setIsContainerLayoutVisible:(BOOL)a3
+- (void)setIsContainerLayoutVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-  [v4 setIsContentViewVisible:v3];
+  visibleCopy = visible;
+  inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+  [inlinePlaybackController setIsContentViewVisible:visibleCopy];
 }
 
 - (BOOL)isContainerLayoutVisible
 {
-  v2 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-  v3 = [v2 isContentViewVisible];
+  inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+  isContentViewVisible = [inlinePlaybackController isContentViewVisible];
 
-  return v3;
+  return isContentViewVisible;
 }
 
 - (void)containerLayoutVisibleRectDidChange
 {
-  v2 = [(PXFeedAutoplayController *)self inlinePlaybackController];
-  [v2 visibleRectDidChange];
+  inlinePlaybackController = [(PXFeedAutoplayController *)self inlinePlaybackController];
+  [inlinePlaybackController visibleRectDidChange];
 }
 
-- (PXFeedAutoplayController)initWithContainerLayout:(id)a3 viewModel:(id)a4 itemLayoutDesiredPlayStateSetter:(id)a5
+- (PXFeedAutoplayController)initWithContainerLayout:(id)layout viewModel:(id)model itemLayoutDesiredPlayStateSetter:(id)setter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  layoutCopy = layout;
+  modelCopy = model;
+  setterCopy = setter;
   v17.receiver = self;
   v17.super_class = PXFeedAutoplayController;
   v11 = [(PXFeedAutoplayController *)&v17 init];
   if (v11)
   {
-    v12 = [[_PXFeedInlinePlaybackController alloc] initWithContainerLayout:v8 viewModel:v9 itemLayoutDesiredPlayStateSetter:v10];
+    v12 = [[_PXFeedInlinePlaybackController alloc] initWithContainerLayout:layoutCopy viewModel:modelCopy itemLayoutDesiredPlayStateSetter:setterCopy];
     inlinePlaybackController = v11->_inlinePlaybackController;
     v11->_inlinePlaybackController = v12;
 
-    v14 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     playbackRecordsByItemLayout = v11->_playbackRecordsByItemLayout;
-    v11->_playbackRecordsByItemLayout = v14;
+    v11->_playbackRecordsByItemLayout = weakToStrongObjectsMapTable;
 
-    [v9 registerChangeObserver:v11 context:ViewModelObservationContext_222359];
+    [modelCopy registerChangeObserver:v11 context:ViewModelObservationContext_222359];
   }
 
   return v11;
@@ -116,8 +116,8 @@
 
 - (PXFeedAutoplayController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedAutoplayController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXFeedAutoplayController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedAutoplayController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXFeedAutoplayController init]"}];
 
   abort();
 }

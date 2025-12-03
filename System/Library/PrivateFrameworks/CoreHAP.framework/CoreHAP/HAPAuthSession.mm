@@ -1,17 +1,17 @@
 @interface HAPAuthSession
 + (id)logCategory;
-- (BOOL)getToken:(id *)a3 uuid:(id *)a4;
-- (HAPAuthSession)initWithRole:(int64_t)a3 instanceId:(id)a4 delegate:(id)a5;
+- (BOOL)getToken:(id *)token uuid:(id *)uuid;
+- (HAPAuthSession)initWithRole:(int64_t)role instanceId:(id)id delegate:(id)delegate;
 - (HAPAuthSessionDelegate)delegate;
 - (id)logIdentifier;
 - (void)_reportAuthFailure;
 - (void)_resetSession;
 - (void)_sendTokenRequest;
-- (void)_sendTokenUpdateRequest:(id)a3;
-- (void)continueAuthAfterValidation:(BOOL)a3;
-- (void)handleAuthExchangeData:(id)a3 withHeader:(BOOL)a4;
+- (void)_sendTokenUpdateRequest:(id)request;
+- (void)continueAuthAfterValidation:(BOOL)validation;
+- (void)handleAuthExchangeData:(id)data withHeader:(BOOL)header;
 - (void)resetSession;
-- (void)sendTokenUpdateRequest:(id)a3;
+- (void)sendTokenUpdateRequest:(id)request;
 @end
 
 @implementation HAPAuthSession
@@ -27,11 +27,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HAPAuthSession *)self delegate];
+  delegate = [(HAPAuthSession *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = delegate;
   }
 
   else
@@ -41,14 +41,14 @@
 
   v7 = v6;
 
-  v8 = [v7 identifier];
+  identifier = [v7 identifier];
 
-  v9 = [v3 stringWithFormat:@"%@ %@", v4, v8];
+  v9 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   return v9;
 }
 
-- (BOOL)getToken:(id *)a3 uuid:(id *)a4
+- (BOOL)getToken:(id *)token uuid:(id *)uuid
 {
   v21 = 0;
   v22 = &v21;
@@ -66,7 +66,7 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(HAPAuthSession *)self workQueue];
+  workQueue = [(HAPAuthSession *)self workQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __32__HAPAuthSession_getToken_uuid___block_invoke;
@@ -75,16 +75,16 @@
   v10[5] = &v21;
   v10[6] = &v15;
   v10[7] = &v11;
-  dispatch_sync(v7, v10);
+  dispatch_sync(workQueue, v10);
 
-  if (a3)
+  if (token)
   {
-    *a3 = v22[5];
+    *token = v22[5];
   }
 
-  if (a4)
+  if (uuid)
   {
-    *a4 = v16[5];
+    *uuid = v16[5];
   }
 
   v8 = *(v12 + 24);
@@ -102,18 +102,18 @@ void __32__HAPAuthSession_getToken_uuid___block_invoke(void *a1)
   *(*(a1[7] + 8) + 24) = 1;
 }
 
-- (void)_sendTokenUpdateRequest:(id)a3
+- (void)_sendTokenUpdateRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v18 = 0;
-  v5 = [(HAPAuthSession *)self instanceId];
-  v6 = [HAPProtocolMessages constructTokenUpdateRequest:v5 token:v4 outTID:&v18];
+  instanceId = [(HAPAuthSession *)self instanceId];
+  v6 = [HAPProtocolMessages constructTokenUpdateRequest:instanceId token:requestCopy outTID:&v18];
 
   if (!v6)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -128,18 +128,18 @@ LABEL_10:
 LABEL_11:
 
     objc_autoreleasePoolPop(v9);
-    [(HAPAuthSession *)v10 _reportAuthFailure];
+    [(HAPAuthSession *)selfCopy2 _reportAuthFailure];
     goto LABEL_12;
   }
 
-  [(HAPAuthSession *)self setToken1:v4];
+  [(HAPAuthSession *)self setToken1:requestCopy];
   [(HAPAuthSession *)self setCurrentTID:v18];
   [(HAPAuthSession *)self setCurrentState:8];
-  v7 = [(HAPAuthSession *)self delegate];
+  delegate = [(HAPAuthSession *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy2 = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if ((v8 & 1) == 0)
@@ -167,38 +167,38 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v9);
-  v14 = [(HAPAuthSession *)v10 delegate];
-  [v14 authSession:v10 sendAuthExchangeData:v6];
+  delegate2 = [(HAPAuthSession *)selfCopy2 delegate];
+  [delegate2 authSession:selfCopy2 sendAuthExchangeData:v6];
 
 LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendTokenUpdateRequest:(id)a3
+- (void)sendTokenUpdateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HAPAuthSession *)self workQueue];
+  requestCopy = request;
+  workQueue = [(HAPAuthSession *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HAPAuthSession_sendTokenUpdateRequest___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (void)_sendTokenRequest
 {
   v27 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v3 = [(HAPAuthSession *)self instanceId];
-  v4 = [HAPProtocolMessages constructTokenRequest:v3 outTID:&v22];
+  instanceId = [(HAPAuthSession *)self instanceId];
+  v4 = [HAPProtocolMessages constructTokenRequest:instanceId outTID:&v22];
 
   if (!v4)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -209,14 +209,14 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = v13;
+    v16 = selfCopy;
     goto LABEL_12;
   }
 
   [(HAPAuthSession *)self setCurrentState:4];
   [(HAPAuthSession *)self setCurrentTID:v22];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy2 = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -229,13 +229,13 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HAPAuthSession *)v6 delegate];
+  delegate = [(HAPAuthSession *)selfCopy2 delegate];
   v10 = objc_opt_respondsToSelector();
 
   if ((v10 & 1) == 0)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v6;
+    v18 = selfCopy2;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -252,23 +252,23 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v11 = [(HAPAuthSession *)v6 delegate];
-  [v11 authSession:v6 sendAuthExchangeData:v4];
+  delegate2 = [(HAPAuthSession *)selfCopy2 delegate];
+  [delegate2 authSession:selfCopy2 sendAuthExchangeData:v4];
 
 LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continueAuthAfterValidation:(BOOL)a3
+- (void)continueAuthAfterValidation:(BOOL)validation
 {
-  v5 = [(HAPAuthSession *)self workQueue];
+  workQueue = [(HAPAuthSession *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__HAPAuthSession_continueAuthAfterValidation___block_invoke;
   v6[3] = &unk_2786D6768;
-  v7 = a3;
+  validationCopy = validation;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(workQueue, v6);
 }
 
 void __46__HAPAuthSession_continueAuthAfterValidation___block_invoke(uint64_t a1)
@@ -319,44 +319,44 @@ void __46__HAPAuthSession_continueAuthAfterValidation___block_invoke(uint64_t a1
   }
 }
 
-- (void)handleAuthExchangeData:(id)a3 withHeader:(BOOL)a4
+- (void)handleAuthExchangeData:(id)data withHeader:(BOOL)header
 {
-  v6 = a3;
-  v7 = [(HAPAuthSession *)self workQueue];
+  dataCopy = data;
+  workQueue = [(HAPAuthSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HAPAuthSession_handleAuthExchangeData_withHeader___block_invoke;
   block[3] = &unk_2786D5268;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dataCopy;
+  headerCopy = header;
+  v8 = dataCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)resetSession
 {
-  v3 = [(HAPAuthSession *)self workQueue];
+  workQueue = [(HAPAuthSession *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __30__HAPAuthSession_resetSession__block_invoke;
   block[3] = &unk_2786D6CA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)_reportAuthFailure
 {
   v15 = *MEMORY[0x277D85DE8];
   [(HAPAuthSession *)self _resetSession];
-  v3 = [(HAPAuthSession *)self delegate];
+  delegate = [(HAPAuthSession *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v12 = [(HAPAuthSession *)self delegate];
+    delegate2 = [(HAPAuthSession *)self delegate];
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:17 userInfo:0];
-    [v12 authSession:self authComplete:v5];
+    [delegate2 authSession:self authComplete:v5];
 
     v6 = *MEMORY[0x277D85DE8];
   }
@@ -364,7 +364,7 @@ void __46__HAPAuthSession_continueAuthAfterValidation___block_invoke(uint64_t a1
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -384,28 +384,28 @@ void __46__HAPAuthSession_continueAuthAfterValidation___block_invoke(uint64_t a1
   v17 = *MEMORY[0x277D85DE8];
   [(HAPAuthSession *)self setToken2:0];
   [(HAPAuthSession *)self setToken1:0];
-  v3 = [(HAPAuthSession *)self role];
-  if (v3 == 1)
+  role = [(HAPAuthSession *)self role];
+  if (role == 1)
   {
     v7 = *MEMORY[0x277D85DE8];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 2;
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!role)
   {
     v4 = *MEMORY[0x277D85DE8];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
 LABEL_5:
 
-    [(HAPAuthSession *)v5 setCurrentState:v6];
+    [(HAPAuthSession *)selfCopy2 setCurrentState:v6];
     return;
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy3 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -413,7 +413,7 @@ LABEL_5:
     v13 = 138543618;
     v14 = v11;
     v15 = 2048;
-    v16 = [(HAPAuthSession *)v9 role];
+    role2 = [(HAPAuthSession *)selfCopy3 role];
     _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_ERROR, "%{public}@Invalid auth session role: %tu", &v13, 0x16u);
   }
 
@@ -421,15 +421,15 @@ LABEL_5:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HAPAuthSession)initWithRole:(int64_t)a3 instanceId:(id)a4 delegate:(id)a5
+- (HAPAuthSession)initWithRole:(int64_t)role instanceId:(id)id delegate:(id)delegate
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  idCopy = id;
+  delegateCopy = delegate;
+  v11 = delegateCopy;
+  if (delegateCopy)
   {
-    if ([v10 conformsToProtocol:&unk_283EAD308])
+    if ([delegateCopy conformsToProtocol:&unk_283EAD308])
     {
       v30.receiver = self;
       v30.super_class = HAPAuthSession;
@@ -443,8 +443,8 @@ LABEL_5:
         workQueue = v13->_workQueue;
         v13->_workQueue = v16;
 
-        v13->_role = a3;
-        objc_storeStrong(&v13->_instanceId, a4);
+        v13->_role = role;
+        objc_storeStrong(&v13->_instanceId, id);
         objc_storeWeak(&v13->_delegate, v11);
         v13->_currentState = 0;
         [(HAPAuthSession *)v13 _resetSession];
@@ -456,7 +456,7 @@ LABEL_5:
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -467,17 +467,17 @@ LABEL_5:
       }
 
       objc_autoreleasePoolPop(v24);
-      v18 = v25;
+      v18 = selfCopy;
     }
 
-    v20 = v18;
+    selfCopy2 = v18;
     v23 = v18;
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {

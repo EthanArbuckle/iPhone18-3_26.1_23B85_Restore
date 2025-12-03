@@ -1,16 +1,16 @@
 @interface MultiChoiceSelectionModal
-- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithCoder:(id)a3;
-- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)didTapDismiss:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithCoder:(id)coder;
+- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)didTapDismiss:(id)dismiss;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation MultiChoiceSelectionModal
 
-- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithCoder:(id)a3
+- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11FTMInternal25MultiChoiceSelectionModal____lazy_storage___tableView) = 0;
   *&self->$__lazy_storage_$_tableView[OBJC_IVAR____TtC11FTMInternal25MultiChoiceSelectionModal_delegate] = 0;
@@ -31,23 +31,23 @@
   sub_10021CA84();
 }
 
-- (void)didTapDismiss:(id)a3
+- (void)didTapDismiss:(id)dismiss
 {
   v4 = objc_allocWithZone(UIImpactFeedbackGenerator);
-  v6 = self;
+  selfCopy = self;
   v5 = [v4 initWithStyle:1];
   [v5 impactOccurred];
-  [(MultiChoiceSelectionModal *)v6 dismissViewControllerAnimated:1 completion:0];
+  [(MultiChoiceSelectionModal *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FTMInternal25MultiChoiceSelectionModal)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -59,7 +59,7 @@
   return 75.0;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -67,14 +67,14 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  sub_10021D284(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10021D284(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -82,9 +82,9 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_10021D4DC(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_10021D4DC(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 

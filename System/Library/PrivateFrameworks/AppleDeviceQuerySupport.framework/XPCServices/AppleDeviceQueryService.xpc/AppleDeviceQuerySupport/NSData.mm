@@ -1,27 +1,27 @@
 @interface NSData
-+ (id)dataFromHexString:(id)a3;
++ (id)dataFromHexString:(id)string;
 @end
 
 @implementation NSData
 
-+ (id)dataFromHexString:(id)a3
++ (id)dataFromHexString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v19[1] = 0;
   v17 = 0;
-  if ([v3 length] && (v4 = objc_msgSend(v3, "length"), v4 == (objc_msgSend(v3, "length") & 0xFFFFFFFFFFFFFFFELL)))
+  if ([stringCopy length] && (v4 = objc_msgSend(stringCopy, "length"), v4 == (objc_msgSend(stringCopy, "length") & 0xFFFFFFFFFFFFFFFELL)))
   {
     v5 = objc_alloc_init(NSMutableData);
-    v6 = [v3 length];
+    v6 = [stringCopy length];
     if (v6 >= 2)
     {
       v7 = 0;
       v8 = v6 >> 1;
       while (2)
       {
-        __str = [v3 characterAtIndex:2 * v7];
+        __str = [stringCopy characterAtIndex:2 * v7];
         v9 = 1;
-        v19[0] = [v3 characterAtIndex:(2 * v7) | 1];
+        v19[0] = [stringCopy characterAtIndex:(2 * v7) | 1];
         p_str = &__str;
         do
         {

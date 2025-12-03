@@ -1,14 +1,14 @@
 @interface SMBDirEnumerator
-- (id)init:(id)a3 onShareID:(unsigned int)a4 dirName:(id)a5 lookUpName:(id)a6 searchFlags:(unsigned int)a7 outParameters:(smb_dir_enum_out *)a8 callBack:(id)a9;
+- (id)init:(id)init onShareID:(unsigned int)d dirName:(id)name lookUpName:(id)upName searchFlags:(unsigned int)flags outParameters:(smb_dir_enum_out *)parameters callBack:(id)back;
 - (int)cleanup;
-- (int)commonInit:(id)a3 onShareID:(unsigned int)a4 dirName:(id)a5 lookUpName:(id)a6 searchFlags:(unsigned int)a7 outParameters:(smb_dir_enum_out *)a8;
-- (int)smb2_smb_parse_query_dir_both_dir_info:(mdchain *)a3;
-- (int)smb2_smb_query_dir:(unsigned int *)a3;
-- (int)smb2fs_smb_findnext:(unsigned int *)a3;
+- (int)commonInit:(id)init onShareID:(unsigned int)d dirName:(id)name lookUpName:(id)upName searchFlags:(unsigned int)flags outParameters:(smb_dir_enum_out *)parameters;
+- (int)smb2_smb_parse_query_dir_both_dir_info:(mdchain *)smb2_smb_parse_query_dir_both_dir_info;
+- (int)smb2_smb_query_dir:(unsigned int *)smb2_smb_query_dir;
+- (int)smb2fs_smb_findnext:(unsigned int *)smb2fs_smb_findnext;
 - (void)cleanup;
-- (void)close:(smb_dir_enum_out *)a3 callBack:(id)a4;
+- (void)close:(smb_dir_enum_out *)close callBack:(id)back;
 - (void)dealloc;
-- (void)nextEntry:(id)a3 outParameters:(smb_dir_enum_out *)a4 callBack:(id)a5;
+- (void)nextEntry:(id)entry outParameters:(smb_dir_enum_out *)parameters callBack:(id)back;
 @end
 
 @implementation SMBDirEnumerator
@@ -41,7 +41,7 @@
 
   if (self->f_need_close != 1)
   {
-    LODWORD(v9) = 0;
+    LODWORD(sock) = 0;
     goto LABEL_18;
   }
 
@@ -49,20 +49,20 @@
   if (!pd)
   {
 LABEL_16:
-    LODWORD(v9) = 0;
+    LODWORD(sock) = 0;
     goto LABEL_17;
   }
 
-  v9 = [(SMBPiston *)pd sock];
-  if (v9)
+  sock = [(SMBPiston *)pd sock];
+  if (sock)
   {
-    v10 = [(SMBPiston *)self->pd sock];
-    v11 = [v10 writeEnabled];
+    sock2 = [(SMBPiston *)self->pd sock];
+    writeEnabled = [sock2 writeEnabled];
 
-    if (v11 == 1)
+    if (writeEnabled == 1)
     {
-      LODWORD(v9) = smb2_smb_close_fid(self->f_node, 0, 0);
-      if (v9 && piston_log_level && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+      LODWORD(sock) = smb2_smb_close_fid(self->f_node, 0, 0);
+      if (sock && piston_log_level && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [SMBDirEnumerator cleanup];
       }
@@ -82,45 +82,45 @@ LABEL_18:
     pthread_mutex_unlock(&self->f_dir_lock);
   }
 
-  return v9;
+  return sock;
 }
 
-- (void)close:(smb_dir_enum_out *)a3 callBack:(id)a4
+- (void)close:(smb_dir_enum_out *)close callBack:(id)back
 {
-  v5 = a4;
+  backCopy = back;
   objc_initWeak(&location, self);
-  v6 = [(SMBPiston *)self->pd sock];
+  sock = [(SMBPiston *)self->pd sock];
 
-  if (!v6)
+  if (!sock)
   {
     v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v9)
     {
       [(SMBDirEnumerator *)v9 close:v10 callBack:v11, v12, v13, v14, v15, v16];
-      if (!v5)
+      if (!backCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v5)
+    else if (!backCopy)
     {
       goto LABEL_6;
     }
 
-    v5[2](v5, 57);
+    backCopy[2](backCopy, 57);
     goto LABEL_6;
   }
 
-  v7 = [(SMBPiston *)self->pd sock];
-  v8 = [v7 signing_queue];
+  sock2 = [(SMBPiston *)self->pd sock];
+  signing_queue = [sock2 signing_queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__SMBDirEnumerator_close_callBack___block_invoke;
   block[3] = &unk_279B4F678;
-  v18 = v5;
+  v18 = backCopy;
   objc_copyWeak(&v19, &location);
-  dispatch_async(v8, block);
+  dispatch_async(signing_queue, block);
 
   objc_destroyWeak(&v19);
 LABEL_6:
@@ -155,14 +155,14 @@ void __35__SMBDirEnumerator_close_callBack___block_invoke(uint64_t a1)
   [(SMBDirEnumerator *)&v3 dealloc];
 }
 
-- (int)commonInit:(id)a3 onShareID:(unsigned int)a4 dirName:(id)a5 lookUpName:(id)a6 searchFlags:(unsigned int)a7 outParameters:(smb_dir_enum_out *)a8
+- (int)commonInit:(id)init onShareID:(unsigned int)d dirName:(id)name lookUpName:(id)upName searchFlags:(unsigned int)flags outParameters:(smb_dir_enum_out *)parameters
 {
-  v9 = a7;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  objc_storeStrong(&self->pd, a3);
-  self->f_shareID = a4;
+  flagsCopy = flags;
+  initCopy = init;
+  nameCopy = name;
+  upNameCopy = upName;
+  objc_storeStrong(&self->pd, init);
+  self->f_shareID = d;
   v18 = pthread_mutex_init(&self->f_dir_lock, 0);
   if (v18)
   {
@@ -177,9 +177,9 @@ void __35__SMBDirEnumerator_close_callBack___block_invoke(uint64_t a1)
     v19 = self->f_flags | 1;
     self->f_state = 1;
     self->f_flags = v19;
-    if (v16)
+    if (nameCopy)
     {
-      v20 = v16;
+      v20 = nameCopy;
     }
 
     else
@@ -190,7 +190,7 @@ void __35__SMBDirEnumerator_close_callBack___block_invoke(uint64_t a1)
     f_createName = self->f_createName;
     self->f_createName = v20;
 
-    if (v9)
+    if (flagsCopy)
     {
       v22 = [(SMBPiston *)self->pd getSessionPtr][80] / 0x60u;
     }
@@ -205,20 +205,20 @@ void __35__SMBDirEnumerator_close_callBack___block_invoke(uint64_t a1)
     self->f_searchCount = v22;
     self->f_infolevel = 37;
     self->f_attrmask = 22;
-    objc_storeStrong(&self->f_lookupName, a6);
+    objc_storeStrong(&self->f_lookupName, upName);
     bzero(self->f_NetworkNameBuffer, 0x3FCuLL);
-    a8->var0 = 0;
+    parameters->var0 = 0;
   }
 
   return v18;
 }
 
-- (id)init:(id)a3 onShareID:(unsigned int)a4 dirName:(id)a5 lookUpName:(id)a6 searchFlags:(unsigned int)a7 outParameters:(smb_dir_enum_out *)a8 callBack:(id)a9
+- (id)init:(id)init onShareID:(unsigned int)d dirName:(id)name lookUpName:(id)upName searchFlags:(unsigned int)flags outParameters:(smb_dir_enum_out *)parameters callBack:(id)back
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
+  initCopy = init;
+  nameCopy = name;
+  upNameCopy = upName;
+  backCopy = back;
   v44.receiver = self;
   v44.super_class = SMBDirEnumerator;
   v19 = [(SMBDirEnumerator *)&v44 init];
@@ -227,48 +227,48 @@ void __35__SMBDirEnumerator_close_callBack___block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v20 = [v15 sock];
+  sock = [initCopy sock];
 
-  if (!v20)
+  if (!sock)
   {
     v25 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v25)
     {
       [(SMBDirEnumerator *)v25 init:v26 onShareID:v27 dirName:v28 lookUpName:v29 searchFlags:v30 outParameters:v31 callBack:v32];
-      if (!v18)
+      if (!backCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v18)
+    else if (!backCopy)
     {
 LABEL_7:
       v24 = 0;
       goto LABEL_8;
     }
 
-    v18[2](v18, 57);
+    backCopy[2](backCopy, 57);
     goto LABEL_7;
   }
 
-  v34 = [v15 sock];
-  v21 = [v34 signing_queue];
+  sock2 = [initCopy sock];
+  signing_queue = [sock2 signing_queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__SMBDirEnumerator_init_onShareID_dirName_lookUpName_searchFlags_outParameters_callBack___block_invoke;
   block[3] = &unk_279B4F6A0;
-  v22 = a8;
+  parametersCopy = parameters;
   v23 = v19;
   v36 = v23;
-  v37 = v15;
-  v42 = a4;
-  v38 = v16;
-  v43 = a7;
-  v39 = v17;
-  v41 = v22;
-  v40 = v18;
-  dispatch_async(v21, block);
+  v37 = initCopy;
+  dCopy = d;
+  v38 = nameCopy;
+  flagsCopy = flags;
+  v39 = upNameCopy;
+  v41 = parametersCopy;
+  v40 = backCopy;
+  dispatch_async(signing_queue, block);
 
   v24 = v23;
 LABEL_8:
@@ -290,49 +290,49 @@ uint64_t __89__SMBDirEnumerator_init_onShareID_dirName_lookUpName_searchFlags_ou
   return result;
 }
 
-- (void)nextEntry:(id)a3 outParameters:(smb_dir_enum_out *)a4 callBack:(id)a5
+- (void)nextEntry:(id)entry outParameters:(smb_dir_enum_out *)parameters callBack:(id)back
 {
-  v8 = a3;
-  v9 = a5;
+  entryCopy = entry;
+  backCopy = back;
   objc_initWeak(&location, self);
-  if (!v8)
+  if (!entryCopy)
   {
     v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v14)
     {
       [(SMBDirEnumerator *)v14 nextEntry:v15 outParameters:v16 callBack:v17, v18, v19, v20, v21];
-      if (!v9)
+      if (!backCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v9)
+    else if (!backCopy)
     {
       goto LABEL_13;
     }
 
     v22 = 22;
 LABEL_12:
-    v9[2](v9, v22);
+    backCopy[2](backCopy, v22);
     goto LABEL_13;
   }
 
-  v10 = [(SMBPiston *)self->pd sock];
+  sock = [(SMBPiston *)self->pd sock];
 
-  if (!v10)
+  if (!sock)
   {
     v23 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v23)
     {
       [(SMBDirEnumerator *)v23 nextEntry:v24 outParameters:v25 callBack:v26, v27, v28, v29, v30];
-      if (!v9)
+      if (!backCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v9)
+    else if (!backCopy)
     {
       goto LABEL_13;
     }
@@ -348,18 +348,18 @@ LABEL_12:
     self->f_state = f_state & 0xFFFFFFFD;
   }
 
-  v12 = [(SMBPiston *)self->pd sock];
-  v13 = [v12 signing_queue];
+  sock2 = [(SMBPiston *)self->pd sock];
+  signing_queue = [sock2 signing_queue];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __53__SMBDirEnumerator_nextEntry_outParameters_callBack___block_invoke;
   v31[3] = &unk_279B4F6C8;
   v31[4] = self;
   objc_copyWeak(v34, &location);
-  v32 = v8;
-  v34[1] = a4;
-  v33 = v9;
-  dispatch_async(v13, v31);
+  v32 = entryCopy;
+  v34[1] = parameters;
+  v33 = backCopy;
+  dispatch_async(signing_queue, v31);
 
   objc_destroyWeak(v34);
 LABEL_13:
@@ -520,13 +520,13 @@ LABEL_10:
   return result;
 }
 
-- (int)smb2fs_smb_findnext:(unsigned int *)a3
+- (int)smb2fs_smb_findnext:(unsigned int *)smb2fs_smb_findnext
 {
   *&v56[5] = *MEMORY[0x277D85DE8];
-  v5 = [(SMBPiston *)self->pd getSessionPtr];
+  getSessionPtr = [(SMBPiston *)self->pd getSessionPtr];
   objc_initWeak(&location, self);
   v52 = 0;
-  *a3 = 0;
+  *smb2fs_smb_findnext = 0;
   if (!self->f_output_buf_len)
   {
     if ((self->f_flags & 2) != 0)
@@ -564,14 +564,14 @@ LABEL_10:
       self->f_query_inp.fileInfoClass = self->f_infolevel;
       self->f_query_inp.flags = v19;
       self->f_query_inp.fileIndex = 0;
-      if ((v5->option_flags & 4) != 0)
+      if ((getSessionPtr->option_flags & 4) != 0)
       {
         sv_maxtransact = 0x10000;
       }
 
       else
       {
-        sv_maxtransact = v5->sv_maxtransact;
+        sv_maxtransact = getSessionPtr->sv_maxtransact;
         if (sv_maxtransact >= 0x100000)
         {
           sv_maxtransact = 0x100000;
@@ -635,7 +635,7 @@ LABEL_10:
 
       fid = v24;
 
-      *a3 = v52;
+      *smb2fs_smb_findnext = v52;
       if (fid != 22)
       {
         break;
@@ -646,7 +646,7 @@ LABEL_10:
         goto LABEL_40;
       }
 
-      option_flags = v5->option_flags;
+      option_flags = getSessionPtr->option_flags;
       if ((option_flags >> 2) & 1 | ((v21 & 1) == 0))
       {
         goto LABEL_40;
@@ -659,10 +659,10 @@ LABEL_10:
           [(SMBDirEnumerator *)buf smb2fs_smb_findnext:v56];
         }
 
-        option_flags = v5->option_flags;
+        option_flags = getSessionPtr->option_flags;
       }
 
-      v5->option_flags = option_flags | 4;
+      getSessionPtr->option_flags = option_flags | 4;
       v29 = self->f_create_rqp;
       if (v29)
       {
@@ -708,9 +708,9 @@ LABEL_10:
   v6 = self->f_query_dir_rqp;
   if (self->f_create_rqp)
   {
-    v7 = [(SMB_rq *)v6 sr_extflags];
+    sr_extflags = [(SMB_rq *)v6 sr_extflags];
     p_f_create_rqp = &self->f_create_rqp;
-    if ((v7 & 2) != 0)
+    if ((sr_extflags & 2) != 0)
     {
       p_f_create_rqp = &self->f_query_dir_rqp;
     }
@@ -718,8 +718,8 @@ LABEL_10:
     v6 = *p_f_create_rqp;
   }
 
-  v9 = [(SMB_rq *)v6 smb_rq_getreply];
-  if (!v9)
+  smb_rq_getreply = [(SMB_rq *)v6 smb_rq_getreply];
+  if (!smb_rq_getreply)
   {
     v33 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
     if (v33)
@@ -745,7 +745,7 @@ LABEL_40:
   }
 
   v12 = objc_loadWeakRetained(&location);
-  fid = [v12 smb2_smb_parse_query_dir_both_dir_info:v9];
+  fid = [v12 smb2_smb_parse_query_dir_both_dir_info:smb_rq_getreply];
 
 LABEL_42:
   objc_destroyWeak(&location);
@@ -753,7 +753,7 @@ LABEL_42:
   return fid;
 }
 
-- (int)smb2_smb_parse_query_dir_both_dir_info:(mdchain *)a3
+- (int)smb2_smb_parse_query_dir_both_dir_info:(mdchain *)smb2_smb_parse_query_dir_both_dir_info
 {
   v298 = 0;
   v297 = 0;
@@ -765,9 +765,9 @@ LABEL_42:
   v290 = 0u;
   v291 = 0u;
   v289 = 0;
-  v5 = [(SMBPiston *)self->pd getSessionPtr];
+  getSessionPtr = [(SMBPiston *)self->pd getSessionPtr];
   v288 = 0;
-  uint32le = md_get_uint32le(a3, &v298 + 1);
+  uint32le = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v298 + 1);
   if (uint32le)
   {
     v7 = uint32le;
@@ -781,7 +781,7 @@ LABEL_42:
   }
 
   v16 = HIDWORD(v298);
-  v17 = md_get_uint32le(a3, &v297);
+  v17 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v297);
   if (v17)
   {
     v7 = v17;
@@ -794,7 +794,7 @@ LABEL_42:
     return v7;
   }
 
-  uint64le = md_get_uint64le(a3, &v296);
+  uint64le = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (uint64le)
   {
     v7 = uint64le;
@@ -812,7 +812,7 @@ LABEL_42:
     smb_time_NT2local(v296, &self->f_attr.fa_crtime.tv_sec);
   }
 
-  v35 = md_get_uint64le(a3, &v296);
+  v35 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (v35)
   {
     v7 = v35;
@@ -830,7 +830,7 @@ LABEL_42:
     smb_time_NT2local(v296, &self->f_attr.fa_atime.tv_sec);
   }
 
-  v44 = md_get_uint64le(a3, &v296);
+  v44 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (v44)
   {
     v7 = v44;
@@ -848,7 +848,7 @@ LABEL_42:
     smb_time_NT2local(v296, &self->f_attr.fa_mtime.tv_sec);
   }
 
-  v53 = md_get_uint64le(a3, &v296);
+  v53 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (v53)
   {
     v7 = v53;
@@ -866,7 +866,7 @@ LABEL_42:
     smb_time_NT2local(v296, &self->f_attr.fa_chtime.tv_sec);
   }
 
-  v62 = md_get_uint64le(a3, &v296);
+  v62 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (v62)
   {
     v7 = v62;
@@ -880,7 +880,7 @@ LABEL_42:
   }
 
   self->f_attr.fa_size = v296;
-  v71 = md_get_uint64le(a3, &v296);
+  v71 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v296);
   if (v71)
   {
     v7 = v71;
@@ -894,7 +894,7 @@ LABEL_42:
   }
 
   self->f_attr.fa_data_alloc = v296;
-  v80 = md_get_uint32le(a3, &v298);
+  v80 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v298);
   if (v80)
   {
     v7 = v80;
@@ -909,7 +909,7 @@ LABEL_42:
 
   v89 = v298;
   self->f_attr.fa_attr = v298;
-  if ((v5->session_server_caps & 4) != 0 || (v89 & 0x10) != 0)
+  if ((getSessionPtr->session_server_caps & 4) != 0 || (v89 & 0x10) != 0)
   {
     self->f_attr.fa_valid_mask |= 1uLL;
   }
@@ -927,7 +927,7 @@ LABEL_42:
   self->f_attr.fa_vtype = v90;
   *&self->f_attr.fa_uid = vdupq_n_s64(0xFFFFFF9BuLL);
   p_f_NetworkNameLen = &self->f_NetworkNameLen;
-  v92 = md_get_uint32le(a3, &self->f_NetworkNameLen);
+  v92 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &self->f_NetworkNameLen);
   if (v92)
   {
     v7 = v92;
@@ -941,7 +941,7 @@ LABEL_42:
   }
 
   self->f_attr.fa_valid_mask |= 2uLL;
-  v101 = md_get_uint32le(a3, &v295 + 1);
+  v101 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v295 + 1);
   if (v101)
   {
     v7 = v101;
@@ -972,7 +972,7 @@ LABEL_42:
 
   if (self->f_infolevel == 38)
   {
-    v112 = md_get_uint32le(a3, 0);
+    v112 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, 0);
     if (v112)
     {
       v7 = v112;
@@ -987,7 +987,7 @@ LABEL_42:
 
     v130 = 80;
 LABEL_61:
-    v7 = md_get_uint64le(a3, &self->f_attr.fa_ino);
+    v7 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &self->f_attr.fa_ino);
     if (v7)
     {
       return v7;
@@ -1011,7 +1011,7 @@ LABEL_61:
     }
 
     f_NetworkNameBuffer = self->f_NetworkNameBuffer;
-    mem = md_get_mem(a3, self->f_NetworkNameBuffer, v131, 0);
+    mem = md_get_mem(smb2_smb_parse_query_dir_both_dir_info, self->f_NetworkNameBuffer, v131, 0);
     if (mem)
     {
       v7 = mem;
@@ -1024,7 +1024,7 @@ LABEL_61:
       return v7;
     }
 
-    smb2fs_smb_file_id_check(v5, self->f_attr.fa_ino, self->f_NetworkNameBuffer, *p_f_NetworkNameLen);
+    smb2fs_smb_file_id_check(getSessionPtr, self->f_attr.fa_ino, self->f_NetworkNameBuffer, *p_f_NetworkNameLen);
     v175 = *p_f_NetworkNameLen;
     if (HIDWORD(v298))
     {
@@ -1045,7 +1045,7 @@ LABEL_61:
 
       else
       {
-        v177 = md_get_mem(a3, 0, v176, 0);
+        v177 = md_get_mem(smb2_smb_parse_query_dir_both_dir_info, 0, v176, 0);
         if (v177)
         {
           v7 = v177;
@@ -1093,7 +1093,7 @@ LABEL_109:
     return 72;
   }
 
-  uint16 = md_get_uint16(a3, &v288);
+  uint16 = md_get_uint16(smb2_smb_parse_query_dir_both_dir_info, &v288);
   if (uint16)
   {
     v7 = uint16;
@@ -1106,7 +1106,7 @@ LABEL_109:
     return v7;
   }
 
-  if ((v5->option_flags & 0x40) != 0 && (session_server_caps = v5->session_server_caps, (session_server_caps & 0x11) != 0))
+  if ((getSessionPtr->option_flags & 0x40) != 0 && (session_server_caps = getSessionPtr->session_server_caps, (session_server_caps & 0x11) != 0))
   {
     fa_fstatus = self->f_attr.fa_fstatus;
     self->f_attr.fa_fstatus = fa_fstatus & 0xFFFD;
@@ -1130,7 +1130,7 @@ LABEL_109:
 
     self->f_attr.fa_max_access = v147;
     self->f_attr.fa_valid_mask = v146 | 0x40;
-    v148 = md_get_uint64le(a3, &self->f_attr.fa_rsrc_size);
+    v148 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &self->f_attr.fa_rsrc_size);
     if (v148)
     {
       v7 = v148;
@@ -1150,7 +1150,7 @@ LABEL_109:
       v292 = 0;
       v290 = 0u;
       v291 = 0u;
-      v186 = md_get_uint64le(a3, &v290);
+      v186 = md_get_uint64le(smb2_smb_parse_query_dir_both_dir_info, &v290);
       if (v186)
       {
         v7 = v186;
@@ -1163,7 +1163,7 @@ LABEL_109:
         return v7;
       }
 
-      uint16le = md_get_uint16le(a3, &v290 + 4);
+      uint16le = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, &v290 + 4);
       if (uint16le)
       {
         v7 = uint16le;
@@ -1177,7 +1177,7 @@ LABEL_109:
       }
 
       v232 = &v290;
-      v233 = md_get_uint16le(a3, &v291 + 6);
+      v233 = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, &v291 + 6);
       if (v233)
       {
         v7 = v233;
@@ -1190,7 +1190,7 @@ LABEL_109:
         return v7;
       }
 
-      v251 = md_get_uint32le(a3, &v291 + 2);
+      v251 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v291 + 2);
       if (v251)
       {
         v7 = v251;
@@ -1209,7 +1209,7 @@ LABEL_109:
       LODWORD(v295) = 0;
       v293 = 0u;
       v294 = 0u;
-      v195 = md_get_uint32le(a3, &v293);
+      v195 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v293);
       if (v195)
       {
         v7 = v195;
@@ -1222,7 +1222,7 @@ LABEL_109:
         return v7;
       }
 
-      v223 = md_get_uint32le(a3, &v293 + 1);
+      v223 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v293 + 1);
       if (v223)
       {
         v7 = v223;
@@ -1235,7 +1235,7 @@ LABEL_109:
         return v7;
       }
 
-      v242 = md_get_uint16le(a3, &v293 + 4);
+      v242 = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, &v293 + 4);
       if (v242)
       {
         v7 = v242;
@@ -1248,7 +1248,7 @@ LABEL_109:
         return v7;
       }
 
-      v260 = md_get_uint16le(a3, &v294 + 6);
+      v260 = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, &v294 + 6);
       if (v260)
       {
         v7 = v260;
@@ -1262,7 +1262,7 @@ LABEL_109:
       }
 
       v232 = &v293;
-      v269 = md_get_uint32le(a3, &v294 + 2);
+      v269 = md_get_uint32le(smb2_smb_parse_query_dir_both_dir_info, &v294 + 2);
       if (v269)
       {
         v7 = v269;
@@ -1280,11 +1280,11 @@ LABEL_109:
     *self->f_attr.fa_finder_info = *v232;
     *&self->f_attr.fa_finder_info[16] = v278;
     self->f_attr.fa_valid_mask |= 0x20uLL;
-    v279 = md_get_uint16le(a3, &v289);
+    v279 = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, &v289);
     if (!v279)
     {
       v130 = 104;
-      if ((v5->session_server_caps & 4) != 0 && v289)
+      if ((getSessionPtr->session_server_caps & 4) != 0 && v289)
       {
         self->f_attr.fa_permissions = v289;
         self->f_attr.fa_valid_mask |= 8uLL;
@@ -1303,7 +1303,7 @@ LABEL_109:
 
   else
   {
-    v157 = md_get_mem(a3, 0, 0x18uLL, 0);
+    v157 = md_get_mem(smb2_smb_parse_query_dir_both_dir_info, 0, 0x18uLL, 0);
     if (v157)
     {
       v7 = v157;
@@ -1316,7 +1316,7 @@ LABEL_109:
 
     else
     {
-      v166 = md_get_uint16le(a3, 0);
+      v166 = md_get_uint16le(smb2_smb_parse_query_dir_both_dir_info, 0);
       if (!v166)
       {
         v130 = 104;
@@ -1335,16 +1335,16 @@ LABEL_109:
   return v7;
 }
 
-- (int)smb2_smb_query_dir:(unsigned int *)a3
+- (int)smb2_smb_query_dir:(unsigned int *)smb2_smb_query_dir
 {
   f_query_buffer_len = self->f_query_buffer_len;
   v29 = 0;
-  *a3 = 0;
-  v5 = [(SMBNode *)self->f_node treeID];
-  v6 = [(SMBNode *)self->f_node onEncryptedShare];
+  *smb2_smb_query_dir = 0;
+  treeID = [(SMBNode *)self->f_node treeID];
+  onEncryptedShare = [(SMBNode *)self->f_node onEncryptedShare];
   pd = self->pd;
   v27 = 0;
-  dir = smb2_rq_alloc(14, v5, v6, &f_query_buffer_len, pd, &v27);
+  dir = smb2_rq_alloc(14, treeID, onEncryptedShare, &f_query_buffer_len, pd, &v27);
   v9 = v27;
   v10 = v27;
   if (dir)
@@ -1353,24 +1353,24 @@ LABEL_109:
   }
 
   objc_storeStrong(&self->f_query_dir_rqp, v9);
-  v12 = [(SMB_rq *)self->f_query_dir_rqp smb_rq_getrequest];
-  mb_put_uint16le(v12, 33);
-  mb_put_uint8(v12, self->f_query_inp.fileInfoClass);
-  mb_put_uint8(v12, self->f_query_inp.flags);
-  mb_put_uint32le(v12, self->f_query_inp.fileIndex);
-  mb_put_uint64le(v12, [(SMBNode *)self->f_node fid]);
+  smb_rq_getrequest = [(SMB_rq *)self->f_query_dir_rqp smb_rq_getrequest];
+  mb_put_uint16le(smb_rq_getrequest, 33);
+  mb_put_uint8(smb_rq_getrequest, self->f_query_inp.fileInfoClass);
+  mb_put_uint8(smb_rq_getrequest, self->f_query_inp.flags);
+  mb_put_uint32le(smb_rq_getrequest, self->f_query_inp.fileIndex);
+  mb_put_uint64le(smb_rq_getrequest, [(SMBNode *)self->f_node fid]);
   [(SMBNode *)self->f_node fid];
-  mb_put_uint64le(v12, v13);
-  mb_put_uint16le(v12, 96);
-  v14 = mb_reserve(v12, 2uLL);
-  mb_put_uint32le(v12, f_query_buffer_len);
+  mb_put_uint64le(smb_rq_getrequest, v13);
+  mb_put_uint16le(smb_rq_getrequest, 96);
+  v14 = mb_reserve(smb_rq_getrequest, 2uLL);
+  mb_put_uint32le(smb_rq_getrequest, f_query_buffer_len);
   if (!self->f_lookupName)
   {
     *v14 = 0;
-    mb_put_uint16le(v12, 0);
+    mb_put_uint16le(smb_rq_getrequest, 0);
 LABEL_13:
     dir = smb_rq_simple(self->pd, self->f_query_dir_rqp);
-    *a3 = [(SMB_rq *)self->f_query_dir_rqp sr_ntstatus];
+    *smb2_smb_query_dir = [(SMB_rq *)self->f_query_dir_rqp sr_ntstatus];
     if (dir)
     {
       if (dir != 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1381,8 +1381,8 @@ LABEL_13:
 
     else
     {
-      v25 = [(SMB_rq *)self->f_query_dir_rqp smb_rq_getreply];
-      dir = smb2_smb_parse_query_dir(v25, v26, 0, &self->f_output_buf_len);
+      smb_rq_getreply = [(SMB_rq *)self->f_query_dir_rqp smb_rq_getreply];
+      dir = smb2_smb_parse_query_dir(smb_rq_getreply, v26, 0, &self->f_output_buf_len);
     }
 
     goto LABEL_2;
@@ -1392,7 +1392,7 @@ LABEL_13:
   cstring_len = smb_get_cstring_len(self->f_lookupName, &v29);
   if (cstring_len)
   {
-    v16 = smb2fs_fullpath(v12, cstring_len, v29, 0, 0, self->f_query_inp.fileNameFlags);
+    v16 = smb2fs_fullpath(smb_rq_getrequest, cstring_len, v29, 0, 0, self->f_query_inp.fileNameFlags);
     if (v16)
     {
       dir = v16;

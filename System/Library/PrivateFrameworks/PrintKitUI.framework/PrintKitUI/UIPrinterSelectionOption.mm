@@ -1,22 +1,22 @@
 @interface UIPrinterSelectionOption
 - (PKPrinter)printer;
-- (UIPrinterSelectionOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrinterSelectionOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
-- (id)printerDisplayName:(id)a3;
+- (id)printerDisplayName:(id)name;
 - (id)summary;
 - (void)didSelectPrintOption;
-- (void)setPrinter:(id)a3;
-- (void)setShowContactingPrinter:(BOOL)a3;
+- (void)setPrinter:(id)printer;
+- (void)setShowContactingPrinter:(BOOL)printer;
 - (void)showContacting;
 @end
 
 @implementation UIPrinterSelectionOption
 
-- (UIPrinterSelectionOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrinterSelectionOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = UIPrinterSelectionOption;
-  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:info printPanelViewController:controller];
   if (v4)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -29,19 +29,19 @@
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
 
   [(UIPrintOption *)self setTableViewCell:v5];
-  v6 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v7 = [(UIPrintOption *)self title];
-  [v6 setText:v7];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  title = [(UIPrintOption *)self title];
+  [valueCellConfiguration setText:title];
 
-  v8 = [(UIPrinterSelectionOption *)self summary];
-  [v6 setSecondaryText:v8];
+  summary = [(UIPrinterSelectionOption *)self summary];
+  [valueCellConfiguration setSecondaryText:summary];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:valueCellConfiguration];
   if ([(UIPrinterSelectionOption *)self contactingPrinter])
   {
     [(UIPrinterSelectionOption *)self showContacting];
@@ -57,98 +57,98 @@
   return v5;
 }
 
-- (id)printerDisplayName:(id)a3
+- (id)printerDisplayName:(id)name
 {
-  v3 = [a3 pkPrinter];
-  v4 = v3;
-  if (v3)
+  pkPrinter = [name pkPrinter];
+  v4 = pkPrinter;
+  if (pkPrinter)
   {
-    v5 = [v3 displayName];
+    displayName = [pkPrinter displayName];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v6 localizedStringForKey:@"No Printer Selected" value:@"No Printer Selected" table:@"Localizable"];
+    displayName = [v6 localizedStringForKey:@"No Printer Selected" value:@"No Printer Selected" table:@"Localizable"];
   }
 
-  return v5;
+  return displayName;
 }
 
 - (id)summary
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
-  v5 = [(UIPrinterSelectionOption *)self printerDisplayName:v4];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  v5 = [(UIPrinterSelectionOption *)self printerDisplayName:currentPrinter];
 
   return v5;
 }
 
 - (void)didSelectPrintOption
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v13 = [v3 printOptionsNavController];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsNavController = [printPanelViewController printOptionsNavController];
 
-  v4 = [v13 topViewController];
-  v5 = [(UIPrinterSelectionOption *)self browserController];
+  topViewController = [printOptionsNavController topViewController];
+  browserController = [(UIPrinterSelectionOption *)self browserController];
 
-  if (v4 != v5)
+  if (topViewController != browserController)
   {
-    v6 = [(UIPrinterSelectionOption *)self browserController];
+    browserController2 = [(UIPrinterSelectionOption *)self browserController];
 
-    if (!v6)
+    if (!browserController2)
     {
       v7 = [UIPrinterBrowserViewController alloc];
-      v8 = [(UIPrintOption *)self printPanelViewController];
-      v9 = [v8 printInfo];
-      v10 = [(UIPrintOption *)self printPanelViewController];
-      v11 = [(UIPrinterBrowserViewController *)v7 initWithOwnerViewController:self printInfo:v9 printPanelViewController:v10];
+      printPanelViewController2 = [(UIPrintOption *)self printPanelViewController];
+      printInfo = [printPanelViewController2 printInfo];
+      printPanelViewController3 = [(UIPrintOption *)self printPanelViewController];
+      v11 = [(UIPrinterBrowserViewController *)v7 initWithOwnerViewController:self printInfo:printInfo printPanelViewController:printPanelViewController3];
       [(UIPrinterSelectionOption *)self setBrowserController:v11];
     }
 
-    v12 = [(UIPrinterSelectionOption *)self browserController];
-    [v13 pushViewController:v12 animated:1];
+    browserController3 = [(UIPrinterSelectionOption *)self browserController];
+    [printOptionsNavController pushViewController:browserController3 animated:1];
   }
 }
 
 - (PKPrinter)printer
 {
-  v2 = [(UIPrintOption *)self printInfo];
-  v3 = [v2 currentPrinter];
-  v4 = [v3 pkPrinter];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  pkPrinter = [currentPrinter pkPrinter];
 
-  return v4;
+  return pkPrinter;
 }
 
-- (void)setPrinter:(id)a3
+- (void)setPrinter:(id)printer
 {
-  v4 = a3;
-  v6 = [[UIPrinter alloc] _initWithPrinter:v4];
+  printerCopy = printer;
+  v6 = [[UIPrinter alloc] _initWithPrinter:printerCopy];
 
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 setCurrentPrinter:v6];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setCurrentPrinter:v6];
 }
 
 - (void)showContacting
 {
-  v3 = [(UIPrintOption *)self tableViewCell];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
   v2 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:4];
-  [v3 setAccessoryView:v2];
+  [tableViewCell setAccessoryView:v2];
   [v2 startAnimating];
 }
 
-- (void)setShowContactingPrinter:(BOOL)a3
+- (void)setShowContactingPrinter:(BOOL)printer
 {
-  v3 = a3;
-  v5 = [(UIPrintOption *)self tableViewCell];
-  if (!v3)
+  printerCopy = printer;
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  if (!printerCopy)
   {
     [(UIPrinterSelectionOption *)self setContactingPrinter:0];
     [MEMORY[0x277CBEB88] cancelPreviousPerformRequestsWithTarget:self selector:sel_showContacting object:0];
     if (pthread_main_np() == 1)
     {
-      [v5 setAccessoryView:0];
-      [v5 setAccessoryType:1];
+      [tableViewCell setAccessoryView:0];
+      [tableViewCell setAccessoryType:1];
       goto LABEL_9;
     }
 
@@ -156,7 +156,7 @@
     v7[1] = 3221225472;
     v7[2] = __53__UIPrinterSelectionOption_setShowContactingPrinter___block_invoke_2;
     v7[3] = &unk_279A9BEE0;
-    v8 = v5;
+    v8 = tableViewCell;
     dispatch_sync(MEMORY[0x277D85CD0], v7);
     v6 = v8;
 LABEL_8:
@@ -171,14 +171,14 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __53__UIPrinterSelectionOption_setShowContactingPrinter___block_invoke;
     block[3] = &unk_279A9BF78;
-    v10 = v5;
-    v11 = self;
+    v10 = tableViewCell;
+    selfCopy = self;
     dispatch_sync(MEMORY[0x277D85CD0], block);
     v6 = v10;
     goto LABEL_8;
   }
 
-  [v5 setSelectionStyle:0];
+  [tableViewCell setSelectionStyle:0];
   [(UIPrinterSelectionOption *)self performSelector:sel_showContacting withObject:0 afterDelay:0.1];
 LABEL_9:
 }

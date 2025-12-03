@@ -1,9 +1,9 @@
 @interface MRSendCommandResultStatus
 + (id)successStatus;
-- (MRSendCommandResultStatus)initWithProtobuf:(id)a3;
-- (MRSendCommandResultStatus)initWithStatusType:(int64_t)a3 statusCode:(unsigned int)a4 dialog:(id)a5 customData:(id)a6 customDataType:(id)a7 error:(id)a8;
+- (MRSendCommandResultStatus)initWithProtobuf:(id)protobuf;
+- (MRSendCommandResultStatus)initWithStatusType:(int64_t)type statusCode:(unsigned int)code dialog:(id)dialog customData:(id)data customDataType:(id)dataType error:(id)error;
 - (_MRSendCommandResultStatusProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __42__MRSendCommandResultStatus_successStatus__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (successStatus_onceToken != -1)
   {
     dispatch_once(&successStatus_onceToken, block);
@@ -33,66 +33,66 @@ void __42__MRSendCommandResultStatus_successStatus__block_invoke(uint64_t a1)
   successStatus_successStatus = v1;
 }
 
-- (MRSendCommandResultStatus)initWithStatusType:(int64_t)a3 statusCode:(unsigned int)a4 dialog:(id)a5 customData:(id)a6 customDataType:(id)a7 error:(id)a8
+- (MRSendCommandResultStatus)initWithStatusType:(int64_t)type statusCode:(unsigned int)code dialog:(id)dialog customData:(id)data customDataType:(id)dataType error:(id)error
 {
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dialogCopy = dialog;
+  dataCopy = data;
+  dataTypeCopy = dataType;
+  errorCopy = error;
   v22.receiver = self;
   v22.super_class = MRSendCommandResultStatus;
   v18 = [(MRSendCommandResultStatus *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_statusType = a3;
-    v18->_statusCode = a4;
-    objc_storeStrong(&v18->_dialog, a5);
-    objc_storeStrong(&v19->_customData, a6);
-    objc_storeStrong(&v19->_customDataType, a7);
-    objc_storeStrong(&v19->_commandError, a8);
+    v18->_statusType = type;
+    v18->_statusCode = code;
+    objc_storeStrong(&v18->_dialog, dialog);
+    objc_storeStrong(&v19->_customData, data);
+    objc_storeStrong(&v19->_customDataType, dataType);
+    objc_storeStrong(&v19->_commandError, error);
   }
 
   return v19;
 }
 
-- (MRSendCommandResultStatus)initWithProtobuf:(id)a3
+- (MRSendCommandResultStatus)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  protobufCopy = protobuf;
+  v5 = protobufCopy;
+  if (protobufCopy)
   {
-    v6 = [v4 type];
-    v7 = [v5 statusCode];
-    v8 = v7;
-    if (v6 != 1 || v7)
+    type = [protobufCopy type];
+    statusCode = [v5 statusCode];
+    v8 = statusCode;
+    if (type != 1 || statusCode)
     {
-      v19 = v6;
+      v19 = type;
       v10 = [MRSendCommandHandlerDialog alloc];
-      v11 = [v5 dialog];
-      v12 = [(MRSendCommandHandlerDialog *)v10 initWithProtobuf:v11];
-      v13 = [v5 customData];
-      v14 = [v5 customDataType];
+      dialog = [v5 dialog];
+      v12 = [(MRSendCommandHandlerDialog *)v10 initWithProtobuf:dialog];
+      customData = [v5 customData];
+      customDataType = [v5 customDataType];
       v15 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v16 = [v5 error];
-      v17 = [v15 mr_initWithProtobuf:v16];
-      self = [(MRSendCommandResultStatus *)self initWithStatusType:v19 statusCode:v8 dialog:v12 customData:v13 customDataType:v14 error:v17];
+      error = [v5 error];
+      v17 = [v15 mr_initWithProtobuf:error];
+      self = [(MRSendCommandResultStatus *)self initWithStatusType:v19 statusCode:v8 dialog:v12 customData:customData customDataType:customDataType error:v17];
 
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = [objc_opt_class() successStatus];
+      selfCopy = [objc_opt_class() successStatus];
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (_MRSendCommandResultStatusProtobuf)protobuf
@@ -100,28 +100,28 @@ void __42__MRSendCommandResultStatus_successStatus__block_invoke(uint64_t a1)
   v3 = objc_alloc_init(_MRSendCommandResultStatusProtobuf);
   [(_MRSendCommandResultStatusProtobuf *)v3 setType:[(MRSendCommandResultStatus *)self statusType]];
   [(_MRSendCommandResultStatusProtobuf *)v3 setStatusCode:[(MRSendCommandResultStatus *)self statusCode]];
-  v4 = [(MRSendCommandResultStatus *)self dialog];
-  v5 = [v4 protobuf];
-  [(_MRSendCommandResultStatusProtobuf *)v3 setDialog:v5];
+  dialog = [(MRSendCommandResultStatus *)self dialog];
+  protobuf = [dialog protobuf];
+  [(_MRSendCommandResultStatusProtobuf *)v3 setDialog:protobuf];
 
-  v6 = [(MRSendCommandResultStatus *)self customData];
-  [(_MRSendCommandResultStatusProtobuf *)v3 setCustomData:v6];
+  customData = [(MRSendCommandResultStatus *)self customData];
+  [(_MRSendCommandResultStatusProtobuf *)v3 setCustomData:customData];
 
-  v7 = [(MRSendCommandResultStatus *)self customDataType];
-  [(_MRSendCommandResultStatusProtobuf *)v3 setCustomDataType:v7];
+  customDataType = [(MRSendCommandResultStatus *)self customDataType];
+  [(_MRSendCommandResultStatusProtobuf *)v3 setCustomDataType:customDataType];
 
-  v8 = [(MRSendCommandResultStatus *)self commandError];
-  v9 = [v8 mr_protobuf];
-  [(_MRSendCommandResultStatusProtobuf *)v3 setError:v9];
+  commandError = [(MRSendCommandResultStatus *)self commandError];
+  mr_protobuf = [commandError mr_protobuf];
+  [(_MRSendCommandResultStatusProtobuf *)v3 setError:mr_protobuf];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() successStatus];
+  successStatus = [objc_opt_class() successStatus];
 
-  if (v4 == self)
+  if (successStatus == self)
   {
 
     return self;
@@ -129,18 +129,18 @@ void __42__MRSendCommandResultStatus_successStatus__block_invoke(uint64_t a1)
 
   else
   {
-    v17 = [objc_opt_class() allocWithZone:a3];
-    v5 = [(MRSendCommandResultStatus *)self statusType];
-    v6 = [(MRSendCommandResultStatus *)self statusCode];
-    v7 = [(MRSendCommandResultStatus *)self dialog];
-    v8 = [v7 copyWithZone:a3];
-    v9 = [(MRSendCommandResultStatus *)self customData];
-    v10 = [v9 copyWithZone:a3];
-    v11 = [(MRSendCommandResultStatus *)self customDataType];
-    v12 = [v11 copyWithZone:a3];
-    v13 = [(MRSendCommandResultStatus *)self commandError];
-    v14 = [v13 copyWithZone:a3];
-    v15 = [v17 initWithStatusType:v5 statusCode:v6 dialog:v8 customData:v10 customDataType:v12 error:v14];
+    v17 = [objc_opt_class() allocWithZone:zone];
+    statusType = [(MRSendCommandResultStatus *)self statusType];
+    statusCode = [(MRSendCommandResultStatus *)self statusCode];
+    dialog = [(MRSendCommandResultStatus *)self dialog];
+    v8 = [dialog copyWithZone:zone];
+    customData = [(MRSendCommandResultStatus *)self customData];
+    v10 = [customData copyWithZone:zone];
+    customDataType = [(MRSendCommandResultStatus *)self customDataType];
+    v12 = [customDataType copyWithZone:zone];
+    commandError = [(MRSendCommandResultStatus *)self commandError];
+    v14 = [commandError copyWithZone:zone];
+    v15 = [v17 initWithStatusType:statusType statusCode:statusCode dialog:v8 customData:v10 customDataType:v12 error:v14];
 
     return v15;
   }
@@ -162,12 +162,12 @@ void __42__MRSendCommandResultStatus_successStatus__block_invoke(uint64_t a1)
     [v3 appendFormat:@" code=%@", v6];
   }
 
-  v7 = [(MRSendCommandResultStatus *)self statusType];
-  if (v7 <= 1)
+  statusType = [(MRSendCommandResultStatus *)self statusType];
+  if (statusType <= 1)
   {
-    if (v7)
+    if (statusType)
     {
-      if (v7 == 1)
+      if (statusType == 1)
       {
         [v3 appendFormat:@" type=Code"];
       }
@@ -181,42 +181,42 @@ void __42__MRSendCommandResultStatus_successStatus__block_invoke(uint64_t a1)
 
   else
   {
-    if (v7 != 2)
+    if (statusType != 2)
     {
-      if (v7 != 3)
+      if (statusType != 3)
       {
-        if (v7 != 999)
+        if (statusType != 999)
         {
           goto LABEL_18;
         }
 
         [v3 appendFormat:@" type=Custom"];
-        v8 = [(MRSendCommandResultStatus *)self customDataType];
-        [v3 appendFormat:@" customDataType=%@", v8];
+        customDataType = [(MRSendCommandResultStatus *)self customDataType];
+        [v3 appendFormat:@" customDataType=%@", customDataType];
 
-        v9 = [(MRSendCommandResultStatus *)self customData];
-        [v3 appendFormat:@" customData.length=%ld", objc_msgSend(v9, "length")];
+        customData = [(MRSendCommandResultStatus *)self customData];
+        [v3 appendFormat:@" customData.length=%ld", objc_msgSend(customData, "length")];
         goto LABEL_16;
       }
 
       [v3 appendFormat:@" type=Error"];
 LABEL_15:
-      v9 = [(MRSendCommandResultStatus *)self commandError];
-      v13 = [v9 msv_treeDescription];
-      [v3 appendFormat:@" error=%@", v13];
+      customData = [(MRSendCommandResultStatus *)self commandError];
+      msv_treeDescription = [customData msv_treeDescription];
+      [v3 appendFormat:@" error=%@", msv_treeDescription];
 
 LABEL_16:
       goto LABEL_18;
     }
 
     [v3 appendFormat:@" type=Dialog"];
-    v10 = [(MRSendCommandResultStatus *)self dialog];
-    v11 = [v10 description];
+    dialog = [(MRSendCommandResultStatus *)self dialog];
+    v11 = [dialog description];
     [v3 appendFormat:@" dialog=%@", v11];
 
-    v12 = [(MRSendCommandResultStatus *)self commandError];
+    commandError = [(MRSendCommandResultStatus *)self commandError];
 
-    if (v12)
+    if (commandError)
     {
       goto LABEL_15;
     }

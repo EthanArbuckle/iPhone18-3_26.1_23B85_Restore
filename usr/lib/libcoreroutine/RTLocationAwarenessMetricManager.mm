@@ -1,17 +1,17 @@
 @interface RTLocationAwarenessMetricManager
-- (RTLocationAwarenessMetricManager)initWithLocationManager:(id)a3 motionManager:(id)a4 learnedLocationStore:(id)a5 startDate:(id)a6 endDate:(id)a7;
-- (double)distanceToNearestSensitiveLocation:(id)a3;
+- (RTLocationAwarenessMetricManager)initWithLocationManager:(id)manager motionManager:(id)motionManager learnedLocationStore:(id)store startDate:(id)date endDate:(id)endDate;
+- (double)distanceToNearestSensitiveLocation:(id)location;
 - (id)collectBoutMetrics;
 - (id)collectDailyMetrics;
 - (id)createBoutDictionary;
 - (id)createMotionDictionary;
 - (id)createSignalEnvironmentDictionary;
-- (id)locationsAndMotionsForDateInterval:(id)a3;
-- (id)sensitiveLocationsOfInterestWithError:(id *)a3;
-- (void)addDwellForMotionType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 motionDwellMetrics:(id)a6 longestDwell:(id)a7 boutCounts:(id)a8;
-- (void)addDwellForSignalEnvironmentType:(int)a3 startDate:(id)a4 endDate:(id)a5 sigEnvMetrics:(id)a6;
+- (id)locationsAndMotionsForDateInterval:(id)interval;
+- (id)sensitiveLocationsOfInterestWithError:(id *)error;
+- (void)addDwellForMotionType:(unint64_t)type startDate:(id)date endDate:(id)endDate motionDwellMetrics:(id)metrics longestDwell:(id)dwell boutCounts:(id)counts;
+- (void)addDwellForSignalEnvironmentType:(int)type startDate:(id)date endDate:(id)endDate sigEnvMetrics:(id)metrics;
 - (void)flushBufferToCurrBoutMetrics;
-- (void)monitorStateChange:(id)a3;
+- (void)monitorStateChange:(id)change;
 - (void)processLastBout;
 - (void)processLastDailyMetrics;
 - (void)processMetrics;
@@ -21,24 +21,24 @@
 - (void)submitBoutMetricsToCoreAnalytics;
 - (void)submitDailyMetricsToCoreAnalytics;
 - (void)submitMetrics;
-- (void)updateBoutMetricsForLocation:(id)a3;
-- (void)updateBoutMetricsForMotion:(id)a3;
+- (void)updateBoutMetricsForLocation:(id)location;
+- (void)updateBoutMetricsForMotion:(id)motion;
 - (void)updateBoutMetricsStateChangeEdgeDwell;
-- (void)updateDailyMetrics:(id)a3;
-- (void)updateStateVariables:(id)a3;
+- (void)updateDailyMetrics:(id)metrics;
+- (void)updateStateVariables:(id)variables;
 @end
 
 @implementation RTLocationAwarenessMetricManager
 
-- (RTLocationAwarenessMetricManager)initWithLocationManager:(id)a3 motionManager:(id)a4 learnedLocationStore:(id)a5 startDate:(id)a6 endDate:(id)a7
+- (RTLocationAwarenessMetricManager)initWithLocationManager:(id)manager motionManager:(id)motionManager learnedLocationStore:(id)store startDate:(id)date endDate:(id)endDate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v26 = v17;
-  if (!v13)
+  managerCopy = manager;
+  motionManagerCopy = motionManager;
+  storeCopy = store;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v26 = endDateCopy;
+  if (!managerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v14)
+  if (!motionManagerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!storeCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -79,7 +79,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!dateCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -92,7 +92,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!endDateCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -104,7 +104,7 @@ LABEL_19:
 
 LABEL_20:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
@@ -114,11 +114,11 @@ LABEL_20:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_locationManager, a3);
-    objc_storeStrong(&v19->_motionManager, a4);
-    objc_storeStrong(&v19->_learnedLocationStore, a5);
-    objc_storeStrong(&v19->_startDate, a6);
-    objc_storeStrong(&v19->_endDate, a7);
+    objc_storeStrong(&v18->_locationManager, manager);
+    objc_storeStrong(&v19->_motionManager, motionManager);
+    objc_storeStrong(&v19->_learnedLocationStore, store);
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v19->_endDate, endDate);
     v20 = objc_opt_new();
     distanceCalculator = v19->_distanceCalculator;
     v19->_distanceCalculator = v20;
@@ -127,26 +127,26 @@ LABEL_20:
   }
 
   self = v19;
-  v22 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)setup
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v4 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateSignalEnvironmentDwell:v4];
+  createSignalEnvironmentDictionary = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateSignalEnvironmentDwell:createSignalEnvironmentDictionary];
 
-  v5 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionDwell:v5];
+  createMotionDictionary = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionDwell:createMotionDictionary];
 
-  v6 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionLongestDwell:v6];
+  createMotionDictionary2 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionLongestDwell:createMotionDictionary2];
 
-  v7 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionTypeNumBouts:v7];
+  createMotionDictionary3 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionTypeNumBouts:createMotionDictionary3];
 
   [(RTLocationAwarenessMetricManager *)self setBoutStateMotion:0];
   [(RTLocationAwarenessMetricManager *)self setBoutStateWifi:0];
@@ -154,27 +154,27 @@ LABEL_21:
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumWifiLocationsInBout:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumGPSLocationsInBout:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumOtherLocationsInBout:0.0];
-  v8 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v8];
+  startDate = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:startDate];
 
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v9];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:distantFuture];
 
   [(RTLocationAwarenessMetricManager *)self setBoutMetricDistanceToSensitiveLocation:-1.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferDistanceToSensitiveLocation:-1.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeDwell:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeType:0];
-  v10 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionDwell:v10];
+  createMotionDictionary4 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionDwell:createMotionDictionary4];
 
-  v11 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionLongestDwell:v11];
+  createMotionDictionary5 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionLongestDwell:createMotionDictionary5];
 
-  v12 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionBoutCounts:v12];
+  createMotionDictionary6 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionBoutCounts:createMotionDictionary6];
 
-  v13 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferSignalEnvironmentDwell:v13];
+  createSignalEnvironmentDictionary2 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferSignalEnvironmentDwell:createSignalEnvironmentDictionary2];
 
   [(RTLocationAwarenessMetricManager *)self setBoutBufferNumAdditionalFixesPerHourRequired1mDutyCycle:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferNumAdditionalFixesPerHourRequired2mDutyCycle:0.0];
@@ -183,20 +183,20 @@ LABEL_21:
   [(RTLocationAwarenessMetricManager *)self setBoutBufferNumAdditionalFixesPerHourRequired15mDutyCycle:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferNumGPSLocationsInBout:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferNumOtherLocationsInBout:0.0];
-  v14 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
-  [(RTLocationAwarenessMetricManager *)self setDailyStateSignalEnvironmentDwell:v14];
+  createSignalEnvironmentDictionary3 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
+  [(RTLocationAwarenessMetricManager *)self setDailyStateSignalEnvironmentDwell:createSignalEnvironmentDictionary3];
 
-  v15 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setDailyStateMotionDwell:v15];
+  createMotionDictionary7 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setDailyStateMotionDwell:createMotionDictionary7];
 
-  v16 = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
-  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutCounts:v16];
+  createBoutDictionary = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
+  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutCounts:createBoutDictionary];
 
-  v17 = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
-  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutDwell:v17];
+  createBoutDictionary2 = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
+  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutDwell:createBoutDictionary2];
 
-  v18 = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
-  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutLongestDwell:v18];
+  createBoutDictionary3 = [(RTLocationAwarenessMetricManager *)self createBoutDictionary];
+  [(RTLocationAwarenessMetricManager *)self setDailyStateBoutLongestDwell:createBoutDictionary3];
 
   v19 = dispatch_semaphore_create(0);
   v69 = 0;
@@ -234,11 +234,11 @@ LABEL_21:
     v29 = v28;
     v30 = objc_opt_new();
     v31 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_609];
-    v32 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v33 = [v32 filteredArrayUsingPredicate:v31];
-    v34 = [v33 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v33 = [callStackSymbols filteredArrayUsingPredicate:v31];
+    firstObject = [v33 firstObject];
 
-    [v30 submitToCoreAnalytics:v34 type:1 duration:v29];
+    [v30 submitToCoreAnalytics:firstObject type:1 duration:v29];
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
     {
@@ -287,38 +287,38 @@ LABEL_8:
       v42 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
       {
-        v56 = [v64[5] firstObject];
+        firstObject2 = [v64[5] firstObject];
         v57 = v70[5];
         *buf = 138412546;
-        *&buf[4] = v56;
+        *&buf[4] = firstObject2;
         v76 = 2112;
         v77 = v57;
         _os_log_debug_impl(&dword_2304B3000, v42, OS_LOG_TYPE_DEBUG, "initializing motion activity to, %@, error, %@", buf, 0x16u);
       }
     }
 
-    v43 = [v64[5] firstObject];
-    -[RTLocationAwarenessMetricManager setStateVariableCurrMotionActivityType:](self, "setStateVariableCurrMotionActivityType:", [v43 type]);
+    firstObject3 = [v64[5] firstObject];
+    -[RTLocationAwarenessMetricManager setStateVariableCurrMotionActivityType:](self, "setStateVariableCurrMotionActivityType:", [firstObject3 type]);
   }
 
-  v44 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariableCurrMotionStart:v44];
+  startDate2 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariableCurrMotionStart:startDate2];
 
   [(RTLocationAwarenessMetricManager *)self setStateVariableCurrSignalEnvironmentType:0];
-  v45 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariableLastSettledStateChangeTimestamp:v45];
+  startDate3 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariableLastSettledStateChangeTimestamp:startDate3];
 
-  v46 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariableLastWifiStateChangeTimestamp:v46];
+  startDate4 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariableLastWifiStateChangeTimestamp:startDate4];
 
-  v47 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariablePrevLocationTimestamp:v47];
+  startDate5 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariablePrevLocationTimestamp:startDate5];
 
-  v48 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariablePrevWifiLocationTimestamp:v48];
+  startDate6 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariablePrevWifiLocationTimestamp:startDate6];
 
-  v49 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [(RTLocationAwarenessMetricManager *)self setStateVariableLastSensitiveLocationCheckTimestamp:v49];
+  startDate7 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [(RTLocationAwarenessMetricManager *)self setStateVariableLastSensitiveLocationCheckTimestamp:startDate7];
 
   [(RTLocationAwarenessMetricManager *)self setStateVariableMostRecentDistanceToSensitiveLocation:-1.0];
   v58 = 0;
@@ -405,17 +405,17 @@ void __41__RTLocationAwarenessMetricManager_setup__block_invoke(uint64_t a1, voi
 
 - (void)resetBoutMetrics
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateSignalEnvironmentDwell:v3];
+  createSignalEnvironmentDictionary = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateSignalEnvironmentDwell:createSignalEnvironmentDictionary];
 
-  v4 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionLongestDwell:v4];
+  createMotionDictionary = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionLongestDwell:createMotionDictionary];
 
-  v5 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionTypeNumBouts:v5];
+  createMotionDictionary2 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionTypeNumBouts:createMotionDictionary2];
 
-  v6 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionDwell:v6];
+  createMotionDictionary3 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateMotionDwell:createMotionDictionary3];
 
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumGPSLocationsInBout:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumWifiLocationsInBout:0.0];
@@ -431,17 +431,17 @@ void __41__RTLocationAwarenessMetricManager_setup__block_invoke(uint64_t a1, voi
 
 - (void)resetBuffer
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferSignalEnvironmentDwell:v3];
+  createSignalEnvironmentDictionary = [(RTLocationAwarenessMetricManager *)self createSignalEnvironmentDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferSignalEnvironmentDwell:createSignalEnvironmentDictionary];
 
-  v4 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionDwell:v4];
+  createMotionDictionary = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionDwell:createMotionDictionary];
 
-  v5 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionLongestDwell:v5];
+  createMotionDictionary2 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionLongestDwell:createMotionDictionary2];
 
-  v6 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
-  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionBoutCounts:v6];
+  createMotionDictionary3 = [(RTLocationAwarenessMetricManager *)self createMotionDictionary];
+  [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionBoutCounts:createMotionDictionary3];
 
   [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeDwell:0.0];
   [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeType:[(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType]];
@@ -456,12 +456,12 @@ void __41__RTLocationAwarenessMetricManager_setup__block_invoke(uint64_t a1, voi
   [(RTLocationAwarenessMetricManager *)self setBoutBufferDistanceToSensitiveLocation:-1.0];
 }
 
-- (id)locationsAndMotionsForDateInterval:(id)a3
+- (id)locationsAndMotionsForDateInterval:(id)interval
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v61 = [v4 startDate];
-  v60 = [v4 endDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
   v76 = 0;
   v77 = &v76;
   v78 = 0x3032000000;
@@ -469,7 +469,7 @@ void __41__RTLocationAwarenessMetricManager_setup__block_invoke(uint64_t a1, voi
   v80 = __Block_byref_object_dispose__108;
   v81 = objc_opt_new();
   v5 = dispatch_semaphore_create(0);
-  v6 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v4 horizontalAccuracy:3600 batchSize:0 boundingBoxLocation:250.0];
+  v6 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:intervalCopy horizontalAccuracy:3600 batchSize:0 boundingBoxLocation:250.0];
   v70 = 0;
   v71 = &v70;
   v72 = 0x3032000000;
@@ -497,11 +497,11 @@ void __41__RTLocationAwarenessMetricManager_setup__block_invoke(uint64_t a1, voi
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_609];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -544,15 +544,15 @@ LABEL_8:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       v51 = [v77[5] count];
-      v52 = [v61 stringFromDate];
-      v53 = [v60 stringFromDate];
+      stringFromDate = [startDate stringFromDate];
+      stringFromDate2 = [endDate stringFromDate];
       v54 = v71[5];
       *buf = 134218754;
       *&buf[4] = v51;
       *&buf[12] = 2112;
-      *&buf[14] = v52;
+      *&buf[14] = stringFromDate;
       *&buf[22] = 2112;
-      v96 = v53;
+      v96 = stringFromDate2;
       LOWORD(v97) = 2112;
       *(&v97 + 2) = v54;
       _os_log_debug_impl(&dword_2304B3000, v27, OS_LOG_TYPE_DEBUG, "Fetched %lu locations, batch for metrics from, %@, to, %@, error, %@", buf, 0x2Au);
@@ -580,7 +580,7 @@ LABEL_8:
   v65 = buf;
   v29 = v9;
   v63 = v29;
-  [(RTMotionActivityManager *)motionManager fetchMotionActivitiesFromStartDate:v61 endDate:v60 handler:v62];
+  [(RTMotionActivityManager *)motionManager fetchMotionActivitiesFromStartDate:startDate endDate:endDate handler:v62];
   v30 = v29;
   v31 = [MEMORY[0x277CBEAA8] now];
   v32 = dispatch_time(0, 3600000000000);
@@ -594,11 +594,11 @@ LABEL_8:
   v35 = v34;
   v36 = objc_opt_new();
   v37 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_609];
-  v38 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v39 = [v38 filteredArrayUsingPredicate:v37];
-  v40 = [v39 firstObject];
+  callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v39 = [callStackSymbols2 filteredArrayUsingPredicate:v37];
+  firstObject2 = [v39 firstObject];
 
-  [v36 submitToCoreAnalytics:v40 type:1 duration:v35];
+  [v36 submitToCoreAnalytics:firstObject2 type:1 duration:v35];
   v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v41, OS_LOG_TYPE_FAULT))
   {
@@ -638,15 +638,15 @@ LABEL_19:
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
     {
       v55 = [v90[5] count];
-      v56 = [v61 stringFromDate];
-      v57 = [v60 stringFromDate];
+      stringFromDate3 = [startDate stringFromDate];
+      stringFromDate4 = [endDate stringFromDate];
       v58 = *(*&buf[8] + 40);
       *v82 = 134218754;
       *&v82[4] = v55;
       v83 = 2112;
-      v84 = v56;
+      v84 = stringFromDate3;
       v85 = 2112;
-      v86 = v57;
+      v86 = stringFromDate4;
       v87 = 2112;
       v88 = v58;
       _os_log_debug_impl(&dword_2304B3000, v48, OS_LOG_TYPE_DEBUG, "Fetched %lu motion activities, batch for metrics from, %@, to, %@, error, %@", v82, 0x2Au);
@@ -704,10 +704,10 @@ void __71__RTLocationAwarenessMetricManager_locationsAndMotionsForDateInterval__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)sensitiveLocationsOfInterestWithError:(id *)a3
+- (id)sensitiveLocationsOfInterestWithError:(id *)error
 {
   v64 = *MEMORY[0x277D85DE8];
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -742,7 +742,7 @@ LABEL_3:
       v50 = 0;
       v6 = dispatch_semaphore_create(0);
       learnedLocationStore = self->_learnedLocationStore;
-      v8 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __74__RTLocationAwarenessMetricManager_sensitiveLocationsOfInterestWithError___block_invoke;
@@ -754,7 +754,7 @@ LABEL_3:
       v44 = a2;
       v9 = v6;
       v41 = v9;
-      [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithPlaceType:v8 handler:v40];
+      [(RTLearnedLocationStore *)learnedLocationStore fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v40];
       v10 = v9;
       v11 = [MEMORY[0x277CBEAA8] now];
       v12 = dispatch_time(0, 3600000000000);
@@ -768,11 +768,11 @@ LABEL_3:
       v15 = v14;
       v16 = objc_opt_new();
       v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_609];
-      v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v19 = [v18 filteredArrayUsingPredicate:v17];
-      v20 = [v19 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+      firstObject = [v19 firstObject];
 
-      [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+      [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
       v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
       {
@@ -805,16 +805,16 @@ LABEL_13:
       v28 = v52[5];
       if (v28)
       {
-        if (a3)
+        if (error)
         {
           v29 = v28;
-          *a3 = v28;
+          *error = v28;
         }
       }
 
       else if (v46[5])
       {
-        [v33 addObjectsFromArray:?];
+        [array addObjectsFromArray:?];
       }
 
       _Block_object_dispose(&v45, 8);
@@ -823,7 +823,7 @@ LABEL_13:
       if (v28)
       {
         v31 = 0;
-        v30 = v33;
+        v30 = array;
         goto LABEL_25;
       }
 
@@ -846,8 +846,8 @@ LABEL_12:
   }
 
 LABEL_23:
-  v30 = v33;
-  v31 = v33;
+  v30 = array;
+  v31 = array;
 LABEL_25:
 
   return v31;
@@ -893,38 +893,38 @@ void __74__RTLocationAwarenessMetricManager_sensitiveLocationsOfInterestWithErro
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)addDwellForMotionType:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 motionDwellMetrics:(id)a6 longestDwell:(id)a7 boutCounts:(id)a8
+- (void)addDwellForMotionType:(unint64_t)type startDate:(id)date endDate:(id)endDate motionDwellMetrics:(id)metrics longestDwell:(id)dwell boutCounts:(id)counts
 {
-  v48 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  [v14 timeIntervalSinceDate:v48];
+  dateCopy = date;
+  endDateCopy = endDate;
+  metricsCopy = metrics;
+  dwellCopy = dwell;
+  countsCopy = counts;
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   if (v18 < 0.0)
   {
     goto LABEL_17;
   }
 
-  [v48 timeIntervalSinceDate:self->_endDate];
+  [dateCopy timeIntervalSinceDate:self->_endDate];
   if (v19 >= 0.0)
   {
     goto LABEL_17;
   }
 
-  if ([(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType]== a3)
+  if ([(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType]== type)
   {
-    v20 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    if (([v48 isEqualToDate:v20] & 1) == 0)
+    boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    if (([dateCopy isEqualToDate:boutStateCurrBoutStart] & 1) == 0)
     {
-      v21 = [(RTLocationAwarenessMetricManager *)self startDate];
-      if (([v48 isEqualToDate:v21] & 1) == 0)
+      startDate = [(RTLocationAwarenessMetricManager *)self startDate];
+      if (([dateCopy isEqualToDate:startDate] & 1) == 0)
       {
-        v22 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-        if (![v14 isEqualToDate:v22])
+        boutStateCurrBoutEnd = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+        if (![endDateCopy isEqualToDate:boutStateCurrBoutEnd])
         {
-          v46 = [(RTLocationAwarenessMetricManager *)self endDate];
-          v47 = [v14 isEqualToDate:v46];
+          endDate = [(RTLocationAwarenessMetricManager *)self endDate];
+          v47 = [endDateCopy isEqualToDate:endDate];
 
           if ((v47 & 1) == 0)
           {
@@ -938,23 +938,23 @@ void __74__RTLocationAwarenessMetricManager_sensitiveLocationsOfInterestWithErro
   }
 
 LABEL_10:
-  v23 = [v14 earlierDate:self->_endDate];
-  [v23 timeIntervalSinceDate:v48];
+  v23 = [endDateCopy earlierDate:self->_endDate];
+  [v23 timeIntervalSinceDate:dateCopy];
   v25 = v24;
 
   v26 = MEMORY[0x277CCABB0];
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-  v28 = [v15 objectForKeyedSubscript:v27];
+  v28 = [metricsCopy objectForKeyedSubscript:v27];
   [v28 doubleValue];
   v30 = [v26 numberWithDouble:v25 + v29];
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-  [v15 setObject:v30 forKeyedSubscript:v31];
+  [metricsCopy setObject:v30 forKeyedSubscript:v31];
 
-  if ([v16 count])
+  if ([dwellCopy count])
   {
     v32 = MEMORY[0x277CCABB0];
     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-    v34 = [v16 objectForKeyedSubscript:v33];
+    v34 = [dwellCopy objectForKeyedSubscript:v33];
     [v34 doubleValue];
     v36 = v35;
 
@@ -970,32 +970,32 @@ LABEL_10:
 
     v38 = [v32 numberWithDouble:v37];
     v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-    [v16 setObject:v38 forKeyedSubscript:v39];
+    [dwellCopy setObject:v38 forKeyedSubscript:v39];
   }
 
-  if ([v17 count])
+  if ([countsCopy count])
   {
     v40 = MEMORY[0x277CCABB0];
     v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-    v42 = [v17 objectForKeyedSubscript:v41];
+    v42 = [countsCopy objectForKeyedSubscript:v41];
     [v42 doubleValue];
     v44 = [v40 numberWithDouble:v43 + 1.0];
     v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType")}];
-    [v17 setObject:v44 forKeyedSubscript:v45];
+    [countsCopy setObject:v44 forKeyedSubscript:v45];
   }
 
 LABEL_17:
 }
 
-- (void)addDwellForSignalEnvironmentType:(int)a3 startDate:(id)a4 endDate:(id)a5 sigEnvMetrics:(id)a6
+- (void)addDwellForSignalEnvironmentType:(int)type startDate:(id)date endDate:(id)endDate sigEnvMetrics:(id)metrics
 {
-  v8 = *&a3;
-  v42 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  v13 = [(RTLocationAwarenessMetricManager *)self startDate];
-  v14 = [v12 isEqualToDate:v13];
+  v8 = *&type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  metricsCopy = metrics;
+  stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  startDate = [(RTLocationAwarenessMetricManager *)self startDate];
+  v14 = [stateVariablePrevLocationTimestamp isEqualToDate:startDate];
 
   if (v14)
   {
@@ -1004,60 +1004,60 @@ LABEL_17:
 
   if ([(RTLocationAwarenessMetricManager *)self stateVariableCurrSignalEnvironmentType]== v8)
   {
-    [v10 timeIntervalSinceDate:v42];
+    [endDateCopy timeIntervalSinceDate:dateCopy];
     v16 = v15;
     v17 = MEMORY[0x277CCABB0];
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-    v19 = [v11 objectForKeyedSubscript:v18];
+    v19 = [metricsCopy objectForKeyedSubscript:v18];
     [v19 doubleValue];
     v21 = [v17 numberWithDouble:v16 + v20];
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-    [v11 setObject:v21 forKeyedSubscript:v22];
+    [metricsCopy setObject:v21 forKeyedSubscript:v22];
   }
 
   else
   {
-    v23 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-    [v10 timeIntervalSinceDate:v23];
+    stateVariablePrevLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+    [endDateCopy timeIntervalSinceDate:stateVariablePrevLocationTimestamp2];
     v25 = v24;
 
     v26 = MEMORY[0x277CBEAA8];
-    v27 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-    v18 = [v26 dateWithTimeInterval:v27 sinceDate:v25 * 0.5];
+    stateVariablePrevLocationTimestamp3 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+    v18 = [v26 dateWithTimeInterval:stateVariablePrevLocationTimestamp3 sinceDate:v25 * 0.5];
 
-    v28 = [v42 laterDate:v18];
-    [v28 timeIntervalSinceDate:v42];
+    v28 = [dateCopy laterDate:v18];
+    [v28 timeIntervalSinceDate:dateCopy];
     v30 = v29;
 
-    [v10 timeIntervalSinceDate:v18];
+    [endDateCopy timeIntervalSinceDate:v18];
     v32 = v31;
     v33 = MEMORY[0x277CCABB0];
     v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-    v35 = [v11 objectForKeyedSubscript:v34];
+    v35 = [metricsCopy objectForKeyedSubscript:v34];
     [v35 doubleValue];
     v37 = [v33 numberWithDouble:v30 + v36];
     v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-    [v11 setObject:v37 forKeyedSubscript:v38];
+    [metricsCopy setObject:v37 forKeyedSubscript:v38];
 
     v39 = MEMORY[0x277CCABB0];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-    v21 = [v11 objectForKeyedSubscript:v19];
+    v21 = [metricsCopy objectForKeyedSubscript:v19];
     [v21 doubleValue];
     v22 = [v39 numberWithDouble:v32 + v40];
     v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
-    [v11 setObject:v22 forKeyedSubscript:v41];
+    [metricsCopy setObject:v22 forKeyedSubscript:v41];
   }
 }
 
-- (double)distanceToNearestSensitiveLocation:(id)a3
+- (double)distanceToNearestSensitiveLocation:(id)location
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   sensitiveLocations = self->_sensitiveLocations;
   v6 = -1.0;
   if (sensitiveLocations && [(NSArray *)sensitiveLocations count])
   {
-    v7 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v4];
+    v7 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
@@ -1090,7 +1090,7 @@ LABEL_17:
           *buf = 138412547;
           v28 = v12;
           v29 = 2117;
-          v30 = v4;
+          v30 = locationCopy;
           _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "error for near sensitive location check: error, %@, location, %{sensitive}@", buf, 0x16u);
         }
       }
@@ -1185,16 +1185,16 @@ uint64_t __60__RTLocationAwarenessMetricManager_sortLocationsAndMotions___block_
 
         v6 = *(*(&v130 + 1) + 8 * v5);
         v7 = MEMORY[0x277CCABB0];
-        v8 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
-        v9 = [v8 objectForKeyedSubscript:v6];
+        boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+        v9 = [boutStateSignalEnvironmentDwell objectForKeyedSubscript:v6];
         [v9 doubleValue];
         v11 = v10;
-        v12 = [(RTLocationAwarenessMetricManager *)self boutBufferSignalEnvironmentDwell];
-        v13 = [v12 objectForKeyedSubscript:v6];
+        boutBufferSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutBufferSignalEnvironmentDwell];
+        v13 = [boutBufferSignalEnvironmentDwell objectForKeyedSubscript:v6];
         [v13 doubleValue];
         v15 = [v7 numberWithDouble:v11 + v14];
-        v16 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
-        [v16 setObject:v15 forKeyedSubscript:v6];
+        boutStateSignalEnvironmentDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+        [boutStateSignalEnvironmentDwell2 setObject:v15 forKeyedSubscript:v6];
 
         ++v5;
       }
@@ -1210,8 +1210,8 @@ uint64_t __60__RTLocationAwarenessMetricManager_sortLocationsAndMotions___block_
   v129 = 0u;
   v126 = 0u;
   v127 = 0u;
-  v115 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
-  v17 = [v115 countByEnumeratingWithState:&v126 objects:v136 count:16];
+  boutBufferMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
+  v17 = [boutBufferMotionLongestDwell countByEnumeratingWithState:&v126 objects:v136 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1223,7 +1223,7 @@ uint64_t __60__RTLocationAwarenessMetricManager_sortLocationsAndMotions___block_
       {
         if (*v127 != v19)
         {
-          objc_enumerationMutation(v115);
+          objc_enumerationMutation(boutBufferMotionLongestDwell);
         }
 
         v21 = *(*(&v126 + 1) + 8 * v20);
@@ -1233,13 +1233,13 @@ uint64_t __60__RTLocationAwarenessMetricManager_sortLocationsAndMotions___block_
 
 LABEL_21:
           v33 = MEMORY[0x277CCABB0];
-          v40 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-          v41 = [v40 objectForKeyedSubscript:v21];
+          boutStateMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+          v41 = [boutStateMotionLongestDwell objectForKeyedSubscript:v21];
           [v41 doubleValue];
           v43 = v42;
 
-          v44 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
-          v45 = [v44 objectForKeyedSubscript:v21];
+          boutBufferMotionLongestDwell2 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
+          v45 = [boutBufferMotionLongestDwell2 objectForKeyedSubscript:v21];
           [v45 doubleValue];
           v47 = v46;
 
@@ -1256,8 +1256,8 @@ LABEL_21:
           goto LABEL_24;
         }
 
-        v23 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-        v24 = [v23 objectForKeyedSubscript:v21];
+        boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+        v24 = [boutStateMotionDwell objectForKeyedSubscript:v21];
         v25 = [v24 isEqualToNumber:&unk_28459EB20];
 
         if (v25)
@@ -1267,9 +1267,9 @@ LABEL_21:
 
         [(RTLocationAwarenessMetricManager *)self boutBufferMotionEdgeDwell];
         v27 = v26;
-        v28 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+        boutStateMotionLongestDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutBufferMotionEdgeType](self, "boutBufferMotionEdgeType")}];
-        v30 = [v28 objectForKeyedSubscript:v29];
+        v30 = [boutStateMotionLongestDwell2 objectForKeyedSubscript:v29];
         [v30 doubleValue];
         v32 = v31;
 
@@ -1279,9 +1279,9 @@ LABEL_21:
         }
 
         v33 = MEMORY[0x277CCABB0];
-        v34 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
+        boutBufferMotionLongestDwell3 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
         v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutBufferMotionEdgeType](self, "boutBufferMotionEdgeType")}];
-        v36 = [v34 objectForKeyedSubscript:v35];
+        v36 = [boutBufferMotionLongestDwell3 objectForKeyedSubscript:v35];
         [v36 doubleValue];
         v38 = v37;
 
@@ -1297,14 +1297,14 @@ LABEL_21:
 
 LABEL_24:
         v48 = [v33 numberWithDouble:v39];
-        v49 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-        [v49 setObject:v48 forKeyedSubscript:v21];
+        boutStateMotionLongestDwell3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+        [boutStateMotionLongestDwell3 setObject:v48 forKeyedSubscript:v21];
 
         ++v20;
       }
 
       while (v18 != v20);
-      v18 = [v115 countByEnumeratingWithState:&v126 objects:v136 count:16];
+      v18 = [boutBufferMotionLongestDwell countByEnumeratingWithState:&v126 objects:v136 count:16];
     }
 
     while (v18);
@@ -1340,28 +1340,28 @@ LABEL_24:
       if (!v55)
       {
         v65 = MEMORY[0x277CCABB0];
-        v56 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-        v57 = [v56 objectForKeyedSubscript:v53];
+        boutStateMotionTypeNumBouts = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+        v57 = [boutStateMotionTypeNumBouts objectForKeyedSubscript:v53];
         [v57 doubleValue];
         v67 = v66;
-        v63 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionBoutCounts];
-        v64 = [v63 objectForKeyedSubscript:v53];
-        [v64 doubleValue];
+        boutBufferMotionBoutCounts = [(RTLocationAwarenessMetricManager *)self boutBufferMotionBoutCounts];
+        boutStateMotionTypeNumBouts3 = [boutBufferMotionBoutCounts objectForKeyedSubscript:v53];
+        [boutStateMotionTypeNumBouts3 doubleValue];
         v69 = [v65 numberWithDouble:v67 + v68];
-        v70 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-        [v70 setObject:v69 forKeyedSubscript:v53];
+        boutStateMotionTypeNumBouts2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+        [boutStateMotionTypeNumBouts2 setObject:v69 forKeyedSubscript:v53];
 
 LABEL_36:
         goto LABEL_37;
       }
 
-      v56 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-      v57 = [v56 objectForKeyedSubscript:v53];
+      boutStateMotionTypeNumBouts = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+      v57 = [boutStateMotionTypeNumBouts objectForKeyedSubscript:v53];
       if ([v57 isEqualToNumber:&unk_28459EB20])
       {
-        v58 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-        v59 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-        v60 = [v58 isEqualToDate:v59];
+        stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+        boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+        v60 = [stateVariableLastSettledStateChangeTimestamp isEqualToDate:boutStateCurrBoutStart];
 
         if (v60)
         {
@@ -1369,12 +1369,12 @@ LABEL_36:
         }
 
         v61 = MEMORY[0x277CCABB0];
-        v56 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-        v57 = [v56 objectForKeyedSubscript:v53];
+        boutStateMotionTypeNumBouts = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+        v57 = [boutStateMotionTypeNumBouts objectForKeyedSubscript:v53];
         [v57 doubleValue];
-        v63 = [v61 numberWithDouble:v62 + 1.0];
-        v64 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-        [v64 setObject:v63 forKeyedSubscript:v53];
+        boutBufferMotionBoutCounts = [v61 numberWithDouble:v62 + 1.0];
+        boutStateMotionTypeNumBouts3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+        [boutStateMotionTypeNumBouts3 setObject:boutBufferMotionBoutCounts forKeyedSubscript:v53];
         goto LABEL_36;
       }
 
@@ -1416,16 +1416,16 @@ LABEL_40:
         [v74 isEqualToNumber:v75];
 
         v76 = MEMORY[0x277CCABB0];
-        v77 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-        v78 = [v77 objectForKeyedSubscript:v74];
+        boutStateMotionDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+        v78 = [boutStateMotionDwell2 objectForKeyedSubscript:v74];
         [v78 doubleValue];
         v80 = v79;
-        v81 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionDwell];
-        v82 = [v81 objectForKeyedSubscript:v74];
+        boutBufferMotionDwell = [(RTLocationAwarenessMetricManager *)self boutBufferMotionDwell];
+        v82 = [boutBufferMotionDwell objectForKeyedSubscript:v74];
         [v82 doubleValue];
         v84 = [v76 numberWithDouble:v80 + v83];
-        v85 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-        [v85 setObject:v84 forKeyedSubscript:v74];
+        boutStateMotionDwell3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+        [boutStateMotionDwell3 setObject:v84 forKeyedSubscript:v74];
 
         ++v73;
       }
@@ -1482,14 +1482,14 @@ LABEL_40:
   [(RTLocationAwarenessMetricManager *)self resetBuffer];
 }
 
-- (void)updateBoutMetricsForLocation:(id)a3
+- (void)updateBoutMetricsForLocation:(id)location
 {
-  v57 = a3;
-  v4 = [v57 timestamp];
-  v5 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  v6 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v7 = [v5 laterDate:v6];
-  [v4 timeIntervalSinceDate:v7];
+  locationCopy = location;
+  timestamp = [locationCopy timestamp];
+  stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  v7 = [stateVariablePrevLocationTimestamp laterDate:boutStateCurrBoutStart];
+  [timestamp timeIntervalSinceDate:v7];
   v9 = v8;
 
   v10 = (v9 + -1.0) / 60.0;
@@ -1499,9 +1499,9 @@ LABEL_40:
   }
 
   v11 = v10;
-  if ([v57 type] == 4 || objc_msgSend(v57, "type") == 11)
+  if ([locationCopy type] == 4 || objc_msgSend(locationCopy, "type") == 11)
   {
-    v12 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+    boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumWifiLocationsInBout];
     [(RTLocationAwarenessMetricManager *)self setBoutMetricNumWifiLocationsInBout:v13 + 1.0];
     [(RTLocationAwarenessMetricManager *)self flushBufferToCurrBoutMetrics];
@@ -1518,9 +1518,9 @@ LABEL_40:
     [(RTLocationAwarenessMetricManager *)self setBoutMetricNumAdditionalFixesPerHourRequired10mDutyCycle:v20 + (v18 + (v17 >> 2))];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired15mDutyCycle];
     [(RTLocationAwarenessMetricManager *)self setBoutMetricNumAdditionalFixesPerHourRequired15mDutyCycle:v21 + (v11 / 15)];
-    v22 = [v57 timestamp];
-    v23 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
-    [v22 timeIntervalSinceDate:v23];
+    timestamp2 = [locationCopy timestamp];
+    stateVariableLastSensitiveLocationCheckTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
+    [timestamp2 timeIntervalSinceDate:stateVariableLastSensitiveLocationCheckTimestamp];
     if (v24 >= 600.0)
     {
     }
@@ -1536,10 +1536,10 @@ LABEL_40:
       }
     }
 
-    [(RTLocationAwarenessMetricManager *)self distanceToNearestSensitiveLocation:v57];
+    [(RTLocationAwarenessMetricManager *)self distanceToNearestSensitiveLocation:locationCopy];
     v28 = v27;
     [(RTLocationAwarenessMetricManager *)self boutMetricDistanceToSensitiveLocation];
-    v29 = self;
+    selfCopy2 = self;
     if (v30 >= 0.0)
     {
       [(RTLocationAwarenessMetricManager *)self boutMetricDistanceToSensitiveLocation];
@@ -1548,7 +1548,7 @@ LABEL_40:
         v31 = v28;
       }
 
-      v29 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -1556,13 +1556,13 @@ LABEL_40:
       v31 = v28;
     }
 
-    [(RTLocationAwarenessMetricManager *)v29 setBoutMetricDistanceToSensitiveLocation:v31];
+    [(RTLocationAwarenessMetricManager *)selfCopy2 setBoutMetricDistanceToSensitiveLocation:v31];
   }
 
   else
   {
-    v12 = [(RTLocationAwarenessMetricManager *)self boutBufferSignalEnvironmentDwell];
-    if ([v57 type] == 1 || objc_msgSend(v57, "type") == 9)
+    boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutBufferSignalEnvironmentDwell];
+    if ([locationCopy type] == 1 || objc_msgSend(locationCopy, "type") == 9)
     {
       [(RTLocationAwarenessMetricManager *)self boutBufferNumGPSLocationsInBout];
       [(RTLocationAwarenessMetricManager *)self setBoutBufferNumGPSLocationsInBout:v32 + 1.0];
@@ -1587,9 +1587,9 @@ LABEL_40:
     [(RTLocationAwarenessMetricManager *)self setBoutBufferNumAdditionalFixesPerHourRequired10mDutyCycle:v40 + (v38 + (v37 >> 2))];
     [(RTLocationAwarenessMetricManager *)self boutBufferNumAdditionalFixesPerHourRequired15mDutyCycle];
     [(RTLocationAwarenessMetricManager *)self setBoutBufferNumAdditionalFixesPerHourRequired15mDutyCycle:v41 + (v11 / 15)];
-    v42 = [v57 timestamp];
-    v43 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
-    [v42 timeIntervalSinceDate:v43];
+    timestamp3 = [locationCopy timestamp];
+    stateVariableLastSensitiveLocationCheckTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
+    [timestamp3 timeIntervalSinceDate:stateVariableLastSensitiveLocationCheckTimestamp2];
     if (v44 >= 600.0)
     {
     }
@@ -1605,10 +1605,10 @@ LABEL_40:
       }
     }
 
-    [(RTLocationAwarenessMetricManager *)self distanceToNearestSensitiveLocation:v57];
+    [(RTLocationAwarenessMetricManager *)self distanceToNearestSensitiveLocation:locationCopy];
     v48 = v47;
     [(RTLocationAwarenessMetricManager *)self boutBufferDistanceToSensitiveLocation];
-    v49 = self;
+    selfCopy4 = self;
     if (v50 >= 0.0)
     {
       [(RTLocationAwarenessMetricManager *)self boutBufferDistanceToSensitiveLocation];
@@ -1617,7 +1617,7 @@ LABEL_40:
         v51 = v48;
       }
 
-      v49 = self;
+      selfCopy4 = self;
     }
 
     else
@@ -1625,101 +1625,101 @@ LABEL_40:
       v51 = v48;
     }
 
-    [(RTLocationAwarenessMetricManager *)v49 setBoutBufferDistanceToSensitiveLocation:v51];
+    [(RTLocationAwarenessMetricManager *)selfCopy4 setBoutBufferDistanceToSensitiveLocation:v51];
   }
 
 LABEL_29:
-  v52 = [v57 signalEnvironmentType];
-  v53 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  v54 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v55 = [v53 laterDate:v54];
-  v56 = [v57 timestamp];
-  [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:v52 startDate:v55 endDate:v56 sigEnvMetrics:v12];
+  signalEnvironmentType = [locationCopy signalEnvironmentType];
+  stateVariablePrevLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  boutStateCurrBoutStart2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  v55 = [stateVariablePrevLocationTimestamp2 laterDate:boutStateCurrBoutStart2];
+  timestamp4 = [locationCopy timestamp];
+  [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:signalEnvironmentType startDate:v55 endDate:timestamp4 sigEnvMetrics:boutStateSignalEnvironmentDwell];
 }
 
-- (void)updateBoutMetricsForMotion:(id)a3
+- (void)updateBoutMetricsForMotion:(id)motion
 {
-  v28 = a3;
-  v4 = [v28 type];
-  if (v4 != [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType])
+  motionCopy = motion;
+  type = [motionCopy type];
+  if (type != [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType])
   {
-    v5 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-    v6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [v5 timeIntervalSinceDate:v6];
+    stateVariableCurrMotionStart = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+    stateVariablePrevWifiLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [stateVariableCurrMotionStart timeIntervalSinceDate:stateVariablePrevWifiLocationTimestamp];
     v8 = v7;
 
     if (v8 >= 0.0)
     {
-      v20 = [v28 type];
+      type2 = [motionCopy type];
       [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
     }
 
     else
     {
-      v9 = [v28 startDate];
-      v10 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-      v11 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-      v12 = [v10 laterDate:v11];
-      [v9 timeIntervalSinceDate:v12];
+      startDate = [motionCopy startDate];
+      stateVariableCurrMotionStart2 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+      boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+      v12 = [stateVariableCurrMotionStart2 laterDate:boutStateCurrBoutStart];
+      [startDate timeIntervalSinceDate:v12];
       [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeDwell:?];
 
       [(RTLocationAwarenessMetricManager *)self setBoutBufferMotionEdgeType:[(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType]];
-      v13 = [v28 type];
-      v14 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-      v15 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-      v16 = [v14 laterDate:v15];
-      v17 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-      v18 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-      v19 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-      [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v13 startDate:v16 endDate:v17 motionDwellMetrics:v18 longestDwell:v19 boutCounts:0];
+      type3 = [motionCopy type];
+      stateVariableCurrMotionStart3 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+      boutStateCurrBoutStart2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+      v16 = [stateVariableCurrMotionStart3 laterDate:boutStateCurrBoutStart2];
+      stateVariablePrevWifiLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+      boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+      boutStateMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+      [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:type3 startDate:v16 endDate:stateVariablePrevWifiLocationTimestamp2 motionDwellMetrics:boutStateMotionDwell longestDwell:boutStateMotionLongestDwell boutCounts:0];
 
-      v20 = [v28 type];
+      type2 = [motionCopy type];
       [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
     }
     v21 = ;
-    v22 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    v23 = [v21 laterDate:v22];
-    v24 = [v28 startDate];
-    v25 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionDwell];
-    v26 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
-    v27 = [(RTLocationAwarenessMetricManager *)self boutBufferMotionBoutCounts];
-    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v20 startDate:v23 endDate:v24 motionDwellMetrics:v25 longestDwell:v26 boutCounts:v27];
+    boutStateCurrBoutStart3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    v23 = [v21 laterDate:boutStateCurrBoutStart3];
+    startDate2 = [motionCopy startDate];
+    boutBufferMotionDwell = [(RTLocationAwarenessMetricManager *)self boutBufferMotionDwell];
+    boutBufferMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutBufferMotionLongestDwell];
+    boutBufferMotionBoutCounts = [(RTLocationAwarenessMetricManager *)self boutBufferMotionBoutCounts];
+    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:type2 startDate:v23 endDate:startDate2 motionDwellMetrics:boutBufferMotionDwell longestDwell:boutBufferMotionLongestDwell boutCounts:boutBufferMotionBoutCounts];
   }
 }
 
 - (void)updateBoutMetricsStateChangeEdgeDwell
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  [v3 timeIntervalSinceDate:v4];
+  boutStateCurrBoutEnd = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  [boutStateCurrBoutEnd timeIntervalSinceDate:boutStateCurrBoutStart];
   [(RTLocationAwarenessMetricManager *)self setBoutMetricDuration:?];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
+  dailyStateBoutCounts = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [dailyStateBoutCounts objectForKeyedSubscript:v7];
   [v8 doubleValue];
   v10 = [v5 numberWithDouble:v9 + 1.0];
-  v11 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
+  dailyStateBoutCounts2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  [v11 setObject:v10 forKeyedSubscript:v12];
+  [dailyStateBoutCounts2 setObject:v10 forKeyedSubscript:v12];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
+  dailyStateBoutDwell = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  v16 = [dailyStateBoutDwell objectForKeyedSubscript:v15];
   [v16 doubleValue];
   v18 = v17;
   [(RTLocationAwarenessMetricManager *)self boutMetricDuration];
   v20 = [v13 numberWithDouble:v18 + v19];
-  v21 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
+  dailyStateBoutDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  [v21 setObject:v20 forKeyedSubscript:v22];
+  [dailyStateBoutDwell2 setObject:v20 forKeyedSubscript:v22];
 
   v23 = MEMORY[0x277CCABB0];
-  v24 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
+  dailyStateBoutLongestDwell = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  v26 = [v24 objectForKeyedSubscript:v25];
+  v26 = [dailyStateBoutLongestDwell objectForKeyedSubscript:v25];
   [v26 doubleValue];
   v28 = v27;
 
@@ -1730,15 +1730,15 @@ LABEL_29:
   }
 
   v30 = [v23 numberWithDouble:v29];
-  v31 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
+  dailyStateBoutLongestDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
-  [v31 setObject:v30 forKeyedSubscript:v32];
+  [dailyStateBoutLongestDwell2 setObject:v30 forKeyedSubscript:v32];
 
-  v33 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v34 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  v35 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v36 = [v34 laterDate:v35];
-  [v33 timeIntervalSinceDate:v36];
+  boutStateCurrBoutEnd2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  boutStateCurrBoutStart2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  v36 = [stateVariablePrevLocationTimestamp laterDate:boutStateCurrBoutStart2];
+  [boutStateCurrBoutEnd2 timeIntervalSinceDate:v36];
   v38 = v37;
 
   v39 = v38 / 60.0 + -1.0;
@@ -1761,45 +1761,45 @@ LABEL_29:
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumAdditionalFixesPerHourRequired10mDutyCycle:v47 + (v45 + (v44 >> 2))];
   [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired15mDutyCycle];
   [(RTLocationAwarenessMetricManager *)self setBoutMetricNumAdditionalFixesPerHourRequired15mDutyCycle:v48 + (v40 / 15)];
-  v49 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v50 = [(RTLocationAwarenessMetricManager *)self stateVariableLastWifiStateChangeTimestamp];
-  LODWORD(v45) = [v49 isEqualToDate:v50];
+  boutStateCurrBoutEnd3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  stateVariableLastWifiStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastWifiStateChangeTimestamp];
+  LODWORD(v45) = [boutStateCurrBoutEnd3 isEqualToDate:stateVariableLastWifiStateChangeTimestamp];
 
   if (v45)
   {
-    v51 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
-    v52 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-    v53 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    v54 = [v52 laterDate:v53];
-    v55 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-    v56 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v57 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-    v58 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v51 startDate:v54 endDate:v55 motionDwellMetrics:v56 longestDwell:v57 boutCounts:v58];
+    stateVariableCurrMotionActivityType = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
+    stateVariableCurrMotionStart = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+    boutStateCurrBoutStart3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    v54 = [stateVariableCurrMotionStart laterDate:boutStateCurrBoutStart3];
+    boutStateCurrBoutEnd4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+    boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    boutStateMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+    boutStateMotionTypeNumBouts = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:stateVariableCurrMotionActivityType startDate:v54 endDate:boutStateCurrBoutEnd4 motionDwellMetrics:boutStateMotionDwell longestDwell:boutStateMotionLongestDwell boutCounts:boutStateMotionTypeNumBouts];
   }
 
-  v59 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v60 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-  v61 = [v59 isEqualToDate:v60];
+  boutStateCurrBoutEnd5 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+  v61 = [boutStateCurrBoutEnd5 isEqualToDate:stateVariableLastSettledStateChangeTimestamp];
 
   if (v61)
   {
-    v62 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-    v63 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-    v64 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    v65 = [v63 laterDate:v64];
-    [v62 timeIntervalSinceDate:v65];
+    boutStateCurrBoutEnd6 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+    stateVariablePrevLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+    boutStateCurrBoutStart4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    v65 = [stateVariablePrevLocationTimestamp2 laterDate:boutStateCurrBoutStart4];
+    [boutStateCurrBoutEnd6 timeIntervalSinceDate:v65];
     v67 = v66;
 
     v68 = MEMORY[0x277CCABB0];
-    v75 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+    boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
     v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-    v70 = [v75 objectForKeyedSubscript:v69];
+    v70 = [boutStateSignalEnvironmentDwell objectForKeyedSubscript:v69];
     [v70 doubleValue];
     v72 = [v68 numberWithDouble:v67 + v71];
-    v73 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+    boutStateSignalEnvironmentDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
     v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-    [v73 setObject:v72 forKeyedSubscript:v74];
+    [boutStateSignalEnvironmentDwell2 setObject:v72 forKeyedSubscript:v74];
   }
 }
 
@@ -1807,24 +1807,24 @@ LABEL_29:
 {
   if ([(RTLocationAwarenessMetricManager *)self boutStateWifi]== 2)
   {
-    v3 = [(RTLocationAwarenessMetricManager *)self endDate];
-    v4 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [v3 timeIntervalSinceDate:v4];
+    endDate = [(RTLocationAwarenessMetricManager *)self endDate];
+    stateVariablePrevWifiLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [endDate timeIntervalSinceDate:stateVariablePrevWifiLocationTimestamp];
     v6 = v5;
 
     if (v6 > 1200.0)
     {
-      v7 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v7];
+      stateVariablePrevWifiLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:stateVariablePrevWifiLocationTimestamp2];
 
-      v8 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
-      v9 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-      v10 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-      v11 = [v9 laterDate:v10];
-      v12 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-      v13 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-      v14 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-      [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v8 startDate:v11 endDate:v12 motionDwellMetrics:v13 longestDwell:v14 boutCounts:0];
+      stateVariableCurrMotionActivityType = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
+      stateVariableCurrMotionStart = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+      boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+      v11 = [stateVariableCurrMotionStart laterDate:boutStateCurrBoutStart];
+      boutStateCurrBoutEnd = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+      boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+      boutStateMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+      [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:stateVariableCurrMotionActivityType startDate:v11 endDate:boutStateCurrBoutEnd motionDwellMetrics:boutStateMotionDwell longestDwell:boutStateMotionLongestDwell boutCounts:0];
 
       [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
       [(RTLocationAwarenessMetricManager *)self setBoutMetricType:2];
@@ -1834,22 +1834,22 @@ LABEL_29:
   [(RTLocationAwarenessMetricManager *)self flushBufferToCurrBoutMetrics];
   if ([(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType]== 1)
   {
-    v15 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v15];
+    stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:stateVariableLastSettledStateChangeTimestamp];
     v16 = 1;
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v17 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-  v18 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-  v19 = [v17 laterDate:v18];
+  stateVariablePrevWifiLocationTimestamp3 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+  stateVariableLastSettledStateChangeTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+  v19 = [stateVariablePrevWifiLocationTimestamp3 laterDate:stateVariableLastSettledStateChangeTimestamp2];
   [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v19];
 
-  v15 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v20 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-  [v15 timeIntervalSinceDate:v20];
+  stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self endDate];
+  stateVariablePrevWifiLocationTimestamp4 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+  [stateVariableLastSettledStateChangeTimestamp timeIntervalSinceDate:stateVariablePrevWifiLocationTimestamp4];
   if (v21 <= 1200.0)
   {
 LABEL_9:
@@ -1858,25 +1858,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v22 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-  v23 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-  [v22 timeIntervalSinceDate:v23];
+  stateVariablePrevWifiLocationTimestamp5 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+  stateVariableLastSettledStateChangeTimestamp3 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+  [stateVariablePrevWifiLocationTimestamp5 timeIntervalSinceDate:stateVariableLastSettledStateChangeTimestamp3];
   if (v24 > 0.0)
   {
 
     goto LABEL_9;
   }
 
-  v39 = [(RTLocationAwarenessMetricManager *)self boutStateWifi];
+  boutStateWifi = [(RTLocationAwarenessMetricManager *)self boutStateWifi];
 
-  if (v39 == 2)
+  if (boutStateWifi == 2)
   {
-    v40 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v40];
+    stateVariablePrevWifiLocationTimestamp6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:stateVariablePrevWifiLocationTimestamp6];
 
     [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
-    v15 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v15];
+    stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:stateVariableLastSettledStateChangeTimestamp];
     v16 = 2;
     goto LABEL_10;
   }
@@ -1884,62 +1884,62 @@ LABEL_9:
   v16 = 3;
 LABEL_11:
   [(RTLocationAwarenessMetricManager *)self setBoutMetricType:v16];
-  v25 = [(RTLocationAwarenessMetricManager *)self endDate];
-  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v25];
+  endDate2 = [(RTLocationAwarenessMetricManager *)self endDate];
+  [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:endDate2];
 
-  v26 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrSignalEnvironmentType];
-  v27 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  v28 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v29 = [v27 laterDate:v28];
-  v30 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v31 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
-  [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:v26 startDate:v29 endDate:v30 sigEnvMetrics:v31];
+  stateVariableCurrSignalEnvironmentType = [(RTLocationAwarenessMetricManager *)self stateVariableCurrSignalEnvironmentType];
+  stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  boutStateCurrBoutStart2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  v29 = [stateVariablePrevLocationTimestamp laterDate:boutStateCurrBoutStart2];
+  endDate3 = [(RTLocationAwarenessMetricManager *)self endDate];
+  boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+  [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:stateVariableCurrSignalEnvironmentType startDate:v29 endDate:endDate3 sigEnvMetrics:boutStateSignalEnvironmentDwell];
 
-  v32 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
-  v33 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-  v34 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v35 = [v33 laterDate:v34];
-  v36 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v37 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-  v38 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-  [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v32 startDate:v35 endDate:v36 motionDwellMetrics:v37 longestDwell:v38 boutCounts:0];
+  stateVariableCurrMotionActivityType2 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
+  stateVariableCurrMotionStart2 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+  boutStateCurrBoutStart3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  v35 = [stateVariableCurrMotionStart2 laterDate:boutStateCurrBoutStart3];
+  endDate4 = [(RTLocationAwarenessMetricManager *)self endDate];
+  boutStateMotionDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+  boutStateMotionLongestDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+  [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:stateVariableCurrMotionActivityType2 startDate:v35 endDate:endDate4 motionDwellMetrics:boutStateMotionDwell2 longestDwell:boutStateMotionLongestDwell2 boutCounts:0];
 
   [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
 }
 
-- (void)updateDailyMetrics:(id)a3
+- (void)updateDailyMetrics:(id)metrics
 {
-  v14 = a3;
+  metricsCopy = metrics;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v14;
-    v5 = [v4 signalEnvironmentType];
-    v6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-    v7 = [v4 timestamp];
+    v4 = metricsCopy;
+    signalEnvironmentType = [v4 signalEnvironmentType];
+    stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+    timestamp = [v4 timestamp];
 
-    v8 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-    [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:v5 startDate:v6 endDate:v7 sigEnvMetrics:v8];
+    dailyStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+    [(RTLocationAwarenessMetricManager *)self addDwellForSignalEnvironmentType:signalEnvironmentType startDate:stateVariablePrevLocationTimestamp endDate:timestamp sigEnvMetrics:dailyStateSignalEnvironmentDwell];
     goto LABEL_3;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v14;
-    v9 = [v6 type];
-    if (v9 == [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType])
+    stateVariablePrevLocationTimestamp = metricsCopy;
+    type = [stateVariablePrevLocationTimestamp type];
+    if (type == [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType])
     {
       goto LABEL_4;
     }
 
-    v10 = [v6 type];
-    v7 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-    v8 = [(RTLocationAwarenessMetricManager *)self startDate];
-    v11 = [v7 laterDate:v8];
-    v12 = [v6 startDate];
-    v13 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:v10 startDate:v11 endDate:v12 motionDwellMetrics:v13 longestDwell:0 boutCounts:0];
+    type2 = [stateVariablePrevLocationTimestamp type];
+    timestamp = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+    dailyStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self startDate];
+    v11 = [timestamp laterDate:dailyStateSignalEnvironmentDwell];
+    startDate = [stateVariablePrevLocationTimestamp startDate];
+    dailyStateMotionDwell = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+    [(RTLocationAwarenessMetricManager *)self addDwellForMotionType:type2 startDate:v11 endDate:startDate motionDwellMetrics:dailyStateMotionDwell longestDwell:0 boutCounts:0];
 
 LABEL_3:
 LABEL_4:
@@ -1950,44 +1950,44 @@ LABEL_4:
 
 - (void)processLastDailyMetrics
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
-  v4 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v5 = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
-  [v4 timeIntervalSinceDate:v5];
+  stateVariableCurrMotionActivityType = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionActivityType];
+  endDate = [(RTLocationAwarenessMetricManager *)self endDate];
+  stateVariableCurrMotionStart = [(RTLocationAwarenessMetricManager *)self stateVariableCurrMotionStart];
+  [endDate timeIntervalSinceDate:stateVariableCurrMotionStart];
   v7 = v6;
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  dailyStateMotionDwell = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stateVariableCurrMotionActivityType];
+  v11 = [dailyStateMotionDwell objectForKeyedSubscript:v10];
   [v11 doubleValue];
   v13 = [v8 numberWithDouble:v7 + v12];
-  v14 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
-  [v14 setObject:v13 forKeyedSubscript:v15];
+  dailyStateMotionDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:stateVariableCurrMotionActivityType];
+  [dailyStateMotionDwell2 setObject:v13 forKeyedSubscript:v15];
 
-  v16 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v17 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
-  [v16 timeIntervalSinceDate:v17];
+  endDate2 = [(RTLocationAwarenessMetricManager *)self endDate];
+  stateVariablePrevLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevLocationTimestamp];
+  [endDate2 timeIntervalSinceDate:stateVariablePrevLocationTimestamp];
   v19 = v18;
 
   v20 = MEMORY[0x277CCABB0];
-  v27 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  dailyStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-  v22 = [v27 objectForKeyedSubscript:v21];
+  v22 = [dailyStateSignalEnvironmentDwell objectForKeyedSubscript:v21];
   [v22 doubleValue];
   v24 = [v20 numberWithDouble:v19 + v23];
-  v25 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  dailyStateSignalEnvironmentDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTLocationAwarenessMetricManager stateVariableCurrSignalEnvironmentType](self, "stateVariableCurrSignalEnvironmentType")}];
-  [v25 setObject:v24 forKeyedSubscript:v26];
+  [dailyStateSignalEnvironmentDwell2 setObject:v24 forKeyedSubscript:v26];
 }
 
 - (void)processMetrics
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self startDate];
-  v4 = [(RTLocationAwarenessMetricManager *)self endDate];
-  v5 = [v3 earlierDate:v4];
-  v6 = [v5 isEqualToDate:v3];
+  startDate = [(RTLocationAwarenessMetricManager *)self startDate];
+  endDate = [(RTLocationAwarenessMetricManager *)self endDate];
+  v5 = [startDate earlierDate:endDate];
+  v6 = [v5 isEqualToDate:startDate];
 
   if (v6)
   {
@@ -1995,11 +1995,11 @@ LABEL_4:
     do
     {
       v8 = v7;
-      v9 = v3;
+      v9 = startDate;
       v10 = objc_autoreleasePoolPush();
-      v7 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v3 sinceDate:3600.0];
+      v7 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:startDate sinceDate:3600.0];
 
-      v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v3 endDate:v7];
+      v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:startDate endDate:v7];
       v12 = [(RTLocationAwarenessMetricManager *)self locationsAndMotionsForDateInterval:v11];
       v13 = [(RTLocationAwarenessMetricManager *)self sortLocationsAndMotions:v12];
       v16[0] = MEMORY[0x277D85DD0];
@@ -2008,12 +2008,12 @@ LABEL_4:
       v16[3] = &unk_2788C4BA8;
       v16[4] = self;
       [v13 enumerateObjectsUsingBlock:v16];
-      v3 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:1.0];
+      startDate = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:1.0];
 
       objc_autoreleasePoolPop(v10);
-      v14 = [(RTLocationAwarenessMetricManager *)self endDate];
-      v15 = [v3 earlierDate:v14];
-      LOBYTE(v11) = [v15 isEqualToDate:v3];
+      endDate2 = [(RTLocationAwarenessMetricManager *)self endDate];
+      v15 = [startDate earlierDate:endDate2];
+      LOBYTE(v11) = [v15 isEqualToDate:startDate];
     }
 
     while ((v11 & 1) != 0);
@@ -2028,16 +2028,16 @@ void __50__RTLocationAwarenessMetricManager_processMetrics__block_invoke(uint64_
   [*(a1 + 32) monitorStateChange:v4];
 }
 
-- (void)monitorStateChange:(id)a3
+- (void)monitorStateChange:(id)change
 {
-  v37 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v37;
-    v5 = [v4 timestamp];
-    v6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [v5 timeIntervalSinceDate:v6];
+    v4 = changeCopy;
+    timestamp = [v4 timestamp];
+    stateVariablePrevWifiLocationTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [timestamp timeIntervalSinceDate:stateVariablePrevWifiLocationTimestamp];
     v8 = v7;
 
     if (-[RTLocationAwarenessMetricManager boutStateMotion](self, "boutStateMotion") == 1 || !-[RTLocationAwarenessMetricManager boutStateWifi](self, "boutStateWifi") && (-[RTLocationAwarenessMetricManager boutStateCurrBoutStart](self, "boutStateCurrBoutStart"), v21 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessMetricManager startDate](self, "startDate"), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 isEqualToDate:v22], v22, v21, v23))
@@ -2074,17 +2074,17 @@ void __50__RTLocationAwarenessMetricManager_processMetrics__block_invoke(uint64_
     }
 
     [(RTLocationAwarenessMetricManager *)self setBoutMetricType:v24];
-    v26 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v26];
+    stateVariablePrevWifiLocationTimestamp2 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:stateVariablePrevWifiLocationTimestamp2];
 
     [(RTLocationAwarenessMetricManager *)self setBoutStateWifi:v25];
-    v27 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [(RTLocationAwarenessMetricManager *)self setStateVariableLastWifiStateChangeTimestamp:v27];
+    stateVariablePrevWifiLocationTimestamp3 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [(RTLocationAwarenessMetricManager *)self setStateVariableLastWifiStateChangeTimestamp:stateVariablePrevWifiLocationTimestamp3];
 
     [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
-    v28 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    v29 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
-    v30 = [v28 laterDate:v29];
+    stateVariablePrevWifiLocationTimestamp4 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    stateVariableLastSettledStateChangeTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSettledStateChangeTimestamp];
+    v30 = [stateVariablePrevWifiLocationTimestamp4 laterDate:stateVariableLastSettledStateChangeTimestamp];
     [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v30];
 
 LABEL_31:
@@ -2098,10 +2098,10 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  v10 = v37;
-  v11 = [v10 startDate];
-  v12 = [(RTLocationAwarenessMetricManager *)self startDate];
-  [v11 timeIntervalSinceDate:v12];
+  v10 = changeCopy;
+  startDate = [v10 startDate];
+  startDate2 = [(RTLocationAwarenessMetricManager *)self startDate];
+  [startDate timeIntervalSinceDate:startDate2];
   v14 = v13;
 
   if (v14 <= 0.0)
@@ -2122,44 +2122,44 @@ LABEL_31:
 
   if (-[RTLocationAwarenessMetricManager boutStateMotion](self, "boutStateMotion") == 1 && [v10 type] != 1 && objc_msgSend(v10, "type") != 6)
   {
-    v31 = [v10 startDate];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v31];
+    startDate3 = [v10 startDate];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:startDate3];
 
     v32 = 2;
     v33 = 1;
 LABEL_43:
     [(RTLocationAwarenessMetricManager *)self setBoutMetricType:v33];
     [(RTLocationAwarenessMetricManager *)self setBoutStateMotion:v32];
-    v35 = [v10 startDate];
-    [(RTLocationAwarenessMetricManager *)self setStateVariableLastSettledStateChangeTimestamp:v35];
+    startDate4 = [v10 startDate];
+    [(RTLocationAwarenessMetricManager *)self setStateVariableLastSettledStateChangeTimestamp:startDate4];
 
     [(RTLocationAwarenessMetricManager *)self updateBoutMetricsForMotion:v10];
     [(RTLocationAwarenessMetricManager *)self flushBufferToCurrBoutMetrics];
     [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
-    v36 = [v10 startDate];
-    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v36];
+    startDate5 = [v10 startDate];
+    [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:startDate5];
 
     goto LABEL_32;
   }
 
   if (-[RTLocationAwarenessMetricManager boutStateMotion](self, "boutStateMotion") == 2 && [v10 type] == 1)
   {
-    v16 = [v10 startDate];
-    v17 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-    [v16 timeIntervalSinceDate:v17];
+    startDate6 = [v10 startDate];
+    stateVariablePrevWifiLocationTimestamp5 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+    [startDate6 timeIntervalSinceDate:stateVariablePrevWifiLocationTimestamp5];
     if (v18 <= 1200.0)
     {
     }
 
     else
     {
-      v19 = [(RTLocationAwarenessMetricManager *)self boutMetricType];
+      boutMetricType = [(RTLocationAwarenessMetricManager *)self boutMetricType];
 
-      if (v19 != 3)
+      if (boutMetricType != 3)
       {
 LABEL_39:
-        v34 = [v10 startDate];
-        [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v34];
+        startDate7 = [v10 startDate];
+        [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:startDate7];
 
         if ([(RTLocationAwarenessMetricManager *)self boutStateWifi]== 2)
         {
@@ -2175,12 +2175,12 @@ LABEL_39:
         goto LABEL_43;
       }
 
-      v20 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:v20];
+      stateVariablePrevWifiLocationTimestamp6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutEnd:stateVariablePrevWifiLocationTimestamp6];
 
       [(RTLocationAwarenessMetricManager *)self submitBoutMetricsToCoreAnalytics];
-      v16 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
-      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:v16];
+      startDate6 = [(RTLocationAwarenessMetricManager *)self stateVariablePrevWifiLocationTimestamp];
+      [(RTLocationAwarenessMetricManager *)self setBoutStateCurrBoutStart:startDate6];
     }
 
     goto LABEL_39;
@@ -2190,25 +2190,25 @@ LABEL_39:
 LABEL_32:
 
 LABEL_33:
-  [(RTLocationAwarenessMetricManager *)self updateStateVariables:v37];
+  [(RTLocationAwarenessMetricManager *)self updateStateVariables:changeCopy];
 }
 
-- (void)updateStateVariables:(id)a3
+- (void)updateStateVariables:(id)variables
 {
-  v22 = a3;
+  variablesCopy = variables;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v22;
+    v4 = variablesCopy;
     if ([v4 type] == 4 || objc_msgSend(v4, "type") == 11)
     {
-      v5 = [v4 timestamp];
-      [(RTLocationAwarenessMetricManager *)self setStateVariablePrevWifiLocationTimestamp:v5];
+      timestamp = [v4 timestamp];
+      [(RTLocationAwarenessMetricManager *)self setStateVariablePrevWifiLocationTimestamp:timestamp];
     }
 
-    v6 = [v4 timestamp];
-    v7 = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
-    [v6 timeIntervalSinceDate:v7];
+    timestamp2 = [v4 timestamp];
+    stateVariableLastSensitiveLocationCheckTimestamp = [(RTLocationAwarenessMetricManager *)self stateVariableLastSensitiveLocationCheckTimestamp];
+    [timestamp2 timeIntervalSinceDate:stateVariableLastSensitiveLocationCheckTimestamp];
     if (v8 >= 600.0)
     {
     }
@@ -2226,12 +2226,12 @@ LABEL_33:
 
     [(RTLocationAwarenessMetricManager *)self boutMetricDistanceToSensitiveLocation];
     [(RTLocationAwarenessMetricManager *)self setStateVariableMostRecentDistanceToSensitiveLocation:?];
-    v20 = [v4 timestamp];
-    [(RTLocationAwarenessMetricManager *)self setStateVariableLastSensitiveLocationCheckTimestamp:v20];
+    timestamp3 = [v4 timestamp];
+    [(RTLocationAwarenessMetricManager *)self setStateVariableLastSensitiveLocationCheckTimestamp:timestamp3];
 
 LABEL_14:
-    v21 = [v4 timestamp];
-    [(RTLocationAwarenessMetricManager *)self setStateVariablePrevLocationTimestamp:v21];
+    timestamp4 = [v4 timestamp];
+    [(RTLocationAwarenessMetricManager *)self setStateVariablePrevLocationTimestamp:timestamp4];
 
     -[RTLocationAwarenessMetricManager setStateVariableCurrSignalEnvironmentType:](self, "setStateVariableCurrSignalEnvironmentType:", [v4 signalEnvironmentType]);
     goto LABEL_15;
@@ -2243,14 +2243,14 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  v11 = v22;
-  v12 = [v11 type];
-  if (v12 != -[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType") || ([v11 startDate], v13 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessMetricManager startDate](self, "startDate"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceDate:", v14), v16 = v15, v14, v13, v16 <= 0.0))
+  v11 = variablesCopy;
+  type = [v11 type];
+  if (type != -[RTLocationAwarenessMetricManager stateVariableCurrMotionActivityType](self, "stateVariableCurrMotionActivityType") || ([v11 startDate], v13 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessMetricManager startDate](self, "startDate"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "timeIntervalSinceDate:", v14), v16 = v15, v14, v13, v16 <= 0.0))
   {
     -[RTLocationAwarenessMetricManager setStateVariableCurrMotionActivityType:](self, "setStateVariableCurrMotionActivityType:", [v11 type]);
-    v17 = [v11 startDate];
-    v18 = [(RTLocationAwarenessMetricManager *)self startDate];
-    v19 = [v17 laterDate:v18];
+    startDate = [v11 startDate];
+    startDate2 = [(RTLocationAwarenessMetricManager *)self startDate];
+    v19 = [startDate laterDate:startDate2];
     [(RTLocationAwarenessMetricManager *)self setStateVariableCurrMotionStart:v19];
   }
 
@@ -2261,11 +2261,11 @@ LABEL_16:
 
 - (id)collectBoutMetrics
 {
-  v3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-  v4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v5 = [v3 laterDate:v4];
-  v6 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-  v7 = [v5 isEqualToDate:v6];
+  boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+  boutStateCurrBoutEnd = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  v5 = [boutStateCurrBoutStart laterDate:boutStateCurrBoutEnd];
+  boutStateCurrBoutEnd2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+  v7 = [v5 isEqualToDate:boutStateCurrBoutEnd2];
 
   if (v7)
   {
@@ -2281,109 +2281,109 @@ LABEL_16:
     [v170 addObjectsFromArray:v173];
     [v170 addObjectsFromArray:&unk_2845A13A0];
     v176 = [RTMetric binsFromStart:&unk_2845A1D58 toEnd:&unk_2845A1D68 gap:&unk_2845A1D78];
-    v172 = [MEMORY[0x277CBEA80] currentCalendar];
-    v8 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    v184 = [v172 components:32 fromDate:v8];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    boutStateCurrBoutStart2 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    v184 = [currentCalendar components:32 fromDate:boutStateCurrBoutStart2];
 
-    v9 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-    v10 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    [v9 timeIntervalSinceDate:v10];
+    boutStateCurrBoutEnd3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+    boutStateCurrBoutStart3 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    [boutStateCurrBoutEnd3 timeIntervalSinceDate:boutStateCurrBoutStart3];
     v12 = v11;
 
-    v13 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v14 = [v13 allKeys];
+    boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    allKeys = [boutStateMotionDwell allKeys];
     v187[0] = MEMORY[0x277D85DD0];
     v187[1] = 3221225472;
     v187[2] = __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke;
     v187[3] = &unk_2788CDF20;
     v187[4] = self;
-    v15 = [v14 sortedArrayUsingComparator:v187];
+    v15 = [allKeys sortedArrayUsingComparator:v187];
 
-    v16 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
-    v17 = [v16 allKeys];
+    boutStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+    allKeys2 = [boutStateSignalEnvironmentDwell allKeys];
     v186[0] = MEMORY[0x277D85DD0];
     v186[1] = 3221225472;
     v186[2] = __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke_2;
     v186[3] = &unk_2788CDF20;
     v186[4] = self;
-    v169 = [v17 sortedArrayUsingComparator:v186];
+    v169 = [allKeys2 sortedArrayUsingComparator:v186];
 
     v18 = [v15 objectAtIndexedSubscript:0];
-    v19 = [v18 intValue];
+    intValue = [v18 intValue];
 
     v177 = v15;
     v20 = [v15 objectAtIndexedSubscript:1];
-    v21 = [v20 intValue];
+    intValue2 = [v20 intValue];
 
     v22 = [v15 objectAtIndexedSubscript:2];
-    v23 = [v22 intValue];
+    intValue3 = [v22 intValue];
 
-    v24 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-    v25 = [MEMORY[0x277CCABB0] numberWithInt:v19];
-    v26 = [v24 objectForKeyedSubscript:v25];
-    v162 = [v26 intValue];
+    boutStateMotionTypeNumBouts = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v25 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
+    v26 = [boutStateMotionTypeNumBouts objectForKeyedSubscript:v25];
+    intValue4 = [v26 intValue];
 
-    v27 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-    v28 = [MEMORY[0x277CCABB0] numberWithInt:v21];
-    v29 = [v27 objectForKeyedSubscript:v28];
-    v164 = [v29 intValue];
+    boutStateMotionTypeNumBouts2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v28 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
+    v29 = [boutStateMotionTypeNumBouts2 objectForKeyedSubscript:v28];
+    intValue5 = [v29 intValue];
 
-    v30 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
-    v31 = [MEMORY[0x277CCABB0] numberWithInt:v23];
-    v32 = [v30 objectForKeyedSubscript:v31];
-    v167 = [v32 intValue];
+    boutStateMotionTypeNumBouts3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v31 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
+    v32 = [boutStateMotionTypeNumBouts3 objectForKeyedSubscript:v31];
+    intValue6 = [v32 intValue];
 
     v33 = MEMORY[0x277CCABB0];
-    v34 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v35 = [MEMORY[0x277CCABB0] numberWithInt:v19];
-    v36 = [v34 objectForKeyedSubscript:v35];
+    boutStateMotionDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    v35 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
+    v36 = [boutStateMotionDwell2 objectForKeyedSubscript:v35];
     [v36 doubleValue];
     v183 = [v33 numberWithDouble:v37 / v12];
 
     v38 = MEMORY[0x277CCABB0];
-    v39 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v158 = v21;
-    v40 = [MEMORY[0x277CCABB0] numberWithInt:v21];
-    v41 = [v39 objectForKeyedSubscript:v40];
+    boutStateMotionDwell3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    v158 = intValue2;
+    v40 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
+    v41 = [boutStateMotionDwell3 objectForKeyedSubscript:v40];
     [v41 doubleValue];
     v182 = [v38 numberWithDouble:v42 / v12];
 
     v43 = MEMORY[0x277CCABB0];
-    v44 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v160 = v23;
-    v45 = [MEMORY[0x277CCABB0] numberWithInt:v23];
-    v46 = [v44 objectForKeyedSubscript:v45];
+    boutStateMotionDwell4 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    v160 = intValue3;
+    v45 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
+    v46 = [boutStateMotionDwell4 objectForKeyedSubscript:v45];
     [v46 doubleValue];
     v181 = [v43 numberWithDouble:v47 / v12];
 
     v48 = MEMORY[0x277CCABB0];
-    v49 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-    v50 = [MEMORY[0x277CCABB0] numberWithInt:v19];
-    v51 = [v49 objectForKeyedSubscript:v50];
+    boutStateMotionLongestDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+    v50 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
+    v51 = [boutStateMotionLongestDwell objectForKeyedSubscript:v50];
     [v51 doubleValue];
     v180 = [v48 numberWithDouble:v52 / v12];
 
     v53 = MEMORY[0x277CCABB0];
-    v54 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-    v55 = [MEMORY[0x277CCABB0] numberWithInt:v21];
-    v56 = [v54 objectForKeyedSubscript:v55];
+    boutStateMotionLongestDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+    v55 = [MEMORY[0x277CCABB0] numberWithInt:intValue2];
+    v56 = [boutStateMotionLongestDwell2 objectForKeyedSubscript:v55];
     [v56 doubleValue];
     v179 = [v53 numberWithDouble:v57 / v12];
 
     v58 = MEMORY[0x277CCABB0];
-    v59 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
-    v60 = [MEMORY[0x277CCABB0] numberWithInt:v23];
-    v61 = [v59 objectForKeyedSubscript:v60];
+    boutStateMotionLongestDwell3 = [(RTLocationAwarenessMetricManager *)self boutStateMotionLongestDwell];
+    v60 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
+    v61 = [boutStateMotionLongestDwell3 objectForKeyedSubscript:v60];
     [v61 doubleValue];
     v178 = [v58 numberWithDouble:v62 / v12];
 
     v63 = [v169 objectAtIndexedSubscript:0];
-    v64 = [v63 intValue];
+    intValue7 = [v63 intValue];
 
     v65 = MEMORY[0x277CCABB0];
-    v66 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
-    v67 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v64];
-    v68 = [v66 objectForKeyedSubscript:v67];
+    boutStateSignalEnvironmentDwell2 = [(RTLocationAwarenessMetricManager *)self boutStateSignalEnvironmentDwell];
+    v67 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:intValue7];
+    v68 = [boutStateSignalEnvironmentDwell2 objectForKeyedSubscript:v67];
     [v68 doubleValue];
     if (v69 <= 0.0)
     {
@@ -2392,7 +2392,7 @@ LABEL_16:
 
     else
     {
-      v70 = v64;
+      v70 = intValue7;
     }
 
     v71 = [v65 numberWithUnsignedInt:v70];
@@ -2417,16 +2417,16 @@ LABEL_16:
     v80 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType")}];
     [v166 setObject:v80 forKeyedSubscript:@"_wifiMobilityType"];
 
-    v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v64];
+    v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:intValue7];
     [v166 setObject:v81 forKeyedSubscript:@"_primarySignalEnvironment"];
 
-    v82 = [MEMORY[0x277CCABB0] numberWithInt:v19];
+    v82 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
     [v166 setObject:v82 forKeyedSubscript:@"_primaryMotion"];
 
     v83 = [RTMetric binForNumber:v183 bins:v176];
     [v166 setObject:v83 forKeyedSubscript:@"_primaryMotionDurationBucketed"];
 
-    v84 = [MEMORY[0x277CCABB0] numberWithInt:v162];
+    v84 = [MEMORY[0x277CCABB0] numberWithInt:intValue4];
     v85 = [RTMetric binForNumber:v84 bins:&unk_2845A1388];
     [v166 setObject:v85 forKeyedSubscript:@"_numBoutsPrimaryMotionBucketed"];
 
@@ -2434,9 +2434,9 @@ LABEL_16:
     [v166 setObject:v86 forKeyedSubscript:@"_longestBoutPrimaryMotionBucketed"];
 
     v87 = MEMORY[0x277CCABB0];
-    v88 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    boutStateMotionDwell5 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
     v89 = [MEMORY[0x277CCABB0] numberWithInt:v158];
-    v90 = [v88 objectForKeyedSubscript:v89];
+    v90 = [boutStateMotionDwell5 objectForKeyedSubscript:v89];
     [v90 doubleValue];
     if (v91 <= 0.0)
     {
@@ -2454,7 +2454,7 @@ LABEL_16:
     v94 = [RTMetric binForNumber:v182 bins:v176];
     [v166 setObject:v94 forKeyedSubscript:@"_secondaryMotionDurationBucketed"];
 
-    v95 = [MEMORY[0x277CCABB0] numberWithInt:v164];
+    v95 = [MEMORY[0x277CCABB0] numberWithInt:intValue5];
     v96 = [RTMetric binForNumber:v95 bins:&unk_2845A1388];
     [v166 setObject:v96 forKeyedSubscript:@"_numBoutsSecondaryMotionBucketed"];
 
@@ -2462,9 +2462,9 @@ LABEL_16:
     [v166 setObject:v97 forKeyedSubscript:@"_longestBoutSecondaryMotionBucketed"];
 
     v98 = MEMORY[0x277CCABB0];
-    v99 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
-    v100 = [MEMORY[0x277CCABB0] numberWithInt:v23];
-    v101 = [v99 objectForKeyedSubscript:v100];
+    boutStateMotionDwell6 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+    v100 = [MEMORY[0x277CCABB0] numberWithInt:intValue3];
+    v101 = [boutStateMotionDwell6 objectForKeyedSubscript:v100];
     [v101 doubleValue];
     if (v102 <= 0.0)
     {
@@ -2482,34 +2482,34 @@ LABEL_16:
     v105 = [RTMetric binForNumber:v181 bins:v176];
     [v166 setObject:v105 forKeyedSubscript:@"_tertiaryMotionDurationBucketed"];
 
-    v106 = [MEMORY[0x277CCABB0] numberWithInt:v167];
+    v106 = [MEMORY[0x277CCABB0] numberWithInt:intValue6];
     v107 = [RTMetric binForNumber:v106 bins:&unk_2845A1388];
     [v166 setObject:v107 forKeyedSubscript:@"_numBoutsTertiaryMotionBucketed"];
 
     v108 = [RTMetric binForNumber:v178 bins:v176];
     [v166 setObject:v108 forKeyedSubscript:@"_longestBoutTertiaryMotionBucketed"];
 
-    v109 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-    v110 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-    [v109 timeIntervalSinceDate:v110];
+    boutStateCurrBoutEnd4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+    boutStateCurrBoutStart4 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+    [boutStateCurrBoutEnd4 timeIntervalSinceDate:boutStateCurrBoutStart4];
     v112 = v111 / 3600.0;
 
-    v168 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    boutStateMotionTypeNumBouts4 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
     v165 = [v177 objectAtIndexedSubscript:3];
-    v163 = [v168 objectForKeyedSubscript:v165];
-    LODWORD(v110) = [v163 intValue];
-    v159 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v163 = [boutStateMotionTypeNumBouts4 objectForKeyedSubscript:v165];
+    LODWORD(boutStateCurrBoutStart4) = [v163 intValue];
+    boutStateMotionTypeNumBouts5 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
     v157 = [v177 objectAtIndexedSubscript:4];
-    v113 = [v159 objectForKeyedSubscript:v157];
-    v161 = [v113 intValue] + v110;
-    v114 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v113 = [boutStateMotionTypeNumBouts5 objectForKeyedSubscript:v157];
+    v161 = [v113 intValue] + boutStateCurrBoutStart4;
+    boutStateMotionTypeNumBouts6 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
     v115 = [v177 objectAtIndexedSubscript:5];
-    v116 = [v114 objectForKeyedSubscript:v115];
-    LODWORD(v109) = [v116 intValue];
-    v117 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
+    v116 = [boutStateMotionTypeNumBouts6 objectForKeyedSubscript:v115];
+    LODWORD(boutStateCurrBoutEnd4) = [v116 intValue];
+    boutStateMotionTypeNumBouts7 = [(RTLocationAwarenessMetricManager *)self boutStateMotionTypeNumBouts];
     v118 = [v177 objectAtIndexedSubscript:6];
-    v119 = [v117 objectForKeyedSubscript:v118];
-    v156 = v109 + [v119 intValue];
+    v119 = [boutStateMotionTypeNumBouts7 objectForKeyedSubscript:v118];
+    v156 = boutStateCurrBoutEnd4 + [v119 intValue];
 
     v120 = [MEMORY[0x277CCABB0] numberWithInt:(v161 + v156)];
     v121 = [RTMetric binForNumber:v120 bins:&unk_2845A1388];
@@ -2517,50 +2517,50 @@ LABEL_16:
 
     v122 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumWifiLocationsInBout];
-    v124 = [v122 numberWithDouble:v123 / v112];
-    v125 = [RTMetric binForNumber:v124 bins:v170];
+    v112 = [v122 numberWithDouble:v123 / v112];
+    v125 = [RTMetric binForNumber:v112 bins:v170];
     [v166 setObject:v125 forKeyedSubscript:@"_numWifiLocations"];
 
     v126 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumGPSLocationsInBout];
-    v128 = [v126 numberWithDouble:v127 / v112];
-    v129 = [RTMetric binForNumber:v128 bins:v170];
+    v1122 = [v126 numberWithDouble:v127 / v112];
+    v129 = [RTMetric binForNumber:v1122 bins:v170];
     [v166 setObject:v129 forKeyedSubscript:@"_numGPSLocations"];
 
     v130 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumOtherLocationsInBout];
-    v132 = [v130 numberWithDouble:v131 / v112];
-    v133 = [RTMetric binForNumber:v132 bins:v170];
+    v1123 = [v130 numberWithDouble:v131 / v112];
+    v133 = [RTMetric binForNumber:v1123 bins:v170];
     [v166 setObject:v133 forKeyedSubscript:@"_numOtherLocations"];
 
     v134 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired1mDutyCycle];
-    v136 = [v134 numberWithDouble:v135 / v112];
-    v137 = [RTMetric binForNumber:v136 bins:v171];
+    v1124 = [v134 numberWithDouble:v135 / v112];
+    v137 = [RTMetric binForNumber:v1124 bins:v171];
     [v166 setObject:v137 forKeyedSubscript:@"_numAdditionalFixesRequired_1mCycle"];
 
     v138 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired2mDutyCycle];
-    v140 = [v138 numberWithDouble:v139 / v112];
-    v141 = [RTMetric binForNumber:v140 bins:v171];
+    v1125 = [v138 numberWithDouble:v139 / v112];
+    v141 = [RTMetric binForNumber:v1125 bins:v171];
     [v166 setObject:v141 forKeyedSubscript:@"_numAdditionalFixesRequired_2mCycle"];
 
     v142 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired5mDutyCycle];
-    v144 = [v142 numberWithDouble:v143 / v112];
-    v145 = [RTMetric binForNumber:v144 bins:v171];
+    v1126 = [v142 numberWithDouble:v143 / v112];
+    v145 = [RTMetric binForNumber:v1126 bins:v171];
     [v166 setObject:v145 forKeyedSubscript:@"_numAdditionalFixesRequired_5mCycle"];
 
     v146 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired10mDutyCycle];
-    v148 = [v146 numberWithDouble:v147 / v112];
-    v149 = [RTMetric binForNumber:v148 bins:v171];
+    v1127 = [v146 numberWithDouble:v147 / v112];
+    v149 = [RTMetric binForNumber:v1127 bins:v171];
     [v166 setObject:v149 forKeyedSubscript:@"_numAdditionalFixesRequired_10mCycle"];
 
     v150 = MEMORY[0x277CCABB0];
     [(RTLocationAwarenessMetricManager *)self boutMetricNumAdditionalFixesPerHourRequired15mDutyCycle];
-    v152 = [v150 numberWithDouble:v151 / v112];
-    v153 = [RTMetric binForNumber:v152 bins:v171];
+    v1128 = [v150 numberWithDouble:v151 / v112];
+    v153 = [RTMetric binForNumber:v1128 bins:v171];
     [v166 setObject:v153 forKeyedSubscript:@"_numAdditionalFixesRequired_15mCycle"];
 
     v154 = v185;
@@ -2625,167 +2625,167 @@ uint64_t __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke
 
   v8 = objc_opt_new();
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
-  v11 = [v10 objectForKeyedSubscript:&unk_28459EB50];
+  dailyStateBoutCounts = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
+  v11 = [dailyStateBoutCounts objectForKeyedSubscript:&unk_28459EB50];
   v12 = [v9 numberWithInteger:{objc_msgSend(v11, "integerValue")}];
   v13 = [RTMetric binForNumber:v12 bins:&unk_2845A13E8];
   [v8 setObject:v13 forKeyedSubscript:@"_numBoutsInPastDayLowMobility"];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
-  v16 = [v15 objectForKeyedSubscript:&unk_28459EB50];
+  dailyStateBoutDwell = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
+  v16 = [dailyStateBoutDwell objectForKeyedSubscript:&unk_28459EB50];
   v17 = [v14 numberWithInteger:{objc_msgSend(v16, "integerValue")}];
   v18 = [RTMetric binForNumber:v17 bins:v5];
   [v8 setObject:v18 forKeyedSubscript:@"_totalDailyDwellLowMobility"];
 
   v19 = MEMORY[0x277CCABB0];
-  v20 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
-  v21 = [v20 objectForKeyedSubscript:&unk_28459EB50];
+  dailyStateBoutLongestDwell = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
+  v21 = [dailyStateBoutLongestDwell objectForKeyedSubscript:&unk_28459EB50];
   v22 = [v19 numberWithInteger:{objc_msgSend(v21, "integerValue")}];
   v23 = [RTMetric binForNumber:v22 bins:v5];
   [v8 setObject:v23 forKeyedSubscript:@"_durationOfLongestLowMobilityBout"];
 
   v24 = MEMORY[0x277CCABB0];
-  v25 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
-  v26 = [v25 objectForKeyedSubscript:&unk_28459EB68];
+  dailyStateBoutCounts2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
+  v26 = [dailyStateBoutCounts2 objectForKeyedSubscript:&unk_28459EB68];
   v27 = [v24 numberWithInteger:{objc_msgSend(v26, "integerValue")}];
   v28 = [RTMetric binForNumber:v27 bins:&unk_2845A13D0];
   [v8 setObject:v28 forKeyedSubscript:@"_numBoutsInPastDayMobileNoWifi"];
 
   v29 = MEMORY[0x277CCABB0];
-  v30 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
-  v31 = [v30 objectForKeyedSubscript:&unk_28459EB68];
+  dailyStateBoutDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
+  v31 = [dailyStateBoutDwell2 objectForKeyedSubscript:&unk_28459EB68];
   v32 = [v29 numberWithInteger:{objc_msgSend(v31, "integerValue")}];
   v33 = [RTMetric binForNumber:v32 bins:v5];
   [v8 setObject:v33 forKeyedSubscript:@"_totalDailyDwellMobileNoWifi"];
 
   v34 = MEMORY[0x277CCABB0];
-  v35 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
-  v36 = [v35 objectForKeyedSubscript:&unk_28459EB68];
+  dailyStateBoutLongestDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
+  v36 = [dailyStateBoutLongestDwell2 objectForKeyedSubscript:&unk_28459EB68];
   v37 = [v34 numberWithInteger:{objc_msgSend(v36, "integerValue")}];
   v38 = [RTMetric binForNumber:v37 bins:v5];
   [v8 setObject:v38 forKeyedSubscript:@"_durationOfLongestMobileNoWifiBout"];
 
   v39 = MEMORY[0x277CCABB0];
-  v40 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
-  v41 = [v40 objectForKeyedSubscript:&unk_28459EB80];
+  dailyStateBoutCounts3 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutCounts];
+  v41 = [dailyStateBoutCounts3 objectForKeyedSubscript:&unk_28459EB80];
   v42 = [v39 numberWithInteger:{objc_msgSend(v41, "integerValue")}];
   v43 = [RTMetric binForNumber:v42 bins:&unk_2845A13D0];
   [v8 setObject:v43 forKeyedSubscript:@"_numBoutsInPastDayMobileWithWifi"];
 
   v44 = MEMORY[0x277CCABB0];
-  v45 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
-  v46 = [v45 objectForKeyedSubscript:&unk_28459EB80];
+  dailyStateBoutDwell3 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutDwell];
+  v46 = [dailyStateBoutDwell3 objectForKeyedSubscript:&unk_28459EB80];
   v47 = [v44 numberWithInteger:{objc_msgSend(v46, "integerValue")}];
   v48 = [RTMetric binForNumber:v47 bins:v5];
   [v8 setObject:v48 forKeyedSubscript:@"_totalDailyDwellMobileWithWifi"];
 
   v49 = MEMORY[0x277CCABB0];
-  v50 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
-  v51 = [v50 objectForKeyedSubscript:&unk_28459EB80];
+  dailyStateBoutLongestDwell3 = [(RTLocationAwarenessMetricManager *)self dailyStateBoutLongestDwell];
+  v51 = [dailyStateBoutLongestDwell3 objectForKeyedSubscript:&unk_28459EB80];
   v52 = [v49 numberWithInteger:{objc_msgSend(v51, "integerValue")}];
   v53 = [RTMetric binForNumber:v52 bins:v5];
   [v8 setObject:v53 forKeyedSubscript:@"_durationOfLongestMobileWithWifiBout"];
 
   v54 = MEMORY[0x277CCABB0];
-  v55 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v56 = [v55 objectForKeyedSubscript:&unk_28459EC40];
+  dailyStateSignalEnvironmentDwell = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v56 = [dailyStateSignalEnvironmentDwell objectForKeyedSubscript:&unk_28459EC40];
   [v56 doubleValue];
   v57 = [v54 numberWithDouble:?];
   v58 = [RTMetric binForNumber:v57 bins:v5];
   [v8 setObject:v58 forKeyedSubscript:@"_totalDailyDwellFoliage"];
 
   v59 = MEMORY[0x277CCABB0];
-  v60 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v61 = [v60 objectForKeyedSubscript:&unk_28459EB20];
+  dailyStateSignalEnvironmentDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v61 = [dailyStateSignalEnvironmentDwell2 objectForKeyedSubscript:&unk_28459EB20];
   [v61 doubleValue];
   v62 = [v59 numberWithDouble:?];
   v63 = [RTMetric binForNumber:v62 bins:v5];
   [v8 setObject:v63 forKeyedSubscript:@"_totalDailyDwellUnavailableSignalEnvironment"];
 
   v64 = MEMORY[0x277CCABB0];
-  v65 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v66 = [v65 objectForKeyedSubscript:&unk_28459EBE0];
+  dailyStateSignalEnvironmentDwell3 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v66 = [dailyStateSignalEnvironmentDwell3 objectForKeyedSubscript:&unk_28459EBE0];
   [v66 doubleValue];
   v67 = [v64 numberWithDouble:?];
   v68 = [RTMetric binForNumber:v67 bins:v5];
   [v8 setObject:v68 forKeyedSubscript:@"_totalDailyDwellRural"];
 
   v69 = MEMORY[0x277CCABB0];
-  v70 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v71 = [v70 objectForKeyedSubscript:&unk_28459EBF8];
+  dailyStateSignalEnvironmentDwell4 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v71 = [dailyStateSignalEnvironmentDwell4 objectForKeyedSubscript:&unk_28459EBF8];
   [v71 doubleValue];
   v72 = [v69 numberWithDouble:?];
   v73 = [RTMetric binForNumber:v72 bins:v5];
   [v8 setObject:v73 forKeyedSubscript:@"_totalDailyDwellUrban"];
 
   v74 = MEMORY[0x277CCABB0];
-  v75 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v76 = [v75 objectForKeyedSubscript:&unk_28459EC10];
+  dailyStateSignalEnvironmentDwell5 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v76 = [dailyStateSignalEnvironmentDwell5 objectForKeyedSubscript:&unk_28459EC10];
   [v76 doubleValue];
   v77 = [v74 numberWithDouble:?];
   v78 = [RTMetric binForNumber:v77 bins:v5];
   [v8 setObject:v78 forKeyedSubscript:@"_totalDailyDwellDenseUrban"];
 
   v79 = MEMORY[0x277CCABB0];
-  v80 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
-  v81 = [v80 objectForKeyedSubscript:&unk_28459EC28];
+  dailyStateSignalEnvironmentDwell6 = [(RTLocationAwarenessMetricManager *)self dailyStateSignalEnvironmentDwell];
+  v81 = [dailyStateSignalEnvironmentDwell6 objectForKeyedSubscript:&unk_28459EC28];
   [v81 doubleValue];
   v82 = [v79 numberWithDouble:?];
   v83 = [RTMetric binForNumber:v82 bins:v5];
   [v8 setObject:v83 forKeyedSubscript:@"_totalDailyDwellDenseUrbanCanyon"];
 
   v84 = MEMORY[0x277CCABB0];
-  v85 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v86 = [v85 objectForKeyedSubscript:&unk_28459EB50];
+  dailyStateMotionDwell = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v86 = [dailyStateMotionDwell objectForKeyedSubscript:&unk_28459EB50];
   [v86 doubleValue];
   v87 = [v84 numberWithDouble:?];
   v88 = [RTMetric binForNumber:v87 bins:v5];
   [v8 setObject:v88 forKeyedSubscript:@"_totalDailyDurationStationary"];
 
   v89 = MEMORY[0x277CCABB0];
-  v90 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v91 = [v90 objectForKeyedSubscript:&unk_28459EB68];
+  dailyStateMotionDwell2 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v91 = [dailyStateMotionDwell2 objectForKeyedSubscript:&unk_28459EB68];
   [v91 doubleValue];
   v92 = [v89 numberWithDouble:?];
   v93 = [RTMetric binForNumber:v92 bins:v5];
   [v8 setObject:v93 forKeyedSubscript:@"_totalDailyDurationWalking"];
 
   v94 = MEMORY[0x277CCABB0];
-  v95 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v96 = [v95 objectForKeyedSubscript:&unk_28459EB80];
+  dailyStateMotionDwell3 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v96 = [dailyStateMotionDwell3 objectForKeyedSubscript:&unk_28459EB80];
   [v96 doubleValue];
   v97 = [v94 numberWithDouble:?];
   v98 = [RTMetric binForNumber:v97 bins:v5];
   [v8 setObject:v98 forKeyedSubscript:@"_totalDailyDurationRunning"];
 
   v99 = MEMORY[0x277CCABB0];
-  v100 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v101 = [v100 objectForKeyedSubscript:&unk_28459EBB0];
+  dailyStateMotionDwell4 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v101 = [dailyStateMotionDwell4 objectForKeyedSubscript:&unk_28459EBB0];
   [v101 doubleValue];
   v102 = [v99 numberWithDouble:?];
   v103 = [RTMetric binForNumber:v102 bins:v5];
   [v8 setObject:v103 forKeyedSubscript:@"_totalDailyDurationCycling"];
 
   v104 = MEMORY[0x277CCABB0];
-  v105 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v106 = [v105 objectForKeyedSubscript:&unk_28459EB98];
+  dailyStateMotionDwell5 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v106 = [dailyStateMotionDwell5 objectForKeyedSubscript:&unk_28459EB98];
   [v106 doubleValue];
   v107 = [v104 numberWithDouble:?];
   v108 = [RTMetric binForNumber:v107 bins:v5];
   [v8 setObject:v108 forKeyedSubscript:@"_totalDailyDurationDriving"];
 
   v109 = MEMORY[0x277CCABB0];
-  v110 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v111 = [v110 objectForKeyedSubscript:&unk_28459EBC8];
+  dailyStateMotionDwell6 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v111 = [dailyStateMotionDwell6 objectForKeyedSubscript:&unk_28459EBC8];
   [v111 doubleValue];
   v112 = [v109 numberWithDouble:?];
   v113 = [RTMetric binForNumber:v112 bins:v5];
   [v8 setObject:v113 forKeyedSubscript:@"_totalDailyDurationMoving"];
 
   v114 = MEMORY[0x277CCABB0];
-  v115 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
-  v116 = [v115 objectForKeyedSubscript:&unk_28459EB38];
+  dailyStateMotionDwell7 = [(RTLocationAwarenessMetricManager *)self dailyStateMotionDwell];
+  v116 = [dailyStateMotionDwell7 objectForKeyedSubscript:&unk_28459EB38];
   [v116 doubleValue];
   v117 = [v114 numberWithDouble:?];
   v118 = [RTMetric binForNumber:v117 bins:v5];
@@ -2821,8 +2821,8 @@ uint64_t __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = NSStringFromSelector(a2);
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [v9 timeIntervalSinceDate:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceDate:v6];
       v11 = 138412546;
       v12 = v8;
       v13 = 2048;
@@ -2838,33 +2838,33 @@ uint64_t __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke
   if (-[RTLocationAwarenessMetricManager boutMetricType](self, "boutMetricType") == 1 || (-[RTLocationAwarenessMetricManager boutStateCurrBoutEnd](self, "boutStateCurrBoutEnd"), v4 = objc_claimAutoreleasedReturnValue(), -[RTLocationAwarenessMetricManager boutStateCurrBoutStart](self, "boutStateCurrBoutStart"), v5 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceDate:v5], v7 = v6, v5, v4, v7 >= 1200.0))
   {
     [(RTLocationAwarenessMetricManager *)self updateBoutMetricsStateChangeEdgeDwell];
-    v8 = [(RTLocationAwarenessMetricManager *)self collectBoutMetrics];
+    collectBoutMetrics = [(RTLocationAwarenessMetricManager *)self collectBoutMetrics];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityLocationAwareness);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = NSStringFromSelector(a2);
-        v11 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
-        v12 = [v11 stringFromDate];
-        v13 = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
-        v14 = [v13 stringFromDate];
-        v15 = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
+        boutStateCurrBoutStart = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutStart];
+        stringFromDate = [boutStateCurrBoutStart stringFromDate];
+        boutStateCurrBoutEnd = [(RTLocationAwarenessMetricManager *)self boutStateCurrBoutEnd];
+        stringFromDate2 = [boutStateCurrBoutEnd stringFromDate];
+        boutStateMotionDwell = [(RTLocationAwarenessMetricManager *)self boutStateMotionDwell];
         *buf = 138413058;
         v20 = v10;
         v21 = 2112;
-        v22 = v12;
+        v22 = stringFromDate;
         v23 = 2112;
-        v24 = v14;
+        v24 = stringFromDate2;
         v25 = 2112;
-        v26 = v15;
+        v26 = boutStateMotionDwell;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, bout start, %@, bout end %@, motion dwell %@", buf, 0x2Au);
       }
     }
 
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v17 = [v16 initWithCString:RTAnalyticsEventLocationAwarenessBoutMetrics encoding:1];
-    log_analytics_submission(v17, v8);
+    log_analytics_submission(v17, collectBoutMetrics);
     v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v17];
     AnalyticsSendEvent();
   }
@@ -2874,10 +2874,10 @@ uint64_t __54__RTLocationAwarenessMetricManager_collectBoutMetrics__block_invoke
 
 - (void)submitDailyMetricsToCoreAnalytics
 {
-  v5 = [(RTLocationAwarenessMetricManager *)self collectDailyMetrics];
+  collectDailyMetrics = [(RTLocationAwarenessMetricManager *)self collectDailyMetrics];
   v2 = objc_alloc(MEMORY[0x277CCACA8]);
   v3 = [v2 initWithCString:RTAnalyticsEventLocationAwarenessDailyMetrics encoding:1];
-  log_analytics_submission(v3, v5);
+  log_analytics_submission(v3, collectDailyMetrics);
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v3];
   AnalyticsSendEvent();
 }

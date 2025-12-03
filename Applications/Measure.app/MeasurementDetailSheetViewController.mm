@@ -1,13 +1,13 @@
 @interface MeasurementDetailSheetViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (_TtC7Measure36MeasurementDetailSheetViewController)initWithCoder:(id)a3;
-- (_TtC7Measure36MeasurementDetailSheetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (_TtC7Measure36MeasurementDetailSheetViewController)initWithCoder:(id)coder;
+- (_TtC7Measure36MeasurementDetailSheetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation MeasurementDetailSheetViewController
 
-- (_TtC7Measure36MeasurementDetailSheetViewController)initWithCoder:(id)a3
+- (_TtC7Measure36MeasurementDetailSheetViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -15,19 +15,19 @@
   return result;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10009E740(a3);
+  selfCopy = self;
+  sub_10009E740(builder);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -36,16 +36,16 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_10009EDA4(a3, v10);
+  v8 = sub_10009EDA4(action, v10);
 
   sub_100018F04(v10, &unk_1004A6970);
   return v8 & 1;
 }
 
-- (_TtC7Measure36MeasurementDetailSheetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Measure36MeasurementDetailSheetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

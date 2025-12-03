@@ -7,7 +7,7 @@
 
 - (void)restoreCloudStatusPresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4422CF4();
   sub_1A4423340();
 }

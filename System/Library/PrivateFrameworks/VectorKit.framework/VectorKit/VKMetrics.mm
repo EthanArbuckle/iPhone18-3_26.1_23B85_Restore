@@ -1,18 +1,18 @@
 @interface VKMetrics
-- (CGRect)boundingRectForItem:(unsigned __int8)a3 text:(id)a4 locale:(id)a5;
-- (VKMetrics)initWithDescriptor:(id)a3;
+- (CGRect)boundingRectForItem:(unsigned __int8)item text:(id)text locale:(id)locale;
+- (VKMetrics)initWithDescriptor:(id)descriptor;
 @end
 
 @implementation VKMetrics
 
-- (CGRect)boundingRectForItem:(unsigned __int8)a3 text:(id)a4 locale:(id)a5
+- (CGRect)boundingRectForItem:(unsigned __int8)item text:(id)text locale:(id)locale
 {
-  v6 = a3;
+  itemCopy = item;
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  md::StringWithLocaleImp<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>::StringWithLocaleImp(v26, [v8 UTF8String], objc_msgSend(v9, "UTF8String"));
-  md::LabelMetrics::boundingRectForItem(v23, self->_labelMetrics.__ptr_, v6, v26);
+  textCopy = text;
+  localeCopy = locale;
+  md::StringWithLocaleImp<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>::StringWithLocaleImp(v26, [textCopy UTF8String], objc_msgSend(localeCopy, "UTF8String"));
+  md::LabelMetrics::boundingRectForItem(v23, self->_labelMetrics.__ptr_, itemCopy, v26);
   if (v25)
   {
     v11 = v23[0];
@@ -54,9 +54,9 @@
   return result;
 }
 
-- (VKMetrics)initWithDescriptor:(id)a3
+- (VKMetrics)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v6.receiver = self;
   v6.super_class = VKMetrics;
   if ([(VKMetrics *)&v6 init])

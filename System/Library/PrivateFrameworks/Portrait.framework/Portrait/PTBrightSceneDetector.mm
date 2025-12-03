@@ -1,15 +1,15 @@
 @interface PTBrightSceneDetector
-- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)a3 emaFilterCoefficient:(float)a4 transitionTime:;
+- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)threshold emaFilterCoefficient:(float)coefficient transitionTime:;
 - (__n64)debugState;
-- (void)updateWithLuxLevel:(float)a3 deltaTime:(float)a4;
+- (void)updateWithLuxLevel:(float)level deltaTime:(float)time;
 @end
 
 @implementation PTBrightSceneDetector
 
-- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)a3 emaFilterCoefficient:(float)a4 transitionTime:
+- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)threshold emaFilterCoefficient:(float)coefficient transitionTime:
 {
   v5 = v4;
-  v12 = *&a3;
+  v12 = *&threshold;
   v13.receiver = self;
   v13.super_class = PTBrightSceneDetector;
   v7 = [(PTBrightSceneDetector *)&v13 init];
@@ -19,7 +19,7 @@
     if ((vcgt_f32(v12, vdup_lane_s32(v12, 1)).u8[0] & 1) == 0)
     {
       *v7->_luxLevelThreshold = v12;
-      v7->_emaFilterCoefficient = a4;
+      v7->_emaFilterCoefficient = coefficient;
       v7->_transitionTime = v5;
       [(PTBrightSceneDetector *)v7 reset];
       v10 = v8;
@@ -39,19 +39,19 @@ LABEL_8:
   return v10;
 }
 
-- (void)updateWithLuxLevel:(float)a3 deltaTime:(float)a4
+- (void)updateWithLuxLevel:(float)level deltaTime:(float)time
 {
-  v4 = self->_filteredLuxLevel + (self->_emaFilterCoefficient * (a3 - self->_filteredLuxLevel));
+  v4 = self->_filteredLuxLevel + (self->_emaFilterCoefficient * (level - self->_filteredLuxLevel));
   self->_filteredLuxLevel = v4;
   v5 = *&self->_luxLevelThreshold[4 * !self->_brightSceneState] < v4;
   self->_brightSceneState = v5;
-  v6 = -a4;
+  timeCopy = -time;
   if (v5)
   {
-    v6 = a4;
+    timeCopy = time;
   }
 
-  v7 = (self->_brightScene + (v6 / self->_transitionTime));
+  v7 = (self->_brightScene + (timeCopy / self->_transitionTime));
   if (v7 > 1.0)
   {
     v7 = 1.0;
@@ -63,8 +63,8 @@ LABEL_8:
 
 - (__n64)debugState
 {
-  result.n64_u32[0] = *(a1 + 12);
-  LOBYTE(a3) = *(a1 + 16);
+  result.n64_u32[0] = *(self + 12);
+  LOBYTE(a3) = *(self + 16);
   result.n64_f32[1] = LODWORD(a3);
   return result;
 }

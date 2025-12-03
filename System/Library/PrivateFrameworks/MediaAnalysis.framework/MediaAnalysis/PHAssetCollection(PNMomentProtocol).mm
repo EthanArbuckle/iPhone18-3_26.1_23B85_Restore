@@ -6,8 +6,8 @@
 
 - (double)approximateCoordinate
 {
-  v1 = [a1 approximateLocation];
-  [v1 coordinate];
+  approximateLocation = [self approximateLocation];
+  [approximateLocation coordinate];
   v3 = v2;
 
   return v3;

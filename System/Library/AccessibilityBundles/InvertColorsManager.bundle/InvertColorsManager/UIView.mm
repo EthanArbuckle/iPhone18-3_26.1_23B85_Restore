@@ -1,5 +1,5 @@
 @interface UIView
-- (BOOL)_accessibilityAncestorMatchesBlock:(id)a3;
+- (BOOL)_accessibilityAncestorMatchesBlock:(id)block;
 - (BOOL)_accessibilityAppliesInvertColors;
 - (BOOL)_accessibilityAppliesInvertColorsInDarkUI;
 - (BOOL)_accessibilityInvertEnabled;
@@ -10,37 +10,37 @@
 
 - (BOOL)_accessibilityInvertEnabled
 {
-  v3 = [(UIView *)self accessibilityInvertEnabledOverride];
-  if (!v3)
+  accessibilityInvertEnabledOverride = [(UIView *)self accessibilityInvertEnabledOverride];
+  if (!accessibilityInvertEnabledOverride)
   {
     return _AXSInvertColorsEnabled() != 0;
   }
 
-  v4 = v3;
-  v5 = [(UIView *)self accessibilityInvertEnabledOverride];
-  v6 = [v5 integerValue];
+  v4 = accessibilityInvertEnabledOverride;
+  accessibilityInvertEnabledOverride2 = [(UIView *)self accessibilityInvertEnabledOverride];
+  integerValue = [accessibilityInvertEnabledOverride2 integerValue];
 
-  if (v6 == -1)
+  if (integerValue == -1)
   {
     return _AXSInvertColorsEnabled() != 0;
   }
 
-  v7 = [(UIView *)self accessibilityInvertEnabledOverride];
-  v8 = [v7 integerValue] == &dword_0 + 1;
+  accessibilityInvertEnabledOverride3 = [(UIView *)self accessibilityInvertEnabledOverride];
+  v8 = [accessibilityInvertEnabledOverride3 integerValue] == &dword_0 + 1;
 
   return v8;
 }
 
 - (BOOL)_accessibilityAppliesInvertColors
 {
-  v3 = [(UIView *)self accessibilityIgnoresInvertColors];
-  if (v3)
+  accessibilityIgnoresInvertColors = [(UIView *)self accessibilityIgnoresInvertColors];
+  if (accessibilityIgnoresInvertColors)
   {
 
-    LOBYTE(v3) = [(UIView *)self _accessibilityInvertEnabled];
+    LOBYTE(accessibilityIgnoresInvertColors) = [(UIView *)self _accessibilityInvertEnabled];
   }
 
-  return v3;
+  return accessibilityIgnoresInvertColors;
 }
 
 - (BOOL)_accessibilityAppliesInvertColorsInDarkUI
@@ -55,37 +55,37 @@
 
 - (void)_accessibilityApplyInvertFilter
 {
-  v3 = [(UIView *)self window];
-  v4 = v3;
-  if (v3)
+  window = [(UIView *)self window];
+  v4 = window;
+  if (window)
   {
-    v5 = [v3 screen];
-    if ([v5 _isCarScreen])
+    screen = [window screen];
+    if ([screen _isCarScreen])
     {
     }
 
     else
     {
-      v6 = [v4 screen];
-      v7 = [v6 _isCarInstrumentsScreen];
+      screen2 = [v4 screen];
+      _isCarInstrumentsScreen = [screen2 _isCarInstrumentsScreen];
 
-      if ((v7 & 1) == 0)
+      if ((_isCarInstrumentsScreen & 1) == 0)
       {
-        v8 = [v4 traitCollection];
-        if ([v8 userInterfaceStyle] == &dword_0 + 2)
+        traitCollection = [v4 traitCollection];
+        if ([traitCollection userInterfaceStyle] == &dword_0 + 2)
         {
-          v9 = [(UIView *)self _accessibilityInvertColorsSupportsDarkWindowInvert];
+          _accessibilityInvertColorsSupportsDarkWindowInvert = [(UIView *)self _accessibilityInvertColorsSupportsDarkWindowInvert];
         }
 
         else
         {
-          v9 = 0;
+          _accessibilityInvertColorsSupportsDarkWindowInvert = 0;
         }
 
-        v10 = [v4 _accessibilityInvertColorsIsInHostedDarkWindow];
+        _accessibilityInvertColorsIsInHostedDarkWindow = [v4 _accessibilityInvertColorsIsInHostedDarkWindow];
         if ([(UIView *)self _accessibilityAppliesInvertColors]&& ([(UIView *)self safeBoolForKey:@"_ancestorHasInvertFilterApplied"]& 1) == 0)
         {
-          v11 = (v9 | v10) ^ 1;
+          v11 = (_accessibilityInvertColorsSupportsDarkWindowInvert | _accessibilityInvertColorsIsInHostedDarkWindow) ^ 1;
         }
 
         else
@@ -95,22 +95,22 @@
 
         if ([(UIView *)self _accessibilityAppliesInvertColorsInDarkUI]&& [(UIView *)self _accessibilityInvertEnabled])
         {
-          v11 |= v9 | v10;
+          v11 |= _accessibilityInvertColorsSupportsDarkWindowInvert | _accessibilityInvertColorsIsInHostedDarkWindow;
         }
 
-        v12 = [(UIView *)self accessibilityInvertEnabledOverride];
-        if (v12)
+        accessibilityInvertEnabledOverride = [(UIView *)self accessibilityInvertEnabledOverride];
+        if (accessibilityInvertEnabledOverride)
         {
-          v13 = v12;
-          v14 = [(UIView *)self accessibilityInvertEnabledOverride];
-          v15 = [v14 integerValue];
+          v13 = accessibilityInvertEnabledOverride;
+          accessibilityInvertEnabledOverride2 = [(UIView *)self accessibilityInvertEnabledOverride];
+          integerValue = [accessibilityInvertEnabledOverride2 integerValue];
 
-          if (v15 != -1)
+          if (integerValue != -1)
           {
             v16 = +[AXSubsystemInvertColors sharedInstance];
-            v17 = [v16 ignoreLogging];
+            ignoreLogging = [v16 ignoreLogging];
 
-            if ((v17 & 1) == 0)
+            if ((ignoreLogging & 1) == 0)
             {
               v18 = +[AXSubsystemInvertColors identifier];
               v19 = AXLoggerForFacility();
@@ -137,8 +137,8 @@
 
         if (v11)
         {
-          v23 = [(UIView *)self accessibilityInvertEnabledOverride];
-          if ([v23 integerValue] == &dword_0 + 1)
+          accessibilityInvertEnabledOverride3 = [(UIView *)self accessibilityInvertEnabledOverride];
+          if ([accessibilityInvertEnabledOverride3 integerValue] == &dword_0 + 1)
           {
             v24 = 2;
           }
@@ -161,27 +161,27 @@
   }
 }
 
-- (BOOL)_accessibilityAncestorMatchesBlock:(id)a3
+- (BOOL)_accessibilityAncestorMatchesBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(UIView *)self superview];
-  if (v5)
+  blockCopy = block;
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v6 = v5;
+    v6 = superview;
     do
     {
-      v7 = v4[2](v4, v6);
+      v7 = blockCopy[2](blockCopy, v6);
       if (v7)
       {
         break;
       }
 
-      v8 = [v6 superview];
+      superview2 = [v6 superview];
 
-      v6 = v8;
+      v6 = superview2;
     }
 
-    while (v8);
+    while (superview2);
   }
 
   else

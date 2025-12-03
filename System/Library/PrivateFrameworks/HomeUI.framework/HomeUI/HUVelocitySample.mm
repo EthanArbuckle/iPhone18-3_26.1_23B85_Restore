@@ -1,5 +1,5 @@
 @interface HUVelocitySample
-+ (id)sampleWithStart:(CGPoint)a3 end:(CGPoint)a4 startTime:(double)a5 endTime:(double)a6;
++ (id)sampleWithStart:(CGPoint)start end:(CGPoint)end startTime:(double)time endTime:(double)endTime;
 - (CGPoint)end;
 - (CGPoint)start;
 - (CGVector)translation;
@@ -8,17 +8,17 @@
 
 @implementation HUVelocitySample
 
-+ (id)sampleWithStart:(CGPoint)a3 end:(CGPoint)a4 startTime:(double)a5 endTime:(double)a6
++ (id)sampleWithStart:(CGPoint)start end:(CGPoint)end startTime:(double)time endTime:(double)endTime
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  y = end.y;
+  x = end.x;
+  v10 = start.y;
+  v11 = start.x;
   v12 = objc_opt_new();
   [v12 setStart:{v11, v10}];
   [v12 setEnd:{x, y}];
-  [v12 setStartTime:a5];
-  [v12 setEndTime:a6];
+  [v12 setStartTime:time];
+  [v12 setEndTime:endTime];
 
   return v12;
 }

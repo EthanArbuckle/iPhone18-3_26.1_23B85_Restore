@@ -1,26 +1,26 @@
 @interface WBSUniqueFilenameEnumerator
-- (WBSUniqueFilenameEnumerator)initWithFilename:(id)a3;
+- (WBSUniqueFilenameEnumerator)initWithFilename:(id)filename;
 - (id)nextObject;
 - (unint64_t)fileNumber;
 @end
 
 @implementation WBSUniqueFilenameEnumerator
 
-- (WBSUniqueFilenameEnumerator)initWithFilename:(id)a3
+- (WBSUniqueFilenameEnumerator)initWithFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v14.receiver = self;
   v14.super_class = WBSUniqueFilenameEnumerator;
   v5 = [(WBSUniqueFilenameEnumerator *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [filenameCopy copy];
     filename = v5->_filename;
     v5->_filename = v6;
 
-    v8 = [(NSString *)v5->_filename stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [(NSString *)v5->_filename stringByDeletingPathExtension];
     filenameWithoutExtension = v5->_filenameWithoutExtension;
-    v5->_filenameWithoutExtension = v8;
+    v5->_filenameWithoutExtension = stringByDeletingPathExtension;
 
     v10 = [(NSString *)v5->_filename substringFromIndex:[(NSString *)v5->_filenameWithoutExtension length]];
     pathExtension = v5->_pathExtension;

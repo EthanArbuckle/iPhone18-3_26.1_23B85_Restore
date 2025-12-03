@@ -1,15 +1,15 @@
 @interface CRXFHealthDataProvider
-- (BOOL)isCloudSyncDisabledError:(id)a3;
+- (BOOL)isCloudSyncDisabledError:(id)error;
 - (CRXFHealthDataProvider)init;
-- (CRXFHealthDataProvider)initWithDeviceModel:(id)a3;
-- (id)createDiopterRangeWithMinimum:(double)a3 maximum:(double)a4;
-- (id)createPrescriptionWithSphereRight:(double)a3 cylinderRight:(double)a4 axisRight:(unint64_t)a5 prismRight:(id)a6 sphereLeft:(double)a7 cylinderLeft:(double)a8 axisLeft:(unint64_t)a9 prismLeft:(id)a10 readerRange:(id)a11 accPayload:(id)a12 description:(id)a13 colorCode:(unint64_t)a14 lensTypeCode:(unint64_t)a15 serialNumber:(id)a16 issueDate:(id)a17;
-- (id)createVisionPrismForVerticalAmount:(double)a3 verticalDirection:(unint64_t)a4 horizontalAmount:(double)a5 horizontalDirection:(unint64_t)a6 leftEye:(BOOL)a7;
-- (id)updatePrescription:(id)a3 withMetadata:(id)a4 axisRight:(id)a5 axisLeft:(id)a6 prismRight:(id)a7 prismLeft:(id)a8;
-- (void)deletePrescriptionsMatchingPredicate:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)getSyncTimesWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)listPrescriptionsWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)updateWithAddedPrescriptions:(id)a3 deletedPrescriptions:(id)a4 completionQueue:(id)a5 completion:(id)a6;
+- (CRXFHealthDataProvider)initWithDeviceModel:(id)model;
+- (id)createDiopterRangeWithMinimum:(double)minimum maximum:(double)maximum;
+- (id)createPrescriptionWithSphereRight:(double)right cylinderRight:(double)cylinderRight axisRight:(unint64_t)axisRight prismRight:(id)prismRight sphereLeft:(double)left cylinderLeft:(double)cylinderLeft axisLeft:(unint64_t)axisLeft prismLeft:(id)self0 readerRange:(id)self1 accPayload:(id)self2 description:(id)self3 colorCode:(unint64_t)self4 lensTypeCode:(unint64_t)self5 serialNumber:(id)self6 issueDate:(id)self7;
+- (id)createVisionPrismForVerticalAmount:(double)amount verticalDirection:(unint64_t)direction horizontalAmount:(double)horizontalAmount horizontalDirection:(unint64_t)horizontalDirection leftEye:(BOOL)eye;
+- (id)updatePrescription:(id)prescription withMetadata:(id)metadata axisRight:(id)right axisLeft:(id)left prismRight:(id)prismRight prismLeft:(id)prismLeft;
+- (void)deletePrescriptionsMatchingPredicate:(id)predicate completionQueue:(id)queue completion:(id)completion;
+- (void)getSyncTimesWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)listPrescriptionsWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)updateWithAddedPrescriptions:(id)prescriptions deletedPrescriptions:(id)deletedPrescriptions completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation CRXFHealthDataProvider
@@ -17,16 +17,16 @@
 - (CRXFHealthDataProvider)init
 {
   v3 = +[CRXUSystemInfo sharedInstance];
-  v4 = [v3 modelName];
-  v5 = [(CRXFHealthDataProvider *)self initWithDeviceModel:v4];
+  modelName = [v3 modelName];
+  v5 = [(CRXFHealthDataProvider *)self initWithDeviceModel:modelName];
 
   return v5;
 }
 
-- (CRXFHealthDataProvider)initWithDeviceModel:(id)a3
+- (CRXFHealthDataProvider)initWithDeviceModel:(id)model
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  modelCopy = model;
   v29.receiver = self;
   v29.super_class = CRXFHealthDataProvider;
   v6 = [(CRXFHealthDataProvider *)&v29 init];
@@ -39,11 +39,11 @@
     log = v7->_log;
     v7->_log = v10;
 
-    objc_storeStrong(&v7->_deviceModel, a3);
-    v12 = [MEMORY[0x277CCAC80] scannerWithString:v5];
-    v13 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    objc_storeStrong(&v7->_deviceModel, model);
+    v12 = [MEMORY[0x277CCAC80] scannerWithString:modelCopy];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
     v28 = 0;
-    v14 = [v12 scanUpToCharactersFromSet:v13 intoString:&v28];
+    v14 = [v12 scanUpToCharactersFromSet:decimalDigitCharacterSet intoString:&v28];
     v15 = v28;
 
     deviceModel = v15;
@@ -53,9 +53,9 @@
     }
 
     objc_storeStrong(&v7->_deviceModelPrefix, deviceModel);
-    v17 = [MEMORY[0x277CCD8D8] visionPrescriptionType];
+    visionPrescriptionType = [MEMORY[0x277CCD8D8] visionPrescriptionType];
     sampleType = v7->_sampleType;
-    v7->_sampleType = v17;
+    v7->_sampleType = visionPrescriptionType;
 
     v19 = [MEMORY[0x277CCD838] predicateForObjectsWithMetadataKey:*MEMORY[0x277CCE120]];
     samplePredicate = v7->_samplePredicate;
@@ -76,73 +76,73 @@
   return v7;
 }
 
-- (id)createPrescriptionWithSphereRight:(double)a3 cylinderRight:(double)a4 axisRight:(unint64_t)a5 prismRight:(id)a6 sphereLeft:(double)a7 cylinderLeft:(double)a8 axisLeft:(unint64_t)a9 prismLeft:(id)a10 readerRange:(id)a11 accPayload:(id)a12 description:(id)a13 colorCode:(unint64_t)a14 lensTypeCode:(unint64_t)a15 serialNumber:(id)a16 issueDate:(id)a17
+- (id)createPrescriptionWithSphereRight:(double)right cylinderRight:(double)cylinderRight axisRight:(unint64_t)axisRight prismRight:(id)prismRight sphereLeft:(double)left cylinderLeft:(double)cylinderLeft axisLeft:(unint64_t)axisLeft prismLeft:(id)self0 readerRange:(id)self1 accPayload:(id)self2 description:(id)self3 colorCode:(unint64_t)self4 lensTypeCode:(unint64_t)self5 serialNumber:(id)self6 issueDate:(id)self7
 {
   v79[7] = *MEMORY[0x277D85DE8];
-  v77 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a16;
+  rangeCopy = range;
+  payloadCopy = payload;
+  descriptionCopy = description;
+  numberCopy = number;
   v28 = MEMORY[0x277CBEB38];
   deviceModel = self->_deviceModel;
   v30 = *MEMORY[0x277CCE120];
   v78[0] = *MEMORY[0x277CCE138];
   v78[1] = v30;
   v79[0] = deviceModel;
-  v79[1] = v25;
-  v76 = v25;
+  v79[1] = payloadCopy;
+  v76 = payloadCopy;
   v78[2] = *MEMORY[0x277CCE128];
   v31 = MEMORY[0x277CCABB0];
-  v73 = a17;
-  v71 = a10;
-  v32 = a6;
-  v33 = [v31 numberWithUnsignedInteger:a14];
+  dateCopy = date;
+  prismLeftCopy = prismLeft;
+  prismRightCopy = prismRight;
+  v33 = [v31 numberWithUnsignedInteger:code];
   v79[2] = v33;
   v78[3] = *MEMORY[0x277CCE130];
-  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a15];
+  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:typeCode];
   v35 = *MEMORY[0x277CCC4A8];
   v79[3] = v34;
-  v79[4] = v26;
-  v75 = v26;
+  v79[4] = descriptionCopy;
+  v75 = descriptionCopy;
   v36 = *MEMORY[0x277CCC520];
   v78[4] = v35;
   v78[5] = v36;
-  v37 = [MEMORY[0x277CCAD78] UUID];
-  v38 = [v37 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v78[6] = *MEMORY[0x277CCC528];
-  v79[5] = v38;
+  v79[5] = uUIDString;
   v79[6] = &unk_285933BA8;
   v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:7];
   v40 = [v28 dictionaryWithDictionary:v39];
 
-  if (v27)
+  if (numberCopy)
   {
-    [v40 setObject:v27 forKeyedSubscript:*MEMORY[0x277CCE140]];
+    [v40 setObject:numberCopy forKeyedSubscript:*MEMORY[0x277CCE140]];
   }
 
-  v74 = v27;
-  if (v77)
+  v74 = numberCopy;
+  if (rangeCopy)
   {
-    v41 = [v77 minimum];
-    [v40 setObject:v41 forKeyedSubscript:@"_HKPrivateMetadataKeyVisionReaderStrengthRangeLow"];
+    minimum = [rangeCopy minimum];
+    [v40 setObject:minimum forKeyedSubscript:@"_HKPrivateMetadataKeyVisionReaderStrengthRangeLow"];
 
-    v42 = [v77 maximum];
-    [v40 setObject:v42 forKeyedSubscript:@"_HKPrivateMetadataKeyVisionReaderStrengthRangeHigh"];
+    maximum = [rangeCopy maximum];
+    [v40 setObject:maximum forKeyedSubscript:@"_HKPrivateMetadataKeyVisionReaderStrengthRangeHigh"];
   }
 
   v43 = MEMORY[0x277CCD7E8];
-  v44 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v45 = [v43 quantityWithUnit:v44 doubleValue:a3];
+  diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
+  v45 = [v43 quantityWithUnit:diopterUnit doubleValue:right];
 
   v46 = MEMORY[0x277CCD7E8];
-  v47 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v48 = [v46 quantityWithUnit:v47 doubleValue:a4];
+  diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
+  v48 = [v46 quantityWithUnit:diopterUnit2 doubleValue:cylinderRight];
 
-  if (a5)
+  if (axisRight)
   {
     v49 = MEMORY[0x277CCD7E8];
-    v50 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
-    v51 = [v49 quantityWithUnit:v50 doubleValue:a5];
+    degreeAngleUnit = [MEMORY[0x277CCDAB0] degreeAngleUnit];
+    v51 = [v49 quantityWithUnit:degreeAngleUnit doubleValue:axisRight];
   }
 
   else
@@ -152,21 +152,21 @@
 
   v68 = v51;
   v70 = v45;
-  v52 = [objc_alloc(MEMORY[0x277CCD480]) initWithSphere:v45 cylinder:v48 axis:v51 addPower:0 vertexDistance:0 prism:v32 farPupillaryDistance:0 nearPupillaryDistance:0];
+  v52 = [objc_alloc(MEMORY[0x277CCD480]) initWithSphere:v45 cylinder:v48 axis:v51 addPower:0 vertexDistance:0 prism:prismRightCopy farPupillaryDistance:0 nearPupillaryDistance:0];
 
   v53 = MEMORY[0x277CCD7E8];
-  v54 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v55 = [v53 quantityWithUnit:v54 doubleValue:a7];
+  diopterUnit3 = [MEMORY[0x277CCDAB0] diopterUnit];
+  v55 = [v53 quantityWithUnit:diopterUnit3 doubleValue:left];
 
   v56 = MEMORY[0x277CCD7E8];
-  v57 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v58 = [v56 quantityWithUnit:v57 doubleValue:a8];
+  diopterUnit4 = [MEMORY[0x277CCDAB0] diopterUnit];
+  v58 = [v56 quantityWithUnit:diopterUnit4 doubleValue:cylinderLeft];
 
-  if (a9)
+  if (axisLeft)
   {
     v59 = MEMORY[0x277CCD7E8];
-    v60 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
-    v61 = [v59 quantityWithUnit:v60 doubleValue:a9];
+    degreeAngleUnit2 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
+    v61 = [v59 quantityWithUnit:degreeAngleUnit2 doubleValue:axisLeft];
   }
 
   else
@@ -174,106 +174,106 @@
     v61 = 0;
   }
 
-  v62 = [objc_alloc(MEMORY[0x277CCD480]) initWithSphere:v55 cylinder:v58 axis:v61 addPower:0 vertexDistance:0 prism:v71 farPupillaryDistance:0 nearPupillaryDistance:0];
+  v62 = [objc_alloc(MEMORY[0x277CCD480]) initWithSphere:v55 cylinder:v58 axis:v61 addPower:0 vertexDistance:0 prism:prismLeftCopy farPupillaryDistance:0 nearPupillaryDistance:0];
 
   v63 = MEMORY[0x277CCD488];
-  v64 = [MEMORY[0x277CCD2E8] localDevice];
-  v65 = [v63 prescriptionWithRightEyeSpecification:v52 leftEyeSpecification:v62 dateIssued:v73 expirationDate:0 device:v64 metadata:v40];
+  localDevice = [MEMORY[0x277CCD2E8] localDevice];
+  v65 = [v63 prescriptionWithRightEyeSpecification:v52 leftEyeSpecification:v62 dateIssued:dateCopy expirationDate:0 device:localDevice metadata:v40];
 
   v66 = *MEMORY[0x277D85DE8];
 
   return v65;
 }
 
-- (id)updatePrescription:(id)a3 withMetadata:(id)a4 axisRight:(id)a5 axisLeft:(id)a6 prismRight:(id)a7 prismLeft:(id)a8
+- (id)updatePrescription:(id)prescription withMetadata:(id)metadata axisRight:(id)right axisLeft:(id)left prismRight:(id)prismRight prismLeft:(id)prismLeft
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  prescriptionCopy = prescription;
+  rightCopy = right;
+  leftCopy = left;
+  prismRightCopy = prismRight;
+  prismLeftCopy = prismLeft;
   v18 = MEMORY[0x277CBEB38];
-  v19 = a4;
-  v20 = [v13 metadata];
-  v21 = [v18 dictionaryWithDictionary:v20];
+  metadataCopy = metadata;
+  metadata = [prescriptionCopy metadata];
+  v21 = [v18 dictionaryWithDictionary:metadata];
 
-  [v21 addEntriesFromDictionary:v19];
+  [v21 addEntriesFromDictionary:metadataCopy];
   v22 = *MEMORY[0x277CCC528];
   v23 = [v21 crxu_integerForKey:*MEMORY[0x277CCC528]];
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:v23 + 1];
   v67 = v21;
   [v21 setObject:v24 forKeyedSubscript:v22];
 
-  v25 = [v13 rightEye];
-  v26 = [v13 leftEye];
-  v27 = v17;
-  v28 = v16;
-  v68 = v15;
-  v65 = v14;
+  rightEye = [prescriptionCopy rightEye];
+  leftEye = [prescriptionCopy leftEye];
+  v27 = prismLeftCopy;
+  v28 = prismRightCopy;
+  v68 = leftCopy;
+  v65 = rightCopy;
   v66 = v27;
-  if (v14 | v28)
+  if (rightCopy | v28)
   {
     v57 = objc_alloc(MEMORY[0x277CCD480]);
-    v29 = [v25 sphere];
-    [v25 cylinder];
-    v62 = v60 = v14;
-    if (!v14)
+    sphere = [rightEye sphere];
+    [rightEye cylinder];
+    v62 = axis = rightCopy;
+    if (!rightCopy)
     {
-      v60 = [v25 axis];
+      axis = [rightEye axis];
     }
 
-    v30 = [v25 addPower];
-    v31 = [v25 vertexDistance];
-    v32 = v28;
+    addPower = [rightEye addPower];
+    vertexDistance = [rightEye vertexDistance];
+    prism = v28;
     if (!v28)
     {
-      v32 = [v25 prism];
+      prism = [rightEye prism];
     }
 
-    v33 = [v25 farPupillaryDistance];
-    v34 = [v25 nearPupillaryDistance];
+    farPupillaryDistance = [rightEye farPupillaryDistance];
+    nearPupillaryDistance = [rightEye nearPupillaryDistance];
     v35 = v57;
-    v58 = v29;
-    v36 = [v35 initWithSphere:v29 cylinder:v62 axis:v60 addPower:v30 vertexDistance:v31 prism:v32 farPupillaryDistance:v33 nearPupillaryDistance:v34];
+    v58 = sphere;
+    v36 = [v35 initWithSphere:sphere cylinder:v62 axis:axis addPower:addPower vertexDistance:vertexDistance prism:prism farPupillaryDistance:farPupillaryDistance nearPupillaryDistance:nearPupillaryDistance];
 
     if (!v28)
     {
     }
 
-    v14 = v65;
+    rightCopy = v65;
     v27 = v66;
     if (!v65)
     {
     }
 
-    v25 = v36;
-    v15 = v68;
+    rightEye = v36;
+    leftCopy = v68;
   }
 
-  if (v15 | v27)
+  if (leftCopy | v27)
   {
     v56 = v28;
     v55 = objc_alloc(MEMORY[0x277CCD480]);
-    v63 = [v26 sphere];
-    [v26 cylinder];
-    v61 = v59 = v15;
-    if (!v15)
+    sphere2 = [leftEye sphere];
+    [leftEye cylinder];
+    v61 = axis2 = leftCopy;
+    if (!leftCopy)
     {
-      v59 = [v26 axis];
+      axis2 = [leftEye axis];
     }
 
-    v37 = [v26 addPower];
-    v38 = [v26 vertexDistance];
-    v39 = v27;
+    addPower2 = [leftEye addPower];
+    vertexDistance2 = [leftEye vertexDistance];
+    prism2 = v27;
     v40 = v27;
     if (!v27)
     {
-      v39 = [v26 prism];
+      prism2 = [leftEye prism];
     }
 
-    v41 = [v26 farPupillaryDistance];
-    v42 = [v26 nearPupillaryDistance];
-    v43 = [v55 initWithSphere:v63 cylinder:v61 axis:v59 addPower:v37 vertexDistance:v38 prism:v39 farPupillaryDistance:v41 nearPupillaryDistance:v42];
+    farPupillaryDistance2 = [leftEye farPupillaryDistance];
+    nearPupillaryDistance2 = [leftEye nearPupillaryDistance];
+    v43 = [v55 initWithSphere:sphere2 cylinder:v61 axis:axis2 addPower:addPower2 vertexDistance:vertexDistance2 prism:prism2 farPupillaryDistance:farPupillaryDistance2 nearPupillaryDistance:nearPupillaryDistance2];
 
     if (!v40)
     {
@@ -283,16 +283,16 @@
     {
     }
 
-    v26 = v43;
-    v14 = v65;
+    leftEye = v43;
+    rightCopy = v65;
     v28 = v56;
   }
 
   v44 = MEMORY[0x277CCD488];
-  v45 = [v13 dateIssued];
-  v46 = [v13 expirationDate];
-  v47 = [v13 device];
-  v48 = [v44 prescriptionWithRightEyeSpecification:v25 leftEyeSpecification:v26 dateIssued:v45 expirationDate:v46 device:v47 metadata:v67];
+  dateIssued = [prescriptionCopy dateIssued];
+  expirationDate = [prescriptionCopy expirationDate];
+  device = [prescriptionCopy device];
+  v48 = [v44 prescriptionWithRightEyeSpecification:rightEye leftEyeSpecification:leftEye dateIssued:dateIssued expirationDate:expirationDate device:device metadata:v67];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -300,10 +300,10 @@
     [CRXFHealthDataProvider updatePrescription:v48 withMetadata:? axisRight:? axisLeft:? prismRight:? prismLeft:?];
   }
 
-  v50 = [v13 sourceRevision];
-  v51 = [v50 source];
-  v52 = [v51 bundleIdentifier];
-  [v48 _setSourceBundleIdentifier:v52];
+  sourceRevision = [prescriptionCopy sourceRevision];
+  source = [sourceRevision source];
+  bundleIdentifier = [source bundleIdentifier];
+  [v48 _setSourceBundleIdentifier:bundleIdentifier];
 
   v53 = self->_log;
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -314,13 +314,13 @@
   return v48;
 }
 
-- (void)listPrescriptionsWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)listPrescriptionsWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v6 = +[CRXUDispatchQueue main];
+    queueCopy = +[CRXUDispatchQueue main];
   }
 
   v8 = objc_alloc(MEMORY[0x277CCD8D0]);
@@ -332,10 +332,10 @@
   v15[2] = __74__CRXFHealthDataProvider_listPrescriptionsWithCompletionQueue_completion___block_invoke;
   v15[3] = &unk_278EA0350;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = queueCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
   v14 = [v8 initWithSampleType:sampleType predicate:samplePredicate limit:0 sortDescriptors:sortDescriptors resultsHandler:v15];
   [(HKHealthStore *)self->_healthStore executeQuery:v14];
 }
@@ -435,33 +435,33 @@ void __74__CRXFHealthDataProvider_listPrescriptionsWithCompletionQueue_completio
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithAddedPrescriptions:(id)a3 deletedPrescriptions:(id)a4 completionQueue:(id)a5 completion:(id)a6
+- (void)updateWithAddedPrescriptions:(id)prescriptions deletedPrescriptions:(id)deletedPrescriptions completionQueue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  prescriptionsCopy = prescriptions;
+  deletedPrescriptionsCopy = deletedPrescriptions;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v12 = +[CRXUDispatchQueue main];
+    queueCopy = +[CRXUDispatchQueue main];
   }
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __103__CRXFHealthDataProvider_updateWithAddedPrescriptions_deletedPrescriptions_completionQueue_completion___block_invoke;
   v36[3] = &unk_278EA0378;
-  v14 = v12;
+  v14 = queueCopy;
   v37 = v14;
-  v38 = v13;
-  v15 = v13;
+  v38 = completionCopy;
+  v15 = completionCopy;
   v16 = MEMORY[0x24C1A0F30](v36);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __103__CRXFHealthDataProvider_updateWithAddedPrescriptions_deletedPrescriptions_completionQueue_completion___block_invoke_3;
   v31[3] = &unk_278EA03F0;
-  v17 = v10;
+  v17 = prescriptionsCopy;
   v32 = v17;
-  v33 = self;
+  selfCopy = self;
   v34 = v14;
   v18 = v16;
   v35 = v18;
@@ -472,7 +472,7 @@ void __74__CRXFHealthDataProvider_listPrescriptionsWithCompletionQueue_completio
   v26[2] = __103__CRXFHealthDataProvider_updateWithAddedPrescriptions_deletedPrescriptions_completionQueue_completion___block_invoke_3_117;
   v26[3] = &unk_278EA0440;
   v26[4] = self;
-  v21 = v11;
+  v21 = deletedPrescriptionsCopy;
   v27 = v21;
   v22 = v18;
   v29 = v22;
@@ -690,28 +690,28 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)deletePrescriptionsMatchingPredicate:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)deletePrescriptionsMatchingPredicate:(id)predicate completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  predicateCopy = predicate;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v9 = +[CRXUDispatchQueue main];
+    queueCopy = +[CRXUDispatchQueue main];
   }
 
   healthStore = self->_healthStore;
-  v12 = [MEMORY[0x277CCD720] visionPrescriptionType];
+  visionPrescriptionType = [MEMORY[0x277CCD720] visionPrescriptionType];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__CRXFHealthDataProvider_deletePrescriptionsMatchingPredicate_completionQueue_completion___block_invoke;
   v15[3] = &unk_278EA0468;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
-  [(HKHealthStore *)healthStore deleteObjectsOfType:v12 predicate:v8 withCompletion:v15];
+  v16 = queueCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = queueCopy;
+  [(HKHealthStore *)healthStore deleteObjectsOfType:visionPrescriptionType predicate:predicateCopy withCompletion:v15];
 }
 
 void __90__CRXFHealthDataProvider_deletePrescriptionsMatchingPredicate_completionQueue_completion___block_invoke(uint64_t a1, char a2, uint64_t a3, void *a4)
@@ -750,13 +750,13 @@ LABEL_5:
   [v9 dispatchAsync:v12];
 }
 
-- (void)getSyncTimesWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)getSyncTimesWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v6 = +[CRXUDispatchQueue main];
+    queueCopy = +[CRXUDispatchQueue main];
   }
 
   if ([(CRXFHealthDataProvider *)self mockCloudSyncTimes])
@@ -765,13 +765,13 @@ LABEL_5:
     v10[1] = 3221225472;
     v10[2] = __69__CRXFHealthDataProvider_getSyncTimesWithCompletionQueue_completion___block_invoke;
     v10[3] = &unk_278EA0490;
-    v11 = v7;
-    [v6 dispatchAsync:v10];
+    v11 = completionCopy;
+    [queueCopy dispatchAsync:v10];
   }
 
   else
   {
-    v8 = [[CRXFHealthCloudSyncObserver alloc] initWithQueue:v6 completion:v7];
+    v8 = [[CRXFHealthCloudSyncObserver alloc] initWithQueue:queueCopy completion:completionCopy];
     cloudSyncObserver = self->_cloudSyncObserver;
     self->_cloudSyncObserver = v8;
 
@@ -788,18 +788,18 @@ uint64_t __69__CRXFHealthDataProvider_getSyncTimesWithCompletionQueue_completion
   return v3(v2, v4);
 }
 
-- (id)createVisionPrismForVerticalAmount:(double)a3 verticalDirection:(unint64_t)a4 horizontalAmount:(double)a5 horizontalDirection:(unint64_t)a6 leftEye:(BOOL)a7
+- (id)createVisionPrismForVerticalAmount:(double)amount verticalDirection:(unint64_t)direction horizontalAmount:(double)horizontalAmount horizontalDirection:(unint64_t)horizontalDirection leftEye:(BOOL)eye
 {
-  v7 = a7;
-  if (!a4)
+  eyeCopy = eye;
+  if (!direction)
   {
     v11 = 1;
 LABEL_5:
     v12 = MEMORY[0x277CCD7E8];
-    v13 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-    v14 = [v12 quantityWithUnit:v13 doubleValue:a3];
+    prismDiopterUnit = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+    v14 = [v12 quantityWithUnit:prismDiopterUnit doubleValue:amount];
 
-    if (a6)
+    if (horizontalDirection)
     {
       goto LABEL_6;
     }
@@ -809,7 +809,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a4 == 1)
+  if (direction == 1)
   {
     v11 = 2;
     goto LABEL_5;
@@ -817,19 +817,19 @@ LABEL_9:
 
   v11 = 0;
   v14 = 0;
-  if (!a6)
+  if (!horizontalDirection)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
-  if (a6 == 1)
+  if (horizontalDirection == 1)
   {
     v15 = 3;
 LABEL_10:
     v16 = MEMORY[0x277CCD7E8];
-    v17 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-    v18 = [v16 quantityWithUnit:v17 doubleValue:a5];
+    prismDiopterUnit2 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+    v18 = [v16 quantityWithUnit:prismDiopterUnit2 doubleValue:horizontalAmount];
 
     goto LABEL_12;
   }
@@ -837,7 +837,7 @@ LABEL_10:
   v15 = 0;
   v18 = 0;
 LABEL_12:
-  if (v7)
+  if (eyeCopy)
   {
     v19 = 1;
   }
@@ -852,32 +852,32 @@ LABEL_12:
   return v20;
 }
 
-- (id)createDiopterRangeWithMinimum:(double)a3 maximum:(double)a4
+- (id)createDiopterRangeWithMinimum:(double)minimum maximum:(double)maximum
 {
   v6 = MEMORY[0x277CCD7E8];
-  v7 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v8 = [v6 quantityWithUnit:v7 doubleValue:a3];
+  diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
+  v8 = [v6 quantityWithUnit:diopterUnit doubleValue:minimum];
 
   v9 = MEMORY[0x277CCD7E8];
-  v10 = [MEMORY[0x277CCDAB0] diopterUnit];
-  v11 = [v9 quantityWithUnit:v10 doubleValue:a4];
+  diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
+  v11 = [v9 quantityWithUnit:diopterUnit2 doubleValue:maximum];
 
   v12 = [objc_alloc(MEMORY[0x277CCD7F8]) initWithMinimum:v8 maximum:v11 isMinimumInclusive:1 isMaximumInclusive:1];
 
   return v12;
 }
 
-- (BOOL)isCloudSyncDisabledError:(id)a3
+- (BOOL)isCloudSyncDisabledError:(id)error
 {
-  v3 = a3;
-  if ([v3 hk_isHealthKitErrorWithCode:701])
+  errorCopy = error;
+  if ([errorCopy hk_isHealthKitErrorWithCode:701])
   {
     v4 = 1;
   }
 
-  else if ([v3 hk_isHealthKitErrorWithCode:100])
+  else if ([errorCopy hk_isHealthKitErrorWithCode:100])
   {
-    v5 = [v3 description];
+    v5 = [errorCopy description];
     v4 = [v5 containsString:@"Code=701"];
   }
 

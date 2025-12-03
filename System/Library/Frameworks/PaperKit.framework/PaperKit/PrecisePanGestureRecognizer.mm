@@ -1,12 +1,12 @@
 @interface PrecisePanGestureRecognizer
-- (_TtC8PaperKit27PrecisePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC8PaperKit27PrecisePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PrecisePanGestureRecognizer
 
-- (_TtC8PaperKit27PrecisePanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC8PaperKit27PrecisePanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

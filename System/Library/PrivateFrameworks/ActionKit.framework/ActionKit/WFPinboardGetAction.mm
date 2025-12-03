@@ -1,13 +1,13 @@
 @interface WFPinboardGetAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFPinboardGetAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [(WFPinboardGetAction *)self parameterValueForKey:@"WFBookmarkCount" ofClass:objc_opt_class()];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
   v6 = [(WFPinboardGetAction *)self parameterValueForKey:@"WFPinTags" ofClass:objc_opt_class()];
   v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", "}];
@@ -32,7 +32,7 @@
   v15[4] = self;
   v16 = v10;
   v14 = v10;
-  [(WFPinboardSessionManager *)v14 getBookmarksWithTags:v9 limit:v5 completion:v15];
+  [(WFPinboardSessionManager *)v14 getBookmarksWithTags:v9 limit:unsignedIntegerValue completion:v15];
 }
 
 void __50__WFPinboardGetAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)

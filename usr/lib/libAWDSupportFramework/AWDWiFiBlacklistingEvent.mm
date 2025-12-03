@@ -1,19 +1,19 @@
 @interface AWDWiFiBlacklistingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBlacklistedDuration:(BOOL)a3;
-- (void)setHasBlacklistedReason:(BOOL)a3;
-- (void)setHasBlacklistedSubreason:(BOOL)a3;
-- (void)setHasNetworkFlags:(BOOL)a3;
-- (void)setHasSecurityType:(BOOL)a3;
-- (void)setHasUnblacklistingReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBlacklistedDuration:(BOOL)duration;
+- (void)setHasBlacklistedReason:(BOOL)reason;
+- (void)setHasBlacklistedSubreason:(BOOL)subreason;
+- (void)setHasNetworkFlags:(BOOL)flags;
+- (void)setHasSecurityType:(BOOL)type;
+- (void)setHasUnblacklistingReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiBlacklistingEvent
@@ -26,9 +26,9 @@
   [(AWDWiFiBlacklistingEvent *)&v3 dealloc];
 }
 
-- (void)setHasNetworkFlags:(BOOL)a3
+- (void)setHasNetworkFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 16;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSecurityType:(BOOL)a3
+- (void)setHasSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -56,9 +56,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasBlacklistedReason:(BOOL)a3
+- (void)setHasBlacklistedReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -71,9 +71,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBlacklistedSubreason:(BOOL)a3
+- (void)setHasBlacklistedSubreason:(BOOL)subreason
 {
-  if (a3)
+  if (subreason)
   {
     v3 = 8;
   }
@@ -86,9 +86,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasBlacklistedDuration:(BOOL)a3
+- (void)setHasBlacklistedDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -101,9 +101,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUnblacklistingReason:(BOOL)a3
+- (void)setHasUnblacklistingReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 64;
   }
@@ -125,22 +125,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   oui = self->_oui;
   if (oui)
   {
-    [v3 setObject:oui forKey:@"oui"];
+    [dictionary setObject:oui forKey:@"oui"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkFlags), @"networkFlags"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_networkFlags), @"networkFlags"}];
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -159,7 +159,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -173,7 +173,7 @@ LABEL_8:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedReason), @"blacklistedReason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedReason), @"blacklistedReason"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -184,17 +184,17 @@ LABEL_9:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedDuration), @"blacklistedDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedDuration), @"blacklistedDuration"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedSubreason), @"blacklistedSubreason"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_blacklistedSubreason), @"blacklistedSubreason"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -205,13 +205,13 @@ LABEL_10:
   if ((has & 0x40) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_unblacklistingReason), @"unblacklistingReason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_unblacklistingReason), @"unblacklistingReason"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -305,24 +305,24 @@ LABEL_17:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 48) |= 1u;
   }
 
   if (self->_oui)
   {
-    [a3 setOui:?];
+    [to setOui:?];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 7) = self->_networkFlags;
-    *(a3 + 48) |= 0x10u;
+    *(to + 7) = self->_networkFlags;
+    *(to + 48) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -341,8 +341,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 10) = self->_securityType;
-  *(a3 + 48) |= 0x20u;
+  *(to + 10) = self->_securityType;
+  *(to + 48) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -356,8 +356,8 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(a3 + 5) = self->_blacklistedReason;
-  *(a3 + 48) |= 4u;
+  *(to + 5) = self->_blacklistedReason;
+  *(to + 48) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -371,8 +371,8 @@ LABEL_9:
   }
 
 LABEL_16:
-  *(a3 + 6) = self->_blacklistedSubreason;
-  *(a3 + 48) |= 8u;
+  *(to + 6) = self->_blacklistedSubreason;
+  *(to + 48) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -386,21 +386,21 @@ LABEL_10:
   }
 
 LABEL_17:
-  *(a3 + 4) = self->_blacklistedDuration;
-  *(a3 + 48) |= 2u;
+  *(to + 4) = self->_blacklistedDuration;
+  *(to + 48) |= 2u;
   if ((*&self->_has & 0x40) == 0)
   {
     return;
   }
 
 LABEL_11:
-  *(a3 + 11) = self->_unblacklistingReason;
-  *(a3 + 48) |= 0x40u;
+  *(to + 11) = self->_unblacklistingReason;
+  *(to + 48) |= 0x40u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -408,7 +408,7 @@ LABEL_11:
     *(v5 + 48) |= 1u;
   }
 
-  *(v6 + 32) = [(NSData *)self->_oui copyWithZone:a3];
+  *(v6 + 32) = [(NSData *)self->_oui copyWithZone:zone];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -489,22 +489,22 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 48);
+    v7 = *(equal + 48);
     if (has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_39:
       LOBYTE(v5) = 0;
@@ -512,7 +512,7 @@ LABEL_39:
     }
 
     oui = self->_oui;
-    if (oui | *(a3 + 4))
+    if (oui | *(equal + 4))
     {
       v5 = [(NSData *)oui isEqual:?];
       if (!v5)
@@ -525,73 +525,73 @@ LABEL_39:
 
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 48) & 0x10) == 0 || self->_networkFlags != *(a3 + 7))
+      if ((*(equal + 48) & 0x10) == 0 || self->_networkFlags != *(equal + 7))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 0x10) != 0)
+    else if ((*(equal + 48) & 0x10) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 48) & 0x20) == 0 || self->_securityType != *(a3 + 10))
+      if ((*(equal + 48) & 0x20) == 0 || self->_securityType != *(equal + 10))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 0x20) != 0)
+    else if ((*(equal + 48) & 0x20) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_blacklistedReason != *(a3 + 5))
+      if ((*(equal + 48) & 4) == 0 || self->_blacklistedReason != *(equal + 5))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_blacklistedSubreason != *(a3 + 6))
+      if ((*(equal + 48) & 8) == 0 || self->_blacklistedSubreason != *(equal + 6))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_39;
     }
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_blacklistedDuration != *(a3 + 4))
+      if ((*(equal + 48) & 2) == 0 || self->_blacklistedDuration != *(equal + 4))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_39;
     }
 
-    LOBYTE(v5) = (*(a3 + 48) & 0x40) == 0;
+    LOBYTE(v5) = (*(equal + 48) & 0x40) == 0;
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 48) & 0x40) == 0 || self->_unblacklistingReason != *(a3 + 11))
+      if ((*(equal + 48) & 0x40) == 0 || self->_unblacklistingReason != *(equal + 11))
       {
         goto LABEL_39;
       }
@@ -696,25 +696,25 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 48))
+  if (*(from + 48))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDWiFiBlacklistingEvent *)self setOui:?];
   }
 
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 0x10) != 0)
   {
-    self->_networkFlags = *(a3 + 7);
+    self->_networkFlags = *(from + 7);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 48);
+    v5 = *(from + 48);
     if ((v5 & 0x20) == 0)
     {
 LABEL_7:
@@ -727,14 +727,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 48) & 0x20) == 0)
+  else if ((*(from + 48) & 0x20) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_securityType = *(a3 + 10);
+  self->_securityType = *(from + 10);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -747,9 +747,9 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_blacklistedReason = *(a3 + 5);
+  self->_blacklistedReason = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -762,9 +762,9 @@ LABEL_9:
   }
 
 LABEL_16:
-  self->_blacklistedSubreason = *(a3 + 6);
+  self->_blacklistedSubreason = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 48);
+  v5 = *(from + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -777,15 +777,15 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_blacklistedDuration = *(a3 + 4);
+  self->_blacklistedDuration = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 48) & 0x40) == 0)
+  if ((*(from + 48) & 0x40) == 0)
   {
     return;
   }
 
 LABEL_11:
-  self->_unblacklistingReason = *(a3 + 11);
+  self->_unblacklistingReason = *(from + 11);
   *&self->_has |= 0x40u;
 }
 

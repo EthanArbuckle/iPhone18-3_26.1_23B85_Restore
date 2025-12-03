@@ -1,31 +1,31 @@
 @interface CKDPShare
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_publicAccessCKLogValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)participantSelfRemovalBehaviorAsString:(int)a3;
-- (id)publicAccessAsString:(int)a3;
-- (id)publisherModelTypeAsString:(int)a3;
-- (int)StringAsParticipantSelfRemovalBehavior:(id)a3;
-- (int)StringAsPublicAccess:(id)a3;
-- (int)StringAsPublisherModelType:(id)a3;
+- (id)participantSelfRemovalBehaviorAsString:(int)string;
+- (id)publicAccessAsString:(int)string;
+- (id)publisherModelTypeAsString:(int)string;
+- (int)StringAsParticipantSelfRemovalBehavior:(id)behavior;
+- (int)StringAsPublicAccess:(id)access;
+- (int)StringAsPublisherModelType:(id)type;
 - (int)participantSelfRemovalBehavior;
 - (int)publicAccess;
 - (int)publisherModelType;
 - (unint64_t)hash;
-- (void)addInvitedKeyToRemove:(id)a3;
-- (void)addParticipant:(id)a3;
-- (void)addPotentialMatch:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllowAnyoneToResolveShare:(BOOL)a3;
-- (void)setHasAnonymousPublicAccess:(BOOL)a3;
-- (void)setHasDenyAccessRequests:(BOOL)a3;
-- (void)setHasPublicAccess:(BOOL)a3;
-- (void)setHasPublisherModel:(BOOL)a3;
-- (void)setHasPublisherModelType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInvitedKeyToRemove:(id)remove;
+- (void)addParticipant:(id)participant;
+- (void)addPotentialMatch:(id)match;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllowAnyoneToResolveShare:(BOOL)share;
+- (void)setHasAnonymousPublicAccess:(BOOL)access;
+- (void)setHasDenyAccessRequests:(BOOL)requests;
+- (void)setHasPublicAccess:(BOOL)access;
+- (void)setHasPublisherModel:(BOOL)model;
+- (void)setHasPublisherModelType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShare
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setHasPublicAccess:(BOOL)a3
+- (void)setHasPublicAccess:(BOOL)access
 {
-  if (a3)
+  if (access)
   {
     v3 = 2;
   }
@@ -74,35 +74,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)publicAccessAsString:(int)a3
+- (id)publicAccessAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CC50[a3 - 1];
+    v4 = off_27854CC50[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsPublicAccess:(id)a3
+- (int)StringAsPublicAccess:(id)access
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"none"))
+  accessCopy = access;
+  if (objc_msgSend_isEqualToString_(accessCopy, v4, @"none"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"readOnly"))
+  else if (objc_msgSend_isEqualToString_(accessCopy, v5, @"readOnly"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"readWrite"))
+  else if (objc_msgSend_isEqualToString_(accessCopy, v7, @"readWrite"))
   {
     v6 = 3;
   }
@@ -115,63 +115,63 @@
   return v6;
 }
 
-- (void)addParticipant:(id)a3
+- (void)addParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantCopy;
   if (!participants)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_participants;
     self->_participants = v6;
 
-    v4 = v8;
+    participantCopy = v8;
     participants = self->_participants;
   }
 
-  objc_msgSend_addObject_(participants, v4, v4);
+  objc_msgSend_addObject_(participants, participantCopy, participantCopy);
 }
 
-- (void)addPotentialMatch:(id)a3
+- (void)addPotentialMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   potentialMatchs = self->_potentialMatchs;
-  v8 = v4;
+  v8 = matchCopy;
   if (!potentialMatchs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_potentialMatchs;
     self->_potentialMatchs = v6;
 
-    v4 = v8;
+    matchCopy = v8;
     potentialMatchs = self->_potentialMatchs;
   }
 
-  objc_msgSend_addObject_(potentialMatchs, v4, v4);
+  objc_msgSend_addObject_(potentialMatchs, matchCopy, matchCopy);
 }
 
-- (void)addInvitedKeyToRemove:(id)a3
+- (void)addInvitedKeyToRemove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   invitedKeyToRemoves = self->_invitedKeyToRemoves;
-  v8 = v4;
+  v8 = removeCopy;
   if (!invitedKeyToRemoves)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_invitedKeyToRemoves;
     self->_invitedKeyToRemoves = v6;
 
-    v4 = v8;
+    removeCopy = v8;
     invitedKeyToRemoves = self->_invitedKeyToRemoves;
   }
 
-  objc_msgSend_addObject_(invitedKeyToRemoves, v4, v4);
+  objc_msgSend_addObject_(invitedKeyToRemoves, removeCopy, removeCopy);
 }
 
-- (void)setHasPublisherModel:(BOOL)a3
+- (void)setHasPublisherModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 64;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasAnonymousPublicAccess:(BOOL)a3
+- (void)setHasAnonymousPublicAccess:(BOOL)access
 {
-  if (a3)
+  if (access)
   {
     v3 = 16;
   }
@@ -212,9 +212,9 @@
   }
 }
 
-- (void)setHasPublisherModelType:(BOOL)a3
+- (void)setHasPublisherModelType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -227,40 +227,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)publisherModelTypeAsString:(int)a3
+- (id)publisherModelTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CC68[a3 - 1];
+    v4 = off_27854CC68[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsPublisherModelType:(id)a3
+- (int)StringAsPublisherModelType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"participantsSeeAccepted"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"participantsSeeAccepted"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"readOnlyCannotSeeReadOnly"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"readOnlyCannotSeeReadOnly"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"selfAndOwner"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"selfAndOwner"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"anonymousPublic"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"anonymousPublic"))
   {
     v6 = 4;
   }
@@ -286,35 +286,35 @@
   }
 }
 
-- (id)participantSelfRemovalBehaviorAsString:(int)a3
+- (id)participantSelfRemovalBehaviorAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CC88[a3 - 1];
+    v4 = off_27854CC88[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsParticipantSelfRemovalBehavior:(id)a3
+- (int)StringAsParticipantSelfRemovalBehavior:(id)behavior
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"setInvited"))
+  behaviorCopy = behavior;
+  if (objc_msgSend_isEqualToString_(behaviorCopy, v4, @"setInvited"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"setUnsubscribed"))
+  else if (objc_msgSend_isEqualToString_(behaviorCopy, v5, @"setUnsubscribed"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"removeFromShare"))
+  else if (objc_msgSend_isEqualToString_(behaviorCopy, v7, @"removeFromShare"))
   {
     v6 = 3;
   }
@@ -327,9 +327,9 @@
   return v6;
 }
 
-- (void)setHasDenyAccessRequests:(BOOL)a3
+- (void)setHasDenyAccessRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 32;
   }
@@ -342,9 +342,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAllowAnyoneToResolveShare:(BOOL)a3
+- (void)setHasAllowAnyoneToResolveShare:(BOOL)share
 {
-  if (a3)
+  if (share)
   {
     v3 = 8;
   }
@@ -636,10 +636,10 @@ LABEL_46:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_shareId)
   {
     PBDataWriterWriteSubmessage();
@@ -854,28 +854,28 @@ LABEL_44:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   shareId = self->_shareId;
-  v49 = v4;
+  v49 = toCopy;
   if (shareId)
   {
-    objc_msgSend_setShareId_(v4, v5, shareId);
-    v4 = v49;
+    objc_msgSend_setShareId_(toCopy, v5, shareId);
+    toCopy = v49;
   }
 
   etag = self->_etag;
   if (etag)
   {
     objc_msgSend_setEtag_(v49, v5, etag);
-    v4 = v49;
+    toCopy = v49;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 24) = self->_publicAccess;
-    v4[156] |= 2u;
+    *(toCopy + 24) = self->_publicAccess;
+    toCopy[156] |= 2u;
   }
 
   invitedPcs = self->_invitedPcs;
@@ -1052,17 +1052,17 @@ LABEL_35:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v96 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_shareId, v11, zone);
   v13 = *(v10 + 128);
   *(v10 + 128) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, zone);
   v16 = *(v10 + 32);
   *(v10 + 32) = v15;
 
@@ -1072,11 +1072,11 @@ LABEL_35:
     *(v10 + 156) |= 2u;
   }
 
-  v18 = objc_msgSend_copyWithZone_(self->_invitedPcs, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_invitedPcs, v17, zone);
   v19 = *(v10 + 48);
   *(v10 + 48) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_selfAddedPcs, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_selfAddedPcs, v20, zone);
   v22 = *(v10 + 112);
   *(v10 + 112) = v21;
 
@@ -1099,7 +1099,7 @@ LABEL_35:
           objc_enumerationMutation(v23);
         }
 
-        v30 = objc_msgSend_copyWithZone_(*(*(&v89 + 1) + 8 * i), v26, a3);
+        v30 = objc_msgSend_copyWithZone_(*(*(&v89 + 1) + 8 * i), v26, zone);
         objc_msgSend_addParticipant_(v10, v31, v30);
       }
 
@@ -1109,7 +1109,7 @@ LABEL_35:
     while (v27);
   }
 
-  v33 = objc_msgSend_copyWithZone_(self->_shortTokenRoutingKey, v32, a3);
+  v33 = objc_msgSend_copyWithZone_(self->_shortTokenRoutingKey, v32, zone);
   v34 = *(v10 + 144);
   *(v10 + 144) = v33;
 
@@ -1132,7 +1132,7 @@ LABEL_35:
           objc_enumerationMutation(v35);
         }
 
-        v42 = objc_msgSend_copyWithZone_(*(*(&v85 + 1) + 8 * j), v38, a3);
+        v42 = objc_msgSend_copyWithZone_(*(*(&v85 + 1) + 8 * j), v38, zone);
         objc_msgSend_addPotentialMatch_(v10, v43, v42);
       }
 
@@ -1161,7 +1161,7 @@ LABEL_35:
           objc_enumerationMutation(v44);
         }
 
-        v51 = objc_msgSend_copyWithZone_(*(*(&v81 + 1) + 8 * k), v47, a3, v81);
+        v51 = objc_msgSend_copyWithZone_(*(*(&v81 + 1) + 8 * k), v47, zone, v81);
         objc_msgSend_addInvitedKeyToRemove_(v10, v52, v51);
       }
 
@@ -1185,7 +1185,7 @@ LABEL_35:
     *(v10 + 156) |= 0x10u;
   }
 
-  v55 = objc_msgSend_copyWithZone_(self->_displayedHostname, v53, a3, v81);
+  v55 = objc_msgSend_copyWithZone_(self->_displayedHostname, v53, zone, v81);
   v56 = *(v10 + 24);
   *(v10 + 24) = v55;
 
@@ -1222,15 +1222,15 @@ LABEL_31:
   }
 
 LABEL_32:
-  v59 = objc_msgSend_copyWithZone_(self->_requestingAccess, v57, a3);
+  v59 = objc_msgSend_copyWithZone_(self->_requestingAccess, v57, zone);
   v60 = *(v10 + 104);
   *(v10 + 104) = v59;
 
-  v62 = objc_msgSend_copyWithZone_(self->_blockedAccess, v61, a3);
+  v62 = objc_msgSend_copyWithZone_(self->_blockedAccess, v61, zone);
   v63 = *(v10 + 8);
   *(v10 + 8) = v62;
 
-  v65 = objc_msgSend_copyWithZone_(self->_cryptoRequirementsSigningKey, v64, a3);
+  v65 = objc_msgSend_copyWithZone_(self->_cryptoRequirementsSigningKey, v64, zone);
   v66 = *(v10 + 16);
   *(v10 + 16) = v65;
 
@@ -1240,19 +1240,19 @@ LABEL_32:
     *(v10 + 156) |= 8u;
   }
 
-  v68 = objc_msgSend_copyWithZone_(self->_invitedPcsKeysToRemove, v67, a3);
+  v68 = objc_msgSend_copyWithZone_(self->_invitedPcsKeysToRemove, v67, zone);
   v69 = *(v10 + 56);
   *(v10 + 56) = v68;
 
-  v71 = objc_msgSend_copyWithZone_(self->_selfAddedPcsKeysToRemove, v70, a3);
+  v71 = objc_msgSend_copyWithZone_(self->_selfAddedPcsKeysToRemove, v70, zone);
   v72 = *(v10 + 120);
   *(v10 + 120) = v71;
 
-  v74 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v73, a3);
+  v74 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v73, zone);
   v75 = *(v10 + 136);
   *(v10 + 136) = v74;
 
-  v77 = objc_msgSend_copyWithZone_(self->_origin, v76, a3);
+  v77 = objc_msgSend_copyWithZone_(self->_origin, v76, zone);
   v78 = *(v10 + 64);
   *(v10 + 64) = v77;
 
@@ -1260,17 +1260,17 @@ LABEL_32:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_71;
   }
 
   shareId = self->_shareId;
-  v9 = v4[16];
+  v9 = equalCopy[16];
   if (shareId | v9)
   {
     if (!objc_msgSend_isEqual_(shareId, v7, v9))
@@ -1280,7 +1280,7 @@ LABEL_32:
   }
 
   etag = self->_etag;
-  v11 = v4[4];
+  v11 = equalCopy[4];
   if (etag | v11)
   {
     if (!objc_msgSend_isEqual_(etag, v7, v11))
@@ -1289,29 +1289,29 @@ LABEL_32:
     }
   }
 
-  v12 = *(v4 + 156);
+  v12 = *(equalCopy + 156);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 156) & 2) == 0 || self->_publicAccess != *(v4 + 24))
+    if ((*(equalCopy + 156) & 2) == 0 || self->_publicAccess != *(equalCopy + 24))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(v4 + 156) & 2) != 0)
+  else if ((*(equalCopy + 156) & 2) != 0)
   {
     goto LABEL_71;
   }
 
   invitedPcs = self->_invitedPcs;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (invitedPcs | v14 && !objc_msgSend_isEqual_(invitedPcs, v7, v14))
   {
     goto LABEL_71;
   }
 
   selfAddedPcs = self->_selfAddedPcs;
-  v16 = v4[14];
+  v16 = equalCopy[14];
   if (selfAddedPcs | v16)
   {
     if (!objc_msgSend_isEqual_(selfAddedPcs, v7, v16))
@@ -1321,7 +1321,7 @@ LABEL_32:
   }
 
   participants = self->_participants;
-  v18 = v4[10];
+  v18 = equalCopy[10];
   if (participants | v18)
   {
     if (!objc_msgSend_isEqual_(participants, v7, v18))
@@ -1331,7 +1331,7 @@ LABEL_32:
   }
 
   shortTokenRoutingKey = self->_shortTokenRoutingKey;
-  v20 = v4[18];
+  v20 = equalCopy[18];
   if (shortTokenRoutingKey | v20)
   {
     if (!objc_msgSend_isEqual_(shortTokenRoutingKey, v7, v20))
@@ -1341,7 +1341,7 @@ LABEL_32:
   }
 
   potentialMatchs = self->_potentialMatchs;
-  v22 = v4[11];
+  v22 = equalCopy[11];
   if (potentialMatchs | v22)
   {
     if (!objc_msgSend_isEqual_(potentialMatchs, v7, v22))
@@ -1351,7 +1351,7 @@ LABEL_32:
   }
 
   invitedKeyToRemoves = self->_invitedKeyToRemoves;
-  v24 = v4[5];
+  v24 = equalCopy[5];
   if (invitedKeyToRemoves | v24)
   {
     if (!objc_msgSend_isEqual_(invitedKeyToRemoves, v7, v24))
@@ -1361,63 +1361,63 @@ LABEL_32:
   }
 
   has = self->_has;
-  v26 = *(v4 + 156);
+  v26 = *(equalCopy + 156);
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 156) & 0x40) == 0)
+    if ((*(equalCopy + 156) & 0x40) == 0)
     {
       goto LABEL_71;
     }
 
-    v29 = *(v4 + 155);
+    v29 = *(equalCopy + 155);
     if (self->_publisherModel)
     {
-      if ((*(v4 + 155) & 1) == 0)
+      if ((*(equalCopy + 155) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(v4 + 155))
+    else if (*(equalCopy + 155))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(v4 + 156) & 0x40) != 0)
+  else if ((*(equalCopy + 156) & 0x40) != 0)
   {
     goto LABEL_71;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 156) & 0x10) == 0)
+    if ((*(equalCopy + 156) & 0x10) == 0)
     {
       goto LABEL_71;
     }
 
-    v30 = *(v4 + 153);
+    v30 = *(equalCopy + 153);
     if (self->_anonymousPublicAccess)
     {
-      if ((*(v4 + 153) & 1) == 0)
+      if ((*(equalCopy + 153) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(v4 + 153))
+    else if (*(equalCopy + 153))
     {
       goto LABEL_71;
     }
   }
 
-  else if ((*(v4 + 156) & 0x10) != 0)
+  else if ((*(equalCopy + 156) & 0x10) != 0)
   {
     goto LABEL_71;
   }
 
   displayedHostname = self->_displayedHostname;
-  v28 = v4[3];
+  v28 = equalCopy[3];
   if (displayedHostname | v28)
   {
     if (!objc_msgSend_isEqual_(displayedHostname, v7, v28))
@@ -1426,12 +1426,12 @@ LABEL_32:
     }
 
     has = self->_has;
-    v26 = *(v4 + 156);
+    v26 = *(equalCopy + 156);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v26 & 4) == 0 || self->_publisherModelType != *(v4 + 25))
+    if ((v26 & 4) == 0 || self->_publisherModelType != *(equalCopy + 25))
     {
       goto LABEL_71;
     }
@@ -1444,7 +1444,7 @@ LABEL_32:
 
   if (has)
   {
-    if ((v26 & 1) == 0 || self->_participantSelfRemovalBehavior != *(v4 + 18))
+    if ((v26 & 1) == 0 || self->_participantSelfRemovalBehavior != *(equalCopy + 18))
     {
       goto LABEL_71;
     }
@@ -1462,16 +1462,16 @@ LABEL_32:
       goto LABEL_71;
     }
 
-    v48 = *(v4 + 154);
+    v48 = *(equalCopy + 154);
     if (self->_denyAccessRequests)
     {
-      if ((*(v4 + 154) & 1) == 0)
+      if ((*(equalCopy + 154) & 1) == 0)
       {
         goto LABEL_71;
       }
     }
 
-    else if (*(v4 + 154))
+    else if (*(equalCopy + 154))
     {
       goto LABEL_71;
     }
@@ -1483,14 +1483,14 @@ LABEL_32:
   }
 
   requestingAccess = self->_requestingAccess;
-  v32 = v4[13];
+  v32 = equalCopy[13];
   if (requestingAccess | v32 && !objc_msgSend_isEqual_(requestingAccess, v7, v32))
   {
     goto LABEL_71;
   }
 
   blockedAccess = self->_blockedAccess;
-  v34 = v4[1];
+  v34 = equalCopy[1];
   if (blockedAccess | v34)
   {
     if (!objc_msgSend_isEqual_(blockedAccess, v7, v34))
@@ -1500,7 +1500,7 @@ LABEL_32:
   }
 
   cryptoRequirementsSigningKey = self->_cryptoRequirementsSigningKey;
-  v36 = v4[2];
+  v36 = equalCopy[2];
   if (cryptoRequirementsSigningKey | v36)
   {
     if (!objc_msgSend_isEqual_(cryptoRequirementsSigningKey, v7, v36))
@@ -1509,10 +1509,10 @@ LABEL_32:
     }
   }
 
-  v37 = *(v4 + 156);
+  v37 = *(equalCopy + 156);
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 156) & 8) == 0)
+    if ((*(equalCopy + 156) & 8) == 0)
     {
       goto LABEL_62;
     }
@@ -1522,35 +1522,35 @@ LABEL_71:
     goto LABEL_72;
   }
 
-  if ((*(v4 + 156) & 8) == 0)
+  if ((*(equalCopy + 156) & 8) == 0)
   {
     goto LABEL_71;
   }
 
-  v49 = *(v4 + 152);
+  v49 = *(equalCopy + 152);
   if (self->_allowAnyoneToResolveShare)
   {
-    if ((v4[19] & 1) == 0)
+    if ((equalCopy[19] & 1) == 0)
     {
       goto LABEL_71;
     }
   }
 
-  else if (v4[19])
+  else if (equalCopy[19])
   {
     goto LABEL_71;
   }
 
 LABEL_62:
   invitedPcsKeysToRemove = self->_invitedPcsKeysToRemove;
-  v39 = v4[7];
+  v39 = equalCopy[7];
   if (invitedPcsKeysToRemove | v39 && !objc_msgSend_isEqual_(invitedPcsKeysToRemove, v7, v39))
   {
     goto LABEL_71;
   }
 
   selfAddedPcsKeysToRemove = self->_selfAddedPcsKeysToRemove;
-  v41 = v4[15];
+  v41 = equalCopy[15];
   if (selfAddedPcsKeysToRemove | v41)
   {
     if (!objc_msgSend_isEqual_(selfAddedPcsKeysToRemove, v7, v41))
@@ -1560,7 +1560,7 @@ LABEL_62:
   }
 
   shortTokenHash = self->_shortTokenHash;
-  v43 = v4[17];
+  v43 = equalCopy[17];
   if (shortTokenHash | v43)
   {
     if (!objc_msgSend_isEqual_(shortTokenHash, v7, v43))
@@ -1570,7 +1570,7 @@ LABEL_62:
   }
 
   origin = self->_origin;
-  v45 = v4[8];
+  v45 = equalCopy[8];
   if (origin | v45)
   {
     isEqual = objc_msgSend_isEqual_(origin, v7, v45);
@@ -1684,12 +1684,12 @@ LABEL_16:
   return v43 ^ objc_msgSend_hash(self->_origin, v44, v45);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   shareId = self->_shareId;
-  v7 = *(v5 + 16);
+  v7 = *(fromCopy + 16);
   if (shareId)
   {
     if (v7)
@@ -1703,20 +1703,20 @@ LABEL_16:
     objc_msgSend_setShareId_(self, v4, v7);
   }
 
-  v8 = *(v5 + 4);
+  v8 = *(fromCopy + 4);
   if (v8)
   {
     objc_msgSend_setEtag_(self, v4, v8);
   }
 
-  if ((*(v5 + 156) & 2) != 0)
+  if ((*(fromCopy + 156) & 2) != 0)
   {
-    self->_publicAccess = *(v5 + 24);
+    self->_publicAccess = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 
   invitedPcs = self->_invitedPcs;
-  v10 = *(v5 + 6);
+  v10 = *(fromCopy + 6);
   if (invitedPcs)
   {
     if (v10)
@@ -1731,7 +1731,7 @@ LABEL_16:
   }
 
   selfAddedPcs = self->_selfAddedPcs;
-  v12 = *(v5 + 14);
+  v12 = *(fromCopy + 14);
   if (selfAddedPcs)
   {
     if (v12)
@@ -1749,7 +1749,7 @@ LABEL_16:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v13 = *(v5 + 10);
+  v13 = *(fromCopy + 10);
   v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v61, v67, 16);
   if (v15)
   {
@@ -1773,7 +1773,7 @@ LABEL_16:
     while (v17);
   }
 
-  v21 = *(v5 + 18);
+  v21 = *(fromCopy + 18);
   if (v21)
   {
     objc_msgSend_setShortTokenRoutingKey_(self, v20, v21);
@@ -1783,7 +1783,7 @@ LABEL_16:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v22 = *(v5 + 11);
+  v22 = *(fromCopy + 11);
   v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v57, v66, 16);
   if (v24)
   {
@@ -1811,7 +1811,7 @@ LABEL_16:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v29 = *(v5 + 5);
+  v29 = *(fromCopy + 5);
   v31 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v30, &v53, v65, 16);
   if (v31)
   {
@@ -1835,32 +1835,32 @@ LABEL_16:
     while (v33);
   }
 
-  v37 = *(v5 + 156);
+  v37 = *(fromCopy + 156);
   if ((v37 & 0x40) != 0)
   {
-    self->_publisherModel = *(v5 + 155);
+    self->_publisherModel = *(fromCopy + 155);
     *&self->_has |= 0x40u;
-    v37 = *(v5 + 156);
+    v37 = *(fromCopy + 156);
   }
 
   if ((v37 & 0x10) != 0)
   {
-    self->_anonymousPublicAccess = *(v5 + 153);
+    self->_anonymousPublicAccess = *(fromCopy + 153);
     *&self->_has |= 0x10u;
   }
 
-  v38 = *(v5 + 3);
+  v38 = *(fromCopy + 3);
   if (v38)
   {
     objc_msgSend_setDisplayedHostname_(self, v36, v38);
   }
 
-  v39 = *(v5 + 156);
+  v39 = *(fromCopy + 156);
   if ((v39 & 4) != 0)
   {
-    self->_publisherModelType = *(v5 + 25);
+    self->_publisherModelType = *(fromCopy + 25);
     *&self->_has |= 4u;
-    v39 = *(v5 + 156);
+    v39 = *(fromCopy + 156);
     if ((v39 & 1) == 0)
     {
 LABEL_51:
@@ -1873,23 +1873,23 @@ LABEL_51:
     }
   }
 
-  else if ((*(v5 + 156) & 1) == 0)
+  else if ((*(fromCopy + 156) & 1) == 0)
   {
     goto LABEL_51;
   }
 
-  self->_participantSelfRemovalBehavior = *(v5 + 18);
+  self->_participantSelfRemovalBehavior = *(fromCopy + 18);
   *&self->_has |= 1u;
-  if ((*(v5 + 156) & 0x20) != 0)
+  if ((*(fromCopy + 156) & 0x20) != 0)
   {
 LABEL_52:
-    self->_denyAccessRequests = *(v5 + 154);
+    self->_denyAccessRequests = *(fromCopy + 154);
     *&self->_has |= 0x20u;
   }
 
 LABEL_53:
   requestingAccess = self->_requestingAccess;
-  v41 = *(v5 + 13);
+  v41 = *(fromCopy + 13);
   if (requestingAccess)
   {
     if (v41)
@@ -1904,7 +1904,7 @@ LABEL_53:
   }
 
   blockedAccess = self->_blockedAccess;
-  v43 = *(v5 + 1);
+  v43 = *(fromCopy + 1);
   if (blockedAccess)
   {
     if (v43)
@@ -1919,7 +1919,7 @@ LABEL_53:
   }
 
   cryptoRequirementsSigningKey = self->_cryptoRequirementsSigningKey;
-  v45 = *(v5 + 2);
+  v45 = *(fromCopy + 2);
   if (cryptoRequirementsSigningKey)
   {
     if (v45)
@@ -1933,14 +1933,14 @@ LABEL_53:
     objc_msgSend_setCryptoRequirementsSigningKey_(self, v36, v45);
   }
 
-  if ((*(v5 + 156) & 8) != 0)
+  if ((*(fromCopy + 156) & 8) != 0)
   {
-    self->_allowAnyoneToResolveShare = *(v5 + 152);
+    self->_allowAnyoneToResolveShare = *(fromCopy + 152);
     *&self->_has |= 8u;
   }
 
   invitedPcsKeysToRemove = self->_invitedPcsKeysToRemove;
-  v47 = *(v5 + 7);
+  v47 = *(fromCopy + 7);
   if (invitedPcsKeysToRemove)
   {
     if (v47)
@@ -1955,7 +1955,7 @@ LABEL_53:
   }
 
   selfAddedPcsKeysToRemove = self->_selfAddedPcsKeysToRemove;
-  v49 = *(v5 + 15);
+  v49 = *(fromCopy + 15);
   if (selfAddedPcsKeysToRemove)
   {
     if (v49)
@@ -1969,13 +1969,13 @@ LABEL_53:
     objc_msgSend_setSelfAddedPcsKeysToRemove_(self, v36, v49);
   }
 
-  v50 = *(v5 + 17);
+  v50 = *(fromCopy + 17);
   if (v50)
   {
     objc_msgSend_setShortTokenHash_(self, v36, v50);
   }
 
-  v51 = *(v5 + 8);
+  v51 = *(fromCopy + 8);
   if (v51)
   {
     objc_msgSend_setOrigin_(self, v36, v51);

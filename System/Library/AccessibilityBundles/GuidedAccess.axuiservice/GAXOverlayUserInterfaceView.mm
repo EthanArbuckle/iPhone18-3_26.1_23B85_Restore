@@ -1,21 +1,21 @@
 @interface GAXOverlayUserInterfaceView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (GAXOverlayUserInterfaceViewDelegate)delegate;
 @end
 
 @implementation GAXOverlayUserInterfaceView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(GAXOverlayUserInterfaceView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 isModalContentBeingPresentedInOverlayUserInterfaceView:self])
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  delegate = [(GAXOverlayUserInterfaceView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate isModalContentBeingPresentedInOverlayUserInterfaceView:self])
   {
     v21.receiver = self;
     v21.super_class = GAXOverlayUserInterfaceView;
-    v9 = [(GAXOverlayUserInterfaceView *)&v21 pointInside:v7 withEvent:x, y];
+    v9 = [(GAXOverlayUserInterfaceView *)&v21 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -41,7 +41,7 @@
 
           v15 = *(*(&v17 + 1) + 8 * i);
           [v15 convertPoint:self fromView:{x, y, v17}];
-          if ([v15 pointInside:v7 withEvent:?])
+          if ([v15 pointInside:eventCopy withEvent:?])
           {
             v9 = 1;
             goto LABEL_14;

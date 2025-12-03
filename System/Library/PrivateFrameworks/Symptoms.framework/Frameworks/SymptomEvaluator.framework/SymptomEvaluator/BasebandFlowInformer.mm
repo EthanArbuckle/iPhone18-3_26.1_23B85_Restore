@@ -1,20 +1,20 @@
 @interface BasebandFlowInformer
 + (BasebandFlowInformer)sharedInstance;
-- (BOOL)flowStart:(id)a3 digest:(id)a4;
-- (BOOL)flowStop:(id)a3;
+- (BOOL)flowStart:(id)start digest:(id)digest;
+- (BOOL)flowStop:(id)stop;
 - (BasebandFlowInformer)init;
 - (id)getState;
-- (void)_receiveIndication:(id)a3;
-- (void)_relayMessage:(id)a3;
-- (void)_resetOnError:(id)a3;
-- (void)_sendSingleDigest:(id)a3;
-- (void)currentDataSIMIdentifier:(id)a3;
-- (void)receiveIndicationForTag:(unint64_t)a3 payload:(id)a4;
+- (void)_receiveIndication:(id)indication;
+- (void)_relayMessage:(id)message;
+- (void)_resetOnError:(id)error;
+- (void)_sendSingleDigest:(id)digest;
+- (void)currentDataSIMIdentifier:(id)identifier;
+- (void)receiveIndicationForTag:(unint64_t)tag payload:(id)payload;
 - (void)reset;
-- (void)setEnableForcedViaSymptom:(BOOL)a3;
-- (void)setEnabledViaBBIndication:(BOOL)a3;
-- (void)setInformImmediate:(BOOL)a3;
-- (void)trace:(const char *)a3 item:(id)a4;
+- (void)setEnableForcedViaSymptom:(BOOL)symptom;
+- (void)setEnabledViaBBIndication:(BOOL)indication;
+- (void)setInformImmediate:(BOOL)immediate;
+- (void)trace:(const char *)trace item:(id)item;
 @end
 
 @implementation BasebandFlowInformer
@@ -54,17 +54,17 @@
   return v3;
 }
 
-- (void)receiveIndicationForTag:(unint64_t)a3 payload:(id)a4
+- (void)receiveIndicationForTag:(unint64_t)tag payload:(id)payload
 {
-  if (a3 == 1)
+  if (tag == 1)
   {
-    [(BasebandFlowInformer *)self _receiveIndication:a4];
+    [(BasebandFlowInformer *)self _receiveIndication:payload];
   }
 }
 
-- (void)currentDataSIMIdentifier:(id)a3
+- (void)currentDataSIMIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -72,41 +72,41 @@
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "BasebandFlowInformer reset after currentDataSIMIdentifier indication", v6, 2u);
   }
 
-  [(BasebandFlowInformer *)self trace:"dataSIMIdentifer" item:v4];
+  [(BasebandFlowInformer *)self trace:"dataSIMIdentifer" item:identifierCopy];
   [(BasebandFlowInformer *)self reset];
 }
 
-- (void)_relayMessage:(id)a3
+- (void)_relayMessage:(id)message
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = messageCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_INFO, "BasebandFlowInformer relays message %@", &v8, 0xCu);
   }
 
-  [(BasebandFlowInformer *)self trace:"relayMessage" item:v4];
+  [(BasebandFlowInformer *)self trace:"relayMessage" item:messageCopy];
   v6 = +[CoreTelephonyShim sharedInstance];
-  [v6 sendTaggedInfo:1 payload:v4];
+  [v6 sendTaggedInfo:1 payload:messageCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSingleDigest:(id)a3
+- (void)_sendSingleDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   if ([(BasebandFlowInformer *)self enabled])
   {
     LODWORD(v8) = 1;
     v7 = 1;
     v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&v7 length:12];
-    v6 = [v4 encodedData];
-    if (v6)
+    encodedData = [digestCopy encodedData];
+    if (encodedData)
     {
-      [v5 appendData:v6];
+      [v5 appendData:encodedData];
       [(BasebandFlowInformer *)self _relayMessage:v5];
     }
   }
@@ -117,19 +117,19 @@
   }
 }
 
-- (void)_receiveIndication:(id)a3
+- (void)_receiveIndication:(id)indication
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  indicationCopy = indication;
   [(BasebandFlowInformer *)self trace:"rxIndication" item:@"indication"];
-  if ([v4 length] < 8)
+  if ([indicationCopy length] < 8)
   {
     v5 = @"Message too small";
     goto LABEL_7;
   }
 
-  v6 = [v4 bytes];
-  if (*v6 != 1)
+  bytes = [indicationCopy bytes];
+  if (*bytes != 1)
   {
     v5 = @"Incorrect version number";
 LABEL_7:
@@ -139,14 +139,14 @@ LABEL_7:
       v11 = 138412546;
       *v12 = v5;
       *&v12[8] = 2112;
-      *&v12[10] = v4;
+      *&v12[10] = indicationCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "BasebandFlowInformer _receiveIndication %@ %@", &v11, 0x16u);
     }
 
     goto LABEL_9;
   }
 
-  [(BasebandFlowInformer *)self setEnabledViaBBIndication:v6[1] != 0];
+  [(BasebandFlowInformer *)self setEnabledViaBBIndication:bytes[1] != 0];
   v7 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -154,7 +154,7 @@ LABEL_7:
     v11 = 67109378;
     *v12 = [(BasebandFlowInformer *)self enabledViaBBIndication];
     *&v12[4] = 2112;
-    *&v12[6] = v4;
+    *&v12[6] = indicationCopy;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_INFO, "BasebandFlowInformer enabled %d after %@", &v11, 0x12u);
   }
 
@@ -163,20 +163,20 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetOnError:(id)a3
+- (void)_resetOnError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(BasebandFlowInformer *)self trace:"_resetOnError" item:v4];
+  errorCopy = error;
+  [(BasebandFlowInformer *)self trace:"_resetOnError" item:errorCopy];
   v5 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = errorCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "BasebandFlowInformer reset on error %@", buf, 0xCu);
   }
 
-  v17 = v4;
+  v17 = errorCopy;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -221,51 +221,51 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnableForcedViaSymptom:(BOOL)a3
+- (void)setEnableForcedViaSymptom:(BOOL)symptom
 {
-  if (self->_enableForcedViaSymptom != a3)
+  if (self->_enableForcedViaSymptom != symptom)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:?];
     [(BasebandFlowInformer *)self trace:"enableForcedViaSymptom" item:v6];
 
-    self->_enableForcedViaSymptom = a3;
-    v7 = a3 || self->_enabledViaBBIndication;
+    self->_enableForcedViaSymptom = symptom;
+    v7 = symptom || self->_enabledViaBBIndication;
 
     [(BasebandFlowInformer *)self setEnabled:v7];
   }
 }
 
-- (void)setEnabledViaBBIndication:(BOOL)a3
+- (void)setEnabledViaBBIndication:(BOOL)indication
 {
-  if (self->_enabledViaBBIndication != a3)
+  if (self->_enabledViaBBIndication != indication)
   {
-    v4 = a3;
+    indicationCopy = indication;
     v6 = [MEMORY[0x277CCABB0] numberWithBool:?];
     [(BasebandFlowInformer *)self trace:"enabledViaBBIndication" item:v6];
 
-    self->_enabledViaBBIndication = v4;
-    v7 = self->_enableForcedViaSymptom || v4;
+    self->_enabledViaBBIndication = indicationCopy;
+    v7 = self->_enableForcedViaSymptom || indicationCopy;
 
     [(BasebandFlowInformer *)self setEnabled:v7];
   }
 }
 
-- (void)setInformImmediate:(BOOL)a3
+- (void)setInformImmediate:(BOOL)immediate
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (self->_informImmediate != a3)
+  if (self->_informImmediate != immediate)
   {
-    v3 = a3;
+    immediateCopy = immediate;
     v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
     [(BasebandFlowInformer *)self trace:"informImmediate" item:v5];
 
     v6 = [(NSMutableSet *)self->_pending count];
-    if (v3)
+    if (immediateCopy)
     {
       v7 = v6;
       if (v6)
       {
-        v20 = v3;
+        v20 = immediateCopy;
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
@@ -317,16 +317,16 @@ LABEL_9:
               }
 
               v16 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:v14];
-              v17 = [v16 encodedData];
-              if (!v17)
+              encodedData = [v16 encodedData];
+              if (!encodedData)
               {
 
                 [(NSMutableDictionary *)self->_flows setObject:0 forKeyedSubscript:v14];
                 goto LABEL_26;
               }
 
-              v18 = v17;
-              [v11 appendData:v17];
+              v18 = encodedData;
+              [v11 appendData:encodedData];
               if (([v16 active] & 1) == 0)
               {
                 [(NSMutableDictionary *)self->_flows setObject:0 forKeyedSubscript:v14];
@@ -357,28 +357,28 @@ LABEL_26:
         }
 
         [(NSMutableSet *)self->_pending removeAllObjects];
-        LOBYTE(v3) = v20;
+        LOBYTE(immediateCopy) = v20;
       }
     }
 
-    self->_informImmediate = v3;
+    self->_informImmediate = immediateCopy;
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)flowStart:(id)a3 digest:(id)a4
+- (BOOL)flowStart:(id)start digest:(id)digest
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  digestCopy = digest;
   if ([(BasebandFlowInformer *)self enabled])
   {
-    [v7 setActive:1];
-    v8 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:v6];
+    [digestCopy setActive:1];
+    v8 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:startCopy];
 
     if (v8)
     {
-      v9 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:v6];
+      v9 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:startCopy];
       [v9 setActive:0];
       [(BasebandFlowInformer *)self trace:"flowStart item:clearing", v9];
       [(BasebandFlowInformer *)self _sendSingleDigest:v9];
@@ -389,40 +389,40 @@ LABEL_26:
       [(BasebandFlowInformer *)self _resetOnError:@"Hit max flows"];
     }
 
-    [(NSMutableDictionary *)self->_flows setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_flows setObject:digestCopy forKeyedSubscript:startCopy];
     if (self->_informImmediate)
     {
-      [(BasebandFlowInformer *)self trace:"flowStart item:sending", v7];
-      [(BasebandFlowInformer *)self _sendSingleDigest:v7];
+      [(BasebandFlowInformer *)self trace:"flowStart item:sending", digestCopy];
+      [(BasebandFlowInformer *)self _sendSingleDigest:digestCopy];
     }
 
     else
     {
-      [(BasebandFlowInformer *)self trace:"flowStart item:pending", v7];
-      [(NSMutableSet *)self->_pending addObject:v6];
+      [(BasebandFlowInformer *)self trace:"flowStart item:pending", digestCopy];
+      [(NSMutableSet *)self->_pending addObject:startCopy];
     }
   }
 
   else
   {
-    [(BasebandFlowInformer *)self trace:"flowStart item:not-enabled", v6];
+    [(BasebandFlowInformer *)self trace:"flowStart item:not-enabled", startCopy];
   }
 
   return 1;
 }
 
-- (BOOL)flowStop:(id)a3
+- (BOOL)flowStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   if (![(BasebandFlowInformer *)self enabled])
   {
     v7 = "flowStop,not-enabled";
 LABEL_7:
-    [(BasebandFlowInformer *)self trace:v7 item:v4];
+    [(BasebandFlowInformer *)self trace:v7 item:stopCopy];
     goto LABEL_10;
   }
 
-  v5 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:stopCopy];
 
   if (!v5)
   {
@@ -430,19 +430,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_flows objectForKeyedSubscript:stopCopy];
   [v6 setActive:0];
   if (self->_informImmediate)
   {
     [(BasebandFlowInformer *)self trace:"flowStop item:sending", v6];
     [(BasebandFlowInformer *)self _sendSingleDigest:v6];
-    [(NSMutableDictionary *)self->_flows setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_flows setObject:0 forKeyedSubscript:stopCopy];
   }
 
   else
   {
     [(BasebandFlowInformer *)self trace:"flowStop item:pending", v6];
-    [(NSMutableSet *)self->_pending addObject:v4];
+    [(NSMutableSet *)self->_pending addObject:stopCopy];
   }
 
 LABEL_10:
@@ -459,9 +459,9 @@ LABEL_10:
   [(BasebandFlowInformer *)self _relayMessage:v3];
 }
 
-- (void)trace:(const char *)a3 item:(id)a4
+- (void)trace:(const char *)trace item:(id)item
 {
-  v9 = a4;
+  itemCopy = item;
   v6 = self->_traceEntries[self->_traceSeqno & 0x1F];
   if (!v6)
   {
@@ -471,18 +471,18 @@ LABEL_10:
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   [(BasebandFlowTraceEntry *)v6 setTimestamp:?];
-  if (a3)
+  if (trace)
   {
-    v7 = a3;
+    traceCopy = trace;
   }
 
   else
   {
-    v7 = "<NULL>";
+    traceCopy = "<NULL>";
   }
 
-  [(BasebandFlowTraceEntry *)v6 setName:v7];
-  v8 = [v9 description];
+  [(BasebandFlowTraceEntry *)v6 setName:traceCopy];
+  v8 = [itemCopy description];
   [(BasebandFlowTraceEntry *)v6 setItem:v8];
 
   ++self->_traceSeqno;
@@ -580,23 +580,23 @@ LABEL_10:
           v27 = objc_alloc(MEMORY[0x277CCACA8]);
           [(BasebandFlowTraceEntry *)v26 timestamp];
           v29 = dateStringMillisecondsFromReferenceInterval(v28);
-          v30 = [(BasebandFlowTraceEntry *)v26 name];
-          v31 = [(BasebandFlowTraceEntry *)v26 item];
-          if (v31)
+          name = [(BasebandFlowTraceEntry *)v26 name];
+          item = [(BasebandFlowTraceEntry *)v26 item];
+          if (item)
           {
             self = [(BasebandFlowTraceEntry *)v26 item];
-            v32 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v32 = &stru_2847966D8;
+            selfCopy = &stru_2847966D8;
           }
 
-          v33 = [v27 initWithFormat:@"%@ %-26s %@", v29, v30, v32];
-          [v3 addObject:v33];
+          selfCopy = [v27 initWithFormat:@"%@ %-26s %@", v29, name, selfCopy];
+          [v3 addObject:selfCopy];
 
-          if (v31)
+          if (item)
           {
           }
         }
@@ -619,7 +619,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __38__BasebandFlowInformer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_50 != -1)
   {
     dispatch_once(&sharedInstance_pred_50, block);

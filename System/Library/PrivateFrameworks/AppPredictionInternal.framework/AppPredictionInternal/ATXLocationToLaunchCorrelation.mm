@@ -1,18 +1,18 @@
 @interface ATXLocationToLaunchCorrelation
-+ (double)_launchProbabilityForEvent:(id)a3 atLocation:(id)a4 correlationMatrix:(id)a5 locationTotals:(id)a6;
-+ (double)_totalLaunchesAtLocation:(id)a3 locationTotals:(id)a4;
-+ (double)_totalLaunchesForEvent:(id)a3 atLocation:(id)a4 correlationMatrix:(id)a5;
++ (double)_launchProbabilityForEvent:(id)event atLocation:(id)location correlationMatrix:(id)matrix locationTotals:(id)totals;
++ (double)_totalLaunchesAtLocation:(id)location locationTotals:(id)totals;
++ (double)_totalLaunchesForEvent:(id)event atLocation:(id)location correlationMatrix:(id)matrix;
 - (ATXLocationToLaunchCorrelation)init;
-- (ATXLocationToLaunchCorrelation)initWithCoder:(id)a3;
-- (ATXLocationToLaunchCorrelation)initWithCorrelationMatrix:(id)a3 locationTotals:(id)a4;
-- (double)launchProbabilityForEvent:(id)a3 atLocation:(id)a4;
-- (double)launchProbabilityForEvent:(id)a3 atLocationsWithProbabilities:(id)a4;
+- (ATXLocationToLaunchCorrelation)initWithCoder:(id)coder;
+- (ATXLocationToLaunchCorrelation)initWithCorrelationMatrix:(id)matrix locationTotals:(id)totals;
+- (double)launchProbabilityForEvent:(id)event atLocation:(id)location;
+- (double)launchProbabilityForEvent:(id)event atLocationsWithProbabilities:(id)probabilities;
 - (double)totalLaunches;
-- (double)totalLaunchesAtLocation:(id)a3;
-- (double)totalLaunchesForEvent:(id)a3 atLocation:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addVisitForLocation:(id)a3 event:(id)a4 value:(double)a5;
-- (void)encodeWithCoder:(id)a3;
+- (double)totalLaunchesAtLocation:(id)location;
+- (double)totalLaunchesForEvent:(id)event atLocation:(id)location;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addVisitForLocation:(id)location event:(id)event value:(double)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXLocationToLaunchCorrelation
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (ATXLocationToLaunchCorrelation)initWithCorrelationMatrix:(id)a3 locationTotals:(id)a4
+- (ATXLocationToLaunchCorrelation)initWithCorrelationMatrix:(id)matrix locationTotals:(id)totals
 {
-  v6 = a3;
-  v7 = a4;
+  matrixCopy = matrix;
+  totalsCopy = totals;
   v13.receiver = self;
   v13.super_class = ATXLocationToLaunchCorrelation;
   v8 = [(ATXLocationToLaunchCorrelation *)&v13 init];
   if (v8)
   {
-    v9 = [[ATXCorrelationMatrixGuardedData alloc] initWithCorrelationMatrix:v6 locationTotals:v7];
+    v9 = [[ATXCorrelationMatrixGuardedData alloc] initWithCorrelationMatrix:matrixCopy locationTotals:totalsCopy];
     v10 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v9];
     lock = v8->_lock;
     v8->_lock = v10;
@@ -44,20 +44,20 @@
   return v8;
 }
 
-- (void)addVisitForLocation:(id)a3 event:(id)a4 value:(double)a5
+- (void)addVisitForLocation:(id)location event:(id)event value:(double)value
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  eventCopy = event;
   lock = self->_lock;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__ATXLocationToLaunchCorrelation_addVisitForLocation_event_value___block_invoke;
   v13[3] = &unk_278599C00;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = locationCopy;
+  v15 = eventCopy;
+  valueCopy = value;
+  v11 = eventCopy;
+  v12 = locationCopy;
   [(_PASLock *)lock runWithLockAcquired:v13];
 }
 
@@ -87,10 +87,10 @@ void __66__ATXLocationToLaunchCorrelation_addVisitForLocation_event_value___bloc
   [v15[2] setObject:v14 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (double)launchProbabilityForEvent:(id)a3 atLocation:(id)a4
+- (double)launchProbabilityForEvent:(id)event atLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  locationCopy = location;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -101,9 +101,9 @@ void __66__ATXLocationToLaunchCorrelation_addVisitForLocation_event_value___bloc
   v13[2] = __71__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocation___block_invoke;
   v13[3] = &unk_278599C28;
   v16 = &v17;
-  v9 = v6;
+  v9 = eventCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = locationCopy;
   v15 = v10;
   [(_PASLock *)lock runWithLockAcquired:v13];
   v11 = v18[3];
@@ -119,10 +119,10 @@ uint64_t __71__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocati
   return result;
 }
 
-- (double)totalLaunchesForEvent:(id)a3 atLocation:(id)a4
+- (double)totalLaunchesForEvent:(id)event atLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  locationCopy = location;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -133,9 +133,9 @@ uint64_t __71__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocati
   v13[2] = __67__ATXLocationToLaunchCorrelation_totalLaunchesForEvent_atLocation___block_invoke;
   v13[3] = &unk_278599C28;
   v16 = &v17;
-  v9 = v6;
+  v9 = eventCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = locationCopy;
   v15 = v10;
   [(_PASLock *)lock runWithLockAcquired:v13];
   v11 = v18[3];
@@ -151,9 +151,9 @@ uint64_t __67__ATXLocationToLaunchCorrelation_totalLaunchesForEvent_atLocation__
   return result;
 }
 
-- (double)totalLaunchesAtLocation:(id)a3
+- (double)totalLaunchesAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -164,7 +164,7 @@ uint64_t __67__ATXLocationToLaunchCorrelation_totalLaunchesForEvent_atLocation__
   v9[2] = __58__ATXLocationToLaunchCorrelation_totalLaunchesAtLocation___block_invoke;
   v9[3] = &unk_278599C50;
   v11 = &v12;
-  v6 = v4;
+  v6 = locationCopy;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[3];
@@ -239,10 +239,10 @@ void __47__ATXLocationToLaunchCorrelation_totalLaunches__block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (double)launchProbabilityForEvent:(id)a3 atLocationsWithProbabilities:(id)a4
+- (double)launchProbabilityForEvent:(id)event atLocationsWithProbabilities:(id)probabilities
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  probabilitiesCopy = probabilities;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -252,9 +252,9 @@ void __47__ATXLocationToLaunchCorrelation_totalLaunches__block_invoke(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __89__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocationsWithProbabilities___block_invoke;
   v13[3] = &unk_278599CA0;
-  v9 = v7;
+  v9 = probabilitiesCopy;
   v14 = v9;
-  v10 = v6;
+  v10 = eventCopy;
   v15 = v10;
   v16 = &v17;
   [(_PASLock *)lock runWithLockAcquired:v13];
@@ -308,10 +308,10 @@ void __89__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocationsW
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (ATXLocationToLaunchCorrelation)initWithCoder:(id)a3
+- (ATXLocationToLaunchCorrelation)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -320,23 +320,23 @@ void __89__ATXLocationToLaunchCorrelation_launchProbabilityForEvent_atLocationsW
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v5 decodeObjectOfClasses:v9 forKey:@"correlationMatrix"];
-  v15 = [v5 decodeObjectOfClasses:v13 forKey:@"locationTotals"];
+  v14 = [coderCopy decodeObjectOfClasses:v9 forKey:@"correlationMatrix"];
+  v15 = [coderCopy decodeObjectOfClasses:v13 forKey:@"locationTotals"];
 
   v16 = [(ATXLocationToLaunchCorrelation *)self initWithCorrelationMatrix:v14 locationTotals:v15];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATXLocationToLaunchCorrelation_encodeWithCoder___block_invoke;
   v7[3] = &unk_278599CC8;
-  v8 = v4;
-  v6 = v4;
+  v8 = coderCopy;
+  v6 = coderCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -352,7 +352,7 @@ uint64_t __50__ATXLocationToLaunchCorrelation_encodeWithCoder___block_invoke(uin
   return [v6 encodeObject:v7 forKey:@"locationTotals"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = 0;
   v8 = &v7;
@@ -366,7 +366,7 @@ uint64_t __50__ATXLocationToLaunchCorrelation_encodeWithCoder___block_invoke(uin
   v6[2] = __47__ATXLocationToLaunchCorrelation_copyWithZone___block_invoke;
   v6[3] = &unk_278599CF0;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = zone;
   [(_PASLock *)lock runWithLockAcquired:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -420,18 +420,18 @@ void __47__ATXLocationToLaunchCorrelation_copyWithZone___block_invoke(uint64_t a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (double)_launchProbabilityForEvent:(id)a3 atLocation:(id)a4 correlationMatrix:(id)a5 locationTotals:(id)a6
++ (double)_launchProbabilityForEvent:(id)event atLocation:(id)location correlationMatrix:(id)matrix locationTotals:(id)totals
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 objectForKeyedSubscript:v10];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  totalsCopy = totals;
+  locationCopy = location;
+  eventCopy = event;
+  v12 = [matrix objectForKeyedSubscript:locationCopy];
+  v13 = [v12 objectForKeyedSubscript:eventCopy];
 
   [v13 doubleValue];
   v15 = v14;
 
-  v16 = [v9 objectForKeyedSubscript:v10];
+  v16 = [totalsCopy objectForKeyedSubscript:locationCopy];
 
   [v16 doubleValue];
   v18 = v17;
@@ -459,11 +459,11 @@ void __47__ATXLocationToLaunchCorrelation_copyWithZone___block_invoke(uint64_t a
   return result;
 }
 
-+ (double)_totalLaunchesForEvent:(id)a3 atLocation:(id)a4 correlationMatrix:(id)a5
++ (double)_totalLaunchesForEvent:(id)event atLocation:(id)location correlationMatrix:(id)matrix
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:a4];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  eventCopy = event;
+  v8 = [matrix objectForKeyedSubscript:location];
+  v9 = [v8 objectForKeyedSubscript:eventCopy];
 
   [v9 doubleValue];
   v11 = v10;
@@ -471,9 +471,9 @@ void __47__ATXLocationToLaunchCorrelation_copyWithZone___block_invoke(uint64_t a
   return v11;
 }
 
-+ (double)_totalLaunchesAtLocation:(id)a3 locationTotals:(id)a4
++ (double)_totalLaunchesAtLocation:(id)location locationTotals:(id)totals
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [totals objectForKeyedSubscript:location];
   [v4 doubleValue];
   v6 = v5;
 

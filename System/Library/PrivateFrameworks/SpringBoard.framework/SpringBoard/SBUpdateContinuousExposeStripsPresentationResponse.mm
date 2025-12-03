@@ -1,19 +1,19 @@
 @interface SBUpdateContinuousExposeStripsPresentationResponse
-- (SBUpdateContinuousExposeStripsPresentationResponse)initWithPresentationOptions:(unint64_t)a3 dismissalOptions:(unint64_t)a4 touchType:(int64_t)a5;
+- (SBUpdateContinuousExposeStripsPresentationResponse)initWithPresentationOptions:(unint64_t)options dismissalOptions:(unint64_t)dismissalOptions touchType:(int64_t)type;
 @end
 
 @implementation SBUpdateContinuousExposeStripsPresentationResponse
 
-- (SBUpdateContinuousExposeStripsPresentationResponse)initWithPresentationOptions:(unint64_t)a3 dismissalOptions:(unint64_t)a4 touchType:(int64_t)a5
+- (SBUpdateContinuousExposeStripsPresentationResponse)initWithPresentationOptions:(unint64_t)options dismissalOptions:(unint64_t)dismissalOptions touchType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = SBUpdateContinuousExposeStripsPresentationResponse;
   result = [(SBChainableModifierEventResponse *)&v9 init];
   if (result)
   {
-    result->_presentationOptions = a3;
-    result->_dismissalOptions = a4;
-    result->_touchType = a5;
+    result->_presentationOptions = options;
+    result->_dismissalOptions = dismissalOptions;
+    result->_touchType = type;
   }
 
   return result;

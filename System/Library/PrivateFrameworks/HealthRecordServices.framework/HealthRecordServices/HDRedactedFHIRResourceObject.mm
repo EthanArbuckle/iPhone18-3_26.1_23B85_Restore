@@ -1,22 +1,22 @@
 @interface HDRedactedFHIRResourceObject
-+ (id)resourceObjectWithFHIRJSONObject:(id)a3 redactedJSONObject:(id)a4 error:(id *)a5;
-- (HDRedactedFHIRResourceObject)initWithCoder:(id)a3;
-- (id)_initWithResourceType:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5 JSONObject:(id)a6;
++ (id)resourceObjectWithFHIRJSONObject:(id)object redactedJSONObject:(id)nObject error:(id *)error;
+- (HDRedactedFHIRResourceObject)initWithCoder:(id)coder;
+- (id)_initWithResourceType:(id)type sourceURL:(id)l FHIRVersion:(id)version JSONObject:(id)object;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDRedactedFHIRResourceObject
 
-- (id)_initWithResourceType:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5 JSONObject:(id)a6
+- (id)_initWithResourceType:(id)type sourceURL:(id)l FHIRVersion:(id)version JSONObject:(id)object
 {
-  v10 = a3;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = HDRedactedFHIRResourceObject;
-  v11 = [(HDFHIRJSONObject *)&v15 initWithJSONObject:a6 sourceURL:a4 FHIRVersion:a5];
+  v11 = [(HDFHIRJSONObject *)&v15 initWithJSONObject:object sourceURL:l FHIRVersion:version];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [typeCopy copy];
     resourceType = v11->_resourceType;
     v11->_resourceType = v12;
   }
@@ -24,26 +24,26 @@
   return v11;
 }
 
-+ (id)resourceObjectWithFHIRJSONObject:(id)a3 redactedJSONObject:(id)a4 error:(id *)a5
++ (id)resourceObjectWithFHIRJSONObject:(id)object redactedJSONObject:(id)nObject error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 detectedResourceType];
-  if (v10)
+  objectCopy = object;
+  nObjectCopy = nObject;
+  detectedResourceType = [objectCopy detectedResourceType];
+  if (detectedResourceType)
   {
-    v11 = [v9 hk_safeStringForKeyPath:@"id" error:a5];
+    v11 = [nObjectCopy hk_safeStringForKeyPath:@"id" error:error];
     if (v11)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"Redacted FHIR resource cannot contain id in JSON"];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"Redacted FHIR resource cannot contain id in JSON"];
       v12 = 0;
     }
 
     else
     {
-      v13 = [a1 alloc];
-      v14 = [v8 sourceURL];
-      v15 = [v8 FHIRVersion];
-      v12 = [v13 _initWithResourceType:v10 sourceURL:v14 FHIRVersion:v15 JSONObject:v9];
+      v13 = [self alloc];
+      sourceURL = [objectCopy sourceURL];
+      fHIRVersion = [objectCopy FHIRVersion];
+      v12 = [v13 _initWithResourceType:detectedResourceType sourceURL:sourceURL FHIRVersion:fHIRVersion JSONObject:nObjectCopy];
     }
   }
 
@@ -55,25 +55,25 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HDRedactedFHIRResourceObject;
-  v4 = a3;
-  [(HDFHIRJSONObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HDFHIRJSONObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(HDRedactedFHIRResourceObject *)self resourceType:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"ResourceType"];
+  [coderCopy encodeObject:v5 forKey:@"ResourceType"];
 }
 
-- (HDRedactedFHIRResourceObject)initWithCoder:(id)a3
+- (HDRedactedFHIRResourceObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
   if (v5)
   {
     v9.receiver = self;
     v9.super_class = HDRedactedFHIRResourceObject;
-    v6 = [(HDFHIRJSONObject *)&v9 initWithCoder:v4];
+    v6 = [(HDFHIRJSONObject *)&v9 initWithCoder:coderCopy];
 
     if (v6)
     {
@@ -81,17 +81,17 @@
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)description
@@ -100,8 +100,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   resourceType = self->_resourceType;
-  v7 = [(HDFHIRJSONObject *)self FHIRVersion];
-  v8 = [v3 stringWithFormat:@"<%@: %@, %@>", v5, resourceType, v7];
+  fHIRVersion = [(HDFHIRJSONObject *)self FHIRVersion];
+  v8 = [v3 stringWithFormat:@"<%@: %@, %@>", v5, resourceType, fHIRVersion];
 
   return v8;
 }

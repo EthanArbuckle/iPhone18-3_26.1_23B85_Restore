@@ -1,7 +1,7 @@
 @interface VLFSessionNetworkReachabilityMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionNetworkReachabilityMonitor)initWithObserver:(id)a3;
+- (VLFSessionNetworkReachabilityMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)updateState;
@@ -45,22 +45,22 @@
   }
 
   v9 = v8;
-  v10 = [(VLFSessionNetworkReachabilityMonitor *)self networkObserver];
-  v11 = [v10 isNetworkReachable];
-  v12 = [(VLFSessionMonitor *)self state];
+  networkObserver = [(VLFSessionNetworkReachabilityMonitor *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
+  state = [(VLFSessionMonitor *)self state];
   v13 = @"Hide";
-  if (v12 == 1)
+  if (state == 1)
   {
     v13 = @"EnablePuck";
   }
 
-  if (v12 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
 
   v14 = @"No network";
-  if (v11)
+  if (isNetworkReachable)
   {
     v14 = @"Has network";
   }
@@ -72,8 +72,8 @@
 
 - (void)updateState
 {
-  v3 = [(VLFSessionNetworkReachabilityMonitor *)self networkObserver];
-  v4 = [v3 isNetworkReachable];
+  networkObserver = [(VLFSessionNetworkReachabilityMonitor *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
 
   if (qword_10195E0E8 != -1)
   {
@@ -82,7 +82,7 @@
 
   v5 = qword_10195E0E0;
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isNetworkReachable)
   {
     if (v6)
     {
@@ -119,11 +119,11 @@
   [(VLFSessionNetworkReachabilityMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionNetworkReachabilityMonitor)initWithObserver:(id)a3
+- (VLFSessionNetworkReachabilityMonitor)initWithObserver:(id)observer
 {
   v7.receiver = self;
   v7.super_class = VLFSessionNetworkReachabilityMonitor;
-  v3 = [(VLFSessionMonitor *)&v7 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v7 initWithObserver:observer];
   if (v3)
   {
     v4 = +[GEONetworkObserver sharedNetworkObserver];

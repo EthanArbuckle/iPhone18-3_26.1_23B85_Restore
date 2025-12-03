@@ -14,7 +14,7 @@
 + (id)storeConfigurationForDeviceActivityLevel;
 + (id)storeConfigurationForLOI;
 + (id)storeConfigurationForWalletTransaction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -23,7 +23,7 @@
 + (id)AppInFocus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAppInFocus];
+  configurationForAppInFocus = [self configurationForAppInFocus];
   v3 = +[BMContextSyncAppInFocus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -35,7 +35,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ContextSync.AppInFocus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.AppInFocus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.AppInFocus" schema:v9 configuration:configurationForAppInFocus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -44,13 +44,13 @@
 
 + (id)configurationForAppInFocus
 {
-  v3 = [a1 storeConfigurationForAppInFocus];
-  v4 = [a1 syncPolicyForAppInFocus];
+  storeConfigurationForAppInFocus = [self storeConfigurationForAppInFocus];
+  syncPolicyForAppInFocus = [self syncPolicyForAppInFocus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"638F2DFF-DEDF-482A-9267-B06F3C730481"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.AppInFocus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.AppInFocus" eventClass:objc_opt_class() storeConfig:storeConfigurationForAppInFocus syncPolicy:syncPolicyForAppInFocus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -66,7 +66,7 @@
 + (id)CellularAvailabilityStatus
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForCellularAvailabilityStatus];
+  configurationForCellularAvailabilityStatus = [self configurationForCellularAvailabilityStatus];
   v3 = +[BMContextSyncCellularAvailabilityStatus columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -78,7 +78,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ContextSync.CellularAvailabilityStatus" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.CellularAvailabilityStatus" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.CellularAvailabilityStatus" schema:v9 configuration:configurationForCellularAvailabilityStatus];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -87,13 +87,13 @@
 
 + (id)configurationForCellularAvailabilityStatus
 {
-  v3 = [a1 storeConfigurationForCellularAvailabilityStatus];
-  v4 = [a1 syncPolicyForCellularAvailabilityStatus];
+  storeConfigurationForCellularAvailabilityStatus = [self storeConfigurationForCellularAvailabilityStatus];
+  syncPolicyForCellularAvailabilityStatus = [self syncPolicyForCellularAvailabilityStatus];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"BEED8CDB-3CA7-42DC-959B-8E8232BE520E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.CellularAvailabilityStatus" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.CellularAvailabilityStatus" eventClass:objc_opt_class() storeConfig:storeConfigurationForCellularAvailabilityStatus syncPolicy:syncPolicyForCellularAvailabilityStatus legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -109,7 +109,7 @@
 + (id)DeviceActivityLevel
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForDeviceActivityLevel];
+  configurationForDeviceActivityLevel = [self configurationForDeviceActivityLevel];
   v3 = +[BMContextSyncDeviceActivityLevel columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -121,7 +121,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ContextSync.DeviceActivityLevel" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.DeviceActivityLevel" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.DeviceActivityLevel" schema:v9 configuration:configurationForDeviceActivityLevel];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -130,13 +130,13 @@
 
 + (id)configurationForDeviceActivityLevel
 {
-  v3 = [a1 storeConfigurationForDeviceActivityLevel];
-  v4 = [a1 syncPolicyForDeviceActivityLevel];
+  storeConfigurationForDeviceActivityLevel = [self storeConfigurationForDeviceActivityLevel];
+  syncPolicyForDeviceActivityLevel = [self syncPolicyForDeviceActivityLevel];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"AF7B26C6-8378-457B-9BD4-30B9E1CEE366"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.DeviceActivityLevel" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.DeviceActivityLevel" eventClass:objc_opt_class() storeConfig:storeConfigurationForDeviceActivityLevel syncPolicy:syncPolicyForDeviceActivityLevel legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -152,7 +152,7 @@
 + (id)LOI
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLOI];
+  configurationForLOI = [self configurationForLOI];
   v3 = +[BMContextSyncLOI columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -164,7 +164,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ContextSync.LOI" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.LOI" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.LOI" schema:v9 configuration:configurationForLOI];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -173,13 +173,13 @@
 
 + (id)configurationForLOI
 {
-  v3 = [a1 storeConfigurationForLOI];
-  v4 = [a1 syncPolicyForLOI];
+  storeConfigurationForLOI = [self storeConfigurationForLOI];
+  syncPolicyForLOI = [self syncPolicyForLOI];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"CA8BE74B-B9ED-4ADC-9E81-CB6E67F5EB23"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.LOI" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.LOI" eventClass:objc_opt_class() storeConfig:storeConfigurationForLOI syncPolicy:syncPolicyForLOI legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -195,7 +195,7 @@
 + (id)WalletTransaction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForWalletTransaction];
+  configurationForWalletTransaction = [self configurationForWalletTransaction];
   v3 = +[BMContextSyncWalletTransaction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -207,7 +207,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ContextSync.WalletTransaction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.WalletTransaction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ContextSync.WalletTransaction" schema:v9 configuration:configurationForWalletTransaction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -216,13 +216,13 @@
 
 + (id)configurationForWalletTransaction
 {
-  v3 = [a1 storeConfigurationForWalletTransaction];
-  v4 = [a1 syncPolicyForWalletTransaction];
+  storeConfigurationForWalletTransaction = [self storeConfigurationForWalletTransaction];
+  syncPolicyForWalletTransaction = [self syncPolicyForWalletTransaction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C2D71310-E246-4A7E-898D-B7D792F17865"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.WalletTransaction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ContextSync.WalletTransaction" eventClass:objc_opt_class() storeConfig:storeConfigurationForWalletTransaction syncPolicy:syncPolicyForWalletTransaction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -235,38 +235,38 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AppInFocus"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AppInFocus"])
   {
-    v5 = [a1 AppInFocus];
+    appInFocus = [self AppInFocus];
 LABEL_11:
-    v6 = v5;
+    v6 = appInFocus;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"CellularAvailabilityStatus"])
+  if ([nameCopy isEqualToString:@"CellularAvailabilityStatus"])
   {
-    v5 = [a1 CellularAvailabilityStatus];
+    appInFocus = [self CellularAvailabilityStatus];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"DeviceActivityLevel"])
+  if ([nameCopy isEqualToString:@"DeviceActivityLevel"])
   {
-    v5 = [a1 DeviceActivityLevel];
+    appInFocus = [self DeviceActivityLevel];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"LOI"])
+  if ([nameCopy isEqualToString:@"LOI"])
   {
-    v5 = [a1 LOI];
+    appInFocus = [self LOI];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"WalletTransaction"])
+  if ([nameCopy isEqualToString:@"WalletTransaction"])
   {
-    v5 = [a1 WalletTransaction];
+    appInFocus = [self WalletTransaction];
     goto LABEL_11;
   }
 

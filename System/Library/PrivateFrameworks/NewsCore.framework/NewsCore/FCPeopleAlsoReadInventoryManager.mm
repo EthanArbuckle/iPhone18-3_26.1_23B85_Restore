@@ -1,12 +1,12 @@
 @interface FCPeopleAlsoReadInventoryManager
 - (FCPeopleAlsoReadInventoryManager)init;
-- (FCPeopleAlsoReadInventoryManager)initWithInventory:(id)a3 readingHistory:(id)a4;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
-- (void)readingHistory:(id)a3 didAddArticlesWithIDs:(id)a4;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
-- (void)readingHistory:(id)a3 didRemoveArticlesWithIDs:(id)a4;
-- (void)readingHistoryDidClear:(id)a3;
-- (void)readingHistoryLikelyClearedRemotely:(id)a3;
+- (FCPeopleAlsoReadInventoryManager)initWithInventory:(id)inventory readingHistory:(id)history;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
+- (void)readingHistory:(id)history didAddArticlesWithIDs:(id)ds;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
+- (void)readingHistory:(id)history didRemoveArticlesWithIDs:(id)ds;
+- (void)readingHistoryDidClear:(id)clear;
+- (void)readingHistoryLikelyClearedRemotely:(id)remotely;
 @end
 
 @implementation FCPeopleAlsoReadInventoryManager
@@ -37,12 +37,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCPeopleAlsoReadInventoryManager)initWithInventory:(id)a3 readingHistory:(id)a4
+- (FCPeopleAlsoReadInventoryManager)initWithInventory:(id)inventory readingHistory:(id)history
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  inventoryCopy = inventory;
+  historyCopy = history;
+  if (!inventoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "inventory"];
     *buf = 136315906;
@@ -55,13 +55,13 @@
     v25 = v15;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (historyCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (historyCopy)
   {
     goto LABEL_6;
   }
@@ -87,8 +87,8 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_inventory, a3);
-    [v8 addObserver:v10];
+    objc_storeStrong(&v9->_inventory, inventory);
+    [historyCopy addObserver:v10];
     v11 = [[FCOperationThrottler alloc] initWithDelegate:v10];
     refreshThrottler = v10->_refreshThrottler;
     v10->_refreshThrottler = v11;
@@ -98,52 +98,52 @@ LABEL_6:
   return v10;
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(FCPeopleAlsoReadInventoryManager *)self inventory];
+  completionCopy = completion;
+  inventory = [(FCPeopleAlsoReadInventoryManager *)self inventory];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__FCPeopleAlsoReadInventoryManager_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v8[3] = &unk_1E7C40890;
-  v9 = v5;
-  v7 = v5;
-  [v6 refreshIfNeededWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [inventory refreshIfNeededWithCompletion:v8];
 }
 
-- (void)readingHistoryDidClear:(id)a3
+- (void)readingHistoryDidClear:(id)clear
 {
-  v3 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
-  [v3 tickle];
+  refreshThrottler = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
+  [refreshThrottler tickle];
 }
 
-- (void)readingHistoryLikelyClearedRemotely:(id)a3
+- (void)readingHistoryLikelyClearedRemotely:(id)remotely
 {
-  v3 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
-  [v3 tickle];
+  refreshThrottler = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
+  [refreshThrottler tickle];
 }
 
-- (void)readingHistory:(id)a3 didRemoveArticlesWithIDs:(id)a4
+- (void)readingHistory:(id)history didRemoveArticlesWithIDs:(id)ds
 {
-  v4 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler:a3];
+  v4 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler:history];
   [v4 tickle];
 }
 
-- (void)readingHistory:(id)a3 didAddArticlesWithIDs:(id)a4
+- (void)readingHistory:(id)history didAddArticlesWithIDs:(id)ds
 {
-  v4 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler:a3];
+  v4 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler:history];
   [v4 tickle];
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a4 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [articles allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -154,19 +154,19 @@ LABEL_6:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) unsignedIntegerValue] == 1)
         {
-          v10 = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
-          [v10 tickle];
+          refreshThrottler = [(FCPeopleAlsoReadInventoryManager *)self refreshThrottler];
+          [refreshThrottler tickle];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;

@@ -1,14 +1,14 @@
 @interface AKAccountPrivacyOptInViewModel
-- (AKAccountPrivacyOptInViewModel)initWithType:(unint64_t)a3;
+- (AKAccountPrivacyOptInViewModel)initWithType:(unint64_t)type;
 @end
 
 @implementation AKAccountPrivacyOptInViewModel
 
-- (AKAccountPrivacyOptInViewModel)initWithType:(unint64_t)a3
+- (AKAccountPrivacyOptInViewModel)initWithType:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
   v21 = a2;
-  v20 = a3;
+  typeCopy = type;
   v22 = 0;
   v19.receiver = self;
   v19.super_class = AKAccountPrivacyOptInViewModel;
@@ -17,11 +17,11 @@
   objc_storeStrong(&v22, v17);
   if (v17)
   {
-    v22->_context = v20;
+    v22->_context = typeCopy;
     location = _AKLogSystem();
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_0_1_8_0(v23, v20);
+      __os_log_helper_16_0_1_8_0(v23, typeCopy);
       _os_log_debug_impl(&dword_222379000, location, OS_LOG_TYPE_DEBUG, "AKAccountPrivacyOptInViewModel initing with context=%ld", v23, 0xCu);
     }
 

@@ -1,28 +1,28 @@
 @interface RDFeatureFlagsObjCWrapper
-+ (id)temporaryOverrideWithEnabledFeatureFlags:(id)a3 disabledFeatureFlags:(id)a4;
-+ (id)wrappedFeatureFlagsWithRawValue:(id)a3;
++ (id)temporaryOverrideWithEnabledFeatureFlags:(id)flags disabledFeatureFlags:(id)featureFlags;
++ (id)wrappedFeatureFlagsWithRawValue:(id)value;
 - (BOOL)isEnabled;
-- (RDFeatureFlagsObjCWrapper)initWithRawValue:(id)a3;
+- (RDFeatureFlagsObjCWrapper)initWithRawValue:(id)value;
 @end
 
 @implementation RDFeatureFlagsObjCWrapper
 
-- (RDFeatureFlagsObjCWrapper)initWithRawValue:(id)a3
+- (RDFeatureFlagsObjCWrapper)initWithRawValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = RDFeatureFlagsObjCWrapper;
   v6 = [(RDFeatureFlagsObjCWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawValue, a3);
+    objc_storeStrong(&v6->_rawValue, value);
   }
 
   return v7;
 }
 
-+ (id)wrappedFeatureFlagsWithRawValue:(id)a3
++ (id)wrappedFeatureFlagsWithRawValue:(id)value
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = _sSo25RDFeatureFlagsObjCWrapperC7reminddE014wrappedFeatureB04withSo010REMFeaturebC9CWrapping_pSgSS_tFZ_0(v3, v4);
@@ -30,7 +30,7 @@
   return v5;
 }
 
-+ (id)temporaryOverrideWithEnabledFeatureFlags:(id)a3 disabledFeatureFlags:(id)a4
++ (id)temporaryOverrideWithEnabledFeatureFlags:(id)flags disabledFeatureFlags:(id)featureFlags
 {
   sub_1000F5104(&qword_10094FFA8, &qword_1007B5F18);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -46,7 +46,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v12 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1006D78EC(v6);
   v8 = type metadata accessor for REMFeatureFlags();
   v9 = *(v8 - 8);

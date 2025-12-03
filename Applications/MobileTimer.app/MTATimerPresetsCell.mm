@@ -1,17 +1,17 @@
 @interface MTATimerPresetsCell
-- (MTATimerPresetsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTATimerPresetsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)localSetup;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)setupLayoutConstraints;
 @end
 
 @implementation MTATimerPresetsCell
 
-- (MTATimerPresetsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTATimerPresetsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTATimerPresetsCell;
-  v4 = [(MTATimerPresetsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTATimerPresetsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -27,14 +27,14 @@
   v3 = [[MTAPresetsViewController alloc] initWithDelegate:0];
   [(MTATimerPresetsCell *)self setPresetsController:v3];
 
-  v4 = [(MTATimerPresetsCell *)self presetsController];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  presetsController = [(MTATimerPresetsCell *)self presetsController];
+  view = [presetsController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MTATimerPresetsCell *)self contentView];
-  v7 = [(MTATimerPresetsCell *)self presetsController];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  contentView = [(MTATimerPresetsCell *)self contentView];
+  presetsController2 = [(MTATimerPresetsCell *)self presetsController];
+  view2 = [presetsController2 view];
+  [contentView addSubview:view2];
 
   v9 = +[UIColor clearColor];
   [(MTATimerPresetsCell *)self setBackgroundColor:v9];
@@ -43,45 +43,45 @@
 - (void)setupLayoutConstraints
 {
   v25 = objc_opt_new();
-  v3 = [(MTATimerPresetsCell *)self presetsController];
-  v4 = [v3 view];
+  presetsController = [(MTATimerPresetsCell *)self presetsController];
+  view = [presetsController view];
 
-  v5 = [v4 leadingAnchor];
-  v6 = [(MTATimerPresetsCell *)self contentView];
-  v7 = [v6 safeAreaLayoutGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
+  leadingAnchor = [view leadingAnchor];
+  contentView = [(MTATimerPresetsCell *)self contentView];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v25 addObject:v9];
 
-  v10 = [v4 trailingAnchor];
-  v11 = [(MTATimerPresetsCell *)self contentView];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  trailingAnchor = [view trailingAnchor];
+  contentView2 = [(MTATimerPresetsCell *)self contentView];
+  safeAreaLayoutGuide2 = [contentView2 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v25 addObject:v14];
 
-  v15 = [v4 topAnchor];
-  v16 = [(MTATimerPresetsCell *)self contentView];
-  v17 = [v16 safeAreaLayoutGuide];
-  v18 = [v17 topAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18];
+  topAnchor = [view topAnchor];
+  contentView3 = [(MTATimerPresetsCell *)self contentView];
+  safeAreaLayoutGuide3 = [contentView3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v25 addObject:v19];
 
-  v20 = [v4 bottomAnchor];
-  v21 = [(MTATimerPresetsCell *)self contentView];
-  v22 = [v21 safeAreaLayoutGuide];
-  v23 = [v22 bottomAnchor];
-  v24 = [v20 constraintEqualToAnchor:v23];
+  bottomAnchor = [view bottomAnchor];
+  contentView4 = [(MTATimerPresetsCell *)self contentView];
+  safeAreaLayoutGuide4 = [contentView4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v25 addObject:v24];
 
   [NSLayoutConstraint activateConstraints:v25];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(MTATimerPresetsCell *)self presetsController];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  presetsController = [(MTATimerPresetsCell *)self presetsController];
+  [presetsController setDelegate:delegateCopy];
 }
 
 @end

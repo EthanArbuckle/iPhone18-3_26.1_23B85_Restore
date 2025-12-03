@@ -1,5 +1,5 @@
 @interface HUQuickControlViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityControlsContainerView;
 - (id)accessibilityControlServiceName;
 - (void)_accessibilityMoveToActiveControl;
@@ -7,16 +7,16 @@
 
 @implementation HUQuickControlViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"activeControlView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFItem" hasInstanceMethod:@"latestResults" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"serviceName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlStepperViewAccessibility" hasInstanceMethod:@"_accessibilityFirstQuickControlElementForFocus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlColorViewAccessibility" hasInstanceMethod:@"_accessibilityFirstQuickControlElementForFocus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlContainerViewController" hasInstanceMethod:@"controlContainerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"activeControlView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"activeControlView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFItem" hasInstanceMethod:@"latestResults" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFServiceNameComponents" hasInstanceMethod:@"serviceName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlStepperViewAccessibility" hasInstanceMethod:@"_accessibilityFirstQuickControlElementForFocus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlColorViewAccessibility" hasInstanceMethod:@"_accessibilityFirstQuickControlElementForFocus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlContainerViewController" hasInstanceMethod:@"controlContainerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"activeControlView" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityControlsContainerView
@@ -38,8 +38,8 @@
 
 - (void)_accessibilityMoveToActiveControl
 {
-  v2 = [(HUQuickControlViewControllerAccessibility *)self _accessibilityControlsContainerView];
-  v3 = [v2 safeValueForKey:@"activeControlView"];
+  _accessibilityControlsContainerView = [(HUQuickControlViewControllerAccessibility *)self _accessibilityControlsContainerView];
+  v3 = [_accessibilityControlsContainerView safeValueForKey:@"activeControlView"];
 
   v7 = 0;
   v8 = &v7;

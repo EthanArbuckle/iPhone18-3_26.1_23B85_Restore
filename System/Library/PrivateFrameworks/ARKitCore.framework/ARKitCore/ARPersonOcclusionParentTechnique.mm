@@ -1,27 +1,27 @@
 @interface ARPersonOcclusionParentTechnique
-- (ARPersonOcclusionParentTechnique)initWithTechniques:(id)a3 delegate:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)processData:(id)a3;
-- (id)techniquesToRunWithForwardedDepth:(BOOL)a3;
+- (ARPersonOcclusionParentTechnique)initWithTechniques:(id)techniques delegate:(id)delegate;
+- (BOOL)isEqual:(id)equal;
+- (id)processData:(id)data;
+- (id)techniquesToRunWithForwardedDepth:(BOOL)depth;
 - (void)dealloc;
-- (void)reconfigureFrom:(id)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)setOptimizationStrategy:(int64_t)a3;
-- (void)setTechniques:(id)a3;
-- (void)submitResultsForTimestamp:(double)a3 context:(id)a4;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6;
+- (void)reconfigureFrom:(id)from;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)setOptimizationStrategy:(int64_t)strategy;
+- (void)setTechniques:(id)techniques;
+- (void)submitResultsForTimestamp:(double)timestamp context:(id)context;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
 - (void)updatePersonDetectionTechniques;
 - (void)updatePrimaryPersonDetectionTechnique;
 @end
 
 @implementation ARPersonOcclusionParentTechnique
 
-- (ARPersonOcclusionParentTechnique)initWithTechniques:(id)a3 delegate:(id)a4
+- (ARPersonOcclusionParentTechnique)initWithTechniques:(id)techniques delegate:(id)delegate
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 indexOfObjectPassingTest:&__block_literal_global_31] == 0x7FFFFFFFFFFFFFFFLL)
+  techniquesCopy = techniques;
+  delegateCopy = delegate;
+  if ([techniquesCopy indexOfObjectPassingTest:&__block_literal_global_31] == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (ARShouldUseLogTypeError_onceToken_13 != -1)
     {
@@ -47,7 +47,7 @@
         *buf = 138543874;
         v34 = v12;
         v35 = 2048;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2112;
         v38 = v17;
         v18 = "%{public}@ <%p>: This parent technique is designed to contain one of the following person detection techniques: %@";
@@ -72,7 +72,7 @@ LABEL_12:
       *buf = 138543874;
       v34 = v12;
       v35 = 2048;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
       v38 = v17;
       v18 = "Error: %{public}@ <%p>: This parent technique is designed to contain one of the following person detection techniques: %@";
@@ -81,13 +81,13 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v25 = 0;
+    selfCopy3 = 0;
     goto LABEL_14;
   }
 
   v30.receiver = self;
   v30.super_class = ARPersonOcclusionParentTechnique;
-  v21 = [(ARParentTechnique *)&v30 initWithTechniques:v6 delegate:v7];
+  v21 = [(ARParentTechnique *)&v30 initWithTechniques:techniquesCopy delegate:delegateCopy];
   if (v21)
   {
     v21->_shouldSkipFramesWhenBusy = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.personocclusion.skipFrameWhenBusy"];
@@ -104,10 +104,10 @@ LABEL_12:
   }
 
   self = v21;
-  v25 = self;
+  selfCopy3 = self;
 LABEL_14:
 
-  return v25;
+  return selfCopy3;
 }
 
 uint64_t __64__ARPersonOcclusionParentTechnique_initWithTechniques_delegate___block_invoke(uint64_t a1, void *a2)
@@ -137,10 +137,10 @@ uint64_t __64__ARPersonOcclusionParentTechnique_initWithTechniques_delegate___bl
   [(ARPersonOcclusionParentTechnique *)&v3 dealloc];
 }
 
-- (void)setOptimizationStrategy:(int64_t)a3
+- (void)setOptimizationStrategy:(int64_t)strategy
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_optimizationStrategy = a3;
+  self->_optimizationStrategy = strategy;
   v4 = _ARLogGeneral_4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -150,7 +150,7 @@ uint64_t __64__ARPersonOcclusionParentTechnique_initWithTechniques_delegate___bl
     v8 = 138543874;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = optimizationStrategy;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: _optimizationStrategy = %ld", &v8, 0x20u);
@@ -159,14 +159,14 @@ uint64_t __64__ARPersonOcclusionParentTechnique_initWithTechniques_delegate___bl
   [(ARPersonOcclusionParentTechnique *)self updatePrimaryPersonDetectionTechnique];
 }
 
-- (void)setTechniques:(id)a3
+- (void)setTechniques:(id)techniques
 {
   v8.receiver = self;
   v8.super_class = ARPersonOcclusionParentTechnique;
-  v4 = a3;
-  [(ARParentTechnique *)&v8 setTechniques:v4];
+  techniquesCopy = techniques;
+  [(ARParentTechnique *)&v8 setTechniques:techniquesCopy];
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:{&__block_literal_global_12_0, v8.receiver, v8.super_class}];
-  v6 = [ARTechnique techniqueMatchingPredicate:v5 inArray:v4];
+  v6 = [ARTechnique techniqueMatchingPredicate:v5 inArray:techniquesCopy];
 
   depthTechnique = self->_depthTechnique;
   self->_depthTechnique = v6;
@@ -192,68 +192,68 @@ uint64_t __50__ARPersonOcclusionParentTechnique_setTechniques___block_invoke(uin
   return isKindOfClass & 1;
 }
 
-- (id)techniquesToRunWithForwardedDepth:(BOOL)a3
+- (id)techniquesToRunWithForwardedDepth:(BOOL)depth
 {
   if (self->_detectedPerson || !self->_optimizationStrategy)
   {
     v8.receiver = self;
     v8.super_class = ARPersonOcclusionParentTechnique;
-    v6 = [(ARParentTechnique *)&v8 techniques];
+    techniques = [(ARParentTechnique *)&v8 techniques];
   }
 
   else
   {
-    v4 = a3;
+    depthCopy = depth;
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{self->_primaryPersonDetectionTechnique, 0}];
-    v6 = v5;
-    if (v4 && self->_depthTechnique)
+    techniques = v5;
+    if (depthCopy && self->_depthTechnique)
     {
       [v5 addObject:?];
     }
   }
 
-  return v6;
+  return techniques;
 }
 
-- (void)reconfigureFrom:(id)a3
+- (void)reconfigureFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v7.receiver = self;
   v7.super_class = ARPersonOcclusionParentTechnique;
-  [(ARParentTechnique *)&v7 reconfigureFrom:v4];
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  [(ARParentTechnique *)&v7 reconfigureFrom:fromCopy];
+  if ([fromCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = fromCopy;
     -[ARPersonOcclusionParentTechnique setOptimizationStrategy:](self, "setOptimizationStrategy:", [v5 optimizationStrategy]);
-    v6 = [v5 depthTechniqueProcessingStrategy];
+    depthTechniqueProcessingStrategy = [v5 depthTechniqueProcessingStrategy];
 
-    [(ARPersonOcclusionParentTechnique *)self setDepthTechniqueProcessingStrategy:v6];
+    [(ARPersonOcclusionParentTechnique *)self setDepthTechniqueProcessingStrategy:depthTechniqueProcessingStrategy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = ARPersonOcclusionParentTechnique;
-  if ([(ARParentTechnique *)&v13 isEqual:v4])
+  if ([(ARParentTechnique *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARPersonOcclusionParentTechnique *)self optimizationStrategy];
-    if (v6 == [v5 optimizationStrategy])
+    v5 = equalCopy;
+    optimizationStrategy = [(ARPersonOcclusionParentTechnique *)self optimizationStrategy];
+    if (optimizationStrategy == [v5 optimizationStrategy])
     {
-      v7 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-      v8 = [v5 depthTechniqueProcessingStrategy];
-      if (v7 == v8)
+      depthTechniqueProcessingStrategy = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+      depthTechniqueProcessingStrategy2 = [v5 depthTechniqueProcessingStrategy];
+      if (depthTechniqueProcessingStrategy == depthTechniqueProcessingStrategy2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-        v10 = [v5 depthTechniqueProcessingStrategy];
-        v11 = [v9 isEqual:v10];
+        depthTechniqueProcessingStrategy3 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+        depthTechniqueProcessingStrategy4 = [v5 depthTechniqueProcessingStrategy];
+        v11 = [depthTechniqueProcessingStrategy3 isEqual:depthTechniqueProcessingStrategy4];
       }
     }
 
@@ -271,16 +271,16 @@ uint64_t __50__ARPersonOcclusionParentTechnique_setTechniques___block_invoke(uin
   return v11;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v5 = [(ARParentTechnique *)self techniques];
-  v6 = [v5 countByEnumeratingWithState:&v46 objects:v58 count:16];
+  techniques = [(ARParentTechnique *)self techniques];
+  v6 = [techniques countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v6)
   {
     v7 = v6;
@@ -291,7 +291,7 @@ uint64_t __50__ARPersonOcclusionParentTechnique_setTechniques___block_invoke(uin
       {
         if (*v47 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(techniques);
         }
 
         v10 = *(*(&v46 + 1) + 8 * i);
@@ -302,7 +302,7 @@ uint64_t __50__ARPersonOcclusionParentTechnique_setTechniques___block_invoke(uin
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v46 objects:v58 count:16];
+      v7 = [techniques countByEnumeratingWithState:&v46 objects:v58 count:16];
       if (v7)
       {
         continue;
@@ -317,11 +317,11 @@ LABEL_12:
 
   objc_opt_class();
   v12 = v11 | objc_opt_isKindOfClass();
-  v13 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-  if (v13)
+  depthTechniqueProcessingStrategy = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+  if (depthTechniqueProcessingStrategy)
   {
-    v14 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-    v15 = [v14 shouldProcessData:v4];
+    depthTechniqueProcessingStrategy2 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+    v15 = [depthTechniqueProcessingStrategy2 shouldProcessData:dataCopy];
   }
 
   else
@@ -335,7 +335,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v4;
+      v17 = dataCopy;
       [v17 timestamp];
       kdebug_trace();
       v42 = 0u;
@@ -380,14 +380,14 @@ LABEL_12:
         *buf = 138543874;
         v52 = v27;
         v53 = 2048;
-        v54 = self;
+        selfCopy = self;
         v55 = 2112;
         v56 = v18;
         _os_log_impl(&dword_1C241C000, v25, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropped frame. Techniques that did not get the image: %@", buf, 0x20u);
       }
     }
 
-    v28 = v4;
+    v28 = dataCopy;
     goto LABEL_45;
   }
 
@@ -395,13 +395,13 @@ LABEL_12:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_44:
-    v28 = [(ARParentTechnique *)self processData:v4 onTechniques:v16];
+    v28 = [(ARParentTechnique *)self processData:dataCopy onTechniques:v16];
 LABEL_45:
     v29 = v28;
     goto LABEL_46;
   }
 
-  v29 = v4;
+  v29 = dataCopy;
   if (![v29 isDroppedData])
   {
 
@@ -412,8 +412,8 @@ LABEL_45:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v30 = [(ARParentTechnique *)self techniques];
-  v31 = [v30 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  techniques2 = [(ARParentTechnique *)self techniques];
+  v31 = [techniques2 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v31)
   {
     v32 = v31;
@@ -424,7 +424,7 @@ LABEL_45:
       {
         if (*v39 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(techniques2);
         }
 
         v35 = *(*(&v38 + 1) + 8 * k);
@@ -436,7 +436,7 @@ LABEL_45:
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v32 = [techniques2 countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v32);
@@ -447,14 +447,14 @@ LABEL_46:
   return v29;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
-  v10 = a4;
-  v6 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-  if (v6)
+  contextCopy = context;
+  depthTechniqueProcessingStrategy = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+  if (depthTechniqueProcessingStrategy)
   {
-    v7 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-    v8 = [v7 shouldRequestResultDataAtTimestamp:v10 context:a3];
+    depthTechniqueProcessingStrategy2 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+    v8 = [depthTechniqueProcessingStrategy2 shouldRequestResultDataAtTimestamp:contextCopy context:timestamp];
   }
 
   else
@@ -463,19 +463,19 @@ LABEL_46:
   }
 
   v9 = [(ARPersonOcclusionParentTechnique *)self techniquesToRunWithForwardedDepth:v8];
-  [(ARParentTechnique *)self requestResultDataAtTimestamp:v10 context:v9 onTechniques:a3];
+  [(ARParentTechnique *)self requestResultDataAtTimestamp:contextCopy context:v9 onTechniques:timestamp];
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-  if (v13)
+  techniqueCopy = technique;
+  dataCopy = data;
+  contextCopy = context;
+  depthTechniqueProcessingStrategy = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+  if (depthTechniqueProcessingStrategy)
   {
-    v14 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
-    v15 = [v14 shouldRequestResultDataAtTimestamp:v12 context:a5];
+    depthTechniqueProcessingStrategy2 = [(ARPersonOcclusionParentTechnique *)self depthTechniqueProcessingStrategy];
+    v15 = [depthTechniqueProcessingStrategy2 shouldRequestResultDataAtTimestamp:contextCopy context:timestamp];
   }
 
   else
@@ -484,9 +484,9 @@ LABEL_46:
   }
 
   v16 = [(ARPersonOcclusionParentTechnique *)self techniquesToRunWithForwardedDepth:v15];
-  if ([(NSHashTable *)self->_personDetectionTechniques containsObject:v10])
+  if ([(NSHashTable *)self->_personDetectionTechniques containsObject:techniqueCopy])
   {
-    if (self->_primaryPersonDetectionTechnique == v10)
+    if (self->_primaryPersonDetectionTechnique == techniqueCopy)
     {
       if (self->_depthTechnique)
       {
@@ -496,13 +496,13 @@ LABEL_46:
           {
             if (self->_placeholderDepthBuffer || (CVPixelBufferCreate(0, 1uLL, 1uLL, 0x66646570u, 0, &self->_placeholderDepthBuffer), self->_placeholderDepthBuffer))
             {
-              v17 = [(ARMLDepthData *)[ARPlaceholderMLDepthData alloc] initWithTimestamp:self->_placeholderDepthBuffer depthBuffer:[(ARMLDepthDataSourceProvider *)self->_depthTechnique depthDataSource] source:a5];
+              v17 = [(ARMLDepthData *)[ARPlaceholderMLDepthData alloc] initWithTimestamp:self->_placeholderDepthBuffer depthBuffer:[(ARMLDepthDataSourceProvider *)self->_depthTechnique depthDataSource] source:timestamp];
               if (v17)
               {
                 v18 = v17;
-                v19 = [v11 arrayByAddingObject:v17];
+                v19 = [dataCopy arrayByAddingObject:v17];
 
-                v11 = v19;
+                dataCopy = v19;
               }
             }
           }
@@ -510,25 +510,25 @@ LABEL_46:
       }
     }
 
-    [(ARParentTechnique *)&v20 technique:v10 didOutputResultData:v11 timestamp:v12 context:v16 onTechniques:a5, self, ARPersonOcclusionParentTechnique, v21.receiver, v21.super_class];
+    [(ARParentTechnique *)&v20 technique:techniqueCopy didOutputResultData:dataCopy timestamp:contextCopy context:v16 onTechniques:timestamp, self, ARPersonOcclusionParentTechnique, v21.receiver, v21.super_class];
   }
 
   else
   {
-    [(ARParentTechnique *)&v21 technique:v10 didOutputResultData:v11 timestamp:v12 context:v16 onTechniques:a5, v20.receiver, v20.super_class, self, ARPersonOcclusionParentTechnique];
+    [(ARParentTechnique *)&v21 technique:techniqueCopy didOutputResultData:dataCopy timestamp:contextCopy context:v16 onTechniques:timestamp, v20.receiver, v20.super_class, self, ARPersonOcclusionParentTechnique];
   }
 }
 
-- (void)submitResultsForTimestamp:(double)a3 context:(id)a4
+- (void)submitResultsForTimestamp:(double)timestamp context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 gatheredData];
+  contextCopy = context;
+  gatheredData = [contextCopy gatheredData];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:buf count:16];
+  v8 = [gatheredData countByEnumeratingWithState:&v27 objects:buf count:16];
   v9 = 0.0;
   if (!v8)
   {
@@ -542,7 +542,7 @@ LABEL_46:
     {
       if (*v28 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(gatheredData);
       }
 
       v12 = *(*(&v27 + 1) + 8 * i);
@@ -552,8 +552,8 @@ LABEL_46:
         v8 = v12;
         [v8 timestamp];
         v9 = v13;
-        v14 = [v8 detectedObjects];
-        LODWORD(v8) = [v14 count] != 0;
+        detectedObjects = [v8 detectedObjects];
+        LODWORD(v8) = [detectedObjects count] != 0;
 LABEL_20:
 
         goto LABEL_21;
@@ -577,24 +577,24 @@ LABEL_21:
         v8 = v12;
         [v8 timestamp];
         v9 = v16;
-        v14 = [v8 rawDetectionResult];
-        if (v14)
+        detectedObjects = [v8 rawDetectionResult];
+        if (detectedObjects)
         {
           LODWORD(v8) = 1;
         }
 
         else
         {
-          v17 = [v8 alignedDetectionResult];
-          if (v17)
+          alignedDetectionResult = [v8 alignedDetectionResult];
+          if (alignedDetectionResult)
           {
             LODWORD(v8) = 1;
           }
 
           else
           {
-            v18 = [v8 alignedDetectionResult];
-            LODWORD(v8) = v18 != 0;
+            alignedDetectionResult2 = [v8 alignedDetectionResult];
+            LODWORD(v8) = alignedDetectionResult2 != 0;
           }
         }
 
@@ -602,7 +602,7 @@ LABEL_21:
       }
     }
 
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:buf count:16];
+    v8 = [gatheredData countByEnumeratingWithState:&v27 objects:buf count:16];
     if (v8)
     {
       continue;
@@ -632,7 +632,7 @@ LABEL_22:
         *buf = 138543618;
         v32 = v22;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "%{public}@ <%p>: detected a person when there were none", buf, 0x16u);
       }
     }
@@ -653,7 +653,7 @@ LABEL_22:
         *buf = 138543874;
         v32 = v25;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         v35 = 2048;
         v36 = 0x3FE0000000000000;
         _os_log_impl(&dword_1C241C000, v23, OS_LOG_TYPE_INFO, "%{public}@ <%p>: detected no person for %f seconds", buf, 0x20u);
@@ -665,7 +665,7 @@ LABEL_22:
 
   v26.receiver = self;
   v26.super_class = ARPersonOcclusionParentTechnique;
-  [(ARParentTechnique *)&v26 submitResultsForTimestamp:v6 context:a3];
+  [(ARParentTechnique *)&v26 submitResultsForTimestamp:contextCopy context:timestamp];
 }
 
 - (void)updatePersonDetectionTechniques
@@ -680,7 +680,7 @@ LABEL_22:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = self;
+  selfCopy = self;
   obj = [(ARParentTechnique *)self techniques];
   v7 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
@@ -699,7 +699,7 @@ LABEL_22:
         v11 = *(*(&v24 + 1) + 8 * i);
         if ([v6 containsObject:objc_opt_class()])
         {
-          [(NSHashTable *)v19->_personDetectionTechniques addObject:v11];
+          [(NSHashTable *)selfCopy->_personDetectionTechniques addObject:v11];
         }
 
         else
@@ -727,7 +727,7 @@ LABEL_22:
 
                 if (v17)
                 {
-                  [(NSHashTable *)v19->_personDetectionTechniques addObject:v11];
+                  [(NSHashTable *)selfCopy->_personDetectionTechniques addObject:v11];
                   goto LABEL_18;
                 }
               }
@@ -761,7 +761,7 @@ LABEL_18:
     v4 = objc_opt_class();
     if (v4)
     {
-      v6 = [(ARParentTechnique *)self techniques];
+      techniques = [(ARParentTechnique *)self techniques];
       v4 = [ARTechnique techniqueOfClass:v4 inArray:?];
       v5 = 0;
       goto LABEL_7;

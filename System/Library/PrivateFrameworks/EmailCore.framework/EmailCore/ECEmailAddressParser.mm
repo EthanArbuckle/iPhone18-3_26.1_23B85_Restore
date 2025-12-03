@@ -1,15 +1,15 @@
 @interface ECEmailAddressParser
-+ (BOOL)_validateString:(id)a3 withFunction:(void *)a4;
-+ (BOOL)parseEmailAddressString:(id)a3 displayName:(id *)a4 localPart:(id *)a5 domain:(id *)a6 groupList:(id *)a7;
-+ (BOOL)parseString:(id)a3 emailAddressList:(id *)a4;
++ (BOOL)_validateString:(id)string withFunction:(void *)function;
++ (BOOL)parseEmailAddressString:(id)string displayName:(id *)name localPart:(id *)part domain:(id *)domain groupList:(id *)list;
++ (BOOL)parseString:(id)string emailAddressList:(id *)list;
 @end
 
 @implementation ECEmailAddressParser
 
-+ (BOOL)parseEmailAddressString:(id)a3 displayName:(id *)a4 localPart:(id *)a5 domain:(id *)a6 groupList:(id *)a7
++ (BOOL)parseEmailAddressString:(id)string displayName:(id *)name localPart:(id *)part domain:(id *)domain groupList:(id *)list
 {
-  v11 = a3;
-  if ([v11 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v29 = 0xAAAAAAAAAAAAAAAALL;
     *&v12 = 0xAAAAAAAAAAAAAAAALL;
@@ -26,7 +26,7 @@
     v25[0] = v12;
     v25[1] = v12;
     v20 = 0xAAAAAAAAAAAA0000;
-    v13 = v11;
+    v13 = stringCopy;
     v21 = v13;
     v22 = v25;
     v23 = 0;
@@ -48,7 +48,7 @@
     *(&v28 + 1) = 0;
     v29 = 0;
     *&v27 = CStringPtr;
-    v16 = _parseAddress(&v20, a4, a5, a6, a7);
+    v16 = _parseAddress(&v20, name, part, domain, list);
     if (v23 == v24)
     {
       v17 = v16;
@@ -68,7 +68,7 @@
     {
       v23 = 0;
       LOWORD(v20) = 257;
-      v18 = _parseAddress(&v20, a4, a5, a6, a7);
+      v18 = _parseAddress(&v20, name, part, domain, list);
       if (v23 == v24)
       {
         v15 = v18;
@@ -89,10 +89,10 @@
   return v15;
 }
 
-+ (BOOL)parseString:(id)a3 emailAddressList:(id *)a4
++ (BOOL)parseString:(id)string emailAddressList:(id *)list
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v23 = 0xAAAAAAAAAAAAAAAALL;
     *&v6 = 0xAAAAAAAAAAAAAAAALL;
@@ -109,7 +109,7 @@
     v19[0] = v6;
     v19[1] = v6;
     v14 = 0xAAAAAAAAAAAA0100;
-    v7 = v5;
+    v7 = stringCopy;
     v15 = v7;
     v16 = v19;
     v17 = 0;
@@ -131,7 +131,7 @@
     *(&v22 + 1) = 0;
     v23 = 0;
     *&v21 = CStringPtr;
-    v10 = _parseElementList(&v14, 1, _parseAddressAppendingToList, a4);
+    v10 = _parseElementList(&v14, 1, _parseAddressAppendingToList, list);
     if (v17 == v18)
     {
       v11 = v10;
@@ -147,7 +147,7 @@
     {
       v17 = 0;
       LOBYTE(v14) = 1;
-      v12 = _parseElementList(&v14, BYTE1(v14), _parseAddressAppendingToList, a4);
+      v12 = _parseElementList(&v14, BYTE1(v14), _parseAddressAppendingToList, list);
       if (v17 == v18)
       {
         v9 = v12;
@@ -168,9 +168,9 @@
   return v9;
 }
 
-+ (BOOL)_validateString:(id)a3 withFunction:(void *)a4
++ (BOOL)_validateString:(id)string withFunction:(void *)function
 {
-  v5 = a3;
+  stringCopy = string;
   v21 = 0xAAAAAAAAAAAAAAAALL;
   *&v6 = 0xAAAAAAAAAAAAAAAALL;
   *(&v6 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -186,7 +186,7 @@
   v17[0] = v6;
   v17[1] = v6;
   v12 = 0xAAAAAAAAAAAA0000;
-  v7 = v5;
+  v7 = stringCopy;
   v13 = v7;
   v14 = v17;
   v15 = 0;
@@ -208,7 +208,7 @@
   *(&v20 + 1) = 0;
   v21 = 0;
   *&v19 = CStringPtr;
-  v9 = (a4)(&v12, 0);
+  v9 = (function)(&v12, 0);
   if (v15 == v16)
   {
     v10 = v9;

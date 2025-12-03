@@ -1,20 +1,20 @@
 @interface AABattery
 + (id)invalidBattery;
-- (AABattery)initWithCoder:(id)a3;
-- (AABattery)initWithLevel:(double)a3 productID:(unsigned int)a4 state:(int64_t)a5 type:(int64_t)a6;
+- (AABattery)initWithCoder:(id)coder;
+- (AABattery)initWithLevel:(double)level productID:(unsigned int)d state:(int64_t)state type:(int64_t)type;
 - (BOOL)fullyCharged;
 - (BOOL)isChargingPaused;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBattery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBattery:(id)battery;
 - (BOOL)isExpired;
-- (BOOL)updateWithAABattery:(id)a3;
+- (BOOL)updateWithAABattery:(id)battery;
 - (double)lowLevel;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)chargeStatus;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLevel:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLevel:(double)level;
 @end
 
 @implementation AABattery
@@ -28,29 +28,29 @@
   return v2;
 }
 
-- (AABattery)initWithLevel:(double)a3 productID:(unsigned int)a4 state:(int64_t)a5 type:(int64_t)a6
+- (AABattery)initWithLevel:(double)level productID:(unsigned int)d state:(int64_t)state type:(int64_t)type
 {
   v10 = [(AABattery *)self init];
   if (v10)
   {
     v10->_lastSeen = CFAbsoluteTimeGetCurrent();
-    v10->_productID = a4;
-    v10->_state = a5;
-    v10->_type = a6;
-    [(AABattery *)v10 setLevel:a3];
+    v10->_productID = d;
+    v10->_state = state;
+    v10->_type = type;
+    [(AABattery *)v10 setLevel:level];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (AABattery)initWithCoder:(id)a3
+- (AABattery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AABattery *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"btyl"])
     {
       [v6 decodeDoubleForKey:@"btyl"];
@@ -92,53 +92,53 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v8 = v4;
+  coderCopy = coder;
+  v8 = coderCopy;
   if (self->_level != 0.0)
   {
-    [v4 encodeDouble:@"btyl" forKey:?];
-    v4 = v8;
+    [coderCopy encodeDouble:@"btyl" forKey:?];
+    coderCopy = v8;
   }
 
   productID = self->_productID;
   if (productID)
   {
     [v8 encodeInt64:productID forKey:@"pid"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   state = self->_state;
   if (state)
   {
     [v8 encodeInteger:state forKey:@"aabs"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   type = self->_type;
   if (type)
   {
     [v8 encodeInteger:type forKey:@"abrt"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_chargingOBCTimeUntilCharged)
   {
     [v8 encodeInteger:? forKey:?];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_lastSeen != 0.0)
   {
     [v8 encodeDouble:@"lstS" forKey:?];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(AABattery *)self level];
   [v4 setLevel:?];
   [v4 setProductID:{-[AABattery productID](self, "productID")}];
@@ -286,14 +286,14 @@ LABEL_8:
   return v3 >= 0.8;
 }
 
-- (BOOL)isEqualToBattery:(id)a3
+- (BOOL)isEqualToBattery:(id)battery
 {
-  v4 = a3;
-  v5 = [(AABattery *)self chargingOBCTimeUntilCharged];
-  if (v5 == [v4 chargingOBCTimeUntilCharged] && (-[AABattery level](self, "level"), v7 = v6, objc_msgSend(v4, "level"), v7 == v8) && (v9 = -[AABattery state](self, "state"), v9 == objc_msgSend(v4, "state")))
+  batteryCopy = battery;
+  chargingOBCTimeUntilCharged = [(AABattery *)self chargingOBCTimeUntilCharged];
+  if (chargingOBCTimeUntilCharged == [batteryCopy chargingOBCTimeUntilCharged] && (-[AABattery level](self, "level"), v7 = v6, objc_msgSend(batteryCopy, "level"), v7 == v8) && (v9 = -[AABattery state](self, "state"), v9 == objc_msgSend(batteryCopy, "state")))
   {
-    v10 = [(AABattery *)self type];
-    v11 = v10 == [v4 type];
+    type = [(AABattery *)self type];
+    v11 = type == [batteryCopy type];
   }
 
   else
@@ -304,16 +304,16 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -350,9 +350,9 @@ LABEL_7:
 
 - (double)lowLevel
 {
-  v3 = [(AABattery *)self isCaseBattery];
+  isCaseBattery = [(AABattery *)self isCaseBattery];
   result = 0.25;
-  if (!v3)
+  if (!isCaseBattery)
   {
     return dbl_241535F70[[(AABattery *)self productID]== 8208];
   }
@@ -360,51 +360,51 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)updateWithAABattery:(id)a3
+- (BOOL)updateWithAABattery:(id)battery
 {
-  v4 = a3;
-  v5 = [(AABattery *)self type];
-  if (v5 == [v4 type])
+  batteryCopy = battery;
+  type = [(AABattery *)self type];
+  if (type == [batteryCopy type])
   {
-    -[AABattery setSourceFlags:](self, "setSourceFlags:", -[AABattery sourceFlags](self, "sourceFlags") | [v4 sourceFlags]);
-    v6 = [(AABattery *)self chargingOBCTimeUntilCharged];
-    v7 = [v4 chargingOBCTimeUntilCharged];
-    v8 = [v4 inAACP];
-    if (v6 == v7)
+    -[AABattery setSourceFlags:](self, "setSourceFlags:", -[AABattery sourceFlags](self, "sourceFlags") | [batteryCopy sourceFlags]);
+    chargingOBCTimeUntilCharged = [(AABattery *)self chargingOBCTimeUntilCharged];
+    chargingOBCTimeUntilCharged2 = [batteryCopy chargingOBCTimeUntilCharged];
+    inAACP = [batteryCopy inAACP];
+    if (chargingOBCTimeUntilCharged == chargingOBCTimeUntilCharged2)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = v8;
+      v9 = inAACP;
     }
 
     if ((v9 & 1) == 0)
     {
-      -[AABattery setChargingOBCTimeUntilCharged:](self, "setChargingOBCTimeUntilCharged:", [v4 chargingOBCTimeUntilCharged]);
+      -[AABattery setChargingOBCTimeUntilCharged:](self, "setChargingOBCTimeUntilCharged:", [batteryCopy chargingOBCTimeUntilCharged]);
     }
 
     v10 = v9 ^ 1;
-    -[AABattery setLastOrigin:](self, "setLastOrigin:", [v4 lastOrigin]);
-    [v4 lastSeen];
+    -[AABattery setLastOrigin:](self, "setLastOrigin:", [batteryCopy lastOrigin]);
+    [batteryCopy lastSeen];
     [(AABattery *)self setLastSeen:?];
-    if (!-[AABattery inAACP](self, "inAACP") || [v4 inAACP])
+    if (!-[AABattery inAACP](self, "inAACP") || [batteryCopy inAACP])
     {
       [(AABattery *)self level];
       v12 = v11;
-      [v4 level];
+      [batteryCopy level];
       if (v12 != v13)
       {
-        [v4 level];
+        [batteryCopy level];
         [(AABattery *)self setLevel:?];
         v10 = 1;
       }
 
-      v14 = [(AABattery *)self state];
-      if (v14 != [v4 state])
+      state = [(AABattery *)self state];
+      if (state != [batteryCopy state])
       {
-        -[AABattery setState:](self, "setState:", [v4 state]);
+        -[AABattery setState:](self, "setState:", [batteryCopy state]);
         v10 = 1;
       }
     }
@@ -418,11 +418,11 @@ LABEL_7:
   return v10;
 }
 
-- (void)setLevel:(double)a3
+- (void)setLevel:(double)level
 {
-  if (a3 == 0.0 || self->_level != a3)
+  if (level == 0.0 || self->_level != level)
   {
-    if (a3 < 0.01)
+    if (level < 0.01)
     {
       v3 = 0.01;
 LABEL_7:
@@ -430,13 +430,13 @@ LABEL_7:
       return;
     }
 
-    if (a3 > 1.0)
+    if (level > 1.0)
     {
       v3 = 1.0;
       goto LABEL_7;
     }
 
-    self->_level = a3;
+    self->_level = level;
   }
 }
 

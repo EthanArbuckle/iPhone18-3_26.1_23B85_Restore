@@ -1,23 +1,23 @@
 @interface EMRemoteConnection
 + (OS_os_log)log;
-- (BOOL)_respondsToRemoteSelector:(SEL)a3;
-- (EMRemoteConnection)initWithProtocol:(id)a3 proxyGenerator:(id)a4;
+- (BOOL)_respondsToRemoteSelector:(SEL)selector;
+- (EMRemoteConnection)initWithProtocol:(id)protocol proxyGenerator:(id)generator;
 - (EMRemoteProxyGenerator)generator;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)_methodSignatureForRemoteSelector:(SEL)a3;
+- (id)_methodSignatureForRemoteSelector:(SEL)selector;
 - (id)proxy;
-- (id)proxyCreator:(id *)a3;
+- (id)proxyCreator:(id *)creator;
 - (id)reattemptingRemoteObjectProxy;
-- (id)reattemptingRemoteObjectProxyWithReattemptHandler:(id)a3;
+- (id)reattemptingRemoteObjectProxyWithReattemptHandler:(id)handler;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)requestRecoveryAssertion;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_reattemptInvocation:(id)a3 withProxy:(id)a4 originalError:(id)a5;
-- (void)_sendInvocation:(id)a3 withProxy:(id)a4;
-- (void)addRecoveryHandler:(id)a3;
-- (void)addResetHandler:(id)a3;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_reattemptInvocation:(id)invocation withProxy:(id)proxy originalError:(id)error;
+- (void)_sendInvocation:(id)invocation withProxy:(id)proxy;
+- (void)addRecoveryHandler:(id)handler;
+- (void)addResetHandler:(id)handler;
 - (void)dealloc;
 - (void)recover;
 - (void)reset;
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __25__EMRemoteConnection_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_34 != -1)
   {
     dispatch_once(&log_onceToken_34, block);
@@ -70,28 +70,28 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   log_log_34 = v1;
 }
 
-- (EMRemoteConnection)initWithProtocol:(id)a3 proxyGenerator:(id)a4
+- (EMRemoteConnection)initWithProtocol:(id)protocol proxyGenerator:(id)generator
 {
-  v7 = a3;
-  v8 = a4;
+  protocolCopy = protocol;
+  generatorCopy = generator;
   v25.receiver = self;
   v25.super_class = EMRemoteConnection;
   v9 = [(EMRemoteConnection *)&v25 init];
   if (v9)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = NSStringFromProtocol(v7);
+    v11 = NSStringFromProtocol(protocolCopy);
     v12 = [v10 stringWithFormat:@"com.apple.email.EMRemoteConnection.%@", v11];
 
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_get_global_queue(21, 0);
-    v16 = dispatch_queue_create_with_target_V2(v13, v14, v15);
+    v16 = dispatch_queue_create_with_target_V2(uTF8String, v14, v15);
     queue = v9->_queue;
     v9->_queue = v16;
 
-    objc_storeWeak(&v9->_generator, v8);
-    objc_storeStrong(&v9->_protocol, a3);
+    objc_storeWeak(&v9->_generator, generatorCopy);
+    objc_storeStrong(&v9->_protocol, protocol);
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
     resetHandlers = v9->_resetHandlers;
     v9->_resetHandlers = v18;
@@ -124,9 +124,9 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromProtocol(self->_protocol);
-  v6 = [(EMRemoteConnection *)self proxy];
+  proxy = [(EMRemoteConnection *)self proxy];
   v7 = @"active";
-  if (!v6)
+  if (!proxy)
   {
     v7 = @"inactive";
   }
@@ -146,8 +146,8 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v8 = NSStringFromProtocol(self->_protocol);
-  v9 = [(EMRemoteConnection *)self proxy];
-  v10 = [v6 stringWithFormat:@"<%@: %p> %@: %ld reset, %ld recovery, currentProxy=%p, pendingReattempts=%@", v7, self, v8, v3, v4, v9, v5];
+  proxy = [(EMRemoteConnection *)self proxy];
+  v10 = [v6 stringWithFormat:@"<%@: %p> %@: %ld reset, %ld recovery, currentProxy=%p, pendingReattempts=%@", v7, self, v8, v3, v4, proxy, v5];
 
   return v10;
 }
@@ -267,12 +267,12 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addResetHandler:(id)a3
+- (void)addResetHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   resetHandlers = self->_resetHandlers;
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
 
   v7 = _Block_copy(v6);
   [(NSMutableArray *)resetHandlers addObject:v7];
@@ -280,12 +280,12 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addRecoveryHandler:(id)a3
+- (void)addRecoveryHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   recoveryHandlers = self->_recoveryHandlers;
-  v6 = [v4 copy];
+  v6 = [handlerCopy copy];
 
   v7 = _Block_copy(v6);
   [(NSMutableArray *)recoveryHandlers addObject:v7];
@@ -302,7 +302,7 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)proxyCreator:(id *)a3
+- (id)proxyCreator:(id *)creator
 {
   os_unfair_lock_lock(&self->_proxyLock);
   v5 = self->_currentProxy;
@@ -322,11 +322,11 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
       v5 = v9;
     }
 
-    else if (a3)
+    else if (creator)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"EMErrorDomain" code:2 userInfo:0];
       v10 = 0;
-      *a3 = v5 = 0;
+      *creator = v5 = 0;
     }
 
     else
@@ -348,19 +348,19 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_methodSignatureForRemoteSelector:(SEL)a3
+- (id)_methodSignatureForRemoteSelector:(SEL)selector
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = CFDictionaryGetValue(self->_knownSelectors, a3);
+  v5 = CFDictionaryGetValue(self->_knownSelectors, selector);
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    if (protocol_getMethodDescription(self->_protocol, a3, 1, 1).name || protocol_getMethodDescription(self->_protocol, a3, 0, 1).name)
+    if (protocol_getMethodDescription(self->_protocol, selector, 1, 1).name || protocol_getMethodDescription(self->_protocol, selector, 0, 1).name)
     {
       protocol = self->_protocol;
       v5 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:_protocol_getMethodTypeEncoding()];
       os_unfair_lock_lock(&self->_lock);
-      CFDictionarySetValue(self->_knownSelectors, a3, v5);
+      CFDictionarySetValue(self->_knownSelectors, selector, v5);
       os_unfair_lock_unlock(&self->_lock);
     }
 
@@ -373,20 +373,20 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)_respondsToRemoteSelector:(SEL)a3
+- (BOOL)_respondsToRemoteSelector:(SEL)selector
 {
   v5 = 1;
-  if (!protocol_getMethodDescription(self->_protocol, a3, 1, 1).name)
+  if (!protocol_getMethodDescription(self->_protocol, selector, 1, 1).name)
   {
-    return protocol_getMethodDescription(self->_protocol, a3, 0, 1).name != 0;
+    return protocol_getMethodDescription(self->_protocol, selector, 0, 1).name != 0;
   }
 
   return v5;
 }
 
-- (void)_reattemptInvocation:(id)a3 withProxy:(id)a4 originalError:(id)a5
+- (void)_reattemptInvocation:(id)invocation withProxy:(id)proxy originalError:(id)error
 {
-  v6 = [_EMRemoteInterfaceDistantObjectReattempt recordedAttemptWithOriginalInvocation:a3 target:a4 error:a5];
+  v6 = [_EMRemoteInterfaceDistantObjectReattempt recordedAttemptWithOriginalInvocation:invocation target:proxy error:error];
   os_unfair_lock_lock(&self->_lock);
   if (self->_waitingForRecovery)
   {
@@ -401,12 +401,12 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sendInvocation:(id)a3 withProxy:(id)a4
+- (void)_sendInvocation:(id)invocation withProxy:(id)proxy
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 reattemptHandler];
-  if ([v8 isSynchronous])
+  invocationCopy = invocation;
+  proxyCopy = proxy;
+  reattemptHandler = [proxyCopy reattemptHandler];
+  if ([proxyCopy isSynchronous])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -414,24 +414,24 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
     block[2] = __48__EMRemoteConnection__sendInvocation_withProxy___block_invoke;
     block[3] = &unk_1E826F500;
     block[4] = self;
-    v28 = v9;
+    v28 = reattemptHandler;
     v29 = a2;
-    v27 = v7;
-    v11 = v9;
+    v27 = invocationCopy;
+    methodSignature = reattemptHandler;
     dispatch_sync(queue, block);
   }
 
   else
   {
-    v12 = CopyInvocation(v7);
+    v12 = CopyInvocation(invocationCopy);
     [v12 retainArguments];
-    v11 = [v7 methodSignature];
-    v13 = [v11 _classForObjectAtArgumentIndex:-1];
+    methodSignature = [invocationCopy methodSignature];
+    v13 = [methodSignature _classForObjectAtArgumentIndex:-1];
     if (v13 == objc_opt_class())
     {
       v14 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
       v25 = v14;
-      [v7 setReturnValue:&v25];
+      [invocationCopy setReturnValue:&v25];
     }
 
     else
@@ -444,14 +444,14 @@ void __25__EMRemoteConnection_log__block_invoke(uint64_t a1)
     v19[1] = 3221225472;
     v19[2] = __48__EMRemoteConnection__sendInvocation_withProxy___block_invoke_76;
     v19[3] = &unk_1E826F550;
-    v24 = v9;
+    v24 = reattemptHandler;
     v20 = v12;
-    v21 = self;
-    v22 = v8;
+    selfCopy = self;
+    v22 = proxyCopy;
     v23 = v14;
     v16 = v14;
     v17 = v12;
-    v18 = v9;
+    v18 = reattemptHandler;
     dispatch_async(v15, v19);
   }
 }
@@ -650,33 +650,33 @@ void __48__EMRemoteConnection__sendInvocation_withProxy___block_invoke_3(uint64_
   dispatch_async(v4, v7);
 }
 
-- (id)reattemptingRemoteObjectProxyWithReattemptHandler:(id)a3
+- (id)reattemptingRemoteObjectProxyWithReattemptHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [_EMRemoteInterfaceDistantObject alloc];
   WeakRetained = objc_loadWeakRetained(&self->_generator);
-  v7 = [(_EMRemoteInterfaceDistantObject *)v5 initWithRemoteInterface:self proxyGenerator:WeakRetained synchronous:0 reattemptHandler:v4];
+  v7 = [(_EMRemoteInterfaceDistantObject *)v5 initWithRemoteInterface:self proxyGenerator:WeakRetained synchronous:0 reattemptHandler:handlerCopy];
 
   return v7;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [_EMRemoteInterfaceDistantObject alloc];
   WeakRetained = objc_loadWeakRetained(&self->_generator);
-  v7 = nonReattemptingHandlerForErrorHandler(v4);
+  v7 = nonReattemptingHandlerForErrorHandler(handlerCopy);
   v8 = [(_EMRemoteInterfaceDistantObject *)v5 initWithRemoteInterface:self proxyGenerator:WeakRetained synchronous:0 reattemptHandler:v7];
 
   return v8;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [_EMRemoteInterfaceDistantObject alloc];
   WeakRetained = objc_loadWeakRetained(&self->_generator);
-  v7 = nonReattemptingHandlerForErrorHandler(v4);
+  v7 = nonReattemptingHandlerForErrorHandler(handlerCopy);
   v8 = [(_EMRemoteInterfaceDistantObject *)v5 initWithRemoteInterface:self proxyGenerator:WeakRetained synchronous:1 reattemptHandler:v7];
 
   return v8;

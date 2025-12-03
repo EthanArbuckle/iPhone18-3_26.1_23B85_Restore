@@ -1,15 +1,15 @@
 @interface EpisodeCaptionLabel
-- (_TtC23ShelfKitCollectionViews19EpisodeCaptionLabel)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews19EpisodeCaptionLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation EpisodeCaptionLabel
 
-- (_TtC23ShelfKitCollectionViews19EpisodeCaptionLabel)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews19EpisodeCaptionLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   result = swift_beginAccess();
   if (off_40D118)
   {

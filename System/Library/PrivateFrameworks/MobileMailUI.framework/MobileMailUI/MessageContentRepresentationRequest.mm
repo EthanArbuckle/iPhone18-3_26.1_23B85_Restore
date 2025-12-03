@@ -6,22 +6,22 @@
 - (BOOL)isFinished;
 - (EFFuture)contentRepresentationFuture;
 - (EMMessage)message;
-- (MessageContentRepresentationRequest)initWithMessage:(id)a3 includeSuggestions:(int64_t)a4 representationType:(id)a5 delegate:(id)a6;
-- (MessageContentRepresentationRequest)initWithMessageList:(id)a3 itemIdentifier:(id)a4 includeSuggestions:(int64_t)a5 representationType:(id)a6 delegate:(id)a7;
+- (MessageContentRepresentationRequest)initWithMessage:(id)message includeSuggestions:(int64_t)suggestions representationType:(id)type delegate:(id)delegate;
+- (MessageContentRepresentationRequest)initWithMessageList:(id)list itemIdentifier:(id)identifier includeSuggestions:(int64_t)suggestions representationType:(id)type delegate:(id)delegate;
 - (NSString)ef_publicDescription;
-- (id)addLoadObserver:(id)a3;
-- (id)onScheduler:(id)a3 addLoadObserver:(id)a4;
+- (id)addLoadObserver:(id)observer;
+- (id)onScheduler:(id)scheduler addLoadObserver:(id)observer;
 - (id)resultIfAvailable;
 - (id)waitForResult;
 - (unint64_t)signpostID;
 - (unint64_t)state;
 - (void)_commonInitWithIncludeSuggestionItems:(id)obj delegate:;
 - (void)_issueMessageContentRepresentationRequest;
-- (void)_resetFuture:(uint64_t)a1;
+- (void)_resetFuture:(uint64_t)future;
 - (void)cancel;
 - (void)dealloc;
 - (void)retry;
-- (void)updateItemID:(id)a3 messageList:(id)a4;
+- (void)updateItemID:(id)d messageList:(id)list;
 @end
 
 @implementation MessageContentRepresentationRequest
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = __42__MessageContentRepresentationRequest_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -57,7 +57,7 @@ void __42__MessageContentRepresentationRequest_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__MessageContentRepresentationRequest_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -78,8 +78,8 @@ void __50__MessageContentRepresentationRequest_signpostLog__block_invoke(uint64_
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -104,26 +104,26 @@ void __55__MessageContentRepresentationRequest_defaultScheduler__block_invoke()
   defaultScheduler_scheduler = v0;
 }
 
-- (MessageContentRepresentationRequest)initWithMessage:(id)a3 includeSuggestions:(int64_t)a4 representationType:(id)a5 delegate:(id)a6
+- (MessageContentRepresentationRequest)initWithMessage:(id)message includeSuggestions:(int64_t)suggestions representationType:(id)type delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = MessageContentRepresentationRequest;
   v13 = [(MessageContentRepresentationRequest *)&v19 init];
   if (v13)
   {
-    v14 = [v10 itemID];
+    itemID = [messageCopy itemID];
     itemID = v13->_itemID;
-    v13->_itemID = v14;
+    v13->_itemID = itemID;
 
-    v16 = [MEMORY[0x277D07150] futureWithResult:v10];
+    v16 = [MEMORY[0x277D07150] futureWithResult:messageCopy];
     messageFuture = v13->_messageFuture;
     v13->_messageFuture = v16;
 
-    objc_storeStrong(&v13->_contentRepresentationType, a5);
-    [(MessageContentRepresentationRequest *)v13 _commonInitWithIncludeSuggestionItems:v12 delegate:?];
+    objc_storeStrong(&v13->_contentRepresentationType, type);
+    [(MessageContentRepresentationRequest *)v13 _commonInitWithIncludeSuggestionItems:delegateCopy delegate:?];
   }
 
   return v13;
@@ -131,49 +131,49 @@ void __55__MessageContentRepresentationRequest_defaultScheduler__block_invoke()
 
 - (void)_commonInitWithIncludeSuggestionItems:(id)obj delegate:
 {
-  if (a1)
+  if (self)
   {
-    objc_storeWeak((a1 + 8), obj);
-    *(a1 + 64) = a2;
-    v5 = [MEMORY[0x277D07180] observableObserver];
-    v6 = *(a1 + 24);
-    *(a1 + 24) = v5;
+    objc_storeWeak((self + 8), obj);
+    *(self + 64) = a2;
+    observableObserver = [MEMORY[0x277D07180] observableObserver];
+    v6 = *(self + 24);
+    *(self + 24) = observableObserver;
 
     v7 = objc_alloc_init(MEMORY[0x277D07170]);
-    v8 = *(a1 + 16);
-    *(a1 + 16) = v7;
+    v8 = *(self + 16);
+    *(self + 16) = v7;
 
-    v13 = [*(a1 + 24) replay:1];
+    v13 = [*(self + 24) replay:1];
     v9 = [v13 filter:&__block_literal_global_68];
-    v10 = *(a1 + 32);
-    *(a1 + 32) = v9;
+    v10 = *(self + 32);
+    *(self + 32) = v9;
 
-    v11 = *(a1 + 16);
-    v12 = [v13 connect];
-    [v11 addCancelable:v12];
+    v11 = *(self + 16);
+    connect = [v13 connect];
+    [v11 addCancelable:connect];
   }
 }
 
-- (MessageContentRepresentationRequest)initWithMessageList:(id)a3 itemIdentifier:(id)a4 includeSuggestions:(int64_t)a5 representationType:(id)a6 delegate:(id)a7
+- (MessageContentRepresentationRequest)initWithMessageList:(id)list itemIdentifier:(id)identifier includeSuggestions:(int64_t)suggestions representationType:(id)type delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  listCopy = list;
+  identifierCopy = identifier;
+  typeCopy = type;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MessageContentRepresentationRequest;
   v16 = [(MessageContentRepresentationRequest *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_itemID, a4);
-    v18 = [v12 messageListItemForItemID:v13];
+    objc_storeStrong(&v16->_itemID, identifier);
+    v18 = [listCopy messageListItemForItemID:identifierCopy];
     v19 = [v18 then:&__block_literal_global_61];
     messageFuture = v17->_messageFuture;
     v17->_messageFuture = v19;
 
-    objc_storeStrong(&v17->_contentRepresentationType, a6);
-    [(MessageContentRepresentationRequest *)v17 _commonInitWithIncludeSuggestionItems:v15 delegate:?];
+    objc_storeStrong(&v17->_contentRepresentationType, type);
+    [(MessageContentRepresentationRequest *)v17 _commonInitWithIncludeSuggestionItems:delegateCopy delegate:?];
   }
 
   return v17;
@@ -186,14 +186,14 @@ id __121__MessageContentRepresentationRequest_initWithMessageList_itemIdentifier
   return v2;
 }
 
-- (void)updateItemID:(id)a3 messageList:(id)a4
+- (void)updateItemID:(id)d messageList:(id)list
 {
-  v11 = a3;
-  v7 = a4;
-  if (([(EMCollectionItemID *)self->_itemID isEqual:v11]& 1) == 0)
+  dCopy = d;
+  listCopy = list;
+  if (([(EMCollectionItemID *)self->_itemID isEqual:dCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_itemID, a3);
-    v8 = [v7 messageListItemForItemID:v11];
+    objc_storeStrong(&self->_itemID, d);
+    v8 = [listCopy messageListItemForItemID:dCopy];
     v9 = [v8 then:&__block_literal_global_63];
     messageFuture = self->_messageFuture;
     self->_messageFuture = v9;
@@ -209,22 +209,22 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
 
 - (NSString)ef_publicDescription
 {
-  v3 = [(MessageContentRepresentationRequest *)self state];
-  if (v3 > 3)
+  state = [(MessageContentRepresentationRequest *)self state];
+  if (state > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_2781818C8[v3];
+    v4 = off_2781818C8[state];
   }
 
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(MessageContentRepresentationRequest *)self itemID];
-  v9 = [v5 stringWithFormat:@"<%@: %p> itemID: %@ state:%@", v7, self, v8, v4];
+  itemID = [(MessageContentRepresentationRequest *)self itemID];
+  v9 = [v5 stringWithFormat:@"<%@: %p> itemID: %@ state:%@", v7, self, itemID, v4];
 
   return v9;
 }
@@ -244,13 +244,13 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
-    v5 = [(MessageContentRepresentationRequest *)self itemID];
+    itemID = [(MessageContentRepresentationRequest *)self itemID];
     v7 = 138412802;
     v8 = v4;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v5;
+    v12 = itemID;
     _os_log_impl(&dword_2149C9000, v3, OS_LOG_TYPE_DEFAULT, "<%@: %p> Content request for message %{public}@ being cancelled.", &v7, 0x20u);
   }
 
@@ -260,12 +260,12 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
 
 - (EMMessage)message
 {
-  v2 = [(MessageContentRepresentationRequest *)self messageFuture];
-  v3 = [v2 result];
+  messageFuture = [(MessageContentRepresentationRequest *)self messageFuture];
+  result = [messageFuture result];
 
   if ((*(*MEMORY[0x277D07110] + 16))())
   {
-    v4 = v3;
+    v4 = result;
   }
 
   else
@@ -281,58 +281,58 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
 - (void)_issueMessageContentRepresentationRequest
 {
   v47 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    atomic_store(0, (a1 + 48));
-    os_unfair_lock_lock((a1 + 68));
-    if (*(a1 + 40))
+    atomic_store(0, (self + 48));
+    os_unfair_lock_lock((self + 68));
+    if (*(self + 40))
     {
-      os_unfair_lock_unlock((a1 + 68));
+      os_unfair_lock_unlock((self + 68));
     }
 
     else
     {
-      v2 = [MEMORY[0x277D071A8] promise];
-      v5 = [v2 future];
-      v6 = *(a1 + 40);
-      *(a1 + 40) = v5;
+      promise = [MEMORY[0x277D071A8] promise];
+      future = [promise future];
+      v6 = *(self + 40);
+      *(self + 40) = future;
 
-      os_unfair_lock_unlock((a1 + 68));
-      if (v2)
+      os_unfair_lock_unlock((self + 68));
+      if (promise)
       {
         v7 = +[MessageContentRepresentationRequest signpostLog];
-        v8 = [a1 signpostID];
-        if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+        signpostID = [self signpostID];
+        if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
         {
-          v9 = [a1 itemID];
+          itemID = [self itemID];
           *buf = 138543362;
-          v42 = v9;
-          _os_signpost_emit_with_name_impl(&dword_2149C9000, v7, OS_SIGNPOST_EVENT, v8, "MessageContentRepresentationRequest", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
+          v42 = itemID;
+          _os_signpost_emit_with_name_impl(&dword_2149C9000, v7, OS_SIGNPOST_EVENT, signpostID, "MessageContentRepresentationRequest", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
         }
 
         v10 = +[MessageContentRepresentationRequest signpostLog];
-        v11 = [a1 signpostID];
-        if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+        signpostID2 = [self signpostID];
+        if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
         {
-          v12 = [a1 itemID];
+          itemID2 = [self itemID];
           *buf = 138543362;
-          v42 = v12;
-          _os_signpost_emit_with_name_impl(&dword_2149C9000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "MessageContentRepresentationRequest", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
+          v42 = itemID2;
+          _os_signpost_emit_with_name_impl(&dword_2149C9000, v10, OS_SIGNPOST_INTERVAL_BEGIN, signpostID2, "MessageContentRepresentationRequest", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
         }
 
         v13 = +[MessageContentRepresentationRequest signpostLog];
-        v14 = [a1 signpostID];
-        if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
+        signpostID3 = [self signpostID];
+        if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
         {
-          v15 = [a1 itemID];
+          itemID3 = [self itemID];
           *buf = 138543362;
-          v42 = v15;
-          _os_signpost_emit_with_name_impl(&dword_2149C9000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v14, "MessageContentRepresentationRequestFailed", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
+          v42 = itemID3;
+          _os_signpost_emit_with_name_impl(&dword_2149C9000, v13, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "MessageContentRepresentationRequestFailed", "itemID=%{signpost.description:attribute,public}@", buf, 0xCu);
         }
 
-        v16 = [a1 messageFuture];
-        v17 = [v16 resultIfAvailable];
-        v18 = v17 == 0;
+        messageFuture = [self messageFuture];
+        resultIfAvailable = [messageFuture resultIfAvailable];
+        v18 = resultIfAvailable == 0;
 
         if (v18)
         {
@@ -340,13 +340,13 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             v27 = objc_opt_class();
-            v28 = [a1 itemID];
+            itemID4 = [self itemID];
             *buf = 138412802;
             v42 = v27;
             v43 = 2048;
-            v44 = a1;
+            selfCopy3 = self;
             v45 = 2114;
-            v46 = v28;
+            v46 = itemID4;
             _os_log_error_impl(&dword_2149C9000, v19, OS_LOG_TYPE_ERROR, "<%@: %p> Issuing content request for message with unavailable message future %{public}@", buf, 0x20u);
           }
         }
@@ -357,35 +357,35 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             v20 = objc_opt_class();
-            v21 = [a1 itemID];
+            itemID5 = [self itemID];
             *buf = 138412802;
             v42 = v20;
             v43 = 2048;
-            v44 = a1;
+            selfCopy3 = self;
             v45 = 2114;
-            v46 = v21;
+            v46 = itemID5;
             _os_log_impl(&dword_2149C9000, v19, OS_LOG_TYPE_DEFAULT, "<%@: %p> Issuing content request for message %{public}@", buf, 0x20u);
           }
         }
 
         v22 = +[MessageContentRepresentationRequest defaultScheduler];
-        v23 = [a1 itemID];
-        objc_initWeak(buf, a1);
+        itemID6 = [self itemID];
+        objc_initWeak(buf, self);
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __80__MessageContentRepresentationRequest__issueMessageContentRepresentationRequest__block_invoke;
         v38[3] = &unk_278181808;
         objc_copyWeak(&v40, buf);
-        v24 = v23;
+        v24 = itemID6;
         v39 = v24;
-        v25 = [v16 onScheduler:v22 then:v38];
+        v25 = [messageFuture onScheduler:v22 then:v38];
         v36[0] = MEMORY[0x277D85DD0];
         v36[1] = 3221225472;
         v36[2] = __80__MessageContentRepresentationRequest__issueMessageContentRepresentationRequest__block_invoke_3;
         v36[3] = &unk_278181830;
         objc_copyWeak(&v37, buf);
         [v25 addSuccessBlock:v36];
-        objc_initWeak(&location, v2);
+        objc_initWeak(&location, promise);
         v29 = MEMORY[0x277D85DD0];
         v30 = 3221225472;
         v31 = __80__MessageContentRepresentationRequest__issueMessageContentRepresentationRequest__block_invoke_95;
@@ -393,8 +393,8 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
         objc_copyWeak(&v33, buf);
         objc_copyWeak(&v34, &location);
         [v25 addFailureBlock:&v29];
-        [v2 finishWithFuture:v25, v29, v30, v31, v32];
-        [*(a1 + 16) addCancelable:v2];
+        [promise finishWithFuture:v25, v29, v30, v31, v32];
+        [*(self + 16) addCancelable:promise];
         objc_destroyWeak(&v34);
         objc_destroyWeak(&v33);
         objc_destroyWeak(&location);
@@ -407,18 +407,18 @@ id __64__MessageContentRepresentationRequest_updateItemID_messageList___block_in
       }
     }
 
-    v2 = +[MessageContentRepresentationRequest log];
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    promise = +[MessageContentRepresentationRequest log];
+    if (os_log_type_enabled(promise, OS_LOG_TYPE_DEFAULT))
     {
       v3 = objc_opt_class();
-      v4 = [a1 itemID];
+      itemID7 = [self itemID];
       *buf = 138412802;
       v42 = v3;
       v43 = 2048;
-      v44 = a1;
+      selfCopy3 = self;
       v45 = 2114;
-      v46 = v4;
-      _os_log_impl(&dword_2149C9000, v2, OS_LOG_TYPE_DEFAULT, "<%@: %p> Content request for message %{public}@ already issued", buf, 0x20u);
+      v46 = itemID7;
+      _os_log_impl(&dword_2149C9000, promise, OS_LOG_TYPE_DEFAULT, "<%@: %p> Content request for message %{public}@ already issued", buf, 0x20u);
     }
 
 LABEL_22:
@@ -626,13 +626,13 @@ LABEL_2:
   v8 = *MEMORY[0x277D85DE8];
   ++self->_retryAttempt;
   v3 = +[MessageContentRepresentationRequest signpostLog];
-  v4 = [(MessageContentRepresentationRequest *)self signpostID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v3))
+  signpostID = [(MessageContentRepresentationRequest *)self signpostID];
+  if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v3))
   {
     retryAttempt_low = LOBYTE(self->_retryAttempt);
     v7[0] = 67240192;
     v7[1] = retryAttempt_low;
-    _os_signpost_emit_with_name_impl(&dword_2149C9000, v3, OS_SIGNPOST_EVENT, v4, "MessageContentRepresentationRequest", "retry-attempt=%{signpost.description:attribute,public}hhu", v7, 8u);
+    _os_signpost_emit_with_name_impl(&dword_2149C9000, v3, OS_SIGNPOST_EVENT, signpostID, "MessageContentRepresentationRequest", "retry-attempt=%{signpost.description:attribute,public}hhu", v7, 8u);
   }
 
   [(MessageContentRepresentationRequest *)self start];
@@ -641,8 +641,8 @@ LABEL_2:
 
 - (id)resultIfAvailable
 {
-  v2 = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
-  v3 = [v2 resultIfAvailable:0];
+  contentRepresentationFuture = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
+  v3 = [contentRepresentationFuture resultIfAvailable:0];
 
   return v3;
 }
@@ -650,33 +650,33 @@ LABEL_2:
 - (id)waitForResult
 {
   [(MessageContentRepresentationRequest *)self start];
-  v3 = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
-  v4 = [v3 result:0];
+  contentRepresentationFuture = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
+  v4 = [contentRepresentationFuture result:0];
 
   return v4;
 }
 
 - (BOOL)hasStarted
 {
-  v2 = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
-  v3 = v2 != 0;
+  contentRepresentationFuture = [(MessageContentRepresentationRequest *)self contentRepresentationFuture];
+  v3 = contentRepresentationFuture != 0;
 
   return v3;
 }
 
 - (BOOL)isFinished
 {
-  v2 = [(MessageContentRepresentationRequest *)self resultIfAvailable];
-  v3 = v2 != 0;
+  resultIfAvailable = [(MessageContentRepresentationRequest *)self resultIfAvailable];
+  v3 = resultIfAvailable != 0;
 
   return v3;
 }
 
 - (unint64_t)state
 {
-  v3 = [(MessageContentRepresentationRequest *)self resultIfAvailable];
+  resultIfAvailable = [(MessageContentRepresentationRequest *)self resultIfAvailable];
 
-  if (v3)
+  if (resultIfAvailable)
   {
     return 2;
   }
@@ -693,15 +693,15 @@ LABEL_2:
   }
 }
 
-- (id)onScheduler:(id)a3 addLoadObserver:(id)a4
+- (id)onScheduler:(id)scheduler addLoadObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  observerCopy = observer;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__MessageContentRepresentationRequest_onScheduler_addLoadObserver___block_invoke;
   aBlock[3] = &unk_278181880;
-  v8 = v7;
+  v8 = observerCopy;
   v22 = v8;
   v9 = _Block_copy(aBlock);
   v16 = MEMORY[0x277D85DD0];
@@ -712,7 +712,7 @@ LABEL_2:
   v20 = v10;
   v11 = _Block_copy(&v16);
   v12 = [MEMORY[0x277D07188] observerWithResultBlock:v11 completionBlock:0 failureBlock:{v9, v16, v17, v18, v19}];
-  v13 = [(EFObservable *)self->_contentObservable observeOn:v6];
+  v13 = [(EFObservable *)self->_contentObservable observeOn:schedulerCopy];
   v14 = [v13 subscribe:v12];
 
   [(EFManualCancelationToken *)self->_cancelationToken addCancelable:v14];
@@ -749,29 +749,29 @@ void __67__MessageContentRepresentationRequest_onScheduler_addLoadObserver___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)addLoadObserver:(id)a3
+- (id)addLoadObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D071B8] immediateScheduler];
-  v6 = [(MessageContentRepresentationRequest *)self onScheduler:v5 addLoadObserver:v4];
+  observerCopy = observer;
+  immediateScheduler = [MEMORY[0x277D071B8] immediateScheduler];
+  v6 = [(MessageContentRepresentationRequest *)self onScheduler:immediateScheduler addLoadObserver:observerCopy];
 
   return v6;
 }
 
-- (void)_resetFuture:(uint64_t)a1
+- (void)_resetFuture:(uint64_t)future
 {
-  if (a1)
+  if (future)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 68));
-    v4 = *(a1 + 40);
+    os_unfair_lock_lock((future + 68));
+    v4 = *(future + 40);
 
     if (v4 == v3)
     {
-      *(a1 + 40) = 0;
+      *(future + 40) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 68));
+    os_unfair_lock_unlock((future + 68));
   }
 }
 

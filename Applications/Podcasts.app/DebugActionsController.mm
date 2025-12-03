@@ -18,32 +18,32 @@
 
 - (void)sendRandomNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_100250970(&unk_1004E7248, sub_10025282C, &unk_1004E7260);
 }
 
 - (void)sendMostRecentNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_100250970(&unk_1004E71A8, sub_100252818, &unk_1004E71C0);
 }
 
 - (void)sendOldestNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_100250970(&unk_1004E7108, sub_100252808, &unk_1004E7120);
 }
 
 - (void)clearAll
 {
-  v2 = [objc_opt_self() currentNotificationCenter];
-  [v2 removeAllDeliveredNotifications];
-  [v2 removeAllPendingNotificationRequests];
+  currentNotificationCenter = [objc_opt_self() currentNotificationCenter];
+  [currentNotificationCenter removeAllDeliveredNotifications];
+  [currentNotificationCenter removeAllPendingNotificationRequests];
 }
 
 - (void)presentDebugSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_100250EA4();
 }
 

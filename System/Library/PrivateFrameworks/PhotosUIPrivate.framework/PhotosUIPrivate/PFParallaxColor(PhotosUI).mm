@@ -15,7 +15,7 @@
 {
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
-  [a1 chroma];
+  [self chroma];
   PXMapValueFromRangeToNewRange();
 
   return PXClamp();
@@ -25,7 +25,7 @@
 {
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
-  [a1 luma];
+  [self luma];
   PXMapValueFromRangeToNewRange();
 
   return PXClamp();
@@ -35,7 +35,7 @@
 {
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
-  [a1 tone];
+  [self tone];
   PXMapValueFromRangeToNewRange();
 
   return PXClamp();
@@ -44,9 +44,9 @@
 - (uint64_t)pu_UIColor
 {
   v1 = MEMORY[0x1E69DC888];
-  v2 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return [v1 colorWithCGColor:v2];
+  return [v1 colorWithCGColor:cGColor];
 }
 
 + (id)pu_parallaxColorWithLuma:()PhotosUI hue:chromaVariation:
@@ -54,7 +54,7 @@
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
   PXMapValueFromRangeToNewRange();
-  v5 = [objc_alloc(MEMORY[0x1E69C0750]) initWithLuma:a1 hue:a2 chroma:v4];
+  v5 = [objc_alloc(MEMORY[0x1E69C0750]) initWithLuma:self hue:a2 chroma:v4];
 
   return v5;
 }
@@ -64,7 +64,7 @@
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
   PXMapValueFromRangeToNewRange();
-  v5 = [objc_alloc(MEMORY[0x1E69C0750]) initWithLuma:v4 hue:a1 chroma:a2];
+  v5 = [objc_alloc(MEMORY[0x1E69C0750]) initWithLuma:v4 hue:self chroma:a2];
 
   return v5;
 }
@@ -74,7 +74,7 @@
   [MEMORY[0x1E69BDE90] lowKeyTone];
   [MEMORY[0x1E69BDE90] highKeyTone];
   PXMapValueFromRangeToNewRange();
-  v3 = [objc_alloc(MEMORY[0x1E69C0750]) initWithHue:a1 tone:v2];
+  v3 = [objc_alloc(MEMORY[0x1E69C0750]) initWithHue:self tone:v2];
 
   return v3;
 }

@@ -1,28 +1,28 @@
 @interface PRUISModalSceneSettings
 - (BOOL)shouldInheritHostDisplayConfiguration;
 - (PRUISModalEntryPoint)entryPoint;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PRUISModalSceneSettings
 
 - (PRUISModalEntryPoint)entryPoint
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2606278161];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2606278161];
 
   return v3;
 }
 
 - (BOOL)shouldInheritHostDisplayConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2606278162];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2606278162];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PRUISMutableModalSceneSettings alloc];
 

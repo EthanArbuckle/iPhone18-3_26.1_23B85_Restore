@@ -1,9 +1,9 @@
 @interface MapsSiriContextProvider
 + (id)sharedContextProvider;
-- (id)_contextFromProvider:(id)a3;
-- (id)_siriMapItemFromConvertibleObject:(id)a3;
-- (id)_siriMapViewportWithRegion:(id)a3;
-- (id)_siriSearchContextWithResults:(id)a3 selectedIndex:(unint64_t)a4;
+- (id)_contextFromProvider:(id)provider;
+- (id)_siriMapItemFromConvertibleObject:(id)object;
+- (id)_siriMapViewportWithRegion:(id)region;
+- (id)_siriSearchContextWithResults:(id)results selectedIndex:(unint64_t)index;
 - (id)getCurrentContext;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)_siriMapItemFromConvertibleObject:(id)a3
+- (id)_siriMapItemFromConvertibleObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(SALocalSearchMapItem);
-  [v3 coordinate];
+  [objectCopy coordinate];
   v6 = v5;
   v8 = v7;
   v9 = objc_alloc_init(SALocation);
@@ -36,37 +36,37 @@
   [v9 setLongitude:v11];
 
   [v4 setLocation:v9];
-  v12 = [v3 title];
-  [v4 setLabel:v12];
+  title = [objectCopy title];
+  [v4 setLabel:title];
 
-  v13 = [v3 mapItem];
-  v14 = [v13 _placeDataAsData];
-  if (v14)
+  mapItem = [objectCopy mapItem];
+  _placeDataAsData = [mapItem _placeDataAsData];
+  if (_placeDataAsData)
   {
-    [v4 setPlaceData2:v14];
+    [v4 setPlaceData2:_placeDataAsData];
   }
 
-  v15 = [v13 _detourInfo];
-  v16 = [v15 detourInfoAsData];
+  _detourInfo = [mapItem _detourInfo];
+  detourInfoAsData = [_detourInfo detourInfoAsData];
 
-  if (v16)
+  if (detourInfoAsData)
   {
-    [v4 setResultDetourInfoData:v16];
+    [v4 setResultDetourInfoData:detourInfoAsData];
   }
 
-  if ([v3 isDynamicCurrentLocation])
+  if ([objectCopy isDynamicCurrentLocation])
   {
     [v4 setDetailType:SALocalSearchMapItemMapItemTypeCURRENT_LOCATIONValue];
   }
 
-  if ([v3 businessID])
+  if ([objectCopy businessID])
   {
     v17 = objc_alloc_init(SALocalSearchBusiness2);
-    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"urn:places:%lld", [v3 businessID]);
+    v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"urn:places:%lld", [objectCopy businessID]);
     v19 = [NSURL URLWithString:v18];
 
     [v17 setIdentifier:v19];
-    v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 localSearchProviderID]);
+    v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [objectCopy localSearchProviderID]);
     [v4 setLocalSearchProviderId:v20];
 
     [v4 setDetailType:SALocalSearchMapItemMapItemTypeBUSINESS_ITEMValue];
@@ -76,18 +76,18 @@
   return v4;
 }
 
-- (id)_siriSearchContextWithResults:(id)a3 selectedIndex:(unint64_t)a4
+- (id)_siriSearchContextWithResults:(id)results selectedIndex:(unint64_t)index
 {
-  v6 = a3;
-  if ([v6 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
     v7 = objc_alloc_init(SALocalSearchMapItemList);
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [resultsCopy count]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v6;
+    v9 = resultsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -115,9 +115,9 @@
     v15 = [v8 copy];
     [v7 setDomainObjects:v15];
 
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL && [v9 count] > a4)
+    if (index != 0x7FFFFFFFFFFFFFFFLL && [v9 count] > index)
     {
-      v16 = [NSNumber numberWithUnsignedInteger:a4];
+      v16 = [NSNumber numberWithUnsignedInteger:index];
       [v7 setSelectedIndex:v16];
     }
   }
@@ -130,17 +130,17 @@
   return v7;
 }
 
-- (id)_siriMapViewportWithRegion:(id)a3
+- (id)_siriMapViewportWithRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = objc_alloc_init(SALocalSearchMapViewport);
-  [v3 eastLng];
+  [regionCopy eastLng];
   [v4 setEastLongitude:?];
-  [v3 westLng];
+  [regionCopy westLng];
   [v4 setWestLongitude:?];
-  [v3 northLat];
+  [regionCopy northLat];
   [v4 setNorthLatitude:?];
-  [v3 southLat];
+  [regionCopy southLat];
   v6 = v5;
 
   [v4 setSouthLatitude:v6];
@@ -148,27 +148,27 @@
   return v4;
 }
 
-- (id)_contextFromProvider:(id)a3
+- (id)_contextFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = +[NSMutableArray array];
-  v6 = [v4 mapView];
-  v7 = [v6 mapRegion];
-  v8 = [(MapsSiriContextProvider *)self _siriMapViewportWithRegion:v7];
+  mapView = [providerCopy mapView];
+  mapRegion = [mapView mapRegion];
+  v8 = [(MapsSiriContextProvider *)self _siriMapViewportWithRegion:mapRegion];
 
   if (v8)
   {
     [v5 addObject:v8];
   }
 
-  v9 = [v4 searchResults];
-  v10 = [NSMutableArray arrayWithArray:v9];
+  searchResults = [providerCopy searchResults];
+  v10 = [NSMutableArray arrayWithArray:searchResults];
 
-  v11 = [v4 selectedResult];
-  v12 = [v4 selectedPOI];
-  if (v11)
+  selectedResult = [providerCopy selectedResult];
+  selectedPOI = [providerCopy selectedPOI];
+  if (selectedResult)
   {
-    v13 = [v10 indexOfObject:v11];
+    v13 = [v10 indexOfObject:selectedResult];
   }
 
   else
@@ -176,14 +176,14 @@
     v13 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v12)
+  if (selectedPOI)
   {
-    v14 = v12;
+    v14 = selectedPOI;
   }
 
   else
   {
-    v14 = v11;
+    v14 = selectedResult;
   }
 
   v15 = v14;

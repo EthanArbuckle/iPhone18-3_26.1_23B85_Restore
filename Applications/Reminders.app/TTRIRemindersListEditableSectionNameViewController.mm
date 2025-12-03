@@ -1,9 +1,9 @@
 @interface TTRIRemindersListEditableSectionNameViewController
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (_TtC9Reminders50TTRIRemindersListEditableSectionNameViewController)init;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation TTRIRemindersListEditableSectionNameViewController
@@ -15,27 +15,27 @@
   return result;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   LOBYTE(self) = sub_100277380();
 
   return self & 1;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_100276E20(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_100276E20(editingCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   if (static String._unconditionallyBridgeFromObjectiveC(_:)() == 10 && v6 == 0xE100000000000000)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -60,11 +60,11 @@ LABEL_7:
   return v9;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002770D8(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1002770D8(editingCopy);
 }
 
 @end

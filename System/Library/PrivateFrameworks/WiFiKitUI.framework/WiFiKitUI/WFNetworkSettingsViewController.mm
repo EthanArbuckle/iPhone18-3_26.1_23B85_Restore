@@ -2,11 +2,11 @@
 - (BOOL)_isAutoJoinConfigurable;
 - (BOOL)_isChinaDevice;
 - (BOOL)_isIPv4ConfigAuto;
-- (BOOL)_shouldShowIPv6ForConfig:(id)a3;
+- (BOOL)_shouldShowIPv6ForConfig:(id)config;
 - (BOOL)_shouldShowRandomConfigSwith;
 - (BOOL)_showDemoModeFeatureDisabledAlert;
 - (BOOL)_showRecommendationSupportLink;
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
 - (UISwitch)autoJoinSwitch;
 - (UISwitch)autoLoginSwitch;
 - (UISwitch)privacyProxyEnabledSwitch;
@@ -15,16 +15,16 @@
 - (UITableViewCell)networkQualityCell;
 - (WFHyperlinkFooterView)linkFooterView;
 - (WFHyperlinkFooterView)networkQualityFooterView;
-- (WFNetworkSettingsViewController)initWithConfig:(id)a3 detailsContext:(id)a4 hardwareMACAddress:(id)a5;
-- (WFNetworkSettingsViewController)initWithConfig:(id)a3 detailsContext:(id)a4 hardwareMACAddress:(id)a5 appearanceProxy:(id)a6;
+- (WFNetworkSettingsViewController)initWithConfig:(id)config detailsContext:(id)context hardwareMACAddress:(id)address;
+- (WFNetworkSettingsViewController)initWithConfig:(id)config detailsContext:(id)context hardwareMACAddress:(id)address appearanceProxy:(id)proxy;
 - (WFNetworkSettingsViewControllerDataCoordinator)dataCoordinator;
 - (WFNetworkSettingsViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 estimatedHeightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view estimatedHeightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_WiFiModeFooterView;
-- (id)_autoJoinRowsFromContext:(id)a3;
-- (id)_detailFooterForMode:(unint64_t)a3;
-- (id)_displayStringForDisableMode:(int64_t)a3;
+- (id)_autoJoinRowsFromContext:(id)context;
+- (id)_detailFooterForMode:(unint64_t)mode;
+- (id)_displayStringForDisableMode:(int64_t)mode;
 - (id)_lowDataModeFooterView;
 - (id)_macAddressToDisplay;
 - (id)_outrankedFooterView;
@@ -34,124 +34,124 @@
 - (id)_randomAddressToDisplay;
 - (id)_randomMACFooterTextToDisplay;
 - (id)_randomMACFooterView;
-- (id)_sectionsFromConfig:(id)a3 context:(id)a4;
-- (id)_selectedPrivateModeForOption:(unint64_t)a3;
-- (id)_stringForSettingsSection:(int64_t)a3;
+- (id)_sectionsFromConfig:(id)config context:(id)context;
+- (id)_selectedPrivateModeForOption:(unint64_t)option;
+- (id)_stringForSettingsSection:(int64_t)section;
 - (id)_touchIDPromptForViewingPasswords;
 - (id)_wifiPasswordContextOptions;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)_disableModeFromKey:(id)a3;
-- (int64_t)_sectionTypeAtSection:(int64_t)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_selectedPrivateModeForString:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_autoJoinSwitchChanged:(id)a3;
-- (void)_autoLoginSwitchChanged:(id)a3;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)_disableModeFromKey:(id)key;
+- (int64_t)_sectionTypeAtSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_selectedPrivateModeForString:(id)string;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_autoJoinSwitchChanged:(id)changed;
+- (void)_autoLoginSwitchChanged:(id)changed;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_didDismissDetailViewController;
 - (void)_didStartPresentingDetailViewController;
-- (void)_fillNetworkQualityCell:(id)a3;
-- (void)_httpProxyAuthChanged:(id)a3;
-- (void)_httpProxyConfigChanged:(int64_t)a3;
-- (void)_logSections:(id)a3;
+- (void)_fillNetworkQualityCell:(id)cell;
+- (void)_httpProxyAuthChanged:(id)changed;
+- (void)_httpProxyConfigChanged:(int64_t)changed;
+- (void)_logSections:(id)sections;
 - (void)_networkQualityOpenURL;
-- (void)_openNetworkQualityDetails:(id)a3;
-- (void)_openRecommendationsLink:(id)a3;
-- (void)_presentDetailViewController:(id)a3;
-- (void)_presentRenewLeaseAlertWithSourceRect:(CGRect)a3;
-- (void)_privacyProxyEnabledSwitchChanged:(id)a3;
+- (void)_openNetworkQualityDetails:(id)details;
+- (void)_openRecommendationsLink:(id)link;
+- (void)_presentDetailViewController:(id)controller;
+- (void)_presentRenewLeaseAlertWithSourceRect:(CGRect)rect;
+- (void)_privacyProxyEnabledSwitchChanged:(id)changed;
 - (void)_promptForgetNetwork;
 - (void)_promptOverrideWiFiOutrankedDev;
 - (void)_pushPrivateModeSelectionViewController;
 - (void)_reloadNetworkQuality;
 - (void)_runNetworkQuality;
-- (void)_saveConfig:(id)a3;
-- (void)_saveDataModeSwitchChanged:(id)a3;
+- (void)_saveConfig:(id)config;
+- (void)_saveDataModeSwitchChanged:(id)changed;
 - (void)_setupAccessoryHeader;
 - (void)_updateManagedNetworkHeader;
-- (void)_updatePrivateAddressMode:(unint64_t)a3;
-- (void)_updateWiFiEMode:(int64_t)a3;
-- (void)contentCachesContext:(id)a3 didUpdateNumOfContentCaches:(int)a4;
+- (void)_updatePrivateAddressMode:(unint64_t)mode;
+- (void)_updateWiFiEMode:(int64_t)mode;
+- (void)contentCachesContext:(id)context didUpdateNumOfContentCaches:(int)caches;
 - (void)dealloc;
 - (void)donePressed;
-- (void)refreshConfig:(id)a3;
-- (void)scrollToCell:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
+- (void)refreshConfig:(id)config;
+- (void)scrollToCell:(unint64_t)cell;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation WFNetworkSettingsViewController
 
-- (WFNetworkSettingsViewController)initWithConfig:(id)a3 detailsContext:(id)a4 hardwareMACAddress:(id)a5
+- (WFNetworkSettingsViewController)initWithConfig:(id)config detailsContext:(id)context hardwareMACAddress:(id)address
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  addressCopy = address;
+  contextCopy = context;
+  configCopy = config;
   v11 = +[WFAppearanceProxy defaultAppearanceProxy];
-  v12 = [(WFNetworkSettingsViewController *)self initWithConfig:v10 detailsContext:v9 hardwareMACAddress:v8 appearanceProxy:v11];
+  v12 = [(WFNetworkSettingsViewController *)self initWithConfig:configCopy detailsContext:contextCopy hardwareMACAddress:addressCopy appearanceProxy:v11];
 
   return v12;
 }
 
-- (WFNetworkSettingsViewController)initWithConfig:(id)a3 detailsContext:(id)a4 hardwareMACAddress:(id)a5 appearanceProxy:(id)a6
+- (WFNetworkSettingsViewController)initWithConfig:(id)config detailsContext:(id)context hardwareMACAddress:(id)address appearanceProxy:(id)proxy
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  contextCopy = context;
+  addressCopy = address;
+  proxyCopy = proxy;
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (v14 && (v35.receiver = self, v35.super_class = WFNetworkSettingsViewController, v15 = -[WFNetworkSettingsViewController initWithStyle:](&v35, sel_initWithStyle_, [v13 tableViewStyle]), self = v15, v10) && v15)
+  if (v14 && (v35.receiver = self, v35.super_class = WFNetworkSettingsViewController, v15 = -[WFNetworkSettingsViewController initWithStyle:](&v35, sel_initWithStyle_, [proxyCopy tableViewStyle]), self = v15, configCopy) && v15)
   {
-    v16 = [v10 copy];
+    v16 = [configCopy copy];
     config = self->_config;
     self->_config = v16;
 
-    objc_storeStrong(&self->_context, a4);
-    objc_storeStrong(&self->_hardwareMACAddress, a5);
+    objc_storeStrong(&self->_context, context);
+    objc_storeStrong(&self->_hardwareMACAddress, address);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v11 privateAddressMode];
+      privateAddressMode = [contextCopy privateAddressMode];
     }
 
     else
     {
-      v18 = 0;
+      privateAddressMode = 0;
     }
 
-    self->_privateAddressMode = v18;
-    v19 = [(WFDetailsProviderContext *)self->_context randomMACAddress];
+    self->_privateAddressMode = privateAddressMode;
+    randomMACAddress = [(WFDetailsProviderContext *)self->_context randomMACAddress];
     randomMACAddress = self->_randomMACAddress;
-    self->_randomMACAddress = v19;
+    self->_randomMACAddress = randomMACAddress;
 
-    self->_randomFeatureEnabled = ([v11 requestedFields] & 0x400) != 0;
-    objc_storeStrong(&self->_appearanceProxy, a6);
+    self->_randomFeatureEnabled = ([contextCopy requestedFields] & 0x400) != 0;
+    objc_storeStrong(&self->_appearanceProxy, proxy);
     self->_isDeviceInDemoMode = 0;
     self->_isRandomMACManageFeatureEnabled = _os_feature_enabled_impl();
     self->_isRotatingTurnedOnForMigratedNetwork = 0;
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(WFDetailsProviderContext *)self->_context scrollToCellType];
-      self->_scrollToCellType = v21;
-      [(WFNetworkSettingsViewController *)self scrollToCell:v21];
+      scrollToCellType = [(WFDetailsProviderContext *)self->_context scrollToCellType];
+      self->_scrollToCellType = scrollToCellType;
+      [(WFNetworkSettingsViewController *)self scrollToCell:scrollToCellType];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [(WFNetworkSettingsViewController *)self context];
-      v23 = [v22 contentCachesContext];
-      [v23 setDelegate:self];
+      context = [(WFNetworkSettingsViewController *)self context];
+      contentCachesContext = [context contentCachesContext];
+      [contentCachesContext setDelegate:self];
     }
 
     if (objc_opt_class())
     {
-      v24 = [MEMORY[0x277D29510] sharedInstance];
+      mEMORY[0x277D29510] = [MEMORY[0x277D29510] sharedInstance];
       v34 = 0;
-      v25 = [v24 isStoreDemoModeEnabled:&v34];
+      v25 = [mEMORY[0x277D29510] isStoreDemoModeEnabled:&v34];
       v26 = v34;
       self->_isDeviceInDemoMode = v25;
 
@@ -182,13 +182,13 @@
 
     if (objc_opt_respondsToSelector())
     {
-      self->_allowViewPassword = [v11 isCredentialsVisible];
+      self->_allowViewPassword = [contextCopy isCredentialsVisible];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v30 = [v11 daDevice];
-      self->_accessory = v30 != 0;
+      daDevice = [contextCopy daDevice];
+      self->_accessory = daDevice != 0;
     }
 
     self->_credentailCellTapped = 0;
@@ -210,63 +210,63 @@
   v26.receiver = self;
   v26.super_class = WFNetworkSettingsViewController;
   [(WFNetworkSettingsViewController *)&v26 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
 
-  v5 = [(WFNetworkSettingsViewController *)self backgroundColor];
+  backgroundColor = [(WFNetworkSettingsViewController *)self backgroundColor];
 
-  if (v5)
+  if (backgroundColor)
   {
-    v6 = [(WFNetworkSettingsViewController *)self backgroundColor];
-    v7 = [(WFNetworkSettingsViewController *)self tableView];
-    [v7 setBackgroundColor:v6];
+    backgroundColor2 = [(WFNetworkSettingsViewController *)self backgroundColor];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView setBackgroundColor:backgroundColor2];
   }
 
-  v8 = [(WFNetworkSettingsViewController *)self context];
-  v9 = [(WFNetworkSettingsViewController *)self _autoJoinRowsFromContext:v8];
+  context = [(WFNetworkSettingsViewController *)self context];
+  v9 = [(WFNetworkSettingsViewController *)self _autoJoinRowsFromContext:context];
   [(WFNetworkSettingsViewController *)self setAutoJoinSectionRows:v9];
 
-  v10 = [(WFNetworkSettingsViewController *)self config];
-  v11 = [(WFNetworkSettingsViewController *)self context];
-  v12 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:v10 context:v11];
+  config = [(WFNetworkSettingsViewController *)self config];
+  context2 = [(WFNetworkSettingsViewController *)self context];
+  v12 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:config context:context2];
   [(WFNetworkSettingsViewController *)self setSections:v12];
 
-  v13 = [(WFNetworkSettingsViewController *)self sections];
-  [(WFNetworkSettingsViewController *)self _logSections:v13];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  [(WFNetworkSettingsViewController *)self _logSections:sections];
 
   v14 = [WFNetworkSettingsCellFactory alloc];
-  v15 = [(WFNetworkSettingsViewController *)self tableView];
-  v16 = [(WFNetworkSettingsCellFactory *)v14 initWithTableView:v15];
+  tableView2 = [(WFNetworkSettingsViewController *)self tableView];
+  v16 = [(WFNetworkSettingsCellFactory *)v14 initWithTableView:tableView2];
   [(WFNetworkSettingsViewController *)self setCellFactory:v16];
 
-  v17 = [(WFNetworkSettingsViewController *)self config];
-  v18 = [v17 displayFriendlyName];
-  [(WFNetworkSettingsViewController *)self setTitle:v18];
+  config2 = [(WFNetworkSettingsViewController *)self config];
+  displayFriendlyName = [config2 displayFriendlyName];
+  [(WFNetworkSettingsViewController *)self setTitle:displayFriendlyName];
 
   if ([MEMORY[0x277D75418] currentIsIPad])
   {
-    v19 = [(WFNetworkSettingsViewController *)self tableView];
-    [v19 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
+    tableView3 = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView3 _setSectionContentInset:{0.0, 20.0, 0.0, 20.0}];
   }
 
   v20 = *MEMORY[0x277D76F30];
-  v21 = [(WFNetworkSettingsViewController *)self tableView];
-  [v21 setRowHeight:v20];
+  tableView4 = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView4 setRowHeight:v20];
 
-  v22 = [(WFNetworkSettingsViewController *)self tableView];
-  [v22 setEstimatedRowHeight:v20];
+  tableView5 = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView5 setEstimatedRowHeight:v20];
 
-  v23 = [(WFNetworkSettingsViewController *)self tableView];
-  [v23 setSectionFooterHeight:v20];
+  tableView6 = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView6 setSectionFooterHeight:v20];
 
-  v24 = [(WFNetworkSettingsViewController *)self tableView];
-  [v24 setEstimatedSectionHeaderHeight:0.0];
+  tableView7 = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView7 setEstimatedSectionHeaderHeight:0.0];
 
-  v25 = [(WFNetworkSettingsViewController *)self tableView];
-  [v25 setEstimatedSectionFooterHeight:v20];
+  tableView8 = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView8 setEstimatedSectionFooterHeight:v20];
 
   [(WFNetworkSettingsViewController *)self _updateManagedNetworkHeader];
   if (_os_feature_enabled_impl())
@@ -277,39 +277,39 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WFNetworkSettingsViewController;
   [(WFNetworkSettingsViewController *)&v4 dealloc];
 }
 
-- (void)refreshConfig:(id)a3
+- (void)refreshConfig:(id)config
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNetworkSettingsConfig *)self->_config isEqual:v4];
-  if (!v4 || v5)
+  configCopy = config;
+  v5 = [(WFNetworkSettingsConfig *)self->_config isEqual:configCopy];
+  if (!configCopy || v5)
   {
-    v14 = WFLogForCategory(0);
+    tableView = WFLogForCategory(0);
     v16 = OSLogForWFLogLevel(4uLL);
-    if (WFCurrentLogLevel() >= 4 && v14 && os_log_type_enabled(v14, v16))
+    if (WFCurrentLogLevel() >= 4 && tableView && os_log_type_enabled(tableView, v16))
     {
       v17 = 136315138;
-      v18 = "[WFNetworkSettingsViewController refreshConfig:]";
-      _os_log_impl(&dword_273FB9000, v14, v16, "%s- config was unchanged.", &v17, 0xCu);
+      configCopy2 = "[WFNetworkSettingsViewController refreshConfig:]";
+      _os_log_impl(&dword_273FB9000, tableView, v16, "%s- config was unchanged.", &v17, 0xCu);
     }
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [configCopy copy];
     [(WFNetworkSettingsViewController *)self setConfig:v6];
 
-    v7 = [(WFNetworkSettingsViewController *)self config];
-    v8 = [(WFNetworkSettingsViewController *)self context];
-    v9 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:v7 context:v8];
+    config = [(WFNetworkSettingsViewController *)self config];
+    context = [(WFNetworkSettingsViewController *)self context];
+    v9 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:config context:context];
     [(WFNetworkSettingsViewController *)self setSections:v9];
 
     v10 = WFLogForCategory(0);
@@ -318,279 +318,279 @@
     {
       config = self->_config;
       v17 = 138412290;
-      v18 = config;
+      configCopy2 = config;
       _os_log_impl(&dword_273FB9000, v10, v11, "Refreshed settings config %@", &v17, 0xCu);
     }
 
-    v13 = [(WFNetworkSettingsViewController *)self sections];
-    [(WFNetworkSettingsViewController *)self _logSections:v13];
+    sections = [(WFNetworkSettingsViewController *)self sections];
+    [(WFNetworkSettingsViewController *)self _logSections:sections];
 
-    v14 = [(WFNetworkSettingsViewController *)self tableView];
-    [v14 reloadData];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView reloadData];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_autoJoinRowsFromContext:(id)a3
+- (id)_autoJoinRowsFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  v7 = [v6 autoJoinConfigurable];
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
+  config = [(WFNetworkSettingsViewController *)self config];
+  autoJoinConfigurable = [config autoJoinConfigurable];
 
-  if (v7)
+  if (autoJoinConfigurable)
   {
-    [v5 addObject:&unk_2883227C8];
+    [array addObject:&unk_2883227C8];
   }
 
-  v8 = [(WFNetworkSettingsViewController *)self config];
-  v9 = [v8 autoLoginConfigurable];
+  config2 = [(WFNetworkSettingsViewController *)self config];
+  autoLoginConfigurable = [config2 autoLoginConfigurable];
 
-  if (v9)
+  if (autoLoginConfigurable)
   {
-    [v5 addObject:&unk_2883227E0];
+    [array addObject:&unk_2883227E0];
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v10 = [v4 username];
-    v11 = [v10 length];
+    username = [contextCopy username];
+    v11 = [username length];
 
     if (v11)
     {
-      [v5 addObject:&unk_2883227F8];
+      [array addObject:&unk_2883227F8];
     }
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v12 = [v4 password];
-    v13 = [v12 length];
+    password = [contextCopy password];
+    v13 = [password length];
 
     if (v13)
     {
-      [v5 addObject:&unk_288322810];
+      [array addObject:&unk_288322810];
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_sectionsFromConfig:(id)a3 context:(id)a4
+- (id)_sectionsFromConfig:(id)config context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  configCopy = config;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   if (![(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v9 = [v6 healthRecommendations];
-    v10 = [v9 count];
+    healthRecommendations = [configCopy healthRecommendations];
+    v10 = [healthRecommendations count];
 
     if (v10)
     {
-      [v8 addObject:&unk_2883227C8];
+      [array addObject:&unk_2883227C8];
     }
 
-    v11 = [(WFNetworkSettingsViewController *)self _portalURL];
+    _portalURL = [(WFNetworkSettingsViewController *)self _portalURL];
 
-    if (v11)
+    if (_portalURL)
     {
-      [v8 addObject:&unk_2883227E0];
+      [array addObject:&unk_2883227E0];
     }
   }
 
-  if ([v6 diagnosable])
+  if ([configCopy diagnosable])
   {
-    [v8 addObject:&unk_288322828];
+    [array addObject:&unk_288322828];
   }
 
-  if (([v7 requestedFields] & 0x1000) != 0 || (objc_msgSend(v7, "requestedFields") & 0x4000) != 0)
+  if (([contextCopy requestedFields] & 0x1000) != 0 || (objc_msgSend(contextCopy, "requestedFields") & 0x4000) != 0)
   {
-    [v8 addObject:&unk_288322840];
+    [array addObject:&unk_288322840];
   }
 
-  if ([v6 joinable])
+  if ([configCopy joinable])
   {
-    [v8 addObject:&unk_2883227F8];
+    [array addObject:&unk_2883227F8];
   }
 
-  if ([v6 forgetable])
+  if ([configCopy forgetable])
   {
-    [v8 addObject:&unk_288322858];
+    [array addObject:&unk_288322858];
   }
 
   if (![(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v12 = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
-    v13 = [v12 count];
+    autoJoinSectionRows = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
+    v13 = [autoJoinSectionRows count];
 
     if (v13)
     {
-      [v8 addObject:&unk_288322810];
+      [array addObject:&unk_288322810];
     }
 
-    if ([v6 saveDataModeConfigurable])
+    if ([configCopy saveDataModeConfigurable])
     {
-      [v8 addObject:&unk_288322870];
+      [array addObject:&unk_288322870];
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 isWifiModeConfigurable])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [contextCopy isWifiModeConfigurable])
     {
-      [v8 addObject:&unk_288322888];
+      [array addObject:&unk_288322888];
     }
 
     if (self->_randomFeatureEnabled)
     {
-      [v8 addObject:&unk_2883228A0];
+      [array addObject:&unk_2883228A0];
     }
 
-    if ([v6 privacyProxyTierStatus])
+    if ([configCopy privacyProxyTierStatus])
     {
-      [v8 addObject:&unk_2883228B8];
+      [array addObject:&unk_2883228B8];
     }
 
-    if ([v6 networkQualityVisible])
+    if ([configCopy networkQualityVisible])
     {
       if (![(WFNetworkSettingsViewController *)self _isChinaDevice])
       {
-        [v6 networkQualityResponsiveness];
+        [configCopy networkQualityResponsiveness];
         if (v14 != 0.0 || (-[WFNetworkSettingsViewController context](self, "context"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isCurrent], v15, v16))
         {
-          [v8 addObject:&unk_2883228D0];
+          [array addObject:&unk_2883228D0];
         }
       }
     }
   }
 
-  [v8 addObject:&unk_2883228E8];
-  if ([(WFNetworkSettingsViewController *)self _shouldShowIPv6ForConfig:v6])
+  [array addObject:&unk_2883228E8];
+  if ([(WFNetworkSettingsViewController *)self _shouldShowIPv6ForConfig:configCopy])
   {
-    [v8 addObject:&unk_288322900];
+    [array addObject:&unk_288322900];
   }
 
-  [v8 addObject:&unk_288322918];
-  if ([v6 httpProxyConfigurable])
+  [array addObject:&unk_288322918];
+  if ([configCopy httpProxyConfigurable])
   {
-    [v8 addObject:&unk_288322930];
+    [array addObject:&unk_288322930];
   }
 
-  if ([v6 manageable])
+  if ([configCopy manageable])
   {
-    [v8 addObject:&unk_288322948];
+    [array addObject:&unk_288322948];
   }
 
-  if ([v6 current])
+  if ([configCopy current])
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v7 contentCachesContext];
-      v18 = [v17 numOfContentCaches];
+      contentCachesContext = [contextCopy contentCachesContext];
+      numOfContentCaches = [contentCachesContext numOfContentCaches];
 
-      if (v18 >= 1)
+      if (numOfContentCaches >= 1)
       {
-        [v8 addObject:&unk_288322960];
+        [array addObject:&unk_288322960];
       }
     }
   }
 
-  return v8;
+  return array;
 }
 
-- (void)_httpProxyConfigChanged:(int64_t)a3
+- (void)_httpProxyConfigChanged:(int64_t)changed
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v5 = [(WFNetworkSettingsViewController *)self config];
-  v6 = [v5 httpProxyConfig];
+  config = [(WFNetworkSettingsViewController *)self config];
+  httpProxyConfig = [config httpProxyConfig];
 
-  if (v6 != a3)
+  if (httpProxyConfig != changed)
   {
-    v7 = [(WFNetworkSettingsViewController *)self config];
-    v8 = [v7 httpProxyConfig];
+    config2 = [(WFNetworkSettingsViewController *)self config];
+    httpProxyConfig2 = [config2 httpProxyConfig];
 
-    v9 = [(WFNetworkSettingsViewController *)self config];
-    v10 = [v9 httpProxyAuthenticationRequired];
+    config3 = [(WFNetworkSettingsViewController *)self config];
+    httpProxyAuthenticationRequired = [config3 httpProxyAuthenticationRequired];
 
-    v11 = [(WFNetworkSettingsViewController *)self config];
-    [v11 setHttpProxyConfig:a3];
+    config4 = [(WFNetworkSettingsViewController *)self config];
+    [config4 setHttpProxyConfig:changed];
 
-    if (a3 != 1 && v10)
+    if (changed != 1 && httpProxyAuthenticationRequired)
     {
-      v12 = [(WFNetworkSettingsViewController *)self config];
-      [v12 setHttpProxyAuthenticationRequired:0];
+      config5 = [(WFNetworkSettingsViewController *)self config];
+      [config5 setHttpProxyAuthenticationRequired:0];
     }
 
-    v13 = [(WFNetworkSettingsViewController *)self sections];
-    v14 = [v13 indexOfObject:&unk_288322930];
+    sections = [(WFNetworkSettingsViewController *)self sections];
+    v14 = [sections indexOfObject:&unk_288322930];
 
-    if (a3 == 2)
+    if (changed == 2)
     {
-      if (v8 == 1)
+      if (httpProxyConfig2 == 1)
       {
-        v33 = [(WFNetworkSettingsViewController *)self tableView];
-        [v33 beginUpdates];
+        tableView = [(WFNetworkSettingsViewController *)self tableView];
+        [tableView beginUpdates];
 
-        v34 = [(WFNetworkSettingsViewController *)self tableView];
+        tableView2 = [(WFNetworkSettingsViewController *)self tableView];
         v35 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:v14];
         v57[0] = v35;
         v36 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:v14];
         v57[1] = v36;
         v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
-        [v34 deleteRowsAtIndexPaths:v37 withRowAnimation:0];
+        [tableView2 deleteRowsAtIndexPaths:v37 withRowAnimation:0];
 
-        if (v10)
+        if (httpProxyAuthenticationRequired)
         {
-          v38 = [(WFNetworkSettingsViewController *)self tableView];
+          tableView3 = [(WFNetworkSettingsViewController *)self tableView];
           v39 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:v14];
           v56[0] = v39;
           v40 = [MEMORY[0x277CCAA70] indexPathForRow:5 inSection:v14];
           v56[1] = v40;
           v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v56 count:2];
-          [v38 deleteRowsAtIndexPaths:v41 withRowAnimation:0];
+          [tableView3 deleteRowsAtIndexPaths:v41 withRowAnimation:0];
         }
 
-        v42 = [(WFNetworkSettingsViewController *)self tableView];
-        [v42 endUpdates];
+        tableView4 = [(WFNetworkSettingsViewController *)self tableView];
+        [tableView4 endUpdates];
 
-        v15 = [(WFNetworkSettingsViewController *)self tableView];
+        tableView5 = [(WFNetworkSettingsViewController *)self tableView];
         v16 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
         v55 = v16;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-        [v15 reloadRowsAtIndexPaths:v17 withRowAnimation:0];
+        [tableView5 reloadRowsAtIndexPaths:v17 withRowAnimation:0];
         goto LABEL_21;
       }
 
-      if (v8)
+      if (httpProxyConfig2)
       {
 LABEL_23:
-        v43 = [(WFNetworkSettingsViewController *)self config];
-        [v43 setHttpProxyConfig:a3];
+        config6 = [(WFNetworkSettingsViewController *)self config];
+        [config6 setHttpProxyConfig:changed];
 
-        v44 = [(WFNetworkSettingsViewController *)self tableView];
+        tableView6 = [(WFNetworkSettingsViewController *)self tableView];
         v45 = [MEMORY[0x277CCAA78] indexSetWithIndex:v14];
-        [v44 reloadSections:v45 withRowAnimation:5];
+        [tableView6 reloadSections:v45 withRowAnimation:5];
 
         goto LABEL_24;
       }
 
-      v30 = [(WFNetworkSettingsViewController *)self tableView];
+      tableView7 = [(WFNetworkSettingsViewController *)self tableView];
       v31 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
       v58 = v31;
       v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
-      [v30 insertRowsAtIndexPaths:v32 withRowAnimation:0];
+      [tableView7 insertRowsAtIndexPaths:v32 withRowAnimation:0];
 
-      v15 = [(WFNetworkSettingsViewController *)self tableView];
+      tableView5 = [(WFNetworkSettingsViewController *)self tableView];
       v28 = MEMORY[0x277CCAA70];
       v29 = 1;
     }
 
     else
     {
-      if (a3 != 1)
+      if (changed != 1)
       {
-        if (!a3)
+        if (!changed)
         {
-          if (v8 == 1)
+          if (httpProxyConfig2 == 1)
           {
             v47 = MEMORY[0x277CBEB18];
             v48 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
@@ -598,7 +598,7 @@ LABEL_23:
             v50 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:v14];
             v51 = [v47 arrayWithObjects:{v48, v49, v50, 0}];
 
-            if (v10)
+            if (httpProxyAuthenticationRequired)
             {
               v52 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:v14];
               [v51 addObject:v52];
@@ -607,19 +607,19 @@ LABEL_23:
               [v51 addObject:v53];
             }
 
-            v54 = [(WFNetworkSettingsViewController *)self tableView];
-            [v54 deleteRowsAtIndexPaths:v51 withRowAnimation:0];
+            tableView8 = [(WFNetworkSettingsViewController *)self tableView];
+            [tableView8 deleteRowsAtIndexPaths:v51 withRowAnimation:0];
 
             goto LABEL_23;
           }
 
-          if (v8 == 2)
+          if (httpProxyConfig2 == 2)
           {
-            v15 = [(WFNetworkSettingsViewController *)self tableView];
+            tableView5 = [(WFNetworkSettingsViewController *)self tableView];
             v16 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
             v61[0] = v16;
             v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
-            [v15 deleteRowsAtIndexPaths:v17 withRowAnimation:0];
+            [tableView5 deleteRowsAtIndexPaths:v17 withRowAnimation:0];
 LABEL_21:
 
             goto LABEL_22;
@@ -629,19 +629,19 @@ LABEL_21:
         goto LABEL_23;
       }
 
-      v18 = [(WFNetworkSettingsViewController *)self tableView];
-      [v18 beginUpdates];
+      tableView9 = [(WFNetworkSettingsViewController *)self tableView];
+      [tableView9 beginUpdates];
 
-      if (v8 == 2)
+      if (httpProxyConfig2 == 2)
       {
-        v19 = [(WFNetworkSettingsViewController *)self tableView];
+        tableView10 = [(WFNetworkSettingsViewController *)self tableView];
         v20 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
         v60 = v20;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
-        [v19 deleteRowsAtIndexPaths:v21 withRowAnimation:0];
+        [tableView10 deleteRowsAtIndexPaths:v21 withRowAnimation:0];
       }
 
-      v22 = [(WFNetworkSettingsViewController *)self tableView];
+      tableView11 = [(WFNetworkSettingsViewController *)self tableView];
       v23 = [MEMORY[0x277CCAA70] indexPathForRow:1 inSection:v14];
       v59[0] = v23;
       v24 = [MEMORY[0x277CCAA70] indexPathForRow:2 inSection:v14];
@@ -649,18 +649,18 @@ LABEL_21:
       v25 = [MEMORY[0x277CCAA70] indexPathForRow:3 inSection:v14];
       v59[2] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:3];
-      [v22 insertRowsAtIndexPaths:v26 withRowAnimation:0];
+      [tableView11 insertRowsAtIndexPaths:v26 withRowAnimation:0];
 
-      v27 = [(WFNetworkSettingsViewController *)self tableView];
-      [v27 endUpdates];
+      tableView12 = [(WFNetworkSettingsViewController *)self tableView];
+      [tableView12 endUpdates];
 
-      v15 = [(WFNetworkSettingsViewController *)self tableView];
+      tableView5 = [(WFNetworkSettingsViewController *)self tableView];
       v28 = MEMORY[0x277CCAA70];
       v29 = 3;
     }
 
     v16 = [v28 indexPathForRow:v29 inSection:v14];
-    [v15 scrollToRowAtIndexPath:v16 atScrollPosition:3 animated:1];
+    [tableView5 scrollToRowAtIndexPath:v16 atScrollPosition:3 animated:1];
 LABEL_22:
 
     goto LABEL_23;
@@ -670,32 +670,32 @@ LABEL_24:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_httpProxyAuthChanged:(id)a3
+- (void)_httpProxyAuthChanged:(id)changed
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 isOn];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  [v6 setHttpProxyAuthenticationRequired:v5];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
+  config = [(WFNetworkSettingsViewController *)self config];
+  [config setHttpProxyAuthenticationRequired:isOn];
 
-  v7 = [(WFNetworkSettingsViewController *)self sections];
-  v8 = [v7 indexOfObject:&unk_288322930];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  v8 = [sections indexOfObject:&unk_288322930];
 
-  v9 = [v4 isOn];
-  v10 = [(WFNetworkSettingsViewController *)self tableView];
+  isOn2 = [changedCopy isOn];
+  tableView = [(WFNetworkSettingsViewController *)self tableView];
   v11 = [MEMORY[0x277CCAA70] indexPathForRow:4 inSection:v8];
   v12 = v11;
-  if (v9)
+  if (isOn2)
   {
     v19[0] = v11;
     v13 = [MEMORY[0x277CCAA70] indexPathForRow:5 inSection:v8];
     v19[1] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
-    [v10 insertRowsAtIndexPaths:v14 withRowAnimation:0];
+    [tableView insertRowsAtIndexPaths:v14 withRowAnimation:0];
 
-    v10 = [(WFNetworkSettingsViewController *)self tableView];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA70] indexPathForRow:5 inSection:v8];
-    [v10 scrollToRowAtIndexPath:v12 atScrollPosition:3 animated:1];
+    [tableView scrollToRowAtIndexPath:v12 atScrollPosition:3 animated:1];
   }
 
   else
@@ -704,7 +704,7 @@ LABEL_24:
     v15 = [MEMORY[0x277CCAA70] indexPathForRow:5 inSection:v8];
     v18[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-    [v10 deleteRowsAtIndexPaths:v16 withRowAnimation:0];
+    [tableView deleteRowsAtIndexPaths:v16 withRowAnimation:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -720,9 +720,9 @@ LABEL_24:
 
   else
   {
-    v3 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+    _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
     v4 = @"kWFLocForgetNetworkTitle";
-    if (v3)
+    if (_isChinaDevice)
     {
       v4 = @"kWFLocForgetNetworkTitleCH";
     }
@@ -734,9 +734,9 @@ LABEL_24:
   v37 = [v5 localizedStringForKey:v38 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(WFNetworkSettingsViewController *)self config];
-  v8 = [v7 displayFriendlyName];
-  v9 = [v6 stringWithFormat:v37, v8];
+  config = [(WFNetworkSettingsViewController *)self config];
+  displayFriendlyName = [config displayFriendlyName];
+  v9 = [v6 stringWithFormat:v37, displayFriendlyName];
 
   if ([(WFNetworkSettingsViewController *)self isAccessory])
   {
@@ -745,10 +745,10 @@ LABEL_24:
 
   else
   {
-    v11 = [(WFNetworkSettingsViewController *)self config];
-    v12 = [v11 cloudSyncable];
+    config2 = [(WFNetworkSettingsViewController *)self config];
+    cloudSyncable = [config2 cloudSyncable];
     v13 = @"kWFLocForgetNetworkMessage";
-    if (v12)
+    if (cloudSyncable)
     {
       v13 = @"kWFLocForgetNetworkSyncedMessage";
     }
@@ -768,27 +768,27 @@ LABEL_24:
 
   if ([(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v17 = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
+    forgetDeviceAlertTitle = [MEMORY[0x277CB8900] forgetDeviceAlertTitle];
 
-    v18 = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
+    forgetDeviceAlertBody = [MEMORY[0x277CB8900] forgetDeviceAlertBody];
 
     v19 = WFLogForCategory(0);
     v20 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v19 && os_log_type_enabled(v19, v20))
     {
       *buf = 138412546;
-      v44 = v17;
+      v44 = forgetDeviceAlertTitle;
       v45 = 2112;
-      v46 = v18;
+      v46 = forgetDeviceAlertBody;
       _os_log_impl(&dword_273FB9000, v19, v20, "Replacing alert title with: %@, replacing alert message text with: %@", buf, 0x16u);
     }
 
-    v21 = v17;
+    v21 = forgetDeviceAlertTitle;
   }
 
   else
   {
-    v18 = v16;
+    forgetDeviceAlertBody = v16;
     v21 = v9;
   }
 
@@ -802,26 +802,26 @@ LABEL_24:
 
   if ([(WFNetworkSettingsViewController *)self isAccessory])
   {
-    v27 = [MEMORY[0x277CB8900] forgetDeviceAlertConfirm];
+    forgetDeviceAlertConfirm = [MEMORY[0x277CB8900] forgetDeviceAlertConfirm];
 
-    v28 = [MEMORY[0x277CB8900] forgetDeviceAlertCancel];
+    forgetDeviceAlertCancel = [MEMORY[0x277CB8900] forgetDeviceAlertCancel];
 
     v29 = WFLogForCategory(0);
     v30 = OSLogForWFLogLevel(3uLL);
     if (WFCurrentLogLevel() >= 3 && v29 && os_log_type_enabled(v29, v30))
     {
       *buf = 138412546;
-      v44 = v27;
+      v44 = forgetDeviceAlertConfirm;
       v45 = 2112;
-      v46 = v28;
+      v46 = forgetDeviceAlertCancel;
       _os_log_impl(&dword_273FB9000, v29, v30, "Replacing confirm title with: %@, replacing cancel text with: %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v28 = v26;
-    v27 = v24;
+    forgetDeviceAlertCancel = v26;
+    forgetDeviceAlertConfirm = v24;
   }
 
   objc_initWeak(buf, self);
@@ -832,7 +832,7 @@ LABEL_24:
   v41[3] = &unk_279EC5ED0;
   objc_copyWeak(&v42, buf);
   v41[4] = self;
-  v32 = [v31 actionWithTitle:v27 style:2 handler:v41];
+  v32 = [v31 actionWithTitle:forgetDeviceAlertConfirm style:2 handler:v41];
   [v22 addAction:v32];
   [v22 setPreferredAction:v32];
   v33 = MEMORY[0x277D750F8];
@@ -841,7 +841,7 @@ LABEL_24:
   v39[2] = __55__WFNetworkSettingsViewController__promptForgetNetwork__block_invoke_2;
   v39[3] = &unk_279EC5830;
   objc_copyWeak(&v40, buf);
-  v34 = [v33 actionWithTitle:v28 style:1 handler:v39];
+  v34 = [v33 actionWithTitle:forgetDeviceAlertCancel style:1 handler:v39];
   [v22 addAction:v34];
 
   [(WFNetworkSettingsViewController *)self setAlert:v22];
@@ -973,9 +973,9 @@ void __82__WFNetworkSettingsViewController__promptOverrideWiFiOutrankedForPrivat
     _os_log_impl(&dword_273FB9000, v3, v4, "%s: showing developer outrank prompt", &v9, 0xCu);
   }
 
-  v5 = [(WFNetworkSettingsViewController *)self config];
-  v6 = [v5 displayFriendlyName];
-  v7 = [WFDeveloperOutrankAlertController developerOutrankAlertControllerWithNetworkName:v6 chinaDevice:[(WFNetworkSettingsViewController *)self _isChinaDevice] completionHandler:&__block_literal_global_5];
+  config = [(WFNetworkSettingsViewController *)self config];
+  displayFriendlyName = [config displayFriendlyName];
+  v7 = [WFDeveloperOutrankAlertController developerOutrankAlertControllerWithNetworkName:displayFriendlyName chinaDevice:[(WFNetworkSettingsViewController *)self _isChinaDevice] completionHandler:&__block_literal_global_5];
 
   [(WFNetworkSettingsViewController *)self presentViewController:v7 animated:1 completion:0];
   v8 = *MEMORY[0x277D85DE8];
@@ -1015,11 +1015,11 @@ void __66__WFNetworkSettingsViewController__promptOverrideWiFiOutrankedDev__bloc
 
 - (BOOL)_isIPv4ConfigAuto
 {
-  v3 = [(WFNetworkSettingsViewController *)self config];
-  if ([v3 ipv4Config])
+  config = [(WFNetworkSettingsViewController *)self config];
+  if ([config ipv4Config])
   {
-    v4 = [(WFNetworkSettingsViewController *)self config];
-    v5 = [v4 ipv4Config] == 1;
+    config2 = [(WFNetworkSettingsViewController *)self config];
+    v5 = [config2 ipv4Config] == 1;
   }
 
   else
@@ -1030,23 +1030,23 @@ void __66__WFNetworkSettingsViewController__promptOverrideWiFiOutrankedDev__bloc
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFNetworkSettingsViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = 1;
-  switch([(WFNetworkSettingsViewController *)self _sectionTypeAtSection:a4])
+  switch([(WFNetworkSettingsViewController *)self _sectionTypeAtSection:section])
   {
     case 0:
-      v11 = [(WFNetworkSettingsViewController *)self config];
-      v12 = [v11 healthRecommendations];
-      v5 = [v12 count];
+      config = [(WFNetworkSettingsViewController *)self config];
+      healthRecommendations = [config healthRecommendations];
+      v5 = [healthRecommendations count];
 
       goto LABEL_9;
     case 1:
@@ -1063,38 +1063,38 @@ void __66__WFNetworkSettingsViewController__promptOverrideWiFiOutrankedDev__bloc
     case 18:
       return 1;
     case 3:
-      v11 = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
-      v5 = [v11 count];
+      config = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
+      v5 = [config count];
 LABEL_9:
 
       return v5;
     case 5:
-      v7 = [(WFNetworkSettingsViewController *)self config];
-      v8 = [v7 current];
+      config2 = [(WFNetworkSettingsViewController *)self config];
+      current = [config2 current];
 
-      v9 = [(WFNetworkSettingsViewController *)self config];
-      v10 = [v9 ipv4Config];
-      if (v8)
+      config3 = [(WFNetworkSettingsViewController *)self config];
+      ipv4Config = [config3 ipv4Config];
+      if (current)
       {
-        if (v10)
+        if (ipv4Config)
         {
 LABEL_6:
 
           return 4;
         }
 
-        v21 = [(WFNetworkSettingsViewController *)self config];
-        v22 = [v21 dhcpClientID];
-        if (!v22)
+        config4 = [(WFNetworkSettingsViewController *)self config];
+        dhcpClientID = [config4 dhcpClientID];
+        if (!dhcpClientID)
         {
 
           goto LABEL_6;
         }
 
-        v23 = v22;
-        v24 = [(WFNetworkSettingsViewController *)self config];
-        v25 = [v24 dhcpClientID];
-        v26 = [v25 length];
+        v23 = dhcpClientID;
+        config5 = [(WFNetworkSettingsViewController *)self config];
+        dhcpClientID2 = [config5 dhcpClientID];
+        v26 = [dhcpClientID2 length];
 
         if (v26)
         {
@@ -1109,7 +1109,7 @@ LABEL_6:
 
       else
       {
-        if (v10 == 2)
+        if (ipv4Config == 2)
         {
           v5 = 4;
         }
@@ -1122,8 +1122,8 @@ LABEL_6:
 
       return v5;
     case 7:
-      v13 = [(WFNetworkSettingsViewController *)self config];
-      v14 = [(WFNetworkSettingsViewController *)self _shouldShowIPv6ForConfig:v13];
+      config6 = [(WFNetworkSettingsViewController *)self config];
+      v14 = [(WFNetworkSettingsViewController *)self _shouldShowIPv6ForConfig:config6];
 
       if (v14)
       {
@@ -1138,22 +1138,22 @@ LABEL_6:
     case 9:
       return v5;
     case 11:
-      v15 = [(WFNetworkSettingsViewController *)self config];
-      LODWORD(v5) = [v15 saveDataModeConfigurable];
+      config7 = [(WFNetworkSettingsViewController *)self config];
+      LODWORD(v5) = [config7 saveDataModeConfigurable];
 
       return v5;
     case 13:
-      v16 = [(WFNetworkSettingsViewController *)self config];
-      if ([v16 networkQualityVisible] && !-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice"))
+      config8 = [(WFNetworkSettingsViewController *)self config];
+      if ([config8 networkQualityVisible] && !-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice"))
       {
-        v19 = [(WFNetworkSettingsViewController *)self config];
-        [v19 networkQualityResponsiveness];
+        config9 = [(WFNetworkSettingsViewController *)self config];
+        [config9 networkQualityResponsiveness];
         if (v20 == 0.0)
         {
-          v27 = [(WFNetworkSettingsViewController *)self context];
-          v28 = [v27 isCurrent];
+          context = [(WFNetworkSettingsViewController *)self context];
+          isCurrent = [context isCurrent];
 
-          if ((v28 & 1) == 0)
+          if ((isCurrent & 1) == 0)
           {
             goto LABEL_17;
           }
@@ -1190,26 +1190,26 @@ LABEL_17:
 
 - (void)_reloadNetworkQuality
 {
-  v3 = [(WFNetworkSettingsViewController *)self sections];
-  v4 = [v3 indexOfObject:&unk_2883228D0];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  v4 = [sections indexOfObject:&unk_2883228D0];
 
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(WFNetworkSettingsViewController *)self tableView];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
     v5 = [MEMORY[0x277CCAA78] indexSetWithIndex:v4];
-    [v6 reloadSections:v5 withRowAnimation:5];
+    [tableView reloadSections:v5 withRowAnimation:5];
   }
 }
 
 - (void)_runNetworkQuality
 {
   v23 = *MEMORY[0x277D85DE8];
-  v19 = [(WFNetworkSettingsViewController *)self config];
-  if ([v19 current])
+  config = [(WFNetworkSettingsViewController *)self config];
+  if ([config current])
   {
-    v3 = [(WFNetworkSettingsViewController *)self networkQualitySpinning];
+    networkQualitySpinning = [(WFNetworkSettingsViewController *)self networkQualitySpinning];
 
-    if (!v3)
+    if (!networkQualitySpinning)
     {
       v4 = WFLogForCategory(0);
       v5 = OSLogForWFLogLevel(3uLL);
@@ -1336,21 +1336,21 @@ uint64_t __53__WFNetworkSettingsViewController__runNetworkQuality__block_invoke_
   return [v13 _reloadNetworkQuality];
 }
 
-- (void)_fillNetworkQualityCell:(id)a3
+- (void)_fillNetworkQualityCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   if ([(WFNetworkSettingsViewController *)self networkQualitySpinning])
   {
     v25 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    [v4 setAccessoryView:v25];
+    [cellCopy setAccessoryView:v25];
 
     [v25 startAnimating];
   }
 
   else
   {
-    v5 = [(WFNetworkSettingsViewController *)self config];
-    [v5 networkQualityResponsiveness];
+    config = [(WFNetworkSettingsViewController *)self config];
+    [config networkQualityResponsiveness];
     v7 = v6;
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1366,8 +1366,8 @@ uint64_t __53__WFNetworkSettingsViewController__runNetworkQuality__block_invoke_
       v10 = [v8 localizedStringForKey:@"kWFLocSettingNetworkQualityRPM" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
       v11 = MEMORY[0x277D2C9B8];
-      v12 = [(WFNetworkSettingsViewController *)self config];
-      [v12 networkQualityResponsiveness];
+      config2 = [(WFNetworkSettingsViewController *)self config];
+      [config2 networkQualityResponsiveness];
       v14 = [v11 ratingForResponsivenessScore:v13];
 
       if (v14 > 2)
@@ -1383,65 +1383,65 @@ uint64_t __53__WFNetworkSettingsViewController__runNetworkQuality__block_invoke_
       }
 
       v18 = MEMORY[0x277CCACA8];
-      v19 = [(WFNetworkSettingsViewController *)self config];
-      [v19 networkQualityResponsiveness];
+      config3 = [(WFNetworkSettingsViewController *)self config];
+      [config3 networkQualityResponsiveness];
       v25 = [v18 stringWithFormat:@"%@ (%u %@)", v17, v20, v10];
     }
 
     v21 = [MEMORY[0x277D75220] buttonWithType:1];
     [v21 setTitle:v25 forState:0];
-    [v4 setAccessoryView:v21];
-    v22 = [v4 textLabel];
+    [cellCopy setAccessoryView:v21];
+    textLabel = [cellCopy textLabel];
 
-    v23 = [v22 font];
-    v24 = [v21 titleLabel];
-    [v24 setFont:v23];
+    font = [textLabel font];
+    titleLabel = [v21 titleLabel];
+    [titleLabel setFont:font];
 
     [v21 sizeToFit];
     [v21 addTarget:self action:sel__runNetworkQuality forControlEvents:64];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v171 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 row];
-  switch(-[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v5 section]))
+  pathCopy = path;
+  v6 = [pathCopy row];
+  switch(-[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]))
   {
     case 0:
-      v7 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v7 recommendationCellAtIndexPath:v5];
+      cellFactory = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory recommendationCellAtIndexPath:pathCopy];
 
-      v9 = [(WFNetworkSettingsViewController *)self config];
-      v10 = [v9 healthRecommendations];
-      v11 = [v10 objectAtIndex:{objc_msgSend(v5, "row")}];
+      config = [(WFNetworkSettingsViewController *)self config];
+      healthRecommendations = [config healthRecommendations];
+      descriptionLabel4 = [healthRecommendations objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v12 = [v11 issueTitle];
-      v13 = [v8 titleLabel];
-      [v13 setText:v12];
+      issueTitle = [descriptionLabel4 issueTitle];
+      titleLabel = [v8 titleLabel];
+      [titleLabel setText:issueTitle];
 
-      v14 = [v8 titleLabel];
-      v15 = [MEMORY[0x277D75348] defaultTextColor];
-      [v14 setTextColor:v15];
+      titleLabel2 = [v8 titleLabel];
+      defaultTextColor = [MEMORY[0x277D75348] defaultTextColor];
+      [titleLabel2 setTextColor:defaultTextColor];
 
-      v16 = [v11 issueDetailText];
-      v17 = [v8 descriptionLabel];
-      [v17 setText:v16];
+      issueDetailText = [descriptionLabel4 issueDetailText];
+      descriptionLabel = [v8 descriptionLabel];
+      [descriptionLabel setText:issueDetailText];
 
-      v18 = [v8 descriptionLabel];
-      v19 = [MEMORY[0x277D75348] altTextColor];
-      [v18 setTextColor:v19];
+      descriptionLabel2 = [v8 descriptionLabel];
+      altTextColor = [MEMORY[0x277D75348] altTextColor];
+      [descriptionLabel2 setTextColor:altTextColor];
       goto LABEL_122;
     case 1:
       if (v6 == 1)
       {
-        v103 = [(WFNetworkSettingsViewController *)self cellFactory];
-        v8 = [v103 forgetCellAtIndexPath:v5 accessory:{-[WFNetworkSettingsViewController isAccessory](self, "isAccessory")}];
+        cellFactory2 = [(WFNetworkSettingsViewController *)self cellFactory];
+        v8 = [cellFactory2 forgetCellAtIndexPath:pathCopy accessory:{-[WFNetworkSettingsViewController isAccessory](self, "isAccessory")}];
 
-        v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v18 = [v11 localizedStringForKey:@"kWFLocSettingNetworkPortalButtonTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-        v104 = [v8 textLabel];
+        descriptionLabel4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+        descriptionLabel2 = [descriptionLabel4 localizedStringForKey:@"kWFLocSettingNetworkPortalButtonTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+        textLabel = [v8 textLabel];
         goto LABEL_121;
       }
 
@@ -1450,117 +1450,117 @@ uint64_t __53__WFNetworkSettingsViewController__runNetworkQuality__block_invoke_
         goto LABEL_58;
       }
 
-      v57 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v57 recommendationCellAtIndexPath:v5];
+      cellFactory3 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory3 recommendationCellAtIndexPath:pathCopy];
 
       v58 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v59 = [v58 localizedStringForKey:@"kWFLocSettingNetworkPortalTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v60 = [v8 titleLabel];
-      [v60 setText:v59];
+      titleLabel3 = [v8 titleLabel];
+      [titleLabel3 setText:v59];
 
-      v61 = [v8 titleLabel];
-      v62 = [MEMORY[0x277D75348] defaultTextColor];
-      [v61 setTextColor:v62];
+      titleLabel4 = [v8 titleLabel];
+      defaultTextColor2 = [MEMORY[0x277D75348] defaultTextColor];
+      [titleLabel4 setTextColor:defaultTextColor2];
 
       v63 = MEMORY[0x277CCACA8];
       v64 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v65 = [v64 localizedStringForKey:@"kWFLocSettingNetworkPortalDescriptionFormat" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v66 = [(WFNetworkSettingsViewController *)self _portalURL];
-      v67 = [v63 stringWithFormat:v65, v66];
-      v68 = [v8 descriptionLabel];
-      [v68 setText:v67];
+      _portalURL = [(WFNetworkSettingsViewController *)self _portalURL];
+      v67 = [v63 stringWithFormat:v65, _portalURL];
+      descriptionLabel3 = [v8 descriptionLabel];
+      [descriptionLabel3 setText:v67];
 
-      v11 = [v8 descriptionLabel];
-      v18 = [MEMORY[0x277D75348] altTextColor];
-      [v11 setTextColor:v18];
+      descriptionLabel4 = [v8 descriptionLabel];
+      descriptionLabel2 = [MEMORY[0x277D75348] altTextColor];
+      [descriptionLabel4 setTextColor:descriptionLabel2];
       goto LABEL_123;
     case 2:
-      v11 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v20 = [v11 joinCellAtIndexPath:v5];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v20 = [descriptionLabel4 joinCellAtIndexPath:pathCopy];
       goto LABEL_56;
     case 3:
-      v47 = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
-      v48 = [v47 objectAtIndex:{objc_msgSend(v5, "row")}];
-      v49 = [v48 integerValue];
+      autoJoinSectionRows = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
+      v48 = [autoJoinSectionRows objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      integerValue = [v48 integerValue];
 
       v8 = 0;
-      if (v49 <= 1)
+      if (integerValue <= 1)
       {
-        if (v49)
+        if (integerValue)
         {
-          if (v49 != 1)
+          if (integerValue != 1)
           {
             goto LABEL_125;
           }
 
-          v50 = [(WFNetworkSettingsViewController *)self cellFactory];
-          v8 = [v50 autoLoginCellAtIndexPath:v5];
+          cellFactory4 = [(WFNetworkSettingsViewController *)self cellFactory];
+          v8 = [cellFactory4 autoLoginCellAtIndexPath:pathCopy];
 
-          v51 = [(WFNetworkSettingsViewController *)self autoLoginSwitch];
-          [v8 setAccessoryView:v51];
+          autoLoginSwitch = [(WFNetworkSettingsViewController *)self autoLoginSwitch];
+          [v8 setAccessoryView:autoLoginSwitch];
 
-          v11 = [(WFNetworkSettingsViewController *)self config];
-          v30 = [v11 autoLoginEnabled];
-          v31 = [(WFNetworkSettingsViewController *)self autoLoginSwitch];
+          descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+          autoLoginEnabled = [descriptionLabel4 autoLoginEnabled];
+          autoLoginSwitch2 = [(WFNetworkSettingsViewController *)self autoLoginSwitch];
 LABEL_9:
-          v34 = v31;
-          [v31 setOn:v30];
+          v34 = autoLoginSwitch2;
+          [autoLoginSwitch2 setOn:autoLoginEnabled];
 LABEL_10:
         }
 
         else
         {
-          v107 = [(WFNetworkSettingsViewController *)self cellFactory];
-          v8 = [v107 autoJoinCellAtIndexPath:v5];
+          cellFactory5 = [(WFNetworkSettingsViewController *)self cellFactory];
+          v8 = [cellFactory5 autoJoinCellAtIndexPath:pathCopy];
 
-          v108 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
-          [v8 setAccessoryView:v108];
+          autoJoinSwitch = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
+          [v8 setAccessoryView:autoJoinSwitch];
 
           if ([(WFNetworkSettingsViewController *)self _isAutoJoinConfigurable])
           {
-            v109 = [(WFNetworkSettingsViewController *)self config];
-            v110 = [v109 autoJoinEnabled];
-            v111 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
-            [v111 setOn:v110];
+            config2 = [(WFNetworkSettingsViewController *)self config];
+            autoJoinEnabled = [config2 autoJoinEnabled];
+            autoJoinSwitch2 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
+            [autoJoinSwitch2 setOn:autoJoinEnabled];
 
-            v112 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
-            v11 = v112;
+            autoJoinSwitch3 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
+            descriptionLabel4 = autoJoinSwitch3;
             v113 = 1;
           }
 
           else
           {
-            v140 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
-            [v140 setOn:0];
+            autoJoinSwitch4 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
+            [autoJoinSwitch4 setOn:0];
 
-            v112 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
-            v11 = v112;
+            autoJoinSwitch3 = [(WFNetworkSettingsViewController *)self autoJoinSwitch];
+            descriptionLabel4 = autoJoinSwitch3;
             v113 = 0;
           }
 
-          [v112 setEnabled:v113];
+          [autoJoinSwitch3 setEnabled:v113];
         }
 
         goto LABEL_124;
       }
 
-      if (v49 == 2)
+      if (integerValue == 2)
       {
-        v114 = [(WFNetworkSettingsViewController *)self context];
+        context = [(WFNetworkSettingsViewController *)self context];
         v115 = objc_opt_respondsToSelector();
 
         if (v115)
         {
-          v116 = [(WFNetworkSettingsViewController *)self context];
-          v11 = [v116 username];
+          context2 = [(WFNetworkSettingsViewController *)self context];
+          descriptionLabel4 = [context2 username];
         }
 
         else
         {
-          v11 = 0;
+          descriptionLabel4 = 0;
         }
 
-        v18 = [(WFNetworkSettingsViewController *)self cellFactory];
+        descriptionLabel2 = [(WFNetworkSettingsViewController *)self cellFactory];
         if ([(WFNetworkSettingsViewController *)self allowViewPassword])
         {
           v135 = [(WFNetworkSettingsViewController *)self credentailCellTapped]^ 1;
@@ -1571,34 +1571,34 @@ LABEL_10:
           v135 = 1;
         }
 
-        v136 = v18;
-        v137 = v5;
-        v138 = v11;
+        v136 = descriptionLabel2;
+        v137 = pathCopy;
+        v138 = descriptionLabel4;
         v139 = 0;
       }
 
       else
       {
-        if (v49 != 3)
+        if (integerValue != 3)
         {
           goto LABEL_125;
         }
 
-        v90 = [(WFNetworkSettingsViewController *)self context];
+        context3 = [(WFNetworkSettingsViewController *)self context];
         v91 = objc_opt_respondsToSelector();
 
         if (v91)
         {
-          v92 = [(WFNetworkSettingsViewController *)self context];
-          v11 = [v92 password];
+          context4 = [(WFNetworkSettingsViewController *)self context];
+          descriptionLabel4 = [context4 password];
         }
 
         else
         {
-          v11 = 0;
+          descriptionLabel4 = 0;
         }
 
-        v18 = [(WFNetworkSettingsViewController *)self cellFactory];
+        descriptionLabel2 = [(WFNetworkSettingsViewController *)self cellFactory];
         if ([(WFNetworkSettingsViewController *)self allowViewPassword])
         {
           v135 = [(WFNetworkSettingsViewController *)self credentailCellTapped]^ 1;
@@ -1609,17 +1609,17 @@ LABEL_10:
           v135 = 1;
         }
 
-        v136 = v18;
-        v137 = v5;
-        v138 = v11;
+        v136 = descriptionLabel2;
+        v137 = pathCopy;
+        v138 = descriptionLabel4;
         v139 = 1;
       }
 
       v8 = [v136 credentialsViewerCellAtIndexPath:v137 credentails:v138 hideCredentials:v135 isPassword:v139];
       goto LABEL_123;
     case 4:
-      v11 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v20 = [v11 forgetCellAtIndexPath:v5 accessory:{-[WFNetworkSettingsViewController isAccessory](self, "isAccessory")}];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v20 = [descriptionLabel4 forgetCellAtIndexPath:pathCopy accessory:{-[WFNetworkSettingsViewController isAccessory](self, "isAccessory")}];
       goto LABEL_56;
     case 5:
       v8 = 0;
@@ -1628,53 +1628,53 @@ LABEL_10:
         switch(v6)
         {
           case 2:
-            v117 = [(WFNetworkSettingsViewController *)self cellFactory];
-            v8 = [v117 ipv4SubnetMaskCellAtIndexPath:v5];
+            cellFactory6 = [(WFNetworkSettingsViewController *)self cellFactory];
+            v8 = [cellFactory6 ipv4SubnetMaskCellAtIndexPath:pathCopy];
 
-            v118 = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
-            v119 = [(WFNetworkSettingsViewController *)self config];
-            v11 = v119;
-            if (v118)
+            _isIPv4ConfigAuto = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
+            config3 = [(WFNetworkSettingsViewController *)self config];
+            descriptionLabel4 = config3;
+            if (_isIPv4ConfigAuto)
             {
-              [v119 ipv4SubnetMask];
+              [config3 ipv4SubnetMask];
             }
 
             else
             {
-              [v119 ipv4SubnetMaskManual];
+              [config3 ipv4SubnetMaskManual];
             }
 
             break;
           case 3:
-            v120 = [(WFNetworkSettingsViewController *)self cellFactory];
-            v8 = [v120 ipv4RouterCellAtIndexPath:v5];
+            cellFactory7 = [(WFNetworkSettingsViewController *)self cellFactory];
+            v8 = [cellFactory7 ipv4RouterCellAtIndexPath:pathCopy];
 
-            v121 = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
-            v122 = [(WFNetworkSettingsViewController *)self config];
-            v11 = v122;
-            if (v121)
+            _isIPv4ConfigAuto2 = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
+            config4 = [(WFNetworkSettingsViewController *)self config];
+            descriptionLabel4 = config4;
+            if (_isIPv4ConfigAuto2)
             {
-              [v122 ipv4RouterAddress];
+              [config4 ipv4RouterAddress];
             }
 
             else
             {
-              [v122 ipv4RouterAddressManual];
+              [config4 ipv4RouterAddressManual];
             }
 
             break;
           case 4:
-            v78 = [(WFNetworkSettingsViewController *)self cellFactory];
-            v8 = [v78 dhcpClientIDCellAtIndexPath:v5];
+            cellFactory8 = [(WFNetworkSettingsViewController *)self cellFactory];
+            v8 = [cellFactory8 dhcpClientIDCellAtIndexPath:pathCopy];
 
-            v11 = [(WFNetworkSettingsViewController *)self config];
-            v79 = [v11 dhcpClientID];
+            descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+            dhcpClientID = [descriptionLabel4 dhcpClientID];
 LABEL_120:
-            v18 = v79;
-            v104 = [v8 detailTextLabel];
+            descriptionLabel2 = dhcpClientID;
+            textLabel = [v8 detailTextLabel];
 LABEL_121:
-            v19 = v104;
-            [v104 setText:v18];
+            altTextColor = textLabel;
+            [textLabel setText:descriptionLabel2];
 LABEL_122:
 
 LABEL_123:
@@ -1685,7 +1685,7 @@ LABEL_124:
             goto LABEL_125;
         }
 
-        v79 = LABEL_86:;
+        dhcpClientID = LABEL_86:;
         goto LABEL_120;
       }
 
@@ -1696,52 +1696,52 @@ LABEL_124:
           goto LABEL_125;
         }
 
-        v93 = [(WFNetworkSettingsViewController *)self cellFactory];
-        v8 = [v93 ipv4AddressCellAtIndexPath:v5];
+        cellFactory9 = [(WFNetworkSettingsViewController *)self cellFactory];
+        v8 = [cellFactory9 ipv4AddressCellAtIndexPath:pathCopy];
 
-        v94 = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
-        v95 = [(WFNetworkSettingsViewController *)self config];
-        v11 = v95;
-        if (v94)
+        _isIPv4ConfigAuto3 = [(WFNetworkSettingsViewController *)self _isIPv4ConfigAuto];
+        config5 = [(WFNetworkSettingsViewController *)self config];
+        descriptionLabel4 = config5;
+        if (_isIPv4ConfigAuto3)
         {
-          [v95 ipv4Address];
+          [config5 ipv4Address];
         }
 
         else
         {
-          [v95 ipv4AddressManual];
+          [config5 ipv4AddressManual];
         }
 
         goto LABEL_86;
       }
 
-      v123 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v123 ipv4AddressConfigCellAtIndexPath:v5];
+      cellFactory10 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory10 ipv4AddressConfigCellAtIndexPath:pathCopy];
 
-      v124 = [(WFNetworkSettingsViewController *)self config];
-      v125 = [v124 ipv4Config];
+      config6 = [(WFNetworkSettingsViewController *)self config];
+      ipv4Config = [config6 ipv4Config];
 
-      if (v125)
+      if (ipv4Config)
       {
-        v126 = [(WFNetworkSettingsViewController *)self config];
-        v127 = [v126 ipv4Config];
+        config7 = [(WFNetworkSettingsViewController *)self config];
+        ipv4Config2 = [config7 ipv4Config];
 
-        if (v127 == 2)
+        if (ipv4Config2 == 2)
         {
           v128 = @"kWFLocSettingsIPV4ConfigureManual";
         }
 
         else
         {
-          v161 = [(WFNetworkSettingsViewController *)self config];
-          v162 = [v161 ipv4Config];
+          config8 = [(WFNetworkSettingsViewController *)self config];
+          ipv4Config3 = [config8 ipv4Config];
 
-          if (v162 != 1)
+          if (ipv4Config3 != 1)
           {
 LABEL_125:
-            v152 = [MEMORY[0x277D75348] altTextColor];
-            v153 = [v8 detailTextLabel];
-            [v153 setTextColor:v152];
+            altTextColor2 = [MEMORY[0x277D75348] altTextColor];
+            detailTextLabel = [v8 detailTextLabel];
+            [detailTextLabel setTextColor:altTextColor2];
 
             goto LABEL_126;
           }
@@ -1755,25 +1755,25 @@ LABEL_125:
         v128 = @"kWFLocSettingsIPV4ConfigureAutomatic";
       }
 
-      v85 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v163 = [v85 localizedStringForKey:v128 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v164 = [v8 detailTextLabel];
-      [v164 setText:v163];
+      context7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v163 = [context7 localizedStringForKey:v128 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+      detailTextLabel2 = [v8 detailTextLabel];
+      [detailTextLabel2 setText:v163];
 
 LABEL_135:
       goto LABEL_125;
     case 6:
-      v11 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v20 = [v11 renewLeaseCellAtIndexPath:v5];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v20 = [descriptionLabel4 renewLeaseCellAtIndexPath:pathCopy];
       goto LABEL_56;
     case 7:
       if (v6 == 1)
       {
-        v102 = [(WFNetworkSettingsViewController *)self cellFactory];
-        v8 = [v102 ipv6RouterCellAtIndexPath:v5];
+        cellFactory11 = [(WFNetworkSettingsViewController *)self cellFactory];
+        v8 = [cellFactory11 ipv6RouterCellAtIndexPath:pathCopy];
 
-        v11 = [(WFNetworkSettingsViewController *)self config];
-        v79 = [v11 ipv6RouterAddress];
+        descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+        dhcpClientID = [descriptionLabel4 ipv6RouterAddress];
         goto LABEL_120;
       }
 
@@ -1785,12 +1785,12 @@ LABEL_58:
 
       else
       {
-        v52 = [(WFNetworkSettingsViewController *)self cellFactory];
-        v8 = [v52 ipv6AddressCellAtIndexPath:v5];
+        cellFactory12 = [(WFNetworkSettingsViewController *)self cellFactory];
+        v8 = [cellFactory12 ipv6AddressCellAtIndexPath:pathCopy];
 
-        v53 = [(WFNetworkSettingsViewController *)self config];
-        v54 = [v53 ipv6Addresses];
-        v55 = [v54 count];
+        config9 = [(WFNetworkSettingsViewController *)self config];
+        ipv6Addresses = [config9 ipv6Addresses];
+        v55 = [ipv6Addresses count];
 
         if (!v55)
         {
@@ -1800,11 +1800,11 @@ LABEL_58:
         [v8 setAccessoryType:0];
         if (v55 == 1)
         {
-          v11 = [(WFNetworkSettingsViewController *)self config];
-          v18 = [v11 ipv6Addresses];
-          v19 = [v18 firstObject];
-          v56 = [v8 detailTextLabel];
-          [v56 setText:v19];
+          descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+          descriptionLabel2 = [descriptionLabel4 ipv6Addresses];
+          altTextColor = [descriptionLabel2 firstObject];
+          detailTextLabel3 = [v8 detailTextLabel];
+          [detailTextLabel3 setText:altTextColor];
 
           goto LABEL_122;
         }
@@ -1812,9 +1812,9 @@ LABEL_58:
         v131 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v132 = [v131 localizedStringForKey:@"kWFLocSettingsAddressesTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-        v133 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu %@", v55, v132];
-        v134 = [v8 detailTextLabel];
-        [v134 setText:v133];
+        v132 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu %@", v55, v132];
+        detailTextLabel4 = [v8 detailTextLabel];
+        [detailTextLabel4 setText:v132];
 
         [v8 setAccessoryType:1];
         [v8 setSelectionStyle:1];
@@ -1827,14 +1827,14 @@ LABEL_58:
         goto LABEL_58;
       }
 
-      v96 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v96 dnsConfigureCellAtIndexPath:v5];
+      cellFactory13 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory13 dnsConfigureCellAtIndexPath:pathCopy];
 
-      v11 = [(WFNetworkSettingsViewController *)self config];
-      v97 = [v11 dnsConfig];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+      dnsConfig = [descriptionLabel4 dnsConfig];
       v98 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v34 = v98;
-      if (v97)
+      if (dnsConfig)
       {
         v99 = @"kWFLocSettingsDNSConfigureManual";
       }
@@ -1845,8 +1845,8 @@ LABEL_58:
       }
 
       v100 = [v98 localizedStringForKey:v99 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v101 = [v8 detailTextLabel];
-      [v101 setText:v100];
+      detailTextLabel5 = [v8 detailTextLabel];
+      [detailTextLabel5 setText:v100];
 
       goto LABEL_10;
     case 9:
@@ -1855,36 +1855,36 @@ LABEL_58:
         goto LABEL_58;
       }
 
-      v35 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v35 httpProxyConfigCellAtIndexPath:v5];
+      cellFactory14 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory14 httpProxyConfigCellAtIndexPath:pathCopy];
 
-      v36 = [(WFNetworkSettingsViewController *)self config];
-      v37 = [v36 httpProxyConfig];
+      config10 = [(WFNetworkSettingsViewController *)self config];
+      httpProxyConfig = [config10 httpProxyConfig];
 
-      if (v37)
+      if (httpProxyConfig)
       {
-        v38 = [(WFNetworkSettingsViewController *)self config];
-        v39 = [v38 httpProxyConfig];
+        config11 = [(WFNetworkSettingsViewController *)self config];
+        httpProxyConfig2 = [config11 httpProxyConfig];
 
-        if (v39 == 2)
+        if (httpProxyConfig2 == 2)
         {
           v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v11 = v40;
+          descriptionLabel4 = v40;
           v41 = @"kWFLocSettingsProxyConfigAutomaticTitle";
         }
 
         else
         {
-          v129 = [(WFNetworkSettingsViewController *)self config];
-          v130 = [v129 httpProxyConfig];
+          config12 = [(WFNetworkSettingsViewController *)self config];
+          httpProxyConfig3 = [config12 httpProxyConfig];
 
-          if (v130 != 1)
+          if (httpProxyConfig3 != 1)
           {
             goto LABEL_125;
           }
 
           v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          v11 = v40;
+          descriptionLabel4 = v40;
           v41 = @"kWFLocSettingsProxyConfigManualTitle";
         }
       }
@@ -1892,62 +1892,62 @@ LABEL_58:
       else
       {
         v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v11 = v40;
+        descriptionLabel4 = v40;
         v41 = @"kWFLocSettingsProxyConfigOffTitle";
       }
 
-      v79 = [v40 localizedStringForKey:v41 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+      dhcpClientID = [v40 localizedStringForKey:v41 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
       goto LABEL_120;
     case 10:
-      v11 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v20 = [v11 manageCellAtIndexPath:v5];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v20 = [descriptionLabel4 manageCellAtIndexPath:pathCopy];
       goto LABEL_56;
     case 11:
-      v26 = [(WFNetworkSettingsViewController *)self config];
-      v27 = [v26 saveDataModeConfigurable];
+      config13 = [(WFNetworkSettingsViewController *)self config];
+      saveDataModeConfigurable = [config13 saveDataModeConfigurable];
 
-      if (!v27)
+      if (!saveDataModeConfigurable)
       {
         goto LABEL_58;
       }
 
-      v28 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v28 saveDataModeCellAtIndexPath:v5];
+      cellFactory15 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory15 saveDataModeCellAtIndexPath:pathCopy];
 
-      v29 = [(WFNetworkSettingsViewController *)self saveDataModeSwitch];
-      [v8 setAccessoryView:v29];
+      saveDataModeSwitch = [(WFNetworkSettingsViewController *)self saveDataModeSwitch];
+      [v8 setAccessoryView:saveDataModeSwitch];
 
-      v11 = [(WFNetworkSettingsViewController *)self config];
-      v30 = [v11 isInSaveDataMode];
-      v31 = [(WFNetworkSettingsViewController *)self saveDataModeSwitch];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+      autoLoginEnabled = [descriptionLabel4 isInSaveDataMode];
+      autoLoginSwitch2 = [(WFNetworkSettingsViewController *)self saveDataModeSwitch];
       goto LABEL_9;
     case 12:
-      v32 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v32 privacyProxyEnabledCellAtIndexPath:v5];
+      cellFactory16 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory16 privacyProxyEnabledCellAtIndexPath:pathCopy];
 
-      v33 = [(WFNetworkSettingsViewController *)self privacyProxyEnabledSwitch];
-      [v8 setAccessoryView:v33];
+      privacyProxyEnabledSwitch = [(WFNetworkSettingsViewController *)self privacyProxyEnabledSwitch];
+      [v8 setAccessoryView:privacyProxyEnabledSwitch];
 
-      v11 = [(WFNetworkSettingsViewController *)self config];
-      v30 = [v11 privacyProxyEnabled];
-      v31 = [(WFNetworkSettingsViewController *)self privacyProxyEnabledSwitch];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self config];
+      autoLoginEnabled = [descriptionLabel4 privacyProxyEnabled];
+      autoLoginSwitch2 = [(WFNetworkSettingsViewController *)self privacyProxyEnabledSwitch];
       goto LABEL_9;
     case 13:
-      v80 = [(WFNetworkSettingsViewController *)self config];
-      if (![v80 networkQualityVisible] || -[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice"))
+      config14 = [(WFNetworkSettingsViewController *)self config];
+      if (![config14 networkQualityVisible] || -[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice"))
       {
 
         goto LABEL_47;
       }
 
-      v105 = [(WFNetworkSettingsViewController *)self config];
-      [v105 networkQualityResponsiveness];
+      config15 = [(WFNetworkSettingsViewController *)self config];
+      [config15 networkQualityResponsiveness];
       if (v106 == 0.0)
       {
-        v141 = [(WFNetworkSettingsViewController *)self context];
-        v142 = [v141 isCurrent];
+        context5 = [(WFNetworkSettingsViewController *)self context];
+        isCurrent = [context5 isCurrent];
 
-        if (!v142)
+        if (!isCurrent)
         {
 LABEL_47:
           v81 = WFLogForCategory(0);
@@ -1967,8 +1967,8 @@ LABEL_47:
       {
       }
 
-      v143 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v143 networkQualityCellAtIndexPath:v5];
+      cellFactory17 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory17 networkQualityCellAtIndexPath:pathCopy];
 
       v144 = WFLogForCategory(0);
       v145 = OSLogForWFLogLevel(3uLL);
@@ -1977,14 +1977,14 @@ LABEL_47:
         v146 = v144;
         if (os_log_type_enabled(v146, v145))
         {
-          v147 = [(WFNetworkSettingsViewController *)self config];
-          [v147 networkQualityResponsiveness];
+          config16 = [(WFNetworkSettingsViewController *)self config];
+          [config16 networkQualityResponsiveness];
           v149 = v148;
-          v150 = [(WFNetworkSettingsViewController *)self networkQualitySpinning];
+          networkQualitySpinning = [(WFNetworkSettingsViewController *)self networkQualitySpinning];
           v151 = "NO";
           v166 = "[WFNetworkSettingsViewController tableView:cellForRowAtIndexPath:]";
           *buf = 136315650;
-          if (v150)
+          if (networkQualitySpinning)
           {
             v151 = "YES";
           }
@@ -1999,15 +1999,15 @@ LABEL_47:
 
       [(WFNetworkSettingsViewController *)self _fillNetworkQualityCell:v8];
 LABEL_126:
-      v154 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-      v155 = [v154 cellTextLabelFont];
+      appearanceProxy = [(WFNetworkSettingsViewController *)self appearanceProxy];
+      cellTextLabelFont = [appearanceProxy cellTextLabelFont];
 
-      if (v155)
+      if (cellTextLabelFont)
       {
-        v156 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-        v157 = [v156 cellTextLabelFont];
-        v158 = [v8 textLabel];
-        [v158 setFont:v157];
+        appearanceProxy2 = [(WFNetworkSettingsViewController *)self appearanceProxy];
+        cellTextLabelFont2 = [appearanceProxy2 cellTextLabelFont];
+        textLabel2 = [v8 textLabel];
+        [textLabel2 setFont:cellTextLabelFont2];
       }
 
       v159 = *MEMORY[0x277D85DE8];
@@ -2017,20 +2017,20 @@ LABEL_126:
       v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:0];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v22 = [v21 localizedStringForKey:@"kWFLocSettingsDiagnosticsTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v23 = [v8 textLabel];
-      [v23 setText:v22];
+      textLabel3 = [v8 textLabel];
+      [textLabel3 setText:v22];
 
-      v24 = [MEMORY[0x277D75348] defaultButtonColor];
-      v25 = [v8 detailTextLabel];
-      [v25 setTextColor:v24];
+      defaultButtonColor = [MEMORY[0x277D75348] defaultButtonColor];
+      detailTextLabel6 = [v8 detailTextLabel];
+      [detailTextLabel6 setTextColor:defaultButtonColor];
 
       [v8 setAccessoryType:1];
       [v8 setSelectionStyle:1];
       goto LABEL_125;
     case 15:
-      v42 = [(WFNetworkSettingsViewController *)self _macAddressToDisplay];
+      _macAddressToDisplay = [(WFNetworkSettingsViewController *)self _macAddressToDisplay];
 
-      if (!v42)
+      if (!_macAddressToDisplay)
       {
         v43 = WFLogForCategory(0);
         v44 = OSLogForWFLogLevel(2uLL);
@@ -2042,42 +2042,42 @@ LABEL_126:
         }
       }
 
-      v45 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v45 randomMACCellAtIndexPath:v5 chinaDevice:{-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice")}];
+      cellFactory18 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory18 randomMACCellAtIndexPath:pathCopy chinaDevice:{-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice")}];
 
-      if ([v5 row] == 1)
+      if ([pathCopy row] == 1)
       {
-        v46 = [(WFNetworkSettingsViewController *)self _macAddressToDisplay];
+        _macAddressToDisplay2 = [(WFNetworkSettingsViewController *)self _macAddressToDisplay];
       }
 
       else
       {
-        if ([v5 row])
+        if ([pathCopy row])
         {
           goto LABEL_125;
         }
 
-        v46 = [(WFNetworkSettingsViewController *)self _selectedPrivateModeForOption:self->_privateAddressMode];
+        _macAddressToDisplay2 = [(WFNetworkSettingsViewController *)self _selectedPrivateModeForOption:self->_privateAddressMode];
       }
 
-      v11 = v46;
-      v18 = [v8 detailTextLabel];
-      [v18 setText:v11];
+      descriptionLabel4 = _macAddressToDisplay2;
+      descriptionLabel2 = [v8 detailTextLabel];
+      [descriptionLabel2 setText:descriptionLabel4];
       goto LABEL_123;
     case 16:
-      v11 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v20 = [v11 outrankedCellAtIndexPath:v5 chinaDevice:{-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice")}];
+      descriptionLabel4 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v20 = [descriptionLabel4 outrankedCellAtIndexPath:pathCopy chinaDevice:{-[WFNetworkSettingsViewController _isChinaDevice](self, "_isChinaDevice")}];
 LABEL_56:
       v8 = v20;
       goto LABEL_124;
     case 17:
-      v69 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v69 wifiModeCellAtIndexPath:v5];
+      cellFactory19 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory19 wifiModeCellAtIndexPath:pathCopy];
 
-      v11 = [v8 contentConfiguration];
-      v70 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+      descriptionLabel4 = [v8 contentConfiguration];
+      _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
       v71 = @"kWFLocSettingsWiFiModeTitle";
-      if (v70)
+      if (_isChinaDevice)
       {
         v71 = @"kWFLocSettingsWiFiModeTitle_CH";
       }
@@ -2087,12 +2087,12 @@ LABEL_56:
       v74 = [v72 bundleForClass:objc_opt_class()];
       v75 = [v74 localizedStringForKey:v73 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings-WIFI_6E"];
 
-      [v11 setText:v75];
-      v76 = [(WFNetworkSettingsViewController *)self context];
-      v77 = -[WFNetworkSettingsViewController _displayStringForDisableMode:](self, "_displayStringForDisableMode:", [v76 wifiMode]);
-      [v11 setSecondaryText:v77];
+      [descriptionLabel4 setText:v75];
+      context6 = [(WFNetworkSettingsViewController *)self context];
+      v77 = -[WFNetworkSettingsViewController _displayStringForDisableMode:](self, "_displayStringForDisableMode:", [context6 wifiMode]);
+      [descriptionLabel4 setSecondaryText:v77];
 
-      [v8 setContentConfiguration:v11];
+      [v8 setContentConfiguration:descriptionLabel4];
       [v8 setAccessoryType:1];
       goto LABEL_124;
     case 18:
@@ -2101,16 +2101,16 @@ LABEL_56:
         goto LABEL_58;
       }
 
-      v83 = [(WFNetworkSettingsViewController *)self cellFactory];
-      v8 = [v83 contentCachesCellAtIndexPath:v5];
+      cellFactory20 = [(WFNetworkSettingsViewController *)self cellFactory];
+      v8 = [cellFactory20 contentCachesCellAtIndexPath:pathCopy];
 
       v84 = MEMORY[0x277CCABB0];
-      v85 = [(WFNetworkSettingsViewController *)self context];
-      v86 = [v85 contentCachesContext];
-      v87 = [v84 numberWithInt:{objc_msgSend(v86, "numOfContentCaches")}];
-      v88 = [v87 stringValue];
-      v89 = [v8 detailTextLabel];
-      [v89 setText:v88];
+      context7 = [(WFNetworkSettingsViewController *)self context];
+      contentCachesContext = [context7 contentCachesContext];
+      v87 = [v84 numberWithInt:{objc_msgSend(contentCachesContext, "numOfContentCaches")}];
+      stringValue = [v87 stringValue];
+      detailTextLabel7 = [v8 detailTextLabel];
+      [detailTextLabel7 setText:stringValue];
 
       goto LABEL_135;
     default:
@@ -2118,28 +2118,28 @@ LABEL_56:
   }
 }
 
-- (int64_t)_sectionTypeAtSection:(int64_t)a3
+- (int64_t)_sectionTypeAtSection:(int64_t)section
 {
-  v4 = [(WFNetworkSettingsViewController *)self sections];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 integerValue];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  v5 = [sections objectAtIndex:section];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_saveConfig:(id)a3
+- (void)_saveConfig:(id)config
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNetworkSettingsViewController *)self config];
-  v6 = [v5 changesBetweenConfig:v4];
+  configCopy = config;
+  config = [(WFNetworkSettingsViewController *)self config];
+  v6 = [config changesBetweenConfig:configCopy];
 
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(4uLL);
   if (WFCurrentLogLevel() >= 4 && v7 && os_log_type_enabled(v7, v8))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = configCopy;
     _os_log_impl(&dword_273FB9000, v7, v8, "save handler new config %@", &v13, 0xCu);
   }
 
@@ -2152,8 +2152,8 @@ LABEL_56:
     _os_log_impl(&dword_273FB9000, v9, v10, "changes: %@", &v13, 0xCu);
   }
 
-  v11 = [(WFNetworkSettingsViewController *)self dataCoordinator];
-  [v11 networkSettingsViewController:self saveConfig:v4 errorHandler:&__block_literal_global_237];
+  dataCoordinator = [(WFNetworkSettingsViewController *)self dataCoordinator];
+  [dataCoordinator networkSettingsViewController:self saveConfig:configCopy errorHandler:&__block_literal_global_237];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -2182,74 +2182,74 @@ void __47__WFNetworkSettingsViewController__saveConfig___block_invoke(uint64_t a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldShowIPv6ForConfig:(id)a3
+- (BOOL)_shouldShowIPv6ForConfig:(id)config
 {
-  v3 = a3;
-  v4 = [v3 ipv6Addresses];
-  if ([v4 count])
+  configCopy = config;
+  ipv6Addresses = [configCopy ipv6Addresses];
+  if ([ipv6Addresses count])
   {
-    v5 = [v3 current];
+    current = [configCopy current];
   }
 
   else
   {
-    v6 = [v3 ipv6RouterAddress];
-    if (v6)
+    ipv6RouterAddress = [configCopy ipv6RouterAddress];
+    if (ipv6RouterAddress)
     {
-      v5 = [v3 current];
+      current = [configCopy current];
     }
 
     else
     {
-      v5 = 0;
+      current = 0;
     }
   }
 
-  return v5;
+  return current;
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v5 section]);
+  pathCopy = path;
+  v6 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]);
   v7 = v6 == 15 || v6 == 5;
-  v8 = v7 && [v5 row];
+  v8 = v7 && [pathCopy row];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  v25 = a3;
-  v9 = a5;
-  v10 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v9 section]);
-  if (sel_copy_ == a4)
+  viewCopy = view;
+  pathCopy = path;
+  v10 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]);
+  if (sel_copy_ == action)
   {
     v11 = v10;
-    v12 = [v25 cellForRowAtIndexPath:v9];
+    v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v13 = v12;
     if (v11 == 3)
     {
-      v14 = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
-      v15 = [v14 objectAtIndex:{objc_msgSend(v9, "row")}];
-      v16 = [v15 integerValue];
+      autoJoinSectionRows = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
+      v15 = [autoJoinSectionRows objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      integerValue = [v15 integerValue];
 
-      if ((v16 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
-        v17 = [v13 contentConfiguration];
-        v18 = [v17 secondaryText];
-        if (![v18 length])
+        contentConfiguration = [v13 contentConfiguration];
+        secondaryText = [contentConfiguration secondaryText];
+        if (![secondaryText length])
         {
 LABEL_9:
 
           goto LABEL_10;
         }
 
-        v19 = [MEMORY[0x277D75810] generalPasteboard];
-        v20 = v19;
-        v21 = v18;
+        generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+        text2 = generalPasteboard;
+        v21 = secondaryText;
 LABEL_8:
-        [v19 setString:v21];
+        [generalPasteboard setString:v21];
 
         goto LABEL_9;
       }
@@ -2257,17 +2257,17 @@ LABEL_8:
 
     else
     {
-      v22 = [v12 detailTextLabel];
-      v23 = [v22 text];
-      v24 = [v23 length];
+      detailTextLabel = [v12 detailTextLabel];
+      text = [detailTextLabel text];
+      v24 = [text length];
 
       if (v24)
       {
-        v17 = [MEMORY[0x277D75810] generalPasteboard];
-        v18 = [v13 detailTextLabel];
-        v20 = [v18 text];
-        v19 = v17;
-        v21 = v20;
+        contentConfiguration = [MEMORY[0x277D75810] generalPasteboard];
+        secondaryText = [v13 detailTextLabel];
+        text2 = [secondaryText text];
+        generalPasteboard = contentConfiguration;
+        v21 = text2;
         goto LABEL_8;
       }
     }
@@ -2276,13 +2276,13 @@ LABEL_10:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v126 = *MEMORY[0x277D85DE8];
-  v108 = a3;
-  v6 = a4;
-  v7 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [v6 section]);
-  v107 = [(WFNetworkSettingsViewController *)self delegate];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[WFNetworkSettingsViewController _sectionTypeAtSection:](self, "_sectionTypeAtSection:", [pathCopy section]);
+  delegate = [(WFNetworkSettingsViewController *)self delegate];
   v8 = WFLogForCategory(0);
   v9 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v8)
@@ -2290,13 +2290,13 @@ LABEL_10:
     v10 = v8;
     if (os_log_type_enabled(v10, v9))
     {
-      v11 = [v6 row];
-      v12 = [v6 section];
+      v11 = [pathCopy row];
+      section = [pathCopy section];
       v13 = [(WFNetworkSettingsViewController *)self _stringForSettingsSection:v7];
       *buf = 134218498;
       v121 = v11;
       v122 = 2048;
-      v123 = v12;
+      v123 = section;
       v124 = 2112;
       v125 = v13;
       _os_log_impl(&dword_273FB9000, v10, v9, "User did select network settings row=%ld in section=%ld (%@)", buf, 0x20u);
@@ -2306,63 +2306,63 @@ LABEL_10:
   switch(v7)
   {
     case 1:
-      if ([v6 row] == 1)
+      if ([pathCopy row] == 1)
       {
-        v14 = [(WFNetworkSettingsViewController *)self context];
+        context = [(WFNetworkSettingsViewController *)self context];
         v15 = objc_opt_respondsToSelector();
 
         if (v15)
         {
-          v16 = [(WFNetworkSettingsViewController *)self context];
-          [v16 openPortalURL];
+          context2 = [(WFNetworkSettingsViewController *)self context];
+          [context2 openPortalURL];
         }
       }
 
       break;
     case 2:
-      v61 = [(WFNetworkSettingsViewController *)self context];
+      context3 = [(WFNetworkSettingsViewController *)self context];
 
-      if (v61)
+      if (context3)
       {
-        v62 = [(WFNetworkSettingsViewController *)self context];
-        [v62 join];
+        context4 = [(WFNetworkSettingsViewController *)self context];
+        [context4 join];
       }
 
       else
       {
-        v62 = [(WFNetworkSettingsViewController *)self delegate];
-        [v62 networkSettingsViewControllerDidJoinNetwork:self];
+        context4 = [(WFNetworkSettingsViewController *)self delegate];
+        [context4 networkSettingsViewControllerDidJoinNetwork:self];
       }
 
       break;
     case 3:
-      v40 = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
-      v41 = [v40 objectAtIndex:{objc_msgSend(v6, "row")}];
-      v42 = [v41 integerValue];
+      autoJoinSectionRows = [(WFNetworkSettingsViewController *)self autoJoinSectionRows];
+      v41 = [autoJoinSectionRows objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+      integerValue = [v41 integerValue];
 
-      if ((v42 & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
         self->_credentailCellTapped = 1;
-        v43 = [(WFNetworkSettingsViewController *)self tableView];
-        [v43 reloadData];
+        tableView = [(WFNetworkSettingsViewController *)self tableView];
+        [tableView reloadData];
 
-        v44 = [(WFNetworkSettingsViewController *)self context];
-        if (v44)
+        context5 = [(WFNetworkSettingsViewController *)self context];
+        if (context5)
         {
-          v45 = [(WFNetworkSettingsViewController *)self context];
+          context6 = [(WFNetworkSettingsViewController *)self context];
           v46 = objc_opt_respondsToSelector();
 
           if (v46)
           {
-            v47 = [(WFNetworkSettingsViewController *)self context];
-            v48 = [v47 credentialsTappedHandler];
+            context7 = [(WFNetworkSettingsViewController *)self context];
+            credentialsTappedHandler = [context7 credentialsTappedHandler];
 
-            if (v48)
+            if (credentialsTappedHandler)
             {
-              v49 = v42 == 3;
-              v50 = [(WFNetworkSettingsViewController *)self context];
-              v51 = [v50 credentialsTappedHandler];
-              v52 = v51;
+              v49 = integerValue == 3;
+              context8 = [(WFNetworkSettingsViewController *)self context];
+              credentialsTappedHandler2 = [context8 credentialsTappedHandler];
+              v52 = credentialsTappedHandler2;
               if (v49)
               {
                 v53 = 2;
@@ -2373,7 +2373,7 @@ LABEL_10:
                 v53 = 1;
               }
 
-              (*(v51 + 16))(v51, v53);
+              (*(credentialsTappedHandler2 + 16))(credentialsTappedHandler2, v53);
             }
           }
         }
@@ -2388,7 +2388,7 @@ LABEL_10:
             _os_log_impl(&dword_273FB9000, v54, v55, "Already allow viewing password. Show copy menu.", buf, 2u);
           }
 
-          v56 = [v108 cellForRowAtIndexPath:v6];
+          v56 = [viewCopy cellForRowAtIndexPath:pathCopy];
           if (([v56 canBecomeFirstResponder] & 1) == 0)
           {
             v57 = WFLogForCategory(0);
@@ -2401,26 +2401,26 @@ LABEL_10:
           }
 
           [v56 becomeFirstResponder];
-          v59 = [MEMORY[0x277D75718] sharedMenuController];
-          [v59 update];
-          v60 = [MEMORY[0x277D75718] sharedMenuController];
+          mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+          [mEMORY[0x277D75718] update];
+          mEMORY[0x277D75718]2 = [MEMORY[0x277D75718] sharedMenuController];
           [v56 bounds];
-          [v60 showMenuFromView:v56 rect:?];
+          [mEMORY[0x277D75718]2 showMenuFromView:v56 rect:?];
         }
 
         else
         {
           v99 = objc_alloc_init(MEMORY[0x277CD4798]);
-          v100 = self;
-          v101 = [(WFNetworkSettingsViewController *)v100 _wifiPasswordContextOptions];
+          selfCopy = self;
+          _wifiPasswordContextOptions = [(WFNetworkSettingsViewController *)selfCopy _wifiPasswordContextOptions];
           v117[0] = MEMORY[0x277D85DD0];
           v117[1] = 3221225472;
           v117[2] = __69__WFNetworkSettingsViewController_tableView_didSelectRowAtIndexPath___block_invoke;
           v117[3] = &unk_279EC5F68;
-          v117[4] = v100;
-          v118 = v108;
-          v119 = v6;
-          [v99 evaluatePolicy:2 options:v101 reply:v117];
+          v117[4] = selfCopy;
+          v118 = viewCopy;
+          v119 = pathCopy;
+          [v99 evaluatePolicy:2 options:_wifiPasswordContextOptions reply:v117];
         }
       }
 
@@ -2429,12 +2429,12 @@ LABEL_10:
       [(WFNetworkSettingsViewController *)self _promptForgetNetwork];
       break;
     case 5:
-      if ([v6 row])
+      if ([pathCopy row])
       {
-        if ([v6 row] == 6)
+        if ([pathCopy row] == 6)
         {
-          v78 = [(WFNetworkSettingsViewController *)self config];
-          v79 = [v78 ipv4Config] == 0;
+          config = [(WFNetworkSettingsViewController *)self config];
+          v79 = [config ipv4Config] == 0;
 
           if (v79)
           {
@@ -2446,9 +2446,9 @@ LABEL_10:
       else
       {
         v95 = [WFIPConfigViewController alloc];
-        v96 = [(WFNetworkSettingsViewController *)self config];
-        v97 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-        v98 = [(WFIPConfigViewController *)v95 initWithConfig:v96 ipType:0 appearanceProxy:v97];
+        config2 = [(WFNetworkSettingsViewController *)self config];
+        appearanceProxy = [(WFNetworkSettingsViewController *)self appearanceProxy];
+        v98 = [(WFIPConfigViewController *)v95 initWithConfig:config2 ipType:0 appearanceProxy:appearanceProxy];
 
         objc_initWeak(buf, self);
         v113[0] = MEMORY[0x277D85DD0];
@@ -2465,9 +2465,9 @@ LABEL_10:
       break;
     case 6:
 LABEL_51:
-      v80 = [(WFNetworkSettingsViewController *)self view];
-      [v108 rectForRowAtIndexPath:v6];
-      [v80 convertRect:v108 fromView:?];
+      view = [(WFNetworkSettingsViewController *)self view];
+      [viewCopy rectForRowAtIndexPath:pathCopy];
+      [view convertRect:viewCopy fromView:?];
       v82 = v81;
       v84 = v83;
       v86 = v85;
@@ -2476,19 +2476,19 @@ LABEL_51:
       [(WFNetworkSettingsViewController *)self _presentRenewLeaseAlertWithSourceRect:v82, v84, v86, v88];
       break;
     case 7:
-      if (![v6 row])
+      if (![pathCopy row])
       {
-        v63 = [(WFNetworkSettingsViewController *)self config];
-        v64 = [v63 ipv6Addresses];
-        v65 = [v64 count] == 0;
+        config3 = [(WFNetworkSettingsViewController *)self config];
+        ipv6Addresses = [config3 ipv6Addresses];
+        v65 = [ipv6Addresses count] == 0;
 
         if (!v65)
         {
           v66 = [WFIPViewController alloc];
-          v67 = [(WFNetworkSettingsViewController *)self config];
-          v68 = [v67 ipv6Addresses];
-          v69 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-          v70 = [(WFIPViewController *)v66 initWithAddresses:v68 prefixLengths:0 appearanceProxy:v69];
+          config4 = [(WFNetworkSettingsViewController *)self config];
+          ipv6Addresses2 = [config4 ipv6Addresses];
+          appearanceProxy2 = [(WFNetworkSettingsViewController *)self appearanceProxy];
+          v70 = [(WFIPViewController *)v66 initWithAddresses:ipv6Addresses2 prefixLengths:0 appearanceProxy:appearanceProxy2];
 
           [(WFNetworkSettingsViewController *)self _presentDetailViewController:v70];
         }
@@ -2497,9 +2497,9 @@ LABEL_51:
       break;
     case 8:
       v71 = [WFDNSConfigViewController alloc];
-      v72 = [(WFNetworkSettingsViewController *)self config];
-      v73 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-      v74 = [(WFDNSConfigViewController *)v71 initWithConfig:v72 appearanceProxy:v73];
+      config5 = [(WFNetworkSettingsViewController *)self config];
+      appearanceProxy3 = [(WFNetworkSettingsViewController *)self appearanceProxy];
+      v74 = [(WFDNSConfigViewController *)v71 initWithConfig:config5 appearanceProxy:appearanceProxy3];
 
       objc_initWeak(buf, self);
       v115[0] = MEMORY[0x277D85DD0];
@@ -2515,9 +2515,9 @@ LABEL_51:
       break;
     case 9:
       v91 = [WFProxyConfigViewController alloc];
-      v92 = [(WFNetworkSettingsViewController *)self config];
-      v93 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-      v94 = [(WFProxyConfigViewController *)v91 initWithConfig:v92 appearanceProxy:v93];
+      config6 = [(WFNetworkSettingsViewController *)self config];
+      appearanceProxy4 = [(WFNetworkSettingsViewController *)self appearanceProxy];
+      v94 = [(WFProxyConfigViewController *)v91 initWithConfig:config6 appearanceProxy:appearanceProxy4];
 
       objc_initWeak(buf, self);
       v111[0] = MEMORY[0x277D85DD0];
@@ -2532,33 +2532,33 @@ LABEL_51:
 
       break;
     case 10:
-      v89 = [(WFNetworkSettingsViewController *)self context];
+      context9 = [(WFNetworkSettingsViewController *)self context];
 
-      if (v89)
+      if (context9)
       {
-        v90 = [(WFNetworkSettingsViewController *)self context];
-        [v90 manage];
+        context10 = [(WFNetworkSettingsViewController *)self context];
+        [context10 manage];
       }
 
       else
       {
-        [v107 networkSettingsViewControllerDidManageNetwork:self];
+        [delegate networkSettingsViewControllerDidManageNetwork:self];
       }
 
       break;
     case 14:
-      v31 = [(WFNetworkSettingsViewController *)self context];
-      v32 = [v31 diagnosticsContext];
+      context11 = [(WFNetworkSettingsViewController *)self context];
+      diagnosticsContext = [context11 diagnosticsContext];
 
       v33 = [WFDiagnosticsTableViewController alloc];
-      v34 = [(WFNetworkSettingsViewController *)self context];
-      v35 = [(WFNetworkSettingsViewController *)self appearanceProxy];
-      v36 = [(WFDiagnosticsTableViewController *)v33 initWithDiagnosticsContext:v32 detailsProviderContext:v34 appearanceProxy:v35];
+      context12 = [(WFNetworkSettingsViewController *)self context];
+      appearanceProxy5 = [(WFNetworkSettingsViewController *)self appearanceProxy];
+      v36 = [(WFDiagnosticsTableViewController *)v33 initWithDiagnosticsContext:diagnosticsContext detailsProviderContext:context12 appearanceProxy:appearanceProxy5];
 
       [(WFNetworkSettingsViewController *)self _presentDetailViewController:v36];
       break;
     case 15:
-      if (![v6 row])
+      if (![pathCopy row])
       {
         if ([(WFDetailsProviderContext *)self->_context isRandomMACAddressConfigurable])
         {
@@ -2574,9 +2574,9 @@ LABEL_51:
             v104 = v102;
             if (os_log_type_enabled(v104, v103))
             {
-              v105 = [(WFNetworkSettingsConfig *)self->_config ssid];
+              ssid = [(WFNetworkSettingsConfig *)self->_config ssid];
               *buf = 138412290;
-              v121 = v105;
+              v121 = ssid;
               _os_log_impl(&dword_273FB9000, v104, v103, "Private Address mode for %@ is not configurable!", buf, 0xCu);
             }
           }
@@ -2585,13 +2585,13 @@ LABEL_51:
 
       break;
     case 16:
-      v37 = [(WFNetworkSettingsViewController *)self context];
-      v38 = ([v37 requestedFields] & 0x2000) == 0;
+      context13 = [(WFNetworkSettingsViewController *)self context];
+      v38 = ([context13 requestedFields] & 0x2000) == 0;
 
       if (v38)
       {
-        v39 = [(WFNetworkSettingsViewController *)self context];
-        -[WFNetworkSettingsViewController _promptOverrideWiFiOutrankedForPrivateCellular:](self, "_promptOverrideWiFiOutrankedForPrivateCellular:", ([v39 requestedFields] >> 14) & 1);
+        context14 = [(WFNetworkSettingsViewController *)self context];
+        -[WFNetworkSettingsViewController _promptOverrideWiFiOutrankedForPrivateCellular:](self, "_promptOverrideWiFiOutrankedForPrivateCellular:", ([context14 requestedFields] >> 14) & 1);
       }
 
       else
@@ -2609,9 +2609,9 @@ LABEL_51:
       v22 = [v17 arrayWithObjects:{v19, v21, 0}];
 
       v23 = [[WFValueListViewController alloc] initWithTitles:v22 switchTitle:0];
-      v24 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+      _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
       v25 = @"kWFLocSettingsWiFiModeTitle";
-      if (v24)
+      if (_isChinaDevice)
       {
         v25 = @"kWFLocSettingsWiFiModeTitle_CH";
       }
@@ -2619,8 +2619,8 @@ LABEL_51:
       v26 = v25;
       v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v28 = [v27 localizedStringForKey:v26 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings-WIFI_6E"];
-      v29 = [(WFValueListViewController *)v23 navigationItem];
-      [v29 setTitle:v28];
+      navigationItem = [(WFValueListViewController *)v23 navigationItem];
+      [navigationItem setTitle:v28];
 
       v30 = [(WFNetworkSettingsViewController *)self _displayStringForDisableMode:[(WFDetailsProviderContext *)self->_context wifiMode]];
       [(WFValueListViewController *)v23 setSelectedTitle:v30];
@@ -2640,17 +2640,17 @@ LABEL_51:
 
       break;
     case 18:
-      v75 = [(WFNetworkSettingsViewController *)self context];
-      v76 = [v75 contentCachesContext];
-      v77 = [v76 cacheLocatorSettingsInstance];
-      [(WFNetworkSettingsViewController *)self _presentDetailViewController:v77];
+      context15 = [(WFNetworkSettingsViewController *)self context];
+      contentCachesContext = [context15 contentCachesContext];
+      cacheLocatorSettingsInstance = [contentCachesContext cacheLocatorSettingsInstance];
+      [(WFNetworkSettingsViewController *)self _presentDetailViewController:cacheLocatorSettingsInstance];
 
       break;
     default:
       break;
   }
 
-  [v108 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v106 = *MEMORY[0x277D85DE8];
 }
@@ -2840,9 +2840,9 @@ LABEL_9:
   [WeakRetained _didDismissDetailViewController];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:a4];
+  v4 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:section];
   v5 = 0;
   if (v4 <= 7)
   {
@@ -2888,9 +2888,9 @@ LABEL_13:
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:a4];
+  v5 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:section];
   v6 = 0;
   if (v5 > 12)
   {
@@ -2898,7 +2898,7 @@ LABEL_13:
     {
       if (v5 == 16)
       {
-        v21 = [(WFNetworkSettingsViewController *)self _outrankedFooterView];
+        _outrankedFooterView = [(WFNetworkSettingsViewController *)self _outrankedFooterView];
       }
 
       else
@@ -2908,7 +2908,7 @@ LABEL_13:
           goto LABEL_25;
         }
 
-        v21 = [(WFNetworkSettingsViewController *)self _WiFiModeFooterView];
+        _outrankedFooterView = [(WFNetworkSettingsViewController *)self _WiFiModeFooterView];
       }
     }
 
@@ -2916,7 +2916,7 @@ LABEL_13:
     {
       if (v5 == 13)
       {
-        v22 = [(WFNetworkSettingsViewController *)self networkQualityFooterView];
+        networkQualityFooterView = [(WFNetworkSettingsViewController *)self networkQualityFooterView];
         goto LABEL_20;
       }
 
@@ -2925,17 +2925,17 @@ LABEL_13:
         goto LABEL_25;
       }
 
-      v21 = [(WFNetworkSettingsViewController *)self _randomMACFooterView];
+      _outrankedFooterView = [(WFNetworkSettingsViewController *)self _randomMACFooterView];
     }
 
 LABEL_23:
-    v6 = v21;
-    v23 = [v6 textLabel];
-    [v23 setNumberOfLines:0];
+    v6 = _outrankedFooterView;
+    textLabel = [v6 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v10 = [v6 textLabel];
+    textLabel2 = [v6 textLabel];
 
-    [v10 sizeToFit];
+    [textLabel2 sizeToFit];
     goto LABEL_24;
   }
 
@@ -2950,7 +2950,7 @@ LABEL_23:
     {
       [(WFNetworkSettingsViewController *)self _privacyProxyEnabledFooterView];
     }
-    v21 = ;
+    _outrankedFooterView = ;
     goto LABEL_23;
   }
 
@@ -2961,9 +2961,9 @@ LABEL_23:
       goto LABEL_28;
     }
 
-    v22 = [(WFNetworkSettingsViewController *)self linkFooterView];
+    networkQualityFooterView = [(WFNetworkSettingsViewController *)self linkFooterView];
 LABEL_20:
-    v6 = v22;
+    v6 = networkQualityFooterView;
     goto LABEL_25;
   }
 
@@ -2972,29 +2972,29 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  v7 = [(WFNetworkSettingsViewController *)self config];
-  v8 = [v7 dhcpLeaseExpirationDate];
+  config = [(WFNetworkSettingsViewController *)self config];
+  dhcpLeaseExpirationDate = [config dhcpLeaseExpirationDate];
 
-  if (v8)
+  if (dhcpLeaseExpirationDate)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v10 = [v9 localizedStringForKey:@"kWFLocSettingsDHCPLeaseExpiresTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
+    textLabel2 = [v9 localizedStringForKey:@"kWFLocSettingsDHCPLeaseExpiresTitle" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-    v11 = [(WFNetworkSettingsViewController *)self config];
-    v12 = [v11 dhcpLeaseExpirationDate];
+    config2 = [(WFNetworkSettingsViewController *)self config];
+    dhcpLeaseExpirationDate2 = [config2 dhcpLeaseExpirationDate];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"kWFLocSettingsDHCPLeaseExpiresDateFormat" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v15 = [v12 stringFromDHCPLeaseExpirationDateWithFormatString:v14];
+    v15 = [dhcpLeaseExpirationDate2 stringFromDHCPLeaseExpirationDateWithFormatString:v14];
 
     v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{15.0, 0.0, 0.0, 0.0}];
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v10, v15];
+    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", textLabel2, v15];
     [v16 setText:v17];
 
     v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968] compatibleWithTraitCollection:0];
     [v16 setFont:v18];
 
-    v19 = [MEMORY[0x277D75348] altTextColor];
-    [v16 setTextColor:v19];
+    altTextColor = [MEMORY[0x277D75348] altTextColor];
+    [v16 setTextColor:altTextColor];
 
     [v16 sizeToFit];
     v20 = objc_alloc(MEMORY[0x277D75D18]);
@@ -3012,10 +3012,10 @@ LABEL_25:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = *MEMORY[0x277D76F30];
-  if (!a4)
+  if (!section)
   {
     return 18.0;
   }
@@ -3023,10 +3023,10 @@ LABEL_25:
   return result;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view estimatedHeightForFooterInSection:(int64_t)section
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v5 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:a4];
+  v5 = [(WFNetworkSettingsViewController *)self _sectionTypeAtSection:section];
   v6 = 0.0;
   if (v5 <= 12)
   {
@@ -3034,16 +3034,16 @@ LABEL_25:
     {
       case 0:
         v33[0] = *MEMORY[0x277D740C0];
-        v8 = [MEMORY[0x277D75348] systemBlueColor];
-        v34[0] = v8;
+        systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+        v34[0] = systemBlueColor;
         v33[1] = *MEMORY[0x277D740A8];
         v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
         v34[1] = v9;
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
-        v11 = [(WFNetworkSettingsViewController *)self recommendationLinkAttributedString];
-        v12 = [v11 string];
-        [v12 sizeWithAttributes:v10];
+        recommendationLinkAttributedString = [(WFNetworkSettingsViewController *)self recommendationLinkAttributedString];
+        string = [recommendationLinkAttributedString string];
+        [string sizeWithAttributes:v10];
         v14 = v13;
 
         [@"A" sizeWithAttributes:v10];
@@ -3051,27 +3051,27 @@ LABEL_25:
 
         goto LABEL_23;
       case 11:
-        v7 = [(WFNetworkSettingsViewController *)self _lowDataModeFooterView];
+        _lowDataModeFooterView = [(WFNetworkSettingsViewController *)self _lowDataModeFooterView];
         break;
       case 12:
-        v7 = [(WFNetworkSettingsViewController *)self _privacyProxyEnabledFooterView];
+        _lowDataModeFooterView = [(WFNetworkSettingsViewController *)self _privacyProxyEnabledFooterView];
         break;
       default:
         goto LABEL_23;
     }
 
 LABEL_18:
-    v16 = v7;
-    [v7 frame];
+    networkQualityFooterView = _lowDataModeFooterView;
+    [_lowDataModeFooterView frame];
     if (v17 == 0.0)
     {
-      v24 = [v16 textLabel];
-      v25 = [v24 attributedText];
-      v20 = [v25 attributesAtIndex:0 effectiveRange:0];
+      textLabel = [networkQualityFooterView textLabel];
+      attributedText = [textLabel attributedText];
+      v20 = [attributedText attributesAtIndex:0 effectiveRange:0];
 
-      v21 = [v16 textLabel];
-      v26 = [v21 text];
-      [v26 sizeWithAttributes:0];
+      textLabel2 = [networkQualityFooterView textLabel];
+      text = [textLabel2 text];
+      [text sizeWithAttributes:0];
       v23 = v27;
 
       goto LABEL_20;
@@ -3084,7 +3084,7 @@ LABEL_18:
   {
     if (v5 == 16)
     {
-      v7 = [(WFNetworkSettingsViewController *)self _outrankedFooterView];
+      _lowDataModeFooterView = [(WFNetworkSettingsViewController *)self _outrankedFooterView];
     }
 
     else
@@ -3094,7 +3094,7 @@ LABEL_18:
         goto LABEL_23;
       }
 
-      v7 = [(WFNetworkSettingsViewController *)self _WiFiModeFooterView];
+      _lowDataModeFooterView = [(WFNetworkSettingsViewController *)self _WiFiModeFooterView];
     }
 
     goto LABEL_18;
@@ -3102,20 +3102,20 @@ LABEL_18:
 
   if (v5 == 13)
   {
-    v16 = [(WFNetworkSettingsViewController *)self networkQualityFooterView];
-    [v16 frame];
+    networkQualityFooterView = [(WFNetworkSettingsViewController *)self networkQualityFooterView];
+    [networkQualityFooterView frame];
     if (v17 == 0.0)
     {
       v31[0] = *MEMORY[0x277D740C0];
-      v18 = [MEMORY[0x277D75348] systemBlueColor];
-      v32[0] = v18;
+      systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+      v32[0] = systemBlueColor2;
       v31[1] = *MEMORY[0x277D740A8];
       v19 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
       v32[1] = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
-      v21 = [v16 text];
-      [v21 sizeWithAttributes:v20];
+      textLabel2 = [networkQualityFooterView text];
+      [textLabel2 sizeWithAttributes:v20];
       v23 = v22;
 LABEL_20:
 
@@ -3133,7 +3133,7 @@ LABEL_21:
 
   if (v5 == 15)
   {
-    v7 = [(WFNetworkSettingsViewController *)self _randomMACFooterView];
+    _lowDataModeFooterView = [(WFNetworkSettingsViewController *)self _randomMACFooterView];
     goto LABEL_18;
   }
 
@@ -3142,69 +3142,69 @@ LABEL_23:
   return v6;
 }
 
-- (void)_autoJoinSwitchChanged:(id)a3
+- (void)_autoJoinSwitchChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 isOn];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  [v6 setAutoJoinEnabled:v5];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
+  config = [(WFNetworkSettingsViewController *)self config];
+  [config setAutoJoinEnabled:isOn];
 
-  v7 = [v4 isOn];
+  isOn2 = [changedCopy isOn];
 
-  [(WFNetworkSettingsViewController *)self _saveAutoJoinEnabledChanged:v7];
+  [(WFNetworkSettingsViewController *)self _saveAutoJoinEnabledChanged:isOn2];
 }
 
-- (void)_autoLoginSwitchChanged:(id)a3
+- (void)_autoLoginSwitchChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 isOn];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  [v6 setAutoLoginEnabled:v5];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
+  config = [(WFNetworkSettingsViewController *)self config];
+  [config setAutoLoginEnabled:isOn];
 
-  v7 = [v4 isOn];
+  isOn2 = [changedCopy isOn];
 
-  [(WFNetworkSettingsViewController *)self _saveAutoLoginEnabledChanged:v7];
+  [(WFNetworkSettingsViewController *)self _saveAutoLoginEnabledChanged:isOn2];
 }
 
-- (void)_saveDataModeSwitchChanged:(id)a3
+- (void)_saveDataModeSwitchChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 isOn];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  [v6 setIsInSaveDataMode:v5];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
+  config = [(WFNetworkSettingsViewController *)self config];
+  [config setIsInSaveDataMode:isOn];
 
-  v7 = [v4 isOn];
+  isOn2 = [changedCopy isOn];
 
-  [(WFNetworkSettingsViewController *)self _saveSaveDataModeChanged:v7];
+  [(WFNetworkSettingsViewController *)self _saveSaveDataModeChanged:isOn2];
 }
 
-- (void)_privacyProxyEnabledSwitchChanged:(id)a3
+- (void)_privacyProxyEnabledSwitchChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 isOn];
-  v6 = [(WFNetworkSettingsViewController *)self config];
-  [v6 setPrivacyProxyEnabled:v5];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
+  config = [(WFNetworkSettingsViewController *)self config];
+  [config setPrivacyProxyEnabled:isOn];
 
-  v7 = [v4 isOn];
+  isOn2 = [changedCopy isOn];
 
-  [(WFNetworkSettingsViewController *)self _privacyProxyEnabledChanged:v7];
+  [(WFNetworkSettingsViewController *)self _privacyProxyEnabledChanged:isOn2];
 }
 
-- (void)_updateWiFiEMode:(int64_t)a3
+- (void)_updateWiFiEMode:(int64_t)mode
 {
-  v5 = [(WFNetworkSettingsViewController *)self context];
-  [v5 setWifiMode:a3];
+  context = [(WFNetworkSettingsViewController *)self context];
+  [context setWifiMode:mode];
 
-  v6 = [(WFNetworkSettingsViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (int64_t)_disableModeFromKey:(id)a3
+- (int64_t)_disableModeFromKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"kWFLocSettingsWiFiModeAuto" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v6 = [v3 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -3215,7 +3215,7 @@ LABEL_23:
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"kWFLocSettingsWiFiModeOff" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v10 = [v3 isEqualToString:v9];
+    v10 = [keyCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -3244,9 +3244,9 @@ LABEL_23:
   v10 = [v3 arrayWithObjects:{v5, v7, v9, 0}];
 
   v11 = [WFPrivateAddressModeOptionsViewController alloc];
-  v12 = [(WFDetailsProviderContext *)self->_context isCurrent];
-  v13 = [(WFNetworkSettingsConfig *)self->_config ssid];
-  v14 = [(WFPrivateAddressModeOptionsViewController *)v11 initWithTitles:v10 originalSelection:v20 isCurrentNetwork:v12 currentNetworkName:v13 isChinaDevice:[(WFNetworkSettingsViewController *)self _isChinaDevice]];
+  isCurrent = [(WFDetailsProviderContext *)self->_context isCurrent];
+  ssid = [(WFNetworkSettingsConfig *)self->_config ssid];
+  v14 = [(WFPrivateAddressModeOptionsViewController *)v11 initWithTitles:v10 originalSelection:v20 isCurrentNetwork:isCurrent currentNetworkName:ssid isChinaDevice:[(WFNetworkSettingsViewController *)self _isChinaDevice]];
 
   LODWORD(v11) = [(WFNetworkSettingsViewController *)self _isChinaDevice];
   v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -3262,8 +3262,8 @@ LABEL_23:
   }
 
   v18 = [v15 localizedStringForKey:v17 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v19 = [(WFPrivateAddressModeOptionsViewController *)v14 navigationItem];
-  [v19 setTitle:v18];
+  navigationItem = [(WFPrivateAddressModeOptionsViewController *)v14 navigationItem];
+  [navigationItem setTitle:v18];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -3282,7 +3282,7 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   return [v4 _updatePrivateAddressMode:v3];
 }
 
-- (void)_updatePrivateAddressMode:(unint64_t)a3
+- (void)_updatePrivateAddressMode:(unint64_t)mode
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -3292,49 +3292,49 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [(WFNetworkSettingsConfig *)self->_config ssid];
+      ssid = [(WFNetworkSettingsConfig *)self->_config ssid];
       v17 = 138412546;
-      v18 = v8;
+      v18 = ssid;
       v19 = 2048;
-      v20 = a3;
+      modeCopy = mode;
       _os_log_impl(&dword_273FB9000, v7, v6, "Private address mode for %@ has been updated to %ld", &v17, 0x16u);
     }
   }
 
-  [(WFNetworkSettingsViewController *)self setPrivateAddressMode:a3];
-  v9 = [(WFNetworkSettingsViewController *)self sections];
-  v10 = [v9 indexOfObject:&unk_2883228A0];
+  [(WFNetworkSettingsViewController *)self setPrivateAddressMode:mode];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  v10 = [sections indexOfObject:&unk_2883228A0];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(WFNetworkSettingsViewController *)self tableView];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
     v12 = [MEMORY[0x277CCAA78] indexSetWithIndex:v10];
-    [v11 reloadSections:v12 withRowAnimation:5];
+    [tableView reloadSections:v12 withRowAnimation:5];
 
-    v13 = [(WFNetworkSettingsViewController *)self tableView];
+    tableView2 = [(WFNetworkSettingsViewController *)self tableView];
     v14 = [MEMORY[0x277CCAA78] indexSetWithIndex:v10];
-    [v13 _reloadSectionHeaderFooters:v14 withRowAnimation:100];
+    [tableView2 _reloadSectionHeaderFooters:v14 withRowAnimation:100];
   }
 
   context = self->_context;
   if (objc_opt_respondsToSelector())
   {
-    [(WFDetailsProviderContext *)self->_context updatePrivateAddressMode:a3];
+    [(WFDetailsProviderContext *)self->_context updatePrivateAddressMode:mode];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_selectedPrivateModeForOption:(unint64_t)a3
+- (id)_selectedPrivateModeForOption:(unint64_t)option
 {
-  if (a3 - 1 > 2)
+  if (option - 1 > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_279EC6018[a3 - 1];
+    v3 = off_279EC6018[option - 1];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   }
@@ -3342,12 +3342,12 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   return v5;
 }
 
-- (unint64_t)_selectedPrivateModeForString:(id)a3
+- (unint64_t)_selectedPrivateModeForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"kWFLocRandomMACOffOption" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v6 = [v3 isEqualToString:v5];
+  v6 = [stringCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -3358,7 +3358,7 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"kWFLocRandomMACStaticOption" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v10 = [v3 isEqualToString:v9];
+    v10 = [stringCopy isEqualToString:v9];
 
     if (v10)
     {
@@ -3369,7 +3369,7 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"kWFLocRandomMACRotatingOption" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-      v13 = [v3 isEqualToString:v12];
+      v13 = [stringCopy isEqualToString:v12];
 
       if (v13)
       {
@@ -3388,10 +3388,10 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
 
 - (BOOL)_shouldShowRandomConfigSwith
 {
-  v2 = [(WFNetworkSettingsViewController *)self context];
-  v3 = [v2 isRandomMACFeatureEnabled];
+  context = [(WFNetworkSettingsViewController *)self context];
+  isRandomMACFeatureEnabled = [context isRandomMACFeatureEnabled];
 
-  return v3;
+  return isRandomMACFeatureEnabled;
 }
 
 - (UISwitch)autoJoinSwitch
@@ -3503,9 +3503,9 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
     v5 = self->_linkFooterView;
     self->_linkFooterView = v4;
 
-    v6 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+    _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
     v7 = @"kWFLocSettingsRecommendationLinkTitle";
-    if (v6)
+    if (_isChinaDevice)
     {
       v7 = @"kWFLocSettingsRecommendationLinkTitleCH";
     }
@@ -3526,34 +3526,34 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   return linkFooterView;
 }
 
-- (void)_openRecommendationsLink:(id)a3
+- (void)_openRecommendationsLink:(id)link
 {
-  v4 = [(WFNetworkSettingsViewController *)self context];
+  context = [(WFNetworkSettingsViewController *)self context];
 
-  if (v4)
+  if (context)
   {
-    v5 = [(WFNetworkSettingsViewController *)self context];
-    [v5 openRecommendationLink];
+    context2 = [(WFNetworkSettingsViewController *)self context];
+    [context2 openRecommendationLink];
   }
 
   else
   {
-    v5 = [(WFNetworkSettingsViewController *)self delegate];
-    [v5 networkSettingsViewControllerDidTapRecommendationLink:self];
+    context2 = [(WFNetworkSettingsViewController *)self delegate];
+    [context2 networkSettingsViewControllerDidTapRecommendationLink:self];
   }
 }
 
 - (BOOL)_showRecommendationSupportLink
 {
-  v3 = [(WFNetworkSettingsViewController *)self config];
-  v4 = [v3 healthRecommendations];
-  if ([v4 count] == 1)
+  config = [(WFNetworkSettingsViewController *)self config];
+  healthRecommendations = [config healthRecommendations];
+  if ([healthRecommendations count] == 1)
   {
-    v5 = [(WFNetworkSettingsViewController *)self config];
-    v6 = [v5 healthRecommendations];
-    v7 = [v6 firstObject];
+    config2 = [(WFNetworkSettingsViewController *)self config];
+    healthRecommendations2 = [config2 healthRecommendations];
+    firstObject = [healthRecommendations2 firstObject];
     v8 = [WFHealthIssue issueWithType:1];
-    v9 = [v7 isEqual:v8] ^ 1;
+    v9 = [firstObject isEqual:v8] ^ 1;
   }
 
   else
@@ -3564,10 +3564,10 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   return v9;
 }
 
-- (void)_presentDetailViewController:(id)a3
+- (void)_presentDetailViewController:(id)controller
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
@@ -3575,33 +3575,33 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
     v8 = 136315394;
     v9 = "[WFNetworkSettingsViewController _presentDetailViewController:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = controllerCopy;
     _os_log_impl(&dword_273FB9000, v5, v6, "%s: pushing view controller='%@'", &v8, 0x16u);
   }
 
   self->_detailViewControllerVisible = 1;
-  [(UIViewController *)self wf_pushViewController:v4 animated:1];
+  [(UIViewController *)self wf_pushViewController:controllerCopy animated:1];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)_isChinaDevice
 {
-  v2 = [(WFNetworkSettingsViewController *)self deviceCapability];
+  deviceCapability = [(WFNetworkSettingsViewController *)self deviceCapability];
 
-  return WFCapabilityIsChinaDevice(v2);
+  return WFCapabilityIsChinaDevice(deviceCapability);
 }
 
-- (void)_logSections:(id)a3
+- (void)_logSections:(id)sections
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
+  sectionsCopy = sections;
+  string = [MEMORY[0x277CCAB68] string];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = sectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -3620,11 +3620,11 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
         }
 
         v13 = -[WFNetworkSettingsViewController _stringForSettingsSection:](self, "_stringForSettingsSection:", [*(*(&v17 + 1) + 8 * v11) integerValue]);
-        [v5 appendString:v13];
+        [string appendString:v13];
 
         if (v12 < [v6 count])
         {
-          [v5 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         ++v11;
@@ -3644,16 +3644,16 @@ uint64_t __74__WFNetworkSettingsViewController__pushPrivateModeSelectionViewCont
   if (WFCurrentLogLevel() >= 4 && v14 && os_log_type_enabled(v14, v15))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = string;
     _os_log_impl(&dword_273FB9000, v14, v15, "Settings Sections: %@", buf, 0xCu);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_displayStringForDisableMode:(int64_t)a3
+- (id)_displayStringForDisableMode:(int64_t)mode
 {
-  if (a3 < 2)
+  if (mode < 2)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = v3;
@@ -3664,7 +3664,7 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = v3;
@@ -3686,16 +3686,16 @@ LABEL_12:
   return v6;
 }
 
-- (id)_stringForSettingsSection:(int64_t)a3
+- (id)_stringForSettingsSection:(int64_t)section
 {
-  if (a3 > 0x12)
+  if (section > 0x12)
   {
     return 0;
   }
 
   else
   {
-    return off_279EC6030[a3];
+    return off_279EC6030[section];
   }
 }
 
@@ -3727,23 +3727,23 @@ LABEL_12:
 {
   if ([(WFNetworkSettingsViewController *)self privateAddressMode]== 1)
   {
-    v3 = self->_hardwareMACAddress;
+    _randomAddressToDisplay = self->_hardwareMACAddress;
   }
 
   else
   {
-    v3 = [(WFNetworkSettingsViewController *)self _randomAddressToDisplay];
+    _randomAddressToDisplay = [(WFNetworkSettingsViewController *)self _randomAddressToDisplay];
   }
 
-  return v3;
+  return _randomAddressToDisplay;
 }
 
 - (id)_randomMACFooterTextToDisplay
 {
-  v3 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+  _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (_isChinaDevice)
   {
     v6 = @"kWFLocPrivateAddressFooterMainTitle_CH";
   }
@@ -3772,14 +3772,14 @@ LABEL_12:
   return v10;
 }
 
-- (id)_detailFooterForMode:(unint64_t)a3
+- (id)_detailFooterForMode:(unint64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 3uLL:
-      v7 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+      _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
       v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v7)
+      if (_isChinaDevice)
       {
         v5 = @"kWFLocPrivateAddressFooterStaticDetail_CH";
       }
@@ -3791,9 +3791,9 @@ LABEL_12:
 
       break;
     case 2uLL:
-      v6 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+      _isChinaDevice2 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
       v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v6)
+      if (_isChinaDevice2)
       {
         v5 = @"kWFLocPrivateAddressFooterRotatingDetail_CH";
       }
@@ -3805,9 +3805,9 @@ LABEL_12:
 
       break;
     case 1uLL:
-      v3 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+      _isChinaDevice3 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
       v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v3)
+      if (_isChinaDevice3)
       {
         v5 = @"kWFLocPrivateAddressFooterOffDetail_CH";
       }
@@ -3830,26 +3830,26 @@ LABEL_15:
   return v8;
 }
 
-- (void)scrollToCell:(unint64_t)a3
+- (void)scrollToCell:(unint64_t)cell
 {
-  if (a3 - 4 <= 3)
+  if (cell - 4 <= 3)
   {
-    v5 = qword_279EC60C8[a3 - 4];
+    v5 = qword_279EC60C8[cell - 4];
     v6 = MEMORY[0x277CCAA70];
-    v7 = [(WFNetworkSettingsViewController *)self sections];
-    v9 = [v6 indexPathForRow:0 inSection:{objc_msgSend(v7, "indexOfObject:", v5)}];
+    sections = [(WFNetworkSettingsViewController *)self sections];
+    v9 = [v6 indexPathForRow:0 inSection:{objc_msgSend(sections, "indexOfObject:", v5)}];
 
-    v8 = [(WFNetworkSettingsViewController *)self tableView];
-    [v8 scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
   }
 }
 
-- (void)_presentRenewLeaseAlertWithSourceRect:(CGRect)a3
+- (void)_presentRenewLeaseAlertWithSourceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = WFLogForCategory(0);
   v9 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v8 && os_log_type_enabled(v8, v9))
@@ -3876,16 +3876,16 @@ LABEL_15:
 
   [v10 addAction:v14];
   [v10 setPreferredAction:v14];
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v17 = [v10 popoverPresentationController];
-    v18 = [(WFNetworkSettingsViewController *)self view];
-    [v17 setSourceView:v18];
+    popoverPresentationController = [v10 popoverPresentationController];
+    view = [(WFNetworkSettingsViewController *)self view];
+    [popoverPresentationController setSourceView:view];
 
-    [v17 setSourceRect:{x, y, width, height}];
+    [popoverPresentationController setSourceRect:{x, y, width, height}];
   }
 
   v19 = MEMORY[0x277D750F8];
@@ -4011,20 +4011,20 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:v5 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-  v8 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
-  v9 = [v8 text];
-  v10 = [v7 isEqualToString:v9];
+  textLabel = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
+  text = [textLabel text];
+  v10 = [v7 isEqualToString:text];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
-    [v11 setText:v7];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
+    [textLabel2 setText:v7];
 
-    v12 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
-    [v12 setNumberOfLines:0];
+    textLabel3 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
+    [textLabel3 setNumberOfLines:0];
 
-    v13 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
-    [v13 sizeToFit];
+    textLabel4 = [(UITableViewHeaderFooterView *)self->_lowDataModeFooterView textLabel];
+    [textLabel4 sizeToFit];
   }
 
   v14 = self->_lowDataModeFooterView;
@@ -4044,14 +4044,14 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
 
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"kWFLocSettingsWiFiModeFooter" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-    v8 = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
-    [v8 setText:v7];
+    textLabel = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
+    [textLabel setText:v7];
 
-    v9 = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
-    [v9 setNumberOfLines:0];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
+    [textLabel2 setNumberOfLines:0];
 
-    v10 = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
-    [v10 sizeToFit];
+    textLabel3 = [(UITableViewHeaderFooterView *)self->_wifiModeFooterView textLabel];
+    [textLabel3 sizeToFit];
 
     wifiModeFooterView = self->_wifiModeFooterView;
   }
@@ -4068,20 +4068,20 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
     v5 = self->_privacyProxyEnabledFooterView;
     self->_privacyProxyEnabledFooterView = v4;
 
-    v6 = [(WFNetworkSettingsViewController *)self config];
-    v7 = [v6 privacyProxyTierStatus];
+    config = [(WFNetworkSettingsViewController *)self config];
+    privacyProxyTierStatus = [config privacyProxyTierStatus];
 
-    if (v7 == 1)
+    if (privacyProxyTierStatus == 1)
     {
       v8 = @"kWFLocPrivacyProxyNonSubscriberFooter";
     }
 
     else
     {
-      v9 = [(WFNetworkSettingsViewController *)self config];
-      v10 = [v9 privacyProxyTierStatus];
+      config2 = [(WFNetworkSettingsViewController *)self config];
+      privacyProxyTierStatus2 = [config2 privacyProxyTierStatus];
 
-      if (v10 == 2)
+      if (privacyProxyTierStatus2 == 2)
       {
         v8 = @"kWFLocPrivacyProxySubscriberFooter";
       }
@@ -4095,14 +4095,14 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:v8 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-    v13 = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
-    [v13 setText:v12];
+    textLabel = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
+    [textLabel setText:v12];
 
-    v14 = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
-    [v14 setNumberOfLines:0];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
+    [textLabel2 setNumberOfLines:0];
 
-    v15 = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
-    [v15 sizeToFit];
+    textLabel3 = [(UITableViewHeaderFooterView *)self->_privacyProxyEnabledFooterView textLabel];
+    [textLabel3 sizeToFit];
 
     privacyProxyEnabledFooterView = self->_privacyProxyEnabledFooterView;
   }
@@ -4119,24 +4119,24 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
     self->_outrankedFooterView = v3;
   }
 
-  v5 = [(WFNetworkSettingsViewController *)self context];
-  v6 = [v5 requestedFields];
+  context = [(WFNetworkSettingsViewController *)self context];
+  requestedFields = [context requestedFields];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [(WFNetworkSettingsViewController *)self _isChinaDevice];
+  _isChinaDevice = [(WFNetworkSettingsViewController *)self _isChinaDevice];
   v9 = @"kWFLocSettingOutrankFooter";
-  if (v8)
+  if (_isChinaDevice)
   {
     v9 = @"kWFLocSettingOutrankFooter_CH";
   }
 
   v10 = @"kWFLocSettingPrivateOutrankFooter_CH";
-  if (!v8)
+  if (!_isChinaDevice)
   {
     v10 = @"kWFLocSettingPrivateOutrankFooter";
   }
 
-  if ((v6 & 0x4000) != 0)
+  if ((requestedFields & 0x4000) != 0)
   {
     v11 = v10;
   }
@@ -4148,20 +4148,20 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
 
   v12 = [v7 localizedStringForKey:v11 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-  v13 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
-  v14 = [v13 text];
-  v15 = [v14 isEqualToString:v12];
+  textLabel = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
+  text = [textLabel text];
+  v15 = [text isEqualToString:v12];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
-    [v16 setText:v12];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
+    [textLabel2 setText:v12];
 
-    v17 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
-    [v17 setNumberOfLines:0];
+    textLabel3 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
+    [textLabel3 setNumberOfLines:0];
 
-    v18 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
-    [v18 sizeToFit];
+    textLabel4 = [(UITableViewHeaderFooterView *)self->_outrankedFooterView textLabel];
+    [textLabel4 sizeToFit];
   }
 
   v19 = self->_outrankedFooterView;
@@ -4175,20 +4175,20 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
   v53 = *MEMORY[0x277D85DE8];
   if (self->_networkQualityFooterView)
   {
-    v3 = [(WFNetworkSettingsViewController *)self config];
-    v4 = [v3 networkQualityDate];
-    if (!v4)
+    config = [(WFNetworkSettingsViewController *)self config];
+    networkQualityDate = [config networkQualityDate];
+    if (!networkQualityDate)
     {
 
       goto LABEL_18;
     }
 
-    v5 = v4;
+    v5 = networkQualityDate;
     if (self->_networkQualityFooterDate)
     {
-      v6 = [(WFNetworkSettingsViewController *)self config];
-      v7 = [v6 networkQualityDate];
-      v8 = [v7 isEqual:self->_networkQualityFooterDate];
+      config2 = [(WFNetworkSettingsViewController *)self config];
+      networkQualityDate2 = [config2 networkQualityDate];
+      v8 = [networkQualityDate2 isEqual:self->_networkQualityFooterDate];
 
       if (v8)
       {
@@ -4208,10 +4208,10 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
     v11 = v9;
     if (os_log_type_enabled(v11, v10))
     {
-      v12 = [(WFNetworkSettingsViewController *)self config];
-      v13 = [v12 networkQualityDate];
-      v14 = [(WFNetworkSettingsViewController *)self config];
-      [v14 networkQualityResponsiveness];
+      config3 = [(WFNetworkSettingsViewController *)self config];
+      networkQualityDate3 = [config3 networkQualityDate];
+      config4 = [(WFNetworkSettingsViewController *)self config];
+      [config4 networkQualityResponsiveness];
       networkQualityFooterView = self->_networkQualityFooterView;
       v17 = "YES";
       networkQualityFooterDate = self->_networkQualityFooterDate;
@@ -4223,7 +4223,7 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
         v17 = "NO";
       }
 
-      v46 = v13;
+      v46 = networkQualityDate3;
       v47 = 2048;
       v48 = v15;
       v49 = 2080;
@@ -4238,10 +4238,10 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
   v20 = self->_networkQualityFooterView;
   self->_networkQualityFooterView = v19;
 
-  v21 = [(WFNetworkSettingsViewController *)self config];
-  v22 = [v21 networkQualityDate];
+  config5 = [(WFNetworkSettingsViewController *)self config];
+  networkQualityDate4 = [config5 networkQualityDate];
 
-  if (v22)
+  if (networkQualityDate4)
   {
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v42 = [v23 localizedStringForKey:@"kWFLocNetworkQualityFooterKnown" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
@@ -4258,14 +4258,14 @@ void __73__WFNetworkSettingsViewController__presentRenewLeaseAlertWithSourceRect
     [v28 setDoesRelativeDateFormatting:1];
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v42, v25];
     v30 = MEMORY[0x277CCACA8];
-    v31 = [(WFNetworkSettingsViewController *)self config];
-    v32 = [v31 networkQualityDate];
-    v33 = [v28 stringFromDate:v32];
+    config6 = [(WFNetworkSettingsViewController *)self config];
+    networkQualityDate5 = [config6 networkQualityDate];
+    v33 = [v28 stringFromDate:networkQualityDate5];
     v34 = [v30 stringWithFormat:@"%@\n%@ %@", v29, v27, v33];
 
-    v35 = [(WFNetworkSettingsViewController *)self config];
-    v36 = [v35 networkQualityDate];
-    v37 = [v36 copy];
+    config7 = [(WFNetworkSettingsViewController *)self config];
+    networkQualityDate6 = [config7 networkQualityDate];
+    v37 = [networkQualityDate6 copy];
     v38 = self->_networkQualityFooterDate;
     self->_networkQualityFooterDate = v37;
 
@@ -4289,15 +4289,15 @@ LABEL_18:
 
 - (void)_networkQualityOpenURL
 {
-  v6 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = MEMORY[0x277CBEBC0];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"kWFLocNetworkQualityKBURL" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   v5 = [v2 URLWithString:v4];
-  [v6 openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:0];
+  [mEMORY[0x277D75128] openURL:v5 options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (void)_openNetworkQualityDetails:(id)a3
+- (void)_openNetworkQualityDetails:(id)details
 {
   v4 = objc_alloc(MEMORY[0x277D37688]);
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -4332,19 +4332,19 @@ LABEL_18:
   v19 = [v18 localizedStringForKey:@"kWFLocNetworkQualityLearnMoreSection3Text" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
   [v28 addSectionWithHeader:v17 content:v19];
 
-  v20 = [MEMORY[0x277D37680] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37680] accessoryButton];
   v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v22 = [v21 localizedStringForKey:@"kWFLocNetworkQualityKBURL" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  [v20 setTitle:v22 forState:0];
+  [accessoryButton setTitle:v22 forState:0];
 
-  [v20 addTarget:self action:sel__networkQualityOpenURL forControlEvents:64];
+  [accessoryButton addTarget:self action:sel__networkQualityOpenURL forControlEvents:64];
   v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v24 = [v23 localizedStringForKey:@"kWFLocNetworkQualityLearnMoreSection4Text" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  [v28 addSectionWithHeader:0 content:v24 accessoryButton:v20];
+  [v28 addSectionWithHeader:0 content:v24 accessoryButton:accessoryButton];
 
   v25 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_donePressed];
-  v26 = [v28 navigationItem];
-  [v26 setRightBarButtonItem:v25];
+  navigationItem = [v28 navigationItem];
+  [navigationItem setRightBarButtonItem:v25];
 
   v27 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v28];
   [(WFNetworkSettingsViewController *)self presentViewController:v27 animated:1 completion:0];
@@ -4352,8 +4352,8 @@ LABEL_18:
 
 - (void)donePressed
 {
-  v2 = [(WFNetworkSettingsViewController *)self presentedViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(WFNetworkSettingsViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)_randomMACFooterView
@@ -4364,26 +4364,26 @@ LABEL_18:
     randomMACFooterView = self->_randomMACFooterView;
     self->_randomMACFooterView = v3;
 
-    v5 = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
-    [v5 setNumberOfLines:0];
+    textLabel = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v6 = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
-    [v6 sizeToFit];
+    textLabel2 = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
+    [textLabel2 sizeToFit];
   }
 
-  v7 = [(WFNetworkSettingsViewController *)self _randomMACFooterTextToDisplay];
-  v8 = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
-  [v8 setText:v7];
+  _randomMACFooterTextToDisplay = [(WFNetworkSettingsViewController *)self _randomMACFooterTextToDisplay];
+  textLabel3 = [(UITableViewHeaderFooterView *)self->_randomMACFooterView textLabel];
+  [textLabel3 setText:_randomMACFooterTextToDisplay];
 
   v9 = self->_randomMACFooterView;
 
   return v9;
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v5)
@@ -4391,11 +4391,11 @@ LABEL_18:
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [v4 userInfo];
+      userInfo = [changeCopy userInfo];
       v12 = 136315394;
       v13 = "[WFNetworkSettingsViewController _contentSizeCategoryDidChange:]";
       v14 = 2112;
-      v15 = v8;
+      v15 = userInfo;
       _os_log_impl(&dword_273FB9000, v7, v6, "%s: size changed to %@", &v12, 0x16u);
     }
   }
@@ -4411,32 +4411,32 @@ LABEL_18:
 
 - (id)_portalURL
 {
-  v3 = [(WFNetworkSettingsViewController *)self context];
+  context = [(WFNetworkSettingsViewController *)self context];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFNetworkSettingsViewController *)self context];
-    v6 = [v5 portalURL];
+    context2 = [(WFNetworkSettingsViewController *)self context];
+    portalURL = [context2 portalURL];
   }
 
   else
   {
-    v6 = 0;
+    portalURL = 0;
   }
 
-  return v6;
+  return portalURL;
 }
 
 - (id)_wifiPasswordContextOptions
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = &unk_288322978;
-  v3 = [(WFNetworkSettingsViewController *)self _passcodePromptForViewingPasswords];
+  _passcodePromptForViewingPasswords = [(WFNetworkSettingsViewController *)self _passcodePromptForViewingPasswords];
   v8[1] = &unk_288322990;
-  v9[0] = v3;
-  v4 = [(WFNetworkSettingsViewController *)self _touchIDPromptForViewingPasswords];
-  v9[1] = v4;
+  v9[0] = _passcodePromptForViewingPasswords;
+  _touchIDPromptForViewingPasswords = [(WFNetworkSettingsViewController *)self _touchIDPromptForViewingPasswords];
+  v9[1] = _touchIDPromptForViewingPasswords;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -4462,7 +4462,7 @@ LABEL_18:
 
 - (BOOL)_isAutoJoinConfigurable
 {
-  v3 = [(WFNetworkSettingsViewController *)self context];
+  context = [(WFNetworkSettingsViewController *)self context];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4470,45 +4470,45 @@ LABEL_18:
     return 1;
   }
 
-  v5 = [(WFNetworkSettingsViewController *)self context];
-  v6 = [v5 autoJoinConfigurable] == 0;
+  context2 = [(WFNetworkSettingsViewController *)self context];
+  v6 = [context2 autoJoinConfigurable] == 0;
 
   return v6;
 }
 
 - (void)_setupAccessoryHeader
 {
-  v3 = [(WFNetworkSettingsViewController *)self context];
+  context = [(WFNetworkSettingsViewController *)self context];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     v5 = MEMORY[0x277CB8900];
-    v6 = [(WFNetworkSettingsViewController *)self context];
-    v7 = [v6 daDevice];
-    v20 = [v5 infoViewControllerFromDevice:v7];
+    context2 = [(WFNetworkSettingsViewController *)self context];
+    daDevice = [context2 daDevice];
+    v20 = [v5 infoViewControllerFromDevice:daDevice];
 
     if (v20)
     {
       [(WFNetworkSettingsViewController *)self addChildViewController:v20];
       [v20 preferredContentSize];
       v9 = v8;
-      v10 = [v20 view];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:1];
+      view = [v20 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-      v11 = [v20 view];
-      [v11 setAutoresizingMask:2];
+      view2 = [v20 view];
+      [view2 setAutoresizingMask:2];
 
-      v12 = [(WFNetworkSettingsViewController *)self view];
-      [v12 bounds];
+      view3 = [(WFNetworkSettingsViewController *)self view];
+      [view3 bounds];
       v14 = v13;
-      v15 = [v20 view];
-      [v15 setFrame:{0.0, 0.0, v14, v9}];
+      view4 = [v20 view];
+      [view4 setFrame:{0.0, 0.0, v14, v9}];
 
       [(WFNetworkSettingsViewController *)self setAccessoryInfoController:v20];
-      v16 = [v20 view];
-      v17 = [(WFNetworkSettingsViewController *)self tableView];
-      [v17 setTableHeaderView:v16];
+      view5 = [v20 view];
+      tableView = [(WFNetworkSettingsViewController *)self tableView];
+      [tableView setTableHeaderView:view5];
 
       [v20 didMoveToParentViewController:self];
     }
@@ -4526,12 +4526,12 @@ LABEL_18:
   }
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   if (self->_allowViewPassword)
   {
-    v4 = [MEMORY[0x277D75718] sharedMenuController];
-    [v4 hideMenu];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+    [mEMORY[0x277D75718] hideMenu];
   }
 }
 
@@ -4539,11 +4539,11 @@ LABEL_18:
 {
   if ([(WFNetworkSettingsViewController *)self showManagedNetworkHeader]&& ([(WFNetworkSettingsViewController *)self context], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_opt_respondsToSelector(), v3, (v4 & 1) != 0))
   {
-    v5 = [(WFNetworkSettingsViewController *)self tableView];
-    [v5 bounds];
+    tableView = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView bounds];
     v7 = v6;
 
-    v27 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v7, 0.0}];
+    tableView3 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v7, 0.0}];
     v8 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{0.0, 0.0, v7, 100.0}];
     v9 = [MEMORY[0x277D75348] colorWithRed:0.427450985 green:0.427450985 blue:0.447058827 alpha:1.0];
     [v8 setTextColor:v9];
@@ -4551,12 +4551,12 @@ LABEL_18:
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v8 setNumberOfLines:0];
     [v8 setTextAlignment:0];
-    v10 = [(WFNetworkSettingsViewController *)self context];
-    v11 = [v10 networkOrigin];
+    context = [(WFNetworkSettingsViewController *)self context];
+    networkOrigin = [context networkOrigin];
 
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = v12;
-    if (v11 == 1)
+    if (networkOrigin == 1)
     {
       v14 = @"kWFLocManagedCarrierNetworkTitle";
     }
@@ -4572,33 +4572,33 @@ LABEL_18:
     [v8 setFont:v16];
 
     [v8 setText:v15];
-    [v27 addSubview:v8];
+    [tableView3 addSubview:v8];
     v17 = MEMORY[0x277CCAAD0];
     v18 = _NSDictionaryOfVariableBindings(&cfstr_Headerlabel.isa, v8, 0);
     v19 = [v17 constraintsWithVisualFormat:@"V:|-10-[headerLabel]-10-|" options:0 metrics:0 views:v18];
-    [v27 addConstraints:v19];
+    [tableView3 addConstraints:v19];
 
     v20 = MEMORY[0x277CCAAD0];
     v21 = _NSDictionaryOfVariableBindings(&cfstr_Headerlabel.isa, v8, 0);
     v22 = [v20 constraintsWithVisualFormat:@"|-40-[headerLabel]-40-|" options:0 metrics:0 views:v21];
-    [v27 addConstraints:v22];
+    [tableView3 addConstraints:v22];
 
-    v23 = [MEMORY[0x277CCAAD0] constraintWithItem:v27 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
-    [v27 addConstraint:v23];
-    [v27 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    v23 = [MEMORY[0x277CCAAD0] constraintWithItem:tableView3 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v7];
+    [tableView3 addConstraint:v23];
+    [tableView3 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     v25 = v24 + 40.0;
-    [v27 removeConstraint:v23];
-    [v27 setFrame:{0.0, 0.0, v7, v25}];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:1];
+    [tableView3 removeConstraint:v23];
+    [tableView3 setFrame:{0.0, 0.0, v7, v25}];
+    [tableView3 setTranslatesAutoresizingMaskIntoConstraints:1];
     [v8 setPreferredMaxLayoutWidth:v7];
-    v26 = [(WFNetworkSettingsViewController *)self tableView];
-    [v26 setTableHeaderView:v27];
+    tableView2 = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView2 setTableHeaderView:tableView3];
   }
 
   else
   {
-    v27 = [(WFNetworkSettingsViewController *)self tableView];
-    [v27 setTableHeaderView:0];
+    tableView3 = [(WFNetworkSettingsViewController *)self tableView];
+    [tableView3 setTableHeaderView:0];
   }
 }
 
@@ -4612,7 +4612,7 @@ LABEL_18:
     v6 = 136315394;
     v7 = "[WFNetworkSettingsViewController _didStartPresentingDetailViewController]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273FB9000, v3, v4, "%s: %@", &v6, 0x16u);
   }
 
@@ -4630,7 +4630,7 @@ LABEL_18:
     v6 = 136315394;
     v7 = "[WFNetworkSettingsViewController _didDismissDetailViewController]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273FB9000, v3, v4, "%s: %@", &v6, 0x16u);
   }
 
@@ -4638,7 +4638,7 @@ LABEL_18:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contentCachesContext:(id)a3 didUpdateNumOfContentCaches:(int)a4
+- (void)contentCachesContext:(id)context didUpdateNumOfContentCaches:(int)caches
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = WFLogForCategory(0);
@@ -4648,13 +4648,13 @@ LABEL_18:
     v17 = 136315394;
     v18 = "[WFNetworkSettingsViewController contentCachesContext:didUpdateNumOfContentCaches:]";
     v19 = 1024;
-    v20 = a4;
+    cachesCopy = caches;
     _os_log_impl(&dword_273FB9000, v6, v7, "%s: numCaches updated to %d", &v17, 0x12u);
   }
 
-  v8 = [(WFNetworkSettingsViewController *)self config];
-  v9 = [(WFNetworkSettingsViewController *)self context];
-  v10 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:v8 context:v9];
+  config = [(WFNetworkSettingsViewController *)self config];
+  context = [(WFNetworkSettingsViewController *)self context];
+  v10 = [(WFNetworkSettingsViewController *)self _sectionsFromConfig:config context:context];
   [(WFNetworkSettingsViewController *)self setSections:v10];
 
   v11 = WFLogForCategory(0);
@@ -4667,11 +4667,11 @@ LABEL_18:
     _os_log_impl(&dword_273FB9000, v11, v12, "Refreshed settings config %@", &v17, 0xCu);
   }
 
-  v14 = [(WFNetworkSettingsViewController *)self sections];
-  [(WFNetworkSettingsViewController *)self _logSections:v14];
+  sections = [(WFNetworkSettingsViewController *)self sections];
+  [(WFNetworkSettingsViewController *)self _logSections:sections];
 
-  v15 = [(WFNetworkSettingsViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(WFNetworkSettingsViewController *)self tableView];
+  [tableView reloadData];
 
   v16 = *MEMORY[0x277D85DE8];
 }

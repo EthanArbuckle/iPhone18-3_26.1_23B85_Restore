@@ -1,29 +1,29 @@
 @interface WFFinderImageResizer
-- (BOOL)unsafeComputeResizedSizesForImageContentItems:(id)a3 inSizes:(id)a4 intoSizesTable:(id)a5 error:(id *)a6;
+- (BOOL)unsafeComputeResizedSizesForImageContentItems:(id)items inSizes:(id)sizes intoSizesTable:(id)table error:(id *)error;
 - (WFFinderImageResizer)init;
-- (id)resizeImages:(id)a3 toSize:(id)a4 completion:(id)a5;
-- (void)computeResizedSizesForImages:(id)a3 inSizes:(id)a4 completion:(id)a5;
+- (id)resizeImages:(id)images toSize:(id)size completion:(id)completion;
+- (void)computeResizedSizesForImages:(id)images inSizes:(id)sizes completion:(id)completion;
 @end
 
 @implementation WFFinderImageResizer
 
-- (BOOL)unsafeComputeResizedSizesForImageContentItems:(id)a3 inSizes:(id)a4 intoSizesTable:(id)a5 error:(id *)a6
+- (BOOL)unsafeComputeResizedSizesForImageContentItems:(id)items inSizes:(id)sizes intoSizesTable:(id)table error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  itemsCopy = items;
+  sizesCopy = sizes;
+  tableCopy = table;
+  if (itemsCopy)
   {
-    if (v12)
+    if (sizesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"sizes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"sizes"}];
 
-    if (v13)
+    if (tableCopy)
     {
       goto LABEL_4;
     }
@@ -31,55 +31,55 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"items"}];
 
-  if (!v12)
+  if (!sizesCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v13)
+  if (tableCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_15:
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"sizesTable"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"sizesTable"}];
 
 LABEL_4:
-  v14 = [v11 count];
-  v15 = [v12 count] * v14;
+  v14 = [itemsCopy count];
+  v15 = [sizesCopy count] * v14;
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v15];
   v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v15];
-  if ([v11 count])
+  if ([itemsCopy count])
   {
     v18 = 0;
     do
     {
-      if ([v12 count])
+      if ([sizesCopy count])
       {
         v19 = 0;
         do
         {
-          v20 = [v11 objectAtIndexedSubscript:v18];
+          v20 = [itemsCopy objectAtIndexedSubscript:v18];
           [v16 addObject:v20];
 
-          v21 = [v12 objectAtIndexedSubscript:v19];
+          v21 = [sizesCopy objectAtIndexedSubscript:v19];
           [v17 addObject:v21];
 
           ++v19;
         }
 
-        while (v19 < [v12 count]);
+        while (v19 < [sizesCopy count]);
       }
 
       ++v18;
     }
 
-    while (v18 < [v11 count]);
+    while (v18 < [itemsCopy count]);
   }
 
   v41[0] = 0;
@@ -103,18 +103,18 @@ LABEL_4:
   v30 = v22;
   v23 = v17;
   v31 = v23;
-  v24 = v13;
+  v24 = tableCopy;
   v32 = v24;
   dispatch_apply(v15, 0, block);
-  if (a6)
+  if (error)
   {
-    *a6 = v36[5];
+    *error = v36[5];
   }
 
   _Block_object_dispose(&v35, 8);
   _Block_object_dispose(v41, 8);
 
-  return a6 != 0;
+  return error != 0;
 }
 
 void __99__WFFinderImageResizer_unsafeComputeResizedSizesForImageContentItems_inSizes_intoSizesTable_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -196,64 +196,64 @@ void __99__WFFinderImageResizer_unsafeComputeResizedSizesForImageContentItems_in
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)resizeImages:(id)a3 toSize:(id)a4 completion:(id)a5
+- (id)resizeImages:(id)images toSize:(id)size completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  imagesCopy = images;
+  sizeCopy = size;
+  completionCopy = completion;
+  if (imagesCopy)
   {
-    if (v10)
+    if (sizeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"size"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"size"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
 
     goto LABEL_4;
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"imageCollection"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"imageCollection"}];
 
-  if (!v10)
+  if (!sizeCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v9, "numberOfItems")}];
-  v13 = [(WFFinderImageResizer *)self queue];
+  v12 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(imagesCopy, "numberOfItems")}];
+  queue = [(WFFinderImageResizer *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__WFFinderImageResizer_resizeImages_toSize_completion___block_invoke;
   block[3] = &unk_1E837F510;
-  v28 = v11;
-  v25 = v9;
-  v26 = v10;
+  v28 = completionCopy;
+  v25 = imagesCopy;
+  v26 = sizeCopy;
   v14 = v12;
   v27 = v14;
-  v15 = v10;
-  v16 = v11;
-  v17 = v9;
-  dispatch_async(v13, block);
+  v15 = sizeCopy;
+  v16 = completionCopy;
+  v17 = imagesCopy;
+  dispatch_async(queue, block);
 
   v18 = v27;
   v19 = v14;
@@ -308,64 +308,64 @@ void __55__WFFinderImageResizer_resizeImages_toSize_completion___block_invoke_3(
   v6[2](v6, v7, v8);
 }
 
-- (void)computeResizedSizesForImages:(id)a3 inSizes:(id)a4 completion:(id)a5
+- (void)computeResizedSizesForImages:(id)images inSizes:(id)sizes completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  imagesCopy = images;
+  sizesCopy = sizes;
+  completionCopy = completion;
+  if (imagesCopy)
   {
-    if (v10)
+    if (sizesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"sizes"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"sizes"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:133 description:{@"Invalid parameter not satisfying: %@", @"completionBlock"}];
 
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"imageCollection"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFFinderImageResizer.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"imageCollection"}];
 
-  if (!v10)
+  if (!sizesCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v11)
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v12 = [v10 count] > 1;
-  v13 = [(WFFinderImageResizer *)self queue];
+  v12 = [sizesCopy count] > 1;
+  queue = [(WFFinderImageResizer *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WFFinderImageResizer_computeResizedSizesForImages_inSizes_completion___block_invoke;
   block[3] = &unk_1E837C2F8;
-  v21 = v9;
-  v22 = self;
-  v23 = v10;
-  v24 = v11;
+  v21 = imagesCopy;
+  selfCopy = self;
+  v23 = sizesCopy;
+  v24 = completionCopy;
   v25 = v12;
-  v14 = v10;
-  v15 = v11;
-  v16 = v9;
-  dispatch_async(v13, block);
+  v14 = sizesCopy;
+  v15 = completionCopy;
+  v16 = imagesCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__WFFinderImageResizer_computeResizedSizesForImages_inSizes_completion___block_invoke(uint64_t a1)

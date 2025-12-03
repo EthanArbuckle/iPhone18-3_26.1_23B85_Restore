@@ -1,20 +1,20 @@
 @interface REHTMLElement
-+ (id)elementWithHTMLData:(id)a3;
-+ (id)elementWithHTMLString:(id)a3;
-+ (id)htmlElementWithTag:(id)a3 content:(id)a4;
-+ (id)link:(id)a3 title:(id)a4;
++ (id)elementWithHTMLData:(id)data;
++ (id)elementWithHTMLString:(id)string;
++ (id)htmlElementWithTag:(id)tag content:(id)content;
++ (id)link:(id)link title:(id)title;
 - (NSData)encodedData;
 - (REHTMLElement)init;
-- (id)_encodeString:(id)a3;
+- (id)_encodeString:(id)string;
 - (id)_encodedData;
-- (id)addChild:(id)a3;
-- (id)addChildren:(id)a3;
-- (id)append:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)elementByAddingAtttibute:(id)a3 value:(id)a4;
-- (id)elementByAddingAtttibutes:(id)a3;
-- (id)elementByAddingClass:(id)a3;
-- (id)elementByAddingClasses:(id)a3;
+- (id)addChild:(id)child;
+- (id)addChildren:(id)children;
+- (id)append:(id)append;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)elementByAddingAtttibute:(id)atttibute value:(id)value;
+- (id)elementByAddingAtttibutes:(id)atttibutes;
+- (id)elementByAddingClass:(id)class;
+- (id)elementByAddingClasses:(id)classes;
 @end
 
 @implementation REHTMLElement
@@ -34,56 +34,56 @@
   return v3;
 }
 
-+ (id)elementWithHTMLData:(id)a3
++ (id)elementWithHTMLData:(id)data
 {
-  v3 = a3;
-  v4 = [[REHTMLDataElement alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[REHTMLDataElement alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (id)elementWithHTMLString:(id)a3
++ (id)elementWithHTMLString:(id)string
 {
-  v3 = a3;
-  v4 = [[REHTMLConstantElement alloc] initWithContent:v3];
+  stringCopy = string;
+  v4 = [[REHTMLConstantElement alloc] initWithContent:stringCopy];
 
   return v4;
 }
 
-+ (id)htmlElementWithTag:(id)a3 content:(id)a4
++ (id)htmlElementWithTag:(id)tag content:(id)content
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[REHTMLTagElement alloc] initWithTag:v6 content:v5];
+  contentCopy = content;
+  tagCopy = tag;
+  v7 = [[REHTMLTagElement alloc] initWithTag:tagCopy content:contentCopy];
 
   return v7;
 }
 
-+ (id)link:(id)a3 title:(id)a4
++ (id)link:(id)link title:(id)title
 {
-  if (a4)
+  if (title)
   {
-    v5 = a4;
+    linkCopy = title;
   }
 
   else
   {
-    v5 = a3;
+    linkCopy = link;
   }
 
-  v6 = a3;
-  v7 = [a1 htmlElementWithTag:@"a" content:v5];
-  v8 = [v7 elementByAddingAtttibute:@"href" value:v6];
+  linkCopy2 = link;
+  v7 = [self htmlElementWithTag:@"a" content:linkCopy];
+  v8 = [v7 elementByAddingAtttibute:@"href" value:linkCopy2];
 
   return v8;
 }
 
-- (id)_encodeString:(id)a3
+- (id)_encodeString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 dataUsingEncoding:{objc_msgSend(objc_opt_class(), "_defaultStringEncoding")}];
+    v4 = [stringCopy dataUsingEncoding:{objc_msgSend(objc_opt_class(), "_defaultStringEncoding")}];
   }
 
   else
@@ -96,32 +96,32 @@
 
 - (id)_encodedData
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  v4 = [(REHTMLElement *)self _prefixContentString];
-  v5 = [(REHTMLElement *)self _encodeString:v4];
+  data = [MEMORY[0x277CBEB28] data];
+  _prefixContentString = [(REHTMLElement *)self _prefixContentString];
+  v5 = [(REHTMLElement *)self _encodeString:_prefixContentString];
 
   if (v5)
   {
-    [v3 appendData:v5];
+    [data appendData:v5];
   }
 
-  v6 = [(REHTMLElement *)self _contentString];
-  v7 = [(REHTMLElement *)self _encodeString:v6];
+  _contentString = [(REHTMLElement *)self _contentString];
+  v7 = [(REHTMLElement *)self _encodeString:_contentString];
 
   if (v7)
   {
-    [v3 appendData:v7];
+    [data appendData:v7];
   }
 
-  v8 = [(REHTMLElement *)self _suffixContentString];
-  v9 = [(REHTMLElement *)self _encodeString:v8];
+  _suffixContentString = [(REHTMLElement *)self _suffixContentString];
+  v9 = [(REHTMLElement *)self _encodeString:_suffixContentString];
 
   if (v9)
   {
-    [v3 appendData:v9];
+    [data appendData:v9];
   }
 
-  v10 = [v3 copy];
+  v10 = [data copy];
 
   return v10;
 }
@@ -149,9 +149,9 @@
 
   else
   {
-    v5 = [(REHTMLElement *)self _encodedData];
+    _encodedData = [(REHTMLElement *)self _encodedData];
     v6 = v13[5];
-    v13[5] = v5;
+    v13[5] = _encodedData;
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -171,41 +171,41 @@
   return v4;
 }
 
-- (id)elementByAddingClass:(id)a3
+- (id)elementByAddingClass:(id)class
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  classCopy = class;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  classCopy2 = class;
+  v6 = [v4 arrayWithObjects:&classCopy count:1];
 
-  v7 = [(REHTMLElement *)self elementByAddingClasses:v6, v10, v11];
+  v7 = [(REHTMLElement *)self elementByAddingClasses:v6, classCopy, v11];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)elementByAddingClasses:(id)a3
+- (id)elementByAddingClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [(REHTMLElement *)self classes];
-  v6 = [v5 arrayByAddingObjectsFromArray:v4];
+  classesCopy = classes;
+  classes = [(REHTMLElement *)self classes];
+  v6 = [classes arrayByAddingObjectsFromArray:classesCopy];
 
   v7 = [(REHTMLElement *)self elementBySettingClasses:v6];
 
   return v7;
 }
 
-- (id)elementByAddingAtttibute:(id)a3 value:(id)a4
+- (id)elementByAddingAtttibute:(id)atttibute value:(id)value
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14[0] = a4;
+  atttibuteCopy = atttibute;
+  v14[0] = value;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 dictionaryWithObjects:v14 forKeys:&v13 count:1];
+  valueCopy = value;
+  atttibuteCopy2 = atttibute;
+  v9 = [v6 dictionaryWithObjects:v14 forKeys:&atttibuteCopy count:1];
 
   v10 = [(REHTMLElement *)self elementByAddingAtttibutes:v9];
 
@@ -214,87 +214,87 @@
   return v10;
 }
 
-- (id)elementByAddingAtttibutes:(id)a3
+- (id)elementByAddingAtttibutes:(id)atttibutes
 {
-  v4 = a3;
-  v5 = [(REHTMLElement *)self attributes];
-  v6 = [v5 mutableCopy];
+  atttibutesCopy = atttibutes;
+  attributes = [(REHTMLElement *)self attributes];
+  v6 = [attributes mutableCopy];
 
-  [v6 setValuesForKeysWithDictionary:v4];
+  [v6 setValuesForKeysWithDictionary:atttibutesCopy];
   v7 = [v6 copy];
   v8 = [(REHTMLElement *)self elementBySettingAtttibutes:v7];
 
   return v8;
 }
 
-- (id)append:(id)a3
+- (id)append:(id)append
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (append)
   {
-    v4 = a3;
+    appendCopy = append;
     v5 = [REHTMLContainerElement alloc];
     v10[0] = self;
-    v10[1] = v4;
+    v10[1] = appendCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-    v7 = [(REHTMLContainerElement *)v5 initWithElements:v6];
+    selfCopy = [(REHTMLContainerElement *)v5 initWithElements:v6];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)addChild:(id)a3
+- (id)addChild:(id)child
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (child)
   {
-    v10 = a3;
+    childCopy = child;
     v4 = MEMORY[0x277CBEA60];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v10 count:1];
+    childCopy2 = child;
+    v6 = [v4 arrayWithObjects:&childCopy count:1];
 
-    v7 = [(REHTMLElement *)self addChildren:v6, v10, v11];
+    selfCopy = [(REHTMLElement *)self addChildren:v6, childCopy, v11];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)addChildren:(id)a3
+- (id)addChildren:(id)children
 {
-  v4 = a3;
-  if ([v4 count])
+  childrenCopy = children;
+  if ([childrenCopy count])
   {
-    v5 = [[REHTMLParentElement alloc] initWithParents:self children:v4];
+    selfCopy = [[REHTMLParentElement alloc] initWithParents:self children:childrenCopy];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }

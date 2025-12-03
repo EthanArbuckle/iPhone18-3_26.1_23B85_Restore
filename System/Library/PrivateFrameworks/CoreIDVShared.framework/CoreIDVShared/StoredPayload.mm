@@ -1,14 +1,14 @@
 @interface StoredPayload
-- (StoredPayload)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (StoredPayload)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation StoredPayload
 
-- (StoredPayload)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (StoredPayload)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for StoredPayload();
-  return [(StoredPayload *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(StoredPayload *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

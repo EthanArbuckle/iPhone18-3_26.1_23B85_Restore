@@ -10,8 +10,8 @@
   lastReportTimeInterval = self->_lastReportTimeInterval;
   if (lastReportTimeInterval == 0.0)
   {
-    v4 = [(BookmarksDatabaseHealthReporter *)self _userDefaults];
-    v5 = [v4 safari_dateForKey:@"LastBookmarksDatabaseHealthReportDate"];
+    _userDefaults = [(BookmarksDatabaseHealthReporter *)self _userDefaults];
+    v5 = [_userDefaults safari_dateForKey:@"LastBookmarksDatabaseHealthReportDate"];
 
     [v5 timeIntervalSinceReferenceDate];
     self->_lastReportTimeInterval = v6;
@@ -20,8 +20,8 @@
   }
 
   v7 = lastReportTimeInterval + 604800.0;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v8 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v10 = v7 < v9;
 
   return v10;
@@ -31,8 +31,8 @@
 {
   if ([(BookmarksDatabaseHealthReporter *)self _shouldReportDatabaseHealth])
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     self->_lastReportTimeInterval = v4;
     v5 = *MEMORY[0x277D767B0];
     v6 = *MEMORY[0x277D76620];
@@ -48,9 +48,9 @@
     v10[2] = __55__BookmarksDatabaseHealthReporter_reportDatabaseHealth__block_invoke_2;
     v10[3] = &unk_2781D59B0;
     v10[4] = self;
-    v11 = v3;
+    v11 = date;
     v12 = v7;
-    v9 = v3;
+    v9 = date;
     dispatch_async(v8, v10);
   }
 }

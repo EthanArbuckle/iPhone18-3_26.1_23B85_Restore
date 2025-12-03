@@ -1,43 +1,43 @@
 @interface VGVertexAttributeBufferDump
-- (VGVertexAttributeBufferDump)initWithCoder:(id)a3;
+- (VGVertexAttributeBufferDump)initWithCoder:(id)coder;
 - (unint64_t)numBytes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGVertexAttributeBufferDump
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(VGVertexAttributeBufferDump *)self vertexFormat];
+  coderCopy = coder;
+  vertexFormat = [(VGVertexAttributeBufferDump *)self vertexFormat];
   v5 = NSStringFromSelector(sel_vertexFormat);
-  [v10 encodeInt:v4 forKey:v5];
+  [coderCopy encodeInt:vertexFormat forKey:v5];
 
-  v6 = [(VGVertexAttributeBufferDump *)self elementCount];
+  elementCount = [(VGVertexAttributeBufferDump *)self elementCount];
   v7 = NSStringFromSelector(sel_elementCount);
-  [v10 encodeInt:v6 forKey:v7];
+  [coderCopy encodeInt:elementCount forKey:v7];
 
   iosurface = self->_iosurface;
   v9 = NSStringFromSelector(sel_iosurface);
-  [v10 vg_encodeSurface:iosurface forKey:v9];
+  [coderCopy vg_encodeSurface:iosurface forKey:v9];
 }
 
-- (VGVertexAttributeBufferDump)initWithCoder:(id)a3
+- (VGVertexAttributeBufferDump)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = VGVertexAttributeBufferDump;
   v5 = [(VGVertexAttributeBufferDump *)&v13 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_vertexFormat);
-    v5->_vertexFormat = [v4 decodeIntForKey:v6];
+    v5->_vertexFormat = [coderCopy decodeIntForKey:v6];
 
     v7 = NSStringFromSelector(sel_elementCount);
-    v5->_elementCount = [v4 decodeIntForKey:v7];
+    v5->_elementCount = [coderCopy decodeIntForKey:v7];
 
     v8 = NSStringFromSelector(sel_iosurface);
-    v9 = [v4 vg_decodeSurfaceForKey:v8];
+    v9 = [coderCopy vg_decodeSurfaceForKey:v8];
     iosurface = v5->_iosurface;
     v5->_iosurface = v9;
 

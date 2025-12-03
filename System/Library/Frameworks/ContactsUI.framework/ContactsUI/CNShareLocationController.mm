@@ -1,19 +1,19 @@
 @interface CNShareLocationController
 + (BOOL)findMyFunctionalityAvailable;
-+ (id)fmlHandleFromContactProperty:(id)a3;
-+ (id)fmlHandlesFromContact:(id)a3;
-- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)a3;
-- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)a3 fmlSession:(id)a4 schedulerProvider:(id)a5;
++ (id)fmlHandleFromContactProperty:(id)property;
++ (id)fmlHandlesFromContact:(id)contact;
+- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)provider;
+- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)provider fmlSession:(id)session schedulerProvider:(id)schedulerProvider;
 - (CNShareLocationProtocol)shareLocationDelegate;
 - (id)endOfDayDate;
-- (void)actionsMenuProviderWithCompletion:(id)a3;
-- (void)canShareWithCompletion:(id)a3;
-- (void)friendshipStateWithCompletion:(id)a3;
+- (void)actionsMenuProviderWithCompletion:(id)completion;
+- (void)canShareWithCompletion:(id)completion;
+- (void)friendshipStateWithCompletion:(id)completion;
 - (void)initiateIDSRequest;
-- (void)isSharingWithCompletion:(id)a3;
+- (void)isSharingWithCompletion:(id)completion;
 - (void)notifySharingStatusDidChange;
-- (void)setContact:(id)a3;
-- (void)shareLocationWithExpiration:(int64_t)a3;
+- (void)setContact:(id)contact;
+- (void)shareLocationWithExpiration:(int64_t)expiration;
 - (void)startUpdatingFriends;
 - (void)stopSharingLocation;
 - (void)stopUpdatingFriends;
@@ -30,31 +30,31 @@
 
 - (void)notifySharingStatusDidChange
 {
-  v3 = [(CNShareLocationController *)self shareLocationDelegate];
+  shareLocationDelegate = [(CNShareLocationController *)self shareLocationDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNShareLocationController *)self shareLocationDelegate];
-    [v5 sharingStatusDidChange];
+    shareLocationDelegate2 = [(CNShareLocationController *)self shareLocationDelegate];
+    [shareLocationDelegate2 sharingStatusDidChange];
   }
 }
 
 - (void)initiateIDSRequest
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = [(CNShareLocationController *)self bestPropertyCancelable];
-  [v3 cancel];
+  bestPropertyCancelable = [(CNShareLocationController *)self bestPropertyCancelable];
+  [bestPropertyCancelable cancel];
 
   v53 = objc_opt_new();
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v4 = [(CNShareLocationController *)self contact];
-  v5 = [v4 phoneNumbers];
+  contact = [(CNShareLocationController *)self contact];
+  phoneNumbers = [contact phoneNumbers];
 
-  v6 = [v5 countByEnumeratingWithState:&v62 objects:v68 count:16];
+  v6 = [phoneNumbers countByEnumeratingWithState:&v62 objects:v68 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,19 +66,19 @@
       {
         if (*v63 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v11 = *(*(&v62 + 1) + 8 * i);
         v12 = MEMORY[0x1E695CE08];
-        v13 = [(CNShareLocationController *)self contact];
-        v14 = [v11 identifier];
-        v15 = [v12 contactPropertyWithContact:v13 propertyKey:v9 identifier:v14];
+        contact2 = [(CNShareLocationController *)self contact];
+        identifier = [v11 identifier];
+        v15 = [v12 contactPropertyWithContact:contact2 propertyKey:v9 identifier:identifier];
 
         [v53 addObject:v15];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v62 objects:v68 count:16];
+      v7 = [phoneNumbers countByEnumeratingWithState:&v62 objects:v68 count:16];
     }
 
     while (v7);
@@ -88,10 +88,10 @@
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v16 = [(CNShareLocationController *)self contact];
-  v17 = [v16 emailAddresses];
+  contact3 = [(CNShareLocationController *)self contact];
+  emailAddresses = [contact3 emailAddresses];
 
-  v18 = [v17 countByEnumeratingWithState:&v58 objects:v67 count:16];
+  v18 = [emailAddresses countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (v18)
   {
     v19 = v18;
@@ -103,44 +103,44 @@
       {
         if (*v59 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v23 = *(*(&v58 + 1) + 8 * j);
         v24 = MEMORY[0x1E695CE08];
-        v25 = [(CNShareLocationController *)self contact];
-        v26 = [v23 identifier];
-        v27 = [v24 contactPropertyWithContact:v25 propertyKey:v21 identifier:v26];
+        contact4 = [(CNShareLocationController *)self contact];
+        identifier2 = [v23 identifier];
+        v27 = [v24 contactPropertyWithContact:contact4 propertyKey:v21 identifier:identifier2];
 
         [v53 addObject:v27];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v58 objects:v67 count:16];
+      v19 = [emailAddresses countByEnumeratingWithState:&v58 objects:v67 count:16];
     }
 
     while (v19);
   }
 
-  v28 = [MEMORY[0x1E6996AF0] bestPropertyComparator];
-  [v53 sortUsingComparator:v28];
+  bestPropertyComparator = [MEMORY[0x1E6996AF0] bestPropertyComparator];
+  [v53 sortUsingComparator:bestPropertyComparator];
 
-  v29 = [v53 firstObject];
-  if (v29)
+  firstObject = [v53 firstObject];
+  if (firstObject)
   {
-    v30 = [(CNShareLocationController *)self schedulerProvider];
+    schedulerProvider = [(CNShareLocationController *)self schedulerProvider];
     v31 = objc_alloc(MEMORY[0x1E6996B70]);
-    v32 = [(CNShareLocationController *)self idsAvailabilityProvider];
-    v33 = [v31 initWithIDSAvailabilityProvider:v32];
+    idsAvailabilityProvider = [(CNShareLocationController *)self idsAvailabilityProvider];
+    v33 = [v31 initWithIDSAvailabilityProvider:idsAvailabilityProvider];
 
-    v51 = [MEMORY[0x1E6996798] observableWithResult:v29];
-    v34 = [(CNShareLocationController *)self contact];
+    v51 = [MEMORY[0x1E6996798] observableWithResult:firstObject];
+    contact5 = [(CNShareLocationController *)self contact];
     v35 = v33;
     v52 = v33;
-    v36 = [v33 resolveBestFaceTimeIDSPropertyForContact:v34 schedulerProvider:v30];
+    v36 = [v33 resolveBestFaceTimeIDSPropertyForContact:contact5 schedulerProvider:schedulerProvider];
     v37 = [v36 onErrorHandler:&__block_literal_global_85];
 
-    v38 = [(CNShareLocationController *)self contact];
-    v39 = [v35 resolveBestIMessageIDSPropertyForContact:v38 schedulerProvider:v30];
+    contact6 = [(CNShareLocationController *)self contact];
+    v39 = [v35 resolveBestIMessageIDSPropertyForContact:contact6 schedulerProvider:schedulerProvider];
     v40 = [v39 onErrorHandler:&__block_literal_global_85];
 
     v41 = MEMORY[0x1E6996798];
@@ -152,10 +152,10 @@
 
     v44 = [v43 take:1];
     v45 = objc_alloc_init(MEMORY[0x1E69967D0]);
-    v46 = [v45 future];
-    [(CNShareLocationController *)self setBestPropertyFuture:v46];
+    future = [v45 future];
+    [(CNShareLocationController *)self setBestPropertyFuture:future];
 
-    v47 = [v30 backgroundScheduler];
+    backgroundScheduler = [schedulerProvider backgroundScheduler];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __47__CNShareLocationController_initiateIDSRequest__block_invoke_88;
@@ -164,17 +164,17 @@
     v56 = v45;
     v48 = v45;
     v49 = v44;
-    v50 = [v47 performCancelableBlock:v54];
+    v50 = [backgroundScheduler performCancelableBlock:v54];
     [(CNShareLocationController *)self setBestPropertyCancelable:v50];
   }
 
   else
   {
-    v30 = CNUILogContactCard();
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    schedulerProvider = CNUILogContactCard();
+    if (os_log_type_enabled(schedulerProvider, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_199A75000, v30, OS_LOG_TYPE_ERROR, "CNShareLocationController: found no handles to check for IDS availability", buf, 2u);
+      _os_log_error_impl(&dword_199A75000, schedulerProvider, OS_LOG_TYPE_ERROR, "CNShareLocationController: found no handles to check for IDS availability", buf, 2u);
     }
   }
 }
@@ -211,26 +211,26 @@ id __47__CNShareLocationController_initiateIDSRequest__block_invoke(uint64_t a1,
 
 - (void)stopUpdatingFriends
 {
-  v3 = [(CNShareLocationController *)self findMyLocateSession];
+  findMyLocateSession = [(CNShareLocationController *)self findMyLocateSession];
 
   v4 = CNUILogContactCard();
-  v5 = v4;
-  if (v3)
+  findMyLocateSession2 = v4;
+  if (findMyLocateSession)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *v6 = 0;
-      _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEFAULT, "FindMyLocateSession stop updating friends!", v6, 2u);
+      _os_log_impl(&dword_199A75000, findMyLocateSession2, OS_LOG_TYPE_DEFAULT, "FindMyLocateSession stop updating friends!", v6, 2u);
     }
 
-    v5 = [(CNShareLocationController *)self findMyLocateSession];
-    [v5 stopUpdatingFriendsWithCompletionHandler:&__block_literal_global_78_44507];
+    findMyLocateSession2 = [(CNShareLocationController *)self findMyLocateSession];
+    [findMyLocateSession2 stopUpdatingFriendsWithCompletionHandler:&__block_literal_global_78_44507];
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_199A75000, v5, OS_LOG_TYPE_ERROR, "CNShareLocationController, can't stop updating friends, findMyLocateSession is nil.", buf, 2u);
+    _os_log_error_impl(&dword_199A75000, findMyLocateSession2, OS_LOG_TYPE_ERROR, "CNShareLocationController, can't stop updating friends, findMyLocateSession is nil.", buf, 2u);
   }
 }
 
@@ -259,21 +259,21 @@ void __48__CNShareLocationController_stopUpdatingFriends__block_invoke(uint64_t 
 
 - (void)startUpdatingFriends
 {
-  v3 = [(CNShareLocationController *)self findMyLocateSession];
+  findMyLocateSession = [(CNShareLocationController *)self findMyLocateSession];
 
-  if (v3)
+  if (findMyLocateSession)
   {
-    v4 = [(CNShareLocationController *)self findMyLocateSession];
-    [v4 startUpdatingFriendsWithInitialUpdates:0 completionHandler:&__block_literal_global_44512];
+    findMyLocateSession2 = [(CNShareLocationController *)self findMyLocateSession];
+    [findMyLocateSession2 startUpdatingFriendsWithInitialUpdates:0 completionHandler:&__block_literal_global_44512];
 
     objc_initWeak(location, self);
-    v5 = [(CNShareLocationController *)self findMyLocateSession];
+    findMyLocateSession3 = [(CNShareLocationController *)self findMyLocateSession];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __49__CNShareLocationController_startUpdatingFriends__block_invoke_75;
     v7[3] = &unk_1E74E4F48;
     objc_copyWeak(&v8, location);
-    [v5 setFriendshipUpdateCallback:v7];
+    [findMyLocateSession3 setFriendshipUpdateCallback:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(location);
@@ -345,28 +345,28 @@ void __49__CNShareLocationController_startUpdatingFriends__block_invoke(uint64_t
 
 - (id)endOfDayDate
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 nextDateAfterDate:v3 matchingUnit:32 value:4 options:1024];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [currentCalendar nextDateAfterDate:date matchingUnit:32 value:4 options:1024];
 
   return v4;
 }
 
 - (void)stopSharingLocation
 {
-  v3 = [(CNShareLocationController *)self findMyLocateSession];
+  findMyLocateSession = [(CNShareLocationController *)self findMyLocateSession];
 
-  if (v3)
+  if (findMyLocateSession)
   {
-    v4 = [(CNShareLocationController *)self findMyLocateSession];
-    v5 = [(CNShareLocationController *)self handles];
-    v6 = [v5 allObjects];
+    findMyLocateSession2 = [(CNShareLocationController *)self findMyLocateSession];
+    handles = [(CNShareLocationController *)self handles];
+    allObjects = [handles allObjects];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __48__CNShareLocationController_stopSharingLocation__block_invoke;
     v8[3] = &unk_1E74E5200;
     v8[4] = self;
-    [v4 stopSharingLocationWith:v6 isFromGroup:0 completion:v8];
+    [findMyLocateSession2 stopSharingLocationWith:allObjects isFromGroup:0 completion:v8];
   }
 
   else
@@ -405,14 +405,14 @@ void __48__CNShareLocationController_stopSharingLocation__block_invoke(uint64_t 
   [v6 performBlock:v7];
 }
 
-- (void)shareLocationWithExpiration:(int64_t)a3
+- (void)shareLocationWithExpiration:(int64_t)expiration
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(CNShareLocationController *)self bestPropertyFuture];
+  bestPropertyFuture = [(CNShareLocationController *)self bestPropertyFuture];
   v19 = 0;
-  v6 = [v5 resultWithTimeout:&v19 error:2.0];
+  v6 = [bestPropertyFuture resultWithTimeout:&v19 error:2.0];
   v7 = v19;
-  v8 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   if (v7)
   {
@@ -432,9 +432,9 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  v10 = [(CNShareLocationController *)self findMyLocateSession];
+  findMyLocateSession = [(CNShareLocationController *)self findMyLocateSession];
 
-  if (!v10)
+  if (!findMyLocateSession)
   {
     v9 = CNUILogContactCard();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -449,18 +449,18 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [objc_opt_class() fmlHandleFromContactProperty:v8];
+  v11 = [objc_opt_class() fmlHandleFromContactProperty:firstObject];
   if (v11)
   {
     v9 = v11;
-    v12 = [(CNShareLocationController *)self findMyLocateSession];
+    findMyLocateSession2 = [(CNShareLocationController *)self findMyLocateSession];
     v13 = [MEMORY[0x1E695DEC8] arrayWithObject:v9];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __57__CNShareLocationController_shareLocationWithExpiration___block_invoke;
     v18[3] = &unk_1E74E5200;
     v18[4] = self;
-    [v12 sendFriendshipOfferTo:v13 end:a3 isFromGroup:0 completion:v18];
+    [findMyLocateSession2 sendFriendshipOfferTo:v13 end:expiration isFromGroup:0 completion:v18];
   }
 
   else
@@ -503,16 +503,16 @@ void __57__CNShareLocationController_shareLocationWithExpiration___block_invoke(
   [v6 performBlock:v7];
 }
 
-- (void)actionsMenuProviderWithCompletion:(id)a3
+- (void)actionsMenuProviderWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__CNShareLocationController_actionsMenuProviderWithCompletion___block_invoke;
   v5[3] = &unk_1E74E4F00;
   objc_copyWeak(&v6, &location);
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -699,18 +699,18 @@ void __63__CNShareLocationController_actionsMenuProviderWithCompletion___block_i
   [v3 performBlock:v4];
 }
 
-- (void)friendshipStateWithCompletion:(id)a3
+- (void)friendshipStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CNShareLocationController *)self serialQueue];
+  completionCopy = completion;
+  serialQueue = [(CNShareLocationController *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__CNShareLocationController_friendshipStateWithCompletion___block_invoke;
   v7[3] = &unk_1E74E6DD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 uint64_t __59__CNShareLocationController_friendshipStateWithCompletion___block_invoke(uint64_t a1)
@@ -765,44 +765,44 @@ LABEL_3:
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)isSharingWithCompletion:(id)a3
+- (void)isSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__CNShareLocationController_isSharingWithCompletion___block_invoke;
   v6[3] = &unk_1E74E4EB0;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CNShareLocationController *)self friendshipStateWithCompletion:v6];
 }
 
-- (void)canShareWithCompletion:(id)a3
+- (void)canShareWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([objc_opt_class() findMyFunctionalityAvailable] && (v5 = +[FindMyLocateSession hasCorrectPermissionsForLocationSharing](_TtC10ContactsUI19FindMyLocateSession, "hasCorrectPermissionsForLocationSharing"), -[CNShareLocationController handles](self, "handles"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5) && v7)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__CNShareLocationController_canShareWithCompletion___block_invoke;
     v8[3] = &unk_1E74E4EB0;
-    v9 = v4;
+    v9 = completionCopy;
     [(CNShareLocationController *)self friendshipStateWithCompletion:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (([(CNContact *)self->_contact isEqual:v5]& 1) == 0)
+  contactCopy = contact;
+  if (([(CNContact *)self->_contact isEqual:contactCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_contact, a3);
-    v6 = [objc_opt_class() fmlHandlesFromContact:v5];
+    objc_storeStrong(&self->_contact, contact);
+    v6 = [objc_opt_class() fmlHandlesFromContact:contactCopy];
     [(CNShareLocationController *)self setHandles:v6];
 
     v7[0] = MEMORY[0x1E69E9820];
@@ -824,11 +824,11 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
   return result;
 }
 
-- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)a3 fmlSession:(id)a4 schedulerProvider:(id)a5
+- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)provider fmlSession:(id)session schedulerProvider:(id)schedulerProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  sessionCopy = session;
+  schedulerProviderCopy = schedulerProvider;
   v16.receiver = self;
   v16.super_class = CNShareLocationController;
   v12 = [(CNShareLocationController *)&v16 init];
@@ -839,9 +839,9 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
       dispatch_once(&LoadAppleAccount_loadPredicate, &__block_literal_global_180);
     }
 
-    objc_storeStrong(&v12->_idsAvailabilityProvider, a3);
-    objc_storeStrong(&v12->_schedulerProvider, a5);
-    objc_storeStrong(&v12->_findMyLocateSession, a4);
+    objc_storeStrong(&v12->_idsAvailabilityProvider, provider);
+    objc_storeStrong(&v12->_schedulerProvider, schedulerProvider);
+    objc_storeStrong(&v12->_findMyLocateSession, session);
     v13 = dispatch_queue_create("CNShareLocationController.serialQueue", 0);
     serialQueue = v12->_serialQueue;
     v12->_serialQueue = v13;
@@ -850,9 +850,9 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
   return v12;
 }
 
-- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)a3
+- (CNShareLocationController)initWithIDSAvailabilityProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if ([objc_opt_class() findMyFunctionalityAvailable])
   {
     v5 = objc_alloc_init(_TtC10ContactsUI19FindMyLocateSession);
@@ -864,19 +864,19 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
   }
 
   v6 = +[CNUIContactsEnvironment currentEnvironment];
-  v7 = [v6 defaultSchedulerProvider];
-  v8 = [(CNShareLocationController *)self initWithIDSAvailabilityProvider:v4 fmlSession:v5 schedulerProvider:v7];
+  defaultSchedulerProvider = [v6 defaultSchedulerProvider];
+  v8 = [(CNShareLocationController *)self initWithIDSAvailabilityProvider:providerCopy fmlSession:v5 schedulerProvider:defaultSchedulerProvider];
 
   return v8;
 }
 
 + (BOOL)findMyFunctionalityAvailable
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 entitlementVerifier];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
   v4 = *MEMORY[0x1E69964F8];
   v12 = 0;
-  v5 = [v3 currentProcessHasBooleanEntitlement:v4 error:&v12];
+  v5 = [entitlementVerifier currentProcessHasBooleanEntitlement:v4 error:&v12];
 
   if ((v5 & 1) == 0)
   {
@@ -886,15 +886,15 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
   return v5;
 }
 
-+ (id)fmlHandleFromContactProperty:(id)a3
++ (id)fmlHandleFromContactProperty:(id)property
 {
-  v3 = a3;
-  v4 = [v3 key];
+  propertyCopy = property;
+  v4 = [propertyCopy key];
   v5 = [v4 isEqualToString:*MEMORY[0x1E695C330]];
 
   if (!v5)
   {
-    v8 = [v3 key];
+    v8 = [propertyCopy key];
     v9 = [v8 isEqualToString:*MEMORY[0x1E695C208]];
 
     if (!v9)
@@ -902,22 +902,22 @@ uint64_t __40__CNShareLocationController_setContact___block_invoke(uint64_t resu
       goto LABEL_7;
     }
 
-    v7 = [v3 value];
-    if (!v7)
+    value = [propertyCopy value];
+    if (!value)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
-    v10 = [CNFMLHandle handleWithIdentifier:v7];
+    v10 = [CNFMLHandle handleWithIdentifier:value];
 
     goto LABEL_8;
   }
 
-  v6 = [v3 value];
-  v7 = [v6 unformattedInternationalStringValue];
+  value2 = [propertyCopy value];
+  value = [value2 unformattedInternationalStringValue];
 
-  if (v7)
+  if (value)
   {
     goto LABEL_6;
   }
@@ -929,17 +929,17 @@ LABEL_8:
   return v10;
 }
 
-+ (id)fmlHandlesFromContact:(id)a3
++ (id)fmlHandlesFromContact:(id)contact
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [v3 emailAddresses];
-  v6 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v6 = [emailAddresses countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -950,14 +950,14 @@ LABEL_8:
       {
         if (*v35 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v10 = [*(*(&v34 + 1) + 8 * i) value];
-        [v4 addObject:v10];
+        value = [*(*(&v34 + 1) + 8 * i) value];
+        [v4 addObject:value];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v7 = [emailAddresses countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v7);
@@ -967,8 +967,8 @@ LABEL_8:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = [v3 phoneNumbers];
-  v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
+  phoneNumbers = [contactCopy phoneNumbers];
+  v12 = [phoneNumbers countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v12)
   {
     v13 = v12;
@@ -979,15 +979,15 @@ LABEL_8:
       {
         if (*v31 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v16 = [*(*(&v30 + 1) + 8 * j) value];
-        v17 = [v16 unformattedInternationalStringValue];
-        [v4 addObject:v17];
+        value2 = [*(*(&v30 + 1) + 8 * j) value];
+        unformattedInternationalStringValue = [value2 unformattedInternationalStringValue];
+        [v4 addObject:unformattedInternationalStringValue];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
+      v13 = [phoneNumbers countByEnumeratingWithState:&v30 objects:v39 count:16];
     }
 
     while (v13);

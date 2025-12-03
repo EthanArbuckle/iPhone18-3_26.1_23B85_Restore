@@ -1,18 +1,18 @@
 @interface ConversationStreamPLL
-- (void)streamConversationsWithBookmark:(_TtC26DeepThoughtBiomeFoundation15StreamsBookmark *)a3 completionHandler:(id)a4;
+- (void)streamConversationsWithBookmark:(_TtC26DeepThoughtBiomeFoundation15StreamsBookmark *)bookmark completionHandler:(id)handler;
 @end
 
 @implementation ConversationStreamPLL
 
-- (void)streamConversationsWithBookmark:(_TtC26DeepThoughtBiomeFoundation15StreamsBookmark *)a3 completionHandler:(id)a4
+- (void)streamConversationsWithBookmark:(_TtC26DeepThoughtBiomeFoundation15StreamsBookmark *)bookmark completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEA66E8, &qword_2487356D8);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = bookmark;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_248731340();
@@ -27,8 +27,8 @@
   v16[3] = 0;
   v16[4] = &unk_248735738;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  bookmarkCopy = bookmark;
+  selfCopy = self;
   sub_24870CE40(0, 0, v11, &unk_248735740, v16);
 }
 

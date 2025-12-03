@@ -1,18 +1,18 @@
 @interface AVSemanticStyle
-+ (AVSemanticStyle)semanticStyleWithToneBias:(float)a3 warmthBias:(float)a4;
++ (AVSemanticStyle)semanticStyleWithToneBias:(float)bias warmthBias:(float)warmthBias;
 + (id)identityStyle;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithToneBias:(float)a3 warmthBias:(float)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithToneBias:(float)bias warmthBias:(float)warmthBias;
 - (id)description;
 @end
 
 @implementation AVSemanticStyle
 
-+ (AVSemanticStyle)semanticStyleWithToneBias:(float)a3 warmthBias:(float)a4
++ (AVSemanticStyle)semanticStyleWithToneBias:(float)bias warmthBias:(float)warmthBias
 {
   v6 = objc_alloc(objc_opt_class());
-  *&v7 = a3;
-  *&v8 = a4;
+  *&v7 = bias;
+  *&v8 = warmthBias;
   v9 = [v6 _initWithToneBias:v7 warmthBias:v8];
 
   return v9;
@@ -25,20 +25,20 @@
   return v2;
 }
 
-- (id)_initWithToneBias:(float)a3 warmthBias:(float)a4
+- (id)_initWithToneBias:(float)bias warmthBias:(float)warmthBias
 {
   v10.receiver = self;
   v10.super_class = AVSemanticStyle;
   result = [(AVSemanticStyle *)&v10 init];
   if (result)
   {
-    if (fabsf(a3) <= 1.0)
+    if (fabsf(bias) <= 1.0)
     {
-      if (fabsf(a4) <= 1.0)
+      if (fabsf(warmthBias) <= 1.0)
       {
-        *(result + 2) = a3;
-        *(result + 3) = a4;
-        *(result + 2) = (a4 * 10000.0) ^ (a3 * 10000.0);
+        *(result + 2) = bias;
+        *(result + 3) = warmthBias;
+        *(result + 2) = (warmthBias * 10000.0) ^ (bias * 10000.0);
         return result;
       }
 
@@ -65,9 +65,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -80,7 +80,7 @@
 
   [(AVSemanticStyle *)self toneBias];
   v6 = v5;
-  [a3 toneBias];
+  [equal toneBias];
   if (v6 != v7)
   {
     return 0;
@@ -88,7 +88,7 @@
 
   [(AVSemanticStyle *)self warmthBias];
   v10 = v9;
-  [a3 warmthBias];
+  [equal warmthBias];
   return v10 == v11;
 }
 

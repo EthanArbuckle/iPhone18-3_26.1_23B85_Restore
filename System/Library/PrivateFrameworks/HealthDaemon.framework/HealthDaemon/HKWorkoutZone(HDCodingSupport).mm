@@ -8,17 +8,17 @@
 - (HDCodableWorkoutZone)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableWorkoutZone);
-  v3 = [a1 identifier];
-  v4 = [v3 UUIDString];
-  [(HDCodableWorkoutZone *)v2 setUuid:v4];
+  identifier = [self identifier];
+  uUIDString = [identifier UUIDString];
+  [(HDCodableWorkoutZone *)v2 setUuid:uUIDString];
 
-  v5 = [a1 type];
-  -[HDCodableWorkoutZone setObjectType:](v2, "setObjectType:", [v5 code]);
+  type = [self type];
+  -[HDCodableWorkoutZone setObjectType:](v2, "setObjectType:", [type code]);
 
   v6 = MEMORY[0x277CCDCE0];
-  v7 = [a1 startQuantity];
-  v8 = [a1 type];
-  v9 = [v6 _valueForQuantity:v7 objectType:v8];
+  startQuantity = [self startQuantity];
+  type2 = [self type];
+  v9 = [v6 _valueForQuantity:startQuantity objectType:type2];
 
   if (v9)
   {
@@ -27,9 +27,9 @@
   }
 
   v10 = MEMORY[0x277CCDCE0];
-  v11 = [a1 endQuantity];
-  v12 = [a1 type];
-  v13 = [v10 _valueForQuantity:v11 objectType:v12];
+  endQuantity = [self endQuantity];
+  type3 = [self type];
+  v13 = [v10 _valueForQuantity:endQuantity objectType:type3];
 
   if (v13)
   {
@@ -37,7 +37,7 @@
     [(HDCodableWorkoutZone *)v2 setEndQuantity:?];
   }
 
-  [a1 timeInZone];
+  [self timeInZone];
   [(HDCodableWorkoutZone *)v2 setTimeInZone:v14];
 
   return v2;
@@ -51,8 +51,8 @@
   {
     v4 = v3;
     v5 = objc_alloc(MEMORY[0x277CCAD78]);
-    v6 = [v4 uuid];
-    v7 = [v5 initWithUUIDString:v6];
+    uuid = [v4 uuid];
+    v7 = [v5 initWithUUIDString:uuid];
 
     v8 = [MEMORY[0x277CCD720] dataTypeWithCode:{objc_msgSend(v4, "objectType")}];
     if ([v4 hasStartQuantity])

@@ -1,11 +1,11 @@
 @interface HUMosaicLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGRect)contentBounds;
 - (CGSize)collectionViewContentSize;
 - (NSMutableArray)attributeCache;
 - (id)currentMosaicFrames;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -16,47 +16,47 @@
   v34.receiver = self;
   v34.super_class = HUMosaicLayout;
   [(HUMosaicLayout *)&v34 prepareLayout];
-  v3 = [(HUMosaicLayout *)self attributeCache];
-  [v3 removeAllObjects];
+  attributeCache = [(HUMosaicLayout *)self attributeCache];
+  [attributeCache removeAllObjects];
 
   [(HUMosaicLayout *)self contentBounds];
   if (CGRectIsEmpty(v35))
   {
-    v4 = [(HUMosaicLayout *)self collectionView];
-    [v4 bounds];
+    collectionView = [(HUMosaicLayout *)self collectionView];
+    [collectionView bounds];
     v6 = v5;
-    v7 = [(HUMosaicLayout *)self collectionView];
-    [v7 bounds];
+    collectionView2 = [(HUMosaicLayout *)self collectionView];
+    [collectionView2 bounds];
     [(HUMosaicLayout *)self setContentBounds:0.0, 0.0, v6];
   }
 
-  v8 = [(HUMosaicLayout *)self collectionView];
-  v9 = [v8 numberOfSections];
+  collectionView3 = [(HUMosaicLayout *)self collectionView];
+  numberOfSections = [collectionView3 numberOfSections];
 
-  if (v9 >= 1)
+  if (numberOfSections >= 1)
   {
-    v10 = [(HUMosaicLayout *)self collectionView];
-    v11 = [v10 numberOfItemsInSection:0];
+    collectionView4 = [(HUMosaicLayout *)self collectionView];
+    v11 = [collectionView4 numberOfItemsInSection:0];
 
-    v12 = [(HUMosaicLayout *)self delegate];
-    v13 = [v12 layoutGeometry];
+    delegate = [(HUMosaicLayout *)self delegate];
+    layoutGeometry = [delegate layoutGeometry];
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v11)
     {
       for (i = 0; i != v11; ++i)
       {
         v16 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:0];
-        v17 = [(HUMosaicLayout *)self delegate];
-        v18 = [v17 cellSizeForItemAtIndexPath:v16];
+        delegate2 = [(HUMosaicLayout *)self delegate];
+        v18 = [delegate2 cellSizeForItemAtIndexPath:v16];
 
         v19 = [HUMosaicCellSize createMosaicCellSizeForSizeDescription:v18];
-        [v14 addObject:v19];
+        [array addObject:v19];
       }
     }
 
     [(HUMosaicLayout *)self contentBounds];
-    v20 = [HUMosaicLayoutHelper framesForSizes:v14 withGeometry:v13 inBounds:?];
+    v20 = [HUMosaicLayoutHelper framesForSizes:array withGeometry:layoutGeometry inBounds:?];
     if ([v20 count])
     {
       v21 = 0;
@@ -72,8 +72,8 @@
         v31 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:0];
         v32 = [MEMORY[0x277D75308] layoutAttributesForCellWithIndexPath:v31];
         [v32 setFrame:{v24, v26, v28, v30}];
-        v33 = [(HUMosaicLayout *)self attributeCache];
-        [v33 addObject:v32];
+        attributeCache2 = [(HUMosaicLayout *)self attributeCache];
+        [attributeCache2 addObject:v32];
 
         ++v21;
       }
@@ -88,9 +88,9 @@
   attributeCache = self->_attributeCache;
   if (!attributeCache)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_attributeCache;
-    self->_attributeCache = v4;
+    self->_attributeCache = array;
 
     attributeCache = self->_attributeCache;
   }
@@ -98,11 +98,11 @@
   return attributeCache;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(HUMosaicLayout *)self contentBounds:a3.origin.x];
+  height = change.size.height;
+  width = change.size.width;
+  [(HUMosaicLayout *)self contentBounds:change.origin.x];
   v8 = v7 != height || v6 != width;
   if (v8)
   {
@@ -122,46 +122,46 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    NSLog(&cfstr_Humosaiclayout.isa, [v4 section]);
+    NSLog(&cfstr_Humosaiclayout.isa, [pathCopy section]);
   }
 
-  v5 = [(HUMosaicLayout *)self attributeCache];
-  v6 = [v5 count];
-  v7 = [v4 item];
+  attributeCache = [(HUMosaicLayout *)self attributeCache];
+  v6 = [attributeCache count];
+  item = [pathCopy item];
 
-  if (v6 <= v7)
+  if (v6 <= item)
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(HUMosaicLayout *)self attributeCache];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    attributeCache2 = [(HUMosaicLayout *)self attributeCache];
+    v9 = [attributeCache2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
   }
 
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(HUMosaicLayout *)self attributeCache];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  attributeCache = [(HUMosaicLayout *)self attributeCache];
+  v10 = [attributeCache countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -172,7 +172,7 @@
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(attributeCache);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
@@ -183,29 +183,29 @@
         v24.size.height = height;
         if (CGRectIntersectsRect(v23, v24))
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [attributeCache countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
 - (id)currentMosaicFrames
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(HUMosaicLayout *)self attributeCache];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attributeCache = [(HUMosaicLayout *)self attributeCache];
+  v5 = [attributeCache countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -216,22 +216,22 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributeCache);
         }
 
         v9 = MEMORY[0x277CCAE60];
         [*(*(&v12 + 1) + 8 * i) frame];
         v10 = [v9 valueWithCGRect:?];
-        [v3 addObject:v10];
+        [array addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [attributeCache countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (CGRect)contentBounds

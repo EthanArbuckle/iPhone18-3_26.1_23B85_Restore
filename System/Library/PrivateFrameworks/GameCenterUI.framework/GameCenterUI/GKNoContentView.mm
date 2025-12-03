@@ -1,16 +1,16 @@
 @interface GKNoContentView
-- (GKNoContentView)initWithFrame:(CGRect)a3;
-- (void)setLoading:(BOOL)a3;
+- (GKNoContentView)initWithFrame:(CGRect)frame;
+- (void)setLoading:(BOOL)loading;
 @end
 
 @implementation GKNoContentView
 
-- (GKNoContentView)initWithFrame:(CGRect)a3
+- (GKNoContentView)initWithFrame:(CGRect)frame
 {
   v31[4] = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = GKNoContentView;
-  v3 = [(GKNoContentView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKNoContentView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [GKUIContentUnavailableView alloc];
@@ -35,29 +35,29 @@
 
     [(UIStackView *)v3->_stackView setAlignment:0];
     [(UIStackView *)v3->_stackView setAxis:1];
-    v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UIActivityIndicatorView *)v3->_loadingIndicatorView setColor:v11];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UIActivityIndicatorView *)v3->_loadingIndicatorView setColor:secondaryLabelColor];
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_loadingIndicatorView];
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_contentUnavailableView];
     [(UIStackView *)v3->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GKNoContentView *)v3 addSubview:v3->_stackView];
-    v26 = [(UIStackView *)v3->_stackView centerXAnchor];
-    v25 = [(GKNoContentView *)v3 centerXAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    centerXAnchor = [(UIStackView *)v3->_stackView centerXAnchor];
+    centerXAnchor2 = [(GKNoContentView *)v3 centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v31[0] = v24;
-    v23 = [(UIStackView *)v3->_stackView centerYAnchor];
-    v22 = [(GKNoContentView *)v3 centerYAnchor];
-    v12 = [v23 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIStackView *)v3->_stackView centerYAnchor];
+    centerYAnchor2 = [(GKNoContentView *)v3 centerYAnchor];
+    v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v31[1] = v12;
-    v13 = [(UIStackView *)v3->_stackView widthAnchor];
-    v14 = [(GKNoContentView *)v3 widthAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    widthAnchor = [(UIStackView *)v3->_stackView widthAnchor];
+    widthAnchor2 = [(GKNoContentView *)v3 widthAnchor];
+    v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v31[2] = v15;
-    v16 = [(GKUIContentUnavailableView *)v3->_contentUnavailableView widthAnchor];
-    v17 = [(GKNoContentView *)v3 stackView];
-    v18 = [v17 widthAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    widthAnchor3 = [(GKUIContentUnavailableView *)v3->_contentUnavailableView widthAnchor];
+    stackView = [(GKNoContentView *)v3 stackView];
+    widthAnchor4 = [stackView widthAnchor];
+    v19 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v31[3] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
 
@@ -88,26 +88,26 @@ void __33__GKNoContentView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  if (self->_loading != a3)
+  if (self->_loading != loading)
   {
-    v4 = a3;
-    self->_loading = a3;
-    v6 = [(GKNoContentView *)self loadingIndicatorView];
-    v7 = v6;
-    if (v4)
+    loadingCopy = loading;
+    self->_loading = loading;
+    loadingIndicatorView = [(GKNoContentView *)self loadingIndicatorView];
+    v7 = loadingIndicatorView;
+    if (loadingCopy)
     {
-      [v6 startAnimating];
+      [loadingIndicatorView startAnimating];
     }
 
     else
     {
-      [v6 stopAnimating];
+      [loadingIndicatorView stopAnimating];
     }
 
-    v8 = [(GKNoContentView *)self stackView];
-    [v8 layoutIfNeeded];
+    stackView = [(GKNoContentView *)self stackView];
+    [stackView layoutIfNeeded];
   }
 }
 

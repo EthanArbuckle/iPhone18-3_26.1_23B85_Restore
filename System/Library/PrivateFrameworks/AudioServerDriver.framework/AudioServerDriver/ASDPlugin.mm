@@ -1,48 +1,48 @@
 @interface ASDPlugin
 - (ASDPlugin)init;
 - (BOOL)deregisterForSystemSleepNotifications;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
 - (BOOL)registerForSystemSleepNotifications;
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4;
-- (id)arrayForKey:(id)a3;
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block;
+- (id)arrayForKey:(id)key;
 - (id)audioDevices;
 - (id)boxes;
 - (id)clockDevices;
-- (id)dictionaryForKey:(id)a3;
+- (id)dictionaryForKey:(id)key;
 - (unsigned)addRef;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (unsigned)objectIDForBoxUID:(id)a3;
-- (unsigned)objectIDForClockDeviceUID:(id)a3;
-- (unsigned)objectIDForDeviceUID:(id)a3;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (unsigned)objectIDForBoxUID:(id)d;
+- (unsigned)objectIDForClockDeviceUID:(id)d;
+- (unsigned)objectIDForDeviceUID:(id)d;
 - (unsigned)removeRef;
-- (void)_handlePowerNotificationWithMessageType:(unsigned int)a3 andArgument:(int64_t)a4;
-- (void)addAudioDevice:(id)a3;
-- (void)addAudioDevices:(id)a3;
-- (void)addBox:(id)a3;
-- (void)addCAObject:(id)a3;
-- (void)addClockDevice:(id)a3;
-- (void)addClockDevices:(id)a3;
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4;
+- (void)_handlePowerNotificationWithMessageType:(unsigned int)type andArgument:(int64_t)argument;
+- (void)addAudioDevice:(id)device;
+- (void)addAudioDevices:(id)devices;
+- (void)addBox:(id)box;
+- (void)addCAObject:(id)object;
+- (void)addClockDevice:(id)device;
+- (void)addClockDevices:(id)devices;
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object;
 - (void)dealloc;
-- (void)doAddAudioDevice:(id)a3;
-- (void)doAddAudioDevices:(id)a3;
-- (void)doAddBox:(id)a3;
-- (void)doAddClockDevice:(id)a3;
-- (void)doAddClockDevices:(id)a3;
-- (void)doRemoveAudioDevice:(id)a3;
-- (void)doRemoveAudioDevices:(id)a3;
-- (void)doRemoveBox:(id)a3;
-- (void)doRemoveClockDevice:(id)a3;
-- (void)doRemoveClockDevices:(id)a3;
-- (void)removeAudioDevice:(id)a3;
-- (void)removeAudioDevices:(id)a3;
-- (void)removeBox:(id)a3;
-- (void)removeCAObject:(id)a3;
-- (void)removeClockDevice:(id)a3;
-- (void)removeClockDevices:(id)a3;
-- (void)removeStreamRealTimeOperations:(id)a3;
-- (void)setArray:(id)a3 forKey:(id)a4;
-- (void)setDictionary:(id)a3 forKey:(id)a4;
+- (void)doAddAudioDevice:(id)device;
+- (void)doAddAudioDevices:(id)devices;
+- (void)doAddBox:(id)box;
+- (void)doAddClockDevice:(id)device;
+- (void)doAddClockDevices:(id)devices;
+- (void)doRemoveAudioDevice:(id)device;
+- (void)doRemoveAudioDevices:(id)devices;
+- (void)doRemoveBox:(id)box;
+- (void)doRemoveClockDevice:(id)device;
+- (void)doRemoveClockDevices:(id)devices;
+- (void)removeAudioDevice:(id)device;
+- (void)removeAudioDevices:(id)devices;
+- (void)removeBox:(id)box;
+- (void)removeCAObject:(id)object;
+- (void)removeClockDevice:(id)device;
+- (void)removeClockDevices:(id)devices;
+- (void)removeStreamRealTimeOperations:(id)operations;
+- (void)setArray:(id)array forKey:(id)key;
+- (void)setDictionary:(id)dictionary forKey:(id)key;
 - (void)systemHasPoweredOn;
 - (void)systemWillSleep;
 @end
@@ -52,15 +52,15 @@
 - (void)systemHasPoweredOn
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDPlugin *)self audioDevices];
-  v4 = [(ASDPlugin *)self clockDevices];
-  v5 = [(ASDPlugin *)self boxes];
+  audioDevices = [(ASDPlugin *)self audioDevices];
+  clockDevices = [(ASDPlugin *)self clockDevices];
+  boxes = [(ASDPlugin *)self boxes];
   v6 = [MEMORY[0x277CBEB58] setWithCapacity:8];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v5;
+  v7 = boxes;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
@@ -75,10 +75,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v34 + 1) + 8 * i) systemHasPoweredOn];
-        if ([v12 count])
+        systemHasPoweredOn = [*(*(&v34 + 1) + 8 * i) systemHasPoweredOn];
+        if ([systemHasPoweredOn count])
         {
-          [v6 addObjectsFromArray:v12];
+          [v6 addObjectsFromArray:systemHasPoweredOn];
         }
       }
 
@@ -92,7 +92,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v3;
+  v13 = audioDevices;
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v14)
   {
@@ -124,7 +124,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = v4;
+  v19 = clockDevices;
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v20)
   {
@@ -231,10 +231,10 @@ void __18__ASDPlugin_boxes__block_invoke(uint64_t a1)
     v3->_nextObjectID = 2;
     v3->_transportType = 0;
     [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [objc_claimAutoreleasedReturnValue() bundleIdentifier];
+    bundleIdentifier = [objc_claimAutoreleasedReturnValue() bundleIdentifier];
     bundleID = v3->_bundleID;
-    v3->_bundleID = v4;
-    v6 = v4;
+    v3->_bundleID = bundleIdentifier;
+    v6 = bundleIdentifier;
 
     v7 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:5 capacity:0];
     objects = v3->_objects;
@@ -290,16 +290,16 @@ void __18__ASDPlugin_boxes__block_invoke(uint64_t a1)
   [(ASDObject *)&v3 dealloc];
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   v6 = 1;
-  if (a3->mSelector > 1819107690)
+  if (property->mSelector > 1819107690)
   {
     if (mSelector - 1969841250 < 3 || mSelector == 1819107691)
     {
@@ -327,16 +327,16 @@ LABEL_18:
   return v6;
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   v8 = 8;
-  if (a3->mSelector <= 1870098019)
+  if (property->mSelector <= 1870098019)
   {
     if (mSelector > 1684370978)
     {
@@ -346,22 +346,22 @@ LABEL_18:
         goto LABEL_16;
       }
 
-      if (a4)
+      if (size)
       {
-        if ((a4 & 3) != 0)
+        if ((size & 3) != 0)
         {
           return 0;
         }
 
-        v12 = a4 >> 2;
+        v12 = size >> 2;
         v34 = 0;
         v35 = &v34;
         v36 = 0x2020000000;
         v37 = 0;
         do
         {
-          v13 = *a5;
-          a5 = a5 + 4;
+          v13 = *data;
+          data = data + 4;
           if (v13 == 1633969526)
           {
             audioDeviceQueue = self->_audioDeviceQueue;
@@ -457,22 +457,22 @@ LABEL_17:
       return [ASDObject dataSizeForProperty:sel_dataSizeForProperty_withQualifierSize_andQualifierData_ withQualifierSize:? andQualifierData:?];
     }
 
-    if (a4)
+    if (size)
     {
-      if ((a4 & 3) != 0)
+      if ((size & 3) != 0)
       {
         return 0;
       }
 
-      v18 = a4 >> 2;
+      v18 = size >> 2;
       v34 = 0;
       v35 = &v34;
       v36 = 0x2020000000;
       v37 = 0;
       while (1)
       {
-        v20 = *a5;
-        a5 = a5 + 4;
+        v20 = *data;
+        data = data + 4;
         v19 = v20;
         if (v20 == 1633841016)
         {
@@ -1126,9 +1126,9 @@ LABEL_3:
   return v2;
 }
 
-- (void)addCAObject:(id)a3
+- (void)addCAObject:(id)object
 {
-  v11 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_objectsLock);
   for (i = self->_nextObjectID; ; self->_nextObjectID = i)
   {
@@ -1145,47 +1145,47 @@ LABEL_3:
     i = (nextObjectID + 1);
   }
 
-  [v11 setObjectID:nextObjectID];
+  [objectCopy setObjectID:nextObjectID];
   ++self->_nextObjectID;
   v9 = self->_objects;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v11, "objectID")}];
-  [(NSMapTable *)v9 setObject:v11 forKey:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(objectCopy, "objectID")}];
+  [(NSMapTable *)v9 setObject:objectCopy forKey:v10];
 
-  [v11 setPlugin:self];
+  [objectCopy setPlugin:self];
   os_unfair_lock_unlock(&self->_objectsLock);
 }
 
-- (void)removeCAObject:(id)a3
+- (void)removeCAObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_objectsLock);
   objects = self->_objects;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 objectID];
+  objectID = [objectCopy objectID];
 
-  v8 = [v6 numberWithUnsignedInt:v7];
+  v8 = [v6 numberWithUnsignedInt:objectID];
   [(NSMapTable *)objects removeObjectForKey:v8];
 
   os_unfair_lock_unlock(&self->_objectsLock);
 }
 
-- (void)addAudioDevice:(id)a3
+- (void)addAudioDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ASDPlugin_addAudioDevice___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doAddAudioDevice:(id)a3
+- (void)doAddAudioDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   audioDeviceQueue = self->_audioDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1193,9 +1193,9 @@ LABEL_3:
   block[2] = __30__ASDPlugin_doAddAudioDevice___block_invoke;
   block[3] = &unk_278CE3EA0;
   block[4] = self;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = a2;
-  v7 = v5;
+  v7 = deviceCopy;
   dispatch_sync(audioDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6264657623;
@@ -1224,23 +1224,23 @@ void __30__ASDPlugin_doAddAudioDevice___block_invoke(uint64_t a1)
   ASD_AddAudioDeviceRealTimeOperations([*(a1 + 32) driverRef], *(a1 + 40));
 }
 
-- (void)removeAudioDevice:(id)a3
+- (void)removeAudioDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ASDPlugin_removeAudioDevice___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doRemoveAudioDevice:(id)a3
+- (void)doRemoveAudioDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   audioDeviceQueue = self->_audioDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1248,9 +1248,9 @@ void __30__ASDPlugin_doAddAudioDevice___block_invoke(uint64_t a1)
   block[2] = __33__ASDPlugin_doRemoveAudioDevice___block_invoke;
   block[3] = &unk_278CE3EA0;
   block[4] = self;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = a2;
-  v7 = v5;
+  v7 = deviceCopy;
   dispatch_sync(audioDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6264657623;
@@ -1281,33 +1281,33 @@ void __33__ASDPlugin_doRemoveAudioDevice___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)addAudioDevices:(id)a3
+- (void)addAudioDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ASDPlugin_addAudioDevices___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doAddAudioDevices:(id)a3
+- (void)doAddAudioDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   audioDeviceQueue = self->_audioDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ASDPlugin_doAddAudioDevices___block_invoke;
   block[3] = &unk_278CE3EA0;
-  v11 = v5;
-  v12 = self;
+  v11 = devicesCopy;
+  selfCopy = self;
   v13 = a2;
-  v7 = v5;
+  v7 = devicesCopy;
   dispatch_sync(audioDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6264657623;
@@ -1350,33 +1350,33 @@ void __31__ASDPlugin_doAddAudioDevices___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAudioDevices:(id)a3
+- (void)removeAudioDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ASDPlugin_removeAudioDevices___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doRemoveAudioDevices:(id)a3
+- (void)doRemoveAudioDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   audioDeviceQueue = self->_audioDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__ASDPlugin_doRemoveAudioDevices___block_invoke;
   block[3] = &unk_278CE3EA0;
-  v11 = v5;
-  v12 = self;
+  v11 = devicesCopy;
+  selfCopy = self;
   v13 = a2;
-  v7 = v5;
+  v7 = devicesCopy;
   dispatch_sync(audioDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F6264657623;
@@ -1467,9 +1467,9 @@ void __25__ASDPlugin_audioDevices__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (unsigned)objectIDForDeviceUID:(id)a3
+- (unsigned)objectIDForDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1480,7 +1480,7 @@ void __25__ASDPlugin_audioDevices__block_invoke(uint64_t a1)
   block[2] = __34__ASDPlugin_objectIDForDeviceUID___block_invoke;
   block[3] = &unk_278CE3EC8;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v14 = v6;
   v15 = &v16;
   dispatch_sync(audioDeviceQueue, block);
@@ -1522,29 +1522,29 @@ void __34__ASDPlugin_objectIDForDeviceUID___block_invoke_2(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeStreamRealTimeOperations:(id)a3
+- (void)removeStreamRealTimeOperations:(id)operations
 {
-  v4 = a3;
-  ASD_RemoveStreamRealTimeOperations([(ASDPlugin *)self driverRef], v4);
+  operationsCopy = operations;
+  ASD_RemoveStreamRealTimeOperations([(ASDPlugin *)self driverRef], operationsCopy);
 }
 
-- (void)addBox:(id)a3
+- (void)addBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __20__ASDPlugin_addBox___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = boxCopy;
+  v6 = boxCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doAddBox:(id)a3
+- (void)doAddBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   boxQueue = self->_boxQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1552,8 +1552,8 @@ void __34__ASDPlugin_objectIDForDeviceUID___block_invoke_2(void *a1)
   block[2] = __22__ASDPlugin_doAddBox___block_invoke;
   block[3] = &unk_278CE3E78;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = boxCopy;
+  v6 = boxCopy;
   dispatch_sync(boxQueue, block);
   [v6 setOwner:self];
   v8 = 0;
@@ -1575,23 +1575,23 @@ void __22__ASDPlugin_doAddBox___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeBox:(id)a3
+- (void)removeBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __23__ASDPlugin_removeBox___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = boxCopy;
+  v6 = boxCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doRemoveBox:(id)a3
+- (void)doRemoveBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   boxQueue = self->_boxQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1599,8 +1599,8 @@ void __22__ASDPlugin_doAddBox___block_invoke(uint64_t a1)
   block[2] = __25__ASDPlugin_doRemoveBox___block_invoke;
   block[3] = &unk_278CE3E78;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = boxCopy;
+  v6 = boxCopy;
   dispatch_sync(boxQueue, block);
   v8 = 0;
   v7 = 0x676C6F62626F7823;
@@ -1620,9 +1620,9 @@ void __25__ASDPlugin_doRemoveBox___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (unsigned)objectIDForBoxUID:(id)a3
+- (unsigned)objectIDForBoxUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1633,9 +1633,9 @@ void __25__ASDPlugin_doRemoveBox___block_invoke(uint64_t a1)
   block[2] = __31__ASDPlugin_objectIDForBoxUID___block_invoke;
   block[3] = &unk_278CE3EC8;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(boxQueue, block);
   LODWORD(boxQueue) = *(v12 + 6);
 
@@ -1652,23 +1652,23 @@ void __31__ASDPlugin_objectIDForBoxUID___block_invoke(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)addClockDevice:(id)a3
+- (void)addClockDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ASDPlugin_addClockDevice___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doAddClockDevice:(id)a3
+- (void)doAddClockDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   clockDeviceQueue = self->_clockDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1676,9 +1676,9 @@ void __31__ASDPlugin_objectIDForBoxUID___block_invoke(void *a1)
   block[2] = __30__ASDPlugin_doAddClockDevice___block_invoke;
   block[3] = &unk_278CE3EA0;
   block[4] = self;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = a2;
-  v7 = v5;
+  v7 = deviceCopy;
   dispatch_sync(clockDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F62636C6B23;
@@ -1707,33 +1707,33 @@ void __30__ASDPlugin_doAddClockDevice___block_invoke(uint64_t a1)
   ASD_AddClockDeviceRealTimeOperations([*(a1 + 32) driverRef], *(a1 + 40));
 }
 
-- (void)addClockDevices:(id)a3
+- (void)addClockDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__ASDPlugin_addClockDevices___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doAddClockDevices:(id)a3
+- (void)doAddClockDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   clockDeviceQueue = self->_clockDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ASDPlugin_doAddClockDevices___block_invoke;
   block[3] = &unk_278CE3EA0;
-  v11 = v5;
-  v12 = self;
+  v11 = devicesCopy;
+  selfCopy = self;
   v13 = a2;
-  v7 = v5;
+  v7 = devicesCopy;
   dispatch_sync(clockDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F62636C6B23;
@@ -1776,23 +1776,23 @@ void __31__ASDPlugin_doAddClockDevices___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClockDevice:(id)a3
+- (void)removeClockDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ASDPlugin_removeClockDevice___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doRemoveClockDevice:(id)a3
+- (void)doRemoveClockDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   clockDeviceQueue = self->_clockDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1800,9 +1800,9 @@ void __31__ASDPlugin_doAddClockDevices___block_invoke(uint64_t a1)
   block[2] = __33__ASDPlugin_doRemoveClockDevice___block_invoke;
   block[3] = &unk_278CE3EA0;
   block[4] = self;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = a2;
-  v7 = v5;
+  v7 = deviceCopy;
   dispatch_sync(clockDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F62636C6B23;
@@ -1833,33 +1833,33 @@ void __33__ASDPlugin_doRemoveClockDevice___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeClockDevices:(id)a3
+- (void)removeClockDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   powerNotificationQueue = self->_powerNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__ASDPlugin_removeClockDevices___block_invoke;
   v7[3] = &unk_278CE3E78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = devicesCopy;
+  v6 = devicesCopy;
   dispatch_sync(powerNotificationQueue, v7);
 }
 
-- (void)doRemoveClockDevices:(id)a3
+- (void)doRemoveClockDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_powerNotificationQueue);
   clockDeviceQueue = self->_clockDeviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__ASDPlugin_doRemoveClockDevices___block_invoke;
   block[3] = &unk_278CE3EA0;
-  v11 = v5;
-  v12 = self;
+  v11 = devicesCopy;
+  selfCopy = self;
   v13 = a2;
-  v7 = v5;
+  v7 = devicesCopy;
   dispatch_sync(clockDeviceQueue, block);
   v9 = 0;
   v8 = 0x676C6F62636C6B23;
@@ -1918,9 +1918,9 @@ void __34__ASDPlugin_doRemoveClockDevices___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)objectIDForClockDeviceUID:(id)a3
+- (unsigned)objectIDForClockDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1931,9 +1931,9 @@ void __34__ASDPlugin_doRemoveClockDevices___block_invoke(uint64_t a1)
   block[2] = __39__ASDPlugin_objectIDForClockDeviceUID___block_invoke;
   block[3] = &unk_278CE3EC8;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(clockDeviceQueue, block);
   LODWORD(clockDeviceQueue) = *(v12 + 6);
 
@@ -1950,18 +1950,18 @@ void __39__ASDPlugin_objectIDForClockDeviceUID___block_invoke(void *a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object
 {
-  v6 = a4;
-  if (v6)
+  objectCopy = object;
+  if (objectCopy)
   {
-    if (a3)
+    if (property)
     {
       pluginHost = self->_pluginHost;
       if (pluginHost)
       {
-        mSelector = a3->mSelector;
-        if (a3->mSelector > 1885762591)
+        mSelector = property->mSelector;
+        if (property->mSelector > 1885762591)
         {
           if (mSelector == 1885762592)
           {
@@ -1983,9 +1983,9 @@ void __39__ASDPlugin_objectIDForClockDeviceUID___block_invoke(void *a1)
 
         if (mSelector != v9)
         {
-          v10 = v6;
-          (pluginHost->PropertiesChanged)(pluginHost, [v6 objectID], 1, a3);
-          v6 = v10;
+          v10 = objectCopy;
+          (pluginHost->PropertiesChanged)(pluginHost, [objectCopy objectID], 1, property);
+          objectCopy = v10;
         }
       }
     }
@@ -1994,14 +1994,14 @@ void __39__ASDPlugin_objectIDForClockDeviceUID___block_invoke(void *a1)
 LABEL_11:
 }
 
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block
 {
-  v6 = a3;
-  v7 = MEMORY[0x245CEBEA0](a4);
+  deviceCopy = device;
+  v7 = MEMORY[0x245CEBEA0](block);
   pluginHost = self->_pluginHost;
   if (pluginHost)
   {
-    v9 = (pluginHost->RequestDeviceConfigurationChange)(pluginHost, [v6 objectID], 0, v7);
+    v9 = (pluginHost->RequestDeviceConfigurationChange)(pluginHost, [deviceCopy objectID], 0, v7);
     if (!v9)
     {
       v12 = 1;
@@ -2029,13 +2029,13 @@ LABEL_9:
   return v12;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
   pluginHost = self->_pluginHost;
   if (pluginHost)
   {
     var8[0] = 0;
-    (pluginHost->CopyFromStorage)(pluginHost, a3, var8);
+    (pluginHost->CopyFromStorage)(pluginHost, key, var8);
     pluginHost = var8[0];
     v3 = var8[2];
   }
@@ -2043,32 +2043,32 @@ LABEL_9:
   return pluginHost;
 }
 
-- (void)setDictionary:(id)a3 forKey:(id)a4
+- (void)setDictionary:(id)dictionary forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   pluginHost = self->_pluginHost;
   if (pluginHost)
   {
-    if (v8)
+    if (dictionaryCopy)
     {
-      (pluginHost->WriteToStorage)(pluginHost, v6);
+      (pluginHost->WriteToStorage)(pluginHost, keyCopy);
     }
 
     else
     {
-      (pluginHost->DeleteFromStorage)(pluginHost, v6);
+      (pluginHost->DeleteFromStorage)(pluginHost, keyCopy);
     }
   }
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
   pluginHost = self->_pluginHost;
   if (pluginHost)
   {
     var8[0] = 0;
-    (pluginHost->CopyFromStorage)(pluginHost, a3, var8);
+    (pluginHost->CopyFromStorage)(pluginHost, key, var8);
     pluginHost = var8[0];
     v3 = var8[2];
   }
@@ -2076,21 +2076,21 @@ LABEL_9:
   return pluginHost;
 }
 
-- (void)setArray:(id)a3 forKey:(id)a4
+- (void)setArray:(id)array forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  keyCopy = key;
   pluginHost = self->_pluginHost;
   if (pluginHost)
   {
-    if (v8)
+    if (arrayCopy)
     {
-      (pluginHost->WriteToStorage)(pluginHost, v6);
+      (pluginHost->WriteToStorage)(pluginHost, keyCopy);
     }
 
     else
     {
-      (pluginHost->DeleteFromStorage)(pluginHost, v6);
+      (pluginHost->DeleteFromStorage)(pluginHost, keyCopy);
     }
   }
 }
@@ -2100,9 +2100,9 @@ LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(ASDPlugin *)self bundleID];
+    bundleID = [(ASDPlugin *)self bundleID];
     v7 = 136315138;
-    v8 = [v3 UTF8String];
+    uTF8String = [bundleID UTF8String];
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s registered for system sleep notifications", &v7, 0xCu);
   }
 
@@ -2130,22 +2130,22 @@ LABEL_9:
   return powerNotificationPort;
 }
 
-- (void)_handlePowerNotificationWithMessageType:(unsigned int)a3 andArgument:(int64_t)a4
+- (void)_handlePowerNotificationWithMessageType:(unsigned int)type andArgument:(int64_t)argument
 {
   v20 = *MEMORY[0x277D85DE8];
-  HIDWORD(v7) = a3 + 536870288;
-  LODWORD(v7) = a3 + 536870288;
+  HIDWORD(v7) = type + 536870288;
+  LODWORD(v7) = type + 536870288;
   v6 = v7 >> 4;
   if (v6 <= 1)
   {
     if (!v6)
     {
-      IOAllowPowerChange(self->_powerConnection, a4);
+      IOAllowPowerChange(self->_powerConnection, argument);
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(ASDPlugin *)self bundleID];
+        bundleID = [(ASDPlugin *)self bundleID];
         v16 = 136315138;
-        v17 = [v8 UTF8String];
+        uTF8String = [bundleID UTF8String];
         v9 = MEMORY[0x277D86220];
         v10 = "%s received power notification kIOMessageCanSystemSleep";
         goto LABEL_19;
@@ -2158,14 +2158,14 @@ LABEL_9:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(ASDPlugin *)self bundleID];
+        bundleID2 = [(ASDPlugin *)self bundleID];
         v16 = 136315138;
-        v17 = [v12 UTF8String];
+        uTF8String = [bundleID2 UTF8String];
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s received power notification kIOMessageSystemWillSleep", &v16, 0xCu);
       }
 
       [(ASDPlugin *)self systemWillSleep];
-      IOAllowPowerChange(self->_powerConnection, a4);
+      IOAllowPowerChange(self->_powerConnection, argument);
       goto LABEL_23;
     }
 
@@ -2178,9 +2178,9 @@ LABEL_9:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(ASDPlugin *)self bundleID];
+        bundleID3 = [(ASDPlugin *)self bundleID];
         v16 = 136315138;
-        v17 = [v13 UTF8String];
+        uTF8String = [bundleID3 UTF8String];
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s received power notification kIOMessageSystemHasPoweredOn", &v16, 0xCu);
       }
 
@@ -2192,9 +2192,9 @@ LABEL_9:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(ASDPlugin *)self bundleID];
+        bundleID = [(ASDPlugin *)self bundleID];
         v16 = 136315138;
-        v17 = [v8 UTF8String];
+        uTF8String = [bundleID UTF8String];
         v9 = MEMORY[0x277D86220];
         v10 = "%s received power notification kIOMessageSystemWillPowerOn";
 LABEL_19:
@@ -2211,11 +2211,11 @@ LABEL_22:
 LABEL_20:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ASDPlugin *)self bundleID];
+      bundleID = [(ASDPlugin *)self bundleID];
       v16 = 136315394;
-      v17 = [v8 UTF8String];
+      uTF8String = [bundleID UTF8String];
       v18 = 1024;
-      v19 = a3;
+      typeCopy = type;
       v9 = MEMORY[0x277D86220];
       v10 = "%s received unhandled power notification 0x%x";
       v14 = 18;
@@ -2227,9 +2227,9 @@ LABEL_20:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ASDPlugin *)self bundleID];
+    bundleID = [(ASDPlugin *)self bundleID];
     v16 = 136315138;
-    v17 = [v8 UTF8String];
+    uTF8String = [bundleID UTF8String];
     v9 = MEMORY[0x277D86220];
     v10 = "%s received power notification kIOMessageSystemWillNotSleep";
     goto LABEL_19;
@@ -2242,15 +2242,15 @@ LABEL_23:
 - (void)systemWillSleep
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDPlugin *)self audioDevices];
-  v4 = [(ASDPlugin *)self clockDevices];
-  v5 = [(ASDPlugin *)self boxes];
+  audioDevices = [(ASDPlugin *)self audioDevices];
+  clockDevices = [(ASDPlugin *)self clockDevices];
+  boxes = [(ASDPlugin *)self boxes];
   v6 = [MEMORY[0x277CBEB58] setWithCapacity:8];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v5;
+  v7 = boxes;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v8)
   {
@@ -2265,10 +2265,10 @@ LABEL_23:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v34 + 1) + 8 * i) systemWillSleep];
-        if ([v12 count])
+        systemWillSleep = [*(*(&v34 + 1) + 8 * i) systemWillSleep];
+        if ([systemWillSleep count])
         {
-          [v6 addObjectsFromArray:v12];
+          [v6 addObjectsFromArray:systemWillSleep];
         }
       }
 
@@ -2282,7 +2282,7 @@ LABEL_23:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v3;
+  v13 = audioDevices;
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v14)
   {
@@ -2314,7 +2314,7 @@ LABEL_23:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = v4;
+  v19 = clockDevices;
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v20)
   {
@@ -2350,9 +2350,9 @@ LABEL_23:
   v10 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(ASDPlugin *)self bundleID];
+    bundleID = [(ASDPlugin *)self bundleID];
     v8 = 136315138;
-    v9 = [v3 UTF8String];
+    uTF8String = [bundleID UTF8String];
     _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s deregistered for system sleep notifications", &v8, 0xCu);
   }
 

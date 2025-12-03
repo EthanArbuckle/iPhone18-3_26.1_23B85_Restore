@@ -1,23 +1,23 @@
 @interface MIOMiscStreamOutputSettings
-+ (id)audioSettingsFromConfig:(id)a3;
-+ (id)customEncoderSettingsFromConfig:(id)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
++ (id)audioSettingsFromConfig:(id)config;
++ (id)customEncoderSettingsFromConfig:(id)config frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
 @end
 
 @implementation MIOMiscStreamOutputSettings
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a7;
-  v9 = a3;
-  v10 = [v9 objectForKey:@"StreamEncoderType"];
-  v11 = [v10 intValue];
+  profileCopy = profile;
+  configCopy = config;
+  v10 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v10 intValue];
 
-  if (v11 <= 17)
+  if (intValue <= 17)
   {
-    if (v11 != 16)
+    if (intValue != 16)
     {
-      if (v11 == 17)
+      if (intValue == 17)
       {
         v15 = 0;
         goto LABEL_14;
@@ -26,26 +26,26 @@
       goto LABEL_17;
     }
 
-    v16 = [objc_opt_class() audioSettingsFromConfig:v9];
+    v16 = [objc_opt_class() audioSettingsFromConfig:configCopy];
   }
 
   else
   {
-    if (v11 != 18)
+    if (intValue != 18)
     {
-      if (v11 == 32)
+      if (intValue == 32)
       {
-        v13 = [v9 objectForKey:@"CustomOutputSettings"];
+        v13 = [configCopy objectForKey:@"CustomOutputSettings"];
         v15 = [[MOVStreamOutputSettings alloc] initWithSettings:v13];
-        [(MOVStreamOutputSettings *)v15 applyAdditionalCompressionPropertiesFromRecordingConfig:v9];
+        [(MOVStreamOutputSettings *)v15 applyAdditionalCompressionPropertiesFromRecordingConfig:configCopy];
         goto LABEL_11;
       }
 
-      if (v11 == 36)
+      if (intValue == 36)
       {
         v12 = [MOVStreamOutputSettings alloc];
-        v13 = [v9 objectForKey:@"VCPEncodingEncoderSpec"];
-        v14 = [v9 objectForKey:@"AdditionalCompressionProperties"];
+        v13 = [configCopy objectForKey:@"VCPEncodingEncoderSpec"];
+        v14 = [configCopy objectForKey:@"AdditionalCompressionProperties"];
         v15 = [(MOVStreamOutputSettings *)v12 initForVCPEncodingWithEncoderSpec:v13 sessopnProperties:v14];
 
 LABEL_11:
@@ -57,7 +57,7 @@ LABEL_17:
       objc_exception_throw(v18);
     }
 
-    v16 = [objc_opt_class() customEncoderSettingsFromConfig:v9 frameRate:v7 enableAVEHighPerformanceProfile:a5];
+    v16 = [objc_opt_class() customEncoderSettingsFromConfig:configCopy frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
   }
 
   v15 = v16;
@@ -66,9 +66,9 @@ LABEL_14:
   return v15;
 }
 
-+ (id)customEncoderSettingsFromConfig:(id)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)customEncoderSettingsFromConfig:(id)config frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v6 = [a3 objectForKey:{@"CustomEncoderConfig", a5}];
+  v6 = [config objectForKey:{@"CustomEncoderConfig", profile}];
   if (v6)
   {
     v7 = [[MOVStreamOutputSettings alloc] initWithConfig:v6];
@@ -76,7 +76,7 @@ LABEL_14:
 
   else
   {
-    v7 = [[MOVStreamOutputSettings alloc] initWithFrameRate:1 useCustomEncoderConfig:a4];
+    v7 = [[MOVStreamOutputSettings alloc] initWithFrameRate:1 useCustomEncoderConfig:rate];
   }
 
   v8 = v7;
@@ -84,19 +84,19 @@ LABEL_14:
   return v8;
 }
 
-+ (id)audioSettingsFromConfig:(id)a3
++ (id)audioSettingsFromConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKey:@"AudioFormatObject"];
+  v5 = [configCopy objectForKey:@"AudioFormatObject"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 settings];
-    [v4 addEntriesFromDictionary:v7];
+    settings = [v5 settings];
+    [v4 addEntriesFromDictionary:settings];
   }
 
-  v8 = [v3 objectForKey:@"AdditionalAudioSettings"];
+  v8 = [configCopy objectForKey:@"AdditionalAudioSettings"];
   if ([v8 count])
   {
     [v4 addEntriesFromDictionary:v8];

@@ -1,19 +1,19 @@
 @interface SUICSiriLanguage
 - (BOOL)_setupAssistantHasCompletedInitialRunAvailable;
-- (SUICSiriLanguage)initWithDelegate:(id)a3;
+- (SUICSiriLanguage)initWithDelegate:(id)delegate;
 - (SUICSiriLanguageDelegate)_delegate;
 - (id)_computeSpokenLanguageCode;
 - (uint64_t)_computeSpokenLanguageCode;
-- (void)_setSpokenLanguageCode:(id)a3;
+- (void)_setSpokenLanguageCode:(id)code;
 - (void)_updateSpokenLanguageCode;
 - (void)dealloc;
 @end
 
 @implementation SUICSiriLanguage
 
-- (SUICSiriLanguage)initWithDelegate:(id)a3
+- (SUICSiriLanguage)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SUICSiriLanguage;
   v5 = [(SUICSiriLanguage *)&v12 init];
@@ -21,16 +21,16 @@
   if (v5)
   {
     *&v5->_setupAssistantHasCompletedInitialRunChecked = 0;
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [(SUICSiriLanguage *)v6 _computeSpokenLanguageCode];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    _computeSpokenLanguageCode = [(SUICSiriLanguage *)v6 _computeSpokenLanguageCode];
     spokenLanguageCode = v6->_spokenLanguageCode;
-    v6->_spokenLanguageCode = v7;
+    v6->_spokenLanguageCode = _computeSpokenLanguageCode;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x1E698D080] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__spokenLanguageDidChange_ name:*MEMORY[0x1E698D080] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v6 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v6;
@@ -38,8 +38,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SUICSiriLanguage;
@@ -48,21 +48,21 @@
 
 - (void)_updateSpokenLanguageCode
 {
-  v3 = [(SUICSiriLanguage *)self _computeSpokenLanguageCode];
-  [(SUICSiriLanguage *)self _setSpokenLanguageCode:v3];
+  _computeSpokenLanguageCode = [(SUICSiriLanguage *)self _computeSpokenLanguageCode];
+  [(SUICSiriLanguage *)self _setSpokenLanguageCode:_computeSpokenLanguageCode];
 }
 
-- (void)_setSpokenLanguageCode:(id)a3
+- (void)_setSpokenLanguageCode:(id)code
 {
-  v7 = a3;
+  codeCopy = code;
   if (![(NSString *)self->_spokenLanguageCode isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [codeCopy copy];
     spokenLanguageCode = self->_spokenLanguageCode;
     self->_spokenLanguageCode = v4;
 
-    v6 = [(SUICSiriLanguage *)self _delegate];
-    [v6 siriLanguageSpokenLanguageCodeDidChange:self];
+    _delegate = [(SUICSiriLanguage *)self _delegate];
+    [_delegate siriLanguageSpokenLanguageCodeDidChange:self];
   }
 }
 
@@ -85,8 +85,8 @@
 
 - (id)_computeSpokenLanguageCode
 {
-  v3 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v4 = [v3 languageCode];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  languageCode = [mEMORY[0x1E698D1C0] languageCode];
 
   if ([(SUICSiriLanguage *)self _setupAssistantHasCompletedInitialRunAvailable])
   {
@@ -109,26 +109,26 @@
     _Block_object_dispose(&v19, 8);
     if (!v5)
     {
-      v17 = [SUICSiriLanguage _computeSpokenLanguageCode];
+      _computeSpokenLanguageCode = [SUICSiriLanguage _computeSpokenLanguageCode];
       _Block_object_dispose(&v19, 8);
-      _Unwind_Resume(v17);
+      _Unwind_Resume(_computeSpokenLanguageCode);
     }
 
     if ((v5() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E695DF58] preferredLanguages];
-      if (![v6 count])
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      if (![preferredLanguages count])
       {
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v7 = [v6 objectAtIndex:0];
+      v7 = [preferredLanguages objectAtIndex:0];
       if ([v7 isEqualToString:@"en-GB"])
       {
-        v8 = [MEMORY[0x1E695DF58] currentLocale];
-        v9 = [v8 objectForKey:*MEMORY[0x1E695D978]];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        v9 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
 
         if (([v9 isEqualToString:@"AU"] & 1) == 0)
         {
@@ -138,11 +138,11 @@ LABEL_16:
           v13 = AFPreferencesSupportedLanguages();
           v14 = [v13 containsObject:v7];
 
-          if (v14 && ([v4 isEqualToString:v7] & 1) == 0)
+          if (v14 && ([languageCode isEqualToString:v7] & 1) == 0)
           {
             v15 = v7;
 
-            v4 = v15;
+            languageCode = v15;
           }
 
           goto LABEL_20;
@@ -165,8 +165,8 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v12 = [MEMORY[0x1E695DF58] currentLocale];
-        v9 = [v12 objectForKey:*MEMORY[0x1E695D978]];
+        currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+        v9 = [currentLocale2 objectForKey:*MEMORY[0x1E695D978]];
 
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v7, v9];
       }
@@ -178,7 +178,7 @@ LABEL_16:
 
 LABEL_21:
 
-  return v4;
+  return languageCode;
 }
 
 - (SUICSiriLanguageDelegate)_delegate

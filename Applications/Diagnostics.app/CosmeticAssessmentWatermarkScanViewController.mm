@@ -1,49 +1,49 @@
 @interface CosmeticAssessmentWatermarkScanViewController
-- (_TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)updateWatermarkPayload;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CosmeticAssessmentWatermarkScanViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E39C4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E3B04();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000E4064(a3);
+  selfCopy = self;
+  sub_1000E4064(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000E42B4(a3);
+  selfCopy = self;
+  sub_1000E42B4(disappear);
 }
 
 - (void)updateWatermarkPayload
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E48C4();
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController_watermarkPresenterView);
+  v3 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController_watermarkPresenterView);
   v4 = String._bridgeToObjectiveC()();
 
   [v3 setVerificationCode:v4];
 }
 
-- (_TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics45CosmeticAssessmentWatermarkScanViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,12 +2,12 @@
 + (id)sharedTimer;
 - (BOOL)shouldStartDisplayLink;
 - (CKImageAnimationTimer)init;
-- (void)addAnimationTimerObserver:(id)a3;
+- (void)addAnimationTimerObserver:(id)observer;
 - (void)animationTimerFired;
 - (void)dealloc;
-- (void)removeAnimationTimerObserver:(id)a3;
-- (void)setDisplayLink:(id)a3;
-- (void)setShouldStopWhenBackgrounded:(BOOL)a3;
+- (void)removeAnimationTimerObserver:(id)observer;
+- (void)setDisplayLink:(id)link;
+- (void)setShouldStopWhenBackgrounded:(BOOL)backgrounded;
 - (void)startDisplayLinkIfNeeded;
 - (void)stopDisplayLink;
 - (void)updateDisplayLink;
@@ -17,8 +17,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CADisplayLink *)self->_displayLink invalidate];
   v4.receiver = self;
@@ -42,9 +42,9 @@
     v4 = CFSetCreateMutable(0, 0, &v7);
     [(CKImageAnimationTimer *)v2 setObservers:v4];
     [(CKImageAnimationTimer *)v2 setShouldStopWhenBackgrounded:1];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_updateDisplayLink name:*MEMORY[0x1E69DDAB0] object:0];
-    [v5 addObserver:v2 selector:sel_updateDisplayLink name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateDisplayLink name:*MEMORY[0x1E69DDAB0] object:0];
+    [defaultCenter addObserver:v2 selector:sel_updateDisplayLink name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v2;
@@ -69,32 +69,32 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
   sharedTimer_sAnimatedImageTimer = v0;
 }
 
-- (void)setDisplayLink:(id)a3
+- (void)setDisplayLink:(id)link
 {
-  v5 = a3;
-  if (self->_displayLink != v5)
+  linkCopy = link;
+  if (self->_displayLink != linkCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_displayLink, a3);
+    v6 = linkCopy;
+    objc_storeStrong(&self->_displayLink, link);
     [(CKImageAnimationTimer *)self setHasValidStartTimeForCurrentDisplayLink:0];
-    v5 = v6;
+    linkCopy = v6;
   }
 }
 
-- (void)addAnimationTimerObserver:(id)a3
+- (void)addAnimationTimerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CKImageAnimationTimer *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(CKImageAnimationTimer *)self observers];
+  [observers addObject:observerCopy];
 
   [(CKImageAnimationTimer *)self updateDisplayLink];
 }
 
-- (void)removeAnimationTimerObserver:(id)a3
+- (void)removeAnimationTimerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CKImageAnimationTimer *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(CKImageAnimationTimer *)self observers];
+  [observers removeObject:observerCopy];
 
   [(CKImageAnimationTimer *)self updateDisplayLink];
 }
@@ -106,8 +106,8 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
   {
     if (!self->_hasValidStartTimeForCurrentDisplayLink)
     {
-      v3 = [(CKImageAnimationTimer *)self displayLink];
-      [v3 targetTimestamp];
+      displayLink = [(CKImageAnimationTimer *)self displayLink];
+      [displayLink targetTimestamp];
       self->_animationStartTime = v4;
 
       self->_hasValidStartTimeForCurrentDisplayLink = 1;
@@ -115,8 +115,8 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
 
     [(CADisplayLink *)self->_displayLink targetTimestamp];
     self->_animationTime = v5 - self->_animationStartTime;
-    v6 = [(CKImageAnimationTimer *)self observers];
-    v7 = [v6 copy];
+    observers = [(CKImageAnimationTimer *)self observers];
+    v7 = [observers copy];
 
     v16 = 0u;
     v17 = 0u;
@@ -160,11 +160,11 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
 
 - (BOOL)shouldStartDisplayLink
 {
-  v3 = [(CKImageAnimationTimer *)self observers];
-  v4 = [v3 count];
+  observers = [(CKImageAnimationTimer *)self observers];
+  v4 = [observers count];
 
-  LODWORD(v3) = +[CKApplicationState isApplicationActive];
-  v5 = v3 | ![(CKImageAnimationTimer *)self shouldStopWhenBackgrounded];
+  LODWORD(observers) = +[CKApplicationState isApplicationActive];
+  v5 = observers | ![(CKImageAnimationTimer *)self shouldStopWhenBackgrounded];
   if (!v4)
   {
     LOBYTE(v5) = 0;
@@ -175,23 +175,23 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
 
 - (void)startDisplayLinkIfNeeded
 {
-  v3 = [(CKImageAnimationTimer *)self displayLink];
-  if (!v3)
+  displayLink = [(CKImageAnimationTimer *)self displayLink];
+  if (!displayLink)
   {
     v5 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_animationTimerFired];
     [v5 setPreferredFramesPerSecond:60];
-    v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v5 addToRunLoop:v4 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CKImageAnimationTimer *)self setDisplayLink:v5];
-    v3 = v5;
+    displayLink = v5;
   }
 }
 
 - (void)stopDisplayLink
 {
-  v3 = [(CKImageAnimationTimer *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(CKImageAnimationTimer *)self displayLink];
+  [displayLink invalidate];
 
   [(CKImageAnimationTimer *)self setDisplayLink:0];
 }
@@ -211,11 +211,11 @@ void __36__CKImageAnimationTimer_sharedTimer__block_invoke()
   }
 }
 
-- (void)setShouldStopWhenBackgrounded:(BOOL)a3
+- (void)setShouldStopWhenBackgrounded:(BOOL)backgrounded
 {
-  if (self->_shouldStopWhenBackgrounded != a3)
+  if (self->_shouldStopWhenBackgrounded != backgrounded)
   {
-    self->_shouldStopWhenBackgrounded = a3;
+    self->_shouldStopWhenBackgrounded = backgrounded;
     [(CKImageAnimationTimer *)self updateDisplayLink];
   }
 }

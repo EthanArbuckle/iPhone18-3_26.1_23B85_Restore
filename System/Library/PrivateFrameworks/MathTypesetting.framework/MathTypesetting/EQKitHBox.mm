@@ -1,31 +1,31 @@
 @interface EQKitHBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)p_cacheErasableBounds;
-- (id)hitTest:(CGPoint)a3;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (id)hitTest:(CGPoint)test;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitHBox
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = EQKitHBox;
-  [(EQKitBox *)&v18 renderIntoContext:v7 offset:x, y];
-  if (v7)
+  [(EQKitBox *)&v18 renderIntoContext:contextCopy offset:x, y];
+  if (contextCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(EQKitCompoundBox *)self childBoxes];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v9 = [childBoxes countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {
       v10 = *v15;
@@ -35,16 +35,16 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(childBoxes);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          [v12 renderIntoContext:v7 offset:{x, y}];
+          [v12 renderIntoContext:contextCopy offset:{x, y}];
           [v12 width];
           x = x + v13;
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v9 = [childBoxes countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v9);
@@ -52,12 +52,12 @@
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = *(a3 + 6);
+  v8 = *(spec + 6);
   if (v8 == 2)
   {
     [(EQKitCompoundBox *)self width];
@@ -66,10 +66,10 @@
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = [(EQKitCompoundBox *)self childBoxes];
-    v9 = [v17 reverseObjectEnumerator];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    reverseObjectEnumerator = [childBoxes reverseObjectEnumerator];
 
-    v18 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
       v19 = x + v16;
@@ -80,20 +80,20 @@ LABEL_14:
       {
         if (*v27 != v20)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v22 = *(*(&v26 + 1) + 8 * v21);
         [v22 width];
         v19 = v19 - v23;
-        if ([v22 appendOpticalAlignToSpec:a3 offset:{v19, y}])
+        if ([v22 appendOpticalAlignToSpec:spec offset:{v19, y}])
         {
           goto LABEL_21;
         }
 
         if (v18 == ++v21)
         {
-          v18 = [v9 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v18)
           {
             goto LABEL_14;
@@ -116,8 +116,8 @@ LABEL_14:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(EQKitCompoundBox *)self childBoxes];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    reverseObjectEnumerator = [(EQKitCompoundBox *)self childBoxes];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
       v11 = *v31;
@@ -127,11 +127,11 @@ LABEL_5:
       {
         if (*v31 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
-        if ([v13 appendOpticalAlignToSpec:a3 offset:{x, y}])
+        if ([v13 appendOpticalAlignToSpec:spec offset:{x, y}])
         {
           break;
         }
@@ -140,7 +140,7 @@ LABEL_5:
         x = x + v14;
         if (v10 == ++v12)
         {
-          v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v30 objects:v35 count:16];
           if (v10)
           {
             goto LABEL_5;
@@ -163,17 +163,17 @@ LABEL_22:
   return v24;
 }
 
-- (id)hitTest:(CGPoint)a3
+- (id)hitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(EQKitCompoundBox *)self childBoxes];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v7 = [childBoxes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -184,7 +184,7 @@ LABEL_22:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childBoxes);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -199,7 +199,7 @@ LABEL_22:
         v9 = v9 - v13;
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [childBoxes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -217,11 +217,11 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6 == self)
+  descendantCopy = descendant;
+  if (descendantCopy == self)
   {
     v14 = 1;
   }
@@ -232,8 +232,8 @@ LABEL_11:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(EQKitCompoundBox *)self childBoxes];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    childBoxes = [(EQKitCompoundBox *)self childBoxes];
+    v8 = [childBoxes countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = *v21;
@@ -244,21 +244,21 @@ LABEL_11:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(childBoxes);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          if ([v12 p_getTransform:a3 fromDescendant:v6])
+          if ([v12 p_getTransform:transform fromDescendant:descendantCopy])
           {
-            v15 = *&a3->c;
-            *&v18.a = *&a3->a;
+            v15 = *&transform->c;
+            *&v18.a = *&transform->a;
             *&v18.c = v15;
-            *&v18.tx = *&a3->tx;
+            *&v18.tx = *&transform->tx;
             CGAffineTransformTranslate(&v19, &v18, v10, 0.0);
             v16 = *&v19.c;
-            *&a3->a = *&v19.a;
-            *&a3->c = v16;
-            *&a3->tx = *&v19.tx;
+            *&transform->a = *&v19.a;
+            *&transform->c = v16;
+            *&transform->tx = *&v19.tx;
             v14 = 1;
             goto LABEL_12;
           }
@@ -267,7 +267,7 @@ LABEL_11:
           v10 = v10 + v13;
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v8 = [childBoxes countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v8)
         {
           continue;
@@ -284,18 +284,18 @@ LABEL_12:
   return v14;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v26 = *MEMORY[0x277D85DE8];
-  *a5 = 0.0;
-  *a3 = 0.0;
-  *a4 = 0.0;
+  *width = 0.0;
+  *height = 0.0;
+  *depth = 0.0;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(EQKitCompoundBox *)self childBoxes];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v9 = [childBoxes countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = *v22;
@@ -306,7 +306,7 @@ LABEL_12:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childBoxes);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
@@ -316,21 +316,21 @@ LABEL_12:
           if (v11)
           {
             [v13 height];
-            *a3 = v15;
+            *height = v15;
             [v13 depth];
           }
 
           else
           {
-            v17 = *a3;
+            v17 = *height;
             [v13 height];
             if (v17 >= v18)
             {
               v18 = v17;
             }
 
-            *a3 = v18;
-            v19 = *a4;
+            *height = v18;
+            v19 = *depth;
             [v13 depth];
             if (v19 >= v16)
             {
@@ -339,14 +339,14 @@ LABEL_12:
           }
 
           v11 = 0;
-          *a4 = v16;
+          *depth = v16;
         }
 
         [v13 width];
-        *a5 = v20 + *a5;
+        *width = v20 + *width;
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [childBoxes countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -364,8 +364,8 @@ LABEL_12:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(EQKitCompoundBox *)self childBoxes];
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  v5 = [childBoxes countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {
     v6 = *v29;
@@ -376,7 +376,7 @@ LABEL_12:
       {
         if (*v29 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childBoxes);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
@@ -419,7 +419,7 @@ LABEL_12:
         v7 = v7 + v19;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v5 = [childBoxes countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v5);

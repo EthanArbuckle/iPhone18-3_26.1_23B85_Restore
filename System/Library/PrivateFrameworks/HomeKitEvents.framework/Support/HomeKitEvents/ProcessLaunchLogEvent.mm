@@ -2,7 +2,7 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC11homeeventsd21ProcessLaunchLogEvent)init;
-- (_TtC11homeeventsd21ProcessLaunchLogEvent)initWithStartTime:(double)a3;
+- (_TtC11homeeventsd21ProcessLaunchLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation ProcessLaunchLogEvent
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC11homeeventsd21ProcessLaunchLogEvent)initWithStartTime:(double)a3
+- (_TtC11homeeventsd21ProcessLaunchLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -30,7 +30,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000170B4();
 
   sub_1000123CC();

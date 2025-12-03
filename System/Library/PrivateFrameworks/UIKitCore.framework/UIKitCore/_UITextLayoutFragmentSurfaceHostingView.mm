@@ -4,7 +4,7 @@
 - (CGRect)_activeLayoutFragmentFrame;
 - (void)_updateGeometry;
 - (void)teardown;
-- (void)updateWithSurface:(id)a3;
+- (void)updateWithSurface:(id)surface;
 @end
 
 @implementation _UITextLayoutFragmentSurfaceHostingView
@@ -21,24 +21,24 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(NSCustomTextSurface *)self->_surface layer];
-    [v11 setBounds:{v4, v6, v8, v10}];
+    layer = [(NSCustomTextSurface *)self->_surface layer];
+    [layer setBounds:{v4, v6, v8, v10}];
 
-    v12 = [(NSCustomTextSurface *)self->_surface layer];
-    [v12 setAnchorPoint:{0.0, 0.0}];
+    layer2 = [(NSCustomTextSurface *)self->_surface layer];
+    [layer2 setAnchorPoint:{0.0, 0.0}];
 
     [(UIView *)self bounds];
     v14 = v13;
     v16 = v15;
-    v17 = [(NSCustomTextSurface *)self->_surface layer];
-    [v17 setPosition:{v14, v16}];
+    layer3 = [(NSCustomTextSurface *)self->_surface layer];
+    [layer3 setPosition:{v14, v16}];
   }
 }
 
 - (CGRect)_activeLayoutFragmentFrame
 {
-  v3 = [(_UITextLayoutFragmentViewBase *)self layoutFragment];
-  [v3 layoutFragmentFrame];
+  layoutFragment = [(_UITextLayoutFragmentViewBase *)self layoutFragment];
+  [layoutFragment layoutFragmentFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -96,44 +96,44 @@
   return result;
 }
 
-- (void)updateWithSurface:(id)a3
+- (void)updateWithSurface:(id)surface
 {
-  v5 = a3;
+  surfaceCopy = surface;
   surface = self->_surface;
-  v17 = v5;
-  if (surface != v5)
+  v17 = surfaceCopy;
+  if (surface != surfaceCopy)
   {
     p_hostedLayer = &self->_hostedLayer;
-    v8 = [(CALayer *)self->_hostedLayer superlayer];
-    v9 = [(UIView *)self layer];
+    superlayer = [(CALayer *)self->_hostedLayer superlayer];
+    layer = [(UIView *)self layer];
 
-    if (v8 == v9)
+    if (superlayer == layer)
     {
       [(CALayer *)*p_hostedLayer removeFromSuperlayer];
     }
 
-    objc_storeStrong(&self->_surface, a3);
+    objc_storeStrong(&self->_surface, surface);
 LABEL_5:
-    v10 = [(NSCustomTextSurface *)self->_surface layer];
+    layer2 = [(NSCustomTextSurface *)self->_surface layer];
     v11 = *p_hostedLayer;
-    *p_hostedLayer = v10;
+    *p_hostedLayer = layer2;
 
-    v12 = [(UIView *)self layer];
-    [v12 addSublayer:*p_hostedLayer];
+    layer3 = [(UIView *)self layer];
+    [layer3 addSublayer:*p_hostedLayer];
 
     goto LABEL_6;
   }
 
-  v13 = [(NSCustomTextSurface *)surface layer];
+  layer4 = [(NSCustomTextSurface *)surface layer];
   p_hostedLayer = &self->_hostedLayer;
   hostedLayer = self->_hostedLayer;
 
-  if (v13 != hostedLayer)
+  if (layer4 != hostedLayer)
   {
-    v15 = [(CALayer *)*p_hostedLayer superlayer];
-    v16 = [(UIView *)self layer];
+    superlayer2 = [(CALayer *)*p_hostedLayer superlayer];
+    layer5 = [(UIView *)self layer];
 
-    if (v15 == v16)
+    if (superlayer2 == layer5)
     {
       [(CALayer *)*p_hostedLayer removeFromSuperlayer];
     }
@@ -146,10 +146,10 @@ LABEL_6:
 
 - (void)teardown
 {
-  v3 = [(CALayer *)self->_hostedLayer superlayer];
-  v4 = [(UIView *)self layer];
+  superlayer = [(CALayer *)self->_hostedLayer superlayer];
+  layer = [(UIView *)self layer];
 
-  if (v3 == v4)
+  if (superlayer == layer)
   {
     [(CALayer *)self->_hostedLayer removeFromSuperlayer];
   }

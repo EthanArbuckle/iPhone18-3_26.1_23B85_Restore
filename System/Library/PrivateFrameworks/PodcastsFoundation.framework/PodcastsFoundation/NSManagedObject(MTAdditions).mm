@@ -10,18 +10,18 @@
 {
   v4 = a3;
   v5 = objc_opt_new();
-  v6 = [a1 entity];
-  v7 = [v6 attributesByName];
+  entity = [self entity];
+  attributesByName = [entity attributesByName];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __87__NSManagedObject_MTAdditions__dictionaryRepresentationWithNullAttributeValueProvider___block_invoke;
   v13[3] = &unk_1E8569400;
-  v13[4] = a1;
+  v13[4] = self;
   v15 = v4;
   v8 = v5;
   v14 = v8;
   v9 = v4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v13];
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v13];
 
   v10 = v14;
   v11 = v8;
@@ -31,11 +31,11 @@
 
 - (id)dictionaryRepresentationWithObjectId
 {
-  v2 = [a1 dictionaryRepresentation];
-  v3 = [a1 objectID];
-  [v2 setObject:v3 forKey:@"objectID"];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  objectID = [self objectID];
+  [dictionaryRepresentation setObject:objectID forKey:@"objectID"];
 
-  return v2;
+  return dictionaryRepresentation;
 }
 
 + (id)aggregateOperation:()MTAdditions attribute:predicate:managedObjectContext:
@@ -70,8 +70,8 @@
   [v19 setEntity:v23];
   v24 = [v12 executeFetchRequest:v19 error:0];
 
-  v25 = [v24 lastObject];
-  v26 = [v25 objectForKey:@"result"];
+  lastObject = [v24 lastObject];
+  v26 = [lastObject objectForKey:@"result"];
 
   return v26;
 }

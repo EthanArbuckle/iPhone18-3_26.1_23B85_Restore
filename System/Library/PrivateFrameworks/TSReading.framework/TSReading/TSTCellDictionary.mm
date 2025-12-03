@@ -2,7 +2,7 @@
 - (TSTCellDictionary)init;
 - (id)allCells;
 - (uint64_t)allCells;
-- (void)applyBlockToAllCells:(id)a3;
+- (void)applyBlockToAllCells:(id)cells;
 - (void)dealloc;
 - (void)removeAllCells;
 @end
@@ -43,11 +43,11 @@
 {
   v4 = [[TSTEphemeralCellMap alloc] initWithCapacity:1];
   pthread_rwlock_rdlock(&self->mDictRWLock);
-  v5 = [(TSUIntegerKeyDictionary *)self->mDict keyEnumerator];
-  v6 = [v5 nextKey];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  keyEnumerator = [(TSUIntegerKeyDictionary *)self->mDict keyEnumerator];
+  nextKey = [keyEnumerator nextKey];
+  if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 nextKey])
+    for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [keyEnumerator nextKey])
     {
       if (HIDWORD(i))
       {
@@ -71,16 +71,16 @@
   return v4;
 }
 
-- (void)applyBlockToAllCells:(id)a3
+- (void)applyBlockToAllCells:(id)cells
 {
   pthread_rwlock_wrlock(&self->mDictRWLock);
-  v5 = [(TSUIntegerKeyDictionary *)self->mDict keyEnumerator];
-  v6 = [v5 nextKey];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  keyEnumerator = [(TSUIntegerKeyDictionary *)self->mDict keyEnumerator];
+  nextKey = [keyEnumerator nextKey];
+  if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v6; i != 0x7FFFFFFFFFFFFFFFLL; i = [v5 nextKey])
+    for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [keyEnumerator nextKey])
     {
-      (*(a3 + 2))(a3, [(TSUIntegerKeyDictionary *)self->mDict objectForKey:i]);
+      (*(cells + 2))(cells, [(TSUIntegerKeyDictionary *)self->mDict objectForKey:i]);
     }
   }
 
@@ -89,11 +89,11 @@
 
 - (uint64_t)allCells
 {
-  v0 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCellDictionary allCells]"];
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellDictionary.m"];
 
-  return [v0 handleFailureInFunction:v1 file:v2 lineNumber:63 description:@"Out-of-bounds type assignment was clamped to max"];
+  return [currentHandler handleFailureInFunction:v1 file:v2 lineNumber:63 description:@"Out-of-bounds type assignment was clamped to max"];
 }
 
 @end

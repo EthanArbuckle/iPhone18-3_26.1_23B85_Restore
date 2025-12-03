@@ -1,72 +1,72 @@
 @interface LSRConnection
-+ (BOOL)isEuclidAvailableForConfigPath:(id)a3;
-+ (id)_jitProfileWithLanguage:(id)a3 modelRoot:(id)a4;
++ (BOOL)isEuclidAvailableForConfigPath:(id)path;
++ (id)_jitProfileWithLanguage:(id)language modelRoot:(id)root;
 + (id)processStartTimeOnce;
 + (void)_cachedRecognizerCleanUp;
 + (void)_cancelCooldownTimer;
 + (void)_cooldownTimerFired;
 + (void)_scheduleCooldownTimer;
 + (void)captureProcessStartTime;
-+ (void)completionWithEuclidErrorWithDescription:(id)a3 configPath:(id)a4 completion:(id)a5;
++ (void)completionWithEuclidErrorWithDescription:(id)description configPath:(id)path completion:(id)completion;
 + (void)initialize;
 - ($115C4C562B26FF47E01F9F4EA65B5887)_auditToken;
-- (BOOL)_callerHasWritePriviledge:(id)a3;
-- (BOOL)_consumeSandboxExtensions:(id)a3 error:(id *)a4;
-- (LSRConnection)initWithXPCConnection:(id)a3;
+- (BOOL)_callerHasWritePriviledge:(id)priviledge;
+- (BOOL)_consumeSandboxExtensions:(id)extensions error:(id *)error;
+- (LSRConnection)initWithXPCConnection:(id)connection;
 - (id)_requestContext;
-- (void)addAudioPacket:(id)a3;
-- (void)addProns:(id)a3 forWord:(id)a4 completion:(id)a5;
-- (void)addSentenceToNgramCounts:(id)a3;
-- (void)addSentenceToNgramCounts:(id)a3 completion:(id)a4;
-- (void)appLmNeedsRebuild:(id)a3 language:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6;
+- (void)addAudioPacket:(id)packet;
+- (void)addProns:(id)prons forWord:(id)word completion:(id)completion;
+- (void)addSentenceToNgramCounts:(id)counts;
+- (void)addSentenceToNgramCounts:(id)counts completion:(id)completion;
+- (void)appLmNeedsRebuild:(id)rebuild language:(id)language sandboxExtensions:(id)extensions completion:(id)completion;
 - (void)cancelSpeech;
-- (void)cleanupCacheWithCompletion:(id)a3;
-- (void)configParametersForVoicemailWithLanguage:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 writeToDirectory:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6;
-- (void)createPhraseCountsArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8;
+- (void)cleanupCacheWithCompletion:(id)completion;
+- (void)configParametersForVoicemailWithLanguage:(id)language clientID:(id)d completion:(id)completion;
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
+- (void)createPhraseCountsArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
 - (void)dealloc;
-- (void)deserializeNgramCountsData:(id)a3 completion:(id)a4;
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 detailedProgress:(BOOL)a6;
-- (void)fetchAssetsForLanguage:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)generateNgramCountsSerializeDataWithCompletion:(id)a3;
-- (void)initializeLmWithAssetPath:(id)a3 completion:(id)a4;
-- (void)initializeLmWithLocale:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)initializeWithSandboxExtensions:(id)a3;
-- (void)installationStateForAssetConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)installedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4;
-- (void)lmeThresholdWithCompletion:(id)a3;
-- (void)logCoreAnalyticsEvent:(id)a3 withAnalytics:(id)a4;
-- (void)metricsWithCompletion:(id)a3;
-- (void)oovWordsAndFrequenciesWithCompletion:(id)a3;
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)preloadRecognizerForLanguage:(id)a3 task:(id)a4 clientID:(id)a5 recognitionOverrides:(id)a6 modelOverrideURL:(id)a7 completion:(id)a8;
-- (void)reportFailureWithError:(id)a3;
-- (void)setPurgeabilityForAssetWithConfig:(id)a3 purgeable:(BOOL)a4 clientID:(id)a5 completion:(id)a6;
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4;
-- (void)speechRecognizer:(id)a3 didProcessAudioDuration:(double)a4;
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResultPackage:(id)a4;
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4;
-- (void)startRecordedAudioDictationWithParameters:(id)a3;
+- (void)deserializeNgramCountsData:(id)data completion:(id)completion;
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration detailedProgress:(BOOL)progress;
+- (void)fetchAssetsForLanguage:(id)language clientID:(id)d completion:(id)completion;
+- (void)generateNgramCountsSerializeDataWithCompletion:(id)completion;
+- (void)initializeLmWithAssetPath:(id)path completion:(id)completion;
+- (void)initializeLmWithLocale:(id)locale clientID:(id)d completion:(id)completion;
+- (void)initializeWithSandboxExtensions:(id)extensions;
+- (void)installationStateForAssetConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)installedLanguagesForAssetType:(unint64_t)type completion:(id)completion;
+- (void)lmeThresholdWithCompletion:(id)completion;
+- (void)logCoreAnalyticsEvent:(id)event withAnalytics:(id)analytics;
+- (void)metricsWithCompletion:(id)completion;
+- (void)oovWordsAndFrequenciesWithCompletion:(id)completion;
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)preloadRecognizerForLanguage:(id)language task:(id)task clientID:(id)d recognitionOverrides:(id)overrides modelOverrideURL:(id)l completion:(id)completion;
+- (void)reportFailureWithError:(id)error;
+- (void)setPurgeabilityForAssetWithConfig:(id)config purgeable:(BOOL)purgeable clientID:(id)d completion:(id)completion;
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error;
+- (void)speechRecognizer:(id)recognizer didProcessAudioDuration:(double)duration;
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResultPackage:(id)package;
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result;
+- (void)startRecordedAudioDictationWithParameters:(id)parameters;
 - (void)stopSpeech;
-- (void)subscriptionsForClientId:(id)a3 completion:(id)a4;
-- (void)supportedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4;
-- (void)synchronousComputeEuclidEmbeddingsForSources:(id)a3 completion:(id)a4;
-- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)a3 clientID:(id)a4 inputFormat:(int64_t)a5 loadingOption:(int64_t)a6 completion:(id)a7;
-- (void)synchronousEuclidConfigPathForLanguageStr:(id)a3 completion:(id)a4;
-- (void)synchronousEuclidNearestNeighborsForSource:(id)a3 numberOfNeighbors:(id)a4 completion:(id)a5;
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8;
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtension:(id)a7 completion:(id)a8;
-- (void)trainFromPlainTextAndWriteToDirectory:(id)a3 sandboxExtension:(id)a4 completion:(id)a5;
-- (void)updateAudioDuration:(id)a3;
-- (void)versionOfAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5;
-- (void)wakeUpWithCompletion:(id)a3;
+- (void)subscriptionsForClientId:(id)id completion:(id)completion;
+- (void)supportedLanguagesForAssetType:(unint64_t)type completion:(id)completion;
+- (void)synchronousComputeEuclidEmbeddingsForSources:(id)sources completion:(id)completion;
+- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)str clientID:(id)d inputFormat:(int64_t)format loadingOption:(int64_t)option completion:(id)completion;
+- (void)synchronousEuclidConfigPathForLanguageStr:(id)str completion:(id)completion;
+- (void)synchronousEuclidNearestNeighborsForSource:(id)source numberOfNeighbors:(id)neighbors completion:(id)completion;
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion;
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion;
+- (void)trainFromPlainTextAndWriteToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion;
+- (void)updateAudioDuration:(id)duration;
+- (void)versionOfAssetWithConfig:(id)config clientID:(id)d completion:(id)completion;
+- (void)wakeUpWithCompletion:(id)completion;
 @end
 
 @implementation LSRConnection
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v3 = dispatch_queue_create("com.apple.speech.localspeechrecognition", v2);
@@ -102,7 +102,7 @@
     *buf = 136315394;
     v7 = "[LSRConnection dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%s %@ deallocating", buf, 0x16u);
   }
 
@@ -111,110 +111,110 @@
   [(LSRConnection *)&v5 dealloc];
 }
 
-- (void)speechRecognizer:(id)a3 didProcessAudioDuration:(double)a4
+- (void)speechRecognizer:(id)recognizer didProcessAudioDuration:(double)duration
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10003AFD8;
   v4[3] = &unk_100066950;
   v4[4] = self;
-  *&v4[5] = a4;
+  *&v4[5] = duration;
   dispatch_async(qword_100071428, v4);
 }
 
-- (void)speechRecognizer:(id)a3 didFinishRecognitionWithError:(id)a4
+- (void)speechRecognizer:(id)recognizer didFinishRecognitionWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  errorCopy = error;
   v8 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003B0F8;
   block[3] = &unk_100066900;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = recognizerCopy;
+  v9 = recognizerCopy;
+  v10 = errorCopy;
   dispatch_async(v8, block);
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizeFinalResultPackage:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizeFinalResultPackage:(id)package
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  packageCopy = package;
   v8 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003BD94;
   block[3] = &unk_100066900;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = packageCopy;
+  v13 = recognizerCopy;
+  v9 = recognizerCopy;
+  v10 = packageCopy;
   dispatch_async(v8, block);
 }
 
-- (void)speechRecognizer:(id)a3 didRecognizePartialResult:(id)a4
+- (void)speechRecognizer:(id)recognizer didRecognizePartialResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = qword_100071428;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10003C31C;
   v8[3] = &unk_1000664B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)synchronousEuclidConfigPathForLanguageStr:(id)a3 completion:(id)a4
+- (void)synchronousEuclidConfigPathForLanguageStr:(id)str completion:(id)completion
 {
-  v14 = a4;
-  v5 = a3;
-  v6 = [[SFEntitledAssetConfig alloc] initWithLanguage:v5 assetType:3];
+  completionCopy = completion;
+  strCopy = str;
+  v6 = [[SFEntitledAssetConfig alloc] initWithLanguage:strCopy assetType:3];
 
   v7 = +[SFEntitledAssetManager sharedInstance];
   v8 = [v7 installedAssetWithConfig:v6];
 
-  if (!v14 || v8)
+  if (!completionCopy || v8)
   {
     v9 = [SFEntitledAssetManager jsonFilenameForAssetType:3];
     v10 = [v8 stringByAppendingPathComponent:v9];
 
     v11 = [LSRConnection isEuclidAvailableForConfigPath:v8];
-    if (!v14 || v11)
+    if (!completionCopy || v11)
     {
-      v12 = v14;
+      v12 = completionCopy;
       v13 = v10;
     }
 
     else
     {
-      v12 = v14;
+      v12 = completionCopy;
       v13 = 0;
     }
 
-    (*(v14 + 2))(v12, v13);
+    (*(completionCopy + 2))(v12, v13);
   }
 
   else
   {
-    (*(v14 + 2))();
+    (*(completionCopy + 2))();
   }
 }
 
-- (void)synchronousEuclidNearestNeighborsForSource:(id)a3 numberOfNeighbors:(id)a4 completion:(id)a5
+- (void)synchronousEuclidNearestNeighborsForSource:(id)source numberOfNeighbors:(id)neighbors completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  neighborsCopy = neighbors;
+  completionCopy = completion;
   euclidInstance = self->_euclidInstance;
   if (euclidInstance)
   {
-    v12 = -[_EAREuclid findNearestNeighbors:numberOfNeighbors:](euclidInstance, "findNearestNeighbors:numberOfNeighbors:", v8, [v9 intValue]);
+    v12 = -[_EAREuclid findNearestNeighbors:numberOfNeighbors:](euclidInstance, "findNearestNeighbors:numberOfNeighbors:", sourceCopy, [neighborsCopy intValue]);
     v13 = +[NSMutableArray array];
     +[NSMutableDictionary dictionary];
     v19 = _NSConcreteStackBlock;
@@ -227,7 +227,7 @@
     [v12 enumerateObjectsUsingBlock:&v19];
     v16 = [v15 copy];
     v17 = [v14 copy];
-    v10[2](v10, v16, v17);
+    completionCopy[2](completionCopy, v16, v17);
   }
 
   else
@@ -240,19 +240,19 @@
       _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%s No instance of _EAREuclid", buf, 0xCu);
     }
 
-    v10[2](v10, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)synchronousComputeEuclidEmbeddingsForSources:(id)a3 completion:(id)a4
+- (void)synchronousComputeEuclidEmbeddingsForSources:(id)sources completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sourcesCopy = sources;
+  completionCopy = completion;
   euclidInstance = self->_euclidInstance;
   if (euclidInstance)
   {
-    v9 = [(_EAREuclid *)euclidInstance computeEmbeddings:v6];
-    v7[2](v7, v9);
+    v9 = [(_EAREuclid *)euclidInstance computeEmbeddings:sourcesCopy];
+    completionCopy[2](completionCopy, v9);
   }
 
   else
@@ -265,48 +265,48 @@
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s No instance of _EAREuclid", &v11, 0xCu);
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)a3 clientID:(id)a4 inputFormat:(int64_t)a5 loadingOption:(int64_t)a6 completion:(id)a7
+- (void)synchronousCreateEuclidInstanceForLanguageStr:(id)str clientID:(id)d inputFormat:(int64_t)format loadingOption:(int64_t)option completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  strCopy = str;
+  dCopy = d;
+  completionCopy = completion;
   v15 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v29 = "[LSRConnection synchronousCreateEuclidInstanceForLanguageStr:clientID:inputFormat:loadingOption:completion:]";
     v30 = 2112;
-    v31 = v12;
+    v31 = strCopy;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s Initializing _EAREuclid instance for languageStr: %@", buf, 0x16u);
   }
 
   v27 = 0;
-  v16 = [LSRConnection modelRootWithLanguage:v12 assetType:3 clientID:v13 modelOverrideURL:0 isSpelling:0 error:&v27];
+  v16 = [LSRConnection modelRootWithLanguage:strCopy assetType:3 clientID:dCopy modelOverrideURL:0 isSpelling:0 error:&v27];
   v17 = v27;
   if (v16)
   {
-    v26 = v13;
-    v18 = self;
-    v19 = a6;
+    v26 = dCopy;
+    selfCopy = self;
+    optionCopy = option;
     v20 = [SFEntitledAssetManager jsonFilenameForAssetType:3];
     v21 = [v16 stringByAppendingPathComponent:v20];
 
     if ([LSRConnection isEuclidAvailableForConfigPath:v16])
     {
-      v22 = [[_EAREuclid alloc] initWithConfiguration:v21 euclidEncoderType:a5 initFlag:v19 language:v12];
-      euclidInstance = v18->_euclidInstance;
-      v18->_euclidInstance = v22;
+      v22 = [[_EAREuclid alloc] initWithConfiguration:v21 euclidEncoderType:format initFlag:optionCopy language:strCopy];
+      euclidInstance = selfCopy->_euclidInstance;
+      selfCopy->_euclidInstance = v22;
 
-      if (v18->_euclidInstance)
+      if (selfCopy->_euclidInstance)
       {
-        v13 = v26;
-        if (v14)
+        dCopy = v26;
+        if (completionCopy)
         {
-          v14[2](v14, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_14;
@@ -320,8 +320,8 @@
       v25 = @"Euclid not available on this device for this locale.";
     }
 
-    [LSRConnection completionWithEuclidErrorWithDescription:v25 configPath:v21 completion:v14];
-    v13 = v26;
+    [LSRConnection completionWithEuclidErrorWithDescription:v25 configPath:v21 completion:completionCopy];
+    dCopy = v26;
 LABEL_14:
 
     goto LABEL_15;
@@ -335,7 +335,7 @@ LABEL_14:
     v30 = 2112;
     v31 = v17;
     _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
-    if (!v14)
+    if (!completionCopy)
     {
       goto LABEL_15;
     }
@@ -343,31 +343,31 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (v14)
+  if (completionCopy)
   {
 LABEL_10:
-    (v14)[2](v14, v17);
+    (completionCopy)[2](completionCopy, v17);
   }
 
 LABEL_15:
 }
 
-- (void)subscriptionsForClientId:(id)a3 completion:(id)a4
+- (void)subscriptionsForClientId:(id)id completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v6 = a4;
-    v7 = [SFEntitledAssetManager subscriptionsForSubscriberId:a3];
-    (*(a4 + 2))(v6, v7);
+    completionCopy = completion;
+    v7 = [SFEntitledAssetManager subscriptionsForSubscriberId:id];
+    (*(completion + 2))(completionCopy, v7);
   }
 }
 
-- (void)appLmNeedsRebuild:(id)a3 language:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6
+- (void)appLmNeedsRebuild:(id)rebuild language:(id)language sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  rebuildCopy = rebuild;
+  languageCopy = language;
+  extensionsCopy = extensions;
+  completionCopy = completion;
   v14 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
   {
@@ -377,15 +377,15 @@ LABEL_15:
   }
 
   v22 = 0;
-  v15 = [(LSRConnection *)self _consumeSandboxExtensions:v12 error:&v22];
+  v15 = [(LSRConnection *)self _consumeSandboxExtensions:extensionsCopy error:&v22];
   v16 = v22;
   if (v15)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
     v21 = 0;
-    v18 = [(LSRLanguageModel *)lsrLanguageModel appLmNeedsRebuild:v10 language:v11 error:&v21];
+    v18 = [(LSRLanguageModel *)lsrLanguageModel appLmNeedsRebuild:rebuildCopy language:languageCopy error:&v21];
     v19 = v21;
-    v13[2](v13, v18, v19);
+    completionCopy[2](completionCopy, v18, v19);
   }
 
   else
@@ -400,23 +400,23 @@ LABEL_15:
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s Failed to consume sandbox extensions when checking for App LM rebuild: %@", buf, 0x16u);
     }
 
-    v13[2](v13, 1, v16);
+    completionCopy[2](completionCopy, 1, v16);
   }
 }
 
-- (void)trainAppLmFromNgramCountsArtifact:(id)a3 forApp:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8
+- (void)trainAppLmFromNgramCountsArtifact:(id)artifact forApp:(id)app language:(id)language writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v14 = a3;
-  v37 = a4;
-  v35 = a5;
-  v15 = a6;
+  artifactCopy = artifact;
+  appCopy = app;
+  languageCopy = language;
+  directoryCopy = directory;
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_10003D318;
   v41[3] = &unk_100066860;
-  v16 = a8;
-  v42 = v16;
-  v17 = a7;
+  completionCopy = completion;
+  v42 = completionCopy;
+  extensionsCopy = extensions;
   v18 = objc_retainBlock(v41);
   v19 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
@@ -427,13 +427,13 @@ LABEL_15:
   }
 
   v40 = 0;
-  v20 = [(LSRConnection *)self _consumeSandboxExtensions:v17 error:&v40, v35];
+  languageCopy = [(LSRConnection *)self _consumeSandboxExtensions:extensionsCopy error:&v40, languageCopy];
 
   v21 = v40;
   v22 = SFLogConnection;
-  if (v20)
+  if (languageCopy)
   {
-    v23 = v14;
+    v23 = artifactCopy;
     if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
@@ -441,8 +441,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s Successfully consumed sandbox extensions", buf, 0xCu);
     }
 
-    v24 = [v15 URLByAppendingPathComponent:@"AppLmModelFile"];
-    v25 = [v15 URLByAppendingPathComponent:@"SpeechProfile"];
+    v24 = [directoryCopy URLByAppendingPathComponent:@"AppLmModelFile"];
+    v25 = [directoryCopy URLByAppendingPathComponent:@"SpeechProfile"];
     v26 = +[NSFileManager defaultManager];
     [v26 removeItemAtURL:v24 error:0];
 
@@ -452,11 +452,11 @@ LABEL_15:
     lsrLanguageModel = self->_lsrLanguageModel;
     v38 = v25;
     v39 = v24;
-    v14 = v23;
+    artifactCopy = v23;
     v29 = v23;
     v31 = v36;
-    v30 = v37;
-    [(LSRLanguageModel *)lsrLanguageModel trainAppLmFromNgramCountsArtifact:v29 forApp:v37 language:v36 appLmArtifact:&v39 vocabFile:&v38];
+    v30 = appCopy;
+    [(LSRLanguageModel *)lsrLanguageModel trainAppLmFromNgramCountsArtifact:v29 forApp:appCopy language:v36 appLmArtifact:&v39 vocabFile:&v38];
     v32 = v39;
 
     v33 = v38;
@@ -484,24 +484,24 @@ LABEL_15:
 
     (v18[2])(v18, 0, 0);
     v31 = v36;
-    v30 = v37;
+    v30 = appCopy;
   }
 }
 
-- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)a3 writeToDirectory:(id)a4 sandboxExtensions:(id)a5 completion:(id)a6
+- (void)createNgramCountsArtifactFromPhraseCountArtifact:(id)artifact writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
+  artifactCopy = artifact;
+  directoryCopy = directory;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10003D574;
   v20[3] = &unk_100066888;
-  v12 = a6;
-  v21 = v12;
-  v13 = a5;
+  completionCopy = completion;
+  v21 = completionCopy;
+  extensionsCopy = extensions;
   v14 = objc_retainBlock(v20);
   v19 = 0;
-  v15 = [(LSRConnection *)self _consumeSandboxExtensions:v13 error:&v19];
+  v15 = [(LSRConnection *)self _consumeSandboxExtensions:extensionsCopy error:&v19];
 
   v16 = v19;
   v17 = SFLogConnection;
@@ -514,8 +514,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s Successfully consumed sandbox extensions", buf, 0xCu);
     }
 
-    v18 = [v11 URLByAppendingPathComponent:@"NgramCountsFile" isDirectory:0];
-    [(LSRLanguageModel *)self->_lsrLanguageModel createNgramCountsArtifactFromPhraseCountArtifact:v10 saveTo:v18];
+    v18 = [directoryCopy URLByAppendingPathComponent:@"NgramCountsFile" isDirectory:0];
+    [(LSRLanguageModel *)self->_lsrLanguageModel createNgramCountsArtifactFromPhraseCountArtifact:artifactCopy saveTo:v18];
     (v14[2])(v14, v18);
   }
 
@@ -534,22 +534,22 @@ LABEL_15:
   }
 }
 
-- (void)createPhraseCountsArtifactWithIdentifier:(id)a3 rawPhraseCountsPath:(id)a4 customPronunciationsPath:(id)a5 writeToDirectory:(id)a6 sandboxExtensions:(id)a7 completion:(id)a8
+- (void)createPhraseCountsArtifactWithIdentifier:(id)identifier rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath writeToDirectory:(id)directory sandboxExtensions:(id)extensions completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identifierCopy = identifier;
+  pathCopy = path;
+  pronunciationsPathCopy = pronunciationsPath;
+  directoryCopy = directory;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10003D800;
   v26[3] = &unk_100066888;
-  v18 = a8;
-  v27 = v18;
-  v19 = a7;
+  completionCopy = completion;
+  v27 = completionCopy;
+  extensionsCopy = extensions;
   v20 = objc_retainBlock(v26);
   v25 = 0;
-  v21 = [(LSRConnection *)self _consumeSandboxExtensions:v19 error:&v25];
+  v21 = [(LSRConnection *)self _consumeSandboxExtensions:extensionsCopy error:&v25];
 
   v22 = v25;
   v23 = SFLogConnection;
@@ -562,8 +562,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s Successfully consumed sandbox extensions", buf, 0xCu);
     }
 
-    v24 = [v17 URLByAppendingPathComponent:@"PhraseCountsFile" isDirectory:0];
-    [(LSRLanguageModel *)self->_lsrLanguageModel createPhraseCountArtifactWithIdentifier:v14 rawPhraseCountsPath:v15 customPronunciationsPath:v16 saveTo:v24];
+    v24 = [directoryCopy URLByAppendingPathComponent:@"PhraseCountsFile" isDirectory:0];
+    [(LSRLanguageModel *)self->_lsrLanguageModel createPhraseCountArtifactWithIdentifier:identifierCopy rawPhraseCountsPath:pathCopy customPronunciationsPath:pronunciationsPathCopy saveTo:v24];
     (v20[2])(v20, v24);
   }
 
@@ -582,27 +582,27 @@ LABEL_15:
   }
 }
 
-- (void)wakeUpWithCompletion:(id)a3
+- (void)wakeUpWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)trainAppLmFromNgramsSerializedData:(id)a3 customPronsData:(id)a4 language:(id)a5 writeToDirectory:(id)a6 sandboxExtension:(id)a7 completion:(id)a8
+- (void)trainAppLmFromNgramsSerializedData:(id)data customPronsData:(id)pronsData language:(id)language writeToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  dataCopy = data;
+  pronsDataCopy = pronsData;
+  languageCopy = language;
+  directoryCopy = directory;
+  extensionCopy = extension;
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_10003DDA8;
   v50[3] = &unk_100066860;
-  v19 = a8;
-  v51 = v19;
+  completionCopy = completion;
+  v51 = completionCopy;
   v20 = objc_retainBlock(v50);
   v21 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
@@ -614,8 +614,8 @@ LABEL_15:
 
   if (sub_10003DDC0())
   {
-    v45 = v15;
-    v56 = v18;
+    v45 = pronsDataCopy;
+    v56 = extensionCopy;
     v22 = [NSArray arrayWithObjects:&v56 count:1];
     v49 = 0;
     v23 = [(LSRConnection *)self _consumeSandboxExtensions:v22 error:&v49];
@@ -638,8 +638,8 @@ LABEL_15:
       goto LABEL_25;
     }
 
-    v41 = v16;
-    v43 = v14;
+    v41 = languageCopy;
+    v43 = dataCopy;
     if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 136315138;
@@ -647,16 +647,16 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s Successfully consumed sandbox extensions", buf, 0xCu);
     }
 
-    v25 = [v17 URLByAppendingPathComponent:@"app-lm"];
+    v25 = [directoryCopy URLByAppendingPathComponent:@"app-lm"];
     v26 = +[NSFileManager defaultManager];
-    v27 = [v25 path];
-    v28 = [v26 fileExistsAtPath:v27];
+    path = [v25 path];
+    v28 = [v26 fileExistsAtPath:path];
 
     v42 = v26;
     if (v28)
     {
       v40 = 0;
-      v16 = v41;
+      languageCopy = v41;
     }
 
     else
@@ -668,7 +668,7 @@ LABEL_15:
       if ((v38 & 1) == 0)
       {
         v36 = v40;
-        v16 = v41;
+        languageCopy = v41;
         if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
@@ -679,13 +679,13 @@ LABEL_15:
         }
 
         (v20[2])(v20, 0, 0);
-        v14 = v43;
+        dataCopy = v43;
         v34 = v44;
         v35 = v42;
         goto LABEL_24;
       }
 
-      v16 = v41;
+      languageCopy = v41;
       if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 136315138;
@@ -694,11 +694,11 @@ LABEL_15:
       }
     }
 
-    v29 = [v17 URLByAppendingPathComponent:@"SpeechProfile"];
+    v29 = [directoryCopy URLByAppendingPathComponent:@"SpeechProfile"];
     lsrLanguageModel = self->_lsrLanguageModel;
     v46 = v29;
     v47 = v25;
-    [(LSRLanguageModel *)lsrLanguageModel trainAppLmFromNgramsSerializedData:v43 customPronsData:v45 language:v16 writeToAppLmDir:&v47 vocabFile:&v46];
+    [(LSRLanguageModel *)lsrLanguageModel trainAppLmFromNgramsSerializedData:v43 customPronsData:v45 language:languageCopy writeToAppLmDir:&v47 vocabFile:&v46];
     v31 = v47;
 
     v32 = v46;
@@ -713,14 +713,14 @@ LABEL_15:
     (v20[2])(v20, v31, v32);
 
     v25 = v31;
-    v14 = v43;
+    dataCopy = v43;
     v34 = v44;
     v35 = v42;
     v36 = v40;
 LABEL_24:
 
 LABEL_25:
-    v15 = v45;
+    pronsDataCopy = v45;
 
     goto LABEL_26;
   }
@@ -737,63 +737,63 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)metricsWithCompletion:(id)a3
+- (void)metricsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
-    v5 = a3;
-    v6 = [(LSRLanguageModel *)lsrLanguageModel metrics];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    metrics = [(LSRLanguageModel *)lsrLanguageModel metrics];
+    (*(completion + 2))(completionCopy, metrics);
   }
 }
 
-- (void)lmeThresholdWithCompletion:(id)a3
+- (void)lmeThresholdWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
-    v5 = a3;
-    (*(a3 + 2))(v5, [(LSRLanguageModel *)lsrLanguageModel lmeThreshold]);
+    completionCopy = completion;
+    (*(completion + 2))(completionCopy, [(LSRLanguageModel *)lsrLanguageModel lmeThreshold]);
   }
 }
 
-- (void)deserializeNgramCountsData:(id)a3 completion:(id)a4
+- (void)deserializeNgramCountsData:(id)data completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
-    v7 = a4;
-    v8 = [(LSRLanguageModel *)lsrLanguageModel deserializeNgramCountsData:a3];
-    (*(a4 + 2))(v7, v8);
+    completionCopy = completion;
+    v8 = [(LSRLanguageModel *)lsrLanguageModel deserializeNgramCountsData:data];
+    (*(completion + 2))(completionCopy, v8);
   }
 }
 
-- (void)generateNgramCountsSerializeDataWithCompletion:(id)a3
+- (void)generateNgramCountsSerializeDataWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
-    v5 = a3;
-    v6 = [(LSRLanguageModel *)lsrLanguageModel ngramCountsSerializeData];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    ngramCountsSerializeData = [(LSRLanguageModel *)lsrLanguageModel ngramCountsSerializeData];
+    (*(completion + 2))(completionCopy, ngramCountsSerializeData);
   }
 }
 
-- (void)trainFromPlainTextAndWriteToDirectory:(id)a3 sandboxExtension:(id)a4 completion:(id)a5
+- (void)trainFromPlainTextAndWriteToDirectory:(id)directory sandboxExtension:(id)extension completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  directoryCopy = directory;
+  extensionCopy = extension;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10003E538;
   v33[3] = &unk_100066860;
-  v10 = a5;
-  v34 = v10;
+  completionCopy = completion;
+  v34 = completionCopy;
   v11 = objc_retainBlock(v33);
   if (sub_10003DDC0())
   {
-    v39 = v9;
+    v39 = extensionCopy;
     v12 = [NSArray arrayWithObjects:&v39 count:1];
     v32 = 0;
     v13 = [(LSRConnection *)self _consumeSandboxExtensions:v12 error:&v32];
@@ -822,10 +822,10 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Successfully consumed sandbox extensions", buf, 0xCu);
     }
 
-    v16 = [v8 URLByAppendingPathComponent:{@"app-lm", v14}];
+    v16 = [directoryCopy URLByAppendingPathComponent:{@"app-lm", v14}];
     v17 = +[NSFileManager defaultManager];
-    v18 = [v16 path];
-    v19 = [v17 fileExistsAtPath:v18];
+    path = [v16 path];
+    v19 = [v17 fileExistsAtPath:path];
 
     if (v19)
     {
@@ -861,7 +861,7 @@ LABEL_26:
       }
     }
 
-    v21 = [v8 URLByAppendingPathComponent:@"SpeechProfile"];
+    v21 = [directoryCopy URLByAppendingPathComponent:@"SpeechProfile"];
     lsrLanguageModel = self->_lsrLanguageModel;
     v29 = v21;
     v30 = v16;
@@ -891,26 +891,26 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)addProns:(id)a3 forWord:(id)a4 completion:(id)a5
+- (void)addProns:(id)prons forWord:(id)word completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     lsrLanguageModel = self->_lsrLanguageModel;
-    v9 = a5;
-    (*(a5 + 2))(v9, [(LSRLanguageModel *)lsrLanguageModel addProns:a3 forWord:a4]);
+    completionCopy = completion;
+    (*(completion + 2))(completionCopy, [(LSRLanguageModel *)lsrLanguageModel addProns:prons forWord:word]);
   }
 }
 
-- (void)oovWordsAndFrequenciesWithCompletion:(id)a3
+- (void)oovWordsAndFrequenciesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315138;
     v8 = "[LSRConnection oovWordsAndFrequenciesWithCompletion:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s oovs words and frequencies", &v7, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -918,27 +918,27 @@ LABEL_22:
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
-    v6 = [(LSRLanguageModel *)self->_lsrLanguageModel oovWordsAndFrequenciesInNgramCount];
-    v4[2](v4, v6);
+    oovWordsAndFrequenciesInNgramCount = [(LSRLanguageModel *)self->_lsrLanguageModel oovWordsAndFrequenciesInNgramCount];
+    completionCopy[2](completionCopy, oovWordsAndFrequenciesInNgramCount);
   }
 
 LABEL_4:
 }
 
-- (void)addSentenceToNgramCounts:(id)a3 completion:(id)a4
+- (void)addSentenceToNgramCounts:(id)counts completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  countsCopy = counts;
+  completionCopy = completion;
   v8 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
   {
     v10 = 136315138;
     v11 = "[LSRConnection addSentenceToNgramCounts:completion:]";
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Adding oovs from sentence", &v10, 0xCu);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -946,151 +946,151 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_3:
-    v9 = [(LSRLanguageModel *)self->_lsrLanguageModel oovsFromSentenceAddedToNgramCounts:v6];
-    v7[2](v7, v9);
+    v9 = [(LSRLanguageModel *)self->_lsrLanguageModel oovsFromSentenceAddedToNgramCounts:countsCopy];
+    completionCopy[2](completionCopy, v9);
   }
 
 LABEL_4:
 }
 
-- (void)addSentenceToNgramCounts:(id)a3
+- (void)addSentenceToNgramCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v5 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[LSRConnection addSentenceToNgramCounts:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = countsCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Adding sentence=%@", &v6, 0x16u);
   }
 
-  [(LSRLanguageModel *)self->_lsrLanguageModel addSentenceToNgramCounts:v4];
+  [(LSRLanguageModel *)self->_lsrLanguageModel addSentenceToNgramCounts:countsCopy];
 }
 
-- (void)initializeLmWithAssetPath:(id)a3 completion:(id)a4
+- (void)initializeLmWithAssetPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   v8 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003E974;
   block[3] = &unk_100066838;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = pathCopy;
+  v9 = pathCopy;
+  v10 = completionCopy;
   dispatch_async(v8, block);
 }
 
-- (void)initializeLmWithLocale:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)initializeLmWithLocale:(id)locale clientID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  localeCopy = locale;
+  dCopy = d;
+  completionCopy = completion;
   v11 = qword_100071428;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003ECB0;
   v15[3] = &unk_100066810;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = localeCopy;
+  selfCopy = self;
+  v18 = dCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = dCopy;
+  v14 = localeCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)setPurgeabilityForAssetWithConfig:(id)a3 purgeable:(BOOL)a4 clientID:(id)a5 completion:(id)a6
+- (void)setPurgeabilityForAssetWithConfig:(id)config purgeable:(BOOL)purgeable clientID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a6;
+  configCopy = config;
+  completionCopy = completion;
   v10 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003EF2C;
   block[3] = &unk_1000667E8;
-  v16 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  purgeableCopy = purgeable;
+  v14 = configCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = configCopy;
   dispatch_async(v10, block);
 }
 
-- (void)configParametersForVoicemailWithLanguage:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)configParametersForVoicemailWithLanguage:(id)language clientID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  languageCopy = language;
+  dCopy = d;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10003F0A4;
   v21[3] = &unk_100066798;
-  v9 = a5;
-  v22 = v9;
+  completionCopy = completion;
+  v22 = completionCopy;
   v10 = objc_retainBlock(v21);
   v11 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F0BC;
   block[3] = &unk_1000667C0;
-  v17 = v7;
-  v18 = v8;
-  v19 = v9;
+  v17 = languageCopy;
+  v18 = dCopy;
+  v19 = completionCopy;
   v20 = v10;
   v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v7;
+  v13 = completionCopy;
+  v14 = dCopy;
+  v15 = languageCopy;
   dispatch_async(v11, block);
 }
 
-- (void)fetchAssetsForLanguage:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)fetchAssetsForLanguage:(id)language clientID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  languageCopy = language;
+  dCopy = d;
+  completionCopy = completion;
   v10 = qword_100071428;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003F450;
   block[3] = &unk_100066838;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = languageCopy;
+  v16 = dCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
+  v13 = languageCopy;
   dispatch_async(v10, block);
 }
 
-- (void)downloadAssetsForConfig:(id)a3 clientID:(id)a4 expiration:(id)a5 detailedProgress:(BOOL)a6
+- (void)downloadAssetsForConfig:(id)config clientID:(id)d expiration:(id)expiration detailedProgress:(BOOL)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 language];
+  configCopy = config;
+  dCopy = d;
+  expirationCopy = expiration;
+  language = [configCopy language];
 
-  if (v13)
+  if (language)
   {
     v14 = qword_100071428;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10003F788;
     block[3] = &unk_100066770;
-    v20 = v10;
-    v21 = self;
-    v22 = v11;
-    v23 = v12;
-    v24 = a6;
+    v20 = configCopy;
+    selfCopy = self;
+    v22 = dCopy;
+    v23 = expirationCopy;
+    progressCopy = progress;
     dispatch_async(v14, block);
 
     v15 = v20;
@@ -1119,45 +1119,45 @@ LABEL_4:
   }
 }
 
-- (void)installedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4
+- (void)installedLanguagesForAssetType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 3)
+    if ((type & 0xFFFFFFFFFFFFFFFBLL) != 3)
     {
       v9 = qword_100071428;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100040B78;
       block[3] = &unk_100066578;
-      v16 = a3;
-      v15 = v6;
+      typeCopy = type;
+      v15 = completionCopy;
       dispatch_async(v9, block);
-      v10 = v15;
+      statusForLanguage = v15;
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v8 = 208;
     }
 
     else
     {
-      if (a3 != 7)
+      if (type != 7)
       {
-        v10 = 0;
+        statusForLanguage = 0;
         goto LABEL_10;
       }
 
       v8 = 216;
     }
 
-    v10 = [*(&self->super.isa + v8) statusForLanguage];
+    statusForLanguage = [*(&self->super.isa + v8) statusForLanguage];
 LABEL_10:
     v11 = SFEntitledAssetTypeToString();
     v18 = 0;
@@ -1171,7 +1171,7 @@ LABEL_10:
     v17[2] = sub_100040B10;
     v17[3] = &unk_100066550;
     v17[4] = &v18;
-    [v10 enumerateKeysAndObjectsUsingBlock:v17];
+    [statusForLanguage enumerateKeysAndObjectsUsingBlock:v17];
     v12 = SFLogConnection;
     if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
     {
@@ -1194,107 +1194,107 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)installationStateForAssetConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)installationStateForAssetConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
+    completionCopy = completion;
+    dCopy = d;
+    configCopy = config;
     v10 = +[SFEntitledAssetManager sharedInstance];
-    [v10 installationStateForAssetConfig:v9 subscriberId:v8 completionHandler:v7];
+    [v10 installationStateForAssetConfig:configCopy subscriberId:dCopy completionHandler:completionCopy];
   }
 }
 
-- (void)supportedLanguagesForAssetType:(unint64_t)a3 completion:(id)a4
+- (void)supportedLanguagesForAssetType:(unint64_t)type completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v6 = a4;
-    v7 = [SFEntitledAssetManager supportedLanguagesForAssetType:a3];
-    (*(a4 + 2))(v6, v7);
+    completionCopy = completion;
+    v7 = [SFEntitledAssetManager supportedLanguagesForAssetType:type];
+    (*(completion + 2))(completionCopy, v7);
   }
 }
 
-- (void)versionOfAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)versionOfAssetWithConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v7 = a5;
-    v8 = a3;
+    completionCopy = completion;
+    configCopy = config;
     v10 = +[SFEntitledAssetManager sharedInstance];
-    v9 = [v10 assetVersionForConfig:v8];
+    v9 = [v10 assetVersionForConfig:configCopy];
 
-    (*(a5 + 2))(v7, v9);
+    (*(completion + 2))(completionCopy, v9);
   }
 }
 
-- (void)pathToAssetWithConfig:(id)a3 clientID:(id)a4 completion:(id)a5
+- (void)pathToAssetWithConfig:(id)config clientID:(id)d completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v7 = a5;
-    v8 = a3;
+    completionCopy = completion;
+    configCopy = config;
     v10 = +[SFEntitledAssetManager sharedInstance];
-    v9 = [v10 installedAssetWithConfig:v8];
+    v9 = [v10 installedAssetWithConfig:configCopy];
 
-    (*(a5 + 2))(v7, v9);
+    (*(completion + 2))(completionCopy, v9);
   }
 }
 
-- (void)reportFailureWithError:(id)a3
+- (void)reportFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = SFAnalyticsEventTypeGetName();
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   AnalyticsSendEventLazy();
 
   v7 = [(LSRConnection *)self _delegate:_NSConcreteStackBlock];
   [v7 localSpeechRecognitionDidFail:v6];
 }
 
-- (void)cleanupCacheWithCompletion:(id)a3
+- (void)cleanupCacheWithCompletion:(id)completion
 {
-  v3 = a3;
-  v5 = v3;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (qword_100071480)
   {
     v4 = [qword_100071480 isEqualToString:kSFSpeechRecognizerTaskCaptioning];
-    v3 = v5;
+    completionCopy = v5;
     if (v4)
     {
       +[LSRConnection _cachedRecognizerCleanUp];
-      v3 = v5;
+      completionCopy = v5;
     }
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 
   _objc_release_x1();
 }
 
-- (void)logCoreAnalyticsEvent:(id)a3 withAnalytics:(id)a4
+- (void)logCoreAnalyticsEvent:(id)event withAnalytics:(id)analytics
 {
-  v5 = a4;
-  v4 = v5;
+  analyticsCopy = analytics;
+  v4 = analyticsCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)initializeWithSandboxExtensions:(id)a3
+- (void)initializeWithSandboxExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   v5 = qword_100071428;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041248;
   v7[3] = &unk_1000664B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = extensionsCopy;
+  v6 = extensionsCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1306,7 +1306,7 @@ LABEL_14:
     *buf = 136315394;
     v6 = "[LSRConnection cancelSpeech]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s cancelSpeech - %p", buf, 0x16u);
   }
 
@@ -1326,7 +1326,7 @@ LABEL_14:
     *buf = 136315394;
     v6 = "[LSRConnection stopSpeech]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s stopSpeech - %p", buf, 0x16u);
   }
 
@@ -1338,13 +1338,13 @@ LABEL_14:
   dispatch_async(qword_100071428, block);
 }
 
-- (void)updateAudioDuration:(id)a3
+- (void)updateAudioDuration:(id)duration
 {
   v4 = qword_100071428;
-  v5 = a3;
+  durationCopy = duration;
   dispatch_assert_queue_V2(v4);
   LODWORD(v4) = [(SFRequestParameters *)self->_requestParameters narrowband];
-  v6 = [v5 length];
+  v6 = [durationCopy length];
 
   v7 = 16000.0;
   if (v4)
@@ -1355,23 +1355,23 @@ LABEL_14:
   self->_audioDuration = self->_audioDuration + (v6 >> 1) / v7;
 }
 
-- (void)addAudioPacket:(id)a3
+- (void)addAudioPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   v5 = qword_100071428;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100041874;
   v7[3] = &unk_1000664B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = packetCopy;
+  selfCopy = self;
+  v6 = packetCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)startRecordedAudioDictationWithParameters:(id)a3
+- (void)startRecordedAudioDictationWithParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = SFLogConnection;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1386,7 +1386,7 @@ LABEL_14:
   *&self->_firstAudioPacketTime = 0u;
   *&self->_silStartFirstToken = 0u;
   self->_asrInitializationTime = 0.0;
-  v7 = [v5 onDeviceOnly];
+  onDeviceOnly = [parametersCopy onDeviceOnly];
   v8 = +[NSXPCConnection currentConnection];
   v9 = v8;
   if (!v8)
@@ -1408,7 +1408,7 @@ LABEL_14:
   v10 = [v8 valueForEntitlement:@"com.apple.assistant.dictation.prerecorded"];
   if (objc_opt_respondsToSelector())
   {
-    if ((([v10 BOOLValue] | v7 ^ 1) & 1) == 0)
+    if ((([v10 BOOLValue] | onDeviceOnly ^ 1) & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -1419,7 +1419,7 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!onDeviceOnly)
   {
     goto LABEL_13;
   }
@@ -1466,19 +1466,19 @@ LABEL_16:
     }
 
     v23 = +[NSBundle mainBundle];
-    v24 = [v23 bundleIdentifier];
+    bundleIdentifier = [v23 bundleIdentifier];
 
     v25 = kSFSpeechRecognizerDumpedTaskIdentifierKey;
-    if (CFPreferencesAppValueIsForced(kSFSpeechRecognizerDumpedTaskIdentifierKey, v24) || SFIsInternalInstall())
+    if (CFPreferencesAppValueIsForced(kSFSpeechRecognizerDumpedTaskIdentifierKey, bundleIdentifier) || SFIsInternalInstall())
     {
-      v26 = [v5 taskIdentifier];
-      v27 = v26 == 0;
+      taskIdentifier = [parametersCopy taskIdentifier];
+      v27 = taskIdentifier == 0;
 
       if (!v27)
       {
-        v28 = [v5 applicationName];
-        v29 = [v5 taskIdentifier];
-        v30 = [NSString stringWithFormat:@"%@.%@", v28, v29];
+        applicationName = [parametersCopy applicationName];
+        taskIdentifier2 = [parametersCopy taskIdentifier];
+        v30 = [NSString stringWithFormat:@"%@.%@", applicationName, taskIdentifier2];
 
         v31 = +[NSUserDefaults standardUserDefaults];
         v32 = [v31 stringForKey:v25];
@@ -1490,20 +1490,20 @@ LABEL_16:
           v35 = SFLogConnection;
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            v36 = [v5 requestIdentifier];
-            v37 = [v5 taskIdentifier];
+            requestIdentifier = [parametersCopy requestIdentifier];
+            taskIdentifier3 = [parametersCopy taskIdentifier];
             *buf = 136315650;
             *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
             *&buf[12] = 2112;
-            *&buf[14] = v36;
+            *&buf[14] = requestIdentifier;
             *&buf[22] = 2112;
-            v225 = v37;
+            v225 = taskIdentifier3;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "%s Audio dumps will be enabled for request: %@ with taskIdentifier: %@", buf, 0x20u);
           }
 
           v38 = [LSRAudioDump alloc];
-          v39 = [v5 taskIdentifier];
-          v40 = [(LSRAudioDump *)v38 initWithTaskIdentifier:v39];
+          taskIdentifier4 = [parametersCopy taskIdentifier];
+          v40 = [(LSRAudioDump *)v38 initWithTaskIdentifier:taskIdentifier4];
           audioDump = self->_audioDump;
           self->_audioDump = v40;
 
@@ -1552,9 +1552,9 @@ LABEL_16:
     [v46 systemUptime];
     v48 = v47;
 
-    objc_storeStrong(&self->_requestParameters, a3);
-    v49 = [v5 task];
-    v50 = v49 == 0;
+    objc_storeStrong(&self->_requestParameters, parameters);
+    task = [parametersCopy task];
+    v50 = task == 0;
 
     if (v50)
     {
@@ -1575,13 +1575,13 @@ LABEL_16:
       goto LABEL_134;
     }
 
-    v51 = [v5 language];
-    v52 = [v5 recognitionOverrides];
-    v53 = [v5 modelOverrideURL];
-    v54 = [v5 task];
-    v55 = [v5 clientIdentifier];
+    language = [parametersCopy language];
+    recognitionOverrides = [parametersCopy recognitionOverrides];
+    modelOverrideURL = [parametersCopy modelOverrideURL];
+    task2 = [parametersCopy task];
+    clientIdentifier = [parametersCopy clientIdentifier];
     v213 = 0;
-    v56 = [(LSRConnection *)self prepareRecognizerWithLanguage:v51 recognitionOverrides:v52 modelOverrideURL:v53 anyConfiguration:0 task:v54 clientID:v55 error:&v213];
+    v56 = [(LSRConnection *)self prepareRecognizerWithLanguage:language recognitionOverrides:recognitionOverrides modelOverrideURL:modelOverrideURL anyConfiguration:0 task:task2 clientID:clientIdentifier error:&v213];
     v57 = v213;
 
     if ((v56 & 1) == 0)
@@ -1592,8 +1592,8 @@ LABEL_134:
       goto LABEL_24;
     }
 
-    v58 = [(SFRequestParameters *)self->_requestParameters task];
-    SetQuasarLoggingLevel(v58);
+    task3 = [(SFRequestParameters *)self->_requestParameters task];
+    SetQuasarLoggingLevel(task3);
 
     v59 = +[NSProcessInfo processInfo];
     [v59 systemUptime];
@@ -1609,20 +1609,20 @@ LABEL_134:
     v63 = objc_loadWeakRetained(&self->_recognizer);
     [v63 setDisableAutoPunctuation:{-[SFRequestParameters enableAutoPunctuation](self->_requestParameters, "enableAutoPunctuation") ^ 1}];
 
-    v64 = [(SFRequestParameters *)self->_requestParameters narrowband];
+    narrowband = [(SFRequestParameters *)self->_requestParameters narrowband];
     v65 = 16000;
-    if (v64)
+    if (narrowband)
     {
       v65 = 8000;
     }
 
     v195 = v65;
     v66 = qword_100071478;
-    v67 = [v5 task];
+    task4 = [parametersCopy task];
     v68 = v66;
-    v69 = v67;
-    v70 = [v68 tasks];
-    if ([v70 containsObject:v69])
+    v69 = task4;
+    tasks = [v68 tasks];
+    if ([tasks containsObject:v69])
     {
       v199 = v69;
       v71 = v57;
@@ -1632,8 +1632,8 @@ LABEL_134:
     {
       v75 = [NSBundle bundleForClass:objc_opt_class()];
       v76 = [v75 localizedStringForKey:@"Task %@ not available for %@ value:supported tasks are %@" table:{&stru_100066A98, @"Localizable"}];
-      v77 = [v68 language];
-      v200 = [NSString localizedStringWithFormat:v76, v69, v77, v70];
+      language2 = [v68 language];
+      v200 = [NSString localizedStringWithFormat:v76, v69, language2, tasks];
 
       *v219 = NSLocalizedFailureReasonErrorKey;
       *buf = v200;
@@ -1674,8 +1674,8 @@ LABEL_133:
       goto LABEL_134;
     }
 
-    v80 = [(SFRequestParameters *)self->_requestParameters inlineItemList];
-    if (!v80 || (-[SFRequestParameters inlineItemList](self->_requestParameters, "inlineItemList"), v81 = objc_claimAutoreleasedReturnValue(), v82 = [v81 count] == 0, v81, v80, v82))
+    inlineItemList = [(SFRequestParameters *)self->_requestParameters inlineItemList];
+    if (!inlineItemList || (-[SFRequestParameters inlineItemList](self->_requestParameters, "inlineItemList"), v81 = objc_claimAutoreleasedReturnValue(), v82 = [v81 count] == 0, v81, inlineItemList, v82))
     {
       v90 = objc_loadWeakRetained(&self->_recognizer);
       [v90 setJitProfileData:0];
@@ -1690,8 +1690,8 @@ LABEL_133:
       v86 = SFLogConnection;
       if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
       {
-        v87 = [(SFRequestParameters *)self->_requestParameters inlineItemList];
-        v88 = [v87 count];
+        inlineItemList2 = [(SFRequestParameters *)self->_requestParameters inlineItemList];
+        v88 = [inlineItemList2 count];
         *buf = 136315394;
         *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
         *&buf[12] = 2048;
@@ -1699,13 +1699,13 @@ LABEL_133:
         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "%s Inline LME input size=%zu", buf, 0x16u);
       }
 
-      v89 = [(SFRequestParameters *)self->_requestParameters language];
-      v90 = [LSRConnection _jitProfileWithLanguage:v89 modelRoot:self->_modelRoot];
+      language3 = [(SFRequestParameters *)self->_requestParameters language];
+      v90 = [LSRConnection _jitProfileWithLanguage:language3 modelRoot:self->_modelRoot];
 
       if (v90)
       {
-        v91 = [(SFRequestParameters *)self->_requestParameters inlineItemList];
-        v92 = [v90 jitProfileFromContextualStrings:v91];
+        inlineItemList3 = [(SFRequestParameters *)self->_requestParameters inlineItemList];
+        v92 = [v90 jitProfileFromContextualStrings:inlineItemList3];
 
         if (!v92)
         {
@@ -1748,57 +1748,57 @@ LABEL_133:
       self->_jitLmeProcessingTime = v101 - v85;
     }
 
-    v102 = [(SFRequestParameters *)self->_requestParameters language];
+    language4 = [(SFRequestParameters *)self->_requestParameters language];
     v103 = qword_100071450;
-    qword_100071450 = v102;
+    qword_100071450 = language4;
 
     objc_storeStrong(&qword_100071460, self->_modelRoot);
-    v104 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
+    dynamicLanguageModel = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
 
-    if (v104)
+    if (dynamicLanguageModel)
     {
-      v105 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
-      v106 = [v105 path];
-      v107 = [_EARArtifact isValid:v106];
+      dynamicLanguageModel2 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
+      path = [dynamicLanguageModel2 path];
+      v107 = [_EARArtifact isValid:path];
 
       if (v107)
       {
         v108 = [_EARAppLmArtifact alloc];
-        v109 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
-        v110 = [v109 path];
-        v201 = [v108 initWithPath:v110];
+        dynamicLanguageModel3 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
+        path2 = [dynamicLanguageModel3 path];
+        v201 = [v108 initWithPath:path2];
 
         if (v201)
         {
           v111 = objc_loadWeakRetained(&self->_recognizer);
-          v112 = [v111 modelInfo];
-          v113 = [v112 version];
+          modelInfo = [v111 modelInfo];
+          version = [modelInfo version];
           v114 = objc_loadWeakRetained(&self->_recognizer);
-          v115 = [v114 modelInfo];
-          v116 = [v115 language];
-          v117 = [v201 isAdaptableToSpeechModelVersion:v113 locale:v116];
+          modelInfo2 = [v114 modelInfo];
+          language5 = [modelInfo2 language];
+          v117 = [v201 isAdaptableToSpeechModelVersion:version locale:language5];
 
           if (v117)
           {
-            v118 = [v201 loadLmHandle];
+            loadLmHandle = [v201 loadLmHandle];
             v119 = SFLogConnection;
             v120 = os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_INFO);
-            if (v118)
+            if (loadLmHandle)
             {
               if (v120)
               {
                 requestParameters = self->_requestParameters;
                 v122 = v119;
-                v123 = [(SFRequestParameters *)requestParameters dynamicLanguageModel];
-                v124 = [v123 path];
+                dynamicLanguageModel4 = [(SFRequestParameters *)requestParameters dynamicLanguageModel];
+                path3 = [dynamicLanguageModel4 path];
                 *buf = 136315394;
                 *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
                 *&buf[12] = 2112;
-                *&buf[14] = v124;
+                *&buf[14] = path3;
                 _os_log_impl(&_mh_execute_header, v122, OS_LOG_TYPE_INFO, "%s Loaded Dynamic LM: %@", buf, 0x16u);
               }
 
-              v228 = v118;
+              v228 = loadLmHandle;
               v198 = [NSArray arrayWithObjects:&v228 count:1];
             }
 
@@ -1822,12 +1822,12 @@ LABEL_133:
           {
             v131 = self->_requestParameters;
             v132 = v130;
-            v133 = [(SFRequestParameters *)v131 dynamicLanguageModel];
-            v134 = [v133 path];
+            dynamicLanguageModel5 = [(SFRequestParameters *)v131 dynamicLanguageModel];
+            path4 = [dynamicLanguageModel5 path];
             *buf = 136315394;
             *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
             *&buf[12] = 2112;
-            *&buf[14] = v134;
+            *&buf[14] = path4;
             _os_log_impl(&_mh_execute_header, v132, OS_LOG_TYPE_INFO, "%s Dynamic LM at %@ was out of sync with current asset", buf, 0x16u);
           }
         }
@@ -1843,12 +1843,12 @@ LABEL_91:
       {
         v126 = self->_requestParameters;
         v127 = v125;
-        v128 = [(SFRequestParameters *)v126 dynamicLanguageModel];
-        v129 = [v128 path];
+        dynamicLanguageModel6 = [(SFRequestParameters *)v126 dynamicLanguageModel];
+        path5 = [dynamicLanguageModel6 path];
         *buf = 136315394;
         *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
         *&buf[12] = 2112;
-        *&buf[14] = v129;
+        *&buf[14] = path5;
         _os_log_impl(&_mh_execute_header, v127, OS_LOG_TYPE_INFO, "%s Dynamic LM at %@ was not valid", buf, 0x16u);
       }
     }
@@ -1858,13 +1858,13 @@ LABEL_92:
     v135 = objc_loadWeakRetained(&self->_recognizer);
     [v135 setExtraLmList:v198];
 
-    v136 = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
+    dynamicVocabulary = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
 
-    if (v136)
+    if (dynamicVocabulary)
     {
-      v137 = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
-      v138 = [v137 path];
-      v139 = [NSData dataWithContentsOfFile:v138];
+      dynamicVocabulary2 = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
+      path6 = [dynamicVocabulary2 path];
+      v139 = [NSData dataWithContentsOfFile:path6];
 
       if (v139)
       {
@@ -1873,12 +1873,12 @@ LABEL_92:
         {
           v141 = self->_requestParameters;
           v142 = v140;
-          v143 = [(SFRequestParameters *)v141 dynamicVocabulary];
-          v144 = [v143 path];
+          dynamicVocabulary3 = [(SFRequestParameters *)v141 dynamicVocabulary];
+          path7 = [dynamicVocabulary3 path];
           *buf = 136315394;
           *&buf[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
           *&buf[12] = 2112;
-          *&buf[14] = v144;
+          *&buf[14] = path7;
           _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_INFO, "%s Loaded Dynamic Vocab: %@", buf, 0x16u);
         }
 
@@ -1906,10 +1906,10 @@ LABEL_92:
     v212[4] = self;
     v212[5] = buf;
     v193 = objc_retainBlock(v212);
-    v146 = [(SFRequestParameters *)self->_requestParameters task];
-    v147 = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
-    v148 = v146;
-    v149 = v147;
+    task5 = [(SFRequestParameters *)self->_requestParameters task];
+    taskIdentifier5 = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
+    v148 = task5;
+    v149 = taskIdentifier5;
     if ([v148 isEqualToString:kSFSpeechRecognizerTaskCaptioning] && (objc_msgSend(v149, "isEqualToString:", kSFSpeechRecognizerTaskIdentifierCallScreening) & 1) != 0 || (objc_msgSend(v148, "isEqualToString:", kSFSpeechRecognizerTaskVoiceMail) & 1) != 0)
     {
       v150 = 1;
@@ -1964,47 +1964,47 @@ LABEL_92:
     }
 
     v157 = objc_loadWeakRetained(&self->_recognizer);
-    v196 = [v157 activeConfiguration];
+    activeConfiguration = [v157 activeConfiguration];
 
-    v202 = [v196 copy];
-    v158 = [v202 farFieldFilter];
-    LOBYTE(v157) = v158 == 0;
+    v202 = [activeConfiguration copy];
+    farFieldFilter = [v202 farFieldFilter];
+    LOBYTE(v157) = farFieldFilter == 0;
 
     if ((v157 & 1) == 0)
     {
-      v159 = [v202 farFieldFilter];
-      v160 = [v159 setByAddingObject:&__kCFBooleanFalse];
+      farFieldFilter2 = [v202 farFieldFilter];
+      v160 = [farFieldFilter2 setByAddingObject:&__kCFBooleanFalse];
       [v202 setFarFieldFilter:v160];
     }
 
-    v161 = [v202 samplingRateFilter];
-    v162 = v161 == 0;
+    samplingRateFilter = [v202 samplingRateFilter];
+    v162 = samplingRateFilter == 0;
 
     if (!v162)
     {
-      v163 = [v202 samplingRateFilter];
+      samplingRateFilter2 = [v202 samplingRateFilter];
       v164 = [NSNumber numberWithUnsignedInteger:v195];
-      v165 = [v163 setByAddingObject:v164];
+      v165 = [samplingRateFilter2 setByAddingObject:v164];
       [v202 setSamplingRateFilter:v165];
     }
 
-    v166 = [v202 taskTypeFilter];
-    v167 = v166 == 0;
+    taskTypeFilter = [v202 taskTypeFilter];
+    v167 = taskTypeFilter == 0;
 
     if (!v167)
     {
-      v168 = [v202 taskTypeFilter];
-      v169 = [v168 setByAddingObject:v199];
+      taskTypeFilter2 = [v202 taskTypeFilter];
+      v169 = [taskTypeFilter2 setByAddingObject:v199];
       [v202 setTaskTypeFilter:v169];
     }
 
-    v170 = [v202 atypicalSpeechFilter];
-    v171 = v170 == 0;
+    atypicalSpeechFilter = [v202 atypicalSpeechFilter];
+    v171 = atypicalSpeechFilter == 0;
 
     if (!v171)
     {
-      v172 = [v202 atypicalSpeechFilter];
-      v173 = [v172 setByAddingObject:&__kCFBooleanFalse];
+      atypicalSpeechFilter2 = [v202 atypicalSpeechFilter];
+      v173 = [atypicalSpeechFilter2 setByAddingObject:&__kCFBooleanFalse];
       [v202 setAtypicalSpeechFilter:v173];
     }
 
@@ -2012,7 +2012,7 @@ LABEL_92:
     v174 = SFLogConnection;
     if (os_log_type_enabled(v174, OS_LOG_TYPE_INFO))
     {
-      v175 = sub_1000436D8(v196);
+      v175 = sub_1000436D8(activeConfiguration);
       v176 = sub_1000436D8(v202);
       *v219 = 136315650;
       *&v219[4] = "[LSRConnection startRecordedAudioDictationWithParameters:]";
@@ -2027,8 +2027,8 @@ LABEL_92:
     [v177 setActiveConfiguration:v202];
 
     v178 = objc_loadWeakRetained(&self->_recognizer);
-    v179 = [(SFRequestParameters *)self->_requestParameters language];
-    v180 = [v178 runRecognitionWithResultStream:self language:v179 task:v199 samplingRate:v195];
+    language6 = [(SFRequestParameters *)self->_requestParameters language];
+    v180 = [v178 runRecognitionWithResultStream:self language:language6 task:v199 samplingRate:v195];
     audioBuffer = self->_audioBuffer;
     self->_audioBuffer = v180;
 
@@ -2042,7 +2042,7 @@ LABEL_92:
     v208 = 3221225472;
     v209 = sub_1000437D4;
     v210 = &unk_100066490;
-    v211 = self;
+    selfCopy = self;
     AnalyticsSendEventLazy();
 
     v205 = 0u;
@@ -2105,14 +2105,14 @@ LABEL_21:
 LABEL_24:
 }
 
-- (void)preloadRecognizerForLanguage:(id)a3 task:(id)a4 clientID:(id)a5 recognitionOverrides:(id)a6 modelOverrideURL:(id)a7 completion:(id)a8
+- (void)preloadRecognizerForLanguage:(id)language task:(id)task clientID:(id)d recognitionOverrides:(id)overrides modelOverrideURL:(id)l completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v19 = 0;
-  LOBYTE(a6) = [(LSRConnection *)self prepareRecognizerWithLanguage:a3 recognitionOverrides:a6 modelOverrideURL:a7 anyConfiguration:1 task:a4 clientID:a5 error:&v19];
+  LOBYTE(overrides) = [(LSRConnection *)self prepareRecognizerWithLanguage:language recognitionOverrides:overrides modelOverrideURL:l anyConfiguration:1 task:task clientID:d error:&v19];
   v15 = v19;
   v16 = 0;
-  if ((a6 & 1) == 0)
+  if ((overrides & 1) == 0)
   {
     v17 = SFLogConnection;
     v18 = os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_ERROR);
@@ -2128,7 +2128,7 @@ LABEL_24:
     }
   }
 
-  (v14)[2](v14, v16);
+  (completionCopy)[2](completionCopy, v16);
 }
 
 - (id)_requestContext
@@ -2138,34 +2138,34 @@ LABEL_24:
   {
     requestParameters = self->_requestParameters;
     v5 = v3;
-    v6 = [(SFRequestParameters *)requestParameters language];
-    v7 = [(SFRequestParameters *)self->_requestParameters task];
-    v8 = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
-    v9 = [(SFRequestParameters *)self->_requestParameters narrowband];
-    v10 = [(SFRequestParameters *)self->_requestParameters applicationName];
-    v11 = [(SFRequestParameters *)self->_requestParameters enableAutoPunctuation];
+    language = [(SFRequestParameters *)requestParameters language];
+    task = [(SFRequestParameters *)self->_requestParameters task];
+    taskIdentifier = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
+    narrowband = [(SFRequestParameters *)self->_requestParameters narrowband];
+    applicationName = [(SFRequestParameters *)self->_requestParameters applicationName];
+    enableAutoPunctuation = [(SFRequestParameters *)self->_requestParameters enableAutoPunctuation];
     *buf = 136316674;
     v34 = "[LSRConnection _requestContext]";
     v35 = 2112;
-    v36 = v6;
+    v36 = language;
     v37 = 2112;
-    v38 = v7;
+    v38 = task;
     v39 = 2112;
-    v40 = v8;
+    v40 = taskIdentifier;
     v41 = 1024;
-    v42 = v9;
+    v42 = narrowband;
     v43 = 2112;
-    v44 = v10;
+    v44 = applicationName;
     v45 = 1024;
-    v46 = v11;
+    v46 = enableAutoPunctuation;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s RequestContext: language:%@ task:%@ taskIdentifier:%@ narrowband:%d appname:%@ enableAutoPunctuation:%d", buf, 0x40u);
   }
 
-  v12 = [(SFRequestParameters *)self->_requestParameters language];
-  v13 = v12;
-  if (v12)
+  language2 = [(SFRequestParameters *)self->_requestParameters language];
+  v13 = language2;
+  if (language2)
   {
-    v14 = v12;
+    v14 = language2;
   }
 
   else
@@ -2175,11 +2175,11 @@ LABEL_24:
 
   v32[0] = v14;
   v31[1] = kSFCoreAnalyticsTaskKey;
-  v15 = [(SFRequestParameters *)self->_requestParameters task];
-  v16 = v15;
-  if (v15)
+  task2 = [(SFRequestParameters *)self->_requestParameters task];
+  v16 = task2;
+  if (task2)
   {
-    v17 = v15;
+    v17 = task2;
   }
 
   else
@@ -2189,11 +2189,11 @@ LABEL_24:
 
   v32[1] = v17;
   v31[2] = kSFCoreAnalyticsTaskIdentifierKey;
-  v18 = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
-  v19 = v18;
-  if (v18)
+  taskIdentifier2 = [(SFRequestParameters *)self->_requestParameters taskIdentifier];
+  v19 = taskIdentifier2;
+  if (taskIdentifier2)
   {
-    v20 = v18;
+    v20 = taskIdentifier2;
   }
 
   else
@@ -2206,11 +2206,11 @@ LABEL_24:
   v21 = [NSNumber numberWithBool:[(SFRequestParameters *)self->_requestParameters narrowband]];
   v32[3] = v21;
   v31[4] = kSFCoreAnalyticsAppnameKey;
-  v22 = [(SFRequestParameters *)self->_requestParameters applicationName];
-  v23 = v22;
-  if (v22)
+  applicationName2 = [(SFRequestParameters *)self->_requestParameters applicationName];
+  v23 = applicationName2;
+  if (applicationName2)
   {
-    v24 = v22;
+    v24 = applicationName2;
   }
 
   else
@@ -2222,12 +2222,12 @@ LABEL_24:
   v32[5] = &__kCFBooleanTrue;
   v31[5] = kSFCoreAnalyticsOndeviceKey;
   v31[6] = kSFCoreAnalyticsUsesCustomLmKey;
-  v25 = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
-  v26 = [NSNumber numberWithInt:v25 != 0];
+  dynamicLanguageModel = [(SFRequestParameters *)self->_requestParameters dynamicLanguageModel];
+  v26 = [NSNumber numberWithInt:dynamicLanguageModel != 0];
   v32[6] = v26;
   v31[7] = kSFCoreAnalyticsUsesCustomVocabKey;
-  v27 = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
-  v28 = [NSNumber numberWithInt:v27 != 0];
+  dynamicVocabulary = [(SFRequestParameters *)self->_requestParameters dynamicVocabulary];
+  v28 = [NSNumber numberWithInt:dynamicVocabulary != 0];
   v31[8] = kSFCoreAnalyticsAPIVersionKey;
   v32[7] = v28;
   v32[8] = &off_100067438;
@@ -2236,9 +2236,9 @@ LABEL_24:
   return v29;
 }
 
-- (BOOL)_callerHasWritePriviledge:(id)a3
+- (BOOL)_callerHasWritePriviledge:(id)priviledge
 {
-  v4 = a3;
+  priviledgeCopy = priviledge;
   [(LSRConnection *)self _auditToken];
   v5 = sandbox_check_by_audit_token();
   v6 = SFLogConnection;
@@ -2250,7 +2250,7 @@ LABEL_24:
       *buf = 136315394;
       v11 = "[LSRConnection _callerHasWritePriviledge:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = priviledgeCopy;
       v8 = "%s Caller does not have write priviledges for: %@";
 LABEL_7:
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, v8, buf, 0x16u);
@@ -2262,7 +2262,7 @@ LABEL_7:
     *buf = 136315394;
     v11 = "[LSRConnection _callerHasWritePriviledge:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = priviledgeCopy;
     v8 = "%s Caller has write priviledges for: %@";
     goto LABEL_7;
   }
@@ -2283,16 +2283,16 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_consumeSandboxExtensions:(id)a3 error:(id *)a4
+- (BOOL)_consumeSandboxExtensions:(id)extensions error:(id *)error
 {
-  v6 = a3;
+  extensionsCopy = extensions;
   v7 = SFLogConnection;
   if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v33 = "[LSRConnection _consumeSandboxExtensions:error:]";
     v34 = 2112;
-    v35 = v6;
+    v35 = extensionsCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Consuming sandbox extensions: %@", buf, 0x16u);
   }
 
@@ -2300,7 +2300,7 @@ LABEL_7:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = extensionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (!v9)
   {
@@ -2334,13 +2334,13 @@ LABEL_7:
           v35 = v24;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s Error consuming sandbox extension: %s", buf, 0x16u);
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_15;
           }
         }
 
-        else if (!a4)
+        else if (!error)
         {
           goto LABEL_15;
         }
@@ -2353,9 +2353,9 @@ LABEL_7:
         v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
         v30[1] = v19;
         v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
-        *a4 = [NSError errorWithDomain:@"kLSRErrorDomain" code:1 userInfo:v20];
+        *error = [NSError errorWithDomain:@"kLSRErrorDomain" code:1 userInfo:v20];
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
         goto LABEL_15;
       }
 
@@ -2374,22 +2374,22 @@ LABEL_7:
   }
 
 LABEL_11:
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_15:
 
-  return a4;
+  return error;
 }
 
-- (LSRConnection)initWithXPCConnection:(id)a3
+- (LSRConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v30.receiver = self;
   v30.super_class = LSRConnection;
   v6 = [(LSRConnection *)&v30 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_alloc_init(NSMutableArray);
     bufferedAudioPackets = v7->_bufferedAudioPackets;
     v7->_bufferedAudioPackets = v8;
@@ -2429,8 +2429,8 @@ LABEL_15:
     v27 = &unk_100066388;
     objc_copyWeak(&v28, &location);
     v22 = objc_retainBlock(&v24);
-    [v5 setInterruptionHandler:{v22, v24, v25, v26, v27}];
-    [v5 setInvalidationHandler:v22];
+    [connectionCopy setInterruptionHandler:{v22, v24, v25, v26, v27}];
+    [connectionCopy setInvalidationHandler:v22];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
@@ -2439,11 +2439,11 @@ LABEL_15:
   return v7;
 }
 
-+ (BOOL)isEuclidAvailableForConfigPath:(id)a3
++ (BOOL)isEuclidAvailableForConfigPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [SFEntitledAssetManager jsonFilenameForAssetType:3];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [pathCopy stringByAppendingPathComponent:v4];
 
   v6 = +[NSFileManager defaultManager];
   LOBYTE(v4) = [v6 fileExistsAtPath:v5];
@@ -2498,17 +2498,17 @@ LABEL_15:
   return v10;
 }
 
-+ (void)completionWithEuclidErrorWithDescription:(id)a3 configPath:(id)a4 completion:(id)a5
++ (void)completionWithEuclidErrorWithDescription:(id)description configPath:(id)path completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  pathCopy = path;
+  descriptionCopy = description;
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"%@ Config Path: %@" value:&stru_100066A98 table:@"Localizable"];
-  v12 = [NSString localizedStringWithFormat:v11, v9, v8];
+  pathCopy = [NSString localizedStringWithFormat:v11, descriptionCopy, pathCopy];
 
   v20 = NSLocalizedDescriptionKey;
-  v21 = v12;
+  v21 = pathCopy;
   v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v14 = [NSError errorWithDomain:@"kLSRErrorDomain" code:101 userInfo:v13];
 
@@ -2520,7 +2520,7 @@ LABEL_15:
     v18 = 2112;
     v19 = v14;
     _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -2528,10 +2528,10 @@ LABEL_15:
     goto LABEL_3;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_3:
-    v7[2](v7, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
 LABEL_4:
@@ -2588,7 +2588,7 @@ LABEL_4:
   }
 
   +[LSRConnection _cachedRecognizerCleanUp];
-  [a1 _cancelCooldownTimer];
+  [self _cancelCooldownTimer];
 }
 
 + (void)_cancelCooldownTimer
@@ -2615,7 +2615,7 @@ LABEL_4:
 + (void)_scheduleCooldownTimer
 {
   dispatch_assert_queue_V2(qword_100071428);
-  [a1 _cancelCooldownTimer];
+  [self _cancelCooldownTimer];
   if (!qword_100071488)
   {
     v3 = SFLogConnection;
@@ -2638,13 +2638,13 @@ LABEL_4:
   }
 }
 
-+ (id)_jitProfileWithLanguage:(id)a3 modelRoot:(id)a4
++ (id)_jitProfileWithLanguage:(id)language modelRoot:(id)root
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  languageCopy = language;
+  rootCopy = root;
+  if (rootCopy)
   {
-    if ([qword_100071450 isEqualToString:v5])
+    if ([qword_100071450 isEqualToString:languageCopy])
     {
       v7 = qword_100071458 == 0;
     }
@@ -2654,7 +2654,7 @@ LABEL_4:
       v7 = 1;
     }
 
-    if (v7 || ![qword_100071460 isEqualToString:v6])
+    if (v7 || ![qword_100071460 isEqualToString:rootCopy])
     {
       v10 = SFLogConnection;
       if (os_log_type_enabled(SFLogConnection, OS_LOG_TYPE_DEBUG))
@@ -2662,15 +2662,15 @@ LABEL_4:
         v17 = 136315650;
         v18 = "+[LSRConnection _jitProfileWithLanguage:modelRoot:]";
         v19 = 2112;
-        v20 = v5;
+        v20 = languageCopy;
         v21 = 2112;
-        v22 = v6;
+        v22 = rootCopy;
         _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s Initialized a new JIT profile builder for language=%@ modelRoot=%@", &v17, 0x20u);
       }
 
-      v11 = [v6 stringByAppendingPathComponent:@"mini.json"];
-      v12 = [v6 stringByAppendingPathComponent:@"ncs"];
-      v13 = [[_EARJitProfile alloc] initWithConfiguration:v11 ncsRoot:v12 language:v5];
+      v11 = [rootCopy stringByAppendingPathComponent:@"mini.json"];
+      v12 = [rootCopy stringByAppendingPathComponent:@"ncs"];
+      v13 = [[_EARJitProfile alloc] initWithConfiguration:v11 ncsRoot:v12 language:languageCopy];
       v14 = qword_100071458;
       qword_100071458 = v13;
 
@@ -2685,9 +2685,9 @@ LABEL_4:
         v17 = 136315650;
         v18 = "+[LSRConnection _jitProfileWithLanguage:modelRoot:]";
         v19 = 2112;
-        v20 = v5;
+        v20 = languageCopy;
         v21 = 2112;
-        v22 = v6;
+        v22 = rootCopy;
         _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Using cached JIT profile builder for language=%@ modelRoot=%@", &v17, 0x20u);
       }
 

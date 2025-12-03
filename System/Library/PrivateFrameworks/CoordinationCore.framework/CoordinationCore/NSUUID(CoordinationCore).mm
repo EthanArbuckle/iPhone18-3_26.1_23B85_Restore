@@ -12,7 +12,7 @@
   v12[1] = 0;
   v11[0] = 0;
   v11[1] = 0;
-  [a1 getUUIDBytes:v12];
+  [self getUUIDBytes:v12];
   [v4 getUUIDBytes:v11];
   v5 = 0;
   v6 = 1;

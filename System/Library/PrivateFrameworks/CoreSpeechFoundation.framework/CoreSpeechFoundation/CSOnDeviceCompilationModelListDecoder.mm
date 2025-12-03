@@ -1,15 +1,15 @@
 @interface CSOnDeviceCompilationModelListDecoder
-+ (id)decodeConfigFrom:(id)a3;
++ (id)decodeConfigFrom:(id)from;
 @end
 
 @implementation CSOnDeviceCompilationModelListDecoder
 
-+ (id)decodeConfigFrom:(id)a3
++ (id)decodeConfigFrom:(id)from
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 dictionary];
-  v5 = [v4 objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
+  fromCopy = from;
+  dictionary = [fromCopy dictionary];
+  v5 = [dictionary objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
 
   if (v5)
   {
@@ -18,8 +18,8 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v7 = [v3 dictionary];
-    v8 = [v7 objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
+    dictionary2 = [fromCopy dictionary];
+    v8 = [dictionary2 objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
 
     v9 = v8;
     v10 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -43,14 +43,14 @@
         }
 
         v15 = *(*(&v30 + 1) + 8 * v14);
-        v16 = [v3 dictionary];
-        v17 = [v16 objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
+        dictionary3 = [fromCopy dictionary];
+        v17 = [dictionary3 objectForKeyedSubscript:@"OnDeviceCompilationModelList"];
         v18 = [v17 objectForKeyedSubscript:v15];
 
         if ([v15 isEqualToString:@"SecondpassChecker"])
         {
-          v19 = [v3 resourcePath];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          resourcePath = [fromCopy resourcePath];
+          v20 = [resourcePath stringByAppendingPathComponent:v18];
           v21 = v6;
           v22 = v20;
           v23 = &unk_1F5916790;
@@ -62,8 +62,8 @@ LABEL_17:
 
         if ([v15 isEqualToString:@"SpeakerRecognition"])
         {
-          v19 = [v3 resourcePath];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          resourcePath = [fromCopy resourcePath];
+          v20 = [resourcePath stringByAppendingPathComponent:v18];
           v21 = v6;
           v22 = v20;
           v23 = &unk_1F59167A8;
@@ -72,8 +72,8 @@ LABEL_17:
 
         if ([v15 isEqualToString:@"AFTM"])
         {
-          v19 = [v3 resourcePath];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          resourcePath = [fromCopy resourcePath];
+          v20 = [resourcePath stringByAppendingPathComponent:v18];
           v21 = v6;
           v22 = v20;
           v23 = &unk_1F59167D8;
@@ -82,8 +82,8 @@ LABEL_17:
 
         if ([v15 isEqualToString:@"ODLD"])
         {
-          v19 = [v3 resourcePath];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          resourcePath = [fromCopy resourcePath];
+          v20 = [resourcePath stringByAppendingPathComponent:v18];
           v21 = v6;
           v22 = v20;
           v23 = &unk_1F59167C0;
@@ -92,8 +92,8 @@ LABEL_17:
 
         if ([v15 isEqualToString:@"NC"])
         {
-          v19 = [v3 resourcePath];
-          v20 = [v19 stringByAppendingPathComponent:v18];
+          resourcePath = [fromCopy resourcePath];
+          v20 = [resourcePath stringByAppendingPathComponent:v18];
           v21 = v6;
           v22 = v20;
           v23 = &unk_1F59167F0;

@@ -1,18 +1,18 @@
 @interface LNExtensionHostConfigurator
-+ (id)extensionIdentityWithExtensionPointIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-+ (id)extensionProcessWithExtensionRecord:(id)a3 extensionType:(int64_t *)a4 error:(id *)a5;
++ (id)extensionIdentityWithExtensionPointIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error;
++ (id)extensionProcessWithExtensionRecord:(id)record extensionType:(int64_t *)type error:(id *)error;
 @end
 
 @implementation LNExtensionHostConfigurator
 
-+ (id)extensionIdentityWithExtensionPointIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)extensionIdentityWithExtensionPointIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v9 = objc_alloc(MEMORY[0x1E6966CE0]);
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bundleIdentifier = %@", v8];
-  v11 = [v9 initWithExtensionPointIdentifier:v7 predicate:v10];
+  bundleIdentifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bundleIdentifier = %@", bundleIdentifierCopy];
+  v11 = [v9 initWithExtensionPointIdentifier:identifierCopy predicate:bundleIdentifierCopy];
 
   v12 = [MEMORY[0x1E6966CF8] executeQuery:v11];
   if ([v12 count])
@@ -22,67 +22,67 @@
       v13 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v12 firstObject];
-        v15 = [v14 url];
+        firstObject = [v12 firstObject];
+        v15 = [firstObject url];
         *buf = 138412546;
-        v22 = v8;
+        v22 = bundleIdentifierCopy;
         v23 = 2112;
         v24 = v15;
       }
     }
 
-    a5 = [v12 firstObject];
+    error = [v12 firstObject];
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = MEMORY[0x1E696ABC0];
     v17 = v25 = *MEMORY[0x1E696A578];
     v26[0] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-    *a5 = [v16 errorWithDomain:@"LNConnectionErrorDomain" code:1100 userInfo:v18];
+    *error = [v16 errorWithDomain:@"LNConnectionErrorDomain" code:1100 userInfo:v18];
 
-    a5 = 0;
+    error = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return a5;
+  return error;
 }
 
-+ (id)extensionProcessWithExtensionRecord:(id)a3 extensionType:(int64_t *)a4 error:(id *)a5
++ (id)extensionProcessWithExtensionRecord:(id)record extensionType:(int64_t *)type error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"LNExtensionHostConfigurator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"extensionRecord"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNExtensionHostConfigurator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"extensionRecord"}];
   }
 
-  v10 = [v9 extensionPointRecord];
-  v11 = [v10 identifier];
+  extensionPointRecord = [recordCopy extensionPointRecord];
+  identifier = [extensionPointRecord identifier];
 
-  if ([v11 isEqualToString:@"com.apple.appintents-extension"])
+  if ([identifier isEqualToString:@"com.apple.appintents-extension"])
   {
-    *a4 = 0;
+    *type = 0;
   }
 
-  if ([v11 isEqualToString:@"com.apple.widgetkit-extension"])
+  if ([identifier isEqualToString:@"com.apple.widgetkit-extension"])
   {
     v12 = 0;
-    *a4 = 1;
+    *type = 1;
   }
 
-  else if (a4)
+  else if (type)
   {
-    v13 = [v9 bundleIdentifier];
-    v14 = [a1 extensionIdentityWithExtensionPointIdentifier:v11 bundleIdentifier:v13 error:a5];
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    v14 = [self extensionIdentityWithExtensionPointIdentifier:identifier bundleIdentifier:bundleIdentifier error:error];
 
     if (v14)
     {
       v15 = [objc_alloc(MEMORY[0x1E6966CC8]) initWithExtensionIdentity:v14];
-      v12 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:v15 error:a5];
+      v12 = [MEMORY[0x1E6966CC0] extensionProcessWithConfiguration:v15 error:error];
     }
 
     else
@@ -90,7 +90,7 @@
       v17 = getLNLogCategoryConnection();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = *a5;
+        v18 = *error;
         *buf = 138543362;
         v23 = v18;
         _os_log_impl(&dword_19763D000, v17, OS_LOG_TYPE_ERROR, "Unable to create extension identity: %{public}@", buf, 0xCu);
@@ -106,7 +106,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = v11;
+      v23 = identifier;
       _os_log_impl(&dword_19763D000, v16, OS_LOG_TYPE_ERROR, "Unsupported extension point identifier %{public}@", buf, 0xCu);
     }
 

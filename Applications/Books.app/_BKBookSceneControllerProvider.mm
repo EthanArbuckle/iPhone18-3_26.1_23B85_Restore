@@ -1,40 +1,40 @@
 @interface _BKBookSceneControllerProvider
 - (BKAppSceneManager)sceneManager;
-- (_BKBookSceneControllerProvider)initWithSceneManager:(id)a3 requestAssetID:(id)a4;
-- (void)provideSceneController:(id)a3;
+- (_BKBookSceneControllerProvider)initWithSceneManager:(id)manager requestAssetID:(id)d;
+- (void)provideSceneController:(id)controller;
 @end
 
 @implementation _BKBookSceneControllerProvider
 
-- (_BKBookSceneControllerProvider)initWithSceneManager:(id)a3 requestAssetID:(id)a4
+- (_BKBookSceneControllerProvider)initWithSceneManager:(id)manager requestAssetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = _BKBookSceneControllerProvider;
   v8 = [(_BKBookSceneControllerProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sceneManager, v6);
-    objc_storeStrong(&v9->_requestAssetID, a4);
+    objc_storeWeak(&v8->_sceneManager, managerCopy);
+    objc_storeStrong(&v9->_requestAssetID, d);
   }
 
   return v9;
 }
 
-- (void)provideSceneController:(id)a3
+- (void)provideSceneController:(id)controller
 {
-  v4 = a3;
-  v5 = [(_BKBookSceneControllerProvider *)self sceneManager];
-  v6 = [(_BKBookSceneControllerProvider *)self requestAssetID];
+  controllerCopy = controller;
+  sceneManager = [(_BKBookSceneControllerProvider *)self sceneManager];
+  requestAssetID = [(_BKBookSceneControllerProvider *)self requestAssetID];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100197358;
   v8[3] = &unk_100A09DC0;
-  v9 = v4;
-  v7 = v4;
-  [v5 requestBookSceneWithAssetID:v6 completion:v8];
+  v9 = controllerCopy;
+  v7 = controllerCopy;
+  [sceneManager requestBookSceneWithAssetID:requestAssetID completion:v8];
 }
 
 - (BKAppSceneManager)sceneManager

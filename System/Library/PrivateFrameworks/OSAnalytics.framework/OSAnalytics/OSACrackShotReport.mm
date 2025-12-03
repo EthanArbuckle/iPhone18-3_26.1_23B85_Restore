@@ -3,12 +3,12 @@
 + (id)getThermalPressureLevel;
 + (void)getDisplayState;
 + (void)getThermalPressureLevel;
-- (BOOL)saveWithOptions:(id)a3;
+- (BOOL)saveWithOptions:(id)options;
 - (id)additionalIPSMetadata;
-- (id)decode_reason:(exit_reason_snapshot *)a3 reason:(id)a4;
+- (id)decode_reason:(exit_reason_snapshot *)decode_reason reason:(id)reason;
 - (id)problemType;
 - (id)reportNamePrefix;
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4;
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block;
 @end
 
 @implementation OSACrackShotReport
@@ -31,15 +31,15 @@
   appName = self->super._appName;
   if (appName)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", appName];
+    appName = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", appName];
   }
 
   else
   {
-    v4 = @"unknown";
+    appName = @"unknown";
   }
 
-  return v4;
+  return appName;
 }
 
 - (id)additionalIPSMetadata
@@ -61,17 +61,17 @@
   v6 = [v4 numberWithBool:{objc_msgSend(v5, "optIn3rdParty")}];
   v16[2] = v6;
   v15[3] = @"incident_id";
-  v7 = [(OSAReport *)self incidentID];
-  v16[3] = v7;
+  incidentID = [(OSAReport *)self incidentID];
+  v16[3] = incidentID;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v9 = [v8 mutableCopy];
 
-  v10 = [(OSAReport *)self etlKey];
+  etlKey = [(OSAReport *)self etlKey];
 
-  if (v10)
+  if (etlKey)
   {
-    v11 = [(OSAReport *)self etlKey];
-    [v9 setObject:v11 forKeyedSubscript:@"etl_key"];
+    etlKey2 = [(OSAReport *)self etlKey];
+    [v9 setObject:etlKey2 forKeyedSubscript:@"etl_key"];
   }
 
   bundleID = self->_bundleID;
@@ -85,21 +85,21 @@
   return v9;
 }
 
-- (id)decode_reason:(exit_reason_snapshot *)a3 reason:(id)a4
+- (id)decode_reason:(exit_reason_snapshot *)decode_reason reason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   v6 = objc_opt_new();
-  if (a3)
+  if (decode_reason)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3->ers_code];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:decode_reason->ers_code];
     [v6 setObject:v7 forKeyedSubscript:@"code"];
 
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3->ers_flags];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:decode_reason->ers_flags];
     [v6 setObject:v8 forKeyedSubscript:@"flags"];
 
-    if (a3->ers_namespace == 20)
+    if (decode_reason->ers_namespace == 20)
     {
-      v9 = [_TtC11OSAnalytics24WatchdogExitReasonHelper descriptionFromCode:LODWORD(a3->ers_code)];
+      v9 = [_TtC11OSAnalytics24WatchdogExitReasonHelper descriptionFromCode:LODWORD(decode_reason->ers_code)];
       [v6 setObject:v9 forKeyedSubscript:@"indicator"];
 
       v10 = @"WATCHDOG";
@@ -107,7 +107,7 @@
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<0x%X>", a3->ers_namespace];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<0x%X>", decode_reason->ers_namespace];
     }
   }
 
@@ -117,9 +117,9 @@
   }
 
   [v6 setObject:v10 forKeyedSubscript:@"namespace"];
-  if (v5)
+  if (reasonCopy)
   {
-    v11 = [v5 componentsSeparatedByString:@"\n"];
+    v11 = [reasonCopy componentsSeparatedByString:@"\n"];
     v12 = [v11 valueForKey:@"stringByTrimming"];
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF != ''"];
     v14 = [v12 filteredArrayUsingPredicate:v13];
@@ -133,40 +133,40 @@
   return v6;
 }
 
-- (void)generateLogAtLevel:(BOOL)a3 withBlock:(id)a4
+- (void)generateLogAtLevel:(BOOL)level withBlock:(id)block
 {
   v99[10] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v98[0] = @"incident";
-  v63 = [(OSAReport *)self incidentID];
-  v99[0] = v63;
+  incidentID = [(OSAReport *)self incidentID];
+  v99[0] = incidentID;
   v98[1] = @"crashReporterKey";
   v62 = +[OSASystemConfiguration sharedInstance];
-  v60 = [v62 crashReporterKey];
-  v99[1] = v60;
+  crashReporterKey = [v62 crashReporterKey];
+  v99[1] = crashReporterKey;
   v98[2] = @"modelCode";
   v61 = +[OSASystemConfiguration sharedInstance];
-  v59 = [v61 modelCode];
-  v99[2] = v59;
+  modelCode = [v61 modelCode];
+  v99[2] = modelCode;
   v98[3] = @"pid";
   v58 = [MEMORY[0x1E696AD98] numberWithInt:self->super._pid];
   v99[3] = v58;
   v98[4] = @"cpuType";
-  v57 = [(OSACrackShotReport *)self decode_cpuType];
-  v99[4] = v57;
+  decode_cpuType = [(OSACrackShotReport *)self decode_cpuType];
+  v99[4] = decode_cpuType;
   v98[5] = @"osVersion";
   v96[0] = @"train";
   v56 = +[OSASystemConfiguration sharedInstance];
-  v55 = [v56 osTrain];
-  v97[0] = v55;
+  osTrain = [v56 osTrain];
+  v97[0] = osTrain;
   v96[1] = @"build";
   v6 = +[OSASystemConfiguration sharedInstance];
-  v7 = [v6 buildVersion];
-  v97[1] = v7;
+  buildVersion = [v6 buildVersion];
+  v97[1] = buildVersion;
   v96[2] = @"releaseType";
   v8 = +[OSASystemConfiguration sharedInstance];
-  v9 = [v8 releaseType];
-  v97[2] = v9;
+  releaseType = [v8 releaseType];
+  v97[2] = releaseType;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:3];
   v99[5] = v10;
   v98[6] = @"captureTime";
@@ -179,24 +179,24 @@
   v99[8] = @"stackshot";
   v99[9] = &unk_1F241E8C0;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v99 forKeys:v98 count:10];
-  v5[2](v5, v12);
+  blockCopy[2](blockCopy, v12);
 
-  v13 = [(OSACrackShotReport *)self problemType];
-  v14 = [OSALog commonFieldsForBody:v13];
-  v5[2](v5, v14);
+  problemType = [(OSACrackShotReport *)self problemType];
+  v14 = [OSALog commonFieldsForBody:problemType];
+  blockCopy[2](blockCopy, v14);
 
   v15 = +[OSASystemConfiguration sharedInstance];
-  LODWORD(v13) = [v15 appleInternal];
+  LODWORD(problemType) = [v15 appleInternal];
 
-  if (v13)
+  if (problemType)
   {
     v16 = +[OSASystemConfiguration sharedInstance];
-    v17 = [v16 hwModel];
+    hwModel = [v16 hwModel];
 
     v94 = @"codeName";
-    v95 = v17;
+    v95 = hwModel;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-    v5[2](v5, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if ([(NSString *)self->super._appName length])
@@ -205,7 +205,7 @@
     v92 = @"procName";
     v93 = appName;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
-    v5[2](v5, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if ([(NSString *)self->_procPath length])
@@ -217,7 +217,7 @@
     v23 = procPath;
     v24 = [v22 dictionaryWithObjects:&v91 forKeys:&v90 count:1];
 
-    v5[2](v5, v24);
+    blockCopy[2](blockCopy, v24);
   }
 
   if (self->_bundleID)
@@ -228,7 +228,7 @@
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&bundleID forKeys:&v86 count:1];
     v89 = v25;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-    v5[2](v5, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
   if ([(NSDictionary *)self->_termination_info count])
@@ -237,24 +237,24 @@
     v84 = @"termination";
     v85 = termination_info;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-    v5[2](v5, v28);
+    blockCopy[2](blockCopy, v28);
   }
 
-  v29 = [objc_opt_class() bootSessionUUID];
-  v30 = v29;
-  if (v29)
+  bootSessionUUID = [objc_opt_class() bootSessionUUID];
+  v30 = bootSessionUUID;
+  if (bootSessionUUID)
   {
     v82 = @"bootSessionUUID";
-    v83 = v29;
+    v83 = bootSessionUUID;
     v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
-    v5[2](v5, v31);
+    blockCopy[2](blockCopy, v31);
   }
 
   v80 = @"uptime";
   v32 = [objc_opt_class() reduceToTwoSigFigures:self->_awakeSystemUptime];
   v81 = v32;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-  v5[2](v5, v33);
+  blockCopy[2](blockCopy, v33);
 
   v34 = +[OSACrackShotReport getThermalPressureLevel];
   v35 = v34;
@@ -263,15 +263,15 @@
     v78 = @"thermalPressureLevel";
     v79 = v34;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
-    v5[2](v5, v36);
+    blockCopy[2](blockCopy, v36);
   }
 
-  v37 = [MEMORY[0x1E696AE30] processInfo];
-  v38 = [v37 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v38)
+  if (isLowPowerModeEnabled)
   {
-    v5[2](v5, &unk_1F241EDD8);
+    blockCopy[2](blockCopy, &unk_1F241EDD8);
   }
 
   v39 = +[OSACrackShotReport getDisplayState];
@@ -281,7 +281,7 @@
     v76 = @"displayState";
     v77 = v39;
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
-    v5[2](v5, v41);
+    blockCopy[2](blockCopy, v41);
   }
 
   if (![(OSACrackShotReport *)self isSnapshotDisabled])
@@ -291,32 +291,32 @@
       v74 = &unk_1F241E8D8;
       v75 = @"stackshot";
       v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
-      v5[2](v5, v42);
+      blockCopy[2](blockCopy, v42);
 
       v43 = objc_alloc_init(OSABinaryImageCatalog);
-      [(OSAStackShotReport *)self decodeKCDataWithBlock:v5 withTuning:&unk_1F241EE00 usingCatalog:v43];
+      [(OSAStackShotReport *)self decodeKCDataWithBlock:blockCopy withTuning:&unk_1F241EE00 usingCatalog:v43];
       v72 = @"binaryImages";
-      v44 = [(OSABinaryImageCatalog *)v43 reportUsedImages];
-      v73 = v44;
+      reportUsedImages = [(OSABinaryImageCatalog *)v43 reportUsedImages];
+      v73 = reportUsedImages;
       v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
-      v5[2](v5, v45);
+      blockCopy[2](blockCopy, v45);
 
       [(OSABinaryImageCatalog *)v43 appendNotesTo:self->super.super._notes];
       v70 = &unk_1F241E908;
       v71 = &stru_1F2411100;
       v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-      v5[2](v5, v46);
+      blockCopy[2](blockCopy, v46);
     }
 
-    v47 = [(OSACrackShotReport *)self spindump];
+    spindump = [(OSACrackShotReport *)self spindump];
 
-    if (v47)
+    if (spindump)
     {
       v68 = @"spindump";
-      v48 = [(OSACrackShotReport *)self spindump];
-      v69 = v48;
+      spindump2 = [(OSACrackShotReport *)self spindump];
+      v69 = spindump2;
       v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-      v5[2](v5, v49);
+      blockCopy[2](blockCopy, v49);
     }
   }
 
@@ -326,7 +326,7 @@
     v66 = @"additionalPayload";
     v67 = additionalPayload;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-    v5[2](v5, v51);
+    blockCopy[2](blockCopy, v51);
   }
 
   [(NSMutableArray *)self->super.super._notes addObject:@"This is a watchdog-triggered termination event, and not expected to be well-represented in the legacy crash format"];
@@ -343,17 +343,17 @@
     v65[0] = notes;
     v65[1] = &unk_1F241E8F0;
     v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v65 forKeys:v64 count:2];
-    v5[2](v5, v53);
+    blockCopy[2](blockCopy, v53);
   }
 
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)saveWithOptions:(id)a3
+- (BOOL)saveWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = OSACrackShotReport;
-  v4 = [(OSAReport *)&v8 saveWithOptions:a3];
+  v4 = [(OSAReport *)&v8 saveWithOptions:options];
   if (self->_isSystemWatchdog)
   {
     v5 = 3;
@@ -364,8 +364,8 @@
     v5 = 4;
   }
 
-  v6 = [(OSAReport *)self logfile];
-  [OSADiagnosticsReporterSupport handleDiagnosticLog:v5 logPath:v6 completion:0];
+  logfile = [(OSAReport *)self logfile];
+  [OSADiagnosticsReporterSupport handleDiagnosticLog:v5 logPath:logfile completion:0];
 
   return v4;
 }
@@ -418,8 +418,8 @@
           v4 = @"ThermalPressureLevelModerate";
 LABEL_23:
           v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:state64];
-          v6 = [v5 stringValue];
-          v2 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+          stringValue = [v5 stringValue];
+          v2 = [v3 stringWithFormat:@"%@ (%@)", v4, stringValue];
 
 LABEL_24:
           notify_cancel(out_token);

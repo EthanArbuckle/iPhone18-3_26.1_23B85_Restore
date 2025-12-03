@@ -1,78 +1,78 @@
 @interface BWOnDemandPixelBufferAllocator
-+ (BWOnDemandPixelBufferAllocator)_onDemandAllocatorWithDimensions:(int)a3 dimensionAlignment:(uint64_t)a4 pixelFormat:(uint64_t)a5 name:(uint64_t)a6 memoryPool:;
-+ (id)onDemandAllocatorWithDimensions:(id)a3 dimensionAlignment:(int)a4 pixelFormat:(unsigned int)a5 name:(id)a6 memoryPool:(id)a7;
-- (BWOnDemandPixelBufferAllocator)initWithVideoFormat:(id)a3 name:(id)a4 memoryPool:(id)a5 additionalPixelBufferAttributes:(id)a6;
++ (BWOnDemandPixelBufferAllocator)_onDemandAllocatorWithDimensions:(int)dimensions dimensionAlignment:(uint64_t)alignment pixelFormat:(uint64_t)format name:(uint64_t)name memoryPool:;
++ (id)onDemandAllocatorWithDimensions:(id)dimensions dimensionAlignment:(int)alignment pixelFormat:(unsigned int)format name:(id)name memoryPool:(id)pool;
+- (BWOnDemandPixelBufferAllocator)initWithVideoFormat:(id)format name:(id)name memoryPool:(id)pool additionalPixelBufferAttributes:(id)attributes;
 - (__CVBuffer)newPixelBuffer;
 - (uint64_t)newPixelBuffer;
-- (void)_initWithVideoFormat:(uint64_t)a3 name:(void *)a4 memoryPool:(uint64_t)a5 additionalPixelBufferAttributes:;
+- (void)_initWithVideoFormat:(uint64_t)format name:(void *)name memoryPool:(uint64_t)pool additionalPixelBufferAttributes:;
 - (void)dealloc;
 @end
 
 @implementation BWOnDemandPixelBufferAllocator
 
-- (BWOnDemandPixelBufferAllocator)initWithVideoFormat:(id)a3 name:(id)a4 memoryPool:(id)a5 additionalPixelBufferAttributes:(id)a6
+- (BWOnDemandPixelBufferAllocator)initWithVideoFormat:(id)format name:(id)name memoryPool:(id)pool additionalPixelBufferAttributes:(id)attributes
 {
-  if (!a5)
+  if (!pool)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No memory pool provided for video format: %@", a4, a5, a6, a3];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
+    format = [MEMORY[0x1E696AEC0] stringWithFormat:@"No memory pool provided for video format: %@", name, pool, attributes, format];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:format userInfo:0]);
   }
 
-  return [(BWOnDemandPixelBufferAllocator *)self _initWithVideoFormat:a3 name:a3 memoryPool:a5 additionalPixelBufferAttributes:a6];
+  return [(BWOnDemandPixelBufferAllocator *)self _initWithVideoFormat:format name:format memoryPool:pool additionalPixelBufferAttributes:attributes];
 }
 
-- (void)_initWithVideoFormat:(uint64_t)a3 name:(void *)a4 memoryPool:(uint64_t)a5 additionalPixelBufferAttributes:
+- (void)_initWithVideoFormat:(uint64_t)format name:(void *)name memoryPool:(uint64_t)pool additionalPixelBufferAttributes:
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a4 && ([a2 memoryPoolUseAllowed] & 1) == 0)
+    if (name && ([a2 memoryPoolUseAllowed] & 1) == 0)
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Memory pool use disallowed with video format: %@", a2];
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v13 userInfo:0]);
     }
 
-    v14.receiver = v5;
+    v14.receiver = selfCopy;
     v14.super_class = BWOnDemandPixelBufferAllocator;
-    v5 = objc_msgSendSuper2(&v14, sel_init);
-    if (v5)
+    selfCopy = objc_msgSendSuper2(&v14, sel_init);
+    if (selfCopy)
     {
-      v5[1] = a2;
-      v5[4] = a4;
+      selfCopy[1] = a2;
+      selfCopy[4] = name;
       v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(a2, "pixelBufferAttributes")}];
-      v10 = [MEMORY[0x1E695DF90] dictionary];
-      [v10 setObject:&unk_1F2245340 forKeyedSubscript:*MEMORY[0x1E696CE60]];
-      [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696CFA0]];
-      if (a4)
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:&unk_1F2245340 forKeyedSubscript:*MEMORY[0x1E696CE60]];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696CFA0]];
+      if (name)
       {
-        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a4, "poolIdentifier")}];
-        [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696CE38]];
+        v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(name, "poolIdentifier")}];
+        [dictionary setObject:v11 forKeyedSubscript:*MEMORY[0x1E696CE38]];
       }
 
-      [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69660D8]];
-      [v9 addEntriesFromDictionary:a5];
-      v5[3] = [v9 copy];
+      [v9 setObject:dictionary forKeyedSubscript:*MEMORY[0x1E69660D8]];
+      [v9 addEntriesFromDictionary:pool];
+      selfCopy[3] = [v9 copy];
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-+ (id)onDemandAllocatorWithDimensions:(id)a3 dimensionAlignment:(int)a4 pixelFormat:(unsigned int)a5 name:(id)a6 memoryPool:(id)a7
++ (id)onDemandAllocatorWithDimensions:(id)dimensions dimensionAlignment:(int)alignment pixelFormat:(unsigned int)format name:(id)name memoryPool:(id)pool
 {
-  if (!a7)
+  if (!pool)
   {
     v18 = v9;
     v19 = v8;
     v20 = v7;
     v14 = MEMORY[0x1E696AEC0];
-    v15 = *&a5;
+    v15 = *&format;
     v16 = BWStringFromDimensions();
     v17 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_msgSend(v14 userInfo:{"stringWithFormat:", @"No memory pool provided for dimensions:%@, pixelFormat:%@", v16, BWStringFromCVPixelFormatType(v15), v10, v18, v19, v20, v11, v12), 0}];
     objc_exception_throw(v17);
   }
 
-  return [BWOnDemandPixelBufferAllocator _onDemandAllocatorWithDimensions:a4 dimensionAlignment:*&a5 pixelFormat:a6 name:a7 memoryPool:?];
+  return [BWOnDemandPixelBufferAllocator _onDemandAllocatorWithDimensions:alignment dimensionAlignment:*&format pixelFormat:name name:pool memoryPool:?];
 }
 
 - (void)dealloc
@@ -99,24 +99,24 @@
   return pixelBufferOut;
 }
 
-+ (BWOnDemandPixelBufferAllocator)_onDemandAllocatorWithDimensions:(int)a3 dimensionAlignment:(uint64_t)a4 pixelFormat:(uint64_t)a5 name:(uint64_t)a6 memoryPool:
++ (BWOnDemandPixelBufferAllocator)_onDemandAllocatorWithDimensions:(int)dimensions dimensionAlignment:(uint64_t)alignment pixelFormat:(uint64_t)format name:(uint64_t)name memoryPool:
 {
   objc_opt_self();
   v11 = 0;
-  if (a4)
+  if (alignment)
   {
     if (a2 >= 1 && SHIDWORD(a2) >= 1)
     {
       v13 = +[BWVideoFormatRequirements formatRequirements];
       [v13 setWidth:a2 & 0x7FFFFFFF];
       [v13 setHeight:a2 >> 32];
-      if (a3)
+      if (dimensions)
       {
-        [v13 setWidthAlignment:a3];
-        [v13 setHeightAlignment:a3];
+        [v13 setWidthAlignment:dimensions];
+        [v13 setHeightAlignment:dimensions];
       }
 
-      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a4];
+      v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:alignment];
       [v13 setSupportedPixelFormats:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v18, 1)}];
       if (!v13)
       {
@@ -129,10 +129,10 @@ LABEL_16:
       }
 
       v14 = [BWOnDemandPixelBufferAllocator alloc];
-      if (a6)
+      if (name)
       {
         v17 = v13;
-        v11 = -[BWOnDemandPixelBufferAllocator initWithVideoFormat:name:memoryPool:additionalPixelBufferAttributes:](v14, "initWithVideoFormat:name:memoryPool:additionalPixelBufferAttributes:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1]), a5, a6, 0);
+        v11 = -[BWOnDemandPixelBufferAllocator initWithVideoFormat:name:memoryPool:additionalPixelBufferAttributes:](v14, "initWithVideoFormat:name:memoryPool:additionalPixelBufferAttributes:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1]), format, name, 0);
         if (!v11)
         {
           goto LABEL_15;
@@ -142,7 +142,7 @@ LABEL_16:
       else
       {
         v16 = v13;
-        v11 = -[BWOnDemandPixelBufferAllocator initWithoutMemoryPoolWithVideoFormat:name:additionalPixelBufferAttributes:](v14, "initWithoutMemoryPoolWithVideoFormat:name:additionalPixelBufferAttributes:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1]), a5, 0);
+        v11 = -[BWOnDemandPixelBufferAllocator initWithoutMemoryPoolWithVideoFormat:name:additionalPixelBufferAttributes:](v14, "initWithoutMemoryPoolWithVideoFormat:name:additionalPixelBufferAttributes:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1]), format, 0);
         if (!v11)
         {
 LABEL_15:

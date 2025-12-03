@@ -1,41 +1,41 @@
 @interface ClarityUISystemPolicyForApp
-- (BOOL)_checkAccessForService:(id)a3;
+- (BOOL)_checkAccessForService:(id)service;
 - (BOOL)_isSystemApplication;
 - (BOOL)requiresBluetoothAccess;
 - (BOOL)requiresLocationAccess;
-- (ClarityUISystemPolicyForApp)initWithBundleIdentifier:(id)a3;
-- (id)_PSSystemPolicyOptionsAsArray:(unint64_t)a3;
-- (id)_PSSystemPolicyOptionsAsString:(unint64_t)a3;
-- (id)_axPSSystemPolicyOptions:(unint64_t)a3;
-- (id)_axSpecifiersForPolicyOptions:(unint64_t)a3 force:(BOOL)a4;
+- (ClarityUISystemPolicyForApp)initWithBundleIdentifier:(id)identifier;
+- (id)_PSSystemPolicyOptionsAsArray:(unint64_t)array;
+- (id)_PSSystemPolicyOptionsAsString:(unint64_t)string;
+- (id)_axPSSystemPolicyOptions:(unint64_t)options;
+- (id)_axSpecifiersForPolicyOptions:(unint64_t)options force:(BOOL)force;
 - (id)_bundle;
-- (id)_localizedExplanationsForServices:(id)a3;
+- (id)_localizedExplanationsForServices:(id)services;
 - (id)appInfo;
-- (id)authLevelStringForStatus:(unint64_t)a3;
+- (id)authLevelStringForStatus:(unint64_t)status;
 - (id)contactsServicesSpecifier;
-- (id)developerExplanationsForSpecifiers:(id)a3;
+- (id)developerExplanationsForSpecifiers:(id)specifiers;
 - (id)locationServicesSpecifier;
-- (id)locationStatus:(id)a3;
+- (id)locationStatus:(id)status;
 - (id)photosServicesSpecifier;
-- (id)privacySpecifiersForPolicyOptions:(unint64_t)a3;
+- (id)privacySpecifiersForPolicyOptions:(unint64_t)options;
 - (id)record;
-- (id)systemPolicySpecifiersIncludingForced:(BOOL)a3;
-- (unint64_t)_axPolicyOptionsFromSpecifiers:(id)a3;
+- (id)systemPolicySpecifiersIncludingForced:(BOOL)forced;
+- (unint64_t)_axPolicyOptionsFromSpecifiers:(id)specifiers;
 - (void)record;
 @end
 
 @implementation ClarityUISystemPolicyForApp
 
-- (ClarityUISystemPolicyForApp)initWithBundleIdentifier:(id)a3
+- (ClarityUISystemPolicyForApp)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = ClarityUISystemPolicyForApp;
   v5 = [(ClarityUISystemPolicyForApp *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    v5->_bundleIdentifier = v4;
+    v5->_bundleIdentifier = identifierCopy;
     *&v5->_claritySupportedPolicyOptions = xmmword_1DAA00;
     appPolicy = v5->_appPolicy;
     v5->_appPolicy = 0;
@@ -95,11 +95,11 @@
 
 - (id)_bundle
 {
-  v2 = [(ClarityUISystemPolicyForApp *)self record];
-  v3 = v2;
-  if (v2)
+  record = [(ClarityUISystemPolicyForApp *)self record];
+  v3 = record;
+  if (record)
   {
-    v4 = [v2 URL];
+    v4 = [record URL];
     v5 = [NSBundle bundleWithURL:v4];
   }
 
@@ -116,8 +116,8 @@
   appInfo = self->_appInfo;
   if (!appInfo)
   {
-    v4 = [(ClarityUISystemPolicyForApp *)self _bundle];
-    v5 = [v4 pathForResource:@"Info" ofType:@"plist"];
+    _bundle = [(ClarityUISystemPolicyForApp *)self _bundle];
+    v5 = [_bundle pathForResource:@"Info" ofType:@"plist"];
 
     v6 = [[NSDictionary alloc] initWithContentsOfFile:v5];
     v7 = self->_appInfo;
@@ -131,35 +131,35 @@
 
 - (BOOL)_isSystemApplication
 {
-  v3 = [(ClarityUISystemPolicyForApp *)self record];
-  v4 = [v3 developerType] == 1;
+  record = [(ClarityUISystemPolicyForApp *)self record];
+  v4 = [record developerType] == 1;
 
-  v5 = [(ClarityUISystemPolicyForApp *)self record];
-  LOBYTE(v3) = [v5 hasSettingsBundle];
+  record2 = [(ClarityUISystemPolicyForApp *)self record];
+  LOBYTE(record) = [record2 hasSettingsBundle];
 
-  return v4 & (v3 ^ 1);
+  return v4 & (record ^ 1);
 }
 
-- (BOOL)_checkAccessForService:(id)a3
+- (BOOL)_checkAccessForService:(id)service
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_infoPlistCache objectForKey:v4];
+  serviceCopy = service;
+  v5 = [(NSMutableDictionary *)self->_infoPlistCache objectForKey:serviceCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_infoPlistCache objectForKey:v4];
-    LOBYTE(v7) = [v6 BOOLValue];
+    appInfo = [(NSMutableDictionary *)self->_infoPlistCache objectForKey:serviceCopy];
+    LOBYTE(v7) = [appInfo BOOLValue];
   }
 
   else
   {
-    v6 = [(ClarityUISystemPolicyForApp *)self appInfo];
-    v8 = [v6 objectForKey:v4];
+    appInfo = [(ClarityUISystemPolicyForApp *)self appInfo];
+    v8 = [appInfo objectForKey:serviceCopy];
     v7 = v8 != 0;
 
     infoPlistCache = self->_infoPlistCache;
     v10 = [NSNumber numberWithBool:v7];
-    [(NSMutableDictionary *)infoPlistCache setObject:v10 forKey:v4];
+    [(NSMutableDictionary *)infoPlistCache setObject:v10 forKey:serviceCopy];
   }
 
   return v7;
@@ -182,12 +182,12 @@
   return [(ClarityUISystemPolicyForApp *)self _checkAccessForService:@"NSBluetoothPeripheralUsageDescription"];
 }
 
-- (id)systemPolicySpecifiersIncludingForced:(BOOL)a3
+- (id)systemPolicySpecifiersIncludingForced:(BOOL)forced
 {
-  v3 = a3;
-  v5 = [(ClarityUISystemPolicyForApp *)self appPolicy];
+  forcedCopy = forced;
+  appPolicy = [(ClarityUISystemPolicyForApp *)self appPolicy];
 
-  if (!v5)
+  if (!appPolicy)
   {
     v6 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:self->_bundleIdentifier];
     [(ClarityUISystemPolicyForApp *)self setAppPolicy:v6];
@@ -196,7 +196,7 @@
   v7 = [(ClarityUISystemPolicyForApp *)self _axSpecifiersForPolicyOptions:self->_tccPolicyOptions force:0];
   v8 = [NSMutableArray arrayWithArray:v7];
 
-  if (v3 && ![(ClarityUISystemPolicyForApp *)self _isSystemApplication])
+  if (forcedCopy && ![(ClarityUISystemPolicyForApp *)self _isSystemApplication])
   {
     v10 = [(ClarityUISystemPolicyForApp *)self _axPolicyOptionsFromSpecifiers:v8];
     tccPolicyOptions = self->_tccPolicyOptions;
@@ -225,12 +225,12 @@
   return v9;
 }
 
-- (id)_axSpecifiersForPolicyOptions:(unint64_t)a3 force:(BOOL)a4
+- (id)_axSpecifiersForPolicyOptions:(unint64_t)options force:(BOOL)force
 {
-  v4 = a4;
+  forceCopy = force;
   v37 = objc_opt_new();
-  v42 = self;
-  v7 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:a3];
+  selfCopy = self;
+  v7 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:options];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -241,7 +241,7 @@
     v40 = *v49;
     *&v8 = 138412290;
     v36 = v8;
-    v39 = v4;
+    v39 = forceCopy;
     v38 = v7;
     do
     {
@@ -258,9 +258,9 @@
         if (v11)
         {
           v43 = v11;
-          v13 = [v11 integerValue];
-          v14 = [(ClarityUISystemPolicyForApp *)v42 appPolicy];
-          v15 = [v14 specifiersForPolicyOptions:v13 force:v4];
+          integerValue = [v11 integerValue];
+          appPolicy = [(ClarityUISystemPolicyForApp *)selfCopy appPolicy];
+          v15 = [appPolicy specifiersForPolicyOptions:integerValue force:forceCopy];
 
           v46 = 0u;
           v47 = 0u;
@@ -316,7 +316,7 @@
             v19 = 0;
           }
 
-          v4 = v39;
+          forceCopy = v39;
           if (v39)
           {
             v12 = v43;
@@ -324,11 +324,11 @@
             {
               if ([v10 isEqualToString:@"PSSystemPolicyOptionsPrivacyPhotos"])
               {
-                v24 = [(ClarityUISystemPolicyForApp *)v42 photosServicesSpecifier];
-                v19 = v24;
-                if (v24)
+                photosServicesSpecifier = [(ClarityUISystemPolicyForApp *)selfCopy photosServicesSpecifier];
+                v19 = photosServicesSpecifier;
+                if (photosServicesSpecifier)
                 {
-                  v25 = v24;
+                  v25 = photosServicesSpecifier;
                 }
               }
 
@@ -339,11 +339,11 @@
 
               if ([v10 isEqualToString:@"PSSystemPolicyOptionsPrivacyAddressBook"])
               {
-                v26 = [(ClarityUISystemPolicyForApp *)v42 contactsServicesSpecifier];
-                v27 = v26;
-                if (v26)
+                contactsServicesSpecifier = [(ClarityUISystemPolicyForApp *)selfCopy contactsServicesSpecifier];
+                v27 = contactsServicesSpecifier;
+                if (contactsServicesSpecifier)
                 {
-                  v28 = v26;
+                  v28 = contactsServicesSpecifier;
 
                   v19 = v28;
                 }
@@ -351,11 +351,11 @@
 
               if ([v10 isEqualToString:@"PSSystemPolicyOptionsLocation"])
               {
-                v29 = [(ClarityUISystemPolicyForApp *)v42 locationServicesSpecifier];
-                v30 = v29;
-                if (v29)
+                locationServicesSpecifier = [(ClarityUISystemPolicyForApp *)selfCopy locationServicesSpecifier];
+                v30 = locationServicesSpecifier;
+                if (locationServicesSpecifier)
                 {
-                  v31 = v29;
+                  v31 = locationServicesSpecifier;
 
                   v19 = v31;
                 }
@@ -415,19 +415,19 @@ LABEL_47:
     while (v41);
   }
 
-  v34 = [(ClarityUISystemPolicyForApp *)v42 developerExplanationsForSpecifiers:v37];
+  v34 = [(ClarityUISystemPolicyForApp *)selfCopy developerExplanationsForSpecifiers:v37];
 
   return v34;
 }
 
-- (unint64_t)_axPolicyOptionsFromSpecifiers:(id)a3
+- (unint64_t)_axPolicyOptionsFromSpecifiers:(id)specifiers
 {
-  v3 = a3;
+  specifiersCopy = specifiers;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v4 = [specifiersCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v4)
   {
     v6 = v4;
@@ -441,7 +441,7 @@ LABEL_47:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -464,7 +464,7 @@ LABEL_47:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v6 = [specifiersCopy countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v6);
@@ -478,7 +478,7 @@ LABEL_47:
   return v7;
 }
 
-- (id)privacySpecifiersForPolicyOptions:(unint64_t)a3
+- (id)privacySpecifiersForPolicyOptions:(unint64_t)options
 {
   v5 = CLFLogSettings();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -491,7 +491,7 @@ LABEL_47:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     bundleIdentifier = self->_bundleIdentifier;
-    v8 = [(ClarityUISystemPolicyForApp *)self _PSSystemPolicyOptionsAsString:a3];
+    v8 = [(ClarityUISystemPolicyForApp *)self _PSSystemPolicyOptionsAsString:options];
     *buf = 138412546;
     v38 = bundleIdentifier;
     v39 = 2112;
@@ -499,7 +499,7 @@ LABEL_47:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Bundle ID: %@ - Policy Options to check for: %@", buf, 0x16u);
   }
 
-  v9 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:a3];
+  v9 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:options];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -546,7 +546,7 @@ LABEL_47:
         else
         {
           v21 = v15;
-          v22 = self;
+          selfCopy = self;
           v23 = v13;
           v24 = CLFLogSettings();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -557,7 +557,7 @@ LABEL_47:
           }
 
           v13 = v23;
-          self = v22;
+          self = selfCopy;
           v15 = v21;
           v9 = v31;
         }
@@ -599,28 +599,28 @@ LABEL_24:
   return v28;
 }
 
-- (id)_localizedExplanationsForServices:(id)a3
+- (id)_localizedExplanationsForServices:(id)services
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v4 = a3;
+  servicesCopy = services;
   v5 = [LSApplicationProxy applicationProxyForIdentifier:bundleIdentifier];
-  v6 = [NSSet setWithArray:v4];
+  v6 = [NSSet setWithArray:servicesCopy];
 
   v7 = [v5 localizedValuesForKeys:v6 fromTable:0];
 
   return v7;
 }
 
-- (id)developerExplanationsForSpecifiers:(id)a3
+- (id)developerExplanationsForSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v17 = [TCCKeyToSpecifierIdentifierMap allKeys];
-  v19 = [(ClarityUISystemPolicyForApp *)self _localizedExplanationsForServices:v17];
+  specifiersCopy = specifiers;
+  allKeys = [TCCKeyToSpecifierIdentifierMap allKeys];
+  v19 = [(ClarityUISystemPolicyForApp *)self _localizedExplanationsForServices:allKeys];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = specifiersCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v5)
   {
@@ -635,7 +635,7 @@ LABEL_24:
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
-        v9 = [v8 name];
+        name = [v8 name];
         v10 = [v8 propertyForKey:@"ClarityTCCIdentifier"];
         if (v10)
         {
@@ -684,7 +684,7 @@ LABEL_24:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *v29 = 138412546;
-            *&v29[4] = v9;
+            *&v29[4] = name;
             *&v29[12] = 2112;
             *&v29[14] = v8;
             _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "A valid tcc key was not found for tcc title: %@, specifier: %@", v29, 0x16u);
@@ -713,10 +713,10 @@ uint64_t __66__ClarityUISystemPolicyForApp_developerExplanationsForSpecifiers___
 
 - (id)photosServicesSpecifier
 {
-  v3 = [(ClarityUISystemPolicyForApp *)self requiresPhotosAccess];
-  v4 = [(ClarityUISystemPolicyForApp *)self requiresPhotosAddAccess];
-  v5 = v4;
-  if (v3 || v4)
+  requiresPhotosAccess = [(ClarityUISystemPolicyForApp *)self requiresPhotosAccess];
+  requiresPhotosAddAccess = [(ClarityUISystemPolicyForApp *)self requiresPhotosAddAccess];
+  v5 = requiresPhotosAddAccess;
+  if (requiresPhotosAccess || requiresPhotosAddAccess)
   {
     photosPrivacyController = self->_photosPrivacyController;
     if (!photosPrivacyController)
@@ -729,7 +729,7 @@ uint64_t __66__ClarityUISystemPolicyForApp_developerExplanationsForSpecifiers___
     }
 
     v10 = settingsLocString(@"PHOTOS", @"ClarityUISettings");
-    v6 = [(PSPhotosPolicyController *)photosPrivacyController appSpecifierWithName:v10 bundleID:self->_bundleIdentifier showPhotosAccess:v3 showPhotosAddAccess:v5];
+    v6 = [(PSPhotosPolicyController *)photosPrivacyController appSpecifierWithName:v10 bundleID:self->_bundleIdentifier showPhotosAccess:requiresPhotosAccess showPhotosAddAccess:v5];
 
     [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
     [v6 setObject:@"com.apple.mobileslideshow" forKeyedSubscript:PSLazyIconAppID];
@@ -791,7 +791,7 @@ uint64_t __66__ClarityUISystemPolicyForApp_developerExplanationsForSpecifiers___
   return v4;
 }
 
-- (id)locationStatus:(id)a3
+- (id)locationStatus:(id)status
 {
   v4 = CLCopyAppsUsingLocation();
   v5 = [v4 objectForKey:self->_bundleIdentifier];
@@ -802,23 +802,23 @@ uint64_t __66__ClarityUISystemPolicyForApp_developerExplanationsForSpecifiers___
   return v7;
 }
 
-- (id)authLevelStringForStatus:(unint64_t)a3
+- (id)authLevelStringForStatus:(unint64_t)status
 {
-  if (a3)
+  if (status)
   {
     v6 = @"NEVER_AUTHORIZATION";
   }
 
-  else if (a3)
+  else if (status)
   {
-    if ((a3 & 4) != 0)
+    if ((status & 4) != 0)
     {
       v6 = @"ALWAYS_AUTHORIZATION";
     }
 
     else
     {
-      if ((a3 & 2) == 0)
+      if ((status & 2) == 0)
       {
         v4 = 0;
 
@@ -839,17 +839,17 @@ uint64_t __66__ClarityUISystemPolicyForApp_developerExplanationsForSpecifiers___
   return v4;
 }
 
-- (id)_axPSSystemPolicyOptions:(unint64_t)a3
+- (id)_axPSSystemPolicyOptions:(unint64_t)options
 {
   v4 = objc_opt_new();
   v5 = v4;
-  if (a3)
+  if (options)
   {
     [v4 setObject:&off_27AA10 forKey:@"PSSystemPolicyOptionsNotifications"];
-    if ((a3 & 2) == 0)
+    if ((options & 2) == 0)
     {
 LABEL_3:
-      if ((a3 & 4) == 0)
+      if ((options & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -858,16 +858,16 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((options & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 setObject:&off_27A8A8 forKey:@"PSSystemPolicyOptionsBackgroundRefresh"];
-  if ((a3 & 4) == 0)
+  if ((options & 4) == 0)
   {
 LABEL_4:
-    if ((a3 & 8) == 0)
+    if ((options & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -877,10 +877,10 @@ LABEL_4:
 
 LABEL_42:
   [v5 setObject:&off_27A908 forKey:@"PSSystemPolicyOptionsPrivacyAddressBook"];
-  if ((a3 & 8) == 0)
+  if ((options & 8) == 0)
   {
 LABEL_5:
-    if ((a3 & 0x10) == 0)
+    if ((options & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -890,10 +890,10 @@ LABEL_5:
 
 LABEL_43:
   [v5 setObject:&off_27A8D8 forKey:@"PSSystemPolicyOptionsPrivacyCalendar"];
-  if ((a3 & 0x10) == 0)
+  if ((options & 0x10) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x20) == 0)
+    if ((options & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -903,10 +903,10 @@ LABEL_6:
 
 LABEL_44:
   [v5 setObject:&off_27AA40 forKey:@"PSSystemPolicyOptionsPrivacyReminders"];
-  if ((a3 & 0x20) == 0)
+  if ((options & 0x20) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x400) == 0)
+    if ((options & 0x400) == 0)
     {
       goto LABEL_8;
     }
@@ -916,10 +916,10 @@ LABEL_7:
 
 LABEL_45:
   [v5 setObject:&off_27AA28 forKey:@"PSSystemPolicyOptionsPrivacyPhotos"];
-  if ((a3 & 0x400) == 0)
+  if ((options & 0x400) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x800) == 0)
+    if ((options & 0x800) == 0)
     {
       goto LABEL_9;
     }
@@ -929,10 +929,10 @@ LABEL_8:
 
 LABEL_46:
   [v5 setObject:&off_27A8C0 forKey:@"PSSystemPolicyOptionsBluetooth"];
-  if ((a3 & 0x800) == 0)
+  if ((options & 0x800) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x1000) == 0)
+    if ((options & 0x1000) == 0)
     {
       goto LABEL_10;
     }
@@ -942,10 +942,10 @@ LABEL_9:
 
 LABEL_47:
   [v5 setObject:&off_27A9C8 forKey:@"PSSystemPolicyOptionsMicrophone"];
-  if ((a3 & 0x1000) == 0)
+  if ((options & 0x1000) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x2000) == 0)
+    if ((options & 0x2000) == 0)
     {
       goto LABEL_11;
     }
@@ -955,10 +955,10 @@ LABEL_10:
 
 LABEL_48:
   [v5 setObject:&off_27A9E0 forKey:@"PSSystemPolicyOptionsMotion"];
-  if ((a3 & 0x2000) == 0)
+  if ((options & 0x2000) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x4000) == 0)
+    if ((options & 0x4000) == 0)
     {
       goto LABEL_12;
     }
@@ -968,10 +968,10 @@ LABEL_11:
 
 LABEL_49:
   [v5 setObject:&off_27A8F0 forKey:@"PSSystemPolicyOptionsCamera"];
-  if ((a3 & 0x4000) == 0)
+  if ((options & 0x4000) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x8000) == 0)
+    if ((options & 0x8000) == 0)
     {
       goto LABEL_13;
     }
@@ -981,10 +981,10 @@ LABEL_12:
 
 LABEL_50:
   [v5 setObject:&off_27AC08 forKey:@"PSSystemPolicyOptionsUbiquity"];
-  if ((a3 & 0x8000) == 0)
+  if ((options & 0x8000) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x10000) == 0)
+    if ((options & 0x10000) == 0)
     {
       goto LABEL_14;
     }
@@ -994,10 +994,10 @@ LABEL_13:
 
 LABEL_51:
   [v5 setObject:&off_27AC20 forKey:@"PSSystemPolicyOptionsCellularData"];
-  if ((a3 & 0x10000) == 0)
+  if ((options & 0x10000) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x20000) == 0)
+    if ((options & 0x20000) == 0)
     {
       goto LABEL_15;
     }
@@ -1007,10 +1007,10 @@ LABEL_14:
 
 LABEL_52:
   [v5 setObject:&off_27A998 forKey:@"PSSystemPolicyOptionsLocation"];
-  if ((a3 & 0x20000) == 0)
+  if ((options & 0x20000) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x40000) == 0)
+    if ((options & 0x40000) == 0)
     {
       goto LABEL_16;
     }
@@ -1020,10 +1020,10 @@ LABEL_15:
 
 LABEL_53:
   [v5 setObject:&off_27AC38 forKey:@"PSSystemPolicyOptionsKeyboardNetworking"];
-  if ((a3 & 0x40000) == 0)
+  if ((options & 0x40000) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x80000) == 0)
+    if ((options & 0x80000) == 0)
     {
       goto LABEL_17;
     }
@@ -1033,10 +1033,10 @@ LABEL_16:
 
 LABEL_54:
   [v5 setObject:&off_27A968 forKey:@"PSSystemPolicyOptionsWillow"];
-  if ((a3 & 0x80000) == 0)
+  if ((options & 0x80000) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x100000) == 0)
+    if ((options & 0x100000) == 0)
     {
       goto LABEL_18;
     }
@@ -1046,10 +1046,10 @@ LABEL_17:
 
 LABEL_55:
   [v5 setObject:&off_27A9B0 forKey:@"PSSystemPolicyOptionsMediaLibrary"];
-  if ((a3 & 0x100000) == 0)
+  if ((options & 0x100000) == 0)
   {
 LABEL_18:
-    if ((a3 & 0x200000) == 0)
+    if ((options & 0x200000) == 0)
     {
       goto LABEL_19;
     }
@@ -1059,10 +1059,10 @@ LABEL_18:
 
 LABEL_56:
   [v5 setObject:&off_27AA70 forKey:@"PSSystemPolicyOptionsSpeechRecognition"];
-  if ((a3 & 0x200000) == 0)
+  if ((options & 0x200000) == 0)
   {
 LABEL_19:
-    if ((a3 & 0x400000) == 0)
+    if ((options & 0x400000) == 0)
     {
       goto LABEL_20;
     }
@@ -1072,10 +1072,10 @@ LABEL_19:
 
 LABEL_57:
   [v5 setObject:&off_27AC50 forKey:@"PSSystemPolicyOptionsVideoSubscriber"];
-  if ((a3 & 0x400000) == 0)
+  if ((options & 0x400000) == 0)
   {
 LABEL_20:
-    if ((a3 & 0x800000) == 0)
+    if ((options & 0x800000) == 0)
     {
       goto LABEL_21;
     }
@@ -1085,10 +1085,10 @@ LABEL_20:
 
 LABEL_58:
   [v5 setObject:&off_27AC68 forKey:@"PSSystemPolicyOptionsDocumentsAndData"];
-  if ((a3 & 0x800000) == 0)
+  if ((options & 0x800000) == 0)
   {
 LABEL_21:
-    if ((a3 & 0x1000000) == 0)
+    if ((options & 0x1000000) == 0)
     {
       goto LABEL_22;
     }
@@ -1098,10 +1098,10 @@ LABEL_21:
 
 LABEL_59:
   [v5 setObject:&off_27AA58 forKey:@"PSSystemPolicyOptionsAssistantAndSearch"];
-  if ((a3 & 0x1000000) == 0)
+  if ((options & 0x1000000) == 0)
   {
 LABEL_22:
-    if ((a3 & 0x2000000) == 0)
+    if ((options & 0x2000000) == 0)
     {
       goto LABEL_23;
     }
@@ -1111,10 +1111,10 @@ LABEL_22:
 
 LABEL_60:
   [v5 setObject:&off_27A938 forKey:@"PSSystemPolicyOptionsFaceID"];
-  if ((a3 & 0x2000000) == 0)
+  if ((options & 0x2000000) == 0)
   {
 LABEL_23:
-    if ((a3 & 0x4000000) == 0)
+    if ((options & 0x4000000) == 0)
     {
       goto LABEL_24;
     }
@@ -1124,10 +1124,10 @@ LABEL_23:
 
 LABEL_61:
   [v5 setObject:&off_27AC80 forKey:@"PSSystemPolicyOptionsPreferredLanguage"];
-  if ((a3 & 0x4000000) == 0)
+  if ((options & 0x4000000) == 0)
   {
 LABEL_24:
-    if ((a3 & 0x8000000) == 0)
+    if ((options & 0x8000000) == 0)
     {
       goto LABEL_25;
     }
@@ -1137,10 +1137,10 @@ LABEL_24:
 
 LABEL_62:
   [v5 setObject:&off_27A980 forKey:@"PSSystemPolicyOptionsNetwork"];
-  if ((a3 & 0x8000000) == 0)
+  if ((options & 0x8000000) == 0)
   {
 LABEL_25:
-    if ((a3 & 0x10000000) == 0)
+    if ((options & 0x10000000) == 0)
     {
       goto LABEL_26;
     }
@@ -1150,10 +1150,10 @@ LABEL_25:
 
 LABEL_63:
   [v5 setObject:&off_27AC98 forKey:@"PSSystemPolicyOptionsAccounts"];
-  if ((a3 & 0x10000000) == 0)
+  if ((options & 0x10000000) == 0)
   {
 LABEL_26:
-    if ((a3 & 0x20000000) == 0)
+    if ((options & 0x20000000) == 0)
     {
       goto LABEL_27;
     }
@@ -1163,10 +1163,10 @@ LABEL_26:
 
 LABEL_64:
   [v5 setObject:&off_27AA88 forKey:@"PSSystemPolicyOptionsCrossSiteTracking"];
-  if ((a3 & 0x20000000) == 0)
+  if ((options & 0x20000000) == 0)
   {
 LABEL_27:
-    if ((a3 & 0x40000000) == 0)
+    if ((options & 0x40000000) == 0)
     {
       goto LABEL_28;
     }
@@ -1176,10 +1176,10 @@ LABEL_27:
 
 LABEL_65:
   [v5 setObject:&off_27ACB0 forKey:@"PSSystemPolicyOptionsDefaultBrowser"];
-  if ((a3 & 0x40000000) == 0)
+  if ((options & 0x40000000) == 0)
   {
 LABEL_28:
-    if ((a3 & 0x80000000) == 0)
+    if ((options & 0x80000000) == 0)
     {
       goto LABEL_29;
     }
@@ -1189,10 +1189,10 @@ LABEL_28:
 
 LABEL_66:
   [v5 setObject:&off_27ACC8 forKey:@"PSSystemPolicyOptionsDefaultMailApp"];
-  if ((a3 & 0x80000000) == 0)
+  if ((options & 0x80000000) == 0)
   {
 LABEL_29:
-    if ((a3 & 0x100000000) == 0)
+    if ((options & 0x100000000) == 0)
     {
       goto LABEL_30;
     }
@@ -1202,10 +1202,10 @@ LABEL_29:
 
 LABEL_67:
   [v5 setObject:&off_27A920 forKey:@"PSSystemPolicyOptionsCrossAppTracking"];
-  if ((a3 & 0x100000000) == 0)
+  if ((options & 0x100000000) == 0)
   {
 LABEL_30:
-    if ((a3 & 0x400000000) == 0)
+    if ((options & 0x400000000) == 0)
     {
       goto LABEL_31;
     }
@@ -1215,10 +1215,10 @@ LABEL_30:
 
 LABEL_68:
   [v5 setObject:&off_27ACE0 forKey:@"PSSystemPolicyOptionsExposureNotification"];
-  if ((a3 & 0x400000000) == 0)
+  if ((options & 0x400000000) == 0)
   {
 LABEL_31:
-    if ((a3 & 0x800000000) == 0)
+    if ((options & 0x800000000) == 0)
     {
       goto LABEL_32;
     }
@@ -1228,10 +1228,10 @@ LABEL_31:
 
 LABEL_69:
   [v5 setObject:&off_27A950 forKey:@"PSSystemPolicyOptionsUserAvailability"];
-  if ((a3 & 0x800000000) == 0)
+  if ((options & 0x800000000) == 0)
   {
 LABEL_32:
-    if ((a3 & 0x1000000000) == 0)
+    if ((options & 0x1000000000) == 0)
     {
       goto LABEL_33;
     }
@@ -1241,10 +1241,10 @@ LABEL_32:
 
 LABEL_70:
   [v5 setObject:&off_27A9F8 forKey:@"PSSystemPolicyOptionsNearbyInteraction"];
-  if ((a3 & 0x1000000000) == 0)
+  if ((options & 0x1000000000) == 0)
   {
 LABEL_33:
-    if ((a3 & 0x8000000000) == 0)
+    if ((options & 0x8000000000) == 0)
     {
       goto LABEL_34;
     }
@@ -1254,10 +1254,10 @@ LABEL_33:
 
 LABEL_71:
   [v5 setObject:&off_27ACF8 forKey:@"PSSystemPolicyOptionsFamilyControls"];
-  if ((a3 & 0x8000000000) == 0)
+  if ((options & 0x8000000000) == 0)
   {
 LABEL_34:
-    if ((a3 & 0x10000000000) == 0)
+    if ((options & 0x10000000000) == 0)
     {
       goto LABEL_35;
     }
@@ -1267,10 +1267,10 @@ LABEL_34:
 
 LABEL_72:
   [v5 setObject:&off_27AD10 forKey:@"PSSystemPolicyOptionsTapToPayLock"];
-  if ((a3 & 0x10000000000) == 0)
+  if ((options & 0x10000000000) == 0)
   {
 LABEL_35:
-    if ((a3 & 0x20000000000) == 0)
+    if ((options & 0x20000000000) == 0)
     {
       goto LABEL_36;
     }
@@ -1280,17 +1280,17 @@ LABEL_35:
 
 LABEL_73:
   [v5 setObject:&off_27AD28 forKey:@"PSSystemPolicyOptionsLiveActivities"];
-  if ((a3 & 0x20000000000) == 0)
+  if ((options & 0x20000000000) == 0)
   {
 LABEL_36:
-    if ((a3 & 0x40000000000) == 0)
+    if ((options & 0x40000000000) == 0)
     {
       goto LABEL_37;
     }
 
 LABEL_75:
     [v5 setObject:&off_27AD58 forKey:@"PSSystemPolicyOptionsTapToPaySound"];
-    if ((a3 & 0x80000000000) == 0)
+    if ((options & 0x80000000000) == 0)
     {
       goto LABEL_39;
     }
@@ -1300,13 +1300,13 @@ LABEL_75:
 
 LABEL_74:
   [v5 setObject:&off_27AD40 forKey:@"PSSystemPolicyOptionsPasteboard"];
-  if ((a3 & 0x40000000000) != 0)
+  if ((options & 0x40000000000) != 0)
   {
     goto LABEL_75;
   }
 
 LABEL_37:
-  if ((a3 & 0x80000000000) != 0)
+  if ((options & 0x80000000000) != 0)
   {
 LABEL_38:
     [v5 setObject:&off_27AD70 forKey:@"PSSystemPolicyOptionsNudityDetection"];
@@ -1318,26 +1318,26 @@ LABEL_39:
   return v5;
 }
 
-- (id)_PSSystemPolicyOptionsAsArray:(unint64_t)a3
+- (id)_PSSystemPolicyOptionsAsArray:(unint64_t)array
 {
-  v3 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:a3];
-  v4 = [v3 allValues];
+  v3 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:array];
+  allValues = [v3 allValues];
 
-  return v4;
+  return allValues;
 }
 
-- (id)_PSSystemPolicyOptionsAsString:(unint64_t)a3
+- (id)_PSSystemPolicyOptionsAsString:(unint64_t)string
 {
-  v3 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:a3];
-  v4 = [v3 allKeys];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  v3 = [(ClarityUISystemPolicyForApp *)self _axPSSystemPolicyOptions:string];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys componentsJoinedByString:{@", "}];
 
   return v5;
 }
 
 - (void)record
 {
-  v3 = *a1;
+  v3 = *self;
   v4 = 138412546;
   v5 = v3;
   v6 = 2112;

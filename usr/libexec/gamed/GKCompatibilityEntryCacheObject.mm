@@ -1,6 +1,6 @@
 @interface GKCompatibilityEntryCacheObject
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKCompatibilityEntryCacheObject
@@ -13,32 +13,32 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKCompatibilityEntryCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKCompatibilityEntryCacheObject internalRepresentation]", [v7 UTF8String], 2676);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKCompatibilityEntryCacheObject internalRepresentation]", [lastPathComponent UTF8String], 2676);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
   v9 = +[GKCompatibilityEntryInternal internalRepresentation];
-  v10 = [(GKCompatibilityEntryCacheObject *)self bundleID];
-  [v9 setBundleID:v10];
+  bundleID = [(GKCompatibilityEntryCacheObject *)self bundleID];
+  [v9 setBundleID:bundleID];
 
-  v11 = [(GKCompatibilityEntryCacheObject *)self adamID];
-  [v9 setAdamID:v11];
+  adamID = [(GKCompatibilityEntryCacheObject *)self adamID];
+  [v9 setAdamID:adamID];
 
-  v12 = [(GKCompatibilityEntryCacheObject *)self platform];
-  [v9 setPlatform:{objc_msgSend(v12, "integerValue")}];
+  platform = [(GKCompatibilityEntryCacheObject *)self platform];
+  [v9 setPlatform:{objc_msgSend(platform, "integerValue")}];
 
   v13 = [NSMutableSet alloc];
-  v14 = [(GKCompatibilityEntryCacheObject *)self versions];
-  v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+  versions = [(GKCompatibilityEntryCacheObject *)self versions];
+  v15 = [v13 initWithCapacity:{objc_msgSend(versions, "count")}];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(GKCompatibilityEntryCacheObject *)self versions];
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  versions2 = [(GKCompatibilityEntryCacheObject *)self versions];
+  v17 = [versions2 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -49,14 +49,14 @@
       {
         if (*v37 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(versions2);
         }
 
-        v21 = [*(*(&v36 + 1) + 8 * i) version];
-        [v15 addObject:v21];
+        version = [*(*(&v36 + 1) + 8 * i) version];
+        [v15 addObject:version];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v18 = [versions2 countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v18);
@@ -64,15 +64,15 @@
 
   [v9 setVersions:v15];
   v22 = [NSMutableSet alloc];
-  v23 = [(GKCompatibilityEntryCacheObject *)self shortVersions];
-  v24 = [v22 initWithCapacity:{objc_msgSend(v23, "count")}];
+  shortVersions = [(GKCompatibilityEntryCacheObject *)self shortVersions];
+  v24 = [v22 initWithCapacity:{objc_msgSend(shortVersions, "count")}];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = [(GKCompatibilityEntryCacheObject *)self shortVersions];
-  v26 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  shortVersions2 = [(GKCompatibilityEntryCacheObject *)self shortVersions];
+  v26 = [shortVersions2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v26)
   {
     v27 = v26;
@@ -83,14 +83,14 @@
       {
         if (*v33 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(shortVersions2);
         }
 
-        v30 = [*(*(&v32 + 1) + 8 * j) shortVersion];
-        [v24 addObject:v30];
+        shortVersion = [*(*(&v32 + 1) + 8 * j) shortVersion];
+        [v24 addObject:shortVersion];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v27 = [shortVersions2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v27);
@@ -101,43 +101,43 @@
   return v9;
 }
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKCompatibilityEntryCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKCompatibilityEntryCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 2699);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKCompatibilityEntryCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 2699);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
-  v11 = [(GKCompatibilityEntryCacheObject *)self managedObjectContext];
+  managedObjectContext = [(GKCompatibilityEntryCacheObject *)self managedObjectContext];
   v60.receiver = self;
   v60.super_class = GKCompatibilityEntryCacheObject;
-  [(GKCacheObject *)&v60 updateWithServerRepresentation:v4];
-  v12 = [(GKCompatibilityEntryCacheObject *)self versions];
-  [v11 _gkDeleteObjects:v12];
+  [(GKCacheObject *)&v60 updateWithServerRepresentation:representationCopy];
+  versions = [(GKCompatibilityEntryCacheObject *)self versions];
+  [managedObjectContext _gkDeleteObjects:versions];
 
-  v13 = [v4 objectForKey:@"bundle-id"];
+  v13 = [representationCopy objectForKey:@"bundle-id"];
   [(GKCompatibilityEntryCacheObject *)self setBundleID:v13];
-  v14 = [v4 objectForKey:@"adam-id"];
+  v14 = [representationCopy objectForKey:@"adam-id"];
   [(GKCompatibilityEntryCacheObject *)self setAdamID:v14];
-  v15 = [v4 objectForKey:@"platform"];
+  v15 = [representationCopy objectForKey:@"platform"];
   v16 = [NSNumber numberWithInteger:[GKGameDescriptor gamePlatformFromServerGameDescriptorString:v15]];
   [(GKCompatibilityEntryCacheObject *)self setPlatform:v16];
 
-  v17 = [v4 objectForKey:@"versions"];
+  v17 = [representationCopy objectForKey:@"versions"];
   v18 = v17;
   if (v13 && [v17 count])
   {
     v45 = v15;
-    v48 = self;
-    v50 = v4;
+    selfCopy = self;
+    v50 = representationCopy;
     v19 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v18, "count")}];
     v56 = 0u;
     v57 = 0u;
@@ -174,7 +174,7 @@
           v27 = v26;
           if (v26)
           {
-            v28 = [(GKCacheObject *)[GKCompatibilityVersionCacheObject alloc] initWithManagedObjectContext:v11];
+            v28 = [(GKCacheObject *)[GKCompatibilityVersionCacheObject alloc] initWithManagedObjectContext:managedObjectContext];
             [(GKCompatibilityVersionCacheObject *)v28 setVersion:v27];
             [v19 addObject:v28];
           }
@@ -186,26 +186,26 @@
       while (v22);
     }
 
-    self = v48;
-    [(GKCompatibilityEntryCacheObject *)v48 setVersions:v19];
+    self = selfCopy;
+    [(GKCompatibilityEntryCacheObject *)selfCopy setVersions:v19];
 
-    v4 = v50;
+    representationCopy = v50;
     v18 = v43;
     v15 = v45;
   }
 
-  v29 = [(GKCompatibilityEntryCacheObject *)self shortVersions];
-  [v11 _gkDeleteObjects:v29];
+  shortVersions = [(GKCompatibilityEntryCacheObject *)self shortVersions];
+  [managedObjectContext _gkDeleteObjects:shortVersions];
 
-  v30 = [v4 objectForKey:@"short-versions"];
+  v30 = [representationCopy objectForKey:@"short-versions"];
   v31 = v30;
   if (v13 && [v30 count])
   {
     v44 = v18;
     v46 = v15;
     v47 = v13;
-    v49 = self;
-    v51 = v4;
+    selfCopy2 = self;
+    v51 = representationCopy;
     v32 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v31, "count")}];
     v52 = 0u;
     v53 = 0u;
@@ -242,7 +242,7 @@
           v40 = v39;
           if (v39)
           {
-            v41 = [(GKCacheObject *)[GKCompatibilityShortVersionCacheObject alloc] initWithManagedObjectContext:v11];
+            v41 = [(GKCacheObject *)[GKCompatibilityShortVersionCacheObject alloc] initWithManagedObjectContext:managedObjectContext];
             [(GKCompatibilityShortVersionCacheObject *)v41 setShortVersion:v40];
             [v32 addObject:v41];
           }
@@ -254,8 +254,8 @@
       while (v35);
     }
 
-    [(GKCompatibilityEntryCacheObject *)v49 setShortVersions:v32];
-    v4 = v51;
+    [(GKCompatibilityEntryCacheObject *)selfCopy2 setShortVersions:v32];
+    representationCopy = v51;
     v13 = v47;
     v18 = v44;
     v15 = v46;

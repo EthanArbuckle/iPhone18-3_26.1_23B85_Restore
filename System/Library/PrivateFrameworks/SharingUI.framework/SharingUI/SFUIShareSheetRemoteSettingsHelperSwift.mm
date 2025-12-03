@@ -1,23 +1,23 @@
 @interface SFUIShareSheetRemoteSettingsHelperSwift
-+ (void)updateHostingControllerWithHostingController:(id)a3 context:(id)a4 hostProcessType:(int64_t)a5 hostPresentationStyle:(int64_t)a6 optionGroups:(id)a7 collaborationOptionsData:(id)a8 cloudShareRequest:(id)a9 isSLMEnabled:(BOOL)a10 presentationDirectionType:(int64_t)a11;
-+ (void)updateHostingControllerWithHostingController:(id)a3 sessionIdentifier:(id)a4;
++ (void)updateHostingControllerWithHostingController:(id)controller context:(id)context hostProcessType:(int64_t)type hostPresentationStyle:(int64_t)style optionGroups:(id)groups collaborationOptionsData:(id)data cloudShareRequest:(id)request isSLMEnabled:(BOOL)self0 presentationDirectionType:(int64_t)self1;
++ (void)updateHostingControllerWithHostingController:(id)controller sessionIdentifier:(id)identifier;
 @end
 
 @implementation SFUIShareSheetRemoteSettingsHelperSwift
 
-+ (void)updateHostingControllerWithHostingController:(id)a3 context:(id)a4 hostProcessType:(int64_t)a5 hostPresentationStyle:(int64_t)a6 optionGroups:(id)a7 collaborationOptionsData:(id)a8 cloudShareRequest:(id)a9 isSLMEnabled:(BOOL)a10 presentationDirectionType:(int64_t)a11
++ (void)updateHostingControllerWithHostingController:(id)controller context:(id)context hostProcessType:(int64_t)type hostPresentationStyle:(int64_t)style optionGroups:(id)groups collaborationOptionsData:(id)data cloudShareRequest:(id)request isSLMEnabled:(BOOL)self0 presentationDirectionType:(int64_t)self1
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a7);
-  MEMORY[0x1E69E5928](a8);
-  MEMORY[0x1E69E5928](a9);
-  if (a7)
+  MEMORY[0x1E69E5928](controller);
+  MEMORY[0x1E69E5928](context);
+  MEMORY[0x1E69E5928](groups);
+  MEMORY[0x1E69E5928](data);
+  MEMORY[0x1E69E5928](request);
+  if (groups)
   {
     sub_1B9ECF4D8();
     v12 = sub_1B9ED8C0C();
-    MEMORY[0x1E69E5920](a7);
+    MEMORY[0x1E69E5920](groups);
     v13 = v12;
   }
 
@@ -28,26 +28,26 @@
 
   v11 = sub_1B9ED849C();
   swift_getObjCClassMetadata();
-  static SFUIShareSheetRemoteSettingsHelperSwift.updateHostingController(hostingController:context:hostProcessType:hostPresentationStyle:optionGroups:collaborationOptionsData:cloudShareRequest:isSLMEnabled:presentationDirectionType:)(a3, a4, a5, a6, v13, a8, a9, v11 & 1, a11);
+  static SFUIShareSheetRemoteSettingsHelperSwift.updateHostingController(hostingController:context:hostProcessType:hostPresentationStyle:optionGroups:collaborationOptionsData:cloudShareRequest:isSLMEnabled:presentationDirectionType:)(controller, context, type, style, v13, data, request, v11 & 1, directionType);
 
-  MEMORY[0x1E69E5920](a9);
-  MEMORY[0x1E69E5920](a8);
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](request);
+  MEMORY[0x1E69E5920](data);
+  MEMORY[0x1E69E5920](context);
+  MEMORY[0x1E69E5920](controller);
 }
 
-+ (void)updateHostingControllerWithHostingController:(id)a3 sessionIdentifier:(id)a4
++ (void)updateHostingControllerWithHostingController:(id)controller sessionIdentifier:(id)identifier
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
+  MEMORY[0x1E69E5928](controller);
+  MEMORY[0x1E69E5928](identifier);
   v5 = sub_1B9ED8AAC();
   v6 = v4;
   swift_getObjCClassMetadata();
-  static SFUIShareSheetRemoteSettingsHelperSwift.updateHostingController(hostingController:sessionIdentifier:)(a3, v5, v6);
+  static SFUIShareSheetRemoteSettingsHelperSwift.updateHostingController(hostingController:sessionIdentifier:)(controller, v5, v6);
 
-  MEMORY[0x1E69E5920](a4);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](identifier);
+  MEMORY[0x1E69E5920](controller);
 }
 
 @end

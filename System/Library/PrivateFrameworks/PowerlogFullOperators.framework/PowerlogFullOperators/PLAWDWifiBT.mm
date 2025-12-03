@@ -2,32 +2,32 @@
 + (id)entryAggregateDefinitionAwdBT;
 + (id)entryAggregateDefinitionAwdWifi;
 + (id)entryAggregateDefinitions;
-+ (id)getSharedObjWithOperator:(id)a3;
-- (BOOL)submitBtDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (BOOL)submitWiFiDataToAWDServer:(id)a3 withAwdConn:(id)a4;
-- (void)addEntryToBTTable:(id)a3 withValue:(double)a4;
-- (void)addEntryToWiFiTable:(id)a3 withValue:(double)a4 andBand:(id)a5;
-- (void)handleBTCallback:(id)a3;
-- (void)handleBTPowerCallback:(id)a3;
-- (void)handleWifiCallback:(id)a3;
++ (id)getSharedObjWithOperator:(id)operator;
+- (BOOL)submitBtDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (BOOL)submitWiFiDataToAWDServer:(id)server withAwdConn:(id)conn;
+- (void)addEntryToBTTable:(id)table withValue:(double)value;
+- (void)addEntryToWiFiTable:(id)table withValue:(double)value andBand:(id)band;
+- (void)handleBTCallback:(id)callback;
+- (void)handleBTPowerCallback:(id)callback;
+- (void)handleWifiCallback:(id)callback;
 - (void)resetBTTable;
 - (void)resetWifiTable;
 - (void)startBtMetricCollection;
-- (void)startMetricCollection:(id)a3;
+- (void)startMetricCollection:(id)collection;
 - (void)startWifiMetricCollection;
-- (void)stopMetricCollection:(id)a3;
+- (void)stopMetricCollection:(id)collection;
 @end
 
 @implementation PLAWDWifiBT
 
-+ (id)getSharedObjWithOperator:(id)a3
++ (id)getSharedObjWithOperator:(id)operator
 {
   v3 = plAwdWifiBT;
   if (!plAwdWifiBT)
   {
-    v4 = a3;
-    v5 = [(PLAWDAuxMetrics *)[PLAWDWifiBT alloc] initWithOperator:v4];
+    operatorCopy = operator;
+    v5 = [(PLAWDAuxMetrics *)[PLAWDWifiBT alloc] initWithOperator:operatorCopy];
 
     v6 = plAwdWifiBT;
     plAwdWifiBT = v5;
@@ -42,11 +42,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"AwdWifi";
-  v3 = [a1 entryAggregateDefinitionAwdWifi];
+  entryAggregateDefinitionAwdWifi = [self entryAggregateDefinitionAwdWifi];
   v8[1] = @"AwdBT";
-  v9[0] = v3;
-  v4 = [a1 entryAggregateDefinitionAwdBT];
-  v9[1] = v4;
+  v9[0] = entryAggregateDefinitionAwdWifi;
+  entryAggregateDefinitionAwdBT = [self entryAggregateDefinitionAwdBT];
+  v9[1] = entryAggregateDefinitionAwdBT;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -54,11 +54,11 @@
   return v5;
 }
 
-- (void)startMetricCollection:(id)a3
+- (void)startMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 longValue];
-  if (v5 == 2031624)
+  collectionCopy = collection;
+  longValue = [collectionCopy longValue];
+  if (longValue == 2031624)
   {
     [(PLAWDWifiBT *)self startBtMetricCollection];
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -79,9 +79,9 @@
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Start BT collection ", @"*******PLAWDMetricsService*******"];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT startMetricCollection:]"];
-        [v14 logMessage:v7 fromFile:v16 fromFunction:v17 fromLineNumber:98];
+        [v14 logMessage:v7 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:98];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -94,7 +94,7 @@
     }
   }
 
-  else if (v5 == 2031621)
+  else if (longValue == 2031621)
   {
     [(PLAWDWifiBT *)self startWifiMetricCollection];
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -115,9 +115,9 @@
         v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Start Wifi collection ", @"*******PLAWDMetricsService*******"];
         v8 = MEMORY[0x277D3F178];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v10 = [v9 lastPathComponent];
+        lastPathComponent2 = [v9 lastPathComponent];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT startMetricCollection:]"];
-        [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:92];
+        [v8 logMessage:v7 fromFile:lastPathComponent2 fromFunction:v11 fromLineNumber:92];
 
         v12 = PLLogCommon();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -130,8 +130,8 @@ LABEL_15:
     }
   }
 
-  v18 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v18 addObject:v4];
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics addObject:collectionCopy];
 }
 
 uint64_t __37__PLAWDWifiBT_startMetricCollection___block_invoke(uint64_t a1)
@@ -148,14 +148,14 @@ uint64_t __37__PLAWDWifiBT_startMetricCollection___block_invoke_102(uint64_t a1)
   return result;
 }
 
-- (void)stopMetricCollection:(id)a3
+- (void)stopMetricCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PLAWDAuxMetrics *)self runningMetrics];
-  [v5 removeObject:v4];
+  collectionCopy = collection;
+  runningMetrics = [(PLAWDAuxMetrics *)self runningMetrics];
+  [runningMetrics removeObject:collectionCopy];
 
-  v6 = [v4 longValue];
-  if (v6 == 2031624)
+  longValue = [collectionCopy longValue];
+  if (longValue == 2031624)
   {
     [(PLAWDWifiBT *)self setBtEventCallback:0];
     [(PLAWDWifiBT *)self setBtPowerCallback:0];
@@ -178,9 +178,9 @@ uint64_t __37__PLAWDWifiBT_startMetricCollection___block_invoke_102(uint64_t a1)
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Stop BT collection ", @"*******PLAWDMetricsService*******"];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT stopMetricCollection:]"];
-        [v15 logMessage:v8 fromFile:v17 fromFunction:v18 fromLineNumber:123];
+        [v15 logMessage:v8 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:123];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -193,7 +193,7 @@ uint64_t __37__PLAWDWifiBT_startMetricCollection___block_invoke_102(uint64_t a1)
     }
   }
 
-  else if (v6 == 2031621)
+  else if (longValue == 2031621)
   {
     [(PLAWDWifiBT *)self setWifiEventCallback:0];
     [(PLAWDWifiBT *)self setWifiRailCallback:0];
@@ -215,9 +215,9 @@ uint64_t __37__PLAWDWifiBT_startMetricCollection___block_invoke_102(uint64_t a1)
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Stop Wifi collection ", @"*******PLAWDMetricsService*******"];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent2 = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT stopMetricCollection:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:116];
+        [v9 logMessage:v8 fromFile:lastPathComponent2 fromFunction:v12 fromLineNumber:116];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -230,8 +230,8 @@ LABEL_15:
     }
   }
 
-  v19 = [(PLAWDAuxMetrics *)self runningMetrics];
-  v20 = [v19 count];
+  runningMetrics2 = [(PLAWDAuxMetrics *)self runningMetrics];
+  v20 = [runningMetrics2 count];
 
   if (!v20)
   {
@@ -254,25 +254,25 @@ uint64_t __36__PLAWDWifiBT_stopMetricCollection___block_invoke_111(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitDataToAWDServer:(id)server withAwdConn:(id)conn
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 longValue];
-  if (v8 == 2031624)
+  serverCopy = server;
+  connCopy = conn;
+  longValue = [serverCopy longValue];
+  if (longValue == 2031624)
   {
-    [(PLAWDWifiBT *)self submitBtDataToAWDServer:v6 withAwdConn:v7];
+    [(PLAWDWifiBT *)self submitBtDataToAWDServer:serverCopy withAwdConn:connCopy];
   }
 
   else
   {
-    if (v8 != 2031621)
+    if (longValue != 2031621)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    [(PLAWDWifiBT *)self submitWiFiDataToAWDServer:v6 withAwdConn:v7];
+    [(PLAWDWifiBT *)self submitWiFiDataToAWDServer:serverCopy withAwdConn:connCopy];
   }
 
   v9 = 1;
@@ -294,17 +294,17 @@ LABEL_7:
   v27[0] = v16;
   v26[1] = *MEMORY[0x277D3F540];
   v22[0] = @"WifiState";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_StringFormat];
-  v23[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v23[0] = commonTypeDict_StringFormat;
   v22[1] = @"Band";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v23[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v23[1] = commonTypeDict_StringFormat2;
   v22[2] = @"Value";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v23[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v23[2] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:3];
   v27[1] = v8;
   v26[2] = *MEMORY[0x277D3F478];
@@ -334,17 +334,17 @@ LABEL_7:
   [(PLAWDWifiBT *)self setIsWiFiStart:1];
   v3 = [MEMORY[0x277D3F6E0] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F7F8]];
   v4 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v5 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke;
   v8[3] = &unk_279A58F10;
   v8[4] = self;
-  v6 = [v4 initWithOperator:v5 forEntryKey:v3 withBlock:v8];
+  v6 = [v4 initWithOperator:operator forEntryKey:v3 withBlock:v8];
 
   [(PLAWDWifiBT *)self setWifiEventCallback:v6];
-  v7 = [(PLAWDWifiBT *)self wifiEventCallback];
-  [v7 requestEntry];
+  wifiEventCallback = [(PLAWDWifiBT *)self wifiEventCallback];
+  [wifiEventCallback requestEntry];
 }
 
 uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t result, uint64_t a2)
@@ -365,33 +365,33 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
   [(PLAWDAuxMetrics *)&v4 resetTableWithEntryKey:v3];
 }
 
-- (void)addEntryToWiFiTable:(id)a3 withValue:(double)a4 andBand:(id)a5
+- (void)addEntryToWiFiTable:(id)table withValue:(double)value andBand:(id)band
 {
   v8 = *MEMORY[0x277D3F5B8];
-  v9 = a5;
-  v10 = a3;
+  bandCopy = band;
+  tableCopy = table;
   v14 = [(PLOperator *)PLAWDMetricsService entryKeyForType:v8 andName:@"AwdWifi"];
   v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14];
-  [v11 setObject:v10 forKeyedSubscript:@"WifiState"];
+  [v11 setObject:tableCopy forKeyedSubscript:@"WifiState"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [v11 setObject:v12 forKeyedSubscript:@"Value"];
 
-  [v11 setObject:v9 forKeyedSubscript:@"Band"];
-  v13 = [(PLAWDAuxMetrics *)self operator];
-  [v13 logEntry:v11];
+  [v11 setObject:bandCopy forKeyedSubscript:@"Band"];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  [operator logEntry:v11];
 }
 
-- (void)handleWifiCallback:(id)a3
+- (void)handleWifiCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"entry"];
+  callbackCopy = callback;
+  v5 = [callbackCopy objectForKey:@"entry"];
   if (!v5)
   {
     goto LABEL_146;
   }
 
-  v249 = v4;
+  v249 = callbackCopy;
   if ([(PLAWDWifiBT *)self isWiFiStart])
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
@@ -413,9 +413,9 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Wifi first DiffProperty entry", @"*******PLAWDMetricsService*******"];
         v9 = MEMORY[0x277D3F178];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v11 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-        [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:243];
+        [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:243];
 
         v13 = PLLogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -448,9 +448,9 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
           v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Wifi DiffProperty first entry - dropped - %@", @"*******PLAWDMetricsService*******", v5];
           v16 = MEMORY[0x277D3F178];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v18 = [v17 lastPathComponent];
+          lastPathComponent2 = [v17 lastPathComponent];
           v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-          [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:248];
+          [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:248];
 
           v20 = PLLogCommon();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -545,9 +545,9 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
 
         v37 = MEMORY[0x277D3F178];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v39 = [v38 lastPathComponent];
+        lastPathComponent3 = [v38 lastPathComponent];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-        [v37 logMessage:v36 fromFile:v39 fromFunction:v40 fromLineNumber:266];
+        [v37 logMessage:v36 fromFile:lastPathComponent3 fromFunction:v40 fromLineNumber:266];
 
         v41 = PLLogCommon();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -603,9 +603,9 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
 
       v54 = MEMORY[0x277D3F178];
       v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v56 = [v55 lastPathComponent];
+      lastPathComponent4 = [v55 lastPathComponent];
       v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v54 logMessage:v53 fromFile:v56 fromFunction:v57 fromLineNumber:273];
+      [v54 logMessage:v53 fromFile:lastPathComponent4 fromFunction:v57 fromLineNumber:273];
 
       v58 = PLLogCommon();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -638,9 +638,9 @@ uint64_t __40__PLAWDWifiBT_startWifiMetricCollection__block_invoke(uint64_t resu
 
       v65 = MEMORY[0x277D3F178];
       v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v67 = [v66 lastPathComponent];
+      lastPathComponent5 = [v66 lastPathComponent];
       v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v65 logMessage:v64 fromFile:v67 fromFunction:v68 fromLineNumber:274];
+      [v65 logMessage:v64 fromFile:lastPathComponent5 fromFunction:v68 fromLineNumber:274];
 
       v69 = PLLogCommon();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
@@ -687,9 +687,9 @@ LABEL_50:
 
         v84 = MEMORY[0x277D3F178];
         v85 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v86 = [v85 lastPathComponent];
+        lastPathComponent6 = [v85 lastPathComponent];
         v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-        [v84 logMessage:v83 fromFile:v86 fromFunction:v87 fromLineNumber:281];
+        [v84 logMessage:v83 fromFile:lastPathComponent6 fromFunction:v87 fromLineNumber:281];
 
         v88 = PLLogCommon();
         if (os_log_type_enabled(v88, OS_LOG_TYPE_DEBUG))
@@ -733,9 +733,9 @@ LABEL_50:
 
         v99 = MEMORY[0x277D3F178];
         v100 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v101 = [v100 lastPathComponent];
+        lastPathComponent7 = [v100 lastPathComponent];
         v102 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-        [v99 logMessage:v98 fromFile:v101 fromFunction:v102 fromLineNumber:288];
+        [v99 logMessage:v98 fromFile:lastPathComponent7 fromFunction:v102 fromLineNumber:288];
 
         v103 = PLLogCommon();
         if (os_log_type_enabled(v103, OS_LOG_TYPE_DEBUG))
@@ -775,13 +775,13 @@ LABEL_50:
         v110 = MEMORY[0x277CCACA8];
         v111 = [v5 objectForKeyedSubscript:@"HSICActiveDuration"];
         [v111 doubleValue];
-        v113 = [v110 stringWithFormat:@"kPLWATXDuration = %f", v112];
+        v112 = [v110 stringWithFormat:@"kPLWATXDuration = %f", v112];
 
         v114 = MEMORY[0x277D3F178];
         v115 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v116 = [v115 lastPathComponent];
+        lastPathComponent8 = [v115 lastPathComponent];
         v117 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-        [v114 logMessage:v113 fromFile:v116 fromFunction:v117 fromLineNumber:295];
+        [v114 logMessage:v112 fromFile:lastPathComponent8 fromFunction:v117 fromLineNumber:295];
 
         v118 = PLLogCommon();
         if (os_log_type_enabled(v118, OS_LOG_TYPE_DEBUG))
@@ -857,13 +857,13 @@ LABEL_89:
       v133 = MEMORY[0x277CCACA8];
       v134 = [v5 objectForKeyedSubscript:@"PNOScanSSIDDuration"];
       [v134 doubleValue];
-      v136 = [v133 stringWithFormat:@"kPLWAPNOScanSSIDDuration = %f", v135];
+      v135 = [v133 stringWithFormat:@"kPLWAPNOScanSSIDDuration = %f", v135];
 
       v137 = MEMORY[0x277D3F178];
       v138 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v139 = [v138 lastPathComponent];
+      lastPathComponent9 = [v138 lastPathComponent];
       v140 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v137 logMessage:v136 fromFile:v139 fromFunction:v140 fromLineNumber:305];
+      [v137 logMessage:v135 fromFile:lastPathComponent9 fromFunction:v140 fromLineNumber:305];
 
       v141 = PLLogCommon();
       if (os_log_type_enabled(v141, OS_LOG_TYPE_DEBUG))
@@ -892,13 +892,13 @@ LABEL_89:
       v144 = MEMORY[0x277CCACA8];
       v145 = [v5 objectForKeyedSubscript:@"PNOBSSIDDuration"];
       [v145 doubleValue];
-      v147 = [v144 stringWithFormat:@"kPLWAPNOScanBSSIDDuration = %f", v146];
+      v146 = [v144 stringWithFormat:@"kPLWAPNOScanBSSIDDuration = %f", v146];
 
       v148 = MEMORY[0x277D3F178];
       v149 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v150 = [v149 lastPathComponent];
+      lastPathComponent10 = [v149 lastPathComponent];
       v151 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v148 logMessage:v147 fromFile:v150 fromFunction:v151 fromLineNumber:306];
+      [v148 logMessage:v146 fromFile:lastPathComponent10 fromFunction:v151 fromLineNumber:306];
 
       v152 = PLLogCommon();
       if (os_log_type_enabled(v152, OS_LOG_TYPE_DEBUG))
@@ -927,13 +927,13 @@ LABEL_89:
       v155 = MEMORY[0x277CCACA8];
       v156 = [v5 objectForKeyedSubscript:@"RoamScanDuration"];
       [v156 doubleValue];
-      v158 = [v155 stringWithFormat:@"kPLWARoamScanDuration = %f", v157];
+      v157 = [v155 stringWithFormat:@"kPLWARoamScanDuration = %f", v157];
 
       v159 = MEMORY[0x277D3F178];
       v160 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v161 = [v160 lastPathComponent];
+      lastPathComponent11 = [v160 lastPathComponent];
       v162 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v159 logMessage:v158 fromFile:v161 fromFunction:v162 fromLineNumber:307];
+      [v159 logMessage:v157 fromFile:lastPathComponent11 fromFunction:v162 fromLineNumber:307];
 
       v163 = PLLogCommon();
       if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -962,13 +962,13 @@ LABEL_89:
       v166 = MEMORY[0x277CCACA8];
       v167 = [v5 objectForKeyedSubscript:@"AssociatedScanDuration"];
       [v167 doubleValue];
-      v169 = [v166 stringWithFormat:@"kPLWAAssociatedScanDuration = %f", v168];
+      v168 = [v166 stringWithFormat:@"kPLWAAssociatedScanDuration = %f", v168];
 
       v170 = MEMORY[0x277D3F178];
       v171 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v172 = [v171 lastPathComponent];
+      lastPathComponent12 = [v171 lastPathComponent];
       v173 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v170 logMessage:v169 fromFile:v172 fromFunction:v173 fromLineNumber:308];
+      [v170 logMessage:v168 fromFile:lastPathComponent12 fromFunction:v173 fromLineNumber:308];
 
       v174 = PLLogCommon();
       if (os_log_type_enabled(v174, OS_LOG_TYPE_DEBUG))
@@ -997,13 +997,13 @@ LABEL_89:
       v177 = MEMORY[0x277CCACA8];
       v178 = [v5 objectForKeyedSubscript:@"OtherScanDuration"];
       [v178 doubleValue];
-      v180 = [v177 stringWithFormat:@"kPLWAOtherScanDuration = %f", v179];
+      v179 = [v177 stringWithFormat:@"kPLWAOtherScanDuration = %f", v179];
 
       v181 = MEMORY[0x277D3F178];
       v182 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v183 = [v182 lastPathComponent];
+      lastPathComponent13 = [v182 lastPathComponent];
       v184 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v181 logMessage:v180 fromFile:v183 fromFunction:v184 fromLineNumber:309];
+      [v181 logMessage:v179 fromFile:lastPathComponent13 fromFunction:v184 fromLineNumber:309];
 
       v185 = PLLogCommon();
       if (os_log_type_enabled(v185, OS_LOG_TYPE_DEBUG))
@@ -1032,13 +1032,13 @@ LABEL_89:
       v188 = MEMORY[0x277CCACA8];
       v189 = [v5 objectForKeyedSubscript:@"UserScanDuration"];
       [v189 doubleValue];
-      v191 = [v188 stringWithFormat:@"kPLWAUserScanDuration = %f", v190];
+      v190 = [v188 stringWithFormat:@"kPLWAUserScanDuration = %f", v190];
 
       v192 = MEMORY[0x277D3F178];
       v193 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v194 = [v193 lastPathComponent];
+      lastPathComponent14 = [v193 lastPathComponent];
       v195 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v192 logMessage:v191 fromFile:v194 fromFunction:v195 fromLineNumber:310];
+      [v192 logMessage:v190 fromFile:lastPathComponent14 fromFunction:v195 fromLineNumber:310];
 
       v196 = PLLogCommon();
       if (os_log_type_enabled(v196, OS_LOG_TYPE_DEBUG))
@@ -1067,13 +1067,13 @@ LABEL_89:
       v199 = MEMORY[0x277CCACA8];
       v200 = [v5 objectForKeyedSubscript:@"ScanDuration"];
       [v200 doubleValue];
-      v202 = [v199 stringWithFormat:@"kPLWAScanDuration = %f", v201];
+      v201 = [v199 stringWithFormat:@"kPLWAScanDuration = %f", v201];
 
       v203 = MEMORY[0x277D3F178];
       v204 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v205 = [v204 lastPathComponent];
+      lastPathComponent15 = [v204 lastPathComponent];
       v206 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleWifiCallback:]"];
-      [v203 logMessage:v202 fromFile:v205 fromFunction:v206 fromLineNumber:311];
+      [v203 logMessage:v201 fromFile:lastPathComponent15 fromFunction:v206 fromLineNumber:311];
 
       v207 = PLLogCommon();
       if (os_log_type_enabled(v207, OS_LOG_TYPE_DEBUG))
@@ -1132,7 +1132,7 @@ LABEL_139:
   [v236 doubleValue];
   v238 = v237;
 
-  v4 = v249;
+  callbackCopy = v249;
   if (v238 > 0.0)
   {
     v15 = [v5 objectForKeyedSubscript:@"PCIEActiveDuration"];
@@ -1249,28 +1249,28 @@ uint64_t __34__PLAWDWifiBT_handleWifiCallback___block_invoke_255(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitWiFiDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitWiFiDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v93 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 newMetricContainerWithIdentifier:{objc_msgSend(a3, "unsignedIntValue")}];
+  connCopy = conn;
+  v7 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(server, "unsignedIntValue")}];
   if (v7)
   {
-    v8 = [(PLAWDWifiBT *)self wifiEventCallback];
-    [v8 requestEntry];
+    wifiEventCallback = [(PLAWDWifiBT *)self wifiEventCallback];
+    [wifiEventCallback requestEntry];
 
     sleep(5u);
     v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v9 timeIntervalSince1970];
     v12 = v11;
-    [v10 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v14 = v13 - v12;
 
     v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AwdWifi"];
-    v16 = [(PLAWDAuxMetrics *)self operator];
-    v17 = [v16 storage];
-    v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
 
     v83 = v18;
     v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
@@ -1294,9 +1294,9 @@ uint64_t __34__PLAWDWifiBT_handleWifiCallback___block_invoke_255(uint64_t a1)
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : %@", @"*******PLAWDMetricsService*******", v19];
         v23 = MEMORY[0x277D3F178];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v25 = [v24 lastPathComponent];
+        lastPathComponent = [v24 lastPathComponent];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitWiFiDataToAWDServer:withAwdConn:]"];
-        [v23 logMessage:v22 fromFile:v25 fromFunction:v26 fromLineNumber:357];
+        [v23 logMessage:v22 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:357];
 
         v27 = PLLogCommon();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -1312,7 +1312,7 @@ uint64_t __34__PLAWDWifiBT_handleWifiCallback___block_invoke_255(uint64_t a1)
     {
       v78 = v15;
       v79 = v7;
-      v80 = self;
+      selfCopy = self;
       [v20 setTimestamp:0];
       [v20 setWifi2P4GHzRxDuration:0];
       [v20 setWifi2P4GHzTxDuration:0];
@@ -1332,7 +1332,7 @@ uint64_t __34__PLAWDWifiBT_handleWifiCallback___block_invoke_255(uint64_t a1)
       [v20 setWifiSleepDuration:0];
       [v20 setWifiTotalDuration:0];
       [v20 setWifiTotalPowerMicroWatt:0];
-      [v20 setTimestamp:{objc_msgSend(v6, "getAWDTimestamp")}];
+      [v20 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
       v89 = 0u;
       v90 = 0u;
       v87 = 0u;
@@ -1540,8 +1540,8 @@ LABEL_30:
 
       v7 = v79;
       [v79 setMetric:v20];
-      self = v80;
-      [(PLAWDWifiBT *)v80 setWifiSubmitCnt:[(PLAWDWifiBT *)v80 wifiSubmitCnt]+ 1];
+      self = selfCopy;
+      [(PLAWDWifiBT *)selfCopy setWifiSubmitCnt:[(PLAWDWifiBT *)selfCopy wifiSubmitCnt]+ 1];
       v19 = v82;
       v15 = v78;
       if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1559,12 +1559,12 @@ LABEL_30:
 
         if (submitWiFiDataToAWDServer_withAwdConn__classDebugEnabled_277 == 1)
         {
-          v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"Submit WiFi stats: submit cnt = %ld", -[PLAWDWifiBT wifiSubmitCnt](v80, "wifiSubmitCnt")];
+          v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"Submit WiFi stats: submit cnt = %ld", -[PLAWDWifiBT wifiSubmitCnt](selfCopy, "wifiSubmitCnt")];
           v64 = MEMORY[0x277D3F178];
           v65 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v66 = [v65 lastPathComponent];
+          lastPathComponent2 = [v65 lastPathComponent];
           v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitWiFiDataToAWDServer:withAwdConn:]"];
-          [v64 logMessage:v63 fromFile:v66 fromFunction:v67 fromLineNumber:444];
+          [v64 logMessage:v63 fromFile:lastPathComponent2 fromFunction:v67 fromLineNumber:444];
 
           v68 = PLLogCommon();
           if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -1599,9 +1599,9 @@ LABEL_30:
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Submit WiFi stats: Empty container!!", @"*******PLAWDMetricsService*******"];
       v71 = MEMORY[0x277D3F178];
       v72 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v73 = [v72 lastPathComponent];
+      lastPathComponent3 = [v72 lastPathComponent];
       v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitWiFiDataToAWDServer:withAwdConn:]"];
-      [v71 logMessage:v15 fromFile:v73 fromFunction:v74 fromLineNumber:448];
+      [v71 logMessage:v15 fromFile:lastPathComponent3 fromFunction:v74 fromLineNumber:448];
 
       v69 = PLLogCommon();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
@@ -1614,7 +1614,7 @@ LABEL_63:
   }
 
   [(PLAWDWifiBT *)self resetWifiTable];
-  v75 = [v6 submitMetric:v7];
+  v75 = [connCopy submitMetric:v7];
 
   v76 = *MEMORY[0x277D85DE8];
   return v75;
@@ -1654,13 +1654,13 @@ uint64_t __53__PLAWDWifiBT_submitWiFiDataToAWDServer_withAwdConn___block_invoke_
   v25[0] = v3;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"BTState";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v20[1] = @"BTValue";
-  v21[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_RealFormat_aggregateFunction_sum];
-  v21[1] = v7;
+  v21[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat_aggregateFunction_sum = [mEMORY[0x277D3F198]2 commonTypeDict_RealFormat_aggregateFunction_sum];
+  v21[1] = commonTypeDict_RealFormat_aggregateFunction_sum;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v25[1] = v8;
   v24[2] = *MEMORY[0x277D3F478];
@@ -1690,31 +1690,31 @@ uint64_t __53__PLAWDWifiBT_submitWiFiDataToAWDServer_withAwdConn___block_invoke_
   [(PLAWDWifiBT *)self setIsBTRailStart:1];
   v3 = [MEMORY[0x277D3F690] entryKeyForType:*MEMORY[0x277D3F5D0] andName:*MEMORY[0x277D3F760]];
   v4 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v5 = [(PLAWDAuxMetrics *)self operator];
+  operator = [(PLAWDAuxMetrics *)self operator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __38__PLAWDWifiBT_startBtMetricCollection__block_invoke;
   v14[3] = &unk_279A58F10;
   v14[4] = self;
-  v6 = [v4 initWithOperator:v5 forEntryKey:v3 withBlock:v14];
+  v6 = [v4 initWithOperator:operator forEntryKey:v3 withBlock:v14];
 
   [(PLAWDWifiBT *)self setBtEventCallback:v6];
-  v7 = [(PLAWDWifiBT *)self btEventCallback];
-  [v7 requestEntry];
+  btEventCallback = [(PLAWDWifiBT *)self btEventCallback];
+  [btEventCallback requestEntry];
 
   v8 = [MEMORY[0x277D3F690] entryKeyForType:*MEMORY[0x277D3F5C8] andName:*MEMORY[0x277D3F758]];
   v9 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v10 = [(PLAWDAuxMetrics *)self operator];
+  operator2 = [(PLAWDAuxMetrics *)self operator];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__PLAWDWifiBT_startBtMetricCollection__block_invoke_2;
   v13[3] = &unk_279A58F10;
   v13[4] = self;
-  v11 = [v9 initWithOperator:v10 forEntryKey:v8 withBlock:v13];
+  v11 = [v9 initWithOperator:operator2 forEntryKey:v8 withBlock:v13];
 
   [(PLAWDWifiBT *)self setBtPowerCallback:v11];
-  v12 = [(PLAWDWifiBT *)self btPowerCallback];
-  [v12 requestEntry];
+  btPowerCallback = [(PLAWDWifiBT *)self btPowerCallback];
+  [btPowerCallback requestEntry];
 }
 
 uint64_t __38__PLAWDWifiBT_startBtMetricCollection__block_invoke(uint64_t result, uint64_t a2)
@@ -1745,24 +1745,24 @@ uint64_t __38__PLAWDWifiBT_startBtMetricCollection__block_invoke_2(uint64_t resu
   [(PLAWDAuxMetrics *)&v4 resetTableWithEntryKey:v3];
 }
 
-- (void)addEntryToBTTable:(id)a3 withValue:(double)a4
+- (void)addEntryToBTTable:(id)table withValue:(double)value
 {
   v6 = *MEMORY[0x277D3F5B8];
-  v7 = a3;
+  tableCopy = table;
   v11 = [(PLOperator *)PLAWDMetricsService entryKeyForType:v6 andName:@"AwdBT"];
   v8 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  [v8 setObject:v7 forKeyedSubscript:@"BTState"];
+  [v8 setObject:tableCopy forKeyedSubscript:@"BTState"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [v8 setObject:v9 forKeyedSubscript:@"BTValue"];
 
-  v10 = [(PLAWDAuxMetrics *)self operator];
-  [v10 logEntry:v8];
+  operator = [(PLAWDAuxMetrics *)self operator];
+  [operator logEntry:v8];
 }
 
-- (void)handleBTCallback:(id)a3
+- (void)handleBTCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   sleep(1u);
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1782,9 +1782,9 @@ uint64_t __38__PLAWDWifiBT_startBtMetricCollection__block_invoke_2(uint64_t resu
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s - %@", "-[PLAWDWifiBT handleBTCallback:]", v4];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleBTCallback:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:557];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:557];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1796,23 +1796,23 @@ uint64_t __38__PLAWDWifiBT_startBtMetricCollection__block_invoke_2(uint64_t resu
 
   if (v4)
   {
-    v12 = [(PLAWDAuxMetrics *)self operator];
-    v13 = [v12 storage];
-    v14 = [v4 entryKey];
-    v15 = [v13 entryForKey:v14 withID:{objc_msgSend(v4, "entryID") - 1}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    entryKey = [v4 entryKey];
+    v15 = [storage entryForKey:entryKey withID:{objc_msgSend(v4, "entryID") - 1}];
 
     if (v15)
     {
       v16 = [v15 objectForKeyedSubscript:@"DeviceConnected"];
-      v17 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
 
-      if (v17)
+      if (bOOLValue)
       {
-        v18 = [v4 entryDate];
-        [v18 timeIntervalSince1970];
+        entryDate = [v4 entryDate];
+        [entryDate timeIntervalSince1970];
         v20 = v19;
-        v21 = [v15 entryDate];
-        v22 = [v21 laterDate:0];
+        entryDate2 = [v15 entryDate];
+        v22 = [entryDate2 laterDate:0];
         [v22 timeIntervalSince1970];
         v24 = v20 - v23;
 
@@ -1840,9 +1840,9 @@ uint64_t __38__PLAWDWifiBT_startBtMetricCollection__block_invoke_2(uint64_t resu
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"BT ConnectedStateCallback - %@", v15];
           v27 = MEMORY[0x277D3F178];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v29 = [v28 lastPathComponent];
+          lastPathComponent2 = [v28 lastPathComponent];
           v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleBTCallback:]"];
-          [v27 logMessage:v26 fromFile:v29 fromFunction:v30 fromLineNumber:567];
+          [v27 logMessage:v26 fromFile:lastPathComponent2 fromFunction:v30 fromLineNumber:567];
 
           v31 = PLLogCommon();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -1869,9 +1869,9 @@ uint64_t __32__PLAWDWifiBT_handleBTCallback___block_invoke_299(uint64_t a1)
   return result;
 }
 
-- (void)handleBTPowerCallback:(id)a3
+- (void)handleBTPowerCallback:(id)callback
 {
-  v4 = [a3 objectForKey:@"entry"];
+  v4 = [callback objectForKey:@"entry"];
   if (v4)
   {
     if (![(PLAWDWifiBT *)self isBTStart])
@@ -1897,9 +1897,9 @@ uint64_t __32__PLAWDWifiBT_handleBTCallback___block_invoke_299(uint64_t a1)
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : BT Properties first entry", @"*******PLAWDMetricsService*******"];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleBTPowerCallback:]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:578];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:578];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1932,9 +1932,9 @@ uint64_t __32__PLAWDWifiBT_handleBTCallback___block_invoke_299(uint64_t a1)
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : BT Properties first entry - dropped", @"*******PLAWDMetricsService*******"];
           v14 = MEMORY[0x277D3F178];
           v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v16 = [v15 lastPathComponent];
+          lastPathComponent2 = [v15 lastPathComponent];
           v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleBTPowerCallback:]"];
-          [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:583];
+          [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:583];
 
           v18 = PLLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -2013,9 +2013,9 @@ LABEL_17:
           v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"BT Properties Callback - %@", v4, block, v41, v42, v43, v44];
           v36 = MEMORY[0x277D3F178];
           v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v38 = [v37 lastPathComponent];
+          lastPathComponent3 = [v37 lastPathComponent];
           v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT handleBTPowerCallback:]"];
-          [v36 logMessage:v13 fromFile:v38 fromFunction:v39 fromLineNumber:606];
+          [v36 logMessage:v13 fromFile:lastPathComponent3 fromFunction:v39 fromLineNumber:606];
 
           v18 = PLLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -2051,28 +2051,28 @@ uint64_t __37__PLAWDWifiBT_handleBTPowerCallback___block_invoke_326(uint64_t a1)
   return result;
 }
 
-- (BOOL)submitBtDataToAWDServer:(id)a3 withAwdConn:(id)a4
+- (BOOL)submitBtDataToAWDServer:(id)server withAwdConn:(id)conn
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 newMetricContainerWithIdentifier:{objc_msgSend(a3, "unsignedIntValue")}];
+  connCopy = conn;
+  v7 = [connCopy newMetricContainerWithIdentifier:{objc_msgSend(server, "unsignedIntValue")}];
   if (v7)
   {
-    v8 = [(PLAWDWifiBT *)self btEventCallback];
-    [v8 requestEntry];
+    btEventCallback = [(PLAWDWifiBT *)self btEventCallback];
+    [btEventCallback requestEntry];
 
     sleep(5u);
     v9 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:-86400.0];
-    v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     [v9 timeIntervalSince1970];
     v12 = v11;
-    [v10 timeIntervalSince1970];
+    [monotonicDate timeIntervalSince1970];
     v14 = v13 - v12;
 
     v15 = [(PLOperator *)PLAWDMetricsService entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"AwdBT"];
-    v16 = [(PLAWDAuxMetrics *)self operator];
-    v17 = [v16 storage];
-    v18 = [v17 aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
+    operator = [(PLAWDAuxMetrics *)self operator];
+    storage = [operator storage];
+    v18 = [storage aggregateEntriesForKey:v15 withBucketLength:86400.0 inTimeIntervalRange:{v12, v14}];
 
     v19 = [MEMORY[0x277D3F190] summarizeAggregateEntries:v18];
     v20 = objc_opt_new();
@@ -2097,9 +2097,9 @@ uint64_t __37__PLAWDWifiBT_handleBTPowerCallback___block_invoke_326(uint64_t a1)
         v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : %@", @"*******PLAWDMetricsService*******", v19];
         v24 = MEMORY[0x277D3F178];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent = [v25 lastPathComponent];
         v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitBtDataToAWDServer:withAwdConn:]"];
-        [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:628];
+        [v24 logMessage:v23 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:628];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -2118,7 +2118,7 @@ uint64_t __37__PLAWDWifiBT_handleBTPowerCallback___block_invoke_326(uint64_t a1)
       v61 = v18;
       v62 = v7;
       v67 = v15;
-      v63 = self;
+      selfCopy = self;
       [v20 setBtConnectedDuration:0];
       [v20 setBtOthersDuration:0];
       [v20 setBtRxDuration:0];
@@ -2126,7 +2126,7 @@ uint64_t __37__PLAWDWifiBT_handleBTPowerCallback___block_invoke_326(uint64_t a1)
       [v20 setBtSleepDuration:0];
       [v20 setBtTotalPowerMicroWatt:0];
       v29 = v20;
-      [v20 setTimestamp:{objc_msgSend(v6, "getAWDTimestamp")}];
+      [v20 setTimestamp:{objc_msgSend(connCopy, "getAWDTimestamp")}];
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
@@ -2211,8 +2211,8 @@ LABEL_28:
       v7 = v62;
       v20 = v29;
       [v62 setMetric:v29];
-      self = v63;
-      [(PLAWDWifiBT *)v63 setBtSubmitCnt:[(PLAWDWifiBT *)v63 btSubmitCnt]+ 1];
+      self = selfCopy;
+      [(PLAWDWifiBT *)selfCopy setBtSubmitCnt:[(PLAWDWifiBT *)selfCopy btSubmitCnt]+ 1];
       v19 = v65;
       v15 = v67;
       v18 = v61;
@@ -2231,12 +2231,12 @@ LABEL_28:
 
         if (submitBtDataToAWDServer_withAwdConn__classDebugEnabled_332 == 1)
         {
-          v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Submit BT stats: submit cnt = %ld", -[PLAWDWifiBT btSubmitCnt](v63, "btSubmitCnt")];
+          v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Submit BT stats: submit cnt = %ld", -[PLAWDWifiBT btSubmitCnt](selfCopy, "btSubmitCnt")];
           v48 = MEMORY[0x277D3F178];
           v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-          v50 = [v49 lastPathComponent];
+          lastPathComponent2 = [v49 lastPathComponent];
           v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitBtDataToAWDServer:withAwdConn:]"];
-          [v48 logMessage:v47 fromFile:v50 fromFunction:v51 fromLineNumber:665];
+          [v48 logMessage:v47 fromFile:lastPathComponent2 fromFunction:v51 fromLineNumber:665];
 
           v52 = PLLogCommon();
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -2272,9 +2272,9 @@ LABEL_28:
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ : Submit BT stats: Empty container!!", @"*******PLAWDMetricsService*******"];
       v54 = MEMORY[0x277D3F178];
       v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/AwdLibrary/PLAWDWifiBT.m"];
-      v56 = [v55 lastPathComponent];
+      lastPathComponent3 = [v55 lastPathComponent];
       v57 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAWDWifiBT submitBtDataToAWDServer:withAwdConn:]"];
-      [v54 logMessage:v15 fromFile:v56 fromFunction:v57 fromLineNumber:669];
+      [v54 logMessage:v15 fromFile:lastPathComponent3 fromFunction:v57 fromLineNumber:669];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -2287,7 +2287,7 @@ LABEL_38:
   }
 
   [(PLAWDWifiBT *)self resetBTTable];
-  v58 = [v6 submitMetric:v7];
+  v58 = [connCopy submitMetric:v7];
 
   v59 = *MEMORY[0x277D85DE8];
   return v58;

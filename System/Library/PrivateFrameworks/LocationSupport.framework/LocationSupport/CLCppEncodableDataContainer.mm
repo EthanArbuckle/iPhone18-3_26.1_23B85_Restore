@@ -1,32 +1,32 @@
 @interface CLCppEncodableDataContainer
-+ (id)containerWithObject:(void *)a3 cppDataEncoder:(id)a4 destructor:(id)a5 binaryVersion:(unint64_t)a6 typeSize:(unint64_t)a7;
-- (CLCppEncodableDataContainer)initWithCoder:(id)a3;
-- (CLCppEncodableDataContainer)initWithObject:(void *)a3 cppDataEncoder:(id)a4 destructor:(id)a5 binaryVersion:(unint64_t)a6 typeSize:(unint64_t)a7;
++ (id)containerWithObject:(void *)object cppDataEncoder:(id)encoder destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size;
+- (CLCppEncodableDataContainer)initWithCoder:(id)coder;
+- (CLCppEncodableDataContainer)initWithObject:(void *)object cppDataEncoder:(id)encoder destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLCppEncodableDataContainer
 
-+ (id)containerWithObject:(void *)a3 cppDataEncoder:(id)a4 destructor:(id)a5 binaryVersion:(unint64_t)a6 typeSize:(unint64_t)a7
++ (id)containerWithObject:(void *)object cppDataEncoder:(id)encoder destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = [[CLCppEncodableDataContainer alloc] initWithObject:a3 cppDataEncoder:v12 destructor:v11 binaryVersion:a6 typeSize:a7];
+  destructorCopy = destructor;
+  encoderCopy = encoder;
+  v13 = [[CLCppEncodableDataContainer alloc] initWithObject:object cppDataEncoder:encoderCopy destructor:destructorCopy binaryVersion:version typeSize:size];
 
   return v13;
 }
 
-- (CLCppEncodableDataContainer)initWithObject:(void *)a3 cppDataEncoder:(id)a4 destructor:(id)a5 binaryVersion:(unint64_t)a6 typeSize:(unint64_t)a7
+- (CLCppEncodableDataContainer)initWithObject:(void *)object cppDataEncoder:(id)encoder destructor:(id)destructor binaryVersion:(unint64_t)version typeSize:(unint64_t)size
 {
-  v12 = a4;
+  encoderCopy = encoder;
   v16.receiver = self;
   v16.super_class = CLCppEncodableDataContainer;
-  v13 = [(CLCppContainer *)&v16 initWithObject:a3 destructor:a5 binaryVersion:a6 typeSize:a7];
+  v13 = [(CLCppContainer *)&v16 initWithObject:object destructor:destructor binaryVersion:version typeSize:size];
   v14 = v13;
   if (v13)
   {
-    [(CLCppEncodableDataContainer *)v13 setEncoder:v12];
+    [(CLCppEncodableDataContainer *)v13 setEncoder:encoderCopy];
   }
 
   return v14;
@@ -42,30 +42,30 @@
   [(CLCppContainer *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CLCppEncodableDataContainer *)self encoder];
+  coderCopy = coder;
+  encoder = [(CLCppEncodableDataContainer *)self encoder];
 
-  if (v4)
+  if (encoder)
   {
-    v5 = [(CLCppEncodableDataContainer *)self encoder];
-    (v5)[2](v5, v6);
+    encoder2 = [(CLCppEncodableDataContainer *)self encoder];
+    (encoder2)[2](encoder2, coderCopy);
   }
 }
 
-- (CLCppEncodableDataContainer)initWithCoder:(id)a3
+- (CLCppEncodableDataContainer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CLCppEncodableDataContainer;
-  v5 = [(CLCppContainer *)&v9 initWithCoder:v4];
+  v5 = [(CLCppContainer *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"serialized"];
+    v6 = [coderCopy decodeObjectForKey:@"serialized"];
     [(CLCppEncodableDataContainer *)v5 setSerialized:v6];
 
-    v7 = [v4 decodeObjectForKey:@"compatibilityInfo"];
+    v7 = [coderCopy decodeObjectForKey:@"compatibilityInfo"];
     [(CLCppEncodableDataContainer *)v5 setCompatibilityInfo:v7];
   }
 

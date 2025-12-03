@@ -9,7 +9,7 @@
 
 - (id)titleStringWithOptions:()CUIKDescription
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &off_1F4AEED30;
   v1 = objc_msgSendSuper2(&v6, sel_titleStringWithOptions_);
   v2 = v1;
@@ -29,16 +29,16 @@
 
 - (id)_actionWithOptions:()CUIKDescription
 {
-  if (([a1 allowedEntityTypes] & 2) != 0)
+  if (([self allowedEntityTypes] & 2) != 0)
   {
-    v6 = [a1 allowedEntityTypes];
-    v5 = (v6 & 1) == 0;
-    if ([a1 type] != 10)
+    allowedEntityTypes = [self allowedEntityTypes];
+    v5 = (allowedEntityTypes & 1) == 0;
+    if ([self type] != 10)
     {
       goto LABEL_7;
     }
 
-    if ((v6 & 1) == 0)
+    if ((allowedEntityTypes & 1) == 0)
     {
       v7 = CUIKBundle();
       v8 = v7;
@@ -55,21 +55,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([a1 type] == 10)
+  if ([self type] == 10)
   {
     goto LABEL_12;
   }
 
   v5 = 0;
 LABEL_7:
-  if ([a1 type] != 9)
+  if ([self type] != 9)
   {
     v14 = 0;
     goto LABEL_23;
   }
 
-  v8 = [a1 _identityStringWithOptions:a3];
-  if ([a1 status] == 2)
+  v8 = [self _identityStringWithOptions:a3];
+  if ([self status] == 2)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = CUIKBundle();
@@ -87,11 +87,11 @@ LABEL_7:
 
   else
   {
-    v15 = [a1 status];
+    status = [self status];
     v10 = MEMORY[0x1E696AEC0];
     v11 = CUIKBundle();
     v12 = v11;
-    if (v15 == 1)
+    if (status == 1)
     {
       v16 = @"%@ joined your shared calendar.";
       v17 = @"%@ joined your shared reminders list.";
@@ -126,7 +126,7 @@ LABEL_23:
 - (id)allDescriptionStringsWithOptions:()CUIKDescription
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 _actionWithOptions:?];
+  v1 = [self _actionWithOptions:?];
   v2 = v1;
   if (v1)
   {
@@ -145,13 +145,13 @@ LABEL_23:
 - (id)descriptionStrings:()CUIKDescription
 {
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-  v6 = [a1 _actionWithOptions:a3];
+  v6 = [self _actionWithOptions:a3];
   [v5 setObject:v6 forKeyedSubscript:@"Action"];
 
-  v7 = [a1 timeSensitiveDescriptionString];
-  [v5 setObject:v7 forKeyedSubscript:@"TimeSensitive"];
+  timeSensitiveDescriptionString = [self timeSensitiveDescriptionString];
+  [v5 setObject:timeSensitiveDescriptionString forKeyedSubscript:@"TimeSensitive"];
 
-  v8 = [a1 blockedDescriptionString:(a3 >> 10) & 1];
+  v8 = [self blockedDescriptionString:(a3 >> 10) & 1];
   [v5 setObject:v8 forKeyedSubscript:@"Blocked"];
 
   v9 = [v5 copy];

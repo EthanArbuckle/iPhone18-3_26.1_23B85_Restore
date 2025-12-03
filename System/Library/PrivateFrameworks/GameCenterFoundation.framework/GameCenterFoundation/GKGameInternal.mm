@@ -3,36 +3,36 @@
 + (id)createGamedGameInternal;
 + (id)secureCodedPropertyKeys;
 - (BOOL)canBeIndexed;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsChallenges;
 - (GKGameDescriptor)gameDescriptor;
 - (NSURL)storeURL;
 - (id)description;
 - (unint64_t)hash;
-- (void)setHasAggregateLeaderboard:(BOOL)a3;
-- (void)setIsArcadeGame:(BOOL)a3;
-- (void)setPrerendered:(BOOL)a3;
-- (void)setSupportsAchievements:(BOOL)a3;
-- (void)setSupportsChallenges:(BOOL)a3;
-- (void)setSupportsLeaderboardChallenges:(BOOL)a3;
-- (void)setSupportsLeaderboardSets:(BOOL)a3;
-- (void)setSupportsLeaderboards:(BOOL)a3;
-- (void)setSupportsMultiplayer:(BOOL)a3;
-- (void)setSupportsTurnBasedMultiplayer:(BOOL)a3;
-- (void)setValid:(BOOL)a3;
+- (void)setHasAggregateLeaderboard:(BOOL)leaderboard;
+- (void)setIsArcadeGame:(BOOL)game;
+- (void)setPrerendered:(BOOL)prerendered;
+- (void)setSupportsAchievements:(BOOL)achievements;
+- (void)setSupportsChallenges:(BOOL)challenges;
+- (void)setSupportsLeaderboardChallenges:(BOOL)challenges;
+- (void)setSupportsLeaderboardSets:(BOOL)sets;
+- (void)setSupportsLeaderboards:(BOOL)leaderboards;
+- (void)setSupportsMultiplayer:(BOOL)multiplayer;
+- (void)setSupportsTurnBasedMultiplayer:(BOOL)multiplayer;
+- (void)setValid:(BOOL)valid;
 @end
 
 @implementation GKGameInternal
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GKGameDescriptor *)self bundleIdentifier];
-    v6 = [v4 bundleIdentifier];
-    v7 = [v5 isEqual:v6];
+    bundleIdentifier = [(GKGameDescriptor *)self bundleIdentifier];
+    bundleIdentifier2 = [equalCopy bundleIdentifier];
+    v7 = [bundleIdentifier isEqual:bundleIdentifier2];
   }
 
   else
@@ -45,8 +45,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKGameDescriptor *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(GKGameDescriptor *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
@@ -115,15 +115,15 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
 
 - (id)description
 {
-  v3 = [(GKGameDescriptor *)self platform];
-  if ((v3 - 1) > 4)
+  platform = [(GKGameDescriptor *)self platform];
+  if ((platform - 1) > 4)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = off_2785E2618[v3 - 1];
+    v4 = off_2785E2618[platform - 1];
   }
 
   v8.receiver = self;
@@ -134,10 +134,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   return v6;
 }
 
-- (void)setPrerendered:(BOOL)a3
+- (void)setPrerendered:(BOOL)prerendered
 {
   v3 = 256;
-  if (!a3)
+  if (!prerendered)
   {
     v3 = 0;
   }
@@ -145,10 +145,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setSupportsLeaderboards:(BOOL)a3
+- (void)setSupportsLeaderboards:(BOOL)leaderboards
 {
   v3 = 512;
-  if (!a3)
+  if (!leaderboards)
   {
     v3 = 0;
   }
@@ -156,10 +156,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setSupportsLeaderboardSets:(BOOL)a3
+- (void)setSupportsLeaderboardSets:(BOOL)sets
 {
   v3 = 1024;
-  if (!a3)
+  if (!sets)
   {
     v3 = 0;
   }
@@ -167,10 +167,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasAggregateLeaderboard:(BOOL)a3
+- (void)setHasAggregateLeaderboard:(BOOL)leaderboard
 {
   v3 = 2048;
-  if (!a3)
+  if (!leaderboard)
   {
     v3 = 0;
   }
@@ -178,10 +178,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setSupportsAchievements:(BOOL)a3
+- (void)setSupportsAchievements:(BOOL)achievements
 {
   v3 = 4096;
-  if (!a3)
+  if (!achievements)
   {
     v3 = 0;
   }
@@ -189,10 +189,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setSupportsMultiplayer:(BOOL)a3
+- (void)setSupportsMultiplayer:(BOOL)multiplayer
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!multiplayer)
   {
     v3 = 0;
   }
@@ -210,10 +210,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   return [(GKGameInternal *)self supportsTurnBasedMultiplayer];
 }
 
-- (void)setValid:(BOOL)a3
+- (void)setValid:(BOOL)valid
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!valid)
   {
     v3 = 0;
   }
@@ -221,10 +221,10 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setSupportsTurnBasedMultiplayer:(BOOL)a3
+- (void)setSupportsTurnBasedMultiplayer:(BOOL)multiplayer
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!multiplayer)
   {
     v3 = 0;
   }
@@ -234,14 +234,14 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
 
 - (GKGameDescriptor)gameDescriptor
 {
-  v3 = [(GKGameDescriptor *)self bundleIdentifier];
-  v4 = [(GKGameDescriptor *)self bundleVersion];
-  v5 = [(GKGameDescriptor *)self shortBundleVersion];
-  v6 = [(GKGameDescriptor *)self adamID];
-  v7 = [GKGameDescriptor gameDescriptorWithBundleID:v3 bundleVersion:v4 shortBundleVersion:v5 adamID:v6];
+  bundleIdentifier = [(GKGameDescriptor *)self bundleIdentifier];
+  bundleVersion = [(GKGameDescriptor *)self bundleVersion];
+  shortBundleVersion = [(GKGameDescriptor *)self shortBundleVersion];
+  adamID = [(GKGameDescriptor *)self adamID];
+  v7 = [GKGameDescriptor gameDescriptorWithBundleID:bundleIdentifier bundleVersion:bundleVersion shortBundleVersion:shortBundleVersion adamID:adamID];
 
-  v8 = [(GKGameDescriptor *)self externalVersion];
-  [v7 setExternalVersion:v8];
+  externalVersion = [(GKGameDescriptor *)self externalVersion];
+  [v7 setExternalVersion:externalVersion];
 
   [v7 setPlatform:{-[GKGameDescriptor platform](self, "platform")}];
 
@@ -256,35 +256,35 @@ void __41__GKGameInternal_secureCodedPropertyKeys__block_invoke()
     v2 = +[GKPreferences shared];
     if (![v2 supportsChallenges])
     {
-      v5 = 0;
+      supportsAchievements = 0;
       goto LABEL_9;
     }
   }
 
   if ([(GKGameInternal *)self supportsLeaderboards]|| [(GKGameInternal *)self supportsLeaderboardSets])
   {
-    v5 = 1;
+    supportsAchievements = 1;
     if ((*&var0 & 0x40000) != 0)
     {
-      return v5;
+      return supportsAchievements;
     }
 
     goto LABEL_9;
   }
 
-  v5 = [(GKGameInternal *)self supportsAchievements];
+  supportsAchievements = [(GKGameInternal *)self supportsAchievements];
   if ((*&var0 & 0x40000) == 0)
   {
 LABEL_9:
   }
 
-  return v5;
+  return supportsAchievements;
 }
 
-- (void)setIsArcadeGame:(BOOL)a3
+- (void)setIsArcadeGame:(BOOL)game
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!game)
   {
     v3 = 0;
   }
@@ -292,10 +292,10 @@ LABEL_9:
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setSupportsChallenges:(BOOL)a3
+- (void)setSupportsChallenges:(BOOL)challenges
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!challenges)
   {
     v3 = 0;
   }
@@ -303,10 +303,10 @@ LABEL_9:
   self->_flags.var0 = (*&self->_flags.var0 & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setSupportsLeaderboardChallenges:(BOOL)a3
+- (void)setSupportsLeaderboardChallenges:(BOOL)challenges
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!challenges)
   {
     v3 = 0;
   }
@@ -336,8 +336,8 @@ LABEL_9:
 {
   v2 = MEMORY[0x277CBEBC0];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKGameDescriptor *)self adamID];
-  v5 = [v3 stringWithFormat:@"https://apps.apple.com/app/id%@", v4];
+  adamID = [(GKGameDescriptor *)self adamID];
+  v5 = [v3 stringWithFormat:@"https://apps.apple.com/app/id%@", adamID];
   v6 = [v2 URLWithString:v5];
 
   return v6;

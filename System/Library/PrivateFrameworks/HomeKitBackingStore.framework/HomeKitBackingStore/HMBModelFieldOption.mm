@@ -1,18 +1,18 @@
 @interface HMBModelFieldOption
-+ (id)encryptedExternalRecordField:(id)a3;
++ (id)encryptedExternalRecordField:(id)field;
 + (id)excludeFromCloudStorage;
-+ (id)externalRecordField:(id)a3;
++ (id)externalRecordField:(id)field;
 + (id)queryableField;
-+ (id)queryableFieldWithEncodeBlock:(id)a3 decodeBlock:(id)a4;
-+ (id)queryableFieldWithEncodeBlock:(id)a3 decodeBlock:(id)a4 descriptionBlock:(id)a5;
-- (void)applyTo:(id)a3;
++ (id)queryableFieldWithEncodeBlock:(id)block decodeBlock:(id)decodeBlock;
++ (id)queryableFieldWithEncodeBlock:(id)block decodeBlock:(id)decodeBlock descriptionBlock:(id)descriptionBlock;
+- (void)applyTo:(id)to;
 @end
 
 @implementation HMBModelFieldOption
 
-- (void)applyTo:(id)a3
+- (void)applyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -24,21 +24,21 @@
   objc_exception_throw(v10);
 }
 
-+ (id)queryableFieldWithEncodeBlock:(id)a3 decodeBlock:(id)a4 descriptionBlock:(id)a5
++ (id)queryableFieldWithEncodeBlock:(id)block decodeBlock:(id)decodeBlock descriptionBlock:(id)descriptionBlock
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMBModelFieldOptionQueryable alloc] initWithEncodingBlock:v9 decodingBlock:v8 descriptionBlock:v7];
+  descriptionBlockCopy = descriptionBlock;
+  decodeBlockCopy = decodeBlock;
+  blockCopy = block;
+  v10 = [[HMBModelFieldOptionQueryable alloc] initWithEncodingBlock:blockCopy decodingBlock:decodeBlockCopy descriptionBlock:descriptionBlockCopy];
 
   return v10;
 }
 
-+ (id)queryableFieldWithEncodeBlock:(id)a3 decodeBlock:(id)a4
++ (id)queryableFieldWithEncodeBlock:(id)block decodeBlock:(id)decodeBlock
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMBModelFieldOptionQueryable alloc] initWithEncodingBlock:v6 decodingBlock:v5 descriptionBlock:&__block_literal_global_262];
+  decodeBlockCopy = decodeBlock;
+  blockCopy = block;
+  v7 = [[HMBModelFieldOptionQueryable alloc] initWithEncodingBlock:blockCopy decodingBlock:decodeBlockCopy descriptionBlock:&__block_literal_global_262];
 
   return v7;
 }
@@ -57,18 +57,18 @@
   return v2;
 }
 
-+ (id)encryptedExternalRecordField:(id)a3
++ (id)encryptedExternalRecordField:(id)field
 {
-  v3 = a3;
-  v4 = [[HMBModelFieldOptionExternalRecordField alloc] initWithExternalRecordField:v3 encrypted:1];
+  fieldCopy = field;
+  v4 = [[HMBModelFieldOptionExternalRecordField alloc] initWithExternalRecordField:fieldCopy encrypted:1];
 
   return v4;
 }
 
-+ (id)externalRecordField:(id)a3
++ (id)externalRecordField:(id)field
 {
-  v3 = a3;
-  v4 = [[HMBModelFieldOptionExternalRecordField alloc] initWithExternalRecordField:v3 encrypted:0];
+  fieldCopy = field;
+  v4 = [[HMBModelFieldOptionExternalRecordField alloc] initWithExternalRecordField:fieldCopy encrypted:0];
 
   return v4;
 }

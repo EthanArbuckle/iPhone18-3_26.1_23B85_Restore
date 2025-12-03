@@ -1,21 +1,21 @@
 @interface CHSRemoteDevicesBox
-- (CHSRemoteDevicesBox)initWithCoder:(id)a3;
-- (CHSRemoteDevicesBox)initWithDevices:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CHSRemoteDevicesBox)initWithCoder:(id)coder;
+- (CHSRemoteDevicesBox)initWithDevices:(id)devices;
+- (void)encodeWithCoder:(id)coder;
 - (void)prepareForEncoding;
 @end
 
 @implementation CHSRemoteDevicesBox
 
-- (CHSRemoteDevicesBox)initWithDevices:(id)a3
+- (CHSRemoteDevicesBox)initWithDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v9.receiver = self;
   v9.super_class = CHSRemoteDevicesBox;
   v5 = [(CHSRemoteDevicesBox *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [devicesCopy copy];
     devices = v5->_devices;
     v5->_devices = v6;
   }
@@ -46,23 +46,23 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (CHSRemoteDevicesBox)initWithCoder:(id)a3
+- (CHSRemoteDevicesBox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CHSRemoteDevicesBox;
   v5 = [(CHSRemoteDevicesBox *)&v14 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"data"])
+    if ([coderCopy containsValueForKey:@"data"])
     {
-      devices = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+      devices = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
       v13 = 0;
       v7 = [MEMORY[0x1E69C7360] decodeObjectOfClass:objc_opt_class() fromData:devices error:&v13];
       v8 = v13;
       if (v8)
       {
-        [v4 failWithError:v8];
+        [coderCopy failWithError:v8];
       }
 
       else if (v7)
@@ -76,7 +76,7 @@
       v9 = MEMORY[0x1E695DFD8];
       v10 = objc_opt_class();
       v8 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-      v11 = [v4 decodeObjectOfClasses:v8 forKey:@"devices"];
+      v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"devices"];
       devices = v5->_devices;
       v5->_devices = v11;
     }
@@ -85,19 +85,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   archivedData = self->_archivedData;
-  v6 = v4;
+  v6 = coderCopy;
   if (archivedData)
   {
-    [v4 encodeObject:archivedData forKey:@"data"];
+    [coderCopy encodeObject:archivedData forKey:@"data"];
   }
 
   else
   {
-    [v4 encodeObject:self->_devices forKey:@"devices"];
+    [coderCopy encodeObject:self->_devices forKey:@"devices"];
   }
 }
 

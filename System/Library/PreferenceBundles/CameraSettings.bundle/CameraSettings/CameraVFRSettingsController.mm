@@ -1,6 +1,6 @@
 @interface CameraVFRSettingsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -75,27 +75,27 @@ LABEL_8:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CameraVFRSettingsController;
-  [(CameraVFRSettingsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CameraVFRSettingsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CameraVFRSettingsController *)self specifierForID:@"vfrGroupSpecifier"];
   if (v7)
   {
     v8 = [(CameraVFRSettingsController *)self indexPathForSpecifier:v7];
-    v9 = [v8 section];
+    section = [v8 section];
   }
 
   else
   {
-    v9 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v9)
+  if ([pathCopy section] == section)
   {
-    v10 = [v6 row];
+    v10 = [pathCopy row];
     if (v10 == &dword_0 + 2)
     {
       v11 = 2;

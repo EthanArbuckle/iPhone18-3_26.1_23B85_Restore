@@ -1,14 +1,14 @@
 @interface MapStylePickerContaineeViewController
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithMapView:(id)a3 delegate:(id)a4;
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithMapView:(id)view delegate:(id)delegate;
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps45MapStylePickerContaineeViewControllerDelegate_)delegate;
 - (int64_t)floatingControlsOptions;
 - (void)didDismissByGesture;
-- (void)handleDismissAction:(id)a3;
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
+- (void)handleDismissAction:(id)action;
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MapStylePickerContaineeViewController
@@ -20,17 +20,17 @@
   return Strong;
 }
 
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithMapView:(id)a3 delegate:(id)a4
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithMapView:(id)view delegate:(id)delegate
 {
-  v4 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v5 = sub_1001D9FE0(v4);
+  v5 = sub_1001D9FE0(viewCopy);
 
   swift_unknownObjectRelease();
   return v5;
 }
 
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC4Maps37MapStylePickerContaineeViewController_debugPanelEnabled;
   *(self + v3) = sub_10078A958();
@@ -40,10 +40,10 @@
   return result;
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1001D9778();
@@ -55,21 +55,21 @@
 {
   ObjectType = swift_getObjectType();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v5 = self;
+  selfCopy = self;
   if (Strong)
   {
-    [Strong mapStylePickerContaineeViewControllerDismissByGestureWithViewController:v5];
+    [Strong mapStylePickerContaineeViewControllerDismissByGestureWithViewController:selfCopy];
     swift_unknownObjectRelease();
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(ContaineeViewController *)&v6 didDismissByGesture];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D9AF4();
 }
 
@@ -86,24 +86,24 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001D9D1C(a3);
+  selfCopy = self;
+  sub_1001D9D1C(disappear);
 }
 
-- (_TtC4Maps37MapStylePickerContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps37MapStylePickerContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+- (void)mapView:(id)view didChangeMapType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_1001DA0A4(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1001DA0A4(view);
 }
 
 @end

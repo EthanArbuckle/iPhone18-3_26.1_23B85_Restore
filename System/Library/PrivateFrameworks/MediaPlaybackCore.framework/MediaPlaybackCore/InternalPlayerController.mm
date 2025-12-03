@@ -1,6 +1,6 @@
 @interface InternalPlayerController
 - (NSDictionary)stateDictionary;
-- (void)resetWithReason:(id)a3;
+- (void)resetWithReason:(id)reason;
 @end
 
 @implementation InternalPlayerController
@@ -15,9 +15,9 @@
   return v2;
 }
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
   sub_1C5DC72C8();
 }

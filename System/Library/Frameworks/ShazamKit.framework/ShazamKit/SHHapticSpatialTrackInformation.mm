@@ -1,62 +1,62 @@
 @interface SHHapticSpatialTrackInformation
-- (SHHapticSpatialTrackInformation)initWithCoder:(id)a3;
-- (SHHapticSpatialTrackInformation)initWithSpatialStartOffset:(double)a3 offsets:(id)a4 timeDrift:(double)a5 matchesStereo:(BOOL)a6;
+- (SHHapticSpatialTrackInformation)initWithCoder:(id)coder;
+- (SHHapticSpatialTrackInformation)initWithSpatialStartOffset:(double)offset offsets:(id)offsets timeDrift:(double)drift matchesStereo:(BOOL)stereo;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHHapticSpatialTrackInformation
 
-- (SHHapticSpatialTrackInformation)initWithSpatialStartOffset:(double)a3 offsets:(id)a4 timeDrift:(double)a5 matchesStereo:(BOOL)a6
+- (SHHapticSpatialTrackInformation)initWithSpatialStartOffset:(double)offset offsets:(id)offsets timeDrift:(double)drift matchesStereo:(BOOL)stereo
 {
-  v11 = a4;
+  offsetsCopy = offsets;
   v15.receiver = self;
   v15.super_class = SHHapticSpatialTrackInformation;
   v12 = [(SHHapticSpatialTrackInformation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_startOffset = a3;
-    objc_storeStrong(&v12->_offsets, a4);
-    v13->_timeDrift = a5;
-    v13->_matchesStereo = a6;
+    v12->_startOffset = offset;
+    objc_storeStrong(&v12->_offsets, offsets);
+    v13->_timeDrift = drift;
+    v13->_matchesStereo = stereo;
   }
 
   return v13;
 }
 
-- (SHHapticSpatialTrackInformation)initWithCoder:(id)a3
+- (SHHapticSpatialTrackInformation)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v7 = [v4 setWithArray:v6];
 
-  [v5 decodeDoubleForKey:@"SHHapticSpatialTrackInformationTimeDriftCodingKey"];
+  [coderCopy decodeDoubleForKey:@"SHHapticSpatialTrackInformationTimeDriftCodingKey"];
   v9 = v8;
-  [v5 decodeDoubleForKey:@"SHHapticSpatialTrackInformationSpatialStartOffsetCodingKey"];
+  [coderCopy decodeDoubleForKey:@"SHHapticSpatialTrackInformationSpatialStartOffsetCodingKey"];
   v11 = v10;
-  v12 = [v5 decodeBoolForKey:@"SHHapticSpatialTrackInformationMatchesStereoCodingKey"];
-  v13 = [v5 decodeObjectOfClasses:v7 forKey:@"SHHapticSpatialTrackInformationOffsetsCodingKey"];
+  v12 = [coderCopy decodeBoolForKey:@"SHHapticSpatialTrackInformationMatchesStereoCodingKey"];
+  v13 = [coderCopy decodeObjectOfClasses:v7 forKey:@"SHHapticSpatialTrackInformationOffsetsCodingKey"];
 
   v14 = [(SHHapticSpatialTrackInformation *)self initWithSpatialStartOffset:v13 offsets:v12 timeDrift:v11 matchesStereo:v9];
   v15 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SHHapticSpatialTrackInformation *)self timeDrift];
-  [v4 encodeDouble:@"SHHapticSpatialTrackInformationTimeDriftCodingKey" forKey:?];
+  [coderCopy encodeDouble:@"SHHapticSpatialTrackInformationTimeDriftCodingKey" forKey:?];
   [(SHHapticSpatialTrackInformation *)self startOffset];
-  [v4 encodeDouble:@"SHHapticSpatialTrackInformationSpatialStartOffsetCodingKey" forKey:?];
-  [v4 encodeBool:-[SHHapticSpatialTrackInformation matchesStereo](self forKey:{"matchesStereo"), @"SHHapticSpatialTrackInformationMatchesStereoCodingKey"}];
-  v5 = [(SHHapticSpatialTrackInformation *)self offsets];
-  [v4 encodeObject:v5 forKey:@"SHHapticSpatialTrackInformationOffsetsCodingKey"];
+  [coderCopy encodeDouble:@"SHHapticSpatialTrackInformationSpatialStartOffsetCodingKey" forKey:?];
+  [coderCopy encodeBool:-[SHHapticSpatialTrackInformation matchesStereo](self forKey:{"matchesStereo"), @"SHHapticSpatialTrackInformationMatchesStereoCodingKey"}];
+  offsets = [(SHHapticSpatialTrackInformation *)self offsets];
+  [coderCopy encodeObject:offsets forKey:@"SHHapticSpatialTrackInformationOffsetsCodingKey"];
 }
 
 - (id)description

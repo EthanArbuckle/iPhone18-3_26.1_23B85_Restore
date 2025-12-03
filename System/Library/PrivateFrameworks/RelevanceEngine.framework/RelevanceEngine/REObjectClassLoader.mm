@@ -1,39 +1,39 @@
 @interface REObjectClassLoader
-- (BOOL)isEqual:(id)a3;
-- (REObjectClassLoader)initWithObjects:(id)a3 configuration:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_enumerateClassesWithBlock:(id)a3;
-- (void)enumerateObjectsWithBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REObjectClassLoader)initWithObjects:(id)objects configuration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_enumerateClassesWithBlock:(id)block;
+- (void)enumerateObjectsWithBlock:(id)block;
 @end
 
 @implementation REObjectClassLoader
 
-- (REObjectClassLoader)initWithObjects:(id)a3 configuration:(id)a4
+- (REObjectClassLoader)initWithObjects:(id)objects configuration:(id)configuration
 {
-  v7 = a3;
+  objectsCopy = objects;
   v11.receiver = self;
   v11.super_class = REObjectClassLoader;
-  v8 = [(REClassLoader *)&v11 initWithConfiguration:a4];
+  v8 = [(REClassLoader *)&v11 initWithConfiguration:configuration];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_objects, a3);
+    objc_storeStrong(&v8->_objects, objects);
   }
 
   return v9;
 }
 
-- (void)_enumerateClassesWithBlock:(id)a3
+- (void)_enumerateClassesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __50__REObjectClassLoader__enumerateClassesWithBlock___block_invoke;
     v6[3] = &unk_2785FA950;
-    v7 = v4;
+    v7 = blockCopy;
     [(REObjectClassLoader *)self enumerateObjectsWithBlock:v6];
   }
 }
@@ -47,14 +47,14 @@ uint64_t __50__REObjectClassLoader__enumerateClassesWithBlock___block_invoke(uin
   return v3(v1, v2);
 }
 
-- (void)enumerateObjectsWithBlock:(id)a3
+- (void)enumerateObjectsWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(REClassLoader *)self configuration];
-    [v5 desiredClassForLoader];
+    configuration = [(REClassLoader *)self configuration];
+    [configuration desiredClassForLoader];
 
     v15 = 0u;
     v16 = 0u;
@@ -79,7 +79,7 @@ uint64_t __50__REObjectClassLoader__enumerateClassesWithBlock___block_invoke(uin
           v11 = *(*(&v13 + 1) + 8 * v10);
           if (objc_opt_isKindOfClass())
           {
-            v4[2](v4, v11);
+            blockCopy[2](blockCopy, v11);
           }
 
           ++v10;
@@ -96,20 +96,20 @@ uint64_t __50__REObjectClassLoader__enumerateClassesWithBlock___block_invoke(uin
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objects = self->_objects;
-  v6 = [(REClassLoader *)self configuration];
-  v7 = [v4 initWithObjects:objects configuration:v6];
+  configuration = [(REClassLoader *)self configuration];
+  v7 = [v4 initWithObjects:objects configuration:configuration];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -120,7 +120,7 @@ uint64_t __50__REObjectClassLoader__enumerateClassesWithBlock___block_invoke(uin
     if (objc_opt_isKindOfClass())
     {
       objects = self->_objects;
-      v6 = v4->_objects;
+      v6 = equalCopy->_objects;
       v7 = objects;
       v8 = v7;
       if (v7 == v6)

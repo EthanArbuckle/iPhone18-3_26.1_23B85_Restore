@@ -1,22 +1,22 @@
 @interface HKHeartbeatSequencePoint
-- (HKHeartbeatSequencePoint)initWithTimeInterval:(double)a3 beatsPerMinute:(double)a4;
+- (HKHeartbeatSequencePoint)initWithTimeInterval:(double)interval beatsPerMinute:(double)minute;
 - (id)allYValues;
 @end
 
 @implementation HKHeartbeatSequencePoint
 
-- (HKHeartbeatSequencePoint)initWithTimeInterval:(double)a3 beatsPerMinute:(double)a4
+- (HKHeartbeatSequencePoint)initWithTimeInterval:(double)interval beatsPerMinute:(double)minute
 {
   v12.receiver = self;
   v12.super_class = HKHeartbeatSequencePoint;
   v6 = [(HKHeartbeatSequencePoint *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
     xValue = v6->_xValue;
     v6->_xValue = v7;
 
-    v9 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithDouble:minute];
     yValue = v6->_yValue;
     v6->_yValue = v9;
   }

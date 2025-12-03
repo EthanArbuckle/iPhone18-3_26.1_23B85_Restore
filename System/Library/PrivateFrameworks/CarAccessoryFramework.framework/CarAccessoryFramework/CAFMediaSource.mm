@@ -31,28 +31,28 @@
 - (NSString)identifier;
 - (NSString)userVisibleLabel;
 - (id)name;
-- (int64_t)typeCompare:(id)a3;
+- (int64_t)typeCompare:(id)compare;
 - (unsigned)currentFrequency;
 - (unsigned)mediaSourceSemanticType;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFMediaSource
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFMediaSource;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -65,12 +65,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -85,40 +85,40 @@
 
 - (id)name
 {
-  v3 = [(CAFService *)self typeName];
-  v4 = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
-  v5 = [v4 formattedValue];
+  typeName = [(CAFService *)self typeName];
+  userVisibleLabelCharacteristic = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
+  formattedValue = [userVisibleLabelCharacteristic formattedValue];
 
-  if ([v5 length])
+  if ([formattedValue length])
   {
-    v6 = [v3 stringByAppendingFormat:@"-%@", v5];
+    v6 = [typeName stringByAppendingFormat:@"-%@", formattedValue];
 
-    v3 = v6;
+    typeName = v6;
   }
 
-  v7 = [(CAFMediaSource *)self mediaSourceSemanticTypeCharacteristic];
-  v8 = [v7 formattedValue];
+  mediaSourceSemanticTypeCharacteristic = [(CAFMediaSource *)self mediaSourceSemanticTypeCharacteristic];
+  formattedValue2 = [mediaSourceSemanticTypeCharacteristic formattedValue];
 
-  if ([v8 length])
+  if ([formattedValue2 length])
   {
-    v9 = [v3 stringByAppendingFormat:@"-%@", v8];
+    v9 = [typeName stringByAppendingFormat:@"-%@", formattedValue2];
 
-    v3 = v9;
+    typeName = v9;
   }
 
-  return v3;
+  return typeName;
 }
 
 - (CAFUInt32Characteristic)currentFrequencyCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000007"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000007"];
@@ -137,46 +137,46 @@
 
 - (unsigned)currentFrequency
 {
-  v2 = [(CAFMediaSource *)self currentFrequencyCharacteristic];
-  v3 = [v2 uint32Value];
+  currentFrequencyCharacteristic = [(CAFMediaSource *)self currentFrequencyCharacteristic];
+  uint32Value = [currentFrequencyCharacteristic uint32Value];
 
-  return v3;
+  return uint32Value;
 }
 
 - (CAFUInt32Range)currentFrequencyRange
 {
-  v2 = [(CAFMediaSource *)self currentFrequencyCharacteristic];
-  v3 = [v2 range];
+  currentFrequencyCharacteristic = [(CAFMediaSource *)self currentFrequencyCharacteristic];
+  range = [currentFrequencyCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (BOOL)hasCurrentFrequency
 {
-  v2 = [(CAFMediaSource *)self currentFrequencyCharacteristic];
-  v3 = v2 != 0;
+  currentFrequencyCharacteristic = [(CAFMediaSource *)self currentFrequencyCharacteristic];
+  v3 = currentFrequencyCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)currentFrequencyInvalid
 {
-  v2 = [(CAFMediaSource *)self currentFrequencyCharacteristic];
-  v3 = [v2 isInvalid];
+  currentFrequencyCharacteristic = [(CAFMediaSource *)self currentFrequencyCharacteristic];
+  isInvalid = [currentFrequencyCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFStringCharacteristic)currentMediaItemIdentifierCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000026"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000026"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000026"];
@@ -195,38 +195,38 @@
 
 - (NSString)currentMediaItemIdentifier
 {
-  v2 = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
-  v3 = [v2 stringValue];
+  currentMediaItemIdentifierCharacteristic = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
+  stringValue = [currentMediaItemIdentifierCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasCurrentMediaItemIdentifier
 {
-  v2 = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
-  v3 = v2 != 0;
+  currentMediaItemIdentifierCharacteristic = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
+  v3 = currentMediaItemIdentifierCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)currentMediaItemIdentifierInvalid
 {
-  v2 = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
-  v3 = [v2 isInvalid];
+  currentMediaItemIdentifierCharacteristic = [(CAFMediaSource *)self currentMediaItemIdentifierCharacteristic];
+  isInvalid = [currentMediaItemIdentifierCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFMediaItemsCharacteristic)mediaItemsCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000012"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000012"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000012"];
@@ -245,16 +245,16 @@
 
 - (CAFMediaItems)mediaItems
 {
-  v2 = [(CAFMediaSource *)self mediaItemsCharacteristic];
-  v3 = [v2 mediaItemsValue];
+  mediaItemsCharacteristic = [(CAFMediaSource *)self mediaItemsCharacteristic];
+  mediaItemsValue = [mediaItemsCharacteristic mediaItemsValue];
 
-  return v3;
+  return mediaItemsValue;
 }
 
 - (BOOL)hasMediaItems
 {
-  v2 = [(CAFMediaSource *)self mediaItemsCharacteristic];
-  v3 = v2 != 0;
+  mediaItemsCharacteristic = [(CAFMediaSource *)self mediaItemsCharacteristic];
+  v3 = mediaItemsCharacteristic != 0;
 
   return v3;
 }
@@ -262,13 +262,13 @@
 - (CAFStringCharacteristic)userVisibleLabelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000001"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000001"];
@@ -287,16 +287,16 @@
 
 - (NSString)userVisibleLabel
 {
-  v2 = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
-  v3 = [v2 stringValue];
+  userVisibleLabelCharacteristic = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
+  stringValue = [userVisibleLabelCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasUserVisibleLabel
 {
-  v2 = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
-  v3 = v2 != 0;
+  userVisibleLabelCharacteristic = [(CAFMediaSource *)self userVisibleLabelCharacteristic];
+  v3 = userVisibleLabelCharacteristic != 0;
 
   return v3;
 }
@@ -304,13 +304,13 @@
 - (CAFStringCharacteristic)identifierCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000019"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000019"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000019"];
@@ -329,22 +329,22 @@
 
 - (NSString)identifier
 {
-  v2 = [(CAFMediaSource *)self identifierCharacteristic];
-  v3 = [v2 stringValue];
+  identifierCharacteristic = [(CAFMediaSource *)self identifierCharacteristic];
+  stringValue = [identifierCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFMediaSourceSemanticTypeCharacteristic)mediaSourceSemanticTypeCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000025"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000025"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000025"];
@@ -363,22 +363,22 @@
 
 - (unsigned)mediaSourceSemanticType
 {
-  v2 = [(CAFMediaSource *)self mediaSourceSemanticTypeCharacteristic];
-  v3 = [v2 mediaSourceSemanticTypeValue];
+  mediaSourceSemanticTypeCharacteristic = [(CAFMediaSource *)self mediaSourceSemanticTypeCharacteristic];
+  mediaSourceSemanticTypeValue = [mediaSourceSemanticTypeCharacteristic mediaSourceSemanticTypeValue];
 
-  return v3;
+  return mediaSourceSemanticTypeValue;
 }
 
 - (CAFBoolCharacteristic)disabledCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000011"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000011"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000011"];
@@ -397,22 +397,22 @@
 
 - (BOOL)disabled
 {
-  v2 = [(CAFMediaSource *)self disabledCharacteristic];
-  v3 = [v2 BOOLValue];
+  disabledCharacteristic = [(CAFMediaSource *)self disabledCharacteristic];
+  bOOLValue = [disabledCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (CAFMediaItemImagesCharacteristic)mediaItemImagesCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000031"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000031"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000031"];
@@ -431,16 +431,16 @@
 
 - (CAFMediaItemImages)mediaItemImages
 {
-  v2 = [(CAFMediaSource *)self mediaItemImagesCharacteristic];
-  v3 = [v2 mediaItemImagesValue];
+  mediaItemImagesCharacteristic = [(CAFMediaSource *)self mediaItemImagesCharacteristic];
+  mediaItemImagesValue = [mediaItemImagesCharacteristic mediaItemImagesValue];
 
-  return v3;
+  return mediaItemImagesValue;
 }
 
 - (BOOL)hasMediaItemImages
 {
-  v2 = [(CAFMediaSource *)self mediaItemImagesCharacteristic];
-  v3 = v2 != 0;
+  mediaItemImagesCharacteristic = [(CAFMediaSource *)self mediaItemImagesCharacteristic];
+  v3 = mediaItemImagesCharacteristic != 0;
 
   return v3;
 }
@@ -448,13 +448,13 @@
 - (BOOL)registeredForCurrentFrequency
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000007"];
 
   return v10;
 }
@@ -462,13 +462,13 @@
 - (BOOL)registeredForCurrentMediaItemIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000026"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000026"];
 
   return v10;
 }
@@ -476,13 +476,13 @@
 - (BOOL)registeredForMediaItems
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000012"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000012"];
 
   return v10;
 }
@@ -490,13 +490,13 @@
 - (BOOL)registeredForUserVisibleLabel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000001"];
 
   return v10;
 }
@@ -504,13 +504,13 @@
 - (BOOL)registeredForIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000019"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000019"];
 
   return v10;
 }
@@ -518,13 +518,13 @@
 - (BOOL)registeredForMediaSourceSemanticType
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000025"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000025"];
 
   return v10;
 }
@@ -532,13 +532,13 @@
 - (BOOL)registeredForDisabled
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000011"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000011"];
 
   return v10;
 }
@@ -546,28 +546,28 @@
 - (BOOL)registeredForMediaItemImages
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000031"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000031"];
 
   return v10;
 }
 
-- (int64_t)typeCompare:(id)a3
+- (int64_t)typeCompare:(id)compare
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  compareCopy = compare;
   v6 = [v4 numberWithUnsignedChar:{-[CAFMediaSource mediaSourceSemanticType](self, "mediaSourceSemanticType")}];
   v7 = [&unk_284683048 indexOfObject:v6];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [v5 mediaSourceSemanticType];
+  mediaSourceSemanticType = [compareCopy mediaSourceSemanticType];
 
-  v10 = [v8 numberWithUnsignedChar:v9];
+  v10 = [v8 numberWithUnsignedChar:mediaSourceSemanticType];
   v11 = [&unk_284683048 indexOfObject:v10];
 
   v12 = -1;

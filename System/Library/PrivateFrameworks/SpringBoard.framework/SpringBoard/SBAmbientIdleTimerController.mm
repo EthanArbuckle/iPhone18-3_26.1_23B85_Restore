@@ -1,5 +1,5 @@
 @interface SBAmbientIdleTimerController
-- (SBAmbientIdleTimerController)initWithWindowScene:(id)a3;
+- (SBAmbientIdleTimerController)initWithWindowScene:(id)scene;
 - (SBWindowScene)_windowScene;
 - (int64_t)idleTimerDuration;
 - (int64_t)idleTimerMode;
@@ -8,36 +8,36 @@
 - (void)_notifyObserversIdleTimerBehaviorDidChange;
 - (void)_notifyObserversSuppressionDidEnd;
 - (void)_notifyObserversUserSleepPredictedDidChange;
-- (void)_setActiveSuppressionReasons:(unint64_t)a3;
-- (void)_setAmbientSuppressed:(BOOL)a3;
-- (void)_setIdleTimerAllowedForAssertions:(BOOL)a3;
-- (void)_setIdleTimerAllowedForAssertions:(BOOL)a3 forSleepFocus:(BOOL)a4;
-- (void)_setIdleTimerAllowedForAssertionsForSleepFocus:(BOOL)a3;
-- (void)_setIdleTimerAllowedForSuppression:(BOOL)a3;
-- (void)_setSuppressionEnabled:(BOOL)a3;
-- (void)_setUserSleepPredicted:(BOOL)a3;
+- (void)_setActiveSuppressionReasons:(unint64_t)reasons;
+- (void)_setAmbientSuppressed:(BOOL)suppressed;
+- (void)_setIdleTimerAllowedForAssertions:(BOOL)assertions;
+- (void)_setIdleTimerAllowedForAssertions:(BOOL)assertions forSleepFocus:(BOOL)focus;
+- (void)_setIdleTimerAllowedForAssertionsForSleepFocus:(BOOL)focus;
+- (void)_setIdleTimerAllowedForSuppression:(BOOL)suppression;
+- (void)_setSuppressionEnabled:(BOOL)enabled;
+- (void)_setUserSleepPredicted:(BOOL)predicted;
 - (void)_updateAmbientSuppressed;
 - (void)_updateSuppressionManager;
 - (void)dealloc;
-- (void)setSuppressForSleep:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setSuppressForSleep:(BOOL)sleep;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBAmbientIdleTimerController
 
-- (SBAmbientIdleTimerController)initWithWindowScene:(id)a3
+- (SBAmbientIdleTimerController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v18.receiver = self;
   v18.super_class = SBAmbientIdleTimerController;
   v5 = [(SBAmbientIdleTimerController *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
     v9 = +[SBAmbientDomain rootSettings];
     ambientSettings = v6->_ambientSettings;
@@ -46,14 +46,14 @@
     v11 = _allAmbientIdleTimerControllers;
     if (!_allAmbientIdleTimerControllers)
     {
-      v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v13 = _allAmbientIdleTimerControllers;
-      _allAmbientIdleTimerControllers = v12;
+      _allAmbientIdleTimerControllers = weakObjectsHashTable2;
 
-      v14 = [SBApp blshService];
-      v15 = [v14 localAssertionService];
+      blshService = [SBApp blshService];
+      localAssertionService = [blshService localAssertionService];
 
-      v16 = [(BLSHLocalAssertionAttributeHandler *)SBAllowAmbientIdleTimerAttributeHandler registerHandlerForService:v15];
+      v16 = [(BLSHLocalAssertionAttributeHandler *)SBAllowAmbientIdleTimerAttributeHandler registerHandlerForService:localAssertionService];
       v11 = _allAmbientIdleTimerControllers;
     }
 
@@ -75,11 +75,11 @@
   [(SBAmbientIdleTimerController *)&v3 dealloc];
 }
 
-- (void)setSuppressForSleep:(BOOL)a3
+- (void)setSuppressForSleep:(BOOL)sleep
 {
-  if (self->_suppressForSleep != a3)
+  if (self->_suppressForSleep != sleep)
   {
-    self->_suppressForSleep = a3;
+    self->_suppressForSleep = sleep;
     [(SBAmbientIdleTimerController *)self _updateSuppressionManager];
 
     [(SBAmbientIdleTimerController *)self _updateAmbientSuppressed];
@@ -101,20 +101,20 @@
 
 - (int64_t)idleTimerDuration
 {
-  v3 = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
+  isAmbientSuppressed = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
   ambientSettings = self->_ambientSettings;
-  if (v3)
+  if (isAmbientSuppressed)
   {
-    v5 = [(SBAmbientSettings *)ambientSettings suppressedIdleTimerDuration];
+    suppressedIdleTimerDuration = [(SBAmbientSettings *)ambientSettings suppressedIdleTimerDuration];
   }
 
   else
   {
-    v5 = [(SBAmbientSettings *)ambientSettings idleTimerDuration];
+    suppressedIdleTimerDuration = [(SBAmbientSettings *)ambientSettings idleTimerDuration];
   }
 
-  v6 = v5;
-  if (([MEMORY[0x277D75128] isRunningInStoreDemoMode] & (v5 != 18)) != 0)
+  v6 = suppressedIdleTimerDuration;
+  if (([MEMORY[0x277D75128] isRunningInStoreDemoMode] & (suppressedIdleTimerDuration != 18)) != 0)
   {
     return 11;
   }
@@ -127,9 +127,9 @@
 
 - (int64_t)idleWarnMode
 {
-  v3 = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
+  isAmbientSuppressed = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
   ambientSettings = self->_ambientSettings;
-  if (v3)
+  if (isAmbientSuppressed)
   {
 
     return [(SBAmbientSettings *)ambientSettings suppressedIdleTimerWarnMode];
@@ -142,38 +142,38 @@
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_ambientSettings == a3)
+  if (self->_ambientSettings == settings)
   {
-    v5 = a4;
+    keyCopy = key;
     [(SBAmbientIdleTimerController *)self _notifyObserversIdleTimerBehaviorDidChange];
-    v6 = [v5 isEqualToString:@"enableSuppression"];
+    v6 = [keyCopy isEqualToString:@"enableSuppression"];
 
     if (v6)
     {
-      v7 = [(SBAmbientSettings *)self->_ambientSettings enableSuppression];
+      enableSuppression = [(SBAmbientSettings *)self->_ambientSettings enableSuppression];
 
-      [(SBAmbientIdleTimerController *)self _setSuppressionEnabled:v7];
+      [(SBAmbientIdleTimerController *)self _setSuppressionEnabled:enableSuppression];
     }
   }
 }
 
-- (void)_setSuppressionEnabled:(BOOL)a3
+- (void)_setSuppressionEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [MEMORY[0x277CC1D50] isAvailable];
+    isAvailable = [MEMORY[0x277CC1D50] isAvailable];
   }
 
   else
   {
-    v4 = 0;
+    isAvailable = 0;
   }
 
-  if (self->_suppressionEnabled != v4)
+  if (self->_suppressionEnabled != isAvailable)
   {
-    self->_suppressionEnabled = v4;
+    self->_suppressionEnabled = isAvailable;
     [(SBAmbientIdleTimerController *)self _updateSuppressionManager];
 
     [(SBAmbientIdleTimerController *)self _updateUserSleepPredicted];
@@ -203,16 +203,16 @@
           _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Starting suppression monitoring", buf, 2u);
         }
 
-        v6 = [(SBAmbientIdleTimerController *)self _sourcesForMonitoredEvents];
+        _sourcesForMonitoredEvents = [(SBAmbientIdleTimerController *)self _sourcesForMonitoredEvents];
         [(CMSuppressionManager *)self->_suppressionManager startService];
         v7 = self->_suppressionManager;
-        v8 = [MEMORY[0x277CCABD8] mainQueue];
+        mainQueue = [MEMORY[0x277CCABD8] mainQueue];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __57__SBAmbientIdleTimerController__updateSuppressionManager__block_invoke;
         v11[3] = &unk_2783C1908;
         objc_copyWeak(&v12, location);
-        [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:v8 withOptions:v6 withHandler:v11];
+        [(CMSuppressionManager *)v7 startSuppressionUpdatesToQueue:mainQueue withOptions:_sourcesForMonitoredEvents withHandler:v11];
 
         self->_suppressionServiceStarted = 1;
         objc_destroyWeak(&v12);
@@ -302,8 +302,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -315,7 +315,7 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -328,7 +328,7 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -342,8 +342,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -355,7 +355,7 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -368,7 +368,7 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -382,8 +382,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -395,7 +395,7 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -408,18 +408,18 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_setAmbientSuppressed:(BOOL)a3
+- (void)_setAmbientSuppressed:(BOOL)suppressed
 {
-  if (self->_ambientSuppressed != a3)
+  if (self->_ambientSuppressed != suppressed)
   {
-    self->_ambientSuppressed = a3;
+    self->_ambientSuppressed = suppressed;
     [(SBAmbientIdleTimerController *)self _notifyObserversIdleTimerBehaviorDidChange];
   }
 }
@@ -427,7 +427,7 @@ LABEL_13:
 - (void)_updateAmbientSuppressed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
+  isAmbientSuppressed = [(SBAmbientIdleTimerController *)self isAmbientSuppressed];
   v4 = self->_idleTimerAllowedForAssertions || self->_idleTimerAllowedForAssertionsForSleepFocus && self->_suppressForSleep || self->_idleTimerAllowedForSuppression;
   [(SBAmbientIdleTimerController *)self _setAmbientSuppressed:v4];
   v5 = SBLogAmbientIdleTimer();
@@ -438,7 +438,7 @@ LABEL_13:
     suppressForSleep = self->_suppressForSleep;
     idleTimerAllowedForSuppression = self->_idleTimerAllowedForSuppression;
     v12[0] = 67110400;
-    v12[1] = v3;
+    v12[1] = isAmbientSuppressed;
     v13 = 1024;
     v14 = v4;
     v15 = 1024;
@@ -452,9 +452,9 @@ LABEL_13:
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Ambient supression state updated. wasAmbientSuppressed = %{BOOL}u  isAmbientSuppressed = %{BOOL}u  [ _idleTimerAllowedForAssertions = %{BOOL}u _idleTimerAllowedForAssertionsForSleepFocus = %{BOOL}u _suppressForSleep = %{BOOL}u _idleTimerAllowedForSuppression = %{BOOL}u ]", v12, 0x26u);
   }
 
-  if (v3 || !v4)
+  if (isAmbientSuppressed || !v4)
   {
-    if (!v4 && v3)
+    if (!v4 && isAmbientSuppressed)
     {
       v10 = SBLogAmbientIdleTimer();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -478,67 +478,67 @@ LABEL_13:
   }
 }
 
-- (void)_setIdleTimerAllowedForAssertions:(BOOL)a3
+- (void)_setIdleTimerAllowedForAssertions:(BOOL)assertions
 {
-  if (self->_idleTimerAllowedForAssertions != a3)
+  if (self->_idleTimerAllowedForAssertions != assertions)
   {
-    self->_idleTimerAllowedForAssertions = a3;
+    self->_idleTimerAllowedForAssertions = assertions;
     [(SBAmbientIdleTimerController *)self _updateAmbientSuppressed];
   }
 }
 
-- (void)_setIdleTimerAllowedForAssertionsForSleepFocus:(BOOL)a3
+- (void)_setIdleTimerAllowedForAssertionsForSleepFocus:(BOOL)focus
 {
-  if (self->_idleTimerAllowedForAssertionsForSleepFocus != a3)
+  if (self->_idleTimerAllowedForAssertionsForSleepFocus != focus)
   {
-    self->_idleTimerAllowedForAssertionsForSleepFocus = a3;
+    self->_idleTimerAllowedForAssertionsForSleepFocus = focus;
     [(SBAmbientIdleTimerController *)self _updateAmbientSuppressed];
   }
 }
 
-- (void)_setIdleTimerAllowedForAssertions:(BOOL)a3 forSleepFocus:(BOOL)a4
+- (void)_setIdleTimerAllowedForAssertions:(BOOL)assertions forSleepFocus:(BOOL)focus
 {
-  if (a4)
+  if (focus)
   {
-    [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForAssertionsForSleepFocus:a3];
+    [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForAssertionsForSleepFocus:assertions];
   }
 
   else
   {
-    [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForAssertions:a3];
+    [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForAssertions:assertions];
   }
 }
 
-- (void)_setIdleTimerAllowedForSuppression:(BOOL)a3
+- (void)_setIdleTimerAllowedForSuppression:(BOOL)suppression
 {
-  if (self->_idleTimerAllowedForSuppression != a3)
+  if (self->_idleTimerAllowedForSuppression != suppression)
   {
-    self->_idleTimerAllowedForSuppression = a3;
+    self->_idleTimerAllowedForSuppression = suppression;
     [(SBAmbientIdleTimerController *)self _updateAmbientSuppressed];
 
     [(SBAmbientIdleTimerController *)self _updateUserSleepPredicted];
   }
 }
 
-- (void)_setActiveSuppressionReasons:(unint64_t)a3
+- (void)_setActiveSuppressionReasons:(unint64_t)reasons
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogAmbientIdleTimer();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    reasonsCopy = reasons;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Active suppression reasons: 0x%lx", &v6, 0xCu);
   }
 
-  [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForSuppression:(self->_monitoredSuppressionReasons & a3) != 0];
+  [(SBAmbientIdleTimerController *)self _setIdleTimerAllowedForSuppression:(self->_monitoredSuppressionReasons & reasons) != 0];
 }
 
-- (void)_setUserSleepPredicted:(BOOL)a3
+- (void)_setUserSleepPredicted:(BOOL)predicted
 {
-  if (self->_userSleepPredicted != a3)
+  if (self->_userSleepPredicted != predicted)
   {
-    self->_userSleepPredicted = a3;
+    self->_userSleepPredicted = predicted;
     [(SBAmbientIdleTimerController *)self _notifyObserversUserSleepPredictedDidChange];
   }
 }

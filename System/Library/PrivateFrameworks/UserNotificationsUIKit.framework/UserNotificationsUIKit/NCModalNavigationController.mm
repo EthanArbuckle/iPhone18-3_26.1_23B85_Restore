@@ -1,6 +1,6 @@
 @interface NCModalNavigationController
 - (NCModalNavigationControllerDelegate)presenterDelegate;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -12,26 +12,26 @@
   v4.super_class = NCModalNavigationController;
   [(NCModalNavigationController *)&v4 viewDidLoad];
   [(NCModalNavigationController *)self setModalPresentationStyle:2];
-  v3 = [(NCModalNavigationController *)self sheetPresentationController];
-  [v3 _setShouldDismissWhenTappedOutside:1];
-  [v3 setPrefersGrabberVisible:0];
+  sheetPresentationController = [(NCModalNavigationController *)self sheetPresentationController];
+  [sheetPresentationController _setShouldDismissWhenTappedOutside:1];
+  [sheetPresentationController setPrefersGrabberVisible:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(NCModalNavigationController *)self isBeingDismissed])
   {
-    v5 = [(NCModalNavigationController *)self presenterDelegate];
+    presenterDelegate = [(NCModalNavigationController *)self presenterDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 modalNavigationControllerDidDismiss:self];
+      [presenterDelegate modalNavigationControllerDidDismiss:self];
     }
   }
 
   v6.receiver = self;
   v6.super_class = NCModalNavigationController;
-  [(NCModalNavigationController *)&v6 viewDidDisappear:v3];
+  [(NCModalNavigationController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 - (NCModalNavigationControllerDelegate)presenterDelegate

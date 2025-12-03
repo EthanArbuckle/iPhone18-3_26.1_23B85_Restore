@@ -1,23 +1,23 @@
 @interface SUUIProductPageTableExpandableHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
 - (void)layoutSubviews;
-- (void)setActionString:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBottomBorderColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopBorderColor:(id)a3;
+- (void)setActionString:(id)string;
+- (void)setBackgroundColor:(id)color;
+- (void)setBottomBorderColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setTitle:(id)title;
+- (void)setTopBorderColor:(id)color;
 @end
 
 @implementation SUUIProductPageTableExpandableHeaderView
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
-  v17 = a3;
-  v4 = [(SUUIProductPageTableExpandableHeaderView *)self actionString];
-  if (v4 != v17 && ([v4 isEqualToString:v17] & 1) == 0)
+  stringCopy = string;
+  actionString = [(SUUIProductPageTableExpandableHeaderView *)self actionString];
+  if (actionString != stringCopy && ([actionString isEqualToString:stringCopy] & 1) == 0)
   {
-    v5 = [v17 length];
+    v5 = [stringCopy length];
     actionLabel = self->_actionLabel;
     if (v5)
     {
@@ -28,31 +28,31 @@
         self->_actionLabel = v7;
 
         v9 = self->_actionLabel;
-        v10 = [(SUUIProductPageTableExpandableHeaderView *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageTableExpandableHeaderView *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_actionLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_actionLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v16 = [(SUUIProductPageTableExpandableHeaderView *)self tintColor];
-          [(UILabel *)v13 setTextColor:v16];
+          tintColor = [(SUUIProductPageTableExpandableHeaderView *)self tintColor];
+          [(UILabel *)v13 setTextColor:tintColor];
         }
 
         [(SUUIProductPageTableExpandableHeaderView *)self addSubview:self->_actionLabel];
         actionLabel = self->_actionLabel;
       }
 
-      [(UILabel *)actionLabel setText:v17];
+      [(UILabel *)actionLabel setText:stringCopy];
       [(UILabel *)self->_actionLabel sizeToFit];
     }
 
@@ -67,12 +67,12 @@
   }
 }
 
-- (void)setBottomBorderColor:(id)a3
+- (void)setBottomBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   bottomBorderView = self->_bottomBorderView;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!bottomBorderView)
     {
@@ -81,11 +81,11 @@
       self->_bottomBorderView = v6;
 
       [(SUUIProductPageTableExpandableHeaderView *)self addSubview:self->_bottomBorderView];
-      v4 = v9;
+      colorCopy = v9;
       bottomBorderView = self->_bottomBorderView;
     }
 
-    [(UIView *)bottomBorderView setBackgroundColor:v4];
+    [(UIView *)bottomBorderView setBackgroundColor:colorCopy];
   }
 
   else
@@ -96,50 +96,50 @@
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v12 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     actionLabel = self->_actionLabel;
-    v7 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)actionLabel setTextColor:v7];
+      [(UILabel *)actionLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v8 = [(SUUIProductPageTableExpandableHeaderView *)self tintColor];
-      [(UILabel *)actionLabel setTextColor:v8];
+      tintColor = [(SUUIProductPageTableExpandableHeaderView *)self tintColor];
+      [(UILabel *)actionLabel setTextColor:tintColor];
     }
 
     titleLabel = self->_titleLabel;
-    v10 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v10)
+    secondaryTextColor2 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)titleLabel setTextColor:v10];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor2];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v11];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
 
-    v5 = v12;
+    schemeCopy = v12;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v17 = a3;
-  v4 = [(SUUIProductPageTableExpandableHeaderView *)self title];
-  if (v4 != v17 && ([v4 isEqualToString:v17] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIProductPageTableExpandableHeaderView *)self title];
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [v17 length];
+    v5 = [titleCopy length];
     titleLabel = self->_titleLabel;
     if (v5)
     {
@@ -150,31 +150,31 @@
         self->_titleLabel = v7;
 
         v9 = self->_titleLabel;
-        v10 = [(SUUIProductPageTableExpandableHeaderView *)self backgroundColor];
-        [(UILabel *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIProductPageTableExpandableHeaderView *)self backgroundColor];
+        [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
         v11 = self->_titleLabel;
         v12 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
         [(UILabel *)v11 setFont:v12];
 
         v13 = self->_titleLabel;
-        v14 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v14)
+        secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v13 setTextColor:v14];
+          [(UILabel *)v13 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v13 setTextColor:v16];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v13 setTextColor:blackColor];
         }
 
         [(SUUIProductPageTableExpandableHeaderView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v17];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -189,12 +189,12 @@
   }
 }
 
-- (void)setTopBorderColor:(id)a3
+- (void)setTopBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   topBorderView = self->_topBorderView;
-  v9 = v4;
-  if (v4)
+  v9 = colorCopy;
+  if (colorCopy)
   {
     if (!topBorderView)
     {
@@ -203,11 +203,11 @@
       self->_topBorderView = v6;
 
       [(SUUIProductPageTableExpandableHeaderView *)self addSubview:self->_topBorderView];
-      v4 = v9;
+      colorCopy = v9;
       topBorderView = self->_topBorderView;
     }
 
-    [(UIView *)topBorderView setBackgroundColor:v4];
+    [(UIView *)topBorderView setBackgroundColor:colorCopy];
   }
 
   else
@@ -224,12 +224,12 @@
   v4 = v3;
   v6 = v5;
   bottomBorderView = self->_bottomBorderView;
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = v6 - 1.0 / v9;
   v11 = v4 + -15.0;
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(UIView *)bottomBorderView setFrame:15.0, v10, v11, 1.0 / v13];
 
   [(UIView *)self->_topBorderView setFrame:15.0, 0.0, v11, 1.0];
@@ -262,15 +262,15 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   actionLabel = self->_actionLabel;
-  v5 = a3;
-  [(UILabel *)actionLabel setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)actionLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIProductPageTableExpandableHeaderView;
-  [(SUUIProductPageTableExpandableHeaderView *)&v6 setBackgroundColor:v5];
+  [(SUUIProductPageTableExpandableHeaderView *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result

@@ -1,51 +1,51 @@
 @interface MFEmailSnippetComposeView
 + (id)reuseIdentifier;
-- (BOOL)_loadSubjectForReference:(id)a3;
-- (BOOL)_shouldDisplayField:(id)a3;
-- (BOOL)_shouldDisplayField:(id)a3 withHeader:(id)a4 removeIfNotDisplayed:(BOOL)a5;
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (CGRect)_frameForBodyTextWithSize:(CGSize)a3 startingAt:(double)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MFEmailSnippetComposeView)initWithFrame:(CGRect)a3;
+- (BOOL)_loadSubjectForReference:(id)reference;
+- (BOOL)_shouldDisplayField:(id)field;
+- (BOOL)_shouldDisplayField:(id)field withHeader:(id)header removeIfNotDisplayed:(BOOL)displayed;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (CGRect)_frameForBodyTextWithSize:(CGSize)size startingAt:(double)at;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MFEmailSnippetComposeView)initWithFrame:(CGRect)frame;
 - (MFEmailSnippetComposeViewDelegate)composeViewDelegate;
-- (double)_roundToPixel:(double)a3;
-- (id)_recipientsFromArray:(id)a3;
+- (double)_roundToPixel:(double)pixel;
+- (id)_recipientsFromArray:(id)array;
 - (id)draftURL;
 - (void)_repopulateFields;
-- (void)_setupAndAddLabel:(id)a3 isHeader:(BOOL)a4;
-- (void)setEmail:(id)a3;
+- (void)_setupAndAddLabel:(id)label isHeader:(BOOL)header;
+- (void)setEmail:(id)email;
 - (void)updateConstraints;
 @end
 
 @implementation MFEmailSnippetComposeView
 
-- (void)_setupAndAddLabel:(id)a3 isHeader:(BOOL)a4
+- (void)_setupAndAddLabel:(id)label isHeader:(BOOL)header
 {
-  v4 = a4;
-  v10 = a3;
+  headerCopy = header;
+  labelCopy = label;
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  [v10 setFont:v6];
+  [labelCopy setFont:v6];
 
   v7 = +[UIColor siriui_textColor];
-  [v10 setColor:v7];
+  [labelCopy setColor:v7];
 
   v8 = +[UIColor clearColor];
-  [v10 setBackgroundColor:v8];
+  [labelCopy setBackgroundColor:v8];
 
-  if (v4)
+  if (headerCopy)
   {
-    [v10 sizeToFit];
+    [labelCopy sizeToFit];
   }
 
-  v9 = [(MFEmailSnippetComposeView *)self contentView];
-  [v9 addSubview:v10];
+  contentView = [(MFEmailSnippetComposeView *)self contentView];
+  [contentView addSubview:labelCopy];
 }
 
-- (MFEmailSnippetComposeView)initWithFrame:(CGRect)a3
+- (MFEmailSnippetComposeView)initWithFrame:(CGRect)frame
 {
   v46.receiver = self;
   v46.super_class = MFEmailSnippetComposeView;
-  v3 = [(MFEmailSnippetComposeView *)&v46 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFEmailSnippetComposeView *)&v46 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -133,8 +133,8 @@
     v3->_subjectDivider = v40;
 
     [(SiriUIKeyline *)v3->_subjectDivider setTranslatesAutoresizingMaskIntoConstraints:0];
-    v42 = [(MFEmailSnippetComposeView *)v3 contentView];
-    [v42 addSubview:v3->_subjectDivider];
+    contentView = [(MFEmailSnippetComposeView *)v3 contentView];
+    [contentView addSubview:v3->_subjectDivider];
 
     v43 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     bodyText = v3->_bodyText;
@@ -157,7 +157,7 @@
   return v4;
 }
 
-- (double)_roundToPixel:(double)a3
+- (double)_roundToPixel:(double)pixel
 {
   v4 = +[UIScreen mainScreen];
   [v4 scale];
@@ -165,17 +165,17 @@
 
   if (v6 > 0.0)
   {
-    v7 = v6 * a3;
+    v7 = v6 * pixel;
     return roundf(v7) / v6;
   }
 
-  return a3;
+  return pixel;
 }
 
-- (CGRect)_frameForBodyTextWithSize:(CGSize)a3 startingAt:(double)a4
+- (CGRect)_frameForBodyTextWithSize:(CGSize)size startingAt:(double)at
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
   v9 = width - v8;
   [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
@@ -185,7 +185,7 @@
   [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
   v16 = v15;
   [(MFEmailSnippetComposeView *)self _roundToPixel:-1.5];
-  v18 = sub_5B1C(v17) + a4;
+  v18 = sub_5B1C(v17) + at;
   v19 = v16;
   v20 = v12;
   v21 = v14;
@@ -196,19 +196,19 @@
   return result;
 }
 
-- (BOOL)_shouldDisplayField:(id)a3
+- (BOOL)_shouldDisplayField:(id)field
 {
-  v4 = a3;
-  v5 = [(UILabel *)v4 text];
-  if ([v5 length] || self->_subjectField == v4)
+  fieldCopy = field;
+  text = [(UILabel *)fieldCopy text];
+  if ([text length] || self->_subjectField == fieldCopy)
   {
     v6 = 1;
   }
 
-  else if (self->_toField == v4)
+  else if (self->_toField == fieldCopy)
   {
-    v8 = [(UILabel *)self->_ccField text];
-    v6 = [v8 length] == 0;
+    text2 = [(UILabel *)self->_ccField text];
+    v6 = [text2 length] == 0;
   }
 
   else
@@ -219,25 +219,25 @@
   return v6;
 }
 
-- (BOOL)_shouldDisplayField:(id)a3 withHeader:(id)a4 removeIfNotDisplayed:(BOOL)a5
+- (BOOL)_shouldDisplayField:(id)field withHeader:(id)header removeIfNotDisplayed:(BOOL)displayed
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MFEmailSnippetComposeView *)self _shouldDisplayField:v8];
-  if (!v10 && v5)
+  displayedCopy = displayed;
+  fieldCopy = field;
+  headerCopy = header;
+  v10 = [(MFEmailSnippetComposeView *)self _shouldDisplayField:fieldCopy];
+  if (!v10 && displayedCopy)
   {
-    [v8 removeFromSuperview];
-    [v9 removeFromSuperview];
+    [fieldCopy removeFromSuperview];
+    [headerCopy removeFromSuperview];
   }
 
   return v10;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 0.0;
   if ([(MFEmailSnippetComposeView *)self _shouldDisplayField:self->_toField])
   {
@@ -284,10 +284,10 @@
   v106.receiver = self;
   v106.super_class = MFEmailSnippetComposeView;
   [(MFEmailSnippetComposeView *)&v106 updateConstraints];
-  v104 = [(MFEmailSnippetComposeView *)self contentView];
-  v3 = [(MFEmailSnippetComposeView *)self contentView];
-  v4 = [v3 constraints];
-  [v104 removeConstraints:v4];
+  contentView = [(MFEmailSnippetComposeView *)self contentView];
+  contentView2 = [(MFEmailSnippetComposeView *)self contentView];
+  constraints = [contentView2 constraints];
+  [contentView removeConstraints:constraints];
 
   v105 = +[NSMutableArray array];
   if ([(MFEmailSnippetComposeView *)self _shouldDisplayField:self->_toField withHeader:self->_toHeader removeIfNotDisplayed:1])
@@ -296,15 +296,15 @@
     [(UILabel *)self->_toHeader sizeToFit];
     [(UILabel *)self->_toField sizeToFit];
     toHeader = self->_toHeader;
-    v7 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView3 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:25.0];
-    v9 = [NSLayoutConstraint constraintWithItem:toHeader attribute:11 relatedBy:0 toItem:v7 attribute:3 multiplier:1.0 constant:sub_5B1C(v8)];
+    v9 = [NSLayoutConstraint constraintWithItem:toHeader attribute:11 relatedBy:0 toItem:contentView3 attribute:3 multiplier:1.0 constant:sub_5B1C(v8)];
     [v5 addObject:v9];
 
     v10 = self->_toHeader;
-    v11 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView4 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v13 = [NSLayoutConstraint constraintWithItem:v10 attribute:5 relatedBy:0 toItem:v11 attribute:5 multiplier:1.0 constant:v12];
+    v13 = [NSLayoutConstraint constraintWithItem:v10 attribute:5 relatedBy:0 toItem:contentView4 attribute:5 multiplier:1.0 constant:v12];
     [v5 addObject:v13];
 
     v14 = [NSLayoutConstraint constraintWithItem:self->_toField attribute:10 relatedBy:0 toItem:self->_toHeader attribute:10 multiplier:1.0 constant:0.0];
@@ -317,9 +317,9 @@
     [v5 addObject:v18];
 
     v19 = self->_toField;
-    v20 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView5 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v22 = [NSLayoutConstraint constraintWithItem:v19 attribute:6 relatedBy:-1 toItem:v20 attribute:6 multiplier:1.0 constant:-v21];
+    v22 = [NSLayoutConstraint constraintWithItem:v19 attribute:6 relatedBy:-1 toItem:contentView5 attribute:6 multiplier:1.0 constant:-v21];
     [v5 addObject:v22];
 
     [v105 addObjectsFromArray:v5];
@@ -341,17 +341,17 @@
     {
       [(MFEmailSnippetComposeView *)self _roundToPixel:23.0];
       v27 = 4;
-      v28 = v23;
+      contentView6 = v23;
     }
 
     else
     {
-      v28 = [(MFEmailSnippetComposeView *)self contentView];
+      contentView6 = [(MFEmailSnippetComposeView *)self contentView];
       [(MFEmailSnippetComposeView *)self _roundToPixel:25.0];
       v27 = 3;
     }
 
-    v29 = [NSLayoutConstraint constraintWithItem:ccHeader attribute:11 relatedBy:0 toItem:v28 attribute:v27 multiplier:1.0 constant:sub_5B1C(v26)];
+    v29 = [NSLayoutConstraint constraintWithItem:ccHeader attribute:11 relatedBy:0 toItem:contentView6 attribute:v27 multiplier:1.0 constant:sub_5B1C(v26)];
     [v24 addObject:v29];
 
     if (!v23)
@@ -359,9 +359,9 @@
     }
 
     v30 = self->_ccHeader;
-    v31 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView7 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v33 = [NSLayoutConstraint constraintWithItem:v30 attribute:5 relatedBy:0 toItem:v31 attribute:5 multiplier:1.0 constant:v32];
+    v33 = [NSLayoutConstraint constraintWithItem:v30 attribute:5 relatedBy:0 toItem:contentView7 attribute:5 multiplier:1.0 constant:v32];
     [v24 addObject:v33];
 
     v34 = [NSLayoutConstraint constraintWithItem:self->_ccField attribute:10 relatedBy:0 toItem:self->_ccHeader attribute:10 multiplier:1.0 constant:0.0];
@@ -374,9 +374,9 @@
     [v24 addObject:v38];
 
     v39 = self->_ccField;
-    v40 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView8 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v42 = [NSLayoutConstraint constraintWithItem:v39 attribute:6 relatedBy:-1 toItem:v40 attribute:6 multiplier:1.0 constant:-v41];
+    v42 = [NSLayoutConstraint constraintWithItem:v39 attribute:6 relatedBy:-1 toItem:contentView8 attribute:6 multiplier:1.0 constant:-v41];
     [v24 addObject:v42];
 
     [v105 addObjectsFromArray:v24];
@@ -396,9 +396,9 @@
     [v44 addObject:v47];
 
     v48 = self->_bccHeader;
-    v49 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView9 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v51 = [NSLayoutConstraint constraintWithItem:v48 attribute:5 relatedBy:0 toItem:v49 attribute:5 multiplier:1.0 constant:v50];
+    v51 = [NSLayoutConstraint constraintWithItem:v48 attribute:5 relatedBy:0 toItem:contentView9 attribute:5 multiplier:1.0 constant:v50];
     [v44 addObject:v51];
 
     v52 = [NSLayoutConstraint constraintWithItem:self->_bccField attribute:10 relatedBy:0 toItem:self->_bccHeader attribute:10 multiplier:1.0 constant:0.0];
@@ -411,9 +411,9 @@
     [v44 addObject:v56];
 
     v57 = self->_bccField;
-    v58 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView10 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v60 = [NSLayoutConstraint constraintWithItem:v57 attribute:6 relatedBy:-1 toItem:v58 attribute:6 multiplier:1.0 constant:-v59];
+    v60 = [NSLayoutConstraint constraintWithItem:v57 attribute:6 relatedBy:-1 toItem:contentView10 attribute:6 multiplier:1.0 constant:-v59];
     [v44 addObject:v60];
 
     [v105 addObjectsFromArray:v44];
@@ -433,9 +433,9 @@
     [v62 addObject:v65];
 
     v66 = self->_subjectHeader;
-    v67 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView11 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v69 = [NSLayoutConstraint constraintWithItem:v66 attribute:5 relatedBy:0 toItem:v67 attribute:5 multiplier:1.0 constant:v68];
+    v69 = [NSLayoutConstraint constraintWithItem:v66 attribute:5 relatedBy:0 toItem:contentView11 attribute:5 multiplier:1.0 constant:v68];
     [v62 addObject:v69];
 
     v70 = [NSLayoutConstraint constraintWithItem:self->_subjectField attribute:10 relatedBy:0 toItem:self->_subjectHeader attribute:10 multiplier:1.0 constant:0.0];
@@ -448,19 +448,19 @@
     [v62 addObject:v74];
 
     v75 = self->_subjectField;
-    v76 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView12 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v78 = [NSLayoutConstraint constraintWithItem:v75 attribute:6 relatedBy:-1 toItem:v76 attribute:6 multiplier:1.0 constant:-v77];
+    v78 = [NSLayoutConstraint constraintWithItem:v75 attribute:6 relatedBy:-1 toItem:contentView12 attribute:6 multiplier:1.0 constant:-v77];
     [v62 addObject:v78];
 
     subjectDivider = self->_subjectDivider;
-    v80 = [(MFEmailSnippetComposeView *)self contentView];
-    v81 = [NSLayoutConstraint constraintWithItem:subjectDivider attribute:5 relatedBy:0 toItem:v80 attribute:5 multiplier:1.0 constant:0.0];
+    contentView13 = [(MFEmailSnippetComposeView *)self contentView];
+    v81 = [NSLayoutConstraint constraintWithItem:subjectDivider attribute:5 relatedBy:0 toItem:contentView13 attribute:5 multiplier:1.0 constant:0.0];
     [v62 addObject:v81];
 
     v82 = self->_subjectDivider;
-    v83 = [(MFEmailSnippetComposeView *)self contentView];
-    v84 = [NSLayoutConstraint constraintWithItem:v82 attribute:6 relatedBy:0 toItem:v83 attribute:6 multiplier:1.0 constant:0.0];
+    contentView14 = [(MFEmailSnippetComposeView *)self contentView];
+    v84 = [NSLayoutConstraint constraintWithItem:v82 attribute:6 relatedBy:0 toItem:contentView14 attribute:6 multiplier:1.0 constant:0.0];
     [v62 addObject:v84];
 
     v85 = [NSLayoutConstraint constraintWithItem:self->_subjectDivider attribute:3 relatedBy:0 toItem:self->_subjectHeader attribute:4 multiplier:1.0 constant:10.0];
@@ -482,39 +482,39 @@
     bodyText = self->_bodyText;
     [(MFEmailSnippetComposeView *)self _roundToPixel:25.0];
     v91 = sub_5B1C(v90);
-    v92 = [(UILabel *)self->_bodyText font];
-    [v92 capHeight];
+    font = [(UILabel *)self->_bodyText font];
+    [font capHeight];
     v94 = [NSLayoutConstraint constraintWithItem:bodyText attribute:3 relatedBy:0 toItem:v23 attribute:4 multiplier:1.0 constant:v91 - v93];
     [v88 addObject:v94];
 
     v95 = self->_bodyText;
-    v96 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView15 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v98 = [NSLayoutConstraint constraintWithItem:v95 attribute:5 relatedBy:0 toItem:v96 attribute:5 multiplier:1.0 constant:v97];
+    v98 = [NSLayoutConstraint constraintWithItem:v95 attribute:5 relatedBy:0 toItem:contentView15 attribute:5 multiplier:1.0 constant:v97];
     [v88 addObject:v98];
 
     v99 = self->_bodyText;
-    v100 = [(MFEmailSnippetComposeView *)self contentView];
+    contentView16 = [(MFEmailSnippetComposeView *)self contentView];
     [(MFEmailSnippetComposeView *)self _roundToPixel:15.0];
-    v102 = [NSLayoutConstraint constraintWithItem:v99 attribute:6 relatedBy:0 toItem:v100 attribute:6 multiplier:1.0 constant:-v101];
+    v102 = [NSLayoutConstraint constraintWithItem:v99 attribute:6 relatedBy:0 toItem:contentView16 attribute:6 multiplier:1.0 constant:-v101];
     [v88 addObject:v102];
 
     [v105 addObjectsFromArray:v88];
   }
 
-  v103 = [(MFEmailSnippetComposeView *)self contentView];
-  [v103 addConstraints:v105];
+  contentView17 = [(MFEmailSnippetComposeView *)self contentView];
+  [contentView17 addConstraints:v105];
 }
 
-- (id)_recipientsFromArray:(id)a3
+- (id)_recipientsFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableString string];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -535,17 +535,17 @@
           [v4 appendString:v10];
         }
 
-        v11 = [v9 displayText];
-        if (![v11 length])
+        displayText = [v9 displayText];
+        if (![displayText length])
         {
-          v12 = [v9 data];
+          data = [v9 data];
 
-          v11 = v12;
+          displayText = data;
         }
 
-        if ([v11 length])
+        if ([displayText length])
         {
-          [v4 appendString:v11];
+          [v4 appendString:displayText];
         }
       }
 
@@ -560,28 +560,28 @@
 
 - (void)_repopulateFields
 {
-  v14 = [(SAEmailEmail *)self->_email recipientsTo];
+  recipientsTo = [(SAEmailEmail *)self->_email recipientsTo];
   v3 = [(MFEmailSnippetComposeView *)self _recipientsFromArray:?];
 
   v15 = v3;
   [(UILabel *)self->_toField setText:?];
-  v4 = [(SAEmailEmail *)self->_email recipientsCc];
-  v5 = [(MFEmailSnippetComposeView *)self _recipientsFromArray:v4];
+  recipientsCc = [(SAEmailEmail *)self->_email recipientsCc];
+  v5 = [(MFEmailSnippetComposeView *)self _recipientsFromArray:recipientsCc];
 
   v6 = v5;
   [(UILabel *)self->_ccField setText:v6];
-  v7 = [(SAEmailEmail *)self->_email recipientsBcc];
-  v8 = [(MFEmailSnippetComposeView *)self _recipientsFromArray:v7];
+  recipientsBcc = [(SAEmailEmail *)self->_email recipientsBcc];
+  v8 = [(MFEmailSnippetComposeView *)self _recipientsFromArray:recipientsBcc];
 
   v9 = v8;
   [(UILabel *)self->_bccField setText:v9];
   subjectField = self->_subjectField;
-  v11 = [(SAEmailEmail *)self->_email subject];
-  [(UILabel *)subjectField setText:v11];
+  subject = [(SAEmailEmail *)self->_email subject];
+  [(UILabel *)subjectField setText:subject];
 
   bodyText = self->_bodyText;
-  v13 = [(SAEmailEmail *)self->_email message];
-  [(UILabel *)bodyText setText:v13];
+  message = [(SAEmailEmail *)self->_email message];
+  [(UILabel *)bodyText setText:message];
 
   if (qword_1E838 != -1)
   {
@@ -591,15 +591,15 @@
   [(MFEmailSnippetComposeView *)self setNeedsLayout];
 }
 
-- (BOOL)_loadSubjectForReference:(id)a3
+- (BOOL)_loadSubjectForReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = dispatch_semaphore_create(0);
   searchCompleted = self->_searchCompleted;
   self->_searchCompleted = v5;
 
   v7 = [MSCriterion alloc];
-  v8 = [v7 initWithType:MSCriterionTypeMessageReference qualifier:MSCriterionQualifierContains expression:v4];
+  v8 = [v7 initWithType:MSCriterionTypeMessageReference qualifier:MSCriterionQualifierContains expression:referenceCopy];
   v9 = [NSArray arrayWithObject:MSResultsKeySubject];
   v10 = [MSSearch findMessageData:v9 matchingCriterion:v8 options:0 delegate:self];
 
@@ -622,21 +622,21 @@
   return v13;
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v10 = a3;
-  if (self->_email != v10)
+  emailCopy = email;
+  if (self->_email != emailCopy)
   {
-    objc_storeStrong(&self->_email, a3);
+    objc_storeStrong(&self->_email, email);
   }
 
-  v5 = [(SAEmailEmail *)v10 type];
-  v6 = [MFAssistantEmail MSSendTypeForSAEMailType:v5];
+  type = [(SAEmailEmail *)emailCopy type];
+  v6 = [MFAssistantEmail MSSendTypeForSAEMailType:type];
 
   if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v7 = [(SAEmailEmail *)v10 referenceId];
-    if ([(MFEmailSnippetComposeView *)self _loadSubjectForReference:v7])
+    referenceId = [(SAEmailEmail *)emailCopy referenceId];
+    if ([(MFEmailSnippetComposeView *)self _loadSubjectForReference:referenceId])
     {
       if (v6 == 2)
       {
@@ -659,43 +659,43 @@
 - (id)draftURL
 {
   v3 = +[NSURL ef_defaultAllowedCharacterSet];
-  v4 = [(SAEmailEmail *)self->_email recipientsTo];
-  v5 = MFCommentedEmailsFromSAPersonAttributes(v4);
+  recipientsTo = [(SAEmailEmail *)self->_email recipientsTo];
+  v5 = MFCommentedEmailsFromSAPersonAttributes(recipientsTo);
   v6 = [v5 componentsJoinedByString:{@", "}];
   v38 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v3];
 
-  v7 = [(SAEmailEmail *)self->_email recipientsCc];
-  v8 = MFCommentedEmailsFromSAPersonAttributes(v7);
+  recipientsCc = [(SAEmailEmail *)self->_email recipientsCc];
+  v8 = MFCommentedEmailsFromSAPersonAttributes(recipientsCc);
   v9 = [v8 componentsJoinedByString:{@", "}];
   v37 = [v9 stringByAddingPercentEncodingWithAllowedCharacters:v3];
 
-  v10 = [(SAEmailEmail *)self->_email recipientsBcc];
-  v11 = MFCommentedEmailsFromSAPersonAttributes(v10);
+  recipientsBcc = [(SAEmailEmail *)self->_email recipientsBcc];
+  v11 = MFCommentedEmailsFromSAPersonAttributes(recipientsBcc);
   v12 = [v11 componentsJoinedByString:{@", "}];
   v36 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v3];
 
-  v13 = [(SAEmailEmail *)self->_email subject];
-  v14 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  subject = [(SAEmailEmail *)self->_email subject];
+  v14 = [subject stringByAddingPercentEncodingWithAllowedCharacters:v3];
 
-  v15 = [(SAEmailEmail *)self->_email message];
-  v16 = [v15 ef_stringByAddingPercentEscapesUsingEncoding:4];
+  message = [(SAEmailEmail *)self->_email message];
+  v16 = [message ef_stringByAddingPercentEscapesUsingEncoding:4];
 
-  v17 = [(SAEmailEmail *)self->_email type];
-  v18 = [MFAssistantEmail MSSendTypeForSAEMailType:v17];
+  type = [(SAEmailEmail *)self->_email type];
+  v18 = [MFAssistantEmail MSSendTypeForSAEMailType:type];
 
   if (v18 == 2)
   {
     v19 = EMAppleMailReplyURLScheme;
-    v20 = [(SAEmailEmail *)self->_email referenceId];
+    referenceId = [(SAEmailEmail *)self->_email referenceId];
     goto LABEL_5;
   }
 
   if (v18 == 3)
   {
     v19 = EMAppleMailForwardURLScheme;
-    v20 = [(SAEmailEmail *)self->_email referenceId];
+    referenceId = [(SAEmailEmail *)self->_email referenceId];
 LABEL_5:
-    v21 = v20;
+    v21 = referenceId;
     v22 = v19;
     goto LABEL_7;
   }
@@ -706,8 +706,8 @@ LABEL_7:
   if ([v22 length])
   {
     v23 = [NSMutableString alloc];
-    v24 = [v21 resourceSpecifier];
-    v25 = [v24 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+    resourceSpecifier = [v21 resourceSpecifier];
+    v25 = [resourceSpecifier stringByAddingPercentEncodingWithAllowedCharacters:v3];
     v26 = [v23 initWithFormat:@"%@:%@", v22, v25];
 
     if ([v38 length])
@@ -725,14 +725,14 @@ LABEL_7:
   else
   {
     v28 = [NSMutableString alloc];
-    v29 = [v28 initWithFormat:@"%@:", EMMailToURLScheme];
+    eMMailToURLScheme = [v28 initWithFormat:@"%@:", EMMailToURLScheme];
     if ([v38 length])
     {
-      [v29 appendString:v38];
+      [eMMailToURLScheme appendString:v38];
     }
 
     v27 = 0;
-    v26 = v29;
+    v26 = eMMailToURLScheme;
   }
 
   if ([v37 length])
@@ -803,11 +803,11 @@ LABEL_7:
   return v34;
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v5 = a4;
-  v6 = [v5 lastObject];
-  v7 = [v6 objectForKey:MSResultsKeySubject];
+  resultsCopy = results;
+  lastObject = [resultsCopy lastObject];
+  v7 = [lastObject objectForKey:MSResultsKeySubject];
   v8 = [v7 copy];
   subjectResult = self->_subjectResult;
   self->_subjectResult = v8;

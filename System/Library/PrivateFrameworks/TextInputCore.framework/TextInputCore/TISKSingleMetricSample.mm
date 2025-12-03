@@ -1,22 +1,22 @@
 @interface TISKSingleMetricSample
 + (id)makeMetric;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TISKSingleMetricSample)init;
-- (TISKSingleMetricSample)initWithCoder:(id)a3;
+- (TISKSingleMetricSample)initWithCoder:(id)coder;
 - (double)average;
 - (double)sum;
 - (double)variance;
 - (id)description;
-- (id)generateDataForSR:(id)a3;
-- (void)merge:(id)a3;
+- (id)generateDataForSR:(id)r;
+- (void)merge:(id)merge;
 @end
 
 @implementation TISKSingleMetricSample
 
-- (id)generateDataForSR:(id)a3
+- (id)generateDataForSR:(id)r
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = *[a3 metricDefinition];
+  v4 = *[r metricDefinition];
   v5 = objc_alloc_init(getSRKeyboardProbabilityMetricClass());
   v6 = self->_samples;
   v7 = [(NSMutableArray *)v6 count];
@@ -56,10 +56,10 @@
 
         [*(*(&v23 + 1) + 8 * i) floatValue];
         v17 = roundf(v16 / v13) * v13;
-        v18 = [v5 mutableSampleValues];
+        mutableSampleValues = [v5 mutableSampleValues];
         *&v19 = v17;
         v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
-        [v18 addObject:v20];
+        [mutableSampleValues addObject:v20];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -73,9 +73,9 @@
   return v5;
 }
 
-- (TISKSingleMetricSample)initWithCoder:(id)a3
+- (TISKSingleMetricSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TISKSingleMetricSample;
   v5 = [(TISKSingleMetricSample *)&v13 init];
@@ -85,7 +85,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"SingleMetricSample"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"SingleMetricSample"];
     samples = v5->_samples;
     v5->_samples = v10;
   }
@@ -93,10 +93,10 @@
   return v5;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mergeCopy = merge;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v5 = IXADefaultLogFacility();
@@ -104,8 +104,8 @@
     {
       v9 = MEMORY[0x277CCACA8];
       samples = self->_samples;
-      v11 = [v4 samples];
-      v12 = [v9 stringWithFormat:@"%s [SensorKit] SingleMetricSample merge: other doesn't respond to sample selector %@ : %@", "-[TISKSingleMetricSample merge:]", samples, v11];
+      samples = [mergeCopy samples];
+      v12 = [v9 stringWithFormat:@"%s [SensorKit] SingleMetricSample merge: other doesn't respond to sample selector %@ : %@", "-[TISKSingleMetricSample merge:]", samples, samples];
       *buf = 138412290;
       v14 = v12;
       _os_log_error_impl(&dword_22CA55000, v5, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -113,8 +113,8 @@
   }
 
   v6 = self->_samples;
-  v7 = [v4 samples];
-  [(NSMutableArray *)v6 addObjectsFromArray:v7];
+  samples2 = [mergeCopy samples];
+  [(NSMutableArray *)v6 addObjectsFromArray:samples2];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -122,7 +122,7 @@
 - (id)description
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -143,7 +143,7 @@
         }
 
         [*(*(&v12 + 1) + 8 * i) floatValue];
-        [v3 appendFormat:@"%f, ", v9];
+        [string appendFormat:@"%f, ", v9];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -154,19 +154,19 @@
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   samples = self->_samples;
-  v4 = [a3 samples];
-  LOBYTE(samples) = [(NSMutableArray *)samples isEqual:v4];
+  samples = [equal samples];
+  LOBYTE(samples) = [(NSMutableArray *)samples isEqual:samples];
 
   return samples;
 }
@@ -307,9 +307,9 @@
   v2 = [(TISKSingleMetricSample *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     samples = v2->_samples;
-    v2->_samples = v3;
+    v2->_samples = array;
   }
 
   return v2;

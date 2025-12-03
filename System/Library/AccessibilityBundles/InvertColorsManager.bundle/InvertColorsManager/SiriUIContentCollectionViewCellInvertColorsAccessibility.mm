@@ -1,6 +1,6 @@
 @interface SiriUIContentCollectionViewCellInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)_axSetTextColorForView:(id)a3;
+- (void)_axSetTextColorForView:(id)view;
 - (void)layoutSubviews;
 @end
 
@@ -29,9 +29,9 @@
   [(SiriUIContentCollectionViewCellInvertColorsAccessibility *)self _axSetTextColorForView:v4];
 }
 
-- (void)_axSetTextColorForView:(id)a3
+- (void)_axSetTextColorForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (UIAccessibilityIsInvertColorsEnabled())
   {
     +[UIColor siriui_lightTextColor];
@@ -42,7 +42,7 @@
     +[UIColor siriui_blendEffectColor];
   }
   v4 = ;
-  [v3 setTextColor:v4];
+  [viewCopy setTextColor:v4];
 }
 
 - (void)layoutSubviews

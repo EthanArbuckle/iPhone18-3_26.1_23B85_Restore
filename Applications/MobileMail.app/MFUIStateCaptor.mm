@@ -1,9 +1,9 @@
 @interface MFUIStateCaptor
 + (id)sharedCaptor;
 - (MFUIStateCaptor)init;
-- (id)_captureUIStateWithTitle:(id)a3 captureBlock:(id)a4;
-- (id)mailSceneHierarchy:(id)a3;
-- (id)redactedStringForString:(id)a3;
+- (id)_captureUIStateWithTitle:(id)title captureBlock:(id)block;
+- (id)mailSceneHierarchy:(id)hierarchy;
+- (id)redactedStringForString:(id)string;
 @end
 
 @implementation MFUIStateCaptor
@@ -35,50 +35,50 @@
   return v3;
 }
 
-- (id)mailSceneHierarchy:(id)a3
+- (id)mailSceneHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v5 = [v4 session];
-  v6 = [v5 persistentIdentifier];
+  hierarchyCopy = hierarchy;
+  session = [hierarchyCopy session];
+  persistentIdentifier = [session persistentIdentifier];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10022ED68;
   v10[3] = &unk_1006560F8;
-  v7 = v4;
+  v7 = hierarchyCopy;
   v11 = v7;
-  v8 = [(MFUIStateCaptor *)self _captureUIStateWithTitle:v6 captureBlock:v10];
+  v8 = [(MFUIStateCaptor *)self _captureUIStateWithTitle:persistentIdentifier captureBlock:v10];
 
   return v8;
 }
 
-- (id)redactedStringForString:(id)a3
+- (id)redactedStringForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ([(MFUIStateCaptor *)self isCapturingUIState])
   {
-    v5 = [v4 mf_fancyRedactedString];
+    mf_fancyRedactedString = [stringCopy mf_fancyRedactedString];
   }
 
   else
   {
-    v5 = v4;
+    mf_fancyRedactedString = stringCopy;
   }
 
-  v6 = v5;
+  v6 = mf_fancyRedactedString;
 
   return v6;
 }
 
-- (id)_captureUIStateWithTitle:(id)a3 captureBlock:(id)a4
+- (id)_captureUIStateWithTitle:(id)title captureBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  blockCopy = block;
   [(MFUIStateCaptor *)self setIsCapturingUIState:1];
-  v8 = [NSString stringWithFormat:@"\n- Begin %@ --------------------------------------------------\n", v6];
-  v9 = [NSString stringWithFormat:@"\n- End %@ --------------------------------------------------\n", v6];
-  v10 = v7[2](v7);
+  titleCopy = [NSString stringWithFormat:@"\n- Begin %@ --------------------------------------------------\n", titleCopy];
+  titleCopy2 = [NSString stringWithFormat:@"\n- End %@ --------------------------------------------------\n", titleCopy];
+  v10 = blockCopy[2](blockCopy);
   [(MFUIStateCaptor *)self setIsCapturingUIState:0];
-  v11 = [NSString stringWithFormat:@"%@%@%@", v8, v10, v9];
+  v11 = [NSString stringWithFormat:@"%@%@%@", titleCopy, v10, titleCopy2];
 
   return v11;
 }

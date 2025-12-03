@@ -1,10 +1,10 @@
 @interface CRKInternetDateProvider
 - (CRKInternetDateProvider)init;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)callAndRemoveCompletionHandlerWithDate:(id)a3 error:(id)a4 task:(id)a5;
-- (void)fetchInternetDateWithCompletion:(id)a3;
-- (void)internetDateRequestDidReceiveTask:(id)a3;
-- (void)storeCompletionHandler:(id)a3 forTask:(id)a4;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)callAndRemoveCompletionHandlerWithDate:(id)date error:(id)error task:(id)task;
+- (void)fetchInternetDateWithCompletion:(id)completion;
+- (void)internetDateRequestDidReceiveTask:(id)task;
+- (void)storeCompletionHandler:(id)handler forTask:(id)task;
 @end
 
 @implementation CRKInternetDateProvider
@@ -24,56 +24,56 @@
   return v2;
 }
 
-- (void)fetchInternetDateWithCompletion:(id)a3
+- (void)fetchInternetDateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKInternetDateProvider *)self session];
+  completionCopy = completion;
+  session = [(CRKInternetDateProvider *)self session];
 
-  if (!v5)
+  if (!session)
   {
-    v6 = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
-    [v6 setHTTPCookieAcceptPolicy:1];
-    [v6 setHTTPMaximumConnectionsPerHost:1];
-    [v6 setRequestCachePolicy:4];
-    [v6 setAllowsCellularAccess:1];
+    ephemeralSessionConfiguration = [MEMORY[0x277CBABC8] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration setHTTPCookieAcceptPolicy:1];
+    [ephemeralSessionConfiguration setHTTPMaximumConnectionsPerHost:1];
+    [ephemeralSessionConfiguration setRequestCachePolicy:4];
+    [ephemeralSessionConfiguration setAllowsCellularAccess:1];
     v7 = MEMORY[0x277CBABB8];
-    v8 = [MEMORY[0x277CCABD8] mainQueue];
-    v9 = [v7 sessionWithConfiguration:v6 delegate:self delegateQueue:v8];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    v9 = [v7 sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:mainQueue];
     [(CRKInternetDateProvider *)self setSession:v9];
   }
 
   v13 = [MEMORY[0x277CBEBC0] URLWithString:@"https://www.apple.com"];
   v10 = [MEMORY[0x277CBAB50] requestWithURL:v13];
   [v10 setHTTPMethod:@"HEAD"];
-  v11 = [(CRKInternetDateProvider *)self session];
-  v12 = [v11 dataTaskWithRequest:v10];
+  session2 = [(CRKInternetDateProvider *)self session];
+  v12 = [session2 dataTaskWithRequest:v10];
 
-  [(CRKInternetDateProvider *)self storeCompletionHandler:v4 forTask:v12];
+  [(CRKInternetDateProvider *)self storeCompletionHandler:completionCopy forTask:v12];
   [v12 resume];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  if (a5)
+  if (error)
   {
-    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:0 error:a5 task:a4];
+    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:0 error:error task:task];
   }
 
   else
   {
-    [(CRKInternetDateProvider *)self internetDateRequestDidReceiveTask:a4];
+    [(CRKInternetDateProvider *)self internetDateRequestDidReceiveTask:task];
   }
 }
 
-- (void)internetDateRequestDidReceiveTask:(id)a3
+- (void)internetDateRequestDidReceiveTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 response];
-  v6 = v5;
-  if (v5 && [v5 statusCode] <= 299 && objc_msgSend(v6, "statusCode") > 199)
+  taskCopy = task;
+  response = [taskCopy response];
+  v6 = response;
+  if (response && [response statusCode] <= 299 && objc_msgSend(v6, "statusCode") > 199)
   {
-    v7 = [v6 allHeaderFields];
-    v8 = [v7 objectForKeyedSubscript:@"Date"];
+    allHeaderFields = [v6 allHeaderFields];
+    v8 = [allHeaderFields objectForKeyedSubscript:@"Date"];
     v9 = [MEMORY[0x277CCA948] dataDetectorWithTypes:8 error:0];
     v13 = 0;
     v14 = &v13;
@@ -91,15 +91,15 @@
       v11 = CRKErrorWithCodeAndUserInfo(113, 0);
     }
 
-    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:v14[5] error:v11 task:v4];
+    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:v14[5] error:v11 task:taskCopy];
 
     _Block_object_dispose(&v13, 8);
   }
 
   else
   {
-    v7 = CRKErrorWithCodeAndUserInfo(113, 0);
-    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:0 error:v7 task:v4];
+    allHeaderFields = CRKErrorWithCodeAndUserInfo(113, 0);
+    [(CRKInternetDateProvider *)self callAndRemoveCompletionHandlerWithDate:0 error:allHeaderFields task:taskCopy];
   }
 }
 
@@ -116,36 +116,36 @@ void __61__CRKInternetDateProvider_internetDateRequestDidReceiveTask___block_inv
   }
 }
 
-- (void)storeCompletionHandler:(id)a3 forTask:(id)a4
+- (void)storeCompletionHandler:(id)handler forTask:(id)task
 {
-  v6 = a4;
-  v8 = MEMORY[0x245D3AAD0](a3);
-  v7 = [(CRKInternetDateProvider *)self completionHandlerTable];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  taskCopy = task;
+  v8 = MEMORY[0x245D3AAD0](handler);
+  completionHandlerTable = [(CRKInternetDateProvider *)self completionHandlerTable];
+  [completionHandlerTable setObject:v8 forKeyedSubscript:taskCopy];
 }
 
-- (void)callAndRemoveCompletionHandlerWithDate:(id)a3 error:(id)a4 task:(id)a5
+- (void)callAndRemoveCompletionHandlerWithDate:(id)date error:(id)error task:(id)task
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CRKInternetDateProvider *)self completionHandlerTable];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  dateCopy = date;
+  errorCopy = error;
+  taskCopy = task;
+  completionHandlerTable = [(CRKInternetDateProvider *)self completionHandlerTable];
+  v12 = [completionHandlerTable objectForKeyedSubscript:taskCopy];
 
   if (v12)
   {
-    (v12)[2](v12, v8, v9);
-    v13 = [(CRKInternetDateProvider *)self completionHandlerTable];
-    [v13 setObject:0 forKeyedSubscript:v10];
+    (v12)[2](v12, dateCopy, errorCopy);
+    completionHandlerTable2 = [(CRKInternetDateProvider *)self completionHandlerTable];
+    [completionHandlerTable2 setObject:0 forKeyedSubscript:taskCopy];
 
-    v14 = [(CRKInternetDateProvider *)self completionHandlerTable];
-    v15 = [v14 allKeys];
-    v16 = [v15 count];
+    completionHandlerTable3 = [(CRKInternetDateProvider *)self completionHandlerTable];
+    allKeys = [completionHandlerTable3 allKeys];
+    v16 = [allKeys count];
 
     if (!v16)
     {
-      v17 = [(CRKInternetDateProvider *)self session];
-      [v17 invalidateAndCancel];
+      session = [(CRKInternetDateProvider *)self session];
+      [session invalidateAndCancel];
 
       [(CRKInternetDateProvider *)self setSession:0];
       if (_CRKLogGeneral_onceToken_38 != -1)

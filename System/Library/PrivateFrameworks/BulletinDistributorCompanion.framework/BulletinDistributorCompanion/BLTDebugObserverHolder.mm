@@ -1,23 +1,23 @@
 @interface BLTDebugObserverHolder
-+ (void)startWithWKAppList:(id)a3;
-- (BLTDebugObserverHolder)initWithWKAppList:(id)a3;
++ (void)startWithWKAppList:(id)list;
+- (BLTDebugObserverHolder)initWithWKAppList:(id)list;
 - (void)dealloc;
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5 playLightsAndSirens:(BOOL)a6 withReply:(id)a7;
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed playLightsAndSirens:(BOOL)sirens withReply:(id)reply;
 @end
 
 @implementation BLTDebugObserverHolder
 
-+ (void)startWithWKAppList:(id)a3
++ (void)startWithWKAppList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__BLTDebugObserverHolder_startWithWKAppList___block_invoke;
   v7[3] = &unk_278D31928;
-  v8 = v4;
-  v9 = a1;
+  v8 = listCopy;
+  selfCopy = self;
   v5 = startWithWKAppList__onceToken;
-  v6 = v4;
+  v6 = listCopy;
   if (v5 != -1)
   {
     dispatch_once(&startWithWKAppList__onceToken, v7);
@@ -37,16 +37,16 @@ uint64_t __45__BLTDebugObserverHolder_startWithWKAppList___block_invoke(uint64_t
   return result;
 }
 
-- (BLTDebugObserverHolder)initWithWKAppList:(id)a3
+- (BLTDebugObserverHolder)initWithWKAppList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v12.receiver = self;
   v12.super_class = BLTDebugObserverHolder;
   v5 = [(BLTDebugObserverHolder *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wkAppList, v4);
+    objc_storeWeak(&v5->_wkAppList, listCopy);
     v7 = BLTWorkQueue();
     v8 = BLTWorkQueue();
     v9 = [BLTBBObserver surrogateWithQueue:v7 calloutQueue:v8];
@@ -68,19 +68,19 @@ uint64_t __45__BLTDebugObserverHolder_startWithWKAppList___block_invoke(uint64_t
   [(BLTDebugObserverHolder *)&v3 dealloc];
 }
 
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5 playLightsAndSirens:(BOOL)a6 withReply:(id)a7
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed playLightsAndSirens:(BOOL)sirens withReply:(id)reply
 {
-  v8 = a6;
+  sirensCopy = sirens;
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a7;
+  bulletinCopy = bulletin;
+  replyCopy = reply;
   v13 = blt_general_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v11 sectionID];
-    [v11 publisherMatchID];
-    v26 = v25 = v11;
-    if (v8)
+    sectionID = [bulletinCopy sectionID];
+    [bulletinCopy publisherMatchID];
+    v26 = v25 = bulletinCopy;
+    if (sirensCopy)
     {
       v15 = "YES";
     }
@@ -113,14 +113,14 @@ uint64_t __45__BLTDebugObserverHolder_startWithWKAppList___block_invoke(uint64_t
       v19 = "NO";
     }
 
-    v28 = v14;
+    v28 = sectionID;
     v29 = 2112;
     v30 = v26;
     v31 = 2048;
-    v32 = a5;
+    feedCopy = feed;
     v33 = 2080;
     v34 = v15;
-    v11 = v25;
+    bulletinCopy = v25;
     v35 = 2080;
     v36 = v17;
     v37 = 2080;
@@ -128,18 +128,18 @@ uint64_t __45__BLTDebugObserverHolder_startWithWKAppList___block_invoke(uint64_t
     _os_log_impl(&dword_241FB3000, v13, OS_LOG_TYPE_INFO, "Bulletin in section %@ with matchID %@ sent to observers now on feed %lu with lightsandsirens: %s initSyncComplete: %s wkAppsLoaded: %s", buf, 0x3Eu);
   }
 
-  v12[2](v12, 0);
-  v20 = [MEMORY[0x277CBEAA8] date];
-  if ((a5 & 0x806E) != 0)
+  replyCopy[2](replyCopy, 0);
+  date = [MEMORY[0x277CBEAA8] date];
+  if ((feed & 0x806E) != 0)
   {
     kdebug_trace();
-    if (v8)
+    if (sirensCopy)
     {
       v21 = blt_general_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v11 publishDate];
-        [v20 timeIntervalSinceDate:v22];
+        publishDate = [bulletinCopy publishDate];
+        [date timeIntervalSinceDate:publishDate];
         *buf = 134217984;
         v28 = v23;
         _os_log_impl(&dword_241FB3000, v21, OS_LOG_TYPE_INFO, "Bulletin raised after %f seconds from 'publish' date", buf, 0xCu);

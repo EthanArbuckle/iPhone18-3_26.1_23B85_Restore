@@ -4,46 +4,46 @@
 - (BOOL)_stopRecording;
 - (BOOL)_supportsPronunciationDictation;
 - (BOOL)_usingSupportedDictationLanguage;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (id)_appliesTo:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (id)_appliesTo:(id)to;
 - (id)_assetUpdaterClient;
-- (id)_ignoresCase:(id)a3;
+- (id)_ignoresCase:(id)case;
 - (id)_language;
-- (id)_originalString:(id)a3;
-- (id)_replacementString:(id)a3;
-- (id)_selectedVoice:(id)a3;
+- (id)_originalString:(id)string;
+- (id)_replacementString:(id)string;
+- (id)_selectedVoice:(id)voice;
 - (id)appSpecifiers;
 - (id)specifiers;
 - (id)voicesSpecifier;
-- (void)_calculateAndUpdateDictationStatus:(id)a3;
-- (void)_dictateButtonTapped:(id)a3;
+- (void)_calculateAndUpdateDictationStatus:(id)status;
+- (void)_dictateButtonTapped:(id)tapped;
 - (void)_handleViewHiddenStatus;
 - (void)_hideAppCombinations;
 - (void)_manageVoicesSelector;
-- (void)_popSuggestionsController:(id)a3;
-- (void)_setAppliesTo:(id)a3 specifier:(id)a4;
-- (void)_setIgnoresCase:(id)a3 specifier:(id)a4;
-- (void)_setOriginalString:(id)a3 specifier:(id)a4;
-- (void)_setReplacementString:(id)a3 specifier:(id)a4;
-- (void)_showAppCombinationsAnimated:(BOOL)a3;
-- (void)_substitutionVoiceId:(id *)a3 andLanguage:(id *)a4;
-- (void)_updateDictationViewWithStatus:(int64_t)a3 withCell:(id)a4;
+- (void)_popSuggestionsController:(id)controller;
+- (void)_setAppliesTo:(id)to specifier:(id)specifier;
+- (void)_setIgnoresCase:(id)case specifier:(id)specifier;
+- (void)_setOriginalString:(id)string specifier:(id)specifier;
+- (void)_setReplacementString:(id)string specifier:(id)specifier;
+- (void)_showAppCombinationsAnimated:(BOOL)animated;
+- (void)_substitutionVoiceId:(id *)id andLanguage:(id *)language;
+- (void)_updateDictationViewWithStatus:(int64_t)status withCell:(id)cell;
 - (void)_updatePlayButtonTraits;
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5;
-- (void)assistantConnection:(id)a3 requestFailedWithError:(id)a4 requestClass:(id)a5;
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion;
+- (void)assistantConnection:(id)connection requestFailedWithError:(id)error requestClass:(id)class;
 - (void)dealloc;
-- (void)editingChanged:(id)a3;
-- (void)handlePlayButton:(id)a3;
-- (void)manipulateDictationView:(int64_t)a3;
-- (void)pronunciationLanguageListController:(id)a3 didSelectLanguages:(id)a4;
-- (void)pronunciationSuggestionsViewController:(id)a3 didSelectPhonemes:(id)a4;
-- (void)pronunciationVoiceListController:(id)a3 didSelectVoices:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)editingChanged:(id)changed;
+- (void)handlePlayButton:(id)button;
+- (void)manipulateDictationView:(int64_t)view;
+- (void)pronunciationLanguageListController:(id)controller didSelectLanguages:(id)languages;
+- (void)pronunciationSuggestionsViewController:(id)controller didSelectPhonemes:(id)phonemes;
+- (void)pronunciationVoiceListController:(id)controller didSelectVoices:(id)voices;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -66,42 +66,42 @@
   v5 = objc_alloc_init(TTSSpeechManager);
   [(AXPronunciationEntryViewController *)self setSpeechManager:v5];
 
-  v6 = [(AXPronunciationEntryViewController *)self speechManager];
-  [v6 setUsesAuxiliarySession:1];
+  speechManager = [(AXPronunciationEntryViewController *)self speechManager];
+  [speechManager setUsesAuxiliarySession:1];
 
   v7 = [UIBarButtonItem alloc];
   v8 = settingsLocString(@"PLAY", @"Accessibility");
   v9 = [v7 initWithTitle:v8 style:2 target:self action:"handlePlayButton:"];
 
-  v10 = [(AXPronunciationEntryViewController *)self navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem = [(AXPronunciationEntryViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v9];
 
-  v11 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setEnabled:0];
+  navigationItem2 = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v13 = [(AXPronunciationEntryViewController *)self specifier];
-  v14 = [v13 propertyForKey:@"AXVocabularyListItem"];
+  specifier = [(AXPronunciationEntryViewController *)self specifier];
+  v14 = [specifier propertyForKey:@"AXVocabularyListItem"];
 
   if (v14)
   {
     [(AXPronunciationEntryViewController *)self setUserSubstitution:v14];
-    v15 = [(AXPronunciationEntryViewController *)self _canSpeakSample];
-    v16 = [(AXPronunciationEntryViewController *)self navigationItem];
-    v17 = [v16 rightBarButtonItem];
-    [v17 setEnabled:v15];
+    _canSpeakSample = [(AXPronunciationEntryViewController *)self _canSpeakSample];
+    navigationItem3 = [(AXPronunciationEntryViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:_canSpeakSample];
   }
 
   else
   {
     v14 = objc_alloc_init(TTSSubstitution);
     v18 = +[AXLanguageManager sharedInstance];
-    v19 = [v18 dialectForUserLocale];
-    v16 = [v19 specificLanguageID];
+    dialectForUserLocale = [v18 dialectForUserLocale];
+    navigationItem3 = [dialectForUserLocale specificLanguageID];
 
-    if (v16)
+    if (navigationItem3)
     {
-      v20 = [NSSet setWithObject:v16];
+      v20 = [NSSet setWithObject:navigationItem3];
       [v14 setLanguages:v20];
     }
 
@@ -129,12 +129,12 @@ BOOL __49__AXPronunciationEntryViewController_viewDidLoad__block_invoke_2(id a1,
 
 - (void)_updatePlayButtonTraits
 {
-  v3 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  v5 = [v4 isEnabled];
+  navigationItem = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
   v6 = UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton;
-  if (v5)
+  if (isEnabled)
   {
     v7 = 0;
   }
@@ -144,28 +144,28 @@ BOOL __49__AXPronunciationEntryViewController_viewDidLoad__block_invoke_2(id a1,
     v7 = UIAccessibilityTraitNotEnabled;
   }
 
-  v9 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v8 = [v9 rightBarButtonItem];
-  [v8 setAccessibilityTraits:v6 | v7];
+  navigationItem2 = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem2 setAccessibilityTraits:v6 | v7];
 }
 
-- (void)_substitutionVoiceId:(id *)a3 andLanguage:(id *)a4
+- (void)_substitutionVoiceId:(id *)id andLanguage:(id *)language
 {
-  v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v8 = [v7 voiceIds];
-  v9 = [v8 count];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  voiceIds = [userSubstitution voiceIds];
+  v9 = [voiceIds count];
 
-  v10 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v28 = v10;
+  userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  v28 = userSubstitution2;
   if (v9 != &dword_0 + 1)
   {
-    v12 = [v10 languages];
-    v13 = [v12 anyObject];
+    languages = [userSubstitution2 languages];
+    anyObject = [languages anyObject];
 
-    if (v13)
+    if (anyObject)
     {
-      v14 = v13;
-      v15 = v13;
+      v14 = anyObject;
+      v15 = anyObject;
     }
 
     else
@@ -173,18 +173,18 @@ BOOL __49__AXPronunciationEntryViewController_viewDidLoad__block_invoke_2(id a1,
       v15 = +[AVSpeechSynthesisVoice currentLanguageCode];
       if (UIAccessibilityIsVoiceOverRunning())
       {
-        v13 = AXLanguageCanonicalFormToGeneralLanguage();
-        v16 = v13;
+        anyObject = AXLanguageCanonicalFormToGeneralLanguage();
+        v16 = anyObject;
       }
 
       else
       {
         v17 = v15;
-        v13 = v15;
+        anyObject = v15;
       }
     }
 
-    *a4 = v13;
+    *language = anyObject;
     v29 = 0;
     IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
     v19 = &AXSpeechSourceKeyVoiceOver;
@@ -195,7 +195,7 @@ BOOL __49__AXPronunciationEntryViewController_viewDidLoad__block_invoke_2(id a1,
 
     v20 = *v19;
     v21 = +[AXSettings sharedInstance];
-    v22 = [v21 speechVoiceIdentifierForLanguage:*a4 sourceKey:v20 exists:&v29];
+    v22 = [v21 speechVoiceIdentifierForLanguage:*language sourceKey:v20 exists:&v29];
 
     if (v29)
     {
@@ -226,17 +226,17 @@ BOOL __49__AXPronunciationEntryViewController_viewDidLoad__block_invoke_2(id a1,
     }
 
     v27 = v22;
-    *a3 = v22;
+    *id = v22;
 LABEL_19:
 
     return;
   }
 
-  v11 = [v10 voiceIds];
-  *a3 = [v11 anyObject];
+  voiceIds2 = [userSubstitution2 voiceIds];
+  *id = [voiceIds2 anyObject];
 }
 
-- (void)handlePlayButton:(id)a3
+- (void)handlePlayButton:(id)button
 {
   v4 = +[AVAudioSession sharedInstance];
   [v4 setCategory:AVAudioSessionCategoryVoiceOver withOptions:2 error:0];
@@ -255,24 +255,24 @@ LABEL_19:
   [v6 setLanguage:v8];
   [v6 setIgnoreCustomSubstitutions:1];
   v9 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
-  v10 = [v9 editableTextField];
-  v11 = [v10 text];
-  [v6 setString:v11];
+  editableTextField = [v9 editableTextField];
+  text = [editableTextField text];
+  [v6 setString:text];
 
-  v12 = [v6 string];
-  v13 = [v12 length];
+  string = [v6 string];
+  v13 = [string length];
 
   if (v13)
   {
-    v14 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v15 = [v14 phonemes];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    phonemes = [userSubstitution phonemes];
 
-    if (v15)
+    if (phonemes)
     {
       v26 = AVSpeechSynthesisIPANotationAttribute;
-      v16 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      v17 = [v16 phonemes];
-      v27 = v17;
+      userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      phonemes2 = [userSubstitution2 phonemes];
+      v27 = phonemes2;
       v18 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     }
 
@@ -282,35 +282,35 @@ LABEL_19:
     }
 
     v21 = [NSAttributedString alloc];
-    v22 = [v6 string];
-    v19 = [v21 initWithString:v22 attributes:v18];
+    string2 = [v6 string];
+    editableTextField2 = [v21 initWithString:string2 attributes:v18];
 
-    [v6 setAttributedString:v19];
+    [v6 setAttributedString:editableTextField2];
   }
 
   else
   {
     v18 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-    v19 = [v18 editableTextField];
-    v20 = [v19 text];
-    [v6 setString:v20];
+    editableTextField2 = [v18 editableTextField];
+    text2 = [editableTextField2 text];
+    [v6 setString:text2];
   }
 
-  v23 = [(AXPronunciationEntryViewController *)self speechManager];
-  [v23 dispatchSpeechAction:v6];
+  speechManager = [(AXPronunciationEntryViewController *)self speechManager];
+  [speechManager dispatchSpeechAction:v6];
 
   [(AXPronunciationEntryViewController *)self setLastAction:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AXPronunciationEntryViewController;
-  [(AXPronunciationEntryViewController *)&v7 viewWillAppear:a3];
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 appliesToAllApps];
+  [(AXPronunciationEntryViewController *)&v7 viewWillAppear:appear];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  appliesToAllApps = [userSubstitution appliesToAllApps];
 
-  if ((v5 & 1) == 0)
+  if ((appliesToAllApps & 1) == 0)
   {
     [(AXPronunciationEntryViewController *)self _showAppCombinationsAnimated:0];
   }
@@ -326,13 +326,13 @@ LABEL_19:
   v3 = settingsLocString(@"PRONUNCIATION_VOICES", @"VoiceOverSettings");
   v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:0 get:"_selectedVoice:" detail:objc_opt_class() cell:2 edit:0];
 
-  v5 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v6 = [v5 voiceIds];
-  [v4 setObject:v6 forKeyedSubscript:@"VoiceIds"];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  voiceIds = [userSubstitution voiceIds];
+  [v4 setObject:voiceIds forKeyedSubscript:@"VoiceIds"];
 
-  v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v8 = [v7 languages];
-  [v4 setObject:v8 forKeyedSubscript:@"Languages"];
+  userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  languages = [userSubstitution2 languages];
+  [v4 setObject:languages forKeyedSubscript:@"Languages"];
 
   [v4 setObject:@"Voices" forKeyedSubscript:PSIDKey];
 
@@ -342,9 +342,9 @@ LABEL_19:
 - (void)_manageVoicesSelector
 {
   v9 = [(AXPronunciationEntryViewController *)self specifierForID:@"Voices"];
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v4 = [v3 languages];
-  v5 = [v4 count];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  languages = [userSubstitution languages];
+  v5 = [languages count];
 
   v6 = v9;
   if (v9)
@@ -365,34 +365,34 @@ LABEL_19:
     }
 
     v7 = [(AXPronunciationEntryViewController *)self specifierForID:@"Languages"];
-    v8 = [(AXPronunciationEntryViewController *)self voicesSpecifier];
-    [(AXPronunciationEntryViewController *)self insertSpecifier:v8 afterSpecifier:v7];
+    voicesSpecifier = [(AXPronunciationEntryViewController *)self voicesSpecifier];
+    [(AXPronunciationEntryViewController *)self insertSpecifier:voicesSpecifier afterSpecifier:v7];
   }
 
   v6 = v9;
 LABEL_7:
 }
 
-- (id)_selectedVoice:(id)a3
+- (id)_selectedVoice:(id)voice
 {
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 voiceIds];
-  v6 = [v5 count];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  voiceIds = [userSubstitution voiceIds];
+  v6 = [voiceIds count];
 
   if (v6 == &dword_0 + 1)
   {
-    v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v8 = [v7 voiceIds];
-    v9 = [v8 anyObject];
-    v10 = [AVSpeechSynthesisVoice _voiceFromInternalVoiceListWithIdentifier:v9];
-    v11 = [v10 name];
+    userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    voiceIds2 = [userSubstitution2 voiceIds];
+    anyObject = [voiceIds2 anyObject];
+    v10 = [AVSpeechSynthesisVoice _voiceFromInternalVoiceListWithIdentifier:anyObject];
+    name = [v10 name];
   }
 
   else
   {
-    v12 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v13 = [v12 voiceIds];
-    v14 = [v13 count];
+    userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    voiceIds3 = [userSubstitution3 voiceIds];
+    v14 = [voiceIds3 count];
 
     if (v14)
     {
@@ -404,45 +404,45 @@ LABEL_7:
       v15 = @"ALL_LANGUAGES";
     }
 
-    v11 = settingsLocString(v15, @"VoiceOverSettings");
+    name = settingsLocString(v15, @"VoiceOverSettings");
   }
 
-  return v11;
+  return name;
 }
 
 - (BOOL)_supportsPronunciationDictation
 {
-  v3 = [(AXPronunciationEntryViewController *)self _usingSupportedDictationLanguage];
-  if (v3)
+  _usingSupportedDictationLanguage = [(AXPronunciationEntryViewController *)self _usingSupportedDictationLanguage];
+  if (_usingSupportedDictationLanguage)
   {
     pronunciationHelper = self->_pronunciationHelper;
 
-    LOBYTE(v3) = [(AXSpeechPronunciationHelper *)pronunciationHelper supportsPronunciationSessions];
+    LOBYTE(_usingSupportedDictationLanguage) = [(AXSpeechPronunciationHelper *)pronunciationHelper supportsPronunciationSessions];
   }
 
-  return v3;
+  return _usingSupportedDictationLanguage;
 }
 
 - (BOOL)_usingSupportedDictationLanguage
 {
   v3 = +[TTSSpeechSynthesizer supportedIPAPhonemeLanguages];
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 languages];
-  v6 = [v5 count];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  languages = [userSubstitution languages];
+  v6 = [languages count];
 
   if (v6)
   {
-    v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v8 = [v7 languages];
-    v9 = [v8 count];
+    userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages2 = [userSubstitution2 languages];
+    v9 = [languages2 count];
 
     v14 = 0;
     if (v9 == &dword_0 + 1)
     {
-      v10 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      v11 = [v10 languages];
-      v12 = [v11 anyObject];
-      v13 = [v3 containsObject:v12];
+      userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      languages3 = [userSubstitution3 languages];
+      anyObject = [languages3 anyObject];
+      v13 = [v3 containsObject:anyObject];
 
       if (v13)
       {
@@ -454,18 +454,18 @@ LABEL_7:
   else
   {
     v15 = +[AXLanguageManager sharedInstance];
-    v16 = [v15 dialectForUserLocale];
-    v17 = [v16 specificLanguageID];
-    v14 = [v3 containsObject:v17];
+    dialectForUserLocale = [v15 dialectForUserLocale];
+    specificLanguageID = [dialectForUserLocale specificLanguageID];
+    v14 = [v3 containsObject:specificLanguageID];
   }
 
   return v14;
 }
 
-- (void)manipulateDictationView:(int64_t)a3
+- (void)manipulateDictationView:(int64_t)view
 {
   dictationView = self->_dictationView;
-  if ((a3 - 3) > 1)
+  if ((view - 3) > 1)
   {
     if (dictationView)
     {
@@ -478,7 +478,7 @@ LABEL_7:
   else if (!dictationView)
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    v6 = [v5 window];
+    window = [v5 window];
 
     v7 = +[UIKeyboardImpl sharedInstance];
     [v7 bounds];
@@ -487,10 +487,10 @@ LABEL_7:
     v13 = v12;
     v15 = v14;
 
-    if (!v6)
+    if (!window)
     {
-      v16 = [(AXPronunciationEntryViewController *)self view];
-      v6 = [v16 window];
+      view = [(AXPronunciationEntryViewController *)self view];
+      window = [view window];
 
       x = CGPointZero.x;
       y = CGPointZero.y;
@@ -520,7 +520,7 @@ LABEL_7:
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    [v6 bounds];
+    [window bounds];
     v33 = [[UIView alloc] initWithFrame:{v27, v32 - v31, v29, v31}];
     v34 = self->_dictationBackgroundView;
     self->_dictationBackgroundView = v33;
@@ -528,7 +528,7 @@ LABEL_7:
     v35 = +[UIColor darkGrayColor];
     [(UIView *)self->_dictationBackgroundView setBackgroundColor:v35];
 
-    [v6 addSubview:self->_dictationBackgroundView];
+    [window addSubview:self->_dictationBackgroundView];
     [(UIView *)self->_dictationBackgroundView addSubview:self->_dictationView];
     AXPerformSafeBlock();
   }
@@ -543,12 +543,12 @@ id __62__AXPronunciationEntryViewController_manipulateDictationView___block_invo
   return [v2 setState:2];
 }
 
-- (void)_updateDictationViewWithStatus:(int64_t)a3 withCell:(id)a4
+- (void)_updateDictationViewWithStatus:(int64_t)status withCell:(id)cell
 {
-  v6 = a4;
-  if (v6)
+  cellCopy = cell;
+  if (cellCopy)
   {
-    v11 = v6;
+    v11 = cellCopy;
   }
 
   else
@@ -563,13 +563,13 @@ id __62__AXPronunciationEntryViewController_manipulateDictationView___block_invo
     }
   }
 
-  [(AXPronunciationEntryViewController *)self manipulateDictationView:a3];
-  if (a3 <= 1)
+  [(AXPronunciationEntryViewController *)self manipulateDictationView:status];
+  if (status <= 1)
   {
     v8 = v11;
-    if (a3)
+    if (status)
     {
-      if (a3 != 1)
+      if (status != 1)
       {
         goto LABEL_18;
       }
@@ -589,7 +589,7 @@ id __62__AXPronunciationEntryViewController_manipulateDictationView___block_invo
   else
   {
     v8 = v11;
-    switch(a3)
+    switch(status)
     {
       case 2:
         [v11 setShowsSpinner:0];
@@ -619,9 +619,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_calculateAndUpdateDictationStatus:(id)a3
+- (void)_calculateAndUpdateDictationStatus:(id)status
 {
-  v11 = a3;
+  statusCopy = status;
   if (self->_isRecording)
   {
     v4 = 3;
@@ -634,9 +634,9 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v5 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v6 = [v5 originalString];
-  if ([v6 length])
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  originalString = [userSubstitution originalString];
+  if ([originalString length])
   {
 
 LABEL_8:
@@ -645,9 +645,9 @@ LABEL_8:
   }
 
   v7 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-  v8 = [v7 editableTextField];
-  v9 = [v8 text];
-  v10 = [v9 length];
+  editableTextField = [v7 editableTextField];
+  text = [editableTextField text];
+  v10 = [text length];
 
   if (v10)
   {
@@ -656,29 +656,29 @@ LABEL_8:
 
   v4 = 0;
 LABEL_9:
-  [(AXPronunciationEntryViewController *)self _updateDictationViewWithStatus:v4 withCell:v11];
+  [(AXPronunciationEntryViewController *)self _updateDictationViewWithStatus:v4 withCell:statusCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = AXPronunciationEntryViewController;
-  [(AXPronunciationEntryViewController *)&v18 viewDidAppear:a3];
+  [(AXPronunciationEntryViewController *)&v18 viewDidAppear:appear];
   v4 = [(AXPronunciationEntryViewController *)self specifierForID:@"OriginalString"];
   v5 = [(AXPronunciationEntryViewController *)self cellForSpecifier:v4];
 
-  v6 = [v5 textField];
-  [v6 setDelegate:self];
+  textField = [v5 textField];
+  [textField setDelegate:self];
 
-  v7 = [v5 textField];
-  [v7 _accessibilitySetBoolValue:1 forKey:UIAccessibilityTokenIgnoreSubstitution];
+  textField2 = [v5 textField];
+  [textField2 _accessibilitySetBoolValue:1 forKey:UIAccessibilityTokenIgnoreSubstitution];
 
-  v8 = [v5 textField];
-  [v8 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
+  textField3 = [v5 textField];
+  [textField3 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
 
-  v9 = [v5 textField];
-  v10 = [v9 text];
-  v11 = [v10 length];
+  textField4 = [v5 textField];
+  text = [textField4 text];
+  v11 = [text length];
 
   if (!v11)
   {
@@ -688,11 +688,11 @@ LABEL_9:
   v12 = [(AXPronunciationEntryViewController *)self specifierForID:@"InputCell"];
   v13 = [(AXPronunciationEntryViewController *)self cellForSpecifier:v12];
 
-  v14 = [v13 textField];
-  [v14 setDelegate:self];
+  textField5 = [v13 textField];
+  [textField5 setDelegate:self];
 
-  v15 = [v13 textField];
-  [v15 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
+  textField6 = [v13 textField];
+  [textField6 addTarget:self action:"editingChanged:" forControlEvents:0x20000];
 
   v16 = [(AXPronunciationEntryViewController *)self specifierForID:@"InputCell"];
   v17 = [(AXPronunciationEntryViewController *)self cellForSpecifier:v16];
@@ -702,8 +702,8 @@ LABEL_9:
 
 - (void)_handleViewHiddenStatus
 {
-  v3 = [(AXPronunciationEntryViewController *)self speechManager];
-  [v3 stopSpeaking];
+  speechManager = [(AXPronunciationEntryViewController *)self speechManager];
+  [speechManager stopSpeaking];
 
   [(AXPronunciationEntryViewController *)self _stopRecording];
   if (![(AXPronunciationEntryViewController *)self _save])
@@ -720,22 +720,22 @@ LABEL_9:
   [(AXPronunciationEntryViewController *)&v3 willResignActive];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(AXPronunciationEntryViewController *)self _handleViewHiddenStatus];
   v5.receiver = self;
   v5.super_class = AXPronunciationEntryViewController;
-  [(AXPronunciationEntryViewController *)&v5 viewWillDisappear:v3];
+  [(AXPronunciationEntryViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(AXPronunciationEntryViewController *)self speechManager];
-  [v3 stopSpeaking];
+  speechManager = [(AXPronunciationEntryViewController *)self speechManager];
+  [speechManager stopSpeaking];
 
-  v4 = [(AXPronunciationEntryViewController *)self speechManager];
-  [v4 tearDown];
+  speechManager2 = [(AXPronunciationEntryViewController *)self speechManager];
+  [speechManager2 tearDown];
 
   [(UIView *)self->_dictationBackgroundView removeFromSuperview];
   v5.receiver = self;
@@ -775,20 +775,20 @@ LABEL_9:
     v14 = settingsLocString(@"PRONUNCIATION_LANGUAGE", @"VoiceOverSettings");
     v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:"_language" detail:objc_opt_class() cell:2 edit:0];
 
-    v16 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v17 = [v16 languages];
-    [v15 setObject:v17 forKeyedSubscript:@"Languages"];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages = [userSubstitution languages];
+    [v15 setObject:languages forKeyedSubscript:@"Languages"];
 
     [v15 setObject:@"Languages" forKeyedSubscript:v10];
     [v5 addObject:v15];
-    v18 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v19 = [v18 languages];
-    v20 = [v19 count];
+    userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages2 = [userSubstitution2 languages];
+    v20 = [languages2 count];
 
     if (v20)
     {
-      v21 = [(AXPronunciationEntryViewController *)self voicesSpecifier];
-      [v5 addObject:v21];
+      voicesSpecifier = [(AXPronunciationEntryViewController *)self voicesSpecifier];
+      [v5 addObject:voicesSpecifier];
     }
 
     v22 = settingsLocString(@"PRONUNCIATION_IGNORE_CASE", @"VoiceOverSettings");
@@ -800,17 +800,17 @@ LABEL_9:
 
     [v25 setObject:@"AppApplies" forKeyedSubscript:v10];
     [v5 addObject:v25];
-    v26 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    if (v26)
+    userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    if (userSubstitution3)
     {
-      v27 = v26;
-      v28 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      v29 = [v28 appliesToAllApps];
+      v27 = userSubstitution3;
+      userSubstitution4 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      appliesToAllApps = [userSubstitution4 appliesToAllApps];
 
-      if ((v29 & 1) == 0)
+      if ((appliesToAllApps & 1) == 0)
       {
-        v30 = [(AXPronunciationEntryViewController *)self appSpecifiers];
-        [v5 addObjectsFromArray:v30];
+        appSpecifiers = [(AXPronunciationEntryViewController *)self appSpecifiers];
+        [v5 addObjectsFromArray:appSpecifiers];
       }
     }
 
@@ -836,13 +836,13 @@ LABEL_9:
   return isRecording;
 }
 
-- (void)assistantConnection:(id)a3 receivedCommand:(id)a4 completion:(id)a5
+- (void)assistantConnection:(id)connection receivedCommand:(id)command completion:(id)completion
 {
-  v6 = a4;
+  commandCopy = command;
   v7 = +[AXSubsystemPronunciations sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemPronunciations identifier];
     v10 = AXLoggerForFacility();
@@ -864,13 +864,13 @@ LABEL_9:
   self->_isRecording = 0;
 }
 
-- (void)assistantConnection:(id)a3 requestFailedWithError:(id)a4 requestClass:(id)a5
+- (void)assistantConnection:(id)connection requestFailedWithError:(id)error requestClass:(id)class
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = +[AXSubsystemPronunciations sharedInstance];
-  v8 = [v7 ignoreLogging];
+  ignoreLogging = [v7 ignoreLogging];
 
-  if ((v8 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v9 = +[AXSubsystemPronunciations identifier];
     v10 = AXLoggerForFacility();
@@ -909,13 +909,13 @@ LABEL_9:
   }
 }
 
-- (void)_popSuggestionsController:(id)a3
+- (void)_popSuggestionsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[AXSubsystemPronunciations sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemPronunciations identifier];
     v8 = AXLoggerForFacility();
@@ -924,7 +924,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v20 = v4;
+      v20 = controllerCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -935,31 +935,31 @@ LABEL_9:
     }
   }
 
-  if ([v4 count] == &dword_0 + 1)
+  if ([controllerCopy count] == &dword_0 + 1)
   {
-    v12 = [v4 firstObject];
-    [(AXPronunciationEntryViewController *)self pronunciationSuggestionsViewController:0 didSelectPhonemes:v12];
+    firstObject = [controllerCopy firstObject];
+    [(AXPronunciationEntryViewController *)self pronunciationSuggestionsViewController:0 didSelectPhonemes:firstObject];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if ([v4 count] >= 2)
+  if ([controllerCopy count] >= 2)
   {
     v21 = 0;
     v22 = 0;
     [(AXPronunciationEntryViewController *)self _substitutionVoiceId:&v22 andLanguage:&v21];
-    v12 = v22;
+    firstObject = v22;
     v13 = v21;
-    v14 = [[AXPronunciationSuggestionsViewController alloc] initWithSuggestions:v4];
-    [(AXPronunciationSuggestionsViewController *)v14 setVoiceId:v12];
+    v14 = [[AXPronunciationSuggestionsViewController alloc] initWithSuggestions:controllerCopy];
+    [(AXPronunciationSuggestionsViewController *)v14 setVoiceId:firstObject];
     [(AXPronunciationSuggestionsViewController *)v14 setLanguage:v13];
 
     [(AXPronunciationSuggestionsViewController *)v14 setDelegate:self];
     v15 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-    v16 = [v15 editableTextField];
-    v17 = [v16 text];
-    v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:0 get:0 detail:0 cell:-1 edit:0];
+    editableTextField = [v15 editableTextField];
+    text = [editableTextField text];
+    v18 = [PSSpecifier preferenceSpecifierNamed:text target:self set:0 get:0 detail:0 cell:-1 edit:0];
     [(AXPronunciationSuggestionsViewController *)v14 setSpecifier:v18];
 
     v19 = [[UINavigationController alloc] initWithRootViewController:v14];
@@ -971,9 +971,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_dictateButtonTapped:(id)a3
+- (void)_dictateButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (self->_isRecording)
   {
     self->_isRecording = 0;
@@ -989,14 +989,14 @@ LABEL_12:
     [v6 setListeningDuration:4.0];
     v7 = objc_opt_new();
     v8 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-    v9 = [v8 editableTextField];
-    v10 = [v9 text];
-    [v7 setOrthography:v10];
+    editableTextField = [v8 editableTextField];
+    text = [editableTextField text];
+    [v7 setOrthography:text];
 
     v11 = +[AXSubsystemPronunciations sharedInstance];
-    LOBYTE(v9) = [v11 ignoreLogging];
+    LOBYTE(editableTextField) = [v11 ignoreLogging];
 
-    if ((v9 & 1) == 0)
+    if ((editableTextField & 1) == 0)
     {
       v12 = +[AXSubsystemPronunciations identifier];
       v13 = AXLoggerForFacility();
@@ -1016,10 +1016,10 @@ LABEL_12:
       }
     }
 
-    v17 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v18 = [v17 languages];
-    v19 = [v18 anyObject];
-    [v7 setLanguage:v19];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages = [userSubstitution languages];
+    anyObject = [languages anyObject];
+    [v7 setLanguage:anyObject];
 
     objc_initWeak(buf, self);
     pronunciationHelper = self->_pronunciationHelper;
@@ -1232,54 +1232,54 @@ void __57__AXPronunciationEntryViewController__assetUpdaterClient__block_invoke(
 
 - (BOOL)_save
 {
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v86 = [v3 originalString];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  originalString = [userSubstitution originalString];
 
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 replacementString];
+  userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  replacementString = [userSubstitution2 replacementString];
 
-  v6 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v85 = [v6 phonemes];
+  userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  phonemes = [userSubstitution3 phonemes];
 
   v7 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 editableTextField];
-    v10 = [v9 text];
-    v11 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    [v11 setOriginalString:v10];
+    editableTextField = [v7 editableTextField];
+    text = [editableTextField text];
+    userSubstitution4 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    [userSubstitution4 setOriginalString:text];
   }
 
-  v12 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v13 = [v12 phonemes];
+  userSubstitution5 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  phonemes2 = [userSubstitution5 phonemes];
 
-  if (v13)
+  if (phonemes2)
   {
-    v14 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    [v14 setReplacementString:0];
+    userSubstitution6 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    [userSubstitution6 setReplacementString:0];
   }
 
   else
   {
     v15 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
-    v14 = v15;
+    userSubstitution6 = v15;
     if (v15)
     {
-      v16 = [v15 editableTextField];
-      v17 = [v16 text];
-      v18 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      [v18 setReplacementString:v17];
+      editableTextField2 = [v15 editableTextField];
+      text2 = [editableTextField2 text];
+      userSubstitution7 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      [userSubstitution7 setReplacementString:text2];
     }
   }
 
-  v19 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v20 = [v19 originalString];
-  v21 = [v20 length];
+  userSubstitution8 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  originalString2 = [userSubstitution8 originalString];
+  v21 = [originalString2 length];
 
   v22 = +[AXSettings sharedInstance];
-  v23 = [v22 customPronunciationSubstitutions];
-  v24 = [v23 mutableCopy];
+  customPronunciationSubstitutions = [v22 customPronunciationSubstitutions];
+  v24 = [customPronunciationSubstitutions mutableCopy];
 
   v88[0] = _NSConcreteStackBlock;
   v88[1] = 3221225472;
@@ -1302,8 +1302,8 @@ void __57__AXPronunciationEntryViewController__assetUpdaterClient__block_invoke(
         goto LABEL_21;
       }
 
-      v26 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      [v24 addObject:v26];
+      userSubstitution9 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      [v24 addObject:userSubstitution9];
       goto LABEL_13;
     }
   }
@@ -1311,17 +1311,17 @@ void __57__AXPronunciationEntryViewController__assetUpdaterClient__block_invoke(
   v27 = v25;
   if (v21)
   {
-    v26 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    [v24 replaceObjectAtIndex:v27 withObject:v26];
+    userSubstitution9 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    [v24 replaceObjectAtIndex:v27 withObject:userSubstitution9];
 LABEL_13:
 
     goto LABEL_21;
   }
 
   v28 = +[AXSubsystemPronunciations sharedInstance];
-  v29 = [v28 ignoreLogging];
+  ignoreLogging = [v28 ignoreLogging];
 
-  if ((v29 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v30 = +[AXSubsystemPronunciations identifier];
     v31 = AXLoggerForFacility();
@@ -1331,7 +1331,7 @@ LABEL_13:
     {
       v33 = AXColorizeFormatLog();
       [(AXPronunciationEntryViewController *)self userSubstitution];
-      v81 = v79 = v27;
+      v81 = userSubstitution15 = v27;
       v34 = _AXStringForArgs();
 
       if (os_log_type_enabled(v31, v32))
@@ -1343,54 +1343,54 @@ LABEL_13:
     }
   }
 
-  [v24 removeObjectAtIndex:{v27, v79, v81}];
+  [v24 removeObjectAtIndex:{v27, userSubstitution15, v81}];
 LABEL_21:
-  v35 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v36 = [v35 originalString];
-  v37 = [v86 isEqualToString:v36];
+  userSubstitution10 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  originalString3 = [userSubstitution10 originalString];
+  v37 = [originalString isEqualToString:originalString3];
 
-  v38 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v39 = [v38 replacementString];
+  userSubstitution11 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  replacementString2 = [userSubstitution11 replacementString];
   v84 = v8;
-  if ([v5 isEqualToString:v39])
+  if ([replacementString isEqualToString:replacementString2])
   {
     v40 = 0;
   }
 
   else
   {
-    v41 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v42 = [v41 replacementString];
-    v40 = [v42 length] != 0;
+    userSubstitution12 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    replacementString3 = [userSubstitution12 replacementString];
+    v40 = [replacementString3 length] != 0;
   }
 
-  v43 = v5;
+  v43 = replacementString;
 
-  v44 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v45 = [v44 phonemes];
-  if ([v85 isEqualToString:v45])
+  userSubstitution13 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  phonemes3 = [userSubstitution13 phonemes];
+  if ([phonemes isEqualToString:phonemes3])
   {
     v46 = 0;
   }
 
   else
   {
-    v47 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v48 = [v47 phonemes];
-    v46 = [v48 length] != 0;
+    userSubstitution14 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    phonemes4 = [userSubstitution14 phonemes];
+    v46 = [phonemes4 length] != 0;
   }
 
   v49 = &__NSDictionary0__struct;
-  if ([v86 length])
+  if ([originalString length])
   {
     v50 = (v37 ^ 1);
     v51 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
     if (v50 | v40 || v46)
     {
       v52 = +[AXSubsystemPronunciations sharedInstance];
-      v53 = [v52 ignoreLogging];
+      ignoreLogging2 = [v52 ignoreLogging];
 
-      if ((v53 & 1) == 0)
+      if ((ignoreLogging2 & 1) == 0)
       {
         v54 = +[AXSubsystemPronunciations identifier];
         v55 = AXLoggerForFacility();
@@ -1401,7 +1401,7 @@ LABEL_21:
           v57 = AXColorizeFormatLog();
           [(AXPronunciationEntryViewController *)self userSubstitution];
           v83 = v82 = v46;
-          v79 = v50;
+          userSubstitution15 = v50;
           v81 = v40;
           v58 = _AXStringForArgs();
 
@@ -1416,9 +1416,9 @@ LABEL_21:
         }
       }
 
-      v89 = v86;
+      v89 = originalString;
       v90 = @"delete";
-      v59 = [NSArray arrayWithObjects:&v89 count:1, v79, v81, v82, v83];
+      v59 = [NSArray arrayWithObjects:&v89 count:1, userSubstitution15, v81, v82, v83];
       v91 = v59;
       v49 = [NSDictionary dictionaryWithObjects:&v91 forKeys:&v90 count:1];
     }
@@ -1429,19 +1429,19 @@ LABEL_21:
     v51 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
   }
 
-  v60 = [v51[511] sharedInstance];
-  v61 = [v60 ignoreLogging];
+  sharedInstance = [v51[511] sharedInstance];
+  ignoreLogging3 = [sharedInstance ignoreLogging];
 
-  if ((v61 & 1) == 0)
+  if ((ignoreLogging3 & 1) == 0)
   {
-    v62 = [v51[511] identifier];
+    identifier = [v51[511] identifier];
     v63 = AXLoggerForFacility();
 
     v64 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v63, v64))
     {
       v65 = AXColorizeFormatLog();
-      v79 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      userSubstitution15 = [(AXPronunciationEntryViewController *)self userSubstitution];
       v66 = _AXStringForArgs();
 
       if (os_log_type_enabled(v63, v64))
@@ -1455,12 +1455,12 @@ LABEL_21:
     v51 = &_s7SwiftUI5ColorV4blueACvgZ_ptr;
   }
 
-  v67 = [v51[511] sharedInstance];
-  v68 = [v67 ignoreLogging];
+  sharedInstance2 = [v51[511] sharedInstance];
+  ignoreLogging4 = [sharedInstance2 ignoreLogging];
 
-  if ((v68 & 1) == 0)
+  if ((ignoreLogging4 & 1) == 0)
   {
-    v69 = [v51[511] identifier];
+    identifier2 = [v51[511] identifier];
     v70 = AXLoggerForFacility();
 
     v71 = AXOSLogLevelFromAXLogLevel();
@@ -1481,9 +1481,9 @@ LABEL_21:
   v74 = +[AXSettings sharedInstance];
   [v74 setCustomPronunciationSubstitutions:v24];
 
-  v75 = [(AXPronunciationEntryViewController *)self _assetUpdaterClient];
+  _assetUpdaterClient = [(AXPronunciationEntryViewController *)self _assetUpdaterClient];
   v76 = +[AXAccessQueue mainAccessQueue];
-  [v75 sendAsynchronousMessage:v49 withIdentifier:1 targetAccessQueue:v76 completion:0];
+  [_assetUpdaterClient sendAsynchronousMessage:v49 withIdentifier:1 targetAccessQueue:v76 completion:0];
 
   v77 = +[NSNotificationCenter defaultCenter];
   [v77 postNotificationName:@"AXVoiceOverReloadPronunciations" object:0];
@@ -1527,22 +1527,22 @@ id __43__AXPronunciationEntryViewController__save__block_invoke_2(uint64_t a1, v
   return appSpecifiers;
 }
 
-- (void)_showAppCombinationsAnimated:(BOOL)a3
+- (void)_showAppCombinationsAnimated:(BOOL)animated
 {
   if (!self->_appSpecifiers)
   {
-    v4 = a3;
+    animatedCopy = animated;
     v6 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-    v7 = [v6 editableTextField];
-    [v7 resignFirstResponder];
+    editableTextField = [v6 editableTextField];
+    [editableTextField resignFirstResponder];
 
     v8 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
-    v9 = [v8 editableTextField];
-    [v9 resignFirstResponder];
+    editableTextField2 = [v8 editableTextField];
+    [editableTextField2 resignFirstResponder];
 
-    v11 = [(AXPronunciationEntryViewController *)self appSpecifiers];
+    appSpecifiers = [(AXPronunciationEntryViewController *)self appSpecifiers];
     v10 = [(AXPronunciationEntryViewController *)self specifierForID:@"AppApplies"];
-    [(AXPronunciationEntryViewController *)self insertContiguousSpecifiers:v11 afterSpecifier:v10 animated:v4];
+    [(AXPronunciationEntryViewController *)self insertContiguousSpecifiers:appSpecifiers afterSpecifier:v10 animated:animatedCopy];
   }
 }
 
@@ -1553,82 +1553,82 @@ id __43__AXPronunciationEntryViewController__save__block_invoke_2(uint64_t a1, v
   self->_appSpecifiers = 0;
 }
 
-- (void)_setOriginalString:(id)a3 specifier:(id)a4
+- (void)_setOriginalString:(id)string specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v6 setOriginalString:v5];
+  stringCopy = string;
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution setOriginalString:stringCopy];
 
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (id)_originalString:(id)a3
+- (id)_originalString:(id)string
 {
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v4 = [v3 originalString];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  originalString = [userSubstitution originalString];
 
-  return v4;
+  return originalString;
 }
 
-- (void)_setReplacementString:(id)a3 specifier:(id)a4
+- (void)_setReplacementString:(id)string specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v6 setPhonemes:0];
+  stringCopy = string;
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution setPhonemes:0];
 
-  v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v7 setReplacementString:v5];
+  userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution2 setReplacementString:stringCopy];
 
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (id)_replacementString:(id)a3
+- (id)_replacementString:(id)string
 {
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 phonemes];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  phonemes = [userSubstitution phonemes];
 
-  v6 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v7 = v6;
-  if (v5)
+  userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+  v7 = userSubstitution2;
+  if (phonemes)
   {
-    [v6 phonemes];
+    [userSubstitution2 phonemes];
   }
 
   else
   {
-    [v6 replacementString];
+    [userSubstitution2 replacementString];
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)_setIgnoresCase:(id)a3 specifier:(id)a4
+- (void)_setIgnoresCase:(id)case specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v6 setIgnoreCase:v5];
+  bOOLValue = [case BOOLValue];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution setIgnoreCase:bOOLValue];
 
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (id)_ignoresCase:(id)a3
+- (id)_ignoresCase:(id)case
 {
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 ignoreCase]);
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userSubstitution ignoreCase]);
 
   return v4;
 }
 
-- (void)_setAppliesTo:(id)a3 specifier:(id)a4
+- (void)_setAppliesTo:(id)to specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
-  v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v7 setAppliesToAllApps:v6];
+  toCopy = to;
+  bOOLValue = [toCopy BOOLValue];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution setAppliesToAllApps:bOOLValue];
 
-  LOBYTE(v6) = [v5 BOOLValue];
-  if (v6)
+  LOBYTE(bOOLValue) = [toCopy BOOLValue];
+  if (bOOLValue)
   {
     [(AXPronunciationEntryViewController *)self _hideAppCombinations];
   }
@@ -1641,35 +1641,35 @@ id __43__AXPronunciationEntryViewController__save__block_invoke_2(uint64_t a1, v
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (id)_appliesTo:(id)a3
+- (id)_appliesTo:(id)to
 {
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 appliesToAllApps]);
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userSubstitution appliesToAllApps]);
 
   return v4;
 }
 
 - (id)_language
 {
-  v3 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v4 = [v3 languages];
-  v5 = [v4 count];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  languages = [userSubstitution languages];
+  v5 = [languages count];
 
   if (v5 == &dword_0 + 1)
   {
     v6 = +[AXLanguageManager sharedInstance];
-    v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v8 = [v7 languages];
-    v9 = [v8 anyObject];
-    v10 = [v6 dialectForLanguageID:v9];
-    v11 = [v10 languageNameAndLocaleInCurrentLocale];
+    userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages2 = [userSubstitution2 languages];
+    anyObject = [languages2 anyObject];
+    v10 = [v6 dialectForLanguageID:anyObject];
+    languageNameAndLocaleInCurrentLocale = [v10 languageNameAndLocaleInCurrentLocale];
   }
 
   else
   {
-    v12 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v13 = [v12 languages];
-    v14 = [v13 count];
+    userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages3 = [userSubstitution3 languages];
+    v14 = [languages3 count];
 
     if (v14)
     {
@@ -1681,26 +1681,26 @@ id __43__AXPronunciationEntryViewController__save__block_invoke_2(uint64_t a1, v
       v15 = @"ALL_LANGUAGES";
     }
 
-    v11 = settingsLocString(v15, @"VoiceOverSettings");
+    languageNameAndLocaleInCurrentLocale = settingsLocString(v15, @"VoiceOverSettings");
   }
 
-  return v11;
+  return languageNameAndLocaleInCurrentLocale;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXPronunciationEntryViewController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXPronunciationEntryViewController *)self specifierForIndexPath:pathCopy];
   v9 = PSIDKey;
   v10 = [v8 objectForKeyedSubscript:PSIDKey];
   v11 = [v10 isEqualToString:@"Languages"];
 
   if (v11)
   {
-    v12 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v13 = [v12 languages];
-    [v8 setObject:v13 forKeyedSubscript:@"Languages"];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages = [userSubstitution languages];
+    [v8 setObject:languages forKeyedSubscript:@"Languages"];
 
     v14 = AXPronunciationLanguageListController;
 LABEL_5:
@@ -1716,13 +1716,13 @@ LABEL_5:
 
   if (v16)
   {
-    v17 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v18 = [v17 voiceIds];
-    [v8 setObject:v18 forKeyedSubscript:@"VoiceIds"];
+    userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    voiceIds = [userSubstitution2 voiceIds];
+    [v8 setObject:voiceIds forKeyedSubscript:@"VoiceIds"];
 
-    v19 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v20 = [v19 languages];
-    [v8 setObject:v20 forKeyedSubscript:@"Languages"];
+    userSubstitution3 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    languages2 = [userSubstitution3 languages];
+    [v8 setObject:languages2 forKeyedSubscript:@"Languages"];
 
     v14 = AXPronunciationVoiceListController;
     goto LABEL_5;
@@ -1730,20 +1730,20 @@ LABEL_5:
 
   v27.receiver = self;
   v27.super_class = AXPronunciationEntryViewController;
-  [(AXPronunciationEntryViewController *)&v27 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AXPronunciationEntryViewController *)&v27 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v21 = [v8 propertyForKey:@"BundleIdentifier"];
   if (v21)
   {
-    v22 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v23 = [v22 bundleIdentifiers];
-    v24 = [v23 mutableCopy];
+    userSubstitution4 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    bundleIdentifiers = [userSubstitution4 bundleIdentifiers];
+    v24 = [bundleIdentifiers mutableCopy];
 
     if (!v24)
     {
       v24 = objc_alloc_init(NSMutableSet);
     }
 
-    v25 = [v6 cellForRowAtIndexPath:v7];
+    v25 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if ([v24 containsObject:v21])
     {
       [v25 setChecked:0];
@@ -1756,8 +1756,8 @@ LABEL_5:
       [v24 addObject:v21];
     }
 
-    v26 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    [v26 setBundleIdentifiers:v24];
+    userSubstitution5 = [(AXPronunciationEntryViewController *)self userSubstitution];
+    [userSubstitution5 setBundleIdentifiers:v24];
 
     [(AXPronunciationEntryViewController *)self _save];
   }
@@ -1765,16 +1765,16 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v16 = a4;
-  v7 = [(AXPronunciationEntryViewController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(AXPronunciationEntryViewController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"BundleIdentifier"];
   if (v8)
   {
-    v9 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    v10 = [v9 bundleIdentifiers];
-    [v16 setChecked:{objc_msgSend(v10, "containsObject:", v8)}];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    bundleIdentifiers = [userSubstitution bundleIdentifiers];
+    [cellCopy setChecked:{objc_msgSend(bundleIdentifiers, "containsObject:", v8)}];
   }
 
   v11 = [v7 objectForKeyedSubscript:PSIDKey];
@@ -1782,31 +1782,31 @@ LABEL_6:
 
   if (v12)
   {
-    [v16 setAccessibilityTraits:UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton];
+    [cellCopy setAccessibilityTraits:UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton];
     v13 = settingsLocString(@"DICTATE_HINT", @"VoiceOverSettings");
-    [v16 setAccessibilityHint:v13];
+    [cellCopy setAccessibilityHint:v13];
 
-    v14 = v16;
-    v15 = [v14 dictateButton];
-    [v15 addTarget:self action:"_dictateButtonTapped:" forControlEvents:64];
+    v14 = cellCopy;
+    dictateButton = [v14 dictateButton];
+    [dictateButton addTarget:self action:"_dictateButtonTapped:" forControlEvents:64];
 
     [(AXPronunciationEntryViewController *)self _calculateAndUpdateDictationStatus:v14];
   }
 
   else
   {
-    [v16 setAccessibilityTraits:UIAccessibilityTraitButton];
+    [cellCopy setAccessibilityTraits:UIAccessibilityTraitButton];
   }
 }
 
-- (void)pronunciationSuggestionsViewController:(id)a3 didSelectPhonemes:(id)a4
+- (void)pronunciationSuggestionsViewController:(id)controller didSelectPhonemes:(id)phonemes
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 length])
+  phonemesCopy = phonemes;
+  controllerCopy = controller;
+  if ([phonemesCopy length])
   {
-    v8 = [(AXPronunciationEntryViewController *)self userSubstitution];
-    [v8 setPhonemes:v6];
+    userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+    [userSubstitution setPhonemes:phonemesCopy];
 
     [(AXPronunciationEntryViewController *)self _save];
     v9 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
@@ -1815,10 +1815,10 @@ LABEL_6:
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
-  v10 = [(AXPronunciationEntryViewController *)self _canSpeakSample];
-  v11 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setEnabled:v10];
+  _canSpeakSample = [(AXPronunciationEntryViewController *)self _canSpeakSample];
+  navigationItem = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_canSpeakSample];
 
   [(AXPronunciationEntryViewController *)self _updatePlayButtonTraits];
   [(AXPronunciationEntryViewController *)self _calculateAndUpdateDictationStatus];
@@ -1828,47 +1828,47 @@ LABEL_6:
   v14 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
   [v14 layoutSubviews];
 
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)pronunciationVoiceListController:(id)a3 didSelectVoices:(id)a4
+- (void)pronunciationVoiceListController:(id)controller didSelectVoices:(id)voices
 {
-  v5 = a4;
-  v7 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  [v7 setVoiceIds:v5];
+  voicesCopy = voices;
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  [userSubstitution setVoiceIds:voicesCopy];
   v6 = [(AXPronunciationEntryViewController *)self specifierForID:@"Voices"];
-  [v6 setProperty:v5 forKey:@"VoiceIds"];
+  [v6 setProperty:voicesCopy forKey:@"VoiceIds"];
 
   [(AXPronunciationEntryViewController *)self reloadSpecifier:v6];
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (void)pronunciationLanguageListController:(id)a3 didSelectLanguages:(id)a4
+- (void)pronunciationLanguageListController:(id)controller didSelectLanguages:(id)languages
 {
-  v14 = a4;
-  v5 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  if (![v14 count])
+  languagesCopy = languages;
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  if (![languagesCopy count])
   {
-    [v5 setVoiceIds:0];
+    [userSubstitution setVoiceIds:0];
   }
 
-  [v5 setLanguages:v14];
-  v6 = [v5 originalString];
-  if (![v6 length])
+  [userSubstitution setLanguages:languagesCopy];
+  originalString = [userSubstitution originalString];
+  if (![originalString length])
   {
 
     goto LABEL_9;
   }
 
-  v7 = [v5 phonemes];
-  if ([v7 length])
+  phonemes = [userSubstitution phonemes];
+  if ([phonemes length])
   {
   }
 
   else
   {
-    v8 = [v5 replacementString];
-    v9 = [v8 length];
+    replacementString = [userSubstitution replacementString];
+    v9 = [replacementString length];
 
     if (!v9)
     {
@@ -1876,63 +1876,63 @@ LABEL_6:
     }
   }
 
-  v10 = [(AXPronunciationEntryViewController *)self _canSpeakSample];
-  v11 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setEnabled:v10];
+  _canSpeakSample = [(AXPronunciationEntryViewController *)self _canSpeakSample];
+  navigationItem = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_canSpeakSample];
 
   [(AXPronunciationEntryViewController *)self _updatePlayButtonTraits];
 LABEL_9:
   [(AXPronunciationEntryViewController *)self _calculateAndUpdateDictationStatus];
   v13 = [(AXPronunciationEntryViewController *)self specifierForID:@"Languages"];
-  [v13 setProperty:v14 forKey:@"Languages"];
+  [v13 setProperty:languagesCopy forKey:@"Languages"];
   [(AXPronunciationEntryViewController *)self reloadSpecifier:v13];
   [(AXPronunciationEntryViewController *)self _save];
 }
 
-- (void)editingChanged:(id)a3
+- (void)editingChanged:(id)changed
 {
   [(AXPronunciationEntryViewController *)self _save];
 
   [(AXPronunciationEntryViewController *)self _calculateAndUpdateDictationStatus];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
   v11 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-  v12 = [v11 editableTextField];
-  v13 = [v12 text];
-  v33 = [v13 length] != 0;
+  editableTextField = [v11 editableTextField];
+  text = [editableTextField text];
+  v33 = [text length] != 0;
 
   v14 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
-  v15 = [v14 editableTextField];
-  v16 = [v15 text];
-  v17 = [v16 length] != 0;
+  editableTextField2 = [v14 editableTextField];
+  text2 = [editableTextField2 text];
+  v17 = [text2 length] != 0;
 
-  v18 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v19 = [v18 phonemes];
-  v20 = [v19 length];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  phonemes = [userSubstitution phonemes];
+  v20 = [phonemes length];
 
-  v21 = [v9 text];
-  v22 = [v21 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  text3 = [fieldCopy text];
+  v22 = [text3 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   v23 = [v22 length] != 0;
   v24 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"OriginalString"];
-  v25 = [v24 editableTextField];
+  editableTextField3 = [v24 editableTextField];
 
-  if (v25 != v9)
+  if (editableTextField3 != fieldCopy)
   {
     v26 = [(AXPronunciationEntryViewController *)self cellForSpecifierID:@"InputCell"];
-    v27 = [v26 editableTextField];
+    editableTextField4 = [v26 editableTextField];
 
-    if (v27 == v9)
+    if (editableTextField4 == fieldCopy)
     {
-      v28 = [(AXPronunciationEntryViewController *)self userSubstitution];
-      [v28 setPhonemes:0];
+      userSubstitution2 = [(AXPronunciationEntryViewController *)self userSubstitution];
+      [userSubstitution2 setPhonemes:0];
 
       v17 = v23;
     }
@@ -1940,15 +1940,15 @@ LABEL_9:
     v23 = v33;
   }
 
-  v29 = 1;
+  _canSpeakSample = 1;
   if (!v23 && !v17 && !v20)
   {
-    v29 = [(AXPronunciationEntryViewController *)self _canSpeakSample];
+    _canSpeakSample = [(AXPronunciationEntryViewController *)self _canSpeakSample];
   }
 
-  v30 = [(AXPronunciationEntryViewController *)self navigationItem];
-  v31 = [v30 rightBarButtonItem];
-  [v31 setEnabled:v29];
+  navigationItem = [(AXPronunciationEntryViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:_canSpeakSample];
 
   [(AXPronunciationEntryViewController *)self _updatePlayButtonTraits];
   return 1;
@@ -1961,10 +1961,10 @@ LABEL_9:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(AXPronunciationEntryViewController *)self userSubstitution];
-  v5 = [v4 languages];
+  userSubstitution = [(AXPronunciationEntryViewController *)self userSubstitution];
+  languages = [userSubstitution languages];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [languages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -1974,7 +1974,7 @@ LABEL_9:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(languages);
         }
 
         v9 = [v3 resolvedVoiceIdentifierForLanguageCode:*(*(&v11 + 1) + 8 * i)];
@@ -1986,7 +1986,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [languages countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

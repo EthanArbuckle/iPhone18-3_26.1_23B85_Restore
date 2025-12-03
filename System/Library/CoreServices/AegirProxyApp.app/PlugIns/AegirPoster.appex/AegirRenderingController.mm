@@ -1,46 +1,46 @@
 @interface AegirRenderingController
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation AegirRenderingController
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1000322C4(v6, a4);
+  selfCopy = self;
+  sub_1000322C4(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v7 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v8 = a5;
-  v9 = self;
-  sub_100033BE8(v7);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_100033BE8(rendererCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didReceiveTapAtPoint:(CGPoint)a4
+- (void)renderer:(id)renderer didReceiveTapAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = point.y;
+  x = point.x;
+  rendererCopy = renderer;
+  selfCopy = self;
   sub_100033E74(x, y);
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_100033908();
 }
 

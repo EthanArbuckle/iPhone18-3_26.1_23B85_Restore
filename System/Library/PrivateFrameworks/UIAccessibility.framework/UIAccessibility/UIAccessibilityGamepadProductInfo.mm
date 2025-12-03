@@ -12,9 +12,9 @@
   v2 = [(UIAccessibilityGamepadProductInfo *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
   }
 
   return v2;
@@ -22,10 +22,10 @@
 
 - (NSString)anonymizedIdentifier
 {
-  v2 = [(UIAccessibilityGamepadProductInfo *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(UIAccessibilityGamepadProductInfo *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 @end

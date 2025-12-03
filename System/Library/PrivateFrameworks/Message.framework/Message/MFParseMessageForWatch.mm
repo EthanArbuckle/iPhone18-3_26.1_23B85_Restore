@@ -1,16 +1,16 @@
 @interface MFParseMessageForWatch
-+ (BOOL)attachmentTypeIsActionable:(unint64_t)a3;
-+ (id)accountIDForAccount:(id)a3;
++ (BOOL)attachmentTypeIsActionable:(unint64_t)actionable;
++ (id)accountIDForAccount:(id)account;
 + (id)createAttachment;
 + (id)createContentAttributedStringHTMLParser;
-+ (id)createHTMLFromText:(id)a3 delSp:(BOOL)a4 flowed:(BOOL)a5;
++ (id)createHTMLFromText:(id)text delSp:(BOOL)sp flowed:(BOOL)flowed;
 + (id)createImageAttachment;
 + (id)createMessage;
 + (id)createMessageContent;
-+ (id)generateNotificationIdWithFolderId:(id)a3 remoteId:(id)a4;
-+ (id)nanoMailboxIDForMFMailboxUID:(id)a3;
-+ (id)scaleImageFromData:(id)a3 maxWidth:(float)a4;
-+ (id)trimAttributedString:(id)a3;
++ (id)generateNotificationIdWithFolderId:(id)id remoteId:(id)remoteId;
++ (id)nanoMailboxIDForMFMailboxUID:(id)d;
++ (id)scaleImageFromData:(id)data maxWidth:(float)width;
++ (id)trimAttributedString:(id)string;
 @end
 
 @implementation MFParseMessageForWatch
@@ -22,17 +22,17 @@
   return v2;
 }
 
-+ (BOOL)attachmentTypeIsActionable:(unint64_t)a3
++ (BOOL)attachmentTypeIsActionable:(unint64_t)actionable
 {
   NNMKAttachmentClass = getNNMKAttachmentClass();
 
-  return [NNMKAttachmentClass isTypeActionable:a3];
+  return [NNMKAttachmentClass isTypeActionable:actionable];
 }
 
-+ (id)trimAttributedString:(id)a3
++ (id)trimAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [getNNMKContentAttributedStringHTMLParserClass() trimAttributedString:v3];
+  stringCopy = string;
+  v4 = [getNNMKContentAttributedStringHTMLParserClass() trimAttributedString:stringCopy];
 
   return v4;
 }
@@ -101,34 +101,34 @@
   return v4;
 }
 
-+ (id)generateNotificationIdWithFolderId:(id)a3 remoteId:(id)a4
++ (id)generateNotificationIdWithFolderId:(id)id remoteId:(id)remoteId
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [getNNMKMessageClass() generateNotificationIdWithFolderId:v5 remoteId:v6];
+  idCopy = id;
+  remoteIdCopy = remoteId;
+  v7 = [getNNMKMessageClass() generateNotificationIdWithFolderId:idCopy remoteId:remoteIdCopy];
 
   return v7;
 }
 
-+ (id)accountIDForAccount:(id)a3
++ (id)accountIDForAccount:(id)account
 {
-  v3 = [a3 nano_account];
-  v4 = [v3 accountId];
+  nano_account = [account nano_account];
+  accountId = [nano_account accountId];
 
-  return v4;
+  return accountId;
 }
 
-+ (id)nanoMailboxIDForMFMailboxUID:(id)a3
++ (id)nanoMailboxIDForMFMailboxUID:(id)d
 {
-  v3 = [a3 nano_mailboxId];
+  nano_mailboxId = [d nano_mailboxId];
 
-  return v3;
+  return nano_mailboxId;
 }
 
-+ (id)scaleImageFromData:(id)a3 maxWidth:(float)a4
++ (id)scaleImageFromData:(id)data maxWidth:(float)width
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF88] data];
+  dataCopy = data;
+  data = [MEMORY[0x1E695DF88] data];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -147,15 +147,15 @@
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  *&v9 = a4;
-  [v7 scaleImageFromData:v5 destinationData:v6 maxWidth:v9];
+  *&v9 = width;
+  [v7 scaleImageFromData:dataCopy destinationData:data maxWidth:v9];
 
-  return v6;
+  return data;
 }
 
-+ (id)createHTMLFromText:(id)a3 delSp:(BOOL)a4 flowed:(BOOL)a5
++ (id)createHTMLFromText:(id)text delSp:(BOOL)sp flowed:(BOOL)flowed
 {
-  if (a4)
+  if (sp)
   {
     v5 = 10;
   }
@@ -166,7 +166,7 @@
   }
 
   v8 = 0;
-  v6 = [a3 mf_convertFromFlowedText:v5 | a5 visuallyEmpty:&v8];
+  v6 = [text mf_convertFromFlowedText:v5 | flowed visuallyEmpty:&v8];
 
   return v6;
 }

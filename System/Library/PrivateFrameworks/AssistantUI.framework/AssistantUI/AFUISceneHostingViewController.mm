@@ -1,6 +1,6 @@
 @interface AFUISceneHostingViewController
 - (AFUISceneHostingViewController)init;
-- (AFUISceneHostingViewController)initWithCoder:(id)a3;
+- (AFUISceneHostingViewController)initWithCoder:(id)coder;
 - (BOOL)isHostingScene;
 - (BOOL)isSceneActive;
 - (CGRect)currentFrame;
@@ -8,31 +8,31 @@
 - (UIEdgeInsets)suspendedSafeAreaInsets;
 - (void)_commonInit;
 - (void)_registerForAmbientPresentationTraitChange;
-- (void)_transitionContentsWithView:(id)a3 forContentState:(int64_t)a4;
-- (void)_updateDeferralChainWithWindow:(id)a3;
+- (void)_transitionContentsWithView:(id)view forContentState:(int64_t)state;
+- (void)_updateDeferralChainWithWindow:(id)window;
 - (void)_updateSceneSettingsForAmbient;
-- (void)_updateSceneSettingsToSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 withAnimationSettings:(id)a5 animationFence:(id)a6;
-- (void)_updateSceneUIApplicationSceneSettingsWithBlock:(id)a3;
+- (void)_updateSceneSettingsToSize:(CGSize)size interfaceOrientation:(int64_t)orientation withAnimationSettings:(id)settings animationFence:(id)fence;
+- (void)_updateSceneUIApplicationSceneSettingsWithBlock:(id)block;
 - (void)deactivateScene;
 - (void)invalidateAndPauseDeferringHIDEvents;
-- (void)invalidateSceneForReason:(unint64_t)a3 explanation:(id)a4;
+- (void)invalidateSceneForReason:(unint64_t)reason explanation:(id)explanation;
 - (void)reactivateScene;
-- (void)sceneController:(id)a3 sceneContentStateDidChange:(id)a4;
-- (void)sceneController:(id)a3 sceneDidUpdateClientSettings:(id)a4;
-- (void)sceneController:(id)a3 sceneWasInvalidated:(id)a4 forReason:(unint64_t)a5;
-- (void)setClippingDisabled:(BOOL)a3;
-- (void)setSafeAreaInsetsAreSuspended:(BOOL)a3;
+- (void)sceneController:(id)controller sceneContentStateDidChange:(id)change;
+- (void)sceneController:(id)controller sceneDidUpdateClientSettings:(id)settings;
+- (void)sceneController:(id)controller sceneWasInvalidated:(id)invalidated forReason:(unint64_t)reason;
+- (void)setClippingDisabled:(BOOL)disabled;
+- (void)setSafeAreaInsetsAreSuspended:(BOOL)suspended;
 - (void)startDeferringHIDEventsIfNeeded;
-- (void)startHostingSceneForConfiguration:(id)a3 withCompletionBlock:(id)a4;
+- (void)startHostingSceneForConfiguration:(id)configuration withCompletionBlock:(id)block;
 - (void)stopHostingScene;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSceneDeactivationReasonMask:(unint64_t)a3;
-- (void)updateSceneWithConfiguration:(id)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSceneDeactivationReasonMask:(unint64_t)mask;
+- (void)updateSceneWithConfiguration:(id)configuration;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AFUISceneHostingViewController
@@ -133,8 +133,8 @@ void __61__AFUISceneHostingViewController_viewSafeAreaInsetsDidChange__block_inv
   v5.super_class = AFUISceneHostingViewController;
   [(AFUISceneHostingViewController *)&v5 viewWillLayoutSubviews];
   windowSceneHostingView = self->_windowSceneHostingView;
-  v4 = [(AFUISceneHostingViewController *)self view];
-  [v4 bounds];
+  view = [(AFUISceneHostingViewController *)self view];
+  [view bounds];
   [(UIView *)windowSceneHostingView setFrame:?];
 }
 
@@ -150,11 +150,11 @@ void __64__AFUISceneHostingViewController__updateSceneSettingsForAmbient__block_
   }
 }
 
-- (AFUISceneHostingViewController)initWithCoder:(id)a3
+- (AFUISceneHostingViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AFUISceneHostingViewController;
-  v3 = [(AFUISceneHostingViewController *)&v6 initWithCoder:a3];
+  v3 = [(AFUISceneHostingViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -170,25 +170,25 @@ void __76__AFUISceneHostingViewController__registerForAmbientPresentationTraitCh
   [WeakRetained _updateSceneSettingsForAmbient];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AFUISceneHostingViewController;
-  [(AFUISceneHostingViewController *)&v5 viewWillAppear:a3];
+  [(AFUISceneHostingViewController *)&v5 viewWillAppear:appear];
   if (!self->_currentOrientation)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    self->_currentOrientation = [v4 activeInterfaceOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    self->_currentOrientation = [mEMORY[0x277D75128] activeInterfaceOrientation];
   }
 }
 
-- (void)_updateSceneSettingsToSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 withAnimationSettings:(id)a5 animationFence:(id)a6
+- (void)_updateSceneSettingsToSize:(CGSize)size interfaceOrientation:(int64_t)orientation withAnimationSettings:(id)settings animationFence:(id)fence
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  settingsCopy = settings;
+  fenceCopy = fence;
   v13 = MEMORY[0x277CEF098];
   v14 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -198,7 +198,7 @@ void __76__AFUISceneHostingViewController__registerForAmbientPresentationTraitCh
     _os_log_impl(&dword_241432000, v14, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if ((a4 - 3) >= 2)
+  if ((orientation - 3) >= 2)
   {
     v15 = width;
   }
@@ -208,18 +208,18 @@ void __76__AFUISceneHostingViewController__registerForAmbientPresentationTraitCh
     v15 = height;
   }
 
-  if ((a4 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     height = width;
   }
 
-  v16 = [(AFUISceneHostingViewController *)self scene];
-  v17 = [v16 settings];
-  v18 = [v17 isForeground];
+  scene = [(AFUISceneHostingViewController *)self scene];
+  settings = [scene settings];
+  isForeground = [settings isForeground];
 
-  if (self->_currentOrientation != a4 || (v40.origin.x = 0.0, v40.origin.y = 0.0, v40.size.width = v15, v40.size.height = height, !CGRectEqualToRect(v40, self->_currentFrame)))
+  if (self->_currentOrientation != orientation || (v40.origin.x = 0.0, v40.origin.y = 0.0, v40.size.width = v15, v40.size.height = height, !CGRectEqualToRect(v40, self->_currentFrame)))
   {
-    self->_currentOrientation = a4;
+    self->_currentOrientation = orientation;
     self->_currentFrame.origin.x = 0.0;
     self->_currentFrame.origin.y = 0.0;
     self->_currentFrame.size.width = v15;
@@ -242,7 +242,7 @@ void __76__AFUISceneHostingViewController__registerForAmbientPresentationTraitCh
       v35 = 2112;
       v36 = v25;
       v37 = 2048;
-      v38 = a4;
+      orientationCopy = orientation;
       _os_log_impl(&dword_241432000, v24, OS_LOG_TYPE_DEFAULT, "%s Updating scene with frame: %@, interfaceOrientation: %zd", buf, 0x20u);
     }
 
@@ -251,11 +251,11 @@ void __76__AFUISceneHostingViewController__registerForAmbientPresentationTraitCh
     v27[1] = 3221225472;
     v27[2] = __119__AFUISceneHostingViewController__updateSceneSettingsToSize_interfaceOrientation_withAnimationSettings_animationFence___block_invoke;
     v27[3] = &unk_278CD53D0;
-    v32 = v18;
-    v28 = v12;
-    v30 = self;
-    v31 = a4;
-    v29 = v11;
+    v32 = isForeground;
+    v28 = fenceCopy;
+    selfCopy = self;
+    orientationCopy2 = orientation;
+    v29 = settingsCopy;
     [(FBScene *)scene updateSettingsWithTransitionBlock:v27];
     [(AFUISceneHostingViewController *)self updateRemoteSceneWithFrontMostAppInterfaceOrientation:self->_currentOrientation];
   }
@@ -287,12 +287,12 @@ id __119__AFUISceneHostingViewController__updateSceneSettingsToSize_interfaceOri
   return v4;
 }
 
-- (void)startHostingSceneForConfiguration:(id)a3 withCompletionBlock:(id)a4
+- (void)startHostingSceneForConfiguration:(id)configuration withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  configurationCopy = configuration;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (!configurationCopy)
   {
     [AFUISceneHostingViewController startHostingSceneForConfiguration:a2 withCompletionBlock:self];
     if (v10)
@@ -305,16 +305,16 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!blockCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v11 = [v8 preferredDeferralMode];
-  self->_deferralMode = v11;
-  self->_pauseDeferrals = v11 != 1;
-  objc_storeStrong(&self->_configuration, a3);
+  preferredDeferralMode = [configurationCopy preferredDeferralMode];
+  self->_deferralMode = preferredDeferralMode;
+  self->_pauseDeferrals = preferredDeferralMode != 1;
+  objc_storeStrong(&self->_configuration, configuration);
   objc_initWeak(&location, self);
   sceneController = self->_sceneController;
   v14[0] = MEMORY[0x277D85DD0];
@@ -324,7 +324,7 @@ LABEL_3:
   objc_copyWeak(&v16, &location);
   v13 = v10;
   v15 = v13;
-  [(AFUISceneController *)sceneController requestSceneWithConfiguration:v8 completionBlock:v14];
+  [(AFUISceneController *)sceneController requestSceneWithConfiguration:configurationCopy completionBlock:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -432,11 +432,11 @@ void __88__AFUISceneHostingViewController_startHostingSceneForConfiguration_with
   [(UIScenePresenter *)presentation deactivate];
 }
 
-- (void)invalidateSceneForReason:(unint64_t)a3 explanation:(id)a4
+- (void)invalidateSceneForReason:(unint64_t)reason explanation:(id)explanation
 {
-  v6 = a4;
+  explanationCopy = explanation;
   [(AFUISceneHostingViewController *)self stopHostingScene];
-  [(AFUISceneController *)self->_sceneController invalidateSceneForReason:a3 explanation:v6];
+  [(AFUISceneController *)self->_sceneController invalidateSceneForReason:reason explanation:explanationCopy];
 
   [(UIScenePresenter *)self->_presentation invalidate];
   presentation = self->_presentation;
@@ -453,8 +453,8 @@ void __88__AFUISceneHostingViewController_startHostingSceneForConfiguration_with
     return 0;
   }
 
-  v3 = [(UIView *)windowSceneHostingView superview];
-  v4 = v3 != 0;
+  superview = [(UIView *)windowSceneHostingView superview];
+  v4 = superview != 0;
 
   return v4;
 }
@@ -463,8 +463,8 @@ void __88__AFUISceneHostingViewController_startHostingSceneForConfiguration_with
 {
   v12 = *MEMORY[0x277D85DE8];
   self->_pauseDeferrals = 0;
-  v3 = [(AFUISceneHostingViewController *)self view];
-  v4 = [v3 window];
+  view = [(AFUISceneHostingViewController *)self view];
+  window = [view window];
 
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -472,13 +472,13 @@ void __88__AFUISceneHostingViewController_startHostingSceneForConfiguration_with
     v8 = 136315394;
     v9 = "[AFUISceneHostingViewController startDeferringHIDEventsIfNeeded]";
     v10 = 2112;
-    v11 = v4;
+    v11 = window;
     _os_log_impl(&dword_241432000, v5, OS_LOG_TYPE_DEFAULT, "%s #siriHID Starting HID deferrals and resuming until asked to pause again: %@", &v8, 0x16u);
   }
 
-  v6 = [(AFUISceneHostingViewController *)self view];
-  v7 = [v6 window];
-  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:v7];
+  view2 = [(AFUISceneHostingViewController *)self view];
+  window2 = [view2 window];
+  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:window2];
 }
 
 - (void)invalidateAndPauseDeferringHIDEvents
@@ -496,47 +496,47 @@ void __88__AFUISceneHostingViewController_startHostingSceneForConfiguration_with
   self->_pauseDeferrals = 1;
 }
 
-- (void)updateSceneWithConfiguration:(id)a3
+- (void)updateSceneWithConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
-  v5 = a3;
-  [(AFUISceneController *)self->_sceneController updateSceneViewWithConfiguration:v5];
+  objc_storeStrong(&self->_configuration, configuration);
+  configurationCopy = configuration;
+  [(AFUISceneController *)self->_sceneController updateSceneViewWithConfiguration:configurationCopy];
 }
 
-- (void)_transitionContentsWithView:(id)a3 forContentState:(int64_t)a4
+- (void)_transitionContentsWithView:(id)view forContentState:(int64_t)state
 {
-  v12 = a3;
+  viewCopy = view;
   [(UIView *)self->_windowSceneHostingView removeFromSuperview];
   windowSceneHostingView = self->_windowSceneHostingView;
   self->_windowSceneHostingView = 0;
 
-  if (v12)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->_windowSceneHostingView, a3);
+    objc_storeStrong(&self->_windowSceneHostingView, view);
     v7 = self->_windowSceneHostingView;
-    v8 = [(AFUISceneHostingViewController *)self view];
-    [v8 bounds];
+    view = [(AFUISceneHostingViewController *)self view];
+    [view bounds];
     [(UIView *)v7 setFrame:?];
 
-    v9 = [(AFUISceneHostingViewController *)self view];
-    [v9 addSubview:self->_windowSceneHostingView];
+    view2 = [(AFUISceneHostingViewController *)self view];
+    [view2 addSubview:self->_windowSceneHostingView];
 
-    v10 = [(AFUISceneHostingViewController *)self view];
-    v11 = [v10 window];
-    [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:v11];
+    view3 = [(AFUISceneHostingViewController *)self view];
+    window = [view3 window];
+    [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:window];
   }
 }
 
-- (void)_updateSceneUIApplicationSceneSettingsWithBlock:(id)a3
+- (void)_updateSceneUIApplicationSceneSettingsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   scene = self->_scene;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettingsWithBlock___block_invoke;
   v7[3] = &unk_278CD5440;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(FBScene *)scene updateSettingsWithBlock:v7];
 }
 
@@ -559,19 +559,19 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = AFUISceneHostingViewController;
-  v4 = a3;
-  [(AFUISceneHostingViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AFUISceneHostingViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(AFUISceneHostingViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 != v7)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    [(AFUISceneConfiguration *)self->_configuration setUserInterfaceStyle:v6];
+    [(AFUISceneConfiguration *)self->_configuration setUserInterfaceStyle:userInterfaceStyle];
     [(AFUISceneHostingViewController *)self updateSceneWithConfiguration:self->_configuration];
   }
 }
@@ -586,8 +586,8 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
 
   else
   {
-    v7 = [(AFUISceneHostingViewController *)self view];
-    [v7 safeAreaInsets];
+    view = [(AFUISceneHostingViewController *)self view];
+    [view safeAreaInsets];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -606,17 +606,17 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
   return result;
 }
 
-- (void)setSafeAreaInsetsAreSuspended:(BOOL)a3
+- (void)setSafeAreaInsetsAreSuspended:(BOOL)suspended
 {
-  if (self->_safeAreaInsetsAreSuspended != a3)
+  if (self->_safeAreaInsetsAreSuspended != suspended)
   {
-    if (a3)
+    if (suspended)
     {
-      v5 = [(AFUISceneHostingViewController *)self view];
-      [v5 safeAreaInsets];
+      view = [(AFUISceneHostingViewController *)self view];
+      [view safeAreaInsets];
       [(AFUISceneHostingViewController *)self setSuspendedSafeAreaInsets:?];
 
-      self->_safeAreaInsetsAreSuspended = a3;
+      self->_safeAreaInsetsAreSuspended = suspended;
     }
 
     else
@@ -628,27 +628,27 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
   }
 }
 
-- (void)setClippingDisabled:(BOOL)a3
+- (void)setClippingDisabled:(BOOL)disabled
 {
-  if (self->_clippingDisabled != a3)
+  if (self->_clippingDisabled != disabled)
   {
     v9 = v3;
     v10 = v4;
-    self->_clippingDisabled = a3;
-    v6 = [(AFUISceneHostingViewController *)self presentation];
+    self->_clippingDisabled = disabled;
+    presentation = [(AFUISceneHostingViewController *)self presentation];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__AFUISceneHostingViewController_setClippingDisabled___block_invoke;
     v7[3] = &__block_descriptor_33_e43_v16__0__UIMutableScenePresentationContext_8l;
-    v8 = a3;
-    [v6 modifyPresentationContext:v7];
+    disabledCopy = disabled;
+    [presentation modifyPresentationContext:v7];
   }
 }
 
 - (BOOL)isSceneActive
 {
-  v2 = [(AFUISceneHostingViewController *)self configuration];
-  v3 = [v2 deactivationReasonMask] == 0;
+  configuration = [(AFUISceneHostingViewController *)self configuration];
+  v3 = [configuration deactivationReasonMask] == 0;
 
   return v3;
 }
@@ -671,64 +671,64 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
   }
 }
 
-- (void)updateSceneDeactivationReasonMask:(unint64_t)a3
+- (void)updateSceneDeactivationReasonMask:(unint64_t)mask
 {
-  v5 = [(AFUISceneHostingViewController *)self configuration];
-  v6 = [v5 copy];
+  configuration = [(AFUISceneHostingViewController *)self configuration];
+  v6 = [configuration copy];
 
-  [v6 setDeactivationReasonMask:a3];
+  [v6 setDeactivationReasonMask:mask];
   [(AFUISceneHostingViewController *)self updateSceneWithConfiguration:v6];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  windowCopy = window;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[AFUISceneHostingViewController viewDidMoveToWindow:shouldAppearOrDisappear:]";
     v10 = 1024;
-    v11 = v4;
+    v11 = disappearCopy;
     _os_log_impl(&dword_241432000, v7, OS_LOG_TYPE_DEFAULT, "%s #siriHID viewDidMoveToWindow:shouldAppearOrDisappear: %d", &v8, 0x12u);
   }
 
-  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:v6];
+  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:windowCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = AFUISceneHostingViewController;
-  [(AFUISceneHostingViewController *)&v18 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [v7 containerView];
+  [(AFUISceneHostingViewController *)&v18 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  containerView = [coordinatorCopy containerView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    window = containerView;
   }
 
   else
   {
-    v9 = [v8 window];
+    window = [containerView window];
   }
 
-  v10 = v9;
+  v10 = window;
   v11 = SBFWindowForViewControllerTransition();
-  v12 = [v11 _toWindowOrientation];
+  _toWindowOrientation = [v11 _toWindowOrientation];
 
   v13 = MEMORY[0x277CF0B70];
-  [v7 transitionDuration];
+  [coordinatorCopy transitionDuration];
   v14 = [v13 settingsWithDuration:?];
-  v15 = [v10 windowScene];
-  v16 = [v15 _synchronizedDrawingFence];
+  windowScene = [v10 windowScene];
+  _synchronizedDrawingFence = [windowScene _synchronizedDrawingFence];
 
-  [(AFUISceneHostingViewController *)self _updateSceneSettingsToSize:v12 interfaceOrientation:v14 withAnimationSettings:v16 animationFence:width, height];
+  [(AFUISceneHostingViewController *)self _updateSceneSettingsToSize:_toWindowOrientation interfaceOrientation:v14 withAnimationSettings:_synchronizedDrawingFence animationFence:width, height];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__AFUISceneHostingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
@@ -738,7 +738,7 @@ void __82__AFUISceneHostingViewController__updateSceneUIApplicationSceneSettings
   v17[4] = self;
   *&v17[7] = width;
   *&v17[8] = height;
-  [v7 animateAlongsideTransition:v17 completion:&__block_literal_global_45];
+  [coordinatorCopy animateAlongsideTransition:v17 completion:&__block_literal_global_45];
 }
 
 void __85__AFUISceneHostingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -747,10 +747,10 @@ void __85__AFUISceneHostingViewController_viewWillTransitionToSize_withTransitio
   [v2 setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)_updateDeferralChainWithWindow:(id)a3
+- (void)_updateDeferralChainWithWindow:(id)window
 {
   *&v34[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  windowCopy = window;
   if ([(AFUISceneHostingViewController *)self _shouldDeferHIDEventsForMode])
   {
     if (self->_pauseDeferrals)
@@ -783,27 +783,27 @@ LABEL_7:
         [(BSInvalidatable *)self->_predicateInvalidationHandler invalidate];
       }
 
-      v12 = [(FBScene *)self->_scene clientHandle];
-      if (v12)
+      clientHandle = [(FBScene *)self->_scene clientHandle];
+      if (clientHandle)
       {
-        v13 = [(FBScene *)self->_scene uiClientSettings];
+        uiClientSettings = [(FBScene *)self->_scene uiClientSettings];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [(FBScene *)self->_scene uiClientSettings];
+          uiClientSettings2 = [(FBScene *)self->_scene uiClientSettings];
         }
 
         else
         {
-          v14 = 0;
+          uiClientSettings2 = 0;
         }
 
-        v15 = [v4 _contextId];
-        v16 = [v14 clientWindowContextID];
-        v17 = v16;
-        if (v15)
+        _contextId = [windowCopy _contextId];
+        clientWindowContextID = [uiClientSettings2 clientWindowContextID];
+        v17 = clientWindowContextID;
+        if (_contextId)
         {
-          v18 = v16 == 0;
+          v18 = clientWindowContextID == 0;
         }
 
         else
@@ -812,7 +812,7 @@ LABEL_7:
         }
 
         v19 = v18;
-        if (!v4 || (v19 & 1) != 0)
+        if (!windowCopy || (v19 & 1) != 0)
         {
           if (v19)
           {
@@ -822,7 +822,7 @@ LABEL_7:
               v31 = 136315650;
               v32 = "[AFUISceneHostingViewController _updateDeferralChainWithWindow:]";
               v33 = 1024;
-              *v34 = v15;
+              *v34 = _contextId;
               v34[2] = 1024;
               *&v34[3] = v17;
               _os_log_impl(&dword_241432000, v30, OS_LOG_TYPE_DEFAULT, "%s #siriHID Skipped deferring HID events because of an invalid contextID (%u) or clientContextID (%u)", &v31, 0x18u);
@@ -832,21 +832,21 @@ LABEL_7:
 
         else
         {
-          v20 = [MEMORY[0x277CF0650] tokenForIdentifierOfCAContext:v15];
+          v20 = [MEMORY[0x277CF0650] tokenForIdentifierOfCAContext:_contextId];
           v21 = objc_alloc_init(MEMORY[0x277CF0730]);
           [v21 setDisplay:0];
           [v21 setToken:v20];
-          v22 = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
-          [v21 setEnvironment:v22];
+          keyboardFocusEnvironment = [MEMORY[0x277CF0628] keyboardFocusEnvironment];
+          [v21 setEnvironment:keyboardFocusEnvironment];
 
           v23 = [MEMORY[0x277CF0650] tokenForIdentifierOfCAContext:v17];
           v24 = objc_alloc_init(MEMORY[0x277CF0748]);
-          v25 = [v12 processHandle];
-          [v24 setPid:{objc_msgSend(v25, "pid")}];
+          processHandle = [clientHandle processHandle];
+          [v24 setPid:{objc_msgSend(processHandle, "pid")}];
 
           [v24 setToken:v23];
-          v26 = [MEMORY[0x277CF0668] sharedInstance];
-          v27 = [v26 deferEventsMatchingPredicate:v21 toTarget:v24 withReason:@"launching Siri.app"];
+          mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
+          v27 = [mEMORY[0x277CF0668] deferEventsMatchingPredicate:v21 toTarget:v24 withReason:@"launching Siri.app"];
           predicateInvalidationHandler = self->_predicateInvalidationHandler;
           self->_predicateInvalidationHandler = v27;
 
@@ -880,29 +880,29 @@ LABEL_7:
   }
 }
 
-- (void)sceneController:(id)a3 sceneContentStateDidChange:(id)a4
+- (void)sceneController:(id)controller sceneContentStateDidChange:(id)change
 {
-  v9 = a4;
-  v5 = [(AFUISceneHostingViewController *)self presentation];
+  changeCopy = change;
+  presentation = [(AFUISceneHostingViewController *)self presentation];
 
-  if (v5)
+  if (presentation)
   {
-    v6 = [(AFUISceneHostingViewController *)self presentation];
-    v7 = [v6 presentationView];
-    -[AFUISceneHostingViewController _transitionContentsWithView:forContentState:](self, "_transitionContentsWithView:forContentState:", v7, [v9 contentState]);
+    presentation2 = [(AFUISceneHostingViewController *)self presentation];
+    presentationView = [presentation2 presentationView];
+    -[AFUISceneHostingViewController _transitionContentsWithView:forContentState:](self, "_transitionContentsWithView:forContentState:", presentationView, [changeCopy contentState]);
   }
 
-  if ([v9 contentState] == 2 && objc_msgSend(v9, "isValid"))
+  if ([changeCopy contentState] == 2 && objc_msgSend(changeCopy, "isValid"))
   {
-    v8 = [v9 identifier];
-    [(AFUISceneHostingViewController *)self _handleSceneDidActivateWithIdentifier:v8];
+    identifier = [changeCopy identifier];
+    [(AFUISceneHostingViewController *)self _handleSceneDidActivateWithIdentifier:identifier];
   }
 }
 
-- (void)sceneController:(id)a3 sceneWasInvalidated:(id)a4 forReason:(unint64_t)a5
+- (void)sceneController:(id)controller sceneWasInvalidated:(id)invalidated forReason:(unint64_t)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  invalidatedCopy = invalidated;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -912,14 +912,14 @@ LABEL_7:
   }
 
   [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:0];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Scene was invalidated - scene=%@", v7];
-  [(AFUISceneHostingViewController *)self _handleInvalidationForReason:a5 explanation:v9];
+  invalidatedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Scene was invalidated - scene=%@", invalidatedCopy];
+  [(AFUISceneHostingViewController *)self _handleInvalidationForReason:reason explanation:invalidatedCopy];
 }
 
-- (void)sceneController:(id)a3 sceneDidUpdateClientSettings:(id)a4
+- (void)sceneController:(id)controller sceneDidUpdateClientSettings:(id)settings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  settingsCopy = settings;
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -928,12 +928,12 @@ LABEL_7:
     _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s #siriHID sceneDidUpdateClientSettings", &v10, 0xCu);
   }
 
-  v7 = [(AFUISceneHostingViewController *)self view];
-  v8 = [v7 window];
-  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:v8];
+  view = [(AFUISceneHostingViewController *)self view];
+  window = [view window];
+  [(AFUISceneHostingViewController *)self _updateDeferralChainWithWindow:window];
 
-  v9 = [v5 audioCategoriesDisablingVolumeHUD];
-  [(AFUISceneHostingViewController *)self _audioCategoriesDisablingVolumeHUDDidChangeTo:v9];
+  audioCategoriesDisablingVolumeHUD = [settingsCopy audioCategoriesDisablingVolumeHUD];
+  [(AFUISceneHostingViewController *)self _audioCategoriesDisablingVolumeHUDDidChangeTo:audioCategoriesDisablingVolumeHUD];
 }
 
 - (CGRect)currentFrame

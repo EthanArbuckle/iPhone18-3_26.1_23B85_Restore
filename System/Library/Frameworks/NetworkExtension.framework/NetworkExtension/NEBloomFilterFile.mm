@@ -1,16 +1,16 @@
 @interface NEBloomFilterFile
-+ (char)mmapToFile:(id)a3 data:(id)a4 numberOfBits:(unsigned int)a5 numberOfHashes:(unsigned int)a6 murmurSeed:(unsigned int)a7 tag:(id)a8;
++ (char)mmapToFile:(id)file data:(id)data numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed tag:(id)tag;
 @end
 
 @implementation NEBloomFilterFile
 
-+ (char)mmapToFile:(id)a3 data:(id)a4 numberOfBits:(unsigned int)a5 numberOfHashes:(unsigned int)a6 murmurSeed:(unsigned int)a7 tag:(id)a8
++ (char)mmapToFile:(id)file data:(id)data numberOfBits:(unsigned int)bits numberOfHashes:(unsigned int)hashes murmurSeed:(unsigned int)seed tag:(id)tag
 {
   *&v53[53] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = open([v13 UTF8String], 518, 420);
+  fileCopy = file;
+  dataCopy = data;
+  tagCopy = tag;
+  v16 = open([fileCopy UTF8String], 518, 420);
   if (v16 < 0)
   {
     v19 = ne_log_obj();
@@ -22,7 +22,7 @@
       *__strerrbuf = 136315906;
       v47 = "+[NEBloomFilterFile mmapToFile:data:numberOfBits:numberOfHashes:murmurSeed:tag:]";
       v48 = 2112;
-      v49 = v13;
+      v49 = fileCopy;
       v50 = 1024;
       v51 = v37;
       v52 = 2080;
@@ -37,7 +37,7 @@
   }
 
   v17 = v16;
-  v18 = [v14 length] + 32;
+  v18 = [dataCopy length] + 32;
   if (ftruncate(v17, v18))
   {
     v19 = ne_log_obj();
@@ -49,7 +49,7 @@
       *__strerrbuf = 136316162;
       v47 = "+[NEBloomFilterFile mmapToFile:data:numberOfBits:numberOfHashes:murmurSeed:tag:]";
       v48 = 2112;
-      v49 = v13;
+      v49 = fileCopy;
       v50 = 1024;
       v51 = v18;
       v52 = 1024;
@@ -76,7 +76,7 @@ LABEL_27:
       *__strerrbuf = 136315906;
       v47 = "+[NEBloomFilterFile mmapToFile:data:numberOfBits:numberOfHashes:murmurSeed:tag:]";
       v48 = 2112;
-      v49 = v13;
+      v49 = fileCopy;
       v50 = 1024;
       v51 = v17;
       v52 = 1024;
@@ -93,13 +93,13 @@ LABEL_6:
   }
 
   v30 = v29;
-  v31 = [v14 length];
+  v31 = [dataCopy length];
   *v30 = xmmword_1BAA4E620;
-  *(v30 + 4) = a5;
-  *(v30 + 5) = a6;
-  *(v30 + 6) = a7;
+  *(v30 + 4) = bits;
+  *(v30 + 5) = hashes;
+  *(v30 + 6) = seed;
   *(v30 + 7) = v31;
-  if (v15 && [v15 length] && (objc_msgSend(v15, "dataUsingEncoding:", 4), (v32 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (tagCopy && [tagCopy length] && (objc_msgSend(tagCopy, "dataUsingEncoding:", 4), (v32 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v19 = v32;
     v33 = [v32 length];
@@ -119,7 +119,7 @@ LABEL_6:
     v26 = v30 + 36;
   }
 
-  [v14 getBytes:v26 length:{objc_msgSend(v14, "length")}];
+  [dataCopy getBytes:v26 length:{objc_msgSend(dataCopy, "length")}];
   if (msync(v30, v18, 16) == -1)
   {
     v35 = *__error();

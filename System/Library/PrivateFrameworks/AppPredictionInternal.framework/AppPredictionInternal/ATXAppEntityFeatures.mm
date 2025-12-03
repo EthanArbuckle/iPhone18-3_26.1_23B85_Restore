@@ -1,6 +1,6 @@
 @interface ATXAppEntityFeatures
 - (ATXAppEntityFeatures)init;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -87,103 +87,103 @@
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v53.receiver = self;
   v53.super_class = ATXAppEntityFeatures;
   v5 = [(ATXAppEntityFeatures *)&v53 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appCategoryScore"];
+    v6 = [nCopy objectForKeyedSubscript:@"appCategoryScore"];
     appCategoryScore = v5->_appCategoryScore;
     v5->_appCategoryScore = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"appCategoryScore_v2"];
+    v8 = [nCopy objectForKeyedSubscript:@"appCategoryScore_v2"];
     appCategoryScore_v2 = v5->_appCategoryScore_v2;
     v5->_appCategoryScore_v2 = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"globalModeAffinityPrior"];
+    v10 = [nCopy objectForKeyedSubscript:@"globalModeAffinityPrior"];
     globalModeAffinityPrior = v5->_globalModeAffinityPrior;
     v5->_globalModeAffinityPrior = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"globalInterruptingPrior"];
+    v12 = [nCopy objectForKeyedSubscript:@"globalInterruptingPrior"];
     globalInterruptingPrior = v5->_globalInterruptingPrior;
     v5->_globalInterruptingPrior = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"notificationsReceivedInLastTwoWeeks"];
+    v14 = [nCopy objectForKeyedSubscript:@"notificationsReceivedInLastTwoWeeks"];
     notificationsReceivedInLastTwoWeeks = v5->_notificationsReceivedInLastTwoWeeks;
     v5->_notificationsReceivedInLastTwoWeeks = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsCountByEntity"];
+    v16 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsCountByEntity"];
     modeAppInterruptionsCountByEntity = v5->_modeAppInterruptionsCountByEntity;
     v5->_modeAppInterruptionsCountByEntity = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"modePopularityOfInterruptingEntity"];
+    v18 = [nCopy objectForKeyedSubscript:@"modePopularityOfInterruptingEntity"];
     modePopularityOfInterruptingEntity = v5->_modePopularityOfInterruptingEntity;
     v5->_modePopularityOfInterruptingEntity = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"modeAppInterruptionsClassConditionalProbabilityByEntity"];
+    v20 = [nCopy objectForKeyedSubscript:@"modeAppInterruptionsClassConditionalProbabilityByEntity"];
     modeAppInterruptionsClassConditionalProbabilityByEntity = v5->_modeAppInterruptionsClassConditionalProbabilityByEntity;
     v5->_modeAppInterruptionsClassConditionalProbabilityByEntity = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"globalAppInterruptionsCountByEntity"];
+    v22 = [nCopy objectForKeyedSubscript:@"globalAppInterruptionsCountByEntity"];
     globalAppInterruptionsCountByEntity = v5->_globalAppInterruptionsCountByEntity;
     v5->_globalAppInterruptionsCountByEntity = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"globalPopularityOfInterruptingEntity"];
+    v24 = [nCopy objectForKeyedSubscript:@"globalPopularityOfInterruptingEntity"];
     globalPopularityOfInterruptingEntity = v5->_globalPopularityOfInterruptingEntity;
     v5->_globalPopularityOfInterruptingEntity = v24;
 
-    v26 = [v4 objectForKeyedSubscript:@"ratioOfModePopularityToGlobalPopularityOfInterruptingEntity"];
+    v26 = [nCopy objectForKeyedSubscript:@"ratioOfModePopularityToGlobalPopularityOfInterruptingEntity"];
     ratioOfModePopularityToGlobalPopularityOfInterruptingEntity = v5->_ratioOfModePopularityToGlobalPopularityOfInterruptingEntity;
     v5->_ratioOfModePopularityToGlobalPopularityOfInterruptingEntity = v26;
 
-    v28 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsClearedForEntity"];
+    v28 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsClearedForEntity"];
     modeCountOfNotificationsClearedForEntity = v5->_modeCountOfNotificationsClearedForEntity;
     v5->_modeCountOfNotificationsClearedForEntity = v28;
 
-    v30 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsClearedForEntity"];
+    v30 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsClearedForEntity"];
     globalCountOfNotificationsClearedForEntity = v5->_globalCountOfNotificationsClearedForEntity;
     v5->_globalCountOfNotificationsClearedForEntity = v30;
 
-    v32 = [v4 objectForKeyedSubscript:@"localNotificationsClearedRateForEntity"];
+    v32 = [nCopy objectForKeyedSubscript:@"localNotificationsClearedRateForEntity"];
     localNotificationsClearedRateForEntity = v5->_localNotificationsClearedRateForEntity;
     v5->_localNotificationsClearedRateForEntity = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"globalNotificationsClearedRateForEntity"];
+    v34 = [nCopy objectForKeyedSubscript:@"globalNotificationsClearedRateForEntity"];
     globalNotificationsClearedRateForEntity = v5->_globalNotificationsClearedRateForEntity;
     v5->_globalNotificationsClearedRateForEntity = v34;
 
-    v36 = [v4 objectForKeyedSubscript:@"ratioOfLocalToGlobalNotificationsClearedRateForEntity"];
+    v36 = [nCopy objectForKeyedSubscript:@"ratioOfLocalToGlobalNotificationsClearedRateForEntity"];
     ratioOfLocalToGlobalNotificationsClearedRateForEntity = v5->_ratioOfLocalToGlobalNotificationsClearedRateForEntity;
     v5->_ratioOfLocalToGlobalNotificationsClearedRateForEntity = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"classConditionalOfNotificationsClearedForEntity"];
+    v38 = [nCopy objectForKeyedSubscript:@"classConditionalOfNotificationsClearedForEntity"];
     classConditionalOfNotificationsClearedForEntity = v5->_classConditionalOfNotificationsClearedForEntity;
     v5->_classConditionalOfNotificationsClearedForEntity = v38;
 
-    v40 = [v4 objectForKeyedSubscript:@"globalCountOfNotificationsReceivedForEntity"];
+    v40 = [nCopy objectForKeyedSubscript:@"globalCountOfNotificationsReceivedForEntity"];
     globalCountOfNotificationsReceivedForEntity = v5->_globalCountOfNotificationsReceivedForEntity;
     v5->_globalCountOfNotificationsReceivedForEntity = v40;
 
-    v42 = [v4 objectForKeyedSubscript:@"modeCountOfNotificationsReceivedForEntity"];
+    v42 = [nCopy objectForKeyedSubscript:@"modeCountOfNotificationsReceivedForEntity"];
     modeCountOfNotificationsReceivedForEntity = v5->_modeCountOfNotificationsReceivedForEntity;
     v5->_modeCountOfNotificationsReceivedForEntity = v42;
 
-    v44 = [v4 objectForKeyedSubscript:@"localPopularityOfNotificationsReceivedForEntity"];
+    v44 = [nCopy objectForKeyedSubscript:@"localPopularityOfNotificationsReceivedForEntity"];
     localPopularityOfNotificationsReceivedForEntity = v5->_localPopularityOfNotificationsReceivedForEntity;
     v5->_localPopularityOfNotificationsReceivedForEntity = v44;
 
-    v46 = [v4 objectForKeyedSubscript:@"globalPopularityOfNotificationsReceivedForEntity"];
+    v46 = [nCopy objectForKeyedSubscript:@"globalPopularityOfNotificationsReceivedForEntity"];
     globalPopularityOfNotificationsReceivedForEntity = v5->_globalPopularityOfNotificationsReceivedForEntity;
     v5->_globalPopularityOfNotificationsReceivedForEntity = v46;
 
-    v48 = [v4 objectForKeyedSubscript:@"ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity"];
+    v48 = [nCopy objectForKeyedSubscript:@"ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity"];
     ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = v5->_ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity;
     v5->_ratioOfLocalToGlobalPopularityOfNotificationsReceivedForEntity = v48;
 
-    v50 = [v4 objectForKeyedSubscript:@"classConditionalOfNotificationsReceivedForEntity"];
+    v50 = [nCopy objectForKeyedSubscript:@"classConditionalOfNotificationsReceivedForEntity"];
     classConditionalOfNotificationsReceivedForEntity = v5->_classConditionalOfNotificationsReceivedForEntity;
     v5->_classConditionalOfNotificationsReceivedForEntity = v50;
   }

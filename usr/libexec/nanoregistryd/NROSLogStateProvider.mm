@@ -1,14 +1,14 @@
 @interface NROSLogStateProvider
-- (NROSLogStateProvider)initWithName:(id)a3 maxStringLength:(int64_t)a4 block:(id)a5;
-- (void)registerOSLogStateHandlerName:(id)a3 block:(id)a4;
+- (NROSLogStateProvider)initWithName:(id)name maxStringLength:(int64_t)length block:(id)block;
+- (void)registerOSLogStateHandlerName:(id)name block:(id)block;
 @end
 
 @implementation NROSLogStateProvider
 
-- (NROSLogStateProvider)initWithName:(id)a3 maxStringLength:(int64_t)a4 block:(id)a5
+- (NROSLogStateProvider)initWithName:(id)name maxStringLength:(int64_t)length block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  blockCopy = block;
   v10 = [(NROSLogStateProvider *)self init];
   if (v10)
   {
@@ -27,19 +27,19 @@
       v15 += 15872;
     }
 
-    while (v15 < a4);
-    if (a4 >= 1)
+    while (v15 < length);
+    if (length >= 1)
     {
       v17 = 0;
       v18 = 0;
       do
       {
-        v19 = [NSString stringWithFormat:@"%@.%ld", v8, v18];
+        v19 = [NSString stringWithFormat:@"%@.%ld", nameCopy, v18];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_10005FFB0;
         v21[3] = &unk_100177BC0;
-        v23 = v9;
+        v23 = blockCopy;
         v22 = v10;
         v24 = v18;
         v25 = v16;
@@ -49,22 +49,22 @@
         v17 += 15872;
       }
 
-      while (v17 < a4);
+      while (v17 < length);
     }
   }
 
   return v10;
 }
 
-- (void)registerOSLogStateHandlerName:(id)a3 block:(id)a4
+- (void)registerOSLogStateHandlerName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   queue = self->_queue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = nameCopy;
+  v12 = blockCopy;
+  v9 = nameCopy;
+  v10 = blockCopy;
   os_state_add_handler();
 }
 

@@ -6,7 +6,7 @@
 - (void)clear_alreadyLocked;
 - (void)disableTimer_alreadyLocked;
 - (void)enableTimer_alreadyLocked;
-- (void)noteDirtySource:(uint64_t)a1;
+- (void)noteDirtySource:(uint64_t)source;
 - (void)synchronize;
 - (void)synchronizeForDaemonTermination;
 @end
@@ -26,12 +26,12 @@
 
 - (void)synchronize
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_CFPrefsSynchronizer *)a1 copyDirtySourcesSnapshotAndClear];
-    CFSetApplyFunction(v1, _CFPrefsSynchronizeDirtySourceForTimer, 0);
+    copyDirtySourcesSnapshotAndClear = [(_CFPrefsSynchronizer *)self copyDirtySourcesSnapshotAndClear];
+    CFSetApplyFunction(copyDirtySourcesSnapshotAndClear, _CFPrefsSynchronizeDirtySourceForTimer, 0);
 
-    CFRelease(v1);
+    CFRelease(copyDirtySourcesSnapshotAndClear);
   }
 }
 
@@ -52,13 +52,13 @@
 
 - (void)clear_alreadyLocked
 {
-  if (a1)
+  if (self)
   {
-    CFSetRemoveAllValues(*(a1 + 24));
-    if (*(a1 + 36) == 1)
+    CFSetRemoveAllValues(*(self + 24));
+    if (*(self + 36) == 1)
     {
-      dispatch_suspend(*(a1 + 8));
-      *(a1 + 36) = 0;
+      dispatch_suspend(*(self + 8));
+      *(self + 36) = 0;
     }
   }
 }
@@ -88,31 +88,31 @@
 
 - (void)enableTimer_alreadyLocked
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 36) & 1) == 0)
+    if ((*(self + 36) & 1) == 0)
     {
-      *(a1 + 36) = 1;
-      dispatch_resume(*(a1 + 8));
+      *(self + 36) = 1;
+      dispatch_resume(*(self + 8));
     }
   }
 }
 
 - (void)disableTimer_alreadyLocked
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 36) == 1)
+    if (*(self + 36) == 1)
     {
-      dispatch_suspend(*(a1 + 8));
-      *(a1 + 36) = 0;
+      dispatch_suspend(*(self + 8));
+      *(self + 36) = 0;
     }
   }
 }
 
-- (void)noteDirtySource:(uint64_t)a1
+- (void)noteDirtySource:(uint64_t)source
 {
-  if (a1)
+  if (source)
   {
     OUTLINED_FUNCTION_11_0();
     os_unfair_lock_lock_with_options();
@@ -129,23 +129,23 @@
 
 - (void)synchronizeForDaemonTermination
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_CFPrefsSynchronizer *)a1 copyDirtySourcesSnapshotAndClear];
-    CFSetApplyFunction(v1, _CFPrefsSynchronizeDirtySourceForDaemonTermination, 0);
+    copyDirtySourcesSnapshotAndClear = [(_CFPrefsSynchronizer *)self copyDirtySourcesSnapshotAndClear];
+    CFSetApplyFunction(copyDirtySourcesSnapshotAndClear, _CFPrefsSynchronizeDirtySourceForDaemonTermination, 0);
 
-    CFRelease(v1);
+    CFRelease(copyDirtySourcesSnapshotAndClear);
   }
 }
 
 - (void)clear
 {
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    [(_CFPrefsSynchronizer *)a1 clear_alreadyLocked];
+    [(_CFPrefsSynchronizer *)self clear_alreadyLocked];
 
-    os_unfair_lock_unlock(a1 + 8);
+    os_unfair_lock_unlock(self + 8);
   }
 }
 

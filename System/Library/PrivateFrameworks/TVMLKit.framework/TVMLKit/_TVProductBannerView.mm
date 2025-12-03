@@ -1,36 +1,36 @@
 @interface _TVProductBannerView
-+ (id)productBannerViewWithElement:(id)a3 existingView:(id)a4;
++ (id)productBannerViewWithElement:(id)element existingView:(id)view;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TVProductBannerView)initWithFrame:(CGRect)a3;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (_TVProductBannerView)initWithFrame:(CGRect)frame;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
 - (void)layoutSubviews;
-- (void)setBackgroundImageView:(id)a3;
-- (void)setHeroImageView:(id)a3;
-- (void)setInfoListView:(id)a3;
-- (void)setStackView:(id)a3;
+- (void)setBackgroundImageView:(id)view;
+- (void)setHeroImageView:(id)view;
+- (void)setInfoListView:(id)view;
+- (void)setStackView:(id)view;
 @end
 
 @implementation _TVProductBannerView
 
-+ (id)productBannerViewWithElement:(id)a3 existingView:(id)a4
++ (id)productBannerViewWithElement:(id)element existingView:(id)view
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  [v7 tv_height];
+  elementCopy = element;
+  viewCopy = view;
+  style = [elementCopy style];
+  [style tv_height];
   v9 = v8;
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
 
   objc_opt_class();
-  v39 = v6;
+  v39 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
-    v13 = v6;
+    v13 = viewCopy;
   }
 
   else
@@ -38,57 +38,57 @@
     v13 = [[_TVProductBannerView alloc] initWithFrame:0.0, 0.0, v12, v9];
   }
 
-  -[_TVProductBannerView setSemanticContentAttribute:](v13, "setSemanticContentAttribute:", [v5 tv_semanticContentAttribute]);
+  -[_TVProductBannerView setSemanticContentAttribute:](v13, "setSemanticContentAttribute:", [elementCopy tv_semanticContentAttribute]);
   [(_TVProductBannerView *)v13 setFrame:0.0, 0.0, v12, v9];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v40 = v5;
-  v14 = [v5 children];
-  v15 = [v14 countByEnumeratingWithState:&v46 objects:v51 count:16];
+  v40 = elementCopy;
+  children = [elementCopy children];
+  v15 = [children countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v15)
   {
     v16 = v15;
     v17 = *v47;
     v18 = 0x279D6D000uLL;
-    v41 = v14;
+    v41 = children;
     do
     {
       for (i = 0; i != v16; ++i)
       {
         if (*v47 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(children);
         }
 
         v20 = *(*(&v46 + 1) + 8 * i);
-        v21 = [v20 tv_elementType];
-        if (v21 > 18)
+        tv_elementType = [v20 tv_elementType];
+        if (tv_elementType > 18)
         {
-          switch(v21)
+          switch(tv_elementType)
           {
             case 19:
-              v27 = [*(v18 + 1176) sharedInterfaceFactory];
-              v28 = [(_TVProductBannerView *)v13 infoListView];
-              v24 = [v27 _viewFromElement:v20 existingView:v28];
+              sharedInterfaceFactory = [*(v18 + 1176) sharedInterfaceFactory];
+              infoListView = [(_TVProductBannerView *)v13 infoListView];
+              children2 = [sharedInterfaceFactory _viewFromElement:v20 existingView:infoListView];
 
-              [(_TVProductBannerView *)v13 setInfoListView:v24];
+              [(_TVProductBannerView *)v13 setInfoListView:children2];
               break;
             case 24:
 LABEL_18:
-              v25 = [*(v18 + 1176) sharedInterfaceFactory];
-              v26 = [(_TVProductBannerView *)v13 heroImageView];
-              v24 = [v25 _viewFromElement:v20 existingView:v26];
+              sharedInterfaceFactory2 = [*(v18 + 1176) sharedInterfaceFactory];
+              heroImageView = [(_TVProductBannerView *)v13 heroImageView];
+              children2 = [sharedInterfaceFactory2 _viewFromElement:v20 existingView:heroImageView];
 
-              [(_TVProductBannerView *)v13 setHeroImageView:v24];
+              [(_TVProductBannerView *)v13 setHeroImageView:children2];
               break;
             case 54:
-              v22 = [*(v18 + 1176) sharedInterfaceFactory];
-              v23 = [(_TVProductBannerView *)v13 stackView];
-              v24 = [v22 _viewFromElement:v20 existingView:v23];
+              sharedInterfaceFactory3 = [*(v18 + 1176) sharedInterfaceFactory];
+              stackView = [(_TVProductBannerView *)v13 stackView];
+              children2 = [sharedInterfaceFactory3 _viewFromElement:v20 existingView:stackView];
 
-              [(_TVProductBannerView *)v13 setStackView:v24];
+              [(_TVProductBannerView *)v13 setStackView:children2];
               break;
             default:
               continue;
@@ -99,14 +99,14 @@ LABEL_32:
           continue;
         }
 
-        if (v21 == 4)
+        if (tv_elementType == 4)
         {
           v44 = 0u;
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v24 = [v20 children];
-          v29 = [v24 countByEnumeratingWithState:&v42 objects:v50 count:16];
+          children2 = [v20 children];
+          v29 = [children2 countByEnumeratingWithState:&v42 objects:v50 count:16];
           if (v29)
           {
             v30 = v29;
@@ -118,23 +118,23 @@ LABEL_32:
               {
                 if (*v43 != v32)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(children2);
                 }
 
                 v34 = *(*(&v42 + 1) + 8 * j);
                 if ([v34 tv_elementType] == 16 && !objc_msgSend(v34, "tv_imageType"))
                 {
                   v18 = v31;
-                  v35 = [*(v31 + 1176) sharedInterfaceFactory];
-                  v36 = [(_TVProductBannerView *)v13 backgroundImageView];
-                  v37 = [v35 _viewFromElement:v34 existingView:v36];
+                  sharedInterfaceFactory4 = [*(v31 + 1176) sharedInterfaceFactory];
+                  backgroundImageView = [(_TVProductBannerView *)v13 backgroundImageView];
+                  v37 = [sharedInterfaceFactory4 _viewFromElement:v34 existingView:backgroundImageView];
 
                   [(_TVProductBannerView *)v13 setBackgroundImageView:v37];
                   goto LABEL_31;
                 }
               }
 
-              v30 = [v24 countByEnumeratingWithState:&v42 objects:v50 count:16];
+              v30 = [children2 countByEnumeratingWithState:&v42 objects:v50 count:16];
               if (v30)
               {
                 continue;
@@ -145,19 +145,19 @@ LABEL_32:
 
             v18 = v31;
 LABEL_31:
-            v14 = v41;
+            children = v41;
           }
 
           goto LABEL_32;
         }
 
-        if (v21 == 16 && ([v20 tv_imageType] == 3 || !objc_msgSend(v20, "tv_imageType")))
+        if (tv_elementType == 16 && ([v20 tv_imageType] == 3 || !objc_msgSend(v20, "tv_imageType")))
         {
           goto LABEL_18;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      v16 = [children countByEnumeratingWithState:&v46 objects:v51 count:16];
     }
 
     while (v16);
@@ -166,12 +166,12 @@ LABEL_31:
   return v13;
 }
 
-- (_TVProductBannerView)initWithFrame:(CGRect)a3
+- (_TVProductBannerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
+  height = frame.size.height;
   v5.receiver = self;
   v5.super_class = _TVProductBannerView;
-  result = [(_TVFocusRedirectView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width];
+  result = [(_TVFocusRedirectView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width];
   if (result)
   {
     result->_height = height;
@@ -183,11 +183,11 @@ LABEL_31:
 - (id)preferredFocusEnvironments
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVProductBannerView *)self stackView];
-  if (v3)
+  stackView = [(_TVProductBannerView *)self stackView];
+  if (stackView)
   {
-    v4 = [(_TVProductBannerView *)self stackView];
-    v7[0] = v4;
+    stackView2 = [(_TVProductBannerView *)self stackView];
+    v7[0] = stackView2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -199,15 +199,15 @@ LABEL_31:
   return v5;
 }
 
-- (void)setBackgroundImageView:(id)a3
+- (void)setBackgroundImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundImageView = self->_backgroundImageView;
-  v8 = v5;
-  if (backgroundImageView != v5)
+  v8 = viewCopy;
+  if (backgroundImageView != viewCopy)
   {
     [(UIView *)backgroundImageView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundImageView, a3);
+    objc_storeStrong(&self->_backgroundImageView, view);
     v7 = self->_backgroundImageView;
     if (v7)
     {
@@ -218,15 +218,15 @@ LABEL_31:
   [(_TVProductBannerView *)self setNeedsLayout];
 }
 
-- (void)setInfoListView:(id)a3
+- (void)setInfoListView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   infoListView = self->_infoListView;
-  v7 = v5;
-  if (infoListView != v5)
+  v7 = viewCopy;
+  if (infoListView != viewCopy)
   {
     [(UIView *)infoListView removeFromSuperview];
-    objc_storeStrong(&self->_infoListView, a3);
+    objc_storeStrong(&self->_infoListView, view);
     if (self->_infoListView)
     {
       [(_TVProductBannerView *)self addSubview:?];
@@ -236,15 +236,15 @@ LABEL_31:
   [(_TVProductBannerView *)self setNeedsLayout];
 }
 
-- (void)setStackView:(id)a3
+- (void)setStackView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   stackView = self->_stackView;
-  v7 = v5;
-  if (stackView != v5)
+  v7 = viewCopy;
+  if (stackView != viewCopy)
   {
     [(UIView *)stackView removeFromSuperview];
-    objc_storeStrong(&self->_stackView, a3);
+    objc_storeStrong(&self->_stackView, view);
     if (self->_stackView)
     {
       [(_TVProductBannerView *)self addSubview:?];
@@ -254,15 +254,15 @@ LABEL_31:
   [(_TVProductBannerView *)self setNeedsLayout];
 }
 
-- (void)setHeroImageView:(id)a3
+- (void)setHeroImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   heroImageView = self->_heroImageView;
-  v7 = v5;
-  if (heroImageView != v5)
+  v7 = viewCopy;
+  if (heroImageView != viewCopy)
   {
     [(UIView *)heroImageView removeFromSuperview];
-    objc_storeStrong(&self->_heroImageView, a3);
+    objc_storeStrong(&self->_heroImageView, view);
     if (self->_heroImageView)
     {
       [(_TVProductBannerView *)self addSubview:?];
@@ -295,16 +295,16 @@ LABEL_31:
   v10 = v9;
   v12 = v11;
   [(UIView *)self->_heroImageView tv_margin];
-  v13 = [(UIView *)self->_heroImageView tv_associatedIKViewElement];
+  tv_associatedIKViewElement = [(UIView *)self->_heroImageView tv_associatedIKViewElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(UIView *)self->_heroImageView tv_associatedIKViewElement];
+    tv_associatedIKViewElement2 = [(UIView *)self->_heroImageView tv_associatedIKViewElement];
   }
 
   else
   {
-    v14 = 0;
+    tv_associatedIKViewElement2 = 0;
   }
 
   if ([MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[_TVProductBannerView semanticContentAttribute](self, "semanticContentAttribute")}] == 1)
@@ -354,8 +354,8 @@ LABEL_31:
     v22 = v40;
   }
 
-  [v14 width];
-  [v14 height];
+  [tv_associatedIKViewElement2 width];
+  [tv_associatedIKViewElement2 height];
   UIRectCenteredXInRect();
   v33 = v32;
   v35 = v34;
@@ -366,26 +366,26 @@ LABEL_31:
   [(UIView *)self->_heroImageView setFrame:v33, v35, v37, v39];
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
-  v7 = [(_TVProductBannerView *)self infoListView];
-  v8 = [v7 tv_impressionableElementsForDocument:v5];
-  [v6 addObjectsFromArray:v8];
+  documentCopy = document;
+  array = [v4 array];
+  infoListView = [(_TVProductBannerView *)self infoListView];
+  v8 = [infoListView tv_impressionableElementsForDocument:documentCopy];
+  [array addObjectsFromArray:v8];
 
-  v9 = [(_TVProductBannerView *)self stackView];
-  v10 = [v9 tv_impressionableElementsForDocument:v5];
-  [v6 addObjectsFromArray:v10];
+  stackView = [(_TVProductBannerView *)self stackView];
+  v10 = [stackView tv_impressionableElementsForDocument:documentCopy];
+  [array addObjectsFromArray:v10];
 
-  v11 = [(_TVProductBannerView *)self heroImageView];
-  v12 = [v11 tv_impressionableElementsForDocument:v5];
+  heroImageView = [(_TVProductBannerView *)self heroImageView];
+  v12 = [heroImageView tv_impressionableElementsForDocument:documentCopy];
 
-  [v6 addObjectsFromArray:v12];
-  if ([v6 count])
+  [array addObjectsFromArray:v12];
+  if ([array count])
   {
-    v13 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
+    v13 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else

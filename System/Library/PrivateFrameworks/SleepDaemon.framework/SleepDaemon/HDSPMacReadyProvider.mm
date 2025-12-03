@@ -1,21 +1,21 @@
 @interface HDSPMacReadyProvider
 - (HDSPEnvironment)environment;
-- (HDSPMacReadyProvider)initWithEnvironment:(id)a3;
+- (HDSPMacReadyProvider)initWithEnvironment:(id)environment;
 - (HDSPSystemReadyDelegate)delegate;
 @end
 
 @implementation HDSPMacReadyProvider
 
-- (HDSPMacReadyProvider)initWithEnvironment:(id)a3
+- (HDSPMacReadyProvider)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPMacReadyProvider;
   v5 = [(HDSPMacReadyProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 

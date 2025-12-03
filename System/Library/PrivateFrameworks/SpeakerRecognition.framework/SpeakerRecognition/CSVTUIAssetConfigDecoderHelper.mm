@@ -1,22 +1,22 @@
 @interface CSVTUIAssetConfigDecoderHelper
-+ (BOOL)getUseRecognizerCombinationFromSecondPassConfigWithSecureAsset:(id)a3;
-+ (float)getPreTriggerAudioTimeFromSecondPassConfigWithSecureAsset:(id)a3;
++ (BOOL)getUseRecognizerCombinationFromSecondPassConfigWithSecureAsset:(id)asset;
++ (float)getPreTriggerAudioTimeFromSecondPassConfigWithSecureAsset:(id)asset;
 - (_TtC18SpeakerRecognition30CSVTUIAssetConfigDecoderHelper)init;
 @end
 
 @implementation CSVTUIAssetConfigDecoderHelper
 
-+ (BOOL)getUseRecognizerCombinationFromSecondPassConfigWithSecureAsset:(id)a3
++ (BOOL)getUseRecognizerCombinationFromSecondPassConfigWithSecureAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = _s18SpeakerRecognition30CSVTUIAssetConfigDecoderHelperC041getUseRecognizerCombinationFromSecondPassD011secureAssetSbSo06SecureO0C_tFZ_0();
 
   return v4 & 1;
 }
 
-+ (float)getPreTriggerAudioTimeFromSecondPassConfigWithSecureAsset:(id)a3
++ (float)getPreTriggerAudioTimeFromSecondPassConfigWithSecureAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = _s18SpeakerRecognition30CSVTUIAssetConfigDecoderHelperC036getPreTriggerAudioTimeFromSecondPassD011secureAssetSfSo06SecureP0C_tFZ_0();
 
   return v4;

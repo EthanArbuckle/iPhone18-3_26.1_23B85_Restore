@@ -3,7 +3,7 @@
 - (NCSupplementaryViewPrototypeRecipeViewController)init;
 - (NCSupplementaryViewPrototypeRecipeViewControllerDelegate)delegate;
 - (id)_testActionNotImplementedBlock;
-- (void)updateConfiguration:(id)a3;
+- (void)updateConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
@@ -29,43 +29,43 @@
   v5.receiver = self;
   v5.super_class = NCSupplementaryViewPrototypeRecipeViewController;
   [(NCSupplementaryViewPrototypeRecipeViewController *)&v5 viewDidLoad];
-  v3 = [(NCSupplementaryViewPrototypeRecipeViewController *)self view];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(NCSupplementaryViewPrototypeRecipeViewController *)self view];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(NCNotificationListSupplementaryViewConfiguration *)self->_configuration mutableCopy];
   if (v5)
   {
     v6 = v5;
-    v4[2](v4, v5);
+    configurationCopy[2](configurationCopy, v5);
     configuration = self->_configuration;
     self->_configuration = v6;
 
-    v8 = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
-    [v8 requestsUpdateForPrototypeRecipeViewController:self];
+    delegate = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
+    [delegate requestsUpdateForPrototypeRecipeViewController:self];
   }
 
   else
   {
     v9 = objc_alloc_init(NCNotificationListMutableSupplementaryViewConfiguration);
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(NCNotificationListMutableSupplementaryViewConfiguration *)v9 setTextColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NCNotificationListMutableSupplementaryViewConfiguration *)v9 setTextColor:whiteColor];
 
-    v11 = [MEMORY[0x277D75348] blackColor];
-    v12 = [v11 colorWithAlphaComponent:0.2];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v12 = [blackColor colorWithAlphaComponent:0.2];
     [(NCNotificationListMutableSupplementaryViewConfiguration *)v9 setTintColor:v12];
 
     [(NCNotificationListMutableSupplementaryViewConfiguration *)v9 setMaterialRecipe:22];
-    v13 = [objc_opt_class() title];
-    v14 = v13;
-    if (v13)
+    title = [objc_opt_class() title];
+    v14 = title;
+    if (title)
     {
-      v15 = v13;
+      v15 = title;
     }
 
     else
@@ -90,8 +90,8 @@
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
-    v4[2](v4, v9);
-    v8 = self->_configuration;
+    configurationCopy[2](configurationCopy, v9);
+    delegate = self->_configuration;
     self->_configuration = &v9->super;
   }
 }

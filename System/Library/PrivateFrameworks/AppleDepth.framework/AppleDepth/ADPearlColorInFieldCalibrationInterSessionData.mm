@@ -1,27 +1,27 @@
 @interface ADPearlColorInFieldCalibrationInterSessionData
 + (id)defaults;
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andDeviceName:(id)a4;
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andFlowType:(int)a4;
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithFactoryPearlToColorTransform:(__n128)a3 currentPearlToColorTransform:(__n128)a4 andFlowType:(double)a5;
-- (__n128)convertDictToExtrinsicsAngles:(void *)a3;
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andDeviceName:(id)name;
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andFlowType:(int)type;
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithFactoryPearlToColorTransform:(__n128)transform currentPearlToColorTransform:(__n128)colorTransform andFlowType:(double)type;
+- (__n128)convertDictToExtrinsicsAngles:(void *)angles;
 - (id)convertExtrinsicsAnglesToDict:(ADPearlColorInFieldCalibrationInterSessionData *)self;
 - (id)persistenceData;
-- (uint64_t)initWithFactoryPearlToColorTransform:(double)a3 currentPearlToColorTransform:(double)a4 andDeviceName:(double)a5;
-- (void)initIsfWithFlowType:(int)a3;
+- (uint64_t)initWithFactoryPearlToColorTransform:(double)transform currentPearlToColorTransform:(double)colorTransform andDeviceName:(double)name;
+- (void)initIsfWithFlowType:(int)type;
 @end
 
 @implementation ADPearlColorInFieldCalibrationInterSessionData
 
-- (__n128)convertDictToExtrinsicsAngles:(void *)a3
+- (__n128)convertDictToExtrinsicsAngles:(void *)angles
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"rotX"];
+  anglesCopy = angles;
+  v4 = [anglesCopy objectForKeyedSubscript:@"rotX"];
   [v4 floatValue];
   v13 = v5;
-  v6 = [v3 objectForKeyedSubscript:@"rotY"];
+  v6 = [anglesCopy objectForKeyedSubscript:@"rotY"];
   [v6 floatValue];
   v12 = v7;
-  v8 = [v3 objectForKeyedSubscript:@"rotZ"];
+  v8 = [anglesCopy objectForKeyedSubscript:@"rotZ"];
   [v8 floatValue];
   v11 = v9;
 
@@ -70,12 +70,12 @@
 
   v10 = MEMORY[0x277CBEB38];
   v18[0] = @"isfHistoryKey";
-  v11 = [(ADInterSessionFilter *)self->super._isf persistenceData];
-  v19[0] = v11;
+  persistenceData = [(ADInterSessionFilter *)self->super._isf persistenceData];
+  v19[0] = persistenceData;
   v18[1] = @"telemetryKey";
-  v12 = [(ADPearlColorInFieldCalibrationInterSessionData *)self inFieldCalibrationTelemetryData];
-  v13 = [v12 persistenceData];
-  v19[1] = v13;
+  inFieldCalibrationTelemetryData = [(ADPearlColorInFieldCalibrationInterSessionData *)self inFieldCalibrationTelemetryData];
+  persistenceData2 = [inFieldCalibrationTelemetryData persistenceData];
+  v19[1] = persistenceData2;
   v19[2] = v9;
   v18[2] = @"depthToMcamFactoryExtrinsics";
   v18[3] = @"interSessionDataVersion";
@@ -87,13 +87,13 @@
   return v16;
 }
 
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithFactoryPearlToColorTransform:(__n128)a3 currentPearlToColorTransform:(__n128)a4 andFlowType:(double)a5
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithFactoryPearlToColorTransform:(__n128)transform currentPearlToColorTransform:(__n128)colorTransform andFlowType:(double)type
 {
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = ADPearlColorInFieldCalibrationInterSessionData;
   v11 = [(ADInFieldCalibrationInterSessionData *)&v36 init];
   v12 = v11;
-  if (v11 && (([(ADInFieldCalibrationInterSessionData *)v11 setVersion:6], [(ADPearlColorInFieldCalibrationInterSessionData *)v12 initIsfWithFlowType:a10], !v12->super._isf) || (v13 = objc_alloc_init(ADPearlColorInFieldCalibrationTelemetryData), inFieldCalibrationTelemetryData = v12->_inFieldCalibrationTelemetryData, v12->_inFieldCalibrationTelemetryData = v13, inFieldCalibrationTelemetryData, v33 = 0u, v34 = 0u, v33.i32[2] = a2.n128_i32[2], v35 = 0u, v34.i32[2] = a3.n128_i32[2], v33.i64[0] = a2.n128_u64[0], v34.i64[0] = a3.n128_u64[0], v35.i32[2] = a4.n128_i32[2], v35.i64[0] = a4.n128_u64[0], [ADUtils calcRotationAngle:&v33], *v12->_pearlToColorRotationAngles = v15, v30 = 0u, v31 = 0u, v32 = 0u, v16 = vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(a6, v33.f32[0]), a7, v34.f32[0]), a8, v35.f32[0]), v17 = vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(a6, *v33.f32, 1), a7, *v34.f32, 1), a8, *v35.f32, 1), v18 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(a6, v33, 2), a7, v34, 2), a8, v35, 2), DWORD2(v30) = v16.i32[2], DWORD2(v31) = v17.i32[2], *&v30 = v16.i64[0], *&v31 = v17.i64[0], DWORD2(v32) = v18.i32[2], *&v32 = v18.i64[0], [ADUtils calcRotationAngle:&v30], isf = v12->super._isf, [(ADPearlColorInFieldCalibrationInterSessionData *)v12 convertExtrinsicsAnglesToDict:?], v20 = objc_claimAutoreleasedReturnValue(), v21 = [(ADInterSessionFilter *)isf fillWithEntry:v20], v20, v21)))
+  if (v11 && (([(ADInFieldCalibrationInterSessionData *)v11 setVersion:6], [(ADPearlColorInFieldCalibrationInterSessionData *)v12 initIsfWithFlowType:a10], !v12->super._isf) || (v13 = objc_alloc_init(ADPearlColorInFieldCalibrationTelemetryData), inFieldCalibrationTelemetryData = v12->_inFieldCalibrationTelemetryData, v12->_inFieldCalibrationTelemetryData = v13, inFieldCalibrationTelemetryData, v33 = 0u, v34 = 0u, v33.i32[2] = a2.n128_i32[2], v35 = 0u, v34.i32[2] = transform.n128_i32[2], v33.i64[0] = a2.n128_u64[0], v34.i64[0] = transform.n128_u64[0], v35.i32[2] = colorTransform.n128_i32[2], v35.i64[0] = colorTransform.n128_u64[0], [ADUtils calcRotationAngle:&v33], *v12->_pearlToColorRotationAngles = v15, v30 = 0u, v31 = 0u, v32 = 0u, v16 = vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(a6, v33.f32[0]), a7, v34.f32[0]), a8, v35.f32[0]), v17 = vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(a6, *v33.f32, 1), a7, *v34.f32, 1), a8, *v35.f32, 1), v18 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(a6, v33, 2), a7, v34, 2), a8, v35, 2), DWORD2(v30) = v16.i32[2], DWORD2(v31) = v17.i32[2], *&v30 = v16.i64[0], *&v31 = v17.i64[0], DWORD2(v32) = v18.i32[2], *&v32 = v18.i64[0], [ADUtils calcRotationAngle:&v30], isf = v12->super._isf, [(ADPearlColorInFieldCalibrationInterSessionData *)v12 convertExtrinsicsAnglesToDict:?], v20 = objc_claimAutoreleasedReturnValue(), v21 = [(ADInterSessionFilter *)isf fillWithEntry:v20], v20, v21)))
   {
     v22 = 0;
   }
@@ -106,10 +106,10 @@
   return v22;
 }
 
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andFlowType:(int)a4
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andFlowType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  representationCopy = representation;
   v25.receiver = self;
   v25.super_class = ADPearlColorInFieldCalibrationInterSessionData;
   v7 = [(ADInFieldCalibrationInterSessionData *)&v25 init];
@@ -118,7 +118,7 @@
     goto LABEL_15;
   }
 
-  v8 = [v6 objectForKey:@"interSessionDataVersion"];
+  v8 = [representationCopy objectForKey:@"interSessionDataVersion"];
   -[ADInFieldCalibrationInterSessionData setVersion:](v7, "setVersion:", [v8 unsignedIntValue]);
 
   if ([(ADInFieldCalibrationInterSessionData *)v7 version]< 5 || [(ADInFieldCalibrationInterSessionData *)v7 version]> 6 || ([(ADPearlColorInFieldCalibrationInterSessionData *)v7 initIsfWithFlowType:v4], !v7->super._isf))
@@ -128,9 +128,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [v6 objectForKey:@"telemetryKey"];
-  v10 = [v6 objectForKey:@"isfHistoryKey"];
-  v11 = [v6 objectForKey:@"depthToMcamFactoryExtrinsics"];
+  v9 = [representationCopy objectForKey:@"telemetryKey"];
+  v10 = [representationCopy objectForKey:@"isfHistoryKey"];
+  v11 = [representationCopy objectForKey:@"depthToMcamFactoryExtrinsics"];
   isf = v7->super._isf;
   if (!v10)
   {
@@ -191,26 +191,26 @@ LABEL_18:
   return v23;
 }
 
-- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)a3 andDeviceName:(id)a4
+- (ADPearlColorInFieldCalibrationInterSessionData)initWithDictionaryRepresentation:(id)representation andDeviceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 hasPrefix:@"J7"] & 1) != 0 || (objc_msgSend(v7, "hasPrefix:", @"J8"))
+  representationCopy = representation;
+  nameCopy = name;
+  if ([nameCopy hasPrefix:@"J7"] & 1) != 0 || (objc_msgSend(nameCopy, "hasPrefix:", @"J8"))
   {
     v8 = 1;
   }
 
-  else if ([v7 hasPrefix:@"V59"])
+  else if ([nameCopy hasPrefix:@"V59"])
   {
     v8 = 2;
   }
 
-  else if ([v7 hasPrefix:@"V5"])
+  else if ([nameCopy hasPrefix:@"V5"])
   {
     v8 = 3;
   }
 
-  else if ([v7 hasPrefix:@"D23"])
+  else if ([nameCopy hasPrefix:@"D23"])
   {
     v8 = 3;
   }
@@ -220,11 +220,11 @@ LABEL_18:
     v8 = 0;
   }
 
-  v9 = [(ADPearlColorInFieldCalibrationInterSessionData *)self initWithDictionaryRepresentation:v6 andFlowType:v8];
+  v9 = [(ADPearlColorInFieldCalibrationInterSessionData *)self initWithDictionaryRepresentation:representationCopy andFlowType:v8];
   return v9;
 }
 
-- (uint64_t)initWithFactoryPearlToColorTransform:(double)a3 currentPearlToColorTransform:(double)a4 andDeviceName:(double)a5
+- (uint64_t)initWithFactoryPearlToColorTransform:(double)transform currentPearlToColorTransform:(double)colorTransform andDeviceName:(double)name
 {
   v12 = a11;
   if ([v12 hasPrefix:@"J7"] & 1) != 0 || (objc_msgSend(v12, "hasPrefix:", @"J8"))
@@ -252,11 +252,11 @@ LABEL_18:
     v13 = 0;
   }
 
-  v14 = [a1 initWithFactoryPearlToColorTransform:v13 currentPearlToColorTransform:a2 andFlowType:{a3, a4, a5, a6, a7, a8, a9}];
+  v14 = [self initWithFactoryPearlToColorTransform:v13 currentPearlToColorTransform:a2 andFlowType:{transform, colorTransform, name, a6, a7, a8, a9}];
   return v14;
 }
 
-- (void)initIsfWithFlowType:(int)a3
+- (void)initIsfWithFlowType:(int)type
 {
   [(ADInterSessionFilterParameters *)self->super._isfParameters setIsStepDetectionActive:1];
   [(ADInterSessionFilterParameters *)self->super._isfParameters setMinStepIndex:2];
@@ -271,7 +271,7 @@ LABEL_18:
   isf = self->super._isf;
   self->super._isf = 0;
 
-  if (a3 > 3)
+  if (type > 3)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -282,16 +282,16 @@ LABEL_18:
 
   else
   {
-    v10 = [objc_opt_class() defaults];
-    v11 = [v10 numberForKey:kADDeviceConfigurationKeyPearlColorIsfCapacity];
+    defaults = [objc_opt_class() defaults];
+    v11 = [defaults numberForKey:kADDeviceConfigurationKeyPearlColorIsfCapacity];
     -[ADInterSessionFilterParameters setMinimalEntriesForResult:](self->super._isfParameters, "setMinimalEntriesForResult:", [v11 unsignedIntValue]);
 
-    v12 = [objc_opt_class() defaults];
-    v13 = [v12 numberForKey:kADDeviceConfigurationKeyPearlColorIsfCapacity];
+    defaults2 = [objc_opt_class() defaults];
+    v13 = [defaults2 numberForKey:kADDeviceConfigurationKeyPearlColorIsfCapacity];
     -[ADInterSessionFilterParameters setCapacity:](self->super._isfParameters, "setCapacity:", [v13 unsignedIntValue]);
 
-    v14 = [objc_opt_class() defaults];
-    v15 = [v14 numberForKey:kADDeviceConfigurationKeyPearlColorIsfOutliers];
+    defaults3 = [objc_opt_class() defaults];
+    v15 = [defaults3 numberForKey:kADDeviceConfigurationKeyPearlColorIsfOutliers];
     -[ADInterSessionFilterParameters setOutlierNumber:](self->super._isfParameters, "setOutlierNumber:", [v15 unsignedIntValue]);
 
     [(ADInterSessionFilterParameters *)self->super._isfParameters setMinStepSize:10];

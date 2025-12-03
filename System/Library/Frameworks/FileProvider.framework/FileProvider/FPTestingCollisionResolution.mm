@@ -1,23 +1,23 @@
 @interface FPTestingCollisionResolution
-- (FPTestingCollisionResolution)initWithCoder:(id)a3;
-- (FPTestingCollisionResolution)initWithOperationIdentifier:(id)a3 renamedItem:(id)a4 snapshotVersion:(int64_t)a5;
+- (FPTestingCollisionResolution)initWithCoder:(id)coder;
+- (FPTestingCollisionResolution)initWithOperationIdentifier:(id)identifier renamedItem:(id)item snapshotVersion:(int64_t)version;
 - (unint64_t)side;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPTestingCollisionResolution
 
-- (FPTestingCollisionResolution)initWithOperationIdentifier:(id)a3 renamedItem:(id)a4 snapshotVersion:(int64_t)a5
+- (FPTestingCollisionResolution)initWithOperationIdentifier:(id)identifier renamedItem:(id)item snapshotVersion:(int64_t)version
 {
-  v9 = a4;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = FPTestingCollisionResolution;
-  v10 = [(FPTestingOperation *)&v13 initWithOperationIdentifier:a3];
+  v10 = [(FPTestingOperation *)&v13 initWithOperationIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_renamedItem, a4);
-    v11->_snapshotVersion = a5;
+    objc_storeStrong(&v10->_renamedItem, item);
+    v11->_snapshotVersion = version;
   }
 
   return v11;
@@ -25,35 +25,35 @@
 
 - (unint64_t)side
 {
-  v2 = [(NSFileProviderItem *)self->_renamedItem itemIdentifier];
-  v3 = [v2 hasPrefix:@"__fp/fs/"] ^ 1;
+  itemIdentifier = [(NSFileProviderItem *)self->_renamedItem itemIdentifier];
+  v3 = [itemIdentifier hasPrefix:@"__fp/fs/"] ^ 1;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FPTestingCollisionResolution;
-  v4 = a3;
-  [(FPTestingOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_renamedItem forKey:{@"_renamedItem", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_snapshotVersion forKey:@"_snapshotVersion"];
+  coderCopy = coder;
+  [(FPTestingOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_renamedItem forKey:{@"_renamedItem", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_snapshotVersion forKey:@"_snapshotVersion"];
 }
 
-- (FPTestingCollisionResolution)initWithCoder:(id)a3
+- (FPTestingCollisionResolution)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FPTestingCollisionResolution;
-  v5 = [(FPTestingOperation *)&v9 initWithCoder:v4];
+  v5 = [(FPTestingOperation *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_renamedItem"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_renamedItem"];
     renamedItem = v5->_renamedItem;
     v5->_renamedItem = v6;
 
-    v5->_snapshotVersion = [v4 decodeIntegerForKey:@"_snapshotVersion"];
+    v5->_snapshotVersion = [coderCopy decodeIntegerForKey:@"_snapshotVersion"];
   }
 
   return v5;

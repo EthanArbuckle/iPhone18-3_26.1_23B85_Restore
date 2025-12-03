@@ -10,16 +10,16 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a1 = [a1 initWithUUIDString:v4];
-    v5 = a1;
+    self = [self initWithUUIDString:v4];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

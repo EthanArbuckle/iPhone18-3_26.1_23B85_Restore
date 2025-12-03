@@ -1,24 +1,24 @@
 @interface HKMedicalIDEditorHeightCell
-- (HKMedicalIDEditorHeightCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4;
+- (HKMedicalIDEditorHeightCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)pickerView:(id)view widthForComponent:(int64_t)component;
 - (id)formattedValue;
 - (void)_commonInit;
 - (void)_hidePicker;
-- (void)_localeDidChange:(id)a3;
+- (void)_localeDidChange:(id)change;
 - (void)_showPicker;
 - (void)beginEditing;
 - (void)dealloc;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)setCentimeterValue:(id)a3;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)setCentimeterValue:(id)value;
 @end
 
 @implementation HKMedicalIDEditorHeightCell
 
-- (HKMedicalIDEditorHeightCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKMedicalIDEditorHeightCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKMedicalIDEditorHeightCell;
-  v4 = [(HKMedicalIDEditorCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKMedicalIDEditorCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -34,7 +34,7 @@
   self->_usesImperialUnits = [v3 usesImperialUnits];
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
   [(HKMedicalIDEditorHeightCell *)self _commonInit];
 
@@ -44,24 +44,24 @@
 - (id)formattedValue
 {
   v3 = +[HKPersonHeightFormatter sharedFormatter];
-  v4 = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
-  v5 = [v3 localizedStringFromHeightInCentimeters:v4];
+  centimeterValue = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
+  v5 = [v3 localizedStringFromHeightInCentimeters:centimeterValue];
 
   return v5;
 }
 
-- (void)setCentimeterValue:(id)a3
+- (void)setCentimeterValue:(id)value
 {
-  objc_storeStrong(&self->_centimeterValue, a3);
+  objc_storeStrong(&self->_centimeterValue, value);
 
   [(HKMedicalIDEditorCell *)self updateValueLabel];
 }
 
 - (void)_showPicker
 {
-  v3 = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
+  centimeterValue = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
 
-  if (!v3)
+  if (!centimeterValue)
   {
     v4 = MEMORY[0x1E696AD98];
     +[HKMedicalIDHeightPickerDataProvider defaultCentimeterValue];
@@ -79,15 +79,15 @@
     [(UIPickerView *)self->_picker setDataSource:self];
     [(UIPickerView *)self->_picker setDelegate:self];
     v9 = [HKHostingAreaLayoutView viewHostingView:self->_picker];
-    v10 = [(HKMedicalIDEditorCell *)self inputTextField];
-    [v10 setInputView:v9];
+    inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+    [inputTextField setInputView:v9];
 
     picker = self->_picker;
   }
 
   [(UIPickerView *)picker reloadAllComponents];
-  v11 = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
-  [v11 doubleValue];
+  centimeterValue2 = [(HKMedicalIDEditorHeightCell *)self centimeterValue];
+  [centimeterValue2 doubleValue];
   v13 = v12;
 
   if (self->_usesImperialUnits)
@@ -112,8 +112,8 @@
 
   [(UIPickerView *)v15 selectRow:v16 inComponent:v17 animated:0];
   [(HKMedicalIDEditorHeightCell *)self reloadInputViews];
-  v18 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v18 becomeFirstResponder];
+  inputTextField2 = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField2 becomeFirstResponder];
 }
 
 - (void)dealloc
@@ -127,8 +127,8 @@
 
 - (void)_hidePicker
 {
-  v2 = [(HKMedicalIDEditorCell *)self inputTextField];
-  [v2 resignFirstResponder];
+  inputTextField = [(HKMedicalIDEditorCell *)self inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
 - (void)beginEditing
@@ -139,30 +139,30 @@
   [(HKMedicalIDEditorHeightCell *)self _showPicker];
 }
 
-- (double)pickerView:(id)a3 widthForComponent:(int64_t)a4
+- (double)pickerView:(id)view widthForComponent:(int64_t)component
 {
   if (self->_usesImperialUnits)
   {
 
-    [HKPickerViewTitleMeasurer pickerView:a3 maxWidthForComponent:a4];
+    [HKPickerViewTitleMeasurer pickerView:view maxWidthForComponent:component];
   }
 
   else
   {
-    [a3 frame];
+    [view frame];
     return v7;
   }
 
   return result;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v15 = v7;
+  viewCopy = view;
+  v15 = viewCopy;
   if (self->_usesImperialUnits)
   {
-    v8 = fmax([v7 selectedRowInComponent:0], 0.0);
+    v8 = fmax([viewCopy selectedRowInComponent:0], 0.0);
     v9 = fmax([v15 selectedRowInComponent:1], 0.0);
     v10 = MEMORY[0x1E696AD98];
     v11 = +[HKPersonHeightFormatter sharedFormatter];
@@ -174,7 +174,7 @@
 
   else
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:row];
     v11 = self->_centimeterValue;
     self->_centimeterValue = v14;
   }

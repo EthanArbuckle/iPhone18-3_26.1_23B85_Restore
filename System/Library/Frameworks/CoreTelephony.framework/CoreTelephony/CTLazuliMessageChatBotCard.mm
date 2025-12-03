@@ -1,11 +1,11 @@
 @interface CTLazuliMessageChatBotCard
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliMessageChatBotCard:(id)a3;
-- (CTLazuliMessageChatBotCard)initWithCoder:(id)a3;
-- (CTLazuliMessageChatBotCard)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliMessageChatBotCard:(id)card;
+- (CTLazuliMessageChatBotCard)initWithCoder:(id)coder;
+- (CTLazuliMessageChatBotCard)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliMessageChatBotCard
@@ -13,27 +13,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliMessageChatBotCard *)self card];
-  [v3 appendFormat:@", card = %@", v4];
+  card = [(CTLazuliMessageChatBotCard *)self card];
+  [v3 appendFormat:@", card = %@", card];
 
-  v5 = [(CTLazuliMessageChatBotCard *)self chipList];
-  [v3 appendFormat:@", chipList = %@", v5];
+  chipList = [(CTLazuliMessageChatBotCard *)self chipList];
+  [v3 appendFormat:@", chipList = %@", chipList];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliMessageChatBotCard:(id)a3
+- (BOOL)isEqualToCTLazuliMessageChatBotCard:(id)card
 {
-  v6 = a3;
-  v7 = [(CTLazuliMessageChatBotCard *)self card];
-  v8 = [v6 card];
-  if (v7 != v8)
+  cardCopy = card;
+  card = [(CTLazuliMessageChatBotCard *)self card];
+  card2 = [cardCopy card];
+  if (card != card2)
   {
-    v3 = [(CTLazuliMessageChatBotCard *)self card];
-    v4 = [v6 card];
-    if (![v3 isEqualToCTLazuliChatBotCard:v4])
+    card3 = [(CTLazuliMessageChatBotCard *)self card];
+    card4 = [cardCopy card];
+    if (![card3 isEqualToCTLazuliChatBotCard:card4])
     {
       v9 = 0;
 LABEL_8:
@@ -42,10 +42,10 @@ LABEL_8:
     }
   }
 
-  v10 = [(CTLazuliMessageChatBotCard *)self chipList];
-  v11 = [v6 chipList];
-  v12 = v11;
-  if (v10 == v11)
+  chipList = [(CTLazuliMessageChatBotCard *)self chipList];
+  chipList2 = [cardCopy chipList];
+  v12 = chipList2;
+  if (chipList == chipList2)
   {
 
     v9 = 1;
@@ -53,12 +53,12 @@ LABEL_8:
 
   else
   {
-    v13 = [(CTLazuliMessageChatBotCard *)self chipList];
-    v14 = [v6 chipList];
-    v9 = [v13 isEqualToCTLazuliChatBotSuggestedChipList:v14];
+    chipList3 = [(CTLazuliMessageChatBotCard *)self chipList];
+    chipList4 = [cardCopy chipList];
+    v9 = [chipList3 isEqualToCTLazuliChatBotSuggestedChipList:chipList4];
   }
 
-  if (v7 != v8)
+  if (card != card2)
   {
     goto LABEL_8;
   }
@@ -68,55 +68,55 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliMessageChatBotCard *)self isEqualToCTLazuliMessageChatBotCard:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliMessageChatBotCard *)self isEqualToCTLazuliMessageChatBotCard:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliMessageChatBotCard allocWithZone:?];
-  v6 = [(CTLazuliChatBotCard *)self->_card copyWithZone:a3];
+  v6 = [(CTLazuliChatBotCard *)self->_card copyWithZone:zone];
   [(CTLazuliMessageChatBotCard *)v5 setCard:v6];
 
-  v7 = [(CTLazuliChatBotSuggestedChipList *)self->_chipList copyWithZone:a3];
+  v7 = [(CTLazuliChatBotSuggestedChipList *)self->_chipList copyWithZone:zone];
   [(CTLazuliMessageChatBotCard *)v5 setChipList:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_card forKey:@"kCardKey"];
-  [v4 encodeObject:self->_chipList forKey:@"kChipListKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_card forKey:@"kCardKey"];
+  [coderCopy encodeObject:self->_chipList forKey:@"kChipListKey"];
 }
 
-- (CTLazuliMessageChatBotCard)initWithCoder:(id)a3
+- (CTLazuliMessageChatBotCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTLazuliMessageChatBotCard;
   v5 = [(CTLazuliMessageChatBotCard *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCardKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCardKey"];
     card = v5->_card;
     v5->_card = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kChipListKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kChipListKey"];
     chipList = v5->_chipList;
     v5->_chipList = v8;
   }
@@ -124,29 +124,29 @@ LABEL_9:
   return v5;
 }
 
-- (CTLazuliMessageChatBotCard)initWithReflection:(const void *)a3
+- (CTLazuliMessageChatBotCard)initWithReflection:(const void *)reflection
 {
   v13.receiver = self;
   v13.super_class = CTLazuliMessageChatBotCard;
   v4 = [(CTLazuliMessageChatBotCard *)&v13 init];
   if (v4)
   {
-    v5 = [[CTLazuliChatBotCard alloc] initWithReflection:a3];
+    v5 = [[CTLazuliChatBotCard alloc] initWithReflection:reflection];
     card = v4->_card;
     v4->_card = v5;
 
-    if (*(a3 + 352) == 1)
+    if (*(reflection + 352) == 1)
     {
       v7 = v4;
       v8 = [CTLazuliChatBotSuggestedChipList alloc];
-      if ((*(a3 + 352) & 1) == 0)
+      if ((*(reflection + 352) & 1) == 0)
       {
         v12 = std::__throw_bad_optional_access[abi:nn200100]();
 
         _Unwind_Resume(v12);
       }
 
-      v9 = [(CTLazuliChatBotSuggestedChipList *)v8 initWithReflection:a3 + 328];
+      v9 = [(CTLazuliChatBotSuggestedChipList *)v8 initWithReflection:reflection + 328];
     }
 
     else

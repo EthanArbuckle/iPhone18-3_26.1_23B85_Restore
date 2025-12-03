@@ -1,6 +1,6 @@
 @interface CAFDimensionManager
 - (CAFCar)car;
-- (CAFDimensionManager)initWithCar:(id)a3;
+- (CAFDimensionManager)initWithCar:(id)car;
 - (CAFUnitEnergyEfficiency)vehicleEnergyEfficiencyUnit;
 - (NSUnitFuelEfficiency)vehicleFuelEfficiencyUnit;
 - (NSUnitLength)vehicleRangeUnit;
@@ -10,39 +10,39 @@
 - (unint64_t)measurementSystem;
 - (void)currentLocaleChanged;
 - (void)invalidate;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFDimensionManager
 
-- (CAFDimensionManager)initWithCar:(id)a3
+- (CAFDimensionManager)initWithCar:(id)car
 {
-  v4 = a3;
+  carCopy = car;
   v18.receiver = self;
   v18.super_class = CAFDimensionManager;
   v5 = [(CAFDimensionManager *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     locale = v5->_locale;
-    v5->_locale = v6;
+    v5->_locale = currentLocale;
 
     v8 = [objc_alloc(MEMORY[0x277CF89C0]) initWithProtocol:&unk_2846AD4B0];
     observers = v5->_observers;
     v5->_observers = v8;
 
-    objc_storeWeak(&v5->_car, v4);
+    objc_storeWeak(&v5->_car, carCopy);
     objc_initWeak(&location, v5);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    v11 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v12 = *MEMORY[0x277CBE620];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __35__CAFDimensionManager_initWithCar___block_invoke;
     v15[3] = &unk_27890D570;
     objc_copyWeak(&v16, &location);
-    v13 = [v10 addObserverForName:v12 object:0 queue:v11 usingBlock:v15];
+    v13 = [defaultCenter addObserverForName:v12 object:0 queue:mainQueue usingBlock:v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -57,24 +57,24 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
   [WeakRetained currentLocaleChanged];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFDimensionManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFDimensionManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFDimensionManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFDimensionManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (unint64_t)measurementSystem
 {
-  v2 = [(CAFDimensionManager *)self locale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE6D0]];
+  locale = [(CAFDimensionManager *)self locale];
+  v3 = [locale objectForKey:*MEMORY[0x277CBE6D0]];
 
   if ([v3 isEqualToString:*MEMORY[0x277CBE6D8]])
   {
@@ -96,8 +96,8 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
 
 - (NSUnitTemperature)unitTemperature
 {
-  v2 = [(CAFDimensionManager *)self locale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE700]];
+  locale = [(CAFDimensionManager *)self locale];
+  v3 = [locale objectForKey:*MEMORY[0x277CBE700]];
   v4 = [v3 isEqualToString:*MEMORY[0x277CBE708]];
 
   if (v4)
@@ -116,15 +116,15 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
 
 - (NSUnitPressure)tirePressureUnit
 {
-  v2 = [(CAFDimensionManager *)self measurementSystem];
-  if (v2 == 2)
+  measurementSystem = [(CAFDimensionManager *)self measurementSystem];
+  if (measurementSystem == 2)
   {
-    v3 = [MEMORY[0x277CCAE38] kilopascals];
+    kilopascals = [MEMORY[0x277CCAE38] kilopascals];
   }
 
   else
   {
-    if (v2)
+    if (measurementSystem)
     {
       [MEMORY[0x277CCAE38] poundsForcePerSquareInch];
     }
@@ -133,10 +133,10 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
     {
       [MEMORY[0x277CCAE38] bars];
     }
-    v3 = ;
+    kilopascals = ;
   }
 
-  return v3;
+  return kilopascals;
 }
 
 - (NSUnitSpeed)vehicleSpeedUnit
@@ -173,15 +173,15 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
 
 - (NSUnitFuelEfficiency)vehicleFuelEfficiencyUnit
 {
-  v2 = [(CAFDimensionManager *)self measurementSystem];
-  if (v2 == 2)
+  measurementSystem = [(CAFDimensionManager *)self measurementSystem];
+  if (measurementSystem == 2)
   {
-    v3 = [MEMORY[0x277CCAE08] milesPerImperialGallon];
+    milesPerImperialGallon = [MEMORY[0x277CCAE08] milesPerImperialGallon];
   }
 
   else
   {
-    if (v2)
+    if (measurementSystem)
     {
       [MEMORY[0x277CCAE08] milesPerGallon];
     }
@@ -190,10 +190,10 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
     {
       [MEMORY[0x277CCAE08] litersPer100Kilometers];
     }
-    v3 = ;
+    milesPerImperialGallon = ;
   }
 
-  return v3;
+  return milesPerImperialGallon;
 }
 
 - (CAFUnitEnergyEfficiency)vehicleEnergyEfficiencyUnit
@@ -216,33 +216,33 @@ void __35__CAFDimensionManager_initWithCar___block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_231618000, a2, OS_LOG_TYPE_DEBUG, "%{public}@ time to invalidate", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (void)currentLocaleChanged
 {
-  v13 = [(CAFDimensionManager *)self locale];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
+  locale = [(CAFDimensionManager *)self locale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v4 = *MEMORY[0x277CBE6D0];
-  v5 = [v13 objectForKey:*MEMORY[0x277CBE6D0]];
-  v6 = [v3 objectForKey:v4];
+  v5 = [locale objectForKey:*MEMORY[0x277CBE6D0]];
+  v6 = [currentLocale objectForKey:v4];
   v7 = *MEMORY[0x277CBE700];
-  v8 = [v13 objectForKey:*MEMORY[0x277CBE700]];
-  v9 = [v3 objectForKey:v7];
-  [(CAFDimensionManager *)self setLocale:v3];
+  v8 = [locale objectForKey:*MEMORY[0x277CBE700]];
+  v9 = [currentLocale objectForKey:v7];
+  [(CAFDimensionManager *)self setLocale:currentLocale];
   if (([v5 isEqualToString:v6] & 1) == 0)
   {
-    v10 = [(CAFDimensionManager *)self observers];
-    [v10 dimensionManager:self didUpdateMeasurementSystem:{-[CAFDimensionManager measurementSystem](self, "measurementSystem")}];
+    observers = [(CAFDimensionManager *)self observers];
+    [observers dimensionManager:self didUpdateMeasurementSystem:{-[CAFDimensionManager measurementSystem](self, "measurementSystem")}];
   }
 
   if (([v8 isEqualToString:v9] & 1) == 0)
   {
-    v11 = [(CAFDimensionManager *)self observers];
-    v12 = [(CAFDimensionManager *)self unitTemperature];
-    [v11 dimensionManager:self didUpdateTemperatureUnit:v12];
+    observers2 = [(CAFDimensionManager *)self observers];
+    unitTemperature = [(CAFDimensionManager *)self unitTemperature];
+    [observers2 dimensionManager:self didUpdateTemperatureUnit:unitTemperature];
   }
 }
 

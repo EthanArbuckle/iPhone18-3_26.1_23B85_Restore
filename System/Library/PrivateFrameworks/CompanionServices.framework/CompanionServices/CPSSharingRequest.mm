@@ -1,52 +1,52 @@
 @interface CPSSharingRequest
-- (CPSSharingRequest)initWithCoder:(id)a3;
-- (CPSSharingRequest)initWithData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CPSSharingRequest)initWithCoder:(id)coder;
+- (CPSSharingRequest)initWithData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSSharingRequest
 
-- (CPSSharingRequest)initWithData:(id)a3
+- (CPSSharingRequest)initWithData:(id)data
 {
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [(CPSSharingRequest *)a2 initWithData:?];
   }
 
-  v7 = v6;
+  v7 = dataCopy;
   v11.receiver = self;
   v11.super_class = CPSSharingRequest;
   v8 = [(CPSAuthenticationRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_requestData, a3);
+    objc_storeStrong(&v8->_requestData, data);
   }
 
   return v9;
 }
 
-- (CPSSharingRequest)initWithCoder:(id)a3
+- (CPSSharingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPSSharingRequest;
-  v5 = [(CPSAuthenticationRequest *)&v16 initWithCoder:v4];
+  v5 = [(CPSAuthenticationRequest *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"requestData"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"requestData"];
     requestData = v5->_requestData;
     v5->_requestData = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeArrayOfObjectsOfClass:v9 forKey:@"customSharingMethods"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:v9 forKey:@"customSharingMethods"];
     customSharingMethods = v5->_customSharingMethods;
     v5->_customSharingMethods = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"customTitleText"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"customTitleText"];
     customTitleText = v5->_customTitleText;
     v5->_customTitleText = v13;
   }
@@ -54,15 +54,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPSSharingRequest;
-  v4 = a3;
-  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_requestData forKey:{@"requestData", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_customSharingMethods forKey:@"customSharingMethods"];
-  [v4 encodeObject:self->_customTitleText forKey:@"customTitleText"];
+  coderCopy = coder;
+  [(CPSAuthenticationRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_requestData forKey:{@"requestData", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_customSharingMethods forKey:@"customSharingMethods"];
+  [coderCopy encodeObject:self->_customTitleText forKey:@"customTitleText"];
 }
 
 - (void)initWithData:(const char *)a1 .cold.1(const char *a1, uint64_t a2)

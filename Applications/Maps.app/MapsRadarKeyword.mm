@@ -1,28 +1,28 @@
 @interface MapsRadarKeyword
-+ (MapsRadarKeyword)keywordWithName:(id)a3 number:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (MapsRadarKeyword)initWithName:(id)a3 number:(unint64_t)a4;
++ (MapsRadarKeyword)keywordWithName:(id)name number:(unint64_t)number;
+- (BOOL)isEqual:(id)equal;
+- (MapsRadarKeyword)initWithName:(id)name number:(unint64_t)number;
 - (NSString)debugDescription;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 @end
 
 @implementation MapsRadarKeyword
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
   v7 = [NSNumber numberWithUnsignedInteger:self->_number];
-  (*v4)(v6, @"number", v7);
+  (*v4)(blockCopy, @"number", v7);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A636F4;
@@ -30,8 +30,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarKeyword *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarKeyword *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -65,7 +65,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100A63944;
@@ -73,8 +73,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarKeyword *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarKeyword *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -106,14 +106,14 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MapsRadarKeyword *)self number];
-    v6 = v5 == [v4 number];
+    number = [(MapsRadarKeyword *)self number];
+    v6 = number == [equalCopy number];
   }
 
   else
@@ -132,10 +132,10 @@ LABEL_9:
   return v3;
 }
 
-- (MapsRadarKeyword)initWithName:(id)a3 number:(unint64_t)a4
+- (MapsRadarKeyword)initWithName:(id)name number:(unint64_t)number
 {
-  v6 = a3;
-  if (!v6)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -169,20 +169,20 @@ LABEL_9:
   v7 = [(MapsRadarKeyword *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_number = a4;
+    v7->_number = number;
   }
 
   return v7;
 }
 
-+ (MapsRadarKeyword)keywordWithName:(id)a3 number:(unint64_t)a4
++ (MapsRadarKeyword)keywordWithName:(id)name number:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 number:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy number:number];
 
   return v7;
 }

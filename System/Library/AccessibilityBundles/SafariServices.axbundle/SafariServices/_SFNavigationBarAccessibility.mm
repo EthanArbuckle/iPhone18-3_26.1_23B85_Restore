@@ -1,65 +1,65 @@
 @interface _SFNavigationBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (_SFNavigationBarAccessibility)initWithFrame:(CGRect)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (_SFNavigationBarAccessibility)initWithFrame:(CGRect)frame;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_accessibilitySortPriority;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateCancelButton;
 - (void)_axUpdateTextFields;
 - (void)_axUpdateURLValue;
 - (void)_compressedBarTapped;
-- (void)_formatToggleButtonTapped:(id)a3;
+- (void)_formatToggleButtonTapped:(id)tapped;
 - (void)_updateSecurityWarningsVisibility;
 - (void)_updateText;
-- (void)fluidProgressViewDidShowProgress:(id)a3;
+- (void)fluidProgressViewDidShowProgress:(id)progress;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4;
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range;
 @end
 
 @implementation _SFNavigationBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFDimmingButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"_SFNavigationBar" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_reloadButton" withType:"_SFDimmingButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_stopButton" withType:"_SFDimmingButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_formatToggleButton" withType:"SFNavigationBarToggleButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_compressedBarButton" withType:"UIButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_item" withType:"SFNavigationBarItem"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_securityAnnotationLabel" withType:"UILabel"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"_SFNavigationBarDelegate" hasRequiredInstanceMethod:@"navigationBarReaderButtonWasTapped:"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_updateText" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_item" withType:"SFNavigationBarItem"];
-  [v3 validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsReaderButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsSecurityAnnotation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_formatToggleButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_compressedBarTapped" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"setExpanded:textFieldSelectionRange:" withFullSignature:{"v", "B", "{_NSRange=QQ}", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"fluidProgressViewDidShowProgress:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_inputMode" withType:"Q"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_updateSecurityWarningsVisibility" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFBrowserContentViewController" hasInstanceVariable:@"_showingReader" withType:"B"];
-  [v3 validateClass:@"_SFBrowserContentViewController" hasInstanceMethod:@"webViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFReaderEnabledWebViewController" hasInstanceMethod:@"readerController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SFReaderController" hasInstanceMethod:@"isReaderAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFNavigationBarItem"];
-  [v3 validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsSecurityAnnotation" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFDimmingButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_reloadButton" withType:"_SFDimmingButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_stopButton" withType:"_SFDimmingButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_formatToggleButton" withType:"SFNavigationBarToggleButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_compressedBarButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_item" withType:"SFNavigationBarItem"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_securityAnnotationLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"_SFNavigationBarDelegate" hasRequiredInstanceMethod:@"navigationBarReaderButtonWasTapped:"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_updateText" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_item" withType:"SFNavigationBarItem"];
+  [validationsCopy validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsReaderButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsSecurityAnnotation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_formatToggleButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_compressedBarTapped" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"setExpanded:textFieldSelectionRange:" withFullSignature:{"v", "B", "{_NSRange=QQ}", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"fluidProgressViewDidShowProgress:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_inputMode" withType:"Q"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceMethod:@"_updateSecurityWarningsVisibility" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFBrowserContentViewController" hasInstanceVariable:@"_showingReader" withType:"B"];
+  [validationsCopy validateClass:@"_SFBrowserContentViewController" hasInstanceMethod:@"webViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFReaderEnabledWebViewController" hasInstanceMethod:@"readerController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SFReaderController" hasInstanceMethod:@"isReaderAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFNavigationBarItem"];
+  [validationsCopy validateClass:@"SFNavigationBarItem" hasInstanceMethod:@"showsSecurityAnnotation" withFullSignature:{"B", 0}];
   if (AXProcessIsSafari())
   {
-    [v3 validateClass:@"BrowserController" hasInstanceMethod:@"isShowingReader" withFullSignature:{"B", 0}];
-    [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
-    [v3 validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"TabDocument" hasInstanceMethod:@"readerContext" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"TabDocument" hasInstanceMethod:@"prepareToUseReader" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"isShowingReader" withFullSignature:{"B", 0}];
+    [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
+    [validationsCopy validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"readerContext" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"prepareToUseReader" withFullSignature:{"v", 0}];
   }
 }
 
@@ -75,11 +75,11 @@
   return [(_SFNavigationBarAccessibility *)&v4 _accessibilitySortPriority];
 }
 
-- (void)_formatToggleButtonTapped:(id)a3
+- (void)_formatToggleButtonTapped:(id)tapped
 {
   v3.receiver = self;
   v3.super_class = _SFNavigationBarAccessibility;
-  [(_SFNavigationBarAccessibility *)&v3 _formatToggleButtonTapped:a3];
+  [(_SFNavigationBarAccessibility *)&v3 _formatToggleButtonTapped:tapped];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
@@ -101,24 +101,24 @@
   }
 }
 
-- (void)fluidProgressViewDidShowProgress:(id)a3
+- (void)fluidProgressViewDidShowProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   v5.receiver = self;
   v5.super_class = _SFNavigationBarAccessibility;
-  [(_SFNavigationBarAccessibility *)&v5 fluidProgressViewDidShowProgress:v4];
-  if ([v4 _accessibilityBoolValueForKey:@"StartedFluidProgress"])
+  [(_SFNavigationBarAccessibility *)&v5 fluidProgressViewDidShowProgress:progressCopy];
+  if ([progressCopy _accessibilityBoolValueForKey:@"StartedFluidProgress"])
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC75E8], &unk_2A22C82F0);
-    [v4 _accessibilitySetBoolValue:0 forKey:@"StartedFluidProgress"];
+    [progressCopy _accessibilitySetBoolValue:0 forKey:@"StartedFluidProgress"];
   }
 }
 
-- (void)setExpanded:(BOOL)a3 textFieldSelectionRange:(_NSRange)a4
+- (void)setExpanded:(BOOL)expanded textFieldSelectionRange:(_NSRange)range
 {
   v5.receiver = self;
   v5.super_class = _SFNavigationBarAccessibility;
-  [(_SFNavigationBarAccessibility *)&v5 setExpanded:a3 textFieldSelectionRange:a4.location, a4.length];
+  [(_SFNavigationBarAccessibility *)&v5 setExpanded:expanded textFieldSelectionRange:range.location, range.length];
   [(_SFNavigationBarAccessibility *)self _axUpdateCancelButton];
   [(_SFNavigationBarAccessibility *)self _axUpdateTextFields];
 }
@@ -242,11 +242,11 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   objc_opt_class();
   v8 = [(_SFNavigationBarAccessibility *)self safeValueForKey:@"_reloadButton"];
   v9 = __UIAccessibilityCastAsClass();
@@ -258,7 +258,7 @@
   v12 = v11;
   v14 = v13;
 
-  if ([v9 pointInside:v7 withEvent:{v12, v14}] && objc_msgSend(v9, "_accessibilityViewIsVisible"))
+  if ([v9 pointInside:eventCopy withEvent:{v12, v14}] && objc_msgSend(v9, "_accessibilityViewIsVisible"))
   {
     v15 = v9;
     goto LABEL_22;
@@ -275,7 +275,7 @@
   v20 = v19;
   v22 = v21;
 
-  if (![v17 pointInside:v7 withEvent:{v20, v22}] || !objc_msgSend(v17, "_accessibilityViewIsVisible"))
+  if (![v17 pointInside:eventCopy withEvent:{v20, v22}] || !objc_msgSend(v17, "_accessibilityViewIsVisible"))
   {
     v23 = [(_SFNavigationBarAccessibility *)self safeValueForKey:@"_textField"];
     v41 = 0;
@@ -285,9 +285,9 @@
     v26 = v25;
     v28 = v27;
 
-    if ([v23 pointInside:v7 withEvent:{v26, v28}])
+    if ([v23 pointInside:eventCopy withEvent:{v26, v28}])
     {
-      v29 = [v23 _accessibilityHitTest:v7 withEvent:{v26, v28}];
+      v29 = [v23 _accessibilityHitTest:eventCopy withEvent:{v26, v28}];
       v30 = v29;
       if (v29 && [v29 isAccessibilityElement])
       {
@@ -312,9 +312,9 @@ LABEL_20:
     v34 = v33;
     v36 = v35;
 
-    if ([v31 pointInside:v7 withEvent:{v34, v36}])
+    if ([v31 pointInside:eventCopy withEvent:{v34, v36}])
     {
-      v37 = [v31 _accessibilityHitTest:v7 withEvent:{v34, v36}];
+      v37 = [v31 _accessibilityHitTest:eventCopy withEvent:{v34, v36}];
 
       if (v37)
       {
@@ -339,7 +339,7 @@ LABEL_19:
 
     v40.receiver = self;
     v40.super_class = _SFNavigationBarAccessibility;
-    v38 = [(_SFNavigationBarAccessibility *)&v40 _accessibilityHitTest:v7 withEvent:x, y];
+    v38 = [(_SFNavigationBarAccessibility *)&v40 _accessibilityHitTest:eventCopy withEvent:x, y];
     goto LABEL_19;
   }
 
@@ -375,11 +375,11 @@ LABEL_22:
   [(_SFNavigationBarAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (_SFNavigationBarAccessibility)initWithFrame:(CGRect)a3
+- (_SFNavigationBarAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _SFNavigationBarAccessibility;
-  v3 = [(_SFNavigationBarAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFNavigationBarAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_SFNavigationBarAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

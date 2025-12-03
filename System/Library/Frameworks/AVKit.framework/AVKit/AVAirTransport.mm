@@ -1,20 +1,20 @@
 @interface AVAirTransport
 + (NSRunLoop)eventRunLoop;
 + (id)airTransportQueue;
-+ (id)channelWithInput:(id)a3 output:(id)a4;
-+ (void)performAsync:(id)a3;
-+ (void)performSync:(id)a3;
++ (id)channelWithInput:(id)input output:(id)output;
++ (void)performAsync:(id)async;
++ (void)performSync:(id)sync;
 + (void)startEventThreadIfNecessary;
 - (AVAirTransportDelegate)delegate;
 - (id)_initPrivate;
 - (id)description;
 - (void)close;
 - (void)dealloc;
-- (void)performOnAirChannelQueueSync:(id)a3;
-- (void)sendObject:(id)a3 receiveResponse:(id)a4;
-- (void)sendResponse:(id)a3;
+- (void)performOnAirChannelQueueSync:(id)sync;
+- (void)sendObject:(id)object receiveResponse:(id)response;
+- (void)sendResponse:(id)response;
 - (void)terminatePendingRequests;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 - (void)writeMore;
 @end
 
@@ -27,14 +27,14 @@
   return WeakRetained;
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
-    v5 = [(AVAirTransport *)self streamDataTransformer];
-    v6 = [v5 dataForMessage:v4];
+    streamDataTransformer = [(AVAirTransport *)self streamDataTransformer];
+    v6 = [streamDataTransformer dataForMessage:responseCopy];
 
     if (v6)
     {
@@ -58,17 +58,17 @@
         *buf = 136315394;
         v11 = "[AVAirTransport sendResponse:]";
         v12 = 2112;
-        v13 = v4;
+        v13 = responseCopy;
         _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s failed to transform response object (%@)", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)sendObject:(id)a3 receiveResponse:(id)a4
+- (void)sendObject:(id)object receiveResponse:(id)response
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  objectCopy = object;
+  v7 = [response copy];
   [(AVAirTransport *)self open];
   v8 = +[AVAirTransport airTransportQueue];
   block[0] = MEMORY[0x1E69E9820];
@@ -76,10 +76,10 @@
   block[2] = __45__AVAirTransport_sendObject_receiveResponse___block_invoke;
   block[3] = &unk_1E720A068;
   block[4] = self;
-  v12 = v6;
+  v12 = objectCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = objectCopy;
   dispatch_async(v8, block);
 }
 
@@ -136,40 +136,40 @@ void __45__AVAirTransport_sendObject_receiveResponse___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performOnAirChannelQueueSync:(id)a3
+- (void)performOnAirChannelQueueSync:(id)sync
 {
-  v5 = a3;
+  syncCopy = sync;
   if (+[AVAirTransport _isRunningOnAirChannelQueue])
   {
-    v5[2]();
+    syncCopy[2]();
   }
 
   else
   {
-    v3 = [v5 copy];
+    v3 = [syncCopy copy];
 
     v4 = +[AVAirTransport airTransportQueue];
     dispatch_sync(v4, v3);
 
-    v5 = v3;
+    syncCopy = v3;
   }
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = _avairlog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[AVAirTransport writeData:]";
     v9 = 2048;
-    v10 = [v4 length];
+    v10 = [dataCopy length];
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s writing %ld bytes...", buf, 0x16u);
   }
 
-  [(NSMutableArray *)self->_outputQueue addObject:v4];
+  [(NSMutableArray *)self->_outputQueue addObject:dataCopy];
   if ([(AVAirTransport *)self canWrite])
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -197,10 +197,10 @@ void __45__AVAirTransport_sendObject_receiveResponse___block_invoke(uint64_t a1)
       }
 
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-      v4 = [(NSMutableArray *)self->_outputQueue firstObject];
-      if (v4)
+      firstObject = [(NSMutableArray *)self->_outputQueue firstObject];
+      if (firstObject)
       {
-        v5 = [(AVAirTransport *)self _writeData:v4];
+        v5 = [(AVAirTransport *)self _writeData:firstObject];
         v6 = _avairlog();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
@@ -211,9 +211,9 @@ void __45__AVAirTransport_sendObject_receiveResponse___block_invoke(uint64_t a1)
           _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s wrote %ld bytes", buf, 0x16u);
         }
 
-        if (v5 == [v4 length])
+        if (v5 == [firstObject length])
         {
-          [(NSMutableArray *)self->_outputQueue removeObject:v4];
+          [(NSMutableArray *)self->_outputQueue removeObject:firstObject];
         }
 
         else
@@ -247,7 +247,7 @@ LABEL_16:
             goto LABEL_18;
           }
 
-          v7 = [v4 subdataWithRange:{v5, objc_msgSend(v4, "length") - v5}];
+          v7 = [firstObject subdataWithRange:{v5, objc_msgSend(firstObject, "length") - v5}];
           [(NSMutableArray *)self->_outputQueue setObject:v7 atIndexedSubscript:0];
         }
       }
@@ -409,23 +409,23 @@ void __35__AVAirTransport_airTransportQueue__block_invoke()
 
 + (NSRunLoop)eventRunLoop
 {
-  [a1 startEventThreadIfNecessary];
+  [self startEventThreadIfNecessary];
   v2 = _eventRunLoop;
 
   return v2;
 }
 
-+ (void)performAsync:(id)a3
++ (void)performAsync:(id)async
 {
-  v6 = [a3 copy];
+  v6 = [async copy];
   v4 = _eventThread;
   v5 = _Block_copy(v6);
-  [a1 performSelector:sel___performBlock_ onThread:v4 withObject:v5 waitUntilDone:0];
+  [self performSelector:sel___performBlock_ onThread:v4 withObject:v5 waitUntilDone:0];
 }
 
-+ (void)performSync:(id)a3
++ (void)performSync:(id)sync
 {
-  aBlock = a3;
+  aBlock = sync;
   if (isRunningEventThread())
   {
     aBlock[2]();
@@ -436,7 +436,7 @@ void __35__AVAirTransport_airTransportQueue__block_invoke()
     v4 = _eventThread;
     v5 = _Block_copy(aBlock);
 
-    [a1 performSelector:sel___performBlock_ onThread:v4 withObject:v5 waitUntilDone:1];
+    [self performSelector:sel___performBlock_ onThread:v4 withObject:v5 waitUntilDone:1];
     aBlock = v5;
   }
 }
@@ -507,11 +507,11 @@ void __45__AVAirTransport_startEventThreadIfNecessary__block_invoke_2()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)channelWithInput:(id)a3 output:(id)a4
++ (id)channelWithInput:(id)input output:(id)output
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AVAirTransportStreams alloc] initWithInput:v6 output:v5];
+  outputCopy = output;
+  inputCopy = input;
+  v7 = [[AVAirTransportStreams alloc] initWithInput:inputCopy output:outputCopy];
 
   return v7;
 }

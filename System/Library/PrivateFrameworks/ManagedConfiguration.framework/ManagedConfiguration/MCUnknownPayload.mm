@@ -1,7 +1,7 @@
 @interface MCUnknownPayload
 + (id)typeStrings;
-- (MCUnknownPayload)initWithContentsOfPayload:(id)a3 profile:(id)a4;
-- (MCUnknownPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCUnknownPayload)initWithContentsOfPayload:(id)payload profile:(id)profile;
+- (MCUnknownPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)subtitle1Description;
 - (id)verboseDescription;
 @end
@@ -18,47 +18,47 @@
   return v2;
 }
 
-- (MCUnknownPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCUnknownPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v10.receiver = self;
   v10.super_class = MCUnknownPayload;
-  v5 = [(MCPayload *)&v10 initWithDictionary:a3 profile:a4 outError:a5];
+  v5 = [(MCPayload *)&v10 initWithDictionary:dictionary profile:profile outError:error];
   if (v5)
   {
     v6 = +[MCUnknownPayload typeStrings];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     type = v5->super._type;
-    v5->super._type = v7;
+    v5->super._type = firstObject;
   }
 
   return v5;
 }
 
-- (MCUnknownPayload)initWithContentsOfPayload:(id)a3 profile:(id)a4
+- (MCUnknownPayload)initWithContentsOfPayload:(id)payload profile:(id)profile
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v18[0] = @"PayloadVersion";
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithInteger:{objc_msgSend(v8, "version")}];
+  profileCopy = profile;
+  payloadCopy = payload;
+  v9 = [[v6 alloc] initWithInteger:{objc_msgSend(payloadCopy, "version")}];
   v19[0] = v9;
   v19[1] = @"com.apple.unknown";
   v18[1] = @"PayloadType";
   v18[2] = @"PayloadIdentifier";
-  v10 = [v8 identifier];
-  v19[2] = v10;
+  identifier = [payloadCopy identifier];
+  v19[2] = identifier;
   v18[3] = @"PayloadUUID";
-  v11 = [v8 UUID];
-  v19[3] = v11;
+  uUID = [payloadCopy UUID];
+  v19[3] = uUID;
   v18[4] = @"PayloadDisplayName";
-  v12 = [v8 displayName];
+  displayName = [payloadCopy displayName];
 
-  v19[4] = v12;
+  v19[4] = displayName;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:5];
   v14 = [v13 mutableCopy];
 
-  v15 = [(MCUnknownPayload *)self initWithDictionary:v14 profile:v7 outError:0];
+  v15 = [(MCUnknownPayload *)self initWithDictionary:v14 profile:profileCopy outError:0];
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
@@ -68,8 +68,8 @@
   v2 = MEMORY[0x1E696AD60];
   v6.receiver = self;
   v6.super_class = MCUnknownPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v2 stringWithString:v3];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [v2 stringWithString:verboseDescription];
 
   [v4 appendFormat:@"Unknown payload.\n"];
 
@@ -78,18 +78,18 @@
 
 - (id)subtitle1Description
 {
-  v3 = [(MCPayload *)self organization];
-  if ([v3 length])
+  organization = [(MCPayload *)self organization];
+  if ([organization length])
   {
-    v4 = [(MCPayload *)self organization];
+    organization2 = [(MCPayload *)self organization];
   }
 
   else
   {
-    v4 = 0;
+    organization2 = 0;
   }
 
-  return v4;
+  return organization2;
 }
 
 @end

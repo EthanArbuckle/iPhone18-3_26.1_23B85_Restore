@@ -1,29 +1,29 @@
 @interface RAPImageStorage
-+ (BOOL)removeImageWithImageIdentifier:(id)a3 directory:(id)a4;
++ (BOOL)removeImageWithImageIdentifier:(id)identifier directory:(id)directory;
 + (id)baseFilePath;
-+ (id)filePathForSubmissionIdentifier:(id)a3;
-+ (id)filePathForSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4;
-- (BOOL)removeImageForSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4;
-- (BOOL)saveImageWithSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4 imageData:(id)a5;
-- (RAPImageStorage)initWithDelegate:(id)a3;
++ (id)filePathForSubmissionIdentifier:(id)identifier;
++ (id)filePathForSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier;
+- (BOOL)removeImageForSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier;
+- (BOOL)saveImageWithSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier imageData:(id)data;
+- (RAPImageStorage)initWithDelegate:(id)delegate;
 @end
 
 @implementation RAPImageStorage
 
-- (BOOL)removeImageForSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4
+- (BOOL)removeImageForSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier
 {
-  v6 = a3;
-  v7 = [RAPImageStorage filePathForSubmissionIdentifier:v6 imageIdentifier:a4];
+  identifierCopy = identifier;
+  v7 = [RAPImageStorage filePathForSubmissionIdentifier:identifierCopy imageIdentifier:imageIdentifier];
   if (v7)
   {
     v8 = [RAPFileManager removeItemAtFilePath:v7];
-    v9 = [RAPImageStorage filePathForSubmissionIdentifier:v6];
+    v9 = [RAPImageStorage filePathForSubmissionIdentifier:identifierCopy];
     v10 = [RAPFileManager numberOfItemsInDirectory:v9];
 
     if (!v10)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained imageStorage:self didFinishRemovingAllImagesForClientSubmissionIdentifier:v6];
+      [WeakRetained imageStorage:self didFinishRemovingAllImagesForClientSubmissionIdentifier:identifierCopy];
     }
   }
 
@@ -35,34 +35,34 @@
   return v8;
 }
 
-- (BOOL)saveImageWithSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4 imageData:(id)a5
+- (BOOL)saveImageWithSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier imageData:(id)data
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [RAPImageStorage filePathForSubmissionIdentifier:a3];
-  v10 = [RAPFileManager saveData:v7 toDirectory:v9 filename:v8];
+  dataCopy = data;
+  imageIdentifierCopy = imageIdentifier;
+  v9 = [RAPImageStorage filePathForSubmissionIdentifier:identifier];
+  v10 = [RAPFileManager saveData:dataCopy toDirectory:v9 filename:imageIdentifierCopy];
 
   return v10;
 }
 
-- (RAPImageStorage)initWithDelegate:(id)a3
+- (RAPImageStorage)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = RAPImageStorage;
   v5 = [(RAPImageStorage *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-+ (BOOL)removeImageWithImageIdentifier:(id)a3 directory:(id)a4
++ (BOOL)removeImageWithImageIdentifier:(id)identifier directory:(id)directory
 {
-  v4 = [a4 URLByAppendingPathComponent:a3];
+  v4 = [directory URLByAppendingPathComponent:identifier];
   v5 = [RAPFileManager removeItemAtFilePath:v4];
 
   return v5;
@@ -76,20 +76,20 @@
   return v3;
 }
 
-+ (id)filePathForSubmissionIdentifier:(id)a3
++ (id)filePathForSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RAPImageStorage baseFilePath];
-  v5 = [v4 URLByAppendingPathComponent:v3];
+  v5 = [v4 URLByAppendingPathComponent:identifierCopy];
 
   return v5;
 }
 
-+ (id)filePathForSubmissionIdentifier:(id)a3 imageIdentifier:(id)a4
++ (id)filePathForSubmissionIdentifier:(id)identifier imageIdentifier:(id)imageIdentifier
 {
-  v5 = a4;
-  v6 = [RAPImageStorage filePathForSubmissionIdentifier:a3];
-  v7 = [v6 URLByAppendingPathComponent:v5];
+  imageIdentifierCopy = imageIdentifier;
+  v6 = [RAPImageStorage filePathForSubmissionIdentifier:identifier];
+  v7 = [v6 URLByAppendingPathComponent:imageIdentifierCopy];
 
   return v7;
 }

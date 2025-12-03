@@ -1,15 +1,15 @@
 @interface MPRTTTranscriptionMessage
-- (MPRTTTranscriptionMessage)initWithCallUUID:(id)a3;
+- (MPRTTTranscriptionMessage)initWithCallUUID:(id)d;
 - (NSAttributedString)attributedText;
 - (id)makeTranscriptMessage;
-- (void)fetchRTTConversationForCallUUID:(id)a3;
+- (void)fetchRTTConversationForCallUUID:(id)d;
 @end
 
 @implementation MPRTTTranscriptionMessage
 
-- (MPRTTTranscriptionMessage)initWithCallUUID:(id)a3
+- (MPRTTTranscriptionMessage)initWithCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = MPRTTTranscriptionMessage;
   v5 = [(MPRTTTranscriptionMessage *)&v10 init];
@@ -20,15 +20,15 @@
     rttConversationsQueue = v5->_rttConversationsQueue;
     v5->_rttConversationsQueue = v7;
 
-    [(MPRTTTranscriptionMessage *)v5 fetchRTTConversationForCallUUID:v4];
+    [(MPRTTTranscriptionMessage *)v5 fetchRTTConversationForCallUUID:dCopy];
   }
 
   return v5;
 }
 
-- (void)fetchRTTConversationForCallUUID:(id)a3
+- (void)fetchRTTConversationForCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,7 +48,7 @@
     block[3] = &unk_100358F38;
     objc_copyWeak(v12, buf);
     v12[1] = v7;
-    v11 = v4;
+    v11 = dCopy;
     dispatch_async(rttConversationsQueue, block);
 
     objc_destroyWeak(v12);
@@ -75,8 +75,8 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(RTTConversation *)self->_conversation utterances];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    utterances = [(RTTConversation *)self->_conversation utterances];
+    v5 = [utterances countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -87,21 +87,21 @@
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(utterances);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
           if (([v9 isMe] & 1) == 0)
           {
-            v10 = [v9 text];
+            text = [v9 text];
             if ([v9 isTranscription])
             {
               v11 = ttyLocString();
               v12 = [NSString stringWithFormat:v11, &stru_100361FD0];
 
-              v13 = [v10 stringByReplacingOccurrencesOfString:v12 withString:&stru_100361FD0];
+              v13 = [text stringByReplacingOccurrencesOfString:v12 withString:&stru_100361FD0];
 
-              v10 = v13;
+              text = v13;
             }
 
             if ([(__CFString *)v3 length])
@@ -109,11 +109,11 @@
               [(__CFString *)v3 appendString:@" "];
             }
 
-            [(__CFString *)v3 appendString:v10];
+            [(__CFString *)v3 appendString:text];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v6 = [utterances countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v6);
@@ -130,7 +130,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001B9A84();
 
   return v3;

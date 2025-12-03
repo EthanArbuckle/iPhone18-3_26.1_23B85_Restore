@@ -7,23 +7,23 @@
 
 - (id)__IS_iconDataForVariant:()IconServicesAdditions withOptions:
 {
-  v7 = [a1 __IS_iconResourceLocator];
-  if ([a1 supportsAlternateIconNames])
+  __IS_iconResourceLocator = [self __IS_iconResourceLocator];
+  if ([self supportsAlternateIconNames])
   {
-    v8 = [v7 bundleIconsDictionary];
+    bundleIconsDictionary = [__IS_iconResourceLocator bundleIconsDictionary];
 
-    if (v8)
+    if (bundleIconsDictionary)
     {
-      v8 = [a1 alternateIconName];
+      bundleIconsDictionary = [self alternateIconName];
     }
   }
 
   else
   {
-    v8 = 0;
+    bundleIconsDictionary = 0;
   }
 
-  v9 = [a1 __IS_iconDataForVariant:a3 preferredIconName:v8 withOptions:a4];
+  v9 = [self __IS_iconDataForVariant:a3 preferredIconName:bundleIconsDictionary withOptions:a4];
 
   return v9;
 }
@@ -31,14 +31,14 @@
 - (id)__IS_iconDataForVariant:()IconServicesAdditions preferredIconName:withOptions:
 {
   v8 = a4;
-  v9 = [[ISIcon alloc] initWithResourceProxy:a1];
+  v9 = [[ISIcon alloc] initWithResourceProxy:self];
   v10 = [ISImageDescriptor imageDescriptorWithIconVariant:a3 options:a5];
   [v10 setPreferedResourceName:v8];
 
   v11 = [(ISIcon *)v9 prepareImageForDescriptor:v10];
-  v12 = [v11 bitmapData];
+  bitmapData = [v11 bitmapData];
 
-  return v12;
+  return bitmapData;
 }
 
 @end

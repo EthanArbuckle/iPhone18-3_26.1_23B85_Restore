@@ -15,82 +15,82 @@
 - (BOOL)bc_isPresentingCardStack;
 - (BOOL)bc_navBarVisible;
 - (BOOL)im_hasValidWidthAndHeightTraitCollection;
-- (BOOL)im_isAncestorOfChildViewController:(id)a3;
+- (BOOL)im_isAncestorOfChildViewController:(id)controller;
 - (BOOL)im_isCompactHeight;
 - (BOOL)im_isCompactWidth;
 - (BOOL)im_tabBarVisible;
-- (BOOL)isSupportedInterfaceOrientation:(int64_t)a3;
+- (BOOL)isSupportedInterfaceOrientation:(int64_t)orientation;
 - (BOOL)usesBrightonAutorotationAPI;
 - (CGRect)im_frameEnvironmentBounds;
 - (CGRect)im_frameEnvironmentFrame;
 - (UIEdgeInsets)im_frameEnvironmentSafeAreaInsets;
 - (_TtC13BookAnalytics9BATracker)ba_effectiveAnalyticsTracker;
-- (id)_ba_effectiveViewControllerForAnalyticsTrackingIgnoringViewController:(id)a3;
-- (id)_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:(id)a3;
+- (id)_ba_effectiveViewControllerForAnalyticsTrackingIgnoringViewController:(id)controller;
+- (id)_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:(id)controller;
 - (id)_bc_analyticsAncestorPresentedViewController;
 - (id)ba_effectiveViewControllerForAnalyticsTracking;
 - (id)ba_effectiveViewControllerForEngagementProvider;
-- (id)ba_setupNewAnalyticsTrackerWithName:(id)a3;
+- (id)ba_setupNewAnalyticsTrackerWithName:(id)name;
 - (id)bc_ancestorFullScreenPresentingViewController;
-- (id)bc_ancestorViewControllerOfClass:(Class)a3 allowPresentingParent:(BOOL)a4;
+- (id)bc_ancestorViewControllerOfClass:(Class)class allowPresentingParent:(BOOL)parent;
 - (id)bc_childPresentedViewController;
 - (id)bc_contextualPresentedViewController;
 - (id)bc_contextualPresentingViewController;
 - (id)bc_deepestPresentedViewController;
-- (id)bc_deepestVisibleChildViewControllerIncludePresented:(BOOL)a3;
+- (id)bc_deepestVisibleChildViewControllerIncludePresented:(BOOL)presented;
 - (id)bc_descendentPresentedViewController;
 - (id)bc_effectiveAncestorOverrideCardPresentingViewController;
 - (id)bc_effectiveCardPresentingViewController;
 - (id)bc_effectiveViewControllerForNavBarVisibility;
-- (id)bc_firstVisibleChildViewControllerOfClass:(Class)a3 includePresented:(BOOL)a4;
-- (id)bc_windowForViewControllerWithFallbackToKeyWindow:(BOOL)a3;
-- (id)im_ancestorConformingToProtocol:(id)a3;
-- (id)im_ancestorFlowControllerConformingToProtocol:(id)a3;
-- (id)im_ancestorValueForKey:(id)a3 conformingToProtocol:(id)a4 fromViewControllersConformingToProtocol:(id)a5;
-- (id)im_ancestorViewControllerConformingToProtocol:(id)a3 includePresenting:(BOOL)a4;
+- (id)bc_firstVisibleChildViewControllerOfClass:(Class)class includePresented:(BOOL)presented;
+- (id)bc_windowForViewControllerWithFallbackToKeyWindow:(BOOL)window;
+- (id)im_ancestorConformingToProtocol:(id)protocol;
+- (id)im_ancestorFlowControllerConformingToProtocol:(id)protocol;
+- (id)im_ancestorValueForKey:(id)key conformingToProtocol:(id)protocol fromViewControllersConformingToProtocol:(id)toProtocol;
+- (id)im_ancestorViewControllerConformingToProtocol:(id)protocol includePresenting:(BOOL)presenting;
 - (id)im_bookshelfTheme;
-- (id)im_childValueForKey:(id)a3 conformingToProtocol:(id)a4 fromViewControllersConformingToProtocol:(id)a5;
+- (id)im_childValueForKey:(id)key conformingToProtocol:(id)protocol fromViewControllersConformingToProtocol:(id)toProtocol;
 - (id)im_effectiveViewControllerForTabBarVisibility;
-- (id)im_firstVisibleChildConformingToProtocol:(id)a3 stopIfDescendentConformsToProtocol:(id)a4 includePresented:(BOOL)a5 validateItem:(id)a6;
-- (id)im_recursiveDescriptionVisibleTree:(BOOL)a3;
+- (id)im_firstVisibleChildConformingToProtocol:(id)protocol stopIfDescendentConformsToProtocol:(id)toProtocol includePresented:(BOOL)presented validateItem:(id)item;
+- (id)im_recursiveDescriptionVisibleTree:(BOOL)tree;
 - (id)im_theme;
-- (id)im_traitCollectionAdjustedForMedusaLevels:(id)a3;
-- (id)im_visibleViewControllersConfirmingToProtocol:(id)a3;
+- (id)im_traitCollectionAdjustedForMedusaLevels:(id)levels;
+- (id)im_visibleViewControllersConfirmingToProtocol:(id)protocol;
 - (id)p_setupStandardUISearchController;
 - (id)rasterizedImage;
 - (int64_t)IMDeviceOrientation;
-- (int64_t)preferredInterfaceOrientationGivenOrientation:(int64_t)a3;
+- (int64_t)preferredInterfaceOrientationGivenOrientation:(int64_t)orientation;
 - (unint64_t)bc_currentLifeCycleState;
-- (void)__im_enumerateChildrenConformingToProtocol:(id)a3 stop:(BOOL *)a4 block:(id)a5;
-- (void)__im_enumerateVisibleChildrenConformingToProtocol:(id)a3 stop:(BOOL *)a4 block:(id)a5;
-- (void)_bc_analyticsSetVisibility:(BOOL)a3;
+- (void)__im_enumerateChildrenConformingToProtocol:(id)protocol stop:(BOOL *)stop block:(id)block;
+- (void)__im_enumerateVisibleChildrenConformingToProtocol:(id)protocol stop:(BOOL *)stop block:(id)block;
+- (void)_bc_analyticsSetVisibility:(BOOL)visibility;
 - (void)_bc_analyticsUpdateVisibilityOfDescendants;
 - (void)_bc_analyticsUpdateVisibilityOfSelf;
-- (void)_bc_analyticsUpdateVisibilityOfSelfWithParent:(id)a3 parentVisibility:(BOOL)a4;
-- (void)_setNotifiedAnalyticsVisibilityWillDisappear:(BOOL)a3;
+- (void)_bc_analyticsUpdateVisibilityOfSelfWithParent:(id)parent parentVisibility:(BOOL)visibility;
+- (void)_setNotifiedAnalyticsVisibilityWillDisappear:(BOOL)disappear;
 - (void)bc_analyticsSubtreeForceEndSession;
 - (void)bc_analyticsVisibilitySubtreeDidDisappear;
 - (void)bc_analyticsVisibilitySubtreeWillDisappear;
 - (void)bc_analyticsVisibilityUpdateSubtree;
-- (void)bc_closeAssetWithCardStackViewController:(id)a3 completion:(id)a4;
-- (void)bc_closeToAssetWithCardStackViewController:(id)a3 completion:(id)a4;
-- (void)bc_dismissCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)bc_dismissIfSafeAnimated:(BOOL)a3;
-- (void)bc_notifyLightLevelDidChange:(int64_t)a3;
-- (void)bc_presentCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)bc_presentViewController:(id)a3 animated:(BOOL)a4 tintColor:(id)a5 completion:(id)a6;
-- (void)bc_setCurrentLifeCycleState:(unint64_t)a3;
-- (void)bc_setNavBarVisible:(BOOL)a3;
-- (void)cleanupAfterTransition:(id)a3;
-- (void)im_dismissAnimated:(BOOL)a3 immediate:(BOOL)a4;
-- (void)im_enumerateChildrenConformingToProtocol:(id)a3 block:(id)a4;
-- (void)im_enumerateVisibleChildrenConformingToProtocol:(id)a3 block:(id)a4;
-- (void)im_finishOngoingModalTransitionAnimations:(id)a3;
+- (void)bc_closeAssetWithCardStackViewController:(id)controller completion:(id)completion;
+- (void)bc_closeToAssetWithCardStackViewController:(id)controller completion:(id)completion;
+- (void)bc_dismissCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)bc_dismissIfSafeAnimated:(BOOL)animated;
+- (void)bc_notifyLightLevelDidChange:(int64_t)change;
+- (void)bc_presentCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)bc_presentViewController:(id)controller animated:(BOOL)animated tintColor:(id)color completion:(id)completion;
+- (void)bc_setCurrentLifeCycleState:(unint64_t)state;
+- (void)bc_setNavBarVisible:(BOOL)visible;
+- (void)cleanupAfterTransition:(id)transition;
+- (void)im_dismissAnimated:(BOOL)animated immediate:(BOOL)immediate;
+- (void)im_enumerateChildrenConformingToProtocol:(id)protocol block:(id)block;
+- (void)im_enumerateVisibleChildrenConformingToProtocol:(id)protocol block:(id)block;
+- (void)im_finishOngoingModalTransitionAnimations:(id)animations;
 - (void)im_notifyThemeDidChange;
-- (void)im_setTabBarVisible:(BOOL)a3;
-- (void)prepareForTransition:(id)a3;
+- (void)im_setTabBarVisible:(BOOL)visible;
+- (void)prepareForTransition:(id)transition;
 - (void)refreshStatusBarAppearance;
-- (void)setBc_isPresentingCardStack:(BOOL)a3;
+- (void)setBc_isPresentingCardStack:(BOOL)stack;
 @end
 
 @implementation UIViewController
@@ -98,17 +98,17 @@
 - (unint64_t)bc_currentLifeCycleState
 {
   v2 = objc_getAssociatedObject(self, off_33D080);
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)bc_setCurrentLifeCycleState:(unint64_t)a3
+- (void)bc_setCurrentLifeCycleState:(unint64_t)state
 {
   v7 = NSStringFromSelector("bc_currentLifeCycleState");
   [(UIViewController *)self willChangeValueForKey:v7];
   v5 = off_33D080;
-  v6 = [NSNumber numberWithUnsignedInteger:a3];
+  v6 = [NSNumber numberWithUnsignedInteger:state];
   objc_setAssociatedObject(self, v5, v6, &dword_0 + 1);
 
   [(UIViewController *)self didChangeValueForKey:v7];
@@ -123,9 +123,9 @@
     objc_setAssociatedObject(self, off_33D088, &__kCFBooleanFalse, &dword_0 + 1);
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)bc_analyticsVisibilityUpdateSubtree
@@ -137,8 +137,8 @@
 
 - (void)bc_analyticsVisibilitySubtreeWillDisappear
 {
-  v3 = [(UIViewController *)self bc_childPresentedViewController];
-  [v3 bc_analyticsVisibilitySubtreeWillDisappear];
+  bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+  [bc_childPresentedViewController bc_analyticsVisibilitySubtreeWillDisappear];
   if ([(UIViewController *)self bc_analyticsVisibility]&& ![(UIViewController *)self _bc_analyticsNotifiedWillDisappear])
   {
     [(UIViewController *)self _setNotifiedAnalyticsVisibilityWillDisappear:1];
@@ -149,8 +149,8 @@
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(UIViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -162,7 +162,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v9 + 1) + 8 * v8) bc_analyticsVisibilitySubtreeWillDisappear];
@@ -170,7 +170,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -180,14 +180,14 @@
 - (void)bc_analyticsVisibilitySubtreeDidDisappear
 {
   [(UIViewController *)self _bc_analyticsSetVisibility:0];
-  v3 = [(UIViewController *)self bc_childPresentedViewController];
-  [v3 bc_analyticsVisibilitySubtreeDidDisappear];
+  bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+  [bc_childPresentedViewController bc_analyticsVisibilitySubtreeDidDisappear];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(UIViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -199,7 +199,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v9 + 1) + 8 * v8) bc_analyticsVisibilitySubtreeDidDisappear];
@@ -207,7 +207,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -217,14 +217,14 @@
 - (void)bc_analyticsSubtreeForceEndSession
 {
   [(UIViewController *)self bc_analyticsForceEndSession];
-  v3 = [(UIViewController *)self bc_childPresentedViewController];
-  [v3 bc_analyticsSubtreeForceEndSession];
+  bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+  [bc_childPresentedViewController bc_analyticsSubtreeForceEndSession];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(UIViewController *)self childViewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -236,7 +236,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v9 + 1) + 8 * v8) bc_analyticsSubtreeForceEndSession];
@@ -244,7 +244,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -264,8 +264,8 @@
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v4 = [(UIViewController *)self childViewControllers];
-    v3 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    childViewControllers = [(UIViewController *)self childViewControllers];
+    v3 = [childViewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v3)
     {
       v5 = *v9;
@@ -275,7 +275,7 @@
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childViewControllers);
           }
 
           if ([*(*(&v8 + 1) + 8 * i) bc_analyticsVisibilityIsObscuredWhenSubtreePresented])
@@ -285,7 +285,7 @@
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v3 = [childViewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (v3)
         {
           continue;
@@ -301,16 +301,16 @@ LABEL_13:
   return v3;
 }
 
-- (void)_bc_analyticsSetVisibility:(BOOL)a3
+- (void)_bc_analyticsSetVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  if ([(UIViewController *)self bc_analyticsVisibility]!= a3)
+  visibilityCopy = visibility;
+  if ([(UIViewController *)self bc_analyticsVisibility]!= visibility)
   {
     v5 = off_33D088;
-    v6 = [NSNumber numberWithBool:v3];
+    v6 = [NSNumber numberWithBool:visibilityCopy];
     objc_setAssociatedObject(self, v5, v6, &dword_0 + 1);
 
-    if (v3)
+    if (visibilityCopy)
     {
       [(UIViewController *)self _setNotifiedAnalyticsVisibilityWillDisappear:0];
 
@@ -334,113 +334,113 @@ LABEL_13:
     objc_setAssociatedObject(self, off_33D090, &__kCFBooleanFalse, &dword_0 + 1);
   }
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)_setNotifiedAnalyticsVisibilityWillDisappear:(BOOL)a3
+- (void)_setNotifiedAnalyticsVisibilityWillDisappear:(BOOL)disappear
 {
   v4 = off_33D090;
-  v5 = [NSNumber numberWithBool:a3];
+  v5 = [NSNumber numberWithBool:disappear];
   objc_setAssociatedObject(self, v4, v5, &dword_0 + 1);
 }
 
 - (BOOL)_bc_analyticsComputeVisibility
 {
-  v3 = [(UIViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  if (!v4 || ([v3 isHidden] & 1) != 0 || !-[UIViewController bc_analyticsVisibilityOfSelf](self, "bc_analyticsVisibilityOfSelf"))
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  if (!window || ([viewIfLoaded isHidden] & 1) != 0 || !-[UIViewController bc_analyticsVisibilityOfSelf](self, "bc_analyticsVisibilityOfSelf"))
   {
     goto LABEL_9;
   }
 
-  v5 = [(UIViewController *)self _bc_analyticsIsObscuredByPresentedViewController];
+  _bc_analyticsIsObscuredByPresentedViewController = [(UIViewController *)self _bc_analyticsIsObscuredByPresentedViewController];
 
-  if ((v5 & 1) == 0)
+  if ((_bc_analyticsIsObscuredByPresentedViewController & 1) == 0)
   {
-    v7 = [(UIViewController *)self parentViewController];
-    v4 = v7;
-    if (!v7)
+    parentViewController = [(UIViewController *)self parentViewController];
+    window = parentViewController;
+    if (!parentViewController)
     {
-      v9 = [(UIViewController *)self presentingViewController];
-      v10 = [v9 presentedViewController];
+      presentingViewController = [(UIViewController *)self presentingViewController];
+      presentedViewController = [presentingViewController presentedViewController];
 
-      if (v10 == self)
+      if (presentedViewController == self)
       {
-        v6 = 1;
+        _bc_analyticsComputeVisibility = 1;
       }
 
       else
       {
-        v11 = [v3 window];
-        v12 = [v11 rootViewController];
+        window2 = [viewIfLoaded window];
+        rootViewController = [window2 rootViewController];
 
-        v6 = v12 == self;
+        _bc_analyticsComputeVisibility = rootViewController == self;
       }
 
       goto LABEL_10;
     }
 
-    if ([v7 bc_analyticsVisibilityOfChild:self])
+    if ([parentViewController bc_analyticsVisibilityOfChild:self])
     {
-      v6 = [v4 _bc_analyticsComputeVisibility];
+      _bc_analyticsComputeVisibility = [window _bc_analyticsComputeVisibility];
 LABEL_10:
 
       goto LABEL_11;
     }
 
 LABEL_9:
-    v6 = 0;
+    _bc_analyticsComputeVisibility = 0;
     goto LABEL_10;
   }
 
-  v6 = 0;
+  _bc_analyticsComputeVisibility = 0;
 LABEL_11:
 
-  return v6;
+  return _bc_analyticsComputeVisibility;
 }
 
 - (BOOL)_bc_analyticsIsObscuredByPresentedViewController
 {
-  v3 = [(UIViewController *)self presentedViewController];
-  if (!v3)
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
-    v3 = [(UIViewController *)self _bc_analyticsAncestorPresentedViewController];
+    presentedViewController = [(UIViewController *)self _bc_analyticsAncestorPresentedViewController];
   }
 
-  v4 = [v3 bc_analyticsVisibilityIsObscuredWhenPresented];
+  bc_analyticsVisibilityIsObscuredWhenPresented = [presentedViewController bc_analyticsVisibilityIsObscuredWhenPresented];
 
-  return v4;
+  return bc_analyticsVisibilityIsObscuredWhenPresented;
 }
 
 - (id)_bc_analyticsAncestorPresentedViewController
 {
-  v3 = [(UIViewController *)self parentViewController];
-  v4 = [v3 presentedViewController];
-  if (!v4)
+  parentViewController = [(UIViewController *)self parentViewController];
+  presentedViewController = [parentViewController presentedViewController];
+  if (!presentedViewController)
   {
-    v5 = [(UIViewController *)self presentingViewController];
-    v4 = [v5 _bc_analyticsAncestorPresentedViewController];
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    presentedViewController = [presentingViewController _bc_analyticsAncestorPresentedViewController];
   }
 
-  return v4;
+  return presentedViewController;
 }
 
 - (void)_bc_analyticsUpdateVisibilityOfSelf
 {
-  v3 = [(UIViewController *)self _bc_analyticsComputeVisibility];
+  _bc_analyticsComputeVisibility = [(UIViewController *)self _bc_analyticsComputeVisibility];
 
-  [(UIViewController *)self _bc_analyticsSetVisibility:v3];
+  [(UIViewController *)self _bc_analyticsSetVisibility:_bc_analyticsComputeVisibility];
 }
 
-- (void)_bc_analyticsUpdateVisibilityOfSelfWithParent:(id)a3 parentVisibility:(BOOL)a4
+- (void)_bc_analyticsUpdateVisibilityOfSelfWithParent:(id)parent parentVisibility:(BOOL)visibility
 {
-  if (a4 && [a3 bc_analyticsVisibilityOfChild:self])
+  if (visibility && [parent bc_analyticsVisibilityOfChild:self])
   {
-    v5 = [(UIViewController *)self viewIfLoaded];
-    v6 = [v5 window];
-    if (v6 && ([v5 isHidden] & 1) == 0 && -[UIViewController bc_analyticsVisibilityOfSelf](self, "bc_analyticsVisibilityOfSelf"))
+    viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    if (window && ([viewIfLoaded isHidden] & 1) == 0 && -[UIViewController bc_analyticsVisibilityOfSelf](self, "bc_analyticsVisibilityOfSelf"))
     {
       v7 = [(UIViewController *)self _bc_analyticsIsObscuredByPresentedViewController]^ 1;
     }
@@ -461,15 +461,15 @@ LABEL_11:
 
 - (void)_bc_analyticsUpdateVisibilityOfDescendants
 {
-  v3 = [(UIViewController *)self bc_childPresentedViewController];
-  [v3 bc_analyticsVisibilityUpdateSubtree];
-  v4 = [(UIViewController *)self bc_analyticsVisibility];
+  bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+  [bc_childPresentedViewController bc_analyticsVisibilityUpdateSubtree];
+  bc_analyticsVisibility = [(UIViewController *)self bc_analyticsVisibility];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -480,30 +480,30 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        [v10 _bc_analyticsUpdateVisibilityOfSelfWithParent:self parentVisibility:v4];
+        [v10 _bc_analyticsUpdateVisibilityOfSelfWithParent:self parentVisibility:bc_analyticsVisibility];
         [v10 _bc_analyticsUpdateVisibilityOfDescendants];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)prepareForTransition:(id)a3
+- (void)prepareForTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(UIViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -515,30 +515,30 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) prepareForTransition:v4];
+        [*(*(&v10 + 1) + 8 * v9) prepareForTransition:transitionCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)cleanupAfterTransition:(id)a3
+- (void)cleanupAfterTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(UIViewController *)self childViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v6 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -550,15 +550,15 @@ LABEL_11:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) cleanupAfterTransition:v4];
+        [*(*(&v10 + 1) + 8 * v9) cleanupAfterTransition:transitionCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [childViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -567,26 +567,26 @@ LABEL_11:
 
 - (int64_t)IMDeviceOrientation
 {
-  v2 = [(UIViewController *)self interfaceOrientation];
+  interfaceOrientation = [(UIViewController *)self interfaceOrientation];
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 orientation];
+  orientation = [v3 orientation];
 
-  if ((v4 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
-    return v2;
+    return interfaceOrientation;
   }
 
   else
   {
-    return v4;
+    return orientation;
   }
 }
 
-- (BOOL)isSupportedInterfaceOrientation:(int64_t)a3
+- (BOOL)isSupportedInterfaceOrientation:(int64_t)orientation
 {
-  v3 = a3;
-  v4 = [(UIViewController *)self supportedInterfaceOrientations];
-  return (v4 & (1 << v3)) != 0 || v4 == 0;
+  orientationCopy = orientation;
+  supportedInterfaceOrientations = [(UIViewController *)self supportedInterfaceOrientations];
+  return (supportedInterfaceOrientations & (1 << orientationCopy)) != 0 || supportedInterfaceOrientations == 0;
 }
 
 - (BOOL)_overridesShouldAutorotate
@@ -625,20 +625,20 @@ LABEL_11:
   return [(UIViewController *)self _overridesSupportedInterfaceOrientations];
 }
 
-- (int64_t)preferredInterfaceOrientationGivenOrientation:(int64_t)a3
+- (int64_t)preferredInterfaceOrientationGivenOrientation:(int64_t)orientation
 {
   if (![(UIViewController *)self isSupportedInterfaceOrientation:?])
   {
-    a3 = [(UIViewController *)self IMDeviceOrientation];
-    if (![(UIViewController *)self isSupportedInterfaceOrientation:a3])
+    orientation = [(UIViewController *)self IMDeviceOrientation];
+    if (![(UIViewController *)self isSupportedInterfaceOrientation:orientation])
     {
-      a3 = 1;
+      orientation = 1;
       if (![(UIViewController *)self isSupportedInterfaceOrientation:1])
       {
-        a3 = 3;
+        orientation = 3;
         if (![(UIViewController *)self isSupportedInterfaceOrientation:3])
         {
-          a3 = 4;
+          orientation = 4;
           if (![(UIViewController *)self isSupportedInterfaceOrientation:4])
           {
             if ([(UIViewController *)self isSupportedInterfaceOrientation:2])
@@ -656,24 +656,24 @@ LABEL_11:
     }
   }
 
-  return a3;
+  return orientation;
 }
 
 - (void)refreshStatusBarAppearance
 {
-  v4 = [(UIViewController *)self view];
-  v2 = [v4 window];
-  v3 = [v2 rootViewController];
-  [v3 setNeedsStatusBarAppearanceUpdate];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
+  [rootViewController setNeedsStatusBarAppearanceUpdate];
 }
 
-- (id)im_recursiveDescriptionVisibleTree:(BOOL)a3
+- (id)im_recursiveDescriptionVisibleTree:(BOOL)tree
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_62788;
   v5[3] = &unk_2CA048;
-  v6 = a3;
+  treeCopy = tree;
   v3 = [(UIViewController *)self im_recursiveDescriptionChildrenBlock:v5];
 
   return v3;
@@ -681,16 +681,16 @@ LABEL_11:
 
 - (id)rasterizedImage
 {
-  v3 = [(UIViewController *)self view];
-  [v3 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v12.width = v4;
   v12.height = v5;
   UIGraphicsBeginImageContextWithOptions(v12, 1, 0.0);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v7 = [(UIViewController *)self view];
-  v8 = [v7 layer];
-  [v8 renderInContext:CurrentContext];
+  view2 = [(UIViewController *)self view];
+  layer = [view2 layer];
+  [layer renderInContext:CurrentContext];
 
   v9 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -700,97 +700,97 @@ LABEL_11:
 
 - (BOOL)im_hasValidWidthAndHeightTraitCollection
 {
-  v2 = [(UIViewController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
-  v4 = [v2 horizontalSizeClass];
-  v5 = [v2 verticalSizeClass];
-  v6 = [v2 verticalSizeClass];
-  v7 = (v3 == &dword_0 + 1 || v4 == &dword_0 + 2) && (v5 == &dword_0 + 1 || v6 == &dword_0 + 2);
+  traitCollection = [(UIViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  verticalSizeClass2 = [traitCollection verticalSizeClass];
+  v7 = (horizontalSizeClass == &dword_0 + 1 || horizontalSizeClass2 == &dword_0 + 2) && (verticalSizeClass == &dword_0 + 1 || verticalSizeClass2 == &dword_0 + 2);
 
   return v7;
 }
 
 - (BOOL)im_isCompactWidth
 {
-  v2 = [(UIViewController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
-  v4 = [v2 horizontalSizeClass];
-  if (v3 != &dword_0 + 1 && v4 != &dword_0 + 2)
+  traitCollection = [(UIViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass != &dword_0 + 1 && horizontalSizeClass2 != &dword_0 + 2)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/ViewControllers/UIViewController+BCAdditions.m", 170, "[UIViewController(IMAdditions) im_isCompactWidth]", "NO", @"<%@: %p> has no trait information.", v7, v8, v9, v6);
   }
 
-  return v3 == &dword_0 + 1;
+  return horizontalSizeClass == &dword_0 + 1;
 }
 
 - (BOOL)im_isCompactHeight
 {
-  v2 = [(UIViewController *)self traitCollection];
-  v3 = [v2 verticalSizeClass];
-  v4 = [v2 verticalSizeClass];
-  if (v3 != &dword_0 + 1 && v4 != &dword_0 + 2)
+  traitCollection = [(UIViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  verticalSizeClass2 = [traitCollection verticalSizeClass];
+  if (verticalSizeClass != &dword_0 + 1 && verticalSizeClass2 != &dword_0 + 2)
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/ViewControllers/UIViewController+BCAdditions.m", 190, "[UIViewController(IMAdditions) im_isCompactHeight]", "NO", @"<%@: %p> has no trait information.", v7, v8, v9, v6);
   }
 
-  return v3 == &dword_0 + 1;
+  return verticalSizeClass == &dword_0 + 1;
 }
 
-- (void)im_dismissAnimated:(BOOL)a3 immediate:(BOOL)a4
+- (void)im_dismissAnimated:(BOOL)animated immediate:(BOOL)immediate
 {
-  v4 = a3;
-  v6 = [(UIViewController *)self parentViewController:a3];
+  animatedCopy = animated;
+  v6 = [(UIViewController *)self parentViewController:animated];
 
   if (v6)
   {
-    v9 = [(UIViewController *)self parentViewController];
-    [v9 im_dismissChildViewController:self animated:v4];
+    parentViewController = [(UIViewController *)self parentViewController];
+    [parentViewController im_dismissChildViewController:self animated:animatedCopy];
   }
 
   else
   {
-    v7 = [(UIViewController *)self presentingViewController];
-    v8 = [v7 presentedViewController];
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    presentedViewController = [presentingViewController presentedViewController];
 
-    if (v8 == self)
+    if (presentedViewController == self)
     {
 
-      [(UIViewController *)self dismissViewControllerAnimated:v4 completion:0];
+      [(UIViewController *)self dismissViewControllerAnimated:animatedCopy completion:0];
     }
   }
 }
 
 - (id)bc_contextualPresentingViewController
 {
-  v3 = [(UIViewController *)self parentViewController];
-  if (v3 || ([(UIViewController *)self presentingViewController], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  parentViewController = [(UIViewController *)self parentViewController];
+  if (parentViewController || ([(UIViewController *)self presentingViewController], (parentViewController = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
-    v5 = [v3 bc_contextualPresentingViewController];
+    v4 = parentViewController;
+    selfCopy = [parentViewController bc_contextualPresentingViewController];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)bc_contextualPresentedViewController
 {
-  v3 = [(UIViewController *)self presentedViewController];
-  v4 = [(UIViewController *)self bc_contextualPresentingViewController];
-  v5 = v4;
-  if (v3)
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  bc_contextualPresentingViewController = [(UIViewController *)self bc_contextualPresentingViewController];
+  v5 = bc_contextualPresentingViewController;
+  if (presentedViewController)
   {
-    if ([v4 im_isAncestorOfChildViewController:v3])
+    if ([bc_contextualPresentingViewController im_isAncestorOfChildViewController:presentedViewController])
     {
-      v6 = v3;
+      v6 = presentedViewController;
     }
 
     else
@@ -811,12 +811,12 @@ LABEL_11:
 
 - (id)bc_descendentPresentedViewController
 {
-  v3 = [(UIViewController *)self presentedViewController];
-  if (v3)
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    if ([(UIViewController *)self im_isAncestorOfChildViewController:v3])
+    if ([(UIViewController *)self im_isAncestorOfChildViewController:presentedViewController])
     {
-      v4 = v3;
+      v4 = presentedViewController;
     }
 
     else
@@ -837,11 +837,11 @@ LABEL_11:
 
 - (id)bc_childPresentedViewController
 {
-  v3 = [(UIViewController *)self presentedViewController];
-  v4 = [v3 presentingViewController];
-  if (v4 == self)
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  presentingViewController = [presentedViewController presentingViewController];
+  if (presentingViewController == self)
   {
-    v5 = v3;
+    v5 = presentedViewController;
   }
 
   else
@@ -854,28 +854,28 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)im_isAncestorOfChildViewController:(id)a3
+- (BOOL)im_isAncestorOfChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
+  controllerCopy = controller;
+  v5 = controllerCopy;
   v6 = 0;
-  if (v4 != self && v4)
+  if (controllerCopy != self && controllerCopy)
   {
     while (1)
     {
-      v7 = [(UIViewController *)v5 parentViewController];
-      v8 = v7;
-      if (v7)
+      parentViewController = [(UIViewController *)v5 parentViewController];
+      v8 = parentViewController;
+      if (parentViewController)
       {
-        v9 = v7;
+        presentingViewController = parentViewController;
       }
 
       else
       {
-        v9 = [(UIViewController *)v5 presentingViewController];
+        presentingViewController = [(UIViewController *)v5 presentingViewController];
       }
 
-      v10 = v9;
+      v10 = presentingViewController;
 
       if (v10 == self)
       {
@@ -898,14 +898,14 @@ LABEL_10:
   return v6;
 }
 
-- (id)im_childValueForKey:(id)a3 conformingToProtocol:(id)a4 fromViewControllersConformingToProtocol:(id)a5
+- (id)im_childValueForKey:(id)key conformingToProtocol:(id)protocol fromViewControllersConformingToProtocol:(id)toProtocol
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(UIViewController *)self conformsToProtocol:v10])
+  keyCopy = key;
+  protocolCopy = protocol;
+  toProtocolCopy = toProtocol;
+  if ([(UIViewController *)self conformsToProtocol:toProtocolCopy])
   {
-    [(UIViewController *)self valueForKey:v8];
+    [(UIViewController *)self valueForKey:keyCopy];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -925,7 +925,7 @@ LABEL_4:
         }
 
         v16 = *(*(&v29 + 1) + 8 * v15);
-        if ([v16 conformsToProtocol:v9])
+        if ([v16 conformsToProtocol:protocolCopy])
         {
           break;
         }
@@ -960,8 +960,8 @@ LABEL_10:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [(UIViewController *)self bc_childViewControllersForProtocolConformance];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  bc_childViewControllersForProtocolConformance = [(UIViewController *)self bc_childViewControllersForProtocolConformance];
+  v19 = [bc_childViewControllersForProtocolConformance countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -972,10 +972,10 @@ LABEL_14:
     {
       if (*v26 != v21)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(bc_childViewControllersForProtocolConformance);
       }
 
-      v23 = [*(*(&v25 + 1) + 8 * v22) im_childValueForKey:v8 conformingToProtocol:v9 fromViewControllersConformingToProtocol:v10];
+      v23 = [*(*(&v25 + 1) + 8 * v22) im_childValueForKey:keyCopy conformingToProtocol:protocolCopy fromViewControllersConformingToProtocol:toProtocolCopy];
       if (v23)
       {
         break;
@@ -983,7 +983,7 @@ LABEL_14:
 
       if (v20 == ++v22)
       {
-        v20 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v20 = [bc_childViewControllersForProtocolConformance countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v20)
         {
           goto LABEL_14;
@@ -998,8 +998,8 @@ LABEL_14:
   {
 LABEL_20:
 
-    v18 = [(UIViewController *)self bc_childPresentedViewController];
-    v23 = [v18 im_ancestorValueForKey:v8 conformingToProtocol:v9 fromViewControllersConformingToProtocol:v10];
+    bc_childViewControllersForProtocolConformance = [(UIViewController *)self bc_childPresentedViewController];
+    v23 = [bc_childViewControllersForProtocolConformance im_ancestorValueForKey:keyCopy conformingToProtocol:protocolCopy fromViewControllersConformingToProtocol:toProtocolCopy];
   }
 
   v17 = v23;
@@ -1009,14 +1009,14 @@ LABEL_22:
   return v17;
 }
 
-- (id)im_ancestorValueForKey:(id)a3 conformingToProtocol:(id)a4 fromViewControllersConformingToProtocol:(id)a5
+- (id)im_ancestorValueForKey:(id)key conformingToProtocol:(id)protocol fromViewControllersConformingToProtocol:(id)toProtocol
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(UIViewController *)self conformsToProtocol:v10])
+  keyCopy = key;
+  protocolCopy = protocol;
+  toProtocolCopy = toProtocol;
+  if ([(UIViewController *)self conformsToProtocol:toProtocolCopy])
   {
-    [(UIViewController *)self valueForKey:v8];
+    [(UIViewController *)self valueForKey:keyCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -1036,7 +1036,7 @@ LABEL_4:
         }
 
         v16 = *(*(&v21 + 1) + 8 * v15);
-        if ([v16 conformsToProtocol:{v9, v21}])
+        if ([v16 conformsToProtocol:{protocolCopy, v21}])
         {
           break;
         }
@@ -1067,13 +1067,13 @@ LABEL_10:
     }
   }
 
-  v18 = [(UIViewController *)self parentViewController];
-  v17 = [v18 im_ancestorValueForKey:v8 conformingToProtocol:v9 fromViewControllersConformingToProtocol:v10];
+  parentViewController = [(UIViewController *)self parentViewController];
+  v17 = [parentViewController im_ancestorValueForKey:keyCopy conformingToProtocol:protocolCopy fromViewControllersConformingToProtocol:toProtocolCopy];
 
   if (!v17)
   {
-    v19 = [(UIViewController *)self presentingViewController];
-    v17 = [v19 im_ancestorValueForKey:v8 conformingToProtocol:v9 fromViewControllersConformingToProtocol:v10];
+    presentingViewController = [(UIViewController *)self presentingViewController];
+    v17 = [presentingViewController im_ancestorValueForKey:keyCopy conformingToProtocol:protocolCopy fromViewControllersConformingToProtocol:toProtocolCopy];
   }
 
 LABEL_14:
@@ -1081,110 +1081,110 @@ LABEL_14:
   return v17;
 }
 
-- (id)im_ancestorViewControllerConformingToProtocol:(id)a3 includePresenting:(BOOL)a4
+- (id)im_ancestorViewControllerConformingToProtocol:(id)protocol includePresenting:(BOOL)presenting
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(UIViewController *)self conformsToProtocol:v6])
+  presentingCopy = presenting;
+  protocolCopy = protocol;
+  if ([(UIViewController *)self conformsToProtocol:protocolCopy])
   {
-    v7 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  v8 = [(UIViewController *)self parentViewController];
-  if (v8)
+  parentViewController = [(UIViewController *)self parentViewController];
+  if (parentViewController)
   {
-    v9 = v8;
-    v10 = v6;
-    v11 = v4;
+    v9 = parentViewController;
+    v10 = protocolCopy;
+    v11 = presentingCopy;
 LABEL_5:
-    v7 = [v8 im_ancestorViewControllerConformingToProtocol:v10 includePresenting:v11];
+    selfCopy = [parentViewController im_ancestorViewControllerConformingToProtocol:v10 includePresenting:v11];
 
     goto LABEL_10;
   }
 
-  if (v4)
+  if (presentingCopy)
   {
-    v8 = [(UIViewController *)self presentingViewController];
-    if (v8)
+    parentViewController = [(UIViewController *)self presentingViewController];
+    if (parentViewController)
     {
-      v9 = v8;
-      v10 = v6;
+      v9 = parentViewController;
+      v10 = protocolCopy;
       v11 = 1;
       goto LABEL_5;
     }
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)im_ancestorConformingToProtocol:(id)a3
+- (id)im_ancestorConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(UIViewController *)v5 parentViewController];
-  v7 = v6;
-  if (v6)
+  protocolCopy = protocol;
+  selfCopy = self;
+  parentViewController = [(UIViewController *)selfCopy parentViewController];
+  v7 = parentViewController;
+  if (parentViewController)
   {
-    v8 = v6;
+    presentingViewController = parentViewController;
   }
 
   else
   {
-    v8 = [(UIViewController *)v5 presentingViewController];
+    presentingViewController = [(UIViewController *)selfCopy presentingViewController];
   }
 
-  v9 = v8;
+  v9 = presentingViewController;
 
   v10 = 0;
-  if (v5)
+  if (selfCopy)
   {
     do
     {
-      if ([(UIViewController *)v5 conformsToProtocol:v4])
+      if ([(UIViewController *)selfCopy conformsToProtocol:protocolCopy])
       {
-        v23 = v5;
+        v23 = selfCopy;
         v20 = v23;
         goto LABEL_21;
       }
 
-      v11 = [(UIViewController *)v5 viewIfLoaded];
-      v12 = [v11 window];
+      viewIfLoaded = [(UIViewController *)selfCopy viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v12)
+      if (window)
       {
-        v13 = [(UIViewController *)v5 viewIfLoaded];
-        v14 = [v13 window];
+        viewIfLoaded2 = [(UIViewController *)selfCopy viewIfLoaded];
+        window2 = [viewIfLoaded2 window];
 
-        v10 = v14;
+        v10 = window2;
       }
 
       v15 = v9;
 
-      v16 = [(UIViewController *)v15 parentViewController];
-      v17 = v16;
-      if (v16)
+      parentViewController2 = [(UIViewController *)v15 parentViewController];
+      v17 = parentViewController2;
+      if (parentViewController2)
       {
-        v18 = v16;
+        presentingViewController2 = parentViewController2;
       }
 
       else
       {
-        v18 = [(UIViewController *)v15 presentingViewController];
+        presentingViewController2 = [(UIViewController *)v15 presentingViewController];
       }
 
-      v9 = v18;
+      v9 = presentingViewController2;
 
-      v5 = v15;
+      selfCopy = v15;
     }
 
     while (v15);
     if (v10)
     {
-      v19 = [v10 im_ancestorConformingToProtocol:v4];
+      v19 = [v10 im_ancestorConformingToProtocol:protocolCopy];
       if (v19)
       {
         v20 = v19;
@@ -1194,11 +1194,11 @@ LABEL_10:
   }
 
   v21 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-  v22 = [v21 delegate];
+  delegate = [v21 delegate];
 
-  if ([v22 conformsToProtocol:v4])
+  if ([delegate conformsToProtocol:protocolCopy])
   {
-    v20 = v22;
+    v20 = delegate;
   }
 
   else
@@ -1214,23 +1214,23 @@ LABEL_21:
   return v20;
 }
 
-- (id)im_ancestorFlowControllerConformingToProtocol:(id)a3
+- (id)im_ancestorFlowControllerConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self im_ancestorValueForKey:@"flowControllers" conformingToProtocol:v4 fromViewControllersConformingToProtocol:&OBJC_PROTOCOL___IMFlowControllerHosting];
+  protocolCopy = protocol;
+  v5 = [(UIViewController *)self im_ancestorValueForKey:@"flowControllers" conformingToProtocol:protocolCopy fromViewControllersConformingToProtocol:&OBJC_PROTOCOL___IMFlowControllerHosting];
   if (!v5)
   {
-    v6 = [(UIViewController *)self viewIfLoaded];
-    v7 = [v6 window];
+    viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
 
-    v8 = [v7 windowScene];
-    v9 = [v8 delegate];
+    windowScene = [window windowScene];
+    delegate = [windowScene delegate];
     objc_opt_class();
     v38 = BUDynamicCast();
     if ([v38 conformsToProtocol:&OBJC_PROTOCOL___IMFlowControllerHosting])
     {
-      v34 = v8;
-      v36 = v9;
+      v34 = windowScene;
+      v36 = delegate;
       [v38 valueForKey:@"flowControllers"];
       v47 = 0u;
       v48 = 0u;
@@ -1242,7 +1242,7 @@ LABEL_21:
         v12 = v11;
         v13 = *v48;
 LABEL_5:
-        v14 = v7;
+        v14 = window;
         v15 = 0;
         while (1)
         {
@@ -1252,7 +1252,7 @@ LABEL_5:
           }
 
           v16 = *(*(&v47 + 1) + 8 * v15);
-          if ([v16 conformsToProtocol:v4])
+          if ([v16 conformsToProtocol:protocolCopy])
           {
             break;
           }
@@ -1260,7 +1260,7 @@ LABEL_5:
           if (v12 == ++v15)
           {
             v12 = [v10 countByEnumeratingWithState:&v47 objects:v53 count:16];
-            v7 = v14;
+            window = v14;
             if (v12)
             {
               goto LABEL_5;
@@ -1272,9 +1272,9 @@ LABEL_5:
 
         v5 = v16;
 
-        v7 = v14;
-        v8 = v34;
-        v9 = v36;
+        window = v14;
+        windowScene = v34;
+        delegate = v36;
         if (v5)
         {
           goto LABEL_28;
@@ -1285,14 +1285,14 @@ LABEL_5:
       {
 LABEL_11:
 
-        v8 = v34;
-        v9 = v36;
+        windowScene = v34;
+        delegate = v36;
       }
     }
 
     objc_opt_class();
     v17 = BUDynamicCast();
-    v18 = [v17 controller];
+    controller = [v17 controller];
     objc_opt_class();
     v19 = BUDynamicCast();
     if ([v19 conformsToProtocol:&OBJC_PROTOCOL___IMFlowControllerHosting])
@@ -1305,8 +1305,8 @@ LABEL_11:
       v5 = [v20 countByEnumeratingWithState:&v43 objects:v52 count:16];
       if (v5)
       {
-        v35 = v7;
-        v37 = v9;
+        v35 = window;
+        v37 = delegate;
         v21 = *v44;
         while (2)
         {
@@ -1318,7 +1318,7 @@ LABEL_11:
             }
 
             v23 = *(*(&v43 + 1) + 8 * i);
-            if ([v23 conformsToProtocol:v4])
+            if ([v23 conformsToProtocol:protocolCopy])
             {
               v5 = v23;
               goto LABEL_25;
@@ -1335,8 +1335,8 @@ LABEL_11:
         }
 
 LABEL_25:
-        v7 = v35;
-        v9 = v37;
+        window = v35;
+        delegate = v37;
       }
     }
 
@@ -1349,7 +1349,7 @@ LABEL_28:
     if (!v5)
     {
       v24 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-      v25 = [v24 delegate];
+      delegate2 = [v24 delegate];
 
       objc_opt_class();
       v26 = BUDynamicCast();
@@ -1375,7 +1375,7 @@ LABEL_28:
               }
 
               v32 = *(*(&v39 + 1) + 8 * j);
-              if ([v32 conformsToProtocol:v4])
+              if ([v32 conformsToProtocol:protocolCopy])
               {
                 v5 = v32;
                 goto LABEL_41;
@@ -1406,20 +1406,20 @@ LABEL_41:
   return v5;
 }
 
-- (id)im_firstVisibleChildConformingToProtocol:(id)a3 stopIfDescendentConformsToProtocol:(id)a4 includePresented:(BOOL)a5 validateItem:(id)a6
+- (id)im_firstVisibleChildConformingToProtocol:(id)protocol stopIfDescendentConformsToProtocol:(id)toProtocol includePresented:(BOOL)presented validateItem:(id)item
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11 && ([(UIViewController *)self conformsToProtocol:v11]& 1) != 0)
+  presentedCopy = presented;
+  protocolCopy = protocol;
+  toProtocolCopy = toProtocol;
+  itemCopy = item;
+  if (toProtocolCopy && ([(UIViewController *)self conformsToProtocol:toProtocolCopy]& 1) != 0)
   {
     v13 = 0;
   }
 
-  else if (!v7 || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v15 = objc_claimAutoreleasedReturnValue(), [v15 im_firstVisibleChildConformingToProtocol:v10 stopIfDescendentConformsToProtocol:v11 includePresented:1 validateItem:v12], v13 = objc_claimAutoreleasedReturnValue(), v15, !v13))
+  else if (!presentedCopy || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v14 = objc_claimAutoreleasedReturnValue(), v14, !v14) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v15 = objc_claimAutoreleasedReturnValue(), [v15 im_firstVisibleChildConformingToProtocol:protocolCopy stopIfDescendentConformsToProtocol:toProtocolCopy includePresented:1 validateItem:itemCopy], v13 = objc_claimAutoreleasedReturnValue(), v15, !v13))
   {
-    if ([(UIViewController *)self conformsToProtocol:v10]&& (!v12 || [(UIViewController *)self im_firstVisibleChildValidateWithItem:v12]) && (v16 = self) != 0)
+    if ([(UIViewController *)self conformsToProtocol:protocolCopy]&& (!itemCopy || [(UIViewController *)self im_firstVisibleChildValidateWithItem:itemCopy]) && (v16 = self) != 0)
     {
       v13 = v16;
     }
@@ -1430,8 +1430,8 @@ LABEL_41:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v17 = [(UIViewController *)self im_visibleChildViewControllers];
-      v18 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      im_visibleChildViewControllers = [(UIViewController *)self im_visibleChildViewControllers];
+      v18 = [im_visibleChildViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
         v19 = v18;
@@ -1442,10 +1442,10 @@ LABEL_41:
           {
             if (*v25 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(im_visibleChildViewControllers);
             }
 
-            v22 = [*(*(&v24 + 1) + 8 * i) im_firstVisibleChildConformingToProtocol:v10 stopIfDescendentConformsToProtocol:v11 includePresented:v7 validateItem:v12];
+            v22 = [*(*(&v24 + 1) + 8 * i) im_firstVisibleChildConformingToProtocol:protocolCopy stopIfDescendentConformsToProtocol:toProtocolCopy includePresented:presentedCopy validateItem:itemCopy];
             if (v22)
             {
               v13 = v22;
@@ -1453,7 +1453,7 @@ LABEL_41:
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v19 = [im_visibleChildViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v19)
           {
             continue;
@@ -1471,10 +1471,10 @@ LABEL_22:
   return v13;
 }
 
-- (id)bc_firstVisibleChildViewControllerOfClass:(Class)a3 includePresented:(BOOL)a4
+- (id)bc_firstVisibleChildViewControllerOfClass:(Class)class includePresented:(BOOL)presented
 {
-  v4 = a4;
-  if (!a4 || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 bc_firstVisibleChildViewControllerOfClass:a3 includePresented:1], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  presentedCopy = presented;
+  if (!presented || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v7 = objc_claimAutoreleasedReturnValue(), v7, !v7) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v8 = objc_claimAutoreleasedReturnValue(), [v8 bc_firstVisibleChildViewControllerOfClass:class includePresented:1], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v10 = self) != 0)
     {
@@ -1487,8 +1487,8 @@ LABEL_22:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v11 = [(UIViewController *)self im_visibleChildViewControllers];
-      v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      im_visibleChildViewControllers = [(UIViewController *)self im_visibleChildViewControllers];
+      v12 = [im_visibleChildViewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1499,10 +1499,10 @@ LABEL_22:
           {
             if (*v19 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(im_visibleChildViewControllers);
             }
 
-            v16 = [*(*(&v18 + 1) + 8 * i) bc_firstVisibleChildViewControllerOfClass:a3 includePresented:v4];
+            v16 = [*(*(&v18 + 1) + 8 * i) bc_firstVisibleChildViewControllerOfClass:class includePresented:presentedCopy];
             if (v16)
             {
               v9 = v16;
@@ -1510,7 +1510,7 @@ LABEL_22:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v13 = [im_visibleChildViewControllers countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v13)
           {
             continue;
@@ -1528,17 +1528,17 @@ LABEL_17:
   return v9;
 }
 
-- (id)bc_deepestVisibleChildViewControllerIncludePresented:(BOOL)a3
+- (id)bc_deepestVisibleChildViewControllerIncludePresented:(BOOL)presented
 {
-  v3 = a3;
-  if (!a3 || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 bc_deepestVisibleChildViewControllerIncludePresented:1], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  presentedCopy = presented;
+  if (!presented || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), v5, !v5) || (-[UIViewController bc_childPresentedViewController](self, "bc_childPresentedViewController"), v6 = objc_claimAutoreleasedReturnValue(), [v6 bc_deepestVisibleChildViewControllerIncludePresented:1], selfCopy = objc_claimAutoreleasedReturnValue(), v6, !selfCopy))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(UIViewController *)self im_visibleChildViewControllers];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    im_visibleChildViewControllers = [(UIViewController *)self im_visibleChildViewControllers];
+    v9 = [im_visibleChildViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1549,19 +1549,19 @@ LABEL_17:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(im_visibleChildViewControllers);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) bc_deepestVisibleChildViewControllerIncludePresented:v3];
+          v13 = [*(*(&v15 + 1) + 8 * i) bc_deepestVisibleChildViewControllerIncludePresented:presentedCopy];
           if (v13)
           {
-            v7 = v13;
+            selfCopy = v13;
 
             goto LABEL_14;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [im_visibleChildViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -1571,25 +1571,25 @@ LABEL_17:
       }
     }
 
-    v7 = self;
+    selfCopy = self;
   }
 
 LABEL_14:
 
-  return v7;
+  return selfCopy;
 }
 
 + (id)bc_presentingViewController
 {
   v2 = +[UIApplication jsa_sharedApplicationIfNotExtension];
-  v3 = [v2 connectedScenes];
-  v4 = [v3 allObjects];
+  connectedScenes = [v2 connectedScenes];
+  allObjects = [connectedScenes allObjects];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v6)
   {
@@ -1610,12 +1610,12 @@ LABEL_14:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 windows];
+            windows = [v10 windows];
             v21 = 0u;
             v22 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v12 = v11;
+            v12 = windows;
             v13 = [v12 countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v13)
             {
@@ -1633,8 +1633,8 @@ LABEL_14:
                   v17 = *(*(&v21 + 1) + 8 * j);
                   if ([v17 isKeyWindow])
                   {
-                    v19 = [v17 rootViewController];
-                    v18 = [v19 bc_deepestPresentedViewController];
+                    rootViewController = [v17 rootViewController];
+                    bc_deepestPresentedViewController = [rootViewController bc_deepestPresentedViewController];
 
                     goto LABEL_22;
                   }
@@ -1654,7 +1654,7 @@ LABEL_14:
       }
 
       v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
-      v18 = 0;
+      bc_deepestPresentedViewController = 0;
     }
 
     while (v7);
@@ -1662,44 +1662,44 @@ LABEL_14:
 
   else
   {
-    v18 = 0;
+    bc_deepestPresentedViewController = 0;
   }
 
 LABEL_22:
 
-  return v18;
+  return bc_deepestPresentedViewController;
 }
 
 - (id)bc_deepestPresentedViewController
 {
-  v3 = [(UIViewController *)self presentedViewController];
-  v4 = self;
-  v5 = v4;
-  if (v3)
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  selfCopy = self;
+  v5 = selfCopy;
+  if (presentedViewController)
   {
     do
     {
-      v6 = v3;
+      v6 = presentedViewController;
 
-      v3 = [(UIViewController *)v6 presentedViewController];
+      presentedViewController = [(UIViewController *)v6 presentedViewController];
 
       v5 = v6;
     }
 
-    while (v3);
+    while (presentedViewController);
   }
 
   else
   {
-    v6 = v4;
+    v6 = selfCopy;
   }
 
   return v6;
 }
 
-- (id)im_visibleViewControllersConfirmingToProtocol:(id)a3
+- (id)im_visibleViewControllersConfirmingToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v9 = 0;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -1707,72 +1707,72 @@ LABEL_22:
   v7[3] = &unk_2CA070;
   v5 = objc_alloc_init(NSMutableArray);
   v8 = v5;
-  [(UIViewController *)self __im_enumerateVisibleChildrenConformingToProtocol:v4 stop:&v9 block:v7];
+  [(UIViewController *)self __im_enumerateVisibleChildrenConformingToProtocol:protocolCopy stop:&v9 block:v7];
 
   return v5;
 }
 
-- (void)im_enumerateVisibleChildrenConformingToProtocol:(id)a3 block:(id)a4
+- (void)im_enumerateVisibleChildrenConformingToProtocol:(id)protocol block:(id)block
 {
-  if (a4)
+  if (block)
   {
     v4 = 0;
-    [(UIViewController *)self __im_enumerateVisibleChildrenConformingToProtocol:a3 stop:&v4 block:a4];
+    [(UIViewController *)self __im_enumerateVisibleChildrenConformingToProtocol:protocol stop:&v4 block:block];
   }
 }
 
-- (void)im_enumerateChildrenConformingToProtocol:(id)a3 block:(id)a4
+- (void)im_enumerateChildrenConformingToProtocol:(id)protocol block:(id)block
 {
-  if (a4)
+  if (block)
   {
     v4 = 0;
-    [(UIViewController *)self __im_enumerateChildrenConformingToProtocol:a3 stop:&v4 block:a4];
+    [(UIViewController *)self __im_enumerateChildrenConformingToProtocol:protocol stop:&v4 block:block];
   }
 }
 
-- (void)__im_enumerateVisibleChildrenConformingToProtocol:(id)a3 stop:(BOOL *)a4 block:(id)a5
+- (void)__im_enumerateVisibleChildrenConformingToProtocol:(id)protocol stop:(BOOL *)stop block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v17 = v9;
-  if (a4)
+  protocolCopy = protocol;
+  blockCopy = block;
+  v17 = blockCopy;
+  if (stop)
   {
-    if (!v8)
+    if (!protocolCopy)
     {
 LABEL_4:
-      (v17)[2](v17, self, a4);
+      (v17)[2](v17, self, stop);
       goto LABEL_5;
     }
   }
 
   else
   {
-    sub_1E6658(v9, v10, v11, v12, v13, v14, v15, v16);
-    if (!v8)
+    sub_1E6658(blockCopy, v10, v11, v12, v13, v14, v15, v16);
+    if (!protocolCopy)
     {
       goto LABEL_4;
     }
   }
 
-  if ([(UIViewController *)self conformsToProtocol:v8])
+  if ([(UIViewController *)self conformsToProtocol:protocolCopy])
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (!*a4)
+  if (!*stop)
   {
-    v18 = [(UIViewController *)self bc_childPresentedViewController];
-    [v18 __im_enumerateVisibleChildrenConformingToProtocol:v8 stop:a4 block:v17];
+    bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+    [bc_childPresentedViewController __im_enumerateVisibleChildrenConformingToProtocol:protocolCopy stop:stop block:v17];
 
-    if (!*a4)
+    if (!*stop)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v19 = [(UIViewController *)self im_visibleChildViewControllers];
-      v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      im_visibleChildViewControllers = [(UIViewController *)self im_visibleChildViewControllers];
+      v20 = [im_visibleChildViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v20)
       {
         v21 = v20;
@@ -1783,18 +1783,18 @@ LABEL_9:
         {
           if (*v25 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(im_visibleChildViewControllers);
           }
 
-          [*(*(&v24 + 1) + 8 * v23) __im_enumerateVisibleChildrenConformingToProtocol:v8 stop:a4 block:v17];
-          if (*a4)
+          [*(*(&v24 + 1) + 8 * v23) __im_enumerateVisibleChildrenConformingToProtocol:protocolCopy stop:stop block:v17];
+          if (*stop)
           {
             break;
           }
 
           if (v21 == ++v23)
           {
-            v21 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v21 = [im_visibleChildViewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v21)
             {
               goto LABEL_9;
@@ -1810,68 +1810,68 @@ LABEL_9:
 
 - (id)bc_ancestorFullScreenPresentingViewController
 {
-  v2 = [(UIViewController *)self presentingViewController];
-  v3 = [v2 modalPresentationStyle];
-  v4 = [v2 presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  modalPresentationStyle = [presentingViewController modalPresentationStyle];
+  v2PresentingViewController = [presentingViewController presentingViewController];
 
-  if (v4 && (v3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+  if (v2PresentingViewController && (modalPresentationStyle - 3) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = [v2 bc_ancestorFullScreenPresentingViewController];
+    bc_ancestorFullScreenPresentingViewController = [presentingViewController bc_ancestorFullScreenPresentingViewController];
   }
 
   else
   {
-    v5 = v2;
+    bc_ancestorFullScreenPresentingViewController = presentingViewController;
   }
 
-  v6 = v5;
+  v6 = bc_ancestorFullScreenPresentingViewController;
 
   return v6;
 }
 
-- (void)__im_enumerateChildrenConformingToProtocol:(id)a3 stop:(BOOL *)a4 block:(id)a5
+- (void)__im_enumerateChildrenConformingToProtocol:(id)protocol stop:(BOOL *)stop block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v17 = v9;
-  if (a4)
+  protocolCopy = protocol;
+  blockCopy = block;
+  v17 = blockCopy;
+  if (stop)
   {
-    if (!v8)
+    if (!protocolCopy)
     {
 LABEL_4:
-      (v17)[2](v17, self, a4);
+      (v17)[2](v17, self, stop);
       goto LABEL_5;
     }
   }
 
   else
   {
-    sub_1E6690(v9, v10, v11, v12, v13, v14, v15, v16);
-    if (!v8)
+    sub_1E6690(blockCopy, v10, v11, v12, v13, v14, v15, v16);
+    if (!protocolCopy)
     {
       goto LABEL_4;
     }
   }
 
-  if ([(UIViewController *)self conformsToProtocol:v8])
+  if ([(UIViewController *)self conformsToProtocol:protocolCopy])
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  if (!*a4)
+  if (!*stop)
   {
-    v18 = [(UIViewController *)self bc_childPresentedViewController];
-    [v18 __im_enumerateChildrenConformingToProtocol:v8 stop:a4 block:v17];
+    bc_childPresentedViewController = [(UIViewController *)self bc_childPresentedViewController];
+    [bc_childPresentedViewController __im_enumerateChildrenConformingToProtocol:protocolCopy stop:stop block:v17];
 
-    if (!*a4)
+    if (!*stop)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v19 = [(UIViewController *)self bc_childViewControllersForProtocolConformance];
-      v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      bc_childViewControllersForProtocolConformance = [(UIViewController *)self bc_childViewControllersForProtocolConformance];
+      v20 = [bc_childViewControllersForProtocolConformance countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v20)
       {
         v21 = v20;
@@ -1882,18 +1882,18 @@ LABEL_9:
         {
           if (*v25 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(bc_childViewControllersForProtocolConformance);
           }
 
-          [*(*(&v24 + 1) + 8 * v23) __im_enumerateChildrenConformingToProtocol:v8 stop:a4 block:v17];
-          if (*a4)
+          [*(*(&v24 + 1) + 8 * v23) __im_enumerateChildrenConformingToProtocol:protocolCopy stop:stop block:v17];
+          if (*stop)
           {
             break;
           }
 
           if (v21 == ++v23)
           {
-            v21 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v21 = [bc_childViewControllersForProtocolConformance countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v21)
             {
               goto LABEL_9;
@@ -1907,36 +1907,36 @@ LABEL_9:
   }
 }
 
-- (void)im_finishOngoingModalTransitionAnimations:(id)a3
+- (void)im_finishOngoingModalTransitionAnimations:(id)animations
 {
-  v4 = a3;
-  if (v4)
+  animationsCopy = animations;
+  if (animationsCopy)
   {
-    v5 = [(UIViewController *)self presentedViewController];
-    if ([v5 isBeingDismissed])
+    presentedViewController = [(UIViewController *)self presentedViewController];
+    if ([presentedViewController isBeingDismissed])
     {
     }
 
     else
     {
-      v6 = [(UIViewController *)self presentedViewController];
-      v7 = [v6 isBeingPresented];
+      presentedViewController2 = [(UIViewController *)self presentedViewController];
+      isBeingPresented = [presentedViewController2 isBeingPresented];
 
-      if (!v7)
+      if (!isBeingPresented)
       {
-        v4[2](v4);
+        animationsCopy[2](animationsCopy);
         goto LABEL_7;
       }
     }
 
-    v8 = [(UIViewController *)self presentedViewController];
-    v9 = [v8 transitionCoordinator];
+    presentedViewController3 = [(UIViewController *)self presentedViewController];
+    transitionCoordinator = [presentedViewController3 transitionCoordinator];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_64708;
     v10[3] = &unk_2CA0B8;
-    v11 = v4;
-    [v9 animateAlongsideTransition:&stru_2CA090 completion:v10];
+    v11 = animationsCopy;
+    [transitionCoordinator animateAlongsideTransition:&stru_2CA090 completion:v10];
   }
 
 LABEL_7:
@@ -1949,45 +1949,45 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(UIViewController *)self presentationController];
-  if (objc_opt_respondsToSelector() & 1) != 0 && ([v4 _transitioningTo])
+  presentationController = [(UIViewController *)self presentationController];
+  if (objc_opt_respondsToSelector() & 1) != 0 && ([presentationController _transitioningTo])
   {
-    v3 = 1;
+    _transitioningFrom = 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v3 = [v4 _transitioningFrom];
+    _transitioningFrom = [presentationController _transitioningFrom];
   }
 
   else
   {
-    v3 = 0;
+    _transitioningFrom = 0;
   }
 
-  return v3;
+  return _transitioningFrom;
 }
 
-- (id)bc_windowForViewControllerWithFallbackToKeyWindow:(BOOL)a3
+- (id)bc_windowForViewControllerWithFallbackToKeyWindow:(BOOL)window
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  windowCopy = window;
+  viewIfLoaded = [(UIViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (!v6)
+  if (!window)
   {
-    v7 = self;
-    v8 = [(UIViewController *)v7 parentViewController];
-    v9 = [(UIViewController *)v7 presentingViewController];
-    v10 = v8 != 0;
-    if (v8 | v9)
+    selfCopy = self;
+    parentViewController = [(UIViewController *)selfCopy parentViewController];
+    presentingViewController = [(UIViewController *)selfCopy presentingViewController];
+    v10 = parentViewController != 0;
+    if (parentViewController | presentingViewController)
     {
-      v11 = v9;
+      v11 = presentingViewController;
       do
       {
         if (v10)
         {
-          v12 = v8;
+          v12 = parentViewController;
         }
 
         else
@@ -1997,48 +1997,48 @@ LABEL_7:
 
         v13 = v12;
 
-        v14 = [(UIViewController *)v13 parentViewController];
+        parentViewController2 = [(UIViewController *)v13 parentViewController];
 
-        v15 = [(UIViewController *)v13 presentingViewController];
+        presentingViewController2 = [(UIViewController *)v13 presentingViewController];
 
-        v10 = v14 != 0;
-        v7 = v13;
-        v11 = v15;
-        v8 = v14;
+        v10 = parentViewController2 != 0;
+        selfCopy = v13;
+        v11 = presentingViewController2;
+        parentViewController = parentViewController2;
       }
 
-      while (v14 | v15);
+      while (parentViewController2 | presentingViewController2);
     }
 
     else
     {
-      v13 = v7;
+      v13 = selfCopy;
     }
 
-    v16 = [(UIViewController *)v13 viewIfLoaded];
-    v6 = [v16 window];
+    viewIfLoaded2 = [(UIViewController *)v13 viewIfLoaded];
+    window = [viewIfLoaded2 window];
 
-    if (v6)
+    if (window)
     {
       v17 = v13;
     }
 
     else
     {
-      v18 = [(UIViewController *)v13 presentedViewController];
-      if (v18)
+      presentedViewController = [(UIViewController *)v13 presentedViewController];
+      if (presentedViewController)
       {
-        v19 = v18;
+        presentedViewController2 = presentedViewController;
         do
         {
-          v17 = v19;
+          v17 = presentedViewController2;
 
-          v19 = [(UIViewController *)v17 presentedViewController];
+          presentedViewController2 = [(UIViewController *)v17 presentedViewController];
 
           v13 = v17;
         }
 
-        while (v19);
+        while (presentedViewController2);
       }
 
       else
@@ -2046,10 +2046,10 @@ LABEL_7:
         v17 = v13;
       }
 
-      v20 = [(UIViewController *)v17 viewIfLoaded];
-      v6 = [v20 window];
+      viewIfLoaded3 = [(UIViewController *)v17 viewIfLoaded];
+      window = [viewIfLoaded3 window];
 
-      if (!v6 && v3)
+      if (!window && windowCopy)
       {
         v21 = BCSceneLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -2058,46 +2058,46 @@ LABEL_7:
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "No window in view hierarchy, falling back to use UIApplication keyWindow", v23, 2u);
         }
 
-        v6 = +[UIWindow _applicationKeyWindow];
+        window = +[UIWindow _applicationKeyWindow];
       }
     }
   }
 
-  return v6;
+  return window;
 }
 
-- (void)bc_presentViewController:(id)a3 animated:(BOOL)a4 tintColor:(id)a5 completion:(id)a6
+- (void)bc_presentViewController:(id)controller animated:(BOOL)animated tintColor:(id)color completion:(id)completion
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(UIViewController *)self bc_windowForViewController];
-  v14 = [v13 tintColor];
-  [v13 setTintColor:v11];
+  animatedCopy = animated;
+  completionCopy = completion;
+  colorCopy = color;
+  controllerCopy = controller;
+  bc_windowForViewController = [(UIViewController *)self bc_windowForViewController];
+  tintColor = [bc_windowForViewController tintColor];
+  [bc_windowForViewController setTintColor:colorCopy];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_64AF0;
   v18[3] = &unk_2C7B30;
-  v19 = v13;
-  v20 = v14;
-  v21 = v10;
-  v15 = v10;
-  v16 = v14;
-  v17 = v13;
-  [(UIViewController *)self presentViewController:v12 animated:v7 completion:v18];
+  v19 = bc_windowForViewController;
+  v20 = tintColor;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = tintColor;
+  v17 = bc_windowForViewController;
+  [(UIViewController *)self presentViewController:controllerCopy animated:animatedCopy completion:v18];
 }
 
 - (id)im_theme
 {
   if ((objc_opt_respondsToSelector() & 1) == 0 || ([(UIViewController *)self theme], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(UIViewController *)self parentViewController];
-    v5 = v4;
-    if (v4)
+    parentViewController = [(UIViewController *)self parentViewController];
+    v5 = parentViewController;
+    if (parentViewController)
     {
-      [v4 im_theme];
+      [parentViewController im_theme];
     }
 
     else
@@ -2115,23 +2115,23 @@ LABEL_7:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_6:
-    v4 = [(UIViewController *)self parentViewController];
-    v5 = v4;
-    if (v4)
+    parentViewController = [(UIViewController *)self parentViewController];
+    v5 = parentViewController;
+    if (parentViewController)
     {
-      [v4 im_bookshelfTheme];
+      [parentViewController im_bookshelfTheme];
     }
 
     else
     {
       [IMTheme themeWithIdentifier:kIMThemeIdentifierBookshelfTheme[0]];
     }
-    v3 = ;
+    theme = ;
 
     goto LABEL_10;
   }
 
-  v3 = [(UIViewController *)self theme];
+  theme = [(UIViewController *)self theme];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2139,14 +2139,14 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!theme)
   {
     goto LABEL_6;
   }
 
 LABEL_10:
 
-  return v3;
+  return theme;
 }
 
 - (void)im_notifyThemeDidChange
@@ -2156,8 +2156,8 @@ LABEL_10:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(UIViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2169,7 +2169,7 @@ LABEL_10:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) im_notifyThemeDidChange];
@@ -2177,23 +2177,23 @@ LABEL_10:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)im_traitCollectionAdjustedForMedusaLevels:(id)a3
+- (id)im_traitCollectionAdjustedForMedusaLevels:(id)levels
 {
-  v4 = [a3 traitCollectionByModifyingTraits:&stru_2CAFF8];
+  v4 = [levels traitCollectionByModifyingTraits:&stru_2CAFF8];
   if (isPad())
   {
-    v5 = [(UIViewController *)self bc_windowForViewController];
-    v6 = v5;
-    if (v5)
+    bc_windowForViewController = [(UIViewController *)self bc_windowForViewController];
+    v6 = bc_windowForViewController;
+    if (bc_windowForViewController)
     {
-      [v5 bounds];
+      [bc_windowForViewController bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -2222,29 +2222,29 @@ LABEL_10:
   return v4;
 }
 
-- (void)bc_notifyLightLevelDidChange:(int64_t)a3
+- (void)bc_notifyLightLevelDidChange:(int64_t)change
 {
   v5 = BUProtocolCast();
   v6 = v5;
   if (v5)
   {
-    [v5 lightLevelDidChange:a3];
+    [v5 lightLevelDidChange:change];
   }
 
-  v7 = [(UIViewController *)self presentedViewController];
+  presentedViewController = [(UIViewController *)self presentedViewController];
 
-  if (v7)
+  if (presentedViewController)
   {
-    v8 = [(UIViewController *)self presentedViewController];
-    [v8 bc_notifyLightLevelDidChange:a3];
+    presentedViewController2 = [(UIViewController *)self presentedViewController];
+    [presentedViewController2 bc_notifyLightLevelDidChange:change];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(UIViewController *)self childViewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  v10 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2256,15 +2256,15 @@ LABEL_10:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childViewControllers);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) bc_notifyLightLevelDidChange:a3];
+        [*(*(&v14 + 1) + 8 * v13) bc_notifyLightLevelDidChange:change];
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [childViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -2273,100 +2273,100 @@ LABEL_10:
 
 - (BCEngagementProvider)bc_engagementProvider
 {
-  v3 = objc_getAssociatedObject(self, off_33E670);
-  if (!v3)
+  bc_engagementProviderSource = objc_getAssociatedObject(self, off_33E670);
+  if (!bc_engagementProviderSource)
   {
-    v3 = [(UIViewController *)self bc_engagementProviderSource];
+    bc_engagementProviderSource = [(UIViewController *)self bc_engagementProviderSource];
 
-    if (v3)
+    if (bc_engagementProviderSource)
     {
-      v4 = [(UIViewController *)self bc_engagementProviderSource];
-      v3 = [v4 bc_engagementProvider];
+      bc_engagementProviderSource2 = [(UIViewController *)self bc_engagementProviderSource];
+      bc_engagementProviderSource = [bc_engagementProviderSource2 bc_engagementProvider];
     }
   }
 
-  return v3;
+  return bc_engagementProviderSource;
 }
 
 - (BCEngagementProvider)bc_effectiveEngagementProvider
 {
-  v2 = [(UIViewController *)self ba_effectiveViewControllerForEngagementProvider];
-  v3 = [v2 bc_engagementProvider];
+  ba_effectiveViewControllerForEngagementProvider = [(UIViewController *)self ba_effectiveViewControllerForEngagementProvider];
+  bc_engagementProvider = [ba_effectiveViewControllerForEngagementProvider bc_engagementProvider];
 
-  return v3;
+  return bc_engagementProvider;
 }
 
 - (id)ba_effectiveViewControllerForEngagementProvider
 {
-  v3 = [(UIViewController *)self bc_engagementProvider];
+  bc_engagementProvider = [(UIViewController *)self bc_engagementProvider];
 
-  if (v3)
+  if (bc_engagementProvider)
   {
-    v4 = self;
+    selfCopy = self;
     goto LABEL_15;
   }
 
-  v5 = [(UIViewController *)self parentViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
-    v6 = [(UIViewController *)self parentViewController];
-    v4 = [v6 _ba_effectiveViewControllerForEngagementProviderIgnoringViewController:self];
+    parentViewController2 = [(UIViewController *)self parentViewController];
+    selfCopy = [parentViewController2 _ba_effectiveViewControllerForEngagementProviderIgnoringViewController:self];
   }
 
   else
   {
-    v7 = [(UIViewController *)self presentingViewController];
+    presentingViewController = [(UIViewController *)self presentingViewController];
 
-    if (!v7)
+    if (!presentingViewController)
     {
-      v4 = 0;
+      selfCopy = 0;
       goto LABEL_15;
     }
 
-    v8 = [(UIViewController *)self presentingViewController];
-    v9 = [v8 bc_deepestVisibleChildViewControllerIncludePresented:0];
+    presentingViewController2 = [(UIViewController *)self presentingViewController];
+    v9 = [presentingViewController2 bc_deepestVisibleChildViewControllerIncludePresented:0];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      presentingViewController3 = v9;
     }
 
     else
     {
-      v11 = [(UIViewController *)self presentingViewController];
+      presentingViewController3 = [(UIViewController *)self presentingViewController];
     }
 
-    v6 = v11;
+    parentViewController2 = presentingViewController3;
 
     objc_opt_class();
-    v12 = [v6 presentedViewController];
+    presentedViewController = [parentViewController2 presentedViewController];
     v13 = BUDynamicCast();
 
-    if (v13 == self || (-[UIViewController topCardSetViewController](v13, "topCardSetViewController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 currentCardViewController], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "topContentViewController"), v16 = objc_claimAutoreleasedReturnValue(), v15, v14, objc_msgSend(v16, "_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:", self), v4 = objc_claimAutoreleasedReturnValue(), v16, !v4))
+    if (v13 == self || (-[UIViewController topCardSetViewController](v13, "topCardSetViewController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 currentCardViewController], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "topContentViewController"), v16 = objc_claimAutoreleasedReturnValue(), v15, v14, objc_msgSend(v16, "_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:", self), selfCopy = objc_claimAutoreleasedReturnValue(), v16, !selfCopy))
     {
-      v4 = [v6 _ba_effectiveViewControllerForEngagementProviderIgnoringViewController:self];
+      selfCopy = [parentViewController2 _ba_effectiveViewControllerForEngagementProviderIgnoringViewController:self];
     }
   }
 
 LABEL_15:
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:(id)a3
+- (id)_ba_effectiveViewControllerForEngagementProviderIgnoringViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIViewController *)self viewControllers];
+    selfCopy = [(UIViewController *)self viewControllers];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [(UIViewController *)v5 reverseObjectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    reverseObjectEnumerator = [(UIViewController *)selfCopy reverseObjectEnumerator];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2377,20 +2377,20 @@ LABEL_15:
         {
           if (*v28 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v11 bc_engagementProvider];
+          bc_engagementProvider = [v11 bc_engagementProvider];
 
-          if (v11 != v4 && v12 != 0)
+          if (v11 != controllerCopy && bc_engagementProvider != 0)
           {
-            v23 = v11;
+            bc_engagementProvider2 = v11;
             goto LABEL_30;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v8);
@@ -2402,29 +2402,29 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = self;
-    v14 = [(UIViewController *)v5 lastNavigationType];
-    if (!v14)
+    selfCopy = self;
+    lastNavigationType = [(UIViewController *)selfCopy lastNavigationType];
+    if (!lastNavigationType)
     {
-      v23 = 0;
+      bc_engagementProvider2 = 0;
       goto LABEL_31;
     }
 
-    v15 = v14;
-    if (v14 == &dword_0 + 1)
+    v15 = lastNavigationType;
+    if (lastNavigationType == &dword_0 + 1)
     {
-      v6 = [(UIViewController *)v5 cardStackViewController];
-      v16 = [v6 childViewControllers];
-      v17 = [v16 indexOfObject:v5];
+      reverseObjectEnumerator = [(UIViewController *)selfCopy cardStackViewController];
+      childViewControllers = [reverseObjectEnumerator childViewControllers];
+      v17 = [childViewControllers indexOfObject:selfCopy];
 
       if (!v17)
       {
 LABEL_22:
-        v23 = 0;
+        bc_engagementProvider2 = 0;
 LABEL_30:
 
 LABEL_31:
-        if (v23)
+        if (bc_engagementProvider2)
         {
           goto LABEL_33;
         }
@@ -2433,42 +2433,42 @@ LABEL_31:
       }
 
       objc_opt_class();
-      v18 = [v6 childViewControllers];
-      v19 = [v18 objectAtIndexedSubscript:v17 - 1];
-      v20 = BUDynamicCast();
+      childViewControllers2 = [reverseObjectEnumerator childViewControllers];
+      v19 = [childViewControllers2 objectAtIndexedSubscript:v17 - 1];
+      topContentViewController2 = BUDynamicCast();
 
-      v21 = [v20 currentCardViewController];
-      v22 = [v21 topContentViewController];
+      currentCardViewController = [topContentViewController2 currentCardViewController];
+      topContentViewController = [currentCardViewController topContentViewController];
 
-      v23 = [v22 bc_engagementProvider];
+      bc_engagementProvider2 = [topContentViewController bc_engagementProvider];
 
-      if (v23)
+      if (bc_engagementProvider2)
       {
-        v23 = v22;
+        bc_engagementProvider2 = topContentViewController;
       }
     }
 
     else
     {
-      v24 = [(UIViewController *)v5 focusedIndex];
+      focusedIndex = [(UIViewController *)selfCopy focusedIndex];
       if (v15 == &dword_0 + 2)
       {
-        v25 = v24 + 1;
+        v25 = focusedIndex + 1;
       }
 
       else
       {
-        v25 = v24 - 1;
+        v25 = focusedIndex - 1;
       }
 
-      v6 = [(UIViewController *)v5 cardViewControllerAtIndex:v25];
-      v20 = [v6 topContentViewController];
-      v23 = [v20 bc_engagementProvider];
+      reverseObjectEnumerator = [(UIViewController *)selfCopy cardViewControllerAtIndex:v25];
+      topContentViewController2 = [reverseObjectEnumerator topContentViewController];
+      bc_engagementProvider2 = [topContentViewController2 bc_engagementProvider];
 
-      if (v23)
+      if (bc_engagementProvider2)
       {
-        v20 = v20;
-        v23 = v20;
+        topContentViewController2 = topContentViewController2;
+        bc_engagementProvider2 = topContentViewController2;
       }
     }
 
@@ -2476,10 +2476,10 @@ LABEL_31:
   }
 
 LABEL_32:
-  v23 = [(UIViewController *)self ba_effectiveViewControllerForEngagementProvider];
+  bc_engagementProvider2 = [(UIViewController *)self ba_effectiveViewControllerForEngagementProvider];
 LABEL_33:
 
-  return v23;
+  return bc_engagementProvider2;
 }
 
 - (id)p_setupStandardUISearchController
@@ -2487,10 +2487,10 @@ LABEL_33:
   v3 = [[UISearchController alloc] initWithSearchResultsController:0];
   [v3 setDimsBackgroundDuringPresentation:0];
   [v3 setHidesNavigationBarDuringPresentation:0];
-  v4 = [v3 searchBar];
-  [v4 _setAutoDisableCancelButton:0];
+  searchBar = [v3 searchBar];
+  [searchBar _setAutoDisableCancelButton:0];
 
-  v5 = [(UIViewController *)self navigationItem];
+  navigationItem = [(UIViewController *)self navigationItem];
   if (_UISolariumEnabled())
   {
     if (isPhone())
@@ -2509,12 +2509,12 @@ LABEL_33:
     v6 = 2;
   }
 
-  [v5 setPreferredSearchBarPlacement:v6];
-  v7 = [(UIViewController *)self navigationItem];
-  [v7 setSearchController:v3];
+  [navigationItem setPreferredSearchBarPlacement:v6];
+  navigationItem2 = [(UIViewController *)self navigationItem];
+  [navigationItem2 setSearchController:v3];
 
-  v8 = [(UIViewController *)self navigationItem];
-  [v8 setHidesSearchBarWhenScrolling:0];
+  navigationItem3 = [(UIViewController *)self navigationItem];
+  [navigationItem3 setHidesSearchBarWhenScrolling:0];
 
   return v3;
 }
@@ -2552,14 +2552,14 @@ LABEL_33:
 {
   if ([(UIViewController *)self isViewLoaded])
   {
-    v3 = [(UIViewController *)self view];
-    [v3 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
   }
 
   else
   {
-    v3 = +[UIScreen mainScreen];
-    [v3 bounds];
+    view = +[UIScreen mainScreen];
+    [view bounds];
   }
 
   v8 = v4;
@@ -2582,8 +2582,8 @@ LABEL_33:
 {
   if ([(UIViewController *)self isViewLoaded])
   {
-    v3 = [(UIViewController *)self view];
-    [v3 safeAreaInsets];
+    view = [(UIViewController *)self view];
+    [view safeAreaInsets];
     top = v4;
     left = v6;
     bottom = v8;
@@ -2611,10 +2611,10 @@ LABEL_33:
 
 - (_TtC13BookAnalytics9BATracker)ba_effectiveAnalyticsTracker
 {
-  v2 = [(UIViewController *)self ba_effectiveViewControllerForAnalyticsTracking];
-  v3 = [v2 ba_analyticsTracker];
+  ba_effectiveViewControllerForAnalyticsTracking = [(UIViewController *)self ba_effectiveViewControllerForAnalyticsTracking];
+  ba_analyticsTracker = [ba_effectiveViewControllerForAnalyticsTracking ba_analyticsTracker];
 
-  return v3;
+  return ba_analyticsTracker;
 }
 
 - (id)ba_effectiveViewControllerForAnalyticsTracking
@@ -2668,19 +2668,19 @@ LABEL_33:
   return v6;
 }
 
-- (id)_ba_effectiveViewControllerForAnalyticsTrackingIgnoringViewController:(id)a3
+- (id)_ba_effectiveViewControllerForAnalyticsTrackingIgnoringViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIViewController *)self viewControllers];
+    selfCopy = [(UIViewController *)self viewControllers];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [(UIViewController *)v5 reverseObjectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    reverseObjectEnumerator = [(UIViewController *)selfCopy reverseObjectEnumerator];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2691,20 +2691,20 @@ LABEL_33:
         {
           if (*v28 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
-          v12 = [v11 ba_analyticsTracker];
+          ba_analyticsTracker = [v11 ba_analyticsTracker];
 
-          if (v11 != v4 && v12 != 0)
+          if (v11 != controllerCopy && ba_analyticsTracker != 0)
           {
-            v23 = v11;
+            ba_analyticsTracker2 = v11;
             goto LABEL_30;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v8);
@@ -2716,29 +2716,29 @@ LABEL_33:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = self;
-    v14 = [(UIViewController *)v5 lastNavigationType];
-    if (!v14)
+    selfCopy = self;
+    lastNavigationType = [(UIViewController *)selfCopy lastNavigationType];
+    if (!lastNavigationType)
     {
-      v23 = 0;
+      ba_analyticsTracker2 = 0;
       goto LABEL_31;
     }
 
-    v15 = v14;
-    if (v14 == &dword_0 + 1)
+    v15 = lastNavigationType;
+    if (lastNavigationType == &dword_0 + 1)
     {
-      v6 = [(UIViewController *)v5 cardStackViewController];
-      v16 = [v6 childViewControllers];
-      v17 = [v16 indexOfObject:v5];
+      reverseObjectEnumerator = [(UIViewController *)selfCopy cardStackViewController];
+      childViewControllers = [reverseObjectEnumerator childViewControllers];
+      v17 = [childViewControllers indexOfObject:selfCopy];
 
       if (!v17)
       {
 LABEL_22:
-        v23 = 0;
+        ba_analyticsTracker2 = 0;
 LABEL_30:
 
 LABEL_31:
-        if (v23)
+        if (ba_analyticsTracker2)
         {
           goto LABEL_33;
         }
@@ -2747,42 +2747,42 @@ LABEL_31:
       }
 
       objc_opt_class();
-      v18 = [v6 childViewControllers];
-      v19 = [v18 objectAtIndexedSubscript:v17 - 1];
-      v20 = BUDynamicCast();
+      childViewControllers2 = [reverseObjectEnumerator childViewControllers];
+      v19 = [childViewControllers2 objectAtIndexedSubscript:v17 - 1];
+      topContentViewController2 = BUDynamicCast();
 
-      v21 = [v20 currentCardViewController];
-      v22 = [v21 topContentViewController];
+      currentCardViewController = [topContentViewController2 currentCardViewController];
+      topContentViewController = [currentCardViewController topContentViewController];
 
-      v23 = [v22 ba_analyticsTracker];
+      ba_analyticsTracker2 = [topContentViewController ba_analyticsTracker];
 
-      if (v23)
+      if (ba_analyticsTracker2)
       {
-        v23 = v22;
+        ba_analyticsTracker2 = topContentViewController;
       }
     }
 
     else
     {
-      v24 = [(UIViewController *)v5 focusedIndex];
+      focusedIndex = [(UIViewController *)selfCopy focusedIndex];
       if (v15 == &dword_0 + 2)
       {
-        v25 = v24 + 1;
+        v25 = focusedIndex + 1;
       }
 
       else
       {
-        v25 = v24 - 1;
+        v25 = focusedIndex - 1;
       }
 
-      v6 = [(UIViewController *)v5 cardViewControllerAtIndex:v25];
-      v20 = [v6 topContentViewController];
-      v23 = [v20 ba_analyticsTracker];
+      reverseObjectEnumerator = [(UIViewController *)selfCopy cardViewControllerAtIndex:v25];
+      topContentViewController2 = [reverseObjectEnumerator topContentViewController];
+      ba_analyticsTracker2 = [topContentViewController2 ba_analyticsTracker];
 
-      if (v23)
+      if (ba_analyticsTracker2)
       {
-        v20 = v20;
-        v23 = v20;
+        topContentViewController2 = topContentViewController2;
+        ba_analyticsTracker2 = topContentViewController2;
       }
     }
 
@@ -2790,34 +2790,34 @@ LABEL_31:
   }
 
 LABEL_32:
-  v23 = [(UIViewController *)self ba_effectiveViewControllerForAnalyticsTracking];
+  ba_analyticsTracker2 = [(UIViewController *)self ba_effectiveViewControllerForAnalyticsTracking];
 LABEL_33:
 
-  return v23;
+  return ba_analyticsTracker2;
 }
 
-- (id)ba_setupNewAnalyticsTrackerWithName:(id)a3
+- (id)ba_setupNewAnalyticsTrackerWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self ba_analyticsTracker];
-  if (v5)
+  nameCopy = name;
+  ba_analyticsTracker = [(UIViewController *)self ba_analyticsTracker];
+  if (ba_analyticsTracker)
   {
     v6 = BALog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 name];
+      name = [ba_analyticsTracker name];
       v13 = 138412546;
-      v14 = v7;
+      v14 = name;
       v15 = 2112;
-      v16 = v4;
+      v16 = nameCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "ba_setupAnalyticsTrackerWithName: replacing existing tracker: %@ with: %@", &v13, 0x16u);
     }
   }
 
-  v8 = [(UIViewController *)self ba_overrideParentAnalyticsTracker];
-  if (v8 || ([(UIViewController *)self ba_effectiveAnalyticsTracker], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  ba_overrideParentAnalyticsTracker = [(UIViewController *)self ba_overrideParentAnalyticsTracker];
+  if (ba_overrideParentAnalyticsTracker || ([(UIViewController *)self ba_effectiveAnalyticsTracker], (ba_overrideParentAnalyticsTracker = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v8;
+    v9 = ba_overrideParentAnalyticsTracker;
   }
 
   else
@@ -2831,7 +2831,7 @@ LABEL_33:
     v9 = 0;
   }
 
-  v10 = [v9 chainWithName:v4];
+  v10 = [v9 chainWithName:nameCopy];
 
   [(UIViewController *)self ba_setAnalyticsTracker:v10];
 
@@ -2845,50 +2845,50 @@ LABEL_33:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    navigationController = v3;
   }
 
   else
   {
-    v5 = [(UIViewController *)self navigationController];
+    navigationController = [(UIViewController *)self navigationController];
   }
 
-  v6 = v5;
+  v6 = navigationController;
 
-  v7 = self;
-  v8 = v7;
-  v9 = v7;
-  if (!v7 || (v9 = v7, v6 == v7))
+  selfCopy = self;
+  v8 = selfCopy;
+  parentViewController = selfCopy;
+  if (!selfCopy || (parentViewController = selfCopy, v6 == selfCopy))
   {
 LABEL_10:
-    v12 = [(UIViewController *)v8 bc_childViewControllerForNavBarVisibility];
-    v13 = [v12 bc_effectiveViewControllerForNavBarVisibility];
+    bc_childViewControllerForNavBarVisibility = [(UIViewController *)v8 bc_childViewControllerForNavBarVisibility];
+    bc_effectiveViewControllerForNavBarVisibility = [bc_childViewControllerForNavBarVisibility bc_effectiveViewControllerForNavBarVisibility];
 
-    if (!v13)
+    if (!bc_effectiveViewControllerForNavBarVisibility)
     {
-      v13 = v8;
+      bc_effectiveViewControllerForNavBarVisibility = v8;
     }
 
-    v10 = v9;
+    v10 = parentViewController;
   }
 
   else
   {
-    v10 = v7;
+    v10 = selfCopy;
     while (1)
     {
-      v11 = [v10 bc_overrideAncestorViewControllerForNavBarVisibility];
-      if (v11)
+      bc_overrideAncestorViewControllerForNavBarVisibility = [v10 bc_overrideAncestorViewControllerForNavBarVisibility];
+      if (bc_overrideAncestorViewControllerForNavBarVisibility)
       {
         break;
       }
 
-      v9 = [v10 parentViewController];
+      parentViewController = [v10 parentViewController];
 
-      if (v9)
+      if (parentViewController)
       {
-        v10 = v9;
-        if (v9 != v6)
+        v10 = parentViewController;
+        if (parentViewController != v6)
         {
           continue;
         }
@@ -2897,10 +2897,10 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v13 = v11;
+    bc_effectiveViewControllerForNavBarVisibility = bc_overrideAncestorViewControllerForNavBarVisibility;
   }
 
-  return v13;
+  return bc_effectiveViewControllerForNavBarVisibility;
 }
 
 - (BOOL)bc_navBarVisible
@@ -2909,20 +2909,20 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)bc_setNavBarVisible:(BOOL)a3
+- (void)bc_setNavBarVisible:(BOOL)visible
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:visible];
   objc_setAssociatedObject(self, &off_2CDAA8, v4, &dword_0 + 1);
 }
 
@@ -2940,39 +2940,39 @@ LABEL_10:
   return [(UIViewController *)self bc_ancestorViewControllerOfClass:v3 allowPresentingParent:1];
 }
 
-- (id)bc_ancestorViewControllerOfClass:(Class)a3 allowPresentingParent:(BOOL)a4
+- (id)bc_ancestorViewControllerOfClass:(Class)class allowPresentingParent:(BOOL)parent
 {
-  v4 = a4;
-  v7 = [(UIViewController *)self parentViewController];
-  v8 = v7;
-  if (!v4 || v7)
+  parentCopy = parent;
+  parentViewController = [(UIViewController *)self parentViewController];
+  presentingViewController3 = parentViewController;
+  if (!parentCopy || parentViewController)
   {
-    if (!v4)
+    if (!parentCopy)
     {
-      v9 = [(UIViewController *)self presentingViewController];
+      presentingViewController = [(UIViewController *)self presentingViewController];
 
-      if (v8 == v9)
+      if (presentingViewController3 == presentingViewController)
       {
-        v10 = [(UIViewController *)self presentingViewController];
+        presentingViewController2 = [(UIViewController *)self presentingViewController];
 
-        v8 = v10;
+        presentingViewController3 = presentingViewController2;
       }
     }
   }
 
   else
   {
-    v8 = [(UIViewController *)self presentingViewController];
+    presentingViewController3 = [(UIViewController *)self presentingViewController];
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = presentingViewController3;
   }
 
   else
   {
-    v11 = [v8 bc_ancestorViewControllerOfClass:a3 allowPresentingParent:v4];
+    v11 = [presentingViewController3 bc_ancestorViewControllerOfClass:class allowPresentingParent:parentCopy];
   }
 
   v12 = v11;
@@ -2982,44 +2982,44 @@ LABEL_10:
 
 - (id)im_effectiveViewControllerForTabBarVisibility
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = v2;
+    v4 = selfCopy;
     while (1)
     {
-      v5 = [v4 im_overrideAncestorViewControllerForTabBarVisibility];
-      if (v5)
+      im_overrideAncestorViewControllerForTabBarVisibility = [v4 im_overrideAncestorViewControllerForTabBarVisibility];
+      if (im_overrideAncestorViewControllerForTabBarVisibility)
       {
         break;
       }
 
-      v6 = [v4 parentViewController];
+      parentViewController = [v4 parentViewController];
 
-      v4 = v6;
-      if (!v6)
+      v4 = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_5;
       }
     }
 
-    v8 = v5;
+    im_effectiveViewControllerForTabBarVisibility = im_overrideAncestorViewControllerForTabBarVisibility;
   }
 
   else
   {
 LABEL_5:
-    v7 = [(UIViewController *)v3 im_childViewControllerForTabBarVisibility];
-    v8 = [v7 im_effectiveViewControllerForTabBarVisibility];
+    im_childViewControllerForTabBarVisibility = [(UIViewController *)v3 im_childViewControllerForTabBarVisibility];
+    im_effectiveViewControllerForTabBarVisibility = [im_childViewControllerForTabBarVisibility im_effectiveViewControllerForTabBarVisibility];
 
-    if (!v8)
+    if (!im_effectiveViewControllerForTabBarVisibility)
     {
-      v8 = v3;
+      im_effectiveViewControllerForTabBarVisibility = v3;
     }
   }
 
-  return v8;
+  return im_effectiveViewControllerForTabBarVisibility;
 }
 
 - (BOOL)im_tabBarVisible
@@ -3028,41 +3028,41 @@ LABEL_5:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)im_setTabBarVisible:(BOOL)a3
+- (void)im_setTabBarVisible:(BOOL)visible
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:visible];
   objc_setAssociatedObject(self, &off_2CE5C0, v4, &dword_0 + 1);
 }
 
 - (id)bc_effectiveCardPresentingViewController
 {
-  v3 = [(UIViewController *)self bc_effectiveAncestorOverrideCardPresentingViewController];
-  if (!v3)
+  selfCopy = [(UIViewController *)self bc_effectiveAncestorOverrideCardPresentingViewController];
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  v4 = [(UIViewController *)v3 bc_childCardPresentingViewController];
-  v5 = v4;
-  if (v4)
+  bc_childCardPresentingViewController = [(UIViewController *)selfCopy bc_childCardPresentingViewController];
+  v5 = bc_childCardPresentingViewController;
+  if (bc_childCardPresentingViewController)
   {
-    v6 = v4;
+    v6 = bc_childCardPresentingViewController;
   }
 
   else
   {
-    v6 = v3;
+    v6 = selfCopy;
   }
 
   v7 = v6;
@@ -3072,56 +3072,56 @@ LABEL_5:
 
 - (id)bc_effectiveAncestorOverrideCardPresentingViewController
 {
-  v3 = [(UIViewController *)self parentViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [(UIViewController *)self parentViewController];
+    parentViewController2 = [(UIViewController *)self parentViewController];
     goto LABEL_5;
   }
 
-  v5 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v4 = [(UIViewController *)self presentingViewController];
+    parentViewController2 = [(UIViewController *)self presentingViewController];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 bc_effectiveAncestorOverrideCardPresentingViewController];
+    v6 = parentViewController2;
+    bc_effectiveAncestorOverrideCardPresentingViewController = [parentViewController2 bc_effectiveAncestorOverrideCardPresentingViewController];
 
-    if (v7)
+    if (bc_effectiveAncestorOverrideCardPresentingViewController)
     {
       goto LABEL_7;
     }
   }
 
-  v7 = [(UIViewController *)self bc_ancestorOverrideCardPresentingViewController];
+  bc_effectiveAncestorOverrideCardPresentingViewController = [(UIViewController *)self bc_ancestorOverrideCardPresentingViewController];
 LABEL_7:
 
-  return v7;
+  return bc_effectiveAncestorOverrideCardPresentingViewController;
 }
 
-- (void)bc_presentCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)bc_presentCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  animatedCopy = animated;
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_176D7C;
   v19 = &unk_2CC630;
-  v20 = self;
-  v21 = a3;
-  v23 = v6;
-  v22 = a5;
-  v8 = v22;
-  v9 = v21;
+  selfCopy = self;
+  controllerCopy = controller;
+  v23 = animatedCopy;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = controllerCopy;
   v10 = objc_retainBlock(&v16);
   v11 = [(UIViewController *)self presentedViewController:v16];
-  v12 = [v11 presentingViewController];
+  presentingViewController = [v11 presentingViewController];
 
-  if (v12 == self)
+  if (presentingViewController == self)
   {
-    v13 = [(UIViewController *)self presentedViewController];
-    [v13 dismissViewControllerAnimated:v6 completion:v10];
+    presentedViewController = [(UIViewController *)self presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:animatedCopy completion:v10];
   }
 
   else
@@ -3129,33 +3129,33 @@ LABEL_7:
     (v10[2])(v10);
   }
 
-  v14 = [(UIViewController *)self presentingViewController];
-  v15 = [v14 view];
-  [v15 setAccessibilityElementsHidden:1];
+  presentingViewController2 = [(UIViewController *)self presentingViewController];
+  view = [presentingViewController2 view];
+  [view setAccessibilityElementsHidden:1];
 }
 
-- (void)bc_dismissCardViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)bc_dismissCardViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   [(UIViewController *)self setValue:&__kCFBooleanFalse forKey:@"bc_isPresentingCardStack"];
-  v10 = [(UIViewController *)self presentingViewController];
-  v11 = [v10 view];
-  [v11 setAccessibilityElementsHidden:0];
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  view = [presentingViewController view];
+  [view setAccessibilityElementsHidden:0];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_176ED4;
   v13[3] = &unk_2C8398;
-  v14 = v8;
-  v12 = v8;
-  [v9 dismissViewControllerAnimated:v5 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [controllerCopy dismissViewControllerAnimated:animatedCopy completion:v13];
 }
 
-- (void)bc_closeToAssetWithCardStackViewController:(id)a3 completion:(id)a4
+- (void)bc_closeToAssetWithCardStackViewController:(id)controller completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -3164,9 +3164,9 @@ LABEL_7:
   }
 }
 
-- (void)bc_closeAssetWithCardStackViewController:(id)a3 completion:(id)a4
+- (void)bc_closeAssetWithCardStackViewController:(id)controller completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;
@@ -3180,52 +3180,52 @@ LABEL_7:
   objc_opt_class();
   v3 = objc_getAssociatedObject(self, off_33F708);
   v4 = BUDynamicCast();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setBc_isPresentingCardStack:(BOOL)a3
+- (void)setBc_isPresentingCardStack:(BOOL)stack
 {
   v4 = off_33F708;
-  v5 = [NSNumber numberWithBool:a3];
+  v5 = [NSNumber numberWithBool:stack];
   objc_setAssociatedObject(self, v4, v5, &dword_0 + 1);
 }
 
-- (void)bc_dismissIfSafeAnimated:(BOOL)a3
+- (void)bc_dismissIfSafeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
-  v5 = [(UIViewController *)v4 presentedViewController];
-  if (v5)
+  animatedCopy = animated;
+  selfCopy = self;
+  presentedViewController = [(UIViewController *)selfCopy presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
+    v6 = presentedViewController;
     while (!swift_dynamicCastObjCProtocolConditional())
     {
-      v7 = [(UIViewController *)v6 presentedViewController];
+      presentedViewController2 = [(UIViewController *)v6 presentedViewController];
 
-      v6 = v7;
-      if (!v7)
+      v6 = presentedViewController2;
+      if (!presentedViewController2)
       {
         goto LABEL_5;
       }
     }
 
-    v10 = v4;
-    v4 = v6;
+    presentingViewController = selfCopy;
+    selfCopy = v6;
     goto LABEL_9;
   }
 
 LABEL_5:
-  v8 = [(UIViewController *)v4 presentedViewController];
-  if (v8)
+  presentedViewController3 = [(UIViewController *)selfCopy presentedViewController];
+  if (presentedViewController3)
   {
-    v9 = v8;
-    v10 = [(UIViewController *)v8 presentingViewController];
+    v9 = presentedViewController3;
+    presentingViewController = [(UIViewController *)presentedViewController3 presentingViewController];
 
-    if (v10)
+    if (presentingViewController)
     {
-      [(UIViewController *)v10 dismissViewControllerAnimated:v3 completion:0];
+      [(UIViewController *)presentingViewController dismissViewControllerAnimated:animatedCopy completion:0];
 LABEL_9:
     }
   }

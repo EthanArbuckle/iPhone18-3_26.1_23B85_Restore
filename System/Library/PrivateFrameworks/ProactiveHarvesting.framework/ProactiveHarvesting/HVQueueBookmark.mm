@@ -13,31 +13,31 @@
   v14[0] = v3;
   v13[1] = @"pastBookmark";
   v4 = [(BMBookmark *)self->_pastBookmark debugDescription];
-  v5 = v4;
+  null = v4;
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[1] = v5;
+  v14[1] = null;
   v13[2] = @"futureCutoff";
   futureCutoff = self->_futureCutoff;
-  v7 = futureCutoff;
+  null2 = futureCutoff;
   if (!futureCutoff)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[2] = v7;
+  v14[2] = null2;
   v13[3] = @"futureBookmark";
   v8 = [(BMBookmark *)self->_futureBookmark debugDescription];
-  v9 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[3] = v9;
+  v14[3] = null3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:4];
   if (!v8)
   {

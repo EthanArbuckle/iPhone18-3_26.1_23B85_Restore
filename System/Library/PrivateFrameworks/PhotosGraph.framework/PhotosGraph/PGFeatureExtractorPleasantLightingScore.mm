@@ -1,19 +1,19 @@
 @interface PGFeatureExtractorPleasantLightingScore
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorPleasantLightingScore
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 aestheticProperties];
-  [v5 pleasantLightingScore];
+  aestheticProperties = [entity aestheticProperties];
+  [aestheticProperties pleasantLightingScore];
   v7 = v6;
   v8 = MEMORY[0x277D22C40];
-  v9 = [(PGFeatureExtractorPleasantLightingScore *)self featureLength];
+  featureLength = [(PGFeatureExtractorPleasantLightingScore *)self featureLength];
   LODWORD(v10) = v7;
-  v11 = [v8 vectorRepeatingFloat:v9 count:v10];
+  v11 = [v8 vectorRepeatingFloat:featureLength count:v10];
 
   return v11;
 }

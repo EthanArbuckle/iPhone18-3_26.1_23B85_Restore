@@ -1,59 +1,59 @@
 @interface UAReplayClientController
-- (UAReplayClientController)initWithManager:(id)a3;
+- (UAReplayClientController)initWithManager:(id)manager;
 - (id)eligibleAdvertiseableItemsInOrder;
 - (id)items;
 - (id)statusString;
-- (id)userActivityInfoForUUID:(id)a3;
-- (void)addItem:(id)a3;
+- (id)userActivityInfoForUUID:(id)d;
+- (void)addItem:(id)item;
 - (void)dealloc;
-- (void)removeItem:(id)a3;
+- (void)removeItem:(id)item;
 @end
 
 @implementation UAReplayClientController
 
-- (UAReplayClientController)initWithManager:(id)a3
+- (UAReplayClientController)initWithManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = UAReplayClientController;
-  return [(UAClientController *)&v4 initWithManager:a3 name:@"ReplayCreator"];
+  return [(UAClientController *)&v4 initWithManager:manager name:@"ReplayCreator"];
 }
 
 - (void)dealloc
 {
-  v3 = [(UACornerActionManagerHandler *)self manager];
-  [v3 scheduleUpdatingAdvertisableItems:0.0];
+  manager = [(UACornerActionManagerHandler *)self manager];
+  [manager scheduleUpdatingAdvertisableItems:0.0];
 
   v4.receiver = self;
   v4.super_class = UAReplayClientController;
   [(UAReplayClientController *)&v4 dealloc];
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  [(UAReplayClientController *)self setItem:a3];
-  v4 = [(UACornerActionManagerHandler *)self manager];
-  [v4 scheduleUpdatingAdvertisableItems];
+  [(UAReplayClientController *)self setItem:item];
+  manager = [(UACornerActionManagerHandler *)self manager];
+  [manager scheduleUpdatingAdvertisableItems];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v9 = a3;
-  v4 = [(UAReplayClientController *)self item];
-  if (v4 != v9)
+  itemCopy = item;
+  item = [(UAReplayClientController *)self item];
+  if (item != itemCopy)
   {
-    v5 = [v9 uuid];
-    v6 = [(UAReplayClientController *)self item];
-    v7 = [v6 uuid];
-    v8 = [v5 isEqual:v7];
+    uuid = [itemCopy uuid];
+    item2 = [(UAReplayClientController *)self item];
+    uuid2 = [item2 uuid];
+    v8 = [uuid isEqual:uuid2];
 
     if (v8)
     {
       goto LABEL_5;
     }
 
-    [(UAReplayClientController *)self setItem:v9];
-    v4 = [(UACornerActionManagerHandler *)self manager];
-    [v4 scheduleUpdatingAdvertisableItems:0.0];
+    [(UAReplayClientController *)self setItem:itemCopy];
+    item = [(UACornerActionManagerHandler *)self manager];
+    [item scheduleUpdatingAdvertisableItems:0.0];
   }
 
 LABEL_5:
@@ -63,11 +63,11 @@ LABEL_5:
 
 - (id)items
 {
-  v3 = [(UAReplayClientController *)self item];
-  if (v3)
+  item = [(UAReplayClientController *)self item];
+  if (item)
   {
-    v4 = [(UAReplayClientController *)self item];
-    v5 = [NSSet setWithObject:v4];
+    item2 = [(UAReplayClientController *)self item];
+    v5 = [NSSet setWithObject:item2];
   }
 
   else
@@ -80,11 +80,11 @@ LABEL_5:
 
 - (id)eligibleAdvertiseableItemsInOrder
 {
-  v3 = [(UAReplayClientController *)self item];
-  if (v3)
+  item = [(UAReplayClientController *)self item];
+  if (item)
   {
-    v4 = [(UAReplayClientController *)self item];
-    v5 = [NSArray arrayWithObject:v4];
+    item2 = [(UAReplayClientController *)self item];
+    v5 = [NSArray arrayWithObject:item2];
   }
 
   else
@@ -95,43 +95,43 @@ LABEL_5:
   return v5;
 }
 
-- (id)userActivityInfoForUUID:(id)a3
+- (id)userActivityInfoForUUID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [(UAReplayClientController *)self item];
-  if (!v5)
+  item = [(UAReplayClientController *)self item];
+  if (!item)
   {
     goto LABEL_5;
   }
 
-  v6 = v5;
-  v7 = [(UAReplayClientController *)self item];
-  v8 = [v7 uuid];
-  v9 = [v4 isEqual:v8];
+  v6 = item;
+  item2 = [(UAReplayClientController *)self item];
+  uuid = [item2 uuid];
+  v9 = [dCopy isEqual:uuid];
 
   if (v9)
   {
-    v10 = [(UAReplayClientController *)self item];
+    item3 = [(UAReplayClientController *)self item];
   }
 
   else
   {
 LABEL_5:
-    v10 = 0;
+    item3 = 0;
   }
 
-  return v10;
+  return item3;
 }
 
 - (id)statusString
 {
-  v2 = [(UAReplayClientController *)self item];
-  v3 = [NSString stringWithFormat:@"ReplayController: ITEM=%@\n", v2];
+  item = [(UAReplayClientController *)self item];
+  v3 = [NSString stringWithFormat:@"ReplayController: ITEM=%@\n", item];
 
   return v3;
 }

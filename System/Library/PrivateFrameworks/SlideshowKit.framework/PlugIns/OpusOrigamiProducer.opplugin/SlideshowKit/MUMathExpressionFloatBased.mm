@@ -1,24 +1,24 @@
 @interface MUMathExpressionFloatBased
-+ (float)evaluateString:(id)a3 error:(id *)a4;
-- (MUMathExpressionFloatBased)initWithString:(id)a3 error:(id *)a4;
-- (float)valueForVariable:(id)a3;
++ (float)evaluateString:(id)string error:(id *)error;
+- (MUMathExpressionFloatBased)initWithString:(id)string error:(id *)error;
+- (float)valueForVariable:(id)variable;
 - (id)stringValue;
 - (void)_resetVariableIndicies;
 - (void)cleanup;
 - (void)dealloc;
-- (void)replaceVariable:(id)a3 withValue:(float)a4;
+- (void)replaceVariable:(id)variable withValue:(float)value;
 - (void)resetAllVariables;
-- (void)setValue:(float)a3 forVariable:(id)a4;
-- (void)setVariableValues:(id)a3;
+- (void)setValue:(float)value forVariable:(id)variable;
+- (void)setVariableValues:(id)values;
 @end
 
 @implementation MUMathExpressionFloatBased
 
-+ (float)evaluateString:(id)a3 error:(id *)a4
++ (float)evaluateString:(id)string error:(id *)error
 {
   [objc_opt_class() invalidResult];
   v6 = v5;
-  if ([a3 UTF8String])
+  if ([string UTF8String])
   {
     operator new();
   }
@@ -26,9 +26,9 @@
   return v6;
 }
 
-- (MUMathExpressionFloatBased)initWithString:(id)a3 error:(id *)a4
+- (MUMathExpressionFloatBased)initWithString:(id)string error:(id *)error
 {
-  if ([a3 UTF8String])
+  if ([string UTF8String])
   {
     v8.receiver = self;
     v8.super_class = MUMathExpressionFloatBased;
@@ -41,9 +41,9 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     return 0;
@@ -92,37 +92,37 @@
   }
 }
 
-- (void)setValue:(float)a3 forVariable:(id)a4
+- (void)setValue:(float)value forVariable:(id)variable
 {
-  v6 = [(NSMutableDictionary *)self->super._indicesForVariables objectForKey:a4];
+  v6 = [(NSMutableDictionary *)self->super._indicesForVariables objectForKey:variable];
   if (v6)
   {
     mInterpreter = self->mInterpreter;
-    v8 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
     v9 = *(*mInterpreter + 352);
-    v10.n128_f32[0] = a3;
+    v10.n128_f32[0] = value;
 
-    v9(mInterpreter, v8, v10);
+    v9(mInterpreter, unsignedIntValue, v10);
   }
 }
 
-- (float)valueForVariable:(id)a3
+- (float)valueForVariable:(id)variable
 {
-  v4 = [(NSMutableDictionary *)self->super._indicesForVariables objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->super._indicesForVariables objectForKey:variable];
   if (!v4)
   {
     return 0.0;
   }
 
   mInterpreter = self->mInterpreter;
-  v6 = [v4 intValue];
+  intValue = [v4 intValue];
   v7 = *(*mInterpreter + 320);
 
-  v7(mInterpreter, v6);
+  v7(mInterpreter, intValue);
   return result;
 }
 
-- (void)setVariableValues:(id)a3
+- (void)setVariableValues:(id)values
 {
   v15 = 0u;
   v16 = 0u;
@@ -144,7 +144,7 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [a3 objectForKey:v10];
+        v11 = [values objectForKey:v10];
         if (v11)
         {
           v12 = v11;
@@ -162,9 +162,9 @@
   }
 }
 
-- (void)replaceVariable:(id)a3 withValue:(float)a4
+- (void)replaceVariable:(id)variable withValue:(float)value
 {
-  if ([(NSMutableDictionary *)self->super._indicesForVariables objectForKey:a3])
+  if ([(NSMutableDictionary *)self->super._indicesForVariables objectForKey:variable])
   {
     operator new();
   }

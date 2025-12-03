@@ -1,39 +1,39 @@
 @interface PKSelectActionView
-- (PKSelectActionView)initWithPass:(id)a3 actions:(id)a4 actionType:(unint64_t)a5 balanceDictionary:(id)a6;
+- (PKSelectActionView)initWithPass:(id)pass actions:(id)actions actionType:(unint64_t)type balanceDictionary:(id)dictionary;
 - (PKSelectActionViewDelegate)delegate;
-- (id)_balanceForTopUpAction:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_balanceForTopUpAction:(id)action;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_addSubviews;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PKSelectActionView
 
-- (PKSelectActionView)initWithPass:(id)a3 actions:(id)a4 actionType:(unint64_t)a5 balanceDictionary:(id)a6
+- (PKSelectActionView)initWithPass:(id)pass actions:(id)actions actionType:(unint64_t)type balanceDictionary:(id)dictionary
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  passCopy = pass;
+  actionsCopy = actions;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PKSelectActionView;
   v14 = [(PKSelectActionView *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_pass, a3);
+    objc_storeStrong(&v14->_pass, pass);
     selectedAction = v15->_selectedAction;
     v15->_selectedAction = 0;
 
-    v15->_actionType = a5;
-    objc_storeStrong(&v15->_balances, a6);
+    v15->_actionType = type;
+    objc_storeStrong(&v15->_balances, dictionary);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __72__PKSelectActionView_initWithPass_actions_actionType_balanceDictionary___block_invoke;
     v26[3] = &__block_descriptor_40_e36_B32__0__PKPaymentPassAction_8Q16_B24l;
-    v26[4] = a5;
-    v17 = [v12 pk_objectsPassingTest:v26];
+    v26[4] = type;
+    v17 = [actionsCopy pk_objectsPassingTest:v26];
     actions = v15->_actions;
     v15->_actions = v17;
 
@@ -59,19 +59,19 @@
   return v15;
 }
 
-- (id)_balanceForTopUpAction:(id)a3
+- (id)_balanceForTopUpAction:(id)action
 {
-  v4 = a3;
-  if ([v4 type] != 1)
+  actionCopy = action;
+  if ([actionCopy type] != 1)
   {
     v7 = 0;
     goto LABEL_15;
   }
 
-  v5 = [v4 associatedEnteredValueIdentifier];
-  if (v5)
+  associatedEnteredValueIdentifier = [actionCopy associatedEnteredValueIdentifier];
+  if (associatedEnteredValueIdentifier)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v5, 0}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{associatedEnteredValueIdentifier, 0}];
     v7 = [(NSDictionary *)self->_balances objectForKeyedSubscript:v6];
   }
 
@@ -80,11 +80,11 @@
     v7 = 0;
   }
 
-  v8 = [v4 relevantPropertyIdentifier];
-  v9 = v8;
-  if (v7 || !v8)
+  relevantPropertyIdentifier = [actionCopy relevantPropertyIdentifier];
+  v9 = relevantPropertyIdentifier;
+  if (v7 || !relevantPropertyIdentifier)
   {
-    if (v5 || v7 || v8)
+    if (associatedEnteredValueIdentifier || v7 || relevantPropertyIdentifier)
     {
       goto LABEL_14;
     }
@@ -95,7 +95,7 @@
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v8, 0}];
+    v10 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{relevantPropertyIdentifier, 0}];
   }
 
   v12 = v10;
@@ -117,11 +117,11 @@ LABEL_15:
   [(UITableView *)tableView setFrame:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = objc_storeWeak(&self->_delegate, v8);
-  [v8 setRightBarButtonEnabled:self->_selectedAction != 0];
+  delegateCopy = delegate;
+  v4 = objc_storeWeak(&self->_delegate, delegateCopy);
+  [delegateCopy setRightBarButtonEnabled:self->_selectedAction != 0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -137,31 +137,31 @@ LABEL_15:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKSelectActionCellIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKSelectActionCellIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"PKSelectActionCellIdentifier"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_actions, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [(PKPaymentPassAction *)v8 title];
-  v10 = [(PKPaymentPassAction *)v8 actionDescription];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_actions, "objectAtIndexedSubscript:", [pathCopy row]);
+  title = [(PKPaymentPassAction *)v8 title];
+  actionDescription = [(PKPaymentPassAction *)v8 actionDescription];
   actionType = self->_actionType;
   if (actionType == 1)
   {
     v17 = [(PKSelectActionView *)self _balanceForTopUpAction:v8];
-    v13 = v17;
+    title2 = v17;
     if (v17)
     {
-      v18 = [v17 localizedTitle];
+      localizedTitle = [v17 localizedTitle];
 
-      v19 = [v13 formattedValue];
+      formattedValue = [title2 formattedValue];
 
-      v10 = v19;
-      v9 = v18;
+      actionDescription = formattedValue;
+      title = localizedTitle;
     }
   }
 
@@ -172,38 +172,38 @@ LABEL_15:
       goto LABEL_9;
     }
 
-    v12 = [(PKPaymentPassAction *)v8 associatedPlan];
-    v13 = [v12 title];
+    associatedPlan = [(PKPaymentPassAction *)v8 associatedPlan];
+    title2 = [associatedPlan title];
 
-    v14 = [v13 label];
+    label = [title2 label];
 
-    v15 = [v13 value];
+    value = [title2 value];
 
     PKCommutePlanFieldEitherLabelOrValueIsEmpty();
-    v16 = [(PKPass *)self->_pass paymentPass];
-    v31 = v15;
+    paymentPass = [(PKPass *)self->_pass paymentPass];
+    v31 = value;
     PKCommutePlanFormatTitleFromLabelAndValue();
-    v9 = v14;
+    title = label;
 
-    v10 = v15;
+    actionDescription = value;
   }
 
 LABEL_9:
-  v20 = [v7 textLabel];
-  [v20 setText:v9];
-  v21 = [MEMORY[0x1E69DC888] labelColor];
-  [v20 setTextColor:v21];
+  textLabel = [v7 textLabel];
+  [textLabel setText:title];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [textLabel setTextColor:labelColor];
 
   v22 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [v20 setFont:v22];
+  [textLabel setFont:v22];
 
-  v23 = [v7 detailTextLabel];
-  [v23 setText:v10];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:actionDescription];
   v24 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  [v23 setFont:v24];
+  [detailTextLabel setFont:v24];
 
-  v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v23 setTextColor:v25];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [detailTextLabel setTextColor:secondaryLabelColor];
 
   [v7 setSelectionStyle:0];
   selectedAction = self->_selectedAction;
@@ -224,14 +224,14 @@ LABEL_9:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v8 = self->_selectedAction;
-  v9 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [v7 row]);
+  v9 = -[NSArray objectAtIndex:](self->_actions, "objectAtIndex:", [pathCopy row]);
   if (v8 != v9)
   {
     objc_storeStrong(&self->_selectedAction, v9);
@@ -248,11 +248,11 @@ LABEL_9:
     }
 
     v14 = [(NSArray *)self->_actions indexOfObject:v8];
-    v15 = [MEMORY[0x1E696AC88] indexPathForRow:v14 inSection:{objc_msgSend(v7, "section")}];
+    v15 = [MEMORY[0x1E696AC88] indexPathForRow:v14 inSection:{objc_msgSend(pathCopy, "section")}];
     v17[0] = v15;
-    v17[1] = v7;
+    v17[1] = pathCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-    [v6 reloadRowsAtIndexPaths:v16 withRowAnimation:5];
+    [viewCopy reloadRowsAtIndexPaths:v16 withRowAnimation:5];
   }
 }
 

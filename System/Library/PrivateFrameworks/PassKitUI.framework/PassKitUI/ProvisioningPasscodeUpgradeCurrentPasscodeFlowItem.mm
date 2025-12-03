@@ -1,6 +1,6 @@
 @interface ProvisioningPasscodeUpgradeCurrentPasscodeFlowItem
 - (_TtC9PassKitUI50ProvisioningPasscodeUpgradeCurrentPasscodeFlowItem)init;
-- (void)currentPasscodeViewController:(id)a3 didFinishWithPasscode:(id)a4;
+- (void)currentPasscodeViewController:(id)controller didFinishWithPasscode:(id)passcode;
 @end
 
 @implementation ProvisioningPasscodeUpgradeCurrentPasscodeFlowItem
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)currentPasscodeViewController:(id)a3 didFinishWithPasscode:(id)a4
+- (void)currentPasscodeViewController:(id)controller didFinishWithPasscode:(id)passcode
 {
   v6 = sub_1BE052434();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1BD9DD4F4(v6, v8);
 }
 

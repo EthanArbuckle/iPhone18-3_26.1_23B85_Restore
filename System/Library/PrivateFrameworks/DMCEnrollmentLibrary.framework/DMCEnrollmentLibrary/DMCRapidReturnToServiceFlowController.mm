@@ -1,10 +1,10 @@
 @interface DMCRapidReturnToServiceFlowController
 - (DMCRRTSFlowDelegate)delegate;
 - (DMCRapidReturnToServiceFlowController)init;
-- (id)errorWithCode:(int)a3 message:(id)a4;
-- (void)requestCheckInWithRetryCount:(int64_t)a3 completion:(id)a4;
-- (void)requestRapidReturnToServiceWithCompletion:(id)a3;
-- (void)startObliterationWithCompletion:(id)a3;
+- (id)errorWithCode:(int)code message:(id)message;
+- (void)requestCheckInWithRetryCount:(int64_t)count completion:(id)completion;
+- (void)requestRapidReturnToServiceWithCompletion:(id)completion;
+- (void)startObliterationWithCompletion:(id)completion;
 @end
 
 @implementation DMCRapidReturnToServiceFlowController
@@ -32,18 +32,18 @@
   return v2;
 }
 
-- (void)requestRapidReturnToServiceWithCompletion:(id)a3
+- (void)requestRapidReturnToServiceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DMCRapidReturnToServiceFlowController *)self workerQueue];
+  completionCopy = completion;
+  workerQueue = [(DMCRapidReturnToServiceFlowController *)self workerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToServiceWithCompletion___block_invoke;
   v7[3] = &unk_278EE40D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 queueBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [workerQueue queueBlock:v7];
 }
 
 void __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToServiceWithCompletion___block_invoke(uint64_t a1)
@@ -74,22 +74,6 @@ void __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToServiceWith
   v11 = v6;
   v7 = v4;
   [v5 queueBlock:v8];
-}
-
-{
-  v4 = a3;
-  v5 = [*(a1 + 32) workerQueue];
-  v9[0] = MEMORY[0x277D85DD0];
-  v9[1] = 3221225472;
-  v9[2] = __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToServiceWithCompletion___block_invoke_2_3;
-  v9[3] = &unk_278EE4128;
-  v6 = *(a1 + 32);
-  v7 = *(a1 + 40);
-  v10 = v4;
-  v11 = v6;
-  v12 = v7;
-  v8 = v4;
-  [v5 queueBlock:v9];
 }
 
 void __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToServiceWithCompletion___block_invoke_3(uint64_t a1)
@@ -241,15 +225,15 @@ uint64_t __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToService
   return result;
 }
 
-- (void)startObliterationWithCompletion:(id)a3
+- (void)startObliterationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D24638] sharedClient];
-  v6 = [(DMCRapidReturnToServiceFlowController *)self mdmProfileData];
-  v7 = [(DMCRapidReturnToServiceFlowController *)self wifiProfileData];
-  v8 = [(DMCRapidReturnToServiceFlowController *)self bootstrapToken];
+  completionCopy = completion;
+  mEMORY[0x277D24638] = [MEMORY[0x277D24638] sharedClient];
+  mdmProfileData = [(DMCRapidReturnToServiceFlowController *)self mdmProfileData];
+  wifiProfileData = [(DMCRapidReturnToServiceFlowController *)self wifiProfileData];
+  bootstrapToken = [(DMCRapidReturnToServiceFlowController *)self bootstrapToken];
   v9 = *MEMORY[0x277D035E0];
-  if (v8)
+  if (bootstrapToken)
   {
     v10 = *MEMORY[0x277D035E0];
   }
@@ -259,15 +243,15 @@ uint64_t __83__DMCRapidReturnToServiceFlowController_requestRapidReturnToService
     v10 = 0;
   }
 
-  v11 = [(DMCRapidReturnToServiceFlowController *)self bootstrapToken];
+  bootstrapToken2 = [(DMCRapidReturnToServiceFlowController *)self bootstrapToken];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__DMCRapidReturnToServiceFlowController_startObliterationWithCompletion___block_invoke;
   v13[3] = &unk_278EE41A0;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
-  [v5 requestReturnToServiceObliterationWithPreserveDataPlan:0 disallowProximitySetup:0 mdmProfileData:v6 wifiProfileData:v7 revertToSnapshotName:v10 bootstrapToken:v11 completionHandler:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [mEMORY[0x277D24638] requestReturnToServiceObliterationWithPreserveDataPlan:0 disallowProximitySetup:0 mdmProfileData:mdmProfileData wifiProfileData:wifiProfileData revertToSnapshotName:v10 bootstrapToken:bootstrapToken2 completionHandler:v13];
 }
 
 void __73__DMCRapidReturnToServiceFlowController_startObliterationWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -307,19 +291,19 @@ uint64_t __73__DMCRapidReturnToServiceFlowController_startObliterationWithComple
   return result;
 }
 
-- (void)requestCheckInWithRetryCount:(int64_t)a3 completion:(id)a4
+- (void)requestCheckInWithRetryCount:(int64_t)count completion:(id)completion
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277D24638] sharedClient];
+  completionCopy = completion;
+  mEMORY[0x277D24638] = [MEMORY[0x277D24638] sharedClient];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__DMCRapidReturnToServiceFlowController_requestCheckInWithRetryCount_completion___block_invoke;
   v9[3] = &unk_278EE4218;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  countCopy = count;
   v9[4] = self;
-  v8 = v6;
-  [v7 requestRRTSCheckInAndValidationWithCompletionHandler:v9];
+  v8 = completionCopy;
+  [mEMORY[0x277D24638] requestRRTSCheckInAndValidationWithCompletionHandler:v9];
 }
 
 void __81__DMCRapidReturnToServiceFlowController_requestCheckInWithRetryCount_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -402,13 +386,13 @@ void __81__DMCRapidReturnToServiceFlowController_requestCheckInWithRetryCount_co
   }
 }
 
-- (id)errorWithCode:(int)a3 message:(id)a4
+- (id)errorWithCode:(int)code message:(id)message
 {
   v4 = MEMORY[0x277CCA9B8];
   v5 = *MEMORY[0x277D03438];
-  v6 = a3;
+  codeCopy = code;
   v7 = DMCErrorArray();
-  v8 = [v4 DMCErrorWithDomain:v5 code:v6 descriptionArray:v7 errorType:{*MEMORY[0x277D032F8], a4, 0}];
+  v8 = [v4 DMCErrorWithDomain:v5 code:codeCopy descriptionArray:v7 errorType:{*MEMORY[0x277D032F8], message, 0}];
 
   return v8;
 }

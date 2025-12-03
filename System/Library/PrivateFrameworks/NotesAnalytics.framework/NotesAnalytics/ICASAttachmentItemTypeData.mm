@@ -1,22 +1,22 @@
 @interface ICASAttachmentItemTypeData
-- (ICASAttachmentItemTypeData)initWithAttachmentID:(id)a3 attachmentUTI:(id)a4;
+- (ICASAttachmentItemTypeData)initWithAttachmentID:(id)d attachmentUTI:(id)i;
 - (id)toDict;
 @end
 
 @implementation ICASAttachmentItemTypeData
 
-- (ICASAttachmentItemTypeData)initWithAttachmentID:(id)a3 attachmentUTI:(id)a4
+- (ICASAttachmentItemTypeData)initWithAttachmentID:(id)d attachmentUTI:(id)i
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iCopy = i;
   v12.receiver = self;
   v12.super_class = ICASAttachmentItemTypeData;
   v9 = [(ICASAttachmentItemTypeData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attachmentID, a3);
-    objc_storeStrong(&v10->_attachmentUTI, a4);
+    objc_storeStrong(&v9->_attachmentID, d);
+    objc_storeStrong(&v10->_attachmentUTI, i);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"attachmentID";
-  v3 = [(ICASAttachmentItemTypeData *)self attachmentID];
-  if (v3)
+  attachmentID = [(ICASAttachmentItemTypeData *)self attachmentID];
+  if (attachmentID)
   {
-    v4 = [(ICASAttachmentItemTypeData *)self attachmentID];
+    attachmentID2 = [(ICASAttachmentItemTypeData *)self attachmentID];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    attachmentID2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = attachmentID2;
   v12[1] = @"attachmentUTI";
-  v13[0] = v4;
-  v6 = [(ICASAttachmentItemTypeData *)self attachmentUTI];
-  if (v6)
+  v13[0] = attachmentID2;
+  attachmentUTI = [(ICASAttachmentItemTypeData *)self attachmentUTI];
+  if (attachmentUTI)
   {
-    v7 = [(ICASAttachmentItemTypeData *)self attachmentUTI];
+    attachmentUTI2 = [(ICASAttachmentItemTypeData *)self attachmentUTI];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    attachmentUTI2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = attachmentUTI2;
+  v13[1] = attachmentUTI2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

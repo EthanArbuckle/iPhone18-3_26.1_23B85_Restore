@@ -1,29 +1,29 @@
 @interface REMMembership
-- (BOOL)isEqual:(id)a3;
-- (REMMembership)initWithCoder:(id)a3;
-- (REMMembership)initWithMemberIdentifier:(id)a3 groupIdentifier:(id)a4 isObsolete:(BOOL)a5 modifiedOn:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMMembership)initWithCoder:(id)coder;
+- (REMMembership)initWithMemberIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier isObsolete:(BOOL)obsolete modifiedOn:(id)on;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMMembership
 
-- (REMMembership)initWithMemberIdentifier:(id)a3 groupIdentifier:(id)a4 isObsolete:(BOOL)a5 modifiedOn:(id)a6
+- (REMMembership)initWithMemberIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier isObsolete:(BOOL)obsolete modifiedOn:(id)on
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  onCopy = on;
   v17.receiver = self;
   v17.super_class = REMMembership;
   v14 = [(REMMembership *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_memberIdentifier, a3);
-    objc_storeStrong(&v15->_groupIdentifier, a4);
-    v15->_isObsolete = a5;
-    objc_storeStrong(&v15->_modifiedOn, a6);
+    objc_storeStrong(&v14->_memberIdentifier, identifier);
+    objc_storeStrong(&v15->_groupIdentifier, groupIdentifier);
+    v15->_isObsolete = obsolete;
+    objc_storeStrong(&v15->_modifiedOn, on);
   }
 
   return v15;
@@ -33,36 +33,36 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMMembership *)self memberIdentifier];
-  v6 = [(REMMembership *)self groupIdentifier];
+  memberIdentifier = [(REMMembership *)self memberIdentifier];
+  groupIdentifier = [(REMMembership *)self groupIdentifier];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[REMMembership isObsolete](self, "isObsolete")}];
-  v8 = [(REMMembership *)self modifiedOn];
-  v9 = [v3 stringWithFormat:@"<%@: %p memberIdentifier: %@, groupIdentifier: %@, isObsolete: %@, modifiedOn: %@>", v4, self, v5, v6, v7, v8];
+  modifiedOn = [(REMMembership *)self modifiedOn];
+  v9 = [v3 stringWithFormat:@"<%@: %p memberIdentifier: %@, groupIdentifier: %@, isObsolete: %@, modifiedOn: %@>", v4, self, memberIdentifier, groupIdentifier, v7, modifiedOn];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = [(REMMembership *)self memberIdentifier];
-  v6 = [v4 memberIdentifier];
-  v7 = v6;
-  if (v5 == v6)
+  memberIdentifier = [(REMMembership *)self memberIdentifier];
+  memberIdentifier2 = [equalCopy memberIdentifier];
+  v7 = memberIdentifier2;
+  if (memberIdentifier == memberIdentifier2)
   {
   }
 
   else
   {
-    v8 = [(REMMembership *)self memberIdentifier];
-    v9 = [v4 memberIdentifier];
-    v10 = [v8 isEqual:v9];
+    memberIdentifier3 = [(REMMembership *)self memberIdentifier];
+    memberIdentifier4 = [equalCopy memberIdentifier];
+    v10 = [memberIdentifier3 isEqual:memberIdentifier4];
 
     if (!v10)
     {
@@ -70,18 +70,18 @@
     }
   }
 
-  v11 = [(REMMembership *)self groupIdentifier];
-  v12 = [v4 groupIdentifier];
-  v13 = v12;
-  if (v11 == v12)
+  groupIdentifier = [(REMMembership *)self groupIdentifier];
+  groupIdentifier2 = [equalCopy groupIdentifier];
+  v13 = groupIdentifier2;
+  if (groupIdentifier == groupIdentifier2)
   {
   }
 
   else
   {
-    v14 = [(REMMembership *)self groupIdentifier];
-    v15 = [v4 groupIdentifier];
-    v16 = [v14 isEqual:v15];
+    groupIdentifier3 = [(REMMembership *)self groupIdentifier];
+    groupIdentifier4 = [equalCopy groupIdentifier];
+    v16 = [groupIdentifier3 isEqual:groupIdentifier4];
 
     if (!v16)
     {
@@ -89,68 +89,68 @@
     }
   }
 
-  v17 = [(REMMembership *)self isObsolete];
-  if (v17 != [v4 isObsolete])
+  isObsolete = [(REMMembership *)self isObsolete];
+  if (isObsolete != [equalCopy isObsolete])
   {
 LABEL_11:
     v18 = 0;
     goto LABEL_12;
   }
 
-  v20 = [(REMMembership *)self modifiedOn];
-  v21 = [v4 modifiedOn];
-  if (v20 == v21)
+  modifiedOn = [(REMMembership *)self modifiedOn];
+  modifiedOn2 = [equalCopy modifiedOn];
+  if (modifiedOn == modifiedOn2)
   {
     v18 = 1;
   }
 
   else
   {
-    v22 = [(REMMembership *)self modifiedOn];
-    v23 = [v4 modifiedOn];
-    v18 = [v22 isEqual:v23];
+    modifiedOn3 = [(REMMembership *)self modifiedOn];
+    modifiedOn4 = [equalCopy modifiedOn];
+    v18 = [modifiedOn3 isEqual:modifiedOn4];
   }
 
 LABEL_12:
   return v18 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(REMMembership *)self memberIdentifier];
-  v6 = [(REMMembership *)self groupIdentifier];
-  v7 = [(REMMembership *)self isObsolete];
-  v8 = [(REMMembership *)self modifiedOn];
-  v9 = [v4 initWithMemberIdentifier:v5 groupIdentifier:v6 isObsolete:v7 modifiedOn:v8];
+  memberIdentifier = [(REMMembership *)self memberIdentifier];
+  groupIdentifier = [(REMMembership *)self groupIdentifier];
+  isObsolete = [(REMMembership *)self isObsolete];
+  modifiedOn = [(REMMembership *)self modifiedOn];
+  v9 = [v4 initWithMemberIdentifier:memberIdentifier groupIdentifier:groupIdentifier isObsolete:isObsolete modifiedOn:modifiedOn];
 
   return v9;
 }
 
-- (REMMembership)initWithCoder:(id)a3
+- (REMMembership)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"memberIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
-  v7 = [v4 decodeBoolForKey:@"isObsolete"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedOn"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"memberIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupIdentifier"];
+  v7 = [coderCopy decodeBoolForKey:@"isObsolete"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedOn"];
 
   v9 = [(REMMembership *)self initWithMemberIdentifier:v5 groupIdentifier:v6 isObsolete:v7 modifiedOn:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMMembership *)self memberIdentifier];
-  [v4 encodeObject:v5 forKey:@"memberIdentifier"];
+  coderCopy = coder;
+  memberIdentifier = [(REMMembership *)self memberIdentifier];
+  [coderCopy encodeObject:memberIdentifier forKey:@"memberIdentifier"];
 
-  v6 = [(REMMembership *)self groupIdentifier];
-  [v4 encodeObject:v6 forKey:@"groupIdentifier"];
+  groupIdentifier = [(REMMembership *)self groupIdentifier];
+  [coderCopy encodeObject:groupIdentifier forKey:@"groupIdentifier"];
 
-  [v4 encodeBool:-[REMMembership isObsolete](self forKey:{"isObsolete"), @"isObsolete"}];
-  v7 = [(REMMembership *)self modifiedOn];
-  [v4 encodeObject:v7 forKey:@"modifiedOn"];
+  [coderCopy encodeBool:-[REMMembership isObsolete](self forKey:{"isObsolete"), @"isObsolete"}];
+  modifiedOn = [(REMMembership *)self modifiedOn];
+  [coderCopy encodeObject:modifiedOn forKey:@"modifiedOn"];
 }
 
 @end

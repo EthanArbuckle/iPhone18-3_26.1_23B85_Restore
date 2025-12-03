@@ -1,45 +1,45 @@
 @interface BMSocialMediaHandle
-- (BMSocialMediaHandle)initWithBundleId:(id)a3 handle:(id)a4;
-- (BMSocialMediaHandle)initWithProto:(id)a3;
-- (BMSocialMediaHandle)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMSocialMediaHandle)initWithBundleId:(id)id handle:(id)handle;
+- (BMSocialMediaHandle)initWithProto:(id)proto;
+- (BMSocialMediaHandle)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation BMSocialMediaHandle
 
-- (BMSocialMediaHandle)initWithBundleId:(id)a3 handle:(id)a4
+- (BMSocialMediaHandle)initWithBundleId:(id)id handle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = BMSocialMediaHandle;
   v9 = [(BMSocialMediaHandle *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundleId, a3);
-    objc_storeStrong(&v10->_handle, a4);
+    objc_storeStrong(&v9->_bundleId, id);
+    objc_storeStrong(&v10->_handle, handle);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     bundleId = self->_bundleId;
-    v7 = [v5 bundleId];
-    if ([(NSString *)bundleId isEqualToString:v7])
+    bundleId = [v5 bundleId];
+    if ([(NSString *)bundleId isEqualToString:bundleId])
     {
       handle = self->_handle;
-      v9 = [v5 handle];
-      v10 = [(NSString *)handle isEqualToString:v9];
+      handle = [v5 handle];
+      v10 = [(NSString *)handle isEqualToString:handle];
     }
 
     else
@@ -58,60 +58,60 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSocialMediaHandle *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSocialMediaHandle *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSocialMediaHandle)initWithProto:(id)a3
+- (BMSocialMediaHandle)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  protoCopy = proto;
+  if (protoCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 bundleId];
-    v7 = [v5 handle];
+    v5 = protoCopy;
+    bundleId = [v5 bundleId];
+    handle = [v5 handle];
 
-    self = [(BMSocialMediaHandle *)self initWithBundleId:v6 handle:v7];
-    v8 = self;
+    self = [(BMSocialMediaHandle *)self initWithBundleId:bundleId handle:handle];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMSocialMediaHandle)initWithProtoData:(id)a3
+- (BMSocialMediaHandle)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSocialMediaHandle alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSocialMediaHandle alloc] initWithData:dataCopy];
 
     self = [(BMSocialMediaHandle *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSocialMediaHandle *)self bundleId];
-  [v3 setBundleId:v4];
+  bundleId = [(BMSocialMediaHandle *)self bundleId];
+  [v3 setBundleId:bundleId];
 
-  v5 = [(BMSocialMediaHandle *)self handle];
-  [v3 setHandle:v5];
+  handle = [(BMSocialMediaHandle *)self handle];
+  [v3 setHandle:handle];
 
   return v3;
 }

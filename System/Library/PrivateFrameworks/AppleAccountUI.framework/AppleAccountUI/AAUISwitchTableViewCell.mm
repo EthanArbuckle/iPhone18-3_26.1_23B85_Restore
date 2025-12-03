@@ -1,17 +1,17 @@
 @interface AAUISwitchTableViewCell
-- (AAUISwitchTableViewCell)initWithCoder:(id)a3;
-- (AAUISwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AAUISwitchTableViewCell)initWithCoder:(id)coder;
+- (AAUISwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (AAUISwitchTableViewCellDelegate)delegate;
 - (void)_delegate_switchTableViewCellDidUpdateValue;
 @end
 
 @implementation AAUISwitchTableViewCell
 
-- (AAUISwitchTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AAUISwitchTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AAUISwitchTableViewCell;
-  v4 = [(AAUISwitchTableViewCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AAUISwitchTableViewCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (AAUISwitchTableViewCell)initWithCoder:(id)a3
+- (AAUISwitchTableViewCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUISwitchTableViewCell;
-  v3 = [(AAUISwitchTableViewCell *)&v6 initWithCoder:a3];
+  v3 = [(AAUISwitchTableViewCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -37,10 +37,10 @@
 
 - (void)_delegate_switchTableViewCellDidUpdateValue
 {
-  v3 = [(AAUISwitchTableViewCell *)self delegate];
+  delegate = [(AAUISwitchTableViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 switchTableViewCellDidUpdateValue:self];
+    [delegate switchTableViewCellDidUpdateValue:self];
   }
 }
 

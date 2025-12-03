@@ -1,27 +1,27 @@
 @interface CalDAVServerVersion
-+ (CalDAVServerVersion)versionWithHTTPHeaders:(id)a3;
-+ (CalDAVServerVersion)versionWithPropertyValue:(id)a3;
-+ (id)_prototypeMatchingServerHeaders:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CalDAVServerVersion)versionWithHTTPHeaders:(id)headers;
++ (CalDAVServerVersion)versionWithPropertyValue:(id)value;
++ (id)_prototypeMatchingServerHeaders:(id)headers;
+- (BOOL)isEqual:(id)equal;
 - (CalDAVServerVersion)init;
 - (id)_allFlagKeys;
 - (id)_propertiesToComplianceClasses;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)propertyValue;
 - (unint64_t)hash;
-- (void)_setPropertiesFromComplianceClasses:(id)a3;
+- (void)_setPropertiesFromComplianceClasses:(id)classes;
 @end
 
 @implementation CalDAVServerVersion
 
-+ (id)_prototypeMatchingServerHeaders:(id)a3
++ (id)_prototypeMatchingServerHeaders:(id)headers
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  headersCopy = headers;
   v4 = +[CalDAVConcreteServerVersion prototypes];
   v5 = v4;
-  if (v3)
+  if (headersCopy)
   {
     v25 = 0u;
     v26 = 0u;
@@ -43,10 +43,10 @@ LABEL_4:
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
-        v12 = [v11 regularExpression];
-        if (v12)
+        regularExpression = [v11 regularExpression];
+        if (regularExpression)
         {
-          v13 = [v12 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+          v13 = [regularExpression matchesInString:headersCopy options:0 range:{0, objc_msgSend(headersCopy, "length")}];
           if ([v13 count])
           {
             v14 = [v11 copy];
@@ -56,7 +56,7 @@ LABEL_4:
               v16 = [v15 rangeAtIndex:1];
               if (v16 != 0x7FFFFFFFFFFFFFFFLL)
               {
-                v18 = [v3 substringWithRange:{v16, v17}];
+                v18 = [headersCopy substringWithRange:{v16, v17}];
                 [v18 doubleValue];
                 v20 = v19;
 
@@ -90,7 +90,7 @@ LABEL_4:
 LABEL_17:
   v14 = [_unknownServerVersionPrototype copy];
 LABEL_18:
-  [v14 setServerHeader:v3];
+  [v14 setServerHeader:headersCopy];
 
   v21 = *MEMORY[0x277D85DE8];
 
@@ -141,19 +141,19 @@ void __35__CalDAVServerVersion__allFlagKeys__block_invoke(uint64_t a1)
   _calDAVAllFlagProperties = v4;
 }
 
-- (void)_setPropertiesFromComplianceClasses:(id)a3
+- (void)_setPropertiesFromComplianceClasses:(id)classes
 {
-  v4 = a3;
-  [(CalDAVServerVersion *)self setComplianceClasses:v4];
-  v5 = [(CalDAVServerVersion *)self _propertiesToComplianceClasses];
+  classesCopy = classes;
+  [(CalDAVServerVersion *)self setComplianceClasses:classesCopy];
+  _propertiesToComplianceClasses = [(CalDAVServerVersion *)self _propertiesToComplianceClasses];
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __59__CalDAVServerVersion__setPropertiesFromComplianceClasses___block_invoke;
   v10 = &unk_278D66D60;
-  v6 = v4;
+  v6 = classesCopy;
   v11 = v6;
-  v12 = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v7];
+  selfCopy = self;
+  [_propertiesToComplianceClasses enumerateKeysAndObjectsUsingBlock:&v7];
 
   if (![(CalDAVServerVersion *)self supportsInboxAvailability:v7])
   {
@@ -170,14 +170,14 @@ void __59__CalDAVServerVersion__setPropertiesFromComplianceClasses___block_invok
   [*(a1 + 40) setValue:v8 forKey:v6];
 }
 
-+ (CalDAVServerVersion)versionWithHTTPHeaders:(id)a3
++ (CalDAVServerVersion)versionWithHTTPHeaders:(id)headers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277CFDB60]];
+  headersCopy = headers;
+  v5 = [headersCopy objectForKey:*MEMORY[0x277CFDB60]];
   v6 = *MEMORY[0x277CFDB28];
   v7 = CDVCleanedStringsFromResponseHeaders();
-  v8 = [a1 _prototypeMatchingServerHeaders:v5];
+  v8 = [self _prototypeMatchingServerHeaders:v5];
   [v8 _setPropertiesFromComplianceClasses:v7];
   v19 = 0u;
   v20 = 0u;
@@ -241,27 +241,27 @@ LABEL_11:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(objc_opt_class());
   [(CalDAVServerVersion *)self version];
   [v4 setVersion:?];
-  v5 = [(CalDAVServerVersion *)self serverHeader];
-  [v4 setServerHeader:v5];
+  serverHeader = [(CalDAVServerVersion *)self serverHeader];
+  [v4 setServerHeader:serverHeader];
 
-  v6 = [(CalDAVServerVersion *)self supportedCalendarComponentSets];
-  [v4 setSupportedCalendarComponentSets:v6];
+  supportedCalendarComponentSets = [(CalDAVServerVersion *)self supportedCalendarComponentSets];
+  [v4 setSupportedCalendarComponentSets:supportedCalendarComponentSets];
 
-  v7 = [(CalDAVServerVersion *)self complianceClasses];
-  [v4 setComplianceClasses:v7];
+  complianceClasses = [(CalDAVServerVersion *)self complianceClasses];
+  [v4 setComplianceClasses:complianceClasses];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(CalDAVServerVersion *)self _allFlagKeys];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _allFlagKeys = [(CalDAVServerVersion *)self _allFlagKeys];
+  v9 = [_allFlagKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -272,7 +272,7 @@ LABEL_11:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_allFlagKeys);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -280,7 +280,7 @@ LABEL_11:
         [v4 setValue:v14 forKey:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [_allFlagKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -292,25 +292,25 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(CalDAVServerVersion *)self type];
-  v4 = [v3 hash];
+  type = [(CalDAVServerVersion *)self type];
+  v4 = [type hash];
   [(CalDAVServerVersion *)self version];
   v6 = v4 + v5 + [(CalDAVServerVersion *)self supportsAutoSchedule];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 type];
-    v7 = [(CalDAVServerVersion *)self type];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    type = [v5 type];
+    type2 = [(CalDAVServerVersion *)self type];
+    if ([type isEqualToString:type2])
     {
       [v5 version];
       v9 = v8;
@@ -323,8 +323,8 @@ LABEL_11:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v12 = [(CalDAVServerVersion *)self _allFlagKeys];
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        _allFlagKeys = [(CalDAVServerVersion *)self _allFlagKeys];
+        v13 = [_allFlagKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -335,7 +335,7 @@ LABEL_11:
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(_allFlagKeys);
               }
 
               v17 = *(*(&v24 + 1) + 8 * i);
@@ -350,7 +350,7 @@ LABEL_11:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+            v14 = [_allFlagKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
             if (v14)
             {
               continue;
@@ -387,13 +387,13 @@ LABEL_17:
 - (id)description
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(CalDAVServerVersion *)self complianceClasses];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  complianceClasses = [(CalDAVServerVersion *)self complianceClasses];
+  v5 = [complianceClasses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -404,43 +404,43 @@ LABEL_17:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(complianceClasses);
         }
 
-        [v3 appendFormat:@"%@, ", *(*(&v15 + 1) + 8 * i)];
+        [string appendFormat:@"%@, ", *(*(&v15 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [complianceClasses countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  if ([v3 length] >= 3)
+  if ([string length] >= 3)
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(CalDAVServerVersion *)self type];
+  type = [(CalDAVServerVersion *)self type];
   [(CalDAVServerVersion *)self version];
-  v12 = [v9 stringWithFormat:@"%@/%0.1f (%@)", v10, v11, v3];
+  v12 = [v9 stringWithFormat:@"%@/%0.1f (%@)", type, v11, string];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (CalDAVServerVersion)versionWithPropertyValue:(id)a3
++ (CalDAVServerVersion)versionWithPropertyValue:(id)value
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v4 = 0.0;
-  if (!v3)
+  if (!valueCopy)
   {
     v31 = 0;
     v32 = 0;
-    v33 = 0;
+    bOOLValue = 0;
     v12 = 0;
     v5 = @"Unknown";
     goto LABEL_26;
@@ -452,12 +452,12 @@ LABEL_17:
   {
     v31 = 0;
     v32 = 0;
-    v33 = 0;
+    bOOLValue = 0;
     v12 = 0;
     goto LABEL_26;
   }
 
-  v6 = [v3 objectForKey:@"CalDAVServerType"];
+  v6 = [valueCopy objectForKey:@"CalDAVServerType"];
   v7 = v6;
   if (v6)
   {
@@ -471,7 +471,7 @@ LABEL_17:
 
   v5 = v8;
 
-  v9 = [v3 objectForKey:@"CalDAVServerVersion"];
+  v9 = [valueCopy objectForKey:@"CalDAVServerVersion"];
   if (v9)
   {
     objc_opt_class();
@@ -482,41 +482,41 @@ LABEL_17:
     }
   }
 
-  v11 = [v3 objectForKey:@"SupportsCompression"];
+  v11 = [valueCopy objectForKey:@"SupportsCompression"];
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v33 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v33 = 0;
+    bOOLValue = 0;
   }
 
-  v12 = [v3 objectForKey:@"ComplianceClasses"];
-  v32 = [v3 objectForKey:@"ServerHeader"];
-  v31 = [v3 objectForKey:@"SupportedCalendarComponentSets"];
-  v13 = [v3 objectForKey:@"CalDAVAutoSchedule"];
-  if (v13 || ([v3 objectForKey:@"CalDAVSupportsComments"], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  v12 = [valueCopy objectForKey:@"ComplianceClasses"];
+  v32 = [valueCopy objectForKey:@"ServerHeader"];
+  v31 = [valueCopy objectForKey:@"SupportedCalendarComponentSets"];
+  v13 = [valueCopy objectForKey:@"CalDAVAutoSchedule"];
+  if (v13 || ([valueCopy objectForKey:@"CalDAVSupportsComments"], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_18:
     v14 = [MEMORY[0x277CBEB58] set];
-    v15 = [v3 objectForKey:@"CalDAVAutoSchedule"];
+    v15 = [valueCopy objectForKey:@"CalDAVAutoSchedule"];
 
     if (v15)
     {
       [v14 addObject:@"calendar-auto-schedule"];
     }
 
-    v16 = [v3 objectForKey:@"CalDAVSupportsComments"];
+    v16 = [valueCopy objectForKey:@"CalDAVSupportsComments"];
 
     if (v16)
     {
       [v14 addObject:@"calendarserver-private-comments"];
     }
 
-    v17 = [v3 objectForKey:@"CalDAVSupportsSharing"];
+    v17 = [valueCopy objectForKey:@"CalDAVSupportsSharing"];
 
     if (v17)
     {
@@ -529,7 +529,7 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  v30 = [v3 objectForKey:@"CalDAVSupportsSharing"];
+  v30 = [valueCopy objectForKey:@"CalDAVSupportsSharing"];
 
   if (v30)
   {
@@ -559,8 +559,8 @@ LABEL_28:
       }
 
       v24 = *(*(&v34 + 1) + 8 * v23);
-      v25 = [v24 type];
-      v26 = [(__CFString *)v5 isEqualToString:v25];
+      type = [v24 type];
+      v26 = [(__CFString *)v5 isEqualToString:type];
 
       if (v26)
       {
@@ -597,7 +597,7 @@ LABEL_34:
 LABEL_37:
   [v27 _setPropertiesFromComplianceClasses:v12];
   [v27 setServerHeader:v32];
-  [v27 setSupportsRequestCompression:v33];
+  [v27 setSupportsRequestCompression:bOOLValue];
   [v27 setSupportedCalendarComponentSets:v31];
 
   v28 = *MEMORY[0x277D85DE8];
@@ -607,22 +607,22 @@ LABEL_37:
 
 - (id)propertyValue
 {
-  v3 = [(CalDAVServerVersion *)self complianceClasses];
-  if (![v3 count])
+  complianceClasses = [(CalDAVServerVersion *)self complianceClasses];
+  if (![complianceClasses count])
   {
     v4 = [MEMORY[0x277CBEB58] set];
-    v5 = [(CalDAVServerVersion *)self _propertiesToComplianceClasses];
+    _propertiesToComplianceClasses = [(CalDAVServerVersion *)self _propertiesToComplianceClasses];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __36__CalDAVServerVersion_propertyValue__block_invoke;
     v20 = &unk_278D66D60;
-    v21 = self;
+    selfCopy = self;
     v6 = v4;
     v22 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:&v17];
+    [_propertiesToComplianceClasses enumerateKeysAndObjectsUsingBlock:&v17];
 
     v7 = v6;
-    v3 = v7;
+    complianceClasses = v7;
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -634,13 +634,13 @@ LABEL_37:
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[CalDAVServerVersion supportsRequestCompression](self, "supportsRequestCompression")}];
   [v8 setObject:v11 forKey:@"SupportsCompression"];
 
-  v12 = [v3 allObjects];
-  [v8 setObject:v12 forKey:@"ComplianceClasses"];
+  allObjects = [complianceClasses allObjects];
+  [v8 setObject:allObjects forKey:@"ComplianceClasses"];
 
-  v13 = [(CalDAVServerVersion *)self type];
-  if (v13)
+  type = [(CalDAVServerVersion *)self type];
+  if (type)
   {
-    [v8 setObject:v13 forKey:@"CalDAVServerType"];
+    [v8 setObject:type forKey:@"CalDAVServerType"];
   }
 
   v14 = [(CalDAVServerVersion *)self serverHeader:v17];
@@ -649,10 +649,10 @@ LABEL_37:
     [v8 setObject:v14 forKey:@"ServerHeader"];
   }
 
-  v15 = [(CalDAVServerVersion *)self supportedCalendarComponentSets];
-  if (v15)
+  supportedCalendarComponentSets = [(CalDAVServerVersion *)self supportedCalendarComponentSets];
+  if (supportedCalendarComponentSets)
   {
-    [v8 setObject:v15 forKey:@"SupportedCalendarComponentSets"];
+    [v8 setObject:supportedCalendarComponentSets forKey:@"SupportedCalendarComponentSets"];
   }
 
   return v8;

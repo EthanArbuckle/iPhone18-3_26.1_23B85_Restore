@@ -1,33 +1,33 @@
 @interface SUGSchemaSUGSiriHelpSignal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SUGSchemaSUGSiriHelpSignal)initWithDictionary:(id)a3;
-- (SUGSchemaSUGSiriHelpSignal)initWithJSON:(id)a3;
+- (SUGSchemaSUGSiriHelpSignal)initWithDictionary:(id)dictionary;
+- (SUGSchemaSUGSiriHelpSignal)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSignalType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSignalType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SUGSchemaSUGSiriHelpSignal
 
-- (SUGSchemaSUGSiriHelpSignal)initWithDictionary:(id)a3
+- (SUGSchemaSUGSiriHelpSignal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SUGSchemaSUGSiriHelpSignal;
   v5 = [(SUGSchemaSUGSiriHelpSignal *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"depthFromActiveSignal"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"depthFromActiveSignal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SUGSchemaSUGSiriHelpSignal setDepthFromActiveSignal:](v5, "setDepthFromActiveSignal:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"signalValue"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"signalValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SUGSchemaSUGSiriHelpSignal *)v5 setSignalValue:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"signalType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"signalType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SUGSchemaSUGSiriHelpSignal)initWithJSON:(id)a3
+- (SUGSchemaSUGSiriHelpSignal)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SUGSchemaSUGSiriHelpSignal *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SUGSchemaSUGSiriHelpSignal *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SUGSchemaSUGSiriHelpSignal *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SUGSchemaSUGSiriHelpSignal depthFromActiveSignal](self, "depthFromActiveSignal")}];
-    [v3 setObject:v5 forKeyedSubscript:@"depthFromActiveSignal"];
+    [dictionary setObject:v5 forKeyedSubscript:@"depthFromActiveSignal"];
 
     has = self->_has;
   }
@@ -107,19 +107,19 @@
       v7 = off_1E78E7BB8[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"signalType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"signalType"];
   }
 
   if (self->_signalValue)
   {
-    v8 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"signalValue"];
+    signalValue = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
+    v9 = [signalValue copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"signalValue"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,15 +148,15 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[28] & 1))
+  if ((*&self->_has & 1) != (equalCopy[28] & 1))
   {
     goto LABEL_15;
   }
@@ -164,16 +164,16 @@
   if (*&self->_has)
   {
     depthFromActiveSignal = self->_depthFromActiveSignal;
-    if (depthFromActiveSignal != [v4 depthFromActiveSignal])
+    if (depthFromActiveSignal != [equalCopy depthFromActiveSignal])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
-  v7 = [v4 signalValue];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  signalValue = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
+  signalValue2 = [equalCopy signalValue];
+  v8 = signalValue2;
+  if ((signalValue != 0) == (signalValue2 == 0))
   {
 
 LABEL_15:
@@ -181,13 +181,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
-  if (v9)
+  signalValue3 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
+  if (signalValue3)
   {
-    v10 = v9;
-    v11 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
-    v12 = [v4 signalValue];
-    v13 = [v11 isEqual:v12];
+    v10 = signalValue3;
+    signalValue4 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
+    signalValue5 = [equalCopy signalValue];
+    v13 = [signalValue4 isEqual:signalValue5];
 
     if (!v13)
     {
@@ -200,7 +200,7 @@ LABEL_15:
   }
 
   v14 = (*&self->_has >> 1) & 1;
-  if (v14 != ((v4[28] >> 1) & 1))
+  if (v14 != ((equalCopy[28] >> 1) & 1))
   {
     goto LABEL_15;
   }
@@ -208,7 +208,7 @@ LABEL_15:
   if (v14)
   {
     signalType = self->_signalType;
-    if (signalType != [v4 signalType])
+    if (signalType != [equalCopy signalType])
     {
       goto LABEL_15;
     }
@@ -220,17 +220,17 @@ LABEL_16:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
+  signalValue = [(SUGSchemaSUGSiriHelpSignal *)self signalValue];
 
-  if (v4)
+  if (signalValue)
   {
     PBDataWriterWriteStringField();
   }
@@ -241,9 +241,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasSignalType:(BOOL)a3
+- (void)setHasSignalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

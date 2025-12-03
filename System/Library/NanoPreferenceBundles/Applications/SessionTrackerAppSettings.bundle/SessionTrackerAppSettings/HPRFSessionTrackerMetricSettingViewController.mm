@@ -1,5 +1,5 @@
 @interface HPRFSessionTrackerMetricSettingViewController
-- (BOOL)_shouldObliterateWorkoutMetricsForMetricsActivityMoveMode:(int64_t)a3 activityMoveModeHealthDB:(int64_t)a4;
+- (BOOL)_shouldObliterateWorkoutMetricsForMetricsActivityMoveMode:(int64_t)mode activityMoveModeHealthDB:(int64_t)b;
 - (HPRFSessionTrackerMetricSettingViewController)init;
 - (id)_activityTypeSpecifiers;
 - (id)applicationBundleIdentifier;
@@ -7,7 +7,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)_obliterateUserConfiguredWorkoutMetricsIfNeeded;
-- (void)_saveWorkoutMetricsActivityMoveMode:(int64_t)a3;
+- (void)_saveWorkoutMetricsActivityMoveMode:(int64_t)mode;
 - (void)dealloc;
 @end
 
@@ -32,9 +32,9 @@
     v8 = +[NRPairedDeviceRegistry sharedInstance];
     v9 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v10 = [v8 getAllDevicesWithArchivedAltAccountDevicesMatching:v9];
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
     device = v2->_device;
-    v2->_device = v11;
+    v2->_device = firstObject;
 
     v13 = v2->_device;
     v14 = FIUIHealthStoreForDevice();
@@ -81,17 +81,17 @@
   }
 }
 
-- (BOOL)_shouldObliterateWorkoutMetricsForMetricsActivityMoveMode:(int64_t)a3 activityMoveModeHealthDB:(int64_t)a4
+- (BOOL)_shouldObliterateWorkoutMetricsForMetricsActivityMoveMode:(int64_t)mode activityMoveModeHealthDB:(int64_t)b
 {
-  v4 = a4 == 2;
-  if (a3 != 1)
+  v4 = b == 2;
+  if (mode != 1)
   {
     v4 = 0;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    return a4 == 1;
+    return b == 1;
   }
 
   else
@@ -100,17 +100,17 @@
   }
 }
 
-- (void)_saveWorkoutMetricsActivityMoveMode:(int64_t)a3
+- (void)_saveWorkoutMetricsActivityMoveMode:(int64_t)mode
 {
   v4 = kHPRFWorkoutMetricsActivityMoveMode;
-  [(NPSDomainAccessor *)self->_domainAccessor setInteger:a3 forKey:kHPRFWorkoutMetricsActivityMoveMode];
-  v5 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
-  v6 = [(HPRFSessionTrackerMetricSettingViewController *)self syncManager];
-  v7 = [(NPSDomainAccessor *)self->_domainAccessor domain];
+  [(NPSDomainAccessor *)self->_domainAccessor setInteger:mode forKey:kHPRFWorkoutMetricsActivityMoveMode];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  syncManager = [(HPRFSessionTrackerMetricSettingViewController *)self syncManager];
+  domain = [(NPSDomainAccessor *)self->_domainAccessor domain];
   v10 = v4;
   v8 = [NSArray arrayWithObjects:&v10 count:1];
   v9 = [NSSet setWithArray:v8];
-  [v6 synchronizeNanoDomain:v7 keys:v9];
+  [syncManager synchronizeNanoDomain:domain keys:v9];
 }
 
 - (id)specifiers
@@ -120,11 +120,11 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(HPRFSessionTrackerMetricSettingViewController *)self _activityTypeSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    _activityTypeSpecifiers = [(HPRFSessionTrackerMetricSettingViewController *)self _activityTypeSpecifiers];
+    [v5 addObjectsFromArray:_activityTypeSpecifiers];
 
-    v7 = [(HPRFSessionTrackerMetricSettingViewController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerMetricSettingViewController *)self setTitle:v7];
+    localizedPaneTitle = [(HPRFSessionTrackerMetricSettingViewController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerMetricSettingViewController *)self setTitle:localizedPaneTitle];
 
     v8 = *&self->BPSNotificationAppController_opaque[v3];
     *&self->BPSNotificationAppController_opaque[v3] = v5;
@@ -204,10 +204,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerMetricSettingViewController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerMetricSettingViewController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

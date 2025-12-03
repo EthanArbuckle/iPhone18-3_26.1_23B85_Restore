@@ -1,11 +1,11 @@
 @interface FLTSSUExample
-+ (Class)data_immutableClassForType:(int64_t)a3;
-+ (int64_t)data_typeForImmutableObject:(id)a3;
++ (Class)data_immutableClassForType:(int64_t)type;
++ (int64_t)data_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)data;
-- (FLTSSUExample)initWithFlatbuffData:(id)a3 root:(const SSUExample *)a4 verify:(BOOL)a5;
+- (FLTSSUExample)initWithFlatbuffData:(id)data root:(const SSUExample *)root verify:(BOOL)verify;
 - (FLTSSUExampleEncodedVector)dataAsFLTSSUExampleEncodedVector;
 - (FLTSSUExampleUtterance)dataAsFLTSSUExampleUtterance;
-- (Offset<SSUExample>)addObjectToBuffer:(void *)a3;
+- (Offset<SSUExample>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)data_type;
 @end
@@ -41,13 +41,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__29__FLTSSUExample_flatbuffData__blo
   return result;
 }
 
-- (Offset<SSUExample>)addObjectToBuffer:(void *)a3
+- (Offset<SSUExample>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FLTSSUExample *)self data_type];
+  data_type = [(FLTSSUExample *)self data_type];
   if ([(FLTSSUExample *)self data_type]== 1)
   {
-    v6 = [(FLTSSUExample *)self dataAsFLTSSUExampleUtterance];
-    LODWORD(v7) = [v6 addObjectToBuffer:a3];
+    dataAsFLTSSUExampleUtterance = [(FLTSSUExample *)self dataAsFLTSSUExampleUtterance];
+    LODWORD(v7) = [dataAsFLTSSUExampleUtterance addObjectToBuffer:buffer];
 
     v7 = v7;
   }
@@ -59,8 +59,8 @@ apple::aiml::flatbuffers2::DetachedBuffer *__29__FLTSSUExample_flatbuffData__blo
 
   if ([(FLTSSUExample *)self data_type]== 2)
   {
-    v8 = [(FLTSSUExample *)self dataAsFLTSSUExampleEncodedVector];
-    v9 = [v8 addObjectToBuffer:a3];
+    dataAsFLTSSUExampleEncodedVector = [(FLTSSUExample *)self dataAsFLTSSUExampleEncodedVector];
+    v9 = [dataAsFLTSSUExampleEncodedVector addObjectToBuffer:buffer];
 
     v10 = v9;
   }
@@ -70,68 +70,68 @@ apple::aiml::flatbuffers2::DetachedBuffer *__29__FLTSSUExample_flatbuffData__blo
     v10 = 0;
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 5);
-  v12 = *(a3 + 6);
-  v13 = *(a3 + 4);
-  if (v5 || *(a3 + 80) == 1)
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 5);
+  v12 = *(buffer + 6);
+  v13 = *(buffer + 4);
+  if (data_type || *(buffer + 80) == 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(a3, 1uLL);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 1uLL);
-    v14 = (*(a3 + 6) - 1);
-    *(a3 + 6) = v14;
-    *v14 = v5;
-    v15 = (*(a3 + 8) - *(a3 + 12) + *(a3 + 10));
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 8uLL);
-    **(a3 + 7) = v15 | 0x400000000;
-    *(a3 + 7) += 8;
-    ++*(a3 + 16);
-    if (*(a3 + 34) <= 4u)
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(buffer, 1uLL);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 1uLL);
+    v14 = (*(buffer + 6) - 1);
+    *(buffer + 6) = v14;
+    *v14 = data_type;
+    v15 = (*(buffer + 8) - *(buffer + 12) + *(buffer + 10));
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 8uLL);
+    **(buffer + 7) = v15 | 0x400000000;
+    *(buffer + 7) += 8;
+    ++*(buffer + 16);
+    if (*(buffer + 34) <= 4u)
     {
       v16 = 4;
     }
 
     else
     {
-      v16 = *(a3 + 34);
+      v16 = *(buffer + 34);
     }
 
-    *(a3 + 34) = v16;
+    *(buffer + 34) = v16;
   }
 
   if ([(FLTSSUExample *)self data_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(a3, v7);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(buffer, v7);
   }
 
   if ([(FLTSSUExample *)self data_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(a3, v10);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<void>(buffer, v10);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v13 - v12 + v11);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v13 - v12 + v11);
 }
 
 - (FLTBFBufferAccessor)data
 {
-  v3 = [(FLTSSUExample *)self data_type];
-  if (v3 == 2)
+  data_type = [(FLTSSUExample *)self data_type];
+  if (data_type == 2)
   {
-    v4 = [(FLTSSUExample *)self dataAsFLTSSUExampleEncodedVector];
+    dataAsFLTSSUExampleEncodedVector = [(FLTSSUExample *)self dataAsFLTSSUExampleEncodedVector];
   }
 
-  else if (v3 == 1)
+  else if (data_type == 1)
   {
-    v4 = [(FLTSSUExample *)self dataAsFLTSSUExampleUtterance];
+    dataAsFLTSSUExampleEncodedVector = [(FLTSSUExample *)self dataAsFLTSSUExampleUtterance];
   }
 
   else
   {
-    v4 = 0;
+    dataAsFLTSSUExampleEncodedVector = 0;
   }
 
-  return v4;
+  return dataAsFLTSSUExampleEncodedVector;
 }
 
 - (FLTSSUExampleEncodedVector)dataAsFLTSSUExampleEncodedVector
@@ -215,42 +215,42 @@ apple::aiml::flatbuffers2::DetachedBuffer *__29__FLTSSUExample_flatbuffData__blo
   }
 }
 
-- (FLTSSUExample)initWithFlatbuffData:(id)a3 root:(const SSUExample *)a4 verify:(BOOL)a5
+- (FLTSSUExample)initWithFlatbuffData:(id)data root:(const SSUExample *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FLTSSUExample;
   v10 = [(FLTSSUExample *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_1C8C15D50;
       v27 = 0;
@@ -272,9 +272,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -283,15 +283,15 @@ LABEL_17:
   return v22;
 }
 
-+ (int64_t)data_typeForImmutableObject:(id)a3
++ (int64_t)data_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
@@ -304,9 +304,9 @@ LABEL_17:
   return v4;
 }
 
-+ (Class)data_immutableClassForType:(int64_t)a3
++ (Class)data_immutableClassForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = off_1E8323128;
 LABEL_5:
@@ -316,7 +316,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = off_1E8323120;
     goto LABEL_5;

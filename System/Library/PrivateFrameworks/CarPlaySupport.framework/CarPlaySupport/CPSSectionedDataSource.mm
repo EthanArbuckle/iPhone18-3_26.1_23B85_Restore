@@ -1,37 +1,37 @@
 @interface CPSSectionedDataSource
 - (BOOL)showingAssistantInLastPosition;
-- (CPSSectionedDataSource)initWithSections:(id)a3 templateEnvironment:(id)a4;
-- (id)_sanitizedSectionIndexTitleForTitle:(id)a3;
+- (CPSSectionedDataSource)initWithSections:(id)sections templateEnvironment:(id)environment;
+- (id)_sanitizedSectionIndexTitleForTitle:(id)title;
 - (id)firstItemIndexPath;
-- (id)indexPathForItemWithIdentifier:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(int64_t)a3;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)sectionWithIdentifier:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)a3 numberOfItems:(int64_t)a4;
+- (id)indexPathForItemWithIdentifier:(id)identifier;
+- (id)itemAtIndexPath:(id)path;
+- (id)sectionAtIndex:(int64_t)index;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)sectionWithIdentifier:(id)identifier;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)section numberOfItems:(int64_t)items;
 - (int64_t)numberOfEnhancedSections;
 - (int64_t)numberOfItems;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
 - (void)_updateLimitingLists;
-- (void)reloadItems:(id)a3;
-- (void)sessionConfiguration:(id)a3 limitedUserInterfacesChanged:(unint64_t)a4;
-- (void)setAssistantCellPosition:(int64_t)a3;
-- (void)setAssistantCellTitle:(id)a3;
-- (void)setAssistantCellVisibility:(int64_t)a3;
+- (void)reloadItems:(id)items;
+- (void)sessionConfiguration:(id)configuration limitedUserInterfacesChanged:(unint64_t)changed;
+- (void)setAssistantCellPosition:(int64_t)position;
+- (void)setAssistantCellTitle:(id)title;
+- (void)setAssistantCellVisibility:(int64_t)visibility;
 - (void)updateIndexPathForAssistantItem;
-- (void)updateSections:(id)a3;
+- (void)updateSections:(id)sections;
 @end
 
 @implementation CPSSectionedDataSource
 
 - (int64_t)numberOfSections
 {
-  v5 = [(CPSSectionedDataSource *)self sections];
-  v6 = [(NSMutableArray *)v5 count];
-  MEMORY[0x277D82BD8](v5);
+  sections = [(CPSSectionedDataSource *)self sections];
+  v6 = [(NSMutableArray *)sections count];
+  MEMORY[0x277D82BD8](sections);
   v13 = v6;
   self->_limitingWithSections = 0;
   if (self->_assistantCellIndexPath)
@@ -71,14 +71,14 @@
     {
       v10 = [(CPSSectionedDataSource *)self sectionAtIndex:i];
       v9 = 1;
-      v8 = [v10 items];
+      items = [v10 items];
       v7 = 1;
-      v4 = [v8 count];
+      v4 = [items count];
     }
 
     if (v7)
     {
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](items);
     }
 
     if (v9)
@@ -137,65 +137,65 @@
   }
 }
 
-- (CPSSectionedDataSource)initWithSections:(id)a3 templateEnvironment:(id)a4
+- (CPSSectionedDataSource)initWithSections:(id)sections templateEnvironment:(id)environment
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sections);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v4 = v17;
-  v17 = 0;
+  objc_storeStrong(&v15, environment);
+  v4 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v4;
   v14.super_class = CPSSectionedDataSource;
   v13 = [(CPSDataSource *)&v14 init];
-  v17 = v13;
-  objc_storeStrong(&v17, v13);
+  selfCopy = v13;
+  objc_storeStrong(&selfCopy, v13);
   if (v13)
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithArray:location[0]];
-    sections = v17->_sections;
-    v17->_sections = v5;
+    sections = selfCopy->_sections;
+    selfCopy->_sections = v5;
     MEMORY[0x277D82BD8](sections);
     v7 = objc_alloc(MEMORY[0x277CBB170]);
-    v8 = [v7 initWithDelegate:v17 templateEnvironment:v15];
-    sessionConfiguration = v17->_sessionConfiguration;
-    v17->_sessionConfiguration = v8;
+    v8 = [v7 initWithDelegate:selfCopy templateEnvironment:v15];
+    sessionConfiguration = selfCopy->_sessionConfiguration;
+    selfCopy->_sessionConfiguration = v8;
     MEMORY[0x277D82BD8](sessionConfiguration);
-    objc_storeStrong(&v17->_templateEnvironment, v15);
-    [(CPSSectionedDataSource *)v17 _updateLimitingLists];
+    objc_storeStrong(&selfCopy->_templateEnvironment, v15);
+    [(CPSSectionedDataSource *)selfCopy _updateLimitingLists];
   }
 
-  v11 = MEMORY[0x277D82BE0](v17);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (id)sectionAtIndex:(int64_t)a3
+- (id)sectionAtIndex:(int64_t)index
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  if (self->_assistantCellIndexPath && ![(NSIndexPath *)v16->_assistantCellIndexPath section])
+  indexCopy = index;
+  if (self->_assistantCellIndexPath && ![(NSIndexPath *)selfCopy->_assistantCellIndexPath section])
   {
-    --v14;
+    --indexCopy;
   }
 
   v12 = 0;
   v8 = 1;
-  if ((v14 & 0x8000000000000000) == 0)
+  if ((indexCopy & 0x8000000000000000) == 0)
   {
-    v13 = [(CPSSectionedDataSource *)v16 sections];
+    sections = [(CPSSectionedDataSource *)selfCopy sections];
     v12 = 1;
-    v8 = v14 > [(NSMutableArray *)v13 count];
+    v8 = indexCopy > [(NSMutableArray *)sections count];
   }
 
   if (v12)
   {
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](sections);
   }
 
   if (v8)
@@ -216,9 +216,9 @@
 
   else
   {
-    v5 = [(CPSSectionedDataSource *)v16 sections];
-    v17 = [(NSMutableArray *)v5 objectAtIndexedSubscript:v14];
-    MEMORY[0x277D82BD8](v5);
+    sections2 = [(CPSSectionedDataSource *)selfCopy sections];
+    v17 = [(NSMutableArray *)sections2 objectAtIndexedSubscript:indexCopy];
+    MEMORY[0x277D82BD8](sections2);
   }
 
   v3 = v17;
@@ -226,27 +226,27 @@
   return v3;
 }
 
-- (id)sectionWithIdentifier:(id)a3
+- (id)sectionWithIdentifier:(id)identifier
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   for (i = 0; ; ++i)
   {
     v10 = i;
-    if (v10 >= [(CPSSectionedDataSource *)v15 numberOfSections])
+    if (v10 >= [(CPSSectionedDataSource *)selfCopy numberOfSections])
     {
       break;
     }
 
     v6 = objc_opt_class();
-    v7 = [(NSMutableArray *)v15->_sections objectAtIndexedSubscript:i];
+    v7 = [(NSMutableArray *)selfCopy->_sections objectAtIndexedSubscript:i];
     v12 = CPSSafeCast_20(v6, v7);
     *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    v8 = [v12 identifier];
-    v9 = [v8 isEqual:location[0]];
-    MEMORY[0x277D82BD8](v8);
+    identifier = [v12 identifier];
+    v9 = [identifier isEqual:location[0]];
+    MEMORY[0x277D82BD8](identifier);
     if (v9)
     {
       v16 = MEMORY[0x277D82BE0](v12);
@@ -286,19 +286,19 @@ LABEL_9:
 
 - (int64_t)numberOfEnhancedSections
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9 = 0;
   for (i = 0; ; ++i)
   {
     v6 = i;
-    if (v6 >= [(CPSSectionedDataSource *)v11 numberOfSections])
+    if (v6 >= [(CPSSectionedDataSource *)selfCopy numberOfSections])
     {
       break;
     }
 
     v4 = objc_opt_class();
-    v5 = [(NSMutableArray *)v11->_sections objectAtIndexedSubscript:i];
+    v5 = [(NSMutableArray *)selfCopy->_sections objectAtIndexedSubscript:i];
     location = CPSSafeCast_20(v4, v5);
     *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
     if ([location sectionHeaderStyle] == 2)
@@ -312,18 +312,18 @@ LABEL_9:
   return v9;
 }
 
-- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)a3 numberOfItems:(int64_t)a4
+- (int64_t)_filteredNumberOfItemsGivenSection:(int64_t)section numberOfItems:(int64_t)items
 {
-  if (self->_assistantCellIndexPath && [(NSIndexPath *)self->_assistantCellIndexPath section]== a3)
+  if (self->_assistantCellIndexPath && [(NSIndexPath *)self->_assistantCellIndexPath section]== section)
   {
     return 1;
   }
 
   if (self->_limitingWithSections)
   {
-    if (a3 >= self->_maxVisibleSection)
+    if (section >= self->_maxVisibleSection)
     {
-      if (a3 == self->_maxVisibleSection)
+      if (section == self->_maxVisibleSection)
       {
         return self->_numberOfVisibleItemsInLastSection;
       }
@@ -336,7 +336,7 @@ LABEL_9:
 
     else
     {
-      return a4;
+      return items;
     }
   }
 
@@ -344,31 +344,31 @@ LABEL_9:
   {
     if ([(CPSSectionedDataSource *)self isLimitingLists])
     {
-      v6 = 12;
+      itemsCopy = 12;
     }
 
     else
     {
-      v6 = a4;
+      itemsCopy = items;
     }
 
-    if (a4 >= v6)
+    if (items >= itemsCopy)
     {
-      return v6;
+      return itemsCopy;
     }
 
     else
     {
-      return a4;
+      return items;
     }
   }
 }
 
 - (int64_t)numberOfItems
 {
-  v5 = [(CPSSectionedDataSource *)self numberOfSections];
+  numberOfSections = [(CPSSectionedDataSource *)self numberOfSections];
   v4 = 0;
-  for (i = 0; i < v5; ++i)
+  for (i = 0; i < numberOfSections; ++i)
   {
     v4 += [(CPSSectionedDataSource *)self numberOfItemsInSection:i];
   }
@@ -376,26 +376,26 @@ LABEL_9:
   return v4;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  if (self->_assistantCellIndexPath && [(NSIndexPath *)v10->_assistantCellIndexPath section]== v8)
+  sectionCopy = section;
+  if (self->_assistantCellIndexPath && [(NSIndexPath *)selfCopy->_assistantCellIndexPath section]== sectionCopy)
   {
     return 1;
   }
 
-  if (v8 >= [(CPSSectionedDataSource *)v10 numberOfSections])
+  if (sectionCopy >= [(CPSSectionedDataSource *)selfCopy numberOfSections])
   {
     return 0;
   }
 
-  v7 = [(CPSSectionedDataSource *)v10 sectionAtIndex:v8];
-  v5 = [v7 items];
-  v6 = [v5 count];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  v11 = [(CPSSectionedDataSource *)v10 _filteredNumberOfItemsGivenSection:v8 numberOfItems:v6, v3];
+  v7 = [(CPSSectionedDataSource *)selfCopy sectionAtIndex:sectionCopy];
+  items = [v7 items];
+  v6 = [items count];
+  *&v3 = MEMORY[0x277D82BD8](items).n128_u64[0];
+  v11 = [(CPSSectionedDataSource *)selfCopy _filteredNumberOfItemsGivenSection:sectionCopy numberOfItems:v6, v3];
   objc_storeStrong(&v7, 0);
   return v11;
 }
@@ -417,13 +417,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v10->_assistantCellIndexPath && ([(NSIndexPath *)v10->_assistantCellIndexPath isEqual:location[0]]& 1) != 0)
+  objc_storeStrong(location, path);
+  if (selfCopy->_assistantCellIndexPath && ([(NSIndexPath *)selfCopy->_assistantCellIndexPath isEqual:location[0]]& 1) != 0)
   {
     v11 = 0;
     v8 = 1;
@@ -431,8 +431,8 @@ LABEL_7:
 
   else
   {
-    v6 = [location[0] section];
-    if (v6 >= -[CPSSectionedDataSource numberOfSections](v10, "numberOfSections") || (v5 = [location[0] row], v5 >= -[CPSSectionedDataSource numberOfItemsInSection:](v10, "numberOfItemsInSection:", objc_msgSend(location[0], "section"))))
+    section = [location[0] section];
+    if (section >= -[CPSSectionedDataSource numberOfSections](selfCopy, "numberOfSections") || (v5 = [location[0] row], v5 >= -[CPSSectionedDataSource numberOfItemsInSection:](selfCopy, "numberOfItemsInSection:", objc_msgSend(location[0], "section"))))
     {
       v11 = 0;
       v8 = 1;
@@ -440,7 +440,7 @@ LABEL_7:
 
     else
     {
-      v7 = -[CPSSectionedDataSource sectionAtIndex:](v10, "sectionAtIndex:", [location[0] section]);
+      v7 = -[CPSSectionedDataSource sectionAtIndex:](selfCopy, "sectionAtIndex:", [location[0] section]);
       v11 = [v7 itemAtIndex:{objc_msgSend(location[0], "row")}];
       v8 = 1;
       objc_storeStrong(&v7, 0);
@@ -453,39 +453,39 @@ LABEL_7:
   return v3;
 }
 
-- (id)indexPathForItemWithIdentifier:(id)a3
+- (id)indexPathForItemWithIdentifier:(id)identifier
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   for (i = 0; ; ++i)
   {
     v11 = i;
-    if (v11 >= [(CPSSectionedDataSource *)v17 numberOfSections])
+    if (v11 >= [(CPSSectionedDataSource *)selfCopy numberOfSections])
     {
       break;
     }
 
-    if (v17->_assistantCellIndexPath)
+    if (selfCopy->_assistantCellIndexPath)
     {
-      v3 = [(NSIndexPath *)v17->_assistantCellIndexPath section];
-      if (v3 == i)
+      section = [(NSIndexPath *)selfCopy->_assistantCellIndexPath section];
+      if (section == i)
       {
         continue;
       }
     }
 
-    v14 = [(CPSSectionedDataSource *)v17 sectionAtIndex:i];
-    for (j = 0; j < [(CPSSectionedDataSource *)v17 numberOfItemsInSection:i]; ++j)
+    v14 = [(CPSSectionedDataSource *)selfCopy sectionAtIndex:i];
+    for (j = 0; j < [(CPSSectionedDataSource *)selfCopy numberOfItemsInSection:i]; ++j)
     {
-      v9 = [v14 items];
-      v8 = [v9 objectAtIndexedSubscript:j];
+      items = [v14 items];
+      v8 = [items objectAtIndexedSubscript:j];
       v7 = CPListItemIdentifier_0(v8);
       v10 = [v7 isEqual:location[0]];
       MEMORY[0x277D82BD8](v7);
       MEMORY[0x277D82BD8](v8);
-      *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+      *&v4 = MEMORY[0x277D82BD8](items).n128_u64[0];
       if (v10)
       {
         v18 = [MEMORY[0x277CCAA70] indexPathForRow:j inSection:{i, v4}];
@@ -511,21 +511,21 @@ LABEL_14:
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  if ([v13 isEqual:v15->_assistantCellIndexPath])
+  objc_storeStrong(&v13, path);
+  if ([v13 isEqual:selfCopy->_assistantCellIndexPath])
   {
     v7 = MEMORY[0x277CF90B8];
-    v8 = [(CPSDataSource *)v15 tableView];
+    tableView = [(CPSDataSource *)selfCopy tableView];
     v12 = [v7 cellForTableView:?];
-    *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    [v12 configureWithText:{v15->_assistantCellTitle, v4}];
+    *&v4 = MEMORY[0x277D82BD8](tableView).n128_u64[0];
+    [v12 configureWithText:{selfCopy->_assistantCellTitle, v4}];
     v16 = MEMORY[0x277D82BE0](v12);
     v11 = 1;
     objc_storeStrong(&v12, 0);
@@ -533,7 +533,7 @@ LABEL_14:
 
   else
   {
-    v10.receiver = v15;
+    v10.receiver = selfCopy;
     v10.super_class = CPSSectionedDataSource;
     v16 = [(CPSDataSource *)&v10 tableView:location[0] cellForRowAtIndexPath:v13];
     v11 = 1;
@@ -546,12 +546,12 @@ LABEL_14:
   return v5;
 }
 
-- (id)_sanitizedSectionIndexTitleForTitle:(id)a3
+- (id)_sanitizedSectionIndexTitleForTitle:(id)title
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   if ([location[0] length])
   {
     v3 = [location[0] rangeOfComposedCharacterSequenceAtIndex:0];
@@ -569,68 +569,68 @@ LABEL_14:
   return v5;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = [MEMORY[0x277CBEB18] array];
-  v12 = [(CPSSectionedDataSource *)v15 numberOfSections];
-  for (i = 0; i < v12; ++i)
+  objc_storeStrong(location, view);
+  array = [MEMORY[0x277CBEB18] array];
+  numberOfSections = [(CPSSectionedDataSource *)selfCopy numberOfSections];
+  for (i = 0; i < numberOfSections; ++i)
   {
-    if (v15->_assistantCellIndexPath)
+    if (selfCopy->_assistantCellIndexPath)
     {
-      v3 = [(NSIndexPath *)v15->_assistantCellIndexPath section];
-      if (v3 == i)
+      section = [(NSIndexPath *)selfCopy->_assistantCellIndexPath section];
+      if (section == i)
       {
         continue;
       }
     }
 
-    v10 = [(CPSSectionedDataSource *)v15 sectionAtIndex:i];
-    v7 = v15;
-    v8 = [v10 sectionIndexTitle];
+    v10 = [(CPSSectionedDataSource *)selfCopy sectionAtIndex:i];
+    v7 = selfCopy;
+    sectionIndexTitle = [v10 sectionIndexTitle];
     v9 = [(CPSSectionedDataSource *)v7 _sanitizedSectionIndexTitleForTitle:?];
-    *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    *&v4 = MEMORY[0x277D82BD8](sectionIndexTitle).n128_u64[0];
     if (v9)
     {
-      [v13 addObject:{v9, v4}];
+      [array addObject:{v9, v4}];
     }
 
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&v10, 0);
   }
 
-  v6 = MEMORY[0x277D82BE0](v13);
-  objc_storeStrong(&v13, 0);
+  v6 = MEMORY[0x277D82BE0](array);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
-  v19 = [(CPSSectionedDataSource *)v23 numberOfSections];
-  v10 = [(CPSSectionedDataSource *)v23 sections];
+  objc_storeStrong(&v21, title);
+  indexCopy = index;
+  numberOfSections = [(CPSSectionedDataSource *)selfCopy numberOfSections];
+  sections = [(CPSSectionedDataSource *)selfCopy sections];
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
   v15 = __72__CPSSectionedDataSource_tableView_sectionForSectionIndexTitle_atIndex___block_invoke;
   v16 = &unk_278D93CC8;
-  v17[1] = v19;
+  v17[1] = numberOfSections;
   v17[0] = MEMORY[0x277D82BE0](v21);
-  v11 = [(NSMutableArray *)v10 indexOfObjectPassingTest:&v12];
-  *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  v11 = [(NSMutableArray *)sections indexOfObjectPassingTest:&v12];
+  *&v5 = MEMORY[0x277D82BD8](sections).n128_u64[0];
   v18 = v11;
-  if (v23->_assistantCellIndexPath && ![(NSIndexPath *)v23->_assistantCellIndexPath section])
+  if (selfCopy->_assistantCellIndexPath && ![(NSIndexPath *)selfCopy->_assistantCellIndexPath section])
   {
     ++v18;
   }
@@ -666,36 +666,36 @@ uint64_t __72__CPSSectionedDataSource_tableView_sectionForSectionIndexTitle_atIn
   return v10 & 1;
 }
 
-- (void)updateSections:(id)a3
+- (void)updateSections:(id)sections
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, sections);
   v3 = [MEMORY[0x277CBEB18] arrayWithArray:location[0]];
-  sections = v7->_sections;
-  v7->_sections = v3;
+  sections = selfCopy->_sections;
+  selfCopy->_sections = v3;
   *&v5 = MEMORY[0x277D82BD8](sections).n128_u64[0];
-  [(CPSDataSource *)v7 reloadData];
+  [(CPSDataSource *)selfCopy reloadData];
   objc_storeStrong(location, 0);
 }
 
-- (void)reloadItems:(id)a3
+- (void)reloadItems:(id)items
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [MEMORY[0x277CBEB18] array];
+  objc_storeStrong(location, items);
+  array = [MEMORY[0x277CBEB18] array];
   v4 = location[0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__CPSSectionedDataSource_reloadItems___block_invoke;
   v12[3] = &unk_278D93CF0;
-  v13 = MEMORY[0x277D82BE0](v17);
-  v14 = MEMORY[0x277D82BE0](v15);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = MEMORY[0x277D82BE0](array);
   [v4 enumerateObjectsUsingBlock:v12];
-  if ([v15 count])
+  if ([array count])
   {
     v3 = MEMORY[0x277D75D18];
     v5 = MEMORY[0x277D85DD0];
@@ -703,8 +703,8 @@ uint64_t __72__CPSSectionedDataSource_tableView_sectionForSectionIndexTitle_atIn
     v7 = 0;
     v8 = __38__CPSSectionedDataSource_reloadItems___block_invoke_43;
     v9 = &unk_278D910D8;
-    v10 = MEMORY[0x277D82BE0](v17);
-    v11 = MEMORY[0x277D82BE0](v15);
+    v10 = MEMORY[0x277D82BE0](selfCopy);
+    v11 = MEMORY[0x277D82BE0](array);
     [v3 performWithoutAnimation:&v5];
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v10, 0);
@@ -712,7 +712,7 @@ uint64_t __72__CPSSectionedDataSource_tableView_sectionForSectionIndexTitle_atIn
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&array, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -765,69 +765,69 @@ double __38__CPSSectionedDataSource_reloadItems___block_invoke_43(uint64_t a1)
 - (void)_updateLimitingLists
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v5 = [(CPSSectionedDataSource *)self sessionConfiguration];
-  v6 = ([(CPSessionConfiguration *)v5 limitedUserInterfaces]& 2) == 2;
+  sessionConfiguration = [(CPSSectionedDataSource *)self sessionConfiguration];
+  v6 = ([(CPSessionConfiguration *)sessionConfiguration limitedUserInterfaces]& 2) == 2;
   v8 = v6;
-  if (v6 != [(CPSSectionedDataSource *)v10 isLimitingLists])
+  if (v6 != [(CPSSectionedDataSource *)selfCopy isLimitingLists])
   {
     location = CarPlaySupportGeneralLogging();
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
     {
       v2 = MEMORY[0x277CCABB0];
-      v4 = [(CPSSectionedDataSource *)v10 sessionConfiguration];
-      v3 = [v2 numberWithUnsignedInteger:{-[CPSessionConfiguration limitedUserInterfaces](v4, "limitedUserInterfaces")}];
+      sessionConfiguration2 = [(CPSSectionedDataSource *)selfCopy sessionConfiguration];
+      v3 = [v2 numberWithUnsignedInteger:{-[CPSessionConfiguration limitedUserInterfaces](sessionConfiguration2, "limitedUserInterfaces")}];
       __os_log_helper_16_2_1_8_66(v11, v3);
       _os_log_impl(&dword_242FE8000, location, OS_LOG_TYPE_DEFAULT, "Limited user interface changed to %{public}@", v11, 0xCu);
       MEMORY[0x277D82BD8](v3);
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](sessionConfiguration2);
     }
 
     objc_storeStrong(&location, 0);
-    v10->_isLimitingLists = v8;
-    [(CPSSectionedDataSource *)v10 updateIndexPathForAssistantItem];
-    [(CPSDataSource *)v10 reloadData];
+    selfCopy->_isLimitingLists = v8;
+    [(CPSSectionedDataSource *)selfCopy updateIndexPathForAssistantItem];
+    [(CPSDataSource *)selfCopy reloadData];
   }
 }
 
-- (void)sessionConfiguration:(id)a3 limitedUserInterfacesChanged:(unint64_t)a4
+- (void)sessionConfiguration:(id)configuration limitedUserInterfacesChanged:(unint64_t)changed
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSSectionedDataSource *)v5 _updateLimitingLists];
+  objc_storeStrong(location, configuration);
+  [(CPSSectionedDataSource *)selfCopy _updateLimitingLists];
   objc_storeStrong(location, 0);
 }
 
-- (void)setAssistantCellPosition:(int64_t)a3
+- (void)setAssistantCellPosition:(int64_t)position
 {
-  if (self->_assistantCellPosition != a3)
+  if (self->_assistantCellPosition != position)
   {
-    self->_assistantCellPosition = a3;
+    self->_assistantCellPosition = position;
     [(CPSSectionedDataSource *)self updateIndexPathForAssistantItem];
   }
 }
 
-- (void)setAssistantCellVisibility:(int64_t)a3
+- (void)setAssistantCellVisibility:(int64_t)visibility
 {
-  if (self->_assistantCellVisibility != a3)
+  if (self->_assistantCellVisibility != visibility)
   {
-    self->_assistantCellVisibility = a3;
+    self->_assistantCellVisibility = visibility;
     [(CPSSectionedDataSource *)self updateIndexPathForAssistantItem];
   }
 }
 
-- (void)setAssistantCellTitle:(id)a3
+- (void)setAssistantCellTitle:(id)title
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(NSString *)v4->_assistantCellTitle isEqualToString:location[0]])
+  objc_storeStrong(location, title);
+  if (![(NSString *)selfCopy->_assistantCellTitle isEqualToString:location[0]])
   {
-    objc_storeStrong(&v4->_assistantCellTitle, location[0]);
+    objc_storeStrong(&selfCopy->_assistantCellTitle, location[0]);
   }
 
   objc_storeStrong(location, 0);
@@ -835,15 +835,15 @@ double __38__CPSSectionedDataSource_reloadItems___block_invoke_43(uint64_t a1)
 
 - (void)updateIndexPathForAssistantItem
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(NSIndexPath *)self->_assistantCellIndexPath copy];
-  if (([(CPSTemplateEnvironment *)v5->_templateEnvironment hasAudioEntitlement]|| [(CPSTemplateEnvironment *)v5->_templateEnvironment hasCommunicationEntitlement]|| [(CPSTemplateEnvironment *)v5->_templateEnvironment hasVideoEntitlement]) && (v5->_assistantCellVisibility == 2 || v5->_assistantCellVisibility == 1 && [(CPSSectionedDataSource *)v5 isLimitingLists]))
+  if (([(CPSTemplateEnvironment *)selfCopy->_templateEnvironment hasAudioEntitlement]|| [(CPSTemplateEnvironment *)selfCopy->_templateEnvironment hasCommunicationEntitlement]|| [(CPSTemplateEnvironment *)selfCopy->_templateEnvironment hasVideoEntitlement]) && (selfCopy->_assistantCellVisibility == 2 || selfCopy->_assistantCellVisibility == 1 && [(CPSSectionedDataSource *)selfCopy isLimitingLists]))
   {
-    if (v5->_assistantCellPosition)
+    if (selfCopy->_assistantCellPosition)
     {
-      objc_storeStrong(&v5->_assistantCellIndexPath, 0);
-      v2 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:{-[CPSSectionedDataSource numberOfSections](v5, "numberOfSections")}];
+      objc_storeStrong(&selfCopy->_assistantCellIndexPath, 0);
+      v2 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:{-[CPSSectionedDataSource numberOfSections](selfCopy, "numberOfSections")}];
     }
 
     else
@@ -851,19 +851,19 @@ double __38__CPSSectionedDataSource_reloadItems___block_invoke_43(uint64_t a1)
       v2 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:?];
     }
 
-    assistantCellIndexPath = v5->_assistantCellIndexPath;
-    v5->_assistantCellIndexPath = v2;
+    assistantCellIndexPath = selfCopy->_assistantCellIndexPath;
+    selfCopy->_assistantCellIndexPath = v2;
     MEMORY[0x277D82BD8](assistantCellIndexPath);
   }
 
   else
   {
-    objc_storeStrong(&v5->_assistantCellIndexPath, 0);
+    objc_storeStrong(&selfCopy->_assistantCellIndexPath, 0);
   }
 
-  if (([(NSIndexPath *)v5->_assistantCellIndexPath isEqual:location[0]]& 1) == 0)
+  if (([(NSIndexPath *)selfCopy->_assistantCellIndexPath isEqual:location[0]]& 1) == 0)
   {
-    [(CPSDataSource *)v5 reloadData];
+    [(CPSDataSource *)selfCopy reloadData];
   }
 
   objc_storeStrong(location, 0);

@@ -1,7 +1,7 @@
 @interface MADUserSafetyQRCodeDetector
 + (BOOL)enabled;
 - (MADUserSafetyQRCodeDetector)init;
-- (void)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 signpostPayload:(id)a5;
+- (void)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation signpostPayload:(id)payload;
 @end
 
 @implementation MADUserSafetyQRCodeDetector
@@ -13,15 +13,15 @@
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (MADUserSafetyQRCodeDetector)init
@@ -31,11 +31,11 @@
   return [(MADUserSafetyQRCodeDetector *)&v3 init];
 }
 
-- (void)processPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 signpostPayload:(id)a5
+- (void)processPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation signpostPayload:(id)payload
 {
-  v5 = *&a4;
+  v5 = *&orientation;
   v84[1] = *MEMORY[0x1E69E9840];
-  v68 = a5;
+  payloadCopy = payload;
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
@@ -45,13 +45,13 @@
   }
 
   context = objc_autoreleasePoolPush();
-  v70 = [MEMORY[0x1E69844A0] mad_defaultRequest];
-  if (v70)
+  mad_defaultRequest = [MEMORY[0x1E69844A0] mad_defaultRequest];
+  if (mad_defaultRequest)
   {
     v71 = *MEMORY[0x1E69848C0];
     v84[0] = *MEMORY[0x1E69848C0];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:1];
-    [v70 setSymbologies:v8];
+    [mad_defaultRequest setSymbologies:v8];
 
     v9 = VCPSignPostLog();
     v10 = os_signpost_id_generate(v9);
@@ -61,18 +61,18 @@
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       *buf = 138412290;
-      v80 = v68;
+      v80 = payloadCopy;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "VNImageRequestHandler_init", "%@", buf, 0xCu);
     }
 
     v13 = objc_alloc(MEMORY[0x1E69845B8]);
-    v67 = [v13 initWithCVPixelBuffer:a3 orientation:v5 options:MEMORY[0x1E695E0F8]];
+    v67 = [v13 initWithCVPixelBuffer:buffer orientation:v5 options:MEMORY[0x1E695E0F8]];
     v14 = VCPSignPostLog();
     v15 = v14;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
     {
       *buf = 138412290;
-      v80 = v68;
+      v80 = payloadCopy;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v15, OS_SIGNPOST_INTERVAL_END, v10, "VNImageRequestHandler_init", "%@", buf, 0xCu);
     }
 
@@ -86,11 +86,11 @@
       if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
       {
         *buf = 138412290;
-        v80 = v68;
+        v80 = payloadCopy;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "VNImageRequestHandler_performRequests", "%@", buf, 0xCu);
       }
 
-      v83 = v70;
+      v83 = mad_defaultRequest;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
       v77 = 0;
       v21 = [v67 performRequests:v20 error:&v77];
@@ -101,22 +101,22 @@
       if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
       {
         *buf = 138412290;
-        v80 = v68;
+        v80 = payloadCopy;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v23, OS_SIGNPOST_INTERVAL_END, v17, "VNImageRequestHandler_performRequests", "%@", buf, 0xCu);
       }
 
       if (v21)
       {
-        v64 = [v70 results];
-        v24 = [(NSNumber *)self->_sensitivity unsignedIntegerValue];
-        v25 = v24;
-        if (v64 && v24 != 3)
+        results = [mad_defaultRequest results];
+        unsignedIntegerValue = [(NSNumber *)self->_sensitivity unsignedIntegerValue];
+        v25 = unsignedIntegerValue;
+        if (results && unsignedIntegerValue != 3)
         {
           v75 = 0u;
           v76 = 0u;
           v73 = 0u;
           v74 = 0u;
-          obj = v64;
+          obj = results;
           v26 = [obj countByEnumeratingWithState:&v73 objects:v78 count:16];
           if (!v26)
           {
@@ -136,17 +136,17 @@
               }
 
               v30 = *(*(&v73 + 1) + 8 * i);
-              v31 = [v30 symbology];
-              v32 = v31 == v71;
+              symbology = [v30 symbology];
+              v32 = symbology == v71;
 
               if (!v32)
               {
                 continue;
               }
 
-              v33 = [v30 payloadStringValue];
-              v34 = [objc_opt_class() nudityAndGoreViolenceURLString];
-              v35 = [v33 isEqualToString:v34];
+              payloadStringValue = [v30 payloadStringValue];
+              nudityAndGoreViolenceURLString = [objc_opt_class() nudityAndGoreViolenceURLString];
+              v35 = [payloadStringValue isEqualToString:nudityAndGoreViolenceURLString];
 
               if (v35)
               {
@@ -163,9 +163,9 @@
                 goto LABEL_43;
               }
 
-              v38 = [v30 payloadStringValue];
-              v39 = [objc_opt_class() nudityURLStringLegacy];
-              if ([v38 isEqualToString:v39])
+              payloadStringValue2 = [v30 payloadStringValue];
+              nudityURLStringLegacy = [objc_opt_class() nudityURLStringLegacy];
+              if ([payloadStringValue2 isEqualToString:nudityURLStringLegacy])
               {
 
 LABEL_34:
@@ -182,26 +182,26 @@ LABEL_34:
                 goto LABEL_43;
               }
 
-              v40 = [v30 payloadStringValue];
-              v41 = [objc_opt_class() nudityURLString];
-              v42 = [v40 isEqualToString:v41];
+              payloadStringValue3 = [v30 payloadStringValue];
+              nudityURLString = [objc_opt_class() nudityURLString];
+              v42 = [payloadStringValue3 isEqualToString:nudityURLString];
 
               if (v42)
               {
                 goto LABEL_34;
               }
 
-              v45 = [v30 payloadStringValue];
-              v46 = [objc_opt_class() goreViolenceURLStringLegacy];
-              if ([v45 isEqualToString:v46])
+              payloadStringValue4 = [v30 payloadStringValue];
+              goreViolenceURLStringLegacy = [objc_opt_class() goreViolenceURLStringLegacy];
+              if ([payloadStringValue4 isEqualToString:goreViolenceURLStringLegacy])
               {
               }
 
               else
               {
-                v47 = [v30 payloadStringValue];
-                v48 = [objc_opt_class() goreViolenceURLString];
-                v49 = [v47 isEqualToString:v48];
+                payloadStringValue5 = [v30 payloadStringValue];
+                goreViolenceURLString = [objc_opt_class() goreViolenceURLString];
+                v49 = [payloadStringValue5 isEqualToString:goreViolenceURLString];
 
                 if (!v49)
                 {

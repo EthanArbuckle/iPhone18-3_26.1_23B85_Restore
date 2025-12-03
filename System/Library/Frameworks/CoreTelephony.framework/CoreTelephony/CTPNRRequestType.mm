@@ -1,11 +1,11 @@
 @interface CTPNRRequestType
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTPNRRequestType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTPNRRequestType:(id)type;
 - (CTPNRRequestType)init;
-- (CTPNRRequestType)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPNRRequestType)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPNRRequestType
@@ -13,20 +13,20 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTPNRRequestType *)self pushToken];
-  [v3 appendFormat:@", pushToken=%@", v4];
+  pushToken = [(CTPNRRequestType *)self pushToken];
+  [v3 appendFormat:@", pushToken=%@", pushToken];
 
-  v5 = [(CTPNRRequestType *)self attemptCount];
-  [v3 appendFormat:@", attempt=%@", v5];
+  attemptCount = [(CTPNRRequestType *)self attemptCount];
+  [v3 appendFormat:@", attempt=%@", attemptCount];
 
-  v6 = [(CTPNRRequestType *)self embedded];
-  [v3 appendFormat:@", embedded=%@", v6];
+  embedded = [(CTPNRRequestType *)self embedded];
+  [v3 appendFormat:@", embedded=%@", embedded];
 
-  v7 = [(CTPNRRequestType *)self pnrReqList];
-  [v3 appendFormat:@", requestList=%@", v7];
+  pnrReqList = [(CTPNRRequestType *)self pnrReqList];
+  [v3 appendFormat:@", requestList=%@", pnrReqList];
 
-  v8 = [(CTPNRRequestType *)self sessionToken];
-  [v3 appendFormat:@", sessionToken=%@", v8];
+  sessionToken = [(CTPNRRequestType *)self sessionToken];
+  [v3 appendFormat:@", sessionToken=%@", sessionToken];
 
   [v3 appendString:@">"];
 
@@ -47,21 +47,21 @@
   return v2;
 }
 
-- (BOOL)isEqualToCTPNRRequestType:(id)a3
+- (BOOL)isEqualToCTPNRRequestType:(id)type
 {
-  v8 = a3;
-  if (!v8)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v10 = 0;
     goto LABEL_21;
   }
 
-  v9 = [(CTPNRRequestType *)self pushToken];
-  if (v9 || ([v8 pushToken], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  pushToken = [(CTPNRRequestType *)self pushToken];
+  if (pushToken || ([typeCopy pushToken], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(CTPNRRequestType *)self pushToken];
-    v4 = [v8 pushToken];
-    if (([v3 isEqualToData:v4] & 1) == 0)
+    pushToken2 = [(CTPNRRequestType *)self pushToken];
+    pushToken3 = [typeCopy pushToken];
+    if (([pushToken2 isEqualToData:pushToken3] & 1) == 0)
     {
 
       v10 = 0;
@@ -76,35 +76,35 @@
     v41 = 0;
   }
 
-  v11 = [(CTPNRRequestType *)self attemptCount];
-  if (!v11)
+  attemptCount = [(CTPNRRequestType *)self attemptCount];
+  if (!attemptCount)
   {
-    v40 = [v8 attemptCount];
-    if (!v40)
+    attemptCount2 = [typeCopy attemptCount];
+    if (!attemptCount2)
     {
-      v40 = 0;
+      attemptCount2 = 0;
       v39 = 0;
       goto LABEL_23;
     }
   }
 
   v12 = v5;
-  v13 = [(CTPNRRequestType *)self attemptCount];
-  v14 = [v8 attemptCount];
-  v6 = v14;
-  if (v13 == v14)
+  attemptCount3 = [(CTPNRRequestType *)self attemptCount];
+  attemptCount4 = [typeCopy attemptCount];
+  v6 = attemptCount4;
+  if (attemptCount3 == attemptCount4)
   {
-    v35 = v13;
+    v35 = attemptCount3;
     v39 = 1;
     v5 = v12;
 LABEL_23:
-    v16 = [(CTPNRRequestType *)self embedded];
-    if (v16 || ([v8 embedded], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
+    embedded = [(CTPNRRequestType *)self embedded];
+    if (embedded || ([typeCopy embedded], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v17 = [(CTPNRRequestType *)self embedded];
-      v37 = [v8 embedded];
-      v38 = v17;
-      if (![v17 isEqual:v37])
+      embedded2 = [(CTPNRRequestType *)self embedded];
+      embedded3 = [typeCopy embedded];
+      v38 = embedded2;
+      if (![embedded2 isEqual:embedded3])
       {
         v10 = 0;
         goto LABEL_48;
@@ -119,20 +119,20 @@ LABEL_23:
       v34 = 0;
     }
 
-    v36 = [(CTPNRRequestType *)self pnrReqList];
-    if (v36 || ([v8 pnrReqList], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    pnrReqList = [(CTPNRRequestType *)self pnrReqList];
+    if (pnrReqList || ([typeCopy pnrReqList], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v18 = [(CTPNRRequestType *)self pnrReqList];
-      v32 = [v8 pnrReqList];
-      v33 = v18;
-      if (![v18 isEqualToArray:?])
+      pnrReqList2 = [(CTPNRRequestType *)self pnrReqList];
+      pnrReqList3 = [typeCopy pnrReqList];
+      v33 = pnrReqList2;
+      if (![pnrReqList2 isEqualToArray:?])
       {
         v10 = 0;
 LABEL_44:
 
 LABEL_45:
-        v24 = v36;
-        if (!v36)
+        v24 = pnrReqList;
+        if (!pnrReqList)
         {
 
           v24 = 0;
@@ -141,7 +141,7 @@ LABEL_45:
         if (!v34)
         {
 LABEL_49:
-          if (!v16)
+          if (!embedded)
           {
           }
 
@@ -149,7 +149,7 @@ LABEL_49:
           {
           }
 
-          if (!v11)
+          if (!attemptCount)
           {
           }
 
@@ -166,38 +166,38 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v30 = v16;
+      v30 = embedded;
       v19 = 1;
     }
 
     else
     {
-      v30 = v16;
+      v30 = embedded;
       v27 = 0;
       v19 = 0;
     }
 
-    v20 = [(CTPNRRequestType *)self sessionToken];
-    if (v20 || ([v8 sessionToken], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+    sessionToken = [(CTPNRRequestType *)self sessionToken];
+    if (sessionToken || ([typeCopy sessionToken], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v28 = v19;
       v29 = v5;
       v21 = [(CTPNRRequestType *)self sessionToken:v25];
-      v22 = [v8 sessionToken];
-      v10 = [v21 isEqualToString:v22];
+      sessionToken2 = [typeCopy sessionToken];
+      v10 = [v21 isEqualToString:sessionToken2];
 
-      if (v20)
+      if (sessionToken)
       {
 
         if (!v28)
         {
           v5 = v29;
-          v16 = v30;
+          embedded = v30;
           goto LABEL_45;
         }
 
         v5 = v29;
-        v16 = v30;
+        embedded = v30;
         goto LABEL_44;
       }
 
@@ -212,7 +212,7 @@ LABEL_48:
       v10 = 1;
     }
 
-    v16 = v30;
+    embedded = v30;
     if ((v19 & 1) == 0)
     {
       goto LABEL_45;
@@ -221,7 +221,7 @@ LABEL_48:
     goto LABEL_44;
   }
 
-  if (v11)
+  if (attemptCount)
   {
   }
 
@@ -237,7 +237,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (!v9)
+  if (!pushToken)
   {
   }
 
@@ -245,10 +245,10 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -256,15 +256,15 @@ LABEL_21:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRRequestType *)self isEqualToCTPNRRequestType:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTPNRRequestType *)self isEqualToCTPNRRequestType:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CTPNRRequestType allocWithZone:a3];
+  v4 = [CTPNRRequestType allocWithZone:zone];
   [(CTPNRRequestType *)v4 setAttemptCount:self->_attemptCount];
   [(CTPNRRequestType *)v4 setPushToken:self->_pushToken];
   [(CTPNRRequestType *)v4 setEmbedded:self->_embedded];
@@ -273,45 +273,45 @@ LABEL_21:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attemptCount = self->_attemptCount;
-  v5 = a3;
-  [v5 encodeObject:attemptCount forKey:@"attempt_count"];
-  [v5 encodeObject:self->_pushToken forKey:@"push_token"];
-  [v5 encodeObject:self->_embedded forKey:@"embedded"];
-  [v5 encodeObject:self->_pnrReqList forKey:@"pnr_req"];
-  [v5 encodeObject:self->_sessionToken forKey:@"session_token"];
+  coderCopy = coder;
+  [coderCopy encodeObject:attemptCount forKey:@"attempt_count"];
+  [coderCopy encodeObject:self->_pushToken forKey:@"push_token"];
+  [coderCopy encodeObject:self->_embedded forKey:@"embedded"];
+  [coderCopy encodeObject:self->_pnrReqList forKey:@"pnr_req"];
+  [coderCopy encodeObject:self->_sessionToken forKey:@"session_token"];
 }
 
-- (CTPNRRequestType)initWithCoder:(id)a3
+- (CTPNRRequestType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CTPNRRequestType;
   v5 = [(CTPNRRequestType *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attempt_count"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attempt_count"];
     attemptCount = v5->_attemptCount;
     v5->_attemptCount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"push_token"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"push_token"];
     pushToken = v5->_pushToken;
     v5->_pushToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embedded"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embedded"];
     embedded = v5->_embedded;
     v5->_embedded = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"pnr_req"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"pnr_req"];
     pnrReqList = v5->_pnrReqList;
     v5->_pnrReqList = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"session_token"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"session_token"];
     sessionToken = v5->_sessionToken;
     v5->_sessionToken = v17;
   }

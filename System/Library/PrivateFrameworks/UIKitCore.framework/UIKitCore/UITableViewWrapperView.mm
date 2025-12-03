@@ -1,27 +1,27 @@
 @interface UITableViewWrapperView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (UITableViewWrapperView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
-- (void)_stickViewToBack:(id)a3;
-- (void)_unstickView:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (UITableViewWrapperView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
+- (void)_stickViewToBack:(id)back;
+- (void)_unstickView:(id)view;
+- (void)bringSubviewToFront:(id)front;
 - (void)dealloc;
-- (void)sendSubviewToBack:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)sendSubviewToBack:(id)back;
+- (void)setBounds:(CGRect)bounds;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITableViewWrapperView
 
-- (UITableViewWrapperView)initWithFrame:(CGRect)a3
+- (UITableViewWrapperView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UITableViewWrapperView;
-  v3 = [(UIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -41,25 +41,25 @@
   [(UIScrollView *)&v4 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self superview];
-  [(UIView *)self convertPoint:v8 toView:x, y];
-  LOBYTE(self) = [v8 pointInside:v7 withEvent:?];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  superview = [(UIView *)self superview];
+  [(UIView *)self convertPoint:superview toView:x, y];
+  LOBYTE(self) = [superview pointInside:eventCopy withEvent:?];
 
   return self;
 }
 
-- (void)_stickViewToBack:(id)a3
+- (void)_stickViewToBack:(id)back
 {
-  v4 = a3;
-  if (v4)
+  backCopy = back;
+  if (backCopy)
   {
     stuckToBackViews = self->_stuckToBackViews;
-    v9 = v4;
+    v9 = backCopy;
     if (!stuckToBackViews)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -70,32 +70,32 @@
     }
 
     v8 = [(NSMutableArray *)stuckToBackViews containsObject:v9];
-    v4 = v9;
+    backCopy = v9;
     if ((v8 & 1) == 0)
     {
       [(UIView *)self insertSubview:v9 atIndex:[(NSMutableArray *)self->_stuckToBackViews count]];
       [(NSMutableArray *)self->_stuckToBackViews addObject:v9];
-      v4 = v9;
+      backCopy = v9;
     }
   }
 }
 
-- (void)_unstickView:(id)a3
+- (void)_unstickView:(id)view
 {
-  v4 = a3;
-  v10 = v4;
-  if (v4)
+  viewCopy = view;
+  v10 = viewCopy;
+  if (viewCopy)
   {
-    [(NSMutableArray *)self->_stuckToBackViews removeObject:v4];
-    v4 = v10;
+    [(NSMutableArray *)self->_stuckToBackViews removeObject:viewCopy];
+    viewCopy = v10;
   }
 
-  v5 = [v4 superview];
-  v6 = v5;
-  if (v5 == self)
+  superview = [viewCopy superview];
+  v6 = superview;
+  if (superview == self)
   {
-    v7 = [(UIView *)self subviews];
-    v8 = [v7 indexOfObject:v10];
+    subviews = [(UIView *)self subviews];
+    v8 = [subviews indexOfObject:v10];
     v9 = [(NSMutableArray *)self->_stuckToBackViews count];
 
     if (v8 < v9)
@@ -109,88 +109,88 @@
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
-  v4 = _UITableViewSubviewToMoveForView(a3);
+  v4 = _UITableViewSubviewToMoveForView(front);
   v5.receiver = self;
   v5.super_class = UITableViewWrapperView;
   [(UIView *)&v5 bringSubviewToFront:v4];
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
-  v4 = _UITableViewSubviewToMoveForView(a3);
+  v4 = _UITableViewSubviewToMoveForView(back);
   v5.receiver = self;
   v5.super_class = UITableViewWrapperView;
   [(UIView *)&v5 sendSubviewToBack:v4];
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
-  v8 = a5;
-  v9 = _UITableViewSubviewToMoveForView(a3);
+  toCopy = to;
+  v9 = _UITableViewSubviewToMoveForView(subview);
   v10.receiver = self;
   v10.super_class = UITableViewWrapperView;
-  [(UIView *)&v10 _addSubview:v9 positioned:a4 relativeTo:v8];
+  [(UIView *)&v10 _addSubview:v9 positioned:positioned relativeTo:toCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  beganCopy = began;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, beganCopy, eventCopy);
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  movedCopy = moved;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, movedCopy, eventCopy);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  endedCopy = ended;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, endedCopy, eventCopy);
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = self;
+  cancelledCopy = cancelled;
+  eventCopy = event;
+  selfCopy = self;
   v9 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v9, a2);
   Implementation = method_getImplementation(InstanceMethod);
-  (Implementation)(v8, a2, v12, v7);
+  (Implementation)(selfCopy, a2, cancelledCopy, eventCopy);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIScrollView *)self contentOffset];
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self superview];
-  v13 = [v12 _manuallyManagesSwipeUI];
+  superview = [(UIView *)self superview];
+  _manuallyManagesSwipeUI = [superview _manuallyManagesSwipeUI];
   v14 = *(&self->super.super._viewFlags + 2);
-  if ((v13 & 1) == 0)
+  if ((_manuallyManagesSwipeUI & 1) == 0)
   {
     if ((v14 & 0x400000) != 0)
     {
@@ -216,7 +216,7 @@
     v16 = 0;
   }
 
-  if (((v13 | v16) & 1) == 0)
+  if (((_manuallyManagesSwipeUI | v16) & 1) == 0)
   {
     v23.origin.x = x;
     v23.origin.y = y;
@@ -249,11 +249,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = UITableViewWrapperView;
-  v5 = [(UIScrollView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIScrollView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

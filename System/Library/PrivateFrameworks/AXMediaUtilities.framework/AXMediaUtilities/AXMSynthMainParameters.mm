@@ -8,12 +8,12 @@
 - (float)sampleRate;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)oscillatorParametersWithIdentifier:(id)a3;
-- (id)oscillatorParametersWithIdentifiers:(id)a3;
+- (id)oscillatorParametersWithIdentifier:(id)identifier;
+- (id)oscillatorParametersWithIdentifiers:(id)identifiers;
 - (void)addSupportedParameters;
-- (void)setBaseFrequency:(float)a3;
-- (void)setMainVolume:(float)a3;
-- (void)setSampleRate:(float)a3;
+- (void)setBaseFrequency:(float)frequency;
+- (void)setMainVolume:(float)volume;
+- (void)setSampleRate:(float)rate;
 @end
 
 @implementation AXMSynthMainParameters
@@ -79,15 +79,15 @@
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = AXMSynthMainParameters;
-  v3 = [(AXMSynthObservableParameters *)&v18 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(AXMSynthObservableParameters *)&v18 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AXMSynthMainParameters *)self allOscillatorParameters];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  allOscillatorParameters = [(AXMSynthMainParameters *)self allOscillatorParameters];
+  v6 = [allOscillatorParameters countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -97,16 +97,16 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allOscillatorParameters);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 dictionaryRepresentation];
-        v11 = [v9 identifier];
-        [v4 setObject:v10 forKeyedSubscript:v11];
+        dictionaryRepresentation2 = [v9 dictionaryRepresentation];
+        identifier = [v9 identifier];
+        [v4 setObject:dictionaryRepresentation2 forKeyedSubscript:identifier];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [allOscillatorParameters countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
@@ -143,28 +143,28 @@
   return v4;
 }
 
-- (id)oscillatorParametersWithIdentifier:(id)a3
+- (id)oscillatorParametersWithIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9[0] = v4;
+  identifierCopy = identifier;
+  v9[0] = identifierCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(AXMSynthMainParameters *)self oscillatorParametersWithIdentifiers:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)oscillatorParametersWithIdentifiers:(id)a3
+- (id)oscillatorParametersWithIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v12;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -181,38 +181,38 @@
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isEqualToString:@"1"])
         {
-          v10 = [(AXMSynthMainParameters *)self mainOsc1Params];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self mainOsc1Params];
+          [array addObject:mainOsc1Params];
         }
 
         else if ([v9 isEqualToString:@"2"])
         {
-          v10 = [(AXMSynthMainParameters *)self mainOsc2Params];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self mainOsc2Params];
+          [array addObject:mainOsc1Params];
         }
 
         else if ([v9 isEqualToString:@"3"])
         {
-          v10 = [(AXMSynthMainParameters *)self mainOsc3Params];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self mainOsc3Params];
+          [array addObject:mainOsc1Params];
         }
 
         else if ([v9 isEqualToString:@"A"])
         {
-          v10 = [(AXMSynthMainParameters *)self fmOperatorAParams];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self fmOperatorAParams];
+          [array addObject:mainOsc1Params];
         }
 
         else if ([v9 isEqualToString:@"B"])
         {
-          v10 = [(AXMSynthMainParameters *)self fmOperatorBParams];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self fmOperatorBParams];
+          [array addObject:mainOsc1Params];
         }
 
         else if ([v9 isEqualToString:@"C"])
         {
-          v10 = [(AXMSynthMainParameters *)self fmOperatorCParams];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self fmOperatorCParams];
+          [array addObject:mainOsc1Params];
         }
 
         else
@@ -222,8 +222,8 @@
             continue;
           }
 
-          v10 = [(AXMSynthMainParameters *)self fmOperatorDParams];
-          [v4 addObject:v10];
+          mainOsc1Params = [(AXMSynthMainParameters *)self fmOperatorDParams];
+          [array addObject:mainOsc1Params];
         }
       }
 
@@ -233,7 +233,7 @@
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 - (float)sampleRate
@@ -245,7 +245,7 @@
   return v4;
 }
 
-- (void)setSampleRate:(float)a3
+- (void)setSampleRate:(float)rate
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -260,7 +260,7 @@
   return v4;
 }
 
-- (void)setBaseFrequency:(float)a3
+- (void)setBaseFrequency:(float)frequency
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];
@@ -275,7 +275,7 @@
   return v4;
 }
 
-- (void)setMainVolume:(float)a3
+- (void)setMainVolume:(float)volume
 {
   v4 = [MEMORY[0x1E696AD98] numberWithFloat:?];
   [AXMSynthObservableParameters setValue:"setValue:forParameter:" forParameter:?];

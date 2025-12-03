@@ -1,15 +1,15 @@
 @interface MPVoicemailMessageViewModel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVoicemailMessageViewModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVoicemailMessageViewModel:(id)model;
 - (unint64_t)hash;
 @end
 
 @implementation MPVoicemailMessageViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MPVoicemailMessageViewModel *)self isEqualToVoicemailMessageViewModel:v4];
+      v5 = [(MPVoicemailMessageViewModel *)self isEqualToVoicemailMessageViewModel:equalCopy];
     }
 
     else
@@ -31,51 +31,51 @@
   return v5;
 }
 
-- (BOOL)isEqualToVoicemailMessageViewModel:(id)a3
+- (BOOL)isEqualToVoicemailMessageViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MPVoicemailMessageViewModel *)self date];
-  v6 = [v4 date];
-  if ([v5 isEqualToDate:v6])
+  modelCopy = model;
+  date = [(MPVoicemailMessageViewModel *)self date];
+  date2 = [modelCopy date];
+  if ([date isEqualToDate:date2])
   {
-    v7 = [(MPVoicemailMessageViewModel *)self localizedDate];
-    v8 = [v4 localizedDate];
-    if ([v7 isEqualToString:v8])
+    localizedDate = [(MPVoicemailMessageViewModel *)self localizedDate];
+    localizedDate2 = [modelCopy localizedDate];
+    if ([localizedDate isEqualToString:localizedDate2])
     {
-      v9 = [(MPVoicemailMessageViewModel *)self localizedDuration];
-      v10 = [v4 localizedDuration];
-      if ([v9 isEqualToString:v10])
+      localizedDuration = [(MPVoicemailMessageViewModel *)self localizedDuration];
+      localizedDuration2 = [modelCopy localizedDuration];
+      if ([localizedDuration isEqualToString:localizedDuration2])
       {
-        v11 = [(MPVoicemailMessageViewModel *)self localizedTitle];
-        v12 = [v4 localizedTitle];
-        if ([v11 isEqualToString:v12])
+        localizedTitle = [(MPVoicemailMessageViewModel *)self localizedTitle];
+        localizedTitle2 = [modelCopy localizedTitle];
+        if ([localizedTitle isEqualToString:localizedTitle2])
         {
-          v37 = v11;
-          v13 = [(MPVoicemailMessageViewModel *)self localizedSubtitle];
-          [v4 localizedSubtitle];
-          v36 = v38 = v13;
-          if ([v13 isEqualToString:?])
+          v37 = localizedTitle;
+          localizedSubtitle = [(MPVoicemailMessageViewModel *)self localizedSubtitle];
+          [modelCopy localizedSubtitle];
+          v36 = v38 = localizedSubtitle;
+          if ([localizedSubtitle isEqualToString:?])
           {
-            v14 = [(MPVoicemailMessageViewModel *)self localizedTranscriptionMessage];
-            v34 = [v4 localizedTranscriptionMessage];
-            v35 = v14;
-            if ([v14 isEqualToString:?])
+            localizedTranscriptionMessage = [(MPVoicemailMessageViewModel *)self localizedTranscriptionMessage];
+            localizedTranscriptionMessage2 = [modelCopy localizedTranscriptionMessage];
+            v35 = localizedTranscriptionMessage;
+            if ([localizedTranscriptionMessage isEqualToString:?])
             {
-              v15 = [(MPVoicemailMessageViewModel *)self localizedSenderIdentityTitle];
-              v32 = [v4 localizedSenderIdentityTitle];
-              v33 = v15;
-              if ([v15 isEqualToString:?])
+              localizedSenderIdentityTitle = [(MPVoicemailMessageViewModel *)self localizedSenderIdentityTitle];
+              localizedSenderIdentityTitle2 = [modelCopy localizedSenderIdentityTitle];
+              v33 = localizedSenderIdentityTitle;
+              if ([localizedSenderIdentityTitle isEqualToString:?])
               {
-                v16 = [(MPVoicemailMessageViewModel *)self localizedAttributedRestrictedAlertTitle];
-                v30 = [v4 localizedAttributedRestrictedAlertTitle];
-                v31 = v16;
-                v17 = [v16 isEqualToAttributedString:?];
-                v11 = v37;
-                if (v17 && (-[MPVoicemailMessageViewModel duration](self, "duration"), v19 = v18, [v4 duration], v19 == v20) && (v24 = -[MPVoicemailMessageViewModel showsPlayerControls](self, "showsPlayerControls"), v24 == objc_msgSend(v4, "showsPlayerControls")) && (v25 = -[MPVoicemailMessageViewModel showsRestrictedAlertView](self, "showsRestrictedAlertView"), v25 == objc_msgSend(v4, "showsRestrictedAlertView")) && (v26 = -[MPVoicemailMessageViewModel showsTranscriptionView](self, "showsTranscriptionView"), v26 == objc_msgSend(v4, "showsTranscriptionView")) && (v27 = -[MPVoicemailMessageViewModel isRead](self, "isRead"), v27 == objc_msgSend(v4, "isRead")) && (v28 = -[MPVoicemailMessageViewModel isDeleted](self, "isDeleted"), v28 == objc_msgSend(v4, "isDeleted")))
+                localizedAttributedRestrictedAlertTitle = [(MPVoicemailMessageViewModel *)self localizedAttributedRestrictedAlertTitle];
+                localizedAttributedRestrictedAlertTitle2 = [modelCopy localizedAttributedRestrictedAlertTitle];
+                v31 = localizedAttributedRestrictedAlertTitle;
+                v17 = [localizedAttributedRestrictedAlertTitle isEqualToAttributedString:?];
+                localizedTitle = v37;
+                if (v17 && (-[MPVoicemailMessageViewModel duration](self, "duration"), v19 = v18, [modelCopy duration], v19 == v20) && (v24 = -[MPVoicemailMessageViewModel showsPlayerControls](self, "showsPlayerControls"), v24 == objc_msgSend(modelCopy, "showsPlayerControls")) && (v25 = -[MPVoicemailMessageViewModel showsRestrictedAlertView](self, "showsRestrictedAlertView"), v25 == objc_msgSend(modelCopy, "showsRestrictedAlertView")) && (v26 = -[MPVoicemailMessageViewModel showsTranscriptionView](self, "showsTranscriptionView"), v26 == objc_msgSend(modelCopy, "showsTranscriptionView")) && (v27 = -[MPVoicemailMessageViewModel isRead](self, "isRead"), v27 == objc_msgSend(modelCopy, "isRead")) && (v28 = -[MPVoicemailMessageViewModel isDeleted](self, "isDeleted"), v28 == objc_msgSend(modelCopy, "isDeleted")))
                 {
-                  v29 = [(MPVoicemailMessageViewModel *)self transcriptViewModel];
-                  v23 = [v4 transcriptViewModel];
-                  v21 = v29 == v23;
+                  transcriptViewModel = [(MPVoicemailMessageViewModel *)self transcriptViewModel];
+                  transcriptViewModel2 = [modelCopy transcriptViewModel];
+                  v21 = transcriptViewModel == transcriptViewModel2;
                 }
 
                 else
@@ -87,21 +87,21 @@
               else
               {
                 v21 = 0;
-                v11 = v37;
+                localizedTitle = v37;
               }
             }
 
             else
             {
               v21 = 0;
-              v11 = v37;
+              localizedTitle = v37;
             }
           }
 
           else
           {
             v21 = 0;
-            v11 = v37;
+            localizedTitle = v37;
           }
         }
 
@@ -133,22 +133,22 @@
 
 - (unint64_t)hash
 {
-  v36 = [(MPVoicemailMessageViewModel *)self date];
-  v32 = [v36 hash];
-  v35 = [(MPVoicemailMessageViewModel *)self localizedDate];
-  v31 = [v35 hash];
-  v34 = [(MPVoicemailMessageViewModel *)self localizedDuration];
-  v30 = [v34 hash];
-  v33 = [(MPVoicemailMessageViewModel *)self localizedTitle];
-  v29 = [v33 hash];
-  v3 = [(MPVoicemailMessageViewModel *)self localizedSubtitle];
-  v28 = [v3 hash];
-  v4 = [(MPVoicemailMessageViewModel *)self localizedTranscriptionMessage];
-  v27 = [v4 hash];
-  v5 = [(MPVoicemailMessageViewModel *)self localizedSenderIdentityTitle];
-  v25 = [v5 hash];
-  v6 = [(MPVoicemailMessageViewModel *)self localizedAttributedRestrictedAlertTitle];
-  v24 = [v6 hash];
+  date = [(MPVoicemailMessageViewModel *)self date];
+  v32 = [date hash];
+  localizedDate = [(MPVoicemailMessageViewModel *)self localizedDate];
+  v31 = [localizedDate hash];
+  localizedDuration = [(MPVoicemailMessageViewModel *)self localizedDuration];
+  v30 = [localizedDuration hash];
+  localizedTitle = [(MPVoicemailMessageViewModel *)self localizedTitle];
+  v29 = [localizedTitle hash];
+  localizedSubtitle = [(MPVoicemailMessageViewModel *)self localizedSubtitle];
+  v28 = [localizedSubtitle hash];
+  localizedTranscriptionMessage = [(MPVoicemailMessageViewModel *)self localizedTranscriptionMessage];
+  v27 = [localizedTranscriptionMessage hash];
+  localizedSenderIdentityTitle = [(MPVoicemailMessageViewModel *)self localizedSenderIdentityTitle];
+  v25 = [localizedSenderIdentityTitle hash];
+  localizedAttributedRestrictedAlertTitle = [(MPVoicemailMessageViewModel *)self localizedAttributedRestrictedAlertTitle];
+  v24 = [localizedAttributedRestrictedAlertTitle hash];
   [(MPVoicemailMessageViewModel *)self duration];
   if (v7 < 0.0)
   {
@@ -266,8 +266,8 @@
   }
 
   v20 = v31 ^ v32 ^ v30 ^ v29 ^ v28 ^ v27 ^ v25 ^ v24 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
-  v21 = [(MPVoicemailMessageViewModel *)self transcriptViewModel];
-  v22 = v20 ^ [v21 hash];
+  transcriptViewModel = [(MPVoicemailMessageViewModel *)self transcriptViewModel];
+  v22 = v20 ^ [transcriptViewModel hash];
 
   return v22 ^ v26;
 }

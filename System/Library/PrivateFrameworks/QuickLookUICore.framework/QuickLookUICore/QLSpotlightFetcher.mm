@@ -1,26 +1,26 @@
 @interface QLSpotlightFetcher
-- (QLSpotlightFetcher)initWithCoder:(id)a3;
-- (QLSpotlightFetcher)initWithSearchableItemUniqueIdentifier:(id)a3 queryString:(id)a4 applicationBundleIdentifier:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
+- (QLSpotlightFetcher)initWithCoder:(id)coder;
+- (QLSpotlightFetcher)initWithSearchableItemUniqueIdentifier:(id)identifier queryString:(id)string applicationBundleIdentifier:(id)bundleIdentifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation QLSpotlightFetcher
 
-- (QLSpotlightFetcher)initWithSearchableItemUniqueIdentifier:(id)a3 queryString:(id)a4 applicationBundleIdentifier:(id)a5
+- (QLSpotlightFetcher)initWithSearchableItemUniqueIdentifier:(id)identifier queryString:(id)string applicationBundleIdentifier:(id)bundleIdentifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  stringCopy = string;
+  bundleIdentifierCopy = bundleIdentifier;
   v17.receiver = self;
   v17.super_class = QLSpotlightFetcher;
   v12 = [(QLItemFetcher *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_searchableItemUniqueIdentifier, a3);
-    objc_storeStrong(&v13->_queryString, a4);
-    objc_storeStrong(&v13->_applicationBundleIdentifier, a5);
+    objc_storeStrong(&v12->_searchableItemUniqueIdentifier, identifier);
+    objc_storeStrong(&v13->_queryString, string);
+    objc_storeStrong(&v13->_applicationBundleIdentifier, bundleIdentifier);
     v14 = [QLSpotlightSearchableItemInfo spotlightInfoWithUniqueIdentifier:v13->_searchableItemUniqueIdentifier queryString:v13->_queryString applicationBundleIdentifier:v13->_applicationBundleIdentifier];
     info = v13->_info;
     v13->_info = v14;
@@ -29,20 +29,20 @@
   return v13;
 }
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = a3;
-  v10 = a6;
+  classesCopy = classes;
+  completionBlockCopy = completionBlock;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__QLSpotlightFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
   v13[3] = &unk_279AE1000;
-  v14 = v9;
-  v15 = self;
-  v16 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a4 addOperationWithBlock:v13];
+  v14 = classesCopy;
+  selfCopy = self;
+  v16 = completionBlockCopy;
+  v11 = completionBlockCopy;
+  v12 = classesCopy;
+  [queue addOperationWithBlock:v13];
 }
 
 void __95__QLSpotlightFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke(uint64_t a1)
@@ -63,34 +63,34 @@ void __95__QLSpotlightFetcher_fetchContentWithAllowedOutputClasses_inQueue_updat
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLSpotlightFetcher;
-  v4 = a3;
-  [(QLItemFetcher *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_searchableItemUniqueIdentifier forKey:{@"searchableItemUniqueIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_queryString forKey:@"queryString"];
-  [v4 encodeObject:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
+  coderCopy = coder;
+  [(QLItemFetcher *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_searchableItemUniqueIdentifier forKey:{@"searchableItemUniqueIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_queryString forKey:@"queryString"];
+  [coderCopy encodeObject:self->_applicationBundleIdentifier forKey:@"applicationBundleIdentifier"];
 }
 
-- (QLSpotlightFetcher)initWithCoder:(id)a3
+- (QLSpotlightFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = QLSpotlightFetcher;
-  v5 = [(QLItemFetcher *)&v13 initWithCoder:v4];
+  v5 = [(QLItemFetcher *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchableItemUniqueIdentifier"];
     searchableItemUniqueIdentifier = v5->_searchableItemUniqueIdentifier;
     v5->_searchableItemUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryString"];
     queryString = v5->_queryString;
     v5->_queryString = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationBundleIdentifier"];
     applicationBundleIdentifier = v5->_applicationBundleIdentifier;
     v5->_applicationBundleIdentifier = v10;
   }

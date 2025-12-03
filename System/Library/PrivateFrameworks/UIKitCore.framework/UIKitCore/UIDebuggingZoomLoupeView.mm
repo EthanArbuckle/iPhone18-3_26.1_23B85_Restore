@@ -1,17 +1,17 @@
 @interface UIDebuggingZoomLoupeView
 - (CGPoint)currentlyInspectedPoint;
 - (UIDebuggingZoomDelegate)delegate;
-- (UIDebuggingZoomLoupeView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (UIDebuggingZoomLoupeView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation UIDebuggingZoomLoupeView
 
-- (UIDebuggingZoomLoupeView)initWithFrame:(CGRect)a3
+- (UIDebuggingZoomLoupeView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIDebuggingZoomLoupeView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor whiteColor];
@@ -21,25 +21,25 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(UIView *)self window:a3.origin.x];
-  v5 = [v4 _screen];
-  [v5 _referenceBounds];
+  v4 = [(UIView *)self window:rect.origin.x];
+  _screen = [v4 _screen];
+  [_screen _referenceBounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UIView *)self window];
-  v11 = [v10 layer];
+  window = [(UIView *)self window];
+  layer = [window layer];
 
-  if (v11)
+  if (layer)
   {
     v12 = +[UIDebuggingInformationOverlay overlay];
-    v51 = [v12 inspectedWindow];
+    inspectedWindow = [v12 inspectedWindow];
 
-    v13 = [v51 layer];
+    layer2 = [inspectedWindow layer];
     [(UIView *)self frame];
-    [v13 convertRect:0 toLayer:?];
+    [layer2 convertRect:0 toLayer:?];
     v15 = v14;
     v17 = v16;
 
@@ -103,8 +103,8 @@
     v50 = (v35 - v30) * 1.2;
     [(UIDebuggingZoomLoupeView *)self currentlyInspectedPoint];
     v37 = (v36 - v23) * 1.2;
-    v38 = [(UIDebuggingZoomLoupeView *)self delegate];
-    v39 = [v38 newCaptureSnapshotAtRect:v51 window:{v31, v33, v18, v19}];
+    delegate = [(UIDebuggingZoomLoupeView *)self delegate];
+    v39 = [delegate newCaptureSnapshotAtRect:inspectedWindow window:{v31, v33, v18, v19}];
 
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
@@ -141,8 +141,8 @@
     v46 = +[UIColor redColor];
     [v46 set];
 
-    v47 = [objc_opt_self() mainScreen];
-    [v47 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v49 = 1.0 / v48;
 
     v55.origin.x = v50 + -2.0;

@@ -1,8 +1,8 @@
 @interface BuddyMandatoryUpdateUtilities
 + (BOOL)isUpdateRequired;
-+ (id)_humanReadableOSVersionWithProductVersion:(id)a3 buildVersion:(id)a4;
++ (id)_humanReadableOSVersionWithProductVersion:(id)version buildVersion:(id)buildVersion;
 + (id)humanReadableCurrentOSVersion;
-+ (id)humanReadableOSVersionFromScanOptions:(id)a3;
++ (id)humanReadableOSVersionFromScanOptions:(id)options;
 + (unint64_t)_mandatoryUpdateInformationFromActivation;
 + (void)removeInformation;
 @end
@@ -11,43 +11,43 @@
 
 + (BOOL)isUpdateRequired
 {
-  v2 = [objc_opt_class() _mandatoryUpdateInformationFromActivation];
-  v3 = [objc_opt_class() deviceIsFromFactory];
+  _mandatoryUpdateInformationFromActivation = [objc_opt_class() _mandatoryUpdateInformationFromActivation];
+  deviceIsFromFactory = [objc_opt_class() deviceIsFromFactory];
   v4 = 4;
-  if (v3)
+  if (deviceIsFromFactory)
   {
     v4 = 1;
   }
 
-  return (v4 & v2) != 0;
+  return (v4 & _mandatoryUpdateInformationFromActivation) != 0;
 }
 
 + (id)humanReadableCurrentOSVersion
 {
   v3 = MGCopyAnswer();
   v4 = MGCopyAnswer();
-  v5 = [a1 _humanReadableOSVersionWithProductVersion:v3 buildVersion:v4];
+  v5 = [self _humanReadableOSVersionWithProductVersion:v3 buildVersion:v4];
 
   return v5;
 }
 
-+ (id)humanReadableOSVersionFromScanOptions:(id)a3
++ (id)humanReadableOSVersionFromScanOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 requestedPMV];
-  v6 = [v4 requestedBuild];
+  optionsCopy = options;
+  requestedPMV = [optionsCopy requestedPMV];
+  requestedBuild = [optionsCopy requestedBuild];
 
-  v7 = [a1 _humanReadableOSVersionWithProductVersion:v5 buildVersion:v6];
+  v7 = [self _humanReadableOSVersionWithProductVersion:requestedPMV buildVersion:requestedBuild];
 
   return v7;
 }
 
-+ (id)_humanReadableOSVersionWithProductVersion:(id)a3 buildVersion:(id)a4
++ (id)_humanReadableOSVersionWithProductVersion:(id)version buildVersion:(id)buildVersion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  v7 = buildVersionCopy;
+  if (!(versionCopy | buildVersionCopy))
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"UNKNOWN" value:&stru_29910 table:@"Localizable"];
@@ -56,23 +56,23 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (buildVersionCopy)
   {
-    if (v5)
+    if (versionCopy)
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v10 = [v8 localizedStringForKey:@"MANDATORY_UPDATE_INFO_HUMAN_READABLE_VERSION" value:&stru_29910 table:@"MandatorySoftwareUpdate"];
-      v9 = [NSString localizedStringWithFormat:v10, v5, v7];
+      v9 = [NSString localizedStringWithFormat:v10, versionCopy, v7];
 
       goto LABEL_6;
     }
 
-    v11 = v6;
+    v11 = buildVersionCopy;
   }
 
   else
   {
-    v11 = v5;
+    v11 = versionCopy;
   }
 
   v9 = v11;

@@ -1,7 +1,7 @@
 @interface MADPhotosSceneBackgroundSystemTask
 + (id)producedResultIdentifiers;
 + (id)sharedTask;
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADPhotosSceneBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000C293C;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B82E0 != -1)
   {
     dispatch_once(&qword_1002B82E0, block);
@@ -30,12 +30,12 @@
   return v2;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (VCPMADUnifiedBackgroundProcessing())
   {
     v18 = @"SkipSyncGallery";
@@ -45,13 +45,13 @@
     v16[1] = 3221225472;
     v16[2] = sub_1000C2BA4;
     v16[3] = &unk_1002848F8;
-    v17 = v11;
-    v14 = [MADUnifiedProcessingTask taskWithCancelBlock:v10 options:v13 progressHandler:v16 andCompletionHandler:v12];
+    v17 = handlerCopy;
+    v14 = [MADUnifiedProcessingTask taskWithCancelBlock:blockCopy options:v13 progressHandler:v16 andCompletionHandler:completionHandlerCopy];
   }
 
   else
   {
-    v14 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:v9 cancelBlock:v10 progressHandler:v11 andCompletionHandler:v12];
+    v14 = [VCPMADSceneLibraryProcessingTask taskWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
   }
 
   return v14;

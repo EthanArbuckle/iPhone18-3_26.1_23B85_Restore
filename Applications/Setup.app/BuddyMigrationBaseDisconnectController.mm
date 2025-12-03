@@ -1,22 +1,22 @@
 @interface BuddyMigrationBaseDisconnectController
-- (BuddyMigrationBaseDisconnectController)initWithConnectionType:(int64_t)a3 featureFlags:(id)a4 deviceProvider:(id)a5;
+- (BuddyMigrationBaseDisconnectController)initWithConnectionType:(int64_t)type featureFlags:(id)flags deviceProvider:(id)provider;
 - (void)_setupSolariumViewLabel;
 - (void)viewDidLoad;
 @end
 
 @implementation BuddyMigrationBaseDisconnectController
 
-- (BuddyMigrationBaseDisconnectController)initWithConnectionType:(int64_t)a3 featureFlags:(id)a4 deviceProvider:(id)a5
+- (BuddyMigrationBaseDisconnectController)initWithConnectionType:(int64_t)type featureFlags:(id)flags deviceProvider:(id)provider
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, flags);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  objc_storeStrong(v21 + 4, location);
-  if (v19 == 1)
+  objc_storeStrong(&v17, provider);
+  objc_storeStrong(selfCopy + 4, location);
+  if (typeCopy == 1)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [(NSBundle *)v6 localizedStringForKey:@"MIGRATION_DISCONNECT_TITLE_WIRED" value:&stru_10032F900 table:@"Migration"];
@@ -28,86 +28,86 @@
     v7 = [(NSBundle *)v6 localizedStringForKey:@"MIGRATION_DISCONNECT_TITLE_WIRELESS" value:&stru_10032F900 table:@"Migration"];
   }
 
-  v8 = *(v21 + 3);
-  *(v21 + 3) = v7;
+  v8 = *(selfCopy + 3);
+  *(selfCopy + 3) = v7;
 
   if ([location isSolariumEnabled])
   {
     if ([v17 type] == 1)
     {
-      objc_storeStrong(v21 + 2, @"ipad.badge.exclamationmark");
+      objc_storeStrong(selfCopy + 2, @"ipad.badge.exclamationmark");
     }
 
     else
     {
-      objc_storeStrong(v21 + 2, @"iphone.badge.exclamationmark");
+      objc_storeStrong(selfCopy + 2, @"iphone.badge.exclamationmark");
     }
 
-    v9 = v21;
-    v21 = 0;
+    v9 = selfCopy;
+    selfCopy = 0;
     v16.receiver = v9;
     v16.super_class = BuddyMigrationBaseDisconnectController;
-    v21 = [(BuddyMigrationBaseDisconnectController *)&v16 initWithTitle:&stru_10032F900 detailText:0 icon:0];
-    objc_storeStrong(&v21, v21);
+    selfCopy = [(BuddyMigrationBaseDisconnectController *)&v16 initWithTitle:&stru_10032F900 detailText:0 icon:0];
+    objc_storeStrong(&selfCopy, selfCopy);
   }
 
   else
   {
-    v10 = v21;
-    v11 = *(v21 + 3);
+    v10 = selfCopy;
+    v11 = *(selfCopy + 3);
     v12 = [UIImage imageNamed:@"Alert Icon"];
-    v21 = 0;
+    selfCopy = 0;
     v15.receiver = v10;
     v15.super_class = BuddyMigrationBaseDisconnectController;
-    v21 = [(BuddyMigrationBaseDisconnectController *)&v15 initWithTitle:v11 detailText:0 icon:v12];
-    objc_storeStrong(&v21, v21);
+    selfCopy = [(BuddyMigrationBaseDisconnectController *)&v15 initWithTitle:v11 detailText:0 icon:v12];
+    objc_storeStrong(&selfCopy, selfCopy);
   }
 
-  v13 = v21;
+  v13 = selfCopy;
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyMigrationBaseDisconnectController;
   [(BuddyMigrationBaseDisconnectController *)&v7 viewDidLoad];
-  v2 = [(BuddyMigrationBaseDisconnectController *)v9 headerView];
-  [v2 setIconInheritsTint:1];
+  headerView = [(BuddyMigrationBaseDisconnectController *)selfCopy headerView];
+  [headerView setIconInheritsTint:1];
 
   v3 = +[UIColor redColor];
-  v4 = [(BuddyMigrationBaseDisconnectController *)v9 headerView];
-  [v4 setTintColor:v3];
+  headerView2 = [(BuddyMigrationBaseDisconnectController *)selfCopy headerView];
+  [headerView2 setTintColor:v3];
 
-  v5 = [(BuddyMigrationBaseDisconnectController *)v9 navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem = [(BuddyMigrationBaseDisconnectController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v6 = [(BuddyMigrationBaseDisconnectController *)v9 featureFlags];
-  LOBYTE(v4) = [(BuddyFeatureFlags *)v6 isSolariumEnabled];
+  featureFlags = [(BuddyMigrationBaseDisconnectController *)selfCopy featureFlags];
+  LOBYTE(headerView2) = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v4)
+  if (headerView2)
   {
-    [(BuddyMigrationBaseDisconnectController *)v9 _setupSolariumViewLabel];
+    [(BuddyMigrationBaseDisconnectController *)selfCopy _setupSolariumViewLabel];
   }
 }
 
 - (void)_setupSolariumViewLabel
 {
-  v69 = self;
+  selfCopy = self;
   v68 = a2;
-  v2 = [(BuddyMigrationBaseDisconnectController *)self text];
+  text = [(BuddyMigrationBaseDisconnectController *)self text];
   v66 = 0;
   v3 = 0;
-  if (v2)
+  if (text)
   {
-    v67 = [(BuddyMigrationBaseDisconnectController *)v69 imageName];
+    imageName = [(BuddyMigrationBaseDisconnectController *)selfCopy imageName];
     v66 = 1;
-    v3 = v67 != 0;
+    v3 = imageName != 0;
   }
 
   if (v66)
@@ -118,8 +118,8 @@
   {
     v65 = objc_alloc_init(UIView);
     [v65 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    [v4 addSubview:v65];
+    view = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    [view addSubview:v65];
 
     v64 = +[UIColor labelColor];
     v63 = +[UIColor redColor];
@@ -128,16 +128,16 @@
     v5 = [NSArray arrayWithObjects:v71 count:2];
     v62 = [UIImageSymbolConfiguration configurationWithPaletteColors:v5];
 
-    v6 = [(BuddyMigrationBaseDisconnectController *)v69 imageName];
-    v61 = [UIImage systemImageNamed:v6 withConfiguration:v62];
+    imageName2 = [(BuddyMigrationBaseDisconnectController *)selfCopy imageName];
+    v61 = [UIImage systemImageNamed:imageName2 withConfiguration:v62];
 
     v60 = [[UIImageView alloc] initWithImage:v61];
     [v60 setContentMode:2];
     [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
     location = objc_alloc_init(UILabel);
     [location setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(BuddyMigrationBaseDisconnectController *)v69 text];
-    [location setText:v7];
+    text2 = [(BuddyMigrationBaseDisconnectController *)selfCopy text];
+    [location setText:text2];
 
     [location setNumberOfLines:0];
     v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -150,66 +150,66 @@
     [location setContentCompressionResistancePriority:1 forAxis:v10];
     [v65 addSubview:v60];
     [v65 addSubview:location];
-    v57 = [v65 leadingAnchor];
-    v58 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v56 = [v58 leadingAnchor];
-    v55 = [v57 constraintGreaterThanOrEqualToAnchor:?];
+    leadingAnchor = [v65 leadingAnchor];
+    view2 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v55 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:?];
     v70[0] = v55;
-    v53 = [v65 trailingAnchor];
-    v54 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v52 = [v54 trailingAnchor];
-    v51 = [v53 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor = [v65 trailingAnchor];
+    view3 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v51 = [trailingAnchor constraintLessThanOrEqualToAnchor:?];
     v70[1] = v51;
-    v49 = [v65 topAnchor];
-    v50 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v48 = [v50 topAnchor];
-    v47 = [v49 constraintGreaterThanOrEqualToAnchor:?];
+    topAnchor = [v65 topAnchor];
+    view4 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    topAnchor2 = [view4 topAnchor];
+    v47 = [topAnchor constraintGreaterThanOrEqualToAnchor:?];
     v70[2] = v47;
-    v45 = [v65 bottomAnchor];
-    v46 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v44 = [v46 bottomAnchor];
-    v43 = [v45 constraintLessThanOrEqualToAnchor:?];
+    bottomAnchor = [v65 bottomAnchor];
+    view5 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v43 = [bottomAnchor constraintLessThanOrEqualToAnchor:?];
     v70[3] = v43;
-    v41 = [v65 centerYAnchor];
-    v42 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v40 = [v42 centerYAnchor];
-    v39 = [v41 constraintEqualToAnchor:?];
+    centerYAnchor = [v65 centerYAnchor];
+    view6 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    centerYAnchor2 = [view6 centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:?];
     v70[4] = v39;
-    v37 = [v65 centerXAnchor];
-    v38 = [(BuddyMigrationBaseDisconnectController *)v69 view];
-    v36 = [v38 centerXAnchor];
-    v35 = [v37 constraintEqualToAnchor:?];
+    centerXAnchor = [v65 centerXAnchor];
+    view7 = [(BuddyMigrationBaseDisconnectController *)selfCopy view];
+    centerXAnchor2 = [view7 centerXAnchor];
+    v35 = [centerXAnchor constraintEqualToAnchor:?];
     v70[5] = v35;
-    v34 = [v60 heightAnchor];
-    v33 = [v34 constraintEqualToConstant:82.0];
+    heightAnchor = [v60 heightAnchor];
+    v33 = [heightAnchor constraintEqualToConstant:82.0];
     v70[6] = v33;
-    v32 = [v60 topAnchor];
-    v31 = [v65 topAnchor];
-    v30 = [v32 constraintEqualToAnchor:?];
+    topAnchor3 = [v60 topAnchor];
+    topAnchor4 = [v65 topAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:?];
     v70[7] = v30;
-    v29 = [location topAnchor];
-    v28 = [v60 bottomAnchor];
-    v27 = [v29 constraintEqualToAnchor:12.0 constant:?];
+    topAnchor5 = [location topAnchor];
+    bottomAnchor3 = [v60 bottomAnchor];
+    v27 = [topAnchor5 constraintEqualToAnchor:12.0 constant:?];
     v70[8] = v27;
-    v26 = [location bottomAnchor];
-    v25 = [v65 bottomAnchor];
-    v24 = [v26 constraintEqualToAnchor:?];
+    bottomAnchor4 = [location bottomAnchor];
+    bottomAnchor5 = [v65 bottomAnchor];
+    v24 = [bottomAnchor4 constraintEqualToAnchor:?];
     v70[9] = v24;
-    v23 = [location leadingAnchor];
-    v22 = [v65 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:?];
+    leadingAnchor3 = [location leadingAnchor];
+    leadingAnchor4 = [v65 leadingAnchor];
+    v21 = [leadingAnchor3 constraintEqualToAnchor:?];
     v70[10] = v21;
-    v11 = [location trailingAnchor];
-    v12 = [v65 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor3 = [location trailingAnchor];
+    trailingAnchor4 = [v65 trailingAnchor];
+    v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v70[11] = v13;
-    v14 = [v60 centerXAnchor];
-    v15 = [v65 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor3 = [v60 centerXAnchor];
+    centerXAnchor4 = [v65 centerXAnchor];
+    v16 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v70[12] = v16;
-    v17 = [location centerXAnchor];
-    v18 = [v65 centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor5 = [location centerXAnchor];
+    centerXAnchor6 = [v65 centerXAnchor];
+    v19 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v70[13] = v19;
     v20 = [NSArray arrayWithObjects:v70 count:14];
     [NSLayoutConstraint activateConstraints:v20];

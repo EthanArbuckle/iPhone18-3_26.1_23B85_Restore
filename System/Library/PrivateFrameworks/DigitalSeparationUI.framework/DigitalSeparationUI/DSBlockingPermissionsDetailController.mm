@@ -1,53 +1,53 @@
 @interface DSBlockingPermissionsDetailController
-- (DSBlockingPermissionsDetailController)initWithPeople:(id)a3 permissions:(id)a4;
+- (DSBlockingPermissionsDetailController)initWithPeople:(id)people permissions:(id)permissions;
 - (DSBlockingPermissionsDetailDelegate)permissionsDelegate;
 - (DSNavigationDelegate)delegate;
-- (id)alertTextForSources:(id)a3;
-- (id)sourceNameForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_presentAlertForError:(id)a3;
+- (id)alertTextForSources:(id)sources;
+- (id)sourceNameForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_presentAlertForError:(id)error;
 - (void)_setUpLinkButton;
 - (void)_stopFindMyPushNextPane;
 - (void)_updateButtons;
 - (void)next;
-- (void)presentFetchError:(id)a3;
+- (void)presentFetchError:(id)error;
 - (void)reloadTableViewData;
-- (void)sharingStoppedForSourceNames:(id)a3 error:(id)a4;
+- (void)sharingStoppedForSourceNames:(id)names error:(id)error;
 - (void)stopAllSharing;
 - (void)stopSelectedSharing;
-- (void)stopSharingSources:(id)a3 alertLabel:(id)a4 alertDetail:(id)a5 completion:(id)a6;
+- (void)stopSharingSources:(id)sources alertLabel:(id)label alertDetail:(id)detail completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation DSBlockingPermissionsDetailController
 
-- (DSBlockingPermissionsDetailController)initWithPeople:(id)a3 permissions:(id)a4
+- (DSBlockingPermissionsDetailController)initWithPeople:(id)people permissions:(id)permissions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstObject];
-  if ([v6 count] < 2)
+  peopleCopy = people;
+  permissionsCopy = permissions;
+  firstObject = [peopleCopy firstObject];
+  if ([peopleCopy count] < 2)
   {
     v9 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v9 = [v6 subarrayWithRange:{1, objc_msgSend(v6, "count") - 1}];
+    v9 = [peopleCopy subarrayWithRange:{1, objc_msgSend(peopleCopy, "count") - 1}];
   }
 
   v10 = DSUILocStringForKey(@"SHARING_PERMISSION_TITLE_TEXT_FORMAT_SCWB");
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v8 displayName];
-  v13 = [v11 stringWithFormat:v10, v12];
+  displayName = [firstObject displayName];
+  v13 = [v11 stringWithFormat:v10, displayName];
 
   v14 = DSUILocStringForKey(@"SHARING_PERMISSION_DETAIL_TEXT_SCWB");
-  v15 = [v8 iconForDetail];
+  iconForDetail = [firstObject iconForDetail];
   v20.receiver = self;
   v20.super_class = DSBlockingPermissionsDetailController;
-  v16 = [(DSTableWelcomeController *)&v20 initWithTitle:v13 detailText:v14 icon:v15 adoptTableViewScrollView:1 shouldShowSearchBar:0];
+  v16 = [(DSTableWelcomeController *)&v20 initWithTitle:v13 detailText:v14 icon:iconForDetail adoptTableViewScrollView:1 shouldShowSearchBar:0];
 
   if (v16)
   {
@@ -55,9 +55,9 @@
     v18 = DSLog_17;
     DSLog_17 = v17;
 
-    [(DSBlockingPermissionsDetailController *)v16 setPerson:v8];
+    [(DSBlockingPermissionsDetailController *)v16 setPerson:firstObject];
     [(DSBlockingPermissionsDetailController *)v16 setRemainingSharingPeople:v9];
-    [(DSBlockingPermissionsDetailController *)v16 setPermissions:v7];
+    [(DSBlockingPermissionsDetailController *)v16 setPermissions:permissionsCopy];
   }
 
   return v16;
@@ -69,21 +69,21 @@
   v14.super_class = DSBlockingPermissionsDetailController;
   [(DSTableWelcomeController *)&v14 viewDidLoad];
   [(DSBlockingPermissionsDetailController *)self reloadTableViewData];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 numberOfRowsInSection:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v4 = [tableView numberOfRowsInSection:0];
 
   if (v4 >= 1)
   {
     for (i = 0; i != v4; ++i)
     {
       v6 = [MEMORY[0x277CCAA70] indexPathForRow:i inSection:0];
-      v7 = [(OBTableWelcomeController *)self tableView];
-      [v7 selectRowAtIndexPath:v6 animated:0 scrollPosition:0];
+      tableView2 = [(OBTableWelcomeController *)self tableView];
+      [tableView2 selectRowAtIndexPath:v6 animated:0 scrollPosition:0];
     }
   }
 
-  v8 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
-  if ([v8 count] == 1)
+  sortedSourceNames = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
+  if ([sortedSourceNames count] == 1)
   {
     v9 = @"SCWB_STOP_SINGLE";
   }
@@ -98,33 +98,33 @@
   v11 = [DSUIUtilities setUpBoldButtonForController:self title:v10 target:self selector:sel_stopAllSharing];
   [(DSTableWelcomeController *)self setBoldButton:v11];
 
-  v12 = [(DSTableWelcomeController *)self boldButton];
-  v13 = [MEMORY[0x277D75348] grayColor];
-  [v12 setTitleColor:v13 forState:2];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [boldButton setTitleColor:grayColor forState:2];
 
   [(DSBlockingPermissionsDetailController *)self _setUpLinkButton];
 }
 
-- (void)presentFetchError:(id)a3
+- (void)presentFetchError:(id)error
 {
-  v6 = a3;
-  v4 = [(DSBlockingPermissionsDetailController *)self navigationController];
-  v5 = [v4 visibleViewController];
+  errorCopy = error;
+  navigationController = [(DSBlockingPermissionsDetailController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
 
-  if (v5 == self)
+  if (visibleViewController == self)
   {
-    [(DSBlockingPermissionsDetailController *)self _presentAlertForError:v6];
+    [(DSBlockingPermissionsDetailController *)self _presentAlertForError:errorCopy];
   }
 
   else
   {
-    [(DSBlockingPermissionsDetailController *)self setCachedFetchError:v6];
+    [(DSBlockingPermissionsDetailController *)self setCachedFetchError:errorCopy];
   }
 }
 
-- (void)_presentAlertForError:(id)a3
+- (void)_presentAlertForError:(id)error
 {
-  v7 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:a3];
+  v7 = [MEMORY[0x277D75110] ds_alertControllerWithFetchSharingError:error];
   v4 = MEMORY[0x277D750F8];
   v5 = DSUILocStringForKey(@"OK");
   v6 = [v4 actionWithTitle:v5 style:0 handler:&__block_literal_global_21];
@@ -135,50 +135,50 @@
 
 - (void)reloadTableViewData
 {
-  v3 = [(DSBlockingPermissionsDetailController *)self person];
-  v4 = [v3 sortedSourceNames];
-  [(DSBlockingPermissionsDetailController *)self setSortedSourceNames:v4];
+  person = [(DSBlockingPermissionsDetailController *)self person];
+  sortedSourceNames = [person sortedSourceNames];
+  [(DSBlockingPermissionsDetailController *)self setSortedSourceNames:sortedSourceNames];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 layoutIfNeeded];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 layoutIfNeeded];
 
   [(DSBlockingPermissionsDetailController *)self _updateButtons];
 }
 
 - (void)next
 {
-  v11 = [(DSBlockingPermissionsDetailController *)self permissionsDelegate];
-  if (v11)
+  permissionsDelegate = [(DSBlockingPermissionsDetailController *)self permissionsDelegate];
+  if (permissionsDelegate)
   {
-    v3 = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
-    v4 = [v3 count];
+    remainingSharingPeople = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
+    v4 = [remainingSharingPeople count];
 
     if (v4)
     {
       v5 = [DSBlockingPermissionsDetailController alloc];
-      v6 = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
-      v7 = [(DSBlockingPermissionsDetailController *)self permissions];
-      v8 = [(DSBlockingPermissionsDetailController *)v5 initWithPeople:v6 permissions:v7];
+      remainingSharingPeople2 = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
+      permissions = [(DSBlockingPermissionsDetailController *)self permissions];
+      v8 = [(DSBlockingPermissionsDetailController *)v5 initWithPeople:remainingSharingPeople2 permissions:permissions];
 
-      [(DSBlockingPermissionsDetailController *)v8 setPermissionsDelegate:v11];
-      v9 = [(DSBlockingPermissionsDetailController *)self navigationController];
-      [v9 pushViewController:v8 animated:1];
+      [(DSBlockingPermissionsDetailController *)v8 setPermissionsDelegate:permissionsDelegate];
+      navigationController = [(DSBlockingPermissionsDetailController *)self navigationController];
+      [navigationController pushViewController:v8 animated:1];
     }
 
     else
     {
-      [v11 reviewSelectedSharingFlowCompleted];
+      [permissionsDelegate reviewSelectedSharingFlowCompleted];
     }
   }
 
   else
   {
     [(DSBlockingPermissionsDetailController *)self postAnalytics];
-    v10 = [(DSBlockingPermissionsDetailController *)self presentingViewController];
-    [v10 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(DSBlockingPermissionsDetailController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -211,15 +211,15 @@ id __54__DSBlockingPermissionsDetailController_postAnalytics__block_invoke(uint6
 - (void)stopSelectedSharing
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = indexPathsForSelectedRows;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -237,7 +237,7 @@ id __54__DSBlockingPermissionsDetailController_postAnalytics__block_invoke(uint6
         v10 = [(DSBlockingPermissionsDetailController *)self sourceNameForIndexPath:*(*(&v17 + 1) + 8 * v9)];
         if (v10)
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
 
         ++v9;
@@ -250,7 +250,7 @@ id __54__DSBlockingPermissionsDetailController_postAnalytics__block_invoke(uint6
     while (v7);
   }
 
-  v11 = [(DSBlockingPermissionsDetailController *)self alertTextForSources:v5];
+  v11 = [(DSBlockingPermissionsDetailController *)self alertTextForSources:array];
   v12 = DSUILocStringForKey(@"STOP_SHARING_MULTIPLE_BY_PERSON_ALERT_LABEL");
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
@@ -258,7 +258,7 @@ id __54__DSBlockingPermissionsDetailController_postAnalytics__block_invoke(uint6
   v14[2] = __60__DSBlockingPermissionsDetailController_stopSelectedSharing__block_invoke;
   v14[3] = &unk_278F75230;
   objc_copyWeak(&v15, &location);
-  [(DSBlockingPermissionsDetailController *)self stopSharingSources:v5 alertLabel:v12 alertDetail:v11 completion:v14];
+  [(DSBlockingPermissionsDetailController *)self stopSharingSources:array alertLabel:v12 alertDetail:v11 completion:v14];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 
@@ -321,57 +321,57 @@ void __60__DSBlockingPermissionsDetailController_stopSelectedSharing__block_invo
 {
   v39[1] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v3 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
-  v29 = [v3 copy];
+  sortedSourceNames = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
+  v29 = [sortedSourceNames copy];
 
-  v4 = [(DSBlockingPermissionsDetailController *)self person];
-  v5 = [v4 displayName];
+  person = [(DSBlockingPermissionsDetailController *)self person];
+  displayName = [person displayName];
 
-  v6 = [(DSBlockingPermissionsDetailController *)self person];
-  v7 = [v6 contact];
-  v8 = [v7 termsOfAddress];
-  if (v8)
+  person2 = [(DSBlockingPermissionsDetailController *)self person];
+  contact = [person2 contact];
+  termsOfAddress = [contact termsOfAddress];
+  if (termsOfAddress)
   {
-    v9 = [(DSBlockingPermissionsDetailController *)self person];
-    v10 = [v9 contact];
-    v11 = [v10 termsOfAddress];
+    person3 = [(DSBlockingPermissionsDetailController *)self person];
+    contact2 = [person3 contact];
+    termsOfAddress2 = [contact2 termsOfAddress];
   }
 
   else
   {
-    v11 = MEMORY[0x277CBEBF8];
+    termsOfAddress2 = MEMORY[0x277CBEBF8];
   }
 
   v28 = DSUILocStringForKey(@"STOP_ALL_SHARING_BY_PEOPLE_ALERT_LABEL");
   v12 = objc_alloc(MEMORY[0x277CCA898]);
   v13 = DSUILocAttributedStringForKey(@"STOP_ALL_SHARING_BY_PEOPLE_ALERT_DETAIL");
   v14 = *MEMORY[0x277CCA290];
-  v37 = v11;
+  v37 = termsOfAddress2;
   v38 = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
   v39[0] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-  v17 = [v12 initWithFormat:v13 options:0 locale:0 context:v16, v5, v5, v5];
+  v17 = [v12 initWithFormat:v13 options:0 locale:0 context:v16, displayName, displayName, displayName];
 
-  v18 = [v17 string];
+  string = [v17 string];
   if ([v29 containsObject:*MEMORY[0x277D05450]])
   {
     v19 = objc_alloc(MEMORY[0x277CCA898]);
     v20 = DSUILocAttributedStringForKey(@"FIND_MY_NOTIFICATION_WARNING_SPECIFIC");
-    v34 = v11;
+    v34 = termsOfAddress2;
     v35 = v14;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
     v36 = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    v23 = [v19 initWithFormat:v20 options:0 locale:0 context:v22, v5];
+    v23 = [v19 initWithFormat:v20 options:0 locale:0 context:v22, displayName];
 
-    v33[0] = v18;
-    v24 = [v23 string];
-    v33[1] = v24;
+    v33[0] = string;
+    string2 = [v23 string];
+    v33[1] = string2;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
     v26 = [v25 componentsJoinedByString:@" "];
 
-    v18 = v26;
+    string = v26;
   }
 
   v30[0] = MEMORY[0x277D85DD0];
@@ -379,7 +379,7 @@ void __60__DSBlockingPermissionsDetailController_stopSelectedSharing__block_invo
   v30[2] = __55__DSBlockingPermissionsDetailController_stopAllSharing__block_invoke;
   v30[3] = &unk_278F75230;
   objc_copyWeak(&v31, &location);
-  [(DSBlockingPermissionsDetailController *)self stopSharingSources:v29 alertLabel:v28 alertDetail:v18 completion:v30];
+  [(DSBlockingPermissionsDetailController *)self stopSharingSources:v29 alertLabel:v28 alertDetail:string completion:v30];
   objc_destroyWeak(&v31);
 
   objc_destroyWeak(&location);
@@ -393,14 +393,14 @@ void __55__DSBlockingPermissionsDetailController_stopAllSharing__block_invoke(ui
   [WeakRetained next];
 }
 
-- (void)stopSharingSources:(id)a3 alertLabel:(id)a4 alertDetail:(id)a5 completion:(id)a6
+- (void)stopSharingSources:(id)sources alertLabel:(id)label alertDetail:(id)detail completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(DSBlockingPermissionsDetailController *)self person];
-  v15 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v12 preferredStyle:0];
+  sourcesCopy = sources;
+  completionCopy = completion;
+  detailCopy = detail;
+  labelCopy = label;
+  person = [(DSBlockingPermissionsDetailController *)self person];
+  v15 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:detailCopy preferredStyle:0];
 
   v16 = MEMORY[0x277D750F8];
   v17 = DSUILocStringForKey(@"CANCEL");
@@ -411,16 +411,16 @@ void __55__DSBlockingPermissionsDetailController_stopAllSharing__block_invoke(ui
   v25 = 3221225472;
   v26 = __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLabel_alertDetail_completion___block_invoke_2;
   v27 = &unk_278F75F78;
-  v28 = self;
-  v29 = v10;
-  v30 = v14;
-  v31 = v11;
-  v20 = v11;
-  v21 = v14;
-  v22 = v10;
-  v23 = [v19 actionWithTitle:v13 style:2 handler:&v24];
+  selfCopy = self;
+  v29 = sourcesCopy;
+  v30 = person;
+  v31 = completionCopy;
+  v20 = completionCopy;
+  v21 = person;
+  v22 = sourcesCopy;
+  v23 = [v19 actionWithTitle:labelCopy style:2 handler:&v24];
 
-  [v15 addAction:{v23, v24, v25, v26, v27, v28}];
+  [v15 addAction:{v23, v24, v25, v26, v27, selfCopy}];
   [v15 addAction:v18];
   [(DSBlockingPermissionsDetailController *)self presentViewController:v15 animated:1 completion:0];
 }
@@ -523,47 +523,47 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
   return v3();
 }
 
-- (void)sharingStoppedForSourceNames:(id)a3 error:(id)a4
+- (void)sharingStoppedForSourceNames:(id)names error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  namesCopy = names;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = DSLog_17;
     if (os_log_type_enabled(DSLog_17, OS_LOG_TYPE_ERROR))
     {
       v13 = v8;
-      v14 = [(DSBlockingPermissionsDetailController *)self person];
+      person = [(DSBlockingPermissionsDetailController *)self person];
       v15 = 138543874;
-      v16 = v14;
+      v16 = person;
       v17 = 2114;
-      v18 = v6;
+      v18 = namesCopy;
       v19 = 2114;
-      v20 = v7;
+      v20 = errorCopy;
       _os_log_error_impl(&dword_248C7E000, v13, OS_LOG_TYPE_ERROR, "Failed to stop sharing %{public}@ from %{public}@ because %{public}@", &v15, 0x20u);
     }
 
-    v9 = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:v7];
-    [(DSTableWelcomeController *)self presentErrorAlertController:v9];
+    permissionsDelegate = [MEMORY[0x277D75110] ds_alertControllerWithStopSharingError:errorCopy];
+    [(DSTableWelcomeController *)self presentErrorAlertController:permissionsDelegate];
   }
 
   else
   {
-    v10 = [(DSBlockingPermissionsDetailController *)self person];
-    [v10 removeSources:v6];
+    person2 = [(DSBlockingPermissionsDetailController *)self person];
+    [person2 removeSources:namesCopy];
 
-    v9 = [(DSBlockingPermissionsDetailController *)self permissionsDelegate];
-    if (v9)
+    permissionsDelegate = [(DSBlockingPermissionsDetailController *)self permissionsDelegate];
+    if (permissionsDelegate)
     {
-      v11 = [(DSBlockingPermissionsDetailController *)self person];
-      [v9 sharingStoppedForPerson:v11 sourceNames:v6];
+      person3 = [(DSBlockingPermissionsDetailController *)self person];
+      [permissionsDelegate sharingStoppedForPerson:person3 sourceNames:namesCopy];
     }
 
     else
     {
-      v11 = [(DSBlockingPermissionsDetailController *)self unsharedSources];
-      [v11 addObjectsFromArray:v6];
+      person3 = [(DSBlockingPermissionsDetailController *)self unsharedSources];
+      [person3 addObjectsFromArray:namesCopy];
     }
   }
 
@@ -572,15 +572,15 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
 
 - (void)_updateButtons
 {
-  v3 = [(DSTableWelcomeController *)self boldButton];
-  [v3 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 indexPathsForSelectedRows];
-  v6 = [v5 count];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
+  v6 = [indexPathsForSelectedRows count];
 
-  v7 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
-  v8 = [v7 count];
+  sortedSourceNames = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
+  v8 = [sortedSourceNames count];
 
   if (v6 == v8)
   {
@@ -594,37 +594,37 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
       v9 = @"SCWB_STOP_ALL";
     }
 
-    v10 = DSUILocStringForKey(v9);
-    v11 = [(DSTableWelcomeController *)self boldButton];
-    [v11 setTitle:v10 forState:0];
+    boldButton5 = DSUILocStringForKey(v9);
+    boldButton2 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton2 setTitle:boldButton5 forState:0];
 
-    v12 = [(DSTableWelcomeController *)self boldButton];
-    [v12 addTarget:self action:sel_stopAllSharing forControlEvents:64];
+    boldButton3 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton3 addTarget:self action:sel_stopAllSharing forControlEvents:64];
   }
 
   else
   {
-    v13 = [(DSTableWelcomeController *)self boldButton];
+    boldButton4 = [(DSTableWelcomeController *)self boldButton];
     v14 = DSUILocStringForKey(@"SCWB_STOP_SELECTED");
-    [v13 setTitle:v14 forState:0];
+    [boldButton4 setTitle:v14 forState:0];
 
-    v10 = [(DSTableWelcomeController *)self boldButton];
-    [v10 addTarget:self action:sel_stopSelectedSharing forControlEvents:64];
+    boldButton5 = [(DSTableWelcomeController *)self boldButton];
+    [boldButton5 addTarget:self action:sel_stopSelectedSharing forControlEvents:64];
   }
 
-  v15 = [(DSTableWelcomeController *)self boldButton];
-  [v15 setEnabled:v6 != 0];
+  boldButton6 = [(DSTableWelcomeController *)self boldButton];
+  [boldButton6 setEnabled:v6 != 0];
 
-  v16 = [(DSBlockingPermissionsDetailController *)self person];
-  v17 = [v16 sourceNames];
-  v18 = [v17 containsObject:*MEMORY[0x277D05450]];
+  person = [(DSBlockingPermissionsDetailController *)self person];
+  sourceNames = [person sourceNames];
+  v18 = [sourceNames containsObject:*MEMORY[0x277D05450]];
 
   if ((v18 & 1) == 0)
   {
-    v19 = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
-    v20 = [v19 count];
+    remainingSharingPeople = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
+    v20 = [remainingSharingPeople count];
 
-    v23 = [(DSTableWelcomeController *)self linkButton];
+    linkButton = [(DSTableWelcomeController *)self linkButton];
     if (v20)
     {
       v21 = @"SKIP";
@@ -636,14 +636,14 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
     }
 
     v22 = DSUILocStringForKey(v21);
-    [v23 setTitle:v22 forState:0];
+    [linkButton setTitle:v22 forState:0];
   }
 }
 
 - (void)_setUpLinkButton
 {
-  v3 = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
-  v4 = [v3 count];
+  remainingSharingPeople = [(DSBlockingPermissionsDetailController *)self remainingSharingPeople];
+  v4 = [remainingSharingPeople count];
 
   v5 = &selRef_next;
   if (v4)
@@ -653,9 +653,9 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
 
   else
   {
-    v7 = [(DSBlockingPermissionsDetailController *)self person];
-    v8 = [v7 sourceNames];
-    v9 = [v8 containsObject:*MEMORY[0x277D05450]];
+    person = [(DSBlockingPermissionsDetailController *)self person];
+    sourceNames = [person sourceNames];
+    v9 = [sourceNames containsObject:*MEMORY[0x277D05450]];
 
     if (v9)
     {
@@ -684,8 +684,8 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
   objc_initWeak(&location, self);
   v12[0] = *MEMORY[0x277D05450];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v4 = [(DSBlockingPermissionsDetailController *)self permissions];
-  v5 = [(DSBlockingPermissionsDetailController *)self person];
+  permissions = [(DSBlockingPermissionsDetailController *)self permissions];
+  person = [(DSBlockingPermissionsDetailController *)self person];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__DSBlockingPermissionsDetailController__stopFindMyPushNextPane__block_invoke;
@@ -693,7 +693,7 @@ uint64_t __94__DSBlockingPermissionsDetailController_stopSharingSources_alertLab
   objc_copyWeak(&v10, &location);
   v6 = v3;
   v9 = v6;
-  [v4 stopSharingSources:v6 withPerson:v5 completion:v8];
+  [permissions stopSharingSources:v6 withPerson:person completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -730,57 +730,57 @@ void __64__DSBlockingPermissionsDetailController__stopFindMyPushNextPane__block_
   [WeakRetained next];
 }
 
-- (id)alertTextForSources:(id)a3
+- (id)alertTextForSources:(id)sources
 {
-  v4 = a3;
+  sourcesCopy = sources;
   v5 = *MEMORY[0x277D05458];
-  v6 = [v4 containsObject:*MEMORY[0x277D05458]];
+  v6 = [sourcesCopy containsObject:*MEMORY[0x277D05458]];
   v7 = *MEMORY[0x277D05450];
-  if (v6 && [v4 containsObject:*MEMORY[0x277D05450]])
+  if (v6 && [sourcesCopy containsObject:*MEMORY[0x277D05450]])
   {
     v8 = DSUILocStringForKey(@"HEALTH_AND_FIND_MY_COMBO_STOP_BY_PERSON_ALERT");
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(DSBlockingPermissionsDetailController *)self person];
-    v11 = [v10 displayName];
-    v12 = [(DSBlockingPermissionsDetailController *)self person];
-    v13 = [v12 displayName];
-    v14 = [v9 stringWithFormat:v8, v11, v13];
+    person = [(DSBlockingPermissionsDetailController *)self person];
+    displayName = [person displayName];
+    person2 = [(DSBlockingPermissionsDetailController *)self person];
+    displayName2 = [person2 displayName];
+    v14 = [v9 stringWithFormat:v8, displayName, displayName2];
   }
 
   else
   {
-    if ([v4 containsObject:v7])
+    if ([sourcesCopy containsObject:v7])
     {
-      v15 = v7;
+      firstObject = v7;
     }
 
-    else if ([v4 containsObject:v5])
+    else if ([sourcesCopy containsObject:v5])
     {
-      v15 = v5;
+      firstObject = v5;
     }
 
     else
     {
-      v15 = [v4 firstObject];
+      firstObject = [sourcesCopy firstObject];
     }
 
-    v8 = v15;
-    v10 = [(DSBlockingPermissionsDetailController *)self person];
-    v14 = [v10 alertTextForSource:v8];
+    v8 = firstObject;
+    person = [(DSBlockingPermissionsDetailController *)self person];
+    v14 = [person alertTextForSource:v8];
   }
 
   return v14;
 }
 
-- (id)sourceNameForIndexPath:(id)a3
+- (id)sourceNameForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 row] < 0 || (v5 = objc_msgSend(v4, "row"), -[DSBlockingPermissionsDetailController sortedSourceNames](self, "sortedSourceNames"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
+  pathCopy = path;
+  if ([pathCopy row] < 0 || (v5 = objc_msgSend(pathCopy, "row"), -[DSBlockingPermissionsDetailController sortedSourceNames](self, "sortedSourceNames"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
   {
     v11 = DSLog_17;
     if (os_log_type_enabled(DSLog_17, OS_LOG_TYPE_FAULT))
     {
-      [(DSSharingPermissionsDetailController *)v4 sourceNameForIndexPath:v11];
+      [(DSSharingPermissionsDetailController *)pathCopy sourceNameForIndexPath:v11];
     }
 
     v10 = 0;
@@ -788,18 +788,18 @@ void __64__DSBlockingPermissionsDetailController__stopFindMyPushNextPane__block_
 
   else
   {
-    v8 = [v4 row];
-    v9 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
-    v10 = [v9 objectAtIndexedSubscript:v8];
+    v8 = [pathCopy row];
+    sortedSourceNames = [(DSBlockingPermissionsDetailController *)self sortedSourceNames];
+    v10 = [sortedSourceNames objectAtIndexedSubscript:v8];
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSBlockingPermissionsDetailController *)self sourceNameForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(DSBlockingPermissionsDetailController *)self sourceNameForIndexPath:pathCopy];
   if ([v6 isEqualToString:*MEMORY[0x277D05450]])
   {
     v7 = 0;
@@ -807,35 +807,35 @@ void __64__DSBlockingPermissionsDetailController__stopFindMyPushNextPane__block_
 
   else
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [(DSBlockingPermissionsDetailController *)self sourceNameForIndexPath:a4];
+  v5 = [(DSBlockingPermissionsDetailController *)self sourceNameForIndexPath:path];
   if (v5)
   {
     v6 = [MEMORY[0x277D054C0] sourceDescriptorForSource:v5];
-    v7 = [(DSBlockingPermissionsDetailController *)self person];
-    v8 = [v7 detailTextForSource:v5];
+    person = [(DSBlockingPermissionsDetailController *)self person];
+    v8 = [person detailTextForSource:v5];
 
     if (v8)
     {
       v9 = [v5 isEqualToString:*MEMORY[0x277D05450]];
-      v10 = [(OBTableWelcomeController *)self tableView];
-      v11 = [v6 localizedName];
-      v12 = [v6 iconForTable];
+      tableView = [(OBTableWelcomeController *)self tableView];
+      localizedName = [v6 localizedName];
+      iconForTable = [v6 iconForTable];
       if (v9)
       {
-        [DSIconTableViewCell disabledIconTableViewCellFromTableView:v10 withText:v11 detail:v8 icon:v12];
+        [DSIconTableViewCell disabledIconTableViewCellFromTableView:tableView withText:localizedName detail:v8 icon:iconForTable];
       }
 
       else
       {
-        [DSIconTableViewCell iconTableViewCellFromTableView:v10 withText:v11 detail:v8 icon:v12];
+        [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:localizedName detail:v8 icon:iconForTable];
       }
       v14 = ;
     }
@@ -857,9 +857,9 @@ void __64__DSBlockingPermissionsDetailController__stopFindMyPushNextPane__block_
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames:a3];
+  v4 = [(DSBlockingPermissionsDetailController *)self sortedSourceNames:view];
   v5 = [v4 count];
 
   if (v5 < 0)

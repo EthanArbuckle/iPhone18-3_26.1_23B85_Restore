@@ -1,10 +1,10 @@
 @interface _WBUDynamicMeCard
-+ (id)_contactObjectComponentForString:(id)a3;
++ (id)_contactObjectComponentForString:(id)string;
 - (_WBUDynamicMeCard)init;
-- (id)valueForProperty:(id)a3 contact:(id)a4;
-- (void)_fetchContactKeysWithHandler:(id)a3;
-- (void)_meCardChanged:(id)a3;
-- (void)performWhenReady:(id)a3;
+- (id)valueForProperty:(id)property contact:(id)contact;
+- (void)_fetchContactKeysWithHandler:(id)handler;
+- (void)_meCardChanged:(id)changed;
+- (void)performWhenReady:(id)ready;
 @end
 
 @implementation _WBUDynamicMeCard
@@ -16,8 +16,8 @@
   v2 = [(_WBUDynamicMeCard *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__meCardChanged_ name:*MEMORY[0x277CBD148] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__meCardChanged_ name:*MEMORY[0x277CBD148] object:0];
 
     v4 = objc_alloc_init(MEMORY[0x277CBDAB8]);
     v2->_meCardExists = [WBUFormDataController contactStoreHasMeCard:v4];
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (void)_meCardChanged:(id)a3
+- (void)_meCardChanged:(id)changed
 {
   me = self->_me;
   self->_me = 0;
@@ -37,33 +37,33 @@
   self->_meCardExists = [WBUFormDataController contactStoreHasMeCard:v5];
 }
 
-- (id)valueForProperty:(id)a3 contact:(id)a4
+- (id)valueForProperty:(id)property contact:(id)contact
 {
-  v5 = a4;
-  v6 = [WBUFormDataController contactKeyForString:a3];
+  contactCopy = contact;
+  v6 = [WBUFormDataController contactKeyForString:property];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (contactCopy && v6)
   {
-    v8 = [v5 valueForKey:v6];
+    v8 = [contactCopy valueForKey:v6];
   }
 
   return v8;
 }
 
-- (void)performWhenReady:(id)a3
+- (void)performWhenReady:(id)ready
 {
-  v4 = a3;
-  v5 = v4;
+  readyCopy = ready;
+  v5 = readyCopy;
   if (self->_me)
   {
-    v4[2](v4);
+    readyCopy[2](readyCopy);
     v6 = v5;
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [readyCopy copy];
 
     blocksPendingMeCard = self->_blocksPendingMeCard;
     if (blocksPendingMeCard)
@@ -106,12 +106,12 @@
   }
 }
 
-- (void)_fetchContactKeysWithHandler:(id)a3
+- (void)_fetchContactKeysWithHandler:(id)handler
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
-  v18[0] = v4;
+  handlerCopy = handler;
+  descriptorForRequiredKeys = [MEMORY[0x277CBDAC8] descriptorForRequiredKeys];
+  v18[0] = descriptorForRequiredKeys;
   v5 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:0];
   v18[1] = v5;
   v6 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:1];
@@ -126,8 +126,8 @@
   block[3] = &unk_279EB17B8;
   v15 = v8;
   v16 = v7;
-  v17 = v3;
-  v10 = v3;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v7;
   v12 = v8;
   dispatch_async(v9, block);
@@ -135,10 +135,10 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_contactObjectComponentForString:(id)a3
++ (id)_contactObjectComponentForString:(id)string
 {
   v18[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = _contactObjectComponentForString__map;
   if (!_contactObjectComponentForString__map)
   {
@@ -172,7 +172,7 @@
     v4 = _contactObjectComponentForString__map;
   }
 
-  v14 = [v4 objectForKey:v3];
+  v14 = [v4 objectForKey:stringCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 

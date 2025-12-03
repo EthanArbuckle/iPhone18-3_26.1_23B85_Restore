@@ -1,11 +1,11 @@
 @interface ButtonsContainerViewController
-- (ButtonsContainerViewController)initWithFloatingButtonItems:(id)a3 visualEffectDisabled:(BOOL)a4;
+- (ButtonsContainerViewController)initWithFloatingButtonItems:(id)items visualEffectDisabled:(BOOL)disabled;
 - (void)_updateGroupVCs;
 - (void)loadView;
 - (void)refreshControls;
-- (void)setBlurGroupName:(id)a3;
-- (void)updateFloatingButtonItems:(id)a3;
-- (void)updateVisibilityForControls:(int64_t)a3;
+- (void)setBlurGroupName:(id)name;
+- (void)updateFloatingButtonItems:(id)items;
+- (void)updateVisibilityForControls:(int64_t)controls;
 - (void)viewDidLoad;
 @end
 
@@ -59,8 +59,8 @@
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 refreshControls];
         [(ButtonsContainerViewController *)self addChildViewController:v9];
-        v10 = [v9 view];
-        [v3 addObject:v10];
+        view = [v9 view];
+        [v3 addObject:view];
 
         [v9 didMoveToParentViewController:self];
       }
@@ -158,19 +158,19 @@
   self->_groupVCs = v16;
 }
 
-- (void)updateFloatingButtonItems:(id)a3
+- (void)updateFloatingButtonItems:(id)items
 {
-  v5 = a3;
-  if (self->_floatingButtonItems != v5)
+  itemsCopy = items;
+  if (self->_floatingButtonItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_floatingButtonItems, a3);
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_floatingButtonItems, items);
     [(ButtonsContainerViewController *)self _updateGroupVCs];
-    v5 = v6;
+    itemsCopy = v6;
   }
 }
 
-- (void)updateVisibilityForControls:(int64_t)a3
+- (void)updateVisibilityForControls:(int64_t)controls
 {
   v14 = 0u;
   v15 = 0u;
@@ -192,15 +192,15 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        [v9 updateVisibilityForControls:{a3, v14}];
-        v10 = [v9 hasShownControls];
-        v11 = [v9 view];
-        v12 = [v11 isHidden];
+        [v9 updateVisibilityForControls:{controls, v14}];
+        hasShownControls = [v9 hasShownControls];
+        view = [v9 view];
+        isHidden = [view isHidden];
 
-        if (v10 == v12)
+        if (hasShownControls == isHidden)
         {
-          v13 = [v9 view];
-          [v13 setHidden:v10 ^ 1];
+          view2 = [v9 view];
+          [view2 setHidden:hasShownControls ^ 1];
         }
       }
 
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)setBlurGroupName:(id)a3
+- (void)setBlurGroupName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   blurGroupName = self->_blurGroupName;
   self->_blurGroupName = v4;
 
@@ -249,9 +249,9 @@
   }
 }
 
-- (ButtonsContainerViewController)initWithFloatingButtonItems:(id)a3 visualEffectDisabled:(BOOL)a4
+- (ButtonsContainerViewController)initWithFloatingButtonItems:(id)items visualEffectDisabled:(BOOL)disabled
 {
-  v6 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = ButtonsContainerViewController;
   v7 = [(ButtonsContainerViewController *)&v13 initWithNibName:0 bundle:0];
@@ -263,8 +263,8 @@
 
     [(UIStackView *)v7->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v7->_stackView _maps_applyGlassGroup];
-    v7->_visualEffectDisabled = a4;
-    v10 = [v6 copy];
+    v7->_visualEffectDisabled = disabled;
+    v10 = [itemsCopy copy];
     floatingButtonItems = v7->_floatingButtonItems;
     v7->_floatingButtonItems = v10;
 

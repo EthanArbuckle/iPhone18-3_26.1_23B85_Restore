@@ -28,14 +28,14 @@
   v5 = v4;
   _Block_object_dispose(&v33, 8);
   v32 = [[v4 alloc] initWithPresentingViewController:v3];
-  v6 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 = AMSLogKey();
     v9 = MEMORY[0x1E696AEC0];
@@ -61,7 +61,7 @@
     *&buf[14] = v14;
     *&buf[22] = 2114;
     v38 = v15;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_INFO, "%{public}@Created CDP UI controller: %{public}@ for view controller: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Created CDP UI controller: %{public}@ for view controller: %{public}@", buf, 0x20u);
     if (v8)
     {
     }
@@ -86,14 +86,14 @@
   v17 = v16;
   _Block_object_dispose(&v33, 8);
   v18 = [[v16 alloc] initWithPresentingViewController:v3];
-  v19 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v19)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v19 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v21 = AMSLogKey();
     v22 = MEMORY[0x1E696AEC0];
@@ -119,13 +119,13 @@
     *&buf[14] = v27;
     *&buf[22] = 2114;
     v38 = v28;
-    _os_log_impl(&dword_1BB036000, v20, OS_LOG_TYPE_INFO, "%{public}@Created sign in flow controller delegate: %{public}@ for view controller: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@Created sign in flow controller delegate: %{public}@ for view controller: %{public}@", buf, 0x20u);
     if (v21)
     {
     }
   }
 
-  [a1 _ams_installCDPUIWithCDPUIController:v32 flowControllerDelegate:v18];
+  [self _ams_installCDPUIWithCDPUIController:v32 flowControllerDelegate:v18];
   v29 = *MEMORY[0x1E69E9840];
 
   return v32;
@@ -136,14 +136,14 @@
   v29 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v8)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v8 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = AMSLogKey();
     v11 = MEMORY[0x1E696AEC0];
@@ -166,15 +166,15 @@
     *&buf[4] = v15;
     *&buf[12] = 2114;
     *&buf[14] = v16;
-    _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Installing CDP UI Provider: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Installing CDP UI Provider: %{public}@", buf, 0x16u);
     if (v10)
     {
     }
   }
 
-  [a1 setCdpUiProvider:v6];
-  v17 = [a1 signInContexts];
-  v18 = [v17 mutableCopy];
+  [self setCdpUiProvider:v6];
+  signInContexts = [self signInContexts];
+  v18 = [signInContexts mutableCopy];
 
   if (!v18)
   {
@@ -206,7 +206,7 @@
 
   [v18 setObject:v7 forKeyedSubscript:*v19];
   v20 = [v18 copy];
-  [a1 setSignInContexts:v20];
+  [self setSignInContexts:v20];
 
   v21 = *MEMORY[0x1E69E9840];
 }

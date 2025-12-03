@@ -1,7 +1,7 @@
 @interface STUIStatusBarDisplayItemDependencyRelation
 - (BOOL)isFulfilled;
 - (STUIStatusBarDisplayItemState)itemState;
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4;
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug;
 - (id)itemStates;
 - (id)type;
 @end
@@ -11,8 +11,8 @@
 - (id)itemStates
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(STUIStatusBarDisplayItemDependencyRelation *)self itemState];
-  v5[0] = v2;
+  itemState = [(STUIStatusBarDisplayItemDependencyRelation *)self itemState];
+  v5[0] = itemState;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -46,16 +46,16 @@
   }
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(id)a3 forDebug:(BOOL)a4
+- (id)_descriptionBuilderWithMultilinePrefix:(id)prefix forDebug:(BOOL)debug
 {
   v11.receiver = self;
   v11.super_class = STUIStatusBarDisplayItemDependencyRelation;
-  v5 = [(STUIStatusBarDisplayItemRelation *)&v11 _descriptionBuilderWithMultilinePrefix:a3 forDebug:a4];
-  v6 = [(STUIStatusBarDisplayItemDependencyRelation *)self itemState];
-  v7 = [v5 appendObject:v6 withName:@"itemState" skipIfNil:1];
+  v5 = [(STUIStatusBarDisplayItemRelation *)&v11 _descriptionBuilderWithMultilinePrefix:prefix forDebug:debug];
+  itemState = [(STUIStatusBarDisplayItemDependencyRelation *)self itemState];
+  v7 = [v5 appendObject:itemState withName:@"itemState" skipIfNil:1];
 
-  v8 = [(STUIStatusBarDisplayItemDependencyRelation *)self placement];
-  v9 = [v5 appendObject:v8 withName:@"placement" skipIfNil:1];
+  placement = [(STUIStatusBarDisplayItemDependencyRelation *)self placement];
+  v9 = [v5 appendObject:placement withName:@"placement" skipIfNil:1];
 
   return v5;
 }

@@ -1,7 +1,7 @@
 @interface AVVideoOutputSettings
-+ (AVVideoOutputSettings)videoOutputSettingsWithTrustedVideoSettingsDictionary:(id)a3;
-+ (AVVideoOutputSettings)videoOutputSettingsWithVideoSettingsDictionary:(id)a3;
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
++ (AVVideoOutputSettings)videoOutputSettingsWithTrustedVideoSettingsDictionary:(id)dictionary;
++ (AVVideoOutputSettings)videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary;
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
 + (id)registeredOutputSettingsClasses;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumFrameDuration;
 - (BOOL)allowWideColor;
@@ -16,7 +16,7 @@
 - (id)compatibleMediaTypes;
 - (int)height;
 - (int)width;
-- (void)colorPropertiesConsideringFormatDescriptions:(id)a3 colorPrimaries:(id *)a4 transferFunction:(id *)a5 ycbcrMatrix:(id *)a6;
+- (void)colorPropertiesConsideringFormatDescriptions:(id)descriptions colorPrimaries:(id *)primaries transferFunction:(id *)function ycbcrMatrix:(id *)matrix;
 @end
 
 @implementation AVVideoOutputSettings
@@ -28,53 +28,53 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-+ (AVVideoOutputSettings)videoOutputSettingsWithVideoSettingsDictionary:(id)a3
++ (AVVideoOutputSettings)videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary
 {
   v13 = 0;
-  result = [a1 _videoOutputSettingsWithVideoSettingsDictionary:a3 exceptionReason:&v13];
+  result = [self _videoOutputSettingsWithVideoSettingsDictionary:dictionary exceptionReason:&v13];
   if (!result)
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, v13, v6, v7, v8, v9, v10, v12), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, v13, v6, v7, v8, v9, v10, v12), 0}];
     objc_exception_throw(v11);
   }
 
   return result;
 }
 
-+ (AVVideoOutputSettings)videoOutputSettingsWithTrustedVideoSettingsDictionary:(id)a3
++ (AVVideoOutputSettings)videoOutputSettingsWithTrustedVideoSettingsDictionary:(id)dictionary
 {
-  if ([a3 objectForKey:*MEMORY[0x1E6966130]])
+  if ([dictionary objectForKey:*MEMORY[0x1E6966130]])
   {
-    v4 = [[AVPixelBufferAttributesVideoOutputSettings alloc] initWithTrustedPixelBufferAttributes:a3];
+    v4 = [[AVPixelBufferAttributesVideoOutputSettings alloc] initWithTrustedPixelBufferAttributes:dictionary];
   }
 
   else
   {
-    result = [a3 objectForKey:@"AVVideoCodecKey"];
+    result = [dictionary objectForKey:@"AVVideoCodecKey"];
     if (!result)
     {
       return result;
     }
 
-    v4 = [[AVAVVideoSettingsVideoOutputSettings alloc] initWithTrustedAVVideoSettingsDictionary:a3];
+    v4 = [[AVAVVideoSettingsVideoOutputSettings alloc] initWithTrustedAVVideoSettingsDictionary:dictionary];
   }
 
   return v4;
 }
 
-+ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)a3 exceptionReason:(id *)a4
++ (id)_videoOutputSettingsWithVideoSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
-  if (a3)
+  if (dictionary)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___AVVideoOutputSettings;
-    return objc_msgSendSuper2(&v6, sel__outputSettingsWithOutputSettingsDictionary_mediaType_exceptionReason_, a3, @"vide", a4);
+    return objc_msgSendSuper2(&v6, sel__outputSettingsWithOutputSettingsDictionary_mediaType_exceptionReason_, dictionary, @"vide", reason);
   }
 
   else
   {
 
-    return [a1 defaultVideoOutputSettings];
+    return [self defaultVideoOutputSettings];
   }
 }
 
@@ -116,7 +116,7 @@
 
 - (NSDictionary)videoScalingProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(NSDictionary *)[(AVVideoOutputSettings *)self videoSettingsDictionary] objectForKey:@"AVVideoColorPropertiesKey"];
   if (v4)
   {
@@ -124,14 +124,14 @@
     v6 = [v4 objectForKey:@"ColorPrimaries"];
     v7 = [v5 objectForKey:@"YCbCrMatrix"];
     v8 = [v5 objectForKey:@"TransferFunction"];
-    [(NSDictionary *)v3 setObject:v6 forKey:*MEMORY[0x1E6983DC0]];
-    [(NSDictionary *)v3 setObject:v7 forKey:*MEMORY[0x1E6983DE0]];
-    [(NSDictionary *)v3 setObject:v8 forKey:*MEMORY[0x1E6983DD8]];
+    [(NSDictionary *)dictionary setObject:v6 forKey:*MEMORY[0x1E6983DC0]];
+    [(NSDictionary *)dictionary setObject:v7 forKey:*MEMORY[0x1E6983DE0]];
+    [(NSDictionary *)dictionary setObject:v8 forKey:*MEMORY[0x1E6983DD8]];
   }
 
-  if ([(NSDictionary *)v3 count])
+  if ([(NSDictionary *)dictionary count])
   {
-    return v3;
+    return dictionary;
   }
 
   else
@@ -177,7 +177,7 @@
   return result;
 }
 
-- (void)colorPropertiesConsideringFormatDescriptions:(id)a3 colorPrimaries:(id *)a4 transferFunction:(id *)a5 ycbcrMatrix:(id *)a6
+- (void)colorPropertiesConsideringFormatDescriptions:(id)descriptions colorPrimaries:(id *)primaries transferFunction:(id *)function ycbcrMatrix:(id *)matrix
 {
   v13 = 0;
   v14 = 0;
@@ -196,19 +196,19 @@
     }
   }
 
-  if (a4)
+  if (primaries)
   {
-    *a4 = v14;
+    *primaries = v14;
   }
 
-  if (a5)
+  if (function)
   {
-    *a5 = v12;
+    *function = v12;
   }
 
-  if (a6)
+  if (matrix)
   {
-    *a6 = v13;
+    *matrix = v13;
   }
 }
 
@@ -234,9 +234,9 @@
 
 - (NSString)frameRateConversionAlgorithm
 {
-  v2 = [(AVVideoOutputSettings *)self videoSettingsDictionary];
+  videoSettingsDictionary = [(AVVideoOutputSettings *)self videoSettingsDictionary];
 
-  return [(NSDictionary *)v2 objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
+  return [(NSDictionary *)videoSettingsDictionary objectForKey:@"AVVideoFrameRateConversionAlgorithm"];
 }
 
 - (BOOL)allowWideColor
@@ -257,14 +257,14 @@
 
 - (BOOL)isProRes
 {
-  v2 = [(AVOutputSettings *)self outputSettingsDictionary];
-  if (v2)
+  outputSettingsDictionary = [(AVOutputSettings *)self outputSettingsDictionary];
+  if (outputSettingsDictionary)
   {
-    v2 = [(NSDictionary *)v2 objectForKey:@"AVVideoCodecKey"];
-    if (v2)
+    outputSettingsDictionary = [(NSDictionary *)outputSettingsDictionary objectForKey:@"AVVideoCodecKey"];
+    if (outputSettingsDictionary)
     {
-      v3 = AVOSTypeForString(v2);
-      LOBYTE(v2) = 1;
+      v3 = AVOSTypeForString(outputSettingsDictionary);
+      LOBYTE(outputSettingsDictionary) = 1;
       if (v3 <= 1634743415)
       {
         if (v3 != 1634742376 && v3 != 1634742888 && v3 != 1634743400)
@@ -279,32 +279,32 @@
         if (v5 && v3 != 1634743416)
         {
 LABEL_16:
-          LOBYTE(v2) = 0;
+          LOBYTE(outputSettingsDictionary) = 0;
         }
       }
     }
   }
 
-  return v2;
+  return outputSettingsDictionary;
 }
 
 - (BOOL)isProRes4KHighFPSSetting
 {
-  v2 = [(AVOutputSettings *)self outputSettingsDictionary];
-  if (!v2)
+  outputSettingsDictionary = [(AVOutputSettings *)self outputSettingsDictionary];
+  if (!outputSettingsDictionary)
   {
-    return v2;
+    return outputSettingsDictionary;
   }
 
-  v3 = v2;
-  v2 = [(NSDictionary *)v2 objectForKey:@"AVVideoCodecKey"];
-  if (!v2)
+  v3 = outputSettingsDictionary;
+  outputSettingsDictionary = [(NSDictionary *)outputSettingsDictionary objectForKey:@"AVVideoCodecKey"];
+  if (!outputSettingsDictionary)
   {
-    return v2;
+    return outputSettingsDictionary;
   }
 
-  v4 = AVOSTypeForString(v2);
-  LOBYTE(v2) = 0;
+  v4 = AVOSTypeForString(outputSettingsDictionary);
+  LOBYTE(outputSettingsDictionary) = 0;
   if (v4 > 1634743415)
   {
     if ((v4 - 1634755432) > 0xB || ((1 << (v4 - 104)) & 0x8C1) == 0)
@@ -312,40 +312,40 @@ LABEL_16:
       v6 = (v4 - 1634759272) > 6 || ((1 << (v4 - 104)) & 0x51) == 0;
       if (v6 && v4 != 1634743416)
       {
-        return v2;
+        return outputSettingsDictionary;
       }
     }
 
 LABEL_25:
-    v2 = [(NSDictionary *)v3 objectForKey:@"AVVideoWidthKey"];
-    if (!v2)
+    outputSettingsDictionary = [(NSDictionary *)v3 objectForKey:@"AVVideoWidthKey"];
+    if (!outputSettingsDictionary)
     {
-      return v2;
+      return outputSettingsDictionary;
     }
 
-    if ([(NSDictionary *)v2 longValue]>= 3840)
+    if ([(NSDictionary *)outputSettingsDictionary longValue]>= 3840)
     {
-      v2 = [(NSDictionary *)v3 objectForKey:@"AVVideoHeightKey"];
-      if (!v2)
+      outputSettingsDictionary = [(NSDictionary *)v3 objectForKey:@"AVVideoHeightKey"];
+      if (!outputSettingsDictionary)
       {
-        return v2;
+        return outputSettingsDictionary;
       }
 
-      if ([(NSDictionary *)v2 longValue]>= 2160)
+      if ([(NSDictionary *)outputSettingsDictionary longValue]>= 2160)
       {
-        v2 = [(NSDictionary *)v3 objectForKey:@"AVVideoCompressionPropertiesKey"];
-        if (!v2)
+        outputSettingsDictionary = [(NSDictionary *)v3 objectForKey:@"AVVideoCompressionPropertiesKey"];
+        if (!outputSettingsDictionary)
         {
-          return v2;
+          return outputSettingsDictionary;
         }
 
-        v2 = [(NSDictionary *)v2 objectForKey:@"ExpectedFrameRate"];
-        if (!v2)
+        outputSettingsDictionary = [(NSDictionary *)outputSettingsDictionary objectForKey:@"ExpectedFrameRate"];
+        if (!outputSettingsDictionary)
         {
-          return v2;
+          return outputSettingsDictionary;
         }
 
-        [(NSDictionary *)v2 floatValue];
+        [(NSDictionary *)outputSettingsDictionary floatValue];
         if (v4 == 1634759278 || v4 == 1634759272)
         {
           v11 = 50.0;
@@ -358,14 +358,14 @@ LABEL_25:
 
         if (v10 >= v11)
         {
-          LOBYTE(v2) = 1;
-          return v2;
+          LOBYTE(outputSettingsDictionary) = 1;
+          return outputSettingsDictionary;
         }
       }
     }
 
-    LOBYTE(v2) = 0;
-    return v2;
+    LOBYTE(outputSettingsDictionary) = 0;
+    return outputSettingsDictionary;
   }
 
   if (v4 == 1634742376 || v4 == 1634742888 || v4 == 1634743400)
@@ -373,7 +373,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  return v2;
+  return outputSettingsDictionary;
 }
 
 @end

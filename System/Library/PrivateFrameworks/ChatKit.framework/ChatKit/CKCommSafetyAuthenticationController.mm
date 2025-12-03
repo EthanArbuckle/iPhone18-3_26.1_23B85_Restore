@@ -1,14 +1,14 @@
 @interface CKCommSafetyAuthenticationController
-+ (void)_presentAuthenticationUI:(id)a3 completion:(id)a4;
-+ (void)presentAuthenticationUI:(id)a3 completion:(id)a4;
++ (void)_presentAuthenticationUI:(id)i completion:(id)completion;
++ (void)presentAuthenticationUI:(id)i completion:(id)completion;
 @end
 
 @implementation CKCommSafetyAuthenticationController
 
-+ (void)presentAuthenticationUI:(id)a3 completion:(id)a4
++ (void)presentAuthenticationUI:(id)i completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -30,7 +30,7 @@
   v10 = objc_alloc_init(v8);
   if ([v10 isRestrictionsPasscodeSet])
   {
-    [a1 _presentAuthenticationUI:v6 completion:v7];
+    [self _presentAuthenticationUI:iCopy completion:completionCopy];
   }
 
   else
@@ -45,14 +45,14 @@
       }
     }
 
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-+ (void)_presentAuthenticationUI:(id)a3 completion:(id)a4
++ (void)_presentAuthenticationUI:(id)i completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -76,8 +76,8 @@
   v11[1] = 3221225472;
   v11[2] = __76__CKCommSafetyAuthenticationController__presentAuthenticationUI_completion___block_invoke;
   v11[3] = &unk_1E72F8240;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 authenticateForCommunicationConfigurationOverrideWithCompletionHandler:v11];
 }
 

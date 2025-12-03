@@ -7,16 +7,16 @@
 
 - (uint64_t)loadedItemsRect
 {
-  result = [a1 loadedItems];
+  result = [self loadedItems];
   if (v3)
   {
     v4 = v3 + result - 1;
-    [a1 frameForItem:result];
+    [self frameForItem:result];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [a1 frameForItem:v4];
+    [self frameForItem:v4];
     v30.origin.x = v13;
     rect = v13;
     v15 = v14;
@@ -60,8 +60,8 @@
 {
   if (a3 != 1)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"PXZoomablePhotosContentLayout.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"numberOfColumns == 1"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosContentLayout.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"numberOfColumns == 1"}];
   }
 }
 

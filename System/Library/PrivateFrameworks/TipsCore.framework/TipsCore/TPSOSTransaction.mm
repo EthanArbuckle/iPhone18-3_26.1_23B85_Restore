@@ -1,29 +1,29 @@
 @interface TPSOSTransaction
-+ (id)transactionWithName:(id)a3;
-- (TPSOSTransaction)initWithTransactionName:(id)a3;
++ (id)transactionWithName:(id)name;
+- (TPSOSTransaction)initWithTransactionName:(id)name;
 - (void)dealloc;
 - (void)endTransaction;
 @end
 
 @implementation TPSOSTransaction
 
-+ (id)transactionWithName:(id)a3
++ (id)transactionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTransactionName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithTransactionName:nameCopy];
 
   return v5;
 }
 
-- (TPSOSTransaction)initWithTransactionName:(id)a3
+- (TPSOSTransaction)initWithTransactionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = TPSOSTransaction;
   v5 = [(TPSOSTransaction *)&v12 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v5->_creationTime = v7;
     v8 = os_transaction_create();
@@ -33,7 +33,7 @@
     v10 = +[TPSLogger default];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(TPSOSTransaction *)v6 initWithTransactionName:v5, v10];
+      [(TPSOSTransaction *)uTF8String initWithTransactionName:v5, v10];
     }
   }
 
@@ -44,7 +44,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1C00A7000, a2, OS_LOG_TYPE_DEBUG, "EndTransaction was called but transaction was already nil. (%p)", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

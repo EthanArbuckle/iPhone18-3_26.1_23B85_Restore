@@ -1,19 +1,19 @@
 @interface ASDTFBetaAppLaunchDataProvider
-- (void)loadLaunchScreenForBundleWithURL:(id)a3 withCompletionHandler:(id)a4;
+- (void)loadLaunchScreenForBundleWithURL:(id)l withCompletionHandler:(id)handler;
 @end
 
 @implementation ASDTFBetaAppLaunchDataProvider
 
-- (void)loadLaunchScreenForBundleWithURL:(id)a3 withCompletionHandler:(id)a4
+- (void)loadLaunchScreenForBundleWithURL:(id)l withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x277CC1E70];
-  v7 = a3;
+  lCopy = l;
   v15 = 0;
-  v8 = [[v6 alloc] initWithURL:v7 allowPlaceholder:0 error:&v15];
+  v8 = [[v6 alloc] initWithURL:lCopy allowPlaceholder:0 error:&v15];
 
   v9 = v15;
-  v10 = [v8 bundleIdentifier];
+  bundleIdentifier = [v8 bundleIdentifier];
   if (v8)
   {
     v11 = 1;
@@ -26,18 +26,18 @@
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CEC4C0] sharedInstance];
+    mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __89__ASDTFBetaAppLaunchDataProvider_loadLaunchScreenForBundleWithURL_withCompletionHandler___block_invoke;
     v13[3] = &unk_279D984A0;
-    v14 = v5;
-    [v12 getLaunchInfoForBundleID:v10 withCompletionHandler:v13];
+    v14 = handlerCopy;
+    [mEMORY[0x277CEC4C0] getLaunchInfoForBundleID:bundleIdentifier withCompletionHandler:v13];
   }
 
   else
   {
-    (*(v5 + 2))(v5, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 

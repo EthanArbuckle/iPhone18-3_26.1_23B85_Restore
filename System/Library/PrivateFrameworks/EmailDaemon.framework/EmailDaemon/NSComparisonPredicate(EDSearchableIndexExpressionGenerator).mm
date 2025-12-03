@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __66__NSComparisonPredicate_EDSearchableIndexExpressionGenerator__log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_87 != -1)
   {
     dispatch_once(&log_onceToken_87, block);
@@ -31,39 +31,39 @@
   }
 
   v2 = ed_hasOnlySpotlightKeypaths_spotlightKeyPaths;
-  v3 = [a1 leftExpression];
-  v4 = [v3 keyPath];
-  v5 = [v2 containsObject:v4];
+  leftExpression = [self leftExpression];
+  keyPath = [leftExpression keyPath];
+  v5 = [v2 containsObject:keyPath];
 
   return v5;
 }
 
 - (id)ed_searchableIndexQueryStringForQueryWithSuggestion:()EDSearchableIndexExpressionGenerator originalSearchString:nonSpotlightPredicates:
 {
-  if ([a1 ed_hasOnlySpotlightKeypaths])
+  if ([self ed_hasOnlySpotlightKeypaths])
   {
-    v9 = [a1 leftExpression];
-    v10 = [v9 keyPath];
+    leftExpression = [self leftExpression];
+    keyPath = [leftExpression keyPath];
 
-    v11 = [a1 rightExpression];
-    v12 = [v11 constantValue];
+    rightExpression = [self rightExpression];
+    constantValue = [rightExpression constantValue];
 
-    if ([v10 isEqualToString:*MEMORY[0x1E699A9D0]])
+    if ([keyPath isEqualToString:*MEMORY[0x1E699A9D0]])
     {
-      objc_storeStrong(a4, v12);
+      objc_storeStrong(a4, constantValue);
       v13 = 0;
     }
 
     else
     {
-      if ([v10 isEqualToString:*MEMORY[0x1E699A998]])
+      if ([keyPath isEqualToString:*MEMORY[0x1E699A998]])
       {
-        v15 = v12;
+        v15 = constantValue;
       }
 
       else
       {
-        v15 = [EDSearchableIndexExpressionGenerator searchableIndexQueryStringForComparisionPredicate:a1 hasSuggestion:a3];
+        v15 = [EDSearchableIndexExpressionGenerator searchableIndexQueryStringForComparisionPredicate:self hasSuggestion:a3];
       }
 
       v13 = v15;
@@ -74,9 +74,9 @@
 
   else
   {
-    v14 = a1;
+    selfCopy = self;
     v13 = 0;
-    *a5 = a1;
+    *a5 = self;
   }
 
   return v13;

@@ -1,7 +1,7 @@
 @interface SCATModernMenuGestureFreehandMainSheet
 - (id)makeMenuItemsIfNeeded;
 - (id)menuItemStruts;
-- (void)menuItemWasActivated:(id)a3;
+- (void)menuItemWasActivated:(id)activated;
 @end
 
 @implementation SCATModernMenuGestureFreehandMainSheet
@@ -27,22 +27,22 @@
     v9 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_more" delegate:self title:v8 activateBehavior:2];
     [v3 addObject:v9];
 
-    v10 = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
-    [v3 addObject:v10];
+    moveToolbarMenuItem = [(SCATModernMenuGestureFreehandSheetBase *)self moveToolbarMenuItem];
+    [v3 addObject:moveToolbarMenuItem];
   }
 
   else
   {
     if ([(SCATModernMenuGestureFreehandSheetBase *)self isLandscape])
     {
-      v11 = [(SCATModernMenuGestureFreehandSheetBase *)self pathMenuItems];
-      [v3 addObjectsFromArray:v11];
+      pathMenuItems = [(SCATModernMenuGestureFreehandSheetBase *)self pathMenuItems];
+      [v3 addObjectsFromArray:pathMenuItems];
     }
 
     else
     {
-      v11 = sub_100042B24(@"FREEHAND_PATH");
-      v12 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_path" delegate:self title:v11 imagePrefixForTouchDependentGlyph:@"adjust" shouldRotate:1 activateBehavior:2];
+      pathMenuItems = sub_100042B24(@"FREEHAND_PATH");
+      v12 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_path" delegate:self title:pathMenuItems imagePrefixForTouchDependentGlyph:@"adjust" shouldRotate:1 activateBehavior:2];
       [v3 addObject:v12];
     }
 
@@ -50,19 +50,19 @@
     v14 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_touch" delegate:self title:v13 activateBehavior:2];
     [v3 addObject:v14];
 
-    v10 = sub_100042B24(@"FREEHAND_MORE_ONE_LINE");
-    v15 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_more" delegate:self title:v10 activateBehavior:2];
+    moveToolbarMenuItem = sub_100042B24(@"FREEHAND_MORE_ONE_LINE");
+    v15 = [SCATModernMenuGestureFreehandItem itemWithIdentifier:@"freehand_more" delegate:self title:moveToolbarMenuItem activateBehavior:2];
     [v3 addObject:v15];
   }
 
   return v3;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"freehand_path"] || objc_msgSend(v5, "isEqualToString:", @"freehand_touch") || objc_msgSend(v5, "isEqualToString:", @"freehand_more"))
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  if ([identifier isEqualToString:@"freehand_path"] || objc_msgSend(identifier, "isEqualToString:", @"freehand_touch") || objc_msgSend(identifier, "isEqualToString:", @"freehand_more"))
   {
     [(SCATModernMenuGestureFreehandSheetBase *)self pushFreehandSheetOfClass:objc_opt_class()];
   }
@@ -71,7 +71,7 @@
   {
     v6.receiver = self;
     v6.super_class = SCATModernMenuGestureFreehandMainSheet;
-    [(SCATModernMenuGestureFreehandSheetBase *)&v6 menuItemWasActivated:v4];
+    [(SCATModernMenuGestureFreehandSheetBase *)&v6 menuItemWasActivated:activatedCopy];
   }
 }
 

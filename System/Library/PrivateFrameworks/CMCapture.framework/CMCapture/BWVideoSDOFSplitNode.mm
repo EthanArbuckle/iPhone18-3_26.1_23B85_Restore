@@ -1,7 +1,7 @@
 @interface BWVideoSDOFSplitNode
 - (BWVideoSDOFSplitNode)init;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWVideoSDOFSplitNode
@@ -34,20 +34,20 @@
   [(BWFanOutNode *)&v4 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    [(BWNodeOutput *)self->_originalOutput emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->_originalOutput emitSampleBuffer:buffer];
     v6 = 192;
 LABEL_9:
     v9 = *(&self->super.super.super.isa + v6);
 
-    [v9 emitSampleBuffer:a3];
+    [v9 emitSampleBuffer:buffer];
     return;
   }
 
-  v7 = CMGetAttachment(a3, @"UnfilteredPixelBuffer", 0);
+  v7 = CMGetAttachment(buffer, @"UnfilteredPixelBuffer", 0);
   if (!v7)
   {
     v6 = 184;
@@ -56,9 +56,9 @@ LABEL_9:
 
   v8 = v7;
   CFRetain(v7);
-  CMRemoveAttachment(a3, @"UnfilteredPixelBuffer");
+  CMRemoveAttachment(buffer, @"UnfilteredPixelBuffer");
   cf = 0;
-  BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v8, &self->_originalVideoFormatDescription, &cf);
+  BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v8, &self->_originalVideoFormatDescription, &cf);
   CFRelease(v8);
   if (cf)
   {
@@ -72,7 +72,7 @@ LABEL_9:
     }
   }
 
-  [(BWNodeOutput *)self->_sdofOutput emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->_sdofOutput emitSampleBuffer:buffer];
 }
 
 @end

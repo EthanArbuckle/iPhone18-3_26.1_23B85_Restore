@@ -1,20 +1,20 @@
 @interface HMCameraClipFetchVideoAssetContextOperation
 + (id)logCategory;
-- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)a3 clip:(id)a4;
-- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)a3 clip:(id)a4 dataSource:(id)a5;
+- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)manager clip:(id)clip;
+- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)manager clip:(id)clip dataSource:(id)source;
 - (_NSRange)videoDataSegmentsRange;
-- (id)decryptData:(id)a3;
+- (id)decryptData:(id)data;
 - (id)description;
-- (id)downloadVideoAssetForContext:(id)a3;
-- (id)downloadVideoSegments:(id)a3 forDataTask:(id)a4 andAppendToOutputStream:(id)a5;
+- (id)downloadVideoAssetForContext:(id)context;
+- (id)downloadVideoSegments:(id)segments forDataTask:(id)task andAppendToOutputStream:(id)stream;
 - (id)fetchVideoAssetContext;
 - (id)logIdentifier;
-- (id)videoSegmentsToDownloadForContext:(id)a3;
-- (id)writeHLSPlaylistForVideoAssetContext:(id)a3;
-- (void)cancelWithError:(id)a3;
-- (void)finishWithVideoAssetContext:(id)a3;
+- (id)videoSegmentsToDownloadForContext:(id)context;
+- (id)writeHLSPlaylistForVideoAssetContext:(id)context;
+- (void)cancelWithError:(id)error;
+- (void)finishWithVideoAssetContext:(id)context;
 - (void)main;
-- (void)updateDownloadProgressToPercentageComplete:(unint64_t)a3;
+- (void)updateDownloadProgressToPercentageComplete:(unint64_t)complete;
 @end
 
 @implementation HMCameraClipFetchVideoAssetContextOperation
@@ -32,23 +32,23 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMCameraClipFetchVideoAssetContextOperation *)self name];
-  v5 = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@/%@", v4, v7];
+  name = [(HMCameraClipFetchVideoAssetContextOperation *)self name];
+  clip = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
+  uniqueIdentifier = [clip uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  v8 = [v3 stringWithFormat:@"%@/%@", name, uUIDString];
 
   return v8;
 }
 
-- (id)writeHLSPlaylistForVideoAssetContext:(id)a3
+- (id)writeHLSPlaylistForVideoAssetContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if ([(HMCameraClipFetchVideoAssetContextOperation *)self isCancelled])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -60,18 +60,18 @@
 
     objc_autoreleasePoolPop(v5);
     v9 = MEMORY[0x1E69B3780];
-    v10 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:12];
-    v11 = [v9 futureWithError:v10];
+    hlsPlaylistDestinationFileURL = [MEMORY[0x1E696ABC0] hmfErrorWithCode:12];
+    futureWithNoResult2 = [v9 futureWithError:hlsPlaylistDestinationFileURL];
   }
 
   else
   {
-    v10 = [(HMCameraClipFetchVideoAssetContextOperation *)self hlsPlaylistDestinationFileURL];
+    hlsPlaylistDestinationFileURL = [(HMCameraClipFetchVideoAssetContextOperation *)self hlsPlaylistDestinationFileURL];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     v15 = v14;
-    if (v10)
+    if (hlsPlaylistDestinationFileURL)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -79,26 +79,26 @@
         *buf = 138543618;
         v31 = v16;
         v32 = 2112;
-        v33 = v10;
+        v33 = hlsPlaylistDestinationFileURL;
         _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@Saving video HLS playlist to %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v12);
-      v17 = [(HMCameraClipFetchVideoAssetContextOperation *)v13 dataSource];
-      v18 = [v4 hlsPlaylist];
+      dataSource = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy2 dataSource];
+      hlsPlaylist = [contextCopy hlsPlaylist];
       v29 = 0;
-      v19 = [v17 writeData:v18 toFileURL:v10 error:&v29];
+      v19 = [dataSource writeData:hlsPlaylist toFileURL:hlsPlaylistDestinationFileURL error:&v29];
       v20 = v29;
 
       if (v19)
       {
-        v21 = [MEMORY[0x1E69B3780] futureWithNoResult];
+        futureWithNoResult = [MEMORY[0x1E69B3780] futureWithNoResult];
       }
 
       else
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = v13;
+        v24 = selfCopy2;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -106,17 +106,17 @@
           *buf = 138543874;
           v31 = v26;
           v32 = 2112;
-          v33 = v10;
+          v33 = hlsPlaylistDestinationFileURL;
           v34 = 2112;
           v35 = v20;
           _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_ERROR, "%{public}@Failed to save video HLS playlist to %@: %@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v23);
-        v21 = [MEMORY[0x1E69B3780] futureWithError:v20];
+        futureWithNoResult = [MEMORY[0x1E69B3780] futureWithError:v20];
       }
 
-      v11 = v21;
+      futureWithNoResult2 = futureWithNoResult;
     }
 
     else
@@ -130,28 +130,28 @@
       }
 
       objc_autoreleasePoolPop(v12);
-      v11 = [MEMORY[0x1E69B3780] futureWithNoResult];
-      v10 = 0;
+      futureWithNoResult2 = [MEMORY[0x1E69B3780] futureWithNoResult];
+      hlsPlaylistDestinationFileURL = 0;
     }
   }
 
   v27 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return futureWithNoResult2;
 }
 
-- (id)decryptData:(id)a3
+- (id)decryptData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[HMCameraClipEncryptedDataContext alloc] initWithDataRepresentation:v4];
+  dataCopy = data;
+  v5 = [[HMCameraClipEncryptedDataContext alloc] initWithDataRepresentation:dataCopy];
   v6 = [HMCameraClipDecryptionManager alloc];
-  v7 = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
-  v8 = [v7 encryptionKey];
-  v9 = [(HMCameraClipDecryptionManager *)v6 initWithKey:v8];
+  clip = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
+  encryptionKey = [clip encryptionKey];
+  v9 = [(HMCameraClipDecryptionManager *)v6 initWithKey:encryptionKey];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -159,33 +159,33 @@
     v18 = 138543874;
     v19 = v13;
     v20 = 2048;
-    v21 = [v4 length];
+    v21 = [dataCopy length];
     v22 = 2112;
     v23 = v5;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Decrypting video segment data of length %lu using encrypted data context %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(HMCameraClipFetchVideoAssetContextOperation *)v11 dataSource];
-  v15 = [v14 dataFromEncryptedDataContext:v5 usingDecryptionManager:v9];
+  dataSource = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy dataSource];
+  v15 = [dataSource dataFromEncryptedDataContext:v5 usingDecryptionManager:v9];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (id)downloadVideoSegments:(id)a3 forDataTask:(id)a4 andAppendToOutputStream:(id)a5
+- (id)downloadVideoSegments:(id)segments forDataTask:(id)task andAppendToOutputStream:(id)stream
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMCameraClipFetchVideoAssetContextOperation *)self isCancelled];
+  segmentsCopy = segments;
+  taskCopy = task;
+  streamCopy = stream;
+  isCancelled = [(HMCameraClipFetchVideoAssetContextOperation *)self isCancelled];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (isCancelled)
   {
     if (v15)
     {
@@ -193,37 +193,37 @@
       *buf = 138543618;
       v49 = v16;
       v50 = 2112;
-      v51 = v8;
+      v51 = segmentsCopy;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Skipping video data download for segments because we are cancelled: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
     v17 = MEMORY[0x1E69B3780];
-    v18 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:12];
-    v19 = [v17 futureWithError:v18];
+    firstObject = [MEMORY[0x1E696ABC0] hmfErrorWithCode:12];
+    v19 = [v17 futureWithError:firstObject];
   }
 
   else
   {
-    v38 = v9;
+    v38 = taskCopy;
     if (v15)
     {
       v20 = HMFGetLogIdentifier();
       *buf = 138543618;
       v49 = v20;
       v50 = 2112;
-      v51 = v8;
+      v51 = segmentsCopy;
       _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Downloading video segments: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v18 = [v8 firstObject];
-    v21 = [v18 byteOffset];
+    firstObject = [segmentsCopy firstObject];
+    byteOffset = [firstObject byteOffset];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v22 = v8;
+    v22 = segmentsCopy;
     v23 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v23)
     {
@@ -239,13 +239,13 @@
           }
 
           v27 = *(*(&v43 + 1) + 8 * i);
-          if ([v27 byteOffset] != v21)
+          if ([v27 byteOffset] != byteOffset)
           {
             _HMFPreconditionFailure();
           }
 
-          v28 = [v27 byteOffset];
-          v21 = [v27 byteLength] + v28;
+          byteOffset2 = [v27 byteOffset];
+          byteOffset = [v27 byteLength] + byteOffset2;
         }
 
         v24 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -254,23 +254,23 @@
       while (v24);
     }
 
-    v29 = [v18 byteOffset];
-    v30 = [v22 lastObject];
-    v31 = [v30 byteOffset];
-    v32 = [v22 lastObject];
-    v33 = [v32 byteLength];
+    byteOffset3 = [firstObject byteOffset];
+    lastObject = [v22 lastObject];
+    byteOffset4 = [lastObject byteOffset];
+    lastObject2 = [v22 lastObject];
+    byteLength = [lastObject2 byteLength];
 
-    v34 = v31 - v29 + v33;
-    v9 = v38;
-    v35 = [v38 downloadDataForByteRange:{v29, v34}];
+    v34 = byteOffset4 - byteOffset3 + byteLength;
+    taskCopy = v38;
+    v35 = [v38 downloadDataForByteRange:{byteOffset3, v34}];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __105__HMCameraClipFetchVideoAssetContextOperation_downloadVideoSegments_forDataTask_andAppendToOutputStream___block_invoke;
     v39[3] = &unk_1E7548C18;
-    v39[4] = v13;
+    v39[4] = selfCopy;
     v40 = v22;
-    v42 = v29;
-    v41 = v10;
+    v42 = byteOffset3;
+    v41 = streamCopy;
     v19 = [v35 flatMap:v39];
   }
 
@@ -462,14 +462,14 @@ LABEL_29:
   return v10;
 }
 
-- (id)downloadVideoAssetForContext:(id)a3
+- (id)downloadVideoAssetForContext:(id)context
 {
   v106 = *MEMORY[0x1E69E9840];
-  v76 = a3;
+  contextCopy = context;
   if ([(HMCameraClipFetchVideoAssetContextOperation *)self isCancelled])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -482,44 +482,44 @@ LABEL_29:
     objc_autoreleasePoolPop(v4);
     v8 = MEMORY[0x1E69B3780];
     v77 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:12];
-    v9 = [v8 futureWithError:v77];
+    futureWithNoResult = [v8 futureWithError:v77];
   }
 
   else
   {
-    v78 = [(HMCameraClipFetchVideoAssetContextOperation *)self clipDestinationFileURL];
+    clipDestinationFileURL = [(HMCameraClipFetchVideoAssetContextOperation *)self clipDestinationFileURL];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     v13 = v12;
-    if (v78)
+    if (clipDestinationFileURL)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v14 = HMFGetLogIdentifier();
-        v108.location = [(HMCameraClipFetchVideoAssetContextOperation *)v11 videoDataSegmentsRange];
+        v108.location = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy2 videoDataSegmentsRange];
         v15 = NSStringFromRange(v108);
-        v16 = [v76 videoSegments];
+        videoSegments = [contextCopy videoSegments];
         *buf = 138543874;
         v99 = v14;
         v100 = 2112;
         v101 = v15;
         v102 = 2048;
-        v103 = [v16 count];
+        v103 = [videoSegments count];
         _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Downloading range of %@ from all %lu video data segments", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v70 = [(HMCameraClipFetchVideoAssetContextOperation *)v11 videoSegmentsToDownloadForContext:v76];
+      v70 = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy2 videoSegmentsToDownloadForContext:contextCopy];
       if ([v70 count])
       {
-        v17 = [(HMCameraClipFetchVideoAssetContextOperation *)v11 dataSource];
+        dataSource = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy2 dataSource];
         v96 = 0;
-        v73 = [v17 createTemporaryDirectoryAppropriateForURL:v78 error:&v96];
+        v73 = [dataSource createTemporaryDirectoryAppropriateForURL:clipDestinationFileURL error:&v96];
         v68 = v96;
 
         v18 = objc_autoreleasePoolPush();
-        v79 = v11;
+        v79 = selfCopy2;
         v19 = HMFGetOSLogHandle();
         v20 = v19;
         if (v73)
@@ -528,7 +528,7 @@ LABEL_29:
           {
             v21 = HMFGetLogIdentifier();
             v22 = [v70 count];
-            v23 = [v76 url];
+            v23 = [contextCopy url];
             *buf = 138544130;
             v99 = v21;
             v100 = 2048;
@@ -541,18 +541,18 @@ LABEL_29:
           }
 
           objc_autoreleasePoolPop(v18);
-          v24 = [(HMCameraClipFetchVideoAssetContextOperation *)v79 dataSource];
-          v25 = [v76 url];
-          v26 = [v76 requiredHTTPHeaders];
-          v27 = [v24 dataTaskWithURL:v25 httpHeaderFields:v26];
+          dataSource2 = [(HMCameraClipFetchVideoAssetContextOperation *)v79 dataSource];
+          v25 = [contextCopy url];
+          requiredHTTPHeaders = [contextCopy requiredHTTPHeaders];
+          v27 = [dataSource2 dataTaskWithURL:v25 httpHeaderFields:requiredHTTPHeaders];
 
           v95[0] = 0;
           v95[1] = v95;
           v95[2] = 0x2020000000;
           v95[3] = 0;
-          v71 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v70, "count")}];
-          v29 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           aBlock[0] = MEMORY[0x1E69E9820];
           aBlock[1] = 3221225472;
           aBlock[2] = __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetForContext___block_invoke;
@@ -590,7 +590,7 @@ LABEL_29:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  if ([v29 count])
+                  if ([array2 count])
                   {
                     if (!v33)
                     {
@@ -598,18 +598,18 @@ LABEL_29:
                       __break(1u);
                     }
 
-                    v31[2](v31, v29, v33);
-                    [v29 removeAllObjects];
+                    v31[2](v31, array2, v33);
+                    [array2 removeAllObjects];
                   }
 
-                  v36 = [MEMORY[0x1E696AFB0] UUID];
-                  v37 = [v36 UUIDString];
-                  v38 = [v73 URLByAppendingPathComponent:v37];
+                  uUID = [MEMORY[0x1E696AFB0] UUID];
+                  uUIDString = [uUID UUIDString];
+                  v38 = [v73 URLByAppendingPathComponent:uUIDString];
                   v39 = [v38 URLByAppendingPathExtension:@"mp4"];
 
-                  [v71 addObject:v39];
-                  v40 = [(HMCameraClipFetchVideoAssetContextOperation *)v79 dataSource];
-                  v41 = [v40 outputStreamToFileAtURL:v39 shouldAppend:0];
+                  [array addObject:v39];
+                  dataSource3 = [(HMCameraClipFetchVideoAssetContextOperation *)v79 dataSource];
+                  v41 = [dataSource3 outputStreamToFileAtURL:v39 shouldAppend:0];
 
                   [v41 open];
                   v42 = objc_autoreleasePoolPush();
@@ -651,30 +651,30 @@ LABEL_29:
                   objc_autoreleasePoolPop(v56);
                   v60 = MEMORY[0x1E69B3780];
                   v61 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
-                  v9 = [v60 futureWithError:v61];
+                  futureWithNoResult = [v60 futureWithError:v61];
                   v33 = 0;
                   goto LABEL_49;
                 }
 
-                v46 = [v29 lastObject];
-                v47 = v46;
-                if (v46)
+                lastObject = [array2 lastObject];
+                v47 = lastObject;
+                if (lastObject)
                 {
-                  v48 = [v46 byteOffset];
-                  v49 = [v47 byteLength];
-                  if (v49 + v48 != [v35 byteOffset])
+                  byteOffset = [lastObject byteOffset];
+                  byteLength = [v47 byteLength];
+                  if (byteLength + byteOffset != [v35 byteOffset])
                   {
-                    v31[2](v31, v29, v33);
-                    [v29 removeAllObjects];
+                    v31[2](v31, array2, v33);
+                    [array2 removeAllObjects];
                   }
                 }
 
-                [v29 addObject:v35];
-                v50 = [v29 count];
+                [array2 addObject:v35];
+                v50 = [array2 count];
                 if (v50 >= [(HMCameraClipFetchVideoAssetContextOperation *)v79 videoSegmentsDownloadBatchSize])
                 {
-                  v31[2](v31, v29, v33);
-                  [v29 removeAllObjects];
+                  v31[2](v31, array2, v33);
+                  [array2 removeAllObjects];
                 }
               }
 
@@ -693,9 +693,9 @@ LABEL_29:
             v33 = 0;
           }
 
-          if ([v29 count])
+          if ([array2 count])
           {
-            v31[2](v31, v29, v33);
+            v31[2](v31, array2, v33);
           }
 
           obj = [MEMORY[0x1E69B3780] chainFutures:v67];
@@ -703,9 +703,9 @@ LABEL_29:
           v82[1] = 3221225472;
           v82[2] = __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetForContext___block_invoke_46;
           v82[3] = &unk_1E7548BC8;
-          v83 = v71;
+          v83 = array;
           v84 = v79;
-          v85 = v78;
+          v85 = clipDestinationFileURL;
           v64 = [obj flatMap:v82];
           v80[0] = MEMORY[0x1E69E9820];
           v80[1] = 3221225472;
@@ -713,7 +713,7 @@ LABEL_29:
           v80[3] = &unk_1E7548BF0;
           v80[4] = v79;
           v81 = v73;
-          v9 = [v64 addCompletionBlock:v80];
+          futureWithNoResult = [v64 addCompletionBlock:v80];
 
           v61 = v83;
 LABEL_49:
@@ -736,14 +736,14 @@ LABEL_49:
           objc_autoreleasePoolPop(v18);
           v63 = MEMORY[0x1E69B3780];
           v69 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
-          v9 = [v63 futureWithError:v69];
+          futureWithNoResult = [v63 futureWithError:v69];
         }
       }
 
       else
       {
         v52 = objc_autoreleasePoolPush();
-        v53 = v11;
+        v53 = selfCopy2;
         v54 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
@@ -755,7 +755,7 @@ LABEL_49:
 
         objc_autoreleasePoolPop(v52);
         [(HMCameraClipFetchVideoAssetContextOperation *)v53 updateDownloadProgressToPercentageComplete:100];
-        v9 = [MEMORY[0x1E69B3780] futureWithNoResult];
+        futureWithNoResult = [MEMORY[0x1E69B3780] futureWithNoResult];
       }
     }
 
@@ -770,14 +770,14 @@ LABEL_49:
       }
 
       objc_autoreleasePoolPop(v10);
-      [(HMCameraClipFetchVideoAssetContextOperation *)v11 updateDownloadProgressToPercentageComplete:100];
-      v9 = [MEMORY[0x1E69B3780] futureWithNoResult];
+      [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy2 updateDownloadProgressToPercentageComplete:100];
+      futureWithNoResult = [MEMORY[0x1E69B3780] futureWithNoResult];
     }
   }
 
   v65 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return futureWithNoResult;
 }
 
 void __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetForContext___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -996,32 +996,32 @@ uint64_t __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetFor
   return [v3 updateDownloadProgressToPercentageComplete:v4];
 }
 
-- (id)videoSegmentsToDownloadForContext:(id)a3
+- (id)videoSegmentsToDownloadForContext:(id)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 videoSegments];
+    videoSegments = [contextCopy videoSegments];
     *buf = 138543618;
     v48 = v8;
     v49 = 2112;
-    v50 = v9;
+    v50 = videoSegments;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Determining video segments to download from all video segments: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v39 = v4;
-  obj = [v4 videoSegments];
+  v39 = contextCopy;
+  obj = [contextCopy videoSegments];
   v11 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v11)
   {
@@ -1062,7 +1062,7 @@ uint64_t __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetFor
       {
         v41 = v13;
         v25 = v12;
-        v26 = v6;
+        v26 = selfCopy;
         v27 = v19;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -1079,16 +1079,16 @@ uint64_t __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetFor
 
         if (!v24)
         {
-          v6 = v26;
+          selfCopy = v26;
           v12 = v25;
           v13 = v41;
           v16 = off_1E7545000;
           goto LABEL_29;
         }
 
-        v6 = v26;
-        v29 = [(HMCameraClipFetchVideoAssetContextOperation *)v26 videoDataSegmentsRange];
-        if (v14 < v29)
+        selfCopy = v26;
+        videoDataSegmentsRange = [(HMCameraClipFetchVideoAssetContextOperation *)v26 videoDataSegmentsRange];
+        if (v14 < videoDataSegmentsRange)
         {
           v12 = v25;
         }
@@ -1096,15 +1096,15 @@ uint64_t __76__HMCameraClipFetchVideoAssetContextOperation_downloadVideoAssetFor
         else
         {
           v12 = v25;
-          if (v14 - v29 < v30)
+          if (v14 - videoDataSegmentsRange < v30)
           {
             v16 = off_1E7545000;
             if (v41)
             {
-              [v10 addObject:v41];
+              [array addObject:v41];
             }
 
-            [v10 addObject:v24];
+            [array addObject:v24];
             v13 = 0;
             goto LABEL_28;
           }
@@ -1117,8 +1117,8 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v22 = [(HMCameraClipFetchVideoAssetContextOperation *)v6 videoDataSegmentsRange];
-      if (v14 < v22 || v14 - v22 >= v23)
+      videoDataSegmentsRange2 = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy videoDataSegmentsRange];
+      if (v14 < videoDataSegmentsRange2 || v14 - videoDataSegmentsRange2 >= v23)
       {
         v31 = v19;
         v24 = v13;
@@ -1127,7 +1127,7 @@ LABEL_28:
 
       else
       {
-        [v10 addObject:v21];
+        [array addObject:v21];
         v24 = v13;
         v13 = 0;
       }
@@ -1142,7 +1142,7 @@ LABEL_29:
 LABEL_33:
 
   v32 = objc_autoreleasePoolPush();
-  v33 = v6;
+  v33 = selfCopy;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
@@ -1150,23 +1150,23 @@ LABEL_33:
     *buf = 138543618;
     v48 = v35;
     v49 = 2112;
-    v50 = v10;
+    v50 = array;
     _os_log_impl(&dword_19BB39000, v34, OS_LOG_TYPE_DEBUG, "%{public}@Determined video segments to download: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v32);
-  v36 = [v10 copy];
+  v36 = [array copy];
 
   v37 = *MEMORY[0x1E69E9840];
 
   return v36;
 }
 
-- (void)updateDownloadProgressToPercentageComplete:(unint64_t)a3
+- (void)updateDownloadProgressToPercentageComplete:(unint64_t)complete
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1174,17 +1174,17 @@ LABEL_33:
     v12 = 138543618;
     v13 = v8;
     v14 = 2048;
-    v15 = a3;
+    completeCopy = complete;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Updating download progress to %lu", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMCameraClipFetchVideoAssetContextOperation *)v6 downloadProgressHandler];
+  downloadProgressHandler = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy downloadProgressHandler];
 
-  if (v9)
+  if (downloadProgressHandler)
   {
-    v10 = [(HMCameraClipFetchVideoAssetContextOperation *)v6 downloadProgressHandler];
-    v10[2](v10, a3);
+    downloadProgressHandler2 = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy downloadProgressHandler];
+    downloadProgressHandler2[2](downloadProgressHandler2, complete);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -1193,10 +1193,10 @@ LABEL_33:
 - (id)fetchVideoAssetContext
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B3780]);
-  v4 = [(HMCameraClipFetchVideoAssetContextOperation *)self clipManager];
-  v5 = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
-  v6 = [v3 completionHandlerAdapter];
-  [v4 fetchVideoSegmentsAssetContextForClip:v5 completion:v6];
+  clipManager = [(HMCameraClipFetchVideoAssetContextOperation *)self clipManager];
+  clip = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
+  completionHandlerAdapter = [v3 completionHandlerAdapter];
+  [clipManager fetchVideoSegmentsAssetContextForClip:clip completion:completionHandlerAdapter];
 
   return v3;
 }
@@ -1205,7 +1205,7 @@ LABEL_33:
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1213,7 +1213,7 @@ LABEL_33:
     *buf = 138543618;
     *&buf[4] = v6;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = selfCopy;
     _os_log_impl(&dword_19BB39000, v5, OS_LOG_TYPE_INFO, "%{public}@Starting fetch video asset context operation: %@", buf, 0x16u);
   }
 
@@ -1224,26 +1224,26 @@ LABEL_33:
   v16 = __Block_byref_object_copy__24684;
   v17 = __Block_byref_object_dispose__24685;
   v18 = 0;
-  v7 = [(HMCameraClipFetchVideoAssetContextOperation *)v4 fetchVideoAssetContext];
+  fetchVideoAssetContext = [(HMCameraClipFetchVideoAssetContextOperation *)selfCopy fetchVideoAssetContext];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke;
   v14[3] = &unk_1E7548AB0;
-  v14[4] = v4;
+  v14[4] = selfCopy;
   v14[5] = buf;
-  v8 = [v7 flatMap:v14];
+  v8 = [fetchVideoAssetContext flatMap:v14];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke_2;
   v13[3] = &unk_1E7548AD8;
-  v13[4] = v4;
+  v13[4] = selfCopy;
   v13[5] = buf;
   v9 = [v8 flatMap:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke_3;
   v12[3] = &unk_1E7548B00;
-  v12[4] = v4;
+  v12[4] = selfCopy;
   v12[5] = buf;
   v10 = [v9 addCompletionBlock:v12];
 
@@ -1274,17 +1274,17 @@ uint64_t __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke_3(
   }
 }
 
-- (void)finishWithVideoAssetContext:(id)a3
+- (void)finishWithVideoAssetContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (![(HMFOperation *)self isFinished])
   {
-    v5 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
+    fetchVideoAssetContextCompletionBlock = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
 
-    if (v5)
+    if (fetchVideoAssetContextCompletionBlock)
     {
-      v6 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
-      (v6)[2](v6, v4, 0);
+      fetchVideoAssetContextCompletionBlock2 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
+      (fetchVideoAssetContextCompletionBlock2)[2](fetchVideoAssetContextCompletionBlock2, contextCopy, 0);
     }
   }
 
@@ -1293,36 +1293,36 @@ uint64_t __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke_3(
   [(HMFOperation *)&v7 finish];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (([(HMCameraClipFetchVideoAssetContextOperation *)self isCancelled]& 1) == 0)
   {
-    v5 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
+    fetchVideoAssetContextCompletionBlock = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
 
-    if (v5)
+    if (fetchVideoAssetContextCompletionBlock)
     {
-      v6 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
-      (v6)[2](v6, 0, v4);
+      fetchVideoAssetContextCompletionBlock2 = [(HMCameraClipFetchVideoAssetContextOperation *)self fetchVideoAssetContextCompletionBlock];
+      (fetchVideoAssetContextCompletionBlock2)[2](fetchVideoAssetContextCompletionBlock2, 0, errorCopy);
     }
   }
 
   v7.receiver = self;
   v7.super_class = HMCameraClipFetchVideoAssetContextOperation;
-  [(HMFOperation *)&v7 cancelWithError:v4];
+  [(HMFOperation *)&v7 cancelWithError:errorCopy];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
-  [v3 appendFormat:@" clip: %@", v4];
+  clip = [(HMCameraClipFetchVideoAssetContextOperation *)self clip];
+  [v3 appendFormat:@" clip: %@", clip];
 
-  v5 = [(HMCameraClipFetchVideoAssetContextOperation *)self clipDestinationFileURL];
-  [v3 appendFormat:@" clipDestinationFileURL: %@", v5];
+  clipDestinationFileURL = [(HMCameraClipFetchVideoAssetContextOperation *)self clipDestinationFileURL];
+  [v3 appendFormat:@" clipDestinationFileURL: %@", clipDestinationFileURL];
 
-  v6 = [(HMCameraClipFetchVideoAssetContextOperation *)self hlsPlaylistDestinationFileURL];
-  [v3 appendFormat:@" hlsPlaylistDestinationFileURL: %@", v6];
+  hlsPlaylistDestinationFileURL = [(HMCameraClipFetchVideoAssetContextOperation *)self hlsPlaylistDestinationFileURL];
+  [v3 appendFormat:@" hlsPlaylistDestinationFileURL: %@", hlsPlaylistDestinationFileURL];
 
   [v3 appendString:@">"];
   v7 = [v3 copy];
@@ -1330,26 +1330,26 @@ uint64_t __51__HMCameraClipFetchVideoAssetContextOperation_main__block_invoke_3(
   return v7;
 }
 
-- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)a3 clip:(id)a4 dataSource:(id)a5
+- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)manager clip:(id)clip dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  managerCopy = manager;
+  clipCopy = clip;
+  sourceCopy = source;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!clipCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -1362,9 +1362,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_clipManager, a3);
-    objc_storeStrong(&v14->_clip, a4);
-    objc_storeStrong(&v14->_dataSource, a5);
+    objc_storeStrong(&v13->_clipManager, manager);
+    objc_storeStrong(&v14->_clip, clip);
+    objc_storeStrong(&v14->_dataSource, source);
     v14->_videoDataSegmentsRange = xmmword_19BE37670;
     v14->_videoSegmentsDownloadBatchSize = 8;
   }
@@ -1372,12 +1372,12 @@ LABEL_9:
   return v14;
 }
 
-- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)a3 clip:(id)a4
+- (HMCameraClipFetchVideoAssetContextOperation)initWithClipManager:(id)manager clip:(id)clip
 {
-  v6 = a4;
-  v7 = a3;
+  clipCopy = clip;
+  managerCopy = manager;
   v8 = objc_alloc_init(HMCameraClipFetchAssetContextOperationDataSource);
-  v9 = [(HMCameraClipFetchVideoAssetContextOperation *)self initWithClipManager:v7 clip:v6 dataSource:v8];
+  v9 = [(HMCameraClipFetchVideoAssetContextOperation *)self initWithClipManager:managerCopy clip:clipCopy dataSource:v8];
 
   return v9;
 }

@@ -1,39 +1,39 @@
 @interface CBStackBLEScannerBTStack
 - ($D91DDCA3822F03E96939068EA8DE741A)aggregateDiscoveryTypes;
-- (BOOL)_addMfgScanIfNeeded:(unint64_t)a3 scanRequest:(void *)a4;
+- (BOOL)_addMfgScanIfNeeded:(unint64_t)needed scanRequest:(void *)request;
 - (CBStackBLEScannerBTStack)init;
 - (id).cxx_construct;
-- (id)_deviceFilterUUIDs:(id)a3;
-- (id)_packetTypeForDiscovery:(id)a3;
-- (id)_scanSummary:(void *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_deviceFilterUUIDs:(id)ds;
+- (id)_packetTypeForDiscovery:(id)discovery;
+- (id)_scanSummary:(void *)summary;
+- (id)descriptionWithLevel:(int)level;
 - (unint64_t)aggregateDiscoveryFlags;
-- (void)_activate:(BOOL)a3;
-- (void)_addBufferedTypesIfNeeded:(id *)a3 scanRequest:(void *)a4;
-- (void)_addServiceUUIDsWithParametersToScanRequestIfNeeded:(void *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 uuids:(void *)a6;
-- (void)_addTypeIfNeeded:(unsigned __int8)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6;
-- (void)_addTypeWithParamsIfNeeded:(unsigned __int8)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6;
-- (void)_addUUIDIfNeeded:(LeUuid *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 uuids:(void *)a6;
-- (void)_addUUIDIfNeededWithParams:(LeUuid *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6;
+- (void)_activate:(BOOL)_activate;
+- (void)_addBufferedTypesIfNeeded:(id *)needed scanRequest:(void *)request;
+- (void)_addServiceUUIDsWithParametersToScanRequestIfNeeded:(void *)needed matchFlags:(unint64_t)flags matchTypes:(id *)types uuids:(void *)uuids;
+- (void)_addTypeIfNeeded:(unsigned __int8)needed matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request;
+- (void)_addTypeWithParamsIfNeeded:(unsigned __int8)needed matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request;
+- (void)_addUUIDIfNeeded:(LeUuid *)needed matchFlags:(unint64_t)flags matchTypes:(id *)types uuids:(void *)uuids;
+- (void)_addUUIDIfNeededWithParams:(LeUuid *)params matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request;
 - (void)_advBufferDrained;
 - (void)_aopBTBufferDrained;
-- (void)_deviceSegmentFound:(id)a3;
+- (void)_deviceSegmentFound:(id)found;
 - (void)_invalidated;
 - (void)_oobKeysRemoveAll;
 - (void)_oobKeysUpdate;
-- (void)_proxyOOBKeysUpdateOnDeviceFound:(id)a3;
+- (void)_proxyOOBKeysUpdateOnDeviceFound:(id)found;
 - (void)_reportAggressiveScanIfNeeded;
 - (void)_rescanTimerFired;
-- (void)_rescanTimerUpdate:(BOOL)a3;
+- (void)_rescanTimerUpdate:(BOOL)update;
 - (void)_sensorTrackingUpdate;
 - (void)_updateBufferedConfigsForAOP;
-- (void)_updateBufferedFlags:(id)a3 type:(int)a4;
-- (void)clearDuplicateFilterCache:(id)a3;
-- (void)deviceBuffered:(id)a3;
-- (void)deviceFound:(id)a3;
-- (void)deviceLost:(id)a3;
-- (void)finishDiscovery:(id)a3 completionHandler:(id)a4;
-- (void)handleInjectedAOPBufAdv:(id)a3;
+- (void)_updateBufferedFlags:(id)flags type:(int)type;
+- (void)clearDuplicateFilterCache:(id)cache;
+- (void)deviceBuffered:(id)buffered;
+- (void)deviceFound:(id)found;
+- (void)deviceLost:(id)lost;
+- (void)finishDiscovery:(id)discovery completionHandler:(id)handler;
+- (void)handleInjectedAOPBufAdv:(id)adv;
 - (void)invalidate;
 @end
 
@@ -71,8 +71,8 @@
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v61 = [v3 oobKeys];
-        v4 = [v61 countByEnumeratingWithState:&v78 objects:v86 count:16];
+        oobKeys = [v3 oobKeys];
+        v4 = [oobKeys countByEnumeratingWithState:&v78 objects:v86 count:16];
         if (v4)
         {
           v64 = *v79;
@@ -82,20 +82,20 @@
             {
               if (*v79 != v64)
               {
-                objc_enumerationMutation(v61);
+                objc_enumerationMutation(oobKeys);
               }
 
               v6 = *(*(&v78 + 1) + 8 * j);
-              v7 = [v6 btAddressType];
-              v8 = [v6 addressType];
-              v9 = [v6 btAddressData];
-              if ([v9 length] == 6 || objc_msgSend(v9, "length") == 7)
+              btAddressType = [v6 btAddressType];
+              addressType = [v6 addressType];
+              btAddressData = [v6 btAddressData];
+              if ([btAddressData length] == 6 || objc_msgSend(btAddressData, "length") == 7)
               {
-                v10 = v8 | v7;
+                v10 = addressType | btAddressType;
                 if (v10)
                 {
                   LOBYTE(v74) = v10;
-                  v11 = v9;
+                  v11 = btAddressData;
                   v12 = v11;
                   if (v11)
                   {
@@ -104,40 +104,40 @@
                       v13 = [NSMutableData dataWithBytes:&v74 length:1];
                       v14 = v12;
                       [v13 appendBytes:objc_msgSend(v12 length:{"bytes"), 6}];
-                      v9 = [v13 copy];
+                      btAddressData = [v13 copy];
                     }
 
                     else
                     {
-                      v9 = v12;
+                      btAddressData = v12;
                     }
                   }
 
                   else
                   {
-                    v9 = 0;
+                    btAddressData = 0;
                   }
                 }
 
-                if ([v9 length] == 7)
+                if ([btAddressData length] == 7)
                 {
-                  v15 = [v9 subdataWithRange:{1, 6}];
+                  v15 = [btAddressData subdataWithRange:{1, 6}];
                 }
 
                 else
                 {
-                  v15 = v9;
+                  v15 = btAddressData;
                 }
 
                 v16 = v15;
-                v17 = [v6 irkData];
-                if ([v17 length] == 16)
+                irkData = [v6 irkData];
+                if ([irkData length] == 16)
                 {
-                  v18 = [v6 keyType];
-                  v19 = v18;
-                  if (v18)
+                  keyType = [v6 keyType];
+                  v19 = keyType;
+                  if (keyType)
                   {
-                    if (v18 == 255)
+                    if (keyType == 255)
                     {
                       if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
                       {
@@ -152,7 +152,7 @@
 
                     else
                     {
-                      v23 = [NSNumber numberWithUnsignedInt:v18];
+                      v23 = [NSNumber numberWithUnsignedInt:keyType];
                       v24 = v60;
                       if (!v60)
                       {
@@ -189,7 +189,7 @@
                       v33 = [v32 count];
 
                       v34 = [v62 objectForKeyedSubscript:v23];
-                      [v34 addObject:v17];
+                      [v34 addObject:irkData];
 
                       v35 = [v62 objectForKeyedSubscript:v23];
                       LODWORD(v33) = v33 == [v35 count];
@@ -234,7 +234,7 @@
                     }
 
                     v58 = v38;
-                    [v38 setObject:v17 forKeyedSubscript:v9];
+                    [v38 setObject:irkData forKeyedSubscript:btAddressData];
                     ++v59;
                   }
 
@@ -249,7 +249,7 @@
               }
             }
 
-            v4 = [v61 countByEnumeratingWithState:&v78 objects:v86 count:16];
+            v4 = [oobKeys countByEnumeratingWithState:&v78 objects:v86 count:16];
           }
 
           while (v4);
@@ -323,7 +323,7 @@ LABEL_83:
 
   if (v57 == self->_proxyoobKeysHash && (v44 = atomic_load(&self->_aopProxyOOBKeyUpdatePending), (v44 & 1) == 0))
   {
-    v45 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -349,12 +349,12 @@ LABEL_83:
       LogPrintF_safe();
     }
 
-    v45 = self;
+    selfCopy2 = self;
     self->_proxyoobKeysHash = v57;
   }
 
-  v46 = v45->_oobKeyMap;
-  v45->_oobKeyMap = v43;
+  v46 = selfCopy2->_oobKeyMap;
+  selfCopy2->_oobKeyMap = v43;
   v47 = v43;
 
   _Block_object_dispose(&v67, 8);
@@ -394,8 +394,8 @@ LABEL_83:
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v31 = [v32 deviceFilter];
-        v4 = [v31 countByEnumeratingWithState:&v43 objects:v56 count:16];
+        deviceFilter = [v32 deviceFilter];
+        v4 = [deviceFilter countByEnumeratingWithState:&v43 objects:v56 count:16];
         if (!v4)
         {
           goto LABEL_25;
@@ -409,7 +409,7 @@ LABEL_83:
           {
             if (*v44 != v5)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(deviceFilter);
             }
 
             v7 = *(*(&v43 + 1) + 8 * v6);
@@ -455,7 +455,7 @@ LABEL_18:
           }
 
           while (v4 != v6);
-          v10 = [v31 countByEnumeratingWithState:&v43 objects:v56 count:16];
+          v10 = [deviceFilter countByEnumeratingWithState:&v43 objects:v56 count:16];
           v4 = v10;
           if (!v10)
           {
@@ -555,15 +555,15 @@ LABEL_30:
   if (v3)
   {
     v21 = [NSSet alloc];
-    v22 = [v3 allKeys];
-    v23 = [v21 initWithArray:v22];
+    allKeys = [v3 allKeys];
+    v23 = [v21 initWithArray:allKeys];
     sensorTrackingDevices = self->_sensorTrackingDevices;
     self->_sensorTrackingDevices = v23;
   }
 
   else
   {
-    v22 = self->_sensorTrackingDevices;
+    allKeys = self->_sensorTrackingDevices;
     self->_sensorTrackingDevices = 0;
   }
 
@@ -578,7 +578,7 @@ LABEL_30:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->_discoveryArray;
   v3 = [(NSArray *)obj countByEnumeratingWithState:&v36 objects:v47 count:16];
   if (v3)
@@ -596,8 +596,8 @@ LABEL_30:
         }
 
         v4 = *(*(&v36 + 1) + 8 * i);
-        v5 = [v4 bufferedAdvConfigsForAOP];
-        if (v5)
+        bufferedAdvConfigsForAOP = [v4 bufferedAdvConfigsForAOP];
+        if (bufferedAdvConfigsForAOP)
         {
           v6 = v4;
           v7 = (*([v4 discoveryTypesInternalPtr] + 3) & 8) == 0;
@@ -608,8 +608,8 @@ LABEL_30:
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v8 = [v4 bufferedAdvConfigsForAOP];
-            v9 = [v8 countByEnumeratingWithState:&v32 objects:v46 count:16];
+            bufferedAdvConfigsForAOP2 = [v4 bufferedAdvConfigsForAOP];
+            v9 = [bufferedAdvConfigsForAOP2 countByEnumeratingWithState:&v32 objects:v46 count:16];
             if (v9)
             {
               v10 = *v33;
@@ -619,7 +619,7 @@ LABEL_30:
                 {
                   if (*v33 != v10)
                   {
-                    objc_enumerationMutation(v8);
+                    objc_enumerationMutation(bufferedAdvConfigsForAOP2);
                   }
 
                   v12 = *(*(&v32 + 1) + 8 * j);
@@ -640,7 +640,7 @@ LABEL_30:
                   }
                 }
 
-                v9 = [v8 countByEnumeratingWithState:&v32 objects:v46 count:16];
+                v9 = [bufferedAdvConfigsForAOP2 countByEnumeratingWithState:&v32 objects:v46 count:16];
               }
 
               while (v9);
@@ -660,7 +660,7 @@ LABEL_30:
     v29 = 0;
   }
 
-  if (v23->_bufferedTypeConfigHash != v29)
+  if (selfCopy->_bufferedTypeConfigHash != v29)
   {
     v42[1] = @"descriptor";
     v43[0] = &off_100B33618;
@@ -685,7 +685,7 @@ LABEL_30:
     v22 = v20;
     v31 = v22;
     sub_10000CA94(v21, v30);
-    v23->_bufferedTypeConfigHash = v29;
+    selfCopy->_bufferedTypeConfigHash = v29;
   }
 }
 
@@ -710,10 +710,10 @@ LABEL_30:
         }
 
         v6 = *(*(&v15 + 1) + 8 * i);
-        v7 = [v6 bleScanRateOverride];
-        if (!v7 && (self->_screenOn || (v7 = [v6 bleScanRateScreenOff]) == 0))
+        bleScanRateOverride = [v6 bleScanRateOverride];
+        if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v6 bleScanRateScreenOff]) == 0))
         {
-          v7 = [v6 bleScanRate];
+          bleScanRateOverride = [v6 bleScanRate];
         }
 
         screenOn = self->_screenOn;
@@ -727,7 +727,7 @@ LABEL_30:
           v9 = 21;
         }
 
-        if (v7 < v9)
+        if (bleScanRateOverride < v9)
         {
           if (([v6 discoveryFlags] & 0x200000000) == 0)
           {
@@ -769,8 +769,8 @@ LABEL_30:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [(NSMutableDictionary *)self->_deviceMap allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v47 count:16];
+  allKeys = [(NSMutableDictionary *)self->_deviceMap allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v5)
   {
     v6 = *v41;
@@ -781,7 +781,7 @@ LABEL_30:
       {
         if (*v41 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v40 + 1) + 8 * v7);
@@ -844,7 +844,7 @@ LABEL_19:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v40 objects:v47 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v40 objects:v47 count:16];
     }
 
     while (v5);
@@ -854,9 +854,9 @@ LABEL_19:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = [(NSMutableDictionary *)self->_safetyAlertsDevices allKeys];
-  obj = v12;
-  v29 = [v12 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_safetyAlertsDevices allKeys];
+  obj = allKeys2;
+  v29 = [allKeys2 countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v29)
   {
     v28 = *v37;
@@ -875,9 +875,9 @@ LABEL_19:
         v34 = 0u;
         v35 = 0u;
         v14 = [(NSMutableDictionary *)self->_safetyAlertsDevices objectForKeyedSubscript:v13, v25, v26];
-        v15 = [v14 allKeys];
+        allKeys3 = [v14 allKeys];
 
-        v16 = [v15 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        v16 = [allKeys3 countByEnumeratingWithState:&v32 objects:v44 count:16];
         if (v16)
         {
           v17 = *v33;
@@ -887,7 +887,7 @@ LABEL_19:
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allKeys3);
               }
 
               v19 = *(*(&v32 + 1) + 8 * j);
@@ -901,7 +901,7 @@ LABEL_19:
               }
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v32 objects:v44 count:16];
+            v16 = [allKeys3 countByEnumeratingWithState:&v32 objects:v44 count:16];
           }
 
           while (v16);
@@ -916,7 +916,7 @@ LABEL_19:
         }
       }
 
-      v12 = obj;
+      allKeys2 = obj;
       v29 = [obj countByEnumeratingWithState:&v36 objects:v45 count:16];
     }
 
@@ -1011,13 +1011,13 @@ LABEL_19:
       bleScannerObjC = self->_bleScannerCPP._bleScannerObjC;
       self->_bleScannerCPP._bleScannerObjC = 0;
 
-      v5 = self;
+      selfCopy = self;
       v6 = sub_100007EE8();
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = nullsub_54;
       v13[3] = &unk_100ADF820;
-      v13[4] = v5;
+      v13[4] = selfCopy;
       sub_10000CA94(v6, v13);
     }
 
@@ -1093,9 +1093,9 @@ LABEL_19:
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   v5 = [(NSMutableDictionary *)self->_deviceMap count];
   bufferedDevices = self->_bufferedDevices;
   if (bufferedDevices)
@@ -1103,7 +1103,7 @@ LABEL_19:
     bufferedDevices = [(NSMutableArray *)bufferedDevices count];
   }
 
-  if (v4 < 0x15)
+  if (levelCopy < 0x15)
   {
     v26 = 0;
     v27 = &v26;
@@ -1139,7 +1139,7 @@ LABEL_19:
     v18[3] = &unk_100ADF7F8;
     v18[4] = &v26;
     v18[5] = &v20;
-    v19 = v4;
+    v19 = levelCopy;
     [(NSMutableDictionary *)deviceMap enumerateKeysAndObjectsUsingBlock:v18, identifier, v5, v14, v15, scanSummary];
     if (v5 > v21[3])
     {
@@ -1162,7 +1162,7 @@ LABEL_19:
   return v7;
 }
 
-- (void)_activate:(BOOL)a3
+- (void)_activate:(BOOL)_activate
 {
   if (!self->_deviceFoundHandler)
   {
@@ -1170,7 +1170,7 @@ LABEL_19:
     goto LABEL_34;
   }
 
-  v3 = self;
+  selfCopy = self;
   if (!self->_deviceLostHandler)
   {
 LABEL_34:
@@ -1193,16 +1193,16 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v3->_identifier)
+  if (!selfCopy->_identifier)
   {
 LABEL_37:
     sub_10080A928();
     goto LABEL_38;
   }
 
-  v5 = a3;
+  _activateCopy = _activate;
   dispatch_assert_queue_V2(dispatchQueue);
-  if (v3->_invalidateCalled)
+  if (selfCopy->_invalidateCalled)
   {
 LABEL_38:
     sub_10080A910();
@@ -1213,13 +1213,13 @@ LABEL_39:
 
   v9 = sub_10000E92C();
   byte_100B55320 = (*(*v9 + 160))(v9);
-  p_btSession = &v3->_btSession;
-  if (v3->_btSession)
+  p_btSession = &selfCopy->_btSession;
+  if (selfCopy->_btSession)
   {
     goto LABEL_14;
   }
 
-  v4 = [[NSString alloc] initWithFormat:@"%@-0x%X", v3->_identifier, CBXPCGetNextClientID()];
+  v4 = [[NSString alloc] initWithFormat:@"%@-0x%X", selfCopy->_identifier, CBXPCGetNextClientID()];
   p_info = &OBJC_METACLASS___BTVCDevice.info;
   if (qword_100B50B88 != -1)
   {
@@ -1241,91 +1241,91 @@ LABEL_9:
   }
 
   v11 = sub_1000117DC(qword_100B50B80, *p_btSession);
-  v3->_proxyoobKeysHash = 0;
-  v3->_sessionHandle = v11;
-  v3->_bufferedTypeConfigHash = 0;
+  selfCopy->_proxyoobKeysHash = 0;
+  selfCopy->_sessionHandle = v11;
+  selfCopy->_bufferedTypeConfigHash = 0;
 
 LABEL_14:
-  if (!v3->_bleScannerCPP._bleScannerObjC)
+  if (!selfCopy->_bleScannerCPP._bleScannerObjC)
   {
     if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
     {
       sub_10080A8B4();
     }
 
-    objc_storeStrong(&v3->_bleScannerCPP._bleScannerObjC, v3);
-    objc_storeStrong(&v3->_bleScannerCPP._dispatchQueue, v3->_dispatchQueue);
+    objc_storeStrong(&selfCopy->_bleScannerCPP._bleScannerObjC, selfCopy);
+    objc_storeStrong(&selfCopy->_bleScannerCPP._dispatchQueue, selfCopy->_dispatchQueue);
     if (qword_100B51078 != -1)
     {
       sub_10080A8E8();
     }
 
-    sub_1000DB5D8(off_100B51070 + 1896, &v3->_bleScannerCPP);
+    sub_1000DB5D8(off_100B51070 + 1896, &selfCopy->_bleScannerCPP);
   }
 
-  *(&v3->_aggregateDiscoveryFlags + 6) = 0;
-  v3->_aggregateDiscoveryFlags = 0;
-  [(CBStackBLEScannerBTStack *)v3 _oobKeysUpdate];
-  [(CBStackBLEScannerBTStack *)v3 _sensorTrackingUpdate];
-  v12 = [(CBStackBLEScannerBTStack *)v3 _scanRequestCreate];
-  scanning = v3->_scanning;
-  v3->_scanning = v12 != 0;
-  sessionHandle = v3->_sessionHandle;
-  v15 = [(CBStackBLEScannerBTStack *)v3 _scanSummary:v12];
-  objc_storeStrong(&v3->_scanSummary, v15);
+  *(&selfCopy->_aggregateDiscoveryFlags + 6) = 0;
+  selfCopy->_aggregateDiscoveryFlags = 0;
+  [(CBStackBLEScannerBTStack *)selfCopy _oobKeysUpdate];
+  [(CBStackBLEScannerBTStack *)selfCopy _sensorTrackingUpdate];
+  _scanRequestCreate = [(CBStackBLEScannerBTStack *)selfCopy _scanRequestCreate];
+  scanning = selfCopy->_scanning;
+  selfCopy->_scanning = _scanRequestCreate != 0;
+  sessionHandle = selfCopy->_sessionHandle;
+  v15 = [(CBStackBLEScannerBTStack *)selfCopy _scanSummary:_scanRequestCreate];
+  objc_storeStrong(&selfCopy->_scanSummary, v15);
   v16 = sub_100007EE8();
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10012F144;
   v19[3] = &unk_100AE15B8;
   v20 = scanning;
-  v21 = v5;
+  v21 = _activateCopy;
   v19[4] = v15;
-  v19[5] = v12;
+  v19[5] = _scanRequestCreate;
   v19[6] = sessionHandle;
   sub_10000CA94(v16, v19);
-  if (!scanning || v5)
+  if (!scanning || _activateCopy)
   {
-    v3->_scanTicks = mach_absolute_time();
-    [(CBStackBLEScannerBTStack *)v3 _rescanTimerUpdate:1];
+    selfCopy->_scanTicks = mach_absolute_time();
+    [(CBStackBLEScannerBTStack *)selfCopy _rescanTimerUpdate:1];
   }
 
   else
   {
-    [(CBStackBLEScannerBTStack *)v3 _rescanTimerUpdate:0];
+    [(CBStackBLEScannerBTStack *)selfCopy _rescanTimerUpdate:0];
     if (dword_100B50FA0 <= 15 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
     }
   }
 
-  if (v3->_profileChangedToken == -1)
+  if (selfCopy->_profileChangedToken == -1)
   {
-    v17 = v3->_dispatchQueue;
+    v17 = selfCopy->_dispatchQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10012F3A0;
     handler[3] = &unk_100ADF848;
-    handler[4] = v3;
-    notify_register_dispatch("com.apple.MCX._managementStatusChangedForDomains", &v3->_profileChangedToken, v17, handler);
+    handler[4] = selfCopy;
+    notify_register_dispatch("com.apple.MCX._managementStatusChangedForDomains", &selfCopy->_profileChangedToken, v17, handler);
   }
 }
 
-- (void)deviceFound:(id)a3
+- (void)deviceFound:(id)found
 {
-  v4 = a3;
-  v5 = v4;
+  foundCopy = found;
+  v5 = foundCopy;
   if (!self->_invalidateCalled)
   {
-    v6 = [v4 identifier];
-    if (!v6)
+    identifier = [foundCopy identifier];
+    if (!identifier)
     {
 LABEL_40:
 
       goto LABEL_41;
     }
 
-    v7 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:identifier];
     if (v7)
     {
       v8 = 0;
@@ -1334,7 +1334,7 @@ LABEL_40:
     else
     {
       v9 = objc_alloc_init(CBDevice);
-      [v9 setIdentifier:v6];
+      [v9 setIdentifier:identifier];
       [v9 setInternalFlags:{objc_msgSend(v5, "internalFlags")}];
       v8 = 0x4000000;
       v7 = v9;
@@ -1345,12 +1345,12 @@ LABEL_40:
     v11 = v10 | v8;
     [v7 setChangeFlags:{objc_msgSend(v7, "changeFlags") | v10 | v8}];
     [v7 setLastSeenTicks:mach_absolute_time()];
-    v12 = [v7 discoveryFlags];
+    discoveryFlags = [v7 discoveryFlags];
     aggregateDiscoveryFlags = self->_aggregateDiscoveryFlags;
     v23 = 0;
     v22 = 0;
     CBDiscoveryTypesAddTypes();
-    if ((aggregateDiscoveryFlags & 0x7CFAAEC5B14FFFFFLL & (v12 | v10)) == 0 && ([v7 discoveryTypesContainTypes:&v22] & 1) == 0 && (objc_msgSend(v7, "changedTypesContainTypes:", &v22) & 1) == 0)
+    if ((aggregateDiscoveryFlags & 0x7CFAAEC5B14FFFFFLL & (discoveryFlags | v10)) == 0 && ([v7 discoveryTypesContainTypes:&v22] & 1) == 0 && (objc_msgSend(v7, "changedTypesContainTypes:", &v22) & 1) == 0)
     {
       if (dword_100B50FA0 <= 5 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
       {
@@ -1374,7 +1374,7 @@ LABEL_40:
         deviceMap = self->_deviceMap;
       }
 
-      [(NSMutableDictionary *)deviceMap setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)deviceMap setObject:v7 forKeyedSubscript:identifier];
       if (dword_100B50FA0 <= 20 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
       {
         v20 = v7;
@@ -1445,14 +1445,14 @@ LABEL_39:
 LABEL_41:
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 UUIDString];
-  v5 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:v4];
+  lostCopy = lost;
+  uUIDString = [lostCopy UUIDString];
+  v5 = [(NSMutableDictionary *)self->_deviceMap objectForKeyedSubscript:uUIDString];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_deviceMap setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_deviceMap setObject:0 forKeyedSubscript:uUIDString];
     if (dword_100B50FA0 <= 15 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
@@ -1472,9 +1472,9 @@ LABEL_41:
   }
 }
 
-- (void)deviceBuffered:(id)a3
+- (void)deviceBuffered:(id)buffered
 {
-  v7 = a3;
+  bufferedCopy = buffered;
   if (!self->_invalidateCalled)
   {
     bufferedDevices = self->_bufferedDevices;
@@ -1487,7 +1487,7 @@ LABEL_41:
       bufferedDevices = self->_bufferedDevices;
     }
 
-    [(NSMutableArray *)bufferedDevices addObject:v7];
+    [(NSMutableArray *)bufferedDevices addObject:bufferedCopy];
     if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF_safe();
@@ -1495,10 +1495,10 @@ LABEL_41:
   }
 }
 
-- (void)_deviceSegmentFound:(id)a3
+- (void)_deviceSegmentFound:(id)found
 {
-  v4 = a3;
-  if ([v4 discoveryTypesContainType:26])
+  foundCopy = found;
+  if ([foundCopy discoveryTypesContainType:26])
   {
     if (!self->_safetyAlertsDevices)
     {
@@ -1507,14 +1507,14 @@ LABEL_41:
       self->_safetyAlertsDevices = v5;
     }
 
-    v7 = [v4 safetyAlertsAlertID];
-    if (v7)
+    safetyAlertsAlertID = [foundCopy safetyAlertsAlertID];
+    if (safetyAlertsAlertID)
     {
-      v8 = [v4 safetyAlertsVersion];
-      v29 = v8;
-      if (v8)
+      safetyAlertsVersion = [foundCopy safetyAlertsVersion];
+      v29 = safetyAlertsVersion;
+      if (safetyAlertsVersion)
       {
-        v9 = [v7 mutableCopy];
+        v9 = [safetyAlertsAlertID mutableCopy];
         [v9 appendBytes:&v29 length:1];
         v10 = [(NSMutableDictionary *)self->_safetyAlertsDevices objectForKeyedSubscript:v9];
 
@@ -1524,13 +1524,13 @@ LABEL_41:
           [(NSMutableDictionary *)self->_safetyAlertsDevices setObject:v11 forKeyedSubscript:v9];
         }
 
-        v27 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v4 safetyAlertsSegmentSegmentNumber]);
+        v27 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [foundCopy safetyAlertsSegmentSegmentNumber]);
         v12 = objc_alloc_init(CBDevice);
-        v13 = [v4 identifier];
-        [v12 setIdentifier:v13];
+        identifier = [foundCopy identifier];
+        [v12 setIdentifier:identifier];
 
-        [v12 setInternalFlags:{objc_msgSend(v4, "internalFlags")}];
-        [v12 updateWithCBDevice:v4];
+        [v12 setInternalFlags:{objc_msgSend(foundCopy, "internalFlags")}];
+        [v12 updateWithCBDevice:foundCopy];
         v14 = [(NSMutableDictionary *)self->_safetyAlertsDevices objectForKeyedSubscript:v9];
         [v14 setObject:v12 forKeyedSubscript:v27];
 
@@ -1542,9 +1542,9 @@ LABEL_41:
 
         v15 = [(NSMutableDictionary *)self->_safetyAlertsDevices objectForKeyedSubscript:v9, v26];
         v16 = [v15 count];
-        v17 = [v4 safetyAlertsSegmentSegmentsTotal];
+        safetyAlertsSegmentSegmentsTotal = [foundCopy safetyAlertsSegmentSegmentsTotal];
 
-        if (v16 == v17)
+        if (v16 == safetyAlertsSegmentSegmentsTotal)
         {
           v18 = [(NSMutableDictionary *)self->_safetyAlertsDevices objectForKeyedSubscript:v9];
           v19 = [v18 objectForKeyedSubscript:&off_100B33450];
@@ -1552,8 +1552,8 @@ LABEL_41:
           if (v19)
           {
             v20 = objc_alloc_init(CBDevice);
-            v21 = [v19 identifier];
-            [v20 setIdentifier:v21];
+            identifier2 = [v19 identifier];
+            [v20 setIdentifier:identifier2];
 
             [v20 setInternalFlags:{objc_msgSend(v19, "internalFlags")}];
             [v20 updateWithCBDevice:v19];
@@ -1606,20 +1606,20 @@ LABEL_41:
   }
 }
 
-- (void)finishDiscovery:(id)a3 completionHandler:(id)a4
+- (void)finishDiscovery:(id)discovery completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = objc_alloc_init(CBDiscoverySummary);
-  v6[2](v6, v5, 0);
+  handlerCopy[2](handlerCopy, v5, 0);
 }
 
-- (id)_packetTypeForDiscovery:(id)a3
+- (id)_packetTypeForDiscovery:(id)discovery
 {
-  v3 = a3;
+  discoveryCopy = discovery;
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [v3 discoveryFlags];
-  v6 = [v3 extraDiscoveryFlags] | v5;
+  discoveryFlags = [discoveryCopy discoveryFlags];
+  v6 = [discoveryCopy extraDiscoveryFlags] | discoveryFlags;
   if ((v6 & 0x4000000000) != 0)
   {
     [v4 addObject:&off_100B33468];
@@ -1680,19 +1680,19 @@ LABEL_41:
     [v4 addObject:&off_100B33558];
   }
 
-  if ((v6 & 0x5030800010083E37) != 0 || [v3 discoveryTypesContainTypes:CBDiscoveryTypesNearbyActionV1()])
+  if ((v6 & 0x5030800010083E37) != 0 || [discoveryCopy discoveryTypesContainTypes:CBDiscoveryTypesNearbyActionV1()])
   {
     [v4 addObject:&off_100B33540];
   }
 
-  if ((v6 & 0x2000000400020108) != 0 || [v3 discoveryTypesContainTypes:CBDiscoveryTypesNearbyActionV2()])
+  if ((v6 & 0x2000000400020108) != 0 || [discoveryCopy discoveryTypesContainTypes:CBDiscoveryTypesNearbyActionV2()])
   {
     [v4 addObject:&off_100B33558];
   }
 
   v19 = 1024;
   v20 = 0;
-  if ((v6 & 0x1C080) != 0 || [v3 discoveryTypesContainTypes:&v19])
+  if ((v6 & 0x1C080) != 0 || [discoveryCopy discoveryTypesContainTypes:&v19])
   {
     [v4 addObject:&off_100B33570];
   }
@@ -1700,7 +1700,7 @@ LABEL_41:
   v18 = 0;
   v17 = 0;
   v16 = 0x80;
-  if ([v3 discoveryTypesContainTypes:&v16])
+  if ([discoveryCopy discoveryTypesContainTypes:&v16])
   {
     [v4 addObject:&off_100B33588];
   }
@@ -1708,12 +1708,12 @@ LABEL_41:
   v15 = 0;
   v14 = 0;
   v13 = 2;
-  if ([v3 discoveryTypesContainTypes:&v13])
+  if ([discoveryCopy discoveryTypesContainTypes:&v13])
   {
     [v4 addObject:&off_100B335A0];
   }
 
-  if ([v3 discoveryTypesContainTypes:CBDiscoveryTypesNearbyInfoV2()])
+  if ([discoveryCopy discoveryTypesContainTypes:CBDiscoveryTypesNearbyInfoV2()])
   {
     [v4 addObject:&off_100B335B8];
   }
@@ -1721,19 +1721,19 @@ LABEL_41:
   v12 = 0;
   v11 = 0;
   v10 = 32;
-  if ([v3 discoveryTypesContainTypes:&v10])
+  if ([discoveryCopy discoveryTypesContainTypes:&v10])
   {
     [v4 addObject:&off_100B335D0];
   }
 
   v8 = 768;
   v9 = 0;
-  if ([v3 discoveryTypesContainTypes:&v8])
+  if ([discoveryCopy discoveryTypesContainTypes:&v8])
   {
     [v4 addObject:&off_100B335E8];
   }
 
-  if (_os_feature_enabled_impl() && [v3 discoveryTypesContainTypes:CBDiscoveryTypesSoftwareUpdate()])
+  if (_os_feature_enabled_impl() && [discoveryCopy discoveryTypesContainTypes:CBDiscoveryTypesSoftwareUpdate()])
   {
     [v4 addObject:&off_100B33600];
   }
@@ -1741,12 +1741,12 @@ LABEL_41:
   return v4;
 }
 
-- (void)clearDuplicateFilterCache:(id)a3
+- (void)clearDuplicateFilterCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   sessionHandle = self->_sessionHandle;
-  [(CBStackBLEScannerBTStack *)self _packetTypeForDiscovery:v4];
+  [(CBStackBLEScannerBTStack *)self _packetTypeForDiscovery:cacheCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -1765,13 +1765,13 @@ LABEL_41:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) unsignedCharValue];
+        unsignedCharValue = [*(*(&v14 + 1) + 8 * v9) unsignedCharValue];
         v11 = sub_100007EE8();
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
         v12[2] = sub_1001306B0;
         v12[3] = &unk_100AE15D8;
-        v13 = v10;
+        v13 = unsignedCharValue;
         v12[4] = sessionHandle;
         sub_10000CA94(v11, v12);
         v9 = v9 + 1;
@@ -1830,14 +1830,14 @@ LABEL_6:
   self->_bufferedDevices = 0;
 }
 
-- (void)_proxyOOBKeysUpdateOnDeviceFound:(id)a3
+- (void)_proxyOOBKeysUpdateOnDeviceFound:(id)found
 {
-  v13 = a3;
-  v15 = [v13 nearbyActionNoWakeAuthTagData];
-  v16 = [v13 btAddressData];
+  foundCopy = found;
+  nearbyActionNoWakeAuthTagData = [foundCopy nearbyActionNoWakeAuthTagData];
+  btAddressData = [foundCopy btAddressData];
   v4 = sub_10000C7D0();
   v5 = (*(*v4 + 2744))(v4);
-  if (v16)
+  if (btAddressData)
   {
     v6 = v5;
   }
@@ -1847,7 +1847,7 @@ LABEL_6:
     v6 = 0;
   }
 
-  if ((v6 & 1) != 0 && [v13 nearbyActionNoWakeType] == 1 && v15)
+  if ((v6 & 1) != 0 && [foundCopy nearbyActionNoWakeType] == 1 && nearbyActionNoWakeAuthTagData)
   {
     v28[0] = 0;
     v28[1] = v28;
@@ -1880,24 +1880,24 @@ LABEL_6:
           v21 = sub_100042224;
           v22 = sub_1000425A4;
           v23 = 0;
-          v11 = [v10 oobKeys];
+          oobKeys = [v10 oobKeys];
           v17[0] = _NSConcreteStackBlock;
           v17[1] = 3221225472;
           v17[2] = sub_100131B7C;
           v17[3] = &unk_100AE16B0;
-          v17[4] = v16;
-          v17[5] = v15;
+          v17[4] = btAddressData;
+          v17[5] = nearbyActionNoWakeAuthTagData;
           v17[7] = v28;
           v17[8] = &v18;
           v17[6] = v10;
-          [v11 enumerateObjectsUsingBlock:v17];
+          [oobKeys enumerateObjectsUsingBlock:v17];
 
           if (v19[5])
           {
             [v10 setOobKeys:?];
             if (dword_100B50FA0 <= 20 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
             {
-              v12 = [v10 oobKeys];
+              oobKeys2 = [v10 oobKeys];
               LogPrintF_safe();
             }
           }
@@ -1915,16 +1915,16 @@ LABEL_6:
   }
 }
 
-- (void)_rescanTimerUpdate:(BOOL)a3
+- (void)_rescanTimerUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   if ([(NSMutableDictionary *)self->_deviceMap count])
   {
     v5 = self->_rescanTimer;
     if (v5)
     {
       v6 = v5;
-      if (v3)
+      if (updateCopy)
       {
         if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
         {
@@ -1947,7 +1947,7 @@ LABEL_6:
       handler[3] = &unk_100AE0B60;
       v6 = v9;
       v13 = v6;
-      v14 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v6, handler);
       if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
       {
@@ -1977,7 +1977,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)_addMfgScanIfNeeded:(unint64_t)a3 scanRequest:(void *)a4
+- (BOOL)_addMfgScanIfNeeded:(unint64_t)needed scanRequest:(void *)request
 {
   v15 = 0u;
   v16 = 0u;
@@ -1998,9 +1998,9 @@ LABEL_6:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 discoveryFlags];
-        v12 = [v10 extraDiscoveryFlags] | v11;
-        if ((v12 & a3) != 0)
+        discoveryFlags = [v10 discoveryFlags];
+        v12 = [v10 extraDiscoveryFlags] | discoveryFlags;
+        if ((v12 & needed) != 0)
         {
           self->_aggregateDiscoveryFlags |= v12;
           v13 = 1;
@@ -2024,12 +2024,12 @@ LABEL_11:
   return v13;
 }
 
-- (void)_addTypeIfNeeded:(unsigned __int8)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6
+- (void)_addTypeIfNeeded:(unsigned __int8)needed matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request
 {
-  v134 = a3;
-  if (a5)
+  neededCopy = needed;
+  if (types)
   {
-    v133 = a5->var0[4] >> 7;
+    v133 = types->var0[4] >> 7;
   }
 
   else
@@ -2037,9 +2037,9 @@ LABEL_11:
     v133 = 0;
   }
 
-  v8 = a3;
+  neededCopy2 = needed;
   v9 = "Invalid";
-  switch(v134)
+  switch(neededCopy)
   {
     case 0:
       break;
@@ -2122,7 +2122,7 @@ LABEL_11:
       v9 = "SoftwareUpdate";
       break;
     default:
-      if (v8 == 100)
+      if (neededCopy2 == 100)
       {
         v9 = "FastLEConnection";
       }
@@ -2171,7 +2171,7 @@ LABEL_8:
   v136 = 0;
   v12 = 0;
   v13 = *v154;
-  v15 = (a4 & 0x40000) == 0 || v134 != 19;
+  v15 = (flags & 0x40000) == 0 || neededCopy != 19;
   v129 = 1;
   v130 = 0;
   v137 = 1;
@@ -2187,18 +2187,18 @@ LABEL_8:
       }
 
       v17 = *(*(&v153 + 1) + 8 * i);
-      v18 = [v17 discoveryFlags];
-      v19 = [v17 extraDiscoveryFlags] | v18;
-      v20 = (v19 & a4) != 0;
-      if (a5 && (v19 & a4) == 0)
+      discoveryFlags = [v17 discoveryFlags];
+      v19 = [v17 extraDiscoveryFlags] | discoveryFlags;
+      v20 = (v19 & flags) != 0;
+      if (types && (v19 & flags) == 0)
       {
-        v20 = [v17 discoveryTypesContainTypes:a5];
+        v20 = [v17 discoveryTypesContainTypes:types];
       }
 
       if (v20)
       {
         self->_aggregateDiscoveryFlags |= v19;
-        if (a5)
+        if (types)
         {
           v21 = v17;
           [v17 discoveryTypesInternalPtr];
@@ -2211,11 +2211,11 @@ LABEL_8:
           v139 = *([v17 discoveryTypesInternalPtr] + 4);
           if (v133 == v139 >> 7)
           {
-            if (v134 > 20)
+            if (neededCopy > 20)
             {
-              if (v134 != 21)
+              if (neededCopy != 21)
               {
-                if (v134 != 22)
+                if (neededCopy != 22)
                 {
                   goto LABEL_97;
                 }
@@ -2226,8 +2226,8 @@ LABEL_8:
                 v127 |= ((v35 & 0x40) >> 6) | ((*[v17 discoveryTypesInternalPtr] & 0x10) >> 4);
                 if ((self->_aggregateDiscoveryFlags & 0x40000) != 0)
                 {
-                  v50 = [v17 oobKeys];
-                  v51 = v50 == 0;
+                  oobKeys = [v17 oobKeys];
+                  v51 = oobKeys == 0;
 
                   if (v51)
                   {
@@ -2245,23 +2245,23 @@ LABEL_8:
                     self->_suppressedDeviceFilter = v54;
                   }
 
-                  v56 = [v17 oobKeys];
+                  oobKeys2 = [v17 oobKeys];
                   v57 = self->_suppressedOobKeys;
                   v58 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v17 useCase]);
-                  [(NSMutableDictionary *)v57 setObject:v56 forKeyedSubscript:v58];
+                  [(NSMutableDictionary *)v57 setObject:oobKeys2 forKeyedSubscript:v58];
 
-                  v59 = [v17 deviceFilter];
+                  deviceFilter = [v17 deviceFilter];
                   v60 = self->_suppressedDeviceFilter;
                   v61 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v17 useCase]);
-                  [(NSMutableDictionary *)v60 setObject:v59 forKeyedSubscript:v61];
+                  [(NSMutableDictionary *)v60 setObject:deviceFilter forKeyedSubscript:v61];
 
                   if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
                   {
-                    v62 = [v17 oobKeys];
-                    v63 = [v62 count];
-                    v64 = [v17 deviceFilter];
+                    oobKeys3 = [v17 oobKeys];
+                    v63 = [oobKeys3 count];
+                    deviceFilter2 = [v17 deviceFilter];
                     v119 = v63;
-                    v120 = [v64 count];
+                    v120 = [deviceFilter2 count];
                     LogPrintF_safe();
                   }
 
@@ -2298,11 +2298,11 @@ LABEL_8:
 
                   if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
                   {
-                    v47 = [v17 oobKeys];
-                    v48 = [v47 count];
-                    v49 = [v17 deviceFilter];
+                    oobKeys4 = [v17 oobKeys];
+                    v48 = [oobKeys4 count];
+                    deviceFilter3 = [v17 deviceFilter];
                     v119 = v48;
-                    v120 = [v49 count];
+                    v120 = [deviceFilter3 count];
                     LogPrintF_safe();
                   }
 
@@ -2336,7 +2336,7 @@ LABEL_8:
               }
             }
 
-            else if (v134 == 15)
+            else if (neededCopy == 15)
             {
               if ((v19 & 0x2000000) != 0)
               {
@@ -2350,8 +2350,8 @@ LABEL_8:
                   v65 = v17;
                   if ((*[v17 discoveryTypesInternalPtr] & 4) != 0)
                   {
-                    v66 = [v17 deviceFilter];
-                    v67 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:v66];
+                    deviceFilter4 = [v17 deviceFilter];
+                    v67 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:deviceFilter4];
 
                     v121 = 1;
                     v140 = v67;
@@ -2378,14 +2378,14 @@ LABEL_8:
               }
             }
 
-            else if (v134 == 19)
+            else if (neededCopy == 19)
             {
-              v23 = [v17 bleRSSIThresholdOrder];
+              bleRSSIThresholdOrder = [v17 bleRSSIThresholdOrder];
               BYTE4(v128) = [v17 bleRSSIThresholdOrder] < 0;
-              v24 = [v17 spatialInteractionfilter];
-              v25 = v24 == 0;
+              spatialInteractionfilter = [v17 spatialInteractionfilter];
+              v25 = spatialInteractionfilter == 0;
 
-              LODWORD(v128) = (v23 >> 2) & 1;
+              LODWORD(v128) = (bleRSSIThresholdOrder >> 2) & 1;
               if (!v25)
               {
                 for (j = 0; j != 22; ++j)
@@ -2398,16 +2398,16 @@ LABEL_8:
                   *(&v160[-1] + k) = 0;
                 }
 
-                v28 = [v17 spatialInteractionfilter];
-                v29 = [v28 blob];
+                spatialInteractionfilter2 = [v17 spatialInteractionfilter];
+                blob = [spatialInteractionfilter2 blob];
 
-                v30 = [v17 spatialInteractionfilter];
-                v31 = [v30 mask];
+                spatialInteractionfilter3 = [v17 spatialInteractionfilter];
+                mask = [spatialInteractionfilter3 mask];
 
-                v32 = v29;
-                memcpy(&__dst, [v29 bytes], objc_msgSend(v29, "length"));
-                v33 = v31;
-                memcpy(&v159, [v31 bytes], objc_msgSend(v31, "length"));
+                v32 = blob;
+                memcpy(&__dst, [blob bytes], objc_msgSend(blob, "length"));
+                v33 = mask;
+                memcpy(&v159, [mask bytes], objc_msgSend(mask, "length"));
               }
             }
 
@@ -2423,16 +2423,16 @@ LABEL_97:
               if ((v19 & 0x40000) != 0)
               {
 LABEL_104:
-                if (v134 == 26)
+                if (neededCopy == 26)
                 {
                   v73 = sub_10000E92C();
                   v132 = (*(*v73 + 904))(v73);
                   v74 = sub_10000E92C();
                   v129 = (*(*v74 + 904))(v74);
                   v75 = v17;
-                  v76 = [v17 discoveryTypesInternalPtr];
+                  discoveryTypesInternalPtr = [v17 discoveryTypesInternalPtr];
                   v130 = 1;
-                  if (v19 & 0x200000000) != 0 && (v76[1])
+                  if (v19 & 0x200000000) != 0 && (discoveryTypesInternalPtr[1])
                   {
                     self->_aopBTTypes |= 0x100u;
                     goto LABEL_110;
@@ -2463,7 +2463,7 @@ LABEL_113:
                   if ((v19 & 0x10000000000) == 0)
                   {
 LABEL_115:
-                    v77 = [v17 bleRSSIThresholdHint];
+                    bleRSSIThresholdHint = [v17 bleRSSIThresholdHint];
                     if (v132)
                     {
                       v78 = -120;
@@ -2474,9 +2474,9 @@ LABEL_115:
                       v78 = -90;
                     }
 
-                    if (v78 <= (v77 & (v77 >> 31)))
+                    if (v78 <= (bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31)))
                     {
-                      v78 = v77 & (v77 >> 31);
+                      v78 = bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31);
                     }
 
                     v79 = v78 == 0;
@@ -2486,19 +2486,19 @@ LABEL_115:
                     }
 
                     v136 = v78;
-                    v80 = [v17 bleScanRateOverride];
-                    if (!v80 && (self->_screenOn || (v80 = [v17 bleScanRateScreenOff]) == 0))
+                    bleScanRateOverride = [v17 bleScanRateOverride];
+                    if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v17 bleScanRateScreenOff]) == 0))
                     {
-                      v80 = [v17 bleScanRate];
-                      if (!v80)
+                      bleScanRateOverride = [v17 bleScanRate];
+                      if (!bleScanRateOverride)
                       {
                         self->_scanRateAnyDefault = 1;
                       }
                     }
 
-                    if (v80 > self->_scanRateHighest)
+                    if (bleScanRateOverride > self->_scanRateHighest)
                     {
-                      self->_scanRateHighest = v80;
+                      self->_scanRateHighest = bleScanRateOverride;
                     }
 
                     v135 |= v79;
@@ -2548,7 +2548,7 @@ LABEL_115:
                         v86 = 0;
                       }
 
-                      sub_100032784(a6, v138, v134, v81, &v151, &v149, v83, 0, !v137, targetCore, 1, v140, v86, 0, (*(&v128 + 3) & 0x100) >> 8, v128 & 1, v129 & 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+                      sub_100032784(request, v138, neededCopy, v81, &v151, &v149, v83, 0, !v137, targetCore, 1, v140, v86, 0, (*(&v128 + 3) & 0x100) >> 8, v128 & 1, v129 & 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
                       for (m = 0; m != 22; ++m)
                       {
                         *(&v162[-1] + m) = 0;
@@ -2690,7 +2690,7 @@ LABEL_132:
         v97 = 2;
       }
 
-      sub_100032784(a6, @"AcceptedInvitation", v134, v97, &v151, &v149, v96, 0, v92, self->_targetCore, 1, 0, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+      sub_100032784(request, @"AcceptedInvitation", neededCopy, v97, &v151, &v149, v96, 0, v92, self->_targetCore, 1, 0, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
       for (ii = 0; ii != 22; ++ii)
       {
         *(&v162[-1] + ii) = 0;
@@ -2717,7 +2717,7 @@ LABEL_132:
       v138 = @"AcceptedInvitation";
     }
 
-    if (v134 == 22)
+    if (neededCopy == 22)
     {
       if (v127)
       {
@@ -2743,7 +2743,7 @@ LABEL_132:
           v100 = -120;
         }
 
-        sub_100032784(a6, @"NearbyInfoV2", 0x16u, 2, &v151, &v149, v100, 0, v92, self->_targetCore, 1, 0, v90, v125 & 1, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        sub_100032784(request, @"NearbyInfoV2", 0x16u, 2, &v151, &v149, v100, 0, v92, self->_targetCore, 1, 0, v90, v125 & 1, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
         v149 = &off_100AE0A78;
         if (v150)
         {
@@ -2799,8 +2799,8 @@ LABEL_132:
                 }
               }
 
-              v109 = [v107 deviceFilter];
-              v110 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:v109];
+              deviceFilter5 = [v107 deviceFilter];
+              v110 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:deviceFilter5];
 
               v140 = v110;
               if ([v110 count])
@@ -2825,7 +2825,7 @@ LABEL_132:
                 v149 = 0;
                 v150 = 0;
                 sub_10000C704(&v149, &v159, 0x16uLL);
-                sub_100032784(a6, @"MiLo", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+                sub_100032784(request, @"MiLo", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
                 v149 = &off_100AE0A78;
                 if (v150)
                 {
@@ -2853,7 +2853,7 @@ LABEL_132:
                 v149 = 0;
                 v150 = 0;
                 sub_10000C704(&v149, &v159, 0x16uLL);
-                sub_100032784(a6, @"Invitation", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+                sub_100032784(request, @"Invitation", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
                 v149 = &off_100AE0A78;
                 if (v150)
                 {
@@ -2887,7 +2887,7 @@ LABEL_132:
               v149 = 0;
               v150 = 0;
               sub_10000C704(&v149, &v159, 0x16uLL);
-              sub_100032784(a6, @"FaceTime", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+              sub_100032784(request, @"FaceTime", 0x16u, v111, &v151, &v149, v108, 0, v92, self->_targetCore, 1, v140, v90, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
               v149 = &off_100AE0A78;
               if (v150)
               {
@@ -2969,7 +2969,7 @@ LABEL_132:
         v118 = 2;
       }
 
-      sub_100032784(a6, v138, v134, v118, &v151, &v149, v117, 0, v92, self->_targetCore, 1, v140, v90, v125 & 1, BYTE4(v128) & 1, v128 & 1, v129 & 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+      sub_100032784(request, v138, neededCopy, v118, &v151, &v149, v117, 0, v92, self->_targetCore, 1, v140, v90, v125 & 1, BYTE4(v128) & 1, v128 & 1, v129 & 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
       v149 = &off_100AE0A78;
       if (v150)
       {
@@ -2988,9 +2988,9 @@ LABEL_132:
 LABEL_253:
 }
 
-- (void)_addTypeWithParamsIfNeeded:(unsigned __int8)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6
+- (void)_addTypeWithParamsIfNeeded:(unsigned __int8)needed matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request
 {
-  v47 = a3;
+  neededCopy = needed;
   v76 = 0;
   v77[0] = 0;
   *(v77 + 6) = 0;
@@ -3022,18 +3022,18 @@ LABEL_3:
     }
 
     v6 = *(*(&v68 + 1) + 8 * v54);
-    v7 = [v6 discoveryFlags];
-    v8 = [v6 extraDiscoveryFlags] | v7;
-    v9 = (v8 & a4) != 0;
-    if (a5 && (v8 & a4) == 0)
+    discoveryFlags = [v6 discoveryFlags];
+    v8 = [v6 extraDiscoveryFlags] | discoveryFlags;
+    v9 = (v8 & flags) != 0;
+    if (types && (v8 & flags) == 0)
     {
-      v9 = [v6 discoveryTypesContainTypes:a5];
+      v9 = [v6 discoveryTypesContainTypes:types];
     }
 
     if (v9)
     {
       self->_aggregateDiscoveryFlags |= v8;
-      if (a5)
+      if (types)
       {
         v10 = v6;
         [v6 discoveryTypesInternalPtr];
@@ -3100,30 +3100,30 @@ LABEL_17:
   }
 
 LABEL_18:
-  v11 = [v6 bleRSSIThresholdHint];
-  if ((v11 & (v11 >> 31)) <= -90)
+  bleRSSIThresholdHint = [v6 bleRSSIThresholdHint];
+  if ((bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31)) <= -90)
   {
     v12 = -90;
   }
 
   else
   {
-    v12 = v11 & (v11 >> 31);
+    v12 = bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31);
   }
 
-  v13 = [v6 bleScanRateOverride];
-  if (!v13 && (self->_screenOn || (v13 = [v6 bleScanRateScreenOff]) == 0))
+  bleScanRateOverride = [v6 bleScanRateOverride];
+  if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v6 bleScanRateScreenOff]) == 0))
   {
-    v13 = [v6 bleScanRate];
-    if (!v13)
+    bleScanRateOverride = [v6 bleScanRate];
+    if (!bleScanRateOverride)
     {
       self->_scanRateAnyDefault = 1;
     }
   }
 
-  if (v13 > self->_scanRateHighest)
+  if (bleScanRateOverride > self->_scanRateHighest)
   {
-    self->_scanRateHighest = v13;
+    self->_scanRateHighest = bleScanRateOverride;
   }
 
   v48 |= (v8 >> 18) & 1;
@@ -3138,8 +3138,8 @@ LABEL_18:
     v57 = 0;
   }
 
-  v15 = [v6 deviceFilter];
-  v58 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:v15];
+  deviceFilter = [v6 deviceFilter];
+  v58 = [(CBStackBLEScannerBTStack *)self _deviceFilterUUIDs:deviceFilter];
 
   v56 = (v8 >> 33) & 1;
   if ([v58 count])
@@ -3152,10 +3152,10 @@ LABEL_18:
     v16 = 2;
   }
 
-  if (v47 != 21)
+  if (neededCopy != 21)
   {
     v20 = _os_feature_enabled_impl() ^ 1;
-    if (v47 != 27)
+    if (neededCopy != 27)
     {
       LOBYTE(v20) = 1;
     }
@@ -3170,7 +3170,7 @@ LABEL_18:
       v64 = 0;
       v65 = 0;
       sub_10000C704(&v64, &v74, 0x16uLL);
-      if (v11 < 0)
+      if (bleRSSIThresholdHint < 0)
       {
         v21 = v12;
       }
@@ -3180,7 +3180,7 @@ LABEL_18:
         v21 = -90;
       }
 
-      sub_100032784(a6, @"Placeholder", v47, v16, &v66, &v64, v21, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+      sub_100032784(request, @"Placeholder", neededCopy, v16, &v66, &v64, v21, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
 LABEL_95:
       v64 = &off_100AE0A78;
       if (v65)
@@ -3197,10 +3197,10 @@ LABEL_95:
       goto LABEL_132;
     }
 
-    v45 = [v6 softwareUpdatePayloads];
+    softwareUpdatePayloads = [v6 softwareUpdatePayloads];
     if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
     {
-      v42 = v45;
+      v42 = softwareUpdatePayloads;
       LogPrintF_safe();
     }
 
@@ -3208,7 +3208,7 @@ LABEL_95:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v27 = v45;
+    v27 = softwareUpdatePayloads;
     v28 = [v27 countByEnumeratingWithState:&v60 objects:v72 count:16];
     if (!v28)
     {
@@ -3218,7 +3218,7 @@ LABEL_131:
     }
 
     v29 = *v61;
-    if (v11 < 0)
+    if (bleRSSIThresholdHint < 0)
     {
       v30 = v12;
     }
@@ -3239,35 +3239,35 @@ LABEL_105:
       }
 
       v33 = *(*(&v60 + 1) + 8 * v32);
-      v34 = [v33 softwareUpdateActionType];
-      v35 = [v33 softwareUpdateDataBlob];
-      v36 = [v33 softwareUpdateDataMask];
+      softwareUpdateActionType = [v33 softwareUpdateActionType];
+      softwareUpdateDataBlob = [v33 softwareUpdateDataBlob];
+      softwareUpdateDataMask = [v33 softwareUpdateDataMask];
       if (dword_100B50FA0 <= 30 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
       {
-        v43 = v35;
-        v44 = v36;
-        v42 = v34;
+        v43 = softwareUpdateDataBlob;
+        v44 = softwareUpdateDataMask;
+        v42 = softwareUpdateActionType;
         LogPrintF_safe();
       }
 
-      if (!v34)
+      if (!softwareUpdateActionType)
       {
         goto LABEL_129;
       }
 
-      LOBYTE(v76) = v34;
+      LOBYTE(v76) = softwareUpdateActionType;
       LOBYTE(v74) = -1;
-      if (v35)
+      if (softwareUpdateDataBlob)
       {
-        v37 = [v35 length];
-        v38 = v35;
-        memcpy(&v76 + 1, [v35 bytes], v37);
-        if ([v36 length])
+        v37 = [softwareUpdateDataBlob length];
+        v38 = softwareUpdateDataBlob;
+        memcpy(&v76 + 1, [softwareUpdateDataBlob bytes], v37);
+        if ([softwareUpdateDataMask length])
         {
-          if ([v36 length] >= v37)
+          if ([softwareUpdateDataMask length] >= v37)
           {
-            v39 = v36;
-            memcpy(&v74 + 1, [v36 bytes], v37);
+            v39 = softwareUpdateDataMask;
+            memcpy(&v74 + 1, [softwareUpdateDataMask bytes], v37);
             goto LABEL_119;
           }
         }
@@ -3293,13 +3293,13 @@ LABEL_119:
       }
 
       v40 = "?";
-      if (v34 <= 3)
+      if (softwareUpdateActionType <= 3)
       {
-        v40 = off_100AE18B0[v34 - 1];
+        v40 = off_100AE18B0[softwareUpdateActionType - 1];
       }
 
       v41 = [NSString stringWithUTF8String:v40, v42];
-      sub_100032784(a6, v41, 0x1Bu, v16, &v66, &v64, v31, 0, v56, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+      sub_100032784(request, v41, 0x1Bu, v16, &v66, &v64, v31, 0, v56, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
 
       v64 = &off_100AE0A78;
       if (v65)
@@ -3369,7 +3369,7 @@ LABEL_58:
         v64 = 0;
         v65 = 0;
         sub_10000C704(&v64, &v74, 0x16uLL);
-        if (v11 < 0)
+        if (bleRSSIThresholdHint < 0)
         {
           v22 = v12;
         }
@@ -3379,7 +3379,7 @@ LABEL_58:
           v22 = -90;
         }
 
-        sub_100032784(a6, @"Ensemble", 0x15u, v16, &v66, &v64, v22, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        sub_100032784(request, @"Ensemble", 0x15u, v16, &v66, &v64, v22, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
         v64 = &off_100AE0A78;
         if (v65)
         {
@@ -3403,7 +3403,7 @@ LABEL_58:
         v64 = 0;
         v65 = 0;
         sub_10000C704(&v64, &v74, 0x16uLL);
-        if (v11 < 0)
+        if (bleRSSIThresholdHint < 0)
         {
           v23 = v12;
         }
@@ -3413,7 +3413,7 @@ LABEL_58:
           v23 = -90;
         }
 
-        sub_100032784(a6, @"CLink", 0x15u, v16, &v66, &v64, v23, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        sub_100032784(request, @"CLink", 0x15u, v16, &v66, &v64, v23, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
         v64 = &off_100AE0A78;
         if (v65)
         {
@@ -3437,7 +3437,7 @@ LABEL_58:
         v64 = 0;
         v65 = 0;
         sub_10000C704(&v64, &v74, 0x16uLL);
-        if (v11 < 0)
+        if (bleRSSIThresholdHint < 0)
         {
           v24 = v12;
         }
@@ -3447,7 +3447,7 @@ LABEL_58:
           v24 = -90;
         }
 
-        sub_100032784(a6, @"RDisplay", 0x15u, v16, &v66, &v64, v24, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        sub_100032784(request, @"RDisplay", 0x15u, v16, &v66, &v64, v24, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
         v64 = &off_100AE0A78;
         if (v65)
         {
@@ -3471,7 +3471,7 @@ LABEL_58:
         v64 = 0;
         v65 = 0;
         sub_10000C704(&v64, &v74, 0x16uLL);
-        if (v11 < 0)
+        if (bleRSSIThresholdHint < 0)
         {
           v25 = v12;
         }
@@ -3481,7 +3481,7 @@ LABEL_58:
           v25 = -90;
         }
 
-        sub_100032784(a6, @"RemotePairing", 0x15u, v16, &v66, &v64, v25, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+        sub_100032784(request, @"RemotePairing", 0x15u, v16, &v66, &v64, v25, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
         v64 = &off_100AE0A78;
         if (v65)
         {
@@ -3508,7 +3508,7 @@ LABEL_58:
       v64 = 0;
       v65 = 0;
       sub_10000C704(&v64, &v74, 0x16uLL);
-      if (v11 < 0)
+      if (bleRSSIThresholdHint < 0)
       {
         v26 = v12;
       }
@@ -3518,7 +3518,7 @@ LABEL_58:
         v26 = -90;
       }
 
-      sub_100032784(a6, @"Wombat", 0x15u, v16, &v66, &v64, v26, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
+      sub_100032784(request, @"Wombat", 0x15u, v16, &v66, &v64, v26, 0, (v8 & 0x200000000) != 0, self->_targetCore, 1, v58, v57, 0, 0, 0, 1, 0, 0xFFFF, 0xFFFF, 0xFFFF);
       goto LABEL_95;
     }
 
@@ -3536,7 +3536,7 @@ LABEL_132:
 LABEL_142:
 }
 
-- (void)_addUUIDIfNeeded:(LeUuid *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 uuids:(void *)a6
+- (void)_addUUIDIfNeeded:(LeUuid *)needed matchFlags:(unint64_t)flags matchTypes:(id *)types uuids:(void *)uuids
 {
   v21 = 0u;
   v22 = 0u;
@@ -3560,18 +3560,18 @@ LABEL_142:
       }
 
       v14 = *(*(&v21 + 1) + 8 * i);
-      v15 = [v14 discoveryFlags];
-      v16 = [v14 extraDiscoveryFlags] | v15;
-      v17 = (v16 & a4) != 0;
-      if (a5 && (v16 & a4) == 0)
+      discoveryFlags = [v14 discoveryFlags];
+      v16 = [v14 extraDiscoveryFlags] | discoveryFlags;
+      v17 = (v16 & flags) != 0;
+      if (types && (v16 & flags) == 0)
       {
-        v17 = [v14 discoveryTypesContainTypes:a5];
+        v17 = [v14 discoveryTypesContainTypes:types];
       }
 
       if (v17)
       {
         self->_aggregateDiscoveryFlags |= v16;
-        if (a5)
+        if (types)
         {
           v18 = v14;
           [v14 discoveryTypesInternalPtr];
@@ -3589,22 +3589,22 @@ LABEL_18:
               if ((v16 & 0x10000000000) == 0)
               {
 LABEL_20:
-                v19 = [v14 bleScanRateOverride];
-                if (!v19 && (self->_screenOn || (v19 = [v14 bleScanRateScreenOff]) == 0))
+                bleScanRateOverride = [v14 bleScanRateOverride];
+                if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v14 bleScanRateScreenOff]) == 0))
                 {
-                  v19 = [v14 bleScanRate];
-                  if (!v19)
+                  bleScanRateOverride = [v14 bleScanRate];
+                  if (!bleScanRateOverride)
                   {
                     self->_scanRateAnyDefault = 1;
                   }
                 }
 
-                if (v19 > self->_scanRateHighest)
+                if (bleScanRateOverride > self->_scanRateHighest)
                 {
-                  self->_scanRateHighest = v19;
+                  self->_scanRateHighest = bleScanRateOverride;
                 }
 
-                sub_10000CDB8(a6, a3);
+                sub_10000CDB8(uuids, needed);
                 goto LABEL_28;
               }
 
@@ -3642,7 +3642,7 @@ LABEL_19:
 LABEL_28:
 }
 
-- (void)_addUUIDIfNeededWithParams:(LeUuid *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 scanRequest:(void *)a6
+- (void)_addUUIDIfNeededWithParams:(LeUuid *)params matchFlags:(unint64_t)flags matchTypes:(id *)types scanRequest:(void *)request
 {
   v34 = 0u;
   v35 = 0u;
@@ -3664,18 +3664,18 @@ LABEL_28:
         }
 
         v12 = *(*(&v34 + 1) + 8 * v11);
-        v13 = [v12 discoveryFlags];
-        v14 = [v12 extraDiscoveryFlags] | v13;
-        v15 = (v14 & a4) != 0;
-        if (a5 && (v14 & a4) == 0)
+        discoveryFlags = [v12 discoveryFlags];
+        v14 = [v12 extraDiscoveryFlags] | discoveryFlags;
+        v15 = (v14 & flags) != 0;
+        if (types && (v14 & flags) == 0)
         {
-          v15 = [v12 discoveryTypesContainTypes:a5];
+          v15 = [v12 discoveryTypesContainTypes:types];
         }
 
         if (v15)
         {
           self->_aggregateDiscoveryFlags |= v14;
-          if (a5)
+          if (types)
           {
             v16 = v12;
             [v12 discoveryTypesInternalPtr];
@@ -3696,34 +3696,34 @@ LABEL_15:
               if ((v14 & 0x10000000000) == 0)
               {
 LABEL_17:
-                v17 = [v12 bleScanRateOverride];
-                if (!v17 && (self->_screenOn || (v17 = [v12 bleScanRateScreenOff]) == 0))
+                bleScanRateOverride = [v12 bleScanRateOverride];
+                if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v12 bleScanRateScreenOff]) == 0))
                 {
-                  v17 = [v12 bleScanRate];
-                  if (!v17)
+                  bleScanRateOverride = [v12 bleScanRate];
+                  if (!bleScanRateOverride)
                   {
                     self->_scanRateAnyDefault = 1;
                   }
                 }
 
-                if (v17 > self->_scanRateHighest)
+                if (bleScanRateOverride > self->_scanRateHighest)
                 {
-                  self->_scanRateHighest = v17;
+                  self->_scanRateHighest = bleScanRateOverride;
                 }
 
-                v18 = [v12 bleRSSIThresholdHint];
-                if ((v18 & (v18 >> 31)) <= -90)
+                bleRSSIThresholdHint = [v12 bleRSSIThresholdHint];
+                if ((bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31)) <= -90)
                 {
                   v19 = -90;
                 }
 
                 else
                 {
-                  v19 = v18 & (v18 >> 31);
+                  v19 = bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31);
                 }
 
                 sub_10006C96C(&v42, 65061);
-                if (sub_10004E15C(&a3->var0.var0, &v42))
+                if (sub_10004E15C(&params->var0.var0, &v42))
                 {
                   if ([v12 discoveryTypesContainTypes:CBDiscoveryTypesProximityService()])
                   {
@@ -3737,7 +3737,7 @@ LABEL_17:
                     if ((*([v12 discoveryTypesInternalPtr] + 2) & 2) != 0)
                     {
                       v21 = 0;
-                      v22 = v19 & (v18 >> 7);
+                      v22 = v19 & (bleRSSIThresholdHint >> 7);
                       do
                       {
                         *(&v43[-1] + v21++) = 0;
@@ -3757,11 +3757,11 @@ LABEL_17:
                       v30 = 0;
                       v31 = 0;
                       sub_10000C704(&v30, &v40, 0x16uLL);
-                      v24 = [&off_100B33630 stringValue];
+                      stringValue = [&off_100B33630 stringValue];
                       v25 = [NSString stringWithUTF8String:"WatchSetup"];
-                      v38 = *&a3->var0.var0;
-                      v39 = *&a3->var0.var1.var2[12];
-                      sub_10003B48C(a6, v24, v25, &v38, &v32, &v30, v22, 0, self->_targetCore, 1, 0, 0, 1);
+                      v38 = *&params->var0.var0;
+                      v39 = *&params->var0.var1.var2[12];
+                      sub_10003B48C(request, stringValue, v25, &v38, &v32, &v30, v22, 0, self->_targetCore, 1, 0, 0, 1);
 
                       v30 = &off_100AE0A78;
                       if (v31)
@@ -3815,7 +3815,7 @@ LABEL_38:
   }
 }
 
-- (void)_addServiceUUIDsWithParametersToScanRequestIfNeeded:(void *)a3 matchFlags:(unint64_t)a4 matchTypes:(id *)a5 uuids:(void *)a6
+- (void)_addServiceUUIDsWithParametersToScanRequestIfNeeded:(void *)needed matchFlags:(unint64_t)flags matchTypes:(id *)types uuids:(void *)uuids
 {
   v61 = 0u;
   v62 = 0u;
@@ -3837,13 +3837,13 @@ LABEL_38:
         }
 
         v6 = *(*(&v61 + 1) + 8 * v45);
-        v7 = [v6 discoveryFlags];
+        discoveryFlags = [v6 discoveryFlags];
         v50 = v6;
-        v8 = [v6 extraDiscoveryFlags] | v7;
-        v9 = (v8 & a4) != 0;
-        if (a5 && (v8 & a4) == 0)
+        v8 = [v6 extraDiscoveryFlags] | discoveryFlags;
+        v9 = (v8 & flags) != 0;
+        if (types && (v8 & flags) == 0)
         {
-          v9 = [v50 discoveryTypesContainTypes:a5];
+          v9 = [v50 discoveryTypesContainTypes:types];
         }
 
         if (!v9)
@@ -3852,7 +3852,7 @@ LABEL_38:
         }
 
         self->_aggregateDiscoveryFlags |= v8;
-        if (a5)
+        if (types)
         {
           v10 = v50;
           [v50 discoveryTypesInternalPtr];
@@ -3893,44 +3893,44 @@ LABEL_16:
         }
 
 LABEL_17:
-        v11 = [v50 bleScanRateOverride];
-        if (!v11 && (self->_screenOn || (v11 = [v50 bleScanRateScreenOff]) == 0))
+        bleScanRateOverride = [v50 bleScanRateOverride];
+        if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v50 bleScanRateScreenOff]) == 0))
         {
-          v11 = [v50 bleScanRate];
-          if (!v11)
+          bleScanRateOverride = [v50 bleScanRate];
+          if (!bleScanRateOverride)
           {
             self->_scanRateAnyDefault = 1;
           }
         }
 
-        if (v11 > self->_scanRateHighest)
+        if (bleScanRateOverride > self->_scanRateHighest)
         {
-          self->_scanRateHighest = v11;
+          self->_scanRateHighest = bleScanRateOverride;
         }
 
-        v12 = [v50 bleRSSIThresholdHint];
+        bleRSSIThresholdHint = [v50 bleRSSIThresholdHint];
         v59 = 0u;
         v60 = 0u;
-        if ((v12 & (v12 >> 31)) <= -90)
+        if ((bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31)) <= -90)
         {
           v13 = -90;
         }
 
         else
         {
-          v13 = v12 & (v12 >> 31);
+          v13 = bleRSSIThresholdHint & (bleRSSIThresholdHint >> 31);
         }
 
         v57 = 0uLL;
         v58 = 0uLL;
-        v14 = [v50 serviceUUIDs];
-        v15 = [v14 countByEnumeratingWithState:&v57 objects:v71 count:16];
+        serviceUUIDs = [v50 serviceUUIDs];
+        v15 = [serviceUUIDs countByEnumeratingWithState:&v57 objects:v71 count:16];
         if (v15)
         {
           LODWORD(v16) = 0;
-          v51 = v14;
+          v51 = serviceUUIDs;
           v52 = *v58;
-          v48 = v13 & (v12 >> 7);
+          v48 = v13 & (bleRSSIThresholdHint >> 7);
           do
           {
             for (i = 0; i != v15; i = i + 1)
@@ -3941,65 +3941,65 @@ LABEL_17:
               }
 
               v18 = *(*(&v57 + 1) + 8 * i);
-              v19 = [v18 serviceUUID];
-              v20 = v19;
-              if (v19 && [v19 length] <= 0xFF)
+              serviceUUID = [v18 serviceUUID];
+              v20 = serviceUUID;
+              if (serviceUUID && [serviceUUID length] <= 0xFF)
               {
                 v69 = 0uLL;
                 v70 = 0;
                 v21 = v20;
                 sub_100065F40(&v69, [v20 bytes], objc_msgSend(v20, "length"));
-                v22 = [v18 blobData];
-                if ([v22 length])
+                blobData = [v18 blobData];
+                if ([blobData length])
                 {
                 }
 
                 else
                 {
-                  v23 = [v18 maskData];
-                  v24 = [v23 length] == 0;
+                  maskData = [v18 maskData];
+                  v24 = [maskData length] == 0;
 
                   if (v24)
                   {
-                    sub_10000CDB8(a6, &v69);
+                    sub_10000CDB8(uuids, &v69);
                     goto LABEL_48;
                   }
                 }
 
                 memset(__dst, 0, 22);
                 memset(v67, 0, 22);
-                v25 = [v18 blobData];
-                v26 = v25;
-                v27 = [v25 bytes];
-                v28 = [v18 blobData];
-                if ([v28 length] > 0x15)
+                blobData2 = [v18 blobData];
+                v26 = blobData2;
+                bytes = [blobData2 bytes];
+                blobData3 = [v18 blobData];
+                if ([blobData3 length] > 0x15)
                 {
-                  v30 = *v27;
-                  *(__dst + 14) = *(v27 + 14);
+                  v30 = *bytes;
+                  *(__dst + 14) = *(bytes + 14);
                   __dst[0] = v30;
                 }
 
                 else
                 {
-                  v29 = [v18 blobData];
-                  memcpy(__dst, v27, [v29 length]);
+                  blobData4 = [v18 blobData];
+                  memcpy(__dst, bytes, [blobData4 length]);
                 }
 
-                v31 = [v18 maskData];
-                v32 = v31;
-                v33 = [v31 bytes];
-                v34 = [v18 maskData];
-                if ([v34 length] > 0x15)
+                maskData2 = [v18 maskData];
+                v32 = maskData2;
+                bytes2 = [maskData2 bytes];
+                maskData3 = [v18 maskData];
+                if ([maskData3 length] > 0x15)
                 {
-                  v36 = *v33;
-                  *(v67 + 14) = *(v33 + 14);
+                  v36 = *bytes2;
+                  *(v67 + 14) = *(bytes2 + 14);
                   v67[0] = v36;
                 }
 
                 else
                 {
-                  v35 = [v18 maskData];
-                  memcpy(v67, v33, [v35 length]);
+                  maskData4 = [v18 maskData];
+                  memcpy(v67, bytes2, [maskData4 length]);
                 }
 
                 v55 = 0;
@@ -4010,10 +4010,10 @@ LABEL_17:
                 sub_10000C704(&v53, v67, 0x16uLL);
                 v16 = (v16 + 1);
                 v37 = [NSString stringWithFormat:@"ServiceUUIDwithBlobMask-%d", v16];
-                v38 = [v50 appID];
+                appID = [v50 appID];
                 v65 = v69;
                 v66 = v70;
-                sub_10003B48C(a3, v37, v38, &v65, &v55, &v53, v48, 0, self->_targetCore, 1, 0, 0, 1);
+                sub_10003B48C(needed, v37, appID, &v65, &v55, &v53, v48, 0, self->_targetCore, 1, 0, 0, 1);
 
                 v53 = &off_100AE0A78;
                 if (v54)
@@ -4031,7 +4031,7 @@ LABEL_17:
 LABEL_48:
             }
 
-            v14 = v51;
+            serviceUUIDs = v51;
             v15 = [v51 countByEnumeratingWithState:&v57 objects:v71 count:16];
           }
 
@@ -4051,7 +4051,7 @@ LABEL_51:
   }
 }
 
-- (void)_addBufferedTypesIfNeeded:(id *)a3 scanRequest:(void *)a4
+- (void)_addBufferedTypesIfNeeded:(id *)needed scanRequest:(void *)request
 {
   v15 = 0u;
   v16 = 0u;
@@ -4072,13 +4072,13 @@ LABEL_51:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 discoveryTypesContainTypes:{a3, v15}])
+        if ([v10 discoveryTypesContainTypes:{needed, v15}])
         {
           v11 = v10;
           [v10 discoveryTypesInternalPtr];
           CBDiscoveryTypesAddTypes();
-          v12 = [v10 discoveryFlags];
-          v13 = [v10 extraDiscoveryFlags] | v12;
+          discoveryFlags = [v10 discoveryFlags];
+          v13 = [v10 extraDiscoveryFlags] | discoveryFlags;
           self->_aggregateDiscoveryFlags |= v13;
           if ((v13 & 0x100000000000) == 0)
           {
@@ -4096,19 +4096,19 @@ LABEL_51:
             else
             {
               self->_anyNonLeechBufferScan = 1;
-              v14 = [v10 bleScanRateOverride];
-              if (!v14 && (self->_screenOn || (v14 = [v10 bleScanRateScreenOff]) == 0))
+              bleScanRateOverride = [v10 bleScanRateOverride];
+              if (!bleScanRateOverride && (self->_screenOn || (bleScanRateOverride = [v10 bleScanRateScreenOff]) == 0))
               {
-                v14 = [v10 bleScanRate];
-                if (!v14)
+                bleScanRateOverride = [v10 bleScanRate];
+                if (!bleScanRateOverride)
                 {
                   self->_scanRateAnyDefault = 1;
                 }
               }
 
-              if (v14 > self->_scanRateHighest)
+              if (bleScanRateOverride > self->_scanRateHighest)
               {
-                self->_scanRateHighest = v14;
+                self->_scanRateHighest = bleScanRateOverride;
               }
             }
           }
@@ -4122,29 +4122,29 @@ LABEL_51:
   }
 }
 
-- (void)_updateBufferedFlags:(id)a3 type:(int)a4
+- (void)_updateBufferedFlags:(id)flags type:(int)type
 {
-  v6 = a3;
-  v7 = v6;
+  flagsCopy = flags;
+  v7 = flagsCopy;
   v15 = 0;
   v14 = 0;
-  if ((a4 - 45) >= 0xFFFFFFD4)
+  if ((type - 45) >= 0xFFFFFFD4)
   {
-    *(&v14 + ((a4 - 1) >> 3)) |= 1 << (-a4 & 7);
+    *(&v14 + ((type - 1) >> 3)) |= 1 << (-type & 7);
   }
 
-  v8 = [v6 discoveryTypesContainTypes:&v14];
-  if (a4 == 36)
+  v8 = [flagsCopy discoveryTypesContainTypes:&v14];
+  if (type == 36)
   {
     v9 = 16;
   }
 
   else
   {
-    v9 = a4 == 37;
+    v9 = type == 37;
   }
 
-  if (a4 == 35)
+  if (type == 35)
   {
     v10 = 8;
   }
@@ -4154,7 +4154,7 @@ LABEL_51:
     v10 = v9;
   }
 
-  if (a4 == 29)
+  if (type == 29)
   {
     v11 = 4;
   }
@@ -4164,7 +4164,7 @@ LABEL_51:
     v11 = 0;
   }
 
-  if (a4 == 25)
+  if (type == 25)
   {
     v12 = 2;
   }
@@ -4174,7 +4174,7 @@ LABEL_51:
     v12 = v11;
   }
 
-  if (a4 == 11)
+  if (type == 11)
   {
     v13 = 1;
   }
@@ -4184,7 +4184,7 @@ LABEL_51:
     v13 = v12;
   }
 
-  if (a4 <= 34)
+  if (type <= 34)
   {
     v10 = v13;
   }
@@ -4197,15 +4197,15 @@ LABEL_51:
   self->_aopBTTypes |= v10;
 }
 
-- (id)_deviceFilterUUIDs:(id)a3
+- (id)_deviceFilterUUIDs:(id)ds
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
+  dsCopy = ds;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -4216,7 +4216,7 @@ LABEL_51:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -4252,7 +4252,7 @@ LABEL_10:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v5);
@@ -4260,18 +4260,18 @@ LABEL_10:
 
   if ([v4 count])
   {
-    v12 = [v4 allObjects];
+    allObjects = [v4 allObjects];
   }
 
   else
   {
-    v12 = 0;
+    allObjects = 0;
   }
 
-  return v12;
+  return allObjects;
 }
 
-- (id)_scanSummary:(void *)a3
+- (id)_scanSummary:(void *)summary
 {
   v119 = 0;
   v120 = &v119;
@@ -4281,7 +4281,7 @@ LABEL_10:
   v124 = 0;
   obj = 0;
   CUPrintFlags64();
-  v67 = v70 = a3;
+  v67 = v70 = summary;
   NSAppendPrintF_safe();
   objc_storeStrong(&v124, 0);
 
@@ -4367,58 +4367,58 @@ LABEL_10:
   v102 = v120[5];
   NSAppendPrintF_safe();
   objc_storeStrong(v18, v102);
-  v19 = a3;
-  if (a3)
+  summaryCopy6 = summary;
+  if (summary)
   {
-    if (*(a3 + 173) == 1)
+    if (*(summary + 173) == 1)
     {
       v20 = (v120 + 5);
       v101 = v120[5];
       NSAppendPrintF_safe();
       objc_storeStrong(v20, v101);
-      v19 = a3;
+      summaryCopy6 = summary;
     }
 
-    if (v19[144] == 1)
+    if (summaryCopy6[144] == 1)
     {
-      v21 = v19[160];
+      v21 = summaryCopy6[160];
       v22 = (v120 + 5);
       v100 = v120[5];
       NSAppendPrintF_safe();
       objc_storeStrong(v22, v100);
-      v19 = a3;
+      summaryCopy6 = summary;
       if (v21)
       {
         v23 = (v120 + 5);
         v99 = v120[5];
         NSAppendPrintF_safe();
         objc_storeStrong(v23, v99);
-        v19 = a3;
+        summaryCopy6 = summary;
       }
     }
 
-    if (*v19 == 1)
+    if (*summaryCopy6 == 1)
     {
       v24 = (v120 + 5);
       v98 = v120[5];
       NSAppendPrintF_safe();
       objc_storeStrong(v24, v98);
-      v19 = a3;
+      summaryCopy6 = summary;
     }
 
-    if (v19[164] == 1)
+    if (summaryCopy6[164] == 1)
     {
       v25 = (v120 + 5);
       v97 = v120[5];
       NSAppendPrintF_safe();
       objc_storeStrong(v25, v97);
-      v19 = a3;
+      summaryCopy6 = summary;
     }
 
     v105 = 0;
     v106 = 0;
     v107 = 0;
-    sub_10006D7D8(&v105, *(v19 + 11), *(v19 + 12), 0xAAAAAAAAAAAAAAABLL * ((*(v19 + 12) - *(v19 + 11)) >> 5));
+    sub_10006D7D8(&v105, *(summaryCopy6 + 11), *(summaryCopy6 + 12), 0xAAAAAAAAAAAAAAABLL * ((*(summaryCopy6 + 12) - *(summaryCopy6 + 11)) >> 5));
     v27 = v105;
     v26 = v106;
     if (v105 != v106)
@@ -4722,30 +4722,30 @@ LABEL_61:
 
 - (unint64_t)aggregateDiscoveryFlags
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  aggregateDiscoveryFlags = v2->_aggregateDiscoveryFlags;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  aggregateDiscoveryFlags = selfCopy->_aggregateDiscoveryFlags;
+  objc_sync_exit(selfCopy);
 
   return aggregateDiscoveryFlags;
 }
 
 - ($D91DDCA3822F03E96939068EA8DE741A)aggregateDiscoveryTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = *v2->_aggregateDiscoveryTypes.bitArray | (*&v2->_aggregateDiscoveryTypes.bitArray[4] << 32);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = *selfCopy->_aggregateDiscoveryTypes.bitArray | (*&selfCopy->_aggregateDiscoveryTypes.bitArray[4] << 32);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)handleInjectedAOPBufAdv:(id)a3
+- (void)handleInjectedAOPBufAdv:(id)adv
 {
-  v3 = a3;
+  advCopy = adv;
   if (dword_100B50FA0 <= 40 && (dword_100B50FA0 != -1 || _LogCategory_Initialize()))
   {
-    [v3 count];
+    [advCopy count];
     LogPrintF_safe();
   }
 
@@ -4754,7 +4754,7 @@ LABEL_61:
   v6[1] = 3221225472;
   v6[2] = sub_1001383C4;
   v6[3] = &unk_100ADF820;
-  v5 = v3;
+  v5 = advCopy;
   v7 = v5;
   sub_10000CA94(v4, v6);
 }

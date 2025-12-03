@@ -1,14 +1,14 @@
 @interface CATBlockCancellable
-- (CATBlockCancellable)initWithCancellables:(id)a3;
-- (CATBlockCancellable)initWithCancellationBlock:(id)a3;
+- (CATBlockCancellable)initWithCancellables:(id)cancellables;
+- (CATBlockCancellable)initWithCancellationBlock:(id)block;
 - (void)cancel;
 @end
 
 @implementation CATBlockCancellable
 
-- (CATBlockCancellable)initWithCancellables:(id)a3
+- (CATBlockCancellable)initWithCancellables:(id)cancellables
 {
-  v4 = [a3 copy];
+  v4 = [cancellables copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__CATBlockCancellable_initWithCancellables___block_invoke;
@@ -20,15 +20,15 @@
   return v6;
 }
 
-- (CATBlockCancellable)initWithCancellationBlock:(id)a3
+- (CATBlockCancellable)initWithCancellationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CATBlockCancellable;
   v5 = [(CATBlockCancellable *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D2F510](v4);
+    v6 = MEMORY[0x245D2F510](blockCopy);
     cancellationBlock = v5->_cancellationBlock;
     v5->_cancellationBlock = v6;
   }
@@ -38,13 +38,13 @@
 
 - (void)cancel
 {
-  v3 = [(CATBlockCancellable *)self cancellationBlock];
+  cancellationBlock = [(CATBlockCancellable *)self cancellationBlock];
 
-  if (v3)
+  if (cancellationBlock)
   {
-    v4 = [(CATBlockCancellable *)self cancellationBlock];
+    cancellationBlock2 = [(CATBlockCancellable *)self cancellationBlock];
     [(CATBlockCancellable *)self setCancellationBlock:0];
-    v4[2]();
+    cancellationBlock2[2]();
   }
 }
 

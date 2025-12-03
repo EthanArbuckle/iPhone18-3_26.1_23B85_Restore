@@ -1,6 +1,6 @@
 @interface MCMXPCMessageWithContainerClassBase
 - (MCMContainerConfiguration)containerConfig;
-- (MCMXPCMessageWithContainerClassBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageWithContainerClassBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (unsigned)disposition;
 @end
 
@@ -11,15 +11,15 @@
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMXPCMessageWithContainerClassBase;
-  v3 = [(MCMXPCMessageBase *)&v7 disposition];
-  if (v3 == 1)
+  disposition = [(MCMXPCMessageBase *)&v7 disposition];
+  if (disposition == 1)
   {
-    v4 = [(MCMXPCMessageWithContainerClassBase *)self containerConfig];
-    v3 = [v4 disposition];
+    containerConfig = [(MCMXPCMessageWithContainerClassBase *)self containerConfig];
+    disposition = [containerConfig disposition];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return disposition;
 }
 
 - (MCMContainerConfiguration)containerConfig
@@ -30,22 +30,22 @@
   return result;
 }
 
-- (MCMXPCMessageWithContainerClassBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageWithContainerClassBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = MCMXPCMessageWithContainerClassBase;
-  v9 = [(MCMXPCMessageBase *)&v21 initWithXPCObject:v8 context:a4 error:a5];
+  v9 = [(MCMXPCMessageBase *)&v21 initWithXPCObject:objectCopy context:context error:error];
   if (v9)
   {
     v10 = v9;
-    xpc_dictionary_get_uint64(v8, "ContainerClass");
+    xpc_dictionary_get_uint64(objectCopy, "ContainerClass");
     v11 = container_class_normalized();
-    v12 = [(MCMXPCMessageBase *)v10 context];
-    v13 = [v12 globalConfiguration];
-    v14 = [v13 staticConfig];
-    v15 = [v14 configForContainerClass:v11];
+    context = [(MCMXPCMessageBase *)v10 context];
+    globalConfiguration = [context globalConfiguration];
+    staticConfig = [globalConfiguration staticConfig];
+    v15 = [staticConfig configForContainerClass:v11];
     containerConfig = v10->_containerConfig;
     v10->_containerConfig = v15;
 
@@ -72,9 +72,9 @@
   }
 
   v10 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = v18;
+    *error = v18;
   }
 
 LABEL_10:

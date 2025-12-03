@@ -1,31 +1,31 @@
 @interface TSTStrokeExporter
-- (TSTStrokeExporter)initWithDefaultStrokeProvider:(id)a3 customStrokeProvider:(id)a4 tableInfo:(id)a5;
-- (id)p_strokeExportCacheForColumnBefore:(unsigned __int16)a3 columnAfter:(unsigned __int16)a4;
-- (id)p_strokeExportCacheForGridColumn:(unsigned int)a3;
-- (id)p_strokeExportCacheForGridRow:(unsigned int)a3;
-- (id)p_strokeExportCacheForRowAbove:(unsigned int)a3 rowBelow:(unsigned int)a4;
-- (id)strokeLayerForColumn:(unsigned int)a3;
-- (id)strokeLayerForRow:(unsigned int)a3;
+- (TSTStrokeExporter)initWithDefaultStrokeProvider:(id)provider customStrokeProvider:(id)strokeProvider tableInfo:(id)info;
+- (id)p_strokeExportCacheForColumnBefore:(unsigned __int16)before columnAfter:(unsigned __int16)after;
+- (id)p_strokeExportCacheForGridColumn:(unsigned int)column;
+- (id)p_strokeExportCacheForGridRow:(unsigned int)row;
+- (id)p_strokeExportCacheForRowAbove:(unsigned int)above rowBelow:(unsigned int)below;
+- (id)strokeLayerForColumn:(unsigned int)column;
+- (id)strokeLayerForRow:(unsigned int)row;
 - (void)p_resolveStrokes;
-- (void)strokesForCellID:(TSUCellCoord)a3 top:(id *)a4 left:(id *)a5 bottom:(id *)a6 right:(id *)a7;
+- (void)strokesForCellID:(TSUCellCoord)d top:(id *)top left:(id *)left bottom:(id *)bottom right:(id *)right;
 @end
 
 @implementation TSTStrokeExporter
 
-- (TSTStrokeExporter)initWithDefaultStrokeProvider:(id)a3 customStrokeProvider:(id)a4 tableInfo:(id)a5
+- (TSTStrokeExporter)initWithDefaultStrokeProvider:(id)provider customStrokeProvider:(id)strokeProvider tableInfo:(id)info
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  strokeProviderCopy = strokeProvider;
+  infoCopy = info;
   v47.receiver = self;
   v47.super_class = TSTStrokeExporter;
   v12 = [(TSTStrokeExporter *)&v47 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_defaultStrokeProvider, a3);
-    objc_storeStrong(&v13->_customStrokeProvider, a4);
-    objc_storeStrong(&v13->_tableInfo, a5);
+    objc_storeStrong(&v12->_defaultStrokeProvider, provider);
+    objc_storeStrong(&v13->_customStrokeProvider, strokeProvider);
+    objc_storeStrong(&v13->_tableInfo, info);
     v18 = objc_msgSend_strongObjectsPointerArray(MEMORY[0x277CCAC18], v14, v15, v16, v17);
     topRowStrokes = v13->_topRowStrokes;
     v13->_topRowStrokes = v18;
@@ -192,56 +192,56 @@ LABEL_18:
   }
 }
 
-- (void)strokesForCellID:(TSUCellCoord)a3 top:(id *)a4 left:(id *)a5 bottom:(id *)a6 right:(id *)a7
+- (void)strokesForCellID:(TSUCellCoord)d top:(id *)top left:(id *)left bottom:(id *)bottom right:(id *)right
 {
-  column = a3.column;
-  if (a4)
+  column = d.column;
+  if (top)
   {
-    v26 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, *&a3, a4, a5);
-    *a4 = objc_msgSend_strokeAtIndex_(v26, v14, column, v15, v16);
+    v26 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, *&d, top, left);
+    *top = objc_msgSend_strokeAtIndex_(v26, v14, column, v15, v16);
   }
 
-  if (a6)
+  if (bottom)
   {
-    v27 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, a3.row + 1, a4, a5);
-    *a6 = objc_msgSend_strokeAtIndex_(v27, v17, column, v18, v19);
+    v27 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, d.row + 1, top, left);
+    *bottom = objc_msgSend_strokeAtIndex_(v27, v17, column, v18, v19);
   }
 
-  if (a5)
+  if (left)
   {
-    v28 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, column, a4, a5);
-    *a5 = objc_msgSend_strokeAtIndex_(v28, v20, *&a3, v21, v22);
+    v28 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, column, top, left);
+    *left = objc_msgSend_strokeAtIndex_(v28, v20, *&d, v21, v22);
   }
 
-  if (a7)
+  if (right)
   {
-    v29 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, column + 1, a4, a5);
-    *a7 = objc_msgSend_strokeAtIndex_(v29, v23, *&a3, v24, v25);
+    v29 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, column + 1, top, left);
+    *right = objc_msgSend_strokeAtIndex_(v29, v23, *&d, v24, v25);
   }
 }
 
-- (id)strokeLayerForColumn:(unsigned int)a3
+- (id)strokeLayerForColumn:(unsigned int)column
 {
-  v5 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, *&a3, v3, v4);
+  v5 = objc_msgSend_p_strokeExportCacheForGridColumn_(self, a2, *&column, v3, v4);
   v10 = objc_msgSend_mergedStrokes(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-- (id)strokeLayerForRow:(unsigned int)a3
+- (id)strokeLayerForRow:(unsigned int)row
 {
-  v5 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, *&a3, v3, v4);
+  v5 = objc_msgSend_p_strokeExportCacheForGridRow_(self, a2, *&row, v3, v4);
   v10 = objc_msgSend_mergedStrokes(v5, v6, v7, v8, v9);
 
   return v10;
 }
 
-- (id)p_strokeExportCacheForGridColumn:(unsigned int)a3
+- (id)p_strokeExportCacheForGridColumn:(unsigned int)column
 {
-  v10 = objc_msgSend_indexOfVisibleColumnAfterAndIncludingColumnAtIndex_(self->_tableInfo, a2, a3, v3, v4);
-  if (a3)
+  v10 = objc_msgSend_indexOfVisibleColumnAfterAndIncludingColumnAtIndex_(self->_tableInfo, a2, column, v3, v4);
+  if (column)
   {
-    v11 = objc_msgSend_indexOfVisibleColumnBeforeColumnAtIndex_(self->_tableInfo, v7, a3, v8, v9);
+    v11 = objc_msgSend_indexOfVisibleColumnBeforeColumnAtIndex_(self->_tableInfo, v7, column, v8, v9);
   }
 
   else
@@ -252,10 +252,10 @@ LABEL_18:
   return MEMORY[0x2821F9670](self, sel_p_strokeExportCacheForColumnBefore_columnAfter_, v11, v10, v9);
 }
 
-- (id)p_strokeExportCacheForGridRow:(unsigned int)a3
+- (id)p_strokeExportCacheForGridRow:(unsigned int)row
 {
-  v5 = *&a3;
-  v10 = objc_msgSend_indexOfVisibleRowAfterAndIncludingRowAtIndex_(self->_tableInfo, a2, *&a3, v3, v4);
+  v5 = *&row;
+  v10 = objc_msgSend_indexOfVisibleRowAfterAndIncludingRowAtIndex_(self->_tableInfo, a2, *&row, v3, v4);
   if (v5)
   {
     v11 = objc_msgSend_indexOfVisibleRowBeforeRowAtIndex_(self->_tableInfo, v7, v5, v8, v9);
@@ -269,25 +269,25 @@ LABEL_18:
   return MEMORY[0x2821F9670](self, sel_p_strokeExportCacheForRowAbove_rowBelow_, v11, v10, v9);
 }
 
-- (id)p_strokeExportCacheForColumnBefore:(unsigned __int16)a3 columnAfter:(unsigned __int16)a4
+- (id)p_strokeExportCacheForColumnBefore:(unsigned __int16)before columnAfter:(unsigned __int16)after
 {
-  v5 = a4;
-  v6 = a3;
-  if (a3 != 0x7FFF && a4 <= a3 && a4 != 0x7FFF)
+  afterCopy = after;
+  beforeCopy = before;
+  if (before != 0x7FFF && after <= before && after != 0x7FFF)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeExporter p_strokeExportCacheForColumnBefore:columnAfter:]", a4, v4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeExporter p_strokeExportCacheForColumnBefore:columnAfter:]", after, v4);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeExporter.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 199, 0, "looking for two visible columns around the gridline");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  v19 = v6 | (v5 << 16);
-  v24 = objc_msgSend_objectForKey_(self->_columnStrokeExportCache, a2, v19, a4, v4);
+  v19 = beforeCopy | (afterCopy << 16);
+  v24 = objc_msgSend_objectForKey_(self->_columnStrokeExportCache, a2, v19, after, v4);
   if (!v24)
   {
-    if (v5 == 0x7FFF)
+    if (afterCopy == 0x7FFF)
     {
       v25 = 0;
     }
@@ -295,13 +295,13 @@ LABEL_18:
     else
     {
       v26 = objc_msgSend_leftColumnStrokes(self, v20, v21, v22, v23);
-      v30 = objc_msgSend_pointerAtIndex_(v26, v27, v5, v28, v29);
+      v30 = objc_msgSend_pointerAtIndex_(v26, v27, afterCopy, v28, v29);
 
       objc_msgSend_lockForRead(v30, v31, v32, v33, v34);
       v25 = v30;
     }
 
-    if (v6 == 0x7FFF)
+    if (beforeCopy == 0x7FFF)
     {
       v35 = 0;
     }
@@ -309,7 +309,7 @@ LABEL_18:
     else
     {
       v36 = objc_msgSend_rightColumnStrokes(self, v20, v21, v22, v23);
-      v35 = objc_msgSend_pointerAtIndex_(v36, v37, v6 + 1, v38, v39);
+      v35 = objc_msgSend_pointerAtIndex_(v36, v37, beforeCopy + 1, v38, v39);
 
       objc_msgSend_lockForRead(v35, v40, v41, v42, v43);
     }
@@ -334,23 +334,23 @@ LABEL_18:
   return v24;
 }
 
-- (id)p_strokeExportCacheForRowAbove:(unsigned int)a3 rowBelow:(unsigned int)a4
+- (id)p_strokeExportCacheForRowAbove:(unsigned int)above rowBelow:(unsigned int)below
 {
-  if (a3 != 0x7FFFFFFF && a4 <= a3 && a4 != 0x7FFFFFFF)
+  if (above != 0x7FFFFFFF && below <= above && below != 0x7FFFFFFF)
   {
     v10 = MEMORY[0x277D81150];
-    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeExporter p_strokeExportCacheForRowAbove:rowBelow:]", *&a4, v4);
+    v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTStrokeExporter p_strokeExportCacheForRowAbove:rowBelow:]", *&below, v4);
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTStrokeExporter.mm", v13, v14);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v16, v11, v15, 236, 0, "looking for two visible rows around the gridline");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v21 = a3 | (a4 << 16);
-  v26 = objc_msgSend_objectForKey_(self->_rowStrokeExportCache, a2, v21, *&a4, v4);
+  v21 = above | (below << 16);
+  v26 = objc_msgSend_objectForKey_(self->_rowStrokeExportCache, a2, v21, *&below, v4);
   if (!v26)
   {
-    if (a4 == 0x7FFFFFFF)
+    if (below == 0x7FFFFFFF)
     {
       v27 = 0;
     }
@@ -358,13 +358,13 @@ LABEL_18:
     else
     {
       v28 = objc_msgSend_topRowStrokes(self, v22, v23, v24, v25);
-      v32 = objc_msgSend_pointerAtIndex_(v28, v29, a4, v30, v31);
+      v32 = objc_msgSend_pointerAtIndex_(v28, v29, below, v30, v31);
 
       objc_msgSend_lockForRead(v32, v33, v34, v35, v36);
       v27 = v32;
     }
 
-    if (a3 == 0x7FFFFFFF)
+    if (above == 0x7FFFFFFF)
     {
       v37 = 0;
     }
@@ -372,7 +372,7 @@ LABEL_18:
     else
     {
       v38 = objc_msgSend_bottomRowStrokes(self, v22, v23, v24, v25);
-      v37 = objc_msgSend_pointerAtIndex_(v38, v39, a3 + 1, v40, v41);
+      v37 = objc_msgSend_pointerAtIndex_(v38, v39, above + 1, v40, v41);
 
       objc_msgSend_lockForRead(v37, v42, v43, v44, v45);
     }

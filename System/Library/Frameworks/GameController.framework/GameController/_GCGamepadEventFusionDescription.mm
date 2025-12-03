@@ -1,24 +1,24 @@
 @interface _GCGamepadEventFusionDescription
-- (_GCGamepadEventFusionDescription)initWithCoder:(id)a3;
-- (_GCGamepadEventFusionDescription)initWithConfiguration:(id)a3 sources:(id)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_GCGamepadEventFusionDescription)initWithCoder:(id)coder;
+- (_GCGamepadEventFusionDescription)initWithConfiguration:(id)configuration sources:(id)sources;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCGamepadEventFusionDescription
 
-- (_GCGamepadEventFusionDescription)initWithConfiguration:(id)a3 sources:(id)a4
+- (_GCGamepadEventFusionDescription)initWithConfiguration:(id)configuration sources:(id)sources
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  sourcesCopy = sources;
   v14.receiver = self;
   v14.super_class = _GCGamepadEventFusionDescription;
   v9 = [(_GCGamepadEventFusionDescription *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_config, configuration);
+    v11 = [sourcesCopy copy];
     sourcesDescription = v10->_sourcesDescription;
     v10->_sourcesDescription = v11;
   }
@@ -26,21 +26,21 @@
   return v10;
 }
 
-- (_GCGamepadEventFusionDescription)initWithCoder:(id)a3
+- (_GCGamepadEventFusionDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _GCGamepadEventFusionDescription;
   v5 = [(_GCGamepadEventFusionDescription *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"config"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"config"];
     config = v5->_config;
     v5->_config = v6;
 
     v8 = _GCGamepadEventSourceDescription_Classes();
     v9 = [v8 setByAddingObject:objc_opt_class()];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"sources"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"sources"];
     sourcesDescription = v5->_sourcesDescription;
     v5->_sourcesDescription = v10;
   }
@@ -48,18 +48,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourcesDescription = self->_sourcesDescription;
-  v5 = a3;
-  [v5 encodeObject:sourcesDescription forKey:@"sources"];
-  [v5 encodeObject:self->_config forKey:@"config"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourcesDescription forKey:@"sources"];
+  [coderCopy encodeObject:self->_config forKey:@"config"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   materializedObject = self->_materializedObject;
   if (!materializedObject)
   {
@@ -83,7 +83,7 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) materializeWithContext:{v4, v19}];
+          v13 = [*(*(&v19 + 1) + 8 * i) materializeWithContext:{contextCopy, v19}];
           if (!v13)
           {
 

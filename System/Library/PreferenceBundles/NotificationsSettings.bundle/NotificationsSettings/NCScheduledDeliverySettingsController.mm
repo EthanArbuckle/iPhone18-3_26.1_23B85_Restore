@@ -1,47 +1,47 @@
 @interface NCScheduledDeliverySettingsController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (NCScheduledDeliverySettingsController)init;
 - (NCScheduledDeliverySettingsControllerDelegate)delegate;
 - (id)_activeSectionInfos;
-- (id)_appListSpecifiersForGroupSpecifier:(id)a3;
+- (id)_appListSpecifiersForGroupSpecifier:(id)specifier;
 - (id)_appSelectionListSpecifiers;
-- (id)_digestTimeSpecifierAtIndex:(unint64_t)a3 forScheduleTime:(id)a4;
-- (id)_frequencyOrderedSectionInfos:(id)a3 forRankedDigestSetupResponses:(id)a4;
+- (id)_digestTimeSpecifierAtIndex:(unint64_t)index forScheduleTime:(id)time;
+- (id)_frequencyOrderedSectionInfos:(id)infos forRankedDigestSetupResponses:(id)responses;
 - (id)_globalScheduledDeliveryTimes;
 - (id)_orderedGlobalScheduledDeliveryTimes;
 - (id)_scheduleDeliveryTimesSpecifiers;
-- (id)_scheduleTimeLabelForIndex:(unint64_t)a3;
+- (id)_scheduleTimeLabelForIndex:(unint64_t)index;
 - (id)_scheduledDeliverySwitchSpecifiers;
 - (id)_showNextSummarySwitchSpecifiers;
 - (id)_specifierForAddNewScheduledTime;
-- (id)_updatesForSpecifiers:(id)a3 withGlobalScheduledDeliverySetting:(int64_t)a4 animated:(BOOL)a5;
-- (id)appScheduledDeliveryEnabled:(id)a3;
-- (id)datePickerForSpecifier:(id)a3;
-- (id)globalScheduledDeliverySetting:(id)a3;
-- (id)globalShowNextSummarySetting:(id)a3;
-- (id)orderType:(id)a3;
+- (id)_updatesForSpecifiers:(id)specifiers withGlobalScheduledDeliverySetting:(int64_t)setting animated:(BOOL)animated;
+- (id)appScheduledDeliveryEnabled:(id)enabled;
+- (id)datePickerForSpecifier:(id)specifier;
+- (id)globalScheduledDeliverySetting:(id)setting;
+- (id)globalShowNextSummarySetting:(id)setting;
+- (id)orderType:(id)type;
 - (id)specifiers;
-- (int64_t)_compareScheduleTime:(id)a3 withScheduleTime:(id)a4;
+- (int64_t)_compareScheduleTime:(id)time withScheduleTime:(id)scheduleTime;
 - (int64_t)_globalScheduledDeliverySetting;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (unint64_t)_numberOfNotificationsForSectionIdentifier:(id)a3;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (unint64_t)_numberOfNotificationsForSectionIdentifier:(id)identifier;
 - (unint64_t)_sectionForScheduleTimes;
 - (void)_addDefaultScheduledDeliveryTimes;
 - (void)_addNewScheduledTime;
 - (void)_loadSortingOrderByNotificationsReceivedIfNecessary;
 - (void)_populateDigestTimeSpecifiers;
-- (void)_removeScheduledTimeAtIndexPath:(id)a3;
-- (void)_replaceScheduleDigestTime:(id)a3 withNewDigestTime:(id)a4;
-- (void)_setGlobalScheduledDeliveryEnabled:(BOOL)a3;
-- (void)_setGlobalScheduledDeliveryTimes:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)digestOnboardingNavigationController:(id)a3 didScheduleDigestDeliveryTimes:(id)a4 forAppBundleIdentifiers:(id)a5;
-- (void)setAppScheduledDeliveryEnabled:(id)a3 specifier:(id)a4;
-- (void)setGlobalScheduledDeliverySetting:(id)a3 specifier:(id)a4;
-- (void)setGlobalShowNextSummarySetting:(id)a3 specifier:(id)a4;
-- (void)setOrderType:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_removeScheduledTimeAtIndexPath:(id)path;
+- (void)_replaceScheduleDigestTime:(id)time withNewDigestTime:(id)digestTime;
+- (void)_setGlobalScheduledDeliveryEnabled:(BOOL)enabled;
+- (void)_setGlobalScheduledDeliveryTimes:(id)times;
+- (void)datePickerChanged:(id)changed;
+- (void)digestOnboardingNavigationController:(id)controller didScheduleDigestDeliveryTimes:(id)times forAppBundleIdentifiers:(id)identifiers;
+- (void)setAppScheduledDeliveryEnabled:(id)enabled specifier:(id)specifier;
+- (void)setGlobalScheduledDeliverySetting:(id)setting specifier:(id)specifier;
+- (void)setGlobalShowNextSummarySetting:(id)setting specifier:(id)specifier;
+- (void)setOrderType:(id)type specifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -79,19 +79,19 @@
 
 - (NCScheduledDeliverySettingsControllerDelegate)delegate
 {
-  v2 = [(NCScheduledDeliverySettingsController *)self specifier];
-  v3 = [v2 propertyForKey:kNotificationsSettingsDetailControllerDelegate];
+  specifier = [(NCScheduledDeliverySettingsController *)self specifier];
+  v3 = [specifier propertyForKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NCScheduledDeliverySettingsController;
-  [(NCScheduledDeliverySettingsController *)&v5 viewDidAppear:a3];
-  v4 = [(NCScheduledDeliverySettingsController *)self specifier];
-  [BulletinBoardController emitNavigationEventForSpecifier:v4 viewController:self];
+  [(NCScheduledDeliverySettingsController *)&v5 viewDidAppear:appear];
+  specifier = [(NCScheduledDeliverySettingsController *)self specifier];
+  [BulletinBoardController emitNavigationEventForSpecifier:specifier viewController:self];
 }
 
 - (id)specifiers
@@ -100,20 +100,20 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(NCScheduledDeliverySettingsController *)self _orderedGlobalScheduledDeliveryTimes];
-    v6 = [NSMutableArray arrayWithArray:v5];
+    _orderedGlobalScheduledDeliveryTimes = [(NCScheduledDeliverySettingsController *)self _orderedGlobalScheduledDeliveryTimes];
+    v6 = [NSMutableArray arrayWithArray:_orderedGlobalScheduledDeliveryTimes];
     orderedScheduledDeliveryTimes = self->_orderedScheduledDeliveryTimes;
     self->_orderedScheduledDeliveryTimes = v6;
 
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(NCScheduledDeliverySettingsController *)self _scheduledDeliverySwitchSpecifiers];
-    [v8 addObjectsFromArray:v9];
+    _scheduledDeliverySwitchSpecifiers = [(NCScheduledDeliverySettingsController *)self _scheduledDeliverySwitchSpecifiers];
+    [v8 addObjectsFromArray:_scheduledDeliverySwitchSpecifiers];
 
-    v10 = [(NCScheduledDeliverySettingsController *)self _globalScheduledDeliverySetting];
-    self->_globalScheduledDeliveryEnabled = v10 == 2;
-    v11 = [(NCScheduledDeliverySettingsController *)self _updatesForSpecifiers:v8 withGlobalScheduledDeliverySetting:v10 animated:0];
-    v12 = [v11 currentSpecifiers];
-    [v8 setArray:v12];
+    _globalScheduledDeliverySetting = [(NCScheduledDeliverySettingsController *)self _globalScheduledDeliverySetting];
+    self->_globalScheduledDeliveryEnabled = _globalScheduledDeliverySetting == 2;
+    v11 = [(NCScheduledDeliverySettingsController *)self _updatesForSpecifiers:v8 withGlobalScheduledDeliverySetting:_globalScheduledDeliverySetting animated:0];
+    currentSpecifiers = [v11 currentSpecifiers];
+    [v8 setArray:currentSpecifiers];
 
     v13 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v8;
@@ -124,12 +124,12 @@
   return v4;
 }
 
-- (id)_updatesForSpecifiers:(id)a3 withGlobalScheduledDeliverySetting:(int64_t)a4 animated:(BOOL)a5
+- (id)_updatesForSpecifiers:(id)specifiers withGlobalScheduledDeliverySetting:(int64_t)setting animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [PSSpecifierUpdates updatesWithSpecifiers:v8];
-  if (a4 == 2)
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
+  v9 = [PSSpecifierUpdates updatesWithSpecifiers:specifiersCopy];
+  if (setting == 2)
   {
     if (![(NSMutableArray *)self->_orderedScheduledDeliveryTimes count])
     {
@@ -137,29 +137,29 @@
     }
 
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [(NCScheduledDeliverySettingsController *)self _scheduleDeliveryTimesSpecifiers];
-    [v10 addObjectsFromArray:v11];
+    _scheduleDeliveryTimesSpecifiers = [(NCScheduledDeliverySettingsController *)self _scheduleDeliveryTimesSpecifiers];
+    [v10 addObjectsFromArray:_scheduleDeliveryTimesSpecifiers];
 
-    v12 = [(NCScheduledDeliverySettingsController *)self _showNextSummarySwitchSpecifiers];
-    [v10 addObjectsFromArray:v12];
+    _showNextSummarySwitchSpecifiers = [(NCScheduledDeliverySettingsController *)self _showNextSummarySwitchSpecifiers];
+    [v10 addObjectsFromArray:_showNextSummarySwitchSpecifiers];
 
-    v13 = [(NCScheduledDeliverySettingsController *)self _appSelectionListSpecifiers];
-    [v10 addObjectsFromArray:v13];
+    _appSelectionListSpecifiers = [(NCScheduledDeliverySettingsController *)self _appSelectionListSpecifiers];
+    [v10 addObjectsFromArray:_appSelectionListSpecifiers];
 
-    [v9 insertContiguousSpecifiers:v10 atIndex:{objc_msgSend(v8, "count")}];
+    [v9 insertContiguousSpecifiers:v10 atIndex:{objc_msgSend(specifiersCopy, "count")}];
   }
 
   else
   {
-    v14 = [v8 indexOfSpecifierWithID:@"SCHEDULE_DELIVERY_TIMES_GROUP_ID"];
+    v14 = [specifiersCopy indexOfSpecifierWithID:@"SCHEDULE_DELIVERY_TIMES_GROUP_ID"];
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v9 removeSpecifiersInRange:{v14, objc_msgSend(v8, "count") - v14}];
+      [v9 removeSpecifiersInRange:{v14, objc_msgSend(specifiersCopy, "count") - v14}];
     }
   }
 
-  v15 = [v9 context];
-  [v15 setAnimated:v5];
+  context = [v9 context];
+  [context setAnimated:animatedCopy];
 
   return v9;
 }
@@ -188,24 +188,24 @@
 
   [v6 setIdentifier:@"SCHEDULE_DELIVERY_TIMES_GROUP_ID"];
   [v3 addObject:v6];
-  v7 = [(NCScheduledDeliverySettingsController *)self orderedDigestTimeSpecifiers];
-  if (v7)
+  orderedDigestTimeSpecifiers = [(NCScheduledDeliverySettingsController *)self orderedDigestTimeSpecifiers];
+  if (orderedDigestTimeSpecifiers)
   {
-    [v3 addObjectsFromArray:v7];
-    if ([v7 count] > 0xB)
+    [v3 addObjectsFromArray:orderedDigestTimeSpecifiers];
+    if ([orderedDigestTimeSpecifiers count] > 0xB)
     {
       goto LABEL_6;
     }
 
-    v8 = [(NCScheduledDeliverySettingsController *)self _specifierForAddNewScheduledTime];
-    [v3 addObject:v8];
+    _specifierForAddNewScheduledTime = [(NCScheduledDeliverySettingsController *)self _specifierForAddNewScheduledTime];
+    [v3 addObject:_specifierForAddNewScheduledTime];
   }
 
   else
   {
-    v8 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
-    [v8 setIdentifier:@"SCHEDULE_DELIVERY_TIMES_LOAD_SPINNER_ID"];
-    [v3 addObject:v8];
+    _specifierForAddNewScheduledTime = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
+    [_specifierForAddNewScheduledTime setIdentifier:@"SCHEDULE_DELIVERY_TIMES_LOAD_SPINNER_ID"];
+    [v3 addObject:_specifierForAddNewScheduledTime];
     [(NCScheduledDeliverySettingsController *)self _populateDigestTimeSpecifiers];
   }
 
@@ -258,16 +258,16 @@ LABEL_6:
   return v3;
 }
 
-- (id)_appListSpecifiersForGroupSpecifier:(id)a3
+- (id)_appListSpecifiersForGroupSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v47 = objc_alloc_init(NSMutableArray);
-  v5 = [(NCScheduledDeliverySettingsController *)self _activeSectionInfos];
-  v6 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
-  v43 = self;
-  v36 = v5;
-  v37 = v4;
-  if (!v6)
+  _activeSectionInfos = [(NCScheduledDeliverySettingsController *)self _activeSectionInfos];
+  rankedDigestSetupResponses = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
+  selfCopy = self;
+  v36 = _activeSectionInfos;
+  v37 = specifierCopy;
+  if (!rankedDigestSetupResponses)
   {
     if ([(NCScheduledDeliverySettingsController *)self isOrderedByNumberOfNotifications])
     {
@@ -276,9 +276,9 @@ LABEL_11:
       {
         v12 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
         v13 = [v12 localizedStringForKey:@"SCHEDULED_DELIVERY_NO_DATA" value:&stru_4E3F0 table:@"NotificationsSettings"];
-        [v4 setProperty:v13 forKey:PSFooterTextGroupKey];
+        [specifierCopy setProperty:v13 forKey:PSFooterTextGroupKey];
 
-        [v4 setProperty:&off_513A8 forKey:PSFooterAlignmentGroupKey];
+        [specifierCopy setProperty:&off_513A8 forKey:PSFooterAlignmentGroupKey];
       }
 
       else
@@ -289,20 +289,20 @@ LABEL_11:
 
       v46 = 0;
       v11 = 0;
-      v9 = self;
+      selfCopy4 = self;
       goto LABEL_15;
     }
 
     v46 = 0;
 LABEL_10:
-    v9 = self;
-    v11 = [(NCScheduledDeliverySettingsController *)self _alphabeticallyOrderedSectionInfos:v5];
+    selfCopy4 = self;
+    v11 = [(NCScheduledDeliverySettingsController *)self _alphabeticallyOrderedSectionInfos:_activeSectionInfos];
     goto LABEL_15;
   }
 
-  v7 = v6;
-  v8 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
-  if ([v8 count])
+  v7 = rankedDigestSetupResponses;
+  rankedDigestSetupResponses2 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
+  if ([rankedDigestSetupResponses2 count])
   {
     v46 = [(NCScheduledDeliverySettingsController *)self maximumAverageNumberOfNotifications]!= 0;
   }
@@ -322,9 +322,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v9 = self;
-  v10 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
-  v11 = [(NCScheduledDeliverySettingsController *)self _frequencyOrderedSectionInfos:v5 forRankedDigestSetupResponses:v10];
+  selfCopy4 = self;
+  rankedDigestSetupResponses3 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
+  v11 = [(NCScheduledDeliverySettingsController *)self _frequencyOrderedSectionInfos:_activeSectionInfos forRankedDigestSetupResponses:rankedDigestSetupResponses3];
 
   v46 = 1;
 LABEL_15:
@@ -357,31 +357,31 @@ LABEL_15:
 
       v16 = *(*(&v49 + 1) + 8 * v15);
       v17 = BBSettingsDisplayNameForBBSection(v16);
-      v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:v9 set:"setAppScheduledDeliveryEnabled:specifier:" get:"appScheduledDeliveryEnabled:" detail:0 cell:6 edit:0];
+      v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:selfCopy4 set:"setAppScheduledDeliveryEnabled:specifier:" get:"appScheduledDeliveryEnabled:" detail:0 cell:6 edit:0];
 
       [v18 setIdentifier:@"APP_SPECIFIER_ID"];
       [v18 setProperty:v16 forKey:@"BBSECTION_INFO_KEY"];
-      v19 = [v16 icon];
-      v20 = [v19 _bestVariantForFormat:1];
+      icon = [v16 icon];
+      v20 = [icon _bestVariantForFormat:1];
 
-      v21 = [v20 applicationIdentifier];
+      applicationIdentifier = [v20 applicationIdentifier];
       v22 = [v20 uti];
-      v23 = [v16 nc_settingsIconImage];
-      if (v23)
+      nc_settingsIconImage = [v16 nc_settingsIconImage];
+      if (nc_settingsIconImage)
       {
         v24 = v18;
-        v25 = v23;
+        v25 = nc_settingsIconImage;
         v26 = v44;
 LABEL_26:
         [v24 setProperty:v25 forKey:v26];
         goto LABEL_27;
       }
 
-      if ([v21 length])
+      if ([applicationIdentifier length])
       {
         [v18 setProperty:&__kCFBooleanTrue forKey:v40];
         v24 = v18;
-        v25 = v21;
+        v25 = applicationIdentifier;
         v26 = v39;
         goto LABEL_26;
       }
@@ -396,24 +396,24 @@ LABEL_26:
       }
 
       [v18 setProperty:&__kCFBooleanTrue forKey:v40];
-      v32 = [v16 sectionID];
-      v33 = [v32 copy];
+      sectionID = [v16 sectionID];
+      v33 = [sectionID copy];
       [v18 setProperty:v33 forKey:v39];
 
-      v9 = v43;
+      selfCopy4 = selfCopy;
 LABEL_27:
       if (v46)
       {
         [v18 setProperty:objc_opt_class() forKey:v41];
-        v27 = [v16 sectionID];
-        v28 = [(NCScheduledDeliverySettingsController *)v9 _numberOfNotificationsForSectionIdentifier:v27];
+        sectionID2 = [v16 sectionID];
+        v28 = [(NCScheduledDeliverySettingsController *)selfCopy4 _numberOfNotificationsForSectionIdentifier:sectionID2];
 
         v29 = v28;
-        v9 = v43;
+        selfCopy4 = selfCopy;
         v30 = [NSNumber numberWithUnsignedInteger:v29];
         [v18 setProperty:v30 forKey:@"SCHEDULED_DELIVERY_APP_COUNT_KEY"];
 
-        v31 = [NSNumber numberWithUnsignedInteger:[(NCScheduledDeliverySettingsController *)v43 maximumAverageNumberOfNotifications]];
+        v31 = [NSNumber numberWithUnsignedInteger:[(NCScheduledDeliverySettingsController *)selfCopy maximumAverageNumberOfNotifications]];
         [v18 setProperty:v31 forKey:@"SCHEDULED_DELIVERY_MAX_COUNT_KEY"];
       }
 
@@ -460,10 +460,10 @@ LABEL_33:
   }
 }
 
-- (id)_digestTimeSpecifierAtIndex:(unint64_t)a3 forScheduleTime:(id)a4
+- (id)_digestTimeSpecifierAtIndex:(unint64_t)index forScheduleTime:(id)time
 {
-  v6 = a4;
-  v7 = [(NCScheduledDeliverySettingsController *)self _scheduleTimeLabelForIndex:a3 + 1];
+  timeCopy = time;
+  v7 = [(NCScheduledDeliverySettingsController *)self _scheduleTimeLabelForIndex:index + 1];
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:3 edit:0];
   [v8 setIdentifier:v7];
   [v8 setProperty:&__kCFBooleanTrue forKey:PSDatePickerInlineKey];
@@ -472,7 +472,7 @@ LABEL_33:
   [v8 setProperty:v9 forKey:PSTableCellHeightKey];
 
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v8 setProperty:v6 forKey:@"SCHEDULE_TIME_KEY"];
+  [v8 setProperty:timeCopy forKey:@"SCHEDULE_TIME_KEY"];
 
   return v8;
 }
@@ -488,14 +488,14 @@ LABEL_33:
   return v4;
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v13 = a3;
-  v4 = [v13 calendar];
-  v5 = [v13 date];
-  v6 = [v4 components:96 fromDate:v5];
+  changedCopy = changed;
+  calendar = [changedCopy calendar];
+  date = [changedCopy date];
+  v6 = [calendar components:96 fromDate:date];
 
-  v7 = [(NSMapTable *)self->_datePickersToSpecifiersMapTable objectForKey:v13];
+  v7 = [(NSMapTable *)self->_datePickersToSpecifiersMapTable objectForKey:changedCopy];
   v8 = [(NSMutableArray *)self->_orderedDigestTimeSpecifiers indexOfObject:v7];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -506,9 +506,9 @@ LABEL_33:
       if ([(NSMutableArray *)self->_orderedScheduledDeliveryTimes containsObject:v6])
       {
         [v6 setMinute:1];
-        v11 = [v13 calendar];
-        v12 = [v11 dateFromComponents:v6];
-        [v13 setDate:v12];
+        calendar2 = [changedCopy calendar];
+        v12 = [calendar2 dateFromComponents:v6];
+        [changedCopy setDate:v12];
       }
 
       [v7 setProperty:v6 forKey:@"SCHEDULE_TIME_KEY"];
@@ -517,9 +517,9 @@ LABEL_33:
   }
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (!self->_datePickersToSpecifiersMapTable)
   {
     v5 = +[NSMapTable mapTableWithWeakToWeakObjects];
@@ -530,23 +530,23 @@ LABEL_33:
   v7 = objc_alloc_init(UIDatePicker);
   [v7 setDatePickerMode:0];
   [v7 setPreferredDatePickerStyle:3];
-  v8 = [v4 propertyForKey:@"SCHEDULE_TIME_KEY"];
-  v9 = [v7 calendar];
-  v10 = [v9 dateFromComponents:v8];
+  v8 = [specifierCopy propertyForKey:@"SCHEDULE_TIME_KEY"];
+  calendar = [v7 calendar];
+  v10 = [calendar dateFromComponents:v8];
   [v7 setDate:v10];
 
-  [(NSMapTable *)self->_datePickersToSpecifiersMapTable setObject:v4 forKey:v7];
+  [(NSMapTable *)self->_datePickersToSpecifiersMapTable setObject:specifierCopy forKey:v7];
 
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(NCScheduledDeliverySettingsController *)self isGlobalScheduledDeliveryEnabled])
   {
-    v6 = [v5 section];
-    v7 = v6 == [(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes];
+    section = [pathCopy section];
+    v7 = section == [(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes];
   }
 
   else
@@ -557,32 +557,32 @@ LABEL_33:
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v8 = a5;
-  if (v8)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (a4 == 1)
+    if (style == 1)
     {
-      [(NCScheduledDeliverySettingsController *)self _removeScheduledTimeAtIndexPath:v8];
+      [(NCScheduledDeliverySettingsController *)self _removeScheduledTimeAtIndexPath:pathCopy];
     }
 
-    else if (a4 == 2)
+    else if (style == 2)
     {
       [(NCScheduledDeliverySettingsController *)self _addNewScheduledTime];
     }
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(NCScheduledDeliverySettingsController *)self isGlobalScheduledDeliveryEnabled])
   {
-    v6 = [(NCScheduledDeliverySettingsController *)self specifierAtIndexPath:v5];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:@"SCHEDULED_DELIVERY_ADD_SUMMARY_ID"];
+    v6 = [(NCScheduledDeliverySettingsController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v6 identifier];
+    v8 = [identifier isEqualToString:@"SCHEDULED_DELIVERY_ADD_SUMMARY_ID"];
 
     if (v8)
     {
@@ -591,8 +591,8 @@ LABEL_33:
 
     else
     {
-      v10 = [v5 section];
-      v9 = v10 == -[NCScheduledDeliverySettingsController _sectionForScheduleTimes](self, "_sectionForScheduleTimes") && [v5 row] != 0;
+      section = [pathCopy section];
+      v9 = section == -[NCScheduledDeliverySettingsController _sectionForScheduleTimes](self, "_sectionForScheduleTimes") && [pathCopy row] != 0;
     }
   }
 
@@ -604,13 +604,13 @@ LABEL_33:
   return v9;
 }
 
-- (void)setGlobalScheduledDeliverySetting:(id)a3 specifier:(id)a4
+- (void)setGlobalScheduledDeliverySetting:(id)setting specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
+  specifierCopy = specifier;
+  bOOLValue = [setting BOOLValue];
   if ([(NCScheduledDeliverySettingsController *)self _globalScheduledDeliverySetting]== -1)
   {
-    if (v7)
+    if (bOOLValue)
     {
       v8 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v9 = [v8 localizedStringForKey:@"SCHEDULED_DELIVERY_ONBOARDING_DEFER_SETUP" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -621,18 +621,18 @@ LABEL_33:
       v11[2] = sub_42B8;
       v11[3] = &unk_4D0D8;
       v11[4] = self;
-      v12 = v6;
+      v12 = specifierCopy;
       [(NCScheduledDeliverySettingsController *)self presentViewController:v10 animated:1 completion:v11];
     }
   }
 
   else
   {
-    [(NCScheduledDeliverySettingsController *)self _setGlobalScheduledDeliveryEnabled:v7];
+    [(NCScheduledDeliverySettingsController *)self _setGlobalScheduledDeliveryEnabled:bOOLValue];
   }
 }
 
-- (id)globalScheduledDeliverySetting:(id)a3
+- (id)globalScheduledDeliverySetting:(id)setting
 {
   if ([(NCScheduledDeliverySettingsController *)self _globalScheduledDeliverySetting]== &dword_0 + 2)
   {
@@ -650,33 +650,33 @@ LABEL_33:
 - (int64_t)_globalScheduledDeliverySetting
 {
   v2 = +[NCSettingsGatewayController sharedInstance];
-  v3 = [v2 effectiveGlobalScheduledDeliverySetting];
+  effectiveGlobalScheduledDeliverySetting = [v2 effectiveGlobalScheduledDeliverySetting];
 
-  return v3;
+  return effectiveGlobalScheduledDeliverySetting;
 }
 
 - (id)_globalScheduledDeliveryTimes
 {
   v2 = +[NCSettingsGatewayController sharedInstance];
-  v3 = [v2 effectiveGlobalScheduledDeliveryTimes];
+  effectiveGlobalScheduledDeliveryTimes = [v2 effectiveGlobalScheduledDeliveryTimes];
 
-  return v3;
+  return effectiveGlobalScheduledDeliveryTimes;
 }
 
-- (void)_setGlobalScheduledDeliveryTimes:(id)a3
+- (void)_setGlobalScheduledDeliveryTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   v5 = +[NCSettingsGatewayController sharedInstance];
-  [v5 setEffectiveGlobalScheduledDeliveryTimes:v4];
+  [v5 setEffectiveGlobalScheduledDeliveryTimes:timesCopy];
 
-  v6 = [(NCScheduledDeliverySettingsController *)self delegate];
-  [v6 scheduledDeliverySettingsControllerDidChangeGlobalScheduledDeliverySettings:self];
+  delegate = [(NCScheduledDeliverySettingsController *)self delegate];
+  [delegate scheduledDeliverySettingsControllerDidChangeGlobalScheduledDeliverySettings:self];
 }
 
-- (void)_setGlobalScheduledDeliveryEnabled:(BOOL)a3
+- (void)_setGlobalScheduledDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v5 = 2;
   }
@@ -689,30 +689,30 @@ LABEL_33:
   v6 = +[NCSettingsGatewayController sharedInstance];
   [v6 setEffectiveGlobalScheduledDeliverySetting:v5];
 
-  [(NCScheduledDeliverySettingsController *)self setGlobalScheduledDeliveryEnabled:v3];
+  [(NCScheduledDeliverySettingsController *)self setGlobalScheduledDeliveryEnabled:enabledCopy];
   v8 = [(NCScheduledDeliverySettingsController *)self _updatesForSpecifiers:*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] withGlobalScheduledDeliverySetting:v5 animated:1];
   [(NCScheduledDeliverySettingsController *)self performSpecifierUpdates:v8];
-  v7 = [(NCScheduledDeliverySettingsController *)self delegate];
-  [v7 scheduledDeliverySettingsControllerDidChangeGlobalScheduledDeliverySettings:self];
+  delegate = [(NCScheduledDeliverySettingsController *)self delegate];
+  [delegate scheduledDeliverySettingsControllerDidChangeGlobalScheduledDeliverySettings:self];
 }
 
-- (id)appScheduledDeliveryEnabled:(id)a3
+- (id)appScheduledDeliveryEnabled:(id)enabled
 {
-  v3 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  v3 = [enabled propertyForKey:@"BBSECTION_INFO_KEY"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 scheduledDeliverySetting] == &dword_0 + 2);
 
   return v4;
 }
 
-- (void)setAppScheduledDeliveryEnabled:(id)a3 specifier:(id)a4
+- (void)setAppScheduledDeliveryEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
-  v12 = [v5 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  v12 = [specifierCopy propertyForKey:@"BBSECTION_INFO_KEY"];
   v7 = [v12 copy];
-  v8 = [v6 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 2;
   }
@@ -723,16 +723,16 @@ LABEL_33:
   }
 
   [v7 setScheduledDeliverySetting:v9];
-  [v5 setProperty:v7 forKey:@"BBSECTION_INFO_KEY"];
+  [specifierCopy setProperty:v7 forKey:@"BBSECTION_INFO_KEY"];
 
   v10 = +[NCSettingsGatewayController sharedInstance];
-  v11 = [v12 sectionID];
-  [v10 setSectionInfo:v7 forSectionID:v11];
+  sectionID = [v12 sectionID];
+  [v10 setSectionInfo:v7 forSectionID:sectionID];
 }
 
-- (void)setGlobalShowNextSummarySetting:(id)a3 specifier:(id)a4
+- (void)setGlobalShowNextSummarySetting:(id)setting specifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([setting BOOLValue])
   {
     v4 = 2;
   }
@@ -746,12 +746,12 @@ LABEL_33:
   [v5 setEffectiveGlobalScheduledDeliveryShowNextSummarySetting:v4];
 }
 
-- (id)globalShowNextSummarySetting:(id)a3
+- (id)globalShowNextSummarySetting:(id)setting
 {
   v3 = +[NCSettingsGatewayController sharedInstance];
-  v4 = [v3 effectiveGlobalScheduledDeliveryShowNextSummarySetting];
+  effectiveGlobalScheduledDeliveryShowNextSummarySetting = [v3 effectiveGlobalScheduledDeliveryShowNextSummarySetting];
 
-  if (v4 == &dword_0 + 2)
+  if (effectiveGlobalScheduledDeliveryShowNextSummarySetting == &dword_0 + 2)
   {
     v5 = &__kCFBooleanTrue;
   }
@@ -764,21 +764,21 @@ LABEL_33:
   return v5;
 }
 
-- (void)_replaceScheduleDigestTime:(id)a3 withNewDigestTime:(id)a4
+- (void)_replaceScheduleDigestTime:(id)time withNewDigestTime:(id)digestTime
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 != v6)
+  timeCopy = time;
+  digestTimeCopy = digestTime;
+  if (timeCopy != digestTimeCopy)
   {
     v7 = [(NSMutableArray *)self->_orderedScheduledDeliveryTimes indexOfObject:?];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->_orderedScheduledDeliveryTimes removeObject:v9];
+      [(NSMutableArray *)self->_orderedScheduledDeliveryTimes removeObject:timeCopy];
     }
 
-    if (([(NSMutableArray *)self->_orderedScheduledDeliveryTimes containsObject:v6]& 1) == 0)
+    if (([(NSMutableArray *)self->_orderedScheduledDeliveryTimes containsObject:digestTimeCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_orderedScheduledDeliveryTimes insertObject:v6 atIndex:v7];
+      [(NSMutableArray *)self->_orderedScheduledDeliveryTimes insertObject:digestTimeCopy atIndex:v7];
     }
 
     v8 = [(NSMutableArray *)self->_orderedScheduledDeliveryTimes copy];
@@ -802,13 +802,13 @@ LABEL_33:
 
 - (void)_addNewScheduledTime
 {
-  v10 = [(NSMutableArray *)self->_orderedScheduledDeliveryTimes lastObject];
+  lastObject = [(NSMutableArray *)self->_orderedScheduledDeliveryTimes lastObject];
   v3 = objc_alloc_init(NSDateComponents);
-  v4 = [v10 hour] + 1;
-  if (v4 >= 0x18)
+  hour = [lastObject hour] + 1;
+  if (hour >= 0x18)
   {
-    v4 = [v10 hour];
-    v5 = ([v10 minute] + 1) % 60;
+    hour = [lastObject hour];
+    v5 = ([lastObject minute] + 1) % 60;
   }
 
   else
@@ -816,12 +816,12 @@ LABEL_33:
     v5 = 0;
   }
 
-  [v3 setHour:v4];
+  [v3 setHour:hour];
   [v3 setMinute:v5];
   [(NSMutableArray *)self->_orderedScheduledDeliveryTimes addObject:v3];
   v6 = [(NCScheduledDeliverySettingsController *)self _digestTimeSpecifierAtIndex:[(NSMutableArray *)self->_orderedDigestTimeSpecifiers count] forScheduleTime:v3];
-  v7 = [(NCScheduledDeliverySettingsController *)self orderedDigestTimeSpecifiers];
-  [v7 addObject:v6];
+  orderedDigestTimeSpecifiers = [(NCScheduledDeliverySettingsController *)self orderedDigestTimeSpecifiers];
+  [orderedDigestTimeSpecifiers addObject:v6];
 
   v8 = [(NCScheduledDeliverySettingsController *)self specifierForID:@"SCHEDULED_DELIVERY_ADD_SUMMARY_ID"];
   [(NCScheduledDeliverySettingsController *)self insertSpecifier:v6 atIndex:[(NCScheduledDeliverySettingsController *)self indexOfSpecifier:v8] animated:1];
@@ -834,27 +834,27 @@ LABEL_33:
   [(NCScheduledDeliverySettingsController *)self _setGlobalScheduledDeliveryTimes:v9];
 }
 
-- (void)_removeScheduledTimeAtIndexPath:(id)a3
+- (void)_removeScheduledTimeAtIndexPath:(id)path
 {
-  v13 = a3;
-  v4 = [v13 section];
-  if (v4 == [(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes])
   {
-    v5 = [(NCScheduledDeliverySettingsController *)self specifierAtIndexPath:v13];
+    v5 = [(NCScheduledDeliverySettingsController *)self specifierAtIndexPath:pathCopy];
     v6 = [(NSMutableArray *)self->_orderedDigestTimeSpecifiers count];
     [(NSMutableArray *)self->_orderedDigestTimeSpecifiers removeObject:v5];
-    -[NSMutableArray removeObjectAtIndex:](self->_orderedScheduledDeliveryTimes, "removeObjectAtIndex:", [v13 row]);
+    -[NSMutableArray removeObjectAtIndex:](self->_orderedScheduledDeliveryTimes, "removeObjectAtIndex:", [pathCopy row]);
     [(NCScheduledDeliverySettingsController *)self removeSpecifier:v5 animated:1];
     if (v6 == &dword_C)
     {
-      v7 = [(NCScheduledDeliverySettingsController *)self _specifierForAddNewScheduledTime];
-      [(NCScheduledDeliverySettingsController *)self insertSpecifier:v7 atEndOfGroup:[(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes] animated:1];
+      _specifierForAddNewScheduledTime = [(NCScheduledDeliverySettingsController *)self _specifierForAddNewScheduledTime];
+      [(NCScheduledDeliverySettingsController *)self insertSpecifier:_specifierForAddNewScheduledTime atEndOfGroup:[(NCScheduledDeliverySettingsController *)self _sectionForScheduleTimes] animated:1];
     }
 
-    v8 = [v13 row];
+    v8 = [pathCopy row];
     while (v8 < [(NSMutableArray *)self->_orderedScheduledDeliveryTimes count])
     {
-      v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v8, [v13 section]);
+      v9 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v8, [pathCopy section]);
       v10 = [(NCScheduledDeliverySettingsController *)self specifierAtIndexPath:v9];
       ++v8;
       if (v9)
@@ -877,21 +877,21 @@ LABEL_33:
 {
   v3 = [(NCScheduledDeliverySettingsController *)self specifierForID:@"SCHEDULE_DELIVERY_TIMES_GROUP_ID"];
   v4 = [(NCScheduledDeliverySettingsController *)self indexPathForSpecifier:v3];
-  v5 = [v4 section];
+  section = [v4 section];
 
-  return v5;
+  return section;
 }
 
-- (id)orderType:(id)a3
+- (id)orderType:(id)type
 {
-  v3 = [(NCScheduledDeliverySettingsController *)self isOrderedByNumberOfNotifications];
+  isOrderedByNumberOfNotifications = [(NCScheduledDeliverySettingsController *)self isOrderedByNumberOfNotifications];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isOrderedByNumberOfNotifications];
 }
 
-- (void)setOrderType:(id)a3 specifier:(id)a4
+- (void)setOrderType:(id)type specifier:(id)specifier
 {
-  -[NCScheduledDeliverySettingsController setOrderedByNumberOfNotifications:](self, "setOrderedByNumberOfNotifications:", [a3 BOOLValue]);
+  -[NCScheduledDeliverySettingsController setOrderedByNumberOfNotifications:](self, "setOrderedByNumberOfNotifications:", [type BOOLValue]);
 
   [(NCScheduledDeliverySettingsController *)self reloadSpecifiers];
 }
@@ -925,26 +925,26 @@ LABEL_33:
 - (id)_activeSectionInfos
 {
   v2 = +[NCSettingsGatewayController sharedInstance];
-  v3 = [v2 activeSectionInfo];
+  activeSectionInfo = [v2 activeSectionInfo];
 
-  v4 = [v3 bs_filter:&stru_4D168];
+  v4 = [activeSectionInfo bs_filter:&stru_4D168];
 
   return v4;
 }
 
-- (id)_frequencyOrderedSectionInfos:(id)a3 forRankedDigestSetupResponses:(id)a4
+- (id)_frequencyOrderedSectionInfos:(id)infos forRankedDigestSetupResponses:(id)responses
 {
-  v5 = a3;
-  v6 = a4;
+  infosCopy = infos;
+  responsesCopy = responses;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_52AC;
   v12[3] = &unk_4D1F8;
-  v13 = v5;
+  v13 = infosCopy;
   v7 = objc_alloc_init(NSMutableArray);
   v14 = v7;
-  v8 = v5;
-  [v6 enumerateObjectsUsingBlock:v12];
+  v8 = infosCopy;
+  [responsesCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -952,17 +952,17 @@ LABEL_33:
   return v7;
 }
 
-- (unint64_t)_numberOfNotificationsForSectionIdentifier:(id)a3
+- (unint64_t)_numberOfNotificationsForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
+  identifierCopy = identifier;
+  rankedDigestSetupResponses = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_5500;
   v13[3] = &unk_4D220;
-  v6 = v4;
+  v6 = identifierCopy;
   v14 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v13];
+  v7 = [rankedDigestSetupResponses indexOfObjectPassingTest:v13];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -971,8 +971,8 @@ LABEL_33:
 
   else
   {
-    v9 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
-    v10 = [v9 objectAtIndex:v7];
+    rankedDigestSetupResponses2 = [(NCScheduledDeliverySettingsController *)self rankedDigestSetupResponses];
+    v10 = [rankedDigestSetupResponses2 objectAtIndex:v7];
 
     v11 = 7 * [v10 numBasicNotifications];
     v8 = v11 / [(NCScheduledDeliverySettingsController *)self numberOfDaysForNotificationCount];
@@ -981,18 +981,18 @@ LABEL_33:
   return v8;
 }
 
-- (int64_t)_compareScheduleTime:(id)a3 withScheduleTime:(id)a4
+- (int64_t)_compareScheduleTime:(id)time withScheduleTime:(id)scheduleTime
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hour];
-  if (v7 >= [v6 hour])
+  timeCopy = time;
+  scheduleTimeCopy = scheduleTime;
+  hour = [timeCopy hour];
+  if (hour >= [scheduleTimeCopy hour])
   {
-    v9 = [v5 hour];
-    if (v9 == [v6 hour])
+    hour2 = [timeCopy hour];
+    if (hour2 == [scheduleTimeCopy hour])
     {
-      v10 = [v5 minute];
-      if (v10 < [v6 minute])
+      minute = [timeCopy minute];
+      if (minute < [scheduleTimeCopy minute])
       {
         v8 = -1;
       }
@@ -1019,27 +1019,27 @@ LABEL_33:
 
 - (id)_orderedGlobalScheduledDeliveryTimes
 {
-  v3 = [(NCScheduledDeliverySettingsController *)self _globalScheduledDeliveryTimes];
+  _globalScheduledDeliveryTimes = [(NCScheduledDeliverySettingsController *)self _globalScheduledDeliveryTimes];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_5694;
   v6[3] = &unk_4D248;
   v6[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v6];
+  v4 = [_globalScheduledDeliveryTimes sortedArrayUsingComparator:v6];
 
   return v4;
 }
 
-- (id)_scheduleTimeLabelForIndex:(unint64_t)a3
+- (id)_scheduleTimeLabelForIndex:(unint64_t)index
 {
-  if (a3 - 1 > 0xB)
+  if (index - 1 > 0xB)
   {
     v5 = &stru_4E3F0;
   }
 
   else
   {
-    v3 = *(&off_4D268 + a3 - 1);
+    v3 = *(&off_4D268 + index - 1);
     v4 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v5 = [v4 localizedStringForKey:v3 value:&stru_4E3F0 table:@"NotificationsSettings"];
   }
@@ -1047,15 +1047,15 @@ LABEL_33:
   return v5;
 }
 
-- (void)digestOnboardingNavigationController:(id)a3 didScheduleDigestDeliveryTimes:(id)a4 forAppBundleIdentifiers:(id)a5
+- (void)digestOnboardingNavigationController:(id)controller didScheduleDigestDeliveryTimes:(id)times forAppBundleIdentifiers:(id)identifiers
 {
-  v7 = a4;
-  v8 = a5;
+  timesCopy = times;
+  identifiersCopy = identifiers;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v9 = [timesCopy countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1066,20 +1066,20 @@ LABEL_33:
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(timesCopy);
         }
 
         [(NSMutableArray *)self->_orderedScheduledDeliveryTimes addObject:*(*(&v40 + 1) + 8 * i)];
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v10 = [timesCopy countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v10);
   }
 
   [(NCScheduledDeliverySettingsController *)self _setGlobalScheduledDeliveryEnabled:1];
-  v13 = [v7 copy];
+  v13 = [timesCopy copy];
   [(NCScheduledDeliverySettingsController *)self _setGlobalScheduledDeliveryTimes:v13];
 
   v14 = objc_alloc_init(NSMutableDictionary);
@@ -1088,9 +1088,9 @@ LABEL_33:
   v38 = 0u;
   v39 = 0u;
   v15 = +[NCSettingsGatewayController sharedInstance];
-  v16 = [v15 activeSectionInfo];
+  activeSectionInfo = [v15 activeSectionInfo];
 
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  v17 = [activeSectionInfo countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1101,15 +1101,15 @@ LABEL_33:
       {
         if (*v37 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(activeSectionInfo);
         }
 
         v21 = *(*(&v36 + 1) + 8 * j);
-        v22 = [v21 sectionID];
-        [v14 setObject:v21 forKey:v22];
+        sectionID = [v21 sectionID];
+        [v14 setObject:v21 forKey:sectionID];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v18 = [activeSectionInfo countByEnumeratingWithState:&v36 objects:v45 count:16];
     }
 
     while (v18);
@@ -1119,7 +1119,7 @@ LABEL_33:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v23 = v8;
+  v23 = identifiersCopy;
   v24 = [v23 countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v24)
   {

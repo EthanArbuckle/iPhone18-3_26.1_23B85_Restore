@@ -1,55 +1,55 @@
 @interface EKReminderStore
-+ (BOOL)isNotFoundError:(id)a3;
-+ (Class)frozenClassForReminderClass:(Class)a3;
++ (BOOL)isNotFoundError:(id)error;
++ (Class)frozenClassForReminderClass:(Class)class;
 + (OS_os_log)log;
-+ (id)uniqueIdentifierForREMObject:(id)a3;
-- (BOOL)_commit:(id *)a3 error:(id *)a4;
-- (BOOL)commit:(id *)a3;
-- (BOOL)isSourceManaged:(id)a3;
-- (BOOL)removeCalendar:(id)a3 error:(id *)a4;
-- (BOOL)removeReminder:(id)a3 error:(id *)a4;
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4;
-- (BOOL)saveObject:(id)a3 withFrozenObject:(id)a4 error:(id *)a5;
-- (BOOL)saveReminder:(id)a3 error:(id *)a4;
++ (id)uniqueIdentifierForREMObject:(id)object;
+- (BOOL)_commit:(id *)_commit error:(id *)error;
+- (BOOL)commit:(id *)commit;
+- (BOOL)isSourceManaged:(id)managed;
+- (BOOL)removeCalendar:(id)calendar error:(id *)error;
+- (BOOL)removeReminder:(id)reminder error:(id *)error;
+- (BOOL)saveCalendar:(id)calendar error:(id *)error;
+- (BOOL)saveObject:(id)object withFrozenObject:(id)frozenObject error:(id *)error;
+- (BOOL)saveReminder:(id)reminder error:(id *)error;
 - (EKEventStore)eventStore;
-- (EKReminderStore)initWithEventStore:(id)a3 token:(id)a4;
+- (EKReminderStore)initWithEventStore:(id)store token:(id)token;
 - (NSArray)calendars;
 - (NSArray)sources;
 - (id)_allLists;
-- (id)_fetchAndCacheConstraintsForFrozenSource:(id)a3;
-- (id)_moveRemindersToNewLists:(id)a3 error:(id *)a4;
-- (id)backingCalendarWithIdentifier:(id)a3;
-- (id)backingReminderWithIdentifier:(id)a3;
-- (id)cachedConstraintsForSource:(id)a3;
-- (id)calendarWithIdentifier:(id)a3;
-- (id)completionBlockForFetchRequestToken:(id)a3 remove:(BOOL)a4;
+- (id)_fetchAndCacheConstraintsForFrozenSource:(id)source;
+- (id)_moveRemindersToNewLists:(id)lists error:(id *)error;
+- (id)backingCalendarWithIdentifier:(id)identifier;
+- (id)backingReminderWithIdentifier:(id)identifier;
+- (id)cachedConstraintsForSource:(id)source;
+- (id)calendarWithIdentifier:(id)identifier;
+- (id)completionBlockForFetchRequestToken:(id)token remove:(BOOL)remove;
 - (id)createNewReminder;
 - (id)createNewReminderCalendar;
 - (id)defaultCalendarForNewReminders;
-- (id)fetchRemindersMatchingPredicate:(id)a3 completion:(id)a4;
-- (id)frozenAlarmForREMAlarms:(id)a3;
-- (id)frozenCalendarFromCalendar:(id)a3 error:(id *)a4;
-- (id)frozenObjectForReminderObject:(id)a3;
-- (id)newFrozenObjectForReminderObject:(id)a3 withChanges:(id)a4;
-- (id)predicateForCalendarStoreForRemindersInCalendars:(id)a3;
-- (id)predicateForCompletedRemindersWithCompletionDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5;
-- (id)predicateForIncompleteRemindersWithDueDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5;
-- (id)predicateForRemindersInCalendars:(id)a3;
-- (id)reminderWithIdentifier:(id)a3;
-- (id)reminderWithUniqueId:(id)a3;
-- (id)remindersMatchingPredicate:(id)a3;
-- (id)remindersWithExternalIdentifier:(id)a3;
-- (id)resetBackingAlarmWithBackingAlarm:(id)a3;
-- (id)resetBackingLocationWithBackingLocation:(id)a3;
-- (id)sourceWithIdentifier:(id)a3;
-- (void)_checkPredicate:(id)a3;
+- (id)fetchRemindersMatchingPredicate:(id)predicate completion:(id)completion;
+- (id)frozenAlarmForREMAlarms:(id)alarms;
+- (id)frozenCalendarFromCalendar:(id)calendar error:(id *)error;
+- (id)frozenObjectForReminderObject:(id)object;
+- (id)newFrozenObjectForReminderObject:(id)object withChanges:(id)changes;
+- (id)predicateForCalendarStoreForRemindersInCalendars:(id)calendars;
+- (id)predicateForCompletedRemindersWithCompletionDateStarting:(id)starting ending:(id)ending calendars:(id)calendars;
+- (id)predicateForIncompleteRemindersWithDueDateStarting:(id)starting ending:(id)ending calendars:(id)calendars;
+- (id)predicateForRemindersInCalendars:(id)calendars;
+- (id)reminderWithIdentifier:(id)identifier;
+- (id)reminderWithUniqueId:(id)id;
+- (id)remindersMatchingPredicate:(id)predicate;
+- (id)remindersWithExternalIdentifier:(id)identifier;
+- (id)resetBackingAlarmWithBackingAlarm:(id)alarm;
+- (id)resetBackingLocationWithBackingLocation:(id)location;
+- (id)sourceWithIdentifier:(id)identifier;
+- (void)_checkPredicate:(id)predicate;
 - (void)_loadAccounts;
 - (void)_loadAccountsIfNeeded;
 - (void)_loadLists;
 - (void)_loadListsIfNeeded;
-- (void)_reminderCopiedToNewList:(id)a3;
+- (void)_reminderCopiedToNewList:(id)list;
 - (void)defaultCalendarForNewReminders;
-- (void)fillInPath:(id)a3 usingParents:(id)a4;
+- (void)fillInPath:(id)path usingParents:(id)parents;
 - (void)remindersChanged;
 - (void)reset;
 @end
@@ -103,19 +103,19 @@ uint64_t __22__EKReminderStore_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EKReminderStore)initWithEventStore:(id)a3 token:(id)a4
+- (EKReminderStore)initWithEventStore:(id)store token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  tokenCopy = token;
   v30.receiver = self;
   v30.super_class = EKReminderStore;
   v8 = [(EKReminderStore *)&v30 init];
   if (v8)
   {
     REMStoreClass = getREMStoreClass();
-    if (v7)
+    if (tokenCopy)
     {
-      v10 = [[REMStoreClass alloc] initWithStoreContainerToken:v7];
+      v10 = [[REMStoreClass alloc] initWithStoreContainerToken:tokenCopy];
     }
 
     else
@@ -163,10 +163,10 @@ uint64_t __22__EKReminderStore_log__block_invoke()
     cachedConstraints = v8->_cachedConstraints;
     v8->_cachedConstraints = v25;
 
-    objc_storeWeak(&v8->_eventStore, v6);
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    v28 = [getREMStoreClass() storeDidChangeNotificationName];
-    [v27 addObserver:v8 selector:sel_remindersChanged name:v28 object:0];
+    objc_storeWeak(&v8->_eventStore, storeCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    storeDidChangeNotificationName = [getREMStoreClass() storeDidChangeNotificationName];
+    [defaultCenter addObserver:v8 selector:sel_remindersChanged name:storeDidChangeNotificationName object:0];
   }
 
   return v8;
@@ -260,10 +260,10 @@ void __26__EKReminderStore_sources__block_invoke(uint64_t a1)
   objc_storeStrong(v3, v2);
 }
 
-- (id)sourceWithIdentifier:(id)a3
+- (id)sourceWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   [(EKReminderStore *)self sources];
   v14 = 0u;
   v15 = 0u;
@@ -283,8 +283,8 @@ void __26__EKReminderStore_sources__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 sourceIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        sourceIdentifier = [v9 sourceIdentifier];
+        v11 = [sourceIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -310,31 +310,31 @@ LABEL_11:
   return v6;
 }
 
-- (id)cachedConstraintsForSource:(id)a3
+- (id)cachedConstraintsForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__1;
   v21 = __Block_byref_object_dispose__1;
   v22 = 0;
-  v5 = [v4 backingObject];
+  backingObject = [sourceCopy backingObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_eventStore);
-    v7 = [WeakRetained reminderSourceForEventSource:v5];
+    v7 = [WeakRetained reminderSourceForEventSource:backingObject];
 
-    v8 = [v7 backingObject];
+    backingObject2 = [v7 backingObject];
 
-    v5 = v8;
+    backingObject = backingObject2;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v5;
+    v9 = backingObject;
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -383,16 +383,16 @@ void __46__EKReminderStore_cachedConstraintsForSource___block_invoke(uint64_t a1
   }
 }
 
-- (id)_fetchAndCacheConstraintsForFrozenSource:(id)a3
+- (id)_fetchAndCacheConstraintsForFrozenSource:(id)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_opt_new();
-  v6 = [v4 remAccount];
-  if (!v6)
+  remAccount = [sourceCopy remAccount];
+  if (!remAccount)
   {
-    v8 = [objc_opt_class() log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    capabilities = [objc_opt_class() log];
+    if (os_log_type_enabled(capabilities, OS_LOG_TYPE_ERROR))
     {
       [EKReminderStore _fetchAndCacheConstraintsForFrozenSource:];
     }
@@ -400,15 +400,15 @@ void __46__EKReminderStore_cachedConstraintsForSource___block_invoke(uint64_t a1
     goto LABEL_15;
   }
 
-  v7 = [v4 remAccount];
-  v8 = [v7 capabilities];
+  remAccount2 = [sourceCopy remAccount];
+  capabilities = [remAccount2 capabilities];
 
-  if (!v8)
+  if (!capabilities)
   {
     v16 = [objc_opt_class() log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(EKReminderStore *)v4 _fetchAndCacheConstraintsForFrozenSource:v16];
+      [(EKReminderStore *)sourceCopy _fetchAndCacheConstraintsForFrozenSource:v16];
     }
 
 LABEL_15:
@@ -416,41 +416,41 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [v8 supportsLocation];
+  supportsLocation = [capabilities supportsLocation];
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v4 remAccount];
-    v12 = [v4 remAccount];
+    remAccount3 = [sourceCopy remAccount];
+    remAccount4 = [sourceCopy remAccount];
     v19 = 138413058;
-    v20 = v4;
+    v20 = sourceCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = remAccount3;
     v23 = 1024;
-    v24 = [v12 type];
+    type = [remAccount4 type];
     v25 = 1024;
-    v26 = v9;
+    v26 = supportsLocation;
     _os_log_impl(&dword_1A805E000, v10, OS_LOG_TYPE_DEFAULT, "Fetching capabilities for source (%@), remAccount (%@), type (%d), supportsLocation (%d)", &v19, 0x22u);
   }
 
-  [v5 setSupportsReminderLocations:v9];
-  [v5 setSupportsAlarmProximity:v9];
-  [v5 setSupportsStructuredLocations:v9];
-  [v5 setSupportsAttachments:{-[NSObject supportsAttachments](v8, "supportsAttachments")}];
+  [v5 setSupportsReminderLocations:supportsLocation];
+  [v5 setSupportsAlarmProximity:supportsLocation];
+  [v5 setSupportsStructuredLocations:supportsLocation];
+  [v5 setSupportsAttachments:{-[NSObject supportsAttachments](capabilities, "supportsAttachments")}];
   [v5 setAllowsEvents:0];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setAllowsCalendarAddDeleteModify:{objc_msgSend(v6, "daAllowsCalendarAddDeleteModify")}];
+    [v5 setAllowsCalendarAddDeleteModify:{objc_msgSend(remAccount, "daAllowsCalendarAddDeleteModify")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setSupportsReminderActions:{-[NSObject supportsReminderActions](v8, "supportsReminderActions")}];
+    [v5 setSupportsReminderActions:{-[NSObject supportsReminderActions](capabilities, "supportsReminderActions")}];
   }
 
   cachedConstraints = self->_cachedConstraints;
-  v14 = [v4 sourceIdentifier];
-  [(NSMutableDictionary *)cachedConstraints setObject:v5 forKeyedSubscript:v14];
+  sourceIdentifier = [sourceCopy sourceIdentifier];
+  [(NSMutableDictionary *)cachedConstraints setObject:v5 forKeyedSubscript:sourceIdentifier];
 
   v15 = v5;
 LABEL_16:
@@ -460,23 +460,23 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)isSourceManaged:(id)a3
+- (BOOL)isSourceManaged:(id)managed
 {
-  v3 = a3;
-  v4 = [v3 backingObject];
+  managedCopy = managed;
+  backingObject = [managedCopy backingObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 backingObject];
-    v7 = [v6 remAccount];
-    v8 = v7;
-    if (v7)
+    backingObject2 = [managedCopy backingObject];
+    remAccount = [backingObject2 remAccount];
+    v8 = remAccount;
+    if (remAccount)
     {
       v15 = 0;
       v14 = 0;
-      v9 = [v7 MCIsManagedWithResultPtr:&v15 error:&v14];
+      v9 = [remAccount MCIsManagedWithResultPtr:&v15 error:&v14];
       v10 = v14;
       if (v9)
       {
@@ -503,8 +503,8 @@ LABEL_16:
 
   else
   {
-    v6 = [objc_opt_class() log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    backingObject2 = [objc_opt_class() log];
+    if (os_log_type_enabled(backingObject2, OS_LOG_TYPE_ERROR))
     {
       [EKReminderStore isSourceManaged:];
     }
@@ -750,19 +750,19 @@ void __28__EKReminderStore_calendars__block_invoke_3(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)calendarWithIdentifier:(id)a3
+- (id)calendarWithIdentifier:(id)identifier
 {
-  v4 = [(EKReminderStore *)self backingCalendarWithIdentifier:a3];
+  v4 = [(EKReminderStore *)self backingCalendarWithIdentifier:identifier];
   WeakRetained = objc_loadWeakRetained(&self->_eventStore);
   v6 = [v4 meltedObjectInStore:WeakRetained];
 
   return v6;
 }
 
-- (id)backingCalendarWithIdentifier:(id)a3
+- (id)backingCalendarWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -773,7 +773,7 @@ void __28__EKReminderStore_calendars__block_invoke_3(uint64_t a1)
   block[2] = __49__EKReminderStore_backingCalendarWithIdentifier___block_invoke;
   block[3] = &unk_1E77FD468;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v24 = v6;
   v25 = &v26;
   dispatch_sync(queue, block);
@@ -892,13 +892,13 @@ void __49__EKReminderStore_backingCalendarWithIdentifier___block_invoke_40(void 
   return v5;
 }
 
-- (id)frozenCalendarFromCalendar:(id)a3 error:(id *)a4
+- (id)frozenCalendarFromCalendar:(id)calendar error:(id *)error
 {
-  v5 = [a3 backingObject];
+  backingObject = [calendar backingObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = backingObject;
   }
 
   else
@@ -909,10 +909,10 @@ void __49__EKReminderStore_backingCalendarWithIdentifier___block_invoke_40(void 
       [EKReminderStore frozenCalendarFromCalendar:error:];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
-      *a4 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -924,15 +924,15 @@ void __49__EKReminderStore_backingCalendarWithIdentifier___block_invoke_40(void 
   return v6;
 }
 
-- (BOOL)saveCalendar:(id)a3 error:(id *)a4
+- (BOOL)saveCalendar:(id)calendar error:(id *)error
 {
-  v6 = a3;
-  if ([v6 validate:a4])
+  calendarCopy = calendar;
+  if ([calendarCopy validate:error])
   {
-    v7 = [(EKReminderStore *)self frozenCalendarFromCalendar:v6 error:a4];
+    v7 = [(EKReminderStore *)self frozenCalendarFromCalendar:calendarCopy error:error];
     if (v7)
     {
-      v8 = [(EKReminderStore *)self saveObject:v6 withFrozenObject:v7 error:a4];
+      v8 = [(EKReminderStore *)self saveObject:calendarCopy withFrozenObject:v7 error:error];
     }
 
     else
@@ -949,29 +949,29 @@ void __49__EKReminderStore_backingCalendarWithIdentifier___block_invoke_40(void 
   return v8;
 }
 
-- (BOOL)removeCalendar:(id)a3 error:(id *)a4
+- (BOOL)removeCalendar:(id)calendar error:(id *)error
 {
-  v6 = a3;
-  if ([v6 _validateDeletable:a4])
+  calendarCopy = calendar;
+  if ([calendarCopy _validateDeletable:error])
   {
-    v7 = [(EKReminderStore *)self frozenCalendarFromCalendar:v6 error:a4];
+    v7 = [(EKReminderStore *)self frozenCalendarFromCalendar:calendarCopy error:error];
     v8 = v7;
     v9 = v7 != 0;
     if (v7)
     {
-      v10 = [v7 uniqueIdentifier];
-      v11 = [v6 isNew];
+      uniqueIdentifier = [v7 uniqueIdentifier];
+      isNew = [calendarCopy isNew];
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __40__EKReminderStore_removeCalendar_error___block_invoke;
       block[3] = &unk_1E77FD6D8;
-      v19 = v11;
+      v19 = isNew;
       block[4] = self;
-      v16 = v10;
+      v16 = uniqueIdentifier;
       v17 = v8;
-      v18 = v6;
-      v13 = v10;
+      v18 = calendarCopy;
+      v13 = uniqueIdentifier;
       dispatch_sync(queue, block);
     }
   }
@@ -1032,13 +1032,13 @@ uint64_t __40__EKReminderStore_removeCalendar_error___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)reminderWithUniqueId:(id)a3
+- (id)reminderWithUniqueId:(id)id
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   remStore = self->_remStore;
   v15 = 0;
-  v6 = [(REMStore *)remStore fetchReminderWithDACalendarItemUniqueIdentifier:v4 inList:0 error:&v15];
+  v6 = [(REMStore *)remStore fetchReminderWithDACalendarItemUniqueIdentifier:idCopy inList:0 error:&v15];
   v7 = v15;
   v8 = v7;
   if (v6)
@@ -1067,7 +1067,7 @@ uint64_t __40__EKReminderStore_removeCalendar_error___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v4;
+        v17 = idCopy;
         _os_log_impl(&dword_1A805E000, v12, OS_LOG_TYPE_INFO, "No reminder found with unique identifier %@", buf, 0xCu);
       }
     }
@@ -1090,22 +1090,22 @@ LABEL_13:
   return v11;
 }
 
-- (id)reminderWithIdentifier:(id)a3
+- (id)reminderWithIdentifier:(id)identifier
 {
-  v4 = [(EKReminderStore *)self backingReminderWithIdentifier:a3];
+  v4 = [(EKReminderStore *)self backingReminderWithIdentifier:identifier];
   WeakRetained = objc_loadWeakRetained(&self->_eventStore);
   v6 = [v4 meltedObjectInStore:WeakRetained];
 
   return v6;
 }
 
-- (id)remindersWithExternalIdentifier:(id)a3
+- (id)remindersWithExternalIdentifier:(id)identifier
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   remStore = self->_remStore;
-  v23 = v4;
-  v32[0] = v4;
+  v23 = identifierCopy;
+  v32[0] = identifierCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v28 = 0;
   v7 = [(REMStore *)remStore fetchRemindersWithDACalendarItemUniqueIdentifiers:v6 inList:0 error:&v28];
@@ -1118,8 +1118,8 @@ LABEL_13:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v7 allValues];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    allValues = [v7 allValues];
+    v11 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1132,7 +1132,7 @@ LABEL_13:
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allValues);
           }
 
           v15 = [(EKReminderStore *)self frozenObjectForReminderObject:*(*(&v24 + 1) + 8 * i), v21, v22];
@@ -1156,7 +1156,7 @@ LABEL_13:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v12 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v12);
@@ -1169,19 +1169,19 @@ LABEL_13:
   {
     if (v8 && [EKReminderStore isNotFoundError:v8])
     {
-      v10 = +[EKReminderStore log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      allValues = +[EKReminderStore log];
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
         v31 = v23;
-        _os_log_impl(&dword_1A805E000, v10, OS_LOG_TYPE_INFO, "No reminders found with external identifier %@", buf, 0xCu);
+        _os_log_impl(&dword_1A805E000, allValues, OS_LOG_TYPE_INFO, "No reminders found with external identifier %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v10 = +[EKReminderStore log];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      allValues = +[EKReminderStore log];
+      if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
       {
         [EKReminderStore remindersWithExternalIdentifier:];
       }
@@ -1195,10 +1195,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)backingReminderWithIdentifier:(id)a3
+- (id)backingReminderWithIdentifier:(id)identifier
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -1216,7 +1216,7 @@ LABEL_13:
   block[3] = &unk_1E77FD700;
   v25 = &v27;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v24 = v6;
   v26 = &v33;
   dispatch_sync(queue, block);
@@ -1355,17 +1355,17 @@ void __49__EKReminderStore_backingReminderWithIdentifier___block_invoke_43(void 
   return v5;
 }
 
-- (BOOL)saveReminder:(id)a3 error:(id *)a4
+- (BOOL)saveReminder:(id)reminder error:(id *)error
 {
-  v6 = a3;
-  if ([v6 validate:a4])
+  reminderCopy = reminder;
+  if ([reminderCopy validate:error])
   {
-    v7 = [v6 calendar];
-    if ([(EKReminderStore *)self saveCalendar:v7 error:a4])
+    calendar = [reminderCopy calendar];
+    if ([(EKReminderStore *)self saveCalendar:calendar error:error])
     {
-      v8 = [v6 backingObject];
-      v9 = [(EKReminderStore *)self frozenCalendarFromCalendar:v7 error:a4];
-      v10 = v9 && ([v6 forceUpdateFrozenCalendar:v9], objc_msgSend(v6, "save:", a4)) && -[EKReminderStore saveObject:withFrozenObject:error:](self, "saveObject:withFrozenObject:error:", v6, v8, a4);
+      backingObject = [reminderCopy backingObject];
+      v9 = [(EKReminderStore *)self frozenCalendarFromCalendar:calendar error:error];
+      v10 = v9 && ([reminderCopy forceUpdateFrozenCalendar:v9], objc_msgSend(reminderCopy, "save:", error)) && -[EKReminderStore saveObject:withFrozenObject:error:](self, "saveObject:withFrozenObject:error:", reminderCopy, backingObject, error);
     }
 
     else
@@ -1382,27 +1382,27 @@ void __49__EKReminderStore_backingReminderWithIdentifier___block_invoke_43(void 
   return v10;
 }
 
-- (BOOL)removeReminder:(id)a3 error:(id *)a4
+- (BOOL)removeReminder:(id)reminder error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 _validateDeletable:a4];
+  reminderCopy = reminder;
+  v7 = [reminderCopy _validateDeletable:error];
   if (v7)
   {
-    v8 = [v6 backingObject];
-    v9 = [v8 uniqueIdentifier];
-    v10 = [v6 isNew];
+    backingObject = [reminderCopy backingObject];
+    uniqueIdentifier = [backingObject uniqueIdentifier];
+    isNew = [reminderCopy isNew];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__EKReminderStore_removeReminder_error___block_invoke;
     block[3] = &unk_1E77FD6D8;
-    v19 = v10;
+    v19 = isNew;
     block[4] = self;
-    v16 = v9;
-    v17 = v8;
-    v18 = v6;
-    v12 = v8;
-    v13 = v9;
+    v16 = uniqueIdentifier;
+    v17 = backingObject;
+    v18 = reminderCopy;
+    v12 = backingObject;
+    v13 = uniqueIdentifier;
     dispatch_sync(queue, block);
   }
 
@@ -1430,15 +1430,15 @@ uint64_t __40__EKReminderStore_removeReminder_error___block_invoke(uint64_t a1)
   return [v3 addObject:v4];
 }
 
-- (id)resetBackingAlarmWithBackingAlarm:(id)a3
+- (id)resetBackingAlarmWithBackingAlarm:(id)alarm
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 firstObject];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  v9 = [(EKReminderStore *)self backingReminderWithIdentifier:v8];
+  alarmCopy = alarm;
+  path = [alarmCopy path];
+  firstObject = [path firstObject];
+  uuid = [firstObject uuid];
+  uUIDString = [uuid UUIDString];
+  v9 = [(EKReminderStore *)self backingReminderWithIdentifier:uUIDString];
 
   if (v9)
   {
@@ -1450,8 +1450,8 @@ uint64_t __40__EKReminderStore_removeReminder_error___block_invoke(uint64_t a1)
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
-      v20 = v6;
-      v21 = v5;
+      v20 = firstObject;
+      v21 = path;
       v12 = *v23;
       while (2)
       {
@@ -1463,9 +1463,9 @@ uint64_t __40__EKReminderStore_removeReminder_error___block_invoke(uint64_t a1)
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 uniqueIdentifier];
-          v16 = [v4 uniqueIdentifier];
-          v17 = [v15 isEqualToString:v16];
+          uniqueIdentifier = [v14 uniqueIdentifier];
+          uniqueIdentifier2 = [alarmCopy uniqueIdentifier];
+          v17 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
 
           if (v17)
           {
@@ -1484,8 +1484,8 @@ uint64_t __40__EKReminderStore_removeReminder_error___block_invoke(uint64_t a1)
       }
 
 LABEL_12:
-      v6 = v20;
-      v5 = v21;
+      firstObject = v20;
+      path = v21;
     }
   }
 
@@ -1499,19 +1499,19 @@ LABEL_12:
   return v11;
 }
 
-- (id)resetBackingLocationWithBackingLocation:(id)a3
+- (id)resetBackingLocationWithBackingLocation:(id)location
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 firstObject];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  v9 = [(EKReminderStore *)self backingReminderWithIdentifier:v8];
+  locationCopy = location;
+  path = [locationCopy path];
+  firstObject = [path firstObject];
+  uuid = [firstObject uuid];
+  uUIDString = [uuid UUIDString];
+  v9 = [(EKReminderStore *)self backingReminderWithIdentifier:uUIDString];
 
   if (v9)
   {
-    v10 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [locationCopy uniqueIdentifier];
     [v9 alarms];
     v23 = 0u;
     v24 = 0u;
@@ -1521,8 +1521,8 @@ LABEL_12:
     if (v12)
     {
       v13 = v12;
-      v21 = v6;
-      v22 = v5;
+      v21 = firstObject;
+      v22 = path;
       v14 = *v24;
 LABEL_4:
       v15 = 0;
@@ -1533,9 +1533,9 @@ LABEL_4:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v23 + 1) + 8 * v15) structuredLocation];
-        v17 = [v16 uniqueIdentifier];
-        v18 = [v17 isEqualToString:v10];
+        structuredLocation = [*(*(&v23 + 1) + 8 * v15) structuredLocation];
+        uniqueIdentifier2 = [structuredLocation uniqueIdentifier];
+        v18 = [uniqueIdentifier2 isEqualToString:uniqueIdentifier];
 
         if (v18)
         {
@@ -1550,49 +1550,49 @@ LABEL_4:
             goto LABEL_4;
           }
 
-          v16 = 0;
+          structuredLocation = 0;
           break;
         }
       }
 
-      v6 = v21;
-      v5 = v22;
+      firstObject = v21;
+      path = v22;
     }
 
     else
     {
-      v16 = 0;
+      structuredLocation = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    structuredLocation = 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return structuredLocation;
 }
 
-- (BOOL)saveObject:(id)a3 withFrozenObject:(id)a4 error:(id *)a5
+- (BOOL)saveObject:(id)object withFrozenObject:(id)frozenObject error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v8 isNew];
+  objectCopy = object;
+  frozenObjectCopy = frozenObject;
+  uniqueIdentifier = [frozenObjectCopy uniqueIdentifier];
+  isNew = [frozenObjectCopy isNew];
 
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__EKReminderStore_saveObject_withFrozenObject_error___block_invoke;
   v15[3] = &unk_1E77FD750;
-  v16 = v7;
-  v17 = self;
-  v19 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v7;
+  v16 = objectCopy;
+  selfCopy = self;
+  v19 = isNew;
+  v18 = uniqueIdentifier;
+  v12 = uniqueIdentifier;
+  v13 = objectCopy;
   dispatch_sync(queue, v15);
 
   return 1;
@@ -1726,23 +1726,23 @@ LABEL_31:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fillInPath:(id)a3 usingParents:(id)a4
+- (void)fillInPath:(id)path usingParents:(id)parents
 {
-  v13 = a3;
-  v5 = a4;
+  pathCopy = path;
+  parentsCopy = parents;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [v13 uniqueIdentifier];
-  v8 = [v5 objectForKeyedSubscript:v7];
+  uniqueIdentifier = [pathCopy uniqueIdentifier];
+  v8 = [parentsCopy objectForKeyedSubscript:uniqueIdentifier];
 
   if (v8)
   {
     do
     {
-      v9 = [v8 backingObject];
-      v10 = [v9 remObjectID];
-      [v6 insertObject:v10 atIndex:0];
-      v11 = [v8 uniqueIdentifier];
-      v12 = [v5 objectForKeyedSubscript:v11];
+      backingObject = [v8 backingObject];
+      remObjectID = [backingObject remObjectID];
+      [v6 insertObject:remObjectID atIndex:0];
+      uniqueIdentifier2 = [v8 uniqueIdentifier];
+      v12 = [parentsCopy objectForKeyedSubscript:uniqueIdentifier2];
 
       v8 = v12;
     }
@@ -1750,10 +1750,10 @@ LABEL_31:
     while (v12);
   }
 
-  [v13 setPath:v6];
+  [pathCopy setPath:v6];
 }
 
-- (BOOL)commit:(id *)a3
+- (BOOL)commit:(id *)commit
 {
   v47 = *MEMORY[0x1E69E9840];
   v40 = 0;
@@ -1823,22 +1823,22 @@ LABEL_31:
     v10 = v25[5];
     if (v10)
     {
-      v11 = [v10 allKeys];
+      allKeys = [v10 allKeys];
       v12 = self->_queue;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __26__EKReminderStore_commit___block_invoke_2;
       v17[3] = &unk_1E77FD580;
       v17[4] = self;
-      v18 = v11;
-      v13 = v11;
+      v18 = allKeys;
+      v13 = allKeys;
       dispatch_sync(v12, v17);
     }
   }
 
-  if (a3)
+  if (commit)
   {
-    *a3 = v41[5];
+    *commit = v41[5];
   }
 
   v14 = *(v37 + 24);
@@ -1904,7 +1904,7 @@ void __26__EKReminderStore_commit___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_commit:(id *)a3 error:(id *)a4
+- (BOOL)_commit:(id *)_commit error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
   if (![(NSMutableSet *)self->_objectIDsToCommit count]&& ![(NSMutableDictionary *)self->_deletedObjects count])
@@ -1997,14 +1997,14 @@ LABEL_23:
     lists = self->_lists;
     self->_lists = 0;
 
-    if ([(NSMutableArray *)self->_remindersNeedingMove count]&& ([(EKReminderStore *)self _moveRemindersToNewLists:v9 error:a4], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v25 = v23, *a3 = v25, v25, v24))
+    if ([(NSMutableArray *)self->_remindersNeedingMove count]&& ([(EKReminderStore *)self _moveRemindersToNewLists:v9 error:error], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v25 = v23, *_commit = v25, v25, v24))
     {
       v26 = 0;
     }
 
     else
     {
-      v26 = [v9 saveSynchronouslyWithError:{a4, v29}];
+      v26 = [v9 saveSynchronouslyWithError:{error, v29}];
     }
 
 LABEL_32:
@@ -2023,7 +2023,7 @@ LABEL_7:
     }
 
     v14 = [(NSMutableDictionary *)self->_updatedObjects objectForKeyedSubscript:*(*(&v33 + 1) + 8 * v13)];
-    v15 = [v14 _applyChangesToSaveRequest:v9 error:a4];
+    v15 = [v14 _applyChangesToSaveRequest:v9 error:error];
 
     if (!v15)
     {
@@ -2048,10 +2048,10 @@ LABEL_33:
   return v26;
 }
 
-- (id)_moveRemindersToNewLists:(id)a3 error:(id *)a4
+- (id)_moveRemindersToNewLists:(id)lists error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  listsCopy = lists;
   v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSMutableArray count](self->_remindersNeedingMove, "count")}];
   v21 = 0u;
   v22 = 0u;
@@ -2073,8 +2073,8 @@ LABEL_33:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 uniqueIdentifier];
-        v15 = [v13 _copyToNewList:v6 error:a4];
+        uniqueIdentifier = [v13 uniqueIdentifier];
+        v15 = [v13 _copyToNewList:listsCopy error:error];
         if (!v15)
         {
 
@@ -2083,7 +2083,7 @@ LABEL_33:
         }
 
         v16 = v15;
-        [v7 setObject:v15 forKeyedSubscript:v14];
+        [v7 setObject:v15 forKeyedSubscript:uniqueIdentifier];
       }
 
       v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -2138,46 +2138,46 @@ uint64_t __24__EKReminderStore_reset__block_invoke(uint64_t a1)
   return [v6 removeAllObjects];
 }
 
-- (id)predicateForRemindersInCalendars:(id)a3
+- (id)predicateForRemindersInCalendars:(id)calendars
 {
-  v3 = a3;
-  v4 = [[EKREMReminderPredicate alloc] initWithCalendars:v3];
+  calendarsCopy = calendars;
+  v4 = [[EKREMReminderPredicate alloc] initWithCalendars:calendarsCopy];
 
   return v4;
 }
 
-- (id)predicateForCalendarStoreForRemindersInCalendars:(id)a3
+- (id)predicateForCalendarStoreForRemindersInCalendars:(id)calendars
 {
-  v3 = a3;
-  v4 = [[EKREMReminderPredicate alloc] initForCalendarStoreWithCalendars:v3];
+  calendarsCopy = calendars;
+  v4 = [[EKREMReminderPredicate alloc] initForCalendarStoreWithCalendars:calendarsCopy];
 
   return v4;
 }
 
-- (id)predicateForIncompleteRemindersWithDueDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5
+- (id)predicateForIncompleteRemindersWithDueDateStarting:(id)starting ending:(id)ending calendars:(id)calendars
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[EKREMCompletionStateReminderPredicate alloc] initForIncompleteRemindersWithDueDateStarting:v9 ending:v8 calendars:v7];
+  calendarsCopy = calendars;
+  endingCopy = ending;
+  startingCopy = starting;
+  v10 = [[EKREMCompletionStateReminderPredicate alloc] initForIncompleteRemindersWithDueDateStarting:startingCopy ending:endingCopy calendars:calendarsCopy];
 
   return v10;
 }
 
-- (id)predicateForCompletedRemindersWithCompletionDateStarting:(id)a3 ending:(id)a4 calendars:(id)a5
+- (id)predicateForCompletedRemindersWithCompletionDateStarting:(id)starting ending:(id)ending calendars:(id)calendars
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[EKREMCompletionStateReminderPredicate alloc] initForCompletedRemindersWithCompletionDateStarting:v9 ending:v8 calendars:v7];
+  calendarsCopy = calendars;
+  endingCopy = ending;
+  startingCopy = starting;
+  v10 = [[EKREMCompletionStateReminderPredicate alloc] initForCompletedRemindersWithCompletionDateStarting:startingCopy ending:endingCopy calendars:calendarsCopy];
 
   return v10;
 }
 
-- (void)_checkPredicate:(id)a3
+- (void)_checkPredicate:(id)predicate
 {
-  v3 = a3;
-  if (!v3)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"predicate is nil"];
   }
@@ -2189,11 +2189,11 @@ uint64_t __24__EKReminderStore_reset__block_invoke(uint64_t a1)
   }
 }
 
-- (id)fetchRemindersMatchingPredicate:(id)a3 completion:(id)a4
+- (id)fetchRemindersMatchingPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(EKReminderStore *)self _checkPredicate:v6];
+  predicateCopy = predicate;
+  completionCopy = completion;
+  [(EKReminderStore *)self _checkPredicate:predicateCopy];
   v8 = [[EKReminderFetchRequestToken alloc] initWithReminderStore:self];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2203,8 +2203,8 @@ uint64_t __24__EKReminderStore_reset__block_invoke(uint64_t a1)
   block[4] = self;
   v10 = v8;
   v22 = v10;
-  v23 = v7;
-  v11 = v7;
+  v23 = completionCopy;
+  v11 = completionCopy;
   dispatch_sync(queue, block);
   queryQueue = self->_queryQueue;
   v18[0] = MEMORY[0x1E69E9820];
@@ -2214,8 +2214,8 @@ uint64_t __24__EKReminderStore_reset__block_invoke(uint64_t a1)
   v18[4] = self;
   v13 = v10;
   v19 = v13;
-  v20 = v6;
-  v14 = v6;
+  v20 = predicateCopy;
+  v14 = predicateCopy;
   dispatch_async(queryQueue, v18);
   v15 = v20;
   v16 = v13;
@@ -2259,9 +2259,9 @@ void __62__EKReminderStore_fetchRemindersMatchingPredicate_completion___block_in
   }
 }
 
-- (id)completionBlockForFetchRequestToken:(id)a3 remove:(BOOL)a4
+- (id)completionBlockForFetchRequestToken:(id)token remove:(BOOL)remove
 {
-  v6 = a3;
+  tokenCopy = token;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -2273,11 +2273,11 @@ void __62__EKReminderStore_fetchRemindersMatchingPredicate_completion___block_in
   v11[1] = 3221225472;
   v11[2] = __62__EKReminderStore_completionBlockForFetchRequestToken_remove___block_invoke;
   v11[3] = &unk_1E77FD7F0;
-  v12 = v6;
+  v12 = tokenCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  removeCopy = remove;
+  v8 = tokenCopy;
   dispatch_sync(queue, v11);
   v9 = _Block_copy(v16[5]);
 
@@ -2302,16 +2302,16 @@ void __62__EKReminderStore_completionBlockForFetchRequestToken_remove___block_in
   }
 }
 
-- (id)remindersMatchingPredicate:(id)a3
+- (id)remindersMatchingPredicate:(id)predicate
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(EKReminderStore *)self _checkPredicate:v4];
-  v45 = v4;
-  v43 = [(EKReminderStore *)self _allLists];
+  predicateCopy = predicate;
+  [(EKReminderStore *)self _checkPredicate:predicateCopy];
+  v45 = predicateCopy;
+  _allLists = [(EKReminderStore *)self _allLists];
   remStore = self->_remStore;
   v75 = 0;
-  v44 = [v45 fetchMatchingRemindersInStore:remStore allLists:v43 error:&v75];
+  v44 = [v45 fetchMatchingRemindersInStore:remStore allLists:_allLists error:&v75];
   v42 = v75;
   if (v44)
   {
@@ -2454,8 +2454,8 @@ void __62__EKReminderStore_completionBlockForFetchRequestToken_remove___block_in
               }
 
               v35 = *(*(&v46 + 1) + 8 * k);
-              v36 = [v35 calendarItemIdentifier];
-              v37 = [v30 containsObject:v36];
+              calendarItemIdentifier = [v35 calendarItemIdentifier];
+              v37 = [v30 containsObject:calendarItemIdentifier];
 
               if ((v37 & 1) == 0)
               {
@@ -2552,10 +2552,10 @@ LABEL_10:
   return v10;
 }
 
-- (id)frozenObjectForReminderObject:(id)a3
+- (id)frozenObjectForReminderObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -2563,7 +2563,7 @@ LABEL_10:
     v16 = __Block_byref_object_copy__1;
     v17 = __Block_byref_object_dispose__1;
     v18 = 0;
-    v5 = [EKReminderStore uniqueIdentifierForREMObject:v4];
+    v5 = [EKReminderStore uniqueIdentifierForREMObject:objectCopy];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -2574,7 +2574,7 @@ LABEL_10:
     v7 = v5;
     v11 = v7;
     dispatch_sync(queue, block);
-    v8 = [(EKReminderStore *)self newFrozenObjectForReminderObject:v4 withChanges:v14[5]];
+    v8 = [(EKReminderStore *)self newFrozenObjectForReminderObject:objectCopy withChanges:v14[5]];
 
     _Block_object_dispose(&v13, 8);
   }
@@ -2596,22 +2596,22 @@ void __49__EKReminderStore_frozenObjectForReminderObject___block_invoke(void *a1
   *(v3 + 40) = v2;
 }
 
-- (id)frozenAlarmForREMAlarms:(id)a3
+- (id)frozenAlarmForREMAlarms:(id)alarms
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  alarmsCopy = alarms;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__1;
   v29 = __Block_byref_object_dispose__1;
   v30 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(alarmsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = alarmsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v7)
   {
@@ -2641,7 +2641,7 @@ void __49__EKReminderStore_frozenObjectForReminderObject___block_invoke(void *a1
   block[2] = __43__EKReminderStore_frozenAlarmForREMAlarms___block_invoke;
   block[3] = &unk_1E77FD4B8;
   v12 = v5;
-  v19 = self;
+  selfCopy = self;
   v20 = &v25;
   v18 = v12;
   dispatch_sync(queue, block);
@@ -2703,13 +2703,13 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)newFrozenObjectForReminderObject:(id)a3 withChanges:(id)a4
+- (id)newFrozenObjectForReminderObject:(id)object withChanges:(id)changes
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [EKReminderStore frozenClassForReminderClass:objc_opt_class()]) != 0)
+  objectCopy = object;
+  changesCopy = changes;
+  if (objectCopy && (v8 = [EKReminderStore frozenClassForReminderClass:objc_opt_class()]) != 0)
   {
-    v9 = [[v8 alloc] initWithREMObject:v6 inStore:self withChanges:v7];
+    v9 = [[v8 alloc] initWithREMObject:objectCopy inStore:self withChanges:changesCopy];
   }
 
   else
@@ -2720,20 +2720,20 @@ LABEL_3:
   return v9;
 }
 
-+ (Class)frozenClassForReminderClass:(Class)a3
++ (Class)frozenClassForReminderClass:(Class)class
 {
   if (frozenClassForReminderClass__onceToken != -1)
   {
     +[EKReminderStore frozenClassForReminderClass:];
   }
 
-  v5 = [frozenClassForReminderClass__reminderClassToFrozenClassMap objectForKey:a3];
+  v5 = [frozenClassForReminderClass__reminderClassToFrozenClassMap objectForKey:class];
   if (!v5)
   {
-    v6 = [a1 log];
+    v6 = [self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [EKReminderStore frozenClassForReminderClass:a3];
+      [EKReminderStore frozenClassForReminderClass:class];
     }
   }
 
@@ -2841,9 +2841,9 @@ void __47__EKReminderStore_frozenClassForReminderClass___block_invoke()
   [v19 setObject:v20 forKey:objc_opt_class()];
 }
 
-- (void)_reminderCopiedToNewList:(id)a3
+- (void)_reminderCopiedToNewList:(id)list
 {
-  v7 = a3;
+  listCopy = list;
   dispatch_assert_queue_V2(self->_queue);
   remindersNeedingMove = self->_remindersNeedingMove;
   if (!remindersNeedingMove)
@@ -2855,16 +2855,16 @@ void __47__EKReminderStore_frozenClassForReminderClass___block_invoke()
     remindersNeedingMove = self->_remindersNeedingMove;
   }
 
-  [(NSMutableArray *)remindersNeedingMove addObject:v7];
+  [(NSMutableArray *)remindersNeedingMove addObject:listCopy];
 }
 
-+ (id)uniqueIdentifierForREMObject:(id)a3
++ (id)uniqueIdentifierForREMObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 frozenClassForReminderClass:objc_opt_class()];
+  objectCopy = object;
+  v5 = [self frozenClassForReminderClass:objc_opt_class()];
   if (v5)
   {
-    v6 = [v5 uniqueIdentifierForREMObject:v4];
+    v6 = [v5 uniqueIdentifierForREMObject:objectCopy];
   }
 
   else
@@ -2875,10 +2875,10 @@ void __47__EKReminderStore_frozenClassForReminderClass___block_invoke()
   return v6;
 }
 
-+ (BOOL)isNotFoundError:(id)a3
++ (BOOL)isNotFoundError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -2898,9 +2898,9 @@ void __47__EKReminderStore_frozenClassForReminderClass___block_invoke()
     +[EKReminderStore isNotFoundError:];
   }
 
-  if ([v4 isEqualToString:*v5])
+  if ([domain isEqualToString:*v5])
   {
-    v7 = [v3 code] == -3000;
+    v7 = [errorCopy code] == -3000;
   }
 
   else

@@ -1,12 +1,12 @@
 @interface LabelWithBackground
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD219LabelWithBackground)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD219LabelWithBackground)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation LabelWithBackground
 
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD219LabelWithBackground)initWithCoder:(id)a3
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD219LabelWithBackground)initWithCoder:(id)coder
 {
   sub_2518F0278();
   sub_2518F0268();
@@ -37,22 +37,22 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for LabelWithBackground();
-  v3 = self;
+  selfCopy = self;
   [(LabelWithBackground *)&v6 layoutSubviews];
   v4 = sub_2518D10AC();
-  [(LabelWithBackground *)v3 bounds:v6.receiver];
+  [(LabelWithBackground *)selfCopy bounds:v6.receiver];
   [v4 setFrame_];
 
   v5 = sub_2518D115C();
-  [(LabelWithBackground *)v3 bounds];
+  [(LabelWithBackground *)selfCopy bounds];
   v8 = CGRectInset(v7, 12.0, 2.0);
   [v5 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   sub_2518F0278();
   sub_2518F0268();
   sub_2518F0218();
@@ -61,7 +61,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = sub_2518D115C();
   [v7 sizeThatFits_];
   v9 = v8;

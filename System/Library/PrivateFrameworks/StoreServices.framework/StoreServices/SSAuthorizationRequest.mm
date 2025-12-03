@@ -1,11 +1,11 @@
 @interface SSAuthorizationRequest
 - (BOOL)start;
-- (SSAuthorizationRequest)initWithAuthorizationToken:(id)a3 accountIdentifier:(id)a4;
-- (SSAuthorizationRequest)initWithXPCEncoding:(id)a3;
+- (SSAuthorizationRequest)initWithAuthorizationToken:(id)token accountIdentifier:(id)identifier;
+- (SSAuthorizationRequest)initWithXPCEncoding:(id)encoding;
 - (id)_init;
 - (id)copyXPCEncoding;
-- (void)startWithAuthorizationResponseBlock:(id)a3;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)startWithAuthorizationResponseBlock:(id)block;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation SSAuthorizationRequest
@@ -17,14 +17,14 @@
   return [(SSRequest *)&v3 init];
 }
 
-- (SSAuthorizationRequest)initWithAuthorizationToken:(id)a3 accountIdentifier:(id)a4
+- (SSAuthorizationRequest)initWithAuthorizationToken:(id)token accountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  tokenCopy = token;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (tokenCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -50,14 +50,14 @@ LABEL_3:
     accountIdentifier = v9->_accountIdentifier;
     v9->_accountIdentifier = v10;
 
-    if ([v6 conformsToProtocol:&unk_1F507D4B0])
+    if ([tokenCopy conformsToProtocol:&unk_1F507D4B0])
     {
-      v12 = [v6 copy];
+      v12 = [tokenCopy copy];
     }
 
     else
     {
-      v12 = v6;
+      v12 = tokenCopy;
     }
 
     token = v9->_token;
@@ -67,10 +67,10 @@ LABEL_3:
   return v9;
 }
 
-- (void)startWithAuthorizationResponseBlock:(id)a3
+- (void)startWithAuthorizationResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -79,19 +79,19 @@ LABEL_3:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v9 = v7;
     }
@@ -115,9 +115,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -129,8 +129,8 @@ LABEL_16:
   v19[2] = __62__SSAuthorizationRequest_startWithAuthorizationResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:57 messageBlock:v19];
 }
 
@@ -228,15 +228,15 @@ void __31__SSAuthorizationRequest_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SSAuthorizationRequest_startWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E84AE260;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSAuthorizationRequest *)self startWithAuthorizationResponseBlock:v6];
 }
 
@@ -261,7 +261,7 @@ uint64_t __51__SSAuthorizationRequest_startWithCompletionBlock___block_invoke(ui
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -284,11 +284,11 @@ uint64_t __41__SSAuthorizationRequest_copyXPCEncoding__block_invoke(uint64_t a1)
   return SSXPCDictionarySetObject(v2, "58", v3);
 }
 
-- (SSAuthorizationRequest)initWithXPCEncoding:(id)a3
+- (SSAuthorizationRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v27.receiver = self;
     v27.super_class = SSAuthorizationRequest;

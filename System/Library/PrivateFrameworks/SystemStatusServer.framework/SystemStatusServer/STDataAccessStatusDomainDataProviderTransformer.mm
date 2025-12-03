@@ -1,39 +1,39 @@
 @interface STDataAccessStatusDomainDataProviderTransformer
-- (STDataAccessStatusDomainDataProviderTransformer)initWithDataProvider:(id)a3 publisherServerHandle:(id)a4;
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4;
+- (STDataAccessStatusDomainDataProviderTransformer)initWithDataProvider:(id)provider publisherServerHandle:(id)handle;
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain;
 @end
 
 @implementation STDataAccessStatusDomainDataProviderTransformer
 
-- (STDataAccessStatusDomainDataProviderTransformer)initWithDataProvider:(id)a3 publisherServerHandle:(id)a4
+- (STDataAccessStatusDomainDataProviderTransformer)initWithDataProvider:(id)provider publisherServerHandle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = STDataAccessStatusDomainDataProviderTransformer;
   v9 = [(STDataAccessStatusDomainDataProviderTransformer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataProvider, a3);
-    objc_storeStrong(&v10->_publisherServerHandle, a4);
+    objc_storeStrong(&v9->_dataProvider, provider);
+    objc_storeStrong(&v10->_publisherServerHandle, handle);
   }
 
   return v10;
 }
 
-- (id)transformedDataForData:(id)a3 domain:(unint64_t)a4
+- (id)transformedDataForData:(id)data domain:(unint64_t)domain
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 6)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (domain == 6)
   {
     v8 = 16;
   }
 
   else
   {
-    if (a4 != 7)
+    if (domain != 7)
     {
       goto LABEL_8;
     }
@@ -41,7 +41,7 @@
     v8 = 24;
   }
 
-  v9 = [v6 copy];
+  v9 = [dataCopy copy];
   v10 = *(&self->super.isa + v8);
   *(&self->super.isa + v8) = v9;
 

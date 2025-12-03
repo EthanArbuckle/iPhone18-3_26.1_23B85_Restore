@@ -1,31 +1,31 @@
 @interface ATXAnchorModelLinkActionDetails
-+ (id)encodedStringForLinkAction:(id)a3;
-+ (id)linkActionFromEncodedString:(id)a3;
-- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)a3 actionId:(id)a4 linkAction:(id)a5;
-- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)a3 actionId:(id)a4 linkActionEncodedString:(id)a5;
++ (id)encodedStringForLinkAction:(id)action;
++ (id)linkActionFromEncodedString:(id)string;
+- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)d actionId:(id)id linkAction:(id)action;
+- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)d actionId:(id)id linkActionEncodedString:(id)string;
 @end
 
 @implementation ATXAnchorModelLinkActionDetails
 
-- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)a3 actionId:(id)a4 linkAction:(id)a5
+- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)d actionId:(id)id linkAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  idCopy = id;
+  actionCopy = action;
   v19.receiver = self;
   v19.super_class = ATXAnchorModelLinkActionDetails;
   v11 = [(ATXAnchorModelLinkActionDetails *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     bundleId = v11->_bundleId;
     v11->_bundleId = v12;
 
-    v14 = [v9 copy];
+    v14 = [idCopy copy];
     actionId = v11->_actionId;
     v11->_actionId = v14;
 
-    v16 = [v10 copy];
+    v16 = [actionCopy copy];
     linkAction = v11->_linkAction;
     v11->_linkAction = v16;
   }
@@ -33,23 +33,23 @@
   return v11;
 }
 
-- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)a3 actionId:(id)a4 linkActionEncodedString:(id)a5
+- (ATXAnchorModelLinkActionDetails)initWithBundleID:(id)d actionId:(id)id linkActionEncodedString:(id)string
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() linkActionFromEncodedString:v8];
+  stringCopy = string;
+  idCopy = id;
+  dCopy = d;
+  v11 = [objc_opt_class() linkActionFromEncodedString:stringCopy];
 
-  v12 = [(ATXAnchorModelLinkActionDetails *)self initWithBundleID:v10 actionId:v9 linkAction:v11];
+  v12 = [(ATXAnchorModelLinkActionDetails *)self initWithBundleID:dCopy actionId:idCopy linkAction:v11];
   return v12;
 }
 
-+ (id)encodedStringForLinkAction:(id)a3
++ (id)encodedStringForLinkAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_autoreleasePoolPush();
   v11 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v11];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:actionCopy requiringSecureCoding:1 error:&v11];
   v6 = v11;
   v7 = v5;
   objc_autoreleasePoolPop(v4);
@@ -73,10 +73,10 @@
   return v9;
 }
 
-+ (id)linkActionFromEncodedString:(id)a3
++ (id)linkActionFromEncodedString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
+  stringCopy = string;
+  v4 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringCopy options:0];
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();

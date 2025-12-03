@@ -1,67 +1,67 @@
 @interface AVTEventCoalescer
-- (AVTEventCoalescer)initWithDelay:(double)a3 queue:(id)a4 logger:(id)a5;
-- (void)eventDidOccur:(id)a3;
-- (void)registerEventForCoalescingWithLabel:(id)a3 handler:(id)a4;
+- (AVTEventCoalescer)initWithDelay:(double)delay queue:(id)queue logger:(id)logger;
+- (void)eventDidOccur:(id)occur;
+- (void)registerEventForCoalescingWithLabel:(id)label handler:(id)handler;
 @end
 
 @implementation AVTEventCoalescer
 
-- (AVTEventCoalescer)initWithDelay:(double)a3 queue:(id)a4 logger:(id)a5
+- (AVTEventCoalescer)initWithDelay:(double)delay queue:(id)queue logger:(id)logger
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  loggerCopy = logger;
   v14.receiver = self;
   v14.super_class = AVTEventCoalescer;
   v11 = [(AVTEventCoalescer *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_delay = a3;
-    objc_storeStrong(&v11->_workQueue, a4);
-    objc_storeStrong(&v12->_logger, a5);
+    v11->_delay = delay;
+    objc_storeStrong(&v11->_workQueue, queue);
+    objc_storeStrong(&v12->_logger, logger);
   }
 
   return v12;
 }
 
-- (void)registerEventForCoalescingWithLabel:(id)a3 handler:(id)a4
+- (void)registerEventForCoalescingWithLabel:(id)label handler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(AVTEventCoalescer *)self eventHandler];
+  labelCopy = label;
+  handlerCopy = handler;
+  eventHandler = [(AVTEventCoalescer *)self eventHandler];
 
-  if (v7)
+  if (eventHandler)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Coalescer already received an eventHandler"];
   }
 
-  [(AVTEventCoalescer *)self setEventLabel:v8];
-  [(AVTEventCoalescer *)self setEventHandler:v6];
+  [(AVTEventCoalescer *)self setEventLabel:labelCopy];
+  [(AVTEventCoalescer *)self setEventHandler:handlerCopy];
 }
 
-- (void)eventDidOccur:(id)a3
+- (void)eventDidOccur:(id)occur
 {
-  v4 = a3;
-  v5 = [(AVTEventCoalescer *)self eventHandler];
+  occurCopy = occur;
+  eventHandler = [(AVTEventCoalescer *)self eventHandler];
 
-  if (!v5)
+  if (!eventHandler)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Coalescer did not receive an eventHandler"];
   }
 
-  v6 = [(AVTEventCoalescer *)self logger];
-  v7 = [(AVTEventCoalescer *)self eventLabel];
-  [v6 logCoalesceableEventOccured:v7];
+  logger = [(AVTEventCoalescer *)self logger];
+  eventLabel = [(AVTEventCoalescer *)self eventLabel];
+  [logger logCoalesceableEventOccured:eventLabel];
 
-  v8 = [(AVTEventCoalescer *)self workQueue];
+  workQueue = [(AVTEventCoalescer *)self workQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35__AVTEventCoalescer_eventDidOccur___block_invoke;
   v10[3] = &unk_278CF9F50;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = occurCopy;
+  v9 = occurCopy;
+  dispatch_async(workQueue, v10);
 }
 
 void __35__AVTEventCoalescer_eventDidOccur___block_invoke(uint64_t a1)

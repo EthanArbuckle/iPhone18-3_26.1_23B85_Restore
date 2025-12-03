@@ -1,30 +1,30 @@
 @interface MIOSpecificationModel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (MIOSpecificationModel)initWithMessageStream:(CodedInputStream *)a3 parserContext:(id)a4 error:(id *)a5;
-- (MIOSpecificationModel)initWithSpecificationData:(id)a3 parserContext:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (MIOSpecificationModel)initWithMessageStream:(CodedInputStream *)stream parserContext:(id)context error:(id *)error;
+- (MIOSpecificationModel)initWithSpecificationData:(id)data parserContext:(id)context error:(id *)error;
 - (id).cxx_construct;
-- (id)computePrecisionForFunctionNamed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3;
-- (id)programOperationHistogramForFunctionNamed:(id)a3;
-- (id)storagePrecisionForFunctionNamed:(id)a3;
-- (unint64_t)_indexForFunctionNamed:(id)a3;
+- (id)computePrecisionForFunctionNamed:(id)named;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named;
+- (id)programOperationHistogramForFunctionNamed:(id)named;
+- (id)storagePrecisionForFunctionNamed:(id)named;
+- (unint64_t)_indexForFunctionNamed:(id)named;
 - (unint64_t)hash;
 @end
 
 @implementation MIOSpecificationModel
 
-- (MIOSpecificationModel)initWithSpecificationData:(id)a3 parserContext:(id)a4 error:(id *)a5
+- (MIOSpecificationModel)initWithSpecificationData:(id)data parserContext:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_specificationData, a3);
-  objc_storeStrong(&self->_parserContext, a4);
-  v11 = [v9 bytes];
-  v12 = [v9 length];
-  v15[0] = v11;
-  v15[1] = v11 + v12;
+  dataCopy = data;
+  contextCopy = context;
+  objc_storeStrong(&self->_specificationData, data);
+  objc_storeStrong(&self->_parserContext, context);
+  bytes = [dataCopy bytes];
+  v12 = [dataCopy length];
+  v15[0] = bytes;
+  v15[1] = bytes + v12;
   v15[2] = 0;
   v16 = v12;
   v17 = 0;
@@ -35,16 +35,16 @@
   v22 = google::protobuf::io::CodedInputStream::default_recursion_limit_;
   v23 = 0;
   v24 = 0;
-  v13 = [(MIOSpecificationModel *)self initWithMessageStream:v15 parserContext:v10 error:a5];
+  v13 = [(MIOSpecificationModel *)self initWithMessageStream:v15 parserContext:contextCopy error:error];
   google::protobuf::io::CodedInputStream::~CodedInputStream(v15);
 
   return v13;
 }
 
-- (MIOSpecificationModel)initWithMessageStream:(CodedInputStream *)a3 parserContext:(id)a4 error:(id *)a5
+- (MIOSpecificationModel)initWithMessageStream:(CodedInputStream *)stream parserContext:(id)context error:(id *)error
 {
   v41[3] = *MEMORY[0x1E69E9840];
-  v30 = a4;
+  contextCopy = context;
   v40.receiver = self;
   v40.super_class = MIOSpecificationModel;
   v7 = [(MIOSpecificationModel *)&v40 init];
@@ -64,7 +64,7 @@ LABEL_20:
   *obj = 0u;
   memset(v38, 0, sizeof(v38));
   v39 = 0;
-  MIOParseModelSpecification(a3, v30, &v31);
+  MIOParseModelSpecification(stream, contextCopy, &v31);
   v8 = [MIOModelDescription alloc];
   v9 = v32;
   v10 = v34;
@@ -80,8 +80,8 @@ LABEL_20:
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v12 addObject:v15];
+      null = [MEMORY[0x1E695DFB0] null];
+      [v12 addObject:null];
     }
   }
 
@@ -95,7 +95,7 @@ LABEL_20:
     v16 = MEMORY[0x1E695E0F0];
   }
 
-  v17 = [(MIOModelDescription *)v8 initWithSpecification:v9 isUpdatable:v10 != 0 modelParameters:v16 classLabelsPerFunction:v12 error:a5];
+  v17 = [(MIOModelDescription *)v8 initWithSpecification:v9 isUpdatable:v10 != 0 modelParameters:v16 classLabelsPerFunction:v12 error:error];
 
   if (v17)
   {
@@ -171,21 +171,21 @@ LABEL_26:
   return v25;
 }
 
-- (unint64_t)_indexForFunctionNamed:(id)a3
+- (unint64_t)_indexForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 || (-[MIOSpecificationModel modelDescription](self, "modelDescription"), v6 = objc_claimAutoreleasedReturnValue(), [v6 defaultFunctionName], v5 = objc_claimAutoreleasedReturnValue(), v6, v5))
+  namedCopy = named;
+  v5 = namedCopy;
+  if (namedCopy || (-[MIOSpecificationModel modelDescription](self, "modelDescription"), v6 = objc_claimAutoreleasedReturnValue(), [v6 defaultFunctionName], v5 = objc_claimAutoreleasedReturnValue(), v6, v5))
   {
-    v7 = [(MIOSpecificationModel *)self modelDescription];
-    v8 = [v7 functionDescriptions];
+    modelDescription = [(MIOSpecificationModel *)self modelDescription];
+    functionDescriptions = [modelDescription functionDescriptions];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke;
     v12[3] = &unk_1E814D950;
     v9 = v5;
     v13 = v9;
-    v10 = [v8 indexOfObjectPassingTest:v12];
+    v10 = [functionDescriptions indexOfObjectPassingTest:v12];
   }
 
   else
@@ -204,9 +204,9 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v4;
 }
 
-- (id)programOperationHistogramForFunctionNamed:(id)a3
+- (id)programOperationHistogramForFunctionNamed:(id)named
 {
-  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:a3];
+  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:named];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -220,9 +220,9 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v5;
 }
 
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named
 {
-  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:a3];
+  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:named];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -236,9 +236,9 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v5;
 }
 
-- (id)computePrecisionForFunctionNamed:(id)a3
+- (id)computePrecisionForFunctionNamed:(id)named
 {
-  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:a3];
+  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:named];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -252,9 +252,9 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v5;
 }
 
-- (id)storagePrecisionForFunctionNamed:(id)a3
+- (id)storagePrecisionForFunctionNamed:(id)named
 {
-  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:a3];
+  v4 = [(MIOSpecificationModel *)self _indexForFunctionNamed:named];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -268,24 +268,24 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v5;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(MIOSpecificationModel *)self specificationData];
+  lCopy = l;
+  specificationData = [(MIOSpecificationModel *)self specificationData];
 
-  if (v7)
+  if (specificationData)
   {
-    v8 = open([v6 fileSystemRepresentation], 1537, 420);
+    v8 = open([lCopy fileSystemRepresentation], 1537, 420);
     google::protobuf::io::FileOutputStream::FileOutputStream(v39, v8);
     google::protobuf::io::CodedOutputStream::CodedOutputStream(v42, v39, 1);
-    v9 = [(MIOSpecificationModel *)self specificationData];
-    v10 = v9;
-    v11 = [v9 bytes];
-    v12 = [(MIOSpecificationModel *)self specificationData];
-    v13 = [v12 length];
-    v38.var0 = v11;
-    v38.var1 = &v11[v13];
+    specificationData2 = [(MIOSpecificationModel *)self specificationData];
+    v10 = specificationData2;
+    bytes = [specificationData2 bytes];
+    specificationData3 = [(MIOSpecificationModel *)self specificationData];
+    v13 = [specificationData3 length];
+    v38.var0 = bytes;
+    v38.var1 = &bytes[v13];
     v38.var2 = 0;
     v38.var3 = v13;
     *&v38.var4 = 0;
@@ -391,14 +391,14 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
             [MIOSpecificationModel writeToURL:error:];
           }
 
-          if (a4)
+          if (error)
           {
             v31 = MEMORY[0x1E696ABC0];
             v40 = *MEMORY[0x1E696A578];
             v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to serialize ModelDescription message"];
             v41 = v32;
             v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-            *a4 = [v31 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v33];
+            *error = [v31 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v33];
           }
 
           CoreML::Specification::ModelDescription::~ModelDescription(v36);
@@ -426,14 +426,14 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
       [MIOSpecificationModel writeToURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v44 = *MEMORY[0x1E696A578];
       v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Model instance must be initialized with an existing model file to write the content back to a file."];
       v45[0] = v29;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-      *a4 = [v28 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v30];
+      *error = [v28 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:v30];
     }
 
     v15 = 0;
@@ -443,10 +443,10 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
     goto LABEL_12;
@@ -459,62 +459,62 @@ uint64_t __48__MIOSpecificationModel__indexForFunctionNamed___block_invoke(uint6
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [(MIOSpecificationModel *)self specificationVersion];
-  v7 = [(MIOSpecificationModel *)v5 specificationVersion];
-  v8 = [v6 isEqual:v7];
+  v5 = equalCopy;
+  specificationVersion = [(MIOSpecificationModel *)self specificationVersion];
+  specificationVersion2 = [(MIOSpecificationModel *)v5 specificationVersion];
+  v8 = [specificationVersion isEqual:specificationVersion2];
 
   if ((v8 & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v9 = [(MIOSpecificationModel *)self modelTypeName];
-  v10 = [(MIOSpecificationModel *)v5 modelTypeName];
-  v11 = [v9 isEqual:v10];
+  modelTypeName = [(MIOSpecificationModel *)self modelTypeName];
+  modelTypeName2 = [(MIOSpecificationModel *)v5 modelTypeName];
+  v11 = [modelTypeName isEqual:modelTypeName2];
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v12 = [(MIOSpecificationModel *)self modelDescription];
-  v13 = [(MIOSpecificationModel *)v5 modelDescription];
-  v14 = [v12 isEqual:v13];
+  modelDescription = [(MIOSpecificationModel *)self modelDescription];
+  modelDescription2 = [(MIOSpecificationModel *)v5 modelDescription];
+  v14 = [modelDescription isEqual:modelDescription2];
 
   if ((v14 & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v15 = [(MIOSpecificationModel *)self layers];
-  v16 = [(MIOSpecificationModel *)v5 layers];
-  v17 = v16;
-  if (v15 == v16)
+  layers = [(MIOSpecificationModel *)self layers];
+  layers2 = [(MIOSpecificationModel *)v5 layers];
+  v17 = layers2;
+  if (layers == layers2)
   {
 
     goto LABEL_14;
   }
 
-  v18 = [(MIOSpecificationModel *)self layers];
-  v19 = [(MIOSpecificationModel *)v5 layers];
-  v20 = [v18 isEqual:v19];
+  layers3 = [(MIOSpecificationModel *)self layers];
+  layers4 = [(MIOSpecificationModel *)v5 layers];
+  v20 = [layers3 isEqual:layers4];
 
   if (v20)
   {
 LABEL_14:
-    v23 = [(MIOSpecificationModel *)self subModels];
-    v24 = [(MIOSpecificationModel *)v5 subModels];
-    if (v23 == v24)
+    subModels = [(MIOSpecificationModel *)self subModels];
+    subModels2 = [(MIOSpecificationModel *)v5 subModels];
+    if (subModels == subModels2)
     {
       v21 = 1;
     }
 
     else
     {
-      v25 = [(MIOSpecificationModel *)self subModels];
-      v26 = [(MIOSpecificationModel *)v5 subModels];
-      v21 = [v25 isEqual:v26];
+      subModels3 = [(MIOSpecificationModel *)self subModels];
+      subModels4 = [(MIOSpecificationModel *)v5 subModels];
+      v21 = [subModels3 isEqual:subModels4];
     }
 
     goto LABEL_9;
@@ -530,21 +530,21 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOSpecificationModel *)self modelTypeName];
-  v4 = [v3 hash];
-  v5 = [(MIOSpecificationModel *)self modelDescription];
-  v6 = [v5 hash];
+  modelTypeName = [(MIOSpecificationModel *)self modelTypeName];
+  v4 = [modelTypeName hash];
+  modelDescription = [(MIOSpecificationModel *)self modelDescription];
+  v6 = [modelDescription hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MIOSpecificationModel alloc];
-  v5 = [(MIOSpecificationModel *)self specificationData];
-  v6 = [(MIOSpecificationModel *)self parserContext];
+  specificationData = [(MIOSpecificationModel *)self specificationData];
+  parserContext = [(MIOSpecificationModel *)self parserContext];
   v14 = 0;
-  v7 = [(MIOSpecificationModel *)v4 initWithSpecificationData:v5 parserContext:v6 error:&v14];
+  v7 = [(MIOSpecificationModel *)v4 initWithSpecificationData:specificationData parserContext:parserContext error:&v14];
   v8 = v14;
 
   if (v8)
@@ -560,8 +560,8 @@ LABEL_12:
 
   else
   {
-    v11 = [(MIOSpecificationModel *)self modelDescription];
-    v12 = [v11 copy];
+    modelDescription = [(MIOSpecificationModel *)self modelDescription];
+    v12 = [modelDescription copy];
     [(MIOSpecificationModel *)v7 setModelDescription:v12];
 
     v10 = v7;

@@ -1,7 +1,7 @@
 @interface PHAssetAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable;
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3;
+- (BOOL)_accessibilitySavePhotoLabel:(id)label;
 - (BOOL)shouldMeasureBlurriness;
 - (id)_accessibilityAssetDuration;
 - (id)_accessibilityCaptionLabel;
@@ -15,48 +15,48 @@
 - (id)accessibilityCustomContent;
 - (id)accessibilityLabel;
 - (id)accessibilityURL;
-- (void)_setAXValueCallback:(id)a3;
-- (void)accessibilityApplyValueBlock:(id)a3;
+- (void)_setAXValueCallback:(id)callback;
+- (void)accessibilityApplyValueBlock:(id)block;
 @end
 
 @implementation PHAssetAccessibility
 
-- (void)_setAXValueCallback:(id)a3
+- (void)_setAXValueCallback:(id)callback
 {
-  v3 = MEMORY[0x29C2E6820](a3, a2);
+  v3 = MEMORY[0x29C2E6820](callback, a2);
   __UIAccessibilitySetAssociatedCopiedObject();
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"pixelWidth" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"pixelHeight" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isPhoto" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isLoopingVideo" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"pixelHeight" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"pixelWidth" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isAudio" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"creationDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"mediaSubtypes" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isPhotoIris" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHAsset" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHObject" hasInstanceMethod:@"localIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHAsset" isKindOfClass:@"PHObject"];
-  [v3 validateClass:@"PHObject" hasInstanceMethod:@"photoLibrary" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHPhotoLibrary" hasInstanceMethod:@"isSystemPhotoLibrary" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PHPhotoLibrary" hasInstanceMethod:@"photoLibraryURL" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"pixelWidth" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"pixelHeight" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isPhoto" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isLoopingVideo" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"pixelHeight" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"pixelWidth" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isAudio" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"duration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"mainFileURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"creationDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"mediaSubtypes" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isPhotoIris" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHAsset" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHObject" hasInstanceMethod:@"localIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHAsset" isKindOfClass:@"PHObject"];
+  [validationsCopy validateClass:@"PHObject" hasInstanceMethod:@"photoLibrary" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHPhotoLibrary" hasInstanceMethod:@"isSystemPhotoLibrary" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PHPhotoLibrary" hasInstanceMethod:@"photoLibraryURL" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)shouldMeasureBlurriness
 {
   v2 = [(PHAssetAccessibility *)self safeValueForKey:@"mediaSubtypes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return (v3 & 0x10) == 0;
+  return (unsignedIntegerValue & 0x10) == 0;
 }
 
 - (id)_accessibilityCreationTime
@@ -83,12 +83,12 @@
 
   if (v3)
   {
-    v4 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v5 = [v4 components:28 fromDate:v3];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    v5 = [currentCalendar components:28 fromDate:v3];
 
-    v6 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v7 = [MEMORY[0x29EDB8DB0] date];
-    v8 = [v6 components:28 fromDate:v7];
+    currentCalendar2 = [MEMORY[0x29EDB8D98] currentCalendar];
+    date = [MEMORY[0x29EDB8DB0] date];
+    v8 = [currentCalendar2 components:28 fromDate:date];
 
     [v5 year];
     [v8 year];
@@ -125,8 +125,8 @@
 
   else
   {
-    v8 = [v3 integerValue];
-    if (v8 >= [v5 integerValue])
+    integerValue = [v3 integerValue];
+    if (integerValue >= [v5 integerValue])
     {
       v9 = @"photo.label.orientation.landscape";
     }
@@ -165,22 +165,22 @@
   v4 = [(PHAssetAccessibility *)self safeValueForKey:@"creationDate"];
   v60 = __UIAccessibilitySafeClass();
 
-  v5 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v61 = [v5 components:28 fromDate:v60];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  v61 = [currentCalendar components:28 fromDate:v60];
 
-  v6 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v7 = [MEMORY[0x29EDB8DB0] date];
-  v8 = [v6 components:28 fromDate:v7];
+  currentCalendar2 = [MEMORY[0x29EDB8D98] currentCalendar];
+  date = [MEMORY[0x29EDB8DB0] date];
+  v8 = [currentCalendar2 components:28 fromDate:date];
 
-  v9 = [(PHAssetAccessibility *)self _accessibilityCreationDate];
-  if ([v9 length])
+  _accessibilityCreationDate = [(PHAssetAccessibility *)self _accessibilityCreationDate];
+  if ([_accessibilityCreationDate length])
   {
     v10 = MEMORY[0x29EDB8058];
     v11 = accessibilityPLServicesLocalizedString(@"date.title");
-    v12 = [v10 customContentWithLabel:v11 value:v9];
+    v12 = [v10 customContentWithLabel:v11 value:_accessibilityCreationDate];
 
-    v13 = [v61 month];
-    if (v13 != [v8 month] || (v14 = objc_msgSend(v61, "day"), v14 != objc_msgSend(v8, "day")) || (v15 = objc_msgSend(v61, "year"), v15 != objc_msgSend(v8, "year")))
+    month = [v61 month];
+    if (month != [v8 month] || (v14 = objc_msgSend(v61, "day"), v14 != objc_msgSend(v8, "day")) || (v15 = objc_msgSend(v61, "year"), v15 != objc_msgSend(v8, "year")))
     {
       [v12 setImportance:1];
     }
@@ -188,80 +188,80 @@
     [v3 addObject:v12];
   }
 
-  v16 = [(PHAssetAccessibility *)self _accessibilityCreationTime];
-  if ([v16 length])
+  _accessibilityCreationTime = [(PHAssetAccessibility *)self _accessibilityCreationTime];
+  if ([_accessibilityCreationTime length])
   {
     v17 = MEMORY[0x29EDB8058];
     v18 = accessibilityPLServicesLocalizedString(@"time.title");
-    v19 = [v17 customContentWithLabel:v18 value:v16];
+    v19 = [v17 customContentWithLabel:v18 value:_accessibilityCreationTime];
 
     [v19 setImportance:1];
     [v3 addObject:v19];
   }
 
-  v58 = v16;
-  v20 = [(PHAssetAccessibility *)self _accessibilityOrientation];
-  if ([v20 length])
+  v58 = _accessibilityCreationTime;
+  _accessibilityOrientation = [(PHAssetAccessibility *)self _accessibilityOrientation];
+  if ([_accessibilityOrientation length])
   {
     v21 = MEMORY[0x29EDB8058];
     v22 = accessibilityPLServicesLocalizedString(@"orientation.title");
-    v23 = [v21 customContentWithLabel:v22 value:v20];
+    v23 = [v21 customContentWithLabel:v22 value:_accessibilityOrientation];
 
     [v3 addObject:v23];
   }
 
-  v24 = [(PHAssetAccessibility *)self _accessibilityAssetDuration];
-  if ([v24 length])
+  _accessibilityAssetDuration = [(PHAssetAccessibility *)self _accessibilityAssetDuration];
+  if ([_accessibilityAssetDuration length])
   {
     v25 = MEMORY[0x29EDB8058];
     v26 = accessibilityPLServicesLocalizedString(@"duration.title");
-    v27 = [v25 customContentWithLabel:v26 value:v24];
+    v27 = [v25 customContentWithLabel:v26 value:_accessibilityAssetDuration];
 
     [v3 addObject:v27];
   }
 
-  v28 = [(PHAssetAccessibility *)self _accessibilityCaptionLabel];
-  if ([v28 length])
+  _accessibilityCaptionLabel = [(PHAssetAccessibility *)self _accessibilityCaptionLabel];
+  if ([_accessibilityCaptionLabel length])
   {
     v29 = MEMORY[0x29EDB8058];
     v30 = accessibilityPLServicesLocalizedString(@"caption.title");
-    v31 = [v29 customContentWithLabel:v30 value:v28];
+    v31 = [v29 customContentWithLabel:v30 value:_accessibilityCaptionLabel];
 
     [v3 addObject:v31];
   }
 
-  v32 = [(PHAssetAccessibility *)self _accessibilityPeopleInPhoto];
-  v59 = v20;
-  v57 = v32;
-  if ([v32 length])
+  _accessibilityPeopleInPhoto = [(PHAssetAccessibility *)self _accessibilityPeopleInPhoto];
+  v59 = _accessibilityOrientation;
+  v57 = _accessibilityPeopleInPhoto;
+  if ([_accessibilityPeopleInPhoto length])
   {
     v33 = MEMORY[0x29EDB8058];
     v34 = accessibilityPLServicesLocalizedString(@"names.title");
-    v35 = [v33 customContentWithLabel:v34 value:v32];
+    _accessibilityFacesInfo = [v33 customContentWithLabel:v34 value:_accessibilityPeopleInPhoto];
 
-    [v3 addObject:v35];
+    [v3 addObject:_accessibilityFacesInfo];
   }
 
   else
   {
-    v35 = [(PHAssetAccessibility *)self _accessibilityFacesInfo];
-    if ([v35 length])
+    _accessibilityFacesInfo = [(PHAssetAccessibility *)self _accessibilityFacesInfo];
+    if ([_accessibilityFacesInfo length])
     {
       v36 = MEMORY[0x29EDB8058];
       v37 = accessibilityPLServicesLocalizedString(@"faces.title");
-      v38 = [v36 customContentWithLabel:v37 value:v35];
+      v38 = [v36 customContentWithLabel:v37 value:_accessibilityFacesInfo];
 
       [v3 addObject:v38];
     }
   }
 
   v39 = [(PHAssetAccessibility *)self safeValueForKey:@"mediaSubtypes"];
-  v40 = [v39 unsignedIntegerValue];
+  unsignedIntegerValue = [v39 unsignedIntegerValue];
 
-  if ((v40 & 2) != 0)
+  if ((unsignedIntegerValue & 2) != 0)
   {
     v41 = accessibilityPLServicesLocalizedString(@"photo.label.type.photo.hdr");
-    if ((v40 & 1) == 0)
+    if ((unsignedIntegerValue & 1) == 0)
     {
       goto LABEL_24;
     }
@@ -270,35 +270,35 @@
   }
 
   v41 = 0;
-  if (v40)
+  if (unsignedIntegerValue)
   {
 LABEL_23:
     v42 = MEMORY[0x29EDB8D80];
     v43 = accessibilityPLServicesLocalizedString(@"photo.label.type.photo.panorama");
-    v44 = [v42 axArrayByIgnoringNilElementsWithCount:{2, v41, v43, v32}];
+    v44 = [v42 axArrayByIgnoringNilElementsWithCount:{2, v41, v43, _accessibilityPeopleInPhoto}];
     AXCombineStringsWithoutDuplicates(v44);
-    v45 = v9;
+    v45 = _accessibilityCreationDate;
     v46 = v8;
     v47 = v3;
-    v49 = v48 = v28;
+    v49 = v48 = _accessibilityCaptionLabel;
 
     v41 = v49;
-    v28 = v48;
+    _accessibilityCaptionLabel = v48;
     v3 = v47;
     v8 = v46;
-    v9 = v45;
+    _accessibilityCreationDate = v45;
   }
 
 LABEL_24:
   v50 = v59;
-  if ((v40 & 0x10) != 0)
+  if ((unsignedIntegerValue & 0x10) != 0)
   {
     v51 = accessibilityPLServicesLocalizedString(@"photo.label.type.photo.depth");
 
     v41 = v51;
   }
 
-  v52 = v24;
+  v52 = _accessibilityAssetDuration;
   if ([v41 length])
   {
     v53 = MEMORY[0x29EDB8058];
@@ -308,7 +308,7 @@ LABEL_24:
     v50 = v59;
     [v3 addObject:v55];
 
-    v52 = v24;
+    v52 = _accessibilityAssetDuration;
   }
 
   return v3;
@@ -359,14 +359,14 @@ LABEL_24:
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 length];
+          name = [v9 name];
+          v11 = [name length];
 
           if (v11)
           {
             v12 = MEMORY[0x29EDB8D80];
-            v13 = [v9 name];
-            v14 = [v12 axArrayByIgnoringNilElementsWithCount:{2, v6, v13, v18}];
+            name2 = [v9 name];
+            v14 = [v12 axArrayByIgnoringNilElementsWithCount:{2, v6, name2, v18}];
             v15 = AXCombineStringsWithoutDuplicates(v14);
 
             v6 = v15;
@@ -424,25 +424,25 @@ LABEL_24:
         v6 = *(*(&v23 + 1) + 8 * i);
         if ([v6 isLocallyAvailable])
         {
-          v7 = [v6 privateFileURL];
-          if (v7)
+          privateFileURL = [v6 privateFileURL];
+          if (privateFileURL)
           {
-            v8 = v7;
-            v9 = [v6 uniformTypeIdentifier];
-            v10 = [v21 identifier];
-            if ([v9 isEqualToString:v10])
+            v8 = privateFileURL;
+            uniformTypeIdentifier = [v6 uniformTypeIdentifier];
+            identifier = [v21 identifier];
+            if ([uniformTypeIdentifier isEqualToString:identifier])
             {
 
 LABEL_17:
-              v16 = [v6 privateFileURL];
+              privateFileURL2 = [v6 privateFileURL];
 
               v14 = v19;
               goto LABEL_19;
             }
 
-            v11 = [v6 uniformTypeIdentifier];
-            v12 = [v20 identifier];
-            v13 = [v11 isEqualToString:v12];
+            uniformTypeIdentifier2 = [v6 uniformTypeIdentifier];
+            identifier2 = [v20 identifier];
+            v13 = [uniformTypeIdentifier2 isEqualToString:identifier2];
 
             if (v13)
             {
@@ -467,7 +467,7 @@ LABEL_17:
   {
     v27 = 0;
     v15 = [v19 safeValueForKey:@"mainFileURL"];
-    v16 = __UIAccessibilitySafeClass();
+    privateFileURL2 = __UIAccessibilitySafeClass();
 
     if (v27 == 1)
     {
@@ -477,14 +477,14 @@ LABEL_17:
 
   else
   {
-    v16 = 0;
+    privateFileURL2 = 0;
   }
 
 LABEL_19:
 
   v17 = *MEMORY[0x29EDCA608];
 
-  return v16;
+  return privateFileURL2;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
@@ -508,30 +508,30 @@ LABEL_19:
 
 - (id)accessibilityLabel
 {
-  v3 = [(PHAssetAccessibility *)self accessibilityUserDefinedLabel];
-  v4 = v3;
-  if (v3)
+  accessibilityUserDefinedLabel = [(PHAssetAccessibility *)self accessibilityUserDefinedLabel];
+  v4 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v5 = v3;
+    v5 = accessibilityUserDefinedLabel;
     goto LABEL_37;
   }
 
   v6 = [(PHAssetAccessibility *)self safeValueForKey:@"isPhoto"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [(PHAssetAccessibility *)self safeValueForKey:@"isVideo"];
-  v9 = [v8 BOOLValue];
+  bOOLValue2 = [v8 BOOLValue];
 
   v10 = [(PHAssetAccessibility *)self safeValueForKey:@"isAudio"];
-  v11 = [v10 BOOLValue];
+  bOOLValue3 = [v10 BOOLValue];
 
   v12 = [(PHAssetAccessibility *)self safeBoolForKey:@"isLoopingVideo"];
   v13 = [(PHAssetAccessibility *)self safeBoolForKey:@"isFavorite"];
   v14 = [(PHAssetAccessibility *)self safeValueForKey:@"isPhotoIris"];
-  v15 = [v14 BOOLValue];
+  bOOLValue4 = [v14 BOOLValue];
 
   v16 = [(PHAssetAccessibility *)self safeValueForKey:@"mainFileURL"];
-  if (v7)
+  if (bOOLValue)
   {
     if (UIAccessibilityIsImageScreenshot())
     {
@@ -539,15 +539,15 @@ LABEL_19:
 LABEL_21:
       v18 = v17;
 LABEL_22:
-      v24 = [(PHAssetAccessibility *)self _accessibilityiCloudPhotoLabel];
-      if ([v24 length])
+      _accessibilityiCloudPhotoLabel = [(PHAssetAccessibility *)self _accessibilityiCloudPhotoLabel];
+      if ([_accessibilityiCloudPhotoLabel length])
       {
-        v25 = v24;
+        v25 = _accessibilityiCloudPhotoLabel;
       }
 
       else
       {
-        if (v7)
+        if (bOOLValue)
         {
           UIAccessibilityMetadataDescriptionForImage();
         }
@@ -573,7 +573,7 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (v15)
+    if (bOOLValue4)
     {
       v19 = *MEMORY[0x29EDC7378];
       v20 = accessibilityCameraUILocalizedString(@"live.photo");
@@ -590,7 +590,7 @@ LABEL_11:
   if (v12)
   {
     v18 = accessibilityPLServicesLocalizedString(@"photo.label.type.looping.video");
-    if (v9)
+    if (bOOLValue2)
     {
       goto LABEL_22;
     }
@@ -598,19 +598,19 @@ LABEL_11:
 
   else
   {
-    if (v9)
+    if (bOOLValue2)
     {
       v21 = [(PHAssetAccessibility *)self safeValueForKey:@"mediaSubtypes"];
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-      if ((v22 & 0x20000) != 0)
+      if ((unsignedIntegerValue & 0x20000) != 0)
       {
         v23 = @"photo.label.type.video.slomo";
       }
 
       else
       {
-        if ((v22 & 0x40000) != 0)
+        if ((unsignedIntegerValue & 0x40000) != 0)
         {
           v36 = MEMORY[0x29EDB8D80];
           v20 = accessibilityPLServicesLocalizedString(@"photo.label.type.video.timelapse");
@@ -628,7 +628,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (v11)
+    if (bOOLValue3)
     {
       v18 = accessibilityPLServicesLocalizedString(@"photo.label.type.audio");
     }
@@ -655,10 +655,10 @@ LABEL_34:
     v28 = MEMORY[0x29EDB8D80];
     [(PHAssetAccessibility *)self _accessibilityAssetDuration];
     v29 = v38 = v16;
-    v30 = [(PHAssetAccessibility *)self _accessibilityCreationDate];
+    _accessibilityCreationDate = [(PHAssetAccessibility *)self _accessibilityCreationDate];
     [(PHAssetAccessibility *)self _accessibilityCreationTime];
     v32 = v31 = v18;
-    v33 = [v28 axArrayByIgnoringNilElementsWithCount:{4, v5, v29, v30, v32}];
+    v33 = [v28 axArrayByIgnoringNilElementsWithCount:{4, v5, v29, _accessibilityCreationDate, v32}];
 
     v18 = v31;
     v4 = 0;
@@ -678,55 +678,55 @@ LABEL_37:
 
 - (id)_accessibilityCaptionLabel
 {
-  v2 = [(PHAssetAccessibility *)self descriptionProperties];
-  v3 = [v2 assetDescription];
+  descriptionProperties = [(PHAssetAccessibility *)self descriptionProperties];
+  assetDescription = [descriptionProperties assetDescription];
 
-  return v3;
+  return assetDescription;
 }
 
 - (id)_accessibilityiCloudPhotoLabel
 {
   v14[1] = *MEMORY[0x29EDCA608];
-  v2 = self;
-  if ([(PHAssetAccessibility *)v2 _axICloudLabelWasSet])
+  selfCopy = self;
+  if ([(PHAssetAccessibility *)selfCopy _axICloudLabelWasSet])
   {
-    v3 = [(PHAssetAccessibility *)v2 localIdentifier];
-    v4 = v3;
-    v5 = v2;
-    if (v3)
+    localIdentifier = [(PHAssetAccessibility *)selfCopy localIdentifier];
+    v4 = localIdentifier;
+    firstObject = selfCopy;
+    if (localIdentifier)
     {
-      v14[0] = v3;
+      v14[0] = localIdentifier;
       v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v14 count:1];
       v7 = [MEMORY[0x29EDBB9F8] fetchAssetsWithLocalIdentifiers:v6 options:0];
       if ([v7 count] != 1)
       {
-        v12 = v2;
+        v12 = selfCopy;
         v13 = v7;
         _AXAssert();
       }
 
-      v5 = [v7 firstObject];
+      firstObject = [v7 firstObject];
     }
 
-    if (!v5)
+    if (!firstObject)
     {
-      v5 = v2;
+      firstObject = selfCopy;
     }
 
-    v2 = v5;
+    selfCopy = firstObject;
   }
 
-  v8 = [(PHAssetAccessibility *)v2 descriptionProperties];
-  v9 = [v8 accessibilityDescription];
+  descriptionProperties = [(PHAssetAccessibility *)selfCopy descriptionProperties];
+  accessibilityDescription = [descriptionProperties accessibilityDescription];
 
   v10 = *MEMORY[0x29EDCA608];
 
-  return v9;
+  return accessibilityDescription;
 }
 
-- (BOOL)_accessibilitySavePhotoLabel:(id)a3
+- (BOOL)_accessibilitySavePhotoLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   [(PHAssetAccessibility *)self setAccessibilityLabel:0];
   [(PHAssetAccessibility *)self _axSetICloudLabelWasSet:1];
   LOBYTE(location) = 0;
@@ -740,7 +740,7 @@ LABEL_37:
   v11[2] = __53__PHAssetAccessibility__accessibilitySavePhotoLabel___block_invoke;
   v11[3] = &unk_29F2E5900;
   v11[4] = self;
-  v7 = v4;
+  v7 = labelCopy;
   v12 = v7;
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
@@ -780,14 +780,14 @@ void __53__PHAssetAccessibility__accessibilitySavePhotoLabel___block_invoke_2(ui
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (void)accessibilityApplyValueBlock:(id)a3
+- (void)accessibilityApplyValueBlock:(id)block
 {
-  v5 = a3;
-  [(PHAssetAccessibility *)self _setAXValueCallback:v5];
-  v4 = [(PHAssetAccessibility *)self _accessibilityPhotoDescription];
-  if (v5 && v4)
+  blockCopy = block;
+  [(PHAssetAccessibility *)self _setAXValueCallback:blockCopy];
+  _accessibilityPhotoDescription = [(PHAssetAccessibility *)self _accessibilityPhotoDescription];
+  if (blockCopy && _accessibilityPhotoDescription)
   {
-    v5[2](v5, v4);
+    blockCopy[2](blockCopy, _accessibilityPhotoDescription);
   }
 }
 

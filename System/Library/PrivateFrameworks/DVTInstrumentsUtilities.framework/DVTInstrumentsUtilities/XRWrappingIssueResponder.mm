@@ -1,22 +1,22 @@
 @interface XRWrappingIssueResponder
 - (XRWrappingIssueResponder)init;
-- (XRWrappingIssueResponder)initWithNextResponder:(id)a3 prototype:(id)a4;
+- (XRWrappingIssueResponder)initWithNextResponder:(id)responder prototype:(id)prototype;
 @end
 
 @implementation XRWrappingIssueResponder
 
-- (XRWrappingIssueResponder)initWithNextResponder:(id)a3 prototype:(id)a4
+- (XRWrappingIssueResponder)initWithNextResponder:(id)responder prototype:(id)prototype
 {
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  prototypeCopy = prototype;
   v11.receiver = self;
   v11.super_class = XRWrappingIssueResponder;
   v8 = [(XRWrappingIssueResponder *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_nextResponder, v6);
-    objc_storeStrong(&v9->_prototype, a4);
+    objc_storeWeak(&v8->_nextResponder, responderCopy);
+    objc_storeStrong(&v9->_prototype, prototype);
   }
 
   return v9;

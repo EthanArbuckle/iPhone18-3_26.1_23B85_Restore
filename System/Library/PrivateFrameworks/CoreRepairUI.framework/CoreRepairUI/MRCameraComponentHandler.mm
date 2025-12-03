@@ -27,8 +27,8 @@
   v2 = [(MRBaseComponentHandler *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
-    -[MRBaseComponentHandler setIsSUCaseForComponent:](v2, "setIsSUCaseForComponent:", [v3 BOOLForKey:@"SUcaseForCamera"]);
+    groupStandardUserDefaults = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
+    -[MRBaseComponentHandler setIsSUCaseForComponent:](v2, "setIsSUCaseForComponent:", [groupStandardUserDefaults BOOLForKey:@"SUcaseForCamera"]);
 
     [(MRBaseComponentHandler *)v2 setComponentName:@"Camera"];
     [(MRBaseComponentHandler *)v2 setSupportsRepair:1];
@@ -46,8 +46,8 @@
     [(MRBaseComponentHandler *)v2 setComponentFollowupClientID:@"com.apple.mobilerepair.CameraRepair"];
     [(MRBaseComponentHandler *)v2 setFinishRepairTitle:@"FINISH_CAMERA_REPAIR_TITLE"];
     [(MRBaseComponentHandler *)v2 setFinishRepairMessage:@"FINISH_CAMERA_REPAIR_DESC"];
-    v7 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
-    v8 = [v7 stringByAppendingString:@"FINISH_REPAIR"];
+    componentFollowupClientID = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
+    v8 = [componentFollowupClientID stringByAppendingString:@"FINISH_REPAIR"];
     [(MRBaseComponentHandler *)v2 setFinishRepairKey:v8];
 
     [(MRBaseComponentHandler *)v2 setComponentUnLockCheckCountKey:@"unlockCheckCountForCamera"];
@@ -63,15 +63,15 @@
     [(MRBaseComponentHandler *)v2 setComponentFirstUIDisplayedTimeKey:@"firstUIDisplayedTimeForCamera"];
     [(MRBaseComponentHandler *)v2 setLastKnownComponentIdentifierKey:@"lastKnownIDForCamera"];
     v9 = MEMORY[0x277D00FD0];
-    v10 = [(MRBaseComponentHandler *)v2 componentName];
-    v11 = [v9 copySealingManifestDataInstanceForComponent:v10];
+    componentName = [(MRBaseComponentHandler *)v2 componentName];
+    v11 = [v9 copySealingManifestDataInstanceForComponent:componentName];
     [(MRBaseComponentHandler *)v2 setLastKnownComponentIdentifierValue:v11];
 
     v12 = objc_opt_new();
     [(MRBaseComponentHandler *)v2 setComponentAuthHandler:v12];
 
-    v13 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
-    v14 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:v13];
+    componentFollowupClientID2 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
+    v14 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:componentFollowupClientID2];
     v15 = [v14 stringByAppendingString:@".plist"];
     [(MRBaseComponentHandler *)v2 setStateFilePath:v15];
 
@@ -90,19 +90,19 @@
 + (void)handleSUCase
 {
   v3 = MGCopyAnswer();
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   if ([MEMORY[0x277D00FC0] supportRepair:1026])
   {
     v5 = 0x277D00FB0;
-    if (v4 != 1)
+    if (intValue != 1)
     {
       v5 = 0x277D00FB8;
     }
 
     v6 = *v5;
     v7 = objc_opt_new();
-    [a1 handleComponentSUCase:@"hasDisplayedFollowupForCamera" lastAUthCheckBuildVersion:@"LastCameraAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.CameraRepair" queryString:@"Camera" suCasekey:@"SUcaseForCamera" startBuildVersion:@"18D1" componentAuth:v7];
+    [self handleComponentSUCase:@"hasDisplayedFollowupForCamera" lastAUthCheckBuildVersion:@"LastCameraAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.CameraRepair" queryString:@"Camera" suCasekey:@"SUcaseForCamera" startBuildVersion:@"18D1" componentAuth:v7];
   }
 }
 
@@ -112,7 +112,7 @@
   block[1] = 3221225472;
   block[2] = __43__MRCameraComponentHandler_sharedSingleton__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSingleton_once_13 != -1)
   {
     dispatch_once(&sharedSingleton_once_13, block);

@@ -1,5 +1,5 @@
 @interface HAP2EncodedCharacteristicResponse
-- (HAP2EncodedCharacteristicResponse)initWithCharacteristics:(id)a3;
+- (HAP2EncodedCharacteristicResponse)initWithCharacteristics:(id)characteristics;
 - (NSArray)characteristics;
 @end
 
@@ -15,16 +15,16 @@
   return self;
 }
 
-- (HAP2EncodedCharacteristicResponse)initWithCharacteristics:(id)a3
+- (HAP2EncodedCharacteristicResponse)initWithCharacteristics:(id)characteristics
 {
-  v5 = a3;
+  characteristicsCopy = characteristics;
   v9.receiver = self;
   v9.super_class = HAP2EncodedCharacteristicResponse;
   v6 = [(HAP2EncodedCharacteristicResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_responses, a3);
+    objc_storeStrong(&v6->_responses, characteristics);
   }
 
   return v7;

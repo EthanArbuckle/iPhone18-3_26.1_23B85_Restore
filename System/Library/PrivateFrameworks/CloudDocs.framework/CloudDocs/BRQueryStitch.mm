@@ -1,5 +1,5 @@
 @interface BRQueryStitch
-- (BRQueryStitch)initWithURL:(id)a3 objid:(id)a4 kind:(char)a5;
+- (BRQueryStitch)initWithURL:(id)l objid:(id)objid kind:(char)kind;
 - (id)description;
 - (void)_creationDone;
 - (void)_deletionDone;
@@ -7,24 +7,24 @@
 - (void)_renameDone;
 - (void)dealloc;
 - (void)done;
-- (void)setQueries:(id)a3;
+- (void)setQueries:(id)queries;
 @end
 
 @implementation BRQueryStitch
 
-- (BRQueryStitch)initWithURL:(id)a3 objid:(id)a4 kind:(char)a5
+- (BRQueryStitch)initWithURL:(id)l objid:(id)objid kind:(char)kind
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  objidCopy = objid;
   v14.receiver = self;
   v14.super_class = BRQueryStitch;
   v11 = [(BRQueryStitch *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_url, a3);
-    objc_storeStrong(&v12->_objid, a4);
-    v12->_kind = a5;
+    objc_storeStrong(&v11->_url, l);
+    objc_storeStrong(&v12->_objid, objid);
+    v12->_kind = kind;
   }
 
   return v12;
@@ -40,27 +40,27 @@
     [v3 appendString:off_1E7A16AA8[kind]];
   }
 
-  v5 = [(NSURL *)self->_url path];
-  [v3 appendFormat:@"%@ possibly interesting %ld queries>", v5, -[NSArray count](self->_contexts, "count")];
+  path = [(NSURL *)self->_url path];
+  [v3 appendFormat:@"%@ possibly interesting %ld queries>", path, -[NSArray count](self->_contexts, "count")];
 
   return v3;
 }
 
-- (void)setQueries:(id)a3
+- (void)setQueries:(id)queries
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queriesCopy = queries;
   if (self->_contexts)
   {
     [BRQueryStitch setQueries:];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(queriesCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = queriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {

@@ -1,14 +1,14 @@
 @interface RCShareMemoOptionsManager
 - (RCShareMemoOptionsManager)init;
-- (RCShareMemoOptionsManager)initWithCompositions:(id)a3 onUpdate:(id)a4;
-- (id)_customizationGroupsForActivityViewController:(id)a3;
+- (RCShareMemoOptionsManager)initWithCompositions:(id)compositions onUpdate:(id)update;
+- (id)_customizationGroupsForActivityViewController:(id)controller;
 @end
 
 @implementation RCShareMemoOptionsManager
 
-- (RCShareMemoOptionsManager)initWithCompositions:(id)a3 onUpdate:(id)a4
+- (RCShareMemoOptionsManager)initWithCompositions:(id)compositions onUpdate:(id)update
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(update);
   sub_1000067AC(0, &qword_1002D02B8);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (id)_customizationGroupsForActivityViewController:(id)a3
+- (id)_customizationGroupsForActivityViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1000FDF14();
 
   sub_1000067AC(0, &qword_1002D0298);

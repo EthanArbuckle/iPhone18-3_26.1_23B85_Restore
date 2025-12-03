@@ -76,9 +76,9 @@
 
   if ([(AXMCIMorphologyRectangle *)self _isIdentity])
   {
-    v3 = self->inputImage;
+    emptyImage = self->inputImage;
 LABEL_21:
-    v4 = v3;
+    v4 = emptyImage;
     goto LABEL_25;
   }
 
@@ -101,7 +101,7 @@ LABEL_21:
     [(CIImage *)self->inputImage extent];
     if (v9 <= (v6 - 1) || ([(CIImage *)self->inputImage extent], v10 <= (v8 - 1)))
     {
-      v3 = [MEMORY[0x1E695F658] emptyImage];
+      emptyImage = [MEMORY[0x1E695F658] emptyImage];
       goto LABEL_21;
     }
 

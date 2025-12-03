@@ -1,8 +1,8 @@
 @interface APCDefaults
-+ (BOOL)BOOLForDefault:(unint64_t)a3;
-+ (float)floatForDefault:(unint64_t)a3;
++ (BOOL)BOOLForDefault:(unint64_t)default;
++ (float)floatForDefault:(unint64_t)default;
 + (id)sharedDefaults;
-+ (int64_t)integerForDefault:(unint64_t)a3;
++ (int64_t)integerForDefault:(unint64_t)default;
 @end
 
 @implementation APCDefaults
@@ -26,10 +26,10 @@ uint64_t __29__APCDefaults_sharedDefaults__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)BOOLForDefault:(unint64_t)a3
++ (BOOL)BOOLForDefault:(unint64_t)default
 {
-  v4 = [a1 sharedDefaults];
-  if (a3)
+  sharedDefaults = [self sharedDefaults];
+  if (default)
   {
     v5 = 0;
   }
@@ -37,12 +37,12 @@ uint64_t __29__APCDefaults_sharedDefaults__block_invoke()
   else
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-    v7 = [v4 objectForKey:v6];
+    v7 = [sharedDefaults objectForKey:v6];
 
     if (v7)
     {
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-      v5 = [v4 BOOLForKey:v8];
+      v5 = [sharedDefaults BOOLForKey:v8];
     }
 
     else
@@ -54,10 +54,10 @@ uint64_t __29__APCDefaults_sharedDefaults__block_invoke()
   return v5;
 }
 
-+ (int64_t)integerForDefault:(unint64_t)a3
++ (int64_t)integerForDefault:(unint64_t)default
 {
-  v4 = [a1 sharedDefaults];
-  if (a3)
+  sharedDefaults = [self sharedDefaults];
+  if (default)
   {
     v5 = 0;
   }
@@ -65,31 +65,31 @@ uint64_t __29__APCDefaults_sharedDefaults__block_invoke()
   else
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-    v5 = [v4 objectForKey:v6];
+    v5 = [sharedDefaults objectForKey:v6];
 
     if (v5)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-      v5 = [v4 integerForKey:v7];
+      v5 = [sharedDefaults integerForKey:v7];
     }
   }
 
   return v5;
 }
 
-+ (float)floatForDefault:(unint64_t)a3
++ (float)floatForDefault:(unint64_t)default
 {
-  v4 = [a1 sharedDefaults];
+  sharedDefaults = [self sharedDefaults];
   v5 = 0.0;
-  if (!a3)
+  if (!default)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-    v7 = [v4 objectForKey:v6];
+    v7 = [sharedDefaults objectForKey:v6];
 
     if (v7)
     {
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"volume"];
-      [v4 floatForKey:v8];
+      [sharedDefaults floatForKey:v8];
       v5 = v9;
     }
 

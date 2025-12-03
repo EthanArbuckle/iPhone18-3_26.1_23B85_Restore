@@ -1,7 +1,7 @@
 @interface ABPKBreakthroughResult
 - (ABPKBreakthroughResult)init;
-- (int)overlayResultOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:;
-- (void)set2dSkeleton:(id)a3 isPoseValid:(BOOL)a4 trackingId:(unsigned int)a5 isFaceVisible:(BOOL)a6 isRaisingHand:(BOOL)a7 isWavingHand:(BOOL)a8;
+- (int)overlayResultOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:;
+- (void)set2dSkeleton:(id)skeleton isPoseValid:(BOOL)valid trackingId:(unsigned int)id isFaceVisible:(BOOL)visible isRaisingHand:(BOOL)hand isWavingHand:(BOOL)wavingHand;
 @end
 
 @implementation ABPKBreakthroughResult
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (void)set2dSkeleton:(id)a3 isPoseValid:(BOOL)a4 trackingId:(unsigned int)a5 isFaceVisible:(BOOL)a6 isRaisingHand:(BOOL)a7 isWavingHand:(BOOL)a8
+- (void)set2dSkeleton:(id)skeleton isPoseValid:(BOOL)valid trackingId:(unsigned int)id isFaceVisible:(BOOL)visible isRaisingHand:(BOOL)hand isWavingHand:(BOOL)wavingHand
 {
-  objc_storeStrong(&self->_skeleton2D, a3);
-  self->_isPoseValid = a4;
-  self->_trackingId = a5;
-  self->_isFaceVisible = a6;
-  self->_isRaisingHand = a7;
-  self->_isWavingHand = a8;
+  objc_storeStrong(&self->_skeleton2D, skeleton);
+  self->_isPoseValid = valid;
+  self->_trackingId = id;
+  self->_isFaceVisible = visible;
+  self->_isRaisingHand = hand;
+  self->_isWavingHand = wavingHand;
 }
 
-- (int)overlayResultOnImage:(__CVBuffer *)a3 withResult:(__CVBuffer *)a4 withColor:
+- (int)overlayResultOnImage:(__CVBuffer *)image withResult:(__CVBuffer *)result withColor:
 {
   v13 = v4;
   v8 = __ABPKLogSharedInstance();
@@ -43,7 +43,7 @@
     _os_log_impl(&dword_23EDDC000, v8, OS_LOG_TYPE_DEBUG, " Overlaying breakthrough results on image ", buf, 2u);
   }
 
-  if (!a4)
+  if (!result)
   {
     v9 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -57,7 +57,7 @@
   if (skeleton2D)
   {
     [(ABPK2dSkeleton *)skeleton2D printData];
-    return [(ABPK2dSkeleton *)self->_skeleton2D overlaySkeletonOnImage:a3 withResult:a4 withColor:v13];
+    return [(ABPK2dSkeleton *)self->_skeleton2D overlaySkeletonOnImage:image withResult:result withColor:v13];
   }
 
   else

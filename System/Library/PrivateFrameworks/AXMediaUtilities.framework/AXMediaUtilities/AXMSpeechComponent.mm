@@ -1,12 +1,12 @@
 @interface AXMSpeechComponent
 - (AXMSpeechComponent)init;
-- (BOOL)canHandleRequest:(id)a3;
-- (void)handleRequest:(id)a3 completion:(id)a4;
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4;
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4;
+- (BOOL)canHandleRequest:(id)request;
+- (void)handleRequest:(id)request completion:(id)completion;
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance;
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance;
 - (void)stopSpeakingAtNextWord;
 - (void)stopSpeakingImmediately;
 @end
@@ -23,32 +23,32 @@
     v3 = objc_alloc_init(MEMORY[0x1E6958508]);
     [(AXMSpeechComponent *)v2 setSynthesizer:v3];
 
-    v4 = [(AXMSpeechComponent *)v2 synthesizer];
-    [v4 setDelegate:v2];
+    synthesizer = [(AXMSpeechComponent *)v2 synthesizer];
+    [synthesizer setDelegate:v2];
   }
 
   return v2;
 }
 
-- (BOOL)canHandleRequest:(id)a3
+- (BOOL)canHandleRequest:(id)request
 {
-  v3 = [a3 speechActions];
-  v4 = [v3 count] != 0;
+  speechActions = [request speechActions];
+  v4 = [speechActions count] != 0;
 
   return v4;
 }
 
-- (void)handleRequest:(id)a3 completion:(id)a4
+- (void)handleRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 speechActions];
-  v8 = [v7 firstObject];
-  v9 = [v8 text];
+  completionCopy = completion;
+  speechActions = [request speechActions];
+  firstObject = [speechActions firstObject];
+  text = [firstObject text];
 
-  v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9 attributes:0];
-  v11 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
+  v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:text attributes:0];
+  currentRequestCompletionBlock = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
 
-  if (v11)
+  if (currentRequestCompletionBlock)
   {
     v12 = AXMediaLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -58,56 +58,56 @@
   }
 
   v20 = [MEMORY[0x1E6958518] speechUtteranceWithAttributedString:v10];
-  [(AXMSpeechComponent *)self setCurrentRequestCompletionBlock:v6];
+  [(AXMSpeechComponent *)self setCurrentRequestCompletionBlock:completionCopy];
 
-  v21 = [(AXMSpeechComponent *)self synthesizer];
-  [v21 speakUtterance:v20];
+  synthesizer = [(AXMSpeechComponent *)self synthesizer];
+  [synthesizer speakUtterance:v20];
 }
 
 - (void)stopSpeakingImmediately
 {
-  v2 = [(AXMSpeechComponent *)self synthesizer];
-  [v2 stopSpeakingAtBoundary:0];
+  synthesizer = [(AXMSpeechComponent *)self synthesizer];
+  [synthesizer stopSpeakingAtBoundary:0];
 }
 
 - (void)stopSpeakingAtNextWord
 {
-  v2 = [(AXMSpeechComponent *)self synthesizer];
-  [v2 stopSpeakingAtBoundary:1];
+  synthesizer = [(AXMSpeechComponent *)self synthesizer];
+  [synthesizer stopSpeakingAtBoundary:1];
 }
 
-- (void)speechSynthesizer:(id)a3 didStartSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didStartSpeechUtterance:(id)utterance
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  utteranceCopy = utterance;
   v5 = AXMediaLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 attributedSpeechString];
-    v7 = [v6 string];
+    attributedSpeechString = [utteranceCopy attributedSpeechString];
+    string = [attributedSpeechString string];
     v8 = 138412290;
-    v9 = v7;
+    v9 = string;
     _os_log_impl(&dword_1AE37B000, v5, OS_LOG_TYPE_DEFAULT, "speech started: '%@'", &v8, 0xCu);
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeechUtterance:(id)utterance
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  utteranceCopy = utterance;
   v6 = AXMediaLogSpeech();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 attributedSpeechString];
-    v8 = [v7 string];
+    attributedSpeechString = [utteranceCopy attributedSpeechString];
+    string = [attributedSpeechString string];
     v19 = 138412290;
-    v20 = v8;
+    v20 = string;
     _os_log_impl(&dword_1AE37B000, v6, OS_LOG_TYPE_DEFAULT, "speech finished: '%@'", &v19, 0xCu);
   }
 
-  v9 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
+  currentRequestCompletionBlock = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
 
-  if (!v9)
+  if (!currentRequestCompletionBlock)
   {
     v10 = AXMediaLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -116,31 +116,31 @@
     }
   }
 
-  v18 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
+  currentRequestCompletionBlock2 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
   [(AXMSpeechComponent *)self setCurrentRequestCompletionBlock:0];
-  if (v18)
+  if (currentRequestCompletionBlock2)
   {
-    v18[2](v18);
+    currentRequestCompletionBlock2[2](currentRequestCompletionBlock2);
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didCancelSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didCancelSpeechUtterance:(id)utterance
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  utteranceCopy = utterance;
   v6 = AXMediaLogSpeech();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 attributedSpeechString];
-    v8 = [v7 string];
+    attributedSpeechString = [utteranceCopy attributedSpeechString];
+    string = [attributedSpeechString string];
     v19 = 138412290;
-    v20 = v8;
+    v20 = string;
     _os_log_impl(&dword_1AE37B000, v6, OS_LOG_TYPE_DEFAULT, "speech canceled: '%@'", &v19, 0xCu);
   }
 
-  v9 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
+  currentRequestCompletionBlock = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
 
-  if (!v9)
+  if (!currentRequestCompletionBlock)
   {
     v10 = AXMediaLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -149,40 +149,40 @@
     }
   }
 
-  v18 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
+  currentRequestCompletionBlock2 = [(AXMSpeechComponent *)self currentRequestCompletionBlock];
   [(AXMSpeechComponent *)self setCurrentRequestCompletionBlock:0];
-  if (v18)
+  if (currentRequestCompletionBlock2)
   {
-    v18[2](v18);
+    currentRequestCompletionBlock2[2](currentRequestCompletionBlock2);
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didPauseSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didPauseSpeechUtterance:(id)utterance
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  utteranceCopy = utterance;
   v5 = AXMediaLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 attributedSpeechString];
-    v7 = [v6 string];
+    attributedSpeechString = [utteranceCopy attributedSpeechString];
+    string = [attributedSpeechString string];
     v8 = 138412290;
-    v9 = v7;
+    v9 = string;
     _os_log_impl(&dword_1AE37B000, v5, OS_LOG_TYPE_DEFAULT, "speech paused: '%@'", &v8, 0xCu);
   }
 }
 
-- (void)speechSynthesizer:(id)a3 didContinueSpeechUtterance:(id)a4
+- (void)speechSynthesizer:(id)synthesizer didContinueSpeechUtterance:(id)utterance
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  utteranceCopy = utterance;
   v5 = AXMediaLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 attributedSpeechString];
-    v7 = [v6 string];
+    attributedSpeechString = [utteranceCopy attributedSpeechString];
+    string = [attributedSpeechString string];
     v8 = 138412290;
-    v9 = v7;
+    v9 = string;
     _os_log_impl(&dword_1AE37B000, v5, OS_LOG_TYPE_DEFAULT, "speech resumed: '%@'", &v8, 0xCu);
   }
 }

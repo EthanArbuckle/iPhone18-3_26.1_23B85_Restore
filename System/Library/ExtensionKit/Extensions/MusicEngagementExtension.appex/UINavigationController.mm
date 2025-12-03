@@ -1,26 +1,26 @@
 @interface UINavigationController
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
-- (id)removeViewController:(id)a3 animated:(BOOL)a4;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
+- (id)removeViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation UINavigationController
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  UINavigationController.playActivityFeatureNames(sourceChildViewController:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  UINavigationController.playActivityFeatureNames(sourceChildViewController:)(controller);
 
   v7.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v7.super.isa;
 }
 
-- (id)removeViewController:(id)a3 animated:(BOOL)a4
+- (id)removeViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  v8 = UINavigationController.removeViewController(_:animated:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = UINavigationController.removeViewController(_:animated:)(controllerCopy, animated);
 
   return v8;
 }

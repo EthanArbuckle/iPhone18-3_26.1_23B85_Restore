@@ -1,6 +1,6 @@
 @interface PHASEMetaParameterDefinition
 - (PHASEMetaParameterDefinition)init;
-- (PHASEMetaParameterDefinition)initWithValue:(id)a3;
+- (PHASEMetaParameterDefinition)initWithValue:(id)value;
 - (id)initInternal;
 @end
 
@@ -20,16 +20,16 @@
   return 0;
 }
 
-- (PHASEMetaParameterDefinition)initWithValue:(id)a3
+- (PHASEMetaParameterDefinition)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = PHASEMetaParameterDefinition;
-  v6 = [(PHASEDefinition *)&v10 initInternal];
-  v7 = v6;
-  if (v6)
+  initInternal = [(PHASEDefinition *)&v10 initInternal];
+  v7 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(initInternal + 2, value);
     v8 = v7;
   }
 

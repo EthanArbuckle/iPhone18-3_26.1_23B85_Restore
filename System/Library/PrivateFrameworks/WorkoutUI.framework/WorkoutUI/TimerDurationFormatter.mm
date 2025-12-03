@@ -1,15 +1,15 @@
 @interface TimerDurationFormatter
 - (_TtC9WorkoutUI22TimerDurationFormatter)init;
-- (_TtC9WorkoutUI22TimerDurationFormatter)initWithCoder:(id)a3;
-- (id)stringFromTimeInterval:(double)a3;
+- (_TtC9WorkoutUI22TimerDurationFormatter)initWithCoder:(id)coder;
+- (id)stringFromTimeInterval:(double)interval;
 @end
 
 @implementation TimerDurationFormatter
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
-  v4 = self;
-  v5 = TimerDurationFormatter.string(from:)(a3);
+  selfCopy = self;
+  v5 = TimerDurationFormatter.string(from:)(interval);
 
   if (v5.value._object)
   {
@@ -31,12 +31,12 @@
   return [(NSDateComponentsFormatter *)&v3 init];
 }
 
-- (_TtC9WorkoutUI22TimerDurationFormatter)initWithCoder:(id)a3
+- (_TtC9WorkoutUI22TimerDurationFormatter)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TimerDurationFormatter();
-  v4 = a3;
-  v5 = [(NSDateComponentsFormatter *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NSDateComponentsFormatter *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

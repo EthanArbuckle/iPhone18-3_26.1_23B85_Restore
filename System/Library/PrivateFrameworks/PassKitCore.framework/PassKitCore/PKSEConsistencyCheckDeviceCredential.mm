@@ -1,38 +1,38 @@
 @interface PKSEConsistencyCheckDeviceCredential
-+ (id)deviceCredentialWithApplet:(id)a3;
-+ (id)deviceCredentialWithDAKeyInformation:(id)a3;
-+ (id)deviceCredentialWithISOCredentialProperties:(id)a3 hasKeyMeterial:(BOOL)a4 requireKeySync:(BOOL)a5;
-- (PKSEConsistencyCheckDeviceCredential)initWithType:(unint64_t)a3 state:(unint64_t)a4 underlyingCredentialState:(id)a5 address:(id)a6;
++ (id)deviceCredentialWithApplet:(id)applet;
++ (id)deviceCredentialWithDAKeyInformation:(id)information;
++ (id)deviceCredentialWithISOCredentialProperties:(id)properties hasKeyMeterial:(BOOL)meterial requireKeySync:(BOOL)sync;
+- (PKSEConsistencyCheckDeviceCredential)initWithType:(unint64_t)type state:(unint64_t)state underlyingCredentialState:(id)credentialState address:(id)address;
 - (id)description;
 @end
 
 @implementation PKSEConsistencyCheckDeviceCredential
 
-- (PKSEConsistencyCheckDeviceCredential)initWithType:(unint64_t)a3 state:(unint64_t)a4 underlyingCredentialState:(id)a5 address:(id)a6
+- (PKSEConsistencyCheckDeviceCredential)initWithType:(unint64_t)type state:(unint64_t)state underlyingCredentialState:(id)credentialState address:(id)address
 {
-  v11 = a5;
-  v12 = a6;
+  credentialStateCopy = credentialState;
+  addressCopy = address;
   v16.receiver = self;
   v16.super_class = PKSEConsistencyCheckDeviceCredential;
   v13 = [(PKSEConsistencyCheckDeviceCredential *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v13->_state = a4;
-    objc_storeStrong(&v13->_underlyingCredentialState, a5);
-    objc_storeStrong(&v14->_address, a6);
+    v13->_type = type;
+    v13->_state = state;
+    objc_storeStrong(&v13->_underlyingCredentialState, credentialState);
+    objc_storeStrong(&v14->_address, address);
     v14->_isManagedByTSM = 1;
   }
 
   return v14;
 }
 
-+ (id)deviceCredentialWithISOCredentialProperties:(id)a3 hasKeyMeterial:(BOOL)a4 requireKeySync:(BOOL)a5
++ (id)deviceCredentialWithISOCredentialProperties:(id)properties hasKeyMeterial:(BOOL)meterial requireKeySync:(BOOL)sync
 {
-  v7 = a3;
-  v8 = [v7 credentialIdentifier];
-  v9 = PKISO18013_SubcredentialIdentifierFromProperties(v7);
+  propertiesCopy = properties;
+  credentialIdentifier = [propertiesCopy credentialIdentifier];
+  v9 = PKISO18013_SubcredentialIdentifierFromProperties(propertiesCopy);
   v10 = [PKSECredentialAddress alloc];
   if (v9)
   {
@@ -45,16 +45,16 @@
   }
 
   v12 = [(PKSECredentialAddress *)v10 initWithType:1 identifier:v11];
-  v13 = [v7 credentialState];
-  v14 = v13;
-  if (v13 > 3)
+  credentialState = [propertiesCopy credentialState];
+  v14 = credentialState;
+  if (credentialState > 3)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = qword_1ADB99728[v13];
+    v15 = qword_1ADB99728[credentialState];
   }
 
   v16 = [PKSEConsistencyCheckDeviceCredential alloc];
@@ -64,7 +64,7 @@
   if (v18)
   {
     v19 = [PKSEConsistencyCheckDeviceCredentialISO18013Properties alloc];
-    v20 = v8;
+    v20 = credentialIdentifier;
     if (v19)
     {
       v41.receiver = v19;
@@ -73,43 +73,43 @@
       v19 = v21;
       if (v21)
       {
-        v21->_hasKeyMeterial = a4;
-        objc_storeStrong(&v21->_isoIdentifier, v8);
-        v19->_requireKeySync = a5;
+        v21->_hasKeyMeterial = meterial;
+        objc_storeStrong(&v21->_isoIdentifier, credentialIdentifier);
+        v19->_requireKeySync = sync;
       }
     }
 
     v22 = *(v18 + 72);
     *(v18 + 72) = v19;
 
-    v23 = [v7 partition];
-    v24 = v23;
-    if (v23 == @"identity")
+    partition = [propertiesCopy partition];
+    v24 = partition;
+    if (partition == @"identity")
     {
     }
 
     else
     {
-      if (!v23 || !@"identity")
+      if (!partition || !@"identity")
       {
 
         goto LABEL_23;
       }
 
-      v25 = [(__CFString *)v23 isEqualToString:@"identity"];
+      v25 = [(__CFString *)partition isEqualToString:@"identity"];
 
       if (!v25)
       {
 LABEL_23:
-        v29 = [v7 docType];
-        v30 = v29;
-        if (v29 == @"aliro-a")
+        docType = [propertiesCopy docType];
+        v30 = docType;
+        if (docType == @"aliro-a")
         {
         }
 
         else
         {
-          if (!v29 || !@"aliro-a")
+          if (!docType || !@"aliro-a")
           {
 
 LABEL_43:
@@ -141,7 +141,7 @@ LABEL_51:
             goto LABEL_52;
           }
 
-          v31 = [(__CFString *)v29 isEqualToString:@"aliro-a"];
+          v31 = [(__CFString *)docType isEqualToString:@"aliro-a"];
 
           if ((v31 & 1) == 0)
           {
@@ -155,15 +155,15 @@ LABEL_51:
       }
     }
 
-    v26 = [v7 docType];
-    v27 = v26;
-    if (v26 == @"org.iso.23220.1.jp.mnc")
+    docType2 = [propertiesCopy docType];
+    v27 = docType2;
+    if (docType2 == @"org.iso.23220.1.jp.mnc")
     {
     }
 
     else
     {
-      if (!v26 || !@"org.iso.23220.1.jp.mnc")
+      if (!docType2 || !@"org.iso.23220.1.jp.mnc")
       {
 
 LABEL_33:
@@ -171,7 +171,7 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v28 = [(__CFString *)v26 isEqualToString:@"org.iso.23220.1.jp.mnc"];
+      v28 = [(__CFString *)docType2 isEqualToString:@"org.iso.23220.1.jp.mnc"];
 
       if (!v28)
       {
@@ -208,31 +208,31 @@ LABEL_52:
 
     *(v18 + 56) = v32;
     *(v18 + 9) = 0;
-    v38 = [v7 payloadIngestionHash];
+    payloadIngestionHash = [propertiesCopy payloadIngestionHash];
     v39 = *(v18 + 40);
-    *(v18 + 40) = v38;
+    *(v18 + 40) = payloadIngestionHash;
   }
 
   return v18;
 }
 
-+ (id)deviceCredentialWithDAKeyInformation:(id)a3
++ (id)deviceCredentialWithDAKeyInformation:(id)information
 {
-  v3 = a3;
-  v4 = [v3 keyType];
-  v5 = v4;
-  v6 = 0;
+  informationCopy = information;
+  keyType = [informationCopy keyType];
+  v5 = keyType;
+  uppercaseString = 0;
   v7 = 0;
   v8 = 1;
-  v29 = v3;
-  if (v4 <= 2)
+  v29 = informationCopy;
+  if (keyType <= 2)
   {
-    if (v4 == 1)
+    if (keyType == 1)
     {
-      v13 = [v3 alishaKeyInformation];
-      v19 = [v13 revocationAttestation];
+      alishaKeyInformation = [informationCopy alishaKeyInformation];
+      revocationAttestation = [alishaKeyInformation revocationAttestation];
 
-      if (v19)
+      if (revocationAttestation)
       {
         v11 = 2;
         v10 = 129;
@@ -240,9 +240,9 @@ LABEL_52:
 
       else
       {
-        v20 = [v13 trackingReceipt];
+        trackingReceipt = [alishaKeyInformation trackingReceipt];
 
-        if (v20)
+        if (trackingReceipt)
         {
           v10 = 15;
         }
@@ -252,7 +252,7 @@ LABEL_52:
           v10 = 21;
         }
 
-        if (v20)
+        if (trackingReceipt)
         {
           v11 = 1;
         }
@@ -263,10 +263,10 @@ LABEL_52:
         }
       }
 
-      v21 = [v13 trackingRequest];
-      v7 = v21 != 0;
+      trackingRequest = [alishaKeyInformation trackingRequest];
+      v7 = trackingRequest != 0;
 
-      v6 = @"A000000809434343444B417631";
+      uppercaseString = @"A000000809434343444B417631";
       v8 = 1;
       v9 = 301;
       goto LABEL_24;
@@ -275,7 +275,7 @@ LABEL_52:
     v9 = 0;
     v10 = 0;
     v11 = 0;
-    if (v4 != 2)
+    if (keyType != 2)
     {
       goto LABEL_25;
     }
@@ -283,14 +283,14 @@ LABEL_52:
     goto LABEL_11;
   }
 
-  if (v4 != 3)
+  if (keyType != 3)
   {
-    if (v4 != 4)
+    if (keyType != 4)
     {
       v9 = 0;
       v10 = 0;
       v11 = 0;
-      if (v4 != 5)
+      if (keyType != 5)
       {
         goto LABEL_25;
       }
@@ -299,8 +299,8 @@ LABEL_52:
     }
 
 LABEL_11:
-    v16 = [v3 hydraKeyInformation];
-    v13 = v16;
+    hydraKeyInformation = [informationCopy hydraKeyInformation];
+    alishaKeyInformation = hydraKeyInformation;
     if (v5 == 4)
     {
       v9 = 139;
@@ -311,9 +311,9 @@ LABEL_11:
       v9 = 130;
     }
 
-    v17 = [v16 appletIdentifier];
-    v18 = [v17 hexEncoding];
-    v6 = [v18 uppercaseString];
+    appletIdentifier = [hydraKeyInformation appletIdentifier];
+    hexEncoding = [appletIdentifier hexEncoding];
+    uppercaseString = [hexEncoding uppercaseString];
 
     v7 = 0;
     v8 = 1;
@@ -323,8 +323,8 @@ LABEL_11:
   }
 
 LABEL_5:
-  v12 = [v3 homeKeyInformation];
-  v13 = v12;
+  homeKeyInformation = [informationCopy homeKeyInformation];
+  alishaKeyInformation = homeKeyInformation;
   if (v5 == 5)
   {
     v9 = 139;
@@ -335,9 +335,9 @@ LABEL_5:
     v9 = 133;
   }
 
-  v14 = [v12 appletIdentifier];
-  v15 = [v14 hexEncoding];
-  v6 = [v15 uppercaseString];
+  appletIdentifier2 = [homeKeyInformation appletIdentifier];
+  hexEncoding2 = [appletIdentifier2 hexEncoding];
+  uppercaseString = [hexEncoding2 uppercaseString];
 
   v8 = 0;
   v7 = 0;
@@ -345,12 +345,12 @@ LABEL_5:
   v10 = 21;
 LABEL_24:
 
-  v3 = v29;
+  informationCopy = v29;
 LABEL_25:
   v22 = v7;
-  v23 = [v3 publicKeyIdentifier];
-  v24 = [[PKSECredentialAddress alloc] initWithType:0 identifier:v6];
-  [(PKSECredentialAddress *)v24 appendType:1 identifier:v23];
+  publicKeyIdentifier = [informationCopy publicKeyIdentifier];
+  v24 = [[PKSECredentialAddress alloc] initWithType:0 identifier:uppercaseString];
+  [(PKSECredentialAddress *)v24 appendType:1 identifier:publicKeyIdentifier];
   v25 = [PKSEConsistencyCheckDeviceCredential alloc];
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
   v27 = [(PKSEConsistencyCheckDeviceCredential *)v25 initWithType:1 state:v11 underlyingCredentialState:v26 address:v24];
@@ -365,18 +365,18 @@ LABEL_25:
   return v27;
 }
 
-+ (id)deviceCredentialWithApplet:(id)a3
++ (id)deviceCredentialWithApplet:(id)applet
 {
-  v3 = a3;
+  appletCopy = applet;
   v4 = [PKSECredentialAddress alloc];
-  v5 = [v3 identifier];
-  v6 = [(PKSECredentialAddress *)v4 initWithType:0 identifier:v5];
+  identifier = [appletCopy identifier];
+  v6 = [(PKSECredentialAddress *)v4 initWithType:0 identifier:identifier];
 
-  v7 = [v3 lifecycleState];
-  v8 = v7;
-  if (v7 <= 14)
+  lifecycleState = [appletCopy lifecycleState];
+  v8 = lifecycleState;
+  if (lifecycleState <= 14)
   {
-    if (v7 == 1 || v7 == 3 || v7 == 7)
+    if (lifecycleState == 1 || lifecycleState == 3 || lifecycleState == 7)
     {
       v13 = 5;
     }
@@ -391,29 +391,29 @@ LABEL_25:
   {
     v9 = 2;
     v10 = 6;
-    if (v7 != 130)
+    if (lifecycleState != 130)
     {
       v10 = 0;
     }
 
-    if (v7 != 129)
+    if (lifecycleState != 129)
     {
       v9 = v10;
     }
 
     v11 = 1;
     v12 = 4;
-    if (v7 != 23)
+    if (lifecycleState != 23)
     {
       v12 = 0;
     }
 
-    if (v7 != 15)
+    if (lifecycleState != 15)
     {
       v11 = v12;
     }
 
-    if (v7 <= 128)
+    if (lifecycleState <= 128)
     {
       v13 = v11;
     }
@@ -431,17 +431,17 @@ LABEL_25:
   if (v16)
   {
     v17 = [PKSEConsistencyCheckDeviceCredentialAppletProperties alloc];
-    v18 = [v3 isLocked];
-    v19 = [v3 containsSubKeys];
+    isLocked = [appletCopy isLocked];
+    containsSubKeys = [appletCopy containsSubKeys];
     if (v17)
     {
-      v20 = v19;
+      v20 = containsSubKeys;
       v24.receiver = v17;
       v24.super_class = PKSEConsistencyCheckDeviceCredentialAppletProperties;
       v21 = objc_msgSendSuper2(&v24, sel_init);
       if (v21)
       {
-        v21->_locked = v18;
+        v21->_locked = isLocked;
         v21->_container = v20;
       }
     }
@@ -476,8 +476,8 @@ LABEL_25:
   [v5 appendFormat:@"state: '%lu'; ", self->_state];
   [v5 appendFormat:@"credentialType: '%lu'; ", self->_credentialType];
   [v5 appendFormat:@"underlyingCredentialState: '%@'; ", self->_underlyingCredentialState];
-  v6 = [(PKSECredentialAddress *)self->_address shortDescription];
-  [v5 appendFormat:@"address: '%@'; ", v6];
+  shortDescription = [(PKSECredentialAddress *)self->_address shortDescription];
+  [v5 appendFormat:@"address: '%@'; ", shortDescription];
 
   if (self->_appletProperties)
   {

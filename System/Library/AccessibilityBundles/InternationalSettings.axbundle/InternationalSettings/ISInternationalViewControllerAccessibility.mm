@@ -1,58 +1,58 @@
 @interface ISInternationalViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forPreferredLanguageAtIndex:(unint64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forPreferredLanguageAtIndex:(unint64_t)index;
 @end
 
 @implementation ISInternationalViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ISInternationalViewController" hasInstanceMethod:@"updateCell: forPreferredLanguageAtIndex:" withFullSignature:{"v", "@", "Q", 0}];
-  [v3 validateClass:@"ISInternationalViewController" hasInstanceMethod:@"updatedAppleLanguages" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ISInternationalViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ISInternationalViewController" hasInstanceMethod:@"updateCell: forPreferredLanguageAtIndex:" withFullSignature:{"v", "@", "Q", 0}];
+  [validationsCopy validateClass:@"ISInternationalViewController" hasInstanceMethod:@"updatedAppleLanguages" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ISInternationalViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
 }
 
-- (void)updateCell:(id)a3 forPreferredLanguageAtIndex:(unint64_t)a4
+- (void)updateCell:(id)cell forPreferredLanguageAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = ISInternationalViewControllerAccessibility;
-  [(ISInternationalViewControllerAccessibility *)&v10 updateCell:v6 forPreferredLanguageAtIndex:a4];
+  [(ISInternationalViewControllerAccessibility *)&v10 updateCell:cellCopy forPreferredLanguageAtIndex:index];
   v7 = [(ISInternationalViewControllerAccessibility *)self safeValueForKey:@"updatedAppleLanguages"];
-  v8 = __UIAccessibilitySafeClass();
+  preferredLanguages = __UIAccessibilitySafeClass();
 
-  if (!v8)
+  if (!preferredLanguages)
   {
-    v8 = [MEMORY[0x29EDB8DE0] preferredLanguages];
+    preferredLanguages = [MEMORY[0x29EDB8DE0] preferredLanguages];
   }
 
-  if ([v8 count] > a4)
+  if ([preferredLanguages count] > index)
   {
-    v9 = [v8 objectAtIndexedSubscript:a4];
-    [v6 accessibilitySetIdentification:@"LanguageCell"];
-    [v6 _accessibilitySetRetainedValue:v9 forKey:@"axLanguage"];
+    v9 = [preferredLanguages objectAtIndexedSubscript:index];
+    [cellCopy accessibilitySetIdentification:@"LanguageCell"];
+    [cellCopy _accessibilitySetRetainedValue:v9 forKey:@"axLanguage"];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = ISInternationalViewControllerAccessibility;
-  v8 = [(ISInternationalViewControllerAccessibility *)&v20 tableView:v6 cellForRowAtIndexPath:v7];
-  if ([v7 section])
+  v8 = [(ISInternationalViewControllerAccessibility *)&v20 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  if ([pathCopy section])
   {
-    v9 = 0;
+    name = 0;
   }
 
   else
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    [v10 indexForIndexPath:v7];
+    [v10 indexForIndexPath:pathCopy];
 
     objc_opt_class();
     v14 = 0;
@@ -67,17 +67,17 @@
 
     v12 = __UIAccessibilityCastAsClass();
 
-    v9 = [v12 name];
+    name = [v12 name];
   }
 
-  if ([(__CFString *)v9 isEqualToString:@"pt"])
+  if ([(__CFString *)name isEqualToString:@"pt"])
   {
 
-    v9 = @"pt-BR";
+    name = @"pt-BR";
   }
 
   [v8 accessibilitySetIdentification:@"LanguageCell"];
-  [v8 _accessibilitySetRetainedValue:v9 forKey:@"axLanguage"];
+  [v8 _accessibilitySetRetainedValue:name forKey:@"axLanguage"];
 
   return v8;
 }

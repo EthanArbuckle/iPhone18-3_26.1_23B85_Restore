@@ -1,8 +1,8 @@
 @interface EKEventCreationGestureController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (EKEventCreationGestureController)initWithView:(id)a3 delegate:(id)a4;
-- (id)_snapDateTo15MinuteInterval:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (EKEventCreationGestureController)initWithView:(id)view delegate:(id)delegate;
+- (id)_snapDateTo15MinuteInterval:(id)interval;
 - (void)_adjustPreviewFrame;
 - (void)_cleanUp;
 - (void)_gestureBegan;
@@ -11,24 +11,24 @@
 - (void)_gestureCompleted;
 - (void)_gestureUpdated;
 - (void)dealloc;
-- (void)handleGesture:(id)a3;
+- (void)handleGesture:(id)gesture;
 - (void)invalidate;
 @end
 
 @implementation EKEventCreationGestureController
 
-- (EKEventCreationGestureController)initWithView:(id)a3 delegate:(id)a4
+- (EKEventCreationGestureController)initWithView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = EKEventCreationGestureController;
   v8 = [(EKEventCreationGestureController *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_gestureDelegate, v7);
-    objc_storeWeak(&v9->_targetView, v6);
+    objc_storeWeak(&v8->_gestureDelegate, delegateCopy);
+    objc_storeWeak(&v9->_targetView, viewCopy);
     v10 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v9 action:sel_handleGesture_];
     gestureRecognizer = v9->_gestureRecognizer;
     v9->_gestureRecognizer = v10;
@@ -71,28 +71,28 @@
   objc_storeWeak(&self->_targetView, 0);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_gestureDelegate);
-  v5 = [WeakRetained creationGestureControllerRequestedContainerView:v3];
+  v5 = [WeakRetained creationGestureControllerRequestedContainerView:selfCopy];
 
-  [(UILongPressGestureRecognizer *)v3->_gestureRecognizer locationInView:v5];
+  [(UILongPressGestureRecognizer *)selfCopy->_gestureRecognizer locationInView:v5];
   v7 = v6;
   v9 = v8;
-  v10 = objc_loadWeakRetained(&v3->_gestureDelegate);
-  LOBYTE(v3) = [v10 creationGestureController:v3 canActivateAtPoint:{v7, v9}];
+  v10 = objc_loadWeakRetained(&selfCopy->_gestureDelegate);
+  LOBYTE(selfCopy) = [v10 creationGestureController:selfCopy canActivateAtPoint:{v7, v9}];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_gestureDelegate);
   v7 = [WeakRetained creationGestureControllerRequestedContainerView:self];
 
-  [v5 locationInView:v7];
+  [touchCopy locationInView:v7];
   v9 = v8;
   v11 = v10;
 
@@ -102,12 +102,12 @@
   return self;
 }
 
-- (void)handleGesture:(id)a3
+- (void)handleGesture:(id)gesture
 {
-  v4 = [a3 state];
-  if (v4 > 3)
+  state = [gesture state];
+  if (state > 3)
   {
-    if ((v4 - 4) < 2)
+    if ((state - 4) < 2)
     {
 
       [(EKEventCreationGestureController *)self _gestureCanceled];
@@ -116,7 +116,7 @@
 
   else
   {
-    switch(v4)
+    switch(state)
     {
       case 1:
 
@@ -134,9 +134,9 @@
   }
 }
 
-- (id)_snapDateTo15MinuteInterval:(id)a3
+- (id)_snapDateTo15MinuteInterval:(id)interval
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [interval timeIntervalSinceReferenceDate];
   v4 = round(v3 / 900.0) * 900.0;
   v5 = MEMORY[0x1E695DF00];
 
@@ -312,8 +312,8 @@
       goto LABEL_6;
     }
 
-    v20 = [(EKEvent *)newEvent eventStore];
-    [v20 removeEvent:self->_newEvent span:0 error:0];
+    eventStore = [(EKEvent *)newEvent eventStore];
+    [eventStore removeEvent:self->_newEvent span:0 error:0];
   }
 
   [(EKEventCreationGestureController *)self _cleanUp];

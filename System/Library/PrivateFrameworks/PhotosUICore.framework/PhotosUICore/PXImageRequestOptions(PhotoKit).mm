@@ -16,98 +16,98 @@
 
 - (id)photoKitRequestOptions
 {
-  v2 = [a1 underlyingPhotoKitImageRequestOptions];
-  if (!v2)
+  underlyingPhotoKitImageRequestOptions = [self underlyingPhotoKitImageRequestOptions];
+  if (!underlyingPhotoKitImageRequestOptions)
   {
-    v2 = objc_alloc_init(MEMORY[0x1E6978868]);
-    [a1 copyPropertiesToPhotoKitOptions:v2];
+    underlyingPhotoKitImageRequestOptions = objc_alloc_init(MEMORY[0x1E6978868]);
+    [self copyPropertiesToPhotoKitOptions:underlyingPhotoKitImageRequestOptions];
   }
 
-  return v2;
+  return underlyingPhotoKitImageRequestOptions;
 }
 
 - (void)copyPropertiesFromPhotoKitOptions:()PhotoKit
 {
   v4 = a3;
-  [a1 setVersion:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsVersionFromPHImageRequestOptionsVersion:", objc_msgSend(v4, "version"))}];
-  [a1 setAllowPlaceholder:{objc_msgSend(v4, "allowPlaceholder")}];
-  [a1 setDeliveryMode:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsDeliveryModeFromPHImageRequestOptionsDeliveryMode:", objc_msgSend(v4, "deliveryMode"))}];
-  [a1 setResizeMode:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsResizeModeFromPHImageRequestOptionsResizeMode:", objc_msgSend(v4, "resizeMode"))}];
+  [self setVersion:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsVersionFromPHImageRequestOptionsVersion:", objc_msgSend(v4, "version"))}];
+  [self setAllowPlaceholder:{objc_msgSend(v4, "allowPlaceholder")}];
+  [self setDeliveryMode:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsDeliveryModeFromPHImageRequestOptionsDeliveryMode:", objc_msgSend(v4, "deliveryMode"))}];
+  [self setResizeMode:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsResizeModeFromPHImageRequestOptionsResizeMode:", objc_msgSend(v4, "resizeMode"))}];
   [v4 normalizedCropRect];
-  [a1 setNormalizedCropRect:?];
-  [a1 setNetworkAccessAllowed:{objc_msgSend(v4, "isNetworkAccessAllowed")}];
-  [a1 setSynchronous:{objc_msgSend(v4, "isSynchronous")}];
-  v5 = [v4 progressHandler];
-  [a1 setProgressHandler:v5];
+  [self setNormalizedCropRect:?];
+  [self setNetworkAccessAllowed:{objc_msgSend(v4, "isNetworkAccessAllowed")}];
+  [self setSynchronous:{objc_msgSend(v4, "isSynchronous")}];
+  progressHandler = [v4 progressHandler];
+  [self setProgressHandler:progressHandler];
 
-  [a1 setAllowSecondaryDegradedImage:{objc_msgSend(v4, "allowSecondaryDegradedImage")}];
+  [self setAllowSecondaryDegradedImage:{objc_msgSend(v4, "allowSecondaryDegradedImage")}];
   [v4 fallbackTargetSizeIfRequestedSizeNotLocallyAvailable];
-  [a1 setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:?];
-  [a1 setLoadingMode:{objc_msgSend(v4, "loadingMode")}];
-  v6 = [v4 resultHandlerQueue];
-  [a1 setResultHandlerQueue:v6];
+  [self setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:?];
+  [self setLoadingMode:{objc_msgSend(v4, "loadingMode")}];
+  resultHandlerQueue = [v4 resultHandlerQueue];
+  [self setResultHandlerQueue:resultHandlerQueue];
 
-  [a1 setDownloadIntent:{objc_msgSend(v4, "downloadIntent")}];
-  [a1 setDownloadPriority:{objc_msgSend(v4, "downloadPriority")}];
-  [a1 setUseLowMemoryMode:{objc_msgSend(v4, "useLowMemoryMode")}];
-  [a1 setPreferHDR:{objc_msgSend(v4, "preferHDR")}];
+  [self setDownloadIntent:{objc_msgSend(v4, "downloadIntent")}];
+  [self setDownloadPriority:{objc_msgSend(v4, "downloadPriority")}];
+  [self setUseLowMemoryMode:{objc_msgSend(v4, "useLowMemoryMode")}];
+  [self setPreferHDR:{objc_msgSend(v4, "preferHDR")}];
   [v4 targetHDRHeadroom];
-  [a1 setTargetHDRHeadroom:?];
-  [a1 setIncludeHDRGainMap:{objc_msgSend(v4, "includeHDRGainMap")}];
-  [a1 setChooseAlchemist:{objc_msgSend(v4, "chooseAlchemist")}];
-  [a1 setUseAsyncForFastOpportunisticResult:{objc_msgSend(v4, "useAsyncForFastOpportunisticResult")}];
-  [a1 setOpportunisticDegradedImagesToReturn:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsDegradedImagesToReturnFromPHImageRequestOptionsDegradedImagesToReturn:", objc_msgSend(v4, "opportunisticDegradedImagesToReturn"))}];
-  v7 = [v4 contextualVideoThumbnailIdentifier];
+  [self setTargetHDRHeadroom:?];
+  [self setIncludeHDRGainMap:{objc_msgSend(v4, "includeHDRGainMap")}];
+  [self setChooseAlchemist:{objc_msgSend(v4, "chooseAlchemist")}];
+  [self setUseAsyncForFastOpportunisticResult:{objc_msgSend(v4, "useAsyncForFastOpportunisticResult")}];
+  [self setOpportunisticDegradedImagesToReturn:{objc_msgSend(objc_opt_class(), "pxImageRequestOptionsDegradedImagesToReturnFromPHImageRequestOptionsDegradedImagesToReturn:", objc_msgSend(v4, "opportunisticDegradedImagesToReturn"))}];
+  contextualVideoThumbnailIdentifier = [v4 contextualVideoThumbnailIdentifier];
 
-  [a1 setContextualVideoThumbnailIdentifier:v7];
+  [self setContextualVideoThumbnailIdentifier:contextualVideoThumbnailIdentifier];
 }
 
 - (void)copyPropertiesToPhotoKitOptions:()PhotoKit
 {
   v4 = a3;
-  [v4 setVersion:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsVersionFromPXImageRequestOptionsVersion:", objc_msgSend(a1, "version"))}];
-  [v4 setAllowPlaceholder:{objc_msgSend(a1, "allowPlaceholder")}];
-  [v4 setDeliveryMode:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsDeliveryModeFromPXImageRequestOptionsDeliveryMode:", objc_msgSend(a1, "deliveryMode"))}];
-  [v4 setResizeMode:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsResizeModeFromPXImageRequestOptionsResizeMode:", objc_msgSend(a1, "resizeMode"))}];
-  [a1 normalizedCropRect];
+  [v4 setVersion:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsVersionFromPXImageRequestOptionsVersion:", objc_msgSend(self, "version"))}];
+  [v4 setAllowPlaceholder:{objc_msgSend(self, "allowPlaceholder")}];
+  [v4 setDeliveryMode:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsDeliveryModeFromPXImageRequestOptionsDeliveryMode:", objc_msgSend(self, "deliveryMode"))}];
+  [v4 setResizeMode:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsResizeModeFromPXImageRequestOptionsResizeMode:", objc_msgSend(self, "resizeMode"))}];
+  [self normalizedCropRect];
   [v4 setNormalizedCropRect:?];
-  [v4 setNetworkAccessAllowed:{objc_msgSend(a1, "isNetworkAccessAllowed")}];
-  [v4 setSynchronous:{objc_msgSend(a1, "isSynchronous")}];
-  v5 = [a1 progressHandler];
-  [v4 setProgressHandler:v5];
+  [v4 setNetworkAccessAllowed:{objc_msgSend(self, "isNetworkAccessAllowed")}];
+  [v4 setSynchronous:{objc_msgSend(self, "isSynchronous")}];
+  progressHandler = [self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
-  [v4 setAllowSecondaryDegradedImage:{objc_msgSend(a1, "allowSecondaryDegradedImage")}];
-  [a1 fallbackTargetSizeIfRequestedSizeNotLocallyAvailable];
+  [v4 setAllowSecondaryDegradedImage:{objc_msgSend(self, "allowSecondaryDegradedImage")}];
+  [self fallbackTargetSizeIfRequestedSizeNotLocallyAvailable];
   [v4 setFallbackTargetSizeIfRequestedSizeNotLocallyAvailable:?];
-  [v4 setLoadingMode:{objc_msgSend(a1, "loadingMode")}];
-  v6 = [a1 resultHandlerQueue];
-  [v4 setResultHandlerQueue:v6];
+  [v4 setLoadingMode:{objc_msgSend(self, "loadingMode")}];
+  resultHandlerQueue = [self resultHandlerQueue];
+  [v4 setResultHandlerQueue:resultHandlerQueue];
 
-  [v4 setDownloadIntent:{objc_msgSend(a1, "downloadIntent")}];
-  [v4 setDownloadPriority:{objc_msgSend(a1, "downloadPriority")}];
-  [v4 setUseLowMemoryMode:{objc_msgSend(a1, "useLowMemoryMode")}];
-  [v4 setPreferHDR:{objc_msgSend(a1, "preferHDR")}];
-  [a1 targetHDRHeadroom];
+  [v4 setDownloadIntent:{objc_msgSend(self, "downloadIntent")}];
+  [v4 setDownloadPriority:{objc_msgSend(self, "downloadPriority")}];
+  [v4 setUseLowMemoryMode:{objc_msgSend(self, "useLowMemoryMode")}];
+  [v4 setPreferHDR:{objc_msgSend(self, "preferHDR")}];
+  [self targetHDRHeadroom];
   [v4 setTargetHDRHeadroom:?];
-  [v4 setIncludeHDRGainMap:{objc_msgSend(a1, "includeHDRGainMap")}];
-  [v4 setChooseAlchemist:{objc_msgSend(a1, "chooseAlchemist")}];
-  [v4 setUseAsyncForFastOpportunisticResult:{objc_msgSend(a1, "useAsyncForFastOpportunisticResult")}];
-  [v4 setOpportunisticDegradedImagesToReturn:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsDegradedImagesToReturnFromPXImageRequestOptionsDegradedImagesToReturn:", objc_msgSend(a1, "opportunisticDegradedImagesToReturn"))}];
-  v7 = [a1 contextualVideoThumbnailIdentifier];
-  [v4 setContextualVideoThumbnailIdentifier:v7];
+  [v4 setIncludeHDRGainMap:{objc_msgSend(self, "includeHDRGainMap")}];
+  [v4 setChooseAlchemist:{objc_msgSend(self, "chooseAlchemist")}];
+  [v4 setUseAsyncForFastOpportunisticResult:{objc_msgSend(self, "useAsyncForFastOpportunisticResult")}];
+  [v4 setOpportunisticDegradedImagesToReturn:{objc_msgSend(objc_opt_class(), "phImageRequestOptionsDegradedImagesToReturnFromPXImageRequestOptionsDegradedImagesToReturn:", objc_msgSend(self, "opportunisticDegradedImagesToReturn"))}];
+  contextualVideoThumbnailIdentifier = [self contextualVideoThumbnailIdentifier];
+  [v4 setContextualVideoThumbnailIdentifier:contextualVideoThumbnailIdentifier];
 }
 
 - (void)setUnderlyingPhotoKitImageRequestOptions:()PhotoKit
 {
   value = a3;
-  [a1 copyPropertiesFromPhotoKitOptions:value];
-  objc_setAssociatedObject(a1, UnderlyingPhotoKitRequestOptionsKey, value, 3);
+  [self copyPropertiesFromPhotoKitOptions:value];
+  objc_setAssociatedObject(self, UnderlyingPhotoKitRequestOptionsKey, value, 3);
 }
 
 - (void)initWithUnderlyingPhotoKitImageRequestOptions:()PhotoKit
 {
   v4 = a3;
-  v5 = [a1 init];
+  v5 = [self init];
   v6 = v5;
   if (v5)
   {
@@ -121,8 +121,8 @@
 {
   if (a3 >= 3)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:181 description:{@"Unexpected PH value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:181 description:{@"Unexpected PH value %ti", a3}];
 
     abort();
   }
@@ -134,8 +134,8 @@
 {
   if (a3 >= 3)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:168 description:{@"Unexpected PX value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:168 description:{@"Unexpected PX value %ti", a3}];
 
     abort();
   }
@@ -147,8 +147,8 @@
 {
   if (a3 >= 6 || ((0x27u >> a3) & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:155 description:{@"Unexpected PH value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:155 description:{@"Unexpected PH value %ti", a3}];
 
     abort();
   }
@@ -160,8 +160,8 @@
 {
   if (a3 >= 4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:140 description:{@"Unexpected PX value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:140 description:{@"Unexpected PX value %ti", a3}];
 
     abort();
   }
@@ -173,8 +173,8 @@
 {
   if (a3 >= 3)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:125 description:{@"Unexpected PH value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:125 description:{@"Unexpected PH value %ti", a3}];
 
     abort();
   }
@@ -186,8 +186,8 @@
 {
   if (a3 >= 3)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:112 description:{@"Unexpected PX value %ti", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImageRequestOptions+PhotoKit.m" lineNumber:112 description:{@"Unexpected PX value %ti", a3}];
 
     abort();
   }

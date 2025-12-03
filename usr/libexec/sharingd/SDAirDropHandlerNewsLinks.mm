@@ -1,6 +1,6 @@
 @interface SDAirDropHandlerNewsLinks
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerNewsLinks)initWithTransfer:(id)a3;
+- (SDAirDropHandlerNewsLinks)initWithTransfer:(id)transfer;
 - (id)candidateIdentifiers;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -8,23 +8,23 @@
 
 @implementation SDAirDropHandlerNewsLinks
 
-- (SDAirDropHandlerNewsLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerNewsLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerNewsLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.news"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.news"];
 }
 
 - (id)candidateIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
-    v5 = [(SDAirDropHandler *)self bundleProxy];
-    v6 = [v5 bundleIdentifier];
-    [v3 addObject:v6];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy2 bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
   }
 
   return v3;
@@ -41,10 +41,10 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -55,7 +55,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -66,7 +66,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -91,10 +91,10 @@ LABEL_14:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
+  senderName = [(SDAirDropHandler *)self senderName];
   v4 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_10090FED8];
   v5 = SFLocalizedStringForKey();
-  v6 = [NSString localizedStringWithFormat:v5, v3];
+  v6 = [NSString localizedStringWithFormat:v5, senderName];
 
   return v6;
 }

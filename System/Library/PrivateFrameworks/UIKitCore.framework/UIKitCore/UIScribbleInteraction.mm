@@ -1,6 +1,6 @@
 @interface UIScribbleInteraction
 + (BOOL)isScribbleEnabled;
-+ (void)_lastEventSourceChanged:(int64_t)a3;
++ (void)_lastEventSourceChanged:(int64_t)changed;
 - (UIScribbleInteraction)initWithDelegate:(id)delegate;
 - (UIView)view;
 - (id)delegate;
@@ -31,15 +31,15 @@
   return v6;
 }
 
-+ (void)_lastEventSourceChanged:(int64_t)a3
++ (void)_lastEventSourceChanged:(int64_t)changed
 {
-  v3 = a3 == 3;
+  v3 = changed == 3;
   if (sIsPencilInputExpected != v3)
   {
-    [a1 willChangeValueForKey:@"isPencilInputExpected"];
+    [self willChangeValueForKey:@"isPencilInputExpected"];
     sIsPencilInputExpected = v3;
 
-    [a1 didChangeValueForKey:@"isPencilInputExpected"];
+    [self didChangeValueForKey:@"isPencilInputExpected"];
   }
 }
 
@@ -63,9 +63,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 sharedSettings];
-  v5 = [v4 recognitionLocaleIdentifier];
-  v6 = v5 != 0;
+  sharedSettings = [v2 sharedSettings];
+  recognitionLocaleIdentifier = [sharedSettings recognitionLocaleIdentifier];
+  v6 = recognitionLocaleIdentifier != 0;
 
   return v6;
 }
@@ -77,10 +77,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(UIScribbleInteraction *)self view];
-  v4 = [v3 interactions];
+  view = [(UIScribbleInteraction *)self view];
+  interactions = [view interactions];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [interactions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -91,20 +91,20 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interactions);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
         {
-          v10 = [v9 scribbleInteractionWrapper];
+          scribbleInteractionWrapper = [v9 scribbleInteractionWrapper];
 
           goto LABEL_12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [interactions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -114,10 +114,10 @@
     }
   }
 
-  v10 = [[UIScribbleInteractionWrapper alloc] initWithCustomScribbleInteraction:self indirectScribbleInteraction:0];
+  scribbleInteractionWrapper = [[UIScribbleInteractionWrapper alloc] initWithCustomScribbleInteraction:self indirectScribbleInteraction:0];
 LABEL_12:
 
-  return v10;
+  return scribbleInteractionWrapper;
 }
 
 - (id)delegate

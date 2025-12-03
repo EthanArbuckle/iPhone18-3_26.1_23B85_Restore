@@ -29,8 +29,8 @@
   v8 = a5;
   v9 = a4;
   v10 = [v7 constraintWithItem:v9 attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:1.0 constant:0.0];
-  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:1 relatedBy:1 toItem:v8 attribute:1 multiplier:1.0 constant:a1];
-  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:2 relatedBy:-1 toItem:v8 attribute:2 multiplier:1.0 constant:-a1];
+  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:1 relatedBy:1 toItem:v8 attribute:1 multiplier:1.0 constant:self];
+  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:v9 attribute:2 relatedBy:-1 toItem:v8 attribute:2 multiplier:1.0 constant:-self];
 
   v15[0] = v10;
   v15[1] = v11;
@@ -48,7 +48,7 @@
   v15 = a7;
   v16 = [v13 constraintWithItem:v14 attribute:1 relatedBy:0 toItem:v15 attribute:1 multiplier:1.0 constant:a2];
   v17 = [MEMORY[0x277CCAAD0] constraintWithItem:v14 attribute:2 relatedBy:0 toItem:v15 attribute:2 multiplier:1.0 constant:-a4];
-  v18 = [MEMORY[0x277CCAAD0] constraintWithItem:v14 attribute:3 relatedBy:0 toItem:v15 attribute:3 multiplier:1.0 constant:a1];
+  v18 = [MEMORY[0x277CCAAD0] constraintWithItem:v14 attribute:3 relatedBy:0 toItem:v15 attribute:3 multiplier:1.0 constant:self];
   v19 = [MEMORY[0x277CCAAD0] constraintWithItem:v14 attribute:4 relatedBy:0 toItem:v15 attribute:4 multiplier:1.0 constant:-a3];
 
   v22[0] = v18;
@@ -64,26 +64,26 @@
 {
   v7 = a5;
   v8 = a4;
-  v9 = [v8 leadingAnchor];
-  v10 = [v7 leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:a1];
+  leadingAnchor = [v8 leadingAnchor];
+  leadingAnchor2 = [v7 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:self];
   [v11 setActive:1];
 
-  v12 = [v8 trailingAnchor];
-  v13 = [v7 trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:a1];
+  trailingAnchor = [v8 trailingAnchor];
+  trailingAnchor2 = [v7 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:self];
   [v14 setActive:1];
 
-  v15 = [v8 topAnchor];
-  v16 = [v7 topAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:a1];
+  topAnchor = [v8 topAnchor];
+  topAnchor2 = [v7 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self];
   [v17 setActive:1];
 
-  v20 = [v8 bottomAnchor];
+  bottomAnchor = [v8 bottomAnchor];
 
-  v18 = [v7 bottomAnchor];
+  bottomAnchor2 = [v7 bottomAnchor];
 
-  v19 = [v20 constraintEqualToAnchor:v18 constant:a1];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:self];
   [v19 setActive:1];
 }
 
@@ -91,26 +91,26 @@
 {
   v13 = a8;
   v14 = a7;
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 leadingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16 constant:a2];
+  leadingAnchor = [v14 leadingAnchor];
+  leadingAnchor2 = [v13 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:a2];
   [v17 setActive:1];
 
-  v18 = [v14 trailingAnchor];
-  v19 = [v13 trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:a4];
+  trailingAnchor = [v14 trailingAnchor];
+  trailingAnchor2 = [v13 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:a4];
   [v20 setActive:1];
 
-  v21 = [v14 topAnchor];
-  v22 = [v13 topAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:a1];
+  topAnchor = [v14 topAnchor];
+  topAnchor2 = [v13 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:self];
   [v23 setActive:1];
 
-  v26 = [v14 bottomAnchor];
+  bottomAnchor = [v14 bottomAnchor];
 
-  v24 = [v13 bottomAnchor];
+  bottomAnchor2 = [v13 bottomAnchor];
 
-  v25 = [v26 constraintEqualToAnchor:v24 constant:a3];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:a3];
   [v25 setActive:1];
 }
 
@@ -118,26 +118,26 @@
 {
   v5 = a4;
   v6 = a3;
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor = [v6 leadingAnchor];
+  leadingAnchor2 = [v5 leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 setActive:1];
 
-  v10 = [v6 trailingAnchor];
-  v11 = [v5 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [v6 trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v12 setActive:1];
 
-  v13 = [v6 topAnchor];
-  v14 = [v5 topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  topAnchor = [v6 topAnchor];
+  topAnchor2 = [v5 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 setActive:1];
 
-  v18 = [v6 bottomAnchor];
+  bottomAnchor = [v6 bottomAnchor];
 
-  v16 = [v5 bottomAnchor];
+  bottomAnchor2 = [v5 bottomAnchor];
 
-  v17 = [v18 constraintEqualToAnchor:v16];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 }
 
@@ -145,7 +145,7 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -172,7 +172,7 @@
         if (v13)
         {
           v15 = [MEMORY[0x277CCAAD0] constraintWithItem:*(*(&v17 + 1) + 8 * v12) attribute:a4 relatedBy:0 toItem:v13 attribute:a4 multiplier:1.0 constant:{0.0, v17}];
-          [v6 addObject:v15];
+          [array addObject:v15];
         }
 
         v10 = v14;
@@ -188,7 +188,7 @@
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
 + (id)_gkConstraintsForViews:()GKAdditions contiguouslyLaidOutVertically:overlap:withinView:insets:applyOrthogonalConstraints:
@@ -206,7 +206,7 @@
   {
     v22 = [v19 objectAtIndex:0];
     v37 = a11;
-    v23 = [v19 lastObject];
+    lastObject = [v19 lastObject];
     if (a9)
     {
       v24 = 3;
@@ -275,7 +275,7 @@
 
     v30 = [MEMORY[0x277CCAAD0] constraintWithItem:v22 attribute:v24 relatedBy:0 toItem:v20 attribute:v24 multiplier:1.0 constant:{v28, v27}];
     [v21 addObject:v30];
-    v31 = [MEMORY[0x277CCAAD0] constraintWithItem:v23 attribute:v25 relatedBy:0 toItem:v20 attribute:v25 multiplier:1.0 constant:-v29];
+    v31 = [MEMORY[0x277CCAAD0] constraintWithItem:lastObject attribute:v25 relatedBy:0 toItem:v20 attribute:v25 multiplier:1.0 constant:-v29];
     [v21 addObject:v31];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
@@ -284,7 +284,7 @@
     v41 = v50;
     v42 = v24;
     v43 = v25;
-    v44 = a1;
+    selfCopy = self;
     v32 = v21;
     v49 = v37;
     v39 = v32;

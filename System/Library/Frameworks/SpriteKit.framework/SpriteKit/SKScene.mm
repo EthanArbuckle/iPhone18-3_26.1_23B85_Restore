@@ -1,15 +1,15 @@
 @interface SKScene
-+ (SKScene)sceneWithContentsOfFile:(id)a3;
-+ (SKScene)sceneWithContentsOfFile:(id)a3 size:(CGSize)a4;
++ (SKScene)sceneWithContentsOfFile:(id)file;
++ (SKScene)sceneWithContentsOfFile:(id)file size:(CGSize)size;
 + (SKScene)sceneWithSize:(CGSize)size;
 + (id)debugHierarchyPropertyDescriptions;
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 - (AVAudioEngine)audioEngine;
-- (BOOL)isEqualToNode:(id)a3;
+- (BOOL)isEqualToNode:(id)node;
 - (CGPoint)anchorPoint;
-- (CGPoint)convertPointFromParent:(CGPoint)a3;
+- (CGPoint)convertPointFromParent:(CGPoint)parent;
 - (CGPoint)convertPointFromView:(CGPoint)point;
-- (CGPoint)convertPointToParent:(CGPoint)a3;
+- (CGPoint)convertPointToParent:(CGPoint)parent;
 - (CGPoint)convertPointToView:(CGPoint)point;
 - (CGPoint)position;
 - (CGPoint)visibleRectCenter;
@@ -19,32 +19,32 @@
 - (CGSize)visibleRectSize;
 - (SKCameraNode)camera;
 - (SKNode)listener;
-- (SKScene)initWithCoder:(id)a3;
+- (SKScene)initWithCoder:(id)coder;
 - (SKScene)initWithSize:(CGSize)size;
 - (SKView)view;
 - (UIColor)backgroundColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)delegate;
 - (id)description;
 - (uint64_t)_update:;
 - (void)_didMakeBackingNode;
-- (void)_didMoveToView:(id)a3;
+- (void)_didMoveToView:(id)view;
 - (void)_update:;
-- (void)_update:(double)a3;
-- (void)_willMoveFromView:(id)a3;
+- (void)_update:(double)_update;
+- (void)_willMoveFromView:(id)view;
 - (void)checkAudioEngine;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAVAudioEngineInterruption:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAVAudioEngineInterruption:(id)interruption;
 - (void)setAnchorPoint:(CGPoint)anchorPoint;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 - (void)setSize:(CGSize)size;
 @end
 
 @implementation SKScene
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -82,9 +82,9 @@
     [(SKEffectNode *)v5 setShouldEnableEffects:0];
     v6->_lastUpdate = -1.0;
     v6->_pausedTime = 0.0;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     allChildenWithConstraints = v6->_allChildenWithConstraints;
-    v6->_allChildenWithConstraints = v7;
+    v6->_allChildenWithConstraints = array;
 
     v9 = objc_alloc_init(MEMORY[0x277D3D170]);
     [v9 setVelocityThreshold:0.1];
@@ -105,9 +105,9 @@
     v15 = v6->_bounds.size;
     v6->_visibleRect.origin = v6->_bounds.origin;
     v6->_visibleRect.size = v15;
-    v16 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     touchMap = v6->_touchMap;
-    v6->_touchMap = v16;
+    v6->_touchMap = strongToWeakObjectsMapTable;
 
     [(SKScene *)v6 setSize:width, height];
     [(SKScene *)v6 setAnchorPoint:0.0, 0.0];
@@ -132,19 +132,19 @@
   return v6;
 }
 
-- (SKScene)initWithCoder:(id)a3
+- (SKScene)initWithCoder:(id)coder
 {
   v73[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  v70.receiver = v5;
+  coderCopy = coder;
+  selfCopy = self;
+  v70.receiver = selfCopy;
   v70.super_class = SKScene;
-  v63 = v4;
-  v6 = [(SKEffectNode *)&v70 initWithCoder:v4];
+  v63 = coderCopy;
+  v6 = [(SKEffectNode *)&v70 initWithCoder:coderCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6 == v5;
+    v8 = v6 == selfCopy;
   }
 
   else
@@ -159,11 +159,11 @@
     v73[1] = objc_opt_class();
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_scenePinBody"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_scenePinBody"];
     scenePinBody = v7->_scenePinBody;
     v7->_scenePinBody = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Scene_bounds"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Scene_bounds"];
     [v14 CGRectValue];
     v7->_bounds.origin.x = v15;
     v7->_bounds.origin.y = v16;
@@ -171,16 +171,16 @@
     v7->_bounds.size.height = v18;
 
     v19 = MEMORY[0x277D75348];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorR"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorR"];
     [v20 doubleValue];
     v22 = v21;
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorG"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorG"];
     [v23 doubleValue];
     v25 = v24;
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorB"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorB"];
     [v26 doubleValue];
     v28 = v27;
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorA"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backgroundColorA"];
     [v29 doubleValue];
     v30 = v22;
     *&v31 = v25;
@@ -191,26 +191,26 @@
     [(SKScene *)v7 setBackgroundColor:v35];
 
     [(SKScene *)v7 setSize:v7->_bounds.size.width, v7->_bounds.size.height];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_anchorPoint"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_anchorPoint"];
     [v36 CGPointValue];
     [(SKScene *)v7 setAnchorPoint:?];
 
-    v37 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     touchMap = v7->_touchMap;
-    v7->_touchMap = v37;
+    v7->_touchMap = strongToWeakObjectsMapTable;
 
-    v39 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     allChildenWithConstraints = v7->_allChildenWithConstraints;
-    v7->_allChildenWithConstraints = v39;
+    v7->_allChildenWithConstraints = array;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_visibleRect"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_visibleRect"];
     [v41 CGRectValue];
     v7->_visibleRect.origin.x = v42;
     v7->_visibleRect.origin.y = v43;
     v7->_visibleRect.size.width = v44;
     v7->_visibleRect.size.height = v45;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scaleMode"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scaleMode"];
     -[SKScene setScaleMode:](v7, "setScaleMode:", [v46 intValue]);
 
     v47 = MEMORY[0x277CBEB98];
@@ -218,7 +218,7 @@
     v72[1] = objc_opt_class();
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
     v49 = [v47 setWithArray:v48];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"_physicsWorld"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"_physicsWorld"];
     physicsWorld = v7->_physicsWorld;
     v7->_physicsWorld = v50;
 
@@ -226,15 +226,15 @@
     [(SKNode *)v7 setUserInteractionEnabled:1];
     [(SKScene *)v7 set_usesExplicitRender:0];
     [(SKScene *)v7 set_usesExplicitUpdate:0];
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_camera"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_camera"];
     [(SKScene *)v7 setCamera:v52];
 
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v53 = [(SKPhysicsWorld *)v7->_physicsWorld bodies];
-    v54 = [v53 countByEnumeratingWithState:&v66 objects:v71 count:16];
+    bodies = [(SKPhysicsWorld *)v7->_physicsWorld bodies];
+    v54 = [bodies countByEnumeratingWithState:&v66 objects:v71 count:16];
     if (v54)
     {
       v55 = *v67;
@@ -244,13 +244,13 @@
         {
           if (*v67 != v55)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(bodies);
           }
 
           v57 = *(*(&v66 + 1) + 8 * i);
-          v58 = [(SKPhysicsBody *)v57 node];
-          v59 = [v58 scene];
-          if (v59 == v5)
+          node = [(SKPhysicsBody *)v57 node];
+          scene = [node scene];
+          if (scene == selfCopy)
           {
           }
 
@@ -265,7 +265,7 @@
           }
         }
 
-        v54 = [v53 countByEnumeratingWithState:&v66 objects:v71 count:16];
+        v54 = [bodies countByEnumeratingWithState:&v66 objects:v71 count:16];
       }
 
       while (v54);
@@ -368,10 +368,10 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   (*(*skcNode + 184))(skcNode, &v10);
 }
 
-- (CGPoint)convertPointFromParent:(CGPoint)a3
+- (CGPoint)convertPointFromParent:(CGPoint)parent
 {
-  v3.f32[0] = a3.x;
-  y = a3.y;
+  v3.f32[0] = parent.x;
+  y = parent.y;
   v3.f32[1] = y;
   v3.i32[2] = 0;
   v3.i32[3] = 1.0;
@@ -382,10 +382,10 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   return result;
 }
 
-- (CGPoint)convertPointToParent:(CGPoint)a3
+- (CGPoint)convertPointToParent:(CGPoint)parent
 {
-  v3.f32[0] = a3.x;
-  y = a3.y;
+  v3.f32[0] = parent.x;
+  y = parent.y;
   v3.f32[1] = y;
   v3.i32[2] = 0;
   v3.i32[3] = 1.0;
@@ -403,12 +403,12 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   return WeakRetained;
 }
 
-- (void)handleAVAudioEngineInterruption:(id)a3
+- (void)handleAVAudioEngineInterruption:(id)interruption
 {
-  v6 = [(AVAudioEngine *)self->_audioEngine mainMixerNode];
+  mainMixerNode = [(AVAudioEngine *)self->_audioEngine mainMixerNode];
   audioEngine = self->_audioEngine;
-  v5 = [(SKScene *)self avAudioEnvironmentNode];
-  [(AVAudioEngine *)audioEngine connect:v5 to:v6 format:0];
+  avAudioEnvironmentNode = [(SKScene *)self avAudioEnvironmentNode];
+  [(AVAudioEngine *)audioEngine connect:avAudioEnvironmentNode to:mainMixerNode format:0];
 
   [(SKScene *)self checkAudioEngine];
 }
@@ -422,27 +422,27 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
     v5 = self->_audioEngine;
     self->_audioEngine = v4;
 
-    v6 = [(AVAudioEngine *)self->_audioEngine mainMixerNode];
+    mainMixerNode = [(AVAudioEngine *)self->_audioEngine mainMixerNode];
     v7 = objc_opt_new();
     [(SKScene *)self frame];
     v9 = v8;
-    v10 = [v7 distanceAttenuationParameters];
+    distanceAttenuationParameters = [v7 distanceAttenuationParameters];
     v11 = v9 * 0.150000006;
     *&v11 = v9 * 0.150000006;
-    [v10 setReferenceDistance:v11];
+    [distanceAttenuationParameters setReferenceDistance:v11];
 
     [(SKScene *)self frame];
     v13 = v12;
-    v14 = [v7 distanceAttenuationParameters];
+    distanceAttenuationParameters2 = [v7 distanceAttenuationParameters];
     *&v15 = v13;
-    [v14 setMaximumDistance:v15];
+    [distanceAttenuationParameters2 setMaximumDistance:v15];
 
     [v7 setListenerPosition:{0.0, 0.0, 0.0}];
     [(AVAudioEngine *)self->_audioEngine attachNode:v7];
-    [(AVAudioEngine *)self->_audioEngine connect:v7 to:v6 format:0];
+    [(AVAudioEngine *)self->_audioEngine connect:v7 to:mainMixerNode format:0];
     [(SKScene *)self setAvAudioEnvironmentNode:v7];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:self selector:sel_handleAVAudioEngineInterruption_ name:*MEMORY[0x277CB8008] object:self->_audioEngine];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleAVAudioEngineInterruption_ name:*MEMORY[0x277CB8008] object:self->_audioEngine];
 
     [(SKScene *)self checkAudioEngine];
     audioEngine = self->_audioEngine;
@@ -497,49 +497,49 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SKScene;
-  [(SKEffectNode *)&v16 encodeWithCoder:v4];
-  [v4 encodeObject:self->_scenePinBody forKey:@"_scenePinBody"];
+  [(SKEffectNode *)&v16 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_scenePinBody forKey:@"_scenePinBody"];
   v15 = *(self->_skcSceneNode + 19);
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:{*&v15, v15}];
-  [v4 encodeObject:v5 forKey:@"_backgroundColorR"];
+  [coderCopy encodeObject:v5 forKey:@"_backgroundColorR"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v15 + 1)];
-  [v4 encodeObject:v6 forKey:@"_backgroundColorG"];
+  [coderCopy encodeObject:v6 forKey:@"_backgroundColorG"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v15 + 2)];
-  [v4 encodeObject:v7 forKey:@"_backgroundColorB"];
+  [coderCopy encodeObject:v7 forKey:@"_backgroundColorB"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:*(&v15 + 3)];
-  [v4 encodeObject:v8 forKey:@"_backgroundColorA"];
+  [coderCopy encodeObject:v8 forKey:@"_backgroundColorA"];
 
   v9 = [MEMORY[0x277CCAE60] valueWithCGRect:{0.0, 0.0, self->_bounds.size.width, self->_bounds.size.height}];
-  [v4 encodeObject:v9 forKey:@"Scene_bounds"];
+  [coderCopy encodeObject:v9 forKey:@"Scene_bounds"];
 
   v10 = [MEMORY[0x277CCAE60] valueWithCGRect:{self->_visibleRect.origin.x, self->_visibleRect.origin.y, self->_visibleRect.size.width, self->_visibleRect.size.height}];
-  [v4 encodeObject:v10 forKey:@"_visibleRect"];
+  [coderCopy encodeObject:v10 forKey:@"_visibleRect"];
 
-  v11 = [(SKScene *)self camera];
-  [v4 encodeObject:v11 forKey:@"_camera"];
+  camera = [(SKScene *)self camera];
+  [coderCopy encodeObject:camera forKey:@"_camera"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SKScene scaleMode](self, "scaleMode")}];
-  [v4 encodeObject:v12 forKey:@"_scaleMode"];
+  [coderCopy encodeObject:v12 forKey:@"_scaleMode"];
 
-  [v4 encodeObject:self->_physicsWorld forKey:@"_physicsWorld"];
+  [coderCopy encodeObject:self->_physicsWorld forKey:@"_physicsWorld"];
   v13 = MEMORY[0x277CCAE60];
   [(SKScene *)self anchorPoint];
   v14 = [v13 valueWithCGPoint:?];
-  [v4 encodeObject:v14 forKey:@"_anchorPoint"];
+  [coderCopy encodeObject:v14 forKey:@"_anchorPoint"];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v41 = 1;
   }
@@ -549,7 +549,7 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v43.receiver = self;
       v43.super_class = SKScene;
       if (!-[SKEffectNode isEqualToNode:](&v43, sel_isEqualToNode_, v5) || (-[SKScene backgroundColor](self, "backgroundColor"), v6 = objc_claimAutoreleasedReturnValue(), [v6 green], v8 = v7, -[SKScene backgroundColor](v5, "backgroundColor"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "green"), v10 = v8, *&v11 = v11, v12 = COERCE_UNSIGNED_INT(v10 - *&v11) & 0x60000000, v9, v6, v12) || (-[SKScene backgroundColor](self, "backgroundColor"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "red"), v15 = v14, -[SKScene backgroundColor](v5, "backgroundColor"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "red"), v17 = v15, *&v18 = v18, v19 = COERCE_UNSIGNED_INT(v17 - *&v18) & 0x60000000, v16, v13, v19) || (-[SKScene backgroundColor](self, "backgroundColor"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "blue"), v22 = v21, -[SKScene backgroundColor](v5, "backgroundColor"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "blue"), v24 = v22, *&v25 = v25, v26 = COERCE_UNSIGNED_INT(v24 - *&v25) & 0x60000000, v23, v20, v26) || (-[SKScene backgroundColor](self, "backgroundColor"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "alpha"), v29 = v28, -[SKScene backgroundColor](v5, "backgroundColor"), v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "alpha"), v31 = v29, *&v32 = v32, v33 = COERCE_UNSIGNED_INT(v31 - *&v32) & 0x60000000, v30, v27, v33) || !CGRectEqualToRect(self->_bounds, v5->_bounds) || !CGRectEqualToRect(self->_visibleRect, v5->_visibleRect) || (v34 = -[SKScene scaleMode](self, "scaleMode"), v34 != -[SKScene scaleMode](v5, "scaleMode")))
@@ -579,12 +579,12 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKNode *)self name];
+  name = [(SKNode *)self name];
   [(SKScene *)self frame];
   v5 = NSStringFromCGRect(v11);
   [(SKScene *)self anchorPoint];
   v6 = NSStringFromCGPoint(v10);
-  v7 = [v3 stringWithFormat:@"<SKScene> name:'%@' frame:%@ anchor:%@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<SKScene> name:'%@' frame:%@ anchor:%@", name, v5, v6];
 
   return v7;
 }
@@ -750,26 +750,26 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (SKScene)sceneWithContentsOfFile:(id)a3
++ (SKScene)sceneWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  if (![v4 length])
+  fileCopy = file;
+  pathExtension = [fileCopy pathExtension];
+  if (![pathExtension length])
   {
-    v5 = [v3 stringByAppendingPathExtension:@"sks"];
+    v5 = [fileCopy stringByAppendingPathExtension:@"sks"];
 
-    v3 = v5;
+    fileCopy = v5;
   }
 
-  if ([v3 isAbsolutePath])
+  if ([fileCopy isAbsolutePath])
   {
-    v6 = v3;
+    v6 = fileCopy;
   }
 
   else
   {
     v7 = SKGetResourceBundle();
-    v6 = [v7 pathForResource:v3 ofType:0];
+    v6 = [v7 pathForResource:fileCopy ofType:0];
   }
 
   v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
@@ -794,11 +794,11 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   return v11;
 }
 
-+ (SKScene)sceneWithContentsOfFile:(id)a3 size:(CGSize)a4
++ (SKScene)sceneWithContentsOfFile:(id)file size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [SKScene sceneWithContentsOfFile:a3];
+  height = size.height;
+  width = size.width;
+  v6 = [SKScene sceneWithContentsOfFile:file];
   if (width <= 0.0 || height <= 0.0)
   {
     v7 = MEMORY[0x277CBEAD8];
@@ -825,12 +825,12 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   audioEngine = self->_audioEngine;
   if (audioEngine)
   {
-    v4 = [(AVAudioEngine *)audioEngine isRunning];
+    isRunning = [(AVAudioEngine *)audioEngine isRunning];
   }
 
   else
   {
-    v4 = 0;
+    isRunning = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
@@ -843,10 +843,10 @@ void __25__SKScene_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   v6 = objc_loadWeakRetained(&self->_view);
   v7 = objc_opt_respondsToSelector();
 
-  v8 = [(SKNode *)self isPaused];
+  isPaused = [(SKNode *)self isPaused];
   if (v7)
   {
-    if (v8)
+    if (isPaused)
     {
 LABEL_7:
       v9 = 0;
@@ -859,11 +859,11 @@ LABEL_7:
 
   else
   {
-    v9 = !v8;
+    v9 = !isPaused;
   }
 
 LABEL_10:
-  if (v4 != v9)
+  if (isRunning != v9)
   {
     v11 = self->_audioEngine;
     v12 = v9 ^ 1;
@@ -886,13 +886,13 @@ LABEL_10:
   }
 }
 
-- (void)_didMoveToView:(id)a3
+- (void)_didMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   self->_lastUpdate = skCurrentTime();
-  objc_storeWeak(&self->_view, v4);
+  objc_storeWeak(&self->_view, viewCopy);
   [(SKScene *)self checkAudioEngine];
-  if (v4)
+  if (viewCopy)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -902,7 +902,7 @@ LABEL_10:
     [(SKNode *)self enumerateChildNodesWithName:@".//SKAudioNode" usingBlock:v5];
   }
 
-  [(SKScene *)self didMoveToView:v4];
+  [(SKScene *)self didMoveToView:viewCopy];
 }
 
 void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
@@ -915,68 +915,68 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_update:(double)a3
+- (void)_update:(double)_update
 {
   v406 = *MEMORY[0x277D85DE8];
   if ((*(self->_skcSceneNode + 172) & 1) == 0)
   {
     v4 = CACurrentMediaTime();
     _perfBeginClientUpdate(v4);
-    v371 = self;
-    v5 = [(SKScene *)self view];
+    selfCopy = self;
+    view = [(SKScene *)self view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
     }
 
-    v6 = [(SKScene *)v371 delegate];
-    if (v6 && ([(SKScene *)v371 delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+    delegate = [(SKScene *)selfCopy delegate];
+    if (delegate && ([(SKScene *)selfCopy delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, delegate, (v8 & 1) != 0))
     {
-      v9 = [(SKScene *)v371 delegate];
-      [v9 update:v371 forScene:a3];
+      delegate2 = [(SKScene *)selfCopy delegate];
+      [delegate2 update:selfCopy forScene:_update];
 
-      v10 = v371;
+      v10 = selfCopy;
     }
 
     else
     {
-      v10 = v371;
-      [(SKScene *)v371 update:a3];
+      v10 = selfCopy;
+      [(SKScene *)selfCopy update:_update];
     }
 
-    v11 = [(SKScene *)v10 view];
+    view2 = [(SKScene *)v10 view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
     }
 
-    if (v371->_lastUpdate < 0.0)
+    if (selfCopy->_lastUpdate < 0.0)
     {
-      v371->_lastUpdate = a3;
+      selfCopy->_lastUpdate = _update;
     }
 
     v12 = CACurrentMediaTime();
     _perfBeginActions(v12);
-    v13 = [(SKScene *)v371 view];
+    view3 = [(SKScene *)selfCopy view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
     }
 
-    if (SKCNode::matchesAnyFlags(v371->_skcSceneNode, 32, 32))
+    if (SKCNode::matchesAnyFlags(selfCopy->_skcSceneNode, 32, 32))
     {
-      v399.receiver = v371;
+      v399.receiver = selfCopy;
       v399.super_class = SKScene;
-      [(SKNode *)&v399 _update:a3];
+      [(SKNode *)&v399 _update:_update];
     }
 
     else
     {
-      v14 = [(SKScene *)v371 view];
+      view4 = [(SKScene *)selfCopy view];
       kdebug_trace();
     }
 
-    v15 = [(SKScene *)v371 view];
+    view5 = [(SKScene *)selfCopy view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
@@ -985,35 +985,35 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
     v16 = CACurrentMediaTime();
     _perfEndActions(v16);
     SKCRendererRemoveCompletedSoundSources();
-    if (a3 - *(&v371->super.super.super.super.isa + v367) <= 0.00000011920929)
+    if (_update - *(&selfCopy->super.super.super.super.isa + v367) <= 0.00000011920929)
     {
       v17 = 0.0166666675;
     }
 
     else
     {
-      v17 = a3 - *(&v371->super.super.super.super.isa + v367);
+      v17 = _update - *(&selfCopy->super.super.super.super.isa + v367);
     }
 
-    WeakRetained = objc_loadWeakRetained(&v371->_delegate);
-    if (WeakRetained && (v19 = objc_loadWeakRetained(&v371->_delegate), v20 = objc_opt_respondsToSelector(), v19, WeakRetained, (v20 & 1) != 0))
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    if (WeakRetained && (v19 = objc_loadWeakRetained(&selfCopy->_delegate), v20 = objc_opt_respondsToSelector(), v19, WeakRetained, (v20 & 1) != 0))
     {
-      v21 = objc_loadWeakRetained(&v371->_delegate);
-      [v21 didEvaluateActionsForScene:v371];
+      v21 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v21 didEvaluateActionsForScene:selfCopy];
     }
 
     else
     {
-      [(SKScene *)v371 didEvaluateActions];
+      [(SKScene *)selfCopy didEvaluateActions];
     }
 
-    if (![(SKNode *)v371 isPaused])
+    if (![(SKNode *)selfCopy isPaused])
     {
-      if (SKCNode::matchesAnyFlags(v371->_skcSceneNode, 8, 8))
+      if (SKCNode::matchesAnyFlags(selfCopy->_skcSceneNode, 8, 8))
       {
         v22 = CACurrentMediaTime();
         _perfBeginPhysics(v22);
-        v23 = [(SKScene *)v371 view];
+        view6 = [(SKScene *)selfCopy view];
         if (sk_debug_get_optional())
         {
           kdebug_trace();
@@ -1023,7 +1023,7 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
         v398 = 0u;
         v395 = 0u;
         v396 = 0u;
-        obj = [(SKPhysicsWorld *)v371->_physicsWorld bodies];
+        obj = [(SKPhysicsWorld *)selfCopy->_physicsWorld bodies];
         v374 = [obj countByEnumeratingWithState:&v395 objects:v405 count:16];
         if (v374)
         {
@@ -1038,27 +1038,27 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
               }
 
               v24 = *(*(&v395 + 1) + 8 * i);
-              v25 = [v24 representedObject];
-              if (v25)
+              representedObject = [v24 representedObject];
+              if (representedObject)
               {
-                v376 = v25;
-                v26 = [v25 _backingNode];
+                v376 = representedObject;
+                _backingNode = [representedObject _backingNode];
                 v388 = 0uLL;
-                SKCNode::resolveWorldPositionRotationAndScale(v26, &v388, 0, 0);
-                (*(*v26 + 200))(v26);
-                v27 = [v376 parent];
-                v28 = [v27 physicsBody];
-                if (!v28)
+                SKCNode::resolveWorldPositionRotationAndScale(_backingNode, &v388, 0, 0);
+                (*(*_backingNode + 200))(_backingNode);
+                parent = [v376 parent];
+                physicsBody = [parent physicsBody];
+                if (!physicsBody)
                 {
-                  v28 = v371->_scenePinBody;
+                  physicsBody = selfCopy->_scenePinBody;
                 }
 
                 v393 = 0u;
                 v394 = 0u;
                 v391 = 0u;
                 v392 = 0u;
-                v29 = [v24 _joints];
-                v30 = [v29 countByEnumeratingWithState:&v391 objects:v404 count:16];
+                _joints = [v24 _joints];
+                v30 = [_joints countByEnumeratingWithState:&v391 objects:v404 count:16];
                 if (v30)
                 {
                   v31 = *v392;
@@ -1068,14 +1068,14 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
                     {
                       if (*v392 != v31)
                       {
-                        objc_enumerationMutation(v29);
+                        objc_enumerationMutation(_joints);
                       }
 
                       v33 = *(*(&v391 + 1) + 8 * j);
-                      v34 = [v33 _implicit];
-                      if (v27)
+                      _implicit = [v33 _implicit];
+                      if (parent)
                       {
-                        v35 = v34;
+                        v35 = _implicit;
                       }
 
                       else
@@ -1085,9 +1085,9 @@ void __26__SKScene__didMoveToView___block_invoke(uint64_t a1, void *a2)
 
                       if (v35 == 1)
                       {
-                        v36 = [v33 bodyA];
-                        v37 = v36;
-                        if (v36 == v28)
+                        bodyA = [v33 bodyA];
+                        v37 = bodyA;
+                        if (bodyA == physicsBody)
                         {
 
 LABEL_53:
@@ -1095,8 +1095,8 @@ LABEL_53:
                           goto LABEL_54;
                         }
 
-                        v38 = [v33 bodyB];
-                        v39 = v38 == v28;
+                        bodyB = [v33 bodyB];
+                        v39 = bodyB == physicsBody;
 
                         if (v39)
                         {
@@ -1105,7 +1105,7 @@ LABEL_53:
                       }
                     }
 
-                    v30 = [v29 countByEnumeratingWithState:&v391 objects:v404 count:16];
+                    v30 = [_joints countByEnumeratingWithState:&v391 objects:v404 count:16];
                     if (v30)
                     {
                       continue;
@@ -1121,7 +1121,7 @@ LABEL_54:
                 {
                   if (v30)
                   {
-                    [(SKPhysicsWorld *)v371->_physicsWorld removeJoint:v30];
+                    [(SKPhysicsWorld *)selfCopy->_physicsWorld removeJoint:v30];
                   }
 
                   goto LABEL_70;
@@ -1137,15 +1137,15 @@ LABEL_54:
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
-                    [(SKPhysicsWorld *)v371->_physicsWorld removeJoint:v30];
+                    [(SKPhysicsWorld *)selfCopy->_physicsWorld removeJoint:v30];
 
 LABEL_59:
-                    if (v28)
+                    if (physicsBody)
                     {
-                      v40 = [SKPhysicsJointPin jointWithBodyA:v28 bodyB:v24 anchor:*&v388, *(&v388 + 1)];
+                      v40 = [SKPhysicsJointPin jointWithBodyA:physicsBody bodyB:v24 anchor:*&v388, *(&v388 + 1)];
                       [v40 setFrictionTorque:0.0];
                       [v40 set_implicit:1];
-                      [(SKPhysicsWorld *)v371->_physicsWorld addJoint:v40];
+                      [(SKPhysicsWorld *)selfCopy->_physicsWorld addJoint:v40];
                       goto LABEL_68;
                     }
 
@@ -1163,14 +1163,14 @@ LABEL_59:
                       goto LABEL_70;
                     }
 
-                    [(SKPhysicsWorld *)v371->_physicsWorld removeJoint:v30];
+                    [(SKPhysicsWorld *)selfCopy->_physicsWorld removeJoint:v30];
                   }
 
-                  if (v28)
+                  if (physicsBody)
                   {
-                    v40 = [SKPhysicsJointFixed jointWithBodyA:v28 bodyB:v24 anchor:*&v388, *(&v388 + 1)];
+                    v40 = [SKPhysicsJointFixed jointWithBodyA:physicsBody bodyB:v24 anchor:*&v388, *(&v388 + 1)];
                     [v40 set_implicit:1];
-                    [(SKPhysicsWorld *)v371->_physicsWorld addJoint:v40];
+                    [(SKPhysicsWorld *)selfCopy->_physicsWorld addJoint:v40];
 LABEL_68:
                   }
 
@@ -1180,7 +1180,7 @@ LABEL_69:
 
 LABEL_70:
 
-                v25 = v376;
+                representedObject = v376;
               }
             }
 
@@ -1190,7 +1190,7 @@ LABEL_70:
           while (v374);
         }
 
-        MEMORY[0x21CF0A090](&v388, [(PKPhysicsWorld *)v371->__pkPhysicsWorld aether]);
+        MEMORY[0x21CF0A090](&v388, [(PKPhysicsWorld *)selfCopy->__pkPhysicsWorld aether]);
         v403[0] = &unk_282E16DF8;
         v403[3] = v403;
         v41 = __p;
@@ -1207,8 +1207,8 @@ LABEL_70:
 
         std::__function::__value_func<void ()(PKCField *)>::~__value_func[abi:ne200100](v403);
         v43 = v17;
-        [(SKPhysicsWorld *)v371->_physicsWorld stepWithTime:8 velocityIterations:3 positionIterations:fminf(v43, 1.0)];
-        v44 = [(SKScene *)v371 view];
+        [(SKPhysicsWorld *)selfCopy->_physicsWorld stepWithTime:8 velocityIterations:3 positionIterations:fminf(v43, 1.0)];
+        view7 = [(SKScene *)selfCopy view];
         if (sk_debug_get_optional())
         {
           kdebug_trace();
@@ -1228,26 +1228,26 @@ LABEL_70:
 
       else
       {
-        v46 = [(SKScene *)v371 view];
+        view8 = [(SKScene *)selfCopy view];
         kdebug_trace();
       }
     }
 
-    v47 = objc_loadWeakRetained(&v371->_delegate);
-    if (v47 && (v48 = objc_loadWeakRetained(&v371->_delegate), v49 = objc_opt_respondsToSelector(), v48, v47, (v49 & 1) != 0))
+    v47 = objc_loadWeakRetained(&selfCopy->_delegate);
+    if (v47 && (v48 = objc_loadWeakRetained(&selfCopy->_delegate), v49 = objc_opt_respondsToSelector(), v48, v47, (v49 & 1) != 0))
     {
-      v50 = objc_loadWeakRetained(&v371->_delegate);
-      [v50 didSimulatePhysicsForScene:v371];
+      v50 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v50 didSimulatePhysicsForScene:selfCopy];
     }
 
     else
     {
-      [(SKScene *)v371 didSimulatePhysics];
+      [(SKScene *)selfCopy didSimulatePhysics];
     }
 
     v51 = CACurrentMediaTime();
     _perfBeginConstraints(v51);
-    v52 = [(SKScene *)v371 view];
+    view9 = [(SKScene *)selfCopy view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
@@ -1257,7 +1257,7 @@ LABEL_70:
     v387 = 0u;
     v384 = 0u;
     v385 = 0u;
-    obja = v371->_allChildenWithConstraints;
+    obja = selfCopy->_allChildenWithConstraints;
     v53 = [(NSMutableArray *)obja countByEnumeratingWithState:&v384 objects:v402 count:16];
     if (v53)
     {
@@ -1274,9 +1274,9 @@ LABEL_70:
           }
 
           v55 = *(*(&v384 + 1) + 8 * v54);
-          v56 = [v55 constraints];
+          constraints = [v55 constraints];
           v377 = v54;
-          v57 = v56 == 0;
+          v57 = constraints == 0;
 
           if (!v57)
           {
@@ -1284,15 +1284,15 @@ LABEL_70:
             v383 = 0u;
             v380 = 0u;
             v381 = 0u;
-            v58 = [v55 constraints];
-            v59 = [v58 countByEnumeratingWithState:&v380 objects:v401 count:16];
+            constraints2 = [v55 constraints];
+            v59 = [constraints2 countByEnumeratingWithState:&v380 objects:v401 count:16];
             if (!v59)
             {
               goto LABEL_197;
             }
 
             v60 = *v381;
-            v379 = v58;
+            v379 = constraints2;
             while (1)
             {
               v61 = 0;
@@ -1310,34 +1310,34 @@ LABEL_70:
                   if (objc_opt_isKindOfClass())
                   {
                     v63 = v62;
-                    v64 = [v63 referenceNode];
-                    v65 = v64 == 0;
+                    referenceNode = [v63 referenceNode];
+                    v65 = referenceNode == 0;
 
                     if (!v65)
                     {
                       [v55 position];
                       v67 = v66;
                       v69 = v68;
-                      v70 = [v63 referenceNode];
-                      v71 = [v55 parent];
-                      [v70 convertPoint:v71 fromNode:{v67, v69}];
+                      referenceNode2 = [v63 referenceNode];
+                      parent2 = [v55 parent];
+                      [referenceNode2 convertPoint:parent2 fromNode:{v67, v69}];
                       v73 = v72;
                       v75 = v74;
 
-                      v76 = [v63 referenceNode];
-                      v77 = [v55 parent];
-                      [v76 convertPoint:v77 fromNode:{v67 + 1.0, v69 + 0.0}];
+                      referenceNode3 = [v63 referenceNode];
+                      parent3 = [v55 parent];
+                      [referenceNode3 convertPoint:parent3 fromNode:{v67 + 1.0, v69 + 0.0}];
                       v79 = v78;
                       v81 = v80;
 
                       [v55 zRotation];
                       v83 = v82;
                       v84 = atan2(-(v79 - v73), v81 - v75);
-                      v85 = [v63 zRotationRange];
-                      [v85 lowerLimit];
+                      zRotationRange = [v63 zRotationRange];
+                      [zRotationRange lowerLimit];
                       v87 = v86;
-                      v88 = [v63 zRotationRange];
-                      [v88 upperLimit];
+                      zRotationRange2 = [v63 zRotationRange];
+                      [zRotationRange2 upperLimit];
                       v89 = v83 + v84;
                       v92 = v91;
                       if (v89 <= v92)
@@ -1359,9 +1359,9 @@ LABEL_70:
 LABEL_106:
 
                       v94 = __sincos_stret(v93);
-                      v95 = [v63 referenceNode];
-                      v96 = [v55 parent];
-                      [v95 convertPoint:v96 toNode:{v73 + v94.__cosval, v75 + v94.__sinval}];
+                      referenceNode4 = [v63 referenceNode];
+                      parent4 = [v55 parent];
+                      [referenceNode4 convertPoint:parent4 toNode:{v73 + v94.__cosval, v75 + v94.__sinval}];
                       v98 = v97;
                       v100 = v99;
 
@@ -1374,11 +1374,11 @@ LABEL_106:
 
                     [v55 zRotation];
                     v177 = v176;
-                    v178 = [v63 zRotationRange];
-                    [v178 lowerLimit];
+                    zRotationRange3 = [v63 zRotationRange];
+                    [zRotationRange3 lowerLimit];
                     v180 = v179;
-                    v181 = [v63 zRotationRange];
-                    [v181 upperLimit];
+                    zRotationRange4 = [v63 zRotationRange];
+                    [zRotationRange4 upperLimit];
                     v182 = v177;
                     v185 = v184;
                     if (v182 <= v185)
@@ -1399,18 +1399,18 @@ LABEL_106:
                   if (objc_opt_isKindOfClass())
                   {
                     v104 = v62;
-                    v105 = [v104 referenceNode];
-                    v106 = v105 == 0;
+                    referenceNode5 = [v104 referenceNode];
+                    v106 = referenceNode5 == 0;
 
                     if (v106)
                     {
                       [v55 position];
                       v231 = v230;
-                      v178 = [v104 xRange];
-                      [v178 lowerLimit];
+                      zRotationRange3 = [v104 xRange];
+                      [zRotationRange3 lowerLimit];
                       v233 = v232;
-                      v181 = [v104 xRange];
-                      [v181 upperLimit];
+                      zRotationRange4 = [v104 xRange];
+                      [zRotationRange4 upperLimit];
                       v234 = v231;
                       v237 = v236;
                       if (v234 <= v237)
@@ -1431,11 +1431,11 @@ LABEL_106:
 
                       [v55 position];
                       v240 = v239;
-                      v241 = [v104 yRange];
-                      [v241 lowerLimit];
+                      yRange = [v104 yRange];
+                      [yRange lowerLimit];
                       v243 = v242;
-                      v244 = [v104 yRange];
-                      [v244 upperLimit];
+                      yRange2 = [v104 yRange];
+                      [yRange2 upperLimit];
                       v245 = v240;
                       v248 = v247;
                       if (v245 <= v248)
@@ -1457,17 +1457,17 @@ LABEL_106:
                     [v55 position];
                     v108 = v107;
                     v110 = v109;
-                    v111 = [v104 referenceNode];
-                    v112 = [v55 parent];
-                    [v111 convertPoint:v112 fromNode:{v108, v110}];
+                    referenceNode6 = [v104 referenceNode];
+                    parent5 = [v55 parent];
+                    [referenceNode6 convertPoint:parent5 fromNode:{v108, v110}];
                     v114 = v113;
                     v116 = v115;
 
-                    v117 = [v104 xRange];
-                    [v117 lowerLimit];
+                    xRange = [v104 xRange];
+                    [xRange lowerLimit];
                     v119 = v118;
-                    v120 = [v104 xRange];
-                    [v120 upperLimit];
+                    xRange2 = [v104 xRange];
+                    [xRange2 upperLimit];
                     v121 = v114;
                     v124 = v123;
                     if (v121 <= v124)
@@ -1486,11 +1486,11 @@ LABEL_106:
                       v125 = v119;
                     }
 
-                    v126 = [v104 yRange];
-                    [v126 lowerLimit];
+                    yRange3 = [v104 yRange];
+                    [yRange3 lowerLimit];
                     v128 = v127;
-                    v129 = [v104 yRange];
-                    [v129 upperLimit];
+                    yRange4 = [v104 yRange];
+                    [yRange4 upperLimit];
                     v130 = v116;
                     v133 = v132;
                     if (v130 <= v133)
@@ -1509,9 +1509,9 @@ LABEL_106:
                       v134 = v128;
                     }
 
-                    v135 = [v104 referenceNode];
-                    v136 = [v55 parent];
-                    [v135 convertPoint:v136 toNode:{v125, v134}];
+                    referenceNode7 = [v104 referenceNode];
+                    parent6 = [v55 parent];
+                    [referenceNode7 convertPoint:parent6 toNode:{v125, v134}];
                     v138 = v137;
                     v140 = v139;
 
@@ -1525,22 +1525,22 @@ LABEL_174:
                   if (objc_opt_isKindOfClass())
                   {
                     v63 = v62;
-                    v141 = [v63 referenceNode];
-                    v142 = v141 == 0;
+                    referenceNode8 = [v63 referenceNode];
+                    v142 = referenceNode8 == 0;
 
                     if (!v142)
                     {
                       [v63 point];
                       v144 = v143;
                       v146 = v145;
-                      v147 = [v63 node];
-                      v148 = v147 == 0;
+                      node = [v63 node];
+                      v148 = node == 0;
 
                       if (!v148)
                       {
-                        v149 = [v55 parent];
-                        v150 = [v63 node];
-                        [v149 convertPoint:v150 fromNode:{v144, v146}];
+                        parent7 = [v55 parent];
+                        node2 = [v63 node];
+                        [parent7 convertPoint:node2 fromNode:{v144, v146}];
                         v144 = v151;
                         v146 = v152;
                       }
@@ -1548,26 +1548,26 @@ LABEL_174:
                       [v55 position];
                       v154 = v153;
                       v156 = v155;
-                      v157 = [v63 referenceNode];
-                      v158 = [v55 parent];
-                      [v157 convertPoint:v158 fromNode:{v144, v146}];
+                      referenceNode9 = [v63 referenceNode];
+                      parent8 = [v55 parent];
+                      [referenceNode9 convertPoint:parent8 fromNode:{v144, v146}];
                       v160 = v159;
                       v162 = v161;
 
-                      v163 = [v63 referenceNode];
-                      v164 = [v55 parent];
-                      [v163 convertPoint:v164 fromNode:{v154, v156}];
+                      referenceNode10 = [v63 referenceNode];
+                      parent9 = [v55 parent];
+                      [referenceNode10 convertPoint:parent9 fromNode:{v154, v156}];
                       v73 = v165;
                       v75 = v166;
 
                       v167 = atan2(-(v160 - v73), v162 - v75);
                       [v55 zRotation];
                       v169 = v168;
-                      v85 = [v63 offset];
-                      [v85 lowerLimit];
+                      zRotationRange = [v63 offset];
+                      [zRotationRange lowerLimit];
                       v171 = v170;
-                      v88 = [v63 offset];
-                      [v88 upperLimit];
+                      zRotationRange2 = [v63 offset];
+                      [zRotationRange2 upperLimit];
                       v172 = v169;
                       v175 = v167 + 1.57079633 + v174;
                       if (v172 <= v175)
@@ -1592,14 +1592,14 @@ LABEL_174:
                     [v63 point];
                     v273 = v272;
                     v275 = v274;
-                    v276 = [v63 node];
-                    v277 = v276 == 0;
+                    node3 = [v63 node];
+                    v277 = node3 == 0;
 
                     if (!v277)
                     {
-                      v278 = [v55 parent];
-                      v279 = [v63 node];
-                      [v278 convertPoint:v279 fromNode:{v273, v275}];
+                      parent10 = [v55 parent];
+                      node4 = [v63 node];
+                      [parent10 convertPoint:node4 fromNode:{v273, v275}];
                       v273 = v280;
                       v275 = v281;
                     }
@@ -1608,11 +1608,11 @@ LABEL_174:
                     v284 = atan2(-(v273 - v282), v275 - v283);
                     [v55 zRotation];
                     v286 = v285;
-                    v178 = [v63 offset];
-                    [v178 lowerLimit];
+                    zRotationRange3 = [v63 offset];
+                    [zRotationRange3 lowerLimit];
                     v288 = v287;
-                    v181 = [v63 offset];
-                    [v181 upperLimit];
+                    zRotationRange4 = [v63 offset];
+                    [zRotationRange4 upperLimit];
                     v289 = v286;
                     v185 = v284 + 1.57079633 + v291;
                     if (v289 <= v185)
@@ -1635,22 +1635,22 @@ LABEL_172:
                   if (objc_opt_isKindOfClass())
                   {
                     v186 = v62;
-                    v187 = [v186 referenceNode];
-                    v188 = v187 == 0;
+                    referenceNode11 = [v186 referenceNode];
+                    v188 = referenceNode11 == 0;
 
                     if (v188)
                     {
                       [v186 point];
                       v316 = v315;
                       v318 = v317;
-                      v319 = [v186 node];
-                      v320 = v319 == 0;
+                      node5 = [v186 node];
+                      v320 = node5 == 0;
 
                       if (!v320)
                       {
-                        v321 = [v55 parent];
-                        v322 = [v186 node];
-                        [v321 convertPoint:v322 fromNode:{v316, v318}];
+                        parent11 = [v55 parent];
+                        node6 = [v186 node];
+                        [parent11 convertPoint:node6 fromNode:{v316, v318}];
                         v316 = v323;
                         v318 = v324;
                       }
@@ -1658,11 +1658,11 @@ LABEL_172:
                       [v55 position];
                       v326 = v325;
                       v328 = v327;
-                      v329 = [v186 distanceRange];
-                      [v329 lowerLimit];
+                      distanceRange = [v186 distanceRange];
+                      [distanceRange lowerLimit];
                       v331 = v330;
-                      v332 = [v186 distanceRange];
-                      [v332 upperLimit];
+                      distanceRange2 = [v186 distanceRange];
+                      [distanceRange2 upperLimit];
                       v334 = v333;
 
                       v335 = v318;
@@ -1695,14 +1695,14 @@ LABEL_172:
                       [v186 point];
                       v190 = v189;
                       v192 = v191;
-                      v193 = [v186 node];
-                      v194 = v193 == 0;
+                      node7 = [v186 node];
+                      v194 = node7 == 0;
 
                       if (!v194)
                       {
-                        v195 = [v55 parent];
-                        v196 = [v186 node];
-                        [v195 convertPoint:v196 fromNode:{v190, v192}];
+                        parent12 = [v55 parent];
+                        node8 = [v186 node];
+                        [parent12 convertPoint:node8 fromNode:{v190, v192}];
                         v190 = v197;
                         v192 = v198;
                       }
@@ -1710,23 +1710,23 @@ LABEL_172:
                       [v55 position];
                       v200 = v199;
                       v202 = v201;
-                      v203 = [v186 referenceNode];
-                      v204 = [v55 parent];
-                      [v203 convertPoint:v204 fromNode:{v190, v192}];
+                      referenceNode12 = [v186 referenceNode];
+                      parent13 = [v55 parent];
+                      [referenceNode12 convertPoint:parent13 fromNode:{v190, v192}];
                       v206 = v205;
                       v208 = v207;
 
-                      v209 = [v186 referenceNode];
-                      v210 = [v55 parent];
-                      [v209 convertPoint:v210 fromNode:{v200, v202}];
+                      referenceNode13 = [v186 referenceNode];
+                      parent14 = [v55 parent];
+                      [referenceNode13 convertPoint:parent14 fromNode:{v200, v202}];
                       v212 = v211;
                       v214 = v213;
 
-                      v215 = [v186 distanceRange];
-                      [v215 lowerLimit];
+                      distanceRange3 = [v186 distanceRange];
+                      [distanceRange3 lowerLimit];
                       v217 = v216;
-                      v218 = [v186 distanceRange];
-                      [v218 upperLimit];
+                      distanceRange4 = [v186 distanceRange];
+                      [distanceRange4 upperLimit];
                       v219 = v206;
                       v220 = v208;
                       v221 = v212;
@@ -1751,9 +1751,9 @@ LABEL_172:
                         v229 = v226;
                       }
 
-                      v178 = [v186 referenceNode];
-                      v181 = [v55 parent];
-                      [v178 convertPoint:v181 toNode:{(((v223 * (1.0 / v225)) * (v225 - v229)) + v221), (((v224 * (1.0 / v225)) * (v225 - v229)) + v222)}];
+                      zRotationRange3 = [v186 referenceNode];
+                      zRotationRange4 = [v55 parent];
+                      [zRotationRange3 convertPoint:zRotationRange4 toNode:{(((v223 * (1.0 / v225)) * (v225 - v229)) + v221), (((v224 * (1.0 / v225)) * (v225 - v229)) + v222)}];
                       [v55 setPosition:?];
 LABEL_173:
                     }
@@ -1768,11 +1768,11 @@ LABEL_173:
                     [v55 size];
                     v251 = v250;
                     v253 = v252;
-                    v254 = [v249 widthRange];
-                    [v254 lowerLimit];
+                    widthRange = [v249 widthRange];
+                    [widthRange lowerLimit];
                     v256 = v255;
-                    v257 = [v249 widthRange];
-                    [v257 upperLimit];
+                    widthRange2 = [v249 widthRange];
+                    [widthRange2 upperLimit];
                     v258 = v251;
                     v261 = v260;
                     if (v258 <= v261)
@@ -1791,11 +1791,11 @@ LABEL_173:
                       v262 = v256;
                     }
 
-                    v263 = [v249 heightRange];
-                    [v263 lowerLimit];
+                    heightRange = [v249 heightRange];
+                    [heightRange lowerLimit];
                     v265 = v264;
-                    v266 = [v249 heightRange];
-                    [v266 upperLimit];
+                    heightRange2 = [v249 heightRange];
+                    [heightRange2 upperLimit];
                     v267 = v253;
                     v270 = v269;
                     if (v267 <= v270)
@@ -1826,11 +1826,11 @@ LABEL_173:
                     v294 = v293;
                     [v55 yScale];
                     v296 = v295;
-                    v297 = [v292 xRange];
-                    [v297 lowerLimit];
+                    xRange3 = [v292 xRange];
+                    [xRange3 lowerLimit];
                     v299 = v298;
-                    v300 = [v292 xRange];
-                    [v300 upperLimit];
+                    xRange4 = [v292 xRange];
+                    [xRange4 upperLimit];
                     v301 = v294;
                     v304 = v303;
                     if (v301 <= v304)
@@ -1849,11 +1849,11 @@ LABEL_173:
                       v305 = v299;
                     }
 
-                    v306 = [v292 yRange];
-                    [v306 lowerLimit];
+                    yRange5 = [v292 yRange];
+                    [yRange5 lowerLimit];
                     v308 = v307;
-                    v309 = [v292 yRange];
-                    [v309 upperLimit];
+                    yRange6 = [v292 yRange];
+                    [yRange6 upperLimit];
                     v311 = v310;
 
                     [v55 setXScale:v305];
@@ -1880,7 +1880,7 @@ LABEL_175:
               }
 
               while (v59 != v61);
-              v58 = v379;
+              constraints2 = v379;
               v344 = [v379 countByEnumeratingWithState:&v380 objects:v401 count:16];
               v59 = v344;
               if (!v344)
@@ -1902,7 +1902,7 @@ LABEL_197:
       while (v53);
     }
 
-    v345 = [(SKScene *)v371 view];
+    view10 = [(SKScene *)selfCopy view];
     if (sk_debug_get_optional())
     {
       kdebug_trace();
@@ -1910,72 +1910,72 @@ LABEL_197:
 
     v346 = CACurrentMediaTime();
     _perfEndConstraints(v346);
-    v347 = objc_loadWeakRetained(&v371->_delegate);
-    if (v347 && (v348 = objc_loadWeakRetained(&v371->_delegate), v349 = objc_opt_respondsToSelector(), v348, v347, (v349 & 1) != 0))
+    v347 = objc_loadWeakRetained(&selfCopy->_delegate);
+    if (v347 && (v348 = objc_loadWeakRetained(&selfCopy->_delegate), v349 = objc_opt_respondsToSelector(), v348, v347, (v349 & 1) != 0))
     {
-      v350 = objc_loadWeakRetained(&v371->_delegate);
-      [v350 didApplyConstraintsForScene:v371];
+      v350 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v350 didApplyConstraintsForScene:selfCopy];
     }
 
     else
     {
-      [(SKScene *)v371 didApplyConstraints];
+      [(SKScene *)selfCopy didApplyConstraints];
     }
 
-    v351 = objc_loadWeakRetained(&v371->_delegate);
-    if (v351 && (v352 = objc_loadWeakRetained(&v371->_delegate), v353 = objc_opt_respondsToSelector(), v352, v351, (v353 & 1) != 0))
+    v351 = objc_loadWeakRetained(&selfCopy->_delegate);
+    if (v351 && (v352 = objc_loadWeakRetained(&selfCopy->_delegate), v353 = objc_opt_respondsToSelector(), v352, v351, (v353 & 1) != 0))
     {
-      v354 = objc_loadWeakRetained(&v371->_delegate);
-      [v354 didFinishUpdateForScene:v371];
+      v354 = objc_loadWeakRetained(&selfCopy->_delegate);
+      [v354 didFinishUpdateForScene:selfCopy];
     }
 
     else
     {
-      [(SKScene *)v371 didFinishUpdate];
+      [(SKScene *)selfCopy didFinishUpdate];
     }
 
     v355 = CACurrentMediaTime();
     _perfEndClientUpdate(v355);
-    v356 = v371;
-    if (v371->_audioEngine)
+    v356 = selfCopy;
+    if (selfCopy->_audioEngine)
     {
-      v357 = objc_loadWeakRetained(&v371->_listener);
+      v357 = objc_loadWeakRetained(&selfCopy->_listener);
       v358 = v357;
       if (v357)
       {
-        [v357 convertPoint:v371 toNode:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+        [v357 convertPoint:selfCopy toNode:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
       }
 
       else
       {
-        [(SKScene *)v371 frame];
+        [(SKScene *)selfCopy frame];
         MidX = CGRectGetMidX(v407);
-        [(SKScene *)v371 frame];
-        [0 convertPoint:v371 toNode:{MidX, CGRectGetMidY(v408)}];
+        [(SKScene *)selfCopy frame];
+        [0 convertPoint:selfCopy toNode:{MidX, CGRectGetMidY(v408)}];
       }
 
       v362 = v359;
       v363 = v360;
-      v364 = [(SKScene *)v371 avAudioEnvironmentNode];
+      avAudioEnvironmentNode = [(SKScene *)selfCopy avAudioEnvironmentNode];
       *&v365 = v363;
       *&v366 = v362;
-      [v364 setListenerPosition:{v366, v365, 0.0}];
+      [avAudioEnvironmentNode setListenerPosition:{v366, v365, 0.0}];
 
-      v356 = v371;
+      v356 = selfCopy;
     }
 
-    *(&v356->super.super.super.super.isa + v367) = a3;
+    *(&v356->super.super.super.super.isa + v367) = _update;
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  if ([(SKNode *)self isPaused]!= a3)
+  pausedCopy = paused;
+  if ([(SKNode *)self isPaused]!= paused)
   {
     v5 = skCurrentTime();
     v6 = 152;
-    if (!v3)
+    if (!pausedCopy)
     {
       v6 = 144;
       v5 = v5 - self->_pausedTime + self->_lastUpdate;
@@ -1986,7 +1986,7 @@ LABEL_197:
 
   v7.receiver = self;
   v7.super_class = SKScene;
-  [(SKNode *)&v7 setPaused:v3];
+  [(SKNode *)&v7 setPaused:pausedCopy];
   [(SKScene *)self checkAudioEngine];
 }
 
@@ -2064,27 +2064,27 @@ LABEL_197:
   return v15;
 }
 
-+ (id)debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
   v70[3] = *MEMORY[0x277D85DE8];
-  v67 = a3;
-  v68 = a4;
-  if ([v67 isEqualToString:@"backgroundColor"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"backgroundColor"])
   {
-    v8 = [v68 backgroundColor];
-    v9 = [v8 CGColor];
-    if (v9)
+    backgroundColor = [objectCopy backgroundColor];
+    cGColor = [backgroundColor CGColor];
+    if (cGColor)
     {
       theDict = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      ColorSpace = CGColorGetColorSpace(v9);
+      ColorSpace = CGColorGetColorSpace(cGColor);
       v11 = CGColorSpaceCopyName(ColorSpace);
-      NumberOfComponents = CGColorGetNumberOfComponents(v9);
+      NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
       v13 = NumberOfComponents << 32;
       v14 = NumberOfComponents;
       if (NumberOfComponents << 32)
       {
         Mutable = CFStringCreateMutable(0, 0);
-        space = v8;
+        space = backgroundColor;
         v16 = ColorSpace;
         v17 = v11;
         v18 = v14 - 1;
@@ -2113,7 +2113,7 @@ LABEL_197:
         while (v19);
         v11 = v17;
         ColorSpace = v16;
-        v8 = space;
+        backgroundColor = space;
       }
 
       else
@@ -2121,7 +2121,7 @@ LABEL_197:
         Mutable = &stru_282E190D8;
       }
 
-      Components = CGColorGetComponents(v9);
+      Components = CGColorGetComponents(cGColor);
       v34 = malloc_type_malloc(v13 >> 29, 0x6004044C4A2DFuLL);
       v35 = v34;
       if (v13)
@@ -2211,10 +2211,10 @@ LABEL_197:
     goto LABEL_99;
   }
 
-  if (![v67 isEqualToString:@"visualRepresentation"])
+  if (![nameCopy isEqualToString:@"visualRepresentation"])
   {
-    v30 = v68;
-    v31 = v67;
+    v30 = objectCopy;
+    v31 = nameCopy;
     if ([(NSString *)v31 length])
     {
       NSSelectorFromString(v31);
@@ -2235,18 +2235,18 @@ LABEL_71:
       {
         if ([(NSString *)v31 length]< 2)
         {
-          v44 = [(NSString *)v31 uppercaseString];
+          uppercaseString = [(NSString *)v31 uppercaseString];
         }
 
         else
         {
           v41 = [(NSString *)v31 substringToIndex:1];
-          v42 = [v41 uppercaseString];
+          uppercaseString2 = [v41 uppercaseString];
           v43 = [(NSString *)v31 substringFromIndex:1];
-          v44 = [v42 stringByAppendingString:v43];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v43];
         }
 
-        v45 = [@"is" stringByAppendingString:v44];
+        v45 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v45);
         if (objc_opt_respondsToSelector())
         {
@@ -2265,7 +2265,7 @@ LABEL_71:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v46 = v30;
       v47 = v31;
@@ -2300,7 +2300,7 @@ LABEL_71:
       v52 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v51];
 
       v53 = v52;
-      *a6 = v52;
+      *error = v52;
     }
 
     v32 = 0;
@@ -2308,17 +2308,17 @@ LABEL_71:
     goto LABEL_71;
   }
 
-  v20 = [v68 createDebugHierarchyVisualRepresentation];
+  createDebugHierarchyVisualRepresentation = [objectCopy createDebugHierarchyVisualRepresentation];
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v68 createDebugHierarchyVisualRepresentation];
-    v22 = [v21 CGColor];
-    if (v22)
+    createDebugHierarchyVisualRepresentation2 = [objectCopy createDebugHierarchyVisualRepresentation];
+    cGColor2 = [createDebugHierarchyVisualRepresentation2 CGColor];
+    if (cGColor2)
     {
       v23 = CFDictionaryCreateMutable(0, 20, MEMORY[0x277CBED60], MEMORY[0x277CBF150]);
-      spacea = CGColorGetColorSpace(v22);
+      spacea = CGColorGetColorSpace(cGColor2);
       theDicta = CGColorSpaceCopyName(spacea);
-      v24 = CGColorGetNumberOfComponents(v22);
+      v24 = CGColorGetNumberOfComponents(cGColor2);
       v25 = v24 << 32;
       v26 = v24;
       if (v24 << 32)
@@ -2355,7 +2355,7 @@ LABEL_71:
         v27 = &stru_282E190D8;
       }
 
-      v54 = CGColorGetComponents(v22);
+      v54 = CGColorGetComponents(cGColor2);
       v55 = malloc_type_malloc(v25 >> 29, 0x6004044C4A2DFuLL);
       v56 = v55;
       if (v25)
@@ -2466,9 +2466,9 @@ LABEL_99:
   return WeakRetained;
 }
 
-- (void)_willMoveFromView:(id)a3
+- (void)_willMoveFromView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SKScene *)self willMoveFromView:?];
   objc_storeWeak(&self->_view, 0);
   [(SKScene *)self checkAudioEngine];
@@ -2484,18 +2484,18 @@ LABEL_99:
     v6 = 0u;
     v4 = 0u;
     SKCNode::resolveWorldPositionRotationAndScale([v0 _backingNode], &v6, &v5, &v4);
-    v2 = [v1 field];
-    [v2 setPosition:*&v6];
+    field = [v1 field];
+    [field setPosition:*&v6];
     LODWORD(v3) = DWORD2(v5);
-    [v2 setRotation:v3];
-    [v2 setScale:*&v4];
+    [field setRotation:v3];
+    [field setScale:*&v4];
   }
 }
 
 - (uint64_t)_update:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

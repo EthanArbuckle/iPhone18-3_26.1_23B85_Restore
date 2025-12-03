@@ -1,12 +1,12 @@
 @interface CADXPCProxyHelper
-- (BOOL)_validateCADObjectIDsInInvocationArguments:(id)a3;
-- (CADXPCProxyHelper)initWithXPCConnection:(id)a3 protocol:(id)a4 synchronous:(BOOL)a5;
+- (BOOL)_validateCADObjectIDsInInvocationArguments:(id)arguments;
+- (CADXPCProxyHelper)initWithXPCConnection:(id)connection protocol:(id)protocol synchronous:(BOOL)synchronous;
 - (CADXPCProxyHelperDelegate)delegate;
-- (id)_replaceReplyBlockInInvocation:(id)a3 retryingAfterInitializationWithContextHolder:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_callReplyHandler:(id)a3 ofInvocation:(id)a4 withErrorCode:(int64_t)a5;
-- (void)_tryInvokeWithGenerationValidation:(id)a3 target:(id)a4 replyBlock:(id)a5 contextHolder:(id)a6;
-- (void)forwardInvocation:(id)a3;
+- (id)_replaceReplyBlockInInvocation:(id)invocation retryingAfterInitializationWithContextHolder:(id)holder;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_callReplyHandler:(id)handler ofInvocation:(id)invocation withErrorCode:(int64_t)code;
+- (void)_tryInvokeWithGenerationValidation:(id)validation target:(id)target replyBlock:(id)block contextHolder:(id)holder;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CADXPCProxyHelper
@@ -18,25 +18,25 @@
   return WeakRetained;
 }
 
-- (CADXPCProxyHelper)initWithXPCConnection:(id)a3 protocol:(id)a4 synchronous:(BOOL)a5
+- (CADXPCProxyHelper)initWithXPCConnection:(id)connection protocol:(id)protocol synchronous:(BOOL)synchronous
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  protocolCopy = protocol;
   v14.receiver = self;
   v14.super_class = CADXPCProxyHelper;
   v11 = [(CADXPCProxyHelper *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connection, a3);
-    objc_storeStrong(&v12->_protocol, a4);
-    v12->_synchronous = a5;
+    objc_storeStrong(&v11->_connection, connection);
+    objc_storeStrong(&v12->_protocol, protocol);
+    v12->_synchronous = synchronous;
   }
 
   return v12;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v14.receiver = self;
   v14.super_class = CADXPCProxyHelper;
@@ -53,9 +53,9 @@ LABEL_7:
   protocol = self->_protocol;
   if (protocol)
   {
-    MethodDescription = protocol_getMethodDescription(protocol, a3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(protocol, selector, 1, 1);
     types = MethodDescription.types;
-    if (MethodDescription.name || (v11 = protocol_getMethodDescription(self->_protocol, a3, 0, 1), types = v11.types, v11.name))
+    if (MethodDescription.name || (v11 = protocol_getMethodDescription(self->_protocol, selector, 0, 1), types = v11.types, v11.name))
     {
       v7 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:types];
       goto LABEL_7;
@@ -68,10 +68,10 @@ LABEL_8:
   return v12;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:v4];
+  invocationCopy = invocation;
+  v5 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:invocationCopy];
   if (self->_connection)
   {
     v20[0] = 0;
@@ -88,8 +88,8 @@ LABEL_8:
     v19 = v20;
     v8 = v6;
     v16 = v8;
-    v17 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = invocationCopy;
     v18 = v9;
     v10 = MEMORY[0x22AA4DCD0](v14);
     connection = self->_connection;
@@ -119,7 +119,7 @@ LABEL_8:
 
   else
   {
-    [(CADXPCProxyHelper *)self _callReplyHandler:v5 ofInvocation:v4 withErrorCode:1021];
+    [(CADXPCProxyHelper *)self _callReplyHandler:v5 ofInvocation:invocationCopy withErrorCode:1021];
   }
 }
 
@@ -187,11 +187,11 @@ void __39__CADXPCProxyHelper_forwardInvocation___block_invoke(uint64_t a1, void 
 LABEL_18:
 }
 
-- (id)_replaceReplyBlockInInvocation:(id)a3 retryingAfterInitializationWithContextHolder:(id)a4
+- (id)_replaceReplyBlockInInvocation:(id)invocation retryingAfterInitializationWithContextHolder:(id)holder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:v6];
+  invocationCopy = invocation;
+  holderCopy = holder;
+  v8 = [MEMORY[0x277CF7820] replyBlockArgumentIndex:invocationCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -199,7 +199,7 @@ LABEL_18:
   }
 
   v10 = v8;
-  v11 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:v6];
+  v11 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:invocationCopy];
   v12 = _Block_signature(v11);
   if (!v12 || !*v12)
   {
@@ -221,14 +221,14 @@ LABEL_11:
     v16 = getCADXPCProxyHelperLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [CADXPCProxyHelper _replaceReplyBlockInInvocation:v6 retryingAfterInitializationWithContextHolder:v16];
+      [CADXPCProxyHelper _replaceReplyBlockInInvocation:invocationCopy retryingAfterInitializationWithContextHolder:v16];
     }
 
     v9 = 0;
     goto LABEL_14;
   }
 
-  if ([(CADXPCProxyHelper *)self _shouldResendInitializationOptionsForInvocation:v6])
+  if ([(CADXPCProxyHelper *)self _shouldResendInitializationOptionsForInvocation:invocationCopy])
   {
     v25[0] = 0;
     v25[1] = v25;
@@ -238,9 +238,9 @@ LABEL_11:
     v19 = 3221225472;
     v20 = __97__CADXPCProxyHelper__replaceReplyBlockInInvocation_retryingAfterInitializationWithContextHolder___block_invoke_2;
     v21 = &unk_27851AEC0;
-    v22 = v7;
+    v22 = holderCopy;
     v23 = v11;
-    v24 = v6;
+    v24 = invocationCopy;
     v33 = __NSMakeSpecialForwardingCaptureBlock();
 
     _Block_object_dispose(v25, 8);
@@ -252,12 +252,12 @@ LABEL_11:
     v28 = 3221225472;
     v29 = __97__CADXPCProxyHelper__replaceReplyBlockInInvocation_retryingAfterInitializationWithContextHolder___block_invoke;
     v30 = &unk_27851AE48;
-    v31 = v7;
+    v31 = holderCopy;
     v32 = v11;
     v33 = __NSMakeSpecialForwardingCaptureBlock();
   }
 
-  [v6 setArgument:&v33 atIndex:{v10, v18, v19, v20, v21}];
+  [invocationCopy setArgument:&v33 atIndex:{v10, v18, v19, v20, v21}];
   v9 = v33;
 
 LABEL_14:
@@ -370,38 +370,38 @@ void __97__CADXPCProxyHelper__replaceReplyBlockInInvocation_retryingAfterInitial
   }
 }
 
-- (void)_tryInvokeWithGenerationValidation:(id)a3 target:(id)a4 replyBlock:(id)a5 contextHolder:(id)a6
+- (void)_tryInvokeWithGenerationValidation:(id)validation target:(id)target replyBlock:(id)block contextHolder:(id)holder
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11 && ![(CADXPCProxyHelper *)self _validateCADObjectIDsInInvocationArguments:v13])
+  validationCopy = validation;
+  targetCopy = target;
+  blockCopy = block;
+  holderCopy = holder;
+  if (blockCopy && ![(CADXPCProxyHelper *)self _validateCADObjectIDsInInvocationArguments:validationCopy])
   {
-    [v12 clear];
-    [(CADXPCProxyHelper *)self _callReplyHandler:v11 ofInvocation:v13 withErrorCode:1010];
+    [holderCopy clear];
+    [(CADXPCProxyHelper *)self _callReplyHandler:blockCopy ofInvocation:validationCopy withErrorCode:1010];
   }
 
   else
   {
-    [v13 invokeWithTarget:v10];
+    [validationCopy invokeWithTarget:targetCopy];
   }
 }
 
-- (BOOL)_validateCADObjectIDsInInvocationArguments:(id)a3
+- (BOOL)_validateCADObjectIDsInInvocationArguments:(id)arguments
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CADXPCProxyHelper *)self delegate];
-  if (![v5 shouldValidateObjectIDs] || (v6 = objc_msgSend(v5, "databaseRestoreGeneration"), v6 == -1))
+  argumentsCopy = arguments;
+  delegate = [(CADXPCProxyHelper *)self delegate];
+  if (![delegate shouldValidateObjectIDs] || (v6 = objc_msgSend(delegate, "databaseRestoreGeneration"), v6 == -1))
   {
     v13 = 1;
     goto LABEL_24;
   }
 
   v7 = v6;
-  v8 = [v4 methodSignature];
-  if (![v8 numberOfArguments])
+  methodSignature = [argumentsCopy methodSignature];
+  if (![methodSignature numberOfArguments])
   {
 LABEL_21:
     v13 = 1;
@@ -411,7 +411,7 @@ LABEL_21:
   v9 = 0;
   while (1)
   {
-    v10 = [v8 getArgumentTypeAtIndex:v9];
+    v10 = [methodSignature getArgumentTypeAtIndex:v9];
     if (*v10 != 64)
     {
       goto LABEL_20;
@@ -423,7 +423,7 @@ LABEL_21:
     }
 
     v23 = 0;
-    [v4 getArgument:&v23 atIndex:v9];
+    [argumentsCopy getArgument:&v23 atIndex:v9];
     if (!v23)
     {
       goto LABEL_20;
@@ -438,8 +438,8 @@ LABEL_21:
         v16 = getCADXPCProxyHelperLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          Name = sel_getName([v4 selector]);
-          v20 = [v11 restoreGeneration];
+          Name = sel_getName([argumentsCopy selector]);
+          restoreGeneration = [v11 restoreGeneration];
           *buf = 136447234;
           v25 = Name;
           v26 = 1024;
@@ -447,7 +447,7 @@ LABEL_21:
           v28 = 2112;
           v29 = v11;
           v30 = 1024;
-          v31 = v20;
+          v31 = restoreGeneration;
           v32 = 1024;
           v33 = v7;
           _os_log_debug_impl(&dword_22430B000, v16, OS_LOG_TYPE_DEBUG, "Found CADObjectID argument with unexpected restore generation in call to selector %{public}s. index = %d, objectID = %@, generation = %d, expected = %d", buf, 0x28u);
@@ -466,15 +466,15 @@ LABEL_21:
     }
 
 LABEL_20:
-    if (++v9 == [v8 numberOfArguments])
+    if (++v9 == [methodSignature numberOfArguments])
     {
       goto LABEL_21;
     }
   }
 
   v11 = v23;
-  v12 = [v11 firstObject];
-  if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  firstObject = [v11 firstObject];
+  if (!firstObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_18:
 
@@ -482,7 +482,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = v12;
+  v16 = firstObject;
   if ([v16 restoreGeneration]== -1 || [v16 restoreGeneration]== v7)
   {
 
@@ -492,8 +492,8 @@ LABEL_19:
   v18 = getCADXPCProxyHelperLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v21 = sel_getName([v4 selector]);
-    v22 = [v16 restoreGeneration];
+    v21 = sel_getName([argumentsCopy selector]);
+    restoreGeneration2 = [v16 restoreGeneration];
     *buf = 136447234;
     v25 = v21;
     v26 = 1024;
@@ -501,7 +501,7 @@ LABEL_19:
     v28 = 2112;
     v29 = v16;
     v30 = 1024;
-    v31 = v22;
+    v31 = restoreGeneration2;
     v32 = 1024;
     v33 = v7;
     _os_log_debug_impl(&dword_22430B000, v18, OS_LOG_TYPE_DEBUG, "Found CADObjectID in array argument with unexpected restore generation in call to selector %{public}s. index = %d, objectID = %@, generation = %d, expected = %d", buf, 0x28u);
@@ -516,19 +516,19 @@ LABEL_24:
   return v13;
 }
 
-- (void)_callReplyHandler:(id)a3 ofInvocation:(id)a4 withErrorCode:(int64_t)a5
+- (void)_callReplyHandler:(id)handler ofInvocation:(id)invocation withErrorCode:(int64_t)code
 {
-  v8 = a3;
-  v9 = a4;
+  handlerCopy = handler;
+  invocationCopy = invocation;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__CADXPCProxyHelper__callReplyHandler_ofInvocation_withErrorCode___block_invoke;
   v14[3] = &unk_27851A300;
-  v10 = v8;
+  v10 = handlerCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = invocationCopy;
   v16 = v11;
-  v17 = a5;
+  codeCopy = code;
   v12 = MEMORY[0x22AA4DCD0](v14);
   v13 = v12;
   if (self->_synchronous)

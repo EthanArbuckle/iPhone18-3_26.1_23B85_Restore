@@ -1,6 +1,6 @@
 @interface FigCaptureSessionParsedVideoDataSinkConfiguration
 - (id)_setMetadataObjectConnectionConfiguration:(id *)result;
-- (id)initWithVideoDataConnectionConfiguration:(void *)a1;
+- (id)initWithVideoDataConnectionConfiguration:(void *)configuration;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(FigCaptureSessionParsedVideoDataSinkConfiguration *)&v3 dealloc];
 }
 
-- (id)initWithVideoDataConnectionConfiguration:(void *)a1
+- (id)initWithVideoDataConnectionConfiguration:(void *)configuration
 {
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = configuration;
   v7.super_class = FigCaptureSessionParsedVideoDataSinkConfiguration;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   v4 = v3;

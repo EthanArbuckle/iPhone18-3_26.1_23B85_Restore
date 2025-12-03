@@ -1,5 +1,5 @@
 @interface ResultItemView
-- (_TtC5Heart14ResultItemView)initWithFrame:(CGRect)a3;
+- (_TtC5Heart14ResultItemView)initWithFrame:(CGRect)frame;
 - (void)learnMoreButtonTapped;
 @end
 
@@ -7,7 +7,7 @@
 
 - (void)learnMoreButtonTapped
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_29D85BA8C();
   [v2 setHidden_];
 
@@ -15,7 +15,7 @@
   [v3 setHidden_];
 }
 
-- (_TtC5Heart14ResultItemView)initWithFrame:(CGRect)a3
+- (_TtC5Heart14ResultItemView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

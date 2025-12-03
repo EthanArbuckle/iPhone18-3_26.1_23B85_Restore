@@ -1,9 +1,9 @@
 @interface NavdDoomHost
 - (NSString)uniqueName;
-- (id)_conditionsForDoomUsingRegister:(id)a3;
-- (id)initFromResourceDepot:(id)a3 sharedRegister:(id)a4 engine:(id)a5;
+- (id)_conditionsForDoomUsingRegister:(id)register;
+- (id)initFromResourceDepot:(id)depot sharedRegister:(id)register engine:(id)engine;
 - (void)commuteWindowUpdated;
-- (void)doomNotificationReceivedWithDetails:(id)a3 forLOI:(id)a4;
+- (void)doomNotificationReceivedWithDetails:(id)details forLOI:(id)i;
 @end
 
 @implementation NavdDoomHost
@@ -15,12 +15,12 @@
   return [v2 description];
 }
 
-- (id)initFromResourceDepot:(id)a3 sharedRegister:(id)a4 engine:(id)a5
+- (id)initFromResourceDepot:(id)depot sharedRegister:(id)register engine:(id)engine
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  depotCopy = depot;
+  registerCopy = register;
+  engineCopy = engine;
+  if (depotCopy)
   {
     v24.receiver = self;
     v24.super_class = NavdDoomHost;
@@ -29,11 +29,11 @@
     {
       v12 = [MapsSuggestionsDOoMWrapper alloc];
       v13 = +[MapsSuggestionsFirstUnlockTrigger description];
-      v14 = [v9 objectForKeyedSubscript:v13];
+      v14 = [registerCopy objectForKeyedSubscript:v13];
       v25 = v14;
       v15 = [NSArray arrayWithObjects:&v25 count:1];
-      v16 = [(NavdDoomHost *)v11 _conditionsForDoomUsingRegister:v9];
-      v17 = [v12 initWithResourceDepot:v8 triggers:v15 conditions:v16 engine:v10];
+      v16 = [(NavdDoomHost *)v11 _conditionsForDoomUsingRegister:registerCopy];
+      v17 = [v12 initWithResourceDepot:depotCopy triggers:v15 conditions:v16 engine:engineCopy];
       doom = v11->_doom;
       v11->_doom = v17;
 
@@ -44,7 +44,7 @@
     }
 
     self = v11;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
@@ -63,22 +63,22 @@
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. We need a resource depot to build from!", buf, 0x26u);
     }
 
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)doomNotificationReceivedWithDetails:(id)a3 forLOI:(id)a4
+- (void)doomNotificationReceivedWithDetails:(id)details forLOI:(id)i
 {
-  v5 = a3;
-  v6 = [MapsSuggestionsEntry entryFromLOI:a4];
+  detailsCopy = details;
+  v6 = [MapsSuggestionsEntry entryFromLOI:i];
   if (v6)
   {
     +[MapsSuggestionsEntry removeStaleArchivedDestinations];
     [v6 archiveDestination];
     v7 = objc_alloc_init(NavdNotificationManager);
-    [(NavdNotificationManager *)v7 showPredictedRouteTrafficIncidentBulletinForCommuteDetails:v5];
+    [(NavdNotificationManager *)v7 showPredictedRouteTrafficIncidentBulletinForCommuteDetails:detailsCopy];
   }
 
   else
@@ -99,31 +99,31 @@
   }
 }
 
-- (id)_conditionsForDoomUsingRegister:(id)a3
+- (id)_conditionsForDoomUsingRegister:(id)register
 {
-  v3 = a3;
+  registerCopy = register;
   v28 = +[NavdMapsSuggestionsLBALocationAccessAllowedCondition description];
-  v27 = [v3 objectForKeyedSubscript:?];
+  v27 = [registerCopy objectForKeyedSubscript:?];
   v31[0] = v27;
   v26 = +[MapsSuggestionsTransportTypePreferenceCondition description];
-  v25 = [v3 objectForKeyedSubscript:?];
+  v25 = [registerCopy objectForKeyedSubscript:?];
   v31[1] = v25;
   v24 = +[MapsSuggestionsSiri isEnabledCondition];
-  v23 = [v24 uniqueName];
-  v22 = [v3 objectForKeyedSubscript:?];
+  uniqueName = [v24 uniqueName];
+  v22 = [registerCopy objectForKeyedSubscript:?];
   v31[2] = v22;
   v21 = +[MapsSuggestionsFirstUnlockTrigger description];
-  v20 = [v3 objectForKeyedSubscript:?];
+  v20 = [registerCopy objectForKeyedSubscript:?];
   v31[3] = v20;
   v19 = +[MapsSuggestionsMapsInstalledTriggeringToggle description];
-  v4 = [v3 objectForKeyedSubscript:?];
+  v4 = [registerCopy objectForKeyedSubscript:?];
   v31[4] = v4;
   v5 = +[MapsSuggestionsNavigationStartedTrigger description];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  v6 = [registerCopy objectForKeyedSubscript:v5];
   v7 = [NSString alloc];
-  v8 = [v6 uniqueName];
-  v9 = [v8 capitalizedString];
-  v10 = [v7 initWithFormat:@"negated%@", v9];
+  uniqueName2 = [v6 uniqueName];
+  capitalizedString = [uniqueName2 capitalizedString];
+  v10 = [v7 initWithFormat:@"negated%@", capitalizedString];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10002016C;
@@ -136,7 +136,7 @@
 
   v31[5] = v14;
   v15 = +[MapsSuggestionsCurrentLocationCondition description];
-  v16 = [v3 objectForKeyedSubscript:v15];
+  v16 = [registerCopy objectForKeyedSubscript:v15];
   v31[6] = v16;
   v17 = [NSArray arrayWithObjects:v31 count:7];
 

@@ -1,24 +1,24 @@
 @interface PKMapsMerchant
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3;
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4;
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record;
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type;
 - (BOOL)hasCloudArchivableDeviceData;
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMapsMerchant:(id)a3;
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMapsMerchant:(id)merchant;
 - (CLLocation)location;
-- (PKMapsMerchant)initWithCloudStoreCoder:(id)a3;
-- (PKMapsMerchant)initWithCoder:(id)a3;
+- (PKMapsMerchant)initWithCloudStoreCoder:(id)coder;
+- (PKMapsMerchant)initWithCoder:(id)coder;
 - (id)_jsonEncodedPostalAddressString;
 - (id)description;
 - (id)jsonRepresentation;
 - (id)stylingInfo;
 - (unint64_t)hash;
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setStylingInfoData:(id)a3;
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLocation:(id)location;
+- (void)setStylingInfoData:(id)data;
 @end
 
 @implementation PKMapsMerchant
@@ -34,8 +34,8 @@
 
   [v3 setObject:self->_name forKeyedSubscript:@"name"];
   [v3 setObject:self->_phoneNumber forKeyedSubscript:@"phoneNumber"];
-  v6 = [(NSURL *)self->_url absoluteString];
-  [v3 setObject:v6 forKeyedSubscript:@"url"];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"url"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_locationLatitude];
   [v3 setObject:v7 forKeyedSubscript:@"locationLatitude"];
@@ -43,16 +43,16 @@
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_locationLongitude];
   [v3 setObject:v8 forKeyedSubscript:@"locationLongitude"];
 
-  v9 = [(NSURL *)self->_heroImageURL absoluteString];
-  [v3 setObject:v9 forKeyedSubscript:@"heroImageURL"];
+  absoluteString2 = [(NSURL *)self->_heroImageURL absoluteString];
+  [v3 setObject:absoluteString2 forKeyedSubscript:@"heroImageURL"];
 
   [v3 setObject:self->_heroImageAttributionName forKeyedSubscript:@"heroImageAttributionName"];
   v10 = PKMerchantCategoryToString(self->_category);
   [v3 setObject:v10 forKeyedSubscript:@"category"];
 
   [v3 setObject:self->_detailedCategory forKeyedSubscript:@"detailedCategory"];
-  v11 = [(NSURL *)self->_businessChatURL absoluteString];
-  [v3 setObject:v11 forKeyedSubscript:@"businessChatURL"];
+  absoluteString3 = [(NSURL *)self->_businessChatURL absoluteString];
+  [v3 setObject:absoluteString3 forKeyedSubscript:@"businessChatURL"];
 
   v12 = [(NSData *)self->_stylingInfoData description];
   [v3 setObject:v12 forKeyedSubscript:@"stylingInfo"];
@@ -62,16 +62,16 @@
   return v13;
 }
 
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_identifier != v4[3] || self->_resultProviderIdentifier != *(v4 + 4))
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy || self->_identifier != equalCopy[3] || self->_resultProviderIdentifier != *(equalCopy + 4))
   {
     goto LABEL_46;
   }
 
-  v6 = v4[4];
+  v6 = equalCopy[4];
   v7 = self->_name;
   v8 = v6;
   v9 = v8;
@@ -293,10 +293,10 @@ LABEL_47:
   return self->_businessChatURL != 0;
 }
 
-- (void)setStylingInfoData:(id)a3
+- (void)setStylingInfoData:(id)data
 {
-  objc_storeStrong(&self->_stylingInfoData, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_stylingInfoData, data);
+  dataCopy = data;
   lazyStylingInfo = self->_lazyStylingInfo;
   self->_lazyStylingInfo = 0;
 }
@@ -345,9 +345,9 @@ LABEL_5:
   return v5;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  [a3 coordinate];
+  [location coordinate];
   latitude = v6.latitude;
   longitude = v6.longitude;
   if (CLLocationCoordinate2DIsValid(v6))
@@ -357,16 +357,16 @@ LABEL_5:
   }
 }
 
-- (PKMapsMerchant)initWithCloudStoreCoder:(id)a3
+- (PKMapsMerchant)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKMapsMerchant;
   v5 = [(PKMapsMerchant *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PKMapsMerchant *)v5 applyPropertiesFromCloudStoreRecord:v4];
+    [(PKMapsMerchant *)v5 applyPropertiesFromCloudStoreRecord:coderCopy];
   }
 
   if ([(PKMapsMerchant *)v6 isValid])
@@ -382,45 +382,45 @@ LABEL_5:
   return v7;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v27 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v4 firstObject];
 
-  v5 = v27;
-  if (v27)
+  v5 = firstObject;
+  if (firstObject)
   {
-    self->_identifier = [v27 pk_encryptedUint64ForKey:@"merchantMapsIdentifier"];
-    self->_resultProviderIdentifier = [v27 pk_encryptedIntForKey:@"merchantResultProviderIdentifier"];
-    v6 = [v27 pk_encryptedStringForKey:@"merchantMapsName"];
+    self->_identifier = [firstObject pk_encryptedUint64ForKey:@"merchantMapsIdentifier"];
+    self->_resultProviderIdentifier = [firstObject pk_encryptedIntForKey:@"merchantResultProviderIdentifier"];
+    v6 = [firstObject pk_encryptedStringForKey:@"merchantMapsName"];
     name = self->_name;
     self->_name = v6;
 
-    v8 = [v27 pk_encryptedUrlForKey:@"merchantBusinessChatURL"];
+    v8 = [firstObject pk_encryptedUrlForKey:@"merchantBusinessChatURL"];
     businessChatURL = self->_businessChatURL;
     self->_businessChatURL = v8;
 
-    v10 = [v27 pk_encryptedLocationForKey:@"merchantLocation"];
+    v10 = [firstObject pk_encryptedLocationForKey:@"merchantLocation"];
     [v10 coordinate];
     self->_locationLatitude = v11;
     self->_locationLongitude = v12;
     if (!self->_phoneNumber)
     {
-      v13 = [v27 pk_encryptedStringForKey:@"merchantPhoneNumber"];
+      v13 = [firstObject pk_encryptedStringForKey:@"merchantPhoneNumber"];
       phoneNumber = self->_phoneNumber;
       self->_phoneNumber = v13;
     }
 
     if (!self->_url)
     {
-      v15 = [v27 pk_encryptedUrlForKey:@"merchantURL"];
+      v15 = [firstObject pk_encryptedUrlForKey:@"merchantURL"];
       url = self->_url;
       self->_url = v15;
     }
 
     if (!self->_postalAddress)
     {
-      v17 = [v27 pk_encryptedDictionaryForKey:@"merchantPostalAddress"];
+      v17 = [firstObject pk_encryptedDictionaryForKey:@"merchantPostalAddress"];
       v18 = v17;
       if (v17)
       {
@@ -433,162 +433,162 @@ LABEL_5:
 
     if (!self->_heroImageURL)
     {
-      v20 = [v27 pk_encryptedUrlForKey:@"merchantHeroImageURL"];
+      v20 = [firstObject pk_encryptedUrlForKey:@"merchantHeroImageURL"];
       heroImageURL = self->_heroImageURL;
       self->_heroImageURL = v20;
     }
 
     if (!self->_heroImageAttributionName)
     {
-      v22 = [v27 pk_encryptedStringForKey:@"merchantHeroImageAttributionName"];
+      v22 = [firstObject pk_encryptedStringForKey:@"merchantHeroImageAttributionName"];
       heroImageAttributionName = self->_heroImageAttributionName;
       self->_heroImageAttributionName = v22;
     }
 
     if (!self->_category)
     {
-      v24 = [v27 pk_encryptedStringForKey:@"merchantCategory"];
+      v24 = [firstObject pk_encryptedStringForKey:@"merchantCategory"];
       self->_category = PKMerchantCategoryFromString(v24);
     }
 
     if (!self->_stylingInfoData)
     {
-      v25 = [v27 pk_encryptedDataForKey:@"merchantStylingInfo"];
+      v25 = [firstObject pk_encryptedDataForKey:@"merchantStylingInfo"];
       stylingInfoData = self->_stylingInfoData;
       self->_stylingInfoData = v25;
     }
 
-    v5 = v27;
+    v5 = firstObject;
   }
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [(PKMapsMerchant *)self _encodeDeviceDataForCloudStoreCoder:a3];
+    [(PKMapsMerchant *)self _encodeDeviceDataForCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v14 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v14 encryptedValues];
+  encryptedValues = [firstObject encryptedValues];
   v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_identifier];
-  [v5 setObject:v6 forKey:@"merchantMapsIdentifier"];
+  [encryptedValues setObject:v6 forKey:@"merchantMapsIdentifier"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_resultProviderIdentifier];
-  [v5 setObject:v7 forKey:@"merchantResultProviderIdentifier"];
+  [encryptedValues setObject:v7 forKey:@"merchantResultProviderIdentifier"];
 
-  [v5 setObject:self->_name forKey:@"merchantMapsName"];
-  [v5 setObject:self->_phoneNumber forKey:@"merchantPhoneNumber"];
-  v8 = [(NSURL *)self->_url absoluteString];
-  [v5 setObject:v8 forKey:@"merchantURL"];
+  [encryptedValues setObject:self->_name forKey:@"merchantMapsName"];
+  [encryptedValues setObject:self->_phoneNumber forKey:@"merchantPhoneNumber"];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  [encryptedValues setObject:absoluteString forKey:@"merchantURL"];
 
-  v9 = [(PKMapsMerchant *)self location];
-  [v5 setObject:v9 forKey:@"merchantLocation"];
+  location = [(PKMapsMerchant *)self location];
+  [encryptedValues setObject:location forKey:@"merchantLocation"];
 
-  v10 = [(PKMapsMerchant *)self _jsonEncodedPostalAddressString];
-  [v5 setObject:v10 forKey:@"merchantPostalAddress"];
+  _jsonEncodedPostalAddressString = [(PKMapsMerchant *)self _jsonEncodedPostalAddressString];
+  [encryptedValues setObject:_jsonEncodedPostalAddressString forKey:@"merchantPostalAddress"];
 
-  v11 = [(NSURL *)self->_heroImageURL absoluteString];
-  [v5 setObject:v11 forKey:@"merchantHeroImageURL"];
+  absoluteString2 = [(NSURL *)self->_heroImageURL absoluteString];
+  [encryptedValues setObject:absoluteString2 forKey:@"merchantHeroImageURL"];
 
   v12 = PKMerchantCategoryToString(self->_category);
-  [v5 setObject:v12 forKey:@"merchantCategory"];
+  [encryptedValues setObject:v12 forKey:@"merchantCategory"];
 
-  [v5 setObject:self->_detailedCategory forKey:@"merchantMapsCategory"];
-  [v5 setObject:self->_heroImageAttributionName forKey:@"merchantHeroImageAttributionName"];
-  [v5 setObject:self->_stylingInfoData forKey:@"merchantStylingInfo"];
+  [encryptedValues setObject:self->_detailedCategory forKey:@"merchantMapsCategory"];
+  [encryptedValues setObject:self->_heroImageAttributionName forKey:@"merchantHeroImageAttributionName"];
+  [encryptedValues setObject:self->_stylingInfoData forKey:@"merchantStylingInfo"];
   if (PKApplePayContainerEnvironment() == 2)
   {
-    v13 = [(NSURL *)self->_businessChatURL absoluteString];
-    [v5 setObject:v13 forKey:@"merchantBusinessChatURL"];
+    absoluteString3 = [(NSURL *)self->_businessChatURL absoluteString];
+    [encryptedValues setObject:absoluteString3 forKey:@"merchantBusinessChatURL"];
   }
 }
 
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [a1 _deleteDeviceDataFromCloudStoreRecord:a3];
+    [self _deleteDeviceDataFromCloudStoreRecord:record];
   }
 }
 
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record
 {
-  v3 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v5 = [v3 firstObject];
+  v3 = [record recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v3 firstObject];
 
-  v4 = [v5 encryptedValues];
-  [v4 setObject:0 forKey:@"merchantMapsIdentifier"];
-  [v4 setObject:0 forKey:@"merchantResultProviderIdentifier"];
-  [v4 setObject:0 forKey:@"merchantMapsName"];
-  [v4 setObject:0 forKey:@"merchantPhoneNumber"];
-  [v4 setObject:0 forKey:@"merchantURL"];
-  [v4 setObject:0 forKey:@"merchantLocation"];
-  [v4 setObject:0 forKey:@"merchantPostalAddress"];
-  [v4 setObject:0 forKey:@"merchantHeroImageURL"];
-  [v4 setObject:0 forKey:@"merchantCategory"];
-  [v4 setObject:0 forKey:@"merchantMapsCategory"];
-  [v4 setObject:0 forKey:@"merchantHeroImageAttributionName"];
-  [v4 setObject:0 forKey:@"merchantStylingInfo"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:0 forKey:@"merchantMapsIdentifier"];
+  [encryptedValues setObject:0 forKey:@"merchantResultProviderIdentifier"];
+  [encryptedValues setObject:0 forKey:@"merchantMapsName"];
+  [encryptedValues setObject:0 forKey:@"merchantPhoneNumber"];
+  [encryptedValues setObject:0 forKey:@"merchantURL"];
+  [encryptedValues setObject:0 forKey:@"merchantLocation"];
+  [encryptedValues setObject:0 forKey:@"merchantPostalAddress"];
+  [encryptedValues setObject:0 forKey:@"merchantHeroImageURL"];
+  [encryptedValues setObject:0 forKey:@"merchantCategory"];
+  [encryptedValues setObject:0 forKey:@"merchantMapsCategory"];
+  [encryptedValues setObject:0 forKey:@"merchantHeroImageAttributionName"];
+  [encryptedValues setObject:0 forKey:@"merchantStylingInfo"];
 }
 
-- (PKMapsMerchant)initWithCoder:(id)a3
+- (PKMapsMerchant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKMapsMerchant;
   v5 = [(PKMapsMerchant *)&v29 init];
   if (v5)
   {
-    v5->_identifier = [v4 decodeInt64ForKey:@"identifier"];
-    v5->_resultProviderIdentifier = [v4 decodeInt32ForKey:@"resultProviderIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_identifier = [coderCopy decodeInt64ForKey:@"identifier"];
+    v5->_resultProviderIdentifier = [coderCopy decodeInt32ForKey:@"resultProviderIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v10;
 
-    [v4 decodeDoubleForKey:@"locationLatitude"];
+    [coderCopy decodeDoubleForKey:@"locationLatitude"];
     v5->_locationLatitude = v12;
-    [v4 decodeDoubleForKey:@"locationLongitude"];
+    [coderCopy decodeDoubleForKey:@"locationLongitude"];
     v5->_locationLongitude = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postalAddress"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postalAddress"];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heroImageURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heroImageURL"];
     heroImageURL = v5->_heroImageURL;
     v5->_heroImageURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantHeroImageAttributionName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantHeroImageAttributionName"];
     heroImageAttributionName = v5->_heroImageAttributionName;
     v5->_heroImageAttributionName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantStylingInfo"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantStylingInfo"];
     stylingInfoData = v5->_stylingInfoData;
     v5->_stylingInfoData = v20;
 
-    v5->_category = [v4 decodeIntegerForKey:@"merchantCategory"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantMapsCategory"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"merchantCategory"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantMapsCategory"];
     detailedCategory = v5->_detailedCategory;
     v5->_detailedCategory = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantBusinessChatURL"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantBusinessChatURL"];
     businessChatURL = v5->_businessChatURL;
     v5->_businessChatURL = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
     lastProcessedDate = v5->_lastProcessedDate;
     v5->_lastProcessedDate = v26;
   }
@@ -596,31 +596,31 @@ LABEL_5:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeInt64:identifier forKey:@"identifier"];
-  [v5 encodeInt32:self->_resultProviderIdentifier forKey:@"resultProviderIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_url forKey:@"url"];
-  [v5 encodeDouble:@"locationLatitude" forKey:self->_locationLatitude];
-  [v5 encodeDouble:@"locationLongitude" forKey:self->_locationLongitude];
-  [v5 encodeObject:self->_postalAddress forKey:@"postalAddress"];
-  [v5 encodeObject:self->_heroImageURL forKey:@"heroImageURL"];
-  [v5 encodeObject:self->_heroImageAttributionName forKey:@"merchantHeroImageAttributionName"];
-  [v5 encodeObject:self->_stylingInfoData forKey:@"merchantStylingInfo"];
-  [v5 encodeInteger:self->_category forKey:@"merchantCategory"];
-  [v5 encodeObject:self->_detailedCategory forKey:@"merchantMapsCategory"];
-  [v5 encodeObject:self->_businessChatURL forKey:@"merchantBusinessChatURL"];
-  [v5 encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:identifier forKey:@"identifier"];
+  [coderCopy encodeInt32:self->_resultProviderIdentifier forKey:@"resultProviderIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeDouble:@"locationLatitude" forKey:self->_locationLatitude];
+  [coderCopy encodeDouble:@"locationLongitude" forKey:self->_locationLongitude];
+  [coderCopy encodeObject:self->_postalAddress forKey:@"postalAddress"];
+  [coderCopy encodeObject:self->_heroImageURL forKey:@"heroImageURL"];
+  [coderCopy encodeObject:self->_heroImageAttributionName forKey:@"merchantHeroImageAttributionName"];
+  [coderCopy encodeObject:self->_stylingInfoData forKey:@"merchantStylingInfo"];
+  [coderCopy encodeInteger:self->_category forKey:@"merchantCategory"];
+  [coderCopy encodeObject:self->_detailedCategory forKey:@"merchantMapsCategory"];
+  [coderCopy encodeObject:self->_businessChatURL forKey:@"merchantBusinessChatURL"];
+  [coderCopy encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
 }
 
 - (id)description
 {
-  v3 = [(PKMapsMerchant *)self jsonRepresentation];
-  v4 = [v3 mutableCopy];
+  jsonRepresentation = [(PKMapsMerchant *)self jsonRepresentation];
+  v4 = [jsonRepresentation mutableCopy];
 
   v5 = [(NSDate *)self->_lastProcessedDate description];
   [v4 setObject:v5 forKeyedSubscript:@"lastProcessedDate"];
@@ -644,28 +644,28 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKMapsMerchant *)self isEqualToMapsMerchant:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKMapsMerchant *)self isEqualToMapsMerchant:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMapsMerchant:(id)a3
+- (BOOL)isEqualToMapsMerchant:(id)merchant
 {
-  v4 = a3;
+  merchantCopy = merchant;
   name = self->_name;
-  v6 = v4[4];
+  v6 = merchantCopy[4];
   if (name)
   {
     v7 = v6 == 0;
@@ -694,7 +694,7 @@ LABEL_5:
   }
 
   phoneNumber = self->_phoneNumber;
-  v10 = v4[5];
+  v10 = merchantCopy[5];
   if (phoneNumber && v10)
   {
     if (([(NSString *)phoneNumber isEqual:?]& 1) == 0)
@@ -709,7 +709,7 @@ LABEL_5:
   }
 
   url = self->_url;
-  v12 = v4[6];
+  v12 = merchantCopy[6];
   if (url && v12)
   {
     if (([(NSURL *)url isEqual:?]& 1) == 0)
@@ -724,7 +724,7 @@ LABEL_5:
   }
 
   postalAddress = self->_postalAddress;
-  v14 = v4[9];
+  v14 = merchantCopy[9];
   if (postalAddress && v14)
   {
     if (([(CNPostalAddress *)postalAddress isEqual:?]& 1) == 0)
@@ -739,7 +739,7 @@ LABEL_5:
   }
 
   heroImageURL = self->_heroImageURL;
-  v16 = v4[10];
+  v16 = merchantCopy[10];
   if (heroImageURL && v16)
   {
     if (([(NSURL *)heroImageURL isEqual:?]& 1) == 0)
@@ -753,7 +753,7 @@ LABEL_5:
     goto LABEL_41;
   }
 
-  v17 = v4[13];
+  v17 = merchantCopy[13];
   v18 = self->_detailedCategory;
   v19 = v17;
   v20 = v19;
@@ -776,7 +776,7 @@ LABEL_5:
     }
   }
 
-  v22 = v4[11];
+  v22 = merchantCopy[11];
   v18 = self->_heroImageAttributionName;
   v23 = v22;
   v20 = v23;
@@ -801,7 +801,7 @@ LABEL_40:
 
 LABEL_44:
   businessChatURL = self->_businessChatURL;
-  v28 = v4[15];
+  v28 = merchantCopy[15];
   if (businessChatURL && v28)
   {
     if (([(NSURL *)businessChatURL isEqual:?]& 1) == 0)
@@ -815,9 +815,9 @@ LABEL_44:
     goto LABEL_41;
   }
 
-  if (self->_category == v4[12] && self->_identifier == v4[3] && self->_resultProviderIdentifier == *(v4 + 4) && self->_locationLatitude == *(v4 + 7) && self->_locationLongitude == *(v4 + 8))
+  if (self->_category == merchantCopy[12] && self->_identifier == merchantCopy[3] && self->_resultProviderIdentifier == *(merchantCopy + 4) && self->_locationLatitude == *(merchantCopy + 7) && self->_locationLongitude == *(merchantCopy + 8))
   {
-    v25 = (self->_stylingInfoData == 0) ^ (v4[14] != 0);
+    v25 = (self->_stylingInfoData == 0) ^ (merchantCopy[14] != 0);
     goto LABEL_42;
   }
 
@@ -830,16 +830,16 @@ LABEL_42:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_name];
-  [v3 safelyAddObject:self->_phoneNumber];
-  [v3 safelyAddObject:self->_url];
-  [v3 safelyAddObject:self->_postalAddress];
-  [v3 safelyAddObject:self->_heroImageURL];
-  [v3 safelyAddObject:self->_heroImageAttributionName];
-  [v3 safelyAddObject:self->_detailedCategory];
-  [v3 safelyAddObject:self->_businessChatURL];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_name];
+  [array safelyAddObject:self->_phoneNumber];
+  [array safelyAddObject:self->_url];
+  [array safelyAddObject:self->_postalAddress];
+  [array safelyAddObject:self->_heroImageURL];
+  [array safelyAddObject:self->_heroImageAttributionName];
+  [array safelyAddObject:self->_detailedCategory];
+  [array safelyAddObject:self->_businessChatURL];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_identifier - v4 + 32 * v4;
   v6 = self->_resultProviderIdentifier - v5 + 32 * v5;
   v7 = self->_locationLatitude - v6 + 32 * v6;
@@ -851,8 +851,8 @@ LABEL_42:
 
 - (id)_jsonEncodedPostalAddressString
 {
-  v2 = [(CNPostalAddress *)self->_postalAddress dictionaryRepresentation];
-  if (v2 && ([MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  dictionaryRepresentation = [(CNPostalAddress *)self->_postalAddress dictionaryRepresentation];
+  if (dictionaryRepresentation && ([MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v3 encoding:4];

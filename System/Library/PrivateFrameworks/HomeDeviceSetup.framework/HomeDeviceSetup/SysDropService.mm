@@ -3,10 +3,10 @@
 - (SysDropService)init;
 - (unint64_t)signpostID;
 - (void)_cleanup;
-- (void)_handleAirDropRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handlePreCheckRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
+- (void)_handleAirDropRequest:(id)request responseHandler:(id)handler;
+- (void)_handlePreCheckRequest:(id)request responseHandler:(id)handler;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionStarted:(id)started;
 - (void)_invalidate;
 - (void)_sfServiceStart;
 - (void)activate;
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __29__SysDropService_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_3 != -1)
   {
     dispatch_once(&signpostLog_onceToken_3, block);
@@ -44,8 +44,8 @@ void __29__SysDropService_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -350,14 +350,14 @@ void __33__SysDropService__sfServiceStart__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   if (self->_sfSession && !self->_serviceStartedFromSetup)
   {
     if (gLogCategory_SysDropService <= 60 && (gLogCategory_SysDropService != -1 || _LogCategory_Initialize()))
     {
-      [(SysDropService *)v5 _handleSessionStarted:?];
+      [(SysDropService *)startedCopy _handleSessionStarted:?];
     }
   }
 
@@ -365,10 +365,10 @@ void __33__SysDropService__sfServiceStart__block_invoke_3(uint64_t a1, void *a2)
   {
     if (gLogCategory_SysDropService <= 30 && (gLogCategory_SysDropService != -1 || _LogCategory_Initialize()))
     {
-      [SysDropService _handleSessionStarted:v5];
+      [SysDropService _handleSessionStarted:startedCopy];
     }
 
-    objc_storeStrong(&self->_sfSession, a3);
+    objc_storeStrong(&self->_sfSession, started);
     sfSession = self->_sfSession;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -386,20 +386,20 @@ void __33__SysDropService__sfServiceStart__block_invoke_3(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession == v4)
+  if (sfSession == endedCopy)
   {
-    v8 = v4;
-    if (v4)
+    v8 = endedCopy;
+    if (endedCopy)
     {
       if (gLogCategory_SysDropService <= 30)
       {
         if (gLogCategory_SysDropService != -1 || (v6 = _LogCategory_Initialize(), sfSession = self->_sfSession, v6))
         {
-          v7 = [(SFSession *)sfSession peer];
+          peer = [(SFSession *)sfSession peer];
           LogPrintF();
 
           sfSession = self->_sfSession;
@@ -409,16 +409,16 @@ void __33__SysDropService__sfServiceStart__block_invoke_3(uint64_t a1, void *a2)
 
     self->_sfSession = 0;
 
-    v4 = v8;
+    endedCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](sfSession, v4);
+  MEMORY[0x2821F96F8](sfSession, endedCopy);
 }
 
-- (void)_handleAirDropRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleAirDropRequest:(id)request responseHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SysDropService <= 30 && (gLogCategory_SysDropService != -1 || _LogCategory_Initialize()))
   {
     [SysDropService _handleAirDropRequest:responseHandler:];
@@ -432,13 +432,13 @@ void __33__SysDropService__sfServiceStart__block_invoke_3(uint64_t a1, void *a2)
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  (*(v6 + 2))(v6, 0, 0, v8);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
 }
 
-- (void)_handlePreCheckRequest:(id)a3 responseHandler:(id)a4
+- (void)_handlePreCheckRequest:(id)request responseHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SysDropService <= 30 && (gLogCategory_SysDropService != -1 || _LogCategory_Initialize()))
   {
     [SysDropService _handlePreCheckRequest:responseHandler:];
@@ -508,7 +508,7 @@ LABEL_11:
     preCheckError = 0;
   }
 
-  v6[2](v6, preCheckError, 0, v9);
+  handlerCopy[2](handlerCopy, preCheckError, 0, v9);
 }
 
 void __33__SysDropService__sfServiceStart__block_invoke_44_cold_1(void *a1)

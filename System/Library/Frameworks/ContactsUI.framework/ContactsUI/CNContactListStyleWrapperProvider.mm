@@ -5,7 +5,7 @@
 - (BOOL)searchBarIsTranslucent;
 - (BOOL)tableIsOpaque;
 - (BOOL)usesInsetPlatterStyle;
-- (CNContactListStyleWrapperProvider)initWithContactStyle:(id)a3;
+- (CNContactListStyleWrapperProvider)initWithContactStyle:(id)style;
 - (id)bannerTitleTextColor;
 - (id)cellBackgroundColor;
 - (id)cellBackgroundSelectedColor;
@@ -40,61 +40,61 @@
 
 - (id)searchBarBackgroundColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 searchBarBackgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  searchBarBackgroundColor = [contactStyle searchBarBackgroundColor];
 
-  return v3;
+  return searchBarBackgroundColor;
 }
 
 - (int64_t)searchBarStyle
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 barStyle];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  barStyle = [contactStyle barStyle];
 
-  return v3;
+  return barStyle;
 }
 
 - (BOOL)searchBarIsTranslucent
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 usesTranslucentBarStyle];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  usesTranslucentBarStyle = [contactStyle usesTranslucentBarStyle];
 
-  return v3;
+  return usesTranslucentBarStyle;
 }
 
 - (id)searchBarTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 textColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  textColor = [contactStyle textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (int64_t)searchBarKeyboardAppearance
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 keyboardAppearance];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  keyboardAppearance = [contactStyle keyboardAppearance];
 
-  return v3;
+  return keyboardAppearance;
 }
 
 - (id)searchBarPlaceholderTextColor
 {
-  v3 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v4 = [v3 placeholderTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  placeholderTextColor = [contactStyle placeholderTextColor];
 
-  v5 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v6 = [v5 placeholderTextColor];
+  contactStyle2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  placeholderTextColor2 = [contactStyle2 placeholderTextColor];
 
-  if (!v4)
+  if (!placeholderTextColor)
   {
-    v7 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-    v8 = [v7 textColor];
+    contactStyle3 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+    textColor = [contactStyle3 textColor];
 
-    if (!v8)
+    if (!textColor)
     {
-      v4 = 0;
-      if (v6)
+      placeholderTextColor = 0;
+      if (placeholderTextColor2)
       {
         goto LABEL_8;
       }
@@ -106,233 +106,233 @@
     v20 = 0.0;
     v17 = 0.0;
     v18 = 0.0;
-    v9 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-    v10 = [v9 textColor];
-    [v10 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
+    contactStyle4 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+    textColor2 = [contactStyle4 textColor];
+    [textColor2 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
 
-    v4 = [MEMORY[0x1E69DC888] colorWithRed:v20 green:v19 blue:v18 alpha:v17 * 0.5];
+    placeholderTextColor = [MEMORY[0x1E69DC888] colorWithRed:v20 green:v19 blue:v18 alpha:v17 * 0.5];
   }
 
-  if (v6)
+  if (placeholderTextColor2)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  v11 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v12 = [v11 readOnlyTextColor];
+  contactStyle5 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  readOnlyTextColor = [contactStyle5 readOnlyTextColor];
 
-  if (v12)
+  if (readOnlyTextColor)
   {
     v19 = 0.0;
     v20 = 0.0;
     v17 = 0.0;
     v18 = 0.0;
-    v13 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-    v14 = [v13 readOnlyTextColor];
-    [v14 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
+    contactStyle6 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+    readOnlyTextColor2 = [contactStyle6 readOnlyTextColor];
+    [readOnlyTextColor2 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
 
     v15 = [MEMORY[0x1E69DC888] colorWithRed:v20 green:v19 blue:v18 alpha:v17 * 0.5];
 
-    v4 = v15;
+    placeholderTextColor = v15;
   }
 
 LABEL_8:
 
-  return v4;
+  return placeholderTextColor;
 }
 
 - (int64_t)navigationBarStyle
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 barStyle];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  barStyle = [contactStyle barStyle];
 
-  return v3;
+  return barStyle;
 }
 
 - (BOOL)navigationBarIsTranslucent
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 usesTranslucentBarStyle];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  usesTranslucentBarStyle = [contactStyle usesTranslucentBarStyle];
 
-  return v3;
+  return usesTranslucentBarStyle;
 }
 
 - (BOOL)tableIsOpaque
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 usesOpaqueBackground];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  usesOpaqueBackground = [contactStyle usesOpaqueBackground];
 
-  return v3;
+  return usesOpaqueBackground;
 }
 
 - (id)bannerTitleTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 textColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  textColor = [contactStyle textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (id)tableBackgroundFilteredColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 groupedBackgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  groupedBackgroundColor = [contactStyle groupedBackgroundColor];
 
-  return v3;
+  return groupedBackgroundColor;
 }
 
 - (id)tableBackgroundColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 backgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  backgroundColor = [contactStyle backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (BOOL)usesInsetPlatterStyle
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
 
-  v5 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v6 = [v5 usesInsetPlatterStyle];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  usesInsetPlatterStyle = [contactStyle usesInsetPlatterStyle];
 
-  return v6;
+  return usesInsetPlatterStyle;
 }
 
 - (id)cellNameTextFont
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 textFont];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  textFont = [contactStyle textFont];
 
-  return v3;
+  return textFont;
 }
 
 - (id)cellNameTextEmphasisedFont
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 boldTextFont];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  boldTextFont = [contactStyle boldTextFont];
 
-  return v3;
+  return boldTextFont;
 }
 
 - (id)cellBackgroundColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 backgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  backgroundColor = [contactStyle backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (BOOL)cellIsOpaque
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 usesOpaqueBackground];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  usesOpaqueBackground = [contactStyle usesOpaqueBackground];
 
-  return v3;
+  return usesOpaqueBackground;
 }
 
 - (id)cellNameTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 listTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  listTextColor = [contactStyle listTextColor];
 
-  return v3;
+  return listTextColor;
 }
 
 - (int64_t)tableSeparatorStyle
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = 2 * ([v2 separatorStyle] == 0);
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  v3 = 2 * ([contactStyle separatorStyle] == 0);
 
   return v3;
 }
 
 - (id)searchBarPlaceholderTextDisabledColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 placeholderTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  placeholderTextColor = [contactStyle placeholderTextColor];
 
-  return v3;
+  return placeholderTextColor;
 }
 
 - (id)searchBarTextDisabledColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 readOnlyTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  readOnlyTextColor = [contactStyle readOnlyTextColor];
 
-  return v3;
+  return readOnlyTextColor;
 }
 
 - (int64_t)tableSeparatorOverlayBlendMode
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 separatorBackdropOverlayBlendMode];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  separatorBackdropOverlayBlendMode = [contactStyle separatorBackdropOverlayBlendMode];
 
-  return v3;
+  return separatorBackdropOverlayBlendMode;
 }
 
 - (unint64_t)tableNoContactsAvailableStyle
 {
-  v3 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  if ([v3 barStyle])
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  if ([contactStyle barStyle])
   {
-    v4 = 1;
+    blurSupported = 1;
   }
 
   else
   {
-    v5 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-    v4 = [v5 blurSupported];
+    contactStyle2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+    blurSupported = [contactStyle2 blurSupported];
   }
 
-  return v4;
+  return blurSupported;
 }
 
 - (id)tableSeparatorColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 separatorColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  separatorColor = [contactStyle separatorColor];
 
-  return v3;
+  return separatorColor;
 }
 
 - (id)tableSectionIndexBackgroundColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 sectionIndexBackgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  sectionIndexBackgroundColor = [contactStyle sectionIndexBackgroundColor];
 
-  return v3;
+  return sectionIndexBackgroundColor;
 }
 
 - (id)headerIndexTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 textColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  textColor = [contactStyle textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (id)headerBackgroundColor
 {
-  v3 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v4 = [v3 headerBackgroundColor];
-  v5 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v6 = v5;
-  if (v4)
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  headerBackgroundColor = [contactStyle headerBackgroundColor];
+  contactStyle2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  v6 = contactStyle2;
+  if (headerBackgroundColor)
   {
-    [v5 headerBackgroundColor];
+    [contactStyle2 headerBackgroundColor];
   }
 
   else
   {
-    [v5 backgroundColor];
+    [contactStyle2 backgroundColor];
   }
   v7 = ;
 
@@ -341,70 +341,70 @@ LABEL_8:
 
 - (BOOL)cellIsVibrant
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 blurSupported];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  blurSupported = [contactStyle blurSupported];
 
-  return v3;
+  return blurSupported;
 }
 
 - (id)cellBlueSelectionSecondaryTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 blueSelectionSecondaryTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  blueSelectionSecondaryTextColor = [contactStyle blueSelectionSecondaryTextColor];
 
-  return v3;
+  return blueSelectionSecondaryTextColor;
 }
 
 - (id)cellSearchResultTextDisabledColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 disabledTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  disabledTextColor = [contactStyle disabledTextColor];
 
-  return v3;
+  return disabledTextColor;
 }
 
 - (id)cellSearchResultTextColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 listTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  listTextColor = [contactStyle listTextColor];
 
-  return v3;
+  return listTextColor;
 }
 
 - (id)cellSearchBackgroundColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 searchCellBackgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  searchCellBackgroundColor = [contactStyle searchCellBackgroundColor];
 
-  return v3;
+  return searchCellBackgroundColor;
 }
 
 - (id)cellNameTextHighlightedColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 highlightedTextColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  highlightedTextColor = [contactStyle highlightedTextColor];
 
-  return v3;
+  return highlightedTextColor;
 }
 
 - (id)cellBackgroundSelectedColor
 {
-  v2 = [(CNContactListStyleWrapperProvider *)self contactStyle];
-  v3 = [v2 selectedCellBackgroundColor];
+  contactStyle = [(CNContactListStyleWrapperProvider *)self contactStyle];
+  selectedCellBackgroundColor = [contactStyle selectedCellBackgroundColor];
 
-  return v3;
+  return selectedCellBackgroundColor;
 }
 
-- (CNContactListStyleWrapperProvider)initWithContactStyle:(id)a3
+- (CNContactListStyleWrapperProvider)initWithContactStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = CNContactListStyleWrapperProvider;
   v6 = [(CNContactListStyleWrapperProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStyle, a3);
+    objc_storeStrong(&v6->_contactStyle, style);
     v8 = v7;
   }
 

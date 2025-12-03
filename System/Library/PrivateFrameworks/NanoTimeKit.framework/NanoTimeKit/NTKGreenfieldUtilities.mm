@@ -1,28 +1,28 @@
 @interface NTKGreenfieldUtilities
-+ (BOOL)shouldAutoDismissViewControllerForAddFaceFlow:(id)a3;
-+ (BOOL)shouldPresentUnreleasedFeaturesInternalWarningForFace:(id)a3;
-+ (BOOL)validateFaceType:(id)a3 faceBundleId:(id)a4;
-+ (id)_addGenericDeviceBorderToWatchFaceImage:(id)a3 includesTransparentPadding:(BOOL)a4;
-+ (id)_addGreyBorderToWatchFaceImage:(id)a3;
-+ (id)_companionAppIdFromWatchAppBundleId:(id)a3;
-+ (id)_decodeFaceFromDataPath:(id)a3;
-+ (id)_greenfieldWatchFaceJsonForFace:(id)a3;
-+ (id)_metadataDictForWatchFace:(id)a3 slotToSampleTemplateMapping:(id)a4 slotToItemIdMapping:(id)a5 slotToBundleIdMapping:(id)a6 watchFaceDataPath:(id)a7;
-+ (id)_queue_encodeDraftRecipe:(id)a3;
-+ (id)_queue_greenfieldPreviewFromUrl:(id)a3;
-+ (id)_queue_snapshotFace:(id)a3 borderType:(unint64_t)a4;
-+ (id)addBorder:(unint64_t)a3 toWatchFaceImage:(id)a4;
++ (BOOL)shouldAutoDismissViewControllerForAddFaceFlow:(id)flow;
++ (BOOL)shouldPresentUnreleasedFeaturesInternalWarningForFace:(id)face;
++ (BOOL)validateFaceType:(id)type faceBundleId:(id)id;
++ (id)_addGenericDeviceBorderToWatchFaceImage:(id)image includesTransparentPadding:(BOOL)padding;
++ (id)_addGreyBorderToWatchFaceImage:(id)image;
++ (id)_companionAppIdFromWatchAppBundleId:(id)id;
++ (id)_decodeFaceFromDataPath:(id)path;
++ (id)_greenfieldWatchFaceJsonForFace:(id)face;
++ (id)_metadataDictForWatchFace:(id)face slotToSampleTemplateMapping:(id)mapping slotToItemIdMapping:(id)idMapping slotToBundleIdMapping:(id)bundleIdMapping watchFaceDataPath:(id)path;
++ (id)_queue_encodeDraftRecipe:(id)recipe;
++ (id)_queue_greenfieldPreviewFromUrl:(id)url;
++ (id)_queue_snapshotFace:(id)face borderType:(unint64_t)type;
++ (id)addBorder:(unint64_t)border toWatchFaceImage:(id)image;
 + (id)createXPCServiceConnection;
 + (id)encodeQueue;
 + (id)temporaryGreenfieldDirectory;
 + (id)temporaryGreenfieldNoBordersSnapshotPath;
-+ (id)unzipWatchFaceFileAtUrl:(id)a3;
-+ (void)_updateSystemDeletableAppItemIdForSlotToItemIdMapping:(id)a3 face:(id)a4;
-+ (void)decodeWatchFaceFromUrl:(id)a3 completionBlock:(id)a4;
-+ (void)encodeRecipeFromDraftRecipe:(id)a3 completionBlock:(id)a4;
-+ (void)generateFacePreviewImageFromDraftRecipe:(id)a3 borderType:(unint64_t)a4 completionBlock:(id)a5;
-+ (void)generateFacePreviewImageFromUrl:(id)a3 completionBlock:(id)a4;
-+ (void)migrateComplicationsOnFace:(id)a3;
++ (id)unzipWatchFaceFileAtUrl:(id)url;
++ (void)_updateSystemDeletableAppItemIdForSlotToItemIdMapping:(id)mapping face:(id)face;
++ (void)decodeWatchFaceFromUrl:(id)url completionBlock:(id)block;
++ (void)encodeRecipeFromDraftRecipe:(id)recipe completionBlock:(id)block;
++ (void)generateFacePreviewImageFromDraftRecipe:(id)recipe borderType:(unint64_t)type completionBlock:(id)block;
++ (void)generateFacePreviewImageFromUrl:(id)url completionBlock:(id)block;
++ (void)migrateComplicationsOnFace:(id)face;
 @end
 
 @implementation NTKGreenfieldUtilities
@@ -64,33 +64,33 @@ void __54__NTKGreenfieldUtilities_temporaryGreenfieldDirectory__block_invoke()
 
 + (id)temporaryGreenfieldNoBordersSnapshotPath
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = NSTemporaryDirectory();
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 stringByAppendingPathComponent:uUIDString];
 
-  [v2 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v6;
 }
 
-+ (void)generateFacePreviewImageFromDraftRecipe:(id)a3 borderType:(unint64_t)a4 completionBlock:(id)a5
++ (void)generateFacePreviewImageFromDraftRecipe:(id)recipe borderType:(unint64_t)type completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_opt_class() encodeQueue];
+  recipeCopy = recipe;
+  blockCopy = block;
+  encodeQueue = [objc_opt_class() encodeQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __93__NTKGreenfieldUtilities_generateFacePreviewImageFromDraftRecipe_borderType_completionBlock___block_invoke;
   v13[3] = &unk_278782DB8;
-  v16 = a1;
-  v17 = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  selfCopy = self;
+  typeCopy = type;
+  v14 = recipeCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = recipeCopy;
+  dispatch_async(encodeQueue, v13);
 }
 
 void __93__NTKGreenfieldUtilities_generateFacePreviewImageFromDraftRecipe_borderType_completionBlock___block_invoke(uint64_t a1)
@@ -110,21 +110,21 @@ void __93__NTKGreenfieldUtilities_generateFacePreviewImageFromDraftRecipe_border
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-+ (void)encodeRecipeFromDraftRecipe:(id)a3 completionBlock:(id)a4
++ (void)encodeRecipeFromDraftRecipe:(id)recipe completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() encodeQueue];
+  recipeCopy = recipe;
+  blockCopy = block;
+  encodeQueue = [objc_opt_class() encodeQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__NTKGreenfieldUtilities_encodeRecipeFromDraftRecipe_completionBlock___block_invoke;
   block[3] = &unk_278782DE0;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = recipeCopy;
+  v9 = blockCopy;
+  v10 = recipeCopy;
+  dispatch_async(encodeQueue, block);
 }
 
 void __70__NTKGreenfieldUtilities_encodeRecipeFromDraftRecipe_completionBlock___block_invoke(uint64_t a1)
@@ -141,58 +141,58 @@ void __70__NTKGreenfieldUtilities_encodeRecipeFromDraftRecipe_completionBlock___
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-+ (id)_queue_encodeDraftRecipe:(id)a3
++ (id)_queue_encodeDraftRecipe:(id)recipe
 {
   v99 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 faceForSharing];
-  v6 = [v4 tempPathOverride];
-  v7 = v6;
-  if (v6)
+  recipeCopy = recipe;
+  faceForSharing = [recipeCopy faceForSharing];
+  tempPathOverride = [recipeCopy tempPathOverride];
+  v7 = tempPathOverride;
+  if (tempPathOverride)
   {
-    v8 = v6;
+    temporaryGreenfieldDirectory = tempPathOverride;
   }
 
   else
   {
-    v8 = [a1 temporaryGreenfieldDirectory];
+    temporaryGreenfieldDirectory = [self temporaryGreenfieldDirectory];
   }
 
-  v9 = v8;
+  v9 = temporaryGreenfieldDirectory;
 
-  v10 = [a1 _queue_snapshotFace:v5 borderType:0];
+  v10 = [self _queue_snapshotFace:faceForSharing borderType:0];
   v11 = v10;
   if (!v10 || (([(UIImage *)v10 size], v14 = *MEMORY[0x277CBF3A8], v13 = *(MEMORY[0x277CBF3A8] + 8), v15 == *MEMORY[0x277CBF3A8]) ? (v16 = v12 == v13) : (v16 = 0), v16))
   {
-    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot without border for face: %@, faceWithoutBorderImage:%@", v5, v11}];
+    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot without border for face: %@, faceWithoutBorderImage:%@", faceForSharing, v11}];
     v26 = 0;
     goto LABEL_62;
   }
 
-  v17 = [a1 _addGreyBorderToWatchFaceImage:v11];
+  v17 = [self _addGreyBorderToWatchFaceImage:v11];
   v18 = v17;
   if (!v17 || (([(UIImage *)v17 size], v20 == v14) ? (v21 = v19 == v13) : (v21 = 0), v21))
   {
-    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot image with grey border for face: %@, faceWithGreyBorderImage:%@", v5, v18}];
+    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot image with grey border for face: %@, faceWithGreyBorderImage:%@", faceForSharing, v18}];
     v26 = 0;
     goto LABEL_61;
   }
 
-  v22 = [a1 _addGenericDeviceBorderToWatchFaceImage:v11 includesTransparentPadding:0];
+  v22 = [self _addGenericDeviceBorderToWatchFaceImage:v11 includesTransparentPadding:0];
   v23 = v22;
   if (!v22 || ([(UIImage *)v22 size], v25 == v14) && v24 == v13)
   {
-    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot image with device border for face: %@, faceWithDeviceBorderImage:%@", v5, v23}];
+    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to generate snapshot image with device border for face: %@, faceWithDeviceBorderImage:%@", faceForSharing, v23}];
     v26 = 0;
     goto LABEL_60;
   }
 
-  v84 = [a1 _greenfieldWatchFaceJsonForFace:v5];
+  v84 = [self _greenfieldWatchFaceJsonForFace:faceForSharing];
   [MEMORY[0x277CCAA00] defaultManager];
-  v27 = v80 = a1;
-  v28 = [MEMORY[0x277CCAD78] UUID];
-  v29 = [v28 UUIDString];
-  v30 = [v9 stringByAppendingPathComponent:v29];
+  v27 = v80 = self;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v30 = [v9 stringByAppendingPathComponent:uUIDString];
 
   [v27 removeItemAtPath:v30 error:0];
   v95 = 0;
@@ -218,11 +218,11 @@ void __70__NTKGreenfieldUtilities_encodeRecipeFromDraftRecipe_completionBlock___
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v33 = [v4 slotToSampleTemplateMapping];
-  v34 = [v33 allKeys];
+  slotToSampleTemplateMapping = [recipeCopy slotToSampleTemplateMapping];
+  allKeys = [slotToSampleTemplateMapping allKeys];
 
-  v35 = [v34 countByEnumeratingWithState:&v91 objects:v98 count:16];
-  v85 = v4;
+  v35 = [allKeys countByEnumeratingWithState:&v91 objects:v98 count:16];
+  v85 = recipeCopy;
   if (!v35)
   {
     goto LABEL_35;
@@ -236,25 +236,25 @@ void __70__NTKGreenfieldUtilities_encodeRecipeFromDraftRecipe_completionBlock___
     {
       if (*v92 != v37)
       {
-        objc_enumerationMutation(v34);
+        objc_enumerationMutation(allKeys);
       }
 
       v39 = *(*(&v91 + 1) + 8 * i);
-      v40 = [v5 complicationForSlot:v39];
+      v40 = [faceForSharing complicationForSlot:v39];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v42 = [v4 slotToSampleTemplateMapping];
-        v41 = [v42 objectForKey:v39];
+        slotToSampleTemplateMapping2 = [recipeCopy slotToSampleTemplateMapping];
+        v41 = [slotToSampleTemplateMapping2 objectForKey:v39];
 
-        v4 = v85;
+        recipeCopy = v85;
 LABEL_32:
         [v86 setObject:v41 forKey:v39];
         goto LABEL_33;
       }
 
-      v41 = [NTKGreenfieldDraftRecipe templateForComplicationAtSlot:v39 face:v5];
-      if (v41 && [v4 canShareTemplate:v41 slot:v39])
+      v41 = [NTKGreenfieldDraftRecipe templateForComplicationAtSlot:v39 face:faceForSharing];
+      if (v41 && [recipeCopy canShareTemplate:v41 slot:v39])
       {
         goto LABEL_32;
       }
@@ -262,15 +262,15 @@ LABEL_32:
 LABEL_33:
     }
 
-    v36 = [v34 countByEnumeratingWithState:&v91 objects:v98 count:16];
+    v36 = [allKeys countByEnumeratingWithState:&v91 objects:v98 count:16];
   }
 
   while (v36);
 LABEL_35:
 
-  v43 = [v4 slotToItemIdMapping];
-  v44 = [v4 slotToBundleIdMapping];
-  v45 = [v80 _metadataDictForWatchFace:v5 slotToSampleTemplateMapping:v86 slotToItemIdMapping:v43 slotToBundleIdMapping:v44 watchFaceDataPath:v30];
+  slotToItemIdMapping = [recipeCopy slotToItemIdMapping];
+  slotToBundleIdMapping = [recipeCopy slotToBundleIdMapping];
+  v45 = [v80 _metadataDictForWatchFace:faceForSharing slotToSampleTemplateMapping:v86 slotToItemIdMapping:slotToItemIdMapping slotToBundleIdMapping:slotToBundleIdMapping watchFaceDataPath:v30];
 
   if (!v45)
   {
@@ -289,7 +289,7 @@ LABEL_35:
   }
 
   v26 = UIImagePNGRepresentation(v78);
-  v4 = v85;
+  recipeCopy = v85;
   v74 = v26;
   if (v26)
   {
@@ -325,7 +325,7 @@ LABEL_35:
         [v48 writeToFile:v53 atomically:1];
 
         v9 = v76;
-        if ([v5 shouldIncludeResourceDirectoryForSharing])
+        if ([faceForSharing shouldIncludeResourceDirectoryForSharing])
         {
           v54 = [v79 stringByAppendingPathComponent:@"Resources"];
           v55 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -337,7 +337,7 @@ LABEL_35:
           }
 
           v88 = 0;
-          v56 = [v5 createResourceDirectorySuitableForSharingAtPath:v54 error:&v88];
+          v56 = [faceForSharing createResourceDirectorySuitableForSharingAtPath:v54 error:&v88];
           v57 = v88;
           if ((v56 & 1) == 0)
           {
@@ -349,8 +349,8 @@ LABEL_35:
         v58 = [v68 zippedDataForPath:v79];
         [v83 removeItemAtPath:v79 error:0];
         v59 = MEMORY[0x277CCACA8];
-        v60 = [v5 faceSharingName];
-        v61 = [v59 stringWithFormat:@"%@.watchface", v60];
+        faceSharingName = [faceForSharing faceSharingName];
+        v61 = [v59 stringWithFormat:@"%@.watchface", faceSharingName];
 
         v62 = v58;
         v63 = [v76 stringByAppendingPathComponent:v61];
@@ -363,11 +363,11 @@ LABEL_35:
           [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesEncodingException" format:{@"Failed to write .watchFace file to disk with error: %@", v65}];
         }
 
-        v66 = [v5 faceSharingName];
-        v26 = [[NTKGreenfieldEncodedRecipe alloc] initWithWatchFaceDataUrl:v64 watchFaceImage:v75 watchFaceName:v66];
+        faceSharingName2 = [faceForSharing faceSharingName];
+        v26 = [[NTKGreenfieldEncodedRecipe alloc] initWithWatchFaceDataUrl:v64 watchFaceImage:v75 watchFaceName:faceSharingName2];
 
         v47 = v69;
-        v4 = v85;
+        recipeCopy = v85;
         v23 = v77;
         v18 = v78;
         v45 = v71;
@@ -411,12 +411,12 @@ LABEL_62:
   return v26;
 }
 
-+ (id)_queue_snapshotFace:(id)a3 borderType:(unint64_t)a4
++ (id)_queue_snapshotFace:(id)face borderType:(unint64_t)type
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 encodeQueue];
-  dispatch_assert_queue_V2(v7);
+  faceCopy = face;
+  encodeQueue = [self encodeQueue];
+  dispatch_assert_queue_V2(encodeQueue);
 
   v52[0] = 0;
   v52[1] = v52;
@@ -427,8 +427,8 @@ LABEL_62:
   aBlock[2] = __57__NTKGreenfieldUtilities__queue_snapshotFace_borderType___block_invoke;
   aBlock[3] = &unk_27877DE58;
   v49 = v52;
-  v50 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = faceCopy;
   v48 = v8;
   v51 = 20;
   v9 = _Block_copy(aBlock);
@@ -460,8 +460,8 @@ LABEL_62:
   v35 = v14;
   v37 = v52;
   v38 = &v41;
-  v39 = a1;
-  v40 = a4;
+  selfCopy2 = self;
+  typeCopy = type;
   v15 = v10;
   v36 = v15;
   v16 = _Block_copy(v34);
@@ -499,10 +499,10 @@ LABEL_62:
   v19 = dispatch_time(0, 20000000000);
   dispatch_semaphore_wait(v15, v19);
   v9[2](v9);
-  v20 = a1;
-  objc_sync_enter(v20);
+  selfCopy3 = self;
+  objc_sync_enter(selfCopy3);
   v21 = v42[5];
-  objc_sync_exit(v20);
+  objc_sync_exit(selfCopy3);
 
   v22 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -623,66 +623,66 @@ void __57__NTKGreenfieldUtilities__queue_snapshotFace_borderType___block_invoke_
   CGContextResetClip(v19);
 }
 
-+ (id)_greenfieldWatchFaceJsonForFace:(id)a3
++ (id)_greenfieldWatchFaceJsonForFace:(id)face
 {
-  v3 = [a3 deepCopy];
-  [v3 clearMetrics];
-  [v3 prepareForSharing];
-  v4 = [v3 greenfieldJSONObjectRepresentation];
+  deepCopy = [face deepCopy];
+  [deepCopy clearMetrics];
+  [deepCopy prepareForSharing];
+  greenfieldJSONObjectRepresentation = [deepCopy greenfieldJSONObjectRepresentation];
 
-  return v4;
+  return greenfieldJSONObjectRepresentation;
 }
 
-+ (id)_metadataDictForWatchFace:(id)a3 slotToSampleTemplateMapping:(id)a4 slotToItemIdMapping:(id)a5 slotToBundleIdMapping:(id)a6 watchFaceDataPath:(id)a7
++ (id)_metadataDictForWatchFace:(id)face slotToSampleTemplateMapping:(id)mapping slotToItemIdMapping:(id)idMapping slotToBundleIdMapping:(id)bundleIdMapping watchFaceDataPath:(id)path
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  faceCopy = face;
+  mappingCopy = mapping;
+  pathCopy = path;
+  bundleIdMappingCopy = bundleIdMapping;
+  idMappingCopy = idMapping;
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __140__NTKGreenfieldUtilities__metadataDictForWatchFace_slotToSampleTemplateMapping_slotToItemIdMapping_slotToBundleIdMapping_watchFaceDataPath___block_invoke;
   v34[3] = &unk_27877F4E8;
-  v19 = v13;
+  v19 = mappingCopy;
   v35 = v19;
-  v20 = v14;
+  v20 = pathCopy;
   v36 = v20;
   v21 = v18;
   v37 = v21;
-  [v12 enumerateComplicationSlotsWithBlock:v34];
-  v22 = [v16 mutableCopy];
+  [faceCopy enumerateComplicationSlotsWithBlock:v34];
+  v22 = [idMappingCopy mutableCopy];
 
-  [a1 _updateSystemDeletableAppItemIdForSlotToItemIdMapping:v22 face:v12];
+  [self _updateSystemDeletableAppItemIdForSlotToItemIdMapping:v22 face:faceCopy];
   [v17 setObject:v21 forKeyedSubscript:@"complication_sample_templates"];
   [v17 setObject:v22 forKeyedSubscript:@"complications_item_ids"];
-  [v17 setObject:v15 forKeyedSubscript:@"complications_bundle_ids"];
+  [v17 setObject:bundleIdMappingCopy forKeyedSubscript:@"complications_bundle_ids"];
 
   v23 = objc_opt_new();
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __140__NTKGreenfieldUtilities__metadataDictForWatchFace_slotToSampleTemplateMapping_slotToItemIdMapping_slotToBundleIdMapping_watchFaceDataPath___block_invoke_2;
   v31[3] = &unk_27877F498;
-  v24 = v12;
+  v24 = faceCopy;
   v32 = v24;
   v25 = v23;
   v33 = v25;
   [v24 enumerateComplicationSlotsWithBlock:v31];
   [v17 setObject:v25 forKeyedSubscript:@"complications_names"];
-  v26 = [v24 createSharingMetadata];
-  if (v26)
+  createSharingMetadata = [v24 createSharingMetadata];
+  if (createSharingMetadata)
   {
-    [v17 setObject:v26 forKey:@"watchface_metadata"];
+    [v17 setObject:createSharingMetadata forKey:@"watchface_metadata"];
   }
 
   [v17 setObject:&unk_284183208 forKey:@"version"];
-  v27 = [MEMORY[0x277CBBAE8] currentDevice];
-  v28 = v27;
-  if (v27)
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v28 = currentDevice;
+  if (currentDevice)
   {
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v27, "sizeClass")}];
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(currentDevice, "sizeClass")}];
     [v17 setObject:v29 forKey:@"device_size"];
   }
 
@@ -736,11 +736,11 @@ void __140__NTKGreenfieldUtilities__metadataDictForWatchFace_slotToSampleTemplat
   return v2;
 }
 
-+ (BOOL)validateFaceType:(id)a3 faceBundleId:(id)a4
++ (BOOL)validateFaceType:(id)type faceBundleId:(id)id
 {
-  v5 = a4;
+  idCopy = id;
   v12 = -1;
-  NTKFaceBundleGetFaceStyleFromString(a3, &v12);
+  NTKFaceBundleGetFaceStyleFromString(type, &v12);
   if (v12 == -1)
   {
     goto LABEL_5;
@@ -753,20 +753,20 @@ void __140__NTKGreenfieldUtilities__metadataDictForWatchFace_slotToSampleTemplat
     goto LABEL_7;
   }
 
-  if (!v5)
+  if (!idCopy)
   {
 LABEL_5:
     v7 = 0;
     goto LABEL_11;
   }
 
-  v6 = [[NTKFaceDescriptor alloc] initWithBundleIdentifier:v5];
+  v6 = [[NTKFaceDescriptor alloc] initWithBundleIdentifier:idCopy];
 LABEL_7:
   v9 = v6;
-  v10 = [MEMORY[0x277CBBAE8] currentDevice];
-  if ([(NTKFaceDescriptor *)v9 isAvailableForDevice:v10])
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  if ([(NTKFaceDescriptor *)v9 isAvailableForDevice:currentDevice])
   {
-    v7 = [(NTKFaceDescriptor *)v9 isAvailableForDevice:v10];
+    v7 = [(NTKFaceDescriptor *)v9 isAvailableForDevice:currentDevice];
   }
 
   else
@@ -778,17 +778,17 @@ LABEL_11:
   return v7;
 }
 
-+ (void)migrateComplicationsOnFace:(id)a3
++ (void)migrateComplicationsOnFace:(id)face
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  faceCopy = face;
   v4 = +[NTKBundleComplicationFaceMigrator sharedInstance];
   v5 = dispatch_semaphore_create(0);
   v6 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v3;
+    v11 = faceCopy;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "migrateComplicationsOnFace about to migrate face %@", buf, 0xCu);
   }
 
@@ -798,25 +798,25 @@ LABEL_11:
   v8[3] = &unk_27877E8E0;
   v9 = v5;
   v7 = v5;
-  [v4 migrateFace:v3 completion:v8];
+  [v4 migrateFace:faceCopy completion:v8];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-+ (void)decodeWatchFaceFromUrl:(id)a3 completionBlock:(id)a4
++ (void)decodeWatchFaceFromUrl:(id)url completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() encodeQueue];
+  urlCopy = url;
+  blockCopy = block;
+  encodeQueue = [objc_opt_class() encodeQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__NTKGreenfieldUtilities_decodeWatchFaceFromUrl_completionBlock___block_invoke;
   block[3] = &unk_278782DE0;
-  v12 = v6;
-  v13 = v7;
-  v14 = a1;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = urlCopy;
+  v13 = blockCopy;
+  selfCopy = self;
+  v9 = blockCopy;
+  v10 = urlCopy;
+  dispatch_async(encodeQueue, block);
 }
 
 void __65__NTKGreenfieldUtilities_decodeWatchFaceFromUrl_completionBlock___block_invoke(id *a1)
@@ -1082,19 +1082,19 @@ LABEL_10:
   }
 }
 
-+ (id)unzipWatchFaceFileAtUrl:(id)a3
++ (id)unzipWatchFaceFileAtUrl:(id)url
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
+  urlCopy = url;
+  defaultManager = [v4 defaultManager];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v9 = [a1 temporaryGreenfieldDirectory];
-  v10 = [v9 stringByAppendingPathComponent:v8];
+  temporaryGreenfieldDirectory = [self temporaryGreenfieldDirectory];
+  v10 = [temporaryGreenfieldDirectory stringByAppendingPathComponent:uUIDString];
 
   v18 = 0;
-  [v6 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v18];
+  [defaultManager createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v18];
   v11 = v18;
   if (v11)
   {
@@ -1102,10 +1102,10 @@ LABEL_10:
   }
 
   v17 = 0;
-  [v6 removeItemAtPath:v10 error:&v17];
+  [defaultManager removeItemAtPath:v10 error:&v17];
   v12 = v17;
   v13 = [MEMORY[0x277CBEBC0] URLWithString:v10];
-  v14 = [NTKUnzipUtilities unzipFile:v5 toPath:v13];
+  v14 = [NTKUnzipUtilities unzipFile:urlCopy toPath:v13];
 
   v15 = 0;
   if (v14)
@@ -1116,13 +1116,13 @@ LABEL_10:
   return v15;
 }
 
-+ (id)_decodeFaceFromDataPath:(id)a3
++ (id)_decodeFaceFromDataPath:(id)path
 {
   v132 = *MEMORY[0x277D85DE8];
-  v93 = a3;
-  v90 = [MEMORY[0x277CCAA00] defaultManager];
-  v82 = [v93 stringByAppendingPathComponent:@"metadata.json"];
-  if (([v90 fileExistsAtPath:v82] & 1) == 0)
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v82 = [pathCopy stringByAppendingPathComponent:@"metadata.json"];
+  if (([defaultManager fileExistsAtPath:v82] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Failed to locate the metadata.json in path: %@", v82}];
   }
@@ -1132,7 +1132,7 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Cannot decode watch face, metadataDict is not dict %@, metadataPath: %@, url %@", v89, v82, v93}];
+    [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Cannot decode watch face, metadataDict is not dict %@, metadataPath: %@, url %@", v89, v82, pathCopy}];
   }
 
   v80 = [v89 objectForKey:@"version"];
@@ -1147,8 +1147,8 @@ LABEL_10:
     [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Version number is not supported. File: %@ Current: %lu", v80, 2}];
   }
 
-  v88 = [v93 stringByAppendingPathComponent:@"face.json"];
-  if (([v90 fileExistsAtPath:v88] & 1) == 0)
+  v88 = [pathCopy stringByAppendingPathComponent:@"face.json"];
+  if (([defaultManager fileExistsAtPath:v88] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Failed to locate the face.json in path: %@", v88}];
   }
@@ -1167,7 +1167,7 @@ LABEL_10:
     [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Failed to load face.json into dict: %@", v88}];
   }
 
-  v78 = [MEMORY[0x277CBBAE8] currentDevice];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
   v119 = 0;
   v120 = &v119;
   v121 = 0x3032000000;
@@ -1182,7 +1182,7 @@ LABEL_10:
   v118 = &v119;
   v6 = v5;
   v117 = v6;
-  [NTKFace greenfieldFaceWithJSONObjectRepresentation:v85 forDevice:v78 withCompletion:v116];
+  [NTKFace greenfieldFaceWithJSONObjectRepresentation:v85 forDevice:currentDevice withCompletion:v116];
   v7 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v6, v7);
   if (!v120[5])
@@ -1190,11 +1190,11 @@ LABEL_10:
     [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesIncompatibleDeviceException" format:{@"Face is nil.face path %@", v88}];
   }
 
-  [v93 stringByAppendingPathComponent:@"Resources"];
+  [pathCopy stringByAppendingPathComponent:@"Resources"];
   v9 = v8 = v89;
-  if ([v90 fileExistsAtPath:v9])
+  if ([defaultManager fileExistsAtPath:v9])
   {
-    if (([v90 isReadableFileAtPath:v9] & 1) == 0)
+    if (([defaultManager isReadableFileAtPath:v9] & 1) == 0)
     {
       [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Could not read file at: %@", v9}];
     }
@@ -1204,7 +1204,7 @@ LABEL_10:
     v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11];
     v13 = v6;
     v115 = 0;
-    v14 = [v90 copyItemAtURL:v10 toURL:v12 error:&v115];
+    v14 = [defaultManager copyItemAtURL:v10 toURL:v12 error:&v115];
     v15 = v115;
     if (v15)
     {
@@ -1285,7 +1285,7 @@ LABEL_10:
   }
 
   [objc_opt_class() migrateComplicationsOnFace:v120[5]];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = v120[5];
   v109[0] = MEMORY[0x277D85DD0];
   v109[1] = 3221225472;
@@ -1294,7 +1294,7 @@ LABEL_10:
   v114 = &v119;
   v92 = v18;
   v110 = v92;
-  v24 = v22;
+  v24 = array;
   v111 = v24;
   v87 = v21;
   v112 = v87;
@@ -1351,8 +1351,8 @@ LABEL_10:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v34 = [v92 allKeys];
-  v35 = [v34 countByEnumeratingWithState:&v101 objects:v130 count:16];
+  allKeys = [v92 allKeys];
+  v35 = [allKeys countByEnumeratingWithState:&v101 objects:v130 count:16];
   if (v35)
   {
     v36 = *v102;
@@ -1362,7 +1362,7 @@ LABEL_10:
       {
         if (*v102 != v36)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(allKeys);
         }
 
         v38 = *(*(&v101 + 1) + 8 * j);
@@ -1408,7 +1408,7 @@ LABEL_62:
           [MEMORY[0x277CBEAD8] raise:@"NTKGreenfieldUtilitiesDecodingException" format:{@"Cannot decode watch face, templateJSON is not a dictionary"}];
         }
 
-        v44 = [MEMORY[0x277CBEBC0] fileURLWithPath:v93];
+        v44 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
         v45 = [v44 URLByAppendingPathComponent:@"complicationData"];
 
         v46 = [v45 URLByAppendingPathComponent:v38];
@@ -1433,7 +1433,7 @@ LABEL_62:
 LABEL_70:
       }
 
-      v35 = [v34 countByEnumeratingWithState:&v101 objects:v130 count:16];
+      v35 = [allKeys countByEnumeratingWithState:&v101 objects:v130 count:16];
     }
 
     while (v35);
@@ -1441,26 +1441,26 @@ LABEL_70:
 
   v50 = [v89 objectForKeyedSubscript:@"complications_names"];
   [v50 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_229];
-  v51 = [v93 stringByAppendingPathComponent:@"no_borders_snapshot.png"];
-  if ([v90 fileExistsAtPath:v51])
+  v51 = [pathCopy stringByAppendingPathComponent:@"no_borders_snapshot.png"];
+  if ([defaultManager fileExistsAtPath:v51])
   {
-    v52 = [a1 temporaryGreenfieldNoBordersSnapshotPath];
-    if ([v90 fileExistsAtPath:v52])
+    temporaryGreenfieldNoBordersSnapshotPath = [self temporaryGreenfieldNoBordersSnapshotPath];
+    if ([defaultManager fileExistsAtPath:temporaryGreenfieldNoBordersSnapshotPath])
     {
-      [v90 removeItemAtPath:v52 error:0];
+      [defaultManager removeItemAtPath:temporaryGreenfieldNoBordersSnapshotPath error:0];
     }
 
-    [v90 copyItemAtPath:v51 toPath:v52 error:0];
+    [defaultManager copyItemAtPath:v51 toPath:temporaryGreenfieldNoBordersSnapshotPath error:0];
   }
 
   else
   {
-    v52 = 0;
+    temporaryGreenfieldNoBordersSnapshotPath = 0;
   }
 
   v53 = [v89 objectForKey:@"device_size"];
   v54 = [NTKGreenfieldDecodedRecipe alloc];
-  v55 = [(NTKGreenfieldDecodedRecipe *)v54 initWithWatchFace:v120[5] complicationSlotToTemplateMapping:v91 complicationSlotToItemIdMapping:v86 complicationSlotToNameMapping:v50 complicationSlotToBundleIdMapping:v87 isUsingModifiedComplicationsSet:v76 != 0 noBorderFacePreviewImagePath:v52 senderBoxedDeviceSize:v53];
+  v55 = [(NTKGreenfieldDecodedRecipe *)v54 initWithWatchFace:v120[5] complicationSlotToTemplateMapping:v91 complicationSlotToItemIdMapping:v86 complicationSlotToNameMapping:v50 complicationSlotToBundleIdMapping:v87 isUsingModifiedComplicationsSet:v76 != 0 noBorderFacePreviewImagePath:temporaryGreenfieldNoBordersSnapshotPath senderBoxedDeviceSize:v53];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__NTKGreenfieldUtilities__decodeFaceFromDataPath___block_invoke_2_234;
@@ -1474,11 +1474,11 @@ LABEL_70:
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v127 = v93;
+    v127 = pathCopy;
     _os_log_impl(&dword_22D9C5000, v57, OS_LOG_TYPE_DEFAULT, "Decode service did start cleaning up files at path: %@.", buf, 0xCu);
   }
 
-  v58 = [MEMORY[0x277CBEBC0] fileURLWithPath:v93];
+  v58 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
   v59 = v58;
   [v58 fileSystemRepresentation];
   v60 = sandbox_extension_issue_file();
@@ -1504,14 +1504,14 @@ LABEL_70:
     _os_log_impl(&dword_22D9C5000, v65, OS_LOG_TYPE_DEFAULT, "Decode service myConnection is:%@.", buf, 0xCu);
   }
 
-  v66 = [v62 remoteObjectProxy];
+  remoteObjectProxy = [v62 remoteObjectProxy];
   v97[0] = MEMORY[0x277D85DD0];
   v97[1] = 3221225472;
   v97[2] = __50__NTKGreenfieldUtilities__decodeFaceFromDataPath___block_invoke_236;
   v97[3] = &unk_27877E820;
-  v67 = v93;
+  v67 = pathCopy;
   v98 = v67;
-  [v66 removeFileAtPath:v67 withSandboxExtension:v60 completionBlock:v97];
+  [remoteObjectProxy removeFileAtPath:v67 withSandboxExtension:v60 completionBlock:v97];
 
   v68 = v98;
   v69 = v56;
@@ -1627,21 +1627,21 @@ void __50__NTKGreenfieldUtilities__decodeFaceFromDataPath___block_invoke_236(uin
   }
 }
 
-+ (void)generateFacePreviewImageFromUrl:(id)a3 completionBlock:(id)a4
++ (void)generateFacePreviewImageFromUrl:(id)url completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() encodeQueue];
+  urlCopy = url;
+  blockCopy = block;
+  encodeQueue = [objc_opt_class() encodeQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBlock___block_invoke;
   block[3] = &unk_278782DE0;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = urlCopy;
+  v9 = blockCopy;
+  v10 = urlCopy;
+  dispatch_async(encodeQueue, block);
 }
 
 void __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBlock___block_invoke(uint64_t a1)
@@ -1665,21 +1665,21 @@ void __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBloc
   }
 }
 
-+ (id)_queue_greenfieldPreviewFromUrl:(id)a3
++ (id)_queue_greenfieldPreviewFromUrl:(id)url
 {
-  v3 = a3;
-  v4 = [objc_opt_class() unzipWatchFaceFileAtUrl:v3];
+  urlCopy = url;
+  v4 = [objc_opt_class() unzipWatchFaceFileAtUrl:urlCopy];
   v5 = v4;
   if (v4)
   {
     v6 = [v4 stringByAppendingPathComponent:@"snapshot.png"];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:v6];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v9 contentsAtPath:v6];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [defaultManager2 contentsAtPath:v6];
       v11 = [MEMORY[0x277D755B8] imageWithData:v10];
       v12 = v11;
       if (v11)
@@ -1699,8 +1699,8 @@ void __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBloc
 
     else
     {
-      v9 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      defaultManager2 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
+      if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
       {
         +[NTKGreenfieldUtilities _queue_greenfieldPreviewFromUrl:];
       }
@@ -1723,11 +1723,11 @@ void __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBloc
   return v12;
 }
 
-+ (id)addBorder:(unint64_t)a3 toWatchFaceImage:(id)a4
++ (id)addBorder:(unint64_t)border toWatchFaceImage:(id)image
 {
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  imageCopy = image;
+  v8 = imageCopy;
+  if (!imageCopy)
   {
     v14 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1738,7 +1738,7 @@ void __74__NTKGreenfieldUtilities_generateFacePreviewImageFromUrl_completionBloc
     goto LABEL_12;
   }
 
-  [v7 size];
+  [imageCopy size];
   v11 = v10;
   v12 = v9;
   if (v10 == 0.0 || v9 == 0.0)
@@ -1755,38 +1755,38 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  if (a3 > 1)
+  if (border > 1)
   {
-    if (a3 == 2)
+    if (border == 2)
     {
-      v15 = a1;
+      selfCopy2 = self;
       v16 = v8;
       v17 = 0;
     }
 
     else
     {
-      if (a3 != 3)
+      if (border != 3)
       {
         goto LABEL_20;
       }
 
-      v15 = a1;
+      selfCopy2 = self;
       v16 = v8;
       v17 = 1;
     }
 
-    v13 = [v15 _addGenericDeviceBorderToWatchFaceImage:v16 includesTransparentPadding:v17];
+    v13 = [selfCopy2 _addGenericDeviceBorderToWatchFaceImage:v16 includesTransparentPadding:v17];
   }
 
-  else if (a3)
+  else if (border)
   {
-    if (a3 != 1)
+    if (border != 1)
     {
       goto LABEL_20;
     }
 
-    v13 = [a1 _addGreyBorderToWatchFaceImage:v8];
+    v13 = [self _addGreyBorderToWatchFaceImage:v8];
   }
 
   else
@@ -1800,7 +1800,7 @@ LABEL_20:
   return v4;
 }
 
-+ (id)_addGreyBorderToWatchFaceImage:(id)a3
++ (id)_addGreyBorderToWatchFaceImage:(id)image
 {
   v24 = 0u;
   v25 = 0u;
@@ -1808,12 +1808,12 @@ LABEL_20:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4 * *&v20;
-  [v3 size];
+  [imageCopy size];
   v7 = v6;
-  [v3 size];
+  [imageCopy size];
   v9 = v7 + v5 - v8;
   v28.size.width = v5 * *(&v21 + 1);
   v28.size.height = v9 + v5 * *(&v21 + 1) - v5;
@@ -1830,10 +1830,10 @@ LABEL_20:
   CGContextAddPath(CurrentContext, [v10 CGPath]);
   v12 = UIGraphicsGetCurrentContext();
   CGContextClip(v12);
-  [v3 size];
+  [imageCopy size];
   v14 = (v5 - v13) * 0.5;
-  [v3 size];
-  [v3 drawAtPoint:{v14, (v9 - v15) * 0.5}];
+  [imageCopy size];
+  [imageCopy drawAtPoint:{v14, (v9 - v15) * 0.5}];
 
   v16 = UIGraphicsGetCurrentContext();
   CGContextResetClip(v16);
@@ -1846,9 +1846,9 @@ LABEL_20:
   return v18;
 }
 
-+ (id)_addGenericDeviceBorderToWatchFaceImage:(id)a3 includesTransparentPadding:(BOOL)a4
++ (id)_addGenericDeviceBorderToWatchFaceImage:(id)image includesTransparentPadding:(BOOL)padding
 {
-  v4 = a3;
+  imageCopy = image;
   memset(v8, 0, sizeof(v8));
   [MEMORY[0x277CBBAE8] currentDevice];
   v5 = [objc_claimAutoreleasedReturnValue() deviceCategory] - 1;
@@ -1917,9 +1917,9 @@ void __37__NTKGreenfieldUtilities_encodeQueue__block_invoke()
   encodeQueue_encodeQueue = v0;
 }
 
-+ (BOOL)shouldAutoDismissViewControllerForAddFaceFlow:(id)a3
++ (BOOL)shouldAutoDismissViewControllerForAddFaceFlow:(id)flow
 {
-  v3 = a3;
+  flowCopy = flow;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -1935,13 +1935,13 @@ void __37__NTKGreenfieldUtilities_encodeQueue__block_invoke()
   return isKindOfClass & 1;
 }
 
-+ (id)_companionAppIdFromWatchAppBundleId:(id)a3
++ (id)_companionAppIdFromWatchAppBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  v5 = [MEMORY[0x277CBBAE8] currentDevice];
-  v6 = [v5 pdrDevice];
-  v7 = [v6 pairingID];
+  idCopy = id;
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  pdrDevice = [currentDevice pdrDevice];
+  pairingID = [pdrDevice pairingID];
 
   v17 = 0;
   v18 = &v17;
@@ -1954,12 +1954,12 @@ void __37__NTKGreenfieldUtilities_encodeQueue__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_invoke;
   v13[3] = &unk_278782F90;
-  v9 = v3;
+  v9 = idCopy;
   v14 = v9;
   v16 = &v17;
   v10 = v8;
   v15 = v10;
-  [v4 fetchApplicationOnDeviceWithPairingID:v7 withBundleID:v9 completion:v13];
+  [mEMORY[0x277CEAF80] fetchApplicationOnDeviceWithPairingID:pairingID withBundleID:v9 completion:v13];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
   v11 = v18[5];
 
@@ -1991,21 +1991,21 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (void)_updateSystemDeletableAppItemIdForSlotToItemIdMapping:(id)a3 face:(id)a4
++ (void)_updateSystemDeletableAppItemIdForSlotToItemIdMapping:(id)mapping face:(id)face
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  mappingCopy = mapping;
+  faceCopy = face;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __85__NTKGreenfieldUtilities__updateSystemDeletableAppItemIdForSlotToItemIdMapping_face___block_invoke;
   v54[3] = &unk_278782FB8;
-  v8 = v6;
+  v8 = faceCopy;
   v55 = v8;
-  v9 = v7;
+  v9 = dictionary;
   v56 = v9;
-  [v5 enumerateKeysAndObjectsUsingBlock:v54];
+  [mappingCopy enumerateKeysAndObjectsUsingBlock:v54];
   v10 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2016,20 +2016,20 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
 
   v11 = MEMORY[0x277CBEB58];
   v41 = v9;
-  v12 = [v9 allValues];
-  v13 = [v11 setWithArray:v12];
+  allValues = [v9 allValues];
+  v13 = [v11 setWithArray:allValues];
 
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v15 = MEMORY[0x277CEC340];
-  v16 = [v13 allObjects];
-  v17 = [v15 queryForBundleIDs:v16];
+  allObjects = [v13 allObjects];
+  v17 = [v15 queryForBundleIDs:allObjects];
 
   v18 = dispatch_semaphore_create(0);
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __85__NTKGreenfieldUtilities__updateSystemDeletableAppItemIdForSlotToItemIdMapping_face___block_invoke_276;
   v50[3] = &unk_278782FE0;
-  v42 = v14;
+  v42 = dictionary2;
   v51 = v42;
   v19 = v13;
   v52 = v19;
@@ -2051,7 +2051,7 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
 
     v22 = dispatch_semaphore_create(0);
     v23 = MEMORY[0x277CEC338];
-    v24 = [v19 allObjects];
+    allObjects2 = [v19 allObjects];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __85__NTKGreenfieldUtilities__updateSystemDeletableAppItemIdForSlotToItemIdMapping_face___block_invoke_279;
@@ -2059,7 +2059,7 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
     v48 = v42;
     v25 = v22;
     v49 = v25;
-    [v23 lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:v24 withResultHandler:v47];
+    [v23 lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:allObjects2 withResultHandler:v47];
 
     v36 = v25;
     dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
@@ -2075,8 +2075,8 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
   v43 = 0u;
   v44 = 0u;
   v40 = v8;
-  v26 = [v8 orderedComplicationSlots];
-  v27 = [v26 countByEnumeratingWithState:&v43 objects:v57 count:16];
+  orderedComplicationSlots = [v8 orderedComplicationSlots];
+  v27 = [orderedComplicationSlots countByEnumeratingWithState:&v43 objects:v57 count:16];
   v28 = v41;
   if (v27)
   {
@@ -2088,11 +2088,11 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
       {
         if (*v44 != v30)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(orderedComplicationSlots);
         }
 
         v32 = *(*(&v43 + 1) + 8 * i);
-        v33 = [v5 objectForKeyedSubscript:v32];
+        v33 = [mappingCopy objectForKeyedSubscript:v32];
         if ([v33 isEqualToNumber:&unk_284183220])
         {
           v34 = [v28 objectForKeyedSubscript:v32];
@@ -2101,7 +2101,7 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
             v35 = [v42 objectForKeyedSubscript:v34];
             if (v33)
             {
-              [v5 setObject:v35 forKeyedSubscript:v32];
+              [mappingCopy setObject:v35 forKeyedSubscript:v32];
             }
 
             v28 = v41;
@@ -2109,7 +2109,7 @@ void __62__NTKGreenfieldUtilities__companionAppIdFromWatchAppBundleId___block_in
         }
       }
 
-      v29 = [v26 countByEnumeratingWithState:&v43 objects:v57 count:16];
+      v29 = [orderedComplicationSlots countByEnumeratingWithState:&v43 objects:v57 count:16];
     }
 
     while (v29);
@@ -2257,25 +2257,25 @@ void __85__NTKGreenfieldUtilities__updateSystemDeletableAppItemIdForSlotToItemId
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-+ (BOOL)shouldPresentUnreleasedFeaturesInternalWarningForFace:(id)a3
++ (BOOL)shouldPresentUnreleasedFeaturesInternalWarningForFace:(id)face
 {
-  v3 = a3;
+  faceCopy = face;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (!NTKInternalBuild(v3, v4))
+  if (!NTKInternalBuild(faceCopy, v4))
   {
     goto LABEL_5;
   }
 
-  if (([v3 shouldPresentAlertForSharingUnreleasedFace] & 1) == 0)
+  if (([faceCopy shouldPresentAlertForSharingUnreleasedFace] & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __80__NTKGreenfieldUtilities_shouldPresentUnreleasedFeaturesInternalWarningForFace___block_invoke;
     v7[3] = &unk_27877FB58;
-    v8 = v3;
+    v8 = faceCopy;
     v9 = &v10;
     [v8 enumerateComplicationSlotsWithBlock:v7];
 

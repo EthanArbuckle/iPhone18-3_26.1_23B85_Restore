@@ -1,40 +1,40 @@
 @interface PKPaymentPassActionViewModel
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentPassActionViewModel)initWithAction:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentPassActionViewModel)initWithAction:(id)action;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentPassActionViewModel
 
-- (PKPaymentPassActionViewModel)initWithAction:(id)a3
+- (PKPaymentPassActionViewModel)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = PKPaymentPassActionViewModel;
   v6 = [(PKPaymentPassActionViewModel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     v7->_isInPreflight = 0;
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v9;
+    v7->_identifier = uUIDString;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(PKPaymentPassAction *)self->_action copyWithZone:a3];
+  v8 = [(PKPaymentPassAction *)self->_action copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -52,18 +52,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

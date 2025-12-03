@@ -1,52 +1,52 @@
 @interface MTVisualStylingProvider
-+ (id)_visualStylingProviderForRecipe:(int64_t)a3 category:(int64_t)a4 andUserInterfaceStyle:(int64_t)a5;
-+ (id)_visualStylingProviderForRecipeNamed:(id)a3 andCategory:(int64_t)a4;
-+ (id)_visualStylingProviderForStyleSetNamed:(id)a3 inBundle:(id)a4;
-- (BOOL)_isAutomaticallyUpdatingViewOrLayer:(id)a3;
-- (MTVisualStylingProvider)initWithCoreMaterialVisualStylingProvider:(id)a3;
-- (id)_visualStylingForContinuallyUpdatedView:(id)a3;
-- (id)_visualStylingForStyle:(int64_t)a3;
-- (id)_visualStylingForStyleNamed:(id)a3;
-- (id)newAutomaticallyUpdatingViewWithStyle:(int64_t)a3;
-- (void)_addObserver:(id)a3;
-- (void)_automaticallyUpdateViewOrLayer:(id)a3 withStyleNamed:(id)a4 andObserverBlock:(id)a5;
-- (void)_removeObserver:(id)a3;
-- (void)_stopAutomaticallyUpdatingViewOrLayer:(id)a3;
-- (void)_updateVisualStyleOfViewOrLayer:(id)a3;
-- (void)automaticallyUpdateLayer:(id)a3 withStyle:(int64_t)a4 andObserverBlock:(id)a5;
-- (void)automaticallyUpdateView:(id)a3 withStyle:(int64_t)a4 andObserverBlock:(id)a5;
-- (void)providedStylesDidChangeForProvider:(id)a3;
++ (id)_visualStylingProviderForRecipe:(int64_t)recipe category:(int64_t)category andUserInterfaceStyle:(int64_t)style;
++ (id)_visualStylingProviderForRecipeNamed:(id)named andCategory:(int64_t)category;
++ (id)_visualStylingProviderForStyleSetNamed:(id)named inBundle:(id)bundle;
+- (BOOL)_isAutomaticallyUpdatingViewOrLayer:(id)layer;
+- (MTVisualStylingProvider)initWithCoreMaterialVisualStylingProvider:(id)provider;
+- (id)_visualStylingForContinuallyUpdatedView:(id)view;
+- (id)_visualStylingForStyle:(int64_t)style;
+- (id)_visualStylingForStyleNamed:(id)named;
+- (id)newAutomaticallyUpdatingViewWithStyle:(int64_t)style;
+- (void)_addObserver:(id)observer;
+- (void)_automaticallyUpdateViewOrLayer:(id)layer withStyleNamed:(id)named andObserverBlock:(id)block;
+- (void)_removeObserver:(id)observer;
+- (void)_stopAutomaticallyUpdatingViewOrLayer:(id)layer;
+- (void)_updateVisualStyleOfViewOrLayer:(id)layer;
+- (void)automaticallyUpdateLayer:(id)layer withStyle:(int64_t)style andObserverBlock:(id)block;
+- (void)automaticallyUpdateView:(id)view withStyle:(int64_t)style andObserverBlock:(id)block;
+- (void)providedStylesDidChangeForProvider:(id)provider;
 @end
 
 @implementation MTVisualStylingProvider
 
-- (void)automaticallyUpdateView:(id)a3 withStyle:(int64_t)a4 andObserverBlock:(id)a5
+- (void)automaticallyUpdateView:(id)view withStyle:(int64_t)style andObserverBlock:(id)block
 {
-  v10 = a3;
-  v8 = a5;
-  if (v10 && MTIsValidVisualStyle(a4))
+  viewCopy = view;
+  blockCopy = block;
+  if (viewCopy && MTIsValidVisualStyle(style))
   {
-    v9 = MTCoreMaterialVisualStyleForVisualStyle(a4);
-    [(MTVisualStylingProvider *)self _automaticallyUpdateViewOrLayer:v10 withStyleNamed:v9 andObserverBlock:v8];
+    v9 = MTCoreMaterialVisualStyleForVisualStyle(style);
+    [(MTVisualStylingProvider *)self _automaticallyUpdateViewOrLayer:viewCopy withStyleNamed:v9 andObserverBlock:blockCopy];
   }
 }
 
-- (void)automaticallyUpdateLayer:(id)a3 withStyle:(int64_t)a4 andObserverBlock:(id)a5
+- (void)automaticallyUpdateLayer:(id)layer withStyle:(int64_t)style andObserverBlock:(id)block
 {
-  v10 = a3;
-  v8 = a5;
-  if (v10 && MTIsValidVisualStyle(a4))
+  layerCopy = layer;
+  blockCopy = block;
+  if (layerCopy && MTIsValidVisualStyle(style))
   {
-    v9 = MTCoreMaterialVisualStyleForVisualStyle(a4);
-    [(MTVisualStylingProvider *)self _automaticallyUpdateViewOrLayer:v10 withStyleNamed:v9 andObserverBlock:v8];
+    v9 = MTCoreMaterialVisualStyleForVisualStyle(style);
+    [(MTVisualStylingProvider *)self _automaticallyUpdateViewOrLayer:layerCopy withStyleNamed:v9 andObserverBlock:blockCopy];
   }
 }
 
-- (id)newAutomaticallyUpdatingViewWithStyle:(int64_t)a3
+- (id)newAutomaticallyUpdatingViewWithStyle:(int64_t)style
 {
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v5 setUserInteractionEnabled:0];
-  [(MTVisualStylingProvider *)self automaticallyUpdateView:v5 withStyle:a3 andObserverBlock:&__block_literal_global_3];
+  [(MTVisualStylingProvider *)self automaticallyUpdateView:v5 withStyle:style andObserverBlock:&__block_literal_global_3];
   return v5;
 }
 
@@ -63,7 +63,7 @@ id __65__MTVisualStylingProvider_newAutomaticallyUpdatingViewWithStyle___block_i
   return v4;
 }
 
-- (void)providedStylesDidChangeForProvider:(id)a3
+- (void)providedStylesDidChangeForProvider:(id)provider
 {
   v24 = *MEMORY[0x277D85DE8];
   [(NSMutableDictionary *)self->_styleNamesToVisualStylings removeAllObjects];
@@ -129,66 +129,66 @@ id __65__MTVisualStylingProvider_newAutomaticallyUpdatingViewWithStyle___block_i
   }
 }
 
-- (void)_automaticallyUpdateViewOrLayer:(id)a3 withStyleNamed:(id)a4 andObserverBlock:(id)a5
+- (void)_automaticallyUpdateViewOrLayer:(id)layer withStyleNamed:(id)named andObserverBlock:(id)block
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v19)
+  layerCopy = layer;
+  namedCopy = named;
+  blockCopy = block;
+  if (layerCopy)
   {
-    v10 = [(MTCoreMaterialVisualStylingProvider *)self->_coreMaterialVisualStylingProvider visualStylingForStyle:v8];
+    v10 = [(MTCoreMaterialVisualStylingProvider *)self->_coreMaterialVisualStylingProvider visualStylingForStyle:namedCopy];
 
     if (v10)
     {
       viewsAndLayersToCoreMaterialVisualStyles = self->_viewsAndLayersToCoreMaterialVisualStyles;
       if (!viewsAndLayersToCoreMaterialVisualStyles)
       {
-        v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
         v13 = self->_viewsAndLayersToCoreMaterialVisualStyles;
-        self->_viewsAndLayersToCoreMaterialVisualStyles = v12;
+        self->_viewsAndLayersToCoreMaterialVisualStyles = weakToStrongObjectsMapTable;
 
         viewsAndLayersToCoreMaterialVisualStyles = self->_viewsAndLayersToCoreMaterialVisualStyles;
       }
 
-      [(NSMapTable *)viewsAndLayersToCoreMaterialVisualStyles setObject:v8 forKey:v19];
-      if (v9)
+      [(NSMapTable *)viewsAndLayersToCoreMaterialVisualStyles setObject:namedCopy forKey:layerCopy];
+      if (blockCopy)
       {
         viewsAndLayersToObserverBlocks = self->_viewsAndLayersToObserverBlocks;
         if (!viewsAndLayersToObserverBlocks)
         {
-          v15 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
           v16 = self->_viewsAndLayersToObserverBlocks;
-          self->_viewsAndLayersToObserverBlocks = v15;
+          self->_viewsAndLayersToObserverBlocks = weakToStrongObjectsMapTable2;
 
           viewsAndLayersToObserverBlocks = self->_viewsAndLayersToObserverBlocks;
         }
 
-        v17 = [v9 copy];
+        v17 = [blockCopy copy];
         v18 = MEMORY[0x223D601D0]();
-        [(NSMapTable *)viewsAndLayersToObserverBlocks setObject:v18 forKey:v19];
+        [(NSMapTable *)viewsAndLayersToObserverBlocks setObject:v18 forKey:layerCopy];
       }
 
-      [(MTVisualStylingProvider *)self _updateVisualStyleOfViewOrLayer:v19];
+      [(MTVisualStylingProvider *)self _updateVisualStyleOfViewOrLayer:layerCopy];
     }
   }
 }
 
-- (void)_stopAutomaticallyUpdatingViewOrLayer:(id)a3
+- (void)_stopAutomaticallyUpdatingViewOrLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
     viewsAndLayersToCoreMaterialVisualStyles = self->_viewsAndLayersToCoreMaterialVisualStyles;
-    v5 = a3;
-    [(NSMapTable *)viewsAndLayersToCoreMaterialVisualStyles removeObjectForKey:v5];
-    [(NSMapTable *)self->_viewsAndLayersToObserverBlocks removeObjectForKey:v5];
+    layerCopy = layer;
+    [(NSMapTable *)viewsAndLayersToCoreMaterialVisualStyles removeObjectForKey:layerCopy];
+    [(NSMapTable *)self->_viewsAndLayersToObserverBlocks removeObjectForKey:layerCopy];
   }
 }
 
-- (BOOL)_isAutomaticallyUpdatingViewOrLayer:(id)a3
+- (BOOL)_isAutomaticallyUpdatingViewOrLayer:(id)layer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  layerCopy = layer;
+  if (layerCopy)
   {
     v12 = 0u;
     v13 = 0u;
@@ -208,7 +208,7 @@ id __65__MTVisualStylingProvider_newAutomaticallyUpdatingViewWithStyle___block_i
             objc_enumerationMutation(v5);
           }
 
-          if (*(*(&v10 + 1) + 8 * i) == v4)
+          if (*(*(&v10 + 1) + 8 * i) == layerCopy)
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
@@ -236,20 +236,20 @@ LABEL_12:
   return v6;
 }
 
-- (void)_updateVisualStyleOfViewOrLayer:(id)a3
+- (void)_updateVisualStyleOfViewOrLayer:(id)layer
 {
-  v9 = a3;
+  layerCopy = layer;
   v4 = [(NSMapTable *)self->_viewsAndLayersToCoreMaterialVisualStyles objectForKey:?];
   if (!v4)
   {
     goto LABEL_13;
   }
 
-  v5 = [(NSMapTable *)self->_viewsAndLayersToObserverBlocks objectForKey:v9];
+  v5 = [(NSMapTable *)self->_viewsAndLayersToObserverBlocks objectForKey:layerCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = (*(v5 + 16))(v5, self, v9);
+    v7 = (*(v5 + 16))(v5, self, layerCopy);
   }
 
   else
@@ -260,7 +260,7 @@ LABEL_12:
   if (objc_opt_respondsToSelector())
   {
     v8 = [(MTVisualStylingProvider *)self _visualStylingForStyleNamed:v4];
-    [v9 mt_replaceVisualStyling:v8];
+    [layerCopy mt_replaceVisualStyling:v8];
 LABEL_9:
 
     goto LABEL_10;
@@ -269,35 +269,35 @@ LABEL_9:
   if (objc_opt_respondsToSelector())
   {
     v8 = [(MTCoreMaterialVisualStylingProvider *)self->_coreMaterialVisualStylingProvider visualStylingForStyle:v4];
-    [v9 mt_replaceAllVisualStylingWithStyling:v8];
+    [layerCopy mt_replaceAllVisualStylingWithStyling:v8];
     goto LABEL_9;
   }
 
 LABEL_10:
   if (v7)
   {
-    (v7)[2](v7, self, v9);
+    (v7)[2](v7, self, layerCopy);
   }
 
 LABEL_13:
 }
 
-+ (id)_visualStylingProviderForRecipe:(int64_t)a3 category:(int64_t)a4 andUserInterfaceStyle:(int64_t)a5
++ (id)_visualStylingProviderForRecipe:(int64_t)recipe category:(int64_t)category andUserInterfaceStyle:(int64_t)style
 {
-  if (a3)
+  if (recipe)
   {
-    v7 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(a3, a5);
-    v8 = [a1 _visualStylingProviderForRecipeNamed:v7 andCategory:a4];
+    v7 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(recipe, style);
+    v8 = [self _visualStylingProviderForRecipeNamed:v7 andCategory:category];
 LABEL_5:
     v9 = v8;
 
     goto LABEL_6;
   }
 
-  if (a4 == 3)
+  if (category == 3)
   {
-    v7 = MTCoreMaterialPlatformColorsStyleNameForUserInterfaceStyle(a5);
-    v8 = [a1 _visualStylingProviderForStyleSetNamed:v7 inBundle:0];
+    v7 = MTCoreMaterialPlatformColorsStyleNameForUserInterfaceStyle(style);
+    v8 = [self _visualStylingProviderForStyleSetNamed:v7 inBundle:0];
     goto LABEL_5;
   }
 
@@ -307,18 +307,18 @@ LABEL_6:
   return v9;
 }
 
-+ (id)_visualStylingProviderForRecipeNamed:(id)a3 andCategory:(int64_t)a4
++ (id)_visualStylingProviderForRecipeNamed:(id)named andCategory:(int64_t)category
 {
-  v6 = a3;
-  if (v6)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v7 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(a4);
+    v7 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(category);
     if (v7)
     {
-      v8 = [MEMORY[0x277CFFF98] coreMaterialVisualStylingProviderForRecipe:v6 andCategory:v7];
+      v8 = [MEMORY[0x277CFFF98] coreMaterialVisualStylingProviderForRecipe:namedCopy andCategory:v7];
       if (v8)
       {
-        v9 = [[a1 alloc] initWithCoreMaterialVisualStylingProvider:v8];
+        v9 = [[self alloc] initWithCoreMaterialVisualStylingProvider:v8];
       }
 
       else
@@ -341,14 +341,14 @@ LABEL_6:
   return v9;
 }
 
-+ (id)_visualStylingProviderForStyleSetNamed:(id)a3 inBundle:(id)a4
++ (id)_visualStylingProviderForStyleSetNamed:(id)named inBundle:(id)bundle
 {
-  if (a3)
+  if (named)
   {
-    v5 = [MEMORY[0x277CFFF98] coreMaterialVisualStylingProviderForStyleSetNamed:a3 inBundle:a4];
+    v5 = [MEMORY[0x277CFFF98] coreMaterialVisualStylingProviderForStyleSetNamed:named inBundle:bundle];
     if (v5)
     {
-      v6 = [[a1 alloc] initWithCoreMaterialVisualStylingProvider:v5];
+      v6 = [[self alloc] initWithCoreMaterialVisualStylingProvider:v5];
     }
 
     else
@@ -365,9 +365,9 @@ LABEL_6:
   return v6;
 }
 
-- (id)_visualStylingForStyle:(int64_t)a3
+- (id)_visualStylingForStyle:(int64_t)style
 {
-  v4 = MTCoreMaterialVisualStyleForVisualStyle(a3);
+  v4 = MTCoreMaterialVisualStyleForVisualStyle(style);
   if (v4)
   {
     v5 = [(MTVisualStylingProvider *)self _visualStylingForStyleNamed:v4];
@@ -381,15 +381,15 @@ LABEL_6:
   return v5;
 }
 
-- (id)_visualStylingForStyleNamed:(id)a3
+- (id)_visualStylingForStyleNamed:(id)named
 {
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_styleNamesToVisualStylings objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_styleNamesToVisualStylings objectForKey:namedCopy];
     if (!v5)
     {
-      v6 = [(MTCoreMaterialVisualStylingProvider *)self->_coreMaterialVisualStylingProvider visualStylingForStyle:v4];
+      v6 = [(MTCoreMaterialVisualStylingProvider *)self->_coreMaterialVisualStylingProvider visualStylingForStyle:namedCopy];
       if (v6)
       {
         v5 = [objc_alloc(objc_msgSend(objc_opt_class() "_visualStylingClass"))];
@@ -403,7 +403,7 @@ LABEL_6:
           styleNamesToVisualStylings = self->_styleNamesToVisualStylings;
         }
 
-        [(NSMutableDictionary *)styleNamesToVisualStylings setObject:v5 forKey:v4];
+        [(NSMutableDictionary *)styleNamesToVisualStylings setObject:v5 forKey:namedCopy];
       }
 
       else
@@ -421,9 +421,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)_visualStylingForContinuallyUpdatedView:(id)a3
+- (id)_visualStylingForContinuallyUpdatedView:(id)view
 {
-  if (a3)
+  if (view)
   {
     v4 = [(NSMapTable *)self->_viewsAndLayersToCoreMaterialVisualStyles objectForKey:?];
     if (v4)
@@ -445,13 +445,13 @@ LABEL_6:
   return v5;
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     privateObservers = self->_privateObservers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!privateObservers)
     {
       v6 = [objc_alloc(MEMORY[0x277CCAC18]) initWithOptions:5];
@@ -467,10 +467,10 @@ LABEL_6:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v6 = a3;
-  if (v6)
+  observerCopy = observer;
+  if (observerCopy)
   {
     privateObservers = self->_privateObservers;
     if (privateObservers)
@@ -479,7 +479,7 @@ LABEL_6:
       if ([(NSPointerArray *)self->_privateObservers count])
       {
         v5 = 0;
-        while ([(NSPointerArray *)self->_privateObservers pointerAtIndex:v5]!= v6)
+        while ([(NSPointerArray *)self->_privateObservers pointerAtIndex:v5]!= observerCopy)
         {
           if (++v5 >= [(NSPointerArray *)self->_privateObservers count])
           {
@@ -495,10 +495,10 @@ LABEL_6:
 LABEL_9:
 }
 
-- (MTVisualStylingProvider)initWithCoreMaterialVisualStylingProvider:(id)a3
+- (MTVisualStylingProvider)initWithCoreMaterialVisualStylingProvider:(id)provider
 {
-  v6 = a3;
-  if (!v6)
+  providerCopy = provider;
+  if (!providerCopy)
   {
     [(MTVisualStylingProvider(Internal) *)a2 initWithCoreMaterialVisualStylingProvider:?];
   }
@@ -509,7 +509,7 @@ LABEL_9:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_coreMaterialVisualStylingProvider, a3);
+    objc_storeStrong(&v7->_coreMaterialVisualStylingProvider, provider);
     [(MTCoreMaterialVisualStylingProvider *)v8->_coreMaterialVisualStylingProvider addObserver:v8];
   }
 

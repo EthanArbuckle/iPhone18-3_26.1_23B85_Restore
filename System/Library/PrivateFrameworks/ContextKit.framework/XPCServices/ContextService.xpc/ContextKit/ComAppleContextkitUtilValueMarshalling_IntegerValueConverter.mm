@@ -1,14 +1,14 @@
 @interface ComAppleContextkitUtilValueMarshalling_IntegerValueConverter
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3;
-- (id)toEmbeddedValueWithId:(id)a3;
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4;
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input;
+- (id)toEmbeddedValueWithId:(id)id;
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output;
 @end
 
 @implementation ComAppleContextkitUtilValueMarshalling_IntegerValueConverter
 
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output
 {
-  if (!a4 || (objc_opt_class(), !a3))
+  if (!output || (objc_opt_class(), !id))
   {
     JreThrowNullPointerException();
   }
@@ -18,15 +18,15 @@
     JreThrowClassCastException();
   }
 
-  v6 = [a3 intValue];
+  intValue = [id intValue];
 
-  [a4 writeIntWithInt:v6];
+  [output writeIntWithInt:intValue];
 }
 
-- (id)toEmbeddedValueWithId:(id)a3
+- (id)toEmbeddedValueWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -36,21 +36,21 @@
     JreThrowClassCastException();
   }
 
-  v4 = [a3 intValue];
+  intValue = [id intValue];
 
-  return JavaLangInteger_valueOfWithInt_(v4);
+  return JavaLangInteger_valueOfWithInt_(intValue);
 }
 
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [a3 readInt];
+  readInt = [input readInt];
 
-  return JavaLangInteger_valueOfWithInt_(v3);
+  return JavaLangInteger_valueOfWithInt_(readInt);
 }
 
 @end

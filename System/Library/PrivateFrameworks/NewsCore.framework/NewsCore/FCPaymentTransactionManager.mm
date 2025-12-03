@@ -2,11 +2,11 @@
 - (BOOL)canMakePayments;
 - (FCPaymentTransactionManager)init;
 - (FCPaymentTransactionManagerDelegate)delegate;
-- (id)createPaymentQueueWithProductID:(id)a3 purchaseID:(id)a4 bundleID:(id)a5 webAccessOptIn:(BOOL)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8;
-- (void)paymentTransactionObserver:(id)a3 didFailPurchaseTransactionWithTransaction:(id)a4;
-- (void)paymentTransactionObserver:(id)a3 didFinishPurchaseTransaction:(id)a4;
-- (void)registerOngoingPurchaseTransactionsWithEntry:(id)a3;
-- (void)startPurchaseWithTagID:(id)a3 productID:(id)a4 purchaseID:(id)a5 bundleID:(id)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8 price:(id)a9 webAccessOptIn:(BOOL)a10 payment:(id)a11;
+- (id)createPaymentQueueWithProductID:(id)d purchaseID:(id)iD bundleID:(id)bundleID webAccessOptIn:(BOOL)in appAdamID:(id)adamID storeExternalVersion:(id)version;
+- (void)paymentTransactionObserver:(id)observer didFailPurchaseTransactionWithTransaction:(id)transaction;
+- (void)paymentTransactionObserver:(id)observer didFinishPurchaseTransaction:(id)transaction;
+- (void)registerOngoingPurchaseTransactionsWithEntry:(id)entry;
+- (void)startPurchaseWithTagID:(id)d productID:(id)iD purchaseID:(id)purchaseID bundleID:(id)bundleID appAdamID:(id)adamID storeExternalVersion:(id)version price:(id)price webAccessOptIn:(BOOL)self0 payment:(id)self1;
 @end
 
 @implementation FCPaymentTransactionManager
@@ -23,9 +23,9 @@
     v2->_paymentTransactionObserver = v3;
 
     [(FCPaymentTransactionObserver *)v2->_paymentTransactionObserver setDelegate:v2];
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     paymentQueueByProductID = v2->_paymentQueueByProductID;
-    v2->_paymentQueueByProductID = v5;
+    v2->_paymentQueueByProductID = dictionary;
   }
 
   return v2;
@@ -38,30 +38,30 @@
   return [SKPaymentQueueClass canMakePayments];
 }
 
-- (void)registerOngoingPurchaseTransactionsWithEntry:(id)a3
+- (void)registerOngoingPurchaseTransactionsWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 productID];
-  v6 = [v4 purchaseID];
-  v7 = [v4 bundleID];
-  v8 = [v4 webAccessOptIn];
-  v9 = [v4 appAdamID];
-  v10 = [v4 storeExternalVersion];
-  v14 = [(FCPaymentTransactionManager *)self createPaymentQueueWithProductID:v5 purchaseID:v6 bundleID:v7 webAccessOptIn:v8 appAdamID:v9 storeExternalVersion:v10];
+  entryCopy = entry;
+  productID = [entryCopy productID];
+  purchaseID = [entryCopy purchaseID];
+  bundleID = [entryCopy bundleID];
+  webAccessOptIn = [entryCopy webAccessOptIn];
+  appAdamID = [entryCopy appAdamID];
+  storeExternalVersion = [entryCopy storeExternalVersion];
+  v14 = [(FCPaymentTransactionManager *)self createPaymentQueueWithProductID:productID purchaseID:purchaseID bundleID:bundleID webAccessOptIn:webAccessOptIn appAdamID:appAdamID storeExternalVersion:storeExternalVersion];
 
-  v11 = [(FCPaymentTransactionManager *)self paymentTransactionObserver];
-  [v14 addTransactionObserver:v11];
+  paymentTransactionObserver = [(FCPaymentTransactionManager *)self paymentTransactionObserver];
+  [v14 addTransactionObserver:paymentTransactionObserver];
 
-  v12 = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
-  v13 = [v4 productID];
+  paymentQueueByProductID = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
+  productID2 = [entryCopy productID];
 
-  [v12 setObject:v14 forKey:v13];
+  [paymentQueueByProductID setObject:v14 forKey:productID2];
 }
 
-- (void)startPurchaseWithTagID:(id)a3 productID:(id)a4 purchaseID:(id)a5 bundleID:(id)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8 price:(id)a9 webAccessOptIn:(BOOL)a10 payment:(id)a11
+- (void)startPurchaseWithTagID:(id)d productID:(id)iD purchaseID:(id)purchaseID bundleID:(id)bundleID appAdamID:(id)adamID storeExternalVersion:(id)version price:(id)price webAccessOptIn:(BOOL)self0 payment:(id)self1
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  if (a10)
+  if (in)
   {
     v16 = @"true";
   }
@@ -76,39 +76,39 @@
   v34[0] = v16;
   v17 = MEMORY[0x1E696AAE8];
   v18 = v16;
-  v19 = a11;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = [v17 mainBundle];
-  v26 = [v25 bundleIdentifier];
-  v34[1] = v26;
+  paymentCopy = payment;
+  versionCopy = version;
+  adamIDCopy = adamID;
+  bundleIDCopy = bundleID;
+  purchaseIDCopy = purchaseID;
+  iDCopy = iD;
+  mainBundle = [v17 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v34[1] = bundleIdentifier;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
-  [v19 setRequestParameters:v27];
-  v28 = [(FCPaymentTransactionManager *)self createPaymentQueueWithProductID:v24 purchaseID:v23 bundleID:v22 webAccessOptIn:a10 appAdamID:v21 storeExternalVersion:v20];
+  [paymentCopy setRequestParameters:v27];
+  v28 = [(FCPaymentTransactionManager *)self createPaymentQueueWithProductID:iDCopy purchaseID:purchaseIDCopy bundleID:bundleIDCopy webAccessOptIn:in appAdamID:adamIDCopy storeExternalVersion:versionCopy];
 
-  v29 = [(FCPaymentTransactionManager *)self paymentTransactionObserver];
-  [v28 addTransactionObserver:v29];
+  paymentTransactionObserver = [(FCPaymentTransactionManager *)self paymentTransactionObserver];
+  [v28 addTransactionObserver:paymentTransactionObserver];
 
-  [v28 addPayment:v19];
-  v30 = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
-  [v30 setObject:v28 forKey:v24];
+  [v28 addPayment:paymentCopy];
+  paymentQueueByProductID = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
+  [paymentQueueByProductID setObject:v28 forKey:iDCopy];
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createPaymentQueueWithProductID:(id)a3 purchaseID:(id)a4 bundleID:(id)a5 webAccessOptIn:(BOOL)a6 appAdamID:(id)a7 storeExternalVersion:(id)a8
+- (id)createPaymentQueueWithProductID:(id)d purchaseID:(id)iD bundleID:(id)bundleID webAccessOptIn:(BOOL)in appAdamID:(id)adamID storeExternalVersion:(id)version
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
-  v19 = [v18 objectForKey:v13];
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  adamIDCopy = adamID;
+  versionCopy = version;
+  paymentQueueByProductID = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
+  v19 = [paymentQueueByProductID objectForKey:dCopy];
 
   if (!v19)
   {
@@ -132,13 +132,13 @@
     v22 = v21;
     _Block_object_dispose(&v28, 8);
     v23 = objc_alloc_init(v21);
-    v24 = [MEMORY[0x1E696AAE8] mainBundle];
-    v25 = [v24 bundleIdentifier];
-    [v23 setBundleIdentifier:v25];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v23 setBundleIdentifier:bundleIdentifier];
 
     [v23 setBundleVersion:@"1.0"];
-    [v23 setStoreItemIdentifier:v16];
-    [v23 setStoreExternalVersion:v17];
+    [v23 setStoreItemIdentifier:adamIDCopy];
+    [v23 setStoreExternalVersion:versionCopy];
     [v23 setVendorIdentifier:v20];
     v19 = [objc_alloc(getSKPaymentQueueClass()) initWithPaymentQueueClient:v23];
   }
@@ -146,14 +146,14 @@
   return v19;
 }
 
-- (void)paymentTransactionObserver:(id)a3 didFailPurchaseTransactionWithTransaction:(id)a4
+- (void)paymentTransactionObserver:(id)observer didFailPurchaseTransactionWithTransaction:(id)transaction
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 payment];
-  v7 = [v6 productIdentifier];
+  transactionCopy = transaction;
+  payment = [transactionCopy payment];
+  productIdentifier = [payment productIdentifier];
 
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!productIdentifier && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "transaction.payment.productIdentifier"];
     *buf = 136315906;
@@ -167,9 +167,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v8 = [v5 error];
+  error = [transactionCopy error];
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!error && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "transaction.error"];
     *buf = 136315906;
@@ -183,15 +183,15 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v9 = [v5 payment];
-  v10 = [v9 productIdentifier];
+  payment2 = [transactionCopy payment];
+  productIdentifier2 = [payment2 productIdentifier];
 
-  v11 = [v5 transactionState];
-  v12 = [v5 error];
-  v13 = v12;
-  if (v12)
+  transactionState = [transactionCopy transactionState];
+  error2 = [transactionCopy error];
+  v13 = error2;
+  if (error2)
   {
-    v14 = v12;
+    v14 = error2;
   }
 
   else
@@ -212,32 +212,32 @@
     *buf = 138543874;
     v29 = v23;
     v30 = 2114;
-    v31 = v10;
+    v31 = productIdentifier2;
     v32 = 2114;
     v33[0] = v14;
     _os_log_error_impl(&dword_1B63EF000, v22, OS_LOG_TYPE_ERROR, "%{public}@ didFailPurchaseTransaction with productID: %{public}@ failed with error: %{public}@", buf, 0x20u);
   }
 
-  if ((v11 - 1) >= 4)
+  if ((transactionState - 1) >= 4)
   {
-    v11 = 0;
+    transactionState = 0;
   }
 
-  v19 = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
-  [v19 removeObjectForKey:v10];
+  paymentQueueByProductID = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
+  [paymentQueueByProductID removeObjectForKey:productIdentifier2];
 
-  v20 = [(FCPaymentTransactionManager *)self delegate];
-  [v20 transactionFailedWithProductID:v10 transactionState:v11 transactionError:v14];
+  delegate = [(FCPaymentTransactionManager *)self delegate];
+  [delegate transactionFailedWithProductID:productIdentifier2 transactionState:transactionState transactionError:v14];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)paymentTransactionObserver:(id)a3 didFinishPurchaseTransaction:(id)a4
+- (void)paymentTransactionObserver:(id)observer didFinishPurchaseTransaction:(id)transaction
 {
   v57 = *MEMORY[0x1E69E9840];
-  v48 = a3;
-  v6 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  observerCopy = observer;
+  transactionCopy = transaction;
+  if (!transactionCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "transaction"];
     *buf = 136315906;
@@ -251,10 +251,10 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v7 = [v6 payment];
-  v8 = [v7 productIdentifier];
+  payment = [transactionCopy payment];
+  productIdentifier = [payment productIdentifier];
 
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!productIdentifier && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "transaction.payment.productIdentifier"];
     *buf = 136315906;
@@ -273,58 +273,58 @@
   {
     v10 = v9;
     v11 = objc_opt_class();
-    v12 = [v6 payment];
-    v13 = [v12 productIdentifier];
+    payment2 = [transactionCopy payment];
+    productIdentifier2 = [payment2 productIdentifier];
     *buf = 138543618;
     v50 = v11;
     v51 = 2114;
-    v52 = v13;
+    v52 = productIdentifier2;
     _os_log_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ didFinishPurchaseTransaction with productID: %{public}@", buf, 0x16u);
   }
 
-  v14 = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
-  v15 = [v6 payment];
-  v16 = [v15 productIdentifier];
-  [v14 removeObjectForKey:v16];
+  paymentQueueByProductID = [(FCPaymentTransactionManager *)self paymentQueueByProductID];
+  payment3 = [transactionCopy payment];
+  productIdentifier3 = [payment3 productIdentifier];
+  [paymentQueueByProductID removeObjectForKey:productIdentifier3];
 
-  v17 = [v6 appleIDAccountDetails];
+  appleIDAccountDetails = [transactionCopy appleIDAccountDetails];
 
-  if (v17)
+  if (appleIDAccountDetails)
   {
-    v18 = [v6 appleIDAccountDetails];
-    v19 = [v18 accountSignupError];
+    appleIDAccountDetails2 = [transactionCopy appleIDAccountDetails];
+    accountSignupError = [appleIDAccountDetails2 accountSignupError];
 
-    if (v19)
+    if (accountSignupError)
     {
       v20 = [FCPaymentTransactionAuthorizationResponse alloc];
-      v21 = [v6 appleIDAccountDetails];
-      v22 = [v21 accountSignupError];
-      v23 = [(FCPaymentTransactionAuthorizationResponse *)v20 initWithCredential:0 accountSignupError:v22];
+      appleIDAccountDetails3 = [transactionCopy appleIDAccountDetails];
+      accountSignupError2 = [appleIDAccountDetails3 accountSignupError];
+      v23 = [(FCPaymentTransactionAuthorizationResponse *)v20 initWithCredential:0 accountSignupError:accountSignupError2];
     }
 
     else
     {
-      v24 = [v6 appleIDAccountDetails];
-      v21 = [v24 authorizationAppleIDCredential];
+      appleIDAccountDetails4 = [transactionCopy appleIDAccountDetails];
+      appleIDAccountDetails3 = [appleIDAccountDetails4 authorizationAppleIDCredential];
 
       v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v26 = [v21 authorizationCode];
-      v22 = [v25 initWithData:v26 encoding:4];
+      authorizationCode = [appleIDAccountDetails3 authorizationCode];
+      accountSignupError2 = [v25 initWithData:authorizationCode encoding:4];
 
       v27 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v28 = [v21 identityToken];
-      v47 = [v27 initWithData:v28 encoding:4];
+      identityToken = [appleIDAccountDetails3 identityToken];
+      v47 = [v27 initWithData:identityToken encoding:4];
 
       v45 = [FCAuthKitAuthorizationCredential alloc];
-      v44 = [v21 userIdentifier];
-      v46 = [v21 userInformation];
-      v29 = [v46 selectedEmail];
-      v30 = [v21 userInformation];
-      v31 = [v30 familyName];
-      v32 = [v21 userInformation];
-      [v32 givenName];
+      userIdentifier = [appleIDAccountDetails3 userIdentifier];
+      userInformation = [appleIDAccountDetails3 userInformation];
+      selectedEmail = [userInformation selectedEmail];
+      userInformation2 = [appleIDAccountDetails3 userInformation];
+      familyName = [userInformation2 familyName];
+      userInformation3 = [appleIDAccountDetails3 userInformation];
+      [userInformation3 givenName];
       v34 = v33 = self;
-      v35 = [(FCAuthKitAuthorizationCredential *)v45 initWithAuthorizationCode:v22 identityToken:v47 userIdentifier:v44 email:v29 familyName:v31 givenName:v34];
+      v35 = [(FCAuthKitAuthorizationCredential *)v45 initWithAuthorizationCode:accountSignupError2 identityToken:v47 userIdentifier:userIdentifier email:selectedEmail familyName:familyName givenName:v34];
 
       self = v33;
       v23 = [[FCPaymentTransactionAuthorizationResponse alloc] initWithCredential:v35 accountSignupError:0];
@@ -337,12 +337,12 @@
   }
 
   v36 = [FCCompletedPaymentTransaction alloc];
-  v37 = [v6 payment];
-  v38 = [v37 productIdentifier];
-  v39 = [(FCCompletedPaymentTransaction *)v36 initWithProductID:v38 receipt:0 appleIDAccountDetails:v23];
+  payment4 = [transactionCopy payment];
+  productIdentifier4 = [payment4 productIdentifier];
+  v39 = [(FCCompletedPaymentTransaction *)v36 initWithProductID:productIdentifier4 receipt:0 appleIDAccountDetails:v23];
 
-  v40 = [(FCPaymentTransactionManager *)self delegate];
-  [v40 transactionPurchased:v39];
+  delegate = [(FCPaymentTransactionManager *)self delegate];
+  [delegate transactionPurchased:v39];
 
   v41 = *MEMORY[0x1E69E9840];
 }

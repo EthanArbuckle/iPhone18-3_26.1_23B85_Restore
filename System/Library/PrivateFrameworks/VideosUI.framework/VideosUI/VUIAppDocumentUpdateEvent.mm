@@ -24,12 +24,12 @@
 + (id)settings;
 + (id)upNextLockupArtSettingChanged;
 + (id)utsk;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRefreshEvent;
 - (NSDictionary)dictionaryRepresentation;
 - (VUIAppDocumentUpdateEvent)init;
-- (VUIAppDocumentUpdateEvent)initWithDescriptor:(id)a3;
-- (id)coalescedEvent:(id)a3;
+- (VUIAppDocumentUpdateEvent)initWithDescriptor:(id)descriptor;
+- (id)coalescedEvent:(id)event;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -571,16 +571,16 @@ void __46__VUIAppDocumentUpdateEvent_pinnedTabsChanged__block_invoke()
   return 0;
 }
 
-- (VUIAppDocumentUpdateEvent)initWithDescriptor:(id)a3
+- (VUIAppDocumentUpdateEvent)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = VUIAppDocumentUpdateEvent;
   v6 = [(VUIAppDocumentUpdateEvent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
   }
 
   return v7;
@@ -589,8 +589,8 @@ void __46__VUIAppDocumentUpdateEvent_pinnedTabsChanged__block_invoke()
 - (NSDictionary)dictionaryRepresentation
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-  v3 = VUIAppDocumentUpdateEventStringRepresentationFromEventType([v2 type]);
+  descriptor = [(VUIAppDocumentUpdateEvent *)self descriptor];
+  v3 = VUIAppDocumentUpdateEventStringRepresentationFromEventType([descriptor type]);
 
   v6 = @"type";
   v7[0] = v3;
@@ -599,16 +599,16 @@ void __46__VUIAppDocumentUpdateEvent_pinnedTabsChanged__block_invoke()
   return v4;
 }
 
-- (id)coalescedEvent:(id)a3
+- (id)coalescedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 descriptor];
-  v6 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-  v7 = [v5 isEqual:v6];
+  eventCopy = event;
+  descriptor = [eventCopy descriptor];
+  descriptor2 = [(VUIAppDocumentUpdateEvent *)self descriptor];
+  v7 = [descriptor isEqual:descriptor2];
 
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -616,47 +616,47 @@ void __46__VUIAppDocumentUpdateEvent_pinnedTabsChanged__block_invoke()
     v9 = VUIDefaultLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(VUIAppDocumentModifiedFavoritesEvent *)self coalescedEvent:v4, v9];
+      [(VUIAppDocumentModifiedFavoritesEvent *)self coalescedEvent:eventCopy, v9];
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)isRefreshEvent
 {
-  v2 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-  v3 = [v2 type];
+  descriptor = [(VUIAppDocumentUpdateEvent *)self descriptor];
+  type = [descriptor type];
 
-  return v3 < 3;
+  return type < 3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-  v3 = [v2 hash];
+  descriptor = [(VUIAppDocumentUpdateEvent *)self descriptor];
+  v3 = [descriptor hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-    v8 = [(VUIAppDocumentUpdateEvent *)v6 descriptor];
-    v9 = v7;
-    v10 = v8;
+    descriptor = [(VUIAppDocumentUpdateEvent *)self descriptor];
+    descriptor2 = [(VUIAppDocumentUpdateEvent *)v6 descriptor];
+    v9 = descriptor;
+    v10 = descriptor2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -690,8 +690,8 @@ void __46__VUIAppDocumentUpdateEvent_pinnedTabsChanged__block_invoke()
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIAppDocumentUpdateEvent *)self descriptor];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"descriptor", v6];
+  descriptor = [(VUIAppDocumentUpdateEvent *)self descriptor];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"descriptor", descriptor];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];

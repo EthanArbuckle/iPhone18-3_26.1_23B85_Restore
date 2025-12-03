@@ -1,28 +1,28 @@
 @interface FBSPseudoSceneUpdater
 - (NSCopying)identifier;
-- (id)_initWithCallOutQueue:(id)a3;
-- (id)createSceneFutureWithDefinition:(id)a3;
-- (void)activateSceneFuture:(id)a3 completion:(id)a4;
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4;
-- (void)scene:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5;
-- (void)scene:(id)a3 invalidateWithTransitionContext:(id)a4;
-- (void)scene:(id)a3 sendInvocation:(id)a4;
-- (void)scene:(id)a3 sendMessage:(id)a4 withResponse:(id)a5;
-- (void)sendActions:(id)a3 toWorkspaceID:(id)a4 completion:(id)a5;
+- (id)_initWithCallOutQueue:(id)queue;
+- (id)createSceneFutureWithDefinition:(id)definition;
+- (void)activateSceneFuture:(id)future completion:(id)completion;
+- (void)requestSceneWithOptions:(id)options completion:(id)completion;
+- (void)scene:(id)scene didReceiveActions:(id)actions forExtension:(Class)extension;
+- (void)scene:(id)scene invalidateWithTransitionContext:(id)context;
+- (void)scene:(id)scene sendInvocation:(id)invocation;
+- (void)scene:(id)scene sendMessage:(id)message withResponse:(id)response;
+- (void)sendActions:(id)actions toWorkspaceID:(id)d completion:(id)completion;
 - (void)sendBatchedMessages;
 @end
 
 @implementation FBSPseudoSceneUpdater
 
-- (id)_initWithCallOutQueue:(id)a3
+- (id)_initWithCallOutQueue:(id)queue
 {
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [(FBSPseudoSceneUpdater *)a2 _initWithCallOutQueue:?];
   }
 
-  v7 = v6;
+  v7 = queueCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -35,7 +35,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_callOutQueue, a3);
+    objc_storeStrong(&v8->_callOutQueue, queue);
   }
 
   return v9;
@@ -54,7 +54,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSPseudoSceneUpdater.m";
     v16 = 1024;
@@ -68,21 +68,21 @@
   _bs_set_crash_log_message();
 }
 
-- (void)scene:(id)a3 didReceiveActions:(id)a4 forExtension:(Class)a5
+- (void)scene:(id)scene didReceiveActions:(id)actions forExtension:(Class)extension
 {
-  v5 = a3;
+  sceneCopy = scene;
   v6 = FBLogSceneClient();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [FBSPseudoSceneUpdater scene:v5 didReceiveActions:? forExtension:?];
+    [FBSPseudoSceneUpdater scene:sceneCopy didReceiveActions:? forExtension:?];
   }
 }
 
-- (void)scene:(id)a3 sendMessage:(id)a4 withResponse:(id)a5
+- (void)scene:(id)scene sendMessage:(id)message withResponse:(id)response
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  messageCopy = message;
+  responseCopy = response;
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"not supported"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -94,7 +94,7 @@
     v18 = 2114;
     v19 = v15;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = @"FBSPseudoSceneUpdater.m";
     v24 = 1024;
@@ -108,33 +108,33 @@
   _bs_set_crash_log_message();
 }
 
-- (void)scene:(id)a3 invalidateWithTransitionContext:(id)a4
+- (void)scene:(id)scene invalidateWithTransitionContext:(id)context
 {
   callOutQueue = self->_callOutQueue;
-  v5 = a3;
+  sceneCopy = scene;
   [(BSServiceQueue *)callOutQueue assertBarrierOnQueue];
-  [v5 _callOutQueue_willDestroyWithTransitionContext:0 completion:0];
-  [v5 _callOutQueue_invalidate];
+  [sceneCopy _callOutQueue_willDestroyWithTransitionContext:0 completion:0];
+  [sceneCopy _callOutQueue_invalidate];
 }
 
-- (void)scene:(id)a3 sendInvocation:(id)a4
+- (void)scene:(id)scene sendInvocation:(id)invocation
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  invocationCopy = invocation;
   v7 = FBLogSceneClient();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [FBSPseudoSceneUpdater scene:v5 sendInvocation:?];
+    [FBSPseudoSceneUpdater scene:sceneCopy sendInvocation:?];
   }
 
-  [v6 cannotResolveForReason:@"Pseudo scenes do not support sending invocations"];
+  [invocationCopy cannotResolveForReason:@"Pseudo scenes do not support sending invocations"];
 }
 
-- (void)sendActions:(id)a3 toWorkspaceID:(id)a4 completion:(id)a5
+- (void)sendActions:(id)actions toWorkspaceID:(id)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  actionsCopy = actions;
+  dCopy = d;
+  completionCopy = completion;
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"not supported"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -146,7 +146,7 @@
     v18 = 2114;
     v19 = v15;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = @"FBSPseudoSceneUpdater.m";
     v24 = 1024;
@@ -160,9 +160,9 @@
   _bs_set_crash_log_message();
 }
 
-- (id)createSceneFutureWithDefinition:(id)a3
+- (id)createSceneFutureWithDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"not supported"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -174,7 +174,7 @@
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"FBSPseudoSceneUpdater.m";
     v18 = 1024;
@@ -188,10 +188,10 @@
   _bs_set_crash_log_message();
 }
 
-- (void)activateSceneFuture:(id)a3 completion:(id)a4
+- (void)activateSceneFuture:(id)future completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  futureCopy = future;
+  completionCopy = completion;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"not supported"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -203,7 +203,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSPseudoSceneUpdater.m";
     v21 = 1024;
@@ -217,10 +217,10 @@
   _bs_set_crash_log_message();
 }
 
-- (void)requestSceneWithOptions:(id)a3 completion:(id)a4
+- (void)requestSceneWithOptions:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"not supported"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -232,7 +232,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSPseudoSceneUpdater.m";
     v21 = 1024;

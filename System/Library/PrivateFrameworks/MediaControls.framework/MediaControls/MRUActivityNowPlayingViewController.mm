@@ -1,5 +1,5 @@
 @interface MRUActivityNowPlayingViewController
-- (MRUActivityNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MRUActivityNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSURL)launchURL;
 - (SBUISystemApertureAccessoryView)detachedMinimalView;
 - (SBUISystemApertureAccessoryView)leadingView;
@@ -10,22 +10,22 @@
 - (unint64_t)presentationBehaviors;
 - (void)createHapticViewController;
 - (void)createWaveformViewController;
-- (void)didSelectArtworkView:(id)a3;
-- (void)didSelectLabelView:(id)a3;
-- (void)didSelectLaunchNowPlaying:(id)a3;
-- (void)didTapTransportButton:(id)a3;
+- (void)didSelectArtworkView:(id)view;
+- (void)didSelectLabelView:(id)view;
+- (void)didSelectLaunchNowPlaying:(id)playing;
+- (void)didTapTransportButton:(id)button;
 - (void)loadView;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d;
 - (void)registerHapticObserver;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)transportControlsView:(id)a3 didSelectRoutingButton:(id)a4;
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)transportControlsView:(id)view didSelectRoutingButton:(id)button;
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button;
 - (void)updateArtwork;
 - (void)updateBundleID;
 - (void)updateEverything;
 - (void)updateLayout;
-- (void)updateLayoutModesPreferringImmediateTransition:(BOOL)a3 deferInCustomLayout:(BOOL)a4 reason:(id)a5;
+- (void)updateLayoutModesPreferringImmediateTransition:(BOOL)transition deferInCustomLayout:(BOOL)layout reason:(id)reason;
 - (void)updateNowPlayingInfo;
 - (void)updateRouteLabel;
 - (void)updateRoutingButton;
@@ -35,16 +35,16 @@
 - (void)updateVolumeControls;
 - (void)updateWaveformVisibility;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MRUActivityNowPlayingViewController
 
-- (MRUActivityNowPlayingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MRUActivityNowPlayingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = MRUActivityNowPlayingViewController;
-  v4 = [(MRUActivityNowPlayingViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(MRUActivityNowPlayingViewController *)&v11 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -56,8 +56,8 @@
     controller = v5->_controller;
     v5->_controller = v7;
 
-    v9 = [(MRUNowPlayingController *)v5->_controller tvRemoteController];
-    [v9 setContext:7];
+    tvRemoteController = [(MRUNowPlayingController *)v5->_controller tvRemoteController];
+    [tvRemoteController setContext:7];
 
     [(MRUNowPlayingController *)v5->_controller addObserver:v5];
   }
@@ -76,52 +76,52 @@
   v17.receiver = self;
   v17.super_class = MRUActivityNowPlayingViewController;
   [(MRUActivityNowPlayingViewController *)&v17 viewDidLoad];
-  v3 = [(MRUActivityNowPlayingViewController *)self view];
-  v4 = [v3 artworkViews];
-  v5 = [v4 firstObject];
-  [v5 addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view artworkViews];
+  firstObject = [artworkViews firstObject];
+  [firstObject addTarget:self action:sel_didSelectArtworkView_ forControlEvents:64];
 
-  v6 = [(MRUActivityNowPlayingViewController *)self view];
-  v7 = [v6 headerView];
-  v8 = [v7 labelView];
-  [v8 addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  headerView = [view2 headerView];
+  labelView = [headerView labelView];
+  [labelView addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
 
-  v9 = [(MRUActivityNowPlayingViewController *)self view];
-  v10 = [v9 transportControlsView];
-  [v10 setDelegate:self];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  transportControlsView = [view3 transportControlsView];
+  [transportControlsView setDelegate:self];
 
   v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didSelectLaunchNowPlaying_];
   [(MRUActivityNowPlayingViewController *)self setLaunchNowPlayingGestureRecognizer:v11];
 
-  v12 = [(MRUActivityNowPlayingViewController *)self view];
-  v13 = [(MRUActivityNowPlayingViewController *)self launchNowPlayingGestureRecognizer];
-  [v12 addGestureRecognizer:v13];
+  view4 = [(MRUActivityNowPlayingViewController *)self view];
+  launchNowPlayingGestureRecognizer = [(MRUActivityNowPlayingViewController *)self launchNowPlayingGestureRecognizer];
+  [view4 addGestureRecognizer:launchNowPlayingGestureRecognizer];
 
   [(MRUActivityNowPlayingViewController *)self createWaveformViewController];
   [(MRUActivityNowPlayingViewController *)self createHapticViewController];
   [(MRUActivityNowPlayingViewController *)self updateEverything];
   [(MRUActivityNowPlayingViewController *)self registerHapticObserver];
   [(MRUActivityNowPlayingViewController *)self updateSylingProvider];
-  v14 = [(MRUActivityNowPlayingViewController *)self view];
-  v15 = [v14 transportControlsView];
-  v16 = [v15 leftButton];
-  [v16 addTarget:self action:sel_didTapTransportButton_ forControlEvents:64];
+  view5 = [(MRUActivityNowPlayingViewController *)self view];
+  transportControlsView2 = [view5 transportControlsView];
+  leftButton = [transportControlsView2 leftButton];
+  [leftButton addTarget:self action:sel_didTapTransportButton_ forControlEvents:64];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MRUActivityNowPlayingViewController;
-  v7 = a4;
-  [(MRUActivityNowPlayingViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MRUActivityNowPlayingViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __90__MRUActivityNowPlayingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E76645E8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global_36];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global_36];
 }
 
 void __90__MRUActivityNowPlayingViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -135,32 +135,32 @@ void __90__MRUActivityNowPlayingViewController_viewWillTransitionToSize_withTran
   [v3 layoutIfNeeded];
 }
 
-- (void)didSelectArtworkView:(id)a3
+- (void)didSelectArtworkView:(id)view
 {
-  v3 = [(MRUNowPlayingController *)self->_controller endpointController];
-  [v3 launchNowPlayingApp];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  [endpointController launchNowPlayingApp];
 }
 
-- (void)didSelectLabelView:(id)a3
+- (void)didSelectLabelView:(id)view
 {
-  v3 = [(MRUNowPlayingController *)self->_controller endpointController];
-  [v3 launchNowPlayingApp];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  [endpointController launchNowPlayingApp];
 }
 
-- (void)didSelectLaunchNowPlaying:(id)a3
+- (void)didSelectLaunchNowPlaying:(id)playing
 {
-  v3 = [(MRUNowPlayingController *)self->_controller endpointController];
-  [v3 launchNowPlayingApp];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  [endpointController launchNowPlayingApp];
 }
 
-- (void)didTapTransportButton:(id)a3
+- (void)didTapTransportButton:(id)button
 {
-  v4 = a3;
-  v5 = [(MRUActivityNowPlayingViewController *)self view];
-  v6 = [v5 transportControlsView];
-  v7 = [v6 leftButton];
+  buttonCopy = button;
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  transportControlsView = [view transportControlsView];
+  leftButton = [transportControlsView leftButton];
 
-  if (v7 == v4)
+  if (leftButton == buttonCopy)
   {
     v8 = [MEMORY[0x1E695DF00] now];
     [(MRUActivityNowPlayingViewController *)self setLastLeftButtonTapDate:v8];
@@ -189,33 +189,33 @@ LABEL_7:
   return v4;
 }
 
-- (void)updateLayoutModesPreferringImmediateTransition:(BOOL)a3 deferInCustomLayout:(BOOL)a4 reason:(id)a5
+- (void)updateLayoutModesPreferringImmediateTransition:(BOOL)transition deferInCustomLayout:(BOOL)layout reason:(id)reason
 {
-  v43 = a4;
-  v5 = a3;
+  layoutCopy = layout;
+  transitionCopy = transition;
   v52 = *MEMORY[0x1E69E9840];
-  v44 = a5;
+  reasonCopy = reason;
   v7 = MCLogCategoryDefault();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v49 = v44;
+    v49 = reasonCopy;
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEBUG, "[MRUActivityVC] updateLayoutModes for %@", buf, 0xCu);
   }
 
-  v8 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v9 = [v8 nowPlayingInfo];
-  v10 = [v9 isPlaying];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
+  isPlaying = [nowPlayingInfo isPlaying];
 
-  v11 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v45 = [v11 bundleID];
+  metadataController2 = [(MRUNowPlayingController *)self->_controller metadataController];
+  bundleID = [metadataController2 bundleID];
 
-  if (v45)
+  if (bundleID)
   {
-    v12 = [(MRUNowPlayingController *)self->_controller metadataController];
-    v13 = [v12 nowPlayingInfo];
-    v14 = [v13 identifier];
-    v15 = v14 != 0;
+    metadataController3 = [(MRUNowPlayingController *)self->_controller metadataController];
+    nowPlayingInfo2 = [metadataController3 nowPlayingInfo];
+    identifier = [nowPlayingInfo2 identifier];
+    v15 = identifier != 0;
   }
 
   else
@@ -224,8 +224,8 @@ LABEL_7:
   }
 
   preferredLayoutMode = self->_preferredLayoutMode;
-  v17 = v10 & v15;
-  if ((v10 & v15) != 0)
+  v17 = isPlaying & v15;
+  if ((isPlaying & v15) != 0)
   {
     v18 = 3;
   }
@@ -235,8 +235,8 @@ LABEL_7:
     v18 = 1;
   }
 
-  v19 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
-  if (v19)
+  inactiveTransitionTimer = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
+  if (inactiveTransitionTimer)
   {
     v20 = self->_activeLayoutMode == 4;
 
@@ -249,28 +249,28 @@ LABEL_7:
         _os_log_impl(&dword_1A20FC000, v21, OS_LOG_TYPE_DEBUG, "[MRUActivityVC] Cancel transition timer.", buf, 2u);
       }
 
-      v22 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
-      [v22 invalidate];
+      inactiveTransitionTimer2 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
+      [inactiveTransitionTimer2 invalidate];
 
       [(MRUActivityNowPlayingViewController *)self setInactiveTransitionTimer:0];
     }
   }
 
   v23 = 1;
-  if (self->_wasPlayingDuringLastPreferredLayoutUpdate && (v10 & 1) == 0)
+  if (self->_wasPlayingDuringLastPreferredLayoutUpdate && (isPlaying & 1) == 0)
   {
     v23 = self->_activeLayoutMode != 1;
   }
 
-  self->_wasPlayingDuringLastPreferredLayoutUpdate = v10;
-  if (preferredLayoutMode != v18 || v5)
+  self->_wasPlayingDuringLastPreferredLayoutUpdate = isPlaying;
+  if (preferredLayoutMode != v18 || transitionCopy)
   {
-    if (v15 & ~v17 & (!v5 && v23))
+    if (v15 & ~v17 & (!transitionCopy && v23))
     {
-      if (!v43 || self->_activeLayoutMode != 4)
+      if (!layoutCopy || self->_activeLayoutMode != 4)
       {
-        v30 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
-        v31 = v30 == 0;
+        inactiveTransitionTimer3 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
+        v31 = inactiveTransitionTimer3 == 0;
 
         if (v31)
         {
@@ -283,8 +283,8 @@ LABEL_7:
 
           objc_initWeak(buf, self);
           v33 = MEMORY[0x1E69B14D8];
-          v34 = [MEMORY[0x1E69B0B08] currentSettings];
-          [v34 quickControlsInactiveTimeout];
+          currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+          [currentSettings quickControlsInactiveTimeout];
           v36 = v35;
           v37 = MEMORY[0x1E69E96A0];
           v46[0] = MEMORY[0x1E69E9820];
@@ -314,8 +314,8 @@ LABEL_25:
       goto LABEL_19;
     }
 
-    v25 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
-    [v25 invalidate];
+    inactiveTransitionTimer4 = [(MRUActivityNowPlayingViewController *)self inactiveTransitionTimer];
+    [inactiveTransitionTimer4 invalidate];
 
     [(MRUActivityNowPlayingViewController *)self setInactiveTransitionTimer:0];
     v26 = MCLogCategoryDefault();
@@ -338,9 +338,9 @@ LABEL_25:
     }
 
     self->_maximumLayoutMode = v29;
-    if (v5)
+    if (transitionCopy)
     {
-      if (v43 && self->_activeLayoutMode == 4)
+      if (layoutCopy && self->_activeLayoutMode == 4)
       {
         v24 = MCLogCategoryDefault();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -379,8 +379,8 @@ LABEL_25:
       }
     }
 
-    v41 = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
-    [v41 requestTransitionToPreferredLayoutMode];
+    systemApertureElementContext = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
+    [systemApertureElementContext requestTransitionToPreferredLayoutMode];
   }
 
 LABEL_19:
@@ -392,10 +392,10 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
   [WeakRetained updateLayoutModesPreferringImmediateTransition:1 deferInCustomLayout:1 reason:@"inactiveTransitionTimer"];
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_activeLayoutMode != a3)
+  if (self->_activeLayoutMode != mode)
   {
     v5 = MCLogCategoryDefault();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -409,10 +409,10 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
       _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEBUG, "[MRUActivityVC] setActiveLayoutMode from %@ to %@", &v9, 0x16u);
     }
 
-    self->_activeLayoutMode = a3;
+    self->_activeLayoutMode = mode;
     [(MRUActivityNowPlayingViewController *)self updateLayoutModesPreferringImmediateTransition:0 deferInCustomLayout:1 reason:@"setActiveLayoutMode"];
-    v8 = [(MRUActivityNowPlayingViewController *)self controller];
-    [v8 updateAutomaticResponseLoading];
+    controller = [(MRUActivityNowPlayingViewController *)self controller];
+    [controller updateAutomaticResponseLoading];
 
     [(MRUActivityNowPlayingViewController *)self updateEverything];
   }
@@ -420,8 +420,8 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
 
 - (double)preferredHeightForBottomSafeArea
 {
-  v2 = [(MRUActivityNowPlayingViewController *)self view];
-  [v2 preferredHeightForBottomSafeArea];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  [view preferredHeightForBottomSafeArea];
   v4 = v3;
 
   return v4;
@@ -429,34 +429,34 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
 
 - (SBUISystemApertureAccessoryView)leadingView
 {
-  v2 = [(MRUActivityNowPlayingViewController *)self view];
-  v3 = [v2 leadingView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  leadingView = [view leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (SBUISystemApertureAccessoryView)trailingView
 {
-  v2 = [(MRUActivityNowPlayingViewController *)self view];
-  v3 = [v2 trailingView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView = [view trailingView];
 
-  return v3;
+  return trailingView;
 }
 
 - (SBUISystemApertureAccessoryView)minimalView
 {
-  v2 = [(MRUActivityNowPlayingViewController *)self view];
-  v3 = [v2 leadingView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  leadingView = [view leadingView];
 
-  return v3;
+  return leadingView;
 }
 
 - (SBUISystemApertureAccessoryView)detachedMinimalView
 {
-  v2 = [(MRUActivityNowPlayingViewController *)self view];
-  v3 = [v2 detachedMinimalView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  detachedMinimalView = [view detachedMinimalView];
 
-  return v3;
+  return detachedMinimalView;
 }
 
 - (unint64_t)presentationBehaviors
@@ -472,9 +472,9 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
   }
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  [(MRUActivityNowPlayingViewController *)self updateBundleID:a3];
+  [(MRUActivityNowPlayingViewController *)self updateBundleID:controller];
   [(MRUActivityNowPlayingViewController *)self updateRouteLabel];
   [(MRUActivityNowPlayingViewController *)self updateRoutingButton];
   [(MRUActivityNowPlayingViewController *)self updateVolumeControls];
@@ -482,32 +482,32 @@ void __113__MRUActivityNowPlayingViewController_updateLayoutModesPreferringImmed
   [(MRUActivityNowPlayingViewController *)self updateWaveformVisibility];
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeBundleID:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeBundleID:(id)d
 {
-  [(MRUActivityNowPlayingViewController *)self updateBundleID:a3];
+  [(MRUActivityNowPlayingViewController *)self updateBundleID:controller];
   [(MRUActivityNowPlayingViewController *)self updateRoutingButton];
 
   [(MRUActivityNowPlayingViewController *)self updateNowPlayingInfo];
 }
 
-- (void)transportControlsView:(id)a3 didSelectTVRemoteButton:(id)a4
+- (void)transportControlsView:(id)view didSelectTVRemoteButton:(id)button
 {
-  v5 = [(MRUNowPlayingController *)self->_controller tvRemoteController:a3];
+  v5 = [(MRUNowPlayingController *)self->_controller tvRemoteController:view];
   [v5 presentTVRemoteUsingApp:1];
 
   [(MRUActivityNowPlayingViewController *)self updateLayoutModesPreferringImmediateTransition:1 deferInCustomLayout:0 reason:@"didSelectTVRemoteButton"];
 }
 
-- (void)transportControlsView:(id)a3 didSelectRoutingButton:(id)a4
+- (void)transportControlsView:(id)view didSelectRoutingButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  buttonCopy = button;
   v8 = objc_alloc_init(MEMORY[0x1E69705B8]);
   if (!+[MRUFeatureFlagProvider isCayenneEnabled])
   {
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    [v8 setPresentingAppBundleID:v10];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v8 setPresentingAppBundleID:bundleIdentifier];
   }
 
   [v8 setSurface:3];
@@ -556,8 +556,8 @@ void __84__MRUActivityNowPlayingViewController_transportControlsView_didSelectRo
 
 - (void)registerHapticObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleHapticEnabledStatusChangedNotification_ name:*MEMORY[0x1E696F718] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleHapticEnabledStatusChangedNotification_ name:*MEMORY[0x1E696F718] object:0];
 }
 
 - (void)createWaveformViewController
@@ -571,16 +571,16 @@ void __84__MRUActivityNowPlayingViewController_transportControlsView_didSelectRo
   self->_waveformViewController = v5;
 
   [(MRUWaveformController *)self->_waveformController setNowPlayingController:self->_controller];
-  v7 = [(MRUActivityNowPlayingViewController *)self view];
-  v8 = [v7 artworkViews];
-  v9 = [v8 firstObject];
-  [v9 addObserver:self->_waveformController];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view artworkViews];
+  firstObject = [artworkViews firstObject];
+  [firstObject addObserver:self->_waveformController];
 
   [(MRUActivityNowPlayingViewController *)self addChildViewController:self->_waveformViewController];
-  v10 = [(MRUWaveformViewController *)self->_waveformViewController view];
-  v11 = [(MRUActivityNowPlayingViewController *)self view];
-  v12 = [v11 trailingView];
-  [v12 setWaveformView:v10];
+  view2 = [(MRUWaveformViewController *)self->_waveformViewController view];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView = [view3 trailingView];
+  [trailingView setWaveformView:view2];
 
   v13 = self->_waveformViewController;
 
@@ -593,16 +593,16 @@ void __84__MRUActivityNowPlayingViewController_transportControlsView_didSelectRo
   hapticViewController = self->_hapticViewController;
   self->_hapticViewController = v3;
 
-  v5 = [(MRUActivityNowPlayingViewController *)self view];
-  v6 = [v5 artworkViews];
-  v7 = [v6 firstObject];
-  [v7 addObserver:self->_hapticViewController];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view artworkViews];
+  firstObject = [artworkViews firstObject];
+  [firstObject addObserver:self->_hapticViewController];
 
   [(MRUActivityNowPlayingViewController *)self addChildViewController:self->_hapticViewController];
-  v8 = [(MRUHapticViewController *)self->_hapticViewController view];
-  v9 = [(MRUActivityNowPlayingViewController *)self view];
-  v10 = [v9 trailingView];
-  [v10 setHapticView:v8];
+  view2 = [(MRUHapticViewController *)self->_hapticViewController view];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView = [view3 trailingView];
+  [trailingView setHapticView:view2];
 
   waveformViewController = self->_waveformViewController;
 
@@ -626,14 +626,14 @@ void __84__MRUActivityNowPlayingViewController_transportControlsView_didSelectRo
 
 - (void)updateBundleID
 {
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  obj = [v3 bundleID];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  obj = [metadataController bundleID];
 
   if (MRMediaRemoteApplicationIsSystemMediaApplication())
   {
     v4 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
 LABEL_5:
-    v5 = obj;
+    endpointController = obj;
     obj = v4;
 LABEL_6:
 
@@ -648,18 +648,18 @@ LABEL_6:
 
   if (obj)
   {
-    v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-    if ([v5 isDeviceSystemRoute])
+    endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+    if ([endpointController isDeviceSystemRoute])
     {
       goto LABEL_6;
     }
 
-    v10 = [(MRUNowPlayingController *)self->_controller endpointController];
-    v11 = [v10 isAirPlaying];
+    endpointController2 = [(MRUNowPlayingController *)self->_controller endpointController];
+    isAirPlaying = [endpointController2 isAirPlaying];
 
-    if ((v11 & 1) == 0)
+    if ((isAirPlaying & 1) == 0)
     {
-      v5 = obj;
+      endpointController = obj;
       obj = &stru_1F1445548;
       goto LABEL_6;
     }
@@ -684,8 +684,8 @@ LABEL_7:
     if ((v8 & 1) == 0)
     {
       objc_storeStrong(&self->_associatedAppBundleIdentifier, obj);
-      v9 = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
-      [v9 setElementNeedsUpdate];
+      systemApertureElementContext = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
+      [systemApertureElementContext setElementNeedsUpdate];
 
       [(MRUActivityNowPlayingViewController *)self updateLayoutModesPreferringImmediateTransition:1 deferInCustomLayout:1 reason:@"updateBundleID"];
     }
@@ -709,18 +709,18 @@ LABEL_7:
 - (void)updateArtwork
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v4 = [v3 artwork];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  artwork = [metadataController artwork];
 
-  v5 = [(MRUActivityNowPlayingViewController *)self artworkTransitionDirection];
+  artworkTransitionDirection = [(MRUActivityNowPlayingViewController *)self artworkTransitionDirection];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(MRUActivityNowPlayingViewController *)self view];
-  v7 = [v6 artworkViews];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view artworkViews];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [artworkViews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -732,14 +732,14 @@ LABEL_7:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(artworkViews);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setArtwork:v4 transitionDirection:v5];
+        [*(*(&v12 + 1) + 8 * v11++) setArtwork:artwork transitionDirection:artworkTransitionDirection];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [artworkViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -751,54 +751,54 @@ LABEL_7:
 - (void)updateNowPlayingInfo
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v4 = [v3 nowPlayingInfo];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
 
-  v5 = [(MRUActivityNowPlayingViewController *)self view];
-  v6 = [v5 headerView];
-  v7 = [v6 labelView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  headerView = [view headerView];
+  labelView = [headerView labelView];
 
-  v8 = [(MRUActivityNowPlayingViewController *)self view];
-  v9 = [v8 artworkViews];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view2 artworkViews];
 
-  v10 = [(MRUActivityNowPlayingViewController *)self view];
-  v11 = [v10 leadingView];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  leadingView = [view3 leadingView];
 
-  v12 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v13 = [v12 route];
-  [v7 setRoute:v13];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
+  [labelView setRoute:route];
 
-  v14 = [v4 stringForComponents:1];
-  v15 = [v4 stringForComponents:122];
+  v14 = [nowPlayingInfo stringForComponents:1];
+  v15 = [nowPlayingInfo stringForComponents:122];
   if (v14 | v15)
   {
-    [v7 setTitle:{v14, v14}];
+    [labelView setTitle:{v14, v14}];
     v16 = v15;
   }
 
   else
   {
-    v17 = [(MRUNowPlayingController *)self->_controller metadataController];
-    v18 = [v17 bundleName];
-    [v7 setTitle:v18];
+    metadataController2 = [(MRUNowPlayingController *)self->_controller metadataController];
+    bundleName = [metadataController2 bundleName];
+    [labelView setTitle:bundleName];
 
     v16 = 0;
   }
 
-  [v7 setSubtitle:v16];
-  v19 = [v4 placeholder];
-  [v7 setPlaceholder:v19];
+  [labelView setSubtitle:v16];
+  placeholder = [nowPlayingInfo placeholder];
+  [labelView setPlaceholder:placeholder];
 
-  [v7 setShowPlaceholder:{objc_msgSend(v4, "showPlaceholder")}];
-  v20 = [v4 stringForComponents:59];
-  v29 = v11;
-  [v11 setAccessibilityLabel:v20];
+  [labelView setShowPlaceholder:{objc_msgSend(nowPlayingInfo, "showPlaceholder")}];
+  v20 = [nowPlayingInfo stringForComponents:59];
+  v29 = leadingView;
+  [leadingView setAccessibilityLabel:v20];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v21 = v9;
+  v21 = artworkViews;
   v22 = [v21 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v22)
   {
@@ -814,9 +814,9 @@ LABEL_7:
         }
 
         v26 = *(*(&v30 + 1) + 8 * i);
-        [v26 setPlaying:{objc_msgSend(v4, "isPlaying")}];
-        v27 = [v4 identifier];
-        [v26 setItemIdentifier:v27];
+        [v26 setPlaying:{objc_msgSend(nowPlayingInfo, "isPlaying")}];
+        identifier = [nowPlayingInfo identifier];
+        [v26 setItemIdentifier:identifier];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -830,84 +830,84 @@ LABEL_7:
 
 - (void)updateTimeControls
 {
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v6 = [v3 timeControls];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  timeControls = [metadataController timeControls];
 
-  v4 = [(MRUActivityNowPlayingViewController *)self view];
-  v5 = [v4 timeControlsView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  timeControlsView = [view timeControlsView];
 
-  [v5 setTimeControls:v6];
+  [timeControlsView setTimeControls:timeControls];
 }
 
 - (void)updateTransportControls
 {
-  v3 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v7 = [v3 transportControls];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  transportControls = [metadataController transportControls];
 
-  v4 = [(MRUActivityNowPlayingViewController *)self view];
-  v5 = [v4 transportControlsView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  transportControlsView = [view transportControlsView];
 
-  [v5 setTransportControls:v7];
-  v6 = [(MRUNowPlayingController *)self->_controller tvRemoteController];
-  [v5 setShowTVRemoteButton:{objc_msgSend(v6, "showTVRemote")}];
+  [transportControlsView setTransportControls:transportControls];
+  tvRemoteController = [(MRUNowPlayingController *)self->_controller tvRemoteController];
+  [transportControlsView setShowTVRemoteButton:{objc_msgSend(tvRemoteController, "showTVRemote")}];
 }
 
 - (void)updateRouteLabel
 {
-  v3 = [(MRUActivityNowPlayingViewController *)self view];
-  v4 = [v3 headerView];
-  v14 = [v4 labelView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  headerView = [view headerView];
+  labelView = [headerView labelView];
 
-  v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v6 = [v5 route];
-  v7 = [(MRUActivityNowPlayingViewController *)self view];
-  v8 = [v7 headerView];
-  v9 = [v8 labelView];
-  [v9 setRoute:v6];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  headerView2 = [view2 headerView];
+  labelView2 = [headerView2 labelView];
+  [labelView2 setRoute:route];
 
-  v10 = [(MRUNowPlayingController *)self->_controller endpointController];
-  if ([v10 isDeviceSystemRoute])
+  endpointController2 = [(MRUNowPlayingController *)self->_controller endpointController];
+  if ([endpointController2 isDeviceSystemRoute])
   {
-    v11 = [(MRUNowPlayingController *)self->_controller endpointController];
-    v12 = [v11 isAirPlaying];
+    endpointController3 = [(MRUNowPlayingController *)self->_controller endpointController];
+    isAirPlaying = [endpointController3 isAirPlaying];
   }
 
   else
   {
-    v12 = 1;
+    isAirPlaying = 1;
   }
 
-  if (v12 != [v14 showRoute])
+  if (isAirPlaying != [labelView showRoute])
   {
-    [v14 setShowRoute:v12];
-    v13 = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
-    [v13 setElementNeedsUpdate];
+    [labelView setShowRoute:isAirPlaying];
+    systemApertureElementContext = [(MRUActivityNowPlayingViewController *)self systemApertureElementContext];
+    [systemApertureElementContext setElementNeedsUpdate];
   }
 }
 
 - (void)updateRoutingButton
 {
-  v3 = [(MRUActivityNowPlayingViewController *)self view];
-  v4 = [v3 transportControlsView];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  transportControlsView = [view transportControlsView];
 
-  v5 = [(MRUActivityNowPlayingViewController *)self view];
-  v6 = [v5 trailingView];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView = [view2 trailingView];
 
-  v7 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v8 = [v7 route];
-  v9 = [v8 canModifyGroupMembership];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
+  canModifyGroupMembership = [route canModifyGroupMembership];
 
-  [v4 setShowRoutingButton:v9];
+  [transportControlsView setShowRoutingButton:canModifyGroupMembership];
   controller = self->_controller;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__MRUActivityNowPlayingViewController_updateRoutingButton__block_invoke;
   v13[3] = &unk_1E76646D8;
-  v14 = v6;
-  v15 = v4;
-  v16 = self;
-  v11 = v4;
-  v12 = v6;
+  v14 = trailingView;
+  v15 = transportControlsView;
+  selfCopy = self;
+  v11 = transportControlsView;
+  v12 = trailingView;
   [(MRUNowPlayingController *)controller routingDeviceImage:v13];
 }
 
@@ -925,14 +925,14 @@ void __58__MRUActivityNowPlayingViewController_updateRoutingButton__block_invoke
 - (void)updateVolumeControls
 {
   *&v33[13] = *MEMORY[0x1E69E9840];
-  v3 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v4 = [v3 route];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
 
-  v5 = [(MPVolumeController *)self->_volumeController dataSource];
-  v6 = v5;
+  dataSource = [(MPVolumeController *)self->_volumeController dataSource];
+  v6 = dataSource;
   if (!self->_volumeController)
   {
-    v9 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v4 outputDeviceRoute:0];
+    v9 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
     v10 = [objc_alloc(MEMORY[0x1E6970A18]) initWithDataSource:v9];
     volumeController = self->_volumeController;
@@ -942,37 +942,37 @@ void __58__MRUActivityNowPlayingViewController_updateRoutingButton__block_invoke
     goto LABEL_5;
   }
 
-  v7 = [v5 groupRoute];
-  v8 = [v7 isEqual:v4];
+  groupRoute = [dataSource groupRoute];
+  v8 = [groupRoute isEqual:route];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:v4 outputDeviceRoute:0];
+    v9 = [objc_alloc(MEMORY[0x1E6970A20]) initWithGroupRoute:route outputDeviceRoute:0];
 
     [(MPVolumeController *)self->_volumeController setDataSource:v9];
 LABEL_5:
     v6 = v9;
   }
 
-  v12 = [v6 volumeControlCapabilities];
-  if (-[MRUActivityNowPlayingViewController isExpanded](self, "isExpanded") && ([v4 isDeviceRoute] & 1) == 0 && (v12 & 3) != 0)
+  volumeControlCapabilities = [v6 volumeControlCapabilities];
+  if (-[MRUActivityNowPlayingViewController isExpanded](self, "isExpanded") && ([route isDeviceRoute] & 1) == 0 && (volumeControlCapabilities & 3) != 0)
   {
     v13 = MCLogCategoryVolume();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
-      v15 = [(MRUActivityNowPlayingViewController *)self isOnScreen];
+      isOnScreen = [(MRUActivityNowPlayingViewController *)self isOnScreen];
       v16 = MRUNowPlayingContextDescription(7);
       v26 = 138544386;
       v27 = v14;
       v28 = 1024;
-      v29 = v15;
+      v29 = isOnScreen;
       v30 = 2114;
       v31 = v16;
       v32 = 1024;
       *v33 = 1;
       v33[2] = 2114;
-      *&v33[3] = v4;
+      *&v33[3] = route;
       _os_log_impl(&dword_1A20FC000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ taking hardware assertion: on screen: %{BOOL}u | context: %{public}@ | control: %{BOOL}u  | route: %{public}@", &v26, 0x2Cu);
     }
 
@@ -993,16 +993,16 @@ LABEL_16:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
-      v24 = [(MRUActivityNowPlayingViewController *)self isOnScreen];
+      isOnScreen2 = [(MRUActivityNowPlayingViewController *)self isOnScreen];
       v25 = MRUNowPlayingContextDescription(7);
       v26 = 138544130;
       v27 = v23;
       v28 = 1024;
-      v29 = v24;
+      v29 = isOnScreen2;
       v30 = 2114;
       v31 = v25;
       v32 = 2114;
-      *v33 = v4;
+      *v33 = route;
       _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ removing hardware assertion: on screen: %{BOOL}u | context: %{public}@ | route: %{public}@", &v26, 0x26u);
     }
 
@@ -1026,74 +1026,74 @@ LABEL_17:
     v3 = 7;
   }
 
-  v4 = [(MRUActivityNowPlayingViewController *)self view];
-  v5 = [v4 artworkViews];
-  v6 = [v5 firstObject];
-  [v6 setStyle:v3];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  artworkViews = [view artworkViews];
+  firstObject = [artworkViews firstObject];
+  [firstObject setStyle:v3];
 
   v7 = self->_activeLayoutMode == 4;
-  v8 = [(MRUActivityNowPlayingViewController *)self view];
-  v9 = [v8 headerView];
-  v10 = [v9 labelView];
-  [v10 setMarqueeEnabled:v7];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  headerView = [view2 headerView];
+  labelView = [headerView labelView];
+  [labelView setMarqueeEnabled:v7];
 
   v11 = self->_activeLayoutMode == 4;
-  v13 = [(MRUActivityNowPlayingViewController *)self view];
-  v12 = [v13 timeControlsView];
-  [v12 setOnScreen:v11];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  timeControlsView = [view3 timeControlsView];
+  [timeControlsView setOnScreen:v11];
 }
 
 - (void)updateWaveformVisibility
 {
-  v3 = [(MRUWaveformController *)self->_waveformController routeSupportsWaveform];
+  routeSupportsWaveform = [(MRUWaveformController *)self->_waveformController routeSupportsWaveform];
   activeLayoutMode = self->_activeLayoutMode;
-  v5 = [MEMORY[0x1E696F728] sharedManager];
-  if ([v5 musicHapticsEnabled])
+  mEMORY[0x1E696F728] = [MEMORY[0x1E696F728] sharedManager];
+  if ([mEMORY[0x1E696F728] musicHapticsEnabled])
   {
-    v6 = [(MRUNowPlayingController *)self->_controller metadataController];
-    v7 = [v6 appSupportsHaptics];
+    metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+    appSupportsHaptics = [metadataController appSupportsHaptics];
   }
 
   else
   {
-    v7 = 0;
+    appSupportsHaptics = 0;
   }
 
-  if (v3)
+  if (routeSupportsWaveform)
   {
     v8 = activeLayoutMode > 2;
-    [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:v8 & (v7 ^ 1)];
-    v9 = v8 & v7;
+    [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:v8 & (appSupportsHaptics ^ 1)];
+    v9 = v8 & appSupportsHaptics;
   }
 
   else
   {
     [(MRUWaveformViewController *)self->_waveformViewController setOnScreen:0];
-    v7 = 0;
+    appSupportsHaptics = 0;
     v9 = 0;
   }
 
   [(MRUHapticViewController *)self->_hapticViewController setOnScreen:v9];
-  v10 = [(MRUActivityNowPlayingViewController *)self view];
-  v11 = [v10 trailingView];
-  [v11 setShowWaveform:v3];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView = [view trailingView];
+  [trailingView setShowWaveform:routeSupportsWaveform];
 
-  v12 = [(MRUActivityNowPlayingViewController *)self view];
-  v13 = [v12 trailingView];
-  [v13 setShowHaptic:v7];
+  view2 = [(MRUActivityNowPlayingViewController *)self view];
+  trailingView2 = [view2 trailingView];
+  [trailingView2 setShowHaptic:appSupportsHaptics];
 
-  v14 = [(MRUActivityNowPlayingViewController *)self view];
-  [v14 setShowTrailingAccessoryWhenExpanded:v3];
+  view3 = [(MRUActivityNowPlayingViewController *)self view];
+  [view3 setShowTrailingAccessoryWhenExpanded:routeSupportsWaveform];
 }
 
 - (void)updateSylingProvider
 {
   v5 = objc_alloc_init(MRUVisualStylingProvider);
-  v3 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  [(MRUVisualStylingProvider *)v5 setPrimaryColor:v3];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  [(MRUVisualStylingProvider *)v5 setPrimaryColor:systemWhiteColor];
 
-  v4 = [(MRUActivityNowPlayingViewController *)self view];
-  [v4 setStylingProvider:v5];
+  view = [(MRUActivityNowPlayingViewController *)self view];
+  [view setStylingProvider:v5];
 }
 
 @end

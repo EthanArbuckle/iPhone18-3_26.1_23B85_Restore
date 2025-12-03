@@ -1,5 +1,5 @@
 @interface CRLImageItem
-+ (void)adjustIncomingWithNewImageGeometry:(id)a3 newMaskGeometry:(id)a4 newImageData:(id)a5 targetImageGeometry:(id)a6 targetMaskGeometry:(id)a7 assetOwner:(id)a8;
++ (void)adjustIncomingWithNewImageGeometry:(id)geometry newMaskGeometry:(id)maskGeometry newImageData:(id)data targetImageGeometry:(id)imageGeometry targetMaskGeometry:(id)targetMaskGeometry assetOwner:(id)owner;
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock;
 - (BOOL)canAspectRatioLockBeChangedByUser;
 - (BOOL)isBackgroundRemoved;
@@ -8,7 +8,7 @@
 - (BOOL)isPDF;
 - (BOOL)isSpatial;
 - (BOOL)maskCanBeReset;
-- (BOOL)maskMatchesImageGeometryWithIgnoreRoundedCorners:(BOOL)a3;
+- (BOOL)maskMatchesImageGeometryWithIgnoreRoundedCorners:(BOOL)corners;
 - (BOOL)needsDownload;
 - (BOOL)placeHolderDataNeedsDownload;
 - (BOOL)shouldDisplayAsSpatial;
@@ -30,32 +30,32 @@
 - (double)viewScaleToUseWhenRasterizingSingleBoardItemForCopy;
 - (float)roundedCornerAmount;
 - (id)commandToResetMask;
-- (id)commandToSetRoundedCornersEnabled:(BOOL)a3;
+- (id)commandToSetRoundedCornersEnabled:(BOOL)enabled;
 - (id)defaultMaskInfo;
-- (id)maskInfoForCornerRadius:(float)a3;
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5;
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3 board:(id)a4;
-- (void)setAssetMediaWithMedia:(id)a3 thumbnailData:(id)a4;
-- (void)setIsBackgroundRemoved:(BOOL)a3;
-- (void)setIsImagePlaceholder:(BOOL)a3;
-- (void)setMaskInfo:(id)a3;
-- (void)set_imageAssetAsData:(id)a3;
-- (void)set_thumbnailAssetAsData:(id)a3;
-- (void)takePropertiesFromReplacedBoardItem:(id)a3;
-- (void)updateGeometryToReplaceBoardItem:(id)a3;
+- (id)maskInfoForCornerRadius:(float)radius;
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size;
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size board:(id)board;
+- (void)setAssetMediaWithMedia:(id)media thumbnailData:(id)data;
+- (void)setIsBackgroundRemoved:(BOOL)removed;
+- (void)setIsImagePlaceholder:(BOOL)placeholder;
+- (void)setMaskInfo:(id)info;
+- (void)set_imageAssetAsData:(id)data;
+- (void)set_thumbnailAssetAsData:(id)data;
+- (void)takePropertiesFromReplacedBoardItem:(id)item;
+- (void)updateGeometryToReplaceBoardItem:(id)item;
 @end
 
 @implementation CRLImageItem
 
-- (void)crl_onBoard:(id)a3 moveItemToPosition:(CGPoint)a4 size:(CGSize)a5
+- (void)crl_onBoard:(id)board moveItemToPosition:(CGPoint)position size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = [(CRLImageItem *)self maskInfo];
-  if (v11)
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  boardCopy = board;
+  maskInfo = [(CRLImageItem *)self maskInfo];
+  if (maskInfo)
   {
     [(CRLBoardItem *)self visibleBoundsForPositioning];
     if (v12 != width || v13 != height)
@@ -137,32 +137,32 @@
         v20 = height / v15;
       }
 
-      v24 = [v11 geometry];
-      v25 = [v24 mutableCopy];
+      geometry = [maskInfo geometry];
+      v25 = [geometry mutableCopy];
 
-      v26 = [v11 geometry];
-      [v26 size];
+      geometry2 = [maskInfo geometry];
+      [geometry2 size];
       v28 = v16 * v27;
-      v29 = [v11 geometry];
-      [v29 size];
+      geometry3 = [maskInfo geometry];
+      [geometry3 size];
       [v25 setSize:{v28, v20 * v30}];
 
-      v31 = [v11 geometry];
-      [v31 position];
+      geometry4 = [maskInfo geometry];
+      [geometry4 position];
       v33 = v16 * v32;
-      v34 = [v11 geometry];
-      [v34 position];
+      geometry5 = [maskInfo geometry];
+      [geometry5 position];
       [v25 setPosition:{v33, v20 * v35}];
 
-      [v11 setGeometry:v25];
-      v36 = [(CRLBoardItemBase *)self geometry];
-      v37 = [v36 mutableCopy];
+      [maskInfo setGeometry:v25];
+      geometry6 = [(CRLBoardItemBase *)self geometry];
+      v37 = [geometry6 mutableCopy];
 
-      v38 = [(CRLBoardItemBase *)self geometry];
-      [v38 size];
+      geometry7 = [(CRLBoardItemBase *)self geometry];
+      [geometry7 size];
       v40 = v16 * v39;
-      v41 = [(CRLBoardItemBase *)self geometry];
-      [v41 size];
+      geometry8 = [(CRLBoardItemBase *)self geometry];
+      [geometry8 size];
       [v37 setSize:{v40, v20 * v42}];
 
       [(CRLBoardItemBase *)self setGeometry:v37];
@@ -172,8 +172,8 @@
     v45 = v44;
     if (v44 != x || v43 != y)
     {
-      v46 = [(CRLBoardItemBase *)self geometry];
-      v47 = [v46 mutableCopy];
+      geometry9 = [(CRLBoardItemBase *)self geometry];
+      v47 = [geometry9 mutableCopy];
 
       v48 = sub_10011F31C(x, y, v45);
       [v47 position];
@@ -186,13 +186,13 @@
   {
     v51.receiver = self;
     v51.super_class = _TtC8Freeform12CRLImageItem;
-    [(CRLBoardItem *)&v51 crl_onBoard:v10 moveItemToPosition:x size:y, width, height];
+    [(CRLBoardItem *)&v51 crl_onBoard:boardCopy moveItemToPosition:x size:y, width, height];
   }
 }
 
 - (NSData)data
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB30D8();
   v4 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24);
   v5 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32);
@@ -217,7 +217,7 @@
 
 - (NSString)filename
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB30D8();
   v4 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24);
   v5 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32);
@@ -234,7 +234,7 @@
   v3 = sub_1005B981C(&unk_1019F8DB0);
   __chkstk_darwin(v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_100933184(v5);
 
   v7 = type metadata accessor for UTType();
@@ -251,31 +251,31 @@
   return v10;
 }
 
-- (void)set_imageAssetAsData:(id)a3
+- (void)set_imageAssetAsData:(id)data
 {
   v4 = *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__imageAssetAsData];
-  *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__imageAssetAsData] = a3;
-  v3 = a3;
+  *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__imageAssetAsData] = data;
+  dataCopy = data;
 }
 
 - (_TtC8Freeform8CRLAsset)imageAssetPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB30D8();
 
   return v3;
 }
 
-- (void)set_thumbnailAssetAsData:(id)a3
+- (void)set_thumbnailAssetAsData:(id)data
 {
   v4 = *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__thumbnailAssetAsData];
-  *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__thumbnailAssetAsData] = a3;
-  v3 = a3;
+  *&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform12CRLImageItem__thumbnailAssetAsData] = data;
+  dataCopy = data;
 }
 
 - (_TtC8Freeform8CRLAsset)thumbnailAssetPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB3AB4();
 
   return v3;
@@ -283,10 +283,10 @@
 
 - (CGSize)mediaRawPixelSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB30D8();
-  v4 = [objc_opt_self() sharedPool];
-  v5 = [v4 providerForAsset:v3 shouldValidate:1];
+  sharedPool = [objc_opt_self() sharedPool];
+  v5 = [sharedPool providerForAsset:v3 shouldValidate:1];
 
   [v5 naturalSize];
   v7 = v6;
@@ -299,17 +299,17 @@
   return result;
 }
 
-- (void)setAssetMediaWithMedia:(id)a3 thumbnailData:(id)a4
+- (void)setAssetMediaWithMedia:(id)media thumbnailData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100BB4A48(v6, a4);
+  mediaCopy = media;
+  dataCopy = data;
+  selfCopy = self;
+  sub_100BB4A48(mediaCopy, data);
 }
 
 - (CRLBezierPath)tracedPath
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BB5634();
   v4 = v3;
 
@@ -318,23 +318,23 @@
 
 - (CRLMaskInfo)maskInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BBF54C();
   v4 = v3;
 
   return v3;
 }
 
-- (void)setMaskInfo:(id)a3
+- (void)setMaskInfo:(id)info
 {
-  v5 = a3;
-  v6 = self;
-  sub_100BB584C(a3);
+  infoCopy = info;
+  selfCopy = self;
+  sub_100BB584C(info);
 }
 
 - (id)defaultMaskInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB5CC8();
 
   return v3;
@@ -342,7 +342,7 @@
 
 - (BOOL)maskCanBeReset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB60A8();
 
   return v3 & 1;
@@ -356,7 +356,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_101A25280)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&unk_101A2F5B0);
     CRRegister.wrappedValue.getter();
@@ -375,29 +375,29 @@
   return result;
 }
 
-- (void)setIsBackgroundRemoved:(BOOL)a3
+- (void)setIsBackgroundRemoved:(BOOL)removed
 {
-  v4 = self;
-  sub_100BB66D0(a3);
+  selfCopy = self;
+  sub_100BB66D0(removed);
 }
 
 - (BOOL)isImagePlaceholder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB691C();
 
   return v3 & 1;
 }
 
-- (void)setIsImagePlaceholder:(BOOL)a3
+- (void)setIsImagePlaceholder:(BOOL)placeholder
 {
-  v4 = self;
-  sub_100BB6AEC(a3);
+  selfCopy = self;
+  sub_100BB6AEC(placeholder);
 }
 
 - (BOOL)isSpatial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB6D6C();
 
   return v3 & 1;
@@ -405,7 +405,7 @@
 
 - (BOOL)isOriginalAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB6F04();
 
   return v3;
@@ -413,7 +413,7 @@
 
 - (BOOL)shouldDisplayAsSpatial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB721C();
 
   return v3;
@@ -421,23 +421,23 @@
 
 - (id)commandToResetMask
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB74D4();
 
   return v3;
 }
 
-- (BOOL)maskMatchesImageGeometryWithIgnoreRoundedCorners:(BOOL)a3
+- (BOOL)maskMatchesImageGeometryWithIgnoreRoundedCorners:(BOOL)corners
 {
-  v4 = self;
-  v5 = sub_100BB7BA4(a3);
+  selfCopy = self;
+  v5 = sub_100BB7BA4(corners);
 
   return v5 & 1;
 }
 
 - (CRLCanvasInfoGeometry)geometryWithMask
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB7E00();
 
   return v3;
@@ -449,7 +449,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   v8 = sub_100BB2384();
   if (v8)
   {
@@ -473,7 +473,7 @@
 
 - (BOOL)allowsParentGroupToBeResizedWithoutAspectRatioLock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB88FC();
 
   return v3 & 1;
@@ -481,17 +481,17 @@
 
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB8C1C();
 
   return v3 & 1;
 }
 
-- (void)takePropertiesFromReplacedBoardItem:(id)a3
+- (void)takePropertiesFromReplacedBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100BB8F14(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100BB8F14(itemCopy);
 }
 
 - (NSString)previewTooltip
@@ -531,50 +531,50 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3 board:(id)a4
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size board:(id)board
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = self;
-  sub_100BB9214(v7, width, height);
+  height = size.height;
+  width = size.width;
+  boardCopy = board;
+  selfCopy = self;
+  sub_100BB9214(boardCopy, width, height);
 }
 
-+ (void)adjustIncomingWithNewImageGeometry:(id)a3 newMaskGeometry:(id)a4 newImageData:(id)a5 targetImageGeometry:(id)a6 targetMaskGeometry:(id)a7 assetOwner:(id)a8
++ (void)adjustIncomingWithNewImageGeometry:(id)geometry newMaskGeometry:(id)maskGeometry newImageData:(id)data targetImageGeometry:(id)imageGeometry targetMaskGeometry:(id)targetMaskGeometry assetOwner:(id)owner
 {
   swift_getObjCClassMetadata();
   swift_getObjectType();
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  geometryCopy = geometry;
+  maskGeometryCopy = maskGeometry;
+  dataCopy = data;
+  imageGeometryCopy = imageGeometry;
+  targetMaskGeometryCopy = targetMaskGeometry;
   swift_unknownObjectRetain();
-  sub_100BBEE78(v14, v15, v16, v17, a7, a8);
+  sub_100BBEE78(geometryCopy, maskGeometryCopy, dataCopy, imageGeometryCopy, targetMaskGeometry, owner);
 
   swift_unknownObjectRelease();
 }
 
 - (float)roundedCornerAmount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB96E0();
 
   return v3;
 }
 
-- (id)commandToSetRoundedCornersEnabled:(BOOL)a3
+- (id)commandToSetRoundedCornersEnabled:(BOOL)enabled
 {
-  v4 = self;
-  v5 = sub_100BB9798(a3);
+  selfCopy = self;
+  v5 = sub_100BB9798(enabled);
 
   return v5;
 }
 
-- (id)maskInfoForCornerRadius:(float)a3
+- (id)maskInfoForCornerRadius:(float)radius
 {
-  v4 = self;
-  v5 = sub_100BB9950(a3);
+  selfCopy = self;
+  v5 = sub_100BB9950(radius);
 
   return v5;
 }
@@ -582,9 +582,9 @@
 - (BOOL)needsDownload
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 standardUserDefaults];
-  LOBYTE(v3) = [v5 BOOLForKey:@"CRLImageItemsRequireAssetDownloadForSendCopyUserDefault"];
+  selfCopy = self;
+  standardUserDefaults = [v3 standardUserDefaults];
+  LOBYTE(v3) = [standardUserDefaults BOOLForKey:@"CRLImageItemsRequireAssetDownloadForSendCopyUserDefault"];
 
   if (v3)
   {
@@ -599,16 +599,16 @@
   return v6 & 1;
 }
 
-- (void)updateGeometryToReplaceBoardItem:(id)a3
+- (void)updateGeometryToReplaceBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100BB9D68(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100BB9D68(itemCopy);
 }
 
 - (CGPoint)centerForReplacingWithNewItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BBAFAC();
   v5 = v4;
 
@@ -621,7 +621,7 @@
 
 - (BOOL)placeHolderDataNeedsDownload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB3AB4();
   if (v3)
   {
@@ -642,7 +642,7 @@
 
 - (double)viewScaleToUseWhenRasterizingSingleBoardItemForCopy
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BBB1E0();
   v4 = v3;
 
@@ -651,7 +651,7 @@
 
 - (NSArray)generativePlaygroundImageItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100BB30D8();
   v4 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24);
   v5 = *(v3 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32);
@@ -667,7 +667,7 @@
     sub_1005B981C(&unk_1019F4D60);
     v7 = swift_allocObject();
     *(v7 + 16) = xmmword_101465920;
-    *(v7 + 32) = v2;
+    *(v7 + 32) = selfCopy;
   }
 
   type metadata accessor for CRLBoardItem(0);

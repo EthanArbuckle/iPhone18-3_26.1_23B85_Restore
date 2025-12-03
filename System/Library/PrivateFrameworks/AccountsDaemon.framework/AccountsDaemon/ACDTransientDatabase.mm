@@ -1,6 +1,6 @@
 @interface ACDTransientDatabase
 - (ACDTransientDatabase)init;
-- (id)_addPersistentStoreWithType:(id)a3 configuration:(id)a4 URL:(id)a5 options:(id)a6 error:(id *)a7;
+- (id)_addPersistentStoreWithType:(id)type configuration:(id)configuration URL:(id)l options:(id)options error:(id *)error;
 - (id)createConnection;
 @end
 
@@ -21,22 +21,22 @@
     v6 = *MEMORY[0x277CBE170];
     v11 = 0;
     v7 = [(ACDTransientDatabase *)v2 _addPersistentStoreWithType:v6 configuration:0 URL:0 options:0 error:&v11];
-    v8 = [(ACDTransientDatabase *)v2 createConnection];
-    v9 = [[ACDDatabaseInitializer alloc] initWithDatabaseConnection:v8];
+    createConnection = [(ACDTransientDatabase *)v2 createConnection];
+    v9 = [[ACDDatabaseInitializer alloc] initWithDatabaseConnection:createConnection];
     [(ACDDatabaseInitializer *)v9 updateDefaultContentIfNecessary:0];
   }
 
   return v2;
 }
 
-- (id)_addPersistentStoreWithType:(id)a3 configuration:(id)a4 URL:(id)a5 options:(id)a6 error:(id *)a7
+- (id)_addPersistentStoreWithType:(id)type configuration:(id)configuration URL:(id)l options:(id)options error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator addPersistentStoreWithType:v12 configuration:v13 URL:v14 options:v15 error:a7];
+  typeCopy = type;
+  configurationCopy = configuration;
+  lCopy = l;
+  optionsCopy = options;
+  v16 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator addPersistentStoreWithType:typeCopy configuration:configurationCopy URL:lCopy options:optionsCopy error:error];
 
   v17 = *MEMORY[0x277D85DE8];
 

@@ -1,7 +1,7 @@
 @interface ATXCompletedMissedNotificationRankingStream
 - (ATXCompletedMissedNotificationRankingStream)init;
-- (id)initFromMissedNotificationRankingEventBiomeStream:(id)a3;
-- (id)publisherFromStartTime:(double)a3;
+- (id)initFromMissedNotificationRankingEventBiomeStream:(id)stream;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation ATXCompletedMissedNotificationRankingStream
@@ -14,24 +14,24 @@
   return v4;
 }
 
-- (id)initFromMissedNotificationRankingEventBiomeStream:(id)a3
+- (id)initFromMissedNotificationRankingEventBiomeStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXCompletedMissedNotificationRankingStream;
   v6 = [(ATXCompletedMissedNotificationRankingStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawMNREventStream, a3);
+    objc_storeStrong(&v6->_rawMNREventStream, stream);
   }
 
   return v7;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
-  v3 = [(ATXMissedNotificationRankingBiomeStream *)self->_rawMNREventStream publisherFromStartTime:a3];
+  v3 = [(ATXMissedNotificationRankingBiomeStream *)self->_rawMNREventStream publisherFromStartTime:time];
   v4 = objc_opt_new();
   v5 = [v3 scanWithInitial:v4 nextPartialResult:&__block_literal_global_190];
   v6 = [v5 filterWithIsIncluded:&__block_literal_global_69];

@@ -1,24 +1,24 @@
 @interface AIAudiogramAxis
-- (AIAudiogramAxis)initWithAxis:(unint64_t)a3 values:(id)a4;
+- (AIAudiogramAxis)initWithAxis:(unint64_t)axis values:(id)values;
 - (AIRecognizedText)maxValue;
 - (AIRecognizedText)minValue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation AIAudiogramAxis
 
-- (AIAudiogramAxis)initWithAxis:(unint64_t)a3 values:(id)a4
+- (AIAudiogramAxis)initWithAxis:(unint64_t)axis values:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v10.receiver = self;
   v10.super_class = AIAudiogramAxis;
   v7 = [(AIAudiogramAxis *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(AIAudiogramAxis *)v7 setAxis:a3];
-    [(AIAudiogramAxis *)v8 setValues:v6];
+    [(AIAudiogramAxis *)v7 setAxis:axis];
+    [(AIAudiogramAxis *)v8 setValues:valuesCopy];
   }
 
   return v8;
@@ -26,25 +26,25 @@
 
 - (AIRecognizedText)minValue
 {
-  v2 = [(AIAudiogramAxis *)self values];
-  v3 = [v2 firstObject];
+  values = [(AIAudiogramAxis *)self values];
+  firstObject = [values firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (AIRecognizedText)maxValue
 {
-  v2 = [(AIAudiogramAxis *)self values];
-  v3 = [v2 lastObject];
+  values = [(AIAudiogramAxis *)self values];
+  lastObject = [values lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)description
 {
-  v3 = [(AIAudiogramAxis *)self axis];
+  axis = [(AIAudiogramAxis *)self axis];
   v4 = @"y";
-  if (!v3)
+  if (!axis)
   {
     v4 = @"x";
   }
@@ -54,15 +54,15 @@
   v11.super_class = AIAudiogramAxis;
   v6 = v4;
   v7 = [(AIAudiogramAxis *)&v11 description];
-  v8 = [(AIAudiogramAxis *)self values];
-  v9 = [v5 stringWithFormat:@"%@ (%@ axis) %@", v7, v6, v8];
+  values = [(AIAudiogramAxis *)self values];
+  v9 = [v5 stringWithFormat:@"%@ (%@ axis) %@", v7, v6, values];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -71,22 +71,22 @@
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__4;
     v22 = __Block_byref_object_dispose__4;
-    v23 = v4;
-    v5 = [(AIAudiogramAxis *)self axis];
-    if (v5 == [v19[5] axis] && (-[AIAudiogramAxis values](self, "values"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), objc_msgSend(v19[5], "values"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v6, v7 == v9))
+    v23 = equalCopy;
+    axis = [(AIAudiogramAxis *)self axis];
+    if (axis == [v19[5] axis] && (-[AIAudiogramAxis values](self, "values"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), objc_msgSend(v19[5], "values"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v6, v7 == v9))
     {
       v14 = 0;
       v15 = &v14;
       v16 = 0x2020000000;
       v17 = 1;
-      v10 = [(AIAudiogramAxis *)self values];
+      values = [(AIAudiogramAxis *)self values];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __27__AIAudiogramAxis_isEqual___block_invoke;
       v13[3] = &unk_278CECC78;
       v13[4] = &v18;
       v13[5] = &v14;
-      [v10 enumerateObjectsUsingBlock:v13];
+      [values enumerateObjectsUsingBlock:v13];
 
       v11 = *(v15 + 24);
       _Block_object_dispose(&v14, 8);

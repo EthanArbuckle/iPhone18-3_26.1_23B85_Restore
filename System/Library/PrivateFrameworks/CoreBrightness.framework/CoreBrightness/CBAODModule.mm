@@ -1,67 +1,67 @@
 @interface CBAODModule
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)copyAndHandleEventWithTransitionLength:(float)a3 forceUpdate:(BOOL)a4;
-- (BOOL)copyAndHandleEventWithTransitionParameters:(id *)a3;
-- (BOOL)handleAABSensorOverridePropertyHandler:(id)a3;
-- (BOOL)handleALSEvent:(id)a3 transitionParameters:(id *)a4;
-- (BOOL)handleDisplayModeUpdate:(id)a3;
-- (BOOL)handleDisplayModeUpdate:(int64_t)a3 transitionLength:(float)a4;
-- (BOOL)handleDisplayNitsOverridePropertyHandler:(id)a3;
-- (BOOL)handleFlipBookStatePropertyHandler:(id)a3;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4 transitionLength:(float)a5 forceUpdate:(BOOL)a6;
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4 transitionParameters:(id *)a5;
-- (BOOL)performUpdate:(float)a3 forceUpdate:(BOOL)a4 rampDoneCallback:(id)a5 rampCanceledCallback:(id)a6;
-- (BOOL)performUpdateWithTransitionParameters:(id *)a3;
-- (BOOL)performUpdateWithTransitionParameters:(id *)a3 rampDoneCallback:(id)a4 rampCanceledCallback:(id)a5;
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3;
-- (BOOL)setALSServiceProperty:(void *)a3 forKey:(__CFString *)a4;
-- (BOOL)setDisplayFactor:(float)a3 transitionLength:(float)a4;
-- (BOOL)setModulesProperty:(id)a3 forKey:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)updateAODState:(unint64_t)a3 transitionParameters:(id *)a4 brightnessFactor:(float)a5 forDisplayMode:(int64_t)a6;
-- (CBAODModule)initWithCBBrtControl:(id)a3 andContext:(id)a4;
-- (float)getFloatValueFrom:(id)a3 key:(id)a4;
-- (float)getFloatValueFrom:(id)a3 key:(id)a4 subkey:(id)a5;
-- (id)copyArrayFromPrefsForKey:(id)a3;
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)copyAndHandleEventWithTransitionLength:(float)length forceUpdate:(BOOL)update;
+- (BOOL)copyAndHandleEventWithTransitionParameters:(id *)parameters;
+- (BOOL)handleAABSensorOverridePropertyHandler:(id)handler;
+- (BOOL)handleALSEvent:(id)event transitionParameters:(id *)parameters;
+- (BOOL)handleDisplayModeUpdate:(id)update;
+- (BOOL)handleDisplayModeUpdate:(int64_t)update transitionLength:(float)length;
+- (BOOL)handleDisplayNitsOverridePropertyHandler:(id)handler;
+- (BOOL)handleFlipBookStatePropertyHandler:(id)handler;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from transitionLength:(float)length forceUpdate:(BOOL)update;
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from transitionParameters:(id *)parameters;
+- (BOOL)performUpdate:(float)update forceUpdate:(BOOL)forceUpdate rampDoneCallback:(id)callback rampCanceledCallback:(id)canceledCallback;
+- (BOOL)performUpdateWithTransitionParameters:(id *)parameters;
+- (BOOL)performUpdateWithTransitionParameters:(id *)parameters rampDoneCallback:(id)callback rampCanceledCallback:(id)canceledCallback;
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client;
+- (BOOL)setALSServiceProperty:(void *)property forKey:(__CFString *)key;
+- (BOOL)setDisplayFactor:(float)factor transitionLength:(float)length;
+- (BOOL)setModulesProperty:(id)property forKey:(id)key;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)updateAODState:(unint64_t)state transitionParameters:(id *)parameters brightnessFactor:(float)factor forDisplayMode:(int64_t)mode;
+- (CBAODModule)initWithCBBrtControl:(id)control andContext:(id)context;
+- (float)getFloatValueFrom:(id)from key:(id)key;
+- (float)getFloatValueFrom:(id)from key:(id)key subkey:(id)subkey;
+- (id)copyArrayFromPrefsForKey:(id)key;
 - (id)copyModulesExtendedIdentifiers;
 - (id)copyModulesIdentifiers;
-- (id)copyModulesInfo:(BOOL)a3;
-- (id)copyModulesPropertyForKey:(id)a3;
-- (id)copyPropertyForKey:(id)a3;
-- (int64_t)getIntegerValueFrom:(id)a3 key:(id)a4;
-- (void)addModule:(id)a3;
+- (id)copyModulesInfo:(BOOL)info;
+- (id)copyModulesPropertyForKey:(id)key;
+- (id)copyPropertyForKey:(id)key;
+- (int64_t)getIntegerValueFrom:(id)from key:(id)key;
+- (void)addModule:(id)module;
 - (void)checkBootArgsConfiguration;
 - (void)dealloc;
-- (void)didCompleteTransitionToDisplayMode:(int64_t)a3;
-- (void)enteringAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4;
-- (void)enteringSuppressedAODRoutineWithTransitionParameters:(id *)a3;
-- (void)exitingAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
-- (void)handleSystemDidWakeFromSleepPropertyHandler:(id)a3;
+- (void)didCompleteTransitionToDisplayMode:(int64_t)mode;
+- (void)enteringAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters;
+- (void)enteringSuppressedAODRoutineWithTransitionParameters:(id *)parameters;
+- (void)exitingAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
+- (void)handleSystemDidWakeFromSleepPropertyHandler:(id)handler;
 - (void)loadAODCurveFromDefaults;
-- (void)offAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4;
-- (void)onAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4;
+- (void)offAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters;
+- (void)onAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters;
 - (void)onSuppresedAODRoutine;
 - (void)prepareForEnterToAODRoutine;
 - (void)releaseDisplayModeCompletionTimer;
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4;
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4;
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode;
+- (void)sendNotificationForKey:(id)key andValue:(id)value;
 - (void)start;
-- (void)updateModulesAODState:(unint64_t)a3;
-- (void)updateModulesAODState:(unint64_t)a3 context:(id)a4;
-- (void)updateModulesAODState:(unint64_t)a3 transitionParameters:(id *)a4;
-- (void)updateModulesAODState:(unint64_t)a3 transitionParameters:(id *)a4 context:(id)a5;
+- (void)updateModulesAODState:(unint64_t)state;
+- (void)updateModulesAODState:(unint64_t)state context:(id)context;
+- (void)updateModulesAODState:(unint64_t)state transitionParameters:(id *)parameters;
+- (void)updateModulesAODState:(unint64_t)state transitionParameters:(id *)parameters context:(id)context;
 @end
 
 @implementation CBAODModule
 
 - (void)releaseDisplayModeCompletionTimer
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->super._logHandle)
   {
-    logHandle = v10->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -89,15 +89,15 @@
     _os_log_impl(&dword_1DE8E5000, log, type, "Release scheduled display mode completion timer", v6, 2u);
   }
 
-  if (v10->_displayModeCompletionTimer)
+  if (selfCopy->_displayModeCompletionTimer)
   {
-    dispatch_source_cancel(v10->_displayModeCompletionTimer);
-    dispatch_release(v10->_displayModeCompletionTimer);
-    v10->_displayModeCompletionTimer = 0;
+    dispatch_source_cancel(selfCopy->_displayModeCompletionTimer);
+    dispatch_release(selfCopy->_displayModeCompletionTimer);
+    selfCopy->_displayModeCompletionTimer = 0;
   }
 }
 
-- (void)sendNotificationForKey:(id)a3 andValue:(id)a4
+- (void)sendNotificationForKey:(id)key andValue:(id)value
 {
   if (self->super._notificationBlock)
   {
@@ -105,43 +105,43 @@
   }
 }
 
-- (CBAODModule)initWithCBBrtControl:(id)a3 andContext:(id)a4
+- (CBAODModule)initWithCBBrtControl:(id)control andContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = a4;
+  controlCopy = control;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = CBAODModule;
-  v26 = -[CBModule initWithQueue:](&v22, sel_initWithQueue_, [a4 displayQueue]);
-  if (v26)
+  selfCopy = -[CBModule initWithQueue:](&v22, sel_initWithQueue_, [context displayQueue]);
+  if (selfCopy)
   {
     v4 = os_log_create("com.apple.CoreBrightness.AOD.CBAODModule", "default");
-    v26->super._logHandle = v4;
+    selfCopy->super._logHandle = v4;
     if (![+[CBAODState isAODSupported] sharedInstance]
     {
 LABEL_25:
-      MEMORY[0x1E69E5920](v26);
+      MEMORY[0x1E69E5920](selfCopy);
       v27 = 0;
       goto LABEL_26;
     }
 
-    v26->_brtCtl = v24;
-    MEMORY[0x1E69E5928](v26->_brtCtl);
+    selfCopy->_brtCtl = controlCopy;
+    MEMORY[0x1E69E5928](selfCopy->_brtCtl);
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v26->_modules = v5;
+    selfCopy->_modules = v5;
     v18 = [CBAODThresholdModule alloc];
-    v6 = -[CBAODThresholdModule initWithQueue:](v18, "initWithQueue:", [v23 displayQueue]);
-    v26->_thresholdModule = v6;
+    v6 = -[CBAODThresholdModule initWithQueue:](v18, "initWithQueue:", [contextCopy displayQueue]);
+    selfCopy->_thresholdModule = v6;
     v7 = [CBAODTransitionController alloc];
-    v8 = [(CBAODTransitionController *)v7 initWithContext:v23 andThresholdModule:v26->_thresholdModule];
-    v26->_transitionController = v8;
-    if (!v26->_transitionController)
+    v8 = [(CBAODTransitionController *)v7 initWithContext:contextCopy andThresholdModule:selfCopy->_thresholdModule];
+    selfCopy->_transitionController = v8;
+    if (!selfCopy->_transitionController)
     {
-      if (v26->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v26->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -173,22 +173,22 @@ LABEL_25:
     }
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v26->_alsServiceClients = v9;
-    v26->_ABStateBackup = 1;
-    v26->_displayBrightnessBackup = 2.0;
-    v26->_ABLuxFilterBackup = 0;
-    v26->_aabSensorOverrideFilter = 0;
-    v26->_backupState = 0;
-    v26->_currentDisplayMode = 5;
-    v26->_suspendFeatureUpdates = 0;
-    v26->_displayModeCompletionTimer = 0;
-    v26->_aodEnabled = 1;
-    v26->_flipBookEnabled = 0;
-    v26->_dominoModeEnabled = 0;
-    [(CBAODModule *)v26 checkBootArgsConfiguration];
-    if (v26->super._logHandle)
+    selfCopy->_alsServiceClients = v9;
+    selfCopy->_ABStateBackup = 1;
+    selfCopy->_displayBrightnessBackup = 2.0;
+    selfCopy->_ABLuxFilterBackup = 0;
+    selfCopy->_aabSensorOverrideFilter = 0;
+    selfCopy->_backupState = 0;
+    selfCopy->_currentDisplayMode = 5;
+    selfCopy->_suspendFeatureUpdates = 0;
+    selfCopy->_displayModeCompletionTimer = 0;
+    selfCopy->_aodEnabled = 1;
+    selfCopy->_flipBookEnabled = 0;
+    selfCopy->_dominoModeEnabled = 0;
+    [(CBAODModule *)selfCopy checkBootArgsConfiguration];
+    if (selfCopy->super._logHandle)
     {
-      v13 = v26->super._logHandle;
+      v13 = selfCopy->super._logHandle;
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_25:
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      if (v26->_aodEnabled)
+      if (selfCopy->_aodEnabled)
       {
         v10 = "enabled";
       }
@@ -223,7 +223,7 @@ LABEL_25:
     }
   }
 
-  v27 = v26;
+  v27 = selfCopy;
 LABEL_26:
   *MEMORY[0x1E69E9840];
   return v27;
@@ -231,22 +231,22 @@ LABEL_26:
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(CBAODModule *)self releaseDisplayModeCompletionTimer];
-  MEMORY[0x1E69E5920](v5->_modules);
-  MEMORY[0x1E69E5920](v5->_brtCtl);
-  MEMORY[0x1E69E5920](v5->_transitionController);
-  MEMORY[0x1E69E5920](v5->_currentALSEvent);
-  MEMORY[0x1E69E5920](v5->_alsServiceClients);
-  v2 = MEMORY[0x1E69E5920](v5->_backupState).n128_u64[0];
-  if (v5->_aabSensorOverrideFilter)
+  MEMORY[0x1E69E5920](selfCopy->_modules);
+  MEMORY[0x1E69E5920](selfCopy->_brtCtl);
+  MEMORY[0x1E69E5920](selfCopy->_transitionController);
+  MEMORY[0x1E69E5920](selfCopy->_currentALSEvent);
+  MEMORY[0x1E69E5920](selfCopy->_alsServiceClients);
+  v2 = MEMORY[0x1E69E5920](selfCopy->_backupState).n128_u64[0];
+  if (selfCopy->_aabSensorOverrideFilter)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_aabSensorOverrideFilter).n128_u64[0];
-    v5->_aabSensorOverrideFilter = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_aabSensorOverrideFilter).n128_u64[0];
+    selfCopy->_aabSensorOverrideFilter = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBAODModule;
   [(CBModule *)&v3 dealloc];
 }
@@ -254,7 +254,7 @@ LABEL_26:
 - (void)checkBootArgsConfiguration
 {
   v11 = *MEMORY[0x1E69E9840];
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   bzero(__s1, 0x400uLL);
   v7[0] = 1024;
@@ -264,10 +264,10 @@ LABEL_26:
     if (v6)
     {
       v2 = strtol(v6 + 14, 0, 0) != 0;
-      v8->_aodEnabled = v2;
-      if (v8->super._logHandle)
+      selfCopy->_aodEnabled = v2;
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v8->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -287,7 +287,7 @@ LABEL_26:
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        if (v8->_aodEnabled)
+        if (selfCopy->_aodEnabled)
         {
           v3 = "Enable";
         }
@@ -306,35 +306,35 @@ LABEL_26:
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyPropertyForKey:(id)a3
+- (id)copyPropertyForKey:(id)key
 {
-  if ([a3 isEqualToString:@"AODDisplayNits"])
+  if ([key isEqualToString:@"AODDisplayNits"])
   {
     v7 = objc_alloc(MEMORY[0x1E696AD98]);
     [(CBAODTransitionController *)self->_transitionController currentDisplayNits];
     return [v7 initWithFloat:?];
   }
 
-  else if ([a3 isEqualToString:@"AODBrightnessState"])
+  else if ([key isEqualToString:@"AODBrightnessState"])
   {
     return [(CBAODTransitionController *)self->_transitionController copyCurrentDisplayState];
   }
 
-  else if ([a3 isEqualToString:@"AODDisplayNitsCap"])
+  else if ([key isEqualToString:@"AODDisplayNitsCap"])
   {
     v6 = objc_alloc(MEMORY[0x1E696AD98]);
     [+[CBAODState sharedInstance](CBAODState nitsCap];
     return [v6 initWithFloat:?];
   }
 
-  else if ([a3 isEqualToString:@"AODDisplayNitsOverride"])
+  else if ([key isEqualToString:@"AODDisplayNitsOverride"])
   {
     v5 = objc_alloc(MEMORY[0x1E696AD98]);
     [(CBAODTransitionController *)self->_transitionController nitsOverride];
     return [v5 initWithFloat:?];
   }
 
-  else if ([a3 isEqualToString:@"AODPCCStrength"])
+  else if ([key isEqualToString:@"AODPCCStrength"])
   {
     v4 = objc_alloc(MEMORY[0x1E696AD98]);
     [(CBAODTransitionController *)self->_transitionController currentAAPFactor];
@@ -343,25 +343,25 @@ LABEL_26:
 
   else
   {
-    return [(CBAODThresholdModule *)self->_thresholdModule copyPropertyForKey:a3];
+    return [(CBAODThresholdModule *)self->_thresholdModule copyPropertyForKey:key];
   }
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
   v28 = *MEMORY[0x1E69E9840];
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = a4;
-  if ([a3 isEqualToString:@"CPMSCurrentCap"])
+  keyCopy = key;
+  propertyCopy = property;
+  if ([key isEqualToString:@"CPMSCurrentCap"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v26->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v26->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -383,7 +383,7 @@ LABEL_26:
       v21 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        if ([v23 BOOLValue])
+        if ([propertyCopy BOOLValue])
         {
           v4 = "";
         }
@@ -397,63 +397,63 @@ LABEL_26:
         _os_log_debug_impl(&dword_1DE8E5000, v22, v21, "CPMS Cap Updated: Forcing update while %s ramping", v27, 0xCu);
       }
 
-      if ([v23 BOOLValue])
+      if ([propertyCopy BOOLValue])
       {
-        [(CBAODModule *)v26 performUpdate];
+        [(CBAODModule *)selfCopy performUpdate];
       }
 
       else
       {
-        [(CBAODModule *)v26 performUpdate:0.0];
+        [(CBAODModule *)selfCopy performUpdate:0.0];
       }
     }
   }
 
-  else if ([v24 isEqualToString:@"IndicatorUpdateRampAOD"])
+  else if ([keyCopy isEqualToString:@"IndicatorUpdateRampAOD"])
   {
-    queue = v26->super._queue;
+    queue = selfCopy->super._queue;
     block = MEMORY[0x1E69E9820];
     v16 = -1073741824;
     v17 = 0;
     v18 = __53__CBAODModule_handleNotificationForKey_withProperty___block_invoke;
     v19 = &unk_1E867B480;
-    v20 = v26;
+    v20 = selfCopy;
     dispatch_async(queue, &block);
   }
 
-  else if ([v24 isEqualToString:@"IndicatorRampFinishedAOD"])
+  else if ([keyCopy isEqualToString:@"IndicatorRampFinishedAOD"])
   {
-    v6 = v26->super._queue;
+    v6 = selfCopy->super._queue;
     v9 = MEMORY[0x1E69E9820];
     v10 = -1073741824;
     v11 = 0;
     v12 = __53__CBAODModule_handleNotificationForKey_withProperty___block_invoke_2;
     v13 = &unk_1E867B480;
-    v14 = v26;
+    v14 = selfCopy;
     dispatch_async(v6, &v9);
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v61 = *MEMORY[0x1E69E9840];
-  v52 = self;
+  selfCopy = self;
   v51 = a2;
-  v50 = a3;
-  v49 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v48 = 0;
-  if ([a4 isEqualToString:@"FlipBookState"])
+  if ([key isEqualToString:@"FlipBookState"])
   {
-    v48 = [(CBAODModule *)v52 handleFlipBookStatePropertyHandler:v50];
+    v48 = [(CBAODModule *)selfCopy handleFlipBookStatePropertyHandler:propertyCopy];
   }
 
-  else if ([v49 isEqualToString:@"DisplayBrightness"])
+  else if ([keyCopy isEqualToString:@"DisplayBrightness"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v52->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -475,18 +475,18 @@ LABEL_26:
     type = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v60, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v60, keyCopy, propertyCopy);
       _os_log_debug_impl(&dword_1DE8E5000, oslog, type, "DisplayBrightness = %@ property = %@", v60, 0x16u);
     }
 
-    v48 = [(CBAODModule *)v52 performUpdate:0.0];
+    v48 = [(CBAODModule *)selfCopy performUpdate:0.0];
   }
 
-  else if ([v49 isEqualToString:@"DisplayNitsKey"])
+  else if ([keyCopy isEqualToString:@"DisplayNitsKey"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v26 = v52->super._logHandle;
+      v26 = selfCopy->super._logHandle;
     }
 
     else
@@ -508,23 +508,23 @@ LABEL_26:
     v44 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v59, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v59, keyCopy, propertyCopy);
       _os_log_debug_impl(&dword_1DE8E5000, v45, v44, "DisplayNits = %@ property = %@", v59, 0x16u);
     }
 
-    v48 = [(CBAODModule *)v52 performUpdate:0.0];
+    v48 = [(CBAODModule *)selfCopy performUpdate:0.0];
   }
 
-  else if ([v49 isEqualToString:@"AODDisplayNitsOverride"])
+  else if ([keyCopy isEqualToString:@"AODDisplayNitsOverride"])
   {
-    [(CBAODModule *)v52 handleDisplayNitsOverridePropertyHandler:v50];
+    [(CBAODModule *)selfCopy handleDisplayNitsOverridePropertyHandler:propertyCopy];
   }
 
-  else if ([v49 isEqualToString:@"ForceLiveUpdates"])
+  else if ([keyCopy isEqualToString:@"ForceLiveUpdates"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v24 = v52->super._logHandle;
+      v24 = selfCopy->super._logHandle;
     }
 
     else
@@ -546,23 +546,23 @@ LABEL_26:
     v42 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v58, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v58, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v43, v42, "ForceLiveUpdates = %@ property = %@", v58, 0x16u);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[CBAODTransitionController setLiveUpdatesOverride:](v52->_transitionController, "setLiveUpdatesOverride:", [v50 BOOLValue]);
-      -[CBAODTransitionController setLiveUpdates:](v52->_transitionController, "setLiveUpdates:", [v50 BOOLValue]);
+      -[CBAODTransitionController setLiveUpdatesOverride:](selfCopy->_transitionController, "setLiveUpdatesOverride:", [propertyCopy BOOLValue]);
+      -[CBAODTransitionController setLiveUpdates:](selfCopy->_transitionController, "setLiveUpdates:", [propertyCopy BOOLValue]);
     }
   }
 
-  else if ([v49 isEqualToString:@"EnableDCPFlipBookUpdates"])
+  else if ([keyCopy isEqualToString:@"EnableDCPFlipBookUpdates"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v22 = v52->super._logHandle;
+      v22 = selfCopy->super._logHandle;
     }
 
     else
@@ -584,22 +584,22 @@ LABEL_26:
     v40 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v57, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v57, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v41, v40, "EnableDCPFlipBookUpdates = %@ property = %@", v57, 0x16u);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[CBAODTransitionController enableDCPFlipBookUpdates:](v52->_transitionController, "enableDCPFlipBookUpdates:", [v50 BOOLValue]);
+      -[CBAODTransitionController enableDCPFlipBookUpdates:](selfCopy->_transitionController, "enableDCPFlipBookUpdates:", [propertyCopy BOOLValue]);
     }
   }
 
-  else if ([v49 isEqualToString:@"AABSensorOverride"])
+  else if ([keyCopy isEqualToString:@"AABSensorOverride"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v20 = v52->super._logHandle;
+      v20 = selfCopy->super._logHandle;
     }
 
     else
@@ -621,18 +621,18 @@ LABEL_26:
     v38 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v56, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v56, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v39, v38, "AABSensorOverride = %@ property = %@", v56, 0x16u);
     }
 
-    [(CBAODModule *)v52 handleAABSensorOverridePropertyHandler:v50];
+    [(CBAODModule *)selfCopy handleAABSensorOverridePropertyHandler:propertyCopy];
   }
 
-  else if ([v49 isEqualToString:@"EnableAOD"])
+  else if ([keyCopy isEqualToString:@"EnableAOD"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v18 = v52->super._logHandle;
+      v18 = selfCopy->super._logHandle;
     }
 
     else
@@ -654,33 +654,33 @@ LABEL_26:
     v36 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v55, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v55, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v37, v36, "Enable AOD = %@ property = %@", v55, 0x16u);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v52->_aodEnabled = [v50 BOOLValue];
+      selfCopy->_aodEnabled = [propertyCopy BOOLValue];
     }
   }
 
-  else if ([v49 isEqualToString:@"AODEDRRampDurationPerStop"])
+  else if ([keyCopy isEqualToString:@"AODEDRRampDurationPerStop"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      transitionController = v52->_transitionController;
-      [v50 floatValue];
+      transitionController = selfCopy->_transitionController;
+      [propertyCopy floatValue];
       [(CBAODTransitionController *)transitionController setDurationOfEDRRamp:?];
     }
   }
 
-  else if ([v49 isEqualToString:@"AODUpdateWithCopiedEvent"])
+  else if ([keyCopy isEqualToString:@"AODUpdateWithCopiedEvent"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v15 = v52->super._logHandle;
+      v15 = selfCopy->super._logHandle;
     }
 
     else
@@ -702,22 +702,22 @@ LABEL_26:
     v34 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v54, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v54, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v35, v34, "%@ = %@", v54, 0x16u);
     }
 
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v50 BOOLValue])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([propertyCopy BOOLValue])
     {
-      [(CBAODModule *)v52 copyAndHandleEvent];
+      [(CBAODModule *)selfCopy copyAndHandleEvent];
     }
   }
 
-  else if ([v49 isEqualToString:@"ALSMedianHistorySize"])
+  else if ([keyCopy isEqualToString:@"ALSMedianHistorySize"])
   {
-    if (v52->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v13 = v52->super._logHandle;
+      v13 = selfCopy->super._logHandle;
     }
 
     else
@@ -739,29 +739,29 @@ LABEL_26:
     v32 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_2_8_64_8_64(v53, v49, v50);
+      __os_log_helper_16_2_2_8_64_8_64(v53, keyCopy, propertyCopy);
       _os_log_impl(&dword_1DE8E5000, v33, v32, "%@ = %@", v53, 0x16u);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CBAODModule *)v52 setALSServiceProperty:v50 forKey:@"ALSMedianHistorySize"];
+      [(CBAODModule *)selfCopy setALSServiceProperty:propertyCopy forKey:@"ALSMedianHistorySize"];
     }
   }
 
-  else if ([v49 isEqualToString:@"CBSystemDidWakeFromSleep"])
+  else if ([keyCopy isEqualToString:@"CBSystemDidWakeFromSleep"])
   {
-    [(CBAODModule *)v52 handleSystemDidWakeFromSleepPropertyHandler:v50];
+    [(CBAODModule *)selfCopy handleSystemDidWakeFromSleepPropertyHandler:propertyCopy];
   }
 
-  else if ([v49 isEqual:{-[CBBrightnessProxy brightnessNotificationPowerOff](v52->_brtCtl, "brightnessNotificationPowerOff")}])
+  else if ([keyCopy isEqual:{-[CBBrightnessProxy brightnessNotificationPowerOff](selfCopy->_brtCtl, "brightnessNotificationPowerOff")}])
   {
-    if ([(CBAODTransitionController *)v52->_transitionController displayON])
+    if ([(CBAODTransitionController *)selfCopy->_transitionController displayON])
     {
-      if (v52->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v11 = v52->super._logHandle;
+        v11 = selfCopy->super._logHandle;
       }
 
       else
@@ -789,24 +789,24 @@ LABEL_26:
         _os_log_impl(&dword_1DE8E5000, v8, v9, "BrightnessNotificationPowerOff from CA -> canceling ongoing transitions.", v29, 2u);
       }
 
-      [(CBAODTransitionController *)v52->_transitionController setDisplayON:0];
-      [(CBAODTransitionController *)v52->_transitionController cancelTransition];
+      [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:0];
+      [(CBAODTransitionController *)selfCopy->_transitionController cancelTransition];
     }
   }
 
-  else if ([v49 isEqualToString:@"DominoStateUpdate"])
+  else if ([keyCopy isEqualToString:@"DominoStateUpdate"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v52->_dominoModeEnabled = [v50 BOOLValue];
+      selfCopy->_dominoModeEnabled = [propertyCopy BOOLValue];
     }
   }
 
-  v4 = [(CBAODThresholdModule *)v52->_thresholdModule setProperty:v50 forKey:v49];
+  v4 = [(CBAODThresholdModule *)selfCopy->_thresholdModule setProperty:propertyCopy forKey:keyCopy];
   v48 = v48 || v4;
   v5 = +[CBAODState sharedInstance];
-  v6 = [(CBAODState *)v5 setProperty:v50 forKey:v49];
+  v6 = [(CBAODState *)v5 setProperty:propertyCopy forKey:keyCopy];
   v48 = v48 || v6;
   *MEMORY[0x1E69E9840];
   return v48;
@@ -821,9 +821,9 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     v3 = 3;
-    if ((v2 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v3 = 0;
     }
@@ -949,11 +949,11 @@ uint64_t __20__CBAODModule_start__block_invoke_76(uint64_t result, uint64_t a2, 
   return result;
 }
 
-- (id)copyModulesPropertyForKey:(id)a3
+- (id)copyModulesPropertyForKey:(id)key
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 1375731712;
@@ -968,7 +968,7 @@ uint64_t __20__CBAODModule_start__block_invoke_76(uint64_t result, uint64_t a2, 
   v9 = __41__CBAODModule_copyModulesPropertyForKey___block_invoke;
   v10 = &unk_1E867BEB8;
   v12 = &v13;
-  v11 = a3;
+  keyCopy2 = key;
   [(NSMutableArray *)modules enumerateObjectsUsingBlock:?];
   v5 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -1004,12 +1004,12 @@ uint64_t __41__CBAODModule_copyModulesPropertyForKey___block_invoke(uint64_t a1,
   return result;
 }
 
-- (BOOL)setModulesProperty:(id)a3 forKey:(id)a4
+- (BOOL)setModulesProperty:(id)property forKey:(id)key
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   v6 = 0;
   v7 = &v6;
   v8 = 0x20000000;
@@ -1032,7 +1032,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
   return result;
 }
 
-- (void)addModule:(id)a3
+- (void)addModule:(id)module
 {
   v9 = *MEMORY[0x1E69E9840];
   if (self->super._logHandle)
@@ -1057,15 +1057,15 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v8, a3);
+    __os_log_helper_16_2_1_8_64(v8, module);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Adding module to AOD modules %@", v8, 0xCu);
   }
 
-  [(NSMutableArray *)self->_modules addObject:a3];
+  [(NSMutableArray *)self->_modules addObject:module];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && self->_transitionController)
   {
-    v5 = [a3 copyPropertyForKey:@"IndicatorModule"];
+    v5 = [module copyPropertyForKey:@"IndicatorModule"];
     [(CBAODTransitionController *)self->_transitionController setIndicator:v5];
     MEMORY[0x1E69E5920](v5);
   }
@@ -1073,20 +1073,20 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleFlipBookStatePropertyHandler:(id)a3
+- (BOOL)handleFlipBookStatePropertyHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
   v14 = 1;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [a3 integerValue];
-    if (![+[CBAODState isFlipbookSupported]&& v13 <= 1 sharedInstance]
+    integerValue = [handler integerValue];
+    if (![+[CBAODState isFlipbookSupported]&& integerValue <= 1 sharedInstance]
     {
       logHandle = self->super._logHandle;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
       {
-        __os_log_helper_16_2_1_8_66(v21, [CBDisplayStateUtilities stringForFlipbookState:v13]);
+        __os_log_helper_16_2_1_8_66(v21, [CBDisplayStateUtilities stringForFlipbookState:integerValue]);
         _os_log_fault_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_FAULT, "[Flipbook state][FAULT] Received flipbook state request (%{public}@) on a device that doesn't support flipbook modes", v21, 0xCu);
       }
     }
@@ -1096,7 +1096,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
       v11 = self->super._logHandle;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        __os_log_helper_16_2_3_8_66_8_66_8_32(v20, +[CBDisplayStateUtilities stringForFlipbookState:](CBDisplayStateUtilities, "stringForFlipbookState:", v13), +[CBDisplayStateUtilities stringForDisplayMode:](CBDisplayStateUtilities, "stringForDisplayMode:", self->_currentDisplayMode), [+[CBAODState AODStateString] sharedInstance];
+        __os_log_helper_16_2_3_8_66_8_66_8_32(v20, +[CBDisplayStateUtilities stringForFlipbookState:](CBDisplayStateUtilities, "stringForFlipbookState:", integerValue), +[CBDisplayStateUtilities stringForDisplayMode:](CBDisplayStateUtilities, "stringForDisplayMode:", self->_currentDisplayMode), [+[CBAODState AODStateString] sharedInstance];
         _os_log_fault_impl(&dword_1DE8E5000, v11, OS_LOG_TYPE_FAULT, "[Flipbook state][FAULT] Unexpected flipbook state request (%{public}@) while in display mode [%{public}@] and AOD state [%s]", v20, 0x20u);
       }
     }
@@ -1123,13 +1123,13 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_66(v19, [CBDisplayStateUtilities stringForFlipbookState:v13]);
+      __os_log_helper_16_2_1_8_66(v19, [CBDisplayStateUtilities stringForFlipbookState:integerValue]);
       _os_log_impl(&dword_1DE8E5000, v10, OS_LOG_TYPE_DEFAULT, "[Flipbook state] %{public}@", v19, 0xCu);
     }
 
-    if (v13)
+    if (integerValue)
     {
-      switch(v13)
+      switch(integerValue)
       {
         case 1uLL:
           self->_suspendFeatureUpdates = 0;
@@ -1184,7 +1184,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            __os_log_helper_16_0_1_8_0(v18, v13);
+            __os_log_helper_16_0_1_8_0(v18, integerValue);
             _os_log_error_impl(&dword_1DE8E5000, v8, OS_LOG_TYPE_ERROR, "invalid flipbook state change request (%ld)", v18, 0xCu);
           }
 
@@ -1241,7 +1241,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
   return v14 & 1;
 }
 
-- (BOOL)handleDisplayNitsOverridePropertyHandler:(id)a3
+- (BOOL)handleDisplayNitsOverridePropertyHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -1267,7 +1267,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v15, a3);
+    __os_log_helper_16_2_1_8_64(v15, handler);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "CBAODDisplayNitsOverride = %@", v15, 0xCu);
   }
 
@@ -1275,7 +1275,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
   if (objc_opt_isKindOfClass())
   {
     transitionController = self->_transitionController;
-    [a3 floatValue];
+    [handler floatValue];
     [(CBAODTransitionController *)transitionController setNitsOverride:?];
     v12 = [(CBAODModule *)self performUpdate:0.0];
   }
@@ -1285,8 +1285,8 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [a3 objectForKey:@"AODDisplayNitsOverrideSubKey"];
-      v10 = [a3 objectForKey:@"AODDisplayNitsOverrideFadePeriodSubKey"];
+      v11 = [handler objectForKey:@"AODDisplayNitsOverrideSubKey"];
+      v10 = [handler objectForKey:@"AODDisplayNitsOverrideFadePeriodSubKey"];
       if (v11)
       {
         v5 = self->_transitionController;
@@ -1310,15 +1310,15 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
   return v12;
 }
 
-- (BOOL)handleAABSensorOverridePropertyHandler:(id)a3
+- (BOOL)handleAABSensorOverridePropertyHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v11 = 0;
+  intValue = 0;
   v10 = -1.0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [handler floatValue];
     v10 = v3;
   }
 
@@ -1327,8 +1327,8 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a3 objectForKey:@"AABSensorOverrideValue"];
-      v8 = [a3 objectForKey:@"AABSensorOverrideOrientation"];
+      v9 = [handler objectForKey:@"AABSensorOverrideValue"];
+      v8 = [handler objectForKey:@"AABSensorOverrideOrientation"];
       if (v9)
       {
         [v9 floatValue];
@@ -1337,7 +1337,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
       if (v8)
       {
-        v11 = [v8 intValue];
+        intValue = [v8 intValue];
       }
     }
   }
@@ -1364,7 +1364,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_2_8_0_4_0(v14, COERCE__INT64(v10), v11);
+    __os_log_helper_16_0_2_8_0_4_0(v14, COERCE__INT64(v10), intValue);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_INFO, "override ALS samples with value = %f, with orientation = %d", v14, 0x12u);
   }
 
@@ -1376,26 +1376,26 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
   if (v10 >= 0.0)
   {
-    self->_aabSensorOverrideFilter = [[CBSensorOverrideFilter alloc] initWithData:a3];
+    self->_aabSensorOverrideFilter = [[CBSensorOverrideFilter alloc] initWithData:handler];
   }
 
   *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)handleSystemDidWakeFromSleepPropertyHandler:(id)a3
+- (void)handleSystemDidWakeFromSleepPropertyHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v38 = self;
+  selfCopy = self;
   v37[2] = a2;
-  v37[1] = a3;
+  v37[1] = handler;
   strcpy(__s2, "aop_threshold_als");
   v37[0] = 128;
   if (!sysctlbyname("kern.wakereason", __s1, v37, 0, 0))
   {
-    if (v38->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v38->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -1426,9 +1426,9 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
     if (strstr(__s1, __s2))
     {
-      if (v38->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v18 = v38->super._logHandle;
+        v18 = selfCopy->super._logHandle;
       }
 
       else
@@ -1452,7 +1452,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
       {
         v14 = oslog;
         *v15 = v32;
-        currentALSEvent = v38->_currentALSEvent;
+        currentALSEvent = selfCopy->_currentALSEvent;
         if (currentALSEvent)
         {
           [(CBALSEvent *)currentALSEvent vendorData];
@@ -1468,10 +1468,10 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
         _os_log_impl(&dword_1DE8E5000, v14, v15[0], "Wake reason aop_threshold_als: lux value = %f", v39, 0xCu);
       }
 
-      v30 = [(CBAODModule *)v38 copyModulesPropertyForKey:@"CBAmbientLightTelemetry"];
+      v30 = [(CBAODModule *)selfCopy copyModulesPropertyForKey:@"CBAmbientLightTelemetry"];
       v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:__s1];
       v11 = objc_alloc(MEMORY[0x1E696AD98]);
-      v12 = v38->_currentALSEvent;
+      v12 = selfCopy->_currentALSEvent;
       if (v12)
       {
         [(CBALSEvent *)v12 vendorData];
@@ -1487,10 +1487,10 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
       v7 = 0x1E696A000uLL;
       v6 = objc_alloc(MEMORY[0x1E696AD98]);
       v8 = &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets;
-      [(CBAODThresholdModule *)v38->_thresholdModule dimLuxThreshold];
+      [(CBAODThresholdModule *)selfCopy->_thresholdModule dimLuxThreshold];
       v26 = [v6 initWithFloat:?];
       v9 = objc_alloc(*(v7 + 3480));
-      [*(&v38->super.super.isa + v8[58]) brightenLuxThreshold];
+      [*(&selfCopy->super.super.isa + v8[58]) brightenLuxThreshold];
       v25 = [v9 initWithFloat:?];
       v4 = objc_alloc(MEMORY[0x1E695DF90]);
       v10 = &v5;
@@ -1500,7 +1500,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
         [v24 setObject:v30 forKey:@"ALSSamplesBeforeWake"];
       }
 
-      [(CBAODModule *)v38 sendNotificationForKey:@"AODWakeFromALSThreshold" andValue:v24];
+      [(CBAODModule *)selfCopy sendNotificationForKey:@"AODWakeFromALSThreshold" andValue:v24];
       MEMORY[0x1E69E5920](v30);
       MEMORY[0x1E69E5920](v29);
       MEMORY[0x1E69E5920](v28);
@@ -1512,7 +1512,7 @@ uint64_t __41__CBAODModule_setModulesProperty_forKey___block_invoke(void *a1, vo
 
   if ([+[CBAODState AODState] sharedInstance]
   {
-    [(CBAODModule *)v38 copyAndHandleEvent];
+    [(CBAODModule *)selfCopy copyAndHandleEvent];
   }
 
   *MEMORY[0x1E69E9840];
@@ -1555,33 +1555,33 @@ uint64_t __41__CBAODModule_performUpdate_forceUpdate___block_invoke(uint64_t a1)
   return [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
 }
 
-- (BOOL)performUpdate:(float)a3 forceUpdate:(BOOL)a4 rampDoneCallback:(id)a5 rampCanceledCallback:(id)a6
+- (BOOL)performUpdate:(float)update forceUpdate:(BOOL)forceUpdate rampDoneCallback:(id)callback rampCanceledCallback:(id)canceledCallback
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
-  v10 = a5;
-  v9 = a6;
+  updateCopy = update;
+  forceUpdateCopy = forceUpdate;
+  callbackCopy = callback;
+  canceledCallbackCopy = canceledCallback;
   memset(__b, 0, sizeof(__b));
-  LOBYTE(__b[0]) = v11;
-  HIBYTE(__b[0]) = v12 >= 0.0;
-  *&__b[1] = v12;
+  LOBYTE(__b[0]) = forceUpdateCopy;
+  HIBYTE(__b[0]) = updateCopy >= 0.0;
+  *&__b[1] = updateCopy;
   memcpy(__dst, __b, sizeof(__dst));
-  return [(CBAODModule *)v14 performUpdateWithTransitionParameters:__dst rampDoneCallback:v10 rampCanceledCallback:v9];
+  return [(CBAODModule *)selfCopy performUpdateWithTransitionParameters:__dst rampDoneCallback:callbackCopy rampCanceledCallback:canceledCallbackCopy];
 }
 
-- (BOOL)performUpdateWithTransitionParameters:(id *)a3
+- (BOOL)performUpdateWithTransitionParameters:(id *)parameters
 {
   v6[7] = self;
   v6[6] = a2;
-  v6[5] = a3;
+  v6[5] = parameters;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__CBAODModule_performUpdateWithTransitionParameters___block_invoke;
   v6[3] = &unk_1E867B480;
   v6[4] = self;
-  memcpy(__dst, a3, sizeof(__dst));
+  memcpy(__dst, parameters, sizeof(__dst));
   return [(CBAODModule *)self performUpdateWithTransitionParameters:__dst rampDoneCallback:v6 rampCanceledCallback:0];
 }
 
@@ -1622,13 +1622,13 @@ uint64_t __53__CBAODModule_performUpdateWithTransitionParameters___block_invoke(
   return [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
 }
 
-- (BOOL)performUpdateWithTransitionParameters:(id *)a3 rampDoneCallback:(id)a4 rampCanceledCallback:(id)a5
+- (BOOL)performUpdateWithTransitionParameters:(id *)parameters rampDoneCallback:(id)callback rampCanceledCallback:(id)canceledCallback
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
-  v18 = a4;
-  v17 = a5;
+  parametersCopy = parameters;
+  callbackCopy = callback;
+  canceledCallbackCopy = canceledCallback;
   v16 = 1;
   queue = self->super._queue;
   v7 = MEMORY[0x1E69E9820];
@@ -1636,10 +1636,10 @@ uint64_t __53__CBAODModule_performUpdateWithTransitionParameters___block_invoke(
   v9 = 0;
   v10 = __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_rampCanceledCallback___block_invoke;
   v11 = &unk_1E867BEE0;
-  v12 = self;
-  memcpy(v15, a3, sizeof(v15));
-  v13 = v18;
-  v14 = v17;
+  selfCopy2 = self;
+  memcpy(v15, parameters, sizeof(v15));
+  v13 = callbackCopy;
+  v14 = canceledCallbackCopy;
   dispatch_async(queue, &v7);
   return v16 & 1;
 }
@@ -1773,18 +1773,18 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handleDisplayModeUpdate:(id)a3
+- (BOOL)handleDisplayModeUpdate:(id)update
 {
   v9 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a3 objectForKey:@"Value"];
-    v7 = [a3 objectForKey:@"TransitionLength"];
+    v8 = [update objectForKey:@"Value"];
+    v7 = [update objectForKey:@"TransitionLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v8 intValue];
+      intValue = [v8 intValue];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1798,23 +1798,23 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
       }
 
       *&v3 = v5;
-      return [(CBAODModule *)self handleDisplayModeUpdate:v6 transitionLength:v3];
+      return [(CBAODModule *)self handleDisplayModeUpdate:intValue transitionLength:v3];
     }
   }
 
   return v9;
 }
 
-- (BOOL)handleDisplayModeUpdate:(int64_t)a3 transitionLength:(float)a4
+- (BOOL)handleDisplayModeUpdate:(int64_t)update transitionLength:(float)length
 {
   v64 = *MEMORY[0x1E69E9840];
-  v60 = self;
+  selfCopy = self;
   v59 = a2;
-  v58 = a3;
-  v57 = a4;
+  updateCopy = update;
+  lengthCopy = length;
   v56 = 0;
   context = objc_autoreleasePoolPush();
-  if (!v60->_aodEnabled)
+  if (!selfCopy->_aodEnabled)
   {
     goto LABEL_68;
   }
@@ -1822,15 +1822,15 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
   memset(__b, 0, sizeof(__b));
   LOBYTE(__b[0]) = 1;
   HIBYTE(__b[0]) = 1;
-  *&__b[1] = v57;
-  if ([+[CBAODState isDCPBasedAODSupported]&& v60->_flipBookEnabled sharedInstance]
+  *&__b[1] = lengthCopy;
+  if ([+[CBAODState isDCPBasedAODSupported]&& selfCopy->_flipBookEnabled sharedInstance]
   {
     LOBYTE(__b[12]) = 1;
   }
 
-  if (v60->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v60->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -1852,18 +1852,18 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
   v53 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_3_8_66_8_66_8_0(v63, [CBDisplayStateUtilities stringForDisplayMode:v60->_currentDisplayMode], [CBDisplayStateUtilities stringForDisplayMode:v58], COERCE__INT64(v57));
+    __os_log_helper_16_2_3_8_66_8_66_8_0(v63, [CBDisplayStateUtilities stringForDisplayMode:selfCopy->_currentDisplayMode], [CBDisplayStateUtilities stringForDisplayMode:updateCopy], COERCE__INT64(lengthCopy));
     _os_log_impl(&dword_1DE8E5000, v54, v53, "[Display Mode] %{public}@ -> %{public}@ in %f seconds", v63, 0x20u);
   }
 
-  [(CBAODTransitionController *)v60->_transitionController cancelTransition];
-  [(CBAODModule *)v60 releaseDisplayModeCompletionTimer];
-  if (!v58)
+  [(CBAODTransitionController *)selfCopy->_transitionController cancelTransition];
+  [(CBAODModule *)selfCopy releaseDisplayModeCompletionTimer];
+  if (!updateCopy)
   {
-    if (v60->_currentDisplayMode == 1 || v60->_currentDisplayMode == 2)
+    if (selfCopy->_currentDisplayMode == 1 || selfCopy->_currentDisplayMode == 2)
     {
       memcpy(v33, __b, sizeof(v33));
-      [(CBAODModule *)v60 updateAODState:0 transitionParameters:v33 brightnessFactor:0.0 forDisplayMode:?];
+      [(CBAODModule *)selfCopy updateAODState:0 transitionParameters:v33 brightnessFactor:0.0 forDisplayMode:?];
       v56 = 1;
       goto LABEL_68;
     }
@@ -1871,16 +1871,16 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
     goto LABEL_45;
   }
 
-  if (v58 != 1)
+  if (updateCopy != 1)
   {
-    if (v58 != 2)
+    if (updateCopy != 2)
     {
-      if (v58 == 3)
+      if (updateCopy == 3)
       {
-        [(CBAODTransitionController *)v60->_transitionController setDisplayON:1];
-        if (v60->_currentDisplayMode == 2)
+        [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:1];
+        if (selfCopy->_currentDisplayMode == 2)
         {
-          if (!v60->_flipBookEnabled)
+          if (!selfCopy->_flipBookEnabled)
           {
             BYTE2(__b[0]) = 1;
           }
@@ -1889,31 +1889,31 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
           __b[5] = 0;
           memcpy(__dst, __b, 0x34uLL);
           LODWORD(v5) = 1.0;
-          [(CBAODModule *)v60 updateAODState:0 transitionParameters:__dst brightnessFactor:3 forDisplayMode:v5];
+          [(CBAODModule *)selfCopy updateAODState:0 transitionParameters:__dst brightnessFactor:3 forDisplayMode:v5];
           v56 = 1;
         }
 
-        else if (v60->_currentDisplayMode == 1)
+        else if (selfCopy->_currentDisplayMode == 1)
         {
           memcpy(v51, __b, sizeof(v51));
           LODWORD(v6) = -1.0;
-          [(CBAODModule *)v60 updateAODState:0 transitionParameters:v51 brightnessFactor:3 forDisplayMode:v6];
+          [(CBAODModule *)selfCopy updateAODState:0 transitionParameters:v51 brightnessFactor:3 forDisplayMode:v6];
           v56 = 1;
         }
       }
 
-      else if (v58 == 4)
+      else if (updateCopy == 4)
       {
-        [(CBAODTransitionController *)v60->_transitionController setDisplayON:1];
-        if (v60->_currentDisplayMode == 1 || v60->_currentDisplayMode == 2)
+        [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:1];
+        if (selfCopy->_currentDisplayMode == 1 || selfCopy->_currentDisplayMode == 2)
         {
           memcpy(v32, __b, sizeof(v32));
           LODWORD(v14) = 1028443341;
-          [(CBAODModule *)v60 updateAODState:0 transitionParameters:v32 brightnessFactor:4 forDisplayMode:v14];
-          currentDisplayMode = v60->_currentDisplayMode;
+          [(CBAODModule *)selfCopy updateAODState:0 transitionParameters:v32 brightnessFactor:4 forDisplayMode:v14];
+          currentDisplayMode = selfCopy->_currentDisplayMode;
           if (currentDisplayMode == 1)
           {
-            oslog = v60->super._logHandle;
+            oslog = selfCopy->super._logHandle;
             v30 = OS_LOG_TYPE_FAULT;
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
             {
@@ -1926,7 +1926,7 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
 
           else if (currentDisplayMode == 2)
           {
-            v28 = v60->super._logHandle;
+            v28 = selfCopy->super._logHandle;
             v27 = OS_LOG_TYPE_FAULT;
             if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
             {
@@ -1939,10 +1939,10 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
 
           else
           {
-            v25 = v60->super._logHandle;
-            if (os_log_type_enabled(v60->super._logHandle, OS_LOG_TYPE_FAULT))
+            v25 = selfCopy->super._logHandle;
+            if (os_log_type_enabled(selfCopy->super._logHandle, OS_LOG_TYPE_FAULT))
             {
-              __os_log_helper_16_2_1_8_66(v62, [CBDisplayStateUtilities stringForDisplayMode:v60->_currentDisplayMode]);
+              __os_log_helper_16_2_1_8_66(v62, [CBDisplayStateUtilities stringForDisplayMode:selfCopy->_currentDisplayMode]);
               _os_log_fault_impl(&dword_1DE8E5000, v25, OS_LOG_TYPE_FAULT, "[Display Mode] Unexpected display mode transition: %{public}@ -> Active Dimmed", v62, 0xCu);
             }
           }
@@ -1953,10 +1953,10 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
 
       else
       {
-        v24 = v60->super._logHandle;
-        if (os_log_type_enabled(v60->super._logHandle, OS_LOG_TYPE_FAULT))
+        v24 = selfCopy->super._logHandle;
+        if (os_log_type_enabled(selfCopy->super._logHandle, OS_LOG_TYPE_FAULT))
         {
-          __os_log_helper_16_2_2_8_66_4_0(v61, [CBDisplayStateUtilities stringForDisplayMode:v60->_currentDisplayMode], v58);
+          __os_log_helper_16_2_2_8_66_4_0(v61, [CBDisplayStateUtilities stringForDisplayMode:selfCopy->_currentDisplayMode], updateCopy);
           _os_log_fault_impl(&dword_1DE8E5000, v24, OS_LOG_TYPE_FAULT, "[Display Mode] Transition to unknown display mode: %{public}@ -> display mode %d", v61, 0x12u);
         }
 
@@ -1966,86 +1966,86 @@ void __91__CBAODModule_performUpdateWithTransitionParameters_rampDoneCallback_ra
       goto LABEL_68;
     }
 
-    if (v60->_currentDisplayMode == 3 || v60->_currentDisplayMode == 4 || !v60->_currentDisplayMode)
+    if (selfCopy->_currentDisplayMode == 3 || selfCopy->_currentDisplayMode == 4 || !selfCopy->_currentDisplayMode)
     {
       memcpy(v46, __b, sizeof(v46));
-      [(CBAODModule *)v60 updateAODState:5 transitionParameters:v46 brightnessFactor:2 forDisplayMode:0.0];
+      [(CBAODModule *)selfCopy updateAODState:5 transitionParameters:v46 brightnessFactor:2 forDisplayMode:0.0];
       v56 = 1;
       goto LABEL_68;
     }
 
-    if (v60->_currentDisplayMode == 1)
+    if (selfCopy->_currentDisplayMode == 1)
     {
       LODWORD(v4) = 0;
-      [(CBAODModule *)v60 setDisplayFactor:v4 transitionLength:?];
-      *&v12 = v57;
+      [(CBAODModule *)selfCopy setDisplayFactor:v4 transitionLength:?];
+      *&v12 = lengthCopy;
       v40 = MEMORY[0x1E69E9820];
       v41 = -1073741824;
       v42 = 0;
       v43 = __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invoke;
       v44 = &unk_1E867B480;
-      v45 = v60;
+      v45 = selfCopy;
       v34 = MEMORY[0x1E69E9820];
       v35 = -1073741824;
       v36 = 0;
       v37 = __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invoke_197;
       v38 = &unk_1E867B480;
-      v39 = v60;
-      [CBAODModule performUpdate:v60 forceUpdate:"performUpdate:forceUpdate:rampDoneCallback:rampCanceledCallback:" rampDoneCallback:1 rampCanceledCallback:v12];
-      v13 = v57 + 0.05;
+      v39 = selfCopy;
+      [CBAODModule performUpdate:selfCopy forceUpdate:"performUpdate:forceUpdate:rampDoneCallback:rampCanceledCallback:" rampDoneCallback:1 rampCanceledCallback:v12];
+      v13 = lengthCopy + 0.05;
       *&v13 = v13;
-      [(CBAODModule *)v60 scheduleDisplayModeCompletionTimerIn:2 forDisplayMode:v13];
+      [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:2 forDisplayMode:v13];
       v56 = 1;
       goto LABEL_68;
     }
 
 LABEL_45:
-    [(CBAODTransitionController *)v60->_transitionController setDisplayON:0];
+    [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:0];
     goto LABEL_68;
   }
 
-  [(CBAODTransitionController *)v60->_transitionController setDisplayON:1];
-  if (v60->_currentDisplayMode == 3)
+  [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:1];
+  if (selfCopy->_currentDisplayMode == 3)
   {
     memcpy(v50, __b, sizeof(v50));
     LODWORD(v8) = -1.0;
-    [(CBAODModule *)v60 updateAODState:1 transitionParameters:v50 brightnessFactor:v8 forDisplayMode:?];
+    [(CBAODModule *)selfCopy updateAODState:1 transitionParameters:v50 brightnessFactor:v8 forDisplayMode:?];
     v56 = 1;
   }
 
-  else if (v60->_currentDisplayMode)
+  else if (selfCopy->_currentDisplayMode)
   {
-    if (v60->_currentDisplayMode == 4)
+    if (selfCopy->_currentDisplayMode == 4)
     {
       memcpy(v48, __b, sizeof(v48));
       LODWORD(v10) = 1.0;
-      [(CBAODModule *)v60 updateAODState:1 transitionParameters:v48 brightnessFactor:v10 forDisplayMode:?];
+      [(CBAODModule *)selfCopy updateAODState:1 transitionParameters:v48 brightnessFactor:v10 forDisplayMode:?];
       v56 = 1;
     }
 
-    else if (v60->_currentDisplayMode == 2)
+    else if (selfCopy->_currentDisplayMode == 2)
     {
-      if (!v60->_flipBookEnabled)
+      if (!selfCopy->_flipBookEnabled)
       {
         BYTE2(__b[0]) = 1;
       }
 
       LODWORD(v7) = 1.0;
-      [(CBAODModule *)v60 setDisplayFactor:v7 transitionLength:?];
+      [(CBAODModule *)selfCopy setDisplayFactor:v7 transitionLength:?];
       LOBYTE(__b[4]) = 1;
       __b[5] = 0;
       memcpy(v47, __b, sizeof(v47));
-      [(CBAODModule *)v60 copyAndHandleEventWithTransitionParameters:v47];
-      v11 = v57 + 0.05;
+      [(CBAODModule *)selfCopy copyAndHandleEventWithTransitionParameters:v47];
+      v11 = lengthCopy + 0.05;
       *&v11 = v11;
-      [(CBAODModule *)v60 scheduleDisplayModeCompletionTimerIn:1 forDisplayMode:v11];
+      [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:1 forDisplayMode:v11];
       v56 = 1;
     }
   }
 
   else
   {
-    if (!v60->_flipBookEnabled)
+    if (!selfCopy->_flipBookEnabled)
     {
       BYTE2(__b[0]) = 1;
     }
@@ -2054,13 +2054,13 @@ LABEL_45:
     __b[5] = 0;
     memcpy(v49, __b, sizeof(v49));
     LODWORD(v9) = 1.0;
-    [(CBAODModule *)v60 updateAODState:1 transitionParameters:v49 brightnessFactor:v9 forDisplayMode:?];
+    [(CBAODModule *)selfCopy updateAODState:1 transitionParameters:v49 brightnessFactor:v9 forDisplayMode:?];
     v56 = 1;
   }
 
 LABEL_68:
   objc_autoreleasePoolPop(context);
-  v60->_currentDisplayMode = v58;
+  selfCopy->_currentDisplayMode = updateCopy;
   *MEMORY[0x1E69E9840];
   return v56 & 1;
 }
@@ -2141,18 +2141,18 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
   return [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
 }
 
-- (BOOL)setDisplayFactor:(float)a3 transitionLength:(float)a4
+- (BOOL)setDisplayFactor:(float)factor transitionLength:(float)length
 {
   v21 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  factorCopy = factor;
+  lengthCopy = length;
   v15 = 0;
   context = objc_autoreleasePoolPush();
-  if (v19->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v19->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -2174,48 +2174,48 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_2_8_0_8_0(v20, COERCE__INT64(v17), COERCE__INT64(v16));
+    __os_log_helper_16_0_2_8_0_8_0(v20, COERCE__INT64(factorCopy), COERCE__INT64(lengthCopy));
     _os_log_impl(&dword_1DE8E5000, v14, v13, "Set brightness factor = %f fade = %f", v20, 0x16u);
   }
 
-  *&v4 = v16;
-  -[CBAODModule setModulesProperty:forKey:](v19, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v4], @"DisplayBrightnessFadePeriod");
-  *&v5 = v17;
-  v15 = -[CBAODModule setModulesProperty:forKey:](v19, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v5], @"DisplayBrightnessFactorWithFade");
-  *&v6 = v17;
-  if (v17 >= 1.0)
+  *&v4 = lengthCopy;
+  -[CBAODModule setModulesProperty:forKey:](selfCopy, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v4], @"DisplayBrightnessFadePeriod");
+  *&v5 = factorCopy;
+  v15 = -[CBAODModule setModulesProperty:forKey:](selfCopy, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:v5], @"DisplayBrightnessFactorWithFade");
+  *&v6 = factorCopy;
+  if (factorCopy >= 1.0)
   {
     memset(__b, 0, sizeof(__b));
     __b[1] = 1;
     memcpy(__dst, __b, sizeof(__dst));
-    [(CBAODModule *)v19 copyAndHandleEventWithTransitionParameters:__dst];
+    [(CBAODModule *)selfCopy copyAndHandleEventWithTransitionParameters:__dst];
   }
 
-  [(CBAODModule *)v19 setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate", v6];
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate", v6];
   objc_autoreleasePoolPop(context);
   *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (BOOL)updateAODState:(unint64_t)a3 transitionParameters:(id *)a4 brightnessFactor:(float)a5 forDisplayMode:(int64_t)a6
+- (BOOL)updateAODState:(unint64_t)state transitionParameters:(id *)parameters brightnessFactor:(float)factor forDisplayMode:(int64_t)mode
 {
   v35 = *MEMORY[0x1E69E9840];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
+  stateCopy = state;
+  parametersCopy = parameters;
+  factorCopy = factor;
+  modeCopy = mode;
   v27 = 0;
   context = objc_autoreleasePoolPush();
-  if (v33->_aodEnabled)
+  if (selfCopy->_aodEnabled)
   {
-    if ([+[CBAODState AODStateExternal]!= v31 sharedInstance]
+    if ([+[CBAODState AODStateExternal]!= stateCopy sharedInstance]
     {
-      [+[CBAODState sharedInstance](CBAODState setAODStateExternal:"setAODStateExternal:", v31];
-      if (v33->super._logHandle)
+      [+[CBAODState sharedInstance](CBAODState setAODStateExternal:"setAODStateExternal:", stateCopy];
+      if (selfCopy->super._logHandle)
       {
-        logHandle = v33->super._logHandle;
+        logHandle = selfCopy->super._logHandle;
       }
 
       else
@@ -2237,7 +2237,7 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
       v25 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
-        if (v31)
+        if (stateCopy)
         {
           v6 = "Entering AOD";
         }
@@ -2247,49 +2247,49 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
           v6 = "Exiting AOD";
         }
 
-        __os_log_helper_16_2_4_8_0_8_32_8_0_8_0(v34, v31, v6, COERCE__INT64(a4->var4), COERCE__INT64(v29));
+        __os_log_helper_16_2_4_8_0_8_32_8_0_8_0(v34, stateCopy, v6, COERCE__INT64(parameters->var4), COERCE__INT64(factorCopy));
         _os_log_impl(&dword_1DE8E5000, v26, v25, "AOD State update (%lu), %s, transitionTime: %f, factor = %f", v34, 0x2Au);
       }
 
       if ([+[CBAODState AODStateExternal]== 1 sharedInstance]
       {
-        [(CBAODModule *)v33 prepareForEnterToAODRoutine];
-        if (v29 >= 0.0)
+        [(CBAODModule *)selfCopy prepareForEnterToAODRoutine];
+        if (factorCopy >= 0.0)
         {
-          *&v7 = v29;
-          [(CBAODModule *)v33 setDisplayFactor:v7 transitionLength:0.0];
+          *&v7 = factorCopy;
+          [(CBAODModule *)selfCopy setDisplayFactor:v7 transitionLength:0.0];
         }
 
-        memcpy(__dst, a4, 0x34uLL);
-        [(CBAODModule *)v33 enteringAODRoutineForDisplayMode:v28 transitionParameters:__dst];
+        memcpy(__dst, parameters, 0x34uLL);
+        [(CBAODModule *)selfCopy enteringAODRoutineForDisplayMode:modeCopy transitionParameters:__dst];
       }
 
       else if ([+[CBAODState AODStateExternal] sharedInstance]
       {
         if ([+[CBAODState AODStateExternal]== 5 sharedInstance]
         {
-          [(CBAODModule *)v33 prepareForEnterToAODRoutine];
-          if (v29 >= 0.0)
+          [(CBAODModule *)selfCopy prepareForEnterToAODRoutine];
+          if (factorCopy >= 0.0)
           {
-            *&v9 = v29;
-            [(CBAODModule *)v33 setDisplayFactor:v9 transitionLength:0.0];
+            *&v9 = factorCopy;
+            [(CBAODModule *)selfCopy setDisplayFactor:v9 transitionLength:0.0];
           }
 
-          memcpy(v22, a4, sizeof(v22));
-          [(CBAODModule *)v33 enteringSuppressedAODRoutineWithTransitionParameters:v22];
+          memcpy(v22, parameters, sizeof(v22));
+          [(CBAODModule *)selfCopy enteringSuppressedAODRoutineWithTransitionParameters:v22];
         }
       }
 
       else
       {
-        if (v29 >= 0.0)
+        if (factorCopy >= 0.0)
         {
-          *&v8 = v29;
-          [(CBAODModule *)v33 setDisplayFactor:v8 transitionLength:0.0];
+          *&v8 = factorCopy;
+          [(CBAODModule *)selfCopy setDisplayFactor:v8 transitionLength:0.0];
         }
 
-        memcpy(v23, a4, sizeof(v23));
-        [(CBAODModule *)v33 exitingAODRoutineForDisplayMode:v28 transitionParameters:v23];
+        memcpy(v23, parameters, sizeof(v23));
+        [(CBAODModule *)selfCopy exitingAODRoutineForDisplayMode:modeCopy transitionParameters:v23];
       }
 
       v27 = 1;
@@ -2298,9 +2298,9 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
 
   else
   {
-    if (v33->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v14 = v33->super._logHandle;
+      v14 = selfCopy->super._logHandle;
     }
 
     else
@@ -2337,12 +2337,12 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
 - (void)prepareForEnterToAODRoutine
 {
   v33 = *MEMORY[0x1E69E9840];
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
   v21 = objc_autoreleasePoolPush();
-  if (v28->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v28->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -2371,14 +2371,14 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
   }
 
   [+[CBAODState sharedInstance](CBAODState acquirePowerAssertion];
-  [(CBAODModule *)v28 setALSServiceProperty:*MEMORY[0x1E695E4D0] forKey:@"AODALSMode"];
-  [(CBAODModule *)v28 loadAODCurveFromDefaults];
-  [(CBAODModule *)v28 updateModulesAODState:2];
-  [(CBAODModule *)v28 setModulesProperty:&unk_1F59C8E20 forKey:@"DisplayBrightnessFadePeriodOverride"];
-  v23 = [(CBAODModule *)v28 copyModulesInfo:1];
-  if (v28->super._logHandle)
+  [(CBAODModule *)selfCopy setALSServiceProperty:*MEMORY[0x1E695E4D0] forKey:@"AODALSMode"];
+  [(CBAODModule *)selfCopy loadAODCurveFromDefaults];
+  [(CBAODModule *)selfCopy updateModulesAODState:2];
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E20 forKey:@"DisplayBrightnessFadePeriodOverride"];
+  v23 = [(CBAODModule *)selfCopy copyModulesInfo:1];
+  if (selfCopy->super._logHandle)
   {
-    v16 = v28->super._logHandle;
+    v16 = selfCopy->super._logHandle;
   }
 
   else
@@ -2402,11 +2402,11 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
     _os_log_impl(&dword_1DE8E5000, v16, OS_LOG_TYPE_DEFAULT, "Current modules info: \n %@", v32, 0xCu);
   }
 
-  v2 = [(CBAODModule *)v28 getIntegerValueFrom:v23 key:@"AutoBrightnessLuxFilter"];
-  v28->_ABLuxFilterBackup = v2;
-  if (v28->super._logHandle)
+  v2 = [(CBAODModule *)selfCopy getIntegerValueFrom:v23 key:@"AutoBrightnessLuxFilter"];
+  selfCopy->_ABLuxFilterBackup = v2;
+  if (selfCopy->super._logHandle)
   {
-    v14 = v28->super._logHandle;
+    v14 = selfCopy->super._logHandle;
   }
 
   else
@@ -2426,15 +2426,15 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v31, v28->_ABLuxFilterBackup);
+    __os_log_helper_16_0_1_8_0(v31, selfCopy->_ABLuxFilterBackup);
     _os_log_impl(&dword_1DE8E5000, v14, OS_LOG_TYPE_DEFAULT, "ALS lux filter backup %ld", v31, 0xCu);
   }
 
-  [(CBAODModule *)v28 getFloatValueFrom:v23 key:@"PendingDisplayNits"];
-  v28->_displayBrightnessBackup = v3;
-  if (v28->super._logHandle)
+  [(CBAODModule *)selfCopy getFloatValueFrom:v23 key:@"PendingDisplayNits"];
+  selfCopy->_displayBrightnessBackup = v3;
+  if (selfCopy->super._logHandle)
   {
-    v12 = v28->super._logHandle;
+    v12 = selfCopy->super._logHandle;
   }
 
   else
@@ -2454,24 +2454,24 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_0_1_8_0(v30, COERCE__INT64(v28->_displayBrightnessBackup));
+    __os_log_helper_16_0_1_8_0(v30, COERCE__INT64(selfCopy->_displayBrightnessBackup));
     _os_log_impl(&dword_1DE8E5000, v12, OS_LOG_TYPE_DEFAULT, "Display brightness backup %f Nits", v30, 0xCu);
   }
 
-  [(CBAODModule *)v28 setModulesProperty:MEMORY[0x1E695E110] forKey:@"CEEnable"];
+  [(CBAODModule *)selfCopy setModulesProperty:MEMORY[0x1E695E110] forKey:@"CEEnable"];
   [v23 objectForKey:@"DisplayBrightnessAuto"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [objc_msgSend(v23 objectForKey:{@"DisplayBrightnessAuto", "BOOLValue"}];
-    v28->_ABStateBackup = v4;
-    if (!v28->_ABStateBackup)
+    selfCopy->_ABStateBackup = v4;
+    if (!selfCopy->_ABStateBackup)
     {
-      [(CBAODModule *)v28 getFloatValueFrom:v23 key:@"PendingDisplayNits"];
+      [(CBAODModule *)selfCopy getFloatValueFrom:v23 key:@"PendingDisplayNits"];
       v22 = v5;
-      if (v28->super._logHandle)
+      if (selfCopy->super._logHandle)
       {
-        v10 = v28->super._logHandle;
+        v10 = selfCopy->super._logHandle;
       }
 
       else
@@ -2501,32 +2501,32 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
     }
   }
 
-  if (v28->_backupState)
+  if (selfCopy->_backupState)
   {
-    MEMORY[0x1E69E5920](v28->_backupState);
-    v28->_backupState = 0;
+    MEMORY[0x1E69E5920](selfCopy->_backupState);
+    selfCopy->_backupState = 0;
   }
 
   v8 = MEMORY[0x1E69E5928](v23);
-  v28->_backupState = v8;
+  selfCopy->_backupState = v8;
   -[CBAODState setProperty:forKey:](+[CBAODState sharedInstance](CBAODState, "sharedInstance"), "setProperty:forKey:", [v23 objectForKey:?], @"AOTCurve");
-  [(CBAODTransitionController *)v28->_transitionController setInitialState:v23];
+  [(CBAODTransitionController *)selfCopy->_transitionController setInitialState:v23];
   MEMORY[0x1E69E5920](v23);
   objc_autoreleasePoolPop(v21);
   *MEMORY[0x1E69E9840];
 }
 
-- (void)enteringAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4
+- (void)enteringAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters
 {
   v64 = *MEMORY[0x1E69E9840];
-  v62 = self;
+  selfCopy = self;
   v61 = a2;
-  v60 = a3;
-  v59 = a4;
+  modeCopy = mode;
+  parametersCopy = parameters;
   context = objc_autoreleasePoolPush();
-  if (v62->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v62->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -2554,16 +2554,16 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: entering AOD", v56, 2u);
   }
 
-  [(CBAODModule *)v62 setModulesProperty:&unk_1F59C8E20 forKey:@"DynamicSliderEnable"];
-  v55 = [(CBAODTransitionController *)v62->_transitionController copyContext];
-  memcpy(__dst, a4, sizeof(__dst));
-  [(CBAODModule *)v62 updateModulesAODState:3 transitionParameters:__dst context:v55];
-  *&v4 = MEMORY[0x1E69E5920](v55).n128_u64[0];
-  if (!v62->_ABStateBackup)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E20 forKey:@"DynamicSliderEnable"];
+  copyContext = [(CBAODTransitionController *)selfCopy->_transitionController copyContext];
+  memcpy(__dst, parameters, sizeof(__dst));
+  [(CBAODModule *)selfCopy updateModulesAODState:3 transitionParameters:__dst context:copyContext];
+  *&v4 = MEMORY[0x1E69E5920](copyContext).n128_u64[0];
+  if (!selfCopy->_ABStateBackup)
   {
-    if (v62->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v18 = v62->super._logHandle;
+      v18 = selfCopy->super._logHandle;
     }
 
     else
@@ -2591,16 +2591,16 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
       _os_log_impl(&dword_1DE8E5000, v15, v16, "Override AB to ON in AOD.", v51, 2u);
     }
 
-    [(CBAODModule *)v62 setModulesProperty:MEMORY[0x1E695E118] forKey:@"DisplayBrightnessAuto"];
+    [(CBAODModule *)selfCopy setModulesProperty:MEMORY[0x1E695E118] forKey:@"DisplayBrightnessAuto"];
   }
 
-  [(CBAODModule *)v62 setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate", v4];
-  v50 = [(CBAODModule *)v62 copyModulesPropertyForKey:?];
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate", v4];
+  v50 = [(CBAODModule *)selfCopy copyModulesPropertyForKey:?];
   [+[CBAODState sharedInstance](CBAODState setProperty:"setProperty:forKey:" forKey:v50, @"AODDarkerCurve"];
-  v49 = [(CBAODModule *)v62 copyModulesInfo:0, MEMORY[0x1E69E5920](v50).n128_f64[0]];
-  if (v62->super._logHandle)
+  v49 = [(CBAODModule *)selfCopy copyModulesInfo:0, MEMORY[0x1E69E5920](v50).n128_f64[0]];
+  if (selfCopy->super._logHandle)
   {
-    v14 = v62->super._logHandle;
+    v14 = selfCopy->super._logHandle;
   }
 
   else
@@ -2630,38 +2630,38 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v62;
+    v12 = selfCopy;
     [objc_msgSend(v49 objectForKey:{@"TrustedLux", "floatValue"}];
     [(CBAODModule *)v12 reevaluatePThresholdsForLux:?];
   }
 
-  v10 = v62;
+  v10 = selfCopy;
   v9 = MEMORY[0x1E696AD98];
   [+[CBAODState sharedInstance](CBAODState thresholdPCCLuxDelta];
   -[CBAODModule setModulesProperty:forKey:](v10, "setModulesProperty:forKey:", [v9 numberWithFloat:?], @"AAPLuxDelta");
-  transitionController = v62->_transitionController;
+  transitionController = selfCopy->_transitionController;
   v38 = MEMORY[0x1E69E9820];
   v39 = -1073741824;
   v40 = 0;
   v41 = __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters___block_invoke;
   v42 = &unk_1E867BF08;
-  v43 = v62;
-  v44 = v60;
-  memcpy(v45, a4, sizeof(v45));
+  v43 = selfCopy;
+  v44 = modeCopy;
+  memcpy(v45, parameters, sizeof(v45));
   v30 = MEMORY[0x1E69E9820];
   v31 = -1073741824;
   v32 = 0;
   v33 = __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters___block_invoke_245;
   v34 = &unk_1E867BF08;
-  v35 = v62;
-  v36 = v60;
-  memcpy(v37, a4, sizeof(v37));
-  memcpy(v29, a4, sizeof(v29));
+  v35 = selfCopy;
+  v36 = modeCopy;
+  memcpy(v37, parameters, sizeof(v37));
+  memcpy(v29, parameters, sizeof(v29));
   if (![(CBAODTransitionController *)transitionController startTransition:v49 transitionParameters:v29 rampDoneCallback:&v38 rampCanceledCallback:&v30])
   {
-    if (v62->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v8 = v62->super._logHandle;
+      v8 = selfCopy->super._logHandle;
     }
 
     else
@@ -2689,8 +2689,8 @@ uint64_t __56__CBAODModule_handleDisplayModeUpdate_transitionLength___block_invo
       _os_log_impl(&dword_1DE8E5000, v5, v6, "This change doesn't trigger transition -> start AOD ON routine", v26, 2u);
     }
 
-    memcpy(v25, a4, sizeof(v25));
-    [(CBAODModule *)v62 onAODRoutineForDisplayMode:v60 transitionParameters:v25];
+    memcpy(v25, parameters, sizeof(v25));
+    [(CBAODModule *)selfCopy onAODRoutineForDisplayMode:modeCopy transitionParameters:v25];
   }
 
   MEMORY[0x1E69E5920](v49);
@@ -2778,16 +2778,16 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
   return [v2 onAODRoutineForDisplayMode:v3 transitionParameters:__dst];
 }
 
-- (void)onAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4
+- (void)onAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  modeCopy = mode;
+  parametersCopy = parameters;
   context = objc_autoreleasePoolPush();
-  if (v17->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v17->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -2815,35 +2815,35 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: AOD is ON", v11, 2u);
   }
 
-  [(CBAODModule *)v17 setModulesProperty:&unk_1F59C8E20 forKey:@"AutoBrightnessLuxFilter"];
-  [(CBAODModule *)v17 updateModulesAODState:1];
-  if (a4->var15)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E20 forKey:@"AutoBrightnessLuxFilter"];
+  [(CBAODModule *)selfCopy updateModulesAODState:1];
+  if (parameters->var15)
   {
-    v4 = a4->var4 + 0.05;
+    v4 = parameters->var4 + 0.05;
     *&v4 = v4;
-    [(CBAODModule *)v17 scheduleDisplayModeCompletionTimerIn:v15 forDisplayMode:v4];
+    [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:modeCopy forDisplayMode:v4];
   }
 
   else
   {
-    [(CBAODModule *)v17 didCompleteTransitionToDisplayMode:v15];
+    [(CBAODModule *)selfCopy didCompleteTransitionToDisplayMode:modeCopy];
   }
 
-  [(CBAODModule *)v17 copyAndHandleEvent];
+  [(CBAODModule *)selfCopy copyAndHandleEvent];
   [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
   objc_autoreleasePoolPop(context);
 }
 
-- (void)enteringSuppressedAODRoutineWithTransitionParameters:(id *)a3
+- (void)enteringSuppressedAODRoutineWithTransitionParameters:(id *)parameters
 {
   v49 = *MEMORY[0x1E69E9840];
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
-  v45 = a3;
+  parametersCopy = parameters;
   context = objc_autoreleasePoolPush();
-  if (v47->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v47->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -2871,14 +2871,14 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: entering Suppressed AOD", v42, 2u);
   }
 
-  [(CBAODModule *)v47 setModulesProperty:&unk_1F59C8E20 forKey:@"DynamicSliderEnable"];
-  memcpy(__dst, a3, sizeof(__dst));
-  [(CBAODModule *)v47 updateModulesAODState:3 transitionParameters:__dst];
-  if (!v47->_ABStateBackup)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E20 forKey:@"DynamicSliderEnable"];
+  memcpy(__dst, parameters, sizeof(__dst));
+  [(CBAODModule *)selfCopy updateModulesAODState:3 transitionParameters:__dst];
+  if (!selfCopy->_ABStateBackup)
   {
-    if (v47->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v16 = v47->super._logHandle;
+      v16 = selfCopy->super._logHandle;
     }
 
     else
@@ -2906,14 +2906,14 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
       _os_log_impl(&dword_1DE8E5000, v13, v14, "Override AB to ON in AOD.", v38, 2u);
     }
 
-    [(CBAODModule *)v47 setModulesProperty:MEMORY[0x1E695E118] forKey:@"DisplayBrightnessAuto"];
+    [(CBAODModule *)selfCopy setModulesProperty:MEMORY[0x1E695E118] forKey:@"DisplayBrightnessAuto"];
   }
 
-  [(CBAODModule *)v47 setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate"];
-  v37 = [(CBAODModule *)v47 copyModulesInfo:0];
-  if (v47->super._logHandle)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E08 forKey:@"ForceModuleUpdate"];
+  v37 = [(CBAODModule *)selfCopy copyModulesInfo:0];
+  if (selfCopy->super._logHandle)
   {
-    v12 = v47->super._logHandle;
+    v12 = selfCopy->super._logHandle;
   }
 
   else
@@ -2943,33 +2943,33 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v47;
+    v10 = selfCopy;
     [objc_msgSend(v37 objectForKey:{@"TrustedLux", "floatValue"}];
     [(CBAODModule *)v10 reevaluatePThresholdsForLux:?];
   }
 
-  v8 = v47;
+  v8 = selfCopy;
   v7 = MEMORY[0x1E696AD98];
   [+[CBAODState sharedInstance](CBAODState thresholdPCCLuxDelta];
   -[CBAODModule setModulesProperty:forKey:](v8, "setModulesProperty:forKey:", [v7 numberWithFloat:?], @"AAPLuxDelta");
-  transitionController = v47->_transitionController;
+  transitionController = selfCopy->_transitionController;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters___block_invoke;
   v33[3] = &unk_1E867B480;
-  v33[4] = v47;
+  v33[4] = selfCopy;
   v27 = MEMORY[0x1E69E9820];
   v28 = -1073741824;
   v29 = 0;
   v30 = __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters___block_invoke_246;
   v31 = &unk_1E867B480;
-  v32 = v47;
-  memcpy(v26, a3, sizeof(v26));
+  v32 = selfCopy;
+  memcpy(v26, parameters, sizeof(v26));
   if (![(CBAODTransitionController *)transitionController startTransition:v37 transitionParameters:v26 rampDoneCallback:v33 rampCanceledCallback:&v27])
   {
-    if (v47->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v6 = v47->super._logHandle;
+      v6 = selfCopy->super._logHandle;
     }
 
     else
@@ -2997,7 +2997,7 @@ uint64_t __69__CBAODModule_enteringAODRoutineForDisplayMode_transitionParameters
       _os_log_impl(&dword_1DE8E5000, v3, v4, "This change doesn't trigger transition -> start AOD ON + suppressed routine", v23, 2u);
     }
 
-    [(CBAODModule *)v47 onSuppresedAODRoutine];
+    [(CBAODModule *)selfCopy onSuppresedAODRoutine];
   }
 
   MEMORY[0x1E69E5920](v37);
@@ -3081,12 +3081,12 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
 
 - (void)onSuppresedAODRoutine
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v7 = objc_autoreleasePoolPush();
-  if (v12->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v12->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -3114,35 +3114,35 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: AOD suppressed is ON", v8, 2u);
   }
 
-  [(CBAODModule *)v12 setModulesProperty:&unk_1F59C8E20 forKey:@"AutoBrightnessLuxFilter"];
-  [(CBAODModule *)v12 updateModulesAODState:1];
-  [(CBAODTransitionController *)v12->_transitionController setDisplayON:0];
-  if (v12->_flipBookEnabled)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E20 forKey:@"AutoBrightnessLuxFilter"];
+  [(CBAODModule *)selfCopy updateModulesAODState:1];
+  [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:0];
+  if (selfCopy->_flipBookEnabled)
   {
-    [(CBAODModule *)v12 didCompleteTransitionToDisplayMode:2];
+    [(CBAODModule *)selfCopy didCompleteTransitionToDisplayMode:2];
   }
 
   else
   {
     LODWORD(v2) = 1028443341;
-    [(CBAODModule *)v12 scheduleDisplayModeCompletionTimerIn:2 forDisplayMode:v2];
+    [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:2 forDisplayMode:v2];
   }
 
   [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)exitingAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4
+- (void)exitingAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters
 {
   v68 = *MEMORY[0x1E69E9840];
-  v65 = self;
+  selfCopy = self;
   v64 = a2;
-  v63 = a3;
-  v62 = a4;
+  modeCopy = mode;
+  parametersCopy = parameters;
   context = objc_autoreleasePoolPush();
-  if (v65->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v65->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -3170,16 +3170,16 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: exiting AOD", v59, 2u);
   }
 
-  [(CBAODModule *)v65 setModulesProperty:&unk_1F59C8E08 forKey:@"DynamicSliderEnable"];
-  v58 = [(CBAODTransitionController *)v65->_transitionController copyContext];
-  memcpy(__dst, a4, sizeof(__dst));
-  [(CBAODModule *)v65 updateModulesAODState:4 transitionParameters:__dst context:v58];
-  v4 = MEMORY[0x1E69E5920](v58).n128_u64[0];
-  if (!v65->_ABStateBackup)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E08 forKey:@"DynamicSliderEnable"];
+  copyContext = [(CBAODTransitionController *)selfCopy->_transitionController copyContext];
+  memcpy(__dst, parameters, sizeof(__dst));
+  [(CBAODModule *)selfCopy updateModulesAODState:4 transitionParameters:__dst context:copyContext];
+  v4 = MEMORY[0x1E69E5920](copyContext).n128_u64[0];
+  if (!selfCopy->_ABStateBackup)
   {
-    if (v65->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v19 = v65->super._logHandle;
+      v19 = selfCopy->super._logHandle;
     }
 
     else
@@ -3207,19 +3207,19 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
       _os_log_impl(&dword_1DE8E5000, v16, v17, "Set AB to OFF", v54, 2u);
     }
 
-    [(CBAODModule *)v65 setModulesProperty:MEMORY[0x1E695E110] forKey:@"DisplayBrightnessAuto"];
-    if (!v65->_dominoModeEnabled)
+    [(CBAODModule *)selfCopy setModulesProperty:MEMORY[0x1E695E110] forKey:@"DisplayBrightnessAuto"];
+    if (!selfCopy->_dominoModeEnabled)
     {
-      *&v4 = v65->_displayBrightnessBackup;
-      -[CBAODModule setModulesProperty:forKey:](v65, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:*&v4], @"DisplayNitsKey");
+      *&v4 = selfCopy->_displayBrightnessBackup;
+      -[CBAODModule setModulesProperty:forKey:](selfCopy, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithFloat:*&v4], @"DisplayNitsKey");
     }
   }
 
-  if (v65->_backupState)
+  if (selfCopy->_backupState)
   {
-    if (v65->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v15 = v65->super._logHandle;
+      v15 = selfCopy->super._logHandle;
     }
 
     else
@@ -3241,24 +3241,24 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
     v52 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_3_8_64_8_64_8_64(v67, [(NSDictionary *)v65->_backupState objectForKey:@"ALSBrightenPdeltaFast"], [(NSDictionary *)v65->_backupState objectForKey:@"ALSBrightenPdeltaSlow"], [(NSDictionary *)v65->_backupState objectForKey:@"ALSDimPdeltaSlow"]);
+      __os_log_helper_16_2_3_8_64_8_64_8_64(v67, [(NSDictionary *)selfCopy->_backupState objectForKey:@"ALSBrightenPdeltaFast"], [(NSDictionary *)selfCopy->_backupState objectForKey:@"ALSBrightenPdeltaSlow"], [(NSDictionary *)selfCopy->_backupState objectForKey:@"ALSDimPdeltaSlow"]);
       _os_log_impl(&dword_1DE8E5000, v53, v52, "AP thresholds: Recover P thresholds from backup: BrightenPdeltaFast = %@, BrightenPdeltaSlow = %@, DimPdeltaSlow = %@", v67, 0x20u);
     }
 
-    v51 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{-[NSDictionary objectForKey:](v65->_backupState, "objectForKey:"), @"ALSBrightenPdeltaFast", -[NSDictionary objectForKey:](v65->_backupState, "objectForKey:"), @"ALSBrightenPdeltaSlow", -[NSDictionary objectForKey:](v65->_backupState, "objectForKey:"), @"ALSDimPdeltaSlow", 0}];
-    [(CBAODModule *)v65 setModulesProperty:v51 forKey:@"ALSInternalSettings"];
-    [(NSDictionary *)v65->_backupState objectForKey:@"AAPLuxDelta"];
+    v51 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{-[NSDictionary objectForKey:](selfCopy->_backupState, "objectForKey:"), @"ALSBrightenPdeltaFast", -[NSDictionary objectForKey:](selfCopy->_backupState, "objectForKey:"), @"ALSBrightenPdeltaSlow", -[NSDictionary objectForKey:](selfCopy->_backupState, "objectForKey:"), @"ALSDimPdeltaSlow", 0}];
+    [(CBAODModule *)selfCopy setModulesProperty:v51 forKey:@"ALSInternalSettings"];
+    [(NSDictionary *)selfCopy->_backupState objectForKey:@"AAPLuxDelta"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CBAODModule *)v65 setModulesProperty:[(NSDictionary *)v65->_backupState objectForKey:?] forKey:@"AAPLuxDelta"];
+      [(CBAODModule *)selfCopy setModulesProperty:[(NSDictionary *)selfCopy->_backupState objectForKey:?] forKey:@"AAPLuxDelta"];
     }
 
-    [(NSDictionary *)v65->_backupState objectForKey:@"CEEnable"];
+    [(NSDictionary *)selfCopy->_backupState objectForKey:@"CEEnable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CBAODModule *)v65 setModulesProperty:[(NSDictionary *)v65->_backupState objectForKey:?] forKey:@"CEEnable"];
+      [(CBAODModule *)selfCopy setModulesProperty:[(NSDictionary *)selfCopy->_backupState objectForKey:?] forKey:@"CEEnable"];
     }
 
     v4 = MEMORY[0x1E69E5920](v51).n128_u64[0];
@@ -3267,10 +3267,10 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
   v5 = +[CBAODState sharedInstance];
   LODWORD(v6) = -1.0;
   [(CBAODState *)v5 setNitsCap:v6];
-  v50 = [(CBAODModule *)v65 copyModulesInfo:0];
-  if (v65->super._logHandle)
+  v50 = [(CBAODModule *)selfCopy copyModulesInfo:0];
+  if (selfCopy->super._logHandle)
   {
-    v13 = v65->super._logHandle;
+    v13 = selfCopy->super._logHandle;
   }
 
   else
@@ -3296,29 +3296,29 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
     _os_log_impl(&dword_1DE8E5000, v49, v48, "EXITING AOD - Target modules info: \n %@", v66, 0xCu);
   }
 
-  transitionController = v65->_transitionController;
+  transitionController = selfCopy->_transitionController;
   v39 = MEMORY[0x1E69E9820];
   v40 = -1073741824;
   v41 = 0;
   v42 = __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters___block_invoke;
   v43 = &unk_1E867BF08;
-  v44 = v65;
-  v45 = v63;
-  memcpy(v46, a4, sizeof(v46));
+  v44 = selfCopy;
+  v45 = modeCopy;
+  memcpy(v46, parameters, sizeof(v46));
   v31 = MEMORY[0x1E69E9820];
   v32 = -1073741824;
   v33 = 0;
   v34 = __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters___block_invoke_259;
   v35 = &unk_1E867BF08;
-  v36 = v65;
-  v37 = v63;
-  memcpy(v38, a4, sizeof(v38));
-  memcpy(v30, a4, sizeof(v30));
+  v36 = selfCopy;
+  v37 = modeCopy;
+  memcpy(v38, parameters, sizeof(v38));
+  memcpy(v30, parameters, sizeof(v30));
   if (![(CBAODTransitionController *)transitionController startTransition:v50 transitionParameters:v30 rampDoneCallback:&v39 rampCanceledCallback:&v31])
   {
-    if (v65->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v10 = v65->super._logHandle;
+      v10 = selfCopy->super._logHandle;
     }
 
     else
@@ -3346,8 +3346,8 @@ uint64_t __68__CBAODModule_enteringSuppressedAODRoutineWithTransitionParameters_
       _os_log_impl(&dword_1DE8E5000, v7, v8, "This change doesn't trigger transition -> start AOD OFF routine", v27, 2u);
     }
 
-    memcpy(v26, a4, sizeof(v26));
-    [(CBAODModule *)v65 offAODRoutineForDisplayMode:v63 transitionParameters:v26];
+    memcpy(v26, parameters, sizeof(v26));
+    [(CBAODModule *)selfCopy offAODRoutineForDisplayMode:modeCopy transitionParameters:v26];
   }
 
   MEMORY[0x1E69E5920](v50);
@@ -3435,16 +3435,16 @@ uint64_t __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters_
   return [v2 offAODRoutineForDisplayMode:v3 transitionParameters:__dst];
 }
 
-- (void)offAODRoutineForDisplayMode:(int64_t)a3 transitionParameters:(id *)a4
+- (void)offAODRoutineForDisplayMode:(int64_t)mode transitionParameters:(id *)parameters
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
+  modeCopy = mode;
+  parametersCopy = parameters;
   context = objc_autoreleasePoolPush();
-  if (v20->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v20->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -3472,52 +3472,52 @@ uint64_t __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters_
     _os_log_impl(&dword_1DE8E5000, log, type, "[AOD routine]: AOD is OFF", v14, 2u);
   }
 
-  [(CBAODModule *)v20 setModulesProperty:&unk_1F59C9808 forKey:@"ALSInternalSettings"];
-  -[CBAODModule setModulesProperty:forKey:](v20, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:v20->_ABLuxFilterBackup], @"AutoBrightnessLuxFilter");
-  v13 = [(CBAODTransitionController *)v20->_transitionController copyContext];
-  [(CBAODModule *)v20 updateModulesAODState:0 context:v13];
-  *&v4 = MEMORY[0x1E69E5920](v13).n128_u64[0];
-  [(CBAODModule *)v20 setModulesProperty:&unk_1F59C8E38 forKey:@"DisplayBrightnessFadePeriodOverride", v4];
-  [(CBAODModule *)v20 setALSServiceProperty:*MEMORY[0x1E695E4C0] forKey:@"AODALSMode"];
-  if (!v18 || v18 == 2)
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C9808 forKey:@"ALSInternalSettings"];
+  -[CBAODModule setModulesProperty:forKey:](selfCopy, "setModulesProperty:forKey:", [MEMORY[0x1E696AD98] numberWithInteger:selfCopy->_ABLuxFilterBackup], @"AutoBrightnessLuxFilter");
+  copyContext = [(CBAODTransitionController *)selfCopy->_transitionController copyContext];
+  [(CBAODModule *)selfCopy updateModulesAODState:0 context:copyContext];
+  *&v4 = MEMORY[0x1E69E5920](copyContext).n128_u64[0];
+  [(CBAODModule *)selfCopy setModulesProperty:&unk_1F59C8E38 forKey:@"DisplayBrightnessFadePeriodOverride", v4];
+  [(CBAODModule *)selfCopy setALSServiceProperty:*MEMORY[0x1E695E4C0] forKey:@"AODALSMode"];
+  if (!modeCopy || modeCopy == 2)
   {
-    [(CBAODTransitionController *)v20->_transitionController setDisplayON:0];
+    [(CBAODTransitionController *)selfCopy->_transitionController setDisplayON:0];
   }
 
-  if (a4->var15)
+  if (parameters->var15)
   {
-    v6 = a4->var4 + 0.05;
+    v6 = parameters->var4 + 0.05;
     *&v6 = v6;
-    [(CBAODModule *)v20 scheduleDisplayModeCompletionTimerIn:v18 forDisplayMode:v6];
+    [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:modeCopy forDisplayMode:v6];
   }
 
-  else if (v20->_flipBookEnabled || v18)
+  else if (selfCopy->_flipBookEnabled || modeCopy)
   {
-    [(CBAODModule *)v20 didCompleteTransitionToDisplayMode:v18];
+    [(CBAODModule *)selfCopy didCompleteTransitionToDisplayMode:modeCopy];
   }
 
   else
   {
     LODWORD(v5) = 1028443341;
-    [(CBAODModule *)v20 scheduleDisplayModeCompletionTimerIn:0 forDisplayMode:v5];
+    [(CBAODModule *)selfCopy scheduleDisplayModeCompletionTimerIn:0 forDisplayMode:v5];
   }
 
   [+[CBAODState sharedInstance](CBAODState releasePowerAssertion];
   objc_autoreleasePoolPop(context);
 }
 
-- (void)didCompleteTransitionToDisplayMode:(int64_t)a3
+- (void)didCompleteTransitionToDisplayMode:(int64_t)mode
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
-  [(CBAODModule *)v18 sendNotificationForKey:@"DisplayModeChangeComplete" andValue:v15];
+  modeCopy = mode;
+  v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:mode];
+  [(CBAODModule *)selfCopy sendNotificationForKey:@"DisplayModeChangeComplete" andValue:v15];
   MEMORY[0x1E69E5920](v15);
-  if (v18->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    logHandle = v18->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -3539,25 +3539,25 @@ uint64_t __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters_
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v19, [CBDisplayStateUtilities stringForDisplayMode:v16]);
+    __os_log_helper_16_2_1_8_64(v19, [CBDisplayStateUtilities stringForDisplayMode:modeCopy]);
     _os_log_impl(&dword_1DE8E5000, v14, v13, "[Display Mode] didCompleteTransitionToDisplayMode %@", v19, 0xCu);
   }
 
-  if (v16 == 2)
+  if (modeCopy == 2)
   {
-    [(CBAODModule *)v18 setALSServiceProperty:&unk_1F59C8E50 forKey:@"ALSMedianHistorySize"];
+    [(CBAODModule *)selfCopy setALSServiceProperty:&unk_1F59C8E50 forKey:@"ALSMedianHistorySize"];
   }
 
-  else if (v16 == 1)
+  else if (modeCopy == 1)
   {
-    [(CBAODModule *)v18 setALSServiceProperty:&unk_1F59C8E68 forKey:@"ALSMedianHistorySize"];
+    [(CBAODModule *)selfCopy setALSServiceProperty:&unk_1F59C8E68 forKey:@"ALSMedianHistorySize"];
   }
 
-  else if (v16 == 3 && v18->_flipBookEnabled)
+  else if (modeCopy == 3 && selfCopy->_flipBookEnabled)
   {
-    if (v18->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      v7 = v18->super._logHandle;
+      v7 = selfCopy->super._logHandle;
     }
 
     else
@@ -3585,28 +3585,28 @@ uint64_t __68__CBAODModule_exitingAODRoutineForDisplayMode_transitionParameters_
       _os_log_error_impl(&dword_1DE8E5000, v4, v5, "Warning: Flipbook enabled in Active On mode.", v10, 2u);
     }
 
-    [(CBAODModule *)v18 setProperty:&unk_1F59C8E80 forKey:@"FlipBookState"];
-    [(CBAODModule *)v18 setProperty:&unk_1F59C8E98 forKey:v3];
+    [(CBAODModule *)selfCopy setProperty:&unk_1F59C8E80 forKey:@"FlipBookState"];
+    [(CBAODModule *)selfCopy setProperty:&unk_1F59C8E98 forKey:v3];
   }
 
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyModulesInfo:(BOOL)a3
+- (id)copyModulesInfo:(BOOL)info
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3)
+  if (info)
   {
-    v4 = [(CBAODModule *)self copyModulesExtendedIdentifiers];
+    copyModulesExtendedIdentifiers = [(CBAODModule *)self copyModulesExtendedIdentifiers];
   }
 
   else
   {
-    v4 = [(CBAODModule *)self copyModulesIdentifiers];
+    copyModulesExtendedIdentifiers = [(CBAODModule *)self copyModulesIdentifiers];
   }
 
-  [v4 enumerateObjectsUsingBlock:?];
-  MEMORY[0x1E69E5920](v4);
+  [copyModulesExtendedIdentifiers enumerateObjectsUsingBlock:?];
+  MEMORY[0x1E69E5920](copyModulesExtendedIdentifiers);
   return v5;
 }
 
@@ -3628,7 +3628,7 @@ double __31__CBAODModule_copyModulesInfo___block_invoke(uint64_t a1, uint64_t a2
 
 - (id)copyModulesIdentifiers
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = objc_alloc(MEMORY[0x1E695DEC8]);
   return [v2 initWithObjects:{@"DisplayBrightness", @"DisplayAAPFactor", @"TrustedLux", @"ColorRamp", kCBBrightnessCapToCA, 0}];
@@ -3636,57 +3636,57 @@ double __31__CBAODModule_copyModulesInfo___block_invoke(uint64_t a1, uint64_t a2
 
 - (id)copyModulesExtendedIdentifiers
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = objc_alloc(MEMORY[0x1E695DEC8]);
   return [v2 initWithObjects:{@"DisplayBrightness", @"PendingDisplayNits", @"DisplayPanelLuminanceMin", @"DisplayPanelLuminanceMax", @"DisplayBrightnessAuto", @"DisplayAAPFactor", @"CBAODMinNits", @"TrustedLux", @"DynamicSliderEnable", @"ALSInternalSettings", @"AOTCurve", @"ALSBrightenPdeltaSlow", @"ALSBrightenPdeltaFast", @"ALSDimPdeltaSlow", @"AAPLuxDelta", @"AutoBrightnessLuxFilter", @"ColorRamp", @"CEEnable", kCBBrightnessCapToCA, 0}];
 }
 
-- (void)updateModulesAODState:(unint64_t)a3
+- (void)updateModulesAODState:(unint64_t)state
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  stateCopy = state;
   memset(__b, 0, sizeof(__b));
   memcpy(__dst, __b, sizeof(__dst));
-  [(CBAODModule *)v7 updateModulesAODState:v5 transitionParameters:__dst];
+  [(CBAODModule *)selfCopy updateModulesAODState:stateCopy transitionParameters:__dst];
 }
 
-- (void)updateModulesAODState:(unint64_t)a3 context:(id)a4
+- (void)updateModulesAODState:(unint64_t)state context:(id)context
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  v6 = a4;
+  stateCopy = state;
+  contextCopy = context;
   memset(__b, 0, sizeof(__b));
   memcpy(__dst, __b, sizeof(__dst));
-  [(CBAODModule *)v9 updateModulesAODState:v7 transitionParameters:__dst context:v6];
+  [(CBAODModule *)selfCopy updateModulesAODState:stateCopy transitionParameters:__dst context:contextCopy];
 }
 
-- (void)updateModulesAODState:(unint64_t)a3 transitionParameters:(id *)a4
+- (void)updateModulesAODState:(unint64_t)state transitionParameters:(id *)parameters
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
-  memcpy(__dst, a4, sizeof(__dst));
-  [(CBAODModule *)self updateModulesAODState:a3 transitionParameters:__dst context:0];
+  stateCopy = state;
+  parametersCopy = parameters;
+  memcpy(__dst, parameters, sizeof(__dst));
+  [(CBAODModule *)self updateModulesAODState:state transitionParameters:__dst context:0];
 }
 
-- (void)updateModulesAODState:(unint64_t)a3 transitionParameters:(id *)a4 context:(id)a5
+- (void)updateModulesAODState:(unint64_t)state transitionParameters:(id *)parameters context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
-  v18 = a5;
-  if ([+[CBAODState AODState]!= a3 sharedInstance]
+  stateCopy = state;
+  parametersCopy = parameters;
+  contextCopy = context;
+  if ([+[CBAODState AODState]!= state sharedInstance]
   {
-    [+[CBAODState sharedInstance](CBAODState setAODState:"setAODState:", v20];
-    if (v22->super._logHandle)
+    [+[CBAODState sharedInstance](CBAODState setAODState:"setAODState:", stateCopy];
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v22->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -3712,14 +3712,14 @@ double __31__CBAODModule_copyModulesInfo___block_invoke(uint64_t a1, uint64_t a2
       _os_log_impl(&dword_1DE8E5000, v17, v16, "AOD %s (State update = %lu)", v23, 0x16u);
     }
 
-    modules = v22->_modules;
+    modules = selfCopy->_modules;
     v9 = MEMORY[0x1E69E9820];
     v10 = -1073741824;
     v11 = 0;
     v12 = __66__CBAODModule_updateModulesAODState_transitionParameters_context___block_invoke;
     v13 = &unk_1E867BF30;
-    memcpy(v15, a4, sizeof(v15));
-    v14 = v18;
+    memcpy(v15, parameters, sizeof(v15));
+    v14 = contextCopy;
     [(NSMutableArray *)modules enumerateObjectsUsingBlock:&v9];
   }
 
@@ -3739,11 +3739,11 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
   return result;
 }
 
-- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)addHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v13 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  if (([(__IOHIDServiceClient *)a3 conformsToUsagePage:65280 usage:4]& 1) != 0)
+  if (([(__IOHIDServiceClient *)client conformsToUsagePage:65280 usage:4]& 1) != 0)
   {
     if (self->super._logHandle)
     {
@@ -3767,13 +3767,13 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v12, a3);
+      __os_log_helper_16_2_1_8_64(v12, client);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Received ALS service - save it! %@", v12, 0xCu);
     }
 
-    if (([(NSMutableArray *)self->_alsServiceClients containsObject:a3]& 1) == 0)
+    if (([(NSMutableArray *)self->_alsServiceClients containsObject:client]& 1) == 0)
     {
-      [(NSMutableArray *)self->_alsServiceClients addObject:a3];
+      [(NSMutableArray *)self->_alsServiceClients addObject:client];
       if ([+[CBAODState isDCPBasedAODSupported] sharedInstance]
       {
         v5 = MEMORY[0x1E695E4C0];
@@ -3785,16 +3785,16 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
     v9 = 1;
   }
 
-  v4 = (v9 & 1 | [(CBAODThresholdModule *)self->_thresholdModule addHIDServiceClient:a3]) != 0;
+  v4 = (v9 & 1 | [(CBAODThresholdModule *)self->_thresholdModule addHIDServiceClient:client]) != 0;
   *MEMORY[0x1E69E9840];
   return v4;
 }
 
-- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)a3
+- (BOOL)removeHIDServiceClient:(__IOHIDServiceClient *)client
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  if (([(NSMutableArray *)self->_alsServiceClients containsObject:a3]& 1) != 0)
+  if (([(NSMutableArray *)self->_alsServiceClients containsObject:client]& 1) != 0)
   {
     if (self->super._logHandle)
     {
@@ -3818,48 +3818,48 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v11, a3);
+      __os_log_helper_16_2_1_8_64(v11, client);
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "Remove ALS service! %@", v11, 0xCu);
     }
 
-    [(NSMutableArray *)self->_alsServiceClients removeObject:a3];
+    [(NSMutableArray *)self->_alsServiceClients removeObject:client];
     v8 = 1;
   }
 
-  v4 = (v8 & 1 | [(CBAODThresholdModule *)self->_thresholdModule removeHIDServiceClient:a3]) != 0;
+  v4 = (v8 & 1 | [(CBAODThresholdModule *)self->_thresholdModule removeHIDServiceClient:client]) != 0;
   *MEMORY[0x1E69E9840];
   return v4;
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4 transitionLength:(float)a5 forceUpdate:(BOOL)a6
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from transitionLength:(float)length forceUpdate:(BOOL)update
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
-  v10 = a5;
-  v9 = a6;
+  eventCopy = event;
+  fromCopy = from;
+  lengthCopy = length;
+  updateCopy = update;
   memset(__b, 0, sizeof(__b));
-  LOBYTE(__b[0]) = v9;
-  HIBYTE(__b[0]) = v10 >= 0.0;
-  *&__b[1] = v10;
+  LOBYTE(__b[0]) = updateCopy;
+  HIBYTE(__b[0]) = lengthCopy >= 0.0;
+  *&__b[1] = lengthCopy;
   memcpy(__dst, __b, sizeof(__dst));
-  return [(CBAODModule *)v14 handleHIDEvent:v12 from:v11 transitionParameters:__dst];
+  return [(CBAODModule *)selfCopy handleHIDEvent:eventCopy from:fromCopy transitionParameters:__dst];
 }
 
-- (BOOL)handleHIDEvent:(__IOHIDEvent *)a3 from:(__IOHIDServiceClient *)a4 transitionParameters:(id *)a5
+- (BOOL)handleHIDEvent:(__IOHIDEvent *)event from:(__IOHIDServiceClient *)from transitionParameters:(id *)parameters
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
-  v9 = a5;
+  eventCopy = event;
+  fromCopy = from;
+  parametersCopy = parameters;
   if ([+[CBAODState AODState]== 1 sharedInstance]
   {
-    v8 = [CBHIDEvent newEvent:v11 andService:v10];
-    if (v13->_aabSensorOverrideFilter)
+    v8 = [CBHIDEvent newEvent:eventCopy andService:fromCopy];
+    if (selfCopy->_aabSensorOverrideFilter)
     {
-      [(CBSensorOverrideFilter *)v13->_aabSensorOverrideFilter filterEvent:v8];
+      [(CBSensorOverrideFilter *)selfCopy->_aabSensorOverrideFilter filterEvent:v8];
     }
 
     if (v8)
@@ -3867,8 +3867,8 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        memcpy(__dst, a5, sizeof(__dst));
-        [(CBAODModule *)v13 handleALSEvent:v8 transitionParameters:__dst];
+        memcpy(__dst, parameters, sizeof(__dst));
+        [(CBAODModule *)selfCopy handleALSEvent:v8 transitionParameters:__dst];
       }
     }
 
@@ -3878,19 +3878,19 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
   return 1;
 }
 
-- (BOOL)handleALSEvent:(id)a3 transitionParameters:(id *)a4
+- (BOOL)handleALSEvent:(id)event transitionParameters:(id *)parameters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  v14 = a4;
+  eventCopy = event;
+  parametersCopy = parameters;
   v13 = 0;
-  if (a3 && (-[NSMutableArray containsObject:](v17->_alsServiceClients, "containsObject:", [v15 service]) & 1) != 0)
+  if (event && (-[NSMutableArray containsObject:](selfCopy->_alsServiceClients, "containsObject:", [eventCopy service]) & 1) != 0)
   {
-    if (v17->super._logHandle)
+    if (selfCopy->super._logHandle)
     {
-      logHandle = v17->super._logHandle;
+      logHandle = selfCopy->super._logHandle;
     }
 
     else
@@ -3912,31 +3912,31 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
     v11 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v18, v15);
+      __os_log_helper_16_2_1_8_64(v18, eventCopy);
       _os_log_debug_impl(&dword_1DE8E5000, v12, v11, "Incoming event %@", v18, 0xCu);
     }
 
     v10 = 0;
-    if (v17->_currentALSEvent)
+    if (selfCopy->_currentALSEvent)
     {
       v10 = 1;
-      MEMORY[0x1E69E5920](v17->_currentALSEvent);
-      v17->_currentALSEvent = MEMORY[0x1E69E5928](v15);
+      MEMORY[0x1E69E5920](selfCopy->_currentALSEvent);
+      selfCopy->_currentALSEvent = MEMORY[0x1E69E5928](eventCopy);
     }
 
     else
     {
-      v17->_currentALSEvent = MEMORY[0x1E69E5928](v15);
+      selfCopy->_currentALSEvent = MEMORY[0x1E69E5928](eventCopy);
       v10 = 1;
     }
 
-    [(CBALSEvent *)v17->_currentALSEvent illuminance];
+    [(CBALSEvent *)selfCopy->_currentALSEvent illuminance];
     *&v4 = v4;
-    [(CBAODModule *)v17 reevaluatePThresholdsForLux:v4];
-    if (!a4->var1 && ((v10 & 1) != 0 || a4->var0))
+    [(CBAODModule *)selfCopy reevaluatePThresholdsForLux:v4];
+    if (!parameters->var1 && ((v10 & 1) != 0 || parameters->var0))
     {
-      memcpy(__dst, a4, 0x34uLL);
-      [(CBAODModule *)v17 performUpdateWithTransitionParameters:__dst];
+      memcpy(__dst, parameters, 0x34uLL);
+      [(CBAODModule *)selfCopy performUpdateWithTransitionParameters:__dst];
     }
 
     v13 = 1;
@@ -3946,28 +3946,28 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
   return v13 & 1;
 }
 
-- (BOOL)copyAndHandleEventWithTransitionLength:(float)a3 forceUpdate:(BOOL)a4
+- (BOOL)copyAndHandleEventWithTransitionLength:(float)length forceUpdate:(BOOL)update
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  lengthCopy = length;
+  updateCopy = update;
   memset(__b, 0, sizeof(__b));
-  LOBYTE(__b[0]) = v7;
-  HIBYTE(__b[0]) = v8 >= 0.0;
-  *&__b[1] = v8;
+  LOBYTE(__b[0]) = updateCopy;
+  HIBYTE(__b[0]) = lengthCopy >= 0.0;
+  *&__b[1] = lengthCopy;
   memcpy(__dst, __b, sizeof(__dst));
-  return [(CBAODModule *)v10 copyAndHandleEventWithTransitionParameters:__dst];
+  return [(CBAODModule *)selfCopy copyAndHandleEventWithTransitionParameters:__dst];
 }
 
-- (BOOL)copyAndHandleEventWithTransitionParameters:(id *)a3
+- (BOOL)copyAndHandleEventWithTransitionParameters:(id *)parameters
 {
-  v40 = self;
+  selfCopy = self;
   v39 = a2;
-  v38 = a3;
+  parametersCopy = parameters;
   if (self->super._logHandle)
   {
-    logHandle = v40->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -4002,19 +4002,19 @@ uint64_t __66__CBAODModule_updateModulesAODState_transitionParameters_context___
   v31 = 0x20000000;
   v32 = 32;
   v33 = 0;
-  alsServiceClients = v40->_alsServiceClients;
+  alsServiceClients = selfCopy->_alsServiceClients;
   v21 = MEMORY[0x1E69E9820];
   v22 = -1073741824;
   v23 = 0;
   v24 = __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_invoke;
   v25 = &unk_1E867BF58;
-  v26 = v40;
-  memcpy(v28, a3, sizeof(v28));
+  v26 = selfCopy;
+  memcpy(v28, parameters, sizeof(v28));
   v27 = &v29;
   [(NSMutableArray *)alsServiceClients enumerateObjectsUsingBlock:&v21];
-  if (v40->super._logHandle)
+  if (selfCopy->super._logHandle)
   {
-    v9 = v40->super._logHandle;
+    v9 = selfCopy->super._logHandle;
   }
 
   else
@@ -4166,11 +4166,11 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   return result;
 }
 
-- (float)getFloatValueFrom:(id)a3 key:(id)a4
+- (float)getFloatValueFrom:(id)from key:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0.0;
-  v7 = [a3 objectForKey:a4];
+  v7 = [from objectForKey:key];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [v7 floatValue];
@@ -4182,7 +4182,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
     oslog = self->super._logHandle;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
     {
-      __os_log_helper_16_2_1_8_64(v11, a4);
+      __os_log_helper_16_2_1_8_64(v11, key);
       _os_log_fault_impl(&dword_1DE8E5000, oslog, OS_LOG_TYPE_FAULT, "getFloatValueFrom error - invalid value for key %@", v11, 0xCu);
     }
   }
@@ -4191,14 +4191,14 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   return v8;
 }
 
-- (float)getFloatValueFrom:(id)a3 key:(id)a4 subkey:(id)a5
+- (float)getFloatValueFrom:(id)from key:(id)key subkey:(id)subkey
 {
   v17 = *MEMORY[0x1E69E9840];
   v11 = 0.0;
-  v10 = [a3 objectForKey:a4];
+  v10 = [from objectForKey:key];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v10 objectForKey:a5];
+    v9 = [v10 objectForKey:subkey];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [v9 floatValue];
@@ -4210,7 +4210,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
       oslog = self->super._logHandle;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
       {
-        __os_log_helper_16_2_1_8_64(v16, a4);
+        __os_log_helper_16_2_1_8_64(v16, key);
         _os_log_fault_impl(&dword_1DE8E5000, oslog, OS_LOG_TYPE_FAULT, "getFloatValueFrom (subkey) error - invalid value for sub-key %@", v16, 0xCu);
       }
     }
@@ -4221,7 +4221,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
     logHandle = self->super._logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
     {
-      __os_log_helper_16_2_1_8_64(v15, a4);
+      __os_log_helper_16_2_1_8_64(v15, key);
       _os_log_fault_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_FAULT, "getFloatValueFrom (subkey)error - invalid value for key %@", v15, 0xCu);
     }
   }
@@ -4230,14 +4230,14 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   return v11;
 }
 
-- (int64_t)getIntegerValueFrom:(id)a3 key:(id)a4
+- (int64_t)getIntegerValueFrom:(id)from key:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [a3 objectForKey:a4];
+  integerValue = 0;
+  v6 = [from objectForKey:key];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
@@ -4245,25 +4245,25 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
     oslog = self->super._logHandle;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
     {
-      __os_log_helper_16_2_1_8_64(v10, a4);
+      __os_log_helper_16_2_1_8_64(v10, key);
       _os_log_fault_impl(&dword_1DE8E5000, oslog, OS_LOG_TYPE_FAULT, "getIntValueFrom error - invalid value for %@", v10, 0xCu);
     }
   }
 
   *MEMORY[0x1E69E9840];
-  return v7;
+  return integerValue;
 }
 
-- (BOOL)setALSServiceProperty:(void *)a3 forKey:(__CFString *)a4
+- (BOOL)setALSServiceProperty:(void *)property forKey:(__CFString *)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  key = a4;
+  propertyCopy = property;
+  key = key;
   if (self->super._logHandle)
   {
-    logHandle = v22->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -4285,13 +4285,13 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v24, key, v20);
+    __os_log_helper_16_2_2_8_64_8_64(v24, key, propertyCopy);
     _os_log_impl(&dword_1DE8E5000, oslog, type, "[ALS service] Set ALS service property %@ = %@", v24, 0x16u);
   }
 
   v16 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = v22->_alsServiceClients;
+  obj = selfCopy->_alsServiceClients;
   v11 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v23 count:16];
   if (v11)
   {
@@ -4308,7 +4308,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
 
       service = 0;
       service = *(__b[1] + 8 * v8);
-      v4 = IOHIDServiceClientSetProperty(service, key, v20);
+      v4 = IOHIDServiceClientSetProperty(service, key, propertyCopy);
       v16 = (v16 | v4) != 0;
       ++v8;
       if (v6 + 1 >= v9)
@@ -4457,7 +4457,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   *MEMORY[0x1E69E9840];
 }
 
-- (id)copyArrayFromPrefsForKey:(id)a3
+- (id)copyArrayFromPrefsForKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -4465,7 +4465,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   if (v7)
   {
     [v7 synchronize];
-    v6 = [v7 objectForKey:a3];
+    v6 = [v7 objectForKey:key];
     if (v6)
     {
       objc_opt_class();
@@ -4500,7 +4500,7 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_3_8_32_8_64_8_64(v11, "[CBAODModule copyArrayFromPrefsForKey:]", a3, v8);
+    __os_log_helper_16_2_3_8_32_8_64_8_64(v11, "[CBAODModule copyArrayFromPrefsForKey:]", key, v8);
     _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "%s: %@ = %@ \n", v11, 0x20u);
   }
 
@@ -4508,16 +4508,16 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   return v8;
 }
 
-- (void)scheduleDisplayModeCompletionTimerIn:(float)a3 forDisplayMode:(int64_t)a4
+- (void)scheduleDisplayModeCompletionTimerIn:(float)in forDisplayMode:(int64_t)mode
 {
   v27 = *MEMORY[0x1E69E9840];
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = a4;
+  inCopy = in;
+  modeCopy = mode;
   if (self->super._logHandle)
   {
-    logHandle = v25->super._logHandle;
+    logHandle = selfCopy->super._logHandle;
   }
 
   else
@@ -4539,40 +4539,40 @@ uint64_t __58__CBAODModule_copyAndHandleEventWithTransitionParameters___block_in
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_2_8_0_8_64(v26, COERCE__INT64(v23), [CBDisplayStateUtilities stringForDisplayMode:v22]);
+    __os_log_helper_16_2_2_8_0_8_64(v26, COERCE__INT64(inCopy), [CBDisplayStateUtilities stringForDisplayMode:modeCopy]);
     _os_log_impl(&dword_1DE8E5000, v21, v20, "Schedule display mode completion timer in %f sec for %@ mode", v26, 0x16u);
   }
 
-  v19 = (v23 * 1000000000.0);
-  if (v25->_displayModeCompletionTimer)
+  v19 = (inCopy * 1000000000.0);
+  if (selfCopy->_displayModeCompletionTimer)
   {
-    source = v25->_displayModeCompletionTimer;
+    source = selfCopy->_displayModeCompletionTimer;
     v4 = dispatch_time(0, v19);
     dispatch_source_set_timer(source, v4, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 
   else
   {
-    v25->_displayModeCompletionTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v25->super._queue);
-    if (v25->_displayModeCompletionTimer)
+    selfCopy->_displayModeCompletionTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->super._queue);
+    if (selfCopy->_displayModeCompletionTimer)
     {
-      displayModeCompletionTimer = v25->_displayModeCompletionTimer;
+      displayModeCompletionTimer = selfCopy->_displayModeCompletionTimer;
       handler = MEMORY[0x1E69E9820];
       v12 = -1073741824;
       v13 = 0;
       v14 = __67__CBAODModule_scheduleDisplayModeCompletionTimerIn_forDisplayMode___block_invoke;
       v15 = &unk_1E867BF80;
-      v16 = v25;
-      v17 = v22;
-      v18 = v23;
+      v16 = selfCopy;
+      v17 = modeCopy;
+      v18 = inCopy;
       dispatch_source_set_event_handler(displayModeCompletionTimer, &handler);
-      v7 = v25->_displayModeCompletionTimer;
+      v7 = selfCopy->_displayModeCompletionTimer;
       v6 = dispatch_time(0, v19);
       dispatch_source_set_timer(v7, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
     }
   }
 
-  dispatch_activate(v25->_displayModeCompletionTimer);
+  dispatch_activate(selfCopy->_displayModeCompletionTimer);
   *MEMORY[0x1E69E9840];
 }
 

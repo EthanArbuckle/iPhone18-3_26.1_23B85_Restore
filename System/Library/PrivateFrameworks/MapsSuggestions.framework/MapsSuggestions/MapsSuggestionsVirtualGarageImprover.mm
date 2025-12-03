@@ -1,15 +1,15 @@
 @interface MapsSuggestionsVirtualGarageImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsVirtualGarageImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (!entryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_12;
   }
 
-  if ([v4 type] != 20)
+  if ([entryCopy type] != 20)
   {
 LABEL_12:
     v16 = 0;

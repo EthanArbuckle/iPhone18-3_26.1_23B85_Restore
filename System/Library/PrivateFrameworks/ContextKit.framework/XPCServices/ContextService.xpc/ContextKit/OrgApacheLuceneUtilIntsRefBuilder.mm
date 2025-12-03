@@ -3,11 +3,11 @@
 - (id)ints;
 - (id)toIntsRef;
 - (int)length;
-- (void)appendWithInt:(int)a3;
-- (void)copyIntsWithOrgApacheLuceneUtilIntsRef:(id)a3;
-- (void)copyUTF8BytesWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (void)appendWithInt:(int)int;
+- (void)copyIntsWithOrgApacheLuceneUtilIntsRef:(id)ref;
+- (void)copyUTF8BytesWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
-- (void)setLengthWithInt:(int)a3;
+- (void)setLengthWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilIntsRefBuilder
@@ -41,7 +41,7 @@
   return ref->length_;
 }
 
-- (void)setLengthWithInt:(int)a3
+- (void)setLengthWithInt:(int)int
 {
   ref = self->ref_;
   if (!ref)
@@ -49,10 +49,10 @@
     JreThrowNullPointerException();
   }
 
-  ref->length_ = a3;
+  ref->length_ = int;
 }
 
-- (void)appendWithInt:(int)a3
+- (void)appendWithInt:(int)int
 {
   ref = self->ref_;
   if (!ref || ([(OrgApacheLuceneUtilIntsRefBuilder *)self growWithInt:(ref->length_ + 1)], v6 = self->ref_, (ints = v6->ints_) == 0))
@@ -68,26 +68,26 @@
     IOSArray_throwOutOfBoundsWithMsg(size, length);
   }
 
-  *(&ints->super.size_ + length + 1) = a3;
+  *(&ints->super.size_ + length + 1) = int;
 }
 
-- (void)copyIntsWithOrgApacheLuceneUtilIntsRef:(id)a3
+- (void)copyIntsWithOrgApacheLuceneUtilIntsRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 4);
-  v5 = *(a3 + 5);
-  v6 = *(a3 + 1);
+  v4 = *(ref + 4);
+  v5 = *(ref + 5);
+  v6 = *(ref + 1);
 
   [(OrgApacheLuceneUtilIntsRefBuilder *)self copyIntsWithIntArray:v6 withInt:v4 withInt:v5];
 }
 
-- (void)copyUTF8BytesWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (void)copyUTF8BytesWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3 || ([(OrgApacheLuceneUtilIntsRefBuilder *)self growWithInt:*(a3 + 5)], v5 = OrgApacheLuceneUtilUnicodeUtil_UTF8toUTF32WithOrgApacheLuceneUtilBytesRef_withIntArray_(a3, self->ref_->ints_), (ref = self->ref_) == 0))
+  if (!ref || ([(OrgApacheLuceneUtilIntsRefBuilder *)self growWithInt:*(ref + 5)], v5 = OrgApacheLuceneUtilUnicodeUtil_UTF8toUTF32WithOrgApacheLuceneUtilBytesRef_withIntArray_(ref, self->ref_->ints_), (ref = self->ref_) == 0))
   {
     JreThrowNullPointerException();
   }

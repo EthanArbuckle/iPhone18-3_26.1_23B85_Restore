@@ -1,53 +1,53 @@
 @interface AAUIManateeStateValidator
-- (AAUIManateeStateValidator)initWithFlowContext:(id)a3 withPresentingViewController:(id)a4;
-- (void)repairIfPrimaryAppleAccountIsCDP:(id)a3;
-- (void)verifyAndRepairManateeWithCompletion:(id)a3;
+- (AAUIManateeStateValidator)initWithFlowContext:(id)context withPresentingViewController:(id)controller;
+- (void)repairIfPrimaryAppleAccountIsCDP:(id)p;
+- (void)verifyAndRepairManateeWithCompletion:(id)completion;
 @end
 
 @implementation AAUIManateeStateValidator
 
-- (AAUIManateeStateValidator)initWithFlowContext:(id)a3 withPresentingViewController:(id)a4
+- (AAUIManateeStateValidator)initWithFlowContext:(id)context withPresentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = AAUIManateeStateValidator;
   v9 = [(AAUIManateeStateValidator *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presentingViewController, a4);
-    objc_storeStrong(&v10->_flowContext, a3);
-    v11 = [MEMORY[0x1E69977E0] sharedInstance];
-    v12 = [v11 contextForPrimaryAccount];
+    objc_storeStrong(&v9->_presentingViewController, controller);
+    objc_storeStrong(&v10->_flowContext, context);
+    mEMORY[0x1E69977E0] = [MEMORY[0x1E69977E0] sharedInstance];
+    contextForPrimaryAccount = [mEMORY[0x1E69977E0] contextForPrimaryAccount];
     context = v10->_context;
-    v10->_context = v12;
+    v10->_context = contextForPrimaryAccount;
   }
 
   return v10;
 }
 
-- (void)repairIfPrimaryAppleAccountIsCDP:(id)a3
+- (void)repairIfPrimaryAppleAccountIsCDP:(id)p
 {
   v4 = MEMORY[0x1E69977E0];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 primaryAccountDSID];
+  pCopy = p;
+  sharedInstance = [v4 sharedInstance];
+  primaryAccountDSID = [sharedInstance primaryAccountDSID];
 
-  if ([MEMORY[0x1E69977E0] isICDPEnabledForDSID:v7 checkWithServer:0])
+  if ([MEMORY[0x1E69977E0] isICDPEnabledForDSID:primaryAccountDSID checkWithServer:0])
   {
-    [(AAUIManateeStateValidator *)self verifyAndRepairManateeWithCompletion:v5];
+    [(AAUIManateeStateValidator *)self verifyAndRepairManateeWithCompletion:pCopy];
   }
 
   else
   {
-    v5[2](v5, 1, 0);
+    pCopy[2](pCopy, 1, 0);
   }
 }
 
-- (void)verifyAndRepairManateeWithCompletion:(id)a3
+- (void)verifyAndRepairManateeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -63,8 +63,8 @@
   v10[1] = 3221225472;
   v10[2] = __66__AAUIManateeStateValidator_verifyAndRepairManateeWithCompletion___block_invoke;
   v10[3] = &unk_1E820C308;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 performDeviceToDeviceEncryptionStateRepairWithCompletion:v10];
 }
 

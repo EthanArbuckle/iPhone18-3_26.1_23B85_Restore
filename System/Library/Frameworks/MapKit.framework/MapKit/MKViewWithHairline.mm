@@ -1,11 +1,11 @@
 @interface MKViewWithHairline
-- (MKViewWithHairline)initWithFrame:(CGRect)a3;
+- (MKViewWithHairline)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBottomHairlineHidden:(BOOL)a3;
-- (void)setHairlineColor:(id)a3;
-- (void)setLeftHairlineInset:(double)a3;
-- (void)setRightHairlineInset:(double)a3;
-- (void)setTopHairlineHidden:(BOOL)a3;
+- (void)setBottomHairlineHidden:(BOOL)hidden;
+- (void)setHairlineColor:(id)color;
+- (void)setLeftHairlineInset:(double)inset;
+- (void)setRightHairlineInset:(double)inset;
+- (void)setTopHairlineHidden:(BOOL)hidden;
 @end
 
 @implementation MKViewWithHairline
@@ -22,19 +22,19 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(MKViewWithHairline *)self window];
-    v12 = [v11 screen];
-    v13 = v12;
-    if (v12)
+    window = [(MKViewWithHairline *)self window];
+    screen = [window screen];
+    v13 = screen;
+    if (screen)
     {
-      [v12 nativeScale];
+      [screen nativeScale];
       v15 = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v16 nativeScale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen nativeScale];
       v15 = v17;
     }
 
@@ -71,12 +71,12 @@
   }
 }
 
-- (void)setBottomHairlineHidden:(BOOL)a3
+- (void)setBottomHairlineHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(MKHairlineView *)self->_bottomHairline setHidden:?];
   bottomHairline = self->_bottomHairline;
-  if (v3)
+  if (hiddenCopy)
   {
     v6 = self->_bottomHairline;
 
@@ -90,12 +90,12 @@
   }
 }
 
-- (void)setTopHairlineHidden:(BOOL)a3
+- (void)setTopHairlineHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(MKHairlineView *)self->_topHairline setHidden:?];
   topHairline = self->_topHairline;
-  if (v3)
+  if (hiddenCopy)
   {
     v6 = self->_topHairline;
 
@@ -109,42 +109,42 @@
   }
 }
 
-- (void)setRightHairlineInset:(double)a3
+- (void)setRightHairlineInset:(double)inset
 {
-  if (self->_rightHairlineInset != a3)
+  if (self->_rightHairlineInset != inset)
   {
-    self->_rightHairlineInset = a3;
+    self->_rightHairlineInset = inset;
     [(UIView *)self _mapkit_setNeedsLayout];
   }
 }
 
-- (void)setLeftHairlineInset:(double)a3
+- (void)setLeftHairlineInset:(double)inset
 {
-  if (self->_leftHairlineInset != a3)
+  if (self->_leftHairlineInset != inset)
   {
-    self->_leftHairlineInset = a3;
+    self->_leftHairlineInset = inset;
     [(UIView *)self _mapkit_setNeedsLayout];
   }
 }
 
-- (void)setHairlineColor:(id)a3
+- (void)setHairlineColor:(id)color
 {
-  v5 = a3;
-  if (self->_hairlineColor != v5)
+  colorCopy = color;
+  if (self->_hairlineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_hairlineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_hairlineColor, color);
     [(MKHairlineView *)self->_topHairline setFillColor:self->_hairlineColor];
     [(MKHairlineView *)self->_bottomHairline setFillColor:self->_hairlineColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (MKViewWithHairline)initWithFrame:(CGRect)a3
+- (MKViewWithHairline)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = MKViewWithHairline;
-  v3 = [(MKViewWithHairline *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKViewWithHairline *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MKHairlineView alloc];

@@ -1,7 +1,7 @@
 @interface ContinuityCaptureShieldUIBackgroundPauseManager
 + (id)sharedInstance;
-- (void)requestDefaultScreenPauseEvent:(int64_t)a3;
-- (void)requestDefaultScreenResumeEvent:(int64_t)a3;
+- (void)requestDefaultScreenPauseEvent:(int64_t)event;
+- (void)requestDefaultScreenResumeEvent:(int64_t)event;
 @end
 
 @implementation ContinuityCaptureShieldUIBackgroundPauseManager
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (void)requestDefaultScreenPauseEvent:(int64_t)a3
+- (void)requestDefaultScreenPauseEvent:(int64_t)event
 {
   BoolAnswer = AVGestaltGetBoolAnswer();
   v6 = sub_100005368();
@@ -27,9 +27,9 @@
     v8 = 136316162;
     v9 = "[ContinuityCaptureShieldUIBackgroundPauseManager requestDefaultScreenPauseEvent:]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    eventCopy = event;
     v14 = 1024;
     v15 = BoolAnswer;
     v16 = 1024;
@@ -40,11 +40,11 @@
   if ((BoolAnswer & 1) == 0)
   {
     v7 = +[CMContinuityCaptureXPCClientCCD sharedInstance];
-    [v7 pauseSessionForEvent:a3];
+    [v7 pauseSessionForEvent:event];
   }
 }
 
-- (void)requestDefaultScreenResumeEvent:(int64_t)a3
+- (void)requestDefaultScreenResumeEvent:(int64_t)event
 {
   BoolAnswer = AVGestaltGetBoolAnswer();
   v6 = sub_100005368();
@@ -53,9 +53,9 @@
     v8 = 136316162;
     v9 = "[ContinuityCaptureShieldUIBackgroundPauseManager requestDefaultScreenResumeEvent:]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    eventCopy = event;
     v14 = 1024;
     v15 = BoolAnswer;
     v16 = 1024;
@@ -66,7 +66,7 @@
   if ((BoolAnswer & 1) == 0)
   {
     v7 = +[CMContinuityCaptureXPCClientCCD sharedInstance];
-    [v7 resumeStreamingForEvent:a3];
+    [v7 resumeStreamingForEvent:event];
   }
 }
 

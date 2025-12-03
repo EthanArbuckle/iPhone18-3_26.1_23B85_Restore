@@ -1,27 +1,27 @@
 @interface MPCWhiskyControllerDisabledState
-- (MPCWhiskyControllerDisabledState)initWithPolicyEvaluation:(id)a3;
+- (MPCWhiskyControllerDisabledState)initWithPolicyEvaluation:(id)evaluation;
 @end
 
 @implementation MPCWhiskyControllerDisabledState
 
-- (MPCWhiskyControllerDisabledState)initWithPolicyEvaluation:(id)a3
+- (MPCWhiskyControllerDisabledState)initWithPolicyEvaluation:(id)evaluation
 {
-  v4 = a3;
-  if (v4)
+  evaluationCopy = evaluation;
+  if (evaluationCopy)
   {
     v12.receiver = self;
     v12.super_class = MPCWhiskyControllerDisabledState;
     v5 = [(MPCWhiskyControllerDisabledState *)&v12 init];
     if (v5)
     {
-      v6 = [v4 explanation];
+      explanation = [evaluationCopy explanation];
       explanation = v5->_explanation;
-      v5->_explanation = v6;
+      v5->_explanation = explanation;
 
-      v8 = [v4 policyType];
-      if (v8 < 3)
+      policyType = [evaluationCopy policyType];
+      if (policyType < 3)
       {
-        v9 = v8 + 1;
+        v9 = policyType + 1;
       }
 
       else
@@ -33,15 +33,15 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

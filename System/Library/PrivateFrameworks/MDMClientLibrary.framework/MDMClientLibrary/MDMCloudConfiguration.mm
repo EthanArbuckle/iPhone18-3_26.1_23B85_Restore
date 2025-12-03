@@ -1,6 +1,6 @@
 @interface MDMCloudConfiguration
-+ (BOOL)isProvisionallyEnrolledWithCloudConfig:(id)a3;
-+ (id)_provisionalEnrollmentExpirationDateFromCloudConfig:(id)a3;
++ (BOOL)isProvisionallyEnrolledWithCloudConfig:(id)config;
++ (id)_provisionalEnrollmentExpirationDateFromCloudConfig:(id)config;
 + (id)sharedConfiguration;
 - (BOOL)alreadySignedIntoFaceTime;
 - (BOOL)hasMAIDCredential;
@@ -13,7 +13,7 @@
 - (BOOL)isTeslaEnrolled;
 - (BOOL)shouldIgnoreMDMFromBackup;
 - (MDMCloudConfiguration)init;
-- (MDMCloudConfiguration)initWithCloudConfigDetails:(id)a3;
+- (MDMCloudConfiguration)initWithCloudConfigDetails:(id)details;
 - (NSDictionary)details;
 - (NSDictionary)setAsideDetails;
 - (id)MAIDUsername;
@@ -32,8 +32,8 @@
 - (id)skipSetupKeys;
 - (int)userMode;
 - (void)refreshDetailsFromDisk;
-- (void)setDetails:(id)a3;
-- (void)setSetAsideDetails:(id)a3;
+- (void)setDetails:(id)details;
+- (void)setSetAsideDetails:(id)details;
 @end
 
 @implementation MDMCloudConfiguration
@@ -93,13 +93,13 @@ uint64_t __44__MDMCloudConfiguration_sharedConfiguration__block_invoke()
 
 - (void)refreshDetailsFromDisk
 {
-  v3 = [(MDMCloudConfiguration *)self memberQueue];
+  memberQueue = [(MDMCloudConfiguration *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MDMCloudConfiguration_refreshDetailsFromDisk__block_invoke;
   block[3] = &unk_278856EE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 void __47__MDMCloudConfiguration_refreshDetailsFromDisk__block_invoke(uint64_t a1)
@@ -148,11 +148,11 @@ void __47__MDMCloudConfiguration_refreshDetailsFromDisk__block_invoke(uint64_t a
 
 - (BOOL)isSupervised
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03090]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03090]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSDictionary)details
@@ -163,14 +163,14 @@ void __47__MDMCloudConfiguration_refreshDetailsFromDisk__block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(MDMCloudConfiguration *)self memberQueue];
+  memberQueue = [(MDMCloudConfiguration *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__MDMCloudConfiguration_details__block_invoke;
   v6[3] = &unk_278856F08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -189,11 +189,11 @@ void __32__MDMCloudConfiguration_details__block_invoke(uint64_t a1)
 
 - (int)userMode
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03080]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03080]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 void __44__MDMCloudConfiguration_sharedConfiguration__block_invoke_2()
@@ -210,31 +210,31 @@ void __44__MDMCloudConfiguration_sharedConfiguration__block_invoke_3()
   [v0 postNotificationName:*MEMORY[0x277D02FF0] object:0];
 }
 
-- (MDMCloudConfiguration)initWithCloudConfigDetails:(id)a3
+- (MDMCloudConfiguration)initWithCloudConfigDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   v6 = [(MDMCloudConfiguration *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memberQueueDetails, a3);
+    objc_storeStrong(&v6->_memberQueueDetails, details);
   }
 
   return v7;
 }
 
-- (void)setDetails:(id)a3
+- (void)setDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(MDMCloudConfiguration *)self memberQueue];
+  detailsCopy = details;
+  memberQueue = [(MDMCloudConfiguration *)self memberQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__MDMCloudConfiguration_setDetails___block_invoke;
   v7[3] = &unk_278856F30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = detailsCopy;
+  v6 = detailsCopy;
+  dispatch_async(memberQueue, v7);
 }
 
 - (NSDictionary)setAsideDetails
@@ -245,14 +245,14 @@ void __44__MDMCloudConfiguration_sharedConfiguration__block_invoke_3()
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(MDMCloudConfiguration *)self memberQueue];
+  memberQueue = [(MDMCloudConfiguration *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__MDMCloudConfiguration_setAsideDetails__block_invoke;
   v6[3] = &unk_278856F08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_async_and_wait(v3, v6);
+  dispatch_async_and_wait(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -269,24 +269,24 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setSetAsideDetails:(id)a3
+- (void)setSetAsideDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(MDMCloudConfiguration *)self memberQueue];
+  detailsCopy = details;
+  memberQueue = [(MDMCloudConfiguration *)self memberQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__MDMCloudConfiguration_setSetAsideDetails___block_invoke;
   v7[3] = &unk_278856F30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = detailsCopy;
+  v6 = detailsCopy;
+  dispatch_async(memberQueue, v7);
 }
 
 - (BOOL)isTeslaEnrolled
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03038]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03038]];
   v4 = [v3 intValue] == 1;
 
   return v4;
@@ -294,12 +294,12 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (BOOL)isAwaitingConfiguration
 {
-  v3 = [(MDMCloudConfiguration *)self details];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D03020]];
+  details = [(MDMCloudConfiguration *)self details];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x277D03020]];
   if ([v4 BOOLValue])
   {
-    v5 = [(MDMCloudConfiguration *)self details];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D03050]];
+    details2 = [(MDMCloudConfiguration *)self details];
+    v6 = [details2 objectForKeyedSubscript:*MEMORY[0x277D03050]];
     v7 = [v6 BOOLValue] ^ 1;
   }
 
@@ -313,41 +313,41 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (BOOL)isMDMUnremovable
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03078]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03078]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isStoredProfileInstalled
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03108]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03108]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isRapidReturnToService
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03088]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03088]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)mdmVersionProtocol
 {
-  v3 = [(MDMCloudConfiguration *)self details];
+  details = [(MDMCloudConfiguration *)self details];
   v4 = *MEMORY[0x277D030C8];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D030C8]];
+  v5 = [details objectForKeyedSubscript:*MEMORY[0x277D030C8]];
 
   if (v5)
   {
-    v6 = [(MDMCloudConfiguration *)self details];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    details2 = [(MDMCloudConfiguration *)self details];
+    v7 = [details2 objectForKeyedSubscript:v4];
   }
 
   else
@@ -360,61 +360,61 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (id)MAIDUsername
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030B8]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D030B8]];
 
   return v3;
 }
 
 - (BOOL)hasMAIDCredential
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030B0]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D030B0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)alreadySignedIntoFaceTime
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03018]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03018]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)language
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03098]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03098]];
 
   return v3;
 }
 
 - (id)region
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03118]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03118]];
 
   return v3;
 }
 
 - (id)languageScript
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030A0]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D030A0]];
 
   return v3;
 }
 
-+ (BOOL)isProvisionallyEnrolledWithCloudConfig:(id)a3
++ (BOOL)isProvisionallyEnrolledWithCloudConfig:(id)config
 {
-  v3 = [a1 _provisionalEnrollmentExpirationDateFromCloudConfig:a3];
+  v3 = [self _provisionalEnrollmentExpirationDateFromCloudConfig:config];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    v5 = [v4 compare:v3] == -1;
+    date = [MEMORY[0x277CBEAA8] date];
+    v5 = [date compare:v3] == -1;
   }
 
   else
@@ -425,9 +425,9 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)_provisionalEnrollmentExpirationDateFromCloudConfig:(id)a3
++ (id)_provisionalEnrollmentExpirationDateFromCloudConfig:(id)config
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277D03110]];
+  v3 = [config objectForKeyedSubscript:*MEMORY[0x277D03110]];
   v4 = v3;
   if (v3)
   {
@@ -445,32 +445,32 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (BOOL)isProvisionallyEnrolled
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [MDMCloudConfiguration isProvisionallyEnrolledWithCloudConfig:v2];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [MDMCloudConfiguration isProvisionallyEnrolledWithCloudConfig:details];
 
   return v3;
 }
 
 - (id)provisionalEnrollmentExpirationDate
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [MDMCloudConfiguration _provisionalEnrollmentExpirationDateFromCloudConfig:v2];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [MDMCloudConfiguration _provisionalEnrollmentExpirationDateFromCloudConfig:details];
 
   return v3;
 }
 
 - (id)skipSetupKeys
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03138]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03138]];
 
   return v3;
 }
 
 - (id)enrollmentServerInfo
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03060]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03060]];
 
   return v3;
 }
@@ -478,8 +478,8 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 - (id)enrollmentServerURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(MDMCloudConfiguration *)self details];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D03060]];
+  details = [(MDMCloudConfiguration *)self details];
+  v4 = [details objectForKeyedSubscript:*MEMORY[0x277D03060]];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03068]];
   v6 = [v2 URLWithString:v5];
 
@@ -488,8 +488,8 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (id)enrollmentAnchorCertificates
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03060]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03060]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D03058]];
 
   return v4;
@@ -497,8 +497,8 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (id)enrollmentServerSupportedFeatures
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03060]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03060]];
   v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D03140]];
 
   return v4;
@@ -506,37 +506,37 @@ void __40__MDMCloudConfiguration_setAsideDetails__block_invoke(uint64_t a1)
 
 - (id)lastDEPPushTokenHash
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030A8]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D030A8]];
 
   return v3;
 }
 
 - (id)mdmServerUID
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D030D0]];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D030D0]];
 
   return v3;
 }
 
 - (id)migrationDeadline
 {
-  v3 = [MEMORY[0x277D034E0] isoDateFormatter];
-  v4 = [(MDMCloudConfiguration *)self details];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D030C0]];
-  v6 = [v3 dateFromString:v5];
+  isoDateFormatter = [MEMORY[0x277D034E0] isoDateFormatter];
+  details = [(MDMCloudConfiguration *)self details];
+  v5 = [details objectForKeyedSubscript:*MEMORY[0x277D030C0]];
+  v6 = [isoDateFormatter dateFromString:v5];
 
   return v6;
 }
 
 - (BOOL)shouldIgnoreMDMFromBackup
 {
-  v2 = [(MDMCloudConfiguration *)self details];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D03070]];
-  v4 = [v3 BOOLValue];
+  details = [(MDMCloudConfiguration *)self details];
+  v3 = [details objectForKeyedSubscript:*MEMORY[0x277D03070]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

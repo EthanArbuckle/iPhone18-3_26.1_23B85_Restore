@@ -1,16 +1,16 @@
 @interface BuddyUserInterfaceStyleSelector
-+ (void)clearUserInterfaceStyleMode:(id)a3;
-+ (void)setUserInterfaceStyleModeValue:(int64_t)a3 presented:(BOOL)a4 buddyPreferences:(id)a5;
++ (void)clearUserInterfaceStyleMode:(id)mode;
++ (void)setUserInterfaceStyleModeValue:(int64_t)value presented:(BOOL)presented buddyPreferences:(id)preferences;
 - (BOOL)controllerNeedsToRun;
 - (BuddyUserInterfaceStyleSelector)init;
 - (_SelectionContentDisplayModel)_contentDisplayModel;
-- (id)_darkImageNameForImageName:(id)a3;
+- (id)_darkImageNameForImageName:(id)name;
 - (void)_continuePressed;
-- (void)_decorateComposedItemView:(id)a3 displayModel:(_SelectionContentDisplayModel)a4;
-- (void)didSelectSegment:(int64_t)a3;
+- (void)_decorateComposedItemView:(id)view displayModel:(_SelectionContentDisplayModel)model;
+- (void)didSelectSegment:(int64_t)segment;
 - (void)loadView;
-- (void)userInterfaceStyleModeDidChange:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)userInterfaceStyleModeDidChange:(id)change;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyUserInterfaceStyleSelector
@@ -44,24 +44,24 @@
 
 - (void)loadView
 {
-  v51 = self;
+  selfCopy = self;
   v50 = a2;
   v49.receiver = self;
   v49.super_class = BuddyUserInterfaceStyleSelector;
   [(BuddyUserInterfaceStyleSelector *)&v49 loadView];
   v2 = +[NSMutableArray array];
-  [(BuddyUserInterfaceStyleSelector *)v51 setTimeLabelWidthConstraints:v2];
+  [(BuddyUserInterfaceStyleSelector *)selfCopy setTimeLabelWidthConstraints:v2];
 
   v3 = +[NSMutableArray array];
-  [(BuddyUserInterfaceStyleSelector *)v51 setTimeLabelCenterYConstraints:v3];
+  [(BuddyUserInterfaceStyleSelector *)selfCopy setTimeLabelCenterYConstraints:v3];
 
-  [(BuddyUserInterfaceStyleSelector *)v51 _contentDisplayModel];
+  [(BuddyUserInterfaceStyleSelector *)selfCopy _contentDisplayModel];
   v47 = v4;
   v48 = v5;
   +[BuddyPosedDeviceSelectionView posedDevicesPadding];
   v46 = v6;
-  v7 = [(BuddyUserInterfaceStyleSelector *)v51 view];
-  [v7 directionalLayoutMargins];
+  view = [(BuddyUserInterfaceStyleSelector *)selfCopy view];
+  [view directionalLayoutMargins];
   *&v44 = v8;
   *(&v44 + 1) = v9;
   *&v45 = v10;
@@ -80,38 +80,38 @@
   v41 = [BuddyPosedDeviceSelectionView selectionItemWithImageName:@"Appearance-Dark" symbolName:@"checkmark.circle.fill" segment:1 text:v17 hostViewLayoutMargins:v44 posedDevicesPadding:v45, v46];
 
   v18 = [[BuddyPosedDeviceSelectionView alloc] initWithLeftView:v43 centerView:v42 rightView:v41];
-  [(BuddyPosedDeviceSelectionController *)v51 setSelectionView:v18];
+  [(BuddyPosedDeviceSelectionController *)selfCopy setSelectionView:v18];
 
-  objc_initWeak(&location, v51);
+  objc_initWeak(&location, selfCopy);
   v34 = _NSConcreteStackBlock;
   v35 = -1073741824;
   v36 = 0;
   v37 = sub_1001379EC;
   v38 = &unk_10032D570;
   objc_copyWeak(&v39, &location);
-  [(BuddyPosedDeviceSelectionController *)v51 setSelectionViewHeightChangeBlock:&v34];
-  v19 = v51;
+  [(BuddyPosedDeviceSelectionController *)selfCopy setSelectionViewHeightChangeBlock:&v34];
+  v19 = selfCopy;
   v20 = +[NSBundle mainBundle];
   v21 = [(NSBundle *)v20 localizedStringForKey:@"APPEARANCE_CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v19 addBoldButton:v21 action:"_continuePressed"];
 
-  v22 = v51;
-  v23 = [(BuddyPosedDeviceSelectionController *)v51 selectionView];
-  v24 = [(BuddyPosedDeviceSelectionView *)v23 leftPosedView];
-  v25 = [(BuddyPosedDeviceSelectionItemView *)v24 contentContainer];
-  [(BuddyUserInterfaceStyleSelector *)v22 _decorateComposedItemView:v25 displayModel:v47, v48];
+  v22 = selfCopy;
+  selectionView = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  leftPosedView = [(BuddyPosedDeviceSelectionView *)selectionView leftPosedView];
+  contentContainer = [(BuddyPosedDeviceSelectionItemView *)leftPosedView contentContainer];
+  [(BuddyUserInterfaceStyleSelector *)v22 _decorateComposedItemView:contentContainer displayModel:v47, v48];
 
-  v26 = v51;
-  v27 = [(BuddyPosedDeviceSelectionController *)v51 selectionView];
-  v28 = [(BuddyPosedDeviceSelectionView *)v27 centerPosedView];
-  v29 = [(BuddyPosedDeviceSelectionItemView *)v28 contentContainer];
-  [(BuddyUserInterfaceStyleSelector *)v26 _decorateComposedItemView:v29 displayModel:v47, v48];
+  v26 = selfCopy;
+  selectionView2 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  centerPosedView = [(BuddyPosedDeviceSelectionView *)selectionView2 centerPosedView];
+  contentContainer2 = [(BuddyPosedDeviceSelectionItemView *)centerPosedView contentContainer];
+  [(BuddyUserInterfaceStyleSelector *)v26 _decorateComposedItemView:contentContainer2 displayModel:v47, v48];
 
-  v30 = v51;
-  v31 = [(BuddyPosedDeviceSelectionController *)v51 selectionView];
-  v32 = [(BuddyPosedDeviceSelectionView *)v31 rightPosedView];
-  v33 = [(BuddyPosedDeviceSelectionItemView *)v32 contentContainer];
-  [(BuddyUserInterfaceStyleSelector *)v30 _decorateComposedItemView:v33 displayModel:v47, v48];
+  v30 = selfCopy;
+  selectionView3 = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  rightPosedView = [(BuddyPosedDeviceSelectionView *)selectionView3 rightPosedView];
+  contentContainer3 = [(BuddyPosedDeviceSelectionItemView *)rightPosedView contentContainer];
+  [(BuddyUserInterfaceStyleSelector *)v30 _decorateComposedItemView:contentContainer3 displayModel:v47, v48];
 
   objc_destroyWeak(&v39);
   objc_destroyWeak(&location);
@@ -120,22 +120,22 @@
   objc_storeStrong(&v43, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = BuddyUserInterfaceStyleSelector;
-  [(BuddyPosedDeviceSelectionController *)&v9 viewWillAppear:a3];
+  [(BuddyPosedDeviceSelectionController *)&v9 viewWillAppear:appear];
   location = [[UISUserInterfaceStyleMode alloc] initWithDelegate:0];
-  v3 = [location modeValue];
-  if (v3 == 1)
+  modeValue = [location modeValue];
+  if (modeValue == 1)
   {
     v7 = 0;
   }
 
-  else if (v3 == 2)
+  else if (modeValue == 2)
   {
     v7 = 1;
   }
@@ -145,42 +145,42 @@
     v7 = 2;
   }
 
-  v4 = [(BuddyPosedDeviceSelectionController *)v12 selectionView];
-  [(BuddyPosedDeviceSelectionView *)v4 selectSegment:v7];
+  selectionView = [(BuddyPosedDeviceSelectionController *)selfCopy selectionView];
+  [(BuddyPosedDeviceSelectionView *)selectionView selectSegment:v7];
 
-  v5 = [(BuddyUserInterfaceStyleSelector *)v12 buddyPreferences];
-  [(BYPreferencesController *)v5 setObject:&__kCFBooleanFalse forKey:@"UserInterfaceStyleModePresented"];
+  buddyPreferences = [(BuddyUserInterfaceStyleSelector *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"UserInterfaceStyleModePresented"];
 
-  v6 = [(BuddyUserInterfaceStyleSelector *)v12 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v6 clearActionForFeature:9];
+  paneFeatureAnalyticsManager = [(BuddyUserInterfaceStyleSelector *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:9];
 
   objc_storeStrong(&location, 0);
 }
 
-+ (void)setUserInterfaceStyleModeValue:(int64_t)a3 presented:(BOOL)a4 buddyPreferences:(id)a5
++ (void)setUserInterfaceStyleModeValue:(int64_t)value presented:(BOOL)presented buddyPreferences:(id)preferences
 {
-  v13 = a1;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
+  valueCopy = value;
+  presentedCopy = presented;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, preferences);
   v5 = [[UISUserInterfaceStyleMode alloc] initWithDelegate:0];
-  [v5 setModeValue:{v11, v5}];
+  [v5 setModeValue:{valueCopy, v5}];
   v6 = location;
-  v7 = [NSNumber numberWithBool:v10];
+  v7 = [NSNumber numberWithBool:presentedCopy];
   [v6 setObject:v7 forKey:@"UserInterfaceStyleModePresented"];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&location, 0);
 }
 
-+ (void)clearUserInterfaceStyleMode:(id)a3
++ (void)clearUserInterfaceStyleMode:(id)mode
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, mode);
   [objc_opt_class() setUserInterfaceStyleModeValue:1 presented:0 buddyPreferences:location[0]];
   objc_storeStrong(location, 0);
 }
@@ -193,13 +193,13 @@
   return v3 & 1;
 }
 
-- (void)_decorateComposedItemView:(id)a3 displayModel:(_SelectionContentDisplayModel)a4
+- (void)_decorateComposedItemView:(id)view displayModel:(_SelectionContentDisplayModel)model
 {
-  v30 = a4;
-  v29 = self;
+  modelCopy = model;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v27 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v27 setNumberOfLines:1];
   v4 = [UIFont systemFontOfSize:60.5 weight:UIFontWeightMedium];
@@ -217,32 +217,32 @@
   [v27 setTextColor:v7];
 
   [location[0] addSubview:v27];
-  v8 = [v27 widthAnchor];
-  var1 = v30.var1;
+  widthAnchor = [v27 widthAnchor];
+  var1 = modelCopy.var1;
   [location[0] bounds];
   v25[2] = v10;
   v25[1] = v11;
   v25[4] = v12;
   v25[3] = v13;
-  v26 = [v8 constraintEqualToConstant:var1 * *&v12];
+  v26 = [widthAnchor constraintEqualToConstant:var1 * *&v12];
 
   [v26 setActive:1];
-  v14 = [v27 centerXAnchor];
-  v15 = [location[0] centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:2.0];
+  centerXAnchor = [v27 centerXAnchor];
+  centerXAnchor2 = [location[0] centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:2.0];
   [v16 setActive:1];
 
-  v17 = [v27 centerYAnchor];
-  v18 = [location[0] centerYAnchor];
+  centerYAnchor = [v27 centerYAnchor];
+  centerYAnchor2 = [location[0] centerYAnchor];
   [location[0] bounds];
-  v25[0] = [v17 constraintEqualToAnchor:v18 constant:{-(v19 * v30.var0), v20, v21, v22, *&v19}];
+  v25[0] = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:{-(v19 * modelCopy.var0), v20, v21, v22, *&v19}];
 
   [v25[0] setActive:1];
-  v23 = [(BuddyUserInterfaceStyleSelector *)v29 timeLabelCenterYConstraints];
-  [(NSMutableArray *)v23 addObject:v25[0]];
+  timeLabelCenterYConstraints = [(BuddyUserInterfaceStyleSelector *)selfCopy timeLabelCenterYConstraints];
+  [(NSMutableArray *)timeLabelCenterYConstraints addObject:v25[0]];
 
-  v24 = [(BuddyUserInterfaceStyleSelector *)v29 timeLabelWidthConstraints];
-  [(NSMutableArray *)v24 addObject:v26];
+  timeLabelWidthConstraints = [(BuddyUserInterfaceStyleSelector *)selfCopy timeLabelWidthConstraints];
+  [(NSMutableArray *)timeLabelWidthConstraints addObject:v26];
 
   objc_storeStrong(v25, 0);
   objc_storeStrong(&v26, 0);
@@ -252,7 +252,7 @@
 
 - (_SelectionContentDisplayModel)_contentDisplayModel
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13 = 0.256222486;
   v12 = 0x3FC99999A0000000;
@@ -359,12 +359,12 @@ LABEL_28:
   return result;
 }
 
-- (id)_darkImageNameForImageName:(id)a3
+- (id)_darkImageNameForImageName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v3 = [location[0] stringByAppendingString:@"_dark"];
   objc_storeStrong(location, 0);
 
@@ -373,28 +373,28 @@ LABEL_28:
 
 - (void)_continuePressed
 {
-  v2 = [(BuddyUserInterfaceStyleSelector *)self settingsManager];
-  v3 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
-  [(BFFSettingsManager *)v2 setUserInterfaceStyleMode:[(UISUserInterfaceStyleMode *)v3 modeValue]];
+  settingsManager = [(BuddyUserInterfaceStyleSelector *)self settingsManager];
+  styleMode = [(BuddyUserInterfaceStyleSelector *)self styleMode];
+  [(BFFSettingsManager *)settingsManager setUserInterfaceStyleMode:[(UISUserInterfaceStyleMode *)styleMode modeValue]];
 
-  v4 = [(BuddyUserInterfaceStyleSelector *)self buddyPreferences];
-  [(BYPreferencesController *)v4 setObject:&__kCFBooleanTrue forKey:@"UserInterfaceStyleModePresented"];
+  buddyPreferences = [(BuddyUserInterfaceStyleSelector *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"UserInterfaceStyleModePresented"];
 
-  v5 = [(BuddyUserInterfaceStyleSelector *)self paneFeatureAnalyticsManager];
-  v6 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
-  v7 = [NSNumber numberWithInteger:[(UISUserInterfaceStyleMode *)v6 modeValue]];
-  [(BYPaneFeatureAnalyticsManager *)v5 recordActionWithValue:v7 forFeature:9];
+  paneFeatureAnalyticsManager = [(BuddyUserInterfaceStyleSelector *)self paneFeatureAnalyticsManager];
+  styleMode2 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
+  v7 = [NSNumber numberWithInteger:[(UISUserInterfaceStyleMode *)styleMode2 modeValue]];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v7 forFeature:9];
 
-  v8 = [(BuddyWelcomeController *)self delegate];
-  [(BFFFlowItemDelegate *)v8 flowItemDone:self nextItemClass:0];
+  delegate = [(BuddyWelcomeController *)self delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:self nextItemClass:0];
 }
 
-- (void)userInterfaceStyleModeDidChange:(id)a3
+- (void)userInterfaceStyleModeDidChange:(id)change
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v10 = 0;
   v8 = 0;
   if ([location[0] modeValue] == 2)
@@ -423,36 +423,36 @@ LABEL_28:
   v4 = [v12 colorWithAlphaComponent:0.96];
   v7 = BFFPointImageOfColor();
 
-  v5 = [(BuddyUserInterfaceStyleSelector *)v14 navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setBackgroundImage:v7 forBarMetrics:0];
+  navigationController = [(BuddyUserInterfaceStyleSelector *)selfCopy navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setBackgroundImage:v7 forBarMetrics:0];
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)didSelectSegment:(int64_t)a3
+- (void)didSelectSegment:(int64_t)segment
 {
-  if (a3)
+  if (segment)
   {
-    if (a3 == 1)
+    if (segment == 1)
     {
-      v5 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
-      [(UISUserInterfaceStyleMode *)v5 setModeValue:2];
+      styleMode = [(BuddyUserInterfaceStyleSelector *)self styleMode];
+      [(UISUserInterfaceStyleMode *)styleMode setModeValue:2];
     }
 
-    else if (a3 == 2)
+    else if (segment == 2)
     {
-      v4 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
-      [(UISUserInterfaceStyleMode *)v4 setModeValue:100];
+      styleMode2 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
+      [(UISUserInterfaceStyleMode *)styleMode2 setModeValue:100];
     }
   }
 
   else
   {
-    v3 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
-    [(UISUserInterfaceStyleMode *)v3 setModeValue:1];
+    styleMode3 = [(BuddyUserInterfaceStyleSelector *)self styleMode];
+    [(UISUserInterfaceStyleMode *)styleMode3 setModeValue:1];
   }
 }
 

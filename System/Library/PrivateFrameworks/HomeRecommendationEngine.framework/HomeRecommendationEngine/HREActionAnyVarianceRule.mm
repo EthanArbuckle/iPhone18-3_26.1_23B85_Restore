@@ -1,13 +1,13 @@
 @interface HREActionAnyVarianceRule
-+ (id)anyVarianceRuleWithKey:(id)a3;
++ (id)anyVarianceRuleWithKey:(id)key;
 @end
 
 @implementation HREActionAnyVarianceRule
 
-+ (id)anyVarianceRuleWithKey:(id)a3
++ (id)anyVarianceRuleWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithKey:v4];
+  keyCopy = key;
+  v5 = [[self alloc] _initWithKey:keyCopy];
 
   return v5;
 }

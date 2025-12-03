@@ -1,37 +1,37 @@
 @interface MPUNowPlayingIndicatorView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPUNowPlayingIndicatorView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPUNowPlayingIndicatorView)initWithFrame:(CGRect)frame;
 - (void)_reloadLevelViews;
 - (void)_updateLevelAnimations;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setLevelCornerRadius:(double)a3;
-- (void)setLevelGuttersColor:(id)a3;
-- (void)setLevelWidth:(double)a3;
-- (void)setMaximumLevelHeight:(double)a3;
-- (void)setMinimumLevelHeight:(double)a3;
-- (void)setNumberOfLevels:(int64_t)a3;
-- (void)setPlaybackState:(int64_t)a3;
-- (void)setShowsLevelGutters:(BOOL)a3;
+- (void)setLevelCornerRadius:(double)radius;
+- (void)setLevelGuttersColor:(id)color;
+- (void)setLevelWidth:(double)width;
+- (void)setMaximumLevelHeight:(double)height;
+- (void)setMinimumLevelHeight:(double)height;
+- (void)setNumberOfLevels:(int64_t)levels;
+- (void)setPlaybackState:(int64_t)state;
+- (void)setShowsLevelGutters:(BOOL)gutters;
 - (void)tintColorDidChange;
 @end
 
 @implementation MPUNowPlayingIndicatorView
 
-- (MPUNowPlayingIndicatorView)initWithFrame:(CGRect)a3
+- (MPUNowPlayingIndicatorView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MPUNowPlayingIndicatorView;
-  v3 = [(MPUNowPlayingIndicatorView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUNowPlayingIndicatorView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MPUNowPlayingIndicatorView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(MPUNowPlayingIndicatorView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MPUNowPlayingIndicatorView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v8 = v7;
 
     v4->_interLevelSpacing = 1.0 / v8 + 1.0;
@@ -95,7 +95,7 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_showsLevelGutters)
   {
@@ -107,7 +107,7 @@
 
     else
     {
-      v6 = [(MPUNowPlayingIndicatorView *)self tintColor:a3.origin.x];
+      v6 = [(MPUNowPlayingIndicatorView *)self tintColor:rect.origin.x];
     }
 
     v11 = v6;
@@ -134,7 +134,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   numberOfLevels = self->_numberOfLevels;
   if (numberOfLevels)
@@ -169,15 +169,15 @@
   levelGuttersColor = self->_levelGuttersColor;
   if (levelGuttersColor)
   {
-    v4 = levelGuttersColor;
+    tintColor = levelGuttersColor;
   }
 
   else
   {
-    v4 = [(MPUNowPlayingIndicatorView *)self tintColor];
+    tintColor = [(MPUNowPlayingIndicatorView *)self tintColor];
   }
 
-  v5 = v4;
+  v5 = tintColor;
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -209,12 +209,12 @@
   }
 }
 
-- (void)setLevelCornerRadius:(double)a3
+- (void)setLevelCornerRadius:(double)radius
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_levelCornerRadius != a3)
+  if (self->_levelCornerRadius != radius)
   {
-    self->_levelCornerRadius = a3;
+    self->_levelCornerRadius = radius;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -235,8 +235,8 @@
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * v8) layer];
-          [v9 setCornerRadius:self->_levelCornerRadius];
+          layer = [*(*(&v10 + 1) + 8 * v8) layer];
+          [layer setCornerRadius:self->_levelCornerRadius];
 
           ++v8;
         }
@@ -250,69 +250,69 @@
   }
 }
 
-- (void)setLevelWidth:(double)a3
+- (void)setLevelWidth:(double)width
 {
-  if (self->_levelWidth != a3)
+  if (self->_levelWidth != width)
   {
-    self->_levelWidth = a3;
+    self->_levelWidth = width;
     [(MPUNowPlayingIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaximumLevelHeight:(double)a3
+- (void)setMaximumLevelHeight:(double)height
 {
-  if (self->_maximumLevelHeight != a3)
+  if (self->_maximumLevelHeight != height)
   {
-    self->_maximumLevelHeight = a3;
+    self->_maximumLevelHeight = height;
     [(MPUNowPlayingIndicatorView *)self _updateLevelAnimations];
   }
 }
 
-- (void)setMinimumLevelHeight:(double)a3
+- (void)setMinimumLevelHeight:(double)height
 {
-  if (self->_minimumLevelHeight != a3)
+  if (self->_minimumLevelHeight != height)
   {
-    self->_minimumLevelHeight = a3;
+    self->_minimumLevelHeight = height;
     [(MPUNowPlayingIndicatorView *)self _updateLevelAnimations];
   }
 }
 
-- (void)setNumberOfLevels:(int64_t)a3
+- (void)setNumberOfLevels:(int64_t)levels
 {
-  if (self->_numberOfLevels != a3)
+  if (self->_numberOfLevels != levels)
   {
-    self->_numberOfLevels = a3;
+    self->_numberOfLevels = levels;
     [(MPUNowPlayingIndicatorView *)self _reloadLevelViews];
   }
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
-  if (self->_playbackState != a3)
+  if (self->_playbackState != state)
   {
-    self->_playbackState = a3;
+    self->_playbackState = state;
     [(MPUNowPlayingIndicatorView *)self _updateLevelAnimations];
   }
 }
 
-- (void)setShowsLevelGutters:(BOOL)a3
+- (void)setShowsLevelGutters:(BOOL)gutters
 {
-  if (self->_showsLevelGutters != a3)
+  if (self->_showsLevelGutters != gutters)
   {
-    self->_showsLevelGutters = a3;
+    self->_showsLevelGutters = gutters;
     [(MPUNowPlayingIndicatorView *)self setNeedsDisplay];
   }
 }
 
-- (void)setLevelGuttersColor:(id)a3
+- (void)setLevelGuttersColor:(id)color
 {
-  v5 = a3;
-  if (self->_levelGuttersColor != v5)
+  colorCopy = color;
+  if (self->_levelGuttersColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_levelGuttersColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_levelGuttersColor, color);
     [(MPUNowPlayingIndicatorView *)self _reloadLevelViews];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -335,9 +335,9 @@
       if (v3 >= [(NSMutableArray *)self->_levelViews count]|| ([(NSMutableArray *)self->_levelViews objectAtIndex:v3], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v8 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
-        v9 = [v8 layer];
-        [v9 setCornerRadius:self->_levelCornerRadius];
-        [v9 setAnchorPoint:{0.5, 1.0}];
+        layer = [v8 layer];
+        [layer setCornerRadius:self->_levelCornerRadius];
+        [layer setAnchorPoint:{0.5, 1.0}];
         levelViews = self->_levelViews;
         if (!levelViews)
         {
@@ -355,16 +355,16 @@
       levelGuttersColor = self->_levelGuttersColor;
       if (levelGuttersColor)
       {
-        v14 = levelGuttersColor;
+        tintColor = levelGuttersColor;
       }
 
       else
       {
-        v14 = [(MPUNowPlayingIndicatorView *)self tintColor];
+        tintColor = [(MPUNowPlayingIndicatorView *)self tintColor];
       }
 
-      v15 = v14;
-      [v8 setBackgroundColor:v14];
+      v15 = tintColor;
+      [v8 setBackgroundColor:tintColor];
 
       ++v3;
     }
@@ -386,25 +386,25 @@
 
 - (void)_updateLevelAnimations
 {
-  v2 = self;
+  selfCopy = self;
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(MPUNowPlayingIndicatorView *)self window];
-  v4 = [v3 screen];
-  v5 = v4;
-  if (v4)
+  window = [(MPUNowPlayingIndicatorView *)self window];
+  screen = [window screen];
+  v5 = screen;
+  if (screen)
   {
-    [v4 _refreshRate];
+    [screen _refreshRate];
     v7 = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 _refreshRate];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _refreshRate];
     v7 = v9;
   }
 
-  [(MPUNowPlayingIndicatorView *)v2 minimumFrameInterval];
+  [(MPUNowPlayingIndicatorView *)selfCopy minimumFrameInterval];
   if (v10 == 0.0)
   {
     v11 = 0.0166666667;
@@ -412,7 +412,7 @@
 
   else
   {
-    [(MPUNowPlayingIndicatorView *)v2 minimumFrameInterval];
+    [(MPUNowPlayingIndicatorView *)selfCopy minimumFrameInterval];
   }
 
   if (v7 < v11)
@@ -424,7 +424,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v2->_levelViews;
+  obj = selfCopy->_levelViews;
   v12 = [(NSMutableArray *)obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v12)
   {
@@ -442,8 +442,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v45 + 1) + 8 * i) layer];
-        playbackState = v2->_playbackState;
+        layer = [*(*(&v45 + 1) + 8 * i) layer];
+        playbackState = selfCopy->_playbackState;
         if (playbackState == 2)
         {
           v18 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"bounds.size.height"];
@@ -454,18 +454,18 @@
           [v18 setRemovedOnCompletion:0];
           [v18 setFillMode:v43];
           v36 = MEMORY[0x277CCABB0];
-          v37 = [v16 presentationLayer];
-          v38 = v37;
-          if (!v37)
+          presentationLayer = [layer presentationLayer];
+          v38 = presentationLayer;
+          if (!presentationLayer)
           {
-            v37 = v16;
+            presentationLayer = layer;
           }
 
-          [v37 bounds];
+          [presentationLayer bounds];
           v39 = [v36 numberWithDouble:CGRectGetHeight(v53)];
           [v18 setFromValue:v39];
 
-          v40 = [MEMORY[0x277CCABB0] numberWithDouble:v2->_minimumLevelHeight];
+          v40 = [MEMORY[0x277CCABB0] numberWithDouble:selfCopy->_minimumLevelHeight];
           [v18 setToValue:v40];
         }
 
@@ -478,22 +478,22 @@
           [v18 setRemovedOnCompletion:0];
           [v18 setFillMode:v43];
           v25 = arc4random();
-          maximumLevelHeight = v2->_maximumLevelHeight;
+          maximumLevelHeight = selfCopy->_maximumLevelHeight;
           v27 = maximumLevelHeight * 0.5 + (v25 % 0xB) / 10.0 * (maximumLevelHeight * 0.5);
           [v18 setDuration:maximumLevelHeight / v27 * 0.65];
-          v28 = [MEMORY[0x277CCABB0] numberWithDouble:v2->_minimumLevelHeight];
+          v28 = [MEMORY[0x277CCABB0] numberWithDouble:selfCopy->_minimumLevelHeight];
           v49[0] = v28;
           v29 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
           v49[1] = v29;
-          [MEMORY[0x277CCABB0] numberWithDouble:v2->_minimumLevelHeight];
+          [MEMORY[0x277CCABB0] numberWithDouble:selfCopy->_minimumLevelHeight];
           v30 = v13;
-          v32 = v31 = v2;
+          v32 = v31 = selfCopy;
           v49[2] = v32;
           v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:3];
           [v18 setValues:v33];
 
           v14 = v41;
-          v2 = v31;
+          selfCopy = v31;
           v13 = v30;
 
           LODWORD(v34) = 2139095040;
@@ -515,14 +515,14 @@
           [v18 setRemovedOnCompletion:0];
           [v18 setFillMode:v43];
           v20 = MEMORY[0x277CCABB0];
-          v21 = [v16 presentationLayer];
-          v22 = v21;
-          if (!v21)
+          presentationLayer2 = [layer presentationLayer];
+          v22 = presentationLayer2;
+          if (!presentationLayer2)
           {
-            v21 = v16;
+            presentationLayer2 = layer;
           }
 
-          [v21 bounds];
+          [presentationLayer2 bounds];
           v23 = [v20 numberWithDouble:CGRectGetHeight(v52)];
           [v18 setFromValue:v23];
 
@@ -530,7 +530,7 @@
         }
 
         [v18 setFrameInterval:v7];
-        [v16 addAnimation:v18 forKey:@"nowPlayingIndicatorAnimation"];
+        [layer addAnimation:v18 forKey:@"nowPlayingIndicatorAnimation"];
 
 LABEL_25:
       }

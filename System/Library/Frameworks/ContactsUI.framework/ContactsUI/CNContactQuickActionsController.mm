@@ -2,36 +2,36 @@
 + (CNKeyDescriptor)descriptorForRequiredKeys;
 + (OS_os_log)log;
 + (id)sharedDataSource;
-- (BOOL)hasDefaultActionForActionType:(id)a3;
+- (BOOL)hasDefaultActionForActionType:(id)type;
 - (CNContactQuickActionViewContainer)contactQuickActionViewContainer;
 - (CNContactQuickActionsController)init;
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4;
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4 disambiguationMenuPresentation:(id)a5;
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4 disambiguationMenuPresentation:(id)a5 userActionListDataSource:(id)a6 schedulerProvider:(id)a7 userActionContext:(id)a8;
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container;
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container disambiguationMenuPresentation:(id)presentation;
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container disambiguationMenuPresentation:(id)presentation userActionListDataSource:(id)source schedulerProvider:(id)provider userActionContext:(id)context;
 - (CNContactQuickActionsControllerDelegate)delegate;
 - (CNContactQuickActionsModelTrackingDelegate)modelTrackingDelegate;
 - (id)allModelsObservable;
-- (id)defaultTitleForActionType:(id)a3;
-- (id)disambiguationMenuForActionType:(id)a3;
+- (id)defaultTitleForActionType:(id)type;
+- (id)disambiguationMenuForActionType:(id)type;
 - (void)cleanUpAfterLatestActionDiscovery;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
 - (void)dealloc;
-- (void)disambiguationViewControllerDismissedExternally:(id)a3;
+- (void)disambiguationViewControllerDismissedExternally:(id)externally;
 - (void)discoverActions;
-- (void)executeLongPressBehaviorForActionType:(id)a3;
-- (void)executeTapBehaviorForActionType:(id)a3 shouldFallbackToDisambiguationMenu:(BOOL)a4;
-- (void)performAction:(id)a3;
-- (void)processDiscoveredModels:(id)a3;
-- (void)reportStoredModel:(id)a3 forActionType:(id)a4 toQuickActionContainer:(id)a5;
+- (void)executeLongPressBehaviorForActionType:(id)type;
+- (void)executeTapBehaviorForActionType:(id)type shouldFallbackToDisambiguationMenu:(BOOL)menu;
+- (void)performAction:(id)action;
+- (void)processDiscoveredModels:(id)models;
+- (void)reportStoredModel:(id)model forActionType:(id)type toQuickActionContainer:(id)container;
 - (void)reportStoredModelsToQuickActionContainer;
-- (void)setContact:(id)a3;
-- (void)setNavigationListStyle:(id)a3;
-- (void)setupDisambiguationMenuForActionType:(id)a3;
-- (void)showDisambiguationMenuForActionType:(id)a3;
-- (void)storeDiscoveredModels:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setNavigationListStyle:(id)style;
+- (void)setupDisambiguationMenuForActionType:(id)type;
+- (void)showDisambiguationMenuForActionType:(id)type;
+- (void)storeDiscoveredModels:(id)models;
 - (void)tearDownDisambiguationMenu;
-- (void)userActionListDataSource:(id)a3 didResolveInitialActionsForActionType:(id)a4 contactIdentifier:(id)a5;
-- (void)userActionListDataSource:(id)a3 willResolveInitialActionsForActionType:(id)a4 contactIdentifier:(id)a5;
+- (void)userActionListDataSource:(id)source didResolveInitialActionsForActionType:(id)type contactIdentifier:(id)identifier;
+- (void)userActionListDataSource:(id)source willResolveInitialActionsForActionType:(id)type contactIdentifier:(id)identifier;
 @end
 
 @implementation CNContactQuickActionsController
@@ -52,8 +52,8 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695CD58];
-  v3 = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
-  v8[0] = v3;
+  descriptorForRequiredKeys = [MEMORY[0x1E6996BE8] descriptorForRequiredKeys];
+  v8[0] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactQuickActionsController descriptorForRequiredKeys]"];
   v6 = [v2 descriptorWithKeyDescriptors:v4 description:v5];
@@ -89,28 +89,28 @@
     _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "cleaning up after latest action discovery", v7, 2u);
   }
 
-  v4 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  [v4 unregisterDelegate:self];
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  [userActionListDataSource unregisterDelegate:self];
 
-  v5 = [(CNContactQuickActionsController *)self actionDiscoveryToken];
-  [v5 cancel];
+  actionDiscoveryToken = [(CNContactQuickActionsController *)self actionDiscoveryToken];
+  [actionDiscoveryToken cancel];
 
   [(CNContactQuickActionsController *)self setActionDiscoveryToken:0];
-  v6 = [MEMORY[0x1E695DF20] dictionary];
-  [(CNContactQuickActionsController *)self setActionListModelsByActionType:v6];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
+  [(CNContactQuickActionsController *)self setActionListModelsByActionType:dictionary];
 }
 
 - (void)discoverActions
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactQuickActionsController *)self contact];
+  contact = [(CNContactQuickActionsController *)self contact];
 
-  if (v3)
+  if (contact)
   {
-    v4 = [(CNContactQuickActionsController *)self userActionListDataSource];
-    v5 = [(CNContactQuickActionsController *)self contact];
-    v6 = [v5 identifier];
-    [v4 registerDelegate:self withContactIdentifier:v6];
+    userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+    contact2 = [(CNContactQuickActionsController *)self contact];
+    identifier = [contact2 identifier];
+    [userActionListDataSource registerDelegate:self withContactIdentifier:identifier];
 
     objc_initWeak(&location, self);
     v31 = 0;
@@ -122,28 +122,28 @@
     v7 = [objc_opt_class() log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(CNContactQuickActionsController *)self contact];
-      v23 = [v22 shortDebugDescription];
+      contact3 = [(CNContactQuickActionsController *)self contact];
+      shortDebugDescription = [contact3 shortDebugDescription];
       *buf = 138412546;
-      v39 = self;
+      selfCopy = self;
       v40 = 2112;
-      v41 = v23;
+      v41 = shortDebugDescription;
       _os_log_debug_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEBUG, "%@ subscribing action discovering requests for contact %@.", buf, 0x16u);
     }
 
-    v8 = [(CNContactQuickActionsController *)self schedulerProvider];
-    v9 = [v8 mainThreadScheduler];
+    schedulerProvider = [(CNContactQuickActionsController *)self schedulerProvider];
+    mainThreadScheduler = [schedulerProvider mainThreadScheduler];
 
-    v10 = [(CNContactQuickActionsController *)self allModelsObservable];
-    v11 = [(CNContactQuickActionsController *)self schedulerProvider];
-    v12 = [v11 backgroundScheduler];
-    v13 = [v10 subscribeOn:v12];
+    allModelsObservable = [(CNContactQuickActionsController *)self allModelsObservable];
+    schedulerProvider2 = [(CNContactQuickActionsController *)self schedulerProvider];
+    backgroundScheduler = [schedulerProvider2 backgroundScheduler];
+    v13 = [allModelsObservable subscribeOn:backgroundScheduler];
     v14 = MEMORY[0x1E69967A0];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __50__CNContactQuickActionsController_discoverActions__block_invoke;
     v27 = &unk_1E74E4408;
-    v15 = v9;
+    v15 = mainThreadScheduler;
     v28 = v15;
     objc_copyWeak(&v30, &location);
     v29 = &v31;
@@ -151,8 +151,8 @@
     v17 = [v13 subscribe:{v16, v24, v25, v26, v27}];
     [(CNContactQuickActionsController *)self setActionDiscoveryToken:v17];
 
-    v18 = [(CNContactQuickActionsController *)self actionDiscoveryToken];
-    objc_storeWeak(v32 + 5, v18);
+    actionDiscoveryToken = [(CNContactQuickActionsController *)self actionDiscoveryToken];
+    objc_storeWeak(v32 + 5, actionDiscoveryToken);
 
     objc_destroyWeak(&v30);
     _Block_object_dispose(&v31, 8);
@@ -162,8 +162,8 @@
 
   else
   {
-    v19 = [(CNContactQuickActionsController *)self actionTypes];
-    v20 = [v19 _cn_indexBy:*MEMORY[0x1E6996520]];
+    actionTypes = [(CNContactQuickActionsController *)self actionTypes];
+    v20 = [actionTypes _cn_indexBy:*MEMORY[0x1E6996520]];
     v21 = [v20 _cn_map:&__block_literal_global_64];
     [(CNContactQuickActionsController *)self setActionListModelsByActionType:v21];
 
@@ -177,27 +177,27 @@
   v3 = [objc_opt_class() log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(CNContactQuickActionsController *)self actionTypes];
+    actionTypes = [(CNContactQuickActionsController *)self actionTypes];
     *buf = 138412290;
-    v16 = v13;
+    v16 = actionTypes;
     _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "Action types: %@", buf, 0xCu);
   }
 
-  v4 = [(CNContactQuickActionsController *)self actionTypes];
+  actionTypes2 = [(CNContactQuickActionsController *)self actionTypes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__CNContactQuickActionsController_allModelsObservable__block_invoke;
   v14[3] = &unk_1E74E6928;
   v14[4] = self;
-  v5 = [v4 _cn_map:v14];
+  v5 = [actionTypes2 _cn_map:v14];
 
   v6 = MEMORY[0x1E6996798];
-  v7 = [(CNContactQuickActionsController *)self schedulerProvider];
-  v8 = [v6 merge:v5 schedulerProvider:v7];
+  schedulerProvider = [(CNContactQuickActionsController *)self schedulerProvider];
+  v8 = [v6 merge:v5 schedulerProvider:schedulerProvider];
 
   v9 = [v8 scan:&__block_literal_global_45 seed:MEMORY[0x1E695E0F8]];
-  v10 = [(CNContactQuickActionsController *)self schedulerProvider];
-  v11 = [v9 throttle:v10 schedulerProvider:0.0];
+  schedulerProvider2 = [(CNContactQuickActionsController *)self schedulerProvider];
+  v11 = [v9 throttle:schedulerProvider2 schedulerProvider:0.0];
 
   return v11;
 }
@@ -272,10 +272,10 @@ void __50__CNContactQuickActionsController_discoverActions__block_invoke_2(uint6
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
-  v4 = [v3 allKeys];
+  actionListModelsByActionType = [(CNContactQuickActionsController *)self actionListModelsByActionType];
+  allKeys = [actionListModelsByActionType allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -287,20 +287,20 @@ void __50__CNContactQuickActionsController_discoverActions__block_invoke_2(uint6
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
-        [(CNContactQuickActionsController *)self reportStoredModel:v11 forActionType:v9 toQuickActionContainer:v12];
+        actionListModelsByActionType2 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
+        v11 = [actionListModelsByActionType2 objectForKeyedSubscript:v9];
+        contactQuickActionViewContainer = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
+        [(CNContactQuickActionsController *)self reportStoredModel:v11 forActionType:v9 toQuickActionContainer:contactQuickActionViewContainer];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -321,98 +321,98 @@ void __50__CNContactQuickActionsController_discoverActions__block_invoke_2(uint6
   return WeakRetained;
 }
 
-- (void)userActionListDataSource:(id)a3 didResolveInitialActionsForActionType:(id)a4 contactIdentifier:(id)a5
+- (void)userActionListDataSource:(id)source didResolveInitialActionsForActionType:(id)type contactIdentifier:(id)identifier
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(CNContactQuickActionsController *)self contact];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:v7];
+  typeCopy = type;
+  identifierCopy = identifier;
+  contact = [(CNContactQuickActionsController *)self contact];
+  identifier = [contact identifier];
+  v10 = [identifier isEqualToString:identifierCopy];
 
   if (v10)
   {
-    v11 = [(CNContactQuickActionsController *)self delegate];
+    delegate = [(CNContactQuickActionsController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CNContactQuickActionsController *)self delegate];
-      [v13 quickActionsController:self didResolveInitialActionsForActionType:v14];
+      delegate2 = [(CNContactQuickActionsController *)self delegate];
+      [delegate2 quickActionsController:self didResolveInitialActionsForActionType:typeCopy];
     }
   }
 }
 
-- (void)userActionListDataSource:(id)a3 willResolveInitialActionsForActionType:(id)a4 contactIdentifier:(id)a5
+- (void)userActionListDataSource:(id)source willResolveInitialActionsForActionType:(id)type contactIdentifier:(id)identifier
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(CNContactQuickActionsController *)self contact];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:v7];
+  typeCopy = type;
+  identifierCopy = identifier;
+  contact = [(CNContactQuickActionsController *)self contact];
+  identifier = [contact identifier];
+  v10 = [identifier isEqualToString:identifierCopy];
 
   if (v10)
   {
-    v11 = [(CNContactQuickActionsController *)self delegate];
+    delegate = [(CNContactQuickActionsController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CNContactQuickActionsController *)self delegate];
-      [v13 quickActionsController:self willResolveInitialActionsForActionType:v14];
+      delegate2 = [(CNContactQuickActionsController *)self delegate];
+      [delegate2 quickActionsController:self willResolveInitialActionsForActionType:typeCopy];
     }
   }
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  actionCopy = action;
+  controllerCopy = controller;
   v8 = [objc_opt_class() log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
+    v17 = actionCopy;
     _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_INFO, "disambiguation menu selected action %@", &v16, 0xCu);
   }
 
-  [(CNContactQuickActionsController *)self performAction:v6];
-  v9 = [v7 actionTypes];
+  [(CNContactQuickActionsController *)self performAction:actionCopy];
+  actionTypes = [controllerCopy actionTypes];
 
-  v10 = [v9 firstObject];
+  firstObject = [actionTypes firstObject];
 
-  v11 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  v12 = [(CNContactQuickActionsController *)self contact];
-  [v11 consumer:self didSelectItem:v6 forContact:v12 actionType:v10];
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  contact = [(CNContactQuickActionsController *)self contact];
+  [userActionListDataSource consumer:self didSelectItem:actionCopy forContact:contact actionType:firstObject];
 
-  v13 = [(CNContactQuickActionsController *)self delegate];
-  v14 = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
-  v15 = [v6 type];
-  [v13 contactQuickActionsController:self dismissDisambiguationViewController:v14 forActionType:v15];
+  delegate = [(CNContactQuickActionsController *)self delegate];
+  disambiguationMenuViewController = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
+  type = [actionCopy type];
+  [delegate contactQuickActionsController:self dismissDisambiguationViewController:disambiguationMenuViewController forActionType:type];
 
   [(CNContactQuickActionsController *)self tearDownDisambiguationMenu];
 }
 
-- (id)disambiguationMenuForActionType:(id)a3
+- (id)disambiguationMenuForActionType:(id)type
 {
-  [(CNContactQuickActionsController *)self setupDisambiguationMenuForActionType:a3];
-  v4 = [(CNContactQuickActionsController *)self currentMenuElements];
-  v5 = [v4 copy];
+  [(CNContactQuickActionsController *)self setupDisambiguationMenuForActionType:type];
+  currentMenuElements = [(CNContactQuickActionsController *)self currentMenuElements];
+  v5 = [currentMenuElements copy];
 
   [(CNContactQuickActionsController *)self tearDownDisambiguationMenu];
 
   return v5;
 }
 
-- (void)disambiguationViewControllerDismissedExternally:(id)a3
+- (void)disambiguationViewControllerDismissedExternally:(id)externally
 {
-  v5 = a3;
-  v6 = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
+  externallyCopy = externally;
+  disambiguationMenuViewController = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
 
-  if (v6 != v5)
+  if (disambiguationMenuViewController != externallyCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:362 description:@"disambiguationViewController must be presented first in order to be dismissed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:362 description:@"disambiguationViewController must be presented first in order to be dismissed"];
   }
 
   [(CNContactQuickActionsController *)self tearDownDisambiguationMenu];
@@ -425,73 +425,73 @@ void __50__CNContactQuickActionsController_discoverActions__block_invoke_2(uint6
   [(CNContactQuickActionsController *)self setDisambiguationMenuViewController:0];
 }
 
-- (void)setupDisambiguationMenuForActionType:(id)a3
+- (void)setupDisambiguationMenuForActionType:(id)type
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = [CNContactActionsController alloc];
-  v6 = [(CNContactQuickActionsController *)self contact];
-  v7 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  v24[0] = v4;
+  contact = [(CNContactQuickActionsController *)self contact];
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  v24[0] = typeCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v9 = [(CNContactActionsController *)v5 initWithContact:v6 dataSource:v7 actionTypes:v8];
+  v9 = [(CNContactActionsController *)v5 initWithContact:contact dataSource:userActionListDataSource actionTypes:v8];
   [(CNContactQuickActionsController *)self setDisambiguationMenuController:v9];
 
-  v10 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-  [v10 setDelegate:self];
+  disambiguationMenuController = [(CNContactQuickActionsController *)self disambiguationMenuController];
+  [disambiguationMenuController setDelegate:self];
 
-  LODWORD(v6) = [(CNContactQuickActionsController *)self isCarPlay];
-  v11 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-  v12 = v11;
-  if (v6)
+  LODWORD(contact) = [(CNContactQuickActionsController *)self isCarPlay];
+  disambiguationMenuController2 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+  disambiguationMenuController4 = disambiguationMenuController2;
+  if (contact)
   {
-    [v11 setDisplayDefaultAppsSectionedMenus:0];
+    [disambiguationMenuController2 setDisplayDefaultAppsSectionedMenus:0];
 
-    if (![v4 isEqualToString:*MEMORY[0x1E695C178]])
+    if (![typeCopy isEqualToString:*MEMORY[0x1E695C178]])
     {
       goto LABEL_6;
     }
 
-    v13 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-    [v13 setGenerateDefaultAppListItemsOnly:1];
+    disambiguationMenuController3 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+    [disambiguationMenuController3 setGenerateDefaultAppListItemsOnly:1];
 
     v14 = *MEMORY[0x1E695C130];
-    v12 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-    [v12 setDefaultAppBundleIdentifier:v14];
+    disambiguationMenuController4 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+    [disambiguationMenuController4 setDefaultAppBundleIdentifier:v14];
   }
 
   else
   {
-    [v11 setDisplayNonDefaultAppsMenuTitle:1];
+    [disambiguationMenuController2 setDisplayNonDefaultAppsMenuTitle:1];
   }
 
 LABEL_6:
-  v15 = [(CNContactQuickActionsController *)self navigationListStyle];
+  navigationListStyle = [(CNContactQuickActionsController *)self navigationListStyle];
 
-  if (v15)
+  if (navigationListStyle)
   {
-    v16 = [(CNContactQuickActionsController *)self navigationListStyle];
-    v17 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-    [v17 setNavigationListStyle:v16];
+    navigationListStyle2 = [(CNContactQuickActionsController *)self navigationListStyle];
+    disambiguationMenuController5 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+    [disambiguationMenuController5 setNavigationListStyle:navigationListStyle2];
   }
 
-  v18 = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
-  v19 = [v18 viewForActionType:v4];
+  contactQuickActionViewContainer = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
+  v19 = [contactQuickActionViewContainer viewForActionType:typeCopy];
 
-  v20 = [(CNContactQuickActionsController *)self disambiguationMenuPresentation];
-  v21 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+  disambiguationMenuPresentation = [(CNContactQuickActionsController *)self disambiguationMenuPresentation];
+  disambiguationMenuController6 = [(CNContactQuickActionsController *)self disambiguationMenuController];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __72__CNContactQuickActionsController_setupDisambiguationMenuForActionType___block_invoke;
   v23[3] = &unk_1E74E6A88;
   v23[4] = self;
-  v22 = [v20 viewControllerForPresentingActionsController:v21 fromView:v19 dismissDisambiguationMenuHandler:v23];
+  v22 = [disambiguationMenuPresentation viewControllerForPresentingActionsController:disambiguationMenuController6 fromView:v19 dismissDisambiguationMenuHandler:v23];
   [(CNContactQuickActionsController *)self setDisambiguationMenuViewController:v22];
 }
 
-- (void)showDisambiguationMenuForActionType:(id)a3
+- (void)showDisambiguationMenuForActionType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -499,208 +499,208 @@ LABEL_6:
     _os_log_impl(&dword_199A75000, v6, OS_LOG_TYPE_INFO, "showing disambiguation menu", v11, 2u);
   }
 
-  v7 = [(CNContactQuickActionsController *)self disambiguationMenuController];
+  disambiguationMenuController = [(CNContactQuickActionsController *)self disambiguationMenuController];
 
-  if (v7)
+  if (disambiguationMenuController)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:323 description:@"disambiguation menu is already being presented"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:323 description:@"disambiguation menu is already being presented"];
   }
 
-  [(CNContactQuickActionsController *)self setupDisambiguationMenuForActionType:v5];
-  v8 = [(CNContactQuickActionsController *)self delegate];
-  v9 = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
-  [v8 contactQuickActionsController:self presentDisambiguationViewController:v9 forActionType:v5];
+  [(CNContactQuickActionsController *)self setupDisambiguationMenuForActionType:typeCopy];
+  delegate = [(CNContactQuickActionsController *)self delegate];
+  disambiguationMenuViewController = [(CNContactQuickActionsController *)self disambiguationMenuViewController];
+  [delegate contactQuickActionsController:self presentDisambiguationViewController:disambiguationMenuViewController forActionType:typeCopy];
 }
 
-- (void)executeLongPressBehaviorForActionType:(id)a3
+- (void)executeLongPressBehaviorForActionType:(id)type
 {
-  v9 = a3;
-  if (!v9)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"parameter ‘actionType’ must be nonnull" userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = [(CNContactQuickActionsController *)self actionTypes];
-  v6 = [v5 containsObject:v9];
+  actionTypes = [(CNContactQuickActionsController *)self actionTypes];
+  v6 = [actionTypes containsObject:typeCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:315 description:@"actionType must be a member of actionTypes provided to the initializer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:315 description:@"actionType must be a member of actionTypes provided to the initializer"];
   }
 
-  [(CNContactQuickActionsController *)self showDisambiguationMenuForActionType:v9];
+  [(CNContactQuickActionsController *)self showDisambiguationMenuForActionType:typeCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = actionCopy;
     _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_INFO, "executing action %@", &v22, 0xCu);
   }
 
-  v6 = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
-  v7 = [v6 traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  contactQuickActionViewContainer = [(CNContactQuickActionsController *)self contactQuickActionViewContainer];
+  traitCollection = [contactQuickActionViewContainer traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v9 = [(objc_class *)getFBSOpenApplicationServiceClass() dashboardEndpoint];
-    v10 = [(CNContactQuickActionsController *)self userActionContext];
-    [v10 setConnectionEndpoint:v9];
+    dashboardEndpoint = [(objc_class *)getFBSOpenApplicationServiceClass() dashboardEndpoint];
+    userActionContext = [(CNContactQuickActionsController *)self userActionContext];
+    [userActionContext setConnectionEndpoint:dashboardEndpoint];
   }
 
-  v11 = [v4 type];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E695C150]];
+  type = [actionCopy type];
+  v12 = [type isEqualToString:*MEMORY[0x1E695C150]];
 
   if (v12)
   {
-    v13 = [(CNContactQuickActionsController *)self contact];
-    v14 = [v13 selectedChannel];
+    contact = [(CNContactQuickActionsController *)self contact];
+    selectedChannel = [contact selectedChannel];
 
-    v15 = [(CNContactQuickActionsController *)self contact];
-    v16 = [v15 selectedChannel];
+    contact2 = [(CNContactQuickActionsController *)self contact];
+    selectedChannel2 = [contact2 selectedChannel];
 
-    if (!v16)
+    if (!selectedChannel2)
     {
-      v17 = [(CNContactQuickActionsController *)self contact];
-      v18 = [v17 preferredChannel];
+      contact3 = [(CNContactQuickActionsController *)self contact];
+      preferredChannel = [contact3 preferredChannel];
 
-      v14 = v18;
+      selectedChannel = preferredChannel;
     }
 
-    v19 = [(CNContactQuickActionsController *)self userActionContext];
-    [v19 setChannelIdentifier:v14];
+    userActionContext2 = [(CNContactQuickActionsController *)self userActionContext];
+    [userActionContext2 setChannelIdentifier:selectedChannel];
   }
 
-  v20 = [(CNContactQuickActionsController *)self userActionContext];
-  v21 = [v4 performActionWithContext:v20];
+  userActionContext3 = [(CNContactQuickActionsController *)self userActionContext];
+  v21 = [actionCopy performActionWithContext:userActionContext3];
 }
 
-- (BOOL)hasDefaultActionForActionType:(id)a3
+- (BOOL)hasDefaultActionForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  actionListModelsByActionType = [(CNContactQuickActionsController *)self actionListModelsByActionType];
+  v6 = [actionListModelsByActionType objectForKeyedSubscript:typeCopy];
 
-  v7 = [v6 defaultAction];
-  LOBYTE(v4) = v7 != 0;
+  defaultAction = [v6 defaultAction];
+  LOBYTE(typeCopy) = defaultAction != 0;
 
-  return v4;
+  return typeCopy;
 }
 
-- (void)executeTapBehaviorForActionType:(id)a3 shouldFallbackToDisambiguationMenu:(BOOL)a4
+- (void)executeTapBehaviorForActionType:(id)type shouldFallbackToDisambiguationMenu:(BOOL)menu
 {
-  v4 = a4;
-  v14 = a3;
-  if (!v14)
+  menuCopy = menu;
+  typeCopy = type;
+  if (!typeCopy)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"parameter ‘actionType’ must be nonnull" userInfo:0];
     objc_exception_throw(v13);
   }
 
-  v7 = [(CNContactQuickActionsController *)self actionTypes];
-  v8 = [v7 containsObject:v14];
+  actionTypes = [(CNContactQuickActionsController *)self actionTypes];
+  v8 = [actionTypes containsObject:typeCopy];
 
   if ((v8 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:275 description:@"actionType must be a member of actionTypes provided to the initializer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:275 description:@"actionType must be a member of actionTypes provided to the initializer"];
   }
 
-  if ([(CNContactQuickActionsController *)self hasDefaultActionForActionType:v14])
+  if ([(CNContactQuickActionsController *)self hasDefaultActionForActionType:typeCopy])
   {
-    v9 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
-    v10 = [v9 objectForKeyedSubscript:v14];
-    v11 = [v10 defaultAction];
-    [(CNContactQuickActionsController *)self performAction:v11];
+    actionListModelsByActionType = [(CNContactQuickActionsController *)self actionListModelsByActionType];
+    v10 = [actionListModelsByActionType objectForKeyedSubscript:typeCopy];
+    defaultAction = [v10 defaultAction];
+    [(CNContactQuickActionsController *)self performAction:defaultAction];
   }
 
-  else if (v4)
+  else if (menuCopy)
   {
-    [(CNContactQuickActionsController *)self showDisambiguationMenuForActionType:v14];
+    [(CNContactQuickActionsController *)self showDisambiguationMenuForActionType:typeCopy];
   }
 }
 
-- (id)defaultTitleForActionType:(id)a3
+- (id)defaultTitleForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  v6 = [v5 consumer:self localizedButtonDisplayNameForActionType:v4];
+  typeCopy = type;
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  v6 = [userActionListDataSource consumer:self localizedButtonDisplayNameForActionType:typeCopy];
 
   return v6;
 }
 
-- (void)reportStoredModel:(id)a3 forActionType:(id)a4 toQuickActionContainer:(id)a5
+- (void)reportStoredModel:(id)model forActionType:(id)type toQuickActionContainer:(id)container
 {
-  v8 = a4;
-  v9 = a3;
-  v12 = [a5 viewForActionType:v8];
-  LODWORD(a5) = [v9 isEmpty];
+  typeCopy = type;
+  modelCopy = model;
+  v12 = [container viewForActionType:typeCopy];
+  LODWORD(container) = [modelCopy isEmpty];
 
-  [v12 setEnabled:a5 ^ 1];
-  v10 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  v11 = [v10 consumer:self localizedButtonDisplayNameForActionType:v8];
+  [v12 setEnabled:container ^ 1];
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  v11 = [userActionListDataSource consumer:self localizedButtonDisplayNameForActionType:typeCopy];
 
   [v12 setTitle:v11];
 }
 
-- (void)storeDiscoveredModels:(id)a3
+- (void)storeDiscoveredModels:(id)models
 {
-  v4 = a3;
-  v5 = [(CNContactQuickActionsController *)self actionListModelsByActionType];
-  v6 = [v5 mutableCopy];
+  modelsCopy = models;
+  actionListModelsByActionType = [(CNContactQuickActionsController *)self actionListModelsByActionType];
+  v6 = [actionListModelsByActionType mutableCopy];
 
-  [v6 addEntriesFromDictionary:v4];
+  [v6 addEntriesFromDictionary:modelsCopy];
   [(CNContactQuickActionsController *)self setActionListModelsByActionType:v6];
 }
 
-- (void)processDiscoveredModels:(id)a3
+- (void)processDiscoveredModels:(id)models
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelsCopy = models;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(CNContactQuickActionsController *)self contact];
-    v10 = [v9 shortDebugDescription];
+    contact = [(CNContactQuickActionsController *)self contact];
+    shortDebugDescription = [contact shortDebugDescription];
     v11 = 138412546;
-    v12 = v10;
+    v12 = shortDebugDescription;
     v13 = 2112;
-    v14 = v4;
+    v14 = modelsCopy;
     _os_log_debug_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEBUG, "for contact: %@, discovered actions %@", &v11, 0x16u);
   }
 
-  [(CNContactQuickActionsController *)self storeDiscoveredModels:v4];
+  [(CNContactQuickActionsController *)self storeDiscoveredModels:modelsCopy];
   [(CNContactQuickActionsController *)self reportStoredModelsToQuickActionContainer];
-  v6 = [(CNContactQuickActionsController *)self modelTrackingDelegate];
+  modelTrackingDelegate = [(CNContactQuickActionsController *)self modelTrackingDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CNContactQuickActionsController *)self modelTrackingDelegate];
-    [v8 quickActionsControllerDidUpdateActionModels];
+    modelTrackingDelegate2 = [(CNContactQuickActionsController *)self modelTrackingDelegate];
+    [modelTrackingDelegate2 quickActionsControllerDidUpdateActionModels];
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_contact, a3);
+  contactCopy = contact;
+  objc_storeStrong(&self->_contact, contact);
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 identifier];
+    identifier = [contactCopy identifier];
     v8 = 138412290;
-    v9 = v7;
+    v9 = identifier;
     _os_log_impl(&dword_199A75000, v6, OS_LOG_TYPE_INFO, "kicking off action discovery by setting contact with identifier %@", &v8, 0xCu);
   }
 
@@ -708,21 +708,21 @@ LABEL_6:
   [(CNContactQuickActionsController *)self discoverActions];
 }
 
-- (void)setNavigationListStyle:(id)a3
+- (void)setNavigationListStyle:(id)style
 {
-  objc_storeStrong(&self->_navigationListStyle, a3);
-  v5 = a3;
-  v6 = [(CNContactQuickActionsController *)self disambiguationMenuController];
-  [v6 setNavigationListStyle:v5];
+  objc_storeStrong(&self->_navigationListStyle, style);
+  styleCopy = style;
+  disambiguationMenuController = [(CNContactQuickActionsController *)self disambiguationMenuController];
+  [disambiguationMenuController setNavigationListStyle:styleCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(CNContactQuickActionsController *)self userActionListDataSource];
-  [v3 unregisterDelegate:self];
+  userActionListDataSource = [(CNContactQuickActionsController *)self userActionListDataSource];
+  [userActionListDataSource unregisterDelegate:self];
 
-  v4 = [(CNContactQuickActionsController *)self actionDiscoveryToken];
-  [v4 cancel];
+  actionDiscoveryToken = [(CNContactQuickActionsController *)self actionDiscoveryToken];
+  [actionDiscoveryToken cancel];
 
   [(CNContactQuickActionsController *)self setActionDiscoveryToken:0];
   v5.receiver = self;
@@ -730,17 +730,17 @@ LABEL_6:
   [(CNContactQuickActionsController *)&v5 dealloc];
 }
 
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4 disambiguationMenuPresentation:(id)a5 userActionListDataSource:(id)a6 schedulerProvider:(id)a7 userActionContext:(id)a8
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container disambiguationMenuPresentation:(id)presentation userActionListDataSource:(id)source schedulerProvider:(id)provider userActionContext:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  obj = a7;
-  v19 = a7;
-  v35 = a8;
-  v20 = a8;
-  if (!v15)
+  typesCopy = types;
+  containerCopy = container;
+  presentationCopy = presentation;
+  sourceCopy = source;
+  obj = provider;
+  providerCopy = provider;
+  contextCopy = context;
+  contextCopy2 = context;
+  if (!typesCopy)
   {
     v28 = MEMORY[0x1E695DF30];
     v29 = *MEMORY[0x1E695D940];
@@ -748,7 +748,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (!v16)
+  if (!containerCopy)
   {
     v28 = MEMORY[0x1E695DF30];
     v29 = *MEMORY[0x1E695D940];
@@ -756,7 +756,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (!v17)
+  if (!presentationCopy)
   {
     v28 = MEMORY[0x1E695DF30];
     v29 = *MEMORY[0x1E695D940];
@@ -764,7 +764,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (!v18)
+  if (!sourceCopy)
   {
     v28 = MEMORY[0x1E695DF30];
     v29 = *MEMORY[0x1E695D940];
@@ -772,7 +772,7 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if (!v19)
+  if (!providerCopy)
   {
     v28 = MEMORY[0x1E695DF30];
     v29 = *MEMORY[0x1E695D940];
@@ -782,11 +782,11 @@ LABEL_16:
     objc_exception_throw(v31);
   }
 
-  v21 = v20;
-  if (![v15 count])
+  v21 = contextCopy2;
+  if (![typesCopy count])
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:102 description:@"actionTypes should contain at least one action type"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactQuickActionsController.m" lineNumber:102 description:@"actionTypes should contain at least one action type"];
   }
 
   v36.receiver = self;
@@ -795,50 +795,50 @@ LABEL_16:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_actionTypes, a3);
-    objc_storeWeak(&v23->_contactQuickActionViewContainer, v16);
-    objc_storeStrong(&v23->_userActionListDataSource, a6);
-    objc_storeStrong(&v23->_disambiguationMenuPresentation, a5);
+    objc_storeStrong(&v22->_actionTypes, types);
+    objc_storeWeak(&v23->_contactQuickActionViewContainer, containerCopy);
+    objc_storeStrong(&v23->_userActionListDataSource, source);
+    objc_storeStrong(&v23->_disambiguationMenuPresentation, presentation);
     objc_storeStrong(&v23->_schedulerProvider, obj);
-    v24 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     actionListModelsByActionType = v23->_actionListModelsByActionType;
-    v23->_actionListModelsByActionType = v24;
+    v23->_actionListModelsByActionType = dictionary;
 
-    objc_storeStrong(&v23->_userActionContext, v35);
+    objc_storeStrong(&v23->_userActionContext, contextCopy);
     v26 = v23;
   }
 
   return v23;
 }
 
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4 disambiguationMenuPresentation:(id)a5
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container disambiguationMenuPresentation:(id)presentation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() sharedDataSource];
+  presentationCopy = presentation;
+  containerCopy = container;
+  typesCopy = types;
+  sharedDataSource = [objc_opt_class() sharedDataSource];
   v12 = +[CNUIContactsEnvironment currentEnvironment];
-  v13 = [v12 defaultSchedulerProvider];
+  defaultSchedulerProvider = [v12 defaultSchedulerProvider];
 
   v14 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v15 = [(CNContactQuickActionsController *)self initWithActionTypes:v10 contactQuickActionViewContainer:v9 disambiguationMenuPresentation:v8 userActionListDataSource:v11 schedulerProvider:v13 userActionContext:v14];
+  v15 = [(CNContactQuickActionsController *)self initWithActionTypes:typesCopy contactQuickActionViewContainer:containerCopy disambiguationMenuPresentation:presentationCopy userActionListDataSource:sharedDataSource schedulerProvider:defaultSchedulerProvider userActionContext:v14];
 
   return v15;
 }
 
-- (CNContactQuickActionsController)initWithActionTypes:(id)a3 contactQuickActionViewContainer:(id)a4
+- (CNContactQuickActionsController)initWithActionTypes:(id)types contactQuickActionViewContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
+  containerCopy = container;
+  typesCopy = types;
   v8 = +[CNContactQuickActionsDisambiguationMenuPresentation defaultPresentation];
-  v9 = [(CNContactQuickActionsController *)self initWithActionTypes:v7 contactQuickActionViewContainer:v6 disambiguationMenuPresentation:v8];
+  v9 = [(CNContactQuickActionsController *)self initWithActionTypes:typesCopy contactQuickActionViewContainer:containerCopy disambiguationMenuPresentation:v8];
 
   return v9;
 }
 
 - (CNContactQuickActionsController)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }

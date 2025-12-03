@@ -1,27 +1,27 @@
 @interface AppleIDPasskeyRequestProvider
 - (_TtC3akd29AppleIDPasskeyRequestProvider)init;
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)a3 url:(id)a4;
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithUrlBagKey:(id)a3;
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)context url:(id)url;
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)context urlBagKey:(id)key;
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithUrlBagKey:(id)key;
 @end
 
 @implementation AppleIDPasskeyRequestProvider
 
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithUrlBagKey:(id)a3
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithUrlBagKey:(id)key
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for AppleIDPasskeyRequestProvider();
-  return [(AKURLRequestProviderImpl *)&v5 initWithUrlBagKey:a3];
+  return [(AKURLRequestProviderImpl *)&v5 initWithUrlBagKey:key];
 }
 
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)context urlBagKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AppleIDPasskeyRequestProvider();
-  return [(AKURLRequestProviderImpl *)&v7 initWithContext:a3 urlBagKey:a4];
+  return [(AKURLRequestProviderImpl *)&v7 initWithContext:context urlBagKey:key];
 }
 
-- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)a3 url:(id)a4
+- (_TtC3akd29AppleIDPasskeyRequestProvider)initWithContext:(id)context url:(id)url
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -35,7 +35,7 @@
   v14 = type metadata accessor for AppleIDPasskeyRequestProvider();
   v17.receiver = self;
   v17.super_class = v14;
-  v15 = [(AKURLRequestProviderImpl *)&v17 initWithContext:a3 url:v13];
+  v15 = [(AKURLRequestProviderImpl *)&v17 initWithContext:context url:v13];
   swift_unknownObjectRelease();
 
   (*(v7 + 8))(v10, v6);

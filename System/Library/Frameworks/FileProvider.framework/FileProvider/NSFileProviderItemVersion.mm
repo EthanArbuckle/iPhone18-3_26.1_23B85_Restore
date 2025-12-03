@@ -1,13 +1,13 @@
 @interface NSFileProviderItemVersion
 + (NSData)beforeFirstSyncComponent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSFileProviderItemVersion)init;
-- (NSFileProviderItemVersion)initWithCoder:(id)a3;
-- (NSFileProviderItemVersion)initWithMainContentVersion:(id)a3 equivalentContentVersions:(id)a4 mainMetadataVersion:(id)a5 equivalentMetadataVersions:(id)a6 lastEditorDeviceName:(id)a7 conflictResolved:(BOOL)a8;
+- (NSFileProviderItemVersion)initWithCoder:(id)coder;
+- (NSFileProviderItemVersion)initWithMainContentVersion:(id)version equivalentContentVersions:(id)versions mainMetadataVersion:(id)metadataVersion equivalentMetadataVersions:(id)metadataVersions lastEditorDeviceName:(id)name conflictResolved:(BOOL)resolved;
 - (id)etagHash;
 - (id)versionRewritingBeforeFirstSync;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)etagHash;
 @end
 
@@ -32,19 +32,19 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (NSFileProviderItemVersion)initWithMainContentVersion:(id)a3 equivalentContentVersions:(id)a4 mainMetadataVersion:(id)a5 equivalentMetadataVersions:(id)a6 lastEditorDeviceName:(id)a7 conflictResolved:(BOOL)a8
+- (NSFileProviderItemVersion)initWithMainContentVersion:(id)version equivalentContentVersions:(id)versions mainMetadataVersion:(id)metadataVersion equivalentMetadataVersions:(id)metadataVersions lastEditorDeviceName:(id)name conflictResolved:(BOOL)resolved
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  if ([v16 count] >= 0x10)
+  versionCopy = version;
+  versionsCopy = versions;
+  metadataVersionCopy = metadataVersion;
+  metadataVersionsCopy = metadataVersions;
+  nameCopy = name;
+  if ([versionsCopy count] >= 0x10)
   {
     [NSFileProviderItemVersion initWithMainContentVersion:a2 equivalentContentVersions:self mainMetadataVersion:? equivalentMetadataVersions:? lastEditorDeviceName:? conflictResolved:?];
   }
 
-  if ([v18 count] >= 0x10)
+  if ([metadataVersionsCopy count] >= 0x10)
   {
     [NSFileProviderItemVersion initWithMainContentVersion:a2 equivalentContentVersions:self mainMetadataVersion:? equivalentMetadataVersions:? lastEditorDeviceName:? conflictResolved:?];
   }
@@ -54,27 +54,27 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
   v20 = [(NSFileProviderItemVersion *)&v32 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [versionCopy copy];
     contentVersion = v20->_contentVersion;
     v20->_contentVersion = v21;
 
-    v23 = [v16 copy];
+    v23 = [versionsCopy copy];
     equivalentContentVersions = v20->_equivalentContentVersions;
     v20->_equivalentContentVersions = v23;
 
-    v25 = [v17 copy];
+    v25 = [metadataVersionCopy copy];
     metadataVersion = v20->_metadataVersion;
     v20->_metadataVersion = v25;
 
-    v27 = [v18 copy];
+    v27 = [metadataVersionsCopy copy];
     equivalentMetadataVersions = v20->_equivalentMetadataVersions;
     v20->_equivalentMetadataVersions = v27;
 
-    v29 = [v19 copy];
+    v29 = [nameCopy copy];
     lastEditorDeviceName = v20->_lastEditorDeviceName;
     v20->_lastEditorDeviceName = v29;
 
-    v20->_conflictResolved = a8;
+    v20->_conflictResolved = resolved;
   }
 
   return v20;
@@ -87,30 +87,30 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_contentVersion forKey:@"c"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_contentVersion forKey:@"c"];
   if ([(NSArray *)self->_equivalentContentVersions count])
   {
-    [v4 encodeObject:self->_equivalentContentVersions forKey:@"ec"];
+    [coderCopy encodeObject:self->_equivalentContentVersions forKey:@"ec"];
   }
 
-  [v4 encodeObject:self->_metadataVersion forKey:@"m"];
+  [coderCopy encodeObject:self->_metadataVersion forKey:@"m"];
   if ([(NSArray *)self->_equivalentMetadataVersions count])
   {
-    [v4 encodeObject:self->_equivalentMetadataVersions forKey:@"em"];
+    [coderCopy encodeObject:self->_equivalentMetadataVersions forKey:@"em"];
   }
 
-  [v4 encodeObject:self->_lastEditorDeviceName forKey:@"ledn"];
-  [v4 encodeBool:self->_conflictResolved forKey:@"cr"];
+  [coderCopy encodeObject:self->_lastEditorDeviceName forKey:@"ledn"];
+  [coderCopy encodeBool:self->_conflictResolved forKey:@"cr"];
 }
 
-- (NSFileProviderItemVersion)initWithCoder:(id)a3
+- (NSFileProviderItemVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ec"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"ec"];
   v7 = v6;
   v8 = MEMORY[0x1E695E0F0];
   if (v6)
@@ -125,8 +125,8 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
 
   v10 = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
-  v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"em"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+  v12 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"em"];
   v13 = v12;
   if (v12)
   {
@@ -140,17 +140,17 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
 
   v15 = v14;
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ledn"];
-  v17 = [v4 decodeBoolForKey:@"cr"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ledn"];
+  v17 = [coderCopy decodeBoolForKey:@"cr"];
 
   v18 = [(NSFileProviderItemVersion *)self initWithMainContentVersion:v5 equivalentContentVersions:v10 mainMetadataVersion:v11 equivalentMetadataVersions:v15 lastEditorDeviceName:v16 conflictResolved:v17];
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -160,14 +160,14 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NSFileProviderItemVersion *)v5 metadataVersion];
-      v7 = [(NSFileProviderItemVersion *)self metadataVersion];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      metadataVersion = [(NSFileProviderItemVersion *)v5 metadataVersion];
+      metadataVersion2 = [(NSFileProviderItemVersion *)self metadataVersion];
+      if ([metadataVersion isEqual:metadataVersion2])
       {
-        v8 = [(NSFileProviderItemVersion *)v5 contentVersion];
-        v9 = [(NSFileProviderItemVersion *)self contentVersion];
-        v10 = [v8 isEqual:v9];
+        contentVersion = [(NSFileProviderItemVersion *)v5 contentVersion];
+        contentVersion2 = [(NSFileProviderItemVersion *)self contentVersion];
+        v10 = [contentVersion isEqual:contentVersion2];
       }
 
       else
@@ -187,10 +187,10 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
 
 - (unint64_t)hash
 {
-  v3 = [(NSFileProviderItemVersion *)self contentVersion];
-  v4 = [v3 hash];
-  v5 = [(NSFileProviderItemVersion *)self metadataVersion];
-  v6 = [v5 hash];
+  contentVersion = [(NSFileProviderItemVersion *)self contentVersion];
+  v4 = [contentVersion hash];
+  metadataVersion = [(NSFileProviderItemVersion *)self metadataVersion];
+  v6 = [metadataVersion hash];
 
   return v6 ^ v4;
 }
@@ -198,10 +198,10 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
 - (id)versionRewritingBeforeFirstSync
 {
   v3 = [NSFileProviderItemVersion alloc];
-  v4 = [(NSFileProviderItemVersion *)self contentVersion];
-  v5 = rewriteBeforeFirstSync(v4);
-  v6 = [(NSFileProviderItemVersion *)self metadataVersion];
-  v7 = rewriteBeforeFirstSync(v6);
+  contentVersion = [(NSFileProviderItemVersion *)self contentVersion];
+  v5 = rewriteBeforeFirstSync(contentVersion);
+  metadataVersion = [(NSFileProviderItemVersion *)self metadataVersion];
+  v7 = rewriteBeforeFirstSync(metadataVersion);
   v8 = [(NSFileProviderItemVersion *)v3 initWithContentVersion:v5 metadataVersion:v7];
 
   return v8;
@@ -209,8 +209,8 @@ uint64_t __53__NSFileProviderItemVersion_beforeFirstSyncComponent__block_invoke(
 
 - (id)etagHash
 {
-  v4 = [(NSFileProviderItemVersion *)self contentVersion];
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v4 encoding:1];
+  contentVersion = [(NSFileProviderItemVersion *)self contentVersion];
+  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:contentVersion encoding:1];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AD48] characterSetWithCharactersInString:@"}{/\\%*|<>"];
@@ -233,7 +233,7 @@ LABEL_9:
     if ((4 * [v5 length]) <= 0xF2)
     {
 LABEL_6:
-      v7 = [v4 base64EncodedDataWithOptions:0];
+      v7 = [contentVersion base64EncodedDataWithOptions:0];
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:1];
 
       if (!v8)
@@ -247,7 +247,7 @@ LABEL_6:
     }
   }
 
-  v9 = [MEMORY[0x1E696AEC0] fp_hashForToken:v4];
+  v9 = [MEMORY[0x1E696AEC0] fp_hashForToken:contentVersion];
 LABEL_12:
 
   return v9;
@@ -267,8 +267,8 @@ LABEL_12:
 
 - (void)etagHash
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"NSFileProviderItemVersion.m" lineNumber:231 description:@"Can't base64 encode version"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"NSFileProviderItemVersion.m" lineNumber:231 description:@"Can't base64 encode version"];
 }
 
 @end

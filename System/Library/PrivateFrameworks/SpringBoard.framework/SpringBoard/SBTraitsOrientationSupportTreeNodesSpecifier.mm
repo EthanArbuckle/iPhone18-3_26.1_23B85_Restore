@@ -1,21 +1,21 @@
 @interface SBTraitsOrientationSupportTreeNodesSpecifier
-+ (id)findParentForParticipant:(id)a3 nodeSpecifications:(id)a4;
-+ (id)findParticipantWithRole:(id)a3 nodeSpecifications:(id)a4;
-- (id)updateStageTreeNodesSpecifications:(id)a3 stageParticipantsRoles:(id)a4 context:(id)a5;
++ (id)findParentForParticipant:(id)participant nodeSpecifications:(id)specifications;
++ (id)findParticipantWithRole:(id)role nodeSpecifications:(id)specifications;
+- (id)updateStageTreeNodesSpecifications:(id)specifications stageParticipantsRoles:(id)roles context:(id)context;
 @end
 
 @implementation SBTraitsOrientationSupportTreeNodesSpecifier
 
-+ (id)findParticipantWithRole:(id)a3 nodeSpecifications:(id)a4
++ (id)findParticipantWithRole:(id)role nodeSpecifications:(id)specifications
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  roleCopy = role;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  specificationsCopy = specifications;
+  v7 = [specificationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,12 +26,12 @@ LABEL_3:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(specificationsCopy);
       }
 
-      v11 = [*(*(&v15 + 1) + 8 * v10) participant];
-      v12 = [v11 role];
-      v13 = [v12 isEqualToString:v5];
+      participant = [*(*(&v15 + 1) + 8 * v10) participant];
+      role = [participant role];
+      v13 = [role isEqualToString:roleCopy];
 
       if (v13)
       {
@@ -40,7 +40,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [specificationsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -54,46 +54,46 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v11 = 0;
+    participant = 0;
   }
 
-  return v11;
+  return participant;
 }
 
-+ (id)findParentForParticipant:(id)a3 nodeSpecifications:(id)a4
++ (id)findParentForParticipant:(id)participant nodeSpecifications:(id)specifications
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  participantCopy = participant;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v7)
+  specificationsCopy = specifications;
+  parentParticipant = [specificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (parentParticipant)
   {
     v8 = *v14;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != parentParticipant; i = i + 1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(specificationsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 participant];
+        participant = [v10 participant];
 
-        if (v11 == v5)
+        if (participant == participantCopy)
         {
-          v7 = [v10 parentParticipant];
+          parentParticipant = [v10 parentParticipant];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v7)
+      parentParticipant = [specificationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (parentParticipant)
       {
         continue;
       }
@@ -104,43 +104,43 @@ LABEL_9:
 
 LABEL_11:
 
-  return v7;
+  return parentParticipant;
 }
 
-- (id)updateStageTreeNodesSpecifications:(id)a3 stageParticipantsRoles:(id)a4 context:(id)a5
+- (id)updateStageTreeNodesSpecifications:(id)specifications stageParticipantsRoles:(id)roles context:(id)context
 {
-  v6 = a3;
+  specificationsCopy = specifications;
   self->_supportedOrientations = 0;
-  v7 = [SBTraitsOrientationSupportTreeNodesSpecifier findParticipantWithRole:@"SBTraitsParticipantRolePipelineManager" nodeSpecifications:v6];
+  v7 = [SBTraitsOrientationSupportTreeNodesSpecifier findParticipantWithRole:@"SBTraitsParticipantRolePipelineManager" nodeSpecifications:specificationsCopy];
   v19 = v7;
   while (1)
   {
     v8 = v7;
-    v7 = [SBTraitsOrientationSupportTreeNodesSpecifier findParentForParticipant:v7 nodeSpecifications:v6];
+    v7 = [SBTraitsOrientationSupportTreeNodesSpecifier findParentForParticipant:v7 nodeSpecifications:specificationsCopy];
 
     if (!v7)
     {
       break;
     }
 
-    v9 = [v7 role];
-    v10 = [v9 isEqualToString:@"SBTraitsParticipantRoleSwitcherPublisher"];
+    role = [v7 role];
+    v10 = [role isEqualToString:@"SBTraitsParticipantRoleSwitcherPublisher"];
 
-    v11 = [v7 role];
-    v12 = [v11 isEqualToString:@"SBTraitsParticipantRoleSwitcherRaw"];
+    role2 = [v7 role];
+    v12 = [role2 isEqualToString:@"SBTraitsParticipantRoleSwitcherRaw"];
 
     if ((v10 & 1) == 0 && !v12)
     {
-      v16 = [v7 orientationPreferences];
-      self->_supportedOrientations = [v16 supportedOrientations];
+      orientationPreferences = [v7 orientationPreferences];
+      self->_supportedOrientations = [orientationPreferences supportedOrientations];
 
       break;
     }
 
-    v13 = [v7 orientationResolutionPolicyInfo];
-    v14 = [v13 resolutionPolicy];
+    orientationResolutionPolicyInfo = [v7 orientationResolutionPolicyInfo];
+    resolutionPolicy = [orientationResolutionPolicyInfo resolutionPolicy];
 
-    if (!v14)
+    if (!resolutionPolicy)
     {
       [v7 currentOrientation];
       v15 = SBFBSInterfaceOrientationMaskForBSInterfaceOrientation();
@@ -169,7 +169,7 @@ LABEL_10:
 
 LABEL_13:
 
-  return v6;
+  return specificationsCopy;
 }
 
 @end

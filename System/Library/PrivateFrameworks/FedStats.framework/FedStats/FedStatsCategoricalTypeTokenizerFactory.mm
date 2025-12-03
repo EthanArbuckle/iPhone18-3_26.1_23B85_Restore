@@ -1,17 +1,17 @@
 @interface FedStatsCategoricalTypeTokenizerFactory
-+ (Class)stringToTokenizerClass:(id)a3 error:(id *)a4;
-+ (id)forVariant:(id)a3 assetNamesInParameters:(id)a4 usingFieldValues:(id)a5;
-+ (id)forVariant:(id)a3 mutateParameters:(id)a4 usingFieldValues:(id)a5 assetURLs:(id)a6 error:(id *)a7;
-+ (id)forVariant:(id)a3 requiredFieldsInParameters:(id)a4;
-+ (id)tokenizerForVariant:(id)a3 parameters:(id)a4 error:(id *)a5;
++ (Class)stringToTokenizerClass:(id)class error:(id *)error;
++ (id)forVariant:(id)variant assetNamesInParameters:(id)parameters usingFieldValues:(id)values;
++ (id)forVariant:(id)variant mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls error:(id *)error;
++ (id)forVariant:(id)variant requiredFieldsInParameters:(id)parameters;
++ (id)tokenizerForVariant:(id)variant parameters:(id)parameters error:(id *)error;
 @end
 
 @implementation FedStatsCategoricalTypeTokenizerFactory
 
-+ (Class)stringToTokenizerClass:(id)a3 error:(id *)a4
++ (Class)stringToTokenizerClass:(id)class error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  classCopy = class;
   v10 = @"character";
   v15 = objc_opt_class();
   v11 = @"delimited";
@@ -23,60 +23,60 @@
   v14 = @"charactersFromUnknownSample";
   v19 = objc_opt_class();
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v10 count:5];
-  if ([v6 objectForKeyedSubscript:v5])
+  if ([v6 objectForKeyedSubscript:classCopy])
   {
-    a4 = [v6 objectForKeyedSubscript:v5];
+    error = [v6 objectForKeyedSubscript:classCopy];
   }
 
-  else if (a4)
+  else if (error)
     v7 = {;
-    *a4 = [FedStatsError errorWithCode:900 description:v7];
+    *error = [FedStatsError errorWithCode:900 description:v7];
 
-    a4 = 0;
+    error = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-+ (id)tokenizerForVariant:(id)a3 parameters:(id)a4 error:(id *)a5
++ (id)tokenizerForVariant:(id)variant parameters:(id)parameters error:(id *)error
 {
-  v8 = a4;
-  v9 = [objc_msgSend(a1 stringToTokenizerClass:a3 error:{a5), "instanceWithParameters:error:", v8, a5}];
+  parametersCopy = parameters;
+  v9 = [objc_msgSend(self stringToTokenizerClass:variant error:{error), "instanceWithParameters:error:", parametersCopy, error}];
 
   return v9;
 }
 
-+ (id)forVariant:(id)a3 mutateParameters:(id)a4 usingFieldValues:(id)a5 assetURLs:(id)a6 error:(id *)a7
++ (id)forVariant:(id)variant mutateParameters:(id)parameters usingFieldValues:(id)values assetURLs:(id)ls error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [objc_msgSend(a1 stringToTokenizerClass:a3 error:{a7), "mutateParameters:usingFieldValues:assetURLs:requiredFields:assetNames:error:", v14, v13, v12, 0, 0, a7}];
+  lsCopy = ls;
+  valuesCopy = values;
+  parametersCopy = parameters;
+  v15 = [objc_msgSend(self stringToTokenizerClass:variant error:{error), "mutateParameters:usingFieldValues:assetURLs:requiredFields:assetNames:error:", parametersCopy, valuesCopy, lsCopy, 0, 0, error}];
 
   return v15;
 }
 
-+ (id)forVariant:(id)a3 assetNamesInParameters:(id)a4 usingFieldValues:(id)a5
++ (id)forVariant:(id)variant assetNamesInParameters:(id)parameters usingFieldValues:(id)values
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a1 stringToTokenizerClass:a3 error:0];
+  parametersCopy = parameters;
+  valuesCopy = values;
+  v10 = [self stringToTokenizerClass:variant error:0];
   v15 = MEMORY[0x277CBEBF8];
-  v11 = [v10 mutateParameters:v8 usingFieldValues:v9 assetURLs:0 requiredFields:0 assetNames:&v15 error:0];
+  v11 = [v10 mutateParameters:parametersCopy usingFieldValues:valuesCopy assetURLs:0 requiredFields:0 assetNames:&v15 error:0];
   v12 = v15;
   v13 = v15;
 
   return v12;
 }
 
-+ (id)forVariant:(id)a3 requiredFieldsInParameters:(id)a4
++ (id)forVariant:(id)variant requiredFieldsInParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [a1 stringToTokenizerClass:a3 error:0];
+  parametersCopy = parameters;
+  v7 = [self stringToTokenizerClass:variant error:0];
   v12 = MEMORY[0x277CBEBF8];
-  v8 = [v7 mutateParameters:v6 usingFieldValues:0 assetURLs:0 requiredFields:&v12 assetNames:0 error:0];
+  v8 = [v7 mutateParameters:parametersCopy usingFieldValues:0 assetURLs:0 requiredFields:&v12 assetNames:0 error:0];
   v9 = v12;
   v10 = v12;
 

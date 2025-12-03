@@ -4,7 +4,7 @@
 + (id)symbolReplaceContentOffUpTransition;
 + (id)symbolReplaceContentTransition;
 + (id)symbolReplaceContentUpUpTransition;
-- (VUISymbolContentTransition)initWithTransition:(id)a3;
+- (VUISymbolContentTransition)initWithTransition:(id)transition;
 @end
 
 @implementation VUISymbolContentTransition
@@ -12,8 +12,8 @@
 + (id)symbolReplaceContentTransition
 {
   v2 = [VUISymbolContentTransition alloc];
-  v3 = [MEMORY[0x277CE1600] transition];
-  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:v3];
+  transition = [MEMORY[0x277CE1600] transition];
+  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:transition];
 
   return v4;
 }
@@ -21,8 +21,8 @@
 + (id)symbolReplaceContentDownUpTransition
 {
   v2 = [VUISymbolContentTransition alloc];
-  v3 = [MEMORY[0x277CE1600] replaceDownUpTransition];
-  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:v3];
+  replaceDownUpTransition = [MEMORY[0x277CE1600] replaceDownUpTransition];
+  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:replaceDownUpTransition];
 
   return v4;
 }
@@ -30,8 +30,8 @@
 + (id)symbolReplaceContentUpUpTransition
 {
   v2 = [VUISymbolContentTransition alloc];
-  v3 = [MEMORY[0x277CE1600] replaceUpUpTransition];
-  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:v3];
+  replaceUpUpTransition = [MEMORY[0x277CE1600] replaceUpUpTransition];
+  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:replaceUpUpTransition];
 
   return v4;
 }
@@ -39,8 +39,8 @@
 + (id)symbolReplaceContentOffUpTransition
 {
   v2 = [VUISymbolContentTransition alloc];
-  v3 = [MEMORY[0x277CE1600] replaceOffUpTransition];
-  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:v3];
+  replaceOffUpTransition = [MEMORY[0x277CE1600] replaceOffUpTransition];
+  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:replaceOffUpTransition];
 
   return v4;
 }
@@ -48,22 +48,22 @@
 + (id)symbolAutomaticContentTransition
 {
   v2 = [VUISymbolContentTransition alloc];
-  v3 = [MEMORY[0x277CE15B8] transition];
-  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:v3];
+  transition = [MEMORY[0x277CE15B8] transition];
+  v4 = [(VUISymbolContentTransition *)v2 initWithTransition:transition];
 
   return v4;
 }
 
-- (VUISymbolContentTransition)initWithTransition:(id)a3
+- (VUISymbolContentTransition)initWithTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   v9.receiver = self;
   v9.super_class = VUISymbolContentTransition;
   v6 = [(VUISymbolContentTransition *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_symbolTransition, a3);
+    objc_storeStrong(&v6->_symbolTransition, transition);
   }
 
   return v7;

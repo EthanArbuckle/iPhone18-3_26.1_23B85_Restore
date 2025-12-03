@@ -1,33 +1,33 @@
 @interface MKTransitInfoPreloader
-+ (id)attributedTextFromPreload:(id)a3 view:(id)a4;
-+ (id)separatorImageWithLineHeight:(double)a3;
-- (MKTransitInfoPreloader)initWithTransitLabels:(id)a3;
-- (void)preloadWithCompletion:(id)a3;
++ (id)attributedTextFromPreload:(id)preload view:(id)view;
++ (id)separatorImageWithLineHeight:(double)height;
+- (MKTransitInfoPreloader)initWithTransitLabels:(id)labels;
+- (void)preloadWithCompletion:(id)completion;
 @end
 
 @implementation MKTransitInfoPreloader
 
-- (void)preloadWithCompletion:(id)a3
+- (void)preloadWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(NSArray *)self->_transitLabels count])
     {
       v5 = +[MKFontManager sharedManager];
-      v6 = [v5 smallAttributionFont];
+      smallAttributionFont = [v5 smallAttributionFont];
 
-      v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v7 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v9 = v8;
 
-      v10 = [MKTransitInfoLabelView stringAttributesForFont:v6 lineBreakMode:4];
+      v10 = [MKTransitInfoLabelView stringAttributesForFont:smallAttributionFont lineBreakMode:4];
       IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
-      v12 = [MEMORY[0x1E69DC668] sharedApplication];
-      v13 = [v12 preferredContentSizeCategory];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-      v14 = [MKTransitInfoLabelView shieldSizeForContentSizeCategory:v13];
-      v15 = [MKTransitInfoLabelView iconSizeForContentSizeCategory:v13];
+      v14 = [MKTransitInfoLabelView shieldSizeForContentSizeCategory:preferredContentSizeCategory];
+      v15 = [MKTransitInfoLabelView iconSizeForContentSizeCategory:preferredContentSizeCategory];
       v16 = +[MKArtworkDataSourceCache sharedInstance];
       v34[0] = 0;
       v34[1] = v34;
@@ -52,16 +52,16 @@
       v23[2] = __48__MKTransitInfoPreloader_preloadWithCompletion___block_invoke;
       v23[3] = &unk_1E76C69E0;
       v24 = v10;
-      v25 = self;
+      selfCopy = self;
       v30 = v15;
       v31 = v14;
       v32 = v9;
       v26 = v16;
-      v27 = v6;
+      v27 = smallAttributionFont;
       v33 = xmmword_1A30F6E40;
       v29 = v34;
-      v28 = v4;
-      v20 = v6;
+      v28 = completionCopy;
+      v20 = smallAttributionFont;
       v21 = v16;
       v22 = v10;
       dispatch_async(v19, v23);
@@ -71,7 +71,7 @@
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -262,15 +262,15 @@ LABEL_21:
 LABEL_22:
 }
 
-- (MKTransitInfoPreloader)initWithTransitLabels:(id)a3
+- (MKTransitInfoPreloader)initWithTransitLabels:(id)labels
 {
-  v4 = a3;
+  labelsCopy = labels;
   v9.receiver = self;
   v9.super_class = MKTransitInfoPreloader;
   v5 = [(MKTransitInfoPreloader *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelsCopy copy];
     transitLabels = v5->_transitLabels;
     v5->_transitLabels = v6;
   }
@@ -278,32 +278,32 @@ LABEL_22:
   return v5;
 }
 
-+ (id)separatorImageWithLineHeight:(double)a3
++ (id)separatorImageWithLineHeight:(double)height
 {
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 nativeScale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen nativeScale];
   v5 = 1.0;
   if (v6 > 1.0)
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 nativeScale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 nativeScale];
     v5 = v8;
   }
 
   v9 = 1.0 / v5;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 scale];
+  mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen3 scale];
   v12 = v11;
   v18.width = v9;
-  v18.height = a3;
+  v18.height = height;
   UIGraphicsBeginImageContextWithOptions(v18, 0, v12);
 
-  v13 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v13 setFill];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [lightGrayColor setFill];
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v19.origin.y = a3 * 0.125;
-  v19.size.height = a3 * 0.75;
+  v19.origin.y = height * 0.125;
+  v19.size.height = height * 0.75;
   v19.origin.x = 0.0;
   v19.size.width = v9;
   CGContextFillRect(CurrentContext, v19);
@@ -313,14 +313,14 @@ LABEL_22:
   return v15;
 }
 
-+ (id)attributedTextFromPreload:(id)a3 view:(id)a4
++ (id)attributedTextFromPreload:(id)preload view:(id)view
 {
-  v5 = a4;
-  v6 = [a3 attributedString];
-  v7 = [v6 copy];
+  viewCopy = view;
+  attributedString = [preload attributedString];
+  v7 = [attributedString copy];
 
-  v8 = [v5 font];
-  [v8 capHeight];
+  font = [viewCopy font];
+  [font capHeight];
   v10 = v9;
 
   v11 = *MEMORY[0x1E69DB5F8];
@@ -330,8 +330,8 @@ LABEL_22:
   v15[2] = __57__MKTransitInfoPreloader_attributedTextFromPreload_view___block_invoke;
   v15[3] = &unk_1E76C6990;
   v17 = v10;
-  v16 = v5;
-  v13 = v5;
+  v16 = viewCopy;
+  v13 = viewCopy;
   [v7 enumerateAttribute:v11 inRange:0 options:v12 usingBlock:{0, v15}];
 
   return v7;

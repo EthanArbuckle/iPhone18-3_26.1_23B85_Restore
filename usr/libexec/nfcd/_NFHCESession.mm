@@ -1,50 +1,50 @@
 @interface _NFHCESession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)resume;
-- (BOOL)suspendWithInfo:(id)a3;
+- (BOOL)suspendWithInfo:(id)info;
 - (BOOL)willStartSession;
 - (NSData)effectiveECPFrame;
 - (id)_routingConfigWithECPBroadcastInHCE;
 - (id)initialECPConfig;
 - (id)initialRoutingConfig;
-- (id)initialRoutingConfigWithField:(id)a3;
-- (void)_asyncReadWithCompletion:(id)a3;
-- (void)_didLoseTarget:(BOOL)a3 suspendAssertion:(BOOL)a4;
-- (void)_syncStartAssertionTimer:(double)a3;
-- (void)_syncStartEmulationWithCompletion:(id)a3;
-- (void)asyncReadAPDUWithCompletion:(id)a3;
+- (id)initialRoutingConfigWithField:(id)field;
+- (void)_asyncReadWithCompletion:(id)completion;
+- (void)_didLoseTarget:(BOOL)target suspendAssertion:(BOOL)assertion;
+- (void)_syncStartAssertionTimer:(double)timer;
+- (void)_syncStartEmulationWithCompletion:(id)completion;
+- (void)asyncReadAPDUWithCompletion:(id)completion;
 - (void)cleanup;
-- (void)didEndSession:(id)a3;
-- (void)didStartSession:(id)a3;
-- (void)endSession:(id)a3;
-- (void)handleFieldChanged:(BOOL)a3;
-- (void)handleFieldNotification:(id)a3;
+- (void)didEndSession:(id)session;
+- (void)didStartSession:(id)session;
+- (void)endSession:(id)session;
+- (void)handleFieldChanged:(BOOL)changed;
+- (void)handleFieldNotification:(id)notification;
 - (void)handleHceTargetLost;
-- (void)handleHostCardReaderDetected:(id)a3;
-- (void)prioritizeSession:(id)a3;
-- (void)readAPDUWithCompletion:(id)a3;
-- (void)requestEmulationAssertion:(id)a3 completion:(id)a4;
+- (void)handleHostCardReaderDetected:(id)detected;
+- (void)prioritizeSession:(id)session;
+- (void)readAPDUWithCompletion:(id)completion;
+- (void)requestEmulationAssertion:(id)assertion completion:(id)completion;
 - (void)restartDiscovery;
-- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)a3;
-- (void)sendAPDU:(id)a3 startReadOnCompletion:(BOOL)a4 completion:(id)a5;
-- (void)startEmulationWithCompletion:(id)a3;
-- (void)stopEmulationAndConfigWithRouting:(id)a3 completion:(id)a4;
-- (void)stopEmulationWithCompletion:(id)a3;
+- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)completion;
+- (void)sendAPDU:(id)u startReadOnCompletion:(BOOL)completion completion:(id)a5;
+- (void)startEmulationWithCompletion:(id)completion;
+- (void)stopEmulationAndConfigWithRouting:(id)routing completion:(id)completion;
+- (void)stopEmulationWithCompletion:(id)completion;
 @end
 
 @implementation _NFHCESession
 
 - (NSData)effectiveECPFrame
 {
-  v4 = [(_NFHCESession *)self ecpBroadcastConfig];
+  ecpBroadcastConfig = [(_NFHCESession *)self ecpBroadcastConfig];
 
-  if (v4)
+  if (ecpBroadcastConfig)
   {
-    v5 = [(_NFHCESession *)self ecpBroadcastConfig];
-    v6 = v5;
-    if (v5)
+    ecpBroadcastConfig2 = [(_NFHCESession *)self ecpBroadcastConfig];
+    v6 = ecpBroadcastConfig2;
+    if (ecpBroadcastConfig2)
     {
-      v7 = *(v5 + 16);
+      v7 = *(ecpBroadcastConfig2 + 16);
     }
 
     else
@@ -52,7 +52,7 @@
       v7 = 0;
     }
 
-    v8 = v7;
+    backgroundTagReadCustomECP = v7;
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -69,7 +69,7 @@
         v13 = 43;
       }
 
-      v10(5, "%c[%{public}s %{public}s]:%i Enabling FD & ECP Broadcast %@", v13, ClassName, Name, 74, v8);
+      v10(5, "%c[%{public}s %{public}s]:%i Enabling FD & ECP Broadcast %@", v13, ClassName, Name, 74, backgroundTagReadCustomECP);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -99,7 +99,7 @@
     v36 = 1024;
     v37 = 74;
     v38 = 2112;
-    v39 = v8;
+    v39 = backgroundTagReadCustomECP;
     v17 = "%c[%{public}s %{public}s]:%i Enabling FD & ECP Broadcast %@";
 LABEL_13:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v17, buf, 0x2Cu);
@@ -110,11 +110,11 @@ LABEL_14:
 
   if ([(_NFSession *)self backgroundTagReadEcpOption]== 2)
   {
-    v8 = [(_NFSession *)self backgroundTagReadCustomECP];
+    backgroundTagReadCustomECP = [(_NFSession *)self backgroundTagReadCustomECP];
 
-    if (v8)
+    if (backgroundTagReadCustomECP)
     {
-      v8 = [(_NFSession *)self backgroundTagReadCustomECP];
+      backgroundTagReadCustomECP = [(_NFSession *)self backgroundTagReadCustomECP];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v18 = NFLogGetLogger();
       if (v18)
@@ -130,7 +130,7 @@ LABEL_14:
           v22 = 43;
         }
 
-        v19(5, "%c[%{public}s %{public}s]:%i Enabling FD & custom ECP %@", v22, v27, v29, 78, v8);
+        v19(5, "%c[%{public}s %{public}s]:%i Enabling FD & custom ECP %@", v22, v27, v29, 78, backgroundTagReadCustomECP);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -160,7 +160,7 @@ LABEL_14:
       v36 = 1024;
       v37 = 78;
       v38 = 2112;
-      v39 = v8;
+      v39 = backgroundTagReadCustomECP;
       v17 = "%c[%{public}s %{public}s]:%i Enabling FD & custom ECP %@";
       goto LABEL_13;
     }
@@ -168,17 +168,17 @@ LABEL_14:
 
   else
   {
-    v8 = 0;
+    backgroundTagReadCustomECP = 0;
   }
 
 LABEL_27:
 
-  return v8;
+  return backgroundTagReadCustomECP;
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 hceAccess])
+  if ([entitlements hceAccess])
   {
     v5 = 0;
   }
@@ -190,9 +190,9 @@ LABEL_27:
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -207,7 +207,7 @@ LABEL_27:
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -221,7 +221,7 @@ LABEL_27:
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -331,7 +331,7 @@ LABEL_27:
   }
 }
 
-- (void)_syncStartAssertionTimer:(double)a3
+- (void)_syncStartAssertionTimer:(double)timer
 {
   if (!self->_emuAssertionTimer)
   {
@@ -342,8 +342,8 @@ LABEL_27:
     v23[3] = &unk_100315F58;
     v23[4] = self;
     v23[5] = a2;
-    v7 = [(_NFSession *)self workQueue];
-    v8 = [v6 initWithCallback:v23 queue:v7];
+    workQueue = [(_NFSession *)self workQueue];
+    v8 = [v6 initWithCallback:v23 queue:workQueue];
     emuAssertionTimer = self->_emuAssertionTimer;
     self->_emuAssertionTimer = v8;
   }
@@ -353,11 +353,11 @@ LABEL_27:
   v22[2] = sub_100080F30;
   v22[3] = &unk_100315F58;
   v22[4] = self;
-  *&v22[5] = a3;
+  *&v22[5] = timer;
   os_unfair_lock_lock(&self->_lock);
   sub_100080F30(v22);
   os_unfair_lock_unlock(&self->_lock);
-  [(NFTimer *)self->_emuAssertionTimer startTimer:a3];
+  [(NFTimer *)self->_emuAssertionTimer startTimer:timer];
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -373,7 +373,7 @@ LABEL_27:
       v15 = 43;
     }
 
-    v11(5, "%c[%{public}s %{public}s]:%i Assertion timer (%{public}fs) started", v15, ClassName, Name, 140, *&a3);
+    v11(5, "%c[%{public}s %{public}s]:%i Assertion timer (%{public}fs) started", v15, ClassName, Name, 140, *&timer);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -402,16 +402,16 @@ LABEL_27:
     v30 = 1024;
     v31 = 140;
     v32 = 2050;
-    v33 = a3;
+    timerCopy = timer;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Assertion timer (%{public}fs) started", buf, 0x2Cu);
   }
 }
 
-- (BOOL)suspendWithInfo:(id)a3
+- (BOOL)suspendWithInfo:(id)info
 {
   v10.receiver = self;
   v10.super_class = _NFHCESession;
-  v4 = [(_NFXPCSession *)&v10 suspendWithInfo:a3];
+  v4 = [(_NFXPCSession *)&v10 suspendWithInfo:info];
   if (v4)
   {
     remoteDev = self->_remoteDev;
@@ -437,13 +437,13 @@ LABEL_27:
 {
   v5.receiver = self;
   v5.super_class = _NFHCESession;
-  v3 = [(_NFXPCSession *)&v5 resume];
-  if (v3)
+  resume = [(_NFXPCSession *)&v5 resume];
+  if (resume)
   {
     sub_10000AA28(self->_hceCALogger);
   }
 
-  return v3;
+  return resume;
 }
 
 - (id)_routingConfigWithECPBroadcastInHCE
@@ -456,24 +456,24 @@ LABEL_27:
   v33 = 3221225472;
   v34 = sub_100081798;
   v35 = &unk_1003161D8;
-  v36 = self;
+  selfCopy = self;
   v37 = &v38;
   os_unfair_lock_lock(&self->_lock);
   sub_100081798(&v32);
   os_unfair_lock_unlock(&self->_lock);
   if ((v39[3] & 1) == 0)
   {
-    v4 = [(_NFHCESession *)self ecpBroadcastConfig];
-    if (v4)
+    ecpBroadcastConfig = [(_NFHCESession *)self ecpBroadcastConfig];
+    if (ecpBroadcastConfig)
     {
-      v5 = v4[3];
+      v5 = ecpBroadcastConfig[3];
 
       if (v5)
       {
-        v6 = [(_NFHCESession *)self ecpBroadcastConfig];
-        if (v6)
+        ecpBroadcastConfig2 = [(_NFHCESession *)self ecpBroadcastConfig];
+        if (ecpBroadcastConfig2)
         {
-          LODWORD(v7) = v6[3];
+          LODWORD(v7) = ecpBroadcastConfig2[3];
           v8 = v7;
         }
 
@@ -535,12 +535,12 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ECP broadcast in HCE enabled", buf, 0x22u);
   }
 
-  v21 = [(_NFHCESession *)self emulationOnSessionStart];
-  v22 = [(_NFHCESession *)self ecpBroadcastConfig];
-  v23 = v22;
-  if (v22)
+  emulationOnSessionStart = [(_NFHCESession *)self emulationOnSessionStart];
+  ecpBroadcastConfig3 = [(_NFHCESession *)self ecpBroadcastConfig];
+  v23 = ecpBroadcastConfig3;
+  if (ecpBroadcastConfig3)
   {
-    v24 = *(v22 + 16);
+    v24 = *(ecpBroadcastConfig3 + 16);
   }
 
   else
@@ -549,11 +549,11 @@ LABEL_27:
   }
 
   v25 = v24;
-  v26 = [(_NFHCESession *)self ecpBroadcastConfig];
-  v27 = v26;
-  if (v26)
+  ecpBroadcastConfig4 = [(_NFHCESession *)self ecpBroadcastConfig];
+  v27 = ecpBroadcastConfig4;
+  if (ecpBroadcastConfig4)
   {
-    v28 = *(v26 + 8);
+    v28 = *(ecpBroadcastConfig4 + 8);
   }
 
   else
@@ -561,21 +561,21 @@ LABEL_27:
     v28 = 0;
   }
 
-  v29 = sub_100081164(self, v21, v25, v28);
+  v29 = sub_100081164(self, emulationOnSessionStart, v25, v28);
 
   _Block_object_dispose(&v38, 8);
 
   return v29;
 }
 
-- (id)initialRoutingConfigWithField:(id)a3
+- (id)initialRoutingConfigWithField:(id)field
 {
-  v5 = a3;
-  v6 = [(_NFHCESession *)self ecpBroadcastConfig];
+  fieldCopy = field;
+  ecpBroadcastConfig = [(_NFHCESession *)self ecpBroadcastConfig];
 
-  if (!v6)
+  if (!ecpBroadcastConfig)
   {
-    v31 = sub_100081164(self, [(_NFHCESession *)self emulationOnSessionStart], 0, 0);
+    _routingConfigWithECPBroadcastInHCE = sub_100081164(self, [(_NFHCESession *)self emulationOnSessionStart], 0, 0);
     goto LABEL_50;
   }
 
@@ -584,7 +584,7 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
@@ -600,7 +600,7 @@ LABEL_27:
         v14 = 43;
       }
 
-      v11(6, "%c[%{public}s %{public}s]:%i disableECPBroadcastInHCE override=%d", v14, ClassName, Name, 229, v9);
+      v11(6, "%c[%{public}s %{public}s]:%i disableECPBroadcastInHCE override=%d", v14, ClassName, Name, 229, bOOLValue);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -629,20 +629,20 @@ LABEL_27:
       v70 = 1024;
       v71 = 229;
       v72 = 1024;
-      v73 = v9;
+      v73 = bOOLValue;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i disableECPBroadcastInHCE override=%d", buf, 0x28u);
     }
 
-    if (v9)
+    if (bOOLValue)
     {
       goto LABEL_26;
     }
   }
 
-  v20 = [(_NFHCESession *)self ecpBroadcastConfig];
-  if (v20)
+  ecpBroadcastConfig2 = [(_NFHCESession *)self ecpBroadcastConfig];
+  if (ecpBroadcastConfig2)
   {
-    v21 = v20[3];
+    v21 = ecpBroadcastConfig2[3];
 
     if (v21)
     {
@@ -650,11 +650,11 @@ LABEL_27:
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v22 = [(_NFHCESession *)self ecpBroadcastConfig];
-      v23 = v22;
-      if (v22)
+      ecpBroadcastConfig3 = [(_NFHCESession *)self ecpBroadcastConfig];
+      v23 = ecpBroadcastConfig3;
+      if (ecpBroadcastConfig3)
       {
-        v24 = *(v22 + 24);
+        v24 = *(ecpBroadcastConfig3 + 24);
       }
 
       else
@@ -678,7 +678,7 @@ LABEL_27:
               objc_enumerationMutation(v25);
             }
 
-            if ([*(*(&v59 + 1) + 8 * i) isEqual:v5])
+            if ([*(*(&v59 + 1) + 8 * i) isEqual:fieldCopy])
             {
               dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
               v32 = NFLogGetLogger();
@@ -726,7 +726,7 @@ LABEL_27:
                 _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Broadcast field matches", buf, 0x22u);
               }
 
-              v31 = [(_NFHCESession *)self _routingConfigWithECPBroadcastInHCE];
+              _routingConfigWithECPBroadcastInHCE = [(_NFHCESession *)self _routingConfigWithECPBroadcastInHCE];
 
               goto LABEL_49;
             }
@@ -743,7 +743,7 @@ LABEL_27:
       }
 
 LABEL_26:
-      v30 = sub_100081164(self, [(_NFHCESession *)self emulationOnSessionStart], 0, 0);
+      _routingConfigWithECPBroadcastInHCE2 = sub_100081164(self, [(_NFHCESession *)self emulationOnSessionStart], 0, 0);
       goto LABEL_48;
     }
   }
@@ -794,24 +794,24 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Broadcast field match rules unavailable", buf, 0x22u);
   }
 
-  v30 = [(_NFHCESession *)self _routingConfigWithECPBroadcastInHCE];
+  _routingConfigWithECPBroadcastInHCE2 = [(_NFHCESession *)self _routingConfigWithECPBroadcastInHCE];
 LABEL_48:
-  v31 = v30;
+  _routingConfigWithECPBroadcastInHCE = _routingConfigWithECPBroadcastInHCE2;
 LABEL_49:
 
 LABEL_50:
 
-  return v31;
+  return _routingConfigWithECPBroadcastInHCE;
 }
 
 - (id)initialRoutingConfig
 {
-  v3 = [(_NFHCESession *)self emulationOnSessionStart];
-  v4 = [(_NFHCESession *)self ecpBroadcastConfig];
-  v5 = v4;
-  if (v4)
+  emulationOnSessionStart = [(_NFHCESession *)self emulationOnSessionStart];
+  ecpBroadcastConfig = [(_NFHCESession *)self ecpBroadcastConfig];
+  v5 = ecpBroadcastConfig;
+  if (ecpBroadcastConfig)
   {
-    v6 = *(v4 + 16);
+    v6 = *(ecpBroadcastConfig + 16);
   }
 
   else
@@ -820,11 +820,11 @@ LABEL_50:
   }
 
   v7 = v6;
-  v8 = [(_NFHCESession *)self ecpBroadcastConfig];
-  v9 = v8;
-  if (v8)
+  ecpBroadcastConfig2 = [(_NFHCESession *)self ecpBroadcastConfig];
+  v9 = ecpBroadcastConfig2;
+  if (ecpBroadcastConfig2)
   {
-    v10 = *(v8 + 8);
+    v10 = *(ecpBroadcastConfig2 + 8);
   }
 
   else
@@ -832,18 +832,18 @@ LABEL_50:
     v10 = 0;
   }
 
-  v11 = sub_100081164(self, v3, v7, v10);
+  v11 = sub_100081164(self, emulationOnSessionStart, v7, v10);
 
   return v11;
 }
 
 - (id)initialECPConfig
 {
-  v3 = [(_NFHCESession *)self ecpBroadcastConfig];
-  v4 = v3;
-  if (v3)
+  ecpBroadcastConfig = [(_NFHCESession *)self ecpBroadcastConfig];
+  v4 = ecpBroadcastConfig;
+  if (ecpBroadcastConfig)
   {
-    v5 = *(v3 + 16);
+    v5 = *(ecpBroadcastConfig + 16);
   }
 
   else
@@ -854,11 +854,11 @@ LABEL_50:
   v6 = v5;
   if ([v6 length])
   {
-    v7 = [(_NFHCESession *)self ecpBroadcastConfig];
-    v8 = v7;
-    if (v7)
+    ecpBroadcastConfig2 = [(_NFHCESession *)self ecpBroadcastConfig];
+    v8 = ecpBroadcastConfig2;
+    if (ecpBroadcastConfig2)
     {
-      v9 = *(v7 + 16);
+      v9 = *(ecpBroadcastConfig2 + 16);
     }
 
     else
@@ -885,30 +885,30 @@ LABEL_50:
   return [(_NFSession *)&v4 willStartSession];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = _NFHCESession;
-  [(_NFXPCSession *)&v3 endSession:a3];
+  [(_NFXPCSession *)&v3 endSession:session];
 }
 
-- (void)prioritizeSession:(id)a3
+- (void)prioritizeSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = _NFHCESession;
-  [(_NFXPCSession *)&v3 prioritizeSessionWithCompletion:a3];
+  [(_NFXPCSession *)&v3 prioritizeSessionWithCompletion:session];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v11.receiver = self;
   v11.super_class = _NFHCESession;
-  v4 = a3;
-  [(_NFXPCSession *)&v11 didStartSession:v4];
-  v5 = [(_NFXPCSession *)self remoteObject];
-  [v5 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v11 didStartSession:sessionCopy];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 
-  if (!v4)
+  if (!sessionCopy)
   {
     remoteDev = self->_remoteDev;
     self->_remoteDev = 0;
@@ -937,9 +937,9 @@ LABEL_50:
   }
 }
 
-- (void)didEndSession:(id)a3
+- (void)didEndSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   if (![(_NFSession *)self didEnd])
   {
     Logger = NFLogGetLogger();
@@ -950,14 +950,14 @@ LABEL_50:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v12 = [(_NFXPCSession *)self clientName];
+      clientName = [(_NFXPCSession *)self clientName];
       v13 = 45;
       if (isMetaClass)
       {
         v13 = 43;
       }
 
-      v7(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v13, ClassName, Name, 312, v12);
+      v7(6, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", v13, ClassName, Name, 312, clientName);
     }
 
     v14 = NFSharedLogGetLogger();
@@ -976,7 +976,7 @@ LABEL_50:
 
       v17 = object_getClassName(self);
       v18 = sel_getName(a2);
-      v19 = [(_NFXPCSession *)self clientName];
+      clientName2 = [(_NFXPCSession *)self clientName];
       *buf = 67110146;
       v23 = v16;
       v24 = 2082;
@@ -986,7 +986,7 @@ LABEL_50:
       v28 = 1024;
       v29 = 312;
       v30 = 2112;
-      v31 = v19;
+      v31 = clientName2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode terminated: %@", buf, 0x2Cu);
     }
 
@@ -998,38 +998,38 @@ LABEL_50:
 
   v21.receiver = self;
   v21.super_class = _NFHCESession;
-  [(_NFSession *)&v21 didEndSession:v5];
+  [(_NFSession *)&v21 didEndSession:sessionCopy];
 }
 
-- (void)stopEmulationAndConfigWithRouting:(id)a3 completion:(id)a4
+- (void)stopEmulationAndConfigWithRouting:(id)routing completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  routingCopy = routing;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v16.receiver = self;
   v16.super_class = _NFHCESession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100082528;
   v12[3] = &unk_100317298;
   objc_copyWeak(v15, &location);
   v15[1] = a2;
-  v13 = v7;
-  v14 = v8;
+  v13 = routingCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v10 = routingCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v6 = a3;
-  objc_storeStrong(&self->_remoteDev, a3);
+  detectedCopy = detected;
+  objc_storeStrong(&self->_remoteDev, detected);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100082CD8;
@@ -1041,14 +1041,14 @@ LABEL_50:
   v7 = NFSharedSignpostLog();
   if (os_signpost_enabled(v7))
   {
-    v8 = [(_NFHCESession *)self readOnConnected];
+    readOnConnected = [(_NFHCESession *)self readOnConnected];
     *buf = 67240192;
-    v15 = v8;
+    v15 = readOnConnected;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_READER_DETECTED", "readOnConnected=%{public,signpost.description:attribute}d", buf, 8u);
   }
 
-  v9 = [(_NFXPCSession *)self remoteObject];
-  [v9 didConnectToReader];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didConnectToReader];
 
   v10 = sub_1001AE20C();
   sub_1001AF828(v10, v11);
@@ -1065,9 +1065,9 @@ LABEL_50:
   }
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1083,7 +1083,7 @@ LABEL_50:
       v10 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i %@", v10, ClassName, Name, 398, v5);
+    v7(6, "%c[%{public}s %{public}s]:%i %@", v10, ClassName, Name, 398, notificationCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1110,29 +1110,29 @@ LABEL_50:
     v25 = 1024;
     v26 = 398;
     v27 = 2112;
-    v28 = v5;
+    v28 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
   }
 
   v14 = NFSharedSignpostLog();
   if (os_signpost_enabled(v14))
   {
-    v15 = [(_NFHCESession *)self emulationOnSessionStart];
+    emulationOnSessionStart = [(_NFHCESession *)self emulationOnSessionStart];
     *buf = 67240192;
-    v20 = v15;
+    v20 = emulationOnSessionStart;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TAG_SESSION_FIELD_NTF", "emulationOnSessionStart=%{public,signpost.description:attribute}d", buf, 8u);
   }
 
-  v16 = [(_NFXPCSession *)self remoteObject];
-  [v16 didReceiveField:v5];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didReceiveField:notificationCopy];
 }
 
-- (void)_didLoseTarget:(BOOL)a3 suspendAssertion:(BOOL)a4
+- (void)_didLoseTarget:(BOOL)target suspendAssertion:(BOOL)assertion
 {
-  if (a3)
+  if (target)
   {
-    v7 = [(_NFXPCSession *)self remoteObject];
-    [v7 didDisconnectFromReader];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didDisconnectFromReader];
 
     v8 = NFSharedSignpostLog();
     if (os_signpost_enabled(v8))
@@ -1144,7 +1144,7 @@ LABEL_50:
 
   v9 = sub_1001AE20C();
   sub_1001AEDB0(v9, v10);
-  if ([(_NFHCESession *)self suspendOnDisconnect]&& !a4 && ![(_NFSession *)self isSuspended])
+  if ([(_NFHCESession *)self suspendOnDisconnect]&& !assertion && ![(_NFSession *)self isSuspended])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -1202,9 +1202,9 @@ LABEL_50:
   }
 }
 
-- (void)handleFieldChanged:(BOOL)a3
+- (void)handleFieldChanged:(BOOL)changed
 {
-  if (!a3)
+  if (!changed)
   {
     v9 = 0;
     v10 = &v9;
@@ -1266,9 +1266,9 @@ LABEL_50:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_syncStartEmulationWithCompletion:(id)a3
+- (void)_syncStartEmulationWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(_NFSession *)self didStart]&& ![(_NFSession *)self isSuspended]&& ![(_NFSession *)self didEnd])
   {
     kdebug_trace();
@@ -1288,14 +1288,14 @@ LABEL_50:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v32 = [(_NFXPCSession *)self clientName];
+      clientName = [(_NFXPCSession *)self clientName];
       v33 = 45;
       if (isMetaClass)
       {
         v33 = 43;
       }
 
-      v27(6, "%c[%{public}s %{public}s]:%i %{public}@", v33, ClassName, Name, 486, v32);
+      v27(6, "%c[%{public}s %{public}s]:%i %{public}@", v33, ClassName, Name, 486, clientName);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1315,7 +1315,7 @@ LABEL_50:
 
       v37 = object_getClassName(self);
       v38 = sel_getName(a2);
-      v39 = [(_NFXPCSession *)self clientName];
+      clientName2 = [(_NFXPCSession *)self clientName];
       *buf = 67110146;
       v59 = v36;
       v60 = 2082;
@@ -1325,7 +1325,7 @@ LABEL_50:
       v64 = 1024;
       v65 = 486;
       v66 = 2114;
-      v67 = v39;
+      v67 = clientName2;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
     }
 
@@ -1333,9 +1333,9 @@ LABEL_50:
     v41 = sub_10004BD70();
     v42 = [v40 setRoutingConfig:v41];
 
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     v43 = NFLogGetLogger();
@@ -1346,14 +1346,14 @@ LABEL_50:
       v46 = class_isMetaClass(v45);
       v47 = object_getClassName(self);
       v48 = sel_getName(a2);
-      v49 = [(_NFXPCSession *)self clientName];
+      clientName3 = [(_NFXPCSession *)self clientName];
       v50 = 45;
       if (v46)
       {
         v50 = 43;
       }
 
-      v44(6, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", v50, v47, v48, 491, v49);
+      v44(6, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", v50, v47, v48, 491, clientName3);
     }
 
     v21 = NFSharedLogGetLogger();
@@ -1372,7 +1372,7 @@ LABEL_50:
 
       v53 = object_getClassName(self);
       v54 = sel_getName(a2);
-      v55 = [(_NFXPCSession *)self clientName];
+      clientName4 = [(_NFXPCSession *)self clientName];
       *buf = 67110146;
       v59 = v52;
       v60 = 2082;
@@ -1382,7 +1382,7 @@ LABEL_50:
       v64 = 1024;
       v65 = 491;
       v66 = 2112;
-      v67 = v55;
+      v67 = clientName4;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i NFC emulation mode activated: %@", buf, 0x2Cu);
     }
 
@@ -1398,14 +1398,14 @@ LABEL_50:
     v9 = class_isMetaClass(v8);
     v10 = object_getClassName(self);
     v11 = sel_getName(a2);
-    v12 = [(_NFSession *)self sessionUID];
+    sessionUID = [(_NFSession *)self sessionUID];
     v13 = 45;
     if (v9)
     {
       v13 = 43;
     }
 
-    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, v10, v11, 482, v12);
+    v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, v10, v11, 482, sessionUID);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1425,7 +1425,7 @@ LABEL_50:
 
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
-    v19 = [(_NFSession *)self sessionUID];
+    sessionUID2 = [(_NFSession *)self sessionUID];
     *buf = 67110146;
     v59 = v16;
     v60 = 2082;
@@ -1435,11 +1435,11 @@ LABEL_50:
     v64 = 1024;
     v65 = 482;
     v66 = 2114;
-    v67 = v19;
+    v67 = sessionUID2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v20 = [NSError alloc];
     v21 = [NSString stringWithUTF8String:"nfcd"];
@@ -1448,15 +1448,15 @@ LABEL_50:
     v57 = v22;
     v23 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
     v24 = [v20 initWithDomain:v21 code:54 userInfo:v23];
-    (v5)[2](v5, v24);
+    (completionCopy)[2](completionCopy, v24);
 
 LABEL_15:
   }
 }
 
-- (void)startEmulationWithCompletion:(id)a3
+- (void)startEmulationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   kdebug_trace();
   v5 = NFSharedSignpostLog();
   if (os_signpost_enabled(v5))
@@ -1467,82 +1467,82 @@ LABEL_15:
 
   v10.receiver = self;
   v10.super_class = _NFHCESession;
-  v6 = [(_NFSession *)&v10 workQueue];
+  workQueue = [(_NFSession *)&v10 workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100083FD0;
   v8[3] = &unk_100316700;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, v8);
 }
 
-- (void)stopEmulationWithCompletion:(id)a3
+- (void)stopEmulationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_10004C144();
-  [(_NFHCESession *)self stopEmulationAndConfigWithRouting:v5 completion:v4];
+  [(_NFHCESession *)self stopEmulationAndConfigWithRouting:v5 completion:completionCopy];
 }
 
-- (void)sendAPDU:(id)a3 startReadOnCompletion:(BOOL)a4 completion:(id)a5
+- (void)sendAPDU:(id)u startReadOnCompletion:(BOOL)completion completion:(id)a5
 {
-  v9 = a3;
+  uCopy = u;
   v10 = a5;
   v19.receiver = self;
   v19.super_class = _NFHCESession;
-  v11 = [(_NFSession *)&v19 workQueue];
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084154;
   block[3] = &unk_100317360;
   block[4] = self;
-  v15 = v9;
+  v15 = uCopy;
   v16 = v10;
   v17 = a2;
-  v18 = a4;
+  completionCopy = completion;
   v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v13 = uCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)readAPDUWithCompletion:(id)a3
+- (void)readAPDUWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFHCESession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000851DC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)asyncReadAPDUWithCompletion:(id)a3
+- (void)asyncReadAPDUWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFHCESession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100085B94;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)_asyncReadWithCompletion:(id)a3
+- (void)_asyncReadWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (![(_NFSession *)self didStart]|| [(_NFSession *)self isSuspended]|| [(_NFSession *)self didEnd])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1554,14 +1554,14 @@ LABEL_15:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(self);
       Name = sel_getName(a2);
-      v12 = [(_NFSession *)self sessionUID];
+      sessionUID = [(_NFSession *)self sessionUID];
       v13 = 45;
       if (isMetaClass)
       {
         v13 = 43;
       }
 
-      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 652, v12);
+      v7(3, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", v13, ClassName, Name, 652, sessionUID);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1581,7 +1581,7 @@ LABEL_15:
 
       v17 = object_getClassName(self);
       v18 = sel_getName(a2);
-      v19 = [(_NFSession *)self sessionUID];
+      sessionUID2 = [(_NFSession *)self sessionUID];
       *buf = 67110146;
       v34 = v16;
       v35 = 2082;
@@ -1591,11 +1591,11 @@ LABEL_15:
       v39 = 1024;
       v40 = 652;
       v41 = 2114;
-      v42 = v19;
+      v42 = sessionUID2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session %{public}@ is not active", buf, 0x2Cu);
     }
 
-    if (v5)
+    if (completionCopy)
     {
       v20 = [NSError alloc];
       v21 = [NSString stringWithUTF8String:"nfcd"];
@@ -1604,7 +1604,7 @@ LABEL_15:
       v32 = v22;
       v23 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v24 = [v20 initWithDomain:v21 code:54 userInfo:v23];
-      v5[2](v5, 0, v24);
+      completionCopy[2](completionCopy, 0, v24);
     }
   }
 
@@ -1620,7 +1620,7 @@ LABEL_15:
     os_unfair_lock_unlock(&self->_lock);
     if (v25)
     {
-      v5[2](v5, 0, v25);
+      completionCopy[2](completionCopy, 0, v25);
       sub_10000A6F0(self->_hceCALogger, v25);
     }
 
@@ -1639,61 +1639,61 @@ LABEL_15:
       v28[2] = sub_1000864FC;
       v28[3] = &unk_1003173B0;
       v28[4] = self;
-      v29 = v5;
+      v29 = completionCopy;
       [(NFHostCardEmulationDeviceHandle *)remoteDev readAPDUWithCompletion:v28];
     }
   }
 }
 
-- (void)requestEmulationAssertion:(id)a3 completion:(id)a4
+- (void)requestEmulationAssertion:(id)assertion completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFHCESession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100086950;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = assertionCopy;
+  v10 = assertionCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)a3
+- (void)resumeSessionFromWaitingOnFieldWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFHCESession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000877FC;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)restartDiscovery
 {
   v6.receiver = self;
   v6.super_class = _NFHCESession;
-  v4 = [(_NFSession *)&v6 workQueue];
+  workQueue = [(_NFSession *)&v6 workQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100087C7C;
   v5[3] = &unk_100315F58;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(workQueue, v5);
 }
 
 @end

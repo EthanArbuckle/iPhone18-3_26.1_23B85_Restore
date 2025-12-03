@@ -1,22 +1,22 @@
 @interface ICASPasswordData
-- (ICASPasswordData)initWithPasswordType:(id)a3 hasHint:(id)a4;
+- (ICASPasswordData)initWithPasswordType:(id)type hasHint:(id)hint;
 - (id)toDict;
 @end
 
 @implementation ICASPasswordData
 
-- (ICASPasswordData)initWithPasswordType:(id)a3 hasHint:(id)a4
+- (ICASPasswordData)initWithPasswordType:(id)type hasHint:(id)hint
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  hintCopy = hint;
   v12.receiver = self;
   v12.super_class = ICASPasswordData;
   v9 = [(ICASPasswordData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passwordType, a3);
-    objc_storeStrong(&v10->_hasHint, a4);
+    objc_storeStrong(&v9->_passwordType, type);
+    objc_storeStrong(&v10->_hasHint, hint);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"passwordType";
-  v3 = [(ICASPasswordData *)self passwordType];
-  if (v3)
+  passwordType = [(ICASPasswordData *)self passwordType];
+  if (passwordType)
   {
-    v4 = [(ICASPasswordData *)self passwordType];
+    passwordType2 = [(ICASPasswordData *)self passwordType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    passwordType2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = passwordType2;
   v12[1] = @"hasHint";
-  v13[0] = v4;
-  v6 = [(ICASPasswordData *)self hasHint];
-  if (v6)
+  v13[0] = passwordType2;
+  hasHint = [(ICASPasswordData *)self hasHint];
+  if (hasHint)
   {
-    v7 = [(ICASPasswordData *)self hasHint];
+    hasHint2 = [(ICASPasswordData *)self hasHint];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    hasHint2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = hasHint2;
+  v13[1] = hasHint2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

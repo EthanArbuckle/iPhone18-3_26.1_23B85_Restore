@@ -1,13 +1,13 @@
 @interface NCExpandedPlatterView
-- (BOOL)_tapGestureRecognizerShouldReceiveTouch:(id)a3;
+- (BOOL)_tapGestureRecognizerShouldReceiveTouch:(id)touch;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)adjustsFontForContentSizeCategory;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)_mainContentViewFrame;
 - (CGSize)_contentViewSize;
-- (CGSize)contentSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
-- (NCExpandedPlatterView)initWithFrame:(CGRect)a3;
+- (CGSize)contentSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
+- (NCExpandedPlatterView)initWithFrame:(CGRect)frame;
 - (UITapGestureRecognizer)defaultTapGestureRecognizer;
 - (void)_configureDefaultTapGestureRecognizerIfNecessary;
 - (void)_configureNotificationContentViewIfNecessary;
@@ -15,24 +15,24 @@
 - (void)_layoutSubviews;
 - (void)_updateUserInterfaceStyle;
 - (void)layoutSubviews;
-- (void)notificationSeamlessContentView:(id)a3 requestsInteractionWithURL:(id)a4;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setFooterText:(id)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setHidesNotificationContent:(BOOL)a3;
-- (void)setImportantAttributedText:(id)a3;
-- (void)setImportantText:(id)a3;
-- (void)setImportantTextVisualStylingProvider:(id)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)notificationSeamlessContentView:(id)view requestsInteractionWithURL:(id)l;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setFooterText:(id)text;
+- (void)setHideDate:(BOOL)date;
+- (void)setHidesNotificationContent:(BOOL)content;
+- (void)setImportantAttributedText:(id)text;
+- (void)setImportantText:(id)text;
+- (void)setImportantTextVisualStylingProvider:(id)provider;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setTimeZone:(id)zone;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCExpandedPlatterView
@@ -41,8 +41,8 @@
 {
   v6.receiver = self;
   v6.super_class = NCExpandedPlatterView;
-  v3 = [(PLExpandedPlatterView *)&v6 adjustForContentSizeCategoryChange];
-  v4 = [(NCNotificationSeamlessContentView *)self->_notificationContentView adjustForContentSizeCategoryChange]| v3;
+  adjustForContentSizeCategoryChange = [(PLExpandedPlatterView *)&v6 adjustForContentSizeCategoryChange];
+  v4 = [(NCNotificationSeamlessContentView *)self->_notificationContentView adjustForContentSizeCategoryChange]| adjustForContentSizeCategoryChange;
   if (v4)
   {
     [(NCExpandedPlatterView *)self setNeedsLayout];
@@ -64,8 +64,8 @@
     [(NCNotificationSeamlessContentView *)self->_notificationContentView setURLInteractionEnabled:1];
     [(NCNotificationSeamlessContentView *)self->_notificationContentView setTextMenusEnabled:1];
     [(NCExpandedPlatterView *)self _updateUserInterfaceStyle];
-    v5 = [(PLExpandedPlatterView *)self _mainContentView];
-    [v5 addSubview:self->_notificationContentView];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    [_mainContentView addSubview:self->_notificationContentView];
   }
 }
 
@@ -157,27 +157,27 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(PLExpandedPlatterView *)self customContentView];
-    [v11 frame];
+    customContentView = [(PLExpandedPlatterView *)self customContentView];
+    [customContentView frame];
 
     v16.origin.x = v4;
     v16.origin.y = v6;
     v16.size.width = v8;
     v16.size.height = v10;
     CGRectGetHeight(v16);
-    v12 = [(PLExpandedPlatterView *)self customContentView];
+    customContentView2 = [(PLExpandedPlatterView *)self customContentView];
     UIRectIntegralWithScale();
-    [v12 setFrame:?];
+    [customContentView2 setFrame:?];
   }
 
   if (self->_scrollViewPinnedToBottom)
   {
-    v13 = [(PLExpandedPlatterView *)self scrollView];
-    [v13 contentSize];
+    scrollView = [(PLExpandedPlatterView *)self scrollView];
+    [scrollView contentSize];
     [(NCExpandedPlatterView *)self frame];
     CGRectGetHeight(v17);
     UICeilToScale();
-    [v13 setContentOffset:{0.0, v14}];
+    [scrollView setContentOffset:{0.0, v14}];
   }
 }
 
@@ -212,8 +212,8 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   if (self->_notificationContentView)
   {
     [(PLExpandedPlatterView *)self _layoutMainContentViewIfNecessary];
-    v3 = [(PLExpandedPlatterView *)self _mainContentView];
-    [v3 frame];
+    _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+    [_mainContentView frame];
     v5 = v4;
     v7 = v6;
 
@@ -226,13 +226,13 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setHidesNotificationContent:(BOOL)a3
+- (void)setHidesNotificationContent:(BOOL)content
 {
-  if (self->_hidesNotificationContent != a3)
+  if (self->_hidesNotificationContent != content)
   {
     v10 = v3;
-    self->_hidesNotificationContent = a3;
-    if (a3)
+    self->_hidesNotificationContent = content;
+    if (content)
     {
       [(NCNotificationSeamlessContentView *)self->_notificationContentView removeFromSuperview];
       notificationContentView = self->_notificationContentView;
@@ -246,16 +246,16 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (NCExpandedPlatterView)initWithFrame:(CGRect)a3
+- (NCExpandedPlatterView)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = NCExpandedPlatterView;
-  v3 = [(PLExpandedPlatterView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PLExpandedPlatterView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(NCExpandedPlatterView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(NCExpandedPlatterView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_opt_self();
     v10[0] = v5;
@@ -266,12 +266,12 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = NCExpandedPlatterView;
-  [(PLExpandedPlatterView *)&v13 sizeThatFitsContentWithSize:a3.width, a3.height];
+  [(PLExpandedPlatterView *)&v13 sizeThatFitsContentWithSize:size.width, size.height];
   v6 = v5;
   v8 = v7;
   notificationContentView = self->_notificationContentView;
@@ -288,12 +288,12 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)contentSizeForSize:(CGSize)a3
+- (CGSize)contentSizeForSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = NCExpandedPlatterView;
-  [(PLExpandedPlatterView *)&v13 contentSizeForSize:a3.width, a3.height];
+  [(PLExpandedPlatterView *)&v13 contentSizeForSize:size.width, size.height];
   v6 = v5;
   v8 = v7;
   notificationContentView = self->_notificationContentView;
@@ -318,18 +318,18 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NCExpandedPlatterView;
-  [(NCExpandedPlatterView *)&v4 traitCollectionDidChange:a3];
+  [(NCExpandedPlatterView *)&v4 traitCollectionDidChange:change];
   [(NCExpandedPlatterView *)self adjustForContentSizeCategoryChange];
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self badgedIconDescription];
+  descriptionCopy = description;
+  badgedIconDescription = [(NCExpandedPlatterView *)self badgedIconDescription];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -337,7 +337,7 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationSeamlessContentView *)self->_notificationContentView setBadgedIconDescription:v6];
+      [(NCNotificationSeamlessContentView *)self->_notificationContentView setBadgedIconDescription:descriptionCopy];
       [(NCNotificationSeamlessContentView *)self->_notificationContentView setShadowsEnabled:1];
     }
 
@@ -345,173 +345,173 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCExpandedPlatterView *)self primaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setPrimaryText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setPrimaryText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCExpandedPlatterView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setPrimarySubtitleText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setPrimarySubtitleText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self secondaryText];
+  textCopy = text;
+  secondaryText = [(NCExpandedPlatterView *)self secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setSecondaryText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setSecondaryText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setImportantText:(id)a3
+- (void)setImportantText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self importantText];
+  textCopy = text;
+  importantText = [(NCExpandedPlatterView *)self importantText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setImportantAttributedText:(id)a3
+- (void)setImportantAttributedText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self importantAttributedText];
+  textCopy = text;
+  importantAttributedText = [(NCExpandedPlatterView *)self importantAttributedText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantAttributedText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantAttributedText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setImportantTextVisualStylingProvider:(id)a3
+- (void)setImportantTextVisualStylingProvider:(id)provider
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self importantTextVisualStylingProvider];
+  providerCopy = provider;
+  importantTextVisualStylingProvider = [(NCExpandedPlatterView *)self importantTextVisualStylingProvider];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantTextVisualStylingProvider:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setImportantTextVisualStylingProvider:providerCopy];
     [(NCExpandedPlatterView *)self setNeedsDisplay];
   }
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self footerText];
+  textCopy = text;
+  footerText = [(NCExpandedPlatterView *)self footerText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setFooterText:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setFooterText:textCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self date];
+  dateCopy = date;
+  date = [(NCExpandedPlatterView *)self date];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDate:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDate:dateCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  v3 = a3;
-  if ([(NCExpandedPlatterView *)self isDateAllDay]!= a3)
+  dayCopy = day;
+  if ([(NCExpandedPlatterView *)self isDateAllDay]!= day)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDateAllDay:v3];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDateAllDay:dayCopy];
 
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(NCExpandedPlatterView *)self timeZone];
+  zoneCopy = zone;
+  timeZone = [(NCExpandedPlatterView *)self timeZone];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setTimeZone:v6];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setTimeZone:zoneCopy];
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if ([(NCExpandedPlatterView *)self dateFormatStyle]!= a3)
+  if ([(NCExpandedPlatterView *)self dateFormatStyle]!= style)
   {
     [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDateFormatStyle:a3];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setDateFormatStyle:style];
 
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  v3 = a3;
-  if ([(NCExpandedPlatterView *)self hideDate]!= a3)
+  dateCopy = date;
+  if ([(NCExpandedPlatterView *)self hideDate]!= date)
   {
-    [(NCNotificationSeamlessContentView *)self->_notificationContentView setHideDate:v3];
+    [(NCNotificationSeamlessContentView *)self->_notificationContentView setHideDate:dateCopy];
 
     [(NCExpandedPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  v3 = a3;
+  prohibitedCopy = prohibited;
   [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationSeamlessContentView *)notificationContentView setScreenCaptureProhibited:v3];
+  [(NCNotificationSeamlessContentView *)notificationContentView setScreenCaptureProhibited:prohibitedCopy];
 }
 
 - (BOOL)adjustsFontForContentSizeCategory
@@ -527,62 +527,62 @@ void __39__NCExpandedPlatterView_layoutSubviews__block_invoke(uint64_t a1)
   return [(PLExpandedPlatterView *)&v4 adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v5.receiver = self;
   v5.super_class = NCExpandedPlatterView;
   [(PLExpandedPlatterView *)&v5 setAdjustsFontForContentSizeCategory:?];
   [(NCExpandedPlatterView *)self _configureNotificationContentViewIfNecessary];
-  [(NCNotificationSeamlessContentView *)self->_notificationContentView setAdjustsFontForContentSizeCategory:v3];
+  [(NCNotificationSeamlessContentView *)self->_notificationContentView setAdjustsFontForContentSizeCategory:categoryCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_defaultTapGestureRecognizer != a3)
+  if (self->_defaultTapGestureRecognizer != recognizer)
   {
     return 0;
   }
 
-  v5 = self;
-  v6 = [a4 view];
-  LOBYTE(v5) = [v6 isDescendantOfView:v5->_notificationContentView];
+  selfCopy = self;
+  view = [gestureRecognizer view];
+  LOBYTE(selfCopy) = [view isDescendantOfView:selfCopy->_notificationContentView];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)notificationSeamlessContentView:(id)a3 requestsInteractionWithURL:(id)a4
+- (void)notificationSeamlessContentView:(id)view requestsInteractionWithURL:(id)l
 {
-  v6 = a4;
-  v5 = [(PLExpandedPlatterView *)self delegate];
+  lCopy = l;
+  delegate = [(PLExpandedPlatterView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 expandedPlatterView:self requestsInteractionWithURL:v6];
+    [delegate expandedPlatterView:self requestsInteractionWithURL:lCopy];
   }
 }
 
 - (void)_updateUserInterfaceStyle
 {
   v3 = MEMORY[0x277D26740];
-  v4 = [(NCExpandedPlatterView *)self traitCollection];
-  v5 = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(v4, "userInterfaceStyle")}];
+  traitCollection = [(NCExpandedPlatterView *)self traitCollection];
+  v5 = [v3 _visualStylingProviderForRecipe:1 category:1 andUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
   [(NCNotificationSeamlessContentView *)self->_notificationContentView setVisualStylingProvider:v5 forCategory:1];
 }
 
-- (BOOL)_tapGestureRecognizerShouldReceiveTouch:(id)a3
+- (BOOL)_tapGestureRecognizerShouldReceiveTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [(PLExpandedPlatterView *)self _mainContentView];
-  v7 = [v5 isDescendantOfView:v6];
+  touchCopy = touch;
+  view = [touchCopy view];
+  _mainContentView = [(PLExpandedPlatterView *)self _mainContentView];
+  v7 = [view isDescendantOfView:_mainContentView];
 
-  v8 = [(PLExpandedPlatterView *)self delegate];
+  delegate = [(PLExpandedPlatterView *)self delegate];
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 expandedPlatterView:self tapGestureRecognizerShouldReceiveTouch:v4];
+      v9 = [delegate expandedPlatterView:self tapGestureRecognizerShouldReceiveTouch:touchCopy];
     }
 
     else

@@ -1,8 +1,8 @@
 @interface PGUpNextHighlightBasedMatchingInfo
-+ (id)matchingInfosWithHighlightNodes:(id)a3;
++ (id)matchingInfosWithHighlightNodes:(id)nodes;
 - (NSString)debugInfo;
-- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)a3;
-- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)a3 momentNodes:(id)a4;
+- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)collection;
+- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)collection momentNodes:(id)nodes;
 - (unint64_t)nodeIdentifier;
 @end
 
@@ -11,61 +11,61 @@
 - (NSString)debugInfo
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGGraphHighlightNodeCollection *)self->_highlightNodeAsCollection uuids];
-  v4 = [v3 anyObject];
-  v5 = [v2 stringWithFormat:@"Highlight uuid %@", v4];
+  uuids = [(PGGraphHighlightNodeCollection *)self->_highlightNodeAsCollection uuids];
+  anyObject = [uuids anyObject];
+  v5 = [v2 stringWithFormat:@"Highlight uuid %@", anyObject];
 
   return v5;
 }
 
 - (unint64_t)nodeIdentifier
 {
-  v2 = [(MAElementCollection *)self->_highlightNodeAsCollection elementIdentifiers];
-  v3 = [v2 firstElement];
+  elementIdentifiers = [(MAElementCollection *)self->_highlightNodeAsCollection elementIdentifiers];
+  firstElement = [elementIdentifiers firstElement];
 
-  return v3;
+  return firstElement;
 }
 
-- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)a3 momentNodes:(id)a4
+- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)collection momentNodes:(id)nodes
 {
-  v7 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = PGUpNextHighlightBasedMatchingInfo;
-  v8 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v11 initWithMomentNodes:a4];
+  v8 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v11 initWithMomentNodes:nodes];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_highlightNodeAsCollection, a3);
+    objc_storeStrong(&v8->_highlightNodeAsCollection, collection);
   }
 
   return v9;
 }
 
-- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)a3
+- (PGUpNextHighlightBasedMatchingInfo)initWithHighlightNodeAsCollection:(id)collection
 {
-  v5 = a3;
-  v6 = [v5 momentNodes];
+  collectionCopy = collection;
+  momentNodes = [collectionCopy momentNodes];
   v9.receiver = self;
   v9.super_class = PGUpNextHighlightBasedMatchingInfo;
-  v7 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v9 initWithMomentNodes:v6];
+  v7 = [(PGUpNextMomentCollectionBasedMatchingInfo *)&v9 initWithMomentNodes:momentNodes];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_highlightNodeAsCollection, a3);
+    objc_storeStrong(&v7->_highlightNodeAsCollection, collection);
   }
 
   return v7;
 }
 
-+ (id)matchingInfosWithHighlightNodes:(id)a3
++ (id)matchingInfosWithHighlightNodes:(id)nodes
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  nodesCopy = nodes;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(nodesCopy, "count")}];
   v6 = MEMORY[0x277D22BF8];
   v7 = +[PGGraphHighlightNode momentInHighlight];
   v8 = objc_opt_self();
-  v9 = [v6 adjacencyWithSources:v4 relation:v7 targetsClass:v8];
+  v9 = [v6 adjacencyWithSources:nodesCopy relation:v7 targetsClass:v8];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;

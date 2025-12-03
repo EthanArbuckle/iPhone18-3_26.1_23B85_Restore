@@ -1,23 +1,23 @@
 @interface AXMT2DPointSampleSeriesStatistics
-- (AXMT2DPointSampleSeriesStatistics)initWithQueue:(id)a3;
+- (AXMT2DPointSampleSeriesStatistics)initWithQueue:(id)queue;
 - (BOOL)valid;
 - (CGPoint)mean;
-- (void)queue:(id)a3 dequeuedValue:(id)a4;
-- (void)queue:(id)a3 enqueuedValue:(id)a4;
+- (void)queue:(id)queue dequeuedValue:(id)value;
+- (void)queue:(id)queue enqueuedValue:(id)value;
 @end
 
 @implementation AXMT2DPointSampleSeriesStatistics
 
-- (AXMT2DPointSampleSeriesStatistics)initWithQueue:(id)a3
+- (AXMT2DPointSampleSeriesStatistics)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AXMT2DPointSampleSeriesStatistics;
   v6 = [(AXMT2DPointSampleSeriesStatistics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__samplesQueue, a3);
+    objc_storeStrong(&v6->__samplesQueue, queue);
     [(AXMTQueue *)v7->__samplesQueue setDelegate:v7];
   }
 
@@ -26,23 +26,23 @@
 
 - (BOOL)valid
 {
-  v2 = [(AXMT2DPointSampleSeriesStatistics *)self _samplesQueue];
-  v3 = [v2 filled];
+  _samplesQueue = [(AXMT2DPointSampleSeriesStatistics *)self _samplesQueue];
+  filled = [_samplesQueue filled];
 
-  return v3;
+  return filled;
 }
 
-- (void)queue:(id)a3 enqueuedValue:(id)a4
+- (void)queue:(id)queue enqueuedValue:(id)value
 {
-  v15 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 pointValue];
+    [valueCopy pointValue];
     v8 = v7;
     v10 = v9;
-    v11 = [v15 count];
+    v11 = [queueCopy count];
     [(AXMT2DPointSampleSeriesStatistics *)self setCount:v11];
     if (v11 == 1)
     {
@@ -52,42 +52,42 @@
 
     else
     {
-      v12 = [v15 values];
-      [(AXMT2DPointSampleSeriesStatistics *)self setMean:AXMTGeometryCentroidOfPoints(v12)];
+      values = [queueCopy values];
+      [(AXMT2DPointSampleSeriesStatistics *)self setMean:AXMTGeometryCentroidOfPoints(values)];
       [(AXMT2DPointSampleSeriesStatistics *)self mean];
-      [(AXMT2DPointSampleSeriesStatistics *)self setStandardDeviation:AXMTGeometryStandardDeviationOfPointsWithPrecalculatedCentroid(v12, v13, v14)];
+      [(AXMT2DPointSampleSeriesStatistics *)self setStandardDeviation:AXMTGeometryStandardDeviationOfPointsWithPrecalculatedCentroid(values, v13, v14)];
     }
   }
 }
 
-- (void)queue:(id)a3 dequeuedValue:(id)a4
+- (void)queue:(id)queue dequeuedValue:(id)value
 {
-  v5 = a3;
-  v6 = [v5 count];
+  queueCopy = queue;
+  v6 = [queueCopy count];
   [(AXMT2DPointSampleSeriesStatistics *)self setCount:v6];
   if (v6 > 1)
   {
-    v15 = [v5 values];
+    values = [queueCopy values];
 
-    [(AXMT2DPointSampleSeriesStatistics *)self setMean:AXMTGeometryCentroidOfPoints(v15)];
+    [(AXMT2DPointSampleSeriesStatistics *)self setMean:AXMTGeometryCentroidOfPoints(values)];
     [(AXMT2DPointSampleSeriesStatistics *)self mean];
-    v12 = AXMTGeometryStandardDeviationOfPointsWithPrecalculatedCentroid(v15, v13, v14);
+    v12 = AXMTGeometryStandardDeviationOfPointsWithPrecalculatedCentroid(values, v13, v14);
   }
 
   else
   {
     x = NSZeroPoint.x;
     y = NSZeroPoint.y;
-    v9 = [v5 values];
+    values2 = [queueCopy values];
 
-    v15 = [v9 firstObject];
+    values = [values2 firstObject];
 
     if (v6 == 1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v15 pointValue];
+        [values pointValue];
         x = v10;
         y = v11;
       }

@@ -1,47 +1,47 @@
 @interface ServiceAccountPageViewController
 - (CGRect)presentationBounds;
 - (SUScriptRedeemCameraViewController)redeemCameraScriptObject;
-- (ServiceAccountPageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ServiceAccountPageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIViewController)presentingBridgedViewController;
-- (id)_bagKeyForConfigURLString:(id)a3;
+- (id)_bagKeyForConfigURLString:(id)string;
 - (id)_preloadConfiguration;
 - (id)navigationController;
 - (id)navigationItem;
-- (id)navigationItemOptionsFromViewController:(id)a3;
-- (void)_loadURLWithActiveConfiguration:(id)a3;
-- (void)_presentErrorViewControllerWithError:(id)a3;
-- (void)_presentViewController:(id)a3;
+- (id)navigationItemOptionsFromViewController:(id)controller;
+- (void)_loadURLWithActiveConfiguration:(id)configuration;
+- (void)_presentErrorViewControllerWithError:(id)error;
+- (void)_presentViewController:(id)controller;
 - (void)_willAppearInRemoteViewController;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)bridgedRightButtonPressed;
-- (void)clientInterface:(id)a3 overrideCreditCardPresentationFromViewController:(id)a4 completion:(id)a5;
-- (void)clientInterface:(id)a3 overrideRedeemCameraPerformAction:(int64_t)a4 withObject:(id)a5;
-- (void)clientInterfaceDidFinishLoading:(id)a3;
+- (void)clientInterface:(id)interface overrideCreditCardPresentationFromViewController:(id)controller completion:(id)completion;
+- (void)clientInterface:(id)interface overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object;
+- (void)clientInterfaceDidFinishLoading:(id)loading;
 - (void)dealloc;
 - (void)dismissPresentingBridgedViewController;
 - (void)dismissViewController;
-- (void)keyboardDidChangeFrame:(CGRect)a3 animationCurve:(int64_t)a4 duration:(double)a5;
-- (void)keyboardWillChangeFrame:(CGRect)a3 animationCurve:(int64_t)a4 duration:(double)a5;
-- (void)loadWithURL:(id)a3;
+- (void)keyboardDidChangeFrame:(CGRect)frame animationCurve:(int64_t)curve duration:(double)duration;
+- (void)keyboardWillChangeFrame:(CGRect)frame animationCurve:(int64_t)curve duration:(double)duration;
+- (void)loadWithURL:(id)l;
 - (void)navigationItemUpdated;
-- (void)overrideIPadRedeemCamera:(id)a3 completion:(id)a4;
-- (void)popBridgedViewControllersToIndex:(unint64_t)a3;
-- (void)redeemCameraCodeDetected:(id)a3;
-- (void)setBridgedNavigationItemWithOptions:(id)a3;
-- (void)setChildViewController:(id)a3;
-- (void)setReferrer:(id)a3;
-- (void)setUnderlyingViewController:(id)a3;
+- (void)overrideIPadRedeemCamera:(id)camera completion:(id)completion;
+- (void)popBridgedViewControllersToIndex:(unint64_t)index;
+- (void)redeemCameraCodeDetected:(id)detected;
+- (void)setBridgedNavigationItemWithOptions:(id)options;
+- (void)setChildViewController:(id)controller;
+- (void)setReferrer:(id)referrer;
+- (void)setUnderlyingViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation ServiceAccountPageViewController
 
-- (ServiceAccountPageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ServiceAccountPageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = ServiceAccountPageViewController;
-  v4 = [(ServiceAccountPageViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(ServiceAccountPageViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[SKProductPageViewController _defaultClientInterface];
@@ -54,9 +54,9 @@
     v8 = +[SUWebViewManager defaultLocalStoragePath];
     [(SUClientInterface *)v7 setLocalStoragePath:v8];
 
-    v9 = [(ServiceAccountPageViewController *)v4 _preloadConfiguration];
+    _preloadConfiguration = [(ServiceAccountPageViewController *)v4 _preloadConfiguration];
     configurationPromise = v4->_configurationPromise;
-    v4->_configurationPromise = v9;
+    v4->_configurationPromise = _preloadConfiguration;
   }
 
   return v4;
@@ -87,68 +87,68 @@
   v10.receiver = self;
   v10.super_class = ServiceAccountPageViewController;
   [(ServiceAccountPageViewController *)&v10 viewDidLoad];
-  v3 = [(ServiceAccountPageViewController *)self view];
+  view = [(ServiceAccountPageViewController *)self view];
   v4 = +[UIColor systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(SUClientInterface *)self->_clientInterface viewControllerFactory];
-  v6 = [v5 newPlaceholderViewController];
+  viewControllerFactory = [(SUClientInterface *)self->_clientInterface viewControllerFactory];
+  newPlaceholderViewController = [viewControllerFactory newPlaceholderViewController];
 
-  v7 = [[SUNavigationController alloc] initWithRootViewController:v6];
+  v7 = [[SUNavigationController alloc] initWithRootViewController:newPlaceholderViewController];
   [(ServiceAccountPageViewController *)self setContainerNavigationController:v7];
 
-  v8 = [(ServiceAccountPageViewController *)self containerNavigationController];
-  [v8 setClientInterface:self->_clientInterface];
+  containerNavigationController = [(ServiceAccountPageViewController *)self containerNavigationController];
+  [containerNavigationController setClientInterface:self->_clientInterface];
 
-  v9 = [(ServiceAccountPageViewController *)self containerNavigationController];
-  [(ServiceAccountPageViewController *)self setChildViewController:v9];
+  containerNavigationController2 = [(ServiceAccountPageViewController *)self containerNavigationController];
+  [(ServiceAccountPageViewController *)self setChildViewController:containerNavigationController2];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   childViewController = self->_childViewController;
-  if (childViewController != v5)
+  if (childViewController != controllerCopy)
   {
-    v13 = v5;
+    v13 = controllerCopy;
     if (childViewController)
     {
       [(UIViewController *)childViewController willMoveToParentViewController:0];
-      v7 = [(UIViewController *)self->_childViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_childViewController view];
+      [view removeFromSuperview];
 
       [(UIViewController *)self->_childViewController removeFromParentViewController];
-      v5 = v13;
+      controllerCopy = v13;
     }
 
-    [(UIViewController *)v5 willMoveToParentViewController:self];
-    v8 = [(UIViewController *)v13 view];
-    v9 = [(ServiceAccountPageViewController *)self view];
-    [v9 bounds];
-    [v8 setFrame:?];
+    [(UIViewController *)controllerCopy willMoveToParentViewController:self];
+    view2 = [(UIViewController *)v13 view];
+    view3 = [(ServiceAccountPageViewController *)self view];
+    [view3 bounds];
+    [view2 setFrame:?];
 
-    v10 = [(UIViewController *)v13 view];
-    [v10 setAutoresizingMask:18];
+    view4 = [(UIViewController *)v13 view];
+    [view4 setAutoresizingMask:18];
 
-    v11 = [(ServiceAccountPageViewController *)self view];
-    v12 = [(UIViewController *)v13 view];
-    [v11 addSubview:v12];
+    view5 = [(ServiceAccountPageViewController *)self view];
+    view6 = [(UIViewController *)v13 view];
+    [view5 addSubview:view6];
 
     [(ServiceAccountPageViewController *)self addChildViewController:v13];
-    objc_storeStrong(&self->_childViewController, a3);
+    objc_storeStrong(&self->_childViewController, controller);
   }
 
   _objc_release_x1();
 }
 
-- (void)setUnderlyingViewController:(id)a3
+- (void)setUnderlyingViewController:(id)controller
 {
-  objc_storeStrong(&self->_underlyingViewController, a3);
-  v5 = a3;
-  v7 = [v5 navigationItem];
-  v6 = [ServiceBridgedNavigationItem itemFromItem:v7];
+  objc_storeStrong(&self->_underlyingViewController, controller);
+  controllerCopy = controller;
+  navigationItem = [controllerCopy navigationItem];
+  v6 = [ServiceBridgedNavigationItem itemFromItem:navigationItem];
   [v6 setProxyHandler:self];
-  [v5 su_setBridgedNavigationItem:v6];
+  [controllerCopy su_setBridgedNavigationItem:v6];
 }
 
 - (void)_willAppearInRemoteViewController
@@ -170,140 +170,140 @@
     v4 = 0;
   }
 
-  v5 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
   v6 = [NSNumber numberWithBool:v4];
-  [v5 didPrepareWithResult:v6 error:v3];
+  [_clientViewControllerProxy didPrepareWithResult:v6 error:v3];
 }
 
 - (id)navigationItem
 {
   if ([(ServiceAccountPageViewController *)self type]== 1)
   {
-    v3 = [(ServiceAccountPageViewController *)self underlyingViewController];
-    v4 = [v3 su_bridgedNavigationItem];
-    v5 = v4;
-    if (v4)
+    underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
+    su_bridgedNavigationItem = [underlyingViewController su_bridgedNavigationItem];
+    v5 = su_bridgedNavigationItem;
+    if (su_bridgedNavigationItem)
     {
-      v6 = v4;
+      navigationItem = su_bridgedNavigationItem;
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = ServiceAccountPageViewController;
-      v6 = [(ServiceAccountPageViewController *)&v10 navigationItem];
+      navigationItem = [(ServiceAccountPageViewController *)&v10 navigationItem];
     }
 
-    v7 = v6;
+    navigationItem2 = navigationItem;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = ServiceAccountPageViewController;
-    v7 = [(ServiceAccountPageViewController *)&v9 navigationItem];
+    navigationItem2 = [(ServiceAccountPageViewController *)&v9 navigationItem];
   }
 
-  return v7;
+  return navigationItem2;
 }
 
 - (id)navigationController
 {
   if ([(ServiceAccountPageViewController *)self type]== 1)
   {
-    v3 = +[ServiceBridgedNavigationController sharedController];
+    navigationController = +[ServiceBridgedNavigationController sharedController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = ServiceAccountPageViewController;
-    v3 = [(ServiceAccountPageViewController *)&v5 navigationController];
+    navigationController = [(ServiceAccountPageViewController *)&v5 navigationController];
   }
 
-  return v3;
+  return navigationController;
 }
 
 - (void)navigationItemUpdated
 {
-  v3 = [(ServiceAccountPageViewController *)self underlyingViewController];
-  v4 = [(ServiceAccountPageViewController *)self navigationItemOptionsFromViewController:v3];
+  underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
+  v4 = [(ServiceAccountPageViewController *)self navigationItemOptionsFromViewController:underlyingViewController];
 
   [(ServiceAccountPageViewController *)self setBridgedNavigationItemWithOptions:v4];
 }
 
-- (void)setBridgedNavigationItemWithOptions:(id)a3
+- (void)setBridgedNavigationItemWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v5 setBridgedNavigationItemWithOptions:v4];
+  optionsCopy = options;
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy setBridgedNavigationItemWithOptions:optionsCopy];
 }
 
-- (id)navigationItemOptionsFromViewController:(id)a3
+- (id)navigationItemOptionsFromViewController:(id)controller
 {
-  v3 = [a3 navigationItem];
+  navigationItem = [controller navigationItem];
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hidesBackButton]);
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [navigationItem hidesBackButton]);
   [v4 setObject:v5 forKeyedSubscript:SKUIServiceNavigationOptionBackButtonHidden];
 
-  v6 = [v3 backButtonTitle];
+  backButtonTitle = [navigationItem backButtonTitle];
 
-  if (v6)
+  if (backButtonTitle)
   {
-    v7 = [v3 backButtonTitle];
-    [v4 setObject:v7 forKeyedSubscript:SKUIServiceNavigationOptionBackButtonTitle];
+    backButtonTitle2 = [navigationItem backButtonTitle];
+    [v4 setObject:backButtonTitle2 forKeyedSubscript:SKUIServiceNavigationOptionBackButtonTitle];
   }
 
-  v8 = [v3 rightBarButtonItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (v8)
+  if (rightBarButtonItem)
   {
-    v9 = [v3 rightBarButtonItem];
-    v10 = [v9 title];
-    [v4 setObject:v10 forKeyedSubscript:SKUIServiceNavigationOptionRightButtonTitle];
+    rightBarButtonItem2 = [navigationItem rightBarButtonItem];
+    title = [rightBarButtonItem2 title];
+    [v4 setObject:title forKeyedSubscript:SKUIServiceNavigationOptionRightButtonTitle];
 
-    v11 = [v3 rightBarButtonItem];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 style]);
+    rightBarButtonItem3 = [navigationItem rightBarButtonItem];
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [rightBarButtonItem3 style]);
     [v4 setObject:v12 forKeyedSubscript:SKUIServiceNavigationOptionRightButtonStyle];
 
-    v13 = [v3 rightBarButtonItem];
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 isEnabled]);
+    rightBarButtonItem4 = [navigationItem rightBarButtonItem];
+    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [rightBarButtonItem4 isEnabled]);
     [v4 setObject:v14 forKeyedSubscript:SKUIServiceNavigationOptionRightButtonEnabled];
   }
 
-  v15 = [v3 title];
+  title2 = [navigationItem title];
 
-  if (v15)
+  if (title2)
   {
-    v16 = [v3 title];
-    [v4 setObject:v16 forKeyedSubscript:SKUIServiceNavigationOptionTitle];
+    title3 = [navigationItem title];
+    [v4 setObject:title3 forKeyedSubscript:SKUIServiceNavigationOptionTitle];
   }
 
   return v4;
 }
 
-- (void)popBridgedViewControllersToIndex:(unint64_t)a3
+- (void)popBridgedViewControllersToIndex:(unint64_t)index
 {
-  v4 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v4 popBridgedViewControllersToIndex:a3];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy popBridgedViewControllersToIndex:index];
 }
 
 - (void)dismissViewController
 {
-  v2 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v2 dismissBridgedViewController];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy dismissBridgedViewController];
 }
 
-- (void)loadWithURL:(id)a3
+- (void)loadWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(ServiceAccountPageViewController *)self loadFromBridgedNavigation])
   {
     v5 = +[ServiceBridgedNavigationController sharedController];
-    v6 = [v5 topViewController];
+    topViewController = [v5 topViewController];
 
-    [(ServiceAccountPageViewController *)self setUnderlyingViewController:v6];
-    [(ServiceAccountPageViewController *)self setChildViewController:v6];
+    [(ServiceAccountPageViewController *)self setUnderlyingViewController:topViewController];
+    [(ServiceAccountPageViewController *)self setChildViewController:topViewController];
   }
 
   else if ([(ServiceAccountPageViewController *)self type]== 2)
@@ -314,31 +314,31 @@
 
     [v7 setOpaque:0];
     [(ServiceAccountPageViewController *)self setView:v7];
-    v9 = [(ServiceAccountPageViewController *)self view];
-    v10 = [v9 window];
-    [v10 makeKeyWindow];
+    view = [(ServiceAccountPageViewController *)self view];
+    window = [view window];
+    [window makeKeyWindow];
 
     v11 = +[ServiceBridgedPresentationController sharedController];
-    v12 = [v11 removeSavedViewController];
+    removeSavedViewController = [v11 removeSavedViewController];
 
-    if (v12)
+    if (removeSavedViewController)
     {
-      [(ServiceAccountPageViewController *)self setPresentingBridgedViewController:v12];
-      [(ServiceAccountPageViewController *)self showViewController:v12 sender:self];
+      [(ServiceAccountPageViewController *)self setPresentingBridgedViewController:removeSavedViewController];
+      [(ServiceAccountPageViewController *)self showViewController:removeSavedViewController sender:self];
     }
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v13 = [(ServiceAccountPageViewController *)self configurationPromise];
+    configurationPromise = [(ServiceAccountPageViewController *)self configurationPromise];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100014168;
     v14[3] = &unk_100051820;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
-    [v13 addFinishBlock:v14];
+    v15 = lCopy;
+    [configurationPromise addFinishBlock:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -347,45 +347,45 @@
 
 - (void)applicationWillEnterForeground
 {
-  v5 = [(ServiceAccountPageViewController *)self underlyingViewController];
+  underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v5 embeddedViewController];
+    embeddedViewController = [underlyingViewController embeddedViewController];
 
-    v5 = v2;
+    underlyingViewController = embeddedViewController;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
+    v3 = underlyingViewController;
     [v3 applicationWillEnterForeground];
-    v4 = [v3 activeChildViewController];
+    activeChildViewController = [v3 activeChildViewController];
 
-    [v4 applicationWillEnterForeground];
+    [activeChildViewController applicationWillEnterForeground];
   }
 }
 
 - (void)applicationDidEnterBackground
 {
-  v5 = [(ServiceAccountPageViewController *)self underlyingViewController];
+  underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v5 embeddedViewController];
+    embeddedViewController = [underlyingViewController embeddedViewController];
 
-    v5 = v2;
+    underlyingViewController = embeddedViewController;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v5;
+    v3 = underlyingViewController;
     [v3 applicationDidEnterBackground];
-    v4 = [v3 activeChildViewController];
+    activeChildViewController = [v3 activeChildViewController];
 
-    [v4 applicationDidEnterBackground];
+    [activeChildViewController applicationDidEnterBackground];
   }
 }
 
@@ -393,12 +393,12 @@
 {
   if ([(ServiceAccountPageViewController *)self type]== 1)
   {
-    v3 = [(ServiceAccountPageViewController *)self underlyingViewController];
-    v4 = [v3 su_bridgedNavigationItem];
-    v6 = [v4 rightBarButtonItem];
+    underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
+    su_bridgedNavigationItem = [underlyingViewController su_bridgedNavigationItem];
+    rightBarButtonItem = [su_bridgedNavigationItem rightBarButtonItem];
 
-    v5 = [v6 target];
-    [v5 performSelector:{objc_msgSend(v6, "action")}];
+    target = [rightBarButtonItem target];
+    [target performSelector:{objc_msgSend(rightBarButtonItem, "action")}];
   }
 }
 
@@ -406,9 +406,9 @@
 {
   if ([(ServiceAccountPageViewController *)self type]== 2)
   {
-    v3 = [(ServiceAccountPageViewController *)self presentingBridgedViewController];
+    presentingBridgedViewController = [(ServiceAccountPageViewController *)self presentingBridgedViewController];
 
-    if (v3)
+    if (presentingBridgedViewController)
     {
       objc_initWeak(&location, self);
       v4[0] = _NSConcreteStackBlock;
@@ -423,24 +423,24 @@
   }
 }
 
-- (void)redeemCameraCodeDetected:(id)a3
+- (void)redeemCameraCodeDetected:(id)detected
 {
-  v4 = a3;
-  v5 = [(ServiceAccountPageViewController *)self redeemCameraScriptObject];
-  [v5 codeDetected:v4];
+  detectedCopy = detected;
+  redeemCameraScriptObject = [(ServiceAccountPageViewController *)self redeemCameraScriptObject];
+  [redeemCameraScriptObject codeDetected:detectedCopy];
 }
 
-- (void)keyboardDidChangeFrame:(CGRect)a3 animationCurve:(int64_t)a4 duration:(double)a5
+- (void)keyboardDidChangeFrame:(CGRect)frame animationCurve:(int64_t)curve duration:(double)duration
 {
   v13[0] = UIKeyboardFrameEndUserInfoKey;
-  v12 = a3;
-  v7 = [NSValue valueWithBytes:&v12 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v7 = [NSValue valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v14[0] = v7;
   v13[1] = UIKeyboardAnimationCurveUserInfoKey;
-  v8 = [NSNumber numberWithInteger:a4];
+  v8 = [NSNumber numberWithInteger:curve];
   v14[1] = v8;
   v13[2] = UIKeyboardAnimationDurationUserInfoKey;
-  v9 = [NSNumber numberWithDouble:a5];
+  v9 = [NSNumber numberWithDouble:duration];
   v14[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
 
@@ -448,17 +448,17 @@
   [v11 postNotificationName:SUKeyboardDidChangeNotification object:0 userInfo:v10];
 }
 
-- (void)keyboardWillChangeFrame:(CGRect)a3 animationCurve:(int64_t)a4 duration:(double)a5
+- (void)keyboardWillChangeFrame:(CGRect)frame animationCurve:(int64_t)curve duration:(double)duration
 {
   v13[0] = UIKeyboardFrameEndUserInfoKey;
-  v12 = a3;
-  v7 = [NSValue valueWithBytes:&v12 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v7 = [NSValue valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v14[0] = v7;
   v13[1] = UIKeyboardAnimationCurveUserInfoKey;
-  v8 = [NSNumber numberWithInteger:a4];
+  v8 = [NSNumber numberWithInteger:curve];
   v14[1] = v8;
   v13[2] = UIKeyboardAnimationDurationUserInfoKey;
-  v9 = [NSNumber numberWithDouble:a5];
+  v9 = [NSNumber numberWithDouble:duration];
   v14[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
 
@@ -466,66 +466,66 @@
   [v11 postNotificationName:SUKeyboardWillChangeNotification object:0 userInfo:v10];
 }
 
-- (void)setReferrer:(id)a3
+- (void)setReferrer:(id)referrer
 {
-  v4 = a3;
-  v5 = [(ServiceAccountPageViewController *)self clientInterface];
-  [v5 setHostApplicationIdentifier:v4];
+  referrerCopy = referrer;
+  clientInterface = [(ServiceAccountPageViewController *)self clientInterface];
+  [clientInterface setHostApplicationIdentifier:referrerCopy];
 }
 
-- (void)overrideIPadRedeemCamera:(id)a3 completion:(id)a4
+- (void)overrideIPadRedeemCamera:(id)camera completion:(id)completion
 {
-  v6 = a4;
-  objc_storeWeak(&self->_redeemCameraViewController, a3);
-  v7 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v7 overrideRedeemCameraWithCompletion:v6];
+  completionCopy = completion;
+  objc_storeWeak(&self->_redeemCameraViewController, camera);
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy overrideRedeemCameraWithCompletion:completionCopy];
 }
 
-- (void)clientInterface:(id)a3 overrideCreditCardPresentationFromViewController:(id)a4 completion:(id)a5
+- (void)clientInterface:(id)interface overrideCreditCardPresentationFromViewController:(id)controller completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v7 overrideCreditCardPresentationWithCompletion:v6];
+  completionCopy = completion;
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy overrideCreditCardPresentationWithCompletion:completionCopy];
 }
 
-- (void)clientInterface:(id)a3 overrideRedeemCameraPerformAction:(int64_t)a4 withObject:(id)a5
+- (void)clientInterface:(id)interface overrideRedeemCameraPerformAction:(int64_t)action withObject:(id)object
 {
-  v8 = a5;
-  if (a4 == 1)
+  objectCopy = object;
+  if (action == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ServiceAccountPageViewController *)self setRedeemCameraScriptObject:v8];
+      [(ServiceAccountPageViewController *)self setRedeemCameraScriptObject:objectCopy];
     }
 
-    v8 = 0;
+    objectCopy = 0;
   }
 
-  v7 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v7 overrideRedeemCameraPerformAction:a4 withObject:v8];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy overrideRedeemCameraPerformAction:action withObject:objectCopy];
 }
 
-- (void)clientInterfaceDidFinishLoading:(id)a3
+- (void)clientInterfaceDidFinishLoading:(id)loading
 {
   self->_finishedLoading = 1;
-  v4 = [(ServiceAccountPageViewController *)self underlyingViewController];
+  underlyingViewController = [(ServiceAccountPageViewController *)self underlyingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 firstViewController];
+    firstViewController = [underlyingViewController firstViewController];
 
-    v4 = v5;
+    underlyingViewController = firstViewController;
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 navigationItem];
-  v7 = [v6 leftBarButtonItems];
+  navigationItem = [underlyingViewController navigationItem];
+  leftBarButtonItems = [navigationItem leftBarButtonItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [leftBarButtonItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -540,18 +540,18 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(leftBarButtonItems);
         }
 
         if ([*(*(&v19 + 1) + 8 * v12) tag] == 999)
         {
-          v14 = [v4 navigationItem];
-          v15 = [v14 leftBarButtonItems];
-          v16 = [v15 mutableCopy];
+          navigationItem2 = [underlyingViewController navigationItem];
+          leftBarButtonItems2 = [navigationItem2 leftBarButtonItems];
+          v16 = [leftBarButtonItems2 mutableCopy];
 
           [v16 removeObjectAtIndex:v13];
-          v17 = [v4 navigationItem];
-          [v17 setLeftBarButtonItems:v16 animated:1];
+          navigationItem3 = [underlyingViewController navigationItem];
+          [navigationItem3 setLeftBarButtonItems:v16 animated:1];
 
           goto LABEL_13;
         }
@@ -561,7 +561,7 @@
       }
 
       while (v9 != v12);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [leftBarButtonItems countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -573,8 +573,8 @@
 
 LABEL_13:
 
-  v18 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v18 didFinishLoading];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy didFinishLoading];
 }
 
 - (id)_preloadConfiguration
@@ -603,7 +603,7 @@ LABEL_13:
   return v6;
 }
 
-- (id)_bagKeyForConfigURLString:(id)a3
+- (id)_bagKeyForConfigURLString:(id)string
 {
   v7[0] = SKAccountPagePaymentsShippingURLString;
   v7[1] = SKAccountPageManageSubscriptionsURLString;
@@ -611,33 +611,33 @@ LABEL_13:
   v8[1] = @"manageSubscriptionsUrl";
   v7[2] = SKAccountPageEditBillingURLString;
   v8[2] = @"editBillingUrl";
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:3];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:stringCopy];
 
   return v5;
 }
 
-- (void)_loadURLWithActiveConfiguration:(id)a3
+- (void)_loadURLWithActiveConfiguration:(id)configuration
 {
-  v76 = a3;
-  v74 = [(ServiceAccountPageViewController *)self _hostApplicationBundleIdentifier];
+  configurationCopy = configuration;
+  _hostApplicationBundleIdentifier = [(ServiceAccountPageViewController *)self _hostApplicationBundleIdentifier];
   v4 = +[SSLogConfig sharedConfig];
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v5 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v6 = [v4 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v5;
+    v7 = shouldLog;
   }
 
   else
   {
-    v7 = v5 & 2;
+    v7 = shouldLog & 2;
   }
 
   if (v7)
@@ -645,7 +645,7 @@ LABEL_13:
     *location = 138543618;
     *&location[4] = objc_opt_class();
     v88 = 2112;
-    v89 = v74;
+    v89 = _hostApplicationBundleIdentifier;
     v8 = *&location[4];
     LODWORD(v72) = 22;
     v71 = location;
@@ -665,27 +665,27 @@ LABEL_13:
   }
 
   v11 = +[ServiceHostRegistry sharedInstance];
-  [v11 setRegisteredHostBundleId:v74];
+  [v11 setRegisteredHostBundleId:_hostApplicationBundleIdentifier];
 
-  v12 = [v76 path];
-  v75 = [(ServiceAccountPageViewController *)self _bagKeyForConfigURLString:v12];
+  path = [configurationCopy path];
+  v75 = [(ServiceAccountPageViewController *)self _bagKeyForConfigURLString:path];
 
   if (v75)
   {
     v13 = +[SSLogConfig sharedConfig];
-    v14 = [v13 shouldLog];
+    shouldLog2 = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog2 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog2;
     }
 
-    v16 = [v13 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v15;
     }
@@ -716,13 +716,13 @@ LABEL_21:
         v83[1] = 3221225472;
         v83[2] = sub_100015D28;
         v84 = v83[3] = &unk_100051898;
-        v22 = v84;
+        value = v84;
         [(ServiceSKUIRedeemViewController *)v21 loadValueForKey:v75 completionBlock:v83];
 
         goto LABEL_63;
       }
 
-      v16 = [NSString stringWithCString:v20 encoding:4, location, v72];
+      oSLogObject2 = [NSString stringWithCString:v20 encoding:4, location, v72];
       free(v20);
       SSFileLog();
     }
@@ -730,9 +730,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v23 = [v76 pathComponents];
-  v24 = [v23 firstObject];
-  v25 = [v24 isEqual:SKAccountPageRedeemURLString];
+  pathComponents = [configurationCopy pathComponents];
+  firstObject = [pathComponents firstObject];
+  v25 = [firstObject isEqual:SKAccountPageRedeemURLString];
 
   if (v25)
   {
@@ -743,24 +743,24 @@ LABEL_21:
     [(ServiceSKUIRedeemViewController *)v21 setClientInterface:self->_clientInterface];
     [(ServiceSKUIRedeemViewController *)v21 setEmbeddedParent:self];
     [(ServiceSKUIRedeemViewController *)v21 setCameraDelegate:self];
-    v27 = [v76 pathComponents];
-    v28 = [v27 count] > 1;
+    pathComponents2 = [configurationCopy pathComponents];
+    v28 = [pathComponents2 count] > 1;
 
     if (v28)
     {
-      v73 = [v76 pathComponents];
-      v22 = [v73 objectAtIndexedSubscript:1];
+      pathComponents3 = [configurationCopy pathComponents];
+      value = [pathComponents3 objectAtIndexedSubscript:1];
     }
 
     else
     {
-      v73 = [NSURLComponents componentsWithURL:v76 resolvingAgainstBaseURL:1];
+      pathComponents3 = [NSURLComponents componentsWithURL:configurationCopy resolvingAgainstBaseURL:1];
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v47 = [v73 queryItems];
-      v48 = [v47 countByEnumeratingWithState:&v79 objects:v86 count:16];
+      queryItems = [pathComponents3 queryItems];
+      v48 = [queryItems countByEnumeratingWithState:&v79 objects:v86 count:16];
       if (v48)
       {
         v49 = *v80;
@@ -770,21 +770,21 @@ LABEL_21:
           {
             if (*v80 != v49)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(queryItems);
             }
 
             v51 = *(*(&v79 + 1) + 8 * i);
-            v52 = [v51 name];
-            v53 = [v52 isEqualToString:@"code"];
+            name = [v51 name];
+            v53 = [name isEqualToString:@"code"];
 
             if (v53)
             {
-              v22 = [v51 value];
+              value = [v51 value];
               goto LABEL_41;
             }
           }
 
-          v48 = [v47 countByEnumeratingWithState:&v79 objects:v86 count:16];
+          v48 = [queryItems countByEnumeratingWithState:&v79 objects:v86 count:16];
           if (v48)
           {
             continue;
@@ -794,13 +794,13 @@ LABEL_21:
         }
       }
 
-      v22 = 0;
+      value = 0;
 LABEL_41:
     }
 
-    if (v22)
+    if (value)
     {
-      [(ServiceSKUIRedeemViewController *)v21 setInitialCode:v22];
+      [(ServiceSKUIRedeemViewController *)v21 setInitialCode:value];
       [(ServiceSKUIRedeemViewController *)v21 setAttempsAutomaticRedeem:1];
     }
 
@@ -810,34 +810,34 @@ LABEL_41:
 
   else
   {
-    v29 = [v76 pathComponents];
-    v30 = [v29 firstObject];
-    v31 = [v30 isEqual:SKAccountPageGiftURLString];
+    pathComponents4 = [configurationCopy pathComponents];
+    firstObject2 = [pathComponents4 firstObject];
+    v31 = [firstObject2 isEqual:SKAccountPageGiftURLString];
 
     if (v31)
     {
-      v32 = [v76 pathComponents];
-      v33 = [v32 count] > 1;
+      pathComponents5 = [configurationCopy pathComponents];
+      v33 = [pathComponents5 count] > 1;
 
       if (v33)
       {
-        v34 = [v76 pathComponents];
-        v21 = [v34 objectAtIndexedSubscript:1];
+        pathComponents6 = [configurationCopy pathComponents];
+        v21 = [pathComponents6 objectAtIndexedSubscript:1];
 
-        v22 = objc_alloc_init(SSLookupRequest);
-        [(ServiceSKUIGiftViewController *)v22 setKeyProfile:SSLookupKeyProfileLockup];
+        value = objc_alloc_init(SSLookupRequest);
+        [(ServiceSKUIGiftViewController *)value setKeyProfile:SSLookupKeyProfileLockup];
         v85 = v21;
         v35 = [NSArray arrayWithObjects:&v85 count:1];
-        [(ServiceSKUIGiftViewController *)v22 setValue:v35 forRequestParameter:SSLookupParameterItemIdentifiers];
+        [(ServiceSKUIGiftViewController *)value setValue:v35 forRequestParameter:SSLookupParameterItemIdentifiers];
 
-        [(ServiceSKUIGiftViewController *)v22 setValue:@"2" forRequestParameter:SSLookupParameterProtocolVersion];
+        [(ServiceSKUIGiftViewController *)value setValue:@"2" forRequestParameter:SSLookupParameterProtocolVersion];
         objc_initWeak(location, self);
         v77[0] = _NSConcreteStackBlock;
         v77[1] = 3221225472;
         v77[2] = sub_100016138;
         v77[3] = &unk_1000518C0;
         objc_copyWeak(&v78, location);
-        [(ServiceSKUIGiftViewController *)v22 startWithLookupBlock:v77];
+        [(ServiceSKUIGiftViewController *)value startWithLookupBlock:v77];
         objc_destroyWeak(&v78);
         objc_destroyWeak(location);
       }
@@ -845,46 +845,46 @@ LABEL_41:
       else
       {
         v21 = [[SKUIGift alloc] initWithGiftCategory:0];
-        v22 = [[ServiceSKUIGiftViewController alloc] initWithGift:v21];
+        value = [[ServiceSKUIGiftViewController alloc] initWithGift:v21];
         v54 = +[ServiceClientContext defaultContext];
-        [(ServiceSKUIGiftViewController *)v22 setClientContext:v54];
+        [(ServiceSKUIGiftViewController *)value setClientContext:v54];
 
-        [(ServiceSKUIGiftViewController *)v22 setEmbeddedParent:self];
-        [(ServiceAccountPageViewController *)self setUnderlyingViewController:v22];
-        [(ServiceAccountPageViewController *)self setChildViewController:v22];
+        [(ServiceSKUIGiftViewController *)value setEmbeddedParent:self];
+        [(ServiceAccountPageViewController *)self setUnderlyingViewController:value];
+        [(ServiceAccountPageViewController *)self setChildViewController:value];
       }
     }
 
     else
     {
-      v36 = [v76 path];
-      v37 = [v36 isEqual:SKAccountPageCustomURLString];
+      path2 = [configurationCopy path];
+      v37 = [path2 isEqual:SKAccountPageCustomURLString];
 
       if (v37)
       {
-        v21 = [v76 copyQueryStringDictionaryWithUnescapedValues:1];
+        v21 = [configurationCopy copyQueryStringDictionaryWithUnescapedValues:1];
         v38 = [(ServiceSKUIRedeemViewController *)v21 objectForKeyedSubscript:@"url"];
-        v22 = [NSURL URLWithString:v38];
+        value = [NSURL URLWithString:v38];
 
-        if (v22)
+        if (value)
         {
           v39 = [(ServiceSKUIRedeemViewController *)v21 objectForKeyedSubscript:@"shouldSignRequests"];
-          v40 = [v39 BOOLValue];
+          bOOLValue = [v39 BOOLValue];
 
           v41 = objc_alloc_init(SUWebViewController);
-          v42 = [(ServiceAccountPageViewController *)self account];
-          [v41 setAccount:v42];
+          account = [(ServiceAccountPageViewController *)self account];
+          [v41 setAccount:account];
 
           [v41 setStyle:0];
-          [v41 setShouldSignRequests:v40];
-          v43 = [v41 webView];
-          v44 = [v43 scrollView];
-          [v44 _setContentInsetAdjustmentBehavior:0];
+          [v41 setShouldSignRequests:bOOLValue];
+          webView = [v41 webView];
+          scrollView = [webView scrollView];
+          [scrollView _setContentInsetAdjustmentBehavior:0];
 
-          [v41 reloadWithStorePage:0 forURL:v22];
-          v45 = [v41 webView];
-          v46 = [NSURLRequest requestWithURL:v22];
-          [v45 loadRequest:v46];
+          [v41 reloadWithStorePage:0 forURL:value];
+          webView2 = [v41 webView];
+          v46 = [NSURLRequest requestWithURL:value];
+          [webView2 loadRequest:v46];
 
           [(ServiceAccountPageViewController *)self _presentViewController:v41];
         }
@@ -898,14 +898,14 @@ LABEL_41:
 
       else
       {
-        v55 = [v76 path];
-        v56 = [v55 isEqual:SKAccountPageCharityURLString];
+        path3 = [configurationCopy path];
+        v56 = [path3 isEqual:SKAccountPageCharityURLString];
 
         if (v56)
         {
-          v21 = [v76 copyQueryStringDictionaryWithUnescapedValues:1];
-          v22 = [(ServiceSKUIRedeemViewController *)v21 objectForKeyedSubscript:@"id"];
-          v57 = [[ServiceSKUIDonationViewController alloc] initWithCharityIdentifier:v22];
+          v21 = [configurationCopy copyQueryStringDictionaryWithUnescapedValues:1];
+          value = [(ServiceSKUIRedeemViewController *)v21 objectForKeyedSubscript:@"id"];
+          v57 = [[ServiceSKUIDonationViewController alloc] initWithCharityIdentifier:value];
           v58 = +[ServiceClientContext defaultContext];
           [(ServiceSKUIDonationViewController *)v57 setClientContext:v58];
 
@@ -916,17 +916,17 @@ LABEL_41:
 
         else
         {
-          if (v76)
+          if (configurationCopy)
           {
-            v21 = [[ServiceSUAccountViewController alloc] initWithExternalAccountURL:v76];
+            v21 = [[ServiceSUAccountViewController alloc] initWithExternalAccountURL:configurationCopy];
           }
 
           else
           {
             v21 = objc_alloc_init(ServiceSUAccountViewController);
             v59 = +[SSAccountStore defaultStore];
-            v60 = [v59 activeAccount];
-            v61 = v60 == 0;
+            activeAccount = [v59 activeAccount];
+            v61 = activeAccount == 0;
 
             if (v61)
             {
@@ -944,40 +944,40 @@ LABEL_41:
             [(ServiceSKUIRedeemViewController *)v21 setShowAccountGlyph:[(ServiceAccountPageViewController *)self showAccountGlyph]];
           }
 
-          v62 = [(ServiceAccountPageViewController *)self clientInterface];
-          [v62 setShowDialogOnError:1];
+          clientInterface = [(ServiceAccountPageViewController *)self clientInterface];
+          [clientInterface setShowDialogOnError:1];
 
           [(ServiceSKUIRedeemViewController *)v21 setClientInterface:self->_clientInterface];
           [(ServiceSKUIRedeemViewController *)v21 setEmbeddedParent:self];
-          v63 = [(ServiceSKUIRedeemViewController *)v21 authenticationContext];
-          v22 = [v63 mutableCopy];
+          authenticationContext = [(ServiceSKUIRedeemViewController *)v21 authenticationContext];
+          value = [authenticationContext mutableCopy];
 
-          if (!v22)
+          if (!value)
           {
-            v64 = [(ServiceAccountPageViewController *)self account];
-            v65 = [v64 ams_DSID];
-            v66 = v65 == 0;
+            account2 = [(ServiceAccountPageViewController *)self account];
+            ams_DSID = [account2 ams_DSID];
+            v66 = ams_DSID == 0;
 
             v67 = [SSMutableAuthenticationContext alloc];
             if (v66)
             {
-              v68 = +[SSAccountStore defaultStore];
-              v69 = [v68 activeAccount];
-              v70 = [v67 initWithAccount:v69];
+              account3 = +[SSAccountStore defaultStore];
+              activeAccount2 = [account3 activeAccount];
+              v70 = [v67 initWithAccount:activeAccount2];
             }
 
             else
             {
-              v68 = [(ServiceAccountPageViewController *)self account];
-              v69 = [v68 ams_DSID];
-              v70 = [v67 initWithAccountIdentifier:v69];
+              account3 = [(ServiceAccountPageViewController *)self account];
+              activeAccount2 = [account3 ams_DSID];
+              v70 = [v67 initWithAccountIdentifier:activeAccount2];
             }
 
-            v22 = v70;
+            value = v70;
           }
 
-          [(ServiceSKUIGiftViewController *)v22 setDisplaysOnLockScreen:1];
-          [(ServiceSKUIRedeemViewController *)v21 setAuthenticationContext:v22];
+          [(ServiceSKUIGiftViewController *)value setDisplaysOnLockScreen:1];
+          [(ServiceSKUIRedeemViewController *)v21 setAuthenticationContext:value];
           [(ServiceAccountPageViewController *)self setPresentedAccountViewController:v21];
           [(ServiceAccountPageViewController *)self _presentViewController:v21];
         }
@@ -988,10 +988,10 @@ LABEL_41:
 LABEL_63:
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[SUNavigationContainerViewController alloc] initWithChildViewController:v4];
+  controllerCopy = controller;
+  v5 = [[SUNavigationContainerViewController alloc] initWithChildViewController:controllerCopy];
   if ([(ServiceAccountPageViewController *)self type]== 1)
   {
     [v5 setBridgedNavigation:1];
@@ -999,11 +999,11 @@ LABEL_63:
     [v6 setupWithContainerViewController:v5];
   }
 
-  v7 = [(ServiceAccountPageViewController *)self navigationController];
+  navigationController = [(ServiceAccountPageViewController *)self navigationController];
 
-  if (v7)
+  if (navigationController)
   {
-    [(ServiceAccountPageViewController *)self setUnderlyingViewController:v4];
+    [(ServiceAccountPageViewController *)self setUnderlyingViewController:controllerCopy];
     [(ServiceAccountPageViewController *)self setChildViewController:v5];
   }
 
@@ -1011,7 +1011,7 @@ LABEL_63:
   {
     v8 = [[ServiceSUNavigationController alloc] initWithRootViewController:v5];
     [(ServiceSUNavigationController *)v8 setEmbeddedParent:self];
-    [(ServiceAccountPageViewController *)self setUnderlyingViewController:v4];
+    [(ServiceAccountPageViewController *)self setUnderlyingViewController:controllerCopy];
     [(ServiceAccountPageViewController *)self setChildViewController:v8];
   }
 
@@ -1026,12 +1026,12 @@ LABEL_63:
   dispatch_after(v9, &_dispatch_main_q, v11);
 }
 
-- (void)_presentErrorViewControllerWithError:(id)a3
+- (void)_presentErrorViewControllerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   self->_finishedLoading = 1;
-  v5 = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
-  [v5 didFinishLoading];
+  _clientViewControllerProxy = [(ServiceAccountPageViewController *)self _clientViewControllerProxy];
+  [_clientViewControllerProxy didFinishLoading];
 
   objc_initWeak(&location, self);
   v6 = [ServiceErrorViewController alloc];
@@ -1044,7 +1044,7 @@ LABEL_63:
   v13[2] = sub_1000167A0;
   v13[3] = &unk_1000516B0;
   objc_copyWeak(&v15, &location);
-  v11 = v4;
+  v11 = errorCopy;
   v14 = v11;
   v12 = [(ServiceErrorViewController *)v6 initWithTitle:v8 message:0 buttonTitle:v10 actionBlock:v13];
 

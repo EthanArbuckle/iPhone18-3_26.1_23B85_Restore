@@ -1,20 +1,20 @@
 @interface THTimeoutDragGestureRecognizer
-- (CGPoint)locationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
 - (CGPoint)requiredMovement;
 - (CGPoint)touchMovement;
 - (CGPoint)touchStartPoint;
 - (void)dealloc;
 - (void)p_cancelTimerFired;
 - (void)p_recognizeTimerFired;
-- (void)p_startCancelTimerWithTimeout:(double)a3;
+- (void)p_startCancelTimerWithTimeout:(double)timeout;
 - (void)p_startRecognizeTimer;
 - (void)p_teardownTimers;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation THTimeoutDragGestureRecognizer
@@ -36,17 +36,17 @@
   [(THTimeoutDragGestureRecognizer *)&v3 dealloc];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = THTimeoutDragGestureRecognizer;
   [THTimeoutDragGestureRecognizer touchesBegan:"touchesBegan:withEvent:" withEvent:?];
-  if ([objc_msgSend(a4 "allTouches")] == &dword_0 + 1)
+  if ([objc_msgSend(event "allTouches")] == &dword_0 + 1)
   {
-    v7 = [a3 anyObject];
+    anyObject = [began anyObject];
     +[NSDate timeIntervalSinceReferenceDate];
     self->_touchStartTime = v8;
-    [v7 locationInView:{-[THTimeoutDragGestureRecognizer view](self, "view")}];
+    [anyObject locationInView:{-[THTimeoutDragGestureRecognizer view](self, "view")}];
     self->_touchStartPoint.x = v9;
     self->_touchStartPoint.y = v10;
     self->_touchMovement = CGPointZero;
@@ -54,7 +54,7 @@
     v11 = TSUProtocolCast();
     if (v11)
     {
-      [v11 dragGestureRecognizer:self requiredMovementForTouch:v7];
+      [v11 dragGestureRecognizer:self requiredMovementForTouch:anyObject];
       self->_requiredMovement.x = v12;
       self->_requiredMovement.y = v13;
     }
@@ -70,9 +70,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(moved "anyObject")];
   TSDSubtractPoints();
   self->_touchMovement.x = v5;
   self->_touchMovement.y = v6;
@@ -118,15 +118,15 @@
   [(THTimeoutDragGestureRecognizer *)self setState:v7];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   [(THTimeoutDragGestureRecognizer *)self setState:4];
   v7.receiver = self;
   v7.super_class = THTimeoutDragGestureRecognizer;
-  [(THTimeoutDragGestureRecognizer *)&v7 touchesCancelled:a3 withEvent:a4];
+  [(THTimeoutDragGestureRecognizer *)&v7 touchesCancelled:cancelled withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([(THTimeoutDragGestureRecognizer *)self state]== &dword_0 + 1)
   {
@@ -146,10 +146,10 @@
   [(THTimeoutDragGestureRecognizer *)self setState:v7];
   v8.receiver = self;
   v8.super_class = THTimeoutDragGestureRecognizer;
-  [(THTimeoutDragGestureRecognizer *)&v8 touchesEnded:a3 withEvent:a4];
+  [(THTimeoutDragGestureRecognizer *)&v8 touchesEnded:ended withEvent:event];
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v13.receiver = self;
   v13.super_class = THTimeoutDragGestureRecognizer;
@@ -170,12 +170,12 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = THTimeoutDragGestureRecognizer;
   [(THTimeoutDragGestureRecognizer *)&v5 setState:?];
-  if ((a3 - 3) <= 2)
+  if ((state - 3) <= 2)
   {
     [(THTimeoutDragGestureRecognizer *)self p_teardownTimers];
     [(UIGestureRecognizer *)self->_dependentGestureRecognizer cancel];
@@ -200,10 +200,10 @@
   [(THTimeoutDragGestureRecognizer *)self setRecognizeTimer:v3];
 }
 
-- (void)p_startCancelTimerWithTimeout:(double)a3
+- (void)p_startCancelTimerWithTimeout:(double)timeout
 {
   [(NSTimer *)[(THTimeoutDragGestureRecognizer *)self cancelTimer] invalidate];
-  v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"p_cancelTimerFired" selector:0 userInfo:0 repeats:a3];
+  v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"p_cancelTimerFired" selector:0 userInfo:0 repeats:timeout];
 
   [(THTimeoutDragGestureRecognizer *)self setCancelTimer:v5];
 }

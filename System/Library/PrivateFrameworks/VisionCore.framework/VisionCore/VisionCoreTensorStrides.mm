@@ -1,13 +1,13 @@
 @interface VisionCoreTensorStrides
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreTensorStrides)initWithByteOffsets:(const int64_t *)a3 rank:(unint64_t)a4;
-- (VisionCoreTensorStrides)initWithCoder:(id)a3;
-- (VisionCoreTensorStrides)initWithShape:(id)a3 dataType:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreTensorStrides)initWithByteOffsets:(const int64_t *)offsets rank:(unint64_t)rank;
+- (VisionCoreTensorStrides)initWithCoder:(id)coder;
+- (VisionCoreTensorStrides)initWithShape:(id)shape dataType:(unint64_t)type;
 - (id).cxx_construct;
 - (id)description;
-- (id)shapeForPackedElementsOfType:(unint64_t)a3 error:(id *)a4;
+- (id)shapeForPackedElementsOfType:(unint64_t)type error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreTensorStrides
@@ -20,10 +20,10 @@
   return self;
 }
 
-- (VisionCoreTensorStrides)initWithCoder:(id)a3
+- (VisionCoreTensorStrides)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offsets"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offsets"];
   v6 = v5;
   if (!v5)
   {
@@ -45,10 +45,10 @@
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Illegal sizes data length of %lu", v7];
     v10 = [MEMORY[0x1E696ABC0] VisionCoreErrorForCorruptedResourceWithLocalizedDescription:v9];
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
 LABEL_7:
-    v11 = 0;
+    selfCopy2 = 0;
     goto LABEL_26;
   }
 
@@ -56,18 +56,18 @@ LABEL_7:
   __p = 0;
   v31 = 0;
   v32 = 0;
-  v28 = v4;
-  v29 = self;
+  v28 = coderCopy;
+  selfCopy = self;
   v27 = v6;
   std::vector<VisionCoreValueConfidencePoint>::reserve(&__p, v7 >> 2);
-  v13 = [v6 bytes];
+  bytes = [v6 bytes];
   v15 = v31;
   v14 = v32;
   v26 = v12;
   v16 = __p;
   do
   {
-    v17 = *v13++;
+    v17 = *bytes++;
     v18 = bswap32(v17);
     v19 = v18;
     if (v15 >= v14)
@@ -127,28 +127,28 @@ LABEL_7:
   v31 = v15;
   v32 = v14;
   __p = v16;
-  self = [(VisionCoreTensorStrides *)v29 initWithByteOffsets:v16 rank:v26];
+  self = [(VisionCoreTensorStrides *)selfCopy initWithByteOffsets:v16 rank:v26];
   v6 = v27;
-  v4 = v28;
+  coderCopy = v28;
   if (__p)
   {
     operator delete(__p);
   }
 
-  v11 = self;
+  selfCopy2 = self;
 LABEL_26:
 
-  return v11;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   begin = self->_byteOffsets.__begin_;
   end = self->_byteOffsets.__end_;
   v6 = end - begin;
   v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:(end - begin) >> 1];
-  v8 = [v7 mutableBytes];
+  mutableBytes = [v7 mutableBytes];
   if (end != begin)
   {
     v9 = v6 >> 3;
@@ -161,32 +161,32 @@ LABEL_26:
     do
     {
       v11 = *v10++;
-      *v8++ = bswap32(v11);
+      *mutableBytes++ = bswap32(v11);
       --v9;
     }
 
     while (v9);
   }
 
-  [v12 encodeObject:v7 forKey:@"offsets"];
+  [coderCopy encodeObject:v7 forKey:@"offsets"];
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendString:@"["];
-  v4 = [(VisionCoreTensorStrides *)self rank];
-  if (v4)
+  rank = [(VisionCoreTensorStrides *)self rank];
+  if (rank)
   {
-    v5 = [(VisionCoreTensorStrides *)self byteOffsets];
+    byteOffsets = [(VisionCoreTensorStrides *)self byteOffsets];
     do
     {
-      v6 = *v5++;
+      v6 = *byteOffsets++;
       [v3 appendFormat:@" %ld", v6];
-      --v4;
+      --rank;
     }
 
-    while (v4);
+    while (rank);
   }
 
   [v3 appendString:@" ]"];
@@ -194,10 +194,10 @@ LABEL_26:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -207,7 +207,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       begin = self->_byteOffsets.__begin_;
       v7 = (self->_byteOffsets.__end_ - begin);
       v8 = v5->_byteOffsets.__begin_;
@@ -243,39 +243,39 @@ LABEL_26:
   return result;
 }
 
-- (id)shapeForPackedElementsOfType:(unint64_t)a3 error:(id *)a4
+- (id)shapeForPackedElementsOfType:(unint64_t)type error:(id *)error
 {
-  v4 = a4;
-  if (!(a3 >> 3))
+  errorCopy = error;
+  if (!(type >> 3))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v11 = NSStringFromVisionCoreTensorDataType(a3);
+    v11 = NSStringFromVisionCoreTensorDataType(type);
     v12 = [v10 initWithFormat:@"unknown element type %@", v11];
 
     v13 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v12];
 LABEL_12:
-    v4->super.isa = v13;
+    errorCopy->super.isa = v13;
 
-    v4 = 0;
+    errorCopy = 0;
     goto LABEL_17;
   }
 
   begin = self->_byteOffsets.__begin_;
   v8 = self->_byteOffsets.__end_ - begin - 1;
-  if (begin[v8] != a3 >> 3)
+  if (begin[v8] != type >> 3)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
 
     v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v15 = NSStringFromVisionCoreTensorDataType(a3);
+    v15 = NSStringFromVisionCoreTensorDataType(type);
     v12 = [v14 initWithFormat:@"%@ is not packed into %@ elements", self, v15];
 
     v13 = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:v12];
@@ -298,22 +298,22 @@ LABEL_12:
       }
     }
 
-    if (v4)
+    if (errorCopy)
     {
       v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v17 = NSStringFromVisionCoreTensorDataType(a3);
+      v17 = NSStringFromVisionCoreTensorDataType(type);
       v18 = [v16 initWithFormat:@"%@ is not packed into %@ elements", self, v17];
 
-      v4->super.isa = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:v18];
+      errorCopy->super.isa = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:v18];
 
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
   else
   {
 LABEL_7:
-    v4 = [VisionCoreTensorShape initWithSizes:"initWithSizes:rank:" rank:?];
+    errorCopy = [VisionCoreTensorShape initWithSizes:"initWithSizes:rank:" rank:?];
   }
 
   if (__p[0])
@@ -323,25 +323,25 @@ LABEL_7:
 
 LABEL_17:
 
-  return v4;
+  return errorCopy;
 }
 
-- (VisionCoreTensorStrides)initWithShape:(id)a3 dataType:(unint64_t)a4
+- (VisionCoreTensorStrides)initWithShape:(id)shape dataType:(unint64_t)type
 {
-  v4 = a4;
-  v21 = a3;
+  typeCopy = type;
+  shapeCopy = shape;
   v22.receiver = self;
   v22.super_class = VisionCoreTensorStrides;
   v6 = [(VisionCoreTensorStrides *)&v22 init];
   if (v6)
   {
-    v7 = [v21 rank];
-    std::vector<VisionCoreValueConfidencePoint>::reserve(&v6->_byteOffsets.__begin_, v7);
-    v8 = [v21 sizes];
-    if (v7)
+    rank = [shapeCopy rank];
+    std::vector<VisionCoreValueConfidencePoint>::reserve(&v6->_byteOffsets.__begin_, rank);
+    sizes = [shapeCopy sizes];
+    if (rank)
     {
-      v9 = v8;
-      v10 = v4 >> 3;
+      v9 = sizes;
+      v10 = typeCopy >> 3;
       v11 = 1;
       do
       {
@@ -411,17 +411,17 @@ LABEL_17:
           *begin = v10;
         }
 
-        --v7;
+        --rank;
       }
 
-      while (v7);
+      while (rank);
     }
   }
 
   return v6;
 }
 
-- (VisionCoreTensorStrides)initWithByteOffsets:(const int64_t *)a3 rank:(unint64_t)a4
+- (VisionCoreTensorStrides)initWithByteOffsets:(const int64_t *)offsets rank:(unint64_t)rank
 {
   v21.receiver = self;
   v21.super_class = VisionCoreTensorStrides;
@@ -429,8 +429,8 @@ LABEL_17:
   v7 = v6;
   if (v6)
   {
-    std::vector<VisionCoreValueConfidencePoint>::reserve(&v6->_byteOffsets.__begin_, a4);
-    if (a4)
+    std::vector<VisionCoreValueConfidencePoint>::reserve(&v6->_byteOffsets.__begin_, rank);
+    if (rank)
     {
       end = v7->_byteOffsets.__end_;
       do
@@ -471,7 +471,7 @@ LABEL_17:
           v16 = end - begin;
           v17 = (8 * v12);
           v18 = (8 * v12 - 8 * v16);
-          *v17 = *a3;
+          *v17 = *offsets;
           end = v17 + 1;
           memcpy(v18, begin, v11);
           v19 = v7->_byteOffsets.__begin_;
@@ -486,15 +486,15 @@ LABEL_17:
 
         else
         {
-          *end++ = *a3;
+          *end++ = *offsets;
         }
 
         v7->_byteOffsets.__end_ = end;
-        ++a3;
-        --a4;
+        ++offsets;
+        --rank;
       }
 
-      while (a4);
+      while (rank);
     }
   }
 

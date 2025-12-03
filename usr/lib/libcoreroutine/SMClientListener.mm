@@ -1,37 +1,37 @@
 @interface SMClientListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (SMClientListener)initWithDefaultsManager:(id)a3 authorizationManager:(id)a4 distanceCalculator:(id)a5 platform:(id)a6 initiatorService:(id)a7 messagingService:(id)a8 receiverService:(id)a9 sessionStore:(id)a10 suggestionsManager:(id)a11 suggestionsHelper:(id)a12 suggestionsStore:(id)a13 eligibilityChecker:(id)a14 deviceConfigurationChecker:(id)a15 appDeletionManager:(id)a16;
-- (id)handleClientConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (SMClientListener)initWithDefaultsManager:(id)manager authorizationManager:(id)authorizationManager distanceCalculator:(id)calculator platform:(id)platform initiatorService:(id)service messagingService:(id)messagingService receiverService:(id)receiverService sessionStore:(id)self0 suggestionsManager:(id)self1 suggestionsHelper:(id)self2 suggestionsStore:(id)self3 eligibilityChecker:(id)self4 deviceConfigurationChecker:(id)self5 appDeletionManager:(id)self6;
+- (id)handleClientConnection:(id)connection;
 - (void)_setup;
-- (void)_setupConnection:(id)a3 forClient:(id)a4;
-- (void)handleDisconnectionForDaemonClient:(id)a3;
+- (void)_setupConnection:(id)connection forClient:(id)client;
+- (void)handleDisconnectionForDaemonClient:(id)client;
 @end
 
 @implementation SMClientListener
 
-- (SMClientListener)initWithDefaultsManager:(id)a3 authorizationManager:(id)a4 distanceCalculator:(id)a5 platform:(id)a6 initiatorService:(id)a7 messagingService:(id)a8 receiverService:(id)a9 sessionStore:(id)a10 suggestionsManager:(id)a11 suggestionsHelper:(id)a12 suggestionsStore:(id)a13 eligibilityChecker:(id)a14 deviceConfigurationChecker:(id)a15 appDeletionManager:(id)a16
+- (SMClientListener)initWithDefaultsManager:(id)manager authorizationManager:(id)authorizationManager distanceCalculator:(id)calculator platform:(id)platform initiatorService:(id)service messagingService:(id)messagingService receiverService:(id)receiverService sessionStore:(id)self0 suggestionsManager:(id)self1 suggestionsHelper:(id)self2 suggestionsStore:(id)self3 eligibilityChecker:(id)self4 deviceConfigurationChecker:(id)self5 appDeletionManager:(id)self6
 {
-  v130 = a3;
-  v112 = a4;
-  v21 = a4;
-  v113 = a5;
-  v120 = a5;
-  v129 = a6;
-  v114 = a7;
-  v128 = a7;
-  v127 = a8;
-  v126 = a9;
-  v118 = a10;
-  v125 = a11;
-  v124 = a12;
-  v123 = a13;
-  v122 = a14;
-  v121 = a15;
-  v22 = a16;
-  v117 = v22;
-  if (!v130)
+  managerCopy = manager;
+  authorizationManagerCopy = authorizationManager;
+  authorizationManagerCopy2 = authorizationManager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  platformCopy = platform;
+  serviceCopy = service;
+  serviceCopy2 = service;
+  messagingServiceCopy = messagingService;
+  receiverServiceCopy = receiverService;
+  storeCopy = store;
+  suggestionsManagerCopy = suggestionsManager;
+  helperCopy = helper;
+  suggestionsStoreCopy = suggestionsStore;
+  checkerCopy = checker;
+  configurationCheckerCopy = configurationChecker;
+  deletionManagerCopy = deletionManager;
+  v117 = deletionManagerCopy;
+  if (!managerCopy)
   {
-    v23 = v21;
+    v23 = authorizationManagerCopy2;
     v107 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
     {
@@ -40,15 +40,15 @@
     }
 
     v106 = 0;
-    v24 = v120;
+    v24 = calculatorCopy2;
     goto LABEL_46;
   }
 
-  v23 = v21;
-  if (!v21)
+  v23 = authorizationManagerCopy2;
+  if (!authorizationManagerCopy2)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    v24 = v120;
+    v24 = calculatorCopy2;
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_45;
@@ -61,8 +61,8 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v24 = v120;
-  if (!v120)
+  v24 = calculatorCopy2;
+  if (!calculatorCopy2)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v129)
+  if (!platformCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v128)
+  if (!serviceCopy2)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -101,7 +101,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v127)
+  if (!messagingServiceCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -114,7 +114,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v126)
+  if (!receiverServiceCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -127,7 +127,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v125)
+  if (!suggestionsManagerCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -140,7 +140,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v124)
+  if (!helperCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -153,7 +153,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v123)
+  if (!suggestionsStoreCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -166,7 +166,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v122)
+  if (!checkerCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -179,7 +179,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v121)
+  if (!configurationCheckerCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -192,7 +192,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (!v22)
+  if (!deletionManagerCopy)
   {
     v108 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -206,7 +206,7 @@ LABEL_45:
 
     v106 = 0;
 LABEL_46:
-    v105 = self;
+    selfCopy = self;
     goto LABEL_47;
   }
 
@@ -217,20 +217,20 @@ LABEL_46:
   if (v26)
   {
     v116 = v26;
-    objc_storeStrong(&v26->_defaultsManager, a3);
-    objc_storeStrong(&v116->_authorizationManager, v112);
-    objc_storeStrong(&v116->_distanceCalculator, v113);
-    objc_storeStrong(&v116->_platform, a6);
-    objc_storeStrong(&v116->_initiatorService, v114);
-    objc_storeStrong(&v116->_sessionStore, a10);
-    objc_storeStrong(&v116->_suggestionsManager, a11);
-    objc_storeStrong(&v116->_suggestionsHelper, a12);
-    objc_storeStrong(&v116->_suggestionsStore, a13);
-    objc_storeStrong(&v116->_messagingService, a8);
-    objc_storeStrong(&v116->_receiverService, a9);
-    objc_storeStrong(&v116->_eligibilityChecker, a14);
-    objc_storeStrong(&v116->_deviceConfigurationChecker, a15);
-    objc_storeStrong(&v116->_appDeletionManager, a16);
+    objc_storeStrong(&v26->_defaultsManager, manager);
+    objc_storeStrong(&v116->_authorizationManager, authorizationManagerCopy);
+    objc_storeStrong(&v116->_distanceCalculator, calculatorCopy);
+    objc_storeStrong(&v116->_platform, platform);
+    objc_storeStrong(&v116->_initiatorService, serviceCopy);
+    objc_storeStrong(&v116->_sessionStore, store);
+    objc_storeStrong(&v116->_suggestionsManager, suggestionsManager);
+    objc_storeStrong(&v116->_suggestionsHelper, helper);
+    objc_storeStrong(&v116->_suggestionsStore, suggestionsStore);
+    objc_storeStrong(&v116->_messagingService, messagingService);
+    objc_storeStrong(&v116->_receiverService, receiverService);
+    objc_storeStrong(&v116->_eligibilityChecker, checker);
+    objc_storeStrong(&v116->_deviceConfigurationChecker, configurationChecker);
+    objc_storeStrong(&v116->_appDeletionManager, deletionManager);
     v27 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28465E528];
     frameworkInterface = v116->_frameworkInterface;
     v116->_frameworkInterface = v27;
@@ -347,7 +347,7 @@ LABEL_46:
     [(NSXPCInterface *)v99 setClasses:v100 forSelector:sel_iMessageGroupPhotoChangedFor_ argumentIndex:0 ofReply:0];
 
     v101 = v116->_daemonInterface;
-    v24 = v120;
+    v24 = calculatorCopy2;
     v102 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
     [(NSXPCInterface *)v101 setClasses:v102 forSelector:sel_kickedFromIMessageGroupWith_ argumentIndex:0 ofReply:0];
 
@@ -360,8 +360,8 @@ LABEL_46:
     v26 = v116;
   }
 
-  v105 = v26;
-  v106 = v105;
+  selfCopy = v26;
+  v106 = selfCopy;
 LABEL_47:
 
   return v106;
@@ -374,36 +374,36 @@ LABEL_47:
   [(RTXPCListener *)&v2 _setup];
 }
 
-- (id)handleClientConnection:(id)a3
+- (id)handleClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = [SMDaemonClient alloc];
-  v6 = [(RTXPCListener *)self queue];
-  v7 = [(SMDaemonClient *)v5 initWithQueue:v6 authorizationManager:self->_authorizationManager defaultsManager:self->_defaultsManager distanceCalculator:self->_distanceCalculator platform:self->_platform initiatorService:self->_initiatorService messagingService:self->_messagingService receiverService:self->_receiverService sessionStore:self->_sessionStore suggestionsManager:self->_suggestionsManager suggestionsHelper:self->_suggestionsHelper suggestionsStore:self->_suggestionsStore eligibilityChecker:self->_eligibilityChecker deviceConfigurationChecker:self->_deviceConfigurationChecker appDeletionManager:self->_appDeletionManager];
+  queue = [(RTXPCListener *)self queue];
+  v7 = [(SMDaemonClient *)v5 initWithQueue:queue authorizationManager:self->_authorizationManager defaultsManager:self->_defaultsManager distanceCalculator:self->_distanceCalculator platform:self->_platform initiatorService:self->_initiatorService messagingService:self->_messagingService receiverService:self->_receiverService sessionStore:self->_sessionStore suggestionsManager:self->_suggestionsManager suggestionsHelper:self->_suggestionsHelper suggestionsStore:self->_suggestionsStore eligibilityChecker:self->_eligibilityChecker deviceConfigurationChecker:self->_deviceConfigurationChecker appDeletionManager:self->_appDeletionManager];
 
-  [(SMClientListener *)self _setupConnection:v4 forClient:v7];
+  [(SMClientListener *)self _setupConnection:connectionCopy forClient:v7];
 
   return v7;
 }
 
-- (void)_setupConnection:(id)a3 forClient:(id)a4
+- (void)_setupConnection:(id)connection forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 suspend];
-  v8 = [(RTXPCListener *)self queue];
-  [v6 _setQueue:v8];
+  connectionCopy = connection;
+  clientCopy = client;
+  [connectionCopy suspend];
+  queue = [(RTXPCListener *)self queue];
+  [connectionCopy _setQueue:queue];
 
-  [v6 setRemoteObjectInterface:self->_frameworkInterface];
-  [v6 setExportedInterface:self->_daemonInterface];
-  [v6 setExportedObject:v7];
-  objc_initWeak(&location, v7);
+  [connectionCopy setRemoteObjectInterface:self->_frameworkInterface];
+  [connectionCopy setExportedInterface:self->_daemonInterface];
+  [connectionCopy setExportedObject:clientCopy];
+  objc_initWeak(&location, clientCopy);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __47__SMClientListener__setupConnection_forClient___block_invoke;
   v17[3] = &unk_2788C5908;
   objc_copyWeak(&v18, &location);
-  [v6 setInterruptionHandler:v17];
+  [connectionCopy setInterruptionHandler:v17];
   objc_initWeak(&from, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -411,19 +411,19 @@ LABEL_47:
   v13[3] = &unk_2788D0D30;
   objc_copyWeak(&v14, &location);
   objc_copyWeak(&v15, &from);
-  [v6 setInvalidationHandler:v13];
-  [v6 resume];
-  v9 = [RTXPC executablePathOfConnection:v6];
-  [v7 setExecutablePath:v9];
+  [connectionCopy setInvalidationHandler:v13];
+  [connectionCopy resume];
+  v9 = [RTXPC executablePathOfConnection:connectionCopy];
+  [clientCopy setExecutablePath:v9];
 
-  v10 = [v7 executablePath];
-  v11 = [v10 lastPathComponent];
-  [v7 setExecutableName:v11];
+  executablePath = [clientCopy executablePath];
+  lastPathComponent = [executablePath lastPathComponent];
+  [clientCopy setExecutableName:lastPathComponent];
 
-  [v7 setProcessIdentifier:{objc_msgSend(v6, "processIdentifier")}];
-  [v7 setXpcConnection:v6];
-  v12 = [v7 xpcConnection];
-  [v12 setDelegate:v7];
+  [clientCopy setProcessIdentifier:{objc_msgSend(connectionCopy, "processIdentifier")}];
+  [clientCopy setXpcConnection:connectionCopy];
+  xpcConnection = [clientCopy xpcConnection];
+  [xpcConnection setDelegate:clientCopy];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v14);
@@ -472,15 +472,15 @@ void __47__SMClientListener__setupConnection_forClient___block_invoke_286(uint64
   [v5 handleDisconnectionForDaemonClient:WeakRetained];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v23 = 0;
-    v8 = [RTXPC clientCodeSignatureIsValid:v7 error:&v23];
+    v8 = [RTXPC clientCodeSignatureIsValid:connectionCopy error:&v23];
     v9 = v23;
     if (v8)
     {
@@ -489,33 +489,33 @@ void __47__SMClientListener__setupConnection_forClient___block_invoke_286(uint64
         v10 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v7 processIdentifier];
-          v20 = [(RTXPCListener *)self machServiceName];
+          processIdentifier = [connectionCopy processIdentifier];
+          machServiceName = [(RTXPCListener *)self machServiceName];
           *buf = 67109378;
-          *v25 = v19;
+          *v25 = processIdentifier;
           *&v25[4] = 2112;
-          *&v25[6] = v20;
+          *&v25[6] = machServiceName;
           _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "listener received incoming connection from pid %d, for service, %@", buf, 0x12u);
         }
       }
 
-      v11 = [(SMClientListener *)self handleClientConnection:v7];
+      v11 = [(SMClientListener *)self handleClientConnection:connectionCopy];
       if (v11)
       {
         v12 = v11;
-        v13 = [(RTXPCListener *)self connectedClients];
-        [v13 addObject:v12];
+        connectedClients = [(RTXPCListener *)self connectedClients];
+        [connectedClients addObject:v12];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v14 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [(RTXPCListener *)self machServiceName];
+            machServiceName2 = [(RTXPCListener *)self machServiceName];
             *buf = 138412546;
             *v25 = v12;
             *&v25[8] = 2112;
-            *&v25[10] = v15;
+            *&v25[10] = machServiceName2;
             _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "client connected, %@, to service, %@", buf, 0x16u);
           }
         }
@@ -530,12 +530,12 @@ void __47__SMClientListener__setupConnection_forClient___block_invoke_286(uint64
         v17 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v7 processIdentifier];
-          v22 = [(RTXPCListener *)self machServiceName];
+          processIdentifier2 = [connectionCopy processIdentifier];
+          machServiceName3 = [(RTXPCListener *)self machServiceName];
           *buf = 67109378;
-          *v25 = v21;
+          *v25 = processIdentifier2;
           *&v25[4] = 2112;
-          *&v25[6] = v22;
+          *&v25[6] = machServiceName3;
           _os_log_debug_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEBUG, "failed to create client for connection from pid, %d, for service, %@", buf, 0x12u);
         }
       }
@@ -580,25 +580,25 @@ LABEL_28:
   return v16;
 }
 
-- (void)handleDisconnectionForDaemonClient:(id)a3
+- (void)handleDisconnectionForDaemonClient:(id)client
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityConnection);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = clientCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "client disconnected, %@", &v7, 0xCu);
     }
   }
 
-  v6 = [(RTXPCListener *)self connectedClients];
-  [v6 removeObject:v4];
+  connectedClients = [(RTXPCListener *)self connectedClients];
+  [connectedClients removeObject:clientCopy];
 
-  [v4 shutdown];
+  [clientCopy shutdown];
   [(RTXPCListener *)self logClients];
 }
 

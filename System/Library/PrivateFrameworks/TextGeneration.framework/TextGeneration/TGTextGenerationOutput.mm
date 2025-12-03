@@ -1,27 +1,27 @@
 @interface TGTextGenerationOutput
-- (BOOL)isEqual:(id)a3;
-- (TGTextGenerationOutput)initWithText:(id)a3 score:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (TGTextGenerationOutput)initWithText:(id)text score:(double)score;
 - (unint64_t)hash;
 @end
 
 @implementation TGTextGenerationOutput
 
-- (TGTextGenerationOutput)initWithText:(id)a3 score:(double)a4
+- (TGTextGenerationOutput)initWithText:(id)text score:(double)score
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = TGTextGenerationOutput;
   v8 = [(TGTextGenerationOutput *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_text, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_text, text);
+    v9->_score = score;
     v17[0] = @"text";
     v17[1] = @"score";
-    v18[0] = v7;
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v18[0] = textCopy;
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:score];
     v18[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v12 = [v11 description];
@@ -33,13 +33,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -50,9 +50,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(TGTextGenerationOutput *)self text];
-    v8 = [v6 text];
-    if ([v7 isEqual:v8])
+    text = [(TGTextGenerationOutput *)self text];
+    text2 = [v6 text];
+    if ([text isEqual:text2])
     {
       [(TGTextGenerationOutput *)self score];
       v10 = v9;
@@ -76,8 +76,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TGTextGenerationOutput *)self text];
-  v4 = [v3 hash];
+  text = [(TGTextGenerationOutput *)self text];
+  v4 = [text hash];
 
   v5 = MEMORY[0x277CCABB0];
   [(TGTextGenerationOutput *)self score];

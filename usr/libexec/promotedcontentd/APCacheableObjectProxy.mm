@@ -1,32 +1,32 @@
 @interface APCacheableObjectProxy
-+ (BOOL)objectIsLoaded:(id)a3;
-+ (id)proxyWithCacheKey:(id)a3 object:(id)a4 identifier:(id)a5 inPersistentStore:(id)a6;
++ (BOOL)objectIsLoaded:(id)loaded;
++ (id)proxyWithCacheKey:(id)key object:(id)object identifier:(id)identifier inPersistentStore:(id)store;
 - (APCacheableBaseObject)proxyObject;
 - (APPersistentCachedStoreProtocol)persistentStore;
 - (NSString)identifier;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation APCacheableObjectProxy
 
-+ (id)proxyWithCacheKey:(id)a3 object:(id)a4 identifier:(id)a5 inPersistentStore:(id)a6
++ (id)proxyWithCacheKey:(id)key object:(id)object identifier:(id)identifier inPersistentStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  keyCopy = key;
+  objectCopy = object;
+  storeCopy = store;
+  identifierCopy = identifier;
   v13 = [APCacheableObjectProxy alloc];
   cacheKey = v13->_cacheKey;
-  v13->_cacheKey = v9;
-  v15 = v9;
+  v13->_cacheKey = keyCopy;
+  v15 = keyCopy;
 
   proxyObject = v13->_proxyObject;
-  v13->_proxyObject = v10;
-  v17 = v10;
+  v13->_proxyObject = objectCopy;
+  v17 = objectCopy;
 
-  objc_storeWeak(&v13->_persistentStore, v11);
-  v18 = [v12 copy];
+  objc_storeWeak(&v13->_persistentStore, storeCopy);
+  v18 = [identifierCopy copy];
 
   identifier = v13->_identifier;
   v13->_identifier = v18;
@@ -42,32 +42,32 @@
     v4 = APLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(APCacheableObjectProxy *)self cacheKey];
+      cacheKey = [(APCacheableObjectProxy *)self cacheKey];
       v13 = 138543362;
-      v14 = v5;
+      v14 = cacheKey;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Cacheable proxy is loading object %{public}@.", &v13, 0xCu);
     }
 
-    v6 = [(APCacheableObjectProxy *)self provideIgnorableKeyNamesBlock];
+    provideIgnorableKeyNamesBlock = [(APCacheableObjectProxy *)self provideIgnorableKeyNamesBlock];
 
-    if (v6)
+    if (provideIgnorableKeyNamesBlock)
     {
-      v7 = [(APCacheableObjectProxy *)self provideIgnorableKeyNamesBlock];
-      v6 = v7[2]();
+      provideIgnorableKeyNamesBlock2 = [(APCacheableObjectProxy *)self provideIgnorableKeyNamesBlock];
+      provideIgnorableKeyNamesBlock = provideIgnorableKeyNamesBlock2[2]();
     }
 
-    v8 = [(APCacheableObjectProxy *)self persistentStore];
-    v9 = [(APCacheableObjectProxy *)self cacheKey];
-    v3 = [v8 objectForKey:v9 ignoreKeys:v6];
+    persistentStore = [(APCacheableObjectProxy *)self persistentStore];
+    cacheKey2 = [(APCacheableObjectProxy *)self cacheKey];
+    v3 = [persistentStore objectForKey:cacheKey2 ignoreKeys:provideIgnorableKeyNamesBlock];
 
     if (!v3)
     {
       v10 = APLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(APCacheableObjectProxy *)self cacheKey];
+        cacheKey3 = [(APCacheableObjectProxy *)self cacheKey];
         v13 = 138543362;
-        v14 = v11;
+        v14 = cacheKey3;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Cacheable proxy failed to get object %{public}@ from cache.", &v13, 0xCu);
       }
     }
@@ -78,22 +78,22 @@
   return v3;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = a3;
-  v4 = [(APCacheableObjectProxy *)self proxyObject];
-  if (v4)
+  invocationCopy = invocation;
+  proxyObject = [(APCacheableObjectProxy *)self proxyObject];
+  if (proxyObject)
   {
-    [v5 setTarget:v4];
-    [v5 invoke];
+    [invocationCopy setTarget:proxyObject];
+    [invocationCopy invoke];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(APCacheableObjectProxy *)self proxyObject];
-  v5 = v4;
-  if (!v4 || ([v4 methodSignatureForSelector:a3], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  proxyObject = [(APCacheableObjectProxy *)self proxyObject];
+  v5 = proxyObject;
+  if (!proxyObject || ([proxyObject methodSignatureForSelector:selector], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = [NSMethodSignature signatureWithObjCTypes:"C@:"];
   }
@@ -106,33 +106,33 @@
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    identifier = identifier;
   }
 
   else
   {
-    v4 = [(APCacheableObjectProxy *)self proxyObject];
-    v3 = [v4 identifier];
+    proxyObject = [(APCacheableObjectProxy *)self proxyObject];
+    identifier = [proxyObject identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
-+ (BOOL)objectIsLoaded:(id)a3
++ (BOOL)objectIsLoaded:(id)loaded
 {
-  v3 = a3;
+  loadedCopy = loaded;
   v4 = objc_opt_class();
   if ([v4 isEqual:objc_opt_class()])
   {
-    v5 = [v3 _proxiedObjectIsAlive];
+    _proxiedObjectIsAlive = [loadedCopy _proxiedObjectIsAlive];
   }
 
   else
   {
-    v5 = 0;
+    _proxiedObjectIsAlive = 0;
   }
 
-  return v5;
+  return _proxiedObjectIsAlive;
 }
 
 - (APPersistentCachedStoreProtocol)persistentStore

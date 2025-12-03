@@ -1,15 +1,15 @@
 @interface AMSSimulatedCrash
-+ (void)throwSimulatedCrashWithFormat:(id)a3;
++ (void)throwSimulatedCrashWithFormat:(id)format;
 @end
 
 @implementation AMSSimulatedCrash
 
-+ (void)throwSimulatedCrashWithFormat:(id)a3
++ (void)throwSimulatedCrashWithFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   if (os_variant_has_internal_content())
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v3 arguments:&v14];
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:formatCopy arguments:&v14];
     v5 = getpid();
     v6 = v4;
     v10 = 0;

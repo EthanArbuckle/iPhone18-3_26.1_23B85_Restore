@@ -1,7 +1,7 @@
 @interface DebugFormatOverlayView
 - (BOOL)isUserInteractionEnabled;
-- (_TtC8NewsFeed22DebugFormatOverlayView)initWithFrame:(CGRect)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (_TtC8NewsFeed22DebugFormatOverlayView)initWithFrame:(CGRect)frame;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation DebugFormatOverlayView
@@ -13,17 +13,17 @@
   return [(DebugFormatOverlayView *)&v3 isUserInteractionEnabled];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(DebugFormatOverlayView *)&v5 setUserInteractionEnabled:v3];
+  [(DebugFormatOverlayView *)&v5 setUserInteractionEnabled:enabledCopy];
   sub_1D6B5F610();
 }
 
-- (_TtC8NewsFeed22DebugFormatOverlayView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed22DebugFormatOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

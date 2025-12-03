@@ -1,9 +1,9 @@
 @interface ClarityUISettingsDataSource
-+ (id)applicationRecordForBundleIdentifier:(id)a3;
++ (id)applicationRecordForBundleIdentifier:(id)identifier;
 - (BOOL)_areSpecifiersLoaded;
 - (BOOL)areSpecifiersLoaded;
-- (BOOL)hasClaritySettingsIncludingSystem:(BOOL)a3;
-- (ClarityUISettingsDataSource)initWithBundleIdentifier:(id)a3;
+- (BOOL)hasClaritySettingsIncludingSystem:(BOOL)system;
+- (ClarityUISettingsDataSource)initWithBundleIdentifier:(id)identifier;
 - (id)_bundle;
 - (id)_claritySettingsBundlePath;
 - (id)_claritySettingsPath;
@@ -19,9 +19,9 @@
 
 @implementation ClarityUISettingsDataSource
 
-- (ClarityUISettingsDataSource)initWithBundleIdentifier:(id)a3
+- (ClarityUISettingsDataSource)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = ClarityUISettingsDataSource;
   v5 = [(ClarityUISettingsDataSource *)&v14 init];
@@ -29,12 +29,12 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v5->_bundleIdentifier = v4;
-    v7 = [ClarityUISettingsDataSource applicationRecordForBundleIdentifier:v4];
+    v5->_bundleIdentifier = identifierCopy;
+    v7 = [ClarityUISettingsDataSource applicationRecordForBundleIdentifier:identifierCopy];
     record = v6->_record;
     v6->_record = v7;
 
-    v9 = [[ClarityUISystemPolicyForApp alloc] initWithBundleIdentifier:v4];
+    v9 = [[ClarityUISystemPolicyForApp alloc] initWithBundleIdentifier:identifierCopy];
     clarityAppPolicy = v6->_clarityAppPolicy;
     v6->_clarityAppPolicy = v9;
 
@@ -50,18 +50,18 @@
   return v6;
 }
 
-+ (id)applicationRecordForBundleIdentifier:(id)a3
++ (id)applicationRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v9];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v9];
   v5 = v9;
   if (v5)
   {
     v6 = CLFLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ClarityUIAppSelectionTableViewDataSource *)v3 _applicationRecordForIdentifier:v5, v6];
+      [(ClarityUIAppSelectionTableViewDataSource *)identifierCopy _applicationRecordForIdentifier:v5, v6];
     }
 
     v7 = 0;
@@ -75,14 +75,14 @@
   return v7;
 }
 
-- (BOOL)hasClaritySettingsIncludingSystem:(BOOL)a3
+- (BOOL)hasClaritySettingsIncludingSystem:(BOOL)system
 {
-  v3 = a3;
-  if (a3)
+  systemCopy = system;
+  if (system)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(ClarityUISettingsDataSource *)self _systemPolicySpecifiers];
-    v6 = [v5 count] != 0;
+    _systemPolicySpecifiers = [(ClarityUISettingsDataSource *)self _systemPolicySpecifiers];
+    v6 = [_systemPolicySpecifiers count] != 0;
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -95,19 +95,19 @@
   v7 = self->_record;
   if (v7)
   {
-    v8 = [(ClarityUISettingsDataSource *)self _claritySettingsPath];
-    if (v8 || ([(LSApplicationRecord *)v7 hasSettingsBundle]& 1) != 0)
+    _claritySettingsPath = [(ClarityUISettingsDataSource *)self _claritySettingsPath];
+    if (_claritySettingsPath || ([(LSApplicationRecord *)v7 hasSettingsBundle]& 1) != 0)
     {
-      v9 = [(ClarityUISettingsDataSource *)self _claritySettingsBundlePath];
+      _claritySettingsBundlePath = [(ClarityUISettingsDataSource *)self _claritySettingsBundlePath];
 
-      if (v3)
+      if (systemCopy)
       {
-        LOBYTE(v6) = (v9 != 0) | v6;
+        LOBYTE(v6) = (_claritySettingsBundlePath != 0) | v6;
       }
 
       else
       {
-        LOBYTE(v6) = v9 != 0;
+        LOBYTE(v6) = _claritySettingsBundlePath != 0;
       }
 
       v10 = CLFLogCommon();
@@ -119,15 +119,15 @@
         v16 = 1024;
         v17 = v6 & 1;
         v18 = 1024;
-        v19 = v3;
+        v19 = systemCopy;
         _os_log_debug_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "Bundle Identifier: %@ - Has Clarity Settings: %d - Include System?: %d", &v14, 0x18u);
       }
     }
 
     else
     {
-      v9 = CLFLogCommon();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      _claritySettingsBundlePath = CLFLogCommon();
+      if (os_log_type_enabled(_claritySettingsBundlePath, OS_LOG_TYPE_DEBUG))
       {
         v13 = self->_bundleIdentifier;
         v14 = 138412802;
@@ -135,16 +135,16 @@
         v16 = 1024;
         v17 = v6;
         v18 = 1024;
-        v19 = v3;
-        _os_log_debug_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "Bundle Identifier: %@ - Has Clarity Settings: %d - Include System?: %d", &v14, 0x18u);
+        v19 = systemCopy;
+        _os_log_debug_impl(&dword_0, _claritySettingsBundlePath, OS_LOG_TYPE_DEBUG, "Bundle Identifier: %@ - Has Clarity Settings: %d - Include System?: %d", &v14, 0x18u);
       }
     }
   }
 
   else
   {
-    v9 = CLFLogCommon();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    _claritySettingsBundlePath = CLFLogCommon();
+    if (os_log_type_enabled(_claritySettingsBundlePath, OS_LOG_TYPE_ERROR))
     {
       [ClarityUISettingsDataSource hasClaritySettingsIncludingSystem:];
     }
@@ -157,11 +157,11 @@
 
 - (id)_bundle
 {
-  v2 = [(ClarityUISettingsDataSource *)self record];
-  v3 = v2;
-  if (v2)
+  record = [(ClarityUISettingsDataSource *)self record];
+  v3 = record;
+  if (record)
   {
-    v4 = [v2 URL];
+    v4 = [record URL];
     v5 = [NSBundle bundleWithURL:v4];
   }
 
@@ -175,9 +175,9 @@
 
 - (id)_settingsBundle
 {
-  v2 = [(ClarityUISettingsDataSource *)self record];
-  v3 = v2;
-  if (v2 && [v2 hasSettingsBundle])
+  record = [(ClarityUISettingsDataSource *)self record];
+  v3 = record;
+  if (record && [record hasSettingsBundle])
   {
     v4 = [v3 URL];
     v5 = [v4 URLByAppendingPathComponent:@"Settings.bundle"];
@@ -194,26 +194,26 @@
 
 - (id)_claritySettingsPath
 {
-  v3 = [(ClarityUISettingsDataSource *)self _bundle];
-  v4 = [(ClarityUISettingsDataSource *)self _claritySettingsPathUsingBundle:v3];
+  _bundle = [(ClarityUISettingsDataSource *)self _bundle];
+  v4 = [(ClarityUISettingsDataSource *)self _claritySettingsPathUsingBundle:_bundle];
 
   return v4;
 }
 
 - (id)_claritySettingsBundlePath
 {
-  v3 = [(ClarityUISettingsDataSource *)self _settingsBundle];
-  v4 = [(ClarityUISettingsDataSource *)self _claritySettingsPathUsingBundle:v3];
+  _settingsBundle = [(ClarityUISettingsDataSource *)self _settingsBundle];
+  v4 = [(ClarityUISettingsDataSource *)self _claritySettingsPathUsingBundle:_settingsBundle];
 
   return v4;
 }
 
 - (id)_dataContainerURL
 {
-  v2 = [(ClarityUISettingsDataSource *)self record];
-  v3 = [v2 dataContainerURL];
+  record = [(ClarityUISettingsDataSource *)self record];
+  dataContainerURL = [record dataContainerURL];
 
-  return v3;
+  return dataContainerURL;
 }
 
 - (BOOL)_areSpecifiersLoaded
@@ -232,9 +232,9 @@
 - (BOOL)areSpecifiersLoaded
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ClarityUISettingsDataSource *)self _areSpecifiersLoaded];
+  _areSpecifiersLoaded = [(ClarityUISettingsDataSource *)self _areSpecifiersLoaded];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _areSpecifiersLoaded;
 }
 
 - (void)reloadSpecifiers
@@ -248,11 +248,11 @@
     [ClarityUISettingsDataSource reloadSpecifiers];
   }
 
-  v4 = [(ClarityUISettingsDataSource *)self specifiers];
-  [v4 removeAllObjects];
+  specifiers = [(ClarityUISettingsDataSource *)self specifiers];
+  [specifiers removeAllObjects];
 
-  v5 = [(ClarityUISettingsDataSource *)self systemSpecifiers];
-  [v5 removeAllObjects];
+  systemSpecifiers = [(ClarityUISettingsDataSource *)self systemSpecifiers];
+  [systemSpecifiers removeAllObjects];
 
   [(ClarityUISettingsDataSource *)self _loadSpecifiers];
   os_unfair_lock_unlock(&self->_lock);
@@ -275,8 +275,8 @@
     }
 
     [(NSMutableArray *)self->_systemSpecifiers removeAllObjects];
-    v5 = [(ClarityUISystemPolicyForApp *)self->_clarityAppPolicy clarityPolicySpecifiers];
-    [(NSMutableArray *)self->_systemSpecifiers addObjectsFromArray:v5];
+    clarityPolicySpecifiers = [(ClarityUISystemPolicyForApp *)self->_clarityAppPolicy clarityPolicySpecifiers];
+    [(NSMutableArray *)self->_systemSpecifiers addObjectsFromArray:clarityPolicySpecifiers];
     self->_systemSpecifiersLoaded = 1;
     v3 = self->_systemSpecifiers;
   }
@@ -286,9 +286,9 @@
 
 - (void)_loadSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (![(ClarityUISettingsDataSource *)v2 _areSpecifiersLoaded])
+  if (![(ClarityUISettingsDataSource *)selfCopy _areSpecifiersLoaded])
   {
     v3 = CLFLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -296,15 +296,15 @@
       [ClarityUISettingsDataSource _loadSpecifiers];
     }
 
-    v4 = [(ClarityUISettingsDataSource *)v2 specifiers];
-    v5 = [(ClarityUISettingsDataSource *)v2 _systemPolicySpecifiers];
-    [v4 addObjectsFromArray:v5];
-    v6 = [(ClarityUISettingsDataSource *)v2 _settingsBundle];
-    if (v6)
+    specifiers = [(ClarityUISettingsDataSource *)selfCopy specifiers];
+    _systemPolicySpecifiers = [(ClarityUISettingsDataSource *)selfCopy _systemPolicySpecifiers];
+    [specifiers addObjectsFromArray:_systemPolicySpecifiers];
+    _settingsBundle = [(ClarityUISettingsDataSource *)selfCopy _settingsBundle];
+    if (_settingsBundle)
     {
-      v19 = v5;
-      v20 = v4;
-      [PSSpecifierDataSource loadSpecifiersFromPlist:@"ClarityUIRoot" inBundle:v6 target:v2 stringsTable:@"ClarityUIRoot.strings"];
+      v19 = _systemPolicySpecifiers;
+      v20 = specifiers;
+      [PSSpecifierDataSource loadSpecifiersFromPlist:@"ClarityUIRoot" inBundle:_settingsBundle target:selfCopy stringsTable:@"ClarityUIRoot.strings"];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
@@ -326,19 +326,19 @@
 
             v11 = *(*(&v23 + 1) + 8 * i);
             [v11 setProperty:@"ClarityUIRoot.strings" forKey:v9];
-            [(ClarityUISettingsDataSource *)v2 _dataContainerURL];
-            v13 = v12 = v2;
+            [(ClarityUISettingsDataSource *)selfCopy _dataContainerURL];
+            v13 = v12 = selfCopy;
             [v11 setProperty:v13 forKey:@"AppContainerURL"];
 
-            v14 = [v11 name];
-            v15 = [v11 name];
-            [v6 localizedStringForKey:v14 value:v15 table:@"ClarityUIRoot.strings"];
-            v17 = v16 = v6;
+            name = [v11 name];
+            name2 = [v11 name];
+            [_settingsBundle localizedStringForKey:name value:name2 table:@"ClarityUIRoot.strings"];
+            v17 = v16 = _settingsBundle;
 
-            v2 = v12;
+            selfCopy = v12;
             [v11 setName:v17];
 
-            v6 = v16;
+            _settingsBundle = v16;
           }
 
           v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -347,11 +347,11 @@
         while (v8);
       }
 
-      v4 = v20;
+      specifiers = v20;
       [v20 addObjectsFromArray:obj];
-      v2->_specifiersLoaded = 1;
+      selfCopy->_specifiersLoaded = 1;
 
-      v5 = v19;
+      _systemPolicySpecifiers = v19;
     }
 
     else
@@ -362,8 +362,8 @@
         [ClarityUISettingsDataSource _loadSpecifiers];
       }
 
-      v2->_specifiersLoaded = 1;
-      v6 = 0;
+      selfCopy->_specifiersLoaded = 1;
+      _settingsBundle = 0;
     }
   }
 }
@@ -379,17 +379,17 @@
 - (id)privacySpecifiers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ClarityUISystemPolicyForApp *)self->_clarityAppPolicy clarityPolicySpecifiers];
+  clarityPolicySpecifiers = [(ClarityUISystemPolicyForApp *)self->_clarityAppPolicy clarityPolicySpecifiers];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return clarityPolicySpecifiers;
 }
 
 - (void)_areSpecifiersLoaded
 {
   v3 = *(a2 + 32);
   v4[0] = 67109378;
-  v4[1] = a1 & 1;
+  v4[1] = self & 1;
   v5 = 2112;
   v6 = v3;
   _os_log_debug_impl(&dword_0, log, OS_LOG_TYPE_DEBUG, "Specifiers are loaded: %d - Bundle Identifier: %@", v4, 0x12u);

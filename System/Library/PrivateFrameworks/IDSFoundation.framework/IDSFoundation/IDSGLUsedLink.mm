@@ -1,28 +1,28 @@
 @interface IDSGLUsedLink
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSGLUsedLink
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSGLUsedLink *)self linkID];
-    if (v6 == [v5 linkID])
+    v5 = equalCopy;
+    linkID = [(IDSGLUsedLink *)self linkID];
+    if (linkID == [v5 linkID])
     {
-      v7 = [(IDSGLUsedLink *)self localIP];
-      v8 = [v5 localIP];
-      if ([v7 isEqual:v8])
+      localIP = [(IDSGLUsedLink *)self localIP];
+      localIP2 = [v5 localIP];
+      if ([localIP isEqual:localIP2])
       {
-        v9 = [(IDSGLUsedLink *)self serverIP];
-        v10 = [v5 serverIP];
-        v11 = [v9 isEqual:v10];
+        serverIP = [(IDSGLUsedLink *)self serverIP];
+        serverIP2 = [v5 serverIP];
+        v11 = [serverIP isEqual:serverIP2];
       }
 
       else
@@ -47,22 +47,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSGLUsedLink *)self serverIP];
-  v4 = [v3 hash];
-  v5 = [(IDSGLUsedLink *)self localIP];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSGLUsedLink *)self linkID];
+  serverIP = [(IDSGLUsedLink *)self serverIP];
+  v4 = [serverIP hash];
+  localIP = [(IDSGLUsedLink *)self localIP];
+  v6 = [localIP hash] ^ v4;
+  linkID = [(IDSGLUsedLink *)self linkID];
 
-  return v6 ^ v7;
+  return v6 ^ linkID;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(IDSGLUsedLink *)self linkID];
-  v5 = [(IDSGLUsedLink *)self serverIP];
-  v6 = [(IDSGLUsedLink *)self localIP];
-  v7 = [v3 stringWithFormat:@"<IDSGLUsedLink linkID=%u serverIP=%@ localIP=%@", v4, v5, v6];
+  linkID = [(IDSGLUsedLink *)self linkID];
+  serverIP = [(IDSGLUsedLink *)self serverIP];
+  localIP = [(IDSGLUsedLink *)self localIP];
+  v7 = [v3 stringWithFormat:@"<IDSGLUsedLink linkID=%u serverIP=%@ localIP=%@", linkID, serverIP, localIP];
 
   return v7;
 }

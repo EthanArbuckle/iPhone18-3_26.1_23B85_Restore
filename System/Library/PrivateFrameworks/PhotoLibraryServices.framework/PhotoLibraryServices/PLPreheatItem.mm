@@ -2,13 +2,13 @@
 - (BOOL)isCancelled;
 - (BOOL)isRetained;
 - (CGSize)optimalSourcePixelSize;
-- (id)cachedImage:(BOOL *)a3;
-- (id)cachedImageIfAvailable:(BOOL *)a3;
+- (id)cachedImage:(BOOL *)image;
+- (id)cachedImageIfAvailable:(BOOL *)available;
 - (id)description;
-- (id)initForCPLPrefetchingWithAssetUUID:(id)a3 format:(unsigned __int16)a4 assetsdClient:(id)a5;
-- (void)cancelPreheatRequestWithCompletionHandler:(id)a3;
-- (void)setCachingAllowed:(BOOL)a3;
-- (void)startPreheatRequestWithCompletionHandler:(id)a3;
+- (id)initForCPLPrefetchingWithAssetUUID:(id)d format:(unsigned __int16)format assetsdClient:(id)client;
+- (void)cancelPreheatRequestWithCompletionHandler:(id)handler;
+- (void)setCachingAllowed:(BOOL)allowed;
+- (void)startPreheatRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation PLPreheatItem
@@ -33,11 +33,11 @@
   return v3 > 0;
 }
 
-- (void)setCachingAllowed:(BOOL)a3
+- (void)setCachingAllowed:(BOOL)allowed
 {
-  if (self->_cachingAllowed != a3)
+  if (self->_cachingAllowed != allowed)
   {
-    self->_cachingAllowed = a3;
+    self->_cachingAllowed = allowed;
   }
 }
 
@@ -57,9 +57,9 @@
   return v2;
 }
 
-- (void)cancelPreheatRequestWithCompletionHandler:(id)a3
+- (void)cancelPreheatRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PLPreheatItem *)self CPLPrefetching])
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -67,14 +67,14 @@
     v6[2] = __59__PLPreheatItem_cancelPreheatRequestWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7577C08;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     v5 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, v6);
     pl_dispatch_async();
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -116,9 +116,9 @@ uint64_t __59__PLPreheatItem_cancelPreheatRequestWithCompletionHandler___block_i
   return result;
 }
 
-- (void)startPreheatRequestWithCompletionHandler:(id)a3
+- (void)startPreheatRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PLPreheatItem *)self CPLPrefetching])
   {
     v5 = dispatch_time(0, 300000000000);
@@ -127,15 +127,15 @@ uint64_t __59__PLPreheatItem_cancelPreheatRequestWithCompletionHandler___block_i
     block[2] = __58__PLPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke;
     block[3] = &unk_1E7575338;
     block[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     v9 = v5;
     v6 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, block);
     pl_dispatch_async();
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -248,21 +248,21 @@ void __58__PLPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke
   *(v2 + 64) = 0;
 }
 
-- (id)cachedImageIfAvailable:(BOOL *)a3
+- (id)cachedImageIfAvailable:(BOOL *)available
 {
-  if (a3)
+  if (available)
   {
-    *a3 = 0;
+    *available = 0;
   }
 
   return 0;
 }
 
-- (id)cachedImage:(BOOL *)a3
+- (id)cachedImage:(BOOL *)image
 {
-  if (a3)
+  if (image)
   {
-    *a3 = 0;
+    *image = 0;
   }
 
   return 0;
@@ -277,12 +277,12 @@ void __58__PLPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke
   v7 = atomic_load(&self->_requestCount);
   v8 = v7;
   cachingAllowed = self->_cachingAllowed;
-  v10 = [(PLPreheatItem *)self virtualCPLTaskIdentifier];
-  if (v10)
+  virtualCPLTaskIdentifier = [(PLPreheatItem *)self virtualCPLTaskIdentifier];
+  if (virtualCPLTaskIdentifier)
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(PLPreheatItem *)self virtualCPLTaskIdentifier];
-    v13 = [v11 stringWithFormat:@" for Hyperion '%@'", v12];
+    virtualCPLTaskIdentifier2 = [(PLPreheatItem *)self virtualCPLTaskIdentifier];
+    v13 = [v11 stringWithFormat:@" for Hyperion '%@'", virtualCPLTaskIdentifier2];
     v14 = [v3 stringWithFormat:@"<%@ %p> fmt: %ld, [r: %ld, c: %ld], %@ ", v5, self, format, v8, cachingAllowed, v13];
   }
 
@@ -294,18 +294,18 @@ void __58__PLPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke
   return v14;
 }
 
-- (id)initForCPLPrefetchingWithAssetUUID:(id)a3 format:(unsigned __int16)a4 assetsdClient:(id)a5
+- (id)initForCPLPrefetchingWithAssetUUID:(id)d format:(unsigned __int16)format assetsdClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = PLPreheatItem;
   v10 = [(PLPreheatItem *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    v10->_format = a4;
-    v12 = [v8 copy];
+    v10->_format = format;
+    v12 = [dCopy copy];
     assetUUID = v11->_assetUUID;
     v11->_assetUUID = v12;
 
@@ -323,7 +323,7 @@ void __58__PLPreheatItem_startPreheatRequestWithCompletionHandler___block_invoke
     CPLPrefetchingWaitGroup = v11->_CPLPrefetchingWaitGroup;
     v11->_CPLPrefetchingWaitGroup = v18;
 
-    objc_storeStrong(&v11->_cloudClient, a5);
+    objc_storeStrong(&v11->_cloudClient, client);
   }
 
   return v11;

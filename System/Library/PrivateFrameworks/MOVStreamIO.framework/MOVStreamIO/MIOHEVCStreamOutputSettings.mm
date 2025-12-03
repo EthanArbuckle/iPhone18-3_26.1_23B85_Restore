@@ -1,17 +1,17 @@
 @interface MIOHEVCStreamOutputSettings
-+ (BOOL)supportsEncoderType:(int)a3;
++ (BOOL)supportsEncoderType:(int)type;
 + (id)AVEEncoderTypeLosslessMasteringLookUp;
 + (id)AVEEncoderTypeProfileLevelLookUp;
 + (id)AVEEncoderTypeRequiresCustomEncodingLookUp;
-+ (id)avfEncoderSpecForEncoderType:(int)a3;
++ (id)avfEncoderSpecForEncoderType:(int)type;
 + (id)encoderSpecification;
-+ (id)hevcAVFSettingsWithProfileLevel:(id)a3 encoderType:(int)a4 frameRate:(double)a5 dimensions:(id)a6 mastery:(id)a7 enableAVEHighPerformanceProfile:(BOOL)a8;
-+ (id)hevcSettingsWithProfileLevel:(id)a3 encoderType:(int)a4 frameRate:(double)a5 mastery:(id)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
-+ (id)masteryFromStreamData:(StreamRecordingData *)a3 withFrameRate:(double)a4;
-+ (id)outputBitDepthIfRequiredForEncoderType:(int)a3;
-+ (id)outputSettings:(int)a3 frameRate:(double)a4 dimensions:(id)a5 mastery:(id)a6 preferEncoderConfig:(BOOL)a7 enableAVEHighPerformanceProfile:(BOOL)a8;
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7;
-+ (void)applyHighPerfSettings:(id)a3;
++ (id)hevcAVFSettingsWithProfileLevel:(id)level encoderType:(int)type frameRate:(double)rate dimensions:(id)dimensions mastery:(id)mastery enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevcSettingsWithProfileLevel:(id)level encoderType:(int)type frameRate:(double)rate mastery:(id)mastery enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)masteryFromStreamData:(StreamRecordingData *)data withFrameRate:(double)rate;
++ (id)outputBitDepthIfRequiredForEncoderType:(int)type;
++ (id)outputSettings:(int)settings frameRate:(double)rate dimensions:(id)dimensions mastery:(id)mastery preferEncoderConfig:(BOOL)config enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile;
++ (void)applyHighPerfSettings:(id)settings;
 @end
 
 @implementation MIOHEVCStreamOutputSettings
@@ -122,9 +122,9 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   +[MIOHEVCStreamOutputSettings AVEEncoderTypeProfileLevelLookUp]::lookUp = v0;
 }
 
-+ (id)outputBitDepthIfRequiredForEncoderType:(int)a3
++ (id)outputBitDepthIfRequiredForEncoderType:(int)type
 {
-  if ((a3 & 0xFFFFFFFE) == 0x22)
+  if ((type & 0xFFFFFFFE) == 0x22)
   {
     return &unk_2868E33D8;
   }
@@ -135,9 +135,9 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   }
 }
 
-+ (BOOL)supportsEncoderType:(int)a3
++ (BOOL)supportsEncoderType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = +[MIOHEVCStreamOutputSettings AVEEncoderTypeProfileLevelLookUp];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
   v6 = [v4 objectForKey:v5];
@@ -146,43 +146,43 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   return v7;
 }
 
-+ (id)outputSettingsWithConfig:(id)a3 formatDescription:(opaqueCMFormatDescription *)a4 defaultFrameRate:(double)a5 preferEncoderConfig:(BOOL)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)outputSettingsWithConfig:(id)config formatDescription:(opaqueCMFormatDescription *)description defaultFrameRate:(double)rate preferEncoderConfig:(BOOL)encoderConfig enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a7;
-  v8 = a6;
-  v22 = a3;
-  v11 = [v22 objectForKey:@"StreamEncoderType"];
-  v12 = [v11 intValue];
+  profileCopy = profile;
+  encoderConfigCopy = encoderConfig;
+  configCopy = config;
+  v11 = [configCopy objectForKey:@"StreamEncoderType"];
+  intValue = [v11 intValue];
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a4);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(description);
   v14 = +[MIOHEVCStreamOutputSettings AVEEncoderTypeLosslessMasteringLookUp];
-  v15 = v8;
-  v16 = v7;
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
+  v15 = encoderConfigCopy;
+  v16 = profileCopy;
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:intValue];
   v18 = [v14 objectForKey:v17];
-  LODWORD(v7) = [v18 BOOLValue];
+  LODWORD(profileCopy) = [v18 BOOLValue];
 
-  if (v7)
+  if (profileCopy)
   {
     +[MIOMastery masteryLossless];
   }
 
   else
   {
-    [MIOMastery masteryFromConfig:v22 formatDescription:a4 frameRate:a5];
+    [MIOMastery masteryFromConfig:configCopy formatDescription:description frameRate:rate];
   }
   v19 = ;
-  v20 = [objc_opt_class() outputSettings:v12 frameRate:Dimensions dimensions:v19 mastery:v15 preferEncoderConfig:v16 enableAVEHighPerformanceProfile:a5];
-  [v20 applyAdditionalCompressionPropertiesFromRecordingConfig:v22];
+  v20 = [objc_opt_class() outputSettings:intValue frameRate:Dimensions dimensions:v19 mastery:v15 preferEncoderConfig:v16 enableAVEHighPerformanceProfile:rate];
+  [v20 applyAdditionalCompressionPropertiesFromRecordingConfig:configCopy];
 
   return v20;
 }
 
-+ (id)outputSettings:(int)a3 frameRate:(double)a4 dimensions:(id)a5 mastery:(id)a6 preferEncoderConfig:(BOOL)a7 enableAVEHighPerformanceProfile:(BOOL)a8
++ (id)outputSettings:(int)settings frameRate:(double)rate dimensions:(id)dimensions mastery:(id)mastery preferEncoderConfig:(BOOL)config enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v8 = a8;
-  v11 = *&a3;
-  v12 = a6;
+  profileCopy = profile;
+  v11 = *&settings;
+  masteryCopy = mastery;
   v13 = +[MIOHEVCStreamOutputSettings AVEEncoderTypeProfileLevelLookUp];
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11];
   v15 = [v13 objectForKey:v14];
@@ -193,14 +193,14 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
     objc_exception_throw(v23);
   }
 
-  if (a7 || (+[MIOHEVCStreamOutputSettings AVEEncoderTypeRequiresCustomEncodingLookUp](MIOHEVCStreamOutputSettings, "AVEEncoderTypeRequiresCustomEncodingLookUp"), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "objectForKey:", v17), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v17, v16, (v19 & 1) != 0))
+  if (config || (+[MIOHEVCStreamOutputSettings AVEEncoderTypeRequiresCustomEncodingLookUp](MIOHEVCStreamOutputSettings, "AVEEncoderTypeRequiresCustomEncodingLookUp"), v16 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "objectForKey:", v17), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "BOOLValue"), v18, v17, v16, (v19 & 1) != 0))
   {
-    v20 = [objc_opt_class() hevcSettingsWithProfileLevel:v15 encoderType:v11 frameRate:v12 mastery:v8 enableAVEHighPerformanceProfile:a4];
+    v20 = [objc_opt_class() hevcSettingsWithProfileLevel:v15 encoderType:v11 frameRate:masteryCopy mastery:profileCopy enableAVEHighPerformanceProfile:rate];
   }
 
   else
   {
-    v20 = [objc_opt_class() hevcAVFSettingsWithProfileLevel:v15 encoderType:v11 frameRate:a5 dimensions:v12 mastery:v8 enableAVEHighPerformanceProfile:a4];
+    v20 = [objc_opt_class() hevcAVFSettingsWithProfileLevel:v15 encoderType:v11 frameRate:dimensions dimensions:masteryCopy mastery:profileCopy enableAVEHighPerformanceProfile:rate];
   }
 
   v21 = v20;
@@ -213,27 +213,27 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   return v21;
 }
 
-+ (id)hevcAVFSettingsWithProfileLevel:(id)a3 encoderType:(int)a4 frameRate:(double)a5 dimensions:(id)a6 mastery:(id)a7 enableAVEHighPerformanceProfile:(BOOL)a8
++ (id)hevcAVFSettingsWithProfileLevel:(id)level encoderType:(int)type frameRate:(double)rate dimensions:(id)dimensions mastery:(id)mastery enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v8 = a8;
-  v12 = *&a4;
+  profileCopy = profile;
+  v12 = *&type;
   v34[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
+  levelCopy = level;
+  masteryCopy = mastery;
   v15 = *MEMORY[0x277CE25D8];
-  v30 = v14;
-  v34[0] = v13;
+  v30 = masteryCopy;
+  v34[0] = levelCopy;
   v16 = *MEMORY[0x277CE2548];
   v33[0] = v15;
   v33[1] = v16;
-  v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v17 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v33[2] = *MEMORY[0x277CE25A8];
   v34[1] = v17;
   v34[2] = &unk_2868E3B28;
-  v18 = [v14 propertyKey];
-  v33[3] = v18;
-  v19 = [v14 propertyValue];
-  v34[3] = v19;
+  propertyKey = [masteryCopy propertyKey];
+  v33[3] = propertyKey;
+  propertyValue = [masteryCopy propertyValue];
+  v34[3] = propertyValue;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:4];
   v21 = [v20 mutableCopy];
 
@@ -244,7 +244,7 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   }
 
   [objc_opt_class() adjustAVFCompressionProperties:v21 encoderType:v12];
-  if (v8)
+  if (profileCopy)
   {
     [objc_opt_class() applyHighPerfSettings:v21];
   }
@@ -254,10 +254,10 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   v24 = *MEMORY[0x277CE63C0];
   v31[0] = v23;
   v31[1] = v24;
-  v25 = [MEMORY[0x277CCABB0] numberWithInt:a6];
+  v25 = [MEMORY[0x277CCABB0] numberWithInt:dimensions];
   v32[1] = v25;
   v31[2] = *MEMORY[0x277CE6360];
-  v26 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(*&a6)];
+  v26 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(*&dimensions)];
   v31[3] = *MEMORY[0x277CE6330];
   v32[2] = v26;
   v32[3] = v21;
@@ -268,27 +268,27 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   return v28;
 }
 
-+ (id)hevcSettingsWithProfileLevel:(id)a3 encoderType:(int)a4 frameRate:(double)a5 mastery:(id)a6 enableAVEHighPerformanceProfile:(BOOL)a7
++ (id)hevcSettingsWithProfileLevel:(id)level encoderType:(int)type frameRate:(double)rate mastery:(id)mastery enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v7 = a7;
-  v10 = *&a4;
+  profileCopy = profile;
+  v10 = *&type;
   v26[5] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
+  levelCopy = level;
+  masteryCopy = mastery;
   v13 = *MEMORY[0x277CE25F0];
   v25[0] = *MEMORY[0x277CE25D8];
   v25[1] = v13;
-  v26[0] = v11;
+  v26[0] = levelCopy;
   v26[1] = MEMORY[0x277CBEC38];
   v25[2] = *MEMORY[0x277CE2548];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v25[3] = *MEMORY[0x277CE25A8];
   v26[2] = v14;
   v26[3] = &unk_2868E3B28;
-  v15 = [v12 propertyKey];
-  v25[4] = v15;
-  v16 = [v12 propertyValue];
-  v26[4] = v16;
+  propertyKey = [masteryCopy propertyKey];
+  v25[4] = propertyKey;
+  propertyValue = [masteryCopy propertyValue];
+  v26[4] = propertyValue;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:5];
   v18 = [v17 mutableCopy];
 
@@ -298,14 +298,14 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
     [v18 setObject:v19 forKey:@"OutputBitDepth"];
   }
 
-  if (v7)
+  if (profileCopy)
   {
     [objc_opt_class() applyHighPerfSettings:v18];
   }
 
   v20 = [MOVStreamEncoderConfig alloc];
-  v21 = [objc_opt_class() encoderSpecification];
-  v22 = [(MOVStreamEncoderConfig *)v20 initWithCodecType:1752589105 encoderSpecification:v21 sessionProperties:v18];
+  encoderSpecification = [objc_opt_class() encoderSpecification];
+  v22 = [(MOVStreamEncoderConfig *)v20 initWithCodecType:1752589105 encoderSpecification:encoderSpecification sessionProperties:v18];
 
   v23 = [[MOVStreamOutputSettings alloc] initWithConfig:v22];
 
@@ -322,18 +322,18 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   return v2;
 }
 
-+ (void)applyHighPerfSettings:(id)a3
++ (void)applyHighPerfSettings:(id)settings
 {
-  v3 = a3;
-  [v3 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
-  [v3 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
-  [v3 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE2500]];
+  settingsCopy = settings;
+  [settingsCopy setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
+  [settingsCopy setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
+  [settingsCopy setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE2500]];
 }
 
-+ (id)masteryFromStreamData:(StreamRecordingData *)a3 withFrameRate:(double)a4
++ (id)masteryFromStreamData:(StreamRecordingData *)data withFrameRate:(double)rate
 {
-  v5 = [MOVStreamOutputSettings getBitsPerSecondForColorStream:a4 frameRate:?];
-  [MOVStreamOutputSettings getQualitySetting:a3];
+  v5 = [MOVStreamOutputSettings getBitsPerSecondForColorStream:rate frameRate:?];
+  [MOVStreamOutputSettings getQualitySetting:data];
   if (v6 >= 0.0)
   {
     [MIOMastery masteryWithQuality:?];
@@ -348,10 +348,10 @@ void __63__MIOHEVCStreamOutputSettings_AVEEncoderTypeProfileLevelLookUp__block_i
   return v7;
 }
 
-+ (id)avfEncoderSpecForEncoderType:(int)a3
++ (id)avfEncoderSpecForEncoderType:(int)type
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if ([objc_opt_class() requiresSWEncoder:*&a3])
+  if ([objc_opt_class() requiresSWEncoder:*&type])
   {
     v5 = *MEMORY[0x277CE2BA8];
     v6[0] = MEMORY[0x277CBEC28];

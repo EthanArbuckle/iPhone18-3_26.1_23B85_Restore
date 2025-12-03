@@ -2,10 +2,10 @@
 + (id)machServiceName;
 - (SHServiceDelegate)serviceDelegate;
 - (_TtC12ShazamEvents19ShazamEventsService)init;
-- (void)eventWithIdentifier:(id)a3 requestTypes:(id)a4 completionHandler:(id)a5;
-- (void)partialEventsWithGeoRequests:(id)a3 requestTypes:(id)a4 completionHandler:(id)a5;
-- (void)serviceVersionWithCompletionHandler:(id)a3;
-- (void)setServiceDelegate:(id)a3;
+- (void)eventWithIdentifier:(id)identifier requestTypes:(id)types completionHandler:(id)handler;
+- (void)partialEventsWithGeoRequests:(id)requests requestTypes:(id)types completionHandler:(id)handler;
+- (void)serviceVersionWithCompletionHandler:(id)handler;
+- (void)setServiceDelegate:(id)delegate;
 - (void)shutdownService;
 @end
 
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (void)setServiceDelegate:(id)a3
+- (void)setServiceDelegate:(id)delegate
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC12ShazamEvents19ShazamEventsService_underlyingServiceDelegate);
-  *(&self->super.isa + OBJC_IVAR____TtC12ShazamEvents19ShazamEventsService_underlyingServiceDelegate) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC12ShazamEvents19ShazamEventsService_underlyingServiceDelegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)eventWithIdentifier:(id)a3 requestTypes:(id)a4 completionHandler:(id)a5
+- (void)eventWithIdentifier:(id)identifier requestTypes:(id)types completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1E10AE05C();
   v9 = v8;
   sub_1E10ADCFC();
@@ -52,28 +52,28 @@
   v13[4] = v10;
   v13[5] = sub_1E108D46C;
   v13[6] = v11;
-  v14 = self;
+  selfCopy = self;
 
   sub_1E0FE5278(&unk_1E10BA768, v13);
 }
 
-- (void)serviceVersionWithCompletionHandler:(id)a3
+- (void)serviceVersionWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC12ShazamEvents19ShazamEventsService_serviceCoordinator);
   v7 = swift_allocObject();
   *(v7 + 16) = sub_1E108D858;
   *(v7 + 24) = v5;
-  v8 = self;
+  selfCopy = self;
 
   sub_1E0FE5278(&unk_1E10BA748, v7);
 }
 
-- (void)partialEventsWithGeoRequests:(id)a3 requestTypes:(id)a4 completionHandler:(id)a5
+- (void)partialEventsWithGeoRequests:(id)requests requestTypes:(id)types completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   type metadata accessor for GeoXPCRequestContainer(0);
   v7 = sub_1E10AE19C();
   sub_1E10ADCFC();
@@ -87,14 +87,14 @@
   v11[3] = v8;
   v11[4] = sub_1E108D858;
   v11[5] = v9;
-  v12 = self;
+  selfCopy = self;
 
   sub_1E0FE5278(&unk_1E10BA740, v11);
 }
 
 - (void)shutdownService
 {
-  v2 = self;
+  selfCopy = self;
   ShazamEventsService.shutdownService()();
 }
 

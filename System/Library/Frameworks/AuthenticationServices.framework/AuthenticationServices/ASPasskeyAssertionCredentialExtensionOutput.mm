@@ -1,30 +1,30 @@
 @interface ASPasskeyAssertionCredentialExtensionOutput
 - (ASAuthorizationPublicKeyCredentialLargeBlobAssertionOutput)largeBlobAssertionOutput;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasskeyAssertionCredentialExtensionOutput
 
 - (ASAuthorizationPublicKeyCredentialLargeBlobAssertionOutput)largeBlobAssertionOutput
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1CE08C8();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___ASPasskeyAssertionCredentialExtensionOutput_coreExtensions);
-  v5 = a3;
-  v8 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = v4;
   v7 = sub_1B1D7BE1C();
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR___ASPasskeyAssertionCredentialExtensionOutput_coreExtensions);
   v4 = objc_allocWithZone(ASPasskeyAssertionCredentialExtensionOutput);

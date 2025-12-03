@@ -1,7 +1,7 @@
 @interface ABVCardActivityAlertEscapingSerializationStrategy
 + (id)charactersToTriggerStrategy;
 + (id)regex;
-+ (id)serializeString:(id)a3;
++ (id)serializeString:(id)string;
 @end
 
 @implementation ABVCardActivityAlertEscapingSerializationStrategy
@@ -23,12 +23,12 @@ id __80__ABVCardActivityAlertEscapingSerializationStrategy_charactersToTriggerSt
   return result;
 }
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
-  v4 = [a1 regex];
-  v5 = [a3 length];
+  regex = [self regex];
+  v5 = [string length];
 
-  return [v4 stringByReplacingMatchesInString:a3 options:0 range:0 withTemplate:{v5, @"\\\\$1"}];
+  return [regex stringByReplacingMatchesInString:string options:0 range:0 withTemplate:{v5, @"\\\\$1"}];
 }
 
 + (id)regex

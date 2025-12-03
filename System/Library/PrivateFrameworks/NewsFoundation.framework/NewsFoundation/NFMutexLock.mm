@@ -1,7 +1,7 @@
 @interface NFMutexLock
-- (NFMutexLock)initWithOptions:(unint64_t)a3;
+- (NFMutexLock)initWithOptions:(unint64_t)options;
 - (void)dealloc;
-- (void)performWithLockSync:(id)a3;
+- (void)performWithLockSync:(id)sync;
 @end
 
 @implementation NFMutexLock
@@ -14,9 +14,9 @@
   [(NFMutexLock *)&v3 dealloc];
 }
 
-- (NFMutexLock)initWithOptions:(unint64_t)a3
+- (NFMutexLock)initWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v9 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = NFMutexLock;
@@ -26,7 +26,7 @@
     v8.__sig = 0;
     *v8.__opaque = 0;
     pthread_mutexattr_init(&v8);
-    pthread_mutexattr_settype(&v8, 2 * (v3 & 1));
+    pthread_mutexattr_settype(&v8, 2 * (optionsCopy & 1));
     pthread_mutex_init(&v4->_lock, &v8);
   }
 
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (void)performWithLockSync:(id)a3
+- (void)performWithLockSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   [(NFMutexLock *)self lock];
-  if (v4)
+  if (syncCopy)
   {
-    v4[2]();
+    syncCopy[2]();
   }
 
   [(NFMutexLock *)self unlock];

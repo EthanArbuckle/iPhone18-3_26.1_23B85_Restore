@@ -1,77 +1,77 @@
 @interface SHOffers
-- (SHOffers)initWithOfferResponse:(id)a3;
-- (id)campaignURLForTrackID:(id)a3 bundleID:(id)a4 token:(id)a5;
-- (id)configForOfferNamed:(id)a3 bundleID:(id)a4;
-- (id)defaultURLForBundleID:(id)a3;
-- (id)subtitleForOfferNamed:(id)a3 bundleID:(id)a4;
-- (id)urlForOfferNamed:(id)a3 bundleID:(id)a4;
-- (id)valueForSpecializedKey:(id)a3 forBundleID:(id)a4 inDictionary:(id)a5;
+- (SHOffers)initWithOfferResponse:(id)response;
+- (id)campaignURLForTrackID:(id)d bundleID:(id)iD token:(id)token;
+- (id)configForOfferNamed:(id)named bundleID:(id)d;
+- (id)defaultURLForBundleID:(id)d;
+- (id)subtitleForOfferNamed:(id)named bundleID:(id)d;
+- (id)urlForOfferNamed:(id)named bundleID:(id)d;
+- (id)valueForSpecializedKey:(id)key forBundleID:(id)d inDictionary:(id)dictionary;
 @end
 
 @implementation SHOffers
 
-- (SHOffers)initWithOfferResponse:(id)a3
+- (SHOffers)initWithOfferResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v9.receiver = self;
   v9.super_class = SHOffers;
   v6 = [(SHOffers *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_offerResponse, a3);
+    objc_storeStrong(&v6->_offerResponse, response);
   }
 
   return v7;
 }
 
-- (id)defaultURLForBundleID:(id)a3
+- (id)defaultURLForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [SHTokenizedURL alloc];
-  v6 = [(SHOffers *)self urlForOfferNamed:@"default" bundleID:v4];
+  v6 = [(SHOffers *)self urlForOfferNamed:@"default" bundleID:dCopy];
 
   v7 = [(SHTokenizedURL *)v5 initWithString:v6];
-  v8 = [(SHTokenizedURL *)v7 URLRepresentation];
+  uRLRepresentation = [(SHTokenizedURL *)v7 URLRepresentation];
 
-  return v8;
+  return uRLRepresentation;
 }
 
-- (id)campaignURLForTrackID:(id)a3 bundleID:(id)a4 token:(id)a5
+- (id)campaignURLForTrackID:(id)d bundleID:(id)iD token:(id)token
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  tokenCopy = token;
+  iDCopy = iD;
   v11 = [SHTokenizedURL alloc];
-  v12 = [(SHOffers *)self urlForOfferNamed:@"campaign" bundleID:v10];
+  v12 = [(SHOffers *)self urlForOfferNamed:@"campaign" bundleID:iDCopy];
 
   v13 = [(SHTokenizedURL *)v11 initWithString:v12];
   if ([(SHTokenizedURL *)v13 containsToken:10]&& [(SHTokenizedURL *)v13 containsToken:9])
   {
-    [(SHTokenizedURL *)v13 updateToken:9 withValue:v8];
-    [(SHTokenizedURL *)v13 updateToken:10 withValue:v9];
-    v14 = [(SHTokenizedURL *)v13 URLRepresentation];
+    [(SHTokenizedURL *)v13 updateToken:9 withValue:dCopy];
+    [(SHTokenizedURL *)v13 updateToken:10 withValue:tokenCopy];
+    uRLRepresentation = [(SHTokenizedURL *)v13 URLRepresentation];
   }
 
   else
   {
-    v14 = 0;
+    uRLRepresentation = 0;
   }
 
-  return v14;
+  return uRLRepresentation;
 }
 
-- (id)urlForOfferNamed:(id)a3 bundleID:(id)a4
+- (id)urlForOfferNamed:(id)named bundleID:(id)d
 {
-  v4 = [(SHOffers *)self configForOfferNamed:a3 bundleID:a4];
+  v4 = [(SHOffers *)self configForOfferNamed:named bundleID:d];
   v5 = [v4 objectForKeyedSubscript:@"url"];
 
   return v5;
 }
 
-- (id)subtitleForOfferNamed:(id)a3 bundleID:(id)a4
+- (id)subtitleForOfferNamed:(id)named bundleID:(id)d
 {
-  v4 = [(SHOffers *)self configForOfferNamed:a3 bundleID:a4];
+  v4 = [(SHOffers *)self configForOfferNamed:named bundleID:d];
   v5 = [v4 objectForKeyedSubscript:@"copy"];
 
   v6 = [v5 objectForKeyedSubscript:@"subtitle"];
@@ -79,22 +79,22 @@
   return v6;
 }
 
-- (id)configForOfferNamed:(id)a3 bundleID:(id)a4
+- (id)configForOfferNamed:(id)named bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHOffers *)self offerResponse];
-  v9 = [(SHOffers *)self valueForSpecializedKey:v7 forBundleID:v6 inDictionary:v8];
+  dCopy = d;
+  namedCopy = named;
+  offerResponse = [(SHOffers *)self offerResponse];
+  v9 = [(SHOffers *)self valueForSpecializedKey:namedCopy forBundleID:dCopy inDictionary:offerResponse];
 
   return v9;
 }
 
-- (id)valueForSpecializedKey:(id)a3 forBundleID:(id)a4 inDictionary:(id)a5
+- (id)valueForSpecializedKey:(id)key forBundleID:(id)d inDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, a4];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", keyCopy, d];
+  v10 = [dictionaryCopy objectForKeyedSubscript:v9];
   v11 = v10;
   if (v10)
   {
@@ -103,7 +103,7 @@
 
   else
   {
-    v12 = [v8 objectForKeyedSubscript:v7];
+    v12 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   v13 = v12;

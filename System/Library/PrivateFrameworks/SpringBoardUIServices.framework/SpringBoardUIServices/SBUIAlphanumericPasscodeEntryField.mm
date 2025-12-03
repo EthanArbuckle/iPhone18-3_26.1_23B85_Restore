@@ -1,26 +1,26 @@
 @interface SBUIAlphanumericPasscodeEntryField
 - (CGSize)_viewSize;
-- (SBUIAlphanumericPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)a3;
+- (SBUIAlphanumericPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)style;
 - (UITextInputTraits)textInputTraits;
-- (void)_autofillForBiometricAuthenticationWithCompletion:(id)a3;
-- (void)_resetForFailedPasscode:(BOOL)a3;
+- (void)_autofillForBiometricAuthenticationWithCompletion:(id)completion;
+- (void)_resetForFailedPasscode:(BOOL)passcode;
 - (void)layoutSubviews;
 - (void)notePasscodeFieldTextDidChange;
 @end
 
 @implementation SBUIAlphanumericPasscodeEntryField
 
-- (SBUIAlphanumericPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)a3
+- (SBUIAlphanumericPasscodeEntryField)initWithDefaultSizeAndLightStyle:(BOOL)style
 {
   v32.receiver = self;
   v32.super_class = SBUIAlphanumericPasscodeEntryField;
-  v4 = [(SBUIPasscodeEntryField *)&v32 initWithDefaultSizeAndLightStyle:a3];
+  v4 = [(SBUIPasscodeEntryField *)&v32 initWithDefaultSizeAndLightStyle:style];
   if (v4)
   {
     v5 = MEMORY[0x1E69DB878];
     v6 = __sb__runningInSpringBoard();
     v7 = v6;
-    v8 = 0x1E69DC000;
+    currentDevice3 = 0x1E69DC000;
     if (v6)
     {
       v9 = SBFEffectiveDeviceClass() == 2;
@@ -28,8 +28,8 @@
 
     else
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      v9 = [v3 userInterfaceIdiom] == 1;
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      v9 = [currentDevice userInterfaceIdiom] == 1;
     }
 
     v10 = 17.0;
@@ -50,8 +50,8 @@
 
     else
     {
-      v13 = [MEMORY[0x1E69DC938] currentDevice];
-      v12 = [v13 userInterfaceIdiom] == 1;
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      v12 = [currentDevice2 userInterfaceIdiom] == 1;
     }
 
     [v11 _bodyLeading];
@@ -73,12 +73,12 @@
     }
 
     [(SBUIAlphanumericPasscodeEntryField *)v4 setUserInteractionEnabled:1];
-    v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v18 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     [(SBUIAlphanumericPasscodeEntryField *)v4 setFrame:0.0, 0.0];
 
     [(SBUIAlphanumericPasscodeEntryField *)v4 setClipsToBounds:1];
-    v19 = [(SBUIPasscodeEntryField *)v4 _textField];
+    _textField = [(SBUIPasscodeEntryField *)v4 _textField];
     v20 = __sb__runningInSpringBoard();
     v21 = v20;
     if (v20)
@@ -88,8 +88,8 @@
 
     else
     {
-      v8 = [MEMORY[0x1E69DC938] currentDevice];
-      v22 = [v8 userInterfaceIdiom] == 1;
+      currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+      v22 = [currentDevice3 userInterfaceIdiom] == 1;
     }
 
     if (v22)
@@ -102,21 +102,21 @@
       v23 = 314.0;
     }
 
-    [v19 setFrame:{0.0, 0.0, v23, v17}];
+    [_textField setFrame:{0.0, 0.0, v23, v17}];
     if ((v21 & 1) == 0)
     {
     }
 
-    [v19 setTextAlignment:0];
-    [v19 setClearButtonMode:0];
-    [v19 setEmptyContentReturnKeyType:1];
-    [v19 setReturnKeyType:9];
-    [v19 setFont:v11];
-    v24 = [v19 textInputTraits];
-    [v24 setAcceptsSplitKeyboard:0];
-    [v24 setAcceptsFloatingKeyboard:0];
-    [v24 setUseInterfaceLanguageForLocalization:1];
-    [v24 setReturnKeyType:9];
+    [_textField setTextAlignment:0];
+    [_textField setClearButtonMode:0];
+    [_textField setEmptyContentReturnKeyType:1];
+    [_textField setReturnKeyType:9];
+    [_textField setFont:v11];
+    textInputTraits = [_textField textInputTraits];
+    [textInputTraits setAcceptsSplitKeyboard:0];
+    [textInputTraits setAcceptsFloatingKeyboard:0];
+    [textInputTraits setUseInterfaceLanguageForLocalization:1];
+    [textInputTraits setReturnKeyType:9];
     v25 = objc_alloc(MEMORY[0x1E69DD250]);
     [(SBUIAlphanumericPasscodeEntryField *)v4 bounds];
     v26 = [v25 initWithFrame:?];
@@ -133,7 +133,7 @@
     [(UIView *)v4->_springViewParent setAutoresizingMask:2];
     [(SBUIAlphanumericPasscodeEntryField *)v4 addSubview:v4->_springViewParent];
     [(UIView *)v4->_springViewParent addSubview:v4->_springView];
-    [(UIView *)v4->_springView addSubview:v19];
+    [(UIView *)v4->_springView addSubview:_textField];
   }
 
   return v4;
@@ -144,8 +144,8 @@
   v13.receiver = self;
   v13.super_class = SBUIAlphanumericPasscodeEntryField;
   [(SBUIAlphanumericPasscodeEntryField *)&v13 layoutSubviews];
-  v3 = [(SBUIPasscodeEntryField *)self _textField];
-  [v3 frame];
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  [_textField frame];
   [(SBUIAlphanumericPasscodeEntryField *)self bounds];
   UIRectCenteredXInRectScale();
   v5 = v4;
@@ -153,41 +153,41 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SBUIPasscodeEntryField *)self _textField];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  _textField2 = [(SBUIPasscodeEntryField *)self _textField];
+  [_textField2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (UITextInputTraits)textInputTraits
 {
-  v2 = [(SBUIPasscodeEntryField *)self _textField];
-  v3 = [v2 textInputTraits];
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  textInputTraits = [_textField textInputTraits];
 
-  return v3;
+  return textInputTraits;
 }
 
-- (void)_autofillForBiometricAuthenticationWithCompletion:(id)a3
+- (void)_autofillForBiometricAuthenticationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SBUIPasscodeEntryField *)self _textField];
-  [v5 setText:@"0000000000"];
+  completionCopy = completion;
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  [_textField setText:@"0000000000"];
   v6.receiver = self;
   v6.super_class = SBUIAlphanumericPasscodeEntryField;
-  [(SBUIPasscodeEntryField *)&v6 _autofillForBiometricAuthenticationWithCompletion:v4];
+  [(SBUIPasscodeEntryField *)&v6 _autofillForBiometricAuthenticationWithCompletion:completionCopy];
 }
 
 - (void)notePasscodeFieldTextDidChange
 {
-  v3 = [MEMORY[0x1E69DCBE0] sharedInstance];
-  [v3 updateReturnKey:0];
+  mEMORY[0x1E69DCBE0] = [MEMORY[0x1E69DCBE0] sharedInstance];
+  [mEMORY[0x1E69DCBE0] updateReturnKey:0];
 
   v4.receiver = self;
   v4.super_class = SBUIAlphanumericPasscodeEntryField;
   [(SBUIPasscodeEntryField *)&v4 notePasscodeFieldTextDidChange];
 }
 
-- (void)_resetForFailedPasscode:(BOOL)a3
+- (void)_resetForFailedPasscode:(BOOL)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"position.x"];
   [v5 setMass:1.20000005];
   [v5 setStiffness:1200.0];
@@ -204,15 +204,15 @@
   v11 = *MEMORY[0x1E69797D8];
   [v5 setFillMode:*MEMORY[0x1E69797D8]];
   v12 = MEMORY[0x1E696AD98];
-  v13 = [(UIView *)self->_springView layer];
-  [v13 position];
+  layer = [(UIView *)self->_springView layer];
+  [layer position];
   v15 = v14 + 75.0;
   *&v15 = v15;
   v16 = [v12 numberWithFloat:v15];
   [v5 setFromValue:v16];
 
-  v17 = [(UIView *)self->_springView layer];
-  [v17 addAnimation:v5 forKey:@"shake"];
+  layer2 = [(UIView *)self->_springView layer];
+  [layer2 addAnimation:v5 forKey:@"shake"];
 
   v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"position.x"];
   LODWORD(v19) = 1054276898;
@@ -224,25 +224,25 @@
   [v18 setDuration:0.100000001];
   [v18 setFillMode:v11];
   v23 = MEMORY[0x1E696AD98];
-  v24 = [(UIView *)self->_springViewParent layer];
-  [v24 position];
+  layer3 = [(UIView *)self->_springViewParent layer];
+  [layer3 position];
   v26 = v25 + -75.0;
   *&v26 = v26;
   v27 = [v23 numberWithFloat:v26];
   [v18 setFromValue:v27];
 
-  v28 = [(UIView *)self->_springViewParent layer];
-  [v28 addAnimation:v18 forKey:@"force-off-center"];
+  layer4 = [(UIView *)self->_springViewParent layer];
+  [layer4 addAnimation:v18 forKey:@"force-off-center"];
 
   v29.receiver = self;
   v29.super_class = SBUIAlphanumericPasscodeEntryField;
-  [(SBUIPasscodeEntryField *)&v29 _resetForFailedPasscode:v3];
+  [(SBUIPasscodeEntryField *)&v29 _resetForFailedPasscode:passcodeCopy];
 }
 
 - (CGSize)_viewSize
 {
-  v2 = [(SBUIPasscodeEntryField *)self _textField];
-  v3 = [v2 font];
+  _textField = [(SBUIPasscodeEntryField *)self _textField];
+  font = [_textField font];
 
   if (__sb__runningInSpringBoard())
   {
@@ -251,11 +251,11 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v4 = [v5 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v4 = [currentDevice userInterfaceIdiom] == 1;
   }
 
-  [v3 _bodyLeading];
+  [font _bodyLeading];
   v7 = v6 + 12.0;
   v8 = 38.0;
   if (v4)
@@ -273,8 +273,8 @@
     v9 = v7;
   }
 
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
 
   v13 = v12;

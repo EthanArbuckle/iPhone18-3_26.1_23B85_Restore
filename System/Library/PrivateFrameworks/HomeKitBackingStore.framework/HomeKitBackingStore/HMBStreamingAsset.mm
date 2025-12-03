@@ -1,27 +1,27 @@
 @interface HMBStreamingAsset
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5;
-+ (void)applyNativeCKValue:(id)a3 fromSource:(unint64_t)a4 associatingWith:(id)a5 toModel:(id)a6 propertyNamed:(id)a7;
-- (HMBStreamingAsset)initWithCoder:(id)a3;
-- (HMBStreamingAsset)initWithUploadStreamingAsset:(id)a3 downloadStreamingAsset:(id)a4;
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error;
++ (void)applyNativeCKValue:(id)value fromSource:(unint64_t)source associatingWith:(id)with toModel:(id)model propertyNamed:(id)named;
+- (HMBStreamingAsset)initWithCoder:(id)coder;
+- (HMBStreamingAsset)initWithUploadStreamingAsset:(id)asset downloadStreamingAsset:(id)streamingAsset;
 - (id)attributeDescriptions;
-- (id)hmbObjectByMergingFromObject:(id)a3;
-- (id)nativeCKValueWithEncodingContext:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)hmbObjectByMergingFromObject:(id)object;
+- (id)nativeCKValueWithEncodingContext:(id)context error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBStreamingAsset
 
-- (id)nativeCKValueWithEncodingContext:(id)a3 error:(id *)a4
+- (id)nativeCKValueWithEncodingContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v5;
-    v7 = [(HMBStreamingAsset *)self uploadStreamingAsset];
-    v8 = v7;
-    if (v7)
+    v6 = contextCopy;
+    uploadStreamingAsset = [(HMBStreamingAsset *)self uploadStreamingAsset];
+    v8 = uploadStreamingAsset;
+    if (uploadStreamingAsset)
     {
-      v9 = v7;
+      v9 = uploadStreamingAsset;
     }
 
     else
@@ -41,14 +41,14 @@
   }
 }
 
-- (id)hmbObjectByMergingFromObject:(id)a3
+- (id)hmbObjectByMergingFromObject:(id)object
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -60,33 +60,33 @@
 
   if (v6)
   {
-    v7 = [v6 uploadStreamingAsset];
-    v8 = v7;
-    if (v7)
+    uploadStreamingAsset = [v6 uploadStreamingAsset];
+    v8 = uploadStreamingAsset;
+    if (uploadStreamingAsset)
     {
-      v9 = v7;
+      uploadStreamingAsset2 = uploadStreamingAsset;
     }
 
     else
     {
-      v9 = [(HMBStreamingAsset *)self uploadStreamingAsset];
+      uploadStreamingAsset2 = [(HMBStreamingAsset *)self uploadStreamingAsset];
     }
 
-    v16 = v9;
+    v16 = uploadStreamingAsset2;
 
-    v17 = [v6 downloadStreamingAsset];
-    v18 = v17;
-    if (v17)
+    downloadStreamingAsset = [v6 downloadStreamingAsset];
+    v18 = downloadStreamingAsset;
+    if (downloadStreamingAsset)
     {
-      v19 = v17;
+      downloadStreamingAsset2 = downloadStreamingAsset;
     }
 
     else
     {
-      v19 = [(HMBStreamingAsset *)self downloadStreamingAsset];
+      downloadStreamingAsset2 = [(HMBStreamingAsset *)self downloadStreamingAsset];
     }
 
-    v20 = v19;
+    v20 = downloadStreamingAsset2;
 
     v15 = [[HMBStreamingAsset alloc] initWithUploadStreamingAsset:v16 downloadStreamingAsset:v20];
   }
@@ -94,7 +94,7 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -104,13 +104,13 @@
       v25 = 2112;
       v26 = objc_opt_class();
       v27 = 2112;
-      v28 = v4;
+      v28 = objectCopy;
       v14 = v26;
       _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_ERROR, "%{public}@Asked to merge from unexpected object of class %@: %@", &v23, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v15 = v11;
+    v15 = selfCopy;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -118,21 +118,21 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBStreamingAsset *)self uploadStreamingAsset];
-  [v4 encodeObject:v5 forKey:@"HMB.u"];
+  coderCopy = coder;
+  uploadStreamingAsset = [(HMBStreamingAsset *)self uploadStreamingAsset];
+  [coderCopy encodeObject:uploadStreamingAsset forKey:@"HMB.u"];
 
-  v6 = [(HMBStreamingAsset *)self downloadStreamingAsset];
-  [v4 encodeObject:v6 forKey:@"HMB.d"];
+  downloadStreamingAsset = [(HMBStreamingAsset *)self downloadStreamingAsset];
+  [coderCopy encodeObject:downloadStreamingAsset forKey:@"HMB.d"];
 }
 
-- (HMBStreamingAsset)initWithCoder:(id)a3
+- (HMBStreamingAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMB.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMB.d"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMB.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMB.d"];
 
   v7 = [(HMBStreamingAsset *)self initWithUploadStreamingAsset:v5 downloadStreamingAsset:v6];
   return v7;
@@ -142,12 +142,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBStreamingAsset *)self uploadStreamingAsset];
-  v5 = [v3 initWithName:@"Upload Streaming Asset" value:v4];
+  uploadStreamingAsset = [(HMBStreamingAsset *)self uploadStreamingAsset];
+  v5 = [v3 initWithName:@"Upload Streaming Asset" value:uploadStreamingAsset];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMBStreamingAsset *)self downloadStreamingAsset];
-  v8 = [v6 initWithName:@"Download Streaming Asset" value:v7];
+  downloadStreamingAsset = [(HMBStreamingAsset *)self downloadStreamingAsset];
+  v8 = [v6 initWithName:@"Download Streaming Asset" value:downloadStreamingAsset];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -156,33 +156,33 @@
   return v9;
 }
 
-- (HMBStreamingAsset)initWithUploadStreamingAsset:(id)a3 downloadStreamingAsset:(id)a4
+- (HMBStreamingAsset)initWithUploadStreamingAsset:(id)asset downloadStreamingAsset:(id)streamingAsset
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  streamingAssetCopy = streamingAsset;
   v12.receiver = self;
   v12.super_class = HMBStreamingAsset;
   v9 = [(HMBStreamingAsset *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uploadStreamingAsset, a3);
-    objc_storeStrong(&v10->_downloadStreamingAsset, a4);
+    objc_storeStrong(&v9->_uploadStreamingAsset, asset);
+    objc_storeStrong(&v10->_downloadStreamingAsset, streamingAsset);
   }
 
   return v10;
 }
 
-+ (void)applyNativeCKValue:(id)a3 fromSource:(unint64_t)a4 associatingWith:(id)a5 toModel:(id)a6 propertyNamed:(id)a7
++ (void)applyNativeCKValue:(id)value fromSource:(unint64_t)source associatingWith:(id)with toModel:(id)model propertyNamed:(id)named
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  valueCopy = value;
+  withCopy = with;
+  modelCopy = model;
+  namedCopy = named;
+  if (valueCopy)
   {
-    v16 = v12;
+    v16 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -198,7 +198,7 @@
 
     if (v18)
     {
-      v19 = [v14 hmbPropertyNamed:v15];
+      v19 = [modelCopy hmbPropertyNamed:namedCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -216,28 +216,28 @@
         v21 = objc_alloc_init(HMBStreamingAsset);
       }
 
-      if (a4 == 4 || a4 == 2)
+      if (source == 4 || source == 2)
       {
         [(HMBStreamingAsset *)v21 setDownloadStreamingAsset:v18];
       }
 
-      else if (a4 == 1)
+      else if (source == 1)
       {
         [(HMBStreamingAsset *)v21 setUploadStreamingAsset:v18];
       }
 
-      [v14 hmbSetProperty:v21 named:v15];
+      [modelCopy hmbSetProperty:v21 named:namedCopy];
     }
 
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = a1;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        [v14 hmbDescription];
+        [modelCopy hmbDescription];
         v26 = v28 = v22;
         *buf = 138544130;
         v30 = v25;
@@ -246,7 +246,7 @@
         v33 = 2112;
         v34 = v26;
         v35 = 2112;
-        v36 = v15;
+        v36 = namedCopy;
         _os_log_impl(&dword_22AD27000, v24, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly found %@ in CKRecord field for wrapped model value %@/%@ which we expected to be a CKStreamingAsset (ignoring).", buf, 0x2Au);
 
         v22 = v28;
@@ -258,21 +258,21 @@
 
   else
   {
-    [v14 hmbSetProperty:0 named:v15];
+    [modelCopy hmbSetProperty:0 named:namedCopy];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)hmbDecodeData:(id)a3 fromStorageLocation:(unint64_t)a4 error:(id *)a5
++ (id)hmbDecodeData:(id)data fromStorageLocation:(unint64_t)location error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (hmbDecodeData_fromStorageLocation_error__onceToken != -1)
   {
     dispatch_once(&hmbDecodeData_fromStorageLocation_error__onceToken, &__block_literal_global_2365);
   }
 
-  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:hmbDecodeData_fromStorageLocation_error__allowedClasses fromData:v6 error:a5];
+  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:hmbDecodeData_fromStorageLocation_error__allowedClasses fromData:dataCopy error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

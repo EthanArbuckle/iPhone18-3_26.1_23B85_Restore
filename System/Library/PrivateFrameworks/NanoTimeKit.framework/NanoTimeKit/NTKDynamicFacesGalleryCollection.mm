@@ -1,23 +1,23 @@
 @interface NTKDynamicFacesGalleryCollection
 - (BOOL)bundleWantsDynamicCollection;
-- (NTKDynamicFacesGalleryCollection)initWithDevice:(id)a3 title:(id)a4 bundleIdentifier:(id)a5;
-- (id)facesForDevice:(id)a3;
+- (NTKDynamicFacesGalleryCollection)initWithDevice:(id)device title:(id)title bundleIdentifier:(id)identifier;
+- (id)facesForDevice:(id)device;
 @end
 
 @implementation NTKDynamicFacesGalleryCollection
 
-- (NTKDynamicFacesGalleryCollection)initWithDevice:(id)a3 title:(id)a4 bundleIdentifier:(id)a5
+- (NTKDynamicFacesGalleryCollection)initWithDevice:(id)device title:(id)title bundleIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = NTKDynamicFacesGalleryCollection;
-  v11 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)&v14 initWithDevice:a3];
+  v11 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)&v14 initWithDevice:device];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a4);
-    objc_storeStrong(&v12->_bundleIdentifier, a5);
+    objc_storeStrong(&v11->_title, title);
+    objc_storeStrong(&v12->_bundleIdentifier, identifier);
     [(NTKGalleryCollection *)v12 setCalloutName:&__block_literal_global_69];
   }
 
@@ -28,13 +28,13 @@
 {
   v3 = +[NTKFaceBundleManager sharedManager];
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
-  v6 = [v3 faceBundleForBundleIdentifier:bundleIdentifier onDevice:v5];
+  device = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
+  v6 = [v3 faceBundleForBundleIdentifier:bundleIdentifier onDevice:device];
 
   if (v6)
   {
-    v7 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
-    v8 = [v6 useDynamicCollectionForDevice:v7];
+    device2 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)self device];
+    v8 = [v6 useDynamicCollectionForDevice:device2];
   }
 
   else
@@ -45,17 +45,17 @@
   return v8;
 }
 
-- (id)facesForDevice:(id)a3
+- (id)facesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([(NTKDynamicFacesGalleryCollection *)self bundleWantsDynamicCollection])
   {
     v5 = +[NTKFaceBundleManager sharedManager];
-    v6 = [v5 faceBundleForBundleIdentifier:self->_bundleIdentifier onDevice:v4];
+    v6 = [v5 faceBundleForBundleIdentifier:self->_bundleIdentifier onDevice:deviceCopy];
 
     if (v6)
     {
-      v7 = [v6 galleryFacesInDynamicCollectionForDevice:v4];
+      v7 = [v6 galleryFacesInDynamicCollectionForDevice:deviceCopy];
       v8 = [v7 copy];
     }
 

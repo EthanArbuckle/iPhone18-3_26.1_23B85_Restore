@@ -1,51 +1,51 @@
 @interface CallCenterManager
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 updatedIncomingPendingConversations:(id)a4;
-- (void)serverDisconnectedForConversationManager:(id)a3;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager updatedIncomingPendingConversations:(id)conversations;
+- (void)serverDisconnectedForConversationManager:(id)manager;
 @end
 
 @implementation CallCenterManager
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_249E74D84(v8, v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_249E74D84(selfCopy, conversationCopy);
 }
 
-- (void)conversationManager:(id)a3 updatedIncomingPendingConversations:(id)a4
+- (void)conversationManager:(id)manager updatedIncomingPendingConversations:(id)conversations
 {
   sub_249DF691C(0, &qword_27EF238C0, 0x277D6EE60);
   v6 = sub_249E7ABE8();
-  v7 = a3;
-  v8 = self;
-  sub_249E750C8(v8, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_249E750C8(selfCopy, v6);
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_249E75284();
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   sub_249E7595C();
 }
 
-- (void)serverDisconnectedForConversationManager:(id)a3
+- (void)serverDisconnectedForConversationManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  sub_249E75D1C(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_249E75D1C(managerCopy);
 }
 
 @end

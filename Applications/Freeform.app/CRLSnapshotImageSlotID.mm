@@ -1,6 +1,6 @@
 @interface CRLSnapshotImageSlotID
 + (id)snapshotContext;
-- (CRLSnapshotImageSlotID)initWithSize:(CGSize)a3;
+- (CRLSnapshotImageSlotID)initWithSize:(CGSize)size;
 - (id)object;
 - (void)dealloc;
 - (void)p_teardown;
@@ -20,10 +20,10 @@
   return v3;
 }
 
-- (CRLSnapshotImageSlotID)initWithSize:(CGSize)a3
+- (CRLSnapshotImageSlotID)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = CRLSnapshotImageSlotID;
   v5 = [(CRLSnapshotImageSlotID *)&v8 init];

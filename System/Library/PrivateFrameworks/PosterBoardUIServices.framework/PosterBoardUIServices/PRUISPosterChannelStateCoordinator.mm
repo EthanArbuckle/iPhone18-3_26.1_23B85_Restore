@@ -1,18 +1,18 @@
 @interface PRUISPosterChannelStateCoordinator
-- (BOOL)applyUpdater:(id)a3 error:(id *)a4;
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 withMetadata:(id)a5 withPolicy:(unint64_t)a6 error:(id *)a7;
+- (BOOL)applyUpdater:(id)updater error:(id *)error;
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state withMetadata:(id)metadata withPolicy:(unint64_t)policy error:(id *)error;
 - (_TtC21PosterBoardUIServices23PRUISPosterChannelState)state;
 - (_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator)init;
-- (_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator)initWithModelCoordinator:(id)a3 channelIdentifier:(id)a4 error:(id *)a5;
+- (_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator)initWithModelCoordinator:(id)coordinator channelIdentifier:(id)identifier error:(id *)error;
 - (_TtP21PosterBoardUIServices42PRUISPosterChannelStateCoordinatorDelegate_)delegate;
 - (id)currentPosterConfiguration;
 - (id)descriptors;
-- (id)descriptorsForState:(id)a3;
-- (id)galleryMetadataForState:(id)a3;
-- (id)prepareStateTransitionWithUpdater:(id)a3 error:(id *)a4;
+- (id)descriptorsForState:(id)state;
+- (id)galleryMetadataForState:(id)state;
+- (id)prepareStateTransitionWithUpdater:(id)updater error:(id *)error;
 - (id)snapshotCacheURL;
 - (void)invalidate;
-- (void)setState:(id)a3;
+- (void)setState:(id)state;
 @end
 
 @implementation PRUISPosterChannelStateCoordinator
@@ -28,7 +28,7 @@
 - (_TtC21PosterBoardUIServices23PRUISPosterChannelState)state
 {
   v2 = *(self + OBJC_IVAR____TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_1CAECC0C4(&v6);
   os_unfair_lock_unlock(v2 + 4);
@@ -37,23 +37,23 @@
   return v4;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
   v4 = *(self + OBJC_IVAR____TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator_lock);
-  v5 = a3;
-  v6 = self;
+  stateCopy = state;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 4);
   sub_1CAECC114();
   os_unfair_lock_unlock(v4 + 4);
 }
 
-- (_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator)initWithModelCoordinator:(id)a3 channelIdentifier:(id)a4 error:(id *)a5
+- (_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator)initWithModelCoordinator:(id)coordinator channelIdentifier:(id)identifier error:(id *)error
 {
   v6 = sub_1CAEF9E1C();
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CAEF9DFC();
-  return PRUISPosterChannelStateCoordinator.init(modelCoordinator:channelIdentifier:)(a3, v8);
+  return PRUISPosterChannelStateCoordinator.init(modelCoordinator:channelIdentifier:)(coordinator, v8);
 }
 
 - (id)snapshotCacheURL
@@ -63,7 +63,7 @@
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *(self + OBJC_IVAR____TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator_rootChannelURLEndpoint);
-  v8 = self;
+  selfCopy = self;
   sub_1CAEBADC0(v7);
 
   v9 = sub_1CAEF9C8C();
@@ -75,7 +75,7 @@
 - (id)currentPosterConfiguration
 {
   v2 = *(self + OBJC_IVAR____TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_1CAECC0C4(&v11);
   os_unfair_lock_unlock(v2 + 4);
@@ -99,22 +99,22 @@
   return v9;
 }
 
-- (BOOL)applyUpdater:(id)a3 error:(id *)a4
+- (BOOL)applyUpdater:(id)updater error:(id *)error
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = PRUISPosterChannelStateCoordinator.prepareStateTransitionWithUpdater(_:)(a3);
+  selfCopy = self;
+  v7 = PRUISPosterChannelStateCoordinator.prepareStateTransitionWithUpdater(_:)(updater);
   sub_1CAEBBDE4(v7);
 
   swift_unknownObjectRelease();
   return 1;
 }
 
-- (id)prepareStateTransitionWithUpdater:(id)a3 error:(id *)a4
+- (id)prepareStateTransitionWithUpdater:(id)updater error:(id *)error
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = PRUISPosterChannelStateCoordinator.prepareStateTransitionWithUpdater(_:)(a3);
+  selfCopy = self;
+  v7 = PRUISPosterChannelStateCoordinator.prepareStateTransitionWithUpdater(_:)(updater);
 
   swift_unknownObjectRelease();
 
@@ -124,7 +124,7 @@
 - (id)descriptors
 {
   v2 = *(self + OBJC_IVAR____TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator_lock);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 4);
   sub_1CAECC0C4(&v7);
   os_unfair_lock_unlock(v2 + 4);
@@ -134,32 +134,32 @@
   return v5;
 }
 
-- (id)descriptorsForState:(id)a3
+- (id)descriptorsForState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PRUISPosterChannelStateCoordinator.descriptorsFor(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  v6 = PRUISPosterChannelStateCoordinator.descriptorsFor(_:)(stateCopy);
 
   return v6;
 }
 
-- (id)galleryMetadataForState:(id)a3
+- (id)galleryMetadataForState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PRUISPosterChannelStateCoordinator.galleryMetadataFor(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  v6 = PRUISPosterChannelStateCoordinator.galleryMetadataFor(_:)(stateCopy);
 
   return v6;
 }
 
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 withMetadata:(id)a5 withPolicy:(unint64_t)a6 error:(id *)a7
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state withMetadata:(id)metadata withPolicy:(unint64_t)policy error:(id *)error
 {
   sub_1CAEB33A4(0, &unk_1EC481DA0);
   v11 = sub_1CAEFA49C();
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  PRUISPosterChannelStateCoordinator.ingestUpdatedDescriptors(_:state:galleryMetadata:policy:)(v11, v12, v13, a6);
+  stateCopy = state;
+  metadataCopy = metadata;
+  selfCopy = self;
+  PRUISPosterChannelStateCoordinator.ingestUpdatedDescriptors(_:state:galleryMetadata:policy:)(v11, stateCopy, metadataCopy, policy);
 
   return 1;
 }
@@ -173,7 +173,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   PRUISPosterChannelStateCoordinator.invalidate()();
 }
 

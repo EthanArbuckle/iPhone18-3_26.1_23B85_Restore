@@ -1,63 +1,63 @@
 @interface SYMessengerSyncEngine
-- (BOOL)_checkMessageHeader:(id)a3 messageID:(id)a4;
-- (BOOL)resume:(id *)a3;
+- (BOOL)_checkMessageHeader:(id)header messageID:(id)d;
+- (BOOL)resume:(id *)resume;
 - (BOOL)targetConnected;
 - (BOOL)targetIsNearby;
-- (SYMessengerSyncEngine)initWithService:(id)a3 queue:(id)a4;
+- (SYMessengerSyncEngine)initWithService:(id)service queue:(id)queue;
 - (id)_fileTransferHeader;
-- (id)_getRequestHeader:(id)a3;
-- (id)_getResponseHeader:(id)a3;
-- (id)cancelMessagesReturningFailures:(id)a3;
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7;
+- (id)_getRequestHeader:(id)header;
+- (id)_getResponseHeader:(id)header;
+- (id)cancelMessagesReturningFailures:(id)failures;
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error;
 - (id)stateForLogging;
-- (void)_handleError:(id)a3 forMessageID:(unsigned __int16)a4;
+- (void)_handleError:(id)error forMessageID:(unsigned __int16)d;
 - (void)_hookupMessageHandler;
 - (void)_oobDataEnded;
 - (void)_oobDataStarted;
-- (void)_recordLastSeqNo:(id)a3;
+- (void)_recordLastSeqNo:(id)no;
 - (void)_requestEnded;
-- (void)_requestStarted:(unsigned __int16)a3;
+- (void)_requestStarted:(unsigned __int16)started;
 - (void)_responseEnded;
-- (void)_responseStarted:(unsigned __int16)a3;
+- (void)_responseStarted:(unsigned __int16)started;
 - (void)_resumeIncomingMessages;
 - (void)_suspendIncomingMessages;
-- (void)_updateMessageCenterPrefs:(id)a3;
+- (void)_updateMessageCenterPrefs:(id)prefs;
 - (void)beginSession;
-- (void)messageCenter:(id)a3 activeDeviceChanged:(id)a4 acknowledgement:(id)a5;
-- (void)messageCenter:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)messageCenter:(id)a3 didReceiveIncomingFileTransfer:(id)a4;
-- (void)messageCenter:(id)a3 didReceiveUnknownRequest:(id)a4;
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forFileTransfer:(id)a5;
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forResponse:(id)a5;
-- (void)messageCenter:(id)a3 didResolveIDSIdentifierForRequest:(id)a4;
-- (void)messageCenter:(id)a3 didSuccessfullyDeliverRequestWithIdentifier:(id)a4 userInfo:(id)a5;
-- (void)messageCenter:(id)a3 didSuccessfullySendRequestWithIdentifier:(id)a4 userInfo:(id)a5;
-- (void)messageCenter:(id)a3 failedToSendMessageWithIdentifier:(id)a4 error:(id)a5 userInfo:(id)a6;
-- (void)messageCenter:(id)a3 nearbyDevicesChanged:(id)a4;
+- (void)messageCenter:(id)center activeDeviceChanged:(id)changed acknowledgement:(id)acknowledgement;
+- (void)messageCenter:(id)center connectedDevicesChanged:(id)changed;
+- (void)messageCenter:(id)center didReceiveIncomingFileTransfer:(id)transfer;
+- (void)messageCenter:(id)center didReceiveUnknownRequest:(id)request;
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forFileTransfer:(id)transfer;
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forResponse:(id)response;
+- (void)messageCenter:(id)center didResolveIDSIdentifierForRequest:(id)request;
+- (void)messageCenter:(id)center didSuccessfullyDeliverRequestWithIdentifier:(id)identifier userInfo:(id)info;
+- (void)messageCenter:(id)center didSuccessfullySendRequestWithIdentifier:(id)identifier userInfo:(id)info;
+- (void)messageCenter:(id)center failedToSendMessageWithIdentifier:(id)identifier error:(id)error userInfo:(id)info;
+- (void)messageCenter:(id)center nearbyDevicesChanged:(id)changed;
 - (void)suspend;
 @end
 
 @implementation SYMessengerSyncEngine
 
-- (SYMessengerSyncEngine)initWithService:(id)a3 queue:(id)a4
+- (SYMessengerSyncEngine)initWithService:(id)service queue:(id)queue
 {
-  v6 = a3;
+  serviceCopy = service;
   v26.receiver = self;
   v26.super_class = SYMessengerSyncEngine;
-  v7 = [(SYSyncEngine *)&v26 initWithService:v6 queue:a4];
+  v7 = [(SYSyncEngine *)&v26 initWithService:serviceCopy queue:queue];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = [v6 name];
-    v10 = [v9 lastPathComponent];
-    v11 = [v8 initWithFormat:@"%@ SYMessengerSyncEngine IDS Queue", v10];
+    name = [serviceCopy name];
+    lastPathComponent = [name lastPathComponent];
+    v11 = [v8 initWithFormat:@"%@ SYMessengerSyncEngine IDS Queue", lastPathComponent];
 
     relative_priority_ptr = 0;
-    v12 = [(SYSyncEngine *)v7 queue];
-    LODWORD(v10) = dispatch_queue_get_qos_class(v12, &relative_priority_ptr);
+    queue = [(SYSyncEngine *)v7 queue];
+    LODWORD(lastPathComponent) = dispatch_queue_get_qos_class(queue, &relative_priority_ptr);
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_attr_make_with_qos_class(v13, v10, relative_priority_ptr);
+    v14 = dispatch_queue_attr_make_with_qos_class(v13, lastPathComponent, relative_priority_ptr);
 
     v15 = dispatch_queue_create([v11 UTF8String], v14);
     idsQueue = v7->_idsQueue;
@@ -68,9 +68,9 @@
     lookupLock = v7->_lookupLock;
     v7->_lookupLock = v17;
 
-    v19 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     requestLookup = v7->_requestLookup;
-    v7->_requestLookup = v19;
+    v7->_requestLookup = weakToStrongObjectsMapTable;
 
     v21 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:517 valueOptions:0x10000];
     callbackLookup = v7->_callbackLookup;
@@ -85,9 +85,9 @@
 - (BOOL)targetIsNearby
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(SYDevice *)self->_activeDevice hasCachedNearby];
+  hasCachedNearby = [(SYDevice *)self->_activeDevice hasCachedNearby];
   activeDevice = self->_activeDevice;
-  if (v3)
+  if (hasCachedNearby)
   {
     v5 = *MEMORY[0x1E69E9840];
     v6 = self->_activeDevice;
@@ -97,9 +97,9 @@
 
   else
   {
-    v8 = [(NMSMessageCenter *)self->_messageCenter idsService];
-    v9 = [v8 devices];
-    v10 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:v9];
+    idsService = [(NMSMessageCenter *)self->_messageCenter idsService];
+    devices = [idsService devices];
+    v10 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:devices];
 
     if (v10)
     {
@@ -112,9 +112,9 @@
       if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [v10 isNearby];
+        isNearby = [v10 isNearby];
         v14 = "not ";
-        if (v13)
+        if (isNearby)
         {
           v14 = "";
         }
@@ -126,25 +126,25 @@
 
       -[SYDevice setCachedIsNearby:](self->_activeDevice, "setCachedIsNearby:", [v10 isNearby]);
       [(SYDevice *)self->_activeDevice setHasCachedNearby:1];
-      v15 = [v10 isNearby];
+      isNearby2 = [v10 isNearby];
     }
 
     else
     {
-      v15 = 0;
+      isNearby2 = 0;
     }
 
     v16 = *MEMORY[0x1E69E9840];
-    return v15;
+    return isNearby2;
   }
 }
 
 - (BOOL)targetConnected
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(SYDevice *)self->_activeDevice hasCachedConnected];
+  hasCachedConnected = [(SYDevice *)self->_activeDevice hasCachedConnected];
   activeDevice = self->_activeDevice;
-  if (v3)
+  if (hasCachedConnected)
   {
     v5 = *MEMORY[0x1E69E9840];
     v6 = self->_activeDevice;
@@ -154,9 +154,9 @@
 
   else
   {
-    v8 = [(NMSMessageCenter *)self->_messageCenter idsService];
-    v9 = [v8 devices];
-    v10 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:v9];
+    idsService = [(NMSMessageCenter *)self->_messageCenter idsService];
+    devices = [idsService devices];
+    v10 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:devices];
 
     if (v10)
     {
@@ -169,9 +169,9 @@
       if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [v10 isConnected];
+        isConnected = [v10 isConnected];
         v14 = "not ";
-        if (v13)
+        if (isConnected)
         {
           v14 = "";
         }
@@ -183,20 +183,20 @@
 
       -[SYDevice setCachedConnected:](self->_activeDevice, "setCachedConnected:", [v10 isConnected]);
       [(SYDevice *)self->_activeDevice setHasCachedConnected:1];
-      v15 = [v10 isConnected];
+      isConnected2 = [v10 isConnected];
     }
 
     else
     {
-      v15 = 0;
+      isConnected2 = 0;
     }
 
     v16 = *MEMORY[0x1E69E9840];
-    return v15;
+    return isConnected2;
   }
 }
 
-- (BOOL)resume:(id *)a3
+- (BOOL)resume:(id *)resume
 {
   [(SYMessengerSyncEngine *)self _hookupMessageHandler];
   [(NMSMessageCenter *)self->_messageCenter resume];
@@ -205,9 +205,9 @@
   self->_activeDevice = v5;
 
   v7 = self->_activeDevice;
-  if (a3 && !v7)
+  if (resume && !v7)
   {
-    *a3 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2003 userInfo:0];
+    *resume = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2003 userInfo:0];
   }
 
   return v7 != 0;
@@ -226,26 +226,26 @@
   v9.super_class = SYMessengerSyncEngine;
   [(SYSyncEngine *)&v9 beginSession];
   activeDevice = self->_activeDevice;
-  v4 = [(NMSMessageCenter *)self->_messageCenter service];
-  v5 = [v4 devices];
-  v6 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:v5];
+  service = [(NMSMessageCenter *)self->_messageCenter service];
+  devices = [service devices];
+  v6 = [(SYDevice *)activeDevice findMatchingIDSDeviceFromList:devices];
 
   v7 = [(NMSMessageCenter *)self->_messageCenter deviceIDFromDevice:v6];
   sessionDeviceID = self->_sessionDeviceID;
   self->_sessionDeviceID = v7;
 }
 
-- (id)outputStreamWithMetadata:(id)a3 priority:(int64_t)a4 options:(id)a5 context:(id)a6 error:(id *)a7
+- (id)outputStreamWithMetadata:(id)metadata priority:(int64_t)priority options:(id)options context:(id)context error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  contextCopy = context;
   if (!self->_messageCenter)
   {
     _os_assumes_log();
   }
 
-  v15 = [MEMORY[0x1E695DFF8] _SYURLForNewTemporaryFile:a7];
+  v15 = [MEMORY[0x1E695DFF8] _SYURLForNewTemporaryFile:error];
   if (v15)
   {
     v16 = [[SYCompressedFileOutputStream alloc] initToCompressedFileAtURL:v15 shouldAppend:0];
@@ -256,11 +256,11 @@
     v18[3] = &unk_1E86CB360;
     objc_copyWeak(v24, &location);
     v19 = v15;
-    v20 = self;
-    v21 = v13;
-    v22 = v12;
-    v24[1] = a4;
-    v23 = v14;
+    selfCopy = self;
+    v21 = optionsCopy;
+    v22 = metadataCopy;
+    v24[1] = priority;
+    v23 = contextCopy;
     [v16 setOnClose:v18];
 
     objc_destroyWeak(v24);
@@ -362,19 +362,19 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
   }
 }
 
-- (id)cancelMessagesReturningFailures:(id)a3
+- (id)cancelMessagesReturningFailures:(id)failures
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  failuresCopy = failures;
+  if ([failuresCopy count])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(failuresCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v18 = v4;
-    v6 = v4;
+    v18 = failuresCopy;
+    v6 = failuresCopy;
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v7)
     {
@@ -425,12 +425,12 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
       while (v8);
     }
 
-    v4 = v18;
+    failuresCopy = v18;
   }
 
   else
   {
-    v5 = v4;
+    v5 = failuresCopy;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -438,12 +438,12 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
   return v5;
 }
 
-- (void)_requestStarted:(unsigned __int16)a3
+- (void)_requestStarted:(unsigned __int16)started
 {
-  self->_handledRequestID = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
+  self->_handledRequestID = started;
+  date = [MEMORY[0x1E695DF00] date];
   requestStartedDate = self->_requestStartedDate;
-  self->_requestStartedDate = v4;
+  self->_requestStartedDate = date;
 
   requestEndedDate = self->_requestEndedDate;
   self->_requestEndedDate = 0;
@@ -451,19 +451,19 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
 
 - (void)_requestEnded
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   requestEndedDate = self->_requestEndedDate;
-  self->_requestEndedDate = v3;
+  self->_requestEndedDate = date;
 
-  MEMORY[0x1EEE66BB8](v3, requestEndedDate);
+  MEMORY[0x1EEE66BB8](date, requestEndedDate);
 }
 
-- (void)_responseStarted:(unsigned __int16)a3
+- (void)_responseStarted:(unsigned __int16)started
 {
-  self->_handledResponseID = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
+  self->_handledResponseID = started;
+  date = [MEMORY[0x1E695DF00] date];
   responseStartedDate = self->_responseStartedDate;
-  self->_responseStartedDate = v4;
+  self->_responseStartedDate = date;
 
   responseEndedDate = self->_responseEndedDate;
   self->_responseEndedDate = 0;
@@ -471,18 +471,18 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
 
 - (void)_responseEnded
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   responseEndedDate = self->_responseEndedDate;
-  self->_responseEndedDate = v3;
+  self->_responseEndedDate = date;
 
-  MEMORY[0x1EEE66BB8](v3, responseEndedDate);
+  MEMORY[0x1EEE66BB8](date, responseEndedDate);
 }
 
 - (void)_oobDataStarted
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   oobDataStartedDate = self->_oobDataStartedDate;
-  self->_oobDataStartedDate = v3;
+  self->_oobDataStartedDate = date;
 
   oobDataEndedDate = self->_oobDataEndedDate;
   self->_oobDataEndedDate = 0;
@@ -490,11 +490,11 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
 
 - (void)_oobDataEnded
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   oobDataEndedDate = self->_oobDataEndedDate;
-  self->_oobDataEndedDate = v3;
+  self->_oobDataEndedDate = date;
 
-  MEMORY[0x1EEE66BB8](v3, oobDataEndedDate);
+  MEMORY[0x1EEE66BB8](date, oobDataEndedDate);
 }
 
 - (id)stateForLogging
@@ -520,21 +520,21 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
 
 - (id)_fileTransferHeader
 {
-  v2 = [(SYSyncEngine *)self service];
-  v3 = [v2 name];
-  v4 = [SYPersistentStore sharedPersistentStoreForService:v3];
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  v4 = [SYPersistentStore sharedPersistentStoreForService:name];
 
   v5 = objc_opt_new();
   [v5 setTimestamp:CFAbsoluteTimeGetCurrent()];
   v6 = [SYPeer alloc];
-  v7 = [v2 peerID];
-  v8 = [v2 generationID];
-  v9 = [(SYPeer *)v6 initWithPeerID:v7 generation:v8];
+  peerID = [service peerID];
+  generationID = [service generationID];
+  v9 = [(SYPeer *)v6 initWithPeerID:peerID generation:generationID];
   [v5 setSender:v9];
 
   v10 = [SYVectorClock alloc];
-  v11 = [v4 vectorClockJSON];
-  v12 = [(SYVectorClock *)v10 initWithJSONRepresentation:v11];
+  vectorClockJSON = [v4 vectorClockJSON];
+  v12 = [(SYVectorClock *)v10 initWithJSONRepresentation:vectorClockJSON];
   [v5 setState:v12];
 
   [v5 setVersion:2];
@@ -543,61 +543,61 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
   return v5;
 }
 
-- (void)_updateMessageCenterPrefs:(id)a3
+- (void)_updateMessageCenterPrefs:(id)prefs
 {
-  v11 = a3;
-  v4 = [v11 objectForKeyedSubscript:@"EnableTransmitWindow"];
+  prefsCopy = prefs;
+  v4 = [prefsCopy objectForKeyedSubscript:@"EnableTransmitWindow"];
   v5 = v4;
   if (!v4 || [v4 BOOLValue])
   {
     [(NMSMessageCenter *)self->_messageCenter setEnableTransmissionWindow:1];
-    v6 = [v11 objectForKeyedSubscript:@"MaxMessagesInFlight"];
+    v6 = [prefsCopy objectForKeyedSubscript:@"MaxMessagesInFlight"];
 
     if (v6)
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = 20;
+      unsignedIntegerValue = 20;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMaxMessagesInFlight:v7];
-    v8 = [v11 objectForKeyedSubscript:@"MinMessagesInFlight"];
+    [(NMSMessageCenter *)self->_messageCenter setMaxMessagesInFlight:unsignedIntegerValue];
+    v8 = [prefsCopy objectForKeyedSubscript:@"MinMessagesInFlight"];
 
     if (v8)
     {
-      v9 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v8 unsignedIntegerValue];
     }
 
     else
     {
-      v9 = 10;
+      unsignedIntegerValue2 = 10;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMinMessagesInFlight:v9];
-    v5 = [v11 objectForKeyedSubscript:@"MaxBytesInFlight"];
+    [(NMSMessageCenter *)self->_messageCenter setMinMessagesInFlight:unsignedIntegerValue2];
+    v5 = [prefsCopy objectForKeyedSubscript:@"MaxBytesInFlight"];
 
     if (v5)
     {
-      v10 = [v5 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v5 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 1000000;
+      unsignedIntegerValue3 = 1000000;
     }
 
-    [(NMSMessageCenter *)self->_messageCenter setMaxBytesInFlight:v10];
+    [(NMSMessageCenter *)self->_messageCenter setMaxBytesInFlight:unsignedIntegerValue3];
   }
 }
 
 - (void)_suspendIncomingMessages
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   queueSuspendedDate = self->_queueSuspendedDate;
-  self->_queueSuspendedDate = v3;
+  self->_queueSuspendedDate = date;
 
   queueResumedDate = self->_queueResumedDate;
   self->_queueResumedDate = 0;
@@ -609,9 +609,9 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
 
 - (void)_resumeIncomingMessages
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   queueResumedDate = self->_queueResumedDate;
-  self->_queueResumedDate = v3;
+  self->_queueResumedDate = date;
 
   messageCenter = self->_messageCenter;
 
@@ -633,17 +633,17 @@ void __81__SYMessengerSyncEngine_outputStreamWithMetadata_priority_options_conte
   }
 
   v4 = [NMSMessageCenter alloc];
-  v5 = [(SYSyncEngine *)self service];
-  v6 = [v5 name];
-  v7 = [(NMSMessageCenter *)v4 initWithIDSServiceIdentifier:v6];
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  v7 = [(NMSMessageCenter *)v4 initWithIDSServiceIdentifier:name];
   messageCenter = self->_messageCenter;
   self->_messageCenter = v7;
 
-  v9 = [(SYSyncEngine *)self transportActivity];
-  [(NMSMessageCenter *)self->_messageCenter setTransportActivity:v9];
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  [(NMSMessageCenter *)self->_messageCenter setTransportActivity:transportActivity];
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v11 = [v10 persistentDomainForName:@"com.apple.companionsync"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v11 = [standardUserDefaults persistentDomainForName:@"com.apple.companionsync"];
 
   [(SYMessengerSyncEngine *)self _updateMessageCenterPrefs:v11];
   v12 = self->_messageCenter;
@@ -1108,44 +1108,44 @@ void __46__SYMessengerSyncEngine__hookupMessageHandler__block_invoke_2_87(uint64
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getRequestHeader:(id)a3
+- (id)_getRequestHeader:(id)header
 {
-  v3 = [a3 pbRequest];
-  v4 = [v3 header];
+  pbRequest = [header pbRequest];
+  header = [pbRequest header];
 
-  return v4;
+  return header;
 }
 
-- (id)_getResponseHeader:(id)a3
+- (id)_getResponseHeader:(id)header
 {
-  v3 = [a3 pbResponse];
-  v4 = [v3 header];
+  pbResponse = [header pbResponse];
+  header = [pbResponse header];
 
-  return v4;
+  return header;
 }
 
-- (BOOL)_checkMessageHeader:(id)a3 messageID:(id)a4
+- (BOOL)_checkMessageHeader:(id)header messageID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SYSyncEngine *)self responder];
-  v9 = [v8 willAcceptMessageWithHeader:v7 messageID:v6];
+  dCopy = d;
+  headerCopy = header;
+  responder = [(SYSyncEngine *)self responder];
+  v9 = [responder willAcceptMessageWithHeader:headerCopy messageID:dCopy];
 
   return v9;
 }
 
-- (void)_recordLastSeqNo:(id)a3
+- (void)_recordLastSeqNo:(id)no
 {
-  v4 = a3;
-  v5 = [(SYSyncEngine *)self service];
-  v6 = [v5 name];
-  v7 = [SYPersistentStore sharedPersistentStoreForService:v6];
-  v8 = [v4 sequenceNumber];
-  v9 = [v4 sender];
+  noCopy = no;
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  v7 = [SYPersistentStore sharedPersistentStoreForService:name];
+  sequenceNumber = [noCopy sequenceNumber];
+  sender = [noCopy sender];
 
-  v10 = [v9 peerID];
+  peerID = [sender peerID];
   v14 = 0;
-  v11 = [v7 setLastSequenceNumber:v8 fromPeer:v10 error:&v14];
+  v11 = [v7 setLastSequenceNumber:sequenceNumber fromPeer:peerID error:&v14];
   v12 = v14;
 
   if ((v11 & 1) == 0)
@@ -1163,30 +1163,30 @@ void __46__SYMessengerSyncEngine__hookupMessageHandler__block_invoke_2_87(uint64
   }
 }
 
-- (void)_handleError:(id)a3 forMessageID:(unsigned __int16)a4
+- (void)_handleError:(id)error forMessageID:(unsigned __int16)d
 {
-  v12 = a3;
-  v5 = [v12 idsIdentifier];
-  v6 = [v12 domain];
-  v7 = [v6 isEqualToString:@"NMSErrorDomain"];
+  errorCopy = error;
+  idsIdentifier = [errorCopy idsIdentifier];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:@"NMSErrorDomain"];
 
-  if (v7 && [v12 code] == 7)
+  if (v7 && [errorCopy code] == 7)
   {
     v8 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v9 = [v12 userInfo];
-    v10 = [v8 initWithSYError:2019 userInfo:v9];
+    userInfo = [errorCopy userInfo];
+    v10 = [v8 initWithSYError:2019 userInfo:userInfo];
 
-    v12 = v10;
+    errorCopy = v10;
   }
 
-  v11 = [(SYSyncEngine *)self responder];
-  [v11 handleSyncError:v12 forMessageWithIdentifier:v5];
+  responder = [(SYSyncEngine *)self responder];
+  [responder handleSyncError:errorCopy forMessageWithIdentifier:idsIdentifier];
 }
 
-- (void)messageCenter:(id)a3 didReceiveUnknownRequest:(id)a4
+- (void)messageCenter:(id)center didReceiveUnknownRequest:(id)request
 {
-  v5 = a3;
-  v6 = a4;
+  centerCopy = center;
+  requestCopy = request;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1199,11 +1199,11 @@ void __46__SYMessengerSyncEngine__hookupMessageHandler__block_invoke_2_87(uint64
   }
 }
 
-- (void)messageCenter:(id)a3 didReceiveIncomingFileTransfer:(id)a4
+- (void)messageCenter:(id)center didReceiveIncomingFileTransfer:(id)transfer
 {
-  v5 = a4;
-  v6 = [v5 fileURL];
-  v7 = [v5 metadata];
+  transferCopy = transfer;
+  fileURL = [transferCopy fileURL];
+  metadata = [transferCopy metadata];
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1215,8 +1215,8 @@ void __46__SYMessengerSyncEngine__hookupMessageHandler__block_invoke_2_87(uint64
     [SYMessengerSyncEngine messageCenter:v8 didReceiveIncomingFileTransfer:?];
   }
 
-  v9 = [(SYSyncEngine *)self responder];
-  [v9 handleFileTransfer:v6 metadata:v7 completion:&__block_literal_global_11];
+  responder = [(SYSyncEngine *)self responder];
+  [responder handleFileTransfer:fileURL metadata:metadata completion:&__block_literal_global_11];
 }
 
 void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___block_invoke(uint64_t a1, char a2, void *a3)
@@ -1236,17 +1236,17 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   }
 }
 
-- (void)messageCenter:(id)a3 didResolveIDSIdentifierForRequest:(id)a4
+- (void)messageCenter:(id)center didResolveIDSIdentifierForRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v6 = +[SYStatisticStore sharedInstance];
-  v7 = [v5 idsIdentifier];
-  [v6 assignIdentifier:v7 toOutgoingMessage:v5];
+  idsIdentifier = [requestCopy idsIdentifier];
+  [v6 assignIdentifier:idsIdentifier toOutgoingMessage:requestCopy];
 
-  v8 = [(SYSyncEngine *)self responder];
-  v9 = [v5 idsIdentifier];
-  v10 = [v5 persistentUserInfo];
-  [v8 enqueuedMessageWithID:v9 context:v10];
+  responder = [(SYSyncEngine *)self responder];
+  idsIdentifier2 = [requestCopy idsIdentifier];
+  persistentUserInfo = [requestCopy persistentUserInfo];
+  [responder enqueuedMessageWithID:idsIdentifier2 context:persistentUserInfo];
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -1256,17 +1256,17 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   v11 = qword_1EDE73458;
   if (os_log_type_enabled(qword_1EDE73458, OS_LOG_TYPE_DEBUG))
   {
-    [SYMessengerSyncEngine messageCenter:v11 didResolveIDSIdentifierForRequest:v5];
+    [SYMessengerSyncEngine messageCenter:v11 didResolveIDSIdentifierForRequest:requestCopy];
   }
 
   dispatch_semaphore_wait(self->_lookupLock, 0xFFFFFFFFFFFFFFFFLL);
-  v12 = [(NSMapTable *)self->_callbackLookup objectForKey:v5];
+  v12 = [(NSMapTable *)self->_callbackLookup objectForKey:requestCopy];
   if (v12)
   {
-    [(NSMapTable *)self->_callbackLookup removeObjectForKey:v5];
+    [(NSMapTable *)self->_callbackLookup removeObjectForKey:requestCopy];
     dispatch_semaphore_signal(self->_lookupLock);
-    v13 = [v5 idsIdentifier];
-    (v12)[2](v12, 1, v13, 0);
+    idsIdentifier3 = [requestCopy idsIdentifier];
+    (v12)[2](v12, 1, idsIdentifier3, 0);
   }
 
   else
@@ -1275,11 +1275,11 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   }
 }
 
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forResponse:(id)a5
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forResponse:(id)response
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 request];
+  identifierCopy = identifier;
+  responseCopy = response;
+  request = [responseCopy request];
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1288,24 +1288,24 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   v10 = qword_1EDE73458;
   if (os_log_type_enabled(qword_1EDE73458, OS_LOG_TYPE_DEBUG))
   {
-    [SYMessengerSyncEngine messageCenter:v10 didResolveIDSIdentifier:v9 forResponse:v7];
+    [SYMessengerSyncEngine messageCenter:v10 didResolveIDSIdentifier:request forResponse:identifierCopy];
   }
 
   v11 = +[SYStatisticStore sharedInstance];
-  [v11 assignIdentifier:v7 toOutgoingMessage:v8];
+  [v11 assignIdentifier:identifierCopy toOutgoingMessage:responseCopy];
 
-  v12 = [(SYSyncEngine *)self responder];
-  v13 = [v8 persistentUserInfo];
+  responder = [(SYSyncEngine *)self responder];
+  persistentUserInfo = [responseCopy persistentUserInfo];
 
-  [v12 enqueuedMessageWithID:v7 context:v13];
+  [responder enqueuedMessageWithID:identifierCopy context:persistentUserInfo];
 }
 
-- (void)messageCenter:(id)a3 didResolveIDSIdentifier:(id)a4 forFileTransfer:(id)a5
+- (void)messageCenter:(id)center didResolveIDSIdentifier:(id)identifier forFileTransfer:(id)transfer
 {
-  v6 = a4;
-  v7 = a5;
+  identifierCopy = identifier;
+  transferCopy = transfer;
   v8 = +[SYStatisticStore sharedInstance];
-  [v8 assignIdentifier:v6 toOutgoingMessage:v7];
+  [v8 assignIdentifier:identifierCopy toOutgoingMessage:transferCopy];
 
   if (_sync_log_facilities_pred != -1)
   {
@@ -1318,12 +1318,12 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   }
 }
 
-- (void)messageCenter:(id)a3 didSuccessfullySendRequestWithIdentifier:(id)a4 userInfo:(id)a5
+- (void)messageCenter:(id)center didSuccessfullySendRequestWithIdentifier:(id)identifier userInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  identifierCopy = identifier;
+  infoCopy = info;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1343,24 +1343,24 @@ void __70__SYMessengerSyncEngine_messageCenter_didReceiveIncomingFileTransfer___
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v9;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1DF835000, v11, OS_LOG_TYPE_DEFAULT, "dataIdentifier: %{public}@ didSendWithSuccess: YES error: nil", buf, 0xCu);
   }
 
   v12 = +[SYStatisticStore sharedInstance];
-  [v12 confirmDeliveryOfOutgoingMessage:v9];
+  [v12 confirmDeliveryOfOutgoingMessage:identifierCopy];
 
-  v13 = [(SYSyncEngine *)self queue];
+  queue = [(SYSyncEngine *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__SYMessengerSyncEngine_messageCenter_didSuccessfullySendRequestWithIdentifier_userInfo___block_invoke;
   block[3] = &unk_1E86CA0F8;
   block[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v13, block);
+  v18 = identifierCopy;
+  v19 = infoCopy;
+  v14 = infoCopy;
+  v15 = identifierCopy;
+  dispatch_async(queue, block);
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1371,12 +1371,12 @@ void __89__SYMessengerSyncEngine_messageCenter_didSuccessfullySendRequestWithIde
   [v2 sentMessageWithID:*(a1 + 40) context:*(a1 + 48)];
 }
 
-- (void)messageCenter:(id)a3 didSuccessfullyDeliverRequestWithIdentifier:(id)a4 userInfo:(id)a5
+- (void)messageCenter:(id)center didSuccessfullyDeliverRequestWithIdentifier:(id)identifier userInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  identifierCopy = identifier;
+  infoCopy = info;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1396,24 +1396,24 @@ void __89__SYMessengerSyncEngine_messageCenter_didSuccessfullySendRequestWithIde
   if (os_log_type_enabled(qword_1EDE73428, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v9;
+    v21 = identifierCopy;
     _os_log_impl(&dword_1DF835000, v11, OS_LOG_TYPE_DEFAULT, "Remote delivery confirmation for %{public}@", buf, 0xCu);
   }
 
   v12 = +[SYStatisticStore sharedInstance];
-  [v12 confirmDeliveryOfOutgoingMessage:v9];
+  [v12 confirmDeliveryOfOutgoingMessage:identifierCopy];
 
-  v13 = [(SYSyncEngine *)self queue];
+  queue = [(SYSyncEngine *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__SYMessengerSyncEngine_messageCenter_didSuccessfullyDeliverRequestWithIdentifier_userInfo___block_invoke;
   block[3] = &unk_1E86CA0F8;
   block[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v13, block);
+  v18 = identifierCopy;
+  v19 = infoCopy;
+  v14 = infoCopy;
+  v15 = identifierCopy;
+  dispatch_async(queue, block);
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1424,12 +1424,12 @@ void __92__SYMessengerSyncEngine_messageCenter_didSuccessfullyDeliverRequestWith
   [v2 deliveredMessageWithID:*(a1 + 40) context:*(a1 + 48)];
 }
 
-- (void)messageCenter:(id)a3 failedToSendMessageWithIdentifier:(id)a4 error:(id)a5 userInfo:(id)a6
+- (void)messageCenter:(id)center failedToSendMessageWithIdentifier:(id)identifier error:(id)error userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  centerCopy = center;
+  identifierCopy = identifier;
+  errorCopy = error;
+  infoCopy = info;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1448,25 +1448,25 @@ void __92__SYMessengerSyncEngine_messageCenter_didSuccessfullyDeliverRequestWith
   v14 = qword_1EDE73458;
   if (os_log_type_enabled(qword_1EDE73458, OS_LOG_TYPE_DEBUG))
   {
-    [SYMessengerSyncEngine messageCenter:v11 failedToSendMessageWithIdentifier:v14 error:v12 userInfo:?];
+    [SYMessengerSyncEngine messageCenter:identifierCopy failedToSendMessageWithIdentifier:v14 error:errorCopy userInfo:?];
   }
 
   v15 = +[SYStatisticStore sharedInstance];
-  v16 = [(SYSyncEngine *)self service];
-  v17 = [v16 name];
-  [v15 updateOutgoingMessageWithIdentifier:v11 forService:v17 sentSuccessfully:0 sendError:v12];
+  service = [(SYSyncEngine *)self service];
+  name = [service name];
+  [v15 updateOutgoingMessageWithIdentifier:identifierCopy forService:name sentSuccessfully:0 sendError:errorCopy];
 
-  v18 = [(SYSyncEngine *)self queue];
+  queue = [(SYSyncEngine *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier_error_userInfo___block_invoke;
   block[3] = &unk_1E86CA0F8;
   block[4] = self;
-  v22 = v12;
-  v23 = v11;
-  v19 = v11;
-  v20 = v12;
-  dispatch_async(v18, block);
+  v22 = errorCopy;
+  v23 = identifierCopy;
+  v19 = identifierCopy;
+  v20 = errorCopy;
+  dispatch_async(queue, block);
 }
 
 void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier_error_userInfo___block_invoke(uint64_t a1)
@@ -1475,12 +1475,12 @@ void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier
   [v2 handleSyncError:*(a1 + 40) forMessageWithIdentifier:*(a1 + 48)];
 }
 
-- (void)messageCenter:(id)a3 activeDeviceChanged:(id)a4 acknowledgement:(id)a5
+- (void)messageCenter:(id)center activeDeviceChanged:(id)changed acknowledgement:(id)acknowledgement
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  changedCopy = changed;
+  acknowledgementCopy = acknowledgement;
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -1493,27 +1493,27 @@ void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier
     v16 = 138412546;
     v17 = activeDevice;
     v18 = 2112;
-    v19 = v9;
+    v19 = changedCopy;
     _os_log_impl(&dword_1DF835000, v11, OS_LOG_TYPE_DEFAULT, "Active IDS device changed. Old = %@, new = %@", &v16, 0x16u);
   }
 
-  v13 = [SYDevice deviceForIDSDevice:v9];
+  v13 = [SYDevice deviceForIDSDevice:changedCopy];
   v14 = self->_activeDevice;
   self->_activeDevice = v13;
 
-  v10[2](v10);
+  acknowledgementCopy[2](acknowledgementCopy);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageCenter:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)messageCenter:(id)center nearbyDevicesChanged:(id)changed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  changedCopy = changed;
   v8 = [(SYSyncEngine *)self transportActivity:0];
   os_activity_scope_enter(v8, &v14);
 
-  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:v7];
+  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:changedCopy];
 
   if (![(SYDevice *)self->_activeDevice hasCachedNearby]|| (((v9 != 0) ^ [(SYDevice *)self->_activeDevice cachedIsNearby]) & 1) != 0)
   {
@@ -1538,8 +1538,8 @@ void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier
       _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, "Target device %s proximity", buf, 0xCu);
     }
 
-    v12 = [(SYSyncEngine *)self responder];
-    [v12 currentDeviceProximityChanged:v9 != 0];
+    responder = [(SYSyncEngine *)self responder];
+    [responder currentDeviceProximityChanged:v9 != 0];
   }
 
   os_activity_scope_leave(&v14);
@@ -1547,16 +1547,16 @@ void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)messageCenter:(id)a3 connectedDevicesChanged:(id)a4
+- (void)messageCenter:(id)center connectedDevicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  changedCopy = changed;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v8 = [(SYSyncEngine *)self transportActivity];
-  os_activity_scope_enter(v8, &state);
+  transportActivity = [(SYSyncEngine *)self transportActivity];
+  os_activity_scope_enter(transportActivity, &state);
 
-  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:v7];
+  v9 = [(SYDevice *)self->_activeDevice findMatchingIDSDeviceFromList:changedCopy];
 
   if (![(SYDevice *)self->_activeDevice hasCachedConnected]|| (((v9 != 0) ^ [(SYDevice *)self->_activeDevice cachedConnected]) & 1) != 0)
   {
@@ -1598,8 +1598,8 @@ void __88__SYMessengerSyncEngine_messageCenter_failedToSendMessageWithIdentifier
 
     _os_log_impl(&dword_1DF835000, v10, OS_LOG_TYPE_DEFAULT, v11, v13, 2u);
 LABEL_13:
-    v12 = [(SYSyncEngine *)self responder];
-    [v12 currentDeviceConnectionChanged:v9 != 0];
+    responder = [(SYSyncEngine *)self responder];
+    [responder currentDeviceConnectionChanged:v9 != 0];
   }
 
   os_activity_scope_leave(&state);

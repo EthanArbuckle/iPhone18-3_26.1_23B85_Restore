@@ -1,12 +1,12 @@
 @interface WLWiFiManager
 - (WLWiFiManager)init;
 - (id)createDeviceClient;
-- (void)_preferredChannel:(__WiFiDeviceClient *)a3 network:(__WiFiNetwork *)a4 channels:(id)a5 completion:(id)a6;
-- (void)currentNetwork:(__WiFiDeviceClient *)a3 channels:(id)a4 completion:(id)a5;
+- (void)_preferredChannel:(__WiFiDeviceClient *)channel network:(__WiFiNetwork *)network channels:(id)channels completion:(id)completion;
+- (void)currentNetwork:(__WiFiDeviceClient *)network channels:(id)channels completion:(id)completion;
 - (void)dealloc;
 - (void)disable;
 - (void)enable;
-- (void)scanNetwork:(id)a3;
+- (void)scanNetwork:(id)network;
 @end
 
 @implementation WLWiFiManager
@@ -102,10 +102,10 @@ LABEL_9:
   return Count;
 }
 
-- (void)scanNetwork:(id)a3
+- (void)scanNetwork:(id)network
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networkCopy = network;
   [(WLWiFiManager *)self ref];
   Device = WiFiManagerClientGetDevice();
   if (Device)
@@ -127,7 +127,7 @@ LABEL_9:
     v12[3] = &unk_279EB6418;
     objc_copyWeak(v14, &location);
     v14[1] = v6;
-    v8 = v4;
+    v8 = networkCopy;
     v13 = v8;
     v9 = MEMORY[0x2743DF630](v12);
     v10 = MEMORY[0x2743DF630]();
@@ -149,9 +149,9 @@ LABEL_9:
   else
   {
     _WLLog();
-    if (v4)
+    if (networkCopy)
     {
-      (*(v4 + 2))(v4, 1);
+      (*(networkCopy + 2))(networkCopy, 1);
     }
   }
 
@@ -165,27 +165,27 @@ void __29__WLWiFiManager_scanNetwork___block_invoke(uint64_t a1, void *a2)
   [WeakRetained currentNetwork:*(a1 + 48) channels:v3 completion:*(a1 + 32)];
 }
 
-- (void)currentNetwork:(__WiFiDeviceClient *)a3 channels:(id)a4 completion:(id)a5
+- (void)currentNetwork:(__WiFiDeviceClient *)network channels:(id)channels completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  channelsCopy = channels;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke;
   v15[3] = &unk_279EB6440;
   objc_copyWeak(v18, &location);
-  v18[1] = a3;
-  v10 = v8;
+  v18[1] = network;
+  v10 = channelsCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = completionCopy;
   v17 = v11;
   v12 = MEMORY[0x2743DF630](v15);
   v13 = MEMORY[0x277D85CD0];
   v14 = MEMORY[0x2743DF630](v12);
-  LODWORD(a3) = WiFiDeviceClientCopyCurrentNetworkAsync();
+  LODWORD(network) = WiFiDeviceClientCopyCurrentNetworkAsync();
 
-  if (a3)
+  if (network)
   {
     _WLLog();
     if (v11)
@@ -204,21 +204,21 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
   [WeakRetained _preferredChannel:*(a1 + 56) network:a2 channels:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)_preferredChannel:(__WiFiDeviceClient *)a3 network:(__WiFiNetwork *)a4 channels:(id)a5 completion:(id)a6
+- (void)_preferredChannel:(__WiFiDeviceClient *)channel network:(__WiFiNetwork *)network channels:(id)channels completion:(id)completion
 {
   v101 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v74 = a6;
+  channelsCopy = channels;
+  completionCopy = completion;
   v9 = WiFiNetworkGetChannel();
   v73 = v9;
-  if (a4)
+  if (network)
   {
-    v83 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v83 = -1;
+    integerValue = -1;
   }
 
   v77 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -229,7 +229,7 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
   v76 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v10 = WiFiDeviceClientCopyProperty();
   v11 = WiFiDeviceClientCopyProperty();
-  v78 = v8;
+  v78 = channelsCopy;
   if (v11)
   {
     v84 = v10;
@@ -275,7 +275,7 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
     }
 
     CFRelease(obj);
-    v8 = v78;
+    channelsCopy = v78;
     v10 = v84;
   }
 
@@ -318,9 +318,9 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
       v25 = *(*(&v90 + 1) + 8 * j);
       v26 = [v25 objectForKeyedSubscript:{v21, v70, v71, v72}];
       v27 = [v25 objectForKeyedSubscript:@"SUP_CHANNEL_FLAGS"];
-      v28 = [v27 unsignedIntegerValue];
-      v29 = v28;
-      v30 = (v28 & 0x100 | (v28 >> 7) & 1) ^ 1;
+      unsignedIntegerValue = [v27 unsignedIntegerValue];
+      v29 = unsignedIntegerValue;
+      v30 = (unsignedIntegerValue & 0x100 | (unsignedIntegerValue >> 7) & 1) ^ 1;
       v31 = [v89 containsObject:v26];
       v32 = v30 | [v88 containsObject:v26] | v31;
       v70 = v26;
@@ -330,26 +330,26 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
       if (!v32)
       {
         v33 = v21;
-        v34 = [v26 integerValue];
-        v35 = v34;
-        if ((v29 & 8) == 0 || ((v34 - 15) >= 0xFFFFFFFFFFFFFFF2 ? (v36 = v34 == v83) : (v36 = 1), v36))
+        integerValue2 = [v26 integerValue];
+        v35 = integerValue2;
+        if ((v29 & 8) == 0 || ((integerValue2 - 15) >= 0xFFFFFFFFFFFFFFF2 ? (v36 = integerValue2 == integerValue) : (v36 = 1), v36))
         {
           v22 = v24;
-          if ((v29 & 0x10) == 0 || ((v34 - 178) >= 0xFFFFFFFFFFFFFF6ELL ? (v42 = v34 == v83) : (v42 = 1), v42))
+          if ((v29 & 0x10) == 0 || ((integerValue2 - 178) >= 0xFFFFFFFFFFFFFF6ELL ? (v42 = integerValue2 == integerValue) : (v42 = 1), v42))
           {
             v21 = v33;
             goto LABEL_48;
           }
 
           v43 = v80;
-          if (v80 <= v34)
+          if (v80 <= integerValue2)
           {
-            v43 = v34;
+            v43 = integerValue2;
           }
 
           v80 = v43;
-          v39 = [v8 objectForKey:v26];
-          v44 = [v8 objectForKey:v26];
+          v39 = [channelsCopy objectForKey:v26];
+          v44 = [channelsCopy objectForKey:v26];
 
           v45 = *(v24 + 2992);
           if (v44)
@@ -365,19 +365,19 @@ void __52__WLWiFiManager_currentNetwork_channels_completion___block_invoke(uint6
             [v75 addObject:v40];
           }
 
-          v8 = v78;
+          channelsCopy = v78;
         }
 
         else
         {
           v37 = v82;
-          if (v82 <= v34)
+          if (v82 <= integerValue2)
           {
-            v37 = v34;
+            v37 = integerValue2;
           }
 
           v82 = v37;
-          v38 = [v8 objectForKey:v26];
+          v38 = [channelsCopy objectForKey:v26];
           v39 = v38;
           if (v38)
           {
@@ -417,52 +417,52 @@ LABEL_54:
   v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
 
   v51 = [v77 sortedArrayUsingDescriptors:v50];
-  v52 = [v51 firstObject];
-  v53 = [v52 integerValue];
+  firstObject = [v51 firstObject];
+  integerValue3 = [firstObject integerValue];
 
   v54 = [v75 sortedArrayUsingDescriptors:v50];
-  v55 = [v54 firstObject];
-  v56 = [v55 integerValue];
+  firstObject2 = [v54 firstObject];
+  integerValue4 = [firstObject2 integerValue];
 
   v57 = [v79 keysSortedByValueUsingComparator:&__block_literal_global_11];
-  v58 = [v57 firstObject];
-  v59 = [v58 integerValue];
+  firstObject3 = [v57 firstObject];
+  integerValue5 = [firstObject3 integerValue];
 
   v60 = [v79 keysSortedByValueUsingComparator:&__block_literal_global_76];
-  v61 = [v60 firstObject];
-  v62 = [v61 integerValue];
+  firstObject4 = [v60 firstObject];
+  integerValue6 = [firstObject4 integerValue];
 
-  if (v59 <= 0)
+  if (integerValue5 <= 0)
   {
     v63 = v48;
   }
 
   else
   {
-    v63 = v59;
+    v63 = integerValue5;
   }
 
-  if (v53 > 0)
+  if (integerValue3 > 0)
   {
-    v63 = v53;
+    v63 = integerValue3;
   }
 
-  if (v62 <= 0)
+  if (integerValue6 <= 0)
   {
     v64 = v47;
   }
 
   else
   {
-    v64 = v62;
+    v64 = integerValue6;
   }
 
-  if (v56 > 0)
+  if (integerValue4 > 0)
   {
-    v64 = v56;
+    v64 = integerValue4;
   }
 
-  if (v83 <= 0)
+  if (integerValue <= 0)
   {
     if (v63 <= 1)
     {
@@ -480,16 +480,16 @@ LABEL_54:
     }
 
     v65 = v78;
-    v66 = v74;
+    v66 = completionCopy;
   }
 
   else
   {
     v65 = v78;
-    v66 = v74;
-    if (v83 > 0xE)
+    v66 = completionCopy;
+    if (integerValue > 0xE)
     {
-      if (v63 <= 0 || (v83 - 32) >= 0x92)
+      if (v63 <= 0 || (integerValue - 32) >= 0x92)
       {
         v67 = 1;
       }

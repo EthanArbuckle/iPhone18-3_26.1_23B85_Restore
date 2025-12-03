@@ -1,46 +1,46 @@
 @interface HFStaticItem
 + (id)emptyItem;
-- (HFStaticItem)initWithResults:(id)a3;
-- (HFStaticItem)initWithResultsAndItemBlock:(id)a3;
-- (HFStaticItem)initWithResultsBlock:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFStaticItem)initWithResults:(id)results;
+- (HFStaticItem)initWithResultsAndItemBlock:(id)block;
+- (HFStaticItem)initWithResultsBlock:(id)block;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFStaticItem
 
 + (id)emptyItem
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithResults:MEMORY[0x277CBEC10]];
 
   return v3;
 }
 
-- (HFStaticItem)initWithResults:(id)a3
+- (HFStaticItem)initWithResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = HFStaticItem;
   v6 = [(HFStaticItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_staticResults, a3);
+    objc_storeStrong(&v6->_staticResults, results);
   }
 
   return v7;
 }
 
-- (HFStaticItem)initWithResultsBlock:(id)a3
+- (HFStaticItem)initWithResultsBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = HFStaticItem;
   v5 = [(HFStaticItem *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     resultsBlock = v5->_resultsBlock;
     v5->_resultsBlock = v6;
   }
@@ -48,15 +48,15 @@
   return v5;
 }
 
-- (HFStaticItem)initWithResultsAndItemBlock:(id)a3
+- (HFStaticItem)initWithResultsAndItemBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = HFStaticItem;
   v5 = [(HFStaticItem *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     resultsAndItemBlock = v5->_resultsAndItemBlock;
     v5->_resultsAndItemBlock = v6;
   }
@@ -64,33 +64,33 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(HFStaticItem *)self staticResults];
+  staticResults = [(HFStaticItem *)self staticResults];
 
-  if (v5)
+  if (staticResults)
   {
     v6 = objc_alloc(objc_opt_class());
-    v7 = [(HFStaticItem *)self staticResults];
-    v8 = [v7 copy];
+    staticResults2 = [(HFStaticItem *)self staticResults];
+    v8 = [staticResults2 copy];
     v9 = [v6 initWithResults:v8];
   }
 
   else
   {
-    v10 = [(HFStaticItem *)self resultsBlock];
+    resultsBlock = [(HFStaticItem *)self resultsBlock];
 
-    if (!v10)
+    if (!resultsBlock)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"HFStaticItem.m" lineNumber:70 description:{@"HFStaticItem should have either staticResults or a resultsBlock, but it has neither"}];
+      staticResults2 = [MEMORY[0x277CCA890] currentHandler];
+      [staticResults2 handleFailureInMethod:a2 object:self file:@"HFStaticItem.m" lineNumber:70 description:{@"HFStaticItem should have either staticResults or a resultsBlock, but it has neither"}];
       v12 = 0;
       goto LABEL_6;
     }
 
     v11 = objc_alloc(objc_opt_class());
-    v7 = [(HFStaticItem *)self resultsBlock];
-    v8 = [v7 copy];
+    staticResults2 = [(HFStaticItem *)self resultsBlock];
+    v8 = [staticResults2 copy];
     v9 = [v11 initWithResultsBlock:v8];
   }
 
@@ -101,26 +101,26 @@ LABEL_6:
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HFStaticItem *)self staticResults];
+  staticResults = [(HFStaticItem *)self staticResults];
 
-  if (v4)
+  if (staticResults)
   {
     v5 = MEMORY[0x277D2C900];
-    v6 = [(HFStaticItem *)self staticResults];
-    v7 = [HFItemUpdateOutcome outcomeWithResults:v6];
+    staticResults2 = [(HFStaticItem *)self staticResults];
+    v7 = [HFItemUpdateOutcome outcomeWithResults:staticResults2];
     v8 = [v5 futureWithResult:v7];
 
     goto LABEL_8;
   }
 
-  v9 = [(HFStaticItem *)self resultsAndItemBlock];
+  resultsAndItemBlock = [(HFStaticItem *)self resultsAndItemBlock];
 
-  if (v9)
+  if (resultsAndItemBlock)
   {
-    v6 = [(HFStaticItem *)self resultsAndItemBlock];
-    v10 = (v6)[2](v6, self);
+    staticResults2 = [(HFStaticItem *)self resultsAndItemBlock];
+    v10 = (staticResults2)[2](staticResults2, self);
     v11 = v10;
     v12 = &__block_literal_global_14;
 LABEL_7:
@@ -129,20 +129,20 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v13 = [(HFStaticItem *)self resultsBlock];
+  resultsBlock = [(HFStaticItem *)self resultsBlock];
 
-  if (v13)
+  if (resultsBlock)
   {
-    v6 = [(HFStaticItem *)self resultsBlock];
-    v10 = (v6[2])();
+    staticResults2 = [(HFStaticItem *)self resultsBlock];
+    v10 = (staticResults2[2])();
     v11 = v10;
     v12 = &__block_literal_global_8;
     goto LABEL_7;
   }
 
   v15 = MEMORY[0x277D2C900];
-  v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-  v8 = [v15 futureWithError:v6];
+  staticResults2 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
+  v8 = [v15 futureWithError:staticResults2];
 LABEL_8:
 
   return v8;

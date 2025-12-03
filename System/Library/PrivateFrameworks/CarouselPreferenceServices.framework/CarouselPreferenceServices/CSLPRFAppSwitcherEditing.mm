@@ -1,19 +1,19 @@
 @interface CSLPRFAppSwitcherEditing
-+ (void)logAppSwitcherEditingAction:(unint64_t)a3 fromSource:(unint64_t)a4;
++ (void)logAppSwitcherEditingAction:(unint64_t)action fromSource:(unint64_t)source;
 @end
 
 @implementation CSLPRFAppSwitcherEditing
 
-+ (void)logAppSwitcherEditingAction:(unint64_t)a3 fromSource:(unint64_t)a4
++ (void)logAppSwitcherEditingAction:(unint64_t)action fromSource:(unint64_t)source
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v4 = @"gizmoSettings";
-  if (!a4)
+  if (!source)
   {
     v4 = @"gizmoSwitcher";
   }
 
-  if (a4 == 2)
+  if (source == 2)
   {
     v5 = @"companionSettings";
   }
@@ -26,12 +26,12 @@
   v12[0] = @"source";
   v12[1] = @"action";
   v6 = @"remove";
-  if (a3 == 1)
+  if (action == 1)
   {
     v6 = @"add";
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
     v6 = @"reorder";
   }

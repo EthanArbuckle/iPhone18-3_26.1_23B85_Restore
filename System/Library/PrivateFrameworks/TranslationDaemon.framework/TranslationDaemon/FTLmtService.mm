@@ -1,21 +1,21 @@
 @interface FTLmtService
-- (void)performLmScorer:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
+- (void)performLmScorer:(id)scorer requestBuilder:(id)builder completion:(id)completion;
 @end
 
 @implementation FTLmtService
 
-- (void)performLmScorer:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performLmScorer:(id)scorer requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [scorer flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__FTLmtService_performLmScorer_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Lmt/LmScorer" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Lmt/LmScorer" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __58__FTLmtService_performLmScorer_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)

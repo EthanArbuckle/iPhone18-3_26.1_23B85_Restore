@@ -1,52 +1,52 @@
 @interface RTPredictedContextMetricsManager
-+ (BOOL)isWithinMidnightBoundary:(id)a3 targetDay:(int64_t)a4 interval:(double)a5;
-+ (double)getTotalInferenceLatencyForRequests:(id)a3;
-+ (double)getTotalMemoryFootprintForRequests:(id)a3;
-+ (float)calculatePredictability:(id)a3 priorVisits:(id)a4 timeWindowHalfWidth:(double)a5;
-+ (id)getAllContextsInOneArray:(id)a3;
-+ (id)getHighProbabilityPredictedContexts:(id)a3;
-+ (id)getPredictedContextLocationFromDictionary:(id)a3;
-+ (id)getRequestCountByInferenceTriggerReasonForRequests:(id)a3;
-+ (id)isCorrectTruth:(id)a3 forPredictions:(id)a4;
-+ (id)stringFromPredictedContextMetricsEvent:(unint64_t)a3;
-+ (int64_t)getFrequentLoiFromCount:(int64_t)a3;
-+ (int64_t)isCorrectPrediction:(id)a3 forTruthVisits:(id)a4 matchingVisit:(id *)a5;
-- (BOOL)submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5;
-- (RTPredictedContextMetricsManager)initWithManagedConfiguration:(id)a3 predictedContextStore:(id)a4 defaultsManager:(id)a5 visitConsolidator:(id)a6;
-- (id)prepareDailyInferenceEventMetrics:(id)a3;
-- (id)prepareInferenceEventMetric:(id)a3;
-- (id)prepareInferenceLOIMismatchEventMetric:(id)a3;
-- (id)preparePredictionEventMetric:(id)a3 correctPrediction:(int64_t)a4 matchingVisit:(id)a5;
-- (id)prepareTrainingEventMetric:(unint64_t)a3;
-- (id)prepareTruthEventMetric:(id)a3 predictability:(float)a4 truePositiveCount:(int64_t)a5 highestProbability:(float)a6 frequentLoi:(int64_t)a7 leadTime:(float)a8;
-- (void)_onDailyMetricsNotification:(id)a3;
++ (BOOL)isWithinMidnightBoundary:(id)boundary targetDay:(int64_t)day interval:(double)interval;
++ (double)getTotalInferenceLatencyForRequests:(id)requests;
++ (double)getTotalMemoryFootprintForRequests:(id)requests;
++ (float)calculatePredictability:(id)predictability priorVisits:(id)visits timeWindowHalfWidth:(double)width;
++ (id)getAllContextsInOneArray:(id)array;
++ (id)getHighProbabilityPredictedContexts:(id)contexts;
++ (id)getPredictedContextLocationFromDictionary:(id)dictionary;
++ (id)getRequestCountByInferenceTriggerReasonForRequests:(id)requests;
++ (id)isCorrectTruth:(id)truth forPredictions:(id)predictions;
++ (id)stringFromPredictedContextMetricsEvent:(unint64_t)event;
++ (int64_t)getFrequentLoiFromCount:(int64_t)count;
++ (int64_t)isCorrectPrediction:(id)prediction forTruthVisits:(id)visits matchingVisit:(id *)visit;
+- (BOOL)submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error;
+- (RTPredictedContextMetricsManager)initWithManagedConfiguration:(id)configuration predictedContextStore:(id)store defaultsManager:(id)manager visitConsolidator:(id)consolidator;
+- (id)prepareDailyInferenceEventMetrics:(id)metrics;
+- (id)prepareInferenceEventMetric:(id)metric;
+- (id)prepareInferenceLOIMismatchEventMetric:(id)metric;
+- (id)preparePredictionEventMetric:(id)metric correctPrediction:(int64_t)prediction matchingVisit:(id)visit;
+- (id)prepareTrainingEventMetric:(unint64_t)metric;
+- (id)prepareTruthEventMetric:(id)metric predictability:(float)predictability truePositiveCount:(int64_t)count highestProbability:(float)probability frequentLoi:(int64_t)loi leadTime:(float)time;
+- (void)_onDailyMetricsNotification:(id)notification;
 - (void)_setup;
-- (void)getPredictionsForInterval:(id)a3 completion:(id)a4;
-- (void)getRequestsForInterval:(id)a3 completion:(id)a4;
-- (void)getVisitsForInterval:(id)a3 completion:(id)a4;
-- (void)onDailyMetricsNotification:(id)a3;
-- (void)prepareAndSubmitDailyInferenceEventMetrics:(id)a3;
-- (void)prepareAndSubmitInferenceEventMetrics:(id)a3;
-- (void)prepareAndSubmitInferenceLOIMismatchEventMetrics:(id)a3;
-- (void)prepareAndSubmitPredictionEventMetrics:(id)a3 yesterdayVisits:(id)a4;
-- (void)prepareAndSubmitTrainingEventMetrics:(unint64_t)a3;
-- (void)prepareAndSubmitTruthEventMetrics:(id)a3 yesterdayVisits:(id)a4 yesterdayPredictions:(id)a5;
-- (void)sendInferenceEventDataToPPS:(id)a3;
-- (void)sendTrainingEventDataToPPS:(id)a3;
+- (void)getPredictionsForInterval:(id)interval completion:(id)completion;
+- (void)getRequestsForInterval:(id)interval completion:(id)completion;
+- (void)getVisitsForInterval:(id)interval completion:(id)completion;
+- (void)onDailyMetricsNotification:(id)notification;
+- (void)prepareAndSubmitDailyInferenceEventMetrics:(id)metrics;
+- (void)prepareAndSubmitInferenceEventMetrics:(id)metrics;
+- (void)prepareAndSubmitInferenceLOIMismatchEventMetrics:(id)metrics;
+- (void)prepareAndSubmitPredictionEventMetrics:(id)metrics yesterdayVisits:(id)visits;
+- (void)prepareAndSubmitTrainingEventMetrics:(unint64_t)metrics;
+- (void)prepareAndSubmitTruthEventMetrics:(id)metrics yesterdayVisits:(id)visits yesterdayPredictions:(id)predictions;
+- (void)sendInferenceEventDataToPPS:(id)s;
+- (void)sendTrainingEventDataToPPS:(id)s;
 - (void)setup;
-- (void)submitFeatureExtractorMetrics:(id)a3;
+- (void)submitFeatureExtractorMetrics:(id)metrics;
 @end
 
 @implementation RTPredictedContextMetricsManager
 
-- (RTPredictedContextMetricsManager)initWithManagedConfiguration:(id)a3 predictedContextStore:(id)a4 defaultsManager:(id)a5 visitConsolidator:(id)a6
+- (RTPredictedContextMetricsManager)initWithManagedConfiguration:(id)configuration predictedContextStore:(id)store defaultsManager:(id)manager visitConsolidator:(id)consolidator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  configurationCopy = configuration;
+  storeCopy = store;
+  managerCopy = manager;
+  consolidatorCopy = consolidator;
+  v15 = consolidatorCopy;
+  if (!configurationCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -61,7 +61,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!storeCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!managerCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -87,7 +87,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v14)
+  if (!consolidatorCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -99,7 +99,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -109,25 +109,25 @@ LABEL_17:
   p_isa = &v16->super.isa;
   if (v16)
   {
-    objc_storeStrong(&v16->_managedConfiguration, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v16->_managedConfiguration, configuration);
+    objc_storeStrong(p_isa + 2, store);
+    objc_storeStrong(p_isa + 3, manager);
+    objc_storeStrong(p_isa + 4, consolidator);
     v18 = p_isa;
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v18 UTF8String];
+      uTF8String = [v18 UTF8String];
     }
 
     else
     {
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v18];
-      v20 = [v25 UTF8String];
+      uTF8String = [v25 UTF8String];
     }
 
-    v26 = dispatch_queue_create(v20, v19);
+    v26 = dispatch_queue_create(uTF8String, v19);
 
     v27 = v18[5];
     v18[5] = v26;
@@ -136,60 +136,60 @@ LABEL_17:
   }
 
   self = p_isa;
-  v23 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)setup
 {
-  v3 = [(RTPredictedContextMetricsManager *)self queue];
+  queue = [(RTPredictedContextMetricsManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__RTPredictedContextMetricsManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_onDailyMetricsNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 }
 
-+ (id)stringFromPredictedContextMetricsEvent:(unint64_t)a3
++ (id)stringFromPredictedContextMetricsEvent:(unint64_t)event
 {
-  if (a3 - 1 > 3)
+  if (event - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D1240[a3 - 1];
+    return off_2788D1240[event - 1];
   }
 }
 
-- (BOOL)submitMetricsForEvent:(unint64_t)a3 data:(id)a4 error:(id *)a5
+- (BOOL)submitMetricsForEvent:(unint64_t)event data:(id)data error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v10 = [v9 isDiagnosticsAndUsageAllowed];
+  dataCopy = data;
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
-  if (v10)
+  if (isDiagnosticsAndUsageAllowed)
   {
-    if (a3 <= 3)
+    if (event <= 3)
     {
-      switch(a3)
+      switch(event)
       {
         case 1uLL:
           v18 = objc_alloc(MEMORY[0x277CCACA8]);
           v17 = 1;
           v19 = [v18 initWithCString:RTAnalyticsEventPredictedContextPredictionEvent encoding:1];
-          log_analytics_submission(v19, v8);
+          log_analytics_submission(v19, dataCopy);
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v19];
           AnalyticsSendEvent();
 
@@ -203,7 +203,7 @@ LABEL_18:
           v12 = RTAnalyticsEventPredictedContextTrainingEvent;
 LABEL_25:
           v22 = [v11 initWithCString:v12 encoding:1];
-          log_analytics_submission(v22, v8);
+          log_analytics_submission(v22, dataCopy);
           v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.%@", v22];
           AnalyticsSendEvent();
 
@@ -214,10 +214,10 @@ LABEL_25:
 
     else
     {
-      if (a3 <= 5)
+      if (event <= 5)
       {
         v11 = objc_alloc(MEMORY[0x277CCACA8]);
-        if (a3 == 4)
+        if (event == 4)
         {
           v12 = RTAnalyticsEventPredictedContextInferenceLOIMismatchEvent;
         }
@@ -230,14 +230,14 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      if (a3 == 6)
+      if (event == 6)
       {
         v11 = objc_alloc(MEMORY[0x277CCACA8]);
         v12 = RTAnalyticsEventPredictedContextFeatureExtractorEvent;
         goto LABEL_25;
       }
 
-      if (a3 == 7)
+      if (event == 7)
       {
         v11 = objc_alloc(MEMORY[0x277CCACA8]);
         v12 = RTAnalyticsEventPredictedContextInferenceDaily;
@@ -256,7 +256,7 @@ LABEL_25:
       v30 = 2112;
       v31 = v27;
       v32 = 2048;
-      v33 = a3;
+      eventCopy = event;
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "%@, %@, Invalid metrics event type, %lu", buf, 0x20u);
     }
   }
@@ -283,99 +283,99 @@ LABEL_26:
   return v17;
 }
 
-- (id)preparePredictionEventMetric:(id)a3 correctPrediction:(int64_t)a4 matchingVisit:(id)a5
+- (id)preparePredictionEventMetric:(id)metric correctPrediction:(int64_t)prediction matchingVisit:(id)visit
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [v9 setObject:v10 forKeyedSubscript:@"correctPrediction"];
+  metricCopy = metric;
+  visitCopy = visit;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:prediction];
+  [dictionary setObject:v10 forKeyedSubscript:@"correctPrediction"];
 
-  [v9 setObject:&unk_28459F8E8 forKeyedSubscript:@"contextType"];
+  [dictionary setObject:&unk_28459F8E8 forKeyedSubscript:@"contextType"];
   v11 = MEMORY[0x277CCABB0];
-  [v7 probability];
+  [metricCopy probability];
   v12 = [v11 numberWithDouble:?];
-  [v9 setObject:v12 forKeyedSubscript:@"probability"];
+  [dictionary setObject:v12 forKeyedSubscript:@"probability"];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v7 dateInterval];
-  v15 = [v14 startDate];
-  [v15 confidenceInterval];
+  dateInterval = [metricCopy dateInterval];
+  startDate = [dateInterval startDate];
+  [startDate confidenceInterval];
   v16 = [v13 numberWithDouble:?];
-  [v9 setObject:v16 forKeyedSubscript:@"predictionStartConfidenceInterval"];
+  [dictionary setObject:v16 forKeyedSubscript:@"predictionStartConfidenceInterval"];
 
   v17 = MEMORY[0x277CCABB0];
-  v18 = [v7 dateInterval];
-  v19 = [v18 endDate];
-  [v19 confidenceInterval];
+  dateInterval2 = [metricCopy dateInterval];
+  endDate = [dateInterval2 endDate];
+  [endDate confidenceInterval];
   v20 = [v17 numberWithDouble:?];
-  [v9 setObject:v20 forKeyedSubscript:@"predictionEndConfidenceInterval"];
+  [dictionary setObject:v20 forKeyedSubscript:@"predictionEndConfidenceInterval"];
 
-  v21 = [v7 dateInterval];
-  v22 = [v21 startDate];
-  v23 = [v22 date];
-  v24 = indexForBucketedHour(v23);
+  dateInterval3 = [metricCopy dateInterval];
+  startDate2 = [dateInterval3 startDate];
+  date = [startDate2 date];
+  v24 = indexForBucketedHour(date);
 
   v25 = [MEMORY[0x277CCABB0] numberWithInteger:v24];
-  [v9 setObject:v25 forKeyedSubscript:@"hour"];
+  [dictionary setObject:v25 forKeyedSubscript:@"hour"];
 
-  v26 = [v7 dateInterval];
-  v27 = [v26 startDate];
-  v28 = [v27 date];
-  v29 = indexForDayOfWeek(v28);
+  dateInterval4 = [metricCopy dateInterval];
+  startDate3 = [dateInterval4 startDate];
+  date2 = [startDate3 date];
+  v29 = indexForDayOfWeek(date2);
 
   v30 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
-  [v9 setObject:v30 forKeyedSubscript:@"dayOfWeek"];
+  [dictionary setObject:v30 forKeyedSubscript:@"dayOfWeek"];
 
   v31 = MEMORY[0x277CCABB0];
   v32 = MEMORY[0x277D01208];
-  v33 = [v7 predictionSources];
-  v34 = [v31 numberWithUnsignedInteger:{objc_msgSend(v32, "maskForSources:", v33)}];
-  [v9 setObject:v34 forKeyedSubscript:@"predictionSourceMask"];
+  predictionSources = [metricCopy predictionSources];
+  v34 = [v31 numberWithUnsignedInteger:{objc_msgSend(v32, "maskForSources:", predictionSources)}];
+  [dictionary setObject:v34 forKeyedSubscript:@"predictionSourceMask"];
 
-  if (v8)
+  if (visitCopy)
   {
     v35 = MEMORY[0x277CCABB0];
-    v36 = [v7 dateInterval];
-    v37 = [v36 startDate];
-    v38 = [v37 date];
-    v39 = [v8 entry];
-    [v38 timeIntervalSinceDate:v39];
+    dateInterval5 = [metricCopy dateInterval];
+    startDate4 = [dateInterval5 startDate];
+    date3 = [startDate4 date];
+    entry = [visitCopy entry];
+    [date3 timeIntervalSinceDate:entry];
     v41 = [v35 numberWithInteger:v40];
-    [v9 setObject:v41 forKeyedSubscript:@"predictionStartTimeOffset"];
+    [dictionary setObject:v41 forKeyedSubscript:@"predictionStartTimeOffset"];
 
     v42 = MEMORY[0x277CCABB0];
-    v43 = [v7 dateInterval];
-    v44 = [v43 endDate];
-    v45 = [v44 date];
-    v46 = [v8 exit];
-    [v45 timeIntervalSinceDate:v46];
+    dateInterval6 = [metricCopy dateInterval];
+    endDate2 = [dateInterval6 endDate];
+    date4 = [endDate2 date];
+    exit = [visitCopy exit];
+    [date4 timeIntervalSinceDate:exit];
     v48 = [v42 numberWithInteger:v47];
-    [v9 setObject:v48 forKeyedSubscript:@"predictionEndTimeOffset"];
+    [dictionary setObject:v48 forKeyedSubscript:@"predictionEndTimeOffset"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v49 = v7;
-    [v9 setObject:&unk_28459F900 forKeyedSubscript:@"contextType"];
-    v50 = [v49 locationOfInterest];
+    v49 = metricCopy;
+    [dictionary setObject:&unk_28459F900 forKeyedSubscript:@"contextType"];
+    locationOfInterest = [v49 locationOfInterest];
 
-    if (v50)
+    if (locationOfInterest)
     {
-      [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hasMapItem"];
-      v51 = [v49 locationOfInterest];
-      v52 = [v51 type];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hasMapItem"];
+      locationOfInterest2 = [v49 locationOfInterest];
+      type = [locationOfInterest2 type];
     }
 
     else
     {
-      [v9 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
-      v52 = -1;
+      [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
+      type = -1;
     }
 
-    v58 = [MEMORY[0x277CCABB0] numberWithInteger:v52];
-    [v9 setObject:v58 forKeyedSubscript:@"locationOfInterestType"];
+    v58 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    [dictionary setObject:v58 forKeyedSubscript:@"locationOfInterestType"];
 
 LABEL_15:
     goto LABEL_16;
@@ -384,10 +384,10 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setObject:&unk_28459F918 forKeyedSubscript:@"contextType"];
-    v49 = v7;
-    v53 = [v49 predictedContextTransports];
-    v54 = [v53 count];
+    [dictionary setObject:&unk_28459F918 forKeyedSubscript:@"contextType"];
+    v49 = metricCopy;
+    predictedContextTransports = [v49 predictedContextTransports];
+    v54 = [predictedContextTransports count];
 
     if (v54)
     {
@@ -396,37 +396,37 @@ LABEL_15:
       v63 = 0x3032000000;
       v64 = __Block_byref_object_copy__164;
       v65 = __Block_byref_object_dispose__164;
-      v55 = [v49 predictedContextTransports];
-      v66 = [v55 firstObject];
+      predictedContextTransports2 = [v49 predictedContextTransports];
+      firstObject = [predictedContextTransports2 firstObject];
 
-      v56 = [v49 predictedContextTransports];
+      predictedContextTransports3 = [v49 predictedContextTransports];
       v60[0] = MEMORY[0x277D85DD0];
       v60[1] = 3221225472;
       v60[2] = __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correctPrediction_matchingVisit___block_invoke;
       v60[3] = &unk_2788D1130;
       v60[4] = &v61;
-      [v56 enumerateObjectsUsingBlock:v60];
+      [predictedContextTransports3 enumerateObjectsUsingBlock:v60];
 
       v57 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v62[5], "transportMode")}];
-      [v9 setObject:v57 forKeyedSubscript:@"transportMode"];
+      [dictionary setObject:v57 forKeyedSubscript:@"transportMode"];
 
       _Block_object_dispose(&v61, 8);
     }
 
-    [v9 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
+    [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setObject:&unk_28459F930 forKeyedSubscript:@"contextType"];
+    [dictionary setObject:&unk_28459F930 forKeyedSubscript:@"contextType"];
   }
 
-  [v9 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasMapItem"];
 LABEL_16:
 
-  return v9;
+  return dictionary;
 }
 
 void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correctPrediction_matchingVisit___block_invoke(uint64_t a1, void *a2)
@@ -441,115 +441,115 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
   }
 }
 
-- (id)prepareInferenceEventMetric:(id)a3
+- (id)prepareInferenceEventMetric:(id)metric
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 predictedContextResult];
-  v7 = [v6 nextStepPredictedContextsWithFilterMask:7];
+  metricCopy = metric;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  predictedContextResult = [metricCopy predictedContextResult];
+  v7 = [predictedContextResult nextStepPredictedContextsWithFilterMask:7];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "clientCount")}];
-  [v5 setObject:v8 forKeyedSubscript:@"clientCount"];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(metricCopy, "clientCount")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"clientCount"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "inferenceTriggerReason")}];
-  [v5 setObject:v9 forKeyedSubscript:@"inferenceTriggerReason"];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(metricCopy, "inferenceTriggerReason")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"inferenceTriggerReason"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-  [v5 setObject:v10 forKeyedSubscript:@"predictionCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"predictionCount"];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v4 requestEndDate];
-  v13 = [v4 requestStartDate];
-  [v12 timeIntervalSinceDate:v13];
+  requestEndDate = [metricCopy requestEndDate];
+  requestStartDate = [metricCopy requestStartDate];
+  [requestEndDate timeIntervalSinceDate:requestStartDate];
   v14 = [v11 numberWithDouble:?];
-  [v5 setObject:v14 forKeyedSubscript:@"inferenceLatency"];
+  [dictionary setObject:v14 forKeyedSubscript:@"inferenceLatency"];
 
   v15 = MEMORY[0x277CCABB0];
-  [v4 memoryFootprintEnd];
+  [metricCopy memoryFootprintEnd];
   v17 = v16;
-  [v4 memoryFootprintStart];
+  [metricCopy memoryFootprintStart];
   v19 = [v15 numberWithDouble:v17 - v18];
-  [v5 setObject:v19 forKeyedSubscript:@"inferenceMemoryUsage"];
+  [dictionary setObject:v19 forKeyedSubscript:@"inferenceMemoryUsage"];
 
   v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
   v21 = [v7 filteredArrayUsingPredicate:v20];
   v22 = [v21 count];
 
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
-  [v5 setObject:v23 forKeyedSubscript:@"locationPredictionCount"];
+  [dictionary setObject:v23 forKeyedSubscript:@"locationPredictionCount"];
 
   v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self isKindOfClass: %@", objc_opt_class()];
   v25 = [v7 filteredArrayUsingPredicate:v24];
   v26 = [v25 count];
 
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v26];
-  [v5 setObject:v27 forKeyedSubscript:@"transitionPredictionCount"];
+  [dictionary setObject:v27 forKeyedSubscript:@"transitionPredictionCount"];
 
-  v28 = [v4 requestStartDate];
-  v29 = indexForBucketedHour(v28);
+  requestStartDate2 = [metricCopy requestStartDate];
+  v29 = indexForBucketedHour(requestStartDate2);
 
   v30 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
-  [v5 setObject:v30 forKeyedSubscript:@"hour"];
+  [dictionary setObject:v30 forKeyedSubscript:@"hour"];
 
-  v31 = [v4 requestEndDate];
-  v32 = indexForDayOfWeek(v31);
+  requestEndDate2 = [metricCopy requestEndDate];
+  v32 = indexForDayOfWeek(requestEndDate2);
 
   v33 = [MEMORY[0x277CCABB0] numberWithInteger:v32];
-  [v5 setObject:v33 forKeyedSubscript:@"dayOfWeek"];
+  [dictionary setObject:v33 forKeyedSubscript:@"dayOfWeek"];
 
-  v34 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v35 = [v34 objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
+  defaultsManager = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v35 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainAllContextLastCompletionDate"];
 
   if (v35)
   {
     v36 = MEMORY[0x277CCABB0];
-    v37 = [v4 requestStartDate];
-    [v37 timeIntervalSinceDate:v35];
+    requestStartDate3 = [metricCopy requestStartDate];
+    [requestStartDate3 timeIntervalSinceDate:v35];
     v38 = [v36 numberWithDouble:?];
-    [v5 setObject:v38 forKeyedSubscript:@"timeSinceLastTrainingSuccess"];
+    [dictionary setObject:v38 forKeyedSubscript:@"timeSinceLastTrainingSuccess"];
   }
 
-  v39 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v40 = [v39 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastInferenceRequestAttempt"];
+  defaultsManager2 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v40 = [defaultsManager2 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastInferenceRequestAttempt"];
   [v40 doubleValue];
   v42 = v41;
 
   if (v42 > 0.0)
   {
     v43 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
-    [v5 setObject:v43 forKeyedSubscript:@"timeSinceLastInference"];
+    [dictionary setObject:v43 forKeyedSubscript:@"timeSinceLastInference"];
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)prepareDailyInferenceEventMetrics:(id)a3
+- (id)prepareDailyInferenceEventMetrics:(id)metrics
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
-  [v4 setObject:v5 forKeyedSubscript:@"dailyInferenceCount"];
+  metricsCopy = metrics;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(metricsCopy, "count")}];
+  [dictionary setObject:v5 forKeyedSubscript:@"dailyInferenceCount"];
 
   v6 = MEMORY[0x277CCABB0];
-  [objc_opt_class() getTotalInferenceLatencyForRequests:v3];
+  [objc_opt_class() getTotalInferenceLatencyForRequests:metricsCopy];
   v7 = [v6 numberWithDouble:?];
-  [v4 setObject:v7 forKeyedSubscript:@"dailyInferenceLatency"];
+  [dictionary setObject:v7 forKeyedSubscript:@"dailyInferenceLatency"];
 
   v8 = MEMORY[0x277CCABB0];
-  [objc_opt_class() getTotalMemoryFootprintForRequests:v3];
+  [objc_opt_class() getTotalMemoryFootprintForRequests:metricsCopy];
   v9 = [v8 numberWithDouble:?];
-  [v4 setObject:v9 forKeyedSubscript:@"dailyInferenceMemoryUsage"];
+  [dictionary setObject:v9 forKeyedSubscript:@"dailyInferenceMemoryUsage"];
 
-  v25 = v3;
-  v10 = [objc_opt_class() getRequestCountByInferenceTriggerReasonForRequests:v3];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonClientRegistration"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonDominantMotionCount"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonNavigationNotificationCount"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonPeriodicTriggerCount"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonSingleShotCount"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonVisitNotificationCount"];
-  [v4 setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonUnknownCount"];
+  v25 = metricsCopy;
+  v10 = [objc_opt_class() getRequestCountByInferenceTriggerReasonForRequests:metricsCopy];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonClientRegistration"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonDominantMotionCount"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonNavigationNotificationCount"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonPeriodicTriggerCount"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonSingleShotCount"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonVisitNotificationCount"];
+  [dictionary setObject:&unk_28459F948 forKeyedSubscript:@"dailyInferenceTriggerReasonUnknownCount"];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -606,7 +606,7 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
           }
         }
 
-        [v4 setObject:v17 forKeyedSubscript:v19];
+        [dictionary setObject:v17 forKeyedSubscript:v19];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -615,204 +615,204 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
     while (v13);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)prepareTrainingEventMetric:(unint64_t)a3
+- (id)prepareTrainingEventMetric:(unint64_t)metric
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v7 = [v6 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  defaultsManager = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v7 = [defaultsManager objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedDate"];
 
-  v8 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v96 = [v8 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
+  defaultsManager2 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v96 = [defaultsManager2 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedCompletionDateKey"];
 
-  v9 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
-  v88 = [v10 integerValue];
+  defaultsManager3 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v10 = [defaultsManager3 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedPolicy"];
+  integerValue = [v10 integerValue];
 
-  v11 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v12 = [v11 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingAttempt"];
+  defaultsManager4 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v12 = [defaultsManager4 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingAttempt"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v16 = [v15 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingSuccess"];
+  defaultsManager5 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v16 = [defaultsManager5 objectForKey:@"RTDefaultsPredictedContextManagerTimeSinceLastTrainingSuccess"];
   [v16 doubleValue];
   v18 = v17;
 
   v19 = indexForBucketedHour(v7);
   v83 = indexForDayOfWeek(v7);
-  v20 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v21 = [v20 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
+  defaultsManager6 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v21 = [defaultsManager6 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedFeatureExtractorMemoryFootprint"];
   [v21 doubleValue];
   v23 = v22;
 
-  v24 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v25 = [v24 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
+  defaultsManager7 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v25 = [defaultsManager7 objectForKey:@"RTDefaultsPredictedContextManagerTrainAttemptedComputeMemoryFootprint"];
   [v25 doubleValue];
   v27 = v26;
 
-  v28 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v29 = [v28 objectForKey:@"RTDefaultsFeatureExtractorTrainCalendarEventCount"];
-  v95 = [v29 integerValue];
+  defaultsManager8 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v29 = [defaultsManager8 objectForKey:@"RTDefaultsFeatureExtractorTrainCalendarEventCount"];
+  integerValue2 = [v29 integerValue];
 
-  v30 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v31 = [v30 objectForKey:@"RTDefaultsFeatureExtractorTrainHomeKitHomesCount"];
-  v94 = [v31 integerValue];
+  defaultsManager9 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v31 = [defaultsManager9 objectForKey:@"RTDefaultsFeatureExtractorTrainHomeKitHomesCount"];
+  integerValue3 = [v31 integerValue];
 
-  v32 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v33 = [v32 objectForKey:@"RTDefaultsFeatureExtractorTrainLocationHistoryCount"];
-  v93 = [v33 integerValue];
+  defaultsManager10 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v33 = [defaultsManager10 objectForKey:@"RTDefaultsFeatureExtractorTrainLocationHistoryCount"];
+  integerValue4 = [v33 integerValue];
 
-  v34 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v35 = [v34 objectForKey:@"RTDefaultsFeatureExtractorTrainLocationOfInterestCount"];
-  v92 = [v35 integerValue];
+  defaultsManager11 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v35 = [defaultsManager11 objectForKey:@"RTDefaultsFeatureExtractorTrainLocationOfInterestCount"];
+  integerValue5 = [v35 integerValue];
 
-  v36 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v37 = [v36 objectForKey:@"RTDefaultsFeatureExtractorTrainMapsActiveNavigation"];
-  v91 = [v37 integerValue];
+  defaultsManager12 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v37 = [defaultsManager12 objectForKey:@"RTDefaultsFeatureExtractorTrainMapsActiveNavigation"];
+  integerValue6 = [v37 integerValue];
 
-  v38 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v39 = [v38 objectForKey:@"RTDefaultsFeatureExtractorTrainMapsViewedPlacesCount"];
-  v90 = [v39 integerValue];
+  defaultsManager13 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v39 = [defaultsManager13 objectForKey:@"RTDefaultsFeatureExtractorTrainMapsViewedPlacesCount"];
+  integerValue7 = [v39 integerValue];
 
-  v40 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v41 = [v40 objectForKey:@"RTDefaultsFeatureExtractorTrainMotionActivityCount"];
-  v89 = [v41 integerValue];
+  defaultsManager14 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v41 = [defaultsManager14 objectForKey:@"RTDefaultsFeatureExtractorTrainMotionActivityCount"];
+  integerValue8 = [v41 integerValue];
 
-  v42 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v43 = [v42 objectForKey:@"RTDefaultsFeatureExtractorTrainParkedCar"];
-  v87 = [v43 integerValue];
+  defaultsManager15 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v43 = [defaultsManager15 objectForKey:@"RTDefaultsFeatureExtractorTrainParkedCar"];
+  integerValue9 = [v43 integerValue];
 
-  v44 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v45 = [v44 objectForKey:@"RTDefaultsFeatureExtractorTrainPropagatedLocationCount"];
-  v86 = [v45 integerValue];
+  defaultsManager16 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v45 = [defaultsManager16 objectForKey:@"RTDefaultsFeatureExtractorTrainPropagatedLocationCount"];
+  integerValue10 = [v45 integerValue];
 
-  v46 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v47 = [v46 objectForKey:@"RTDefaultsFeatureExtractorTrainTransitionCount"];
-  v85 = [v47 integerValue];
+  defaultsManager17 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v47 = [defaultsManager17 objectForKey:@"RTDefaultsFeatureExtractorTrainTransitionCount"];
+  integerValue11 = [v47 integerValue];
 
-  v48 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v49 = [v48 objectForKey:@"RTDefaultsFeatureExtractorTrainVisitCount"];
-  v84 = [v49 integerValue];
+  defaultsManager18 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v49 = [defaultsManager18 objectForKey:@"RTDefaultsFeatureExtractorTrainVisitCount"];
+  integerValue12 = [v49 integerValue];
 
-  v50 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v51 = [v50 objectForKey:@"RTDefaultsFeatureExtractorTrainWorkoutCount"];
-  v52 = [v51 integerValue];
+  defaultsManager19 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v51 = [defaultsManager19 objectForKey:@"RTDefaultsFeatureExtractorTrainWorkoutCount"];
+  integerValue13 = [v51 integerValue];
 
-  v53 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v54 = [v53 objectForKey:@"RTDefaultsPredictedContextManagerLastTrainResult"];
-  v55 = [v54 integerValue];
+  defaultsManager20 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v54 = [defaultsManager20 objectForKey:@"RTDefaultsPredictedContextManagerLastTrainResult"];
+  integerValue14 = [v54 integerValue];
 
-  v56 = a3;
-  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v57 forKeyedSubscript:@"trainingResultMask"];
+  metricCopy = metric;
+  v57 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:metric];
+  [dictionary setObject:v57 forKeyedSubscript:@"trainingResultMask"];
 
-  v58 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v55];
-  [v5 setObject:v58 forKeyedSubscript:@"lastTrainingResultMask"];
+  v58 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue14];
+  [dictionary setObject:v58 forKeyedSubscript:@"lastTrainingResultMask"];
 
-  v59 = [MEMORY[0x277CCABB0] numberWithInteger:v88];
-  [v5 setObject:v59 forKeyedSubscript:@"trainingPolicy"];
+  v59 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+  [dictionary setObject:v59 forKeyedSubscript:@"trainingPolicy"];
 
   v60 = [MEMORY[0x277CCABB0] numberWithInteger:v19];
-  [v5 setObject:v60 forKeyedSubscript:@"hour"];
+  [dictionary setObject:v60 forKeyedSubscript:@"hour"];
 
   v61 = [MEMORY[0x277CCABB0] numberWithInteger:v83];
-  [v5 setObject:v61 forKeyedSubscript:@"dayOfWeek"];
+  [dictionary setObject:v61 forKeyedSubscript:@"dayOfWeek"];
 
   if (v14 > 0.0)
   {
     v62 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-    [v5 setObject:v62 forKeyedSubscript:@"timeSinceLastTraining"];
+    [dictionary setObject:v62 forKeyedSubscript:@"timeSinceLastTraining"];
   }
 
   if (v18 > 0.0)
   {
     v63 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
-    [v5 setObject:v63 forKeyedSubscript:@"timeSinceLastTrainingSuccess"];
+    [dictionary setObject:v63 forKeyedSubscript:@"timeSinceLastTrainingSuccess"];
   }
 
   v64 = MEMORY[0x277CCABB0];
   [v96 timeIntervalSinceDate:v7];
   v65 = [v64 numberWithDouble:?];
-  [v5 setObject:v65 forKeyedSubscript:@"trainingDuration"];
+  [dictionary setObject:v65 forKeyedSubscript:@"trainingDuration"];
 
   v66 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
-  [v5 setObject:v66 forKeyedSubscript:@"featureExtractorMemoryFootprint"];
+  [dictionary setObject:v66 forKeyedSubscript:@"featureExtractorMemoryFootprint"];
 
   v67 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
-  [v5 setObject:v67 forKeyedSubscript:@"computeMemoryFootprint"];
+  [dictionary setObject:v67 forKeyedSubscript:@"computeMemoryFootprint"];
 
-  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v95];
-  [v5 setObject:v68 forKeyedSubscript:@"calendarEventCount"];
+  v68 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue2];
+  [dictionary setObject:v68 forKeyedSubscript:@"calendarEventCount"];
 
-  v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v94];
-  [v5 setObject:v69 forKeyedSubscript:@"homeKitHomesCount"];
+  v69 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue3];
+  [dictionary setObject:v69 forKeyedSubscript:@"homeKitHomesCount"];
 
-  v70 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v93];
-  [v5 setObject:v70 forKeyedSubscript:@"locationHistoryCount"];
+  v70 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue4];
+  [dictionary setObject:v70 forKeyedSubscript:@"locationHistoryCount"];
 
-  v71 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v92];
-  [v5 setObject:v71 forKeyedSubscript:@"locationOfInterestCount"];
+  v71 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue5];
+  [dictionary setObject:v71 forKeyedSubscript:@"locationOfInterestCount"];
 
-  v72 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v91];
-  [v5 setObject:v72 forKeyedSubscript:@"hasMapsActiveNavigation"];
+  v72 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue6];
+  [dictionary setObject:v72 forKeyedSubscript:@"hasMapsActiveNavigation"];
 
-  v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v90];
-  [v5 setObject:v73 forKeyedSubscript:@"mapsViewedPlacesCount"];
+  v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue7];
+  [dictionary setObject:v73 forKeyedSubscript:@"mapsViewedPlacesCount"];
 
-  v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v89];
-  [v5 setObject:v74 forKeyedSubscript:@"motionActivityCount"];
+  v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue8];
+  [dictionary setObject:v74 forKeyedSubscript:@"motionActivityCount"];
 
-  v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v87];
-  [v5 setObject:v75 forKeyedSubscript:@"hasParkedCar"];
+  v75 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue9];
+  [dictionary setObject:v75 forKeyedSubscript:@"hasParkedCar"];
 
-  v76 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v86];
-  [v5 setObject:v76 forKeyedSubscript:@"propagatedLocationCount"];
+  v76 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue10];
+  [dictionary setObject:v76 forKeyedSubscript:@"propagatedLocationCount"];
 
-  v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v85];
-  [v5 setObject:v77 forKeyedSubscript:@"transitionCount"];
+  v77 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue11];
+  [dictionary setObject:v77 forKeyedSubscript:@"transitionCount"];
 
-  v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v84];
-  [v5 setObject:v78 forKeyedSubscript:@"visitCount"];
+  v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue12];
+  [dictionary setObject:v78 forKeyedSubscript:@"visitCount"];
 
-  v79 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v52];
-  [v5 setObject:v79 forKeyedSubscript:@"workoutCount"];
+  v79 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue13];
+  [dictionary setObject:v79 forKeyedSubscript:@"workoutCount"];
 
-  v80 = [(RTPredictedContextMetricsManager *)self defaultsManager];
-  v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v56];
-  [v80 setObject:v81 forKey:@"RTDefaultsPredictedContextManagerLastTrainResult"];
+  defaultsManager21 = [(RTPredictedContextMetricsManager *)self defaultsManager];
+  v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:metricCopy];
+  [defaultsManager21 setObject:v81 forKey:@"RTDefaultsPredictedContextManagerLastTrainResult"];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)prepareInferenceLOIMismatchEventMetric:(id)a3
+- (id)prepareInferenceLOIMismatchEventMetric:(id)metric
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 predictedContextResult];
-  v6 = [v5 analytics];
+  metricCopy = metric;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  predictedContextResult = [metricCopy predictedContextResult];
+  analytics = [predictedContextResult analytics];
 
-  if (v6 && ([v6 rolledLOIResult], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (analytics && ([analytics rolledLOIResult], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v8 = [v6 rolledLOIResult];
-    v9 = [v8 allValues];
+    rolledLOIResult = [analytics rolledLOIResult];
+    allValues = [rolledLOIResult allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v51 objects:v61 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v51 objects:v61 count:16];
     if (v10)
     {
       v11 = v10;
       v49 = 0;
-      obj = v9;
-      v43 = v6;
-      v44 = v4;
-      v45 = v3;
+      obj = allValues;
+      v43 = analytics;
+      v44 = dictionary;
+      v45 = metricCopy;
       v12 = 0;
       v13 = 0;
       v14 = 0;
@@ -851,7 +851,7 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
             }
           }
 
-          v21 = [v19 loiIsMissingFromCurrentVisitHistory];
+          loiIsMissingFromCurrentVisitHistory = [v19 loiIsMissingFromCurrentVisitHistory];
           if ([v19 isHome])
           {
             ++v12;
@@ -864,7 +864,7 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
             v15 += [v19 loiIsMissingFromCurrentVisitHistory];
           }
 
-          v16 += v21;
+          v16 += loiIsMissingFromCurrentVisitHistory;
         }
 
         v49 += v11;
@@ -884,9 +884,9 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
         v26 = -1.0;
       }
 
-      v4 = v44;
-      v3 = v45;
-      v6 = v43;
+      dictionary = v44;
+      metricCopy = v45;
+      analytics = v43;
     }
 
     else
@@ -902,33 +902,33 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
     }
 
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
-    [v4 setObject:v29 forKeyedSubscript:@"numberOfTotalLOIs"];
+    [dictionary setObject:v29 forKeyedSubscript:@"numberOfTotalLOIs"];
 
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
-    [v4 setObject:v30 forKeyedSubscript:@"numberOfAffectedLOIs"];
+    [dictionary setObject:v30 forKeyedSubscript:@"numberOfAffectedLOIs"];
 
     v31 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
-    [v4 setObject:v31 forKeyedSubscript:@"affectedLOIRatioMax"];
+    [dictionary setObject:v31 forKeyedSubscript:@"affectedLOIRatioMax"];
 
     v32 = [MEMORY[0x277CCABB0] numberWithDouble:v26];
-    [v4 setObject:v32 forKeyedSubscript:@"affectedLOIRatioMin"];
+    [dictionary setObject:v32 forKeyedSubscript:@"affectedLOIRatioMin"];
 
     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
-    [v4 setObject:v33 forKeyedSubscript:@"numberOfInferenceAttempts"];
+    [dictionary setObject:v33 forKeyedSubscript:@"numberOfInferenceAttempts"];
 
     v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-    [v4 setObject:v34 forKeyedSubscript:@"numberOfTotalHome"];
+    [dictionary setObject:v34 forKeyedSubscript:@"numberOfTotalHome"];
 
     v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v13];
-    [v4 setObject:v35 forKeyedSubscript:@"numberOfTotalWork"];
+    [dictionary setObject:v35 forKeyedSubscript:@"numberOfTotalWork"];
 
     v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-    [v4 setObject:v36 forKeyedSubscript:@"numberOfAffectedHome"];
+    [dictionary setObject:v36 forKeyedSubscript:@"numberOfAffectedHome"];
 
     v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
-    [v4 setObject:v37 forKeyedSubscript:@"numberOfAffectedWork"];
+    [dictionary setObject:v37 forKeyedSubscript:@"numberOfAffectedWork"];
 
-    v28 = v4;
+    v28 = dictionary;
   }
 
   else
@@ -939,14 +939,14 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
       v39 = objc_opt_class();
       v40 = NSStringFromClass(v39);
       NSStringFromSelector(a2);
-      v42 = v41 = v6;
+      v42 = v41 = analytics;
       *buf = 138412546;
       v56 = v40;
       v57 = 2112;
       v58 = v42;
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "%@, %@, no analytics to report", buf, 0x16u);
 
-      v6 = v41;
+      analytics = v41;
     }
 
     v28 = 0;
@@ -955,40 +955,40 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
   return v28;
 }
 
-- (id)prepareTruthEventMetric:(id)a3 predictability:(float)a4 truePositiveCount:(int64_t)a5 highestProbability:(float)a6 frequentLoi:(int64_t)a7 leadTime:(float)a8
+- (id)prepareTruthEventMetric:(id)metric predictability:(float)predictability truePositiveCount:(int64_t)count highestProbability:(float)probability frequentLoi:(int64_t)loi leadTime:(float)time
 {
-  v13 = a3;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  *&v15 = a4;
+  metricCopy = metric;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  *&v15 = predictability;
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:v15];
-  [v14 setObject:v16 forKeyedSubscript:@"predictability"];
+  [dictionary setObject:v16 forKeyedSubscript:@"predictability"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v14 setObject:v17 forKeyedSubscript:@"correctPredictionsCount"];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+  [dictionary setObject:v17 forKeyedSubscript:@"correctPredictionsCount"];
 
-  *&v18 = a6;
+  *&v18 = probability;
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:v18];
-  [v14 setObject:v19 forKeyedSubscript:@"highestConfidence"];
+  [dictionary setObject:v19 forKeyedSubscript:@"highestConfidence"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
-  [v14 setObject:v20 forKeyedSubscript:@"frequentLoi"];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:loi];
+  [dictionary setObject:v20 forKeyedSubscript:@"frequentLoi"];
 
-  *&v21 = a8;
+  *&v21 = time;
   v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
-  [v14 setObject:v22 forKeyedSubscript:@"leadTime"];
+  [dictionary setObject:v22 forKeyedSubscript:@"leadTime"];
 
-  v23 = [v13 placeInference];
+  placeInference = [metricCopy placeInference];
 
-  if (v23)
+  if (placeInference)
   {
-    v24 = [v13 placeInference];
-    v23 = [v24 userType];
+    placeInference2 = [metricCopy placeInference];
+    placeInference = [placeInference2 userType];
   }
 
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23];
-  [v14 setObject:v25 forKeyedSubscript:@"placeType"];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:placeInference];
+  [dictionary setObject:v25 forKeyedSubscript:@"placeType"];
 
-  if (a5 >= 1)
+  if (count >= 1)
   {
     v26 = 1;
   }
@@ -999,33 +999,33 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
   }
 
   v27 = [MEMORY[0x277CCABB0] numberWithInteger:v26];
-  [v14 setObject:v27 forKeyedSubscript:@"correctTruth"];
+  [dictionary setObject:v27 forKeyedSubscript:@"correctTruth"];
 
-  v28 = [v13 entry];
-  v29 = indexForBucketedHour(v28);
+  entry = [metricCopy entry];
+  v29 = indexForBucketedHour(entry);
 
   v30 = [MEMORY[0x277CCABB0] numberWithInteger:v29];
-  [v14 setObject:v30 forKeyedSubscript:@"hour"];
+  [dictionary setObject:v30 forKeyedSubscript:@"hour"];
 
-  v31 = [v13 entry];
-  v32 = indexForDayOfWeek(v31);
+  entry2 = [metricCopy entry];
+  v32 = indexForDayOfWeek(entry2);
 
   v33 = [MEMORY[0x277CCABB0] numberWithInteger:v32];
-  [v14 setObject:v33 forKeyedSubscript:@"dayOfWeek"];
+  [dictionary setObject:v33 forKeyedSubscript:@"dayOfWeek"];
 
-  return v14;
+  return dictionary;
 }
 
-- (void)prepareAndSubmitPredictionEventMetrics:(id)a3 yesterdayVisits:(id)a4
+- (void)prepareAndSubmitPredictionEventMetrics:(id)metrics yesterdayVisits:(id)visits
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D36B80] sharedInstance];
-  v10 = [v9 optInApple];
+  metricsCopy = metrics;
+  visitsCopy = visits;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v11 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v12 = [v11 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1035,7 +1035,7 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
       v14 = NSStringFromSelector(a2);
       v15 = v14;
       v16 = @"NO";
-      if (v10)
+      if (optInApple)
       {
         v17 = @"YES";
       }
@@ -1049,7 +1049,7 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
       v22 = v14;
       v24 = v17;
       v23 = 2112;
-      if (v12)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v16 = @"YES";
       }
@@ -1060,16 +1060,16 @@ void __97__RTPredictedContextMetricsManager_preparePredictionEventMetric_correct
     }
   }
 
-  if ((v10 & v12) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetrics_yesterdayVisits___block_invoke;
     v18[3] = &unk_2788D1158;
     v18[4] = self;
-    v19 = v8;
+    v19 = visitsCopy;
     v20 = a2;
-    [v7 enumerateKeysAndObjectsUsingBlock:v18];
+    [metricsCopy enumerateKeysAndObjectsUsingBlock:v18];
   }
 }
 
@@ -1162,15 +1162,15 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)submitFeatureExtractorMetrics:(id)a3
+- (void)submitFeatureExtractorMetrics:(id)metrics
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D36B80] sharedInstance];
-  v7 = [v6 optInApple];
+  metricsCopy = metrics;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v8 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v9 = [v8 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1180,7 +1180,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v11 = NSStringFromSelector(a2);
       v12 = v11;
       v13 = @"NO";
-      if (v7)
+      if (optInApple)
       {
         v14 = @"YES";
       }
@@ -1194,7 +1194,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v22 = v11;
       v24 = v14;
       v23 = 2112;
-      if (v9)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v13 = @"YES";
       }
@@ -1205,10 +1205,10 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v7 & v9) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
     v20 = 0;
-    [(RTPredictedContextMetricsManager *)self submitMetricsForEvent:6 data:v5 error:&v20];
+    [(RTPredictedContextMetricsManager *)self submitMetricsForEvent:6 data:metricsCopy error:&v20];
     v15 = v20;
     if (v15)
     {
@@ -1230,15 +1230,15 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)prepareAndSubmitInferenceEventMetrics:(id)a3
+- (void)prepareAndSubmitInferenceEventMetrics:(id)metrics
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D36B80] sharedInstance];
-  v7 = [v6 optInApple];
+  metricsCopy = metrics;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v8 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v9 = [v8 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1248,7 +1248,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v11 = NSStringFromSelector(a2);
       v12 = v11;
       v13 = @"NO";
-      if (v7)
+      if (optInApple)
       {
         v14 = @"YES";
       }
@@ -1262,7 +1262,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v23 = v11;
       v25 = v14;
       v24 = 2112;
-      if (v9)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v13 = @"YES";
       }
@@ -1273,9 +1273,9 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v7 & v9) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
-    v15 = [(RTPredictedContextMetricsManager *)self prepareInferenceEventMetric:v5];
+    v15 = [(RTPredictedContextMetricsManager *)self prepareInferenceEventMetric:metricsCopy];
     v21 = 0;
     [(RTPredictedContextMetricsManager *)self submitMetricsForEvent:2 data:v15 error:&v21];
     v16 = v21;
@@ -1301,15 +1301,15 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)prepareAndSubmitDailyInferenceEventMetrics:(id)a3
+- (void)prepareAndSubmitDailyInferenceEventMetrics:(id)metrics
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D36B80] sharedInstance];
-  v7 = [v6 optInApple];
+  metricsCopy = metrics;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v8 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v9 = [v8 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1319,7 +1319,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v11 = NSStringFromSelector(a2);
       v12 = v11;
       v13 = @"NO";
-      if (v7)
+      if (optInApple)
       {
         v14 = @"YES";
       }
@@ -1333,7 +1333,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v27 = v11;
       v29 = v14;
       v28 = 2112;
-      if (v9)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v13 = @"YES";
       }
@@ -1344,9 +1344,9 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v7 & v9) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
-    v15 = [(RTPredictedContextMetricsManager *)self prepareDailyInferenceEventMetrics:v5];
+    v15 = [(RTPredictedContextMetricsManager *)self prepareDailyInferenceEventMetrics:metricsCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1388,14 +1388,14 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)prepareAndSubmitTrainingEventMetrics:(unint64_t)a3
+- (void)prepareAndSubmitTrainingEventMetrics:(unint64_t)metrics
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D36B80] sharedInstance];
-  v7 = [v6 optInApple];
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v8 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v9 = [v8 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1405,7 +1405,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v11 = NSStringFromSelector(a2);
       v12 = v11;
       v13 = @"NO";
-      if (v7)
+      if (optInApple)
       {
         v14 = @"YES";
       }
@@ -1419,7 +1419,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v23 = v11;
       v25 = v14;
       v24 = 2112;
-      if (v9)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v13 = @"YES";
       }
@@ -1430,9 +1430,9 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v7 & v9) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
-    v15 = [(RTPredictedContextMetricsManager *)self prepareTrainingEventMetric:a3];
+    v15 = [(RTPredictedContextMetricsManager *)self prepareTrainingEventMetric:metrics];
     v21 = 0;
     [(RTPredictedContextMetricsManager *)self submitMetricsForEvent:3 data:v15 error:&v21];
     v16 = v21;
@@ -1458,15 +1458,15 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)prepareAndSubmitInferenceLOIMismatchEventMetrics:(id)a3
+- (void)prepareAndSubmitInferenceLOIMismatchEventMetrics:(id)metrics
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D36B80] sharedInstance];
-  v7 = [v6 optInApple];
+  metricsCopy = metrics;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v8 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v9 = [v8 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1476,7 +1476,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v11 = NSStringFromSelector(a2);
       v12 = v11;
       v13 = @"NO";
-      if (v7)
+      if (optInApple)
       {
         v14 = @"YES";
       }
@@ -1490,7 +1490,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v23 = v11;
       v25 = v14;
       v24 = 2112;
-      if (v9)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v13 = @"YES";
       }
@@ -1501,9 +1501,9 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v7 & v9) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
-    v15 = [(RTPredictedContextMetricsManager *)self prepareInferenceLOIMismatchEventMetric:v5];
+    v15 = [(RTPredictedContextMetricsManager *)self prepareInferenceLOIMismatchEventMetric:metricsCopy];
     v21 = 0;
     [(RTPredictedContextMetricsManager *)self submitMetricsForEvent:4 data:v15 error:&v21];
     v16 = v21;
@@ -1527,17 +1527,17 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
   }
 }
 
-- (void)prepareAndSubmitTruthEventMetrics:(id)a3 yesterdayVisits:(id)a4 yesterdayPredictions:(id)a5
+- (void)prepareAndSubmitTruthEventMetrics:(id)metrics yesterdayVisits:(id)visits yesterdayPredictions:(id)predictions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277D36B80] sharedInstance];
-  v13 = [v12 optInApple];
+  metricsCopy = metrics;
+  visitsCopy = visits;
+  predictionsCopy = predictions;
+  mEMORY[0x277D36B80] = [MEMORY[0x277D36B80] sharedInstance];
+  optInApple = [mEMORY[0x277D36B80] optInApple];
 
-  v14 = [(RTPredictedContextMetricsManager *)self managedConfiguration];
-  v15 = [v14 isDiagnosticsAndUsageAllowed];
+  managedConfiguration = [(RTPredictedContextMetricsManager *)self managedConfiguration];
+  isDiagnosticsAndUsageAllowed = [managedConfiguration isDiagnosticsAndUsageAllowed];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1547,7 +1547,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v17 = NSStringFromSelector(a2);
       v18 = v17;
       v19 = @"NO";
-      if (v13)
+      if (optInApple)
       {
         v20 = @"YES";
       }
@@ -1561,7 +1561,7 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
       v28 = v17;
       v30 = v20;
       v29 = 2112;
-      if (v15)
+      if (isDiagnosticsAndUsageAllowed)
       {
         v19 = @"YES";
       }
@@ -1572,19 +1572,19 @@ void __91__RTPredictedContextMetricsManager_prepareAndSubmitPredictionEventMetri
     }
   }
 
-  if ((v13 & v15) == 1)
+  if ((optInApple & isDiagnosticsAndUsageAllowed) == 1)
   {
-    v21 = [objc_opt_class() getPredictedContextLocationFromDictionary:v11];
+    v21 = [objc_opt_class() getPredictedContextLocationFromDictionary:predictionsCopy];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __107__RTPredictedContextMetricsManager_prepareAndSubmitTruthEventMetrics_yesterdayVisits_yesterdayPredictions___block_invoke;
     v23[3] = &unk_2788D1180;
     v23[4] = self;
     v26 = a2;
-    v24 = v9;
+    v24 = metricsCopy;
     v25 = v21;
     v22 = v21;
-    [v10 enumerateObjectsUsingBlock:v23];
+    [visitsCopy enumerateObjectsUsingBlock:v23];
   }
 }
 
@@ -1709,23 +1709,23 @@ void __107__RTPredictedContextMetricsManager_prepareAndSubmitTruthEventMetrics_y
   }
 }
 
-- (void)sendInferenceEventDataToPPS:(id)a3
+- (void)sendInferenceEventDataToPPS:(id)s
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   if (qword_2814A7D98 != -1)
   {
     dispatch_once(&qword_2814A7D98, &__block_literal_global_137);
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 objectForKeyedSubscript:@"inferenceLatency"];
+  v6 = [sCopy objectForKeyedSubscript:@"inferenceLatency"];
   [v5 setObject:v6 forKeyedSubscript:@"inferenceLatency"];
 
-  v7 = [v4 objectForKeyedSubscript:@"inferenceTriggerReason"];
+  v7 = [sCopy objectForKeyedSubscript:@"inferenceTriggerReason"];
   [v5 setObject:v7 forKeyedSubscript:@"inferenceTriggerReason"];
 
-  v8 = [v4 objectForKeyedSubscript:@"predictionCount"];
+  v8 = [sCopy objectForKeyedSubscript:@"predictionCount"];
   [v5 setObject:v8 forKeyedSubscript:@"predictionCount"];
 
   v9 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1753,20 +1753,20 @@ uint64_t __64__RTPredictedContextMetricsManager_sendInferenceEventDataToPPS___bl
   return result;
 }
 
-- (void)sendTrainingEventDataToPPS:(id)a3
+- (void)sendTrainingEventDataToPPS:(id)s
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   if (qword_2814A7DA8 != -1)
   {
     dispatch_once(&qword_2814A7DA8, &__block_literal_global_460);
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 objectForKeyedSubscript:@"trainingDuration"];
+  v6 = [sCopy objectForKeyedSubscript:@"trainingDuration"];
   [v5 setObject:v6 forKeyedSubscript:@"trainingDuration"];
 
-  v7 = [v4 objectForKeyedSubscript:@"trainingPolicy"];
+  v7 = [sCopy objectForKeyedSubscript:@"trainingPolicy"];
   [v5 setObject:v7 forKeyedSubscript:@"trainingPolicy"];
 
   v8 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1794,24 +1794,24 @@ uint64_t __63__RTPredictedContextMetricsManager_sendTrainingEventDataToPPS___blo
   return result;
 }
 
-- (void)onDailyMetricsNotification:(id)a3
+- (void)onDailyMetricsNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTPredictedContextMetricsManager *)self queue];
+  notificationCopy = notification;
+  queue = [(RTPredictedContextMetricsManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__RTPredictedContextMetricsManager_onDailyMetricsNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDailyMetricsNotification:(id)a3
+- (void)_onDailyMetricsNotification:(id)notification
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -1821,16 +1821,16 @@ uint64_t __63__RTPredictedContextMetricsManager_sendTrainingEventDataToPPS___blo
       *buf = 138412546;
       *&buf[4] = v7;
       *&buf[12] = 2112;
-      *&buf[14] = v5;
+      *&buf[14] = notificationCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%@, received notification, %@", buf, 0x16u);
     }
   }
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v9 = [MEMORY[0x277CBEAA8] now];
   v21 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v9 sinceDate:-86400.0];
-  v20 = [v8 startOfDayForDate:v21];
-  v19 = [v8 startOfDayForDate:v9];
+  v20 = [currentCalendar startOfDayForDate:v21];
+  v19 = [currentCalendar startOfDayForDate:v9];
   v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v20 endDate:v19];
   v18 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v9 sinceDate:-4838400.0];
   v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v18 endDate:v9];
@@ -2312,40 +2312,40 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (float)calculatePredictability:(id)a3 priorVisits:(id)a4 timeWindowHalfWidth:(double)a5
++ (float)calculatePredictability:(id)predictability priorVisits:(id)visits timeWindowHalfWidth:(double)width
 {
   v163 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predictabilityCopy = predictability;
+  visitsCopy = visits;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [v7 placeInference];
-      [v11 preferredName];
+      placeInference = [predictabilityCopy placeInference];
+      [placeInference preferredName];
       v12 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v13 = [v7 placeInference];
-      v14 = [v13 loiIdentifier];
-      v15 = [v7 entry];
+      placeInference2 = [predictabilityCopy placeInference];
+      loiIdentifier = [placeInference2 loiIdentifier];
+      entry = [predictabilityCopy entry];
       *buf = 138413571;
       v152 = v10;
       v153 = 2117;
       v154 = v12;
       v155 = 2112;
-      v156 = v14;
+      v156 = loiIdentifier;
       v157 = 2112;
-      v158 = v15;
+      v158 = entry;
       v159 = 2048;
-      v160 = [v8 count];
+      v160 = [visitsCopy count];
       v161 = 2048;
-      v162 = a5;
+      widthCopy = width;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, target visit, %{sensitive}@, loiIdentifier, %@, entry, %@, prior visit count, %lu, timeWindowHalfWidthSeconds: %f", buf, 0x3Eu);
     }
   }
 
-  if (!v7 || ([v7 entry], (v16 = objc_claimAutoreleasedReturnValue()) == 0) || (v17 = v16, objc_msgSend(v7, "placeInference"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "loiIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, !v19))
+  if (!predictabilityCopy || ([predictabilityCopy entry], (v16 = objc_claimAutoreleasedReturnValue()) == 0) || (v17 = v16, objc_msgSend(predictabilityCopy, "placeInference"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "loiIdentifier"), v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v17, !v19))
   {
     v59 = 0.0;
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2369,7 +2369,7 @@ LABEL_52:
     goto LABEL_122;
   }
 
-  if (!v8 || ![v8 count])
+  if (!visitsCopy || ![visitsCopy count])
   {
     v59 = 0.0;
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2390,21 +2390,21 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  v20 = [MEMORY[0x277CBEA80] currentCalendar];
-  v129 = v7;
-  v21 = [v7 entry];
-  log = v20;
-  v22 = [v20 components:512 fromDate:v21];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v129 = predictabilityCopy;
+  entry2 = [predictabilityCopy entry];
+  log = currentCalendar;
+  v22 = [currentCalendar components:512 fromDate:entry2];
 
   v118 = v22;
-  v125 = [v22 weekday];
-  v123 = [MEMORY[0x277CBEB18] array];
+  weekday = [v22 weekday];
+  array = [MEMORY[0x277CBEB18] array];
   v143 = 0u;
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v119 = v8;
-  obj = v8;
+  v119 = visitsCopy;
+  obj = visitsCopy;
   v23 = [obj countByEnumeratingWithState:&v143 objects:v150 count:16];
   if (!v23)
   {
@@ -2424,25 +2424,25 @@ LABEL_52:
       }
 
       v27 = *(*(&v143 + 1) + 8 * v26);
-      v28 = [v27 placeInference];
-      v29 = [v28 loiIdentifier];
-      v30 = [v129 placeInference];
-      v31 = [v30 loiIdentifier];
-      if ([v29 isEqual:v31])
+      placeInference3 = [v27 placeInference];
+      loiIdentifier2 = [placeInference3 loiIdentifier];
+      placeInference4 = [v129 placeInference];
+      loiIdentifier3 = [placeInference4 loiIdentifier];
+      if ([loiIdentifier2 isEqual:loiIdentifier3])
       {
-        v32 = [v27 entry];
+        entry3 = [v27 entry];
 
-        if (!v32)
+        if (!entry3)
         {
           goto LABEL_21;
         }
 
-        v33 = [v27 entry];
-        v28 = [log components:512 fromDate:v33];
+        entry4 = [v27 entry];
+        placeInference3 = [log components:512 fromDate:entry4];
 
-        if ([v28 weekday] != v125)
+        if ([placeInference3 weekday] != weekday)
         {
-          if (![objc_opt_class() isWithinMidnightBoundary:v27 targetDay:v125 interval:a5])
+          if (![objc_opt_class() isWithinMidnightBoundary:v27 targetDay:weekday interval:width])
           {
             goto LABEL_20;
           }
@@ -2460,7 +2460,7 @@ LABEL_52:
           }
         }
 
-        [v123 addObject:v27];
+        [array addObject:v27];
       }
 
       else
@@ -2481,14 +2481,14 @@ LABEL_21:
   while (v36);
 LABEL_29:
 
-  v37 = v123;
+  v37 = array;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       v39 = NSStringFromSelector(a2);
-      v40 = COERCE_DOUBLE([v123 count]);
+      v40 = COERCE_DOUBLE([array count]);
       *buf = 138412546;
       v152 = v39;
       v153 = 2048;
@@ -2497,19 +2497,19 @@ LABEL_29:
     }
   }
 
-  v7 = v129;
-  if ([v123 count])
+  predictabilityCopy = v129;
+  if ([array count])
   {
-    v41 = [v129 entry];
+    entry5 = [v129 entry];
     [MEMORY[0x277CBEB18] array];
     obja = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v117 = v41;
-    v42 = [log components:224 fromDate:v41];
+    v117 = entry5;
+    v42 = [log components:224 fromDate:entry5];
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v124 = v123;
+    v124 = array;
     v43 = [v124 countByEnumeratingWithState:&v139 objects:v149 count:16];
     if (v43)
     {
@@ -2529,8 +2529,8 @@ LABEL_29:
             objc_enumerationMutation(v124);
           }
 
-          v48 = [*(*(&v139 + 1) + 8 * v47) entry];
-          v49 = [log components:224 fromDate:v48];
+          entry6 = [*(*(&v139 + 1) + 8 * v47) entry];
+          v49 = [log components:224 fromDate:entry6];
 
           v50 = [log dateFromComponents:v42];
           v51 = [log dateFromComponents:v49];
@@ -2557,7 +2557,7 @@ LABEL_29:
             v46 = v54;
           }
 
-          if (fabs(v53) <= a5)
+          if (fabs(v53) <= width)
           {
             v58 = &unk_2845A2258;
           }
@@ -2698,15 +2698,15 @@ LABEL_29:
             objc_enumerationMutation(v82);
           }
 
-          v89 = [*(*(&v131 + 1) + 8 * j) entry];
-          v90 = [log components:224 fromDate:v89];
+          entry7 = [*(*(&v131 + 1) + 8 * j) entry];
+          v90 = [log components:224 fromDate:entry7];
 
           v91 = [log dateFromComponents:v42];
           v92 = [log dateFromComponents:v90];
           [v92 timeIntervalSinceDate:v91];
           v94 = fabs(v93);
           v95 = v87 + v93 * v93;
-          if (v94 <= a5)
+          if (v94 <= width)
           {
             v86 = v86 + 1.0;
             v87 = v95;
@@ -2735,9 +2735,9 @@ LABEL_29:
       v96 = v87 / v86;
     }
 
-    v97 = -v96 / (a5 * a5);
+    v97 = -v96 / (width * width);
     v98 = expf(v97);
-    v37 = v123;
+    v37 = array;
     v62 = v117;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2803,10 +2803,10 @@ LABEL_29:
       if (os_log_type_enabled(v108, OS_LOG_TYPE_INFO))
       {
         v109 = NSStringFromSelector(a2);
-        v110 = [v129 placeInference];
-        v111 = [v110 preferredName];
-        v112 = [v129 placeInference];
-        v113 = [v112 loiIdentifier];
+        placeInference5 = [v129 placeInference];
+        preferredName = [placeInference5 preferredName];
+        placeInference6 = [v129 placeInference];
+        loiIdentifier4 = [placeInference6 loiIdentifier];
         [v129 entry];
         v115 = v114 = v42;
         *buf = 138413315;
@@ -2814,9 +2814,9 @@ LABEL_29:
         v153 = 2048;
         v154 = v59;
         v155 = 2117;
-        v156 = v111;
+        v156 = preferredName;
         v157 = 2112;
-        v158 = v113;
+        v158 = loiIdentifier4;
         v159 = 2112;
         v160 = v115;
         _os_log_impl(&dword_2304B3000, v108, OS_LOG_TYPE_INFO, "%@, predictability, %f, for target visit, %{sensitive}@, loiIdentifier, %@, entry, %@", buf, 0x34u);
@@ -2824,32 +2824,32 @@ LABEL_29:
         v42 = v114;
         v62 = v117;
 
-        v37 = v123;
+        v37 = array;
       }
     }
 
-    v7 = v129;
-    v8 = v119;
+    predictabilityCopy = v129;
+    visitsCopy = v119;
     goto LABEL_120;
   }
 
   v59 = 0.0;
-  v8 = v119;
+  visitsCopy = v119;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v62 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
     if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
     {
       v63 = NSStringFromSelector(a2);
-      v64 = [v129 placeInference];
-      [v64 loiIdentifier];
+      placeInference7 = [v129 placeInference];
+      [placeInference7 loiIdentifier];
       v65 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       *buf = 138412802;
       v152 = v63;
       v153 = 2112;
       v154 = v65;
       v155 = 2048;
-      v156 = v125;
+      v156 = weekday;
       _os_log_impl(&dword_2304B3000, v62, OS_LOG_TYPE_INFO, "%@, No relevant prior visits found for LOI: %@ and day of week: %ld", buf, 0x20u);
     }
 
@@ -2862,24 +2862,24 @@ LABEL_123:
   return v59;
 }
 
-- (void)getVisitsForInterval:(id)a3 completion:(id)a4
+- (void)getVisitsForInterval:(id)interval completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RTPredictedContextMetricsManager *)self visitConsolidator];
+  completionCopy = completion;
+  intervalCopy = interval;
+  visitConsolidator = [(RTPredictedContextMetricsManager *)self visitConsolidator];
   v9 = objc_alloc(MEMORY[0x277D01340]);
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
   v11 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_28459F9A8, &unk_28459F9C0, 0}];
   LOWORD(v14) = 256;
-  v12 = [v9 initWithAscending:1 confidence:v10 dateInterval:v7 labelVisit:1 limit:0 sources:v11 redact:v14 filterPairedVisitEntries:?];
+  v12 = [v9 initWithAscending:1 confidence:v10 dateInterval:intervalCopy labelVisit:1 limit:0 sources:v11 redact:v14 filterPairedVisitEntries:?];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__RTPredictedContextMetricsManager_getVisitsForInterval_completion___block_invoke;
   v15[3] = &unk_2788C6D60;
-  v16 = v6;
-  v13 = v6;
-  [v8 fetchStoredVisitsWithOptions:v12 handler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [visitConsolidator fetchStoredVisitsWithOptions:v12 handler:v15];
 }
 
 void __68__RTPredictedContextMetricsManager_getVisitsForInterval_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2910,25 +2910,25 @@ uint64_t __68__RTPredictedContextMetricsManager_getVisitsForInterval_completion_
   return result;
 }
 
-- (void)getPredictionsForInterval:(id)a3 completion:(id)a4
+- (void)getPredictionsForInterval:(id)interval completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  intervalCopy = interval;
   v8 = [RTStoredPredictedContextFetchOptions alloc];
   v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"predictionStartDate" ascending:1];
   v16[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v11 = [(RTStoredPredictedContextFetchOptions *)v8 initWithDateInterval:v7 filterContextTypeMask:0 resultSortDescriptors:v10 limit:0];
+  v11 = [(RTStoredPredictedContextFetchOptions *)v8 initWithDateInterval:intervalCopy filterContextTypeMask:0 resultSortDescriptors:v10 limit:0];
 
-  v12 = [(RTPredictedContextMetricsManager *)self predictedContextStore];
+  predictedContextStore = [(RTPredictedContextMetricsManager *)self predictedContextStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__RTPredictedContextMetricsManager_getPredictionsForInterval_completion___block_invoke;
   v14[3] = &unk_2788C5268;
-  v15 = v6;
-  v13 = v6;
-  [v12 fetchPredictedContextAndRequestDateWithOptions:v11 handler:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [predictedContextStore fetchPredictedContextAndRequestDateWithOptions:v11 handler:v14];
 }
 
 void __73__RTPredictedContextMetricsManager_getPredictionsForInterval_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2959,25 +2959,25 @@ uint64_t __73__RTPredictedContextMetricsManager_getPredictionsForInterval_comple
   return result;
 }
 
-- (void)getRequestsForInterval:(id)a3 completion:(id)a4
+- (void)getRequestsForInterval:(id)interval completion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  intervalCopy = interval;
   v8 = [RTStoredPredictedContextRequestFetchOptions alloc];
   v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"requestStartDate" ascending:1];
   v16[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v11 = [(RTStoredPredictedContextRequestFetchOptions *)v8 initWithDateInterval:v7 inferenceTriggerReason:0 resultSortDescriptors:v10 limit:0];
+  v11 = [(RTStoredPredictedContextRequestFetchOptions *)v8 initWithDateInterval:intervalCopy inferenceTriggerReason:0 resultSortDescriptors:v10 limit:0];
 
-  v12 = [(RTPredictedContextMetricsManager *)self predictedContextStore];
+  predictedContextStore = [(RTPredictedContextMetricsManager *)self predictedContextStore];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__RTPredictedContextMetricsManager_getRequestsForInterval_completion___block_invoke;
   v14[3] = &unk_2788C6D60;
-  v15 = v6;
-  v13 = v6;
-  [v12 fetchPredictedContextRequestsWithOptions:v11 handler:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [predictedContextStore fetchPredictedContextRequestsWithOptions:v11 handler:v14];
 }
 
 void __70__RTPredictedContextMetricsManager_getRequestsForInterval_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3008,24 +3008,24 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
   return result;
 }
 
-+ (int64_t)isCorrectPrediction:(id)a3 forTruthVisits:(id)a4 matchingVisit:(id *)a5
++ (int64_t)isCorrectPrediction:(id)prediction forTruthVisits:(id)visits matchingVisit:(id *)visit
 {
   v95 = *MEMORY[0x277D85DE8];
-  v69 = a3;
-  v7 = a4;
-  if (a5)
+  predictionCopy = prediction;
+  visitsCopy = visits;
+  if (visit)
   {
-    *a5 = 0;
+    *visit = 0;
   }
 
-  if (v69 && (v53 = a5, [v69 locationOfInterest], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  if (predictionCopy && (v53 = visit, [predictionCopy locationOfInterest], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v52 = v7;
-    v10 = v7;
+    v52 = visitsCopy;
+    v10 = visitsCopy;
     v68 = [v10 countByEnumeratingWithState:&v70 objects:v94 count:16];
     if (v68)
     {
@@ -3041,26 +3041,26 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
           }
 
           v12 = *(*(&v70 + 1) + 8 * i);
-          v13 = [v69 locationOfInterest];
-          v14 = [v13 identifier];
-          v15 = [v12 placeInference];
-          v16 = [v15 loiIdentifier];
-          v17 = [v14 isEqual:v16];
+          locationOfInterest = [predictionCopy locationOfInterest];
+          identifier = [locationOfInterest identifier];
+          placeInference = [v12 placeInference];
+          loiIdentifier = [placeInference loiIdentifier];
+          v17 = [identifier isEqual:loiIdentifier];
 
-          v18 = [v69 dateInterval];
-          v19 = [v18 startDate];
-          v20 = [v19 date];
-          v21 = [v12 exit];
-          if ([v20 compare:v21] == -1)
+          dateInterval = [predictionCopy dateInterval];
+          startDate = [dateInterval startDate];
+          date = [startDate date];
+          exit = [v12 exit];
+          if ([date compare:exit] == -1)
           {
-            v63 = [v69 dateInterval];
-            v23 = [v63 endDate];
-            v24 = [v23 date];
+            dateInterval2 = [predictionCopy dateInterval];
+            endDate = [dateInterval2 endDate];
+            date2 = [endDate date];
             [v12 entry];
             v65 = i;
             v25 = v12;
             v27 = v26 = v17;
-            v22 = [v24 compare:v27] == 1;
+            v22 = [date2 compare:v27] == 1;
 
             v17 = v26;
             v12 = v25;
@@ -3080,22 +3080,22 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
               v29 = objc_opt_class();
               v66 = NSStringFromClass(v29);
               v64 = NSStringFromSelector(a2);
-              v60 = [v69 locationOfInterest];
-              [v60 identifier];
+              locationOfInterest2 = [predictionCopy locationOfInterest];
+              [locationOfInterest2 identifier];
               v30 = log = v28;
-              v59 = [v69 dateInterval];
-              v58 = [v59 startDate];
-              v31 = [v58 date];
-              v57 = [v69 dateInterval];
-              v56 = [v57 endDate];
-              v32 = [v56 date];
-              v55 = [v12 placeInference];
-              [v55 loiIdentifier];
+              dateInterval3 = [predictionCopy dateInterval];
+              startDate2 = [dateInterval3 startDate];
+              date3 = [startDate2 date];
+              dateInterval4 = [predictionCopy dateInterval];
+              endDate2 = [dateInterval4 endDate];
+              date4 = [endDate2 date];
+              placeInference2 = [v12 placeInference];
+              [placeInference2 loiIdentifier];
               v34 = v33 = v22;
               [v12 entry];
               v36 = v35 = v17;
-              v37 = [v12 exit];
-              v38 = v37;
+              exit2 = [v12 exit];
+              v38 = exit2;
               *buf = 138414594;
               v39 = @"❌";
               if (v35)
@@ -3119,15 +3119,15 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
               v78 = 2112;
               v79 = v30;
               v80 = 2112;
-              v81 = v31;
+              v81 = date3;
               v82 = 2112;
-              v83 = v32;
+              v83 = date4;
               v84 = 2112;
               v85 = v34;
               v86 = 2112;
               v87 = v36;
               v88 = 2112;
-              v89 = v37;
+              v89 = exit2;
               v90 = 2112;
               v91 = v40;
               v92 = 2112;
@@ -3158,7 +3158,7 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
                 v78 = 2112;
                 v79 = v12;
                 v80 = 2112;
-                v81 = v69;
+                v81 = predictionCopy;
                 _os_log_impl(&dword_2304B3000, v46, OS_LOG_TYPE_INFO, "%@, %@, ✅ overlapping truth visit, %@, prediction, %@", buf, 0x2Au);
               }
             }
@@ -3170,7 +3170,7 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
             }
 
             v45 = 1;
-            v7 = v52;
+            visitsCopy = v52;
             v41 = obj;
             goto LABEL_37;
           }
@@ -3190,7 +3190,7 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v41 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
-      v7 = v52;
+      visitsCopy = v52;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
         v42 = objc_opt_class();
@@ -3201,7 +3201,7 @@ uint64_t __70__RTPredictedContextMetricsManager_getRequestsForInterval_completio
         v76 = 2112;
         v77 = v44;
         v78 = 2112;
-        v79 = v69;
+        v79 = predictionCopy;
         _os_log_impl(&dword_2304B3000, v41, OS_LOG_TYPE_INFO, "%@, %@, ❌ no overlapping truth visit for prediction, %@", buf, 0x20u);
       }
 
@@ -3212,7 +3212,7 @@ LABEL_37:
     else
     {
       v45 = 2;
-      v7 = v52;
+      visitsCopy = v52;
     }
   }
 
@@ -3224,12 +3224,12 @@ LABEL_37:
   return v45;
 }
 
-+ (id)isCorrectTruth:(id)a3 forPredictions:(id)a4
++ (id)isCorrectTruth:(id)truth forPredictions:(id)predictions
 {
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7 && ([v7 placeInference], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "loiIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  truthCopy = truth;
+  predictionsCopy = predictions;
+  if (truthCopy && ([truthCopy placeInference], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "loiIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
     v50 = 0;
     v51 = &v50;
@@ -3249,14 +3249,14 @@ LABEL_37:
     v31 = 3221225472;
     v32 = __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___block_invoke;
     v33 = &unk_2788D11F8;
-    v11 = v7;
-    v38 = a1;
+    v11 = truthCopy;
+    selfCopy = self;
     v39 = a2;
     v34 = v11;
     v35 = &v46;
     v36 = &v50;
     v37 = &v40;
-    [v8 enumerateKeysAndObjectsUsingBlock:&v30];
+    [predictionsCopy enumerateKeysAndObjectsUsingBlock:&v30];
     if (v47[3] < 1)
     {
       v15 = 0.0;
@@ -3265,8 +3265,8 @@ LABEL_37:
     else
     {
       v12 = [MEMORY[0x277CBEAA8] getEarliestDate:{v41[5], v30, v31, v32, v33}];
-      v13 = [v11 entry];
-      [v13 timeIntervalSinceDate:v12];
+      entry = [v11 entry];
+      [entry timeIntervalSinceDate:v12];
       v15 = v14;
     }
 
@@ -3278,7 +3278,7 @@ LABEL_37:
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = NSStringFromSelector(a2);
-        v21 = [objc_opt_class() getAllContextsInOneArray:v8];
+        v21 = [objc_opt_class() getAllContextsInOneArray:predictionsCopy];
         v22 = [v21 count];
         v23 = v47[3];
         v24 = v51[6];
@@ -3491,16 +3491,16 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
   }
 }
 
-+ (id)getPredictedContextLocationFromDictionary:(id)a3
++ (id)getPredictedContextLocationFromDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = dictionaryCopy;
   v19 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
@@ -3516,7 +3516,7 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
 
         v6 = *(*(&v24 + 1) + 8 * i);
         v7 = [v4 objectForKeyedSubscript:v6];
-        v8 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
@@ -3540,7 +3540,7 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v8 addObject:v14];
+                [array addObject:v14];
               }
             }
 
@@ -3550,9 +3550,9 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
           while (v11);
         }
 
-        if ([v8 count])
+        if ([array count])
         {
-          [v17 setObject:v8 forKeyedSubscript:v6];
+          [dictionary setObject:array forKeyedSubscript:v6];
         }
       }
 
@@ -3562,22 +3562,22 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
     while (v19);
   }
 
-  v15 = [v17 copy];
+  v15 = [dictionary copy];
 
   return v15;
 }
 
-+ (id)getAllContextsInOneArray:(id)a3
++ (id)getAllContextsInOneArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [arrayCopy allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3588,32 +3588,32 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [v4 addObjectsFromArray:*(*(&v12 + 1) + 8 * i)];
+        [array addObjectsFromArray:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [v4 copy];
+  v10 = [array copy];
 
   return v10;
 }
 
-+ (int64_t)getFrequentLoiFromCount:(int64_t)a3
++ (int64_t)getFrequentLoiFromCount:(int64_t)count
 {
   v3 = 3;
-  if (a3 <= 40)
+  if (count <= 40)
   {
     v3 = 0;
   }
 
-  if ((a3 - 17) >= 0x18)
+  if ((count - 17) >= 0x18)
   {
     v4 = v3;
   }
@@ -3623,7 +3623,7 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
     v4 = 2;
   }
 
-  if ((a3 - 1) >= 0x10)
+  if ((count - 1) >= 0x10)
   {
     return v4;
   }
@@ -3634,18 +3634,18 @@ void __66__RTPredictedContextMetricsManager_isCorrectTruth_forPredictions___bloc
   }
 }
 
-+ (id)getHighProbabilityPredictedContexts:(id)a3
++ (id)getHighProbabilityPredictedContexts:(id)contexts
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  contextsCopy = contexts;
+  dictionary = [v3 dictionary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__RTPredictedContextMetricsManager_getHighProbabilityPredictedContexts___block_invoke;
   v9[3] = &unk_2788D1220;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = dictionary;
+  v6 = dictionary;
+  [contextsCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -3698,39 +3698,39 @@ void __72__RTPredictedContextMetricsManager_getHighProbabilityPredictedContexts_
   }
 }
 
-+ (BOOL)isWithinMidnightBoundary:(id)a3 targetDay:(int64_t)a4 interval:(double)a5
++ (BOOL)isWithinMidnightBoundary:(id)boundary targetDay:(int64_t)day interval:(double)interval
 {
-  v7 = a3;
-  v8 = [v7 entry];
+  boundaryCopy = boundary;
+  entry = [boundaryCopy entry];
 
-  if (v8)
+  if (entry)
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [v7 entry];
-    v11 = [v9 components:736 fromDate:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    entry2 = [boundaryCopy entry];
+    v11 = [currentCalendar components:736 fromDate:entry2];
 
-    v12 = [v11 weekday];
+    weekday = [v11 weekday];
     v13 = 3600 * [v11 hour];
     v14 = v13 + 60 * [v11 minute];
     v15 = v14 + [v11 second];
-    if (v12 == a4 && (v15 <= a5 || (86400 - v15) <= a5))
+    if (weekday == day && (v15 <= interval || (86400 - v15) <= interval))
     {
       goto LABEL_18;
     }
 
     v16 = 7;
-    if (a4 != 1)
+    if (day != 1)
     {
-      v16 = a4 - 1;
+      v16 = day - 1;
     }
 
     v17 = 1;
-    if (a4 != 7)
+    if (day != 7)
     {
-      v17 = a4 + 1;
+      v17 = day + 1;
     }
 
-    if (v12 == v16 && (86400 - v15) <= a5)
+    if (weekday == v16 && (86400 - v15) <= interval)
     {
 LABEL_18:
       v19 = 1;
@@ -3738,7 +3738,7 @@ LABEL_18:
 
     else
     {
-      v19 = v15 <= a5 && v12 == v17;
+      v19 = v15 <= interval && weekday == v17;
     }
   }
 
@@ -3750,15 +3750,15 @@ LABEL_18:
   return v19;
 }
 
-+ (double)getTotalInferenceLatencyForRequests:(id)a3
++ (double)getTotalInferenceLatencyForRequests:(id)requests
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [requestsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3770,21 +3770,21 @@ LABEL_18:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 requestStartDate];
-        if (v10)
+        requestStartDate = [v9 requestStartDate];
+        if (requestStartDate)
         {
-          v11 = v10;
-          v12 = [v9 requestEndDate];
+          v11 = requestStartDate;
+          requestEndDate = [v9 requestEndDate];
 
-          if (v12)
+          if (requestEndDate)
           {
-            v13 = [v9 requestEndDate];
-            v14 = [v9 requestStartDate];
-            [v13 timeIntervalSinceDate:v14];
+            requestEndDate2 = [v9 requestEndDate];
+            requestStartDate2 = [v9 requestStartDate];
+            [requestEndDate2 timeIntervalSinceDate:requestStartDate2];
             v16 = v15;
 
             v7 = v7 + v16;
@@ -3792,7 +3792,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [requestsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -3806,15 +3806,15 @@ LABEL_18:
   return v7;
 }
 
-+ (double)getTotalMemoryFootprintForRequests:(id)a3
++ (double)getTotalMemoryFootprintForRequests:(id)requests
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [requestsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3826,7 +3826,7 @@ LABEL_18:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -3836,7 +3836,7 @@ LABEL_18:
         v7 = v7 + v11 - v12;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [requestsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -3850,16 +3850,16 @@ LABEL_18:
   return v7;
 }
 
-+ (id)getRequestCountByInferenceTriggerReasonForRequests:(id)a3
++ (id)getRequestCountByInferenceTriggerReasonForRequests:(id)requests
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestsCopy = requests;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = requestsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {

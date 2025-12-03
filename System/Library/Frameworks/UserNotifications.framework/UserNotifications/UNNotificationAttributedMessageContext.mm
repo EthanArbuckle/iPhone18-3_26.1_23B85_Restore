@@ -1,24 +1,24 @@
 @interface UNNotificationAttributedMessageContext
-+ (id)contextWithSendMessageIntent:(id)a3 attributedContent:(id)a4;
-- (id)_initWithSendMessageIntent:(id)a3 attributedContent:(id)a4;
++ (id)contextWithSendMessageIntent:(id)intent attributedContent:(id)content;
+- (id)_initWithSendMessageIntent:(id)intent attributedContent:(id)content;
 @end
 
 @implementation UNNotificationAttributedMessageContext
 
-- (id)_initWithSendMessageIntent:(id)a3 attributedContent:(id)a4
+- (id)_initWithSendMessageIntent:(id)intent attributedContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = UNNotificationAttributedMessageContext;
   v8 = [(UNNotificationAttributedMessageContext *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [intentCopy copy];
     sendMessageIntent = v8->_sendMessageIntent;
     v8->_sendMessageIntent = v9;
 
-    v11 = [v7 copy];
+    v11 = [contentCopy copy];
     attributedContent = v8->_attributedContent;
     v8->_attributedContent = v11;
   }
@@ -26,11 +26,11 @@
   return v8;
 }
 
-+ (id)contextWithSendMessageIntent:(id)a3 attributedContent:(id)a4
++ (id)contextWithSendMessageIntent:(id)intent attributedContent:(id)content
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) _initWithSendMessageIntent:v6 attributedContent:v5];
+  contentCopy = content;
+  intentCopy = intent;
+  v7 = [objc_alloc(objc_opt_class()) _initWithSendMessageIntent:intentCopy attributedContent:contentCopy];
 
   return v7;
 }

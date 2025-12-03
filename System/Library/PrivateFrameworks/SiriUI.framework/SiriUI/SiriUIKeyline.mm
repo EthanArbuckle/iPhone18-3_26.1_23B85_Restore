@@ -1,75 +1,75 @@
 @interface SiriUIKeyline
 + (SiriUIKeyline)keylineWithDefaultInsets;
-+ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3;
-+ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4;
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)type;
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)type platterStyling:(BOOL)styling;
 + (id)keyline;
 + (id)keylineForSelectableRow;
 + (id)verticalKeyline;
-- (CGSize)_sizeThatFits:(CGSize)a3 useAutolayout:(BOOL)a4;
+- (CGSize)_sizeThatFits:(CGSize)fits useAutolayout:(BOOL)autolayout;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriUIKeyline)initWithKeylineType:(int64_t)a3;
-- (SiriUIKeyline)initWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4;
-- (double)_keylineThicknessForType:(int64_t)a3;
-- (id)_keylineColorForType:(int64_t)a3 platterStyling:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriUIKeyline)initWithKeylineType:(int64_t)type;
+- (SiriUIKeyline)initWithKeylineType:(int64_t)type platterStyling:(BOOL)styling;
+- (double)_keylineThicknessForType:(int64_t)type;
+- (id)_keylineColorForType:(int64_t)type platterStyling:(BOOL)styling;
 - (void)layoutSubviews;
-- (void)setKeylineType:(int64_t)a3;
+- (void)setKeylineType:(int64_t)type;
 @end
 
 @implementation SiriUIKeyline
 
 + (id)keyline
 {
-  v2 = [[a1 alloc] initWithKeylineType:2];
+  v2 = [[self alloc] initWithKeylineType:2];
 
   return v2;
 }
 
 + (SiriUIKeyline)keylineWithDefaultInsets
 {
-  v2 = [[a1 alloc] initWithKeylineType:1];
+  v2 = [[self alloc] initWithKeylineType:1];
 
   return v2;
 }
 
 + (id)keylineForSelectableRow
 {
-  v2 = [[a1 alloc] initWithKeylineType:3];
+  v2 = [[self alloc] initWithKeylineType:3];
 
   return v2;
 }
 
 + (id)verticalKeyline
 {
-  v2 = [[a1 alloc] initWithKeylineType:5];
+  v2 = [[self alloc] initWithKeylineType:5];
 
   return v2;
 }
 
-+ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)type
 {
   v5 = SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets();
 
-  return [a1 keylineWithKeylineType:a3 platterStyling:v5];
+  return [self keylineWithKeylineType:type platterStyling:v5];
 }
 
-+ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)type platterStyling:(BOOL)styling
 {
-  v4 = [[a1 alloc] initWithKeylineType:a3 platterStyling:a4];
+  v4 = [[self alloc] initWithKeylineType:type platterStyling:styling];
 
   return v4;
 }
 
-- (SiriUIKeyline)initWithKeylineType:(int64_t)a3
+- (SiriUIKeyline)initWithKeylineType:(int64_t)type
 {
   v5 = SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets();
 
-  return [(SiriUIKeyline *)self initWithKeylineType:a3 platterStyling:v5];
+  return [(SiriUIKeyline *)self initWithKeylineType:type platterStyling:v5];
 }
 
-- (SiriUIKeyline)initWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4
+- (SiriUIKeyline)initWithKeylineType:(int64_t)type platterStyling:(BOOL)styling
 {
-  v4 = a4;
+  stylingCopy = styling;
   v17.receiver = self;
   v17.super_class = SiriUIKeyline;
   v6 = *MEMORY[0x277CBF3A0];
@@ -80,13 +80,13 @@
   v11 = v10;
   if (v10)
   {
-    v10->_keylineType = a3;
+    v10->_keylineType = type;
     v12 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
     keyLineView = v11->_keyLineView;
     v11->_keyLineView = v12;
 
     v14 = v11->_keyLineView;
-    v15 = [(SiriUIKeyline *)v11 _keylineColorForType:v11->_keylineType platterStyling:v4];
+    v15 = [(SiriUIKeyline *)v11 _keylineColorForType:v11->_keylineType platterStyling:stylingCopy];
     [(UIView *)v14 setBackgroundColor:v15];
 
     [(SiriUIKeyline *)v11 addSubview:v11->_keyLineView];
@@ -95,9 +95,9 @@
   return v11;
 }
 
-- (id)_keylineColorForType:(int64_t)a3 platterStyling:(BOOL)a4
+- (id)_keylineColorForType:(int64_t)type platterStyling:(BOOL)styling
 {
-  if (a4)
+  if (styling)
   {
     [MEMORY[0x277D75348] siriui_platterKeylineColor];
   }
@@ -111,18 +111,18 @@
   return v4;
 }
 
-- (double)_keylineThicknessForType:(int64_t)a3
+- (double)_keylineThicknessForType:(int64_t)type
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   return 1.0 / v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SiriUIKeyline *)self _sizeThatFits:0 useAutolayout:a3.width, a3.height];
+  [(SiriUIKeyline *)self _sizeThatFits:0 useAutolayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -136,15 +136,15 @@
   return result;
 }
 
-- (CGSize)_sizeThatFits:(CGSize)a3 useAutolayout:(BOOL)a4
+- (CGSize)_sizeThatFits:(CGSize)fits useAutolayout:(BOOL)autolayout
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(SiriUIKeyline *)self keylineType];
+  autolayoutCopy = autolayout;
+  height = fits.height;
+  width = fits.width;
+  keylineType = [(SiriUIKeyline *)self keylineType];
   v9 = *MEMORY[0x277D77260];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
   [(SiriUIKeyline *)self _keylineThicknessForType:self->_keylineType];
   v14 = ceil(v13);
@@ -153,7 +153,7 @@
     v13 = v14;
   }
 
-  if (v4)
+  if (autolayoutCopy)
   {
     v15 = v9;
   }
@@ -163,7 +163,7 @@
     v15 = height;
   }
 
-  if (v4)
+  if (autolayoutCopy)
   {
     v16 = v9;
   }
@@ -173,7 +173,7 @@
     v16 = width;
   }
 
-  if (v8 == 5)
+  if (keylineType == 5)
   {
     v17 = v13;
   }
@@ -183,7 +183,7 @@
     v17 = v16;
   }
 
-  if (v8 == 5)
+  if (keylineType == 5)
   {
     v18 = v15;
   }
@@ -210,15 +210,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriUIKeyline *)self keylineType];
-  if (v11 == 4)
+  keylineType = [(SiriUIKeyline *)self keylineType];
+  if (keylineType == 4)
   {
     [(SiriUIKeyline *)self customLeftPadding];
     v12 = v15;
     [(SiriUIKeyline *)self customRightPadding];
   }
 
-  else if (v11 == 3)
+  else if (keylineType == 3)
   {
     IsRTL = SiriLanguageIsRTL();
     v13 = 16.0;
@@ -242,7 +242,7 @@
   {
     v12 = 0.0;
     v13 = 0.0;
-    if (v11 == 1)
+    if (keylineType == 1)
     {
       v12 = 16.0;
       v13 = 16.0;
@@ -252,10 +252,10 @@
   [(UIView *)self->_keyLineView setFrame:v4 + v12, v6, v8 - (v12 + v13), v10];
 }
 
-- (void)setKeylineType:(int64_t)a3
+- (void)setKeylineType:(int64_t)type
 {
-  self->_keylineType = a3;
-  [(SiriUIKeyline *)self setHidden:a3 == 0];
+  self->_keylineType = type;
+  [(SiriUIKeyline *)self setHidden:type == 0];
 
   [(SiriUIKeyline *)self setNeedsLayout];
 }

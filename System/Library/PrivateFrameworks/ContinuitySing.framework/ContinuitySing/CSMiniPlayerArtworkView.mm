@@ -1,31 +1,31 @@
 @interface CSMiniPlayerArtworkView
-- (CSMiniPlayerArtworkView)initWithFrame:(CGRect)a3;
-- (id)_constraintsMatchingFramesOf:(id)a3 and:(id)a4;
-- (void)setArtwork:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (CSMiniPlayerArtworkView)initWithFrame:(CGRect)frame;
+- (id)_constraintsMatchingFramesOf:(id)of and:(id)and;
+- (void)setArtwork:(id)artwork;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation CSMiniPlayerArtworkView
 
-- (CSMiniPlayerArtworkView)initWithFrame:(CGRect)a3
+- (CSMiniPlayerArtworkView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = CSMiniPlayerArtworkView;
-  v3 = [(CSMiniPlayerArtworkView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSMiniPlayerArtworkView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v27 = [MEMORY[0x277D75340] colorWithRed:0.17254902 green:0.17254902 blue:0.180392157 alpha:1.0];
     [(CSMiniPlayerArtworkView *)v3 setBackgroundColor:v27];
-    v4 = [(CSMiniPlayerArtworkView *)v3 layer];
-    [v4 setCornerRadius:5.0];
+    layer = [(CSMiniPlayerArtworkView *)v3 layer];
+    [layer setCornerRadius:5.0];
 
     [(CSMiniPlayerArtworkView *)v3 setClipsToBounds:1];
-    v5 = [(CSMiniPlayerArtworkView *)v3 layer];
+    layer2 = [(CSMiniPlayerArtworkView *)v3 layer];
     v6 = [MEMORY[0x277D75340] colorWithWhite:1.0 alpha:0.12];
-    [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    [layer2 setBorderColor:{objc_msgSend(v6, "CGColor")}];
 
-    v7 = [(CSMiniPlayerArtworkView *)v3 layer];
-    [v7 setBorderWidth:0.5];
+    layer3 = [(CSMiniPlayerArtworkView *)v3 layer];
+    [layer3 setBorderWidth:0.5];
 
     v26 = [MEMORY[0x277D755D8] configurationWithWeight:3];
     v8 = [MEMORY[0x277D755B0] _systemImageNamed:@"music" withConfiguration:v26];
@@ -34,8 +34,8 @@
     v3->_placeholderImageView = v9;
 
     v11 = v3->_placeholderImageView;
-    v12 = [MEMORY[0x277D75340] tertiaryLabelColor];
-    [(UIImageView *)v11 setTintColor:v12];
+    tertiaryLabelColor = [MEMORY[0x277D75340] tertiaryLabelColor];
+    [(UIImageView *)v11 setTintColor:tertiaryLabelColor];
 
     v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
     artworkView = v3->_artworkView;
@@ -50,13 +50,13 @@
     [v15 activateConstraints:v16];
 
     v17 = MEMORY[0x277CCAAD0];
-    v18 = [(UIImageView *)v3->_placeholderImageView centerXAnchor];
-    v19 = [(CSMiniPlayerArtworkView *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIImageView *)v3->_placeholderImageView centerXAnchor];
+    centerXAnchor2 = [(CSMiniPlayerArtworkView *)v3 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v28[0] = v20;
-    v21 = [(UIImageView *)v3->_placeholderImageView centerYAnchor];
-    v22 = [(CSMiniPlayerArtworkView *)v3 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor = [(UIImageView *)v3->_placeholderImageView centerYAnchor];
+    centerYAnchor2 = [(CSMiniPlayerArtworkView *)v3 centerYAnchor];
+    v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
     [v17 activateConstraints:v24];
@@ -65,22 +65,22 @@
   return v3;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v6.receiver = self;
   v6.super_class = CSMiniPlayerArtworkView;
-  [(CSMiniPlayerArtworkView *)&v6 setBounds:a3.origin.x, a3.origin.y];
+  [(CSMiniPlayerArtworkView *)&v6 setBounds:bounds.origin.x, bounds.origin.y];
   [(MPArtworkCatalog *)self->_artwork setFittingSize:width, height];
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v8 = a3;
-  objc_storeStrong(&self->_artwork, a3);
+  artworkCopy = artwork;
+  objc_storeStrong(&self->_artwork, artwork);
   [(UIImageView *)self->_artworkView setImage:0];
-  if (v8)
+  if (artworkCopy)
   {
     artwork = self->_artwork;
     [(CSMiniPlayerArtworkView *)self bounds];
@@ -115,27 +115,27 @@ void __38__CSMiniPlayerArtworkView_setArtwork___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)_constraintsMatchingFramesOf:(id)a3 and:(id)a4
+- (id)_constraintsMatchingFramesOf:(id)of and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
-  v20 = [v6 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  andCopy = and;
+  ofCopy = of;
+  leadingAnchor = [ofCopy leadingAnchor];
+  leadingAnchor2 = [andCopy leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v18;
-  v7 = [v6 trailingAnchor];
-  v8 = [v5 trailingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  trailingAnchor = [ofCopy trailingAnchor];
+  trailingAnchor2 = [andCopy trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v9;
-  v10 = [v6 topAnchor];
-  v11 = [v5 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [ofCopy topAnchor];
+  topAnchor2 = [andCopy topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v12;
-  v13 = [v6 bottomAnchor];
+  bottomAnchor = [ofCopy bottomAnchor];
 
-  v14 = [v5 bottomAnchor];
+  bottomAnchor2 = [andCopy bottomAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 

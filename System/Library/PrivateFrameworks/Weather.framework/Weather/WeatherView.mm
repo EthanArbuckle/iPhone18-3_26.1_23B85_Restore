@@ -1,31 +1,31 @@
 @interface WeatherView
-- (BOOL)_setCity:(id)a3 associateAsDelegate:(BOOL)a4;
-- (BOOL)updateWeatherDisplayForCity:(id)a3;
-- (WeatherView)initWithFrame:(CGRect)a3;
+- (BOOL)_setCity:(id)city associateAsDelegate:(BOOL)delegate;
+- (BOOL)updateWeatherDisplayForCity:(id)city;
+- (WeatherView)initWithFrame:(CGRect)frame;
 - (id)bundle;
-- (void)cityDidStartWeatherUpdate:(id)a3;
+- (void)cityDidStartWeatherUpdate:(id)update;
 - (void)cleanupWindView;
 - (void)dealloc;
 - (void)refreshLocalization;
-- (void)resetLocale:(id)a3;
-- (void)showCity:(id)a3;
+- (void)resetLocale:(id)locale;
+- (void)showCity:(id)city;
 @end
 
 @implementation WeatherView
 
-- (WeatherView)initWithFrame:(CGRect)a3
+- (WeatherView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = WeatherView;
-  v3 = [(WeatherView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WeatherView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     lastLocale = v3->_lastLocale;
-    v3->_lastLocale = v4;
+    v3->_lastLocale = currentLocale;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel_resetLocale_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_resetLocale_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v3;
@@ -33,8 +33,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(City *)self->_city removeUpdateObserver:self];
   [(WeatherView *)self cleanupWindView];
@@ -43,39 +43,39 @@
   [(WeatherView *)&v4 dealloc];
 }
 
-- (void)resetLocale:(id)a3
+- (void)resetLocale:(id)locale
 {
   lastLocale = self->_lastLocale;
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  LOBYTE(lastLocale) = [(NSLocale *)lastLocale isEqualToLocaleForWeather:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  LOBYTE(lastLocale) = [(NSLocale *)lastLocale isEqualToLocaleForWeather:currentLocale];
 
   if ((lastLocale & 1) == 0)
   {
-    v6 = [(WeatherView *)self city];
-    [(WeatherView *)self showCity:v6];
+    city = [(WeatherView *)self city];
+    [(WeatherView *)self showCity:city];
   }
 
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v8 = self->_lastLocale;
-  self->_lastLocale = v7;
+  self->_lastLocale = currentLocale2;
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](currentLocale2, v8);
 }
 
-- (BOOL)_setCity:(id)a3 associateAsDelegate:(BOOL)a4
+- (BOOL)_setCity:(id)city associateAsDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  cityCopy = city;
   city = self->_city;
-  if (city != v7)
+  if (city != cityCopy)
   {
     [(City *)self->_city removeUpdateObserver:self];
     if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
     {
-      objc_storeStrong(&self->_city, a3);
+      objc_storeStrong(&self->_city, city);
       if (self->_city)
       {
-        v9 = !v4;
+        v9 = !delegateCopy;
       }
 
       else
@@ -85,41 +85,41 @@
 
       if (!v9)
       {
-        [(City *)v7 addUpdateObserver:self];
+        [(City *)cityCopy addUpdateObserver:self];
       }
     }
   }
 
-  return city != v7;
+  return city != cityCopy;
 }
 
-- (void)showCity:(id)a3
+- (void)showCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   if ([WeatherView _setCity:"_setCity:associateAsDelegate:" associateAsDelegate:?])
   {
-    [(WeatherView *)self updateWeatherDisplayForCity:v4];
+    [(WeatherView *)self updateWeatherDisplayForCity:cityCopy];
   }
 }
 
-- (BOOL)updateWeatherDisplayForCity:(id)a3
+- (BOOL)updateWeatherDisplayForCity:(id)city
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:113 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView updateWeatherDisplayForCity:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:113 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView updateWeatherDisplayForCity:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)cityDidStartWeatherUpdate:(id)a3
+- (void)cityDidStartWeatherUpdate:(id)update
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:119 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView cityDidStartWeatherUpdate:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:119 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView cityDidStartWeatherUpdate:]", objc_opt_class()}];
 }
 
 - (void)refreshLocalization
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView refreshLocalization]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WeatherView.m" lineNumber:124 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[WeatherView refreshLocalization]", objc_opt_class()}];
 }
 
 - (id)bundle
@@ -142,8 +142,8 @@
   windView = self->_windView;
   if (windView)
   {
-    v4 = [(UIView *)windView layer];
-    [v4 removeAnimationForKey:@"contents"];
+    layer = [(UIView *)windView layer];
+    [layer removeAnimationForKey:@"contents"];
 
     [(UIView *)self->_windView removeFromSuperview];
     v5 = self->_windView;

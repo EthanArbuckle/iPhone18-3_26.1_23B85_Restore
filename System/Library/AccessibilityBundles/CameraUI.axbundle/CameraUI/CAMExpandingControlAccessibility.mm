@@ -1,18 +1,18 @@
 @interface CAMExpandingControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityCustomActions;
 - (unint64_t)accessibilityTraits;
-- (void)setExpanded:(BOOL)a3;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation CAMExpandingControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMExpandingControl" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMExpandingControl" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -118,13 +118,13 @@ void __62__CAMExpandingControlAccessibility_accessibilityPerformEscape__block_in
   UIAccessibilityPostNotification(v2, v3);
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
+  expandedCopy = expanded;
   v5.receiver = self;
   v5.super_class = CAMExpandingControlAccessibility;
   [(CAMExpandingControlAccessibility *)&v5 setExpanded:?];
-  if (v3)
+  if (expandedCopy)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
   }

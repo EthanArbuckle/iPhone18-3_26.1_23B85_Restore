@@ -1,8 +1,8 @@
 @interface PKStackedTableViewSettingsRow
 + (id)cellReuseIdentifier;
-- (PKStackedTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5;
+- (PKStackedTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4;
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path;
 @end
 
 @implementation PKStackedTableViewSettingsRow
@@ -14,47 +14,47 @@
   return NSStringFromClass(v2);
 }
 
-- (PKStackedTableViewSettingsRow)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5
+- (PKStackedTableViewSettingsRow)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v15.receiver = self;
   v15.super_class = PKStackedTableViewSettingsRow;
   v11 = [(PKStackedTableViewSettingsRow *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    objc_storeStrong(&v11->_title, a4);
-    objc_storeStrong(&v11->_value, a5);
+    objc_storeStrong(&v11->_title, title);
+    objc_storeStrong(&v11->_value, subtitle);
   }
 
   return v11;
 }
 
-- (id)tableViewCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [objc_opt_class() cellReuseIdentifier];
-  v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+  viewCopy = view;
+  cellReuseIdentifier = [objc_opt_class() cellReuseIdentifier];
+  v7 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
   if (!v7)
   {
-    v7 = [[PKStackedLabelCell alloc] initWithReuseIdentifier:v6];
+    v7 = [[PKStackedLabelCell alloc] initWithReuseIdentifier:cellReuseIdentifier];
   }
 
   [(PKStackedLabelCell *)v7 setTitleText:self->_title];
-  v8 = [self->_value stringValue];
-  [(PKStackedLabelCell *)v7 setDetailText:v8];
+  stringValue = [self->_value stringValue];
+  [(PKStackedLabelCell *)v7 setDetailText:stringValue];
 
-  v9 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(PKStackedLabelCell *)v7 setTitleTextColor:v9];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(PKStackedLabelCell *)v7 setTitleTextColor:tertiaryLabelColor];
 
-  v10 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(PKStackedLabelCell *)v7 setDetailTextColor:v10];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(PKStackedLabelCell *)v7 setDetailTextColor:systemBlueColor];
 
   [(PKTableViewCell *)v7 setShowsActionSpinner:self->_showSpinner];
   [(PKStackedLabelCell *)v7 setAccessibilityIdentifier:self->_identifier];

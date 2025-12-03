@@ -1,29 +1,29 @@
 @interface ATXHeroDataServer
 - (ATXHeroDataServer)init;
-- (ATXHeroDataServer)initWithHeroClipManager:(id)a3 heroAppManager:(id)a4 heroPoiManager:(id)a5 tracker:(id)a6 predictionsTracker:(id)a7 locationManager:(id)a8;
-- (ATXHeroDataServer)initWithHeroClipManager:(id)a3 heroAppManager:(id)a4 tracker:(id)a5;
-- (BOOL)_didPredictionsChange:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_filterPredictions:(id)a3 currentLocation:(id)a4;
-- (id)_heroAppPredictionsFromPredictions:(id)a3;
-- (id)_heroClipPredictionsFromPredictions:(id)a3;
-- (id)_heroPoiPredictionsFromPredictions:(id)a3;
-- (id)processPredictions:(id)a3;
-- (void)_addBundleIdsToPredictions:(id)a3;
-- (void)_donateAppClipsToHeroClipManager:(id)a3;
-- (void)_donateHeroAppsToHeroAppManager:(id)a3;
-- (void)_donatePoiCategoriesToHeroPoiManager:(id)a3;
+- (ATXHeroDataServer)initWithHeroClipManager:(id)manager heroAppManager:(id)appManager heroPoiManager:(id)poiManager tracker:(id)tracker predictionsTracker:(id)predictionsTracker locationManager:(id)locationManager;
+- (ATXHeroDataServer)initWithHeroClipManager:(id)manager heroAppManager:(id)appManager tracker:(id)tracker;
+- (BOOL)_didPredictionsChange:(id)change;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_filterPredictions:(id)predictions currentLocation:(id)location;
+- (id)_heroAppPredictionsFromPredictions:(id)predictions;
+- (id)_heroClipPredictionsFromPredictions:(id)predictions;
+- (id)_heroPoiPredictionsFromPredictions:(id)predictions;
+- (id)processPredictions:(id)predictions;
+- (void)_addBundleIdsToPredictions:(id)predictions;
+- (void)_donateAppClipsToHeroClipManager:(id)manager;
+- (void)_donateHeroAppsToHeroAppManager:(id)manager;
+- (void)_donatePoiCategoriesToHeroPoiManager:(id)manager;
 - (void)_setExpiry;
-- (void)_setPredictionsInDefaults:(id)a3;
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
+- (void)_setPredictionsInDefaults:(id)defaults;
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
 - (void)dealloc;
-- (void)donateHeroAppPredictions:(id)a3 completion:(id)a4;
-- (void)donatePredictions:(id)a3 shouldOnlyDonateHeroPoiPredictions:(BOOL)a4;
-- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)getCurrentHeroPoiCategoryWithCompletion:(id)a3;
-- (void)updateHeroAppManagerAndHeroClipManagerWithPredictions:(id)a3;
+- (void)donateHeroAppPredictions:(id)predictions completion:(id)completion;
+- (void)donatePredictions:(id)predictions shouldOnlyDonateHeroPoiPredictions:(BOOL)poiPredictions;
+- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)getCurrentHeroPoiCategoryWithCompletion:(id)completion;
+- (void)updateHeroAppManagerAndHeroClipManagerWithPredictions:(id)predictions;
 @end
 
 @implementation ATXHeroDataServer
@@ -38,56 +38,56 @@
   return v6;
 }
 
-- (ATXHeroDataServer)initWithHeroClipManager:(id)a3 heroAppManager:(id)a4 tracker:(id)a5
+- (ATXHeroDataServer)initWithHeroClipManager:(id)manager heroAppManager:(id)appManager tracker:(id)tracker
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  trackerCopy = tracker;
+  appManagerCopy = appManager;
+  managerCopy = manager;
   v11 = objc_alloc_init(ATXHeroPoiManager);
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277D41BF8] sharedInstance];
-  v14 = [(ATXHeroDataServer *)self initWithHeroClipManager:v10 heroAppManager:v9 heroPoiManager:v11 tracker:v8 predictionsTracker:v12 locationManager:v13];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  v14 = [(ATXHeroDataServer *)self initWithHeroClipManager:managerCopy heroAppManager:appManagerCopy heroPoiManager:v11 tracker:trackerCopy predictionsTracker:v12 locationManager:mEMORY[0x277D41BF8]];
 
   return v14;
 }
 
-- (ATXHeroDataServer)initWithHeroClipManager:(id)a3 heroAppManager:(id)a4 heroPoiManager:(id)a5 tracker:(id)a6 predictionsTracker:(id)a7 locationManager:(id)a8
+- (ATXHeroDataServer)initWithHeroClipManager:(id)manager heroAppManager:(id)appManager heroPoiManager:(id)poiManager tracker:(id)tracker predictionsTracker:(id)predictionsTracker locationManager:(id)locationManager
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  obj = a6;
-  v18 = a6;
-  v35 = a7;
-  v19 = a7;
-  v36 = a8;
+  managerCopy = manager;
+  appManagerCopy = appManager;
+  poiManagerCopy = poiManager;
+  obj = tracker;
+  trackerCopy = tracker;
+  predictionsTrackerCopy = predictionsTracker;
+  predictionsTrackerCopy2 = predictionsTracker;
+  locationManagerCopy = locationManager;
   v37.receiver = self;
   v37.super_class = ATXHeroDataServer;
   v20 = [(ATXHeroDataServer *)&v37 init];
   if (v20)
   {
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v33 = a8;
-    v21 = v19;
-    v22 = v18;
-    v23 = v17;
-    v24 = v16;
-    v26 = v25 = v15;
+    locationManagerCopy2 = locationManager;
+    v21 = predictionsTrackerCopy2;
+    v22 = trackerCopy;
+    v23 = poiManagerCopy;
+    v24 = appManagerCopy;
+    v26 = v25 = managerCopy;
     v27 = dispatch_queue_create("ATXHeroServerQueue", v26);
     queue = v20->_queue;
     v20->_queue = v27;
 
-    v15 = v25;
-    v16 = v24;
-    v17 = v23;
-    v18 = v22;
-    v19 = v21;
-    objc_storeStrong(&v20->_heroClipManager, a3);
-    objc_storeStrong(&v20->_heroAppManager, a4);
-    objc_storeStrong(&v20->_heroPoiManager, a5);
+    managerCopy = v25;
+    appManagerCopy = v24;
+    poiManagerCopy = v23;
+    trackerCopy = v22;
+    predictionsTrackerCopy2 = v21;
+    objc_storeStrong(&v20->_heroClipManager, manager);
+    objc_storeStrong(&v20->_heroAppManager, appManager);
+    objc_storeStrong(&v20->_heroPoiManager, poiManager);
     objc_storeStrong(&v20->_tracker, obj);
-    objc_storeStrong(&v20->_predictionsTracker, v35);
-    objc_storeStrong(&v20->_locationManager, v33);
+    objc_storeStrong(&v20->_predictionsTracker, predictionsTrackerCopy);
+    objc_storeStrong(&v20->_locationManager, locationManagerCopy2);
     v29 = objc_alloc(MEMORY[0x277CCAE98]);
     v30 = [v29 initWithMachServiceName:*MEMORY[0x277D13200]];
     listener = v20->_listener;
@@ -108,11 +108,11 @@
   [(ATXHeroDataServer *)&v3 dealloc];
 }
 
-- (void)donateHeroAppPredictions:(id)a3 completion:(id)a4
+- (void)donateHeroAppPredictions:(id)predictions completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predictionsCopy = predictions;
+  completionCopy = completion;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -127,7 +127,7 @@
   v12 = __atxlog_handle_hero();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 count];
+    v13 = [predictionsCopy count];
     *buf = 136315394;
     v22 = "[ATXHeroDataServer donateHeroAppPredictions:completion:]";
     v23 = 2048;
@@ -141,12 +141,12 @@
   v19[2] = __57__ATXHeroDataServer_donateHeroAppPredictions_completion___block_invoke;
   v19[3] = &unk_278596C10;
   v19[4] = self;
-  v20 = v6;
-  v15 = v6;
+  v20 = predictionsCopy;
+  v15 = predictionsCopy;
   dispatch_sync(queue, v19);
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v16 = __atxlog_handle_xpc();
@@ -160,10 +160,10 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  predictionCopy = prediction;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -175,13 +175,13 @@
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "addConfirmForAppClip", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(ATXHeroClipManager *)self->_heroClipManager feedback];
+  feedback = [(ATXHeroClipManager *)self->_heroClipManager feedback];
   LODWORD(v13) = 1.0;
-  [v12 addConfirmForAppClipWithHeroAppPrediction:v7 weight:v13];
+  [feedback addConfirmForAppClipWithHeroAppPrediction:predictionCopy weight:v13];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v14 = __atxlog_handle_xpc();
@@ -193,10 +193,10 @@
   }
 }
 
-- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  predictionCopy = prediction;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -208,13 +208,13 @@
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "addSoftRejectForAppClip", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(ATXHeroClipManager *)self->_heroClipManager feedback];
+  feedback = [(ATXHeroClipManager *)self->_heroClipManager feedback];
   LODWORD(v13) = 1.0;
-  [v12 addRejectForAppClipWithHeroAppPrediction:v7 weight:v13];
+  [feedback addRejectForAppClipWithHeroAppPrediction:predictionCopy weight:v13];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v14 = __atxlog_handle_xpc();
@@ -226,10 +226,10 @@
   }
 }
 
-- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  predictionCopy = prediction;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -241,13 +241,13 @@
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "addHardRejectForAppClip", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(ATXHeroClipManager *)self->_heroClipManager feedback];
+  feedback = [(ATXHeroClipManager *)self->_heroClipManager feedback];
   LODWORD(v13) = 1.0;
-  [v12 addRejectForAppClipWithHeroAppPrediction:v7 weight:v13];
+  [feedback addRejectForAppClipWithHeroAppPrediction:predictionCopy weight:v13];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v14 = __atxlog_handle_xpc();
@@ -259,10 +259,10 @@
   }
 }
 
-- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  predictionCopy = prediction;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -274,13 +274,13 @@
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "feedbackScoreForAppClip", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(ATXHeroClipManager *)self->_heroClipManager feedback];
-  [v12 feedbackScoreForAppClipWithHeroAppPrediction:v7];
+  feedback = [(ATXHeroClipManager *)self->_heroClipManager feedback];
+  [feedback feedbackScoreForAppClipWithHeroAppPrediction:predictionCopy];
   v14 = v13;
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
   v15 = __atxlog_handle_xpc();
@@ -292,9 +292,9 @@
   }
 }
 
-- (void)getCurrentHeroPoiCategoryWithCompletion:(id)a3
+- (void)getCurrentHeroPoiCategoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = __atxlog_handle_xpc();
   v6 = os_signpost_id_generate(v5);
 
@@ -306,8 +306,8 @@
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "getCurrentPoiCategory", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v9 = [(ATXHeroPoiManager *)self->_heroPoiManager currentPoiCategory];
-  v4[2](v4, v9, 0);
+  currentPoiCategory = [(ATXHeroPoiManager *)self->_heroPoiManager currentPoiCategory];
+  completionCopy[2](completionCopy, currentPoiCategory, 0);
 
   v10 = __atxlog_handle_xpc();
   v11 = v10;
@@ -318,19 +318,19 @@
   }
 }
 
-- (id)processPredictions:(id)a3
+- (id)processPredictions:(id)predictions
 {
-  v4 = a3;
-  v5 = [(ATXLocationManagerProtocol *)self->_locationManager getCurrentLocation];
-  if (v5)
+  predictionsCopy = predictions;
+  getCurrentLocation = [(ATXLocationManagerProtocol *)self->_locationManager getCurrentLocation];
+  if (getCurrentLocation)
   {
-    v6 = [(ATXHeroDataServer *)self _filterPredictions:v4 currentLocation:v5];
+    v6 = [(ATXHeroDataServer *)self _filterPredictions:predictionsCopy currentLocation:getCurrentLocation];
 
-    v7 = [ATXHeroDataServerHelper heroAppPredictionsSortedByDistance:v6 currentLocation:v5];
+    v7 = [ATXHeroDataServerHelper heroAppPredictionsSortedByDistance:v6 currentLocation:getCurrentLocation];
 
     [(ATXHeroDataServer *)self _addBundleIdsToPredictions:v7];
-    v4 = v7;
-    v8 = v4;
+    predictionsCopy = v7;
+    v8 = predictionsCopy;
   }
 
   else
@@ -347,34 +347,34 @@
   return v8;
 }
 
-- (void)donatePredictions:(id)a3 shouldOnlyDonateHeroPoiPredictions:(BOOL)a4
+- (void)donatePredictions:(id)predictions shouldOnlyDonateHeroPoiPredictions:(BOOL)poiPredictions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ATXHeroDataServer *)self _heroPoiPredictionsFromPredictions:v6];
-  if (!v4)
+  poiPredictionsCopy = poiPredictions;
+  predictionsCopy = predictions;
+  v7 = [(ATXHeroDataServer *)self _heroPoiPredictionsFromPredictions:predictionsCopy];
+  if (!poiPredictionsCopy)
   {
-    v9 = [(ATXHeroDataServer *)self _heroAppPredictionsFromPredictions:v6];
-    v10 = [(ATXHeroDataServer *)self _heroClipPredictionsFromPredictions:v6];
-    v11 = [v6 count];
-    v12 = [(ATXHeroDataServer *)self _didPredictionsChange:v6];
+    v9 = [(ATXHeroDataServer *)self _heroAppPredictionsFromPredictions:predictionsCopy];
+    v10 = [(ATXHeroDataServer *)self _heroClipPredictionsFromPredictions:predictionsCopy];
+    v11 = [predictionsCopy count];
+    v12 = [(ATXHeroDataServer *)self _didPredictionsChange:predictionsCopy];
     if (v12 || !v11)
     {
       [(ATXHeroDataServer *)self _donateAppClipsToHeroClipManager:v10];
       if ([v10 count])
       {
         v16 = MEMORY[0x277CBEBF8];
-        v17 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v17 = self;
+        selfCopy2 = self;
         v16 = v9;
       }
 
-      [(ATXHeroDataServer *)v17 _donateHeroAppsToHeroAppManager:v16];
-      [(ATXHeroDataServer *)self _setPredictionsInDefaults:v6];
+      [(ATXHeroDataServer *)selfCopy2 _donateHeroAppsToHeroAppManager:v16];
+      [(ATXHeroDataServer *)self _setPredictionsInDefaults:predictionsCopy];
       if (v11)
       {
         [(ATXHeroDataServer *)self _setExpiry];
@@ -444,23 +444,23 @@ LABEL_23:
 LABEL_27:
 }
 
-- (void)updateHeroAppManagerAndHeroClipManagerWithPredictions:(id)a3
+- (void)updateHeroAppManagerAndHeroClipManagerWithPredictions:(id)predictions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(ATXLocationManagerProtocol *)self->_locationManager locationOfInterestAtCurrentLocation];
+  locationOfInterestAtCurrentLocation = [(ATXLocationManagerProtocol *)self->_locationManager locationOfInterestAtCurrentLocation];
   v6 = __atxlog_handle_hero();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *v34 = 136315394;
     *&v34[4] = "[ATXHeroDataServer updateHeroAppManagerAndHeroClipManagerWithPredictions:]";
     *&v34[12] = 2112;
-    *&v34[14] = v5;
+    *&v34[14] = locationOfInterestAtCurrentLocation;
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_DEFAULT, "%s Location of Interest: %@", v34, 0x16u);
   }
 
-  if (!v5 || [v5 type] == -1)
+  if (!locationOfInterestAtCurrentLocation || [locationOfInterestAtCurrentLocation type] == -1)
   {
     v8 = 0;
     v7 = 0;
@@ -468,14 +468,14 @@ LABEL_27:
 
   else
   {
-    v7 = [v5 type] != 3;
+    v7 = [locationOfInterestAtCurrentLocation type] != 3;
     v8 = 1;
   }
 
-  v9 = [(ATXLocationManagerProtocol *)self->_locationManager isNearFrequentLocationOfInterest];
+  isNearFrequentLocationOfInterest = [(ATXLocationManagerProtocol *)self->_locationManager isNearFrequentLocationOfInterest];
   v10 = +[ATXHeroDataServerHelper canPredictClipsGivenRecentMotion];
-  v11 = [(ATXHeroDataServer *)self heroAppAndClipPredictionsAreEligibleGivenIsMoving:!v10 isNearKnownTypeLOI:v8 isNearFrequentLOI:v9];
-  v12 = [(ATXHeroDataServer *)self heroPoiPredictionsAreEligibleGivenIsMoving:!v10 isNearKnownTypeLOIExcludingGym:v7 isNearFrequentLOI:v9];
+  v11 = [(ATXHeroDataServer *)self heroAppAndClipPredictionsAreEligibleGivenIsMoving:!v10 isNearKnownTypeLOI:v8 isNearFrequentLOI:isNearFrequentLocationOfInterest];
+  v12 = [(ATXHeroDataServer *)self heroPoiPredictionsAreEligibleGivenIsMoving:!v10 isNearKnownTypeLOIExcludingGym:v7 isNearFrequentLOI:isNearFrequentLocationOfInterest];
   if ([MEMORY[0x277D42590] isInternalBuild])
   {
     v13 = *MEMORY[0x277CEBDC8];
@@ -502,10 +502,10 @@ LABEL_14:
 LABEL_27:
       v22 = 1;
 LABEL_39:
-      v29 = [(ATXHeroDataServer *)self processPredictions:v4, *v34, *&v34[16]];
+      v29 = [(ATXHeroDataServer *)self processPredictions:predictionsCopy, *v34, *&v34[16]];
 
       [(ATXHeroDataServer *)self donatePredictions:v29 shouldOnlyDonateHeroPoiPredictions:v22 & v15];
-      v4 = v29;
+      predictionsCopy = v29;
       goto LABEL_40;
     }
   }
@@ -540,7 +540,7 @@ LABEL_39:
       *&v34[4] = v18;
       *&v34[12] = 2112;
       *&v34[14] = v19;
-      if (!v9)
+      if (!isNearFrequentLocationOfInterest)
       {
         v17 = @"NO";
       }
@@ -619,69 +619,69 @@ LABEL_40:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donateAppClipsToHeroClipManager:(id)a3
+- (void)_donateAppClipsToHeroClipManager:(id)manager
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __atxlog_handle_hero();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [managerCopy description];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Sending app clip predictions to App Clips manager. Predictions: %@", &v8, 0xCu);
   }
 
-  [(ATXHeroClipManager *)self->_heroClipManager donateAppClipsWithHeroAppPredictions:v4];
+  [(ATXHeroClipManager *)self->_heroClipManager donateAppClipsWithHeroAppPredictions:managerCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donateHeroAppsToHeroAppManager:(id)a3
+- (void)_donateHeroAppsToHeroAppManager:(id)manager
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __atxlog_handle_hero();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [managerCopy description];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Sending hero app predictions to Hero App Manager. Predictions: %@", &v8, 0xCu);
   }
 
-  [(ATXHeroAppManager *)self->_heroAppManager donateHeroAppPredictions:v4];
+  [(ATXHeroAppManager *)self->_heroAppManager donateHeroAppPredictions:managerCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_donatePoiCategoriesToHeroPoiManager:(id)a3
+- (void)_donatePoiCategoriesToHeroPoiManager:(id)manager
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __atxlog_handle_hero();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 description];
+    v6 = [managerCopy description];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Sending hero poi predictions to Hero POI Manager. Predictions: %@", &v8, 0xCu);
   }
 
-  [(ATXHeroPoiManager *)self->_heroPoiManager donateHeroPoiPredictions:v4];
+  [(ATXHeroPoiManager *)self->_heroPoiManager donateHeroPoiPredictions:managerCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filterPredictions:(id)a3 currentLocation:(id)a4
+- (id)_filterPredictions:(id)predictions currentLocation:(id)location
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predictionsCopy = predictions;
+  locationCopy = location;
   dispatch_assert_queue_V2(self->_queue);
-  if (v7)
+  if (locationCopy)
   {
-    v8 = [ATXHeroDataServerHelper inRadiusPredictionsFrom:v6 currentLocation:v7];
+    v8 = [ATXHeroDataServerHelper inRadiusPredictionsFrom:predictionsCopy currentLocation:locationCopy];
 
     v9 = __atxlog_handle_hero();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -691,8 +691,8 @@ LABEL_40:
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Left with %lu hero app predictions after removing out of radius predictions.", &v14, 0xCu);
     }
 
-    v6 = v8;
-    v10 = v6;
+    predictionsCopy = v8;
+    v10 = predictionsCopy;
   }
 
   else
@@ -712,16 +712,16 @@ LABEL_40:
   return v10;
 }
 
-- (void)_addBundleIdsToPredictions:(id)a3
+- (void)_addBundleIdsToPredictions:(id)predictions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   dispatch_assert_queue_V2(self->_queue);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = predictionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -750,17 +750,17 @@ LABEL_40:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_heroAppPredictionsFromPredictions:(id)a3
+- (id)_heroAppPredictionsFromPredictions:(id)predictions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -777,8 +777,8 @@ LABEL_40:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 bundleId];
-        v14 = [v13 isEqualToString:v10];
+        bundleId = [v12 bundleId];
+        v14 = [bundleId isEqualToString:v10];
 
         if ((v14 & 1) == 0)
         {
@@ -797,17 +797,17 @@ LABEL_40:
   return v5;
 }
 
-- (id)_heroClipPredictionsFromPredictions:(id)a3
+- (id)_heroClipPredictionsFromPredictions:(id)predictions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -824,12 +824,12 @@ LABEL_40:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 bundleId];
-        if ([v13 isEqualToString:v10])
+        bundleId = [v12 bundleId];
+        if ([bundleId isEqualToString:v10])
         {
-          v14 = [v12 urlHash];
+          urlHash = [v12 urlHash];
 
-          if (v14)
+          if (urlHash)
           {
             [v5 addObject:v12];
           }
@@ -851,17 +851,17 @@ LABEL_40:
   return v5;
 }
 
-- (id)_heroPoiPredictionsFromPredictions:(id)a3
+- (id)_heroPoiPredictionsFromPredictions:(id)predictions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictionsCopy = predictions;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -877,12 +877,12 @@ LABEL_40:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 poiCategory];
-        if (v12)
+        poiCategory = [v11 poiCategory];
+        if (poiCategory)
         {
-          v13 = v12;
-          v14 = [v11 poiCategory];
-          v15 = [v14 isEqualToString:&stru_2839A6058];
+          v13 = poiCategory;
+          poiCategory2 = [v11 poiCategory];
+          v15 = [poiCategory2 isEqualToString:&stru_2839A6058];
 
           if ((v15 & 1) == 0)
           {
@@ -902,23 +902,23 @@ LABEL_40:
   return v5;
 }
 
-- (BOOL)_didPredictionsChange:(id)a3
+- (BOOL)_didPredictionsChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   queue = self->_queue;
-  v5 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(queue);
-  LOBYTE(v3) = [(ATXHeroPredictionsTracker *)v3->_predictionsTracker didPredictionsChange:v5];
+  LOBYTE(selfCopy) = [(ATXHeroPredictionsTracker *)selfCopy->_predictionsTracker didPredictionsChange:changeCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_setPredictionsInDefaults:(id)a3
+- (void)_setPredictionsInDefaults:(id)defaults
 {
   queue = self->_queue;
-  v5 = a3;
+  defaultsCopy = defaults;
   dispatch_assert_queue_V2(queue);
-  [(ATXHeroPredictionsTracker *)self->_predictionsTracker setPredictionsInDefaults:v5];
+  [(ATXHeroPredictionsTracker *)self->_predictionsTracker setPredictionsInDefaults:defaultsCopy];
 }
 
 - (void)_setExpiry
@@ -1005,20 +1005,20 @@ void __31__ATXHeroDataServer__setExpiry__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = *MEMORY[0x277D13200];
-  v7 = [v5 valueForEntitlement:*MEMORY[0x277D13200]];
+  v7 = [connectionCopy valueForEntitlement:*MEMORY[0x277D13200]];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0 && ([v7 BOOLValue] & 1) != 0)
   {
     v8 = ATXHeroDataXPCInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_171];
-    [v5 setInvalidationHandler:&__block_literal_global_49_3];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_171];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_49_3];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -1027,7 +1027,7 @@ void __31__ATXHeroDataServer__setExpiry__block_invoke_2(uint64_t a1)
     v10 = __atxlog_handle_hero();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(ATXNotificationDigestRankerServer *)v5 listener:v6 shouldAcceptNewConnection:v10];
+      [(ATXNotificationDigestRankerServer *)connectionCopy listener:v6 shouldAcceptNewConnection:v10];
     }
 
     v9 = 0;

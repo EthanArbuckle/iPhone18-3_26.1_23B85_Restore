@@ -1,19 +1,19 @@
 @interface _MFEmailSetEnumerator
-- (_MFEmailSetEnumerator)initWithSet:(id)a3;
+- (_MFEmailSetEnumerator)initWithSet:(id)set;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation _MFEmailSetEnumerator
 
-- (_MFEmailSetEnumerator)initWithSet:(id)a3
+- (_MFEmailSetEnumerator)initWithSet:(id)set
 {
   v6.receiver = self;
   v6.super_class = _MFEmailSetEnumerator;
   v4 = [(_MFEmailSetEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_set = a3;
+    v4->_set = set;
   }
 
   return v4;

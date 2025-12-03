@@ -1,5 +1,5 @@
 @interface EmbeddedViewTableViewCell
-- (_TtC18HealthExperienceUI25EmbeddedViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18HealthExperienceUI25EmbeddedViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA161C28();
 }
 
-- (_TtC18HealthExperienceUI25EmbeddedViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18HealthExperienceUI25EmbeddedViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v7 = v6;
@@ -42,7 +42,7 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for EmbeddedViewTableViewCell();
-  v10 = [(EmbeddedViewTableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:v9];
+  v10 = [(EmbeddedViewTableViewCell *)&v12 initWithStyle:style reuseIdentifier:v9];
 
   return v10;
 }

@@ -1,26 +1,26 @@
 @interface AVTCompositorTextureProvider
-- (AVTCompositorTextureProvider)initWithCompositor:(id)a3 memoji:(id)a4 propertyName:(id)a5;
-- (id)newTextureForDevice:(id)a3;
+- (AVTCompositorTextureProvider)initWithCompositor:(id)compositor memoji:(id)memoji propertyName:(id)name;
+- (id)newTextureForDevice:(id)device;
 - (void)dealloc;
-- (void)renderToTexture:(id)a3 computeCommandHandler:(id)a4 blitCommandHandler:(id)a5 completionHandler:(id)a6 helper:(id)a7;
+- (void)renderToTexture:(id)texture computeCommandHandler:(id)handler blitCommandHandler:(id)commandHandler completionHandler:(id)completionHandler helper:(id)helper;
 @end
 
 @implementation AVTCompositorTextureProvider
 
-- (AVTCompositorTextureProvider)initWithCompositor:(id)a3 memoji:(id)a4 propertyName:(id)a5
+- (AVTCompositorTextureProvider)initWithCompositor:(id)compositor memoji:(id)memoji propertyName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  compositorCopy = compositor;
+  memojiCopy = memoji;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = AVTCompositorTextureProvider;
   v11 = [(AVTCompositorTextureProvider *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_memoji, v9);
-    objc_storeWeak(&v12->_compositor, v8);
-    v13 = [v10 copy];
+    objc_storeWeak(&v11->_memoji, memojiCopy);
+    objc_storeWeak(&v12->_compositor, compositorCopy);
+    v13 = [nameCopy copy];
     propertyName = v12->_propertyName;
     v12->_propertyName = v13;
 
@@ -43,11 +43,11 @@
   [(AVTCompositorTextureProvider *)&v4 dealloc];
 }
 
-- (id)newTextureForDevice:(id)a3
+- (id)newTextureForDevice:(id)device
 {
   propertyName = self->_propertyName;
-  v5 = a3;
-  v6 = [AVTCompositorPipelineCache pipelineForPropertyName:propertyName device:v5];
+  deviceCopy = device;
+  v6 = [AVTCompositorPipelineCache pipelineForPropertyName:propertyName device:deviceCopy];
   pipeline = self->_pipeline;
   self->_pipeline = v6;
 
@@ -66,7 +66,7 @@
   v10 = [MEMORY[0x1E69741B8] texture2DDescriptorWithPixelFormat:v8 width:v9 height:v9 mipmapped:1];
   [v10 setUsage:3];
   [v10 setStorageMode:2];
-  v11 = [v5 newTextureWithDescriptor:v10];
+  v11 = [deviceCopy newTextureWithDescriptor:v10];
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Compositor - %@", self->_propertyName];
   [v11 setLabel:v12];
@@ -74,14 +74,14 @@
   return v11;
 }
 
-- (void)renderToTexture:(id)a3 computeCommandHandler:(id)a4 blitCommandHandler:(id)a5 completionHandler:(id)a6 helper:(id)a7
+- (void)renderToTexture:(id)texture computeCommandHandler:(id)handler blitCommandHandler:(id)commandHandler completionHandler:(id)completionHandler helper:(id)helper
 {
-  v21 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (self->_lastRenderedTexture == v21)
+  textureCopy = texture;
+  handlerCopy = handler;
+  commandHandlerCopy = commandHandler;
+  completionHandlerCopy = completionHandler;
+  helperCopy = helper;
+  if (self->_lastRenderedTexture == textureCopy)
   {
     if (!self->_skinIsDirty && !self->_componentDirtyMask)
     {
@@ -98,19 +98,19 @@
   v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSMutableSet count](self->_helperTokens, "count")}];
   pipeline = self->_pipeline;
   WeakRetained = objc_loadWeakRetained(&self->_memoji);
-  [(AVTCompositorPipeline *)pipeline compositeTexture:v21 forMemoji:WeakRetained considerSkin:self->_skinIsDirty componentsToConsider:self->_componentDirtyMask computeCommandHandler:v12 blitCommandHandler:v13 completionHandler:v14 helper:v15 helperTokens:v16];
+  [(AVTCompositorPipeline *)pipeline compositeTexture:textureCopy forMemoji:WeakRetained considerSkin:self->_skinIsDirty componentsToConsider:self->_componentDirtyMask computeCommandHandler:handlerCopy blitCommandHandler:commandHandlerCopy completionHandler:completionHandlerCopy helper:helperCopy helperTokens:v16];
 
   v19 = objc_loadWeakRetained(&self->_memoji);
-  v20 = [v19 usageIntent];
+  usageIntent = [v19 usageIntent];
 
-  if (v20 != 2)
+  if (usageIntent != 2)
   {
     objc_storeStrong(&self->_helperTokens, v16);
   }
 
   self->_skinIsDirty = 0;
   self->_componentDirtyMask = 0;
-  self->_lastRenderedTexture = v21;
+  self->_lastRenderedTexture = textureCopy;
 
 LABEL_8:
 }

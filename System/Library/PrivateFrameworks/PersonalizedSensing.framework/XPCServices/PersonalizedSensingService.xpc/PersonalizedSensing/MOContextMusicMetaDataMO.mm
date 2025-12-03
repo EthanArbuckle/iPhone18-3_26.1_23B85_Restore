@@ -1,30 +1,30 @@
 @interface MOContextMusicMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextMusicMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v4 = a3;
-  if (a3)
+  objectCopy = object;
+  if (object)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [[MOContextMusicMetaDataMO alloc] initWithContext:v5];
+    contextCopy = context;
+    v6 = objectCopy;
+    objectCopy = [[MOContextMusicMetaDataMO alloc] initWithContext:contextCopy];
 
-    v7 = [(MOContextMusicMetaDataMO *)v6 musicString];
-    [(MOContextMusicMetaDataMO *)v4 setMusicString:v7];
+    musicString = [(MOContextMusicMetaDataMO *)v6 musicString];
+    [(MOContextMusicMetaDataMO *)objectCopy setMusicString:musicString];
 
-    v8 = [(MOContextMusicMetaDataMO *)v6 artist];
-    [(MOContextMusicMetaDataMO *)v4 setArtist:v8];
+    artist = [(MOContextMusicMetaDataMO *)v6 artist];
+    [(MOContextMusicMetaDataMO *)objectCopy setArtist:artist];
 
-    v9 = [(MOContextMusicMetaDataMO *)v6 title];
+    title = [(MOContextMusicMetaDataMO *)v6 title];
 
-    [(MOContextMusicMetaDataMO *)v4 setTitle:v9];
+    [(MOContextMusicMetaDataMO *)objectCopy setTitle:title];
   }
 
-  return v4;
+  return objectCopy;
 }
 
 @end

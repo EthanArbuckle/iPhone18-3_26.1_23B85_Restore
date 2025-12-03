@@ -3,37 +3,37 @@
 - (PHCarPlayRecentsViewController)init;
 - (TUContactsDataProvider)contactsDataProvider;
 - (id)badgeString;
-- (id)bundleIdentifierForRecentCall:(id)a3;
-- (id)contactsForRecentCallForAvatar:(id)a3;
-- (id)conversationWithUUID:(id)a3;
-- (id)recentCallAtIndex:(int64_t)a3;
-- (id)restrictedSubtitleForConversation:(id)a3;
-- (id)restrictedSubtitleForRecentCall:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)bundleIdentifierForRecentCall:(id)call;
+- (id)contactsForRecentCallForAvatar:(id)avatar;
+- (id)conversationWithUUID:(id)d;
+- (id)recentCallAtIndex:(int64_t)index;
+- (id)restrictedSubtitleForConversation:(id)conversation;
+- (id)restrictedSubtitleForRecentCall:(id)call;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)titleForNoContentBanner;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_replaceRecentCalls:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_replaceRecentCalls:(id)calls;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
 - (void)dealloc;
-- (void)handleTUCallCenterCallStatusChangedNotification:(id)a3;
-- (void)insertJoinableConversationsIfNecessary:(id)a3;
-- (void)joinConversationAtIndexPath:(id)a3;
-- (void)performBatchUpdates:(id)a3 completion:(id)a4;
-- (void)programmaticallySelectRowAtIndexPath:(id)a3;
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4;
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4;
-- (void)removeJoinableConversation:(id)a3;
-- (void)setRecentCalls:(id)a3;
-- (void)showRestrictedAlertWithMessage:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)handleTUCallCenterCallStatusChangedNotification:(id)notification;
+- (void)insertJoinableConversationsIfNecessary:(id)necessary;
+- (void)joinConversationAtIndexPath:(id)path;
+- (void)performBatchUpdates:(id)updates completion:(id)completion;
+- (void)programmaticallySelectRowAtIndexPath:(id)path;
+- (void)recentsController:(id)controller didChangeCalls:(id)calls;
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count;
+- (void)removeJoinableConversation:(id)conversation;
+- (void)setRecentCalls:(id)calls;
+- (void)showRestrictedAlertWithMessage:(id)message;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateNoContentBanner;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHCarPlayRecentsViewController
@@ -52,9 +52,9 @@
     v5 = *(v2 + 65);
     *(v2 + 65) = 0;
 
-    v6 = [UIApp recentsController];
+    recentsController = [UIApp recentsController];
     v7 = *(v2 + 49);
-    *(v2 + 49) = v6;
+    *(v2 + 49) = recentsController;
 
     [*(v2 + 49) addDelegate:v2 queue:&_dispatch_main_q];
     *(v2 + 73) = 0;
@@ -134,26 +134,26 @@ void __38__PHCarPlayRecentsViewController_init__block_invoke_2(uint64_t a1)
   v12.receiver = self;
   v12.super_class = PHCarPlayRecentsViewController;
   [(PHCarPlayGenericViewController *)&v12 viewDidLoad];
-  v3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
   v4 = objc_opt_class();
   v5 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayRecentsTableViewCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [mainTableView registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
   v7 = objc_opt_class();
   v8 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayRecentsOngoingMultiwayTableViewCell];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [mainTableView2 registerClass:v7 forCellReuseIdentifier:v8];
 
-  v9 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  [v9 setRowHeight:UITableViewAutomaticDimension];
+  mainTableView3 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  [mainTableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v10 = [(PHCarPlayRecentsViewController *)self conversationManager];
+  conversationManager = [(PHCarPlayRecentsViewController *)self conversationManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke;
   v11[3] = &unk_100284FD0;
   v11[4] = self;
-  [v10 registerWithCompletionHandler:v11];
+  [conversationManager registerWithCompletionHandler:v11];
 }
 
 void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke(uint64_t a1)
@@ -175,11 +175,11 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
   [v1 insertJoinableConversationsIfNecessary:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PHCarPlayRecentsViewController;
-  [(PHCarPlayGenericTableViewController *)&v5 viewWillAppear:a3];
+  [(PHCarPlayGenericTableViewController *)&v5 viewWillAppear:appear];
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -188,11 +188,11 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v22.receiver = self;
   v22.super_class = PHCarPlayRecentsViewController;
-  [(PHCarPlayRecentsViewController *)&v22 viewIsAppearing:a3];
+  [(PHCarPlayRecentsViewController *)&v22 viewIsAppearing:appearing];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,13 +200,13 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController PHCarPlayRecentsViewController viewIsAppearing", buf, 2u);
   }
 
-  v5 = [(PHCarPlayRecentsViewController *)self recentCalls];
+  recentCalls = [(PHCarPlayRecentsViewController *)self recentCalls];
 
-  if (!v5)
+  if (!recentCalls)
   {
-    v6 = [(PHCarPlayRecentsViewController *)self recentsController];
-    v7 = [v6 recentCalls];
-    v8 = [v7 mutableCopy];
+    recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+    recentCalls2 = [recentsController recentCalls];
+    v8 = [recentCalls2 mutableCopy];
 
     v9 = PHDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -218,15 +218,15 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
     }
 
     [(PHCarPlayRecentsViewController *)self _replaceRecentCalls:v8];
-    v11 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
+    pendingUpdatedRecentCalls = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
 
-    if (v11)
+    if (pendingUpdatedRecentCalls)
     {
       v12 = PHDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
-        v14 = [v13 count];
+        pendingUpdatedRecentCalls2 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
+        v14 = [pendingUpdatedRecentCalls2 count];
         *buf = 134217984;
         v24 = v14;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController viewIsAppearing: ignoring %lu stale pendingUpdatedRecentCalls", buf, 0xCu);
@@ -236,23 +236,23 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
     }
   }
 
-  v15 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
+  pendingUpdatedRecentCalls3 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
 
-  if (v15)
+  if (pendingUpdatedRecentCalls3)
   {
     v16 = PHDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
-      v18 = [v17 count];
+      pendingUpdatedRecentCalls4 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
+      v18 = [pendingUpdatedRecentCalls4 count];
       *buf = 134217984;
       v24 = v18;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController viewIsAppearing: applying %lu pendingUpdatedRecentCalls", buf, 0xCu);
     }
 
-    v19 = [(PHCarPlayRecentsViewController *)self recentsController];
-    v20 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
-    [(PHCarPlayRecentsViewController *)self recentsController:v19 didChangeCalls:v20];
+    recentsController2 = [(PHCarPlayRecentsViewController *)self recentsController];
+    pendingUpdatedRecentCalls5 = [(PHCarPlayRecentsViewController *)self pendingUpdatedRecentCalls];
+    [(PHCarPlayRecentsViewController *)self recentsController:recentsController2 didChangeCalls:pendingUpdatedRecentCalls5];
 
     [(PHCarPlayRecentsViewController *)self setPendingUpdatedRecentCalls:0];
   }
@@ -261,25 +261,25 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
   [v21 addObserver:self selector:"applicationDidEnterBackgroundNotification:" name:UIApplicationDidEnterBackgroundNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHCarPlayRecentsViewController;
-  [(PHCarPlayRecentsViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PHCarPlayRecentsViewController *)self recentsController];
-  [v4 markRecentCallsAsRead];
+  [(PHCarPlayRecentsViewController *)&v5 viewWillDisappear:disappear];
+  recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+  [recentsController markRecentCallsAsRead];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHCarPlayRecentsViewController;
-  [(PHCarPlayGenericViewController *)&v5 viewDidDisappear:a3];
+  [(PHCarPlayGenericViewController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:0];
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -288,23 +288,23 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "", v10, 2u);
   }
 
-  v5 = [(PHCarPlayRecentsViewController *)self tabBarController];
-  v6 = [v5 selectedViewController];
-  v7 = [v6 childViewControllers];
-  v8 = [v7 firstObject];
+  tabBarController = [(PHCarPlayRecentsViewController *)self tabBarController];
+  selectedViewController = [tabBarController selectedViewController];
+  childViewControllers = [selectedViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  if (v8 == self)
+  if (firstObject == self)
   {
-    v9 = [(PHCarPlayRecentsViewController *)self recentsController];
-    [v9 markRecentCallsAsRead];
+    recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+    [recentsController markRecentCallsAsRead];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = [(PHCarPlayRecentsViewController *)self recentCalls];
+    recentCalls = [(PHCarPlayRecentsViewController *)self recentCalls];
   }
 
   else
@@ -314,29 +314,29 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
       return 0;
     }
 
-    v5 = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
+    recentCalls = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
   }
 
-  v7 = v5;
-  v8 = [v5 count];
+  v7 = recentCalls;
+  v8 = [recentCalls count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
     v8 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayRecentsTableViewCell];
-    v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-    v10 = [v6 row];
+    v10 = [pathCopy row];
     v11 = [(PHCarPlayRecentsViewController *)self recentCallAtIndex:v10];
     [v9 setRecentCall:v11];
-    v12 = [(PHCarPlayRecentsViewController *)self recentsController];
-    v13 = [v12 itemForRecentCall:v11];
+    recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+    v13 = [recentsController itemForRecentCall:v11];
     [v9 setRecentsItem:v13];
 
     if (![*(&self->_pendingUpdatedRecentCalls + 1) phoneRecentsAvatarsCarplayEnabled])
@@ -344,23 +344,23 @@ void __45__PHCarPlayRecentsViewController_viewDidLoad__block_invoke_2(uint64_t a
       goto LABEL_6;
     }
 
-    v14 = [(PHCarPlayRecentsViewController *)self contactsForRecentCallForAvatar:v11];
-    [v9 setContacts:v14];
+    displayName = [(PHCarPlayRecentsViewController *)self contactsForRecentCallForAvatar:v11];
+    [v9 setContacts:displayName];
   }
 
   else
   {
     v15 = +[(PHCarPlayGenericTableViewCell *)PHCarPlayRecentsOngoingMultiwayTableViewCell];
-    v9 = [v7 dequeueReusableCellWithIdentifier:v15 forIndexPath:v6];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:v15 forIndexPath:pathCopy];
 
-    v16 = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
-    v17 = [v6 row];
+    joinableConversationUUIDs = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
+    v17 = [pathCopy row];
 
-    v18 = [v16 objectAtIndexedSubscript:v17];
+    v18 = [joinableConversationUUIDs objectAtIndexedSubscript:v17];
     v11 = [(PHCarPlayRecentsViewController *)self conversationWithUUID:v18];
 
-    v14 = [v11 displayName];
-    [v9 setCallName:v14];
+    displayName = [v11 displayName];
+    [v9 setCallName:displayName];
   }
 
 LABEL_6:
@@ -368,19 +368,19 @@ LABEL_6:
   return v9;
 }
 
-- (id)contactsForRecentCallForAvatar:(id)a3
+- (id)contactsForRecentCallForAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [(PHCarPlayRecentsViewController *)self recentsController];
-  v6 = [v5 contactByHandleForRecentCall:v4 keyDescriptors:&__NSArray0__struct];
+  avatarCopy = avatar;
+  recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+  v6 = [recentsController contactByHandleForRecentCall:avatarCopy keyDescriptors:&__NSArray0__struct];
 
   v7 = objc_alloc_init(NSMutableArray);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v4 validRemoteParticipantHandles];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  validRemoteParticipantHandles = [avatarCopy validRemoteParticipantHandles];
+  v9 = [validRemoteParticipantHandles countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -391,7 +391,7 @@ LABEL_6:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(validRemoteParticipantHandles);
         }
 
         v13 = [v6 objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i)];
@@ -403,7 +403,7 @@ LABEL_6:
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [validRemoteParticipantHandles countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -412,65 +412,65 @@ LABEL_6:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  [(PHCarPlayRecentsViewController *)self programmaticallySelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  [(PHCarPlayRecentsViewController *)self programmaticallySelectRowAtIndexPath:pathCopy];
 }
 
-- (void)programmaticallySelectRowAtIndexPath:(id)a3
+- (void)programmaticallySelectRowAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = pathCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "programmaticallySelectRowAtIndexPath:%@", &v13, 0xCu);
   }
 
-  if ([v4 section])
+  if ([pathCopy section])
   {
-    v6 = -[PHCarPlayRecentsViewController recentCallAtIndex:](self, "recentCallAtIndex:", [v4 row]);
-    v7 = [(PHCarPlayRecentsViewController *)self recentsController];
-    v8 = [v7 dialRequestForRecentCall:v6];
+    v6 = -[PHCarPlayRecentsViewController recentCallAtIndex:](self, "recentCallAtIndex:", [pathCopy row]);
+    recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+    v8 = [recentsController dialRequestForRecentCall:v6];
 
     v9 = +[TUCallCenter sharedInstance];
-    v10 = [v9 callFilterController];
-    v11 = [v10 shouldRestrictDialRequest:v8];
+    callFilterController = [v9 callFilterController];
+    v11 = [callFilterController shouldRestrictDialRequest:v8];
 
     if (v11)
     {
-      v12 = [(PHCarPlayRecentsViewController *)self restrictedSubtitleForRecentCall:v6];
-      [(PHCarPlayRecentsViewController *)self showRestrictedAlertWithMessage:v12];
+      recentsController2 = [(PHCarPlayRecentsViewController *)self restrictedSubtitleForRecentCall:v6];
+      [(PHCarPlayRecentsViewController *)self showRestrictedAlertWithMessage:recentsController2];
     }
 
     else
     {
-      v12 = [(PHCarPlayRecentsViewController *)self recentsController];
-      [v12 performDialRequest:v8];
+      recentsController2 = [(PHCarPlayRecentsViewController *)self recentsController];
+      [recentsController2 performDialRequest:v8];
     }
   }
 
   else
   {
-    [(PHCarPlayRecentsViewController *)self joinConversationAtIndexPath:v4];
+    [(PHCarPlayRecentsViewController *)self joinConversationAtIndexPath:pathCopy];
   }
 }
 
-- (void)joinConversationAtIndexPath:(id)a3
+- (void)joinConversationAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
-  v6 = [v4 row];
+  pathCopy = path;
+  joinableConversationUUIDs = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [joinableConversationUUIDs objectAtIndexedSubscript:v6];
   v12 = [(PHCarPlayRecentsViewController *)self conversationWithUUID:v7];
 
   v8 = +[TUCallCenter sharedInstance];
-  v9 = [v8 callFilterController];
-  LODWORD(v6) = [v9 shouldRestrictConversation:v12 performSynchronously:1];
+  callFilterController = [v8 callFilterController];
+  LODWORD(v6) = [callFilterController shouldRestrictConversation:v12 performSynchronously:1];
 
   if (v6)
   {
@@ -494,11 +494,11 @@ LABEL_6:
   }
 }
 
-- (id)bundleIdentifierForRecentCall:(id)a3
+- (id)bundleIdentifierForRecentCall:(id)call
 {
-  v3 = a3;
-  v4 = [v3 serviceProvider];
-  v5 = [v4 isEqualToString:kCHServiceProviderTelephony];
+  callCopy = call;
+  serviceProvider = [callCopy serviceProvider];
+  v5 = [serviceProvider isEqualToString:kCHServiceProviderTelephony];
 
   if (v5)
   {
@@ -507,8 +507,8 @@ LABEL_6:
 
   else
   {
-    v7 = [v3 serviceProvider];
-    v8 = [v7 isEqualToString:kCHServiceProviderFaceTime];
+    serviceProvider2 = [callCopy serviceProvider];
+    v8 = [serviceProvider2 isEqualToString:kCHServiceProviderFaceTime];
 
     if (v8)
     {
@@ -517,7 +517,7 @@ LABEL_6:
 
     else
     {
-      [v3 serviceProvider];
+      [callCopy serviceProvider];
     }
     v6 = ;
   }
@@ -527,12 +527,12 @@ LABEL_6:
   return v9;
 }
 
-- (void)showRestrictedAlertWithMessage:(id)a3
+- (void)showRestrictedAlertWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = TUBundle();
   v6 = [v5 localizedStringForKey:@"RESTRICTED_CONTENT" value:&stru_10028F310 table:@"TelephonyUtilities"];
-  v10 = [UIAlertController alertControllerWithTitle:v6 message:v4 preferredStyle:1];
+  v10 = [UIAlertController alertControllerWithTitle:v6 message:messageCopy preferredStyle:1];
 
   v7 = TUBundle();
   v8 = [v7 localizedStringForKey:@"CANCEL" value:&stru_10028F310 table:@"TelephonyUtilities"];
@@ -542,19 +542,19 @@ LABEL_6:
   [(PHCarPlayRecentsViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (id)restrictedSubtitleForConversation:(id)a3
+- (id)restrictedSubtitleForConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = [v3 activeRemoteParticipants];
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  conversationCopy = conversation;
+  activeRemoteParticipants = [conversationCopy activeRemoteParticipants];
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [activeRemoteParticipants count]);
 
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v53 = v3;
-  v6 = [v3 activeRemoteParticipants];
-  v7 = [v6 countByEnumeratingWithState:&v66 objects:v72 count:16];
+  v53 = conversationCopy;
+  activeRemoteParticipants2 = [conversationCopy activeRemoteParticipants];
+  v7 = [activeRemoteParticipants2 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v7)
   {
     v8 = v7;
@@ -566,27 +566,27 @@ LABEL_6:
       {
         if (*v67 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeRemoteParticipants2);
         }
 
         v12 = *(*(&v66 + 1) + 8 * i);
-        v13 = [v12 handle];
-        v14 = [v13 value];
-        if ([v14 length])
+        handle = [v12 handle];
+        value = [handle value];
+        if ([value length])
         {
-          v15 = [v12 handle];
-          v16 = [v15 value];
+          handle2 = [v12 handle];
+          value2 = [handle2 value];
         }
 
         else
         {
-          v16 = v10;
+          value2 = v10;
         }
 
-        [v5 addObject:v16];
+        [v5 addObject:value2];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v66 objects:v72 count:16];
+      v8 = [activeRemoteParticipants2 countByEnumeratingWithState:&v66 objects:v72 count:16];
     }
 
     while (v8);
@@ -598,8 +598,8 @@ LABEL_6:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v17 = [v53 remoteMembers];
-    v18 = [v17 countByEnumeratingWithState:&v62 objects:v71 count:16];
+    remoteMembers = [v53 remoteMembers];
+    v18 = [remoteMembers countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v18)
     {
       v19 = v18;
@@ -611,27 +611,27 @@ LABEL_6:
         {
           if (*v63 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(remoteMembers);
           }
 
           v23 = *(*(&v62 + 1) + 8 * j);
-          v24 = [v23 handle];
-          v25 = [v24 value];
-          if ([v25 length])
+          handle3 = [v23 handle];
+          value3 = [handle3 value];
+          if ([value3 length])
           {
-            v26 = [v23 handle];
-            v27 = [v26 value];
+            handle4 = [v23 handle];
+            value4 = [handle4 value];
           }
 
           else
           {
-            v27 = v21;
+            value4 = v21;
           }
 
-          [v5 addObject:v27];
+          [v5 addObject:value4];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        v19 = [remoteMembers countByEnumeratingWithState:&v62 objects:v71 count:16];
       }
 
       while (v19);
@@ -639,9 +639,9 @@ LABEL_6:
   }
 
   v28 = +[TUCallCenter sharedInstance];
-  v29 = [v28 callFilterController];
+  callFilterController = [v28 callFilterController];
   v30 = TUPreferredFaceTimeBundleIdentifier();
-  v31 = [v29 policyForAddresses:v5 forBundleIdentifier:v30];
+  v31 = [callFilterController policyForAddresses:v5 forBundleIdentifier:v30];
 
   v60 = 0u;
   v61 = 0u;
@@ -692,21 +692,21 @@ LABEL_45:
           v43 = [TUHandle handleWithDestinationID:v38];
           v39 = [v42 initWithHandle:v43];
 
-          v44 = [(PHCarPlayRecentsViewController *)self contactsDataProvider];
-          v40 = [v44 executeFetchRequest:v39];
+          contactsDataProvider = [(PHCarPlayRecentsViewController *)self contactsDataProvider];
+          v40 = [contactsDataProvider executeFetchRequest:v39];
 
-          v45 = [v40 localizedName];
-          if ([v45 length])
+          localizedName = [v40 localizedName];
+          if ([localizedName length])
           {
-            v46 = [v40 localizedName];
+            localizedName2 = [v40 localizedName];
           }
 
           else
           {
-            v46 = v38;
+            localizedName2 = v38;
           }
 
-          v34 = v46;
+          v34 = localizedName2;
 
 LABEL_35:
         }
@@ -756,33 +756,33 @@ LABEL_46:
   return v49;
 }
 
-- (id)restrictedSubtitleForRecentCall:(id)a3
+- (id)restrictedSubtitleForRecentCall:(id)call
 {
-  v3 = [a3 callerNameForDisplay];
-  if (![v3 length])
+  callerNameForDisplay = [call callerNameForDisplay];
+  if (![callerNameForDisplay length])
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"UNKNOWN" value:&stru_10028F310 table:@"PHCarPlay"];
 
-    v3 = v5;
+    callerNameForDisplay = v5;
   }
 
   v6 = TUBundle();
   v7 = [v6 localizedStringForKey:@"DOWNTIME_CALLER_ALTERNATE_%@" value:&stru_10028F310 table:@"TelephonyUtilities"];
-  v8 = [NSString stringWithFormat:v7, v3];
+  v8 = [NSString stringWithFormat:v7, callerNameForDisplay];
 
   return v8;
 }
 
 - (void)updateNoContentBanner
 {
-  v3 = [(PHCarPlayRecentsViewController *)self recentCalls];
-  v4 = [v3 count];
+  recentCalls = [(PHCarPlayRecentsViewController *)self recentCalls];
+  v4 = [recentCalls count];
 
   if (![(PHCarPlayRecentsViewController *)self shouldSuppressMultiwayRecentCalls])
   {
-    v5 = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
-    v4 = &v4[[v5 count]];
+    joinableConversationUUIDs = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
+    v4 = &v4[[joinableConversationUUIDs count]];
   }
 
   [(PHCarPlayGenericTableViewController *)self setNoContentBannerShown:v4 == 0];
@@ -811,17 +811,17 @@ LABEL_46:
   return v3;
 }
 
-- (id)conversationWithUUID:(id)a3
+- (id)conversationWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(PHCarPlayRecentsViewController *)self conversationManager];
-  v6 = [v5 activeConversations];
+  conversationManager = [(PHCarPlayRecentsViewController *)self conversationManager];
+  activeConversations = [conversationManager activeConversations];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [activeConversations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -833,12 +833,12 @@ LABEL_46:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeConversations);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 UUID];
-        v14 = [v13 isEqual:v4];
+        uUID = [v12 UUID];
+        v14 = [uUID isEqual:dCopy];
 
         if (v14)
         {
@@ -848,7 +848,7 @@ LABEL_46:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [activeConversations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -862,17 +862,17 @@ LABEL_46:
   return v9;
 }
 
-- (void)insertJoinableConversationsIfNecessary:(id)a3
+- (void)insertJoinableConversationsIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (![(PHCarPlayRecentsViewController *)self shouldSuppressMultiwayRecentCalls])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __73__PHCarPlayRecentsViewController_insertJoinableConversationsIfNecessary___block_invoke;
     v6[3] = &unk_100285C58;
-    v7 = v4;
-    v8 = self;
+    v7 = necessaryCopy;
+    selfCopy = self;
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = __73__PHCarPlayRecentsViewController_insertJoinableConversationsIfNecessary___block_invoke_164;
@@ -945,12 +945,12 @@ void __73__PHCarPlayRecentsViewController_insertJoinableConversationsIfNecessary
   }
 }
 
-- (void)removeJoinableConversation:(id)a3
+- (void)removeJoinableConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
-  v6 = [v4 UUID];
-  v7 = [v5 indexOfObject:v6];
+  conversationCopy = conversation;
+  joinableConversationUUIDs = [(PHCarPlayRecentsViewController *)self joinableConversationUUIDs];
+  uUID = [conversationCopy UUID];
+  v7 = [joinableConversationUUIDs indexOfObject:uUID];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -960,7 +960,7 @@ void __73__PHCarPlayRecentsViewController_insertJoinableConversationsIfNecessary
     v9[3] = &unk_100286518;
     v11 = v7;
     v9[4] = self;
-    v10 = v4;
+    v10 = conversationCopy;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __61__PHCarPlayRecentsViewController_removeJoinableConversation___block_invoke_166;
@@ -994,9 +994,9 @@ void __61__PHCarPlayRecentsViewController_removeJoinableConversation___block_inv
   }
 }
 
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4
+- (void)recentsController:(id)controller didChangeCalls:(id)calls
 {
-  v5 = [a4 mutableCopy];
+  v5 = [calls mutableCopy];
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1016,7 +1016,7 @@ void __61__PHCarPlayRecentsViewController_removeJoinableConversation___block_inv
   }
 }
 
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count
 {
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1026,23 +1026,23 @@ void __61__PHCarPlayRecentsViewController_removeJoinableConversation___block_inv
     *buf = 138412802;
     v11 = v7;
     v12 = 2048;
-    v13 = [(PHCarPlayRecentsViewController *)self unreadCallCount];
+    unreadCallCount = [(PHCarPlayRecentsViewController *)self unreadCallCount];
     v14 = 2048;
-    v15 = a4;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController %@ is handling unread call count change from %lu to %lu", buf, 0x20u);
   }
 
-  [(PHCarPlayRecentsViewController *)self setUnreadCallCount:a4];
+  [(PHCarPlayRecentsViewController *)self setUnreadCallCount:count];
   v9.receiver = self;
   v9.super_class = PHCarPlayRecentsViewController;
   [(PHCarPlayGenericTableViewController *)&v9 updateBadgeString];
 }
 
-- (void)_replaceRecentCalls:(id)a3
+- (void)_replaceRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  if (v5)
+  callsCopy = calls;
+  mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  if (mainTableView)
   {
 
 LABEL_3:
@@ -1050,7 +1050,7 @@ LABEL_3:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = [v4 count];
+      v15 = [callsCopy count];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController recentsController:didChangeCalls performBatchUpdates for %lu calls", buf, 0xCu);
     }
 
@@ -1059,7 +1059,7 @@ LABEL_3:
     v12[2] = __54__PHCarPlayRecentsViewController__replaceRecentCalls___block_invoke;
     v12[3] = &unk_100285C58;
     v12[4] = self;
-    v13 = v4;
+    v13 = callsCopy;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __54__PHCarPlayRecentsViewController__replaceRecentCalls___block_invoke_2;
@@ -1070,10 +1070,10 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v7 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-  v8 = [v7 window];
+  mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+  window = [mainTableView2 window];
 
-  if (!v8)
+  if (!window)
   {
     goto LABEL_3;
   }
@@ -1082,7 +1082,7 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v15 = [v4 count];
+    v15 = [callsCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController replaceRecentCalls ignored %lu calls since view is not yet loaded", buf, 0xCu);
   }
 
@@ -1115,15 +1115,15 @@ void __54__PHCarPlayRecentsViewController__replaceRecentCalls___block_invoke_2(u
   }
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __82__PHCarPlayRecentsViewController_conversationManager_stateChangedForConversation___block_invoke;
   v6[3] = &unk_1002852E0;
-  v7 = a4;
-  v8 = self;
-  v5 = v7;
+  conversationCopy = conversation;
+  selfCopy = self;
+  v5 = conversationCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
@@ -1147,39 +1147,39 @@ void __82__PHCarPlayRecentsViewController_conversationManager_stateChangedForCon
   }
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __80__PHCarPlayRecentsViewController_conversationManager_removedActiveConversation___block_invoke;
   v5[3] = &unk_1002852E0;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  conversationCopy = conversation;
+  v4 = conversationCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)setRecentCalls:(id)a3
+- (void)setRecentCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v31 = [v4 count];
+    v31 = [callsCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHCarPlayRecentsViewController setRecentCalls to %lu calls", buf, 0xCu);
   }
 
-  if (*(&self->_contactsDataProvider + 1) != v4)
+  if (*(&self->_contactsDataProvider + 1) != callsCopy)
   {
     v23 = +[NSMutableArray array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = v4;
+    v6 = callsCopy;
     v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
-    v22 = v4;
+    v22 = callsCopy;
     if (v7)
     {
       v8 = v7;
@@ -1200,8 +1200,8 @@ void __82__PHCarPlayRecentsViewController_conversationManager_stateChangedForCon
           {
             if (v9)
             {
-              v14 = [(PHCarPlayRecentsViewController *)self recentsController];
-              v15 = [v14 coalesceRecentCall:v9 withRecentCall:v13];
+              recentsController = [(PHCarPlayRecentsViewController *)self recentsController];
+              v15 = [recentsController coalesceRecentCall:v9 withRecentCall:v13];
             }
 
             else
@@ -1251,7 +1251,7 @@ LABEL_22:
         v24.super_class = PHCarPlayRecentsViewController;
         [(PHCarPlayGenericTableViewController *)&v24 updateBadgeString];
 
-        v4 = v22;
+        callsCopy = v22;
         goto LABEL_25;
       }
     }
@@ -1270,52 +1270,52 @@ LABEL_22:
 LABEL_25:
 }
 
-- (void)handleTUCallCenterCallStatusChangedNotification:(id)a3
+- (void)handleTUCallCenterCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v14 = 138412546;
     v15 = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@>", &v14, 0x16u);
   }
 
-  v9 = [v4 object];
-  if ([v9 disconnectedReason] == 17)
+  object = [notificationCopy object];
+  if ([object disconnectedReason] == 17)
   {
     v10 = PHDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = object;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Call status changed for call with dial failed: %@", &v14, 0xCu);
     }
 
-    v11 = [(PHCarPlayRecentsViewController *)self conversationManager];
-    v12 = [v11 activeConversations];
-    v13 = [v12 allObjects];
-    [(PHCarPlayRecentsViewController *)self insertJoinableConversationsIfNecessary:v13];
+    conversationManager = [(PHCarPlayRecentsViewController *)self conversationManager];
+    activeConversations = [conversationManager activeConversations];
+    allObjects = [activeConversations allObjects];
+    [(PHCarPlayRecentsViewController *)self insertJoinableConversationsIfNecessary:allObjects];
   }
 }
 
-- (id)recentCallAtIndex:(int64_t)a3
+- (id)recentCallAtIndex:(int64_t)index
 {
-  v4 = [(PHCarPlayRecentsViewController *)self recentCalls];
-  v5 = v4;
-  if (a3 < 0 || [v4 count] <= a3)
+  recentCalls = [(PHCarPlayRecentsViewController *)self recentCalls];
+  v5 = recentCalls;
+  if (index < 0 || [recentCalls count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [v5 objectAtIndexedSubscript:index];
   }
 
   return v6;
@@ -1328,8 +1328,8 @@ LABEL_25:
   {
     v4 = [TUContactsDataProvider alloc];
     v5 = +[(PHApplicationServices *)MPApplicationServices];
-    v6 = [v5 contactStore];
-    v7 = [v4 initWithContactsDataSource:v6];
+    contactStore = [v5 contactStore];
+    v7 = [v4 initWithContactsDataSource:contactStore];
     v8 = *(&self->_recentsController + 1);
     *(&self->_recentsController + 1) = v7;
 
@@ -1339,33 +1339,33 @@ LABEL_25:
   return v3;
 }
 
-- (void)performBatchUpdates:(id)a3 completion:(id)a4
+- (void)performBatchUpdates:(id)updates completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHCarPlayGenericTableViewController *)self mainTableViewDataSource];
-  v9 = [v8 filterType];
+  updatesCopy = updates;
+  completionCopy = completion;
+  mainTableViewDataSource = [(PHCarPlayGenericTableViewController *)self mainTableViewDataSource];
+  filterType = [mainTableViewDataSource filterType];
 
-  if (v9)
+  if (filterType)
   {
-    v6[2](v6, 0);
-    v10 = [(PHCarPlayGenericTableViewController *)self mainTableView];
-    [v10 reloadData];
+    updatesCopy[2](updatesCopy, 0);
+    mainTableView = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    [mainTableView reloadData];
 
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
-    v11 = [(PHCarPlayGenericTableViewController *)self mainTableView];
+    mainTableView2 = [(PHCarPlayGenericTableViewController *)self mainTableView];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __65__PHCarPlayRecentsViewController_performBatchUpdates_completion___block_invoke;
     v12[3] = &unk_100285590;
-    v13 = v6;
-    [v11 performBatchUpdates:v12 completion:v7];
+    v13 = updatesCopy;
+    [mainTableView2 performBatchUpdates:v12 completion:completionCopy];
 
-    v7 = v13;
+    completionCopy = v13;
   }
 }
 

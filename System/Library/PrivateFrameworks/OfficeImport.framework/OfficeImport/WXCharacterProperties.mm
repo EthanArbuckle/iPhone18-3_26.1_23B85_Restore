@@ -1,6 +1,6 @@
 @interface WXCharacterProperties
-+ (BOOL)readBooleanCharacterMultipleProperty:(_xmlNode *)a3 propertyName:(const char *)a4 attributeName:(const char *)a5 outValue:(int *)a6 state:(id)a7;
-+ (BOOL)readBooleanCharacterProperty:(_xmlNode *)a3 propertyName:(const char *)a4 attributeName:(const char *)a5 outValue:(int *)a6 state:(id)a7;
++ (BOOL)readBooleanCharacterMultipleProperty:(_xmlNode *)property propertyName:(const char *)name attributeName:(const char *)attributeName outValue:(int *)value state:(id)state;
++ (BOOL)readBooleanCharacterProperty:(_xmlNode *)property propertyName:(const char *)name attributeName:(const char *)attributeName outValue:(int *)value state:(id)state;
 + (TCEnumerationMap)emphasisMarkEnumMap;
 + (TCEnumerationMap)fontHintEnumMap;
 + (TCEnumerationMap)highlightEnumMap;
@@ -8,15 +8,15 @@
 + (TCEnumerationMap)twoLineBracketsEnumMap;
 + (TCEnumerationMap)underlineEnumMap;
 + (TCEnumerationMap)verticalAlignEnumMap;
-+ (id)readFillColor:(_xmlNode *)a3 forTarget:(id)a4 state:(id)a5;
-+ (void)applyDeletionInsertionProperties:(id)a3 state:(id)a4;
++ (id)readFillColor:(_xmlNode *)color forTarget:(id)target state:(id)state;
++ (void)applyDeletionInsertionProperties:(id)properties state:(id)state;
 + (void)emphasisMarkEnumMap;
 + (void)fontHintEnumMap;
 + (void)highlightEnumMap;
 + (void)ligaturesEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
-+ (void)readReflection:(id)a3 fromXmlNode:(_xmlNode *)a4 state:(id)a5;
-+ (void)readShadowForTarget:(id)a3 fromXmlNode:(_xmlNode *)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
++ (void)readReflection:(id)reflection fromXmlNode:(_xmlNode *)node state:(id)state;
++ (void)readShadowForTarget:(id)target fromXmlNode:(_xmlNode *)node state:(id)state;
 + (void)twoLineBracketsEnumMap;
 + (void)underlineEnumMap;
 + (void)verticalAlignEnumMap;
@@ -185,396 +185,396 @@ void __40__WXCharacterProperties_fontHintEnumMap__block_invoke()
   +[WXCharacterProperties fontHintEnumMap]::sFontHintEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  [v7 setResolveMode:0];
-  v9 = [(WXReadState *)v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "ins");
+  toCopy = to;
+  stateCopy = state;
+  [toCopy setResolveMode:0];
+  wXMainNamespace = [(WXReadState *)stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "ins");
 
   if (v10)
   {
-    [v7 setEdited:1];
+    [toCopy setEdited:1];
     v11 = wmxmlGetDateProperty(v10);
-    [v7 setEditDate:v11];
+    [toCopy setEditDate:v11];
 
-    v12 = [(WXReadState *)v8 document];
+    document = [(WXReadState *)stateCopy document];
     v13 = wmxmlGetAuthorProperty(v10);
-    [v7 setIndexToAuthorIDOfEdit:{objc_msgSend(v12, "revisionAuthorAddLookup:", v13)}];
+    [toCopy setIndexToAuthorIDOfEdit:{objc_msgSend(document, "revisionAuthorAddLookup:", v13)}];
   }
 
-  v14 = [(WXReadState *)v8 WXMainNamespace];
-  v15 = OCXFindChild(a3, v14, "del");
+  wXMainNamespace2 = [(WXReadState *)stateCopy WXMainNamespace];
+  v15 = OCXFindChild(from, wXMainNamespace2, "del");
 
   if (v15)
   {
-    [v7 setDeleted:1];
+    [toCopy setDeleted:1];
     v16 = wmxmlGetDateProperty(v15);
-    [v7 setDeletionDate:v16];
+    [toCopy setDeletionDate:v16];
 
-    v17 = [(WXReadState *)v8 document];
+    document2 = [(WXReadState *)stateCopy document];
     v18 = wmxmlGetAuthorProperty(v15);
-    [v7 setIndexToAuthorIDOfDeletion:{objc_msgSend(v17, "revisionAuthorAddLookup:", v18)}];
+    [toCopy setIndexToAuthorIDOfDeletion:{objc_msgSend(document2, "revisionAuthorAddLookup:", v18)}];
   }
 
-  v19 = [(WXReadState *)v8 WXMainNamespace];
-  v20 = OCXFindChild(a3, v19, "rPrChange");
+  wXMainNamespace3 = [(WXReadState *)stateCopy WXMainNamespace];
+  v20 = OCXFindChild(from, wXMainNamespace3, "rPrChange");
 
   if (v20)
   {
-    v21 = [(WXReadState *)v8 WXMainNamespace];
-    v22 = OCXFindChild(v20, v21, "rPr");
+    wXMainNamespace4 = [(WXReadState *)stateCopy WXMainNamespace];
+    v22 = OCXFindChild(v20, wXMainNamespace4, "rPr");
 
     if (v22)
     {
-      [WXCharacterProperties readFrom:v22 to:v7 state:v8];
-      [v7 setResolveMode:1];
-      [v7 setFormattingChanged:1];
-      v23 = [(WXReadState *)v8 document];
+      [WXCharacterProperties readFrom:v22 to:toCopy state:stateCopy];
+      [toCopy setResolveMode:1];
+      [toCopy setFormattingChanged:1];
+      document3 = [(WXReadState *)stateCopy document];
       v24 = wmxmlGetAuthorProperty(v20);
-      [v7 setIndexToAuthorIDOfFormattingChange:{objc_msgSend(v23, "revisionAuthorAddLookup:", v24)}];
+      [toCopy setIndexToAuthorIDOfFormattingChange:{objc_msgSend(document3, "revisionAuthorAddLookup:", v24)}];
     }
   }
 
   v176[0] = 0;
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"rtl" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"rtl" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setRightToLeft:v176[0]];
+    [toCopy setRightToLeft:v176[0]];
   }
 
-  else if (![WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"cs" attributeName:"val" outValue:v176 state:v8])
+  else if (![WXCharacterProperties readBooleanCharacterProperty:from propertyName:"cs" attributeName:"val" outValue:v176 state:stateCopy])
   {
     goto LABEL_12;
   }
 
-  [v7 setUseCsFont:v176[0]];
+  [toCopy setUseCsFont:v176[0]];
 LABEL_12:
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"b" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"b" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setBold:v176[0]];
+    [toCopy setBold:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"bCs" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"bCs" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setBoldForBiText:v176[0]];
+    [toCopy setBoldForBiText:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"i" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"i" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setItalic:v176[0]];
+    [toCopy setItalic:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"iCs" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"iCs" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setItalicForBiText:v176[0]];
+    [toCopy setItalicForBiText:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"smallCaps" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"smallCaps" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setSmallCaps:v176[0]];
+    [toCopy setSmallCaps:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"outline" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"outline" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setOutline:v176[0]];
+    [toCopy setOutline:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"shadow" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"shadow" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setShadow:v176[0]];
+    [toCopy setShadow:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"emboss" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"emboss" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setEmbossed:v176[0]];
+    [toCopy setEmbossed:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"imprint" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"imprint" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setImprint:v176[0]];
+    [toCopy setImprint:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"strike" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"strike" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setStrikeThrough:v176[0]];
+    [toCopy setStrikeThrough:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"dstrike" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"dstrike" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setDoubleStrikeThrough:v176[0]];
+    [toCopy setDoubleStrikeThrough:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"caps" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"caps" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setCaps:v176[0]];
+    [toCopy setCaps:v176[0]];
   }
 
-  if ([WXCharacterProperties readBooleanCharacterProperty:a3 propertyName:"vanish" attributeName:"val" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterProperty:from propertyName:"vanish" attributeName:"val" outValue:v176 state:stateCopy])
   {
-    [v7 setHidden:v176[0]];
+    [toCopy setHidden:v176[0]];
   }
 
   v175 = 0;
-  v25 = [(WXReadState *)v8 WXMainNamespace];
-  v26 = OCXFindChild(a3, v25, "spacing");
+  wXMainNamespace5 = [(WXReadState *)stateCopy WXMainNamespace];
+  v26 = OCXFindChild(from, wXMainNamespace5, "spacing");
 
-  v27 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v26) = CXOptionalLongAttribute(v26, v27, "val", &v175, 14);
+  wXMainNamespace6 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v26) = CXOptionalLongAttribute(v26, wXMainNamespace6, "val", &v175, 14);
 
   if (v26)
   {
-    [v7 setSpacing:v175];
+    [toCopy setSpacing:v175];
   }
 
-  v28 = [(WXReadState *)v8 WXMainNamespace];
-  v29 = OCXFindChild(a3, v28, "sz");
+  wXMainNamespace7 = [(WXReadState *)stateCopy WXMainNamespace];
+  v29 = OCXFindChild(from, wXMainNamespace7, "sz");
 
-  v30 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v29) = CXOptionalLongAttribute(v29, v30, "val", &v175, 15);
+  wXMainNamespace8 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v29) = CXOptionalLongAttribute(v29, wXMainNamespace8, "val", &v175, 15);
 
   if (v29)
   {
-    [v7 setFontSize:v175];
+    [toCopy setFontSize:v175];
   }
 
-  v31 = [(WXReadState *)v8 WXMainNamespace];
-  v32 = OCXFindChild(a3, v31, "szCs");
+  wXMainNamespace9 = [(WXReadState *)stateCopy WXMainNamespace];
+  v32 = OCXFindChild(from, wXMainNamespace9, "szCs");
 
-  v33 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v32) = CXOptionalLongAttribute(v32, v33, "val", &v175, 15);
+  wXMainNamespace10 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v32) = CXOptionalLongAttribute(v32, wXMainNamespace10, "val", &v175, 15);
 
   if (v32)
   {
-    [v7 setFontSizeForBiText:v175];
+    [toCopy setFontSizeForBiText:v175];
   }
 
-  v34 = [(WXReadState *)v8 WXMainNamespace];
-  v35 = OCXFindChild(a3, v34, "position");
+  wXMainNamespace11 = [(WXReadState *)stateCopy WXMainNamespace];
+  v35 = OCXFindChild(from, wXMainNamespace11, "position");
 
-  v36 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v35) = CXOptionalLongAttribute(v35, v36, "val", &v175, 15);
+  wXMainNamespace12 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v35) = CXOptionalLongAttribute(v35, wXMainNamespace12, "val", &v175, 15);
 
   if (v35)
   {
-    [v7 setPosition:v175];
+    [toCopy setPosition:v175];
   }
 
-  v37 = [(WXReadState *)v8 WXMainNamespace];
-  v38 = OCXFindChild(a3, v37, "kern");
+  wXMainNamespace13 = [(WXReadState *)stateCopy WXMainNamespace];
+  v38 = OCXFindChild(from, wXMainNamespace13, "kern");
 
-  v39 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v38) = CXOptionalLongAttribute(v38, v39, "val", &v175, 15);
+  wXMainNamespace14 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v38) = CXOptionalLongAttribute(v38, wXMainNamespace14, "val", &v175, 15);
 
   if (v38)
   {
-    [v7 setKerning:v175];
+    [toCopy setKerning:v175];
   }
 
-  v40 = OCXFindChild(a3, WXWord2010Namespace, "reflection");
+  v40 = OCXFindChild(from, WXWord2010Namespace, "reflection");
   if (CXOptionalLongAttribute(v40, WXWord2010Namespace, "dist", &v175))
   {
     v41 = objc_alloc_init(OADReflectionEffect);
-    [a1 readReflection:v41 fromXmlNode:v40 state:v8];
-    [v7 setReflection:v41];
+    [self readReflection:v41 fromXmlNode:v40 state:stateCopy];
+    [toCopy setReflection:v41];
   }
 
-  v42 = OCXFindChild(a3, WXWord2010Namespace, "shadow");
+  v42 = OCXFindChild(from, WXWord2010Namespace, "shadow");
   if (v42)
   {
-    [a1 readShadowForTarget:v7 fromXmlNode:v42 state:v8];
+    [self readShadowForTarget:toCopy fromXmlNode:v42 state:stateCopy];
   }
 
-  v43 = [(WXReadState *)v8 WXMainNamespace];
-  v44 = OCXFindChild(a3, v43, "w");
+  wXMainNamespace15 = [(WXReadState *)stateCopy WXMainNamespace];
+  v44 = OCXFindChild(from, wXMainNamespace15, "w");
 
-  v45 = [(WXReadState *)v8 WXMainNamespace];
-  LODWORD(v44) = CXOptionalLongAttribute(v44, v45, "val", &v175);
+  wXMainNamespace16 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v44) = CXOptionalLongAttribute(v44, wXMainNamespace16, "val", &v175);
 
   if (v44)
   {
-    [v7 setTextScale:v175];
+    [toCopy setTextScale:v175];
   }
 
   v174 = 0;
-  v46 = OCXFindChild(a3, WXWord2010Namespace, "ligatures");
-  v47 = [a1 ligaturesEnumMap];
-  LODWORD(v46) = readEnumProperty<WDLigatures>(v46, "val", v47, &v174);
+  v46 = OCXFindChild(from, WXWord2010Namespace, "ligatures");
+  ligaturesEnumMap = [self ligaturesEnumMap];
+  LODWORD(v46) = readEnumProperty<WDLigatures>(v46, "val", ligaturesEnumMap, &v174);
 
   if (v46)
   {
-    [v7 setLigature:v174];
+    [toCopy setLigature:v174];
   }
 
   v173 = 0;
-  v48 = [a1 highlightEnumMap];
-  v49 = readEnumProperty<WDHighlightColor>(a3, "highlight", "val", v48, &v173, v8);
+  highlightEnumMap = [self highlightEnumMap];
+  v49 = readEnumProperty<WDHighlightColor>(from, "highlight", "val", highlightEnumMap, &v173, stateCopy);
 
   if (v49)
   {
-    [v7 setHighlight:1];
-    [v7 setHighlightColor:v173];
+    [toCopy setHighlight:1];
+    [toCopy setHighlightColor:v173];
   }
 
   v172 = 0;
-  v50 = [a1 verticalAlignEnumMap];
-  v51 = readEnumProperty<WDCharacterVerticalAlign>(a3, "vertAlign", "val", v50, &v172, v8);
+  verticalAlignEnumMap = [self verticalAlignEnumMap];
+  v51 = readEnumProperty<WDCharacterVerticalAlign>(from, "vertAlign", "val", verticalAlignEnumMap, &v172, stateCopy);
 
   if (v51)
   {
-    [v7 setVerticalAlign:v172];
+    [toCopy setVerticalAlign:v172];
   }
 
   v171 = 0;
-  v52 = [a1 emphasisMarkEnumMap];
-  v53 = readEnumProperty<WDCharacterEmphasisMark>(a3, "em", "val", v52, &v171, v8);
+  emphasisMarkEnumMap = [self emphasisMarkEnumMap];
+  v53 = readEnumProperty<WDCharacterEmphasisMark>(from, "em", "val", emphasisMarkEnumMap, &v171, stateCopy);
 
   if (v53)
   {
-    [v7 setEmphasisMark:v171];
+    [toCopy setEmphasisMark:v171];
   }
 
-  v54 = [(WXReadState *)v8 WXMainNamespace];
-  v55 = OCXFindChild(a3, v54, "u");
+  wXMainNamespace17 = [(WXReadState *)stateCopy WXMainNamespace];
+  v55 = OCXFindChild(from, wXMainNamespace17, "u");
 
   if (v55)
   {
-    v56 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace18 = [(WXReadState *)stateCopy WXMainNamespace];
     v170 = 0;
-    v57 = CXOptionalStringAttribute(v55, v56, "val", &v170);
+    v57 = CXOptionalStringAttribute(v55, wXMainNamespace18, "val", &v170);
     v58 = v170;
 
     if (v57)
     {
-      v59 = [a1 underlineEnumMap];
-      [v7 setUnderline:{objc_msgSend(v59, "valueForString:", v58)}];
+      underlineEnumMap = [self underlineEnumMap];
+      [toCopy setUnderline:{objc_msgSend(underlineEnumMap, "valueForString:", v58)}];
 
-      if ([v7 underline] == -130883970)
+      if ([toCopy underline] == -130883970)
       {
-        [v7 setUnderline:0];
+        [toCopy setUnderline:0];
       }
     }
 
-    v60 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace19 = [(WXReadState *)stateCopy WXMainNamespace];
     v169 = 0;
-    v61 = CXOptionalStringAttribute(v55, v60, "color", &v169);
+    v61 = CXOptionalStringAttribute(v55, wXMainNamespace19, "color", &v169);
     v62 = v169;
 
     if (v61)
     {
       v63 = [WXShading getColorFromString:v62];
-      [v7 setUnderlineColor:v63];
+      [toCopy setUnderlineColor:v63];
     }
   }
 
-  v64 = [(WXReadState *)v8 WXMainNamespace];
-  v65 = OCXFindChild(a3, v64, "color");
+  wXMainNamespace20 = [(WXReadState *)stateCopy WXMainNamespace];
+  v65 = OCXFindChild(from, wXMainNamespace20, "color");
 
   if (v65)
   {
-    v66 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace21 = [(WXReadState *)stateCopy WXMainNamespace];
     v168 = 0;
-    v67 = CXOptionalStringAttribute(v65, v66, "val", &v168);
+    v67 = CXOptionalStringAttribute(v65, wXMainNamespace21, "val", &v168);
     v68 = v168;
 
     if (v67)
     {
       v69 = [WXShading getColorFromString:v68];
-      [v7 setColor:v69];
+      [toCopy setColor:v69];
 
-      v70 = [v7 color];
-      [v70 alphaComponent];
+      color = [toCopy color];
+      [color alphaComponent];
       v72 = v71 == 0.0;
 
-      [v7 setColorAuto:v72];
+      [toCopy setColorAuto:v72];
     }
   }
 
-  v73 = [(WXReadState *)v8 WXMainNamespace];
-  v74 = OCXFindChild(a3, v73, "rFonts");
+  wXMainNamespace22 = [(WXReadState *)stateCopy WXMainNamespace];
+  v74 = OCXFindChild(from, wXMainNamespace22, "rFonts");
 
   if (v74)
   {
-    v75 = [v7 document];
-    v153 = [v75 fontTable];
+    document4 = [toCopy document];
+    fontTable = [document4 fontTable];
 
-    v148 = [(WXReadState *)v8 document];
-    v147 = [v148 theme];
-    v146 = [v147 baseStyles];
-    v152 = [v146 fontScheme];
-    v76 = [(WXReadState *)v8 WXMainNamespace];
+    document5 = [(WXReadState *)stateCopy document];
+    theme = [document5 theme];
+    baseStyles = [theme baseStyles];
+    fontScheme = [baseStyles fontScheme];
+    wXMainNamespace23 = [(WXReadState *)stateCopy WXMainNamespace];
     v167 = 0;
-    LODWORD(v75) = CXOptionalStringAttribute(v74, v76, "asciiTheme", &v167);
+    LODWORD(document4) = CXOptionalStringAttribute(v74, wXMainNamespace23, "asciiTheme", &v167);
     v77 = v167;
 
     v151 = v77;
-    if (v75)
+    if (document4)
     {
       if ([v77 rangeOfString:@"major"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v152 minorFont];
+        [fontScheme minorFont];
       }
 
       else
       {
-        [v152 majorFont];
+        [fontScheme majorFont];
       }
       v78 = ;
-      v79 = [v78 latinFont];
+      latinFont = [v78 latinFont];
     }
 
     else
     {
-      v79 = 0;
+      latinFont = 0;
     }
 
-    v80 = [(WXReadState *)v8 WXMainNamespace];
-    v166 = v79;
-    CXOptionalStringAttribute(v74, v80, "ascii", &v166);
+    wXMainNamespace24 = [(WXReadState *)stateCopy WXMainNamespace];
+    v166 = latinFont;
+    CXOptionalStringAttribute(v74, wXMainNamespace24, "ascii", &v166);
     v81 = v166;
 
     if (v81 && [v81 length])
     {
-      v82 = [v153 fontWithName:v81 create:1];
-      [v7 setFont:v82];
+      v82 = [fontTable fontWithName:v81 create:1];
+      [toCopy setFont:v82];
     }
 
-    v83 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace25 = [(WXReadState *)stateCopy WXMainNamespace];
     v165 = 0;
-    v84 = CXOptionalStringAttribute(v74, v83, "cs", &v165);
+    v84 = CXOptionalStringAttribute(v74, wXMainNamespace25, "cs", &v165);
     v150 = v165;
 
     if (v84)
     {
-      v85 = [v153 fontWithName:v150 create:1];
-      [v7 setExtendedFont:v85];
+      v85 = [fontTable fontWithName:v150 create:1];
+      [toCopy setExtendedFont:v85];
     }
 
-    v86 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace26 = [(WXReadState *)stateCopy WXMainNamespace];
     v164 = 0;
-    v87 = CXOptionalStringAttribute(v74, v86, "hAnsi", &v164);
+    v87 = CXOptionalStringAttribute(v74, wXMainNamespace26, "hAnsi", &v164);
     v149 = v164;
 
     if (v87)
     {
-      v88 = [v153 fontWithName:v149 create:1];
-      [v7 setSymbolFont:v88];
+      v88 = [fontTable fontWithName:v149 create:1];
+      [toCopy setSymbolFont:v88];
     }
 
-    v89 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace27 = [(WXReadState *)stateCopy WXMainNamespace];
     v163 = 0;
-    v90 = CXOptionalStringAttribute(v74, v89, "hint", &v163);
+    v90 = CXOptionalStringAttribute(v74, wXMainNamespace27, "hint", &v163);
     v91 = v163;
 
     if (v90)
     {
-      v92 = [a1 fontHintEnumMap];
-      [v7 setFontHint:{objc_msgSend(v92, "valueForString:", v91)}];
+      fontHintEnumMap = [self fontHintEnumMap];
+      [toCopy setFontHint:{objc_msgSend(fontHintEnumMap, "valueForString:", v91)}];
     }
 
-    v93 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace28 = [(WXReadState *)stateCopy WXMainNamespace];
     v162 = 0;
-    v94 = CXOptionalStringAttribute(v74, v93, "eastAsiaTheme", &v162);
+    v94 = CXOptionalStringAttribute(v74, wXMainNamespace28, "eastAsiaTheme", &v162);
     v95 = v162;
 
     if (!v94)
@@ -585,26 +585,26 @@ LABEL_12:
 
     if ([v95 rangeOfString:@"major"] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v96 = [v152 minorFont];
-      v97 = [v96 eastAsianFont];
+      minorFont = [fontScheme minorFont];
+      eastAsianFont = [minorFont eastAsianFont];
 
-      if (![v97 length])
+      if (![eastAsianFont length])
       {
-        v98 = [v152 minorFont];
-        v99 = [v98 latinFont];
+        minorFont2 = [fontScheme minorFont];
+        latinFont2 = [minorFont2 latinFont];
 LABEL_97:
-        v100 = v99;
+        v100 = latinFont2;
 
 LABEL_98:
-        v102 = [(WXReadState *)v8 WXMainNamespace];
+        wXMainNamespace29 = [(WXReadState *)stateCopy WXMainNamespace];
         v161 = v100;
-        CXOptionalStringAttribute(v74, v102, "eastAsia", &v161);
+        CXOptionalStringAttribute(v74, wXMainNamespace29, "eastAsia", &v161);
         v103 = v161;
 
         if (v103 && [v103 length])
         {
-          v104 = [v153 fontWithName:v103 create:1];
-          [v7 setFarEastFont:v104];
+          v104 = [fontTable fontWithName:v103 create:1];
+          [toCopy setFarEastFont:v104];
         }
 
         goto LABEL_102;
@@ -613,112 +613,112 @@ LABEL_98:
 
     else
     {
-      v101 = [v152 majorFont];
-      v97 = [v101 eastAsianFont];
+      majorFont = [fontScheme majorFont];
+      eastAsianFont = [majorFont eastAsianFont];
 
-      if (![v97 length])
+      if (![eastAsianFont length])
       {
-        v98 = [v152 majorFont];
-        v99 = [v98 latinFont];
+        minorFont2 = [fontScheme majorFont];
+        latinFont2 = [minorFont2 latinFont];
         goto LABEL_97;
       }
     }
 
-    v100 = v97;
+    v100 = eastAsianFont;
     goto LABEL_98;
   }
 
 LABEL_102:
-  v105 = [(WXReadState *)v8 WXMainNamespace];
-  v106 = OCXFindChild(a3, v105, "lang");
+  wXMainNamespace30 = [(WXReadState *)stateCopy WXMainNamespace];
+  v106 = OCXFindChild(from, wXMainNamespace30, "lang");
 
   if (v106)
   {
-    v107 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace31 = [(WXReadState *)stateCopy WXMainNamespace];
     v160 = 0;
-    CXOptionalStringAttribute(v106, v107, "val", &v160);
+    CXOptionalStringAttribute(v106, wXMainNamespace31, "val", &v160);
     v108 = v160;
 
     if (v108 && [(NSString *)v108 length])
     {
-      [v7 setLanguageForDefaultText:OCDLanguageFromOfficeString(v108)];
+      [toCopy setLanguageForDefaultText:OCDLanguageFromOfficeString(v108)];
     }
 
-    v109 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace32 = [(WXReadState *)stateCopy WXMainNamespace];
     v159 = v108;
-    CXOptionalStringAttribute(v106, v109, "eastAsia", &v159);
+    CXOptionalStringAttribute(v106, wXMainNamespace32, "eastAsia", &v159);
     v110 = v159;
 
     if (v110 && [(NSString *)v110 length])
     {
-      [v7 setLanguageForFarEast:OCDLanguageFromOfficeString(v110)];
+      [toCopy setLanguageForFarEast:OCDLanguageFromOfficeString(v110)];
     }
 
-    v111 = [(WXReadState *)v8 WXMainNamespace];
+    wXMainNamespace33 = [(WXReadState *)stateCopy WXMainNamespace];
     v158 = v110;
-    CXOptionalStringAttribute(v106, v111, "bidi", &v158);
+    CXOptionalStringAttribute(v106, wXMainNamespace33, "bidi", &v158);
     v112 = v158;
 
     if (v112 && [(NSString *)v112 length])
     {
-      [v7 setLanguageForBiText:OCDLanguageFromOfficeString(v112)];
+      [toCopy setLanguageForBiText:OCDLanguageFromOfficeString(v112)];
     }
   }
 
-  if ([WXCharacterProperties readBooleanCharacterMultipleProperty:a3 propertyName:"eastAsianLayout" attributeName:"vert" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterMultipleProperty:from propertyName:"eastAsianLayout" attributeName:"vert" outValue:v176 state:stateCopy])
   {
-    [v7 setHorizontalInVertical:v176[0] != 0];
+    [toCopy setHorizontalInVertical:v176[0] != 0];
     if (v176[0])
     {
       LODWORD(v156) = 0;
-      if ([WXCharacterProperties readBooleanCharacterMultipleProperty:a3 propertyName:"eastAsianLayout" attributeName:"vertCompress" outValue:&v156 state:v8])
+      if ([WXCharacterProperties readBooleanCharacterMultipleProperty:from propertyName:"eastAsianLayout" attributeName:"vertCompress" outValue:&v156 state:stateCopy])
       {
-        [v7 setCompressHorizontalInVertical:v156 != 0];
+        [toCopy setCompressHorizontalInVertical:v156 != 0];
       }
     }
   }
 
-  if ([WXCharacterProperties readBooleanCharacterMultipleProperty:a3 propertyName:"eastAsianLayout" attributeName:"combine" outValue:v176 state:v8])
+  if ([WXCharacterProperties readBooleanCharacterMultipleProperty:from propertyName:"eastAsianLayout" attributeName:"combine" outValue:v176 state:stateCopy])
   {
-    [v7 setTwoLinesInOne:v176[0] != 0];
+    [toCopy setTwoLinesInOne:v176[0] != 0];
     if (v176[0])
     {
       LODWORD(v156) = 0;
-      v113 = [a1 twoLineBracketsEnumMap];
-      v114 = readEnumProperty<WDTwoLineBrackets>(a3, "eastAsianLayout", "combineBrackets", v113, &v156, v8);
+      twoLineBracketsEnumMap = [self twoLineBracketsEnumMap];
+      v114 = readEnumProperty<WDTwoLineBrackets>(from, "eastAsianLayout", "combineBrackets", twoLineBracketsEnumMap, &v156, stateCopy);
 
       if (v114)
       {
-        [v7 setBracketTwoLinesInOne:v156];
+        [toCopy setBracketTwoLinesInOne:v156];
       }
     }
   }
 
   v157 = 0;
-  if (wmxmlGetBoolOnlyProperty(a3, "noProof", "val", &v157, v8) && v157)
+  if (wmxmlGetBoolOnlyProperty(from, "noProof", "val", &v157, stateCopy) && v157)
   {
-    [v7 setLanguageForDefaultText:1024];
+    [toCopy setLanguageForDefaultText:1024];
   }
 
-  v115 = [(WXReadState *)v8 WXMainNamespace];
-  v116 = OCXFindChild(a3, v115, "bdr");
+  wXMainNamespace34 = [(WXReadState *)stateCopy WXMainNamespace];
+  v116 = OCXFindChild(from, wXMainNamespace34, "bdr");
 
   if (v116)
   {
-    v117 = [v7 mutableBorder];
-    [WXBorder readFrom:v116 to:v117 state:v8];
+    mutableBorder = [toCopy mutableBorder];
+    [WXBorder readFrom:v116 to:mutableBorder state:stateCopy];
   }
 
-  v118 = [(WXReadState *)v8 WXMainNamespace];
-  v119 = OCXFindChild(a3, v118, "shd");
+  wXMainNamespace35 = [(WXReadState *)stateCopy WXMainNamespace];
+  v119 = OCXFindChild(from, wXMainNamespace35, "shd");
 
   if (v119)
   {
-    v120 = [v7 mutableShading];
-    [WXShading readFrom:v119 to:v120 state:v8];
+    mutableShading = [toCopy mutableShading];
+    [WXShading readFrom:v119 to:mutableShading state:stateCopy];
   }
 
-  v121 = OCXFindChild(a3, WXWord2010Namespace, "textOutline");
+  v121 = OCXFindChild(from, WXWord2010Namespace, "textOutline");
   v122 = v121;
   if (v121)
   {
@@ -726,19 +726,19 @@ LABEL_102:
     CXOptionalLongAttribute(v121, WXWord2010Namespace, "w", &v156);
     v123 = v156 / 12700.0;
     *&v123 = v123;
-    [v7 setOutline2010Width:v123];
+    [toCopy setOutline2010Width:v123];
     v124 = OCXFindChild(v122, WXWord2010Namespace, "solidFill");
     if (v124)
     {
-      v125 = [a1 readFillColor:v124 forTarget:v7 state:v8];
+      v125 = [self readFillColor:v124 forTarget:toCopy state:stateCopy];
       if (v125)
       {
-        [v7 setOutlineColor:v125];
+        [toCopy setOutlineColor:v125];
       }
     }
   }
 
-  v126 = OCXFindChild(a3, WXWord2010Namespace, "textFill");
+  v126 = OCXFindChild(from, WXWord2010Namespace, "textFill");
   v128 = v126;
   if (v126)
   {
@@ -747,22 +747,22 @@ LABEL_102:
       v127 = OCXFindChild(v128, WXWord2010Namespace, "solidFill");
       if (v127)
       {
-        v129 = [a1 readFillColor:v127 forTarget:v7 state:v8];
+        v129 = [self readFillColor:v127 forTarget:toCopy state:stateCopy];
         v130 = v129;
         if (v129)
         {
           [v129 alphaComponent];
           if (v131 > 0.0)
           {
-            [v7 setColor:v130];
-            if ([v7 isOutline2010WidthOverridden])
+            [toCopy setColor:v130];
+            if ([toCopy isOutline2010WidthOverridden])
             {
-              [v7 outline2010Width];
+              [toCopy outline2010Width];
               if (v132 > 0.0)
               {
-                [v7 outline2010Width];
+                [toCopy outline2010Width];
                 *&v134 = -v133;
-                [v7 setOutline2010Width:v134];
+                [toCopy setOutline2010Width:v134];
               }
             }
           }
@@ -771,72 +771,72 @@ LABEL_102:
     }
   }
 
-  v135 = [(WXReadState *)v8 WXMainNamespace];
-  v136 = OCXFindChild(a3, v135, "rStyle");
+  wXMainNamespace36 = [(WXReadState *)stateCopy WXMainNamespace];
+  v136 = OCXFindChild(from, wXMainNamespace36, "rStyle");
 
-  v137 = [(WXReadState *)v8 WXMainNamespace];
+  wXMainNamespace37 = [(WXReadState *)stateCopy WXMainNamespace];
   v155 = 0;
-  LODWORD(v136) = CXOptionalStringAttribute(v136, v137, "val", &v155);
+  LODWORD(v136) = CXOptionalStringAttribute(v136, wXMainNamespace37, "val", &v155);
   v138 = v155;
 
   if (v136)
   {
-    v139 = [(WXReadState *)v8 document];
-    v140 = [v139 styleSheet];
-    v141 = [v140 styleWithId:v138];
+    document6 = [(WXReadState *)stateCopy document];
+    styleSheet = [document6 styleSheet];
+    v141 = [styleSheet styleWithId:v138];
 
     if (v141)
     {
-      [v7 setBaseStyle:v141];
+      [toCopy setBaseStyle:v141];
     }
   }
 
-  v142 = [(WXReadState *)v8 document];
-  v143 = [v142 styleSheet];
-  v144 = [v143 defaultParagraphStyle];
-  v145 = [v144 characterProperties];
-  [v7 negateFormattingChangesWithDefaults:v145];
+  document7 = [(WXReadState *)stateCopy document];
+  styleSheet2 = [document7 styleSheet];
+  defaultParagraphStyle = [styleSheet2 defaultParagraphStyle];
+  characterProperties = [defaultParagraphStyle characterProperties];
+  [toCopy negateFormattingChangesWithDefaults:characterProperties];
 
-  [v7 setResolveMode:2];
+  [toCopy setResolveMode:2];
 }
 
-+ (void)applyDeletionInsertionProperties:(id)a3 state:(id)a4
++ (void)applyDeletionInsertionProperties:(id)properties state:(id)state
 {
-  v13 = a3;
-  v5 = a4;
-  [v13 setResolveMode:0];
-  v6 = [v5 currentDeleteAuthor];
-  v7 = [v5 currentDeleteDate];
-  v8 = v7;
-  if (v6 && v7)
+  propertiesCopy = properties;
+  stateCopy = state;
+  [propertiesCopy setResolveMode:0];
+  currentDeleteAuthor = [stateCopy currentDeleteAuthor];
+  currentDeleteDate = [stateCopy currentDeleteDate];
+  v8 = currentDeleteDate;
+  if (currentDeleteAuthor && currentDeleteDate)
   {
-    [v13 setDeleted:1];
-    [v13 setDeletionDate:v8];
-    v9 = [v5 document];
-    [v13 setIndexToAuthorIDOfDeletion:{objc_msgSend(v9, "revisionAuthorAddLookup:", v6)}];
+    [propertiesCopy setDeleted:1];
+    [propertiesCopy setDeletionDate:v8];
+    document = [stateCopy document];
+    [propertiesCopy setIndexToAuthorIDOfDeletion:{objc_msgSend(document, "revisionAuthorAddLookup:", currentDeleteAuthor)}];
   }
 
-  v10 = [v5 currentEditAuthor];
+  currentEditAuthor = [stateCopy currentEditAuthor];
 
-  v11 = [v5 currentEditDate];
+  currentEditDate = [stateCopy currentEditDate];
 
-  if (v10 && v11)
+  if (currentEditAuthor && currentEditDate)
   {
-    [v13 setEdited:1];
-    [v13 setEditDate:v11];
-    v12 = [v5 document];
-    [v13 setIndexToAuthorIDOfEdit:{objc_msgSend(v12, "revisionAuthorAddLookup:", v10)}];
+    [propertiesCopy setEdited:1];
+    [propertiesCopy setEditDate:currentEditDate];
+    document2 = [stateCopy document];
+    [propertiesCopy setIndexToAuthorIDOfEdit:{objc_msgSend(document2, "revisionAuthorAddLookup:", currentEditAuthor)}];
   }
 
-  [v13 setResolveMode:2];
+  [propertiesCopy setResolveMode:2];
 }
 
-+ (void)readShadowForTarget:(id)a3 fromXmlNode:(_xmlNode *)a4 state:(id)a5
++ (void)readShadowForTarget:(id)target fromXmlNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a3;
-  v7 = [OAXBaseTypes readRectAlignmentFromXmlNode:a4 name:"algn"];
+  targetCopy = target;
+  v7 = [OAXBaseTypes readRectAlignmentFromXmlNode:node name:"algn"];
   v60 = 0;
-  CXOptionalLongAttribute(a4, WXWord2010Namespace, "sx", &v60);
+  CXOptionalLongAttribute(node, WXWord2010Namespace, "sx", &v60);
   v8 = v7 == 0;
   v9 = v60 == 0;
   v11 = v8 && v9;
@@ -850,7 +850,7 @@ LABEL_102:
   v13 = objc_alloc_init(*v12);
   v59 = 0;
   v49 = v13;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "blurRad", &v59))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "blurRad", &v59))
   {
     v14 = v59 / 25400.0;
     *&v14 = v14;
@@ -858,7 +858,7 @@ LABEL_102:
   }
 
   v58 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "dist", &v58))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "dist", &v58))
   {
     v15 = v58 / 19050.0;
     *&v15 = v15;
@@ -866,33 +866,33 @@ LABEL_102:
   }
 
   v57 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "dir", &v57))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "dir", &v57))
   {
     v16 = v57 / 60000.0;
     *&v16 = v16;
     [v13 setAngle:v16];
   }
 
-  v17 = OCXFindChild(a4, WXWord2010Namespace, "srgbClr");
+  v17 = OCXFindChild(node, WXWord2010Namespace, "srgbClr");
   v18 = v17;
   if (!v17)
   {
-    v18 = OCXFindChild(a4, WXWord2010Namespace, "schemeClr");
+    v18 = OCXFindChild(node, WXWord2010Namespace, "schemeClr");
     v55 = 0;
     v31 = CXOptionalStringAttribute(v18, WXWord2010Namespace, "val", &v55);
     v20 = v55;
     if (v31)
     {
-      v48 = v6;
-      v21 = [v6 document];
+      v48 = targetCopy;
+      document = [targetCopy document];
       v46 = v7;
-      v47 = [v21 theme];
-      v32 = [v47 baseStyles];
-      v33 = [v32 colorScheme];
-      v34 = [v21 colorMap];
-      v30 = [OAXColorScheme colorForScheme:v33 colorMap:v34 value:v20];
+      theme = [document theme];
+      baseStyles = [theme baseStyles];
+      colorScheme = [baseStyles colorScheme];
+      colorMap = [document colorMap];
+      v30 = [OAXColorScheme colorForScheme:colorScheme colorMap:colorMap value:v20];
 
-      v6 = v48;
+      targetCopy = v48;
       v7 = v46;
       goto LABEL_15;
     }
@@ -910,12 +910,12 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v21 = [WXShading getColorFromString:v20];
-  [v21 redComponent];
+  document = [WXShading getColorFromString:v20];
+  [document redComponent];
   v23 = v22;
-  [v21 greenComponent];
+  [document greenComponent];
   v25 = v24;
-  [v21 blueComponent];
+  [document blueComponent];
   v26 = v23;
   *&v27 = v25;
   *&v29 = v28;
@@ -939,7 +939,7 @@ LABEL_17:
       *&v39 = v39;
     }
 
-    [v6 setShadow2010Opacity:v39];
+    [targetCopy setShadow2010Opacity:v39];
   }
 
   if (!v11)
@@ -959,7 +959,7 @@ LABEL_17:
     }
 
     v53 = 0;
-    if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "sy", &v53))
+    if (CXOptionalLongAttribute(node, WXWord2010Namespace, "sy", &v53))
     {
       v43 = v53 / 100000.0;
       *&v43 = v43;
@@ -967,7 +967,7 @@ LABEL_17:
     }
 
     v52 = 0;
-    if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "kx", &v52))
+    if (CXOptionalLongAttribute(node, WXWord2010Namespace, "kx", &v52))
     {
       v44 = v52 / 60000.0;
       *&v44 = v44;
@@ -975,7 +975,7 @@ LABEL_17:
     }
 
     v51 = 0;
-    if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "ky", &v51))
+    if (CXOptionalLongAttribute(node, WXWord2010Namespace, "ky", &v51))
     {
       v45 = v51 / 60000.0;
       *&v45 = v45;
@@ -983,151 +983,151 @@ LABEL_17:
     }
 
     v50 = 0;
-    if (CXOptionalBoolAttribute(a4, WXWord2010Namespace, "rotWithShape", &v50))
+    if (CXOptionalBoolAttribute(node, WXWord2010Namespace, "rotWithShape", &v50))
     {
       [v41 setRotateWithShape:v50];
     }
   }
 
-  [v6 setShadow2010:v49];
+  [targetCopy setShadow2010:v49];
 }
 
-+ (BOOL)readBooleanCharacterMultipleProperty:(_xmlNode *)a3 propertyName:(const char *)a4 attributeName:(const char *)a5 outValue:(int *)a6 state:(id)a7
++ (BOOL)readBooleanCharacterMultipleProperty:(_xmlNode *)property propertyName:(const char *)name attributeName:(const char *)attributeName outValue:(int *)value state:(id)state
 {
   v10 = 0;
-  BoolProperty = wmxmlGetBoolProperty(a3, a4, a5, &v10, a7);
+  BoolProperty = wmxmlGetBoolProperty(property, name, attributeName, &v10, state);
   if (BoolProperty)
   {
-    *a6 = v10;
+    *value = v10;
   }
 
   return BoolProperty;
 }
 
-+ (void)readReflection:(id)a3 fromXmlNode:(_xmlNode *)a4 state:(id)a5
++ (void)readReflection:(id)reflection fromXmlNode:(_xmlNode *)node state:(id)state
 {
-  v6 = a3;
+  reflectionCopy = reflection;
   v32 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "blurRad", &v32))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "blurRad", &v32))
   {
     v7 = v32 / 12700.0;
     *&v7 = v7;
-    [v6 setBlurRadius:v7];
+    [reflectionCopy setBlurRadius:v7];
   }
 
   v31 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "stA", &v31))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "stA", &v31))
   {
     v8 = v31 / 100000.0;
     *&v8 = v8;
-    [v6 setStartOpacity:v8];
+    [reflectionCopy setStartOpacity:v8];
   }
 
   v30 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "stPos", &v30))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "stPos", &v30))
   {
     v9 = v30 / 100000.0;
     *&v9 = v9;
-    [v6 setStartPosition:v9];
+    [reflectionCopy setStartPosition:v9];
   }
 
   v29 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "endA", &v29))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "endA", &v29))
   {
     v10 = v29 / 100000.0;
     *&v10 = v10;
-    [v6 setEndOpacity:v10];
+    [reflectionCopy setEndOpacity:v10];
   }
 
   v28 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "endPos", &v28))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "endPos", &v28))
   {
     v11 = v28 / 100000.0;
     *&v11 = v11;
-    [v6 setEndPosition:v11];
+    [reflectionCopy setEndPosition:v11];
   }
 
   v27 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "dist", &v27))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "dist", &v27))
   {
     v12 = v27 / 12700.0;
     *&v12 = v12;
-    [v6 setDistance:v12];
+    [reflectionCopy setDistance:v12];
   }
 
   v26 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "dir", &v26))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "dir", &v26))
   {
     v13 = v26 / 60000.0;
     *&v13 = v13;
-    [v6 setDirection:v13];
+    [reflectionCopy setDirection:v13];
   }
 
   v25 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "fadeDir", &v25))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "fadeDir", &v25))
   {
     v14 = v25 / 60000.0;
     *&v14 = v14;
-    [v6 setFadeDirection:v14];
+    [reflectionCopy setFadeDirection:v14];
   }
 
   v24 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "sx", &v24))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "sx", &v24))
   {
     v15 = v24 / 100000.0;
     *&v15 = v15;
-    [v6 setXScale:v15];
+    [reflectionCopy setXScale:v15];
   }
 
   v23 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "sy", &v23))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "sy", &v23))
   {
     v16 = v23 / 100000.0;
     *&v16 = v16;
-    [v6 setYScale:v16];
+    [reflectionCopy setYScale:v16];
   }
 
   v22 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "kx", &v22))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "kx", &v22))
   {
     v17 = v22 / 60000.0;
     *&v17 = v17;
-    [v6 setXSkew:v17];
+    [reflectionCopy setXSkew:v17];
   }
 
   v21 = 0;
-  if (CXOptionalLongAttribute(a4, WXWord2010Namespace, "ky", &v21))
+  if (CXOptionalLongAttribute(node, WXWord2010Namespace, "ky", &v21))
   {
     v18 = v21 / 60000.0;
     *&v18 = v18;
-    [v6 setYSkew:v18];
+    [reflectionCopy setYSkew:v18];
   }
 
-  v19 = [OAXBaseTypes readRectAlignmentFromXmlNode:a4 name:"algn"];
+  v19 = [OAXBaseTypes readRectAlignmentFromXmlNode:node name:"algn"];
   if (v19)
   {
-    [v6 setAlignment:v19];
+    [reflectionCopy setAlignment:v19];
   }
 
   v20 = 0;
-  if (CXOptionalBoolAttribute(a4, WXWord2010Namespace, "rotWithShape", &v20))
+  if (CXOptionalBoolAttribute(node, WXWord2010Namespace, "rotWithShape", &v20))
   {
-    [v6 setRotateWithShape:v20];
+    [reflectionCopy setRotateWithShape:v20];
   }
 }
 
-+ (id)readFillColor:(_xmlNode *)a3 forTarget:(id)a4 state:(id)a5
++ (id)readFillColor:(_xmlNode *)color forTarget:(id)target state:(id)state
 {
-  v6 = a5;
-  v7 = OCXFindChild(a3, WXWord2010Namespace, "srgbClr");
+  stateCopy = state;
+  v7 = OCXFindChild(color, WXWord2010Namespace, "srgbClr");
   if (v7)
   {
     v19 = 0;
     v8 = CXOptionalStringAttribute(v7, WXWord2010Namespace, "val", &v19);
-    v9 = v19;
+    drawingState = v19;
     if (v8)
     {
-      v10 = [WXShading getColorFromString:v9];
+      v10 = [WXShading getColorFromString:drawingState];
     }
 
     else
@@ -1138,14 +1138,14 @@ LABEL_17:
 
   else
   {
-    v11 = OCXFindChild(a3, WXWord2010Namespace, "schemeClr");
+    v11 = OCXFindChild(color, WXWord2010Namespace, "schemeClr");
     if (!v11)
     {
       v10 = 0;
       goto LABEL_14;
     }
 
-    v9 = [v6 drawingState];
+    drawingState = [stateCopy drawingState];
     v18 = 0;
     v12 = CXOptionalStringAttribute(v11, WXWord2010Namespace, "val", &v18);
     v13 = v18;
@@ -1154,9 +1154,9 @@ LABEL_17:
       v14 = [OAXColor readPresetColorFromAttribute:v13];
       if (v14 || ([OAXColor readSchemeColorFromAttribute:v13], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v15 = [v9 colorMap];
-        v16 = [v9 colorScheme];
-        v10 = [OADColor tsuColorWithColor:v14 colorMap:v15 colorScheme:v16 colorPalette:0];
+        colorMap = [drawingState colorMap];
+        colorScheme = [drawingState colorScheme];
+        v10 = [OADColor tsuColorWithColor:v14 colorMap:colorMap colorScheme:colorScheme colorPalette:0];
       }
 
       else
@@ -1176,13 +1176,13 @@ LABEL_14:
   return v10;
 }
 
-+ (BOOL)readBooleanCharacterProperty:(_xmlNode *)a3 propertyName:(const char *)a4 attributeName:(const char *)a5 outValue:(int *)a6 state:(id)a7
++ (BOOL)readBooleanCharacterProperty:(_xmlNode *)property propertyName:(const char *)name attributeName:(const char *)attributeName outValue:(int *)value state:(id)state
 {
   v10 = 0;
-  BoolOnlyProperty = wmxmlGetBoolOnlyProperty(a3, a4, a5, &v10, a7);
+  BoolOnlyProperty = wmxmlGetBoolOnlyProperty(property, name, attributeName, &v10, state);
   if (BoolOnlyProperty)
   {
-    *a6 = v10;
+    *value = v10;
   }
 
   return BoolOnlyProperty;

@@ -1,25 +1,25 @@
 @interface SFHighlightContactList
-- (SFHighlightContactList)initWithContacts:(id)a3;
-- (void)_didTapManage:(id)a3;
+- (SFHighlightContactList)initWithContacts:(id)contacts;
+- (void)_didTapManage:(id)manage;
 - (void)_updateList;
-- (void)cellDidReceiveTap:(id)a3;
+- (void)cellDidReceiveTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setContacts:(id)a3;
-- (void)setInfoViewControllerHandler:(id)a3;
+- (void)setContacts:(id)contacts;
+- (void)setInfoViewControllerHandler:(id)handler;
 @end
 
 @implementation SFHighlightContactList
 
-- (SFHighlightContactList)initWithContacts:(id)a3
+- (SFHighlightContactList)initWithContacts:(id)contacts
 {
   v69[10] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v67.receiver = self;
   v67.super_class = SFHighlightContactList;
   v5 = [(SFHighlightContactList *)&v67 initWithFrame:0.0, 0.0, 240.0, 1000.0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contactsCopy copy];
     contacts = v5->_contacts;
     v5->_contacts = v6;
 
@@ -30,8 +30,8 @@
     [(UIStackView *)v5->_stackView setAxis:1];
     [(UIStackView *)v5->_stackView setLayoutMarginsRelativeArrangement:1];
     [(UIStackView *)v5->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(UIStackView *)v5->_stackView setBackgroundColor:v10];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(UIStackView *)v5->_stackView setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     [(UIStackView *)v5->_stackView _setContinuousCornerRadius:12.0];
     [(UIStackView *)v5->_stackView sizeToFit];
@@ -40,7 +40,7 @@
     headerLabel = v5->_headerLabel;
     v5->_headerLabel = v11;
 
-    v66 = v4;
+    v66 = contactsCopy;
     v13 = _WBSLocalizedString();
     [(UILabel *)v5->_headerLabel setText:v13];
 
@@ -49,8 +49,8 @@
     [(UILabel *)v5->_headerLabel setFont:v14];
 
     [(UILabel *)v5->_headerLabel setAdjustsFontForContentSizeCategory:1];
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v5->_headerLabel setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v5->_headerLabel setTextColor:secondaryLabelColor];
 
     [(SFHighlightContactList *)v5 addSubview:v5->_headerLabel];
     v16 = objc_alloc_init(SFHighlightContactListButton);
@@ -65,66 +65,66 @@
     [(SFHighlightContactListButton *)v5->_manageButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFHighlightContactListButton *)v5->_manageButton addTarget:v5 action:sel__didTapManage_ forControlEvents:64];
     [(SFHighlightContactList *)v5 addSubview:v5->_manageButton];
-    v19 = [(SFHighlightContactListButton *)v5->_manageButton topAnchor];
-    v20 = [(SFHighlightContactList *)v5 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [(SFHighlightContactListButton *)v5->_manageButton topAnchor];
+    topAnchor2 = [(SFHighlightContactList *)v5 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     manageButtonTopConstraintForEmptyList = v5->_manageButtonTopConstraintForEmptyList;
     v5->_manageButtonTopConstraintForEmptyList = v21;
 
-    v23 = [(SFHighlightContactListButton *)v5->_manageButton topAnchor];
-    v24 = [(UIStackView *)v5->_stackView bottomAnchor];
-    v25 = [v23 constraintEqualToSystemSpacingBelowAnchor:v24 multiplier:2.0];
+    topAnchor3 = [(SFHighlightContactListButton *)v5->_manageButton topAnchor];
+    bottomAnchor = [(UIStackView *)v5->_stackView bottomAnchor];
+    v25 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:2.0];
     manageButtonTopConstraintForNonEmptyList = v5->_manageButtonTopConstraintForNonEmptyList;
     v5->_manageButtonTopConstraintForNonEmptyList = v25;
 
-    v27 = [(SFHighlightContactList *)v5 layoutMarginsGuide];
-    v28 = [(SFHighlightContactListButton *)v5->_manageButton layoutMarginsGuide];
+    layoutMarginsGuide = [(SFHighlightContactList *)v5 layoutMarginsGuide];
+    layoutMarginsGuide2 = [(SFHighlightContactListButton *)v5->_manageButton layoutMarginsGuide];
     v53 = MEMORY[0x1E696ACD8];
-    v64 = [(UILabel *)v5->_headerLabel topAnchor];
-    v63 = [(SFHighlightContactList *)v5 topAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    topAnchor4 = [(UILabel *)v5->_headerLabel topAnchor];
+    topAnchor5 = [(SFHighlightContactList *)v5 topAnchor];
+    v62 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v69[0] = v62;
-    v65 = v28;
-    v61 = [v28 leadingAnchor];
-    v60 = [(UILabel *)v5->_headerLabel leadingAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60 constant:8.0];
+    v65 = layoutMarginsGuide2;
+    leadingAnchor = [layoutMarginsGuide2 leadingAnchor];
+    leadingAnchor2 = [(UILabel *)v5->_headerLabel leadingAnchor];
+    v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     v69[1] = v59;
-    v58 = [(UILabel *)v5->_headerLabel trailingAnchor];
-    v57 = [v28 trailingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    trailingAnchor = [(UILabel *)v5->_headerLabel trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v69[2] = v56;
-    v55 = [v27 leadingAnchor];
-    v54 = [(UIStackView *)v5->_stackView leadingAnchor];
-    v52 = [v55 constraintEqualToAnchor:v54 constant:8.0];
+    leadingAnchor3 = [layoutMarginsGuide leadingAnchor];
+    leadingAnchor4 = [(UIStackView *)v5->_stackView leadingAnchor];
+    v52 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
     v69[3] = v52;
-    v50 = [(UIStackView *)v5->_stackView trailingAnchor];
-    v49 = [v27 trailingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49 constant:8.0];
+    trailingAnchor3 = [(UIStackView *)v5->_stackView trailingAnchor];
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
     v69[4] = v48;
-    v47 = [(UIStackView *)v5->_stackView topAnchor];
-    v46 = [(UILabel *)v5->_headerLabel bottomAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46 constant:4.0];
+    topAnchor6 = [(UIStackView *)v5->_stackView topAnchor];
+    bottomAnchor2 = [(UILabel *)v5->_headerLabel bottomAnchor];
+    v45 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:4.0];
     v69[5] = v45;
-    v44 = [v27 leadingAnchor];
-    v43 = [(SFHighlightContactListButton *)v5->_manageButton leadingAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43 constant:8.0];
+    leadingAnchor5 = [layoutMarginsGuide leadingAnchor];
+    leadingAnchor6 = [(SFHighlightContactListButton *)v5->_manageButton leadingAnchor];
+    v42 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
     v69[6] = v42;
-    v29 = [(SFHighlightContactListButton *)v5->_manageButton trailingAnchor];
-    v51 = v27;
-    v30 = [v27 trailingAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:8.0];
+    trailingAnchor5 = [(SFHighlightContactListButton *)v5->_manageButton trailingAnchor];
+    v51 = layoutMarginsGuide;
+    trailingAnchor6 = [layoutMarginsGuide trailingAnchor];
+    v31 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:8.0];
     v69[7] = v31;
-    v32 = [(SFHighlightContactListButton *)v5->_manageButton heightAnchor];
-    v33 = [v32 constraintGreaterThanOrEqualToConstant:44.0];
+    heightAnchor = [(SFHighlightContactListButton *)v5->_manageButton heightAnchor];
+    v33 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
     v69[8] = v33;
-    v34 = [(SFHighlightContactListButton *)v5->_manageButton bottomAnchor];
-    v35 = [v27 bottomAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    bottomAnchor3 = [(SFHighlightContactListButton *)v5->_manageButton bottomAnchor];
+    bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+    v36 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v69[9] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:10];
     [v53 activateConstraints:v37];
 
-    v4 = v66;
+    contactsCopy = v66;
     [(SFHighlightContactList *)v5 setDirectionalLayoutMargins:*MEMORY[0x1E69DEAE0], 8.0, *MEMORY[0x1E69DEAE0], 8.0];
     [(SFHighlightContactList *)v5 _updateList];
     v68 = objc_opt_class();
@@ -137,17 +137,17 @@
   return v5;
 }
 
-- (void)setInfoViewControllerHandler:(id)a3
+- (void)setInfoViewControllerHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  handlerCopy = handler;
+  v5 = _Block_copy(handlerCopy);
   v6 = _Block_copy(self->_infoViewControllerHandler);
   v7 = WBSIsEqual();
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v4 copy];
+    v8 = [handlerCopy copy];
     infoViewControllerHandler = self->_infoViewControllerHandler;
     self->_infoViewControllerHandler = v8;
 
@@ -155,8 +155,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v11 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -168,14 +168,14 @@
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
-          [*(*(&v15 + 1) + 8 * v14++) setInfoViewControllerHandler:v4];
+          [*(*(&v15 + 1) + 8 * v14++) setInfoViewControllerHandler:handlerCopy];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v12);
@@ -183,12 +183,12 @@
   }
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v6 = a3;
+  contactsCopy = contacts;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [contactsCopy copy];
     contacts = self->_contacts;
     self->_contacts = v4;
 
@@ -203,8 +203,8 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v4)
   {
     v5 = v4;
@@ -215,13 +215,13 @@
       {
         if (*v40 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v39 + 1) + 8 * i) removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v5);
@@ -243,11 +243,11 @@
   v37 = v11;
   v12 = [v9 sortedArrayUsingComparator:v36];
 
-  v13 = [v12 firstObject];
-  [v13 setFirstInList:1];
+  firstObject = [v12 firstObject];
+  [firstObject setFirstInList:1];
 
-  v14 = [v12 lastObject];
-  [v14 setLastInList:1];
+  lastObject = [v12 lastObject];
+  [lastObject setLastInList:1];
 
   v34 = 0u;
   v35 = 0u;
@@ -354,7 +354,7 @@ uint64_t __37__SFHighlightContactList__updateList__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)_didTapManage:(id)a3
+- (void)_didTapManage:(id)manage
 {
   manageHandler = self->_manageHandler;
   if (manageHandler)
@@ -363,17 +363,17 @@ uint64_t __37__SFHighlightContactList__updateList__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)cellDidReceiveTap:(id)a3
+- (void)cellDidReceiveTap:(id)tap
 {
   rowTapHandler = self->_rowTapHandler;
   if (rowTapHandler)
   {
-    v5 = a3;
-    v8 = [v5 contact];
+    tapCopy = tap;
+    contact = [tapCopy contact];
     contacts = self->_contacts;
-    v7 = [v5 contact];
+    contact2 = [tapCopy contact];
 
-    rowTapHandler[2](rowTapHandler, v8, [(NSArray *)contacts indexOfObject:v7]);
+    rowTapHandler[2](rowTapHandler, contact, [(NSArray *)contacts indexOfObject:contact2]);
   }
 }
 

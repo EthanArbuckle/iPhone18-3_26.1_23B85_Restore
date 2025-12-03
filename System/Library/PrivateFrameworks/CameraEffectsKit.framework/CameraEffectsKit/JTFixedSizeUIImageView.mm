@@ -1,6 +1,6 @@
 @interface JTFixedSizeUIImageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation JTFixedSizeUIImageView
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(JTFixedSizeUIImageView *)self bounds:a3.width];
+  [(JTFixedSizeUIImageView *)self bounds:fits.width];
   v4 = v3;
   v6 = v5;
   result.height = v6;

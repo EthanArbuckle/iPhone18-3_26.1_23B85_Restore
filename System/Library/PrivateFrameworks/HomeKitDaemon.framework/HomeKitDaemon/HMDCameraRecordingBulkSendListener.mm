@@ -1,15 +1,15 @@
 @interface HMDCameraRecordingBulkSendListener
 + (id)logCategory;
 - (BOOL)isSessionOpenInProgress;
-- (HMDCameraRecordingBulkSendListener)initWithWorkQueue:(id)a3;
+- (HMDCameraRecordingBulkSendListener)initWithWorkQueue:(id)queue;
 - (HMDCameraRecordingBulkSendListenerDelegate)delegate;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
-- (void)_callPendingOpenSessionCallbackWithResult:(void *)a3 error:;
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4;
-- (void)accessoryDidStartListening:(id)a3;
-- (void)addPendingBulkSendSessionCallback:(id)a3;
-- (void)openBulkSendSessionWithAccessory:(id)a3 callback:(id)a4;
+- (void)_callPendingOpenSessionCallbackWithResult:(void *)result error:;
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error;
+- (void)accessoryDidStartListening:(id)listening;
+- (void)addPendingBulkSendSessionCallback:(id)callback;
+- (void)openBulkSendSessionWithAccessory:(id)accessory callback:(id)callback;
 @end
 
 @implementation HMDCameraRecordingBulkSendListener
@@ -25,8 +25,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCameraRecordingBulkSendListener *)self UUID];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uUID = [(HMDCameraRecordingBulkSendListener *)self UUID];
+  v5 = [v3 initWithName:@"UUID" value:uUID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -37,15 +37,15 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraRecordingBulkSendListener *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMDCameraRecordingBulkSendListener *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)accessory:(id)a3 didCloseDataStreamWithError:(id)a4
+- (void)accessory:(id)accessory didCloseDataStreamWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   if (self)
   {
     Property = objc_getProperty(self, v5, 24, 1);
@@ -61,8 +61,8 @@
   v9[2] = __76__HMDCameraRecordingBulkSendListener_accessory_didCloseDataStreamWithError___block_invoke;
   v9[3] = &unk_27868A750;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(Property, v9);
 }
 
@@ -100,20 +100,20 @@ void __76__HMDCameraRecordingBulkSendListener_accessory_didCloseDataStreamWithEr
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callPendingOpenSessionCallbackWithResult:(void *)a3 error:
+- (void)_callPendingOpenSessionCallbackWithResult:(void *)result error:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  resultCopy = result;
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 24, 1);
+    Property = objc_getProperty(self, v6, 24, 1);
     dispatch_assert_queue_V2(Property);
-    v10 = objc_getProperty(a1, v9, 32, 1);
+    v10 = objc_getProperty(self, v9, 32, 1);
     if (v10)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = a1;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -123,22 +123,22 @@ void __76__HMDCameraRecordingBulkSendListener_accessory_didCloseDataStreamWithEr
         v19 = 2112;
         v20 = v5;
         v21 = 2112;
-        v22 = v7;
+        v22 = resultCopy;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Calling pending callback with result: %@ error: %@", &v17, 0x20u);
       }
 
       objc_autoreleasePoolPop(v11);
-      objc_setProperty_atomic_copy(v12, v15, 0, 32);
-      v10[2](v10, v5, v7);
+      objc_setProperty_atomic_copy(selfCopy, v15, 0, 32);
+      v10[2](v10, v5, resultCopy);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidStartListening:(id)a3
+- (void)accessoryDidStartListening:(id)listening
 {
-  v5 = a3;
+  listeningCopy = listening;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -154,8 +154,8 @@ void __76__HMDCameraRecordingBulkSendListener_accessory_didCloseDataStreamWithEr
   v8[2] = __65__HMDCameraRecordingBulkSendListener_accessoryDidStartListening___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = listeningCopy;
+  v7 = listeningCopy;
   dispatch_async(Property, v8);
 }
 
@@ -203,15 +203,15 @@ void __65__HMDCameraRecordingBulkSendListener_accessoryDidStartListening___block
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openBulkSendSessionWithAccessory:(id)a3 callback:(id)a4
+- (void)openBulkSendSessionWithAccessory:(id)accessory callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  accessoryCopy = accessory;
   if (self)
   {
     Property = objc_getProperty(self, v8, 24, 1);
     dispatch_assert_queue_V2(Property);
-    objc_setProperty_atomic_copy(self, v10, v6, 32);
+    objc_setProperty_atomic_copy(self, v10, callbackCopy, 32);
     v12 = objc_getProperty(self, v11, 24, 1);
   }
 
@@ -226,7 +226,7 @@ void __65__HMDCameraRecordingBulkSendListener_accessoryDidStartListening___block
   v13[2] = __80__HMDCameraRecordingBulkSendListener_openBulkSendSessionWithAccessory_callback___block_invoke;
   v13[3] = &unk_27867F2A8;
   v13[4] = self;
-  [a3 openBulkSendSessionForFileType:@"ipcamera.recording" reason:@"record" metadata:0 queue:v12 callback:v13];
+  [accessory openBulkSendSessionForFileType:@"ipcamera.recording" reason:@"record" metadata:0 queue:v12 callback:v13];
 }
 
 void __80__HMDCameraRecordingBulkSendListener_openBulkSendSessionWithAccessory_callback___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -258,9 +258,9 @@ void __80__HMDCameraRecordingBulkSendListener_openBulkSendSessionWithAccessory_c
   dispatch_async(Property, block);
 }
 
-- (void)addPendingBulkSendSessionCallback:(id)a3
+- (void)addPendingBulkSendSessionCallback:(id)callback
 {
-  newValue = a3;
+  newValue = callback;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -284,19 +284,19 @@ void __80__HMDCameraRecordingBulkSendListener_openBulkSendSessionWithAccessory_c
   return self != 0;
 }
 
-- (HMDCameraRecordingBulkSendListener)initWithWorkQueue:(id)a3
+- (HMDCameraRecordingBulkSendListener)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HMDCameraRecordingBulkSendListener;
   v6 = [(HMDCameraRecordingBulkSendListener *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workQueue, a3);
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v6->_workQueue, queue);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     UUID = v7->_UUID;
-    v7->_UUID = v8;
+    v7->_UUID = uUID;
   }
 
   return v7;

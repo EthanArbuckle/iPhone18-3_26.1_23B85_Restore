@@ -1,52 +1,52 @@
 @interface CDPUIDeviceToDeviceEncryptionHelper
 + (id)_newLegacyFlowContext;
-+ (id)_newLegacyFlowContextForAltDSID:(id)a3;
-+ (id)_newLegacyFlowContextWithContext:(id)a3;
++ (id)_newLegacyFlowContextForAltDSID:(id)d;
++ (id)_newLegacyFlowContextWithContext:(id)context;
 - (BOOL)_hasLocalSecret;
 - (BOOL)_hasManatee;
 - (BOOL)_inCircle;
-- (CDPUIDeviceToDeviceEncryptionHelper)initWithContext:(id)a3;
-- (CDPUIDeviceToDeviceEncryptionHelper)initWithPresentingViewController:(id)a3;
+- (CDPUIDeviceToDeviceEncryptionHelper)initWithContext:(id)context;
+- (CDPUIDeviceToDeviceEncryptionHelper)initWithPresentingViewController:(id)controller;
 - (CDPUIDeviceToDeviceEncryptionHelperDelegate)delegate;
 - (UIViewController)presentingViewController;
-- (id)_authenticationContextForFlowContext:(id)a3;
-- (id)_cdpErrorWithUnderlyingError:(id)a3;
-- (id)_inAppAuthenticationContextForFlowContext:(id)a3;
+- (id)_authenticationContextForFlowContext:(id)context;
+- (id)_cdpErrorWithUnderlyingError:(id)error;
+- (id)_inAppAuthenticationContextForFlowContext:(id)context;
 - (id)_newSpinnerViewController;
 - (id)_presentingNavigationController;
 - (id)_presentingViewController;
-- (id)_repairContextForFlowContext:(id)a3 withAuthenticationResults:(id)a4;
-- (id)_stateControllerForFlowContext:(id)a3 withAuthenticationResults:(id)a4;
-- (id)_stateControllerWithRepairContext:(id)a3;
-- (void)_beginUpgradeFlowWithContext:(id)a3 completion:(id)a4;
+- (id)_repairContextForFlowContext:(id)context withAuthenticationResults:(id)results;
+- (id)_stateControllerForFlowContext:(id)context withAuthenticationResults:(id)results;
+- (id)_stateControllerWithRepairContext:(id)context;
+- (void)_beginUpgradeFlowWithContext:(id)context completion:(id)completion;
 - (void)_configureNavigationController;
 - (void)_configurePresentingViewControllerForModalPresentation;
-- (void)_continueAuthenticatedUpgradeFlowWithContext:(id)a3 authenticationResults:(id)a4 completion:(id)a5;
-- (void)_continueUpgradeFlowWithContext:(id)a3 completion:(id)a4;
-- (void)_createLocalSecretForContext:(id)a3 completion:(id)a4;
-- (void)_determineEscrowRepairUpgradeEligibilityForContext:(id)a3 completion:(id)a4;
-- (void)_determineManateeUpgradeEligibilityForContext:(id)a3 completion:(id)a4;
-- (void)_determineSecurityUpgradeEligibilityForContext:(id)a3 completion:(id)a4;
-- (void)_determineUpgradeEligibilityForContext:(id)a3 completion:(id)a4;
-- (void)_dismissNavigationControllerWithCompletion:(id)a3;
-- (void)_legacyRequestPermissionToContinueFlowWithCompletion:(id)a3;
-- (void)_performAuthenticatedRepairFlowWithContext:(id)a3 stateController:(id)a4 completion:(id)a5;
+- (void)_continueAuthenticatedUpgradeFlowWithContext:(id)context authenticationResults:(id)results completion:(id)completion;
+- (void)_continueUpgradeFlowWithContext:(id)context completion:(id)completion;
+- (void)_createLocalSecretForContext:(id)context completion:(id)completion;
+- (void)_determineEscrowRepairUpgradeEligibilityForContext:(id)context completion:(id)completion;
+- (void)_determineManateeUpgradeEligibilityForContext:(id)context completion:(id)completion;
+- (void)_determineSecurityUpgradeEligibilityForContext:(id)context completion:(id)completion;
+- (void)_determineUpgradeEligibilityForContext:(id)context completion:(id)completion;
+- (void)_dismissNavigationControllerWithCompletion:(id)completion;
+- (void)_legacyRequestPermissionToContinueFlowWithCompletion:(id)completion;
+- (void)_performAuthenticatedRepairFlowWithContext:(id)context stateController:(id)controller completion:(id)completion;
 - (void)_postBiometricFollowUp;
-- (void)_presentIneligibilityAlertForFlowContext:(id)a3 completion:(id)a4;
-- (void)_presentSpinnerViewControllerWithCompletion:(id)a3;
-- (void)_requestPermissionToCreatePasscodeForFlowContext:(id)a3 completion:(id)a4;
-- (void)_validateLocalSecretForContext:(id)a3 withStateController:(id)a4 completion:(id)a5;
+- (void)_presentIneligibilityAlertForFlowContext:(id)context completion:(id)completion;
+- (void)_presentSpinnerViewControllerWithCompletion:(id)completion;
+- (void)_requestPermissionToCreatePasscodeForFlowContext:(id)context completion:(id)completion;
+- (void)_validateLocalSecretForContext:(id)context withStateController:(id)controller completion:(id)completion;
 - (void)dealloc;
-- (void)localSecretValidationCanCancelWithViewController:(id)a3 completion:(id)a4;
-- (void)performDeviceToDeviceEncryptionStateRepairForContext:(id)a3 withCompletion:(id)a4;
-- (void)performDeviceToDeviceEncryptionStateRepairWithCompletion:(id)a3;
+- (void)localSecretValidationCanCancelWithViewController:(id)controller completion:(id)completion;
+- (void)performDeviceToDeviceEncryptionStateRepairForContext:(id)context withCompletion:(id)completion;
+- (void)performDeviceToDeviceEncryptionStateRepairWithCompletion:(id)completion;
 @end
 
 @implementation CDPUIDeviceToDeviceEncryptionHelper
 
-- (CDPUIDeviceToDeviceEncryptionHelper)initWithContext:(id)a3
+- (CDPUIDeviceToDeviceEncryptionHelper)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = CDPUIDeviceToDeviceEncryptionHelper;
   v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)&v16 init];
@@ -56,13 +56,13 @@
     authenticationController = v6->_authenticationController;
     v6->_authenticationController = v7;
 
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     if ([MEMORY[0x277CFD560] canEnableMultiUserManatee])
     {
       v9 = objc_alloc(MEMORY[0x277CFDAA0]);
-      v10 = [v5 altDSID];
-      v11 = [v5 telemetryFlowID];
-      v12 = [v9 initWithAltDSID:v10 telemetryFlowID:v11];
+      altDSID = [contextCopy altDSID];
+      telemetryFlowID = [contextCopy telemetryFlowID];
+      v12 = [v9 initWithAltDSID:altDSID telemetryFlowID:telemetryFlowID];
       followUpProvider = v6->_followUpProvider;
       v6->_followUpProvider = v12;
     }
@@ -70,7 +70,7 @@
     else
     {
       v14 = objc_alloc_init(MEMORY[0x277CFDAA0]);
-      v10 = v6->_followUpProvider;
+      altDSID = v6->_followUpProvider;
       v6->_followUpProvider = v14;
     }
   }
@@ -78,15 +78,15 @@
   return v6;
 }
 
-- (CDPUIDeviceToDeviceEncryptionHelper)initWithPresentingViewController:(id)a3
+- (CDPUIDeviceToDeviceEncryptionHelper)initWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[CDPUIDeviceToDeviceEncryptionHelper _newLegacyFlowContext];
   v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self initWithContext:v5];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_presentingViewController, v4);
+    objc_storeWeak(&v6->_presentingViewController, controllerCopy);
   }
 
   return v6;
@@ -99,14 +99,14 @@
   _os_log_debug_impl(&dword_2451DB000, v0, OS_LOG_TYPE_DEBUG, "CDPUIDeviceToDeviceEncryptionHelper (%p) deallocated", v1, 0xCu);
 }
 
-- (void)performDeviceToDeviceEncryptionStateRepairWithCompletion:(id)a3
+- (void)performDeviceToDeviceEncryptionStateRepairWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__CDPUIDeviceToDeviceEncryptionHelper_performDeviceToDeviceEncryptionStateRepairWithCompletion___block_invoke;
   aBlock[3] = &unk_278E2BB18;
-  v5 = v4;
+  v5 = completionCopy;
   aBlock[4] = self;
   v14 = v5;
   v6 = _Block_copy(aBlock);
@@ -114,7 +114,7 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v7, &state);
-  v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__CDPUIDeviceToDeviceEncryptionHelper_performDeviceToDeviceEncryptionStateRepairWithCompletion___block_invoke_3;
@@ -122,7 +122,7 @@
   v10[4] = self;
   v9 = v6;
   v11 = v9;
-  [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineUpgradeEligibilityForContext:v8 completion:v10];
+  [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineUpgradeEligibilityForContext:context completion:v10];
 
   os_activity_scope_leave(&state);
 }
@@ -245,75 +245,75 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)performDeviceToDeviceEncryptionStateRepairForContext:(id)a3 withCompletion:(id)a4
+- (void)performDeviceToDeviceEncryptionStateRepairForContext:(id)context withCompletion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (!self->_context)
   {
-    v7 = [v12 altDSID];
-    v8 = [CDPUIDeviceToDeviceEncryptionHelper _newLegacyFlowContextForAltDSID:v7];
+    altDSID = [contextCopy altDSID];
+    v8 = [CDPUIDeviceToDeviceEncryptionHelper _newLegacyFlowContextForAltDSID:altDSID];
     context = self->_context;
     self->_context = v8;
   }
 
-  v10 = [v12 securityUpgradeContext];
-  [(CDPUIDeviceToDeviceEncryptionFlowContext *)self->_context setSecurityUpgradeContext:v10];
+  securityUpgradeContext = [contextCopy securityUpgradeContext];
+  [(CDPUIDeviceToDeviceEncryptionFlowContext *)self->_context setSecurityUpgradeContext:securityUpgradeContext];
 
-  v11 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-  [(CDPUIDeviceToDeviceEncryptionFlowContext *)self->_context setPresentingViewController:v11];
+  _presentingViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+  [(CDPUIDeviceToDeviceEncryptionFlowContext *)self->_context setPresentingViewController:_presentingViewController];
 
-  [(CDPUIDeviceToDeviceEncryptionHelper *)self performDeviceToDeviceEncryptionStateRepairWithCompletion:v6];
+  [(CDPUIDeviceToDeviceEncryptionHelper *)self performDeviceToDeviceEncryptionStateRepairWithCompletion:completionCopy];
 }
 
 - (void)_configurePresentingViewControllerForModalPresentation
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-  [v3 setModalInPresentation:1];
+  _presentingViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+  [_presentingViewController setModalInPresentation:1];
 
-  v4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  _presentingViewController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [v4 setModalPresentationStyle:2 * ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
-  v7 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
+  [_presentingViewController2 setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+  _presentingNavigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
 
-  if (v7)
+  if (_presentingNavigationController)
   {
-    v13 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
-    v8 = [v13 navigationBar];
-    [v8 setTranslucent:1];
+    _presentingNavigationController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
+    navigationBar = [_presentingNavigationController2 navigationBar];
+    [navigationBar setTranslucent:1];
 
-    v9 = [v13 navigationBar];
+    navigationBar2 = [_presentingNavigationController2 navigationBar];
     v10 = objc_alloc_init(MEMORY[0x277D755B8]);
-    [v9 setBackgroundImage:v10 forBarMetrics:0];
+    [navigationBar2 setBackgroundImage:v10 forBarMetrics:0];
 
-    v11 = [v13 navigationBar];
+    navigationBar3 = [_presentingNavigationController2 navigationBar];
     v12 = objc_alloc_init(MEMORY[0x277D755B8]);
-    [v11 setShadowImage:v12];
+    [navigationBar3 setShadowImage:v12];
   }
 }
 
-- (void)_beginUpgradeFlowWithContext:(id)a3 completion:(id)a4
+- (void)_beginUpgradeFlowWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__CDPUIDeviceToDeviceEncryptionHelper__beginUpgradeFlowWithContext_completion___block_invoke;
   aBlock[3] = &unk_278E2AF38;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = contextCopy;
   v22 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v23 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v8 cdpContext];
-  v12 = [v11 isiCDPEligible];
+  cdpContext = [v8 cdpContext];
+  isiCDPEligible = [cdpContext isiCDPEligible];
 
   if ([v8 deviceToDeviceEncryptionUpgradeUIStyle] == 3)
   {
-    if (v12)
+    if (isiCDPEligible)
     {
       if (v10)
       {
@@ -342,15 +342,15 @@ LABEL_20:
 
   else
   {
-    v13 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
-    v14 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel alloc] initWithContext:v8 is2FA:v12 hasLocalSecret:[(CDPUIDeviceToDeviceEncryptionHelper *)self _hasLocalSecret]];
+    _newUpgradeUIProvider = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
+    v14 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionUpgradeMessageViewModel alloc] initWithContext:v8 is2FA:isiCDPEligible hasLocalSecret:[(CDPUIDeviceToDeviceEncryptionHelper *)self _hasLocalSecret]];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __79__CDPUIDeviceToDeviceEncryptionHelper__beginUpgradeFlowWithContext_completion___block_invoke_9;
     v16[3] = &unk_278E2B2A8;
-    v17 = v13;
+    v17 = _newUpgradeUIProvider;
     v18 = v10;
-    v15 = v13;
+    v15 = _newUpgradeUIProvider;
     [v15 promptForUpgradeWithContext:v8 vm:v14 completion:v16];
   }
 }
@@ -503,29 +503,29 @@ void __79__CDPUIDeviceToDeviceEncryptionHelper__beginUpgradeFlowWithContext_comp
   }
 }
 
-- (void)_continueUpgradeFlowWithContext:(id)a3 completion:(id)a4
+- (void)_continueUpgradeFlowWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__CDPUIDeviceToDeviceEncryptionHelper__continueUpgradeFlowWithContext_completion___block_invoke;
   aBlock[3] = &unk_278E2BB40;
-  v17 = v6;
-  v18 = v7;
+  v17 = contextCopy;
+  v18 = completionCopy;
   aBlock[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = contextCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
   v11 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _inAppAuthenticationContextForFlowContext:v8];
-  v12 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationController];
+  _authenticationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationController];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__CDPUIDeviceToDeviceEncryptionHelper__continueUpgradeFlowWithContext_completion___block_invoke_3;
   v14[3] = &unk_278E2BB90;
   v15 = v10;
   v13 = v10;
-  [v12 authenticateWithContext:v11 completion:v14];
+  [_authenticationController authenticateWithContext:v11 completion:v14];
 }
 
 void __82__CDPUIDeviceToDeviceEncryptionHelper__continueUpgradeFlowWithContext_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -668,11 +668,11 @@ void __82__CDPUIDeviceToDeviceEncryptionHelper__continueUpgradeFlowWithContext_c
   }
 }
 
-- (void)_continueAuthenticatedUpgradeFlowWithContext:(id)a3 authenticationResults:(id)a4 completion:(id)a5
+- (void)_continueAuthenticatedUpgradeFlowWithContext:(id)context authenticationResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  contextCopy = context;
+  completionCopy = completion;
+  resultsCopy = results;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -680,28 +680,28 @@ void __82__CDPUIDeviceToDeviceEncryptionHelper__continueUpgradeFlowWithContext_c
     _os_log_impl(&dword_2451DB000, v11, OS_LOG_TYPE_DEFAULT, "Authentication for upgrade succeeded, checking CDP state", buf, 2u);
   }
 
-  v12 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _stateControllerForFlowContext:v8 withAuthenticationResults:v10];
+  v12 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _stateControllerForFlowContext:contextCopy withAuthenticationResults:resultsCopy];
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __117__CDPUIDeviceToDeviceEncryptionHelper__continueAuthenticatedUpgradeFlowWithContext_authenticationResults_completion___block_invoke;
   v22 = &unk_278E2BBB8;
-  v13 = v8;
+  v13 = contextCopy;
   v23 = v13;
-  v26 = v9;
+  v26 = completionCopy;
   v14 = v12;
   v24 = v14;
-  v25 = self;
-  v15 = v9;
+  selfCopy = self;
+  v15 = completionCopy;
   v16 = _Block_copy(&v19);
   if ([(CDPUIDeviceToDeviceEncryptionHelper *)self _hasLocalSecret:v19])
   {
-    v17 = [v13 cachedLocalSecret];
+    cachedLocalSecret = [v13 cachedLocalSecret];
 
-    if (v17)
+    if (cachedLocalSecret)
     {
-      v18 = [v13 cachedLocalSecret];
-      v16[2](v16, v18, 0);
+      cachedLocalSecret2 = [v13 cachedLocalSecret];
+      v16[2](v16, cachedLocalSecret2, 0);
     }
 
     else if ([v13 deviceToDeviceEncryptionUpgradeType] == 2)
@@ -799,21 +799,21 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_performAuthenticatedRepairFlowWithContext:(id)a3 stateController:(id)a4 completion:(id)a5
+- (void)_performAuthenticatedRepairFlowWithContext:(id)context stateController:(id)controller completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  controllerCopy = controller;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __109__CDPUIDeviceToDeviceEncryptionHelper__performAuthenticatedRepairFlowWithContext_stateController_completion___block_invoke;
   v13[3] = &unk_278E2AF38;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = contextCopy;
+  v15 = controllerCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = controllerCopy;
+  v12 = contextCopy;
   [v11 repairCloudDataProtectionStateWithCompletion:v13];
 }
 
@@ -866,13 +866,13 @@ void __109__CDPUIDeviceToDeviceEncryptionHelper__performAuthenticatedRepairFlowW
   }
 }
 
-- (void)_determineUpgradeEligibilityForContext:(id)a3 completion:(id)a4
+- (void)_determineUpgradeEligibilityForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 altDSID];
+  contextCopy = context;
+  completionCopy = completion;
+  altDSID = [contextCopy altDSID];
 
-  if (!v8)
+  if (!altDSID)
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -885,7 +885,7 @@ void __109__CDPUIDeviceToDeviceEncryptionHelper__performAuthenticatedRepairFlowW
     goto LABEL_9;
   }
 
-  if ([v6 isDemoDevice])
+  if ([contextCopy isDemoDevice])
   {
     v9 = _CDPLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -897,47 +897,47 @@ void __109__CDPUIDeviceToDeviceEncryptionHelper__performAuthenticatedRepairFlowW
     v11 = -5314;
 LABEL_9:
     v13 = [v10 cdp_errorWithCode:v11];
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 
     goto LABEL_10;
   }
 
-  v14 = [v6 deviceToDeviceEncryptionUpgradeType];
-  if (v14)
+  deviceToDeviceEncryptionUpgradeType = [contextCopy deviceToDeviceEncryptionUpgradeType];
+  if (deviceToDeviceEncryptionUpgradeType)
   {
-    if (v14 == 2)
+    if (deviceToDeviceEncryptionUpgradeType == 2)
     {
-      [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineEscrowRepairUpgradeEligibilityForContext:v6 completion:v7];
+      [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineEscrowRepairUpgradeEligibilityForContext:contextCopy completion:completionCopy];
     }
 
-    else if (v14 == 1)
+    else if (deviceToDeviceEncryptionUpgradeType == 1)
     {
-      [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineSecurityUpgradeEligibilityForContext:v6 completion:v7];
+      [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineSecurityUpgradeEligibilityForContext:contextCopy completion:completionCopy];
     }
   }
 
   else
   {
-    [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineManateeUpgradeEligibilityForContext:v6 completion:v7];
+    [(CDPUIDeviceToDeviceEncryptionHelper *)self _determineManateeUpgradeEligibilityForContext:contextCopy completion:completionCopy];
   }
 
 LABEL_10:
 }
 
-- (void)_determineSecurityUpgradeEligibilityForContext:(id)a3 completion:(id)a4
+- (void)_determineSecurityUpgradeEligibilityForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cdpContext];
-  v9 = [v8 isiCDPEligible];
+  contextCopy = context;
+  completionCopy = completion;
+  cdpContext = [contextCopy cdpContext];
+  isiCDPEligible = [cdpContext isiCDPEligible];
 
-  if (v9)
+  if (isiCDPEligible)
   {
-    if (v7)
+    if (completionCopy)
     {
       if ([MEMORY[0x277CCACC8] isMainThread])
       {
-        (*(v7 + 2))(v7, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
       }
 
       else
@@ -947,7 +947,7 @@ LABEL_10:
         block[2] = __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibilityForContext_completion___block_invoke;
         block[3] = &unk_278E2B1B8;
         v15 = 0;
-        v16 = v7;
+        v16 = completionCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
     }
@@ -955,14 +955,14 @@ LABEL_10:
 
   else
   {
-    v10 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationContextForFlowContext:v6];
-    v11 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationController];
+    v10 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationContextForFlowContext:contextCopy];
+    _authenticationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _authenticationController];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibilityForContext_completion___block_invoke_2;
     v12[3] = &unk_278E2AF10;
-    v13 = v7;
-    [v11 checkSecurityUpgradeEligibilityForContext:v10 completion:v12];
+    v13 = completionCopy;
+    [_authenticationController checkSecurityUpgradeEligibilityForContext:v10 completion:v12];
   }
 }
 
@@ -1020,13 +1020,13 @@ void __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibil
   }
 }
 
-- (void)_determineManateeUpgradeEligibilityForContext:(id)a3 completion:(id)a4
+- (void)_determineManateeUpgradeEligibilityForContext:(id)context completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if ([(CDPUIDeviceToDeviceEncryptionHelper *)self _hasManatee])
   {
     v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _inCircle]^ 1;
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -1035,7 +1035,7 @@ void __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibil
   else
   {
     v6 = 1;
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -1043,7 +1043,7 @@ void __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibil
 
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v5[2](v5, v6, 0);
+    completionCopy[2](completionCopy, v6, 0);
   }
 
   else
@@ -1052,7 +1052,7 @@ void __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibil
     v7[1] = 3221225472;
     v7[2] = __96__CDPUIDeviceToDeviceEncryptionHelper__determineManateeUpgradeEligibilityForContext_completion___block_invoke;
     v7[3] = &unk_278E2BBE0;
-    v8 = v5;
+    v8 = completionCopy;
     v9 = v6;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
@@ -1060,21 +1060,21 @@ void __97__CDPUIDeviceToDeviceEncryptionHelper__determineSecurityUpgradeEligibil
 LABEL_8:
 }
 
-- (void)_determineEscrowRepairUpgradeEligibilityForContext:(id)a3 completion:(id)a4
+- (void)_determineEscrowRepairUpgradeEligibilityForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(CDPUIDeviceToDeviceEncryptionHelper *)self _hasLocalSecret]&& [(CDPUIDeviceToDeviceEncryptionHelper *)self _hasManatee]&& [(CDPUIDeviceToDeviceEncryptionHelper *)self _inCircle])
   {
-    v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _stateControllerForFlowContext:v6 withAuthenticationResults:0];
-    [v8 shouldPerformRepairWithOptionForceFetch:1 completion:v7];
+    v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _stateControllerForFlowContext:contextCopy withAuthenticationResults:0];
+    [v8 shouldPerformRepairWithOptionForceFetch:1 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -1083,17 +1083,17 @@ LABEL_8:
       block[1] = 3221225472;
       block[2] = __101__CDPUIDeviceToDeviceEncryptionHelper__determineEscrowRepairUpgradeEligibilityForContext_completion___block_invoke;
       block[3] = &unk_278E2B118;
-      v10 = v7;
+      v10 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
 }
 
-- (void)_validateLocalSecretForContext:(id)a3 withStateController:(id)a4 completion:(id)a5
+- (void)_validateLocalSecretForContext:(id)context withStateController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
+  contextCopy = context;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1103,20 +1103,20 @@ LABEL_8:
 
   v12 = objc_alloc(MEMORY[0x277CE44D8]);
   v13 = [v12 initWithEventName:*MEMORY[0x277CFD768] eventCategory:*MEMORY[0x277CFD930] initData:0];
-  v14 = [v9 uiProvider];
+  uiProvider = [controllerCopy uiProvider];
 
-  v15 = [v10 repairContext];
+  repairContext = [contextCopy repairContext];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101__CDPUIDeviceToDeviceEncryptionHelper__validateLocalSecretForContext_withStateController_completion___block_invoke;
   v18[3] = &unk_278E2AF60;
   v19 = v13;
-  v20 = self;
-  v21 = v8;
-  v16 = v8;
+  selfCopy = self;
+  v21 = completionCopy;
+  v16 = completionCopy;
   v17 = v13;
-  [v14 cdpContext:v15 promptForLocalSecretWithCompletion:v18];
+  [uiProvider cdpContext:repairContext promptForLocalSecretWithCompletion:v18];
 }
 
 void __101__CDPUIDeviceToDeviceEncryptionHelper__validateLocalSecretForContext_withStateController_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1189,14 +1189,14 @@ void __101__CDPUIDeviceToDeviceEncryptionHelper__validateLocalSecretForContext_w
   }
 }
 
-- (void)_createLocalSecretForContext:(id)a3 completion:(id)a4
+- (void)_createLocalSecretForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if ([(CDPUIDeviceToDeviceEncryptionHelper *)self _hasLocalSecret])
   {
     v8 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:5094];
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 
   else
@@ -1210,9 +1210,9 @@ void __101__CDPUIDeviceToDeviceEncryptionHelper__validateLocalSecretForContext_w
 
     v10 = objc_alloc(MEMORY[0x277CE44D8]);
     v11 = [v10 initWithEventName:*MEMORY[0x277CFD768] eventCategory:*MEMORY[0x277CFD930] initData:0];
-    v12 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionCreatePasscodeViewModel alloc] initWithContext:v6 is2FA:1 hasLocalSecret:0];
-    v13 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
-    v14 = [CDPUIDeviceToDeviceEncryptionPasscodeController passcodeControllerWithPresenter:v13 vm:v12];
+    v12 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionCreatePasscodeViewModel alloc] initWithContext:contextCopy is2FA:1 hasLocalSecret:0];
+    _navigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
+    v14 = [CDPUIDeviceToDeviceEncryptionPasscodeController passcodeControllerWithPresenter:_navigationController vm:v12];
 
     [v14 setDelegate:self];
     v17[0] = MEMORY[0x277D85DD0];
@@ -1221,8 +1221,8 @@ void __101__CDPUIDeviceToDeviceEncryptionHelper__validateLocalSecretForContext_w
     v17[3] = &unk_278E2BC08;
     v18 = v14;
     v19 = v11;
-    v20 = self;
-    v21 = v7;
+    selfCopy = self;
+    v21 = completionCopy;
     v15 = v11;
     v16 = v14;
     [v16 createPasscodeStateWithCompletion:v17];
@@ -1308,34 +1308,34 @@ void __79__CDPUIDeviceToDeviceEncryptionHelper__createLocalSecretForContext_comp
   }
 }
 
-- (void)_presentIneligibilityAlertForFlowContext:(id)a3 completion:(id)a4
+- (void)_presentIneligibilityAlertForFlowContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
-  v9 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionIneligibilityAlertViewModel alloc] initWithContext:v7 is2FA:0 hasLocalSecret:0];
+  completionCopy = completion;
+  contextCopy = context;
+  _newUpgradeUIProvider = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
+  v9 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionIneligibilityAlertViewModel alloc] initWithContext:contextCopy is2FA:0 hasLocalSecret:0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__CDPUIDeviceToDeviceEncryptionHelper__presentIneligibilityAlertForFlowContext_completion___block_invoke;
   v12[3] = &unk_278E2B2A8;
-  v13 = v8;
-  v14 = v6;
-  v10 = v6;
-  v11 = v8;
-  [v11 promptIneligibilityWithContext:v7 vm:v9 completion:v12];
+  v13 = _newUpgradeUIProvider;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = _newUpgradeUIProvider;
+  [v11 promptIneligibilityWithContext:contextCopy vm:v9 completion:v12];
 }
 
-- (void)_requestPermissionToCreatePasscodeForFlowContext:(id)a3 completion:(id)a4
+- (void)_requestPermissionToCreatePasscodeForFlowContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 deviceToDeviceEncryptionUpgradeType] == 1 || -[CDPUIDeviceToDeviceEncryptionHelper _hasLocalSecret](self, "_hasLocalSecret") || objc_msgSend(v6, "shouldSuppressPasscodeCreationCancelPrompt"))
+  contextCopy = context;
+  completionCopy = completion;
+  if ([contextCopy deviceToDeviceEncryptionUpgradeType] == 1 || -[CDPUIDeviceToDeviceEncryptionHelper _hasLocalSecret](self, "_hasLocalSecret") || objc_msgSend(contextCopy, "shouldSuppressPasscodeCreationCancelPrompt"))
   {
-    if (v7)
+    if (completionCopy)
     {
       if ([MEMORY[0x277CCACC8] isMainThread])
       {
-        v7[2](v7, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       else
@@ -1344,7 +1344,7 @@ void __79__CDPUIDeviceToDeviceEncryptionHelper__createLocalSecretForContext_comp
         block[1] = 3221225472;
         block[2] = __99__CDPUIDeviceToDeviceEncryptionHelper__requestPermissionToCreatePasscodeForFlowContext_completion___block_invoke;
         block[3] = &unk_278E2B118;
-        v15 = v7;
+        v15 = completionCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
     }
@@ -1352,16 +1352,16 @@ void __79__CDPUIDeviceToDeviceEncryptionHelper__createLocalSecretForContext_comp
 
   else
   {
-    v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
-    v9 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionCancelCreateViewModel alloc] initWithContext:v6 is2FA:0 hasLocalSecret:0];
+    _newUpgradeUIProvider = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newUpgradeUIProvider];
+    v9 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)[CDPUIDeviceToDeviceEncryptionCancelCreateViewModel alloc] initWithContext:contextCopy is2FA:0 hasLocalSecret:0];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __99__CDPUIDeviceToDeviceEncryptionHelper__requestPermissionToCreatePasscodeForFlowContext_completion___block_invoke_2;
     v11[3] = &unk_278E2B2A8;
-    v12 = v8;
-    v13 = v7;
-    v10 = v8;
-    [v10 promptForCancelWithContext:v6 vm:v9 completion:v11];
+    v12 = _newUpgradeUIProvider;
+    v13 = completionCopy;
+    v10 = _newUpgradeUIProvider;
+    [v10 promptForCancelWithContext:contextCopy vm:v9 completion:v11];
   }
 }
 
@@ -1388,18 +1388,18 @@ void __99__CDPUIDeviceToDeviceEncryptionHelper__requestPermissionToCreatePasscod
   }
 }
 
-- (void)_legacyRequestPermissionToContinueFlowWithCompletion:(id)a3
+- (void)_legacyRequestPermissionToContinueFlowWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CDPUIDeviceToDeviceEncryptionHelper *)self delegate];
+  completionCopy = completion;
+  delegate = [(CDPUIDeviceToDeviceEncryptionHelper *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinueFlowWithCompletion___block_invoke_2;
     v8[3] = &unk_278E2BC30;
-    v9 = v4;
-    [v5 deviceToDeviceEncryptionHelper:self shouldContinueUpgradingUserToHSA2WithCompletion:v8];
+    v9 = completionCopy;
+    [delegate deviceToDeviceEncryptionHelper:self shouldContinueUpgradingUserToHSA2WithCompletion:v8];
     v6 = v9;
 LABEL_9:
 
@@ -1413,7 +1413,7 @@ LABEL_9:
     _os_log_impl(&dword_2451DB000, v7, OS_LOG_TYPE_DEFAULT, "No delegate for requesting permission, continuing encryption upgrade", buf, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if (![MEMORY[0x277CCACC8] isMainThread])
     {
@@ -1421,13 +1421,13 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinueFlowWithCompletion___block_invoke;
       block[3] = &unk_278E2B118;
-      v11 = v4;
+      v11 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
       v6 = v11;
       goto LABEL_9;
     }
 
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_10:
@@ -1502,68 +1502,68 @@ void __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinu
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)_presentSpinnerViewControllerWithCompletion:(id)a3
+- (void)_presentSpinnerViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newSpinnerViewController];
-  v5 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
-  [v5 pushViewController:v6 animated:1];
+  completionCopy = completion;
+  _newSpinnerViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newSpinnerViewController];
+  _navigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
+  [_navigationController pushViewController:_newSpinnerViewController animated:1];
 
-  v4[2](v4);
+  completionCopy[2](completionCopy);
 }
 
-- (id)_authenticationContextForFlowContext:(id)a3
+- (id)_authenticationContextForFlowContext:(id)context
 {
   v3 = MEMORY[0x277CF0170];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  [v5 setAltDSID:v6];
+  [v5 setAltDSID:altDSID];
 
   return v5;
 }
 
-- (id)_inAppAuthenticationContextForFlowContext:(id)a3
+- (id)_inAppAuthenticationContextForFlowContext:(id)context
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0130] sharedInstance];
-  v6 = [v4 altDSID];
-  v7 = [v5 authKitAccountWithAltDSID:v6];
+  contextCopy = context;
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  altDSID = [contextCopy altDSID];
+  v7 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
   v8 = objc_alloc_init(MEMORY[0x277CF0380]);
-  v9 = [v7 username];
-  [v8 setUsername:v9];
+  username = [v7 username];
+  [v8 setUsername:username];
 
   v10 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_AUTH_TITLE_REBRAND"];
-  v11 = [v10 localizedString];
-  [v8 setTitle:v11];
+  localizedString = [v10 localizedString];
+  [v8 setTitle:localizedString];
 
   v12 = MEMORY[0x277CCACA8];
   v13 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_AUTH_MESSAGE"];
-  v14 = [v13 localizedString];
-  v15 = [v7 username];
-  v16 = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+  localizedString2 = [v13 localizedString];
+  username2 = [v7 username];
+  v16 = [v12 stringWithValidatedFormat:localizedString2 validFormatSpecifiers:@"%@" error:0, username2];
   [v8 setReason:v16];
 
-  v17 = [v4 altDSID];
-  [v8 setAltDSID:v17];
+  altDSID2 = [contextCopy altDSID];
+  [v8 setAltDSID:altDSID2];
 
   [v8 setAuthenticationType:0];
   [v8 setAnticipateEscrowAttempt:1];
   [v8 setIsUsernameEditable:0];
   [v8 setSupportsPiggybacking:1];
   [v8 setShouldOfferSecurityUpgrade:1];
-  v18 = [v4 telemetryFlowID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
 
-  if (v18)
+  if (telemetryFlowID)
   {
-    v19 = [v4 telemetryFlowID];
-    [v8 setTelemetryFlowID:v19];
+    telemetryFlowID2 = [contextCopy telemetryFlowID];
+    [v8 setTelemetryFlowID:telemetryFlowID2];
   }
 
-  v20 = [v4 securityUpgradeContext];
-  v21 = [v20 isEqualToString:*MEMORY[0x277CF00A0]];
+  securityUpgradeContext = [contextCopy securityUpgradeContext];
+  v21 = [securityUpgradeContext isEqualToString:*MEMORY[0x277CF00A0]];
 
   if (v21)
   {
@@ -1572,46 +1572,46 @@ void __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinu
 
   else
   {
-    v22 = [v4 securityUpgradeContext];
-    [v8 setSecurityUpgradeContext:v22];
+    securityUpgradeContext2 = [contextCopy securityUpgradeContext];
+    [v8 setSecurityUpgradeContext:securityUpgradeContext2];
   }
 
   [v8 setForceInlinePresentation:1];
-  v23 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
-  [v8 setPresentingViewController:v23];
+  _navigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
+  [v8 setPresentingViewController:_navigationController];
 
   return v8;
 }
 
 - (id)_presentingViewController
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  v4 = [v3 presentingViewController];
-  v5 = v4;
-  if (v4)
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  presentingViewController = [context presentingViewController];
+  v5 = presentingViewController;
+  if (presentingViewController)
   {
-    v6 = v4;
+    presentingViewController2 = presentingViewController;
   }
 
   else
   {
-    v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self presentingViewController];
+    presentingViewController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self presentingViewController];
   }
 
-  v7 = v6;
+  v7 = presentingViewController2;
 
   return v7;
 }
 
 - (id)_presentingNavigationController
 {
-  v2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  v3 = [v2 presentingViewController];
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  presentingViewController = [context presentingViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = presentingViewController;
   }
 
   else
@@ -1624,16 +1624,16 @@ void __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinu
 
 - (void)_configureNavigationController
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  if ([v3 forceInlinePresentation])
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  if ([context forceInlinePresentation])
   {
-    v4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
+    _presentingNavigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
 
-    if (v4)
+    if (_presentingNavigationController)
     {
-      v5 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
+      _presentingNavigationController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingNavigationController];
       navigationController = self->_navigationController;
-      self->_navigationController = v5;
+      self->_navigationController = _presentingNavigationController2;
 
       obj = [(UINavigationController *)self->_navigationController topViewController];
       objc_storeWeak(&self->_initialTopViewController, obj);
@@ -1645,16 +1645,16 @@ void __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinu
   {
   }
 
-  v7 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  if ([v7 deviceToDeviceEncryptionUpgradeUIStyle])
+  context2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  if ([context2 deviceToDeviceEncryptionUpgradeUIStyle])
   {
-    v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-    v9 = [v8 deviceToDeviceEncryptionUpgradeUIStyle];
+    context3 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+    deviceToDeviceEncryptionUpgradeUIStyle = [context3 deviceToDeviceEncryptionUpgradeUIStyle];
 
-    if (v9 != 3)
+    if (deviceToDeviceEncryptionUpgradeUIStyle != 3)
     {
-      v10 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-      obj = [v10 presentedViewController];
+      _presentingViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+      obj = [_presentingViewController presentedViewController];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1671,31 +1671,31 @@ void __92__CDPUIDeviceToDeviceEncryptionHelper__legacyRequestPermissionToContinu
   }
 
   v11 = objc_alloc(MEMORY[0x277D757A0]);
-  v12 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newSpinnerViewController];
-  v13 = [v11 initWithRootViewController:v12];
+  _newSpinnerViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _newSpinnerViewController];
+  v13 = [v11 initWithRootViewController:_newSpinnerViewController];
   v14 = self->_navigationController;
   self->_navigationController = v13;
 
-  v15 = [(UINavigationController *)self->_navigationController navigationItem];
-  [v15 setHidesBackButton:1];
+  navigationItem = [(UINavigationController *)self->_navigationController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v16 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  LODWORD(v12) = [v16 configureForModalPresentation];
+  context4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  LODWORD(_newSpinnerViewController) = [context4 configureForModalPresentation];
 
-  if (v12)
+  if (_newSpinnerViewController)
   {
     [(UINavigationController *)self->_navigationController setModalInPresentation:1];
     v17 = self->_navigationController;
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    v19 = [v18 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    [(UINavigationController *)v17 setModalPresentationStyle:2 * ((v19 & 0xFFFFFFFFFFFFFFFBLL) == 1)];
+    [(UINavigationController *)v17 setModalPresentationStyle:2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)];
   }
 
   obj = [(UINavigationController *)self->_navigationController transitionCoordinator];
   [obj animateAlongsideTransition:&__block_literal_global_0 completion:&__block_literal_global_86];
-  v20 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-  [v20 presentViewController:self->_navigationController animated:1 completion:0];
+  _presentingViewController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+  [_presentingViewController2 presentViewController:self->_navigationController animated:1 completion:0];
 
 LABEL_13:
 }
@@ -1718,81 +1718,81 @@ void __69__CDPUIDeviceToDeviceEncryptionHelper__configureNavigationController__b
   }
 }
 
-- (void)_dismissNavigationControllerWithCompletion:(id)a3
+- (void)_dismissNavigationControllerWithCompletion:(id)completion
 {
-  v12 = a3;
-  v4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  v5 = [v4 forceInlinePresentation];
+  completionCopy = completion;
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  forceInlinePresentation = [context forceInlinePresentation];
 
-  if (v5)
+  if (forceInlinePresentation)
   {
     WeakRetained = objc_loadWeakRetained(&self->_initialTopViewController);
 
     if (WeakRetained)
     {
-      v7 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
+      _navigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
       v8 = objc_loadWeakRetained(&self->_initialTopViewController);
-      v9 = [v7 popToViewController:v8 animated:0];
+      v9 = [_navigationController popToViewController:v8 animated:0];
     }
   }
 
   else
   {
-    v10 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+    _presentingViewController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
 
-    if (v10)
+    if (_presentingViewController)
     {
-      v11 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
-      [v11 dismissViewControllerAnimated:1 completion:v12];
+      _presentingViewController2 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _presentingViewController];
+      [_presentingViewController2 dismissViewControllerAnimated:1 completion:completionCopy];
 
       goto LABEL_7;
     }
   }
 
-  v12[2]();
+  completionCopy[2]();
 LABEL_7:
 }
 
-- (id)_stateControllerForFlowContext:(id)a3 withAuthenticationResults:(id)a4
+- (id)_stateControllerForFlowContext:(id)context withAuthenticationResults:(id)results
 {
-  v5 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _repairContextForFlowContext:a3 withAuthenticationResults:a4];
+  v5 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _repairContextForFlowContext:context withAuthenticationResults:results];
   v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _stateControllerWithRepairContext:v5];
 
   return v6;
 }
 
-- (id)_repairContextForFlowContext:(id)a3 withAuthenticationResults:(id)a4
+- (id)_repairContextForFlowContext:(id)context withAuthenticationResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v6 = MEMORY[0x277CFD4A8];
-  v7 = a3;
-  if (v5)
+  contextCopy = context;
+  if (resultsCopy)
   {
-    v8 = [[v6 alloc] initWithAuthenticationResults:v5];
+    contextForPrimaryAccount = [[v6 alloc] initWithAuthenticationResults:resultsCopy];
   }
 
   else
   {
-    v8 = [(objc_class *)v6 contextForPrimaryAccount];
+    contextForPrimaryAccount = [(objc_class *)v6 contextForPrimaryAccount];
   }
 
-  v9 = v8;
-  v10 = [v7 requiresSynchronousRepair];
+  v9 = contextForPrimaryAccount;
+  requiresSynchronousRepair = [contextCopy requiresSynchronousRepair];
 
-  [v9 set_disableAsyncSecureBackupEnrollment:v10];
+  [v9 set_disableAsyncSecureBackupEnrollment:requiresSynchronousRepair];
 
   return v9;
 }
 
-- (id)_stateControllerWithRepairContext:(id)a3
+- (id)_stateControllerWithRepairContext:(id)context
 {
   v4 = MEMORY[0x277CFD548];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContext:v5];
+  contextCopy = context;
+  v6 = [[v4 alloc] initWithContext:contextCopy];
 
   v7 = [CDPUIController alloc];
-  v8 = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
-  v9 = [(CDPUIBaseController *)v7 initWithPresentingViewController:v8];
+  _navigationController = [(CDPUIDeviceToDeviceEncryptionHelper *)self _navigationController];
+  v9 = [(CDPUIBaseController *)v7 initWithPresentingViewController:_navigationController];
 
   [(CDPUIController *)v9 setForceInlinePresentation:1];
   [v6 setUiProvider:v9];
@@ -1800,11 +1800,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)_cdpErrorWithUnderlyingError:(id)a3
+- (id)_cdpErrorWithUnderlyingError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CFD418]), v5, !v6))
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy && ([errorCopy domain], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CFD418]), v5, !v6))
   {
     if ([v4 ak_isUserCancelError] & 1) != 0 || (objc_msgSend(v4, "ak_isAuthenticationErrorWithCode:", -7064))
     {
@@ -1836,54 +1836,54 @@ LABEL_7:
 
 - (BOOL)_hasLocalSecret
 {
-  v2 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v3 = [v2 hasLocalSecret];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-  return v3;
+  return hasLocalSecret;
 }
 
 - (BOOL)_hasManatee
 {
   v3 = objc_alloc(MEMORY[0x277CFD510]);
-  v4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  v5 = [v4 cdpContext];
-  v6 = [v3 initWithContext:v5];
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  cdpContext = [context cdpContext];
+  v6 = [v3 initWithContext:cdpContext];
 
-  LOBYTE(v4) = [v6 isManateeAvailable:0];
-  return v4;
+  LOBYTE(context) = [v6 isManateeAvailable:0];
+  return context;
 }
 
 - (BOOL)_inCircle
 {
   v3 = objc_alloc(MEMORY[0x277CFD498]);
-  v4 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  v5 = [v4 cdpContext];
-  v6 = [v3 initWithContext:v5];
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  cdpContext = [context cdpContext];
+  v6 = [v3 initWithContext:cdpContext];
 
-  LOBYTE(v4) = [v6 combinedCachedCircleStatus:0] == 1;
-  return v4;
+  LOBYTE(context) = [v6 combinedCachedCircleStatus:0] == 1;
+  return context;
 }
 
 + (id)_newLegacyFlowContext
 {
-  v3 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-  v4 = [a1 _newLegacyFlowContextWithContext:v3];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  v4 = [self _newLegacyFlowContextWithContext:contextForPrimaryAccount];
 
   return v4;
 }
 
-+ (id)_newLegacyFlowContextForAltDSID:(id)a3
++ (id)_newLegacyFlowContextForAltDSID:(id)d
 {
-  v4 = [MEMORY[0x277CFD4A8] contextForAccountWithAltDSID:a3];
-  v5 = [a1 _newLegacyFlowContextWithContext:v4];
+  v4 = [MEMORY[0x277CFD4A8] contextForAccountWithAltDSID:d];
+  v5 = [self _newLegacyFlowContextWithContext:v4];
 
   return v5;
 }
 
-+ (id)_newLegacyFlowContextWithContext:(id)a3
++ (id)_newLegacyFlowContextWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithCDPContext:v3];
+  contextCopy = context;
+  v4 = [[CDPUIDeviceToDeviceEncryptionFlowContext alloc] initWithCDPContext:contextCopy];
 
   [(CDPUIDeviceToDeviceEncryptionFlowContext *)v4 setDeviceToDeviceEncryptionUpgradeUIStyle:3];
   [(CDPUIDeviceToDeviceEncryptionFlowContext *)v4 setDeviceToDeviceEncryptionUpgradeType:0];
@@ -1899,9 +1899,9 @@ LABEL_7:
     _os_log_impl(&dword_2451DB000, v2, OS_LOG_TYPE_DEFAULT, "Posting biometric follow up.", v5, 2u);
   }
 
-  v3 = [MEMORY[0x277CFD4D8] contextForSettingUpBiometrics];
+  contextForSettingUpBiometrics = [MEMORY[0x277CFD4D8] contextForSettingUpBiometrics];
   v4 = objc_alloc_init(MEMORY[0x277CFD4E0]);
-  [v4 postFollowUpWithContext:v3 error:0];
+  [v4 postFollowUpWithContext:contextForSettingUpBiometrics error:0];
 }
 
 - (id)_newSpinnerViewController
@@ -1925,19 +1925,19 @@ LABEL_7:
   v3 = v2;
   _Block_object_dispose(&v9, 8);
   v4 = objc_alloc_init(v2);
-  v5 = [v4 label];
+  label = [v4 label];
   v6 = CDPLocalizedString();
-  [v5 setText:v6];
+  [label setText:v6];
 
   [v4 setSpinning:1];
   return v4;
 }
 
-- (void)localSecretValidationCanCancelWithViewController:(id)a3 completion:(id)a4
+- (void)localSecretValidationCanCancelWithViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
-  [(CDPUIDeviceToDeviceEncryptionHelper *)self _requestPermissionToCreatePasscodeForFlowContext:v6 completion:v5];
+  completionCopy = completion;
+  context = [(CDPUIDeviceToDeviceEncryptionHelper *)self context];
+  [(CDPUIDeviceToDeviceEncryptionHelper *)self _requestPermissionToCreatePasscodeForFlowContext:context completion:completionCopy];
 }
 
 - (UIViewController)presentingViewController

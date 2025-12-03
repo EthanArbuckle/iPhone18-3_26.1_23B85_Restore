@@ -1,9 +1,9 @@
 @interface HMDAccessoryPairingProgressStateMap
-- (HMDAccessoryPairingProgressStateMap)initWithDate:(id)a3;
+- (HMDAccessoryPairingProgressStateMap)initWithDate:(id)date;
 - (NSString)lastProgressState;
 - (NSString)longestProgressState;
 - (double)getTimeDurationForLongestProgressState;
-- (void)updateWithProgressState:(id)a3 date:(id)a4;
+- (void)updateWithProgressState:(id)state date:(id)date;
 @end
 
 @implementation HMDAccessoryPairingProgressStateMap
@@ -47,39 +47,39 @@
   return v3;
 }
 
-- (void)updateWithProgressState:(id)a3 date:(id)a4
+- (void)updateWithProgressState:(id)state date:(id)date
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
-  [v7 timeIntervalSinceDate:self->_lastProgressStateEventTime];
+  [dateCopy timeIntervalSinceDate:self->_lastProgressStateEventTime];
   v9 = v8;
-  if (v6)
+  if (stateCopy)
   {
-    v10 = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
-    [v10 setObject:&unk_286627DA8 forKey:v6];
+    progressStateMap = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
+    [progressStateMap setObject:&unk_286627DA8 forKey:stateCopy];
 
     if (self->_lastProgressState)
     {
-      v11 = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
+      progressStateMap2 = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
       v12 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-      [v11 setObject:v12 forKey:self->_lastProgressState];
+      [progressStateMap2 setObject:v12 forKey:self->_lastProgressState];
     }
 
-    [(HMDAccessoryPairingProgressStateMap *)self setLastProgressState:v6];
-    [(HMDAccessoryPairingProgressStateMap *)self setLastProgressStateEventTime:v7];
+    [(HMDAccessoryPairingProgressStateMap *)self setLastProgressState:stateCopy];
+    [(HMDAccessoryPairingProgressStateMap *)self setLastProgressStateEventTime:dateCopy];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v16 = HMFGetLogIdentifier();
-      progressStateMap = v14->_progressStateMap;
+      progressStateMap = selfCopy->_progressStateMap;
       v36 = 138543874;
       v37 = v16;
       v38 = 2112;
-      v39 = v6;
+      v39 = stateCopy;
       v40 = 2112;
       v41 = progressStateMap;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Successfully added progress state: %@ to the pairing progress state map: %@", &v36, 0x20u);
@@ -106,12 +106,12 @@ LABEL_9:
     }
 
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
       v29 = HMFGetLogIdentifier();
-      longestProgressState = v27->_longestProgressState;
+      longestProgressState = selfCopy2->_longestProgressState;
       v36 = 138543618;
       v37 = v29;
       v38 = 2112;
@@ -125,12 +125,12 @@ LABEL_9:
 
   if (self->_lastProgressState)
   {
-    v18 = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
+    progressStateMap3 = [(HMDAccessoryPairingProgressStateMap *)self progressStateMap];
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-    [v18 setObject:v19 forKey:self->_lastProgressState];
+    [progressStateMap3 setObject:v19 forKey:self->_lastProgressState];
 
     v13 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -147,7 +147,7 @@ LABEL_9:
   }
 
   v32 = objc_autoreleasePoolPush();
-  v33 = self;
+  selfCopy4 = self;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
   {
@@ -164,9 +164,9 @@ LABEL_17:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessoryPairingProgressStateMap)initWithDate:(id)a3
+- (HMDAccessoryPairingProgressStateMap)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = HMDAccessoryPairingProgressStateMap;
   v6 = [(HMDAccessoryPairingProgressStateMap *)&v10 init];
@@ -176,7 +176,7 @@ LABEL_17:
     progressStateMap = v6->_progressStateMap;
     v6->_progressStateMap = v7;
 
-    objc_storeStrong(&v6->_lastProgressStateEventTime, a3);
+    objc_storeStrong(&v6->_lastProgressStateEventTime, date);
   }
 
   return v6;

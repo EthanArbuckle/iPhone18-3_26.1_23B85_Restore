@@ -1,12 +1,12 @@
 @interface HighlightCalendarDayView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDate)axDate;
 - (NSString)axProjectionKind;
-- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithCoder:(id)a3;
-- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithCoder:(id)coder;
+- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithFrame:(CGRect)frame;
 - (int64_t)axCircleState;
 - (int64_t)axProbability;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
 @end
 
@@ -25,7 +25,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1D154CF60(v5);
 
   v7 = sub_1D15A26A8();
@@ -137,7 +137,7 @@ LABEL_8:
   return qword_1D15B56D0[v3];
 }
 
-- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithCoder:(id)a3
+- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithCoder:(id)coder
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -155,7 +155,7 @@ LABEL_8:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -165,12 +165,12 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
-  v5 = [(HighlightCalendarDayView *)v4 traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
+  selfCopy = self;
+  traitCollection = [(HighlightCalendarDayView *)selfCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v10 = *(&v4->super._viewFlags + OBJC_IVAR____TtC19HealthVisualization24HighlightCalendarDayView_model + 1);
-  v7 = sub_1D154E870(v6, &v10);
+  v10 = *(&selfCopy->super._viewFlags + OBJC_IVAR____TtC19HealthVisualization24HighlightCalendarDayView_model + 1);
+  v7 = sub_1D154E870(preferredContentSizeCategory, &v10);
 
   v8 = v7;
   v9 = v7;
@@ -189,11 +189,11 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1D154DD8C();
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   sub_1D15A4148();
   sub_1D15A4138();
@@ -205,14 +205,14 @@ LABEL_8:
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for HighlightCalendarDayView();
-  v5 = a3;
-  v6 = self;
-  [(HighlightCalendarDayView *)&v9 layoutSublayersOfLayer:v5];
-  v7 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC19HealthVisualization24HighlightCalendarDayView_todayIndicatorLayer);
+  layerCopy = layer;
+  selfCopy = self;
+  [(HighlightCalendarDayView *)&v9 layoutSublayersOfLayer:layerCopy];
+  v7 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC19HealthVisualization24HighlightCalendarDayView_todayIndicatorLayer);
   if (v7)
   {
     v8 = v7;
-    [(HighlightCalendarDayView *)v6 bounds:v9.receiver];
+    [(HighlightCalendarDayView *)selfCopy bounds:v9.receiver];
     [v8 setFrame_];
   }
 
@@ -221,7 +221,7 @@ LABEL_8:
   }
 }
 
-- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithFrame:(CGRect)a3
+- (_TtC19HealthVisualization24HighlightCalendarDayView)initWithFrame:(CGRect)frame
 {
   sub_1D15A4148();
   sub_1D15A4138();

@@ -1,20 +1,20 @@
 @interface SAPerson
-- (id)_ad_personContactHandlesWithAddressBookManager:(id)a3;
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3;
+- (id)_ad_personContactHandlesWithAddressBookManager:(id)manager;
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager;
 @end
 
 @implementation SAPerson
 
-- (id)_ad_personContactHandlesWithAddressBookManager:(id)a3
+- (id)_ad_personContactHandlesWithAddressBookManager:(id)manager
 {
-  v25 = a3;
+  managerCopy = manager;
   v4 = objc_alloc_init(NSMutableSet);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(SAPerson *)self emails];
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  emails = [(SAPerson *)self emails];
+  v6 = [emails countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -25,23 +25,23 @@
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(emails);
         }
 
         v10 = *(*(&v30 + 1) + 8 * i);
-        v11 = [v10 label];
-        v12 = [v10 emailAddress];
-        if (v12)
+        label = [v10 label];
+        emailAddress = [v10 emailAddress];
+        if (emailAddress)
         {
           v13 = objc_alloc_init(STPersonContactHandle);
           [v13 setType:0];
-          [v13 setLabel:v11];
-          [v13 setHandle:v12];
+          [v13 setLabel:label];
+          [v13 setHandle:emailAddress];
           [v4 addObject:v13];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v7 = [emails countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v7);
@@ -51,8 +51,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(SAPerson *)self phones];
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  phones = [(SAPerson *)self phones];
+  v15 = [phones countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v15)
   {
     v16 = v15;
@@ -63,47 +63,47 @@
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(phones);
         }
 
         v19 = *(*(&v26 + 1) + 8 * j);
-        v20 = [v19 label];
-        v21 = [v19 number];
-        if (v21)
+        label2 = [v19 label];
+        number = [v19 number];
+        if (number)
         {
           v22 = objc_alloc_init(STPersonContactHandle);
           [v22 setType:1];
-          [v22 setLabel:v20];
-          [v22 setHandle:v21];
+          [v22 setLabel:label2];
+          [v22 setHandle:number];
           [v4 addObject:v22];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v16 = [phones countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v16);
   }
 
-  v23 = [v25 contactHandlesForPerson:self];
+  v23 = [managerCopy contactHandlesForPerson:self];
   [v4 unionSet:v23];
 
   return v4;
 }
 
-- (id)ad_transcriptionResultWithAddressBookManager:(id)a3
+- (id)ad_transcriptionResultWithAddressBookManager:(id)manager
 {
-  v4 = a3;
-  if (!v4)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v4 = objc_alloc_init(ADAddressBookManager);
+    managerCopy = objc_alloc_init(ADAddressBookManager);
   }
 
   v5 = objc_alloc_init(STPerson);
-  v6 = [(SAPerson *)self fullName];
-  [v5 setFullName:v6];
+  fullName = [(SAPerson *)self fullName];
+  [v5 setFullName:fullName];
 
-  v7 = [(SAPerson *)self _ad_personContactHandlesWithAddressBookManager:v4];
+  v7 = [(SAPerson *)self _ad_personContactHandlesWithAddressBookManager:managerCopy];
   [v5 setContactHandles:v7];
 
   return v5;

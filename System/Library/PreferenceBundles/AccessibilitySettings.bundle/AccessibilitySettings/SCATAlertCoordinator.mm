@@ -1,36 +1,36 @@
 @interface SCATAlertCoordinator
-- (SCATAlertCoordinator)initWithViewController:(id)a3;
+- (SCATAlertCoordinator)initWithViewController:(id)controller;
 - (UIViewController)viewController;
-- (void)showOnboardingAlertWithTitle:(id)a3 message:(id)a4 successTitle:(id)a5 cancelTitle:(id)a6 successHandler:(id)a7 cancelHandler:(id)a8;
-- (void)showProfileNamingAlertWithProfile:(id)a3 renaming:(BOOL)a4 message:(id)a5 successHandler:(id)a6 cancelHandler:(id)a7;
-- (void)showSwichAlreadyInUseAlert:(id)a3;
-- (void)showSwitchNamingAlertWithSwitch:(id)a3 message:(id)a4 successHandler:(id)a5 cancelHandler:(id)a6;
+- (void)showOnboardingAlertWithTitle:(id)title message:(id)message successTitle:(id)successTitle cancelTitle:(id)cancelTitle successHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)showProfileNamingAlertWithProfile:(id)profile renaming:(BOOL)renaming message:(id)message successHandler:(id)handler cancelHandler:(id)cancelHandler;
+- (void)showSwichAlreadyInUseAlert:(id)alert;
+- (void)showSwitchNamingAlertWithSwitch:(id)switch message:(id)message successHandler:(id)handler cancelHandler:(id)cancelHandler;
 @end
 
 @implementation SCATAlertCoordinator
 
-- (SCATAlertCoordinator)initWithViewController:(id)a3
+- (SCATAlertCoordinator)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SCATAlertCoordinator;
   v5 = [(SCATAlertCoordinator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATAlertCoordinator *)v5 setViewController:v4];
+    [(SCATAlertCoordinator *)v5 setViewController:controllerCopy];
   }
 
   return v6;
 }
 
-- (void)showSwitchNamingAlertWithSwitch:(id)a3 message:(id)a4 successHandler:(id)a5 cancelHandler:(id)a6
+- (void)showSwitchNamingAlertWithSwitch:(id)switch message:(id)message successHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  switchCopy = switch;
+  messageCopy = message;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
+  if (!switchCopy)
   {
     _AXAssert();
   }
@@ -41,13 +41,13 @@
     v15 = AXParameterizedLocalizedString();
     v25 = AXParameterizedLocalizedString();
     objc_initWeak(location, self);
-    v16 = [UIAlertController alertControllerWithTitle:v14 message:v11 preferredStyle:1];
+    v16 = [UIAlertController alertControllerWithTitle:v14 message:messageCopy preferredStyle:1];
     v24 = v14;
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = __93__SCATAlertCoordinator_showSwitchNamingAlertWithSwitch_message_successHandler_cancelHandler___block_invoke;
     v37[3] = &unk_2593A8;
-    v17 = v13;
+    v17 = cancelHandlerCopy;
     v38 = v17;
     objc_copyWeak(&v39, location);
     v18 = [UIAlertAction actionWithTitle:v15 style:1 handler:v37];
@@ -59,10 +59,10 @@
     v31[3] = &unk_2593F8;
     v19 = v16;
     v32 = v19;
-    v20 = v10;
+    v20 = switchCopy;
     v33 = v20;
     objc_copyWeak(&v36, location);
-    v34 = v12;
+    v34 = handlerCopy;
     v35 = v17;
     v21 = [UIAlertAction actionWithTitle:v25 style:0 handler:v31];
     [v19 addAction:v21];
@@ -73,7 +73,7 @@
     v29[3] = &unk_259420;
     v30 = v20;
     [v19 addTextFieldWithConfigurationHandler:v29];
-    v22 = [(SCATAlertCoordinator *)self viewController];
+    viewController = [(SCATAlertCoordinator *)self viewController];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = __93__SCATAlertCoordinator_showSwitchNamingAlertWithSwitch_message_successHandler_cancelHandler___block_invoke_5;
@@ -81,7 +81,7 @@
     v23 = v19;
     v27 = v23;
     objc_copyWeak(&v28, location);
-    [v22 presentViewController:v23 animated:1 completion:v26];
+    [viewController presentViewController:v23 animated:1 completion:v26];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v36);
@@ -199,9 +199,9 @@ void __93__SCATAlertCoordinator_showSwitchNamingAlertWithSwitch_message_successH
   [WeakRetained setShowingAlert:1];
 }
 
-- (void)showSwichAlreadyInUseAlert:(id)a3
+- (void)showSwichAlreadyInUseAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (![(SCATAlertCoordinator *)self isShowingAlert])
   {
     objc_initWeak(&location, self);
@@ -213,17 +213,17 @@ void __93__SCATAlertCoordinator_showSwitchNamingAlertWithSwitch_message_successH
     v13[1] = 3221225472;
     v13[2] = __51__SCATAlertCoordinator_showSwichAlreadyInUseAlert___block_invoke;
     v13[3] = &unk_2593A8;
-    v14 = v4;
+    v14 = alertCopy;
     objc_copyWeak(&v15, &location);
     v9 = [UIAlertAction actionWithTitle:v7 style:1 handler:v13];
     [v8 addAction:v9];
-    v10 = [(SCATAlertCoordinator *)self viewController];
+    viewController = [(SCATAlertCoordinator *)self viewController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __51__SCATAlertCoordinator_showSwichAlreadyInUseAlert___block_invoke_2;
     v11[3] = &unk_255388;
     objc_copyWeak(&v12, &location);
-    [v10 presentViewController:v8 animated:1 completion:v11];
+    [viewController presentViewController:v8 animated:1 completion:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v15);
@@ -250,43 +250,43 @@ void __51__SCATAlertCoordinator_showSwichAlreadyInUseAlert___block_invoke_2(uint
   [WeakRetained setShowingAlert:1];
 }
 
-- (void)showOnboardingAlertWithTitle:(id)a3 message:(id)a4 successTitle:(id)a5 cancelTitle:(id)a6 successHandler:(id)a7 cancelHandler:(id)a8
+- (void)showOnboardingAlertWithTitle:(id)title message:(id)message successTitle:(id)successTitle cancelTitle:(id)cancelTitle successHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  successTitleCopy = successTitle;
+  cancelTitleCopy = cancelTitle;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
   if (![(SCATAlertCoordinator *)self isShowingAlert])
   {
     objc_initWeak(location, self);
-    v20 = [UIAlertController alertControllerWithTitle:v14 message:v15 preferredStyle:1];
+    v20 = [UIAlertController alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTitle_cancelTitle_successHandler_cancelHandler___block_invoke;
     v29[3] = &unk_2593A8;
-    v30 = v19;
+    v30 = cancelHandlerCopy;
     objc_copyWeak(&v31, location);
-    v21 = [UIAlertAction actionWithTitle:v17 style:2 handler:v29];
+    v21 = [UIAlertAction actionWithTitle:cancelTitleCopy style:2 handler:v29];
     [v20 addAction:v21];
 
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTitle_cancelTitle_successHandler_cancelHandler___block_invoke_2;
     v26[3] = &unk_2593A8;
-    v27 = v18;
+    v27 = handlerCopy;
     objc_copyWeak(&v28, location);
-    v22 = [UIAlertAction actionWithTitle:v16 style:0 handler:v26];
+    v22 = [UIAlertAction actionWithTitle:successTitleCopy style:0 handler:v26];
     [v20 addAction:v22];
 
-    v23 = [(SCATAlertCoordinator *)self viewController];
+    viewController = [(SCATAlertCoordinator *)self viewController];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTitle_cancelTitle_successHandler_cancelHandler___block_invoke_3;
     v24[3] = &unk_255388;
     objc_copyWeak(&v25, location);
-    [v23 presentViewController:v20 animated:1 completion:v24];
+    [viewController presentViewController:v20 animated:1 completion:v24];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v28);
@@ -326,26 +326,26 @@ void __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTit
   [WeakRetained setShowingAlert:1];
 }
 
-- (void)showProfileNamingAlertWithProfile:(id)a3 renaming:(BOOL)a4 message:(id)a5 successHandler:(id)a6 cancelHandler:(id)a7
+- (void)showProfileNamingAlertWithProfile:(id)profile renaming:(BOOL)renaming message:(id)message successHandler:(id)handler cancelHandler:(id)cancelHandler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  profileCopy = profile;
+  messageCopy = message;
+  handlerCopy = handler;
+  cancelHandlerCopy = cancelHandler;
   if (![(SCATAlertCoordinator *)self isShowingAlert])
   {
-    if (v12)
+    if (profileCopy)
     {
       v16 = AXParameterizedLocalizedString();
       v17 = AXParameterizedLocalizedString();
       v25 = AXParameterizedLocalizedString();
       objc_initWeak(location, self);
-      v18 = [UIAlertController alertControllerWithTitle:v16 message:v13 preferredStyle:1];
+      v18 = [UIAlertController alertControllerWithTitle:v16 message:messageCopy preferredStyle:1];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = __104__SCATAlertCoordinator_showProfileNamingAlertWithProfile_renaming_message_successHandler_cancelHandler___block_invoke;
       v38[3] = &unk_2593A8;
-      v39 = v15;
+      v39 = cancelHandlerCopy;
       objc_copyWeak(&v40, location);
       v24 = v17;
       v19 = [UIAlertAction actionWithTitle:v17 style:1 handler:v38];
@@ -357,9 +357,9 @@ void __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTit
       v32[2] = __104__SCATAlertCoordinator_showProfileNamingAlertWithProfile_renaming_message_successHandler_cancelHandler___block_invoke_2;
       v32[3] = &unk_259448;
       objc_copyWeak(&v35, &from);
-      v20 = v12;
+      v20 = profileCopy;
       v33 = v20;
-      v34 = v14;
+      v34 = handlerCopy;
       objc_copyWeak(&v36, location);
       v21 = [UIAlertAction actionWithTitle:v25 style:0 handler:v32];
       [v18 addAction:v21];
@@ -369,9 +369,9 @@ void __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTit
       v29[2] = __104__SCATAlertCoordinator_showProfileNamingAlertWithProfile_renaming_message_successHandler_cancelHandler___block_invoke_3;
       v29[3] = &unk_259470;
       v30 = v20;
-      v31 = a4;
+      renamingCopy = renaming;
       [v18 addTextFieldWithConfigurationHandler:v29];
-      v22 = [(SCATAlertCoordinator *)self viewController];
+      viewController = [(SCATAlertCoordinator *)self viewController];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = __104__SCATAlertCoordinator_showProfileNamingAlertWithProfile_renaming_message_successHandler_cancelHandler___block_invoke_4;
@@ -379,7 +379,7 @@ void __115__SCATAlertCoordinator_showOnboardingAlertWithTitle_message_successTit
       v23 = v18;
       v27 = v23;
       objc_copyWeak(&v28, location);
-      [v22 presentViewController:v23 animated:1 completion:v26];
+      [viewController presentViewController:v23 animated:1 completion:v26];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&v36);

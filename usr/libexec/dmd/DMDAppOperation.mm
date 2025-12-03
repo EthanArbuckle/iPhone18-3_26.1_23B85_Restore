@@ -1,7 +1,7 @@
 @interface DMDAppOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
-- (void)runWithRequest:(id)a3;
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
+- (void)runWithRequest:(id)request;
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier;
 - (void)waitUntilFinished;
 @end
 
@@ -14,30 +14,30 @@
   [(DMDAppOperation *)&v2 waitUntilFinished];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v17.receiver = a1;
+  requestCopy = request;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___DMDAppOperation;
-  if (objc_msgSendSuper2(&v17, "validateRequest:error:", v6, a4))
+  if (objc_msgSendSuper2(&v17, "validateRequest:error:", requestCopy, error))
   {
-    v7 = [v6 bundleIdentifier];
-    v8 = [v6 storeItemIdentifier];
-    v9 = [v6 manifestURL];
-    v10 = v9;
-    v11 = v7 != 0;
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    storeItemIdentifier = [requestCopy storeItemIdentifier];
+    manifestURL = [requestCopy manifestURL];
+    v10 = manifestURL;
+    v11 = bundleIdentifier != 0;
     v12 = 1;
-    if (v7)
+    if (bundleIdentifier)
     {
       v12 = 2;
     }
 
-    if (v8)
+    if (storeItemIdentifier)
     {
       v11 = v12;
     }
 
-    if (v9)
+    if (manifestURL)
     {
       ++v11;
     }
@@ -51,12 +51,12 @@
         sub_10007DD14(v14);
       }
 
-      if (a4)
+      if (error)
       {
         v18 = DMFInvalidParameterErrorKey;
         v19 = @"request.bundleIdentifier";
         v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-        *a4 = DMFErrorWithCodeAndUserInfo();
+        *error = DMFErrorWithCodeAndUserInfo();
       }
     }
   }
@@ -69,23 +69,23 @@
   return v13;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[DMDAppController sharedController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100022CBC;
   v7[3] = &unk_1000CE5F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   [v5 getBundleIdentifierForAppRequest:v6 completion:v7];
 }
 
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier
 {
-  v8 = [NSAssertionHandler currentHandler:a3];
+  v8 = [NSAssertionHandler currentHandler:request];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
   [v8 handleFailureInMethod:a2 object:self file:@"DMDAppOperation.m" lineNumber:73 description:{@"%@ must implement %@", v6, v7}];

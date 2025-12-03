@@ -1,38 +1,38 @@
 @interface LIGHTHOUSE_BITACORA_PROTOBitacoraState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)trialIdentifierTypeAsString:(int)a3;
-- (int)StringAsTrialIdentifierType:(id)a3;
+- (id)trialIdentifierTypeAsString:(int)string;
+- (int)StringAsTrialIdentifierType:(id)type;
 - (int)trialIdentifierType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCountCustomTargettingMet:(BOOL)a3;
-- (void)setHasCountGeneralTargetting:(BOOL)a3;
-- (void)setHasCountGeneralTargettingMet:(BOOL)a3;
-- (void)setHasCountPerformTaskFailed:(BOOL)a3;
-- (void)setHasCountPerformTaskSucceeded:(BOOL)a3;
-- (void)setHasCountStopFailed:(BOOL)a3;
-- (void)setHasCountStopSucceeded:(BOOL)a3;
-- (void)setHasCountTaskCompletedFailed:(BOOL)a3;
-- (void)setHasCountTaskCompletedSucceeded:(BOOL)a3;
-- (void)setHasCountTaskFetchedFailed:(BOOL)a3;
-- (void)setHasCountTaskFetchedSucceeded:(BOOL)a3;
-- (void)setHasCountTaskScheduledFailed:(BOOL)a3;
-- (void)setHasCountTaskScheduledSucceeded:(BOOL)a3;
-- (void)setHasIsActivated:(BOOL)a3;
-- (void)setHasIsAllocated:(BOOL)a3;
-- (void)setHasTrialIdentifierType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCountCustomTargettingMet:(BOOL)met;
+- (void)setHasCountGeneralTargetting:(BOOL)targetting;
+- (void)setHasCountGeneralTargettingMet:(BOOL)met;
+- (void)setHasCountPerformTaskFailed:(BOOL)failed;
+- (void)setHasCountPerformTaskSucceeded:(BOOL)succeeded;
+- (void)setHasCountStopFailed:(BOOL)failed;
+- (void)setHasCountStopSucceeded:(BOOL)succeeded;
+- (void)setHasCountTaskCompletedFailed:(BOOL)failed;
+- (void)setHasCountTaskCompletedSucceeded:(BOOL)succeeded;
+- (void)setHasCountTaskFetchedFailed:(BOOL)failed;
+- (void)setHasCountTaskFetchedSucceeded:(BOOL)succeeded;
+- (void)setHasCountTaskScheduledFailed:(BOOL)failed;
+- (void)setHasCountTaskScheduledSucceeded:(BOOL)succeeded;
+- (void)setHasIsActivated:(BOOL)activated;
+- (void)setHasIsAllocated:(BOOL)allocated;
+- (void)setHasTrialIdentifierType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LIGHTHOUSE_BITACORA_PROTOBitacoraState
 
-- (void)setHasIsAllocated:(BOOL)a3
+- (void)setHasIsAllocated:(BOOL)allocated
 {
-  if (a3)
+  if (allocated)
   {
     v3 = 0x10000;
   }
@@ -45,9 +45,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasIsActivated:(BOOL)a3
+- (void)setHasIsActivated:(BOOL)activated
 {
-  if (a3)
+  if (activated)
   {
     v3 = 0x8000;
   }
@@ -60,9 +60,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasCountGeneralTargetting:(BOOL)a3
+- (void)setHasCountGeneralTargetting:(BOOL)targetting
 {
-  if (a3)
+  if (targetting)
   {
     v3 = 4;
   }
@@ -75,9 +75,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasCountGeneralTargettingMet:(BOOL)a3
+- (void)setHasCountGeneralTargettingMet:(BOOL)met
 {
-  if (a3)
+  if (met)
   {
     v3 = 8;
   }
@@ -90,9 +90,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasCountCustomTargettingMet:(BOOL)a3
+- (void)setHasCountCustomTargettingMet:(BOOL)met
 {
-  if (a3)
+  if (met)
   {
     v3 = 2;
   }
@@ -105,9 +105,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasCountTaskFetchedSucceeded:(BOOL)a3
+- (void)setHasCountTaskFetchedSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 2048;
   }
@@ -120,9 +120,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasCountTaskFetchedFailed:(BOOL)a3
+- (void)setHasCountTaskFetchedFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 1024;
   }
@@ -135,9 +135,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasCountTaskScheduledSucceeded:(BOOL)a3
+- (void)setHasCountTaskScheduledSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 0x2000;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasCountTaskScheduledFailed:(BOOL)a3
+- (void)setHasCountTaskScheduledFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 4096;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasCountTaskCompletedSucceeded:(BOOL)a3
+- (void)setHasCountTaskCompletedSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 512;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasCountTaskCompletedFailed:(BOOL)a3
+- (void)setHasCountTaskCompletedFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 256;
   }
@@ -195,9 +195,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasCountPerformTaskSucceeded:(BOOL)a3
+- (void)setHasCountPerformTaskSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 32;
   }
@@ -210,9 +210,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasCountPerformTaskFailed:(BOOL)a3
+- (void)setHasCountPerformTaskFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 16;
   }
@@ -225,9 +225,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasCountStopSucceeded:(BOOL)a3
+- (void)setHasCountStopSucceeded:(BOOL)succeeded
 {
-  if (a3)
+  if (succeeded)
   {
     v3 = 128;
   }
@@ -240,9 +240,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasCountStopFailed:(BOOL)a3
+- (void)setHasCountStopFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 64;
   }
@@ -268,9 +268,9 @@
   }
 }
 
-- (void)setHasTrialIdentifierType:(BOOL)a3
+- (void)setHasTrialIdentifierType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x4000;
   }
@@ -283,35 +283,35 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (id)trialIdentifierTypeAsString:(int)a3
+- (id)trialIdentifierTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v6 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", v3, v4, a3);
+    v6 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", v3, v4, string);
   }
 
   else
   {
-    v6 = off_279813C80[a3];
+    v6 = off_279813C80[string];
   }
 
   return v6;
 }
 
-- (int)StringAsTrialIdentifierType:(id)a3
+- (int)StringAsTrialIdentifierType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"Unknown", v5, v6))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"Unknown", v5, v6))
   {
     v10 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"experiment", v8, v9))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"experiment", v8, v9))
   {
     v10 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"BMLT", v12, v13))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"BMLT", v12, v13))
   {
     v10 = 2;
   }
@@ -660,15 +660,15 @@ LABEL_45:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_telemetryID)
   {
     sub_255F0BF24();
   }
 
-  v25 = v4;
+  v25 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_trialIdentifiers)
   {
@@ -952,19 +952,19 @@ LABEL_24:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v22 = a3;
-  objc_msgSend_setTelemetryID_(v22, v4, self->_telemetryID, v5, v6);
-  objc_msgSend_setTrialIdentifiers_(v22, v7, self->_trialIdentifiers, v8, v9);
-  objc_msgSend_setContextID_(v22, v10, self->_contextID, v11, v12);
-  v16 = v22;
-  *(v22 + 1) = self->_timestamp;
+  toCopy = to;
+  objc_msgSend_setTelemetryID_(toCopy, v4, self->_telemetryID, v5, v6);
+  objc_msgSend_setTrialIdentifiers_(toCopy, v7, self->_trialIdentifiers, v8, v9);
+  objc_msgSend_setContextID_(toCopy, v10, self->_contextID, v11, v12);
+  v16 = toCopy;
+  *(toCopy + 1) = self->_timestamp;
   has = self->_has;
   if ((*&has & 0x10000) != 0)
   {
-    *(v22 + 137) = self->_isAllocated;
-    *(v22 + 35) |= 0x10000u;
+    *(toCopy + 137) = self->_isAllocated;
+    *(toCopy + 35) |= 0x10000u;
     has = self->_has;
     if ((*&has & 0x8000) == 0)
     {
@@ -983,8 +983,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v22 + 136) = self->_isActivated;
-  *(v22 + 35) |= 0x8000u;
+  *(toCopy + 136) = self->_isActivated;
+  *(toCopy + 35) |= 0x8000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -998,8 +998,8 @@ LABEL_4:
   }
 
 LABEL_32:
-  *(v22 + 8) = self->_countGeneralTargetting;
-  *(v22 + 35) |= 4u;
+  *(toCopy + 8) = self->_countGeneralTargetting;
+  *(toCopy + 35) |= 4u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1013,8 +1013,8 @@ LABEL_5:
   }
 
 LABEL_33:
-  *(v22 + 9) = self->_countGeneralTargettingMet;
-  *(v22 + 35) |= 8u;
+  *(toCopy + 9) = self->_countGeneralTargettingMet;
+  *(toCopy + 35) |= 8u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1028,8 +1028,8 @@ LABEL_6:
   }
 
 LABEL_34:
-  *(v22 + 6) = self->_countCustomTargetting;
-  *(v22 + 35) |= 1u;
+  *(toCopy + 6) = self->_countCustomTargetting;
+  *(toCopy + 35) |= 1u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1043,8 +1043,8 @@ LABEL_7:
   }
 
 LABEL_35:
-  *(v22 + 7) = self->_countCustomTargettingMet;
-  *(v22 + 35) |= 2u;
+  *(toCopy + 7) = self->_countCustomTargettingMet;
+  *(toCopy + 35) |= 2u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1058,8 +1058,8 @@ LABEL_8:
   }
 
 LABEL_36:
-  *(v22 + 17) = self->_countTaskFetchedSucceeded;
-  *(v22 + 35) |= 0x800u;
+  *(toCopy + 17) = self->_countTaskFetchedSucceeded;
+  *(toCopy + 35) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1073,8 +1073,8 @@ LABEL_9:
   }
 
 LABEL_37:
-  *(v22 + 16) = self->_countTaskFetchedFailed;
-  *(v22 + 35) |= 0x400u;
+  *(toCopy + 16) = self->_countTaskFetchedFailed;
+  *(toCopy + 35) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1088,8 +1088,8 @@ LABEL_10:
   }
 
 LABEL_38:
-  *(v22 + 19) = self->_countTaskScheduledSucceeded;
-  *(v22 + 35) |= 0x2000u;
+  *(toCopy + 19) = self->_countTaskScheduledSucceeded;
+  *(toCopy + 35) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1103,8 +1103,8 @@ LABEL_11:
   }
 
 LABEL_39:
-  *(v22 + 18) = self->_countTaskScheduledFailed;
-  *(v22 + 35) |= 0x1000u;
+  *(toCopy + 18) = self->_countTaskScheduledFailed;
+  *(toCopy + 35) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1118,8 +1118,8 @@ LABEL_12:
   }
 
 LABEL_40:
-  *(v22 + 15) = self->_countTaskCompletedSucceeded;
-  *(v22 + 35) |= 0x200u;
+  *(toCopy + 15) = self->_countTaskCompletedSucceeded;
+  *(toCopy + 35) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1133,8 +1133,8 @@ LABEL_13:
   }
 
 LABEL_41:
-  *(v22 + 14) = self->_countTaskCompletedFailed;
-  *(v22 + 35) |= 0x100u;
+  *(toCopy + 14) = self->_countTaskCompletedFailed;
+  *(toCopy + 35) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1148,8 +1148,8 @@ LABEL_14:
   }
 
 LABEL_42:
-  *(v22 + 11) = self->_countPerformTaskSucceeded;
-  *(v22 + 35) |= 0x20u;
+  *(toCopy + 11) = self->_countPerformTaskSucceeded;
+  *(toCopy + 35) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1163,8 +1163,8 @@ LABEL_15:
   }
 
 LABEL_43:
-  *(v22 + 10) = self->_countPerformTaskFailed;
-  *(v22 + 35) |= 0x10u;
+  *(toCopy + 10) = self->_countPerformTaskFailed;
+  *(toCopy + 35) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1178,8 +1178,8 @@ LABEL_16:
   }
 
 LABEL_44:
-  *(v22 + 13) = self->_countStopSucceeded;
-  *(v22 + 35) |= 0x80u;
+  *(toCopy + 13) = self->_countStopSucceeded;
+  *(toCopy + 35) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1193,59 +1193,59 @@ LABEL_17:
   }
 
 LABEL_45:
-  *(v22 + 12) = self->_countStopFailed;
-  *(v22 + 35) |= 0x40u;
+  *(toCopy + 12) = self->_countStopFailed;
+  *(toCopy + 35) |= 0x40u;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_18:
-    *(v22 + 26) = self->_trialIdentifierType;
-    *(v22 + 35) |= 0x4000u;
+    *(toCopy + 26) = self->_trialIdentifierType;
+    *(toCopy + 35) |= 0x4000u;
   }
 
 LABEL_19:
   trialExperimentID = self->_trialExperimentID;
   if (trialExperimentID)
   {
-    objc_msgSend_setTrialExperimentID_(v22, v13, trialExperimentID, v14, v15);
-    v16 = v22;
+    objc_msgSend_setTrialExperimentID_(toCopy, v13, trialExperimentID, v14, v15);
+    v16 = toCopy;
   }
 
   trialDeploymentID = self->_trialDeploymentID;
   if (trialDeploymentID)
   {
-    objc_msgSend_setTrialDeploymentID_(v22, v13, trialDeploymentID, v14, v15);
-    v16 = v22;
+    objc_msgSend_setTrialDeploymentID_(toCopy, v13, trialDeploymentID, v14, v15);
+    v16 = toCopy;
   }
 
   trialTreatmentID = self->_trialTreatmentID;
   if (trialTreatmentID)
   {
-    objc_msgSend_setTrialTreatmentID_(v22, v13, trialTreatmentID, v14, v15);
-    v16 = v22;
+    objc_msgSend_setTrialTreatmentID_(toCopy, v13, trialTreatmentID, v14, v15);
+    v16 = toCopy;
   }
 
   trialTaskID = self->_trialTaskID;
   if (trialTaskID)
   {
-    objc_msgSend_setTrialTaskID_(v22, v13, trialTaskID, v14, v15);
-    v16 = v22;
+    objc_msgSend_setTrialTaskID_(toCopy, v13, trialTaskID, v14, v15);
+    v16 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_init(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_copyWithZone_(self->_telemetryID, v15, a3, v16, v17);
+  v18 = objc_msgSend_copyWithZone_(self->_telemetryID, v15, zone, v16, v17);
   v19 = *(v14 + 80);
   *(v14 + 80) = v18;
 
-  v23 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v20, a3, v21, v22);
+  v23 = objc_msgSend_copyWithZone_(self->_trialIdentifiers, v20, zone, v21, v22);
   v24 = *(v14 + 112);
   *(v14 + 112) = v23;
 
-  v28 = objc_msgSend_copyWithZone_(self->_contextID, v25, a3, v26, v27);
+  v28 = objc_msgSend_copyWithZone_(self->_contextID, v25, zone, v26, v27);
   v29 = *(v14 + 16);
   *(v14 + 16) = v28;
 
@@ -1493,36 +1493,36 @@ LABEL_18:
   }
 
 LABEL_19:
-  v34 = objc_msgSend_copyWithZone_(self->_trialExperimentID, v30, a3, v31, v32);
+  v34 = objc_msgSend_copyWithZone_(self->_trialExperimentID, v30, zone, v31, v32);
   v35 = *(v14 + 96);
   *(v14 + 96) = v34;
 
-  v39 = objc_msgSend_copyWithZone_(self->_trialDeploymentID, v36, a3, v37, v38);
+  v39 = objc_msgSend_copyWithZone_(self->_trialDeploymentID, v36, zone, v37, v38);
   v40 = *(v14 + 88);
   *(v14 + 88) = v39;
 
-  v44 = objc_msgSend_copyWithZone_(self->_trialTreatmentID, v41, a3, v42, v43);
+  v44 = objc_msgSend_copyWithZone_(self->_trialTreatmentID, v41, zone, v42, v43);
   v45 = *(v14 + 128);
   *(v14 + 128) = v44;
 
-  v49 = objc_msgSend_copyWithZone_(self->_trialTaskID, v46, a3, v47, v48);
+  v49 = objc_msgSend_copyWithZone_(self->_trialTaskID, v46, zone, v47, v48);
   v50 = *(v14 + 120);
   *(v14 + 120) = v49;
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5, v7, v8))
   {
     goto LABEL_108;
   }
 
   telemetryID = self->_telemetryID;
-  v13 = v4[10];
+  v13 = equalCopy[10];
   if (telemetryID | v13)
   {
     if (!objc_msgSend_isEqual_(telemetryID, v9, v13, v10, v11))
@@ -1532,7 +1532,7 @@ LABEL_19:
   }
 
   trialIdentifiers = self->_trialIdentifiers;
-  v15 = v4[14];
+  v15 = equalCopy[14];
   if (trialIdentifiers | v15)
   {
     if (!objc_msgSend_isEqual_(trialIdentifiers, v9, v15, v10, v11))
@@ -1542,7 +1542,7 @@ LABEL_19:
   }
 
   contextID = self->_contextID;
-  v17 = v4[2];
+  v17 = equalCopy[2];
   if (contextID | v17)
   {
     if (!objc_msgSend_isEqual_(contextID, v9, v17, v10, v11))
@@ -1551,13 +1551,13 @@ LABEL_19:
     }
   }
 
-  if (self->_timestamp != v4[1])
+  if (self->_timestamp != equalCopy[1])
   {
     goto LABEL_108;
   }
 
   has = self->_has;
-  v19 = *(v4 + 35);
+  v19 = *(equalCopy + 35);
   if ((*&has & 0x10000) != 0)
   {
     if ((v19 & 0x10000) == 0)
@@ -1565,16 +1565,16 @@ LABEL_19:
       goto LABEL_108;
     }
 
-    v20 = *(v4 + 137);
+    v20 = *(equalCopy + 137);
     if (self->_isAllocated)
     {
-      if ((*(v4 + 137) & 1) == 0)
+      if ((*(equalCopy + 137) & 1) == 0)
       {
         goto LABEL_108;
       }
     }
 
-    else if (*(v4 + 137))
+    else if (*(equalCopy + 137))
     {
       goto LABEL_108;
     }
@@ -1602,16 +1602,16 @@ LABEL_108:
     goto LABEL_108;
   }
 
-  v21 = *(v4 + 136);
+  v21 = *(equalCopy + 136);
   if (self->_isActivated)
   {
-    if ((v4[17] & 1) == 0)
+    if ((equalCopy[17] & 1) == 0)
     {
       goto LABEL_108;
     }
   }
 
-  else if (v4[17])
+  else if (equalCopy[17])
   {
     goto LABEL_108;
   }
@@ -1619,7 +1619,7 @@ LABEL_108:
 LABEL_13:
   if ((*&has & 4) != 0)
   {
-    if ((v19 & 4) == 0 || self->_countGeneralTargetting != *(v4 + 8))
+    if ((v19 & 4) == 0 || self->_countGeneralTargetting != *(equalCopy + 8))
     {
       goto LABEL_108;
     }
@@ -1632,7 +1632,7 @@ LABEL_13:
 
   if ((*&has & 8) != 0)
   {
-    if ((v19 & 8) == 0 || self->_countGeneralTargettingMet != *(v4 + 9))
+    if ((v19 & 8) == 0 || self->_countGeneralTargettingMet != *(equalCopy + 9))
     {
       goto LABEL_108;
     }
@@ -1645,7 +1645,7 @@ LABEL_13:
 
   if (*&has)
   {
-    if ((v19 & 1) == 0 || self->_countCustomTargetting != *(v4 + 6))
+    if ((v19 & 1) == 0 || self->_countCustomTargetting != *(equalCopy + 6))
     {
       goto LABEL_108;
     }
@@ -1658,7 +1658,7 @@ LABEL_13:
 
   if ((*&has & 2) != 0)
   {
-    if ((v19 & 2) == 0 || self->_countCustomTargettingMet != *(v4 + 7))
+    if ((v19 & 2) == 0 || self->_countCustomTargettingMet != *(equalCopy + 7))
     {
       goto LABEL_108;
     }
@@ -1671,7 +1671,7 @@ LABEL_13:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v19 & 0x800) == 0 || self->_countTaskFetchedSucceeded != *(v4 + 17))
+    if ((v19 & 0x800) == 0 || self->_countTaskFetchedSucceeded != *(equalCopy + 17))
     {
       goto LABEL_108;
     }
@@ -1684,7 +1684,7 @@ LABEL_13:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v19 & 0x400) == 0 || self->_countTaskFetchedFailed != *(v4 + 16))
+    if ((v19 & 0x400) == 0 || self->_countTaskFetchedFailed != *(equalCopy + 16))
     {
       goto LABEL_108;
     }
@@ -1697,7 +1697,7 @@ LABEL_13:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v19 & 0x2000) == 0 || self->_countTaskScheduledSucceeded != *(v4 + 19))
+    if ((v19 & 0x2000) == 0 || self->_countTaskScheduledSucceeded != *(equalCopy + 19))
     {
       goto LABEL_108;
     }
@@ -1710,7 +1710,7 @@ LABEL_13:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v19 & 0x1000) == 0 || self->_countTaskScheduledFailed != *(v4 + 18))
+    if ((v19 & 0x1000) == 0 || self->_countTaskScheduledFailed != *(equalCopy + 18))
     {
       goto LABEL_108;
     }
@@ -1723,7 +1723,7 @@ LABEL_13:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v19 & 0x200) == 0 || self->_countTaskCompletedSucceeded != *(v4 + 15))
+    if ((v19 & 0x200) == 0 || self->_countTaskCompletedSucceeded != *(equalCopy + 15))
     {
       goto LABEL_108;
     }
@@ -1736,7 +1736,7 @@ LABEL_13:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v19 & 0x100) == 0 || self->_countTaskCompletedFailed != *(v4 + 14))
+    if ((v19 & 0x100) == 0 || self->_countTaskCompletedFailed != *(equalCopy + 14))
     {
       goto LABEL_108;
     }
@@ -1749,7 +1749,7 @@ LABEL_13:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v19 & 0x20) == 0 || self->_countPerformTaskSucceeded != *(v4 + 11))
+    if ((v19 & 0x20) == 0 || self->_countPerformTaskSucceeded != *(equalCopy + 11))
     {
       goto LABEL_108;
     }
@@ -1762,7 +1762,7 @@ LABEL_13:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v19 & 0x10) == 0 || self->_countPerformTaskFailed != *(v4 + 10))
+    if ((v19 & 0x10) == 0 || self->_countPerformTaskFailed != *(equalCopy + 10))
     {
       goto LABEL_108;
     }
@@ -1775,7 +1775,7 @@ LABEL_13:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v19 & 0x80) == 0 || self->_countStopSucceeded != *(v4 + 13))
+    if ((v19 & 0x80) == 0 || self->_countStopSucceeded != *(equalCopy + 13))
     {
       goto LABEL_108;
     }
@@ -1788,7 +1788,7 @@ LABEL_13:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v19 & 0x40) == 0 || self->_countStopFailed != *(v4 + 12))
+    if ((v19 & 0x40) == 0 || self->_countStopFailed != *(equalCopy + 12))
     {
       goto LABEL_108;
     }
@@ -1801,7 +1801,7 @@ LABEL_13:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v19 & 0x4000) == 0 || self->_trialIdentifierType != *(v4 + 26))
+    if ((v19 & 0x4000) == 0 || self->_trialIdentifierType != *(equalCopy + 26))
     {
       goto LABEL_108;
     }
@@ -1813,14 +1813,14 @@ LABEL_13:
   }
 
   trialExperimentID = self->_trialExperimentID;
-  v23 = v4[12];
+  v23 = equalCopy[12];
   if (trialExperimentID | v23 && !objc_msgSend_isEqual_(trialExperimentID, v9, v23, v10, v11))
   {
     goto LABEL_108;
   }
 
   trialDeploymentID = self->_trialDeploymentID;
-  v25 = v4[11];
+  v25 = equalCopy[11];
   if (trialDeploymentID | v25)
   {
     if (!objc_msgSend_isEqual_(trialDeploymentID, v9, v25, v10, v11))
@@ -1830,7 +1830,7 @@ LABEL_13:
   }
 
   trialTreatmentID = self->_trialTreatmentID;
-  v27 = v4[16];
+  v27 = equalCopy[16];
   if (trialTreatmentID | v27)
   {
     if (!objc_msgSend_isEqual_(trialTreatmentID, v9, v27, v10, v11))
@@ -1840,7 +1840,7 @@ LABEL_13:
   }
 
   trialTaskID = self->_trialTaskID;
-  v29 = v4[15];
+  v29 = equalCopy[15];
   if (trialTaskID | v29)
   {
     isEqual = objc_msgSend_isEqual_(trialTaskID, v9, v29, v10, v11);
@@ -2089,19 +2089,19 @@ LABEL_30:
   return v41 ^ v46 ^ objc_msgSend_hash(self->_trialTaskID, v47, v48, v49, v50);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = *(v4 + 10);
-  v16 = v4;
+  fromCopy = from;
+  v7 = *(fromCopy + 10);
+  v16 = fromCopy;
   if (v7)
   {
-    objc_msgSend_setTelemetryID_(self, v4, v7, v5, v6);
-    v4 = v16;
+    objc_msgSend_setTelemetryID_(self, fromCopy, v7, v5, v6);
+    fromCopy = v16;
   }
 
   trialIdentifiers = self->_trialIdentifiers;
-  v9 = *(v4 + 14);
+  v9 = *(fromCopy + 14);
   if (trialIdentifiers)
   {
     if (!v9)
@@ -2109,7 +2109,7 @@ LABEL_30:
       goto LABEL_9;
     }
 
-    objc_msgSend_mergeFrom_(trialIdentifiers, v4, v9, v5, v6);
+    objc_msgSend_mergeFrom_(trialIdentifiers, fromCopy, v9, v5, v6);
   }
 
   else
@@ -2119,25 +2119,25 @@ LABEL_30:
       goto LABEL_9;
     }
 
-    objc_msgSend_setTrialIdentifiers_(self, v4, v9, v5, v6);
+    objc_msgSend_setTrialIdentifiers_(self, fromCopy, v9, v5, v6);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_9:
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   if (v10)
   {
-    objc_msgSend_setContextID_(self, v4, v10, v5, v6);
-    v4 = v16;
+    objc_msgSend_setContextID_(self, fromCopy, v10, v5, v6);
+    fromCopy = v16;
   }
 
-  self->_timestamp = *(v4 + 1);
-  v11 = *(v4 + 35);
+  self->_timestamp = *(fromCopy + 1);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x10000) != 0)
   {
-    self->_isAllocated = *(v4 + 137);
+    self->_isAllocated = *(fromCopy + 137);
     *&self->_has |= 0x10000u;
-    v11 = *(v4 + 35);
+    v11 = *(fromCopy + 35);
     if ((v11 & 0x8000) == 0)
     {
 LABEL_13:
@@ -2155,9 +2155,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  self->_isActivated = *(v4 + 136);
+  self->_isActivated = *(fromCopy + 136);
   *&self->_has |= 0x8000u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 4) == 0)
   {
 LABEL_14:
@@ -2170,9 +2170,9 @@ LABEL_14:
   }
 
 LABEL_42:
-  self->_countGeneralTargetting = *(v4 + 8);
+  self->_countGeneralTargetting = *(fromCopy + 8);
   *&self->_has |= 4u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 8) == 0)
   {
 LABEL_15:
@@ -2185,9 +2185,9 @@ LABEL_15:
   }
 
 LABEL_43:
-  self->_countGeneralTargettingMet = *(v4 + 9);
+  self->_countGeneralTargettingMet = *(fromCopy + 9);
   *&self->_has |= 8u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 1) == 0)
   {
 LABEL_16:
@@ -2200,9 +2200,9 @@ LABEL_16:
   }
 
 LABEL_44:
-  self->_countCustomTargetting = *(v4 + 6);
+  self->_countCustomTargetting = *(fromCopy + 6);
   *&self->_has |= 1u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 2) == 0)
   {
 LABEL_17:
@@ -2215,9 +2215,9 @@ LABEL_17:
   }
 
 LABEL_45:
-  self->_countCustomTargettingMet = *(v4 + 7);
+  self->_countCustomTargettingMet = *(fromCopy + 7);
   *&self->_has |= 2u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x800) == 0)
   {
 LABEL_18:
@@ -2230,9 +2230,9 @@ LABEL_18:
   }
 
 LABEL_46:
-  self->_countTaskFetchedSucceeded = *(v4 + 17);
+  self->_countTaskFetchedSucceeded = *(fromCopy + 17);
   *&self->_has |= 0x800u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x400) == 0)
   {
 LABEL_19:
@@ -2245,9 +2245,9 @@ LABEL_19:
   }
 
 LABEL_47:
-  self->_countTaskFetchedFailed = *(v4 + 16);
+  self->_countTaskFetchedFailed = *(fromCopy + 16);
   *&self->_has |= 0x400u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x2000) == 0)
   {
 LABEL_20:
@@ -2260,9 +2260,9 @@ LABEL_20:
   }
 
 LABEL_48:
-  self->_countTaskScheduledSucceeded = *(v4 + 19);
+  self->_countTaskScheduledSucceeded = *(fromCopy + 19);
   *&self->_has |= 0x2000u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x1000) == 0)
   {
 LABEL_21:
@@ -2275,9 +2275,9 @@ LABEL_21:
   }
 
 LABEL_49:
-  self->_countTaskScheduledFailed = *(v4 + 18);
+  self->_countTaskScheduledFailed = *(fromCopy + 18);
   *&self->_has |= 0x1000u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x200) == 0)
   {
 LABEL_22:
@@ -2290,9 +2290,9 @@ LABEL_22:
   }
 
 LABEL_50:
-  self->_countTaskCompletedSucceeded = *(v4 + 15);
+  self->_countTaskCompletedSucceeded = *(fromCopy + 15);
   *&self->_has |= 0x200u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x100) == 0)
   {
 LABEL_23:
@@ -2305,9 +2305,9 @@ LABEL_23:
   }
 
 LABEL_51:
-  self->_countTaskCompletedFailed = *(v4 + 14);
+  self->_countTaskCompletedFailed = *(fromCopy + 14);
   *&self->_has |= 0x100u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x20) == 0)
   {
 LABEL_24:
@@ -2320,9 +2320,9 @@ LABEL_24:
   }
 
 LABEL_52:
-  self->_countPerformTaskSucceeded = *(v4 + 11);
+  self->_countPerformTaskSucceeded = *(fromCopy + 11);
   *&self->_has |= 0x20u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x10) == 0)
   {
 LABEL_25:
@@ -2335,9 +2335,9 @@ LABEL_25:
   }
 
 LABEL_53:
-  self->_countPerformTaskFailed = *(v4 + 10);
+  self->_countPerformTaskFailed = *(fromCopy + 10);
   *&self->_has |= 0x10u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x80) == 0)
   {
 LABEL_26:
@@ -2350,9 +2350,9 @@ LABEL_26:
   }
 
 LABEL_54:
-  self->_countStopSucceeded = *(v4 + 13);
+  self->_countStopSucceeded = *(fromCopy + 13);
   *&self->_has |= 0x80u;
-  v11 = *(v4 + 35);
+  v11 = *(fromCopy + 35);
   if ((v11 & 0x40) == 0)
   {
 LABEL_27:
@@ -2365,41 +2365,41 @@ LABEL_27:
   }
 
 LABEL_55:
-  self->_countStopFailed = *(v4 + 12);
+  self->_countStopFailed = *(fromCopy + 12);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 35) & 0x4000) != 0)
+  if ((*(fromCopy + 35) & 0x4000) != 0)
   {
 LABEL_28:
-    self->_trialIdentifierType = *(v4 + 26);
+    self->_trialIdentifierType = *(fromCopy + 26);
     *&self->_has |= 0x4000u;
   }
 
 LABEL_29:
-  v12 = *(v4 + 12);
+  v12 = *(fromCopy + 12);
   if (v12)
   {
-    objc_msgSend_setTrialExperimentID_(self, v4, v12, v5, v6);
-    v4 = v16;
+    objc_msgSend_setTrialExperimentID_(self, fromCopy, v12, v5, v6);
+    fromCopy = v16;
   }
 
-  v13 = *(v4 + 11);
+  v13 = *(fromCopy + 11);
   if (v13)
   {
-    objc_msgSend_setTrialDeploymentID_(self, v4, v13, v5, v6);
-    v4 = v16;
+    objc_msgSend_setTrialDeploymentID_(self, fromCopy, v13, v5, v6);
+    fromCopy = v16;
   }
 
-  v14 = *(v4 + 16);
+  v14 = *(fromCopy + 16);
   if (v14)
   {
-    objc_msgSend_setTrialTreatmentID_(self, v4, v14, v5, v6);
-    v4 = v16;
+    objc_msgSend_setTrialTreatmentID_(self, fromCopy, v14, v5, v6);
+    fromCopy = v16;
   }
 
-  v15 = *(v4 + 15);
+  v15 = *(fromCopy + 15);
   if (v15)
   {
-    objc_msgSend_setTrialTaskID_(self, v4, v15, v5, v6);
+    objc_msgSend_setTrialTaskID_(self, fromCopy, v15, v5, v6);
   }
 
   MEMORY[0x2821F96F8]();

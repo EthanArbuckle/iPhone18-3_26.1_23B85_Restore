@@ -1,19 +1,19 @@
 @interface HMIAnalytics
-+ (BOOL)sendEventWithName:(id)a3 payloadBuilder:(id)a4;
++ (BOOL)sendEventWithName:(id)name payloadBuilder:(id)builder;
 + (BOOL)upload;
-+ (id)payloadWithCamera:(id)a3;
-+ (int64_t)bucketForValue:(int64_t)a3 usingBuckets:(id)a4;
-+ (void)sendEventForClusteringTask:(id)a3;
-+ (void)sendEventForFaceEvent:(id)a3 homePersonManagerUUID:(id)a4 camera:(id)a5;
-+ (void)sendEventForPersonRecognitionType:(int64_t)a3 camera:(id)a4;
-+ (void)sendEventForPersonsModels:(id)a3;
-+ (void)sendEventsForFragmentResult:(id)a3;
-+ (void)videoAnalyzerDidAnalyzeFragmentWithResult:(id)a3 state:(id)a4;
-+ (void)videoAnalyzerDidCreateTimelapseFragment:(id)a3 state:(id)a4;
-+ (void)videoAnalyzerDidFindFaceEvent:(id)a3 homePersonManagerUUID:(id)a4 camera:(id)a5;
-+ (void)videoAnalyzerDidTerminateWithError:(id)a3 state:(id)a4;
-+ (void)videoPackageAnalyzerDidClassifyCandidateAsPackage:(BOOL)a3 camera:(id)a4;
-+ (void)videoPackageAnalyzerDidResetReferenceImageWithInterval:(double)a3 camera:(id)a4;
++ (id)payloadWithCamera:(id)camera;
++ (int64_t)bucketForValue:(int64_t)value usingBuckets:(id)buckets;
++ (void)sendEventForClusteringTask:(id)task;
++ (void)sendEventForFaceEvent:(id)event homePersonManagerUUID:(id)d camera:(id)camera;
++ (void)sendEventForPersonRecognitionType:(int64_t)type camera:(id)camera;
++ (void)sendEventForPersonsModels:(id)models;
++ (void)sendEventsForFragmentResult:(id)result;
++ (void)videoAnalyzerDidAnalyzeFragmentWithResult:(id)result state:(id)state;
++ (void)videoAnalyzerDidCreateTimelapseFragment:(id)fragment state:(id)state;
++ (void)videoAnalyzerDidFindFaceEvent:(id)event homePersonManagerUUID:(id)d camera:(id)camera;
++ (void)videoAnalyzerDidTerminateWithError:(id)error state:(id)state;
++ (void)videoPackageAnalyzerDidClassifyCandidateAsPackage:(BOOL)package camera:(id)camera;
++ (void)videoPackageAnalyzerDidResetReferenceImageWithInterval:(double)interval camera:(id)camera;
 @end
 
 @implementation HMIAnalytics
@@ -26,20 +26,20 @@
   return v3;
 }
 
-+ (BOOL)sendEventWithName:(id)a3 payloadBuilder:(id)a4
++ (BOOL)sendEventWithName:(id)name payloadBuilder:(id)builder
 {
-  v6 = a3;
-  v7 = a4;
-  if ([a1 upload])
+  nameCopy = name;
+  builderCopy = builder;
+  if ([self upload])
   {
-    if ([a1 lazyPayloads])
+    if ([self lazyPayloads])
     {
       v8 = AnalyticsSendEventLazy();
     }
 
     else
     {
-      v9 = v7[2](v7);
+      v9 = builderCopy[2](builderCopy);
       AnalyticsSendEvent();
 
       v8 = 1;
@@ -54,92 +54,92 @@
   return v8;
 }
 
-+ (id)payloadWithCamera:(id)a3
++ (id)payloadWithCamera:(id)camera
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 manufacturer];
+  cameraCopy = camera;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  manufacturer = [cameraCopy manufacturer];
 
-  if (v5)
+  if (manufacturer)
   {
-    v6 = [v3 manufacturer];
-    [v4 setObject:v6 forKeyedSubscript:@"cameraManufacturer"];
+    manufacturer2 = [cameraCopy manufacturer];
+    [dictionary setObject:manufacturer2 forKeyedSubscript:@"cameraManufacturer"];
   }
 
-  v7 = [v3 model];
+  model = [cameraCopy model];
 
-  if (v7)
+  if (model)
   {
-    v8 = [v3 model];
-    [v4 setObject:v8 forKeyedSubscript:@"cameraModel"];
+    model2 = [cameraCopy model];
+    [dictionary setObject:model2 forKeyedSubscript:@"cameraModel"];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "hasBattery")}];
-  [v4 setObject:v9 forKeyedSubscript:@"cameraHasBattery"];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(cameraCopy, "hasBattery")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"cameraHasBattery"];
 
-  v10 = [v4 copy];
+  v10 = [dictionary copy];
 
   return v10;
 }
 
-+ (void)sendEventForPersonRecognitionType:(int64_t)a3 camera:(id)a4
++ (void)sendEventForPersonRecognitionType:(int64_t)type camera:(id)camera
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (v6)
+  cameraCopy = camera;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (cameraCopy)
   {
-    v8 = [HMIAnalytics payloadWithCamera:v6];
-    [v7 addEntriesFromDictionary:v8];
+    v8 = [HMIAnalytics payloadWithCamera:cameraCopy];
+    [dictionary addEntriesFromDictionary:v8];
   }
 
-  if (!a3)
+  if (!type)
   {
     v9 = @"face";
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v9 = @"torso";
 LABEL_7:
-    [v7 setObject:v9 forKeyedSubscript:@"recognitionType"];
+    [dictionary setObject:v9 forKeyedSubscript:@"recognitionType"];
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__HMIAnalytics_sendEventForPersonRecognitionType_camera___block_invoke;
   v11[3] = &unk_2787549B0;
-  v12 = v7;
-  v10 = v7;
-  [a1 sendEventWithName:@"com.apple.HomeAI.PersonRecognitionEvent" payloadBuilder:v11];
+  v12 = dictionary;
+  v10 = dictionary;
+  [self sendEventWithName:@"com.apple.HomeAI.PersonRecognitionEvent" payloadBuilder:v11];
 }
 
-+ (void)videoAnalyzerDidFindFaceEvent:(id)a3 homePersonManagerUUID:(id)a4 camera:(id)a5
++ (void)videoAnalyzerDidFindFaceEvent:(id)event homePersonManagerUUID:(id)d camera:(id)camera
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v15 faceRecognition];
-  v10 = [v9 classifications];
-  v11 = [v10 na_any:&__block_literal_global_24];
+  eventCopy = event;
+  dCopy = d;
+  cameraCopy = camera;
+  faceRecognition = [eventCopy faceRecognition];
+  classifications = [faceRecognition classifications];
+  v11 = [classifications na_any:&__block_literal_global_24];
 
-  v12 = [v15 faceRecognition];
-  v13 = [v12 classifications];
-  v14 = [v13 na_any:&__block_literal_global_25];
+  faceRecognition2 = [eventCopy faceRecognition];
+  classifications2 = [faceRecognition2 classifications];
+  v14 = [classifications2 na_any:&__block_literal_global_25];
 
   if (v11)
   {
-    [HMIAnalytics sendEventForPersonRecognitionType:0 camera:v8];
+    [HMIAnalytics sendEventForPersonRecognitionType:0 camera:cameraCopy];
   }
 
   if (v14)
   {
-    [HMIAnalytics sendEventForPersonRecognitionType:1 camera:v8];
+    [HMIAnalytics sendEventForPersonRecognitionType:1 camera:cameraCopy];
   }
 
   else
   {
-    [HMIAnalytics sendEventForFaceEvent:v15 homePersonManagerUUID:v7 camera:v8];
+    [HMIAnalytics sendEventForFaceEvent:eventCopy homePersonManagerUUID:dCopy camera:cameraCopy];
   }
 }
 
@@ -167,75 +167,75 @@ BOOL __75__HMIAnalytics_videoAnalyzerDidFindFaceEvent_homePersonManagerUUID_came
   return v3;
 }
 
-+ (void)sendEventForFaceEvent:(id)a3 homePersonManagerUUID:(id)a4 camera:(id)a5
++ (void)sendEventForFaceEvent:(id)event homePersonManagerUUID:(id)d camera:(id)camera
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  if (v10)
+  eventCopy = event;
+  dCopy = d;
+  cameraCopy = camera;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (cameraCopy)
   {
-    v12 = [HMIAnalytics payloadWithCamera:v10];
-    [v11 addEntriesFromDictionary:v12];
+    v12 = [HMIAnalytics payloadWithCamera:cameraCopy];
+    [dictionary addEntriesFromDictionary:v12];
   }
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v8 confidence];
-  [v14 value];
+  confidence = [eventCopy confidence];
+  [confidence value];
   v16 = [v13 numberWithDouble:ceil(v15 * 10.0)];
-  [v11 setObject:v16 forKeyedSubscript:@"detectionScore"];
+  [dictionary setObject:v16 forKeyedSubscript:@"detectionScore"];
 
-  v17 = [v8 userInfo];
-  v18 = [v17 objectForKeyedSubscript:@"FaceFilteredState"];
+  userInfo = [eventCopy userInfo];
+  v18 = [userInfo objectForKeyedSubscript:@"FaceFilteredState"];
 
   if (v18)
   {
-    [v11 setObject:v18 forKeyedSubscript:@"faceFilteredState"];
+    [dictionary setObject:v18 forKeyedSubscript:@"faceFilteredState"];
   }
 
-  v19 = [v8 faceRecognition];
+  faceRecognition = [eventCopy faceRecognition];
 
-  if (v19)
+  if (faceRecognition)
   {
-    v32 = a1;
+    selfCopy = self;
     v20 = [MEMORY[0x277CBEB58] set];
-    v21 = [v8 faceRecognition];
-    v22 = [v21 classifications];
+    faceRecognition2 = [eventCopy faceRecognition];
+    classifications = [faceRecognition2 classifications];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___block_invoke;
     v35[3] = &unk_2787549D8;
-    v36 = v9;
-    v23 = v11;
+    v36 = dCopy;
+    v23 = dictionary;
     v37 = v23;
     v24 = v20;
     v38 = v24;
-    [v22 na_each:v35];
+    [classifications na_each:v35];
 
     if ([v24 count])
     {
-      v25 = [v24 allObjects];
-      v26 = [v25 sortedArrayUsingComparator:&__block_literal_global_39];
+      allObjects = [v24 allObjects];
+      v26 = [allObjects sortedArrayUsingComparator:&__block_literal_global_39];
 
-      v27 = [v26 firstObject];
-      v28 = HMIFaceFamiliarityAsString([v27 integerValue]);
+      firstObject = [v26 firstObject];
+      v28 = HMIFaceFamiliarityAsString([firstObject integerValue]);
       [v23 setObject:v28 forKeyedSubscript:@"externalFamiliarity"];
     }
 
-    v29 = [v8 faceRecognition];
-    v30 = HMISessionEntityAssignmentAsString([v29 sessionEntityAssignment]);
+    faceRecognition3 = [eventCopy faceRecognition];
+    v30 = HMISessionEntityAssignmentAsString([faceRecognition3 sessionEntityAssignment]);
     [v23 setObject:v30 forKeyedSubscript:@"sessionEntityAssignment"];
 
-    a1 = v32;
+    self = selfCopy;
   }
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___block_invoke_3;
   v33[3] = &unk_2787549B0;
-  v34 = v11;
-  v31 = v11;
-  [a1 sendEventWithName:@"com.apple.HomeAI.FaceEvent" payloadBuilder:v33];
+  v34 = dictionary;
+  v31 = dictionary;
+  [self sendEventWithName:@"com.apple.HomeAI.FaceEvent" payloadBuilder:v33];
 }
 
 void __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___block_invoke(uint64_t a1, void *a2)
@@ -272,82 +272,82 @@ BOOL __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___blo
   return v5 > v6;
 }
 
-+ (void)sendEventForClusteringTask:(id)a3
++ (void)sendEventForClusteringTask:(id)task
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfFaceprintsClustered")}];
-  [v5 setObject:v6 forKeyedSubscript:@"faceprintsClustered"];
+  taskCopy = task;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(taskCopy, "numberOfFaceprintsClustered")}];
+  [dictionary setObject:v6 forKeyedSubscript:@"faceprintsClustered"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfClusters")}];
-  [v5 setObject:v7 forKeyedSubscript:@"clusters"];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(taskCopy, "numberOfClusters")}];
+  [dictionary setObject:v7 forKeyedSubscript:@"clusters"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfPersonsCreated")}];
-  [v5 setObject:v8 forKeyedSubscript:@"personsCreated"];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(taskCopy, "numberOfPersonsCreated")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"personsCreated"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "numberOfUnknownFaceprintsAssociated")}];
-  [v5 setObject:v9 forKeyedSubscript:@"faceprintsAssociated"];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(taskCopy, "numberOfUnknownFaceprintsAssociated")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"faceprintsAssociated"];
 
   v10 = MEMORY[0x277CCABB0];
-  [v4 faceprintingDuration];
+  [taskCopy faceprintingDuration];
   v11 = [v10 numberWithDouble:?];
-  [v5 setObject:v11 forKeyedSubscript:@"faceprintingDuration"];
+  [dictionary setObject:v11 forKeyedSubscript:@"faceprintingDuration"];
 
   v12 = MEMORY[0x277CCABB0];
-  [v4 clusteringDuration];
+  [taskCopy clusteringDuration];
   v13 = [v12 numberWithDouble:?];
-  [v5 setObject:v13 forKeyedSubscript:@"clusteringDuration"];
+  [dictionary setObject:v13 forKeyedSubscript:@"clusteringDuration"];
 
   v14 = MEMORY[0x277CCABB0];
-  [v4 totalDuration];
+  [taskCopy totalDuration];
   v15 = [v14 numberWithDouble:?];
-  [v5 setObject:v15 forKeyedSubscript:@"totalDuration"];
+  [dictionary setObject:v15 forKeyedSubscript:@"totalDuration"];
 
-  v16 = [v4 error];
+  error = [taskCopy error];
 
-  if (v16)
+  if (error)
   {
     v17 = MEMORY[0x277CCABB0];
-    v18 = [v4 error];
-    v19 = [v17 numberWithInteger:{objc_msgSend(v18, "code")}];
-    [v5 setObject:v19 forKeyedSubscript:@"errorCode"];
+    error2 = [taskCopy error];
+    v19 = [v17 numberWithInteger:{objc_msgSend(error2, "code")}];
+    [dictionary setObject:v19 forKeyedSubscript:@"errorCode"];
 
-    v20 = [v4 error];
-    v21 = [v20 description];
-    [v5 setObject:v21 forKeyedSubscript:@"errorDescription"];
+    error3 = [taskCopy error];
+    v21 = [error3 description];
+    [dictionary setObject:v21 forKeyedSubscript:@"errorDescription"];
   }
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __43__HMIAnalytics_sendEventForClusteringTask___block_invoke;
   v23[3] = &unk_2787549B0;
-  v24 = v5;
-  v22 = v5;
-  [a1 sendEventWithName:@"com.apple.HomeAI.FaceClustering" payloadBuilder:v23];
+  v24 = dictionary;
+  v22 = dictionary;
+  [self sendEventWithName:@"com.apple.HomeAI.FaceClustering" payloadBuilder:v23];
 }
 
-+ (void)sendEventForPersonsModels:(id)a3
++ (void)sendEventForPersonsModels:(id)models
 {
   v36[7] = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  modelsCopy = models;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v22 = a1;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v24 modelSummaries];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  array2 = [MEMORY[0x277CBEB18] array];
+  modelSummaries = [modelsCopy modelSummaries];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __42__HMIAnalytics_sendEventForPersonsModels___block_invoke;
   v27[3] = &unk_278754A48;
-  v7 = v4;
+  v7 = array;
   v28 = v7;
   v30 = &v31;
-  v8 = v5;
+  v8 = array2;
   v29 = v8;
-  [v6 na_each:v27];
+  [modelSummaries na_each:v27];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(v7, "count"), &unk_284075588)}];
   v9 = [v7 valueForKeyPath:@"@avg.self"];
@@ -370,8 +370,8 @@ BOOL __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___blo
   v15 = [v8 valueForKeyPath:@"@avg.self"];
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(v15, "integerValue"), &unk_2840755D0)}];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(v24, "homeToExternalEquivalencies"), &unk_2840755E8)}];
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(v24, "externalToExternalEquivalencies"), &unk_284075600)}];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(modelsCopy, "homeToExternalEquivalencies"), &unk_2840755E8)}];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{+[HMIAnalytics bucketForValue:usingBuckets:](HMIAnalytics, "bucketForValue:usingBuckets:", objc_msgSend(modelsCopy, "externalToExternalEquivalencies"), &unk_284075600)}];
   v35[0] = @"externalLibraries";
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32[3]];
   v36[0] = v19;
@@ -395,7 +395,7 @@ BOOL __67__HMIAnalytics_sendEventForFaceEvent_homePersonManagerUUID_camera___blo
   v25[3] = &unk_278754A70;
   v21 = v20;
   v26 = v21;
-  [v22 sendEventWithName:@"com.apple.HomeAI.PersonsModels" payloadBuilder:v25];
+  [selfCopy sendEventWithName:@"com.apple.HomeAI.PersonsModels" payloadBuilder:v25];
 
   _Block_object_dispose(&v31, 8);
 }
@@ -433,35 +433,35 @@ void __42__HMIAnalytics_sendEventForPersonsModels___block_invoke(uint64_t a1, vo
   [v4 na_each:{v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}];
 }
 
-+ (int64_t)bucketForValue:(int64_t)a3 usingBuckets:(id)a4
++ (int64_t)bucketForValue:(int64_t)value usingBuckets:(id)buckets
 {
-  v5 = a4;
+  bucketsCopy = buckets;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__HMIAnalytics_bucketForValue_usingBuckets___block_invoke;
   v12[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l;
-  v12[4] = a3;
-  v6 = [v5 na_firstObjectPassingTest:v12];
+  v12[4] = value;
+  v6 = [bucketsCopy na_firstObjectPassingTest:v12];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    lastObject = v6;
   }
 
   else
   {
-    v8 = [v5 lastObject];
+    lastObject = [bucketsCopy lastObject];
   }
 
-  v9 = v8;
+  v9 = lastObject;
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
-+ (void)sendEventsForFragmentResult:(id)a3
++ (void)sendEventsForFragmentResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -470,15 +470,15 @@ void __42__HMIAnalytics_sendEventForPersonsModels___block_invoke(uint64_t a1, vo
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [v4 configuration];
-  v6 = [v5 activityZones];
+  configuration = [resultCopy configuration];
+  activityZones = [configuration activityZones];
 
-  if ([v6 count])
+  if ([activityZones count])
   {
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 isInclusion];
+    v7 = [activityZones objectAtIndexedSubscript:0];
+    isInclusion = [v7 isInclusion];
 
-    if (v8)
+    if (isInclusion)
     {
       v9 = @"inclusion";
     }
@@ -494,14 +494,14 @@ void __42__HMIAnalytics_sendEventForPersonsModels___block_invoke(uint64_t a1, vo
     v9 = @"None";
   }
 
-  v10 = [v4 frameResults];
+  frameResults = [resultCopy frameResults];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__HMIAnalytics_sendEventsForFragmentResult___block_invoke;
   v15[3] = &unk_278754AE0;
   v15[4] = v20;
   v15[5] = &v16;
-  [v10 na_each:v15];
+  [frameResults na_each:v15];
 
   if (v17[6] >= 1)
   {
@@ -512,7 +512,7 @@ void __42__HMIAnalytics_sendEventForPersonsModels___block_invoke(uint64_t a1, vo
     v14 = &v16;
     v12 = v9;
     v13 = v20;
-    [a1 sendEventWithName:@"com.apple.HomeAI.MotionScore" payloadBuilder:v11];
+    [self sendEventWithName:@"com.apple.HomeAI.MotionScore" payloadBuilder:v11];
   }
 
   _Block_object_dispose(&v16, 8);
@@ -557,19 +557,19 @@ id __44__HMIAnalytics_sendEventsForFragmentResult___block_invoke_3(void *a1, dou
   return v4;
 }
 
-+ (void)videoAnalyzerDidTerminateWithError:(id)a3 state:(id)a4
++ (void)videoAnalyzerDidTerminateWithError:(id)error state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  stateCopy = state;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__HMIAnalytics_videoAnalyzerDidTerminateWithError_state___block_invoke;
   v10[3] = &unk_278754B30;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
-  [a1 sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidTerminate_v0" payloadBuilder:v10];
+  v11 = stateCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = stateCopy;
+  [self sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidTerminate_v0" payloadBuilder:v10];
 }
 
 id __57__HMIAnalytics_videoAnalyzerDidTerminateWithError_state___block_invoke(uint64_t a1)
@@ -629,19 +629,19 @@ id __57__HMIAnalytics_videoAnalyzerDidTerminateWithError_state___block_invoke(ui
   return v2;
 }
 
-+ (void)videoAnalyzerDidCreateTimelapseFragment:(id)a3 state:(id)a4
++ (void)videoAnalyzerDidCreateTimelapseFragment:(id)fragment state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  fragmentCopy = fragment;
+  stateCopy = state;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__HMIAnalytics_videoAnalyzerDidCreateTimelapseFragment_state___block_invoke;
   v10[3] = &unk_278754B30;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
-  [a1 sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidCreateTimelapseFragment_v0" payloadBuilder:v10];
+  v11 = stateCopy;
+  v12 = fragmentCopy;
+  v8 = fragmentCopy;
+  v9 = stateCopy;
+  [self sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidCreateTimelapseFragment_v0" payloadBuilder:v10];
 }
 
 id __62__HMIAnalytics_videoAnalyzerDidCreateTimelapseFragment_state___block_invoke(uint64_t a1)
@@ -680,19 +680,19 @@ id __62__HMIAnalytics_videoAnalyzerDidCreateTimelapseFragment_state___block_invo
   return v2;
 }
 
-+ (void)videoAnalyzerDidAnalyzeFragmentWithResult:(id)a3 state:(id)a4
++ (void)videoAnalyzerDidAnalyzeFragmentWithResult:(id)result state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  stateCopy = state;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HMIAnalytics_videoAnalyzerDidAnalyzeFragmentWithResult_state___block_invoke;
   v10[3] = &unk_278754B30;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
-  [a1 sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidAnalyzeFragment_v5" payloadBuilder:v10];
+  v11 = stateCopy;
+  v12 = resultCopy;
+  v8 = resultCopy;
+  v9 = stateCopy;
+  [self sendEventWithName:@"com.apple.HomeAI.VideoAnalyzer.DidAnalyzeFragment_v5" payloadBuilder:v10];
 }
 
 id __64__HMIAnalytics_videoAnalyzerDidAnalyzeFragmentWithResult_state___block_invoke(uint64_t a1)
@@ -797,17 +797,17 @@ void __64__HMIAnalytics_videoAnalyzerDidAnalyzeFragmentWithResult_state___block_
   [v13 setObject:v12 forKeyedSubscript:v14];
 }
 
-+ (void)videoPackageAnalyzerDidClassifyCandidateAsPackage:(BOOL)a3 camera:(id)a4
++ (void)videoPackageAnalyzerDidClassifyCandidateAsPackage:(BOOL)package camera:(id)camera
 {
-  v6 = a4;
+  cameraCopy = camera;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__HMIAnalytics_videoPackageAnalyzerDidClassifyCandidateAsPackage_camera___block_invoke;
   v8[3] = &unk_278754B80;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
-  [a1 sendEventWithName:@"com.apple.HomeAI.VideoPackageAnalyzer.DidClassify_v0" payloadBuilder:v8];
+  v9 = cameraCopy;
+  packageCopy = package;
+  v7 = cameraCopy;
+  [self sendEventWithName:@"com.apple.HomeAI.VideoPackageAnalyzer.DidClassify_v0" payloadBuilder:v8];
 }
 
 id __73__HMIAnalytics_videoPackageAnalyzerDidClassifyCandidateAsPackage_camera___block_invoke(uint64_t a1)
@@ -825,17 +825,17 @@ id __73__HMIAnalytics_videoPackageAnalyzerDidClassifyCandidateAsPackage_camera__
   return v2;
 }
 
-+ (void)videoPackageAnalyzerDidResetReferenceImageWithInterval:(double)a3 camera:(id)a4
++ (void)videoPackageAnalyzerDidResetReferenceImageWithInterval:(double)interval camera:(id)camera
 {
-  v6 = a4;
+  cameraCopy = camera;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__HMIAnalytics_videoPackageAnalyzerDidResetReferenceImageWithInterval_camera___block_invoke;
   v8[3] = &unk_278754BA8;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
-  [a1 sendEventWithName:@"com.apple.HomeAI.VideoPackageAnalyzer.DidReset_v0" payloadBuilder:v8];
+  v9 = cameraCopy;
+  intervalCopy = interval;
+  v7 = cameraCopy;
+  [self sendEventWithName:@"com.apple.HomeAI.VideoPackageAnalyzer.DidReset_v0" payloadBuilder:v8];
 }
 
 id __78__HMIAnalytics_videoPackageAnalyzerDidResetReferenceImageWithInterval_camera___block_invoke(uint64_t a1)

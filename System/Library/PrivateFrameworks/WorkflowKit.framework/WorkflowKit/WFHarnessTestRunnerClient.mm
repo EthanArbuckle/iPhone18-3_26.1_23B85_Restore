@@ -1,7 +1,7 @@
 @interface WFHarnessTestRunnerClient
-- (WFHarnessTestRunnerClient)initWithRunRequest:(id)a3;
+- (WFHarnessTestRunnerClient)initWithRunRequest:(id)request;
 - (id)description;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
 @end
 
 @implementation WFHarnessTestRunnerClient
@@ -11,23 +11,23 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWorkflowRunnerClient *)self runRequest];
-  v7 = [v3 stringWithFormat:@"<%@: %p, runRequest: %@>", v5, self, v6];
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+  v7 = [v3 stringWithFormat:@"<%@: %p, runRequest: %@>", v5, self, runRequest];
 
   return v7;
 }
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  completionCopy = completion;
+  if (resultCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = resultCopy;
     }
 
     else
@@ -42,19 +42,19 @@
   }
 
   v9 = v8;
-  v10 = [v9 testResult];
+  testResult = [v9 testResult];
 
   v11 = objc_opt_class();
-  v12 = [v6 error];
-  v13 = [v11 underlyingErrorIfRunnerError:v12];
+  error = [resultCopy error];
+  v13 = [v11 underlyingErrorIfRunnerError:error];
 
-  v14 = [(WFHarnessTestRunnerClient *)self testDelegate];
+  testDelegate = [(WFHarnessTestRunnerClient *)self testDelegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(WFHarnessTestRunnerClient *)self testDelegate];
-    [v16 workflowRunnerClient:self didFinishRunningHarnessTestsWithResult:v10 error:v13];
+    testDelegate2 = [(WFHarnessTestRunnerClient *)self testDelegate];
+    [testDelegate2 workflowRunnerClient:self didFinishRunningHarnessTestsWithResult:testResult error:v13];
   }
 
   else
@@ -68,24 +68,24 @@
     }
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (WFHarnessTestRunnerClient)initWithRunRequest:(id)a3
+- (WFHarnessTestRunnerClient)initWithRunRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunnerClient.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"runRequest"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessTestRunnerClient.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"runRequest"}];
   }
 
-  v6 = [v5 testRunDescriptor];
+  testRunDescriptor = [requestCopy testRunDescriptor];
   v12.receiver = self;
   v12.super_class = WFHarnessTestRunnerClient;
-  v7 = [(WFWorkflowRunnerClient *)&v12 initWithDescriptor:v6 runRequest:v5];
+  v7 = [(WFWorkflowRunnerClient *)&v12 initWithDescriptor:testRunDescriptor runRequest:requestCopy];
   v8 = v7;
   if (v7)
   {

@@ -1,20 +1,20 @@
 @interface PDFPageLayerEffect
-+ (id)createFlashEffectForPDFLinkAnnotation:(id)a3 withLayer:(id)a4 forType:(int64_t)a5;
-+ (id)createPDFAnnotationLayerEffectForAnnotation:(id)a3 withLayer:(id)a4;
-+ (id)createPDFCoachmarkLayerEffectsWithFrame:(CGRect)a3 withLayer:(id)a4;
-+ (id)createPDFMarkupLayerEffectsForAnnotation:(id)a3 withLayer:(id)a4;
-+ (id)createPDFNoteLayerEffectForAnnotation:(id)a3 withLayer:(id)a4;
-+ (id)createPDFSelectionLayerEffectsForSelections:(id)a3 withLayer:(id)a4;
++ (id)createFlashEffectForPDFLinkAnnotation:(id)annotation withLayer:(id)layer forType:(int64_t)type;
++ (id)createPDFAnnotationLayerEffectForAnnotation:(id)annotation withLayer:(id)layer;
++ (id)createPDFCoachmarkLayerEffectsWithFrame:(CGRect)frame withLayer:(id)layer;
++ (id)createPDFMarkupLayerEffectsForAnnotation:(id)annotation withLayer:(id)layer;
++ (id)createPDFNoteLayerEffectForAnnotation:(id)annotation withLayer:(id)layer;
++ (id)createPDFSelectionLayerEffectsForSelections:(id)selections withLayer:(id)layer;
 - (CGRect)pageFrame;
-- (PDFPageLayerEffect)initWithPDFPageLayer:(id)a3;
+- (PDFPageLayerEffect)initWithPDFPageLayer:(id)layer;
 @end
 
 @implementation PDFPageLayerEffect
 
-- (PDFPageLayerEffect)initWithPDFPageLayer:(id)a3
+- (PDFPageLayerEffect)initWithPDFPageLayer:(id)layer
 {
   v20[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layerCopy = layer;
   v18.receiver = self;
   v18.super_class = PDFPageLayerEffect;
   v5 = [(PDFPageLayerEffect *)&v18 init];
@@ -24,28 +24,28 @@
     v7 = v5->_private;
     v5->_private = v6;
 
-    objc_storeWeak(&v5->_private->pageLayer, v4);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeWeak(&v5->_private->pageLayer, layerCopy);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v9 = v5->_private;
     uuid = v9->uuid;
-    v9->uuid = v8;
+    v9->uuid = uUID;
 
     v5->_private->shouldRotateContent = 1;
     v19[0] = @"onOrderIn";
-    v11 = [MEMORY[0x1E695DFB0] null];
-    v20[0] = v11;
+    null = [MEMORY[0x1E695DFB0] null];
+    v20[0] = null;
     v19[1] = @"onOrderOut";
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v20[1] = v12;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v20[1] = null2;
     v19[2] = @"sublayers";
-    v13 = [MEMORY[0x1E695DFB0] null];
-    v20[2] = v13;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v20[2] = null3;
     v19[3] = @"contents";
-    v14 = [MEMORY[0x1E695DFB0] null];
-    v20[3] = v14;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v20[3] = null4;
     v19[4] = @"bounds";
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v20[4] = v15;
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v20[4] = null5;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:5];
 
     [(PDFPageLayerEffect *)v5 setActions:v16];
@@ -68,32 +68,32 @@
   return result;
 }
 
-+ (id)createPDFSelectionLayerEffectsForSelections:(id)a3 withLayer:(id)a4
++ (id)createPDFSelectionLayerEffectsForSelections:(id)selections withLayer:(id)layer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PDFPageLayerSelectionEffect alloc] initWithPDFPageLayer:v5];
-  [v5 bounds];
+  layerCopy = layer;
+  selectionsCopy = selections;
+  v7 = [[PDFPageLayerSelectionEffect alloc] initWithPDFPageLayer:layerCopy];
+  [layerCopy bounds];
   [(PDFPageLayerSelectionEffect *)v7 setFrame:?];
-  [v5 bounds];
+  [layerCopy bounds];
   [(PDFPageLayerEffect *)v7 setPageFrame:?];
   [(PDFPageLayerSelectionEffect *)v7 setZPosition:-300.0];
   [(PDFPageLayerSelectionEffect *)v7 setAllowsGroupBlending:0];
   [(PDFPageLayerSelectionEffect *)v7 setGeometryFlipped:1];
-  [(PDFPageLayerSelectionEffect *)v7 setSelections:v6];
+  [(PDFPageLayerSelectionEffect *)v7 setSelections:selectionsCopy];
 
-  [v5 addPageLayerEffect:v7];
+  [layerCopy addPageLayerEffect:v7];
 
   return v7;
 }
 
-+ (id)createPDFCoachmarkLayerEffectsWithFrame:(CGRect)a3 withLayer:(id)a4
++ (id)createPDFCoachmarkLayerEffectsWithFrame:(CGRect)frame withLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
   if (PDFRectValid(x, y, width, height) && (v30.origin.x = x, v30.origin.y = y, v30.size.width = width, v30.size.height = height, !PDFRectIsEmpty(v30)))
   {
     v31.origin.x = x;
@@ -111,20 +111,20 @@
     [v14 setCornerRadius:3.0];
     v16 = objc_alloc(MEMORY[0x1E695DF70]);
     v17 = PDFCGColorCreateGenericRGB(0.949019608, 0.937254902, 0.0, 1.0);
-    v18 = [v17 CGColor];
+    cGColor = [v17 CGColor];
     v19 = PDFCGColorCreateGenericRGB(0.929411765, 0.8, 0.0, 1.0);
-    v20 = [v16 initWithObjects:{v18, objc_msgSend(v19, "CGColor"), 0}];
+    v20 = [v16 initWithObjects:{cGColor, objc_msgSend(v19, "CGColor"), 0}];
 
-    v21 = [v8 page];
-    v22 = [v21 rotation];
+    page = [layerCopy page];
+    rotation = [page rotation];
 
-    if (v22 >= 180)
+    if (rotation >= 180)
     {
       [v20 exchangeObjectAtIndex:0 withObjectAtIndex:1];
     }
 
     [v14 setColors:v20];
-    if (v22 == 90)
+    if (rotation == 90)
     {
       v23 = 1.0;
     }
@@ -134,7 +134,7 @@
       v23 = 0.0;
     }
 
-    if (v22 == 90)
+    if (rotation == 90)
     {
       v24 = 0.0;
     }
@@ -144,13 +144,13 @@
       v24 = -1.0;
     }
 
-    if (v22 == 180)
+    if (rotation == 180)
     {
       v23 = 0.0;
       v24 = 1.0;
     }
 
-    if (v22 == 270)
+    if (rotation == 270)
     {
       v25 = -1.0;
     }
@@ -160,26 +160,26 @@
       v25 = v23;
     }
 
-    if (v22 != 270)
+    if (rotation != 270)
     {
       v15 = v24;
     }
 
-    v26 = [MEMORY[0x1E69DC888] blackColor];
-    [v14 setShadowColor:{objc_msgSend(v26, "CGColor")}];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [v14 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     [v14 setShadowOffset:{v25, v15}];
     LODWORD(v27) = 1061997773;
     [v14 setShadowOpacity:v27];
     [v14 setShadowRadius:1.0];
     [v14 setGeometryFlipped:1];
-    v9 = [[PDFPageLayerEffect alloc] initWithPDFPageLayer:v8];
+    v9 = [[PDFPageLayerEffect alloc] initWithPDFPageLayer:layerCopy];
     [(PDFPageLayerEffect *)v9 setFrame:PDFRectToCGRect(v9)];
     [(PDFPageLayerEffect *)v9 setPageFrame:v10, v11, v12, v13];
     [(PDFPageLayerEffect *)v9 setZPosition:-500.0];
     [(PDFPageLayerEffect *)v9 setCompositingFilter:*MEMORY[0x1E6979CA8]];
     [(PDFPageLayerEffect *)v9 addSublayer:v14];
-    [v8 addPageLayerEffect:v9];
+    [layerCopy addPageLayerEffect:v9];
   }
 
   else
@@ -190,17 +190,17 @@
   return v9;
 }
 
-+ (id)createPDFAnnotationLayerEffectForAnnotation:(id)a3 withLayer:(id)a4
++ (id)createPDFAnnotationLayerEffectForAnnotation:(id)annotation withLayer:(id)layer
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ([v5 bounds], v8 = v7, v10 = v9, v12 = v11, v14 = v13, !PDFRectValid(v7, v9, v11, v13)) || (v27.origin.x = v8, v27.origin.y = v10, v27.size.width = v12, v27.size.height = v14, PDFRectIsEmpty(v27)))
+  annotationCopy = annotation;
+  layerCopy = layer;
+  if (!annotationCopy || ([annotationCopy bounds], v8 = v7, v10 = v9, v12 = v11, v14 = v13, !PDFRectValid(v7, v9, v11, v13)) || (v27.origin.x = v8, v27.origin.y = v10, v27.size.width = v12, v27.size.height = v14, PDFRectIsEmpty(v27)))
   {
     v15 = 0;
     goto LABEL_5;
   }
 
-  v17 = [v5 valueForAnnotationKey:@"/Subtype"];
+  v17 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
   v18 = [v17 isEqualToString:@"/Link"];
   v19 = [v17 isEqualToString:@"/Popup"];
   if (!v18)
@@ -208,16 +208,16 @@
     goto LABEL_12;
   }
 
-  v20 = [v5 border];
-  v21 = v20;
-  if (v20)
+  border = [annotationCopy border];
+  v21 = border;
+  if (border)
   {
-    [v20 lineWidth];
+    [border lineWidth];
     if (v22 > 0.0)
     {
 
 LABEL_12:
-      v15 = [(PDFPageLayerEffect *)[PDFPageLayerAnnotationEffect alloc] initWithPDFPageLayer:v6];
+      v15 = [(PDFPageLayerEffect *)[PDFPageLayerAnnotationEffect alloc] initWithPDFPageLayer:layerCopy];
       [(PDFPageLayerAnnotationEffect *)v15 setFrame:PDFRectToCGRect(v15)];
       v23 = -200.0;
       if (v19)
@@ -226,10 +226,10 @@ LABEL_12:
       }
 
       [(PDFPageLayerAnnotationEffect *)v15 setZPosition:v23];
-      if ([v5 shouldDisplay])
+      if ([annotationCopy shouldDisplay])
       {
-        v24 = [v6 page];
-        -[PDFPageLayerAnnotationEffect setHidden:](v15, "setHidden:", [v24 displaysAnnotations] ^ 1);
+        page = [layerCopy page];
+        -[PDFPageLayerAnnotationEffect setHidden:](v15, "setHidden:", [page displaysAnnotations] ^ 1);
       }
 
       else
@@ -241,7 +241,7 @@ LABEL_12:
       [(PDFPageLayerAnnotationEffect *)v15 setGeometryFlipped:1];
       [(PDFPageLayerAnnotationEffect *)v15 setNeedsDisplay];
       [(PDFPageLayerAnnotationEffect *)v15 setDrawsAsynchronously:1];
-      objc_storeWeak(&v15->super._private->annotation, v5);
+      objc_storeWeak(&v15->super._private->annotation, annotationCopy);
       if ([v17 isEqualToString:@"/Text"])
       {
         v15->super._private->shouldRotateContent = 0;
@@ -249,14 +249,14 @@ LABEL_12:
 
       else if ([v17 isEqualToString:@"/Ink"])
       {
-        v25 = [v5 valueForAnnotationKey:@"/IT"];
+        v25 = [annotationCopy valueForAnnotationKey:@"/IT"];
         if ([v25 isEqualToString:@"/InkHighlight"])
         {
           [(PDFPageLayerAnnotationEffect *)v15 setCompositingFilter:*MEMORY[0x1E6979CA8]];
         }
       }
 
-      [v6 addPageLayerEffect:v15];
+      [layerCopy addPageLayerEffect:v15];
       goto LABEL_25;
     }
   }
@@ -269,19 +269,19 @@ LABEL_5:
   return v15;
 }
 
-+ (id)createPDFMarkupLayerEffectsForAnnotation:(id)a3 withLayer:(id)a4
++ (id)createPDFMarkupLayerEffectsForAnnotation:(id)annotation withLayer:(id)layer
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ([v5 bounds], v8 = v7, v10 = v9, v12 = v11, v14 = v13, PDFRectValid(v7, v9, v11, v13)) && (v19.origin.x = v8, v19.origin.y = v10, v19.size.width = v12, v19.size.height = v14, !PDFRectIsEmpty(v19)))
+  annotationCopy = annotation;
+  layerCopy = layer;
+  if (annotationCopy && ([annotationCopy bounds], v8 = v7, v10 = v9, v12 = v11, v14 = v13, PDFRectValid(v7, v9, v11, v13)) && (v19.origin.x = v8, v19.origin.y = v10, v19.size.width = v12, v19.size.height = v14, !PDFRectIsEmpty(v19)))
   {
-    v15 = [(PDFPageLayerEffect *)[PDFPageLayerMarkupAnnotationEffect alloc] initWithPDFPageLayer:v6];
+    v15 = [(PDFPageLayerEffect *)[PDFPageLayerMarkupAnnotationEffect alloc] initWithPDFPageLayer:layerCopy];
     [(PDFPageLayerMarkupAnnotationEffect *)v15 setFrame:PDFRectToCGRect(v15)];
     [(PDFPageLayerMarkupAnnotationEffect *)v15 setZPosition:-400.0];
-    if ([v5 shouldDisplay])
+    if ([annotationCopy shouldDisplay])
     {
-      v17 = [v6 page];
-      -[PDFPageLayerMarkupAnnotationEffect setHidden:](v15, "setHidden:", [v17 displaysAnnotations] ^ 1);
+      page = [layerCopy page];
+      -[PDFPageLayerMarkupAnnotationEffect setHidden:](v15, "setHidden:", [page displaysAnnotations] ^ 1);
     }
 
     else
@@ -292,9 +292,9 @@ LABEL_5:
     [(PDFPageLayerMarkupAnnotationEffect *)v15 setCompositingFilter:*MEMORY[0x1E6979CA8]];
     [(PDFPageLayerMarkupAnnotationEffect *)v15 setAllowsGroupBlending:0];
     [(PDFPageLayerMarkupAnnotationEffect *)v15 setGeometryFlipped:1];
-    objc_storeWeak(&v15->super._private->annotation, v5);
+    objc_storeWeak(&v15->super._private->annotation, annotationCopy);
     [(PDFPageLayerMarkupAnnotationEffect *)v15 update];
-    [v6 addPageLayerEffect:v15];
+    [layerCopy addPageLayerEffect:v15];
   }
 
   else
@@ -305,33 +305,33 @@ LABEL_5:
   return v15;
 }
 
-+ (id)createPDFNoteLayerEffectForAnnotation:(id)a3 withLayer:(id)a4
++ (id)createPDFNoteLayerEffectForAnnotation:(id)annotation withLayer:(id)layer
 {
-  v4 = a3;
-  if (a3)
+  annotationCopy = annotation;
+  if (annotation)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [(PDFPageLayerEffect *)[PDFPageLayerNoteEffect alloc] initWithPDFPageLayer:v5];
-    [(PDFPageLayerNoteEffect *)v4 setBorderWidth:1.0];
-    [(PDFPageLayerNoteEffect *)v4 setCornerRadius:1.0];
-    objc_storeWeak(&v4->super._private->annotation, v6);
+    layerCopy = layer;
+    v6 = annotationCopy;
+    annotationCopy = [(PDFPageLayerEffect *)[PDFPageLayerNoteEffect alloc] initWithPDFPageLayer:layerCopy];
+    [(PDFPageLayerNoteEffect *)annotationCopy setBorderWidth:1.0];
+    [(PDFPageLayerNoteEffect *)annotationCopy setCornerRadius:1.0];
+    objc_storeWeak(&annotationCopy->super._private->annotation, v6);
 
-    [(PDFPageLayerNoteEffect *)v4 update];
-    [v5 addPageLayerEffect:v4];
+    [(PDFPageLayerNoteEffect *)annotationCopy update];
+    [layerCopy addPageLayerEffect:annotationCopy];
   }
 
-  return v4;
+  return annotationCopy;
 }
 
-+ (id)createFlashEffectForPDFLinkAnnotation:(id)a3 withLayer:(id)a4 forType:(int64_t)a5
++ (id)createFlashEffectForPDFLinkAnnotation:(id)annotation withLayer:(id)layer forType:(int64_t)type
 {
-  v7 = a4;
-  if (a3)
+  layerCopy = layer;
+  if (annotation)
   {
-    v8 = a3;
-    v9 = [[PDFPageLayerEffect alloc] initWithPDFPageLayer:v7];
-    [v8 bounds];
+    annotationCopy = annotation;
+    v9 = [[PDFPageLayerEffect alloc] initWithPDFPageLayer:layerCopy];
+    [annotationCopy bounds];
     x = v10;
     y = v12;
     width = v14;
@@ -339,14 +339,14 @@ LABEL_5:
 
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    if (a5 == 1)
+    if (type == 1)
     {
       v18 = 0.2;
     }
 
     else
     {
-      if (a5 != 2)
+      if (type != 2)
       {
         [(PDFPageLayerEffect *)v9 setCornerRadius:1.5];
         v19 = +[PDFSelection defaultActiveColor];
@@ -396,18 +396,18 @@ LABEL_8:
     v31 = 3221225472;
     v32 = __78__PDFPageLayerEffect_createFlashEffectForPDFLinkAnnotation_withLayer_forType___block_invoke;
     v33 = &unk_1E8150FF8;
-    v28 = v7;
+    v28 = layerCopy;
     v34 = v28;
-    a3 = v9;
-    v35 = a3;
+    annotation = v9;
+    annotationCopy2 = annotation;
     [v27 setCompletionBlock:&v30];
-    [a3 addAnimation:v22 forKey:{@"fadeAnimation", v30, v31, v32, v33}];
+    [annotation addAnimation:v22 forKey:{@"fadeAnimation", v30, v31, v32, v33}];
 
     [MEMORY[0x1E6979518] commit];
-    [v28 addPageLayerEffect:a3];
+    [v28 addPageLayerEffect:annotation];
   }
 
-  return a3;
+  return annotation;
 }
 
 void __78__PDFPageLayerEffect_createFlashEffectForPDFLinkAnnotation_withLayer_forType___block_invoke(uint64_t a1)

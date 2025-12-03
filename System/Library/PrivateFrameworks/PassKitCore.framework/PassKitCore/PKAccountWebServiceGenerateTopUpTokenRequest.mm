@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceGenerateTopUpTokenRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceGenerateTopUpTokenRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKAccountWebServiceGenerateTopUpTokenRequest *)self baseURL];
-  if (!v5)
+  informationCopy = information;
+  baseURL = [(PKAccountWebServiceGenerateTopUpTokenRequest *)self baseURL];
+  if (!baseURL)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -29,7 +29,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -76,18 +76,18 @@ LABEL_13:
   v19[1] = accountIdentifier;
   v19[2] = @"generateTopUpToken";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
-  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v5 endpointComponents:v14 queryParameters:0 appleAccountInformation:v4];
+  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v14 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v8 setHTTPMethod:@"POST"];
   [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v15 = PKUniqueDeviceIdentifier();
   [v8 setValue:v15 forHTTPHeaderField:@"X-Apple-Device-GUID"];
 
-  v16 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = PKAppleBalanceInStoreTopUpTokenTypeToString(self->_tokenType);
-  [v16 setObject:v17 forKeyedSubscript:@"tokenType"];
+  [dictionary setObject:v17 forKeyedSubscript:@"tokenType"];
 
-  v18 = [objc_opt_class() _HTTPBodyWithDictionary:v16];
+  v18 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v8 setHTTPBody:v18];
 
   v7 = [v8 copy];

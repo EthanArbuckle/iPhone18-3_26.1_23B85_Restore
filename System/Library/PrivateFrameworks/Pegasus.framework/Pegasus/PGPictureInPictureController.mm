@@ -1,19 +1,19 @@
 @interface PGPictureInPictureController
 + (BOOL)isPictureInPictureSupported;
 - (BOOL)_hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP;
-- (BOOL)backgroundPIPService:(id)a3 canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:(id)a4 appBundleIdentifier:(id)a5;
-- (BOOL)isStoppingOrCancellingPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)pictureInPictureInterruptionBeganWithReason:(int64_t)a3 attribution:(id)a4;
-- (BOOL)pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:(id)a3;
-- (BOOL)pictureInPictureRemoteObjectShouldAcceptSetupRequest:(id)a3;
-- (BOOL)pictureInPictureRemoteObjectShouldCancelActivePictureInPictureOnStart:(id)a3;
-- (BOOL)shouldStartPictureInPictureForApplicationEnteringBackground:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
-- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3;
-- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
-- (CGSize)preferredContentSizeForActivePictureInPictureWithApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
-- (CGSize)preferredContentSizeForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3;
-- (CGSize)preferredContentSizeForInteractivelyEnteringBackgroundForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
+- (BOOL)backgroundPIPService:(id)service canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
+- (BOOL)isStoppingOrCancellingPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)pictureInPictureInterruptionBeganWithReason:(int64_t)reason attribution:(id)attribution;
+- (BOOL)pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:(id)authorization;
+- (BOOL)pictureInPictureRemoteObjectShouldAcceptSetupRequest:(id)request;
+- (BOOL)pictureInPictureRemoteObjectShouldCancelActivePictureInPictureOnStart:(id)start;
+- (BOOL)shouldStartPictureInPictureForApplicationEnteringBackground:(id)background sceneSessionPersistentIdentifier:(id)identifier;
+- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application;
+- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
+- (CGSize)preferredContentSizeForActivePictureInPictureWithApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
+- (CGSize)preferredContentSizeForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application;
+- (CGSize)preferredContentSizeForInteractivelyEnteringBackgroundForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
 - (NSDictionary)activeSceneSessionIdentifiersByApplication;
 - (NSSet)activePictureInPictureApplicationsStoppingOrCancelling;
 - (PGPictureInPictureAnalyticsDelegate)analyticsDelegate;
@@ -22,46 +22,46 @@
 - (id)_faceTimeVideoCallInterruptionExemption;
 - (id)_faceTimeVideoCallRemoteObject;
 - (id)_pictureInPictureRemoteObjects;
-- (id)_remoteObjectForPictureInPictureApplication:(id)a3 passingTest:(id)a4 error:(id *)a5;
-- (id)_remoteObjectForPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5;
-- (id)_remoteObjectForTestApplicationWithBundleIdentifier:(id)a3;
-- (id)_remoteObjectThatCanCancelPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5;
-- (id)_remoteObjectThatCanStopPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5;
-- (id)_remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5;
-- (id)_remoteObjectsForPictureInPictureApplication:(id)a3;
-- (id)existingPictureInPictureApplicationForBundleIdentifier:(id)a3;
-- (id)pictureInPictureRemoteObject:(id)a3 displayConfigurationForApplication:(id)a4;
-- (id)pictureInPictureRemoteObjectInterruptionAssistant:(id)a3;
-- (int64_t)contentTypePictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
-- (int64_t)tetheringModeForSceneSessionPersistentIdentifier:(id)a3;
-- (void)_addRemoteObject:(id)a3;
-- (void)_removeRemoteObject:(id)a3;
+- (id)_remoteObjectForPictureInPictureApplication:(id)application passingTest:(id)test error:(id *)error;
+- (id)_remoteObjectForPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error;
+- (id)_remoteObjectForTestApplicationWithBundleIdentifier:(id)identifier;
+- (id)_remoteObjectThatCanCancelPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error;
+- (id)_remoteObjectThatCanStopPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error;
+- (id)_remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error;
+- (id)_remoteObjectsForPictureInPictureApplication:(id)application;
+- (id)existingPictureInPictureApplicationForBundleIdentifier:(id)identifier;
+- (id)pictureInPictureRemoteObject:(id)object displayConfigurationForApplication:(id)application;
+- (id)pictureInPictureRemoteObjectInterruptionAssistant:(id)assistant;
+- (int64_t)contentTypePictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
+- (int64_t)tetheringModeForSceneSessionPersistentIdentifier:(id)identifier;
+- (void)_addRemoteObject:(id)object;
+- (void)_removeRemoteObject:(id)object;
 - (void)_updateAllRemoteObjectsForPIPPossibleAndExemptAttributions;
 - (void)activateBackgroundPIPAuthorizationService;
-- (void)backgroundPIPService:(id)a3 didGrantBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)a4;
-- (void)backgroundPIPService:(id)a3 didRevokeBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)a4;
-- (void)beginTwoStageStopPictureInPictureForApplication:(id)a3 withSceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 byRestoringUserInterfaceWithCompletionHandler:(id)a6;
-- (void)cancelPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4;
+- (void)backgroundPIPService:(id)service didGrantBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)identifier;
+- (void)backgroundPIPService:(id)service didRevokeBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)identifier;
+- (void)beginTwoStageStopPictureInPictureForApplication:(id)application withSceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated byRestoringUserInterfaceWithCompletionHandler:(id)handler;
+- (void)cancelPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)endTwoStageStopPictureInPictureForApplication:(id)a3 withSceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)endTwoStageStopPictureInPictureForApplication:(id)application withSceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler;
 - (void)init;
-- (void)pagingSkipByNumberOfPages:(int64_t)a3 application:(id)a4;
-- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)a3 attribution:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 didCreatePictureInPictureViewController:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 didHidePictureInPictureViewController:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 didRequestPictureInPictureStopForViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6;
-- (void)pictureInPictureRemoteObject:(id)a3 didShowPictureInPictureViewController:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 requestActivationOfSceneWithPersistenceIdentier:(id)a4 completion:(id)a5;
-- (void)pictureInPictureRemoteObject:(id)a3 willDestroyPictureInPictureViewController:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 willHidePictureInPictureViewController:(id)a4;
-- (void)pictureInPictureRemoteObject:(id)a3 willShowPictureInPictureViewController:(id)a4;
-- (void)restorePictureInPictureTestActionForApplicationWithBundleIdentifier:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)startPictureInPictureForApplicationEnteringBackground:(id)a3 sceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)startPictureInPictureResourcesUsageReductionForApplication:(id)a3 requestingViewController:(id)a4;
-- (void)startPictureInPictureTestActionForApplicationWithBundleIdentifier:(id)a3;
-- (void)stopPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)stopPictureInPictureResourcesUsageReductionForApplication:(id)a3 requestingViewController:(id)a4;
+- (void)pagingSkipByNumberOfPages:(int64_t)pages application:(id)application;
+- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)reason attribution:(id)attribution;
+- (void)pictureInPictureRemoteObject:(id)object didCreatePictureInPictureViewController:(id)controller;
+- (void)pictureInPictureRemoteObject:(id)object didHidePictureInPictureViewController:(id)controller;
+- (void)pictureInPictureRemoteObject:(id)object didRequestPictureInPictureStopForViewController:(id)controller sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)pictureInPictureRemoteObject:(id)object didShowPictureInPictureViewController:(id)controller;
+- (void)pictureInPictureRemoteObject:(id)object requestActivationOfSceneWithPersistenceIdentier:(id)identier completion:(id)completion;
+- (void)pictureInPictureRemoteObject:(id)object willDestroyPictureInPictureViewController:(id)controller;
+- (void)pictureInPictureRemoteObject:(id)object willHidePictureInPictureViewController:(id)controller;
+- (void)pictureInPictureRemoteObject:(id)object willShowPictureInPictureViewController:(id)controller;
+- (void)restorePictureInPictureTestActionForApplicationWithBundleIdentifier:(id)identifier;
+- (void)setDelegate:(id)delegate;
+- (void)startPictureInPictureForApplicationEnteringBackground:(id)background sceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler;
+- (void)startPictureInPictureResourcesUsageReductionForApplication:(id)application requestingViewController:(id)controller;
+- (void)startPictureInPictureTestActionForApplicationWithBundleIdentifier:(id)identifier;
+- (void)stopPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler;
+- (void)stopPictureInPictureResourcesUsageReductionForApplication:(id)application requestingViewController:(id)controller;
 @end
 
 @implementation PGPictureInPictureController
@@ -77,8 +77,8 @@
 
 - (id)_faceTimeVideoCallRemoteObject
 {
-  v2 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v3 = [v2 bs_firstObjectPassingTest:&__block_literal_global_58];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v3 = [_pictureInPictureRemoteObjects bs_firstObjectPassingTest:&__block_literal_global_58];
 
   return v3;
 }
@@ -132,9 +132,9 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
     v5->_interruptionAssistant = v12;
 
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pegasus.PGPictureInPictureController %p", v5];
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     listenerQueue = v5->_listenerQueue;
     v5->_listenerQueue = v17;
 
@@ -170,9 +170,9 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -272,9 +272,9 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
   }
 }
 
-- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3
+- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application
 {
-  [(PGPictureInPictureController *)self initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:a3 sceneSessionPersistentIdentifier:0];
+  [(PGPictureInPictureController *)self initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:application sceneSessionPersistentIdentifier:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -282,38 +282,38 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
   return result;
 }
 
-- (CGSize)preferredContentSizeForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3
+- (CGSize)preferredContentSizeForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application
 {
-  [(PGPictureInPictureController *)self preferredContentSizeForInteractivelyEnteringBackgroundForApplication:a3 sceneSessionPersistentIdentifier:0];
+  [(PGPictureInPictureController *)self preferredContentSizeForInteractivelyEnteringBackgroundForApplication:application sceneSessionPersistentIdentifier:0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (int64_t)contentTypePictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (int64_t)contentTypePictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
-  v4 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:a3 sceneSessionPersistentIdentifier:a4 error:0];
+  v4 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:application sceneSessionPersistentIdentifier:identifier error:0];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 contentType];
+    contentType = [v4 contentType];
   }
 
   else
   {
-    v6 = 0;
+    contentType = 0;
   }
 
-  return v6;
+  return contentType;
 }
 
-- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (CGRect)initialFrameForInteractivePictureInPictureAnimationEnteringBackgroundForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(PGPictureInPictureController *)v8 _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:v6 sceneSessionPersistentIdentifier:v7 error:0];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(PGPictureInPictureController *)selfCopy _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:applicationCopy sceneSessionPersistentIdentifier:identifierCopy error:0];
   v10 = v9;
   if (v9)
   {
@@ -332,7 +332,7 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
     v18 = *(MEMORY[0x1E695F050] + 24);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v19 = v12;
   v20 = v14;
   v21 = v16;
@@ -344,13 +344,13 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
   return result;
 }
 
-- (CGSize)preferredContentSizeForInteractivelyEnteringBackgroundForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (CGSize)preferredContentSizeForInteractivelyEnteringBackgroundForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(PGPictureInPictureController *)v8 _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:v6 sceneSessionPersistentIdentifier:v7 error:0];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(PGPictureInPictureController *)selfCopy _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:applicationCopy sceneSessionPersistentIdentifier:identifierCopy error:0];
   v10 = v9;
   if (v9)
   {
@@ -365,7 +365,7 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
     v14 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v15 = v12;
   v16 = v14;
   result.height = v16;
@@ -373,23 +373,23 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
   return result;
 }
 
-- (CGSize)preferredContentSizeForActivePictureInPictureWithApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (CGSize)preferredContentSizeForActivePictureInPictureWithApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  activePictureInPictureRemoteObjects = v8->_activePictureInPictureRemoteObjects;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activePictureInPictureRemoteObjects = selfCopy->_activePictureInPictureRemoteObjects;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __126__PGPictureInPictureController_preferredContentSizeForActivePictureInPictureWithApplication_sceneSessionPersistentIdentifier___block_invoke;
   v22[3] = &unk_1E7F32400;
-  v10 = v6;
+  v10 = applicationCopy;
   v23 = v10;
-  v11 = v7;
+  v11 = identifierCopy;
   v24 = v11;
   v12 = [(NSMutableSet *)activePictureInPictureRemoteObjects bs_firstObjectPassingTest:v22];
-  if (v12 || (-[PGPictureInPictureController _remoteObjectsForPictureInPictureApplication:](v8, "_remoteObjectsForPictureInPictureApplication:", v10), v13 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __126__PGPictureInPictureController_preferredContentSizeForActivePictureInPictureWithApplication_sceneSessionPersistentIdentifier___block_invoke_2, v20[3] = &unk_1E7F32428, v21 = v11, [v13 bs_firstObjectPassingTest:v20], v12 = objc_claimAutoreleasedReturnValue(), v21, v13, v12))
+  if (v12 || (-[PGPictureInPictureController _remoteObjectsForPictureInPictureApplication:](selfCopy, "_remoteObjectsForPictureInPictureApplication:", v10), v13 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __126__PGPictureInPictureController_preferredContentSizeForActivePictureInPictureWithApplication_sceneSessionPersistentIdentifier___block_invoke_2, v20[3] = &unk_1E7F32428, v21 = v11, [v13 bs_firstObjectPassingTest:v20], v12 = objc_claimAutoreleasedReturnValue(), v21, v13, v12))
   {
     [v12 preferredContentSize];
     v15 = v14;
@@ -402,7 +402,7 @@ uint64_t __59__PGPictureInPictureController_isPictureInPictureSupported__block_i
     v17 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v18 = v15;
   v19 = v17;
   result.height = v19;
@@ -427,10 +427,10 @@ uint64_t __126__PGPictureInPictureController_preferredContentSizeForActivePictur
   return v5;
 }
 
-- (BOOL)shouldStartPictureInPictureForApplicationEnteringBackground:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (BOOL)shouldStartPictureInPictureForApplicationEnteringBackground:(id)background sceneSessionPersistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  backgroundCopy = background;
+  identifierCopy = identifier;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -441,16 +441,16 @@ uint64_t __126__PGPictureInPictureController_preferredContentSizeForActivePictur
   }
 
   v12 = 0;
-  v9 = [(PGPictureInPictureController *)self _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:v6 sceneSessionPersistentIdentifier:v7 error:&v12];
+  v9 = [(PGPictureInPictureController *)self _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:backgroundCopy sceneSessionPersistentIdentifier:identifierCopy error:&v12];
   v10 = v12 == 0;
 
   return v10;
 }
 
-- (BOOL)isStoppingOrCancellingPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (BOOL)isStoppingOrCancellingPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  identifierCopy = identifier;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -464,28 +464,28 @@ uint64_t __126__PGPictureInPictureController_preferredContentSizeForActivePictur
   v13[1] = 3221225472;
   v13[2] = __118__PGPictureInPictureController_isStoppingOrCancellingPictureInPictureForApplication_sceneSessionPersistentIdentifier___block_invoke;
   v13[3] = &unk_1E7F32450;
-  v14 = v7;
-  v9 = v7;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:v6 passingTest:v13 error:0];
-  v11 = [v10 isStoppingOrCancellingPictureInPicture];
+  v14 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:applicationCopy passingTest:v13 error:0];
+  isStoppingOrCancellingPictureInPicture = [v10 isStoppingOrCancellingPictureInPicture];
 
-  return v11;
+  return isStoppingOrCancellingPictureInPicture;
 }
 
-- (int64_t)tetheringModeForSceneSessionPersistentIdentifier:(id)a3
+- (int64_t)tetheringModeForSceneSessionPersistentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  identifierCopy = identifier;
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__PGPictureInPictureController_tetheringModeForSceneSessionPersistentIdentifier___block_invoke;
   v12[3] = &unk_1E7F32428;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v12];
+  v13 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [_pictureInPictureRemoteObjects bs_firstObjectPassingTest:v12];
 
-  v8 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v9 = [v8 bs_firstObjectPassingTest:&__block_literal_global_40];
+  _pictureInPictureRemoteObjects2 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v9 = [_pictureInPictureRemoteObjects2 bs_firstObjectPassingTest:&__block_literal_global_40];
 
   v10 = 0;
   if (v9 && v7 && v9 != v7)
@@ -506,12 +506,12 @@ uint64_t __81__PGPictureInPictureController_tetheringModeForSceneSessionPersiste
   return a1 & v4;
 }
 
-- (void)startPictureInPictureForApplicationEnteringBackground:(id)a3 sceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)startPictureInPictureForApplicationEnteringBackground:(id)background sceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  backgroundCopy = background;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v13 = PGLogCommon();
@@ -522,7 +522,7 @@ uint64_t __81__PGPictureInPictureController_tetheringModeForSceneSessionPersiste
   }
 
   v18 = 0;
-  v14 = [(PGPictureInPictureController *)self _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:v10 sceneSessionPersistentIdentifier:v11 error:&v18];
+  v14 = [(PGPictureInPictureController *)self _remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:backgroundCopy sceneSessionPersistentIdentifier:identifierCopy error:&v18];
   v15 = v18;
   if (v14)
   {
@@ -530,13 +530,13 @@ uint64_t __81__PGPictureInPictureController_tetheringModeForSceneSessionPersiste
     v16[1] = 3221225472;
     v16[2] = __146__PGPictureInPictureController_startPictureInPictureForApplicationEnteringBackground_sceneSessionPersistentIdentifier_animated_completionHandler___block_invoke;
     v16[3] = &unk_1E7F32478;
-    v17 = v12;
-    [v14 startPictureInPictureEnteringBackgroundAnimated:v7 withCompletionHandler:v16];
+    v17 = handlerCopy;
+    [v14 startPictureInPictureEnteringBackgroundAnimated:animatedCopy withCompletionHandler:v16];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
@@ -551,12 +551,12 @@ uint64_t __146__PGPictureInPictureController_startPictureInPictureForApplication
   return result;
 }
 
-- (void)stopPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)stopPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v13 = PGLogCommon();
@@ -567,7 +567,7 @@ uint64_t __146__PGPictureInPictureController_startPictureInPictureForApplication
   }
 
   v18 = 0;
-  v14 = [(PGPictureInPictureController *)self _remoteObjectThatCanStopPictureInPictureApplication:v10 sceneSessionPersistentIdentifier:v11 error:&v18];
+  v14 = [(PGPictureInPictureController *)self _remoteObjectThatCanStopPictureInPictureApplication:applicationCopy sceneSessionPersistentIdentifier:identifierCopy error:&v18];
   v15 = v18;
   if (v14)
   {
@@ -575,13 +575,13 @@ uint64_t __146__PGPictureInPictureController_startPictureInPictureForApplication
     v16[1] = 3221225472;
     v16[2] = __127__PGPictureInPictureController_stopPictureInPictureForApplication_sceneSessionPersistentIdentifier_animated_completionHandler___block_invoke;
     v16[3] = &unk_1E7F32478;
-    v17 = v12;
-    [v14 stopPictureInPictureAnimated:v7 withCompletionHandler:v16];
+    v17 = handlerCopy;
+    [v14 stopPictureInPictureAnimated:animatedCopy withCompletionHandler:v16];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
@@ -596,11 +596,11 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
   return result;
 }
 
-- (void)beginTwoStageStopPictureInPictureForApplication:(id)a3 withSceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 byRestoringUserInterfaceWithCompletionHandler:(id)a6
+- (void)beginTwoStageStopPictureInPictureForApplication:(id)application withSceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated byRestoringUserInterfaceWithCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v12 = PGLogCommon();
@@ -611,23 +611,23 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
   }
 
   v15 = 0;
-  v13 = [(PGPictureInPictureController *)self _remoteObjectThatCanStopPictureInPictureApplication:v9 sceneSessionPersistentIdentifier:v10 error:&v15];
+  v13 = [(PGPictureInPictureController *)self _remoteObjectThatCanStopPictureInPictureApplication:applicationCopy sceneSessionPersistentIdentifier:identifierCopy error:&v15];
   v14 = v15;
   if (v13)
   {
-    [v13 beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:v11];
+    [v13 beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:handlerCopy];
   }
 
-  else if (v11)
+  else if (handlerCopy)
   {
-    v11[2](v11, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 }
 
-- (void)endTwoStageStopPictureInPictureForApplication:(id)a3 withSceneSessionPersistentIdentifier:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)endTwoStageStopPictureInPictureForApplication:(id)application withSceneSessionPersistentIdentifier:(id)identifier animated:(BOOL)animated completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a6;
+  applicationCopy = application;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v10 = PGLogCommon();
@@ -638,33 +638,33 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
   }
 
   v13 = 0;
-  v11 = [(PGPictureInPictureController *)self _remoteObjectThatCanEndTwoStageStopPictureInPictureApplication:v8 error:&v13];
+  v11 = [(PGPictureInPictureController *)self _remoteObjectThatCanEndTwoStageStopPictureInPictureApplication:applicationCopy error:&v13];
   v12 = v13;
   if (v11)
   {
-    [v11 endTwoStageStopPictureInPictureWithCompletionBlock:v9];
+    [v11 endTwoStageStopPictureInPictureWithCompletionBlock:handlerCopy];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    v9[2](v9, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
   }
 }
 
-- (void)cancelPictureInPictureForApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4
+- (void)cancelPictureInPictureForApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  identifierCopy = identifier;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315650;
     v13 = "[PGPictureInPictureController cancelPictureInPictureForApplication:sceneSessionPersistentIdentifier:]";
     v14 = 2114;
-    v15 = v6;
+    v15 = applicationCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ %{public}@", &v12, 0x20u);
   }
 
@@ -677,7 +677,7 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
     }
   }
 
-  v10 = [(PGPictureInPictureController *)self _remoteObjectThatCanCancelPictureInPictureApplication:v6 sceneSessionPersistentIdentifier:v7 error:0];
+  v10 = [(PGPictureInPictureController *)self _remoteObjectThatCanCancelPictureInPictureApplication:applicationCopy sceneSessionPersistentIdentifier:identifierCopy error:0];
   v11 = v10;
   if (v10)
   {
@@ -685,10 +685,10 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
   }
 }
 
-- (void)startPictureInPictureResourcesUsageReductionForApplication:(id)a3 requestingViewController:(id)a4
+- (void)startPictureInPictureResourcesUsageReductionForApplication:(id)application requestingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -702,9 +702,9 @@ uint64_t __127__PGPictureInPictureController_stopPictureInPictureForApplication_
   v12[1] = 3221225472;
   v12[2] = __116__PGPictureInPictureController_startPictureInPictureResourcesUsageReductionForApplication_requestingViewController___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v7;
-  v9 = v7;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:v6 passingTest:v12 error:0];
+  v13 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:applicationCopy passingTest:v12 error:0];
   v11 = v10;
   if (v10)
   {
@@ -720,10 +720,10 @@ BOOL __116__PGPictureInPictureController_startPictureInPictureResourcesUsageRedu
   return v4;
 }
 
-- (void)stopPictureInPictureResourcesUsageReductionForApplication:(id)a3 requestingViewController:(id)a4
+- (void)stopPictureInPictureResourcesUsageReductionForApplication:(id)application requestingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -737,9 +737,9 @@ BOOL __116__PGPictureInPictureController_startPictureInPictureResourcesUsageRedu
   v12[1] = 3221225472;
   v12[2] = __115__PGPictureInPictureController_stopPictureInPictureResourcesUsageReductionForApplication_requestingViewController___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v7;
-  v9 = v7;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:v6 passingTest:v12 error:0];
+  v13 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:applicationCopy passingTest:v12 error:0];
   v11 = v10;
   if (v10)
   {
@@ -755,16 +755,16 @@ BOOL __115__PGPictureInPictureController_stopPictureInPictureResourcesUsageReduc
   return v4;
 }
 
-- (id)_remoteObjectForTestApplicationWithBundleIdentifier:(id)a3
+- (id)_remoteObjectForTestApplicationWithBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v6 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -774,13 +774,13 @@ BOOL __115__PGPictureInPictureController_stopPictureInPictureResourcesUsageReduc
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_pictureInPictureRemoteObjects);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 pictureInPictureApplication];
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:v4];
+        pictureInPictureApplication = [v9 pictureInPictureApplication];
+        bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -789,7 +789,7 @@ BOOL __115__PGPictureInPictureController_stopPictureInPictureResourcesUsageReduc
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -804,9 +804,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)startPictureInPictureTestActionForApplicationWithBundleIdentifier:(id)a3
+- (void)startPictureInPictureTestActionForApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = PGLogCommon();
@@ -816,13 +816,13 @@ LABEL_11:
     }
   }
 
-  v6 = [(PGPictureInPictureController *)self _remoteObjectForTestApplicationWithBundleIdentifier:v4];
+  v6 = [(PGPictureInPictureController *)self _remoteObjectForTestApplicationWithBundleIdentifier:identifierCopy];
   [v6 sendStartPictureInPictureTestAction];
 }
 
-- (void)restorePictureInPictureTestActionForApplicationWithBundleIdentifier:(id)a3
+- (void)restorePictureInPictureTestActionForApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = PGLogCommon();
@@ -832,16 +832,16 @@ LABEL_11:
     }
   }
 
-  v6 = [(PGPictureInPictureController *)self _remoteObjectForTestApplicationWithBundleIdentifier:v4];
-  v7 = [v6 pictureInPictureViewController];
-  v8 = [v7 viewModel];
-  [v8 handleRestoreButtonTapped];
+  v6 = [(PGPictureInPictureController *)self _remoteObjectForTestApplicationWithBundleIdentifier:identifierCopy];
+  pictureInPictureViewController = [v6 pictureInPictureViewController];
+  viewModel = [pictureInPictureViewController viewModel];
+  [viewModel handleRestoreButtonTapped];
 }
 
-- (BOOL)pictureInPictureInterruptionBeganWithReason:(int64_t)a3 attribution:(id)a4
+- (BOOL)pictureInPictureInterruptionBeganWithReason:(int64_t)reason attribution:(id)attribution
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributionCopy = attribution;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v7 = PGLogCommon();
@@ -854,27 +854,27 @@ LABEL_11:
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = PGStringFromPictureInPictureInterruptionReason(a3);
+    v9 = PGStringFromPictureInPictureInterruptionReason(reason);
     *buf = 136315650;
     v24 = "[PGPictureInPictureController pictureInPictureInterruptionBeganWithReason:attribution:]";
     v25 = 2114;
     v26 = v9;
     v27 = 2114;
-    v28 = v6;
+    v28 = attributionCopy;
     _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ %{public}@", buf, 0x20u);
   }
 
-  [(PGInterruptionAssistant *)self->_interruptionAssistant addReason:a3 attribution:v6];
+  [(PGInterruptionAssistant *)self->_interruptionAssistant addReason:reason attribution:attributionCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v11 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
-    v13 = 0;
+    isInterrupted = 0;
     v14 = *v19;
     do
     {
@@ -882,26 +882,26 @@ LABEL_11:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_pictureInPictureRemoteObjects);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        [v16 pictureInPictureInterruptionBeganWithReason:a3 attribution:v6];
-        if (!((a3 != 2) | v13 & 1))
+        [v16 pictureInPictureInterruptionBeganWithReason:reason attribution:attributionCopy];
+        if (!((reason != 2) | isInterrupted & 1))
         {
           if ([(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v16])
           {
-            v13 = [v16 isInterrupted];
+            isInterrupted = [v16 isInterrupted];
           }
 
           else
           {
-            v13 = 0;
+            isInterrupted = 0;
           }
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -909,16 +909,16 @@ LABEL_11:
 
   else
   {
-    v13 = 0;
+    isInterrupted = 0;
   }
 
-  return v13 & 1;
+  return isInterrupted & 1;
 }
 
-- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)a3 attribution:(id)a4
+- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)reason attribution:(id)attribution
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributionCopy = attribution;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v7 = PGLogCommon();
@@ -931,24 +931,24 @@ LABEL_11:
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = PGStringFromPictureInPictureInterruptionReason(a3);
+    v9 = PGStringFromPictureInPictureInterruptionReason(reason);
     *buf = 136315650;
     v30 = "[PGPictureInPictureController pictureInPictureInterruptionEndedWithReason:attribution:]";
     v31 = 2114;
     v32 = v9;
     v33 = 2114;
-    v34 = v6;
+    v34 = attributionCopy;
     _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@ %{public}@", buf, 0x20u);
   }
 
   v10 = [(PGInterruptionAssistant *)self->_interruptionAssistant hasInterruptionReason:1];
-  [(PGInterruptionAssistant *)self->_interruptionAssistant removeReason:a3 attribution:v6];
+  [(PGInterruptionAssistant *)self->_interruptionAssistant removeReason:reason attribution:attributionCopy];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v12 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -960,14 +960,14 @@ LABEL_11:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_pictureInPictureRemoteObjects);
         }
 
-        [*(*(&v24 + 1) + 8 * v15++) pictureInPictureInterruptionEndedWithReason:a3 attribution:v6];
+        [*(*(&v24 + 1) + 8 * v15++) pictureInPictureInterruptionEndedWithReason:reason attribution:attributionCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v13);
@@ -975,12 +975,12 @@ LABEL_11:
 
   if (![(PGInterruptionAssistant *)self->_interruptionAssistant hasInterruptionReason:1]&& v10 && _os_feature_enabled_impl())
   {
-    v16 = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
-    v17 = [v16 currentState];
-    v18 = [v16 shouldStartPictureInPictureEnteringBackground];
-    if (v17 == 2)
+    _faceTimeVideoCallRemoteObject = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
+    currentState = [_faceTimeVideoCallRemoteObject currentState];
+    shouldStartPictureInPictureEnteringBackground = [_faceTimeVideoCallRemoteObject shouldStartPictureInPictureEnteringBackground];
+    if (currentState == 2)
     {
-      if (v18)
+      if (shouldStartPictureInPictureEnteringBackground)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v20 = objc_opt_respondsToSelector();
@@ -1000,7 +1000,7 @@ LABEL_11:
               _os_log_impl(&dword_1BB282000, v23, OS_LOG_TYPE_DEFAULT, "%s Starting PIP for FaceTime Video Call upon unlock", buf, 0xCu);
             }
 
-            [v16 startPictureInPictureFromBackground];
+            [_faceTimeVideoCallRemoteObject startPictureInPictureFromBackground];
           }
         }
       }
@@ -1008,16 +1008,16 @@ LABEL_11:
   }
 }
 
-- (id)existingPictureInPictureApplicationForBundleIdentifier:(id)a3
+- (id)existingPictureInPictureApplicationForBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  v6 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1028,12 +1028,12 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(_pictureInPictureRemoteObjects);
       }
 
-      v10 = [*(*(&v14 + 1) + 8 * v9) pictureInPictureApplication];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v11 isEqualToString:v4];
+      pictureInPictureApplication = [*(*(&v14 + 1) + 8 * v9) pictureInPictureApplication];
+      bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
+      v12 = [bundleIdentifier isEqualToString:identifierCopy];
 
       if (v12)
       {
@@ -1042,7 +1042,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [_pictureInPictureRemoteObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1056,10 +1056,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v10 = 0;
+    pictureInPictureApplication = 0;
   }
 
-  return v10;
+  return pictureInPictureApplication;
 }
 
 - (NSSet)activePictureInPictureApplicationsStoppingOrCancelling
@@ -1123,14 +1123,14 @@ id __86__PGPictureInPictureController_activePictureInPictureApplicationsStopping
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 pictureInPictureApplication];
-          if (v10)
+          pictureInPictureApplication = [v9 pictureInPictureApplication];
+          if (pictureInPictureApplication)
           {
-            v11 = [v3 objectForKey:v10];
+            v11 = [v3 objectForKey:pictureInPictureApplication];
 
             if (v11)
             {
-              [v3 objectForKey:v10];
+              [v3 objectForKey:pictureInPictureApplication];
             }
 
             else
@@ -1138,15 +1138,15 @@ id __86__PGPictureInPictureController_activePictureInPictureApplicationsStopping
               [MEMORY[0x1E695DF70] array];
             }
             v12 = ;
-            v13 = [v9 sourceSceneSessionPersistentIdentifier];
-            if (v13)
+            sourceSceneSessionPersistentIdentifier = [v9 sourceSceneSessionPersistentIdentifier];
+            if (sourceSceneSessionPersistentIdentifier)
             {
-              [v12 addObject:v13];
+              [v12 addObject:sourceSceneSessionPersistentIdentifier];
             }
 
             if (v12)
             {
-              [v3 setObject:v12 forKey:v10];
+              [v3 setObject:v12 forKey:pictureInPictureApplication];
             }
           }
         }
@@ -1181,25 +1181,25 @@ id __86__PGPictureInPictureController_activePictureInPictureApplicationsStopping
   }
 }
 
-- (void)pagingSkipByNumberOfPages:(int64_t)a3 application:(id)a4
+- (void)pagingSkipByNumberOfPages:(int64_t)pages application:(id)application
 {
-  v5 = [(PGPictureInPictureController *)self _remoteObjectsForPictureInPictureApplication:a4];
-  v6 = [v5 anyObject];
+  v5 = [(PGPictureInPictureController *)self _remoteObjectsForPictureInPictureApplication:application];
+  anyObject = [v5 anyObject];
 
-  [v6 pagingSkipByNumberOfPages:a3];
+  [anyObject pagingSkipByNumberOfPages:pages];
 }
 
-- (id)_remoteObjectsForPictureInPictureApplication:(id)a3
+- (id)_remoteObjectsForPictureInPictureApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  applicationCopy = application;
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__PGPictureInPictureController__remoteObjectsForPictureInPictureApplication___block_invoke;
   v9[3] = &unk_1E7F32450;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 objectsPassingTest:v9];
+  v10 = applicationCopy;
+  v6 = applicationCopy;
+  v7 = [_pictureInPictureRemoteObjects objectsPassingTest:v9];
 
   return v7;
 }
@@ -1212,16 +1212,16 @@ BOOL __77__PGPictureInPictureController__remoteObjectsForPictureInPictureApplica
   return v4;
 }
 
-- (id)_remoteObjectForPictureInPictureApplication:(id)a3 passingTest:(id)a4 error:(id *)a5
+- (id)_remoteObjectForPictureInPictureApplication:(id)application passingTest:(id)test error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(PGPictureInPictureController *)v10 _remoteObjectsForPictureInPictureApplication:v8];
+  applicationCopy = application;
+  testCopy = test;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(PGPictureInPictureController *)selfCopy _remoteObjectsForPictureInPictureApplication:applicationCopy];
   if ([v11 count])
   {
-    v12 = [v11 objectsPassingTest:v9];
+    v12 = [v11 objectsPassingTest:testCopy];
     if ([v12 count] >= 2)
     {
       v13 = PGLogCommon();
@@ -1233,57 +1233,57 @@ BOOL __77__PGPictureInPictureController__remoteObjectsForPictureInPictureApplica
 
     if ([v12 count] == 1)
     {
-      v14 = [v12 anyObject];
+      anyObject = [v12 anyObject];
       v15 = 0;
     }
 
     else
     {
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1002 userInfo:0];
-      v14 = 0;
+      anyObject = 0;
     }
   }
 
   else
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1000 userInfo:0];
-    v14 = 0;
+    anyObject = 0;
   }
 
-  objc_sync_exit(v10);
-  if (a5)
+  objc_sync_exit(selfCopy);
+  if (error)
   {
     v16 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
-  return v14;
+  return anyObject;
 }
 
-- (id)_remoteObjectForPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5
+- (id)_remoteObjectForPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __115__PGPictureInPictureController__remoteObjectForPictureInPictureApplication_sceneSessionPersistentIdentifier_error___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:a3 passingTest:v12 error:a5];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:application passingTest:v12 error:error];
 
   return v10;
 }
 
-- (id)_remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5
+- (id)_remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __164__PGPictureInPictureController__remoteObjectThatShouldStartPictureInPictureEnteringBackgroundForPictureInPictureApplication_sceneSessionPersistentIdentifier_error___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:a3 passingTest:v12 error:a5];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:application passingTest:v12 error:error];
 
   return v10;
 }
@@ -1313,16 +1313,16 @@ uint64_t __164__PGPictureInPictureController__remoteObjectThatShouldStartPicture
   return v7;
 }
 
-- (id)_remoteObjectThatCanStopPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5
+- (id)_remoteObjectThatCanStopPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __123__PGPictureInPictureController__remoteObjectThatCanStopPictureInPictureApplication_sceneSessionPersistentIdentifier_error___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:a3 passingTest:v12 error:a5];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:application passingTest:v12 error:error];
 
   return v10;
 }
@@ -1343,16 +1343,16 @@ uint64_t __123__PGPictureInPictureController__remoteObjectThatCanStopPictureInPi
   return v4;
 }
 
-- (id)_remoteObjectThatCanCancelPictureInPictureApplication:(id)a3 sceneSessionPersistentIdentifier:(id)a4 error:(id *)a5
+- (id)_remoteObjectThatCanCancelPictureInPictureApplication:(id)application sceneSessionPersistentIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __125__PGPictureInPictureController__remoteObjectThatCanCancelPictureInPictureApplication_sceneSessionPersistentIdentifier_error___block_invoke;
   v12[3] = &unk_1E7F32450;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:a3 passingTest:v12 error:a5];
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = [(PGPictureInPictureController *)self _remoteObjectForPictureInPictureApplication:application passingTest:v12 error:error];
 
   return v10;
 }
@@ -1375,15 +1375,15 @@ uint64_t __125__PGPictureInPictureController__remoteObjectThatCanCancelPictureIn
 
 - (BOOL)_hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP
 {
-  v3 = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
+  _faceTimeVideoCallRemoteObject = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
   activePictureInPictureRemoteObjects = self->_activePictureInPictureRemoteObjects;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__PGPictureInPictureController__hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP__block_invoke;
   v12[3] = &unk_1E7F32400;
-  v5 = v3;
+  v5 = _faceTimeVideoCallRemoteObject;
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   if (([(NSMutableSet *)activePictureInPictureRemoteObjects bs_containsObjectPassingTest:v12]& 1) != 0)
   {
     v6 = 1;
@@ -1391,14 +1391,14 @@ uint64_t __125__PGPictureInPictureController__remoteObjectThatCanCancelPictureIn
 
   else
   {
-    v7 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+    _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __92__PGPictureInPictureController__hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP__block_invoke_2;
     v9[3] = &unk_1E7F32400;
     v10 = v5;
-    v11 = self;
-    v6 = [v7 bs_containsObjectPassingTest:v9];
+    selfCopy2 = self;
+    v6 = [_pictureInPictureRemoteObjects bs_containsObjectPassingTest:v9];
   }
 
   return v6;
@@ -1489,13 +1489,13 @@ uint64_t __62__PGPictureInPictureController__faceTimeVideoCallRemoteObject__bloc
     }
   }
 
-  v4 = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
-  v39 = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
+  _pictureInPictureRemoteObjects = [(PGPictureInPictureController *)self _pictureInPictureRemoteObjects];
+  _faceTimeVideoCallRemoteObject = [(PGPictureInPictureController *)self _faceTimeVideoCallRemoteObject];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v4;
+  obj = _pictureInPictureRemoteObjects;
   v5 = [obj countByEnumeratingWithState:&v45 objects:v56 count:16];
   if (v5)
   {
@@ -1529,17 +1529,17 @@ uint64_t __62__PGPictureInPictureController__faceTimeVideoCallRemoteObject__bloc
         }
 
         [(PGPictureInPictureRemoteObject *)v9 setPictureInPicturePossible:v10];
-        if (-[PGPictureInPictureRemoteObject isVideoCall](v9, "isVideoCall") && (-[PGPictureInPictureRemoteObject pictureInPictureApplication](v9, "pictureInPictureApplication"), v12 = objc_claimAutoreleasedReturnValue(), [v12 bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqual:", @"com.apple.InCallService"), v13, v12, v14) || -[PGPictureInPictureRemoteObject isAssociatedWithRemoteObject:](v9, "isAssociatedWithRemoteObject:", v39))
+        if (-[PGPictureInPictureRemoteObject isVideoCall](v9, "isVideoCall") && (-[PGPictureInPictureRemoteObject pictureInPictureApplication](v9, "pictureInPictureApplication"), v12 = objc_claimAutoreleasedReturnValue(), [v12 bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqual:", @"com.apple.InCallService"), v13, v12, v14) || -[PGPictureInPictureRemoteObject isAssociatedWithRemoteObject:](v9, "isAssociatedWithRemoteObject:", _faceTimeVideoCallRemoteObject))
         {
-          v15 = [(PGPictureInPictureController *)self _faceTimeVideoCallInterruptionExemption];
-          [(PGPictureInPictureRemoteObject *)v9 setExemptAttribution:v15];
+          _faceTimeVideoCallInterruptionExemption = [(PGPictureInPictureController *)self _faceTimeVideoCallInterruptionExemption];
+          [(PGPictureInPictureRemoteObject *)v9 setExemptAttribution:_faceTimeVideoCallInterruptionExemption];
         }
 
         else
         {
-          v15 = [(PGPictureInPictureRemoteObject *)v9 pictureInPictureApplication];
-          v16 = [v15 bundleIdentifier];
-          [(PGPictureInPictureRemoteObject *)v9 setExemptAttribution:v16];
+          _faceTimeVideoCallInterruptionExemption = [(PGPictureInPictureRemoteObject *)v9 pictureInPictureApplication];
+          bundleIdentifier = [_faceTimeVideoCallInterruptionExemption bundleIdentifier];
+          [(PGPictureInPictureRemoteObject *)v9 setExemptAttribution:bundleIdentifier];
         }
 
         if ((v10 & 1) == 0 && [(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v9]&& [(PGPictureInPictureRemoteObject *)v9 canCancelPictureInPicture])
@@ -1554,8 +1554,8 @@ uint64_t __62__PGPictureInPictureController__faceTimeVideoCallRemoteObject__bloc
     while (v6);
   }
 
-  v17 = [(PGBackgroundPIPService *)self->_backgroundPIPService identifiersForAuthorizedActivitySessions];
-  if (![v17 count])
+  identifiersForAuthorizedActivitySessions = [(PGBackgroundPIPService *)self->_backgroundPIPService identifiersForAuthorizedActivitySessions];
+  if (![identifiersForAuthorizedActivitySessions count])
   {
     goto LABEL_54;
   }
@@ -1567,13 +1567,13 @@ uint64_t __62__PGPictureInPictureController__faceTimeVideoCallRemoteObject__bloc
     goto LABEL_55;
   }
 
-  v19 = [(PGPictureInPictureController *)self _hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP];
+  _hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP = [(PGPictureInPictureController *)self _hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = obj;
-  v20 = [v17 countByEnumeratingWithState:&v40 objects:v55 count:16];
+  identifiersForAuthorizedActivitySessions = obj;
+  v20 = [identifiersForAuthorizedActivitySessions countByEnumeratingWithState:&v40 objects:v55 count:16];
   if (!v20)
   {
 LABEL_54:
@@ -1583,7 +1583,7 @@ LABEL_54:
 
   v21 = v20;
   v22 = *v41;
-  v37 = v17;
+  v37 = identifiersForAuthorizedActivitySessions;
 LABEL_29:
   v23 = 0;
   while (1)
@@ -1594,14 +1594,14 @@ LABEL_29:
     }
 
     v24 = *(*(&v40 + 1) + 8 * v23);
-    v25 = v19 ? [v39 isEqual:*(*(&v40 + 1) + 8 * v23)] ^ 1 : 0;
-    v26 = [v24 activitySessionIdentifier];
-    v27 = [v24 pictureInPictureApplication];
-    v28 = [v27 bundleIdentifier];
+    v25 = _hasActiveNonVideoCallRemoteObjectAuthorizedForBackgroundPIP ? [_faceTimeVideoCallRemoteObject isEqual:*(*(&v40 + 1) + 8 * v23)] ^ 1 : 0;
+    activitySessionIdentifier = [v24 activitySessionIdentifier];
+    pictureInPictureApplication = [v24 pictureInPictureApplication];
+    bundleIdentifier2 = [pictureInPictureApplication bundleIdentifier];
 
     if ((v25 & 1) == 0)
     {
-      if ([(PGBackgroundPIPService *)self->_backgroundPIPService hasAcquiredAuthorizationForActivitySessionWithIdentifier:v26 appBundleIdentifier:v28])
+      if ([(PGBackgroundPIPService *)self->_backgroundPIPService hasAcquiredAuthorizationForActivitySessionWithIdentifier:activitySessionIdentifier appBundleIdentifier:bundleIdentifier2])
       {
         break;
       }
@@ -1609,7 +1609,7 @@ LABEL_29:
 
     if (v21 == ++v23)
     {
-      v17 = v37;
+      identifiersForAuthorizedActivitySessions = v37;
       v21 = [v37 countByEnumeratingWithState:&v40 objects:v55 count:16];
       if (v21)
       {
@@ -1620,13 +1620,13 @@ LABEL_29:
     }
   }
 
-  v29 = [(PGPictureInPictureController *)self delegate];
+  delegate = [(PGPictureInPictureController *)self delegate];
   v30 = objc_opt_respondsToSelector();
 
   if (v30)
   {
-    v31 = [(PGPictureInPictureController *)self delegate];
-    v32 = [v31 pictureInPictureController:self shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:v28];
+    delegate2 = [(PGPictureInPictureController *)self delegate];
+    v32 = [delegate2 pictureInPictureController:self shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:bundleIdentifier2];
 
     v33 = v37;
     if (v32)
@@ -1641,7 +1641,7 @@ LABEL_29:
         v34 = 0;
       }
 
-      v17 = v34;
+      identifiersForAuthorizedActivitySessions = v34;
     }
 
     else
@@ -1652,24 +1652,24 @@ LABEL_29:
         *buf = 136315650;
         v50 = "[PGPictureInPictureController _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions]";
         v51 = 2114;
-        v52 = v26;
+        v52 = activitySessionIdentifier;
         v53 = 2114;
-        v54 = v28;
+        v54 = bundleIdentifier2;
         _os_log_impl(&dword_1BB282000, v35, OS_LOG_TYPE_DEFAULT, "%s Revoking authorization for %{public}@ because the delegate forbids background pip for the app %{public}@", buf, 0x20u);
       }
 
-      [(PGBackgroundPIPService *)self->_backgroundPIPService revokeAuthorizationActivitySessionWithIdentifier:v26];
-      v17 = 0;
+      [(PGBackgroundPIPService *)self->_backgroundPIPService revokeAuthorizationActivitySessionWithIdentifier:activitySessionIdentifier];
+      identifiersForAuthorizedActivitySessions = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    identifiersForAuthorizedActivitySessions = 0;
     v33 = v37;
   }
 
-  if (v17)
+  if (identifiersForAuthorizedActivitySessions)
   {
     v36 = PGLogCommon();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -1677,12 +1677,12 @@ LABEL_29:
       *buf = 136315394;
       v50 = "[PGPictureInPictureController _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions]";
       v51 = 2114;
-      v52 = v17;
+      v52 = identifiersForAuthorizedActivitySessions;
       _os_log_impl(&dword_1BB282000, v36, OS_LOG_TYPE_DEFAULT, "%s Attempting to start backgroundPIP for %{public}@", buf, 0x16u);
     }
 
-    [v17 setPictureInPicturePossible:1];
-    [v17 startPictureInPictureFromBackground];
+    [identifiersForAuthorizedActivitySessions setPictureInPicturePossible:1];
+    [identifiersForAuthorizedActivitySessions startPictureInPictureFromBackground];
     goto LABEL_54;
   }
 
@@ -1706,43 +1706,43 @@ uint64_t __90__PGPictureInPictureController__updateAllRemoteObjectsForPIPPossibl
   return v5;
 }
 
-- (void)_addRemoteObject:(id)a3
+- (void)_addRemoteObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
+    objectCopy = object;
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableSet *)self->_lock_pictureInPictureRemoteObjects addObject:v4];
+    [(NSMutableSet *)self->_lock_pictureInPictureRemoteObjects addObject:objectCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_removeRemoteObject:(id)a3
+- (void)_removeRemoteObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
+    objectCopy = object;
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableSet *)self->_lock_pictureInPictureRemoteObjects removeObject:v4];
+    [(NSMutableSet *)self->_lock_pictureInPictureRemoteObjects removeObject:objectCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[PGPictureInPictureController listener:shouldAcceptNewConnection:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    v25 = v5;
+    v25 = connectionCopy;
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %p %{public}@", buf, 0x20u);
   }
 
@@ -1755,7 +1755,7 @@ uint64_t __90__PGPictureInPictureController__updateAllRemoteObjectsForPIPPossibl
     }
   }
 
-  if (!PGIsPictureInPictureSupported() || (*&self->_delegateRespondsTo & 0x20) != 0 && (-[PGPictureInPictureController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 pictureInPictureController:self shouldDenyNewConnection:v5], v8, (v9 & 1) != 0))
+  if (!PGIsPictureInPictureSupported() || (*&self->_delegateRespondsTo & 0x20) != 0 && (-[PGPictureInPictureController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 pictureInPictureController:self shouldDenyNewConnection:connectionCopy], v8, (v9 & 1) != 0))
   {
     v10 = 0;
   }
@@ -1773,8 +1773,8 @@ uint64_t __90__PGPictureInPictureController__updateAllRemoteObjectsForPIPPossibl
     v15[1] = 3221225472;
     v15[2] = __67__PGPictureInPictureController_listener_shouldAcceptNewConnection___block_invoke_4;
     v15[3] = &unk_1E7F32558;
-    v16 = v5;
-    v17 = self;
+    v16 = connectionCopy;
+    selfCopy2 = self;
     v18 = v11;
     v13 = v11;
     dispatch_async(listenerQueue, v15);
@@ -1939,38 +1939,38 @@ void __67__PGPictureInPictureController_listener_shouldAcceptNewConnection___blo
   [v2 setAnalyticsDelegate:v3];
 }
 
-- (BOOL)pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:(id)a3
+- (BOOL)pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:(id)authorization
 {
   backgroundPIPService = self->_backgroundPIPService;
-  v4 = a3;
-  v5 = [v4 activitySessionIdentifier];
-  v6 = [v4 pictureInPictureApplication];
+  authorizationCopy = authorization;
+  activitySessionIdentifier = [authorizationCopy activitySessionIdentifier];
+  pictureInPictureApplication = [authorizationCopy pictureInPictureApplication];
 
-  v7 = [v6 bundleIdentifier];
-  LOBYTE(backgroundPIPService) = [(PGBackgroundPIPService *)backgroundPIPService hasAcquiredAuthorizationForActivitySessionWithIdentifier:v5 appBundleIdentifier:v7];
+  bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
+  LOBYTE(backgroundPIPService) = [(PGBackgroundPIPService *)backgroundPIPService hasAcquiredAuthorizationForActivitySessionWithIdentifier:activitySessionIdentifier appBundleIdentifier:bundleIdentifier];
 
   return backgroundPIPService;
 }
 
-- (BOOL)pictureInPictureRemoteObjectShouldAcceptSetupRequest:(id)a3
+- (BOOL)pictureInPictureRemoteObjectShouldAcceptSetupRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v4];
+  requestCopy = request;
+  v5 = [(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:requestCopy];
   activePictureInPictureRemoteObjects = self->_activePictureInPictureRemoteObjects;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__PGPictureInPictureController_pictureInPictureRemoteObjectShouldAcceptSetupRequest___block_invoke;
   v9[3] = &unk_1E7F32428;
-  v10 = v4;
-  v7 = v4;
+  v10 = requestCopy;
+  v7 = requestCopy;
   LOBYTE(activePictureInPictureRemoteObjects) = v5 | [(NSMutableSet *)activePictureInPictureRemoteObjects bs_containsObjectPassingTest:v9];
 
   return (activePictureInPictureRemoteObjects & 1) == 0;
 }
 
-- (BOOL)pictureInPictureRemoteObjectShouldCancelActivePictureInPictureOnStart:(id)a3
+- (BOOL)pictureInPictureRemoteObjectShouldCancelActivePictureInPictureOnStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if ((*&self->_delegateRespondsTo & 0x10) != 0 && [(NSMutableSet *)self->_activePictureInPictureRemoteObjects count])
   {
     activePictureInPictureRemoteObjects = self->_activePictureInPictureRemoteObjects;
@@ -1978,13 +1978,13 @@ void __67__PGPictureInPictureController_listener_shouldAcceptNewConnection___blo
     v10 = 3221225472;
     v11 = __102__PGPictureInPictureController_pictureInPictureRemoteObjectShouldCancelActivePictureInPictureOnStart___block_invoke;
     v12 = &unk_1E7F32400;
-    v13 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = startCopy;
     v14 = v6;
     v7 = [(NSMutableSet *)activePictureInPictureRemoteObjects bs_containsObjectPassingTest:&v9];
     if ((v7 & 1) == 0)
     {
-      [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart addObject:v6, v9, v10, v11, v12, v13];
+      [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart addObject:v6, v9, v10, v11, v12, selfCopy];
     }
   }
 
@@ -2010,43 +2010,43 @@ uint64_t __102__PGPictureInPictureController_pictureInPictureRemoteObjectShouldC
   return v9;
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 didRequestPictureInPictureStopForViewController:(id)a4 sourceSceneSessionIdentifier:(id)a5 animated:(BOOL)a6
+- (void)pictureInPictureRemoteObject:(id)object didRequestPictureInPictureStopForViewController:(id)controller sourceSceneSessionIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v6 = a6;
-  obj = a3;
-  v10 = a4;
-  v11 = a5;
+  animatedCopy = animated;
+  obj = object;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   objc_storeWeak(&self->_remoteObjectThatRequestedStop, obj);
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
   if ((*&self->_delegateRespondsTo & 0x40) != 0)
   {
-    v12 = [(PGPictureInPictureController *)self delegate];
-    [v12 pictureInPictureController:self didRequestStopForPictureInPictureViewController:v10 sourceSceneSessionIdentifier:v11 animated:v6];
+    delegate = [(PGPictureInPictureController *)self delegate];
+    [delegate pictureInPictureController:self didRequestStopForPictureInPictureViewController:controllerCopy sourceSceneSessionIdentifier:identifierCopy animated:animatedCopy];
   }
 
   else
   {
-    v12 = [obj pictureInPictureApplication];
-    v13 = [obj sourceSceneSessionPersistentIdentifier];
-    [(PGPictureInPictureController *)self stopPictureInPictureForApplication:v12 sceneSessionPersistentIdentifier:v13 animated:v6 completionHandler:0];
+    delegate = [obj pictureInPictureApplication];
+    sourceSceneSessionPersistentIdentifier = [obj sourceSceneSessionPersistentIdentifier];
+    [(PGPictureInPictureController *)self stopPictureInPictureForApplication:delegate sceneSessionPersistentIdentifier:sourceSceneSessionPersistentIdentifier animated:animatedCopy completionHandler:0];
   }
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 didCreatePictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object didCreatePictureInPictureViewController:(id)controller
 {
   if (*&self->_delegateRespondsTo)
   {
-    v6 = a4;
-    v7 = [(PGPictureInPictureController *)self delegate];
-    [v7 pictureInPictureController:self didCreatePictureInPictureViewController:v6];
+    controllerCopy = controller;
+    delegate = [(PGPictureInPictureController *)self delegate];
+    [delegate pictureInPictureController:self didCreatePictureInPictureViewController:controllerCopy];
   }
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 willShowPictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object willShowPictureInPictureViewController:(id)controller
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -2074,7 +2074,7 @@ uint64_t __102__PGPictureInPictureController_pictureInPictureRemoteObjectShouldC
   v31 = 0;
   v32 = 0;
   v13 = *v35;
-  v33 = self;
+  selfCopy = self;
   do
   {
     v14 = 0;
@@ -2086,7 +2086,7 @@ uint64_t __102__PGPictureInPictureController_pictureInPictureRemoteObjectShouldC
       }
 
       v15 = *(*(&v34 + 1) + 8 * v14);
-      if ([(PGPictureInPictureController *)v6 canTetherRemoteObjectAsMicroPIP:v15])
+      if ([(PGPictureInPictureController *)objectCopy canTetherRemoteObjectAsMicroPIP:v15])
       {
         v16 = PGLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2094,20 +2094,20 @@ uint64_t __102__PGPictureInPictureController_pictureInPictureRemoteObjectShouldC
           *buf = 136315650;
           v39 = "[PGPictureInPictureController pictureInPictureRemoteObject:willShowPictureInPictureViewController:]";
           v40 = 2048;
-          v41 = v6;
+          selfCopy2 = objectCopy;
           v42 = 2048;
           v43 = v15;
           _os_log_impl(&dword_1BB282000, v16, OS_LOG_TYPE_DEFAULT, "%s Will tether because new object %p can tether %p as micropip", buf, 0x20u);
         }
 
         v17 = v15;
-        v18 = v6;
+        v18 = objectCopy;
 LABEL_18:
         [PGPictureInPictureRemoteObject tetherRemoteObject:v17 toRemoteObject:v18 mode:1];
         goto LABEL_19;
       }
 
-      if ([(PGPictureInPictureController *)v15 canTetherRemoteObjectAsMicroPIP:v6])
+      if ([(PGPictureInPictureController *)v15 canTetherRemoteObjectAsMicroPIP:objectCopy])
       {
         v19 = PGLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2115,18 +2115,18 @@ LABEL_18:
           *buf = 136315650;
           v39 = "[PGPictureInPictureController pictureInPictureRemoteObject:willShowPictureInPictureViewController:]";
           v40 = 2048;
-          v41 = v15;
+          selfCopy2 = v15;
           v42 = 2048;
-          v43 = v6;
+          v43 = objectCopy;
           _os_log_impl(&dword_1BB282000, v19, OS_LOG_TYPE_DEFAULT, "%s Will tether because active object %p can tether %p as micropip", buf, 0x20u);
         }
 
-        v17 = v6;
+        v17 = objectCopy;
         v18 = v15;
         goto LABEL_18;
       }
 
-      if ([(PGPictureInPictureController *)v6 canActivateUntetheredAlongsideOtherObject:v15])
+      if ([(PGPictureInPictureController *)objectCopy canActivateUntetheredAlongsideOtherObject:v15])
       {
         v20 = PGLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -2135,7 +2135,7 @@ LABEL_26:
           *buf = 136315650;
           v39 = "[PGPictureInPictureController pictureInPictureRemoteObject:willShowPictureInPictureViewController:]";
           v40 = 2048;
-          v41 = v6;
+          selfCopy2 = objectCopy;
           v42 = 2048;
           v43 = v15;
           _os_log_impl(&dword_1BB282000, v20, OS_LOG_TYPE_DEFAULT, "%s Allowing remote object %p to coexist with active %p because one is QNBacklink", buf, 0x20u);
@@ -2146,7 +2146,7 @@ LABEL_27:
         goto LABEL_19;
       }
 
-      if ([(PGPictureInPictureController *)v15 canActivateUntetheredAlongsideOtherObject:v6])
+      if ([(PGPictureInPictureController *)v15 canActivateUntetheredAlongsideOtherObject:objectCopy])
       {
         v20 = PGLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -2157,7 +2157,7 @@ LABEL_27:
         goto LABEL_27;
       }
 
-      if ([(PGPictureInPictureController *)v6 canPreventOrSuspendRemoteObject:v15])
+      if ([(PGPictureInPictureController *)objectCopy canPreventOrSuspendRemoteObject:v15])
       {
         v21 = PGLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2165,7 +2165,7 @@ LABEL_27:
           *buf = 136315650;
           v39 = "[PGPictureInPictureController pictureInPictureRemoteObject:willShowPictureInPictureViewController:]";
           v40 = 2048;
-          v41 = self;
+          selfCopy2 = self;
           v42 = 2048;
           v43 = v15;
           _os_log_impl(&dword_1BB282000, v21, OS_LOG_TYPE_DEFAULT, "%s New object %p suspending active %p", buf, 0x20u);
@@ -2178,7 +2178,7 @@ LABEL_27:
 
       else
       {
-        v22 = [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart containsObject:v6];
+        v22 = [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart containsObject:objectCopy];
         v23 = PGLogCommon();
         v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
         if (v22)
@@ -2191,18 +2191,18 @@ LABEL_27:
           }
 
           v31 = 1;
-          self = v33;
+          self = selfCopy;
         }
 
         else
         {
-          self = v33;
+          self = selfCopy;
           if (v24)
           {
             *buf = 136315650;
             v39 = "[PGPictureInPictureController pictureInPictureRemoteObject:willShowPictureInPictureViewController:]";
             v40 = 2048;
-            v41 = v33;
+            selfCopy2 = selfCopy;
             v42 = 2048;
             v43 = v15;
             _os_log_impl(&dword_1BB282000, v23, OS_LOG_TYPE_DEFAULT, "%s New object %p canceling active %p", buf, 0x20u);
@@ -2213,9 +2213,9 @@ LABEL_27:
           if (!v32)
           {
             v26 = MEMORY[0x1E695DFA8];
-            v27 = [(NSMutableSet *)v33->_activePictureInPictureRemoteObjects count];
+            v27 = [(NSMutableSet *)selfCopy->_activePictureInPictureRemoteObjects count];
             v28 = v26;
-            self = v33;
+            self = selfCopy;
             v25 = [v28 setWithCapacity:v27];
           }
 
@@ -2237,7 +2237,7 @@ LABEL_19:
 
   if (v31)
   {
-    [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart removeObject:v6];
+    [(NSMutableSet *)self->_pictureInPictureRemoteObjectsSupportingActiveSessionCancellationOnStart removeObject:objectCopy];
   }
 
   v30 = v32;
@@ -2247,14 +2247,14 @@ LABEL_46:
     [(NSMutableSet *)self->_activePictureInPictureRemoteObjects minusSet:v30];
   }
 
-  [(NSMutableSet *)self->_activePictureInPictureRemoteObjects addObject:v6];
+  [(NSMutableSet *)self->_activePictureInPictureRemoteObjects addObject:objectCopy];
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
-  [(PGBackgroundPIPService *)self->_backgroundPIPService pipDidStartForRemoteObject:v6];
+  [(PGBackgroundPIPService *)self->_backgroundPIPService pipDidStartForRemoteObject:objectCopy];
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 didShowPictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object didShowPictureInPictureViewController:(id)controller
 {
-  v5 = a3;
+  objectCopy = object;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v6 = PGLogCommon();
@@ -2264,15 +2264,15 @@ LABEL_46:
     }
   }
 
-  if ([(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v5])
+  if ([(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:objectCopy])
   {
     if (self->_pictureInPictureActive)
     {
       [(PGPictureInPictureController *)self willChangeValueForKey:@"activePictureInPictureApplication"];
       self->_pictureInPictureActive = 1;
-      v7 = [v5 pictureInPictureApplication];
+      pictureInPictureApplication = [objectCopy pictureInPictureApplication];
       activePictureInPictureApplication = self->_activePictureInPictureApplication;
-      self->_activePictureInPictureApplication = v7;
+      self->_activePictureInPictureApplication = pictureInPictureApplication;
     }
 
     else
@@ -2280,9 +2280,9 @@ LABEL_46:
       [(PGPictureInPictureController *)self willChangeValueForKey:@"pictureInPictureActive"];
       [(PGPictureInPictureController *)self willChangeValueForKey:@"activePictureInPictureApplication"];
       self->_pictureInPictureActive = 1;
-      v9 = [v5 pictureInPictureApplication];
+      pictureInPictureApplication2 = [objectCopy pictureInPictureApplication];
       v10 = self->_activePictureInPictureApplication;
-      self->_activePictureInPictureApplication = v9;
+      self->_activePictureInPictureApplication = pictureInPictureApplication2;
 
       [(PGPictureInPictureController *)self didChangeValueForKey:@"pictureInPictureActive"];
     }
@@ -2293,10 +2293,10 @@ LABEL_46:
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 willHidePictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object willHidePictureInPictureViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -2308,11 +2308,11 @@ LABEL_46:
 
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
-    v9 = [(PGPictureInPictureController *)self delegate];
-    [v9 pictureInPictureController:self willHidePictureInPictureViewController:v7];
+    delegate = [(PGPictureInPictureController *)self delegate];
+    [delegate pictureInPictureController:self willHidePictureInPictureViewController:controllerCopy];
   }
 
-  if ([(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v6])
+  if ([(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:objectCopy])
   {
     suspendedPictureInPictureRemoteObject = self->_suspendedPictureInPictureRemoteObject;
     if (!suspendedPictureInPictureRemoteObject)
@@ -2324,14 +2324,14 @@ LABEL_46:
     }
 
     v11 = self->_activePictureInPictureApplication;
-    v12 = [(PGPictureInPictureRemoteObject *)suspendedPictureInPictureRemoteObject pictureInPictureApplication];
+    pictureInPictureApplication = [(PGPictureInPictureRemoteObject *)suspendedPictureInPictureRemoteObject pictureInPictureApplication];
 
-    if (v11 != v12)
+    if (v11 != pictureInPictureApplication)
     {
       [(PGPictureInPictureController *)self willChangeValueForKey:@"activePictureInPictureApplication"];
-      v13 = [(PGPictureInPictureRemoteObject *)self->_suspendedPictureInPictureRemoteObject pictureInPictureApplication];
+      pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)self->_suspendedPictureInPictureRemoteObject pictureInPictureApplication];
       activePictureInPictureApplication = self->_activePictureInPictureApplication;
-      self->_activePictureInPictureApplication = v13;
+      self->_activePictureInPictureApplication = pictureInPictureApplication2;
 LABEL_12:
 
       [(PGPictureInPictureController *)self didChangeValueForKey:@"activePictureInPictureApplication"];
@@ -2341,10 +2341,10 @@ LABEL_12:
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 didHidePictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object didHidePictureInPictureViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  controllerCopy = controller;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -2354,7 +2354,7 @@ LABEL_12:
     }
   }
 
-  v9 = [(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:v6];
+  v9 = [(NSMutableSet *)self->_activePictureInPictureRemoteObjects containsObject:objectCopy];
   suspendedPictureInPictureRemoteObject = self->_suspendedPictureInPictureRemoteObject;
   if (v9)
   {
@@ -2373,77 +2373,77 @@ LABEL_12:
       [(PGPictureInPictureController *)self didChangeValueForKey:@"pictureInPictureActive"];
     }
 
-    [(NSMutableSet *)self->_activePictureInPictureRemoteObjects removeObject:v6];
+    [(NSMutableSet *)self->_activePictureInPictureRemoteObjects removeObject:objectCopy];
   }
 
-  else if (suspendedPictureInPictureRemoteObject == v6)
+  else if (suspendedPictureInPictureRemoteObject == objectCopy)
   {
     self->_suspendedPictureInPictureRemoteObject = 0;
   }
 
   if ((*&self->_delegateRespondsTo & 8) != 0)
   {
-    v12 = [(PGPictureInPictureController *)self delegate];
-    [v12 pictureInPictureController:self didHidePictureInPictureViewController:v7];
+    delegate = [(PGPictureInPictureController *)self delegate];
+    [delegate pictureInPictureController:self didHidePictureInPictureViewController:controllerCopy];
   }
 
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
-  [(PGBackgroundPIPService *)self->_backgroundPIPService pipDidStopForRemoteObject:v6];
+  [(PGBackgroundPIPService *)self->_backgroundPIPService pipDidStopForRemoteObject:objectCopy];
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 willDestroyPictureInPictureViewController:(id)a4
+- (void)pictureInPictureRemoteObject:(id)object willDestroyPictureInPictureViewController:(id)controller
 {
-  v9 = a3;
-  v6 = a4;
+  objectCopy = object;
+  controllerCopy = controller;
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
-    v7 = [(PGPictureInPictureController *)self delegate];
-    [v7 pictureInPictureController:self willDestroyPictureInPictureViewController:v6];
+    delegate = [(PGPictureInPictureController *)self delegate];
+    [delegate pictureInPictureController:self willDestroyPictureInPictureViewController:controllerCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_remoteObjectThatRequestedStop);
 
-  if (WeakRetained == v9)
+  if (WeakRetained == objectCopy)
   {
     objc_storeWeak(&self->_remoteObjectThatRequestedStop, 0);
   }
 }
 
-- (id)pictureInPictureRemoteObjectInterruptionAssistant:(id)a3
+- (id)pictureInPictureRemoteObjectInterruptionAssistant:(id)assistant
 {
   v3 = [(PGInterruptionAssistant *)self->_interruptionAssistant copyWithExemptAttribution:0];
 
   return v3;
 }
 
-- (void)pictureInPictureRemoteObject:(id)a3 requestActivationOfSceneWithPersistenceIdentier:(id)a4 completion:(id)a5
+- (void)pictureInPictureRemoteObject:(id)object requestActivationOfSceneWithPersistenceIdentier:(id)identier completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && ([(PGPictureInPictureController *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, (v11 & 1) != 0))
+  objectCopy = object;
+  identierCopy = identier;
+  completionCopy = completion;
+  if (identierCopy && ([(PGPictureInPictureController *)self delegate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, (v11 & 1) != 0))
   {
-    v12 = [(PGPictureInPictureController *)self delegate];
-    v13 = [v14 pictureInPictureViewController];
-    [v12 pictureInPictureController:self requestActivationOfSceneWithPersistenceIdentier:v8 pictureInPictureViewController:v13 completion:v9];
+    delegate = [(PGPictureInPictureController *)self delegate];
+    pictureInPictureViewController = [objectCopy pictureInPictureViewController];
+    [delegate pictureInPictureController:self requestActivationOfSceneWithPersistenceIdentier:identierCopy pictureInPictureViewController:pictureInPictureViewController completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)pictureInPictureRemoteObject:(id)a3 displayConfigurationForApplication:(id)a4
+- (id)pictureInPictureRemoteObject:(id)object displayConfigurationForApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(PGPictureInPictureController *)self delegate];
+  applicationCopy = application;
+  delegate = [(PGPictureInPictureController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PGPictureInPictureController *)self delegate];
-    v9 = [v8 pictureInPictureController:self displayConfigurationForApplication:v5];
+    delegate2 = [(PGPictureInPictureController *)self delegate];
+    v9 = [delegate2 pictureInPictureController:self displayConfigurationForApplication:applicationCopy];
   }
 
   else
@@ -2454,52 +2454,52 @@ LABEL_12:
   return v9;
 }
 
-- (void)backgroundPIPService:(id)a3 didGrantBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)a4
+- (void)backgroundPIPService:(id)service didGrantBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[PGPictureInPictureController backgroundPIPService:didGrantBackgroundPIPAuthorizationForActivitySessionWithIdentifier:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v7, 0x16u);
   }
 
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
 }
 
-- (void)backgroundPIPService:(id)a3 didRevokeBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)a4
+- (void)backgroundPIPService:(id)service didRevokeBackgroundPIPAuthorizationForActivitySessionWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[PGPictureInPictureController backgroundPIPService:didRevokeBackgroundPIPAuthorizationForActivitySessionWithIdentifier:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = identifierCopy;
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v7, 0x16u);
   }
 
   [(PGPictureInPictureController *)self _updateAllRemoteObjectsForPIPPossibleAndExemptAttributions];
 }
 
-- (BOOL)backgroundPIPService:(id)a3 canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:(id)a4 appBundleIdentifier:(id)a5
+- (BOOL)backgroundPIPService:(id)service canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(PGPictureInPictureController *)self delegate];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  delegate = [(PGPictureInPictureController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(PGPictureInPictureController *)self delegate];
-    v12 = [v11 pictureInPictureController:self shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:v8];
+    delegate2 = [(PGPictureInPictureController *)self delegate];
+    v12 = [delegate2 pictureInPictureController:self shouldAuthorizeBackgroundPIPForAppWithBundleIdentifier:bundleIdentifierCopy];
   }
 
   else
@@ -2513,9 +2513,9 @@ LABEL_12:
     *buf = 136315906;
     v20 = "[PGPictureInPictureController backgroundPIPService:canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:appBundleIdentifier:]";
     v21 = 2114;
-    v22 = v7;
+    v22 = identifierCopy;
     v23 = 2114;
-    v24 = v8;
+    v24 = bundleIdentifierCopy;
     v25 = 1024;
     v26 = v12;
     _os_log_impl(&dword_1BB282000, v13, OS_LOG_TYPE_DEFAULT, "%s %{public}@ %{public}@ canAuthorizeBackgroundPIPForActivitySessionWithIdentifier before checking interruptions %{BOOL}u", buf, 0x26u);
@@ -2525,13 +2525,13 @@ LABEL_12:
   {
     if ([(PGInterruptionAssistant *)self->_interruptionAssistant hasInterruptionReason:2])
     {
-      v14 = [(PGInterruptionAssistant *)self->_interruptionAssistant cameraInterruptionAttributions];
+      cameraInterruptionAttributions = [(PGInterruptionAssistant *)self->_interruptionAssistant cameraInterruptionAttributions];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __131__PGPictureInPictureController_backgroundPIPService_canAuthorizeBackgroundPIPForActivitySessionWithIdentifier_appBundleIdentifier___block_invoke;
       v18[3] = &unk_1E7F325A8;
       v18[4] = self;
-      v15 = [v14 bs_containsObjectPassingTest:v18] ^ 1;
+      v15 = [cameraInterruptionAttributions bs_containsObjectPassingTest:v18] ^ 1;
       if ((v15 & 1) == 0)
       {
         v16 = PGLogCommon();
@@ -2540,9 +2540,9 @@ LABEL_12:
           *buf = 136315650;
           v20 = "[PGPictureInPictureController backgroundPIPService:canAuthorizeBackgroundPIPForActivitySessionWithIdentifier:appBundleIdentifier:]";
           v21 = 2114;
-          v22 = v7;
+          v22 = identifierCopy;
           v23 = 2114;
-          v24 = v8;
+          v24 = bundleIdentifierCopy;
           _os_log_impl(&dword_1BB282000, v16, OS_LOG_TYPE_DEFAULT, "%s Controller changed mind and decided to reject auth due for %{public}@ %{public}@ to camera interruption.", buf, 0x20u);
         }
       }

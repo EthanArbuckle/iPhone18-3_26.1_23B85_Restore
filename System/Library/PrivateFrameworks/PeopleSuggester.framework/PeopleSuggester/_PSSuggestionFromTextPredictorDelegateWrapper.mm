@@ -1,108 +1,108 @@
 @interface _PSSuggestionFromTextPredictorDelegateWrapper
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithDelegateType:(int64_t)a3 textPredictor:(id)a4 startSecondsFromQuery:(double)a5 endSecondsFromQuery:(double)a6 priorScoreThreshold:(float)a7 isEnabled:(BOOL)a8 defaultConfidenceCategory:(int64_t)a9;
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)a3 calendarConfig:(id)a4;
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)a3 remindersConfig:(id)a4;
-- (id)getSuggestionsWithPredictionContext:(id)a3;
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5;
-- (void)updateWithCalendarConfig:(id)a3;
-- (void)updateWithRemindersConfig:(id)a3;
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithDelegateType:(int64_t)type textPredictor:(id)predictor startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery priorScoreThreshold:(float)threshold isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category;
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)predictor calendarConfig:(id)config;
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)predictor remindersConfig:(id)config;
+- (id)getSuggestionsWithPredictionContext:(id)context;
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply;
+- (void)updateWithCalendarConfig:(id)config;
+- (void)updateWithRemindersConfig:(id)config;
 @end
 
 @implementation _PSSuggestionFromTextPredictorDelegateWrapper
 
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithDelegateType:(int64_t)a3 textPredictor:(id)a4 startSecondsFromQuery:(double)a5 endSecondsFromQuery:(double)a6 priorScoreThreshold:(float)a7 isEnabled:(BOOL)a8 defaultConfidenceCategory:(int64_t)a9
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithDelegateType:(int64_t)type textPredictor:(id)predictor startSecondsFromQuery:(double)query endSecondsFromQuery:(double)fromQuery priorScoreThreshold:(float)threshold isEnabled:(BOOL)enabled defaultConfidenceCategory:(int64_t)category
 {
-  v17 = a4;
+  predictorCopy = predictor;
   v21.receiver = self;
   v21.super_class = _PSSuggestionFromTextPredictorDelegateWrapper;
   v18 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_delegateType = a3;
-    objc_storeStrong(&v18->_textPredictor, a4);
-    v19->_startSecondsFromQuery = a5;
-    v19->_endSecondsFromQuery = a6;
-    v19->_priorScoreThreshold = a7;
-    v19->_isEnabled = a8;
-    v19->_defaultConfidenceCategory = a9;
+    v18->_delegateType = type;
+    objc_storeStrong(&v18->_textPredictor, predictor);
+    v19->_startSecondsFromQuery = query;
+    v19->_endSecondsFromQuery = fromQuery;
+    v19->_priorScoreThreshold = threshold;
+    v19->_isEnabled = enabled;
+    v19->_defaultConfidenceCategory = category;
   }
 
   return v19;
 }
 
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)a3 calendarConfig:(id)a4
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)predictor calendarConfig:(id)config
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 startSecondsFromQuery];
+  configCopy = config;
+  predictorCopy = predictor;
+  [configCopy startSecondsFromQuery];
   v9 = v8;
-  [v6 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   v11 = v10;
-  [v6 priorScoreThreshold];
+  [configCopy priorScoreThreshold];
   v13 = v12;
-  v14 = [v6 isEnabled];
-  v15 = [v6 defaultConfidenceCategory];
+  isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
   LODWORD(v16) = v13;
-  v17 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self initWithDelegateType:1 textPredictor:v7 startSecondsFromQuery:v14 endSecondsFromQuery:v15 priorScoreThreshold:v9 isEnabled:v11 defaultConfidenceCategory:v16];
+  v17 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self initWithDelegateType:1 textPredictor:predictorCopy startSecondsFromQuery:isEnabled endSecondsFromQuery:defaultConfidenceCategory priorScoreThreshold:v9 isEnabled:v11 defaultConfidenceCategory:v16];
 
   return v17;
 }
 
-- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)a3 remindersConfig:(id)a4
+- (_PSSuggestionFromTextPredictorDelegateWrapper)initWithTextPredictor:(id)predictor remindersConfig:(id)config
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 startSecondsFromQuery];
+  configCopy = config;
+  predictorCopy = predictor;
+  [configCopy startSecondsFromQuery];
   v9 = v8;
-  [v6 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   v11 = v10;
-  [v6 priorScoreThreshold];
+  [configCopy priorScoreThreshold];
   v13 = v12;
-  v14 = [v6 isEnabled];
-  v15 = [v6 defaultConfidenceCategory];
+  isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
   LODWORD(v16) = v13;
-  v17 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self initWithDelegateType:2 textPredictor:v7 startSecondsFromQuery:v14 endSecondsFromQuery:v15 priorScoreThreshold:v9 isEnabled:v11 defaultConfidenceCategory:v16];
+  v17 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self initWithDelegateType:2 textPredictor:predictorCopy startSecondsFromQuery:isEnabled endSecondsFromQuery:defaultConfidenceCategory priorScoreThreshold:v9 isEnabled:v11 defaultConfidenceCategory:v16];
 
   return v17;
 }
 
-- (void)updateWithCalendarConfig:(id)a3
+- (void)updateWithCalendarConfig:(id)config
 {
-  v4 = a3;
-  [v4 startSecondsFromQuery];
+  configCopy = config;
+  [configCopy startSecondsFromQuery];
   self->_startSecondsFromQuery = v5;
-  [v4 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   self->_endSecondsFromQuery = v6;
-  [v4 priorScoreThreshold];
+  [configCopy priorScoreThreshold];
   self->_priorScoreThreshold = v7;
-  self->_isEnabled = [v4 isEnabled];
-  v8 = [v4 defaultConfidenceCategory];
+  self->_isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  self->_defaultConfidenceCategory = v8;
+  self->_defaultConfidenceCategory = defaultConfidenceCategory;
 }
 
-- (void)updateWithRemindersConfig:(id)a3
+- (void)updateWithRemindersConfig:(id)config
 {
-  v4 = a3;
-  [v4 startSecondsFromQuery];
+  configCopy = config;
+  [configCopy startSecondsFromQuery];
   self->_startSecondsFromQuery = v5;
-  [v4 endSecondsFromQuery];
+  [configCopy endSecondsFromQuery];
   self->_endSecondsFromQuery = v6;
-  [v4 priorScoreThreshold];
+  [configCopy priorScoreThreshold];
   self->_priorScoreThreshold = v7;
-  self->_isEnabled = [v4 isEnabled];
-  v8 = [v4 defaultConfidenceCategory];
+  self->_isEnabled = [configCopy isEnabled];
+  defaultConfidenceCategory = [configCopy defaultConfidenceCategory];
 
-  self->_defaultConfidenceCategory = v8;
+  self->_defaultConfidenceCategory = defaultConfidenceCategory;
 }
 
-- (id)getSuggestionsWithPredictionContext:(id)a3
+- (id)getSuggestionsWithPredictionContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   if (!self->_isEnabled)
   {
     delegateType = self->_delegateType;
@@ -143,7 +143,7 @@ LABEL_15:
     }
 
     *&v18 = self->_priorScoreThreshold;
-    v10 = [(_PSSuggestionFromTextPredictor *)self->_textPredictor suggestionsFromIncompleteRemindersWithContext:v4 startDate:v5 endDate:v6 priorScoreThreshold:v18];
+    v10 = [(_PSSuggestionFromTextPredictor *)self->_textPredictor suggestionsFromIncompleteRemindersWithContext:contextCopy startDate:v5 endDate:v6 priorScoreThreshold:v18];
     v19 = +[_PSLogging suggestionSignpost];
     if (os_signpost_enabled(v19))
     {
@@ -183,7 +183,7 @@ LABEL_15:
   }
 
   *&v9 = self->_priorScoreThreshold;
-  v10 = [(_PSSuggestionFromTextPredictor *)self->_textPredictor suggestionsFromUnstructuredCalendarEventsWithContext:v4 startDate:v5 endDate:v6 priorScoreThreshold:v9];
+  v10 = [(_PSSuggestionFromTextPredictor *)self->_textPredictor suggestionsFromUnstructuredCalendarEventsWithContext:contextCopy startDate:v5 endDate:v6 priorScoreThreshold:v9];
   v11 = +[_PSLogging suggestionSignpost];
   if (os_signpost_enabled(v11))
   {
@@ -209,33 +209,33 @@ LABEL_28:
   return v10;
 }
 
-- (void)suggestionsForInteractionSuggestionRequest:(id)a3 clientModelId:(id)a4 reply:(id)a5
+- (void)suggestionsForInteractionSuggestionRequest:(id)request clientModelId:(id)id reply:(id)reply
 {
   v78 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v58 = a4;
-  v52 = a5;
+  requestCopy = request;
+  idCopy = id;
+  replyCopy = reply;
   v7 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [_PSSuggestionFromTextPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:v54 clientModelId:self reply:v7];
+    [_PSSuggestionFromTextPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:requestCopy clientModelId:self reply:v7];
   }
 
   if (!self->_delegateType)
   {
-    v53 = [objc_alloc(getATXSuggestionRequestResponseClass_0()) initWithSuggestions:MEMORY[0x1E695E0F0] feedbackMetadata:0 originalRequest:v54 responseCode:2 error:0];
-    v52[2](v52, v53);
+    psPredictionContext = [objc_alloc(getATXSuggestionRequestResponseClass_0()) initWithSuggestions:MEMORY[0x1E695E0F0] feedbackMetadata:0 originalRequest:requestCopy responseCode:2 error:0];
+    replyCopy[2](replyCopy, psPredictionContext);
     goto LABEL_44;
   }
 
-  v53 = [v54 psPredictionContext];
+  psPredictionContext = [requestCopy psPredictionContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [_PSSuggestionFromTextPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:v53 clientModelId:v8 reply:?];
+      [_PSSuggestionFromTextPredictorDelegateWrapper suggestionsForInteractionSuggestionRequest:psPredictionContext clientModelId:v8 reply:?];
     }
   }
 
@@ -271,15 +271,15 @@ LABEL_13:
     v12 = v11;
     _Block_object_dispose(&v73, 8);
     v50 = [v11 clientModelIdFromClientModelType:v10];
-    v13 = [v50 isEqualToString:{v58, v50}];
+    v13 = [v50 isEqualToString:{idCopy, v50}];
     goto LABEL_17;
   }
 
-  v13 = [0 isEqualToString:{v58, 0}];
+  v13 = [0 isEqualToString:{idCopy, 0}];
 LABEL_17:
   if (v13)
   {
-    v14 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self getSuggestionsWithPredictionContext:v53];
+    v14 = [(_PSSuggestionFromTextPredictorDelegateWrapper *)self getSuggestionsWithPredictionContext:psPredictionContext];
     v57 = objc_opt_new();
     v66 = 0u;
     v67 = 0u;
@@ -321,7 +321,7 @@ LABEL_17:
 
           v19 = v17;
           _Block_object_dispose(&v73, 8);
-          v20 = [[v17 alloc] initWithClientModelId:v58 clientModelVersion:@"1.0" engagementResetPolicy:0];
+          v20 = [[v17 alloc] initWithClientModelId:idCopy clientModelVersion:@"1.0" engagementResetPolicy:0];
           v73 = 0;
           v74 = &v73;
           v75 = 0x2050000000;
@@ -346,8 +346,8 @@ LABEL_17:
           v24 = [v21 alloc];
           v25 = [v16 description];
           v26 = objc_opt_new();
-          v27 = [v26 UUIDString];
-          v28 = [v24 initWithExecutableObject:v16 executableDescription:v25 executableIdentifier:v27 suggestionExecutableType:6];
+          uUIDString = [v26 UUIDString];
+          v28 = [v24 initWithExecutableObject:v16 executableDescription:v25 executableIdentifier:uUIDString suggestionExecutableType:6];
 
           v73 = 0;
           v74 = &v73;
@@ -371,14 +371,14 @@ LABEL_17:
           v31 = v29;
           _Block_object_dispose(&v73, 8);
           v32 = [v29 alloc];
-          v33 = [v16 groupName];
-          v34 = v33;
-          if (!v33)
+          groupName = [v16 groupName];
+          v34 = groupName;
+          if (!groupName)
           {
-            v63 = [v16 recipients];
-            v62 = [v63 firstObject];
-            v61 = [v62 handle];
-            v34 = v61;
+            recipients = [v16 recipients];
+            firstObject = [recipients firstObject];
+            handle = [firstObject handle];
+            v34 = handle;
           }
 
           v73 = 0;
@@ -405,7 +405,7 @@ LABEL_17:
           v38 = [v35 layoutConfigurationsForLayoutOptions:2];
           v39 = [v32 initWithTitle:v34 subtitle:0 preferredLayoutConfigs:v38 allowedOnLockscreen:1 allowedOnHomeScreen:1 allowedOnSpotlight:1];
 
-          if (!v33)
+          if (!groupName)
           {
           }
 
@@ -462,14 +462,14 @@ LABEL_17:
       while (v60);
     }
 
-    v48 = [objc_alloc(getATXSuggestionRequestResponseClass_0()) initWithSuggestions:v57 feedbackMetadata:0 originalRequest:v54 responseCode:2 error:0];
-    v52[2](v52, v48);
+    v48 = [objc_alloc(getATXSuggestionRequestResponseClass_0()) initWithSuggestions:v57 feedbackMetadata:0 originalRequest:requestCopy responseCode:2 error:0];
+    replyCopy[2](replyCopy, v48);
   }
 
   else
   {
-    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:v54 requestedClientModelId:v58 actualClientModelId:v51];
-    v52[2](v52, obj);
+    obj = [_PSZkwUtils clientModelMismatchErrorResponseForRequest:requestCopy requestedClientModelId:idCopy actualClientModelId:v51];
+    replyCopy[2](replyCopy, obj);
   }
 
 LABEL_44:

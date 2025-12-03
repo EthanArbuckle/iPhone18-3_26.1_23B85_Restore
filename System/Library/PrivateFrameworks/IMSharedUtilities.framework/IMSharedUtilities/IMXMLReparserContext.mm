@@ -1,21 +1,21 @@
 @interface IMXMLReparserContext
-- (IMXMLReparserContext)initWithContent:(id)a3 attributesToPreserve:(id)a4 attributesToMerge:(id)a5;
-- (void)_setOutContent:(id)a3 error:(id)a4;
+- (IMXMLReparserContext)initWithContent:(id)content attributesToPreserve:(id)preserve attributesToMerge:(id)merge;
+- (void)_setOutContent:(id)content error:(id)error;
 - (void)dealloc;
 @end
 
 @implementation IMXMLReparserContext
 
-- (IMXMLReparserContext)initWithContent:(id)a3 attributesToPreserve:(id)a4 attributesToMerge:(id)a5
+- (IMXMLReparserContext)initWithContent:(id)content attributesToPreserve:(id)preserve attributesToMerge:(id)merge
 {
   v10.receiver = self;
   v10.super_class = IMXMLReparserContext;
   v8 = [(IMXMLReparserContext *)&v10 init];
   if (v8)
   {
-    v8->_inContent = a3;
-    v8->_attributesToPreserve = a4;
-    v8->_attributesToMerge = a5;
+    v8->_inContent = content;
+    v8->_attributesToPreserve = preserve;
+    v8->_attributesToMerge = merge;
   }
 
   return v8;
@@ -28,20 +28,20 @@
   [(IMXMLReparserContext *)&v3 dealloc];
 }
 
-- (void)_setOutContent:(id)a3 error:(id)a4
+- (void)_setOutContent:(id)content error:(id)error
 {
   outContent = self->_outContent;
-  if (outContent != a3)
+  if (outContent != content)
   {
 
-    self->_outContent = a3;
+    self->_outContent = content;
   }
 
   error = self->_error;
-  if (error != a4)
+  if (error != error)
   {
 
-    self->_error = a4;
+    self->_error = error;
   }
 }
 

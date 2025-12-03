@@ -1,12 +1,12 @@
 @interface DRSProtoRapidPayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoRapidPayload
@@ -17,134 +17,134 @@
   v8.receiver = self;
   v8.super_class = DRSProtoRapidPayload;
   v4 = [(DRSProtoRapidPayload *)&v8 description];
-  v5 = [(DRSProtoRapidPayload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoRapidPayload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   deviceMetadata = self->_deviceMetadata;
   if (deviceMetadata)
   {
-    v5 = [(DRSProtoClientDeviceMetadata *)deviceMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"device_metadata"];
+    dictionaryRepresentation = [(DRSProtoClientDeviceMetadata *)deviceMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"device_metadata"];
   }
 
   payloadMetadata = self->_payloadMetadata;
   if (payloadMetadata)
   {
-    v7 = [(DRSProtoRequestDescription *)payloadMetadata dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"payload_metadata"];
+    dictionaryRepresentation2 = [(DRSProtoRequestDescription *)payloadMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"payload_metadata"];
   }
 
   payloadDescription = self->_payloadDescription;
   if (payloadDescription)
   {
-    v9 = [(DRSProtoFileDescription *)payloadDescription dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"payload_description"];
+    dictionaryRepresentation3 = [(DRSProtoFileDescription *)payloadDescription dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"payload_description"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_uploadAttempts];
-    [v3 setObject:v10 forKey:@"upload_attempts"];
+    [dictionary setObject:v10 forKey:@"upload_attempts"];
   }
 
   payload = self->_payload;
   if (payload)
   {
-    [v3 setObject:payload forKey:@"payload"];
+    [dictionary setObject:payload forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_deviceMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_payloadMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_payloadDescription)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     uploadAttempts = self->_uploadAttempts;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_payload)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_deviceMetadata)
   {
-    [v4 setDeviceMetadata:?];
-    v4 = v5;
+    [toCopy setDeviceMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_payloadMetadata)
   {
     [v5 setPayloadMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_payloadDescription)
   {
     [v5 setPayloadDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_uploadAttempts;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 10) = self->_uploadAttempts;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_payload)
   {
     [v5 setPayload:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoClientDeviceMetadata *)self->_deviceMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoClientDeviceMetadata *)self->_deviceMetadata copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(DRSProtoRequestDescription *)self->_payloadMetadata copyWithZone:a3];
+  v8 = [(DRSProtoRequestDescription *)self->_payloadMetadata copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(DRSProtoFileDescription *)self->_payloadDescription copyWithZone:a3];
+  v10 = [(DRSProtoFileDescription *)self->_payloadDescription copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -154,23 +154,23 @@
     *(v5 + 44) |= 1u;
   }
 
-  v12 = [(NSData *)self->_payload copyWithZone:a3];
+  v12 = [(NSData *)self->_payload copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   deviceMetadata = self->_deviceMetadata;
-  if (deviceMetadata | *(v4 + 1))
+  if (deviceMetadata | *(equalCopy + 1))
   {
     if (![(DRSProtoClientDeviceMetadata *)deviceMetadata isEqual:?])
     {
@@ -179,7 +179,7 @@
   }
 
   payloadMetadata = self->_payloadMetadata;
-  if (payloadMetadata | *(v4 + 4))
+  if (payloadMetadata | *(equalCopy + 4))
   {
     if (![(DRSProtoRequestDescription *)payloadMetadata isEqual:?])
     {
@@ -188,7 +188,7 @@
   }
 
   payloadDescription = self->_payloadDescription;
-  if (payloadDescription | *(v4 + 3))
+  if (payloadDescription | *(equalCopy + 3))
   {
     if (![(DRSProtoFileDescription *)payloadDescription isEqual:?])
     {
@@ -196,16 +196,16 @@
     }
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_uploadAttempts != *(v4 + 10))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_uploadAttempts != *(equalCopy + 10))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
 LABEL_15:
     v10 = 0;
@@ -213,7 +213,7 @@ LABEL_15:
   }
 
   payload = self->_payload;
-  if (payload | *(v4 + 2))
+  if (payload | *(equalCopy + 2))
   {
     v10 = [(NSData *)payload isEqual:?];
   }
@@ -246,12 +246,12 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSData *)self->_payload hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   deviceMetadata = self->_deviceMetadata;
-  v6 = *(v4 + 1);
-  v11 = v4;
+  v6 = *(fromCopy + 1);
+  v11 = fromCopy;
   if (deviceMetadata)
   {
     if (!v6)
@@ -272,10 +272,10 @@ LABEL_16:
     [(DRSProtoRapidPayload *)self setDeviceMetadata:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   payloadMetadata = self->_payloadMetadata;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (payloadMetadata)
   {
     if (!v8)
@@ -296,10 +296,10 @@ LABEL_7:
     [(DRSProtoRapidPayload *)self setPayloadMetadata:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   payloadDescription = self->_payloadDescription;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (payloadDescription)
   {
     if (!v10)
@@ -320,18 +320,18 @@ LABEL_13:
     [(DRSProtoRapidPayload *)self setPayloadDescription:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_uploadAttempts = *(v4 + 10);
+    self->_uploadAttempts = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(DRSProtoRapidPayload *)self setPayload:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 }
 

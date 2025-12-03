@@ -1,70 +1,70 @@
 @interface SBBannerCustomTransitionAnimator
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5;
-+ (void)animateWithSettings:(id)a3 animations:(id)a4 completion:(id)a5;
-- (void)_updateCustomContextWithTransitionContext:(id)a3;
-- (void)actionsForTransition:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion;
++ (void)animateWithSettings:(id)settings animations:(id)animations completion:(id)completion;
+- (void)_updateCustomContextWithTransitionContext:(id)context;
+- (void)actionsForTransition:(id)transition;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation SBBannerCustomTransitionAnimator
 
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6 || (objc_opt_respondsToSelector() & 1) == 0)
+  interactiveCopy = interactive;
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (interactiveCopy || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___SBBannerCustomTransitionAnimator;
-    objc_msgSendSuper2(&v10, sel_animateInteractive_animations_completion_, v6, v8, v9);
+    objc_msgSendSuper2(&v10, sel_animateInteractive_animations_completion_, interactiveCopy, animationsCopy, completionCopy);
   }
 
   else
   {
-    [a1 performAnimationsForTransition:v8 completion:v9];
+    [self performAnimationsForTransition:animationsCopy completion:completionCopy];
   }
 }
 
-+ (void)animateWithSettings:(id)a3 animations:(id)a4 completion:(id)a5
++ (void)animateWithSettings:(id)settings animations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
+  animationsCopy = animations;
   if (objc_opt_respondsToSelector())
   {
-    [a1 performAnimationsForTransition:v10 completion:v9];
+    [self performAnimationsForTransition:animationsCopy completion:completionCopy];
   }
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___SBBannerCustomTransitionAnimator;
-    objc_msgSendSuper2(&v11, sel_animateWithSettings_animations_completion_, v8, v10, v9);
+    objc_msgSendSuper2(&v11, sel_animateWithSettings_animations_completion_, settingsCopy, animationsCopy, completionCopy);
   }
 }
 
-- (void)_updateCustomContextWithTransitionContext:(id)a3
+- (void)_updateCustomContextWithTransitionContext:(id)context
 {
-  v7 = a3;
-  v4 = [(SBBannerCustomTransitionAnimatorContext *)self->_customContext transitionContext];
+  contextCopy = context;
+  transitionContext = [(SBBannerCustomTransitionAnimatorContext *)self->_customContext transitionContext];
 
-  if (v4 != v7)
+  if (transitionContext != contextCopy)
   {
     v5 = objc_alloc_init(SBBannerCustomTransitionAnimatorContext);
     customContext = self->_customContext;
     self->_customContext = v5;
 
-    [(SBBannerCustomTransitionAnimatorContext *)self->_customContext setTransitionContext:v7];
+    [(SBBannerCustomTransitionAnimatorContext *)self->_customContext setTransitionContext:contextCopy];
     [(SBBannerCustomTransitionAnimatorContext *)self->_customContext setPresentationTransition:[(BNBannerTransitionAnimator *)self isPresenting]];
   }
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(SBBannerCustomTransitionAnimator *)self _updateCustomContextWithTransitionContext:v4];
+  transitionCopy = transition;
+  [(SBBannerCustomTransitionAnimator *)self _updateCustomContextWithTransitionContext:transitionCopy];
   if (objc_opt_respondsToSelector())
   {
     [(SBBannerCustomTransitionAnimator *)self prepareForTransition:self->_customContext];
@@ -72,24 +72,24 @@
 
   v5.receiver = self;
   v5.super_class = SBBannerCustomTransitionAnimator;
-  [(BNBannerAnimator *)&v5 animateTransition:v4];
+  [(BNBannerAnimator *)&v5 animateTransition:transitionCopy];
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   if ([objc_opt_class() instancesRespondToSelector:sel_animationEnded_])
   {
     v5.receiver = self;
     v5.super_class = SBBannerCustomTransitionAnimator;
-    [(SBBannerCustomTransitionAnimator *)&v5 animationEnded:v3];
+    [(SBBannerCustomTransitionAnimator *)&v5 animationEnded:endedCopy];
   }
 }
 
-- (void)actionsForTransition:(id)a3
+- (void)actionsForTransition:(id)transition
 {
-  v4 = a3;
-  [(SBBannerCustomTransitionAnimator *)self _updateCustomContextWithTransitionContext:v4];
+  transitionCopy = transition;
+  [(SBBannerCustomTransitionAnimator *)self _updateCustomContextWithTransitionContext:transitionCopy];
   if (objc_opt_respondsToSelector())
   {
     [(SBBannerCustomTransitionAnimator *)self performActionsForTransition:self->_customContext];
@@ -99,7 +99,7 @@
   {
     v5.receiver = self;
     v5.super_class = SBBannerCustomTransitionAnimator;
-    [(BNBannerTransitionAnimator *)&v5 actionsForTransition:v4];
+    [(BNBannerTransitionAnimator *)&v5 actionsForTransition:transitionCopy];
   }
 }
 

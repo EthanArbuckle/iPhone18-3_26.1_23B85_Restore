@@ -8,14 +8,14 @@
 - (NSNumber)relativeIconInset;
 - (double)lightAngle;
 - (double)lightIntensity;
-- (void)setChicletDropShadow:(id)a3;
-- (void)setEffectsAreEnabled:(BOOL)a3;
-- (void)setEncapsulationShape:(id)a3;
-- (void)setLightAngle:(double)a3;
-- (void)setLightAngles:(id)a3;
-- (void)setLightDirection:(id)a3;
-- (void)setLightIntensity:(double)a3;
-- (void)setRelativeIconInset:(id)a3;
+- (void)setChicletDropShadow:(id)shadow;
+- (void)setEffectsAreEnabled:(BOOL)enabled;
+- (void)setEncapsulationShape:(id)shape;
+- (void)setLightAngle:(double)angle;
+- (void)setLightAngles:(id)angles;
+- (void)setLightDirection:(id)direction;
+- (void)setLightIntensity:(double)intensity;
+- (void)setRelativeIconInset:(id)inset;
 @end
 
 @implementation ICRGlobalConfiguration
@@ -25,9 +25,9 @@
   v2 = OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   if (qword_1EDB2FB50 != -1)
   {
-    v7 = self;
+    selfCopy = self;
     swift_once();
-    self = v7;
+    self = selfCopy;
   }
 
   v3 = qword_1EDB2FB68;
@@ -50,18 +50,18 @@
 - (double)lightAngle
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
   v4 = GlobalConfiguration.lightAngle.getter();
   swift_endAccess();
 
   return v4;
 }
 
-- (void)setLightAngle:(double)a3
+- (void)setLightAngle:(double)angle
 {
   v4 = self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
-  *(v4 + 8) = __sincos_stret(a3);
+  *(v4 + 8) = __sincos_stret(angle);
   *(v4 + 3) = 0;
 }
 
@@ -72,11 +72,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLightIntensity:(double)a3
+- (void)setLightIntensity:(double)intensity
 {
   v5 = OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = intensity;
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)lightAngles
@@ -95,10 +95,10 @@
   return result;
 }
 
-- (void)setLightAngles:(id)a3
+- (void)setLightAngles:(id)angles
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = angles.var1;
+  var0 = angles.var0;
   v5 = (self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration);
   swift_beginAccess();
   v6 = __sincos_stret(var1);
@@ -121,11 +121,11 @@
   return result;
 }
 
-- (void)setLightDirection:(id)a3
+- (void)setLightDirection:(id)direction
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = direction.var2;
+  var1 = direction.var1;
+  var0 = direction.var0;
   v6 = (self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration);
   swift_beginAccess();
   v6[1] = var0;
@@ -140,32 +140,32 @@
   return v2[32];
 }
 
-- (void)setEffectsAreEnabled:(BOOL)a3
+- (void)setEffectsAreEnabled:(BOOL)enabled
 {
   v4 = self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
-  v4[32] = a3;
+  v4[32] = enabled;
 }
 
 - (NSNumber)relativeIconInset
 {
   v2 = (self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration);
   swift_beginAccess();
-  v3 = 0;
+  initWithDouble_ = 0;
   if ((v2[7] & 1) == 0)
   {
-    v3 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
+    initWithDouble_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
   }
 
-  return v3;
+  return initWithDouble_;
 }
 
-- (void)setRelativeIconInset:(id)a3
+- (void)setRelativeIconInset:(id)inset
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (inset)
   {
-    [a3 doubleValue];
+    [inset doubleValue];
     v6 = v5;
   }
 
@@ -174,8 +174,8 @@
     v6 = 0;
   }
 
-  v7 = a3 == 0;
-  v8 = v4 + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
+  v7 = inset == 0;
+  v8 = selfCopy + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
   *(v8 + 6) = v6;
   v8[56] = v7;
@@ -185,32 +185,32 @@
 {
   v2 = self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
-  v3 = 0;
+  initWithBool_ = 0;
   v4 = v2[57];
   if (v4 != 2)
   {
-    v3 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
+    initWithBool_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
   }
 
-  return v3;
+  return initWithBool_;
 }
 
-- (void)setChicletDropShadow:(id)a3
+- (void)setChicletDropShadow:(id)shadow
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (shadow)
   {
-    v5 = [a3 BOOLValue];
+    bOOLValue = [shadow BOOLValue];
   }
 
   else
   {
-    v5 = 2;
+    bOOLValue = 2;
   }
 
-  v6 = v4 + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
+  v6 = selfCopy + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
-  v6[57] = v5;
+  v6[57] = bOOLValue;
 }
 
 - (CUIEncapsulationShape)encapsulationShape
@@ -238,9 +238,9 @@
   return v4;
 }
 
-- (void)setEncapsulationShape:(id)a3
+- (void)setEncapsulationShape:(id)shape
 {
-  if (a3)
+  if (shape)
   {
     v5 = &off_1F285B780;
   }
@@ -253,10 +253,10 @@
   v6 = self + OBJC_IVAR___ICRGlobalConfiguration_globalConfiguration;
   swift_beginAccess();
   v7 = *(v6 + 8);
-  *(v6 + 8) = a3;
+  *(v6 + 8) = shape;
   *(v6 + 9) = v5;
-  v8 = self;
-  v9 = a3;
+  selfCopy = self;
+  shapeCopy = shape;
 }
 
 @end

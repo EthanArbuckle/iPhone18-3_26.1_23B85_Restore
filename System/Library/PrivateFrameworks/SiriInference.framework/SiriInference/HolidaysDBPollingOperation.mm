@@ -7,7 +7,7 @@
 
 - (BOOL)isReady
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HolidaysDBPollingOperation.isReady.getter();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   HolidaysDBPollingOperation.main()();
 }
 

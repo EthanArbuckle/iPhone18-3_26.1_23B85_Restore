@@ -1,54 +1,54 @@
 @interface VUIImageProxy
 + (id)_imageDecoratorQueue;
 + (id)_imageReadWriteQueue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isImageAvailable;
-- (BOOL)isOfSameOriginAs:(id)a3;
+- (BOOL)isOfSameOriginAs:(id)as;
 - (CGSize)dynamicProxyRequestedSize;
 - (CGSize)expectedSize;
-- (VUIImageProxy)initWithObject:(id)a3 imageLoader:(id)a4 groupType:(int64_t)a5;
-- (id)_assetKeyWithImageLoaderKey:(id)a3 decoratorIdentifier:(id)a4;
+- (VUIImageProxy)initWithObject:(id)object imageLoader:(id)loader groupType:(int64_t)type;
+- (id)_assetKeyWithImageLoaderKey:(id)key decoratorIdentifier:(id)identifier;
 - (id)_decoratedImageAssetKey;
 - (id)_decoratedImageAssetPath;
 - (id)_decoratorIdentifier;
-- (id)_imageAssetPathWithAssetKey:(id)a3;
+- (id)_imageAssetPathWithAssetKey:(id)key;
 - (id)_imageLoaderKey;
 - (id)_originalImageAssetKey;
 - (id)_originalImageAssetPath;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_callCompletionHandlerWithImage:(id)a3 error:(id)a4 finished:(BOOL)a5;
-- (void)_callWriteCompletionHandlerWithPath:(id)a3 error:(id)a4 finished:(BOOL)a5;
-- (void)_completeImageLoadWithImage:(id)a3 imagePath:(id)a4 error:(id)a5 assetKey:(id)a6 expiryDate:(id)a7 tags:(id)a8;
-- (void)_decorateAndWriteImage:(id)a3 imagePath:(id)a4 scaleToSize:(CGSize)a5 cropToFit:(BOOL)a6 scalingResult:(unint64_t)a7 assetKey:(id)a8 expiryDate:(id)a9 tags:(id)a10;
-- (void)_imageDidWriteHandler:(id)a3;
+- (void)_callCompletionHandlerWithImage:(id)image error:(id)error finished:(BOOL)finished;
+- (void)_callWriteCompletionHandlerWithPath:(id)path error:(id)error finished:(BOOL)finished;
+- (void)_completeImageLoadWithImage:(id)image imagePath:(id)path error:(id)error assetKey:(id)key expiryDate:(id)date tags:(id)tags;
+- (void)_decorateAndWriteImage:(id)image imagePath:(id)path scaleToSize:(CGSize)size cropToFit:(BOOL)fit scalingResult:(unint64_t)result assetKey:(id)key expiryDate:(id)date tags:(id)self0;
+- (void)_imageDidWriteHandler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
 - (void)load;
-- (void)setIsLoading:(BOOL)a3;
-- (void)setWriteToAssetLibrary:(BOOL)a3;
+- (void)setIsLoading:(BOOL)loading;
+- (void)setWriteToAssetLibrary:(BOOL)library;
 @end
 
 @implementation VUIImageProxy
 
-- (VUIImageProxy)initWithObject:(id)a3 imageLoader:(id)a4 groupType:(int64_t)a5
+- (VUIImageProxy)initWithObject:(id)object imageLoader:(id)loader groupType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  objectCopy = object;
+  loaderCopy = loader;
   v15.receiver = self;
   v15.super_class = VUIImageProxy;
   v11 = [(VUIImageProxy *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_object, a3);
-    objc_storeStrong(&v12->_imageLoader, a4);
+    objc_storeStrong(&v11->_object, object);
+    objc_storeStrong(&v12->_imageLoader, loader);
     *&v12->_writeToAssetLibrary = 257;
     v12->_imageDirection = 0;
-    v12->_groupType = a5;
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12->_returnImageAfterWrittenToDisk = [v13 BOOLForKey:@"ImageProxyReturnImageAfterWrittenToDisk"];
+    v12->_groupType = type;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12->_returnImageAfterWrittenToDisk = [standardUserDefaults BOOLForKey:@"ImageProxyReturnImageAfterWrittenToDisk"];
   }
 
   return v12;
@@ -58,8 +58,8 @@
 {
   if (self->_imageDidWriteObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_imageDidWriteObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_imageDidWriteObserver];
   }
 
   v4.receiver = self;
@@ -73,17 +73,17 @@
   v9.receiver = self;
   v9.super_class = VUIImageProxy;
   v4 = [(VUIImageProxy *)&v9 description];
-  v5 = [(VUIImageProxy *)self object];
-  v6 = [v5 description];
+  object = [(VUIImageProxy *)self object];
+  v6 = [object description];
   v7 = [v3 stringWithFormat:@"%@ - %@", v4, v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -93,10 +93,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VUIImageProxy *)v5 object];
+      v5 = equalCopy;
+      object = [(VUIImageProxy *)v5 object];
       object = self->_object;
-      v8 = v6;
+      v8 = object;
       v9 = object;
       v10 = v9;
       if (v8 == v9)
@@ -118,9 +118,9 @@
         }
       }
 
-      v13 = [(VUIImageProxy *)v5 imageLoader];
+      imageLoader = [(VUIImageProxy *)v5 imageLoader];
       imageLoader = self->_imageLoader;
-      v8 = v13;
+      v8 = imageLoader;
       v15 = imageLoader;
       v10 = v15;
       if (v8 == v15)
@@ -142,9 +142,9 @@
         }
       }
 
-      v17 = [(VUIImageProxy *)v5 decorator];
+      decorator = [(VUIImageProxy *)v5 decorator];
       decorator = self->_decorator;
-      v8 = v17;
+      v8 = decorator;
       v19 = decorator;
       v10 = v19;
       if (v8 == v19)
@@ -191,24 +191,24 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(VUIImageProxy *)self object];
-  v4 = [v3 hash];
-  v5 = [(VUIImageProxy *)self imageLoader];
-  v6 = [v5 hash] + v4;
-  v7 = [(VUIImageProxy *)self groupType];
+  object = [(VUIImageProxy *)self object];
+  v4 = [object hash];
+  imageLoader = [(VUIImageProxy *)self imageLoader];
+  v6 = [imageLoader hash] + v4;
+  groupType = [(VUIImageProxy *)self groupType];
 
-  return v6 + v7;
+  return v6 + groupType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(VUIImageProxy *)self object];
-  v6 = [(VUIImageProxy *)self imageLoader];
-  v7 = [v4 initWithObject:v5 imageLoader:v6 groupType:{-[VUIImageProxy groupType](self, "groupType")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  object = [(VUIImageProxy *)self object];
+  imageLoader = [(VUIImageProxy *)self imageLoader];
+  v7 = [v4 initWithObject:object imageLoader:imageLoader groupType:{-[VUIImageProxy groupType](self, "groupType")}];
 
-  v8 = [(VUIImageProxy *)self decorator];
-  [v7 setDecorator:v8];
+  decorator = [(VUIImageProxy *)self decorator];
+  [v7 setDecorator:decorator];
 
   [v7 setCacheOnLoad:{-[VUIImageProxy cacheOnLoad](self, "cacheOnLoad")}];
   [v7 setLoadSynchronouslyIfCached:{-[VUIImageProxy loadSynchronouslyIfCached](self, "loadSynchronouslyIfCached")}];
@@ -216,14 +216,14 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)isOfSameOriginAs:(id)a3
+- (BOOL)isOfSameOriginAs:(id)as
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if ([v5 isEqual:self->_object])
+  asCopy = as;
+  object = [asCopy object];
+  if ([object isEqual:self->_object])
   {
-    v6 = [v4 imageLoader];
-    v7 = [v6 isEqual:self->_imageLoader] && objc_msgSend(v4, "groupType") == self->_groupType && objc_msgSend(v4, "imageDirection") == self->_imageDirection;
+    imageLoader = [asCopy imageLoader];
+    v7 = [imageLoader isEqual:self->_imageLoader] && objc_msgSend(asCopy, "groupType") == self->_groupType && objc_msgSend(asCopy, "imageDirection") == self->_imageDirection;
   }
 
   else
@@ -236,8 +236,8 @@ LABEL_25:
 
 - (CGSize)expectedSize
 {
-  v2 = [(VUIImageProxy *)self decorator];
-  [v2 expectedSize];
+  decorator = [(VUIImageProxy *)self decorator];
+  [decorator expectedSize];
   v4 = v3;
   v6 = v5;
 
@@ -248,21 +248,21 @@ LABEL_25:
   return result;
 }
 
-- (void)setWriteToAssetLibrary:(BOOL)a3
+- (void)setWriteToAssetLibrary:(BOOL)library
 {
-  self->_writeToAssetLibrary = a3;
-  if (!a3)
+  self->_writeToAssetLibrary = library;
+  if (!library)
   {
     [(VUIImageProxy *)self setReturnImageAfterWrittenToDisk:0];
   }
 }
 
-- (void)setIsLoading:(BOOL)a3
+- (void)setIsLoading:(BOOL)loading
 {
-  if (self->_isLoading != a3)
+  if (self->_isLoading != loading)
   {
-    self->_isLoading = a3;
-    if (!a3)
+    self->_isLoading = loading;
+    if (!loading)
     {
       [(VUIImageProxy *)self setDecoratorRequestToken:0];
     }
@@ -271,8 +271,8 @@ LABEL_25:
 
 - (BOOL)isImageAvailable
 {
-  v2 = [(VUIImageProxy *)self _decoratedImageAssetPath];
-  v3 = [v2 length] != 0;
+  _decoratedImageAssetPath = [(VUIImageProxy *)self _decoratedImageAssetPath];
+  v3 = [_decoratedImageAssetPath length] != 0;
 
   return v3;
 }
@@ -283,26 +283,26 @@ LABEL_25:
   {
     [VUIPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:1 withError:0];
     objc_initWeak(location, self);
-    v3 = [(VUIImageProxy *)self _imageLoaderKey];
-    v4 = [(VUIImageProxy *)self imageLoader];
+    _imageLoaderKey = [(VUIImageProxy *)self _imageLoaderKey];
+    imageLoader = [(VUIImageProxy *)self imageLoader];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(VUIImageProxy *)self imageLoader];
-      v6 = [(VUIImageProxy *)self object];
-      v7 = [v5 URLForObject:v6];
+      imageLoader2 = [(VUIImageProxy *)self imageLoader];
+      object = [(VUIImageProxy *)self object];
+      v7 = [imageLoader2 URLForObject:object];
     }
 
     else
     {
       v8 = MEMORY[0x277CBEBC0];
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"imageKey://%@", v3];
-      v7 = [v8 URLWithString:v5];
+      imageLoader2 = [MEMORY[0x277CCACA8] stringWithFormat:@"imageKey://%@", _imageLoaderKey];
+      v7 = [v8 URLWithString:imageLoader2];
     }
 
     if ([(VUIImageProxy *)self optimizedImageRendering]|| ([(VUIImageProxy *)self decorator], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v10 = [(VUIImageProxy *)self _originalImageAssetPath];
-      if (!v10)
+      _originalImageAssetPath = [(VUIImageProxy *)self _originalImageAssetPath];
+      if (!_originalImageAssetPath)
       {
         goto LABEL_13;
       }
@@ -310,9 +310,9 @@ LABEL_25:
 
     else
     {
-      v10 = [(VUIImageProxy *)self _decoratedImageAssetPath];
+      _originalImageAssetPath = [(VUIImageProxy *)self _decoratedImageAssetPath];
 
-      if (!v10)
+      if (!_originalImageAssetPath)
       {
         goto LABEL_13;
       }
@@ -322,23 +322,23 @@ LABEL_25:
     {
       if (self->_loadSynchronouslyIfCached)
       {
-        v11 = [VUIImage imageWithPath:v10 cacheImmediately:self->_cacheOnLoad];
-        [(VUIImageProxy *)self _callCompletionHandlerWithImage:v11 error:0 finished:1];
-        [(VUIImageProxy *)self _callWriteCompletionHandlerWithPath:v10 error:0 finished:1];
+        _originalImageAssetKey = [VUIImage imageWithPath:_originalImageAssetPath cacheImmediately:self->_cacheOnLoad];
+        [(VUIImageProxy *)self _callCompletionHandlerWithImage:_originalImageAssetKey error:0 finished:1];
+        [(VUIImageProxy *)self _callWriteCompletionHandlerWithPath:_originalImageAssetPath error:0 finished:1];
 LABEL_30:
 
         goto LABEL_31;
       }
 
-      v26 = [objc_opt_class() _imageDecoratorQueue];
+      _imageDecoratorQueue = [objc_opt_class() _imageDecoratorQueue];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __21__VUIImageProxy_load__block_invoke;
       v51[3] = &unk_279E21BA8;
       objc_copyWeak(&v53, location);
-      v10 = v10;
-      v52 = v10;
-      dispatch_async(v26, v51);
+      _originalImageAssetPath = _originalImageAssetPath;
+      v52 = _originalImageAssetPath;
+      dispatch_async(_imageDecoratorQueue, v51);
 
       v25 = &v53;
       goto LABEL_20;
@@ -346,39 +346,39 @@ LABEL_30:
 
 LABEL_13:
     [(VUIImageProxy *)self setIsLoading:1];
-    if (v3)
+    if (_imageLoaderKey)
     {
-      v11 = [(VUIImageProxy *)self _originalImageAssetKey];
-      v12 = [(VUIImageProxy *)self _decoratedImageAssetKey];
-      v13 = [(VUIImageProxy *)self decorator];
+      _originalImageAssetKey = [(VUIImageProxy *)self _originalImageAssetKey];
+      _decoratedImageAssetKey = [(VUIImageProxy *)self _decoratedImageAssetKey];
+      decorator = [(VUIImageProxy *)self decorator];
 
-      if (v13)
+      if (decorator)
       {
-        v14 = [(VUIImageProxy *)self decorator];
-        [v14 loaderScaleToSize];
+        decorator2 = [(VUIImageProxy *)self decorator];
+        [decorator2 loaderScaleToSize];
         v16 = v15;
         v18 = v17;
 
-        v19 = [(VUIImageProxy *)self decorator];
-        v13 = [v19 loaderCropToFit];
+        decorator3 = [(VUIImageProxy *)self decorator];
+        decorator = [decorator3 loaderCropToFit];
 
-        v20 = [(VUIImageProxy *)self _originalImageAssetPath];
+        _originalImageAssetPath2 = [(VUIImageProxy *)self _originalImageAssetPath];
 
-        if (v20)
+        if (_originalImageAssetPath2)
         {
           v21 = +[VUIAssetLibrary sharedInstance];
-          v22 = [v21 assetExpiryDateForKey:v11 inGroupOfType:{-[VUIImageProxy groupType](self, "groupType")}];
+          v22 = [v21 assetExpiryDateForKey:_originalImageAssetKey inGroupOfType:{-[VUIImageProxy groupType](self, "groupType")}];
 
-          v23 = [MEMORY[0x277CBEB98] setWithObject:v3];
-          [(VUIImageProxy *)self _decorateAndWriteImage:0 imagePath:v20 scaleToSize:v13 cropToFit:0 scalingResult:v12 assetKey:v22 expiryDate:*&v16 tags:*&v18, v23];
+          v23 = [MEMORY[0x277CBEB98] setWithObject:_imageLoaderKey];
+          [(VUIImageProxy *)self _decorateAndWriteImage:0 imagePath:_originalImageAssetPath2 scaleToSize:decorator cropToFit:0 scalingResult:_decoratedImageAssetKey assetKey:v22 expiryDate:*&v16 tags:*&v18, v23];
 
-          v10 = v20;
+          _originalImageAssetPath = _originalImageAssetPath2;
 LABEL_29:
 
           goto LABEL_30;
         }
 
-        v10 = 0;
+        _originalImageAssetPath = 0;
       }
 
       else
@@ -400,38 +400,38 @@ LABEL_29:
       objc_copyWeak(v41, location);
       v40 = &v43;
       v36[4] = self;
-      v37 = v11;
-      v38 = v3;
+      v37 = _originalImageAssetKey;
+      v38 = _imageLoaderKey;
       v41[1] = v16;
       v41[2] = v18;
-      v42 = v13;
-      v39 = v12;
+      v42 = decorator;
+      v39 = _decoratedImageAssetKey;
       v27 = MEMORY[0x2743B7C30](v36);
-      v28 = [(VUIImageProxy *)self imageLoader];
+      imageLoader3 = [(VUIImageProxy *)self imageLoader];
       v29 = objc_opt_respondsToSelector();
 
       if (v29)
       {
-        v30 = [(VUIImageProxy *)self imageLoader];
-        v31 = [(VUIImageProxy *)self object];
-        v32 = [v30 loadImageForObject:v31 scaleToSize:v13 cropToFit:-[VUIImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v27, *&v16, *&v18}];
+        imageLoader4 = [(VUIImageProxy *)self imageLoader];
+        object2 = [(VUIImageProxy *)self object];
+        v32 = [imageLoader4 loadImageForObject:object2 scaleToSize:decorator cropToFit:-[VUIImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v27, *&v16, *&v18}];
       }
 
       else
       {
-        v33 = [(VUIImageProxy *)self imageLoader];
+        imageLoader5 = [(VUIImageProxy *)self imageLoader];
         v34 = objc_opt_respondsToSelector();
 
-        v30 = [(VUIImageProxy *)self imageLoader];
+        imageLoader4 = [(VUIImageProxy *)self imageLoader];
         [(VUIImageProxy *)self object];
         if (v34)
-          v31 = {;
-          [v30 loadImageForObject:v31 scaleToSize:v13 cropToFit:-[VUIImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v27, *&v16, *&v18}];
+          object2 = {;
+          [imageLoader4 loadImageForObject:object2 scaleToSize:decorator cropToFit:-[VUIImageProxy imageDirection](self imageDirection:"imageDirection") completionHandler:{v27, *&v16, *&v18}];
         }
 
         else
-          v31 = {;
-          [v30 loadImageForObject:v31 scaleToSize:v13 cropToFit:v27 completionHandler:{*&v16, *&v18}];
+          object2 = {;
+          [imageLoader4 loadImageForObject:object2 scaleToSize:decorator cropToFit:v27 completionHandler:{*&v16, *&v18}];
         }
         v32 = ;
       }
@@ -447,13 +447,13 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v24 = [objc_opt_class() _imageReadWriteQueue];
+    _imageReadWriteQueue = [objc_opt_class() _imageReadWriteQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __21__VUIImageProxy_load__block_invoke_2;
     block[3] = &unk_279E217C0;
     objc_copyWeak(&v50, location);
-    dispatch_async(v24, block);
+    dispatch_async(_imageReadWriteQueue, block);
 
     v25 = &v50;
 LABEL_20:
@@ -602,47 +602,47 @@ uint64_t __37__VUIImageProxy__imageReadWriteQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_decorateAndWriteImage:(id)a3 imagePath:(id)a4 scaleToSize:(CGSize)a5 cropToFit:(BOOL)a6 scalingResult:(unint64_t)a7 assetKey:(id)a8 expiryDate:(id)a9 tags:(id)a10
+- (void)_decorateAndWriteImage:(id)image imagePath:(id)path scaleToSize:(CGSize)size cropToFit:(BOOL)fit scalingResult:(unint64_t)result assetKey:(id)key expiryDate:(id)date tags:(id)self0
 {
-  height = a5.height;
-  width = a5.width;
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = [(VUIImageProxy *)self decorator];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  pathCopy = path;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  decorator = [(VUIImageProxy *)self decorator];
   cacheOnLoad = self->_cacheOnLoad;
   v23 = objc_alloc_init(_VUIDecoratorRequest);
   [(VUIImageProxy *)self setDecoratorRequestToken:v23];
   objc_initWeak(location, self);
-  v24 = [objc_opt_class() _imageDecoratorQueue];
+  _imageDecoratorQueue = [objc_opt_class() _imageDecoratorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__VUIImageProxy__decorateAndWriteImage_imagePath_scaleToSize_cropToFit_scalingResult_assetKey_expiryDate_tags___block_invoke;
   block[3] = &unk_279E21D80;
   objc_copyWeak(v43, location);
-  v35 = v16;
-  v36 = v17;
+  v35 = imageCopy;
+  v36 = pathCopy;
   v44 = cacheOnLoad;
   v37 = v23;
-  v38 = self;
-  v39 = v18;
-  v40 = v19;
-  v43[1] = a7;
+  selfCopy = self;
+  v39 = keyCopy;
+  v40 = dateCopy;
+  v43[1] = result;
   v43[2] = *&width;
   v43[3] = *&height;
-  v45 = a6;
-  v41 = v20;
-  v42 = v21;
-  v25 = v21;
-  v26 = v20;
-  v27 = v19;
-  v28 = v18;
+  fitCopy = fit;
+  v41 = tagsCopy;
+  v42 = decorator;
+  v25 = decorator;
+  v26 = tagsCopy;
+  v27 = dateCopy;
+  v28 = keyCopy;
   v29 = v23;
-  v30 = v17;
-  v31 = v16;
-  dispatch_async(v24, block);
+  v30 = pathCopy;
+  v31 = imageCopy;
+  dispatch_async(_imageDecoratorQueue, block);
 
   objc_destroyWeak(v43);
   objc_destroyWeak(location);
@@ -768,64 +768,64 @@ void __111__VUIImageProxy__decorateAndWriteImage_imagePath_scaleToSize_cropToFit
   }
 }
 
-- (void)_completeImageLoadWithImage:(id)a3 imagePath:(id)a4 error:(id)a5 assetKey:(id)a6 expiryDate:(id)a7 tags:(id)a8
+- (void)_completeImageLoadWithImage:(id)image imagePath:(id)path error:(id)error assetKey:(id)key expiryDate:(id)date tags:(id)tags
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v15)
+  imageCopy = image;
+  pathCopy = path;
+  errorCopy = error;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  if (pathCopy)
   {
-    v20 = [(VUIImageProxy *)self completionHandler];
+    completionHandler = [(VUIImageProxy *)self completionHandler];
 
-    if (v20)
+    if (completionHandler)
     {
-      if (v14)
+      if (imageCopy)
       {
-        v21 = v14;
+        v21 = imageCopy;
       }
 
       else
       {
-        v21 = [VUIImage imageWithPath:v15 cacheImmediately:self->_cacheOnLoad];
+        v21 = [VUIImage imageWithPath:pathCopy cacheImmediately:self->_cacheOnLoad];
       }
 
       v25 = v21;
       [(VUIImageProxy *)self _callCompletionHandlerWithImage:v21 error:0 finished:1];
     }
 
-    v26 = self;
-    v27 = v15;
+    selfCopy2 = self;
+    v27 = pathCopy;
     v28 = 0;
     goto LABEL_12;
   }
 
-  if (!v14)
+  if (!imageCopy)
   {
-    [(VUIImageProxy *)self _callCompletionHandlerWithImage:0 error:v16 finished:1];
-    v26 = self;
+    [(VUIImageProxy *)self _callCompletionHandlerWithImage:0 error:errorCopy finished:1];
+    selfCopy2 = self;
     v27 = 0;
-    v28 = v16;
+    v28 = errorCopy;
 LABEL_12:
-    [(VUIImageProxy *)v26 _callWriteCompletionHandlerWithPath:v27 error:v28 finished:1];
+    [(VUIImageProxy *)selfCopy2 _callWriteCompletionHandlerWithPath:v27 error:v28 finished:1];
 LABEL_13:
-    [(VUIImageProxy *)self setIsLoading:0, v34, v35, v36, v37, v38];
+    [(VUIImageProxy *)self setIsLoading:0, defaultCenter, v35, v36, v37, v38];
     goto LABEL_14;
   }
 
-  v22 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   if (self->_writeToAssetLibrary)
   {
-    v23 = v22;
-    v24 = [(VUIImageProxy *)self writeCompletionHandler];
-    if (v24)
+    v23 = isMainThread;
+    writeCompletionHandler = [(VUIImageProxy *)self writeCompletionHandler];
+    if (writeCompletionHandler)
     {
 
 LABEL_17:
       objc_initWeak(&location, self);
-      v34 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v29 = objc_alloc_init(MEMORY[0x277CCABD8]);
       v35 = MEMORY[0x277D85DD0];
       v36 = 3221225472;
@@ -833,7 +833,7 @@ LABEL_17:
       v38 = &unk_279E21DA8;
       objc_copyWeak(&v39, &location);
       v40 = v23;
-      v30 = [v34 addObserverForName:@"VUIAssetDidWriteNotification" object:v17 queue:v29 usingBlock:&v35];
+      v30 = [defaultCenter addObserverForName:@"VUIAssetDidWriteNotification" object:keyCopy queue:v29 usingBlock:&v35];
       imageDidWriteObserver = self->_imageDidWriteObserver;
       self->_imageDidWriteObserver = v30;
 
@@ -854,12 +854,12 @@ LABEL_19:
   if (self->_writeToAssetLibrary)
   {
     v33 = +[VUIAssetLibrary sharedInstance];
-    [v33 setImageAsset:v14 forKey:v17 inGroupOfType:-[VUIImageProxy groupType](self expiryDate:"groupType") tags:{v18, v19}];
+    [v33 setImageAsset:imageCopy forKey:keyCopy inGroupOfType:-[VUIImageProxy groupType](self expiryDate:"groupType") tags:{dateCopy, tagsCopy}];
   }
 
   if (!self->_returnImageAfterWrittenToDisk)
   {
-    [(VUIImageProxy *)self _callCompletionHandlerWithImage:v14 error:0 finished:1];
+    [(VUIImageProxy *)self _callCompletionHandlerWithImage:imageCopy error:0 finished:1];
   }
 
   if ((v32 & 1) == 0)
@@ -925,35 +925,35 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
   }
 }
 
-- (void)_imageDidWriteHandler:(id)a3
+- (void)_imageDidWriteHandler:(id)handler
 {
-  v7 = self;
-  v4 = [a3 userInfo];
-  if ([(VUIImageProxy *)v7 isLoading])
+  selfCopy = self;
+  userInfo = [handler userInfo];
+  if ([(VUIImageProxy *)selfCopy isLoading])
   {
-    v5 = [v4 objectForKey:@"VUIAssetDidWriteNotificationAssetPathKey"];
-    v6 = [v4 objectForKey:@"VUIAssetDidWriteNotificationErrorKey"];
-    [(VUIImageProxy *)v7 _callWriteCompletionHandlerWithPath:v5 error:v6 finished:1];
+    v5 = [userInfo objectForKey:@"VUIAssetDidWriteNotificationAssetPathKey"];
+    v6 = [userInfo objectForKey:@"VUIAssetDidWriteNotificationErrorKey"];
+    [(VUIImageProxy *)selfCopy _callWriteCompletionHandlerWithPath:v5 error:v6 finished:1];
   }
 
-  [(VUIImageProxy *)v7 setIsLoading:0];
+  [(VUIImageProxy *)selfCopy setIsLoading:0];
 }
 
 - (id)_decoratorIdentifier
 {
-  v2 = [(VUIImageProxy *)self decorator];
-  v3 = [v2 decoratorIdentifier];
+  decorator = [(VUIImageProxy *)self decorator];
+  decoratorIdentifier = [decorator decoratorIdentifier];
 
-  return v3;
+  return decoratorIdentifier;
 }
 
-- (id)_assetKeyWithImageLoaderKey:(id)a3 decoratorIdentifier:(id)a4
+- (id)_assetKeyWithImageLoaderKey:(id)key decoratorIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (keyCopy)
   {
-    v8 = [MEMORY[0x277CCAB68] stringWithString:v6];
+    v8 = [MEMORY[0x277CCAB68] stringWithString:keyCopy];
     [v8 appendString:@"_"];
     if ([(VUIImageProxy *)self imageDirection])
     {
@@ -966,10 +966,10 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
     }
 
     [v8 appendString:v9];
-    if (v7)
+    if (identifierCopy)
     {
       [v8 appendString:@"_"];
-      [v8 appendString:v7];
+      [v8 appendString:identifierCopy];
     }
   }
 
@@ -983,17 +983,17 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
 
 - (id)_imageLoaderKey
 {
-  v3 = [(VUIImageProxy *)self imageLoader];
-  v4 = [(VUIImageProxy *)self object];
-  v5 = [v3 imageKeyForObject:v4];
+  imageLoader = [(VUIImageProxy *)self imageLoader];
+  object = [(VUIImageProxy *)self object];
+  v5 = [imageLoader imageKeyForObject:object];
 
   return v5;
 }
 
 - (id)_originalImageAssetKey
 {
-  v3 = [(VUIImageProxy *)self _imageLoaderKey];
-  v4 = [(VUIImageProxy *)self _assetKeyWithImageLoaderKey:v3 decoratorIdentifier:0];
+  _imageLoaderKey = [(VUIImageProxy *)self _imageLoaderKey];
+  v4 = [(VUIImageProxy *)self _assetKeyWithImageLoaderKey:_imageLoaderKey decoratorIdentifier:0];
   if ([(VUIImageProxy *)self allowsSubstitutionForOriginal])
   {
     v5 = [(VUIImageProxy *)self _imageAssetPathWithAssetKey:v4];
@@ -1001,7 +1001,7 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
     if (!v5)
     {
       v6 = +[VUIAssetLibrary sharedInstance];
-      v7 = [MEMORY[0x277CBEB98] setWithObject:v3];
+      v7 = [MEMORY[0x277CBEB98] setWithObject:_imageLoaderKey];
       v8 = [v6 keyForAssetWithTags:v7 inGroupOfType:{-[VUIImageProxy groupType](self, "groupType")}];
 
       if (v8)
@@ -1025,9 +1025,9 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
 
 - (id)_decoratedImageAssetKey
 {
-  v3 = [(VUIImageProxy *)self _imageLoaderKey];
-  v4 = [(VUIImageProxy *)self _decoratorIdentifier];
-  v5 = [(VUIImageProxy *)self _assetKeyWithImageLoaderKey:v3 decoratorIdentifier:v4];
+  _imageLoaderKey = [(VUIImageProxy *)self _imageLoaderKey];
+  _decoratorIdentifier = [(VUIImageProxy *)self _decoratorIdentifier];
+  v5 = [(VUIImageProxy *)self _assetKeyWithImageLoaderKey:_imageLoaderKey decoratorIdentifier:_decoratorIdentifier];
   if ([v5 length] >= 0x100)
   {
     v6 = [v5 substringFromIndex:{objc_msgSend(v5, "length") - 255}];
@@ -1040,27 +1040,27 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
 
 - (id)_decoratedImageAssetPath
 {
-  v3 = [(VUIImageProxy *)self _decoratedImageAssetKey];
-  v4 = [(VUIImageProxy *)self _imageAssetPathWithAssetKey:v3];
+  _decoratedImageAssetKey = [(VUIImageProxy *)self _decoratedImageAssetKey];
+  v4 = [(VUIImageProxy *)self _imageAssetPathWithAssetKey:_decoratedImageAssetKey];
 
   return v4;
 }
 
 - (id)_originalImageAssetPath
 {
-  v3 = [(VUIImageProxy *)self _originalImageAssetKey];
-  v4 = [(VUIImageProxy *)self _imageAssetPathWithAssetKey:v3];
+  _originalImageAssetKey = [(VUIImageProxy *)self _originalImageAssetKey];
+  v4 = [(VUIImageProxy *)self _imageAssetPathWithAssetKey:_originalImageAssetKey];
 
   return v4;
 }
 
-- (id)_imageAssetPathWithAssetKey:(id)a3
+- (id)_imageAssetPathWithAssetKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = a3;
+    keyCopy = key;
     v5 = +[VUIAssetLibrary sharedInstance];
-    v6 = [v5 assetPathForKey:v4 inGroupOfType:{-[VUIImageProxy groupType](self, "groupType")}];
+    v6 = [v5 assetPathForKey:keyCopy inGroupOfType:{-[VUIImageProxy groupType](self, "groupType")}];
   }
 
   else
@@ -1075,63 +1075,63 @@ void __86__VUIImageProxy__completeImageLoadWithImage_imagePath_error_assetKey_ex
 {
   if ([(VUIImageProxy *)self isLoading])
   {
-    v9 = self;
-    if (v9->_imageDidWriteObserver)
+    selfCopy = self;
+    if (selfCopy->_imageDidWriteObserver)
     {
-      v3 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v3 removeObserver:v9->_imageDidWriteObserver];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:selfCopy->_imageDidWriteObserver];
 
-      imageDidWriteObserver = v9->_imageDidWriteObserver;
-      v9->_imageDidWriteObserver = 0;
+      imageDidWriteObserver = selfCopy->_imageDidWriteObserver;
+      selfCopy->_imageDidWriteObserver = 0;
     }
 
-    v5 = [(VUIImageProxy *)v9 requestToken];
+    requestToken = [(VUIImageProxy *)selfCopy requestToken];
 
-    if (v5)
+    if (requestToken)
     {
-      v6 = [(VUIImageProxy *)v9 imageLoader];
-      v7 = [(VUIImageProxy *)v9 requestToken];
-      [v6 cancelLoad:v7];
+      imageLoader = [(VUIImageProxy *)selfCopy imageLoader];
+      requestToken2 = [(VUIImageProxy *)selfCopy requestToken];
+      [imageLoader cancelLoad:requestToken2];
 
-      [(VUIImageProxy *)v9 setRequestToken:0];
+      [(VUIImageProxy *)selfCopy setRequestToken:0];
     }
 
-    v8 = [(VUIImageProxy *)v9 decoratorRequestToken];
-    [v8 setStatusCancelled:1];
+    decoratorRequestToken = [(VUIImageProxy *)selfCopy decoratorRequestToken];
+    [decoratorRequestToken setStatusCancelled:1];
 
-    [(VUIImageProxy *)v9 setDecoratorRequestToken:0];
-    [(VUIImageProxy *)v9 setIsLoading:0];
-    [(VUIImageProxy *)v9 _callCompletionHandlerWithImage:0 error:0 finished:0];
-    [(VUIImageProxy *)v9 _callWriteCompletionHandlerWithPath:0 error:0 finished:0];
+    [(VUIImageProxy *)selfCopy setDecoratorRequestToken:0];
+    [(VUIImageProxy *)selfCopy setIsLoading:0];
+    [(VUIImageProxy *)selfCopy _callCompletionHandlerWithImage:0 error:0 finished:0];
+    [(VUIImageProxy *)selfCopy _callWriteCompletionHandlerWithPath:0 error:0 finished:0];
   }
 }
 
-- (void)_callCompletionHandlerWithImage:(id)a3 error:(id)a4 finished:(BOOL)a5
+- (void)_callCompletionHandlerWithImage:(id)image error:(id)error finished:(BOOL)finished
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  [VUIPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:0 withError:v8];
-  v9 = [(VUIImageProxy *)self completionHandler];
-  v10 = [v9 copy];
+  finishedCopy = finished;
+  imageCopy = image;
+  errorCopy = error;
+  [VUIPagePerformanceController postNotificationForImageProxy:self withLoadingStatus:0 withError:errorCopy];
+  completionHandler = [(VUIImageProxy *)self completionHandler];
+  v10 = [completionHandler copy];
 
   if (v10)
   {
-    (v10)[2](v10, v11, v8, v5);
+    (v10)[2](v10, imageCopy, errorCopy, finishedCopy);
   }
 }
 
-- (void)_callWriteCompletionHandlerWithPath:(id)a3 error:(id)a4 finished:(BOOL)a5
+- (void)_callWriteCompletionHandlerWithPath:(id)path error:(id)error finished:(BOOL)finished
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = [(VUIImageProxy *)self writeCompletionHandler];
-  v10 = [v9 copy];
+  finishedCopy = finished;
+  pathCopy = path;
+  errorCopy = error;
+  writeCompletionHandler = [(VUIImageProxy *)self writeCompletionHandler];
+  v10 = [writeCompletionHandler copy];
 
   if (v10)
   {
-    (v10)[2](v10, v11, v8, v5);
+    (v10)[2](v10, pathCopy, errorCopy, finishedCopy);
   }
 }
 

@@ -1,31 +1,31 @@
 @interface DynamicTypeLinkedLabel
 - (NSAttributedString)attributedText;
-- (void)labelTapped:(id)a3;
-- (void)setAttributedText:(id)a3;
+- (void)labelTapped:(id)tapped;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation DynamicTypeLinkedLabel
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E05FCE8();
 
   return v3;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E05FD90(a3);
+  textCopy = text;
+  selfCopy = self;
+  sub_24E05FD90(text);
 }
 
-- (void)labelTapped:(id)a3
+- (void)labelTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E060648(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_24E060648(tappedCopy);
 }
 
 @end

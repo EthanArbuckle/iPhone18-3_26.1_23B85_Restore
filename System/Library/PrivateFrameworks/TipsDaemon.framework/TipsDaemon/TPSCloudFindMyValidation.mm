@@ -1,12 +1,12 @@
 @interface TPSCloudFindMyValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSCloudFindMyValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -20,12 +20,12 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__11;
   v17 = __Block_byref_object_dispose__11;
-  v18 = [MEMORY[0x277D08F78] sharedInstance];
+  mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
   v5 = v14[5];
   if (!v5)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
 
     v5 = v14[5];
   }
@@ -37,7 +37,7 @@
   v10 = v21;
   v11 = v19;
   v8[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   v12 = &v13;
   [v5 fmipStateWithCompletion:v8];

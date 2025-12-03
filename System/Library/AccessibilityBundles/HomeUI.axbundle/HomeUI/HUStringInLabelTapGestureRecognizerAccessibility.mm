@@ -1,24 +1,24 @@
 @interface HUStringInLabelTapGestureRecognizerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)shouldReceiveEvent:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)shouldReceiveEvent:(id)event;
 @end
 
 @implementation HUStringInLabelTapGestureRecognizerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUStringInLabelTapGestureRecognizer" isKindOfClass:@"UITapGestureRecognizer"];
-  [v3 validateClass:@"HUStringInLabelTapGestureRecognizer" hasInstanceMethod:@"shouldReceiveEvent:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"HUStringInLabelTapGestureRecognizer" hasInstanceMethod:@"_didTapAttributedTextInLabel: targetRange: event:" withFullSignature:{"B", "@", "{_NSRange=QQ}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUStringInLabelTapGestureRecognizer" isKindOfClass:@"UITapGestureRecognizer"];
+  [validationsCopy validateClass:@"HUStringInLabelTapGestureRecognizer" hasInstanceMethod:@"shouldReceiveEvent:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"HUStringInLabelTapGestureRecognizer" hasInstanceMethod:@"_didTapAttributedTextInLabel: targetRange: event:" withFullSignature:{"B", "@", "{_NSRange=QQ}", "@", 0}];
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v19.receiver = self;
   v19.super_class = HUStringInLabelTapGestureRecognizerAccessibility;
-  [(HUStringInLabelTapGestureRecognizerAccessibility *)&v19 shouldReceiveEvent:v4];
+  [(HUStringInLabelTapGestureRecognizerAccessibility *)&v19 shouldReceiveEvent:eventCopy];
   LOBYTE(v15) = 0;
   objc_opt_class();
   v5 = [(HUStringInLabelTapGestureRecognizerAccessibility *)self safeValueForKey:@"view"];
@@ -26,23 +26,23 @@
 
   if (v6)
   {
-    v7 = [v6 attributedText];
-    if (v7)
+    attributedText = [v6 attributedText];
+    if (attributedText)
     {
       v8 = [(HUStringInLabelTapGestureRecognizerAccessibility *)self safeValueForKey:@"view"];
-      v9 = [v8 accessibilityLabel];
+      accessibilityLabel = [v8 accessibilityLabel];
 
-      if (v9)
+      if (accessibilityLabel)
       {
-        v10 = [v7 string];
-        [v10 rangeOfString:v9 options:4];
+        string = [attributedText string];
+        [string rangeOfString:accessibilityLabel options:4];
 
         v15 = 0;
         v16 = &v15;
         v17 = 0x2020000000;
         v18 = 0;
         v13 = v6;
-        v14 = v4;
+        v14 = eventCopy;
         AXPerformSafeBlock();
         v11 = *(v16 + 24);
 
@@ -55,10 +55,10 @@ LABEL_11:
 
     else
     {
-      v9 = AXLogCommon();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      accessibilityLabel = AXLogCommon();
+      if (os_log_type_enabled(accessibilityLabel, OS_LOG_TYPE_ERROR))
       {
-        [HUStringInLabelTapGestureRecognizerAccessibility shouldReceiveEvent:v9];
+        [HUStringInLabelTapGestureRecognizerAccessibility shouldReceiveEvent:accessibilityLabel];
       }
     }
 
@@ -66,10 +66,10 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = AXLogCommon();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  attributedText = AXLogCommon();
+  if (os_log_type_enabled(attributedText, OS_LOG_TYPE_ERROR))
   {
-    [HUStringInLabelTapGestureRecognizerAccessibility shouldReceiveEvent:v7];
+    [HUStringInLabelTapGestureRecognizerAccessibility shouldReceiveEvent:attributedText];
   }
 
   v11 = 0;

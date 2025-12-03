@@ -1,16 +1,16 @@
 @interface _MPArtworkDataSourceURLCache
-- (_MPArtworkDataSourceURLCache)initWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4 diskPath:(id)a5;
-- (void)setRepresentationSize:(CGSize)a3 forRequest:(id)a4;
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4;
+- (_MPArtworkDataSourceURLCache)initWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity diskPath:(id)path;
+- (void)setRepresentationSize:(CGSize)size forRequest:(id)request;
+- (void)storeCachedResponse:(id)response forRequest:(id)request;
 @end
 
 @implementation _MPArtworkDataSourceURLCache
 
-- (void)setRepresentationSize:(CGSize)a3 forRequest:(id)a4
+- (void)setRepresentationSize:(CGSize)size forRequest:(id)request
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  requestCopy = request;
   accessQueue = self->_accessQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -19,30 +19,30 @@
   v12 = width;
   v13 = height;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = requestCopy;
+  v9 = requestCopy;
   dispatch_barrier_async(accessQueue, v10);
 }
 
-- (void)storeCachedResponse:(id)a3 forRequest:(id)a4
+- (void)storeCachedResponse:(id)response forRequest:(id)request
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 userInfo];
-  v9 = [v8 mutableCopy];
+  responseCopy = response;
+  requestCopy = request;
+  userInfo = [responseCopy userInfo];
+  v9 = [userInfo mutableCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = v9;
+    dictionary = v9;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v12 = v11;
+  v12 = dictionary;
 
   v25 = 0;
   v26 = &v25;
@@ -57,7 +57,7 @@
   block[3] = &unk_1E7681330;
   v24 = &v25;
   block[4] = self;
-  v14 = v7;
+  v14 = requestCopy;
   v23 = v14;
   dispatch_sync(accessQueue, block);
   if (![v26[5] length])
@@ -76,9 +76,9 @@
 
   [v12 setObject:v26[5] forKeyedSubscript:@"representationSize"];
   v17 = objc_alloc(MEMORY[0x1E696AAF8]);
-  v18 = [v6 response];
-  v19 = [v6 data];
-  v20 = [v17 initWithResponse:v18 data:v19 userInfo:v12 storagePolicy:0];
+  response = [responseCopy response];
+  data = [responseCopy data];
+  v20 = [v17 initWithResponse:response data:data userInfo:v12 storagePolicy:0];
 
   v21.receiver = self;
   v21.super_class = _MPArtworkDataSourceURLCache;
@@ -87,16 +87,16 @@
   _Block_object_dispose(&v25, 8);
 }
 
-- (_MPArtworkDataSourceURLCache)initWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4 diskPath:(id)a5
+- (_MPArtworkDataSourceURLCache)initWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity diskPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = _MPArtworkDataSourceURLCache;
-  v5 = [(NSURLCache *)&v11 initWithMemoryCapacity:a3 diskCapacity:a4 diskPath:a5];
+  v5 = [(NSURLCache *)&v11 initWithMemoryCapacity:capacity diskCapacity:diskCapacity diskPath:path];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     requestSizeMap = v5->_requestSizeMap;
-    v5->_requestSizeMap = v6;
+    v5->_requestSizeMap = weakToStrongObjectsMapTable;
 
     v8 = dispatch_queue_create("com.apple.mediaplayer.MPArtworkDataSourceURLCache.accessQueue", MEMORY[0x1E69E96A8]);
     accessQueue = v5->_accessQueue;

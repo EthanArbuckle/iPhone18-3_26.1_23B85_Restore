@@ -1,10 +1,10 @@
 @interface MadBridge
 + (_TtC9appstored9MadBridge)shared;
-- (BOOL)isThirdPartyRestore:(id)a3;
+- (BOOL)isThirdPartyRestore:(id)restore;
 - (_TtC9appstored9MadBridge)init;
-- (void)kickOffRestoreIfNeeded:(id)a3;
+- (void)kickOffRestoreIfNeeded:(id)needed;
 - (void)sendDiscoverEvent;
-- (void)transferAppAssetPromisesForCoordinators:(id)a3 logKey:(id)a4;
+- (void)transferAppAssetPromisesForCoordinators:(id)coordinators logKey:(id)key;
 @end
 
 @implementation MadBridge
@@ -21,23 +21,23 @@
   return v3;
 }
 
-- (BOOL)isThirdPartyRestore:(id)a3
+- (BOOL)isThirdPartyRestore:(id)restore
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1001916B8(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)transferAppAssetPromisesForCoordinators:(id)a3 logKey:(id)a4
+- (void)transferAppAssetPromisesForCoordinators:(id)coordinators logKey:(id)key
 {
   sub_10009FAD4(0, &qword_10059EEE0);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_100191DAC(v6, v7);
+  keyCopy = key;
+  selfCopy = self;
+  sub_100191DAC(v6, keyCopy);
 }
 
 - (void)sendDiscoverEvent
@@ -53,11 +53,11 @@
   sub_10019F02C(0, 0, v4, &unk_100438998, v6);
 }
 
-- (void)kickOffRestoreIfNeeded:(id)a3
+- (void)kickOffRestoreIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001922C0(v4);
+  neededCopy = needed;
+  selfCopy = self;
+  sub_1001922C0(neededCopy);
 }
 
 - (_TtC9appstored9MadBridge)init

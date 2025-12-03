@@ -1,14 +1,14 @@
 @interface UIDatePicker
-+ (id)_styleForIdiom:(int64_t)a3;
++ (id)_styleForIdiom:(int64_t)idiom;
 + (void)_prepareStyleStorageIfNecessary;
-+ (void)_registerStyle:(id)a3 forIdiom:(int64_t)a4;
++ (void)_registerStyle:(id)style forIdiom:(int64_t)idiom;
 - (BOOL)_allowsZeroCountDownDuration;
 - (BOOL)_allowsZeroTimeInterval;
 - (BOOL)_isTimeIntervalMode;
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSCalendar)calendar;
 - (NSDate)_dateUnderSelectionBar;
 - (NSDictionary)_overrideCompactTextAttributes;
@@ -17,8 +17,8 @@
 - (UIColor)_magnifierLineColor;
 - (UIColor)_textColor;
 - (UIColor)_textShadowColor;
-- (UIDatePicker)initWithCoder:(id)a3;
-- (UIDatePicker)initWithFrame:(CGRect)a3;
+- (UIDatePicker)initWithCoder:(id)coder;
+- (UIDatePicker)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_appliedInsetsToEdgeOfContent;
 - (_UIDatePickerCompactStyleDelegate)_compactStyleDelegate;
 - (_UIDatePickerOverlayPresentation)_overlayPresentation;
@@ -26,62 +26,62 @@
 - (double)timeInterval;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (id)dateComponents;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_commonInit;
-- (void)_compactStyleSetActiveComponent:(int64_t)a3;
-- (void)_datePickerReset:(id)a3;
+- (void)_compactStyleSetActiveComponent:(int64_t)component;
+- (void)_datePickerReset:(id)reset;
 - (void)_emitValueChanged;
-- (void)_installPickerView:(id)a3 updatingSize:(BOOL)a4;
-- (void)_performScrollTest:(id)a3 withIterations:(int64_t)a4 rowsToScroll:(int64_t)a5 inComponent:(int64_t)a6;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_installPickerView:(id)view updatingSize:(BOOL)size;
+- (void)_performScrollTest:(id)test withIterations:(int64_t)iterations rowsToScroll:(int64_t)scroll inComponent:(int64_t)component;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_registerObservers;
-- (void)_setAllowsZeroCountDownDuration:(BOOL)a3;
-- (void)_setAllowsZeroTimeInterval:(BOOL)a3;
-- (void)_setCompactStyleDelegate:(id)a3;
-- (void)_setCustomFontDesign:(id)a3;
-- (void)_setDisplaysTimeZone:(BOOL)a3;
-- (void)_setHighlightColor:(id)a3;
-- (void)_setHighlightsToday:(BOOL)a3;
-- (void)_setMagnifierLineColor:(id)a3;
-- (void)_setOverrideCompactTextAttributes:(id)a3;
-- (void)_setSelectionBarIgnoresInset:(BOOL)a3;
-- (void)_setTextColor:(id)a3;
-- (void)_setTextShadowColor:(id)a3;
+- (void)_setAllowsZeroCountDownDuration:(BOOL)duration;
+- (void)_setAllowsZeroTimeInterval:(BOOL)interval;
+- (void)_setCompactStyleDelegate:(id)delegate;
+- (void)_setCustomFontDesign:(id)design;
+- (void)_setDisplaysTimeZone:(BOOL)zone;
+- (void)_setHighlightColor:(id)color;
+- (void)_setHighlightsToday:(BOOL)today;
+- (void)_setMagnifierLineColor:(id)color;
+- (void)_setOverrideCompactTextAttributes:(id)attributes;
+- (void)_setSelectionBarIgnoresInset:(BOOL)inset;
+- (void)_setTextColor:(id)color;
+- (void)_setTextShadowColor:(id)color;
 - (void)_setUpInitialValues;
-- (void)_updatePickerDateFromOldDate:(id)a3 animated:(BOOL)a4;
+- (void)_updatePickerDateFromOldDate:(id)date animated:(BOOL)animated;
 - (void)_updatePickerViewIfNecessary;
 - (void)_workaround66574039_updateLayoutMargins;
 - (void)awakeFromNib;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutMarginsDidChange;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCalendar:(NSCalendar *)calendar;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
 - (void)setDate:(NSDate *)date;
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
 - (void)setDatePickerMode:(UIDatePickerMode)datePickerMode;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
 - (void)setLocale:(NSLocale *)locale;
 - (void)setMaximumDate:(NSDate *)maximumDate;
 - (void)setMinimumDate:(NSDate *)minimumDate;
 - (void)setMinuteInterval:(NSInteger)minuteInterval;
 - (void)setPreferredDatePickerStyle:(UIDatePickerStyle)preferredDatePickerStyle;
 - (void)setRoundsToMinuteInterval:(BOOL)roundsToMinuteInterval;
-- (void)setTimeInterval:(double)a3;
+- (void)setTimeInterval:(double)interval;
 - (void)setTimeZone:(NSTimeZone *)timeZone;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIDatePicker
 
-- (UIDatePicker)initWithFrame:(CGRect)a3
+- (UIDatePicker)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (dyld_program_sdk_at_least())
   {
     v8 = [objc_alloc(_UIDatePickerClassForStyleAndMode(0 2))];
@@ -93,9 +93,9 @@
   else
   {
     v13 = +[UIDevice currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    userInterfaceIdiom = [v13 userInterfaceIdiom];
 
-    if ((v14 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(UIPickerView *)_UIDatePickerView sizeForMainScreenTraitsThatFits:width, height];
     }
@@ -129,22 +129,22 @@
   return v18;
 }
 
-- (UIDatePicker)initWithCoder:(id)a3
+- (UIDatePicker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = UIDatePicker;
-  v5 = [(UIControl *)&v21 initWithCoder:v4];
+  v5 = [(UIControl *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     data = v5->_data;
     v5->_data = v6;
 
-    v5->_preferredDatePickerStyle = [v4 decodeIntegerForKey:@"UIPickerStyle"];
-    if ([v4 containsValueForKey:@"UIDatePickerMode"])
+    v5->_preferredDatePickerStyle = [coderCopy decodeIntegerForKey:@"UIPickerStyle"];
+    if ([coderCopy containsValueForKey:@"UIDatePickerMode"])
     {
-      v8 = [v4 decodeIntegerForKey:@"UIDatePickerMode"];
+      v8 = [coderCopy decodeIntegerForKey:@"UIDatePickerMode"];
     }
 
     else
@@ -157,18 +157,18 @@
     v10 = [v9 initWithFrame:?];
     [(UIDatePicker *)v5 _installPickerView:v10 updatingSize:0];
     [(UIDatePicker *)v5 setDatePickerMode:v8];
-    v11 = [v4 decodeObjectForKey:@"UILocale"];
+    v11 = [coderCopy decodeObjectForKey:@"UILocale"];
     [(UIDatePicker *)v5 setLocale:v11];
 
-    v12 = [v4 decodeObjectForKey:@"UITimeZone"];
+    v12 = [coderCopy decodeObjectForKey:@"UITimeZone"];
     [(UIDatePicker *)v5 setTimeZone:v12];
 
-    v13 = [v4 decodeObjectForKey:@"UICalendar"];
+    v13 = [coderCopy decodeObjectForKey:@"UICalendar"];
     [(UIDatePicker *)v5 setCalendar:v13];
 
-    if ([v4 containsValueForKey:@"UIMinuteInterval"])
+    if ([coderCopy containsValueForKey:@"UIMinuteInterval"])
     {
-      v14 = [v4 decodeIntegerForKey:@"UIMinuteInterval"];
+      v14 = [coderCopy decodeIntegerForKey:@"UIMinuteInterval"];
     }
 
     else
@@ -179,26 +179,26 @@
     [(UIDatePicker *)v5 setMinuteInterval:v14];
     if ([(UIDatePicker *)v5 _isTimeIntervalMode])
     {
-      [v4 decodeFloatForKey:@"UICountDownDuration"];
+      [coderCopy decodeFloatForKey:@"UICountDownDuration"];
       [(UIDatePicker *)v5 setTimeInterval:v15];
     }
 
     else
     {
-      v16 = [v4 decodeObjectForKey:@"UIMinimumDate"];
+      v16 = [coderCopy decodeObjectForKey:@"UIMinimumDate"];
       [(UIDatePicker *)v5 setMinimumDate:v16];
 
-      v17 = [v4 decodeObjectForKey:@"UIMaximumDate"];
+      v17 = [coderCopy decodeObjectForKey:@"UIMaximumDate"];
       [(UIDatePicker *)v5 setMaximumDate:v17];
 
-      v18 = [v4 decodeObjectForKey:@"UIDate"];
+      v18 = [coderCopy decodeObjectForKey:@"UIDate"];
       [(UIDatePicker *)v5 setDate:v18];
     }
 
     [(UIDatePicker *)v5 _setUpInitialValues];
-    if ([v4 containsValueForKey:@"UIDatePickerUseCurrentDateDuringDecoding"])
+    if ([coderCopy containsValueForKey:@"UIDatePickerUseCurrentDateDuringDecoding"])
     {
-      -[UIDatePicker _setUseCurrentDateDuringDecoding:](v5, "_setUseCurrentDateDuringDecoding:", [v4 decodeBoolForKey:@"UIDatePickerUseCurrentDateDuringDecoding"]);
+      -[UIDatePicker _setUseCurrentDateDuringDecoding:](v5, "_setUseCurrentDateDuringDecoding:", [coderCopy decodeBoolForKey:@"UIDatePickerUseCurrentDateDuringDecoding"]);
     }
 
     [(UIDatePicker *)v5 _commonInit];
@@ -229,62 +229,62 @@
   [&v4 awakeFromNib];
   if ([(UIDatePicker *)self _useCurrentDateDuringDecoding])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [(UIDatePicker *)self setDate:v3];
+    date = [MEMORY[0x1E695DF00] date];
+    [(UIDatePicker *)self setDate:date];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UIDatePicker;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_pickerView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = UIDatePicker;
-  [(UIControl *)&v20 encodeWithCoder:v4];
+  [(UIControl *)&v20 encodeWithCoder:coderCopy];
   preferredDatePickerStyle = self->_preferredDatePickerStyle;
   if (preferredDatePickerStyle)
   {
-    [v4 encodeInteger:preferredDatePickerStyle forKey:@"UIPickerStyle"];
+    [coderCopy encodeInteger:preferredDatePickerStyle forKey:@"UIPickerStyle"];
   }
 
   if ([(UIDatePicker *)self datePickerMode]!= UIDatePickerModeDateAndTime)
   {
-    [v4 encodeInteger:-[UIDatePicker datePickerMode](self forKey:{"datePickerMode"), @"UIDatePickerMode"}];
+    [coderCopy encodeInteger:-[UIDatePicker datePickerMode](self forKey:{"datePickerMode"), @"UIDatePickerMode"}];
   }
 
-  v6 = [(_UIDatePickerDataModel *)self->_data locale];
+  locale = [(_UIDatePickerDataModel *)self->_data locale];
 
-  if (v6)
+  if (locale)
   {
-    v7 = [(_UIDatePickerDataModel *)self->_data locale];
-    [v4 encodeObject:v7 forKey:@"UILocale"];
+    locale2 = [(_UIDatePickerDataModel *)self->_data locale];
+    [coderCopy encodeObject:locale2 forKey:@"UILocale"];
   }
 
-  v8 = [(UIDatePicker *)self timeZone];
+  timeZone = [(UIDatePicker *)self timeZone];
 
-  if (v8)
+  if (timeZone)
   {
-    v9 = [(UIDatePicker *)self timeZone];
-    [v4 encodeObject:v9 forKey:@"UITimeZone"];
+    timeZone2 = [(UIDatePicker *)self timeZone];
+    [coderCopy encodeObject:timeZone2 forKey:@"UITimeZone"];
   }
 
-  v10 = [(_UIDatePickerDataModel *)self->_data calendar];
+  calendar = [(_UIDatePickerDataModel *)self->_data calendar];
 
-  if (v10)
+  if (calendar)
   {
-    v11 = [(_UIDatePickerDataModel *)self->_data calendar];
-    [v4 encodeObject:v11 forKey:@"UICalendar"];
+    calendar2 = [(_UIDatePickerDataModel *)self->_data calendar];
+    [coderCopy encodeObject:calendar2 forKey:@"UICalendar"];
   }
 
   if ([(UIDatePicker *)self _isTimeIntervalMode])
@@ -294,60 +294,60 @@
     {
       [(UIDatePicker *)self timeInterval];
       *&v13 = v13;
-      [v4 encodeFloat:@"UICountDownDuration" forKey:v13];
+      [coderCopy encodeFloat:@"UICountDownDuration" forKey:v13];
     }
   }
 
   else
   {
-    v14 = [(UIDatePicker *)self date];
+    date = [(UIDatePicker *)self date];
 
-    if (v14)
+    if (date)
     {
-      v15 = [(UIDatePicker *)self date];
-      [v4 encodeObject:v15 forKey:@"UIDate"];
+      date2 = [(UIDatePicker *)self date];
+      [coderCopy encodeObject:date2 forKey:@"UIDate"];
     }
 
-    v16 = [(UIDatePicker *)self minimumDate];
+    minimumDate = [(UIDatePicker *)self minimumDate];
 
-    if (v16)
+    if (minimumDate)
     {
-      v17 = [(UIDatePicker *)self minimumDate];
-      [v4 encodeObject:v17 forKey:@"UIMinimumDate"];
+      minimumDate2 = [(UIDatePicker *)self minimumDate];
+      [coderCopy encodeObject:minimumDate2 forKey:@"UIMinimumDate"];
     }
 
-    v18 = [(UIDatePicker *)self maximumDate];
+    maximumDate = [(UIDatePicker *)self maximumDate];
 
-    if (v18)
+    if (maximumDate)
     {
-      v19 = [(UIDatePicker *)self maximumDate];
-      [v4 encodeObject:v19 forKey:@"UIMaximumDate"];
+      maximumDate2 = [(UIDatePicker *)self maximumDate];
+      [coderCopy encodeObject:maximumDate2 forKey:@"UIMaximumDate"];
     }
   }
 
   if ([(UIDatePicker *)self minuteInterval]!= 1)
   {
-    [v4 encodeInteger:-[UIDatePicker minuteInterval](self forKey:{"minuteInterval"), @"UIMinuteInterval"}];
+    [coderCopy encodeInteger:-[UIDatePicker minuteInterval](self forKey:{"minuteInterval"), @"UIMinuteInterval"}];
   }
 
   if (![(UIDatePicker *)self _useCurrentDateDuringDecoding])
   {
-    [v4 encodeBool:-[UIDatePicker _useCurrentDateDuringDecoding](self forKey:{"_useCurrentDateDuringDecoding"), @"UIDatePickerUseCurrentDateDuringDecoding"}];
+    [coderCopy encodeBool:-[UIDatePicker _useCurrentDateDuringDecoding](self forKey:{"_useCurrentDateDuringDecoding"), @"UIDatePickerUseCurrentDateDuringDecoding"}];
   }
 }
 
 - (void)_setUpInitialValues
 {
-  v3 = [(UIDatePicker *)self date];
+  date = [(UIDatePicker *)self date];
 
-  if (!v3)
+  if (!date)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
-    [(UIDatePicker *)self setDate:v4];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [(UIDatePicker *)self setDate:date2];
   }
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [v5 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = +[UIDatePicker _styleForIdiom:](UIDatePicker, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
   style = self->_style;
   self->_style = v6;
 
@@ -362,12 +362,12 @@
 
 - (void)_registerObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__datePickerReset_ name:0x1EFB8A3D0 object:0];
-  [v3 addObserver:self selector:sel__todayChanged_ name:0x1EFB8EE90 object:UIApp];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__datePickerReset_ name:0x1EFB8A3D0 object:0];
+  [defaultCenter addObserver:self selector:sel__todayChanged_ name:0x1EFB8EE90 object:UIApp];
 }
 
-- (void)_datePickerReset:(id)a3
+- (void)_datePickerReset:(id)reset
 {
   [(_UIDatePickerDataModel *)self->_data resetForCurrentLocaleOrCalendarChange];
   [(_UIDatePickerViewComponent *)self->_pickerView didReset];
@@ -405,20 +405,20 @@ void __33__UIDatePicker__datePickerReset___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_installPickerView:(id)a3 updatingSize:(BOOL)a4
+- (void)_installPickerView:(id)view updatingSize:(BOOL)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v26[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  objc_storeStrong(&self->_pickerView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_pickerView, view);
   [(_UIDatePickerViewComponent *)self->_pickerView setDatePicker:self];
   if (!self->_data)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIDatePicker.m" lineNumber:392 description:@"Installing picker view before data model has been created"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDatePicker.m" lineNumber:392 description:@"Installing picker view before data model has been created"];
   }
 
-  -[_UIDatePickerDataModel setDatePickerStyle:](self->_data, "setDatePickerStyle:", [v8 datePickerStyle]);
+  -[_UIDatePickerDataModel setDatePickerStyle:](self->_data, "setDatePickerStyle:", [viewCopy datePickerStyle]);
   [(_UIDatePickerViewComponent *)self->_pickerView setData:self->_data];
   [(_UIDatePickerViewComponent *)self->_pickerView _setEnabled:[(UIControl *)self isEnabled]];
   [(UIDatePicker *)self _workaround66574039_updateLayoutMargins];
@@ -427,21 +427,21 @@ void __33__UIDatePicker__datePickerReset___block_invoke(uint64_t a1)
   {
     [(_UIDatePickerViewComponent *)self->_pickerView setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = MEMORY[0x1E69977A0];
-    v24 = [(_UIDatePickerViewComponent *)self->_pickerView leadingAnchor];
-    v23 = [(UIView *)self leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(_UIDatePickerViewComponent *)self->_pickerView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v22;
-    v21 = [(_UIDatePickerViewComponent *)self->_pickerView trailingAnchor];
-    v20 = [(UIView *)self trailingAnchor];
-    v18 = [v21 constraintEqualToAnchor:v20];
+    trailingAnchor = [(_UIDatePickerViewComponent *)self->_pickerView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v18;
-    v9 = [(_UIDatePickerViewComponent *)self->_pickerView topAnchor];
-    v10 = [(UIView *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(_UIDatePickerViewComponent *)self->_pickerView topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[2] = v11;
-    v12 = [(_UIDatePickerViewComponent *)self->_pickerView bottomAnchor];
-    v13 = [(UIView *)self bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(_UIDatePickerViewComponent *)self->_pickerView bottomAnchor];
+    bottomAnchor2 = [(UIView *)self bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v19 activateConstraints:v15];
@@ -458,7 +458,7 @@ void __33__UIDatePicker__datePickerReset___block_invoke(uint64_t a1)
   v25.receiver = self;
   v25.super_class = UIDatePicker;
   [(UIView *)&v25 invalidateIntrinsicContentSize];
-  if (v4)
+  if (sizeCopy)
   {
     [(UIView *)self sizeToFit];
   }
@@ -481,8 +481,8 @@ void __33__UIDatePicker__datePickerReset___block_invoke(uint64_t a1)
 
 - (NSLocale)locale
 {
-  v2 = [(_UIDatePickerDataModel *)self->_data locale];
-  v3 = _UIDatePickerUserLocaleForLocale(v2);
+  locale = [(_UIDatePickerDataModel *)self->_data locale];
+  v3 = _UIDatePickerUserLocaleForLocale(locale);
 
   return v3;
 }
@@ -490,9 +490,9 @@ void __33__UIDatePicker__datePickerReset___block_invoke(uint64_t a1)
 - (void)setLocale:(NSLocale *)locale
 {
   v4 = _UIDatePickerStoredLocaleForLocale(locale);
-  v5 = [(_UIDatePickerDataModel *)self->_data locale];
+  locale = [(_UIDatePickerDataModel *)self->_data locale];
   v8 = v4;
-  v6 = v5;
+  v6 = locale;
   if (v8 == v6)
   {
 
@@ -519,8 +519,8 @@ LABEL_9:
 
 - (NSCalendar)calendar
 {
-  v2 = [(_UIDatePickerDataModel *)self->_data calendar];
-  v3 = _UIDatePickerUserCalendarForCalendar(v2);
+  calendar = [(_UIDatePickerDataModel *)self->_data calendar];
+  v3 = _UIDatePickerUserCalendarForCalendar(calendar);
 
   return v3;
 }
@@ -528,22 +528,22 @@ LABEL_9:
 - (void)setCalendar:(NSCalendar *)calendar
 {
   v4 = _UIDatePickerStoredCalendarForCalendar(calendar);
-  v5 = [(_UIDatePickerDataModel *)self->_data calendar];
+  calendar = [(_UIDatePickerDataModel *)self->_data calendar];
   v6 = v4;
   v8 = v6;
-  if (v5 == v6)
+  if (calendar == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !calendar)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [calendar isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -558,22 +558,22 @@ LABEL_9:
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
   v4 = timeZone;
-  v5 = [(_UIDatePickerDataModel *)self->_data timeZone];
+  timeZone = [(_UIDatePickerDataModel *)self->_data timeZone];
   v6 = v4;
   v8 = v6;
-  if (v5 == v6)
+  if (timeZone == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !timeZone)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSTimeZone *)v5 isEqual:v6];
+  v7 = [(NSTimeZone *)timeZone isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -588,8 +588,8 @@ LABEL_9:
 - (void)setDate:(NSDate *)date
 {
   v6 = date;
-  v4 = [(UIView *)self window];
-  v5 = v4 != 0;
+  window = [(UIView *)self window];
+  v5 = window != 0;
 
   [(UIDatePicker *)self setDate:v6 animated:v5];
 }
@@ -597,10 +597,10 @@ LABEL_9:
 - (void)setMinimumDate:(NSDate *)minimumDate
 {
   v4 = minimumDate;
-  v5 = [(_UIDatePickerDataModel *)self->_data minimumDate];
+  minimumDate = [(_UIDatePickerDataModel *)self->_data minimumDate];
   v6 = v4;
   v11 = v6;
-  if (v5 == v6)
+  if (minimumDate == v6)
   {
 
 LABEL_10:
@@ -608,25 +608,25 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !minimumDate)
   {
 
 LABEL_8:
-    v5 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+    minimumDate = [(_UIDatePickerDataModel *)self->_data effectiveDate];
     [(_UIDatePickerDataModel *)self->_data setMinimumDate:v11];
     [(_UIDatePickerViewComponent *)self->_pickerView didChangeMinimumDate];
-    v9 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
-    v10 = [(NSDate *)v5 isEqualToDate:v9];
+    effectiveDate = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+    v10 = [(NSDate *)minimumDate isEqualToDate:effectiveDate];
 
     if (!v10)
     {
-      [(UIDatePicker *)self _updatePickerDateFromOldDate:v5 animated:0];
+      [(UIDatePicker *)self _updatePickerDateFromOldDate:minimumDate animated:0];
     }
 
     goto LABEL_10;
   }
 
-  v7 = [(NSDate *)v5 isEqual:v6];
+  v7 = [(NSDate *)minimumDate isEqual:v6];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -640,10 +640,10 @@ LABEL_11:
 - (void)setMaximumDate:(NSDate *)maximumDate
 {
   v4 = maximumDate;
-  v5 = [(_UIDatePickerDataModel *)self->_data maximumDate];
+  maximumDate = [(_UIDatePickerDataModel *)self->_data maximumDate];
   v6 = v4;
   v11 = v6;
-  if (v5 == v6)
+  if (maximumDate == v6)
   {
 
 LABEL_10:
@@ -651,25 +651,25 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !maximumDate)
   {
 
 LABEL_8:
-    v5 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+    maximumDate = [(_UIDatePickerDataModel *)self->_data effectiveDate];
     [(_UIDatePickerDataModel *)self->_data setMaximumDate:v11];
     [(_UIDatePickerViewComponent *)self->_pickerView didChangeMaximumDate];
-    v9 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
-    v10 = [(NSDate *)v5 isEqualToDate:v9];
+    effectiveDate = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+    v10 = [(NSDate *)maximumDate isEqualToDate:effectiveDate];
 
     if (!v10)
     {
-      [(UIDatePicker *)self _updatePickerDateFromOldDate:v5 animated:0];
+      [(UIDatePicker *)self _updatePickerDateFromOldDate:maximumDate animated:0];
     }
 
     goto LABEL_10;
   }
 
-  v7 = [(NSDate *)v5 isEqual:v6];
+  v7 = [(NSDate *)maximumDate isEqual:v6];
 
   v8 = v11;
   if ((v7 & 1) == 0)
@@ -695,23 +695,23 @@ LABEL_11:
 {
   v4 = animated;
   v6 = date;
-  v7 = [(_UIDatePickerDataModel *)self->_data date];
+  date = [(_UIDatePickerDataModel *)self->_data date];
   v8 = v6;
   v13 = v8;
-  if (v7 == v8)
+  if (date == v8)
   {
   }
 
   else
   {
-    if (!v8 || !v7)
+    if (!v8 || !date)
     {
 
 LABEL_9:
-      v10 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+      effectiveDate = [(_UIDatePickerDataModel *)self->_data effectiveDate];
       [(_UIDatePickerDataModel *)self->_data setDate:v13];
-      v11 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
-      v12 = [v10 isEqualToDate:v11];
+      effectiveDate2 = [(_UIDatePickerDataModel *)self->_data effectiveDate];
+      v12 = [effectiveDate isEqualToDate:effectiveDate2];
 
       if (v12)
       {
@@ -720,13 +720,13 @@ LABEL_9:
 
       else
       {
-        [(UIDatePicker *)self _updatePickerDateFromOldDate:v10 animated:v4];
+        [(UIDatePicker *)self _updatePickerDateFromOldDate:effectiveDate animated:v4];
       }
 
       goto LABEL_13;
     }
 
-    v9 = [(NSDate *)v7 isEqual:v8];
+    v9 = [(NSDate *)date isEqual:v8];
 
     if ((v9 & 1) == 0)
     {
@@ -759,37 +759,37 @@ LABEL_13:
   }
 }
 
-- (void)_setSelectionBarIgnoresInset:(BOOL)a3
+- (void)_setSelectionBarIgnoresInset:(BOOL)inset
 {
-  if (self->_datePickerViewFlags.selectionBarIgnoresInset != a3)
+  if (self->_datePickerViewFlags.selectionBarIgnoresInset != inset)
   {
-    v3 = a3;
-    self->_datePickerViewFlags.selectionBarIgnoresInset = a3;
+    insetCopy = inset;
+    self->_datePickerViewFlags.selectionBarIgnoresInset = inset;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       pickerView = self->_pickerView;
 
-      [(_UIDatePickerViewComponent *)pickerView _setSelectionBarIgnoresInset:v3];
+      [(_UIDatePickerViewComponent *)pickerView _setSelectionBarIgnoresInset:insetCopy];
     }
   }
 }
 
-- (void)_setCustomFontDesign:(id)a3
+- (void)_setCustomFontDesign:(id)design
 {
-  v4 = a3;
-  v5 = [(_UIDatePickerDataModel *)self->_data customFontDesign];
-  v6 = v4;
+  designCopy = design;
+  customFontDesign = [(_UIDatePickerDataModel *)self->_data customFontDesign];
+  v6 = designCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (customFontDesign == v6)
   {
 
     goto LABEL_10;
   }
 
-  if (v6 && v5)
+  if (v6 && customFontDesign)
   {
-    v7 = [v5 isEqual:v6];
+    v7 = [customFontDesign isEqual:v6];
 
     if (v7)
     {
@@ -838,10 +838,10 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(_UIDatePickerViewComponent *)self->_pickerView usesAutoLayout]& 1) != 0)
   {
     v6 = -1.0;
@@ -850,9 +850,9 @@ LABEL_10:
 
   else
   {
-    v8 = [(_UIDatePickerViewComponent *)self->_pickerView hasDefaultSize];
+    hasDefaultSize = [(_UIDatePickerViewComponent *)self->_pickerView hasDefaultSize];
     pickerView = self->_pickerView;
-    if (v8)
+    if (hasDefaultSize)
     {
 
       [(_UIDatePickerViewComponent *)pickerView defaultSize];
@@ -870,10 +870,10 @@ LABEL_10:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(_UIDatePickerViewComponent *)self->_pickerView usesAutoLayout])
   {
     pickerView = self->_pickerView;
@@ -900,7 +900,7 @@ LABEL_10:
   [(UIView *)&v3 invalidateIntrinsicContentSize];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   if (dyld_program_sdk_at_least())
   {
@@ -909,11 +909,11 @@ LABEL_10:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (UIViewIgnoresTouchEvents(self))
   {
     v8 = 0;
@@ -921,7 +921,7 @@ LABEL_10:
 
   else
   {
-    v8 = [(_UIDatePickerViewComponent *)self->_pickerView hitTest:v7 withEvent:x, y];
+    v8 = [(_UIDatePickerViewComponent *)self->_pickerView hitTest:eventCopy withEvent:x, y];
   }
 
   return v8;
@@ -945,7 +945,7 @@ LABEL_10:
   }
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
   v7.receiver = self;
   v7.super_class = UIDatePicker;
@@ -955,16 +955,16 @@ LABEL_10:
 
   if (isKindOfClass)
   {
-    [(_UIDatePickerViewComponent *)self->_pickerView setContentHorizontalAlignment:a3];
+    [(_UIDatePickerViewComponent *)self->_pickerView setContentHorizontalAlignment:alignment];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ((dyld_program_sdk_at_least() & 1) == 0 && self->_pickerView && ((objc_opt_respondsToSelector() & 1) == 0 || ([(_UIDatePickerViewComponent *)self->_pickerView usesAutoLayout]& 1) == 0))
   {
     [(_UIDatePickerViewComponent *)self->_pickerView _sizeThatFits:width, height];
@@ -977,12 +977,12 @@ LABEL_10:
   [(UIView *)&v10 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ((dyld_program_sdk_at_least() & 1) == 0 && self->_pickerView && ((objc_opt_respondsToSelector() & 1) == 0 || ([(_UIDatePickerViewComponent *)self->_pickerView usesAutoLayout]& 1) == 0))
   {
     [(_UIDatePickerViewComponent *)self->_pickerView _sizeThatFits:width, height];
@@ -995,13 +995,13 @@ LABEL_10:
   [(UIView *)&v10 setBounds:x, y, width, height];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = UIDatePicker;
   [(UIControl *)&v5 setEnabled:?];
-  [(_UIDatePickerViewComponent *)self->_pickerView _setEnabled:v3];
+  [(_UIDatePickerViewComponent *)self->_pickerView _setEnabled:enabledCopy];
 }
 
 - (void)_emitValueChanged
@@ -1012,31 +1012,31 @@ LABEL_10:
   }
 }
 
-- (void)_updatePickerDateFromOldDate:(id)a3 animated:(BOOL)a4
+- (void)_updatePickerDateFromOldDate:(id)date animated:(BOOL)animated
 {
   self->_ignoresEmitValueChanged = 1;
-  [(_UIDatePickerViewComponent *)self->_pickerView didChangeDateFrom:a3 animated:a4];
+  [(_UIDatePickerViewComponent *)self->_pickerView didChangeDateFrom:date animated:animated];
   self->_ignoresEmitValueChanged = 0;
 }
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = 0;
+    _systemDefaultFocusGroupIdentifier = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIDatePicker;
-    v5 = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
 - (BOOL)becomeFirstResponder
@@ -1044,9 +1044,9 @@ LABEL_10:
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(_UIDatePickerViewComponent *)self->_pickerView primaryFirstResponder], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 becomeFirstResponder];
+    becomeFirstResponder = [v3 becomeFirstResponder];
 
-    return v5;
+    return becomeFirstResponder;
   }
 
   else
@@ -1062,9 +1062,9 @@ LABEL_10:
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(_UIDatePickerViewComponent *)self->_pickerView primaryFirstResponder], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = [v3 resignFirstResponder];
+    resignFirstResponder = [v3 resignFirstResponder];
 
-    return v5;
+    return resignFirstResponder;
   }
 
   else
@@ -1091,19 +1091,19 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   __datePickerIdiomsToStyles = v0;
 }
 
-+ (void)_registerStyle:(id)a3 forIdiom:(int64_t)a4
++ (void)_registerStyle:(id)style forIdiom:(int64_t)idiom
 {
-  v6 = a3;
-  [a1 _prepareStyleStorageIfNecessary];
+  styleCopy = style;
+  [self _prepareStyleStorageIfNecessary];
   v7 = __datePickerIdiomsToStyles;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKey:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v7 setObject:styleCopy forKey:v8];
 }
 
-+ (id)_styleForIdiom:(int64_t)a3
++ (id)_styleForIdiom:(int64_t)idiom
 {
   v3 = __datePickerIdiomsToStyles;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v5 = [v3 objectForKey:v4];
 
   if (v5)
@@ -1131,9 +1131,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return v8;
 }
 
-- (void)_setCompactStyleDelegate:(id)a3
+- (void)_setCompactStyleDelegate:(id)delegate
 {
-  objc_storeWeak(&self->__compactStyleDelegate, a3);
+  objc_storeWeak(&self->__compactStyleDelegate, delegate);
   v6 = self->_pickerView;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -1151,7 +1151,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return WeakRetained;
 }
 
-- (void)_compactStyleSetActiveComponent:(int64_t)a3
+- (void)_compactStyleSetActiveComponent:(int64_t)component
 {
   v6 = self->_pickerView;
   v4 = objc_opt_self();
@@ -1159,7 +1159,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
 
   if (isKindOfClass)
   {
-    [(_UIDatePickerViewComponent *)v6 setActiveComponent:a3];
+    [(_UIDatePickerViewComponent *)v6 setActiveComponent:component];
   }
 }
 
@@ -1171,35 +1171,35 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
 
   if (isKindOfClass)
   {
-    v5 = [(_UIDatePickerViewComponent *)v2 overrideAttributes];
+    overrideAttributes = [(_UIDatePickerViewComponent *)v2 overrideAttributes];
   }
 
   else
   {
-    v5 = 0;
+    overrideAttributes = 0;
   }
 
-  return v5;
+  return overrideAttributes;
 }
 
-- (void)_setOverrideCompactTextAttributes:(id)a3
+- (void)_setOverrideCompactTextAttributes:(id)attributes
 {
-  v7 = a3;
+  attributesCopy = attributes;
   v4 = self->_pickerView;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    [(_UIDatePickerViewComponent *)v4 setOverrideAttributes:v7];
+    [(_UIDatePickerViewComponent *)v4 setOverrideAttributes:attributesCopy];
   }
 }
 
-- (void)_setDisplaysTimeZone:(BOOL)a3
+- (void)_setDisplaysTimeZone:(BOOL)zone
 {
-  if (self->__displaysTimeZone != a3)
+  if (self->__displaysTimeZone != zone)
   {
-    self->__displaysTimeZone = a3;
+    self->__displaysTimeZone = zone;
     v6 = self->_pickerView;
     v4 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1243,9 +1243,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _isTimeIntervalMode];
 }
 
-- (void)_setHighlightsToday:(BOOL)a3
+- (void)_setHighlightsToday:(BOOL)today
 {
-  v3 = a3;
+  todayCopy = today;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1256,7 +1256,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView setHighlightsToday:v3];
+  [(_UIDatePickerViewComponent *)pickerView setHighlightsToday:todayCopy];
 }
 
 - (BOOL)_allowsZeroCountDownDuration
@@ -1274,9 +1274,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _allowsZeroCountDownDuration];
 }
 
-- (void)_setAllowsZeroCountDownDuration:(BOOL)a3
+- (void)_setAllowsZeroCountDownDuration:(BOOL)duration
 {
-  v3 = a3;
+  durationCopy = duration;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1287,7 +1287,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setAllowsZeroCountDownDuration:v3];
+  [(_UIDatePickerViewComponent *)pickerView _setAllowsZeroCountDownDuration:durationCopy];
 }
 
 - (BOOL)_allowsZeroTimeInterval
@@ -1305,9 +1305,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _allowsZeroTimeInterval];
 }
 
-- (void)_setAllowsZeroTimeInterval:(BOOL)a3
+- (void)_setAllowsZeroTimeInterval:(BOOL)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1318,7 +1318,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setAllowsZeroTimeInterval:v3];
+  [(_UIDatePickerViewComponent *)pickerView _setAllowsZeroTimeInterval:intervalCopy];
 }
 
 - (UIColor)_highlightColor
@@ -1336,9 +1336,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _highlightColor];
 }
 
-- (void)_setHighlightColor:(id)a3
+- (void)_setHighlightColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1349,7 +1349,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setHighlightColor:v5];
+  [(_UIDatePickerViewComponent *)pickerView _setHighlightColor:colorCopy];
 }
 
 - (UIColor)_textColor
@@ -1367,9 +1367,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _textColor];
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1380,8 +1380,8 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setTextColor:v4];
-  [(_UIDatePickerDataModel *)self->_data setCustomTextColor:v4];
+  [(_UIDatePickerViewComponent *)pickerView _setTextColor:colorCopy];
+  [(_UIDatePickerDataModel *)self->_data setCustomTextColor:colorCopy];
 
   v6 = self->_pickerView;
 
@@ -1403,9 +1403,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _textShadowColor];
 }
 
-- (void)_setTextShadowColor:(id)a3
+- (void)_setTextShadowColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1416,7 +1416,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setTextShadowColor:v5];
+  [(_UIDatePickerViewComponent *)pickerView _setTextShadowColor:colorCopy];
 }
 
 - (UIColor)_magnifierLineColor
@@ -1434,9 +1434,9 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return [(_UIDatePickerViewComponent *)pickerView _magnifierLineColor];
 }
 
-- (void)_setMagnifierLineColor:(id)a3
+- (void)_setMagnifierLineColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
@@ -1447,7 +1447,7 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
     pickerView = 0;
   }
 
-  [(_UIDatePickerViewComponent *)pickerView _setMagnifierLineColor:v5];
+  [(_UIDatePickerViewComponent *)pickerView _setMagnifierLineColor:colorCopy];
 }
 
 - (double)timeInterval
@@ -1463,20 +1463,20 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return result;
 }
 
-- (void)setTimeInterval:(double)a3
+- (void)setTimeInterval:(double)interval
 {
   if (objc_opt_respondsToSelector())
   {
     pickerView = self->_pickerView;
 
-    [(_UIDatePickerViewComponent *)pickerView setTimeInterval:a3];
+    [(_UIDatePickerViewComponent *)pickerView setTimeInterval:interval];
   }
 }
 
 - (id)dateComponents
 {
-  v2 = [(_UIDatePickerDataModel *)self->_data lastSelectedDateComponents];
-  v3 = [v2 copy];
+  lastSelectedDateComponents = [(_UIDatePickerDataModel *)self->_data lastSelectedDateComponents];
+  v3 = [lastSelectedDateComponents copy];
 
   return v3;
 }
@@ -1488,12 +1488,12 @@ void __47__UIDatePicker__prepareStyleStorageIfNecessary__block_invoke()
   return WeakRetained;
 }
 
-- (void)_performScrollTest:(id)a3 withIterations:(int64_t)a4 rowsToScroll:(int64_t)a5 inComponent:(int64_t)a6
+- (void)_performScrollTest:(id)test withIterations:(int64_t)iterations rowsToScroll:(int64_t)scroll inComponent:(int64_t)component
 {
-  v10 = a3;
+  testCopy = test;
   if (objc_opt_respondsToSelector())
   {
-    [(_UIDatePickerViewComponent *)self->_pickerView _performScrollTest:v10 withIterations:a4 rowsToScroll:a5 inComponent:a6];
+    [(_UIDatePickerViewComponent *)self->_pickerView _performScrollTest:testCopy withIterations:iterations rowsToScroll:scroll inComponent:component];
   }
 }
 

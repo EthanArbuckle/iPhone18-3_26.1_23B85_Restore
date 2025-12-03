@@ -1,10 +1,10 @@
 @interface PGInvariantFamilyMemoryNodeFeatureExtractor
-- (PGInvariantFamilyMemoryNodeFeatureExtractor)initWithError:(id *)a3;
+- (PGInvariantFamilyMemoryNodeFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGInvariantFamilyMemoryNodeFeatureExtractor
 
-- (PGInvariantFamilyMemoryNodeFeatureExtractor)initWithError:(id *)a3
+- (PGInvariantFamilyMemoryNodeFeatureExtractor)initWithError:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v19[0] = *MEMORY[0x277D275B0];
@@ -12,13 +12,13 @@
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v6 = MEMORY[0x277D22C90];
   v7 = +[PGGraphPersonNode filterExcludingMe];
-  v8 = [v7 relation];
-  v18[0] = v8;
+  relation = [v7 relation];
+  v18[0] = relation;
   v9 = +[PGGraphPersonNode familyOfPerson];
   v18[1] = v9;
   v10 = +[PGGraphMeNode filter];
-  v11 = [v10 relation];
-  v18[2] = v11;
+  relation2 = [v10 relation];
+  v18[2] = relation2;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
   v13 = [v6 chain:v12];
 

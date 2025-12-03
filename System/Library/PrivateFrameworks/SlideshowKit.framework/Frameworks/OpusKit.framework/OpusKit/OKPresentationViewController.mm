@@ -2,24 +2,24 @@
 - (BOOL)isActivityIndicatorVisible;
 - (void)_startMotion;
 - (void)_startPresentation;
-- (void)_updateMotion:(int64_t)a3;
+- (void)_updateMotion:(int64_t)motion;
 - (void)commonInit;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)orientationChanged:(id)a3;
-- (void)setActivityIndicatorVisible:(BOOL)a3;
-- (void)updateActivityIndicatorWithProgress:(double)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)orientationChanged:(id)changed;
+- (void)setActivityIndicatorVisible:(BOOL)visible;
+- (void)updateActivityIndicatorWithProgress:(double)progress;
 - (void)updateMotion;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation OKPresentationViewController
@@ -65,8 +65,8 @@
   }
 
   [objc_msgSend(MEMORY[0x277D75418] "currentDevice")];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D76878] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76878] object:0];
   couchLabelHUDView = self->_couchLabelHUDView;
   if (couchLabelHUDView)
   {
@@ -88,24 +88,24 @@
 
 - (BOOL)isActivityIndicatorVisible
 {
-  v3 = [(OKPresentationViewControllerProxy *)self downloadIndicatorEnabled];
-  if (v3)
+  downloadIndicatorEnabled = [(OKPresentationViewControllerProxy *)self downloadIndicatorEnabled];
+  if (downloadIndicatorEnabled)
   {
-    LOBYTE(v3) = [(OKRoundProgressView *)self->_roundProgressView superview]!= 0;
+    LOBYTE(downloadIndicatorEnabled) = [(OKRoundProgressView *)self->_roundProgressView superview]!= 0;
   }
 
-  return v3;
+  return downloadIndicatorEnabled;
 }
 
-- (void)setActivityIndicatorVisible:(BOOL)a3
+- (void)setActivityIndicatorVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(OKPresentationViewControllerProxy *)self downloadIndicatorEnabled])
   {
-    v5 = [(OKPresentationViewController *)self isActivityIndicatorVisible];
-    if (v3)
+    isActivityIndicatorVisible = [(OKPresentationViewController *)self isActivityIndicatorVisible];
+    if (visibleCopy)
     {
-      if (!v5)
+      if (!isActivityIndicatorVisible)
       {
         [(OKRoundProgressView *)self->_roundProgressView setAlpha:0.0];
         rootNavigatorIsReady = self->super._rootNavigatorIsReady;
@@ -203,7 +203,7 @@
       }
     }
 
-    else if (v5)
+    else if (isActivityIndicatorVisible)
     {
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -229,13 +229,13 @@ uint64_t __60__OKPresentationViewController_setActivityIndicatorVisible___block_
   return [v2 removeFromSuperview];
 }
 
-- (void)updateActivityIndicatorWithProgress:(double)a3
+- (void)updateActivityIndicatorWithProgress:(double)progress
 {
   if ([(OKPresentationViewControllerProxy *)self downloadIndicatorEnabled])
   {
     roundProgressView = self->_roundProgressView;
 
-    [(OKRoundProgressView *)roundProgressView setProgress:a3];
+    [(OKRoundProgressView *)roundProgressView setProgress:progress];
   }
 }
 
@@ -304,8 +304,8 @@ uint64_t __60__OKPresentationViewController_setActivityIndicatorVisible___block_
   }
 
   [objc_msgSend(MEMORY[0x277D75418] "currentDevice")];
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:self selector:sel_orientationChanged_ name:*MEMORY[0x277D76878] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_orientationChanged_ name:*MEMORY[0x277D76878] object:0];
 }
 
 uint64_t __43__OKPresentationViewController_viewDidLoad__block_invoke()
@@ -316,32 +316,32 @@ uint64_t __43__OKPresentationViewController_viewDidLoad__block_invoke()
   return [v0 setCategory:v1 error:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewController;
-  [(OKPresentationViewControllerProxy *)&v3 viewWillAppear:a3];
+  [(OKPresentationViewControllerProxy *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewController;
-  [(OKPresentationViewControllerProxy *)&v3 viewDidAppear:a3];
+  [(OKPresentationViewControllerProxy *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewController;
-  [(OKPresentationViewControllerProxy *)&v3 viewWillDisappear:a3];
+  [(OKPresentationViewControllerProxy *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewController;
-  [(OKPresentationViewControllerProxy *)&v3 viewDidDisappear:a3];
+  [(OKPresentationViewControllerProxy *)&v3 viewDidDisappear:disappear];
 }
 
 - (void)_startPresentation
@@ -394,12 +394,12 @@ uint64_t __43__OKPresentationViewController_viewDidLoad__block_invoke()
   [-[OKPresentationViewController view](self "view")];
   [-[OKNavigatorViewController view](-[OKPresentationViewControllerProxy mainNavigatorViewController](self "mainNavigatorViewController")];
   [-[OKNavigatorViewController view](-[OKPresentationViewControllerProxy mainNavigatorViewController](self "mainNavigatorViewController")];
-  v28 = [(OKNavigatorViewController *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] view];
+  view = [(OKNavigatorViewController *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] view];
   v29 = *(MEMORY[0x277CBF2C0] + 16);
   v38[0] = *MEMORY[0x277CBF2C0];
   v38[1] = v29;
   v38[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v28 setTransform:v38];
+  [view setTransform:v38];
   [(OKPresentationViewControllerProxy *)self resolutionSize];
   if (v4 == v31 && v6 == v30)
   {
@@ -414,8 +414,8 @@ uint64_t __43__OKPresentationViewController_viewDidLoad__block_invoke()
   else
   {
     [(OKNavigatorViewControllerProxy *)[(OKPresentationViewControllerProxy *)self mainNavigatorViewController] resolutionDidChange];
-    v35 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v35 postNotificationName:@"OKPresentationViewControllerResolutionDidChangeNotification" object:self userInfo:MEMORY[0x277CBEC10]];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"OKPresentationViewControllerResolutionDidChangeNotification" object:self userInfo:MEMORY[0x277CBEC10]];
   }
 
   if (!v25)
@@ -435,34 +435,34 @@ uint64_t __43__OKPresentationViewController_viewDidLoad__block_invoke()
   [(OKPresentationViewControllerProxy *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = OKPresentationViewController;
-  [(OKPresentationViewController *)&v4 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(OKPresentationViewController *)&v4 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = OKPresentationViewController;
-  [(OKPresentationViewController *)&v4 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(OKPresentationViewController *)&v4 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v3.receiver = self;
   v3.super_class = OKPresentationViewController;
-  [(OKPresentationViewController *)&v3 didRotateFromInterfaceOrientation:a3];
+  [(OKPresentationViewController *)&v3 didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  if (a3 == 1)
+  if (ended == 1)
   {
     block[7] = v4;
     block[8] = v5;
-    if ([(OKPresentationInfo *)[[(OKPresentationViewControllerProxy *)self presentation:a3] info] motionSupported])
+    if ([(OKPresentationInfo *)[[(OKPresentationViewControllerProxy *)self presentation:ended] info] motionSupported])
     {
       v7 = dispatch_time(0, 500000000);
       block[0] = MEMORY[0x277D85DD0];
@@ -483,9 +483,9 @@ uint64_t __54__OKPresentationViewController_motionEnded_withEvent___block_invoke
   return [v1 _updateMotion:v2];
 }
 
-- (void)_updateMotion:(int64_t)a3
+- (void)_updateMotion:(int64_t)motion
 {
-  if (a3 <= 6 && ((1 << a3) & 0x61) != 0)
+  if (motion <= 6 && ((1 << motion) & 0x61) != 0)
   {
     self->_shouldForwardMotion = 0;
     motionAttitudeReference = self->_motionAttitudeReference;
@@ -517,7 +517,7 @@ uint64_t __54__OKPresentationViewController_motionEnded_withEvent___block_invoke
     }
   }
 
-  self->_motionOrientationReference = a3;
+  self->_motionOrientationReference = motion;
 }
 
 uint64_t __46__OKPresentationViewController__updateMotion___block_invoke(uint64_t a1)
@@ -674,16 +674,16 @@ void *__44__OKPresentationViewController__startMotion__block_invoke_2(uint64_t a
 {
   if (self->_shouldForwardMotion)
   {
-    v4 = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
+    mainNavigatorViewController = [(OKPresentationViewControllerProxy *)self mainNavigatorViewController];
     motionLastRotationX = self->_motionLastRotationX;
     motionLastRotationY = self->_motionLastRotationY;
     motionLastRotationZ = self->_motionLastRotationZ;
 
-    [(OKNavigatorViewControllerProxy *)v4 updateWithMotionTiltRotationX:motionLastRotationX tiltRotationY:motionLastRotationY tiltRotationZ:motionLastRotationZ];
+    [(OKNavigatorViewControllerProxy *)mainNavigatorViewController updateWithMotionTiltRotationX:motionLastRotationX tiltRotationY:motionLastRotationY tiltRotationZ:motionLastRotationZ];
   }
 }
 
-- (void)orientationChanged:(id)a3
+- (void)orientationChanged:(id)changed
 {
   self->_shouldForwardMotion = 0;
   motionAttitudeReference = self->_motionAttitudeReference;

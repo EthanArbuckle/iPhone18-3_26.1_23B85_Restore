@@ -1,22 +1,22 @@
 @interface AKAppleIDServerUIEventHandlerImp
-- (void)fetchUserInformationForAltDSID:(id)a3 completion:(id)a4;
-- (void)postCDPFollowUpForError:(id)a3;
-- (void)reauthenticateWithContext:(id)a3 withCompletion:(id)a4;
-- (void)startCDPRepairWithContext:(id)a3 withAdditionalData:(id)a4 completion:(id)a5;
-- (void)updateAccountUsernameForAltDSID:(id)a3 withHarvestedData:(id)a4;
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forContext:(id)a4 withAuthController:(id)a5 completion:(id)a6;
+- (void)fetchUserInformationForAltDSID:(id)d completion:(id)completion;
+- (void)postCDPFollowUpForError:(id)error;
+- (void)reauthenticateWithContext:(id)context withCompletion:(id)completion;
+- (void)startCDPRepairWithContext:(id)context withAdditionalData:(id)data completion:(id)completion;
+- (void)updateAccountUsernameForAltDSID:(id)d withHarvestedData:(id)data;
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forContext:(id)context withAuthController:(id)controller completion:(id)completion;
 @end
 
 @implementation AKAppleIDServerUIEventHandlerImp
 
-- (void)reauthenticateWithContext:(id)a3 withCompletion:(id)a4
+- (void)reauthenticateWithContext:(id)context withCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, completion);
   v27 = _AKLogSystem();
   v26 = 2;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -31,18 +31,18 @@
   v24 = objc_alloc_init(AKAppleIDAuthenticationInAppContext);
   v23 = objc_alloc_init(MEMORY[0x277CF0178]);
   v6 = v24;
-  v7 = [location[0] username];
+  username = [location[0] username];
   [(AKAppleIDAuthenticationInAppContext *)v6 setUsername:?];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v4 = MEMORY[0x277D82BD8](username).n128_u64[0];
   v8 = v24;
-  v9 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   [(AKAppleIDAuthenticationInAppContext *)v8 setAltDSID:?];
-  *&v5 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](altDSID).n128_u64[0];
   [(AKAppleIDAuthenticationInAppContext *)v24 setIsUsernameEditable:0, v5];
   v10 = v24;
-  v11 = [location[0] presentingViewController];
+  presentingViewController = [location[0] presentingViewController];
   [(AKAppleIDAuthenticationInAppContext *)v10 setPresentingViewController:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](presentingViewController);
   v13 = v23;
   v12 = v24;
   v17 = MEMORY[0x277D85DD0];
@@ -75,14 +75,14 @@ void __77__AKAppleIDServerUIEventHandlerImp_reauthenticateWithContext_withComple
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchUserInformationForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchUserInformationForAltDSID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogSystem();
   v17 = 2;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -126,15 +126,15 @@ void __78__AKAppleIDServerUIEventHandlerImp_fetchUserInformationForAltDSID_compl
   objc_storeStrong(location, 0);
 }
 
-- (void)updateAccountUsernameForAltDSID:(id)a3 withHarvestedData:(id)a4
+- (void)updateAccountUsernameForAltDSID:(id)d withHarvestedData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, data);
   v13 = _AKLogSystem();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -147,9 +147,9 @@ void __78__AKAppleIDServerUIEventHandlerImp_fetchUserInformationForAltDSID_compl
   v11 = [v14 objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
   if (v11)
   {
-    v6 = [MEMORY[0x277CF0130] sharedInstance];
-    [v6 updateUsername:v11 forAccountsWithAltDSID:location[0]];
-    MEMORY[0x277D82BD8](v6);
+    mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+    [mEMORY[0x277CF0130] updateUsername:v11 forAccountsWithAltDSID:location[0]];
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0130]);
   }
 
   else
@@ -173,16 +173,16 @@ void __78__AKAppleIDServerUIEventHandlerImp_fetchUserInformationForAltDSID_compl
   *MEMORY[0x277D85DE8];
 }
 
-- (void)startCDPRepairWithContext:(id)a3 withAdditionalData:(id)a4 completion:(id)a5
+- (void)startCDPRepairWithContext:(id)context withAdditionalData:(id)data completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, data);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, completion);
   v8 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -260,18 +260,18 @@ void __92__AKAppleIDServerUIEventHandlerImp_startCDPRepairWithContext_withAdditi
   objc_storeStrong(&v18, 0);
 }
 
-- (void)updateStateWithExternalAuthenticationResponse:(id)a3 forContext:(id)a4 withAuthController:(id)a5 completion:(id)a6
+- (void)updateStateWithExternalAuthenticationResponse:(id)response forContext:(id)context withAuthController:(id)controller completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, context);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, controller);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, completion);
   v23 = _AKLogSystem();
   v22 = 2;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -318,18 +318,18 @@ void __123__AKAppleIDServerUIEventHandlerImp_updateStateWithExternalAuthenticati
   objc_storeStrong(&location, 0);
 }
 
-- (void)postCDPFollowUpForError:(id)a3
+- (void)postCDPFollowUpForError:(id)error
 {
   v8 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [MEMORY[0x277CF01E0] followUpRepairContext];
-  [v5 setRepairType:2];
-  v3 = [MEMORY[0x277CF01E0] followUpController];
-  [v3 postFollowUpWithContext:v5 error:0];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, error);
+  followUpRepairContext = [MEMORY[0x277CF01E0] followUpRepairContext];
+  [followUpRepairContext setRepairType:2];
+  followUpController = [MEMORY[0x277CF01E0] followUpController];
+  [followUpController postFollowUpWithContext:followUpRepairContext error:0];
+  MEMORY[0x277D82BD8](followUpController);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
@@ -338,7 +338,7 @@ void __123__AKAppleIDServerUIEventHandlerImp_updateStateWithExternalAuthenticati
   }
 
   objc_storeStrong(&oslog, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&followUpRepairContext, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }

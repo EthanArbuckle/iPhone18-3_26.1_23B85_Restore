@@ -1,63 +1,63 @@
 @interface HDSPAnalyticsManager
 + (id)dailyCollectionActivity;
 + (id)dailyCollectionCriteria;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_queryMorningIndexRangeForDate:(id)a3;
-- (HDSPAnalyticsManager)initWithEnvironment:(id)a3;
-- (HDSPAnalyticsManager)initWithEnvironment:(id)a3 analyticsManager:(id)a4 dataCollectionScheduler:(id)a5;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_queryMorningIndexRangeForDate:(id)date;
+- (HDSPAnalyticsManager)initWithEnvironment:(id)environment;
+- (HDSPAnalyticsManager)initWithEnvironment:(id)environment analyticsManager:(id)manager dataCollectionScheduler:(id)scheduler;
 - (HDSPEnvironment)environment;
-- (id)_makeReportQueryWithMorningIndexRange:(id)a3 resultsHandler:(id)a4;
+- (id)_makeReportQueryWithMorningIndexRange:(id)range resultsHandler:(id)handler;
 - (id)currentDate;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)_lock_executeQuery:(id)a3;
-- (void)_processQueryResultsWithSummaries:(id)a3 breathingDisturbanceSamples:(id)a4 sleepApneaEventSamples:(id)a5 sleepApneaFeatureOnboardingRecord:(id)a6 queryRange:(id)a7 error:(id)a8;
-- (void)_pruneExpiredWindDownActionDataBeforeQueryRange:(id)a3;
-- (void)_submitAnalyticsReportsUsingBuilder:(id)a3;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)_lock_executeQuery:(id)query;
+- (void)_processQueryResultsWithSummaries:(id)summaries breathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record queryRange:(id)range error:(id)error;
+- (void)_pruneExpiredWindDownActionDataBeforeQueryRange:(id)range;
+- (void)_submitAnalyticsReportsUsingBuilder:(id)builder;
 - (void)_unit_testing_pruneExpiredWindDownActionData;
 - (void)cancelDailyCollectionActivity;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)scheduleDailyCollectionActivity;
-- (void)significantTimeChangeDetected:(id)a3;
+- (void)significantTimeChangeDetected:(id)detected;
 - (void)updateScheduledActivity;
 @end
 
 @implementation HDSPAnalyticsManager
 
-- (HDSPAnalyticsManager)initWithEnvironment:(id)a3
+- (HDSPAnalyticsManager)initWithEnvironment:(id)environment
 {
   v4 = MEMORY[0x277D62410];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x277CBEBD0] hksp_analyticsUserDefaults];
-  v8 = [v6 initWithUserDefaults:v7];
+  hksp_analyticsUserDefaults = [MEMORY[0x277CBEBD0] hksp_analyticsUserDefaults];
+  v8 = [v6 initWithUserDefaults:hksp_analyticsUserDefaults];
 
   v9 = [HDSPXPCActivityScheduler alloc];
-  v10 = [v5 defaultCallbackScheduler];
-  v11 = [(HDSPXPCActivityScheduler *)v9 initWithCallbackScheduler:v10];
+  defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+  v11 = [(HDSPXPCActivityScheduler *)v9 initWithCallbackScheduler:defaultCallbackScheduler];
 
-  v12 = [(HDSPAnalyticsManager *)self initWithEnvironment:v5 analyticsManager:v8 dataCollectionScheduler:v11];
+  v12 = [(HDSPAnalyticsManager *)self initWithEnvironment:environmentCopy analyticsManager:v8 dataCollectionScheduler:v11];
   return v12;
 }
 
-- (HDSPAnalyticsManager)initWithEnvironment:(id)a3 analyticsManager:(id)a4 dataCollectionScheduler:(id)a5
+- (HDSPAnalyticsManager)initWithEnvironment:(id)environment analyticsManager:(id)manager dataCollectionScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
   v18.receiver = self;
   v18.super_class = HDSPAnalyticsManager;
   v11 = [(HDSPAnalyticsManager *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_environment, v8);
-    objc_storeStrong(&v12->_analyticsManager, a4);
-    v13 = [v8 mutexGenerator];
-    v14 = v13[2]();
+    objc_storeWeak(&v11->_environment, environmentCopy);
+    objc_storeStrong(&v12->_analyticsManager, manager);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v14 = mutexGenerator[2]();
     mutexProvider = v12->_mutexProvider;
     v12->_mutexProvider = v14;
 
-    objc_storeStrong(&v12->_dataCollectionScheduler, a5);
+    objc_storeStrong(&v12->_dataCollectionScheduler, scheduler);
     v12->_isDataCollectionInProgress = 0;
     v16 = v12;
   }
@@ -65,10 +65,10 @@
   return v12;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,16 +78,16 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Environment will become ready", &v10, 0xCu);
   }
 
-  v7 = [v4 timeChangeListener];
-  [v7 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v8 = [v4 notificationListener];
+  notificationListener = [readyCopy notificationListener];
 
-  [v8 addObserver:self];
+  [notificationListener addObserver:self];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -103,7 +103,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -157,14 +157,14 @@
   }
 
   objc_initWeak(buf, self);
-  v5 = [(HDSPAnalyticsManager *)self dataCollectionScheduler];
-  v6 = [objc_opt_class() dailyCollectionActivity];
+  dataCollectionScheduler = [(HDSPAnalyticsManager *)self dataCollectionScheduler];
+  dailyCollectionActivity = [objc_opt_class() dailyCollectionActivity];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HDSPAnalyticsManager_scheduleDailyCollectionActivity__block_invoke;
   v8[3] = &unk_279C7B2F8;
   objc_copyWeak(&v9, buf);
-  [v5 scheduleActivity:v6 activityHandler:v8];
+  [dataCollectionScheduler scheduleActivity:dailyCollectionActivity activityHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
@@ -209,8 +209,8 @@ void __55__HDSPAnalyticsManager_scheduleDailyCollectionActivity__block_invoke(ui
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cancelling daily collection activity", &v7, 0xCu);
   }
 
-  v5 = [(HDSPAnalyticsManager *)self dataCollectionScheduler];
-  [v5 unscheduleActivities];
+  dataCollectionScheduler = [(HDSPAnalyticsManager *)self dataCollectionScheduler];
+  [dataCollectionScheduler unscheduleActivities];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -230,8 +230,8 @@ void __55__HDSPAnalyticsManager_scheduleDailyCollectionActivity__block_invoke(ui
 + (id)dailyCollectionActivity
 {
   v3 = [HDSPXPCActivity alloc];
-  v4 = [a1 dailyCollectionCriteria];
-  v5 = [(HDSPXPCActivity *)v3 initWithEventName:@"com.apple.sleep.analytics-daily.activity" options:0 criteria:v4];
+  dailyCollectionCriteria = [self dailyCollectionCriteria];
+  v5 = [(HDSPXPCActivity *)v3 initWithEventName:@"com.apple.sleep.analytics-daily.activity" options:0 criteria:dailyCollectionCriteria];
 
   return v5;
 }
@@ -239,16 +239,16 @@ void __55__HDSPAnalyticsManager_scheduleDailyCollectionActivity__block_invoke(ui
 - (id)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
 
-- (void)_lock_executeQuery:(id)a3
+- (void)_lock_executeQuery:(id)query
 {
   v98 = *MEMORY[0x277D85DE8];
-  v54 = a3;
+  queryCopy = query;
   v4 = HKSPLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -297,8 +297,8 @@ LABEL_7:
   v96 = 0;
   v97 = 0;
   v95 = "";
-  v9 = [(HDSPAnalyticsManager *)self currentDate];
-  v96 = [(HDSPAnalyticsManager *)self _queryMorningIndexRangeForDate:v9];
+  currentDate = [(HDSPAnalyticsManager *)self currentDate];
+  v96 = [(HDSPAnalyticsManager *)self _queryMorningIndexRangeForDate:currentDate];
   v97 = v10;
 
   v11 = dispatch_group_create();
@@ -343,10 +343,10 @@ LABEL_7:
   v53 = v14;
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v17 = [WeakRetained healthStoreProvider];
-  v18 = [v17 healthStore];
+  healthStoreProvider = [WeakRetained healthStoreProvider];
+  healthStore = [healthStoreProvider healthStore];
 
-  [v18 executeQuery:v14];
+  [healthStore executeQuery:v14];
   v19 = HKSPLogForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
@@ -381,7 +381,7 @@ LABEL_7:
   v70 = v30;
   v51 = [v26 initWithQueryDescriptors:v52 limit:0 sortDescriptors:v29 resultsHandler:v69];
 
-  [v18 executeQuery:v51];
+  [healthStore executeQuery:v51];
   dispatch_group_enter(v30);
   v31 = objc_alloc(MEMORY[0x277CCD848]);
   v32 = [MEMORY[0x277CCD8D8] _typeWithIdentifier:*MEMORY[0x277CCBAC0]];
@@ -404,9 +404,9 @@ LABEL_7:
   v66 = v38;
   v39 = [v35 initWithQueryDescriptors:v34 limit:0 sortDescriptors:v37 resultsHandler:v65];
 
-  [v18 executeQuery:v39];
+  [healthStore executeQuery:v39];
   v40 = objc_alloc(MEMORY[0x277CCD438]);
-  v41 = [v40 initWithFeatureIdentifier:*MEMORY[0x277CCC0D8] healthStore:v18];
+  v41 = [v40 initWithFeatureIdentifier:*MEMORY[0x277CCC0D8] healthStore:healthStore];
   v64 = 0;
   v42 = [v41 featureOnboardingRecordWithError:&v64];
   v43 = v64;
@@ -433,7 +433,7 @@ LABEL_7:
   objc_copyWeak(&v63, v85);
   v58 = v81;
   v59 = v79;
-  v56 = v54;
+  v56 = queryCopy;
   v57 = v42;
   v60 = v77;
   p_buf = &buf;
@@ -575,28 +575,28 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
   [WeakRetained _withLock:?];
 }
 
-- (void)_processQueryResultsWithSummaries:(id)a3 breathingDisturbanceSamples:(id)a4 sleepApneaEventSamples:(id)a5 sleepApneaFeatureOnboardingRecord:(id)a6 queryRange:(id)a7 error:(id)a8
+- (void)_processQueryResultsWithSummaries:(id)summaries breathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record queryRange:(id)range error:(id)error
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v30 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  summariesCopy = summaries;
+  samplesCopy = samples;
+  eventSamplesCopy = eventSamples;
+  recordCopy = record;
+  errorCopy = error;
   v19 = HKSPLogForCategory();
-  v20 = v19;
-  if (v18)
+  var1 = v19;
+  if (errorCopy)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v27 = objc_opt_class();
       v28 = 2114;
-      v29 = v18;
+      v29 = errorCopy;
       v21 = v27;
-      _os_log_error_impl(&dword_269B11000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Queries failed with error: %{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_269B11000, var1, OS_LOG_TYPE_ERROR, "[%{public}@] Queries failed with error: %{public}@", buf, 0x16u);
     }
   }
 
@@ -607,26 +607,26 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
       *buf = 138543362;
       v27 = objc_opt_class();
       v22 = v27;
-      _os_log_impl(&dword_269B11000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Queries succeeded", buf, 0xCu);
+      _os_log_impl(&dword_269B11000, var1, OS_LOG_TYPE_DEFAULT, "[%{public}@] Queries succeeded", buf, 0xCu);
     }
 
     v23 = [HDSPAnalyticsDailyReportBuilder alloc];
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v20 = [(HDSPAnalyticsDailyReportBuilder *)v23 initWithEnvironment:WeakRetained daySummaries:v14 breathingDisturbanceSamples:v15 sleepApneaEventSamples:v16 sleepApneaFeatureOnboardingRecord:v17 morningIndexRange:var0, var1];
+    var1 = [(HDSPAnalyticsDailyReportBuilder *)v23 initWithEnvironment:WeakRetained daySummaries:summariesCopy breathingDisturbanceSamples:samplesCopy sleepApneaEventSamples:eventSamplesCopy sleepApneaFeatureOnboardingRecord:recordCopy morningIndexRange:var0, var1];
 
-    [(HDSPAnalyticsManager *)self _submitAnalyticsReportsUsingBuilder:v20];
+    [(HDSPAnalyticsManager *)self _submitAnalyticsReportsUsingBuilder:var1];
     [(HDSPAnalyticsManager *)self _pruneExpiredWindDownActionDataBeforeQueryRange:var0, var1];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_queryMorningIndexRangeForDate:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_queryMorningIndexRangeForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 hk_gregorianCalendar];
-  v6 = [v4 hk_dayIndexWithCalendar:v5];
+  dateCopy = date;
+  hk_gregorianCalendar = [v3 hk_gregorianCalendar];
+  v6 = [dateCopy hk_dayIndexWithCalendar:hk_gregorianCalendar];
 
   v7 = HDSPAnalyticsDailyReportSummaryDayCount;
   v8 = v6 - HDSPAnalyticsDailyReportSummaryDayCount;
@@ -638,51 +638,51 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
   return result;
 }
 
-- (id)_makeReportQueryWithMorningIndexRange:(id)a3 resultsHandler:(id)a4
+- (id)_makeReportQueryWithMorningIndexRange:(id)range resultsHandler:(id)handler
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = MEMORY[0x277CCD9C0];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithMorningIndexRange:var0 ascending:var1 limit:1 options:0 resultsHandler:{5, v7}];
+  handlerCopy = handler;
+  v8 = [[v6 alloc] initWithMorningIndexRange:var0 ascending:var1 limit:1 options:0 resultsHandler:{5, handlerCopy}];
 
   [v8 setDebugIdentifier:@"SleepDailyAnalyticsReportQuery"];
 
   return v8;
 }
 
-- (void)_submitAnalyticsReportsUsingBuilder:(id)a3
+- (void)_submitAnalyticsReportsUsingBuilder:(id)builder
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [a3 buildReports];
+  buildReports = [builder buildReports];
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v4;
+    v12 = buildReports;
     v6 = v10;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending daily reports: %{public}@", &v9, 0x16u);
   }
 
-  v7 = [(HDSPAnalyticsManager *)self analyticsManager];
-  [v7 trackEvents:v4];
+  analyticsManager = [(HDSPAnalyticsManager *)self analyticsManager];
+  [analyticsManager trackEvents:buildReports];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pruneExpiredWindDownActionDataBeforeQueryRange:(id)a3
+- (void)_pruneExpiredWindDownActionDataBeforeQueryRange:(id)range
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3.var1 <= 0)
+  if (range.var1 <= 0)
   {
     v4 = 0x7FFFFFFFFFFFFFFELL;
   }
 
   else
   {
-    v4 = a3.var1 + a3.var0 - 2;
+    v4 = range.var1 + range.var0 - 2;
   }
 
   v5 = HKSPLogForCategory();
@@ -699,25 +699,25 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Pruning wind down action data prior to %{public}@", &v13, 0x16u);
   }
 
-  v10 = [(HDSPAnalyticsManager *)self analyticsManager];
-  v11 = [v10 analyticsStore];
-  [v11 removeAllWindDownActionsBeforeMorningIndex:v4];
+  analyticsManager = [(HDSPAnalyticsManager *)self analyticsManager];
+  analyticsStore = [analyticsManager analyticsStore];
+  [analyticsStore removeAllWindDownActionsBeforeMorningIndex:v4];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_unit_testing_pruneExpiredWindDownActionData
 {
-  v5 = [(HDSPAnalyticsManager *)self currentDate];
-  v3 = [(HDSPAnalyticsManager *)self _queryMorningIndexRangeForDate:v5];
+  currentDate = [(HDSPAnalyticsManager *)self currentDate];
+  v3 = [(HDSPAnalyticsManager *)self _queryMorningIndexRangeForDate:currentDate];
   [(HDSPAnalyticsManager *)self _pruneExpiredWindDownActionDataBeforeQueryRange:v3, v4];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.sleepd.analytics"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.sleepd.analytics"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -725,7 +725,7 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
       *buf = 138543618;
       v13 = objc_opt_class();
       v14 = 2114;
-      v15 = v5;
+      v15 = nameCopy;
       v7 = v13;
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", buf, 0x16u);
     }
@@ -738,11 +738,11 @@ void __43__HDSPAnalyticsManager__lock_executeQuery___block_invoke_322(uint64_t a
     [(HDSPAnalyticsManager *)self _withLock:v11];
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 void __76__HDSPAnalyticsManager_notificationListener_didReceiveNotificationWithName___block_invoke(uint64_t a1)

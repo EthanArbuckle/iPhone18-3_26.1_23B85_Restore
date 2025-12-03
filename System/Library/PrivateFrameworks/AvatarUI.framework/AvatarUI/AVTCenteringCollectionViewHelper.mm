@@ -1,16 +1,16 @@
 @interface AVTCenteringCollectionViewHelper
-+ (CGPoint)contentOffsetForCenteringPoint:(CGPoint)a3 collectionView:(id)a4;
-+ (UIEdgeInsets)insetsForBounds:(CGRect)a3 withFirstCellSize:(CGSize)a4 lastCellSize:(CGSize)a5;
-+ (id)indexPathForItemBeingScrolledTowardFromOffset:(CGPoint)a3 currentOffset:(CGPoint)a4 nearestItemToCenter:(id)a5 itemCount:(unint64_t)a6 itemOffsetProvider:(id)a7 ratio:(double *)a8;
-+ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)a3 collectionView:(id)a4;
++ (CGPoint)contentOffsetForCenteringPoint:(CGPoint)point collectionView:(id)view;
++ (UIEdgeInsets)insetsForBounds:(CGRect)bounds withFirstCellSize:(CGSize)size lastCellSize:(CGSize)cellSize;
++ (id)indexPathForItemBeingScrolledTowardFromOffset:(CGPoint)offset currentOffset:(CGPoint)currentOffset nearestItemToCenter:(id)center itemCount:(unint64_t)count itemOffsetProvider:(id)provider ratio:(double *)ratio;
++ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)offset collectionView:(id)view;
 @end
 
 @implementation AVTCenteringCollectionViewHelper
 
-+ (UIEdgeInsets)insetsForBounds:(CGRect)a3 withFirstCellSize:(CGSize)a4 lastCellSize:(CGSize)a5
++ (UIEdgeInsets)insetsForBounds:(CGRect)bounds withFirstCellSize:(CGSize)size lastCellSize:(CGSize)cellSize
 {
-  v5 = (a3.size.width - a4.width) * 0.5;
-  v6 = (a3.size.width - a5.width) * 0.5;
+  v5 = (bounds.size.width - size.width) * 0.5;
+  v6 = (bounds.size.width - cellSize.width) * 0.5;
   v7 = 0.0;
   v8 = 0.0;
   result.right = v6;
@@ -20,33 +20,33 @@
   return result;
 }
 
-+ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)a3 collectionView:(id)a4
++ (id)indexPathForNearestItemToCenterWithOffset:(CGPoint)offset collectionView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 contentSize];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  [viewCopy contentSize];
   v8 = v7;
-  [v6 contentInset];
+  [viewCopy contentInset];
   v10 = v8 + v9;
-  [v6 bounds];
+  [viewCopy bounds];
   v11 = v10 - CGRectGetWidth(v50);
   if (x >= v11)
   {
     x = v11;
   }
 
-  [v6 contentInset];
+  [viewCopy contentInset];
   if (x <= -v12)
   {
     x = -v12;
   }
 
-  [v6 bounds];
+  [viewCopy bounds];
   v13 = CGRectGetWidth(v51) * 0.5 + x;
-  [v6 bounds];
+  [viewCopy bounds];
   v14 = y + CGRectGetHeight(v52) * 0.5;
-  [v6 bounds];
+  [viewCopy bounds];
   UIRectCenteredAboutPoint();
   v16 = v15;
   v18 = v17;
@@ -67,14 +67,14 @@
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 0x7FFFFFFFFFFFFFFFLL;
-  v24 = [v6 collectionViewLayout];
-  v25 = [v24 indexesForElementsInRect:objc_msgSend(v6 visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), v16, v18, v20, v22, v16, v18, v20, v22}];
+  collectionViewLayout = [viewCopy collectionViewLayout];
+  v25 = [collectionViewLayout indexesForElementsInRect:objc_msgSend(viewCopy visibleBounds:"numberOfItemsInSection:" numberOfItems:{0), v16, v18, v20, v22, v16, v18, v20, v22}];
 
   v31 = MEMORY[0x1E69E9820];
   v32 = 3221225472;
   v33 = __93__AVTCenteringCollectionViewHelper_indexPathForNearestItemToCenterWithOffset_collectionView___block_invoke_2;
   v34 = &unk_1E7F3B168;
-  v26 = v6;
+  v26 = viewCopy;
   v35 = v26;
   v39 = v16;
   v40 = v18;
@@ -131,17 +131,17 @@ void __93__AVTCenteringCollectionViewHelper_indexPathForNearestItemToCenterWithO
   }
 }
 
-+ (CGPoint)contentOffsetForCenteringPoint:(CGPoint)a3 collectionView:(id)a4
++ (CGPoint)contentOffsetForCenteringPoint:(CGPoint)point collectionView:(id)view
 {
-  v4 = a4;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   CGRectGetWidth(v14);
-  [v4 bounds];
+  [viewCopy bounds];
   CGRectGetHeight(v15);
-  v5 = [v4 window];
+  window = [viewCopy window];
 
-  v6 = [v5 screen];
-  [v6 scale];
+  screen = [window screen];
+  [screen scale];
   UIPointRoundToScale();
   v8 = v7;
   v10 = v9;
@@ -153,18 +153,18 @@ void __93__AVTCenteringCollectionViewHelper_indexPathForNearestItemToCenterWithO
   return result;
 }
 
-+ (id)indexPathForItemBeingScrolledTowardFromOffset:(CGPoint)a3 currentOffset:(CGPoint)a4 nearestItemToCenter:(id)a5 itemCount:(unint64_t)a6 itemOffsetProvider:(id)a7 ratio:(double *)a8
++ (id)indexPathForItemBeingScrolledTowardFromOffset:(CGPoint)offset currentOffset:(CGPoint)currentOffset nearestItemToCenter:(id)center itemCount:(unint64_t)count itemOffsetProvider:(id)provider ratio:(double *)ratio
 {
-  x = a4.x;
-  v12 = a3.x;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14[2](v14, v13);
-  v16 = v13;
+  x = currentOffset.x;
+  v12 = offset.x;
+  centerCopy = center;
+  providerCopy = provider;
+  v15 = providerCopy[2](providerCopy, centerCopy);
+  v16 = centerCopy;
   v17 = v16;
   if (x > v12)
   {
-    if (x > v15 && [v16 item] + 1 < a6)
+    if (x > v15 && [v16 item] + 1 < count)
     {
       v18 = MEMORY[0x1E696AC88];
       v19 = [v17 item] + 1;
@@ -185,7 +185,7 @@ LABEL_16:
 
   if (x >= v15 || [v16 item] < 1)
   {
-    if (x > v15 && [v17 item] + 1 < a6)
+    if (x > v15 && [v17 item] + 1 < count)
     {
       v22 = MEMORY[0x1E696AC88];
       v23 = [v17 item] + 1;
@@ -196,7 +196,7 @@ LABEL_17:
     v21 = 0;
 LABEL_18:
     v20 = v17;
-    if (!a8)
+    if (!ratio)
     {
       goto LABEL_23;
     }
@@ -204,8 +204,8 @@ LABEL_18:
 LABEL_19:
     if (v21)
     {
-      v24 = v14[2](v14, v21);
-      v25 = v14[2](v14, v20);
+      v24 = providerCopy[2](providerCopy, v21);
+      v25 = providerCopy[2](providerCopy, v20);
       v26 = 1.0 - fabs((x - v25) / (v25 - v24));
     }
 
@@ -214,7 +214,7 @@ LABEL_19:
       v26 = 1.0;
     }
 
-    *a8 = v26;
+    *ratio = v26;
     goto LABEL_23;
   }
 
@@ -223,7 +223,7 @@ LABEL_19:
 LABEL_8:
   v20 = [v18 indexPathForItem:v19 inSection:0];
   v21 = v17;
-  if (a8)
+  if (ratio)
   {
     goto LABEL_19;
   }

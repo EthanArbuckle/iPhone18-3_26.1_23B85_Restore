@@ -2,23 +2,23 @@
 + (id)_clientErrorForFinishedSeries;
 + (id)_exceptionForPreviouslyDiscardedBuilder;
 + (id)serverInterface;
-- (BOOL)_changeStateForDiscardWithError:(id *)a3;
-- (BOOL)_changeStateForFinishWithError:(id *)a3;
-- (BOOL)_changeStateForInsertWithError:(id *)a3;
-- (BOOL)_insertQuantity:(id)a3 dateInterval:(id)a4 error:(id *)a5;
-- (BOOL)_validateDateInterval:(id)a3 error:(id *)a4;
-- (BOOL)_validateQuantity:(id)a3 error:(id *)a4;
+- (BOOL)_changeStateForDiscardWithError:(id *)error;
+- (BOOL)_changeStateForFinishWithError:(id *)error;
+- (BOOL)_changeStateForInsertWithError:(id *)error;
+- (BOOL)_insertQuantity:(id)quantity dateInterval:(id)interval error:(id *)error;
+- (BOOL)_validateDateInterval:(id)interval error:(id *)error;
+- (BOOL)_validateQuantity:(id)quantity error:(id *)error;
 - (BOOL)insertQuantity:(HKQuantity *)quantity date:(NSDate *)date error:(NSError *)error;
 - (BOOL)insertQuantity:(HKQuantity *)quantity dateInterval:(NSDateInterval *)dateInterval error:(NSError *)error;
 - (HKQuantitySeriesSampleBuilder)init;
 - (HKQuantitySeriesSampleBuilder)initWithHealthStore:(HKHealthStore *)healthStore quantityType:(HKQuantityType *)quantityType startDate:(NSDate *)startDate device:(HKDevice *)device;
 - (id)_queue_clientErrorForFatalError;
-- (void)_changeStateForFatalError:(id)a3;
-- (void)_discardWithCompletion:(id)a3;
-- (void)_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 completion:(id)a5;
-- (void)_taskServer_discardWithCompletion:(id)a3;
-- (void)_taskServer_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 finalSeries:(id)a5 completion:(id)a6;
-- (void)_taskServer_insertQuantitySeries:(id)a3 completion:(id)a4;
+- (void)_changeStateForFatalError:(id)error;
+- (void)_discardWithCompletion:(id)completion;
+- (void)_finishSeriesWithMetadata:(id)metadata endDate:(id)date completion:(id)completion;
+- (void)_taskServer_discardWithCompletion:(id)completion;
+- (void)_taskServer_finishSeriesWithMetadata:(id)metadata endDate:(id)date finalSeries:(id)series completion:(id)completion;
+- (void)_taskServer_insertQuantitySeries:(id)series completion:(id)completion;
 - (void)discard;
 - (void)finishSeriesWithMetadata:(NSDictionary *)metadata endDate:(NSDate *)endDate completion:(void *)completion;
 @end
@@ -132,9 +132,9 @@
     v15->_device = v37;
 
     v15->_batchSize = 1024;
-    v39 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v15->_identifier;
-    v15->_identifier = v39;
+    v15->_identifier = uUID;
 
     v41 = [[HKQuantitySeriesSampleBuilderTaskServerConfiguration alloc] initWithQuantityType:v15->_quantityType startDate:v15->_startDate device:v15->_device];
     v42 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v15->_healthStore taskIdentifier:@"HKQuantitySeriesSampleBuilderTaskServerIdentifier" exportedObject:v15 taskUUID:v15->_identifier];
@@ -207,24 +207,24 @@ void __40__HKQuantitySeriesSampleBuilder_discard__block_invoke(uint64_t a1, char
   }
 }
 
-- (BOOL)_insertQuantity:(id)a3 dateInterval:(id)a4 error:(id *)a5
+- (BOOL)_insertQuantity:(id)quantity dateInterval:(id)interval error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  quantityCopy = quantity;
+  intervalCopy = interval;
   dispatch_assert_queue_not_V2(self->_queue);
   v9 = objc_alloc_init(HKCodableQuantitySeriesDatum);
-  v10 = [(HKQuantityType *)self->_quantityType canonicalUnit];
-  [v7 doubleValueForUnit:v10];
+  canonicalUnit = [(HKQuantityType *)self->_quantityType canonicalUnit];
+  [quantityCopy doubleValueForUnit:canonicalUnit];
   [(HKCodableQuantitySeriesDatum *)v9 setValue:?];
 
-  v11 = [v8 startDate];
-  [v11 timeIntervalSinceReferenceDate];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(HKCodableQuantitySeriesDatum *)v9 setTimeInterval:?];
 
   [(HKHealthStore *)self->_healthStore applicationSDKVersionToken];
   if (HKProgramSDKTokenAtLeast())
   {
-    [v8 duration];
+    [intervalCopy duration];
     *&v12 = v12;
     [(HKCodableQuantitySeriesDatum *)v9 setDuration:v12];
   }
@@ -309,11 +309,11 @@ void __68__HKQuantitySeriesSampleBuilder__insertQuantity_dateInterval_error___bl
   }
 }
 
-- (void)_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 completion:(id)a5
+- (void)_finishSeriesWithMetadata:(id)metadata endDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  dateCopy = date;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -335,9 +335,9 @@ void __68__HKQuantitySeriesSampleBuilder__insertQuantity_dateInterval_error___bl
   v14[3] = &unk_1E737B4B8;
   v16 = &v18;
   v14[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v15 = v13;
-  [(HKQuantitySeriesSampleBuilder *)self _taskServer_finishSeriesWithMetadata:v8 endDate:v9 finalSeries:v12 completion:v14];
+  [(HKQuantitySeriesSampleBuilder *)self _taskServer_finishSeriesWithMetadata:metadataCopy endDate:dateCopy finalSeries:v12 completion:v14];
 
   _Block_object_dispose(&v18, 8);
 }
@@ -366,9 +366,9 @@ void __78__HKQuantitySeriesSampleBuilder__finishSeriesWithMetadata_endDate_compl
   (*(a1[5] + 16))();
 }
 
-- (void)_discardWithCompletion:(id)a3
+- (void)_discardWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v7 = 0;
   v5 = [(HKQuantitySeriesSampleBuilder *)self _changeStateForDiscardWithError:&v7];
   v6 = v7;
@@ -389,48 +389,48 @@ void __78__HKQuantitySeriesSampleBuilder__finishSeriesWithMetadata_endDate_compl
   }
 }
 
-- (BOOL)_validateQuantity:(id)a3 error:(id *)a4
+- (BOOL)_validateQuantity:(id)quantity error:(id *)error
 {
-  v6 = a3;
+  quantityCopy = quantity;
   quantityType = self->_quantityType;
-  v8 = [v6 _unit];
-  v9 = [(HKQuantityType *)quantityType isCompatibleWithUnit:v8];
+  _unit = [quantityCopy _unit];
+  v9 = [(HKQuantityType *)quantityType isCompatibleWithUnit:_unit];
 
   if (!v9)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Quantity (%@) does not have a unit compatible with quantity series builder quantity type %@", v6, self->_quantityType}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Quantity (%@) does not have a unit compatible with quantity series builder quantity type %@", quantityCopy, self->_quantityType}];
   }
 
   return v9;
 }
 
-- (BOOL)_validateDateInterval:(id)a3 error:(id *)a4
+- (BOOL)_validateDateInterval:(id)interval error:(id *)error
 {
-  v6 = a3;
+  intervalCopy = interval;
   [(HKHealthStore *)self->_healthStore applicationSDKVersionToken];
   if (HKProgramSDKTokenAtLeast())
   {
-    v7 = [v6 startDate];
-    [v7 timeIntervalSinceReferenceDate];
-    v8 = [v6 endDate];
-    [v8 timeIntervalSinceReferenceDate];
+    startDate = [intervalCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
+    endDate = [intervalCopy endDate];
+    [endDate timeIntervalSinceReferenceDate];
 
     if ([(HKSampleType *)self->_quantityType isMaximumDurationRestricted])
     {
-      [v6 duration];
+      [intervalCopy duration];
       v10 = v9;
       [(HKSampleType *)self->_quantityType maximumAllowedDuration];
       if (v10 > v11)
       {
-        [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"dateInterval (%@) exceeds the maximum allowed duration for sample type (%@)", v6, self->_quantityType, v26}];
+        [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"dateInterval (%@) exceeds the maximum allowed duration for sample type (%@)", intervalCopy, self->_quantityType, v26}];
         goto LABEL_13;
       }
     }
 
     if ([(HKSampleType *)self->_quantityType isMaximumDurationRestricted])
     {
-      v12 = [v6 endDate];
-      [v12 timeIntervalSinceReferenceDate];
+      endDate2 = [intervalCopy endDate];
+      [endDate2 timeIntervalSinceReferenceDate];
       v14 = v13;
       [(NSDate *)self->_startDate timeIntervalSinceReferenceDate];
       v16 = v14 - v15;
@@ -439,26 +439,26 @@ void __78__HKQuantitySeriesSampleBuilder__finishSeriesWithMetadata_endDate_compl
 
       if (v16 > v18)
       {
-        [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"startDate (%@) and dateInterval (%@) exceed the maximum allowed duration for sample type (%@)", self->_startDate, v6, self->_quantityType}];
+        [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"startDate (%@) and dateInterval (%@) exceed the maximum allowed duration for sample type (%@)", self->_startDate, intervalCopy, self->_quantityType}];
         goto LABEL_13;
       }
     }
 
     if ([(HKSampleType *)self->_quantityType isMinimumDurationRestricted])
     {
-      [v6 duration];
+      [intervalCopy duration];
       v20 = v19;
       [(HKSampleType *)self->_quantityType minimumAllowedDuration];
       if (v20 < v21)
       {
-        [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"dateInterval (%@) is below the minimum allowed duration for sample type (%@)", v6, self->_quantityType, v26}];
+        [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"dateInterval (%@) is below the minimum allowed duration for sample type (%@)", intervalCopy, self->_quantityType, v26}];
         goto LABEL_13;
       }
     }
   }
 
-  v22 = [v6 startDate];
-  v23 = [v22 hk_isBeforeDate:self->_startDate];
+  startDate2 = [intervalCopy startDate];
+  v23 = [startDate2 hk_isBeforeDate:self->_startDate];
 
   if (!v23)
   {
@@ -466,7 +466,7 @@ void __78__HKQuantitySeriesSampleBuilder__finishSeriesWithMetadata_endDate_compl
     goto LABEL_15;
   }
 
-  [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Date interval (%@) is before builder's start date %@", v6, self->_startDate, v26}];
+  [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Date interval (%@) is before builder's start date %@", intervalCopy, self->_startDate, v26}];
 LABEL_13:
   v24 = 0;
 LABEL_15:
@@ -474,7 +474,7 @@ LABEL_15:
   return v24;
 }
 
-- (BOOL)_changeStateForInsertWithError:(id *)a3
+- (BOOL)_changeStateForInsertWithError:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_queue);
   v25 = 0;
@@ -509,10 +509,10 @@ LABEL_15:
     v7 = v6;
     if (v6)
     {
-      if (a3)
+      if (error)
       {
         v8 = v6;
-        *a3 = v7;
+        *error = v7;
       }
 
       else
@@ -584,7 +584,7 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_changeStateForFinishWithError:(id *)a3
+- (BOOL)_changeStateForFinishWithError:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_queue);
   v26 = 0;
@@ -620,10 +620,10 @@ LABEL_12:
     v8 = v7;
     if (v7)
     {
-      if (a3)
+      if (error)
       {
         v9 = v7;
-        *a3 = v8;
+        *error = v8;
       }
 
       else
@@ -699,7 +699,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)_changeStateForDiscardWithError:(id *)a3
+- (BOOL)_changeStateForDiscardWithError:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_queue);
   v25 = 0;
@@ -734,10 +734,10 @@ LABEL_12:
     v7 = v6;
     if (v6)
     {
-      if (a3)
+      if (error)
       {
         v8 = v6;
-        *a3 = v7;
+        *error = v7;
       }
 
       else
@@ -806,9 +806,9 @@ LABEL_12:
   return result;
 }
 
-- (void)_changeStateForFatalError:(id)a3
+- (void)_changeStateForFatalError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -816,8 +816,8 @@ LABEL_12:
   v7[2] = __59__HKQuantitySeriesSampleBuilder__changeStateForFatalError___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -855,7 +855,7 @@ void __59__HKQuantitySeriesSampleBuilder__changeStateForFatalError___block_invok
   v2 = MEMORY[0x1E695DF30];
   v3 = *MEMORY[0x1E695D920];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 stringWithFormat:@"%@ already discarded.", v5];
   v7 = [v2 exceptionWithName:v3 reason:v6 userInfo:0];
 
@@ -871,16 +871,16 @@ void __59__HKQuantitySeriesSampleBuilder__changeStateForFatalError___block_invok
   return [v3 hk_error:3 description:@"Quantity series sample builder experienced a fatal error" underlyingError:fatalError];
 }
 
-- (void)_taskServer_insertQuantitySeries:(id)a3 completion:(id)a4
+- (void)_taskServer_insertQuantitySeries:(id)series completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  seriesCopy = series;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__HKQuantitySeriesSampleBuilder__taskServer_insertQuantitySeries_completion___block_invoke;
   v13[3] = &unk_1E737B508;
-  v14 = v6;
+  v14 = seriesCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -888,46 +888,46 @@ void __59__HKQuantitySeriesSampleBuilder__changeStateForFatalError___block_invok
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = seriesCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)_taskServer_finishSeriesWithMetadata:(id)a3 endDate:(id)a4 finalSeries:(id)a5 completion:(id)a6
+- (void)_taskServer_finishSeriesWithMetadata:(id)metadata endDate:(id)date finalSeries:(id)series completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  dateCopy = date;
+  seriesCopy = series;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __101__HKQuantitySeriesSampleBuilder__taskServer_finishSeriesWithMetadata_endDate_finalSeries_completion___block_invoke;
   v21[3] = &unk_1E737B530;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
+  v22 = metadataCopy;
+  v23 = dateCopy;
+  v24 = seriesCopy;
+  v25 = completionCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __101__HKQuantitySeriesSampleBuilder__taskServer_finishSeriesWithMetadata_endDate_finalSeries_completion___block_invoke_2;
   v19[3] = &unk_1E7376960;
   v20 = v25;
   v15 = v25;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = seriesCopy;
+  v17 = dateCopy;
+  v18 = metadataCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v21 errorHandler:v19];
 }
 
-- (void)_taskServer_discardWithCompletion:(id)a3
+- (void)_taskServer_discardWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__HKQuantitySeriesSampleBuilder__taskServer_discardWithCompletion___block_invoke;
   v9[3] = &unk_1E737B558;
-  v10 = v4;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__HKQuantitySeriesSampleBuilder__taskServer_discardWithCompletion___block_invoke_2;
@@ -940,8 +940,8 @@ void __59__HKQuantitySeriesSampleBuilder__changeStateForFatalError___block_invok
 + (id)serverInterface
 {
   v2 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F06F70B8];
-  v3 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  [v2 setClasses:v3 forSelector:sel_remote_finishSeriesWithMetadata_endDate_finalSeries_completion_ argumentIndex:0 ofReply:0];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  [v2 setClasses:hk_secureCodingClasses forSelector:sel_remote_finishSeriesWithMetadata_endDate_finalSeries_completion_ argumentIndex:0 ofReply:0];
 
   v4 = [v2 hk_setArrayOfClass:objc_opt_class() forSelector:sel_remote_finishSeriesWithMetadata_endDate_finalSeries_completion_ argumentIndex:0 ofReply:1];
 

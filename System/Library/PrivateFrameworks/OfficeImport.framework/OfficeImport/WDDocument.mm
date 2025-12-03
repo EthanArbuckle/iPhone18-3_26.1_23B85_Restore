@@ -4,7 +4,7 @@
 - (id)addSection;
 - (id)annotationBlockIterator;
 - (id)annotationIterator;
-- (id)citationFor:(id)a3;
+- (id)citationFor:(id)for;
 - (id)colorMap;
 - (id)description;
 - (id)endnoteBlockIterator;
@@ -12,9 +12,9 @@
 - (id)footnoteBlockIterator;
 - (id)footnoteIterator;
 - (id)imageBulletParagraph;
-- (id)imageBulletWithCharacterOffset:(int)a3;
-- (id)listDefinitionWithListId:(int)a3;
-- (id)listLevelWithListId:(int)a3 levelIndex:(unsigned __int8)a4;
+- (id)imageBulletWithCharacterOffset:(int)offset;
+- (id)listDefinitionWithListId:(int)id;
+- (id)listLevelWithListId:(int)id levelIndex:(unsigned __int8)index;
 - (id)mainBlocksIterator;
 - (id)mainRunsIterator;
 - (id)newAnnotationBlockIterator;
@@ -26,26 +26,26 @@
 - (id)newMainBlocksIterator;
 - (id)newMainRunsIterator;
 - (id)newSectionIterator;
-- (id)revisionAuthorAt:(unint64_t)a3;
+- (id)revisionAuthorAt:(unint64_t)at;
 - (id)sectionIterator;
-- (void)addChangeTrackingEditAtDate:(id)a3 authorIndex:(int)a4;
+- (void)addChangeTrackingEditAtDate:(id)date authorIndex:(int)index;
 - (void)addImageBullets;
-- (void)addObjPointer:(id)a3;
+- (void)addObjPointer:(id)pointer;
 - (void)removeEmptySections;
-- (void)removeObjPointer:(id)a3;
-- (void)setAutoHyphenate:(BOOL)a3;
-- (void)setBookFold:(BOOL)a3;
-- (void)setBorderSurroundFooter:(BOOL)a3;
-- (void)setBorderSurroundHeader:(BOOL)a3;
-- (void)setEvenAndOddHeaders:(BOOL)a3;
-- (void)setKinsokuStrict:(BOOL)a3;
-- (void)setNoTabForHangingIndents:(BOOL)a3;
-- (void)setShowFormatting:(BOOL)a3;
-- (void)setShowInsertionsAndDeletions:(BOOL)a3;
-- (void)setShowMarkup:(BOOL)a3;
-- (void)setShowOutline:(BOOL)a3;
-- (void)setShowRevisionMarksOnScreen:(BOOL)a3;
-- (void)setTrackChanges:(BOOL)a3;
+- (void)removeObjPointer:(id)pointer;
+- (void)setAutoHyphenate:(BOOL)hyphenate;
+- (void)setBookFold:(BOOL)fold;
+- (void)setBorderSurroundFooter:(BOOL)footer;
+- (void)setBorderSurroundHeader:(BOOL)header;
+- (void)setEvenAndOddHeaders:(BOOL)headers;
+- (void)setKinsokuStrict:(BOOL)strict;
+- (void)setNoTabForHangingIndents:(BOOL)indents;
+- (void)setShowFormatting:(BOOL)formatting;
+- (void)setShowInsertionsAndDeletions:(BOOL)deletions;
+- (void)setShowMarkup:(BOOL)markup;
+- (void)setShowOutline:(BOOL)outline;
+- (void)setShowRevisionMarksOnScreen:(BOOL)screen;
+- (void)setTrackChanges:(BOOL)changes;
 @end
 
 @implementation WDDocument
@@ -185,8 +185,8 @@
 
   if (![(WDText *)mImageBulletText blockCount])
   {
-    v6 = [(WDText *)self->mImageBulletText addParagraph];
-    v7 = [v6 addBookmark:@"_PictureBullets" type:0];
+    addParagraph = [(WDText *)self->mImageBulletText addParagraph];
+    v7 = [addParagraph addBookmark:@"_PictureBullets" type:0];
   }
 
   v8 = self->mImageBulletText;
@@ -194,27 +194,27 @@
   return [(WDText *)v8 blockAt:0];
 }
 
-- (void)addObjPointer:(id)a3
+- (void)addObjPointer:(id)pointer
 {
-  v4 = a3;
-  if (v4)
+  pointerCopy = pointer;
+  if (pointerCopy)
   {
-    [(NSMutableSet *)self->mObjPointers addObject:v4];
+    [(NSMutableSet *)self->mObjPointers addObject:pointerCopy];
   }
 }
 
-- (void)removeObjPointer:(id)a3
+- (void)removeObjPointer:(id)pointer
 {
-  v4 = a3;
-  if (v4)
+  pointerCopy = pointer;
+  if (pointerCopy)
   {
-    [(NSMutableSet *)self->mObjPointers removeObject:v4];
+    [(NSMutableSet *)self->mObjPointers removeObject:pointerCopy];
   }
 }
 
-- (void)setBorderSurroundHeader:(BOOL)a3
+- (void)setBorderSurroundHeader:(BOOL)header
 {
-  if (a3)
+  if (header)
   {
     v3 = 2;
   }
@@ -227,9 +227,9 @@
   *(self + 296) = *(self + 296) & 0xFD | v3;
 }
 
-- (void)setBorderSurroundFooter:(BOOL)a3
+- (void)setBorderSurroundFooter:(BOOL)footer
 {
-  if (a3)
+  if (footer)
   {
     v3 = 4;
   }
@@ -242,9 +242,9 @@
   *(self + 296) = *(self + 296) & 0xFB | v3;
 }
 
-- (void)setKinsokuStrict:(BOOL)a3
+- (void)setKinsokuStrict:(BOOL)strict
 {
-  if (a3)
+  if (strict)
   {
     v3 = 8;
   }
@@ -257,9 +257,9 @@
   *(self + 296) = *(self + 296) & 0xF7 | v3;
 }
 
-- (void)setAutoHyphenate:(BOOL)a3
+- (void)setAutoHyphenate:(BOOL)hyphenate
 {
-  if (a3)
+  if (hyphenate)
   {
     v3 = 16;
   }
@@ -272,9 +272,9 @@
   *(self + 296) = *(self + 296) & 0xEF | v3;
 }
 
-- (void)setEvenAndOddHeaders:(BOOL)a3
+- (void)setEvenAndOddHeaders:(BOOL)headers
 {
-  if (a3)
+  if (headers)
   {
     v3 = 32;
   }
@@ -287,16 +287,16 @@
   *(self + 296) = *(self + 296) & 0xDF | v3;
 }
 
-- (id)citationFor:(id)a3
+- (id)citationFor:(id)for
 {
-  v3 = [(WDCitationTable *)self->mCitationTable citationFor:a3];
+  v3 = [(WDCitationTable *)self->mCitationTable citationFor:for];
 
   return v3;
 }
 
-- (id)listDefinitionWithListId:(int)a3
+- (id)listDefinitionWithListId:(int)id
 {
-  v4 = [(WDDocument *)self listWithListId:*&a3];
+  v4 = [(WDDocument *)self listWithListId:*&id];
   v5 = v4;
   if (v4)
   {
@@ -311,29 +311,29 @@
   return v6;
 }
 
-- (id)listLevelWithListId:(int)a3 levelIndex:(unsigned __int8)a4
+- (id)listLevelWithListId:(int)id levelIndex:(unsigned __int8)index
 {
-  v4 = a4;
-  v5 = *&a3;
+  indexCopy = index;
+  v5 = *&id;
   v7 = [(WDDocument *)self listWithListId:?];
-  v8 = [v7 levelOverrideForLevel:v4];
+  v8 = [v7 levelOverrideForLevel:indexCopy];
   if ([v8 isListLevelOverridden])
   {
-    v9 = [v8 listLevel];
+    listLevel = [v8 listLevel];
   }
 
   else
   {
     v10 = [(WDDocument *)self listDefinitionWithListId:v5];
-    v9 = [v10 levelAt:v4];
+    listLevel = [v10 levelAt:indexCopy];
   }
 
-  return v9;
+  return listLevel;
 }
 
-- (void)setBookFold:(BOOL)a3
+- (void)setBookFold:(BOOL)fold
 {
-  if (a3)
+  if (fold)
   {
     v3 = 64;
   }
@@ -346,16 +346,16 @@
   *(self + 296) = *(self + 296) & 0xBF | v3;
 }
 
-- (id)imageBulletWithCharacterOffset:(int)a3
+- (id)imageBulletWithCharacterOffset:(int)offset
 {
-  if ([(NSMutableArray *)self->mImageBullets count]<= a3)
+  if ([(NSMutableArray *)self->mImageBullets count]<= offset)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->mImageBullets objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->mImageBullets objectAtIndex:offset];
   }
 
   return v5;
@@ -368,25 +368,25 @@
     return;
   }
 
-  v13 = [(WDDocument *)self imageBulletParagraph];
-  v3 = [v13 addBookmark:@"_PictureBullets" type:1];
-  v4 = [(NSMutableArray *)self->mSections lastObject];
-  v5 = [v4 text];
+  imageBulletParagraph = [(WDDocument *)self imageBulletParagraph];
+  v3 = [imageBulletParagraph addBookmark:@"_PictureBullets" type:1];
+  lastObject = [(NSMutableArray *)self->mSections lastObject];
+  text = [lastObject text];
 
-  v6 = [v5 blockCount];
-  if (v6)
+  blockCount = [text blockCount];
+  if (blockCount)
   {
-    v7 = [v5 blockAt:v6 - 1];
+    v7 = [text blockAt:blockCount - 1];
     v8 = v7;
     if (v7 && ![v7 blockType])
     {
       v9 = v8;
-      v10 = [v13 runCount];
-      if (v10)
+      runCount = [imageBulletParagraph runCount];
+      if (runCount)
       {
-        for (i = 0; i != v10; ++i)
+        for (i = 0; i != runCount; ++i)
         {
-          v12 = [v13 runAt:i];
+          v12 = [imageBulletParagraph runAt:i];
           [v9 addRun:v12];
         }
       }
@@ -401,13 +401,13 @@
   }
 
   v9 = v8;
-  [v5 addBlock:v13];
+  [text addBlock:imageBulletParagraph];
 LABEL_12:
 }
 
-- (id)revisionAuthorAt:(unint64_t)a3
+- (id)revisionAuthorAt:(unint64_t)at
 {
-  if (a3 == -1)
+  if (at == -1)
   {
     v4 = TCBundle();
     v3 = [v4 localizedStringForKey:@"Unknown" value:&stru_286EE1130 table:@"TCCompatibility"];
@@ -421,9 +421,9 @@ LABEL_12:
   return v3;
 }
 
-- (void)setShowMarkup:(BOOL)a3
+- (void)setShowMarkup:(BOOL)markup
 {
-  if (a3)
+  if (markup)
   {
     v3 = 0x80;
   }
@@ -436,9 +436,9 @@ LABEL_12:
   *(self + 296) = v3 & 0x80 | *(self + 296) & 0x7F;
 }
 
-- (void)setTrackChanges:(BOOL)a3
+- (void)setTrackChanges:(BOOL)changes
 {
-  if (a3)
+  if (changes)
   {
     v3 = 2;
   }
@@ -451,9 +451,9 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xFD | v3;
 }
 
-- (void)setShowRevisionMarksOnScreen:(BOOL)a3
+- (void)setShowRevisionMarksOnScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 4;
   }
@@ -466,9 +466,9 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xFB | v3;
 }
 
-- (void)setShowInsertionsAndDeletions:(BOOL)a3
+- (void)setShowInsertionsAndDeletions:(BOOL)deletions
 {
-  if (a3)
+  if (deletions)
   {
     v3 = 8;
   }
@@ -481,9 +481,9 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xF7 | v3;
 }
 
-- (void)setShowFormatting:(BOOL)a3
+- (void)setShowFormatting:(BOOL)formatting
 {
-  if (a3)
+  if (formatting)
   {
     v3 = 16;
   }
@@ -496,9 +496,9 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xEF | v3;
 }
 
-- (void)setShowOutline:(BOOL)a3
+- (void)setShowOutline:(BOOL)outline
 {
-  if (a3)
+  if (outline)
   {
     v3 = 32;
   }
@@ -511,9 +511,9 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xDF | v3;
 }
 
-- (void)setNoTabForHangingIndents:(BOOL)a3
+- (void)setNoTabForHangingIndents:(BOOL)indents
 {
-  if (a3)
+  if (indents)
   {
     v3 = 64;
   }
@@ -526,10 +526,10 @@ LABEL_12:
   *(self + 297) = *(self + 297) & 0xBF | v3;
 }
 
-- (void)addChangeTrackingEditAtDate:(id)a3 authorIndex:(int)a4
+- (void)addChangeTrackingEditAtDate:(id)date authorIndex:(int)index
 {
-  v4 = *&a4;
-  [(NSMutableArray *)self->mChangeTrackingEditDates addObject:a3];
+  v4 = *&index;
+  [(NSMutableArray *)self->mChangeTrackingEditDates addObject:date];
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v4];
   [(NSMutableArray *)self->mChangeTrackingEditAuthors addObject:?];
 }
@@ -543,10 +543,10 @@ LABEL_12:
     do
     {
       v5 = [(NSMutableArray *)self->mSections objectAtIndex:v4];
-      v6 = [v5 text];
-      v7 = [v6 blockCount];
+      text = [v5 text];
+      blockCount = [text blockCount];
 
-      if (!v7)
+      if (!blockCount)
       {
         [(NSMutableArray *)self->mSections removeObjectAtIndex:v4];
       }
@@ -560,9 +560,9 @@ LABEL_12:
 
 - (id)sectionIterator
 {
-  v2 = [(WDDocument *)self newSectionIterator];
+  newSectionIterator = [(WDDocument *)self newSectionIterator];
 
-  return v2;
+  return newSectionIterator;
 }
 
 - (id)newSectionIterator
@@ -575,120 +575,120 @@ LABEL_12:
 
 - (id)mainBlocksIterator
 {
-  v2 = [(WDDocument *)self newMainBlocksIterator];
+  newMainBlocksIterator = [(WDDocument *)self newMainBlocksIterator];
 
-  return v2;
+  return newMainBlocksIterator;
 }
 
 - (id)newMainBlocksIterator
 {
-  v2 = [(WDDocument *)self newSectionIterator];
-  v3 = [(WDCombinedIterator *)[WDSectionBlockIterator alloc] initWithParentIterator:v2];
+  newSectionIterator = [(WDDocument *)self newSectionIterator];
+  v3 = [(WDCombinedIterator *)[WDSectionBlockIterator alloc] initWithParentIterator:newSectionIterator];
 
   return v3;
 }
 
 - (id)mainRunsIterator
 {
-  v2 = [(WDDocument *)self newMainRunsIterator];
+  newMainRunsIterator = [(WDDocument *)self newMainRunsIterator];
 
-  return v2;
+  return newMainRunsIterator;
 }
 
 - (id)newMainRunsIterator
 {
-  v2 = [(WDDocument *)self newMainBlocksIterator];
-  v3 = [(WDCombinedIterator *)[WDBlockRunIterator alloc] initWithParentIterator:v2];
+  newMainBlocksIterator = [(WDDocument *)self newMainBlocksIterator];
+  v3 = [(WDCombinedIterator *)[WDBlockRunIterator alloc] initWithParentIterator:newMainBlocksIterator];
 
   return v3;
 }
 
 - (id)footnoteIterator
 {
-  v2 = [(WDDocument *)self newFootnoteIterator];
+  newFootnoteIterator = [(WDDocument *)self newFootnoteIterator];
 
-  return v2;
+  return newFootnoteIterator;
 }
 
 - (id)newFootnoteIterator
 {
-  v2 = [(WDDocument *)self newMainRunsIterator];
-  v3 = [(WDTestIterator *)[WDFootnoteIterator alloc] initWithIterator:v2];
+  newMainRunsIterator = [(WDDocument *)self newMainRunsIterator];
+  v3 = [(WDTestIterator *)[WDFootnoteIterator alloc] initWithIterator:newMainRunsIterator];
 
   return v3;
 }
 
 - (id)endnoteIterator
 {
-  v2 = [(WDDocument *)self newEndnoteIterator];
+  newEndnoteIterator = [(WDDocument *)self newEndnoteIterator];
 
-  return v2;
+  return newEndnoteIterator;
 }
 
 - (id)newEndnoteIterator
 {
-  v2 = [(WDDocument *)self newMainRunsIterator];
-  v3 = [(WDTestIterator *)[WDEndnoteIterator alloc] initWithIterator:v2];
+  newMainRunsIterator = [(WDDocument *)self newMainRunsIterator];
+  v3 = [(WDTestIterator *)[WDEndnoteIterator alloc] initWithIterator:newMainRunsIterator];
 
   return v3;
 }
 
 - (id)annotationIterator
 {
-  v2 = [(WDDocument *)self newAnnotationIterator];
+  newAnnotationIterator = [(WDDocument *)self newAnnotationIterator];
 
-  return v2;
+  return newAnnotationIterator;
 }
 
 - (id)newAnnotationIterator
 {
-  v2 = [(WDDocument *)self newMainRunsIterator];
-  v3 = [(WDTestIterator *)[WDAnnotationIterator alloc] initWithIterator:v2];
+  newMainRunsIterator = [(WDDocument *)self newMainRunsIterator];
+  v3 = [(WDTestIterator *)[WDAnnotationIterator alloc] initWithIterator:newMainRunsIterator];
 
   return v3;
 }
 
 - (id)footnoteBlockIterator
 {
-  v2 = [(WDDocument *)self newFootnoteBlockIterator];
+  newFootnoteBlockIterator = [(WDDocument *)self newFootnoteBlockIterator];
 
-  return v2;
+  return newFootnoteBlockIterator;
 }
 
 - (id)newFootnoteBlockIterator
 {
-  v2 = [(WDDocument *)self newFootnoteIterator];
-  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:v2];
+  newFootnoteIterator = [(WDDocument *)self newFootnoteIterator];
+  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:newFootnoteIterator];
 
   return v3;
 }
 
 - (id)endnoteBlockIterator
 {
-  v2 = [(WDDocument *)self newEndnoteBlockIterator];
+  newEndnoteBlockIterator = [(WDDocument *)self newEndnoteBlockIterator];
 
-  return v2;
+  return newEndnoteBlockIterator;
 }
 
 - (id)newEndnoteBlockIterator
 {
-  v2 = [(WDDocument *)self newEndnoteIterator];
-  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:v2];
+  newEndnoteIterator = [(WDDocument *)self newEndnoteIterator];
+  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:newEndnoteIterator];
 
   return v3;
 }
 
 - (id)annotationBlockIterator
 {
-  v2 = [(WDDocument *)self newAnnotationBlockIterator];
+  newAnnotationBlockIterator = [(WDDocument *)self newAnnotationBlockIterator];
 
-  return v2;
+  return newAnnotationBlockIterator;
 }
 
 - (id)newAnnotationBlockIterator
 {
-  v2 = [(WDDocument *)self newAnnotationIterator];
-  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:v2];
+  newAnnotationIterator = [(WDDocument *)self newAnnotationIterator];
+  v3 = [(WDCombinedIterator *)[WDNoteBlockIterator alloc] initWithParentIterator:newAnnotationIterator];
 
   return v3;
 }

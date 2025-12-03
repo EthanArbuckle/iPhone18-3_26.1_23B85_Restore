@@ -33,7 +33,7 @@
   [(CIVector *)v15 Y];
   v26 = [CIVector vectorWithX:v20 Y:v22 Z:v24 W:v25];
   v27 = [CIVector vectorWithX:(v4 * v4) Y:1.0 / v18 Z:v16 W:v17];
-  v28 = [(CISunbeamsGenerator *)self _CISunbeams];
+  _CISunbeams = [(CISunbeamsGenerator *)self _CISunbeams];
   [(CIVector *)self->inputCenter X];
   v30 = v29 - v18;
   [(CIVector *)self->inputCenter Y];
@@ -46,7 +46,7 @@
   v34[1] = v26;
   v34[2] = v27;
   v34[3] = self->inputColor;
-  return [v28 applyWithExtent:v33 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 4, MEMORY[0x1E69E9820], 3221225472, __34__CISunbeamsGenerator_outputImage__block_invoke, &unk_1E75C24D8, v15), v30, v31 - v18, v18 + v18, v18 + v18}];
+  return [_CISunbeams applyWithExtent:v33 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 4, MEMORY[0x1E69E9820], 3221225472, __34__CISunbeamsGenerator_outputImage__block_invoke, &unk_1E75C24D8, v15), v30, v31 - v18, v18 + v18, v18 + v18}];
 }
 
 double __34__CISunbeamsGenerator_outputImage__block_invoke(uint64_t a1)

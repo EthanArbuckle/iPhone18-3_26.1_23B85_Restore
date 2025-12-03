@@ -1,68 +1,68 @@
 @interface WFWidgetViewController
 + (id)progressSubscribers;
 + (id)runningStates;
-+ (id)workflowOrFolderIdentifierFromINIntentBackedOptions:(id)a3 widgetType:(int64_t)a4;
++ (id)workflowOrFolderIdentifierFromINIntentBackedOptions:(id)options widgetType:(int64_t)type;
 - (WFWidgetDataSource)dataSource;
 - (WFWidgetEmptyStateView)emptyStateView;
 - (WFWidgetGridView)gridView;
-- (WFWidgetViewController)initWithOptions:(id)a3;
+- (WFWidgetViewController)initWithOptions:(id)options;
 - (id)emptyStateTitle;
 - (id)fetchDataSource;
-- (id)publishingHandlerForCell:(id)a3;
-- (id)runningContextForAction:(id)a3;
-- (int64_t)widgetTypeFromOptions:(id)a3;
-- (unint64_t)limitFromOptions:(id)a3;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (id)publishingHandlerForCell:(id)cell;
+- (id)runningContextForAction:(id)action;
+- (int64_t)widgetTypeFromOptions:(id)options;
+- (unint64_t)limitFromOptions:(id)options;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
-- (void)emptyStateViewWasTapped:(id)a3;
-- (void)gridView:(id)a3 cellDidTransitionToRunningState:(int64_t)a4;
-- (void)gridView:(id)a3 didTapCell:(id)a4;
-- (void)handleUpdateFromCache:(id)a3;
-- (void)layoutWithActions:(id)a3 dataSource:(id)a4;
+- (void)emptyStateViewWasTapped:(id)tapped;
+- (void)gridView:(id)view cellDidTransitionToRunningState:(int64_t)state;
+- (void)gridView:(id)view didTapCell:(id)cell;
+- (void)handleUpdateFromCache:(id)cache;
+- (void)layoutWithActions:(id)actions dataSource:(id)source;
 - (void)loadView;
-- (void)openShortcutsAppWithOptions:(id)a3;
-- (void)refreshActionsWithDataSource:(id)a3;
+- (void)openShortcutsAppWithOptions:(id)options;
+- (void)refreshActionsWithDataSource:(id)source;
 - (void)refreshDataSource;
 - (void)removeStaleRunningContexts;
 - (void)restoreRunningStateIfNecessary;
-- (void)resumeRunningWithCell:(id)a3;
-- (void)setWidgetStyleToClear:(BOOL)a3;
+- (void)resumeRunningWithCell:(id)cell;
+- (void)setWidgetStyleToClear:(BOOL)clear;
 - (void)showEmptyStateViewIfNeeded;
-- (void)showRunningUIForCell:(id)a3;
+- (void)showRunningUIForCell:(id)cell;
 - (void)showWidgetGridViewIfNeeded;
 - (void)startObservingContentSizeCategoryNotifications;
 - (void)stopObservingContentSizeCategoryNotifications;
-- (void)stopRunningWithCell:(id)a3;
-- (void)tintWithHomeScreenTintColor:(CGColor *)a3;
+- (void)stopRunningWithCell:(id)cell;
+- (void)tintWithHomeScreenTintColor:(CGColor *)color;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation WFWidgetViewController
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
+  clientCopy = client;
+  outputCopy = output;
+  errorCopy = error;
+  v13 = clientCopy;
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v14 = [(WFWidgetViewController *)self gridView];
-    v15 = [v13 action];
-    v16 = [v14 cellForSystemAction:v15];
+    gridView = [(WFWidgetViewController *)self gridView];
+    action = [v13 action];
+    v16 = [gridView cellForSystemAction:action];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowWithOutput_error_cancelled___block_invoke;
     v19[3] = &unk_1E8307F68;
     v20 = v16;
-    v23 = a6;
-    v21 = v12;
-    v22 = self;
+    cancelledCopy = cancelled;
+    v21 = errorCopy;
+    selfCopy = self;
     v17 = v16;
     dispatch_async(MEMORY[0x1E69E96A0], v19);
 
@@ -106,15 +106,15 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
   }
 }
 
-- (void)openShortcutsAppWithOptions:(id)a3
+- (void)openShortcutsAppWithOptions:(id)options
 {
   v3 = MEMORY[0x1E699FB78];
-  v4 = a3;
-  v5 = [v3 serviceWithDefaultShellEndpoint];
-  [v5 openApplication:*MEMORY[0x1E69E0FB0] withOptions:v4 completion:&__block_literal_global_173];
+  optionsCopy = options;
+  serviceWithDefaultShellEndpoint = [v3 serviceWithDefaultShellEndpoint];
+  [serviceWithDefaultShellEndpoint openApplication:*MEMORY[0x1E69E0FB0] withOptions:optionsCopy completion:&__block_literal_global_173];
 }
 
-- (void)emptyStateViewWasTapped:(id)a3
+- (void)emptyStateViewWasTapped:(id)tapped
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = [(WFWidgetViewController *)self log];
@@ -124,13 +124,13 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     _os_log_impl(&dword_1C830A000, v4, OS_LOG_TYPE_DEFAULT, "Empty state view was tapped, launching Shortcuts app", buf, 2u);
   }
 
-  v5 = [(WFWidgetViewController *)self dataSource];
-  v6 = [v5 folderIdentifierForDeepLinking];
+  dataSource = [(WFWidgetViewController *)self dataSource];
+  folderIdentifierForDeepLinking = [dataSource folderIdentifierForDeepLinking];
 
-  if ([(WFWidgetViewController *)self widgetType]== 2 && v6)
+  if ([(WFWidgetViewController *)self widgetType]== 2 && folderIdentifierForDeepLinking)
   {
     v7 = MEMORY[0x1E695DFF8];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"shortcuts://folder?id=%@", v6];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"shortcuts://folder?id=%@", folderIdentifierForDeepLinking];
     v9 = [v7 URLWithString:v8];
 
     if (v9)
@@ -154,10 +154,10 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
   }
 }
 
-- (void)gridView:(id)a3 cellDidTransitionToRunningState:(int64_t)a4
+- (void)gridView:(id)view cellDidTransitionToRunningState:(int64_t)state
 {
-  v6 = a3;
-  if (a4 == 3 || !a4)
+  viewCopy = view;
+  if (state == 3 || !state)
   {
     [(WFWidgetViewController *)self setRunning:0];
     if ([(WFWidgetViewController *)self needsLayout])
@@ -169,16 +169,16 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
         _os_log_impl(&dword_1C830A000, v7, OS_LOG_TYPE_DEFAULT, "Doing deferred layout now", v9, 2u);
       }
 
-      v8 = [(WFWidgetViewController *)self dataSource];
-      [(WFWidgetViewController *)self refreshActionsWithDataSource:v8];
+      dataSource = [(WFWidgetViewController *)self dataSource];
+      [(WFWidgetViewController *)self refreshActionsWithDataSource:dataSource];
     }
   }
 }
 
-- (void)gridView:(id)a3 didTapCell:(id)a4
+- (void)gridView:(id)view didTapCell:(id)cell
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  cellCopy = cell;
   v6 = [(WFWidgetViewController *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -186,23 +186,23 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_DEFAULT, "Widget was tapped", &v30, 2u);
   }
 
-  v7 = [v5 action];
+  action = [cellCopy action];
 
-  if (v7)
+  if (action)
   {
-    if ([v5 runningState] == 1 || objc_msgSend(v5, "runningState") == 2)
+    if ([cellCopy runningState] == 1 || objc_msgSend(cellCopy, "runningState") == 2)
     {
       v8 = [(WFWidgetViewController *)self log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 action];
-        v10 = [v9 identifier];
+        action2 = [cellCopy action];
+        identifier = [action2 identifier];
         v30 = 138543362;
-        v31 = v10;
+        v31 = identifier;
         _os_log_impl(&dword_1C830A000, v8, OS_LOG_TYPE_DEFAULT, "Workflow (%{public}@) was running, now stopping...", &v30, 0xCu);
       }
 
-      [(WFWidgetViewController *)self stopRunningWithCell:v5];
+      [(WFWidgetViewController *)self stopRunningWithCell:cellCopy];
     }
 
     else if ([(WFWidgetViewController *)self running])
@@ -217,56 +217,56 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
 
     else
     {
-      v13 = [v5 runningState];
+      runningState = [cellCopy runningState];
       v14 = [(WFWidgetViewController *)self log];
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if (v13 == 3)
+      if (runningState == 3)
       {
         if (v15)
         {
-          v16 = [v5 action];
-          v17 = [v16 identifier];
+          action3 = [cellCopy action];
+          identifier2 = [action3 identifier];
           v30 = 138543362;
-          v31 = v17;
+          v31 = identifier2;
           _os_log_impl(&dword_1C830A000, v14, OS_LOG_TYPE_DEFAULT, "Resuming run with action identifier: %{public}@", &v30, 0xCu);
         }
 
-        [(WFWidgetViewController *)self resumeRunningWithCell:v5];
+        [(WFWidgetViewController *)self resumeRunningWithCell:cellCopy];
       }
 
       else
       {
         if (v15)
         {
-          v18 = [v5 action];
-          v19 = [v18 identifier];
+          action4 = [cellCopy action];
+          identifier3 = [action4 identifier];
           v30 = 138543362;
-          v31 = v19;
+          v31 = identifier3;
           _os_log_impl(&dword_1C830A000, v14, OS_LOG_TYPE_DEFAULT, "Starting run with action identifier: %{public}@", &v30, 0xCu);
         }
 
-        [(WFWidgetViewController *)self showRunningUIForCell:v5];
+        [(WFWidgetViewController *)self showRunningUIForCell:cellCopy];
         v20 = objc_alloc(MEMORY[0x1E69E0D78]);
-        v21 = [v5 action];
-        v22 = [v20 initWithSystemAction:v21];
+        action5 = [cellCopy action];
+        v22 = [v20 initWithSystemAction:action5];
 
         [v22 start];
-        v23 = [v22 context];
+        context = [v22 context];
 
-        if (v23)
+        if (context)
         {
-          v24 = [v22 context];
-          v25 = [v5 action];
-          [v24 setAction:v25];
+          context2 = [v22 context];
+          action6 = [cellCopy action];
+          [context2 setAction:action6];
 
-          v26 = [(WFWidgetViewController *)self publishingHandlerForCell:v5];
-          v27 = [v24 addProgressSubscriberUsingPublishingHandler:v26];
+          v26 = [(WFWidgetViewController *)self publishingHandlerForCell:cellCopy];
+          v27 = [context2 addProgressSubscriberUsingPublishingHandler:v26];
 
-          v28 = [objc_opt_class() progressSubscribers];
-          [v28 setObject:v27 forKey:v24];
+          progressSubscribers = [objc_opt_class() progressSubscribers];
+          [progressSubscribers setObject:v27 forKey:context2];
 
-          v29 = [objc_opt_class() runningStates];
-          [v29 addObject:v24];
+          runningStates = [objc_opt_class() runningStates];
+          [runningStates addObject:context2];
 
           objc_storeStrong(&self->_client, v22);
         }
@@ -280,7 +280,7 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138412290;
-      v31 = v5;
+      v31 = cellCopy;
       _os_log_impl(&dword_1C830A000, v11, OS_LOG_TYPE_DEFAULT, "Cell (%@) does not have an action, launching Shortcuts app", &v30, 0xCu);
     }
 
@@ -288,7 +288,7 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   v4 = [(WFWidgetViewController *)self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -297,25 +297,25 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     _os_log_impl(&dword_1C830A000, v4, OS_LOG_TYPE_DEFAULT, "Received ContentSizeCategory changed notification", v6, 2u);
   }
 
-  v5 = [(WFWidgetViewController *)self dataSource];
-  [(WFWidgetViewController *)self refreshActionsWithDataSource:v5];
+  dataSource = [(WFWidgetViewController *)self dataSource];
+  [(WFWidgetViewController *)self refreshActionsWithDataSource:dataSource];
 }
 
 - (void)stopObservingContentSizeCategoryNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)startObservingContentSizeCategoryNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (void)setWidgetStyleToClear:(BOOL)a3
+- (void)setWidgetStyleToClear:(BOOL)clear
 {
-  v3 = a3;
+  clearCopy = clear;
   v17 = *MEMORY[0x1E69E9840];
   v5 = [(WFWidgetViewController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -325,9 +325,9 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     v8 = v7;
     v9 = @"NO";
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    if (v3)
+    if (clearCopy)
     {
       v9 = @"YES";
     }
@@ -338,12 +338,12 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "<%p %@> Setting widget style to clear: %@", &v11, 0x20u);
   }
 
-  self->_isClearStyleEnabled = v3;
-  v10 = [(WFWidgetViewController *)self gridView];
-  [v10 setCellsToClear:v3];
+  self->_isClearStyleEnabled = clearCopy;
+  gridView = [(WFWidgetViewController *)self gridView];
+  [gridView setCellsToClear:clearCopy];
 }
 
-- (void)tintWithHomeScreenTintColor:(CGColor *)a3
+- (void)tintWithHomeScreenTintColor:(CGColor *)color
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = [(WFWidgetViewController *)self log];
@@ -351,26 +351,26 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(WFWidgetViewController *)self gridView];
-    v9 = [(WFWidgetViewController *)self gridView];
+    gridView = [(WFWidgetViewController *)self gridView];
+    gridView2 = [(WFWidgetViewController *)self gridView];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     v16 = 134219010;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = v7;
     v20 = 2048;
-    v21 = v8;
+    v21 = gridView;
     v22 = 2112;
     v23 = v11;
     v24 = 2112;
-    v25 = a3;
+    colorCopy = color;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "<%p %@> Assigning home screen tint color to <%p %@>: %@", &v16, 0x34u);
   }
 
-  if (a3)
+  if (color)
   {
-    v12 = [MEMORY[0x1E69E09E0] colorWithCGColor:a3];
+    v12 = [MEMORY[0x1E69E09E0] colorWithCGColor:color];
   }
 
   else
@@ -382,20 +382,20 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
   self->_homeScreenTintColor = v12;
   v14 = v12;
 
-  v15 = [(WFWidgetViewController *)self gridView];
-  [v15 tintWithHomeScreenTintColor:v14];
+  gridView3 = [(WFWidgetViewController *)self gridView];
+  [gridView3 tintWithHomeScreenTintColor:v14];
 }
 
-- (id)runningContextForAction:(id)a3
+- (id)runningContextForAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  actionCopy = action;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [objc_opt_class() runningStates];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  runningStates = [objc_opt_class() runningStates];
+  v5 = [runningStates countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -405,13 +405,13 @@ void __98__WFWidgetViewController_workflowRunnerClient_didFinishRunningWorkflowW
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(runningStates);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 action];
-        v10 = v3;
-        v11 = v9;
+        action = [v8 action];
+        v10 = actionCopy;
+        v11 = action;
         v12 = v11;
         if (v11 == v10)
         {
@@ -421,7 +421,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v3 && v11)
+        if (actionCopy && v11)
         {
           v13 = [v10 isEqual:v11];
 
@@ -436,7 +436,7 @@ LABEL_16:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [runningStates countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -451,16 +451,16 @@ LABEL_17:
   return v5;
 }
 
-- (id)publishingHandlerForCell:(id)a3
+- (id)publishingHandlerForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__WFWidgetViewController_publishingHandlerForCell___block_invoke;
   v9[3] = &unk_1E8307F20;
-  v10 = v4;
-  v11 = self;
-  v5 = v4;
+  v10 = cellCopy;
+  selfCopy = self;
+  v5 = cellCopy;
   v6 = _Block_copy(v9);
   v7 = _Block_copy(v6);
 
@@ -522,15 +522,15 @@ void __51__WFWidgetViewController_publishingHandlerForCell___block_invoke_3(uint
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     [(WFWidgetViewController *)self removeStaleRunningContexts];
-    v3 = [objc_opt_class() runningStates];
-    v4 = [(WFWidgetViewController *)self gridView];
-    v5 = [v4 actionsForVisibleCells];
+    runningStates = [objc_opt_class() runningStates];
+    gridView = [(WFWidgetViewController *)self gridView];
+    actionsForVisibleCells = [gridView actionsForVisibleCells];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = v3;
+    v6 = runningStates;
     v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v7)
     {
@@ -547,18 +547,18 @@ void __51__WFWidgetViewController_publishingHandlerForCell___block_invoke_3(uint
           }
 
           v11 = *(*(&v26 + 1) + 8 * i);
-          v12 = [v11 action];
+          action = [v11 action];
 
-          if (v12)
+          if (action)
           {
-            v13 = [v11 action];
-            v14 = [v5 containsObject:v13];
+            action2 = [v11 action];
+            v14 = [actionsForVisibleCells containsObject:action2];
 
             if (v14)
             {
-              v15 = [(WFWidgetViewController *)self gridView];
-              v16 = [v11 action];
-              v17 = [v15 cellForSystemAction:v16];
+              gridView2 = [(WFWidgetViewController *)self gridView];
+              action3 = [v11 action];
+              v17 = [gridView2 cellForSystemAction:action3];
 
               if ([v17 runningState] == 1 || objc_msgSend(v17, "runningState") == 2)
               {
@@ -576,8 +576,8 @@ void __51__WFWidgetViewController_publishingHandlerForCell___block_invoke_3(uint
               v19 = [(WFWidgetViewController *)self publishingHandlerForCell:v18];
               v20 = [v11 addProgressSubscriberUsingPublishingHandler:v19];
 
-              v21 = [objc_opt_class() progressSubscribers];
-              [v21 setObject:v20 forKey:v11];
+              progressSubscribers = [objc_opt_class() progressSubscribers];
+              [progressSubscribers setObject:v20 forKey:v11];
             }
           }
         }
@@ -609,14 +609,14 @@ LABEL_18:
 - (void)removeStaleRunningContexts
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v2 = [MEMORY[0x1E695DF00] date];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  date = [MEMORY[0x1E695DF00] date];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [objc_opt_class() runningStates];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  runningStates = [objc_opt_class() runningStates];
+  v4 = [runningStates countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -628,12 +628,12 @@ LABEL_18:
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(runningStates);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 creationDate];
-        v11 = [v19 components:16 fromDate:v10 toDate:v2 options:0];
+        creationDate = [v9 creationDate];
+        v11 = [currentCalendar components:16 fromDate:creationDate toDate:date options:0];
 
         if ([v11 day] >= 7)
         {
@@ -646,7 +646,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [runningStates countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v5);
@@ -677,8 +677,8 @@ LABEL_18:
         }
 
         v17 = *(*(&v20 + 1) + 8 * j);
-        v18 = [objc_opt_class() runningStates];
-        [v18 removeObject:v17];
+        runningStates2 = [objc_opt_class() runningStates];
+        [runningStates2 removeObject:v17];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -688,14 +688,14 @@ LABEL_18:
   }
 }
 
-- (void)resumeRunningWithCell:(id)a3
+- (void)resumeRunningWithCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__WFWidgetViewController_resumeRunningWithCell___block_invoke;
   block[3] = &unk_1E83086B0;
-  v5 = v4;
+  v5 = cellCopy;
   v12 = v5;
   v6 = MEMORY[0x1E69E96A0];
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -717,16 +717,16 @@ void __48__WFWidgetViewController_resumeRunningWithCell___block_invoke_2(uint64_
   [v2 resume];
 }
 
-- (void)stopRunningWithCell:(id)a3
+- (void)stopRunningWithCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__WFWidgetViewController_stopRunningWithCell___block_invoke;
   v6[3] = &unk_1E83086D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = cellCopy;
+  selfCopy = self;
+  v5 = cellCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -764,16 +764,16 @@ void __46__WFWidgetViewController_stopRunningWithCell___block_invoke(uint64_t a1
   }
 }
 
-- (void)showRunningUIForCell:(id)a3
+- (void)showRunningUIForCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__WFWidgetViewController_showRunningUIForCell___block_invoke;
   v6[3] = &unk_1E83086D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = cellCopy;
+  selfCopy = self;
+  v5 = cellCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -785,16 +785,16 @@ void __47__WFWidgetViewController_showRunningUIForCell___block_invoke(uint64_t a
   [v2 disableAllCellsExceptCell:*(a1 + 32)];
 }
 
-- (void)handleUpdateFromCache:(id)a3
+- (void)handleUpdateFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__WFWidgetViewController_handleUpdateFromCache___block_invoke;
   v6[3] = &unk_1E83086D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = cacheCopy;
+  selfCopy = self;
+  v5 = cacheCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -874,12 +874,12 @@ LABEL_16:
 LABEL_17:
 }
 
-- (unint64_t)limitFromOptions:(id)a3
+- (unint64_t)limitFromOptions:(id)options
 {
-  v4 = [a3 family];
-  if (v4 > 2)
+  family = [options family];
+  if (family > 2)
   {
-    if (v4 != 3)
+    if (family != 3)
     {
       return 16;
     }
@@ -889,9 +889,9 @@ LABEL_17:
 
   else
   {
-    if (v4 != 1)
+    if (family != 1)
     {
-      if (v4 == 2)
+      if (family == 2)
       {
         return 4;
       }
@@ -911,17 +911,17 @@ LABEL_17:
   }
 }
 
-- (void)refreshActionsWithDataSource:(id)a3
+- (void)refreshActionsWithDataSource:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(WFWidgetViewController *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEFAULT, "<%p %@> Refreshing actions", &v10, 0x16u);
@@ -929,12 +929,12 @@ LABEL_17:
 
   if ([(WFWidgetViewController *)self widgetType]== 1)
   {
-    v8 = [(WFWidgetViewController *)self options];
-    [v8 family];
+    options = [(WFWidgetViewController *)self options];
+    [options family];
   }
 
-  v9 = [v4 configuredActions];
-  [(WFWidgetViewController *)self layoutWithActions:v9 dataSource:v4];
+  configuredActions = [sourceCopy configuredActions];
+  [(WFWidgetViewController *)self layoutWithActions:configuredActions dataSource:sourceCopy];
 }
 
 - (id)emptyStateTitle
@@ -954,20 +954,20 @@ LABEL_17:
   return v6;
 }
 
-- (void)layoutWithActions:(id)a3 dataSource:(id)a4
+- (void)layoutWithActions:(id)actions dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  sourceCopy = source;
   [(WFWidgetViewController *)self setNeedsLayout:0];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke;
   block[3] = &unk_1E8308600;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = actionsCopy;
+  selfCopy = self;
+  v13 = sourceCopy;
+  v8 = sourceCopy;
+  v9 = actionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -989,13 +989,13 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
   }
 }
 
-- (int64_t)widgetTypeFromOptions:(id)a3
+- (int64_t)widgetTypeFromOptions:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 intent];
-  v5 = [v4 typeName];
-  v6 = [v5 isEqualToString:@"sirikit.intents.custom.com.apple.WorkflowKit.ShortcutsIntents.WFShortcutsSmallWidgetConfigurationIntent"];
+  optionsCopy = options;
+  intent = [optionsCopy intent];
+  typeName = [intent typeName];
+  v6 = [typeName isEqualToString:@"sirikit.intents.custom.com.apple.WorkflowKit.ShortcutsIntents.WFShortcutsSmallWidgetConfigurationIntent"];
 
   if (v6)
   {
@@ -1004,9 +1004,9 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
 
   else
   {
-    v8 = [v3 intent];
-    v9 = [v8 typeName];
-    v10 = [v9 isEqualToString:@"sirikit.intents.custom.com.apple.WorkflowKit.ShortcutsIntents.WFShortcutsWidgetConfigurationIntent"];
+    intent2 = [optionsCopy intent];
+    typeName2 = [intent2 typeName];
+    v10 = [typeName2 isEqualToString:@"sirikit.intents.custom.com.apple.WorkflowKit.ShortcutsIntents.WFShortcutsWidgetConfigurationIntent"];
 
     if (v10)
     {
@@ -1015,13 +1015,13 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
 
     else
     {
-      v11 = [v3 intent];
-      if (v11)
+      intent3 = [optionsCopy intent];
+      if (intent3)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = v11;
+          v12 = intent3;
         }
 
         else
@@ -1037,8 +1037,8 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
 
       v13 = v12;
 
-      v14 = [v13 appIntentIdentifier];
-      v15 = [v14 isEqualToString:@"WFShortcutsSmallWidgetConfigurationIntent"];
+      appIntentIdentifier = [v13 appIntentIdentifier];
+      v15 = [appIntentIdentifier isEqualToString:@"WFShortcutsSmallWidgetConfigurationIntent"];
 
       if (v15)
       {
@@ -1047,8 +1047,8 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
 
       else
       {
-        v16 = [v13 appIntentIdentifier];
-        v17 = [v16 isEqualToString:@"WFShortcutsWidgetConfigurationIntent"];
+        appIntentIdentifier2 = [v13 appIntentIdentifier];
+        v17 = [appIntentIdentifier2 isEqualToString:@"WFShortcutsWidgetConfigurationIntent"];
 
         if (v17)
         {
@@ -1063,7 +1063,7 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
             v20 = 136315394;
             v21 = "[WFWidgetViewController widgetTypeFromOptions:]";
             v22 = 2112;
-            v23 = v3;
+            v23 = optionsCopy;
             _os_log_impl(&dword_1C830A000, v18, OS_LOG_TYPE_FAULT, "%s Could not determine widget type from options %@", &v20, 0x16u);
           }
 
@@ -1076,18 +1076,18 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WFWidgetViewController;
-  [(WFWidgetViewController *)&v4 viewWillAppear:a3];
+  [(WFWidgetViewController *)&v4 viewWillAppear:appear];
   [(WFWidgetViewController *)self restoreRunningStateIfNecessary];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(WFWidgetViewController *)self dataSource];
-  [(WFWidgetViewController *)self refreshActionsWithDataSource:v3];
+  dataSource = [(WFWidgetViewController *)self dataSource];
+  [(WFWidgetViewController *)self refreshActionsWithDataSource:dataSource];
 }
 
 - (void)viewWillLayoutSubviews
@@ -1095,61 +1095,61 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
   v13.receiver = self;
   v13.super_class = WFWidgetViewController;
   [(WFWidgetViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(WFWidgetViewController *)self view];
-  [v3 bounds];
+  view = [(WFWidgetViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(WFWidgetViewController *)self gridView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  gridView = [(WFWidgetViewController *)self gridView];
+  [gridView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)showWidgetGridViewIfNeeded
 {
-  v3 = [(WFWidgetViewController *)self emptyStateView];
-  v4 = [v3 superview];
+  emptyStateView = [(WFWidgetViewController *)self emptyStateView];
+  superview = [emptyStateView superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(WFWidgetViewController *)self emptyStateView];
-    [v5 removeFromSuperview];
+    emptyStateView2 = [(WFWidgetViewController *)self emptyStateView];
+    [emptyStateView2 removeFromSuperview];
   }
 
-  v6 = [(WFWidgetViewController *)self gridView];
-  v7 = [v6 superview];
+  gridView = [(WFWidgetViewController *)self gridView];
+  superview2 = [gridView superview];
 
-  if (!v7)
+  if (!superview2)
   {
-    v9 = [(WFWidgetViewController *)self view];
-    v8 = [(WFWidgetViewController *)self gridView];
-    [v9 addSubview:v8];
+    view = [(WFWidgetViewController *)self view];
+    gridView2 = [(WFWidgetViewController *)self gridView];
+    [view addSubview:gridView2];
   }
 }
 
 - (void)showEmptyStateViewIfNeeded
 {
-  v3 = [(WFWidgetViewController *)self gridView];
-  v4 = [v3 superview];
+  gridView = [(WFWidgetViewController *)self gridView];
+  superview = [gridView superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(WFWidgetViewController *)self gridView];
-    [v5 removeFromSuperview];
+    gridView2 = [(WFWidgetViewController *)self gridView];
+    [gridView2 removeFromSuperview];
   }
 
-  v11 = [(WFWidgetViewController *)self emptyStateTitle];
-  v6 = [(WFWidgetViewController *)self emptyStateView];
-  [v6 setTitleString:v11];
+  emptyStateTitle = [(WFWidgetViewController *)self emptyStateTitle];
+  emptyStateView = [(WFWidgetViewController *)self emptyStateView];
+  [emptyStateView setTitleString:emptyStateTitle];
 
-  v7 = [(WFWidgetViewController *)self emptyStateView];
-  v8 = [v7 superview];
+  emptyStateView2 = [(WFWidgetViewController *)self emptyStateView];
+  superview2 = [emptyStateView2 superview];
 
-  if (!v8)
+  if (!superview2)
   {
-    v9 = [(WFWidgetViewController *)self view];
-    v10 = [(WFWidgetViewController *)self emptyStateView];
-    [v9 addSubview:v10];
+    view = [(WFWidgetViewController *)self view];
+    emptyStateView3 = [(WFWidgetViewController *)self emptyStateView];
+    [view addSubview:emptyStateView3];
   }
 }
 
@@ -1172,8 +1172,8 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
     v6 = [[WFWidgetEmptyStateView alloc] initWithTitle:v5];
     [(WFWidgetEmptyStateView *)v6 setDelegate:self];
     [(WFWidgetEmptyStateView *)v6 setClipsToBounds:1];
-    v7 = [(WFWidgetViewController *)self view];
-    [v7 bounds];
+    view = [(WFWidgetViewController *)self view];
+    [view bounds];
     [(WFWidgetEmptyStateView *)v6 setFrame:?];
 
     [(WFWidgetEmptyStateView *)v6 setAutoresizingMask:18];
@@ -1192,18 +1192,18 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
   if (!gridView)
   {
     v4 = [WFWidgetGridView alloc];
-    v5 = [(WFWidgetViewController *)self options];
-    v6 = [v5 family];
-    v7 = [(WFWidgetViewController *)self widgetType];
+    options = [(WFWidgetViewController *)self options];
+    family = [options family];
+    widgetType = [(WFWidgetViewController *)self widgetType];
     [(WFWidgetViewController *)self cornerRadius];
     v9 = v8;
     v10 = [(WFWidgetViewController *)self log];
-    v11 = [(WFWidgetGridView *)v4 initWithFamily:v6 widgetType:v7 cornerRadius:v10 log:v9];
+    v11 = [(WFWidgetGridView *)v4 initWithFamily:family widgetType:widgetType cornerRadius:v10 log:v9];
 
     [(WFWidgetGridView *)v11 setDelegate:self];
     [(WFWidgetGridView *)v11 setClipsToBounds:1];
-    v12 = [(WFWidgetViewController *)self view];
-    [v12 bounds];
+    view = [(WFWidgetViewController *)self view];
+    [view bounds];
     [(WFWidgetGridView *)v11 setFrame:?];
 
     [(WFWidgetGridView *)v11 setAutoresizingMask:18];
@@ -1230,9 +1230,9 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
   dataSource = self->_dataSource;
   if (!dataSource)
   {
-    v4 = [(WFWidgetViewController *)self fetchDataSource];
+    fetchDataSource = [(WFWidgetViewController *)self fetchDataSource];
     v5 = self->_dataSource;
-    self->_dataSource = v4;
+    self->_dataSource = fetchDataSource;
 
     dataSource = self->_dataSource;
   }
@@ -1243,10 +1243,10 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
 - (id)fetchDataSource
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [(WFWidgetViewController *)self options];
-  v4 = [v3 intent];
+  options = [(WFWidgetViewController *)self options];
+  intent = [options intent];
 
-  if (v4)
+  if (intent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1259,49 +1259,49 @@ void __55__WFWidgetViewController_layoutWithActions_dataSource___block_invoke(ui
         _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEBUG, "%s Attempting modern INAppIntent widget deserialization", &v47, 0xCu);
       }
 
-      v6 = [v4 linkAction];
-      if (!v6)
+      linkAction = [intent linkAction];
+      if (!linkAction)
       {
-        v11 = getWFWidgetLogObject();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        value = getWFWidgetLogObject();
+        if (os_log_type_enabled(value, OS_LOG_TYPE_ERROR))
         {
           v47 = 136315394;
           v48 = "[WFWidgetViewController fetchDataSource]";
           v49 = 2112;
-          v50 = v4;
-          _os_log_impl(&dword_1C830A000, v11, OS_LOG_TYPE_ERROR, "%s Could not get link action from INAppIntent: %@", &v47, 0x16u);
+          v50 = intent;
+          _os_log_impl(&dword_1C830A000, value, OS_LOG_TYPE_ERROR, "%s Could not get link action from INAppIntent: %@", &v47, 0x16u);
         }
 
         v13 = 0;
         goto LABEL_45;
       }
 
-      v7 = [(WFWidgetViewController *)self widgetType];
-      v8 = [v6 parameters];
-      v9 = v8;
-      if (v7 == 1)
+      widgetType = [(WFWidgetViewController *)self widgetType];
+      parameters = [linkAction parameters];
+      v9 = parameters;
+      if (widgetType == 1)
       {
-        v10 = [v8 if_firstObjectPassingTest:&__block_literal_global_2299];
-        v11 = [v10 value];
+        v10 = [parameters if_firstObjectPassingTest:&__block_literal_global_2299];
+        value = [v10 value];
 
-        v12 = [MEMORY[0x1E69E09F8] systemActionWithValue:v11];
-        v13 = [[WFWidgetDataSource alloc] initWithAction:v12];
+        instanceIdentifier = [MEMORY[0x1E69E09F8] systemActionWithValue:value];
+        v13 = [[WFWidgetDataSource alloc] initWithAction:instanceIdentifier];
 LABEL_44:
 
 LABEL_45:
         goto LABEL_46;
       }
 
-      v21 = [v8 if_firstObjectPassingTest:&__block_literal_global_95];
-      v11 = [v21 value];
+      v21 = [parameters if_firstObjectPassingTest:&__block_literal_global_95];
+      value = [v21 value];
 
-      v22 = [v11 value];
-      if (v22)
+      v11Value = [value value];
+      if (v11Value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = v22;
+          v23 = v11Value;
         }
 
         else
@@ -1317,18 +1317,18 @@ LABEL_45:
 
       v24 = v23;
 
-      v25 = [v24 identifier];
+      identifier = [v24 identifier];
 
-      v12 = [v25 instanceIdentifier];
+      instanceIdentifier = [identifier instanceIdentifier];
 
-      v26 = [MEMORY[0x1E695DFF8] URLWithString:v12];
-      v27 = [v26 pathComponents];
-      v28 = [v27 lastObject];
-      v29 = v28;
+      v26 = [MEMORY[0x1E695DFF8] URLWithString:instanceIdentifier];
+      pathComponents = [v26 pathComponents];
+      lastObject = [pathComponents lastObject];
+      v29 = lastObject;
       v30 = @"MyShortcuts";
-      if (v28)
+      if (lastObject)
       {
-        v30 = v28;
+        v30 = lastObject;
       }
 
       v31 = v30;
@@ -1339,8 +1339,8 @@ LABEL_45:
       {
 
         v35 = [WFWidgetDataSource alloc];
-        v36 = [(WFWidgetViewController *)self options];
-        v37 = [(WFWidgetViewController *)self limitFromOptions:v36];
+        options2 = [(WFWidgetViewController *)self options];
+        v37 = [(WFWidgetViewController *)self limitFromOptions:options2];
         v38 = @"MyShortcuts";
       }
 
@@ -1350,12 +1350,12 @@ LABEL_45:
         v38 = v39;
         if (v39 == @"custom" || (v40 = [(__CFString *)v39 isEqualToString:@"custom"], v38, v40))
         {
-          v41 = [v6 parameters];
-          v42 = [v41 if_firstObjectPassingTest:&__block_literal_global_105];
-          v36 = [v42 value];
+          parameters2 = [linkAction parameters];
+          v42 = [parameters2 if_firstObjectPassingTest:&__block_literal_global_105];
+          options2 = [v42 value];
 
-          v43 = [v36 value];
-          if (!v43 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+          value2 = [options2 value];
+          if (!value2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
 
             v44 = getWFGeneralLogObject();
@@ -1364,22 +1364,22 @@ LABEL_45:
               v47 = 136315394;
               v48 = "[WFWidgetViewController fetchDataSource]";
               v49 = 2112;
-              v50 = v6;
+              v50 = linkAction;
               _os_log_impl(&dword_1C830A000, v44, OS_LOG_TYPE_DEFAULT, "%s Got action %@", &v47, 0x16u);
             }
 
-            v43 = 0;
+            value2 = 0;
           }
 
-          v45 = [v43 if_compactMap:&__block_literal_global_109];
+          v45 = [value2 if_compactMap:&__block_literal_global_109];
           v13 = [[WFWidgetDataSource alloc] initWithActions:v45];
 
           goto LABEL_43;
         }
 
         v35 = [WFWidgetDataSource alloc];
-        v36 = [(WFWidgetViewController *)self options];
-        v37 = [(WFWidgetViewController *)self limitFromOptions:v36];
+        options2 = [(WFWidgetViewController *)self options];
+        v37 = [(WFWidgetViewController *)self limitFromOptions:options2];
       }
 
       v13 = [(WFWidgetDataSource *)v35 initWithIdentifier:v38 limit:v37];
@@ -1398,10 +1398,10 @@ LABEL_43:
   }
 
   v15 = objc_opt_class();
-  v16 = [(WFWidgetViewController *)self options];
-  v4 = [v15 workflowOrFolderIdentifierFromINIntentBackedOptions:v16 widgetType:{-[WFWidgetViewController widgetType](self, "widgetType")}];
+  options3 = [(WFWidgetViewController *)self options];
+  intent = [v15 workflowOrFolderIdentifierFromINIntentBackedOptions:options3 widgetType:{-[WFWidgetViewController widgetType](self, "widgetType")}];
 
-  if (v4)
+  if (intent)
   {
     if ([(WFWidgetViewController *)self widgetType]!= 1)
     {
@@ -1412,15 +1412,15 @@ LABEL_43:
       }
 
       v20 = [WFWidgetDataSource alloc];
-      v6 = [(WFWidgetViewController *)self options];
-      v17 = [(WFWidgetDataSource *)v20 initWithIdentifier:v4 limit:[(WFWidgetViewController *)self limitFromOptions:v6]];
+      linkAction = [(WFWidgetViewController *)self options];
+      v17 = [(WFWidgetDataSource *)v20 initWithIdentifier:intent limit:[(WFWidgetViewController *)self limitFromOptions:linkAction]];
       goto LABEL_19;
     }
 
-    v6 = [WFWidgetDataSource systemActionForWorkflowIdentifier:v4];
-    if (v6)
+    linkAction = [WFWidgetDataSource systemActionForWorkflowIdentifier:intent];
+    if (linkAction)
     {
-      v17 = [[WFWidgetDataSource alloc] initWithAction:v6];
+      v17 = [[WFWidgetDataSource alloc] initWithAction:linkAction];
 LABEL_19:
       v13 = v17;
       goto LABEL_46;
@@ -1429,16 +1429,16 @@ LABEL_19:
 
   else
   {
-    v6 = getWFWidgetLogObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    linkAction = getWFWidgetLogObject();
+    if (os_log_type_enabled(linkAction, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(WFWidgetViewController *)self options];
-      v19 = [v18 intent];
+      options4 = [(WFWidgetViewController *)self options];
+      intent2 = [options4 intent];
       v47 = 136315394;
       v48 = "[WFWidgetViewController fetchDataSource]";
       v49 = 2112;
-      v50 = v19;
-      _os_log_impl(&dword_1C830A000, v6, OS_LOG_TYPE_ERROR, "%s Could not get workflow or folder identifier: %@", &v47, 0x16u);
+      v50 = intent2;
+      _os_log_impl(&dword_1C830A000, linkAction, OS_LOG_TYPE_ERROR, "%s Could not get workflow or folder identifier: %@", &v47, 0x16u);
     }
   }
 
@@ -1523,47 +1523,47 @@ uint64_t __41__WFWidgetViewController_fetchDataSource__block_invoke(uint64_t a1,
   [(WFWidgetViewController *)&v12 loadView];
   [(WFWidgetViewController *)self cornerRadius];
   v4 = v3;
-  v5 = [(WFWidgetViewController *)self view];
-  v6 = [v5 layer];
-  [v6 setCornerRadius:v4];
+  view = [(WFWidgetViewController *)self view];
+  layer = [view layer];
+  [layer setCornerRadius:v4];
 
   v7 = *MEMORY[0x1E69796E8];
-  v8 = [(WFWidgetViewController *)self view];
-  v9 = [v8 layer];
-  [v9 setCornerCurve:v7];
+  view2 = [(WFWidgetViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 setCornerCurve:v7];
 
-  v10 = [(WFWidgetViewController *)self view];
-  v11 = [v10 layer];
-  [v11 setMasksToBounds:1];
+  view3 = [(WFWidgetViewController *)self view];
+  layer3 = [view3 layer];
+  [layer3 setMasksToBounds:1];
 }
 
 - (void)dealloc
 {
   [(WFWidgetViewController *)self stopObservingContentSizeCategoryNotifications];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"WFWidgetCacheUpdateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"WFWidgetCacheUpdateNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = WFWidgetViewController;
   [(WFWidgetViewController *)&v4 dealloc];
 }
 
-- (WFWidgetViewController)initWithOptions:(id)a3
+- (WFWidgetViewController)initWithOptions:(id)options
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  optionsCopy = options;
   v34.receiver = self;
   v34.super_class = WFWidgetViewController;
   v6 = [(WFWidgetViewController *)&v34 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = os_log_create("com.apple.shortcuts", "Widget");
     log = v7->_log;
     v7->_log = v8;
 
-    v7->_widgetType = [(WFWidgetViewController *)v7 widgetTypeFromOptions:v5];
+    v7->_widgetType = [(WFWidgetViewController *)v7 widgetTypeFromOptions:optionsCopy];
     HasBeenUnlocked = VCDeviceHasBeenUnlocked();
     v11 = v7->_log;
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -1581,8 +1581,8 @@ uint64_t __41__WFWidgetViewController_fetchDataSource__block_invoke(uint64_t a1,
         _os_log_impl(&dword_1C830A000, v13, OS_LOG_TYPE_DEFAULT, "<%p %@> Device has been unlocked at least once, refreshing", buf, 0x16u);
       }
 
-      v16 = [(WFWidgetViewController *)v7 dataSource];
-      [(WFWidgetViewController *)v7 refreshActionsWithDataSource:v16];
+      dataSource = [(WFWidgetViewController *)v7 dataSource];
+      [(WFWidgetViewController *)v7 refreshActionsWithDataSource:dataSource];
     }
 
     else
@@ -1614,13 +1614,13 @@ uint64_t __41__WFWidgetViewController_fetchDataSource__block_invoke(uint64_t a1,
     }
 
     [(WFWidgetViewController *)v7 startObservingContentSizeCategoryNotifications:v28];
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v7 selector:sel_handleUpdateFromCache_ name:@"WFWidgetCacheUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_handleUpdateFromCache_ name:@"WFWidgetCacheUpdateNotification" object:0];
 
     v22 = objc_opt_new();
     v23 = [v22 previewMetricsSpecificationForBundleIdentifier:*MEMORY[0x1E69E0FB0]];
 
-    v24 = [v23 metricsForFamily:{objc_msgSend(v5, "family")}];
+    v24 = [v23 metricsForFamily:{objc_msgSend(optionsCopy, "family")}];
     [v24 _effectiveCornerRadius];
     v7->_cornerRadius = v25;
 
@@ -1682,14 +1682,14 @@ uint64_t __39__WFWidgetViewController_runningStates__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)workflowOrFolderIdentifierFromINIntentBackedOptions:(id)a3 widgetType:(int64_t)a4
++ (id)workflowOrFolderIdentifierFromINIntentBackedOptions:(id)options widgetType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 1)
+  optionsCopy = options;
+  v6 = optionsCopy;
+  if (type == 1)
   {
-    v11 = [v5 intent];
-    v8 = [v11 valueForKey:@"shortcut"];
+    intent = [optionsCopy intent];
+    v8 = [intent valueForKey:@"shortcut"];
 
     if (v8)
     {
@@ -1703,41 +1703,41 @@ uint64_t __39__WFWidgetViewController_runningStates__block_invoke()
     goto LABEL_10;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v7 = [v5 intent];
-    v8 = [v7 valueForKey:@"folder"];
+    intent2 = [optionsCopy intent];
+    v8 = [intent2 valueForKey:@"folder"];
 
     if (v8)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 identifier];
+        identifier = [v8 identifier];
 
-        if (!v9)
+        if (!identifier)
         {
-          v10 = @"MyShortcuts";
+          identifier2 = @"MyShortcuts";
 LABEL_11:
 
           goto LABEL_13;
         }
 
 LABEL_9:
-        v10 = [v8 identifier];
+        identifier2 = [v8 identifier];
         goto LABEL_11;
       }
     }
 
 LABEL_10:
-    v10 = 0;
+    identifier2 = 0;
     goto LABEL_11;
   }
 
-  v10 = 0;
+  identifier2 = 0;
 LABEL_13:
 
-  return v10;
+  return identifier2;
 }
 
 @end

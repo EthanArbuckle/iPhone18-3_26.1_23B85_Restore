@@ -15,7 +15,7 @@
 - (void)didAddFirstObserver
 {
   objc_initWeak(&location, self);
-  v3 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+  dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
   objc_copyWeak(&v6, &location);
   v4 = _GEOConfigAddBlockListenerForKey();
   transportTypeChangedListener = self->_transportTypeChangedListener;

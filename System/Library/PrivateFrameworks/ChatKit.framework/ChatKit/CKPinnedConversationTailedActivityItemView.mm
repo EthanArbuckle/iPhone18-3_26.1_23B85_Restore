@@ -1,39 +1,39 @@
 @interface CKPinnedConversationTailedActivityItemView
 - (CGPoint)originationPoint;
 - (CGPoint)tailAttachmentPoint;
-- (CGPoint)tailAttachmentPointWithOutputForMinimumContinousAnchorX:(double *)a3 maximumContinuousAnchorX:(double *)a4;
+- (CGPoint)tailAttachmentPointWithOutputForMinimumContinousAnchorX:(double *)x maximumContinuousAnchorX:(double *)anchorX;
 - (CGRect)pillRect;
 - (CGSize)parentAvatarViewSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKPinnedConversationActivityItemViewDelegate)activityItemViewDelegate;
-- (CKPinnedConversationTailedActivityItemView)initWithActivityItem:(id)a3 contentView:(id)a4 needsContentViewStroke:(BOOL)a5;
+- (CKPinnedConversationTailedActivityItemView)initWithActivityItem:(id)item contentView:(id)view needsContentViewStroke:(BOOL)stroke;
 - (UIEdgeInsets)contentViewPadding;
 - (double)balloonTailHeight;
 - (double)contentViewHorizontalInsetForPillCornerRadius;
-- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 anchorPoint:(CGPoint)a5 originationHorizontalDirection:(int64_t)a6 originationDirection:(int64_t)a7;
+- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint anchorPoint:(CGPoint)anchorPoint originationHorizontalDirection:(int64_t)direction originationDirection:(int64_t)originationDirection;
 - (void)_updateUserInterfaceStyles;
 - (void)layoutSubviews;
-- (void)setOriginationDirection:(int64_t)a3;
-- (void)setOriginationPoint:(CGPoint)a3;
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOriginationDirection:(int64_t)direction;
+- (void)setOriginationPoint:(CGPoint)point;
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKPinnedConversationTailedActivityItemView
 
-- (CKPinnedConversationTailedActivityItemView)initWithActivityItem:(id)a3 contentView:(id)a4 needsContentViewStroke:(BOOL)a5
+- (CKPinnedConversationTailedActivityItemView)initWithActivityItem:(id)item contentView:(id)view needsContentViewStroke:(BOOL)stroke
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  strokeCopy = stroke;
+  itemCopy = item;
+  viewCopy = view;
   v32.receiver = self;
   v32.super_class = CKPinnedConversationTailedActivityItemView;
   v11 = [(CKPinnedConversationTailedActivityItemView *)&v32 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_activityItem, a3);
-    objc_storeStrong(&v12->_contentView, a4);
+    objc_storeStrong(&v11->_activityItem, item);
+    objc_storeStrong(&v12->_contentView, view);
     v13 = [[CKPinnedConversationActivityItemViewShadowLayer alloc] initWithShadowType:0];
     broadShadowLayer = v12->_broadShadowLayer;
     v12->_broadShadowLayer = v13;
@@ -52,17 +52,17 @@
 
     [(CKPinnedConversationActivityItemViewBackdropLayer *)v12->_backdropLayer setMask:v12->_backdropMaskShapeLayer];
     [(CKPinnedConversationTailedActivityItemView *)v12 _updateUserInterfaceStyles];
-    v21 = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
-    [v21 addSublayer:v12->_broadShadowLayer];
+    layer = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
+    [layer addSublayer:v12->_broadShadowLayer];
 
-    v22 = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
-    [v22 addSublayer:v12->_tightShadowLayer];
+    layer2 = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
+    [layer2 addSublayer:v12->_tightShadowLayer];
 
     v23 = v12->_backdropLayer;
-    v24 = [(UIView *)v12->_contentView layer];
-    [(CKPinnedConversationActivityItemViewBackdropLayer *)v23 addSublayer:v24];
+    layer3 = [(UIView *)v12->_contentView layer];
+    [(CKPinnedConversationActivityItemViewBackdropLayer *)v23 addSublayer:layer3];
 
-    if (v5)
+    if (strokeCopy)
     {
       v25 = objc_alloc_init(MEMORY[0x1E69794A0]);
       contentViewStrokeLayer = v12->_contentViewStrokeLayer;
@@ -72,8 +72,8 @@
       v27 = [MEMORY[0x1E69DC888] colorWithWhite:0.341176471 alpha:1.0];
       -[CAShapeLayer setStrokeColor:](v12->_contentViewStrokeLayer, "setStrokeColor:", [v27 CGColor]);
 
-      v28 = [MEMORY[0x1E69DC888] clearColor];
-      -[CAShapeLayer setFillColor:](v12->_contentViewStrokeLayer, "setFillColor:", [v28 CGColor]);
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      -[CAShapeLayer setFillColor:](v12->_contentViewStrokeLayer, "setFillColor:", [clearColor CGColor]);
 
       v29 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
       [(CAShapeLayer *)v12->_contentViewStrokeLayer setCompositingFilter:v29];
@@ -81,14 +81,14 @@
       [(CKPinnedConversationActivityItemViewBackdropLayer *)v12->_backdropLayer addSublayer:v12->_contentViewStrokeLayer];
     }
 
-    v30 = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
-    [v30 addSublayer:v12->_backdropLayer];
+    layer4 = [(CKPinnedConversationTailedActivityItemView *)v12 layer];
+    [layer4 addSublayer:v12->_backdropLayer];
   }
 
   return v12;
 }
 
-- (CGPoint)tailAttachmentPointWithOutputForMinimumContinousAnchorX:(double *)a3 maximumContinuousAnchorX:(double *)a4
+- (CGPoint)tailAttachmentPointWithOutputForMinimumContinousAnchorX:(double *)x maximumContinuousAnchorX:(double *)anchorX
 {
   [(CKPinnedConversationTailedActivityItemView *)self bounds];
   v41.origin.x = v7;
@@ -158,15 +158,15 @@
   v31 = MinY;
   v32 = v23 * 1.528665;
   v33 = v21 * v38;
-  if (a3)
+  if (x)
   {
-    *a3 = v32 + v37 + v33;
+    *x = v32 + v37 + v33;
   }
 
   v34 = v21 * v40;
-  if (a4)
+  if (anchorX)
   {
-    *a4 = v29 - v32 - v34;
+    *anchorX = v29 - v32 - v34;
   }
 
   v35 = v23 + MinX + v33;
@@ -314,8 +314,8 @@
   }
 
   v91 = v26;
-  v34 = [(CKPinnedConversationTailedActivityItemView *)self contentViewContentMode];
-  if (v34 == 1)
+  contentViewContentMode = [(CKPinnedConversationTailedActivityItemView *)self contentViewContentMode];
+  if (contentViewContentMode == 1)
   {
     [(CKPinnedConversationTailedActivityItemView *)self bounds];
     v20 = v40;
@@ -326,7 +326,7 @@
     v35 = 0.0;
     v36 = 0.0;
     v37 = 0.0;
-    if (!v34)
+    if (!contentViewContentMode)
     {
       [(CKPinnedConversationTailedActivityItemView *)self contentViewHorizontalInsetForPillCornerRadius];
       v39 = v38;
@@ -435,16 +435,16 @@
     v54 = v53;
     if (originationHorizontalDirection)
     {
-      v55 = v53;
+      bezierPathByReversingPath = v53;
     }
 
     else
     {
-      v55 = [v53 bezierPathByReversingPath];
+      bezierPathByReversingPath = [v53 bezierPathByReversingPath];
     }
 
-    v56 = v55;
-    [v46 appendPath:v55];
+    v56 = bezierPathByReversingPath;
+    [v46 appendPath:bezierPathByReversingPath];
 
     v33 = v33;
   }
@@ -539,28 +539,28 @@
     v71 = v70;
     if (originationHorizontalDirection)
     {
-      v72 = [v70 bezierPathByReversingPath];
+      bezierPathByReversingPath2 = [v70 bezierPathByReversingPath];
     }
 
     else
     {
-      v72 = v70;
+      bezierPathByReversingPath2 = v70;
     }
 
-    v73 = v72;
+    v73 = bezierPathByReversingPath2;
     v63 = v92;
-    [v46 appendPath:v72];
+    [v46 appendPath:bezierPathByReversingPath2];
   }
 
   v74 = v63 < v23;
   [v46 _addRoundedCornerWithTrueCorner:4 radius:0 corner:v90 clockwise:v74 leadInIsContinuous:MinX leadOutIsContinuous:{v77, v93, v93}];
   [v46 _addRoundedCornerWithTrueCorner:1 radius:0 corner:v74 clockwise:v29 leadInIsContinuous:v79 leadOutIsContinuous:{v62, v93, v93}];
   [v46 addLineToPoint:{v85, v22}];
-  v75 = [v46 CGPath];
-  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:v75];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:v75];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:v75];
-  [(CAShapeLayer *)self->_contentViewStrokeLayer setPath:v75];
+  cGPath = [v46 CGPath];
+  [(CAShapeLayer *)self->_backdropMaskShapeLayer setPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setShadowPath:cGPath];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_tightShadowLayer setShadowPath:cGPath];
+  [(CAShapeLayer *)self->_contentViewStrokeLayer setPath:cGPath];
 }
 
 void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invoke(uint64_t a1)
@@ -569,18 +569,18 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   [v2 setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 anchorPoint:(CGPoint)a5 originationHorizontalDirection:(int64_t)a6 originationDirection:(int64_t)a7
+- (id)_pathForTailedBalloonSegmentWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint anchorPoint:(CGPoint)anchorPoint originationHorizontalDirection:(int64_t)direction originationDirection:(int64_t)originationDirection
 {
-  y = a5.y;
-  x = a5.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = anchorPoint.y;
+  x = anchorPoint.x;
+  v11 = point.y;
+  v12 = point.x;
   v14 = objc_alloc_init(MEMORY[0x1E69DC728]);
   [v14 moveToPoint:{v12, v11}];
   [(CKPinnedConversationTailedActivityItemView *)self balloonTailWidth];
   v16 = vabdd_f64(y, v11) + -1.0;
   v17 = -(v15 * 0.661754856);
-  if (a7 == 1)
+  if (originationDirection == 1)
   {
     v18 = -(v16 * 0.811138015);
   }
@@ -591,19 +591,19 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   }
 
   v19 = -(v16 * 0.182405165);
-  if (a7 == 1)
+  if (originationDirection == 1)
   {
     v19 = v16 * 0.182405165;
   }
 
   v37 = v19;
-  if (!a6)
+  if (!direction)
   {
     v17 = v15 * 0.661754856;
   }
 
   v20 = -(v15 * 0.162759545);
-  if (a6)
+  if (direction)
   {
     v20 = v15 * 0.162759545;
     v21 = v15 * 0.419959812;
@@ -615,13 +615,13 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   }
 
   v22 = -(v15 * 0.158070998);
-  if (a6)
+  if (direction)
   {
     v22 = v15 * 0.158070998;
   }
 
   v36 = v22;
-  if (a6)
+  if (direction)
   {
     v23 = v15;
   }
@@ -636,14 +636,14 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   v38 = x + v17;
   v39 = v23;
   v26 = v16 * 0.136400323;
-  if (a7 == 1)
+  if (originationDirection == 1)
   {
     v26 = -(v16 * 0.136400323);
   }
 
   v27 = v11 + v26;
   v28 = v16 * 0.0121065375;
-  if (a7 == 1)
+  if (originationDirection == 1)
   {
     v28 = -(v16 * 0.0121065375);
   }
@@ -662,15 +662,15 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   v33 = v32;
   [v14 addLineToPoint:?];
   [v14 addQuadCurveToPoint:v39 + v38 controlPoint:{v11, v33, v11}];
-  [v14 addLineToPoint:{a4.x, a4.y}];
+  [v14 addLineToPoint:{endPoint.x, endPoint.y}];
 
   return v14;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CKPinnedConversationTailedActivityItemView *)self contentViewPadding];
   v7 = v6;
   v9 = v8;
@@ -680,11 +680,11 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   v14 = v13;
   [(CKPinnedConversationTailedActivityItemView *)self balloonTailWidth];
   [(CKPinnedConversationTailedActivityItemView *)self pillCornerRadius];
-  v15 = [(CKPinnedConversationTailedActivityItemView *)self contentViewContentMode];
-  if (v15 == 1)
+  contentViewContentMode = [(CKPinnedConversationTailedActivityItemView *)self contentViewContentMode];
+  if (contentViewContentMode == 1)
   {
-    v28 = [(CKPinnedConversationTailedActivityItemView *)self contentView];
-    [v28 systemLayoutSizeFittingSize:{width, height}];
+    contentView = [(CKPinnedConversationTailedActivityItemView *)self contentView];
+    [contentView systemLayoutSizeFittingSize:{width, height}];
     v21 = v29;
     v20 = v30;
   }
@@ -698,13 +698,13 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
     v19 = v7;
     v20 = 0.0;
     v21 = 0.0;
-    if (!v15)
+    if (!contentViewContentMode)
     {
       v22 = v16;
       [(CKPinnedConversationTailedActivityItemView *)self contentViewHorizontalInsetForPillCornerRadius];
       v24 = v33 - v18 - v34 - v23 * 2.0;
-      v25 = [(CKPinnedConversationTailedActivityItemView *)self contentView];
-      [v25 systemLayoutSizeFittingSize:{v24, v17 - v22 - v19 - v11}];
+      contentView2 = [(CKPinnedConversationTailedActivityItemView *)self contentView];
+      [contentView2 systemLayoutSizeFittingSize:{v24, v17 - v22 - v19 - v11}];
 
       UICeilToViewScale();
       v20 = v26;
@@ -749,51 +749,51 @@ void __60__CKPinnedConversationTailedActivityItemView_layoutSubviews__block_invo
   return result;
 }
 
-- (void)setOriginationDirection:(int64_t)a3
+- (void)setOriginationDirection:(int64_t)direction
 {
-  if (self->_originationDirection != a3)
+  if (self->_originationDirection != direction)
   {
-    self->_originationDirection = a3;
+    self->_originationDirection = direction;
     [(CKPinnedConversationTailedActivityItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setOriginationPoint:(CGPoint)a3
+- (void)setOriginationPoint:(CGPoint)point
 {
-  if (a3.x != self->_originationPoint.x || a3.y != self->_originationPoint.y)
+  if (point.x != self->_originationPoint.x || point.y != self->_originationPoint.y)
   {
-    self->_originationPoint = a3;
+    self->_originationPoint = point;
     [(CKPinnedConversationTailedActivityItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setPreferredTailAttachmentPointXCoordinate:(double)a3
+- (void)setPreferredTailAttachmentPointXCoordinate:(double)coordinate
 {
-  if (self->_preferredTailAttachmentPointXCoordinate != a3)
+  if (self->_preferredTailAttachmentPointXCoordinate != coordinate)
   {
-    self->_preferredTailAttachmentPointXCoordinate = a3;
+    self->_preferredTailAttachmentPointXCoordinate = coordinate;
     [(CKPinnedConversationTailedActivityItemView *)self setNeedsLayout];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKPinnedConversationTailedActivityItemView;
-  [(CKPinnedConversationTailedActivityItemView *)&v4 traitCollectionDidChange:a3];
+  [(CKPinnedConversationTailedActivityItemView *)&v4 traitCollectionDidChange:change];
   [(CKPinnedConversationTailedActivityItemView *)self _updateUserInterfaceStyles];
 }
 
 - (void)_updateUserInterfaceStyles
 {
-  v3 = [(CKPinnedConversationTailedActivityItemView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(CKPinnedConversationTailedActivityItemView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:v4];
-  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewBackdropLayer *)self->_backdropLayer setUserInterfaceStyle:userInterfaceStyle];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)self->_broadShadowLayer setUserInterfaceStyle:userInterfaceStyle];
   tightShadowLayer = self->_tightShadowLayer;
 
-  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:v4];
+  [(CKPinnedConversationActivityItemViewShadowLayer *)tightShadowLayer setUserInterfaceStyle:userInterfaceStyle];
 }
 
 - (CGPoint)originationPoint

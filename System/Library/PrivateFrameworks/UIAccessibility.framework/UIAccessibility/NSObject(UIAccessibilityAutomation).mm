@@ -21,40 +21,40 @@
 
 - (id)_accessibilityUserTestingElementAttributes
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  if ([a1 _accessibilityUserTestingIsContinuityButton])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([self _accessibilityUserTestingIsContinuityButton])
   {
-    [v2 addObject:@"continuity-button"];
+    [array addObject:@"continuity-button"];
   }
 
-  if ([a1 _accessibilityUserTestingIsDefaultButton])
+  if ([self _accessibilityUserTestingIsDefaultButton])
   {
-    [v2 addObject:@"default-button"];
+    [array addObject:@"default-button"];
   }
 
-  if ([a1 _accessibilityUserTestingIsCancelButton])
+  if ([self _accessibilityUserTestingIsCancelButton])
   {
-    [v2 addObject:@"cancel-button"];
+    [array addObject:@"cancel-button"];
   }
 
-  if ([a1 _accessibilityUserTestingIsDestructiveButton])
+  if ([self _accessibilityUserTestingIsDestructiveButton])
   {
-    [v2 addObject:@"destructive-button"];
+    [array addObject:@"destructive-button"];
   }
 
-  if ([a1 _accessibilityUserTestingIsPreferredButton])
+  if ([self _accessibilityUserTestingIsPreferredButton])
   {
-    [v2 addObject:@"preferred-button"];
+    [array addObject:@"preferred-button"];
   }
 
-  if ([a1 _accessibilityUserTestingIsBackNavButton])
+  if ([self _accessibilityUserTestingIsBackNavButton])
   {
     v3 = @"back-nav-button";
   }
 
   else
   {
-    if (![a1 _accessibilityUserTestingIsRightNavButton])
+    if (![self _accessibilityUserTestingIsRightNavButton])
     {
       goto LABEL_16;
     }
@@ -62,19 +62,19 @@
     v3 = @"right-nav-button";
   }
 
-  [v2 addObject:v3];
+  [array addObject:v3];
 LABEL_16:
-  if ([a1 _accessibilityHasDragSources])
+  if ([self _accessibilityHasDragSources])
   {
-    [v2 addObject:@"drag-source"];
+    [array addObject:@"drag-source"];
   }
 
-  if ([a1 _accessibilityHasDragDestinations])
+  if ([self _accessibilityHasDragDestinations])
   {
-    [v2 addObject:@"drag-destination"];
+    [array addObject:@"drag-destination"];
   }
 
-  return v2;
+  return array;
 }
 
 - (id)_accessibilityUserTestingElementBaseType
@@ -115,28 +115,28 @@ LABEL_4:
 - (void)_setAccessibilityAutomationType:()UIAccessibilityAutomation
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-  [a1 _accessibilitySetRetainedValue:v2 forKey:@"AXAutomationType"];
+  [self _accessibilitySetRetainedValue:v2 forKey:@"AXAutomationType"];
 }
 
 - (uint64_t)_accessibilityAutomationType
 {
-  v2 = [a1 _accessibilityValueForKey:@"AXAutomationType"];
-  v3 = [v2 integerValue];
+  v2 = [self _accessibilityValueForKey:@"AXAutomationType"];
+  integerValue = [v2 integerValue];
 
-  if (!v3)
+  if (!integerValue)
   {
-    v4 = [a1 accessibilityTraits];
-    if ((*MEMORY[0x1E69DD9B8] & ~v4) != 0)
+    accessibilityTraits = [self accessibilityTraits];
+    if ((*MEMORY[0x1E69DD9B8] & ~accessibilityTraits) != 0)
     {
-      if ((*MEMORY[0x1E69DDA00] & ~v4) != 0)
+      if ((*MEMORY[0x1E69DDA00] & ~accessibilityTraits) != 0)
       {
-        if ((*MEMORY[0x1E69DDA18] & ~v4) != 0)
+        if ((*MEMORY[0x1E69DDA18] & ~accessibilityTraits) != 0)
         {
-          if ((*MEMORY[0x1E69DD9D0] & ~v4) != 0)
+          if ((*MEMORY[0x1E69DD9D0] & ~accessibilityTraits) != 0)
           {
-            if ((*MEMORY[0x1E69DD9E0] & ~v4) != 0)
+            if ((*MEMORY[0x1E69DD9E0] & ~accessibilityTraits) != 0)
             {
-              if ((*MEMORY[0x1E69DD9D8] & ~v4) != 0)
+              if ((*MEMORY[0x1E69DD9D8] & ~accessibilityTraits) != 0)
               {
                 return 0;
               }
@@ -171,7 +171,7 @@ LABEL_4:
       }
     }
 
-    else if ((*MEMORY[0x1E69DDA30] & ~v4) != 0)
+    else if ((*MEMORY[0x1E69DDA30] & ~accessibilityTraits) != 0)
     {
       return 9;
     }
@@ -182,7 +182,7 @@ LABEL_4:
     }
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)_accessibilityUserTestingElementType
@@ -221,27 +221,27 @@ LABEL_4:
       value = MEMORY[0x1AC58F8E0]([v3 remotePid], objc_msgSend(v3, "uuidHash"), 9999);
     }
 
-    v4 = value;
+    accessibilityContainer = value;
   }
 
   else
   {
-    v4 = [a1 accessibilityContainer];
+    accessibilityContainer = [self accessibilityContainer];
   }
 
-  return v4;
+  return accessibilityContainer;
 }
 
 - (id)_accessibilityAncestry
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = a1;
-  if (v3)
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     while (1)
     {
-      [v2 addObject:v4];
+      [array addObject:v4];
       v5 = AXRemoteElementFromObject();
       v6 = v5;
       if (v5)
@@ -252,10 +252,10 @@ LABEL_4:
         }
       }
 
-      v7 = [v4 _accessibilityUserTestingParent];
+      _accessibilityUserTestingParent = [v4 _accessibilityUserTestingParent];
 
-      v4 = v7;
-      if (!v7)
+      v4 = _accessibilityUserTestingParent;
+      if (!_accessibilityUserTestingParent)
       {
         goto LABEL_16;
       }
@@ -270,9 +270,9 @@ LABEL_4:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [value reverseObjectEnumerator];
-          v10 = [v9 allObjects];
-          [v2 addObjectsFromArray:v10];
+          reverseObjectEnumerator = [value reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
+          [array addObjectsFromArray:allObjects];
         }
       }
 
@@ -290,24 +290,24 @@ LABEL_4:
   }
 
 LABEL_16:
-  v11 = [v2 reverseObjectEnumerator];
-  v12 = [v11 allObjects];
+  reverseObjectEnumerator2 = [array reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator2 allObjects];
 
-  return v12;
+  return allObjects2;
 }
 
 - (id)_accessibilityUserTestingSupplementaryViews:()UIAccessibilityAutomation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (a3)
   {
-    [a1 _accessibilitySupplementaryHeaderViews];
+    [self _accessibilitySupplementaryHeaderViews];
   }
 
   else
   {
-    [a1 _accessibilitySupplementaryFooterViews];
+    [self _accessibilitySupplementaryFooterViews];
   }
 
   v17 = 0u;
@@ -335,13 +335,13 @@ LABEL_16:
           v13[1] = 3221225472;
           v13[2] = __83__NSObject_UIAccessibilityAutomation___accessibilityUserTestingSupplementaryViews___block_invoke;
           v13[3] = &unk_1E78AAC38;
-          v14 = v5;
+          v14 = array;
           [v11 accessibilityEnumerateContainerElementsUsingBlock:v13];
         }
 
         else
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -351,63 +351,63 @@ LABEL_16:
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (uint64_t)_accessibilityUserTestingChildrenCount
 {
-  v2 = [a1 _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
-  [a1 _accessibilitySetBoolValue:1 forKey:@"AXPerformingChildrenCount"];
-  if ([a1 _accessibilityHasOrderedChildren])
+  v2 = [self _accessibilityBoolValueForKey:@"AXPerformingChildrenCount"];
+  [self _accessibilitySetBoolValue:1 forKey:@"AXPerformingChildrenCount"];
+  if ([self _accessibilityHasOrderedChildren])
   {
-    v3 = [a1 _accessibilityUserTestingSupplementaryViews:1];
-    v4 = [a1 _accessibilityUserTestingSupplementaryViews:0];
-    v5 = [v3 count];
+    automationElements = [self _accessibilityUserTestingSupplementaryViews:1];
+    v4 = [self _accessibilityUserTestingSupplementaryViews:0];
+    v5 = [automationElements count];
     v6 = [v4 count];
-    v7 = v6 + [a1 accessibilityElementCount] + v5;
+    v7 = v6 + [self accessibilityElementCount] + v5;
   }
 
   else
   {
-    v3 = [a1 automationElements];
-    v7 = [v3 count];
+    automationElements = [self automationElements];
+    v7 = [automationElements count];
   }
 
-  [a1 _accessibilitySetBoolValue:v2 forKey:@"AXPerformingChildrenCount"];
+  [self _accessibilitySetBoolValue:v2 forKey:@"AXPerformingChildrenCount"];
   return v7;
 }
 
 - (id)_accessibilityUserTestingChildrenWithRange:()UIAccessibilityAutomation
 {
-  if ([a1 _accessibilityHasOrderedChildren])
+  if ([self _accessibilityHasOrderedChildren])
   {
-    v7 = [a1 _accessibilityUserTestingSupplementaryViews:1];
-    if ([a1 accessibilityShouldEnumerateContainerElementsArrayDirectly] && (objc_msgSend(a1, "_accessibilityElements"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    automationElements = [self _accessibilityUserTestingSupplementaryViews:1];
+    if ([self accessibilityShouldEnumerateContainerElementsArrayDirectly] && (objc_msgSend(self, "_accessibilityElements"), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
-      v10 = [v8 count];
+      accessibilityElementCount = [v8 count];
       v11 = 0;
     }
 
     else
     {
-      v10 = [a1 accessibilityElementCount];
+      accessibilityElementCount = [self accessibilityElementCount];
       v9 = 0;
       v11 = 1;
     }
 
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-    if (a3 < [v7 count])
+    if (a3 < [automationElements count])
     {
       v13 = a4;
-      if (a3 + a4 > [v7 count])
+      if (a3 + a4 > [automationElements count])
       {
-        v13 = [v7 count] - a3;
+        v13 = [automationElements count] - a3;
       }
 
       if (v13 >= 1)
       {
-        v14 = [v7 subarrayWithRange:{a3, v13}];
+        v14 = [automationElements subarrayWithRange:{a3, v13}];
         [v12 addObjectsFromArray:v14];
 
         a3 = 0;
@@ -417,7 +417,7 @@ LABEL_16:
 
     if (a4)
     {
-      if (a3 >= v10 || a4 < 1)
+      if (a3 >= accessibilityElementCount || a4 < 1)
       {
         goto LABEL_25;
       }
@@ -427,7 +427,7 @@ LABEL_16:
       {
         if (v11)
         {
-          [a1 accessibilityElementAtIndex:v15];
+          [self accessibilityElementAtIndex:v15];
         }
 
         else
@@ -445,11 +445,11 @@ LABEL_16:
         ++v15;
       }
 
-      while (v15 < v10 && a4);
+      while (v15 < accessibilityElementCount && a4);
       if (a4)
       {
 LABEL_25:
-        v17 = [a1 _accessibilityUserTestingSupplementaryViews:0];
+        v17 = [self _accessibilityUserTestingSupplementaryViews:0];
         if (a3 < [v17 count])
         {
           if (a3 + a4 > [v17 count])
@@ -469,10 +469,10 @@ LABEL_25:
 
   else
   {
-    v7 = [a1 automationElements];
-    if (a3 + a4 <= [v7 count])
+    automationElements = [self automationElements];
+    if (a3 + a4 <= [automationElements count])
     {
-      v12 = [v7 subarrayWithRange:{a3, a4}];
+      v12 = [automationElements subarrayWithRange:{a3, a4}];
     }
 
     else
@@ -488,10 +488,10 @@ LABEL_25:
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
-  v3 = [a1 _accessibilityUserTestingSupplementaryViews:1];
+  v3 = [self _accessibilityUserTestingSupplementaryViews:1];
   [v2 axSafelyAddObjectsFromArray:v3];
 
-  if ([a1 isAccessibilityElement])
+  if ([self isAccessibilityElement])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -503,8 +503,8 @@ LABEL_25:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [a1 subviews];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    subviews = [self subviews];
+    v5 = [subviews countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -515,19 +515,19 @@ LABEL_25:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(subviews);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 accessibilityIdentifier];
+          accessibilityIdentifier = [v9 accessibilityIdentifier];
 
-          if (v10)
+          if (accessibilityIdentifier)
           {
             [v2 addObject:v9];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v6 = [subviews countByEnumeratingWithState:&v14 objects:v20 count:16];
       }
 
       while (v6);
@@ -536,7 +536,7 @@ LABEL_25:
 
   else
   {
-    if (![a1 _accessibilityHasOrderedChildren])
+    if (![self _accessibilityHasOrderedChildren])
     {
       goto LABEL_16;
     }
@@ -546,18 +546,18 @@ LABEL_25:
     v18[2] = __90__NSObject_UIAccessibilityAutomation___accessibilityBaseImplementationUserTestingChildren__block_invoke;
     v18[3] = &unk_1E78AAC38;
     v19 = v2;
-    [a1 accessibilityEnumerateContainerElementsUsingBlock:v18];
-    v4 = v19;
+    [self accessibilityEnumerateContainerElementsUsingBlock:v18];
+    subviews = v19;
   }
 
 LABEL_16:
-  v11 = [a1 _accessibilityUserTestingSupplementaryViews:0];
+  v11 = [self _accessibilityUserTestingSupplementaryViews:0];
   [v2 axSafelyAddObjectsFromArray:v11];
 
-  if (([a1 _accessibilityTextViewShouldBreakUpParagraphs] & 1) == 0)
+  if (([self _accessibilityTextViewShouldBreakUpParagraphs] & 1) == 0)
   {
-    v12 = [a1 _accessibilityInternalTextLinks];
-    [v2 axSafelyAddObjectsFromArray:v12];
+    _accessibilityInternalTextLinks = [self _accessibilityInternalTextLinks];
+    [v2 axSafelyAddObjectsFromArray:_accessibilityInternalTextLinks];
   }
 
   return v2;
@@ -609,7 +609,7 @@ LABEL_16:
     {
       v15 = v13;
 
-      v50 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
 
       v67 = 0u;
       v68 = 0u;
@@ -671,7 +671,7 @@ LABEL_16:
             }
 
             v25 = [v20 _iosAccessibilityAttributeValue:5030];
-            v26 = [v25 integerValue];
+            integerValue = [v25 integerValue];
 
             v27 = AXLogUIA();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -679,11 +679,11 @@ LABEL_16:
               *buf = 138543618;
               v71 = v20;
               v72 = 1026;
-              LODWORD(v73) = v26;
+              LODWORD(v73) = integerValue;
               _os_log_debug_impl(&dword_1A9B83000, v27, OS_LOG_TYPE_DEBUG, "Current %{public}@ snapshot child count: %{public}d", buf, 0x12u);
             }
 
-            if (v26 <= a5)
+            if (integerValue <= a5)
             {
               v29 = [v20 _iosAccessibilityAttributeValue:5001];
               [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v29, "count")}];
@@ -694,7 +694,7 @@ LABEL_16:
               v28 = [MEMORY[0x1E696B098] valueWithRange:0];
               v29 = [v20 _iosAccessibilityAttributeValue:95003 forParameter:v28];
 
-              [MEMORY[0x1E696AD98] numberWithInteger:v26];
+              [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
             }
             v30 = ;
             [v17 setObject:v30 forKeyedSubscript:@"UIAccessibilitySnapshotKeyChildrenCount"];
@@ -725,26 +725,26 @@ LABEL_16:
                 }
 
                 v48 = v33;
-                v35 = [v33 lastObject];
-                v36 = v35;
-                if (v35)
+                lastObject = [v33 lastObject];
+                v36 = lastObject;
+                if (lastObject)
                 {
                   v47 = v23;
-                  v37 = [v35 _accessibilityObscuredScreenAllowedViews];
+                  _accessibilityObscuredScreenAllowedViews = [lastObject _accessibilityObscuredScreenAllowedViews];
                   v38 = AXLogUIA();
                   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412546;
                     v71 = v36;
                     v72 = 2112;
-                    v73 = v37;
+                    v73 = _accessibilityObscuredScreenAllowedViews;
                     _os_log_impl(&dword_1A9B83000, v38, OS_LOG_TYPE_INFO, "found a modal child and honor modal views: %@ [but allowing these through: %@]", buf, 0x16u);
                   }
 
                   v39 = MEMORY[0x1E695DEC8];
                   v69 = v36;
                   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
-                  v41 = [v39 axArrayWithPossiblyNilArrays:{2, v40, v37}];
+                  v41 = [v39 axArrayWithPossiblyNilArrays:{2, v40, _accessibilityObscuredScreenAllowedViews}];
 
                   v29 = v41;
                   v8 = v45;
@@ -761,7 +761,7 @@ LABEL_16:
               v60[3] = &unk_1E78AB7E8;
               v63 = a5;
               v61 = v32;
-              v62 = v50;
+              v62 = array;
               v42 = v32;
               [v29 enumerateObjectsUsingBlock:v60];
             }
@@ -784,10 +784,10 @@ LABEL_16:
       }
 
       ++v53;
-      v13 = v50;
+      v13 = array;
     }
 
-    while ([v50 count]);
+    while ([array count]);
   }
 
   return v44;
@@ -797,9 +797,9 @@ LABEL_16:
 {
   v62 = *MEMORY[0x1E69E9840];
   v9 = a3;
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = _AXCreateAXUIElementWithElement();
-  [v10 setObject:v11 forKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
+  [dictionary setObject:v11 forKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
 
   v12 = AXLogUIA();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -807,12 +807,12 @@ LABEL_16:
     [NSObject(UIAccessibilityAutomation) _accessibilityUserTestingSnapshotDescendantsWithAttributes:maxDepth:maxChildren:maxArrayCount:honorsModalViews:];
   }
 
-  v13 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = dictionary;
   v41 = v14;
   if (v14)
   {
-    v46 = v13;
+    v46 = selfCopy;
     v15 = v14;
     v42 = v9;
     v45 = a7;
@@ -820,7 +820,7 @@ LABEL_16:
     {
       context = objc_autoreleasePoolPush();
       v56 = 0;
-      v16 = _accessibilityAttributesForObject(v13, v9, a6, 1, &v56);
+      v16 = _accessibilityAttributesForObject(selfCopy, v9, a6, 1, &v56);
       v17 = v56;
       [v15 setObject:v16 forKeyedSubscript:@"UIAccessibilitySnapshotKeyAttributes"];
       if (v17)
@@ -830,21 +830,21 @@ LABEL_16:
 
       if (a5)
       {
-        v18 = [v13 _iosAccessibilityAttributeValue:5030];
+        v18 = [selfCopy _iosAccessibilityAttributeValue:5030];
         [v15 setObject:v18 forKeyedSubscript:@"UIAccessibilitySnapshotKeyChildrenCount"];
-        v19 = [v18 integerValue];
-        if (v19 >= a5)
+        integerValue = [v18 integerValue];
+        if (integerValue >= a5)
         {
           v20 = a5;
         }
 
         else
         {
-          v20 = v19;
+          v20 = integerValue;
         }
 
         v21 = [MEMORY[0x1E696B098] valueWithRange:{0, v20}];
-        v22 = [v13 _iosAccessibilityAttributeValue:95003 forParameter:v21];
+        v22 = [selfCopy _iosAccessibilityAttributeValue:95003 forParameter:v21];
 
         if ([v22 count])
         {
@@ -860,26 +860,26 @@ LABEL_16:
           if (a7)
           {
             v25 = [v22 ax_filteredArrayUsingBlock:&__block_literal_global_392];
-            v26 = [v25 firstObject];
+            firstObject = [v25 firstObject];
 
-            if (v26)
+            if (firstObject)
             {
               v43 = v23;
-              v27 = [v26 _accessibilityObscuredScreenAllowedViews];
+              _accessibilityObscuredScreenAllowedViews = [firstObject _accessibilityObscuredScreenAllowedViews];
               v28 = AXLogUIA();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v59 = v26;
+                v59 = firstObject;
                 v60 = 2112;
-                v61 = v27;
+                v61 = _accessibilityObscuredScreenAllowedViews;
                 _os_log_impl(&dword_1A9B83000, v28, OS_LOG_TYPE_INFO, "found a modal child and honor modal views: %@ [but allowing these through: %@]", buf, 0x16u);
               }
 
               v29 = MEMORY[0x1E695DEC8];
-              v57 = v26;
+              v57 = firstObject;
               v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
-              v31 = [v29 axArrayWithPossiblyNilArrays:{2, v30, v27}];
+              v31 = [v29 axArrayWithPossiblyNilArrays:{2, v30, _accessibilityObscuredScreenAllowedViews}];
 
               v22 = v31;
               v9 = v42;
@@ -908,16 +908,16 @@ LABEL_16:
       v34 = [v46 _iosAccessibilityAttributeValue:5002];
       if (v34)
       {
-        v35 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v36 = _AXCreateAXUIElementWithElement();
-        [v35 setObject:v36 forKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
+        [dictionary2 setObject:v36 forKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
 
         v37 = AXLogUIA();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
         {
           v38 = objc_opt_class();
           v44 = v38;
-          v39 = [v35 objectForKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
+          v39 = [dictionary2 objectForKeyedSubscript:@"UIAccessibilitySnapshotKeyElement"];
           *buf = 138478083;
           v59 = v38;
           a7 = v45;
@@ -928,26 +928,26 @@ LABEL_16:
           v9 = v42;
         }
 
-        [v15 setObject:v35 forKeyedSubscript:@"UIAccessibilitySnapshotKeyParent"];
+        [v15 setObject:dictionary2 forKeyedSubscript:@"UIAccessibilitySnapshotKeyParent"];
       }
 
       else
       {
-        v35 = 0;
+        dictionary2 = 0;
       }
 
       objc_autoreleasePoolPop(v33);
       objc_autoreleasePoolPop(context);
-      v13 = v34;
-      v15 = v35;
+      selfCopy = v34;
+      v15 = dictionary2;
     }
 
-    while (v35);
+    while (dictionary2);
   }
 
   else
   {
-    v34 = v13;
+    v34 = selfCopy;
   }
 
   return v41;
@@ -979,28 +979,28 @@ LABEL_16:
     [v7 filterUsingPredicate:?];
     if ([v7 count])
     {
-      v24 = [v8 unsignedIntegerValue];
-      v23 = [v9 unsignedIntegerValue];
-      v22 = [v10 unsignedIntegerValue];
-      v13 = [v11 BOOLValue];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v10 unsignedIntegerValue];
+      bOOLValue = [v11 BOOLValue];
       if (v12 || AXRequestingClient() != 2)
       {
-        v14 = [v12 BOOLValue];
+        bOOLValue2 = [v12 BOOLValue];
       }
 
       else
       {
-        v14 = 1;
+        bOOLValue2 = 1;
       }
 
-      if (v13)
+      if (bOOLValue)
       {
-        [a1 _accessibilityUserTestingSnapshotDescendantsWithAttributes:v7 maxDepth:v24 maxChildren:v23 maxArrayCount:v22 honorsModalViews:v14];
+        [self _accessibilityUserTestingSnapshotDescendantsWithAttributes:v7 maxDepth:unsignedIntegerValue maxChildren:unsignedIntegerValue2 maxArrayCount:unsignedIntegerValue3 honorsModalViews:bOOLValue2];
       }
 
       else
       {
-        [a1 _accessibilityUserTestingSnapshotAncestorsWithAttributes:v7 maxDepth:v24 maxChildren:v23 maxArrayCount:v22 honorsModalViews:v14];
+        [self _accessibilityUserTestingSnapshotAncestorsWithAttributes:v7 maxDepth:unsignedIntegerValue maxChildren:unsignedIntegerValue2 maxArrayCount:unsignedIntegerValue3 honorsModalViews:bOOLValue2];
       }
       v15 = ;
     }
@@ -1074,7 +1074,7 @@ LABEL_16:
   v7[4] = @"traverseFromParentsToChildren";
   v8[4] = MEMORY[0x1E695E118];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:5];
-  v5 = [a1 _accessibilityUserTestingSnapshotWithOptions:v4];
+  v5 = [self _accessibilityUserTestingSnapshotWithOptions:v4];
 
   return v5;
 }

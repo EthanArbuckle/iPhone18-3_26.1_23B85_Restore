@@ -1,10 +1,10 @@
 @interface TTRITextCellTextFieldTextArea
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (_TtC15RemindersUICore29TTRITextCellTextFieldTextArea)init;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)textFieldEditingChanged;
 @end
 
@@ -19,7 +19,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 24);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   v5 = self + OBJC_IVAR____TtC15RemindersUICore29TTRITextCellTextFieldTextArea_delegate;
   swift_beginAccess();
@@ -41,8 +41,8 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 48);
-    v8 = a3;
-    v9 = self;
+    editingCopy = editing;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
@@ -50,7 +50,7 @@
   return 1;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v4 = self + OBJC_IVAR____TtC15RemindersUICore29TTRITextCellTextFieldTextArea_delegate;
   swift_beginAccess();
@@ -59,13 +59,13 @@
     v5 = *(v4 + 1);
     swift_getObjectType();
     v6 = *(v5 + 8);
-    v7 = self;
+    selfCopy = self;
     v6();
     swift_unknownObjectRelease();
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   sub_21DBFA16C();
   v6 = self + OBJC_IVAR____TtC15RemindersUICore29TTRITextCellTextFieldTextArea_delegate;
@@ -75,7 +75,7 @@
     v7 = *(v6 + 1);
     swift_getObjectType();
     v8 = *(v7 + 16);
-    v9 = self;
+    selfCopy = self;
     v10 = v8();
     swift_unknownObjectRelease();
   }
@@ -88,44 +88,44 @@
   return v10 & 1;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = self;
+  selfCopy = self;
   v5 = self + OBJC_IVAR____TtC15RemindersUICore29TTRITextCellTextFieldTextArea_delegate;
   swift_beginAccess();
   if (!swift_unknownObjectWeakLoadStrong())
   {
-    v10 = a3;
-    v11 = v4;
+    returnCopy = return;
+    v11 = selfCopy;
     goto LABEL_5;
   }
 
   v6 = *(v5 + 1);
   swift_getObjectType();
   v7 = *(v6 + 32);
-  v8 = a3;
-  v9 = v4;
+  returnCopy2 = return;
+  v9 = selfCopy;
   LOBYTE(v6) = v7();
   swift_unknownObjectRelease();
   if ((v6 & 1) == 0)
   {
 LABEL_5:
-    [a3 resignFirstResponder];
+    [return resignFirstResponder];
     goto LABEL_6;
   }
 
-  a3 = v8;
-  v4 = v9;
+  return = returnCopy2;
+  selfCopy = v9;
 LABEL_6:
 
   return 0;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  TTRITextCellTextFieldTextArea.textFieldDidEndEditing(_:)(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  TTRITextCellTextFieldTextArea.textFieldDidEndEditing(_:)(editingCopy);
 }
 
 @end

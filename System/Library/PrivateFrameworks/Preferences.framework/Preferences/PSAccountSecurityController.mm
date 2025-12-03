@@ -2,20 +2,20 @@
 - (PSAccountSecurityController)init;
 - (id)passcodeSpecifiers;
 - (id)specifiers;
-- (void)_setShowsDoneButton:(BOOL)a3;
-- (void)_showSecurityCodeChangeSheetOnSpecifier:(id)a3;
+- (void)_setShowsDoneButton:(BOOL)button;
+- (void)_showSecurityCodeChangeSheetOnSpecifier:(id)specifier;
 - (void)cancelPressed;
-- (void)changeSecurityCode:(id)a3;
+- (void)changeSecurityCode:(id)code;
 - (void)disableRecovery;
 - (void)handleBurnedRecord;
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error;
 - (void)navCancelPressed;
 - (void)navDonePressed;
-- (void)phoneSettingsFragment:(id)a3 didChangePhoneNumber:(id)a4 countryInfo:(id)a5;
+- (void)phoneSettingsFragment:(id)fragment didChangePhoneNumber:(id)number countryInfo:(id)info;
 - (void)reloadSpecifiers;
-- (void)setUseRecovery:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setUseRecovery:(id)recovery specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PSAccountSecurityController
@@ -35,20 +35,20 @@
   return v2;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(KeychainSyncPhoneSettingsFragment *)self->_phoneSettingsFragment resignFirstResponder];
   v5.receiver = self;
   v5.super_class = PSAccountSecurityController;
-  [(PSListController *)&v5 viewWillDisappear:v3];
+  [(PSListController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PSAccountSecurityController;
-  [(PSListController *)&v6 viewDidAppear:a3];
+  [(PSListController *)&v6 viewDidAppear:appear];
   if ([(PSAccountSecurityController *)self isMovingToParentViewController])
   {
     v4 = dispatch_get_global_queue(0, 0);
@@ -535,18 +535,18 @@ void __41__PSAccountSecurityController_specifiers__block_invoke_3(uint64_t a1, i
   [(PSAccountSecurityController *)self _setShowsDoneButton:0];
 }
 
-- (void)_showSecurityCodeChangeSheetOnSpecifier:(id)a3
+- (void)_showSecurityCodeChangeSheetOnSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSAccountSecurityController *)self securityCodeType];
+  specifierCopy = specifier;
+  securityCodeType = [(PSAccountSecurityController *)self securityCodeType];
   manager = self->_manager;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__PSAccountSecurityController__showSecurityCodeChangeSheetOnSpecifier___block_invoke;
   v7[3] = &unk_1E71DCEE8;
-  v8 = v5 == 2;
+  v8 = securityCodeType == 2;
   v7[4] = self;
-  [(PSKeychainSyncManager *)manager showChangeSecurityCodeFlowWithSpecifier:v4 overController:self completion:v7];
+  [(PSKeychainSyncManager *)manager showChangeSecurityCodeFlowWithSpecifier:specifierCopy overController:self completion:v7];
 }
 
 void __71__PSAccountSecurityController__showSecurityCodeChangeSheetOnSpecifier___block_invoke(uint64_t a1, int a2, void *a3, int a4, void *a5)
@@ -653,14 +653,14 @@ void __71__PSAccountSecurityController__showSecurityCodeChangeSheetOnSpecifier__
   [*(a1 + 32) presentViewController:*(*(a1 + 32) + 1472) animated:1 completion:0];
 }
 
-- (void)changeSecurityCode:(id)a3
+- (void)changeSecurityCode:(id)code
 {
   phoneSettingsFragment = self->_phoneSettingsFragment;
-  v6 = a3;
-  v5 = [(KeychainSyncPhoneSettingsFragment *)phoneSettingsFragment phoneNumberCell];
-  [v5 resignFirstResponder];
+  codeCopy = code;
+  phoneNumberCell = [(KeychainSyncPhoneSettingsFragment *)phoneSettingsFragment phoneNumberCell];
+  [phoneNumberCell resignFirstResponder];
 
-  [(PSAccountSecurityController *)self _showSecurityCodeChangeSheetOnSpecifier:v6];
+  [(PSAccountSecurityController *)self _showSecurityCodeChangeSheetOnSpecifier:codeCopy];
 }
 
 - (void)disableRecovery
@@ -739,10 +739,10 @@ void __46__PSAccountSecurityController_disableRecovery__block_invoke_2(uint64_t 
   }
 }
 
-- (void)setUseRecovery:(id)a3 specifier:(id)a4
+- (void)setUseRecovery:(id)recovery specifier:(id)specifier
 {
-  v6 = a4;
-  if ([a3 BOOLValue])
+  specifierCopy = specifier;
+  if ([recovery BOOLValue])
   {
     manager = self->_manager;
     v20[0] = MEMORY[0x1E69E9820];
@@ -750,7 +750,7 @@ void __46__PSAccountSecurityController_disableRecovery__block_invoke_2(uint64_t 
     v20[2] = __56__PSAccountSecurityController_setUseRecovery_specifier___block_invoke;
     v20[3] = &unk_1E71DCF10;
     v20[4] = self;
-    [(PSKeychainSyncManager *)manager showEnableEscrowFlowWithSpecifier:v6 overController:self completion:v20];
+    [(PSKeychainSyncManager *)manager showEnableEscrowFlowWithSpecifier:specifierCopy overController:self completion:v20];
   }
 
   else
@@ -825,22 +825,22 @@ void __49__PSAccountSecurityController_handleBurnedRecord__block_invoke_2(uint64
   [v3 showEnableEscrowFlowWithSpecifier:v4 overController:? completion:?];
 }
 
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
-  v7 = a4;
-  if (self->_devicePINController == a3)
+  resultCopy = result;
+  if (self->_devicePINController == controller)
   {
-    [(PSKeychainSyncManager *)self->_manager startNavigationSpinnerInViewController:a3];
-    v8 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v9 = [(PSAccountSecurityController *)self securityCode];
+    [(PSKeychainSyncManager *)self->_manager startNavigationSpinnerInViewController:controller];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    securityCode = [(PSAccountSecurityController *)self securityCode];
     v20 = 0;
-    v10 = [v8 changePasscodeFrom:v7 to:v9 outError:&v20];
+    v10 = [mEMORY[0x1E69ADFB8] changePasscodeFrom:resultCopy to:securityCode outError:&v20];
     v11 = v20;
 
     if (v10)
     {
-      v12 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-      [v12 saveDeviceUnlockPasscodeInputModes];
+      mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+      [mEMORY[0x1E69DCBF0] saveDeviceUnlockPasscodeInputModes];
     }
 
     else
@@ -848,24 +848,24 @@ void __49__PSAccountSecurityController_handleBurnedRecord__block_invoke_2(uint64
       NSLog(&cfstr_ErrorChangingP.isa, v11);
       v13 = MEMORY[0x1E69DC650];
       v14 = PS_LocalizedStringForKeychainSync(@"ERROR_CHANGING_PASSCODE");
-      v12 = [v13 alertControllerWithTitle:v14 message:0 preferredStyle:1];
+      mEMORY[0x1E69DCBF0] = [v13 alertControllerWithTitle:v14 message:0 preferredStyle:1];
 
       v15 = MEMORY[0x1E69DC648];
       v16 = PS_LocalizedStringForKeychainSync(@"OK");
       v17 = [v15 actionWithTitle:v16 style:0 handler:0];
-      [v12 addAction:v17];
+      [mEMORY[0x1E69DCBF0] addAction:v17];
 
-      [(PSAccountSecurityController *)self presentViewController:v12 animated:1 completion:0];
+      [(PSAccountSecurityController *)self presentViewController:mEMORY[0x1E69DCBF0] animated:1 completion:0];
     }
 
     [(PSKeychainSyncManager *)self->_manager stopNavigationSpinner];
-    v18 = [(PSViewController *)self rootController];
+    rootController = [(PSViewController *)self rootController];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __80__PSAccountSecurityController_keychainSyncController_didFinishWithResult_error___block_invoke;
     v19[3] = &unk_1E71DBE20;
     v19[4] = self;
-    [v18 dismissViewControllerAnimated:1 completion:v19];
+    [rootController dismissViewControllerAnimated:1 completion:v19];
   }
 }
 
@@ -1131,8 +1131,8 @@ LABEL_29:
 
 - (void)navCancelPressed
 {
-  v3 = [(PSAccountSecurityController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(PSAccountSecurityController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)navDonePressed
@@ -1142,34 +1142,34 @@ LABEL_29:
   [(PSAccountSecurityController *)self saveSMSTargetChanges];
 }
 
-- (void)_setShowsDoneButton:(BOOL)a3
+- (void)_setShowsDoneButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_navCancelPressed];
-    v4 = [(PSAccountSecurityController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v8];
+    navigationItem4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_navCancelPressed];
+    navigationItem = [(PSAccountSecurityController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:navigationItem4];
 
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_navDonePressed];
-    v6 = [(PSAccountSecurityController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    navigationItem2 = [(PSAccountSecurityController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v5];
   }
 
   else
   {
-    v7 = [(PSAccountSecurityController *)self navigationItem];
-    [v7 setLeftBarButtonItem:0];
+    navigationItem3 = [(PSAccountSecurityController *)self navigationItem];
+    [navigationItem3 setLeftBarButtonItem:0];
 
-    v8 = [(PSAccountSecurityController *)self navigationItem];
-    [v8 setRightBarButtonItem:0];
+    navigationItem4 = [(PSAccountSecurityController *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:0];
   }
 }
 
-- (void)phoneSettingsFragment:(id)a3 didChangePhoneNumber:(id)a4 countryInfo:(id)a5
+- (void)phoneSettingsFragment:(id)fragment didChangePhoneNumber:(id)number countryInfo:(id)info
 {
-  v13 = a4;
-  v7 = a5;
-  if ([(NSString *)self->_SMSTarget isEqualToString:v13]&& [(KeychainSyncCountryInfo *)self->_SMSTargetCountryInfo isEqual:v7])
+  numberCopy = number;
+  infoCopy = info;
+  if ([(NSString *)self->_SMSTarget isEqualToString:numberCopy]&& [(KeychainSyncCountryInfo *)self->_SMSTargetCountryInfo isEqual:infoCopy])
   {
     [(PSAccountSecurityController *)self _setShowsDoneButton:0];
   }
@@ -1177,11 +1177,11 @@ LABEL_29:
   else
   {
     [(PSAccountSecurityController *)self _setShowsDoneButton:1];
-    v8 = [(PSAccountSecurityController *)self navigationItem];
-    v9 = [v8 rightBarButtonItem];
+    navigationItem = [(PSAccountSecurityController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    v10 = [v13 length];
-    if (v7)
+    v10 = [numberCopy length];
+    if (infoCopy)
     {
       v11 = v10 == 0;
     }
@@ -1192,19 +1192,19 @@ LABEL_29:
     }
 
     v12 = !v11;
-    [v9 setEnabled:v12];
+    [rightBarButtonItem setEnabled:v12];
   }
 }
 
 - (void)cancelPressed
 {
-  v3 = [(PSViewController *)self rootController];
+  rootController = [(PSViewController *)self rootController];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__PSAccountSecurityController_cancelPressed__block_invoke;
   v4[3] = &unk_1E71DBE20;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [rootController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __44__PSAccountSecurityController_cancelPressed__block_invoke(uint64_t a1)

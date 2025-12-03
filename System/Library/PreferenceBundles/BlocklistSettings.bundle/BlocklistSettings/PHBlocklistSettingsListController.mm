@@ -1,30 +1,30 @@
 @interface PHBlocklistSettingsListController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (BSUIBrandManager)brandManager;
 - (PHBlocklistSettingsListController)init;
-- (id)_specifierForRowIndex:(int64_t)a3;
+- (id)_specifierForRowIndex:(int64_t)index;
 - (id)createNewAutocompleteSearchController;
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4;
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address;
 - (id)specifiers;
-- (void)_ruleTapped:(id)a3;
-- (void)_rulesChanged:(id)a3;
-- (void)_showContactPickerViewController:(id)a3;
+- (void)_ruleTapped:(id)tapped;
+- (void)_rulesChanged:(id)changed;
+- (void)_showContactPickerViewController:(id)controller;
 - (void)_updateEditDoneButton;
 - (void)_updateForEditingState;
-- (void)blockContact:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)createBlocklistSettingsViewWithCompletionHandler:(id)a3;
+- (void)blockContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)createBlocklistSettingsViewWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4;
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view;
 - (void)emitBlocklistNavigationEvent;
 - (void)handleContactPickerBlockButtonTapped;
 - (void)handleContactPickerCancelled;
 - (void)loadView;
 - (void)presentContactPicker;
 - (void)refreshBlocklistEntries;
-- (void)setBlocklistEditing:(BOOL)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)setBlocklistEditing:(BOOL)editing;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation PHBlocklistSettingsListController
@@ -62,7 +62,7 @@
   [(PHBlocklistSettingsListController *)&v4 dealloc];
 }
 
-- (void)_rulesChanged:(id)a3
+- (void)_rulesChanged:(id)changed
 {
   if ([(PHBlocklistSettingsListController *)self betterBlockingEnabled])
   {
@@ -75,8 +75,8 @@
   }
 
   v4 = +[TUPrivacyManager sharedPrivacyManager];
-  v5 = [v4 privacyRules];
-  v6 = [v5 count];
+  privacyRules = [v4 privacyRules];
+  v6 = [privacyRules count];
 
   if (!v6)
   {
@@ -118,9 +118,9 @@
 
 - (id)specifiers
 {
-  v3 = [(PHBlocklistSettingsListController *)self betterBlockingEnabled];
+  betterBlockingEnabled = [(PHBlocklistSettingsListController *)self betterBlockingEnabled];
   v4 = OBJC_IVAR___PSListController__specifiers;
-  if (v3 && !*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
+  if (betterBlockingEnabled && !*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = &__NSArray0__struct;
   }
@@ -145,7 +145,7 @@
     [v6 addObject:v7];
     self->_specifierStartIndex = 1;
     v10 = +[TUPrivacyManager sharedPrivacyManager];
-    v11 = [v10 privacyRules];
+    privacyRules = [v10 privacyRules];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_31E0;
@@ -153,7 +153,7 @@
     v20[4] = self;
     v12 = v6;
     v21 = v12;
-    [v11 enumerateObjectsUsingBlock:v20];
+    [privacyRules enumerateObjectsUsingBlock:v20];
 
     addNewSpecifier = self->_addNewSpecifier;
     if (!addNewSpecifier)
@@ -178,25 +178,25 @@
   return v5;
 }
 
-- (void)_ruleTapped:(id)a3
+- (void)_ruleTapped:(id)tapped
 {
-  v34 = a3;
-  v4 = [v34 userInfo];
-  v5 = [v4 type];
-  if (!v5)
+  tappedCopy = tapped;
+  userInfo = [tappedCopy userInfo];
+  type = [userInfo type];
+  if (!type)
   {
-    v10 = [v4 phoneNumber];
-    v11 = [v10 unformattedInternationalRepresentation];
-    v12 = v11;
-    if (v11)
+    phoneNumber = [userInfo phoneNumber];
+    unformattedInternationalRepresentation = [phoneNumber unformattedInternationalRepresentation];
+    v12 = unformattedInternationalRepresentation;
+    if (unformattedInternationalRepresentation)
     {
-      v35 = v11;
+      digits = unformattedInternationalRepresentation;
     }
 
     else
     {
-      v14 = [v4 phoneNumber];
-      v35 = [v14 digits];
+      phoneNumber2 = [userInfo phoneNumber];
+      digits = [phoneNumber2 digits];
     }
 
     v6 = &CNContactPhoneNumbersKey;
@@ -204,24 +204,24 @@
     goto LABEL_11;
   }
 
-  if (v5 != 2)
+  if (type != 2)
   {
-    if (v5 != 1)
+    if (type != 1)
     {
       v13 = 0;
       v7 = 0;
-      v35 = 0;
+      digits = 0;
       goto LABEL_12;
     }
 
-    v35 = [v4 email];
+    digits = [userInfo email];
     v6 = &CNContactEmailAddressesKey;
     v7 = 3;
 LABEL_11:
     v13 = *v6;
 LABEL_12:
     v15 = [TUContactsDataProviderFetchRequest alloc];
-    v16 = [[TUHandle alloc] initWithType:v7 value:v35];
+    v16 = [[TUHandle alloc] initWithType:v7 value:digits];
     v17 = [v15 initWithHandle:v16];
 
     v18 = +[CNContactViewController descriptorForRequiredKeys];
@@ -229,49 +229,49 @@ LABEL_12:
     v19 = [NSArray arrayWithObjects:&v41 count:1];
     [v17 setAuxiliaryKeysToFetch:v19];
 
-    v20 = [(PHBlocklistSettingsListController *)self contactsDataProvider];
-    v21 = [v20 executeFetchRequest:v17];
+    contactsDataProvider = [(PHBlocklistSettingsListController *)self contactsDataProvider];
+    v21 = [contactsDataProvider executeFetchRequest:v17];
 
-    v22 = [v21 contacts];
-    v23 = [v22 firstObject];
+    contacts = [v21 contacts];
+    firstObject = [contacts firstObject];
 
-    if (v23)
+    if (firstObject)
     {
-      v24 = [CNContactViewController viewControllerForContact:v23];
+      v24 = [CNContactViewController viewControllerForContact:firstObject];
       [v24 setAllowsEditing:0];
       if ([v13 isEqualToString:CNContactPhoneNumbersKey])
       {
-        v25 = [CNPhoneNumber phoneNumberWithStringValue:v35];
-        v26 = [v23 labeledValueForPhoneNumber:v25];
-        v27 = [v26 identifier];
+        v25 = [CNPhoneNumber phoneNumberWithStringValue:digits];
+        v26 = [firstObject labeledValueForPhoneNumber:v25];
+        identifier = [v26 identifier];
       }
 
       else
       {
         if (![v13 isEqualToString:CNContactEmailAddressesKey])
         {
-          v27 = 0;
+          identifier = 0;
           goto LABEL_25;
         }
 
-        v25 = [v23 labeledValueForEmailAddress:v35];
-        v27 = [v25 identifier];
+        v25 = [firstObject labeledValueForEmailAddress:digits];
+        identifier = [v25 identifier];
       }
 
 LABEL_25:
-      [v24 highlightPropertyWithKey:v13 identifier:v27];
+      [v24 highlightPropertyWithKey:v13 identifier:identifier];
       goto LABEL_26;
     }
 
-    v27 = objc_alloc_init(CNMutableContact);
+    identifier = objc_alloc_init(CNMutableContact);
     if ([v13 isEqualToString:CNContactPhoneNumbersKey])
     {
-      v28 = [CNPhoneNumber phoneNumberWithStringValue:v35];
+      v28 = [CNPhoneNumber phoneNumberWithStringValue:digits];
       v29 = [CNLabeledValue labeledValueWithLabel:CNLabelPhoneNumberMain value:v28];
       v40 = v29;
       v30 = [NSArray arrayWithObjects:&v40 count:1];
 
-      [v27 setPhoneNumbers:v30];
+      [identifier setPhoneNumbers:v30];
     }
 
     else
@@ -279,37 +279,37 @@ LABEL_25:
       if (![v13 isEqualToString:CNContactEmailAddressesKey])
       {
 LABEL_23:
-        v24 = [CNContactViewController viewControllerForUnknownContact:v27];
+        v24 = [CNContactViewController viewControllerForUnknownContact:identifier];
 LABEL_26:
 
-        v32 = [(PHBlocklistSettingsListController *)self contactStore];
-        [v24 setContactStore:v32];
+        contactStore = [(PHBlocklistSettingsListController *)self contactStore];
+        [v24 setContactStore:contactStore];
 
-        v33 = [(PHBlocklistSettingsListController *)self navigationController];
-        [v33 pushViewController:v24 animated:1];
+        navigationController = [(PHBlocklistSettingsListController *)self navigationController];
+        [navigationController pushViewController:v24 animated:1];
 
         goto LABEL_27;
       }
 
-      v31 = [CNLabeledValue labeledValueWithLabel:CNLabelHome value:v35];
+      v31 = [CNLabeledValue labeledValueWithLabel:CNLabelHome value:digits];
       v39 = v31;
       v30 = [NSArray arrayWithObjects:&v39 count:1];
 
-      [v27 setEmailAddresses:v30];
+      [identifier setEmailAddresses:v30];
     }
 
     goto LABEL_23;
   }
 
   objc_initWeak(&location, self);
-  v8 = [(PHBlocklistSettingsListController *)self brandManager];
-  v9 = [v4 businessID];
+  brandManager = [(PHBlocklistSettingsListController *)self brandManager];
+  businessID = [userInfo businessID];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_3C5C;
   v36[3] = &unk_14A98;
   objc_copyWeak(&v37, &location);
-  [v8 brandWithURI:v9 completion:v36];
+  [brandManager brandWithURI:businessID completion:v36];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
@@ -319,8 +319,8 @@ LABEL_27:
 - (void)_updateEditDoneButton
 {
   v3 = +[TUPrivacyManager sharedPrivacyManager];
-  v4 = [v3 privacyRules];
-  v5 = [v4 count];
+  privacyRules = [v3 privacyRules];
+  v5 = [privacyRules count];
 
   if (v5)
   {
@@ -334,7 +334,7 @@ LABEL_27:
       v6 = @"BLOCKLIST_EDIT";
     }
 
-    v10 = [PHBlocklistSettingsStrings localizedStringForKey:v6];
+    navigationItem2 = [PHBlocklistSettingsStrings localizedStringForKey:v6];
     if (self->_editing)
     {
       v7 = 2;
@@ -345,15 +345,15 @@ LABEL_27:
       v7 = 0;
     }
 
-    v8 = [[UIBarButtonItem alloc] initWithTitle:v10 style:v7 target:self action:"_editDoneButtonTapped:"];
-    v9 = [(PHBlocklistSettingsListController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    v8 = [[UIBarButtonItem alloc] initWithTitle:navigationItem2 style:v7 target:self action:"_editDoneButtonTapped:"];
+    navigationItem = [(PHBlocklistSettingsListController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   else
   {
-    v10 = [(PHBlocklistSettingsListController *)self navigationItem];
-    [v10 setRightBarButtonItem:0];
+    navigationItem2 = [(PHBlocklistSettingsListController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
@@ -365,11 +365,11 @@ LABEL_27:
   }
 
   [(PHBlocklistSettingsListController *)self _updateEditDoneButton];
-  v3 = [(PHBlocklistSettingsListController *)self navigationItem];
-  [v3 setHidesBackButton:self->_editing animated:1];
+  navigationItem = [(PHBlocklistSettingsListController *)self navigationItem];
+  [navigationItem setHidesBackButton:self->_editing animated:1];
 
-  v4 = [(PHBlocklistSettingsListController *)self table];
-  [v4 setEditing:self->_editing animated:1];
+  table = [(PHBlocklistSettingsListController *)self table];
+  [table setEditing:self->_editing animated:1];
 
   addNewSpecifier = self->_addNewSpecifier;
   v6 = [NSNumber numberWithBool:!self->_editing];
@@ -380,41 +380,41 @@ LABEL_27:
   [(PHBlocklistSettingsListController *)self reloadSpecifier:v7 animated:0];
 }
 
-- (void)_showContactPickerViewController:(id)a3
+- (void)_showContactPickerViewController:(id)controller
 {
-  v4 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+  contactPickerViewController = [(PHBlocklistSettingsListController *)self contactPickerViewController];
 
-  if (!v4)
+  if (!contactPickerViewController)
   {
     v5 = objc_alloc_init(CNContactPickerViewController);
     [(PHBlocklistSettingsListController *)self setContactPickerViewController:v5];
 
-    v6 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-    [v6 setDelegate:self];
+    contactPickerViewController2 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    [contactPickerViewController2 setDelegate:self];
 
     v7 = [NSPredicate predicateWithFormat:@"(emailAddresses.@count > 0) OR (phoneNumbers.@count > 0)"];
-    v8 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-    [v8 setPredicateForEnablingContact:v7];
+    contactPickerViewController3 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    [contactPickerViewController3 setPredicateForEnablingContact:v7];
 
-    v9 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-    [v9 setAllowsEditing:0];
+    contactPickerViewController4 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    [contactPickerViewController4 setAllowsEditing:0];
 
     v16[0] = CNContactPhoneNumbersKey;
     v16[1] = CNContactEmailAddressesKey;
     v10 = [NSArray arrayWithObjects:v16 count:2];
-    v11 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-    [v11 setDisplayedPropertyKeys:v10];
+    contactPickerViewController5 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    [contactPickerViewController5 setDisplayedPropertyKeys:v10];
 
-    v12 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-    [v12 setAllowsCancel:1];
+    contactPickerViewController6 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    [contactPickerViewController6 setAllowsCancel:1];
 
-    v13 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+    contactPickerViewController7 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
     v14 = [PHBlocklistSettingsStrings localizedStringForKey:@"BLOCKLIST_ADD_PROMPT"];
-    [v13 setPrompt:v14];
+    [contactPickerViewController7 setPrompt:v14];
   }
 
-  v15 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
-  [(PHBlocklistSettingsListController *)self presentViewController:v15 animated:1 completion:0];
+  contactPickerViewController8 = [(PHBlocklistSettingsListController *)self contactPickerViewController];
+  [(PHBlocklistSettingsListController *)self presentViewController:contactPickerViewController8 animated:1 completion:0];
 }
 
 - (BSUIBrandManager)brandManager
@@ -451,9 +451,9 @@ LABEL_27:
   return v2;
 }
 
-- (id)_specifierForRowIndex:(int64_t)a3
+- (id)_specifierForRowIndex:(int64_t)index
 {
-  v4 = self->_specifierStartIndex + a3;
+  v4 = self->_specifierStartIndex + index;
   v5 = OBJC_IVAR___PSListController__specifiers;
   if (v4 >= [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] count])
   {
@@ -468,35 +468,35 @@ LABEL_27:
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = self;
-  v5 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [a4 row]);
-  LOBYTE(v4) = v5 != v4->_addNewSpecifier;
+  selfCopy = self;
+  v5 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [path row]);
+  LOBYTE(selfCopy) = v5 != selfCopy->_addNewSpecifier;
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = self;
-  v5 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [a4 row]);
-  LOBYTE(v4) = v5 != v4->_addNewSpecifier;
+  selfCopy = self;
+  v5 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [path row]);
+  LOBYTE(selfCopy) = v5 != selfCopy->_addNewSpecifier;
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [a5 row]);
+    v7 = -[PHBlocklistSettingsListController _specifierForRowIndex:](self, "_specifierForRowIndex:", [path row]);
     if (v7 && v7 != self->_addNewSpecifier)
     {
       v10 = v7;
       v8 = +[TUPrivacyManager sharedPrivacyManager];
-      v9 = [(PSSpecifier *)v10 userInfo];
-      [v8 removeRule:v9];
+      userInfo = [(PSSpecifier *)v10 userInfo];
+      [v8 removeRule:userInfo];
 
       [(PHBlocklistSettingsListController *)self removeSpecifier:v10 animated:1];
       [(PHBlocklistSettingsListController *)self reloadSpecifiers];
@@ -505,15 +505,15 @@ LABEL_27:
   }
 }
 
-- (void)blockContact:(id)a3
+- (void)blockContact:(id)contact
 {
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v21 = a3;
-  v3 = [v21 phoneNumbers];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v4 = [phoneNumbers countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v4)
   {
     v5 = v4;
@@ -524,13 +524,13 @@ LABEL_27:
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v8 = [*(*(&v27 + 1) + 8 * i) value];
-        v9 = [v8 digits];
+        value = [*(*(&v27 + 1) + 8 * i) value];
+        digits = [value digits];
         v10 = TUHomeCountryCode();
-        v11 = [TUPhoneNumber phoneNumberWithDigits:v9 countryCode:v10];
+        v11 = [TUPhoneNumber phoneNumberWithDigits:digits countryCode:v10];
 
         if (v11)
         {
@@ -539,7 +539,7 @@ LABEL_27:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v5 = [phoneNumbers countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v5);
@@ -549,8 +549,8 @@ LABEL_27:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [v21 emailAddresses];
-  v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  emailAddresses = [contactCopy emailAddresses];
+  v14 = [emailAddresses countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -561,16 +561,16 @@ LABEL_27:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v18 = *(*(&v23 + 1) + 8 * j);
         v19 = +[TUPrivacyManager sharedPrivacyManager];
-        v20 = [v18 value];
-        [v19 setBlockIncomingCommunication:1 forEmailAddress:v20];
+        value2 = [v18 value];
+        [v19 setBlockIncomingCommunication:1 forEmailAddress:value2];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v15 = [emailAddresses countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v15);
@@ -579,21 +579,21 @@ LABEL_27:
   [(PHBlocklistSettingsListController *)self reloadSpecifiers];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a4;
-  [a3 invalidateSelectionAnimated:1];
-  [(PHBlocklistSettingsListController *)self blockContact:v6];
+  contactCopy = contact;
+  [picker invalidateSelectionAnimated:1];
+  [(PHBlocklistSettingsListController *)self blockContact:contactCopy];
 
   [(PHBlocklistSettingsListController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)createBlocklistSettingsViewWithCompletionHandler:(id)a3
+- (void)createBlocklistSettingsViewWithCompletionHandler:(id)handler
 {
   v5 = (*(*(sub_D2B8(&qword_190D8, &qword_10E80) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -609,60 +609,60 @@ LABEL_27:
   v12[3] = 0;
   v12[4] = &unk_10F18;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_BFAC(0, 0, v7, &unk_10F28, v12);
 }
 
 - (void)refreshBlocklistEntries
 {
-  v2 = self;
+  selfCopy = self;
   sub_54F8();
 }
 
-- (void)setBlocklistEditing:(BOOL)a3
+- (void)setBlocklistEditing:(BOOL)editing
 {
-  v3 = self;
+  selfCopy = self;
   sub_5C50();
 }
 
 - (void)presentContactPicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_5D74();
 }
 
 - (void)handleContactPickerCancelled
 {
-  v2 = self;
+  selfCopy = self;
   sub_67B4();
 }
 
 - (void)handleContactPickerBlockButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_68FC();
 }
 
 - (void)emitBlocklistNavigationEvent
 {
-  v2 = self;
+  selfCopy = self;
   sub_B100();
 }
 
-- (id)searchController:(id)a3 composeRecipientForAddress:(id)a4
+- (id)searchController:(id)controller composeRecipientForAddress:(id)address
 {
   sub_EB40();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_CF24();
 
   return v6;
 }
 
-- (void)didTapTextViewAccessoryButtonForSearchController:(id)a3 anchoredToView:(id)a4
+- (void)didTapTextViewAccessoryButtonForSearchController:(id)controller anchoredToView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  viewCopy = view;
+  selfCopy = self;
   _sSo33PHBlocklistSettingsListControllerC09BlocklistB0E29didTapTextViewAccessoryButton3for10anchoredToySo020CNAutocompleteSearchD0C_So6UIViewCtF_0();
 }
 

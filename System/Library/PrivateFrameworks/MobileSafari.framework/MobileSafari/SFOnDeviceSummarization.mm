@@ -1,9 +1,9 @@
 @interface SFOnDeviceSummarization
-+ (BOOL)isSummarizationAvailabileForLanguageCode:(id)a3;
++ (BOOL)isSummarizationAvailabileForLanguageCode:(id)code;
 - (NSString)summary;
 - (SFOnDeviceSummarization)init;
 - (SFOnDeviceSummarizationDelegate)delegate;
-- (void)summarizeArticleText:(id)a3;
+- (void)summarizeArticleText:(id)text;
 @end
 
 @implementation SFOnDeviceSummarization
@@ -44,7 +44,7 @@
   return v2;
 }
 
-+ (BOOL)isSummarizationAvailabileForLanguageCode:(id)a3
++ (BOOL)isSummarizationAvailabileForLanguageCode:(id)code
 {
   v3 = sub_18BC20BD8();
   v5 = _sSo23SFOnDeviceSummarizationC12MobileSafariE02isC10Availabile15forLanguageCodeSbSS_tFZ_0(v3, v4);
@@ -52,10 +52,10 @@
   return v5 & 1;
 }
 
-- (void)summarizeArticleText:(id)a3
+- (void)summarizeArticleText:(id)text
 {
   sub_18BC20BD8();
-  v4 = self;
+  selfCopy = self;
   sub_18BBC0B10();
 }
 

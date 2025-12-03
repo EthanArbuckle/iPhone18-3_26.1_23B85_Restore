@@ -1,6 +1,6 @@
 @interface EndOfTrackNotificationScheduler
 - (_TtC7NewsUI231EndOfTrackNotificationScheduler)init;
-- (void)userInfoDidChangeEndOfAudioTrackNotificationsEnabled:(id)a3 fromCloud:(BOOL)a4;
+- (void)userInfoDidChangeEndOfAudioTrackNotificationsEnabled:(id)enabled fromCloud:(BOOL)cloud;
 @end
 
 @implementation EndOfTrackNotificationScheduler
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)userInfoDidChangeEndOfAudioTrackNotificationsEnabled:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeEndOfAudioTrackNotificationsEnabled:(id)enabled fromCloud:(BOOL)cloud
 {
-  v5 = a3;
-  v6 = self;
-  sub_2198A6C8C(v5);
+  enabledCopy = enabled;
+  selfCopy = self;
+  sub_2198A6C8C(enabledCopy);
 }
 
 @end

@@ -4,32 +4,32 @@
 - (BOOL)_hasIncidentDetailsContent;
 - (MapsProgressButton)progressButton;
 - (NavTrafficIncidentAlertViewControllerDelegate)delegate;
-- (double)actionButtonsHeightForLayout:(unint64_t)a3;
+- (double)actionButtonsHeightForLayout:(unint64_t)layout;
 - (double)detailsHeight;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_incidentTypeAsString;
-- (void)_didReceiveIncidentUpdate:(id)a3;
-- (void)_didTapActionButton:(id)a3;
-- (void)_didTapCancelButton:(id)a3;
-- (void)_updateActionButtonsPaddingForLayout:(unint64_t)a3;
+- (void)_didReceiveIncidentUpdate:(id)update;
+- (void)_didTapActionButton:(id)button;
+- (void)_didTapCancelButton:(id)button;
+- (void)_updateActionButtonsPaddingForLayout:(unint64_t)layout;
 - (void)_updateGrabberVisibility;
 - (void)_updateViewsFromContent;
-- (void)applyAlphaToContent:(double)a3;
-- (void)didChangeLayout:(unint64_t)a3;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewTapped:(id)a3;
-- (void)setAnimationDuration:(double)a3;
-- (void)setAnimationStarted:(BOOL)a3;
-- (void)setIncident:(id)a3;
-- (void)setIncidentAlert:(id)a3;
-- (void)setProgressionHidden:(BOOL)a3;
-- (void)setRerouteTimerProgress:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)applyAlphaToContent:(double)content;
+- (void)didChangeLayout:(unint64_t)layout;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewTapped:(id)tapped;
+- (void)setAnimationDuration:(double)duration;
+- (void)setAnimationStarted:(BOOL)started;
+- (void)setIncident:(id)incident;
+- (void)setIncidentAlert:(id)alert;
+- (void)setProgressionHidden:(BOOL)hidden;
+- (void)setRerouteTimerProgress:(double)progress;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation NavTrafficIncidentContaineeViewController
@@ -41,22 +41,22 @@
   return WeakRetained;
 }
 
-- (void)_didReceiveIncidentUpdate:(id)a3
+- (void)_didReceiveIncidentUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SiriTrafficIncidentIsClearKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [update userInfo];
+  v5 = [userInfo objectForKey:@"SiriTrafficIncidentIsClearKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [(NavTrafficIncidentContaineeViewController *)self delegate];
-  v8 = v7;
-  if (v6)
+  delegate = [(NavTrafficIncidentContaineeViewController *)self delegate];
+  v8 = delegate;
+  if (bOOLValue)
   {
-    [v7 didTapRejectButtonOnTrafficIncidentViewControllerTarget:0];
+    [delegate didTapRejectButtonOnTrafficIncidentViewControllerTarget:0];
   }
 
   else
   {
-    [v7 didTapAcceptButtonOnTrafficIncidentViewControllerTarget:0];
+    [delegate didTapAcceptButtonOnTrafficIncidentViewControllerTarget:0];
   }
 }
 
@@ -64,10 +64,10 @@
 {
   if (self->_incidentAlert)
   {
-    v2 = [(MNTrafficIncidentAlert *)self->_incidentAlert incident];
-    v3 = [v2 type];
+    incident = [(MNTrafficIncidentAlert *)self->_incidentAlert incident];
+    type = [incident type];
     v4 = @"ACCIDENT";
-    switch(v3)
+    switch(type)
     {
       case 0:
         break;
@@ -111,7 +111,7 @@
         v4 = @"AREA_INCIDENT";
         break;
       default:
-        if (v3 == 100)
+        if (type == 100)
         {
           v4 = @"TIME_BASED_RESTRICTION";
         }
@@ -119,7 +119,7 @@
         else
         {
 LABEL_7:
-          v4 = [NSString stringWithFormat:@"(unknown: %i)", v3];
+          v4 = [NSString stringWithFormat:@"(unknown: %i)", type];
         }
 
         break;
@@ -134,31 +134,31 @@ LABEL_7:
   return v4;
 }
 
-- (void)_didTapActionButton:(id)a3
+- (void)_didTapActionButton:(id)button
 {
-  v4 = [(NavTrafficIncidentContaineeViewController *)self delegate];
-  [v4 didTapAcceptButtonOnTrafficIncidentViewControllerTarget:739];
+  delegate = [(NavTrafficIncidentContaineeViewController *)self delegate];
+  [delegate didTapAcceptButtonOnTrafficIncidentViewControllerTarget:739];
 
   if (![(MNTrafficIncidentAlert *)self->_incidentAlert isReroute])
   {
     return;
   }
 
-  v5 = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRoute];
-  if (([v5 isEVRoute] & 1) == 0)
+  originalRoute = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRoute];
+  if (([originalRoute isEVRoute] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
+  alternateRoute = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
 
-  if (!v6)
+  if (!alternateRoute)
   {
 LABEL_7:
     v9 = +[MKMapService sharedService];
-    v8 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
-    [v9 captureUserAction:3060 onTarget:401 eventValue:v8];
+    analyticsMessage = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+    [v9 captureUserAction:3060 onTarget:401 eventValue:analyticsMessage];
     goto LABEL_8;
   }
 
@@ -166,53 +166,53 @@ LABEL_7:
   [v7 captureUserAction:6097 onTarget:615 eventValue:0];
 
   v9 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-  v8 = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
-  [v9 offeredEVRerouteWithAlternateRoute:v8 wasAccepted:1];
+  analyticsMessage = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
+  [v9 offeredEVRerouteWithAlternateRoute:analyticsMessage wasAccepted:1];
 LABEL_8:
 }
 
-- (void)_didTapCancelButton:(id)a3
+- (void)_didTapCancelButton:(id)button
 {
-  v4 = [(NavTrafficIncidentContaineeViewController *)self delegate];
-  [v4 didTapRejectButtonOnTrafficIncidentViewControllerTarget:739];
+  delegate = [(NavTrafficIncidentContaineeViewController *)self delegate];
+  [delegate didTapRejectButtonOnTrafficIncidentViewControllerTarget:739];
 
   if (![(MNTrafficIncidentAlert *)self->_incidentAlert isReroute])
   {
     return;
   }
 
-  v5 = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRoute];
-  if (![v5 isEVRoute])
+  originalRoute = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRoute];
+  if (![originalRoute isEVRoute])
   {
     goto LABEL_5;
   }
 
-  v6 = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRouteNavigability];
-  if ([v6 isEvFeasible])
+  originalRouteNavigability = [(MNTrafficIncidentAlert *)self->_incidentAlert originalRouteNavigability];
+  if ([originalRouteNavigability isEvFeasible])
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
+  alternateRoute = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
 
-  if (v9)
+  if (alternateRoute)
   {
     v10 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-    v8 = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
-    [v10 offeredEVRerouteWithAlternateRoute:v8 wasAccepted:0];
+    alternateRoute2 = [(MNTrafficIncidentAlert *)self->_incidentAlert alternateRoute];
+    [v10 offeredEVRerouteWithAlternateRoute:alternateRoute2 wasAccepted:0];
     goto LABEL_12;
   }
 
 LABEL_6:
-  v7 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+  analyticsMessage = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
 
   v10 = +[MKMapService sharedService];
-  if (v7)
+  if (analyticsMessage)
   {
-    v8 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
-    [v10 captureUserAction:3061 onTarget:401 eventValue:v8];
+    alternateRoute2 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+    [v10 captureUserAction:3061 onTarget:401 eventValue:alternateRoute2];
 LABEL_12:
 
     goto LABEL_13;
@@ -222,54 +222,54 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setProgressionHidden:(BOOL)a3
+- (void)setProgressionHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_progressionHidden = a3;
-  v4 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
-  [v4 setProgressionHidden:v3];
+  hiddenCopy = hidden;
+  self->_progressionHidden = hidden;
+  progressButton = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+  [progressButton setProgressionHidden:hiddenCopy];
 }
 
-- (void)setRerouteTimerProgress:(double)a3
+- (void)setRerouteTimerProgress:(double)progress
 {
-  self->_rerouteTimerProgress = a3;
-  v5 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+  self->_rerouteTimerProgress = progress;
+  progressButton = [(NavTrafficIncidentContaineeViewController *)self progressButton];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
-    v7 = [NSNumber numberWithDouble:a3];
-    [v8 performSelector:"setProgress:" withObject:v7];
+    progressButton2 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+    v7 = [NSNumber numberWithDouble:progress];
+    [progressButton2 performSelector:"setProgress:" withObject:v7];
   }
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
   v4 = +[MKMapService sharedService];
-  v5 = [(NavTrafficIncidentContaineeViewController *)self currentUITargetForAnalytics];
-  v6 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
-  [v4 captureUserAction:3 onTarget:v5 eventValue:v6];
+  currentUITargetForAnalytics = [(NavTrafficIncidentContaineeViewController *)self currentUITargetForAnalytics];
+  analyticsMessage = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+  [v4 captureUserAction:3 onTarget:currentUITargetForAnalytics eventValue:analyticsMessage];
 
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  v8 = [v7 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
-  if (v8 == 2)
+  if (containeeLayout == 2)
   {
     goto LABEL_8;
   }
 
-  if (v8 != 1)
+  if (containeeLayout != 1)
   {
     return;
   }
 
   if ([(NavTrafficIncidentContaineeViewController *)self _hasIncidentDetailsContent]|| [(NavTrafficIncidentContaineeViewController *)self _hasActionButtons])
   {
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    v10 = [v9 containerStyle];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController2 containerStyle];
 
-    if (v10 == 5)
+    if (containerStyle == 5)
     {
       v11 = 3;
     }
@@ -286,29 +286,29 @@ LABEL_8:
     v11 = 1;
   }
 
-  if (v11 != v8)
+  if (v11 != containeeLayout)
   {
-    v12 = [(ContaineeViewController *)self cardPresentationController];
-    [v12 wantsLayout:v11];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 wantsLayout:v11];
   }
 }
 
-- (double)actionButtonsHeightForLayout:(unint64_t)a3
+- (double)actionButtonsHeightForLayout:(unint64_t)layout
 {
-  v5 = [(NavTrafficIncidentContaineeViewController *)self _hasActionButtons];
-  if (a3 == 1)
+  _hasActionButtons = [(NavTrafficIncidentContaineeViewController *)self _hasActionButtons];
+  if (layout == 1)
   {
     result = 0.0;
-    if (!v5)
+    if (!_hasActionButtons)
     {
       return result;
     }
 
-    v5 = [(NavTrafficIncidentContaineeViewController *)self _displayActionButtonsForSmallLayout];
+    _hasActionButtons = [(NavTrafficIncidentContaineeViewController *)self _displayActionButtonsForSmallLayout];
   }
 
   result = 75.0;
-  if (!v5)
+  if (!_hasActionButtons)
   {
     return 0.0;
   }
@@ -321,20 +321,20 @@ LABEL_8:
   v3 = 0.0;
   if ([(NavTrafficIncidentContaineeViewController *)self _hasIncidentDetailsContent])
   {
-    v4 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-    [v4 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+    incidentDetailsView = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+    [incidentDetailsView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v3 = v5;
   }
 
   return v3;
 }
 
-- (void)_updateActionButtonsPaddingForLayout:(unint64_t)a3
+- (void)_updateActionButtonsPaddingForLayout:(unint64_t)layout
 {
-  if (a3 == 1 && ![(NavTrafficIncidentContaineeViewController *)self _displayActionButtonsForSmallLayout])
+  if (layout == 1 && ![(NavTrafficIncidentContaineeViewController *)self _displayActionButtonsForSmallLayout])
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     [(NSLayoutConstraint *)self->_actionButtonsBottomConstraint setConstant:?];
   }
 
@@ -346,12 +346,12 @@ LABEL_8:
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 1)
+  if (layout == 1)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 bottomSafeOffset];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController bottomSafeOffset];
     v15 = v14;
     [(ContaineeViewController *)self headerHeight];
     v17 = v16 + v15;
@@ -361,7 +361,7 @@ LABEL_8:
   }
 
   v4 = -1.0;
-  if (a3 == 2)
+  if (layout == 2)
   {
     if ([(NavTrafficIncidentContaineeViewController *)self _hasIncidentDetailsContent]|| [(NavTrafficIncidentContaineeViewController *)self _hasActionButtons])
     {
@@ -371,17 +371,17 @@ LABEL_8:
       v10 = v9 + v8;
       [(NavTrafficIncidentContaineeViewController *)self actionButtonsHeightForLayout:2];
       v12 = v11;
-      v5 = [(ContaineeViewController *)self cardPresentationController];
-      [v5 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v4 = v10 + v12 + v13;
       goto LABEL_9;
     }
   }
 
-  else if (a3 == 4)
+  else if (layout == 4)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v4 = v6;
 LABEL_9:
   }
@@ -389,126 +389,126 @@ LABEL_9:
   return v4;
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v4.receiver = self;
   v4.super_class = NavTrafficIncidentContaineeViewController;
-  [(ContaineeViewController *)&v4 didChangeLayout:a3];
+  [(ContaineeViewController *)&v4 didChangeLayout:layout];
   [(NavTrafficIncidentContaineeViewController *)self _updateGrabberVisibility];
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = NavTrafficIncidentContaineeViewController;
   [(ContaineeViewController *)&v5 willChangeLayout:?];
-  [(NavTrafficIncidentContaineeViewController *)self _updateActionButtonsPaddingForLayout:a3];
+  [(NavTrafficIncidentContaineeViewController *)self _updateActionButtonsPaddingForLayout:layout];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   incidentAlert = self->_incidentAlert;
-  v5 = a3;
-  v6 = [(MNTrafficIncidentAlert *)incidentAlert analyticsMessage];
+  actionCopy = action;
+  analyticsMessage = [(MNTrafficIncidentAlert *)incidentAlert analyticsMessage];
 
   v7 = +[MKMapService sharedService];
-  v8 = [(NavTrafficIncidentContaineeViewController *)self currentUITargetForAnalytics];
-  if (v6)
+  currentUITargetForAnalytics = [(NavTrafficIncidentContaineeViewController *)self currentUITargetForAnalytics];
+  if (analyticsMessage)
   {
-    v9 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+    analyticsMessage2 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
     v10 = v7;
     v11 = 4;
   }
 
   else
   {
-    v9 = [(NavTrafficIncidentContaineeViewController *)self _incidentTypeAsString];
+    analyticsMessage2 = [(NavTrafficIncidentContaineeViewController *)self _incidentTypeAsString];
     v10 = v7;
     v11 = 108;
   }
 
-  [v10 captureUserAction:v11 onTarget:v8 eventValue:v9];
+  [v10 captureUserAction:v11 onTarget:currentUITargetForAnalytics eventValue:analyticsMessage2];
 
   v14.receiver = self;
   v14.super_class = NavTrafficIncidentContaineeViewController;
-  [(ContaineeViewController *)&v14 handleDismissAction:v5];
+  [(ContaineeViewController *)&v14 handleDismissAction:actionCopy];
 
-  v12 = [(NavTrafficIncidentContaineeViewController *)self dismissHandler];
+  dismissHandler = [(NavTrafficIncidentContaineeViewController *)self dismissHandler];
 
-  if (v12)
+  if (dismissHandler)
   {
-    v13 = [(NavTrafficIncidentContaineeViewController *)self dismissHandler];
-    v13[2]();
+    dismissHandler2 = [(NavTrafficIncidentContaineeViewController *)self dismissHandler];
+    dismissHandler2[2]();
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v6.receiver = self;
   v6.super_class = NavTrafficIncidentContaineeViewController;
   [(ContaineeViewController *)&v6 applyAlphaToContent:?];
   if (![(NavTrafficIncidentContaineeViewController *)self _hasIncidentDetailsContent])
   {
-    a3 = 0.0;
+    content = 0.0;
   }
 
-  v5 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v5 setHairLineAlpha:a3];
+  headerView = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [headerView setHairLineAlpha:content];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = NavTrafficIncidentContaineeViewController;
-  v4 = a3;
-  [(MapsThemeViewController *)&v11 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(MapsThemeViewController *)&v11 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(NavTrafficIncidentContaineeViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(NavTrafficIncidentContaineeViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+    incidentAlert = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
 
-    v9 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-    if (v8)
+    titleView = [(NavTrafficIncidentContaineeViewController *)self titleView];
+    if (incidentAlert)
     {
-      v10 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-      [NavTrafficIncidentViewComposer configureHeaderView:v9 withTrafficIncidentAlert:v10];
+      incidentAlert2 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+      [NavTrafficIncidentViewComposer configureHeaderView:titleView withTrafficIncidentAlert:incidentAlert2];
     }
 
     else
     {
-      v10 = [(NavTrafficIncidentContaineeViewController *)self incident];
-      [NavTrafficIncidentViewComposer configureHeaderView:v9 withTrafficIncidentFeature:v10];
+      incidentAlert2 = [(NavTrafficIncidentContaineeViewController *)self incident];
+      [NavTrafficIncidentViewComposer configureHeaderView:titleView withTrafficIncidentFeature:incidentAlert2];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NavTrafficIncidentContaineeViewController;
-  [(ContaineeViewController *)&v5 viewWillDisappear:a3];
+  [(ContaineeViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"SiriTrafficIncidentUpdateNotification" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = NavTrafficIncidentContaineeViewController;
-  [(ContaineeViewController *)&v12 viewWillAppear:a3];
+  [(ContaineeViewController *)&v12 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_didReceiveIncidentUpdate:" name:@"SiriTrafficIncidentUpdateNotification" object:0];
 
-  v5 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+  analyticsMessage = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
 
   v6 = +[MKMapService sharedService];
-  if (v5)
+  if (analyticsMessage)
   {
-    v7 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
+    analyticsMessage2 = [(MNTrafficIncidentAlert *)self->_incidentAlert analyticsMessage];
     v8 = v6;
     v9 = 248;
     v10 = 401;
@@ -516,16 +516,16 @@ LABEL_9:
 
   else
   {
-    v7 = [(NavTrafficIncidentContaineeViewController *)self _incidentTypeAsString];
+    analyticsMessage2 = [(NavTrafficIncidentContaineeViewController *)self _incidentTypeAsString];
     v8 = v6;
     v9 = 110;
     v10 = 0;
   }
 
-  [v8 captureUserAction:v9 onTarget:v10 eventValue:v7];
+  [v8 captureUserAction:v9 onTarget:v10 eventValue:analyticsMessage2];
 
-  v11 = [(ContaineeViewController *)self cardPresentationController];
-  -[NavTrafficIncidentContaineeViewController _updateActionButtonsPaddingForLayout:](self, "_updateActionButtonsPaddingForLayout:", [v11 containeeLayout]);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[NavTrafficIncidentContaineeViewController _updateActionButtonsPaddingForLayout:](self, "_updateActionButtonsPaddingForLayout:", [cardPresentationController containeeLayout]);
 }
 
 - (void)viewDidLayoutSubviews
@@ -534,33 +534,33 @@ LABEL_9:
   v10.super_class = NavTrafficIncidentContaineeViewController;
   [(ContaineeViewController *)&v10 viewDidLayoutSubviews];
   previousWidth = self->_previousWidth;
-  v4 = [(NavTrafficIncidentContaineeViewController *)self view];
-  [v4 bounds];
+  view = [(NavTrafficIncidentContaineeViewController *)self view];
+  [view bounds];
   v6 = v5;
 
   if (previousWidth != v6)
   {
-    v7 = [(NavTrafficIncidentContaineeViewController *)self view];
-    [v7 bounds];
+    view2 = [(NavTrafficIncidentContaineeViewController *)self view];
+    [view2 bounds];
     self->_previousWidth = v8;
 
-    v9 = [(ContaineeViewController *)self cardPresentationController];
-    [v9 updateHeightForCurrentLayout];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController updateHeightForCurrentLayout];
   }
 }
 
-- (void)setAnimationStarted:(BOOL)a3
+- (void)setAnimationStarted:(BOOL)started
 {
-  self->_animationStarted = a3;
-  if (a3)
+  self->_animationStarted = started;
+  if (started)
   {
-    v4 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+    progressButton = [(NavTrafficIncidentContaineeViewController *)self progressButton];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
-      [v6 performSelector:"startProgressAnimation"];
+      progressButton2 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+      [progressButton2 performSelector:"startProgressAnimation"];
     }
   }
 }
@@ -570,97 +570,97 @@ LABEL_9:
   v117.receiver = self;
   v117.super_class = NavTrafficIncidentContaineeViewController;
   [(ContaineeViewController *)&v117 viewDidLoad];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 setEdgeAttachedRegularHeightDimmingBehavior:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setEdgeAttachedRegularHeightDimmingBehavior:1];
 
-  v116 = [(NavTrafficIncidentContaineeViewController *)self view];
-  [v116 setAccessibilityIdentifier:@"NavTrafficIncidentView"];
+  view = [(NavTrafficIncidentContaineeViewController *)self view];
+  [view setAccessibilityIdentifier:@"NavTrafficIncidentView"];
   v4 = [[ContainerHeaderView alloc] initWithCardButtonType:0];
   [(NavTrafficIncidentContaineeViewController *)self setHeaderView:v4];
 
-  v5 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [headerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v6 setHeaderSize:2];
+  headerView2 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [headerView2 setHeaderSize:2];
 
-  v7 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v7 setDelegate:self];
+  headerView3 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [headerView3 setDelegate:self];
 
-  v8 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v8 setButtonHidden:1];
+  headerView4 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [headerView4 setButtonHidden:1];
 
-  v9 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  [v116 addSubview:v9];
+  headerView5 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  [view addSubview:headerView5];
 
   v10 = [NavTrafficIncidentHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v14 = [(NavTrafficIncidentHeaderView *)v10 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(NavTrafficIncidentContaineeViewController *)self setTitleView:v14];
+  height = [(NavTrafficIncidentHeaderView *)v10 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(NavTrafficIncidentContaineeViewController *)self setTitleView:height];
 
-  v15 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleView = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  [titleView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  [v16 setDelegate:self];
+  titleView2 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  [titleView2 setDelegate:self];
 
   v17 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  [v17 addSubview:v18];
+  titleView3 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  [v17 addSubview:titleView3];
 
-  v114 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  v112 = [v114 leadingAnchor];
-  v110 = [v17 leadingAnchor];
-  v108 = [v112 constraintEqualToAnchor:v110 constant:16.0];
+  titleView4 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  leadingAnchor = [titleView4 leadingAnchor];
+  leadingAnchor2 = [v17 leadingAnchor];
+  v108 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v120[0] = v108;
-  v106 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  v104 = [v106 topAnchor];
-  v102 = [v17 topAnchor];
-  v99 = [v104 constraintEqualToAnchor:v102];
+  titleView5 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  topAnchor = [titleView5 topAnchor];
+  topAnchor2 = [v17 topAnchor];
+  v99 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v120[1] = v99;
-  v97 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  v19 = [v97 trailingAnchor];
-  v20 = [v17 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-16.0];
+  titleView6 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  trailingAnchor = [titleView6 trailingAnchor];
+  trailingAnchor2 = [v17 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v120[2] = v21;
-  v22 = [(NavTrafficIncidentContaineeViewController *)self titleView];
-  v23 = [v22 bottomAnchor];
-  v24 = [v17 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  titleView7 = [(NavTrafficIncidentContaineeViewController *)self titleView];
+  bottomAnchor = [titleView7 bottomAnchor];
+  bottomAnchor2 = [v17 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v120[3] = v25;
   v26 = [NSArray arrayWithObjects:v120 count:4];
   [NSLayoutConstraint activateConstraints:v26];
 
-  v27 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  headerView6 = [(NavTrafficIncidentContaineeViewController *)self headerView];
   v115 = v17;
-  [v27 setTitleView:v17];
+  [headerView6 setTitleView:v17];
 
-  v28 = [[NavTrafficIncidentDetailsView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(NavTrafficIncidentContaineeViewController *)self setIncidentDetailsView:v28];
+  height2 = [[NavTrafficIncidentDetailsView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(NavTrafficIncidentContaineeViewController *)self setIncidentDetailsView:height2];
 
-  v29 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  incidentDetailsView = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+  [incidentDetailsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-  [v116 addSubview:v30];
+  incidentDetailsView2 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+  [view addSubview:incidentDetailsView2];
 
   v31 = +[NavUserDecisionButtonFactory cancelButton];
   cancelButton = self->_cancelButton;
   self->_cancelButton = v31;
 
   [(MapsProgressBarButton *)self->_cancelButton addTarget:self action:"_didTapCancelButton:" forControlEvents:64];
-  v33 = [(MNTrafficIncidentAlert *)self->_incidentAlert acceptButtonInfo];
-  LOBYTE(v20) = [v33 isDefaultButton];
+  acceptButtonInfo = [(MNTrafficIncidentAlert *)self->_incidentAlert acceptButtonInfo];
+  LOBYTE(trailingAnchor2) = [acceptButtonInfo isDefaultButton];
 
-  if (v20)
+  if (trailingAnchor2)
   {
     v34 = +[NavUserDecisionButtonFactory confirmButton];
-    v35 = [v34 theme];
-    v36 = [v35 blueButtonBackgroundColor:0];
-    v37 = [v35 fadedGrayButtonBackgroundColor:0];
+    theme = [v34 theme];
+    v36 = [theme blueButtonBackgroundColor:0];
+    v37 = [theme fadedGrayButtonBackgroundColor:0];
     [v34 setUnfilledLabelColor:v36];
     [v34 setUnfilledBackgroundColor:v37];
     v38 = +[UIColor whiteColor];
@@ -670,8 +670,8 @@ LABEL_9:
     v39 = [UIFont _maps_boldSystemFontWithFixedSize:22.0];
     [v34 setTitleFont:v39];
 
-    v40 = [v34 progressBackgroundFillView];
-    [v40 updateColors];
+    progressBackgroundFillView = [v34 progressBackgroundFillView];
+    [progressBackgroundFillView updateColors];
 
     [v34 setAccessibilityIdentifier:@"ConfirmButton"];
     confirmButton = self->_confirmButton;
@@ -681,7 +681,7 @@ LABEL_9:
   else
   {
     v42 = +[NavUserDecisionButtonFactory cancelButton];
-    v35 = self->_confirmButton;
+    theme = self->_confirmButton;
     self->_confirmButton = v42;
   }
 
@@ -689,17 +689,17 @@ LABEL_9:
   if (self->_incidentAlert)
   {
     progressionHidden = self->_progressionHidden;
-    v44 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
-    [v44 setProgressionHidden:progressionHidden];
+    progressButton = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+    [progressButton setProgressionHidden:progressionHidden];
 
-    v45 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+    progressButton2 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
     v46 = objc_opt_respondsToSelector();
 
     if (v46)
     {
-      v47 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+      progressButton3 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
       v48 = [NSNumber numberWithDouble:self->_rerouteTimerProgress];
-      [v47 performSelector:"setProgress:" withObject:v48];
+      [progressButton3 performSelector:"setProgress:" withObject:v48];
     }
   }
 
@@ -718,68 +718,68 @@ LABEL_9:
   [(UIStackView *)self->_buttonsStackView setAlignment:0];
   [(UIStackView *)self->_buttonsStackView setSpacing:10.0];
   [(UIStackView *)self->_buttonsStackView setAccessibilityIdentifier:@"ButtonStack"];
-  v54 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
-  [v116 addSubview:v54];
+  buttonsStackView = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
+  [view addSubview:buttonsStackView];
 
-  v55 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
-  v56 = [v55 topAnchor];
-  v57 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  v58 = [v57 bottomAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58];
+  buttonsStackView2 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
+  topAnchor3 = [buttonsStackView2 topAnchor];
+  headerView7 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  bottomAnchor3 = [headerView7 bottomAnchor];
+  v59 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   actionButtonsBottomConstraint = self->_actionButtonsBottomConstraint;
   self->_actionButtonsBottomConstraint = v59;
 
-  v113 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  v109 = [v113 leadingAnchor];
-  v111 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v107 = [v111 leadingAnchor];
-  v105 = [v109 constraintEqualToAnchor:v107];
+  headerView8 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  leadingAnchor3 = [headerView8 leadingAnchor];
+  view2 = [(NavTrafficIncidentContaineeViewController *)self view];
+  leadingAnchor4 = [view2 leadingAnchor];
+  v105 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v118[0] = v105;
-  v103 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  v100 = [v103 trailingAnchor];
-  v101 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v98 = [v101 trailingAnchor];
-  v96 = [v100 constraintEqualToAnchor:v98];
+  headerView9 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  trailingAnchor3 = [headerView9 trailingAnchor];
+  view3 = [(NavTrafficIncidentContaineeViewController *)self view];
+  trailingAnchor4 = [view3 trailingAnchor];
+  v96 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v118[1] = v96;
-  v95 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  v93 = [v95 topAnchor];
-  v94 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v92 = [v94 topAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  headerView10 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  topAnchor4 = [headerView10 topAnchor];
+  view4 = [(NavTrafficIncidentContaineeViewController *)self view];
+  topAnchor5 = [view4 topAnchor];
+  v91 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v118[2] = v91;
-  v90 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-  v88 = [v90 leadingAnchor];
-  v89 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v87 = [v89 leadingAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  incidentDetailsView3 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+  leadingAnchor5 = [incidentDetailsView3 leadingAnchor];
+  view5 = [(NavTrafficIncidentContaineeViewController *)self view];
+  leadingAnchor6 = [view5 leadingAnchor];
+  v86 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v118[3] = v86;
-  v85 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-  v83 = [v85 trailingAnchor];
-  v84 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v82 = [v84 trailingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  incidentDetailsView4 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+  trailingAnchor5 = [incidentDetailsView4 trailingAnchor];
+  view6 = [(NavTrafficIncidentContaineeViewController *)self view];
+  trailingAnchor6 = [view6 trailingAnchor];
+  v81 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v118[4] = v81;
-  v80 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
-  v78 = [v80 topAnchor];
-  v79 = [(NavTrafficIncidentContaineeViewController *)self headerView];
-  v77 = [v79 bottomAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  incidentDetailsView5 = [(NavTrafficIncidentContaineeViewController *)self incidentDetailsView];
+  topAnchor6 = [incidentDetailsView5 topAnchor];
+  headerView11 = [(NavTrafficIncidentContaineeViewController *)self headerView];
+  bottomAnchor4 = [headerView11 bottomAnchor];
+  v76 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v118[5] = v76;
-  v75 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
-  v73 = [v75 leadingAnchor];
-  v74 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v72 = [v74 leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:24.0];
+  buttonsStackView3 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
+  leadingAnchor7 = [buttonsStackView3 leadingAnchor];
+  view7 = [(NavTrafficIncidentContaineeViewController *)self view];
+  leadingAnchor8 = [view7 leadingAnchor];
+  v71 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:24.0];
   v118[6] = v71;
-  v61 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
-  v62 = [v61 trailingAnchor];
-  v63 = [(NavTrafficIncidentContaineeViewController *)self view];
-  v64 = [v63 trailingAnchor];
-  v65 = [v62 constraintEqualToAnchor:v64 constant:-24.0];
+  buttonsStackView4 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
+  trailingAnchor7 = [buttonsStackView4 trailingAnchor];
+  view8 = [(NavTrafficIncidentContaineeViewController *)self view];
+  trailingAnchor8 = [view8 trailingAnchor];
+  v65 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-24.0];
   v118[7] = v65;
-  v66 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
-  v67 = [v66 heightAnchor];
-  v68 = [v67 constraintEqualToConstant:60.0];
+  buttonsStackView5 = [(NavTrafficIncidentContaineeViewController *)self buttonsStackView];
+  heightAnchor = [buttonsStackView5 heightAnchor];
+  v68 = [heightAnchor constraintEqualToConstant:60.0];
   v69 = self->_actionButtonsBottomConstraint;
   v118[8] = v68;
   v118[9] = v69;
@@ -791,33 +791,33 @@ LABEL_9:
 
 - (BOOL)_displayActionButtonsForSmallLayout
 {
-  v2 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-  v3 = [v2 acceptButtonInfo];
-  v4 = [v3 buttonDisplay] == 1;
+  incidentAlert = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+  acceptButtonInfo = [incidentAlert acceptButtonInfo];
+  v4 = [acceptButtonInfo buttonDisplay] == 1;
 
   return v4;
 }
 
 - (BOOL)_hasActionButtons
 {
-  v2 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-  v3 = [v2 acceptButtonInfo];
-  v4 = v3 != 0;
+  incidentAlert = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+  acceptButtonInfo = [incidentAlert acceptButtonInfo];
+  v4 = acceptButtonInfo != 0;
 
   return v4;
 }
 
 - (BOOL)_hasIncidentDetailsContent
 {
-  v3 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+  incidentAlert = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
 
-  if (v3)
+  if (incidentAlert)
   {
-    v4 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-    v5 = [v4 incident];
-    v6 = [v5 type];
+    incidentAlert2 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+    incident = [incidentAlert2 incident];
+    type = [incident type];
 
-    if (v6 == 14)
+    if (type == 14)
     {
 LABEL_3:
       LOBYTE(v7) = 0;
@@ -827,30 +827,30 @@ LABEL_3:
 
   else
   {
-    v8 = [(NavTrafficIncidentContaineeViewController *)self incident];
-    v9 = [v8 type];
+    incident2 = [(NavTrafficIncidentContaineeViewController *)self incident];
+    type2 = [incident2 type];
 
-    if (v9 == 14)
+    if (type2 == 14)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-  if (v10)
+  incidentAlert3 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+  if (incidentAlert3)
   {
-    v11 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
-    v12 = [v11 incident];
-    v13 = [v12 info];
+    incidentAlert4 = [(NavTrafficIncidentContaineeViewController *)self incidentAlert];
+    incident3 = [incidentAlert4 incident];
+    info = [incident3 info];
   }
 
   else
   {
-    v11 = [(NavTrafficIncidentContaineeViewController *)self incident];
-    v13 = [v11 info];
+    incidentAlert4 = [(NavTrafficIncidentContaineeViewController *)self incident];
+    info = [incidentAlert4 info];
   }
 
-  if ([v13 length])
+  if ([info length])
   {
     v7 = ![(NavTrafficIncidentContaineeViewController *)self _hasActionButtons];
   }
@@ -865,51 +865,51 @@ LABEL_3:
 
 - (void)_updateGrabberVisibility
 {
-  v3 = [(NavTrafficIncidentContaineeViewController *)self _allowsCardDrag];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setHideGrabber:v3 ^ 1];
+  _allowsCardDrag = [(NavTrafficIncidentContaineeViewController *)self _allowsCardDrag];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setHideGrabber:_allowsCardDrag ^ 1];
 }
 
 - (void)_updateViewsFromContent
 {
-  v2 = self;
+  selfCopy = self;
   if ([(NavTrafficIncidentContaineeViewController *)self isViewLoaded])
   {
-    v3 = [(NavTrafficIncidentContaineeViewController *)v2 incidentAlert];
+    incidentAlert = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentAlert];
 
-    v4 = [(NavTrafficIncidentContaineeViewController *)v2 titleView];
-    if (v3)
+    titleView = [(NavTrafficIncidentContaineeViewController *)selfCopy titleView];
+    if (incidentAlert)
     {
-      v5 = [(NavTrafficIncidentContaineeViewController *)v2 incidentAlert];
-      [NavTrafficIncidentViewComposer configureHeaderView:v4 withTrafficIncidentAlert:v5];
+      incidentAlert2 = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentAlert];
+      [NavTrafficIncidentViewComposer configureHeaderView:titleView withTrafficIncidentAlert:incidentAlert2];
 
-      v6 = [(NavTrafficIncidentContaineeViewController *)v2 incidentDetailsView];
-      v7 = [(NavTrafficIncidentContaineeViewController *)v2 incidentAlert];
-      [NavTrafficIncidentViewComposer configureDetailsView:v6 withTrafficIncidentAlert:v7];
+      incidentDetailsView = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentDetailsView];
+      incidentAlert3 = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentAlert];
+      [NavTrafficIncidentViewComposer configureDetailsView:incidentDetailsView withTrafficIncidentAlert:incidentAlert3];
 
-      progressionHidden = v2->_progressionHidden;
-      v9 = [(NavTrafficIncidentContaineeViewController *)v2 progressButton];
-      [v9 setProgressionHidden:progressionHidden];
+      progressionHidden = selfCopy->_progressionHidden;
+      progressButton = [(NavTrafficIncidentContaineeViewController *)selfCopy progressButton];
+      [progressButton setProgressionHidden:progressionHidden];
     }
 
     else
     {
-      v10 = [(NavTrafficIncidentContaineeViewController *)v2 incident];
-      [NavTrafficIncidentViewComposer configureHeaderView:v4 withTrafficIncidentFeature:v10];
+      incident = [(NavTrafficIncidentContaineeViewController *)selfCopy incident];
+      [NavTrafficIncidentViewComposer configureHeaderView:titleView withTrafficIncidentFeature:incident];
 
-      v9 = [(NavTrafficIncidentContaineeViewController *)v2 incidentDetailsView];
-      v11 = [(NavTrafficIncidentContaineeViewController *)v2 incident];
-      [NavTrafficIncidentViewComposer configureDetailsView:v9 withTrafficIncidentFeature:v11];
+      progressButton = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentDetailsView];
+      incident2 = [(NavTrafficIncidentContaineeViewController *)selfCopy incident];
+      [NavTrafficIncidentViewComposer configureDetailsView:progressButton withTrafficIncidentFeature:incident2];
     }
 
-    if ([(NavTrafficIncidentContaineeViewController *)v2 _hasActionButtons])
+    if ([(NavTrafficIncidentContaineeViewController *)selfCopy _hasActionButtons])
     {
       v52 = 0u;
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v12 = [(UIStackView *)v2->_buttonsStackView arrangedSubviews];
-      v13 = [v12 countByEnumeratingWithState:&v50 objects:v57 count:16];
+      arrangedSubviews = [(UIStackView *)selfCopy->_buttonsStackView arrangedSubviews];
+      v13 = [arrangedSubviews countByEnumeratingWithState:&v50 objects:v57 count:16];
       if (v13)
       {
         v14 = v13;
@@ -920,13 +920,13 @@ LABEL_3:
           {
             if (*v51 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(arrangedSubviews);
             }
 
-            [(UIStackView *)v2->_buttonsStackView _maps_removeArrangedSubview:*(*(&v50 + 1) + 8 * i)];
+            [(UIStackView *)selfCopy->_buttonsStackView _maps_removeArrangedSubview:*(*(&v50 + 1) + 8 * i)];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v50 objects:v57 count:16];
+          v14 = [arrangedSubviews countByEnumeratingWithState:&v50 objects:v57 count:16];
         }
 
         while (v14);
@@ -937,27 +937,27 @@ LABEL_3:
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v17 = [(NavTrafficIncidentContaineeViewController *)v2 incidentAlert];
-      v18 = [v17 buttonInfos];
+      incidentAlert4 = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentAlert];
+      buttonInfos = [incidentAlert4 buttonInfos];
 
-      v19 = [v18 countByEnumeratingWithState:&v46 objects:v56 count:16];
+      v19 = [buttonInfos countByEnumeratingWithState:&v46 objects:v56 count:16];
       if (v19)
       {
         v20 = v19;
         v21 = *v47;
-        v44 = v2;
+        v44 = selfCopy;
         do
         {
           for (j = 0; j != v20; j = j + 1)
           {
             if (*v47 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(buttonInfos);
             }
 
             v23 = *(*(&v46 + 1) + 8 * j);
-            v24 = [v23 action];
-            if (!v24)
+            action = [v23 action];
+            if (!action)
             {
               v27 = sub_100035E6C();
               if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -972,14 +972,14 @@ LABEL_3:
               goto LABEL_32;
             }
 
-            if (v24 == 2)
+            if (action == 2)
             {
               v25 = &OBJC_IVAR___NavTrafficIncidentContaineeViewController__confirmButton;
             }
 
             else
             {
-              if (v24 != 1)
+              if (action != 1)
               {
                 goto LABEL_28;
               }
@@ -987,7 +987,7 @@ LABEL_3:
               v25 = &OBJC_IVAR___NavTrafficIncidentContaineeViewController__cancelButton;
             }
 
-            v26 = *(&v2->super.super.super.super.super.isa + *v25);
+            v26 = *(&selfCopy->super.super.super.super.super.isa + *v25);
             if (!v26)
             {
 LABEL_28:
@@ -1008,45 +1008,45 @@ LABEL_32:
             }
 
             v27 = v26;
-            v28 = [v23 title];
-            [v27 setTitle:v28 forState:0];
+            title = [v23 title];
+            [v27 setTitle:title forState:0];
 
-            if (v27 == v2->_confirmButton && (objc_opt_respondsToSelector() & 1) != 0)
+            if (v27 == selfCopy->_confirmButton && (objc_opt_respondsToSelector() & 1) != 0)
             {
-              confirmButton = v2->_confirmButton;
-              v30 = [v23 title];
-              [(MapsProgressButton *)confirmButton performSelector:"setTitle:forState:" withObject:v30 withObject:&off_1016E68C0];
+              confirmButton = selfCopy->_confirmButton;
+              title2 = [v23 title];
+              [(MapsProgressButton *)confirmButton performSelector:"setTitle:forState:" withObject:title2 withObject:&off_1016E68C0];
 
-              v2 = v44;
+              selfCopy = v44;
               v31 = v44->_confirmButton;
-              v32 = [v23 title];
-              [(MapsProgressButton *)v31 performSelector:"setTitle:forState:" withObject:v32 withObject:&off_1016E68D8];
+              title3 = [v23 title];
+              [(MapsProgressButton *)v31 performSelector:"setTitle:forState:" withObject:title3 withObject:&off_1016E68D8];
             }
 
             [v45 addObject:v27];
-            v33 = [v27 layer];
-            [v33 setCornerRadius:30.0];
+            layer = [v27 layer];
+            [layer setCornerRadius:30.0];
 
 LABEL_33:
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v46 objects:v56 count:16];
+          v20 = [buttonInfos countByEnumeratingWithState:&v46 objects:v56 count:16];
         }
 
         while (v20);
       }
 
-      [(UIStackView *)v2->_buttonsStackView _maps_setArrangedSubviews:v45];
-      [(UIStackView *)v2->_buttonsStackView setHidden:0];
+      [(UIStackView *)selfCopy->_buttonsStackView _maps_setArrangedSubviews:v45];
+      [(UIStackView *)selfCopy->_buttonsStackView setHidden:0];
     }
 
     else
     {
-      [(UIStackView *)v2->_buttonsStackView setHidden:1];
+      [(UIStackView *)selfCopy->_buttonsStackView setHidden:1];
     }
 
-    v37 = [(NavTrafficIncidentContaineeViewController *)v2 _hasIncidentDetailsContent];
-    if (v37)
+    _hasIncidentDetailsContent = [(NavTrafficIncidentContaineeViewController *)selfCopy _hasIncidentDetailsContent];
+    if (_hasIncidentDetailsContent)
     {
       v38 = 1.0;
     }
@@ -1056,36 +1056,36 @@ LABEL_33:
       v38 = 0.0;
     }
 
-    v39 = [(NavTrafficIncidentContaineeViewController *)v2 headerView];
-    [v39 setHairLineAlpha:v38];
+    headerView = [(NavTrafficIncidentContaineeViewController *)selfCopy headerView];
+    [headerView setHairLineAlpha:v38];
 
-    v40 = [(NavTrafficIncidentContaineeViewController *)v2 incidentDetailsView];
-    [v40 setHidden:v37 ^ 1];
+    incidentDetailsView2 = [(NavTrafficIncidentContaineeViewController *)selfCopy incidentDetailsView];
+    [incidentDetailsView2 setHidden:_hasIncidentDetailsContent ^ 1];
 
-    v41 = [(ContaineeViewController *)v2 cardPresentationController];
-    v42 = [v41 containeeLayout];
+    cardPresentationController = [(ContaineeViewController *)selfCopy cardPresentationController];
+    containeeLayout = [cardPresentationController containeeLayout];
 
-    if ((v37 & 1) != 0 || [(NavTrafficIncidentContaineeViewController *)v2 _hasActionButtons]|| v42 != 2)
+    if ((_hasIncidentDetailsContent & 1) != 0 || [(NavTrafficIncidentContaineeViewController *)selfCopy _hasActionButtons]|| containeeLayout != 2)
     {
-      v43 = [(ContaineeViewController *)v2 cardPresentationController];
-      [v43 updateHeightForCurrentLayout];
+      cardPresentationController2 = [(ContaineeViewController *)selfCopy cardPresentationController];
+      [cardPresentationController2 updateHeightForCurrentLayout];
     }
 
     else
     {
-      v43 = [(ContaineeViewController *)v2 cardPresentationController];
-      [v43 wantsLayout:1];
+      cardPresentationController2 = [(ContaineeViewController *)selfCopy cardPresentationController];
+      [cardPresentationController2 wantsLayout:1];
     }
 
-    [(NavTrafficIncidentContaineeViewController *)v2 _updateGrabberVisibility];
+    [(NavTrafficIncidentContaineeViewController *)selfCopy _updateGrabberVisibility];
   }
 }
 
-- (void)setAnimationDuration:(double)a3
+- (void)setAnimationDuration:(double)duration
 {
-  self->_animationDuration = a3;
-  v4 = [(NavTrafficIncidentContaineeViewController *)self progressButton];
-  [v4 setAnimationDuration:a3];
+  self->_animationDuration = duration;
+  progressButton = [(NavTrafficIncidentContaineeViewController *)self progressButton];
+  [progressButton setAnimationDuration:duration];
 }
 
 - (MapsProgressButton)progressButton
@@ -1093,17 +1093,17 @@ LABEL_33:
   incidentAlert = self->_incidentAlert;
   if (incidentAlert)
   {
-    v4 = [(MNTrafficIncidentAlert *)incidentAlert acceptButtonInfo];
-    v5 = [v4 isDefaultButton];
+    acceptButtonInfo = [(MNTrafficIncidentAlert *)incidentAlert acceptButtonInfo];
+    isDefaultButton = [acceptButtonInfo isDefaultButton];
 
-    if (v5)
+    if (isDefaultButton)
     {
-      v6 = self->_confirmButton;
+      dismissButton = self->_confirmButton;
     }
 
     else
     {
-      v6 = [(NavTrafficIncidentHeaderView *)self->_titleView dismissButton];
+      dismissButton = [(NavTrafficIncidentHeaderView *)self->_titleView dismissButton];
     }
   }
 
@@ -1133,20 +1133,20 @@ LABEL_33:
       }
     }
 
-    v6 = 0;
+    dismissButton = 0;
   }
 
-  return v6;
+  return dismissButton;
 }
 
-- (void)setIncident:(id)a3
+- (void)setIncident:(id)incident
 {
-  v7 = a3;
-  v5 = [(NavTrafficIncidentContaineeViewController *)self incident];
+  incidentCopy = incident;
+  incident = [(NavTrafficIncidentContaineeViewController *)self incident];
 
-  if (v5 != v7)
+  if (incident != incidentCopy)
   {
-    objc_storeStrong(&self->_incident, a3);
+    objc_storeStrong(&self->_incident, incident);
     incidentAlert = self->_incidentAlert;
     self->_incidentAlert = 0;
 
@@ -1154,12 +1154,12 @@ LABEL_33:
   }
 }
 
-- (void)setIncidentAlert:(id)a3
+- (void)setIncidentAlert:(id)alert
 {
-  v6 = a3;
-  if (self->_incidentAlert != v6)
+  alertCopy = alert;
+  if (self->_incidentAlert != alertCopy)
   {
-    objc_storeStrong(&self->_incidentAlert, a3);
+    objc_storeStrong(&self->_incidentAlert, alert);
     incident = self->_incident;
     self->_incident = 0;
   }

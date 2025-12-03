@@ -1,13 +1,13 @@
 @interface AddToSiriSwiftHostingViewController
 - (WFDatabase)database;
 - (WFWorkflow)workflow;
-- (_TtC10WorkflowUI35AddToSiriSwiftHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10WorkflowUI35AddToSiriSwiftHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP10WorkflowUI43AddToSiriSwiftHostingViewControllerDelegate_)delegate;
-- (void)setDatabase:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setWorkflow:(id)a3;
+- (void)setDatabase:(id)database;
+- (void)setDelegate:(id)delegate;
+- (void)setWorkflow:(id)workflow;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AddToSiriSwiftHostingViewController
@@ -19,11 +19,11 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_27491BC54(a3);
+  selfCopy = self;
+  sub_27491BC54(delegate);
 }
 
 - (WFWorkflow)workflow
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)setWorkflow:(id)a3
+- (void)setWorkflow:(id)workflow
 {
-  v5 = a3;
-  v6 = self;
-  sub_27491BD2C(a3);
+  workflowCopy = workflow;
+  selfCopy = self;
+  sub_27491BD2C(workflow);
 }
 
 - (WFDatabase)database
@@ -47,28 +47,28 @@
   return v2;
 }
 
-- (void)setDatabase:(id)a3
+- (void)setDatabase:(id)database
 {
-  v5 = a3;
-  v6 = self;
-  sub_27491BDF8(a3);
+  databaseCopy = database;
+  selfCopy = self;
+  sub_27491BDF8(database);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27491BE04();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_27491C754(a3);
+  selfCopy = self;
+  sub_27491C754(disappear);
 }
 
-- (_TtC10WorkflowUI35AddToSiriSwiftHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI35AddToSiriSwiftHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
     v7 = v6;
@@ -80,8 +80,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_27491C8FC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_27491C8FC(v5, v7, bundle);
 }
 
 @end

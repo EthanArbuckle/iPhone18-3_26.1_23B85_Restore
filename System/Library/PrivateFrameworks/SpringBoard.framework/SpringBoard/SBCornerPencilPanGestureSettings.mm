@@ -1,5 +1,5 @@
 @interface SBCornerPencilPanGestureSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -38,17 +38,17 @@
   return v11;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"idealSwipeUnitVector"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"cornerSwipeGestureEnabled") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"type") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"useNewCornerGestureHeuristics") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"idealSwipeDegrees") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"underSwipeForgivenessDegrees") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"overSwipeForgivenessDegrees"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"idealSwipeUnitVector"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"cornerSwipeGestureEnabled") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"type") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"useNewCornerGestureHeuristics") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"idealSwipeDegrees") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"underSwipeForgivenessDegrees") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"overSwipeForgivenessDegrees"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"edgeProtectMode"];
+    v4 = [keyCopy isEqualToString:@"edgeProtectMode"];
   }
 
   return v4;

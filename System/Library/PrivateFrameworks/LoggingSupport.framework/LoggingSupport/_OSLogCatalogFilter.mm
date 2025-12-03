@@ -1,17 +1,17 @@
 @interface _OSLogCatalogFilter
-- (BOOL)containsProcessLookupSubstr:(id)a3;
-- (BOOL)containsSenderLookupSubstr:(id)a3;
-- (BOOL)containsSubsystemSubstr:(id)a3;
-- (BOOL)isKeptCatalog:(catalog_s *)a3;
-- (_OSLogCatalogFilter)initWithPredicate:(id)a3 collection:(id)a4;
+- (BOOL)containsProcessLookupSubstr:(id)substr;
+- (BOOL)containsSenderLookupSubstr:(id)substr;
+- (BOOL)containsSubsystemSubstr:(id)substr;
+- (BOOL)isKeptCatalog:(catalog_s *)catalog;
+- (_OSLogCatalogFilter)initWithPredicate:(id)predicate collection:(id)collection;
 - (void)dealloc;
 - (void)generateUUIDSet;
-- (void)handleDSOFile:(_ftsent *)a3;
-- (void)processComparisonPredicate:(id)a3;
-- (void)processLeftExpression:(id)a3 andRightExpression:(id)a4;
+- (void)handleDSOFile:(_ftsent *)file;
+- (void)processComparisonPredicate:(id)predicate;
+- (void)processLeftExpression:(id)expression andRightExpression:(id)rightExpression;
 - (void)readDSCUUIDs;
 - (void)readDSOUUIDs;
-- (void)visitPredicate:(id)a3;
+- (void)visitPredicate:(id)predicate;
 @end
 
 @implementation _OSLogCatalogFilter
@@ -136,70 +136,70 @@ LABEL_3:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_OSLogCatalogFilter *)self processComparisonPredicate:v4];
+    [(_OSLogCatalogFilter *)self processComparisonPredicate:predicateCopy];
   }
 }
 
-- (void)processComparisonPredicate:(id)a3
+- (void)processComparisonPredicate:(id)predicate
 {
-  v4 = a3;
-  v6 = [v4 leftExpression];
-  v5 = [v4 rightExpression];
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
 
-  [(_OSLogCatalogFilter *)self processLeftExpression:v6 andRightExpression:v5];
-  [(_OSLogCatalogFilter *)self processLeftExpression:v5 andRightExpression:v6];
+  [(_OSLogCatalogFilter *)self processLeftExpression:leftExpression andRightExpression:rightExpression];
+  [(_OSLogCatalogFilter *)self processLeftExpression:rightExpression andRightExpression:leftExpression];
 }
 
-- (void)processLeftExpression:(id)a3 andRightExpression:(id)a4
+- (void)processLeftExpression:(id)expression andRightExpression:(id)rightExpression
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 expressionType] == 3)
+  expressionCopy = expression;
+  rightExpressionCopy = rightExpression;
+  if ([expressionCopy expressionType] == 3)
   {
-    v7 = [v9 keyPath];
-    if (([v7 isEqualToString:@"processID"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"processIdentifier"))
+    keyPath = [expressionCopy keyPath];
+    if (([keyPath isEqualToString:@"processID"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"processIdentifier"))
     {
-      v8 = [v6 constantValue];
-      [(_OSLogCatalogFilter *)self addProcessID:v8];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogCatalogFilter *)self addProcessID:constantValue];
     }
 
-    else if (([v7 isEqualToString:@"process"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"processImagePath"))
+    else if (([keyPath isEqualToString:@"process"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"processImagePath"))
     {
-      v8 = [v6 constantValue];
-      [(_OSLogCatalogFilter *)self addProcessLookupSubstr:v8];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogCatalogFilter *)self addProcessLookupSubstr:constantValue];
     }
 
-    else if (([v7 isEqualToString:@"sender"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"senderImagePath"))
+    else if (([keyPath isEqualToString:@"sender"] & 1) != 0 || objc_msgSend(keyPath, "isEqualToString:", @"senderImagePath"))
     {
-      v8 = [v6 constantValue];
-      [(_OSLogCatalogFilter *)self addSenderLookupSubstr:v8];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogCatalogFilter *)self addSenderLookupSubstr:constantValue];
     }
 
     else
     {
-      if (![v7 isEqualToString:@"subsystem"])
+      if (![keyPath isEqualToString:@"subsystem"])
       {
         goto LABEL_6;
       }
 
-      v8 = [v6 constantValue];
-      [(_OSLogCatalogFilter *)self addSubsystem:v8];
+      constantValue = [rightExpressionCopy constantValue];
+      [(_OSLogCatalogFilter *)self addSubsystem:constantValue];
     }
 
 LABEL_6:
   }
 }
 
-- (void)handleDSOFile:(_ftsent *)a3
+- (void)handleDSOFile:(_ftsent *)file
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = openat(-2, a3->fts_path, 0);
+  v3 = openat(-2, file->fts_path, 0);
   if (v3 == -1)
   {
     v6 = *__error();
@@ -235,10 +235,10 @@ LABEL_7:
   __break(1u);
 }
 
-- (BOOL)containsSenderLookupSubstr:(id)a3
+- (BOOL)containsSenderLookupSubstr:(id)substr
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  substrCopy = substr;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -257,7 +257,7 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([substrCopy localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -280,10 +280,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsProcessLookupSubstr:(id)a3
+- (BOOL)containsProcessLookupSubstr:(id)substr
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  substrCopy = substr;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -302,7 +302,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([substrCopy localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -325,10 +325,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)containsSubsystemSubstr:(id)a3
+- (BOOL)containsSubsystemSubstr:(id)substr
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  substrCopy = substr;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -347,7 +347,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([substrCopy localizedStandardContainsString:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -370,7 +370,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isKeptCatalog:(catalog_s *)a3
+- (BOOL)isKeptCatalog:(catalog_s *)catalog
 {
   v21 = *MEMORY[0x277D85DE8];
   if (self->_hasItems && !self->_hasSharedCacheItems)
@@ -385,13 +385,13 @@ LABEL_11:
     v16[3] = &unk_2787AE3B8;
     v16[4] = self;
     v16[5] = &v17;
-    _catalog_for_each_uuid(a3, v16);
+    _catalog_for_each_uuid(catalog, v16);
     if (v18[3])
     {
       goto LABEL_6;
     }
 
-    var2 = a3->var2;
+    var2 = catalog->var2;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __37___OSLogCatalogFilter_isKeptCatalog___block_invoke_2;
@@ -407,12 +407,12 @@ LABEL_6:
 
     else
     {
-      var4 = a3->var4;
+      var4 = catalog->var4;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v11 = __37___OSLogCatalogFilter_isKeptCatalog___block_invoke_3;
       v12 = &unk_2787AE408;
-      v13 = self;
+      selfCopy = self;
       v14 = &v17;
       if (var4)
       {
@@ -456,26 +456,26 @@ LABEL_6:
   [(_OSLogCatalogFilter *)&v3 dealloc];
 }
 
-- (_OSLogCatalogFilter)initWithPredicate:(id)a3 collection:(id)a4
+- (_OSLogCatalogFilter)initWithPredicate:(id)predicate collection:(id)collection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  collectionCopy = collection;
   v8 = getenv("LOG_USE_CATALOGFILTER");
   if (v8 && *v8 == 48 && !v8[1])
   {
     goto LABEL_12;
   }
 
-  v9 = [v7 UUIDTextReference];
-  v10 = [v9 fileDescriptor];
+  uUIDTextReference = [collectionCopy UUIDTextReference];
+  fileDescriptor = [uUIDTextReference fileDescriptor];
 
-  if (fcntl(v10, 50, __s1, 1024) == -1)
+  if (fcntl(fileDescriptor, 50, __s1, 1024) == -1)
   {
     v29 = *__error();
     _os_assumes_log();
 LABEL_12:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -508,7 +508,7 @@ LABEL_12:
     v14->_uuidAccept = v23;
 
     v14->_uuidtext_path = strdup(__s1);
-    v25 = _OSLogGetSimplePredicate(v6, v11, v12, v13);
+    v25 = _OSLogGetSimplePredicate(predicateCopy, v11, v12, v13);
     [v25 acceptVisitor:v14 flags:0];
     if (v14->_hasItems)
     {
@@ -518,11 +518,11 @@ LABEL_12:
 
   self = v14;
 
-  v26 = self;
+  selfCopy = self;
 LABEL_10:
 
   v27 = *MEMORY[0x277D85DE8];
-  return v26;
+  return selfCopy;
 }
 
 @end

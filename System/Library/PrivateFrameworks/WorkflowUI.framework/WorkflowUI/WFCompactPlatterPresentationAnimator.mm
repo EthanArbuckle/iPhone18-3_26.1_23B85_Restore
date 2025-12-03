@@ -1,23 +1,23 @@
 @interface WFCompactPlatterPresentationAnimator
-- (id)initForPresenting:(BOOL)a3;
-- (void)_animateDismissalWithTransitionContext:(id)a3;
-- (void)_animatePresentationWithTransitionContext:(id)a3;
-- (void)animateTransition:(id)a3;
+- (id)initForPresenting:(BOOL)presenting;
+- (void)_animateDismissalWithTransitionContext:(id)context;
+- (void)_animatePresentationWithTransitionContext:(id)context;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation WFCompactPlatterPresentationAnimator
 
-- (void)_animateDismissalWithTransitionContext:(id)a3
+- (void)_animateDismissalWithTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 viewControllerForKey:*MEMORY[0x277D77230]];
-  v5 = [v4 presentationController];
-  if (v5)
+  contextCopy = context;
+  v4 = [contextCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  presentationController = [v4 presentationController];
+  if (presentationController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = presentationController;
     }
 
     else
@@ -53,8 +53,8 @@
   v19[1] = 3221225472;
   v19[2] = __79__WFCompactPlatterPresentationAnimator__animateDismissalWithTransitionContext___block_invoke_2;
   v19[3] = &unk_279EE8540;
-  v20 = v3;
-  v17 = v3;
+  v20 = contextCopy;
+  v17 = contextCopy;
   v18 = v4;
   [v16 _animateUsingSpringWithDampingRatio:0 response:v21 tracking:v19 dampingRatioSmoothing:1.0 responseSmoothing:0.5 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.998];
 }
@@ -77,17 +77,17 @@ uint64_t __79__WFCompactPlatterPresentationAnimator__animateDismissalWithTransit
   return [v1 completeTransition:v2];
 }
 
-- (void)_animatePresentationWithTransitionContext:(id)a3
+- (void)_animatePresentationWithTransitionContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 viewControllerForKey:*MEMORY[0x277D77240]];
-  v5 = [v4 presentationController];
-  if (v5)
+  contextCopy = context;
+  v4 = [contextCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  presentationController = [v4 presentationController];
+  if (presentationController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = presentationController;
     }
 
     else
@@ -103,11 +103,11 @@ uint64_t __79__WFCompactPlatterPresentationAnimator__animateDismissalWithTransit
 
   v7 = v6;
 
-  v8 = [v4 view];
+  view = [v4 view];
   [v7 frameOfDismissedViewInContainerView];
-  [v8 setFrame:?];
-  v9 = [v3 containerView];
-  [v9 addSubview:v8];
+  [view setFrame:?];
+  containerView = [contextCopy containerView];
+  [containerView addSubview:view];
 
   [v7 frameOfPresentedViewInContainerView];
   v11 = v10;
@@ -120,7 +120,7 @@ uint64_t __79__WFCompactPlatterPresentationAnimator__animateDismissalWithTransit
   v23[1] = 3221225472;
   v23[2] = __82__WFCompactPlatterPresentationAnimator__animatePresentationWithTransitionContext___block_invoke;
   v23[3] = &unk_279EE89B0;
-  v24 = v8;
+  v24 = view;
   v25 = v11;
   v26 = v13;
   v27 = v15;
@@ -129,9 +129,9 @@ uint64_t __79__WFCompactPlatterPresentationAnimator__animateDismissalWithTransit
   v21[1] = 3221225472;
   v21[2] = __82__WFCompactPlatterPresentationAnimator__animatePresentationWithTransitionContext___block_invoke_2;
   v21[3] = &unk_279EE8540;
-  v22 = v3;
-  v19 = v3;
-  v20 = v8;
+  v22 = contextCopy;
+  v19 = contextCopy;
+  v20 = view;
   [v18 _animateUsingSpringWithDampingRatio:0 response:v23 tracking:v21 dampingRatioSmoothing:1.0 responseSmoothing:0.5 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.998];
 }
 
@@ -143,21 +143,21 @@ uint64_t __82__WFCompactPlatterPresentationAnimator__animatePresentationWithTran
   return [v1 completeTransition:v2];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if ([(WFCompactPlatterPresentationAnimator *)self isPresenting])
   {
-    [(WFCompactPlatterPresentationAnimator *)self _animatePresentationWithTransitionContext:v4];
+    [(WFCompactPlatterPresentationAnimator *)self _animatePresentationWithTransitionContext:transitionCopy];
   }
 
   else
   {
-    [(WFCompactPlatterPresentationAnimator *)self _animateDismissalWithTransitionContext:v4];
+    [(WFCompactPlatterPresentationAnimator *)self _animateDismissalWithTransitionContext:transitionCopy];
   }
 }
 
-- (id)initForPresenting:(BOOL)a3
+- (id)initForPresenting:(BOOL)presenting
 {
   v8.receiver = self;
   v8.super_class = WFCompactPlatterPresentationAnimator;
@@ -165,7 +165,7 @@ uint64_t __82__WFCompactPlatterPresentationAnimator__animatePresentationWithTran
   v5 = v4;
   if (v4)
   {
-    v4->_presenting = a3;
+    v4->_presenting = presenting;
     v6 = v4;
   }
 

@@ -1,16 +1,16 @@
 @interface _UISearchCancelButtonCarPlay
-- (_UISearchCancelButtonCarPlay)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_UISearchCancelButtonCarPlay)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 @end
 
 @implementation _UISearchCancelButtonCarPlay
 
-- (_UISearchCancelButtonCarPlay)initWithFrame:(CGRect)a3
+- (_UISearchCancelButtonCarPlay)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _UISearchCancelButtonCarPlay;
-  v3 = [(UIButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -42,30 +42,30 @@
   [(UIView *)self->focusedView _setContinuousCornerRadius:CGRectGetHeight(v6) * 0.5];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v15.receiver = self;
   v15.super_class = _UISearchCancelButtonCarPlay;
-  v6 = a3;
-  [(UIView *)&v15 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(UIView *)&v15 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
   focusedView = self->focusedView;
-  if (v7 == self)
+  if (nextFocusedItem == self)
   {
     [(UIView *)focusedView setHidden:0];
     [(UIView *)self sendSubviewToBack:self->focusedView];
-    v9 = [(UIButton *)self imageView];
-    v10 = [(UIButton *)self imageView];
-    v11 = [v10 traitCollection];
-    v12 = [v11 userInterfaceStyle];
+    imageView = [(UIButton *)self imageView];
+    imageView2 = [(UIButton *)self imageView];
+    traitCollection = [imageView2 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v13 = 1;
-    if (v12 != 2)
+    if (userInterfaceStyle != 2)
     {
-      v13 = v12;
+      v13 = userInterfaceStyle;
     }
 
-    if (v12 == 1)
+    if (userInterfaceStyle == 1)
     {
       v14 = 2;
     }
@@ -75,14 +75,14 @@
       v14 = v13;
     }
 
-    [v9 setOverrideUserInterfaceStyle:v14];
+    [imageView setOverrideUserInterfaceStyle:v14];
   }
 
   else
   {
     [(UIView *)focusedView setHidden:1];
-    v9 = [(UIButton *)self imageView];
-    [v9 setOverrideUserInterfaceStyle:0];
+    imageView = [(UIButton *)self imageView];
+    [imageView setOverrideUserInterfaceStyle:0];
   }
 }
 

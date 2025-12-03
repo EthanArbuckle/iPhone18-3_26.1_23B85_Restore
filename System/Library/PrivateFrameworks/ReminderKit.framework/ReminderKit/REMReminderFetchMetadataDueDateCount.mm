@@ -1,78 +1,78 @@
 @interface REMReminderFetchMetadataDueDateCount
-- (BOOL)isEqual:(id)a3;
-- (REMReminderFetchMetadataDueDateCount)initWithCoder:(id)a3;
-- (REMReminderFetchMetadataDueDateCount)initWithDueDate:(id)a3 count:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderFetchMetadataDueDateCount)initWithCoder:(id)coder;
+- (REMReminderFetchMetadataDueDateCount)initWithDueDate:(id)date count:(int64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderFetchMetadataDueDateCount
 
-- (REMReminderFetchMetadataDueDateCount)initWithDueDate:(id)a3 count:(int64_t)a4
+- (REMReminderFetchMetadataDueDateCount)initWithDueDate:(id)date count:(int64_t)count
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = REMReminderFetchMetadataDueDateCount;
   v8 = [(REMReminderFetchMetadataDueDateCount *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dueDate, a3);
-    v9->_count = a4;
+    objc_storeStrong(&v8->_dueDate, date);
+    v9->_count = count;
   }
 
   return v9;
 }
 
-- (REMReminderFetchMetadataDueDateCount)initWithCoder:(id)a3
+- (REMReminderFetchMetadataDueDateCount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMReminderFetchMetadataDueDateCount;
   v5 = [(REMReminderFetchMetadataDueDateCount *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueDate"];
     dueDate = v5->_dueDate;
     v5->_dueDate = v6;
 
-    v5->_count = [v4 decodeIntegerForKey:@"count"];
+    v5->_count = [coderCopy decodeIntegerForKey:@"count"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
-  [v5 encodeObject:v4 forKey:@"dueDate"];
+  coderCopy = coder;
+  dueDate = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
+  [coderCopy encodeObject:dueDate forKey:@"dueDate"];
 
-  [v5 encodeInteger:-[REMReminderFetchMetadataDueDateCount count](self forKey:{"count"), @"count"}];
+  [coderCopy encodeInteger:-[REMReminderFetchMetadataDueDateCount count](self forKey:{"count"), @"count"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
-      v8 = [(REMReminderFetchMetadataDueDateCount *)v6 dueDate];
-      v9 = v8;
-      if (v7 == v8)
+      dueDate = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
+      dueDate2 = [(REMReminderFetchMetadataDueDateCount *)v6 dueDate];
+      v9 = dueDate2;
+      if (dueDate == dueDate2)
       {
       }
 
       else
       {
-        v10 = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
-        v11 = [(REMReminderFetchMetadataDueDateCount *)v6 dueDate];
-        v12 = [v10 isEqual:v11];
+        dueDate3 = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
+        dueDate4 = [(REMReminderFetchMetadataDueDateCount *)v6 dueDate];
+        v12 = [dueDate3 isEqual:dueDate4];
 
         if (!v12)
         {
@@ -100,8 +100,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
-  v4 = [v3 hash];
+  dueDate = [(REMReminderFetchMetadataDueDateCount *)self dueDate];
+  v4 = [dueDate hash];
   v5 = [(REMReminderFetchMetadataDueDateCount *)self count];
 
   return v5 + v4;

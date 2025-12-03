@@ -1,14 +1,14 @@
 @interface PUIContactsPrivacyController
-+ (BOOL)isServiceRestricted:(id)a3;
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showContactsAccess:(BOOL)a5 showPickerUsage:(BOOL)a6;
-- (id)contactsStatus:(id)a3;
++ (BOOL)isServiceRestricted:(id)restricted;
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showContactsAccess:(BOOL)access showPickerUsage:(BOOL)usage;
+- (id)contactsStatus:(id)status;
 - (id)createSpecifiers;
 - (id)createSpecifiersWithCombinedPickerUsage;
 - (id)specifiers;
-- (void)_setContactsTCCStatus:(id)a3 specifier:(id)a4;
+- (void)_setContactsTCCStatus:(id)status specifier:(id)specifier;
 - (void)provideNavigationDonations;
-- (void)setAccess:(id)a3 forSpecifier:(id)a4;
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5;
+- (void)setAccess:(id)access forSpecifier:(id)specifier;
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value;
 - (void)updateContactsAuthorizationStates;
 - (void)updateSpecifiersForImposedSettings;
 @end
@@ -19,15 +19,15 @@
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v3 = PUI_BundleForPrivacySettingsFramework();
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
-  v7 = [v5 initWithKey:@"CONTACTS" table:@"Privacy" locale:v6 bundleURL:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v7 = [v5 initWithKey:@"CONTACTS" table:@"Privacy" locale:currentLocale bundleURL:bundleURL];
 
   v8 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v9 = [MEMORY[0x277CBEAF8] currentLocale];
-  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:v9 bundleURL:v4];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  v10 = [v8 initWithKey:@"PRIVACY" table:@"Privacy" locale:currentLocale2 bundleURL:bundleURL];
 
   v14[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
@@ -37,15 +37,15 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isServiceRestricted:(id)a3
++ (BOOL)isServiceRestricted:(id)restricted
 {
-  v3 = a3;
+  restrictedCopy = restricted;
   CFPreferencesAppSynchronize(@"com.apple.springboard");
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsCapabilities", @"com.apple.springboard");
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 containsObject:v3];
+    v6 = [v4 containsObject:restrictedCopy];
   }
 
   else
@@ -88,10 +88,10 @@
         {
           v11 = v10;
           v12 = [v9 objectForKeyedSubscript:v7];
-          v13 = [v12 BOOLValue];
-          v14 = [v3 BOOLValue];
+          bOOLValue = [v12 BOOLValue];
+          bOOLValue2 = [v3 BOOLValue];
 
-          if (v13 == v14)
+          if (bOOLValue == bOOLValue2)
           {
             continue;
           }
@@ -167,12 +167,12 @@
   [(PUIContactsPrivacyController *)self setContactsLimitedAccessAppIDs:v20];
 
   [(PUIContactsPrivacyController *)self setContactsDeniedAppIDs:v21];
-  v22 = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
-  v23 = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
-  v24 = [v22 setByAddingObjectsFromSet:v23];
+  contactsFullAccessAllowedAppIDs = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
+  contactsLimitedAccessAppIDs = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
+  v24 = [contactsFullAccessAllowedAppIDs setByAddingObjectsFromSet:contactsLimitedAccessAppIDs];
 
-  v25 = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
-  v26 = [v24 setByAddingObjectsFromSet:v25];
+  contactsDeniedAppIDs = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
+  v26 = [v24 setByAddingObjectsFromSet:contactsDeniedAppIDs];
   [(PUIContactsPrivacyController *)self setContactsAllAppIDs:v26];
 
   v27 = bundleIdentifiersWithPickerAccess();
@@ -181,21 +181,21 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setContactsTCCStatus:(id)a3 specifier:(id)a4
+- (void)_setContactsTCCStatus:(id)status specifier:(id)specifier
 {
   *&v17[13] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"appBundleID"];
-  v8 = [v6 intValue];
+  statusCopy = status;
+  v7 = [specifier propertyForKey:@"appBundleID"];
+  intValue = [statusCopy intValue];
 
-  if (v8 > 4)
+  if (intValue > 4)
   {
     v9 = @"unsupported";
   }
 
   else
   {
-    v9 = off_279BA19A8[v8];
+    v9 = off_279BA19A8[intValue];
   }
 
   v10 = _PUILoggingFacility();
@@ -204,7 +204,7 @@
     v14 = 138412802;
     v15 = v7;
     v16 = 1024;
-    *v17 = v8;
+    *v17 = intValue;
     v17[2] = 2112;
     *&v17[3] = v9;
     _os_log_impl(&dword_2657FE000, v10, OS_LOG_TYPE_DEFAULT, "Selected contacts auth for app %@: %d(%@)", &v14, 0x1Cu);
@@ -212,14 +212,14 @@
 
   v11 = _PUILoggingFacility();
   v12 = v11;
-  if (v8 > 2)
+  if (intValue > 2)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
       v14 = 138412802;
       v15 = v7;
       v16 = 1024;
-      *v17 = v8;
+      *v17 = intValue;
       v17[2] = 2112;
       *&v17[3] = v9;
       _os_log_fault_impl(&dword_2657FE000, v12, OS_LOG_TYPE_FAULT, "Unexpected value set for contacts tcc access for app %@: %d(%@)", &v14, 0x1Cu);
@@ -237,7 +237,7 @@
       _os_log_impl(&dword_2657FE000, v12, OS_LOG_TYPE_DEFAULT, "Setting contacts auth for app %@ to %@", &v14, 0x16u);
     }
 
-    [(PUIContactsPrivacyController *)self setTCCForService:*MEMORY[0x277D6C100] appIdentifier:v7 value:v8];
+    [(PUIContactsPrivacyController *)self setTCCForService:*MEMORY[0x277D6C100] appIdentifier:v7 value:intValue];
   }
 
   [(PUIContactsPrivacyController *)self updateContactsAuthorizationStates];
@@ -246,22 +246,22 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTCCForService:(__CFString *)a3 appIdentifier:(id)a4 value:(int)a5
+- (void)setTCCForService:(__CFString *)service appIdentifier:(id)identifier value:(int)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = _PUILoggingFacility();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (a5 != 4)
+  if (value != 4)
   {
     if (v10)
     {
       *buf = 138412802;
-      v25 = a3;
+      serviceCopy2 = service;
       v26 = 2112;
-      v27 = v8;
+      v27 = identifierCopy;
       v28 = 1024;
-      v29 = a5;
+      valueCopy = value;
       _os_log_impl(&dword_2657FE000, v9, OS_LOG_TYPE_DEFAULT, "Setting TCC auth for service: %@ appIdentifier:%@, accessLevel:%d", buf, 0x1Cu);
     }
 
@@ -270,13 +270,13 @@
       [PUIContactsPrivacyController setTCCForService:appIdentifier:value:];
     }
 
-    [(__CFString *)v8 cStringUsingEncoding:4];
+    [(__CFString *)identifierCopy cStringUsingEncoding:4];
     v9 = tcc_identity_create();
     v11 = tcc_service_singleton_for_CF_name();
-    if (a5 == 1)
+    if (value == 1)
     {
-      v17 = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
-      v18 = [v17 containsObject:v8];
+      contactsLimitedAccessAppIDs = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
+      v18 = [contactsLimitedAccessAppIDs containsObject:identifierCopy];
 
       if (v18)
       {
@@ -284,12 +284,12 @@
       }
     }
 
-    else if (a5 != 3)
+    else if (value != 3)
     {
-      if (a5 == 2)
+      if (value == 2)
       {
-        v12 = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
-        v13 = [v12 containsObject:v8];
+        contactsFullAccessAllowedAppIDs = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
+        v13 = [contactsFullAccessAllowedAppIDs containsObject:identifierCopy];
 
         if ((v13 & 1) == 0)
         {
@@ -300,14 +300,14 @@
             v22[2] = __69__PUIContactsPrivacyController_setTCCForService_appIdentifier_value___block_invoke_2;
             v22[3] = &unk_279BA18B0;
             v22[4] = self;
-            v14 = v8;
+            v14 = identifierCopy;
             v23 = v14;
             v15 = _Block_copy(v22);
             v16 = _PUILoggingFacility();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v25 = a3;
+              serviceCopy2 = service;
               v26 = 2112;
               v27 = v14;
               _os_log_impl(&dword_2657FE000, v16, OS_LOG_TYPE_DEFAULT, "Setting %@ auth for app %@ to full, after prompt", buf, 0x16u);
@@ -325,8 +325,8 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v19 = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
-      v20 = [v19 containsObject:v8];
+      contactsDeniedAppIDs = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
+      v20 = [contactsDeniedAppIDs containsObject:identifierCopy];
 
       if (v20)
       {
@@ -343,7 +343,7 @@ LABEL_20:
   if (v10)
   {
     *buf = 138412290;
-    v25 = v8;
+    serviceCopy2 = identifierCopy;
     _os_log_impl(&dword_2657FE000, v9, OS_LOG_TYPE_DEFAULT, "Access level is picker only; Skipping for app: %@", buf, 0xCu);
   }
 
@@ -381,12 +381,12 @@ void __69__PUIContactsPrivacyController_setTCCForService_appIdentifier_value___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)contactsStatus:(id)a3
+- (id)contactsStatus:(id)status
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 propertyForKey:@"appBundleID"];
-  v5 = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
-  v6 = [v5 containsObject:v4];
+  v4 = [status propertyForKey:@"appBundleID"];
+  contactsFullAccessAllowedAppIDs = [(PUIContactsPrivacyController *)self contactsFullAccessAllowedAppIDs];
+  v6 = [contactsFullAccessAllowedAppIDs containsObject:v4];
 
   if (v6)
   {
@@ -402,8 +402,8 @@ void __69__PUIContactsPrivacyController_setTCCForService_appIdentifier_value___b
     goto LABEL_19;
   }
 
-  v9 = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
-  v10 = [v9 containsObject:v4];
+  contactsLimitedAccessAppIDs = [(PUIContactsPrivacyController *)self contactsLimitedAccessAppIDs];
+  v10 = [contactsLimitedAccessAppIDs containsObject:v4];
 
   if (v10)
   {
@@ -419,8 +419,8 @@ void __69__PUIContactsPrivacyController_setTCCForService_appIdentifier_value___b
     goto LABEL_19;
   }
 
-  v11 = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
-  v12 = [v11 containsObject:v4];
+  contactsDeniedAppIDs = [(PUIContactsPrivacyController *)self contactsDeniedAppIDs];
+  v12 = [contactsDeniedAppIDs containsObject:v4];
 
   if (v12)
   {
@@ -437,8 +437,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v13 = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
-  v14 = [v13 containsObject:v4];
+  pickerUsageAppIDs = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
+  v14 = [pickerUsageAppIDs containsObject:v4];
 
   v15 = _PUILoggingFacility();
   v7 = v15;
@@ -466,50 +466,50 @@ LABEL_19:
   return v8;
 }
 
-- (id)appSpecifierWithName:(id)a3 bundleID:(id)a4 showContactsAccess:(BOOL)a5 showPickerUsage:(BOOL)a6
+- (id)appSpecifierWithName:(id)name bundleID:(id)d showContactsAccess:(BOOL)access showPickerUsage:(BOOL)usage
 {
-  v6 = a6;
-  v7 = a5;
+  usageCopy = usage;
+  accessCopy = access;
   v10 = MEMORY[0x277D3FAD8];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 preferenceSpecifierNamed:v12 target:self set:sel__setContactsTCCStatus_specifier_ get:sel_contactsStatus_ detail:objc_opt_class() cell:2 edit:0];
-  [v13 setIdentifier:v11];
-  [v13 setProperty:v11 forKey:@"appBundleID"];
+  dCopy = d;
+  nameCopy = name;
+  v13 = [v10 preferenceSpecifierNamed:nameCopy target:self set:sel__setContactsTCCStatus_specifier_ get:sel_contactsStatus_ detail:objc_opt_class() cell:2 edit:0];
+  [v13 setIdentifier:dCopy];
+  [v13 setProperty:dCopy forKey:@"appBundleID"];
 
-  [v13 setProperty:v12 forKey:@"appLocalizedDisplayName"];
+  [v13 setProperty:nameCopy forKey:@"appLocalizedDisplayName"];
   v14 = PUI_LocalizedStringForPrivacy(@"CONTACTS_AUTH_HEADER");
   [v13 setProperty:v14 forKey:*MEMORY[0x277D40110]];
 
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [MEMORY[0x277CBEB18] array];
-  if (v7)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if (accessCopy)
   {
     v17 = PUI_LocalizedStringForPrivacy(@"CONTACTS_NO_ACCESS_AUTHORIZATION");
-    [v15 addObject:v17];
+    [array addObject:v17];
 
-    [v16 addObject:&unk_28772B300];
+    [array2 addObject:&unk_28772B300];
     [v13 setProperty:MEMORY[0x277CBEC38] forKey:@"hasTCCOptions"];
     v18 = PUI_LocalizedStringForPrivacy(@"CONTACTS_LIMITED_ACCESS_AUTHORIZATION");
-    [v15 addObject:v18];
+    [array addObject:v18];
 
-    [v16 addObject:&unk_28772B2D0];
+    [array2 addObject:&unk_28772B2D0];
     v19 = PUI_LocalizedStringForPrivacy(@"CONTACTS_FULL_ACCESS_AUTHORIZATION");
-    [v15 addObject:v19];
+    [array addObject:v19];
 
-    [v16 addObject:&unk_28772B2E8];
+    [array2 addObject:&unk_28772B2E8];
   }
 
-  if (v6)
+  if (usageCopy)
   {
     v20 = PUI_LocalizedStringForPrivacy(@"CONTACTS_PICKER_ONLY_AUTHORIZATION");
-    [v15 addObject:v20];
+    [array addObject:v20];
 
-    [v16 addObject:&unk_28772B318];
+    [array2 addObject:&unk_28772B318];
     [v13 setProperty:MEMORY[0x277CBEC38] forKey:@"hasPickerInfo"];
   }
 
-  [v13 setValues:v16 titles:v15];
+  [v13 setValues:array2 titles:array];
 
   return v13;
 }
@@ -565,11 +565,11 @@ LABEL_19:
             {
               [v4 addObject:v15];
               v16 = PUIDisplayNameForApp(v14);
-              v17 = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
-              v18 = [v17 containsObject:v15];
+              contactsAllAppIDs = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
+              v18 = [contactsAllAppIDs containsObject:v15];
 
-              v19 = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
-              v20 = [v19 containsObject:v15];
+              pickerUsageAppIDs = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
+              v20 = [pickerUsageAppIDs containsObject:v15];
 
               if ((v18 | v20))
               {
@@ -605,7 +605,7 @@ LABEL_19:
     v63 = PUIGetActivePairedDevice();
     if (v63 && objc_opt_class())
     {
-      v23 = [MEMORY[0x277D2BD58] sharedInstance];
+      mEMORY[0x277D2BD58] = [MEMORY[0x277D2BD58] sharedInstance];
       ScreenScale();
       v88 = 0u;
       v89 = 0u;
@@ -622,8 +622,8 @@ LABEL_19:
       v67 = v25;
       v87 = 0uLL;
       v86 = 0uLL;
-      v70 = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
-      v26 = [v70 countByEnumeratingWithState:&v86 objects:v99 count:16];
+      contactsAllAppIDs2 = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
+      v26 = [contactsAllAppIDs2 countByEnumeratingWithState:&v86 objects:v99 count:16];
       if (v26)
       {
         v72 = *v87;
@@ -634,7 +634,7 @@ LABEL_19:
           {
             if (*v87 != v72)
             {
-              objc_enumerationMutation(v70);
+              objc_enumerationMutation(contactsAllAppIDs2);
             }
 
             v28 = *(*(&v86 + 1) + 8 * j);
@@ -653,11 +653,11 @@ LABEL_19:
                 v29 = PUIDisplayNameForWatchApp(v30);
               }
 
-              v31 = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
-              v32 = [v31 containsObject:v28];
+              contactsAllAppIDs3 = [(PUIContactsPrivacyController *)self contactsAllAppIDs];
+              v32 = [contactsAllAppIDs3 containsObject:v28];
 
-              v33 = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
-              v34 = [v33 containsObject:v28];
+              pickerUsageAppIDs2 = [(PUIContactsPrivacyController *)self pickerUsageAppIDs];
+              v34 = [pickerUsageAppIDs2 containsObject:v28];
 
               if (v29)
               {
@@ -681,7 +681,7 @@ LABEL_19:
               v38 = v36;
               v84 = v38;
               objc_copyWeak(&v85, buf);
-              [v23 getIconForBundleID:v30 iconVariant:v67 block:v83 timeout:-1.0];
+              [mEMORY[0x277D2BD58] getIconForBundleID:v30 iconVariant:v67 block:v83 timeout:-1.0];
               [v76 addObject:v38];
               objc_destroyWeak(&v85);
 
@@ -689,7 +689,7 @@ LABEL_19:
             }
           }
 
-          v26 = [v70 countByEnumeratingWithState:&v86 objects:v99 count:16];
+          v26 = [contactsAllAppIDs2 countByEnumeratingWithState:&v86 objects:v99 count:16];
         }
 
         while (v26);
@@ -736,8 +736,8 @@ LABEL_19:
             v44 = v78;
             if (v45)
             {
-              v46 = [v45 localizedName];
-              v47 = [(PUIContactsPrivacyController *)self appSpecifierWithName:v46 bundleID:v43 showContactsAccess:0 showPickerUsage:1];
+              localizedName = [v45 localizedName];
+              v47 = [(PUIContactsPrivacyController *)self appSpecifierWithName:localizedName bundleID:v43 showContactsAccess:0 showPickerUsage:1];
               [v47 setProperty:v43 forKey:v71];
               [v47 setProperty:MEMORY[0x277CBEC38] forKey:v68];
               v48 = [MEMORY[0x277CCABB0] numberWithInt:!v75];
@@ -748,14 +748,14 @@ LABEL_19:
 
             else
             {
-              v46 = _PUILoggingFacility();
-              if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+              localizedName = _PUILoggingFacility();
+              if (os_log_type_enabled(localizedName, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
                 v95 = v43;
                 v96 = 2112;
                 v97 = v44;
-                _os_log_impl(&dword_2657FE000, v46, OS_LOG_TYPE_DEFAULT, "Contacts: Skipping picker log for app (%@) without bundle record with error: %@", buf, 0x16u);
+                _os_log_impl(&dword_2657FE000, localizedName, OS_LOG_TYPE_DEFAULT, "Contacts: Skipping picker log for app (%@) without bundle record with error: %@", buf, 0x16u);
               }
             }
           }
@@ -847,22 +847,22 @@ uint64_t __71__PUIContactsPrivacyController_createSpecifiersWithCombinedPickerUs
   return v7;
 }
 
-- (void)setAccess:(id)a3 forSpecifier:(id)a4
+- (void)setAccess:(id)access forSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accessCopy = access;
+  specifierCopy = specifier;
   v7 = *MEMORY[0x277D401A8];
-  v8 = [v6 propertyForKey:*MEMORY[0x277D401A8]];
-  v9 = [v5 isEqual:v8];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D401A8]];
+  v9 = [accessCopy isEqual:v8];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [v6 propertyForKey:@"appBundleID"];
+    v10 = [specifierCopy propertyForKey:@"appBundleID"];
     v11 = *MEMORY[0x277D6C100];
-    [v5 BOOLValue];
+    [accessCopy BOOLValue];
     TCCAccessSetForBundleId();
-    [v6 setProperty:v5 forKey:v7];
+    [specifierCopy setProperty:accessCopy forKey:v7];
     v12 = _PUILoggingFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -927,23 +927,23 @@ uint64_t __71__PUIContactsPrivacyController_createSpecifiersWithCombinedPickerUs
 
             [v14 setProperty:v11 forKey:@"appBundleID"];
             [v14 setProperty:v11 forKey:@"PUITCCAccessControllerBundleIDKey"];
-            v16 = [(PUIContactsPrivacyController *)self specifier];
-            v17 = [v16 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
+            specifier = [(PUIContactsPrivacyController *)self specifier];
+            v17 = [specifier objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
 
             if (v17)
             {
-              v18 = [(PUIContactsPrivacyController *)self specifier];
-              v19 = [v18 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
+              specifier2 = [(PUIContactsPrivacyController *)self specifier];
+              v19 = [specifier2 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
               [v14 setProperty:v19 forKey:v64];
             }
 
-            v20 = [(PUIContactsPrivacyController *)self specifier];
-            v21 = [v20 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
+            specifier3 = [(PUIContactsPrivacyController *)self specifier];
+            v21 = [specifier3 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
 
             if (v21)
             {
-              v22 = [(PUIContactsPrivacyController *)self specifier];
-              v23 = [v22 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
+              specifier4 = [(PUIContactsPrivacyController *)self specifier];
+              v23 = [specifier4 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
               [v14 setProperty:v23 forKey:@"PUITCCAccessControllerCellDelegateKey"];
             }
 
@@ -982,7 +982,7 @@ uint64_t __71__PUIContactsPrivacyController_createSpecifiersWithCombinedPickerUs
       v59 = [v27 setWithArray:v29];
 
       v30 = [v71 setByAddingObjectsFromSet:v59];
-      v69 = [MEMORY[0x277D2BD58] sharedInstance];
+      mEMORY[0x277D2BD58] = [MEMORY[0x277D2BD58] sharedInstance];
       ScreenScale();
       if (v31 == 2)
       {
@@ -1054,23 +1054,23 @@ LABEL_30:
 
               [v41 setProperty:v36 forKey:@"appBundleID"];
               [v41 setProperty:v36 forKey:@"PUITCCAccessControllerBundleIDKey"];
-              v44 = [(PUIContactsPrivacyController *)self specifier];
-              v45 = [v44 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
+              specifier5 = [(PUIContactsPrivacyController *)self specifier];
+              v45 = [specifier5 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
 
               if (v45)
               {
-                v46 = [(PUIContactsPrivacyController *)self specifier];
-                v47 = [v46 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
+                specifier6 = [(PUIContactsPrivacyController *)self specifier];
+                v47 = [specifier6 objectForKeyedSubscript:@"PUITCCAccessControllerCellClassKey"];
                 [v41 setProperty:v47 forKey:v62];
               }
 
-              v48 = [(PUIContactsPrivacyController *)self specifier];
-              v49 = [v48 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
+              specifier7 = [(PUIContactsPrivacyController *)self specifier];
+              v49 = [specifier7 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
 
               if (v49)
               {
-                v50 = [(PUIContactsPrivacyController *)self specifier];
-                v51 = [v50 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
+                specifier8 = [(PUIContactsPrivacyController *)self specifier];
+                v51 = [specifier8 objectForKeyedSubscript:@"PUITCCAccessControllerCellDelegateKey"];
                 [v41 setProperty:v51 forKey:@"PUITCCAccessControllerCellDelegateKey"];
               }
 
@@ -1082,7 +1082,7 @@ LABEL_30:
               v52 = v41;
               v78 = v52;
               objc_copyWeak(&v79, buf);
-              [v69 getIconForBundleID:v38 iconVariant:v67 block:v77 timeout:-1.0];
+              [mEMORY[0x277D2BD58] getIconForBundleID:v38 iconVariant:v67 block:v77 timeout:-1.0];
               [v74 addObject:v52];
               objc_destroyWeak(&v79);
 

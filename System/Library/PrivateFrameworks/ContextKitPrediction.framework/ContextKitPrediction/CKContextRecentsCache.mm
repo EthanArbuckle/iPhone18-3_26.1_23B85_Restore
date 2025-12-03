@@ -1,43 +1,43 @@
 @interface CKContextRecentsCache
-- (BOOL)_constellationResult:(id)a3 intersectsWithRecent:(id)a4;
-- (BOOL)_recent:(id)a3 matchesKeywords:(id)a4;
-- (CKContextRecentsCache)initWithCacheConfiguration:(unint64_t)a3;
+- (BOOL)_constellationResult:(id)result intersectsWithRecent:(id)recent;
+- (BOOL)_recent:(id)_recent matchesKeywords:(id)keywords;
+- (CKContextRecentsCache)initWithCacheConfiguration:(unint64_t)configuration;
 - (CKContextRecentsCacheDelegate)delegate;
-- (id)_associatedTopicIdsForRecent:(id)a3;
-- (id)_associatedTopicTitlesForRecent:(id)a3;
-- (id)_relativeDateStringForRecent:(id)a3;
+- (id)_associatedTopicIdsForRecent:(id)recent;
+- (id)_associatedTopicTitlesForRecent:(id)recent;
+- (id)_relativeDateStringForRecent:(id)recent;
 - (unint64_t)_maximumNumberOfItemsToRetrieve;
-- (void)_groupActivitiesByAppIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5;
-- (void)_groupActivitiesByConstellationIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5;
-- (void)_groupActivitiesByDateIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5;
-- (void)_groupActivitiesByModeIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5;
-- (void)_modeDidChangeToModeWithModeUUIDString:(id)a3;
+- (void)_groupActivitiesByAppIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply;
+- (void)_groupActivitiesByConstellationIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply;
+- (void)_groupActivitiesByDateIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply;
+- (void)_groupActivitiesByModeIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply;
+- (void)_modeDidChangeToModeWithModeUUIDString:(id)string;
 - (void)_performMaintenanceTasks;
-- (void)_performMaintenanceTasksForRecents:(id)a3;
-- (void)_pruneRecentsFromUnusedAppsForRecents:(id)a3;
+- (void)_performMaintenanceTasksForRecents:(id)recents;
+- (void)_pruneRecentsFromUnusedAppsForRecents:(id)recents;
 - (void)_registerComputedModeStream;
 - (void)_scheduleDeferredMaintenanceTasks;
 - (void)_updateLatestFocusMode;
-- (void)allRecentsWithReply:(id)a3;
+- (void)allRecentsWithReply:(id)reply;
 - (void)dealloc;
-- (void)insertUserActivityData:(id)a3 preferredTitle:(id)a4 bundleId:(id)a5 topics:(id)a6 hasAssociatedImageRepresentation:(BOOL)a7 uuid:(id)a8;
-- (void)pruneRecentsForBundleIdentifiers:(id)a3;
-- (void)removeAllRecentsWithReply:(id)a3;
-- (void)removeRecentWithUUID:(id)a3;
-- (void)removeRecentsMatchingRecent:(id)a3;
-- (void)retrieveRecentMatchingUUID:(id)a3 withReply:(id)a4;
-- (void)retrieveRecentsBetweenStartDate:(id)a3 endDate:(id)a4 withReply:(id)a5;
-- (void)retrieveRecentsCatalogWithStyle:(unint64_t)a3 withReply:(id)a4;
-- (void)retrieveRecentsForPredictionWithReply:(id)a3;
-- (void)retrieveRecentsMatchingBundleIdentifier:(id)a3 withReply:(id)a4;
-- (void)retrieveRecentsMatchingMode:(id)a3 withReply:(id)a4;
-- (void)retrieveRecentsMatchingStrings:(id)a3 withReply:(id)a4;
-- (void)retrieveRecentsMatchingTopicIds:(id)a3 titles:(id)a4 withReply:(id)a5;
+- (void)insertUserActivityData:(id)data preferredTitle:(id)title bundleId:(id)id topics:(id)topics hasAssociatedImageRepresentation:(BOOL)representation uuid:(id)uuid;
+- (void)pruneRecentsForBundleIdentifiers:(id)identifiers;
+- (void)removeAllRecentsWithReply:(id)reply;
+- (void)removeRecentWithUUID:(id)d;
+- (void)removeRecentsMatchingRecent:(id)recent;
+- (void)retrieveRecentMatchingUUID:(id)d withReply:(id)reply;
+- (void)retrieveRecentsBetweenStartDate:(id)date endDate:(id)endDate withReply:(id)reply;
+- (void)retrieveRecentsCatalogWithStyle:(unint64_t)style withReply:(id)reply;
+- (void)retrieveRecentsForPredictionWithReply:(id)reply;
+- (void)retrieveRecentsMatchingBundleIdentifier:(id)identifier withReply:(id)reply;
+- (void)retrieveRecentsMatchingMode:(id)mode withReply:(id)reply;
+- (void)retrieveRecentsMatchingStrings:(id)strings withReply:(id)reply;
+- (void)retrieveRecentsMatchingTopicIds:(id)ids titles:(id)titles withReply:(id)reply;
 @end
 
 @implementation CKContextRecentsCache
 
-- (CKContextRecentsCache)initWithCacheConfiguration:(unint64_t)a3
+- (CKContextRecentsCache)initWithCacheConfiguration:(unint64_t)configuration
 {
   v15.receiver = self;
   v15.super_class = CKContextRecentsCache;
@@ -52,7 +52,7 @@
     stream = v4->_stream;
     v4->_stream = v7;
 
-    v4->_configuration = a3;
+    v4->_configuration = configuration;
     v9 = objc_alloc_init(MEMORY[0x277CF1B80]);
     computedModeStream = v4->_computedModeStream;
     v4->_computedModeStream = v9;
@@ -70,29 +70,29 @@
   return v4;
 }
 
-- (void)insertUserActivityData:(id)a3 preferredTitle:(id)a4 bundleId:(id)a5 topics:(id)a6 hasAssociatedImageRepresentation:(BOOL)a7 uuid:(id)a8
+- (void)insertUserActivityData:(id)data preferredTitle:(id)title bundleId:(id)id topics:(id)topics hasAssociatedImageRepresentation:(BOOL)representation uuid:(id)uuid
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  dataCopy = data;
+  titleCopy = title;
+  idCopy = id;
+  topicsCopy = topics;
+  uuidCopy = uuid;
   objc_initWeak(&location, self);
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __117__CKContextRecentsCache_insertUserActivityData_preferredTitle_bundleId_topics_hasAssociatedImageRepresentation_uuid___block_invoke;
   v24[3] = &unk_278E06E70;
   objc_copyWeak(&v30, &location);
-  v19 = v15;
+  v19 = titleCopy;
   v25 = v19;
-  v20 = v14;
+  v20 = dataCopy;
   v26 = v20;
-  v21 = v16;
+  v21 = idCopy;
   v27 = v21;
-  v22 = v17;
+  v22 = topicsCopy;
   v28 = v22;
-  v31 = a7;
-  v23 = v18;
+  representationCopy = representation;
+  v23 = uuidCopy;
   v29 = v23;
   [v20 _createUserActivityDataWithOptions:0 completionHandler:v24];
 
@@ -201,10 +201,10 @@ void __117__CKContextRecentsCache_insertUserActivityData_preferredTitle_bundleId
   [v2 sendEvent:*(a1 + 40)];
 }
 
-- (void)allRecentsWithReply:(id)a3
+- (void)allRecentsWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     objc_initWeak(&location, self);
     biomeQueue = self->_biomeQueue;
@@ -214,7 +214,7 @@ void __117__CKContextRecentsCache_insertUserActivityData_preferredTitle_bundleId
     v6[3] = &unk_278E06EE8;
     objc_copyWeak(&v8, &location);
     v6[4] = self;
-    v7 = v4;
+    v7 = replyCopy;
     dispatch_async(biomeQueue, v6);
 
     objc_destroyWeak(&v8);
@@ -339,18 +339,18 @@ void __45__CKContextRecentsCache_allRecentsWithReply___block_invoke_32(uint64_t 
   }
 }
 
-- (void)retrieveRecentsBetweenStartDate:(id)a3 endDate:(id)a4 withReply:(id)a5
+- (void)retrieveRecentsBetweenStartDate:(id)date endDate:(id)endDate withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  replyCopy = reply;
+  v11 = replyCopy;
+  if (replyCopy)
   {
-    if (v8 && v9)
+    if (dateCopy && endDateCopy)
     {
-      v12 = [MEMORY[0x277CBEAA8] date];
-      [v8 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [dateCopy timeIntervalSinceReferenceDate];
       v14 = v13;
       objc_initWeak(&location, self);
       biomeQueue = self->_biomeQueue;
@@ -362,9 +362,9 @@ void __45__CKContextRecentsCache_allRecentsWithReply___block_invoke_32(uint64_t 
       v16 = v11;
       v22[1] = v14;
       v21 = v16;
-      v19 = v12;
-      v20 = v9;
-      v17 = v12;
+      v19 = date;
+      v20 = endDateCopy;
+      v17 = date;
       dispatch_async(biomeQueue, v18);
 
       objc_destroyWeak(v22);
@@ -373,7 +373,7 @@ void __45__CKContextRecentsCache_allRecentsWithReply___block_invoke_32(uint64_t 
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(replyCopy + 2))(replyCopy, 0);
     }
   }
 }
@@ -503,14 +503,14 @@ uint64_t __75__CKContextRecentsCache_retrieveRecentsBetweenStartDate_endDate_wit
   return v12;
 }
 
-- (void)retrieveRecentMatchingUUID:(id)a3 withReply:(id)a4
+- (void)retrieveRecentMatchingUUID:(id)d withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
-    if (v6)
+    if (dCopy)
     {
       objc_initWeak(&location, self);
       biomeQueue = self->_biomeQueue;
@@ -520,7 +520,7 @@ uint64_t __75__CKContextRecentsCache_retrieveRecentsBetweenStartDate_endDate_wit
       v10[3] = &unk_278E06EE8;
       objc_copyWeak(&v13, &location);
       v12 = v8;
-      v11 = v6;
+      v11 = dCopy;
       dispatch_async(biomeQueue, v10);
 
       objc_destroyWeak(&v13);
@@ -529,7 +529,7 @@ uint64_t __75__CKContextRecentsCache_retrieveRecentsBetweenStartDate_endDate_wit
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(replyCopy + 2))(replyCopy, 0);
     }
   }
 }
@@ -588,31 +588,31 @@ void __62__CKContextRecentsCache_retrieveRecentMatchingUUID_withReply___block_in
   }
 }
 
-- (void)removeAllRecentsWithReply:(id)a3
+- (void)removeAllRecentsWithReply:(id)reply
 {
   v4 = MEMORY[0x277CF1B30];
-  v5 = a3;
+  replyCopy = reply;
   v6 = [v4 alloc];
-  v7 = [(BMUserActivityMetadataStream *)self->_stream identifier];
-  v8 = [v6 initWithRestrictedStreamIdentifier:v7];
+  identifier = [(BMUserActivityMetadataStream *)self->_stream identifier];
+  v8 = [v6 initWithRestrictedStreamIdentifier:identifier];
 
   [v8 pruneWithPredicateBlock:&__block_literal_global_0];
-  v5[2](v5, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)removeRecentWithUUID:(id)a3
+- (void)removeRecentWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc(MEMORY[0x277CF1B30]);
-  v6 = [(BMUserActivityMetadataStream *)self->_stream identifier];
-  v7 = [v5 initWithRestrictedStreamIdentifier:v6];
+  identifier = [(BMUserActivityMetadataStream *)self->_stream identifier];
+  v7 = [v5 initWithRestrictedStreamIdentifier:identifier];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__CKContextRecentsCache_removeRecentWithUUID___block_invoke;
   v9[3] = &unk_278E06FD0;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   [v7 pruneWithPredicateBlock:v9];
 }
 
@@ -630,19 +630,19 @@ uint64_t __46__CKContextRecentsCache_removeRecentWithUUID___block_invoke(uint64_
   return v7;
 }
 
-- (void)removeRecentsMatchingRecent:(id)a3
+- (void)removeRecentsMatchingRecent:(id)recent
 {
-  v4 = a3;
+  recentCopy = recent;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
   v14 = objc_alloc_init(CKContextUserFacingUniversalRecent);
-  [v10[5] setEvent:v4];
+  [v10[5] setEvent:recentCopy];
   v5 = objc_alloc(MEMORY[0x277CF1B30]);
-  v6 = [(BMUserActivityMetadataStream *)self->_stream identifier];
-  v7 = [v5 initWithRestrictedStreamIdentifier:v6];
+  identifier = [(BMUserActivityMetadataStream *)self->_stream identifier];
+  v7 = [v5 initWithRestrictedStreamIdentifier:identifier];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -668,19 +668,19 @@ uint64_t __53__CKContextRecentsCache_removeRecentsMatchingRecent___block_invoke(
   return v7;
 }
 
-- (void)pruneRecentsForBundleIdentifiers:(id)a3
+- (void)pruneRecentsForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc(MEMORY[0x277CF1B30]);
-  v6 = [(BMUserActivityMetadataStream *)self->_stream identifier];
-  v7 = [v5 initWithRestrictedStreamIdentifier:v6];
+  identifier = [(BMUserActivityMetadataStream *)self->_stream identifier];
+  v7 = [v5 initWithRestrictedStreamIdentifier:identifier];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__CKContextRecentsCache_pruneRecentsForBundleIdentifiers___block_invoke;
   v9[3] = &unk_278E06FD0;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifiersCopy;
+  v8 = identifiersCopy;
   [v7 pruneWithPredicateBlock:v9];
 }
 
@@ -694,18 +694,18 @@ uint64_t __58__CKContextRecentsCache_pruneRecentsForBundleIdentifiers___block_in
   return v6;
 }
 
-- (void)retrieveRecentsCatalogWithStyle:(unint64_t)a3 withReply:(id)a4
+- (void)retrieveRecentsCatalogWithStyle:(unint64_t)style withReply:(id)reply
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  replyCopy = reply;
+  v7 = replyCopy;
+  if (replyCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__CKContextRecentsCache_retrieveRecentsCatalogWithStyle_withReply___block_invoke;
     v8[3] = &unk_278E07020;
-    v9 = v6;
-    v10 = a3;
+    v9 = replyCopy;
+    styleCopy = style;
     v8[4] = self;
     [(CKContextRecentsCache *)self allRecentsWithReply:v8];
   }
@@ -765,11 +765,11 @@ void __67__CKContextRecentsCache_retrieveRecentsCatalogWithStyle_withReply___blo
 LABEL_13:
 }
 
-- (void)retrieveRecentsMatchingBundleIdentifier:(id)a3 withReply:(id)a4
+- (void)retrieveRecentsMatchingBundleIdentifier:(id)identifier withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if ([identifierCopy length])
   {
     objc_initWeak(&location, self);
     biomeQueue = self->_biomeQueue;
@@ -778,8 +778,8 @@ LABEL_13:
     v9[2] = __75__CKContextRecentsCache_retrieveRecentsMatchingBundleIdentifier_withReply___block_invoke;
     v9[3] = &unk_278E06EE8;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
+    v11 = replyCopy;
+    v10 = identifierCopy;
     dispatch_async(biomeQueue, v9);
 
     objc_destroyWeak(&v12);
@@ -788,7 +788,7 @@ LABEL_13:
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
@@ -903,24 +903,24 @@ void __75__CKContextRecentsCache_retrieveRecentsMatchingBundleIdentifier_withRep
   [*(*(*(a1 + 32) + 8) + 40) insertObject:v3 atIndex:0];
 }
 
-- (void)retrieveRecentsMatchingMode:(id)a3 withReply:(id)a4
+- (void)retrieveRecentsMatchingMode:(id)mode withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  modeCopy = mode;
+  replyCopy = reply;
+  if ([modeCopy length])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__CKContextRecentsCache_retrieveRecentsMatchingMode_withReply___block_invoke;
     v8[3] = &unk_278E07070;
-    v10 = v7;
-    v9 = v6;
+    v10 = replyCopy;
+    v9 = modeCopy;
     [(CKContextRecentsCache *)self allRecentsWithReply:v8];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
@@ -977,10 +977,10 @@ void __63__CKContextRecentsCache_retrieveRecentsMatchingMode_withReply___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveRecentsForPredictionWithReply:(id)a3
+- (void)retrieveRecentsForPredictionWithReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
     objc_initWeak(&location, self);
     biomeQueue = self->_biomeQueue;
@@ -989,7 +989,7 @@ void __63__CKContextRecentsCache_retrieveRecentsMatchingMode_withReply___block_i
     block[2] = __63__CKContextRecentsCache_retrieveRecentsForPredictionWithReply___block_invoke;
     block[3] = &unk_278E07108;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = replyCopy;
     dispatch_async(biomeQueue, block);
 
     objc_destroyWeak(&v8);
@@ -1146,19 +1146,19 @@ void __63__CKContextRecentsCache_retrieveRecentsForPredictionWithReply___block_i
   }
 }
 
-- (void)retrieveRecentsMatchingStrings:(id)a3 withReply:(id)a4
+- (void)retrieveRecentsMatchingStrings:(id)strings withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__CKContextRecentsCache_retrieveRecentsMatchingStrings_withReply___block_invoke;
   v10[3] = &unk_278E07130;
-  v11 = v6;
-  v12 = v7;
+  v11 = stringsCopy;
+  v12 = replyCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = stringsCopy;
+  v9 = replyCopy;
   [(CKContextRecentsCache *)self allRecentsWithReply:v10];
 }
 
@@ -1212,14 +1212,14 @@ void __66__CKContextRecentsCache_retrieveRecentsMatchingStrings_withReply___bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveRecentsMatchingTopicIds:(id)a3 titles:(id)a4 withReply:(id)a5
+- (void)retrieveRecentsMatchingTopicIds:(id)ids titles:(id)titles withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  idsCopy = ids;
+  titlesCopy = titles;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if ([v8 count] || objc_msgSend(v9, "count"))
+    if ([idsCopy count] || objc_msgSend(titlesCopy, "count"))
     {
       objc_initWeak(&location, self);
       v11[0] = MEMORY[0x277D85DD0];
@@ -1227,9 +1227,9 @@ void __66__CKContextRecentsCache_retrieveRecentsMatchingStrings_withReply___bloc
       v11[2] = __74__CKContextRecentsCache_retrieveRecentsMatchingTopicIds_titles_withReply___block_invoke;
       v11[3] = &unk_278E07158;
       objc_copyWeak(&v15, &location);
-      v14 = v10;
-      v12 = v8;
-      v13 = v9;
+      v14 = replyCopy;
+      v12 = idsCopy;
+      v13 = titlesCopy;
       [(CKContextRecentsCache *)self allRecentsWithReply:v11];
 
       objc_destroyWeak(&v15);
@@ -1238,7 +1238,7 @@ void __66__CKContextRecentsCache_retrieveRecentsMatchingStrings_withReply___bloc
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(replyCopy + 2))(replyCopy, 0);
     }
   }
 }
@@ -1361,25 +1361,25 @@ LABEL_22:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_modeDidChangeToModeWithModeUUIDString:(id)a3
+- (void)_modeDidChangeToModeWithModeUUIDString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [CKContextRecentsCache _modeDidChangeToModeWithModeUUIDString:];
   }
 
-  v5 = [v4 copy];
+  v5 = [stringCopy copy];
   latestActivity = self->_latestActivity;
   self->_latestActivity = v5;
 
-  v7 = [(CKContextRecentsCache *)self delegate];
+  delegate = [(CKContextRecentsCache *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CKContextRecentsCache *)self delegate];
-    [v9 modeDidChangeToModeWithUUIDString:self->_latestActivity forCache:self];
+    delegate2 = [(CKContextRecentsCache *)self delegate];
+    [delegate2 modeDidChangeToModeWithUUIDString:self->_latestActivity forCache:self];
   }
 }
 
@@ -1446,14 +1446,14 @@ uint64_t __47__CKContextRecentsCache__updateLatestFocusMode__block_invoke_2(uint
 - (void)_registerComputedModeStream
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 processName];
-  v6 = [v3 stringWithFormat:@"%@.%@", @"CKContextRecentsCache.Modes", v5];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v6 = [v3 stringWithFormat:@"%@.%@", @"CKContextRecentsCache.Modes", processName];
 
   objc_initWeak(&location, self);
-  v7 = [(BMUserFocusComputedModeStream *)self->_computedModeStream publisher];
+  publisher = [(BMUserFocusComputedModeStream *)self->_computedModeStream publisher];
   v8 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:v6 targetQueue:self->_computedFocusModeQueue];
-  v9 = [v7 subscribeOn:v8];
+  v9 = [publisher subscribeOn:v8];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__CKContextRecentsCache__registerComputedModeStream__block_invoke_62;
@@ -1504,23 +1504,23 @@ void __52__CKContextRecentsCache__registerComputedModeStream__block_invoke_62(ui
   }
 }
 
-- (void)_groupActivitiesByDateIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5
+- (void)_groupActivitiesByDateIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  recentsCopy = recents;
+  replyCopy = reply;
+  v10 = replyCopy;
+  if (replyCopy)
   {
-    v24 = v9;
+    v24 = replyCopy;
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v25 = v8;
-    obj = v8;
+    v25 = recentsCopy;
+    obj = recentsCopy;
     v13 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
@@ -1539,7 +1539,7 @@ void __52__CKContextRecentsCache__registerComputedModeStream__block_invoke_62(ui
           v18 = [(CKContextRecentsCache *)self _relativeDateStringForRecent:v17];
           v19 = [v12 objectForKeyedSubscript:v18];
           v20 = v19;
-          if (!a4 || [v19 count] < a4)
+          if (!limit || [v19 count] < limit)
           {
             if (v20)
             {
@@ -1567,7 +1567,7 @@ void __52__CKContextRecentsCache__registerComputedModeStream__block_invoke_62(ui
     v10 = v24;
     v24[2](v24, v22, v11, v12);
 
-    v8 = v25;
+    recentsCopy = v25;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1591,23 +1591,23 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByDateIntoSectionsWithRecen
   return v11;
 }
 
-- (void)_groupActivitiesByAppIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5
+- (void)_groupActivitiesByAppIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  recentsCopy = recents;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (replyCopy)
   {
-    v24 = v8;
+    v24 = replyCopy;
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v7;
-    v12 = v7;
+    v25 = recentsCopy;
+    v12 = recentsCopy;
     v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v13)
     {
@@ -1623,10 +1623,10 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByDateIntoSectionsWithRecen
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
-          v18 = [v17 associatedBundleId];
-          v19 = [v11 objectForKeyedSubscript:v18];
+          associatedBundleId = [v17 associatedBundleId];
+          v19 = [v11 objectForKeyedSubscript:associatedBundleId];
           v20 = v19;
-          if (!a4 || [v19 count] < a4)
+          if (!limit || [v19 count] < limit)
           {
             if (v20)
             {
@@ -1638,9 +1638,9 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByDateIntoSectionsWithRecen
               [MEMORY[0x277CBEA60] arrayWithObject:v17];
             }
             v21 = ;
-            [v11 setObject:v21 forKeyedSubscript:v18];
+            [v11 setObject:v21 forKeyedSubscript:associatedBundleId];
 
-            [v10 setObject:v18 forKeyedSubscript:v18];
+            [v10 setObject:associatedBundleId forKeyedSubscript:associatedBundleId];
           }
         }
 
@@ -1654,7 +1654,7 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByDateIntoSectionsWithRecen
     v9 = v24;
     v24[2](v24, v22, v10, v11);
 
-    v7 = v25;
+    recentsCopy = v25;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1678,21 +1678,21 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
   return v11;
 }
 
-- (void)_groupActivitiesByConstellationIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5
+- (void)_groupActivitiesByConstellationIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply
 {
   v55 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v7 = a5;
-  if (v7)
+  recentsCopy = recents;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v33 = a4;
-    v34 = v7;
+    limitCopy = limit;
+    v34 = replyCopy;
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v35;
+    obj = recentsCopy;
     v39 = [obj countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v39)
     {
@@ -1706,15 +1706,15 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
             objc_enumerationMutation(obj);
           }
 
-          v10 = [(CKContextRecentsCache *)self _associatedTopicIdsForRecent:*(*(&v45 + 1) + 8 * i), v33];
-          v11 = [v10 array];
+          limitCopy = [(CKContextRecentsCache *)self _associatedTopicIdsForRecent:*(*(&v45 + 1) + 8 * i), limitCopy];
+          array = [limitCopy array];
 
-          if ([v11 count])
+          if ([array count])
           {
             v12 = 0;
             do
             {
-              v13 = [v11 objectAtIndexedSubscript:v12];
+              v13 = [array objectAtIndexedSubscript:v12];
               v14 = [v8 objectForKeyedSubscript:v13];
               v15 = v14;
               if (v14)
@@ -1728,7 +1728,7 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
                 [v8 setObject:&unk_28578A988 forKeyedSubscript:v13];
               }
 
-              v17 = [v11 count];
+              v17 = [array count];
               ++v12;
               if (v17 >= 4)
               {
@@ -1751,8 +1751,8 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
       while (v39);
     }
 
-    v19 = [v8 allKeys];
-    v20 = [v19 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [v8 allKeys];
+    v20 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v21 = [v20 count];
     v22 = v21;
@@ -1772,7 +1772,7 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
       v25 = 0;
       do
       {
-        v26 = [v20 objectAtIndexedSubscript:{v25, v33}];
+        v26 = [v20 objectAtIndexedSubscript:{v25, limitCopy}];
         v27 = [v8 objectForKeyedSubscript:v26];
         [v24 setObject:v27 forKeyedSubscript:v26];
 
@@ -1801,10 +1801,10 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
     v29 = v28;
     _Block_object_dispose(&v50, 8);
     v30 = [v28 clientWithDefaultRequestType:5];
-    v31 = [v30 newRequest];
-    [v31 setIncludeHigherLevelTopics:1];
-    [v31 setMaxConstellationTopics:15];
-    [v31 setItemIds:v24];
+    newRequest = [v30 newRequest];
+    [newRequest setIncludeHigherLevelTopics:1];
+    [newRequest setMaxConstellationTopics:15];
+    [newRequest setItemIds:v24];
     objc_initWeak(location, self);
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
@@ -1813,14 +1813,14 @@ uint64_t __82__CKContextRecentsCache__groupActivitiesByAppIntoSectionsWithRecent
     objc_copyWeak(v44, location);
     v43 = v34;
     v41 = obj;
-    v42 = self;
-    v44[1] = v33;
-    [v31 executeWithReply:v40];
+    selfCopy = self;
+    v44[1] = limitCopy;
+    [newRequest executeWithReply:v40];
 
     objc_destroyWeak(v44);
     objc_destroyWeak(location);
 
-    v7 = v34;
+    replyCopy = v34;
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -1988,23 +1988,23 @@ uint64_t __92__CKContextRecentsCache__groupActivitiesByConstellationIntoSections
   return v11;
 }
 
-- (void)_groupActivitiesByModeIntoSectionsWithRecents:(id)a3 limit:(unint64_t)a4 reply:(id)a5
+- (void)_groupActivitiesByModeIntoSectionsWithRecents:(id)recents limit:(unint64_t)limit reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  recentsCopy = recents;
+  replyCopy = reply;
+  v9 = replyCopy;
+  if (replyCopy)
   {
-    v25 = v8;
+    v25 = replyCopy;
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v7;
-    v12 = v7;
+    v26 = recentsCopy;
+    v12 = recentsCopy;
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
@@ -2020,20 +2020,20 @@ uint64_t __92__CKContextRecentsCache__groupActivitiesByConstellationIntoSections
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          v18 = [v17 modeIdentifier];
-          if ([v18 length])
+          modeIdentifier = [v17 modeIdentifier];
+          if ([modeIdentifier length])
           {
-            v19 = [v17 modeIdentifier];
+            modeIdentifier2 = [v17 modeIdentifier];
           }
 
           else
           {
-            v19 = @"Other";
+            modeIdentifier2 = @"Other";
           }
 
-          v20 = [v11 objectForKeyedSubscript:v19];
+          v20 = [v11 objectForKeyedSubscript:modeIdentifier2];
           v21 = v20;
-          if (!a4 || [v20 count] < a4)
+          if (!limit || [v20 count] < limit)
           {
             if (v21)
             {
@@ -2045,9 +2045,9 @@ uint64_t __92__CKContextRecentsCache__groupActivitiesByConstellationIntoSections
               [MEMORY[0x277CBEA60] arrayWithObject:v17];
             }
             v22 = ;
-            [v11 setObject:v22 forKeyedSubscript:v19];
+            [v11 setObject:v22 forKeyedSubscript:modeIdentifier2];
 
-            [v10 setObject:v19 forKeyedSubscript:v19];
+            [v10 setObject:modeIdentifier2 forKeyedSubscript:modeIdentifier2];
           }
         }
 
@@ -2061,7 +2061,7 @@ uint64_t __92__CKContextRecentsCache__groupActivitiesByConstellationIntoSections
     v9 = v25;
     v25[2](v25, v23, v10, v11);
 
-    v7 = v26;
+    recentsCopy = v26;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -2085,17 +2085,17 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByModeIntoSectionsWithRecen
   return v11;
 }
 
-- (BOOL)_constellationResult:(id)a3 intersectsWithRecent:(id)a4
+- (BOOL)_constellationResult:(id)result intersectsWithRecent:(id)recent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  resultCopy = result;
+  recentCopy = recent;
+  v8 = recentCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (resultCopy && recentCopy)
   {
-    v10 = [(CKContextRecentsCache *)self _associatedTopicTitlesForRecent:v7];
-    v11 = [v6 title];
-    v12 = [v10 containsObject:v11];
+    v10 = [(CKContextRecentsCache *)self _associatedTopicTitlesForRecent:recentCopy];
+    title = [resultCopy title];
+    v12 = [v10 containsObject:title];
 
     if (v12)
     {
@@ -2104,19 +2104,19 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByModeIntoSectionsWithRecen
 
     else
     {
-      v13 = [v6 topicId];
-      if ([v13 length])
+      topicId = [resultCopy topicId];
+      if ([topicId length])
       {
         v14 = [(CKContextRecentsCache *)self _associatedTopicIdsForRecent:v8];
-        v15 = [v6 relatedItems];
-        if ([v15 intersectsOrderedSet:v14])
+        relatedItems = [resultCopy relatedItems];
+        if ([relatedItems intersectsOrderedSet:v14])
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = [v14 containsObject:v13];
+          v9 = [v14 containsObject:topicId];
         }
       }
 
@@ -2130,15 +2130,15 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByModeIntoSectionsWithRecen
   return v9;
 }
 
-- (BOOL)_recent:(id)a3 matchesKeywords:(id)a4
+- (BOOL)_recent:(id)_recent matchesKeywords:(id)keywords
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  _recentCopy = _recent;
+  keywordsCopy = keywords;
+  v8 = keywordsCopy;
+  if (_recentCopy && [keywordsCopy count])
   {
-    v9 = [(CKContextRecentsCache *)self _associatedTopicTitlesForRecent:v6];
+    v9 = [(CKContextRecentsCache *)self _associatedTopicTitlesForRecent:_recentCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -2159,8 +2159,8 @@ uint64_t __83__CKContextRecentsCache__groupActivitiesByModeIntoSectionsWithRecen
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v6 title];
-          v17 = [v16 localizedCaseInsensitiveContainsString:v15];
+          title = [_recentCopy title];
+          v17 = [title localizedCaseInsensitiveContainsString:v15];
 
           if (v17 & 1) != 0 || ([v9 containsObject:v15])
           {
@@ -2197,13 +2197,13 @@ LABEL_16:
   return v18;
 }
 
-- (id)_relativeDateStringForRecent:(id)a3
+- (id)_relativeDateStringForRecent:(id)recent
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  recentCopy = recent;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277CBEAA8];
-  [v4 absoluteTimestamp];
+  [recentCopy absoluteTimestamp];
   v8 = v7;
 
   v9 = [v6 dateWithTimeIntervalSinceReferenceDate:v8];
@@ -2215,17 +2215,17 @@ LABEL_16:
   return v10;
 }
 
-- (id)_associatedTopicIdsForRecent:(id)a3
+- (id)_associatedTopicIdsForRecent:(id)recent
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recentCopy = recent;
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 topics];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  topics = [recentCopy topics];
+  v6 = [topics countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2236,17 +2236,17 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topics);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) topicIdentifier];
-        if ([v10 length] && objc_msgSend(v10, "hasPrefix:", @"Q"))
+        topicIdentifier = [*(*(&v13 + 1) + 8 * i) topicIdentifier];
+        if ([topicIdentifier length] && objc_msgSend(topicIdentifier, "hasPrefix:", @"Q"))
         {
-          [v4 addObject:v10];
+          [v4 addObject:topicIdentifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [topics countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -2257,17 +2257,17 @@ LABEL_16:
   return v4;
 }
 
-- (id)_associatedTopicTitlesForRecent:(id)a3
+- (id)_associatedTopicTitlesForRecent:(id)recent
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recentCopy = recent;
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 topics];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  topics = [recentCopy topics];
+  v6 = [topics countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2278,17 +2278,17 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topics);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) title];
-        if ([v10 length])
+        title = [*(*(&v13 + 1) + 8 * i) title];
+        if ([title length])
         {
-          [v4 addObject:v10];
+          [v4 addObject:title];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [topics countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -2372,12 +2372,12 @@ void __49__CKContextRecentsCache__performMaintenanceTasks__block_invoke(uint64_t
   }
 }
 
-- (void)_performMaintenanceTasksForRecents:(id)a3
+- (void)_performMaintenanceTasksForRecents:(id)recents
 {
-  v4 = a3;
-  if ([v4 count])
+  recentsCopy = recents;
+  if ([recentsCopy count])
   {
-    [(CKContextRecentsCache *)self _pruneRecentsFromUnusedAppsForRecents:v4];
+    [(CKContextRecentsCache *)self _pruneRecentsFromUnusedAppsForRecents:recentsCopy];
     objc_initWeak(location, self);
     v5 = dispatch_time(0, 1000000000);
     v6 = dispatch_get_global_queue(9, 0);
@@ -2432,10 +2432,10 @@ void __60__CKContextRecentsCache__performMaintenanceTasksForRecents___block_invo
   [(CKContextRecentsCache *)&v4 dealloc];
 }
 
-- (void)_pruneRecentsFromUnusedAppsForRecents:(id)a3
+- (void)_pruneRecentsFromUnusedAppsForRecents:(id)recents
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recentsCopy = recents;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [CKContextRecentsCache _pruneRecentsFromUnusedAppsForRecents:];
@@ -2447,7 +2447,7 @@ void __60__CKContextRecentsCache__performMaintenanceTasksForRecents___block_invo
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v3;
+  v6 = recentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
   if (v7)
   {
@@ -2462,10 +2462,10 @@ void __60__CKContextRecentsCache__performMaintenanceTasksForRecents___block_invo
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * v9) associatedBundleId];
-        if ([v10 length] && (objc_msgSend(v5, "containsObject:", v10) & 1) == 0)
+        associatedBundleId = [*(*(&v17 + 1) + 8 * v9) associatedBundleId];
+        if ([associatedBundleId length] && (objc_msgSend(v5, "containsObject:", associatedBundleId) & 1) == 0)
         {
-          [v5 addObject:v10];
+          [v5 addObject:associatedBundleId];
           v22 = 0;
           v23 = &v22;
           v24 = 0x2050000000;
@@ -2485,10 +2485,10 @@ void __60__CKContextRecentsCache__performMaintenanceTasksForRecents___block_invo
           v12 = v11;
           _Block_object_dispose(&v22, 8);
           v16 = 0;
-          v13 = [v11 bundleRecordWithApplicationIdentifier:v10 error:&v16];
+          v13 = [v11 bundleRecordWithApplicationIdentifier:associatedBundleId error:&v16];
           if (!v13 || v16)
           {
-            [v4 addObject:v10];
+            [v4 addObject:associatedBundleId];
           }
         }
 

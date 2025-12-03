@@ -1,27 +1,27 @@
 @interface ATXHomeScreenWidgetDiscoverabilityLogHarvester
 - (ATXHomeScreenWidgetDiscoverabilityLogHarvester)init;
-- (BOOL)_isRegularlyUsedApp:(id)a3;
-- (BOOL)_shouldConsiderWidgetWhenCalculatingRankBasedMetricsWithFamilyMask:(unint64_t)a3;
-- (id)_appLaunchCountForAppBundleId:(id)a3;
-- (id)_fetchStackSuggestionsWithDefaultStack:(id)a3;
-- (id)_generateSummaryMetricsWithDescriptorCache:(id)a3 withActivity:(id)a4;
+- (BOOL)_isRegularlyUsedApp:(id)app;
+- (BOOL)_shouldConsiderWidgetWhenCalculatingRankBasedMetricsWithFamilyMask:(unint64_t)mask;
+- (id)_appLaunchCountForAppBundleId:(id)id;
+- (id)_fetchStackSuggestionsWithDefaultStack:(id)stack;
+- (id)_generateSummaryMetricsWithDescriptorCache:(id)cache withActivity:(id)activity;
 - (id)_globalPopularityDictionary;
-- (id)_initializeMetricsAccumulatorWithKeys:(id)a3;
+- (id)_initializeMetricsAccumulatorWithKeys:(id)keys;
 - (id)_installed3PAppsSortedByUsage;
 - (id)_installed3PAppsWithWidgetsSortedByUsage;
 - (id)_installedAppsSortedByAppUsage;
 - (id)_setOfTopTwentyInstalled3PApps;
 - (id)_topTwentyInstalled3PAppsSortedByUsage;
-- (id)_uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)a3;
+- (id)_uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)days;
 - (id)dryRunResult;
 - (void)_logAdblClassificationForUser;
-- (void)_logRankBasedMetricsWithOnboardingStacks:(id)a3 algorithm:(int)a4;
-- (void)_populateDistributionBasedMetricsWithAppMetrics:(id)a3;
-- (void)_populateRankBasedGlobalPopularityMetricsForWidgetPersonality:(id)a3 withRank:(id)a4 adoptionScore:(id)a5;
-- (void)_populateRankBasedMetricsForUsageWithRank:(id)a3 appBundleId:(id)a4 mostRegularlyUsedApp:(id)a5 secondMostRegularlyUsedApp:(id)a6;
-- (void)_populateRankBasedTimelineAdoptionMetricsForWidgetPersonality:(id)a3 withRank:(id)a4 adoptionScore:(id)a5;
+- (void)_logRankBasedMetricsWithOnboardingStacks:(id)stacks algorithm:(int)algorithm;
+- (void)_populateDistributionBasedMetricsWithAppMetrics:(id)metrics;
+- (void)_populateRankBasedGlobalPopularityMetricsForWidgetPersonality:(id)personality withRank:(id)rank adoptionScore:(id)score;
+- (void)_populateRankBasedMetricsForUsageWithRank:(id)rank appBundleId:(id)id mostRegularlyUsedApp:(id)app secondMostRegularlyUsedApp:(id)usedApp;
+- (void)_populateRankBasedTimelineAdoptionMetricsForWidgetPersonality:(id)personality withRank:(id)rank adoptionScore:(id)score;
 - (void)_queryAppUsageForAllInstalledApps;
-- (void)generateWidgetDiscoverabilityMetricsWithActivity:(id)a3;
+- (void)generateWidgetDiscoverabilityMetricsWithActivity:(id)activity;
 - (void)sendToCoreAnalytics;
 @end
 
@@ -45,9 +45,9 @@
 
     v8 = BiomeLibrary();
     v9 = [v8 App];
-    v10 = [v9 InFocus];
+    inFocus = [v9 InFocus];
     appLaunchStream = v2->_appLaunchStream;
-    v2->_appLaunchStream = v10;
+    v2->_appLaunchStream = inFocus;
 
     v12 = objc_opt_new();
     appUsageDictionary = v2->_appUsageDictionary;
@@ -57,9 +57,9 @@
     timelineRelevanceAdoptionHelper = v2->_timelineRelevanceAdoptionHelper;
     v2->_timelineRelevanceAdoptionHelper = v14;
 
-    v16 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)v2 _globalPopularityDictionary];
+    _globalPopularityDictionary = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)v2 _globalPopularityDictionary];
     globalPopularityDictionary = v2->_globalPopularityDictionary;
-    v2->_globalPopularityDictionary = v16;
+    v2->_globalPopularityDictionary = _globalPopularityDictionary;
 
     v2->_isiPad = [MEMORY[0x277D42590] isiPad];
     v18 = objc_opt_new();
@@ -105,12 +105,12 @@ LABEL_9:
   return v4;
 }
 
-- (void)generateWidgetDiscoverabilityMetricsWithActivity:(id)a3
+- (void)generateWidgetDiscoverabilityMetricsWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CEB998] sharedInstance];
+  activityCopy = activity;
+  mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
   v19 = 0;
-  v6 = [v5 fetchHomeScreenWidgetDescriptorMetadataWithError:&v19];
+  v6 = [mEMORY[0x277CEB998] fetchHomeScreenWidgetDescriptorMetadataWithError:&v19];
   v7 = v19;
   if (v7)
   {
@@ -127,14 +127,14 @@ LABEL_9:
     v8 = [v9 histogramForLaunchType:1];
 
     v10 = objc_opt_new();
-    v11 = [v10 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+    rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps = [v10 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
     v12 = objc_alloc(MEMORY[0x277CEB458]);
-    v13 = [v5 homeScreenDescriptors];
-    v14 = [v12 initWithDescriptors:v13 descriptorInstallDates:v6 homeScreenConfig:MEMORY[0x277CBEBF8] isDayZeroExperience:0 isiPad:self->_isiPad spotlightAppLaunchHistogram:v8 adblDrainClassification:1 appLaunchCounts:v11];
+    homeScreenDescriptors = [mEMORY[0x277CEB998] homeScreenDescriptors];
+    v14 = [v12 initWithDescriptors:homeScreenDescriptors descriptorInstallDates:v6 homeScreenConfig:MEMORY[0x277CBEBF8] isDayZeroExperience:0 isiPad:self->_isiPad spotlightAppLaunchHistogram:v8 adblDrainClassification:1 appLaunchCounts:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
-    v15 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _generateSummaryMetricsWithDescriptorCache:v6 withActivity:v4];
-    if (v15 && ([v4 didDefer] & 1) == 0)
+    v15 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _generateSummaryMetricsWithDescriptorCache:v6 withActivity:activityCopy];
+    if (v15 && ([activityCopy didDefer] & 1) == 0)
     {
       v17 = 0;
       do
@@ -207,37 +207,37 @@ void __147__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateWidgetDiscov
 - (void)_logAdblClassificationForUser
 {
   v3 = MEMORY[0x277CCABB0];
-  v5 = [MEMORY[0x277CEB3D8] sharedInstance];
-  v4 = [v3 numberWithUnsignedInteger:{objc_msgSend(v5, "fetchADBLDrainClassification")}];
+  mEMORY[0x277CEB3D8] = [MEMORY[0x277CEB3D8] sharedInstance];
+  v4 = [v3 numberWithUnsignedInteger:{objc_msgSend(mEMORY[0x277CEB3D8], "fetchADBLDrainClassification")}];
   [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v4 forKeyedSubscript:@"adblClassificationForUser"];
 }
 
-- (id)_fetchStackSuggestionsWithDefaultStack:(id)a3
+- (id)_fetchStackSuggestionsWithDefaultStack:(id)stack
 {
   if (self->_isiPad)
   {
-    [a3 mediumDefaultStack];
+    [stack mediumDefaultStack];
   }
 
   else
   {
-    [a3 smallDefaultStack];
+    [stack smallDefaultStack];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)_initializeMetricsAccumulatorWithKeys:(id)a3
+- (id)_initializeMetricsAccumulatorWithKeys:(id)keys
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = keysCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -268,11 +268,11 @@ void __147__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateWidgetDiscov
   return v4;
 }
 
-- (id)_generateSummaryMetricsWithDescriptorCache:(id)a3 withActivity:(id)a4
+- (id)_generateSummaryMetricsWithDescriptorCache:(id)cache withActivity:(id)activity
 {
   v33[6] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  activityCopy = activity;
   v33[0] = @"howMany3PAppsHaveWidgets";
   v33[1] = @"howManyAppsHaveWidgets";
   v33[2] = @"howManyRegularlyUsed3PAppsHaveWidgets";
@@ -285,7 +285,7 @@ void __147__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateWidgetDiscov
   self->_appMetricsAccumulator = v9;
 
   [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _queryAppUsageForAllInstalledApps];
-  if ([v7 didDefer])
+  if ([activityCopy didDefer])
   {
     v11 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -304,8 +304,8 @@ void __147__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateWidgetDiscov
     v30[2] = __106__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateSummaryMetricsWithDescriptorCache_withActivity___block_invoke;
     v30[3] = &unk_278598418;
     v30[4] = self;
-    v25 = v6;
-    [v6 enumerateKeysAndObjectsUsingBlock:v30];
+    v25 = cacheCopy;
+    [cacheCopy enumerateKeysAndObjectsUsingBlock:v30];
     v12 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
@@ -341,7 +341,7 @@ void __147__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateWidgetDiscov
     }
 
     [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _populateDistributionBasedMetricsWithAppMetrics:v12];
-    v6 = v25;
+    cacheCopy = v25;
     v8 = v24;
   }
 
@@ -417,16 +417,16 @@ void __106__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateSummaryMetri
 - (void)_queryAppUsageForAllInstalledApps
 {
   v3 = [objc_alloc(MEMORY[0x277CEB388]) initWithStream:self->_appLaunchStream];
-  v4 = [v3 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
+  rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps = [v3 rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 
-  [(NSMutableDictionary *)self->_appUsageDictionary addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)self->_appUsageDictionary addEntriesFromDictionary:rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForAllApps];
 }
 
-- (void)_populateDistributionBasedMetricsWithAppMetrics:(id)a3
+- (void)_populateDistributionBasedMetricsWithAppMetrics:(id)metrics
 {
-  v14 = a3;
-  v4 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsWithWidgetsSortedByUsage];
-  v5 = [v4 count];
+  metricsCopy = metrics;
+  _installed3PAppsWithWidgetsSortedByUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsWithWidgetsSortedByUsage];
+  v5 = [_installed3PAppsWithWidgetsSortedByUsage count];
   if (v5 >= 0x14)
   {
     v6 = 20;
@@ -437,24 +437,24 @@ void __106__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateSummaryMetri
     v6 = v5;
   }
 
-  v7 = [v4 subarrayWithRange:{0, v6}];
+  v7 = [_installed3PAppsWithWidgetsSortedByUsage subarrayWithRange:{0, v6}];
   if ([v7 count])
   {
-    v8 = [v7 firstObject];
-    v9 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:v8];
-    [v14 setObject:v9 forKeyedSubscript:@"maxNumberOfUniqueDaysLaunchedForTop20"];
+    firstObject = [v7 firstObject];
+    v9 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:firstObject];
+    [metricsCopy setObject:v9 forKeyedSubscript:@"maxNumberOfUniqueDaysLaunchedForTop20"];
 
-    v10 = [v7 lastObject];
-    v11 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:v10];
-    [v14 setObject:v11 forKeyedSubscript:@"minNumberOfUniqueDaysLaunchedForTop20"];
+    lastObject = [v7 lastObject];
+    v11 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:lastObject];
+    [metricsCopy setObject:v11 forKeyedSubscript:@"minNumberOfUniqueDaysLaunchedForTop20"];
 
     v12 = [v7 objectAtIndex:{objc_msgSend(v7, "count") >> 1}];
     v13 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:v12];
-    [v14 setObject:v13 forKeyedSubscript:@"medianNumberOfUniqueDaysLaunchedForTop20"];
+    [metricsCopy setObject:v13 forKeyedSubscript:@"medianNumberOfUniqueDaysLaunchedForTop20"];
   }
 }
 
-- (BOOL)_shouldConsiderWidgetWhenCalculatingRankBasedMetricsWithFamilyMask:(unint64_t)a3
+- (BOOL)_shouldConsiderWidgetWhenCalculatingRankBasedMetricsWithFamilyMask:(unint64_t)mask
 {
   v3 = 2;
   if (self->_isiPad)
@@ -462,52 +462,52 @@ void __106__ATXHomeScreenWidgetDiscoverabilityLogHarvester__generateSummaryMetri
     v3 = 4;
   }
 
-  return (v3 & a3) != 0;
+  return (v3 & mask) != 0;
 }
 
-- (void)_logRankBasedMetricsWithOnboardingStacks:(id)a3 algorithm:(int)a4
+- (void)_logRankBasedMetricsWithOnboardingStacks:(id)stacks algorithm:(int)algorithm
 {
-  v6 = a3;
+  stacksCopy = stacks;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __101__ATXHomeScreenWidgetDiscoverabilityLogHarvester__logRankBasedMetricsWithOnboardingStacks_algorithm___block_invoke;
   v20[3] = &unk_278598440;
   v20[4] = self;
   v7 = [MEMORY[0x277CCAC30] predicateWithBlock:v20];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [stacksCopy filteredArrayUsingPredicate:v7];
   v9 = [v8 mutableCopy];
 
   [MEMORY[0x277CEB460] filterOutDuplicateWidgetsFromSameAppBundleId:v9];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
-  v19 = a4 == 3;
-  v10 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsWithWidgetsSortedByUsage];
+  v19 = algorithm == 3;
+  _installed3PAppsWithWidgetsSortedByUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsWithWidgetsSortedByUsage];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__9;
   v16[4] = __Block_byref_object_dispose__9;
-  v11 = [v10 count];
-  if (v11)
+  firstObject = [_installed3PAppsWithWidgetsSortedByUsage count];
+  if (firstObject)
   {
-    v11 = [v10 firstObject];
+    firstObject = [_installed3PAppsWithWidgetsSortedByUsage firstObject];
   }
 
-  v17 = v11;
+  v17 = firstObject;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
   v14[3] = __Block_byref_object_copy__9;
   v14[4] = __Block_byref_object_dispose__9;
-  if ([v10 count] < 2)
+  if ([_installed3PAppsWithWidgetsSortedByUsage count] < 2)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v10 objectAtIndex:1];
+    v12 = [_installed3PAppsWithWidgetsSortedByUsage objectAtIndex:1];
   }
 
   v15 = v12;
@@ -569,25 +569,25 @@ void __101__ATXHomeScreenWidgetDiscoverabilityLogHarvester__logRankBasedMetricsW
   }
 }
 
-- (void)_populateRankBasedTimelineAdoptionMetricsForWidgetPersonality:(id)a3 withRank:(id)a4 adoptionScore:(id)a5
+- (void)_populateRankBasedTimelineAdoptionMetricsForWidgetPersonality:(id)personality withRank:(id)rank adoptionScore:(id)score
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9)
+  personalityCopy = personality;
+  rankCopy = rank;
+  scoreCopy = score;
+  v10 = scoreCopy;
+  if (!scoreCopy)
   {
     goto LABEL_13;
   }
 
-  if ([v9 isEqualToNumber:&unk_283A553B8])
+  if ([scoreCopy isEqualToNumber:&unk_283A553B8])
   {
     v11 = [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries objectForKeyedSubscript:@"firstWidgetThatIsGoodTimelineRelevanceAdopter"];
 
     widgetDiscoverabilityDictionaries = self->_widgetDiscoverabilityDictionaries;
     if (!v11)
     {
-      [(NSMutableDictionary *)widgetDiscoverabilityDictionaries setObject:v19 forKeyedSubscript:@"firstWidgetThatIsGoodTimelineRelevanceAdopter"];
+      [(NSMutableDictionary *)widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:@"firstWidgetThatIsGoodTimelineRelevanceAdopter"];
       v14 = @"rankForFirstWidgetThatIsGoodTimelineRelevanceAdopter";
       goto LABEL_7;
     }
@@ -596,10 +596,10 @@ void __101__ATXHomeScreenWidgetDiscoverabilityLogHarvester__logRankBasedMetricsW
 
     if (!v13)
     {
-      [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v19 forKeyedSubscript:@"secondWidgetThatIsGoodTimelineRelevanceAdopter"];
+      [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:@"secondWidgetThatIsGoodTimelineRelevanceAdopter"];
       v14 = @"rankForSecondWidgetThatIsGoodTimelineRelevanceAdopter";
 LABEL_7:
-      [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v8 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:v14];
     }
   }
 
@@ -624,16 +624,16 @@ LABEL_7:
     v18 = @"rankForFirstWidgetThatIsTimelineRelevanceAdopter";
   }
 
-  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v19 forKeyedSubscript:v15];
-  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v8 forKeyedSubscript:v18];
+  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:v15];
+  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:v18];
 LABEL_13:
 }
 
-- (void)_populateRankBasedGlobalPopularityMetricsForWidgetPersonality:(id)a3 withRank:(id)a4 adoptionScore:(id)a5
+- (void)_populateRankBasedGlobalPopularityMetricsForWidgetPersonality:(id)personality withRank:(id)rank adoptionScore:(id)score
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = [(NSDictionary *)self->_globalPopularityDictionary objectForKeyedSubscript:v18];
+  personalityCopy = personality;
+  rankCopy = rank;
+  v9 = [(NSDictionary *)self->_globalPopularityDictionary objectForKeyedSubscript:personalityCopy];
 
   if (!v9)
   {
@@ -645,7 +645,7 @@ LABEL_13:
   widgetDiscoverabilityDictionaries = self->_widgetDiscoverabilityDictionaries;
   if (!v10)
   {
-    [(NSMutableDictionary *)widgetDiscoverabilityDictionaries setObject:v18 forKeyedSubscript:@"firstWidgetThatIsGloballyPopular"];
+    [(NSMutableDictionary *)widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:@"firstWidgetThatIsGloballyPopular"];
     v13 = @"rankForFirstWidgetThatIsGloballyPopular";
     goto LABEL_6;
   }
@@ -654,13 +654,13 @@ LABEL_13:
 
   if (!v12)
   {
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v18 forKeyedSubscript:@"secondWidgetThatIsGloballyPopular"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:@"secondWidgetThatIsGloballyPopular"];
     v13 = @"rankForSecondWidgetThatIsGloballyPopular";
 LABEL_6:
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v8 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:v13];
   }
 
-  if (!a5)
+  if (!score)
   {
     goto LABEL_13;
   }
@@ -677,35 +677,35 @@ LABEL_6:
       goto LABEL_13;
     }
 
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v18 forKeyedSubscript:@"secondWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:personalityCopy forKeyedSubscript:@"secondWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular"];
     v17 = @"rankForSecondWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular";
   }
 
   else
   {
-    [(NSMutableDictionary *)v15 setObject:v18 forKeyedSubscript:@"firstWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular"];
+    [(NSMutableDictionary *)v15 setObject:personalityCopy forKeyedSubscript:@"firstWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular"];
     v17 = @"rankForFirstWidgetThatIsTimelineRelevanceAdopterAndGloballyPopular";
   }
 
-  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v8 forKeyedSubscript:v17];
+  [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:v17];
 LABEL_13:
 }
 
-- (void)_populateRankBasedMetricsForUsageWithRank:(id)a3 appBundleId:(id)a4 mostRegularlyUsedApp:(id)a5 secondMostRegularlyUsedApp:(id)a6
+- (void)_populateRankBasedMetricsForUsageWithRank:(id)rank appBundleId:(id)id mostRegularlyUsedApp:(id)app secondMostRegularlyUsedApp:(id)usedApp
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  rankCopy = rank;
+  idCopy = id;
+  appCopy = app;
+  usedAppCopy = usedApp;
   v13 = [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries objectForKeyedSubscript:@"mostRegularlyUsedAppWithWidget"];
   if (v13)
   {
   }
 
-  else if ([v11 isEqualToString:v10])
+  else if ([appCopy isEqualToString:idCopy])
   {
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v10 forKeyedSubscript:@"mostRegularlyUsedAppWithWidget"];
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v15 forKeyedSubscript:@"rankForMostRegularlyUsedAppWithWidget"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:idCopy forKeyedSubscript:@"mostRegularlyUsedAppWithWidget"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:@"rankForMostRegularlyUsedAppWithWidget"];
   }
 
   v14 = [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries objectForKeyedSubscript:@"secondMostRegularlyUsedAppWithWidget"];
@@ -713,10 +713,10 @@ LABEL_13:
   {
   }
 
-  else if ([v12 isEqualToString:v10])
+  else if ([usedAppCopy isEqualToString:idCopy])
   {
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v10 forKeyedSubscript:@"secondMostRegularlyUsedAppWithWidget"];
-    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:v15 forKeyedSubscript:@"rankForSecondMostRegularlyUsedAppWithWidget"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:idCopy forKeyedSubscript:@"secondMostRegularlyUsedAppWithWidget"];
+    [(NSMutableDictionary *)self->_widgetDiscoverabilityDictionaries setObject:rankCopy forKeyedSubscript:@"rankForSecondMostRegularlyUsedAppWithWidget"];
   }
 }
 
@@ -777,31 +777,31 @@ LABEL_13:
   return v3;
 }
 
-- (id)_uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)a3
+- (id)_uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)days
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(NSMutableDictionary *)self->_appUsageDictionary objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_appUsageDictionary objectForKeyedSubscript:days];
   v5 = [v3 numberWithUnsignedInteger:{objc_msgSend(v4, "uniqueDaysLaunched")}];
 
   return v5;
 }
 
-- (id)_appLaunchCountForAppBundleId:(id)a3
+- (id)_appLaunchCountForAppBundleId:(id)id
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(NSMutableDictionary *)self->_appUsageDictionary objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_appUsageDictionary objectForKeyedSubscript:id];
   v5 = [v3 numberWithUnsignedInteger:{objc_msgSend(v4, "rawLaunchCount")}];
 
   return v5;
 }
 
-- (BOOL)_isRegularlyUsedApp:(id)a3
+- (BOOL)_isRegularlyUsedApp:(id)app
 {
-  if (a3)
+  if (app)
   {
     v3 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _uniqueDaysAppHasBeenLaunchedOverLast28Days:?];
-    v4 = [v3 integerValue];
-    v5 = v4 >= *MEMORY[0x277CEBB08];
+    integerValue = [v3 integerValue];
+    v5 = integerValue >= *MEMORY[0x277CEBB08];
   }
 
   else
@@ -821,13 +821,13 @@ LABEL_13:
 - (id)_installedAppsSortedByAppUsage
 {
   v3 = +[_ATXAppIconState sharedInstance];
-  v4 = [v3 allInstalledAppsKnownToSpringBoard];
+  allInstalledAppsKnownToSpringBoard = [v3 allInstalledAppsKnownToSpringBoard];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSortedByAppUsage__block_invoke;
   v7[3] = &unk_278598110;
   v7[4] = self;
-  v5 = [v4 sortedArrayUsingComparator:v7];
+  v5 = [allInstalledAppsKnownToSpringBoard sortedArrayUsingComparator:v7];
 
   return v5;
 }
@@ -885,9 +885,9 @@ uint64_t __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSort
   thirdPartyAppsSortedByUsage = self->_thirdPartyAppsSortedByUsage;
   if (!thirdPartyAppsSortedByUsage)
   {
-    v4 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installedAppsSortedByAppUsage];
+    _installedAppsSortedByAppUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installedAppsSortedByAppUsage];
     v5 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_25];
-    v6 = [v4 filteredArrayUsingPredicate:v5];
+    v6 = [_installedAppsSortedByAppUsage filteredArrayUsingPredicate:v5];
     v7 = self->_thirdPartyAppsSortedByUsage;
     self->_thirdPartyAppsSortedByUsage = v6;
 
@@ -901,8 +901,8 @@ uint64_t __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSort
 
 - (id)_topTwentyInstalled3PAppsSortedByUsage
 {
-  v2 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsSortedByUsage];
-  v3 = [v2 count];
+  _installed3PAppsSortedByUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsSortedByUsage];
+  v3 = [_installed3PAppsSortedByUsage count];
   if (v3 >= 0x14)
   {
     v4 = 20;
@@ -913,7 +913,7 @@ uint64_t __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSort
     v4 = v3;
   }
 
-  v5 = [v2 subarrayWithRange:{0, v4}];
+  v5 = [_installed3PAppsSortedByUsage subarrayWithRange:{0, v4}];
 
   return v5;
 }
@@ -924,8 +924,8 @@ uint64_t __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSort
   if (!topTwentyInstalled3PApps)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _topTwentyInstalled3PAppsSortedByUsage];
-    v6 = [v4 setWithArray:v5];
+    _topTwentyInstalled3PAppsSortedByUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _topTwentyInstalled3PAppsSortedByUsage];
+    v6 = [v4 setWithArray:_topTwentyInstalled3PAppsSortedByUsage];
     v7 = self->_topTwentyInstalled3PApps;
     self->_topTwentyInstalled3PApps = v6;
 
@@ -942,14 +942,14 @@ uint64_t __80__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installedAppsSort
   v3 = [(NSMutableDictionary *)self->_appMetricsAccumulator objectForKeyedSubscript:@"howManyAppsHaveWidgets"];
   if (v3 && (v4 = v3, -[NSMutableDictionary objectForKeyedSubscript:](self->_appMetricsAccumulator, "objectForKeyedSubscript:", @"howManyAppsHaveWidgets"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, v6))
   {
-    v7 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsSortedByUsage];
+    _installed3PAppsSortedByUsage = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self _installed3PAppsSortedByUsage];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __90__ATXHomeScreenWidgetDiscoverabilityLogHarvester__installed3PAppsWithWidgetsSortedByUsage__block_invoke;
     v11[3] = &unk_278598440;
     v11[4] = self;
     v8 = [MEMORY[0x277CCAC30] predicateWithBlock:v11];
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [_installed3PAppsSortedByUsage filteredArrayUsingPredicate:v8];
   }
 
   else

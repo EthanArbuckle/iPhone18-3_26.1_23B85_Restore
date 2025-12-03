@@ -1,25 +1,25 @@
 @interface MSVLRUDictionary
-- (BOOL)isEqual:(id)a3;
-- (MSVLRUDictionary)initWithMaximumCapacity:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MSVLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity;
 - (MSVLRUDictionaryDelegate)delegate;
 - (id)allValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)peekObjectForKey:(id)a3;
-- (void)_addNodeToFront:(id)a3;
-- (void)_moveNodeToFront:(id)a3;
-- (void)_removeNode:(id)a3;
-- (void)_removeNodeFromLinkedList:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)peekObjectForKey:(id)key;
+- (void)_addNodeToFront:(id)front;
+- (void)_moveNodeToFront:(id)front;
+- (void)_removeNode:(id)node;
+- (void)_removeNodeFromLinkedList:(id)list;
 - (void)_shrinkToCapacity;
 - (void)endTransaction;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)performTransaction:(id)a3;
-- (void)pokeKey:(id)a3;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)performTransaction:(id)transaction;
+- (void)pokeKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setMaximumCapacity:(int64_t)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setMaximumCapacity:(int64_t)capacity;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation MSVLRUDictionary
@@ -31,60 +31,60 @@
   return WeakRetained;
 }
 
-- (void)_addNodeToFront:(id)a3
+- (void)_addNodeToFront:(id)front
 {
-  v4 = a3;
-  v5 = [(MSVLRUDictionary *)self head];
-  v8 = [v5 next];
+  frontCopy = front;
+  head = [(MSVLRUDictionary *)self head];
+  next = [head next];
 
-  v6 = [(MSVLRUDictionary *)self head];
-  [v6 setNext:v4];
+  head2 = [(MSVLRUDictionary *)self head];
+  [head2 setNext:frontCopy];
 
-  v7 = [(MSVLRUDictionary *)self head];
-  [v4 setPrev:v7];
+  head3 = [(MSVLRUDictionary *)self head];
+  [frontCopy setPrev:head3];
 
-  [v4 setNext:v8];
-  [v8 setPrev:v4];
+  [frontCopy setNext:next];
+  [next setPrev:frontCopy];
 }
 
-- (void)_moveNodeToFront:(id)a3
+- (void)_moveNodeToFront:(id)front
 {
-  v6 = a3;
-  v4 = [(MSVLRUDictionary *)self head];
-  v5 = [v4 next];
+  frontCopy = front;
+  head = [(MSVLRUDictionary *)self head];
+  next = [head next];
 
-  if (v5 != v6)
+  if (next != frontCopy)
   {
-    [(MSVLRUDictionary *)self _removeNodeFromLinkedList:v6];
-    [(MSVLRUDictionary *)self _addNodeToFront:v6];
+    [(MSVLRUDictionary *)self _removeNodeFromLinkedList:frontCopy];
+    [(MSVLRUDictionary *)self _addNodeToFront:frontCopy];
   }
 }
 
-- (void)_removeNode:(id)a3
+- (void)_removeNode:(id)node
 {
-  v9 = a3;
+  nodeCopy = node;
   [(MSVLRUDictionary *)self _removeNodeFromLinkedList:?];
-  v4 = [(MSVLRUDictionary *)self delegate];
+  delegate = [(MSVLRUDictionary *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v9 object];
-    v6 = [v9 key];
-    [v4 dictionary:self willRemoveObject:v5 forKey:v6];
+    object = [nodeCopy object];
+    v6 = [nodeCopy key];
+    [delegate dictionary:self willRemoveObject:object forKey:v6];
   }
 
-  v7 = [(MSVLRUDictionary *)self dictionary];
-  v8 = [v9 key];
-  [v7 removeObjectForKey:v8];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v8 = [nodeCopy key];
+  [dictionary removeObjectForKey:v8];
 }
 
-- (void)_removeNodeFromLinkedList:(id)a3
+- (void)_removeNodeFromLinkedList:(id)list
 {
-  v3 = a3;
-  v5 = [v3 prev];
-  v4 = [v3 next];
+  listCopy = list;
+  prev = [listCopy prev];
+  next = [listCopy next];
 
-  [v5 setNext:v4];
-  [v4 setPrev:v5];
+  [prev setNext:next];
+  [next setPrev:prev];
 }
 
 - (void)_shrinkToCapacity
@@ -93,17 +93,17 @@
   {
     while ([(MSVLRUDictionary *)self count]> self->_maximumCapacity)
     {
-      v3 = [(MSVLRUDictionary *)self tail];
-      v5 = [v3 prev];
+      tail = [(MSVLRUDictionary *)self tail];
+      prev = [tail prev];
 
-      if (!v5 || ([(MSVLRUDictionary *)self head], v4 = objc_claimAutoreleasedReturnValue(), v4, v5 == v4))
+      if (!prev || ([(MSVLRUDictionary *)self head], v4 = objc_claimAutoreleasedReturnValue(), v4, prev == v4))
       {
 
         MEMORY[0x1EEE66BB8]();
         return;
       }
 
-      [(MSVLRUDictionary *)self _removeNode:v5];
+      [(MSVLRUDictionary *)self _removeNode:prev];
     }
   }
 }
@@ -111,28 +111,28 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p>{\n", objc_opt_class(), self];
-  v4 = [(MSVLRUDictionary *)self head];
-  v5 = [v4 next];
+  head = [(MSVLRUDictionary *)self head];
+  next = [head next];
 
-  if (v5 == self->_tail)
+  if (next == self->_tail)
   {
-    v8 = v5;
+    v5Next = next;
   }
 
   else
   {
     do
     {
-      v6 = [(MSVLRUDictionaryNode *)v5 key];
-      v7 = [(MSVLRUDictionaryNode *)v5 object];
-      [v3 appendFormat:@"\t%@ = %@;\n", v6, v7];
+      v6 = [(MSVLRUDictionaryNode *)next key];
+      object = [(MSVLRUDictionaryNode *)next object];
+      [v3 appendFormat:@"\t%@ = %@;\n", v6, object];
 
-      v8 = [(MSVLRUDictionaryNode *)v5 next];
+      v5Next = [(MSVLRUDictionaryNode *)next next];
 
-      v5 = v8;
+      next = v5Next;
     }
 
-    while (v8 != self->_tail);
+    while (v5Next != self->_tail);
   }
 
   [v3 appendString:@"}\n"];
@@ -140,12 +140,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(NSMutableDictionary *)self->_dictionary isEqual:v4[3]];
+    v5 = [(NSMutableDictionary *)self->_dictionary isEqual:equalCopy[3]];
   }
 
   else
@@ -156,7 +156,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MSVLRUDictionary alloc] initWithMaximumCapacity:[(MSVLRUDictionary *)self maximumCapacity]];
   v5 = [(NSMutableDictionary *)self->_dictionary mutableCopy];
@@ -174,58 +174,58 @@
   return v4;
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
-  v5 = [(MSVLRUDictionary *)self head];
-  v6 = [v5 next];
+  head = [(MSVLRUDictionary *)self head];
+  next = [head next];
 
   while (1)
   {
-    v7 = [(MSVLRUDictionary *)self tail];
+    tail = [(MSVLRUDictionary *)self tail];
 
-    if (v6 == v7)
+    if (next == tail)
     {
       break;
     }
 
-    v8 = [v6 key];
-    v9 = [v6 object];
-    v4[2](v4, v8, v9, &v11);
+    v8 = [next key];
+    object = [next object];
+    blockCopy[2](blockCopy, v8, object, &v11);
 
-    v10 = [v6 next];
+    v6Next = [next next];
 
-    v6 = v10;
+    next = v6Next;
     if (v11 == 1)
     {
       goto LABEL_6;
     }
   }
 
-  v10 = v6;
+  v6Next = next;
 LABEL_6:
 }
 
 - (void)removeAllObjects
 {
-  v3 = [(MSVLRUDictionary *)self dictionary];
-  [v3 removeAllObjects];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  [dictionary removeAllObjects];
 
-  v4 = [(MSVLRUDictionary *)self tail];
-  v5 = [(MSVLRUDictionary *)self head];
-  [v5 setNext:v4];
+  tail = [(MSVLRUDictionary *)self tail];
+  head = [(MSVLRUDictionary *)self head];
+  [head setNext:tail];
 
-  v7 = [(MSVLRUDictionary *)self head];
-  v6 = [(MSVLRUDictionary *)self tail];
-  [v6 setPrev:v7];
+  head2 = [(MSVLRUDictionary *)self head];
+  tail2 = [(MSVLRUDictionary *)self tail];
+  [tail2 setPrev:head2];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSVLRUDictionary *)self dictionary];
-  v7 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
 
   v6 = v7;
   if (v7)
@@ -235,61 +235,61 @@ LABEL_6:
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v18 = a3;
-  v7 = a4;
-  if (!v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
-  v8 = [(MSVLRUDictionary *)self dictionary];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v9 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
     [(MSVLRUDictionary *)self _moveNodeToFront:v9];
-    [(MSVLRUDictionaryNode *)v9 setObject:v18];
+    [(MSVLRUDictionaryNode *)v9 setObject:objectCopy];
   }
 
   else
   {
     if (!self->_transactionCount)
     {
-      v10 = [(MSVLRUDictionary *)self dictionary];
-      v11 = [v10 count];
-      v12 = [(MSVLRUDictionary *)self maximumCapacity];
+      dictionary2 = [(MSVLRUDictionary *)self dictionary];
+      v11 = [dictionary2 count];
+      maximumCapacity = [(MSVLRUDictionary *)self maximumCapacity];
 
-      if (v11 == v12)
+      if (v11 == maximumCapacity)
       {
-        v13 = [(MSVLRUDictionary *)self tail];
-        v14 = [v13 prev];
-        [(MSVLRUDictionary *)self _removeNode:v14];
+        tail = [(MSVLRUDictionary *)self tail];
+        prev = [tail prev];
+        [(MSVLRUDictionary *)self _removeNode:prev];
       }
     }
 
-    v15 = [v7 copy];
-    v9 = [[MSVLRUDictionaryNode alloc] initWithKey:v15 object:v18];
-    v16 = [(MSVLRUDictionary *)self dictionary];
-    [v16 setObject:v9 forKeyedSubscript:v15];
+    v15 = [keyCopy copy];
+    v9 = [[MSVLRUDictionaryNode alloc] initWithKey:v15 object:objectCopy];
+    dictionary3 = [(MSVLRUDictionary *)self dictionary];
+    [dictionary3 setObject:v9 forKeyedSubscript:v15];
 
     [(MSVLRUDictionary *)self _addNodeToFront:v9];
   }
 }
 
-- (void)pokeKey:(id)a3
+- (void)pokeKey:(id)key
 {
-  v8 = a3;
-  if (!v8)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
-  v5 = [(MSVLRUDictionary *)self dictionary];
-  v6 = [v5 objectForKeyedSubscript:v8];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v6 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
@@ -297,57 +297,57 @@ LABEL_6:
   }
 }
 
-- (id)peekObjectForKey:(id)a3
+- (id)peekObjectForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
-  v6 = [(MSVLRUDictionary *)self dictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
-  v8 = [v7 object];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
+  object = [v7 object];
 
-  return v8;
+  return object;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
-  v6 = [(MSVLRUDictionary *)self dictionary];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  dictionary = [(MSVLRUDictionary *)self dictionary];
+  v7 = [dictionary objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
     [(MSVLRUDictionary *)self _moveNodeToFront:v7];
-    v8 = [v7 object];
+    object = [v7 object];
   }
 
   else
   {
-    v8 = 0;
+    object = 0;
   }
 
-  return v8;
+  return object;
 }
 
-- (void)setMaximumCapacity:(int64_t)a3
+- (void)setMaximumCapacity:(int64_t)capacity
 {
-  if (a3 < 0)
+  if (capacity < 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"maximumCapacity >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:107 description:{@"Invalid parameter not satisfying: %@", @"maximumCapacity >= 0"}];
   }
 
-  self->_maximumCapacity = a3;
+  self->_maximumCapacity = capacity;
 
   [(MSVLRUDictionary *)self _shrinkToCapacity];
 }
@@ -364,11 +364,11 @@ LABEL_6:
   }
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   [(MSVLRUDictionary *)self beginTransaction];
-  v4[2](v4);
+  transactionCopy[2](transactionCopy);
 
   [(MSVLRUDictionary *)self endTransaction];
 }
@@ -381,8 +381,8 @@ LABEL_6:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_dictionary allValues];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_dictionary allValues];
+  v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -393,14 +393,14 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) object];
-        [v3 addObject:v9];
+        object = [*(*(&v12 + 1) + 8 * i) object];
+        [v3 addObject:object];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -411,12 +411,12 @@ LABEL_6:
   return v3;
 }
 
-- (MSVLRUDictionary)initWithMaximumCapacity:(unint64_t)a3
+- (MSVLRUDictionary)initWithMaximumCapacity:(unint64_t)capacity
 {
-  if (!a3)
+  if (!capacity)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"maximumCapacity > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVLRUDictionary.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"maximumCapacity > 0"}];
   }
 
   v15.receiver = self;
@@ -424,11 +424,11 @@ LABEL_6:
   v5 = [(MSVLRUDictionary *)&v15 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v5->_maximumCapacity = a3;
+    v5->_maximumCapacity = capacity;
     v8 = [[MSVLRUDictionaryNode alloc] initWithKey:0 object:0];
     head = v5->_head;
     v5->_head = v8;

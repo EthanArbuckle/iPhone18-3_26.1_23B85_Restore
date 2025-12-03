@@ -1,55 +1,55 @@
 @interface STSSearchDropDownViewController
 - (BOOL)shouldShowLegalNotice;
 - (PopUpSearchViewDelegate)locationDelegate;
-- (STSSearchDropDownViewController)initWithSearchModel:(id)a3;
+- (STSSearchDropDownViewController)initWithSearchModel:(id)model;
 - (STSSearchDropDownViewControllerDelegate)delegate;
 - (void)_updateSuggestions;
-- (void)categoryViewController:(id)a3 didSelectCategory:(id)a4 suggested:(BOOL)a5;
-- (void)categoryViewController:(id)a3 didSelectRecent:(id)a4;
-- (void)categoryViewControllerDidSelectClearRecentsButton:(id)a3;
+- (void)categoryViewController:(id)controller didSelectCategory:(id)category suggested:(BOOL)suggested;
+- (void)categoryViewController:(id)controller didSelectRecent:(id)recent;
+- (void)categoryViewControllerDidSelectClearRecentsButton:(id)button;
 - (void)clearRecents;
 - (void)close;
 - (void)didCloseDropDown;
 - (void)didPressDownKey;
-- (void)didPressReturnKey:(id)a3;
+- (void)didPressReturnKey:(id)key;
 - (void)didPressUpKey;
 - (void)didRequestClose;
 - (void)dropDownContentViewControllerShouldDismiss;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchModelUpdatedQuerySuggestions:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchModelUpdatedQuerySuggestions:(id)suggestions;
 - (void)sendVisibleResultsFeedback;
-- (void)setSceneIdentifier:(id)a3;
+- (void)setSceneIdentifier:(id)identifier;
 - (void)showCategories;
-- (void)showPickerAndPerformQuery:(id)a3 requestType:(int64_t)a4;
+- (void)showPickerAndPerformQuery:(id)query requestType:(int64_t)type;
 - (void)showSuggestions;
 - (void)showSuggestionsIfNeccessary;
-- (void)suggestionViewController:(id)a3 didSelectSuggestion:(id)a4 suggested:(BOOL)a5;
+- (void)suggestionViewController:(id)controller didSelectSuggestion:(id)suggestion suggested:(BOOL)suggested;
 @end
 
 @implementation STSSearchDropDownViewController
 
-- (STSSearchDropDownViewController)initWithSearchModel:(id)a3
+- (STSSearchDropDownViewController)initWithSearchModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v27.receiver = self;
   v27.super_class = STSSearchDropDownViewController;
   v6 = [(STSSearchDropDownViewController *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    v8 = [(STSSearchDropDownViewController *)v6 view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(STSSearchDropDownViewController *)v6 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(STSSearchDropDownViewController *)v7 view];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v10];
+    view2 = [(STSSearchDropDownViewController *)v7 view];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view2 setBackgroundColor:clearColor];
 
-    objc_storeStrong(&v7->_searchModel, a3);
-    v11 = [[CategoriesDataSource alloc] initWithSearchModel:v5];
+    objc_storeStrong(&v7->_searchModel, model);
+    v11 = [[CategoriesDataSource alloc] initWithSearchModel:modelCopy];
     categoriesDataSource = v7->_categoriesDataSource;
     v7->_categoriesDataSource = v11;
 
-    v13 = [[SuggestionsDataSource alloc] initWithSearchModel:v5];
+    v13 = [[SuggestionsDataSource alloc] initWithSearchModel:modelCopy];
     suggestionsDataSource = v7->_suggestionsDataSource;
     v7->_suggestionsDataSource = v13;
 
@@ -60,32 +60,32 @@
     v15 = objc_alloc_init(STSDropDownRootView);
     [(STSDropDownRootView *)v15 setUserInteractionEnabled:1];
     [(STSSearchDropDownViewController *)v7 setView:v15];
-    v16 = [(STSSearchDropDownViewController *)v7 view];
-    v17 = [v16 layer];
-    [v17 setMasksToBounds:1];
+    view3 = [(STSSearchDropDownViewController *)v7 view];
+    layer = [view3 layer];
+    [layer setMasksToBounds:1];
 
-    v18 = [(STSSearchDropDownViewController *)v7 view];
-    v19 = [v18 layer];
-    [v19 setCornerRadius:6.0];
+    view4 = [(STSSearchDropDownViewController *)v7 view];
+    layer2 = [view4 layer];
+    [layer2 setCornerRadius:6.0];
 
-    v20 = [(STSSearchDropDownViewController *)v7 view];
-    v21 = [v20 layer];
-    [v21 setBorderWidth:1.0];
+    view5 = [(STSSearchDropDownViewController *)v7 view];
+    layer3 = [view5 layer];
+    [layer3 setBorderWidth:1.0];
 
-    v22 = [MEMORY[0x277D75348] separatorColor];
-    v23 = [v22 CGColor];
-    v24 = [(STSSearchDropDownViewController *)v7 view];
-    v25 = [v24 layer];
-    [v25 setBorderColor:v23];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    cGColor = [separatorColor CGColor];
+    view6 = [(STSSearchDropDownViewController *)v7 view];
+    layer4 = [view6 layer];
+    [layer4 setBorderColor:cGColor];
   }
 
   return v7;
 }
 
-- (void)setSceneIdentifier:(id)a3
+- (void)setSceneIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_sceneIdentifier, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_sceneIdentifier, identifier);
+  identifierCopy = identifier;
   [(PopUpPlugin *)self->_popUpPlugin setSceneIdentifier:self->_sceneIdentifier];
 }
 
@@ -102,10 +102,10 @@
 
 - (void)showCategories
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 sts_legalNoticeCount];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  sts_legalNoticeCount = [standardUserDefaults sts_legalNoticeCount];
 
-  if (v4 >= 3)
+  if (sts_legalNoticeCount >= 3)
   {
     if (self->_popUpShowing == 1)
     {
@@ -179,22 +179,22 @@
 
 - (void)showSuggestions
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 sts_legalNoticeCount];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  sts_legalNoticeCount = [standardUserDefaults sts_legalNoticeCount];
 
-  if (v4 >= 3)
+  if (sts_legalNoticeCount >= 3)
   {
     if (self->_popUpShowing)
     {
       [(PopUpPlugin *)self->_popUpPlugin setDataSource:self->_suggestionsDataSource];
       [(PopUpPlugin *)self->_popUpPlugin setDelegate:self->_suggestionsDataSource];
-      v5 = [(STSSearchDropDownViewController *)self query];
-      v6 = [v5 length];
+      query = [(STSSearchDropDownViewController *)self query];
+      v6 = [query length];
 
       if (!v6)
       {
-        v7 = [(STSSearchDropDownViewController *)self suggestionsDataSource];
-        [v7 clearSuggestions];
+        suggestionsDataSource = [(STSSearchDropDownViewController *)self suggestionsDataSource];
+        [suggestionsDataSource clearSuggestions];
       }
 
       [(STSSearchDropDownViewController *)self _updateSuggestions];
@@ -212,13 +212,13 @@
       }
 
       self->_popUpShowing = 0;
-      v10 = [(STSSearchDropDownViewController *)self query];
-      v11 = [v10 length];
+      query2 = [(STSSearchDropDownViewController *)self query];
+      v11 = [query2 length];
 
       if (!v11)
       {
-        v12 = [(STSSearchDropDownViewController *)self suggestionsDataSource];
-        [v12 clearSuggestions];
+        suggestionsDataSource2 = [(STSSearchDropDownViewController *)self suggestionsDataSource];
+        [suggestionsDataSource2 clearSuggestions];
       }
     }
   }
@@ -232,11 +232,11 @@
 
 - (void)_updateSuggestions
 {
-  v3 = [(STSSearchModel *)self->_searchModel predictedSuggestions];
-  v4 = [v3 mutableCopy];
+  predictedSuggestions = [(STSSearchModel *)self->_searchModel predictedSuggestions];
+  v4 = [predictedSuggestions mutableCopy];
 
-  v5 = [(CategoriesDataSource *)self->_categoriesDataSource recentQueries];
-  v6 = [v5 sts_map:&__block_literal_global_1];
+  recentQueries = [(CategoriesDataSource *)self->_categoriesDataSource recentQueries];
+  v6 = [recentQueries sts_map:&__block_literal_global_1];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -254,8 +254,8 @@
 
     v9 = v6;
 LABEL_7:
-    v11 = [(STSSearchDropDownViewController *)self suggestionsDataSource];
-    [v11 updateQuerySuggestions:v9];
+    suggestionsDataSource = [(STSSearchDropDownViewController *)self suggestionsDataSource];
+    [suggestionsDataSource updateQuerySuggestions:v9];
 
     goto LABEL_8;
   }
@@ -319,11 +319,11 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   }
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = [a3 searchTextField];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  searchTextField = [bar searchTextField];
+  text = [searchTextField text];
+  v7 = [text length];
 
   if (v7)
   {
@@ -342,18 +342,18 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   }
 }
 
-- (void)showPickerAndPerformQuery:(id)a3 requestType:(int64_t)a4
+- (void)showPickerAndPerformQuery:(id)query requestType:(int64_t)type
 {
   categoriesDataSource = self->_categoriesDataSource;
-  v7 = a3;
-  [(CategoriesDataSource *)categoriesDataSource addQueryToRecents:v7];
+  queryCopy = query;
+  [(CategoriesDataSource *)categoriesDataSource addQueryToRecents:queryCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained searchDropDownViewController:self didQueryFor:v7 requestType:a4];
+  [WeakRetained searchDropDownViewController:self didQueryFor:queryCopy requestType:type];
 }
 
 - (void)sendVisibleResultsFeedback
 {
-  v5 = [(PopUpPlugin *)self->_popUpPlugin indexPathsForVisibleRows];
+  indexPathsForVisibleRows = [(PopUpPlugin *)self->_popUpPlugin indexPathsForVisibleRows];
   v3 = [(CategoriesDataSource *)self->_categoriesDataSource visibleResultsForIndexPaths:?];
   if ([v3 count])
   {
@@ -362,16 +362,16 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   }
 }
 
-- (void)categoryViewController:(id)a3 didSelectCategory:(id)a4 suggested:(BOOL)a5
+- (void)categoryViewController:(id)controller didSelectCategory:(id)category suggested:(BOOL)suggested
 {
-  v6 = a4;
-  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:v6 requestType:5];
-  [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:v6];
+  categoryCopy = category;
+  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:categoryCopy requestType:5];
+  [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:categoryCopy];
 }
 
-- (void)categoryViewController:(id)a3 didSelectRecent:(id)a4
+- (void)categoryViewController:(id)controller didSelectRecent:(id)recent
 {
-  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:a4 requestType:6];
+  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:recent requestType:6];
   suggestionsDataSource = self->_suggestionsDataSource;
 
   [(SuggestionsDataSource *)suggestionsDataSource clearSuggestions];
@@ -384,17 +384,17 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   [v2 didClearRecents];
 }
 
-- (void)categoryViewControllerDidSelectClearRecentsButton:(id)a3
+- (void)categoryViewControllerDidSelectClearRecentsButton:(id)button
 {
   [(CategoriesDataSource *)self->_categoriesDataSource clearRecents];
   v3 = +[STSFeedbackReporter sharedInstance];
   [v3 didClearRecents];
 }
 
-- (void)suggestionViewController:(id)a3 didSelectSuggestion:(id)a4 suggested:(BOOL)a5
+- (void)suggestionViewController:(id)controller didSelectSuggestion:(id)suggestion suggested:(BOOL)suggested
 {
-  v6 = [a4 suggestion];
-  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:v6 requestType:1];
+  suggestion = [suggestion suggestion];
+  [(STSSearchDropDownViewController *)self showPickerAndPerformQuery:suggestion requestType:1];
 }
 
 - (void)dropDownContentViewControllerShouldDismiss
@@ -403,10 +403,10 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   [WeakRetained searchDropDownViewControllerShouldDismiss];
 }
 
-- (void)searchModelUpdatedQuerySuggestions:(id)a3
+- (void)searchModelUpdatedQuerySuggestions:(id)suggestions
 {
-  v4 = [a3 querySuggestions];
-  v5 = [v4 count];
+  querySuggestions = [suggestions querySuggestions];
+  v5 = [querySuggestions count];
 
   if (!v5)
   {
@@ -428,8 +428,8 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
 
 - (BOOL)shouldShowLegalNotice
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 sts_legalNoticeCount] < 3;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults sts_legalNoticeCount] < 3;
 
   return v3;
 }
@@ -438,8 +438,8 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
 {
   if (self->_popUpShowing == 3)
   {
-    v3 = [(STSSearchDropDownViewController *)self query];
-    v4 = [v3 length];
+    query = [(STSSearchDropDownViewController *)self query];
+    v4 = [query length];
 
     if (v4)
     {
@@ -463,11 +463,11 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
   }
 }
 
-- (void)didPressReturnKey:(id)a3
+- (void)didPressReturnKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   popUpShowing = self->_popUpShowing;
-  v12 = v4;
+  v12 = keyCopy;
   if (popUpShowing >= 2)
   {
     if (popUpShowing == 2)
@@ -478,38 +478,38 @@ void __53__STSSearchDropDownViewController__updateSuggestions__block_invoke_3(ui
 
   else
   {
-    v6 = [(PopUpPlugin *)self->_popUpPlugin getSelection];
-    v7 = [v6 length];
+    getSelection = [(PopUpPlugin *)self->_popUpPlugin getSelection];
+    v7 = [getSelection length];
 
-    v4 = v12;
+    keyCopy = v12;
     if (v7)
     {
-      v8 = [(PopUpPlugin *)self->_popUpPlugin getSelection];
-      [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:v8];
-      v9 = [(STSSearchDropDownViewController *)self delegate];
-      [v9 searchDropDownViewController:self didQueryFor:v8 requestType:1];
+      getSelection2 = [(PopUpPlugin *)self->_popUpPlugin getSelection];
+      [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:getSelection2];
+      delegate = [(STSSearchDropDownViewController *)self delegate];
+      [delegate searchDropDownViewController:self didQueryFor:getSelection2 requestType:1];
 
-      [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:v8];
+      [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:getSelection2];
 LABEL_8:
 
       goto LABEL_9;
     }
   }
 
-  v10 = [v4 length];
-  v11 = [(STSSearchDropDownViewController *)self delegate];
-  v8 = v11;
+  v10 = [keyCopy length];
+  delegate2 = [(STSSearchDropDownViewController *)self delegate];
+  getSelection2 = delegate2;
   if (!v10)
   {
-    [v11 searchDropDownViewControllerShouldPresent];
+    [delegate2 searchDropDownViewControllerShouldPresent];
     goto LABEL_8;
   }
 
-  [v11 searchDropDownViewController:self didQueryFor:v12 requestType:1];
+  [delegate2 searchDropDownViewController:self didQueryFor:v12 requestType:1];
 
   [(CategoriesDataSource *)self->_categoriesDataSource addQueryToRecents:v12];
 LABEL_9:
-  v4 = v12;
+  keyCopy = v12;
 LABEL_10:
 }
 

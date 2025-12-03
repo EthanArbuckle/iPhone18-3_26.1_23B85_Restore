@@ -12,18 +12,18 @@
 
 + (id)_moduleBackgroundMaterialView
 {
-  v2 = [a1 _darkMaterialView];
-  [v2 setGroupNameBase:@"ControlCenterModuleBackground"];
+  _darkMaterialView = [self _darkMaterialView];
+  [_darkMaterialView setGroupNameBase:@"ControlCenterModuleBackground"];
 
-  return v2;
+  return _darkMaterialView;
 }
 
 + (id)_darkMaterialView
 {
   v2 = MEMORY[0x1E69AE158];
-  v3 = [a1 _controlCenterModulesRecipe];
+  _controlCenterModulesRecipe = [self _controlCenterModulesRecipe];
 
-  return [v2 materialViewWithRecipe:v3];
+  return [v2 materialViewWithRecipe:_controlCenterModulesRecipe];
 }
 
 + (id)_lightFillView
@@ -61,10 +61,10 @@
 
 + (int64_t)_controlCenterBackgroundRecipe
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 21;
   }

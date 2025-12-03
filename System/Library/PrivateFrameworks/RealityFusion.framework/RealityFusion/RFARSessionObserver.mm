@@ -2,12 +2,12 @@
 - (RFARSessionObserver)init;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)processAddedAnchors:(id)a3;
-- (void)processRemovedAnchors:(id)a3;
-- (void)processUpdatedAnchors:(id)a3;
-- (void)processUpdatedExternalAnchors:(id)a3;
+- (void)processAddedAnchors:(id)anchors;
+- (void)processRemovedAnchors:(id)anchors;
+- (void)processUpdatedAnchors:(id)anchors;
+- (void)processUpdatedExternalAnchors:(id)anchors;
 - (void)setCallback:(function<void (rf::data_flow::provider::InputData)&&;
-- (void)updateSession:(id)a3 withTime:(double)a4;
+- (void)updateSession:(id)session withTime:(double)time;
 @end
 
 @implementation RFARSessionObserver
@@ -26,18 +26,18 @@
   [(RFARSessionObserver *)&v2 dealloc];
 }
 
-- (void)processAddedAnchors:(id)a3
+- (void)processAddedAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   v5 = *(self + 21);
   v6 = *(self + 22);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__RFARSessionObserver_processAddedAnchors___block_invoke;
   v8[3] = &unk_279AED1A0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = anchorsCopy;
+  selfCopy = self;
+  v7 = anchorsCopy;
   dispatch_group_async(v5, v6, v8);
 }
 
@@ -234,18 +234,18 @@ void __43__RFARSessionObserver_processAddedAnchors___block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processUpdatedAnchors:(id)a3
+- (void)processUpdatedAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   v5 = *(self + 21);
   v6 = *(self + 22);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__RFARSessionObserver_processUpdatedAnchors___block_invoke;
   v8[3] = &unk_279AED1A0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = anchorsCopy;
+  selfCopy = self;
+  v7 = anchorsCopy;
   dispatch_group_async(v5, v6, v8);
 }
 
@@ -426,18 +426,18 @@ void __45__RFARSessionObserver_processUpdatedAnchors___block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRemovedAnchors:(id)a3
+- (void)processRemovedAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   v5 = *(self + 21);
   v6 = *(self + 22);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__RFARSessionObserver_processRemovedAnchors___block_invoke;
   v8[3] = &unk_279AED1A0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = anchorsCopy;
+  selfCopy = self;
+  v7 = anchorsCopy;
   dispatch_group_async(v5, v6, v8);
 }
 
@@ -678,18 +678,18 @@ void __45__RFARSessionObserver_processRemovedAnchors___block_invoke()
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processUpdatedExternalAnchors:(id)a3
+- (void)processUpdatedExternalAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   v5 = *(self + 21);
   v6 = *(self + 22);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__RFARSessionObserver_processUpdatedExternalAnchors___block_invoke;
   v8[3] = &unk_279AED1A0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = anchorsCopy;
+  selfCopy = self;
+  v7 = anchorsCopy;
   dispatch_group_async(v5, v6, v8);
 }
 
@@ -927,10 +927,10 @@ void __53__RFARSessionObserver_processUpdatedExternalAnchors___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSession:(id)a3 withTime:(double)a4
+- (void)updateSession:(id)session withTime:(double)time
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sessionCopy = session;
   std::mutex::lock((self + 96));
   v7 = *(self + 10);
   if (*(self + 88) == 1 && v7 != 0)
@@ -941,16 +941,16 @@ void __53__RFARSessionObserver_processUpdatedExternalAnchors___block_invoke(uint
       v10 = rf::realityFusionLogObject(v6);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [*(*(*(self + 6) + ((*(self + 9) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * (*(self + 9) & 0x1FFLL)) identifier];
-        v12 = [v11 UUIDString];
-        v13 = v12;
-        v14 = [v12 UTF8String];
+        identifier = [*(*(*(self + 6) + ((*(self + 9) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * (*(self + 9) & 0x1FFLL)) identifier];
+        uUIDString = [identifier UUIDString];
+        v13 = uUIDString;
+        uTF8String = [uUIDString UTF8String];
         *buf = 136446210;
-        v20 = v14;
+        v20 = uTF8String;
         _os_log_impl(&dword_2617CB000, v10, OS_LOG_TYPE_DEFAULT, "RFARSessionObserver: Attempting to re-add anchor %{public}s in queue to ARKit", buf, 0xCu);
       }
 
-      [v5 addAnchor:*(*(*(self + 6) + ((*(self + 9) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * (*(self + 9) & 0x1FFLL))];
+      [sessionCopy addAnchor:*(*(*(self + 6) + ((*(self + 9) >> 6) & 0x3FFFFFFFFFFFFF8)) + 8 * (*(self + 9) & 0x1FFLL))];
       v15 = vaddq_s64(*(self + 72), xmmword_261864070);
       *(self + 72) = v15;
       if (v15.i64[0] >= 0x400uLL)

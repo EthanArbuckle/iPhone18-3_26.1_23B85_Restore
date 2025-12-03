@@ -1,36 +1,36 @@
 @interface _HDSPPowerAssertion
-+ (id)assertionWithIdentifier:(id)a3 timeout:(double)a4;
-- (_HDSPPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)assertionWithIdentifier:(id)identifier timeout:(double)timeout;
+- (_HDSPPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_locked_release;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 - (void)releaseAssertion;
 @end
 
 @implementation _HDSPPowerAssertion
 
-+ (id)assertionWithIdentifier:(id)a3 timeout:(double)a4
++ (id)assertionWithIdentifier:(id)identifier timeout:(double)timeout
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithIdentifier:v5 timeout:a4];
+  identifierCopy = identifier;
+  v6 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy timeout:timeout];
 
   return v6;
 }
 
-- (_HDSPPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4
+- (_HDSPPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v28.receiver = self;
   v28.super_class = _HDSPPowerAssertion;
   v8 = [(_HDSPPowerAssertion *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
+    objc_storeStrong(&v8->_identifier, identifier);
     v9->_assertionLock._os_unfair_lock_opaque = 0;
     v10 = HKSPLogForCategory();
     v9->_signpost_id = os_signpost_id_generate(v10);
@@ -53,11 +53,11 @@
     v35[0] = @"AssertType";
     v35[1] = @"AssertName";
     v36[0] = @"PreventUserIdleSystemSleep";
-    v36[1] = v7;
+    v36[1] = identifierCopy;
     v36[2] = @"TimeoutActionRelease";
     v35[2] = @"TimeoutAction";
     v35[3] = @"TimeoutSeconds";
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
     v36[3] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:4];
 
@@ -77,7 +77,7 @@
         v31 = 2114;
         v32 = v27;
         v33 = 2114;
-        v34 = v7;
+        v34 = identifierCopy;
         _os_log_error_impl(&dword_269B11000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Error %{public}@ taking power assert for %{public}@", buf, 0x20u);
       }
     }
@@ -89,11 +89,11 @@
   return v9;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_assertionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_assertionLock);
 }
@@ -142,27 +142,27 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_HDSPPowerAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_HDSPPowerAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_HDSPPowerAssertion *)self identifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  identifier = [(_HDSPPowerAssertion *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_HDSPPowerAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_HDSPPowerAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

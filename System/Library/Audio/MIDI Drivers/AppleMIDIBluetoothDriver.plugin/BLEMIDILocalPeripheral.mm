@@ -1,32 +1,32 @@
 @interface BLEMIDILocalPeripheral
 - (BLEMIDILocalPeripheral)init;
-- (BLEMIDILocalPeripheral)initWithDriver:(MIDIDriverInterface *)a3;
-- (BLEMIDILocalPeripheral)peripheralWithUUID:(id)a3;
-- (BOOL)isAlreadyConnectedAsPeripheral:(id)a3;
+- (BLEMIDILocalPeripheral)initWithDriver:(MIDIDriverInterface *)driver;
+- (BLEMIDILocalPeripheral)peripheralWithUUID:(id)d;
+- (BOOL)isAlreadyConnectedAsPeripheral:(id)peripheral;
 - (id)connectedCentralUUID;
 - (id)subscribedCentral;
 - (void)activateConnectedUUID;
-- (void)activateUUID:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)activateUUID:(id)d;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)checkAddMIDIService;
 - (void)dealloc;
-- (void)enqueue:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 _didReceiveWriteRequests:(id)a4;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3;
+- (void)enqueue:(id)enqueue;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralManager:(id)manager _didReceiveWriteRequests:(id)requests;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers;
 - (void)removeMIDIService;
-- (void)resetDevice:(unsigned int)a3;
+- (void)resetDevice:(unsigned int)device;
 - (void)sendIfReady;
 @end
 
@@ -48,7 +48,7 @@
   return 0;
 }
 
-- (BLEMIDILocalPeripheral)initWithDriver:(MIDIDriverInterface *)a3
+- (BLEMIDILocalPeripheral)initWithDriver:(MIDIDriverInterface *)driver
 {
   v8.receiver = self;
   v8.super_class = BLEMIDILocalPeripheral;
@@ -59,7 +59,7 @@
     v5 = [CBCentralManager alloc];
     v6 = [NSNumber numberWithBool:0];
     v4->centralManager = [v5 initWithDelegate:v4 queue:0 options:{+[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v6, CBCentralManagerOptionReceiveSystemEvents, +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 0), CBCentralManagerOptionShowPowerAlertKey, 0)}];
-    v4->driver = a3;
+    v4->driver = driver;
     v4->commandQueue = dispatch_queue_create("BLEMIDILocalPeripheral_CommandQueue", 0);
     v4->outgoingPackets = [[NSMutableArray alloc] initWithCapacity:0];
     v4->readyToSend = 1;
@@ -87,9 +87,9 @@
   {
     if ([objc_msgSend(result "subscribedCentrals")] == &dword_0 + 1)
     {
-      v4 = [(CBMutableCharacteristic *)self->midiChar subscribedCentrals];
+      subscribedCentrals = [(CBMutableCharacteristic *)self->midiChar subscribedCentrals];
 
-      return [(NSArray *)v4 objectAtIndex:0];
+      return [(NSArray *)subscribedCentrals objectAtIndex:0];
     }
 
     else
@@ -110,16 +110,16 @@
 
 - (void)activateConnectedUUID
 {
-  v3 = [(BLEMIDILocalPeripheral *)self subscribedCentral];
-  if (v3)
+  subscribedCentral = [(BLEMIDILocalPeripheral *)self subscribedCentral];
+  if (subscribedCentral)
   {
-    v4 = [objc_msgSend(v3 "identifier")];
+    v4 = [objc_msgSend(subscribedCentral "identifier")];
 
     [(BLEMIDILocalPeripheral *)self activateUUID:v4];
   }
 }
 
-- (void)activateUUID:(id)a3
+- (void)activateUUID:(id)d
 {
   v5 = +[BLEMIDIAccessor localPeripheral];
   str = 0;
@@ -128,8 +128,8 @@
   {
     if (!self->connectedCentral)
     {
-      v9 = [(BLEMIDILocalPeripheral *)self subscribedCentral];
-      if (!v9)
+      subscribedCentral = [(BLEMIDILocalPeripheral *)self subscribedCentral];
+      if (!subscribedCentral)
       {
         sub_8EB0();
         v12 = qword_1D978;
@@ -143,17 +143,17 @@
         v34 = 1024;
         v35 = 160;
         v36 = 2112;
-        *v37 = a3;
+        *v37 = d;
         v13 = "%25s:%-5d Received a request to activate connected central with UUID %@, but there is no subscribed central.";
         v14 = v12;
         v15 = 28;
         goto LABEL_34;
       }
 
-      self->connectedCentral = v9;
+      self->connectedCentral = subscribedCentral;
     }
 
-    v10 = [BLEMIDIAccessor midiDeviceForUUID:a3 isLocalPeripheral:1 isRemotePeripheral:0];
+    v10 = [BLEMIDIAccessor midiDeviceForUUID:d isLocalPeripheral:1 isRemotePeripheral:0];
     if (v10)
     {
       if (([BLEMIDIAccessor deviceIsOnline:v10]& 1) != 0)
@@ -166,7 +166,7 @@ LABEL_16:
       return;
     }
 
-    v11 = [BLEMIDIAccessor midiDeviceForUUID:a3];
+    v11 = [BLEMIDIAccessor midiDeviceForUUID:d];
     LODWORD(obj) = v11;
     if (v11)
     {
@@ -184,7 +184,7 @@ LABEL_16:
       v34 = 1024;
       v35 = 180;
       v36 = 2112;
-      *v37 = a3;
+      *v37 = d;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_INFO, "%25s:%-5d Received a request to activate connected central with UUID %@. This will create a new MIDI device.", buf, 0x1Cu);
     }
 
@@ -228,8 +228,8 @@ LABEL_16:
         _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, "%25s:%-5d Remote central device connected with MIDIDeviceRef %u, %@", buf, 0x22u);
       }
 
-      MIDIObjectSetStringProperty(obj, @"BLE MIDI Device UUID", a3);
-      v24 = [(BLEMIDILocalPeripheral *)self peripheralWithUUID:a3];
+      MIDIObjectSetStringProperty(obj, @"BLE MIDI Device UUID", d);
+      v24 = [(BLEMIDILocalPeripheral *)self peripheralWithUUID:d];
       if (v24)
       {
         v25 = v24;
@@ -243,7 +243,7 @@ LABEL_16:
           v34 = 1024;
           v35 = 196;
           v36 = 2112;
-          *v37 = a3;
+          *v37 = d;
           _os_log_impl(&dword_0, v26, OS_LOG_TYPE_INFO, "%25s:%-5d [device info] connectPeripheral: UUID %@", buf, 0x1Cu);
         }
 
@@ -291,7 +291,7 @@ LABEL_34:
     v34 = 1024;
     v35 = 145;
     v36 = 2112;
-    *v37 = a3;
+    *v37 = d;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Received a request to activate connected central with UUID %@, but there is an online local peripheral. Please file a bug report for CoreMIDI.", buf, 0x1Cu);
   }
 
@@ -361,21 +361,21 @@ LABEL_34:
   }
 }
 
-- (void)resetDevice:(unsigned int)a3
+- (void)resetDevice:(unsigned int)device
 {
-  MIDIObjectSetIntegerProperty(a3, @"MIDI Remote Peripheral", 0);
-  MIDIObjectSetIntegerProperty(a3, @"MIDI Local Peripheral", 1);
-  MIDIObjectSetIntegerProperty(a3, @"MIDI Input Supported", 1);
+  MIDIObjectSetIntegerProperty(device, @"MIDI Remote Peripheral", 0);
+  MIDIObjectSetIntegerProperty(device, @"MIDI Local Peripheral", 1);
+  MIDIObjectSetIntegerProperty(device, @"MIDI Input Supported", 1);
 
-  MIDIObjectSetIntegerProperty(a3, @"MIDI Output Supported", 1);
+  MIDIObjectSetIntegerProperty(device, @"MIDI Output Supported", 1);
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = [(BLEMIDILocalPeripheral *)self isLECapableHardware];
-  if (self->leCapable != v4)
+  isLECapableHardware = [(BLEMIDILocalPeripheral *)self isLECapableHardware];
+  if (self->leCapable != isLECapableHardware)
   {
-    v5 = v4;
+    v5 = isLECapableHardware;
     sub_8EB0();
     v6 = qword_1D978;
     if (os_log_type_enabled(qword_1D978, OS_LOG_TYPE_INFO))
@@ -433,9 +433,9 @@ LABEL_34:
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  if (a4)
+  if (error)
   {
     sub_8EB0();
     v5 = qword_1D978;
@@ -446,17 +446,17 @@ LABEL_34:
       v8 = 1024;
       v9 = 375;
       v10 = 2112;
-      v11 = a4;
+      errorCopy = error;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", &v6, 0x1Cu);
     }
   }
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
   sub_8EB0();
   v8 = qword_1D978;
-  if (a5)
+  if (error)
   {
     if (os_log_type_enabled(qword_1D978, OS_LOG_TYPE_ERROR))
     {
@@ -465,7 +465,7 @@ LABEL_34:
       v11 = 1024;
       v12 = 381;
       v13 = 2112;
-      v14 = a5;
+      serviceCopy = error;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d Error publishing service: %@", &v9, 0x1Cu);
     }
   }
@@ -479,7 +479,7 @@ LABEL_34:
       v11 = 1024;
       v12 = 383;
       v13 = 2112;
-      v14 = a4;
+      serviceCopy = service;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "%25s:%-5d Added service: %@", &v9, 0x1Cu);
     }
 
@@ -487,7 +487,7 @@ LABEL_34:
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
   sub_8EB0();
   v8 = qword_1D978;
@@ -498,13 +498,13 @@ LABEL_34:
     v12 = 1024;
     v13 = 390;
     v14 = 2112;
-    v15 = a4;
+    centralCopy2 = central;
     v16 = 2112;
-    v17 = a5;
+    characteristicCopy = characteristic;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %@ subscribed to MIDI characteristic %@. This will bring the device online.", &v10, 0x26u);
   }
 
-  if (-[BLEMIDILocalPeripheral isAlreadyConnectedAsPeripheral:](self, "isAlreadyConnectedAsPeripheral:", [objc_msgSend(a4 "identifier")]))
+  if (-[BLEMIDILocalPeripheral isAlreadyConnectedAsPeripheral:](self, "isAlreadyConnectedAsPeripheral:", [objc_msgSend(central "identifier")]))
   {
     sub_8EB0();
     v9 = qword_1D978;
@@ -515,19 +515,19 @@ LABEL_34:
       v12 = 1024;
       v13 = 393;
       v14 = 2112;
-      v15 = a4;
+      centralCopy2 = central;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "%25s:%-5d %@ is already connected as a peripheral to this central. It will now be disconnected to reverse roles.", &v10, 0x1Cu);
     }
 
-    sub_F538((self->driver - 1), [objc_msgSend(a4 "identifier")]);
+    sub_F538((self->driver - 1), [objc_msgSend(central "identifier")]);
     usleep(0xC350u);
   }
 
-  self->connectedCentral = a4;
-  -[BLEMIDILocalPeripheral activateUUID:](self, "activateUUID:", [objc_msgSend(a4 "identifier")]);
+  self->connectedCentral = central;
+  -[BLEMIDILocalPeripheral activateUUID:](self, "activateUUID:", [objc_msgSend(central "identifier")]);
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
   sub_8EB0();
   v8 = qword_1D978;
@@ -538,13 +538,13 @@ LABEL_34:
     v14 = 1024;
     v15 = 405;
     v16 = 2112;
-    v17 = a4;
+    centralCopy = central;
     v18 = 2112;
-    v19 = a5;
+    characteristicCopy = characteristic;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %@ unsubscribed from MIDI characteristic %@. This will take the device offline.", &v12, 0x26u);
   }
 
-  v9 = +[BLEMIDIAccessor midiDeviceForUUID:isLocalPeripheral:isRemotePeripheral:](BLEMIDIAccessor, "midiDeviceForUUID:isLocalPeripheral:isRemotePeripheral:", [objc_msgSend(a4 "identifier")], 1, 0);
+  v9 = +[BLEMIDIAccessor midiDeviceForUUID:isLocalPeripheral:isRemotePeripheral:](BLEMIDIAccessor, "midiDeviceForUUID:isLocalPeripheral:isRemotePeripheral:", [objc_msgSend(central "identifier")], 1, 0);
   if (v9)
   {
     v10 = v9;
@@ -568,7 +568,7 @@ LABEL_34:
   }
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
   sub_8EB0();
   v6 = qword_1D978;
@@ -581,13 +581,13 @@ LABEL_34:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "%25s:%-5d peripheralManager:didReceiveReadRequest: returning CBATTErrorSuccess.", &v7, 0x12u);
   }
 
-  [a3 respondToRequest:a4 withResult:0];
+  [manager respondToRequest:request withResult:0];
 }
 
-- (void)peripheralManager:(id)a3 _didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager _didReceiveWriteRequests:(id)requests
 {
-  v4 = a4;
-  v7 = [a4 count];
+  requestsCopy = requests;
+  v7 = [requests count];
   if (v7)
   {
     v9 = v7;
@@ -599,39 +599,39 @@ LABEL_34:
     v26 = v7;
     do
     {
-      v13 = [v4 objectAtIndex:{v10, v25}];
+      v13 = [requestsCopy objectAtIndex:{v10, v25}];
       if ([objc_msgSend(objc_msgSend(v13 "characteristic")])
       {
-        v14 = [v13 value];
-        if ([(BLEMIDIDevice *)self->bleDevice dataReceiver]&& v14)
+        value = [v13 value];
+        if ([(BLEMIDIDevice *)self->bleDevice dataReceiver]&& value)
         {
           sub_8EB0();
           v15 = qword_1D978;
           if (os_log_type_enabled(qword_1D978, OS_LOG_TYPE_DEBUG))
           {
-            v16 = v4;
+            v16 = requestsCopy;
             v17 = v12;
             v18 = v11;
-            v19 = a3;
-            v20 = [(BLEMIDIDataReceiver *)[(BLEMIDIDevice *)self->bleDevice dataReceiver] nowInMS];
-            v21 = [v14 length];
+            managerCopy = manager;
+            nowInMS = [(BLEMIDIDataReceiver *)[(BLEMIDIDevice *)self->bleDevice dataReceiver] nowInMS];
+            v21 = [value length];
             *buf = v25;
             v28 = "BTLEMIDILocalPeripheral.mm";
             v29 = 1024;
             v30 = 448;
             v31 = 2048;
-            v32 = v20;
-            a3 = v19;
+            v32 = nowInMS;
+            manager = managerCopy;
             v11 = v18;
             v12 = v17;
-            v4 = v16;
+            requestsCopy = v16;
             v9 = v26;
             v33 = 2048;
             v34 = v21;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "%25s:%-5d %llu ms: Received value of length %lu", buf, 0x26u);
           }
 
-          [(BLEMIDIDataReceiver *)[(BLEMIDIDevice *)self->bleDevice dataReceiver] unpackValue:v14];
+          [(BLEMIDIDataReceiver *)[(BLEMIDIDevice *)self->bleDevice dataReceiver] unpackValue:value];
         }
 
         peripheralManager = self->peripheralManager;
@@ -641,7 +641,7 @@ LABEL_34:
 
       else
       {
-        peripheralManager = a3;
+        peripheralManager = manager;
         v23 = v13;
         v24 = 10;
       }
@@ -654,7 +654,7 @@ LABEL_34:
   }
 }
 
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers
 {
   self->readyToSend = 1;
   commandQueue = self->commandQueue;
@@ -666,18 +666,18 @@ LABEL_34:
   dispatch_sync(commandQueue, block);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [(BLEMIDILocalPeripheral *)self isLECapableHardware];
-  if (self->leCapable != v4)
+  isLECapableHardware = [(BLEMIDILocalPeripheral *)self isLECapableHardware];
+  if (self->leCapable != isLECapableHardware)
   {
-    self->leCapable = v4;
+    self->leCapable = isLECapableHardware;
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  if (self->centralManager == a3)
+  if (self->centralManager == manager)
   {
     sub_8EB0();
     v6 = qword_1D978;
@@ -688,11 +688,11 @@ LABEL_34:
       v11 = 1024;
       v12 = 505;
       v13 = 2112;
-      v14 = a4;
+      peripheralCopy = peripheral;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "%25s:%-5d [device info] didConnectPeripheral: %@", buf, 0x1Cu);
     }
 
-    if (([objc_msgSend(objc_msgSend(a4 "identifier")] & 1) == 0)
+    if (([objc_msgSend(objc_msgSend(peripheral "identifier")] & 1) == 0)
     {
       sub_8EB0();
       v7 = qword_1D978;
@@ -705,18 +705,18 @@ LABEL_34:
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: This central is only allowed to connect to a previously connected central.", buf, 0x12u);
       }
 
-      [(CBCentralManager *)self->centralManager cancelPeripheralConnection:a4];
+      [(CBCentralManager *)self->centralManager cancelPeripheralConnection:peripheral];
     }
 
-    [a4 setDelegate:self];
+    [peripheral setDelegate:self];
     v8 = [CBUUID UUIDWithString:@"180A"];
-    [a4 discoverServices:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v8, 1)}];
+    [peripheral discoverServices:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v8, 1)}];
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  if (self->centralManager == a3)
+  if (self->centralManager == manager)
   {
     sub_8EB0();
     v8 = qword_1D978;
@@ -727,9 +727,9 @@ LABEL_34:
       v11 = 1024;
       v12 = 526;
       v13 = 2112;
-      v14 = a4;
+      peripheralCopy = peripheral;
       v15 = 2112;
-      v16 = a5;
+      errorCopy = error;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "%25s:%-5d [device info] didDisconnectPeripheral: %@ error: %@", &v9, 0x26u);
     }
 
@@ -738,9 +738,9 @@ LABEL_34:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  if (self->centralManager == a3)
+  if (self->centralManager == manager)
   {
     sub_8EB0();
     v7 = qword_1D978;
@@ -751,34 +751,34 @@ LABEL_34:
       v10 = 1024;
       v11 = 541;
       v12 = 2112;
-      v13 = a4;
+      peripheralCopy = peripheral;
       v14 = 2112;
-      v15 = a5;
+      errorCopy = error;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d ERROR: Failed to connect to peripheral: %@ with error: %@", &v8, 0x26u);
     }
 
-    if (a4)
+    if (peripheral)
     {
-      [a4 setDelegate:0];
+      [peripheral setDelegate:0];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 services];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  services = [peripheral services];
+  v7 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v7)
   {
     goto LABEL_11;
   }
 
   v8 = v7;
-  v13 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = *v15;
   do
@@ -787,32 +787,32 @@ LABEL_34:
     {
       if (*v15 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(services);
       }
 
       v12 = *(*(&v14 + 1) + 8 * i);
       if ([objc_msgSend(v12 "UUID")])
       {
-        [a3 discoverCharacteristics:0 forService:v12];
+        [peripheral discoverCharacteristics:0 forService:v12];
         v9 = 1;
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v8);
-  self = v13;
+  self = selfCopy;
   if ((v9 & 1) == 0)
   {
 LABEL_11:
-    [(CBCentralManager *)self->centralManager cancelPeripheralConnection:a3];
+    [(CBCentralManager *)self->centralManager cancelPeripheralConnection:peripheral];
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  if (![objc_msgSend(a4 "UUID")])
+  if (![objc_msgSend(service "UUID")])
   {
     goto LABEL_13;
   }
@@ -821,7 +821,7 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [a4 characteristics];
+  obj = [service characteristics];
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v8)
   {
@@ -831,7 +831,7 @@ LABEL_11:
   v9 = v8;
   v10 = 0;
   v11 = *v20;
-  v16 = self;
+  selfCopy = self;
   p_centralModelOutstanding = &self->centralModelOutstanding;
   p_centralManufacturerOutstanding = &self->centralManufacturerOutstanding;
   do
@@ -854,7 +854,7 @@ LABEL_11:
         }
       }
 
-      [a3 readValueForCharacteristic:v14];
+      [peripheral readValueForCharacteristic:v14];
       v10 = 1;
       *v15 = 1;
     }
@@ -863,19 +863,19 @@ LABEL_11:
   }
 
   while (v9);
-  self = v16;
+  self = selfCopy;
   if ((v10 & 1) == 0)
   {
 LABEL_13:
-    [(CBCentralManager *)self->centralManager cancelPeripheralConnection:a3];
+    [(CBCentralManager *)self->centralManager cancelPeripheralConnection:peripheral];
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  if ([objc_msgSend(a4 "UUID")])
+  if ([objc_msgSend(characteristic "UUID")])
   {
-    v8 = [[NSString alloc] initWithData:objc_msgSend(a4 encoding:{"value"), 4}];
+    v8 = [[NSString alloc] initWithData:objc_msgSend(characteristic encoding:{"value"), 4}];
     v9 = +[BLEMIDIAccessor localPeripheral];
     if (v9)
     {
@@ -888,9 +888,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([objc_msgSend(a4 "UUID")])
+  if ([objc_msgSend(characteristic "UUID")])
   {
-    v11 = [[NSString alloc] initWithData:objc_msgSend(a4 encoding:{"value"), 4}];
+    v11 = [[NSString alloc] initWithData:objc_msgSend(characteristic encoding:{"value"), 4}];
     v12 = +[BLEMIDIAccessor localPeripheral];
     if (v12)
     {
@@ -906,13 +906,13 @@ LABEL_10:
   {
     centralManager = self->centralManager;
 
-    [(CBCentralManager *)centralManager cancelPeripheralConnection:a3];
+    [(CBCentralManager *)centralManager cancelPeripheralConnection:peripheral];
   }
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  if (a3)
+  if (enqueue)
   {
     commandQueue = self->commandQueue;
     v4[0] = _NSConcreteStackBlock;
@@ -920,7 +920,7 @@ LABEL_10:
     v4[2] = sub_B204;
     v4[3] = &unk_18880;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = enqueue;
     dispatch_sync(commandQueue, v4);
   }
 }
@@ -968,9 +968,9 @@ LABEL_10:
   [v3 drain];
 }
 
-- (BOOL)isAlreadyConnectedAsPeripheral:(id)a3
+- (BOOL)isAlreadyConnectedAsPeripheral:(id)peripheral
 {
-  v3 = [BLEMIDIAccessor midiDeviceForUUID:a3 isLocalPeripheral:0 isRemotePeripheral:1];
+  v3 = [BLEMIDIAccessor midiDeviceForUUID:peripheral isLocalPeripheral:0 isRemotePeripheral:1];
   if (v3)
   {
 
@@ -980,9 +980,9 @@ LABEL_10:
   return v3;
 }
 
-- (BLEMIDILocalPeripheral)peripheralWithUUID:(id)a3
+- (BLEMIDILocalPeripheral)peripheralWithUUID:(id)d
 {
-  v4 = [[NSUUID alloc] initWithUUIDString:a3];
+  v4 = [[NSUUID alloc] initWithUUIDString:d];
   centralManager = self->centralManager;
   v8 = v4;
   result = [(CBCentralManager *)centralManager retrievePeripheralsWithIdentifiers:[NSArray arrayWithObjects:&v8 count:1]];

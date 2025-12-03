@@ -33,13 +33,13 @@
 
 - (void)_animationCompleted
 {
-  v3 = [(ApplicationTest *)self application];
+  application = [(ApplicationTest *)self application];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100048D04;
   v4[3] = &unk_10020EB00;
   v4[4] = self;
-  [v3 installCACommitCompletionBlock:v4];
+  [application installCACommitCompletionBlock:v4];
 }
 
 - (id)notificationName

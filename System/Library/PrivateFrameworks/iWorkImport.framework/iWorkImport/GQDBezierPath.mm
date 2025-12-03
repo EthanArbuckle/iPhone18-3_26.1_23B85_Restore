@@ -1,23 +1,23 @@
 @interface GQDBezierPath
-+ (__CFString)createCFStringFromPath:(CGPath *)a3;
++ (__CFString)createCFStringFromPath:(CGPath *)path;
 - (BOOL)isRectangular;
 - (CGPath)createBezierPath;
 - (CGPath)path;
-- (GQDBezierPath)initWithPathString:(const char *)a3;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (GQDBezierPath)initWithPathString:(const char *)string;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 - (void)dealloc;
 @end
 
 @implementation GQDBezierPath
 
-- (GQDBezierPath)initWithPathString:(const char *)a3
+- (GQDBezierPath)initWithPathString:(const char *)string
 {
   v7.receiver = self;
   v7.super_class = GQDBezierPath;
   v4 = [(GQDBezierPath *)&v7 init];
   if (v4)
   {
-    v5 = xmlStrdup(a3);
+    v5 = xmlStrdup(string);
     v4->mPathStr = v5;
     v4->mPath = sub_42ABC(v5);
   }
@@ -129,19 +129,19 @@
 
 - (CGPath)createBezierPath
 {
-  v2 = [(GQDBezierPath *)self path];
+  path = [(GQDBezierPath *)self path];
 
-  return CGPathCreateCopy(v2);
+  return CGPathCreateCopy(path);
 }
 
-+ (__CFString)createCFStringFromPath:(CGPath *)a3
++ (__CFString)createCFStringFromPath:(CGPath *)path
 {
   Mutable = CFStringCreateMutable(0, 0);
-  CGPathApply(a3, Mutable, sub_2EB0);
+  CGPathApply(path, Mutable, sub_2EB0);
   return Mutable;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
   mPathStr = self->mPathStr;
   if (mPathStr)
@@ -150,7 +150,7 @@
     self->mPathStr = 0;
   }
 
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "path", *(qword_A35E0 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "path", *(qword_A35E0 + 16));
   self->mPathStr = AttributeNs;
   if (self->mPath)
   {

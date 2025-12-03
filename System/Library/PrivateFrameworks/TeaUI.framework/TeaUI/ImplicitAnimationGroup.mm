@@ -3,22 +3,22 @@
 - (BOOL)isRunning;
 - (double)fractionComplete;
 - (int64_t)state;
-- (void)addCompletion:(id)a3;
-- (void)continueAnimationWithTimingParameters:(id)a3 durationFactor:(double)a4;
-- (void)finishAnimationAtPosition:(int64_t)a3;
+- (void)addCompletion:(id)completion;
+- (void)continueAnimationWithTimingParameters:(id)parameters durationFactor:(double)factor;
+- (void)finishAnimationAtPosition:(int64_t)position;
 - (void)pauseAnimation;
-- (void)setFractionComplete:(double)a3;
-- (void)setReversed:(BOOL)a3;
+- (void)setFractionComplete:(double)complete;
+- (void)setReversed:(BOOL)reversed;
 - (void)startAnimation;
-- (void)startAnimationAfterDelay:(double)a3;
-- (void)stopAnimation:(BOOL)a3;
+- (void)startAnimationAfterDelay:(double)delay;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation ImplicitAnimationGroup
 
 - (int64_t)state
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImplicitAnimationGroup.state.getter();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (BOOL)isRunning
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImplicitAnimationGroup.isRunning.getter();
 
   return v3 & 1;
@@ -34,77 +34,77 @@
 
 - (BOOL)isReversed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImplicitAnimationGroup.isReversed.getter();
 
   return v3 & 1;
 }
 
-- (void)setReversed:(BOOL)a3
+- (void)setReversed:(BOOL)reversed
 {
-  v4 = self;
-  ImplicitAnimationGroup.isReversed.setter(a3);
+  selfCopy = self;
+  ImplicitAnimationGroup.isReversed.setter(reversed);
 }
 
 - (double)fractionComplete
 {
-  v2 = self;
+  selfCopy = self;
   ImplicitAnimationGroup.fractionComplete.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setFractionComplete:(double)a3
+- (void)setFractionComplete:(double)complete
 {
-  v4 = self;
-  ImplicitAnimationGroup.fractionComplete.setter(a3);
+  selfCopy = self;
+  ImplicitAnimationGroup.fractionComplete.setter(complete);
 }
 
 - (void)startAnimation
 {
-  v2 = self;
+  selfCopy = self;
   ImplicitAnimationGroup.startAnimation()();
 }
 
-- (void)startAnimationAfterDelay:(double)a3
+- (void)startAnimationAfterDelay:(double)delay
 {
-  v4 = self;
-  ImplicitAnimationGroup.startAnimation(afterDelay:)(a3);
+  selfCopy = self;
+  ImplicitAnimationGroup.startAnimation(afterDelay:)(delay);
 }
 
 - (void)pauseAnimation
 {
-  v2 = self;
+  selfCopy = self;
   ImplicitAnimationGroup.pauseAnimation()();
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
-  v4 = self;
-  ImplicitAnimationGroup.stopAnimation(_:)(a3);
+  selfCopy = self;
+  ImplicitAnimationGroup.stopAnimation(_:)(animation);
 }
 
-- (void)finishAnimationAtPosition:(int64_t)a3
+- (void)finishAnimationAtPosition:(int64_t)position
 {
-  v4 = self;
-  ImplicitAnimationGroup.finishAnimation(at:)(a3);
+  selfCopy = self;
+  ImplicitAnimationGroup.finishAnimation(at:)(position);
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   ImplicitAnimationGroup.addCompletion(_:)(sub_1D7FECEEC, v5);
 }
 
-- (void)continueAnimationWithTimingParameters:(id)a3 durationFactor:(double)a4
+- (void)continueAnimationWithTimingParameters:(id)parameters durationFactor:(double)factor
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  ImplicitAnimationGroup.continueAnimation(withTimingParameters:durationFactor:)(a3, a4);
+  selfCopy = self;
+  ImplicitAnimationGroup.continueAnimation(withTimingParameters:durationFactor:)(parameters, factor);
   swift_unknownObjectRelease();
 }
 

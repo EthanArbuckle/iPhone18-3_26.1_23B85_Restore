@@ -1,12 +1,12 @@
 @interface TPSLoadingView
-- (TPSLoadingView)initWithLoadingLabel:(BOOL)a3;
+- (TPSLoadingView)initWithLoadingLabel:(BOOL)label;
 @end
 
 @implementation TPSLoadingView
 
-- (TPSLoadingView)initWithLoadingLabel:(BOOL)a3
+- (TPSLoadingView)initWithLoadingLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   v41.receiver = self;
   v41.super_class = TPSLoadingView;
   v4 = [(TPSLoadingView *)&v41 init];
@@ -26,7 +26,7 @@
     [(UIActivityIndicatorView *)v5->_loadingIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TPSLoadingView *)v5 addSubview:v5->_loadingIndicatorView];
     p_loadingLabel = &v5->_loadingIndicatorView;
-    if (v3)
+    if (labelCopy)
     {
       v12 = objc_alloc(MEMORY[0x277D756B8]);
       v13 = [v12 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -36,8 +36,8 @@
 
       [(UILabel *)v5->_loadingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UILabel *)v5->_loadingLabel setNumberOfLines:0];
-      v15 = [MEMORY[0x277CCA8D8] mainBundle];
-      v16 = [v15 localizedStringForKey:@"LOADING" value:&stru_28345ED28 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v16 = [mainBundle localizedStringForKey:@"LOADING" value:&stru_28345ED28 table:0];
       [(UILabel *)v5->_loadingLabel setText:v16];
 
       [(UILabel *)v5->_loadingLabel setTextAlignment:1];
@@ -45,43 +45,43 @@
       [(UILabel *)v5->_loadingLabel setFont:v17];
 
       [(TPSLoadingView *)v5 addSubview:v5->_loadingLabel];
-      v18 = [(UILabel *)v5->_loadingLabel firstBaselineAnchor];
-      v19 = [*p_loadingIndicatorView bottomAnchor];
-      v20 = [v18 constraintEqualToSystemSpacingBelowAnchor:v19 multiplier:1.0];
+      firstBaselineAnchor = [(UILabel *)v5->_loadingLabel firstBaselineAnchor];
+      bottomAnchor = [*p_loadingIndicatorView bottomAnchor];
+      v20 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
       [v20 setActive:1];
 
-      v21 = [(UILabel *)v5->_loadingLabel centerXAnchor];
-      v22 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      centerXAnchor = [(UILabel *)v5->_loadingLabel centerXAnchor];
+      centerXAnchor2 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
+      v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [v23 setActive:1];
 
       v24 = +[TPSAppearance secondaryLabelColor];
       [(UILabel *)v5->_loadingLabel setTextColor:v24];
     }
 
-    v25 = [(UILayoutGuide *)v5->_loadingLayoutGuide bottomAnchor];
-    v26 = [*p_loadingLabel bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    bottomAnchor2 = [(UILayoutGuide *)v5->_loadingLayoutGuide bottomAnchor];
+    bottomAnchor3 = [*p_loadingLabel bottomAnchor];
+    v27 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v27 setActive:1];
 
-    v28 = [*p_loadingIndicatorView centerXAnchor];
-    v29 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerXAnchor3 = [*p_loadingIndicatorView centerXAnchor];
+    centerXAnchor4 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
+    v30 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v30 setActive:1];
 
-    v31 = [(UILayoutGuide *)v5->_loadingLayoutGuide topAnchor];
-    v32 = [*p_loadingIndicatorView topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    topAnchor = [(UILayoutGuide *)v5->_loadingLayoutGuide topAnchor];
+    topAnchor2 = [*p_loadingIndicatorView topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v33 setActive:1];
 
-    v34 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
-    v35 = [(TPSLoadingView *)v5 centerXAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    centerXAnchor5 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerXAnchor];
+    centerXAnchor6 = [(TPSLoadingView *)v5 centerXAnchor];
+    v36 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v36 setActive:1];
 
-    v37 = [(UILayoutGuide *)v5->_loadingLayoutGuide centerYAnchor];
-    v38 = [(TPSLoadingView *)v5 centerYAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    centerYAnchor = [(UILayoutGuide *)v5->_loadingLayoutGuide centerYAnchor];
+    centerYAnchor2 = [(TPSLoadingView *)v5 centerYAnchor];
+    v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v39 setActive:1];
 
     [*p_loadingIndicatorView startAnimating];

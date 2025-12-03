@@ -1,24 +1,24 @@
 @interface RDCustomProfile
-+ (id)createContactProfile:(id)a3 config:(id)a4 lang:(id)a5 isJit:(BOOL)a6;
-- (RDCustomProfile)initWithLanguage:(id)a3 assetPath:(id)a4;
++ (id)createContactProfile:(id)profile config:(id)config lang:(id)lang isJit:(BOOL)jit;
+- (RDCustomProfile)initWithLanguage:(id)language assetPath:(id)path;
 @end
 
 @implementation RDCustomProfile
 
-- (RDCustomProfile)initWithLanguage:(id)a3 assetPath:(id)a4
+- (RDCustomProfile)initWithLanguage:(id)language assetPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  languageCopy = language;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = RDCustomProfile;
   v9 = [(RDCustomProfile *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_langugage, a3);
-    objc_storeStrong(&v10->_assetPath, a4);
+    objc_storeStrong(&v9->_langugage, language);
+    objc_storeStrong(&v10->_assetPath, path);
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/mini.json", v10->_assetPath];
-    v12 = sub_272373A4C(v11, v7, 0);
+    v12 = sub_272373A4C(v11, languageCopy, 0);
     builder = v10->_builder;
     v10->_builder = v12;
   }
@@ -26,15 +26,15 @@
   return v10;
 }
 
-+ (id)createContactProfile:(id)a3 config:(id)a4 lang:(id)a5 isJit:(BOOL)a6
++ (id)createContactProfile:(id)profile config:(id)config lang:(id)lang isJit:(BOOL)jit
 {
   v109 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = sub_272373A4C(v10, v11, a6);
-  v13 = v11;
-  v14 = v9;
+  profileCopy = profile;
+  configCopy = config;
+  langCopy = lang;
+  v12 = sub_272373A4C(configCopy, langCopy, jit);
+  v13 = langCopy;
+  v14 = profileCopy;
   [v12 removeAllWords];
   v90 = 0;
   v15 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v14 options:1 error:&v90];
@@ -45,9 +45,9 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v59 = [v16 description];
-      v60 = [v59 UTF8String];
+      uTF8String = [v59 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v60;
+      *&buf[4] = uTF8String;
       _os_log_error_impl(&dword_2721E4000, v17, OS_LOG_TYPE_ERROR, "Could not parse user profile: %s\n", buf, 0xCu);
     }
 
@@ -67,7 +67,7 @@
   }
 
   v17 = [v15 objectForKeyedSubscript:@"userData"];
-  v84 = v10;
+  v84 = configCopy;
   if (v17)
   {
     if (![&stru_2881908A8 length])
@@ -108,9 +108,9 @@ LABEL_61:
     v18 = sub_272374688();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v62 = [&stru_2881908A8 UTF8String];
+      uTF8String2 = [&stru_2881908A8 UTF8String];
       *buf = 136315138;
-      *&buf[4] = v62;
+      *&buf[4] = uTF8String2;
       _os_log_error_impl(&dword_2721E4000, v18, OS_LOG_TYPE_ERROR, "Got simulated prior file from input: %s\n", buf, 0xCu);
     }
 
@@ -136,7 +136,7 @@ LABEL_61:
           v79 = v17;
           v83 = v17;
           v23 = v22;
-          v85 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v77 = v23;
           v24 = [v23 objectForKeyedSubscript:@"urn:contacts:com.apple.contact.people"];
           objc_opt_class();
@@ -184,7 +184,7 @@ LABEL_61:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v85 addObject:v32];
+                    [array addObject:v32];
                   }
                 }
               }
@@ -215,7 +215,7 @@ LABEL_61:
           v96 = 0u;
           v97 = 0u;
           v95 = 0u;
-          v86 = v85;
+          v86 = array;
           v34 = [v86 countByEnumeratingWithState:&v95 objects:v104 count:16];
           if (v34)
           {
@@ -277,9 +277,9 @@ LABEL_61:
         v63 = sub_272374688();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
         {
-          v67 = [&stru_2881908A8 UTF8String];
+          uTF8String3 = [&stru_2881908A8 UTF8String];
           *buf = 136315138;
-          *&buf[4] = v67;
+          *&buf[4] = uTF8String3;
           _os_log_error_impl(&dword_2721E4000, v63, OS_LOG_TYPE_ERROR, "Empty simulated priors JSON at %s\n", buf, 0xCu);
         }
       }
@@ -289,13 +289,13 @@ LABEL_61:
         v63 = sub_272374688();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
         {
-          v64 = [&stru_2881908A8 UTF8String];
+          uTF8String4 = [&stru_2881908A8 UTF8String];
           v65 = [v16 description];
-          v66 = [v65 UTF8String];
+          uTF8String5 = [v65 UTF8String];
           *buf = 136315394;
-          *&buf[4] = v64;
+          *&buf[4] = uTF8String4;
           *&buf[12] = 2080;
-          *&buf[14] = v66;
+          *&buf[14] = uTF8String5;
           _os_log_error_impl(&dword_2721E4000, v63, OS_LOG_TYPE_ERROR, "Could not parse simulated priors info %s: %s\n", buf, 0x16u);
         }
       }
@@ -306,13 +306,13 @@ LABEL_61:
       v71 = sub_272374688();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
       {
-        v72 = [&stru_2881908A8 UTF8String];
+        uTF8String6 = [&stru_2881908A8 UTF8String];
         v73 = [v20 description];
-        v74 = [v73 UTF8String];
+        uTF8String7 = [v73 UTF8String];
         *buf = 136315394;
-        *&buf[4] = v72;
+        *&buf[4] = uTF8String6;
         *&buf[12] = 2080;
-        *&buf[14] = v74;
+        *&buf[14] = uTF8String7;
         _os_log_error_impl(&dword_2721E4000, v71, OS_LOG_TYPE_ERROR, "Could not read simulated priors info %s: %s\n", buf, 0x16u);
       }
 
@@ -325,10 +325,10 @@ LABEL_57:
   }
 
   v47 = v16;
-  v48 = [v15 allKeys];
-  v49 = [v48 firstObject];
+  allKeys = [v15 allKeys];
+  firstObject = [allKeys firstObject];
 
-  v50 = [v15 objectForKeyedSubscript:v49];
+  v50 = [v15 objectForKeyedSubscript:firstObject];
   v51 = v12;
   v52 = v50;
   objc_opt_class();
@@ -358,8 +358,8 @@ LABEL_62:
   v16 = v47;
 LABEL_42:
 
-  v54 = [v12 dataProfile];
-  if (!v54)
+  dataProfile = [v12 dataProfile];
+  if (!dataProfile)
   {
 LABEL_58:
     v68 = sub_272374688();
@@ -373,7 +373,7 @@ LABEL_58:
     goto LABEL_60;
   }
 
-  v55 = v54;
+  v55 = dataProfile;
   v56 = sub_272374688();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
   {

@@ -1,12 +1,12 @@
 @interface PITapToTrackRequest
 - (CGPoint)normalizedImagePoint;
-- (PITapToTrackRequest)initWithComposition:(id)a3;
-- (PITapToTrackRequest)initWithComposition:(id)a3 startTime:(id *)a4 pointToTrack:(CGPoint)a5;
-- (PITapToTrackRequest)initWithMedia:(id)a3;
-- (PITapToTrackRequest)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PITapToTrackRequest)initWithComposition:(id)composition;
+- (PITapToTrackRequest)initWithComposition:(id)composition startTime:(id *)time pointToTrack:(CGPoint)track;
+- (PITapToTrackRequest)initWithMedia:(id)media;
+- (PITapToTrackRequest)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
-- (void)setStartTime:(id *)a3;
+- (void)setStartTime:(id *)time;
 @end
 
 @implementation PITapToTrackRequest
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_startTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_startTime.value = *&time->var0;
   self->_startTime.epoch = var3;
 }
 
@@ -36,33 +36,33 @@
   [(PITapToTrackRenderJob *)v3 setStartTime:&v6];
   [(PITapToTrackRequest *)self normalizedImagePoint];
   [(PITapToTrackRenderJob *)v3 setNormalizedImagePoint:?];
-  v4 = [(PITapToTrackRequest *)self progressHandler];
-  [(PITapToTrackRenderJob *)v3 setProgressHandler:v4];
+  progressHandler = [(PITapToTrackRequest *)self progressHandler];
+  [(PITapToTrackRenderJob *)v3 setProgressHandler:progressHandler];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = PITapToTrackRequest;
-  v4 = [(NURenderRequest *)&v11 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v11 copyWithZone:zone];
   [(PITapToTrackRequest *)self startTime];
   v7 = v9;
   v8 = v10;
   [v4 setStartTime:&v7];
   [(PITapToTrackRequest *)self normalizedImagePoint];
   [v4 setNormalizedImagePoint:?];
-  v5 = [(PITapToTrackRequest *)self progressHandler];
-  [v4 setProgressHandler:v5];
+  progressHandler = [(PITapToTrackRequest *)self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
   return v4;
 }
 
-- (PITapToTrackRequest)initWithMedia:(id)a3
+- (PITapToTrackRequest)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -101,8 +101,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -129,8 +129,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -148,10 +148,10 @@ LABEL_14:
   }
 }
 
-- (PITapToTrackRequest)initWithRequest:(id)a3
+- (PITapToTrackRequest)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -190,8 +190,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -218,8 +218,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -237,10 +237,10 @@ LABEL_14:
   }
 }
 
-- (PITapToTrackRequest)initWithComposition:(id)a3
+- (PITapToTrackRequest)initWithComposition:(id)composition
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -279,8 +279,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -307,8 +307,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -326,19 +326,19 @@ LABEL_14:
   }
 }
 
-- (PITapToTrackRequest)initWithComposition:(id)a3 startTime:(id *)a4 pointToTrack:(CGPoint)a5
+- (PITapToTrackRequest)initWithComposition:(id)composition startTime:(id *)time pointToTrack:(CGPoint)track
 {
-  y = a5.y;
-  x = a5.x;
+  y = track.y;
+  x = track.x;
   v16[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PITapToTrackRequest;
-  v8 = [(NURenderRequest *)&v15 initWithComposition:a3];
+  v8 = [(NURenderRequest *)&v15 initWithComposition:composition];
   v9 = v8;
   if (v8)
   {
-    v13 = *&a4->var0;
-    var3 = a4->var3;
+    v13 = *&time->var0;
+    var3 = time->var3;
     [(PITapToTrackRequest *)v8 setStartTime:&v13];
     [(PITapToTrackRequest *)v9 setNormalizedImagePoint:x, y];
     v10 = +[PIPipelineFilters sourceFilterNoOrientation];

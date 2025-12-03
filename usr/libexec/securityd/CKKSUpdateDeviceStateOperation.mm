@@ -1,5 +1,5 @@
 @interface CKKSUpdateDeviceStateOperation
-- (CKKSUpdateDeviceStateOperation)initWithOperationDependencies:(id)a3 rateLimit:(BOOL)a4 ckoperationGroup:(id)a5;
+- (CKKSUpdateDeviceStateOperation)initWithOperationDependencies:(id)dependencies rateLimit:(BOOL)limit ckoperationGroup:(id)group;
 - (void)groupStart;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)groupStart
 {
-  v2 = [(CKKSUpdateDeviceStateOperation *)self deps];
-  v27 = [v2 accountStateTracker];
+  deps = [(CKKSUpdateDeviceStateOperation *)self deps];
+  accountStateTracker = [deps accountStateTracker];
 
-  if (v27)
+  if (accountStateTracker)
   {
     objc_initWeak(location, self);
-    v3 = [v27 ckdeviceIDInitialized];
-    v4 = [v3 wait:200000000000];
+    ckdeviceIDInitialized = [accountStateTracker ckdeviceIDInitialized];
+    v4 = [ckdeviceIDInitialized wait:200000000000];
 
     if (v4)
     {
@@ -26,11 +26,11 @@
       }
     }
 
-    v26 = [v27 ckdeviceID];
-    if (v26)
+    ckdeviceID = [accountStateTracker ckdeviceID];
+    if (ckdeviceID)
     {
-      v6 = [v27 cdpCapableiCloudAccountInitialized];
-      v7 = [v6 wait:500000000];
+      cdpCapableiCloudAccountInitialized = [accountStateTracker cdpCapableiCloudAccountInitialized];
+      v7 = [cdpCapableiCloudAccountInitialized wait:500000000];
 
       if (v7)
       {
@@ -43,17 +43,17 @@
       }
 
       v9 = +[NSHashTable weakObjectsHashTable];
-      v10 = [(CKKSUpdateDeviceStateOperation *)self deps];
-      v11 = [v10 databaseProvider];
+      deps2 = [(CKKSUpdateDeviceStateOperation *)self deps];
+      databaseProvider = [deps2 databaseProvider];
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v12 = [(CKKSUpdateDeviceStateOperation *)self deps];
-      v13 = [v12 activeManagedViews];
+      deps3 = [(CKKSUpdateDeviceStateOperation *)self deps];
+      activeManagedViews = [deps3 activeManagedViews];
 
-      v14 = [v13 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v14 = [activeManagedViews countByEnumeratingWithState:&v32 objects:v38 count:16];
       if (v14)
       {
         v15 = *v33;
@@ -63,7 +63,7 @@
           {
             if (*v33 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(activeManagedViews);
             }
 
             v17 = *(*(&v32 + 1) + 8 * i);
@@ -76,12 +76,12 @@
             objc_copyWeak(&v31, location);
             v18 = v9;
             v30 = v18;
-            [v11 dispatchSyncWithSQLTransaction:v29];
+            [databaseProvider dispatchSyncWithSQLTransaction:v29];
 
             objc_destroyWeak(&v31);
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v32 objects:v38 count:16];
+          v14 = [activeManagedViews countByEnumeratingWithState:&v32 objects:v38 count:16];
         }
 
         while (v14);
@@ -101,11 +101,11 @@
       v40[0] = @"CK device ID missing";
       v39[0] = NSLocalizedDescriptionKey;
       v39[1] = NSUnderlyingErrorKey;
-      v23 = [v27 ckdeviceIDError];
-      v24 = v23;
-      if (v23)
+      ckdeviceIDError = [accountStateTracker ckdeviceIDError];
+      v24 = ckdeviceIDError;
+      if (ckdeviceIDError)
       {
-        v25 = v23;
+        v25 = ckdeviceIDError;
       }
 
       else
@@ -116,9 +116,9 @@
       v9 = v25;
 
       v40[1] = v9;
-      v11 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
-      v13 = [NSError errorWithDomain:@"CKKSErrorDomain" code:59 userInfo:v11];
-      [(CKKSResultOperation *)self setError:v13];
+      databaseProvider = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
+      activeManagedViews = [NSError errorWithDomain:@"CKKSErrorDomain" code:59 userInfo:databaseProvider];
+      [(CKKSResultOperation *)self setError:activeManagedViews];
     }
 
     objc_destroyWeak(location);
@@ -141,19 +141,19 @@
   }
 }
 
-- (CKKSUpdateDeviceStateOperation)initWithOperationDependencies:(id)a3 rateLimit:(BOOL)a4 ckoperationGroup:(id)a5
+- (CKKSUpdateDeviceStateOperation)initWithOperationDependencies:(id)dependencies rateLimit:(BOOL)limit ckoperationGroup:(id)group
 {
-  v9 = a3;
-  v10 = a5;
+  dependenciesCopy = dependencies;
+  groupCopy = group;
   v14.receiver = self;
   v14.super_class = CKKSUpdateDeviceStateOperation;
   v11 = [(CKKSGroupOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong((v11 + 134), a3);
-    objc_storeStrong((v12 + 142), a5);
-    v12[128] = a4;
+    objc_storeStrong((v11 + 134), dependencies);
+    objc_storeStrong((v12 + 142), group);
+    v12[128] = limit;
   }
 
   return v12;

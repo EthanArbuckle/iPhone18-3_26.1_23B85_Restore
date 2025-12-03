@@ -1,18 +1,18 @@
 @interface OBAnalyticsEvent
-+ (id)eventWithName:(id)a3 withPayload:(id)a4;
++ (id)eventWithName:(id)name withPayload:(id)payload;
 - (id)description;
 @end
 
 @implementation OBAnalyticsEvent
 
-+ (id)eventWithName:(id)a3 withPayload:(id)a4
++ (id)eventWithName:(id)name withPayload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  nameCopy = name;
   v7 = objc_alloc_init(OBAnalyticsEvent);
-  [(OBAnalyticsEvent *)v7 setName:v6];
+  [(OBAnalyticsEvent *)v7 setName:nameCopy];
 
-  [(OBAnalyticsEvent *)v7 setPayload:v5];
+  [(OBAnalyticsEvent *)v7 setPayload:payloadCopy];
 
   return v7;
 }
@@ -20,9 +20,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(OBAnalyticsEvent *)self name];
-  v5 = [(OBAnalyticsEvent *)self payload];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  name = [(OBAnalyticsEvent *)self name];
+  payload = [(OBAnalyticsEvent *)self payload];
+  v6 = [v3 stringWithFormat:@"%@ %@", name, payload];
 
   return v6;
 }

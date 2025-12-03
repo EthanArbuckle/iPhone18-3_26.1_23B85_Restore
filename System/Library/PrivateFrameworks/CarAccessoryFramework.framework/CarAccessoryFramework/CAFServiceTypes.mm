@@ -2,8 +2,8 @@
 + (NSDictionary)serviceNameByType;
 + (NSDictionary)serviceTypeByName;
 + (NSSet)stateCaptureValues;
-+ (id)serviceNameFor:(id)a3;
-+ (id)serviceNameForType:(id)a3;
++ (id)serviceNameFor:(id)for;
++ (id)serviceNameForType:(id)type;
 @end
 
 @implementation CAFServiceTypes
@@ -627,24 +627,24 @@ void __37__CAFServiceTypes_stateCaptureValues__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)serviceNameForType:(id)a3
++ (id)serviceNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 serviceNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  serviceNameByType = [self serviceNameByType];
+  v6 = [serviceNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;
 }
 
-+ (id)serviceNameFor:(id)a3
++ (id)serviceNameFor:(id)for
 {
-  v4 = [a1 serviceTypeFor:a3];
-  v5 = [a1 serviceNameForType:v4];
+  v4 = [self serviceTypeFor:for];
+  v5 = [self serviceNameForType:v4];
 
   return v5;
 }

@@ -1,6 +1,6 @@
 @interface SiriUIConfiguration
-- (SiriUIConfiguration)initWithFlamesViewFidelity:(int64_t)a3 isSystemHostedPresentation:(BOOL)a4 allowResizingBetweenModes:(BOOL)a5 siriViewMode:(int64_t)a6 showsSensitiveUI:(BOOL)a7;
-- (id)_NSStringFromSiriViewMode:(int64_t)a3;
+- (SiriUIConfiguration)initWithFlamesViewFidelity:(int64_t)fidelity isSystemHostedPresentation:(BOOL)presentation allowResizingBetweenModes:(BOOL)modes siriViewMode:(int64_t)mode showsSensitiveUI:(BOOL)i;
+- (id)_NSStringFromSiriViewMode:(int64_t)mode;
 - (id)description;
 @end
 
@@ -21,33 +21,33 @@
   return v8;
 }
 
-- (SiriUIConfiguration)initWithFlamesViewFidelity:(int64_t)a3 isSystemHostedPresentation:(BOOL)a4 allowResizingBetweenModes:(BOOL)a5 siriViewMode:(int64_t)a6 showsSensitiveUI:(BOOL)a7
+- (SiriUIConfiguration)initWithFlamesViewFidelity:(int64_t)fidelity isSystemHostedPresentation:(BOOL)presentation allowResizingBetweenModes:(BOOL)modes siriViewMode:(int64_t)mode showsSensitiveUI:(BOOL)i
 {
   v13.receiver = self;
   v13.super_class = SiriUIConfiguration;
   result = [(SiriUIConfiguration *)&v13 init];
   if (result)
   {
-    result->_isSystemHostedPresentation = a4;
-    result->_flamesViewFidelity = a3;
-    result->_siriViewMode = a6;
-    result->_allowResizingBetweenModes = a5;
-    result->_showsSensitiveUI = a7;
+    result->_isSystemHostedPresentation = presentation;
+    result->_flamesViewFidelity = fidelity;
+    result->_siriViewMode = mode;
+    result->_allowResizingBetweenModes = modes;
+    result->_showsSensitiveUI = i;
   }
 
   return result;
 }
 
-- (id)_NSStringFromSiriViewMode:(int64_t)a3
+- (id)_NSStringFromSiriViewMode:(int64_t)mode
 {
-  if ((a3 - 4) > 4)
+  if ((mode - 4) > 4)
   {
     return @"AFUISiriViewModeNone";
   }
 
   else
   {
-    return *(&off_279C5A6F8 + a3 - 4);
+    return *(&off_279C5A6F8 + mode - 4);
   }
 }
 

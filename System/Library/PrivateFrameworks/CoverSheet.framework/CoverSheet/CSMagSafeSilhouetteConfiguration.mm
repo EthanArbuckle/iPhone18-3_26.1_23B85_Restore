@@ -1,15 +1,15 @@
 @interface CSMagSafeSilhouetteConfiguration
 - (CGSize)size;
-- (CSMagSafeSilhouetteConfiguration)initWithSize:(CGSize)a3 bottomOffset:(double)a4 cornerRadius:(double)a5 roundedCorners:(unint64_t)a6;
-- (unint64_t)roundedCornersMaskForOrientation:(int64_t)a3;
+- (CSMagSafeSilhouetteConfiguration)initWithSize:(CGSize)size bottomOffset:(double)offset cornerRadius:(double)radius roundedCorners:(unint64_t)corners;
+- (unint64_t)roundedCornersMaskForOrientation:(int64_t)orientation;
 @end
 
 @implementation CSMagSafeSilhouetteConfiguration
 
-- (CSMagSafeSilhouetteConfiguration)initWithSize:(CGSize)a3 bottomOffset:(double)a4 cornerRadius:(double)a5 roundedCorners:(unint64_t)a6
+- (CSMagSafeSilhouetteConfiguration)initWithSize:(CGSize)size bottomOffset:(double)offset cornerRadius:(double)radius roundedCorners:(unint64_t)corners
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = CSMagSafeSilhouetteConfiguration;
   result = [(CSMagSafeSilhouetteConfiguration *)&v12 init];
@@ -17,29 +17,29 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_bottomOffset = a4;
-    result->_cornerRadius = a5;
-    result->_roundedCorners = a6;
+    result->_bottomOffset = offset;
+    result->_cornerRadius = radius;
+    result->_roundedCorners = corners;
   }
 
   return result;
 }
 
-- (unint64_t)roundedCornersMaskForOrientation:(int64_t)a3
+- (unint64_t)roundedCornersMaskForOrientation:(int64_t)orientation
 {
   v3 = 3;
   v4 = 10;
-  if (a3 == 3)
+  if (orientation == 3)
   {
     v4 = 5;
   }
 
-  if (a3 >= 3)
+  if (orientation >= 3)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (orientation)
   {
     return v3;
   }

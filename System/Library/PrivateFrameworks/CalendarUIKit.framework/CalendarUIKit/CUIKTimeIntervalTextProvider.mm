@@ -1,67 +1,67 @@
 @interface CUIKTimeIntervalTextProvider
-+ (BOOL)_use24HourFormatForLocale:(id)a3;
-+ (_NSRange)_rangeOfAnnontatedTime:(id)a3 matchingPattern:(id)a4;
-+ (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)a3;
-+ (id)CUIKSmallCapAMPMTimezoneClarificationStringForStartDate:(id)a3 endDate:(id)a4 startTimeZone:(id)a5 endTimeZone:(id)a6 color:(id)a7;
-+ (id)_dateFormatterWithCalendar:(id)a3 designatorRequiresWhitespace:(BOOL)a4 dateHasZeroMinutes:(BOOL)a5;
-+ (id)_stringByRemovingDesignatorRange:(_NSRange)a3 fromString:(id)a4;
-+ (id)_timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 textProviderUtils:(id)a6;
-+ (id)attributedAndSmallCappedDesignatorTextWithDate:(id)a3 calendar:(id)a4 color:(id)a5;
-+ (id)timeIntervalAttributedAndSmallCappedDesignatorTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 color:(id)a6 font:(id)a7;
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5;
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6;
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6 designatorRequiresWhitespace:(BOOL)a7 smallCapsAllowed:(BOOL)a8 dropLeftRedundantDesignator:(BOOL)a9;
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6 textProviderUtils:(id)a7;
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 keepRedundantDesignator:(BOOL)a6;
-+ (void)force24HourFormatForUnitTests:(BOOL)a3 withLocale:(id)a4;
++ (BOOL)_use24HourFormatForLocale:(id)locale;
++ (_NSRange)_rangeOfAnnontatedTime:(id)time matchingPattern:(id)pattern;
++ (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)time;
++ (id)CUIKSmallCapAMPMTimezoneClarificationStringForStartDate:(id)date endDate:(id)endDate startTimeZone:(id)zone endTimeZone:(id)timeZone color:(id)color;
++ (id)_dateFormatterWithCalendar:(id)calendar designatorRequiresWhitespace:(BOOL)whitespace dateHasZeroMinutes:(BOOL)minutes;
++ (id)_stringByRemovingDesignatorRange:(_NSRange)range fromString:(id)string;
++ (id)_timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar textProviderUtils:(id)utils;
++ (id)attributedAndSmallCappedDesignatorTextWithDate:(id)date calendar:(id)calendar color:(id)color;
++ (id)timeIntervalAttributedAndSmallCappedDesignatorTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar color:(id)color font:(id)font;
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar;
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font;
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font designatorRequiresWhitespace:(BOOL)whitespace smallCapsAllowed:(BOOL)allowed dropLeftRedundantDesignator:(BOOL)designator;
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font textProviderUtils:(id)utils;
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar keepRedundantDesignator:(BOOL)designator;
++ (void)force24HourFormatForUnitTests:(BOOL)tests withLocale:(id)locale;
 + (void)resetForce24HourFormatForUnitTests;
 @end
 
 @implementation CUIKTimeIntervalTextProvider
 
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
   v13 = objc_alloc_init(CUIKTextProviderUtils);
-  v14 = [a1 timeIntervalAttributedTextWithStartDate:v12 endDate:v11 calendar:v10 font:a6 textProviderUtils:v13];
+  v14 = [self timeIntervalAttributedTextWithStartDate:dateCopy endDate:endDateCopy calendar:calendarCopy font:font textProviderUtils:v13];
 
   return v14;
 }
 
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6 designatorRequiresWhitespace:(BOOL)a7 smallCapsAllowed:(BOOL)a8 dropLeftRedundantDesignator:(BOOL)a9
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font designatorRequiresWhitespace:(BOOL)whitespace smallCapsAllowed:(BOOL)allowed dropLeftRedundantDesignator:(BOOL)designator
 {
-  v9 = a8;
-  v10 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  allowedCopy = allowed;
+  whitespaceCopy = whitespace;
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
   v18 = objc_alloc_init(CUIKTextProviderUtils);
-  [(CUIKTextProviderUtils *)v18 setDesignatorRequiresWhitespace:v10];
-  [(CUIKTextProviderUtils *)v18 setSmallCapsAllowed:v9];
-  [(CUIKTextProviderUtils *)v18 setDropLeftRedundantDesignator:a9];
-  v19 = [a1 timeIntervalAttributedTextWithStartDate:v17 endDate:v16 calendar:v15 font:a6 textProviderUtils:v18];
+  [(CUIKTextProviderUtils *)v18 setDesignatorRequiresWhitespace:whitespaceCopy];
+  [(CUIKTextProviderUtils *)v18 setSmallCapsAllowed:allowedCopy];
+  [(CUIKTextProviderUtils *)v18 setDropLeftRedundantDesignator:designator];
+  v19 = [self timeIntervalAttributedTextWithStartDate:dateCopy endDate:endDateCopy calendar:calendarCopy font:font textProviderUtils:v18];
 
   return v19;
 }
 
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 font:(__CTFont *)a6 textProviderUtils:(id)a7
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar font:(__CTFont *)font textProviderUtils:(id)utils
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(__CTFont *)a6 CUIKFontWithAlternativePunctuation];
+  utilsCopy = utils;
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
+  cUIKFontWithAlternativePunctuation = [(__CTFont *)font CUIKFontWithAlternativePunctuation];
   v33 = *MEMORY[0x1E69DB648];
-  v34[0] = v16;
+  v34[0] = cUIKFontWithAlternativePunctuation;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-  v18 = [a1 _timeIntervalAttributedTextWithStartDate:v15 endDate:v14 calendar:v13 textProviderUtils:v12];
+  v18 = [self _timeIntervalAttributedTextWithStartDate:dateCopy endDate:endDateCopy calendar:calendarCopy textProviderUtils:utilsCopy];
 
   v19 = objc_alloc(MEMORY[0x1E696AD40]);
-  v20 = [v18 string];
-  v21 = [v19 initWithString:v20 attributes:v17];
+  string = [v18 string];
+  v21 = [v19 initWithString:string attributes:v17];
 
   v22 = [v18 length];
   v29[0] = MEMORY[0x1E69E9820];
@@ -70,10 +70,10 @@
   v29[3] = &unk_1E839A870;
   v23 = v21;
   v30 = v23;
-  v31 = v16;
-  v32 = v12;
-  v24 = v12;
-  v25 = v16;
+  v31 = cUIKFontWithAlternativePunctuation;
+  v32 = utilsCopy;
+  v24 = utilsCopy;
+  v25 = cUIKFontWithAlternativePunctuation;
   [v18 enumerateAttributesInRange:0 options:v22 usingBlock:{0, v29}];
   v26 = v32;
   v27 = v23;
@@ -93,34 +93,34 @@ void __112__CUIKTimeIntervalTextProvider_timeIntervalAttributedTextWithStartDate
   }
 }
 
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
   v11 = objc_alloc_init(CUIKTextProviderUtils);
-  v12 = [a1 _timeIntervalAttributedTextWithStartDate:v10 endDate:v9 calendar:v8 textProviderUtils:v11];
+  v12 = [self _timeIntervalAttributedTextWithStartDate:dateCopy endDate:endDateCopy calendar:calendarCopy textProviderUtils:v11];
 
   return v12;
 }
 
-+ (id)timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 keepRedundantDesignator:(BOOL)a6
++ (id)timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar keepRedundantDesignator:(BOOL)designator
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  designatorCopy = designator;
+  calendarCopy = calendar;
+  endDateCopy = endDate;
+  dateCopy = date;
   v13 = objc_alloc_init(CUIKTextProviderUtils);
-  [(CUIKTextProviderUtils *)v13 setKeepRedundantDesignator:v6];
-  v14 = [a1 _timeIntervalAttributedTextWithStartDate:v12 endDate:v11 calendar:v10 textProviderUtils:v13];
+  [(CUIKTextProviderUtils *)v13 setKeepRedundantDesignator:designatorCopy];
+  v14 = [self _timeIntervalAttributedTextWithStartDate:dateCopy endDate:endDateCopy calendar:calendarCopy textProviderUtils:v13];
 
   return v14;
 }
 
-+ (void)force24HourFormatForUnitTests:(BOOL)a3 withLocale:(id)a4
++ (void)force24HourFormatForUnitTests:(BOOL)tests withLocale:(id)locale
 {
-  v4 = a3;
-  v5 = a4;
+  testsCopy = tests;
+  localeCopy = locale;
   os_unfair_lock_lock(&force24HourFormatRegistryLock);
   if (!force24HourFormatRegistry)
   {
@@ -129,11 +129,11 @@ void __112__CUIKTimeIntervalTextProvider_timeIntervalAttributedTextWithStartDate
     force24HourFormatRegistry = v6;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:testsCopy];
   v9 = force24HourFormatRegistry;
-  v10 = [v5 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  [v9 setObject:v8 forKeyedSubscript:localeIdentifier];
 
   os_unfair_lock_unlock(&force24HourFormatRegistryLock);
 }
@@ -147,47 +147,47 @@ void __112__CUIKTimeIntervalTextProvider_timeIntervalAttributedTextWithStartDate
   os_unfair_lock_unlock(&force24HourFormatRegistryLock);
 }
 
-+ (BOOL)_use24HourFormatForLocale:(id)a3
++ (BOOL)_use24HourFormatForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   os_unfair_lock_lock(&force24HourFormatRegistryLock);
   v4 = force24HourFormatRegistry;
-  v5 = [v3 localeIdentifier];
+  localeIdentifier = [localeCopy localeIdentifier];
 
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [v4 objectForKeyedSubscript:localeIdentifier];
 
   os_unfair_lock_unlock(&force24HourFormatRegistryLock);
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = CUIKShow24Hours();
+    bOOLValue = CUIKShow24Hours();
   }
 
-  v8 = v7;
+  v8 = bOOLValue;
 
   return v8;
 }
 
-+ (id)_dateFormatterWithCalendar:(id)a3 designatorRequiresWhitespace:(BOOL)a4 dateHasZeroMinutes:(BOOL)a5
++ (id)_dateFormatterWithCalendar:(id)calendar designatorRequiresWhitespace:(BOOL)whitespace dateHasZeroMinutes:(BOOL)minutes
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  minutesCopy = minutes;
+  whitespaceCopy = whitespace;
+  calendarCopy = calendar;
   if (_dateFormatterWithCalendar_designatorRequiresWhitespace_dateHasZeroMinutes__onceToken != -1)
   {
     +[CUIKTimeIntervalTextProvider _dateFormatterWithCalendar:designatorRequiresWhitespace:dateHasZeroMinutes:];
   }
 
-  v9 = [v8 locale];
-  v10 = [a1 _use24HourFormatForLocale:v9];
+  locale = [calendarCopy locale];
+  v10 = [self _use24HourFormatForLocale:locale];
 
-  v11 = v5 & ~v10;
-  v12 = [v8 copy];
-  v13 = [[CUIKDateFormatterCacheKey alloc] initWithCalendar:v12 is24HourFormat:v10 dropDesignator:0 canDropMinutes:v11 designatorRequiresWhitespace:v6 addDate:0];
+  v11 = minutesCopy & ~v10;
+  v12 = [calendarCopy copy];
+  v13 = [[CUIKDateFormatterCacheKey alloc] initWithCalendar:v12 is24HourFormat:v10 dropDesignator:0 canDropMinutes:v11 designatorRequiresWhitespace:whitespaceCopy addDate:0];
   v14 = [_dateFormatterWithCalendar_designatorRequiresWhitespace_dateHasZeroMinutes__cache objectForKey:v13];
   if (v14)
   {
@@ -198,11 +198,11 @@ void __112__CUIKTimeIntervalTextProvider_timeIntervalAttributedTextWithStartDate
   {
     v16 = objc_opt_new();
     [v16 setCalendar:v12];
-    v17 = [v12 timeZone];
-    [v16 setTimeZone:v17];
+    timeZone = [v12 timeZone];
+    [v16 setTimeZone:timeZone];
 
-    v18 = [v12 locale];
-    [v16 setLocale:v18];
+    locale2 = [v12 locale];
+    [v16 setLocale:locale2];
 
     v19 = MEMORY[0x1E696AB78];
     if (v11)
@@ -215,10 +215,10 @@ void __112__CUIKTimeIntervalTextProvider_timeIntervalAttributedTextWithStartDate
       v20 = @"jmm";
     }
 
-    v21 = [v12 locale];
-    v22 = [v19 dateFormatFromTemplate:v20 options:0 locale:v21];
+    locale3 = [v12 locale];
+    v22 = [v19 dateFormatFromTemplate:v20 options:0 locale:locale3];
 
-    v23 = [CUIKTextProviderUtils timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v22 designatorRequiresWhitespace:v6];
+    v23 = [CUIKTextProviderUtils timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v22 designatorRequiresWhitespace:whitespaceCopy];
 
     [v16 setDateFormat:v23];
     [_dateFormatterWithCalendar_designatorRequiresWhitespace_dateHasZeroMinutes__cache setObject:v16 forKey:v13];
@@ -237,78 +237,78 @@ uint64_t __107__CUIKTimeIntervalTextProvider__dateFormatterWithCalendar_designat
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)_timeIntervalAttributedTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 textProviderUtils:(id)a6
++ (id)_timeIntervalAttributedTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar textProviderUtils:(id)utils
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = ([v13 keepZeroMinutes] & 1) == 0 && objc_msgSend(v12, "component:fromDate:", 64, v10) == 0;
-  v15 = [a1 _dateFormatterWithCalendar:v12 designatorRequiresWhitespace:objc_msgSend(v13 dateHasZeroMinutes:{"designatorRequiresWhitespace"), v14}];
-  v16 = [v15 _attributedStringWithFieldsFromDate:v10];
-  v18 = [a1 _rangeOfDesignatorInAnnotatedTime:v16];
+  dateCopy = date;
+  endDateCopy = endDate;
+  calendarCopy = calendar;
+  utilsCopy = utils;
+  v14 = ([utilsCopy keepZeroMinutes] & 1) == 0 && objc_msgSend(calendarCopy, "component:fromDate:", 64, dateCopy) == 0;
+  v15 = [self _dateFormatterWithCalendar:calendarCopy designatorRequiresWhitespace:objc_msgSend(utilsCopy dateHasZeroMinutes:{"designatorRequiresWhitespace"), v14}];
+  v16 = [v15 _attributedStringWithFieldsFromDate:dateCopy];
+  v18 = [self _rangeOfDesignatorInAnnotatedTime:v16];
   v70 = v17;
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v77 = 0;
+    string = 0;
   }
 
   else
   {
     v19 = [v16 attributedSubstringFromRange:{v18, v17}];
-    v77 = [v19 string];
+    string = [v19 string];
   }
 
   v75 = v16;
-  v20 = ([v13 keepZeroMinutes] & 1) == 0 && objc_msgSend(v12, "component:fromDate:", 64, v11) == 0;
-  v74 = v12;
-  v21 = [a1 _dateFormatterWithCalendar:v12 designatorRequiresWhitespace:objc_msgSend(v13 dateHasZeroMinutes:{"designatorRequiresWhitespace"), v20}];
+  v20 = ([utilsCopy keepZeroMinutes] & 1) == 0 && objc_msgSend(calendarCopy, "component:fromDate:", 64, endDateCopy) == 0;
+  v74 = calendarCopy;
+  v21 = [self _dateFormatterWithCalendar:calendarCopy designatorRequiresWhitespace:objc_msgSend(utilsCopy dateHasZeroMinutes:{"designatorRequiresWhitespace"), v20}];
 
   v71 = v21;
-  v22 = [v21 _attributedStringWithFieldsFromDate:v11];
-  v24 = [a1 _rangeOfDesignatorInAnnotatedTime:v22];
+  v22 = [v21 _attributedStringWithFieldsFromDate:endDateCopy];
+  v24 = [self _rangeOfDesignatorInAnnotatedTime:v22];
   v25 = v23;
   v76 = v22;
   if (v24 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v26 = 0;
+    string2 = 0;
   }
 
   else
   {
     v27 = [v22 attributedSubstringFromRange:{v24, v23}];
-    v26 = [v27 string];
+    string2 = [v27 string];
   }
 
-  v72 = v11;
+  v72 = endDateCopy;
   v28 = CUIKBundle();
   v29 = [v28 localizedStringForKey:@"INTERVAL_HYPHEN_NARROW" value:@" – " table:0];
 
-  v73 = v26;
-  if (v77 | v26)
+  v73 = string2;
+  if (string | string2)
   {
-    v69 = v10;
+    v69 = dateCopy;
     v78 = @"CUIKSmallCapsAttributeName";
-    v45 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v13, "smallCapsAllowed")}];
+    v45 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(utilsCopy, "smallCapsAllowed")}];
     v79[0] = v45;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:&v78 count:1];
-    v46 = v66 = v13;
+    v46 = v66 = utilsCopy;
 
     v47 = objc_alloc(MEMORY[0x1E696AD40]);
-    v48 = [v75 string];
-    v49 = [v47 initWithString:v48];
+    string3 = [v75 string];
+    v49 = [v47 initWithString:string3];
 
     v50 = v25;
     v51 = v49;
     [v49 addAttributes:v46 range:{v18, v70}];
     v52 = objc_alloc(MEMORY[0x1E696AD40]);
-    v53 = [v76 string];
-    v54 = [v52 initWithString:v53];
+    string4 = [v76 string];
+    v54 = [v52 initWithString:string4];
 
     v67 = v46;
     v55 = v46;
-    v13 = v66;
+    utilsCopy = v66;
     [v54 addAttributes:v55 range:{v24, v50}];
     v68 = v29;
     v56 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v29];
@@ -324,15 +324,15 @@ uint64_t __107__CUIKTimeIntervalTextProvider__dateFormatterWithCalendar_designat
     else
     {
       v57 = v51;
-      if (v73 && [v77 isEqualToString:?])
+      if (v73 && [string isEqualToString:?])
       {
         if ([v66 dropLeftRedundantDesignator])
         {
           if (v18 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v33 = v75;
-            v58 = [v75 string];
-            v59 = [a1 _stringByRemovingDesignatorRange:v18 fromString:{v70, v58}];
+            string5 = [v75 string];
+            v59 = [self _stringByRemovingDesignatorRange:v18 fromString:{v70, string5}];
 
             v60 = 0x1E696A000uLL;
             v61 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v59];
@@ -347,8 +347,8 @@ LABEL_31:
 
         else if (v24 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v64 = [v76 string];
-          v59 = [a1 _stringByRemovingDesignatorRange:v24 fromString:{v50, v64}];
+          string6 = [v76 string];
+          v59 = [self _stringByRemovingDesignatorRange:v24 fromString:{v50, string6}];
 
           v60 = 0x1E696A000uLL;
           v65 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v59];
@@ -370,29 +370,29 @@ LABEL_26:
     [v42 appendAttributedString:v54];
 
     v38 = v68;
-    v10 = v69;
+    dateCopy = v69;
     goto LABEL_27;
   }
 
-  v30 = [v74 locale];
-  v31 = [v30 languageCode];
+  locale = [v74 locale];
+  languageCode = [locale languageCode];
 
-  v32 = [MEMORY[0x1E695DF58] characterDirectionForLanguage:v31];
+  v32 = [MEMORY[0x1E695DF58] characterDirectionForLanguage:languageCode];
   v33 = v75;
-  v34 = [v75 string];
-  v35 = [v34 directionalityIsolatedString];
+  string7 = [v75 string];
+  directionalityIsolatedString = [string7 directionalityIsolatedString];
 
-  v36 = [v76 string];
-  v37 = [v36 directionalityIsolatedString];
+  string8 = [v76 string];
+  directionalityIsolatedString2 = [string8 directionalityIsolatedString];
 
   v38 = v29;
-  v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v35, v29, v37];
+  v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", directionalityIsolatedString, v29, directionalityIsolatedString2];
   v40 = v39;
   if (v32 == 2)
   {
-    v41 = [v39 RTLString];
+    rTLString = [v39 RTLString];
 
-    v40 = v41;
+    v40 = rTLString;
   }
 
   v42 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v40];
@@ -404,37 +404,37 @@ LABEL_27:
   return v42;
 }
 
-+ (id)CUIKSmallCapAMPMTimezoneClarificationStringForStartDate:(id)a3 endDate:(id)a4 startTimeZone:(id)a5 endTimeZone:(id)a6 color:(id)a7
++ (id)CUIKSmallCapAMPMTimezoneClarificationStringForStartDate:(id)date endDate:(id)endDate startTimeZone:(id)zone endTimeZone:(id)timeZone color:(id)color
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  zoneCopy = zone;
+  timeZoneCopy = timeZone;
+  colorCopy = color;
   v15 = MEMORY[0x1E696AD40];
-  v16 = a4;
-  v17 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v18 = objc_alloc_init(v15);
-  v55 = v12;
-  if (v12)
+  v55 = zoneCopy;
+  if (zoneCopy)
   {
-    v19 = v12;
+    calendarTimeZone = zoneCopy;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E695DFE8] calendarTimeZone];
+    calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
   }
 
-  v20 = v19;
-  v53 = v19;
-  v21 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v21 setTimeZone:v20];
-  v52 = v21;
-  v48 = [a1 attributedAndSmallCappedDesignatorTextWithDate:v17 calendar:v21 color:v14];
-  v54 = v13;
-  if (v13)
+  v20 = calendarTimeZone;
+  v53 = calendarTimeZone;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setTimeZone:v20];
+  v52 = currentCalendar;
+  v48 = [self attributedAndSmallCappedDesignatorTextWithDate:dateCopy calendar:currentCalendar color:colorCopy];
+  v54 = timeZoneCopy;
+  if (timeZoneCopy)
   {
-    v22 = v13;
+    v22 = timeZoneCopy;
   }
 
   else
@@ -444,31 +444,31 @@ LABEL_27:
 
   v23 = MEMORY[0x1E695DEE8];
   v24 = v22;
-  v25 = [v23 currentCalendar];
-  [v25 setTimeZone:v24];
-  v51 = v25;
-  v50 = [a1 attributedAndSmallCappedDesignatorTextWithDate:v16 calendar:v25 color:v14];
+  currentCalendar2 = [v23 currentCalendar];
+  [currentCalendar2 setTimeZone:v24];
+  v51 = currentCalendar2;
+  v50 = [self attributedAndSmallCappedDesignatorTextWithDate:endDateCopy calendar:currentCalendar2 color:colorCopy];
 
   v26 = MEMORY[0x1E696AEC0];
-  v27 = _CUIKShortTZString(v20, v17);
+  v27 = _CUIKShortTZString(v20, dateCopy);
   v28 = [v26 stringWithFormat:@"(%@)", v27];
 
   v29 = objc_alloc(MEMORY[0x1E696AAB0]);
   v63 = *MEMORY[0x1E69DB650];
   v30 = v63;
-  v64[0] = v14;
+  v64[0] = colorCopy;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
   v49 = v28;
   v47 = [v29 initWithString:v28 attributes:v31];
 
   v32 = MEMORY[0x1E696AEC0];
-  v33 = _CUIKShortTZString(v24, v17);
+  v33 = _CUIKShortTZString(v24, dateCopy);
 
   v34 = [v32 stringWithFormat:@"(%@)", v33];
 
   v35 = objc_alloc(MEMORY[0x1E696AAB0]);
   v61 = v30;
-  v62 = v14;
+  v62 = colorCopy;
   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
   v56 = [v35 initWithString:v34 attributes:v36];
 
@@ -477,13 +477,13 @@ LABEL_27:
 
   v39 = objc_alloc(MEMORY[0x1E696AAB0]);
   v59 = v30;
-  v60 = v14;
+  v60 = colorCopy;
   v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
   v41 = [v39 initWithString:v38 attributes:v40];
 
   v42 = objc_alloc(MEMORY[0x1E696AAB0]);
   v57 = v30;
-  v58 = v14;
+  v58 = colorCopy;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
   v44 = [v42 initWithString:@" " attributes:v43];
 
@@ -505,17 +505,17 @@ LABEL_27:
   return v18;
 }
 
-+ (id)attributedAndSmallCappedDesignatorTextWithDate:(id)a3 calendar:(id)a4 color:(id)a5
++ (id)attributedAndSmallCappedDesignatorTextWithDate:(id)date calendar:(id)calendar color:(id)color
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 _dateFormatterWithCalendar:v9 designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(v9, "component:fromDate:", 64, v10) == 0}];
+  colorCopy = color;
+  calendarCopy = calendar;
+  dateCopy = date;
+  v11 = [self _dateFormatterWithCalendar:calendarCopy designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(calendarCopy, "component:fromDate:", 64, dateCopy) == 0}];
 
-  v12 = [v11 _attributedStringWithFieldsFromDate:v10];
+  v12 = [v11 _attributedStringWithFieldsFromDate:dateCopy];
 
-  v13 = [a1 _rangeOfDesignatorInAnnotatedTime:v12];
+  v13 = [self _rangeOfDesignatorInAnnotatedTime:v12];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL || (v15 = v13, v16 = v14, [v12 attributedSubstringFromRange:{v13, v14}], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "string"), v18 = objc_claimAutoreleasedReturnValue(), v17, !v18))
   {
     v32 = v12;
@@ -527,9 +527,9 @@ LABEL_27:
     v20 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
     v36 = [v19 fontWithDescriptor:v20 size:0.0];
 
-    v21 = [v36 fontDescriptor];
+    fontDescriptor = [v36 fontDescriptor];
     v44 = *MEMORY[0x1E69DB8B0];
-    v38 = v8;
+    v38 = colorCopy;
     v37 = v18;
     v23 = *MEMORY[0x1E69DB900];
     v41[0] = *MEMORY[0x1E69DB908];
@@ -548,17 +548,17 @@ LABEL_27:
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
     v45[0] = v26;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
-    v28 = [v21 fontDescriptorByAddingAttributes:v27];
+    v28 = [fontDescriptor fontDescriptorByAddingAttributes:v27];
 
     v29 = [MEMORY[0x1E69DB878] fontWithDescriptor:v28 size:0.0];
     v30 = objc_alloc(MEMORY[0x1E696AD40]);
-    v31 = [v12 string];
-    v32 = [v30 initWithString:v31];
+    string = [v12 string];
+    v32 = [v30 initWithString:string];
 
     v33 = *MEMORY[0x1E69DB648];
     [v32 addAttribute:*MEMORY[0x1E69DB648] value:v36 range:{0, v15}];
     v34 = v33;
-    v8 = v38;
+    colorCopy = v38;
     [v32 addAttribute:v34 value:v29 range:{v15, v16}];
     [v32 addAttribute:*MEMORY[0x1E69DB650] value:v38 range:{v15, v16}];
   }
@@ -566,19 +566,19 @@ LABEL_27:
   return v32;
 }
 
-+ (id)timeIntervalAttributedAndSmallCappedDesignatorTextWithStartDate:(id)a3 endDate:(id)a4 calendar:(id)a5 color:(id)a6 font:(id)a7
++ (id)timeIntervalAttributedAndSmallCappedDesignatorTextWithStartDate:(id)date endDate:(id)endDate calendar:(id)calendar color:(id)color font:(id)font
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v79 = a6;
-  v81 = a7;
-  v13 = a4;
-  v14 = a3;
+  calendarCopy = calendar;
+  colorCopy = color;
+  fontCopy = font;
+  endDateCopy = endDate;
+  dateCopy = date;
   v15 = 1;
-  v16 = [a1 _dateFormatterWithCalendar:v12 designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(v12, "component:fromDate:", 64, v14) == 0}];
-  v17 = [v16 _attributedStringWithFieldsFromDate:v14];
+  v16 = [self _dateFormatterWithCalendar:calendarCopy designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(calendarCopy, "component:fromDate:", 64, dateCopy) == 0}];
+  v17 = [v16 _attributedStringWithFieldsFromDate:dateCopy];
 
-  v19 = [a1 _rangeOfDesignatorInAnnotatedTime:v17];
+  v19 = [self _rangeOfDesignatorInAnnotatedTime:v17];
   v20 = v18;
   if (v19 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -593,60 +593,60 @@ LABEL_27:
 
   v76 = v20;
   v25 = 1;
-  v26 = [a1 _dateFormatterWithCalendar:v12 designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(v12, "component:fromDate:", 64, v13) == 0}];
+  v26 = [self _dateFormatterWithCalendar:calendarCopy designatorRequiresWhitespace:1 dateHasZeroMinutes:{objc_msgSend(calendarCopy, "component:fromDate:", 64, endDateCopy) == 0}];
 
   v77 = v26;
-  v27 = [v26 _attributedStringWithFieldsFromDate:v13];
+  v27 = [v26 _attributedStringWithFieldsFromDate:endDateCopy];
 
-  v29 = [a1 _rangeOfDesignatorInAnnotatedTime:v27];
+  v29 = [self _rangeOfDesignatorInAnnotatedTime:v27];
   v30 = v28;
   if (v29 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v31 = [v27 attributedSubstringFromRange:{v29, v28}];
-    v32 = [v31 string];
+    string = [v31 string];
 
-    v25 = v32 == 0;
+    v25 = string == 0;
   }
 
   v80 = v27;
   v33 = CUIKBundle();
   v34 = [v33 localizedStringForKey:@"INTERVAL_HYPHEN_NARROW" value:@" – " table:0];
 
-  v78 = v12;
+  v78 = calendarCopy;
   if ((v15 & v25) == 1)
   {
-    v35 = [v12 locale];
-    v36 = [v35 languageCode];
+    locale = [calendarCopy locale];
+    languageCode = [locale languageCode];
 
-    v37 = [MEMORY[0x1E695DF58] characterDirectionForLanguage:v36];
-    v38 = [v17 string];
-    v39 = [v38 directionalityIsolatedString];
+    v37 = [MEMORY[0x1E695DF58] characterDirectionForLanguage:languageCode];
+    string2 = [v17 string];
+    directionalityIsolatedString = [string2 directionalityIsolatedString];
 
-    v40 = [v80 string];
-    v41 = [v40 directionalityIsolatedString];
+    string3 = [v80 string];
+    directionalityIsolatedString2 = [string3 directionalityIsolatedString];
 
-    v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v39, v34, v41];
+    v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", directionalityIsolatedString, v34, directionalityIsolatedString2];
     v43 = v42;
     v44 = v34;
     if (v37 == 2)
     {
-      v45 = [v42 RTLString];
+      rTLString = [v42 RTLString];
 
-      v43 = v45;
+      v43 = rTLString;
     }
 
-    v46 = v79;
-    v47 = v81;
+    v46 = colorCopy;
+    v47 = fontCopy;
     v48 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v43];
     v49 = [v43 rangeOfString:v44];
-    [v48 addAttribute:*MEMORY[0x1E69DB650] value:v79 range:{v49, v50}];
+    [v48 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{v49, v50}];
 
     v51 = v80;
   }
 
   else
   {
-    v52 = [v81 fontDescriptor];
+    fontDescriptor = [fontCopy fontDescriptor];
     v87 = *MEMORY[0x1E69DB8B0];
     v75 = v30;
     v54 = *MEMORY[0x1E69DB900];
@@ -667,34 +667,34 @@ LABEL_27:
     v57 = v73 = v34;
     v88[0] = v57;
     v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v88 forKeys:&v87 count:1];
-    v74 = [v52 fontDescriptorByAddingAttributes:v58];
+    v74 = [fontDescriptor fontDescriptorByAddingAttributes:v58];
 
     v59 = [MEMORY[0x1E69DB878] fontWithDescriptor:v74 size:0.0];
     v60 = objc_alloc(MEMORY[0x1E696AD40]);
-    v61 = [v17 string];
-    v62 = [v60 initWithString:v61];
+    string4 = [v17 string];
+    v62 = [v60 initWithString:string4];
 
     v63 = *MEMORY[0x1E69DB648];
-    [v62 addAttribute:*MEMORY[0x1E69DB648] value:v81 range:{0, v19}];
+    [v62 addAttribute:*MEMORY[0x1E69DB648] value:fontCopy range:{0, v19}];
     v64 = v59;
     v72 = v59;
     [v62 addAttribute:v63 value:v59 range:{v19, v76}];
     v65 = *MEMORY[0x1E69DB650];
-    [v62 addAttribute:*MEMORY[0x1E69DB650] value:v79 range:{v19, v76}];
+    [v62 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{v19, v76}];
     v66 = objc_alloc(MEMORY[0x1E696AD40]);
     v51 = v80;
-    v67 = [v80 string];
-    v68 = [v66 initWithString:v67];
+    string5 = [v80 string];
+    v68 = [v66 initWithString:string5];
 
-    [v68 addAttribute:v63 value:v81 range:{0, v29}];
+    [v68 addAttribute:v63 value:fontCopy range:{0, v29}];
     v69 = v63;
-    v46 = v79;
+    v46 = colorCopy;
     [v68 addAttribute:v69 value:v64 range:{v29, v75}];
-    v47 = v81;
-    [v68 addAttribute:v65 value:v79 range:{v29, v75}];
+    v47 = fontCopy;
+    [v68 addAttribute:v65 value:colorCopy range:{v29, v75}];
     v44 = v73;
     v70 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v73];
-    [v70 addAttribute:v65 value:v79 range:{0, objc_msgSend(v70, "length")}];
+    [v70 addAttribute:v65 value:colorCopy range:{0, objc_msgSend(v70, "length")}];
     v48 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v62];
     [v48 appendAttributedString:v70];
     [v48 appendAttributedString:v68];
@@ -703,32 +703,32 @@ LABEL_27:
   return v48;
 }
 
-+ (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)a3
++ (_NSRange)_rangeOfDesignatorInAnnotatedTime:(id)time
 {
-  v3 = [a1 _rangeOfAnnontatedTime:a3 matchingPattern:&__block_literal_global_43];
+  v3 = [self _rangeOfAnnontatedTime:time matchingPattern:&__block_literal_global_43];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-+ (_NSRange)_rangeOfAnnontatedTime:(id)a3 matchingPattern:(id)a4
++ (_NSRange)_rangeOfAnnontatedTime:(id)time matchingPattern:(id)pattern
 {
-  v5 = a3;
-  v6 = a4;
+  timeCopy = time;
+  patternCopy = pattern;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
   v19 = &unk_1CADB7076;
   v20 = xmmword_1CAD58160;
-  v7 = [v5 length];
+  v7 = [timeCopy length];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__CUIKTimeIntervalTextProvider__rangeOfAnnontatedTime_matchingPattern___block_invoke;
   v13[3] = &unk_1E839A8B8;
-  v8 = v6;
+  v8 = patternCopy;
   v14 = v8;
   v15 = &v16;
-  [v5 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v13}];
+  [timeCopy enumerateAttributesInRange:0 options:v7 usingBlock:{0, v13}];
   v9 = v17[4];
   v10 = v17[5];
 
@@ -752,11 +752,11 @@ void __71__CUIKTimeIntervalTextProvider__rangeOfAnnontatedTime_matchingPattern__
   }
 }
 
-+ (id)_stringByRemovingDesignatorRange:(_NSRange)a3 fromString:(id)a4
++ (id)_stringByRemovingDesignatorRange:(_NSRange)range fromString:(id)string
 {
-  v4 = [a4 stringByReplacingCharactersInRange:a3.location withString:{a3.length, &stru_1F4AA8958}];
-  v5 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v4 = [string stringByReplacingCharactersInRange:range.location withString:{range.length, &stru_1F4AA8958}];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v6;
 }

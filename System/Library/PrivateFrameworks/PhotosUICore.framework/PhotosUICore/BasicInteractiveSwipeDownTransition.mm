@@ -1,23 +1,23 @@
 @interface BasicInteractiveSwipeDownTransition
 - (_TtC12PhotosUICore35BasicInteractiveSwipeDownTransition)init;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BasicInteractiveSwipeDownTransition
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1A52459C4();
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
   self;
-  sub_1A423D540(a3);
+  sub_1A423D540(transition);
 }
 
 - (_TtC12PhotosUICore35BasicInteractiveSwipeDownTransition)init

@@ -1,26 +1,26 @@
 @interface HKCodableSummaryActivityRingsValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivityResumeDate:(BOOL)a3;
-- (void)setHasCreationDate:(BOOL)a3;
-- (void)setHasDateData:(BOOL)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasHasEverHadAWatch:(BOOL)a3;
-- (void)setHasPaused:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivityResumeDate:(BOOL)date;
+- (void)setHasCreationDate:(BOOL)date;
+- (void)setHasDateData:(BOOL)data;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasHasEverHadAWatch:(BOOL)watch;
+- (void)setHasPaused:(BOOL)paused;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryActivityRingsValue
 
-- (void)setHasDateData:(BOOL)a3
+- (void)setHasDateData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 8;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCreationDate:(BOOL)a3
+- (void)setHasCreationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasEverHadAWatch:(BOOL)a3
+- (void)setHasHasEverHadAWatch:(BOOL)watch
 {
-  if (a3)
+  if (watch)
   {
     v3 = 64;
   }
@@ -93,9 +93,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPaused:(BOOL)a3
+- (void)setHasPaused:(BOOL)paused
 {
-  if (a3)
+  if (paused)
   {
     v3 = 0x80;
   }
@@ -108,9 +108,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasActivityResumeDate:(BOOL)a3
+- (void)setHasActivityResumeDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -129,20 +129,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryActivityRingsValue;
   v4 = [(HKCodableSummaryActivityRingsValue *)&v8 description];
-  v5 = [(HKCodableSummaryActivityRingsValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryActivityRingsValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateData];
-    [v3 setObject:v5 forKey:@"dateData"];
+    [dictionary setObject:v5 forKey:@"dateData"];
 
     has = self->_has;
   }
@@ -150,70 +150,70 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_activityMoveMode];
-    [v3 setObject:v6 forKey:@"activityMoveMode"];
+    [dictionary setObject:v6 forKey:@"activityMoveMode"];
   }
 
   activeEnergyBurned = self->_activeEnergyBurned;
   if (activeEnergyBurned)
   {
-    v8 = [(HKCodableQuantity *)activeEnergyBurned dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"activeEnergyBurned"];
+    dictionaryRepresentation = [(HKCodableQuantity *)activeEnergyBurned dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"activeEnergyBurned"];
   }
 
   activeEnergyBurnedGoal = self->_activeEnergyBurnedGoal;
   if (activeEnergyBurnedGoal)
   {
-    v10 = [(HKCodableQuantity *)activeEnergyBurnedGoal dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"activeEnergyBurnedGoal"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)activeEnergyBurnedGoal dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"activeEnergyBurnedGoal"];
   }
 
   appleMoveTime = self->_appleMoveTime;
   if (appleMoveTime)
   {
-    v12 = [(HKCodableQuantity *)appleMoveTime dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"appleMoveTime"];
+    dictionaryRepresentation3 = [(HKCodableQuantity *)appleMoveTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"appleMoveTime"];
   }
 
   appleMoveTimeGoal = self->_appleMoveTimeGoal;
   if (appleMoveTimeGoal)
   {
-    v14 = [(HKCodableQuantity *)appleMoveTimeGoal dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"appleMoveTimeGoal"];
+    dictionaryRepresentation4 = [(HKCodableQuantity *)appleMoveTimeGoal dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"appleMoveTimeGoal"];
   }
 
   appleExerciseTime = self->_appleExerciseTime;
   if (appleExerciseTime)
   {
-    v16 = [(HKCodableQuantity *)appleExerciseTime dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"appleExerciseTime"];
+    dictionaryRepresentation5 = [(HKCodableQuantity *)appleExerciseTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"appleExerciseTime"];
   }
 
   appleExerciseTimeGoal = self->_appleExerciseTimeGoal;
   if (appleExerciseTimeGoal)
   {
-    v18 = [(HKCodableQuantity *)appleExerciseTimeGoal dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"appleExerciseTimeGoal"];
+    dictionaryRepresentation6 = [(HKCodableQuantity *)appleExerciseTimeGoal dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"appleExerciseTimeGoal"];
   }
 
   appleStandHours = self->_appleStandHours;
   if (appleStandHours)
   {
-    v20 = [(HKCodableQuantity *)appleStandHours dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"appleStandHours"];
+    dictionaryRepresentation7 = [(HKCodableQuantity *)appleStandHours dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"appleStandHours"];
   }
 
   appleStandHoursGoal = self->_appleStandHoursGoal;
   if (appleStandHoursGoal)
   {
-    v22 = [(HKCodableQuantity *)appleStandHoursGoal dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"appleStandHoursGoal"];
+    dictionaryRepresentation8 = [(HKCodableQuantity *)appleStandHoursGoal dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"appleStandHoursGoal"];
   }
 
   v23 = self->_has;
   if ((v23 & 0x20) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-    [v3 setObject:v26 forKey:@"startDate"];
+    [dictionary setObject:v26 forKey:@"startDate"];
 
     v23 = self->_has;
     if ((v23 & 0x10) == 0)
@@ -234,7 +234,7 @@ LABEL_23:
   }
 
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-  [v3 setObject:v27 forKey:@"endDate"];
+  [dictionary setObject:v27 forKey:@"endDate"];
 
   v23 = self->_has;
   if ((v23 & 4) == 0)
@@ -250,7 +250,7 @@ LABEL_24:
 
 LABEL_33:
   v28 = [MEMORY[0x1E696AD98] numberWithDouble:self->_creationDate];
-  [v3 setObject:v28 forKey:@"creationDate"];
+  [dictionary setObject:v28 forKey:@"creationDate"];
 
   v23 = self->_has;
   if ((v23 & 0x40) == 0)
@@ -266,7 +266,7 @@ LABEL_25:
 
 LABEL_34:
   v29 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasEverHadAWatch];
-  [v3 setObject:v29 forKey:@"hasEverHadAWatch"];
+  [dictionary setObject:v29 forKey:@"hasEverHadAWatch"];
 
   v23 = self->_has;
   if ((v23 & 0x80) == 0)
@@ -282,23 +282,23 @@ LABEL_26:
 
 LABEL_35:
   v30 = [MEMORY[0x1E696AD98] numberWithBool:self->_paused];
-  [v3 setObject:v30 forKey:@"paused"];
+  [dictionary setObject:v30 forKey:@"paused"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_27:
     v24 = [MEMORY[0x1E696AD98] numberWithDouble:self->_activityResumeDate];
-    [v3 setObject:v24 forKey:@"activityResumeDate"];
+    [dictionary setObject:v24 forKey:@"activityResumeDate"];
   }
 
 LABEL_28:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -425,77 +425,77 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_dateData;
-    *(v4 + 124) |= 8u;
+    toCopy[4] = *&self->_dateData;
+    *(toCopy + 124) |= 8u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = self->_activityMoveMode;
-    *(v4 + 124) |= 1u;
+    toCopy[1] = self->_activityMoveMode;
+    *(toCopy + 124) |= 1u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_activeEnergyBurned)
   {
-    [v4 setActiveEnergyBurned:?];
-    v4 = v7;
+    [toCopy setActiveEnergyBurned:?];
+    toCopy = v7;
   }
 
   if (self->_activeEnergyBurnedGoal)
   {
     [v7 setActiveEnergyBurnedGoal:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleMoveTime)
   {
     [v7 setAppleMoveTime:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleMoveTimeGoal)
   {
     [v7 setAppleMoveTimeGoal:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleExerciseTime)
   {
     [v7 setAppleExerciseTime:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleExerciseTimeGoal)
   {
     [v7 setAppleExerciseTimeGoal:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleStandHours)
   {
     [v7 setAppleStandHours:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appleStandHoursGoal)
   {
     [v7 setAppleStandHoursGoal:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    v4[6] = *&self->_startDate;
-    *(v4 + 124) |= 0x20u;
+    toCopy[6] = *&self->_startDate;
+    *(toCopy + 124) |= 0x20u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -514,8 +514,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v4[5] = *&self->_endDate;
-  *(v4 + 124) |= 0x10u;
+  toCopy[5] = *&self->_endDate;
+  *(toCopy + 124) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -529,8 +529,8 @@ LABEL_24:
   }
 
 LABEL_33:
-  v4[3] = *&self->_creationDate;
-  *(v4 + 124) |= 4u;
+  toCopy[3] = *&self->_creationDate;
+  *(toCopy + 124) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -544,8 +544,8 @@ LABEL_25:
   }
 
 LABEL_34:
-  *(v4 + 120) = self->_hasEverHadAWatch;
-  *(v4 + 124) |= 0x40u;
+  *(toCopy + 120) = self->_hasEverHadAWatch;
+  *(toCopy + 124) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x80) == 0)
   {
@@ -559,21 +559,21 @@ LABEL_26:
   }
 
 LABEL_35:
-  *(v4 + 121) = self->_paused;
-  *(v4 + 124) |= 0x80u;
+  *(toCopy + 121) = self->_paused;
+  *(toCopy + 124) |= 0x80u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_27:
-    v4[2] = *&self->_activityResumeDate;
-    *(v4 + 124) |= 2u;
+    toCopy[2] = *&self->_activityResumeDate;
+    *(toCopy + 124) |= 2u;
   }
 
 LABEL_28:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -589,35 +589,35 @@ LABEL_28:
     *(v5 + 124) |= 1u;
   }
 
-  v8 = [(HKCodableQuantity *)self->_activeEnergyBurned copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_activeEnergyBurned copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
-  v10 = [(HKCodableQuantity *)self->_activeEnergyBurnedGoal copyWithZone:a3];
+  v10 = [(HKCodableQuantity *)self->_activeEnergyBurnedGoal copyWithZone:zone];
   v11 = *(v6 + 64);
   *(v6 + 64) = v10;
 
-  v12 = [(HKCodableQuantity *)self->_appleMoveTime copyWithZone:a3];
+  v12 = [(HKCodableQuantity *)self->_appleMoveTime copyWithZone:zone];
   v13 = *(v6 + 88);
   *(v6 + 88) = v12;
 
-  v14 = [(HKCodableQuantity *)self->_appleMoveTimeGoal copyWithZone:a3];
+  v14 = [(HKCodableQuantity *)self->_appleMoveTimeGoal copyWithZone:zone];
   v15 = *(v6 + 96);
   *(v6 + 96) = v14;
 
-  v16 = [(HKCodableQuantity *)self->_appleExerciseTime copyWithZone:a3];
+  v16 = [(HKCodableQuantity *)self->_appleExerciseTime copyWithZone:zone];
   v17 = *(v6 + 72);
   *(v6 + 72) = v16;
 
-  v18 = [(HKCodableQuantity *)self->_appleExerciseTimeGoal copyWithZone:a3];
+  v18 = [(HKCodableQuantity *)self->_appleExerciseTimeGoal copyWithZone:zone];
   v19 = *(v6 + 80);
   *(v6 + 80) = v18;
 
-  v20 = [(HKCodableQuantity *)self->_appleStandHours copyWithZone:a3];
+  v20 = [(HKCodableQuantity *)self->_appleStandHours copyWithZone:zone];
   v21 = *(v6 + 104);
   *(v6 + 104) = v20;
 
-  v22 = [(HKCodableQuantity *)self->_appleStandHoursGoal copyWithZone:a3];
+  v22 = [(HKCodableQuantity *)self->_appleStandHoursGoal copyWithZone:zone];
   v23 = *(v6 + 112);
   *(v6 + 112) = v22;
 
@@ -701,48 +701,48 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 124) & 8) == 0 || self->_dateData != *(v4 + 4))
+    if ((*(equalCopy + 124) & 8) == 0 || self->_dateData != *(equalCopy + 4))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 124) & 8) != 0)
+  else if ((*(equalCopy + 124) & 8) != 0)
   {
     goto LABEL_63;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 124) & 1) == 0 || self->_activityMoveMode != *(v4 + 1))
+    if ((*(equalCopy + 124) & 1) == 0 || self->_activityMoveMode != *(equalCopy + 1))
     {
       goto LABEL_63;
     }
   }
 
-  else if (*(v4 + 124))
+  else if (*(equalCopy + 124))
   {
     goto LABEL_63;
   }
 
   activeEnergyBurned = self->_activeEnergyBurned;
-  if (activeEnergyBurned | *(v4 + 7) && ![(HKCodableQuantity *)activeEnergyBurned isEqual:?])
+  if (activeEnergyBurned | *(equalCopy + 7) && ![(HKCodableQuantity *)activeEnergyBurned isEqual:?])
   {
     goto LABEL_63;
   }
 
   activeEnergyBurnedGoal = self->_activeEnergyBurnedGoal;
-  if (activeEnergyBurnedGoal | *(v4 + 8))
+  if (activeEnergyBurnedGoal | *(equalCopy + 8))
   {
     if (![(HKCodableQuantity *)activeEnergyBurnedGoal isEqual:?])
     {
@@ -751,7 +751,7 @@ LABEL_11:
   }
 
   appleMoveTime = self->_appleMoveTime;
-  if (appleMoveTime | *(v4 + 11))
+  if (appleMoveTime | *(equalCopy + 11))
   {
     if (![(HKCodableQuantity *)appleMoveTime isEqual:?])
     {
@@ -760,7 +760,7 @@ LABEL_11:
   }
 
   appleMoveTimeGoal = self->_appleMoveTimeGoal;
-  if (appleMoveTimeGoal | *(v4 + 12))
+  if (appleMoveTimeGoal | *(equalCopy + 12))
   {
     if (![(HKCodableQuantity *)appleMoveTimeGoal isEqual:?])
     {
@@ -769,7 +769,7 @@ LABEL_11:
   }
 
   appleExerciseTime = self->_appleExerciseTime;
-  if (appleExerciseTime | *(v4 + 9))
+  if (appleExerciseTime | *(equalCopy + 9))
   {
     if (![(HKCodableQuantity *)appleExerciseTime isEqual:?])
     {
@@ -778,7 +778,7 @@ LABEL_11:
   }
 
   appleExerciseTimeGoal = self->_appleExerciseTimeGoal;
-  if (appleExerciseTimeGoal | *(v4 + 10))
+  if (appleExerciseTimeGoal | *(equalCopy + 10))
   {
     if (![(HKCodableQuantity *)appleExerciseTimeGoal isEqual:?])
     {
@@ -787,7 +787,7 @@ LABEL_11:
   }
 
   appleStandHours = self->_appleStandHours;
-  if (appleStandHours | *(v4 + 13))
+  if (appleStandHours | *(equalCopy + 13))
   {
     if (![(HKCodableQuantity *)appleStandHours isEqual:?])
     {
@@ -796,7 +796,7 @@ LABEL_11:
   }
 
   appleStandHoursGoal = self->_appleStandHoursGoal;
-  if (appleStandHoursGoal | *(v4 + 14))
+  if (appleStandHoursGoal | *(equalCopy + 14))
   {
     if (![(HKCodableQuantity *)appleStandHoursGoal isEqual:?])
     {
@@ -806,72 +806,72 @@ LABEL_11:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 124) & 0x20) == 0 || self->_startDate != *(v4 + 6))
+    if ((*(equalCopy + 124) & 0x20) == 0 || self->_startDate != *(equalCopy + 6))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 124) & 0x20) != 0)
+  else if ((*(equalCopy + 124) & 0x20) != 0)
   {
     goto LABEL_63;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 124) & 0x10) == 0 || self->_endDate != *(v4 + 5))
+    if ((*(equalCopy + 124) & 0x10) == 0 || self->_endDate != *(equalCopy + 5))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 124) & 0x10) != 0)
+  else if ((*(equalCopy + 124) & 0x10) != 0)
   {
     goto LABEL_63;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 124) & 4) == 0 || self->_creationDate != *(v4 + 3))
+    if ((*(equalCopy + 124) & 4) == 0 || self->_creationDate != *(equalCopy + 3))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 124) & 4) != 0)
+  else if ((*(equalCopy + 124) & 4) != 0)
   {
     goto LABEL_63;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 124) & 0x40) == 0)
+    if ((*(equalCopy + 124) & 0x40) == 0)
     {
       goto LABEL_63;
     }
 
     if (self->_hasEverHadAWatch)
     {
-      if ((*(v4 + 120) & 1) == 0)
+      if ((*(equalCopy + 120) & 1) == 0)
       {
         goto LABEL_63;
       }
     }
 
-    else if (*(v4 + 120))
+    else if (*(equalCopy + 120))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 124) & 0x40) != 0)
+  else if ((*(equalCopy + 124) & 0x40) != 0)
   {
     goto LABEL_63;
   }
 
   if ((*&self->_has & 0x80) == 0)
   {
-    if ((*(v4 + 124) & 0x80) == 0)
+    if ((*(equalCopy + 124) & 0x80) == 0)
     {
       goto LABEL_47;
     }
@@ -881,20 +881,20 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if ((*(v4 + 124) & 0x80) == 0)
+  if ((*(equalCopy + 124) & 0x80) == 0)
   {
     goto LABEL_63;
   }
 
   if (self->_paused)
   {
-    if ((*(v4 + 121) & 1) == 0)
+    if ((*(equalCopy + 121) & 1) == 0)
     {
       goto LABEL_63;
     }
   }
 
-  else if (*(v4 + 121))
+  else if (*(equalCopy + 121))
   {
     goto LABEL_63;
   }
@@ -902,7 +902,7 @@ LABEL_63:
 LABEL_47:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 124) & 2) == 0 || self->_activityResumeDate != *(v4 + 2))
+    if ((*(equalCopy + 124) & 2) == 0 || self->_activityResumeDate != *(equalCopy + 2))
     {
       goto LABEL_63;
     }
@@ -912,7 +912,7 @@ LABEL_47:
 
   else
   {
-    v13 = (*(v4 + 124) & 2) == 0;
+    v13 = (*(equalCopy + 124) & 2) == 0;
   }
 
 LABEL_64:
@@ -1137,21 +1137,21 @@ LABEL_39:
   return v38 ^ v5 ^ v37 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v18 ^ v22 ^ v26 ^ v30 ^ v31 ^ v35;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 124);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 124);
   if ((v6 & 8) != 0)
   {
-    self->_dateData = *(v4 + 4);
+    self->_dateData = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v6 = *(v4 + 124);
+    v6 = *(fromCopy + 124);
   }
 
   if (v6)
   {
-    self->_activityMoveMode = *(v4 + 1);
+    self->_activityMoveMode = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

@@ -1,7 +1,7 @@
 @interface MonitoredStates
 + (id)sharedInstance;
-- (MonitoredStates)initWithCoder:(id)a3;
-- (MonitoredStates)initWithImmersionLevelControllerPresentOnScreen:(BOOL)a3;
+- (MonitoredStates)initWithCoder:(id)coder;
+- (MonitoredStates)initWithImmersionLevelControllerPresentOnScreen:(BOOL)screen;
 @end
 
 @implementation MonitoredStates
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000176A0;
   block[3] = &unk_100055408;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100067A58 != -1)
   {
     dispatch_once(&qword_100067A58, block);
@@ -23,22 +23,22 @@
   return v2;
 }
 
-- (MonitoredStates)initWithImmersionLevelControllerPresentOnScreen:(BOOL)a3
+- (MonitoredStates)initWithImmersionLevelControllerPresentOnScreen:(BOOL)screen
 {
   v5.receiver = self;
   v5.super_class = MonitoredStates;
   result = [(MonitoredStates *)&v5 init];
   if (result)
   {
-    result->_isImmersionLevelControllerPresentOnScreen = a3;
+    result->_isImmersionLevelControllerPresentOnScreen = screen;
   }
 
   return result;
 }
 
-- (MonitoredStates)initWithCoder:(id)a3
+- (MonitoredStates)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"isImmersionLevelControllerPresentOnScreen"];
+  v4 = [coder decodeBoolForKey:@"isImmersionLevelControllerPresentOnScreen"];
 
   return [(MonitoredStates *)self initWithImmersionLevelControllerPresentOnScreen:v4];
 }

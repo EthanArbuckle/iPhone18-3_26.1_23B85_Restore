@@ -1,40 +1,40 @@
 @interface VCPEdgeDetector
-- (VCPEdgeDetector)initWithImage:(float *)a3 edgeMap:(float *)a4 width:(unint64_t)a5 height:(unint64_t)a6 widthExtension:(int)a7 heightExtension:(int)a8;
-- (int)detectWithSigma:(float)a3 lowThreshold:(float)a4 highThreshold:(float)a5;
-- (int)gradientEstimation:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5 gradient:(DSPSplitComplex)a6 gradientMag:(float *)a7;
-- (int)noiseReduction:(float *)a3 sigma:(float)a4 imageFiltered:(float *)a5;
+- (VCPEdgeDetector)initWithImage:(float *)image edgeMap:(float *)map width:(unint64_t)width height:(unint64_t)height widthExtension:(int)extension heightExtension:(int)heightExtension;
+- (int)detectWithSigma:(float)sigma lowThreshold:(float)threshold highThreshold:(float)highThreshold;
+- (int)gradientEstimation:(float *)estimation width:(unint64_t)width height:(unint64_t)height gradient:(DSPSplitComplex)gradient gradientMag:(float *)mag;
+- (int)noiseReduction:(float *)reduction sigma:(float)sigma imageFiltered:(float *)filtered;
 - (void)dealloc;
 @end
 
 @implementation VCPEdgeDetector
 
-- (VCPEdgeDetector)initWithImage:(float *)a3 edgeMap:(float *)a4 width:(unint64_t)a5 height:(unint64_t)a6 widthExtension:(int)a7 heightExtension:(int)a8
+- (VCPEdgeDetector)initWithImage:(float *)image edgeMap:(float *)map width:(unint64_t)width height:(unint64_t)height widthExtension:(int)extension heightExtension:(int)heightExtension
 {
   v29.receiver = self;
   v29.super_class = VCPEdgeDetector;
   v14 = [(VCPEdgeDetector *)&v29 init];
   v15 = v14;
   v16 = 0;
-  if (a3 && v14)
+  if (image && v14)
   {
-    v14->_image = a3;
-    v14->_edgeMap = a4;
-    v14->_width = a5;
-    v14->_height = a6;
-    v14->_widthExt = a7;
-    v14->_heightExt = a8;
-    v17 = a5 + 2 * a7;
-    v18 = a6 + 2 * a8;
+    v14->_image = image;
+    v14->_edgeMap = map;
+    v14->_width = width;
+    v14->_height = height;
+    v14->_widthExt = extension;
+    v14->_heightExt = heightExtension;
+    v17 = width + 2 * extension;
+    v18 = height + 2 * heightExtension;
     v14->_widthPadded = v17;
     v14->_heightPadded = v18;
-    if ((a6 * a5) >> 62)
+    if ((height * width) >> 62)
     {
       v19 = -1;
     }
 
     else
     {
-      v19 = 4 * a6 * a5;
+      v19 = 4 * height * width;
     }
 
     v20 = MEMORY[0x1E69E5398];
@@ -115,7 +115,7 @@
   [(VCPEdgeDetector *)&v7 dealloc];
 }
 
-- (int)detectWithSigma:(float)a3 lowThreshold:(float)a4 highThreshold:(float)a5
+- (int)detectWithSigma:(float)sigma lowThreshold:(float)threshold highThreshold:(float)highThreshold
 {
   v74 = *MEMORY[0x1E69E9840];
   widthPadded = self->_widthPadded;
@@ -125,7 +125,7 @@
     result = [(VCPEdgeDetector *)self gradientEstimation:self->_imageFiltered width:self->_widthPadded height:self->_heightPadded gradient:self->_gradient.realp gradientMag:self->_gradient.imagp, self->_gradientMag];
     if (!result)
     {
-      v58 = a5;
+      highThresholdCopy = highThreshold;
       heightExt = self->_heightExt;
       heightPadded = self->_heightPadded;
       v60 = self->_widthPadded;
@@ -234,7 +234,7 @@
             do
             {
               v52 = v51 + v50 * v48;
-              if (self->_nonMaxSuppressed[v52] >= v58 && edgeMap[v52] == 0.0)
+              if (self->_nonMaxSuppressed[v52] >= highThresholdCopy && edgeMap[v52] == 0.0)
               {
                 edgeMap[v52] = 1.0;
                 *v46 = v52;
@@ -252,7 +252,7 @@
                   do
                   {
                     v57 = v70[v54];
-                    if ([(VCPEdgeDetector *)self isInImage:v57 width:LODWORD(self->_width) height:LODWORD(self->_height)]&& self->_nonMaxSuppressed[v57] >= a4 && edgeMap[v57] == 0.0)
+                    if ([(VCPEdgeDetector *)self isInImage:v57 width:LODWORD(self->_width) height:LODWORD(self->_height)]&& self->_nonMaxSuppressed[v57] >= threshold && edgeMap[v57] == 0.0)
                     {
                       edgeMap[v57] = 1.0;
                       v46[v53++] = v57;
@@ -290,11 +290,11 @@
   return result;
 }
 
-- (int)noiseReduction:(float *)a3 sigma:(float)a4 imageFiltered:(float *)a5
+- (int)noiseReduction:(float *)reduction sigma:(float)sigma imageFiltered:(float *)filtered
 {
   v26 = *MEMORY[0x1E69E9840];
-  *v5.i32 = (a4 + a4) * a4;
-  v9 = a4 * 2.5066;
+  *v5.i32 = (sigma + sigma) * sigma;
+  v9 = sigma * 2.5066;
   v10 = vdup_lane_s32(v5, 0);
   v11 = -2;
   v12 = __F;
@@ -332,19 +332,19 @@
   }
 
   while (v11 != 3);
-  vDSP_f5x5(a3, self->_heightPadded, self->_widthPadded, __F, a5);
+  vDSP_f5x5(reduction, self->_heightPadded, self->_widthPadded, __F, filtered);
   return 0;
 }
 
-- (int)gradientEstimation:(float *)a3 width:(unint64_t)a4 height:(unint64_t)a5 gradient:(DSPSplitComplex)a6 gradientMag:(float *)a7
+- (int)gradientEstimation:(float *)estimation width:(unint64_t)width height:(unint64_t)height gradient:(DSPSplitComplex)gradient gradientMag:(float *)mag
 {
-  imagp = a6.imagp;
-  v13 = a6;
-  vDSP_f3x3(a3, a5, a4, [VCPEdgeDetector gradientEstimation:width:height:gradient:gradientMag:]::kSobel, a6.realp);
-  vDSP_f3x3(a3, a5, a4, &[VCPEdgeDetector gradientEstimation:width:height:gradient:gradientMag:]::kSobel[9], imagp);
-  if (a7)
+  imagp = gradient.imagp;
+  gradientCopy = gradient;
+  vDSP_f3x3(estimation, height, width, [VCPEdgeDetector gradientEstimation:width:height:gradient:gradientMag:]::kSobel, gradient.realp);
+  vDSP_f3x3(estimation, height, width, &[VCPEdgeDetector gradientEstimation:width:height:gradient:gradientMag:]::kSobel[9], imagp);
+  if (mag)
   {
-    vDSP_zvmags(&v13, 1, a7, 1, a5 * a4);
+    vDSP_zvmags(&gradientCopy, 1, mag, 1, height * width);
   }
 
   return 0;

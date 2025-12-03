@@ -1,54 +1,54 @@
 @interface OBAdditionalDisplayLanguageManager
-- (OBAdditionalDisplayLanguageManager)initWithDisplayLanguage:(id)a3;
-- (id)didTapRightBarButtonItemForWelcomeController:(id)a3 currentDisplayLanguage:(id)a4;
-- (void)configureNavigationItemRightBarButtonItemForWelcomeController:(id)a3 currentDisplayLanguage:(id)a4 action:(SEL)a5;
+- (OBAdditionalDisplayLanguageManager)initWithDisplayLanguage:(id)language;
+- (id)didTapRightBarButtonItemForWelcomeController:(id)controller currentDisplayLanguage:(id)language;
+- (void)configureNavigationItemRightBarButtonItemForWelcomeController:(id)controller currentDisplayLanguage:(id)language action:(SEL)action;
 @end
 
 @implementation OBAdditionalDisplayLanguageManager
 
-- (OBAdditionalDisplayLanguageManager)initWithDisplayLanguage:(id)a3
+- (OBAdditionalDisplayLanguageManager)initWithDisplayLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v10.receiver = self;
   v10.super_class = OBAdditionalDisplayLanguageManager;
   v5 = [(OBAdditionalDisplayLanguageManager *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [languageCopy copy];
     [(OBAdditionalDisplayLanguageManager *)v5 setOriginalDisplayLanguage:v6];
 
     v7 = +[OBCapabilities sharedCapabilities];
-    v8 = [v7 additionalDisplayLanguageForDisplayLanguage:v4];
+    v8 = [v7 additionalDisplayLanguageForDisplayLanguage:languageCopy];
     [(OBAdditionalDisplayLanguageManager *)v5 setAdditionalDisplayLanguage:v8];
   }
 
   return v5;
 }
 
-- (void)configureNavigationItemRightBarButtonItemForWelcomeController:(id)a3 currentDisplayLanguage:(id)a4 action:(SEL)a5
+- (void)configureNavigationItemRightBarButtonItemForWelcomeController:(id)controller currentDisplayLanguage:(id)language action:(SEL)action
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  languageCopy = language;
   v10 = _OBLoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
+    additionalDisplayLanguage = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
     *buf = 138412802;
-    v36 = v8;
+    v36 = controllerCopy;
     v37 = 2112;
-    v38 = v9;
+    v38 = languageCopy;
     v39 = 2112;
-    v40 = v11;
+    v40 = additionalDisplayLanguage;
     _os_log_impl(&dword_1B4FB6000, v10, OS_LOG_TYPE_DEFAULT, "configure toggle button with welcomeController %@ displayLanguage %@ self.additionalDisplayLanguage %@", buf, 0x20u);
   }
 
-  v12 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
+  additionalDisplayLanguage2 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
 
-  if (v12)
+  if (additionalDisplayLanguage2)
   {
-    v13 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
-    v14 = [v9 isEqualToString:v13];
+    additionalDisplayLanguage3 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
+    v14 = [languageCopy isEqualToString:additionalDisplayLanguage3];
 
     if (v14)
     {
@@ -82,40 +82,40 @@
     v20 = _OBLoggingFacility();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v8 navigationItem];
+      navigationItem = [controllerCopy navigationItem];
       *buf = 138412290;
-      v36 = v21;
+      v36 = navigationItem;
       _os_log_impl(&dword_1B4FB6000, v20, OS_LOG_TYPE_DEFAULT, "configure toggle button navigation item %@", buf, 0xCu);
     }
 
-    v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v18 style:0 target:v8 action:a5];
-    v23 = [v8 navigationItem];
-    v24 = [v23 rightBarButtonItem];
+    v22 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v18 style:0 target:controllerCopy action:action];
+    navigationItem2 = [controllerCopy navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
 
-    v25 = [v8 navigationItem];
-    v26 = v25;
-    if (v24)
+    navigationItem3 = [controllerCopy navigationItem];
+    v26 = navigationItem3;
+    if (rightBarButtonItem)
     {
-      v27 = [v25 rightBarButtonItem];
-      v34[0] = v27;
+      rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+      v34[0] = rightBarButtonItem2;
       v34[1] = v22;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-      v29 = [v8 navigationItem];
-      [v29 setRightBarButtonItems:v28];
+      navigationItem4 = [controllerCopy navigationItem];
+      [navigationItem4 setRightBarButtonItems:v28];
     }
 
     else
     {
-      [v25 setRightBarButtonItem:v22];
+      [navigationItem3 setRightBarButtonItem:v22];
     }
 
     v30 = _OBLoggingFacility();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v8 navigationItem];
-      v32 = [v31 rightBarButtonItem];
+      navigationItem5 = [controllerCopy navigationItem];
+      rightBarButtonItem3 = [navigationItem5 rightBarButtonItem];
       *buf = 138412290;
-      v36 = v32;
+      v36 = rightBarButtonItem3;
       _os_log_impl(&dword_1B4FB6000, v30, OS_LOG_TYPE_DEFAULT, "configure toggle button navigation item right bar button item %@", buf, 0xCu);
     }
   }
@@ -133,18 +133,18 @@
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)didTapRightBarButtonItemForWelcomeController:(id)a3 currentDisplayLanguage:(id)a4
+- (id)didTapRightBarButtonItemForWelcomeController:(id)controller currentDisplayLanguage:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 scrollView];
-  [v8 setContentOffset:0 animated:{0.0, 0.0}];
+  languageCopy = language;
+  controllerCopy = controller;
+  scrollView = [controllerCopy scrollView];
+  [scrollView setContentOffset:0 animated:{0.0, 0.0}];
 
-  [v7 updateNavigationBarAnimated:0];
-  v9 = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
-  LODWORD(v8) = [v9 isEqualToString:v6];
+  [controllerCopy updateNavigationBarAnimated:0];
+  additionalDisplayLanguage = [(OBAdditionalDisplayLanguageManager *)self additionalDisplayLanguage];
+  LODWORD(scrollView) = [additionalDisplayLanguage isEqualToString:languageCopy];
 
-  if (v8)
+  if (scrollView)
   {
     [(OBAdditionalDisplayLanguageManager *)self originalDisplayLanguage];
   }

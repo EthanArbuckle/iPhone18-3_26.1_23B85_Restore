@@ -10,8 +10,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 _gkScore];
-  v12 = [v11 challengeComposeControllerWithMessage:v10 players:v9 completionHandler:v8];
+  _gkScore = [self _gkScore];
+  v12 = [_gkScore challengeComposeControllerWithMessage:v10 players:v9 completionHandler:v8];
 
   return v12;
 }
@@ -21,8 +21,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 _gkScore];
-  v12 = [v11 challengeComposeControllerWithMessage:v10 players:v9 completion:v8];
+  _gkScore = [self _gkScore];
+  v12 = [_gkScore challengeComposeControllerWithMessage:v10 players:v9 completion:v8];
 
   return v12;
 }

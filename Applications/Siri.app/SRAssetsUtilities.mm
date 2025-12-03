@@ -1,12 +1,12 @@
 @interface SRAssetsUtilities
 + (BOOL)shouldShowAssetDownloadBanner;
-+ (void)_runAssetCheckWithTask:(id)a3;
-+ (void)_scheduleAssetCheckWithEarliestBeginDate:(id)a3;
++ (void)_runAssetCheckWithTask:(id)task;
++ (void)_scheduleAssetCheckWithEarliestBeginDate:(id)date;
 + (void)setupBackgroundAssetCheck;
 - (BOOL)_hasInexpensiveNetwork;
 - (SRAssetsUtilities)init;
 - (unint64_t)_mockSiriAssetState;
-- (void)checkAssetsWithCompletion:(id)a3;
+- (void)checkAssetsWithCompletion:(id)completion;
 @end
 
 @implementation SRAssetsUtilities
@@ -26,19 +26,19 @@
   return v2;
 }
 
-- (void)checkAssetsWithCompletion:(id)a3
+- (void)checkAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 assistantIsEnabled];
+  assistantIsEnabled = [v5 assistantIsEnabled];
 
-  if (v6)
+  if (assistantIsEnabled)
   {
     [(UAFAssetUtilities *)self->_assetUtilities refreshUnderstandingOnDeviceAssetsAvailableAsync];
-    v7 = [(SRAssetsUtilities *)self _mockSiriAssetState];
-    if (v7)
+    _mockSiriAssetState = [(SRAssetsUtilities *)self _mockSiriAssetState];
+    if (_mockSiriAssetState)
     {
-      v8 = v7;
+      v8 = _mockSiriAssetState;
       v9 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
@@ -49,7 +49,7 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Using mock value for Siri asset state: %lu", &v14, 0x16u);
       }
 
-      v4[2](v4, v8);
+      completionCopy[2](completionCopy, v8);
     }
 
     else
@@ -94,13 +94,13 @@
         v11 = 4;
       }
 
-      v4[2](v4, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
   else
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
@@ -141,9 +141,9 @@
   }
 }
 
-+ (void)_scheduleAssetCheckWithEarliestBeginDate:(id)a3
++ (void)_scheduleAssetCheckWithEarliestBeginDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -155,7 +155,7 @@
   v5 = [[BGProcessingTaskRequest alloc] initWithIdentifier:@"com.apple.siri.CheckAssetStatus"];
   [v5 setRequiresExternalPower:0];
   [v5 setRequiresNetworkConnectivity:1];
-  [v5 setEarliestBeginDate:v3];
+  [v5 setEarliestBeginDate:dateCopy];
   v6 = +[BGTaskScheduler sharedScheduler];
   v10 = 0;
   v7 = [v6 submitTaskRequest:v5 error:&v10];
@@ -171,24 +171,24 @@
   }
 }
 
-+ (void)_runAssetCheckWithTask:(id)a3
++ (void)_runAssetCheckWithTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   if (AFDeviceSupportsSiriUOD() & 1) != 0 || (AFDeviceSupportsHybridUOD())
   {
     v4 = objc_alloc_init(SRAssetsUtilities);
-    objc_initWeak(location, v3);
+    objc_initWeak(location, taskCopy);
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10002FEFC;
     v8[3] = &unk_1001676A0;
     objc_copyWeak(&v9, location);
-    [v3 setExpirationHandler:v8];
+    [taskCopy setExpirationHandler:v8];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10003000C;
     v6[3] = &unk_1001676C8;
-    v7 = v3;
+    v7 = taskCopy;
     [(SRAssetsUtilities *)v4 checkAssetsWithCompletion:v6];
 
     objc_destroyWeak(&v9);
@@ -210,11 +210,11 @@
 - (BOOL)_hasInexpensiveNetwork
 {
   v2 = +[NWPathEvaluator sharedDefaultEvaluator];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  if ([v3 status] == 1)
+  if ([path status] == 1)
   {
-    v4 = [v3 isExpensive] ^ 1;
+    v4 = [path isExpensive] ^ 1;
   }
 
   else
@@ -230,15 +230,15 @@
   v2 = objc_alloc_init(SRAssetsUtilities);
   if ([(SRAssetsUtilities *)v2 _hasSufficientDiskSpaceForDownload])
   {
-    v3 = [(SRAssetsUtilities *)v2 _hasInexpensiveNetwork];
+    _hasInexpensiveNetwork = [(SRAssetsUtilities *)v2 _hasInexpensiveNetwork];
   }
 
   else
   {
-    v3 = 0;
+    _hasInexpensiveNetwork = 0;
   }
 
-  return v3;
+  return _hasInexpensiveNetwork;
 }
 
 @end

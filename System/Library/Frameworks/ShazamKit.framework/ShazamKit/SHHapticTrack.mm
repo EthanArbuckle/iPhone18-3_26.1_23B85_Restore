@@ -1,29 +1,29 @@
 @interface SHHapticTrack
 - (NSFileManager)fileManager;
 - (NSURL)fileURL;
-- (SHHapticTrack)initWithCoder:(id)a3;
-- (SHHapticTrack)initWithFileIdentifier:(id)a3 hapticData:(id)a4 algorithm:(id)a5;
+- (SHHapticTrack)initWithCoder:(id)coder;
+- (SHHapticTrack)initWithFileIdentifier:(id)identifier hapticData:(id)data algorithm:(id)algorithm;
 - (id)destinationURLForHapticFile;
 - (id)hapticFileURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHHapticTrack
 
-- (SHHapticTrack)initWithFileIdentifier:(id)a3 hapticData:(id)a4 algorithm:(id)a5
+- (SHHapticTrack)initWithFileIdentifier:(id)identifier hapticData:(id)data algorithm:(id)algorithm
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
+  algorithmCopy = algorithm;
   v15.receiver = self;
   v15.super_class = SHHapticTrack;
   v12 = [(SHHapticTrack *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_fileIdentifier, a3);
-    objc_storeStrong(&v13->_hapticData, a4);
-    objc_storeStrong(&v13->_algorithm, a5);
+    objc_storeStrong(&v12->_fileIdentifier, identifier);
+    objc_storeStrong(&v13->_hapticData, data);
+    objc_storeStrong(&v13->_algorithm, algorithm);
   }
 
   return v13;
@@ -34,9 +34,9 @@
   fileURL = self->_fileURL;
   if (!fileURL)
   {
-    v4 = [(SHHapticTrack *)self hapticFileURL];
+    hapticFileURL = [(SHHapticTrack *)self hapticFileURL];
     v5 = self->_fileURL;
-    self->_fileURL = v4;
+    self->_fileURL = hapticFileURL;
 
     fileURL = self->_fileURL;
   }
@@ -49,9 +49,9 @@
   fileManager = self->_fileManager;
   if (!fileManager)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v5 = self->_fileManager;
-    self->_fileManager = v4;
+    self->_fileManager = defaultManager;
 
     fileManager = self->_fileManager;
   }
@@ -59,42 +59,42 @@
   return fileManager;
 }
 
-- (SHHapticTrack)initWithCoder:(id)a3
+- (SHHapticTrack)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemFileIdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemHapticDataKey"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemAlgorithmKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemFileIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemHapticDataKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHHapticItemAlgorithmKey"];
 
   v8 = [(SHHapticTrack *)self initWithFileIdentifier:v5 hapticData:v6 algorithm:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SHHapticTrack *)self fileIdentifier];
-  [v4 encodeObject:v5 forKey:@"SHHapticItemFileIdentifierKey"];
+  coderCopy = coder;
+  fileIdentifier = [(SHHapticTrack *)self fileIdentifier];
+  [coderCopy encodeObject:fileIdentifier forKey:@"SHHapticItemFileIdentifierKey"];
 
-  v6 = [(SHHapticTrack *)self hapticData];
-  [v4 encodeObject:v6 forKey:@"SHHapticItemHapticDataKey"];
+  hapticData = [(SHHapticTrack *)self hapticData];
+  [coderCopy encodeObject:hapticData forKey:@"SHHapticItemHapticDataKey"];
 
-  v7 = [(SHHapticTrack *)self algorithm];
-  [v4 encodeObject:v7 forKey:@"SHHapticItemAlgorithmKey"];
+  algorithm = [(SHHapticTrack *)self algorithm];
+  [coderCopy encodeObject:algorithm forKey:@"SHHapticItemAlgorithmKey"];
 }
 
 - (id)hapticFileURL
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SHHapticTrack *)self destinationURLForHapticFile];
-  if (v3)
+  destinationURLForHapticFile = [(SHHapticTrack *)self destinationURLForHapticFile];
+  if (destinationURLForHapticFile)
   {
-    v4 = [(SHHapticTrack *)self fileManager];
-    v5 = [v3 path];
-    if ([v4 fileExistsAtPath:v5])
+    fileManager = [(SHHapticTrack *)self fileManager];
+    path = [destinationURLForHapticFile path];
+    if ([fileManager fileExistsAtPath:path])
     {
-      v6 = [(SHHapticTrack *)self fileManager];
-      v7 = [v6 removeItemAtURL:v3 error:0];
+      fileManager2 = [(SHHapticTrack *)self fileManager];
+      v7 = [fileManager2 removeItemAtURL:destinationURLForHapticFile error:0];
 
       if ((v7 & 1) == 0)
       {
@@ -102,7 +102,7 @@
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v19 = 138412290;
-          v20 = v3;
+          v20 = destinationURLForHapticFile;
           _os_log_impl(&dword_230F52000, v8, OS_LOG_TYPE_INFO, "Returning existing ahap url %@", &v19, 0xCu);
         }
 
@@ -114,15 +114,15 @@
     {
     }
 
-    v11 = [(SHHapticTrack *)self fileManager];
-    v12 = [v3 path];
-    v13 = [(SHHapticTrack *)self hapticData];
-    v14 = [v11 createFileAtPath:v12 contents:v13 attributes:0];
+    fileManager3 = [(SHHapticTrack *)self fileManager];
+    path2 = [destinationURLForHapticFile path];
+    hapticData = [(SHHapticTrack *)self hapticData];
+    v14 = [fileManager3 createFileAtPath:path2 contents:hapticData attributes:0];
 
     if (v14)
     {
 LABEL_12:
-      v15 = v3;
+      v15 = destinationURLForHapticFile;
       goto LABEL_17;
     }
 
@@ -139,9 +139,9 @@ LABEL_12:
     v9 = sh_log_object();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(SHHapticTrack *)self fileIdentifier];
+      fileIdentifier = [(SHHapticTrack *)self fileIdentifier];
       v19 = 138412290;
-      v20 = v10;
+      v20 = fileIdentifier;
       _os_log_impl(&dword_230F52000, v9, OS_LOG_TYPE_DEBUG, "Could not create file path to save haptic file with identifier %@", &v19, 0xCu);
     }
   }
@@ -157,19 +157,19 @@ LABEL_17:
 - (id)destinationURLForHapticFile
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SHHapticTrack *)self fileManager];
-  v4 = [v3 temporaryDirectory];
-  v5 = [v4 URLByAppendingPathComponent:@"MusicHaptics"];
+  fileManager = [(SHHapticTrack *)self fileManager];
+  temporaryDirectory = [fileManager temporaryDirectory];
+  v5 = [temporaryDirectory URLByAppendingPathComponent:@"MusicHaptics"];
 
-  v6 = [(SHHapticTrack *)self fileManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  fileManager2 = [(SHHapticTrack *)self fileManager];
+  path = [v5 path];
+  v8 = [fileManager2 fileExistsAtPath:path];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(SHHapticTrack *)self fileManager];
+    fileManager3 = [(SHHapticTrack *)self fileManager];
     v22 = 0;
-    v10 = [v9 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v22];
+    v10 = [fileManager3 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v22];
     v11 = v22;
 
     if ((v10 & 1) == 0)
@@ -182,17 +182,17 @@ LABEL_17:
         _os_log_impl(&dword_230F52000, v12, OS_LOG_TYPE_ERROR, "Could not create folder for haptic files, using temporary directory %@", buf, 0xCu);
       }
 
-      v13 = [(SHHapticTrack *)self fileManager];
-      v14 = [v13 temporaryDirectory];
+      fileManager4 = [(SHHapticTrack *)self fileManager];
+      temporaryDirectory2 = [fileManager4 temporaryDirectory];
 
-      v5 = v14;
+      v5 = temporaryDirectory2;
     }
   }
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [(SHHapticTrack *)self fileIdentifier];
-  v17 = [(SHHapticTrack *)self algorithm];
-  v18 = [v15 stringWithFormat:@"%@_%@", v16, v17];
+  fileIdentifier = [(SHHapticTrack *)self fileIdentifier];
+  algorithm = [(SHHapticTrack *)self algorithm];
+  v18 = [v15 stringWithFormat:@"%@_%@", fileIdentifier, algorithm];
 
   v19 = [v5 URLByAppendingPathComponent:v18 conformingToType:*MEMORY[0x277CE1CD8]];
 

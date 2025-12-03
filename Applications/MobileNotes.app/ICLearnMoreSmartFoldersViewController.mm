@@ -1,6 +1,6 @@
 @interface ICLearnMoreSmartFoldersViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (ICLearnMoreSmartFoldersViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (ICLearnMoreSmartFoldersViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UITextView)filteringTagsExampleBodyTextView;
 - (UITextView)filteringTagsSummaryBodyTextView;
 - (UITextView)howToSmartFoldersBodyTextView;
@@ -88,7 +88,7 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_1004B4B30();
   }
 
@@ -98,9 +98,9 @@
   }
 }
 
-- (ICLearnMoreSmartFoldersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICLearnMoreSmartFoldersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -112,20 +112,20 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1001A2A3C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1001A2A3C(v5, v7, bundle);
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  LOBYTE(self) = sub_1001A3024(v12);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(self) = sub_1001A3024(viewCopy);
 
   (*(v9 + 8))(v11, v8);
   return self & 1;

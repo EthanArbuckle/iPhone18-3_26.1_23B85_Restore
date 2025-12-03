@@ -1,51 +1,51 @@
 @interface ASDDSPAudioDevice
-+ (id)dspItemsInConfiguration:(id)a3 notInConfiguration:(id)a4;
-- (ASDDSPAudioDevice)initWithDeviceUID:(id)a3 underlyingDevice:(id)a4 deviceDSPDatabase:(id)a5 plugin:(id)a6;
-- (BOOL)applyDeviceDSPConfiguration:(id)a3;
-- (BOOL)applyStreamDSPConfiguration:(id)a3 toStream:(id)a4;
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4;
-- (BOOL)underlyingDeviceHasAllProperties:(id)a3;
++ (id)dspItemsInConfiguration:(id)configuration notInConfiguration:(id)inConfiguration;
+- (ASDDSPAudioDevice)initWithDeviceUID:(id)d underlyingDevice:(id)device deviceDSPDatabase:(id)database plugin:(id)plugin;
+- (BOOL)applyDeviceDSPConfiguration:(id)configuration;
+- (BOOL)applyStreamDSPConfiguration:(id)configuration toStream:(id)stream;
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block;
+- (BOOL)underlyingDeviceHasAllProperties:(id)properties;
 - (BOOL)updateDeviceDSPConfiguration;
 - (id)findDSPConfigurationForCurrentState;
 - (id)willDoReadInputBlock;
 - (id)willDoWriteMixBlock;
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4;
-- (void)addInputStream:(id)a3;
-- (void)addOutputStream:(id)a3;
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4;
-- (void)removeInputStream:(id)a3;
-- (void)removeOutputStream:(id)a3;
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case;
+- (void)addInputStream:(id)stream;
+- (void)addOutputStream:(id)stream;
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object;
+- (void)removeInputStream:(id)stream;
+- (void)removeOutputStream:(id)stream;
 - (void)updateDeviceDSPConfiguration;
 @end
 
 @implementation ASDDSPAudioDevice
 
-- (ASDDSPAudioDevice)initWithDeviceUID:(id)a3 underlyingDevice:(id)a4 deviceDSPDatabase:(id)a5 plugin:(id)a6
+- (ASDDSPAudioDevice)initWithDeviceUID:(id)d underlyingDevice:(id)device deviceDSPDatabase:(id)database plugin:(id)plugin
 {
   v50 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
+  deviceCopy = device;
+  databaseCopy = database;
   v46.receiver = self;
   v46.super_class = ASDDSPAudioDevice;
-  v13 = [(ASDAudioDevice *)&v46 initWithDeviceUID:a3 withPlugin:a6];
+  v13 = [(ASDAudioDevice *)&v46 initWithDeviceUID:d withPlugin:plugin];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_underlyingDevice, a4);
-    objc_storeStrong(&v14->_dspDatabase, a5);
-    v15 = [(ASDAudioDeviceDSPDatabase *)v14->_dspDatabase referencedUnderlyingDeviceProperties];
-    v16 = [(ASDDSPAudioDevice *)v14 underlyingDeviceHasAllProperties:v15];
+    objc_storeStrong(&v13->_underlyingDevice, device);
+    objc_storeStrong(&v14->_dspDatabase, database);
+    referencedUnderlyingDeviceProperties = [(ASDAudioDeviceDSPDatabase *)v14->_dspDatabase referencedUnderlyingDeviceProperties];
+    v16 = [(ASDDSPAudioDevice *)v14 underlyingDeviceHasAllProperties:referencedUnderlyingDeviceProperties];
 
     if (v16)
     {
-      [v11 setConfigurationChangeDelegate:v14];
-      [v11 setPropertyChangedDelegate:v14];
+      [deviceCopy setConfigurationChangeDelegate:v14];
+      [deviceCopy setPropertyChangedDelegate:v14];
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v17 = [v11 inputStreams];
-      v18 = [v17 countByEnumeratingWithState:&v42 objects:v49 count:16];
+      inputStreams = [deviceCopy inputStreams];
+      v18 = [inputStreams countByEnumeratingWithState:&v42 objects:v49 count:16];
       if (v18)
       {
         v19 = v18;
@@ -56,13 +56,13 @@
           {
             if (*v43 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(inputStreams);
             }
 
             [*(*(&v42 + 1) + 8 * i) setPropertyChangedDelegate:v14];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v42 objects:v49 count:16];
+          v19 = [inputStreams countByEnumeratingWithState:&v42 objects:v49 count:16];
         }
 
         while (v19);
@@ -72,8 +72,8 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v22 = [v11 outputStreams];
-      v23 = [v22 countByEnumeratingWithState:&v38 objects:v48 count:16];
+      outputStreams = [deviceCopy outputStreams];
+      v23 = [outputStreams countByEnumeratingWithState:&v38 objects:v48 count:16];
       if (v23)
       {
         v24 = v23;
@@ -84,13 +84,13 @@
           {
             if (*v39 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(outputStreams);
             }
 
             [*(*(&v38 + 1) + 8 * j) setPropertyChangedDelegate:v14];
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v38 objects:v48 count:16];
+          v24 = [outputStreams countByEnumeratingWithState:&v38 objects:v48 count:16];
         }
 
         while (v24);
@@ -100,8 +100,8 @@
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v27 = [v11 controls];
-      v28 = [v27 countByEnumeratingWithState:&v34 objects:v47 count:16];
+      controls = [deviceCopy controls];
+      v28 = [controls countByEnumeratingWithState:&v34 objects:v47 count:16];
       if (v28)
       {
         v29 = v28;
@@ -112,13 +112,13 @@
           {
             if (*v35 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(controls);
             }
 
             [*(*(&v34 + 1) + 8 * k) setPropertyChangedDelegate:v14];
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v34 objects:v47 count:16];
+          v29 = [controls countByEnumeratingWithState:&v34 objects:v47 count:16];
         }
 
         while (v29);
@@ -132,7 +132,7 @@
         [ASDDSPAudioDevice initWithDeviceUID:v14 underlyingDevice:? deviceDSPDatabase:? plugin:?];
       }
 
-      v27 = v14;
+      controls = v14;
       v14 = 0;
     }
   }
@@ -141,15 +141,15 @@
   return v14;
 }
 
-- (BOOL)underlyingDeviceHasAllProperties:(id)a3
+- (BOOL)underlyingDeviceHasAllProperties:(id)properties
 {
   v73 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v72 count:16];
+  v5 = [propertiesCopy countByEnumeratingWithState:&v42 objects:v72 count:16];
   if (v5)
   {
     v7 = v5;
@@ -165,19 +165,19 @@
       {
         if (*v43 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(propertiesCopy);
         }
 
         v12 = *(*(&v42 + 1) + 8 * v11);
         v41 = 0;
-        v40 = 0;
-        v40 = [v12 audioObjectPropertyAddress];
+        audioObjectPropertyAddress = 0;
+        audioObjectPropertyAddress = [v12 audioObjectPropertyAddress];
         v41 = v13;
-        if (![(ASDAudioDevice *)self->_underlyingDevice hasProperty:&v40])
+        if (![(ASDAudioDevice *)self->_underlyingDevice hasProperty:&audioObjectPropertyAddress])
         {
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
-            v39 = [(ASDAudioDevice *)self deviceUID];
+            deviceUID = [(ASDAudioDevice *)self deviceUID];
             if ([v12 selector] < 0x20000000)
             {
               v38 = 32;
@@ -222,15 +222,15 @@
             v36 = v16;
             if ([v12 selector] < 32 || objc_msgSend(v12, "selector") == 127)
             {
-              v17 = 32;
+              selector = 32;
             }
 
             else
             {
-              v17 = [v12 selector];
+              selector = [v12 selector];
             }
 
-            v35 = v17;
+            v35 = selector;
             if ([v12 scope] < 0x20000000 || objc_msgSend(v12, "scope") > 2130706431)
             {
               v18 = 32;
@@ -266,15 +266,15 @@
             v32 = v20;
             if ([v12 scope] < 32 || objc_msgSend(v12, "scope") == 127)
             {
-              v21 = 32;
+              scope = 32;
             }
 
             else
             {
-              v21 = [v12 scope];
+              scope = [v12 scope];
             }
 
-            v31 = v21;
+            v31 = scope;
             if ([v12 element] < 0x20000000 || objc_msgSend(v12, "element") > 2130706431)
             {
               v22 = 32;
@@ -308,16 +308,16 @@
 
             if ([v12 element] < 32 || objc_msgSend(v12, "element") == 127)
             {
-              v25 = 32;
+              element = 32;
             }
 
             else
             {
-              v25 = [v12 element];
+              element = [v12 element];
             }
 
             *buf = v29;
-            v47 = v39;
+            v47 = deviceUID;
             v48 = 1024;
             v49 = v38;
             v50 = 1024;
@@ -341,7 +341,7 @@
             v68 = 1024;
             v69 = v24;
             v70 = 1024;
-            v71 = v25;
+            v71 = element;
             _os_log_error_impl(&dword_2415D8000, v10, OS_LOG_TYPE_ERROR, "Underlying device '%@' is missing property %c%c%c%c %c%c%c%c %c%c%c%c", buf, 0x54u);
 
             v9 = 0;
@@ -357,7 +357,7 @@
       }
 
       while (v7 != v11);
-      v26 = [v4 countByEnumeratingWithState:&v42 objects:v72 count:16];
+      v26 = [propertiesCopy countByEnumeratingWithState:&v42 objects:v72 count:16];
       v7 = v26;
     }
 
@@ -376,15 +376,15 @@
 - (BOOL)updateDeviceDSPConfiguration
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDDSPAudioDevice *)self currentDSPConfiguration];
-  v4 = [(ASDDSPAudioDevice *)self findDSPConfigurationForCurrentState];
-  if ([v4 isEqual:v3])
+  currentDSPConfiguration = [(ASDDSPAudioDevice *)self currentDSPConfiguration];
+  findDSPConfigurationForCurrentState = [(ASDDSPAudioDevice *)self findDSPConfigurationForCurrentState];
+  if ([findDSPConfigurationForCurrentState isEqual:currentDSPConfiguration])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(ASDAudioDevice *)self deviceUID];
+      deviceUID = [(ASDAudioDevice *)self deviceUID];
       *buf = 138412290;
-      v35 = v5;
+      v35 = deviceUID;
       _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DSP configuration remains unchanged on device '%@'", buf, 0xCu);
     }
 
@@ -393,23 +393,23 @@ LABEL_8:
     goto LABEL_32;
   }
 
-  if ([(ASDDSPAudioDevice *)self applyDeviceDSPConfiguration:v4])
+  if ([(ASDDSPAudioDevice *)self applyDeviceDSPConfiguration:findDSPConfigurationForCurrentState])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v3 name];
-      v7 = [v4 name];
-      v8 = [(ASDAudioDevice *)self deviceUID];
+      name = [currentDSPConfiguration name];
+      name2 = [findDSPConfigurationForCurrentState name];
+      deviceUID2 = [(ASDAudioDevice *)self deviceUID];
       *buf = 138412802;
-      v35 = v6;
+      v35 = name;
       v36 = 2112;
-      v37 = v7;
+      v37 = name2;
       v38 = 2112;
-      v39 = v8;
+      v39 = deviceUID2;
       _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "DSP configuration changed from '%@' to '%@' on device '%@'", buf, 0x20u);
     }
 
-    [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:v4];
+    [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:findDSPConfigurationForCurrentState];
     goto LABEL_8;
   }
 
@@ -420,8 +420,8 @@ LABEL_8:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [(ASDAudioDevice *)self inputStreams];
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    inputStreams = [(ASDAudioDevice *)self inputStreams];
+    v11 = [inputStreams countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v11)
     {
       v12 = v11;
@@ -432,7 +432,7 @@ LABEL_8:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(inputStreams);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
@@ -444,7 +444,7 @@ LABEL_8:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v12 = [inputStreams countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v12);
@@ -454,8 +454,8 @@ LABEL_8:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = [(ASDAudioDevice *)self outputStreams];
-    v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    outputStreams = [(ASDAudioDevice *)self outputStreams];
+    v17 = [outputStreams countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v17)
     {
       v18 = v17;
@@ -466,7 +466,7 @@ LABEL_8:
         {
           if (*v25 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(outputStreams);
           }
 
           v21 = *(*(&v24 + 1) + 8 * j);
@@ -478,7 +478,7 @@ LABEL_8:
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v18 = [outputStreams countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v18);
@@ -487,7 +487,7 @@ LABEL_8:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(ASDDSPAudioDevice *)v4 updateDeviceDSPConfiguration];
+    [(ASDDSPAudioDevice *)findDSPConfigurationForCurrentState updateDeviceDSPConfiguration];
   }
 
   v9 = 0;
@@ -504,10 +504,10 @@ LABEL_32:
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v3 = [(ASDDSPAudioDevice *)self dspDatabase];
-  v4 = [v3 dspConfigurations];
+  dspDatabase = [(ASDDSPAudioDevice *)self dspDatabase];
+  dspConfigurations = [dspDatabase dspConfigurations];
 
-  v30 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v30 = [dspConfigurations countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v30)
   {
     v29 = *v41;
@@ -517,7 +517,7 @@ LABEL_3:
     {
       if (*v41 != v29)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(dspConfigurations);
       }
 
       v31 = v5;
@@ -526,8 +526,8 @@ LABEL_3:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v7 = [v6 underlyingDeviceProperties];
-      v8 = [v7 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      underlyingDeviceProperties = [v6 underlyingDeviceProperties];
+      v8 = [underlyingDeviceProperties countByEnumeratingWithState:&v36 objects:v45 count:16];
       v9 = v6;
       if (v8)
       {
@@ -539,18 +539,18 @@ LABEL_3:
           {
             if (*v37 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(underlyingDeviceProperties);
             }
 
             v13 = *(*(&v36 + 1) + 8 * i);
             underlyingDevice = self->_underlyingDevice;
-            v15 = [v13 address];
-            v16 = [(ASDAudioDevice *)underlyingDevice getProperty:v15];
+            address = [v13 address];
+            v16 = [(ASDAudioDevice *)underlyingDevice getProperty:address];
 
-            v17 = [v13 value];
-            LOBYTE(v15) = [v16 isEqual:v17];
+            value = [v13 value];
+            LOBYTE(address) = [v16 isEqual:value];
 
-            if ((v15 & 1) == 0)
+            if ((address & 1) == 0)
             {
 
               v9 = 0;
@@ -558,7 +558,7 @@ LABEL_3:
             }
           }
 
-          v10 = [v7 countByEnumeratingWithState:&v36 objects:v45 count:16];
+          v10 = [underlyingDeviceProperties countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v10)
           {
             continue;
@@ -576,8 +576,8 @@ LABEL_16:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v18 = [v6 dspDeviceProperties];
-      v19 = [v18 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      dspDeviceProperties = [v6 dspDeviceProperties];
+      v19 = [dspDeviceProperties countByEnumeratingWithState:&v32 objects:v44 count:16];
       if (v19)
       {
         v20 = v19;
@@ -588,24 +588,24 @@ LABEL_16:
           {
             if (*v33 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(dspDeviceProperties);
             }
 
             v23 = *(*(&v32 + 1) + 8 * j);
-            v24 = [v23 address];
-            v25 = [(ASDAudioDevice *)self getProperty:v24];
+            address2 = [v23 address];
+            v25 = [(ASDAudioDevice *)self getProperty:address2];
 
-            v26 = [v23 value];
-            LOBYTE(v24) = [v25 isEqual:v26];
+            value2 = [v23 value];
+            LOBYTE(address2) = [v25 isEqual:value2];
 
-            if ((v24 & 1) == 0)
+            if ((address2 & 1) == 0)
             {
 
               goto LABEL_27;
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v32 objects:v44 count:16];
+          v20 = [dspDeviceProperties countByEnumeratingWithState:&v32 objects:v44 count:16];
           if (v20)
           {
             continue;
@@ -624,7 +624,7 @@ LABEL_27:
       v5 = v31 + 1;
       if (v31 + 1 == v30)
       {
-        v30 = [v4 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v30 = [dspConfigurations countByEnumeratingWithState:&v40 objects:v46 count:16];
         if (v30)
         {
           goto LABEL_3;
@@ -646,16 +646,16 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)applyDeviceDSPConfiguration:(id)a3
+- (BOOL)applyDeviceDSPConfiguration:(id)configuration
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = [(ASDAudioDevice *)self inputStreams];
-  v6 = [v5 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  inputStreams = [(ASDAudioDevice *)self inputStreams];
+  v6 = [inputStreams countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v6)
   {
     v7 = v6;
@@ -667,15 +667,15 @@ LABEL_29:
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputStreams);
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v4 inputDSP];
-          v13 = [v12 count];
+          inputDSP = [configurationCopy inputDSP];
+          v13 = [inputDSP count];
 
           if (v8 >= v13)
           {
@@ -689,11 +689,11 @@ LABEL_17:
             goto LABEL_18;
           }
 
-          v14 = [v4 inputDSP];
-          v15 = [v14 objectAtIndexedSubscript:v8];
+          inputDSP2 = [configurationCopy inputDSP];
+          v15 = [inputDSP2 objectAtIndexedSubscript:v8];
 
-          LOBYTE(v14) = [(ASDDSPAudioDevice *)self applyStreamDSPConfiguration:v15 toStream:v11];
-          if ((v14 & 1) == 0)
+          LOBYTE(inputDSP2) = [(ASDDSPAudioDevice *)self applyStreamDSPConfiguration:v15 toStream:v11];
+          if ((inputDSP2 & 1) == 0)
           {
             goto LABEL_17;
           }
@@ -701,19 +701,19 @@ LABEL_17:
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(ASDAudioDevice *)self deviceUID];
-          v17 = [v11 streamName];
+          deviceUID = [(ASDAudioDevice *)self deviceUID];
+          streamName = [v11 streamName];
           *buf = 138412546;
-          v45 = v16;
+          v45 = deviceUID;
           v46 = 2112;
-          v47 = v17;
+          v47 = streamName;
           _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: Stream '%@' isn't an ASDDSPStream, skipping.", buf, 0x16u);
         }
 
         ++v8;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v7 = [inputStreams countByEnumeratingWithState:&v39 objects:v48 count:16];
       if (v7)
       {
         continue;
@@ -730,8 +730,8 @@ LABEL_18:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = [(ASDAudioDevice *)self outputStreams];
-  v20 = [v19 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  outputStreams = [(ASDAudioDevice *)self outputStreams];
+  v20 = [outputStreams countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v20)
   {
     v21 = v20;
@@ -744,15 +744,15 @@ LABEL_18:
       {
         if (*v36 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(outputStreams);
         }
 
         v25 = *(*(&v35 + 1) + 8 * j);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = [v4 outputDSP];
-          v27 = [v26 count];
+          outputDSP = [configurationCopy outputDSP];
+          v27 = [outputDSP count];
 
           if (v22 >= v27)
           {
@@ -766,11 +766,11 @@ LABEL_34:
             goto LABEL_35;
           }
 
-          v28 = [v4 outputDSP];
-          v29 = [v28 objectAtIndexedSubscript:v22];
+          outputDSP2 = [configurationCopy outputDSP];
+          v29 = [outputDSP2 objectAtIndexedSubscript:v22];
 
-          LOBYTE(v28) = [(ASDDSPAudioDevice *)self applyStreamDSPConfiguration:v29 toStream:v25];
-          if ((v28 & 1) == 0)
+          LOBYTE(outputDSP2) = [(ASDDSPAudioDevice *)self applyStreamDSPConfiguration:v29 toStream:v25];
+          if ((outputDSP2 & 1) == 0)
           {
             goto LABEL_34;
           }
@@ -778,19 +778,19 @@ LABEL_34:
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(ASDAudioDevice *)self deviceUID];
-          v31 = [v25 streamName];
+          deviceUID2 = [(ASDAudioDevice *)self deviceUID];
+          streamName2 = [v25 streamName];
           *buf = 138412546;
-          v45 = v30;
+          v45 = deviceUID2;
           v46 = 2112;
-          v47 = v31;
+          v47 = streamName2;
           _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: Stream '%@' isn't an ASDDSPStream, skipping.", buf, 0x16u);
         }
 
         ++v22;
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v21 = [outputStreams countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v21)
       {
         continue;
@@ -808,19 +808,19 @@ LABEL_35:
   return v18;
 }
 
-- (BOOL)applyStreamDSPConfiguration:(id)a3 toStream:(id)a4
+- (BOOL)applyStreamDSPConfiguration:(id)configuration toStream:(id)stream
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  streamCopy = stream;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v6 hardwareDSP];
-    v10 = [v8 currentDSPConfiguration];
-    v11 = [v10 hardwareDSP];
-    v12 = [ASDDSPAudioDevice dspItemsInConfiguration:v9 notInConfiguration:v11];
+    v8 = streamCopy;
+    hardwareDSP = [configurationCopy hardwareDSP];
+    currentDSPConfiguration = [v8 currentDSPConfiguration];
+    hardwareDSP2 = [currentDSPConfiguration hardwareDSP];
+    v12 = [ASDDSPAudioDevice dspItemsInConfiguration:hardwareDSP notInConfiguration:hardwareDSP2];
 
     if ([ASDAUStripInfo containsOnlyAUStrips:v12])
     {
@@ -833,8 +833,8 @@ LABEL_35:
       if (v14)
       {
         v15 = v14;
-        v30 = self;
-        v31 = v6;
+        selfCopy = self;
+        v31 = configurationCopy;
         v16 = *v33;
         do
         {
@@ -846,16 +846,16 @@ LABEL_35:
             }
 
             v18 = *(*(&v32 + 1) + 8 * i);
-            v19 = [v8 hardwareDSP];
-            v20 = [ASDDSPGraphLoader applyAUStrip:v18 toGraph:v19];
+            hardwareDSP3 = [v8 hardwareDSP];
+            v20 = [ASDDSPGraphLoader applyAUStrip:v18 toGraph:hardwareDSP3];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
         }
 
         while (v15);
-        self = v30;
-        v6 = v31;
+        self = selfCopy;
+        configurationCopy = v31;
       }
 
       else
@@ -865,16 +865,16 @@ LABEL_35:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(ASDAudioDevice *)self deviceUID];
+        deviceUID = [(ASDAudioDevice *)self deviceUID];
         *buf = 138412290;
-        v37 = v27;
+        v37 = deviceUID;
         _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%@: New StreamDSPConfiguration contained only AUStrip differences", buf, 0xCu);
       }
 
       if (v20)
       {
 LABEL_22:
-        [v8 setCurrentDSPConfiguration:v6];
+        [v8 setCurrentDSPConfiguration:configurationCopy];
         v21 = 1;
 LABEL_28:
 
@@ -884,19 +884,19 @@ LABEL_28:
 
     else
     {
-      v22 = [v6 hardwareDSP];
-      v23 = [ASDDSPGraphLoader graphWithConfiguration:v22];
+      hardwareDSP4 = [configurationCopy hardwareDSP];
+      v23 = [ASDDSPGraphLoader graphWithConfiguration:hardwareDSP4];
 
       if (v23)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v23 name];
-          v25 = [(ASDAudioDevice *)self deviceUID];
+          name = [v23 name];
+          deviceUID2 = [(ASDAudioDevice *)self deviceUID];
           *buf = 138412546;
-          v37 = v24;
+          v37 = name;
           v38 = 2112;
-          v39 = v25;
+          v39 = deviceUID2;
           _os_log_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "New DSPGraph '%@' created on device '%@'", buf, 0x16u);
         }
 
@@ -937,18 +937,18 @@ LABEL_29:
   return v21;
 }
 
-+ (id)dspItemsInConfiguration:(id)a3 notInConfiguration:(id)a4
++ (id)dspItemsInConfiguration:(id)configuration notInConfiguration:(id)inConfiguration
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v22 = [MEMORY[0x277CBEB18] array];
+  configurationCopy = configuration;
+  inConfigurationCopy = inConfiguration;
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v20 = v5;
-  obj = [v5 dspItems];
+  v20 = configurationCopy;
+  obj = [configurationCopy dspItems];
   v7 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -968,13 +968,13 @@ LABEL_29:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v12 = [v6 dspItems];
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        dspItems = [inConfigurationCopy dspItems];
+        v13 = [dspItems countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (!v13)
         {
 
 LABEL_16:
-          [v22 addObject:v11];
+          [array addObject:v11];
           continue;
         }
 
@@ -987,13 +987,13 @@ LABEL_16:
           {
             if (*v24 != v16)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(dspItems);
             }
 
             v15 |= [v11 isEqual:*(*(&v23 + 1) + 8 * j)];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v14 = [dspItems countByEnumeratingWithState:&v23 objects:v31 count:16];
         }
 
         while (v14);
@@ -1012,13 +1012,13 @@ LABEL_16:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array;
 }
 
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1026,8 +1026,8 @@ LABEL_16:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 underlyingStreams];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    underlyingStreams = [streamCopy underlyingStreams];
+    v8 = [underlyingStreams countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1039,17 +1039,17 @@ LABEL_16:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(underlyingStreams);
           }
 
-          v13 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:*(*(&v16 + 1) + 8 * i) useCase:a4];
+          v13 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:*(*(&v16 + 1) + 8 * i) useCase:case];
           if (v13)
           {
             v10 = v13;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [underlyingStreams countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -1063,57 +1063,57 @@ LABEL_16:
 
   else
   {
-    v10 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:v6 useCase:a4];
+    v10 = [(ASDAudioDevice *)self->_underlyingDevice teardownIsolatedIOForStream:streamCopy useCase:case];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)addInputStream:(id)a3
+- (void)addInputStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:0];
   v5.receiver = self;
   v5.super_class = ASDDSPAudioDevice;
-  [(ASDAudioDevice *)&v5 addInputStream:v4];
+  [(ASDAudioDevice *)&v5 addInputStream:streamCopy];
 }
 
-- (void)removeInputStream:(id)a3
+- (void)removeInputStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:0];
   v5.receiver = self;
   v5.super_class = ASDDSPAudioDevice;
-  [(ASDAudioDevice *)&v5 removeInputStream:v4];
+  [(ASDAudioDevice *)&v5 removeInputStream:streamCopy];
 }
 
-- (void)addOutputStream:(id)a3
+- (void)addOutputStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:0];
   v5.receiver = self;
   v5.super_class = ASDDSPAudioDevice;
-  [(ASDAudioDevice *)&v5 addOutputStream:v4];
+  [(ASDAudioDevice *)&v5 addOutputStream:streamCopy];
 }
 
-- (void)removeOutputStream:(id)a3
+- (void)removeOutputStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   [(ASDDSPAudioDevice *)self setCurrentDSPConfiguration:0];
   v5.receiver = self;
   v5.super_class = ASDDSPAudioDevice;
-  [(ASDAudioDevice *)&v5 removeOutputStream:v4];
+  [(ASDAudioDevice *)&v5 removeOutputStream:streamCopy];
 }
 
 - (id)willDoReadInputBlock
 {
-  v2 = [(ASDAudioDevice *)self hasInput];
+  hasInput = [(ASDAudioDevice *)self hasInput];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__ASDDSPAudioDevice_willDoReadInputBlock__block_invoke;
   v5[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v6 = v2;
+  v6 = hasInput;
   v3 = MEMORY[0x245CEBEA0](v5);
 
   return v3;
@@ -1128,12 +1128,12 @@ uint64_t __41__ASDDSPAudioDevice_willDoReadInputBlock__block_invoke(uint64_t a1,
 
 - (id)willDoWriteMixBlock
 {
-  v2 = [(ASDAudioDevice *)self hasOutput];
+  hasOutput = [(ASDAudioDevice *)self hasOutput];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ASDDSPAudioDevice_willDoWriteMixBlock__block_invoke;
   v5[3] = &__block_descriptor_33_e14_i28__0I8_12_20l;
-  v6 = v2;
+  v6 = hasOutput;
   v3 = MEMORY[0x245CEBEA0](v5);
 
   return v3;
@@ -1146,18 +1146,18 @@ uint64_t __40__ASDDSPAudioDevice_willDoWriteMixBlock__block_invoke(uint64_t a1, 
   return 0;
 }
 
-- (BOOL)requestConfigurationChangeForDevice:(id)a3 withBlock:(id)a4
+- (BOOL)requestConfigurationChangeForDevice:(id)device withBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(ASDObject *)self plugin];
+  blockCopy = block;
+  plugin = [(ASDObject *)self plugin];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__ASDDSPAudioDevice_requestConfigurationChangeForDevice_withBlock___block_invoke;
   v9[3] = &unk_278CE42D0;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
-  LOBYTE(self) = [v6 requestConfigurationChangeForDevice:self withBlock:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  LOBYTE(self) = [plugin requestConfigurationChangeForDevice:self withBlock:v9];
 
   return self;
 }
@@ -1170,10 +1170,10 @@ uint64_t __67__ASDDSPAudioDevice_requestConfigurationChangeForDevice_withBlock__
   return [v2 updateDeviceDSPConfiguration];
 }
 
-- (void)changedProperty:(const AudioObjectPropertyAddress *)a3 forObject:(id)a4
+- (void)changedProperty:(const AudioObjectPropertyAddress *)property forObject:(id)object
 {
-  v6 = [(ASDObject *)self plugin:a3];
-  [v6 changedProperty:a3 forObject:self];
+  v6 = [(ASDObject *)self plugin:property];
+  [v6 changedProperty:property forObject:self];
 }
 
 - (void)initWithDeviceUID:(void *)a1 underlyingDevice:deviceDSPDatabase:plugin:.cold.1(void *a1)
@@ -1189,12 +1189,12 @@ uint64_t __67__ASDDSPAudioDevice_requestConfigurationChangeForDevice_withBlock__
 - (void)updateDeviceDSPConfiguration
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [a1 name];
-  v4 = [a2 deviceUID];
+  name = [self name];
+  deviceUID = [a2 deviceUID];
   v6 = 138412546;
-  v7 = v3;
+  v7 = name;
   v8 = 2112;
-  v9 = v4;
+  v9 = deviceUID;
   _os_log_error_impl(&dword_2415D8000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "DSP configuration '%@' couldn't be applied on device '%@'", &v6, 0x16u);
 
   v5 = *MEMORY[0x277D85DE8];

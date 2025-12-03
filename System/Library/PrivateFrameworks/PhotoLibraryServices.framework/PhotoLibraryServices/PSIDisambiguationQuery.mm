@@ -1,43 +1,43 @@
 @interface PSIDisambiguationQuery
-+ (BOOL)_disambiguationQueryTextIsExactMatchOfGroup:(id)a3 disambiguation:(id)a4 normalizedQueryText:(id)a5;
-+ (BOOL)_disambiguationQueryTextIsSubstringMatchOfGroup:(id)a3 disambiguation:(id)a4 normalizedQueryText:(id)a5;
-+ (id)_consolidateDisambiguationIntermediateResults:(id)a3;
-+ (id)_disambiguationResultForDisambiguation:(id)a3 sortedResults:(id)a4;
-+ (id)_fetchGroupsWithFTS5FormattedString:(id)a3 indexingCategories:(id)a4 delegate:(id)a5;
-+ (id)_sortedResultsForDisambiguation:(id)a3 exactMatchResults:(id)a4 fullTokenMatchResults:(id)a5 wildcardMatchResults:(id)a6;
-+ (id)_sortedResultsForDisambiguationType:(unint64_t)a3 maxNumberOfResults:(unint64_t)a4 exactMatchResults:(id)a5 fullTokenMatchResults:(id)a6 wildcardMatchResults:(id)a7;
++ (BOOL)_disambiguationQueryTextIsExactMatchOfGroup:(id)group disambiguation:(id)disambiguation normalizedQueryText:(id)text;
++ (BOOL)_disambiguationQueryTextIsSubstringMatchOfGroup:(id)group disambiguation:(id)disambiguation normalizedQueryText:(id)text;
++ (id)_consolidateDisambiguationIntermediateResults:(id)results;
++ (id)_disambiguationResultForDisambiguation:(id)disambiguation sortedResults:(id)results;
++ (id)_fetchGroupsWithFTS5FormattedString:(id)string indexingCategories:(id)categories delegate:(id)delegate;
++ (id)_sortedResultsForDisambiguation:(id)disambiguation exactMatchResults:(id)results fullTokenMatchResults:(id)matchResults wildcardMatchResults:(id)wildcardMatchResults;
++ (id)_sortedResultsForDisambiguationType:(unint64_t)type maxNumberOfResults:(unint64_t)results exactMatchResults:(id)matchResults fullTokenMatchResults:(id)tokenMatchResults wildcardMatchResults:(id)wildcardMatchResults;
 - (BOOL)cancelled;
-- (PSIDisambiguationQuery)initWithDisambiguation:(id)a3 photoLibrary:(id)a4 photosEntityStore:(id)a5;
-- (PSIDisambiguationQuery)initWithDisambiguations:(id)a3 photosEntityStore:(id)a4;
-- (id)_disambiguationIntermediateResultWithDisambiguation:(id)a3 delegate:(id)a4;
-- (id)_disambiguationResultWithDisambiguation:(id)a3 delegate:(id)a4;
-- (id)_groupsForMatchType:(unint64_t)a3 fromGroups:(id)a4 disambiguation:(id)a5 normalizedQueryText:(id)a6;
+- (PSIDisambiguationQuery)initWithDisambiguation:(id)disambiguation photoLibrary:(id)library photosEntityStore:(id)store;
+- (PSIDisambiguationQuery)initWithDisambiguations:(id)disambiguations photosEntityStore:(id)store;
+- (id)_disambiguationIntermediateResultWithDisambiguation:(id)disambiguation delegate:(id)delegate;
+- (id)_disambiguationResultWithDisambiguation:(id)disambiguation delegate:(id)delegate;
+- (id)_groupsForMatchType:(unint64_t)type fromGroups:(id)groups disambiguation:(id)disambiguation normalizedQueryText:(id)text;
 - (id)performDisambiguationQuery;
-- (void)setCancelled:(BOOL)a3;
+- (void)setCancelled:(BOOL)cancelled;
 @end
 
 @implementation PSIDisambiguationQuery
 
-- (id)_groupsForMatchType:(unint64_t)a3 fromGroups:(id)a4 disambiguation:(id)a5 normalizedQueryText:(id)a6
+- (id)_groupsForMatchType:(unint64_t)type fromGroups:(id)groups disambiguation:(id)disambiguation normalizedQueryText:(id)text
 {
-  v10 = a5;
-  v11 = a6;
+  disambiguationCopy = disambiguation;
+  textCopy = text;
   v12 = MEMORY[0x1E695DF70];
-  v13 = a4;
+  groupsCopy = groups;
   v14 = objc_alloc_init(v12);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __92__PSIDisambiguationQuery__groupsForMatchType_fromGroups_disambiguation_normalizedQueryText___block_invoke;
   v21[3] = &unk_1E7574A60;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v25 = a3;
+  v22 = disambiguationCopy;
+  v23 = textCopy;
+  typeCopy = type;
   v15 = v14;
   v24 = v15;
-  v16 = v11;
-  v17 = v10;
-  [v13 enumerateObjectsUsingBlock:v21];
+  v16 = textCopy;
+  v17 = disambiguationCopy;
+  [groupsCopy enumerateObjectsUsingBlock:v21];
 
   v18 = v24;
   v19 = v15;
@@ -111,51 +111,51 @@ LABEL_19:
 
 - (BOOL)cancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cancelled = v2->_cancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cancelled = selfCopy->_cancelled;
+  objc_sync_exit(selfCopy);
 
   return cancelled;
 }
 
-- (void)setCancelled:(BOOL)a3
+- (void)setCancelled:(BOOL)cancelled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cancelled = a3;
+  obj->_cancelled = cancelled;
   objc_sync_exit(obj);
 }
 
-- (id)_disambiguationResultWithDisambiguation:(id)a3 delegate:(id)a4
+- (id)_disambiguationResultWithDisambiguation:(id)disambiguation delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = [(PSIDisambiguationQuery *)self _disambiguationIntermediateResultWithDisambiguation:v6 delegate:a4];
-  v8 = [v7 exactMatchResults];
-  v9 = [v7 fullTokenMatchResults];
-  v10 = [v7 wildcardMatchResults];
-  v11 = [objc_opt_class() _sortedResultsForDisambiguation:v6 exactMatchResults:v8 fullTokenMatchResults:v9 wildcardMatchResults:v10];
-  v12 = [objc_opt_class() _disambiguationResultForDisambiguation:v6 sortedResults:v11];
+  disambiguationCopy = disambiguation;
+  v7 = [(PSIDisambiguationQuery *)self _disambiguationIntermediateResultWithDisambiguation:disambiguationCopy delegate:delegate];
+  exactMatchResults = [v7 exactMatchResults];
+  fullTokenMatchResults = [v7 fullTokenMatchResults];
+  wildcardMatchResults = [v7 wildcardMatchResults];
+  v11 = [objc_opt_class() _sortedResultsForDisambiguation:disambiguationCopy exactMatchResults:exactMatchResults fullTokenMatchResults:fullTokenMatchResults wildcardMatchResults:wildcardMatchResults];
+  v12 = [objc_opt_class() _disambiguationResultForDisambiguation:disambiguationCopy sortedResults:v11];
 
   return v12;
 }
 
-- (id)_disambiguationIntermediateResultWithDisambiguation:(id)a3 delegate:(id)a4
+- (id)_disambiguationIntermediateResultWithDisambiguation:(id)disambiguation delegate:(id)delegate
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSIDisambiguationIntermediateResult *)v6 matchOptions];
-  v9 = [v7 tokenizer];
-  v10 = [(PSIDisambiguationIntermediateResult *)v6 queryTerm];
-  v11 = [v9 normalizeString:v10];
+  disambiguationCopy = disambiguation;
+  delegateCopy = delegate;
+  matchOptions = [(PSIDisambiguationIntermediateResult *)disambiguationCopy matchOptions];
+  tokenizer = [delegateCopy tokenizer];
+  queryTerm = [(PSIDisambiguationIntermediateResult *)disambiguationCopy queryTerm];
+  v11 = [tokenizer normalizeString:queryTerm];
 
-  if (v8)
+  if (matchOptions)
   {
-    v13 = [PSITokenizer fts5StringFromString:v11 useWildcard:1 leadingAnchored:(v8 >> 3) & 1 orderInsensitive:0];
+    v13 = [PSITokenizer fts5StringFromString:v11 useWildcard:1 leadingAnchored:(matchOptions >> 3) & 1 orderInsensitive:0];
     v14 = objc_opt_class();
-    v15 = [(PSIDisambiguationIntermediateResult *)v6 indexingCategories];
-    v12 = [v14 _fetchGroupsWithFTS5FormattedString:v13 indexingCategories:v15 delegate:v7];
+    indexingCategories = [(PSIDisambiguationIntermediateResult *)disambiguationCopy indexingCategories];
+    v12 = [v14 _fetchGroupsWithFTS5FormattedString:v13 indexingCategories:indexingCategories delegate:delegateCopy];
   }
 
   else
@@ -168,11 +168,11 @@ LABEL_19:
     v16 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(PSIDisambiguationIntermediateResult *)v6 queryTerm];
+      queryTerm2 = [(PSIDisambiguationIntermediateResult *)disambiguationCopy queryTerm];
       *buf = 138412546;
-      v31 = v17;
+      v31 = queryTerm2;
       v32 = 2112;
-      v33 = v6;
+      v33 = disambiguationCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Disambiguation query cancelled for query term: %@ with result: %@", buf, 0x16u);
     }
 
@@ -181,12 +181,12 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if ((v8 & 6) != 0)
+  if ((matchOptions & 6) != 0)
   {
-    v20 = [PSITokenizer fts5StringFromString:v11 useWildcard:0 leadingAnchored:(v8 >> 3) & 1 orderInsensitive:0];
+    v20 = [PSITokenizer fts5StringFromString:v11 useWildcard:0 leadingAnchored:(matchOptions >> 3) & 1 orderInsensitive:0];
     v21 = objc_opt_class();
-    v22 = [(PSIDisambiguationIntermediateResult *)v6 indexingCategories];
-    v19 = [v21 _fetchGroupsWithFTS5FormattedString:v20 indexingCategories:v22 delegate:v7];
+    indexingCategories2 = [(PSIDisambiguationIntermediateResult *)disambiguationCopy indexingCategories];
+    v19 = [v21 _fetchGroupsWithFTS5FormattedString:v20 indexingCategories:indexingCategories2 delegate:delegateCopy];
   }
 
   else
@@ -199,11 +199,11 @@ LABEL_19:
     v16 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(PSIDisambiguationIntermediateResult *)v6 queryTerm];
+      queryTerm3 = [(PSIDisambiguationIntermediateResult *)disambiguationCopy queryTerm];
       *buf = 138412546;
-      v31 = v23;
+      v31 = queryTerm3;
       v32 = 2112;
-      v33 = v6;
+      v33 = disambiguationCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Disambiguation query cancelled for query term: %@ with result: %@", buf, 0x16u);
     }
 
@@ -211,17 +211,17 @@ LABEL_19:
     goto LABEL_25;
   }
 
-  if ((v8 & 4) == 0)
+  if ((matchOptions & 4) == 0)
   {
     v16 = MEMORY[0x1E695E0F0];
-    if ((v8 & 2) != 0)
+    if ((matchOptions & 2) != 0)
     {
       goto LABEL_17;
     }
 
 LABEL_20:
     v24 = MEMORY[0x1E695E0F0];
-    if (v8)
+    if (matchOptions)
     {
       goto LABEL_18;
     }
@@ -231,27 +231,27 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v16 = [(PSIDisambiguationQuery *)self _groupsForMatchType:2 fromGroups:v19 disambiguation:v6 normalizedQueryText:v11];
-  if ((v8 & 2) == 0)
+  v16 = [(PSIDisambiguationQuery *)self _groupsForMatchType:2 fromGroups:v19 disambiguation:disambiguationCopy normalizedQueryText:v11];
+  if ((matchOptions & 2) == 0)
   {
     goto LABEL_20;
   }
 
 LABEL_17:
-  v24 = [(PSIDisambiguationQuery *)self _groupsForMatchType:1 fromGroups:v19 disambiguation:v6 normalizedQueryText:v11];
-  if ((v8 & 1) == 0)
+  v24 = [(PSIDisambiguationQuery *)self _groupsForMatchType:1 fromGroups:v19 disambiguation:disambiguationCopy normalizedQueryText:v11];
+  if ((matchOptions & 1) == 0)
   {
     goto LABEL_21;
   }
 
 LABEL_18:
-  v25 = [(PSIDisambiguationQuery *)self _groupsForMatchType:0 fromGroups:v12 disambiguation:v6 normalizedQueryText:v11];
+  v25 = [(PSIDisambiguationQuery *)self _groupsForMatchType:0 fromGroups:v12 disambiguation:disambiguationCopy normalizedQueryText:v11];
 LABEL_22:
-  v18 = [[PSIDisambiguationIntermediateResult alloc] initWithDisambiguation:v6 exactMatchResults:v16 fullTokenMatchResults:v24 wildcardMatchResults:v25];
+  v18 = [[PSIDisambiguationIntermediateResult alloc] initWithDisambiguation:disambiguationCopy exactMatchResults:v16 fullTokenMatchResults:v24 wildcardMatchResults:v25];
   v26 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    [(PSIDisambiguationIntermediateResult *)v6 queryTerm];
+    [(PSIDisambiguationIntermediateResult *)disambiguationCopy queryTerm];
     v27 = v29 = v12;
     *buf = 138412546;
     v31 = v27;
@@ -285,10 +285,10 @@ LABEL_25:
 
   v32 = v6;
 
-  v7 = [(PSIDisambiguationQuery *)self disambiguations];
-  if ([v7 count])
+  disambiguations = [(PSIDisambiguationQuery *)self disambiguations];
+  if ([disambiguations count])
   {
-    v8 = [(PSIDisambiguationQuery *)self photosEntityStore];
+    photosEntityStore = [(PSIDisambiguationQuery *)self photosEntityStore];
     if ([(PSIDisambiguationQuery *)self cancelled])
     {
       v9 = PLSearchBackendQueryGetLog();
@@ -302,7 +302,7 @@ LABEL_36:
       }
 
       *buf = 138412290;
-      v44 = v7;
+      v44 = disambiguations;
       v10 = "Disambiguation query cancelled for %@";
       v11 = v9;
       v12 = OS_LOG_TYPE_DEFAULT;
@@ -310,14 +310,14 @@ LABEL_36:
 
     else
     {
-      v14 = [v7 firstObject];
-      v15 = [v14 disambiguationType];
+      firstObject = [disambiguations firstObject];
+      disambiguationType = [firstObject disambiguationType];
 
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v16 = v7;
+      v16 = disambiguations;
       v17 = [v16 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (!v17)
       {
@@ -344,7 +344,7 @@ LABEL_19:
 
               v24 = *(*(&v33 + 1) + 8 * i);
               v25 = objc_autoreleasePoolPush();
-              v26 = [(PSIDisambiguationQuery *)self _disambiguationIntermediateResultWithDisambiguation:v24 delegate:v8];
+              v26 = [(PSIDisambiguationQuery *)self _disambiguationIntermediateResultWithDisambiguation:v24 delegate:photosEntityStore];
               if (v26)
               {
                 [v9 addObject:v26];
@@ -381,7 +381,7 @@ LABEL_13:
           objc_enumerationMutation(v16);
         }
 
-        if (v15 != [*(*(&v37 + 1) + 8 * v19) disambiguationType])
+        if (disambiguationType != [*(*(&v37 + 1) + 8 * v19) disambiguationType])
         {
           break;
         }
@@ -415,11 +415,11 @@ LABEL_13:
     goto LABEL_35;
   }
 
-  v8 = PLSearchBackendQueryGetLog();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  photosEntityStore = PLSearchBackendQueryGetLog();
+  if (os_log_type_enabled(photosEntityStore, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "There is no disambiguations", buf, 2u);
+    _os_log_impl(&dword_19BF1F000, photosEntityStore, OS_LOG_TYPE_DEFAULT, "There is no disambiguations", buf, 2u);
   }
 
   v13 = 0;
@@ -428,15 +428,15 @@ LABEL_37:
   return v13;
 }
 
-- (PSIDisambiguationQuery)initWithDisambiguations:(id)a3 photosEntityStore:(id)a4
+- (PSIDisambiguationQuery)initWithDisambiguations:(id)disambiguations photosEntityStore:(id)store
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  disambiguationsCopy = disambiguations;
+  storeCopy = store;
+  v10 = storeCopy;
+  if (disambiguationsCopy)
   {
-    if (v9)
+    if (storeCopy)
     {
 LABEL_3:
       v17.receiver = self;
@@ -445,20 +445,20 @@ LABEL_3:
       p_isa = &v11->super.isa;
       if (v11)
       {
-        objc_storeStrong(&v11->_disambiguations, a3);
-        objc_storeStrong(p_isa + 2, a4);
+        objc_storeStrong(&v11->_disambiguations, disambiguations);
+        objc_storeStrong(p_isa + 2, store);
       }
 
       self = p_isa;
-      v13 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PSIDisambiguationQuery.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"disambiguations"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDisambiguationQuery.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"disambiguations"}];
 
     if (v10)
     {
@@ -470,26 +470,26 @@ LABEL_3:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = disambiguationsCopy;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Unexpected nil photos entity store, aborting initialization of disambiguation queries: %@", buf, 0xCu);
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v13;
+  return selfCopy;
 }
 
-- (PSIDisambiguationQuery)initWithDisambiguation:(id)a3 photoLibrary:(id)a4 photosEntityStore:(id)a5
+- (PSIDisambiguationQuery)initWithDisambiguation:(id)disambiguation photoLibrary:(id)library photosEntityStore:(id)store
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  disambiguationCopy = disambiguation;
+  libraryCopy = library;
+  storeCopy = store;
+  v12 = storeCopy;
+  if (disambiguationCopy)
   {
-    if (v11)
+    if (storeCopy)
     {
 LABEL_3:
       v20.receiver = self;
@@ -497,25 +497,25 @@ LABEL_3:
       v13 = [(PSIDisambiguationQuery *)&v20 init];
       if (v13)
       {
-        v21 = v9;
+        v21 = disambiguationCopy;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
         disambiguations = v13->_disambiguations;
         v13->_disambiguations = v14;
 
-        objc_storeStrong(&v13->_photosEntityStore, a5);
-        objc_storeStrong(&v13->_photoLibrary, a4);
+        objc_storeStrong(&v13->_photosEntityStore, store);
+        objc_storeStrong(&v13->_photoLibrary, library);
       }
 
       self = v13;
-      v16 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
   }
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PSIDisambiguationQuery.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"disambiguation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PSIDisambiguationQuery.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"disambiguation"}];
 
     if (v12)
     {
@@ -527,30 +527,30 @@ LABEL_3:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v23 = v9;
+    v23 = disambiguationCopy;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Unexpected nil photos entity store, aborting initialization of disambiguation query: %@", buf, 0xCu);
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)_consolidateDisambiguationIntermediateResults:(id)a3
++ (id)_consolidateDisambiguationIntermediateResults:(id)results
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  resultsCopy = results;
+  if ([resultsCopy count])
   {
-    v30 = a1;
-    v5 = [v4 firstObject];
-    v6 = [v5 disambiguation];
+    selfCopy = self;
+    firstObject = [resultsCopy firstObject];
+    disambiguation = [firstObject disambiguation];
 
-    v29 = [v6 disambiguationType];
-    v28 = [v6 maxNumberOfResults];
-    v31 = v6;
-    v27 = [v6 matchOptions];
+    disambiguationType = [disambiguation disambiguationType];
+    maxNumberOfResults = [disambiguation maxNumberOfResults];
+    v31 = disambiguation;
+    matchOptions = [disambiguation matchOptions];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -559,8 +559,8 @@ LABEL_10:
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v32 = v4;
-    obj = v4;
+    v32 = resultsCopy;
+    obj = resultsCopy;
     v11 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v11)
     {
@@ -576,18 +576,18 @@ LABEL_10:
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 disambiguation];
-          v17 = [v16 queryTerm];
-          [v7 addObject:v17];
+          disambiguation2 = [v15 disambiguation];
+          queryTerm = [disambiguation2 queryTerm];
+          [v7 addObject:queryTerm];
 
-          v18 = [v15 exactMatchResults];
-          [v8 addObjectsFromArray:v18];
+          exactMatchResults = [v15 exactMatchResults];
+          [v8 addObjectsFromArray:exactMatchResults];
 
-          v19 = [v15 fullTokenMatchResults];
-          [v9 addObjectsFromArray:v19];
+          fullTokenMatchResults = [v15 fullTokenMatchResults];
+          [v9 addObjectsFromArray:fullTokenMatchResults];
 
-          v20 = [v15 wildcardMatchResults];
-          [v10 addObjectsFromArray:v20];
+          wildcardMatchResults = [v15 wildcardMatchResults];
+          [v10 addObjectsFromArray:wildcardMatchResults];
         }
 
         v12 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -598,12 +598,12 @@ LABEL_10:
 
     v21 = [PLDisambiguation alloc];
     v22 = [v7 componentsJoinedByString:{@", "}];
-    v23 = [(PLDisambiguation *)v21 initWithQueryTerm:v22 disambiguationType:v29 indexingCategories:0 maxNumberOfResults:v28 matchOptions:v27];
+    v23 = [(PLDisambiguation *)v21 initWithQueryTerm:v22 disambiguationType:disambiguationType indexingCategories:0 maxNumberOfResults:maxNumberOfResults matchOptions:matchOptions];
 
-    v24 = [v30 _sortedResultsForDisambiguationType:v29 maxNumberOfResults:v28 exactMatchResults:v8 fullTokenMatchResults:v9 wildcardMatchResults:v10];
-    v25 = [v30 _disambiguationResultForDisambiguation:v23 sortedResults:v24];
+    v24 = [selfCopy _sortedResultsForDisambiguationType:disambiguationType maxNumberOfResults:maxNumberOfResults exactMatchResults:v8 fullTokenMatchResults:v9 wildcardMatchResults:v10];
+    v25 = [selfCopy _disambiguationResultForDisambiguation:v23 sortedResults:v24];
 
-    v4 = v32;
+    resultsCopy = v32;
   }
 
   else
@@ -614,15 +614,15 @@ LABEL_10:
   return v25;
 }
 
-+ (id)_sortedResultsForDisambiguationType:(unint64_t)a3 maxNumberOfResults:(unint64_t)a4 exactMatchResults:(id)a5 fullTokenMatchResults:(id)a6 wildcardMatchResults:(id)a7
++ (id)_sortedResultsForDisambiguationType:(unint64_t)type maxNumberOfResults:(unint64_t)results exactMatchResults:(id)matchResults fullTokenMatchResults:(id)tokenMatchResults wildcardMatchResults:(id)wildcardMatchResults
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  matchResultsCopy = matchResults;
+  tokenMatchResultsCopy = tokenMatchResults;
+  wildcardMatchResultsCopy = wildcardMatchResults;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v50 = v11;
-  v15 = [v11 mutableCopy];
+  v50 = matchResultsCopy;
+  v15 = [matchResultsCopy mutableCopy];
   v16 = v15;
   if (v15)
   {
@@ -636,7 +636,7 @@ LABEL_10:
 
   v52 = v17;
 
-  v18 = [v12 mutableCopy];
+  v18 = [tokenMatchResultsCopy mutableCopy];
   v19 = v18;
   if (v18)
   {
@@ -650,10 +650,10 @@ LABEL_10:
 
   v51 = v20;
 
-  v21 = [v13 mutableCopy];
+  v21 = [wildcardMatchResultsCopy mutableCopy];
   v22 = v21;
-  v48 = v13;
-  v49 = v12;
+  v48 = wildcardMatchResultsCopy;
+  v49 = tokenMatchResultsCopy;
   if (v21)
   {
     v23 = v21;
@@ -685,19 +685,19 @@ LABEL_10:
   v47 = v24;
   [v25 addObjectsFromArray:v24];
   v30 = [v25 count];
-  if (v30 >= a4)
+  if (v30 >= results)
   {
-    v31 = a4;
+    resultsCopy = results;
   }
 
   else
   {
-    v31 = v30;
+    resultsCopy = v30;
   }
 
-  if (a4)
+  if (results)
   {
-    v32 = v31;
+    v32 = resultsCopy;
   }
 
   else
@@ -712,17 +712,17 @@ LABEL_10:
     {
       v34 = [v25 objectAtIndexedSubscript:v33];
       v35 = v34;
-      if (a3 != 1)
+      if (type != 1)
       {
         break;
       }
 
-      v43 = [v34 normalizedString];
-      v44 = [v14 containsObject:v43];
+      normalizedString = [v34 normalizedString];
+      v44 = [v14 containsObject:normalizedString];
 
       if ((v44 & 1) == 0)
       {
-        v38 = [v35 normalizedString];
+        normalizedString2 = [v35 normalizedString];
         goto LABEL_27;
       }
 
@@ -734,12 +734,12 @@ LABEL_30:
       }
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v39 = [PLGenericLocationTuple alloc];
-      v40 = [v35 normalizedString];
-      v41 = [v35 lookupIdentifier];
-      v42 = -[PLGenericLocationTuple initWithText:lookupIdentifier:indexCategory:](v39, "initWithText:lookupIdentifier:indexCategory:", v40, v41, [v35 category]);
+      normalizedString3 = [v35 normalizedString];
+      lookupIdentifier = [v35 lookupIdentifier];
+      v42 = -[PLGenericLocationTuple initWithText:lookupIdentifier:indexCategory:](v39, "initWithText:lookupIdentifier:indexCategory:", normalizedString3, lookupIdentifier, [v35 category]);
 
       if ([v14 containsObject:v42])
       {
@@ -749,22 +749,22 @@ LABEL_30:
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_30;
       }
 
-      v36 = [v34 lookupIdentifier];
-      v37 = [v14 containsObject:v36];
+      lookupIdentifier2 = [v34 lookupIdentifier];
+      v37 = [v14 containsObject:lookupIdentifier2];
 
       if (v37)
       {
         goto LABEL_30;
       }
 
-      v38 = [v35 lookupIdentifier];
+      normalizedString2 = [v35 lookupIdentifier];
 LABEL_27:
-      v42 = v38;
+      v42 = normalizedString2;
     }
 
     [v14 addObject:v42];
@@ -779,46 +779,46 @@ LABEL_31:
   return v45;
 }
 
-+ (id)_sortedResultsForDisambiguation:(id)a3 exactMatchResults:(id)a4 fullTokenMatchResults:(id)a5 wildcardMatchResults:(id)a6
++ (id)_sortedResultsForDisambiguation:(id)disambiguation exactMatchResults:(id)results fullTokenMatchResults:(id)matchResults wildcardMatchResults:(id)wildcardMatchResults
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 disambiguationType];
-  v15 = [v13 maxNumberOfResults];
+  wildcardMatchResultsCopy = wildcardMatchResults;
+  matchResultsCopy = matchResults;
+  resultsCopy = results;
+  disambiguationCopy = disambiguation;
+  disambiguationType = [disambiguationCopy disambiguationType];
+  maxNumberOfResults = [disambiguationCopy maxNumberOfResults];
 
-  v16 = [a1 _sortedResultsForDisambiguationType:v14 maxNumberOfResults:v15 exactMatchResults:v12 fullTokenMatchResults:v11 wildcardMatchResults:v10];
+  v16 = [self _sortedResultsForDisambiguationType:disambiguationType maxNumberOfResults:maxNumberOfResults exactMatchResults:resultsCopy fullTokenMatchResults:matchResultsCopy wildcardMatchResults:wildcardMatchResultsCopy];
 
   return v16;
 }
 
-+ (id)_disambiguationResultForDisambiguation:(id)a3 sortedResults:(id)a4
++ (id)_disambiguationResultForDisambiguation:(id)disambiguation sortedResults:(id)results
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  disambiguationCopy = disambiguation;
+  resultsCopy = results;
+  if (![resultsCopy count])
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 disambiguationType];
-  if (v7 == 1)
+  disambiguationType = [disambiguationCopy disambiguationType];
+  if (disambiguationType == 1)
   {
     v8 = [PLDisambiguationResult alloc];
-    v9 = v5;
+    v9 = disambiguationCopy;
     v10 = 0;
-    v11 = v6;
+    v11 = resultsCopy;
     goto LABEL_9;
   }
 
-  if (v7 != 2)
+  if (disambiguationType != 2)
   {
-    if (v7 == 3)
+    if (disambiguationType == 3)
     {
       v8 = [PLDisambiguationResult alloc];
-      v9 = v5;
-      v10 = v6;
+      v9 = disambiguationCopy;
+      v10 = resultsCopy;
       v11 = 0;
 LABEL_9:
       v13 = 0;
@@ -831,10 +831,10 @@ LABEL_6:
   }
 
   v8 = [PLDisambiguationResult alloc];
-  v9 = v5;
+  v9 = disambiguationCopy;
   v10 = 0;
   v11 = 0;
-  v13 = v6;
+  v13 = resultsCopy;
 LABEL_10:
   v12 = [(PLDisambiguationResult *)v8 initWithDisambiguation:v9 personLookupIdentifiers:v10 locationNames:v11 genericLocationTuples:v13];
 LABEL_11:
@@ -842,58 +842,58 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_fetchGroupsWithFTS5FormattedString:(id)a3 indexingCategories:(id)a4 delegate:(id)a5
++ (id)_fetchGroupsWithFTS5FormattedString:(id)string indexingCategories:(id)categories delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = [v7 groupIdsMatchingFTSString:a3 categories:a4 textIsSearchable:1];
+  delegateCopy = delegate;
+  v8 = [delegateCopy groupIdsMatchingFTSString:string categories:categories textIsSearchable:1];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v8, 0}];
-  v10 = [v7 groupArraysFromGroupIdSets:v9 dateFilter:0 searchResultTypes:1 progressBlock:&__block_literal_global_96472];
+  v10 = [delegateCopy groupArraysFromGroupIdSets:v9 dateFilter:0 searchResultTypes:1 progressBlock:&__block_literal_global_96472];
 
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
-  return v11;
+  return firstObject;
 }
 
-+ (BOOL)_disambiguationQueryTextIsSubstringMatchOfGroup:(id)a3 disambiguation:(id)a4 normalizedQueryText:(id)a5
++ (BOOL)_disambiguationQueryTextIsSubstringMatchOfGroup:(id)group disambiguation:(id)disambiguation normalizedQueryText:(id)text
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 queryTerm];
-  if (![v9 length])
+  groupCopy = group;
+  textCopy = text;
+  queryTerm = [disambiguation queryTerm];
+  if (![queryTerm length])
   {
     LOBYTE(v10) = 0;
     goto LABEL_5;
   }
 
-  v10 = [v8 length];
+  v10 = [textCopy length];
 
   if (v10)
   {
-    v9 = [v7 normalizedString];
-    LOBYTE(v10) = [v9 containsString:v8];
+    queryTerm = [groupCopy normalizedString];
+    LOBYTE(v10) = [queryTerm containsString:textCopy];
 LABEL_5:
   }
 
   return v10;
 }
 
-+ (BOOL)_disambiguationQueryTextIsExactMatchOfGroup:(id)a3 disambiguation:(id)a4 normalizedQueryText:(id)a5
++ (BOOL)_disambiguationQueryTextIsExactMatchOfGroup:(id)group disambiguation:(id)disambiguation normalizedQueryText:(id)text
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 queryTerm];
-  if (![v9 length])
+  groupCopy = group;
+  textCopy = text;
+  queryTerm = [disambiguation queryTerm];
+  if (![queryTerm length])
   {
     LOBYTE(v10) = 0;
     goto LABEL_5;
   }
 
-  v10 = [v8 length];
+  v10 = [textCopy length];
 
   if (v10)
   {
-    v9 = [v7 normalizedString];
-    LOBYTE(v10) = [v8 isEqualToString:v9];
+    queryTerm = [groupCopy normalizedString];
+    LOBYTE(v10) = [textCopy isEqualToString:queryTerm];
 LABEL_5:
   }
 

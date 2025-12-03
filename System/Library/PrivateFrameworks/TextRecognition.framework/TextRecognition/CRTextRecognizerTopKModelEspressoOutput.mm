@@ -1,61 +1,61 @@
 @interface CRTextRecognizerTopKModelEspressoOutput
 - ($FD4688982923A924290ECB669CAF1EC2)output_label_prob_map;
 - ($FD4688982923A924290ECB669CAF1EC2)output_topk_indices;
-- (CRTextRecognizerTopKModelEspressoOutput)initWithOutputLabelProbs:(id *)a3 outputTopKIndices:(id *)a4 featureInfo:(id)a5 batchSize:(unint64_t)a6;
+- (CRTextRecognizerTopKModelEspressoOutput)initWithOutputLabelProbs:(id *)probs outputTopKIndices:(id *)indices featureInfo:(id)info batchSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation CRTextRecognizerTopKModelEspressoOutput
 
-- (CRTextRecognizerTopKModelEspressoOutput)initWithOutputLabelProbs:(id *)a3 outputTopKIndices:(id *)a4 featureInfo:(id)a5 batchSize:(unint64_t)a6
+- (CRTextRecognizerTopKModelEspressoOutput)initWithOutputLabelProbs:(id *)probs outputTopKIndices:(id *)indices featureInfo:(id)info batchSize:(unint64_t)size
 {
-  v11 = a5;
+  infoCopy = info;
   v31.receiver = self;
   v31.super_class = CRTextRecognizerTopKModelEspressoOutput;
   v12 = [(CRTextRecognizerTopKModelEspressoOutput *)&v31 init];
   v13 = v12;
   if (v12)
   {
-    v14 = *&a3->var0;
-    v15 = *a3->var2;
-    *(v12 + 56) = *&a3->var2[2];
+    v14 = *&probs->var0;
+    v15 = *probs->var2;
+    *(v12 + 56) = *&probs->var2[2];
     *(v12 + 40) = v15;
     *(v12 + 24) = v14;
-    v16 = *a3->var3;
-    v17 = *&a3->var3[2];
-    v18 = *&a3->var4;
-    *(v12 + 120) = *&a3->var6;
+    v16 = *probs->var3;
+    v17 = *&probs->var3[2];
+    v18 = *&probs->var4;
+    *(v12 + 120) = *&probs->var6;
     *(v12 + 104) = v18;
     *(v12 + 88) = v17;
     *(v12 + 72) = v16;
-    v19 = *&a3->var8;
-    v20 = *&a3->var10;
-    v21 = *&a3->var12;
-    *(v12 + 23) = *&a3->var14;
+    v19 = *&probs->var8;
+    v20 = *&probs->var10;
+    v21 = *&probs->var12;
+    *(v12 + 23) = *&probs->var14;
     *(v12 + 168) = v21;
     *(v12 + 152) = v20;
     *(v12 + 136) = v19;
-    v22 = *&a4->var0;
-    v23 = *&a4->var2[2];
-    *(v12 + 13) = *a4->var2;
+    v22 = *&indices->var0;
+    v23 = *&indices->var2[2];
+    *(v12 + 13) = *indices->var2;
     *(v12 + 14) = v23;
     *(v12 + 12) = v22;
-    v24 = *a4->var3;
-    v25 = *&a4->var3[2];
-    v26 = *&a4->var6;
-    *(v12 + 17) = *&a4->var4;
+    v24 = *indices->var3;
+    v25 = *&indices->var3[2];
+    v26 = *&indices->var6;
+    *(v12 + 17) = *&indices->var4;
     *(v12 + 18) = v26;
     *(v12 + 15) = v24;
     *(v12 + 16) = v25;
-    v27 = *&a4->var8;
-    v28 = *&a4->var10;
-    v29 = *&a4->var12;
-    *(v12 + 44) = *&a4->var14;
+    v27 = *&indices->var8;
+    v28 = *&indices->var10;
+    v29 = *&indices->var12;
+    *(v12 + 44) = *&indices->var14;
     *(v12 + 20) = v28;
     *(v12 + 21) = v29;
     *(v12 + 19) = v27;
-    objc_storeStrong(v12 + 1, a5);
-    v13->_batchSize = a6;
+    objc_storeStrong(v12 + 1, info);
+    v13->_batchSize = size;
   }
 
   return v13;

@@ -1,13 +1,13 @@
 @interface BMComputeSubscription
-- (BMComputeSubscription)initWithCoder:(id)a3;
-- (BMComputeSubscription)initWithIdentifier:(id)a3 client:(id)a4 createdAt:(id)a5 waking:(BOOL)a6 DSLGraph:(id)a7 subscriber:(id)a8 block:(id)a9;
-- (BMComputeSubscription)initWithToken:(unint64_t)a3 descriptor:(id)a4;
+- (BMComputeSubscription)initWithCoder:(id)coder;
+- (BMComputeSubscription)initWithIdentifier:(id)identifier client:(id)client createdAt:(id)at waking:(BOOL)waking DSLGraph:(id)graph subscriber:(id)subscriber block:(id)block;
+- (BMComputeSubscription)initWithToken:(unint64_t)token descriptor:(id)descriptor;
 - (BOOL)isUnclaimed;
 - (NSDate)initialBookmarkTimestamp;
 - (id)XPCEvent;
 - (id)description;
-- (id)fetchBookmarkFromStorage:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)fetchBookmarkFromStorage:(id)storage error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMComputeSubscription
@@ -16,27 +16,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BMComputeSubscription *)self client];
-  v6 = [(BMComputeSubscription *)self identifier];
+  client = [(BMComputeSubscription *)self client];
+  identifier = [(BMComputeSubscription *)self identifier];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMComputeSubscription waking](self, "waking")}];
-  v8 = [(BMComputeSubscription *)self streamIdentifiers];
-  v9 = [(BMComputeSubscription *)self graph];
-  v10 = [(BMComputeSubscription *)self subscriber];
+  streamIdentifiers = [(BMComputeSubscription *)self streamIdentifiers];
+  graph = [(BMComputeSubscription *)self graph];
+  subscriber = [(BMComputeSubscription *)self subscriber];
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[BMComputeSubscription token](self, "token")}];
-  v12 = [v3 stringWithFormat:@"<%@ %p> client: %@, identifier: %@, waking: %@, streams: %@, graph: %@, subscriber:%@, token: %@", v4, self, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 stringWithFormat:@"<%@ %p> client: %@, identifier: %@, waking: %@, streams: %@, graph: %@, subscriber:%@, token: %@", v4, self, client, identifier, v7, streamIdentifiers, graph, subscriber, v11];
 
   return v12;
 }
 
-- (BMComputeSubscription)initWithIdentifier:(id)a3 client:(id)a4 createdAt:(id)a5 waking:(BOOL)a6 DSLGraph:(id)a7 subscriber:(id)a8 block:(id)a9
+- (BMComputeSubscription)initWithIdentifier:(id)identifier client:(id)client createdAt:(id)at waking:(BOOL)waking DSLGraph:(id)graph subscriber:(id)subscriber block:(id)block
 {
   v64 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v56 = a8;
-  aBlock = a9;
+  identifierCopy = identifier;
+  clientCopy = client;
+  atCopy = at;
+  graphCopy = graph;
+  subscriberCopy = subscriber;
+  aBlock = block;
   if (BMIdentifierIsPathSafe())
   {
     v62.receiver = self;
@@ -44,28 +44,28 @@
     v19 = [(BMComputeSubscription *)&v62 init];
     if (v19)
     {
-      v54 = v17;
-      v20 = [v15 copy];
+      v54 = atCopy;
+      v20 = [identifierCopy copy];
       identifier = v19->_identifier;
       v19->_identifier = v20;
 
-      v55 = v16;
-      v22 = [v16 copy];
+      v55 = clientCopy;
+      v22 = [clientCopy copy];
       client = v19->_client;
       v19->_client = v22;
 
       v24 = [(NSString *)v19->_client stringByAppendingString:@":"];
-      v25 = [v24 stringByAppendingString:v15];
+      v25 = [v24 stringByAppendingString:identifierCopy];
       uniqueIdentifier = v19->_uniqueIdentifier;
       v19->_uniqueIdentifier = v25;
 
-      v19->_waking = a6;
-      objc_storeStrong(&v19->_graph, a7);
-      objc_storeStrong(&v19->_subscriber, a8);
-      v53 = v18;
-      v27 = [v18 rootStreamIdentifiers];
+      v19->_waking = waking;
+      objc_storeStrong(&v19->_graph, graph);
+      objc_storeStrong(&v19->_subscriber, subscriber);
+      v53 = graphCopy;
+      rootStreamIdentifiers = [graphCopy rootStreamIdentifiers];
       streamIdentifiers = v19->_streamIdentifiers;
-      v19->_streamIdentifiers = v27;
+      v19->_streamIdentifiers = rootStreamIdentifiers;
 
       v29 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v58 = 0u;
@@ -116,15 +116,15 @@
       block = v19->_block;
       v19->_block = v40;
 
-      objc_storeStrong(&v19->_createdAt, a5);
+      objc_storeStrong(&v19->_createdAt, at);
       connection = v19->_connection;
       v19->_connection = 0;
 
       v19->_pendingDemand = 0;
       v19->_token = 0;
-      v18 = v53;
-      v43 = [v53 streamPublishers];
-      if ([v43 count] >= 2)
+      graphCopy = v53;
+      streamPublishers = [v53 streamPublishers];
+      if ([streamPublishers count] >= 2)
       {
         v44 = __biome_log_for_category();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -133,18 +133,18 @@
         }
       }
 
-      v45 = [v43 allObjects];
-      v46 = [v45 firstObject];
-      v47 = [v46 useCase];
+      allObjects = [streamPublishers allObjects];
+      firstObject = [allObjects firstObject];
+      useCase = [firstObject useCase];
       useCase = v19->_useCase;
-      v19->_useCase = v47;
+      v19->_useCase = useCase;
 
-      v17 = v54;
-      v16 = v55;
+      atCopy = v54;
+      clientCopy = v55;
     }
 
     self = v19;
-    v49 = self;
+    selfCopy = self;
   }
 
   else
@@ -155,18 +155,18 @@
       [BMComputeSubscription initWithIdentifier:client:createdAt:waking:DSLGraph:subscriber:block:];
     }
 
-    v49 = 0;
+    selfCopy = 0;
   }
 
   v51 = *MEMORY[0x1E69E9840];
-  return v49;
+  return selfCopy;
 }
 
-- (BMComputeSubscription)initWithToken:(unint64_t)a3 descriptor:(id)a4
+- (BMComputeSubscription)initWithToken:(unint64_t)token descriptor:(id)descriptor
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  string = xpc_dictionary_get_string(v6, "identifier");
+  descriptorCopy = descriptor;
+  string = xpc_dictionary_get_string(descriptorCopy, "identifier");
   if (string)
   {
     v8 = string;
@@ -176,10 +176,10 @@
     if (IsPathSafe)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
-      v12 = xpc_dictionary_get_string(v6, "client");
+      v12 = xpc_dictionary_get_string(descriptorCopy, "client");
       if (!v12)
       {
-        v28 = MEMORY[0x1865F7C40](v6);
+        v28 = MEMORY[0x1865F7C40](descriptorCopy);
         v29 = __biome_log_for_category();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
@@ -187,14 +187,14 @@
         }
 
         free(v28);
-        v27 = 0;
+        selfCopy = 0;
         goto LABEL_45;
       }
 
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v12];
-      xpc_dictionary_get_double(v6, "createdAt");
+      xpc_dictionary_get_double(descriptorCopy, "createdAt");
       v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:?];
-      v15 = xpc_dictionary_get_dictionary(v6, "graph");
+      v15 = xpc_dictionary_get_dictionary(descriptorCopy, "graph");
       if (v15)
       {
         v16 = _CFXPCCreateCFObjectFromXPCObject();
@@ -207,7 +207,7 @@
             [BMComputeSubscription initWithToken:descriptor:];
           }
 
-          v27 = 0;
+          selfCopy = 0;
           goto LABEL_44;
         }
 
@@ -241,7 +241,7 @@
               [BMComputeSubscription initWithToken:descriptor:];
             }
 
-            v27 = 0;
+            selfCopy = 0;
             v16 = v21;
             v13 = v52;
             v14 = v17;
@@ -257,13 +257,13 @@
         v17 = v14;
         v52 = v13;
         *buf = 0;
-        data = xpc_dictionary_get_data(v6, "graphData", buf);
+        data = xpc_dictionary_get_data(descriptorCopy, "graphData", buf);
         v31 = objc_alloc(MEMORY[0x1E695DEF0]);
         v32 = [v31 initWithBytes:data length:*buf];
         v33 = MEMORY[0x1E696ACD0];
-        v34 = [MEMORY[0x1E698E888] allowed];
+        allowed = [MEMORY[0x1E698E888] allowed];
         v54 = 0;
-        v16 = [v33 unarchivedObjectOfClasses:v34 fromData:v32 error:&v54];
+        v16 = [v33 unarchivedObjectOfClasses:allowed fromData:v32 error:&v54];
         v35 = v54;
 
         if (!v16 || v35)
@@ -275,14 +275,14 @@
             [BMComputeSubscription initWithToken:descriptor:];
           }
 
-          v27 = 0;
+          selfCopy = 0;
           goto LABEL_43;
         }
       }
 
       v14 = v17;
       *buf = 0;
-      v36 = xpc_dictionary_get_data(v6, "subscriber", buf);
+      v36 = xpc_dictionary_get_data(descriptorCopy, "subscriber", buf);
       if (v36)
       {
         v37 = v36;
@@ -290,9 +290,9 @@
         v38 = objc_alloc(MEMORY[0x1E695DEF0]);
         v39 = [v38 initWithBytes:v37 length:*buf];
         v40 = MEMORY[0x1E696ACD0];
-        v41 = [MEMORY[0x1E698E888] allowed];
+        allowed2 = [MEMORY[0x1E698E888] allowed];
         v53 = 0;
-        v42 = [v40 unarchivedObjectOfClasses:v41 fromData:v39 error:&v53];
+        v42 = [v40 unarchivedObjectOfClasses:allowed2 fromData:v39 error:&v53];
         v43 = v53;
 
         if (v43)
@@ -303,7 +303,7 @@
             [BMComputeSubscription initWithToken:descriptor:];
           }
 
-          v27 = 0;
+          selfCopy = 0;
           v14 = v51;
 LABEL_42:
 
@@ -326,16 +326,16 @@ LABEL_45:
       v48 = [(BMComputeSubscription *)self initWithIdentifier:v11 client:v52 createdAt:v14 waking:1 DSLGraph:v16 subscriber:v42 block:0];
       if (v48)
       {
-        v48->_token = a3;
+        v48->_token = token;
       }
 
       self = v48;
-      v27 = self;
+      selfCopy = self;
       goto LABEL_42;
     }
   }
 
-  v25 = MEMORY[0x1865F7C40](v6);
+  v25 = MEMORY[0x1865F7C40](descriptorCopy);
   v26 = __biome_log_for_category();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -343,11 +343,11 @@ LABEL_45:
   }
 
   free(v25);
-  v27 = 0;
+  selfCopy = 0;
 LABEL_46:
 
   v49 = *MEMORY[0x1E69E9840];
-  return v27;
+  return selfCopy;
 }
 
 - (BOOL)isUnclaimed
@@ -357,8 +357,8 @@ LABEL_46:
     return 0;
   }
 
-  v4 = [(BMComputeSubscription *)self connection];
-  v3 = v4 == 0;
+  connection = [(BMComputeSubscription *)self connection];
+  v3 = connection == 0;
 
   return v3;
 }
@@ -373,12 +373,12 @@ LABEL_46:
 
   else
   {
-    v5 = [(BMComputeSubscription *)self waking];
-    v6 = [(BMComputeSubscription *)self createdAt];
-    v3 = v6;
-    if (v5)
+    waking = [(BMComputeSubscription *)self waking];
+    createdAt = [(BMComputeSubscription *)self createdAt];
+    v3 = createdAt;
+    if (waking)
     {
-      v7 = [(NSDate *)v6 dateByAddingTimeInterval:-3.0];
+      v7 = [(NSDate *)createdAt dateByAddingTimeInterval:-3.0];
 
       v3 = v7;
     }
@@ -391,30 +391,30 @@ LABEL_46:
 {
   v3 = objc_autoreleasePoolPush();
   empty = xpc_dictionary_create_empty();
-  v5 = [(BMComputeSubscription *)self identifier];
-  v6 = [v5 UTF8String];
+  identifier = [(BMComputeSubscription *)self identifier];
+  uTF8String = [identifier UTF8String];
 
-  if (v6)
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(empty, "identifier", v6);
+    xpc_dictionary_set_string(empty, "identifier", uTF8String);
   }
 
-  v7 = [(BMComputeSubscription *)self client];
-  v8 = [v7 UTF8String];
+  client = [(BMComputeSubscription *)self client];
+  uTF8String2 = [client UTF8String];
 
-  if (v8)
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(empty, "client", v8);
+    xpc_dictionary_set_string(empty, "client", uTF8String2);
   }
 
-  v9 = [(BMComputeSubscription *)self createdAt];
-  [v9 timeIntervalSince1970];
+  createdAt = [(BMComputeSubscription *)self createdAt];
+  [createdAt timeIntervalSince1970];
   xpc_dictionary_set_double(empty, "createdAt", v10);
 
   v11 = MEMORY[0x1E696ACC8];
-  v12 = [(BMComputeSubscription *)self graph];
+  graph = [(BMComputeSubscription *)self graph];
   v32 = 0;
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v32];
+  v13 = [v11 archivedDataWithRootObject:graph requiringSecureCoding:1 error:&v32];
   v14 = v32;
 
   if (v14)
@@ -431,14 +431,14 @@ LABEL_9:
   }
 
   xpc_dictionary_set_data(empty, "graphData", [v13 bytes], objc_msgSend(v13, "length"));
-  v17 = [(BMComputeSubscription *)self subscriber];
+  subscriber = [(BMComputeSubscription *)self subscriber];
 
-  if (v17)
+  if (subscriber)
   {
     v18 = MEMORY[0x1E696ACC8];
-    v19 = [(BMComputeSubscription *)self subscriber];
+    subscriber2 = [(BMComputeSubscription *)self subscriber];
     v31 = 0;
-    v20 = [v18 archivedDataWithRootObject:v19 requiringSecureCoding:1 error:&v31];
+    v20 = [v18 archivedDataWithRootObject:subscriber2 requiringSecureCoding:1 error:&v31];
     v21 = v31;
 
     if (v21)
@@ -463,53 +463,53 @@ LABEL_17:
   return v16;
 }
 
-- (id)fetchBookmarkFromStorage:(id)a3 error:(id *)a4
+- (id)fetchBookmarkFromStorage:(id)storage error:(id *)error
 {
-  v6 = a3;
-  v7 = [(BMComputeSubscription *)self identifier];
-  v8 = [(BMComputeSubscription *)self client];
-  v9 = [v6 checkExistenceOfBookmarkForSubscriptionWithIdentifier:v7 client:v8];
+  storageCopy = storage;
+  identifier = [(BMComputeSubscription *)self identifier];
+  client = [(BMComputeSubscription *)self client];
+  v9 = [storageCopy checkExistenceOfBookmarkForSubscriptionWithIdentifier:identifier client:client];
 
   if (v9)
   {
-    v10 = [(BMComputeSubscription *)self identifier];
-    v11 = [(BMComputeSubscription *)self client];
-    v12 = [v6 readBookmarkForSubscriptionWithIdentifier:v10 client:v11 error:a4];
+    identifier2 = [(BMComputeSubscription *)self identifier];
+    client2 = [(BMComputeSubscription *)self client];
+    v12 = [storageCopy readBookmarkForSubscriptionWithIdentifier:identifier2 client:client2 error:error];
   }
 
   else
   {
-    v13 = [(BMComputeSubscription *)self graph];
-    v14 = [(BMComputeSubscription *)self initialBookmarkTimestamp];
+    graph = [(BMComputeSubscription *)self graph];
+    initialBookmarkTimestamp = [(BMComputeSubscription *)self initialBookmarkTimestamp];
     v19 = 0;
-    v12 = BMDSLGetBookmarkForDate(v13, v14, &v19);
-    v10 = v19;
+    v12 = BMDSLGetBookmarkForDate(graph, initialBookmarkTimestamp, &v19);
+    identifier2 = v19;
 
-    v15 = [(BMComputeSubscription *)self identifier];
-    v16 = [(BMComputeSubscription *)self client];
-    [v6 writeBookmark:v12 forSubscriptionWithIdentifier:v15 client:v16];
+    identifier3 = [(BMComputeSubscription *)self identifier];
+    client3 = [(BMComputeSubscription *)self client];
+    [storageCopy writeBookmark:v12 forSubscriptionWithIdentifier:identifier3 client:client3];
 
-    if (a4)
+    if (error)
     {
-      v17 = v10;
-      *a4 = v10;
+      v17 = identifier2;
+      *error = identifier2;
     }
   }
 
   return v12;
 }
 
-- (BMComputeSubscription)initWithCoder:(id)a3
+- (BMComputeSubscription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"client"];
-  [v4 decodeDoubleForKey:@"createdAt"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"client"];
+  [coderCopy decodeDoubleForKey:@"createdAt"];
   v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:?];
-  v8 = [v4 decodeBoolForKey:@"waking"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"graphData"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscriber"];
-  v11 = [v4 decodeInt64ForKey:@"token"];
+  v8 = [coderCopy decodeBoolForKey:@"waking"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"graphData"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscriber"];
+  v11 = [coderCopy decodeInt64ForKey:@"token"];
 
   v12 = [(BMComputeSubscription *)self initWithIdentifier:v5 client:v6 createdAt:v7 waking:v8 DSLGraph:v9 subscriber:v10 block:0];
   v13 = v12;
@@ -521,30 +521,30 @@ LABEL_17:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(BMComputeSubscription *)self identifier];
-  [v10 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(BMComputeSubscription *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(BMComputeSubscription *)self client];
-  [v10 encodeObject:v5 forKey:@"client"];
+  client = [(BMComputeSubscription *)self client];
+  [coderCopy encodeObject:client forKey:@"client"];
 
-  v6 = [(BMComputeSubscription *)self createdAt];
-  [v6 timeIntervalSince1970];
-  [v10 encodeDouble:@"createdAt" forKey:?];
+  createdAt = [(BMComputeSubscription *)self createdAt];
+  [createdAt timeIntervalSince1970];
+  [coderCopy encodeDouble:@"createdAt" forKey:?];
 
-  [v10 encodeBool:-[BMComputeSubscription waking](self forKey:{"waking"), @"waking"}];
-  v7 = [(BMComputeSubscription *)self graph];
-  [v10 encodeObject:v7 forKey:@"graphData"];
+  [coderCopy encodeBool:-[BMComputeSubscription waking](self forKey:{"waking"), @"waking"}];
+  graph = [(BMComputeSubscription *)self graph];
+  [coderCopy encodeObject:graph forKey:@"graphData"];
 
-  [v10 encodeInt64:-[BMComputeSubscription token](self forKey:{"token"), @"token"}];
-  v8 = [(BMComputeSubscription *)self subscriber];
+  [coderCopy encodeInt64:-[BMComputeSubscription token](self forKey:{"token"), @"token"}];
+  subscriber = [(BMComputeSubscription *)self subscriber];
 
-  if (v8)
+  if (subscriber)
   {
-    v9 = [(BMComputeSubscription *)self subscriber];
-    [v10 encodeObject:v9 forKey:@"subscriber"];
+    subscriber2 = [(BMComputeSubscription *)self subscriber];
+    [coderCopy encodeObject:subscriber2 forKey:@"subscriber"];
   }
 }
 

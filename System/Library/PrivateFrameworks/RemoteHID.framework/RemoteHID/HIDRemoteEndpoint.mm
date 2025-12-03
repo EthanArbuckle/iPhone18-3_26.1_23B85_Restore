@@ -1,18 +1,18 @@
 @interface HIDRemoteEndpoint
-- (HIDRemoteEndpoint)initWithID:(unint64_t)a3;
-- (id)_removeDeviceID:(unint64_t)a3;
+- (HIDRemoteEndpoint)initWithID:(unint64_t)d;
+- (id)_removeDeviceID:(unint64_t)d;
 - (id)copyState;
 - (id)devices;
-- (id)getDevice:(unint64_t)a3;
-- (void)addDevice:(id)a3;
-- (void)logRemovedDevice:(id)a3;
+- (id)getDevice:(unint64_t)device;
+- (void)addDevice:(id)device;
+- (void)logRemovedDevice:(id)device;
 - (void)removeAllDevices;
-- (void)removeDeviceID:(unint64_t)a3;
+- (void)removeDeviceID:(unint64_t)d;
 @end
 
 @implementation HIDRemoteEndpoint
 
-- (HIDRemoteEndpoint)initWithID:(unint64_t)a3
+- (HIDRemoteEndpoint)initWithID:(unint64_t)d
 {
   v12.receiver = self;
   v12.super_class = HIDRemoteEndpoint;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_endpointID = a3;
+    v4->_endpointID = d;
     v6 = objc_opt_new();
     devices = v5->_devices;
     v5->_devices = v6;
@@ -36,11 +36,11 @@
   return v5;
 }
 
-- (id)getDevice:(unint64_t)a3
+- (id)getDevice:(unint64_t)device
 {
   os_unfair_recursive_lock_lock_with_options();
   devices = self->_devices;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:device];
   v7 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v6];
 
   os_unfair_recursive_lock_unlock();
@@ -48,16 +48,16 @@
   return v7;
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_recursive_lock_lock_with_options();
-  v8 = -[HIDRemoteEndpoint _removeDeviceID:](self, "_removeDeviceID:", [v4 deviceID]);
+  v8 = -[HIDRemoteEndpoint _removeDeviceID:](self, "_removeDeviceID:", [deviceCopy deviceID]);
   devices = self->_devices;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "deviceID")}];
-  [(NSMutableDictionary *)devices setObject:v4 forKeyedSubscript:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(deviceCopy, "deviceID")}];
+  [(NSMutableDictionary *)devices setObject:deviceCopy forKeyedSubscript:v6];
 
-  [v4 setEndpointID:{-[HIDRemoteEndpoint endpointID](self, "endpointID")}];
+  [deviceCopy setEndpointID:{-[HIDRemoteEndpoint endpointID](self, "endpointID")}];
   os_unfair_recursive_lock_unlock();
   v7 = v8;
   if (v8)
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)removeDeviceID:(unint64_t)a3
+- (void)removeDeviceID:(unint64_t)d
 {
-  v3 = [(HIDRemoteEndpoint *)self _removeDeviceID:a3];
+  v3 = [(HIDRemoteEndpoint *)self _removeDeviceID:d];
   if (v3)
   {
     v4 = v3;
@@ -78,12 +78,12 @@
   }
 }
 
-- (id)_removeDeviceID:(unint64_t)a3
+- (id)_removeDeviceID:(unint64_t)d
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_recursive_lock_lock_with_options();
   devices = self->_devices;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v6];
 
   if (v7)
@@ -94,15 +94,15 @@
       v14 = 138412802;
       v15 = v7;
       v16 = 2048;
-      v17 = a3;
+      dCopy = d;
       v18 = 2048;
-      v19 = [(HIDRemoteEndpoint *)self endpointID];
+      endpointID = [(HIDRemoteEndpoint *)self endpointID];
       _os_log_impl(&dword_261D9C000, v8, OS_LOG_TYPE_DEFAULT, "Remove device:%@ with id:%llu for endpoint:%llu", &v14, 0x20u);
     }
 
     [(HIDRemoteEndpoint *)self logRemovedDevice:v7];
     v9 = self->_devices;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
     [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
     v11 = RemoteHIDLog();
@@ -126,11 +126,11 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = [(HIDRemoteEndpoint *)self endpointID];
+    endpointID = [(HIDRemoteEndpoint *)self endpointID];
     _os_log_impl(&dword_261D9C000, v3, OS_LOG_TYPE_DEFAULT, "Removing all devices for endpoint:%llu", buf, 0xCu);
   }
 
-  v4 = [(NSMutableDictionary *)self->_devices allValues];
+  allValues = [(NSMutableDictionary *)self->_devices allValues];
   devices = self->_devices;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -140,14 +140,14 @@
   [(NSMutableDictionary *)devices enumerateKeysAndObjectsUsingBlock:v7];
   [(NSMutableDictionary *)self->_devices removeAllObjects];
   os_unfair_recursive_lock_unlock();
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_0];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_0];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logRemovedDevice:(id)a3
+- (void)logRemovedDevice:(id)device
 {
-  v6 = a3;
+  deviceCopy = device;
   os_unfair_recursive_lock_lock_with_options();
   if ([(NSMutableArray *)self->_prevDeviceLog count]>= 0x32)
   {
@@ -155,7 +155,7 @@
   }
 
   prevDeviceLog = self->_prevDeviceLog;
-  v5 = [v6 description];
+  v5 = [deviceCopy description];
   [(NSMutableArray *)prevDeviceLog addObject:v5];
 
   os_unfair_recursive_lock_unlock();
@@ -195,10 +195,10 @@ void __30__HIDRemoteEndpoint_copyState__block_invoke(uint64_t a1, uint64_t a2, v
 - (id)devices
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_devices allValues];
+  allValues = [(NSMutableDictionary *)self->_devices allValues];
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return allValues;
 }
 
 - (void)_removeDeviceID:(uint64_t *)a1 .cold.1(uint64_t *a1, NSObject *a2)

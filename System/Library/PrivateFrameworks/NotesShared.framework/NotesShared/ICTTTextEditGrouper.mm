@@ -1,51 +1,51 @@
 @interface ICTTTextEditGrouper
-- (BOOL)trustsTimestampsFromReplicaID:(id)a3;
-- (ICTTTextEditGrouper)initWithNote:(id)a3;
-- (_NSRange)rangeForEdits:(id)a3;
-- (id)editGroupForEdits:(id)a3 userID:(id)a4 inAttributedString:(id)a5;
-- (id)editsByAddingAllowedAttachmentEditsToEdit:(id)a3 inAttributedString:(id)a4;
-- (id)editsByAddingCheckmarkEditsToEdit:(id)a3 inAttributedString:(id)a4;
-- (id)editsByAddingTableEditsToEdit:(id)a3 inAttributedString:(id)a4;
-- (id)filteredEditForEdit:(id)a3 inAttributedString:(id)a4;
+- (BOOL)trustsTimestampsFromReplicaID:(id)d;
+- (ICTTTextEditGrouper)initWithNote:(id)note;
+- (_NSRange)rangeForEdits:(id)edits;
+- (id)editGroupForEdits:(id)edits userID:(id)d inAttributedString:(id)string;
+- (id)editsByAddingAllowedAttachmentEditsToEdit:(id)edit inAttributedString:(id)string;
+- (id)editsByAddingCheckmarkEditsToEdit:(id)edit inAttributedString:(id)string;
+- (id)editsByAddingTableEditsToEdit:(id)edit inAttributedString:(id)string;
+- (id)filteredEditForEdit:(id)edit inAttributedString:(id)string;
 - (id)groupedEdits;
-- (id)groupedEditsForEdits:(id)a3 inAttributedString:(id)a4;
-- (id)latestTimestampForEdits:(id)a3;
-- (id)userIDForReplicaID:(id)a3;
+- (id)groupedEditsForEdits:(id)edits inAttributedString:(id)string;
+- (id)latestTimestampForEdits:(id)edits;
+- (id)userIDForReplicaID:(id)d;
 @end
 
 @implementation ICTTTextEditGrouper
 
-- (ICTTTextEditGrouper)initWithNote:(id)a3
+- (ICTTTextEditGrouper)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v15.receiver = self;
   v15.super_class = ICTTTextEditGrouper;
   v6 = [(ICTTTextEditGrouper *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_note, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_note, note);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     userIDForReplicaID = v7->_userIDForReplicaID;
-    v7->_userIDForReplicaID = v8;
+    v7->_userIDForReplicaID = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     trustsTimestampsFromReplicaID = v7->_trustsTimestampsFromReplicaID;
-    v7->_trustsTimestampsFromReplicaID = v10;
+    v7->_trustsTimestampsFromReplicaID = dictionary2;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     checkmarkReplicaIDForUserID = v7->_checkmarkReplicaIDForUserID;
-    v7->_checkmarkReplicaIDForUserID = v12;
+    v7->_checkmarkReplicaIDForUserID = dictionary3;
   }
 
   return v7;
 }
 
-- (id)groupedEditsForEdits:(id)a3 inAttributedString:(id)a4
+- (id)groupedEditsForEdits:(id)edits inAttributedString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v46 = [MEMORY[0x277CBEB18] array];
+  editsCopy = edits;
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
   if ([(ICTTTextEditGrouper *)self includesTableEdits])
   {
     v54[0] = MEMORY[0x277D85DD0];
@@ -53,13 +53,13 @@
     v54[2] = __63__ICTTTextEditGrouper_groupedEditsForEdits_inAttributedString___block_invoke;
     v54[3] = &unk_2781982A8;
     v54[4] = self;
-    v55 = v7;
-    v8 = [v6 ic_flatMap:v54];
+    v55 = stringCopy;
+    v8 = [editsCopy ic_flatMap:v54];
 
-    v6 = v8;
+    editsCopy = v8;
   }
 
-  v49 = v7;
+  v49 = stringCopy;
   if ([(ICTTTextEditGrouper *)self includesCheckmarkEdits])
   {
     v52[0] = MEMORY[0x277D85DD0];
@@ -67,16 +67,16 @@
     v52[2] = __63__ICTTTextEditGrouper_groupedEditsForEdits_inAttributedString___block_invoke_2;
     v52[3] = &unk_2781982A8;
     v52[4] = self;
-    v53 = v7;
-    v9 = [v6 ic_flatMap:v52];
+    v53 = stringCopy;
+    v9 = [editsCopy ic_flatMap:v52];
 
-    v6 = v9;
+    editsCopy = v9;
   }
 
-  v10 = [(ICTTTextEditGrouper *)self filter];
-  v11 = [v10 allowedAttachmentIDs];
+  filter = [(ICTTTextEditGrouper *)self filter];
+  allowedAttachmentIDs = [filter allowedAttachmentIDs];
 
-  if (v11)
+  if (allowedAttachmentIDs)
   {
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
@@ -85,9 +85,9 @@
     v50[4] = self;
     v12 = v49;
     v51 = v49;
-    v13 = [v6 ic_flatMap:v50];
+    v13 = [editsCopy ic_flatMap:v50];
 
-    v6 = v13;
+    editsCopy = v13;
   }
 
   else
@@ -95,113 +95,113 @@
     v12 = v49;
   }
 
-  v47 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CCAD78] CR_unknown];
-  v48 = [v14 UUIDString];
+  array2 = [MEMORY[0x277CBEB18] array];
+  cR_unknown = [MEMORY[0x277CCAD78] CR_unknown];
+  uUIDString = [cR_unknown UUIDString];
 
-  if ([v6 count])
+  if ([editsCopy count])
   {
     v15 = 0;
     v16 = 0;
     do
     {
-      v17 = [v6 objectAtIndexedSubscript:v16];
-      if (++v16 >= [v6 count])
+      v17 = [editsCopy objectAtIndexedSubscript:v16];
+      if (++v16 >= [editsCopy count])
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = [v6 objectAtIndexedSubscript:v16];
+        v18 = [editsCopy objectAtIndexedSubscript:v16];
       }
 
-      v19 = [v12 string];
-      v20 = [v17 range];
+      string = [v12 string];
+      range = [v17 range];
       v22 = v21;
-      v23 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v24 = [v19 ic_range:v20 onlyContainsCharacterSet:{v22, v23}];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v24 = [string ic_range:range onlyContainsCharacterSet:{v22, whitespaceAndNewlineCharacterSet}];
 
       if ([(ICTTTextEditGrouper *)self joinsWhitespaceAndNewlineGaps]&& v24)
       {
-        v25 = [v17 range];
-        v15 = v25 + v26;
+        range2 = [v17 range];
+        v15 = range2 + v26;
         v12 = v49;
       }
 
       else
       {
-        v27 = [v17 replicaID];
-        v28 = [(ICTTTextEditGrouper *)self userIDForReplicaID:v27];
+        replicaID = [v17 replicaID];
+        v28 = [(ICTTTextEditGrouper *)self userIDForReplicaID:replicaID];
 
-        v29 = [v28 isEqual:v48];
+        v29 = [v28 isEqual:uUIDString];
         v30 = !-[ICTTTextEditGrouper joinsTextGaps](self, "joinsTextGaps") && v15 < [v17 range];
-        v31 = [v17 range];
+        range3 = [v17 range];
         v33 = v32;
-        v36 = v31 == [v18 range] && v33 == v34;
+        v36 = range3 == [v18 range] && v33 == v34;
         if (!v29 || v30 || v36)
         {
-          v37 = v47;
+          v37 = array2;
           v12 = v49;
-          if ([v47 count])
+          if ([array2 count])
           {
-            v38 = [(ICTTTextEditGrouper *)self editGroupForEdits:v47 userID:v48 inAttributedString:v49];
-            [v46 addObject:v38];
+            v38 = [(ICTTTextEditGrouper *)self editGroupForEdits:array2 userID:uUIDString inAttributedString:v49];
+            [array addObject:v38];
           }
 
-          [v47 removeAllObjects];
+          [array2 removeAllObjects];
           v39 = v28;
 
-          v48 = v39;
+          uUIDString = v39;
         }
 
         else
         {
           v12 = v49;
-          v37 = v47;
+          v37 = array2;
         }
 
         v40 = [(ICTTTextEditGrouper *)self filteredEditForEdit:v17 inAttributedString:v12];
         [v37 ic_addNonNilObject:v40];
-        v41 = [v40 range];
-        v15 = v41 + v42;
+        range4 = [v40 range];
+        v15 = range4 + v42;
       }
     }
 
-    while (v16 < [v6 count]);
+    while (v16 < [editsCopy count]);
   }
 
-  if ([v47 count])
+  if ([array2 count])
   {
-    v43 = [(ICTTTextEditGrouper *)self editGroupForEdits:v47 userID:v48 inAttributedString:v12];
-    [v46 addObject:v43];
+    v43 = [(ICTTTextEditGrouper *)self editGroupForEdits:array2 userID:uUIDString inAttributedString:v12];
+    [array addObject:v43];
   }
 
-  v44 = [v46 copy];
+  v44 = [array copy];
 
   return v44;
 }
 
 - (id)groupedEdits
 {
-  v3 = [(ICTTTextEditGrouper *)self note];
+  note = [(ICTTTextEditGrouper *)self note];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v10 = MEMORY[0x277CBEBF8];
     goto LABEL_5;
   }
 
-  v4 = [(ICTTTextEditGrouper *)self note];
-  v5 = [v4 uiAttributedString];
+  note2 = [(ICTTTextEditGrouper *)self note];
+  uiAttributedString = [note2 uiAttributedString];
 
-  if (v5)
+  if (uiAttributedString)
   {
-    v3 = [(ICTTTextEditGrouper *)self note];
-    v6 = [v3 uiAttributedString];
-    v7 = [v6 edits];
-    v8 = [(ICTTTextEditGrouper *)self note];
-    v9 = [v8 uiAttributedString];
-    v10 = [(ICTTTextEditGrouper *)self groupedEditsForEdits:v7 inAttributedString:v9];
+    note = [(ICTTTextEditGrouper *)self note];
+    uiAttributedString2 = [note uiAttributedString];
+    edits = [uiAttributedString2 edits];
+    note3 = [(ICTTTextEditGrouper *)self note];
+    uiAttributedString3 = [note3 uiAttributedString];
+    v10 = [(ICTTTextEditGrouper *)self groupedEditsForEdits:edits inAttributedString:uiAttributedString3];
 
 LABEL_5:
     goto LABEL_6;
@@ -213,65 +213,65 @@ LABEL_6:
   return v10;
 }
 
-- (id)userIDForReplicaID:(id)a3
+- (id)userIDForReplicaID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTTTextEditGrouper *)self userIDForReplicaID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  userIDForReplicaID = [(ICTTTextEditGrouper *)self userIDForReplicaID];
+  v6 = [userIDForReplicaID objectForKeyedSubscript:dCopy];
 
   if (!v6)
   {
-    v7 = [(ICTTTextEditGrouper *)self note];
-    v6 = [v7 userIDForReplicaID:v4];
+    note = [(ICTTTextEditGrouper *)self note];
+    v6 = [note userIDForReplicaID:dCopy];
 
-    v8 = [(ICTTTextEditGrouper *)self userIDForReplicaID];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    userIDForReplicaID2 = [(ICTTTextEditGrouper *)self userIDForReplicaID];
+    [userIDForReplicaID2 setObject:v6 forKeyedSubscript:dCopy];
   }
 
   return v6;
 }
 
-- (BOOL)trustsTimestampsFromReplicaID:(id)a3
+- (BOOL)trustsTimestampsFromReplicaID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  trustsTimestampsFromReplicaID = [(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID];
+  v6 = [trustsTimestampsFromReplicaID objectForKeyedSubscript:dCopy];
 
   if (!v6)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [(ICTTTextEditGrouper *)self note];
-    v6 = [v7 numberWithBool:{objc_msgSend(v8, "trustsTimestampsFromReplicaID:", v4)}];
+    note = [(ICTTTextEditGrouper *)self note];
+    v6 = [v7 numberWithBool:{objc_msgSend(note, "trustsTimestampsFromReplicaID:", dCopy)}];
 
-    v9 = [(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID];
-    [v9 setObject:v6 forKeyedSubscript:v4];
+    trustsTimestampsFromReplicaID2 = [(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID];
+    [trustsTimestampsFromReplicaID2 setObject:v6 forKeyedSubscript:dCopy];
   }
 
-  v10 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
-- (id)filteredEditForEdit:(id)a3 inAttributedString:(id)a4
+- (id)filteredEditForEdit:(id)edit inAttributedString:(id)string
 {
-  v5 = a3;
-  v6 = [v5 replicaID];
-  v7 = [(ICTTTextEditGrouper *)self userIDForReplicaID:v6];
+  editCopy = edit;
+  replicaID = [editCopy replicaID];
+  v7 = [(ICTTTextEditGrouper *)self userIDForReplicaID:replicaID];
 
-  v8 = [(ICTTTextEditGrouper *)self filter];
-  if (v8)
+  filter = [(ICTTTextEditGrouper *)self filter];
+  if (filter)
   {
-    v9 = v8;
-    v10 = [(ICTTTextEditGrouper *)self filter];
-    if ([v10 allowsMissingUsers])
+    v9 = filter;
+    filter2 = [(ICTTTextEditGrouper *)self filter];
+    if ([filter2 allowsMissingUsers])
     {
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAD78] CR_unknown];
-      v12 = [v11 UUIDString];
-      v13 = [v7 isEqual:v12];
+      cR_unknown = [MEMORY[0x277CCAD78] CR_unknown];
+      uUIDString = [cR_unknown UUIDString];
+      v13 = [v7 isEqual:uUIDString];
 
       if (v13)
       {
@@ -282,14 +282,14 @@ LABEL_7:
     }
   }
 
-  v14 = [(ICTTTextEditGrouper *)self filter];
-  v15 = [v14 allowedUserIDs];
-  if (v15)
+  filter3 = [(ICTTTextEditGrouper *)self filter];
+  allowedUserIDs = [filter3 allowedUserIDs];
+  if (allowedUserIDs)
   {
-    v16 = v15;
-    v17 = [(ICTTTextEditGrouper *)self filter];
-    v18 = [v17 allowedUserIDs];
-    v19 = [v18 containsObject:v7];
+    v16 = allowedUserIDs;
+    filter4 = [(ICTTTextEditGrouper *)self filter];
+    allowedUserIDs2 = [filter4 allowedUserIDs];
+    v19 = [allowedUserIDs2 containsObject:v7];
 
     if (!v19)
     {
@@ -301,27 +301,27 @@ LABEL_7:
   {
   }
 
-  v21 = [v5 replicaID];
-  if (![(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID:v21])
+  replicaID2 = [editCopy replicaID];
+  if (![(ICTTTextEditGrouper *)self trustsTimestampsFromReplicaID:replicaID2])
   {
 
     goto LABEL_15;
   }
 
-  v22 = [v5 timestamp];
+  timestamp = [editCopy timestamp];
 
-  if (!v22)
+  if (!timestamp)
   {
 LABEL_15:
-    v22 = [(ICTTTextEditGrouper *)self filter];
-    if (v22)
+    timestamp = [(ICTTTextEditGrouper *)self filter];
+    if (timestamp)
     {
-      v29 = [(ICTTTextEditGrouper *)self filter];
-      v30 = [v29 allowsMissingTimestamps];
+      filter5 = [(ICTTTextEditGrouper *)self filter];
+      allowsMissingTimestamps = [filter5 allowsMissingTimestamps];
 
-      v22 = 0;
+      timestamp = 0;
       v20 = 0;
-      if (!v30)
+      if (!allowsMissingTimestamps)
       {
         goto LABEL_24;
       }
@@ -330,14 +330,14 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  v23 = [(ICTTTextEditGrouper *)self filter];
-  v24 = [v23 fromDate];
-  if (v24)
+  filter6 = [(ICTTTextEditGrouper *)self filter];
+  fromDate = [filter6 fromDate];
+  if (fromDate)
   {
-    v25 = v24;
-    v26 = [(ICTTTextEditGrouper *)self filter];
-    v27 = [v26 fromDate];
-    v28 = [v22 ic_isEarlierThanDate:v27];
+    v25 = fromDate;
+    filter7 = [(ICTTTextEditGrouper *)self filter];
+    fromDate2 = [filter7 fromDate];
+    v28 = [timestamp ic_isEarlierThanDate:fromDate2];
 
     if (v28)
     {
@@ -349,26 +349,26 @@ LABEL_15:
   {
   }
 
-  v31 = [(ICTTTextEditGrouper *)self filter];
-  v32 = [v31 toDate];
-  if (!v32)
+  filter8 = [(ICTTTextEditGrouper *)self filter];
+  toDate = [filter8 toDate];
+  if (!toDate)
   {
 
     goto LABEL_23;
   }
 
-  v33 = v32;
-  v34 = [(ICTTTextEditGrouper *)self filter];
-  v35 = [v34 toDate];
-  v36 = [v22 ic_isLaterThanDate:v35];
+  v33 = toDate;
+  filter9 = [(ICTTTextEditGrouper *)self filter];
+  toDate2 = [filter9 toDate];
+  v36 = [timestamp ic_isLaterThanDate:toDate2];
 
   if ((v36 & 1) == 0)
   {
 LABEL_23:
     v37 = [ICTTTextEdit alloc];
-    v38 = [v5 replicaID];
-    v39 = [v5 range];
-    v20 = [(ICTTTextEdit *)v37 initWithTimestamp:v22 replicaID:v38 range:v39, v40];
+    replicaID3 = [editCopy replicaID];
+    range = [editCopy range];
+    v20 = [(ICTTTextEdit *)v37 initWithTimestamp:timestamp replicaID:replicaID3 range:range, v40];
 
     goto LABEL_24;
   }
@@ -382,30 +382,30 @@ LABEL_25:
   return v20;
 }
 
-- (id)editGroupForEdits:(id)a3 userID:(id)a4 inAttributedString:(id)a5
+- (id)editGroupForEdits:(id)edits userID:(id)d inAttributedString:(id)string
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(ICTTTextEditGrouper *)self latestTimestampForEdits:v8];
-  v10 = [(ICTTTextEditGrouper *)self rangeForEdits:v8];
+  dCopy = d;
+  editsCopy = edits;
+  v9 = [(ICTTTextEditGrouper *)self latestTimestampForEdits:editsCopy];
+  v10 = [(ICTTTextEditGrouper *)self rangeForEdits:editsCopy];
   v12 = v11;
   v13 = [ICTTTextEditGroup alloc];
-  v14 = [v8 copy];
+  v14 = [editsCopy copy];
 
-  v15 = [(ICTTTextEditGroup *)v13 initWithEdits:v14 latestTimestamp:v9 userID:v7 range:v10, v12];
+  v15 = [(ICTTTextEditGroup *)v13 initWithEdits:v14 latestTimestamp:v9 userID:dCopy range:v10, v12];
 
   return v15;
 }
 
-- (id)latestTimestampForEdits:(id)a3
+- (id)latestTimestampForEdits:(id)edits
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  editsCopy = edits;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [editsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -421,26 +421,26 @@ LABEL_25:
     {
       if (*v18 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(editsCopy);
       }
 
       v9 = *(*(&v17 + 1) + 8 * i);
-      v10 = [v9 timestamp];
-      if (v10)
+      timestamp = [v9 timestamp];
+      if (timestamp)
       {
-        v11 = v10;
+        v11 = timestamp;
         if (!v6)
         {
 
 LABEL_11:
-          v15 = [v9 timestamp];
+          timestamp2 = [v9 timestamp];
 
-          v6 = v15;
+          v6 = timestamp2;
           continue;
         }
 
-        v12 = [v9 timestamp];
-        [v12 timeIntervalSinceDate:v6];
+        timestamp3 = [v9 timestamp];
+        [timestamp3 timeIntervalSinceDate:v6];
         v14 = v13;
 
         if (v14 > 0.0)
@@ -450,7 +450,7 @@ LABEL_11:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v5 = [editsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
   while (v5);
@@ -459,15 +459,15 @@ LABEL_16:
   return v6;
 }
 
-- (_NSRange)rangeForEdits:(id)a3
+- (_NSRange)rangeForEdits:(id)edits
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  editsCopy = edits;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [editsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -480,7 +480,7 @@ LABEL_16:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(editsCopy);
         }
 
         location = [*(*(&v16 + 1) + 8 * i) range];
@@ -499,7 +499,7 @@ LABEL_16:
         v6 = length;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [editsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -518,25 +518,25 @@ LABEL_16:
   return result;
 }
 
-- (id)editsByAddingCheckmarkEditsToEdit:(id)a3 inAttributedString:(id)a4
+- (id)editsByAddingCheckmarkEditsToEdit:(id)edit inAttributedString:(id)string
 {
-  v6 = a3;
+  editCopy = edit;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a4;
-  v9 = [v7 array];
+  stringCopy = string;
+  array = [v7 array];
   v10 = ICTTAttributeNameParagraphStyle;
-  v11 = [v6 range];
+  range = [editCopy range];
   v13 = v12;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __76__ICTTTextEditGrouper_editsByAddingCheckmarkEditsToEdit_inAttributedString___block_invoke;
   v18[3] = &unk_2781982D0;
-  v19 = v6;
-  v20 = v9;
-  v21 = self;
-  v14 = v9;
-  v15 = v6;
-  [v8 enumerateAttribute:v10 inRange:v11 options:v13 usingBlock:{0, v18}];
+  v19 = editCopy;
+  v20 = array;
+  selfCopy = self;
+  v14 = array;
+  v15 = editCopy;
+  [stringCopy enumerateAttribute:v10 inRange:range options:v13 usingBlock:{0, v18}];
 
   v16 = [v14 copy];
 
@@ -601,24 +601,24 @@ void __76__ICTTTextEditGrouper_editsByAddingCheckmarkEditsToEdit_inAttributedStr
   }
 }
 
-- (id)editsByAddingTableEditsToEdit:(id)a3 inAttributedString:(id)a4
+- (id)editsByAddingTableEditsToEdit:(id)edit inAttributedString:(id)string
 {
-  v6 = a3;
+  editCopy = edit;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a4;
-  v9 = [v7 array];
-  v10 = [v6 range];
+  stringCopy = string;
+  array = [v7 array];
+  range = [editCopy range];
   v12 = v11;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__ICTTTextEditGrouper_editsByAddingTableEditsToEdit_inAttributedString___block_invoke;
   v17[3] = &unk_2781983B0;
-  v18 = v6;
-  v19 = self;
-  v20 = v9;
-  v13 = v9;
-  v14 = v6;
-  [v8 enumerateAttribute:@"NSAttachment" inRange:v10 options:v12 usingBlock:{0, v17}];
+  v18 = editCopy;
+  selfCopy = self;
+  v20 = array;
+  v13 = array;
+  v14 = editCopy;
+  [stringCopy enumerateAttribute:@"NSAttachment" inRange:range options:v12 usingBlock:{0, v17}];
 
   v15 = [v13 copy];
 
@@ -827,25 +827,25 @@ uint64_t __72__ICTTTextEditGrouper_editsByAddingTableEditsToEdit_inAttributedStr
   return v11;
 }
 
-- (id)editsByAddingAllowedAttachmentEditsToEdit:(id)a3 inAttributedString:(id)a4
+- (id)editsByAddingAllowedAttachmentEditsToEdit:(id)edit inAttributedString:(id)string
 {
-  v6 = a3;
+  editCopy = edit;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a4;
-  v9 = [v7 array];
+  stringCopy = string;
+  array = [v7 array];
   v10 = *MEMORY[0x277D74060];
-  v11 = [v6 range];
+  range = [editCopy range];
   v13 = v12;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__ICTTTextEditGrouper_editsByAddingAllowedAttachmentEditsToEdit_inAttributedString___block_invoke;
   v18[3] = &unk_2781983D8;
   v18[4] = self;
-  v19 = v6;
-  v20 = v9;
-  v14 = v9;
-  v15 = v6;
-  [v8 enumerateAttribute:v10 inRange:v11 options:v13 usingBlock:{0, v18}];
+  v19 = editCopy;
+  v20 = array;
+  v14 = array;
+  v15 = editCopy;
+  [stringCopy enumerateAttribute:v10 inRange:range options:v13 usingBlock:{0, v18}];
 
   v16 = [v14 copy];
 

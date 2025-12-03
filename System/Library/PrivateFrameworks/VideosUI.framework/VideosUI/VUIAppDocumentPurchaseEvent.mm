@@ -1,12 +1,12 @@
 @interface VUIAppDocumentPurchaseEvent
-- (VUIAppDocumentPurchaseEvent)initWithDescriptor:(id)a3;
-- (VUIAppDocumentPurchaseEvent)initWithPurchaseEventDescriptor:(id)a3;
+- (VUIAppDocumentPurchaseEvent)initWithDescriptor:(id)descriptor;
+- (VUIAppDocumentPurchaseEvent)initWithPurchaseEventDescriptor:(id)descriptor;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation VUIAppDocumentPurchaseEvent
 
-- (VUIAppDocumentPurchaseEvent)initWithDescriptor:(id)a3
+- (VUIAppDocumentPurchaseEvent)initWithDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -16,23 +16,23 @@
   return 0;
 }
 
-- (VUIAppDocumentPurchaseEvent)initWithPurchaseEventDescriptor:(id)a3
+- (VUIAppDocumentPurchaseEvent)initWithPurchaseEventDescriptor:(id)descriptor
 {
   v4.receiver = self;
   v4.super_class = VUIAppDocumentPurchaseEvent;
-  return [(VUIAppDocumentUpdateEvent *)&v4 initWithDescriptor:a3];
+  return [(VUIAppDocumentUpdateEvent *)&v4 initWithDescriptor:descriptor];
 }
 
 - (id)dictionaryRepresentation
 {
   v9.receiver = self;
   v9.super_class = VUIAppDocumentPurchaseEvent;
-  v3 = [(VUIAppDocumentUpdateEvent *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(VUIAppDocumentUpdateEvent *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(VUIAppDocumentPurchaseEvent *)self _purchaseEventDescriptor];
-  v6 = [v5 canonicalID];
-  [v4 vui_setObjectIfNotNil:v6 forKey:@"canonicalId"];
+  _purchaseEventDescriptor = [(VUIAppDocumentPurchaseEvent *)self _purchaseEventDescriptor];
+  canonicalID = [_purchaseEventDescriptor canonicalID];
+  [v4 vui_setObjectIfNotNil:canonicalID forKey:@"canonicalId"];
 
   v7 = [v4 copy];
 

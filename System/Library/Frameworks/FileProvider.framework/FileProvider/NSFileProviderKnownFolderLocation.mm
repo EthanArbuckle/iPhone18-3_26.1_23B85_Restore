@@ -1,23 +1,23 @@
 @interface NSFileProviderKnownFolderLocation
-- (NSFileProviderKnownFolderLocation)initWithExistingItemIdentifier:(id)a3;
-- (NSFileProviderKnownFolderLocation)initWithParentItemIdentifier:(id)a3 filename:(id)a4;
+- (NSFileProviderKnownFolderLocation)initWithExistingItemIdentifier:(id)identifier;
+- (NSFileProviderKnownFolderLocation)initWithParentItemIdentifier:(id)identifier filename:(id)filename;
 @end
 
 @implementation NSFileProviderKnownFolderLocation
 
-- (NSFileProviderKnownFolderLocation)initWithParentItemIdentifier:(id)a3 filename:(id)a4
+- (NSFileProviderKnownFolderLocation)initWithParentItemIdentifier:(id)identifier filename:(id)filename
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FPKnownFolderPathMatchingLocation alloc] initWithParentItemIdentifier:v7 filename:v6];
+  filenameCopy = filename;
+  identifierCopy = identifier;
+  v8 = [[FPKnownFolderPathMatchingLocation alloc] initWithParentItemIdentifier:identifierCopy filename:filenameCopy];
 
   return &v8->super;
 }
 
-- (NSFileProviderKnownFolderLocation)initWithExistingItemIdentifier:(id)a3
+- (NSFileProviderKnownFolderLocation)initWithExistingItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[FPKnownFolderExistingLocation alloc] initWithExistingItemIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[FPKnownFolderExistingLocation alloc] initWithExistingItemIdentifier:identifierCopy];
 
   return &v5->super;
 }

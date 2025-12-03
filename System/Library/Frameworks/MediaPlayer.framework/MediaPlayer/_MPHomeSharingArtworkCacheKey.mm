@@ -1,7 +1,7 @@
 @interface _MPHomeSharingArtworkCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (_MPHomeSharingArtworkCacheKey)initWithPersistentID:(unint64_t)a3 size:(CGSize)a4;
+- (_MPHomeSharingArtworkCacheKey)initWithPersistentID:(unint64_t)d size:(CGSize)size;
 - (unint64_t)hash;
 @end
 
@@ -25,15 +25,15 @@
   return v5 ^ llround(v6);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 persistentID];
-    v7 = [(_MPHomeSharingArtworkCacheKey *)self persistentID];
+    v5 = equalCopy;
+    persistentID = [v5 persistentID];
+    persistentID2 = [(_MPHomeSharingArtworkCacheKey *)self persistentID];
     [v5 size];
     v9 = v8;
     v11 = v10;
@@ -45,7 +45,7 @@
       v13 = 0;
     }
 
-    v15 = v6 == v7 && v13;
+    v15 = persistentID == persistentID2 && v13;
   }
 
   else
@@ -56,16 +56,16 @@
   return v15;
 }
 
-- (_MPHomeSharingArtworkCacheKey)initWithPersistentID:(unint64_t)a3 size:(CGSize)a4
+- (_MPHomeSharingArtworkCacheKey)initWithPersistentID:(unint64_t)d size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = _MPHomeSharingArtworkCacheKey;
   result = [(_MPHomeSharingArtworkCacheKey *)&v8 init];
   if (result)
   {
-    result->_persistentID = a3;
+    result->_persistentID = d;
     result->_size.width = width;
     result->_size.height = height;
   }

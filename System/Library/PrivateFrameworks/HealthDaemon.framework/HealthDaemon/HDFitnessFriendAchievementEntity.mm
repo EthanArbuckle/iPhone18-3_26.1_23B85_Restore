@@ -1,34 +1,34 @@
 @interface HDFitnessFriendAchievementEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)enumerateAchievementsWithPredicate:(id)a3 anchor:(id *)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)enumerateAchievementsWithPredicate:(id)predicate anchor:(id *)anchor profile:(id)profile error:(id *)error handler:(id)handler;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
 @end
 
 @implementation HDFitnessFriendAchievementEntity
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDFitnessFriendAchievementEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDFitnessFriendAchievementEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v28[5] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a5;
+  objectCopy = object;
+  dCopy = d;
+  databaseCopy = database;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDFitnessFriendAchievementEntity.m" lineNumber:84 description:{@"Subclasses must override %s", "+[HDFitnessFriendAchievementEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDFitnessFriendAchievementEntity.m" lineNumber:84 description:{@"Subclasses must override %s", "+[HDFitnessFriendAchievementEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v28[0] = @"data_id";
@@ -41,11 +41,11 @@
   v25[1] = 3221225472;
   v25[2] = __98__HDFitnessFriendAchievementEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &unk_278613DE8;
-  v26 = v13;
-  v27 = v12;
-  v17 = v12;
-  v18 = v13;
-  v19 = [a1 insertOrReplaceEntity:1 database:v14 properties:v16 error:a7 bindingHandler:v25];
+  v26 = dCopy;
+  v27 = objectCopy;
+  v17 = objectCopy;
+  v18 = dCopy;
+  v19 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v16 error:error bindingHandler:v25];
 
   if (v19)
   {
@@ -79,25 +79,25 @@ void __98__HDFitnessFriendAchievementEntity_insertDataObject_withProvenance_inDa
   MEMORY[0x22AAC6BB0](a2, @"value", v7);
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addFitnessFriendAchievements:a3];
+    [collection addFitnessFriendAchievements:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (BOOL)enumerateAchievementsWithPredicate:(id)a3 anchor:(id *)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)enumerateAchievementsWithPredicate:(id)predicate anchor:(id *)anchor profile:(id)profile error:(id *)error handler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  if (a4)
+  predicateCopy = predicate;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (anchor)
   {
-    v13 = *a4;
+    v13 = *anchor;
     v14 = *MEMORY[0x277D10A40];
     if (v13)
     {
@@ -117,16 +117,16 @@ void __98__HDFitnessFriendAchievementEntity_insertDataObject_withProvenance_inDa
     v14 = *MEMORY[0x277D10A40];
   }
 
-  v16 = [MEMORY[0x277CCD720] fitnessFriendAchievementType];
-  v17 = [(HDSampleEntity *)HDFitnessFriendAchievementEntity entityEnumeratorWithType:v16 profile:v11];
+  fitnessFriendAchievementType = [MEMORY[0x277CCD720] fitnessFriendAchievementType];
+  v17 = [(HDSampleEntity *)HDFitnessFriendAchievementEntity entityEnumeratorWithType:fitnessFriendAchievementType profile:profileCopy];
 
-  v18 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v10 otherPredicate:v15];
+  v18 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:predicateCopy otherPredicate:v15];
   [v17 setPredicate:v18];
 
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
-  v32 = [v13 longLongValue];
+  longLongValue = [v13 longLongValue];
   v19 = [MEMORY[0x277D10B68] orderingTermWithProperty:v14 entityClass:objc_opt_class() ascending:1];
   v33[0] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -137,12 +137,12 @@ void __98__HDFitnessFriendAchievementEntity_insertDataObject_withProvenance_inDa
   v26[2] = __100__HDFitnessFriendAchievementEntity_enumerateAchievementsWithPredicate_anchor_profile_error_handler___block_invoke;
   v26[3] = &unk_278622330;
   v28 = &v29;
-  v21 = v12;
+  v21 = handlerCopy;
   v27 = v21;
-  v22 = [v17 enumerateWithError:a6 handler:v26];
-  if (a4)
+  v22 = [v17 enumerateWithError:error handler:v26];
+  if (anchor)
   {
-    *a4 = [MEMORY[0x277CCABB0] numberWithLongLong:v30[3]];
+    *anchor = [MEMORY[0x277CCABB0] numberWithLongLong:v30[3]];
   }
 
   _Block_object_dispose(&v29, 8);

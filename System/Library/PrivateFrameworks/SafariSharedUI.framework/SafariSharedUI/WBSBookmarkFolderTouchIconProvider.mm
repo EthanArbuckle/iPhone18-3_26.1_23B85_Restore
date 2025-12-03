@@ -3,22 +3,22 @@
 - (NSArray)allFolderUUIDs;
 - (WBSBookmarkFolderTouchIconProvider)init;
 - (WBSSiteMetadataProviderDelegate)providerDelegate;
-- (id)_arrayByPaddingArray:(id)a3 toMaximumNumberOfThumbnailsWithObject:(id)a4 targetCount:(unint64_t)a5;
-- (id)_drawTouchIconForRequest:(id)a3;
-- (id)backgroundColorForRequest:(id)a3;
-- (id)cachedImageForFolderUUID:(id)a3;
-- (id)configurationForRequest:(id)a3;
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4;
-- (void)_coalesceResponseDispatchForRequest:(id)a3;
-- (void)_dispatchResponseForRequest:(id)a3;
-- (void)_dispatchResponseForRequest:(id)a3 touchIcon:(id)a4;
-- (void)_prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4;
-- (void)_registerInfo:(id)a3 forRequest:(id)a4;
-- (void)_stopWatchingUpdatesForRequests:(id)a3;
-- (void)contentOfFolderDidUpdateWithUUID:(id)a3;
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4;
-- (void)requestsWithFolderUUIDsDidBecomeInvalid:(id)a3;
-- (void)stopWatchingUpdatesForRequest:(id)a3;
+- (id)_arrayByPaddingArray:(id)array toMaximumNumberOfThumbnailsWithObject:(id)object targetCount:(unint64_t)count;
+- (id)_drawTouchIconForRequest:(id)request;
+- (id)backgroundColorForRequest:(id)request;
+- (id)cachedImageForFolderUUID:(id)d;
+- (id)configurationForRequest:(id)request;
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates;
+- (void)_coalesceResponseDispatchForRequest:(id)request;
+- (void)_dispatchResponseForRequest:(id)request;
+- (void)_dispatchResponseForRequest:(id)request touchIcon:(id)icon;
+- (void)_prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response;
+- (void)_registerInfo:(id)info forRequest:(id)request;
+- (void)_stopWatchingUpdatesForRequests:(id)requests;
+- (void)contentOfFolderDidUpdateWithUUID:(id)d;
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response;
+- (void)requestsWithFolderUUIDsDidBecomeInvalid:(id)invalid;
+- (void)stopWatchingUpdatesForRequest:(id)request;
 @end
 
 @implementation WBSBookmarkFolderTouchIconProvider
@@ -31,23 +31,23 @@
   if (v2)
   {
     v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.WBSBookmarkFolderTouchIconProvider.%@.%p._internalQueue", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     bookmarkFolderIdentifiersToRequestSets = v2->_bookmarkFolderIdentifiersToRequestSets;
-    v2->_bookmarkFolderIdentifiersToRequestSets = v8;
+    v2->_bookmarkFolderIdentifiersToRequestSets = dictionary;
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     requestsToRequestInfos = v2->_requestsToRequestInfos;
-    v2->_requestsToRequestInfos = v10;
+    v2->_requestsToRequestInfos = dictionary2;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     folderUUIDsToTouchIconInfo = v2->_folderUUIDsToTouchIconInfo;
-    v2->_folderUUIDsToTouchIconInfo = v12;
+    v2->_folderUUIDsToTouchIconInfo = dictionary3;
 
     v14 = v2;
   }
@@ -55,7 +55,7 @@
   return v2;
 }
 
-- (id)configurationForRequest:(id)a3
+- (id)configurationForRequest:(id)request
 {
   if (defaultConfiguration_onceToken != -1)
   {
@@ -71,36 +71,36 @@
 {
   v3 = self->_folderUUIDsToTouchIconInfo;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo allKeys];
+  allKeys = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo allKeys];
   objc_sync_exit(v3);
 
-  return v4;
+  return allKeys;
 }
 
-- (id)cachedImageForFolderUUID:(id)a3
+- (id)cachedImageForFolderUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_folderUUIDsToTouchIconInfo;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo objectForKeyedSubscript:v4];
-  v7 = [v6 touchIcon];
+  v6 = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo objectForKeyedSubscript:dCopy];
+  touchIcon = [v6 touchIcon];
 
   objc_sync_exit(v5);
 
-  return v7;
+  return touchIcon;
 }
 
-- (void)contentOfFolderDidUpdateWithUUID:(id)a3
+- (void)contentOfFolderDidUpdateWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__WBSBookmarkFolderTouchIconProvider_contentOfFolderDidUpdateWithUUID___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -138,17 +138,17 @@ void __71__WBSBookmarkFolderTouchIconProvider_contentOfFolderDidUpdateWithUUID__
   }
 }
 
-- (void)requestsWithFolderUUIDsDidBecomeInvalid:(id)a3
+- (void)requestsWithFolderUUIDsDidBecomeInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSBookmarkFolderTouchIconProvider_requestsWithFolderUUIDsDidBecomeInvalid___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidCopy;
+  v6 = invalidCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -199,21 +199,21 @@ void __78__WBSBookmarkFolderTouchIconProvider_requestsWithFolderUUIDsDidBecomeIn
   [*(a1 + 32) _stopWatchingUpdatesForRequests:v3];
 }
 
-- (id)responseForRequest:(id)a3 willProvideUpdates:(BOOL *)a4
+- (id)responseForRequest:(id)request willProvideUpdates:(BOOL *)updates
 {
-  v6 = a3;
-  *a4 = [(WBSBookmarkFolderTouchIconProvider *)self canProvideUpdatesForRequest:v6];
-  v7 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:v6];
+  requestCopy = request;
+  *updates = [(WBSBookmarkFolderTouchIconProvider *)self canProvideUpdatesForRequest:requestCopy];
+  v7 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:requestCopy];
   v8 = self->_folderUUIDsToTouchIconInfo;
   objc_sync_enter(v8);
   v9 = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo objectForKey:v7];
-  v10 = [v9 touchIcon];
+  touchIcon = [v9 touchIcon];
 
   objc_sync_exit(v8);
-  if (v10 || ([(WBSBookmarkFolderTouchIconProvider *)self defaultFolderIconForRequest:v6], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (touchIcon || ([(WBSBookmarkFolderTouchIconProvider *)self defaultFolderIconForRequest:requestCopy], (touchIcon = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:v6];
-    v12 = [WBSTouchIconResponse responseWithURL:0 touchIcon:v10 generated:1 extractedBackgroundColor:v11];
+    v11 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:requestCopy];
+    v12 = [WBSTouchIconResponse responseWithURL:0 touchIcon:touchIcon generated:1 extractedBackgroundColor:v11];
   }
 
   else
@@ -224,32 +224,32 @@ void __78__WBSBookmarkFolderTouchIconProvider_requestsWithFolderUUIDsDidBecomeIn
   return v12;
 }
 
-- (void)prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4
+- (void)prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response
 {
-  v6 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__WBSBookmarkFolderTouchIconProvider_prepareResponseForRequest_allowDelayedResponse___block_invoke;
   block[3] = &unk_1E82834C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = requestCopy;
+  responseCopy = response;
+  v8 = requestCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)stopWatchingUpdatesForRequest:(id)a3
+- (void)stopWatchingUpdatesForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__WBSBookmarkFolderTouchIconProvider_stopWatchingUpdatesForRequest___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -260,16 +260,16 @@ void __68__WBSBookmarkFolderTouchIconProvider_stopWatchingUpdatesForRequest___bl
   [v1 _stopWatchingUpdatesForRequests:v2];
 }
 
-- (void)_stopWatchingUpdatesForRequests:(id)a3
+- (void)_stopWatchingUpdatesForRequests:(id)requests
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestsCopy = requests;
   v5 = [MEMORY[0x1E695DFA8] set];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = requestsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -289,8 +289,8 @@ void __68__WBSBookmarkFolderTouchIconProvider_stopWatchingUpdatesForRequest___bl
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 subrequestTokens];
-          [v5 unionSet:v14];
+          subrequestTokens = [v12 subrequestTokens];
+          [v5 unionSet:subrequestTokens];
 
           [(NSMutableDictionary *)self->_requestsToRequestInfos removeObjectForKey:v11];
           v15 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:v11];
@@ -343,40 +343,40 @@ void __63__WBSBookmarkFolderTouchIconProvider__appUsesLeftToRightLayout__block_i
   _appUsesLeftToRightLayout_usesLeftToRight = [v0 userInterfaceLayoutDirection] == 0;
 }
 
-- (id)backgroundColorForRequest:(id)a3
+- (id)backgroundColorForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WBSBookmarkFolderTouchIconProvider *)v4 backgroundColor];
-  if (v5)
+  requestCopy = request;
+  backgroundColor = [(WBSBookmarkFolderTouchIconProvider *)requestCopy backgroundColor];
+  if (backgroundColor)
   {
-    v6 = v4;
+    selfCopy = requestCopy;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = [(WBSBookmarkFolderTouchIconProvider *)v6 backgroundColor];
+  backgroundColor2 = [(WBSBookmarkFolderTouchIconProvider *)selfCopy backgroundColor];
 
-  return v7;
+  return backgroundColor2;
 }
 
-- (void)_prepareResponseForRequest:(id)a3 allowDelayedResponse:(BOOL)a4
+- (void)_prepareResponseForRequest:(id)request allowDelayedResponse:(BOOL)response
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(WBSBookmarkFolderTouchIconProvider *)self configurationForRequest:v6];
-  v8 = -[WBSBookmarkFolderTouchIconProvider subrequestsForRequest:maximumNumberOfSubrequests:](self, "subrequestsForRequest:maximumNumberOfSubrequests:", v6, [v7 maximumNumberOfThumbnailIcons]);
-  v9 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:v6];
-  v10 = [v9 subrequests];
-  v11 = [v10 isEqualToArray:v8];
+  responseCopy = response;
+  requestCopy = request;
+  v7 = [(WBSBookmarkFolderTouchIconProvider *)self configurationForRequest:requestCopy];
+  v8 = -[WBSBookmarkFolderTouchIconProvider subrequestsForRequest:maximumNumberOfSubrequests:](self, "subrequestsForRequest:maximumNumberOfSubrequests:", requestCopy, [v7 maximumNumberOfThumbnailIcons]);
+  v9 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:requestCopy];
+  subrequests = [v9 subrequests];
+  v11 = [subrequests isEqualToArray:v8];
 
   if ((v11 & 1) == 0)
   {
     v12 = [v8 count];
-    v13 = [(WBSBookmarkFolderTouchIconProvider *)self defaultFolderIconForRequest:v6];
-    v14 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:v6];
+    v13 = [(WBSBookmarkFolderTouchIconProvider *)self defaultFolderIconForRequest:requestCopy];
+    v14 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:requestCopy];
     v15 = [WBSTouchIconResponse responseWithURL:0 touchIcon:v13 generated:1 extractedBackgroundColor:v14];
     WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
     if (v12)
@@ -384,30 +384,30 @@ void __63__WBSBookmarkFolderTouchIconProvider__appUsesLeftToRightLayout__block_i
       v29 = WeakRetained;
       v27 = v14;
       v28 = v13;
-      if (v4)
+      if (responseCopy)
       {
-        [WeakRetained siteMetadataProvider:self didReceiveResponse:v15 ofType:1 didReceiveNewData:0 forRequest:v6];
+        [WeakRetained siteMetadataProvider:self didReceiveResponse:v15 ofType:1 didReceiveNewData:0 forRequest:requestCopy];
       }
 
       v17 = objc_alloc_init(_WBSBookmarkFolderTouchIconProviderRequestInfo);
       [(_WBSBookmarkFolderTouchIconProviderRequestInfo *)v17 setSubrequests:v8];
-      [(WBSBookmarkFolderTouchIconProvider *)self _registerInfo:v17 forRequest:v6];
+      [(WBSBookmarkFolderTouchIconProvider *)self _registerInfo:v17 forRequest:requestCopy];
       v18 = [MEMORY[0x1E695DFA8] set];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __86__WBSBookmarkFolderTouchIconProvider__prepareResponseForRequest_allowDelayedResponse___block_invoke;
       v31[3] = &unk_1E8283518;
       v32 = v7;
-      v33 = self;
+      selfCopy = self;
       v19 = v29;
       v34 = v19;
-      v35 = v6;
+      v35 = requestCopy;
       v36 = v18;
       v20 = v18;
       [v8 enumerateObjectsUsingBlock:v31];
       [(_WBSBookmarkFolderTouchIconProviderRequestInfo *)v17 setSubrequestTokens:v20];
-      v21 = [v9 subrequestTokens];
-      [v19 siteMetadataProvider:self cancelRequestsWithTokens:v21];
+      subrequestTokens = [v9 subrequestTokens];
+      [v19 siteMetadataProvider:self cancelRequestsWithTokens:subrequestTokens];
 
       v22 = v29;
       v14 = v27;
@@ -417,10 +417,10 @@ void __63__WBSBookmarkFolderTouchIconProvider__appUsesLeftToRightLayout__block_i
     else
     {
       v22 = WeakRetained;
-      [WeakRetained siteMetadataProvider:self didReceiveResponse:v15 ofType:0 didReceiveNewData:1 forRequest:v6];
-      v23 = [v7 backgroundColorForEmptySlots];
+      [WeakRetained siteMetadataProvider:self didReceiveResponse:v15 ofType:0 didReceiveNewData:1 forRequest:requestCopy];
+      backgroundColorForEmptySlots = [v7 backgroundColorForEmptySlots];
 
-      if (v23)
+      if (backgroundColorForEmptySlots)
       {
         v24 = objc_alloc_init(_WBSBookmarkFolderTouchIconProviderRequestInfo);
         [MEMORY[0x1E695DFD8] set];
@@ -430,8 +430,8 @@ void __63__WBSBookmarkFolderTouchIconProvider__appUsesLeftToRightLayout__block_i
 
         v22 = v25;
         v15 = v30;
-        [(WBSBookmarkFolderTouchIconProvider *)self _registerInfo:v24 forRequest:v6];
-        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:v6];
+        [(WBSBookmarkFolderTouchIconProvider *)self _registerInfo:v24 forRequest:requestCopy];
+        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:requestCopy];
       }
     }
   }
@@ -497,11 +497,11 @@ void __86__WBSBookmarkFolderTouchIconProvider__prepareResponseForRequest_allowDe
   }
 }
 
-- (void)_registerInfo:(id)a3 forRequest:(id)a4
+- (void)_registerInfo:(id)info forRequest:(id)request
 {
-  v8 = a4;
-  [(NSMutableDictionary *)self->_requestsToRequestInfos setObject:a3 forKeyedSubscript:v8];
-  v6 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:v8];
+  requestCopy = request;
+  [(NSMutableDictionary *)self->_requestsToRequestInfos setObject:info forKeyedSubscript:requestCopy];
+  v6 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:requestCopy];
   if (v6)
   {
     v7 = [(NSMutableDictionary *)self->_bookmarkFolderIdentifiersToRequestSets objectForKeyedSubscript:v6];
@@ -511,14 +511,14 @@ void __86__WBSBookmarkFolderTouchIconProvider__prepareResponseForRequest_allowDe
       [(NSMutableDictionary *)self->_bookmarkFolderIdentifiersToRequestSets setObject:v7 forKeyedSubscript:v6];
     }
 
-    [v7 addObject:v8];
+    [v7 addObject:requestCopy];
   }
 }
 
-- (void)_coalesceResponseDispatchForRequest:(id)a3
+- (void)_coalesceResponseDispatchForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:v4];
+  requestCopy = request;
+  v5 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:requestCopy];
   v6 = v5;
   if (v5 && ([v5 hasScheduledCoalescedUpdate] & 1) == 0)
   {
@@ -531,7 +531,7 @@ void __86__WBSBookmarkFolderTouchIconProvider__prepareResponseForRequest_allowDe
     v9[2] = __74__WBSBookmarkFolderTouchIconProvider__coalesceResponseDispatchForRequest___block_invoke;
     v9[3] = &unk_1E8283540;
     objc_copyWeak(&v12, &location);
-    v10 = v4;
+    v10 = requestCopy;
     v11 = v6;
     dispatch_after(v7, internalQueue, v9);
 
@@ -550,24 +550,24 @@ uint64_t __74__WBSBookmarkFolderTouchIconProvider__coalesceResponseDispatchForRe
   return [v3 setHasScheduledCoalescedUpdate:0];
 }
 
-- (void)_dispatchResponseForRequest:(id)a3
+- (void)_dispatchResponseForRequest:(id)request
 {
-  v23 = a3;
+  requestCopy = request;
   v4 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:?];
   if (v4)
   {
-    [v23 sizeForDrawing];
+    [requestCopy sizeForDrawing];
     v6 = v5;
     v8 = v7;
-    v9 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:v23];
+    v9 = [(WBSBookmarkFolderTouchIconProvider *)self folderUUIDForRequest:requestCopy];
     v10 = self->_folderUUIDsToTouchIconInfo;
     objc_sync_enter(v10);
     v11 = [(NSMutableDictionary *)self->_folderUUIDsToTouchIconInfo objectForKey:v9];
     objc_sync_exit(v10);
 
-    v12 = [v4 thumbnailImages];
-    v13 = [MEMORY[0x1E695DFB0] null];
-    v14 = [v12 containsObject:v13];
+    thumbnailImages = [v4 thumbnailImages];
+    null = [MEMORY[0x1E695DFB0] null];
+    v14 = [thumbnailImages containsObject:null];
 
     if (v14)
     {
@@ -576,18 +576,18 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v15 = [v4 backgroundColors];
-    v16 = [v11 backgroundColors];
-    if ([v16 isEqual:v15])
+    backgroundColors = [v4 backgroundColors];
+    backgroundColors2 = [v11 backgroundColors];
+    if ([backgroundColors2 isEqual:backgroundColors])
     {
-      v17 = [v11 thumbnailImages];
-      v18 = [v17 isEqualToArray:v12];
+      thumbnailImages2 = [v11 thumbnailImages];
+      v18 = [thumbnailImages2 isEqualToArray:thumbnailImages];
 
       if (!v18)
       {
 LABEL_10:
-        v16 = [(WBSBookmarkFolderTouchIconProvider *)self _drawTouchIconForRequest:v23];
-        v21 = [[_WBSBookmarkFolderTouchIconProviderInfo alloc] initWithThumbnailImages:v12 backgroundColors:v15 touchIcon:v16];
+        backgroundColors2 = [(WBSBookmarkFolderTouchIconProvider *)self _drawTouchIconForRequest:requestCopy];
+        v21 = [[_WBSBookmarkFolderTouchIconProviderInfo alloc] initWithThumbnailImages:thumbnailImages backgroundColors:backgroundColors touchIcon:backgroundColors2];
         if (v9)
         {
           v22 = self->_folderUUIDsToTouchIconInfo;
@@ -596,16 +596,16 @@ LABEL_10:
           objc_sync_exit(v22);
         }
 
-        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:v23 touchIcon:v16];
+        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:requestCopy touchIcon:backgroundColors2];
 
         goto LABEL_13;
       }
 
-      v16 = [v11 touchIcon];
-      [v16 size];
-      if (v16 && v19 >= v6 && v20 >= v8)
+      backgroundColors2 = [v11 touchIcon];
+      [backgroundColors2 size];
+      if (backgroundColors2 && v19 >= v6 && v20 >= v8)
       {
-        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:v23 touchIcon:v16];
+        [(WBSBookmarkFolderTouchIconProvider *)self _dispatchResponseForRequest:requestCopy touchIcon:backgroundColors2];
 LABEL_13:
 
         goto LABEL_14;
@@ -618,47 +618,47 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)_dispatchResponseForRequest:(id)a3 touchIcon:(id)a4
+- (void)_dispatchResponseForRequest:(id)request touchIcon:(id)icon
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:v11];
+  requestCopy = request;
+  iconCopy = icon;
+  v7 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:requestCopy];
 
   if (v7)
   {
-    v8 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:v11];
-    v9 = [WBSTouchIconResponse responseWithURL:0 touchIcon:v6 generated:1 extractedBackgroundColor:v8];
+    v8 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:requestCopy];
+    v9 = [WBSTouchIconResponse responseWithURL:0 touchIcon:iconCopy generated:1 extractedBackgroundColor:v8];
     WeakRetained = objc_loadWeakRetained(&self->_providerDelegate);
-    [WeakRetained siteMetadataProvider:self didReceiveResponse:v9 ofType:0 didReceiveNewData:1 forRequest:v11];
+    [WeakRetained siteMetadataProvider:self didReceiveResponse:v9 ofType:0 didReceiveNewData:1 forRequest:requestCopy];
   }
 }
 
-- (id)_drawTouchIconForRequest:(id)a3
+- (id)_drawTouchIconForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WBSBookmarkFolderTouchIconProvider *)self configurationForRequest:v4];
-  v6 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:v4];
-  [v4 sizeForDrawing];
+  requestCopy = request;
+  v5 = [(WBSBookmarkFolderTouchIconProvider *)self configurationForRequest:requestCopy];
+  v6 = [(NSMutableDictionary *)self->_requestsToRequestInfos objectForKeyedSubscript:requestCopy];
+  [requestCopy sizeForDrawing];
   v8 = v7;
   v10 = v9;
-  v38 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:v4];
+  v38 = [(WBSBookmarkFolderTouchIconProvider *)self backgroundColorForRequest:requestCopy];
   [v38 safari_luminance];
   v12 = v11;
   v13 = [MEMORY[0x1E69DC888] safari_colorWithRGBColorComponents:&unk_1F466CFE0];
-  v14 = [v6 thumbnailImages];
-  v15 = [v6 backgroundColors];
-  v16 = [v5 backgroundColorForEmptySlots];
+  thumbnailImages = [v6 thumbnailImages];
+  backgroundColors = [v6 backgroundColors];
+  backgroundColorForEmptySlots = [v5 backgroundColorForEmptySlots];
 
-  if (v16)
+  if (backgroundColorForEmptySlots)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v18 = -[WBSBookmarkFolderTouchIconProvider _arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:](self, "_arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:", v14, v17, [v5 maximumNumberOfThumbnailIcons]);
+    null = [MEMORY[0x1E695DFB0] null];
+    v18 = -[WBSBookmarkFolderTouchIconProvider _arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:](self, "_arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:", thumbnailImages, null, [v5 maximumNumberOfThumbnailIcons]);
 
-    v19 = [v5 backgroundColorForEmptySlots];
-    v20 = -[WBSBookmarkFolderTouchIconProvider _arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:](self, "_arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:", v15, v19, [v5 maximumNumberOfThumbnailIcons]);
+    backgroundColorForEmptySlots2 = [v5 backgroundColorForEmptySlots];
+    v20 = -[WBSBookmarkFolderTouchIconProvider _arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:](self, "_arrayByPaddingArray:toMaximumNumberOfThumbnailsWithObject:targetCount:", backgroundColors, backgroundColorForEmptySlots2, [v5 maximumNumberOfThumbnailIcons]);
 
-    v15 = v20;
-    v14 = v18;
+    backgroundColors = v20;
+    thumbnailImages = v18;
   }
 
   v21 = +[WBSBookmarkFolderTouchIconProvider _appUsesLeftToRightLayout];
@@ -670,12 +670,12 @@ LABEL_15:
   v47 = v10;
   v22 = v5;
   v40 = v22;
-  v41 = self;
-  v37 = v4;
+  selfCopy = self;
+  v37 = requestCopy;
   v42 = v37;
-  v23 = v14;
+  v23 = thumbnailImages;
   v43 = v23;
-  v24 = v15;
+  v24 = backgroundColors;
   v44 = v24;
   v49 = v21;
   v48 = v12;
@@ -958,26 +958,26 @@ uint64_t __63__WBSBookmarkFolderTouchIconProvider__drawTouchIconForRequest___blo
   return v5 ^ 1u;
 }
 
-- (id)_arrayByPaddingArray:(id)a3 toMaximumNumberOfThumbnailsWithObject:(id)a4 targetCount:(unint64_t)a5
+- (id)_arrayByPaddingArray:(id)array toMaximumNumberOfThumbnailsWithObject:(id)object targetCount:(unint64_t)count
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count] >= a5)
+  arrayCopy = array;
+  objectCopy = object;
+  if ([arrayCopy count] >= count)
   {
-    v13 = v7;
+    v13 = arrayCopy;
   }
 
   else
   {
-    v9 = [v7 mutableCopy];
-    v10 = [v7 count];
-    v11 = a5 > v10;
-    v12 = a5 - v10;
+    v9 = [arrayCopy mutableCopy];
+    v10 = [arrayCopy count];
+    v11 = count > v10;
+    v12 = count - v10;
     if (v11)
     {
       do
       {
-        [v9 addObject:v8];
+        [v9 addObject:objectCopy];
         --v12;
       }
 

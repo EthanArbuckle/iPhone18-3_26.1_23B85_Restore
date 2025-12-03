@@ -1,10 +1,10 @@
 @interface OcclusionDebugView
-- (_TtC18CosmeticAssessment18OcclusionDebugView)initWithCoder:(id)a3;
+- (_TtC18CosmeticAssessment18OcclusionDebugView)initWithCoder:(id)coder;
 @end
 
 @implementation OcclusionDebugView
 
-- (_TtC18CosmeticAssessment18OcclusionDebugView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment18OcclusionDebugView)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();

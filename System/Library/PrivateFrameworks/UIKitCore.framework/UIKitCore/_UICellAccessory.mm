@@ -1,7 +1,7 @@
 @interface _UICellAccessory
-+ (id)accessoryWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (id)accessoryWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_UICellAccessory)init;
 - (id)description;
 @end
@@ -21,25 +21,25 @@
   return result;
 }
 
-+ (id)accessoryWithIdentifier:(id)a3
++ (id)accessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = objc_alloc_init(self);
+  [v5 setIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
+    identifier = [equalCopy identifier];
     v7 = identifier;
-    v8 = v6;
+    v8 = identifier;
     v9 = v8;
     if (v7 == v8)
     {
@@ -75,7 +75,7 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);

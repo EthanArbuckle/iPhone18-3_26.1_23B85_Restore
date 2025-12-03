@@ -3,9 +3,9 @@
 - (id)binaries;
 - (id)initForHarvestingBinaries;
 - (id)mappings;
-- (void)addBinaries:(id)a3;
-- (void)addBinaryMapping:(id)a3 forEncoder:(unsigned int)a4 atEncoderIndex:(unsigned int)a5 forIndex:(unsigned int)a6;
-- (void)addSampledCallFunctionIndex:(unint64_t)a3;
+- (void)addBinaries:(id)binaries;
+- (void)addBinaryMapping:(id)mapping forEncoder:(unsigned int)encoder atEncoderIndex:(unsigned int)index forIndex:(unsigned int)forIndex;
+- (void)addSampledCallFunctionIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -41,27 +41,27 @@
   return v4;
 }
 
-- (void)addSampledCallFunctionIndex:(unint64_t)a3
+- (void)addSampledCallFunctionIndex:(unint64_t)index
 {
   functionIndices = self->_functionIndices;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:index];
   [(NSMutableArray *)functionIndices addObject:v4];
 }
 
-- (void)addBinaryMapping:(id)a3 forEncoder:(unsigned int)a4 atEncoderIndex:(unsigned int)a5 forIndex:(unsigned int)a6
+- (void)addBinaryMapping:(id)mapping forEncoder:(unsigned int)encoder atEncoderIndex:(unsigned int)index forIndex:(unsigned int)forIndex
 {
   v35[9] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  mappingCopy = mapping;
+  if ([mappingCopy count])
   {
     v7 = 0;
     v8 = 1;
-    v25 = v6;
+    v25 = mappingCopy;
     do
     {
-      v9 = [v6 objectAtIndexedSubscript:v7];
-      v10 = [v9 binaryUniqueId];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%016llx", v10];
+      v9 = [mappingCopy objectAtIndexedSubscript:v7];
+      binaryUniqueId = [v9 binaryUniqueId];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%016llx", binaryUniqueId];
       if (v11)
       {
         v12 = [(NSMutableDictionary *)self->_binaryTypes objectForKeyedSubscript:v11];
@@ -88,13 +88,13 @@
         v33 = v13;
         v35[3] = v13;
         v34[4] = @"encID";
-        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a4];
+        v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:encoder];
         v35[4] = v14;
         v34[5] = @"encIndex";
-        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a5];
+        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:index];
         v35[5] = v15;
         v34[6] = @"index";
-        v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a6];
+        v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:forIndex];
         v35[6] = v16;
         v34[7] = @"drawCallIndex";
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_drawCallIndex];
@@ -117,26 +117,26 @@
         {
         }
 
-        v6 = v25;
+        mappingCopy = v25;
       }
 
       v7 = v8;
     }
 
-    while ([v6 count] > v8++);
+    while ([mappingCopy count] > v8++);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBinaries:(id)a3
+- (void)addBinaries:(id)binaries
 {
   v32 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = binaries;
   v19 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v19)
   {
@@ -173,8 +173,8 @@
               }
 
               v11 = *(*(&v22 + 1) + 8 * i);
-              v12 = [v11 uniqueIdentifier];
-              v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%016llx", v12];
+              uniqueIdentifier = [v11 uniqueIdentifier];
+              v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%016llx", uniqueIdentifier];
               [(NSMutableDictionary *)self->_binaryTypes setObject:v5 forKeyedSubscript:v13];
               binaries = self->_binaries;
               if (binaries)
@@ -183,8 +183,8 @@
 
                 if (!v15)
                 {
-                  v16 = [v11 binary];
-                  [(NSMutableDictionary *)self->_binaries setObject:v16 forKeyedSubscript:v13];
+                  binary = [v11 binary];
+                  [(NSMutableDictionary *)self->_binaries setObject:binary forKeyedSubscript:v13];
                 }
               }
             }
@@ -228,13 +228,13 @@
   v2 = [(ProgramAddressTableCollector *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     binaryTypes = v2->_binaryTypes;
-    v2->_binaryTypes = v3;
+    v2->_binaryTypes = dictionary;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mappings = v2->_mappings;
-    v2->_mappings = v5;
+    v2->_mappings = array;
 
     v2->_drawCallIndex = 0;
     v7 = objc_opt_new();
@@ -259,13 +259,13 @@
   v2 = [(ProgramAddressTableCollector *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     binaryTypes = v2->_binaryTypes;
-    v2->_binaryTypes = v3;
+    v2->_binaryTypes = dictionary;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     mappings = v2->_mappings;
-    v2->_mappings = v5;
+    v2->_mappings = array;
 
     v7 = objc_opt_new();
     binaries = v2->_binaries;

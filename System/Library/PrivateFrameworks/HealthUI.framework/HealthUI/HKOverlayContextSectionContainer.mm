@@ -1,23 +1,23 @@
 @interface HKOverlayContextSectionContainer
-- (HKOverlayContextSectionContainer)initWithContainerTitle:(id)a3 overlayContextSections:(id)a4 primaryDisplayType:(id)a5;
+- (HKOverlayContextSectionContainer)initWithContainerTitle:(id)title overlayContextSections:(id)sections primaryDisplayType:(id)type;
 @end
 
 @implementation HKOverlayContextSectionContainer
 
-- (HKOverlayContextSectionContainer)initWithContainerTitle:(id)a3 overlayContextSections:(id)a4 primaryDisplayType:(id)a5
+- (HKOverlayContextSectionContainer)initWithContainerTitle:(id)title overlayContextSections:(id)sections primaryDisplayType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  sectionsCopy = sections;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = HKOverlayContextSectionContainer;
   v12 = [(HKOverlayContextSectionContainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_localizedContainerTitle, a3);
-    objc_storeStrong(&v13->_overlayContextSections, a4);
-    objc_storeStrong(&v13->_primaryDisplayType, a5);
+    objc_storeStrong(&v12->_localizedContainerTitle, title);
+    objc_storeStrong(&v13->_overlayContextSections, sections);
+    objc_storeStrong(&v13->_primaryDisplayType, type);
   }
 
   return v13;

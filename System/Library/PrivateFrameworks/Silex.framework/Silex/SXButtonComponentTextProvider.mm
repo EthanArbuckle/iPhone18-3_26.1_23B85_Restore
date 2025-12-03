@@ -1,16 +1,16 @@
 @interface SXButtonComponentTextProvider
-- (id)textForComponent:(id)a3;
+- (id)textForComponent:(id)component;
 @end
 
 @implementation SXButtonComponentTextProvider
 
-- (id)textForComponent:(id)a3
+- (id)textForComponent:(id)component
 {
-  v3 = [a3 text];
-  v4 = v3;
-  if (v3)
+  text = [component text];
+  v4 = text;
+  if (text)
   {
-    v5 = v3;
+    v5 = text;
   }
 
   else

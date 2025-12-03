@@ -8,26 +8,26 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(LabeledButtonViewAccessibility *)self controlView];
-  v3 = [v2 accessibilityLabel];
+  controlView = [(LabeledButtonViewAccessibility *)self controlView];
+  accessibilityLabel = [controlView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(LabeledButtonViewAccessibility *)self controlView];
-  v3 = [v2 accessibilityTraits];
+  controlView = [(LabeledButtonViewAccessibility *)self controlView];
+  accessibilityTraits = [controlView accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(LabeledButtonViewAccessibility *)self controlView];
-  v3 = [v2 accessibilityValue];
+  controlView = [(LabeledButtonViewAccessibility *)self controlView];
+  accessibilityValue = [controlView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface HKCodableLevelViewDataConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSortedNormalizedBuckets:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSortedNormalizedBuckets:(id)buckets;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableLevelViewDataConfiguration
 
-- (void)addSortedNormalizedBuckets:(id)a3
+- (void)addSortedNormalizedBuckets:(id)buckets
 {
-  v4 = a3;
+  bucketsCopy = buckets;
   sortedNormalizedBuckets = self->_sortedNormalizedBuckets;
-  v8 = v4;
+  v8 = bucketsCopy;
   if (!sortedNormalizedBuckets)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sortedNormalizedBuckets;
     self->_sortedNormalizedBuckets = v6;
 
-    v4 = v8;
+    bucketsCopy = v8;
     sortedNormalizedBuckets = self->_sortedNormalizedBuckets;
   }
 
-  [(NSMutableArray *)sortedNormalizedBuckets addObject:v4];
+  [(NSMutableArray *)sortedNormalizedBuckets addObject:bucketsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableLevelViewDataConfiguration;
   v4 = [(HKCodableLevelViewDataConfiguration *)&v8 description];
-  v5 = [(HKCodableLevelViewDataConfiguration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableLevelViewDataConfiguration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,9 +45,9 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_normalizedValue];
-  [v3 setObject:v4 forKey:@"normalizedValue"];
+  [dictionary setObject:v4 forKey:@"normalizedValue"];
 
   if ([(NSMutableArray *)self->_sortedNormalizedBuckets count])
   {
@@ -71,8 +71,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -81,16 +81,16 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"sortedNormalizedBuckets"];
+    [dictionary setObject:v5 forKey:@"sortedNormalizedBuckets"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   v12 = 0u;
   v13 = 0u;
@@ -124,30 +124,30 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  v8[1] = self->_normalizedValue;
+  toCopy = to;
+  toCopy[1] = self->_normalizedValue;
   if ([(HKCodableLevelViewDataConfiguration *)self sortedNormalizedBucketsCount])
   {
-    [v8 clearSortedNormalizedBuckets];
-    v4 = [(HKCodableLevelViewDataConfiguration *)self sortedNormalizedBucketsCount];
-    if (v4)
+    [toCopy clearSortedNormalizedBuckets];
+    sortedNormalizedBucketsCount = [(HKCodableLevelViewDataConfiguration *)self sortedNormalizedBucketsCount];
+    if (sortedNormalizedBucketsCount)
     {
-      v5 = v4;
+      v5 = sortedNormalizedBucketsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableLevelViewDataConfiguration *)self sortedNormalizedBucketsAtIndex:i];
-        [v8 addSortedNormalizedBuckets:v7];
+        [toCopy addSortedNormalizedBuckets:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_normalizedValue;
   v13 = 0u;
   v14 = 0u;
@@ -169,7 +169,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addSortedNormalizedBuckets:v11];
 
         ++v10;
@@ -185,13 +185,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_normalizedValue == *(v4 + 1))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_normalizedValue == *(equalCopy + 1))
   {
     sortedNormalizedBuckets = self->_sortedNormalizedBuckets;
-    if (sortedNormalizedBuckets | v4[2])
+    if (sortedNormalizedBuckets | equalCopy[2])
     {
       v6 = [(NSMutableArray *)sortedNormalizedBuckets isEqual:?];
     }
@@ -245,16 +245,16 @@
   return [(NSMutableArray *)self->_sortedNormalizedBuckets hash]^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_normalizedValue = *(v4 + 1);
+  fromCopy = from;
+  self->_normalizedValue = *(fromCopy + 1);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

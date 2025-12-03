@@ -1,17 +1,17 @@
 @interface DynamicUIFlowController
 - (_TtC14iCloudSettings23DynamicUIFlowController)init;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation DynamicUIFlowController
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_27592BCE4(a4, a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_27592BCE4(result, error);
 }
 
 - (_TtC14iCloudSettings23DynamicUIFlowController)init

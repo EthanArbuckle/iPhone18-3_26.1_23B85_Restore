@@ -1,20 +1,20 @@
 @interface _CRSPassthroughService
-- (BOOL)canSatisfyCardRequest:(id)a3;
-- (void)requestCard:(id)a3 reply:(id)a4;
+- (BOOL)canSatisfyCardRequest:(id)request;
+- (void)requestCard:(id)card reply:(id)reply;
 @end
 
 @implementation _CRSPassthroughService
 
-- (void)requestCard:(id)a3 reply:(id)a4
+- (void)requestCard:(id)card reply:(id)reply
 {
-  v5 = a4;
-  if (v5)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v8 = v5;
-    v6 = [a3 content];
-    if ([v6 conformsToProtocol:&unk_2855F3B18])
+    v8 = replyCopy;
+    content = [card content];
+    if ([content conformsToProtocol:&unk_2855F3B18])
     {
-      v7 = v6;
+      v7 = content;
     }
 
     else
@@ -24,14 +24,14 @@
 
     v8[2](v8, v7, 0);
 
-    v5 = v8;
+    replyCopy = v8;
   }
 }
 
-- (BOOL)canSatisfyCardRequest:(id)a3
+- (BOOL)canSatisfyCardRequest:(id)request
 {
-  v3 = [a3 content];
-  v4 = [v3 conformsToProtocol:&unk_2855F3B18];
+  content = [request content];
+  v4 = [content conformsToProtocol:&unk_2855F3B18];
 
   return v4;
 }

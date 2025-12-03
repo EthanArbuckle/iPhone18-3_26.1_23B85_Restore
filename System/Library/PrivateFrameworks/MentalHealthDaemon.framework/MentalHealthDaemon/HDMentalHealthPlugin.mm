@@ -1,44 +1,44 @@
 @interface HDMentalHealthPlugin
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3;
-- (HDMentalHealthPlugin)initWithTypicalDayProvider:(id)a3;
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon;
+- (HDMentalHealthPlugin)initWithTypicalDayProvider:(id)provider;
 - (id)demoDataGeneratorClasses;
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 - (void)handleDatabaseObliteration;
 @end
 
 @implementation HDMentalHealthPlugin
 
-- (HDMentalHealthPlugin)initWithTypicalDayProvider:(id)a3
+- (HDMentalHealthPlugin)initWithTypicalDayProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = HDMentalHealthPlugin;
   v6 = [(HDMentalHealthPlugin *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_typicalDayProvider, a3);
+    objc_storeStrong(&v6->_typicalDayProvider, provider);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldLoadPluginForDaemon:(id)a3
++ (BOOL)shouldLoadPluginForDaemon:(id)daemon
 {
-  v3 = [a3 behavior];
-  v4 = [v3 isRealityDevice];
+  behavior = [daemon behavior];
+  isRealityDevice = [behavior isRealityDevice];
 
-  return v4 ^ 1;
+  return isRealityDevice ^ 1;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[HDMHProfileExtension alloc] initWithProfile:v4 typicalDayProvider:self->_typicalDayProvider];
+    v5 = [[HDMHProfileExtension alloc] initWithProfile:profileCopy typicalDayProvider:self->_typicalDayProvider];
   }
 
   else

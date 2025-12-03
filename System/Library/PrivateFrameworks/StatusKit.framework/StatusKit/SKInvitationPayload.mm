@@ -1,27 +1,27 @@
 @interface SKInvitationPayload
 + (id)logger;
 - (NSDictionary)payloadDictionary;
-- (SKInvitationPayload)initWithCoder:(id)a3;
-- (SKInvitationPayload)initWithData:(id)a3 dateCreated:(id)a4;
-- (SKInvitationPayload)initWithDictionary:(id)a3 dateCreated:(id)a4;
+- (SKInvitationPayload)initWithCoder:(id)coder;
+- (SKInvitationPayload)initWithData:(id)data dateCreated:(id)created;
+- (SKInvitationPayload)initWithDictionary:(id)dictionary dateCreated:(id)created;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKInvitationPayload
 
-- (SKInvitationPayload)initWithData:(id)a3 dateCreated:(id)a4
+- (SKInvitationPayload)initWithData:(id)data dateCreated:(id)created
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  createdCopy = created;
   v12.receiver = self;
   v12.super_class = SKInvitationPayload;
   v9 = [(SKInvitationPayload *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_payloadData, a3);
-    objc_storeStrong(&v10->_dateCreated, a4);
+    objc_storeStrong(&v9->_payloadData, data);
+    objc_storeStrong(&v10->_dateCreated, created);
   }
 
   return v10;
@@ -48,50 +48,50 @@ uint64_t __29__SKInvitationPayload_logger__block_invoke()
 
 - (id)description
 {
-  v3 = [(SKInvitationPayload *)self payloadDictionary];
+  payloadDictionary = [(SKInvitationPayload *)self payloadDictionary];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  if (v3)
+  if (payloadDictionary)
   {
-    v6 = [(SKInvitationPayload *)self dateCreated];
-    v7 = [v4 stringWithFormat:@"<%@: %p payloadDictionary = %@; dateCreated = %@>;", v5, self, v3, v6];;
+    dateCreated = [(SKInvitationPayload *)self dateCreated];
+    v7 = [v4 stringWithFormat:@"<%@: %p payloadDictionary = %@; dateCreated = %@>;", v5, self, payloadDictionary, dateCreated];;
   }
 
   else
   {
-    v6 = [(SKInvitationPayload *)self payloadData];
-    v8 = [(SKInvitationPayload *)self dateCreated];
-    v7 = [v4 stringWithFormat:@"<%@: %p payloadData = %@; dateCreated = %@>;", v5, self, v6, v8];;
+    dateCreated = [(SKInvitationPayload *)self payloadData];
+    dateCreated2 = [(SKInvitationPayload *)self dateCreated];
+    v7 = [v4 stringWithFormat:@"<%@: %p payloadData = %@; dateCreated = %@>;", v5, self, dateCreated, dateCreated2];;
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payloadData = self->_payloadData;
-  v5 = a3;
-  [v5 encodeObject:payloadData forKey:@"payloadData"];
-  [v5 encodeObject:self->_dateCreated forKey:@"dateCreated"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payloadData forKey:@"payloadData"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
 }
 
-- (SKInvitationPayload)initWithCoder:(id)a3
+- (SKInvitationPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payloadData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payloadData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
 
   v7 = [(SKInvitationPayload *)self initWithData:v5 dateCreated:v6];
   return v7;
 }
 
-- (SKInvitationPayload)initWithDictionary:(id)a3 dateCreated:(id)a4
+- (SKInvitationPayload)initWithDictionary:(id)dictionary dateCreated:(id)created
 {
-  v6 = a4;
-  if (a3)
+  createdCopy = created;
+  if (dictionary)
   {
     v11 = 0;
-    a3 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v11];
+    dictionary = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:&v11];
     v7 = v11;
     if (v7)
     {
@@ -103,32 +103,32 @@ uint64_t __29__SKInvitationPayload_logger__block_invoke()
     }
   }
 
-  v9 = [(SKInvitationPayload *)self initWithData:a3 dateCreated:v6];
+  v9 = [(SKInvitationPayload *)self initWithData:dictionary dateCreated:createdCopy];
 
   return v9;
 }
 
 - (NSDictionary)payloadDictionary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  p_cachedPayloadDictionary = &v2->_cachedPayloadDictionary;
-  cachedPayloadDictionary = v2->_cachedPayloadDictionary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_cachedPayloadDictionary = &selfCopy->_cachedPayloadDictionary;
+  cachedPayloadDictionary = selfCopy->_cachedPayloadDictionary;
   if (cachedPayloadDictionary)
   {
     v5 = cachedPayloadDictionary;
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
-    v6 = [(SKInvitationPayload *)v2 payloadData];
-    if (v6)
+    payloadData = [(SKInvitationPayload *)selfCopy payloadData];
+    if (payloadData)
     {
       v11 = 0;
-      v5 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:0 error:&v11];
+      v5 = [MEMORY[0x277CCAC58] propertyListWithData:payloadData options:0 format:0 error:&v11];
       v7 = v11;
       if (v7)
       {
@@ -145,7 +145,7 @@ uint64_t __29__SKInvitationPayload_logger__block_invoke()
       v5 = 0;
     }
 
-    v9 = v2;
+    v9 = selfCopy;
     objc_sync_enter(v9);
     objc_storeStrong(p_cachedPayloadDictionary, v5);
     objc_sync_exit(v9);

@@ -8,20 +8,20 @@
 - (void)donateRunInteractionWithDatabase:()Conversion workflowReference:completionHandler:
 {
   v6 = a5;
-  v7 = [a1 shortcut];
-  v8 = [v7 intent];
+  shortcut = [self shortcut];
+  intent = [shortcut intent];
 
-  if (v8)
+  if (intent)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696E8B8]) _init];
-    objc_storeStrong(&v9[*MEMORY[0x1E696EAF0]], v8);
+    _init = [objc_alloc(MEMORY[0x1E696E8B8]) _init];
+    objc_storeStrong(&_init[*MEMORY[0x1E696EAF0]], intent);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __110__WFINShortcutRunDescriptor_Conversion__donateRunInteractionWithDatabase_workflowReference_completionHandler___block_invoke;
     v10[3] = &unk_1E837FA10;
-    v11 = v8;
+    v11 = intent;
     v12 = v6;
-    [v9 donateInteractionWithCompletion:v10];
+    [_init donateInteractionWithCompletion:v10];
   }
 }
 
@@ -29,10 +29,10 @@
 {
   v32 = *MEMORY[0x1E69E9840];
   v7 = a5;
-  v8 = [a1 shortcut];
+  shortcut = [self shortcut];
   v9 = +[WFActionRegistry sharedRegistry];
   v25 = 0;
-  v10 = [v9 createActionWithShortcut:v8 error:&v25];
+  v10 = [v9 createActionWithShortcut:shortcut error:&v25];
   v11 = v25;
 
   if (v10)
@@ -52,31 +52,31 @@ LABEL_13:
     }
 
     [(WFWorkflow *)v14 addAction:v10];
-    v16 = [v8 userActivity];
+    userActivity = [shortcut userActivity];
 
-    if (v16)
+    if (userActivity)
     {
-      v17 = [v8 userActivity];
-      v18 = [v17 title];
+      userActivity2 = [shortcut userActivity];
+      title = [userActivity2 title];
     }
 
     else
     {
-      v20 = [v8 intent];
+      intent = [shortcut intent];
 
-      if (!v20)
+      if (!intent)
       {
 LABEL_12:
         (v7)[2](v7, v14, 0);
         goto LABEL_13;
       }
 
-      v17 = [v8 intent];
-      v18 = [v17 _title];
+      userActivity2 = [shortcut intent];
+      title = [userActivity2 _title];
     }
 
-    v21 = v18;
-    v22 = [v18 copy];
+    v21 = title;
+    v22 = [title copy];
     [(WFWorkflow *)v14 setName:v22];
 
     goto LABEL_12;
@@ -88,7 +88,7 @@ LABEL_12:
     *buf = 136315650;
     v27 = "[WFINShortcutRunDescriptor(Conversion) createWorkflowWithEnvironment:database:completionHandler:]";
     v28 = 2112;
-    v29 = v8;
+    v29 = shortcut;
     v30 = 2112;
     v31 = v11;
     _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_ERROR, "%s Unable to create action from INShortcut: %@, error: %@", buf, 0x20u);

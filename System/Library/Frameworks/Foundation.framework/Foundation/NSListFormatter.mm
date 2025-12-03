@@ -1,11 +1,11 @@
 @interface NSListFormatter
 + (NSString)localizedStringByJoiningStrings:(NSArray *)strings;
 - (NSListFormatter)init;
-- (NSListFormatter)initWithLocale:(id)a3;
+- (NSListFormatter)initWithLocale:(id)locale;
 - (NSLocale)locale;
 - (NSString)stringForObjectValue:(id)obj;
 - (__CFListFormatter)_listFormatter;
-- (id)_stringFromStringArray:(id)a3;
+- (id)_stringFromStringArray:(id)array;
 - (void)dealloc;
 - (void)setLocale:(NSLocale *)locale;
 @end
@@ -54,12 +54,12 @@
 
 - (NSListFormatter)init
 {
-  v3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
 
-  return [(NSListFormatter *)self initWithLocale:v3];
+  return [(NSListFormatter *)self initWithLocale:autoupdatingCurrentLocale];
 }
 
-- (NSListFormatter)initWithLocale:(id)a3
+- (NSListFormatter)initWithLocale:(id)locale
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -67,7 +67,7 @@
   v4 = [(NSListFormatter *)&v6 init];
   if (v4)
   {
-    v4->_locale = [a3 copy];
+    v4->_locale = [locale copy];
   }
 
   return v4;
@@ -104,7 +104,7 @@
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v14 = [(NSListFormatter *)self locale];
+  locale = [(NSListFormatter *)self locale];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -125,7 +125,7 @@
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSFormatter *)self->_itemFormatter stringForObjectValue:v10];
-        if (!v11 && ((objc_opt_respondsToSelector() & 1) == 0 || (v11 = [v10 descriptionWithLocale:v14]) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (v11 = objc_msgSend(v10, "localizedDescription")) == 0))
+        if (!v11 && ((objc_opt_respondsToSelector() & 1) == 0 || (v11 = [v10 descriptionWithLocale:locale]) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (v11 = objc_msgSend(v10, "localizedDescription")) == 0))
         {
           v11 = [v10 description];
           if (!v11)
@@ -154,7 +154,7 @@ LABEL_19:
   return v12;
 }
 
-- (id)_stringFromStringArray:(id)a3
+- (id)_stringFromStringArray:(id)array
 {
   [(NSListFormatter *)self _listFormatter];
   StringByJoiningStrings = _CFListFormatterCreateStringByJoiningStrings();

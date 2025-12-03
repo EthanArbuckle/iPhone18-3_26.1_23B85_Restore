@@ -3,19 +3,19 @@
 + (id)loadCache;
 - (BOOL)save;
 - (RDPeerSharingInfoCache)init;
-- (RDPeerSharingInfoCache)initWithCache:(id)a3;
-- (RDPeerSharingInfoCache)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RDPeerSharingInfoCache)initWithCache:(id)cache;
+- (RDPeerSharingInfoCache)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RDPeerSharingInfoCache
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RDPeerSharingInfoCache *)self cache];
-  v6 = [v4 initWithCache:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  cache = [(RDPeerSharingInfoCache *)self cache];
+  v6 = [v4 initWithCache:cache];
 
   return v6;
 }
@@ -35,24 +35,24 @@
   return v2;
 }
 
-- (RDPeerSharingInfoCache)initWithCache:(id)a3
+- (RDPeerSharingInfoCache)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = RDPeerSharingInfoCache;
   v6 = [(RDPeerSharingInfoCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cache, a3);
+    objc_storeStrong(&v6->_cache, cache);
   }
 
   return v7;
 }
 
-- (RDPeerSharingInfoCache)initWithCoder:(id)a3
+- (RDPeerSharingInfoCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = RDPeerSharingInfoCache;
   v5 = [(RDPeerSharingInfoCache *)&v12 init];
@@ -62,18 +62,18 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"kRDPeerSharingInfoCacheKeyCache"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"kRDPeerSharingInfoCacheKeyCache"];
     v5 = [(RDPeerSharingInfoCache *)v5 initWithCache:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RDPeerSharingInfoCache *)self cache];
-  [v4 encodeObject:v5 forKey:@"kRDPeerSharingInfoCacheKeyCache"];
+  coderCopy = coder;
+  cache = [(RDPeerSharingInfoCache *)self cache];
+  [coderCopy encodeObject:cache forKey:@"kRDPeerSharingInfoCacheKeyCache"];
 }
 
 + (id)getCachePath
@@ -108,9 +108,9 @@
       {
         v7 = v6;
         v8 = [v5 description];
-        v9 = [v8 UTF8String];
+        uTF8String = [v8 UTF8String];
         *buf = 136315138;
-        v35 = v9;
+        v35 = uTF8String;
         _os_log_impl(&dword_100000000, v7, OS_LOG_TYPE_ERROR, "Got an error while reading sharing data, but continuing anyway: %s", buf, 0xCu);
       }
     }
@@ -137,9 +137,9 @@
         {
           v18 = v17;
           v19 = [v16 description];
-          v20 = [v19 UTF8String];
+          uTF8String2 = [v19 UTF8String];
           *buf = 136315138;
-          v35 = v20;
+          v35 = uTF8String2;
           _os_log_impl(&dword_100000000, v18, OS_LOG_TYPE_ERROR, "Encountered error while unarchiving sharing cache: %s", buf, 0xCu);
         }
       }
@@ -159,9 +159,9 @@
       {
         v28 = v27;
         v29 = [v16 description];
-        v30 = [v29 UTF8String];
+        uTF8String3 = [v29 UTF8String];
         *buf = 136315138;
-        v35 = v30;
+        v35 = uTF8String3;
         _os_log_impl(&dword_100000000, v28, OS_LOG_TYPE_ERROR, "Failed to read unarchive sharing cache: %s", buf, 0xCu);
       }
 
@@ -183,9 +183,9 @@
     {
       v23 = v22;
       v24 = [v5 description];
-      v25 = [v24 UTF8String];
+      uTF8String4 = [v24 UTF8String];
       *buf = 136315138;
-      v35 = v25;
+      v35 = uTF8String4;
       _os_log_impl(&dword_100000000, v23, OS_LOG_TYPE_ERROR, "Failed to read sharing cached data file: %s", buf, 0xCu);
     }
 
@@ -216,7 +216,7 @@
       {
         v11 = v10;
         v12 = [v9 description];
-        v13 = [v9 localizedFailureReason];
+        localizedFailureReason = [v9 localizedFailureReason];
         *buf = 68289538;
         *&buf[4] = 0;
         v26 = 2082;
@@ -224,7 +224,7 @@
         v28 = 2114;
         v29 = v12;
         v30 = 2114;
-        v31 = v13;
+        v31 = localizedFailureReason;
         _os_log_impl(&dword_100000000, v11, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:Failed to archive sharing data, description:%{public, location:escape_only}@, failureReason:%{public, location:escape_only}@}", buf, 0x26u);
 
         if (qword_100018FF8 != -1)
@@ -241,7 +241,7 @@
 
       v15 = v14;
       v16 = [v9 description];
-      v17 = [v9 localizedFailureReason];
+      localizedFailureReason2 = [v9 localizedFailureReason];
       *buf = 68289538;
       *&buf[4] = 0;
       v26 = 2082;
@@ -249,7 +249,7 @@
       v28 = 2114;
       v29 = v16;
       v30 = 2114;
-      v31 = v17;
+      v31 = localizedFailureReason2;
       _os_signpost_emit_with_name_impl(&dword_100000000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Failed to archive sharing data", "{msg%{public}.0s:Failed to archive sharing data, description:%{public, location:escape_only}@, failureReason:%{public, location:escape_only}@}", buf, 0x26u);
     }
 

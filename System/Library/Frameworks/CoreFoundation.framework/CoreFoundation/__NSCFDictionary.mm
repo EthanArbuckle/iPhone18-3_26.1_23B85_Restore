@@ -1,17 +1,17 @@
 @interface __NSCFDictionary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Class)classForCoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObservationInfo:(void *)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObservationInfo:(void *)info;
 @end
 
 @implementation __NSCFDictionary
@@ -67,9 +67,9 @@
   return objc_opt_self();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
@@ -79,7 +79,7 @@
     __cf_tsanReadFunction(self, v3, __CFTSANTagMutableDictionary);
   }
 
-  return CFDictionaryGetValue(self, a3);
+  return CFDictionaryGetValue(self, key);
 }
 
 - (id)keyEnumerator
@@ -94,7 +94,7 @@
   return v4;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   if (!_CFDictionaryIsMutable(self))
   {
@@ -103,7 +103,7 @@
 
   if (!__cf_tsanWriteFunction)
   {
-    if (a4)
+    if (key)
     {
       goto LABEL_4;
     }
@@ -113,22 +113,22 @@ LABEL_9:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableDictionary);
-  if (!a4)
+  if (!key)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (!a3)
+  if (!object)
   {
-    _NSDictionaryRaiseInsertNilValueException(self, a2, a4);
+    _NSDictionaryRaiseInsertNilValueException(self, a2, key);
   }
 
-  v9 = [a4 copyWithZone:0];
-  CFDictionarySetValue(self, v9, a3);
+  v9 = [key copyWithZone:0];
+  CFDictionarySetValue(self, v9, object);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   if (!_CFDictionaryIsMutable(self))
   {
@@ -140,25 +140,25 @@ LABEL_4:
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableDictionary);
   }
 
-  if (!a3)
+  if (!key)
   {
     _NSDictionaryRaiseRemoveNilKeyException(self, a2);
   }
 
-  CFDictionaryRemoveValue(self, a3);
+  CFDictionaryRemoveValue(self, key);
 }
 
-- (void)setObservationInfo:(void *)a3
+- (void)setObservationInfo:(void *)info
 {
   v7 = *MEMORY[0x1E69E9840];
-  _CFDictionarySetKVOBit(self, a3 != 0);
+  _CFDictionarySetKVOBit(self, info != 0);
   v6.receiver = self;
   v6.super_class = __NSCFDictionary;
-  [(__NSCFDictionary *)&v6 setObservationInfo:a3];
+  [(__NSCFDictionary *)&v6 setObservationInfo:info];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9 = *MEMORY[0x1E69E9840];
   if (__cf_tsanReadFunction)
@@ -170,12 +170,12 @@ LABEL_4:
   {
     v8.receiver = self;
     v8.super_class = __NSCFDictionary;
-    result = [(NSDictionary *)&v8 isEqual:a3];
+    result = [(NSDictionary *)&v8 isEqual:equal];
   }
 
-  else if (a3)
+  else if (equal)
   {
-    result = _CFNonObjCEqual(self, a3) != 0;
+    result = _CFNonObjCEqual(self, equal) != 0;
   }
 
   else
@@ -187,14 +187,14 @@ LABEL_4:
   return result;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (__cf_tsanReadFunction)
   {
     __cf_tsanReadFunction(self, v5, __CFTSANTagMutableDictionary);
   }
 
-  return _CFDictionaryFastEnumeration(self, a3, a4, a5);
+  return _CFDictionaryFastEnumeration(self, state, objects, count);
 }
 
 - (void)removeAllObjects
@@ -212,7 +212,7 @@ LABEL_4:
   CFDictionaryRemoveAllValues(self);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   theDict = self;
   if (__cf_tsanReadFunction)
@@ -234,7 +234,7 @@ LABEL_4:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if (__cf_tsanReadFunction)
   {

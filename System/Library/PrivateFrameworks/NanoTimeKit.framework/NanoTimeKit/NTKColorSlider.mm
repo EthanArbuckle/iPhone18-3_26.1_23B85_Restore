@@ -1,26 +1,26 @@
 @interface NTKColorSlider
-- (BOOL)_valueIsInsideMidpoint:(float)a3;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (NTKColorSlider)initWithFrame:(CGRect)a3;
+- (BOOL)_valueIsInsideMidpoint:(float)midpoint;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (NTKColorSlider)initWithFrame:(CGRect)frame;
 - (NTKColorSliderDelegate)delegate;
 - (double)_colorGradientStep;
 - (id)createThumbView;
-- (void)_setValue:(float)a3 animated:(BOOL)a4;
+- (void)_setValue:(float)value animated:(BOOL)animated;
 - (void)_touchEnded;
 - (void)_updateThumbColor;
 - (void)layoutSubviews;
-- (void)setColors:(id)a3;
-- (void)valueDidChange:(id)a3 forEvent:(id)a4;
+- (void)setColors:(id)colors;
+- (void)valueDidChange:(id)change forEvent:(id)event;
 @end
 
 @implementation NTKColorSlider
 
-- (NTKColorSlider)initWithFrame:(CGRect)a3
+- (NTKColorSlider)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = NTKColorSlider;
-  v3 = [(NTKColorSlider *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKColorSlider *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,15 +33,15 @@
     v7 = [objc_alloc(MEMORY[0x277D75F30]) initWithStyle:2];
     [(NTKColorSlider *)v4 _setEdgeFeedbackGenerator:v7];
 
-    v8 = [(NTKColorSlider *)v4 _edgeFeedbackGenerator];
-    [v8 setAxis:1];
+    _edgeFeedbackGenerator = [(NTKColorSlider *)v4 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator setAxis:1];
 
     [(NTKColorSlider *)v4 maximumValue];
     v10 = v9;
     [(NTKColorSlider *)v4 minimumValue];
     v12 = (v10 - v11);
-    v13 = [(NTKColorSlider *)v4 _edgeFeedbackGenerator];
-    [v13 setDistance:v12];
+    _edgeFeedbackGenerator2 = [(NTKColorSlider *)v4 _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator2 setDistance:v12];
 
     v14 = objc_alloc_init(MEMORY[0x277D75A10]);
     selectionFeedbackGenerator = v4->_selectionFeedbackGenerator;
@@ -57,9 +57,9 @@
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v16 = [MEMORY[0x277CD9EB0] layer];
+      layer = [MEMORY[0x277CD9EB0] layer];
       trackLayer = v4->_trackLayer;
-      v4->_trackLayer = v16;
+      v4->_trackLayer = layer;
 
       [(CAGradientLayer *)v4->_trackLayer setCornerCurve:*MEMORY[0x277CDA138]];
       [(CAGradientLayer *)v4->_trackLayer setStartPoint:0.0, 0.5];
@@ -88,8 +88,8 @@
       v22 = v4->_trackLayer;
       v25 = v26;
       [(CAGradientLayer *)v22 setTransform:&v25];
-      v23 = [(NTKColorSlider *)v4 layer];
-      [v23 insertSublayer:v4->_trackLayer atIndex:0];
+      layer2 = [(NTKColorSlider *)v4 layer];
+      [layer2 insertSublayer:v4->_trackLayer atIndex:0];
 
       [(NTKColorSlider *)v4 setClipsToBounds:0];
     }
@@ -134,10 +134,10 @@
   }
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v5 = a3;
-  objc_storeStrong(&self->_colors, a3);
+  colorsCopy = colors;
+  objc_storeStrong(&self->_colors, colors);
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   [(NTKColorSlider *)self _colorGradientStep];
@@ -155,7 +155,7 @@
   [(NSArray *)colors enumerateObjectsUsingBlock:v14];
   if (_UISolariumEnabled())
   {
-    v13 = [objc_alloc(MEMORY[0x277D76248]) initWithColors:v5 locations:v12];
+    v13 = [objc_alloc(MEMORY[0x277D76248]) initWithColors:colorsCopy locations:v12];
     [(NTKColorSlider *)self _setSliderConfiguration:v13];
   }
 
@@ -254,12 +254,12 @@ LABEL_9:
   return thumbView;
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v19.receiver = self;
   v19.super_class = NTKColorSlider;
   [(NTKColorSlider *)&v19 trackRectForBounds:?];
@@ -288,21 +288,21 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v11 = a3.origin.y;
-  v22 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v22 = bounds.origin.x;
   if (_UISolariumEnabled())
   {
     v23.receiver = self;
     v23.super_class = NTKColorSlider;
-    [(NTKColorSlider *)&v23 thumbRectForBounds:v22 trackRect:v11 value:v10, v9, x, y, width, height, LODWORD(a5)];
+    [(NTKColorSlider *)&v23 thumbRectForBounds:v22 trackRect:v11 value:v10, v9, x, y, width, height, LODWORD(value)];
   }
 
   else
@@ -335,20 +335,20 @@ LABEL_9:
   return result;
 }
 
-- (void)_setValue:(float)a3 animated:(BOOL)a4
+- (void)_setValue:(float)value animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = NTKColorSlider;
-  [(NTKColorSlider *)&v5 setValue:a4 animated:?];
+  [(NTKColorSlider *)&v5 setValue:animated animated:?];
   [(NTKColorSlider *)self _updateThumbColor];
 }
 
-- (BOOL)_valueIsInsideMidpoint:(float)a3
+- (BOOL)_valueIsInsideMidpoint:(float)midpoint
 {
   [(NTKColorSlider *)self maximumValue];
   v6 = v5;
   [(NTKColorSlider *)self minimumValue];
-  v8 = a3 + ((v6 - v7) * -0.5);
+  v8 = midpoint + ((v6 - v7) * -0.5);
   if (v8 < 0.0)
   {
     v8 = -v8;
@@ -357,9 +357,9 @@ LABEL_9:
   return v8 + -0.01 < 0.0;
 }
 
-- (void)valueDidChange:(id)a3 forEvent:(id)a4
+- (void)valueDidChange:(id)change forEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   [(NTKColorSlider *)self value];
   v7 = v6;
   if ([(NTKColorSlider *)self _valueIsInsideMidpoint:?])
@@ -382,21 +382,21 @@ LABEL_9:
 LABEL_6:
   v9 = v7;
   [(NTKColorSlider *)self _updateThumbColor];
-  v10 = [v5 allTouches];
+  allTouches = [eventCopy allTouches];
 
-  v26 = [v10 anyObject];
+  anyObject = [allTouches anyObject];
 
-  if (!v26)
+  if (!anyObject)
   {
     goto LABEL_18;
   }
 
-  v11 = [v26 phase];
-  if (v11 <= 2)
+  phase = [anyObject phase];
+  if (phase <= 2)
   {
-    if (v11)
+    if (phase)
     {
-      if (v11 != 1)
+      if (phase != 1)
       {
         goto LABEL_18;
       }
@@ -405,11 +405,11 @@ LABEL_6:
     else
     {
       [(UISelectionFeedbackGenerator *)self->_selectionFeedbackGenerator prepare];
-      v18 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-      [v18 prepare];
+      _edgeFeedbackGenerator = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+      [_edgeFeedbackGenerator prepare];
 
-      v19 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-      [v19 userInteractionStarted];
+      _edgeFeedbackGenerator2 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+      [_edgeFeedbackGenerator2 userInteractionStarted];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained colorSlider:self valueChanged:0 phase:v9];
@@ -417,28 +417,28 @@ LABEL_6:
 
     v13 = objc_loadWeakRetained(&self->_delegate);
     v14 = v13;
-    v15 = self;
+    selfCopy2 = self;
     v16 = v9;
     v17 = 1;
 LABEL_16:
-    [v13 colorSlider:v15 valueChanged:v17 phase:v16];
+    [v13 colorSlider:selfCopy2 valueChanged:v17 phase:v16];
 
     goto LABEL_18;
   }
 
-  if (v11 != 3)
+  if (phase != 3)
   {
-    if (v11 != 4)
+    if (phase != 4)
     {
       goto LABEL_18;
     }
 
-    v12 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-    [v12 userInteractionCancelled];
+    _edgeFeedbackGenerator3 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+    [_edgeFeedbackGenerator3 userInteractionCancelled];
 
     v13 = objc_loadWeakRetained(&self->_delegate);
     v14 = v13;
-    v15 = self;
+    selfCopy2 = self;
     v16 = v9;
     v17 = 3;
     goto LABEL_16;
@@ -446,12 +446,12 @@ LABEL_16:
 
   [(NTKColorSlider *)self _touchEnded];
 LABEL_18:
-  v21 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-  v22 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-  [v22 distance];
+  _edgeFeedbackGenerator4 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+  _edgeFeedbackGenerator5 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+  [_edgeFeedbackGenerator5 distance];
   v24 = v23;
   [(NTKColorSlider *)self minimumValue];
-  [v21 positionUpdated:v24 * (v9 - v25)];
+  [_edgeFeedbackGenerator4 positionUpdated:v24 * (v9 - v25)];
 }
 
 - (void)_touchEnded
@@ -459,8 +459,8 @@ LABEL_18:
   [(NTKColorSlider *)self value];
   v4 = v3;
   v5 = v3;
-  v6 = [(NTKColorSlider *)self _edgeFeedbackGenerator];
-  [v6 userInteractionEnded];
+  _edgeFeedbackGenerator = [(NTKColorSlider *)self _edgeFeedbackGenerator];
+  [_edgeFeedbackGenerator userInteractionEnded];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained colorSlider:self valueChanged:2 phase:v5];

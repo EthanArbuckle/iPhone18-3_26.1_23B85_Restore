@@ -1,14 +1,14 @@
 @interface SBUIPowerDownView
-- (SBUIPowerDownView)initWithFrame:(CGRect)a3 vibrantSettings:(id)a4;
+- (SBUIPowerDownView)initWithFrame:(CGRect)frame vibrantSettings:(id)settings;
 - (SBUIPowerDownViewDelegate)delegate;
 - (id)_createActionSlider;
-- (id)createDimmingBackdropViewWithFrame:(CGRect)a3;
+- (id)createDimmingBackdropViewWithFrame:(CGRect)frame;
 - (void)_animatePowerDown;
 - (void)_cancelAutoDismissTimer;
 - (void)_createFindMyUI;
 - (void)_notifyDelegateCancelled;
 - (void)_notifyDelegatePowerDown;
-- (void)_powerDownSliderDidUpdateSlideWithValue:(double)a3;
+- (void)_powerDownSliderDidUpdateSlideWithValue:(double)value;
 - (void)_prepareViewsForAlert;
 - (void)_readIODeviceSupportsFindMy;
 - (void)_readShouldPowerDownViewShowFindMyAlert;
@@ -17,120 +17,120 @@
 - (void)_willAnimateIn;
 - (void)_willAnimateOut;
 - (void)dealloc;
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4;
+- (void)hideAnimated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
-- (void)showAnimated:(BOOL)a3 completion:(id)a4;
+- (void)showAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBUIPowerDownView
 
-- (SBUIPowerDownView)initWithFrame:(CGRect)a3 vibrantSettings:(id)a4
+- (SBUIPowerDownView)initWithFrame:(CGRect)frame vibrantSettings:(id)settings
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   v58.receiver = self;
   v58.super_class = SBUIPowerDownView;
-  v11 = [(SBUIPowerDownView *)&v58 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(SBUIPowerDownView *)&v58 initWithFrame:x, y, width, height];
+  if (height)
   {
     v54 = objc_alloc_init(MEMORY[0x1E69C8750]);
-    [(SBUIPowerDownView *)v11 setBeaconManager:v54];
-    [(SBUIPowerDownView *)v11 _readIODeviceSupportsFindMy];
-    [(SBUIPowerDownView *)v11 _readShouldPowerDownViewShowFindMyAlert];
-    [(SBUIPowerDownView *)v11 setAutoresizingMask:18];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBUIPowerDownView *)v11 setBackgroundColor:v12];
+    [(SBUIPowerDownView *)height setBeaconManager:v54];
+    [(SBUIPowerDownView *)height _readIODeviceSupportsFindMy];
+    [(SBUIPowerDownView *)height _readShouldPowerDownViewShowFindMyAlert];
+    [(SBUIPowerDownView *)height setAutoresizingMask:18];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBUIPowerDownView *)height setBackgroundColor:clearColor];
 
-    [(SBUIPowerDownView *)v11 bounds];
+    [(SBUIPowerDownView *)height bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [(SBUIPowerDownView *)v11 setAlpha:0.0];
-    v21 = [(SBUIPowerDownView *)v11 createDimmingBackdropViewWithFrame:v14, v16, v18, v20];
-    backdropView = v11->_backdropView;
-    v11->_backdropView = v21;
+    [(SBUIPowerDownView *)height setAlpha:0.0];
+    v21 = [(SBUIPowerDownView *)height createDimmingBackdropViewWithFrame:v14, v16, v18, v20];
+    backdropView = height->_backdropView;
+    height->_backdropView = v21;
 
-    [(SBUIPowerDownView *)v11 addSubview:v11->_backdropView];
+    [(SBUIPowerDownView *)height addSubview:height->_backdropView];
     v56 = 0u;
     v57 = 0u;
     v55 = 0u;
-    SBGetPowerDownViewMetrics(&v55, [(SBUIPowerDownView *)v11 _isLandscapeAspectRatio]);
-    objc_storeStrong(&v11->_vibrantSettings, a4);
-    v23 = [(SBUIPowerDownView *)v11 _createActionSlider];
-    actionSlider = v11->_actionSlider;
-    v11->_actionSlider = v23;
+    SBGetPowerDownViewMetrics(&v55, [(SBUIPowerDownView *)height _isLandscapeAspectRatio]);
+    objc_storeStrong(&height->_vibrantSettings, settings);
+    _createActionSlider = [(SBUIPowerDownView *)height _createActionSlider];
+    actionSlider = height->_actionSlider;
+    height->_actionSlider = _createActionSlider;
 
-    [(_UIActionSlider *)v11->_actionSlider setAlpha:0.0];
-    [(SBUIPowerDownView *)v11 addSubview:v11->_actionSlider];
+    [(_UIActionSlider *)height->_actionSlider setAlpha:0.0];
+    [(SBUIPowerDownView *)height addSubview:height->_actionSlider];
     v25 = [objc_alloc(MEMORY[0x1E69DC738]) initWithFrame:{0.0, 0.0, *(&v55 + 1), *(&v55 + 1)}];
-    cancelButton = v11->_cancelButton;
-    v11->_cancelButton = v25;
+    cancelButton = height->_cancelButton;
+    height->_cancelButton = v25;
 
-    v27 = v11->_cancelButton;
+    v27 = height->_cancelButton;
     v28 = MEMORY[0x1E69DCAB8];
     v29 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v31 = [v30 traitCollection];
-    v32 = [v28 imageNamed:@"PowerDownCancel" inBundle:v29 compatibleWithTraitCollection:v31];
-    v33 = [MEMORY[0x1E69DC888] whiteColor];
-    v34 = [v32 _flatImageWithColor:v33];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    v32 = [v28 imageNamed:@"PowerDownCancel" inBundle:v29 compatibleWithTraitCollection:traitCollection];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v34 = [v32 _flatImageWithColor:whiteColor];
     [(UIButton *)v27 setImage:v34 forState:0];
 
-    [(UIButton *)v11->_cancelButton addTarget:v11 action:sel__cancelButtonTapped forControlEvents:64];
-    [(UIButton *)v11->_cancelButton setAlpha:0.0];
-    [(SBUIPowerDownView *)v11 addSubview:v11->_cancelButton];
+    [(UIButton *)height->_cancelButton addTarget:height action:sel__cancelButtonTapped forControlEvents:64];
+    [(UIButton *)height->_cancelButton setAlpha:0.0];
+    [(SBUIPowerDownView *)height addSubview:height->_cancelButton];
     v35 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    cancelLabel = v11->_cancelLabel;
-    v11->_cancelLabel = v35;
+    cancelLabel = height->_cancelLabel;
+    height->_cancelLabel = v35;
 
-    v37 = v11->_cancelLabel;
-    v38 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v37 setBackgroundColor:v38];
+    v37 = height->_cancelLabel;
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v37 setBackgroundColor:clearColor2];
 
-    v39 = v11->_cancelLabel;
-    v40 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v39 setTextColor:v40];
+    v39 = height->_cancelLabel;
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v39 setTextColor:whiteColor2];
 
     v41 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v42 = [v41 localizedStringForKey:@"POWER_DOWN_CANCEL" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
 
-    [(UILabel *)v11->_cancelLabel setText:v42];
-    v43 = v11->_cancelLabel;
+    [(UILabel *)height->_cancelLabel setText:v42];
+    v43 = height->_cancelLabel;
     v44 = [MEMORY[0x1E69DB878] systemFontOfSize:*(&v56 + 1)];
     [(UILabel *)v43 setFont:v44];
 
-    [(UILabel *)v11->_cancelLabel setAlpha:0.0];
-    [(SBUIPowerDownView *)v11 addSubview:v11->_cancelLabel];
-    [(UIButton *)v11->_cancelButton setAccessibilityLabel:v42];
-    [(UILabel *)v11->_cancelLabel setAccessibilityElementsHidden:1];
+    [(UILabel *)height->_cancelLabel setAlpha:0.0];
+    [(SBUIPowerDownView *)height addSubview:height->_cancelLabel];
+    [(UIButton *)height->_cancelButton setAccessibilityLabel:v42];
+    [(UILabel *)height->_cancelLabel setAccessibilityElementsHidden:1];
     v45 = [[SBUIShapeView alloc] initWithFrame:v14, v16, v18, v20];
-    darkeningUnderlayView = v11->_darkeningUnderlayView;
-    v11->_darkeningUnderlayView = v45;
+    darkeningUnderlayView = height->_darkeningUnderlayView;
+    height->_darkeningUnderlayView = v45;
 
-    v47 = v11->_darkeningUnderlayView;
-    v48 = [MEMORY[0x1E69DC888] blackColor];
-    [(SBUIShapeView *)v47 setFillColor:v48];
+    v47 = height->_darkeningUnderlayView;
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(SBUIShapeView *)v47 setFillColor:blackColor];
 
-    [(SBUIShapeView *)v11->_darkeningUnderlayView setFillRule:1];
-    [(SBUIShapeView *)v11->_darkeningUnderlayView setAlpha:0.0];
-    [(SBUIPowerDownView *)v11 addSubview:v11->_darkeningUnderlayView];
+    [(SBUIShapeView *)height->_darkeningUnderlayView setFillRule:1];
+    [(SBUIShapeView *)height->_darkeningUnderlayView setAlpha:0.0];
+    [(SBUIPowerDownView *)height addSubview:height->_darkeningUnderlayView];
     v49 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v14, v16, v18, v20}];
-    darkeningOverlayView = v11->_darkeningOverlayView;
-    v11->_darkeningOverlayView = v49;
+    darkeningOverlayView = height->_darkeningOverlayView;
+    height->_darkeningOverlayView = v49;
 
-    v51 = v11->_darkeningOverlayView;
-    v52 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v51 setBackgroundColor:v52];
+    v51 = height->_darkeningOverlayView;
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v51 setBackgroundColor:blackColor2];
 
-    [(UIView *)v11->_darkeningOverlayView setAlpha:0.0];
-    [(SBUIPowerDownView *)v11 addSubview:v11->_darkeningOverlayView];
+    [(UIView *)height->_darkeningOverlayView setAlpha:0.0];
+    [(SBUIPowerDownView *)height addSubview:height->_darkeningOverlayView];
   }
 
-  return v11;
+  return height;
 }
 
 - (void)dealloc
@@ -154,14 +154,14 @@
   v47 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v48];
   v42 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v47];
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.right" withConfiguration:v46];
-  v45 = [v4 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v4 imageFlippedForRightToLeftLayoutDirection];
 
-  v44 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v45];
+  v44 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:imageFlippedForRightToLeftLayoutDirection];
   v5 = MEMORY[0x1E696AAB0];
   v52 = *MEMORY[0x1E69DB650];
   v6 = v52;
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v53[0] = v7;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v53[0] = secondaryLabelColor;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   v40 = [v5 attributedStringWithAttachment:v44 attributes:v8];
 
@@ -192,46 +192,46 @@
 
   [(UIButton *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)v19 setAlpha:0.0];
-  v20 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIButton *)v19 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIButton *)v19 setBackgroundColor:clearColor];
 
   [(UIButton *)v19 setAttributedTitle:v12 forState:0];
-  v21 = [(UIButton *)v19 titleLabel];
-  [v21 _setDrawsAsBackdropOverlayWithBlendMode:2];
+  titleLabel = [(UIButton *)v19 titleLabel];
+  [titleLabel _setDrawsAsBackdropOverlayWithBlendMode:2];
 
-  v22 = [(UIButton *)v19 titleLabel];
-  [v22 setNumberOfLines:0];
+  titleLabel2 = [(UIButton *)v19 titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v23 = [(UIButton *)v19 titleLabel];
-  [v23 setTextAlignment:1];
+  titleLabel3 = [(UIButton *)v19 titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
-  v24 = [(UIButton *)v19 titleLabel];
-  [v24 setLineBreakMode:0];
+  titleLabel4 = [(UIButton *)v19 titleLabel];
+  [titleLabel4 setLineBreakMode:0];
 
   [(UIButton *)v19 addTarget:self action:sel__didTapFindMy forControlEvents:64];
   [(SBUIPowerDownView *)self insertSubview:v19 aboveSubview:self->_cancelLabel];
-  v25 = [(UIButton *)v19 centerXAnchor];
-  v26 = [(SBUIPowerDownView *)self centerXAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerXAnchor = [(UIButton *)v19 centerXAnchor];
+  centerXAnchor2 = [(SBUIPowerDownView *)self centerXAnchor];
+  v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v3 addObject:v27];
 
-  v28 = [(UIButton *)v19 leadingAnchor];
-  v29 = [(SBUIPowerDownView *)self leadingAnchor];
-  v30 = [v28 constraintGreaterThanOrEqualToAnchor:v29 constant:20.0];
+  leadingAnchor = [(UIButton *)v19 leadingAnchor];
+  leadingAnchor2 = [(SBUIPowerDownView *)self leadingAnchor];
+  v30 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:20.0];
 
-  v31 = [(UIButton *)v19 trailingAnchor];
-  v32 = [(SBUIPowerDownView *)self trailingAnchor];
-  v33 = [v31 constraintLessThanOrEqualToAnchor:v32 constant:20.0];
+  trailingAnchor = [(UIButton *)v19 trailingAnchor];
+  trailingAnchor2 = [(SBUIPowerDownView *)self trailingAnchor];
+  v33 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:20.0];
 
   [v3 addObject:v30];
   [v3 addObject:v33];
-  v34 = [(UIButton *)v19 topAnchor];
-  v35 = [(_UIActionSlider *)self->_actionSlider bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35 constant:4.0];
+  topAnchor = [(UIButton *)v19 topAnchor];
+  bottomAnchor = [(_UIActionSlider *)self->_actionSlider bottomAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
   [v3 addObject:v36];
 
-  v37 = [(UIButton *)v19 heightAnchor];
-  v38 = [v37 constraintGreaterThanOrEqualToConstant:40.0];
+  heightAnchor = [(UIButton *)v19 heightAnchor];
+  v38 = [heightAnchor constraintGreaterThanOrEqualToConstant:40.0];
   [v3 addObject:v38];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v3];
@@ -243,16 +243,16 @@
   [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v49 completion:0];
 }
 
-- (id)createDimmingBackdropViewWithFrame:(CGRect)a3
+- (id)createDimmingBackdropViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 _graphicsQuality];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v8 == 10)
+  if (_graphicsQuality == 10)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{x, y, width, height}];
     v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.7];
@@ -267,10 +267,10 @@
   return v9;
 }
 
-- (void)showAnimated:(BOOL)a3 completion:(id)a4
+- (void)showAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(_UIActionSlider *)self->_actionSlider closeTrackAnimated:0];
   [(SBUIPowerDownView *)self _updateSliderExclusionPath];
   v25[0] = MEMORY[0x1E69E9820];
@@ -284,17 +284,17 @@
   v23[2] = __45__SBUIPowerDownView_showAnimated_completion___block_invoke_2;
   v23[3] = &unk_1E789DA60;
   v23[4] = self;
-  v24 = v4;
+  v24 = animatedCopy;
   v8 = MEMORY[0x1AC58E960](v23);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __45__SBUIPowerDownView_showAnimated_completion___block_invoke_3;
   v21[3] = &unk_1E789DB90;
   v21[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   v22 = v9;
   v10 = MEMORY[0x1AC58E960](v21);
-  if (v4)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     [(SBUIPowerDownView *)self showHideAnimationDuration];
@@ -360,10 +360,10 @@ uint64_t __45__SBUIPowerDownView_showAnimated_completion___block_invoke_3(uint64
   return result;
 }
 
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __45__SBUIPowerDownView_hideAnimated_completion___block_invoke;
@@ -381,10 +381,10 @@ uint64_t __45__SBUIPowerDownView_showAnimated_completion___block_invoke_3(uint64
   v21[2] = __45__SBUIPowerDownView_hideAnimated_completion___block_invoke_3;
   v21[3] = &unk_1E789DB90;
   v21[4] = self;
-  v9 = v6;
+  v9 = completionCopy;
   v22 = v9;
   v10 = MEMORY[0x1AC58E960](v21);
-  if (v4)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     v19[0] = MEMORY[0x1E69E9820];
@@ -453,8 +453,8 @@ uint64_t __45__SBUIPowerDownView_hideAnimated_completion___block_invoke_3(uint64
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBUIPowerDownView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(SBUIPowerDownView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   v34 = 0u;
@@ -504,19 +504,19 @@ uint64_t __45__SBUIPowerDownView_hideAnimated_completion___block_invoke_3(uint64
 
 - (void)_willAnimateIn
 {
-  v3 = [(SBUIPowerDownView *)self delegate];
-  [v3 powerDownViewWillAnimateIn:self];
+  delegate = [(SBUIPowerDownView *)self delegate];
+  [delegate powerDownViewWillAnimateIn:self];
 }
 
 - (void)_willAnimateOut
 {
-  v3 = [(SBUIPowerDownView *)self delegate];
-  [v3 powerDownViewWillAnimateOut:self];
+  delegate = [(SBUIPowerDownView *)self delegate];
+  [delegate powerDownViewWillAnimateOut:self];
 }
 
-- (void)_powerDownSliderDidUpdateSlideWithValue:(double)a3
+- (void)_powerDownSliderDidUpdateSlideWithValue:(double)value
 {
-  [(SBUIShapeView *)self->_darkeningUnderlayView setAlpha:a3];
+  [(SBUIShapeView *)self->_darkeningUnderlayView setAlpha:value];
 
   [(SBUIPowerDownView *)self _updateSliderExclusionPath];
 }
@@ -541,7 +541,7 @@ uint64_t __45__SBUIPowerDownView_hideAnimated_completion___block_invoke_3(uint64
   v3 = MEMORY[0x1E69DC728];
   [(SBUIPowerDownView *)self bounds];
   v4 = [v3 bezierPathWithRect:?];
-  v5 = [(_UIActionSlider *)self->_actionSlider knobMaskPath];
+  knobMaskPath = [(_UIActionSlider *)self->_actionSlider knobMaskPath];
   [(_UIActionSlider *)self->_actionSlider frame];
   x = v13.origin.x;
   y = v13.origin.y;
@@ -554,8 +554,8 @@ uint64_t __45__SBUIPowerDownView_hideAnimated_completion___block_invoke_3(uint64
   v14.size.height = height;
   MinY = CGRectGetMinY(v14);
   CGAffineTransformMakeTranslation(&v12, MinX, MinY);
-  [v5 applyTransform:&v12];
-  [v4 appendBezierPath:v5];
+  [knobMaskPath applyTransform:&v12];
+  [v4 appendBezierPath:knobMaskPath];
   [(SBUIShapeView *)self->_darkeningUnderlayView setPath:v4];
 }
 
@@ -596,21 +596,21 @@ uint64_t __38__SBUIPowerDownView__animatePowerDown__block_invoke(uint64_t a1)
 
 - (id)_createActionSlider
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 _graphicsQuality];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
   v5 = objc_alloc(MEMORY[0x1E69DD338]);
   v6 = [v5 initWithFrame:self->_vibrantSettings vibrantSettings:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   v7 = MEMORY[0x1E69DCAB8];
   v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v10 = [v9 traitCollection];
-  v11 = [v7 imageNamed:@"PowerDownKnob" inBundle:v8 compatibleWithTraitCollection:v10];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v11 = [v7 imageNamed:@"PowerDownKnob" inBundle:v8 compatibleWithTraitCollection:traitCollection];
   v12 = [v11 imageWithRenderingMode:2];
   [v6 setKnobImage:v12];
 
-  v13 = [MEMORY[0x1E69DC888] redColor];
-  [v6 setTintColor:v13];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [v6 setTintColor:redColor];
 
   v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"POWER_DOWN_LOCK_LABEL" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
@@ -618,7 +618,7 @@ uint64_t __38__SBUIPowerDownView__animatePowerDown__block_invoke(uint64_t a1)
 
   [v6 setDelegate:self];
   [v6 setKnobImageOffset:{-0.5, -1.0}];
-  if (v4 == 10)
+  if (_graphicsQuality == 10)
   {
     [v6 setStyle:2];
     v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.831372549 alpha:0.96];
@@ -633,17 +633,17 @@ uint64_t __38__SBUIPowerDownView__animatePowerDown__block_invoke(uint64_t a1)
   v12[1] = *MEMORY[0x1E69E9840];
   [(SBUIPowerDownView *)self _resetAutoDismissTimer];
   [(_UIActionSlider *)self->_actionSlider removeFromSuperview];
-  v3 = [(SBUIPowerDownView *)self _createActionSlider];
+  _createActionSlider = [(SBUIPowerDownView *)self _createActionSlider];
   actionSlider = self->_actionSlider;
-  self->_actionSlider = v3;
+  self->_actionSlider = _createActionSlider;
 
   [(SBUIPowerDownView *)self insertSubview:self->_actionSlider belowSubview:self->_cancelButton];
   findMyButton = self->_findMyButton;
   if (findMyButton)
   {
-    v6 = [(UIButton *)findMyButton topAnchor];
-    v7 = [(_UIActionSlider *)self->_actionSlider bottomAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7 constant:4.0];
+    topAnchor = [(UIButton *)findMyButton topAnchor];
+    bottomAnchor = [(_UIActionSlider *)self->_actionSlider bottomAnchor];
+    v8 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
 
     v9 = MEMORY[0x1E696ACD8];
     v12[0] = v8;
@@ -663,13 +663,13 @@ uint64_t __38__SBUIPowerDownView__animatePowerDown__block_invoke(uint64_t a1)
 - (void)_readIODeviceSupportsFindMy
 {
   objc_initWeak(&location, self);
-  v3 = [(SBUIPowerDownView *)self beaconManager];
+  beaconManager = [(SBUIPowerDownView *)self beaconManager];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__SBUIPowerDownView__readIODeviceSupportsFindMy__block_invoke;
   v4[3] = &unk_1E789DC58;
   objc_copyWeak(&v5, &location);
-  [v3 isLPEMModeSupported:v4];
+  [beaconManager isLPEMModeSupported:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -704,13 +704,13 @@ void __48__SBUIPowerDownView__readIODeviceSupportsFindMy__block_invoke_2(uint64_
 - (void)_readShouldPowerDownViewShowFindMyAlert
 {
   objc_initWeak(&location, self);
-  v3 = [(SBUIPowerDownView *)self beaconManager];
+  beaconManager = [(SBUIPowerDownView *)self beaconManager];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__SBUIPowerDownView__readShouldPowerDownViewShowFindMyAlert__block_invoke;
   v4[3] = &unk_1E789DC58;
   objc_copyWeak(&v5, &location);
-  [v3 userHasAcknowledgeFindMyWithCompletion:v4];
+  [beaconManager userHasAcknowledgeFindMyWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);

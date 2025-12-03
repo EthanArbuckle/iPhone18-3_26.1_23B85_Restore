@@ -2,30 +2,30 @@
 - (BOOL)attemptStartProgressProbe;
 - (BOOL)disableLocalFlowsTracking;
 - (BOOL)enableLocalFlowsTracking;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)startTracking;
 - (BOOL)stopTracking;
-- (LiveLinkObserver)initWithInterfaceName:(id)a3;
-- (unint64_t)_assessProgressFromBaseline:(nstat_progress_indicators *)a3 toMetrics:(nstat_progress_indicators *)a4;
-- (void)_captureProgressWithInterval:(unint64_t)a3 capWindowTo:(unint64_t)a4;
+- (LiveLinkObserver)initWithInterfaceName:(id)name;
+- (unint64_t)_assessProgressFromBaseline:(nstat_progress_indicators *)baseline toMetrics:(nstat_progress_indicators *)metrics;
+- (void)_captureProgressWithInterval:(unint64_t)interval capWindowTo:(unint64_t)to;
 - (void)dealloc;
 - (void)disablePremiumMode;
 - (void)enablePremiumMode;
-- (void)postHasAdviceNotification:(BOOL)a3;
-- (void)startProgressProbeTimerWithInterval:(unint64_t)a3 capWindowTo:(unint64_t)a4;
+- (void)postHasAdviceNotification:(BOOL)notification;
+- (void)startProgressProbeTimerWithInterval:(unint64_t)interval capWindowTo:(unint64_t)to;
 - (void)stopProgressProbeTimer;
 @end
 
 @implementation LiveLinkObserver
 
-- (LiveLinkObserver)initWithInterfaceName:(id)a3
+- (LiveLinkObserver)initWithInterfaceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = LiveLinkObserver;
   v5 = [(LiveLinkObserver *)&v10 init];
   v6 = v5;
-  if (!v4)
+  if (!nameCopy)
   {
     goto LABEL_5;
   }
@@ -36,9 +36,9 @@
     goto LABEL_7;
   }
 
-  if ([v4 length])
+  if ([nameCopy length])
   {
-    v7 = v4;
+    v7 = nameCopy;
     interfaceName = v6->_interfaceName;
     v6->_interfaceName = v7;
   }
@@ -67,13 +67,13 @@ LABEL_7:
   [(LiveLinkObserver *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -81,8 +81,8 @@ LABEL_7:
     else
     {
       interfaceName = self->_interfaceName;
-      v6 = [(LiveLinkObserver *)v4 interfaceName];
-      v7 = [(NSString *)interfaceName isEqual:v6];
+      interfaceName = [(LiveLinkObserver *)equalCopy interfaceName];
+      v7 = [(NSString *)interfaceName isEqual:interfaceName];
     }
   }
 
@@ -94,9 +94,9 @@ LABEL_7:
   return v7;
 }
 
-- (void)postHasAdviceNotification:(BOOL)a3
+- (void)postHasAdviceNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v10 = *MEMORY[0x277D85DE8];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -112,11 +112,11 @@ LABEL_7:
   if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = v3;
+    v9 = notificationCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "Posting Darwin Notification with LiveLink advice = %llu", buf, 0xCu);
   }
 
-  notify_set_state(self->notifyToken, v3);
+  notify_set_state(self->notifyToken, notificationCopy);
   notify_post(kDarwinNotificationLiveLinkHasAdvice);
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -156,9 +156,9 @@ LABEL_7:
         _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "Allocated progress probe for interface %@", &v15, 0xCu);
       }
 
-      v12 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       timeOfProbeStart = self->_timeOfProbeStart;
-      self->_timeOfProbeStart = v12;
+      self->_timeOfProbeStart = date;
 
       self->_iter = 0;
       v5 = [(TCPProgressProbe *)self->_tcpProgressProbe manage:0 outValue:0];
@@ -193,9 +193,9 @@ LABEL_7:
 
 - (BOOL)startTracking
 {
-  v3 = [(LiveLinkObserver *)self attemptStartProgressProbe];
+  attemptStartProgressProbe = [(LiveLinkObserver *)self attemptStartProgressProbe];
   [(LiveLinkObserver *)self startProgressProbeTimerWithInterval:5 capWindowTo:30];
-  return v3;
+  return attemptStartProgressProbe;
 }
 
 - (BOOL)stopTracking
@@ -423,7 +423,7 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startProgressProbeTimerWithInterval:(unint64_t)a3 capWindowTo:(unint64_t)a4
+- (void)startProgressProbeTimerWithInterval:(unint64_t)interval capWindowTo:(unint64_t)to
 {
   v7 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   progressProbeTimer = self->progressProbeTimer;
@@ -431,15 +431,15 @@ LABEL_8:
 
   v9 = self->progressProbeTimer;
   v10 = dispatch_time(0, 5000000000);
-  dispatch_source_set_timer(v9, v10, 1000000000 * a3, 1000000000 * a3 / 0x14);
+  dispatch_source_set_timer(v9, v10, 1000000000 * interval, 1000000000 * interval / 0x14);
   v11 = self->progressProbeTimer;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __68__LiveLinkObserver_startProgressProbeTimerWithInterval_capWindowTo___block_invoke;
   handler[3] = &unk_27898D158;
   handler[4] = self;
-  handler[5] = a3;
-  handler[6] = a4;
+  handler[5] = interval;
+  handler[6] = to;
   dispatch_source_set_event_handler(v11, handler);
   dispatch_source_set_cancel_handler(self->progressProbeTimer, &__block_literal_global_21);
   dispatch_resume(self->progressProbeTimer);
@@ -512,13 +512,13 @@ LABEL_10:
   }
 }
 
-- (void)_captureProgressWithInterval:(unint64_t)a3 capWindowTo:(unint64_t)a4
+- (void)_captureProgressWithInterval:(unint64_t)interval capWindowTo:(unint64_t)to
 {
   [(NSDate *)self->_timeOfProbeStart timeIntervalSinceNow];
-  v7 = -v6;
-  if (v7 >= a4)
+  toCopy = -v6;
+  if (toCopy >= to)
   {
-    v7 = a4;
+    toCopy = to;
   }
 
   memset(v10, 0, sizeof(v10));
@@ -528,7 +528,7 @@ LABEL_10:
   v9[2] = __61__LiveLinkObserver__captureProgressWithInterval_capWindowTo___block_invoke;
   v9[3] = &unk_27898D180;
   v9[4] = self;
-  *&v9[5] = v7;
+  *&v9[5] = toCopy;
   [(TCPProgressProbe *)tcpProgressProbe fetchMetricsForFlowsAged:v10 metrics:1 includeQUICFlows:v9 resultBlock:?];
 }
 
@@ -608,32 +608,32 @@ void __61__LiveLinkObserver__captureProgressWithInterval_capWindowTo___block_inv
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_assessProgressFromBaseline:(nstat_progress_indicators *)a3 toMetrics:(nstat_progress_indicators *)a4
+- (unint64_t)_assessProgressFromBaseline:(nstat_progress_indicators *)baseline toMetrics:(nstat_progress_indicators *)metrics
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (*&a4->var1 || a4->var3)
+  if (*&metrics->var1 || metrics->var3)
   {
     v5 = 20;
-    if (a3)
+    if (baseline)
     {
 LABEL_4:
       v6 = liveLinkLogHandle;
       if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [TCPProgressProbe progressPrettyPrintUtility:a3];
+        v8 = [TCPProgressProbe progressPrettyPrintUtility:baseline];
         v21 = 138412290;
         v22 = v8;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "TCP establish new baseline: %@", &v21, 0xCu);
       }
 
-      v9 = *&a3->var4;
-      _assessProgressFromBaseline_toMetrics__base_0 = *&a3->var0;
+      v9 = *&baseline->var4;
+      _assessProgressFromBaseline_toMetrics__base_0 = *&baseline->var0;
       unk_2814D4660 = v9;
-      v10 = *&a3->var7;
-      v11 = *&a3->var9;
-      v12 = *&a3->var13;
-      xmmword_2814D4690 = *&a3->var11;
+      v10 = *&baseline->var7;
+      v11 = *&baseline->var9;
+      v12 = *&baseline->var13;
+      xmmword_2814D4690 = *&baseline->var11;
       unk_2814D46A0 = v12;
       xmmword_2814D4670 = v10;
       unk_2814D4680 = v11;
@@ -644,7 +644,7 @@ LABEL_4:
   else
   {
     v5 = 0;
-    if (a3)
+    if (baseline)
     {
       goto LABEL_4;
     }
@@ -652,15 +652,15 @@ LABEL_4:
 
   v13 = 0.0;
   v14 = 0.0;
-  if (a4->var0)
+  if (metrics->var0)
   {
-    var2 = a4->var2;
-    if (var2 <= a4->var3)
+    var2 = metrics->var2;
+    if (var2 <= metrics->var3)
     {
-      var2 = a4->var3;
+      var2 = metrics->var3;
     }
 
-    v14 = (var2 + a4->var1) / a4->var0;
+    v14 = (var2 + metrics->var1) / metrics->var0;
   }
 
   if (_assessProgressFromBaseline_toMetrics__base_0)
@@ -675,7 +675,7 @@ LABEL_4:
   }
 
   v17 = v14 < 0.5 || v14 <= v13;
-  if ((!v17 || v14 == v13 && v13 >= 0.75) && !a4->var6)
+  if ((!v17 || v14 == v13 && v13 >= 0.75) && !metrics->var6)
   {
     v5 = (v14 * 100.0);
   }

@@ -1,16 +1,16 @@
 @interface MPSNDArrayInitializationIdentity
-- (MPSNDArrayInitializationIdentity)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayInitializationIdentity)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSNDArrayInitializationIdentity)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayInitializationIdentity)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 @end
 
 @implementation MPSNDArrayInitializationIdentity
 
-- (MPSNDArrayInitializationIdentity)initWithDevice:(id)a3
+- (MPSNDArrayInitializationIdentity)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayInitializationIdentity;
-  result = [(MPSNDArrayInitialization *)&v4 initWithDevice:a3 sourceCount:0];
+  result = [(MPSNDArrayInitialization *)&v4 initWithDevice:device sourceCount:0];
   if (result)
   {
     result->super.super._encode = EncodeIdentityInitialization;
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayInitializationIdentity;
-  result = [(MPSNDArrayInitialization *)&v5 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v5 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 17) = EncodeIdentityInitialization;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (MPSNDArrayInitializationIdentity)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayInitializationIdentity)initWithCoder:(id)coder device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayInitializationIdentity;
-  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayInitialization *)&v5 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeIdentityInitialization;

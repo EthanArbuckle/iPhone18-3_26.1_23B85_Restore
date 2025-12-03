@@ -1,7 +1,7 @@
 @interface SUNowPlayingTrackCellConfiguration
 + (id)copyDefaultContext;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -12,7 +12,7 @@
 + (id)copyDefaultContext
 {
   v22 = *MEMORY[0x1E69E9840];
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___SUNowPlayingTrackCellConfiguration;
   v2 = objc_msgSendSuper2(&v15, sel_copyDefaultContext);
   v3 = objc_alloc_init(SUImageDataProvider);
@@ -46,19 +46,19 @@
   return v2;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
     return [MEMORY[0x1E69DC888] grayColor];
   }
 
-  if (a4)
+  if (modifiers)
   {
     return [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  if (a3 == 2)
+  if (index == 2)
   {
     return [MEMORY[0x1E69DC888] colorWithWhite:0.2 alpha:1.0];
   }
@@ -66,15 +66,15 @@
   return [MEMORY[0x1E69DC888] blackColor];
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
   v3 = 10.0;
-  if (a3 == 3)
+  if (index == 3)
   {
     v3 = 20.0;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = 15.0;
   }
@@ -136,21 +136,21 @@
   v7.receiver = self;
   v7.super_class = SUNowPlayingTrackCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v7 reloadStrings];
-  v3 = [self->super.super.super.super.super._representedObject title];
+  title = [self->super.super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super.super._strings + 3) = v4;
-  v5 = [self->super.super.super.super.super._representedObject artistName];
+  artistName = [self->super.super.super.super.super._representedObject artistName];
 
-  v6 = [v5 length];
+  v6 = [artistName length];
   if (v6)
   {
-    v6 = v5;
+    v6 = artistName;
   }
 
   *(self->super.super.super.super._strings + 1) = v6;

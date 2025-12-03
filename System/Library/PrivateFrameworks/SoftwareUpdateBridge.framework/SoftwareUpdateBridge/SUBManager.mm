@@ -1,53 +1,53 @@
 @interface SUBManager
-- (BOOL)adoptSimulationFileOfName:(id)a3;
-- (SUBManager)initWithDelegate:(id)a3;
+- (BOOL)adoptSimulationFileOfName:(id)name;
+- (SUBManager)initWithDelegate:(id)delegate;
 - (SUBManagerDelegate)delegate;
 - (id)_serverConnection;
-- (void)_forwardDownloadProgress:(id)a3;
-- (void)_forwardInstallResult:(id)a3;
-- (void)_forwardInstallationAwaitingUserInteraction:(id)a3;
-- (void)_forwardInstallationCanProceed:(id)a3;
-- (void)_forwardInstallationWillProceed:(id)a3;
-- (void)_forwardScanResult:(id)a3;
-- (void)_forwardUserDidAcceptTermsAndConditionsChanged:(id)a3;
-- (void)_forwardUserInstallRequestTypeChanged:(id)a3;
+- (void)_forwardDownloadProgress:(id)progress;
+- (void)_forwardInstallResult:(id)result;
+- (void)_forwardInstallationAwaitingUserInteraction:(id)interaction;
+- (void)_forwardInstallationCanProceed:(id)proceed;
+- (void)_forwardInstallationWillProceed:(id)proceed;
+- (void)_forwardScanResult:(id)result;
+- (void)_forwardUserDidAcceptTermsAndConditionsChanged:(id)changed;
+- (void)_forwardUserInstallRequestTypeChanged:(id)changed;
 - (void)dealloc;
-- (void)getCloudDescriptors:(id)a3;
-- (void)installUpdate:(id)a3;
-- (void)installUpdate:(id)a3 passcode:(id)a4;
-- (void)managerState:(id)a3;
+- (void)getCloudDescriptors:(id)descriptors;
+- (void)installUpdate:(id)update;
+- (void)installUpdate:(id)update passcode:(id)passcode;
+- (void)managerState:(id)state;
 - (void)performMigration;
-- (void)purgeUpdate:(id)a3 completion:(id)a4;
-- (void)removeCloudDescriptor:(id)a3;
+- (void)purgeUpdate:(id)update completion:(id)completion;
+- (void)removeCloudDescriptor:(id)descriptor;
 - (void)scanForUpdates;
-- (void)sendTermsRequest:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setUserInstallRequestTypeForUpdate:(id)a3 userInstallRequestType:(int64_t)a4 completion:(id)a5;
-- (void)startDownload:(id)a3;
-- (void)startDownload:(id)a3 passcode:(id)a4;
-- (void)supportsInstallTonightWithCompletion:(id)a3;
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3;
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3 completion:(id)a4;
+- (void)sendTermsRequest:(id)request;
+- (void)setDelegate:(id)delegate;
+- (void)setUserInstallRequestTypeForUpdate:(id)update userInstallRequestType:(int64_t)type completion:(id)completion;
+- (void)startDownload:(id)download;
+- (void)startDownload:(id)download passcode:(id)passcode;
+- (void)supportsInstallTonightWithCompletion:(id)completion;
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update;
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation SUBManager
 
-- (SUBManager)initWithDelegate:(id)a3
+- (SUBManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = SUBManager;
   v5 = [(SUBManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.SUBManager.ipc", v7);
     queue = v6->_queue;
     v6->_queue = v8;
 
-    v10 = [(SUBManager *)v6 _serverConnection];
+    _serverConnection = [(SUBManager *)v6 _serverConnection];
   }
 
   return v6;
@@ -74,17 +74,17 @@
   [(SUBManager *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__SUBManager_setDelegate___block_invoke;
   v7[3] = &unk_279CA7820;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -309,38 +309,38 @@ uint64_t __31__SUBManager__serverConnection__block_invoke_290(uint64_t a1)
   return [v2 setServerConnection:0];
 }
 
-- (void)_forwardScanResult:(id)a3
+- (void)_forwardScanResult:(id)result
 {
   v4 = SUBMessageDescriptorKey;
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_opt_class();
-  v11 = SUBIPCDecodeObjectForKey(v5, v4, v6);
+  v11 = SUBIPCDecodeObjectForKey(resultCopy, v4, v6);
   v7 = SUBMessageErrorKey;
   v8 = objc_opt_class();
-  v9 = SUBIPCDecodeObjectForKey(v5, v7, v8);
+  v9 = SUBIPCDecodeObjectForKey(resultCopy, v7, v8);
 
-  v10 = [(SUBManager *)self delegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SUBManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 manager:self scanRequestDidLocateUpdate:v11 error:v9];
+    [delegate manager:self scanRequestDidLocateUpdate:v11 error:v9];
   }
 }
 
-- (void)_forwardDownloadProgress:(id)a3
+- (void)_forwardDownloadProgress:(id)progress
 {
   v4 = SUBMessageDownloadKey;
-  v5 = a3;
+  progressCopy = progress;
   v6 = objc_opt_class();
-  v20 = SUBIPCDecodeObjectForKey(v5, v4, v6);
+  v20 = SUBIPCDecodeObjectForKey(progressCopy, v4, v6);
   v7 = SUBMessageErrorKey;
   v8 = objc_opt_class();
-  v9 = SUBIPCDecodeObjectForKey(v5, v7, v8);
+  v9 = SUBIPCDecodeObjectForKey(progressCopy, v7, v8);
 
-  v10 = [(SUBManager *)self delegate];
-  v11 = v10;
+  delegate = [(SUBManager *)self delegate];
+  v11 = delegate;
   if (v9)
   {
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v11 manager:self didFailDownload:v20 withError:v9];
     }
@@ -348,10 +348,10 @@ uint64_t __31__SUBManager__serverConnection__block_invoke_290(uint64_t a1)
 
   else
   {
-    v12 = [v20 progress];
-    v13 = [v12 isDone];
+    progress = [v20 progress];
+    isDone = [progress isDone];
 
-    if (v13)
+    if (isDone)
     {
       if (!v11)
       {
@@ -360,11 +360,11 @@ uint64_t __31__SUBManager__serverConnection__block_invoke_290(uint64_t a1)
 
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v20 descriptor];
-        v15 = [v20 descriptor];
-        v16 = [v15 willProceedWithInstallation];
-        v17 = [v20 descriptor];
-        [v11 manager:self installationOfUpdate:v14 willProceed:v16 waitingForAdmissionControl:{objc_msgSend(v17, "isAwaitingAdmissionControlForInstallation")}];
+        descriptor = [v20 descriptor];
+        descriptor2 = [v20 descriptor];
+        willProceedWithInstallation = [descriptor2 willProceedWithInstallation];
+        descriptor3 = [v20 descriptor];
+        [v11 manager:self installationOfUpdate:descriptor willProceed:willProceedWithInstallation waitingForAdmissionControl:{objc_msgSend(descriptor3, "isAwaitingAdmissionControlForInstallation")}];
       }
 
       else
@@ -374,10 +374,10 @@ uint64_t __31__SUBManager__serverConnection__block_invoke_290(uint64_t a1)
           goto LABEL_15;
         }
 
-        v14 = [v20 descriptor];
-        v18 = [v14 willProceedWithInstallation];
-        v19 = [v20 descriptor];
-        [v11 manager:self didFinishDownload:v20 willProceedWithInstallation:v18 waitingForAdmissionControl:{objc_msgSend(v19, "isAwaitingAdmissionControlForInstallation")}];
+        descriptor = [v20 descriptor];
+        willProceedWithInstallation2 = [descriptor willProceedWithInstallation];
+        descriptor4 = [v20 descriptor];
+        [v11 manager:self didFinishDownload:v20 willProceedWithInstallation:willProceedWithInstallation2 waitingForAdmissionControl:{objc_msgSend(descriptor4, "isAwaitingAdmissionControlForInstallation")}];
       }
     }
 
@@ -390,37 +390,37 @@ uint64_t __31__SUBManager__serverConnection__block_invoke_290(uint64_t a1)
 LABEL_15:
 }
 
-- (void)_forwardInstallResult:(id)a3
+- (void)_forwardInstallResult:(id)result
 {
   v4 = SUBMessageDescriptorKey;
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_opt_class();
-  v12 = SUBIPCDecodeObjectForKey(v5, v4, v6);
+  v12 = SUBIPCDecodeObjectForKey(resultCopy, v4, v6);
   v7 = SUBMessageErrorKey;
   v8 = objc_opt_class();
-  v9 = SUBIPCDecodeObjectForKey(v5, v7, v8);
+  v9 = SUBIPCDecodeObjectForKey(resultCopy, v7, v8);
 
-  v10 = [(SUBManager *)self delegate];
-  v11 = v10;
+  delegate = [(SUBManager *)self delegate];
+  v11 = delegate;
   if (v9)
   {
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v11 manager:self didFailInstallation:v12 withError:v9];
     }
   }
 
-  else if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v11 manager:self didFinishInstallation:v12];
   }
 }
 
-- (void)_forwardInstallationCanProceed:(id)a3
+- (void)_forwardInstallationCanProceed:(id)proceed
 {
-  xdict = a3;
-  v4 = [(SUBManager *)self delegate];
-  if (v4)
+  xdict = proceed;
+  delegate = [(SUBManager *)self delegate];
+  if (delegate)
   {
     v5 = SUBMessageDescriptorKey;
     v6 = objc_opt_class();
@@ -428,68 +428,68 @@ LABEL_15:
     int64 = xpc_dictionary_get_int64(xdict, SUBMessageCanProceedWithInstallationKey);
     if (objc_opt_respondsToSelector())
     {
-      [v4 manager:self installationOfUpdate:v7 willProceed:0 waitingForAdmissionControl:int64 == 0];
+      [delegate manager:self installationOfUpdate:v7 willProceed:0 waitingForAdmissionControl:int64 == 0];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v4 manager:self installationOfUpdate:v7 canProceed:int64 != 0];
+      [delegate manager:self installationOfUpdate:v7 canProceed:int64 != 0];
     }
   }
 }
 
-- (void)_forwardInstallationWillProceed:(id)a3
+- (void)_forwardInstallationWillProceed:(id)proceed
 {
-  v8 = a3;
-  v4 = [(SUBManager *)self delegate];
-  if (v4)
+  proceedCopy = proceed;
+  delegate = [(SUBManager *)self delegate];
+  if (delegate)
   {
     v5 = SUBMessageDescriptorKey;
     v6 = objc_opt_class();
-    v7 = SUBIPCDecodeObjectForKey(v8, v5, v6);
+    v7 = SUBIPCDecodeObjectForKey(proceedCopy, v5, v6);
     if (objc_opt_respondsToSelector())
     {
-      [v4 manager:self installationOfUpdate:v7 willProceed:1 waitingForAdmissionControl:0];
+      [delegate manager:self installationOfUpdate:v7 willProceed:1 waitingForAdmissionControl:0];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      [v4 manager:self willProceedWithInstallation:v7];
+      [delegate manager:self willProceedWithInstallation:v7];
     }
   }
 }
 
-- (void)_forwardUserDidAcceptTermsAndConditionsChanged:(id)a3
+- (void)_forwardUserDidAcceptTermsAndConditionsChanged:(id)changed
 {
-  v4 = [(SUBManager *)self delegate];
+  delegate = [(SUBManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 managerUserDidAcceptTermsAndConditionsForUpdate:self];
+    [delegate managerUserDidAcceptTermsAndConditionsForUpdate:self];
   }
 }
 
-- (void)_forwardUserInstallRequestTypeChanged:(id)a3
+- (void)_forwardUserInstallRequestTypeChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [(SUBManager *)self delegate];
+  changedCopy = changed;
+  delegate = [(SUBManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = SUBMessageUserInstallRequestTypeKey;
     v6 = objc_opt_class();
-    v7 = SUBIPCDecodeObjectForKey(v8, v5, v6);
-    [v4 manager:self userInstallRequestTypeDidChange:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    v7 = SUBIPCDecodeObjectForKey(changedCopy, v5, v6);
+    [delegate manager:self userInstallRequestTypeDidChange:{objc_msgSend(v7, "unsignedIntegerValue")}];
   }
 }
 
-- (void)_forwardInstallationAwaitingUserInteraction:(id)a3
+- (void)_forwardInstallationAwaitingUserInteraction:(id)interaction
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = SUBMessageDescriptorKey;
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = objc_opt_class();
-  v7 = SUBIPCDecodeObjectForKey(v5, v4, v6);
+  v7 = SUBIPCDecodeObjectForKey(interactionCopy, v4, v6);
 
-  v8 = [(SUBManager *)self delegate];
+  delegate = [(SUBManager *)self delegate];
   v9 = objc_opt_respondsToSelector();
   v10 = softwareupdatebridge_log;
   v11 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
@@ -502,7 +502,7 @@ LABEL_15:
       _os_log_impl(&dword_26AB06000, v10, OS_LOG_TYPE_DEFAULT, "Delegate found to handle %{public}s notification", &v13, 0xCu);
     }
 
-    [v8 manager:self installationAwaitingUserInteraction:v7];
+    [delegate manager:self installationAwaitingUserInteraction:v7];
   }
 
   else if (v11)
@@ -515,19 +515,19 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)managerState:(id)a3
+- (void)managerState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUBMessageTypeKey, SUBMessageTypeQueryManagerState);
-  v6 = [(SUBManager *)self _serverConnection];
+  _serverConnection = [(SUBManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __27__SUBManager_managerState___block_invoke;
   handler[3] = &unk_279CA78C0;
-  v7 = v4;
+  v7 = stateCopy;
   v10 = v7;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 
   if ((atomic_exchange(&self->_hasQueriedStateOnceFlag, 1u) & 1) == 0)
   {
@@ -591,83 +591,83 @@ LABEL_11:
 {
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeScanForUpdates);
-  v3 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v3, message);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)startDownload:(id)a3
+- (void)startDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeStartDownload);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v4);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, downloadCopy);
 
-  v5 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v5, message);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)startDownload:(id)a3 passcode:(id)a4
+- (void)startDownload:(id)download passcode:(id)passcode
 {
-  v6 = a4;
-  v7 = a3;
+  passcodeCopy = passcode;
+  downloadCopy = download;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeStartDownload);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v7);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, downloadCopy);
 
-  SUBIPCEncodeObject(message, SUBMessagePasscodeKey, v6);
-  v8 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v8, message);
+  SUBIPCEncodeObject(message, SUBMessagePasscodeKey, passcodeCopy);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)installUpdate:(id)a3
+- (void)installUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeInstallUpdate);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v4);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, updateCopy);
 
-  v5 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v5, message);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)installUpdate:(id)a3 passcode:(id)a4
+- (void)installUpdate:(id)update passcode:(id)passcode
 {
-  v6 = a4;
-  v7 = a3;
+  passcodeCopy = passcode;
+  updateCopy = update;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeInstallUpdate);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v7);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, updateCopy);
 
-  SUBIPCEncodeObject(message, SUBMessagePasscodeKey, v6);
-  v8 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v8, message);
+  SUBIPCEncodeObject(message, SUBMessagePasscodeKey, passcodeCopy);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeUserDidAcceptTermsAndConditions);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v4);
-  v5 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v5, message);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, updateCopy);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 
-  [v4 setUserDidAcceptTermsAndConditions:1];
+  [updateCopy setUserDidAcceptTermsAndConditions:1];
 }
 
-- (void)getCloudDescriptors:(id)a3
+- (void)getCloudDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUBMessageTypeKey, SUBMessageTypeGetCloudDescriptors);
-  v6 = [(SUBManager *)self _serverConnection];
+  _serverConnection = [(SUBManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __34__SUBManager_getCloudDescriptors___block_invoke;
   handler[3] = &unk_279CA78C0;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  v9 = descriptorsCopy;
+  v7 = descriptorsCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 }
 
 void __34__SUBManager_getCloudDescriptors___block_invoke(uint64_t a1, void *a2)
@@ -699,26 +699,26 @@ void __34__SUBManager_getCloudDescriptors___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)removeCloudDescriptor:(id)a3
+- (void)removeCloudDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypeRemoveCloudDescriptor);
-  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, v4);
+  SUBIPCEncodeObject(message, SUBMessageDescriptorKey, descriptorCopy);
 
-  v5 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v5, message);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)userDidAcceptTermsAndConditionsForUpdate:(id)a3 completion:(id)a4
+- (void)userDidAcceptTermsAndConditionsForUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 userDidAcceptTermsAndConditions])
+  updateCopy = update;
+  completionCopy = completion;
+  if ([updateCopy userDidAcceptTermsAndConditions])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -728,9 +728,9 @@ void __34__SUBManager_getCloudDescriptors___block_invoke(uint64_t a1, void *a2)
     v8[1] = 3221225472;
     v8[2] = __66__SUBManager_userDidAcceptTermsAndConditionsForUpdate_completion___block_invoke;
     v8[3] = &unk_279CA78E8;
-    v11 = v7;
-    v9 = v6;
-    v10 = self;
+    v11 = completionCopy;
+    v9 = updateCopy;
+    selfCopy = self;
     [(SUBManager *)self supportsInstallTonightWithCompletion:v8];
   }
 }
@@ -833,22 +833,22 @@ LABEL_14:
   }
 }
 
-- (void)purgeUpdate:(id)a3 completion:(id)a4
+- (void)purgeUpdate:(id)update completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  updateCopy = update;
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v8, SUBMessageTypeKey, SUBMessageTypePurgeUpdate);
-  SUBIPCEncodeObject(v8, SUBMessageDescriptorKey, v7);
+  SUBIPCEncodeObject(v8, SUBMessageDescriptorKey, updateCopy);
 
-  v9 = [(SUBManager *)self _serverConnection];
+  _serverConnection = [(SUBManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __37__SUBManager_purgeUpdate_completion___block_invoke;
   handler[3] = &unk_279CA78C0;
-  v12 = v6;
-  v10 = v6;
-  xpc_connection_send_message_with_reply(v9, v8, 0, handler);
+  v12 = completionCopy;
+  v10 = completionCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v8, 0, handler);
 }
 
 void __37__SUBManager_purgeUpdate_completion___block_invoke(uint64_t a1, void *a2)
@@ -865,17 +865,17 @@ void __37__SUBManager_purgeUpdate_completion___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)setUserInstallRequestTypeForUpdate:(id)a3 userInstallRequestType:(int64_t)a4 completion:(id)a5
+- (void)setUserInstallRequestTypeForUpdate:(id)update userInstallRequestType:(int64_t)type completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  updateCopy = update;
+  completionCopy = completion;
   v10 = softwareupdatebridge_log;
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
     *buf = 136446210;
-    v22 = SUBStringForUserInstallRequestType(a4);
+    v22 = SUBStringForUserInstallRequestType(type);
     _os_log_impl(&dword_26AB06000, v11, OS_LOG_TYPE_DEFAULT, "Request Type: %{public}s", buf, 0xCu);
   }
 
@@ -883,7 +883,7 @@ void __37__SUBManager_purgeUpdate_completion___block_invoke(uint64_t a1, void *a
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v8;
+    v22 = updateCopy;
     _os_log_impl(&dword_26AB06000, v12, OS_LOG_TYPE_DEFAULT, "Descriptor(setUserInstallRequestTypeForUpdate): %{public}@", buf, 0xCu);
   }
 
@@ -891,12 +891,12 @@ void __37__SUBManager_purgeUpdate_completion___block_invoke(uint64_t a1, void *a
   v16[1] = 3221225472;
   v16[2] = __83__SUBManager_setUserInstallRequestTypeForUpdate_userInstallRequestType_completion___block_invoke;
   v16[3] = &unk_279CA7938;
-  v19 = v9;
-  v20 = a4;
-  v17 = v8;
-  v18 = self;
-  v13 = v8;
-  v14 = v9;
+  v19 = completionCopy;
+  typeCopy = type;
+  v17 = updateCopy;
+  selfCopy = self;
+  v13 = updateCopy;
+  v14 = completionCopy;
   [(SUBManager *)self supportsInstallTonightWithCompletion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1017,15 +1017,15 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)adoptSimulationFileOfName:(id)a3
+- (BOOL)adoptSimulationFileOfName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUBMessageTypeKey, SUBMessageTypeSetSimulationFile);
-  SUBIPCEncodeObject(v5, SUBMessageSimulationFileNameKey, v4);
-  v6 = [(SUBManager *)self _serverConnection];
-  v7 = xpc_connection_send_message_with_reply_sync(v6, v5);
+  SUBIPCEncodeObject(v5, SUBMessageSimulationFileNameKey, nameCopy);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  v7 = xpc_connection_send_message_with_reply_sync(_serverConnection, v5);
 
   v8 = MEMORY[0x26D6678D0](v7);
   if (v8 != MEMORY[0x277D86480])
@@ -1039,7 +1039,7 @@ LABEL_10:
       if (v12)
       {
         v25 = 138412290;
-        v26 = v4;
+        v26 = nameCopy;
         v13 = "[AdoptSimulationFile]: Got unexpected response when trying to adopt simulation file of name %@";
 LABEL_7:
         _os_log_impl(&dword_26AB06000, v11, OS_LOG_TYPE_DEFAULT, v13, &v25, 0xCu);
@@ -1052,7 +1052,7 @@ LABEL_7:
     if (v12)
     {
       v25 = 138412290;
-      v26 = v4;
+      v26 = nameCopy;
       _os_log_impl(&dword_26AB06000, v11, OS_LOG_TYPE_DEFAULT, "[AdoptSimulationFile]: Parsing response to adopt simulation file(%@) request", &v25, 0xCu);
     }
 
@@ -1067,7 +1067,7 @@ LABEL_7:
       if (v19)
       {
         v25 = 138412546;
-        v26 = v4;
+        v26 = nameCopy;
         v27 = 2112;
         v28 = v17;
         v20 = "[AdoptSimulationFile]: Got error while trying to adopt simulation file %@: %@";
@@ -1081,7 +1081,7 @@ LABEL_16:
     else if (v19)
     {
       v25 = 138412290;
-      v26 = v4;
+      v26 = nameCopy;
       v20 = "[AdoptSimulationFile]: Successfully adopted simulation file %@";
       v21 = v18;
       v22 = 12;
@@ -1095,7 +1095,7 @@ LABEL_16:
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412290;
-    v26 = v4;
+    v26 = nameCopy;
     v13 = "[AdoptSimulationFile]: Got XPC error while trying to adopt simulation file of name %@";
     goto LABEL_7;
   }
@@ -1112,35 +1112,35 @@ LABEL_18:
 {
   message = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(message, SUBMessageTypeKey, SUBMessageTypePerformMigration);
-  v3 = [(SUBManager *)self _serverConnection];
-  xpc_connection_send_message(v3, message);
+  _serverConnection = [(SUBManager *)self _serverConnection];
+  xpc_connection_send_message(_serverConnection, message);
 }
 
-- (void)supportsInstallTonightWithCompletion:(id)a3
+- (void)supportsInstallTonightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  completionCopy = completion;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"79C6122C-6767-4098-9B1E-30DE4D6D0180"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [getActivePairedDevice supportsCapability:v7];
 
   if (v8)
   {
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v9, SUBMessageTypeKey, SUBMessageTypeGetSupportsInstallTonight);
-    v10 = [(SUBManager *)self _serverConnection];
+    _serverConnection = [(SUBManager *)self _serverConnection];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __51__SUBManager_supportsInstallTonightWithCompletion___block_invoke;
     handler[3] = &unk_279CA78C0;
-    v12 = v4;
-    xpc_connection_send_message_with_reply(v10, v9, 0, handler);
+    v12 = completionCopy;
+    xpc_connection_send_message_with_reply(_serverConnection, v9, 0, handler);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -1205,19 +1205,19 @@ LABEL_15:
   }
 }
 
-- (void)sendTermsRequest:(id)a3
+- (void)sendTermsRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, SUBMessageTypeKey, SUBMessageTypeSendTermsRequest);
-  v6 = [(SUBManager *)self _serverConnection];
+  _serverConnection = [(SUBManager *)self _serverConnection];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __31__SUBManager_sendTermsRequest___block_invoke;
   handler[3] = &unk_279CA78C0;
-  v9 = v4;
-  v7 = v4;
-  xpc_connection_send_message_with_reply(v6, v5, 0, handler);
+  v9 = requestCopy;
+  v7 = requestCopy;
+  xpc_connection_send_message_with_reply(_serverConnection, v5, 0, handler);
 }
 
 void __31__SUBManager_sendTermsRequest___block_invoke(uint64_t a1, void *a2)

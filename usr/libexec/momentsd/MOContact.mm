@@ -1,30 +1,30 @@
 @interface MOContact
-- (BOOL)isEqual:(id)a3;
-- (MOContact)initWithCDContact:(id)a3;
-- (MOContact)initWithCoder:(id)a3;
-- (MOContact)initWithIdentifier:(id)a3 personId:(id)a4 displayName:(id)a5 isOrganization:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (MOContact)initWithCDContact:(id)contact;
+- (MOContact)initWithCoder:(id)coder;
+- (MOContact)initWithIdentifier:(id)identifier personId:(id)id displayName:(id)name isOrganization:(BOOL)organization;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContact
 
-- (MOContact)initWithIdentifier:(id)a3 personId:(id)a4 displayName:(id)a5 isOrganization:(BOOL)a6
+- (MOContact)initWithIdentifier:(id)identifier personId:(id)id displayName:(id)name isOrganization:(BOOL)organization
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  idCopy = id;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = MOContact;
   v14 = [(MOContact *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    objc_storeStrong(&v15->_personId, a4);
-    objc_storeStrong(&v15->_displayName, a5);
-    v15->_isOrganization = a6;
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_personId, id);
+    objc_storeStrong(&v15->_displayName, name);
+    v15->_isOrganization = organization;
   }
 
   return v15;
@@ -32,42 +32,42 @@
 
 - (id)description
 {
-  v3 = [(MOContact *)self identifier];
-  v4 = [v3 mask];
-  v5 = [(MOContact *)self personId];
-  v6 = [(MOContact *)self displayName];
-  v7 = [v6 mask];
-  v8 = [NSString stringWithFormat:@"identifier, %@, personId, %@, name, %@, is organization, %d", v4, v5, v7, [(MOContact *)self isOrganization]];
+  identifier = [(MOContact *)self identifier];
+  mask = [identifier mask];
+  personId = [(MOContact *)self personId];
+  displayName = [(MOContact *)self displayName];
+  mask2 = [displayName mask];
+  v8 = [NSString stringWithFormat:@"identifier, %@, personId, %@, name, %@, is organization, %d", mask, personId, mask2, [(MOContact *)self isOrganization]];
 
   return v8;
 }
 
-- (MOContact)initWithCoder:(id)a3
+- (MOContact)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personId"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
-  v8 = [v4 decodeBoolForKey:@"isOrganization"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personId"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+  v8 = [coderCopy decodeBoolForKey:@"isOrganization"];
 
   v9 = [(MOContact *)self initWithIdentifier:v5 personId:v6 displayName:v7 isOrganization:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_personId forKey:@"personId"];
-  [v5 encodeObject:self->_displayName forKey:@"displayName"];
-  [v5 encodeBool:self->_isOrganization forKey:@"isOrganization"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_personId forKey:@"personId"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeBool:self->_isOrganization forKey:@"isOrganization"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -77,18 +77,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MOContact *)self identifier];
-      v7 = [(MOContact *)v5 identifier];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(MOContact *)self identifier];
+      identifier2 = [(MOContact *)v5 identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v8 = [(MOContact *)self personId];
-        v9 = [(MOContact *)v5 personId];
-        if ([v8 isEqualToString:v9])
+        personId = [(MOContact *)self personId];
+        personId2 = [(MOContact *)v5 personId];
+        if ([personId isEqualToString:personId2])
         {
-          v10 = [(MOContact *)self displayName];
-          v11 = [(MOContact *)v5 displayName];
-          v12 = [v10 isEqualToString:v11];
+          displayName = [(MOContact *)self displayName];
+          displayName2 = [(MOContact *)v5 displayName];
+          v12 = [displayName isEqualToString:displayName2];
         }
 
         else
@@ -119,15 +119,15 @@
   return v4 ^ [(NSString *)self->_displayName hash];
 }
 
-- (MOContact)initWithCDContact:(id)a3
+- (MOContact)initWithCDContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 personId];
-  v7 = [v4 displayName];
-  v8 = [v4 contactIdType];
+  contactCopy = contact;
+  identifier = [contactCopy identifier];
+  personId = [contactCopy personId];
+  displayName = [contactCopy displayName];
+  contactIdType = [contactCopy contactIdType];
 
-  v9 = [(MOContact *)self initWithIdentifier:v5 personId:v6 displayName:v7 isOrganization:v8 == 1];
+  v9 = [(MOContact *)self initWithIdentifier:identifier personId:personId displayName:displayName isOrganization:contactIdType == 1];
   return v9;
 }
 

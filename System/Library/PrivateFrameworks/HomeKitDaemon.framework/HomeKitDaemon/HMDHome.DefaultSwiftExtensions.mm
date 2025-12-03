@@ -1,27 +1,27 @@
 @interface HMDHome.DefaultSwiftExtensions
 - (_TtCE13HomeKitDaemonCSo7HMDHomeP33_0B6F54D380C02F3DBB7BB084234D6AED22DefaultSwiftExtensions)init;
-- (void)configureWithHome:(id)a3;
-- (void)unconfigureWithHome:(id)a3;
+- (void)configureWithHome:(id)home;
+- (void)unconfigureWithHome:(id)home;
 @end
 
 @implementation HMDHome.DefaultSwiftExtensions
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
-  v4 = a3;
-  v5 = self;
-  sub_2297A4F88(v4);
+  homeCopy = home;
+  selfCopy = self;
+  sub_2297A4F88(homeCopy);
 }
 
-- (void)unconfigureWithHome:(id)a3
+- (void)unconfigureWithHome:(id)home
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCE13HomeKitDaemonCSo7HMDHomeP33_0B6F54D380C02F3DBB7BB084234D6AED22DefaultSwiftExtensions_userPresenceSubscriptionManager);
   if (v3)
   {
     v5 = objc_opt_self();
-    v7 = self;
-    v6 = [v5 defaultCenter];
-    [v6 removeObserver_];
+    selfCopy = self;
+    defaultCenter = [v5 defaultCenter];
+    [defaultCenter removeObserver_];
 
     [*(v3 + OBJC_IVAR____TtC13HomeKitDaemon37UserPresenceUpdateSubscriptionManager_messageDispatcher) deregisterReceiver_];
   }

@@ -1,21 +1,21 @@
 @interface QLTextThumbnailRenderer
-+ (id)_readingOptionsFromContentType:(id)a3 encoding:(unsigned int)a4;
-+ (id)mutableAttributedStringForThumbnailWithData:(id)a3 contentType:(id)a4 documentAttributes:(id *)a5 error:(id *)a6;
-+ (id)mutableAttributedStringForThumbnailWithURL:(id)a3 contentType:(id)a4 documentAttributes:(id *)a5 error:(id *)a6;
-+ (id)textDocumentTypeFromContentType:(id)a3;
++ (id)_readingOptionsFromContentType:(id)type encoding:(unsigned int)encoding;
++ (id)mutableAttributedStringForThumbnailWithData:(id)data contentType:(id)type documentAttributes:(id *)attributes error:(id *)error;
++ (id)mutableAttributedStringForThumbnailWithURL:(id)l contentType:(id)type documentAttributes:(id *)attributes error:(id *)error;
++ (id)textDocumentTypeFromContentType:(id)type;
 - (CGSize)contextSize;
 - (CGSize)paperSize;
-- (QLTextThumbnailRenderer)initWithData:(id)a3 contentType:(id)a4 stringEncoding:(unint64_t)a5 maxSize:(CGSize)a6 iconMode:(BOOL)a7;
-- (QLTextThumbnailRenderer)initWithURL:(id)a3 contentType:(id)a4 stringEncoding:(unint64_t)a5 maxSize:(CGSize)a6 iconMode:(BOOL)a7;
+- (QLTextThumbnailRenderer)initWithData:(id)data contentType:(id)type stringEncoding:(unint64_t)encoding maxSize:(CGSize)size iconMode:(BOOL)mode;
+- (QLTextThumbnailRenderer)initWithURL:(id)l contentType:(id)type stringEncoding:(unint64_t)encoding maxSize:(CGSize)size iconMode:(BOOL)mode;
 - (void)draw;
 @end
 
 @implementation QLTextThumbnailRenderer
 
-+ (id)textDocumentTypeFromContentType:(id)a3
++ (id)textDocumentTypeFromContentType:(id)type
 {
-  v3 = a3;
-  if ([v3 conformsToType:UTTypeRTFD])
+  typeCopy = type;
+  if ([typeCopy conformsToType:UTTypeRTFD])
   {
     v4 = &NSRTFDTextDocumentType;
 LABEL_7:
@@ -23,13 +23,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 conformsToType:UTTypeRTF])
+  if ([typeCopy conformsToType:UTTypeRTF])
   {
     v4 = &NSRTFTextDocumentType;
     goto LABEL_7;
   }
 
-  if ([v3 conformsToType:UTTypeText])
+  if ([typeCopy conformsToType:UTTypeText])
   {
     v4 = &NSPlainTextDocumentType;
     goto LABEL_7;
@@ -41,13 +41,13 @@ LABEL_8:
   return v5;
 }
 
-+ (id)_readingOptionsFromContentType:(id)a3 encoding:(unsigned int)a4
++ (id)_readingOptionsFromContentType:(id)type encoding:(unsigned int)encoding
 {
-  if (a3)
+  if (type)
   {
-    v5 = a3;
-    v6 = CFStringConvertEncodingToNSStringEncoding(a4);
-    v7 = [QLTextThumbnailRenderer textDocumentTypeFromContentType:v5];
+    typeCopy = type;
+    v6 = CFStringConvertEncodingToNSStringEncoding(encoding);
+    v7 = [QLTextThumbnailRenderer textDocumentTypeFromContentType:typeCopy];
 
     if (v7)
     {
@@ -75,46 +75,46 @@ LABEL_8:
   return v9;
 }
 
-+ (id)mutableAttributedStringForThumbnailWithData:(id)a3 contentType:(id)a4 documentAttributes:(id *)a5 error:(id *)a6
++ (id)mutableAttributedStringForThumbnailWithData:(id)data contentType:(id)type documentAttributes:(id *)attributes error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 _readingOptionsFromContentType:v9 encoding:QLGuessEncodingForTextFileFromData()];
+  typeCopy = type;
+  dataCopy = data;
+  v11 = [self _readingOptionsFromContentType:typeCopy encoding:QLGuessEncodingForTextFileFromData()];
 
-  v12 = [[NSMutableAttributedString alloc] initWithData:v10 options:v11 documentAttributes:a5 error:0];
+  v12 = [[NSMutableAttributedString alloc] initWithData:dataCopy options:v11 documentAttributes:attributes error:0];
 
   return v12;
 }
 
-+ (id)mutableAttributedStringForThumbnailWithURL:(id)a3 contentType:(id)a4 documentAttributes:(id *)a5 error:(id *)a6
++ (id)mutableAttributedStringForThumbnailWithURL:(id)l contentType:(id)type documentAttributes:(id *)attributes error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a1 _readingOptionsFromContentType:v10 encoding:QLGuessEncodingForTextFileAtURL()];
+  typeCopy = type;
+  lCopy = l;
+  v12 = [self _readingOptionsFromContentType:typeCopy encoding:QLGuessEncodingForTextFileAtURL()];
 
-  v13 = [[NSMutableAttributedString alloc] initWithURL:v11 options:v12 documentAttributes:a5 error:a6];
+  v13 = [[NSMutableAttributedString alloc] initWithURL:lCopy options:v12 documentAttributes:attributes error:error];
 
   return v13;
 }
 
-- (QLTextThumbnailRenderer)initWithData:(id)a3 contentType:(id)a4 stringEncoding:(unint64_t)a5 maxSize:(CGSize)a6 iconMode:(BOOL)a7
+- (QLTextThumbnailRenderer)initWithData:(id)data contentType:(id)type stringEncoding:(unint64_t)encoding maxSize:(CGSize)size iconMode:(BOOL)mode
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  typeCopy = type;
   v26.receiver = self;
   v26.super_class = QLTextThumbnailRenderer;
   v13 = [(QLTextThumbnailRenderer *)&v26 init];
   if (v13)
   {
     v25 = 0;
-    v14 = [QLTextThumbnailRenderer mutableAttributedStringForThumbnailWithData:v11 contentType:v12 documentAttributes:&v25 error:0];
+    v14 = [QLTextThumbnailRenderer mutableAttributedStringForThumbnailWithData:dataCopy contentType:typeCopy documentAttributes:&v25 error:0];
     v15 = v25;
     attributedString = v13->_attributedString;
     v13->_attributedString = v14;
 
-    if ([v12 conformsToType:UTTypePlainText])
+    if ([typeCopy conformsToType:UTTypePlainText])
     {
       v17 = v13->_attributedString;
       v27 = NSFontAttributeName;
@@ -155,24 +155,24 @@ LABEL_9:
   return v13;
 }
 
-- (QLTextThumbnailRenderer)initWithURL:(id)a3 contentType:(id)a4 stringEncoding:(unint64_t)a5 maxSize:(CGSize)a6 iconMode:(BOOL)a7
+- (QLTextThumbnailRenderer)initWithURL:(id)l contentType:(id)type stringEncoding:(unint64_t)encoding maxSize:(CGSize)size iconMode:(BOOL)mode
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
+  typeCopy = type;
   v26.receiver = self;
   v26.super_class = QLTextThumbnailRenderer;
   v13 = [(QLTextThumbnailRenderer *)&v26 init];
   if (v13)
   {
     v25 = 0;
-    v14 = [QLTextThumbnailRenderer mutableAttributedStringForThumbnailWithURL:v11 contentType:v12 documentAttributes:&v25 error:0];
+    v14 = [QLTextThumbnailRenderer mutableAttributedStringForThumbnailWithURL:lCopy contentType:typeCopy documentAttributes:&v25 error:0];
     v15 = v25;
     attributedString = v13->_attributedString;
     v13->_attributedString = v14;
 
-    if ([v12 conformsToType:UTTypePlainText])
+    if ([typeCopy conformsToType:UTTypePlainText])
     {
       v17 = v13->_attributedString;
       v27 = NSFontAttributeName;
@@ -242,8 +242,8 @@ LABEL_9:
   v20 = v19;
   [(QLTextThumbnailRenderer *)self paperSize];
   CGContextScaleCTM(CurrentContext, v18, v20 / v21);
-  v22 = [(QLTextThumbnailRenderer *)self attributedString];
-  [v22 drawInRect:{v9, v9, v11, v12}];
+  attributedString = [(QLTextThumbnailRenderer *)self attributedString];
+  [attributedString drawInRect:{v9, v9, v11, v12}];
 }
 
 - (CGSize)contextSize

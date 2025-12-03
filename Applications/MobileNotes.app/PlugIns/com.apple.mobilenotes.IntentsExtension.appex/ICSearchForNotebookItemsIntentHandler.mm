@@ -1,82 +1,82 @@
 @interface ICSearchForNotebookItemsIntentHandler
-- (void)handleSearchForNotebookItems:(id)a3 completion:(id)a4;
-- (void)resolveContentForSearchForNotebookItems:(id)a3 withCompletion:(id)a4;
-- (void)resolveTitleForSearchForNotebookItems:(id)a3 withCompletion:(id)a4;
+- (void)handleSearchForNotebookItems:(id)items completion:(id)completion;
+- (void)resolveContentForSearchForNotebookItems:(id)items withCompletion:(id)completion;
+- (void)resolveTitleForSearchForNotebookItems:(id)items withCompletion:(id)completion;
 @end
 
 @implementation ICSearchForNotebookItemsIntentHandler
 
-- (void)resolveTitleForSearchForNotebookItems:(id)a3 withCompletion:(id)a4
+- (void)resolveTitleForSearchForNotebookItems:(id)items withCompletion:(id)completion
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 title];
-  v7 = [v6 spokenPhrase];
-  v8 = [v7 length];
+  itemsCopy = items;
+  completionCopy = completion;
+  title = [itemsCopy title];
+  spokenPhrase = [title spokenPhrase];
+  v8 = [spokenPhrase length];
 
   if (v8)
   {
-    v9 = [v11 title];
-    v10 = [INSpeakableStringResolutionResult successWithResolvedString:v9];
-    v5[2](v5, v10);
+    title2 = [itemsCopy title];
+    v10 = [INSpeakableStringResolutionResult successWithResolvedString:title2];
+    completionCopy[2](completionCopy, v10);
 
-    v5 = v10;
+    completionCopy = v10;
   }
 
   else
   {
-    v9 = +[INSpeakableStringResolutionResult notRequired];
-    v5[2](v5, v9);
+    title2 = +[INSpeakableStringResolutionResult notRequired];
+    completionCopy[2](completionCopy, title2);
   }
 }
 
-- (void)resolveContentForSearchForNotebookItems:(id)a3 withCompletion:(id)a4
+- (void)resolveContentForSearchForNotebookItems:(id)items withCompletion:(id)completion
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v10 content];
-  v7 = [v6 length];
+  itemsCopy = items;
+  completionCopy = completion;
+  content = [itemsCopy content];
+  v7 = [content length];
 
   if (v7)
   {
-    v8 = [v10 content];
-    v9 = [INStringResolutionResult successWithResolvedString:v8];
-    v5[2](v5, v9);
+    content2 = [itemsCopy content];
+    v9 = [INStringResolutionResult successWithResolvedString:content2];
+    completionCopy[2](completionCopy, v9);
 
-    v5 = v9;
+    completionCopy = v9;
   }
 
   else
   {
-    v8 = +[INStringResolutionResult notRequired];
-    v5[2](v5, v8);
+    content2 = +[INStringResolutionResult notRequired];
+    completionCopy[2](completionCopy, content2);
   }
 }
 
-- (void)handleSearchForNotebookItems:(id)a3 completion:(id)a4
+- (void)handleSearchForNotebookItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 title];
-  v9 = [v8 spokenPhrase];
+  itemsCopy = items;
+  completionCopy = completion;
+  title = [itemsCopy title];
+  spokenPhrase = [title spokenPhrase];
 
-  v10 = [v6 content];
-  v11 = [v6 dateTime];
-  v12 = [v11 startDateComponents];
+  content = [itemsCopy content];
+  dateTime = [itemsCopy dateTime];
+  startDateComponents = [dateTime startDateComponents];
 
-  v13 = [v6 dateTime];
-  v14 = [v13 endDateComponents];
+  dateTime2 = [itemsCopy dateTime];
+  endDateComponents = [dateTime2 endDateComponents];
 
-  if (v12)
+  if (startDateComponents)
   {
     v15 = +[NSCalendar currentCalendar];
-    v70 = [v15 dateFromComponents:v12];
+    v70 = [v15 dateFromComponents:startDateComponents];
 
-    if (v14)
+    if (endDateComponents)
     {
 LABEL_3:
       v16 = +[NSCalendar currentCalendar];
-      v67 = [v16 dateFromComponents:v14];
+      v67 = [v16 dateFromComponents:endDateComponents];
 
       goto LABEL_6;
     }
@@ -85,7 +85,7 @@ LABEL_3:
   else
   {
     v70 = 0;
-    if (v14)
+    if (endDateComponents)
     {
       goto LABEL_3;
     }
@@ -93,33 +93,33 @@ LABEL_3:
 
   v67 = 0;
 LABEL_6:
-  v63 = v14;
-  v64 = v12;
-  v66 = [v6 dateSearchType];
-  v17 = [v6 groupName];
-  v18 = [v17 vocabularyIdentifier];
+  v63 = endDateComponents;
+  v64 = startDateComponents;
+  dateSearchType = [itemsCopy dateSearchType];
+  groupName = [itemsCopy groupName];
+  vocabularyIdentifier = [groupName vocabularyIdentifier];
 
-  v69 = v10;
-  if (v18)
+  v69 = content;
+  if (vocabularyIdentifier)
   {
-    v19 = [v6 groupName];
-    v20 = [v19 vocabularyIdentifier];
-    v21 = [NSURL URLWithString:v20];
+    groupName2 = [itemsCopy groupName];
+    vocabularyIdentifier2 = [groupName2 vocabularyIdentifier];
+    v21 = [NSURL URLWithString:vocabularyIdentifier2];
 
-    v22 = [(ICBaseIntentHandler *)self noteContext];
-    v23 = [v22 modernManagedObjectContext];
-    v24 = [v23 persistentStoreCoordinator];
-    [v24 managedObjectIDForURIRepresentation:v21];
-    v26 = v25 = v7;
+    noteContext = [(ICBaseIntentHandler *)self noteContext];
+    modernManagedObjectContext = [noteContext modernManagedObjectContext];
+    persistentStoreCoordinator = [modernManagedObjectContext persistentStoreCoordinator];
+    [persistentStoreCoordinator managedObjectIDForURIRepresentation:v21];
+    v26 = v25 = completionCopy;
 
-    v27 = [(ICBaseIntentHandler *)self noteContext];
-    v28 = [v27 htmlManagedObjectContext];
-    v29 = [v28 persistentStoreCoordinator];
-    v30 = [v29 managedObjectIDForURIRepresentation:v21];
+    noteContext2 = [(ICBaseIntentHandler *)self noteContext];
+    htmlManagedObjectContext = [noteContext2 htmlManagedObjectContext];
+    persistentStoreCoordinator2 = [htmlManagedObjectContext persistentStoreCoordinator];
+    v30 = [persistentStoreCoordinator2 managedObjectIDForURIRepresentation:v21];
 
     v31 = v26;
-    v7 = v25;
-    v10 = v69;
+    completionCopy = v25;
+    content = v69;
   }
 
   else
@@ -129,7 +129,7 @@ LABEL_6:
   }
 
   v62 = v31;
-  v32 = [(ICBaseIntentHandler *)self notesWithText:v10 title:v9 fromDate:v70 toDate:v67 dateSearchType:v66 modernFolderID:v30 legacyFolderID:?];
+  v32 = [(ICBaseIntentHandler *)self notesWithText:content title:spokenPhrase fromDate:v70 toDate:v67 dateSearchType:dateSearchType modernFolderID:v30 legacyFolderID:?];
   v33 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
@@ -137,8 +137,8 @@ LABEL_6:
   }
 
   v34 = [v32 count];
-  v65 = v7;
-  v68 = v9;
+  v65 = completionCopy;
+  v68 = spokenPhrase;
   if (v34 > kICMaximumSiriNoteCount + 1)
   {
     v35 = [v32 subarrayWithRange:0];
@@ -170,7 +170,7 @@ LABEL_6:
         }
 
         v43 = *(*(&v71 + 1) + 8 * v42);
-        v44 = [v6 includeAllNoteContents];
+        includeAllNoteContents = [itemsCopy includeAllNoteContents];
         if (v40 < 5)
         {
           v45 = 1;
@@ -178,7 +178,7 @@ LABEL_6:
 
         else
         {
-          v45 = v44;
+          v45 = includeAllNoteContents;
         }
 
         v46 = [(ICBaseIntentHandler *)self intentNoteForSearchIndexableNote:v43 includeContent:v45];
@@ -217,7 +217,7 @@ LABEL_6:
   v55 = NSStringFromSelector("toDate");
   [v51 setObject:v67 forKeyedSubscript:v55];
 
-  v56 = [NSNumber numberWithInteger:v66];
+  v56 = [NSNumber numberWithInteger:dateSearchType];
   v57 = NSStringFromSelector("dateSearchType");
   [v51 setObject:v56 forKeyedSubscript:v57];
 

@@ -1,5 +1,5 @@
 @interface NSConcreteMapTableValueEnumerator
-+ (id)enumeratorWithMapTable:(id)a3;
++ (id)enumeratorWithMapTable:(id)table;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -51,10 +51,10 @@
   return v7;
 }
 
-+ (id)enumeratorWithMapTable:(id)a3
++ (id)enumeratorWithMapTable:(id)table
 {
   v4 = [NSConcreteMapTableValueEnumerator alloc];
-  v4->mapTable = a3;
+  v4->mapTable = table;
   v4->counter = 0;
 
   return v4;

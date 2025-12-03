@@ -1,18 +1,18 @@
 @interface CDMTokenChain
-+ (id)convertCDMTokenChainToProtoTokenChain:(id)a3;
-- (CDMTokenChain)initWithProtoTokenChain:(id)a3;
-- (CDMTokenChain)initWithString:(id)a3 locale:(id)a4;
-- (CDMTokenChain)initWithString:(id)a3 locale:(id)a4 tokens:(id)a5;
-- (id)cleanStringFromToken:(int64_t)a3 toToken:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)convertCDMTokenChainToProtoTokenChain:(id)chain;
+- (CDMTokenChain)initWithProtoTokenChain:(id)chain;
+- (CDMTokenChain)initWithString:(id)string locale:(id)locale;
+- (CDMTokenChain)initWithString:(id)string locale:(id)locale tokens:(id)tokens;
+- (id)cleanStringFromToken:(int64_t)token toToken:(int64_t)toToken;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dropInsignificantTokens;
 - (id)dropWhitespaceTokens;
 - (id)extractTokens;
 - (id)normalizedString;
-- (int)tokenIndexFromCharacterIndex:(int64_t)a3;
-- (unsigned)nonWhiteSpaceCountFromToken:(int64_t)a3 toToken:(int64_t)a4;
-- (void)addToken:(id)a3;
+- (int)tokenIndexFromCharacterIndex:(int64_t)index;
+- (unsigned)nonWhiteSpaceCountFromToken:(int64_t)token toToken:(int64_t)toToken;
+- (void)addToken:(id)token;
 @end
 
 @implementation CDMTokenChain
@@ -52,12 +52,12 @@
         memset(&__p, 0, sizeof(__p));
         if (([v5 isWhiteSpace] & 1) == 0)
         {
-          v6 = [v5 cleanValue];
-          v7 = v6;
+          cleanValue = [v5 cleanValue];
+          v7 = cleanValue;
           memset(&v30, 0, sizeof(v30));
-          if (v6)
+          if (cleanValue)
           {
-            Length = CFStringGetLength(v6);
+            Length = CFStringGetLength(cleanValue);
             std::basic_string<char16_t>::resize(&v30, Length, v9);
             if ((v30.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
             {
@@ -94,11 +94,11 @@
         if (size)
         {
           v13 = [CDMToken alloc];
-          v14 = [v5 value];
-          v15 = [v5 begin];
+          value = [v5 value];
+          begin = [v5 begin];
           v16 = [v5 end];
-          v17 = [v5 isSignificant];
-          v18 = [v5 isWhiteSpace];
+          isSignificant = [v5 isSignificant];
+          isWhiteSpace = [v5 isWhiteSpace];
           if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
           {
             p_p = &__p;
@@ -120,7 +120,7 @@
           }
 
           v21 = [MEMORY[0x1E696AEC0] stringWithCharacters:p_p length:v20];
-          v22 = -[CDMToken initWithValue:begin:end:significant:whitespace:cleanValue:tokenIndex:nonWhitespaceTokenIndex:](v13, "initWithValue:begin:end:significant:whitespace:cleanValue:tokenIndex:nonWhitespaceTokenIndex:", v14, v15, v16, v17, v18, v21, [v5 tokenIndex], objc_msgSend(v5, "nonWhitespaceTokenIndex"));
+          v22 = -[CDMToken initWithValue:begin:end:significant:whitespace:cleanValue:tokenIndex:nonWhitespaceTokenIndex:](v13, "initWithValue:begin:end:significant:whitespace:cleanValue:tokenIndex:nonWhitespaceTokenIndex:", value, begin, v16, isSignificant, isWhiteSpace, v21, [v5 tokenIndex], objc_msgSend(v5, "nonWhitespaceTokenIndex"));
 
           [v27 addObject:v22];
           v12 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
@@ -229,12 +229,12 @@
   return v3;
 }
 
-- (int)tokenIndexFromCharacterIndex:(int64_t)a3
+- (int)tokenIndexFromCharacterIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_characterToTokenIndexMapping objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSMutableArray *)self->_characterToTokenIndexMapping objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (id)description
@@ -275,59 +275,59 @@
   return v3;
 }
 
-- (unsigned)nonWhiteSpaceCountFromToken:(int64_t)a3 toToken:(int64_t)a4
+- (unsigned)nonWhiteSpaceCountFromToken:(int64_t)token toToken:(int64_t)toToken
 {
   v7 = [(NSMutableArray *)self->_tokens count];
   v8 = 0;
-  if ((a3 & 0x8000000000000000) == 0 && v7 > a3 && a3 < a4)
+  if ((token & 0x8000000000000000) == 0 && v7 > token && token < toToken)
   {
     v8 = 0;
     do
     {
-      if (a3 >= [(NSMutableArray *)self->_tokens count])
+      if (token >= [(NSMutableArray *)self->_tokens count])
       {
         break;
       }
 
-      v10 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:a3];
-      v11 = [v10 isWhiteSpace];
+      v10 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:token];
+      isWhiteSpace = [v10 isWhiteSpace];
 
-      v8 += v11 ^ 1;
-      ++a3;
+      v8 += isWhiteSpace ^ 1;
+      ++token;
     }
 
-    while (a4 != a3);
+    while (toToken != token);
   }
 
   return v8;
 }
 
-- (id)cleanStringFromToken:(int64_t)a3 toToken:(int64_t)a4
+- (id)cleanStringFromToken:(int64_t)token toToken:(int64_t)toToken
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E696AD60] string];
-  if ([(NSMutableArray *)self->_tokens count]> a3 && a3 <= a4)
+  string = [MEMORY[0x1E696AD60] string];
+  if ([(NSMutableArray *)self->_tokens count]> token && token <= toToken)
   {
     do
     {
-      if (a3 >= [(NSMutableArray *)self->_tokens count])
+      if (token >= [(NSMutableArray *)self->_tokens count])
       {
         break;
       }
 
-      v9 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:a3];
-      v10 = [v9 getHasCleanValues];
+      v9 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:token];
+      getHasCleanValues = [v9 getHasCleanValues];
 
-      if (v10)
+      if (getHasCleanValues)
       {
         v22 = 0u;
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:a3, 0];
-        v12 = [v11 cleanValues];
+        v11 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:token, 0];
+        cleanValues = [v11 cleanValues];
 
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [cleanValues countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v13)
         {
           v14 = *v21;
@@ -337,13 +337,13 @@
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(cleanValues);
               }
 
-              [v7 appendString:*(*(&v20 + 1) + 8 * i)];
+              [string appendString:*(*(&v20 + 1) + 8 * i)];
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+            v13 = [cleanValues countByEnumeratingWithState:&v20 objects:v24 count:16];
           }
 
           while (v13);
@@ -352,27 +352,27 @@
 
       else
       {
-        v12 = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:a3];
-        v16 = [v12 value];
-        [v7 appendString:v16];
+        cleanValues = [(NSMutableArray *)self->_tokens objectAtIndexedSubscript:token];
+        value = [cleanValues value];
+        [string appendString:value];
       }
     }
 
-    while (a3++ != a4);
+    while (token++ != toToken);
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return string;
 }
 
-- (void)addToken:(id)a3
+- (void)addToken:(id)token
 {
-  v10 = a3;
+  tokenCopy = token;
   [(NSMutableArray *)self->_tokens addObject:?];
-  if ([v10 isWhiteSpace])
+  if ([tokenCopy isWhiteSpace])
   {
-    for (i = [v10 begin]; i < objc_msgSend(v10, "end"); ++i)
+    for (i = [tokenCopy begin]; i < objc_msgSend(tokenCopy, "end"); ++i)
     {
       characterToTokenIndexMapping = self->_characterToTokenIndexMapping;
       v6 = [MEMORY[0x1E696AD98] numberWithInt:0xFFFFFFFFLL];
@@ -382,16 +382,16 @@
 
   else
   {
-    for (j = [v10 begin]; j < objc_msgSend(v10, "end"); ++j)
+    for (j = [tokenCopy begin]; j < objc_msgSend(tokenCopy, "end"); ++j)
     {
       v8 = self->_characterToTokenIndexMapping;
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "tokenIndex")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(tokenCopy, "tokenIndex")}];
       [(NSMutableArray *)v8 addObject:v9];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithString:self->_string locale:self->_locale];
   if (v4)
@@ -408,20 +408,20 @@
   return v4;
 }
 
-- (CDMTokenChain)initWithProtoTokenChain:(id)a3
+- (CDMTokenChain)initWithProtoTokenChain:(id)chain
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 stringValue];
-  v6 = [v4 locale];
-  v7 = [(CDMTokenChain *)self initWithString:v5 locale:v6];
+  chainCopy = chain;
+  stringValue = [chainCopy stringValue];
+  locale = [chainCopy locale];
+  v7 = [(CDMTokenChain *)self initWithString:stringValue locale:locale];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v4 tokens];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tokens = [chainCopy tokens];
+  v9 = [tokens countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = *v16;
@@ -432,7 +432,7 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(tokens);
         }
 
         v12 = [[CDMToken alloc] initWithProtoToken:*(*(&v15 + 1) + 8 * v11)];
@@ -442,7 +442,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [tokens countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -452,18 +452,18 @@
   return v7;
 }
 
-- (CDMTokenChain)initWithString:(id)a3 locale:(id)a4 tokens:(id)a5
+- (CDMTokenChain)initWithString:(id)string locale:(id)locale tokens:(id)tokens
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(CDMTokenChain *)self initWithString:a3 locale:a4];
+  tokensCopy = tokens;
+  v9 = [(CDMTokenChain *)self initWithString:string locale:locale];
   if (v9)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = v8;
+    v10 = tokensCopy;
     v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
@@ -493,20 +493,20 @@
   return v9;
 }
 
-- (CDMTokenChain)initWithString:(id)a3 locale:(id)a4
+- (CDMTokenChain)initWithString:(id)string locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  localeCopy = locale;
   v18.receiver = self;
   v18.super_class = CDMTokenChain;
   v8 = [(CDMTokenChain *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     string = v8->_string;
     v8->_string = v9;
 
-    v11 = [v7 copy];
+    v11 = [localeCopy copy];
     locale = v8->_locale;
     v8->_locale = v11;
 
@@ -522,20 +522,20 @@
   return v8;
 }
 
-+ (id)convertCDMTokenChainToProtoTokenChain:(id)a3
++ (id)convertCDMTokenChainToProtoTokenChain:(id)chain
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  chainCopy = chain;
   v4 = objc_alloc_init(MEMORY[0x1E69D13D8]);
-  if (v3)
+  if (chainCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = v3;
-    v5 = [v3 tokens];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v21 = chainCopy;
+    tokens = [chainCopy tokens];
+    v6 = [tokens countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = *v23;
@@ -545,47 +545,47 @@
         {
           if (*v23 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(tokens);
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
           v10 = objc_alloc_init(MEMORY[0x1E69D13D0]);
           [v10 setBegin:{objc_msgSend(v9, "begin")}];
           [v10 setEnd:{objc_msgSend(v9, "end")}];
-          v11 = [v9 value];
-          [v10 setValue:v11];
+          value = [v9 value];
+          [v10 setValue:value];
 
           [v10 setIsSignificant:{objc_msgSend(v9, "isSignificant")}];
           [v10 setIsWhitespace:{objc_msgSend(v9, "isWhiteSpace")}];
-          v12 = [v9 cleanValues];
-          v13 = [v12 copy];
+          cleanValues = [v9 cleanValues];
+          v13 = [cleanValues copy];
           [v10 setCleanValues:v13];
 
-          v14 = [v9 cleanValue];
-          [v10 setCleanValue:v14];
+          cleanValue = [v9 cleanValue];
+          [v10 setCleanValue:cleanValue];
 
           [v10 setTokenIndex:{objc_msgSend(v9, "tokenIndex")}];
           [v10 setNonWhitespaceTokenIndex:{objc_msgSend(v9, "nonWhitespaceTokenIndex")}];
-          v15 = [v9 normalizedValues];
-          v16 = [v15 copy];
+          normalizedValues = [v9 normalizedValues];
+          v16 = [normalizedValues copy];
           [v10 setNormalizedValues:v16];
 
           [v4 addTokens:v10];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v6 = [tokens countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v6);
     }
 
-    v17 = [v21 locale];
-    [v4 setLocale:v17];
+    locale = [v21 locale];
+    [v4 setLocale:locale];
 
-    v18 = [v21 string];
-    [v4 setStringValue:v18];
+    string = [v21 string];
+    [v4 setStringValue:string];
 
-    v3 = v21;
+    chainCopy = v21;
   }
 
   v19 = *MEMORY[0x1E69E9840];

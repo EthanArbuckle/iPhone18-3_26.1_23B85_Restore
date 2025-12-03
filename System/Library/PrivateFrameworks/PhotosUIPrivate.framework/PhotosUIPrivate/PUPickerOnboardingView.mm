@@ -1,18 +1,18 @@
 @interface PUPickerOnboardingView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (CGSize)attachmentAnchorSize;
 - (CGSize)attachmentIconSize;
 - (NSAttributedString)attributedText;
-- (PUPickerOnboardingView)initWithClientDisplayName:(id)a3;
+- (PUPickerOnboardingView)initWithClientDisplayName:(id)name;
 - (PUPickerOnboardingViewDelegate)delegate;
 - (UIView)badgeContainerView;
 - (void)_updateBadgeConstraints;
 - (void)_updateTextView;
 - (void)layoutSubviews;
-- (void)setBadgeContainerView:(id)a3;
-- (void)setCompressionLevel:(unint64_t)a3;
-- (void)setMaximumContentSizeCategory:(id)a3;
-- (void)transitionToBadge:(id)a3;
+- (void)setBadgeContainerView:(id)view;
+- (void)setCompressionLevel:(unint64_t)level;
+- (void)setMaximumContentSizeCategory:(id)category;
+- (void)transitionToBadge:(id)badge;
 - (void)updateTraitsIfNeeded;
 @end
 
@@ -32,9 +32,9 @@
   return WeakRetained;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = [(PUPickerOnboardingView *)self delegate:a3];
+  v7 = [(PUPickerOnboardingView *)self delegate:view];
   [v7 assetPickerOnboardingViewWantsToLearnMoreAboutDataAccess:self];
 
   return 0;
@@ -46,10 +46,10 @@
   v76.receiver = self;
   v76.super_class = PUPickerOnboardingView;
   [(PUPickerOnboardingView *)&v76 layoutSubviews];
-  v3 = [(PUPickerOnboardingView *)self overlayView];
-  v4 = [v3 isUserInteractionEnabled];
+  overlayView = [(PUPickerOnboardingView *)self overlayView];
+  isUserInteractionEnabled = [overlayView isUserInteractionEnabled];
 
-  if (v4)
+  if (isUserInteractionEnabled)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -68,9 +68,9 @@
     v79[5] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v79 count:6];
     lastContentSizeCategory = self->_lastContentSizeCategory;
-    v11 = [(PUPickerOnboardingView *)self traitCollection];
-    v12 = [v11 preferredContentSizeCategory];
-    v13 = UIContentSizeCategoryCompareToCategory(lastContentSizeCategory, v12);
+    traitCollection = [(PUPickerOnboardingView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v13 = UIContentSizeCategoryCompareToCategory(lastContentSizeCategory, preferredContentSizeCategory);
 
     [(PUPickerOnboardingView *)self bounds];
     Height = CGRectGetHeight(v80);
@@ -114,13 +114,13 @@
       if ([(PUPickerOnboardingView *)self compressionLevel]== 5)
       {
         v47 = v9;
-        v21 = [v9 reverseObjectEnumerator];
-        v22 = [v21 nextObject];
+        reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+        nextObject = [reverseObjectEnumerator nextObject];
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        obj = v21;
+        obj = reverseObjectEnumerator;
         v23 = [obj countByEnumeratingWithState:&v56 objects:v77 count:16];
         v24 = v5;
         if (v23)
@@ -130,7 +130,7 @@
           while (2)
           {
             v27 = 0;
-            v28 = v22;
+            v28 = nextObject;
             do
             {
               if (*v57 != v26)
@@ -139,8 +139,8 @@
               }
 
               v29 = *(*(&v56 + 1) + 8 * v27);
-              v30 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
-              v31 = [v30 isEqualToString:v28];
+              maximumContentSizeCategory = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
+              v31 = [maximumContentSizeCategory isEqualToString:v28];
 
               if (v31)
               {
@@ -151,15 +151,15 @@
                 if ((v24[2](v24) & 1) == 0)
                 {
                   [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:v28];
-                  v22 = v28;
+                  nextObject = v28;
                   goto LABEL_42;
                 }
               }
 
-              v22 = v29;
+              nextObject = v29;
 
               ++v27;
-              v28 = v22;
+              v28 = nextObject;
             }
 
             while (v25 != v27);
@@ -176,10 +176,10 @@
 LABEL_42:
 
         v9 = v47;
-        v32 = [v47 firstObject];
+        firstObject = [v47 firstObject];
 
         v5 = v24;
-        if (v22 == v32)
+        if (nextObject == firstObject)
         {
           [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:0];
           v54.receiver = self;
@@ -187,7 +187,7 @@ LABEL_42:
           [(PUPickerOnboardingView *)&v54 layoutSubviews];
           if ((v24[2](v24) & 1) == 0)
           {
-            [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:v22];
+            [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:nextObject];
           }
         }
 
@@ -196,9 +196,9 @@ LABEL_42:
 
       if ([(PUPickerOnboardingView *)self compressionLevel]== 5)
       {
-        v33 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
+        maximumContentSizeCategory2 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
 
-        if (!v33)
+        if (!maximumContentSizeCategory2)
         {
           [(PUPickerOnboardingView *)self setCompressionLevel:4];
           v53.receiver = self;
@@ -304,17 +304,17 @@ LABEL_42:
 
       if ([(PUPickerOnboardingView *)self compressionLevel]== 5)
       {
-        v19 = [v9 objectEnumerator];
-        v20 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
+        objectEnumerator = [v9 objectEnumerator];
+        maximumContentSizeCategory3 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
         v46 = 416;
-        if (v20)
+        if (maximumContentSizeCategory3)
         {
         }
 
         else if ((v5[2](v5) & 1) == 0)
         {
-          v34 = [v19 nextObject];
-          [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:v34];
+          nextObject2 = [objectEnumerator nextObject];
+          [(PUPickerOnboardingView *)self setMaximumContentSizeCategory:nextObject2];
 
           v69.receiver = self;
           v69.super_class = PUPickerOnboardingView;
@@ -325,7 +325,7 @@ LABEL_42:
         v68 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v35 = v19;
+        v35 = objectEnumerator;
         v36 = [v35 countByEnumeratingWithState:&v65 objects:v78 count:16];
         if (v36)
         {
@@ -346,8 +346,8 @@ LABEL_66:
               break;
             }
 
-            v41 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
-            v42 = UIContentSizeCategoryCompareToCategory(v41, v40);
+            maximumContentSizeCategory4 = [(PUPickerOnboardingView *)self maximumContentSizeCategory];
+            v42 = UIContentSizeCategoryCompareToCategory(maximumContentSizeCategory4, v40);
 
             if (v42 != NSOrderedAscending)
             {
@@ -390,10 +390,10 @@ LABEL_66:
       }
     }
 
-    v43 = [(PUPickerOnboardingView *)self traitCollection];
-    v44 = [v43 preferredContentSizeCategory];
+    traitCollection2 = [(PUPickerOnboardingView *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
     v45 = self->_lastContentSizeCategory;
-    self->_lastContentSizeCategory = v44;
+    self->_lastContentSizeCategory = preferredContentSizeCategory2;
 
     *(&self->super.super.super.isa + v16[963]) = v15;
   }
@@ -445,24 +445,24 @@ BOOL __40__PUPickerOnboardingView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMaximumContentSizeCategory:(id)a3
+- (void)setMaximumContentSizeCategory:(id)category
 {
   v4.receiver = self;
   v4.super_class = PUPickerOnboardingView;
-  [(PUPickerOnboardingView *)&v4 setMaximumContentSizeCategory:a3];
+  [(PUPickerOnboardingView *)&v4 setMaximumContentSizeCategory:category];
   [(PUPickerOnboardingView *)self updateTraitsIfNeeded];
   [(PUPickerOnboardingView *)self _updateTextView];
   [(PUPickerOnboardingView *)self setNeedsLayout];
 }
 
-- (void)setBadgeContainerView:(id)a3
+- (void)setBadgeContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 window];
-  v6 = [(PUPickerOnboardingView *)self window];
-  if (v5 == v6)
+  viewCopy = view;
+  window = [viewCopy window];
+  window2 = [(PUPickerOnboardingView *)self window];
+  if (window == window2)
   {
-    v7 = v4;
+    v7 = viewCopy;
   }
 
   else
@@ -482,12 +482,12 @@ BOOL __40__PUPickerOnboardingView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCompressionLevel:(unint64_t)a3
+- (void)setCompressionLevel:(unint64_t)level
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (self->_compressionLevel != a3)
+  if (self->_compressionLevel != level)
   {
-    self->_compressionLevel = a3;
+    self->_compressionLevel = level;
     [(PUPickerOnboardingView *)self updateTraitsIfNeeded];
     [(PUPickerOnboardingView *)self _updateTextView];
     [(PUPickerOnboardingView *)self setNeedsLayout];
@@ -633,16 +633,16 @@ BOOL __40__PUPickerOnboardingView_layoutSubviews__block_invoke(uint64_t a1)
   }
 
   v59 = PULocalizedString(@"PICKER_PRIVACY_TITLE");
-  v5 = [(PUPickerOnboardingView *)self clientDisplayName];
-  if (![v5 length])
+  clientDisplayName = [(PUPickerOnboardingView *)self clientDisplayName];
+  if (![clientDisplayName length])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(PUPickerOnboardingView *)self clientDisplayName];
+  clientDisplayName2 = [(PUPickerOnboardingView *)self clientDisplayName];
 
-  if (!v6)
+  if (!clientDisplayName2)
   {
 LABEL_7:
     v53 = PULocalizedString(@"PICKER_PRIVACY_MESSAGE_GENERIC");
@@ -651,12 +651,12 @@ LABEL_7:
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = PULocalizedString(@"PICKER_PRIVACY_MESSAGE_%@_APP_NAME");
-  v53 = [v7 stringWithFormat:v8, v6];
+  v53 = [v7 stringWithFormat:v8, clientDisplayName2];
 
 LABEL_8:
   v51 = PULocalizedString(@"PICKER_PRIVACY_LEARN_MORE_MESSAGE");
-  v9 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-  v10 = [v9 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+  v10 = [defaultParagraphStyle mutableCopy];
 
   [v10 setAlignment:1];
   [v10 setLineSpacing:-2.0];
@@ -665,9 +665,9 @@ LABEL_8:
   v55 = v10;
   v11 = [v10 copy];
   v12 = [PUImageTextAttachment alloc];
-  v13 = [(PUPickerOnboardingView *)self attachmentAnchorView];
+  attachmentAnchorView = [(PUPickerOnboardingView *)self attachmentAnchorView];
   [(PUPickerOnboardingView *)self attachmentAnchorSize];
-  v14 = [(PUImageTextAttachment *)v12 initWithImageView:v13 size:?];
+  v14 = [(PUImageTextAttachment *)v12 initWithImageView:attachmentAnchorView size:?];
 
   v54 = v14;
   v15 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v14];
@@ -678,13 +678,13 @@ LABEL_8:
   [v16 addAttribute:*MEMORY[0x1E69DB688] value:v11 range:{0, objc_msgSend(v16, "length")}];
   v64 = *MEMORY[0x1E69DB648];
   v18 = v64;
-  v19 = [(PUPickerOnboardingView *)self titleFont];
-  v67[0] = v19;
+  titleFont = [(PUPickerOnboardingView *)self titleFont];
+  v67[0] = titleFont;
   v65 = *MEMORY[0x1E69DB650];
   v20 = v65;
-  v21 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   v66 = v17;
-  v67[1] = v21;
+  v67[1] = labelColor;
   v67[2] = v11;
   v56 = v11;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v64 count:3];
@@ -695,12 +695,12 @@ LABEL_8:
   v25 = [v23 initWithString:v24 attributes:v22];
 
   v62[0] = v18;
-  v26 = [(PUPickerOnboardingView *)self bodyFont];
-  v63[0] = v26;
+  bodyFont = [(PUPickerOnboardingView *)self bodyFont];
+  v63[0] = bodyFont;
   v62[1] = v20;
-  v27 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
   v62[2] = v17;
-  v63[1] = v27;
+  v63[1] = labelColor2;
   v63[2] = v58;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:3];
 
@@ -712,9 +712,9 @@ LABEL_8:
 
   v33 = v32;
   v60[0] = v18;
-  v34 = [(PUPickerOnboardingView *)self bodyFont];
+  bodyFont2 = [(PUPickerOnboardingView *)self bodyFont];
   v35 = *MEMORY[0x1E69DB670];
-  v61[0] = v34;
+  v61[0] = bodyFont2;
   v61[1] = @"foo://bar";
   v60[1] = v35;
   v60[2] = v17;
@@ -732,9 +732,9 @@ LABEL_8:
   {
     v48 = v25;
     v40 = [PUImageTextAttachment alloc];
-    v41 = [(PUPickerOnboardingView *)self attachmentIconView];
+    attachmentIconView = [(PUPickerOnboardingView *)self attachmentIconView];
     [(PUPickerOnboardingView *)self attachmentIconSize];
-    v42 = [(PUImageTextAttachment *)v40 initWithImageView:v41 size:?];
+    v42 = [(PUImageTextAttachment *)v40 initWithImageView:attachmentIconView size:?];
 
     v43 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v42];
     v44 = [v43 mutableCopy];
@@ -769,15 +769,15 @@ LABEL_11:
 
 - (CGSize)attachmentIconSize
 {
-  v3 = [(PUPickerOnboardingView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PUPickerOnboardingView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v5 = 14.0;
-  if (v4 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v6 = [(PUPickerOnboardingView *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+    traitCollection2 = [(PUPickerOnboardingView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -786,8 +786,8 @@ LABEL_11:
 
     else
     {
-      v10 = [(PUPickerOnboardingView *)self compressionLevel];
-      switch(v10)
+      compressionLevel = [(PUPickerOnboardingView *)self compressionLevel];
+      switch(compressionLevel)
       {
         case 5uLL:
           v5 = 18.0;
@@ -811,51 +811,51 @@ LABEL_11:
   return result;
 }
 
-- (void)transitionToBadge:(id)a3
+- (void)transitionToBadge:(id)badge
 {
-  v96 = a3;
-  v4 = [(PUPickerOnboardingView *)self platter];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:1];
+  badgeCopy = badge;
+  platter = [(PUPickerOnboardingView *)self platter];
+  [platter setTranslatesAutoresizingMaskIntoConstraints:1];
   v5 = MEMORY[0x1E696ACD8];
-  v6 = [(PUPickerOnboardingView *)self platterInsetConstraints];
-  [v5 deactivateConstraints:v6];
+  platterInsetConstraints = [(PUPickerOnboardingView *)self platterInsetConstraints];
+  [v5 deactivateConstraints:platterInsetConstraints];
 
   v7 = MEMORY[0x1E696ACD8];
-  v8 = [(PUPickerOnboardingView *)self contentCenterConstraints];
-  [v7 deactivateConstraints:v8];
+  contentCenterConstraints = [(PUPickerOnboardingView *)self contentCenterConstraints];
+  [v7 deactivateConstraints:contentCenterConstraints];
 
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [(PUPickerOnboardingView *)self contentInsetConstraints];
-  [v9 deactivateConstraints:v10];
+  contentInsetConstraints = [(PUPickerOnboardingView *)self contentInsetConstraints];
+  [v9 deactivateConstraints:contentInsetConstraints];
 
-  v95 = [(PUPickerOnboardingView *)self largeIconView];
-  [v95 setTranslatesAutoresizingMaskIntoConstraints:1];
+  largeIconView = [(PUPickerOnboardingView *)self largeIconView];
+  [largeIconView setTranslatesAutoresizingMaskIntoConstraints:1];
   v11 = MEMORY[0x1E696ACD8];
-  v12 = [(PUPickerOnboardingView *)self largeIconViewConstraints];
-  [v11 deactivateConstraints:v12];
+  largeIconViewConstraints = [(PUPickerOnboardingView *)self largeIconViewConstraints];
+  [v11 deactivateConstraints:largeIconViewConstraints];
 
-  v13 = [(PUPickerOnboardingView *)self textView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [v13 setAutoresizingMask:40];
+  textView = [(PUPickerOnboardingView *)self textView];
+  [textView setTranslatesAutoresizingMaskIntoConstraints:1];
+  [textView setAutoresizingMask:40];
   v14 = MEMORY[0x1E696ACD8];
-  v15 = [(PUPickerOnboardingView *)self textViewConstraints];
-  [v14 deactivateConstraints:v15];
+  textViewConstraints = [(PUPickerOnboardingView *)self textViewConstraints];
+  [v14 deactivateConstraints:textViewConstraints];
 
-  v16 = [(PUPickerOnboardingView *)self button];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:1];
+  button = [(PUPickerOnboardingView *)self button];
+  [button setTranslatesAutoresizingMaskIntoConstraints:1];
   v17 = MEMORY[0x1E696ACD8];
-  v18 = [(PUPickerOnboardingView *)self buttonConstraints];
-  [v17 deactivateConstraints:v18];
+  buttonConstraints = [(PUPickerOnboardingView *)self buttonConstraints];
+  [v17 deactivateConstraints:buttonConstraints];
 
-  v19 = [(PUPickerOnboardingView *)self badge];
-  v97 = [(PUPickerOnboardingView *)self delegate];
+  badge = [(PUPickerOnboardingView *)self badge];
+  delegate = [(PUPickerOnboardingView *)self delegate];
   objc_initWeak(location, self);
   v20 = objc_alloc(MEMORY[0x1E69DD278]);
   v137[0] = MEMORY[0x1E69E9820];
   v137[1] = 3221225472;
   v137[2] = __44__PUPickerOnboardingView_transitionToBadge___block_invoke;
   v137[3] = &unk_1E7B80DD0;
-  v21 = v16;
+  v21 = button;
   v138 = v21;
   v104 = [v20 initWithDuration:v137 controlPoint1:0.3 controlPoint2:? animations:?];
   v22 = objc_alloc(MEMORY[0x1E69DD278]);
@@ -879,25 +879,25 @@ LABEL_11:
   }
   v23 = ;
   [v23 bounds];
-  [v23 convertRect:v4 toView:?];
+  [v23 convertRect:platter toView:?];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(PUPickerOnboardingView *)self badgeIconView];
-  [v32 setFrame:{v25, v27, v29, v31}];
-  [v32 setAlpha:0.0];
-  [v32 setHidden:0];
-  v33 = [(PUPickerOnboardingView *)self badgeLabel];
-  v34 = [(PUPickerOnboardingView *)self titleFont];
-  [v34 pointSize];
+  badgeIconView = [(PUPickerOnboardingView *)self badgeIconView];
+  [badgeIconView setFrame:{v25, v27, v29, v31}];
+  [badgeIconView setAlpha:0.0];
+  [badgeIconView setHidden:0];
+  badgeLabel = [(PUPickerOnboardingView *)self badgeLabel];
+  titleFont = [(PUPickerOnboardingView *)self titleFont];
+  [titleFont pointSize];
   v36 = v35;
-  v37 = [v33 font];
-  [v37 pointSize];
+  font = [badgeLabel font];
+  [font pointSize];
   v39 = v38;
 
-  v40 = [(PUPickerOnboardingView *)self traitCollection];
-  if ([v40 layoutDirection])
+  traitCollection = [(PUPickerOnboardingView *)self traitCollection];
+  if ([traitCollection layoutDirection])
   {
     v41 = -1.0;
   }
@@ -907,20 +907,20 @@ LABEL_11:
     v41 = 1.0;
   }
 
-  v42 = [(PUPickerOnboardingView *)self attachmentAnchorView];
+  attachmentAnchorView = [(PUPickerOnboardingView *)self attachmentAnchorView];
   v99 = v41;
   v101 = v39;
   v43 = v36;
-  [v42 bounds];
-  [v42 convertRect:v4 toView:?];
+  [attachmentAnchorView bounds];
+  [attachmentAnchorView convertRect:platter toView:?];
   v45 = v44;
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  [v33 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [badgeLabel sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v53 = v52;
   v55 = v54;
-  v93 = v42;
+  v93 = attachmentAnchorView;
   v140.origin.x = v45;
   v140.origin.y = v47;
   v140.size.width = v49;
@@ -930,13 +930,13 @@ LABEL_11:
   v141.origin.y = v47;
   v141.size.width = v49;
   v141.size.height = v51;
-  [v33 setCenter:{MaxX + v43 / v101 * v53 * 0.5 * v99, CGRectGetMidY(v141)}];
-  [v33 setBounds:{0.0, 0.0, v53, v55}];
+  [badgeLabel setCenter:{MaxX + v43 / v101 * v53 * 0.5 * v99, CGRectGetMidY(v141)}];
+  [badgeLabel setBounds:{0.0, 0.0, v53, v55}];
   CGAffineTransformMakeScale(&v134, v43 / v101, v43 / v101);
   v133 = v134;
-  [v33 setTransform:&v133];
-  [v33 setAlpha:0.0];
-  [v33 setHidden:0];
+  [badgeLabel setTransform:&v133];
+  [badgeLabel setAlpha:0.0];
+  [badgeLabel setHidden:0];
   v57 = objc_alloc(MEMORY[0x1E69DD278]);
   v130[0] = MEMORY[0x1E69E9820];
   v130[1] = 3221225472;
@@ -944,7 +944,7 @@ LABEL_11:
   v130[3] = &unk_1E7B80C38;
   v102 = v23;
   v131 = v102;
-  v58 = v32;
+  v58 = badgeIconView;
   v132 = v58;
   v59 = [v57 initWithDuration:3 curve:v130 animations:0.167];
   [v59 startAnimation];
@@ -954,9 +954,9 @@ LABEL_11:
   v127[1] = 3221225472;
   v127[2] = __44__PUPickerOnboardingView_transitionToBadge___block_invoke_4;
   v127[3] = &unk_1E7B80C38;
-  v61 = v4;
+  v61 = platter;
   v128 = v61;
-  v62 = v19;
+  v62 = badge;
   v129 = v62;
   v63 = [v60 initWithDuration:v127 controlPoint1:0.5 controlPoint2:0.33 animations:{0.0, 0.2, 1.0}];
   [v63 startAnimationAfterDelay:0.167];
@@ -977,9 +977,9 @@ LABEL_11:
   v121[1] = 3221225472;
   v121[2] = __44__PUPickerOnboardingView_transitionToBadge___block_invoke_6;
   v121[3] = &unk_1E7B80C38;
-  v69 = v33;
+  v69 = badgeLabel;
   v122 = v69;
-  v70 = v13;
+  v70 = textView;
   v123 = v70;
   v71 = [v68 initWithDuration:v121 controlPoint1:0.167 controlPoint2:0.33 animations:{0.0, 0.67, 1.0}];
   [v71 startAnimationAfterDelay:0.167];
@@ -997,14 +997,14 @@ LABEL_11:
   v120 = v75;
   v76 = [v72 initWithDuration:v117 controlPoint1:0.5 controlPoint2:0.33 animations:{0.0, 0.2, 1.0}];
   [v76 startAnimationAfterDelay:0.167];
-  v77 = [(PUPickerOnboardingView *)self overlayView];
+  overlayView = [(PUPickerOnboardingView *)self overlayView];
   v90 = v70;
   v78 = objc_alloc(MEMORY[0x1E69DD278]);
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
   v115[2] = __44__PUPickerOnboardingView_transitionToBadge___block_invoke_8;
   v115[3] = &unk_1E7B80DD0;
-  v79 = v77;
+  v79 = overlayView;
   v116 = v79;
   v80 = [v78 initWithDuration:v115 controlPoint1:0.333 controlPoint2:0.33 animations:{0.0, 0.67, 1.0}];
   [v80 startAnimationAfterDelay:0.334];
@@ -1012,7 +1012,7 @@ LABEL_11:
   v112[1] = 3221225472;
   v112[2] = __44__PUPickerOnboardingView_transitionToBadge___block_invoke_9;
   v112[3] = &unk_1E7B80770;
-  v81 = v97;
+  v81 = delegate;
   v113 = v81;
   objc_copyWeak(&v114, location);
   [v80 addCompletion:v112];
@@ -1137,29 +1137,29 @@ void __44__PUPickerOnboardingView_transitionToBadge___block_invoke_12(uint64_t a
     [MEMORY[0x1E696ACD8] deactivateConstraints:?];
   }
 
-  v3 = [(PUPickerOnboardingView *)self badgeContainerView];
-  v4 = v3;
-  if (v3)
+  badgeContainerView = [(PUPickerOnboardingView *)self badgeContainerView];
+  v4 = badgeContainerView;
+  if (badgeContainerView)
   {
-    v5 = v3;
+    selfCopy = badgeContainerView;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
-  v18 = [(PUPickerPrivacyBadge *)self->_badge leadingAnchor];
-  v7 = [(PUPickerOnboardingView *)v6 safeAreaLayoutGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v18 constraintEqualToAnchor:v8 constant:8.0];
+  leadingAnchor = [(PUPickerPrivacyBadge *)self->_badge leadingAnchor];
+  safeAreaLayoutGuide = [(PUPickerOnboardingView *)v6 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v19[0] = v9;
-  v10 = [(PUPickerPrivacyBadge *)self->_badge topAnchor];
-  v11 = [(PUPickerOnboardingView *)v6 safeAreaLayoutGuide];
-  v12 = [v11 topAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:8.0];
+  topAnchor = [(PUPickerPrivacyBadge *)self->_badge topAnchor];
+  safeAreaLayoutGuide2 = [(PUPickerOnboardingView *)v6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   v19[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   badgeConstraints = self->_badgeConstraints;
@@ -1177,14 +1177,14 @@ void __44__PUPickerOnboardingView_transitionToBadge___block_invoke_12(uint64_t a
   attributedText = self->_attributedText;
   self->_attributedText = 0;
 
-  v4 = [(PUPickerOnboardingView *)self traitCollection];
+  traitCollection = [(PUPickerOnboardingView *)self traitCollection];
   v5 = 0;
   compressionLevel = self->_compressionLevel;
   if (compressionLevel > 4)
   {
     if (compressionLevel == 5)
     {
-      v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD28] compatibleWithTraitCollection:v4];
+      v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD28] compatibleWithTraitCollection:traitCollection];
       v8 = MEMORY[0x1E69DB880];
       v9 = MEMORY[0x1E69DDD08];
     }
@@ -1200,13 +1200,13 @@ void __44__PUPickerOnboardingView_transitionToBadge___block_invoke_12(uint64_t a
         }
 
         v21 = *MEMORY[0x1E69DDD10];
-        v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10] compatibleWithTraitCollection:v4];
+        v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10] compatibleWithTraitCollection:traitCollection];
         v8 = MEMORY[0x1E69DB880];
         v10 = v21;
         goto LABEL_5;
       }
 
-      v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD08] compatibleWithTraitCollection:v4];
+      v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD08] compatibleWithTraitCollection:traitCollection];
       v8 = MEMORY[0x1E69DB880];
       v9 = MEMORY[0x1E69DDD10];
     }
@@ -1214,14 +1214,14 @@ void __44__PUPickerOnboardingView_transitionToBadge___block_invoke_12(uint64_t a
 LABEL_4:
     v10 = *v9;
 LABEL_5:
-    v5 = [v8 preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:v4];
+    v5 = [v8 preferredFontDescriptorWithTextStyle:v10 compatibleWithTraitCollection:traitCollection];
     goto LABEL_6;
   }
 
   v7 = 0;
   if (compressionLevel < 5)
   {
-    v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD80] compatibleWithTraitCollection:v4];
+    v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD80] compatibleWithTraitCollection:traitCollection];
     v8 = MEMORY[0x1E69DB880];
     v9 = MEMORY[0x1E69DDD28];
     goto LABEL_4;
@@ -1245,15 +1245,15 @@ LABEL_6:
   bodyFont = self->_bodyFont;
   self->_bodyFont = v17;
 
-  v19 = [(PUPickerOnboardingView *)self attributedText];
-  v20 = [(PUPickerOnboardingView *)self textView];
-  [v20 setAttributedText:v19];
+  attributedText = [(PUPickerOnboardingView *)self attributedText];
+  textView = [(PUPickerOnboardingView *)self textView];
+  [textView setAttributedText:attributedText];
 }
 
-- (PUPickerOnboardingView)initWithClientDisplayName:(id)a3
+- (PUPickerOnboardingView)initWithClientDisplayName:(id)name
 {
   v199[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v192.receiver = self;
   v192.super_class = PUPickerOnboardingView;
   v5 = *MEMORY[0x1E695F058];
@@ -1263,14 +1263,14 @@ LABEL_6:
   v9 = [(PUPickerOnboardingView *)&v192 initWithFrame:*MEMORY[0x1E695F058], v6, v7, v8];
   if (v9)
   {
-    v189 = v4;
-    v10 = [v4 copy];
+    v189 = nameCopy;
+    v10 = [nameCopy copy];
     clientDisplayName = v9->_clientDisplayName;
     v9->_clientDisplayName = v10;
 
-    v12 = [(PUPickerOnboardingView *)v9 traitCollection];
-    v13 = [v12 preferredContentSizeCategory];
-    v14 = [v13 copy];
+    traitCollection = [(PUPickerOnboardingView *)v9 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v14 = [preferredContentSizeCategory copy];
     lastContentSizeCategory = v9->_lastContentSizeCategory;
     v9->_lastContentSizeCategory = v14;
 
@@ -1285,21 +1285,21 @@ LABEL_6:
     [(UIView *)v9->_overlayView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUPickerOnboardingView *)v9 addSubview:v9->_overlayView];
     v175 = MEMORY[0x1E696ACD8];
-    v190 = [(UIView *)v9->_overlayView topAnchor];
-    v186 = [(PUPickerOnboardingView *)v9 topAnchor];
-    v183 = [v190 constraintEqualToAnchor:v186];
+    topAnchor = [(UIView *)v9->_overlayView topAnchor];
+    topAnchor2 = [(PUPickerOnboardingView *)v9 topAnchor];
+    v183 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v199[0] = v183;
-    v179 = [(UIView *)v9->_overlayView bottomAnchor];
-    v19 = [(PUPickerOnboardingView *)v9 bottomAnchor];
-    v20 = [v179 constraintEqualToAnchor:v19];
+    bottomAnchor = [(UIView *)v9->_overlayView bottomAnchor];
+    bottomAnchor2 = [(PUPickerOnboardingView *)v9 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v199[1] = v20;
-    v21 = [(UIView *)v9->_overlayView leadingAnchor];
-    v22 = [(PUPickerOnboardingView *)v9 leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    leadingAnchor = [(UIView *)v9->_overlayView leadingAnchor];
+    leadingAnchor2 = [(PUPickerOnboardingView *)v9 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v199[2] = v23;
-    v24 = [(UIView *)v9->_overlayView trailingAnchor];
-    v25 = [(PUPickerOnboardingView *)v9 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    trailingAnchor = [(UIView *)v9->_overlayView trailingAnchor];
+    trailingAnchor2 = [(PUPickerOnboardingView *)v9 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v199[3] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v199 count:4];
     [v175 activateConstraints:v27];
@@ -1310,41 +1310,41 @@ LABEL_6:
     platter = v9->_platter;
     v9->_platter = v30;
 
-    v32 = [MEMORY[0x1E69DC888] blackColor];
-    v33 = [v32 CGColor];
-    v34 = [(UIVisualEffectView *)v9->_platter layer];
-    [v34 setShadowColor:v33];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [(UIVisualEffectView *)v9->_platter layer];
+    [layer setShadowColor:cGColor];
 
-    v35 = [(UIVisualEffectView *)v9->_platter layer];
+    layer2 = [(UIVisualEffectView *)v9->_platter layer];
     LODWORD(v36) = 1041865114;
-    [v35 setShadowOpacity:v36];
+    [layer2 setShadowOpacity:v36];
 
     v37 = *MEMORY[0x1E695F060];
     v38 = *(MEMORY[0x1E695F060] + 8);
-    v39 = [(UIVisualEffectView *)v9->_platter layer];
-    [v39 setShadowOffset:{v37, v38}];
+    layer3 = [(UIVisualEffectView *)v9->_platter layer];
+    [layer3 setShadowOffset:{v37, v38}];
 
-    v40 = [(UIVisualEffectView *)v9->_platter layer];
-    [v40 setShadowRadius:1.0];
+    layer4 = [(UIVisualEffectView *)v9->_platter layer];
+    [layer4 setShadowRadius:1.0];
 
     [(UIVisualEffectView *)v9->_platter setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIVisualEffectView *)v9->_platter _setCornerRadius:10.0];
     [(PUPickerOnboardingView *)v9 addSubview:v9->_platter];
-    v191 = [(UIVisualEffectView *)v9->_platter leadingAnchor];
-    v187 = [(PUPickerOnboardingView *)v9 leadingAnchor];
-    v184 = [v191 constraintGreaterThanOrEqualToAnchor:v187 constant:24.0];
+    leadingAnchor3 = [(UIVisualEffectView *)v9->_platter leadingAnchor];
+    leadingAnchor4 = [(PUPickerOnboardingView *)v9 leadingAnchor];
+    v184 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:24.0];
     v198[0] = v184;
-    v180 = [(UIVisualEffectView *)v9->_platter topAnchor];
-    v176 = [(PUPickerOnboardingView *)v9 topAnchor];
-    v41 = [v180 constraintGreaterThanOrEqualToAnchor:v176 constant:24.0];
+    topAnchor3 = [(UIVisualEffectView *)v9->_platter topAnchor];
+    topAnchor4 = [(PUPickerOnboardingView *)v9 topAnchor];
+    v41 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:24.0];
     v198[1] = v41;
-    v42 = [(PUPickerOnboardingView *)v9 trailingAnchor];
-    v43 = [(UIVisualEffectView *)v9->_platter trailingAnchor];
-    v44 = [v42 constraintGreaterThanOrEqualToAnchor:v43 constant:24.0];
+    trailingAnchor3 = [(PUPickerOnboardingView *)v9 trailingAnchor];
+    trailingAnchor4 = [(UIVisualEffectView *)v9->_platter trailingAnchor];
+    v44 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:24.0];
     v198[2] = v44;
-    v45 = [(PUPickerOnboardingView *)v9 bottomAnchor];
-    v46 = [(UIVisualEffectView *)v9->_platter bottomAnchor];
-    v47 = [v45 constraintGreaterThanOrEqualToAnchor:v46 constant:24.0];
+    bottomAnchor3 = [(PUPickerOnboardingView *)v9 bottomAnchor];
+    bottomAnchor4 = [(UIVisualEffectView *)v9->_platter bottomAnchor];
+    v47 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:24.0];
     v198[3] = v47;
     v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v198 count:4];
     platterInsetConstraints = v9->_platterInsetConstraints;
@@ -1355,35 +1355,35 @@ LABEL_6:
     contentLayoutGuide = v9->_contentLayoutGuide;
     v9->_contentLayoutGuide = v50;
 
-    v188 = [(UILayoutGuide *)v9->_contentLayoutGuide centerXAnchor];
-    v52 = [(PUPickerOnboardingView *)v9 safeAreaLayoutGuide];
-    v53 = [v52 centerXAnchor];
-    v54 = [v188 constraintEqualToAnchor:v53];
+    centerXAnchor = [(UILayoutGuide *)v9->_contentLayoutGuide centerXAnchor];
+    safeAreaLayoutGuide = [(PUPickerOnboardingView *)v9 safeAreaLayoutGuide];
+    centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+    v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v197[0] = v54;
-    v55 = [(UILayoutGuide *)v9->_contentLayoutGuide centerYAnchor];
-    v56 = [(PUPickerOnboardingView *)v9 safeAreaLayoutGuide];
-    v57 = [v56 centerYAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    centerYAnchor = [(UILayoutGuide *)v9->_contentLayoutGuide centerYAnchor];
+    safeAreaLayoutGuide2 = [(PUPickerOnboardingView *)v9 safeAreaLayoutGuide];
+    centerYAnchor2 = [safeAreaLayoutGuide2 centerYAnchor];
+    v58 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v197[1] = v58;
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v197 count:2];
     contentCenterConstraints = v9->_contentCenterConstraints;
     v9->_contentCenterConstraints = v59;
 
-    v181 = [(UILayoutGuide *)v9->_contentLayoutGuide leadingAnchor];
-    v177 = [(UIVisualEffectView *)v9->_platter leadingAnchor];
-    v172 = [v181 constraintEqualToAnchor:v177 constant:16.0];
+    leadingAnchor5 = [(UILayoutGuide *)v9->_contentLayoutGuide leadingAnchor];
+    leadingAnchor6 = [(UIVisualEffectView *)v9->_platter leadingAnchor];
+    v172 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
     v196[0] = v172;
-    v170 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
-    v168 = [(UIVisualEffectView *)v9->_platter topAnchor];
-    v167 = [v170 constraintEqualToAnchor:v168 constant:16.0];
+    topAnchor5 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
+    topAnchor6 = [(UIVisualEffectView *)v9->_platter topAnchor];
+    v167 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:16.0];
     v196[1] = v167;
-    v61 = [(UIVisualEffectView *)v9->_platter trailingAnchor];
-    v62 = [(UILayoutGuide *)v9->_contentLayoutGuide trailingAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:16.0];
+    trailingAnchor5 = [(UIVisualEffectView *)v9->_platter trailingAnchor];
+    trailingAnchor6 = [(UILayoutGuide *)v9->_contentLayoutGuide trailingAnchor];
+    v63 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:16.0];
     v196[2] = v63;
-    v64 = [(UIVisualEffectView *)v9->_platter bottomAnchor];
-    v65 = [(UILayoutGuide *)v9->_contentLayoutGuide bottomAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65 constant:16.0];
+    bottomAnchor5 = [(UIVisualEffectView *)v9->_platter bottomAnchor];
+    bottomAnchor6 = [(UILayoutGuide *)v9->_contentLayoutGuide bottomAnchor];
+    v66 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:16.0];
     v196[3] = v66;
     v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v196 count:4];
     contentInsetConstraints = v9->_contentInsetConstraints;
@@ -1399,9 +1399,9 @@ LABEL_6:
     v182 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:32.0 scale:{32.0, 3.0}];
     v185 = v71;
     v72 = [v71 prepareImageForDescriptor:?];
-    v73 = [v72 CGImage];
+    cGImage = [v72 CGImage];
 
-    v178 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v73 scale:0 orientation:3.0];
+    v178 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:cGImage scale:0 orientation:3.0];
     v74 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v178];
     largeIconView = v9->_largeIconView;
     v9->_largeIconView = v74;
@@ -1409,35 +1409,35 @@ LABEL_6:
     [(UIImageView *)v9->_largeIconView setTranslatesAutoresizingMaskIntoConstraints:0];
     if ((MEMORY[0x1B8C6D660]([(UIImageView *)v9->_largeIconView setAccessibilityIdentifier:@"PickerOnboardingViewIcon"]) & 1) == 0)
     {
-      v76 = [MEMORY[0x1E69DC888] blackColor];
-      v77 = [v76 CGColor];
-      v78 = [(UIImageView *)v9->_largeIconView layer];
-      [v78 setShadowColor:v77];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      cGColor2 = [blackColor2 CGColor];
+      layer5 = [(UIImageView *)v9->_largeIconView layer];
+      [layer5 setShadowColor:cGColor2];
 
-      v79 = [(UIImageView *)v9->_largeIconView layer];
+      layer6 = [(UIImageView *)v9->_largeIconView layer];
       LODWORD(v80) = 1041865114;
-      [v79 setShadowOpacity:v80];
+      [layer6 setShadowOpacity:v80];
 
-      v81 = [(UIImageView *)v9->_largeIconView layer];
-      [v81 setShadowOffset:{v37, v38}];
+      layer7 = [(UIImageView *)v9->_largeIconView layer];
+      [layer7 setShadowOffset:{v37, v38}];
 
-      v82 = [(UIImageView *)v9->_largeIconView layer];
-      [v82 setShadowRadius:1.0];
+      layer8 = [(UIImageView *)v9->_largeIconView layer];
+      [layer8 setShadowRadius:1.0];
     }
 
-    v173 = [(UIImageView *)v9->_largeIconView widthAnchor];
-    v171 = [v173 constraintEqualToConstant:32.0];
+    widthAnchor = [(UIImageView *)v9->_largeIconView widthAnchor];
+    v171 = [widthAnchor constraintEqualToConstant:32.0];
     v195[0] = v171;
-    v169 = [(UIImageView *)v9->_largeIconView heightAnchor];
-    v83 = [v169 constraintEqualToConstant:32.0];
+    heightAnchor = [(UIImageView *)v9->_largeIconView heightAnchor];
+    v83 = [heightAnchor constraintEqualToConstant:32.0];
     v195[1] = v83;
-    v84 = [(UIImageView *)v9->_largeIconView topAnchor];
-    v85 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
+    topAnchor7 = [(UIImageView *)v9->_largeIconView topAnchor];
+    topAnchor8 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
+    v86 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
     v195[2] = v86;
-    v87 = [(UIImageView *)v9->_largeIconView centerXAnchor];
-    v88 = [(UILayoutGuide *)v9->_contentLayoutGuide centerXAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88];
+    centerXAnchor3 = [(UIImageView *)v9->_largeIconView centerXAnchor];
+    centerXAnchor4 = [(UILayoutGuide *)v9->_contentLayoutGuide centerXAnchor];
+    v89 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v195[3] = v89;
     v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:v195 count:4];
     largeIconViewConstraints = v9->_largeIconViewConstraints;
@@ -1461,12 +1461,12 @@ LABEL_6:
     v9->_attachmentIconView = v99;
 
     v101 = [MEMORY[0x1E69DD168] textViewUsingTextLayoutManager:1];
-    v102 = [(UITextView *)v101 textContainer];
-    [v102 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v101 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)v101 setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-    v103 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v101 setBackgroundColor:v103];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v101 setBackgroundColor:clearColor];
 
     [(UITextView *)v101 setEditable:0];
     [(UITextView *)v101 setScrollEnabled:0];
@@ -1479,33 +1479,33 @@ LABEL_6:
     [(UITextView *)v9->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITextView *)v9->_textView setAdjustsFontForContentSizeCategory:1];
     [(UITextView *)v9->_textView setDelegate:v9];
-    v105 = [(UITextView *)v9->_textView widthAnchor];
-    v106 = [v105 constraintEqualToConstant:320.0];
+    widthAnchor2 = [(UITextView *)v9->_textView widthAnchor];
+    v106 = [widthAnchor2 constraintEqualToConstant:320.0];
     textViewWidthConstraint = v9->_textViewWidthConstraint;
     v9->_textViewWidthConstraint = v106;
 
     LODWORD(v108) = 1144750080;
     [(NSLayoutConstraint *)v9->_textViewWidthConstraint setPriority:v108];
-    v109 = [(UITextView *)v9->_textView topAnchor];
-    v110 = [(UIImageView *)v9->_largeIconView bottomAnchor];
-    v111 = [v109 constraintEqualToAnchor:v110 constant:12.0];
+    topAnchor9 = [(UITextView *)v9->_textView topAnchor];
+    bottomAnchor7 = [(UIImageView *)v9->_largeIconView bottomAnchor];
+    v111 = [topAnchor9 constraintEqualToAnchor:bottomAnchor7 constant:12.0];
     textViewTopAnchorToLargeIconConstraint = v9->_textViewTopAnchorToLargeIconConstraint;
     v9->_textViewTopAnchorToLargeIconConstraint = v111;
 
-    v113 = [(UITextView *)v9->_textView topAnchor];
-    v114 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
-    v115 = [v113 constraintEqualToAnchor:v114];
+    topAnchor10 = [(UITextView *)v9->_textView topAnchor];
+    topAnchor11 = [(UILayoutGuide *)v9->_contentLayoutGuide topAnchor];
+    v115 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
     textViewTopAnchorToPlatterConstraint = v9->_textViewTopAnchorToPlatterConstraint;
     v9->_textViewTopAnchorToPlatterConstraint = v115;
 
     v194[0] = v9->_textViewWidthConstraint;
-    v117 = [(UITextView *)v9->_textView leadingAnchor];
-    v118 = [(UILayoutGuide *)v9->_contentLayoutGuide leadingAnchor];
-    v119 = [v117 constraintEqualToAnchor:v118];
+    leadingAnchor7 = [(UITextView *)v9->_textView leadingAnchor];
+    leadingAnchor8 = [(UILayoutGuide *)v9->_contentLayoutGuide leadingAnchor];
+    v119 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v194[1] = v119;
-    v120 = [(UILayoutGuide *)v9->_contentLayoutGuide trailingAnchor];
-    v121 = [(UITextView *)v9->_textView trailingAnchor];
-    v122 = [v120 constraintEqualToAnchor:v121];
+    trailingAnchor7 = [(UILayoutGuide *)v9->_contentLayoutGuide trailingAnchor];
+    trailingAnchor8 = [(UITextView *)v9->_textView trailingAnchor];
+    v122 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v194[2] = v122;
     v123 = [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:3];
     textViewConstraints = v9->_textViewConstraints;
@@ -1517,23 +1517,23 @@ LABEL_6:
     v126 = [(NSArray *)v9->_textViewConstraints arrayByAddingObject:v9->_textViewTopAnchorToLargeIconConstraint];
     [v125 activateConstraints:v126];
 
-    v127 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
     filledButtonConfiguration = v9->_filledButtonConfiguration;
-    v9->_filledButtonConfiguration = v127;
+    v9->_filledButtonConfiguration = filledButtonConfiguration;
 
     [(UIButtonConfiguration *)v9->_filledButtonConfiguration setCornerStyle:4];
     [(UIButtonConfiguration *)v9->_filledButtonConfiguration setButtonSize:2];
     v129 = PULocalizedString(@"PICKER_PRIVACY_OK_BUTTON_TITLE");
     [(UIButtonConfiguration *)v9->_filledButtonConfiguration setTitle:v129];
 
-    v130 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     plainButtonConfiguration = v9->_plainButtonConfiguration;
-    v9->_plainButtonConfiguration = v130;
+    v9->_plainButtonConfiguration = plainButtonConfiguration;
 
     [(UIButtonConfiguration *)v9->_plainButtonConfiguration setContentInsets:*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)];
     [(UIButtonConfiguration *)v9->_plainButtonConfiguration setButtonSize:2];
-    v132 = [(UIButtonConfiguration *)v9->_filledButtonConfiguration title];
-    [(UIButtonConfiguration *)v9->_plainButtonConfiguration setTitle:v132];
+    title = [(UIButtonConfiguration *)v9->_filledButtonConfiguration title];
+    [(UIButtonConfiguration *)v9->_plainButtonConfiguration setTitle:title];
 
     v133 = v9->_filledButtonConfiguration;
     v134 = MEMORY[0x1E69DC738];
@@ -1548,15 +1548,15 @@ LABEL_6:
     v135[72] = v136;
 
     [v135[72] setTranslatesAutoresizingMaskIntoConstraints:0];
-    v139 = [v135[72] topAnchor];
-    v140 = [(UITextView *)v9->_textView bottomAnchor];
-    v141 = [v139 constraintEqualToAnchor:v140 constant:16.0];
+    topAnchor12 = [v135[72] topAnchor];
+    bottomAnchor8 = [(UITextView *)v9->_textView bottomAnchor];
+    v141 = [topAnchor12 constraintEqualToAnchor:bottomAnchor8 constant:16.0];
     v142 = v135[75];
     v135[75] = v141;
 
-    v143 = [(UILayoutGuide *)v9->_contentLayoutGuide bottomAnchor];
-    v144 = [v135[72] bottomAnchor];
-    v145 = [v143 constraintEqualToAnchor:v144];
+    bottomAnchor9 = [(UILayoutGuide *)v9->_contentLayoutGuide bottomAnchor];
+    bottomAnchor10 = [v135[72] bottomAnchor];
+    v145 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v146 = v135[76];
     v135[76] = v145;
 
@@ -1566,12 +1566,12 @@ LABEL_6:
     v135[78] = v148;
     v193[0] = v135[75];
     v193[1] = v135[76];
-    v149 = [v135[72] widthAnchor];
-    v150 = [v149 constraintGreaterThanOrEqualToConstant:80.0];
+    widthAnchor3 = [v135[72] widthAnchor];
+    v150 = [widthAnchor3 constraintGreaterThanOrEqualToConstant:80.0];
     v193[2] = v150;
-    v151 = [v135[72] centerXAnchor];
-    v152 = [v135 centerXAnchor];
-    v153 = [v151 constraintEqualToAnchor:v152];
+    centerXAnchor5 = [v135[72] centerXAnchor];
+    centerXAnchor6 = [v135 centerXAnchor];
+    v153 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v193[3] = v153;
     v154 = [MEMORY[0x1E695DEC8] arrayWithObjects:v193 count:4];
     v155 = v135[77];
@@ -1592,24 +1592,24 @@ LABEL_6:
     v135[83] = v158;
 
     [v135[83] setHidden:1];
-    v160 = [(UIVisualEffectView *)v9->_platter contentView];
-    [v160 addSubview:v135[83]];
+    contentView = [(UIVisualEffectView *)v9->_platter contentView];
+    [contentView addSubview:v135[83]];
 
     v161 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
     v162 = v135[84];
     v135[84] = v161;
 
-    v163 = [v135[81] labelFont];
-    [v135[84] setFont:v163];
+    labelFont = [v135[81] labelFont];
+    [v135[84] setFont:labelFont];
 
-    v164 = [v135[81] labelText];
-    [v135[84] setText:v164];
+    labelText = [v135[81] labelText];
+    [v135[84] setText:labelText];
 
     [v135[84] setHidden:1];
-    v165 = [(UIVisualEffectView *)v9->_platter contentView];
-    [v165 addSubview:v135[84]];
+    contentView2 = [(UIVisualEffectView *)v9->_platter contentView];
+    [contentView2 addSubview:v135[84]];
 
-    v4 = v189;
+    nameCopy = v189;
   }
 
   return v9;

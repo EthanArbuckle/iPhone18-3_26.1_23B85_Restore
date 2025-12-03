@@ -1,8 +1,8 @@
 @interface IDSRemoteURLConnection
 - (BOOL)_connect;
 - (BOOL)_disconnect;
-- (IDSRemoteURLConnection)initWithURLRequest:(id)a3 completionBlock:(id)a4;
-- (IDSRemoteURLConnection)initWithURLRequest:(id)a3 completionBlockWithTimingData:(id)a4;
+- (IDSRemoteURLConnection)initWithURLRequest:(id)request completionBlock:(id)block;
+- (IDSRemoteURLConnection)initWithURLRequest:(id)request completionBlockWithTimingData:(id)data;
 - (void)_disconnected;
 - (void)cancel;
 - (void)dealloc;
@@ -107,25 +107,25 @@
   return self->_connection != 0;
 }
 
-- (IDSRemoteURLConnection)initWithURLRequest:(id)a3 completionBlock:(id)a4
+- (IDSRemoteURLConnection)initWithURLRequest:(id)request completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1A7C6715C;
   v10[3] = &unk_1E77E24F0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(IDSRemoteURLConnection *)self initWithURLRequest:a3 completionBlockWithTimingData:v10];
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = [(IDSRemoteURLConnection *)self initWithURLRequest:request completionBlockWithTimingData:v10];
 
   return v8;
 }
 
-- (IDSRemoteURLConnection)initWithURLRequest:(id)a3 completionBlockWithTimingData:(id)a4
+- (IDSRemoteURLConnection)initWithURLRequest:(id)request completionBlockWithTimingData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = IDSRemoteURLConnection;
   v9 = [(IDSRemoteURLConnection *)&v18 init];
@@ -135,7 +135,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v7;
+      v20 = requestCopy;
       v21 = 2048;
       v22 = v9;
       _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Init with URL request: %@  (%p)", buf, 0x16u);
@@ -152,8 +152,8 @@
       }
     }
 
-    objc_storeStrong(&v9->_request, a3);
-    v15 = [v8 copy];
+    objc_storeStrong(&v9->_request, request);
+    v15 = [dataCopy copy];
     block = v9->_block;
     v9->_block = v15;
   }
@@ -171,7 +171,7 @@
     *buf = 138412546;
     v13 = request;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "Released URL request: %@  (%p)", buf, 0x16u);
   }
 
@@ -180,12 +180,12 @@
   {
     sub_1A7C66C58(v5, v6, @"Released URL request: %@  (%p)");
     v9 = self->_request;
-    v10 = self;
+    selfCopy3 = self;
     sub_1A7C66CCC(v7, v8, @"Released URL request: %@  (%p)");
     if (_IMWillLog())
     {
       v9 = self->_request;
-      v10 = self;
+      selfCopy3 = self;
       _IMAlwaysLog();
     }
   }
@@ -208,21 +208,21 @@
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         request = self->_request;
-        v5 = [(IDSRemoteURLConnection *)self bundleIdentifierForDataUsage];
+        bundleIdentifierForDataUsage = [(IDSRemoteURLConnection *)self bundleIdentifierForDataUsage];
         *buf = 138412802;
         v27 = request;
         v28 = 2112;
-        v29 = v5;
+        v29 = bundleIdentifierForDataUsage;
         v30 = 2048;
-        v31 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "Sending URL request: %@ (Data usage identifier: %@)  (%p)", buf, 0x20u);
       }
 
       if (os_log_shim_legacy_logging_enabled())
       {
         v6 = self->_request;
-        v22 = [(IDSRemoteURLConnection *)self bundleIdentifierForDataUsage];
-        sub_1A7C66C58(v22, v7, @"Sending URL request: %@ (Data usage identifier: %@)  (%p)");
+        bundleIdentifierForDataUsage2 = [(IDSRemoteURLConnection *)self bundleIdentifierForDataUsage];
+        sub_1A7C66C58(bundleIdentifierForDataUsage2, v7, @"Sending URL request: %@ (Data usage identifier: %@)  (%p)");
 
         v8 = self->_request;
         v23 = [(IDSRemoteURLConnection *)self bundleIdentifierForDataUsage:v6];
@@ -280,7 +280,7 @@
     *buf = 138412546;
     v13 = request;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling URL request: %@  (%p)", buf, 0x16u);
   }
 
@@ -289,12 +289,12 @@
   {
     sub_1A7C66C58(v5, v6, @"Cancelling URL request: %@  (%p)");
     v10 = self->_request;
-    v11 = self;
+    selfCopy3 = self;
     sub_1A7C66CCC(v7, v8, @"Cancelling URL request: %@  (%p)");
     if (_IMWillLog())
     {
       v10 = self->_request;
-      v11 = self;
+      selfCopy3 = self;
       _IMAlwaysLog();
     }
   }

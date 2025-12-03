@@ -1,24 +1,24 @@
 @interface HKMobilityWalkingSteadinessFeatureStatusManager
 - (BOOL)isFitnessTrackingEnabled;
-- (HKMobilityWalkingSteadinessFeatureStatusManager)initWithHealthStore:(id)a3;
-- (id)notificationStatusWithError:(id *)a3;
-- (id)onboardingStatusWithError:(id *)a3;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)client_didUpdateFitnessTrackingEnabled:(BOOL)a3;
-- (void)client_didUpdateNotificationStatus:(id)a3;
-- (void)client_didUpdateOnboardingStatus:(id)a3;
+- (HKMobilityWalkingSteadinessFeatureStatusManager)initWithHealthStore:(id)store;
+- (id)notificationStatusWithError:(id *)error;
+- (id)onboardingStatusWithError:(id *)error;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)client_didUpdateFitnessTrackingEnabled:(BOOL)enabled;
+- (void)client_didUpdateNotificationStatus:(id)status;
+- (void)client_didUpdateOnboardingStatus:(id)status;
 - (void)connectionInvalidated;
 - (void)isFitnessTrackingEnabled;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resetOnboarding;
-- (void)setNotificationsEnabled:(BOOL)a3;
+- (void)setNotificationsEnabled:(BOOL)enabled;
 @end
 
 @implementation HKMobilityWalkingSteadinessFeatureStatusManager
 
-- (HKMobilityWalkingSteadinessFeatureStatusManager)initWithHealthStore:(id)a3
+- (HKMobilityWalkingSteadinessFeatureStatusManager)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = HKMobilityWalkingSteadinessFeatureStatusManager;
   v5 = [(HKMobilityWalkingSteadinessFeatureStatusManager *)&v16 init];
@@ -30,8 +30,8 @@
     v5->_observers = v7;
 
     v9 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v9 initWithHealthStore:v4 taskIdentifier:@"HKMobilityWalkingSteadinessFeatureStatusManagerServer" exportedObject:v5 taskUUID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v9 initWithHealthStore:storeCopy taskIdentifier:@"HKMobilityWalkingSteadinessFeatureStatusManagerServer" exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v11;
 
@@ -45,7 +45,7 @@
   return v5;
 }
 
-- (id)onboardingStatusWithError:(id *)a3
+- (id)onboardingStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -76,10 +76,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -138,7 +138,7 @@ uint64_t __66__HKMobilityWalkingSteadinessFeatureStatusManager_resetOnboarding__
   return [a2 remote_resetOnboardingWithCompletion:v3];
 }
 
-- (id)notificationStatusWithError:(id *)a3
+- (id)notificationStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -169,10 +169,10 @@ uint64_t __66__HKMobilityWalkingSteadinessFeatureStatusManager_resetOnboarding__
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -213,7 +213,7 @@ void __79__HKMobilityWalkingSteadinessFeatureStatusManager_notificationStatusWit
   *(v9 + 40) = v6;
 }
 
-- (void)setNotificationsEnabled:(BOOL)a3
+- (void)setNotificationsEnabled:(BOOL)enabled
 {
   v11[0] = 0;
   v11[1] = v11;
@@ -230,7 +230,7 @@ void __79__HKMobilityWalkingSteadinessFeatureStatusManager_notificationStatusWit
   v6[1] = 3221225472;
   v6[2] = __75__HKMobilityWalkingSteadinessFeatureStatusManager_setNotificationsEnabled___block_invoke;
   v6[3] = &unk_2796D8550;
-  v7 = a3;
+  enabledCopy = enabled;
   v6[4] = v11;
   v6[5] = &v8;
   v5[0] = MEMORY[0x277D85DD0];
@@ -300,11 +300,11 @@ uint64_t __75__HKMobilityWalkingSteadinessFeatureStatusManager_setNotificationsE
     }
   }
 
-  v4 = [v12[5] BOOLValue];
+  bOOLValue = [v12[5] BOOLValue];
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return bOOLValue;
 }
 
 uint64_t __75__HKMobilityWalkingSteadinessFeatureStatusManager_isFitnessTrackingEnabled__block_invoke(uint64_t a1, void *a2)
@@ -333,7 +333,7 @@ void __75__HKMobilityWalkingSteadinessFeatureStatusManager_isFitnessTrackingEnab
   *(v9 + 40) = v5;
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -341,7 +341,7 @@ void __75__HKMobilityWalkingSteadinessFeatureStatusManager_isFitnessTrackingEnab
   v5[2] = __69__HKMobilityWalkingSteadinessFeatureStatusManager_addObserver_queue___block_invoke;
   v5[3] = &unk_2796D85C8;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __69__HKMobilityWalkingSteadinessFeatureStatusManager_addObserver_queue___block_invoke(uint64_t a1)
@@ -373,7 +373,7 @@ void __69__HKMobilityWalkingSteadinessFeatureStatusManager_addObserver_queue___b
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -381,7 +381,7 @@ void __69__HKMobilityWalkingSteadinessFeatureStatusManager_addObserver_queue___b
   v4[2] = __66__HKMobilityWalkingSteadinessFeatureStatusManager_removeObserver___block_invoke;
   v4[3] = &unk_2796D85C8;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __66__HKMobilityWalkingSteadinessFeatureStatusManager_removeObserver___block_invoke(uint64_t a1)
@@ -406,16 +406,16 @@ void __66__HKMobilityWalkingSteadinessFeatureStatusManager_removeObserver___bloc
   }
 }
 
-- (void)client_didUpdateOnboardingStatus:(id)a3
+- (void)client_didUpdateOnboardingStatus:(id)status
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2F8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_251952000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying observers that onboarding status changed", buf, 0xCu);
   }
 
@@ -425,8 +425,8 @@ void __66__HKMobilityWalkingSteadinessFeatureStatusManager_removeObserver___bloc
   v9[2] = __84__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateOnboardingStatus___block_invoke;
   v9[3] = &unk_2796D8610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = statusCopy;
+  v7 = statusCopy;
   [(HKObserverSet *)observers notifyObservers:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -441,16 +441,16 @@ void __84__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateOnboa
   }
 }
 
-- (void)client_didUpdateNotificationStatus:(id)a3
+- (void)client_didUpdateNotificationStatus:(id)status
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2F8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_251952000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying observers that notification status changed", buf, 0xCu);
   }
 
@@ -460,8 +460,8 @@ void __84__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateOnboa
   v9[2] = __86__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateNotificationStatus___block_invoke;
   v9[3] = &unk_2796D8610;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = statusCopy;
+  v7 = statusCopy;
   [(HKObserverSet *)observers notifyObservers:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -476,7 +476,7 @@ void __86__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateNotif
   }
 }
 
-- (void)client_didUpdateFitnessTrackingEnabled:(BOOL)a3
+- (void)client_didUpdateFitnessTrackingEnabled:(BOOL)enabled
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -484,7 +484,7 @@ void __86__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateNotif
   v4[2] = __90__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateFitnessTrackingEnabled___block_invoke;
   v4[3] = &unk_2796D8638;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   [(HKObserverSet *)observers notifyObservers:v4];
 }
 
@@ -501,7 +501,7 @@ void __90__HKMobilityWalkingSteadinessFeatureStatusManager_client_didUpdateFitne
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_251952000, a2, OS_LOG_TYPE_ERROR, "[%{public}@] Connection invalidated", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

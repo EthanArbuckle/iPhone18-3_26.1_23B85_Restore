@@ -1,21 +1,21 @@
 @interface IATextInputActionsSessionDictationBeganAction
-- (IATextInputActionsSessionDictationBeganAction)initWithCoder:(id)a3;
+- (IATextInputActionsSessionDictationBeganAction)initWithCoder:(id)coder;
 - (id)description;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (id)toDictionary;
-- (int64_t)mergeActionIfPossible:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IATextInputActionsSessionDictationBeganAction
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   v7 = objc_msgSend_source(self, v5, v6);
-  if (v7 == objc_msgSend_source(v4, v8, v9))
+  if (v7 == objc_msgSend_source(possibleCopy, v8, v9))
   {
-    v12 = objc_msgSend_asDictationBegan(v4, v10, v11);
+    v12 = objc_msgSend_asDictationBegan(possibleCopy, v10, v11);
     v15 = v12;
     if (v12)
     {
@@ -72,59 +72,59 @@
   return v31;
 }
 
-- (IATextInputActionsSessionDictationBeganAction)initWithCoder:(id)a3
+- (IATextInputActionsSessionDictationBeganAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = IATextInputActionsSessionDictationBeganAction;
-  v5 = [(IATextInputActionsSessionAction *)&v22 initWithCoder:v4];
+  v5 = [(IATextInputActionsSessionAction *)&v22 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"dictationBeganCount");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"dictationBeganCount");
     v5->_dictationBeganCount = objc_msgSend_unsignedLongValue(v8, v9, v10);
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"modelessUsedAtLeastOnceCount");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"modelessUsedAtLeastOnceCount");
     v5->_modelessUsedAtLeastOnceCount = objc_msgSend_unsignedLongValue(v13, v14, v15);
 
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"multiModalDictationBeganCount");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"multiModalDictationBeganCount");
     v5->_multiModalDictationBeganCount = objc_msgSend_unsignedLongValue(v18, v19, v20);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = IATextInputActionsSessionDictationBeganAction;
-  v4 = a3;
-  [(IATextInputActionsSessionAction *)&v14 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IATextInputActionsSessionAction *)&v14 encodeWithCoder:coderCopy];
   v6 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v5, self->_dictationBeganCount, v14.receiver, v14.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v7, v6, @"dictationBeganCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"dictationBeganCount");
 
   v9 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v8, self->_modelessUsedAtLeastOnceCount);
-  objc_msgSend_encodeObject_forKey_(v4, v10, v9, @"modelessUsedAtLeastOnceCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v10, v9, @"modelessUsedAtLeastOnceCount");
 
   v12 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v11, self->_multiModalDictationBeganCount);
-  objc_msgSend_encodeObject_forKey_(v4, v13, v12, @"multiModalDictationBeganCount");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, v12, @"multiModalDictationBeganCount");
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v18.receiver = self;
   v18.super_class = IATextInputActionsSessionDictationBeganAction;
-  v3 = a3;
-  v4 = [(IATextInputActionsSessionAction *)&v18 initFromDictionary:v3];
-  v6 = objc_msgSend_objectForKeyedSubscript_(v3, v5, @"dictationBeganCount", v18.receiver, v18.super_class);
+  dictionaryCopy = dictionary;
+  v4 = [(IATextInputActionsSessionAction *)&v18 initFromDictionary:dictionaryCopy];
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"dictationBeganCount", v18.receiver, v18.super_class);
   v4[23] = objc_msgSend_unsignedLongValue(v6, v7, v8);
 
-  v10 = objc_msgSend_objectForKeyedSubscript_(v3, v9, @"modelessUsedAtLeastOnceCount");
+  v10 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v9, @"modelessUsedAtLeastOnceCount");
   v4[24] = objc_msgSend_unsignedLongValue(v10, v11, v12);
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v3, v13, @"multiModalDictationBeganCount");
+  v14 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, @"multiModalDictationBeganCount");
 
   v4[25] = objc_msgSend_unsignedLongValue(v14, v15, v16);
   return v4;
@@ -134,17 +134,17 @@
 {
   v14.receiver = self;
   v14.super_class = IATextInputActionsSessionDictationBeganAction;
-  v3 = [(IATextInputActionsSessionAction *)&v14 toDictionary];
+  toDictionary = [(IATextInputActionsSessionAction *)&v14 toDictionary];
   v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v4, self->_dictationBeganCount);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v6, v5, @"dictationBeganCount");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v6, v5, @"dictationBeganCount");
 
   v8 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v7, self->_modelessUsedAtLeastOnceCount);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v9, v8, @"modelessUsedAtLeastOnceCount");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v9, v8, @"modelessUsedAtLeastOnceCount");
 
   v11 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v10, self->_multiModalDictationBeganCount);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v12, v11, @"multiModalDictationBeganCount");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v12, v11, @"multiModalDictationBeganCount");
 
-  return v3;
+  return toDictionary;
 }
 
 @end

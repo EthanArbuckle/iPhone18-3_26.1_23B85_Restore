@@ -1,34 +1,34 @@
 @interface ASRSchemaASRSampledAudioFileStorageFailed
-- (ASRSchemaASRSampledAudioFileStorageFailed)initWithDictionary:(id)a3;
-- (ASRSchemaASRSampledAudioFileStorageFailed)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRSampledAudioFileStorageFailed)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRSampledAudioFileStorageFailed)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSampledAudioStorageFailureReason:(BOOL)a3;
-- (void)setHasUnderlyingErrorCode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSampledAudioStorageFailureReason:(BOOL)reason;
+- (void)setHasUnderlyingErrorCode:(BOOL)code;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRSampledAudioFileStorageFailed
 
-- (ASRSchemaASRSampledAudioFileStorageFailed)initWithDictionary:(id)a3
+- (ASRSchemaASRSampledAudioFileStorageFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ASRSchemaASRSampledAudioFileStorageFailed;
   v5 = [(ASRSchemaASRSampledAudioFileStorageFailed *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRSampledAudioFileStorageFailed setErrorCode:](v5, "setErrorCode:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,14 +36,14 @@
       [(ASRSchemaASRSampledAudioFileStorageFailed *)v5 setErrorDomain:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"underlyingErrorCode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"underlyingErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRSampledAudioFileStorageFailed setUnderlyingErrorCode:](v5, "setUnderlyingErrorCode:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"underlyingErrorDomain"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"underlyingErrorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       [(ASRSchemaASRSampledAudioFileStorageFailed *)v5 setUnderlyingErrorDomain:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"sampledAudioStorageFailureReason"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sampledAudioStorageFailureReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (ASRSchemaASRSampledAudioFileStorageFailed)initWithJSON:(id)a3
+- (ASRSchemaASRSampledAudioFileStorageFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRSampledAudioFileStorageFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRSampledAudioFileStorageFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,18 +100,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRSampledAudioFileStorageFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorDomain)
   {
-    v5 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"errorDomain"];
+    errorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
+    v6 = [errorDomain copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorDomain"];
   }
 
   has = self->_has;
@@ -128,26 +128,26 @@
       v9 = off_1E78D1F70[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"sampledAudioStorageFailureReason"];
+    [dictionary setObject:v9 forKeyedSubscript:@"sampledAudioStorageFailureReason"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[ASRSchemaASRSampledAudioFileStorageFailed underlyingErrorCode](self, "underlyingErrorCode")}];
-    [v3 setObject:v10 forKeyedSubscript:@"underlyingErrorCode"];
+    [dictionary setObject:v10 forKeyedSubscript:@"underlyingErrorCode"];
   }
 
   if (self->_underlyingErrorDomain)
   {
-    v11 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"underlyingErrorDomain"];
+    underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
+    v12 = [underlyingErrorDomain copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"underlyingErrorDomain"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -187,15 +187,15 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  if ((*&self->_has & 1) != (v4[44] & 1))
+  if ((*&self->_has & 1) != (equalCopy[44] & 1))
   {
     goto LABEL_18;
   }
@@ -203,26 +203,26 @@
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
-  v7 = [v4 errorDomain];
-  if ((v6 != 0) == (v7 == 0))
+  errorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
+  errorDomain2 = [equalCopy errorDomain];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
-  if (v8)
+  errorDomain3 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
+  if (errorDomain3)
   {
-    v9 = v8;
-    v10 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
-    v11 = [v4 errorDomain];
-    v12 = [v10 isEqual:v11];
+    v9 = errorDomain3;
+    errorDomain4 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
+    errorDomain5 = [equalCopy errorDomain];
+    v12 = [errorDomain4 isEqual:errorDomain5];
 
     if (!v12)
     {
@@ -235,7 +235,7 @@
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[44] >> 1) & 1))
+  if (v13 != ((equalCopy[44] >> 1) & 1))
   {
     goto LABEL_18;
   }
@@ -243,28 +243,28 @@
   if (v13)
   {
     underlyingErrorCode = self->_underlyingErrorCode;
-    if (underlyingErrorCode != [v4 underlyingErrorCode])
+    if (underlyingErrorCode != [equalCopy underlyingErrorCode])
     {
       goto LABEL_18;
     }
   }
 
-  v6 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
-  v7 = [v4 underlyingErrorDomain];
-  if ((v6 != 0) == (v7 == 0))
+  errorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
+  errorDomain2 = [equalCopy underlyingErrorDomain];
+  if ((errorDomain != 0) == (errorDomain2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v15 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
-  if (v15)
+  underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
+  if (underlyingErrorDomain)
   {
-    v16 = v15;
-    v17 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
-    v18 = [v4 underlyingErrorDomain];
-    v19 = [v17 isEqual:v18];
+    v16 = underlyingErrorDomain;
+    underlyingErrorDomain2 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
+    underlyingErrorDomain3 = [equalCopy underlyingErrorDomain];
+    v19 = [underlyingErrorDomain2 isEqual:underlyingErrorDomain3];
 
     if (!v19)
     {
@@ -277,9 +277,9 @@ LABEL_17:
   }
 
   v22 = (*&self->_has >> 2) & 1;
-  if (v22 == ((v4[44] >> 2) & 1))
+  if (v22 == ((equalCopy[44] >> 2) & 1))
   {
-    if (!v22 || (sampledAudioStorageFailureReason = self->_sampledAudioStorageFailureReason, sampledAudioStorageFailureReason == [v4 sampledAudioStorageFailureReason]))
+    if (!v22 || (sampledAudioStorageFailureReason = self->_sampledAudioStorageFailureReason, sampledAudioStorageFailureReason == [equalCopy sampledAudioStorageFailureReason]))
     {
       v20 = 1;
       goto LABEL_19;
@@ -293,17 +293,17 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
+  errorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self errorDomain];
 
-  if (v4)
+  if (errorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -313,9 +313,9 @@ LABEL_19:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
+  underlyingErrorDomain = [(ASRSchemaASRSampledAudioFileStorageFailed *)self underlyingErrorDomain];
 
-  if (v5)
+  if (underlyingErrorDomain)
   {
     PBDataWriterWriteStringField();
   }
@@ -326,9 +326,9 @@ LABEL_19:
   }
 }
 
-- (void)setHasSampledAudioStorageFailureReason:(BOOL)a3
+- (void)setHasSampledAudioStorageFailureReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -341,9 +341,9 @@ LABEL_19:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUnderlyingErrorCode:(BOOL)a3
+- (void)setHasUnderlyingErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }

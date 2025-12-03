@@ -1,38 +1,38 @@
 @interface APOdmlFeatureStorage
-- (APOdmlFeatureStorage)initWithExperimentID:(id)a3 treatmentID:(id)a4 deploymentID:(int)a5 trialNamespace:(id)a6;
-- (id)featureForName:(id)a3;
-- (id)featureForName:(id)a3 backgroundContext:(id)a4;
-- (id)featuresForName:(id)a3 fetchLimit:(unint64_t)a4 backgroundContext:(id)a5;
-- (id)saveFeatureFromObject:(id)a3 withName:(id)a4;
-- (id)vectorsForName:(id)a3 lookbackWindow:(id)a4;
-- (void)deleteExpiredFeaturesForName:(id)a3 lookbackWindow:(id)a4;
+- (APOdmlFeatureStorage)initWithExperimentID:(id)d treatmentID:(id)iD deploymentID:(int)deploymentID trialNamespace:(id)namespace;
+- (id)featureForName:(id)name;
+- (id)featureForName:(id)name backgroundContext:(id)context;
+- (id)featuresForName:(id)name fetchLimit:(unint64_t)limit backgroundContext:(id)context;
+- (id)saveFeatureFromObject:(id)object withName:(id)name;
+- (id)vectorsForName:(id)name lookbackWindow:(id)window;
+- (void)deleteExpiredFeaturesForName:(id)name lookbackWindow:(id)window;
 @end
 
 @implementation APOdmlFeatureStorage
 
-- (APOdmlFeatureStorage)initWithExperimentID:(id)a3 treatmentID:(id)a4 deploymentID:(int)a5 trialNamespace:(id)a6
+- (APOdmlFeatureStorage)initWithExperimentID:(id)d treatmentID:(id)iD deploymentID:(int)deploymentID trialNamespace:(id)namespace
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  namespaceCopy = namespace;
   v17.receiver = self;
   v17.super_class = APOdmlFeatureStorage;
   v14 = [(APOdmlCoreDataStorage *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_experimentID, a3);
-    objc_storeStrong(&v15->_treatmentID, a4);
-    v15->_deploymentID = a5;
-    objc_storeStrong(&v15->_trialNamespace, a6);
+    objc_storeStrong(&v14->_experimentID, d);
+    objc_storeStrong(&v15->_treatmentID, iD);
+    v15->_deploymentID = deploymentID;
+    objc_storeStrong(&v15->_trialNamespace, namespace);
   }
 
   return v15;
 }
 
-- (id)featureForName:(id)a3 backgroundContext:(id)a4
+- (id)featureForName:(id)name backgroundContext:(id)context
 {
-  v4 = objc_msgSend_featuresForName_fetchLimit_backgroundContext_(self, a2, a3, 1, a4);
+  v4 = objc_msgSend_featuresForName_fetchLimit_backgroundContext_(self, a2, name, 1, context);
   v7 = v4;
   if (v4)
   {
@@ -47,13 +47,13 @@
   return v8;
 }
 
-- (id)featureForName:(id)a3
+- (id)featureForName:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_storePrecheck(v5, v6, v7);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_storePrecheck(selfCopy, v6, v7);
   if (v8)
   {
     v9 = OdmlLogForCategory(0);
@@ -70,18 +70,18 @@
     v12 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v11, @"APOdmlFeatureStorageErrorDomain", 5004, 0);
     objc_msgSend_sendEvent_additionalDetails_(APOdmlAnalyticsFeatureStorage, v13, v12, 0);
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
     v14 = 0;
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v17 = objc_msgSend_persistentContainer(v5, v15, v16);
+    v17 = objc_msgSend_persistentContainer(selfCopy, v15, v16);
     v20 = objc_msgSend_newBackgroundContext(v17, v18, v19);
 
-    v22 = objc_msgSend_featureForName_backgroundContext_(v5, v21, v4, v20);
+    v22 = objc_msgSend_featureForName_backgroundContext_(selfCopy, v21, nameCopy, v20);
     v23 = v22;
     if (v22)
     {
@@ -108,7 +108,7 @@
       v14 = 0;
     }
 
-    v5 = v20;
+    selfCopy = v20;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -116,14 +116,14 @@
   return v14;
 }
 
-- (id)vectorsForName:(id)a3 lookbackWindow:(id)a4
+- (id)vectorsForName:(id)name lookbackWindow:(id)window
 {
   v59 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v48 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v9 = objc_msgSend_storePrecheck(v6, v7, v8);
+  nameCopy = name;
+  windowCopy = window;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_storePrecheck(selfCopy, v7, v8);
   if (v9)
   {
     v10 = OdmlLogForCategory(0);
@@ -137,18 +137,18 @@
       _os_log_impl(&dword_260ECB000, v10, OS_LOG_TYPE_ERROR, "[%@] Vector retrieval failed; CoreData failed to load with the following error: %@.", buf, 0x16u);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
     v12 = 0;
   }
 
   else
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
-    v15 = objc_msgSend_persistentContainer(v6, v13, v14);
+    v15 = objc_msgSend_persistentContainer(selfCopy, v13, v14);
     v18 = objc_msgSend_newBackgroundContext(v15, v16, v17);
 
-    v20 = objc_msgSend_featuresForName_fetchLimit_backgroundContext_(v6, v19, v46, 0, v18);
+    v20 = objc_msgSend_featuresForName_fetchLimit_backgroundContext_(selfCopy, v19, nameCopy, 0, v18);
     v47 = objc_msgSend_array(MEMORY[0x277CBEB18], v21, v22);
     v52 = 0u;
     v53 = 0u;
@@ -176,7 +176,7 @@
             objc_msgSend_timeIntervalSinceDate_(v31, v35, v34);
             v37 = v36;
 
-            objc_msgSend_doubleValue(v48, v38, v39);
+            objc_msgSend_doubleValue(windowCopy, v38, v39);
             if (v37 <= v40)
             {
               *buf = 0;
@@ -205,7 +205,7 @@
     }
 
     v12 = objc_msgSend_copy(v47, v42, v43);
-    v6 = v18;
+    selfCopy = v18;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -213,14 +213,14 @@
   return v12;
 }
 
-- (id)featuresForName:(id)a3 fetchLimit:(unint64_t)a4 backgroundContext:(id)a5
+- (id)featuresForName:(id)name fetchLimit:(unint64_t)limit backgroundContext:(id)context
 {
   v90[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v70 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  v12 = objc_msgSend_storePrecheck(v9, v10, v11);
+  nameCopy = name;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v12 = objc_msgSend_storePrecheck(selfCopy, v10, v11);
   if (v12)
   {
     v13 = OdmlLogForCategory(0);
@@ -244,7 +244,7 @@
     v17 = 0;
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   if (v12)
   {
     v20 = 0;
@@ -253,10 +253,10 @@
 
   v21 = objc_msgSend_fetchRequestWithEntityName_(MEMORY[0x277CBE428], v19, @"Feature");
   v22 = MEMORY[0x277CCAC30];
-  v25 = objc_msgSend_deploymentID(v9, v23, v24);
-  v28 = objc_msgSend_experimentID(v9, v26, v27);
-  v31 = objc_msgSend_treatmentID(v9, v29, v30);
-  v33 = objc_msgSend_predicateWithFormat_(v22, v32, @"(deploymentID == %d) AND (experimentID == %@) AND (treatmentID == %@) AND (featureType == %@)", v25, v28, v31, v8);
+  v25 = objc_msgSend_deploymentID(selfCopy, v23, v24);
+  v28 = objc_msgSend_experimentID(selfCopy, v26, v27);
+  v31 = objc_msgSend_treatmentID(selfCopy, v29, v30);
+  v33 = objc_msgSend_predicateWithFormat_(v22, v32, @"(deploymentID == %d) AND (experimentID == %@) AND (treatmentID == %@) AND (featureType == %@)", v25, v28, v31, nameCopy);
 
   objc_msgSend_setPredicate_(v21, v34, v33);
   v36 = objc_msgSend_sortDescriptorWithKey_ascending_(MEMORY[0x277CCAC98], v35, @"createdAt", 0);
@@ -264,9 +264,9 @@
   v38 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v37, v90, 1);
   objc_msgSend_setSortDescriptors_(v21, v39, v38);
 
-  if (a4)
+  if (limit)
   {
-    objc_msgSend_setFetchLimit_(v21, v40, a4);
+    objc_msgSend_setFetchLimit_(v21, v40, limit);
     v41 = OdmlLogForCategory(0);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
@@ -274,7 +274,7 @@
       *buf = 138412546;
       *&buf[4] = v42;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = limit;
       v43 = v42;
       _os_log_impl(&dword_260ECB000, v41, OS_LOG_TYPE_DEFAULT, "[%@] Fetching Features from CoreData with a fetch limit of %lu", buf, 0x16u);
     }
@@ -310,7 +310,7 @@
   v71[2] = sub_260ED4170;
   v71[3] = &unk_279AC61D8;
   v74 = &v76;
-  v72 = v70;
+  v72 = contextCopy;
   v46 = v21;
   v73 = v46;
   v75 = buf;
@@ -364,7 +364,7 @@
       *v82 = 138412546;
       v83 = v59;
       v84 = 2112;
-      v85 = v8;
+      v85 = nameCopy;
       v60 = v59;
       _os_log_impl(&dword_260ECB000, v58, OS_LOG_TYPE_ERROR, "[%@] Failed to retrieve feature %@", v82, 0x16u);
     }
@@ -388,14 +388,14 @@ LABEL_24:
   return v20;
 }
 
-- (id)saveFeatureFromObject:(id)a3 withName:(id)a4
+- (id)saveFeatureFromObject:(id)object withName:(id)name
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v11 = objc_msgSend_storePrecheck(v8, v9, v10);
+  objectCopy = object;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = objc_msgSend_storePrecheck(selfCopy, v9, v10);
   if (v11)
   {
     v12 = OdmlLogForCategory(0);
@@ -419,10 +419,10 @@ LABEL_24:
     v15 = 0;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (!v11)
   {
-    v20 = objc_msgSend_persistentContainer(v8, v18, v19);
+    v20 = objc_msgSend_persistentContainer(selfCopy, v18, v19);
     v23 = objc_msgSend_newBackgroundContext(v20, v21, v22);
 
     *buf = 0;
@@ -437,9 +437,9 @@ LABEL_24:
     v36[3] = &unk_279AC6200;
     v24 = v23;
     v37 = v24;
-    v38 = v8;
-    v39 = v7;
-    v40 = v6;
+    v38 = selfCopy;
+    v39 = nameCopy;
+    v40 = objectCopy;
     v41 = buf;
     objc_msgSend_performBlockAndWait_(v24, v25, v36);
     v26 = *(*&buf[8] + 40);
@@ -475,14 +475,14 @@ LABEL_24:
   return v11;
 }
 
-- (void)deleteExpiredFeaturesForName:(id)a3 lookbackWindow:(id)a4
+- (void)deleteExpiredFeaturesForName:(id)name lookbackWindow:(id)window
 {
   v63 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v42 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v9 = objc_msgSend_storePrecheck(v6, v7, v8);
+  nameCopy = name;
+  windowCopy = window;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_storePrecheck(selfCopy, v7, v8);
   if (v9)
   {
     v10 = OdmlLogForCategory(0);
@@ -496,18 +496,18 @@ LABEL_24:
       _os_log_impl(&dword_260ECB000, v10, OS_LOG_TYPE_ERROR, "[%@] Delete feature failed; CoreData failed to load with the following error: %@.", buf, 0x16u);
     }
 
-    v12 = v6;
-    objc_sync_exit(v6);
+    v12 = selfCopy;
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
-    v15 = objc_msgSend_persistentContainer(v6, v13, v14);
+    v15 = objc_msgSend_persistentContainer(selfCopy, v13, v14);
     v18 = objc_msgSend_newBackgroundContext(v15, v16, v17);
 
-    objc_msgSend_featuresForName_fetchLimit_backgroundContext_(v6, v19, v40, 0, v18);
+    objc_msgSend_featuresForName_fetchLimit_backgroundContext_(selfCopy, v19, nameCopy, 0, v18);
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -540,7 +540,7 @@ LABEL_24:
             v49[5] = buf;
             objc_msgSend_performBlockAndWait_(v18, v21, v49);
             v26 = *(*&buf[8] + 24);
-            objc_msgSend_doubleValue(v42, v27, v28);
+            objc_msgSend_doubleValue(windowCopy, v27, v28);
             if (v26 >= v29)
             {
               v46[0] = MEMORY[0x277D85DD0];

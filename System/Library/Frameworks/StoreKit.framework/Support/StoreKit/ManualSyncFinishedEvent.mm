@@ -1,14 +1,14 @@
 @interface ManualSyncFinishedEvent
-- (void)configureWithError:(id)a3;
+- (void)configureWithError:(id)error;
 @end
 
 @implementation ManualSyncFinishedEvent
 
-- (void)configureWithError:(id)a3
+- (void)configureWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_100173A14(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_100173A14(error);
 }
 
 @end

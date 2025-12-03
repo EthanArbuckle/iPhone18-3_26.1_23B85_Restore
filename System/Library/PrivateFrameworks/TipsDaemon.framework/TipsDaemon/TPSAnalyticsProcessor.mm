@@ -1,10 +1,10 @@
 @interface TPSAnalyticsProcessor
-+ (id)loadValueForKey:(id)a3 class:(Class)a4;
++ (id)loadValueForKey:(id)key class:(Class)class;
 - (NSDate)dateLastRun;
 - (TPSAnalyticsProcessor)init;
 - (TPSAnalyticsProcessorDataSource)dataSource;
-- (void)processAnalytics:(id)a3;
-- (void)setDateLastRun:(id)a3;
+- (void)processAnalytics:(id)analytics;
+- (void)setDateLastRun:(id)run;
 @end
 
 @implementation TPSAnalyticsProcessor
@@ -16,9 +16,9 @@
   v2 = [(TPSAnalyticsProcessor *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D71620] sharedInstance];
+    mEMORY[0x277D71620] = [MEMORY[0x277D71620] sharedInstance];
     analyticsEventController = v2->_analyticsEventController;
-    v2->_analyticsEventController = v3;
+    v2->_analyticsEventController = mEMORY[0x277D71620];
 
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
@@ -40,27 +40,27 @@
   return [v3 loadValueForKey:dateLastRunKey class:v5];
 }
 
-- (void)setDateLastRun:(id)a3
+- (void)setDateLastRun:(id)run
 {
-  v4 = a3;
-  [objc_opt_class() saveValue:v4 forKey:self->_dateLastRunKey];
+  runCopy = run;
+  [objc_opt_class() saveValue:runCopy forKey:self->_dateLastRunKey];
 }
 
-+ (id)loadValueForKey:(id)a3 class:(Class)a4
++ (id)loadValueForKey:(id)key class:(Class)class
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [v5 setWithObject:a4];
-  v8 = [MEMORY[0x277D717A8] unarchivedObjectOfClasses:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [v5 setWithObject:class];
+  v8 = [MEMORY[0x277D717A8] unarchivedObjectOfClasses:v7 forKey:keyCopy];
 
   return v8;
 }
 
-- (void)processAnalytics:(id)a3
+- (void)processAnalytics:(id)analytics
 {
-  if (a3)
+  if (analytics)
   {
-    (*(a3 + 2))(a3);
+    (*(analytics + 2))(analytics);
   }
 }
 

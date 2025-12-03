@@ -1,17 +1,17 @@
 @interface ICQUIiCloudPlusFeatureCell
-- (ICQUIiCloudPlusFeatureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (ICQUIiCloudPlusFeatureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupViews;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICQUIiCloudPlusFeatureCell
 
-- (ICQUIiCloudPlusFeatureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ICQUIiCloudPlusFeatureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = ICQUIiCloudPlusFeatureCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -43,51 +43,51 @@
   [(UILabel *)v8 setFont:v9];
 
   v10 = self->_titleLabel;
-  v11 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)v10 setColor:v11];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)v10 setColor:labelColor];
 
-  v12 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  [v12 addSubview:self->_titleLabel];
+  contentView = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
-  v13 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  [v13 addSubview:self->_cellImageView];
+  contentView2 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  [contentView2 addSubview:self->_cellImageView];
 
   v33 = MEMORY[0x277CCAAD0];
-  v43 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v44 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  v42 = [v44 layoutMarginsGuide];
-  v41 = [v42 leadingAnchor];
-  v40 = [v43 constraintEqualToAnchor:v41 constant:42.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView3 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:42.0];
   v45[0] = v40;
-  v38 = [(UILabel *)self->_titleLabel centerYAnchor];
-  v39 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  v37 = [v39 layoutMarginsGuide];
-  v36 = [v37 centerYAnchor];
-  v35 = [v38 constraintEqualToAnchor:v36];
+  centerYAnchor = [(UILabel *)self->_titleLabel centerYAnchor];
+  contentView4 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v45[1] = v35;
-  v32 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v34 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  v31 = [v34 layoutMarginsGuide];
-  v30 = [v31 trailingAnchor];
-  v29 = [v32 constraintEqualToAnchor:v30];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView5 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[2] = v29;
-  v28 = [(UIImageView *)self->_cellImageView widthAnchor];
-  v27 = [v28 constraintEqualToConstant:24.0];
+  widthAnchor = [(UIImageView *)self->_cellImageView widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:24.0];
   v45[3] = v27;
-  v26 = [(UIImageView *)self->_cellImageView heightAnchor];
-  v25 = [v26 constraintEqualToConstant:24.0];
+  heightAnchor = [(UIImageView *)self->_cellImageView heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:24.0];
   v45[4] = v25;
-  v23 = [(UIImageView *)self->_cellImageView leadingAnchor];
-  v24 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  v14 = [v24 layoutMarginsGuide];
-  v15 = [v14 leadingAnchor];
-  v16 = [v23 constraintEqualToAnchor:v15];
+  leadingAnchor3 = [(UIImageView *)self->_cellImageView leadingAnchor];
+  contentView6 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v45[5] = v16;
-  v17 = [(UIImageView *)self->_cellImageView centerYAnchor];
-  v18 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
-  v19 = [v18 layoutMarginsGuide];
-  v20 = [v19 centerYAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
+  centerYAnchor3 = [(UIImageView *)self->_cellImageView centerYAnchor];
+  contentView7 = [(ICQUIiCloudPlusFeatureCell *)self contentView];
+  layoutMarginsGuide5 = [contentView7 layoutMarginsGuide];
+  centerYAnchor4 = [layoutMarginsGuide5 centerYAnchor];
+  v21 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v45[6] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:7];
   [v33 activateConstraints:v22];
@@ -100,18 +100,18 @@
   v12.receiver = self;
   v12.super_class = ICQUIiCloudPlusFeatureCell;
   [(PSTableCell *)&v12 layoutSubviews];
-  v3 = [(ICQUIiCloudPlusFeatureCell *)self imageView];
-  [v3 setHidden:1];
+  imageView = [(ICQUIiCloudPlusFeatureCell *)self imageView];
+  [imageView setHidden:1];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [(ICQUIiCloudPlusFeatureCell *)self setSeparatorColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(ICQUIiCloudPlusFeatureCell *)self setSeparatorColor:clearColor];
 
-  LODWORD(v4) = self->_isLastCell;
+  LODWORD(clearColor) = self->_isLastCell;
   [(ICQUIiCloudPlusFeatureCell *)self layoutMargins];
   v6 = v5;
   v8 = v7;
   [(ICQUIiCloudPlusFeatureCell *)self layoutMargins];
-  if (v4 == 1)
+  if (clearColor == 1)
   {
     v10 = v9;
     [(ICQUIiCloudPlusFeatureCell *)self layoutMargins];
@@ -129,20 +129,20 @@
   [(ICQUIiCloudPlusFeatureCell *)self setNeedsDisplay];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = ICQUIiCloudPlusFeatureCell;
-  v4 = a3;
-  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(ICQUIiCloudPlusFeatureCell *)self textLabel:v9.receiver];
   [v5 setText:&stru_28844FC60];
 
-  v6 = [v4 propertyForKey:@"LAST_ITEM_KEY"];
+  v6 = [specifierCopy propertyForKey:@"LAST_ITEM_KEY"];
   self->_isLastCell = v6 != 0;
 
   titleLabel = self->_titleLabel;
-  v8 = [v4 propertyForKey:*MEMORY[0x277D40170]];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D40170]];
 
   [(UILabel *)titleLabel setText:v8];
   [(ICQUIiCloudPlusFeatureCell *)self setNeedsLayout];

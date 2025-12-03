@@ -1,67 +1,67 @@
 @interface CDRequesterStoreAuthenticationSession
 - (id)_idsMessageRecipientUsernames;
-- (id)_responseForGetNotifInfoRequest:(id)a3;
-- (void)_configureRapportClient:(id)a3;
-- (void)_prepareForActivationWithCompletionHandler:(id)a3;
+- (id)_responseForGetNotifInfoRequest:(id)request;
+- (void)_configureRapportClient:(id)client;
+- (void)_prepareForActivationWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDRequesterStoreAuthenticationSession
 
-- (void)_prepareForActivationWithCompletionHandler:(id)a3
+- (void)_prepareForActivationWithCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v4 = [(CDRequesterSession *)self request];
-  v5 = [v4 authenticationRequest];
+  handlerCopy = handler;
+  request = [(CDRequesterSession *)self request];
+  authenticationRequest = [request authenticationRequest];
   authenticationRequest = self->_authenticationRequest;
-  self->_authenticationRequest = v5;
+  self->_authenticationRequest = authenticationRequest;
 
   if (!self->_authenticationRequest)
   {
     goto LABEL_4;
   }
 
-  v7 = [(CDRequesterSession *)self request];
-  v8 = [v7 account];
+  request2 = [(CDRequesterSession *)self request];
+  account = [request2 account];
   storeAccount = self->_storeAccount;
-  self->_storeAccount = v8;
+  self->_storeAccount = account;
 
   if (self->_storeAccount)
   {
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
 LABEL_4:
     v10 = CPSErrorMake();
-    (v11)[2](v11, v10);
+    (handlerCopy)[2](handlerCopy, v10);
   }
 }
 
-- (void)_configureRapportClient:(id)a3
+- (void)_configureRapportClient:(id)client
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001C938;
   v6[3] = &unk_10008A780;
   v6[4] = self;
-  v4 = a3;
-  [v4 registerRequestID:@"com.apple.CompanionAuthentication.GetAuthInfo" options:0 handler:v6];
+  clientCopy = client;
+  [clientCopy registerRequestID:@"com.apple.CompanionAuthentication.GetAuthInfo" options:0 handler:v6];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001CC54;
   v5[3] = &unk_10008A780;
   v5[4] = self;
-  [v4 registerRequestID:@"com.apple.CompanionAuthentication.DidFinishAuth" options:0 handler:v5];
+  [clientCopy registerRequestID:@"com.apple.CompanionAuthentication.DidFinishAuth" options:0 handler:v5];
 }
 
-- (id)_responseForGetNotifInfoRequest:(id)a3
+- (id)_responseForGetNotifInfoRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 storeAccountToken];
-  v6 = [v4 nonce];
+  requestCopy = request;
+  storeAccountToken = [requestCopy storeAccountToken];
+  nonce = [requestCopy nonce];
 
-  LOBYTE(self) = sub_1000643F8(self, v5, v6);
+  LOBYTE(self) = sub_1000643F8(self, storeAccountToken, nonce);
   if (self)
   {
     v7 = objc_alloc_init(CDGetNotifInfoResponse);
@@ -83,8 +83,8 @@ LABEL_4:
 
 - (id)_idsMessageRecipientUsernames
 {
-  v2 = [(ACAccount *)self->_storeAccount ams_altDSID];
-  if (!v2)
+  ams_altDSID = [(ACAccount *)self->_storeAccount ams_altDSID];
+  if (!ams_altDSID)
   {
     v3 = cps_session_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))

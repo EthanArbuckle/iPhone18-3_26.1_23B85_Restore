@@ -1,72 +1,72 @@
 @interface SFFormAutoFillFrameHandle
-+ (id)frameHandleFromSerializedData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)frameHandleFromSerializedData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSData)serializedData;
 - (NSString)description;
-- (SFFormAutoFillFrameHandle)initWithCoder:(id)a3;
-- (SFFormAutoFillFrameHandle)initWithFrameHandle:(id)a3 URL:(id)a4 serverTrust:(__SecTrust *)a5 pageID:(id)a6;
-- (SFFormAutoFillFrameHandle)initWithFrameInfo:(id)a3;
-- (SFFormAutoFillFrameHandle)initWithWebProcessPlugInFrame:(id)a3;
+- (SFFormAutoFillFrameHandle)initWithCoder:(id)coder;
+- (SFFormAutoFillFrameHandle)initWithFrameHandle:(id)handle URL:(id)l serverTrust:(__SecTrust *)trust pageID:(id)d;
+- (SFFormAutoFillFrameHandle)initWithFrameInfo:(id)info;
+- (SFFormAutoFillFrameHandle)initWithWebProcessPlugInFrame:(id)frame;
 - (WBSGlobalFrameIdentifier)webFrameIdentifier;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)serializedData;
 @end
 
 @implementation SFFormAutoFillFrameHandle
 
-- (SFFormAutoFillFrameHandle)initWithFrameHandle:(id)a3 URL:(id)a4 serverTrust:(__SecTrust *)a5 pageID:(id)a6
+- (SFFormAutoFillFrameHandle)initWithFrameHandle:(id)handle URL:(id)l serverTrust:(__SecTrust *)trust pageID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  handleCopy = handle;
+  lCopy = l;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = SFFormAutoFillFrameHandle;
   v14 = [(SFFormAutoFillFrameHandle *)&v18 init];
   v15 = v14;
   v16 = 0;
-  if (v14 && v11 && v12)
+  if (v14 && handleCopy && lCopy)
   {
-    objc_storeStrong(&v14->_frameHandle, a3);
-    objc_storeStrong(&v15->_URL, a4);
-    if (a5)
+    objc_storeStrong(&v14->_frameHandle, handle);
+    objc_storeStrong(&v15->_URL, l);
+    if (trust)
     {
-      v15->_serverTrust = CFRetain(a5);
+      v15->_serverTrust = CFRetain(trust);
     }
 
-    objc_storeStrong(&v15->_pageID, a6);
+    objc_storeStrong(&v15->_pageID, d);
     v16 = v15;
   }
 
   return v16;
 }
 
-- (SFFormAutoFillFrameHandle)initWithFrameInfo:(id)a3
+- (SFFormAutoFillFrameHandle)initWithFrameInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = SFFormAutoFillFrameHandle;
   v5 = [(SFFormAutoFillFrameHandle *)&v15 init];
   if (v5)
   {
-    v6 = [v4 _handle];
+    _handle = [infoCopy _handle];
     frameHandle = v5->_frameHandle;
-    v5->_frameHandle = v6;
+    v5->_frameHandle = _handle;
 
-    v8 = [v4 request];
-    v9 = [v8 URL];
+    request = [infoCopy request];
+    v9 = [request URL];
     URL = v5->_URL;
     v5->_URL = v9;
 
     if (objc_opt_respondsToSelector())
     {
-      v5->_serverTrust = CFRetain([v4 _serverTrust]);
+      v5->_serverTrust = CFRetain([infoCopy _serverTrust]);
     }
 
-    v11 = [v4 _documentIdentifier];
+    _documentIdentifier = [infoCopy _documentIdentifier];
     documentIdentifier = v5->_documentIdentifier;
-    v5->_documentIdentifier = v11;
+    v5->_documentIdentifier = _documentIdentifier;
 
     v13 = v5;
   }
@@ -107,10 +107,10 @@
   [(SFFormAutoFillFrameHandle *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -122,7 +122,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (WBSIsEqual() && WBSIsEqual() && WBSIsEqual())
       {
         v8 = WBSIsEqual();
@@ -161,16 +161,16 @@
   return v6;
 }
 
-- (SFFormAutoFillFrameHandle)initWithCoder:(id)a3
+- (SFFormAutoFillFrameHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SFFormAutoFillFrameHandle;
   v5 = [(SFFormAutoFillFrameHandle *)&v13 init];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverTrust"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverTrust"];
     if (v7)
     {
       v8 = SecTrustDeserialize();
@@ -187,9 +187,9 @@ LABEL_10:
       v8 = 0;
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frameHandle"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pageID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frameHandle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pageID"];
     v6 = [(SFFormAutoFillFrameHandle *)v6 initWithFrameHandle:v9 URL:v10 serverTrust:v8 pageID:v11];
 
     if (v8)
@@ -207,19 +207,19 @@ LABEL_11:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_frameHandle forKey:@"frameHandle"];
-  [v6 encodeObject:self->_URL forKey:@"URL"];
-  [v6 encodeObject:self->_pageID forKey:@"pageID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_frameHandle forKey:@"frameHandle"];
+  [coderCopy encodeObject:self->_URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_pageID forKey:@"pageID"];
   if (self->_serverTrust)
   {
     v4 = SecTrustSerialize();
     if (v4)
     {
       v5 = [MEMORY[0x1E695DEF0] dataWithData:v4];
-      [v6 encodeObject:v5 forKey:@"serverTrust"];
+      [coderCopy encodeObject:v5 forKey:@"serverTrust"];
     }
   }
 }
@@ -241,9 +241,9 @@ LABEL_11:
   return v2;
 }
 
-+ (id)frameHandleFromSerializedData:(id)a3
++ (id)frameHandleFromSerializedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -261,7 +261,7 @@ LABEL_11:
   v11 = objc_opt_class();
   v12 = [v4 setWithObjects:{v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
   v18 = 0;
-  v13 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v12 fromData:v3 error:&v18];
+  v13 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v12 fromData:dataCopy error:&v18];
   v14 = v18;
   if (v14)
   {
@@ -290,25 +290,25 @@ LABEL_10:
   return v16;
 }
 
-- (SFFormAutoFillFrameHandle)initWithWebProcessPlugInFrame:(id)a3
+- (SFFormAutoFillFrameHandle)initWithWebProcessPlugInFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [v4 _browserContextController];
-  v6 = [v5 handle];
+  frameCopy = frame;
+  _browserContextController = [frameCopy _browserContextController];
+  handle = [_browserContextController handle];
 
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "_webPageID")}];
-  v8 = [v4 handle];
-  v9 = [v4 URL];
-  v10 = [v4 _serverTrust];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(handle, "_webPageID")}];
+  handle2 = [frameCopy handle];
+  v9 = [frameCopy URL];
+  _serverTrust = [frameCopy _serverTrust];
 
-  v11 = [(SFFormAutoFillFrameHandle *)self initWithFrameHandle:v8 URL:v9 serverTrust:v10 pageID:v7];
+  v11 = [(SFFormAutoFillFrameHandle *)self initWithFrameHandle:handle2 URL:v9 serverTrust:_serverTrust pageID:v7];
   return v11;
 }
 
 - (void)serializedData
 {
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_0(&dword_1D4644000, v5, v6, "Failed to archive SFFormAutoFillFrameHandle: %{public}@", v7, v8, v9, v10, 2u);
 }
 

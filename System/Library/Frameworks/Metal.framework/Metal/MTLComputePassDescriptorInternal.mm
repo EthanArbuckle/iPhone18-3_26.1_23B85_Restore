@@ -1,8 +1,8 @@
 @interface MTLComputePassDescriptorInternal
 + (id)computePassDescriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLComputePassDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -45,8 +45,8 @@
   p_private = &self->_private;
   v8[0] = self->_private.dispatchType;
   v8[1] = [(MTLComputePassDescriptorInternal *)self substreamCount];
-  v9 = [(MTLComputePassDescriptorInternal *)self allowCommandEncoderCoalescing];
-  *(&v9 + 1) = [(MTLComputePassDescriptorInternal *)self usedForRaytracingEmulation];
+  allowCommandEncoderCoalescing = [(MTLComputePassDescriptorInternal *)self allowCommandEncoderCoalescing];
+  *(&allowCommandEncoderCoalescing + 1) = [(MTLComputePassDescriptorInternal *)self usedForRaytracingEmulation];
   v4 = 0;
   v5 = _MTLHashState(v8, 0x18uLL);
   do
@@ -64,18 +64,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class == object_getClass(a3))
+  if (Class == object_getClass(equal))
   {
-    v6 = a3 + 8;
-    if (self->_private.dispatchType == *(a3 + 1) && self->_private.substreamCount == *(a3 + 6) && self->_private.allowCommandEncoderCoalescing == *(a3 + 28) && self->_private.usedForRaytracingEmulation == *(a3 + 29))
+    v6 = equal + 8;
+    if (self->_private.dispatchType == *(equal + 1) && self->_private.substreamCount == *(equal + 6) && self->_private.allowCommandEncoderCoalescing == *(equal + 28) && self->_private.usedForRaytracingEmulation == *(equal + 29))
     {
       v7 = 0;
       p_sampleBufferAttachments = &self->_private.sampleBufferAttachments;
@@ -147,9 +147,9 @@ LABEL_27:
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = 0;
   p_private = &self->_private;
   do
@@ -157,7 +157,7 @@ LABEL_27:
     v8 = p_private->sampleBufferAttachments->_sampleDescriptors[v6];
     if (v8)
     {
-      *(*(v5 + 16) + 8 + v6 * 8) = [(MTLComputePassSampleBufferAttachmentDescriptorInternal *)v8 copyWithZone:a3];
+      *(*(v5 + 16) + 8 + v6 * 8) = [(MTLComputePassSampleBufferAttachmentDescriptorInternal *)v8 copyWithZone:zone];
     }
 
     ++v6;

@@ -1,7 +1,7 @@
 @interface PLComputeCachePolicy
 - (BOOL)_isLastSnapshotDateWithinPolicy;
 - (BOOL)snapshotRequired;
-- (PLComputeCachePolicy)initWithPolicyData:(id)a3 configuration:(id)a4;
+- (PLComputeCachePolicy)initWithPolicyData:(id)data configuration:(id)configuration;
 - (int64_t)_deriveAllowPolicy;
 - (int64_t)_deriveDenyPolicy;
 - (void)_checkAllowPolicy;
@@ -12,14 +12,14 @@
 
 - (BOOL)_isLastSnapshotDateWithinPolicy
 {
-  v3 = [(PLComputeCachePolicyDataSource *)self->_data lastSnapshotDate];
-  if (v3)
+  lastSnapshotDate = [(PLComputeCachePolicyDataSource *)self->_data lastSnapshotDate];
+  if (lastSnapshotDate)
   {
     v4 = [MEMORY[0x1E695DF00] now];
-    [v4 timeIntervalSinceDate:v3];
+    [v4 timeIntervalSinceDate:lastSnapshotDate];
     v6 = v5;
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 integerForKey:@"PLComputeCachePolicyMinSnapshotTimeInMinutes"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults integerForKey:@"PLComputeCachePolicyMinSnapshotTimeInMinutes"];
 
     if (v8 < 1)
     {
@@ -74,9 +74,9 @@
     return 5;
   }
 
-  v4 = [(PLComputeCachePolicyDataSource *)self->_data lastSnapshotDate];
+  lastSnapshotDate = [(PLComputeCachePolicyDataSource *)self->_data lastSnapshotDate];
 
-  if (!v4 && ![(PLComputeCachePolicy *)self _isAssetCountWithinPolicy])
+  if (!lastSnapshotDate && ![(PLComputeCachePolicy *)self _isAssetCountWithinPolicy])
   {
     return 3;
   }
@@ -92,12 +92,12 @@
 - (void)_checkAllowPolicy
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PLComputeCachePolicy *)self _deriveAllowPolicy];
-  self->_allowPolicy = v3;
-  if ((v3 - 1) < 2)
+  _deriveAllowPolicy = [(PLComputeCachePolicy *)self _deriveAllowPolicy];
+  self->_allowPolicy = _deriveAllowPolicy;
+  if ((_deriveAllowPolicy - 1) < 2)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = PLStringFromPLComputeCacheSnapshotAllowPolicyShort(v3);
+    v5 = PLStringFromPLComputeCacheSnapshotAllowPolicyShort(_deriveAllowPolicy);
     v6 = v5;
     allowPolicy = self->_allowPolicy;
     v8 = @"Snapshot disabled. Snapshot is current";
@@ -132,7 +132,7 @@
     goto LABEL_17;
   }
 
-  if (v3)
+  if (_deriveAllowPolicy)
   {
     return;
   }
@@ -177,12 +177,12 @@ LABEL_18:
 - (void)_checkDenyPolicy
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PLComputeCachePolicy *)self _deriveDenyPolicy];
-  self->_denyPolicy = v3;
-  if ((v3 - 1) <= 4)
+  _deriveDenyPolicy = [(PLComputeCachePolicy *)self _deriveDenyPolicy];
+  self->_denyPolicy = _deriveDenyPolicy;
+  if ((_deriveDenyPolicy - 1) <= 4)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = PLStringFromPLComputeCacheSnapshotDenyPolicyShort(v3);
+    v5 = PLStringFromPLComputeCacheSnapshotDenyPolicyShort(_deriveDenyPolicy);
     v6 = v5;
     v7 = self->_denyPolicy - 1;
     if (v7 > 4)
@@ -212,23 +212,23 @@ LABEL_18:
 
 - (BOOL)snapshotRequired
 {
-  v3 = [(PLComputeCachePolicy *)self snapshotAllowed];
-  if (v3)
+  snapshotAllowed = [(PLComputeCachePolicy *)self snapshotAllowed];
+  if (snapshotAllowed)
   {
-    LOBYTE(v3) = self->_allowPolicy != 0;
+    LOBYTE(snapshotAllowed) = self->_allowPolicy != 0;
   }
 
-  return v3;
+  return snapshotAllowed;
 }
 
-- (PLComputeCachePolicy)initWithPolicyData:(id)a3 configuration:(id)a4
+- (PLComputeCachePolicy)initWithPolicyData:(id)data configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dataCopy = data;
+  configurationCopy = configuration;
+  if (!dataCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLComputeCachePolicy.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLComputeCachePolicy.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
   v14.receiver = self;
@@ -237,8 +237,8 @@ LABEL_18:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_data, a3);
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&v10->_data, data);
+    objc_storeStrong(&v11->_configuration, configuration);
     [(PLComputeCachePolicy *)v11 _checkDenyPolicy];
     if ([(PLComputeCachePolicy *)v11 snapshotAllowed])
     {

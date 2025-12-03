@@ -1,21 +1,21 @@
 @interface SHLLibraryStore
 - (SHLLibraryCache)currentCache;
-- (SHLLibraryStore)initWithConfiguration:(id)a3;
+- (SHLLibraryStore)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SHLLibraryStore
 
-- (SHLLibraryStore)initWithConfiguration:(id)a3
+- (SHLLibraryStore)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLLibraryStore;
   v6 = [(SHLLibraryStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v8 = -[SHLCloudContainerTransformer initWithScope:]([SHLCloudContainerTransformer alloc], "initWithScope:", [v5 sessionScope]);
+    objc_storeStrong(&v6->_configuration, configuration);
+    v8 = -[SHLCloudContainerTransformer initWithScope:]([SHLCloudContainerTransformer alloc], "initWithScope:", [configurationCopy sessionScope]);
     containerTransformer = v7->_containerTransformer;
     v7->_containerTransformer = v8;
   }
@@ -31,10 +31,10 @@
     goto LABEL_4;
   }
 
-  v4 = [(SHLLibraryStore *)self configuration];
-  v5 = [v4 sessionType];
+  configuration = [(SHLLibraryStore *)self configuration];
+  sessionType = [configuration sessionType];
 
-  if (v5)
+  if (sessionType)
   {
     currentCache = self->_currentCache;
 LABEL_4:
@@ -42,17 +42,17 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(SHLLibraryStore *)self containerTransformer];
-  v9 = [v8 cloudBackedContainer];
+  containerTransformer = [(SHLLibraryStore *)self containerTransformer];
+  cloudBackedContainer = [containerTransformer cloudBackedContainer];
 
   v10 = [SHLCloudLibraryCache alloc];
-  v11 = [(SHLLibraryStore *)self configuration];
-  v12 = [v11 callingProcessIdentifier];
-  v13 = [v9 container];
-  v14 = [v13 containerIdentifier];
-  v15 = [(SHLLibraryStore *)self configuration];
-  v16 = [v15 sessionIdentifier];
-  v6 = [(SHLCloudLibraryCache *)v10 initWithCallingProcessIdentifier:v12 containerIdentifier:v14 transactionIdentifier:v16];
+  configuration2 = [(SHLLibraryStore *)self configuration];
+  callingProcessIdentifier = [configuration2 callingProcessIdentifier];
+  container = [cloudBackedContainer container];
+  containerIdentifier = [container containerIdentifier];
+  configuration3 = [(SHLLibraryStore *)self configuration];
+  sessionIdentifier = [configuration3 sessionIdentifier];
+  v6 = [(SHLCloudLibraryCache *)v10 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
 
 LABEL_5:
 

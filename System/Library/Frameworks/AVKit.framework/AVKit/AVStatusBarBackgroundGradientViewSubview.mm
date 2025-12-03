@@ -1,15 +1,15 @@
 @interface AVStatusBarBackgroundGradientViewSubview
-- (AVStatusBarBackgroundGradientViewSubview)initWithFrame:(CGRect)a3;
+- (AVStatusBarBackgroundGradientViewSubview)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AVStatusBarBackgroundGradientViewSubview
 
-- (AVStatusBarBackgroundGradientViewSubview)initWithFrame:(CGRect)a3
+- (AVStatusBarBackgroundGradientViewSubview)initWithFrame:(CGRect)frame
 {
   v28[16] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = AVStatusBarBackgroundGradientViewSubview;
-  v3 = [(AVStatusBarBackgroundGradientViewSubview *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVStatusBarBackgroundGradientViewSubview *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v25 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
@@ -46,16 +46,16 @@
     v11 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.00392156863];
     v28[15] = [v11 CGColor];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:16];
-    v13 = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
-    [v13 setColors:v12];
+    layer = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
+    [layer setColors:v12];
 
     v3 = v26;
-    v14 = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
-    [v14 setLocations:&unk_1EFF12E18];
+    layer2 = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
+    [layer2 setLocations:&unk_1EFF12E18];
 
     v15 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798C8]];
-    v16 = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
-    [v16 setCompositingFilter:v15];
+    layer3 = [(AVStatusBarBackgroundGradientViewSubview *)v26 layer];
+    [layer3 setCompositingFilter:v15];
   }
 
   return v3;

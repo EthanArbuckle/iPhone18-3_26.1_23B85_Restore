@@ -1,11 +1,11 @@
 @interface ACCFeaturePluginHIDProvider
 + (id)sharedHIDProvider;
 - (ACCFeaturePluginHIDProvider)init;
-- (BOOL)deleteHIDDescriptor:(id)a3;
-- (BOOL)processGetReportResponse:(id)a3 reportType:(unsigned __int8)a4 reportID:(unsigned __int8)a5 forUUID:(id)a6;
-- (BOOL)processInReport:(id)a3 forUUID:(id)a4;
-- (id)createHIDDescriptor:(id)a3;
-- (id)getDescriptor:(id)a3;
+- (BOOL)deleteHIDDescriptor:(id)descriptor;
+- (BOOL)processGetReportResponse:(id)response reportType:(unsigned __int8)type reportID:(unsigned __int8)d forUUID:(id)iD;
+- (BOOL)processInReport:(id)report forUUID:(id)d;
+- (id)createHIDDescriptor:(id)descriptor;
+- (id)getDescriptor:(id)descriptor;
 - (void)dealloc;
 - (void)stopHIDProvider;
 @end
@@ -63,13 +63,13 @@ uint64_t __48__ACCFeaturePluginHIDProvider_sharedHIDProvider__block_invoke()
 
 - (void)stopHIDProvider
 {
-  v3 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+  hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__ACCFeaturePluginHIDProvider_stopHIDProvider__block_invoke;
   block[3] = &unk_2789E2AE8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(hidProviderLock, block);
 
   [(ACCFeaturePluginHIDProvider *)self setHidClient:0];
   [(ACCFeaturePluginHIDProvider *)self setHidProviderLock:0];
@@ -113,25 +113,25 @@ uint64_t __46__ACCFeaturePluginHIDProvider_stopHIDProvider__block_invoke(uint64_
   return result;
 }
 
-- (id)createHIDDescriptor:(id)a3
+- (id)createHIDDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+  hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__ACCFeaturePluginHIDProvider_createHIDDescriptor___block_invoke;
   block[3] = &unk_2789E2B88;
-  v10 = v4;
-  v11 = self;
+  v10 = descriptorCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = descriptorCopy;
+  dispatch_sync(hidProviderLock, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -206,24 +206,24 @@ void __51__ACCFeaturePluginHIDProvider_createHIDDescriptor___block_invoke_4(uint
   [v6 hidDescriptor:v5 active:a3];
 }
 
-- (BOOL)deleteHIDDescriptor:(id)a3
+- (BOOL)deleteHIDDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (descriptorCopy)
   {
-    v5 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+    hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__ACCFeaturePluginHIDProvider_deleteHIDDescriptor___block_invoke;
     block[3] = &unk_2789E2B88;
     block[4] = self;
-    v9 = v4;
+    v9 = descriptorCopy;
     v10 = &v11;
-    dispatch_sync(v5, block);
+    dispatch_sync(hidProviderLock, block);
 
     v6 = *(v12 + 24);
   }
@@ -302,19 +302,19 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processInReport:(id)a3 forUUID:(id)a4
+- (BOOL)processInReport:(id)report forUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  reportCopy = report;
+  dCopy = d;
+  v8 = dCopy;
   v9 = 0;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (v6 && v7)
+  if (reportCopy && dCopy)
   {
-    v10 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+    hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __55__ACCFeaturePluginHIDProvider_processInReport_forUUID___block_invoke;
@@ -322,8 +322,8 @@ LABEL_13:
     v12[4] = self;
     v13 = v8;
     v15 = &v16;
-    v14 = v6;
-    dispatch_sync(v10, v12);
+    v14 = reportCopy;
+    dispatch_sync(hidProviderLock, v12);
 
     v9 = *(v17 + 24);
   }
@@ -374,19 +374,19 @@ void __55__ACCFeaturePluginHIDProvider_processInReport_forUUID___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processGetReportResponse:(id)a3 reportType:(unsigned __int8)a4 reportID:(unsigned __int8)a5 forUUID:(id)a6
+- (BOOL)processGetReportResponse:(id)response reportType:(unsigned __int8)type reportID:(unsigned __int8)d forUUID:(id)iD
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
+  responseCopy = response;
+  iDCopy = iD;
+  v12 = iDCopy;
   v13 = 0;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  if (v10 && v11)
+  if (responseCopy && iDCopy)
   {
-    v14 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+    hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__ACCFeaturePluginHIDProvider_processGetReportResponse_reportType_reportID_forUUID___block_invoke;
@@ -394,10 +394,10 @@ void __55__ACCFeaturePluginHIDProvider_processInReport_forUUID___block_invoke(ui
     block[4] = self;
     v17 = v12;
     v19 = &v22;
-    v20 = a4;
-    v21 = a5;
-    v18 = v10;
-    dispatch_sync(v14, block);
+    typeCopy = type;
+    dCopy = d;
+    v18 = responseCopy;
+    dispatch_sync(hidProviderLock, block);
 
     v13 = *(v23 + 24);
   }
@@ -448,26 +448,26 @@ void __84__ACCFeaturePluginHIDProvider_processGetReportResponse_reportType_repor
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDescriptor:(id)a3
+- (id)getDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  if (v4)
+  if (descriptorCopy)
   {
-    v5 = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
+    hidProviderLock = [(ACCFeaturePluginHIDProvider *)self hidProviderLock];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__ACCFeaturePluginHIDProvider_getDescriptor___block_invoke;
     block[3] = &unk_2789E2B88;
     block[4] = self;
-    v10 = v4;
+    v10 = descriptorCopy;
     v11 = &v12;
-    dispatch_sync(v5, block);
+    dispatch_sync(hidProviderLock, block);
 
     v6 = v13[5];
   }

@@ -5,11 +5,11 @@
 - (CGSize)leadingViewScale;
 - (CGSize)minimalViewScale;
 - (CGSize)trailingViewScale;
-- (SBSAElementDescriptionMutator)initWithElementDescription:(id)a3;
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3;
-- (void)setLeadingViewTransform:(CGAffineTransform *)a3;
-- (void)setMinimalViewTransform:(CGAffineTransform *)a3;
-- (void)setTrailingViewTransform:(CGAffineTransform *)a3;
+- (SBSAElementDescriptionMutator)initWithElementDescription:(id)description;
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity;
+- (void)setLeadingViewTransform:(CGAffineTransform *)transform;
+- (void)setMinimalViewTransform:(CGAffineTransform *)transform;
+- (void)setTrailingViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SBSAElementDescriptionMutator
@@ -56,36 +56,36 @@
   return result;
 }
 
-- (SBSAElementDescriptionMutator)initWithElementDescription:(id)a3
+- (SBSAElementDescriptionMutator)initWithElementDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = SBSAElementDescriptionMutator;
   v6 = [(SBSAElementDescriptionMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementDescription, a3);
+    objc_storeStrong(&v6->_elementDescription, description);
   }
 
   return v7;
 }
 
-- (void)setAssociatedSystemApertureElementIdentity:(id)a3
+- (void)setAssociatedSystemApertureElementIdentity:(id)identity
 {
-  v11 = a3;
-  v4 = [(SBSAElementDescriptionMutator *)self associatedSystemApertureElementIdentity];
+  identityCopy = identity;
+  associatedSystemApertureElementIdentity = [(SBSAElementDescriptionMutator *)self associatedSystemApertureElementIdentity];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     elementDescription = self->_elementDescription;
-    if (v11)
+    if (identityCopy)
     {
       v7 = [SBSAElementIdentification alloc];
-      v8 = [v11 clientIdentifier];
-      v9 = [v11 elementIdentifier];
-      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
+      clientIdentifier = [identityCopy clientIdentifier];
+      elementIdentifier = [identityCopy elementIdentifier];
+      v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
       [(SBSAElementDescription *)elementDescription _setAssociatedSystemApertureElementIdentity:v10];
     }
 
@@ -104,13 +104,13 @@
   return result;
 }
 
-- (void)setLeadingViewTransform:(CGAffineTransform *)a3
+- (void)setLeadingViewTransform:(CGAffineTransform *)transform
 {
   elementDescription = self->_elementDescription;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SBSAElementDescription *)elementDescription _setLeadingViewTransform:v5];
 }
 
@@ -122,13 +122,13 @@
   return result;
 }
 
-- (void)setTrailingViewTransform:(CGAffineTransform *)a3
+- (void)setTrailingViewTransform:(CGAffineTransform *)transform
 {
   elementDescription = self->_elementDescription;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SBSAElementDescription *)elementDescription _setTrailingViewTransform:v5];
 }
 
@@ -140,13 +140,13 @@
   return result;
 }
 
-- (void)setMinimalViewTransform:(CGAffineTransform *)a3
+- (void)setMinimalViewTransform:(CGAffineTransform *)transform
 {
   elementDescription = self->_elementDescription;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(SBSAElementDescription *)elementDescription _setMinimalViewTransform:v5];
 }
 

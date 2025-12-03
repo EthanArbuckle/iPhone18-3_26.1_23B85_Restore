@@ -1,20 +1,20 @@
 @interface SUUIITunesPassConfiguration
-- (SUUIITunesPassConfiguration)initWithITunesPassDictionary:(id)a3 clientContext:(id)a4;
+- (SUUIITunesPassConfiguration)initWithITunesPassDictionary:(id)dictionary clientContext:(id)context;
 - (id)learnMoreAlertView;
 @end
 
 @implementation SUUIITunesPassConfiguration
 
-- (SUUIITunesPassConfiguration)initWithITunesPassDictionary:(id)a3 clientContext:(id)a4
+- (SUUIITunesPassConfiguration)initWithITunesPassDictionary:(id)dictionary clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v73.receiver = self;
   v73.super_class = SUUIITunesPassConfiguration;
   v8 = [(SUUIITunesPassConfiguration *)&v73 init];
   if (v8)
   {
-    v9 = [v6 objectForKey:@"learnMoreAlert"];
+    v9 = [dictionaryCopy objectForKey:@"learnMoreAlert"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       }
     }
 
-    v22 = [v6 objectForKey:@"learnMore"];
+    v22 = [dictionaryCopy objectForKey:@"learnMore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       }
     }
 
-    v38 = [v6 objectForKey:@"lockup"];
+    v38 = [dictionaryCopy objectForKey:@"lockup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,9 +148,9 @@
 
     if (!v8->_dialogLearnMoreButton)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_DIALOG_BUTTON_LEARN_MORE" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_DIALOG_BUTTON_LEARN_MORE" inTable:@"Redeem"];
       }
 
       else
@@ -164,9 +164,9 @@
 
     if (!v8->_dialogMessage)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_DIALOG_MESSAGE" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_DIALOG_MESSAGE" inTable:@"Redeem"];
       }
 
       else
@@ -180,9 +180,9 @@
 
     if (!v8->_dialogNotNowButton)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_DIALOG_BUTTON_NOT_NOW" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_DIALOG_BUTTON_NOT_NOW" inTable:@"Redeem"];
       }
 
       else
@@ -196,9 +196,9 @@
 
     if (!v8->_dialogTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_DIALOG_TITLE" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_DIALOG_TITLE" inTable:@"Redeem"];
       }
 
       else
@@ -212,9 +212,9 @@
 
     if (!v8->_learnMoreAddPassButtonTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_ADD_PASS_BUTTON" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_ADD_PASS_BUTTON" inTable:@"Redeem"];
       }
 
       else
@@ -228,9 +228,9 @@
 
     if (!v8->_learnMoreDoneButtonTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_DONE_BUTTON" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_DONE_BUTTON" inTable:@"Redeem"];
       }
 
       else
@@ -244,9 +244,9 @@
 
     if (!v8->_learnMoreExplanation)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_EXPLANATION" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_EXPLANATION" inTable:@"Redeem"];
       }
 
       else
@@ -260,9 +260,9 @@
 
     if (!v8->_learnMoreTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_TITLE" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_TITLE" inTable:@"Redeem"];
       }
 
       else
@@ -276,9 +276,9 @@
 
     if (!v8->_learnMoreViewPassButtonTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_VIEW_PASS_BUTTON" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_PAGE_VIEW_PASS_BUTTON" inTable:@"Redeem"];
       }
 
       else
@@ -292,9 +292,9 @@
 
     if (!v8->_lockupDescription)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_EXPLANATION" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_EXPLANATION" inTable:@"Redeem"];
       }
 
       else
@@ -308,9 +308,9 @@
 
     if (!v8->_lockupLearnMoreLinkTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_LINK" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_LEARN_MORE_LINK" inTable:@"Redeem"];
       }
 
       else
@@ -324,9 +324,9 @@
 
     if (!v8->_lockupTitle)
     {
-      if (v7)
+      if (contextCopy)
       {
-        [v7 localizedStringForKey:@"ITUNES_PASS_TITLE" inTable:@"Redeem"];
+        [contextCopy localizedStringForKey:@"ITUNES_PASS_TITLE" inTable:@"Redeem"];
       }
 
       else

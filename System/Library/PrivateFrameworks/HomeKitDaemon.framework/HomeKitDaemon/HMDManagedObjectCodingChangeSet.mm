@@ -1,9 +1,9 @@
 @interface HMDManagedObjectCodingChangeSet
-- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)a3 context:(id)a4 changes:(id)a5;
-- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)a3 context:(id)a4 transactions:(id)a5;
+- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)model context:(id)context changes:(id)changes;
+- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)model context:(id)context transactions:(id)transactions;
 - (HMDManagedObjectCodingChangeSetSummary)summary;
-- (int64_t)changeScopeForObjectWithID:(id)a3 attributeKeys:(id *)a4 relationshipKeys:(id *)a5;
-- (void)synthesizeParentChildChanges:(void *)a3 forObject:(void *)a4 withDescription:(void *)a5 model:;
+- (int64_t)changeScopeForObjectWithID:(id)d attributeKeys:(id *)keys relationshipKeys:(id *)relationshipKeys;
+- (void)synthesizeParentChildChanges:(void *)changes forObject:(void *)object withDescription:(void *)description model:;
 @end
 
 @implementation HMDManagedObjectCodingChangeSet
@@ -22,7 +22,7 @@
     v19 = 3221225472;
     v20 = __42__HMDManagedObjectCodingChangeSet_summary__block_invoke;
     v21 = &unk_278680D68;
-    v22 = self;
+    selfCopy = self;
     v23 = v7;
     v24 = v5;
     v25 = v6;
@@ -30,7 +30,7 @@
     v10 = v5;
     v11 = v7;
     [(NSMutableDictionary *)changedObjects enumerateKeysAndObjectsUsingBlock:&v18];
-    v12 = [v11 sortedArrayUsingSelector:{sel_compare_, v18, v19, v20, v21, v22}];
+    v12 = [v11 sortedArrayUsingSelector:{sel_compare_, v18, v19, v20, v21, selfCopy}];
     v13 = [v12 componentsJoinedByString:&stru_283CF9D50];
 
     v14 = [[HMDManagedObjectCodingChangeSetSummary alloc] initWithShortDescriptionForChangeSet:v13 insertedObjectNames:v10 modifiedObjectPropertyNames:v9];
@@ -149,9 +149,9 @@ void __42__HMDManagedObjectCodingChangeSet_summary__block_invoke(uint64_t a1, vo
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)changeScopeForObjectWithID:(id)a3 attributeKeys:(id *)a4 relationshipKeys:(id *)a5
+- (int64_t)changeScopeForObjectWithID:(id)d attributeKeys:(id *)keys relationshipKeys:(id *)relationshipKeys
 {
-  v7 = [(NSMutableDictionary *)self->_changedObjects objectForKeyedSubscript:a3];
+  v7 = [(NSMutableDictionary *)self->_changedObjects objectForKeyedSubscript:d];
   v8 = v7;
   if (v7 == @"<*>")
   {
@@ -160,14 +160,14 @@ void __42__HMDManagedObjectCodingChangeSet_summary__block_invoke(uint64_t a1, vo
 
   else if (v7)
   {
-    if (a4)
+    if (keys)
     {
-      *a4 = [(HMDManagedObjectCodingChangeDetails *)v7 changedAttributeKeys];
+      *keys = [(HMDManagedObjectCodingChangeDetails *)v7 changedAttributeKeys];
     }
 
-    if (a5)
+    if (relationshipKeys)
     {
-      *a5 = [(HMDManagedObjectCodingChangeDetails *)v8 changedRelationshipKeys];
+      *relationshipKeys = [(HMDManagedObjectCodingChangeDetails *)v8 changedRelationshipKeys];
     }
 
     v9 = 2;
@@ -181,16 +181,16 @@ void __42__HMDManagedObjectCodingChangeSet_summary__block_invoke(uint64_t a1, vo
   return v9;
 }
 
-- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)a3 context:(id)a4 transactions:(id)a5
+- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)model context:(id)context transactions:(id)transactions
 {
-  v8 = a5;
+  transactionsCopy = transactions;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__HMDManagedObjectCodingChangeSet_initWithCodingModel_context_transactions___block_invoke;
   v12[3] = &unk_278680D18;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(HMDManagedObjectCodingChangeSet *)self initWithCodingModel:a3 context:a4 changes:v12];
+  v13 = transactionsCopy;
+  v9 = transactionsCopy;
+  v10 = [(HMDManagedObjectCodingChangeSet *)self initWithCodingModel:model context:context changes:v12];
 
   return v10;
 }
@@ -229,11 +229,11 @@ void __76__HMDManagedObjectCodingChangeSet_initWithCodingModel_context_transacti
   [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:v5];
 }
 
-- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)a3 context:(id)a4 changes:(id)a5
+- (HMDManagedObjectCodingChangeSet)initWithCodingModel:(id)model context:(id)context changes:(id)changes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  contextCopy = context;
+  changesCopy = changes;
   v23.receiver = self;
   v23.super_class = HMDManagedObjectCodingChangeSet;
   v11 = [(HMDManagedObjectCodingChangeSet *)&v23 init];
@@ -244,13 +244,13 @@ void __76__HMDManagedObjectCodingChangeSet_initWithCodingModel_context_transacti
     v18[1] = 3221225472;
     v18[2] = __71__HMDManagedObjectCodingChangeSet_initWithCodingModel_context_changes___block_invoke;
     v18[3] = &unk_278680CA0;
-    v19 = v8;
+    v19 = modelCopy;
     v13 = v12;
     v20 = v13;
     v14 = v11;
     v21 = v14;
-    v22 = v9;
-    v10[2](v10, v18);
+    v22 = contextCopy;
+    changesCopy[2](changesCopy, v18);
     changedObjects = v14->_changedObjects;
     v14->_changedObjects = v13;
     v16 = v13;
@@ -343,49 +343,49 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)synthesizeParentChildChanges:(void *)a3 forObject:(void *)a4 withDescription:(void *)a5 model:
+- (void)synthesizeParentChildChanges:(void *)changes forObject:(void *)object withDescription:(void *)description model:
 {
   v38 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  v28 = a1;
-  if (a1)
+  changesCopy = changes;
+  descriptionCopy = description;
+  selfCopy = self;
+  if (self)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = [a4 parentRelationships];
-    v32 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    parentRelationships = [object parentRelationships];
+    v32 = [parentRelationships countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v32)
     {
-      v30 = v10;
+      v30 = changesCopy;
       v31 = *v34;
-      v29 = v12;
+      v29 = parentRelationships;
       do
       {
         for (i = 0; i != v32; ++i)
         {
           if (*v34 != v31)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(parentRelationships);
           }
 
           v14 = *(*(&v33 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [v10 valueForKey:v15];
+          name = [v14 name];
+          v16 = [changesCopy valueForKey:name];
 
           if (v16)
           {
-            v17 = v11;
-            v18 = [v11 descriptionForManagedObject:v16];
-            v19 = [v14 inverseRelationship];
-            v20 = [v18 descriptionForRelationship:v19];
-            v21 = [v20 codingKey];
+            v17 = descriptionCopy;
+            v18 = [descriptionCopy descriptionForManagedObject:v16];
+            inverseRelationship = [v14 inverseRelationship];
+            v20 = [v18 descriptionForRelationship:inverseRelationship];
+            codingKey = [v20 codingKey];
 
-            v22 = [v16 objectID];
-            v23 = [v9 objectForKeyedSubscript:v22];
+            objectID = [v16 objectID];
+            v23 = [v9 objectForKeyedSubscript:objectID];
             if (v23 == @"<*>")
             {
               v24 = @"<*>";
@@ -396,33 +396,33 @@ LABEL_16:
               v24 = v23;
               if (v23)
               {
-                [(HMDManagedObjectCodingChangeDetails *)v23 addChangedRelationshipCodingKey:v21];
+                [(HMDManagedObjectCodingChangeDetails *)v23 addChangedRelationshipCodingKey:codingKey];
               }
 
               else
               {
                 v24 = objc_alloc_init(HMDManagedObjectCodingChangeDetails);
-                [v9 setObject:v24 forKeyedSubscript:v22];
-                [(HMDManagedObjectCodingChangeDetails *)v24 addChangedRelationshipCodingKey:v21];
+                [v9 setObject:v24 forKeyedSubscript:objectID];
+                [(HMDManagedObjectCodingChangeDetails *)v24 addChangedRelationshipCodingKey:codingKey];
                 [v17 rootDescription];
                 v26 = v25 = v9;
 
                 if (v18 != v26)
                 {
-                  [(HMDManagedObjectCodingChangeSet *)v28 synthesizeParentChildChanges:v25 forObject:v16 withDescription:v18 model:v17];
+                  [(HMDManagedObjectCodingChangeSet *)selfCopy synthesizeParentChildChanges:v25 forObject:v16 withDescription:v18 model:v17];
                 }
 
                 v9 = v25;
-                v12 = v29;
-                v10 = v30;
+                parentRelationships = v29;
+                changesCopy = v30;
               }
             }
 
-            v11 = v17;
+            descriptionCopy = v17;
           }
         }
 
-        v32 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v32 = [parentRelationships countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v32);

@@ -1,21 +1,21 @@
 @interface MRPowerLogger
 + (MRPowerLogger)sharedLogger;
-- (MRPowerLogger)initWithQueue:(id)a3;
-- (void)logEvent:(id)a3 withInfo:(id)a4;
+- (MRPowerLogger)initWithQueue:(id)queue;
+- (void)logEvent:(id)event withInfo:(id)info;
 @end
 
 @implementation MRPowerLogger
 
-- (MRPowerLogger)initWithQueue:(id)a3
+- (MRPowerLogger)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = MRPowerLogger;
   v6 = [(MRPowerLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -43,20 +43,20 @@ void __29__MRPowerLogger_sharedLogger__block_invoke()
   sharedLogger___logger = v2;
 }
 
-- (void)logEvent:(id)a3 withInfo:(id)a4
+- (void)logEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRPowerLogger *)self queue];
+  eventCopy = event;
+  infoCopy = info;
+  queue = [(MRPowerLogger *)self queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__MRPowerLogger_logEvent_withInfo___block_invoke;
   v11[3] = &unk_1E769A4A0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = eventCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = eventCopy;
+  dispatch_async(queue, v11);
 }
 
 uint64_t __35__MRPowerLogger_logEvent_withInfo___block_invoke(uint64_t a1)

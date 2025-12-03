@@ -1,29 +1,29 @@
 @interface CPLBeforeUploadCheckItem
-- (BOOL)_addRelatedRecordWithScopedIdentifierToAdditionalRecords:(id)a3 provider:(id)a4 error:(id *)a5;
-- (BOOL)_forAdditionalRecordRule:(id)a3 check:(void *)a4 error:(id *)a5;
-- (BOOL)_forRule:(id)a3 check:(void *)a4 error:(id *)a5;
-- (BOOL)_serverResourcesMatches:(id)a3;
-- (BOOL)checkBeforeUploadWithError:(id *)a3;
-- (BOOL)dropGeneratingDerivativesIfPossibleWithRecordOnServer:(id)a3 error:(id *)a4;
+- (BOOL)_addRelatedRecordWithScopedIdentifierToAdditionalRecords:(id)records provider:(id)provider error:(id *)error;
+- (BOOL)_forAdditionalRecordRule:(id)rule check:(void *)check error:(id *)error;
+- (BOOL)_forRule:(id)rule check:(void *)check error:(id *)error;
+- (BOOL)_serverResourcesMatches:(id)matches;
+- (BOOL)checkBeforeUploadWithError:(id *)error;
+- (BOOL)dropGeneratingDerivativesIfPossibleWithRecordOnServer:(id)server error:(id *)error;
 - (BOOL)isTrashedOrDeletedAsset;
 - (BOOL)needsToGenerateDerivatives;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)rejectChangeWithReason:(id)a3 error:(id *)a4;
-- (BOOL)requestFetchForRule:(id)a3 error:(id *)a4;
-- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)a3 forRule:(id)a4 error:(id *)a5;
-- (CPLBeforeUploadCheckItem)initWithChange:(id)a3 checkItems:(id)a4;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)rejectChangeWithReason:(id)reason error:(id *)error;
+- (BOOL)requestFetchForRule:(id)rule error:(id *)error;
+- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)identifier forRule:(id)rule error:(id *)error;
+- (CPLBeforeUploadCheckItem)initWithChange:(id)change checkItems:(id)items;
 - (CPLBeforeUploadCheckItems)items;
 - (CPLFingerprintContext)fingerprintContext;
 - (CPLRecordTarget)target;
 - (id)description;
 - (unint64_t)estimatedResourceUploadSize;
-- (void)_bumpPushRepositoryPriority:(unint64_t)a3 reason:(id)a4;
-- (void)_dropChangeWithReason:(id)a3;
-- (void)dropChangeWithReason:(id)a3;
-- (void)dropResourceChangeWithReason:(id)a3;
-- (void)dropSharingChangeWithReason:(id)a3;
-- (void)reinjectChangeWithReason:(id)a3;
-- (void)updatePushRepositoryPriorityWithRecordOnServer:(id)a3;
+- (void)_bumpPushRepositoryPriority:(unint64_t)priority reason:(id)reason;
+- (void)_dropChangeWithReason:(id)reason;
+- (void)dropChangeWithReason:(id)reason;
+- (void)dropResourceChangeWithReason:(id)reason;
+- (void)dropSharingChangeWithReason:(id)reason;
+- (void)reinjectChangeWithReason:(id)reason;
+- (void)updatePushRepositoryPriorityWithRecordOnServer:(id)server;
 @end
 
 @implementation CPLBeforeUploadCheckItem
@@ -64,15 +64,15 @@
 
   if ([(NSMutableSet *)self->_rulesForRecordFetch count])
   {
-    v10 = [(NSMutableSet *)self->_rulesForRecordFetch allObjects];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_rulesForRecordFetch allObjects];
+    v11 = [allObjects componentsJoinedByString:{@", "}];
     [v5 appendFormat:@" [fetch: %@]", v11];
   }
 
   if ([(NSMutableDictionary *)self->_rulesForOtherRecordFetches count])
   {
-    v12 = [(NSMutableDictionary *)self->_rulesForOtherRecordFetches allKeys];
-    v13 = [v12 componentsJoinedByString:{@", "}];
+    allKeys = [(NSMutableDictionary *)self->_rulesForOtherRecordFetches allKeys];
+    v13 = [allKeys componentsJoinedByString:{@", "}];
     [v5 appendFormat:@" [other: %@]", v13];
   }
 
@@ -97,25 +97,25 @@
 - (CPLRecordTarget)target
 {
   WeakRetained = objc_loadWeakRetained(&self->_items);
-  v4 = [WeakRetained targetMapping];
-  v5 = [v4 targetForRecordWithScopedIdentifier:self->_scopedIdentifier];
+  targetMapping = [WeakRetained targetMapping];
+  v5 = [targetMapping targetForRecordWithScopedIdentifier:self->_scopedIdentifier];
 
   if (!v5)
   {
     v6 = objc_loadWeakRetained(&self->_items);
-    v7 = [v6 sharingScopeIdentifier];
-    if (v7)
+    sharingScopeIdentifier = [v6 sharingScopeIdentifier];
+    if (sharingScopeIdentifier)
     {
-      v8 = v7;
-      v9 = [(objc_class *)self->_changeClass supportsSharing];
+      v8 = sharingScopeIdentifier;
+      supportsSharing = [(objc_class *)self->_changeClass supportsSharing];
 
-      if (v9)
+      if (supportsSharing)
       {
         v10 = [CPLScopedIdentifier alloc];
         v11 = objc_loadWeakRetained(&self->_items);
-        v12 = [v11 sharingScopeIdentifier];
-        v13 = [(CPLScopedIdentifier *)self->_scopedIdentifier identifier];
-        v14 = [(CPLScopedIdentifier *)v10 initWithScopeIdentifier:v12 identifier:v13];
+        sharingScopeIdentifier2 = [v11 sharingScopeIdentifier];
+        identifier = [(CPLScopedIdentifier *)self->_scopedIdentifier identifier];
+        v14 = [(CPLScopedIdentifier *)v10 initWithScopeIdentifier:sharingScopeIdentifier2 identifier:identifier];
 
         v5 = [[CPLRecordTarget alloc] initWithScopedIdentifier:self->_scopedIdentifier otherScopedIdentifier:v14 targetState:0];
         goto LABEL_7;
@@ -134,10 +134,10 @@ LABEL_7:
   return v5;
 }
 
-- (void)updatePushRepositoryPriorityWithRecordOnServer:(id)a3
+- (void)updatePushRepositoryPriorityWithRecordOnServer:(id)server
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  serverCopy = server;
   change = self->_change;
   if (change)
   {
@@ -158,11 +158,11 @@ LABEL_7:
         }
       }
 
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
       v30 = self->_change;
       v31 = NSStringFromSelector(a2);
-      [v28 handleFailureInMethod:a2 object:self file:v29 lineNumber:1081 description:{@"%@ should not participate in %@", v30, v31}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v29 lineNumber:1081 description:{@"%@ should not participate in %@", v30, v31}];
 
       abort();
     }
@@ -184,9 +184,9 @@ LABEL_7:
     v32[4] = self;
     v7 = MEMORY[0x1E128EBA0](v32);
     WeakRetained = objc_loadWeakRetained(&self->_items);
-    v9 = [WeakRetained sharingScopeIdentifier];
+    sharingScopeIdentifier = [WeakRetained sharingScopeIdentifier];
 
-    if (!v9)
+    if (!sharingScopeIdentifier)
     {
 LABEL_20:
       if ((v34[3] & 1) == 0)
@@ -213,8 +213,8 @@ LABEL_30:
 
         if ([(CPLRecordChange *)self->_change hasChangeType:8])
         {
-          v21 = [(CPLRecordChange *)self->_change resources];
-          v22 = [v21 count] == 0;
+          resources = [(CPLRecordChange *)self->_change resources];
+          v22 = [resources count] == 0;
 
           if (!v22)
           {
@@ -225,7 +225,7 @@ LABEL_30:
           }
         }
 
-        if (-[CPLRecordChange hasChangeType:](self->_change, "hasChangeType:", 2) && !-[CPLRecordChange inTrash](self->_change, "inTrash") && [v5 inTrash])
+        if (-[CPLRecordChange hasChangeType:](self->_change, "hasChangeType:", 2) && !-[CPLRecordChange inTrash](self->_change, "inTrash") && [serverCopy inTrash])
         {
           v18 = *(*&buf[8] + 24);
           v19 = @"removing asset from recently deleted in scope";
@@ -241,13 +241,13 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v10 = [(CPLBeforeUploadCheckItem *)self target];
+    target = [(CPLBeforeUploadCheckItem *)self target];
     if (![(objc_class *)self->_changeClass supportsSharingScopedIdentifier]|| ![(CPLRecordChange *)self->_change hasChangeType:64])
     {
-      v17 = [v10 targetState];
-      if (v17 <= 3)
+      targetState = [target targetState];
+      if (targetState <= 3)
       {
-        *(*&buf[8] + 24) = 0x1010000u >> (8 * v17);
+        *(*&buf[8] + 24) = 0x1010000u >> (8 * targetState);
       }
 
       goto LABEL_19;
@@ -255,12 +255,12 @@ LABEL_34:
 
     v11 = self->_change;
     v12 = objc_loadWeakRetained(&self->_items);
-    v13 = [v12 sharingScopeIdentifier];
-    v14 = [(CPLRecordChange *)v11 isSharedInScopeWithIdentifier:v13];
+    sharingScopeIdentifier2 = [v12 sharingScopeIdentifier];
+    v14 = [(CPLRecordChange *)v11 isSharedInScopeWithIdentifier:sharingScopeIdentifier2];
     *(*&buf[8] + 24) = v14;
 
-    v15 = [v10 targetState];
-    if ((v15 - 2) < 2)
+    targetState2 = [target targetState];
+    if ((targetState2 - 2) < 2)
     {
       if (*(*&buf[8] + 24))
       {
@@ -272,9 +272,9 @@ LABEL_19:
       v16 = @"moving record back from sharing scope";
     }
 
-    else if (v15)
+    else if (targetState2)
     {
-      if (v15 != 1 || (*(*&buf[8] + 24) & 1) == 0)
+      if (targetState2 != 1 || (*(*&buf[8] + 24) & 1) == 0)
       {
         goto LABEL_19;
       }
@@ -319,11 +319,11 @@ uint64_t __75__CPLBeforeUploadCheckItem_updatePushRepositoryPriorityWithRecordOn
   return [v3 _bumpPushRepositoryPriority:v4 reason:a2];
 }
 
-- (void)_bumpPushRepositoryPriority:(unint64_t)a3 reason:(id)a4
+- (void)_bumpPushRepositoryPriority:(unint64_t)priority reason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_change && self->_pushRepositoryPriority < a3)
+  reasonCopy = reason;
+  if (self->_change && self->_pushRepositoryPriority < priority)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -335,16 +335,16 @@ uint64_t __75__CPLBeforeUploadCheckItem_updatePushRepositoryPriorityWithRecordOn
         v12 = 134218754;
         v13 = pushRepositoryPriority;
         v14 = 2048;
-        v15 = a3;
+        priorityCopy = priority;
         v16 = 2112;
         v17 = change;
         v18 = 2112;
-        v19 = v6;
+        v19 = reasonCopy;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Moving priority from %lu to %lu for %@ - reason: %@", &v12, 0x2Au);
       }
     }
 
-    self->_pushRepositoryPriority = a3;
+    self->_pushRepositoryPriority = priority;
     [(CPLBeforeUploadCheckItem *)self _dropChangeWithReason:@"bumping push priority of change"];
     WeakRetained = objc_loadWeakRetained(&self->_items);
     [WeakRetained itemShouldBeReinjectedInPushRepository:self];
@@ -353,19 +353,19 @@ uint64_t __75__CPLBeforeUploadCheckItem_updatePushRepositoryPriorityWithRecordOn
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)dropGeneratingDerivativesIfPossibleWithRecordOnServer:(id)a3 error:(id *)a4
+- (BOOL)dropGeneratingDerivativesIfPossibleWithRecordOnServer:(id)server error:(id *)error
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  serverCopy = server;
   if (![(CPLRecordChange *)self->_change isAssetChange])
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v44 = v5;
-    v19 = [v5 resources];
-    v20 = [v19 countByEnumeratingWithState:&v47 objects:v55 count:16];
+    v44 = serverCopy;
+    resources = [serverCopy resources];
+    v20 = [resources countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (!v20)
     {
       v46 = 0;
@@ -377,7 +377,7 @@ LABEL_54:
         self->_needsToGenerateImageDerivatives = 0;
       }
 
-      v5 = v44;
+      serverCopy = v44;
       if (self->_needsToGenerateVideoComplementDerivatives && ([(CPLResourceTypeSet *)self->_resourcesToGenerateVideoComplementDerivatives isEmpty]& v22) == 1)
       {
         self->_needsToGenerateVideoComplementDerivatives = 0;
@@ -396,26 +396,26 @@ LABEL_26:
     {
       if (*v48 != v23)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(resources);
       }
 
       v25 = *(*(&v47 + 1) + 8 * v24);
-      v26 = [v25 resourceType];
-      v27 = v26;
-      if (v26 <= 0x1C)
+      resourceType = [v25 resourceType];
+      v27 = resourceType;
+      if (resourceType <= 0x1C)
       {
-        if (((1 << v26) & 0x102000C0) != 0)
+        if (((1 << resourceType) & 0x102000C0) != 0)
         {
           v22 = 1;
           goto LABEL_46;
         }
 
-        if (((1 << v26) & 0x30000) != 0)
+        if (((1 << resourceType) & 0x30000) != 0)
         {
           goto LABEL_41;
         }
 
-        if (v26 == 18)
+        if (resourceType == 18)
         {
           if (!self->_needsToGenerateVideoComplementDerivatives || ![(CPLResourceTypeSet *)self->_resourcesToGenerateVideoComplementDerivatives containsResourceType:18])
           {
@@ -433,12 +433,12 @@ LABEL_26:
         }
       }
 
-      if (v26 - 3 >= 3)
+      if (resourceType - 3 >= 3)
       {
-        if (v26 - 1 < 2)
+        if (resourceType - 1 < 2)
         {
 LABEL_41:
-          if (!self->_needsToGenerateImageDerivatives || ![(CPLResourceTypeSet *)self->_resourcesToGenerateImageDerivatives containsResourceType:v26])
+          if (!self->_needsToGenerateImageDerivatives || ![(CPLResourceTypeSet *)self->_resourcesToGenerateImageDerivatives containsResourceType:resourceType])
           {
             goto LABEL_46;
           }
@@ -463,7 +463,7 @@ LABEL_45:
 LABEL_46:
       if (v21 == ++v24)
       {
-        v21 = [v19 countByEnumeratingWithState:&v47 objects:v55 count:16];
+        v21 = [resources countByEnumeratingWithState:&v47 objects:v55 count:16];
         if (!v21)
         {
           goto LABEL_54;
@@ -474,13 +474,13 @@ LABEL_46:
     }
   }
 
-  v6 = [(CPLRecordChange *)self->_change adjustments];
-  v7 = v5;
-  v8 = [v7 adjustments];
-  v9 = v8;
-  if (!v6)
+  adjustments = [(CPLRecordChange *)self->_change adjustments];
+  v7 = serverCopy;
+  adjustments2 = [v7 adjustments];
+  v9 = adjustments2;
+  if (!adjustments)
   {
-    if (v8)
+    if (adjustments2)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -526,18 +526,18 @@ LABEL_64:
     goto LABEL_72;
   }
 
-  if (v8 && [v6 isEqual:v8])
+  if (adjustments2 && [adjustments isEqual:adjustments2])
   {
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v10 = [v7 resources];
-    v11 = [v10 countByEnumeratingWithState:&v51 objects:v60 count:16];
+    resources2 = [v7 resources];
+    v11 = [resources2 countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v11)
     {
       v12 = v11;
-      v41 = v6;
+      v41 = adjustments;
       v42 = v9;
       v43 = v7;
       v13 = 0;
@@ -549,14 +549,14 @@ LABEL_64:
         {
           if (*v52 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(resources2);
           }
 
           v16 = *(*(&v51 + 1) + 8 * i);
-          v17 = [v16 resourceType];
-          if (v17 <= 0x1C)
+          resourceType2 = [v16 resourceType];
+          if (resourceType2 <= 0x1C)
           {
-            if (((1 << v17) & 0x210E000) != 0)
+            if (((1 << resourceType2) & 0x210E000) != 0)
             {
               if ([(CPLBeforeUploadCheckItem *)self _serverResourcesMatches:v16])
               {
@@ -568,19 +568,19 @@ LABEL_64:
               }
             }
 
-            else if (((1 << v17) & 0x102000C0) != 0)
+            else if (((1 << resourceType2) & 0x102000C0) != 0)
             {
               v13 = 1;
             }
 
-            else if (((1 << v17) & 0x38) != 0)
+            else if (((1 << resourceType2) & 0x38) != 0)
             {
               v45 = 1;
             }
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v51 objects:v60 count:16];
+        v12 = [resources2 countByEnumeratingWithState:&v51 objects:v60 count:16];
       }
 
       while (v12);
@@ -617,20 +617,20 @@ LABEL_72:
   return 1;
 }
 
-- (BOOL)_serverResourcesMatches:(id)a3
+- (BOOL)_serverResourcesMatches:(id)matches
 {
-  v4 = a3;
-  v5 = -[CPLRecordChange resourceForType:](self->_change, "resourceForType:", [v4 resourceType]);
+  matchesCopy = matches;
+  v5 = -[CPLRecordChange resourceForType:](self->_change, "resourceForType:", [matchesCopy resourceType]);
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 identity];
-    v8 = [v7 fingerPrint];
+    identity = [v5 identity];
+    fingerPrint = [identity fingerPrint];
 
-    v9 = [v4 identity];
-    v10 = [v9 fingerPrint];
+    identity2 = [matchesCopy identity];
+    fingerPrint2 = [identity2 fingerPrint];
 
-    v11 = v8 && v10 && ([v8 isEqual:v10] & 1) != 0 || (v8 | v10) == 0;
+    v11 = fingerPrint && fingerPrint2 && ([fingerPrint isEqual:fingerPrint2] & 1) != 0 || (fingerPrint | fingerPrint2) == 0;
   }
 
   else
@@ -641,10 +641,10 @@ LABEL_72:
   return v11;
 }
 
-- (BOOL)rejectChangeWithReason:(id)a3 error:(id *)a4
+- (BOOL)rejectChangeWithReason:(id)reason error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  reasonCopy = reason;
   if (!self->_change)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -659,46 +659,46 @@ LABEL_72:
       }
     }
 
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
-    [v16 handleFailureInMethod:a2 object:self file:v17 lineNumber:871 description:{@"Trying to reject already rejected or dropped %@", self->_change}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v17 lineNumber:871 description:{@"Trying to reject already rejected or dropped %@", self->_change}];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = reasonCopy;
   [(CPLBeforeUploadCheckItem *)self _dropChangeWithReason:@"rejected"];
   v18 = @"CPLErrorRejectedReasonKey";
   v19 = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v10 = [CPLErrors cplErrorWithCode:18 underlyingError:0 userInfo:v9 description:@"%@", v8];
 
-  if (a4)
+  if (error)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v12 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)reinjectChangeWithReason:(id)a3
+- (void)reinjectChangeWithReason:(id)reason
 {
   if (self->_change)
   {
-    v5 = a3;
+    reasonCopy = reason;
     WeakRetained = objc_loadWeakRetained(&self->_items);
     [WeakRetained itemShouldBeReinjectedInPushRepository:self];
 
-    [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:v5];
+    [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:reasonCopy];
   }
 }
 
-- (void)dropSharingChangeWithReason:(id)a3
+- (void)dropSharingChangeWithReason:(id)reason
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   change = self->_change;
   if (change && [(CPLRecordChange *)change hasChangeType:64])
   {
@@ -716,22 +716,22 @@ LABEL_72:
         }
       }
 
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
-      [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:847 description:{@"Trying to drop sharing change for unsupported %@", self->_change}];
+      [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:847 description:{@"Trying to drop sharing change for unsupported %@", self->_change}];
 
       abort();
     }
 
-    v7 = [(CPLRecordChange *)self->_change changeType];
-    if (!v7)
+    changeType = [(CPLRecordChange *)self->_change changeType];
+    if (!changeType)
     {
-      v7 = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
+      changeType = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
     }
 
-    if (v7 == 64)
+    if (changeType == 64)
     {
-      [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:v5];
+      [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:reasonCopy];
     }
 
     else
@@ -745,22 +745,22 @@ LABEL_72:
           *buf = 138412546;
           v16 = v9;
           v17 = 2112;
-          v18 = v5;
+          v18 = reasonCopy;
           _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Dropping sharing change for %@ - reason: %@", buf, 0x16u);
         }
       }
 
-      [(CPLRecordChange *)self->_change setChangeType:v7 & 0xFFFFFFFFFFFFFFBFLL];
+      [(CPLRecordChange *)self->_change setChangeType:changeType & 0xFFFFFFFFFFFFFFBFLL];
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dropChangeWithReason:(id)a3
+- (void)dropChangeWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_change)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -772,21 +772,21 @@ LABEL_72:
         v8 = 138412546;
         v9 = change;
         v10 = 2112;
-        v11 = v4;
+        v11 = reasonCopy;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "Dropping %@ - reason: %@", &v8, 0x16u);
       }
     }
 
-    [(CPLBeforeUploadCheckItem *)self _dropChangeWithReason:v4];
+    [(CPLBeforeUploadCheckItem *)self _dropChangeWithReason:reasonCopy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dropChangeWithReason:(id)a3
+- (void)_dropChangeWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   if (!self->_change)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -801,15 +801,15 @@ LABEL_72:
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLBeforeUploadCheckItems.m"];
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:828 description:{@"Trying to drop an already dropped %@", self->_changeClass}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:828 description:{@"Trying to drop an already dropped %@", self->_changeClass}];
 
     abort();
   }
 
-  v14 = v6;
-  objc_storeStrong(&self->_dropReason, a3);
+  v14 = reasonCopy;
+  objc_storeStrong(&self->_dropReason, reason);
   *&self->_needsToGenerateImageDerivatives = 0;
   if ([(CPLRecordChange *)self->_change supportsResources]&& [(CPLRecordChange *)self->_change hasChangeType:8])
   {
@@ -823,27 +823,27 @@ LABEL_72:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)dropResourceChangeWithReason:(id)a3
+- (void)dropResourceChangeWithReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   change = self->_change;
   if (change && [(CPLRecordChange *)change supportsResources]&& [(CPLRecordChange *)self->_change hasChangeType:8])
   {
-    v7 = [(CPLRecordChange *)self->_change changeType];
-    if (!v7)
+    changeType = [(CPLRecordChange *)self->_change changeType];
+    if (!changeType)
     {
-      v7 = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
+      changeType = [(CPLRecordChange *)self->_change fullChangeTypeForFullRecord];
     }
 
-    if (v7 == 8)
+    if (changeType == 8)
     {
-      [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:v5];
+      [(CPLBeforeUploadCheckItem *)self dropChangeWithReason:reasonCopy];
     }
 
     else
     {
-      objc_storeStrong(&self->_dropReason, a3);
+      objc_storeStrong(&self->_dropReason, reason);
       if ((_CPLSilentLogging & 1) == 0)
       {
         v8 = __CPLCheckOSLogDomain();
@@ -853,12 +853,12 @@ LABEL_72:
           v12 = 138412546;
           v13 = v9;
           v14 = 2112;
-          v15 = v5;
+          v15 = reasonCopy;
           _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Dropping resource change for %@ - reason: %@", &v12, 0x16u);
         }
       }
 
-      [(CPLRecordChange *)self->_change setChangeType:v7 & 0xFFFFFFFFFFFFFFF7];
+      [(CPLRecordChange *)self->_change setChangeType:changeType & 0xFFFFFFFFFFFFFFF7];
       *&self->_needsToGenerateImageDerivatives = 0;
       WeakRetained = objc_loadWeakRetained(&self->_items);
       [WeakRetained itemWillDropResourceChange:self];
@@ -868,14 +868,14 @@ LABEL_72:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)a3 forRule:(id)a4 error:(id *)a5
+- (BOOL)requestFetchOfRecordWithScopedIdentifier:(id)identifier forRule:(id)rule error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9 != @"CheckRuleDisabled")
+  identifierCopy = identifier;
+  ruleCopy = rule;
+  if (ruleCopy != @"CheckRuleDisabled")
   {
     WeakRetained = objc_loadWeakRetained(&self->_items);
-    v11 = [WeakRetained requestFetchOfRecordWithScopedIdentifier:v8 forItem:self rule:v9 error:a5];
+    v11 = [WeakRetained requestFetchOfRecordWithScopedIdentifier:identifierCopy forItem:self rule:ruleCopy error:error];
 
     if (!v11)
     {
@@ -893,7 +893,7 @@ LABEL_72:
       rulesForOtherRecordFetches = self->_rulesForOtherRecordFetches;
     }
 
-    [(NSMutableDictionary *)rulesForOtherRecordFetches setObject:v8 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)rulesForOtherRecordFetches setObject:identifierCopy forKeyedSubscript:ruleCopy];
   }
 
   v15 = 1;
@@ -902,10 +902,10 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)requestFetchForRule:(id)a3 error:(id *)a4
+- (BOOL)requestFetchForRule:(id)rule error:(id *)error
 {
-  v6 = a3;
-  if (v6 == @"CheckRuleDisabled")
+  ruleCopy = rule;
+  if (ruleCopy == @"CheckRuleDisabled")
   {
     v8 = 1;
   }
@@ -925,19 +925,19 @@ LABEL_8:
       self->_rulesForRecordFetch = v9;
 
       WeakRetained = objc_loadWeakRetained(&self->_items);
-      v12 = [(CPLRecordChange *)self->_change scopedIdentifier];
-      v8 = [WeakRetained requestFetchOfRecordWithScopedIdentifier:v12 forItem:self rule:v6 error:a4];
+      scopedIdentifier = [(CPLRecordChange *)self->_change scopedIdentifier];
+      v8 = [WeakRetained requestFetchOfRecordWithScopedIdentifier:scopedIdentifier forItem:self rule:ruleCopy error:error];
 
       rulesForRecordFetch = self->_rulesForRecordFetch;
     }
 
-    [(NSMutableSet *)rulesForRecordFetch addObject:v6];
+    [(NSMutableSet *)rulesForRecordFetch addObject:ruleCopy];
   }
 
   return v8;
 }
 
-- (BOOL)checkBeforeUploadWithError:(id *)a3
+- (BOOL)checkBeforeUploadWithError:(id *)error
 {
   if (![(CPLBeforeUploadCheckItem *)self hasRequestedRecordFetch])
   {
@@ -1098,7 +1098,7 @@ LABEL_23:
 
 LABEL_31:
     v22 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1110,7 +1110,7 @@ LABEL_28:
   v22 = 0;
 LABEL_29:
   v10 = v12;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_24;
   }
@@ -1120,7 +1120,7 @@ LABEL_32:
   {
     v26 = v10;
     v22 = 0;
-    *a3 = v10;
+    *error = v10;
   }
 
 LABEL_24:
@@ -1128,20 +1128,20 @@ LABEL_24:
   return v22;
 }
 
-- (BOOL)_forAdditionalRecordRule:(id)a3 check:(void *)a4 error:(id *)a5
+- (BOOL)_forAdditionalRecordRule:(id)rule check:(void *)check error:(id *)error
 {
   if (!self->_change)
   {
     return 1;
   }
 
-  v8 = [(NSMutableDictionary *)self->_rulesForOtherRecordFetches objectForKey:a3];
+  v8 = [(NSMutableDictionary *)self->_rulesForOtherRecordFetches objectForKey:rule];
   if (v8)
   {
     WeakRetained = objc_loadWeakRetained(&self->_items);
     v10 = [WeakRetained recordFromTransportWithScopedIdentifier:v8];
 
-    v11 = (a4)(self, v10, a5);
+    v11 = (check)(self, v10, error);
   }
 
   else
@@ -1152,9 +1152,9 @@ LABEL_24:
   return v11;
 }
 
-- (BOOL)_forRule:(id)a3 check:(void *)a4 error:(id *)a5
+- (BOOL)_forRule:(id)rule check:(void *)check error:(id *)error
 {
-  if (![(NSMutableSet *)self->_rulesForRecordFetch containsObject:a3])
+  if (![(NSMutableSet *)self->_rulesForRecordFetch containsObject:rule])
   {
     return 1;
   }
@@ -1178,25 +1178,25 @@ LABEL_24:
     self->_recordExistsOnServer = recordOnServer != 0;
   }
 
-  return (a4)(self, recordExistsOnServer, recordOnServer, a5);
+  return (check)(self, recordExistsOnServer, recordOnServer, error);
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v139 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_items);
-  v6 = [WeakRetained provider];
+  provider = [WeakRetained provider];
 
-  v7 = [(CPLRecordChange *)self->_change scopedIdentifier];
+  scopedIdentifier = [(CPLRecordChange *)self->_change scopedIdentifier];
   v131 = 0;
-  v8 = [v6 willNeedToAccessRecordWithScopedIdentifier:v7 error:&v131];
+  v8 = [provider willNeedToAccessRecordWithScopedIdentifier:scopedIdentifier error:&v131];
   v9 = v131;
 
   if (v8)
   {
-    v10 = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
+    relatedScopedIdentifier = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
     v130 = v9;
-    v11 = [(CPLBeforeUploadCheckItem *)self _addRelatedRecordWithScopedIdentifierToAdditionalRecords:v10 provider:v6 error:&v130];
+    v11 = [(CPLBeforeUploadCheckItem *)self _addRelatedRecordWithScopedIdentifierToAdditionalRecords:relatedScopedIdentifier provider:provider error:&v130];
     v12 = v130;
 
     if (!v11)
@@ -1204,9 +1204,9 @@ LABEL_24:
       goto LABEL_95;
     }
 
-    v13 = [(CPLRecordChange *)self->_change secondaryScopedIdentifier];
+    secondaryScopedIdentifier = [(CPLRecordChange *)self->_change secondaryScopedIdentifier];
     v129 = v12;
-    v11 = [(CPLBeforeUploadCheckItem *)self _addRelatedRecordWithScopedIdentifierToAdditionalRecords:v13 provider:v6 error:&v129];
+    v11 = [(CPLBeforeUploadCheckItem *)self _addRelatedRecordWithScopedIdentifierToAdditionalRecords:secondaryScopedIdentifier provider:provider error:&v129];
     v9 = v129;
 
     if (!v11)
@@ -1218,9 +1218,9 @@ LABEL_24:
     if ((self->_ruleGroups & 8) != 0 && ![(CPLRecordChange *)self->_change canLowerQuota]&& [(CPLRecordChange *)self->_change isAssetChange]&& !self->_pushRepositoryPriority)
     {
       v80 = objc_loadWeakRetained(&self->_items);
-      v81 = [v80 shouldCheckOverQuotaChangesWithServer];
+      shouldCheckOverQuotaChangesWithServer = [v80 shouldCheckOverQuotaChangesWithServer];
 
-      if (v81)
+      if (shouldCheckOverQuotaChangesWithServer)
       {
         if ((self->_ruleGroups & 8) != 0)
         {
@@ -1239,8 +1239,8 @@ LABEL_24:
 
       else
       {
-        v92 = [(CPLRecordChange *)self->_change _recordKnownByCloudCache];
-        [(CPLBeforeUploadCheckItem *)self updatePushRepositoryPriorityWithRecordOnServer:v92];
+        _recordKnownByCloudCache = [(CPLRecordChange *)self->_change _recordKnownByCloudCache];
+        [(CPLBeforeUploadCheckItem *)self updatePushRepositoryPriorityWithRecordOnServer:_recordKnownByCloudCache];
 
         if (!self->_change)
         {
@@ -1249,29 +1249,29 @@ LABEL_24:
       }
     }
 
-    v14 = objc_loadWeakRetained(&self->_items);
-    v15 = [(CPLScopedIdentifier *)v14 sharingScopeIdentifier];
-    if (!v15)
+    relatedScopedIdentifier2 = objc_loadWeakRetained(&self->_items);
+    sharingScopeIdentifier = [(CPLScopedIdentifier *)relatedScopedIdentifier2 sharingScopeIdentifier];
+    if (!sharingScopeIdentifier)
     {
       goto LABEL_18;
     }
 
-    v16 = v15;
-    v17 = [(CPLRecordChange *)self->_change supportsSharingScopedIdentifier];
+    v16 = sharingScopeIdentifier;
+    supportsSharingScopedIdentifier = [(CPLRecordChange *)self->_change supportsSharingScopedIdentifier];
 
-    if (v17 && [(CPLRecordChange *)self->_change hasChangeType:64])
+    if (supportsSharingScopedIdentifier && [(CPLRecordChange *)self->_change hasChangeType:64])
     {
       change = self->_change;
       v19 = objc_loadWeakRetained(&self->_items);
-      v20 = [v19 sharingScopeIdentifier];
-      LOBYTE(change) = [(CPLRecordChange *)change isSharedInScopeWithIdentifier:v20];
+      sharingScopeIdentifier2 = [v19 sharingScopeIdentifier];
+      LOBYTE(change) = [(CPLRecordChange *)change isSharedInScopeWithIdentifier:sharingScopeIdentifier2];
 
       if (change)
       {
-        v14 = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
-        if (v14)
+        relatedScopedIdentifier2 = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
+        if (relatedScopedIdentifier2)
         {
-          if (([v6 isCloudRecordWithScopedIdentifierShared:v14] & 1) == 0)
+          if (([provider isCloudRecordWithScopedIdentifierShared:relatedScopedIdentifier2] & 1) == 0)
           {
             [(CPLRecordChange *)self->_change _noteRelatedRecordShouldBeShared];
             if ((_CPLSilentLogging & 1) == 0)
@@ -1279,11 +1279,11 @@ LABEL_24:
               v21 = __CPLCheckOSLogDomain();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
-                v22 = [(CPLRecordChange *)self->_change scopedIdentifier];
+                scopedIdentifier2 = [(CPLRecordChange *)self->_change scopedIdentifier];
                 *buf = 138412546;
-                v134 = v22;
+                v134 = scopedIdentifier2;
                 v135 = 2112;
-                v136 = v14;
+                v136 = relatedScopedIdentifier2;
                 _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_DEFAULT, "In order to share %@, we will need to ensure %@ is also shared", buf, 0x16u);
               }
             }
@@ -1309,9 +1309,9 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v30 = [(CPLRecordChange *)self->_change sharingRecordChangeData];
+        sharingRecordChangeData = [(CPLRecordChange *)self->_change sharingRecordChangeData];
 
-        if (v30)
+        if (sharingRecordChangeData)
         {
           goto LABEL_19;
         }
@@ -1357,13 +1357,13 @@ LABEL_22:
       goto LABEL_95;
     }
 
-    v108 = [v6 availableResourceTypesToUploadForChange:self->_change];
-    v25 = [(CPLRecordChange *)self->_change resourceCopyFromScopedIdentifier];
-    v100 = [(CPLRecordChange *)self->_change resources];
+    v108 = [provider availableResourceTypesToUploadForChange:self->_change];
+    resourceCopyFromScopedIdentifier = [(CPLRecordChange *)self->_change resourceCopyFromScopedIdentifier];
+    resources = [(CPLRecordChange *)self->_change resources];
     if ([(CPLRecordChange *)self->_change isAssetChange])
     {
-      v26 = [(CPLRecordChange *)self->_change adjustments];
-      v99 = v26 != 0;
+      adjustments = [(CPLRecordChange *)self->_change adjustments];
+      v99 = adjustments != 0;
     }
 
     else
@@ -1371,10 +1371,10 @@ LABEL_22:
       v99 = 0;
     }
 
-    if (v25)
+    if (resourceCopyFromScopedIdentifier)
     {
       v124 = 0;
-      v27 = [v6 willNeedToAccessRecordWithScopedIdentifier:v25 error:&v124];
+      v27 = [provider willNeedToAccessRecordWithScopedIdentifier:resourceCopyFromScopedIdentifier error:&v124];
       v28 = v124;
       if (v27)
       {
@@ -1390,7 +1390,7 @@ LABEL_22:
           {
             scopedIdentifier = self->_scopedIdentifier;
             *buf = 138412802;
-            v134 = v25;
+            v134 = resourceCopyFromScopedIdentifier;
             v135 = 2112;
             v136 = scopedIdentifier;
             v137 = 2112;
@@ -1406,20 +1406,20 @@ LABEL_22:
         v12 = v35;
       }
 
-      if ([v100 count] != 0 || v99)
+      if ([resources count] != 0 || v99)
       {
-        v102 = [v108 isEmpty];
+        isEmpty = [v108 isEmpty];
       }
 
       else
       {
-        v102 = 0;
+        isEmpty = 0;
       }
 
       if (!v29)
       {
         v11 = 0;
-        v60 = v25;
+        v60 = resourceCopyFromScopedIdentifier;
         goto LABEL_94;
       }
 
@@ -1429,11 +1429,11 @@ LABEL_22:
     else
     {
       v107 = v12;
-      v102 = 0;
+      isEmpty = 0;
     }
 
-    v97 = v25;
-    v98 = a3;
+    v97 = resourceCopyFromScopedIdentifier;
+    errorCopy = error;
     v36 = objc_alloc_init(CPLResourceTypeSet);
     resourcesToGenerateImageDerivatives = self->_resourcesToGenerateImageDerivatives;
     self->_resourcesToGenerateImageDerivatives = v36;
@@ -1447,21 +1447,21 @@ LABEL_22:
     v120 = 0u;
     v121 = 0u;
     v122 = 0u;
-    obj = v100;
+    obj = resources;
     v106 = [obj countByEnumeratingWithState:&v119 objects:v132 count:16];
     if (!v106)
     {
       LOBYTE(v109) = 0;
       v40 = 0;
-      v101 = v102;
+      v101 = isEmpty;
       goto LABEL_117;
     }
 
     v40 = 0;
     v109 = 0;
     v104 = *v120;
-    v101 = v102;
-    v105 = v6;
+    v101 = isEmpty;
+    v105 = provider;
 LABEL_53:
     v41 = 0;
     while (1)
@@ -1472,22 +1472,22 @@ LABEL_53:
       }
 
       v42 = *(*(&v119 + 1) + 8 * v41);
-      v43 = [v42 resourceType];
-      v44 = [v6 isResourceDynamic:v42];
+      resourceType = [v42 resourceType];
+      v44 = [provider isResourceDynamic:v42];
       if (v99 && !v109)
       {
-        v109 = [CPLResource isAdjustedResourceType:v43];
+        v109 = [CPLResource isAdjustedResourceType:resourceType];
       }
 
       v45 = objc_loadWeakRetained(&self->_items);
-      v46 = [v45 originalBatch];
-      v47 = [(CPLRecordChange *)self->_change scopedIdentifier];
-      v48 = [v46 localResourceOfType:v43 forItemWithCloudScopedIdentifier:v47];
+      originalBatch = [v45 originalBatch];
+      scopedIdentifier3 = [(CPLRecordChange *)self->_change scopedIdentifier];
+      v48 = [originalBatch localResourceOfType:resourceType forItemWithCloudScopedIdentifier:scopedIdentifier3];
 
       if (!v48)
       {
-        v6 = v105;
-        a3 = v98;
+        provider = v105;
+        error = errorCopy;
         v61 = v107;
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -1503,9 +1503,9 @@ LABEL_53:
         v63 = objc_alloc(MEMORY[0x1E696AEC0]);
         v64 = +[CPLResource shortDescriptionForResourceType:](CPLResource, "shortDescriptionForResourceType:", [v42 resourceType]);
         v65 = self->_change;
-        v66 = [v63 initWithFormat:@"Cloud resource %@ does not match any local resource of %@", v64, objc_opt_class()];
+        domain = [v63 initWithFormat:@"Cloud resource %@ does not match any local resource of %@", v64, objc_opt_class()];
 
-        v67 = [CPLErrors invalidCloudCacheErrorWithReason:v66];
+        v67 = [CPLErrors invalidCloudCacheErrorWithReason:domain];
         v48 = 0;
 LABEL_90:
 
@@ -1519,32 +1519,32 @@ LABEL_92:
         goto LABEL_93;
       }
 
-      if (!(v44 & 1 | (([v108 containsResourceType:v43] & 1) == 0)))
+      if (!(v44 & 1 | (([v108 containsResourceType:resourceType] & 1) == 0)))
       {
         break;
       }
 
-      v49 = [v42 identity];
-      v50 = v49;
-      if (v102)
+      identity = [v42 identity];
+      v50 = identity;
+      if (isEmpty)
       {
-        [v49 setAvailable:1];
+        [identity setAvailable:1];
 
-        v101 &= v43 != 5;
+        v101 &= resourceType != 5;
       }
 
       else
       {
-        [v49 setAvailable:v44 != 0];
+        [identity setAvailable:v44 != 0];
       }
 
 LABEL_77:
-      v57 = [v42 identity];
-      v58 = [v57 isAvailable];
+      identity2 = [v42 identity];
+      isAvailable = [identity2 isAvailable];
 
-      v40 |= v58 ^ 1;
+      v40 |= isAvailable ^ 1;
       ++v41;
-      v6 = v105;
+      provider = v105;
       if (v106 == v41)
       {
         v59 = [obj countByEnumeratingWithState:&v119 objects:v132 count:16];
@@ -1569,7 +1569,7 @@ LABEL_117:
           {
             if ((v40 & 1) == 0)
             {
-              a3 = v98;
+              error = errorCopy;
               if ((v101 & 1) == 0)
               {
                 v11 = 1;
@@ -1606,9 +1606,9 @@ LABEL_93:
 LABEL_94:
 
 LABEL_95:
-              v68 = [(CPLRecordChange *)self->_change recordChangeData];
+              recordChangeData = [(CPLRecordChange *)self->_change recordChangeData];
 
-              if (v68)
+              if (recordChangeData)
               {
                 if (v11)
                 {
@@ -1619,12 +1619,12 @@ LABEL_111:
                 v24 = 0;
                 v9 = v12;
 LABEL_112:
-                if (a3 && !v24)
+                if (error && !v24)
                 {
 LABEL_114:
                   v77 = v9;
                   v24 = 0;
-                  *a3 = v9;
+                  *error = v9;
                 }
 
                 goto LABEL_115;
@@ -1678,11 +1678,11 @@ LABEL_97:
                 v24 = [(CPLBeforeUploadCheckItem *)self requestFetchForRule:@"DontTrustCloudCache" error:&v111];
                 v69 = v111;
 
-                v70 = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
-                if (v70)
+                relatedScopedIdentifier3 = [(CPLRecordChange *)self->_change relatedScopedIdentifier];
+                if (relatedScopedIdentifier3)
                 {
                   v110 = v69;
-                  v24 = [(CPLBeforeUploadCheckItem *)self requestFetchOfRecordWithScopedIdentifier:v70 forRule:@"DontTrustCloudCache" error:&v110];
+                  v24 = [(CPLBeforeUploadCheckItem *)self requestFetchOfRecordWithScopedIdentifier:relatedScopedIdentifier3 forRule:@"DontTrustCloudCache" error:&v110];
                   v71 = v110;
 
                   v69 = v71;
@@ -1700,9 +1700,9 @@ LABEL_148:
 
           else
           {
-            if (v102)
+            if (isEmpty)
             {
-              a3 = v98;
+              error = errorCopy;
               if ((_CPLSilentLogging & 1) == 0)
               {
                 v88 = __CPLCheckOSLogDomain();
@@ -1752,7 +1752,7 @@ LABEL_148:
           }
 
           v11 = [(CPLBeforeUploadCheckItem *)self requestFetchForRule:v95 error:v96];
-          a3 = v98;
+          error = errorCopy;
           goto LABEL_157;
         }
 
@@ -1760,15 +1760,15 @@ LABEL_148:
       }
     }
 
-    if (v43 <= 5)
+    if (resourceType <= 5)
     {
-      if ((v43 - 3) < 3)
+      if ((resourceType - 3) < 3)
       {
         self->_needsToGenerateImageDerivatives = 0;
         goto LABEL_75;
       }
 
-      if ((v43 - 1) >= 2)
+      if ((resourceType - 1) >= 2)
       {
         goto LABEL_75;
       }
@@ -1776,12 +1776,12 @@ LABEL_148:
 
     else
     {
-      if (v43 > 0x1C)
+      if (resourceType > 0x1C)
       {
         goto LABEL_79;
       }
 
-      if (((1 << v43) & 0x102000C0) != 0)
+      if (((1 << resourceType) & 0x102000C0) != 0)
       {
         self->_needsToGenerateVideoComplementDerivatives = 0;
 LABEL_75:
@@ -1792,8 +1792,8 @@ LABEL_75:
 
         if (!v54)
         {
-          v6 = v105;
-          a3 = v98;
+          provider = v105;
+          error = errorCopy;
           if ((_CPLSilentLogging & 1) == 0)
           {
             v83 = __CPLCheckOSLogDomain();
@@ -1807,22 +1807,22 @@ LABEL_75:
             }
           }
 
-          v66 = [(CPLScopedIdentifier *)v55 domain];
-          if (![v66 isEqualToString:*MEMORY[0x1E696A250]])
+          domain = [(CPLScopedIdentifier *)v55 domain];
+          if (![domain isEqualToString:*MEMORY[0x1E696A250]])
           {
             goto LABEL_91;
           }
 
-          v84 = [(CPLScopedIdentifier *)v55 code];
+          code = [(CPLScopedIdentifier *)v55 code];
 
-          if (v84 == 4)
+          if (code == 4)
           {
             v85 = objc_alloc(MEMORY[0x1E696AEC0]);
             v86 = +[CPLResource shortDescriptionForResourceType:](CPLResource, "shortDescriptionForResourceType:", [v48 resourceType]);
             v87 = self->_change;
-            v66 = [v85 initWithFormat:@"Missing resource %@ on disk during push to transport for %@", v86, objc_opt_class()];
+            domain = [v85 initWithFormat:@"Missing resource %@ on disk during push to transport for %@", v86, objc_opt_class()];
 
-            v67 = [CPLErrors invalidClientCacheErrorWithReason:v66];
+            v67 = [CPLErrors invalidClientCacheErrorWithReason:domain];
             v61 = v55;
             goto LABEL_90;
           }
@@ -1830,17 +1830,17 @@ LABEL_75:
           goto LABEL_92;
         }
 
-        v56 = [v42 identity];
-        [v56 setFileURL:v54];
-        [v56 setAvailable:1];
+        identity3 = [v42 identity];
+        [identity3 setFileURL:v54];
+        [identity3 setAvailable:1];
 
         v107 = v55;
         goto LABEL_77;
       }
 
-      if (((1 << v43) & 0x30000) == 0)
+      if (((1 << resourceType) & 0x30000) == 0)
       {
-        if (v43 == 18)
+        if (resourceType == 18)
         {
           v51 = self->_resourcesToGenerateVideoComplementDerivatives;
           v52 = 18;
@@ -1850,7 +1850,7 @@ LABEL_74:
         }
 
 LABEL_79:
-        if (v43 != 1000 || !v99)
+        if (resourceType != 1000 || !v99)
         {
           goto LABEL_75;
         }
@@ -1862,11 +1862,11 @@ LABEL_79:
     }
 
     v51 = self->_resourcesToGenerateImageDerivatives;
-    v52 = v43;
+    v52 = resourceType;
     goto LABEL_74;
   }
 
-  if (a3)
+  if (error)
   {
     goto LABEL_114;
   }
@@ -1878,12 +1878,12 @@ LABEL_115:
   return v24;
 }
 
-- (BOOL)_addRelatedRecordWithScopedIdentifierToAdditionalRecords:(id)a3 provider:(id)a4 error:(id *)a5
+- (BOOL)_addRelatedRecordWithScopedIdentifierToAdditionalRecords:(id)records provider:(id)provider error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = !v7 || [v8 willNeedToAccessRecordWithScopedIdentifier:v7 error:a5];
+  recordsCopy = records;
+  providerCopy = provider;
+  v9 = providerCopy;
+  v10 = !recordsCopy || [providerCopy willNeedToAccessRecordWithScopedIdentifier:recordsCopy error:error];
 
   return v10;
 }
@@ -1891,9 +1891,9 @@ LABEL_115:
 - (CPLFingerprintContext)fingerprintContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_items);
-  v3 = [WeakRetained fingerprintContext];
+  fingerprintContext = [WeakRetained fingerprintContext];
 
-  return v3;
+  return fingerprintContext;
 }
 
 - (BOOL)needsToGenerateDerivatives
@@ -1918,54 +1918,54 @@ LABEL_115:
   return change & 1;
 }
 
-- (CPLBeforeUploadCheckItem)initWithChange:(id)a3 checkItems:(id)a4
+- (CPLBeforeUploadCheckItem)initWithChange:(id)change checkItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  itemsCopy = items;
   v21.receiver = self;
   v21.super_class = CPLBeforeUploadCheckItem;
   v9 = [(CPLBeforeUploadCheckItem *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_change, a3);
+    objc_storeStrong(&v9->_change, change);
     if (![(CPLRecordChange *)v10->_change isDelete])
     {
-      v11 = [(CPLRecordChange *)v10->_change recordModificationDate];
+      recordModificationDate = [(CPLRecordChange *)v10->_change recordModificationDate];
 
-      if (!v11 && (_CPLSilentLogging & 1) == 0)
+      if (!recordModificationDate && (_CPLSilentLogging & 1) == 0)
       {
         v12 = __CPLCheckOSLogDomain();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           change = v10->_change;
           *buf = 138412290;
-          v23 = change;
+          changeCopy2 = change;
           _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_ERROR, "No record modification date for %@", buf, 0xCu);
         }
       }
     }
 
-    v14 = [(CPLRecordChange *)v10->_change scopedIdentifier];
+    scopedIdentifier = [(CPLRecordChange *)v10->_change scopedIdentifier];
     scopedIdentifier = v10->_scopedIdentifier;
-    v10->_scopedIdentifier = v14;
+    v10->_scopedIdentifier = scopedIdentifier;
 
-    objc_storeWeak(&v10->_items, v8);
+    objc_storeWeak(&v10->_items, itemsCopy);
     v16 = objc_opt_class();
     changeClass = v10->_changeClass;
     v10->_changeClass = v16;
 
-    v18 = [(CPLRecordChange *)v10->_change isAssetChange];
-    v10->_isAsset = v18;
-    if (v18)
+    isAssetChange = [(CPLRecordChange *)v10->_change isAssetChange];
+    v10->_isAsset = isAssetChange;
+    if (isAssetChange)
     {
-      LOBYTE(v18) = [(CPLRecordChange *)v10->_change isDelete]|| [(CPLRecordChange *)v10->_change inTrash];
+      LOBYTE(isAssetChange) = [(CPLRecordChange *)v10->_change isDelete]|| [(CPLRecordChange *)v10->_change inTrash];
     }
 
-    v10->_isTrashedOrDeletedAsset = v18;
-    v10->_ruleGroups = [v8 ruleGroups];
-    v10->_pushRepositoryPriority = [v8 pushRepositoryPriority];
+    v10->_isTrashedOrDeletedAsset = isAssetChange;
+    v10->_ruleGroups = [itemsCopy ruleGroups];
+    v10->_pushRepositoryPriority = [itemsCopy pushRepositoryPriority];
   }
 
   v19 = *MEMORY[0x1E69E9840];

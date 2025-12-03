@@ -1,17 +1,17 @@
 @interface WFMPMediaContentItem
 + (id)contentCategories;
-+ (id)localizedFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (MPMediaItem)mediaItem;
 - (NSDictionary)additionalRepresentationsForSerialization;
 - (NSString)albumTitle;
@@ -19,46 +19,46 @@
 - (NSString)title;
 - (WFFileType)preferredFileType;
 - (id)assetURL;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (void)getPreferredFileSize:(id)a3;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (void)getPreferredFileSize:(id)size;
 @end
 
 @implementation WFMPMediaContentItem
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v13 = [(WFMPMediaContentItem *)self mediaItem];
+    mediaItem = [(WFMPMediaContentItem *)self mediaItem];
     v14 = getMPMediaItemPropertyArtwork();
-    v10 = [v13 valueForProperty:v14];
+    assetURL = [mediaItem valueForProperty:v14];
 
-    v15 = [(WFMPMediaContentItem *)self mediaItem];
+    mediaItem2 = [(WFMPMediaContentItem *)self mediaItem];
     v16 = getMPMediaItemPropertyAlbumTitle();
-    v17 = [v15 valueForProperty:v16];
+    v17 = [mediaItem2 valueForProperty:v16];
     v18 = v17;
     if (v17)
     {
-      v19 = v17;
+      name = v17;
     }
 
     else
     {
-      v19 = [(WFContentItem *)self name];
+      name = [(WFContentItem *)self name];
     }
 
-    v11 = v19;
+    releaseDate = name;
 
-    [v10 bounds];
-    v22 = [v10 imageWithSize:{v20, v21}];
+    [assetURL bounds];
+    v22 = [assetURL imageWithSize:{v20, v21}];
     if (v22)
     {
       v23 = [objc_alloc(MEMORY[0x277D79FC8]) initWithPlatformImage:v22];
-      a5 = [WFObjectRepresentation object:v23 named:v11];
+      error = [WFObjectRepresentation object:v23 named:releaseDate];
     }
 
-    else if (a5)
+    else if (error)
     {
       v41 = MEMORY[0x277CCA9B8];
       v24 = *MEMORY[0x277CCA5B8];
@@ -68,27 +68,27 @@
       v44[1] = *MEMORY[0x277CCA450];
       v26 = MEMORY[0x277CCACA8];
       v27 = WFLocalizedString(@"The item “%@” cannot be converted to an image, because it has no artwork.");
-      v28 = [(WFContentItem *)self name];
-      v29 = [v26 localizedStringWithFormat:v27, v28];
+      name2 = [(WFContentItem *)self name];
+      v29 = [v26 localizedStringWithFormat:v27, name2];
       v45[1] = v29;
       v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:2];
-      *a5 = [v41 errorWithDomain:v24 code:79 userInfo:v30];
+      *error = [v41 errorWithDomain:v24 code:79 userInfo:v30];
 
-      a5 = 0;
+      error = 0;
     }
 
     goto LABEL_20;
   }
 
-  v8 = NSStringFromClass(a3);
+  v8 = NSStringFromClass(class);
   v9 = [@"AVAsset" isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(WFMPMediaContentItem *)self assetURL];
-    if (!v10)
+    assetURL = [(WFMPMediaContentItem *)self assetURL];
+    if (!assetURL)
     {
-      if (a5)
+      if (error)
       {
         v31 = MEMORY[0x277CCA9B8];
         v32 = *MEMORY[0x277CCA5B8];
@@ -98,42 +98,42 @@
         v42[1] = *MEMORY[0x277CCA450];
         v34 = MEMORY[0x277CCACA8];
         v35 = WFLocalizedString(@"The item “%@” cannot be exported, likely because it is only stored in iCloud or has not yet been synced to this device.");
-        v36 = [(WFContentItem *)self name];
-        v37 = [v34 localizedStringWithFormat:v35, v36];
+        name3 = [(WFContentItem *)self name];
+        v37 = [v34 localizedStringWithFormat:v35, name3];
         v43[1] = v37;
         v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
-        *a5 = [v31 errorWithDomain:v32 code:79 userInfo:v38];
+        *error = [v31 errorWithDomain:v32 code:79 userInfo:v38];
 
-        a5 = 0;
+        error = 0;
       }
 
       goto LABEL_21;
     }
 
-    v11 = [getAVURLAssetClass_10395() assetWithURL:v10];
-    v12 = [(WFContentItem *)self name];
-    a5 = [WFObjectRepresentation object:v11 named:v12];
+    releaseDate = [getAVURLAssetClass_10395() assetWithURL:assetURL];
+    name4 = [(WFContentItem *)self name];
+    error = [WFObjectRepresentation object:releaseDate named:name4];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
-      a5 = 0;
+      error = 0;
       goto LABEL_22;
     }
 
-    v10 = [(WFMPMediaContentItem *)self mediaItem];
-    v11 = [v10 releaseDate];
-    if (!v11)
+    assetURL = [(WFMPMediaContentItem *)self mediaItem];
+    releaseDate = [assetURL releaseDate];
+    if (!releaseDate)
     {
-      a5 = 0;
+      error = 0;
       goto LABEL_20;
     }
 
-    v12 = [(WFMPMediaContentItem *)self mediaItem];
-    v39 = [v12 releaseDate];
-    a5 = [WFObjectRepresentation object:v39 named:@"Release Date"];
+    name4 = [(WFMPMediaContentItem *)self mediaItem];
+    releaseDate2 = [name4 releaseDate];
+    error = [WFObjectRepresentation object:releaseDate2 named:@"Release Date"];
   }
 
 LABEL_20:
@@ -141,17 +141,17 @@ LABEL_21:
 
 LABEL_22:
 
-  return a5;
+  return error;
 }
 
 - (WFFileType)preferredFileType
 {
-  v3 = [(WFMPMediaContentItem *)self assetURL];
-  v4 = [v3 pathExtension];
+  assetURL = [(WFMPMediaContentItem *)self assetURL];
+  pathExtension = [assetURL pathExtension];
 
-  if ([v4 length])
+  if ([pathExtension length])
   {
-    v5 = [MEMORY[0x277D79F68] typeFromFileExtension:v4];
+    v5 = [MEMORY[0x277D79F68] typeFromFileExtension:pathExtension];
     if ([v5 conformsToUTType:*MEMORY[0x277CE1DE0]])
     {
       v6 = [MEMORY[0x277D79F68] typeWithString:*MEMORY[0x277D7A418]];
@@ -162,44 +162,44 @@ LABEL_22:
       v6 = v5;
     }
 
-    v7 = v6;
+    preferredFileType = v6;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFMPMediaContentItem;
-    v7 = [(WFContentItem *)&v9 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v9 preferredFileType];
   }
 
-  return v7;
+  return preferredFileType;
 }
 
-- (void)getPreferredFileSize:(id)a3
+- (void)getPreferredFileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(WFMPMediaContentItem *)self assetURL];
+  sizeCopy = size;
+  assetURL = [(WFMPMediaContentItem *)self assetURL];
 
-  if (!v5)
+  if (!assetURL)
   {
-    v4[2](v4, 0);
+    sizeCopy[2](sizeCopy, 0);
 LABEL_21:
 
     return;
   }
 
   AVURLAssetClass_10395 = getAVURLAssetClass_10395();
-  v7 = [(WFMPMediaContentItem *)self assetURL];
-  v8 = [AVURLAssetClass_10395 assetWithURL:v7];
+  assetURL2 = [(WFMPMediaContentItem *)self assetURL];
+  v8 = [AVURLAssetClass_10395 assetWithURL:assetURL2];
 
-  v9 = [(WFMPMediaContentItem *)self preferredFileType];
-  if (([v9 conformsToString:*MEMORY[0x277D7A418]] & 1) == 0)
+  preferredFileType = [(WFMPMediaContentItem *)self preferredFileType];
+  if (([preferredFileType conformsToString:*MEMORY[0x277D7A418]] & 1) == 0)
   {
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke;
     v32[3] = &unk_278349F78;
-    v33 = v4;
+    v33 = sizeCopy;
     [(WFContentItem *)self getFileRepresentation:v32 forType:0];
     v15 = v33;
 LABEL_20:
@@ -314,28 +314,28 @@ LABEL_20:
         v25 = v31[1];
         v26 = v31[2];
         [v15 setTimeRange:&v24];
-        v4[2](v4, [v15 estimatedOutputFileLength]);
+        sizeCopy[2](sizeCopy, [v15 estimatedOutputFileLength]);
         goto LABEL_20;
       }
 
-      v22 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CMTimeRange soft_CMTimeRangeMake(CMTime, CMTime)"}];
-      [v22 handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:25 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:25 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CMTime getkCMTimeZero(void)"];
-      [v22 handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:24 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:24 description:{@"%s", dlerror()}];
     }
   }
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVAssetExportPresetAppleM4A(void)"];
-    [v22 handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v23 file:@"WFMPMediaContentItem.m" lineNumber:30 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
@@ -352,51 +352,51 @@ uint64_t __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke(uint64_t
 
 - (NSString)albumTitle
 {
-  v2 = [(WFMPMediaContentItem *)self mediaItem];
-  v3 = [v2 albumTitle];
+  mediaItem = [(WFMPMediaContentItem *)self mediaItem];
+  albumTitle = [mediaItem albumTitle];
 
-  return v3;
+  return albumTitle;
 }
 
 - (NSString)artist
 {
-  v2 = [(WFMPMediaContentItem *)self mediaItem];
-  v3 = [v2 artist];
+  mediaItem = [(WFMPMediaContentItem *)self mediaItem];
+  artist = [mediaItem artist];
 
-  return v3;
+  return artist;
 }
 
 - (NSString)title
 {
-  v2 = [(WFMPMediaContentItem *)self mediaItem];
-  v3 = [v2 title];
+  mediaItem = [(WFMPMediaContentItem *)self mediaItem];
+  title = [mediaItem title];
 
-  return v3;
+  return title;
 }
 
 - (NSDictionary)additionalRepresentationsForSerialization
 {
   v10.receiver = self;
   v10.super_class = WFMPMediaContentItem;
-  v3 = [(WFContentItem *)&v10 additionalRepresentationsForSerialization];
-  v4 = [v3 mutableCopy];
+  additionalRepresentationsForSerialization = [(WFContentItem *)&v10 additionalRepresentationsForSerialization];
+  v4 = [additionalRepresentationsForSerialization mutableCopy];
 
-  v5 = [(WFMPMediaContentItem *)self preferredFileType];
-  v6 = [v5 string];
-  [v4 setObject:v6 forKey:@"link.contentkit.remoteitem.preferredfiletype"];
+  preferredFileType = [(WFMPMediaContentItem *)self preferredFileType];
+  string = [preferredFileType string];
+  [v4 setObject:string forKey:@"link.contentkit.remoteitem.preferredfiletype"];
 
-  v7 = [(WFMPMediaContentItem *)self artist];
-  [v4 setValue:v7 forKey:@"link.contentkit.mpmediaitem.artist"];
+  artist = [(WFMPMediaContentItem *)self artist];
+  [v4 setValue:artist forKey:@"link.contentkit.mpmediaitem.artist"];
 
-  v8 = [(WFMPMediaContentItem *)self albumTitle];
-  [v4 setValue:v8 forKey:@"link.contentkit.mpmediaitem.album"];
+  albumTitle = [(WFMPMediaContentItem *)self albumTitle];
+  [v4 setValue:albumTitle forKey:@"link.contentkit.mpmediaitem.album"];
 
   return v4;
 }
 
 - (id)assetURL
 {
-  v2 = [(WFMPMediaContentItem *)self mediaItem];
+  mediaItem = [(WFMPMediaContentItem *)self mediaItem];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -413,16 +413,16 @@ uint64_t __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke(uint64_t
   _Block_object_dispose(&v9, 8);
   if (v3)
   {
-    v5 = [v2 valueForProperty:*v3];
+    v5 = [mediaItem valueForProperty:*v3];
 
     return v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyAssetURL(void)"];
-    [v7 handleFailureInFunction:v8 file:@"WFMPMediaContentItem.m" lineNumber:35 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v8 file:@"WFMPMediaContentItem.m" lineNumber:35 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -455,38 +455,38 @@ uint64_t __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke(uint64_t
   return v5;
 }
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Music (plural)", @"Music");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedFilterDescriptionWithContext:(id)a3
++ (id)localizedFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Music (singular)", @"Music");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes media (plural)", @"iTunes media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"iTunes media (singular)", @"iTunes media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -520,25 +520,25 @@ uint64_t __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke(uint64_t
   return v4;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 allProperties];
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  allProperties = [self allProperties];
   v15 = getMPMediaItemPropertyDiscNumber();
-  v16 = [v14 objectMatchingKey:@"userInfo" value:v15];
+  v16 = [allProperties objectMatchingKey:@"userInfo" value:v15];
 
   v17 = getMPMediaItemPropertyAlbumTrackNumber();
-  v18 = [v14 objectMatchingKey:@"userInfo" value:v17];
+  v18 = [allProperties objectMatchingKey:@"userInfo" value:v17];
 
   v19 = getMPMediaItemPropertyAlbumTitle();
-  WFInsertSortDescriptorAroundDescriptorMatchingUserInfo(v10, v18, 0, 1u, v19);
+  WFInsertSortDescriptorAroundDescriptorMatchingUserInfo(queryCopy, v18, 0, 1u, v19);
 
   v20 = getMPMediaItemPropertyAlbumTrackNumber();
-  WFInsertSortDescriptorAroundDescriptorMatchingUserInfo(v10, v16, 1, 0, v20);
+  WFInsertSortDescriptorAroundDescriptorMatchingUserInfo(queryCopy, v16, 1, 0, v20);
 
   v21 = getWFContentGraphLogObject();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -546,31 +546,31 @@ uint64_t __45__WFMPMediaContentItem_getPreferredFileSize___block_invoke(uint64_t
     *buf = 136315650;
     v30 = "+[WFMPMediaContentItem runQuery:withItems:permissionRequestor:completionHandler:]";
     v31 = 2112;
-    v32 = v10;
+    v32 = queryCopy;
     v33 = 2048;
-    v34 = [v11 count];
+    v34 = [itemsCopy count];
     _os_log_impl(&dword_21E1BD000, v21, OS_LOG_TYPE_INFO, "%s Running query %@ with %lu input items", buf, 0x20u);
   }
 
-  if ([v11 count])
+  if ([itemsCopy count])
   {
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = &OBJC_METACLASS___WFMPMediaContentItem;
-    objc_msgSendSuper2(&v28, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+    objc_msgSendSuper2(&v28, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
   }
 
   else
   {
-    v22 = [v10 predicate];
+    predicate = [queryCopy predicate];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completionHandler___block_invoke;
     v23[3] = &unk_278346D70;
-    v24 = v10;
-    v25 = v12;
-    v26 = v13;
-    v27 = a1;
-    [(WFContentLibraryANDFiltering *)WFMPMediaLibraryFiltering getItemsMatchingPredicate:v22 resultHandler:v23];
+    v24 = queryCopy;
+    v25 = requestorCopy;
+    v26 = handlerCopy;
+    selfCopy = self;
+    [(WFContentLibraryANDFiltering *)WFMPMediaLibraryFiltering getItemsMatchingPredicate:predicate resultHandler:v23];
   }
 }
 
@@ -627,7 +627,7 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Title"];
+  v2 = [self propertyForName:@"Title"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -669,9 +669,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v3)
   {
-    v65 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyTitle(void)"];
-    [v65 handleFailureInFunction:v66 file:@"WFMPMediaContentItem.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v66 file:@"WFMPMediaContentItem.m" lineNumber:36 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -708,9 +708,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v6)
   {
-    v67 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyArtist(void)"];
-    [v67 handleFailureInFunction:v68 file:@"WFMPMediaContentItem.m" lineNumber:38 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v68 file:@"WFMPMediaContentItem.m" lineNumber:38 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -742,9 +742,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v9)
   {
-    v69 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyAlbumArtist(void)"];
-    [v69 handleFailureInFunction:v70 file:@"WFMPMediaContentItem.m" lineNumber:39 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v70 file:@"WFMPMediaContentItem.m" lineNumber:39 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -776,9 +776,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v12)
   {
-    v71 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v72 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyGenre(void)"];
-    [v71 handleFailureInFunction:v72 file:@"WFMPMediaContentItem.m" lineNumber:40 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v72 file:@"WFMPMediaContentItem.m" lineNumber:40 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -810,9 +810,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v15)
   {
-    v73 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
     v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyComposer(void)"];
-    [v73 handleFailureInFunction:v74 file:@"WFMPMediaContentItem.m" lineNumber:41 description:{@"%s", dlerror()}];
+    [currentHandler5 handleFailureInFunction:v74 file:@"WFMPMediaContentItem.m" lineNumber:41 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -844,9 +844,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v18)
   {
-    v75 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
     v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyDateAdded(void)"];
-    [v75 handleFailureInFunction:v76 file:@"WFMPMediaContentItem.m" lineNumber:42 description:{@"%s", dlerror()}];
+    [currentHandler6 handleFailureInFunction:v76 file:@"WFMPMediaContentItem.m" lineNumber:42 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -857,8 +857,8 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   v254[6] = v213;
   v212 = WFLocalizedContentPropertyNameMarker(@"Media Kind");
   v211 = [WFContentPropertyBuilder block:v223 name:v212 class:objc_opt_class()];
-  v210 = [v222 allValues];
-  v209 = [v211 possibleValues:v210];
+  allValues = [v222 allValues];
+  v209 = [v211 possibleValues:allValues];
   v250 = 0;
   v251 = &v250;
   v252 = 0x2020000000;
@@ -881,9 +881,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v21)
   {
-    v77 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
     v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyMediaType(void)"];
-    [v77 handleFailureInFunction:v78 file:@"WFMPMediaContentItem.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler7 handleFailureInFunction:v78 file:@"WFMPMediaContentItem.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -920,9 +920,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v24)
   {
-    v79 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
     v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyPlaybackDuration(void)"];
-    [v79 handleFailureInFunction:v80 file:@"WFMPMediaContentItem.m" lineNumber:44 description:{@"%s", dlerror()}];
+    [currentHandler8 handleFailureInFunction:v80 file:@"WFMPMediaContentItem.m" lineNumber:44 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -955,9 +955,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v27)
   {
-    v81 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
     v82 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyPlayCount(void)"];
-    [v81 handleFailureInFunction:v82 file:@"WFMPMediaContentItem.m" lineNumber:45 description:{@"%s", dlerror()}];
+    [currentHandler9 handleFailureInFunction:v82 file:@"WFMPMediaContentItem.m" lineNumber:45 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1012,9 +1012,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v30)
   {
-    v83 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
     v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyIsExplicit(void)"];
-    [v83 handleFailureInFunction:v84 file:@"WFMPMediaContentItem.m" lineNumber:49 description:{@"%s", dlerror()}];
+    [currentHandler10 handleFailureInFunction:v84 file:@"WFMPMediaContentItem.m" lineNumber:49 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1050,9 +1050,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v33)
   {
-    v85 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
     v86 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyLyrics(void)"];
-    [v85 handleFailureInFunction:v86 file:@"WFMPMediaContentItem.m" lineNumber:50 description:{@"%s", dlerror()}];
+    [currentHandler11 handleFailureInFunction:v86 file:@"WFMPMediaContentItem.m" lineNumber:50 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1085,9 +1085,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v36)
   {
-    v87 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
     v88 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyReleaseDate(void)"];
-    [v87 handleFailureInFunction:v88 file:@"WFMPMediaContentItem.m" lineNumber:51 description:{@"%s", dlerror()}];
+    [currentHandler12 handleFailureInFunction:v88 file:@"WFMPMediaContentItem.m" lineNumber:51 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1122,9 +1122,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v39)
   {
-    v89 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
     v90 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyComments(void)"];
-    [v89 handleFailureInFunction:v90 file:@"WFMPMediaContentItem.m" lineNumber:52 description:{@"%s", dlerror()}];
+    [currentHandler13 handleFailureInFunction:v90 file:@"WFMPMediaContentItem.m" lineNumber:52 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1158,9 +1158,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v42)
   {
-    v91 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler14 = [MEMORY[0x277CCA890] currentHandler];
     v92 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyIsCloudItem(void)"];
-    [v91 handleFailureInFunction:v92 file:@"WFMPMediaContentItem.m" lineNumber:53 description:{@"%s", dlerror()}];
+    [currentHandler14 handleFailureInFunction:v92 file:@"WFMPMediaContentItem.m" lineNumber:53 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1205,9 +1205,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v45)
   {
-    v93 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler15 = [MEMORY[0x277CCA890] currentHandler];
     v94 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertySkipCount(void)"];
-    [v93 handleFailureInFunction:v94 file:@"WFMPMediaContentItem.m" lineNumber:54 description:{@"%s", dlerror()}];
+    [currentHandler15 handleFailureInFunction:v94 file:@"WFMPMediaContentItem.m" lineNumber:54 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1239,9 +1239,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v48)
   {
-    v95 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler16 = [MEMORY[0x277CCA890] currentHandler];
     v96 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyLastPlayedDate(void)"];
-    [v95 handleFailureInFunction:v96 file:@"WFMPMediaContentItem.m" lineNumber:55 description:{@"%s", dlerror()}];
+    [currentHandler16 handleFailureInFunction:v96 file:@"WFMPMediaContentItem.m" lineNumber:55 description:{@"%s", dlerror()}];
 
     goto LABEL_72;
   }
@@ -1275,9 +1275,9 @@ void __81__WFMPMediaContentItem_runQuery_withItems_permissionRequestor_completio
   _Block_object_dispose(&v250, 8);
   if (!v51)
   {
-    v97 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler17 = [MEMORY[0x277CCA890] currentHandler];
     v98 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPMediaItemPropertyRating(void)"];
-    [v97 handleFailureInFunction:v98 file:@"WFMPMediaContentItem.m" lineNumber:56 description:{@"%s", dlerror()}];
+    [currentHandler17 handleFailureInFunction:v98 file:@"WFMPMediaContentItem.m" lineNumber:56 description:{@"%s", dlerror()}];
 
 LABEL_72:
     __break(1u);
@@ -1538,47 +1538,47 @@ void __40__WFMPMediaContentItem_propertyBuilders__block_invoke(uint64_t a1, void
   (a4)[2](v7, v9);
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  if (a3)
+  if (thumbnail)
   {
-    height = a4.height;
-    width = a4.width;
+    height = size.height;
+    width = size.width;
     v8 = MEMORY[0x277D79FC8];
-    v9 = a3;
+    thumbnailCopy = thumbnail;
     v10 = [v8 alloc];
-    v11 = [(WFMPMediaContentItem *)self mediaItem];
-    v12 = [v11 artwork];
-    v13 = [v12 imageWithSize:{width, height}];
+    mediaItem = [(WFMPMediaContentItem *)self mediaItem];
+    artwork = [mediaItem artwork];
+    v13 = [artwork imageWithSize:{width, height}];
     v14 = [v10 initWithPlatformImage:v13];
-    (*(a3 + 2))(v9, v14, 0);
+    (*(thumbnail + 2))(thumbnailCopy, v14, 0);
   }
 
   return 1;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFMPMediaContentItem *)self mediaItem];
-  [v5 playbackDuration];
+  textCopy = text;
+  mediaItem = [(WFMPMediaContentItem *)self mediaItem];
+  [mediaItem playbackDuration];
   v7 = WFChooseFromListFormatPlaybackDuration(v6);
 
-  if (v4)
+  if (textCopy)
   {
-    v4[2](v4, v7);
+    textCopy[2](textCopy, v7);
   }
 
   return 1;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFMPMediaContentItem *)self artist];
-    (*(a3 + 2))(v5, v6);
+    subtitleCopy = subtitle;
+    artist = [(WFMPMediaContentItem *)self artist];
+    (*(subtitle + 2))(subtitleCopy, artist);
   }
 
   return 1;

@@ -11,7 +11,7 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
+    inspectableValueWithNull = 0;
     goto LABEL_25;
   }
 
@@ -21,12 +21,12 @@
     if ([v4 hasRatioValue])
     {
       v9 = MEMORY[0x277CCD880];
-      v10 = [v4 ratioValue];
-      v6 = [v9 createWithCodable:v10];
+      ratioValue = [v4 ratioValue];
+      stringValue = [v9 createWithCodable:ratioValue];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithRatio:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithRatio:stringValue];
         goto LABEL_23;
       }
     }
@@ -34,12 +34,12 @@
     else if ([v4 hasMedicalDateValue])
     {
       v11 = MEMORY[0x277CCD5D8];
-      v12 = [v4 medicalDateValue];
-      v6 = [v11 createWithCodable:v12];
+      medicalDateValue = [v4 medicalDateValue];
+      stringValue = [v11 createWithCodable:medicalDateValue];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithMedicalDate:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithMedicalDate:stringValue];
         goto LABEL_23;
       }
     }
@@ -47,12 +47,12 @@
     else if ([v4 hasDateComponentsValue])
     {
       v13 = MEMORY[0x277CBEAB8];
-      v14 = [v4 dateComponentsValue];
-      v6 = [v13 hk_dateComponentsWithCodableDateComponents:v14];
+      dateComponentsValue = [v4 dateComponentsValue];
+      stringValue = [v13 hk_dateComponentsWithCodableDateComponents:dateComponentsValue];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithDateComponents:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithDateComponents:stringValue];
         goto LABEL_23;
       }
     }
@@ -60,12 +60,12 @@
     else if ([v4 hasCodedQuantityValue])
     {
       v15 = MEMORY[0x277CCD198];
-      v16 = [v4 codedQuantityValue];
-      v6 = [v15 createWithCodable:v16];
+      codedQuantityValue = [v4 codedQuantityValue];
+      stringValue = [v15 createWithCodable:codedQuantityValue];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithCodedQuantity:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithCodedQuantity:stringValue];
         goto LABEL_23;
       }
     }
@@ -73,12 +73,12 @@
     else if ([v4 hasMedicalCodingValue])
     {
       v17 = MEMORY[0x277CCD5C0];
-      v18 = [v4 medicalCodingValue];
-      v6 = [(HKMedicalCoding *)v17 _medicalCodingsWithCodable:v18];
+      medicalCodingValue = [v4 medicalCodingValue];
+      stringValue = [(HKMedicalCoding *)v17 _medicalCodingsWithCodable:medicalCodingValue];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithMedicalCodings:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithMedicalCodings:stringValue];
         goto LABEL_23;
       }
     }
@@ -87,116 +87,116 @@
     {
       if (![v4 hasCodedValueCollection])
       {
-        v8 = [MEMORY[0x277CCD550] inspectableValueWithNull];
+        inspectableValueWithNull = [MEMORY[0x277CCD550] inspectableValueWithNull];
         goto LABEL_24;
       }
 
       v19 = MEMORY[0x277CCD1A8];
-      v20 = [v4 codedValueCollection];
-      v6 = [v19 createWithCodable:v20];
+      codedValueCollection = [v4 codedValueCollection];
+      stringValue = [v19 createWithCodable:codedValueCollection];
 
-      if (v6)
+      if (stringValue)
       {
-        v7 = [MEMORY[0x277CCD550] inspectableValueWithCodedValueCollection:v6];
+        v7 = [MEMORY[0x277CCD550] inspectableValueWithCodedValueCollection:stringValue];
         goto LABEL_23;
       }
     }
 
-    v8 = 0;
+    inspectableValueWithNull = 0;
     goto LABEL_24;
   }
 
   v5 = MEMORY[0x277CCD550];
-  v6 = [v4 stringValue];
-  v7 = [v5 inspectableValueWithString:v6];
+  stringValue = [v4 stringValue];
+  v7 = [v5 inspectableValueWithString:stringValue];
 LABEL_23:
-  v8 = v7;
+  inspectableValueWithNull = v7;
 
 LABEL_24:
 LABEL_25:
 
-  return v8;
+  return inspectableValueWithNull;
 }
 
 - (HDCodableInspectableValue)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableInspectableValue);
-  v3 = [a1 valueType];
-  if (v3 > 5)
+  valueType = [self valueType];
+  if (valueType > 5)
   {
-    if (v3 > 8)
+    if (valueType > 8)
     {
-      if (v3 != 9)
+      if (valueType != 9)
       {
-        if (v3 == 10)
+        if (valueType == 10)
         {
-          v4 = [a1 inspectableIntegerValue];
-          -[HDCodableInspectableValue setInspectableIntegerValue:](v2, "setInspectableIntegerValue:", [v4 longLongValue]);
+          inspectableIntegerValue = [self inspectableIntegerValue];
+          -[HDCodableInspectableValue setInspectableIntegerValue:](v2, "setInspectableIntegerValue:", [inspectableIntegerValue longLongValue]);
         }
 
         else
         {
-          if (v3 != 11)
+          if (valueType != 11)
           {
             goto LABEL_27;
           }
 
-          v4 = [a1 BOOLeanValue];
-          -[HDCodableInspectableValue setBooleanValue:](v2, "setBooleanValue:", [v4 BOOLValue]);
+          inspectableIntegerValue = [self BOOLeanValue];
+          -[HDCodableInspectableValue setBooleanValue:](v2, "setBooleanValue:", [inspectableIntegerValue BOOLValue]);
         }
 
         goto LABEL_26;
       }
 
       v7 = MEMORY[0x277CCD5C0];
-      v4 = [a1 dataAbsentReasonCodings];
-      v5 = [(HKMedicalCoding *)v7 _codeableRepresentationForMedicalCodings:v4];
-      [(HDCodableInspectableValue *)v2 setDataAbsentReasonCodingsValue:v5];
+      inspectableIntegerValue = [self dataAbsentReasonCodings];
+      codableRepresentationForSync = [(HKMedicalCoding *)v7 _codeableRepresentationForMedicalCodings:inspectableIntegerValue];
+      [(HDCodableInspectableValue *)v2 setDataAbsentReasonCodingsValue:codableRepresentationForSync];
     }
 
-    else if (v3 == 6)
+    else if (valueType == 6)
     {
-      v4 = [a1 codedQuantityValue];
-      v5 = [v4 codableRepresentationForSync];
-      [(HDCodableInspectableValue *)v2 setCodedQuantityValue:v5];
+      inspectableIntegerValue = [self codedQuantityValue];
+      codableRepresentationForSync = [inspectableIntegerValue codableRepresentationForSync];
+      [(HDCodableInspectableValue *)v2 setCodedQuantityValue:codableRepresentationForSync];
     }
 
-    else if (v3 == 7)
+    else if (valueType == 7)
     {
       v6 = MEMORY[0x277CCD5C0];
-      v4 = [a1 medicalCodings];
-      v5 = [(HKMedicalCoding *)v6 _codeableRepresentationForMedicalCodings:v4];
-      [(HDCodableInspectableValue *)v2 setMedicalCodingValue:v5];
+      inspectableIntegerValue = [self medicalCodings];
+      codableRepresentationForSync = [(HKMedicalCoding *)v6 _codeableRepresentationForMedicalCodings:inspectableIntegerValue];
+      [(HDCodableInspectableValue *)v2 setMedicalCodingValue:codableRepresentationForSync];
     }
 
     else
     {
-      v4 = [a1 codedValueCollection];
-      v5 = [v4 codableRepresentationForSync];
-      [(HDCodableInspectableValue *)v2 setCodedValueCollection:v5];
+      inspectableIntegerValue = [self codedValueCollection];
+      codableRepresentationForSync = [inspectableIntegerValue codableRepresentationForSync];
+      [(HDCodableInspectableValue *)v2 setCodedValueCollection:codableRepresentationForSync];
     }
 
     goto LABEL_25;
   }
 
-  if (v3 > 1)
+  if (valueType > 1)
   {
-    switch(v3)
+    switch(valueType)
     {
       case 2:
-        v4 = [a1 medicalDateValue];
-        v5 = [v4 codableRepresentationForSync];
-        [(HDCodableInspectableValue *)v2 setMedicalDateValue:v5];
+        inspectableIntegerValue = [self medicalDateValue];
+        codableRepresentationForSync = [inspectableIntegerValue codableRepresentationForSync];
+        [(HDCodableInspectableValue *)v2 setMedicalDateValue:codableRepresentationForSync];
         break;
       case 3:
-        v4 = [a1 medicalDateIntervalValue];
-        v5 = [v4 codableRepresentationForSync];
-        [(HDCodableInspectableValue *)v2 setMedicalDateIntervalValue:v5];
+        inspectableIntegerValue = [self medicalDateIntervalValue];
+        codableRepresentationForSync = [inspectableIntegerValue codableRepresentationForSync];
+        [(HDCodableInspectableValue *)v2 setMedicalDateIntervalValue:codableRepresentationForSync];
         break;
       case 4:
-        v4 = [a1 dateComponentsValue];
-        v5 = [v4 hk_codableDateComponents];
-        [(HDCodableInspectableValue *)v2 setDateComponentsValue:v5];
+        inspectableIntegerValue = [self dateComponentsValue];
+        codableRepresentationForSync = [inspectableIntegerValue hk_codableDateComponents];
+        [(HDCodableInspectableValue *)v2 setDateComponentsValue:codableRepresentationForSync];
         break;
       default:
         goto LABEL_27;
@@ -207,21 +207,21 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v3)
+  if (valueType)
   {
-    if (v3 != 1)
+    if (valueType != 1)
     {
       goto LABEL_27;
     }
 
-    v4 = [a1 ratioValue];
-    v5 = [v4 codableRepresentationForSync];
-    [(HDCodableInspectableValue *)v2 setRatioValue:v5];
+    inspectableIntegerValue = [self ratioValue];
+    codableRepresentationForSync = [inspectableIntegerValue codableRepresentationForSync];
+    [(HDCodableInspectableValue *)v2 setRatioValue:codableRepresentationForSync];
     goto LABEL_25;
   }
 
-  v4 = [a1 stringValue];
-  [(HDCodableInspectableValue *)v2 setStringValue:v4];
+  inspectableIntegerValue = [self stringValue];
+  [(HDCodableInspectableValue *)v2 setStringValue:inspectableIntegerValue];
 LABEL_26:
 
 LABEL_27:

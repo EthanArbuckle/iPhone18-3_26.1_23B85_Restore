@@ -1,17 +1,17 @@
 @interface HDTailSpin
-+ (void)generateTailSpinForTeam:(id)a3 category:(id)a4 description:(id)a5 logger:(id)a6;
++ (void)generateTailSpinForTeam:(id)team category:(id)category description:(id)description logger:(id)logger;
 @end
 
 @implementation HDTailSpin
 
-+ (void)generateTailSpinForTeam:(id)a3 category:(id)a4 description:(id)a5 logger:(id)a6
++ (void)generateTailSpinForTeam:(id)team category:(id)category description:(id)description logger:(id)logger
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([MEMORY[0x277CCDD30] isAppleInternalInstall] && objc_msgSend(a1, "_isImprovedHealthAndActivityEnabled"))
+  teamCopy = team;
+  categoryCopy = category;
+  descriptionCopy = description;
+  loggerCopy = logger;
+  if ([MEMORY[0x277CCDD30] isAppleInternalInstall] && objc_msgSend(self, "_isImprovedHealthAndActivityEnabled"))
   {
     v51 = 0u;
     v52 = 0u;
@@ -52,18 +52,18 @@
     v14 = sysctl(v53, 4u, buf, &v21, 0, 0);
     v15 = v23;
     _HKInitializeLogging();
-    v16 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+    v16 = os_log_type_enabled(loggerCopy, OS_LOG_TYPE_DEFAULT);
     if (v14 || (v15 & 0x800) == 0)
     {
       if (v16)
       {
         *buf = 138543874;
-        *&buf[4] = v10;
+        *&buf[4] = teamCopy;
         *&buf[12] = 2114;
-        *&buf[14] = v11;
+        *&buf[14] = categoryCopy;
         *&buf[22] = 2114;
-        *&buf[24] = v12;
-        _os_log_impl(&dword_25156C000, v13, OS_LOG_TYPE_DEFAULT, "[tailspin] Saving tailspin for  %{public}@-%{public}@: %{public}@", buf, 0x20u);
+        *&buf[24] = descriptionCopy;
+        _os_log_impl(&dword_25156C000, loggerCopy, OS_LOG_TYPE_DEFAULT, "[tailspin] Saving tailspin for  %{public}@-%{public}@: %{public}@", buf, 0x20u);
       }
 
       v18 = DRTailspinRequest();
@@ -71,15 +71,15 @@
       if ((v18 & 1) == 0)
       {
         _HKInitializeLogging();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggerCopy, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          *&buf[4] = v10;
+          *&buf[4] = teamCopy;
           *&buf[12] = 2114;
-          *&buf[14] = v11;
+          *&buf[14] = categoryCopy;
           *&buf[22] = 2114;
-          *&buf[24] = v12;
-          _os_log_error_impl(&dword_25156C000, v13, OS_LOG_TYPE_ERROR, "[tailspin] Failed to generate tailspin for %{public}@-%{public}@: %{public}@", buf, 0x20u);
+          *&buf[24] = descriptionCopy;
+          _os_log_error_impl(&dword_25156C000, loggerCopy, OS_LOG_TYPE_ERROR, "[tailspin] Failed to generate tailspin for %{public}@-%{public}@: %{public}@", buf, 0x20u);
         }
       }
     }
@@ -87,28 +87,28 @@
     else if (v16)
     {
       *buf = 138543874;
-      *&buf[4] = v10;
+      *&buf[4] = teamCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
+      *&buf[14] = categoryCopy;
       *&buf[22] = 2114;
-      *&buf[24] = v12;
+      *&buf[24] = descriptionCopy;
       v17 = "[tailspin] Debugger Attached - Skipping tailspin for  %{public}@-%{public}@: %{public}@";
 LABEL_9:
-      _os_log_impl(&dword_25156C000, v13, OS_LOG_TYPE_DEFAULT, v17, buf, 0x20u);
+      _os_log_impl(&dword_25156C000, loggerCopy, OS_LOG_TYPE_DEFAULT, v17, buf, 0x20u);
     }
   }
 
   else
   {
     _HKInitializeLogging();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggerCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      *&buf[4] = v10;
+      *&buf[4] = teamCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v11;
+      *&buf[14] = categoryCopy;
       *&buf[22] = 2114;
-      *&buf[24] = v12;
+      *&buf[24] = descriptionCopy;
       v17 = "[tailspin] IH&A is not enabled. Not triggering tailspin for %{public}@-%{public}@: %{public}@";
       goto LABEL_9;
     }

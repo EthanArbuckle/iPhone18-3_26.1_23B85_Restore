@@ -6,7 +6,7 @@
 - (id)osVersion;
 - (id)serialNumber;
 - (void)dealloc;
-- (void)registerForDeviceNameUpdates:(id)a3;
+- (void)registerForDeviceNameUpdates:(id)updates;
 - (void)setupDeviceNameListener;
 @end
 
@@ -14,9 +14,9 @@
 
 - (void)setupDeviceNameListener
 {
-  v3 = [(OTDeviceInformationActualAdapter *)self deviceNameUpdateListeners];
+  deviceNameUpdateListeners = [(OTDeviceInformationActualAdapter *)self deviceNameUpdateListeners];
 
-  if (!v3)
+  if (!deviceNameUpdateListeners)
   {
     v4 = [[CKKSListenerCollection alloc] initWithName:@"OTDeviceInformationActualAdapter"];
     [(OTDeviceInformationActualAdapter *)self setDeviceNameUpdateListeners:v4];
@@ -35,9 +35,9 @@
       if ([(OTDeviceInformationActualAdapter *)self store])
       {
         SCDynamicStoreSetNotificationKeys([(OTDeviceInformationActualAdapter *)self store], v7, 0);
-        v8 = [(OTDeviceInformationActualAdapter *)self store];
+        store = [(OTDeviceInformationActualAdapter *)self store];
         v9 = dispatch_get_global_queue(0, 0);
-        SCDynamicStoreSetDispatchQueue(v8, v9);
+        SCDynamicStoreSetDispatchQueue(store, v9);
       }
     }
   }
@@ -118,9 +118,9 @@
   if (sysctlbyname("kern.osversion", v12, &v10, 0, 0) | v3 || (HIBYTE(v15) = 0, HIBYTE(v13) = 0, [NSString stringWithFormat:@"%s (%s)", v14, v12], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 operatingSystemVersionString];
+    operatingSystemVersionString = [v5 operatingSystemVersionString];
 
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"Version" withString:&stru_10000C830];
+    v7 = [operatingSystemVersionString stringByReplacingOccurrencesOfString:@"Version" withString:&stru_10000C830];
   }
 
   v8 = [NSString stringWithFormat:@"%@ %@", @"iphone", v7];
@@ -128,18 +128,18 @@
   return v8;
 }
 
-- (void)registerForDeviceNameUpdates:(id)a3
+- (void)registerForDeviceNameUpdates:(id)updates
 {
-  v6 = a3;
+  updatesCopy = updates;
   if (os_variant_allows_internal_security_policies())
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(OTDeviceInformationActualAdapter *)v4 setupDeviceNameListener];
-    v5 = [(OTDeviceInformationActualAdapter *)v4 deviceNameUpdateListeners];
-    [v5 registerListener:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(OTDeviceInformationActualAdapter *)selfCopy setupDeviceNameListener];
+    deviceNameUpdateListeners = [(OTDeviceInformationActualAdapter *)selfCopy deviceNameUpdateListeners];
+    [deviceNameUpdateListeners registerListener:updatesCopy];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -172,8 +172,8 @@
 
 - (BOOL)isMachineIDOverridden
 {
-  v2 = [(OTDeviceInformationActualAdapter *)self overriddenMachineID];
-  v3 = v2 != 0;
+  overriddenMachineID = [(OTDeviceInformationActualAdapter *)self overriddenMachineID];
+  v3 = overriddenMachineID != 0;
 
   return v3;
 }

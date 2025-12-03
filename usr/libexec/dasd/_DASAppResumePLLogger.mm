@@ -1,13 +1,13 @@
 @interface _DASAppResumePLLogger
-+ (id)applicationBundleIDForExecutableName:(id)a3;
++ (id)applicationBundleIDForExecutableName:(id)name;
 + (id)sharedInstance;
-+ (id)topPredictionsFromScores:(id)a3;
-- (BOOL)updateCarryStatusWithContext:(id)a3;
++ (id)topPredictionsFromScores:(id)scores;
+- (BOOL)updateCarryStatusWithContext:(id)context;
 - (_DASAppResumePLLogger)init;
 - (id)appsFromProactiveSuggestions;
 - (void)initializeCarryStatusLogging;
-- (void)logAppResumePredictions:(id)a3 durationCheck:(BOOL)a4;
-- (void)logFreezerSkipReasons:(id)a3;
+- (void)logAppResumePredictions:(id)predictions durationCheck:(BOOL)check;
+- (void)logFreezerSkipReasons:(id)reasons;
 - (void)logUpdatedCarryStatus;
 @end
 
@@ -63,9 +63,9 @@ LABEL_6:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = v15;
-    v17 = [@"/System/Library/PrivateFrameworks/PowerLog.framework/PowerLog" UTF8String];
+    uTF8String = [@"/System/Library/PrivateFrameworks/PowerLog.framework/PowerLog" UTF8String];
     *buf = 136315138;
-    v21 = v17;
+    v21 = uTF8String;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Powerlog library at %s does not exist", buf, 0xCu);
   }
 
@@ -81,7 +81,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_1000194D0;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AE30 != -1)
   {
     dispatch_once(&qword_10020AE30, block);
@@ -92,19 +92,19 @@ LABEL_10:
   return v2;
 }
 
-+ (id)topPredictionsFromScores:(id)a3
++ (id)topPredictionsFromScores:(id)scores
 {
-  v3 = a3;
-  v4 = [v3 keysSortedByValueUsingComparator:&stru_1001B5748];
+  scoresCopy = scores;
+  v4 = [scoresCopy keysSortedByValueUsingComparator:&stru_1001B5748];
   v5 = +[NSMutableDictionary dictionary];
-  if ([v3 count] > 9)
+  if ([scoresCopy count] > 9)
   {
     v6 = 10;
   }
 
   else
   {
-    v6 = [v3 count];
+    v6 = [scoresCopy count];
     if (v6 < 1)
     {
       goto LABEL_7;
@@ -116,7 +116,7 @@ LABEL_10:
   do
   {
     v9 = [v4 objectAtIndexedSubscript:v7];
-    v10 = [v3 objectForKeyedSubscript:v9];
+    v10 = [scoresCopy objectForKeyedSubscript:v9];
     v11 = [v4 objectAtIndexedSubscript:v7];
     [v5 setObject:v10 forKeyedSubscript:v11];
 
@@ -129,13 +129,13 @@ LABEL_7:
   return v5;
 }
 
-- (void)logAppResumePredictions:(id)a3 durationCheck:(BOOL)a4
+- (void)logAppResumePredictions:(id)predictions durationCheck:(BOOL)check
 {
-  v4 = a4;
-  v6 = a3;
+  checkCopy = check;
+  predictionsCopy = predictions;
   if (self->_powerLogExists)
   {
-    if (v4 && ([(NSDate *)self->_lastReportedDate timeIntervalSinceNow], v7 > -1800.0))
+    if (checkCopy && ([(NSDate *)self->_lastReportedDate timeIntervalSinceNow], v7 > -1800.0))
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -155,15 +155,15 @@ LABEL_8:
       v23[2] = sub_10001995C;
       v10 = v23[3] = &unk_1001B5608;
       v24 = v10;
-      [v6 enumerateKeysAndObjectsUsingBlock:v23];
-      v11 = [(_DASAppResumePLLogger *)self appsFromProactiveSuggestions];
+      [predictionsCopy enumerateKeysAndObjectsUsingBlock:v23];
+      appsFromProactiveSuggestions = [(_DASAppResumePLLogger *)self appsFromProactiveSuggestions];
       v18 = _NSConcreteStackBlock;
       v19 = 3221225472;
       v20 = sub_100019ABC;
       v21 = &unk_1001B5608;
       v12 = v10;
       v22 = v12;
-      [v11 enumerateKeysAndObjectsUsingBlock:&v18];
+      [appsFromProactiveSuggestions enumerateKeysAndObjectsUsingBlock:&v18];
       v27 = @"appResumePredictions";
       v28 = v12;
       v13 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1, v18, v19, v20, v21];
@@ -198,16 +198,16 @@ LABEL_8:
   }
 }
 
-+ (id)applicationBundleIDForExecutableName:(id)a3
++ (id)applicationBundleIDForExecutableName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = os_transaction_create();
   v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
   v6 = [v5 objectForKey:@"appNameTranslation"];
 
-  if (v6 && ([v6 objectForKeyedSubscript:v3], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (v6 && ([v6 objectForKeyedSubscript:nameCopy], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v6 objectForKeyedSubscript:v3];
+    v8 = [v6 objectForKeyedSubscript:nameCopy];
     v9 = v6;
   }
 
@@ -216,55 +216,55 @@ LABEL_8:
     v9 = +[NSMutableDictionary dictionary];
 
     v10 = [LSApplicationRecord enumeratorWithOptions:0];
-    v11 = [v10 nextObject];
-    v12 = [v11 compatibilityObject];
+    nextObject = [v10 nextObject];
+    compatibilityObject = [nextObject compatibilityObject];
 
-    if (v12)
+    if (compatibilityObject)
     {
       do
       {
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 bundleIdentifier];
-        if (v14)
+        bundleIdentifier = [compatibilityObject bundleIdentifier];
+        if (bundleIdentifier)
         {
-          v15 = v14;
-          v16 = [v12 bundleExecutable];
+          v15 = bundleIdentifier;
+          bundleExecutable = [compatibilityObject bundleExecutable];
 
-          if (v16)
+          if (bundleExecutable)
           {
-            v17 = [v12 bundleIdentifier];
-            v18 = [v12 bundleExecutable];
-            [v9 setObject:v17 forKeyedSubscript:v18];
+            bundleIdentifier2 = [compatibilityObject bundleIdentifier];
+            bundleExecutable2 = [compatibilityObject bundleExecutable];
+            [v9 setObject:bundleIdentifier2 forKeyedSubscript:bundleExecutable2];
           }
         }
 
         objc_autoreleasePoolPop(v13);
-        v19 = [v10 nextObject];
-        v20 = [v19 compatibilityObject];
+        nextObject2 = [v10 nextObject];
+        compatibilityObject2 = [nextObject2 compatibilityObject];
 
-        v12 = v20;
+        compatibilityObject = compatibilityObject2;
       }
 
-      while (v20);
+      while (compatibilityObject2);
     }
 
     v21 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.duetactivityscheduler"];
     [v21 setObject:v9 forKey:@"appNameTranslation"];
 
-    v8 = [v9 objectForKeyedSubscript:v3];
+    v8 = [v9 objectForKeyedSubscript:nameCopy];
   }
 
   return v8;
 }
 
-- (void)logFreezerSkipReasons:(id)a3
+- (void)logFreezerSkipReasons:(id)reasons
 {
-  v4 = a3;
-  v5 = v4;
+  reasonsCopy = reasons;
+  v5 = reasonsCopy;
   if (self->_powerLogExists)
   {
     v11 = @"Applications";
-    v12 = v4;
+    v12 = reasonsCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -312,16 +312,16 @@ LABEL_8:
     v5 = v4;
     _Block_object_dispose(&v32, 8);
     v22 = [[v4 alloc] initWithConsumerSubType:9];
-    v6 = [v22 suggestionLayoutFromCache];
-    v21 = v6;
-    if (v6)
+    suggestionLayoutFromCache = [v22 suggestionLayoutFromCache];
+    v21 = suggestionLayoutFromCache;
+    if (suggestionLayoutFromCache)
     {
-      v7 = [v6 allSuggestionsInLayout];
+      allSuggestionsInLayout = [suggestionLayoutFromCache allSuggestionsInLayout];
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v8 = [v7 countByEnumeratingWithState:&v23 objects:v36 count:16];
+      v8 = [allSuggestionsInLayout countByEnumeratingWithState:&v23 objects:v36 count:16];
       if (v8)
       {
         v9 = *v24;
@@ -331,24 +331,24 @@ LABEL_8:
           {
             if (*v24 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allSuggestionsInLayout);
             }
 
             v11 = *(*(&v23 + 1) + 8 * i);
-            v12 = [v11 executableSpecification];
-            v13 = [v12 executableObject];
+            executableSpecification = [v11 executableSpecification];
+            executableObject = [executableSpecification executableObject];
 
-            if (v13)
+            if (executableObject)
             {
-              v14 = [v11 scoreSpecification];
-              [v14 rawScore];
+              scoreSpecification = [v11 scoreSpecification];
+              [scoreSpecification rawScore];
               v15 = [NSNumber numberWithDouble:?];
-              v16 = [v13 description];
+              v16 = [executableObject description];
               [v3 setObject:v15 forKeyedSubscript:v16];
             }
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v23 objects:v36 count:16];
+          v8 = [allSuggestionsInLayout countByEnumeratingWithState:&v23 objects:v36 count:16];
         }
 
         while (v8);
@@ -432,10 +432,10 @@ LABEL_8:
 {
   v3 = +[_CDClientContext userContext];
   v4 = [v3 objectForKeyedSubscript:self->_inferredCarryStatusKeyPath];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   v6 = [(_DASAppResumePLLogger *)self updateCarryStatusWithContext:v3];
-  if (v5 == v6)
+  if (bOOLValue == v6)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -461,17 +461,17 @@ LABEL_8:
   }
 }
 
-- (BOOL)updateCarryStatusWithContext:(id)a3
+- (BOOL)updateCarryStatusWithContext:(id)context
 {
   v4 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v5 = [v4 deviceIsInferredCarry];
+  deviceIsInferredCarry = [v4 deviceIsInferredCarry];
 
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_10011C668();
   }
 
-  return v5;
+  return deviceIsInferredCarry;
 }
 
 @end

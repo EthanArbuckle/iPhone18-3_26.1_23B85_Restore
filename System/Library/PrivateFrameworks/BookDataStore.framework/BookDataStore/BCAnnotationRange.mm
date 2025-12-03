@@ -1,9 +1,9 @@
 @interface BCAnnotationRange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCAnnotationRange
@@ -14,45 +14,45 @@
   v8.receiver = self;
   v8.super_class = BCAnnotationRange;
   v4 = [(BCAnnotationRange *)&v8 description];
-  v5 = [(BCAnnotationRange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCAnnotationRange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_location];
-  [v3 setObject:v4 forKey:@"location"];
+  [dictionary setObject:v4 forKey:@"location"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_length];
-  [v3 setObject:v5 forKey:@"length"];
+  [dictionary setObject:v5 forKey:@"length"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   location = self->_location;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteUint64Field();
   length = self->_length;
   PBDataWriterWriteUint64Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_location;
   *(result + 1) = self->_length;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_location == v4[2] && self->_length == v4[1];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_location == equalCopy[2] && self->_length == equalCopy[1];
 
   return v5;
 }

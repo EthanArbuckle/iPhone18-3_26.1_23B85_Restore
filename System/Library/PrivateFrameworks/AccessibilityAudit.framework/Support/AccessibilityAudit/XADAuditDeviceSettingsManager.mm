@@ -1,18 +1,18 @@
 @interface XADAuditDeviceSettingsManager
 - (XADAuditDeviceSettingsManager)init;
 - (id)_fontCategories;
-- (id)_fontValueFromCategoryIndex:(int64_t)a3;
+- (id)_fontValueFromCategoryIndex:(int64_t)index;
 - (id)_platformDefaultSettings;
 - (id)_platformSettings;
 - (id)settingsToCache;
-- (int64_t)_fontCategoryIndexFromValue:(id)a3;
-- (void)_settingDidChange:(id)a3;
+- (int64_t)_fontCategoryIndexFromValue:(id)value;
+- (void)_settingDidChange:(id)change;
 - (void)dealloc;
-- (void)setHostAPIVersion:(int64_t)a3;
+- (void)setHostAPIVersion:(int64_t)version;
 - (void)startObservingChanges;
 - (void)stopObservingChanges;
-- (void)updateCurrentValueForSetting:(id)a3 postNotificationIfChanged:(BOOL)a4;
-- (void)updateSetting:(id)a3 withNumberValue:(id)a4;
+- (void)updateCurrentValueForSetting:(id)setting postNotificationIfChanged:(BOOL)changed;
+- (void)updateSetting:(id)setting withNumberValue:(id)value;
 @end
 
 @implementation XADAuditDeviceSettingsManager
@@ -25,11 +25,11 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(XADAuditDeviceSettingsManager *)v2 _platformSettings];
-    [(XADAuditDeviceSettingsManager *)v3 setSettings:v4];
+    _platformSettings = [(XADAuditDeviceSettingsManager *)v2 _platformSettings];
+    [(XADAuditDeviceSettingsManager *)v3 setSettings:_platformSettings];
 
-    v5 = [(XADAuditDeviceSettingsManager *)v3 _platformDefaultSettings];
-    [(XADAuditDeviceSettingsManager *)v3 setDefaultSettings:v5];
+    _platformDefaultSettings = [(XADAuditDeviceSettingsManager *)v3 _platformDefaultSettings];
+    [(XADAuditDeviceSettingsManager *)v3 setDefaultSettings:_platformDefaultSettings];
 
     [(XADAuditDeviceSettingsManager *)v3 updateCurrentValueForAllSettingsAndPostNotificationIfChanged:1];
   }
@@ -41,47 +41,47 @@
 {
   v7.receiver = self;
   v7.super_class = XADAuditDeviceSettingsManager;
-  v2 = [(XADAuditDeviceSettingsManager *)&v7 settingsToCache];
+  settingsToCache = [(XADAuditDeviceSettingsManager *)&v7 settingsToCache];
   v3 = [AXAuditDeviceSetting createWithIdentifier:@"FONT_EXTENDED_RANGES" currentValue:0 settingType:3];
   v4 = v3;
   if (v3)
   {
-    if (v2)
+    if (settingsToCache)
     {
-      v5 = [v2 arrayByAddingObject:v3];
+      v5 = [settingsToCache arrayByAddingObject:v3];
 
-      v2 = v5;
+      settingsToCache = v5;
     }
 
     else
     {
       v8 = v3;
-      v2 = [NSArray arrayWithObjects:&v8 count:1];
+      settingsToCache = [NSArray arrayWithObjects:&v8 count:1];
     }
   }
 
-  return v2;
+  return settingsToCache;
 }
 
-- (void)setHostAPIVersion:(int64_t)a3
+- (void)setHostAPIVersion:(int64_t)version
 {
   v6.receiver = self;
   v6.super_class = XADAuditDeviceSettingsManager;
-  [(XADAuditDeviceSettingsManager *)&v6 setHostAPIVersion:a3];
-  v4 = [(XADAuditDeviceSettingsManager *)self _platformSettings];
-  [(XADAuditDeviceSettingsManager *)self setSettings:v4];
+  [(XADAuditDeviceSettingsManager *)&v6 setHostAPIVersion:version];
+  _platformSettings = [(XADAuditDeviceSettingsManager *)self _platformSettings];
+  [(XADAuditDeviceSettingsManager *)self setSettings:_platformSettings];
 
-  v5 = [(XADAuditDeviceSettingsManager *)self _platformDefaultSettings];
-  [(XADAuditDeviceSettingsManager *)self setDefaultSettings:v5];
+  _platformDefaultSettings = [(XADAuditDeviceSettingsManager *)self _platformDefaultSettings];
+  [(XADAuditDeviceSettingsManager *)self setDefaultSettings:_platformDefaultSettings];
 
   [(XADAuditDeviceSettingsManager *)self updateCurrentValueForAllSettingsAndPostNotificationIfChanged:1];
 }
 
 - (id)_platformDefaultSettings
 {
-  v2 = [(XADAuditDeviceSettingsManager *)self _platformSettings];
+  _platformSettings = [(XADAuditDeviceSettingsManager *)self _platformSettings];
   v3 = [AXAuditDeviceSetting createWithIdentifier:@"FONT_EXTENDED_RANGES" currentValue:&off_100019990 settingType:3];
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [_platformSettings arrayByAddingObject:v3];
 
   return v4;
 }
@@ -111,11 +111,11 @@
   [v3 addObject:v8];
   v9 = [AXAuditDeviceSetting createWithIdentifier:AXAuditDeviceSettingIdentifierDifferentiateWithoutColor currentValue:&off_100019990 settingType:3];
   [v3 addObject:v9];
-  v10 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-  v11 = -[XADAuditDeviceSettingsManager _fontValueFromCategoryIndex:](self, "_fontValueFromCategoryIndex:", [v10 indexOfObject:UIContentSizeCategoryLarge]);
+  _fontCategories = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+  v11 = -[XADAuditDeviceSettingsManager _fontValueFromCategoryIndex:](self, "_fontValueFromCategoryIndex:", [_fontCategories indexOfObject:UIContentSizeCategoryLarge]);
   v12 = [AXAuditDeviceSetting createWithIdentifier:AXAuditDeviceSettingIdentifierFontsSize currentValue:v11 settingType:2];
-  v13 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-  [v12 setSliderTickMarks:{objc_msgSend(v13, "count")}];
+  _fontCategories2 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+  [v12 setSliderTickMarks:{objc_msgSend(_fontCategories2, "count")}];
 
   [v3 addObject:v12];
 
@@ -131,9 +131,9 @@
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
 
-- (void)_settingDidChange:(id)a3
+- (void)_settingDidChange:(id)change
 {
-  v4 = [(XADAuditDeviceSettingsManager *)self settingForIdentifier:a3];
+  v4 = [(XADAuditDeviceSettingsManager *)self settingForIdentifier:change];
   [(XADAuditDeviceSettingsManager *)self updateCurrentValueForSetting:v4 postNotificationIfChanged:1];
 }
 
@@ -154,20 +154,20 @@
   v4 = [[NSHashTable alloc] initWithOptions:5 capacity:1];
   [(XADAuditDeviceSettingsManager *)self set_notificationContext:v4];
 
-  v5 = [(XADAuditDeviceSettingsManager *)self _notificationContext];
-  [v5 addObject:self];
+  _notificationContext = [(XADAuditDeviceSettingsManager *)self _notificationContext];
+  [_notificationContext addObject:self];
 
-  v6 = [(XADAuditDeviceSettingsManager *)self _notificationContext];
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000708C, kAXSInvertColorsEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_1000070DC, kAXSDarkenSystemColorsEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000712C, kAXSReduceMotionChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000717C, kAXSEnhanceBackgroundContrastChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_1000071CC, kAXSEnhanceTextLegibilityChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000721C, kAXSIncreaseButtonLegibilityNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000726C, kAXSButtonShapesEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_1000072BC, kAXSGrayscaleEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000730C, kAXSDifferentiateWithoutColorChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10000735C, @"ApplePreferredContentSizeCategoryChangedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  _notificationContext2 = [(XADAuditDeviceSettingsManager *)self _notificationContext];
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000708C, kAXSInvertColorsEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_1000070DC, kAXSDarkenSystemColorsEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000712C, kAXSReduceMotionChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000717C, kAXSEnhanceBackgroundContrastChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_1000071CC, kAXSEnhanceTextLegibilityChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000721C, kAXSIncreaseButtonLegibilityNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000726C, kAXSButtonShapesEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_1000072BC, kAXSGrayscaleEnabledNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000730C, kAXSDifferentiateWithoutColorChangedNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, _notificationContext2, sub_10000735C, @"ApplePreferredContentSizeCategoryChangedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (id)_fontCategories
@@ -177,14 +177,14 @@
   return v2;
 }
 
-- (void)updateCurrentValueForSetting:(id)a3 postNotificationIfChanged:(BOOL)a4
+- (void)updateCurrentValueForSetting:(id)setting postNotificationIfChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [v6 enabled];
-  v9 = [v6 currentValueNumber];
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierInvertColors])
+  changedCopy = changed;
+  settingCopy = setting;
+  identifier = [settingCopy identifier];
+  enabled = [settingCopy enabled];
+  currentValueNumber = [settingCopy currentValueNumber];
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierInvertColors])
   {
     v10 = _AXSInvertColorsEnabled();
 LABEL_19:
@@ -198,76 +198,76 @@ LABEL_19:
       v11 = &__kCFBooleanFalse;
     }
 
-    v12 = v6;
+    v12 = settingCopy;
     goto LABEL_23;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierIncreaseContrast])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierIncreaseContrast])
   {
     v10 = _AXDarkenSystemColors();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierReduceMotion])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierReduceMotion])
   {
     v10 = _AXSReduceMotionEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierReduceTransparency])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierReduceTransparency])
   {
     v10 = _AXSEnhanceBackgroundContrastEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierBoldFonts])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierBoldFonts])
   {
     v10 = _AXSEnhanceTextLegibilityEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierOnOffLabels])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierOnOffLabels])
   {
     v10 = _AXSIncreaseButtonLegibility();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierButtonShapes])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierButtonShapes])
   {
     v10 = _AXSButtonShapesEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierGrayscale])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierGrayscale])
   {
     v10 = _AXSGrayscaleEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierDifferentiateWithoutColor])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierDifferentiateWithoutColor])
   {
     v10 = _AXSDifferentiateWithoutColorEnabled();
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:AXAuditDeviceSettingIdentifierFontsSize])
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierFontsSize])
   {
     v19 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.apple.UIKit"];
     v20 = CFPreferencesCopyAppValue(@"UIPreferredContentSizeCategoryName", v19);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-      v22 = [v21 indexOfObject:v20];
+      _fontCategories = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+      v22 = [_fontCategories indexOfObject:v20];
 
       v23 = [(XADAuditDeviceSettingsManager *)self _fontValueFromCategoryIndex:v22];
-      [v6 setCurrentValueNumber:v23];
+      [settingCopy setCurrentValueNumber:v23];
     }
 
     goto LABEL_40;
   }
 
-  if (![v7 isEqualToString:@"FONT_EXTENDED_RANGES"])
+  if (![identifier isEqualToString:@"FONT_EXTENDED_RANGES"])
   {
     goto LABEL_24;
   }
@@ -277,30 +277,30 @@ LABEL_19:
   if (keyExistsAndHasValidFormat)
   {
     v20 = [NSNumber numberWithBool:AppBooleanValue != 0];
-    [v6 setCurrentValueNumber:v20];
+    [settingCopy setCurrentValueNumber:v20];
 LABEL_40:
 
     goto LABEL_24;
   }
 
-  v12 = v6;
+  v12 = settingCopy;
   v11 = 0;
 LABEL_23:
   [v12 setCurrentValueNumber:v11];
 LABEL_24:
-  if (v4)
+  if (changedCopy)
   {
-    v13 = [v6 identifier];
-    v14 = [(XADAuditDeviceSettingsManager *)self settingForIdentifier:v13];
+    identifier2 = [settingCopy identifier];
+    v14 = [(XADAuditDeviceSettingsManager *)self settingForIdentifier:identifier2];
 
     if (v14)
     {
-      if (v8 == [v6 enabled])
+      if (enabled == [settingCopy enabled])
       {
-        if (v9 || ([v6 currentValueNumber], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (currentValueNumber || ([settingCopy currentValueNumber], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          v15 = [v6 currentValueNumber];
-          v16 = [v9 isEqual:v15];
+          currentValueNumber2 = [settingCopy currentValueNumber];
+          v16 = [currentValueNumber isEqual:currentValueNumber2];
 
           if (v16)
           {
@@ -313,18 +313,18 @@ LABEL_24:
         }
       }
 
-      v18 = [(XADAuditDeviceSettingsManager *)self delegate];
-      [v18 axAuditDeviceManager:self settingDidChange:v6];
+      delegate = [(XADAuditDeviceSettingsManager *)self delegate];
+      [delegate axAuditDeviceManager:self settingDidChange:settingCopy];
     }
   }
 
 LABEL_33:
 }
 
-- (id)_fontValueFromCategoryIndex:(int64_t)a3
+- (id)_fontValueFromCategoryIndex:(int64_t)index
 {
-  v4 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-  v5 = [v4 count];
+  _fontCategories = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+  v5 = [_fontCategories count];
 
   if (v5 < 2)
   {
@@ -333,7 +333,7 @@ LABEL_33:
 
   else
   {
-    v6 = a3 / (v5 + -1.0);
+    v6 = index / (v5 + -1.0);
     if (v6 > 1.0)
     {
       v6 = 1.0;
@@ -350,11 +350,11 @@ LABEL_33:
   return v7;
 }
 
-- (int64_t)_fontCategoryIndexFromValue:(id)a3
+- (int64_t)_fontCategoryIndexFromValue:(id)value
 {
-  v4 = a3;
-  v5 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-  v6 = [v5 count];
+  valueCopy = value;
+  _fontCategories = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+  v6 = [_fontCategories count];
 
   if (v6 < 2)
   {
@@ -363,7 +363,7 @@ LABEL_33:
 
   else
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     if (v7 > 1.0)
     {
       v7 = 1.0;
@@ -380,80 +380,80 @@ LABEL_33:
   return v8;
 }
 
-- (void)updateSetting:(id)a3 withNumberValue:(id)a4
+- (void)updateSetting:(id)setting withNumberValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  valueCopy = value;
   v31.receiver = self;
   v31.super_class = XADAuditDeviceSettingsManager;
-  [(XADAuditDeviceSettingsManager *)&v31 updateSetting:v6 withNumberValue:v7];
-  v8 = [v6 identifier];
-  if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierInvertColors])
+  [(XADAuditDeviceSettingsManager *)&v31 updateSetting:settingCopy withNumberValue:valueCopy];
+  identifier = [settingCopy identifier];
+  if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierInvertColors])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSInvertColorsSetEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierIncreaseContrast])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierIncreaseContrast])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetDarkenSystemColors();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierReduceMotion])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierReduceMotion])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetReduceMotionEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierReduceTransparency])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierReduceTransparency])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetEnhanceBackgroundContrastEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierBoldFonts])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierBoldFonts])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetEnhanceTextLegibilityEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierOnOffLabels])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierOnOffLabels])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetIncreaseButtonLegibility();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierButtonShapes])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierButtonShapes])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetButtonShapesEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierGrayscale])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierGrayscale])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSGrayscaleSetEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierDifferentiateWithoutColor])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierDifferentiateWithoutColor])
   {
-    [v7 BOOLValue];
+    [valueCopy BOOLValue];
     _AXSSetDifferentiateWithoutColorEnabled();
   }
 
-  else if ([v8 isEqualToString:AXAuditDeviceSettingIdentifierFontsSize])
+  else if ([identifier isEqualToString:AXAuditDeviceSettingIdentifierFontsSize])
   {
-    v9 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-    v10 = [(XADAuditDeviceSettingsManager *)self _fontCategoryIndexFromValue:v7];
-    v11 = [v9 indexOfObject:UIContentSizeCategoryExtraExtraExtraLarge];
-    if ((v10 & 0x8000000000000000) != 0 || (v12 = v11, v10 >= [v9 count]))
+    _fontCategories = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+    v10 = [(XADAuditDeviceSettingsManager *)self _fontCategoryIndexFromValue:valueCopy];
+    v11 = [_fontCategories indexOfObject:UIContentSizeCategoryExtraExtraExtraLarge];
+    if ((v10 & 0x8000000000000000) != 0 || (v12 = v11, v10 >= [_fontCategories count]))
     {
-      v18 = [v8 isEqualToString:@"FONT_EXTENDED_RANGES"];
-      if (v7 && v18)
+      v18 = [identifier isEqualToString:@"FONT_EXTENDED_RANGES"];
+      if (valueCopy && v18)
       {
-        v19 = [v7 BOOLValue];
-        if (v19)
+        bOOLValue = [valueCopy BOOLValue];
+        if (bOOLValue)
         {
           v20 = &kCFBooleanTrue;
         }
@@ -465,23 +465,23 @@ LABEL_33:
 
         CFPreferencesSetAppValue(kPSLargeTextUsesExtendedRangeKey, *v20, off_10001DC78);
         CFPreferencesAppSynchronize(off_10001DC78);
-        if ((v19 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v21 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.apple.UIKit"];
           v22 = CFPreferencesCopyAppValue(@"UIPreferredContentSizeCategoryName", v21);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
-            v24 = [v23 indexOfObject:v22];
+            _fontCategories2 = [(XADAuditDeviceSettingsManager *)self _fontCategories];
+            v24 = [_fontCategories2 indexOfObject:v22];
 
-            v25 = [v9 indexOfObject:UIContentSizeCategoryExtraExtraExtraLarge];
+            v25 = [_fontCategories indexOfObject:UIContentSizeCategoryExtraExtraExtraLarge];
             if ((v25 & 0x8000000000000000) == 0)
             {
               v26 = v25;
-              if (v25 < [v9 count] && v24 > v26)
+              if (v25 < [_fontCategories count] && v24 > v26)
               {
-                v27 = [v9 objectAtIndex:v26];
+                v27 = [_fontCategories objectAtIndex:v26];
 
                 v28 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.apple.UIKit"];
                 CFPreferencesSetAppValue(@"UIPreferredContentSizeCategoryName", v27, v28);
@@ -501,7 +501,7 @@ LABEL_33:
 
     else
     {
-      v13 = [v9 objectAtIndex:v10];
+      v13 = [_fontCategories objectAtIndex:v10];
       v14 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.apple.UIKit"];
       CFPreferencesSetAppValue(@"UIPreferredContentSizeCategoryName", v13, v14);
       v15 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.apple.UIKit"];
@@ -524,7 +524,7 @@ LABEL_33:
     }
   }
 
-  [(XADAuditDeviceSettingsManager *)self updateCurrentValueForSetting:v6 postNotificationIfChanged:1];
+  [(XADAuditDeviceSettingsManager *)self updateCurrentValueForSetting:settingCopy postNotificationIfChanged:1];
 }
 
 @end

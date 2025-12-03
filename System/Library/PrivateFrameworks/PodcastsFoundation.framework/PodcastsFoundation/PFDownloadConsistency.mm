@@ -1,14 +1,14 @@
 @interface PFDownloadConsistency
 - (PFDownloadConsistency)init;
-- (void)beginEnforcementWithCompletionHandler:(id)a3;
+- (void)beginEnforcementWithCompletionHandler:(id)handler;
 - (void)endEnforcement;
 @end
 
 @implementation PFDownloadConsistency
 
-- (void)beginEnforcementWithCompletionHandler:(id)a3
+- (void)beginEnforcementWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -23,7 +23,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D8DBC7B0(v7, v6);
   sub_1D8D15664(v7);
 }
@@ -33,7 +33,7 @@
   v3 = OBJC_IVAR___PFDownloadConsistency_listener;
   if (*(&self->super.isa + OBJC_IVAR___PFDownloadConsistency_listener))
   {
-    v4 = self;
+    selfCopy = self;
 
     sub_1D917785C();
 
@@ -42,7 +42,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   *(&self->super.isa + v3) = 0;

@@ -1,36 +1,36 @@
 @interface AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsBandGroup:(id)a3;
-- (int)StringAsCaIndex:(id)a3;
-- (int)StringAsMcgState:(id)a3;
-- (int)StringAsRat:(id)a3;
-- (int)StringAsRxDivState:(id)a3;
+- (int)StringAsBandGroup:(id)group;
+- (int)StringAsCaIndex:(id)index;
+- (int)StringAsMcgState:(id)state;
+- (int)StringAsRat:(id)rat;
+- (int)StringAsRxDivState:(id)state;
 - (int)bandGroup;
 - (int)caIndex;
 - (int)mcgState;
 - (int)rat;
 - (int)rxDivState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCaIndex:(BOOL)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasIsEndc:(BOOL)a3;
-- (void)setHasMcgCcNum:(BOOL)a3;
-- (void)setHasMcgState:(BOOL)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasRxDivState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCaIndex:(BOOL)index;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasIsEndc:(BOOL)endc;
+- (void)setHasMcgCcNum:(BOOL)num;
+- (void)setHasMcgState:(BOOL)state;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasRxDivState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin
 
-- (void)setHasIsEndc:(BOOL)a3
+- (void)setHasIsEndc:(BOOL)endc
 {
-  if (a3)
+  if (endc)
   {
     v3 = 0x80;
   }
@@ -56,9 +56,9 @@
   }
 }
 
-- (void)setHasMcgState:(BOOL)a3
+- (void)setHasMcgState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -71,17 +71,17 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsMcgState:(id)a3
+- (int)StringAsMcgState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Idle"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Idle"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Connected"];
+    v4 = [stateCopy isEqualToString:@"Connected"];
   }
 
   return v4;
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 32;
   }
@@ -115,25 +115,25 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LTE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"LTE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"NR"];
+    v4 = [ratCopy isEqualToString:@"NR"];
   }
 
   return v4;
 }
 
-- (void)setHasMcgCcNum:(BOOL)a3
+- (void)setHasMcgCcNum:(BOOL)num
 {
-  if (a3)
+  if (num)
   {
     v3 = 8;
   }
@@ -159,9 +159,9 @@
   }
 }
 
-- (void)setHasCaIndex:(BOOL)a3
+- (void)setHasCaIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -174,40 +174,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCaIndex:(id)a3
+- (int)StringAsCaIndex:(id)index
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PCC"])
+  indexCopy = index;
+  if ([indexCopy isEqualToString:@"PCC"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SCC1"])
+  else if ([indexCopy isEqualToString:@"SCC1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SCC2"])
+  else if ([indexCopy isEqualToString:@"SCC2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SCC3"])
+  else if ([indexCopy isEqualToString:@"SCC3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SCC4"])
+  else if ([indexCopy isEqualToString:@"SCC4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SCC5"])
+  else if ([indexCopy isEqualToString:@"SCC5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SCC6"])
+  else if ([indexCopy isEqualToString:@"SCC6"])
   {
     v4 = 6;
   }
@@ -233,9 +233,9 @@
   }
 }
 
-- (void)setHasRxDivState:(BOOL)a3
+- (void)setHasRxDivState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 64;
   }
@@ -248,25 +248,25 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsRxDivState:(id)a3
+- (int)StringAsRxDivState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ONE_RX"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"ONE_RX"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TWO_RX"])
+  else if ([stateCopy isEqualToString:@"TWO_RX"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"THREE_RX"])
+  else if ([stateCopy isEqualToString:@"THREE_RX"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FOUR_RX"])
+  else if ([stateCopy isEqualToString:@"FOUR_RX"])
   {
     v4 = 3;
   }
@@ -292,20 +292,20 @@
   }
 }
 
-- (int)StringAsBandGroup:(id)a3
+- (int)StringAsBandGroup:(id)group
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Low"])
+  groupCopy = group;
+  if ([groupCopy isEqualToString:@"Low"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Mid"])
+  else if ([groupCopy isEqualToString:@"Mid"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"High"])
+  else if ([groupCopy isEqualToString:@"High"])
   {
     v4 = 2;
   }
@@ -318,9 +318,9 @@
   return v4;
 }
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -339,20 +339,20 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin;
   v4 = [(AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogLteNrRxDiversityHistRxdBin *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has < 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_isEndc];
-    [v3 setObject:v7 forKey:@"is_endc"];
+    [dictionary setObject:v7 forKey:@"is_endc"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -391,7 +391,7 @@ LABEL_3:
     v9 = @"Idle";
   }
 
-  [v3 setObject:v9 forKey:@"mcg_state"];
+  [dictionary setObject:v9 forKey:@"mcg_state"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -425,7 +425,7 @@ LABEL_20:
     v11 = @"LTE";
   }
 
-  [v3 setObject:v11 forKey:@"rat"];
+  [dictionary setObject:v11 forKey:@"rat"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -441,7 +441,7 @@ LABEL_5:
 
 LABEL_26:
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_mcgCcNum];
-  [v3 setObject:v12 forKey:@"mcg_cc_num"];
+  [dictionary setObject:v12 forKey:@"mcg_cc_num"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -467,7 +467,7 @@ LABEL_27:
     v14 = off_27825BAA0[caIndex];
   }
 
-  [v3 setObject:v14 forKey:@"ca_index"];
+  [dictionary setObject:v14 forKey:@"ca_index"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -493,7 +493,7 @@ LABEL_31:
     v16 = off_27825BAD8[rxDivState];
   }
 
-  [v3 setObject:v16 forKey:@"rx_div_state"];
+  [dictionary setObject:v16 forKey:@"rx_div_state"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -519,7 +519,7 @@ LABEL_35:
     v18 = off_27825BAF8[bandGroup];
   }
 
-  [v3 setObject:v18 forKey:@"band_group"];
+  [dictionary setObject:v18 forKey:@"band_group"];
 
   if ((*&self->_has & 4) == 0)
   {
@@ -528,16 +528,16 @@ LABEL_35:
 
 LABEL_9:
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-  [v3 setObject:v5 forKey:@"duration_ms"];
+  [dictionary setObject:v5 forKey:@"duration_ms"];
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if (has < 0)
   {
@@ -648,14 +648,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has < 0)
   {
-    v4[36] = self->_isEndc;
-    v4[40] |= 0x80u;
+    toCopy[36] = self->_isEndc;
+    toCopy[40] |= 0x80u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -674,8 +674,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_mcgState;
-  v4[40] |= 0x10u;
+  *(toCopy + 6) = self->_mcgState;
+  toCopy[40] |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -689,8 +689,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(v4 + 7) = self->_rat;
-  v4[40] |= 0x20u;
+  *(toCopy + 7) = self->_rat;
+  toCopy[40] |= 0x20u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -704,8 +704,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  *(v4 + 5) = self->_mcgCcNum;
-  v4[40] |= 8u;
+  *(toCopy + 5) = self->_mcgCcNum;
+  toCopy[40] |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -719,8 +719,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 3) = self->_caIndex;
-  v4[40] |= 2u;
+  *(toCopy + 3) = self->_caIndex;
+  toCopy[40] |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -734,8 +734,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 8) = self->_rxDivState;
-  v4[40] |= 0x40u;
+  *(toCopy + 8) = self->_rxDivState;
+  toCopy[40] |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -749,21 +749,21 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 2) = self->_bandGroup;
-  v4[40] |= 1u;
+  *(toCopy + 2) = self->_bandGroup;
+  toCopy[40] |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
-    *(v4 + 4) = self->_durationMs;
-    v4[40] |= 4u;
+    *(toCopy + 4) = self->_durationMs;
+    toCopy[40] |= 4u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has < 0)
   {
@@ -875,10 +875,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
@@ -886,7 +886,7 @@ LABEL_9:
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
-    if ((*(v4 + 40) & 0x80) == 0)
+    if ((*(equalCopy + 40) & 0x80) == 0)
     {
       goto LABEL_4;
     }
@@ -896,21 +896,21 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if ((*(v4 + 40) & 0x80) == 0)
+  if ((*(equalCopy + 40) & 0x80) == 0)
   {
     goto LABEL_44;
   }
 
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (self->_isEndc)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_44;
   }
@@ -918,86 +918,86 @@ LABEL_44:
 LABEL_4:
   if ((*&has & 0x10) != 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0 || self->_mcgState != *(v4 + 6))
+    if ((*(equalCopy + 40) & 0x10) == 0 || self->_mcgState != *(equalCopy + 6))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) != 0)
+  else if ((*(equalCopy + 40) & 0x10) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&has & 0x20) != 0)
   {
-    if ((*(v4 + 40) & 0x20) == 0 || self->_rat != *(v4 + 7))
+    if ((*(equalCopy + 40) & 0x20) == 0 || self->_rat != *(equalCopy + 7))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 40) & 0x20) != 0)
+  else if ((*(equalCopy + 40) & 0x20) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_mcgCcNum != *(v4 + 5))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_mcgCcNum != *(equalCopy + 5))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_caIndex != *(v4 + 3))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_caIndex != *(equalCopy + 3))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&has & 0x40) != 0)
   {
-    if ((*(v4 + 40) & 0x40) == 0 || self->_rxDivState != *(v4 + 8))
+    if ((*(equalCopy + 40) & 0x40) == 0 || self->_rxDivState != *(equalCopy + 8))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 40) & 0x40) != 0)
+  else if ((*(equalCopy + 40) & 0x40) != 0)
   {
     goto LABEL_44;
   }
 
   if (*&has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_bandGroup != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_bandGroup != *(equalCopy + 2))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_44;
   }
 
-  v7 = (*(v4 + 40) & 4) == 0;
+  v7 = (*(equalCopy + 40) & 4) == 0;
   if ((*&has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_durationMs != *(v4 + 4))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_durationMs != *(equalCopy + 4))
     {
       goto LABEL_44;
     }
@@ -1120,15 +1120,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if (v5 < 0)
   {
-    self->_isEndc = *(v4 + 36);
+    self->_isEndc = *(fromCopy + 36);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -1141,14 +1141,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) == 0)
+  else if ((*(fromCopy + 40) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_mcgState = *(v4 + 6);
+  self->_mcgState = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -1161,9 +1161,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_rat = *(v4 + 7);
+  self->_rat = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -1176,9 +1176,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_mcgCcNum = *(v4 + 5);
+  self->_mcgCcNum = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1191,9 +1191,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_caIndex = *(v4 + 3);
+  self->_caIndex = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1206,9 +1206,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_rxDivState = *(v4 + 8);
+  self->_rxDivState = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 1) == 0)
   {
 LABEL_8:
@@ -1221,12 +1221,12 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_bandGroup = *(v4 + 2);
+  self->_bandGroup = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 4) != 0)
+  if ((*(fromCopy + 40) & 4) != 0)
   {
 LABEL_9:
-    self->_durationMs = *(v4 + 4);
+    self->_durationMs = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

@@ -1,13 +1,13 @@
 @interface GTMTLReplayErrorReplyStream
-- (GTMTLReplayErrorReplyStream)initWithObserver:(id)a3;
-- (void)notifyError_:(id)a3 replyConnection:(id)a4;
+- (GTMTLReplayErrorReplyStream)initWithObserver:(id)observer;
+- (void)notifyError_:(id)error_ replyConnection:(id)connection;
 @end
 
 @implementation GTMTLReplayErrorReplyStream
 
-- (GTMTLReplayErrorReplyStream)initWithObserver:(id)a3
+- (GTMTLReplayErrorReplyStream)initWithObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v6 = [GTServiceProperties protocolMethods:&unk_2860EE6C8];
   v9.receiver = self;
   v9.super_class = GTMTLReplayErrorReplyStream;
@@ -15,16 +15,16 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_observer, a3);
+    objc_storeStrong(&v7->_observer, observer);
   }
 
   return v7;
 }
 
-- (void)notifyError_:(id)a3 replyConnection:(id)a4
+- (void)notifyError_:(id)error_ replyConnection:(id)connection
 {
   observer = self->_observer;
-  nserror = xpc_dictionary_get_nserror(a3, "error");
+  nserror = xpc_dictionary_get_nserror(error_, "error");
   [(GTMTLReplayServiceObserver *)observer notifyError:nserror];
 }
 

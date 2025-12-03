@@ -1,20 +1,20 @@
 @interface PVUtils
-+ (id)faceprintFromFaceprintArchive:(id)a3 error:(id *)a4;
-+ (id)selectRepresentativeFromFaceDescriptors:(id)a3;
++ (id)faceprintFromFaceprintArchive:(id)archive error:(id *)error;
++ (id)selectRepresentativeFromFaceDescriptors:(id)descriptors;
 @end
 
 @implementation PVUtils
 
-+ (id)selectRepresentativeFromFaceDescriptors:(id)a3
++ (id)selectRepresentativeFromFaceDescriptors:(id)descriptors
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = v3;
+  v4 = descriptorsCopy;
   v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v5)
   {
@@ -34,21 +34,21 @@
 
         v10 = *(*(&v31 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 faceId];
-        v13 = [v10 faceprint];
-        v14 = v13;
-        if (v12 >= 1 && v13 != 0)
+        faceId = [v10 faceId];
+        faceprint = [v10 faceprint];
+        v14 = faceprint;
+        if (faceId >= 1 && faceprint != 0)
         {
           v30 = 0;
-          v16 = [PVUtils faceprintFromFaceprintArchive:v13 error:&v30];
+          v16 = [PVUtils faceprintFromFaceprintArchive:faceprint error:&v30];
           v17 = v30;
           if (v16)
           {
             v18 = objc_alloc_init(MEMORY[0x277CE2CD0]);
-            [v18 setFaceId:v12];
+            [v18 setFaceId:faceId];
             [v18 setFaceTorsoprint:v16];
-            v19 = [v16 faceprint];
-            [v18 setFaceprint:v19];
+            faceprint2 = [v16 faceprint];
+            [v18 setFaceprint:faceprint2];
 
             [v26 addObject:v18];
           }
@@ -92,21 +92,21 @@
       v27[3] = &unk_2788B1690;
       v28 = v20;
       v22 = [v4 sortedArrayUsingComparator:v27];
-      v23 = [v22 lastObject];
+      lastObject = [v22 lastObject];
     }
 
     else
     {
-      v23 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v23 = 0;
+    lastObject = 0;
   }
 
-  return v23;
+  return lastObject;
 }
 
 uint64_t __51__PVUtils_selectRepresentativeFromFaceDescriptors___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -152,11 +152,11 @@ uint64_t __51__PVUtils_selectRepresentativeFromFaceDescriptors___block_invoke(ui
   return v21;
 }
 
-+ (id)faceprintFromFaceprintArchive:(id)a3 error:(id *)a4
++ (id)faceprintFromFaceprintArchive:(id)archive error:(id *)error
 {
   v5 = MEMORY[0x277CE2CD8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithState:v6 error:a4];
+  archiveCopy = archive;
+  v7 = [[v5 alloc] initWithState:archiveCopy error:error];
 
   return v7;
 }

@@ -1,37 +1,37 @@
 @interface EnvironmentService
-- (EnvironmentService)initWithDependencies:(id)a3 workQueue:(id)a4;
+- (EnvironmentService)initWithDependencies:(id)dependencies workQueue:(id)queue;
 - (void)_postNotification;
 - (void)_postNotificationOnWorkQueue;
 - (void)_startBiometryMonitoring;
 - (void)_startCompanionMonitoring;
 - (void)_startMonitors;
 - (void)_startUserPasswordMonitoring;
-- (void)biometryAccessoriesDidChangeForHelper:(id)a3;
-- (void)biometryEnrolledStateDidChangeForHelper:(id)a3;
-- (void)biometryLockoutStateDidChangeForHelper:(id)a3;
-- (void)companionAuthenticationSessionMonitorDidUpdate:(id)a3;
-- (void)passcodeSetDidChangeForHelper:(id)a3;
+- (void)biometryAccessoriesDidChangeForHelper:(id)helper;
+- (void)biometryEnrolledStateDidChangeForHelper:(id)helper;
+- (void)biometryLockoutStateDidChangeForHelper:(id)helper;
+- (void)companionAuthenticationSessionMonitorDidUpdate:(id)update;
+- (void)passcodeSetDidChangeForHelper:(id)helper;
 - (void)startServices;
 @end
 
 @implementation EnvironmentService
 
-- (EnvironmentService)initWithDependencies:(id)a3 workQueue:(id)a4
+- (EnvironmentService)initWithDependencies:(id)dependencies workQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  dependenciesCopy = dependencies;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = EnvironmentService;
   v8 = [(EnvironmentService *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dependencies, v6);
-    v10 = [[LACEnvironmentServiceXPCHost alloc] initWithDependencies:v6 workQueue:v7];
+    objc_storeWeak(&v8->_dependencies, dependenciesCopy);
+    v10 = [[LACEnvironmentServiceXPCHost alloc] initWithDependencies:dependenciesCopy workQueue:queueCopy];
     xpcController = v9->_xpcController;
     v9->_xpcController = v10;
 
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeStrong(&v9->_workQueue, queue);
   }
 
   return v9;
@@ -62,37 +62,37 @@
 - (void)_startBiometryMonitoring
 {
   WeakRetained = objc_loadWeakRetained(&self->_dependencies);
-  v3 = [WeakRetained biometryHelper];
-  [v3 addObserver:self];
+  biometryHelper = [WeakRetained biometryHelper];
+  [biometryHelper addObserver:self];
 }
 
 - (void)_startUserPasswordMonitoring
 {
   WeakRetained = objc_loadWeakRetained(&self->_dependencies);
-  v3 = [WeakRetained passcodeHelper];
-  [v3 addObserver:self];
+  passcodeHelper = [WeakRetained passcodeHelper];
+  [passcodeHelper addObserver:self];
 }
 
 - (void)_startCompanionMonitoring
 {
   WeakRetained = objc_loadWeakRetained(&self->_dependencies);
-  v4 = [WeakRetained onenessSessionMonitor];
-  [v4 addObserver:self];
+  onenessSessionMonitor = [WeakRetained onenessSessionMonitor];
+  [onenessSessionMonitor addObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_dependencies);
-  v6 = [v5 onenessSessionMonitor];
-  [v6 startMonitoring];
+  onenessSessionMonitor2 = [v5 onenessSessionMonitor];
+  [onenessSessionMonitor2 startMonitoring];
 
   v7 = objc_loadWeakRetained(&self->_dependencies);
-  v8 = [v7 phoneIntegrationSessionMonitor];
-  [v8 addObserver:self];
+  phoneIntegrationSessionMonitor = [v7 phoneIntegrationSessionMonitor];
+  [phoneIntegrationSessionMonitor addObserver:self];
 
   v10 = objc_loadWeakRetained(&self->_dependencies);
-  v9 = [v10 phoneIntegrationSessionMonitor];
-  [v9 startMonitoring];
+  phoneIntegrationSessionMonitor2 = [v10 phoneIntegrationSessionMonitor];
+  [phoneIntegrationSessionMonitor2 startMonitoring];
 }
 
-- (void)passcodeSetDidChangeForHelper:(id)a3
+- (void)passcodeSetDidChangeForHelper:(id)helper
 {
   v4 = LACLogEnvironment();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -104,7 +104,7 @@
   [(EnvironmentService *)self _postNotificationOnWorkQueue];
 }
 
-- (void)biometryEnrolledStateDidChangeForHelper:(id)a3
+- (void)biometryEnrolledStateDidChangeForHelper:(id)helper
 {
   v4 = LACLogEnvironment();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -116,7 +116,7 @@
   [(EnvironmentService *)self _postNotificationOnWorkQueue];
 }
 
-- (void)biometryLockoutStateDidChangeForHelper:(id)a3
+- (void)biometryLockoutStateDidChangeForHelper:(id)helper
 {
   v4 = LACLogEnvironment();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@
   [(EnvironmentService *)self _postNotificationOnWorkQueue];
 }
 
-- (void)biometryAccessoriesDidChangeForHelper:(id)a3
+- (void)biometryAccessoriesDidChangeForHelper:(id)helper
 {
   v4 = LACLogEnvironment();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -140,7 +140,7 @@
   [(EnvironmentService *)self _postNotificationOnWorkQueue];
 }
 
-- (void)companionAuthenticationSessionMonitorDidUpdate:(id)a3
+- (void)companionAuthenticationSessionMonitorDidUpdate:(id)update
 {
   v4 = LACLogEnvironment();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

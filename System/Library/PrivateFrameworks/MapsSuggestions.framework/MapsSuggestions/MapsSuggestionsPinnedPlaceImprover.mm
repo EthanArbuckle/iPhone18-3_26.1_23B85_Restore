@@ -1,15 +1,15 @@
 @interface MapsSuggestionsPinnedPlaceImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsPinnedPlaceImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
     goto LABEL_10;
   }
 
-  if (![v3 isPureShortcut])
+  if (![entryCopy isPureShortcut])
   {
 LABEL_10:
     v11 = 0;

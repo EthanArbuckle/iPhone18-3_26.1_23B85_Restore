@@ -1,21 +1,21 @@
 @interface CRLiOSSidebarViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (NSUndoManager)undoManager;
 - (UIWindow)keyboardObserversWindow;
-- (_TtC8Freeform27CRLiOSSidebarViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC8Freeform27CRLiOSSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)keyboardWillHideOrUndock:(id)a3;
-- (void)keyboardWillShowOrDock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC8Freeform27CRLiOSSidebarViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC8Freeform27CRLiOSSidebarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)keyboardWillHideOrUndock:(id)undock;
+- (void)keyboardWillShowOrDock:(id)dock;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -23,37 +23,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10061B078();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_10062B8AC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CRLiOSSidebarViewController();
   v4 = v5.receiver;
-  [(CRLiOSSidebarViewController *)&v5 viewDidAppear:v3];
+  [(CRLiOSSidebarViewController *)&v5 viewDidAppear:appearCopy];
   [objc_opt_self() addKeyboardObserver:{v4, v5.receiver, v5.super_class}];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10061D3C4();
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -62,10 +62,10 @@
   else
   {
     memset(v15, 0, sizeof(v15));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_10061E248(a3, v15, &v16);
+  sub_10061E248(action, v15, &v16);
 
   sub_10000CAAC(v15, &unk_1019F4D00);
   v8 = v17;
@@ -89,44 +89,44 @@
   return v13;
 }
 
-- (_TtC8Freeform27CRLiOSSidebarViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC8Freeform27CRLiOSSidebarViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8Freeform27CRLiOSSidebarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Freeform27CRLiOSSidebarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_10062BC3C();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10062C398();
 
   (*(v7 + 8))(v9, v6);
@@ -134,21 +134,21 @@
 
 - (NSUndoManager)undoManager
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10061E8A8();
 
   return v3;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   v13 = sub_10062D174();
 
   (*(v8 + 8))(v10, v7);
@@ -156,17 +156,17 @@
   return v13;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v13 = self;
-  sub_10062DB14(a4);
+  selfCopy = self;
+  sub_10062DB14(session);
 
   swift_unknownObjectRelease();
   (*(v9 + 8))(v11, v8);
@@ -176,17 +176,17 @@
   return v14.super.isa;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v9 = type metadata accessor for IndexPath();
   v10 = *(v9 - 8);
   __chkstk_darwin(v9);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v14 = self;
-  sub_10062E3AC(a4);
+  selfCopy = self;
+  sub_10062E3AC(session);
 
   swift_unknownObjectRelease();
   (*(v10 + 8))(v12, v9);
@@ -196,12 +196,12 @@
   return v15.super.isa;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = sub_1005B981C(&unk_101A23C40);
   __chkstk_darwin(v9 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for IndexPath();
@@ -214,10 +214,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = sub_10061FD70(v14, a4, v11);
+  selfCopy = self;
+  v16 = sub_10061FD70(viewCopy, update, v11);
 
   swift_unknownObjectRelease();
   sub_10000CAAC(v11, &unk_101A23C40);
@@ -225,26 +225,26 @@
   return v16;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10062EC08(a4);
+  selfCopy = self;
+  sub_10062EC08(coordinator);
 
   swift_unknownObjectRelease();
 }
 
 - (UIWindow)keyboardObserversWindow
 {
-  v2 = self;
-  result = [(CRLiOSSidebarViewController *)v2 view];
+  selfCopy = self;
+  result = [(CRLiOSSidebarViewController *)selfCopy view];
   if (result)
   {
     v4 = result;
-    v5 = [(UIWindow *)result window];
+    window = [(UIWindow *)result window];
 
-    return v5;
+    return window;
   }
 
   else
@@ -255,41 +255,41 @@
   return result;
 }
 
-- (void)keyboardWillShowOrDock:(id)a3
+- (void)keyboardWillShowOrDock:(id)dock
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_100621074();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)keyboardWillHideOrUndock:(id)a3
+- (void)keyboardWillHideOrUndock:(id)undock
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v16 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
-  v9 = [(CRLiOSSidebarViewController *)v8 collectionView];
-  if (v9)
+  selfCopy = self;
+  collectionView = [(CRLiOSSidebarViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v10 = v9;
+    v10 = collectionView;
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
     right = UIEdgeInsetsZero.right;
-    [v9 setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+    [collectionView setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-    v14 = [(CRLiOSSidebarViewController *)v8 collectionView];
-    if (v14)
+    collectionView2 = [(CRLiOSSidebarViewController *)selfCopy collectionView];
+    if (collectionView2)
     {
-      v15 = v14;
-      [v14 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
+      v15 = collectionView2;
+      [collectionView2 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
 
       (*(v5 + 8))(v7, v4);
       return;

@@ -1,10 +1,10 @@
 @interface SBIconRotationContainer
 - (SBIconCoordinate)coordinate;
 - (SBIconListView)listView;
-- (SBIconRotationContainer)initWithFrame:(CGRect)a3 startIcon:(id)a4 endIcon:(id)a5 listView:(id)a6 coordinate:(SBIconCoordinate)a7 location:(id)a8 transitionAnimation:(int64_t)a9 offscreen:(BOOL)a10;
-- (id)addIconViewForIcon:(id)a3 configurationOptions:(unint64_t)a4;
-- (void)_configureViewIfNecessary:(id)a3 forShowingSnapshotWhenDeactivated:(BOOL)a4;
-- (void)borrowExistingIconViewForIcon:(id)a3;
+- (SBIconRotationContainer)initWithFrame:(CGRect)frame startIcon:(id)icon endIcon:(id)endIcon listView:(id)view coordinate:(SBIconCoordinate)coordinate location:(id)location transitionAnimation:(int64_t)animation offscreen:(BOOL)self0;
+- (id)addIconViewForIcon:(id)icon configurationOptions:(unint64_t)options;
+- (void)_configureViewIfNecessary:(id)necessary forShowingSnapshotWhenDeactivated:(BOOL)deactivated;
+- (void)borrowExistingIconViewForIcon:(id)icon;
 - (void)concludeTransition;
 - (void)layoutSubviews;
 - (void)performTransition;
@@ -13,42 +13,42 @@
 
 @implementation SBIconRotationContainer
 
-- (SBIconRotationContainer)initWithFrame:(CGRect)a3 startIcon:(id)a4 endIcon:(id)a5 listView:(id)a6 coordinate:(SBIconCoordinate)a7 location:(id)a8 transitionAnimation:(int64_t)a9 offscreen:(BOOL)a10
+- (SBIconRotationContainer)initWithFrame:(CGRect)frame startIcon:(id)icon endIcon:(id)endIcon listView:(id)view coordinate:(SBIconCoordinate)coordinate location:(id)location transitionAnimation:(int64_t)animation offscreen:(BOOL)self0
 {
-  row = a7.row;
-  column = a7.column;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
+  row = coordinate.row;
+  column = coordinate.column;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  iconCopy = icon;
+  endIconCopy = endIcon;
+  viewCopy = view;
+  locationCopy = location;
   v34.receiver = self;
   v34.super_class = SBIconRotationContainer;
-  v24 = [(SBIconRotationContainer *)&v34 initWithFrame:x, y, width, height];
-  v25 = v24;
-  if (v24)
+  height = [(SBIconRotationContainer *)&v34 initWithFrame:x, y, width, height];
+  v25 = height;
+  if (height)
   {
-    v24->_coordinate.column = column;
-    v24->_coordinate.row = row;
-    v26 = [v23 copy];
+    height->_coordinate.column = column;
+    height->_coordinate.row = row;
+    v26 = [locationCopy copy];
     location = v25->_location;
     v25->_location = v26;
 
-    v25->_transitionAnimation = a9;
-    v25->_offscreen = a10;
-    objc_storeWeak(&v25->_listView, v22);
-    if (v20)
+    v25->_transitionAnimation = animation;
+    v25->_offscreen = offscreen;
+    objc_storeWeak(&v25->_listView, viewCopy);
+    if (iconCopy)
     {
-      [(SBIconRotationContainer *)v25 borrowExistingIconViewForIcon:v20];
-      v28 = [(SBIconRotationContainer *)v25 addIconViewForIcon:v20 configurationOptions:4];
+      [(SBIconRotationContainer *)v25 borrowExistingIconViewForIcon:iconCopy];
+      v28 = [(SBIconRotationContainer *)v25 addIconViewForIcon:iconCopy configurationOptions:4];
       startView = v25->_startView;
       v25->_startView = v28;
     }
 
-    if (v20 == v21 && !v25->_transitionAnimation)
+    if (iconCopy == endIconCopy && !v25->_transitionAnimation)
     {
       v32 = v25->_startView;
       endView = v25->_endView;
@@ -57,14 +57,14 @@
 
     else
     {
-      if (!v21)
+      if (!endIconCopy)
       {
 LABEL_10:
         [(SBIconRotationContainer *)v25 layoutIfNeeded];
         goto LABEL_11;
       }
 
-      v30 = [(SBIconRotationContainer *)v25 addIconViewForIcon:v21 configurationOptions:4];
+      v30 = [(SBIconRotationContainer *)v25 addIconViewForIcon:endIconCopy configurationOptions:4];
       endView = v25->_endView;
       v25->_endView = v30;
     }
@@ -77,42 +77,42 @@ LABEL_11:
   return v25;
 }
 
-- (void)borrowExistingIconViewForIcon:(id)a3
+- (void)borrowExistingIconViewForIcon:(id)icon
 {
-  v4 = a3;
-  v8 = [(SBIconRotationContainer *)self listView];
-  v5 = [v8 iconViewForIcon:v4];
+  iconCopy = icon;
+  listView = [(SBIconRotationContainer *)self listView];
+  v5 = [listView iconViewForIcon:iconCopy];
 
   if (v5)
   {
     [v5 setHidden:1];
     [(SBIconRotationContainer *)self addSubview:v5];
     [(SBIconRotationContainer *)self setBorrowedIconView:v5];
-    v6 = [v8 pauseLayoutForIconView:v5 forReason:@"rotation"];
-    v7 = [(SBIconRotationContainer *)self existingIconPauseLayoutAssertion];
-    [v7 invalidate];
+    v6 = [listView pauseLayoutForIconView:v5 forReason:@"rotation"];
+    existingIconPauseLayoutAssertion = [(SBIconRotationContainer *)self existingIconPauseLayoutAssertion];
+    [existingIconPauseLayoutAssertion invalidate];
 
     [(SBIconRotationContainer *)self setExistingIconPauseLayoutAssertion:v6];
   }
 }
 
-- (id)addIconViewForIcon:(id)a3 configurationOptions:(unint64_t)a4
+- (id)addIconViewForIcon:(id)icon configurationOptions:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(SBIconRotationContainer *)self listView];
-  v8 = [v7 dequeueReusableIconView];
-  if (v8)
+  iconCopy = icon;
+  listView = [(SBIconRotationContainer *)self listView];
+  dequeueReusableIconView = [listView dequeueReusableIconView];
+  if (dequeueReusableIconView)
   {
-    v9 = v8;
-    [v8 setConfigurationOptions:a4];
+    v9 = dequeueReusableIconView;
+    [dequeueReusableIconView setConfigurationOptions:options];
   }
 
   else
   {
-    v9 = [objc_alloc(objc_msgSend(v7 "baseIconViewClass"))];
+    v9 = [objc_alloc(objc_msgSend(listView "baseIconViewClass"))];
   }
 
-  [v7 configureIconView:v9 forIcon:v6];
+  [listView configureIconView:v9 forIcon:iconCopy];
 
   [(SBIconRotationContainer *)self _configureViewIfNecessary:v9 forShowingSnapshotWhenDeactivated:1];
   [v9 layoutIfNeeded];
@@ -146,11 +146,11 @@ LABEL_11:
     [(SBIconRotationContainer *)self _configureViewIfNecessary:endView forShowingSnapshotWhenDeactivated:1];
   }
 
-  v4 = [(SBIconRotationContainer *)self transitionAnimation];
-  if (v4 <= 3)
+  transitionAnimation = [(SBIconRotationContainer *)self transitionAnimation];
+  if (transitionAnimation <= 3)
   {
-    v5 = dbl_1BEE87E38[v4];
-    [(SBIconView *)self->_endView setAlpha:dbl_1BEE87E18[v4]];
+    v5 = dbl_1BEE87E38[transitionAnimation];
+    [(SBIconView *)self->_endView setAlpha:dbl_1BEE87E18[transitionAnimation]];
     [(SBIconView *)self->_endView setIconAccessoryAlpha:v5];
     v6 = self->_endView;
 
@@ -160,8 +160,8 @@ LABEL_11:
 
 - (void)performTransition
 {
-  v3 = [(SBIconRotationContainer *)self transitionAnimation];
-  if (v3 == 3)
+  transitionAnimation = [(SBIconRotationContainer *)self transitionAnimation];
+  if (transitionAnimation == 3)
   {
     [(SBIconView *)self->_startView setAlpha:0.0];
     endView = self->_endView;
@@ -171,7 +171,7 @@ LABEL_11:
 
   else
   {
-    if (v3 == 2)
+    if (transitionAnimation == 2)
     {
       [(SBIconView *)self->_endView setAlpha:1.0];
       [(SBIconView *)self->_startView setIconAccessoryAlpha:0.0];
@@ -181,7 +181,7 @@ LABEL_11:
 
     else
     {
-      if (v3 != 1)
+      if (transitionAnimation != 1)
       {
         return;
       }
@@ -198,50 +198,50 @@ LABEL_11:
 
 - (void)concludeTransition
 {
-  v11 = [(SBIconRotationContainer *)self startView];
-  v3 = [(SBIconRotationContainer *)self endView];
-  [(SBIconRotationContainer *)self _configureViewIfNecessary:v11 forShowingSnapshotWhenDeactivated:0];
-  if (v3 != v11)
+  startView = [(SBIconRotationContainer *)self startView];
+  endView = [(SBIconRotationContainer *)self endView];
+  [(SBIconRotationContainer *)self _configureViewIfNecessary:startView forShowingSnapshotWhenDeactivated:0];
+  if (endView != startView)
   {
-    [(SBIconRotationContainer *)self _configureViewIfNecessary:v3 forShowingSnapshotWhenDeactivated:0];
+    [(SBIconRotationContainer *)self _configureViewIfNecessary:endView forShowingSnapshotWhenDeactivated:0];
   }
 
-  v4 = [(SBIconRotationContainer *)self listView];
-  v5 = [(SBIconRotationContainer *)self borrowedIconView];
-  v6 = v5;
-  if (v5)
+  listView = [(SBIconRotationContainer *)self listView];
+  borrowedIconView = [(SBIconRotationContainer *)self borrowedIconView];
+  v6 = borrowedIconView;
+  if (borrowedIconView)
   {
-    v7 = [v5 icon];
-    v8 = [v4 displayedIconViewForIcon:v7];
+    icon = [borrowedIconView icon];
+    v8 = [listView displayedIconViewForIcon:icon];
 
     if (v8 == v6)
     {
       [v6 setHidden:0];
-      [v4 addSubview:v6];
+      [listView addSubview:v6];
     }
   }
 
-  v9 = [(SBIconRotationContainer *)self existingIconPauseLayoutAssertion];
-  [v9 invalidate];
+  existingIconPauseLayoutAssertion = [(SBIconRotationContainer *)self existingIconPauseLayoutAssertion];
+  [existingIconPauseLayoutAssertion invalidate];
 
   [(SBIconRotationContainer *)self setExistingIconPauseLayoutAssertion:0];
-  v10 = [v4 iconViewProvider];
-  [v10 recycleIconView:v11];
-  if (v3 != v11)
+  iconViewProvider = [listView iconViewProvider];
+  [iconViewProvider recycleIconView:startView];
+  if (endView != startView)
   {
-    [v10 recycleIconView:v3];
+    [iconViewProvider recycleIconView:endView];
   }
 
   [(SBIconRotationContainer *)self setListView:0];
 }
 
-- (void)_configureViewIfNecessary:(id)a3 forShowingSnapshotWhenDeactivated:(BOOL)a4
+- (void)_configureViewIfNecessary:(id)necessary forShowingSnapshotWhenDeactivated:(BOOL)deactivated
 {
-  v4 = a4;
-  v5 = [a3 customIconImageViewController];
+  deactivatedCopy = deactivated;
+  customIconImageViewController = [necessary customIconImageViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setShowsSnapshotWhenDeactivated:v4];
+    [customIconImageViewController setShowsSnapshotWhenDeactivated:deactivatedCopy];
   }
 }
 

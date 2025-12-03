@@ -2,9 +2,9 @@
 - (id)baseColor;
 - (id)variationMaxColor;
 - (id)variationMinColor;
-- (void)setBaseColor:(void *)a1;
-- (void)setVariationMaxColor:(void *)a1;
-- (void)setVariationMinColor:(void *)a1;
+- (void)setBaseColor:(void *)color;
+- (void)setVariationMaxColor:(void *)color;
+- (void)setVariationMinColor:(void *)color;
 @end
 
 @implementation AVTVaryingColor
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (void)setBaseColor:(void *)a1
+- (void)setBaseColor:(void *)color
 {
-  if (a1)
+  if (color)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 8);
+    objc_setProperty_atomic(color, newValue, newValue, 8);
   }
 }
 
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (void)setVariationMinColor:(void *)a1
+- (void)setVariationMinColor:(void *)color
 {
-  if (a1)
+  if (color)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 16);
+    objc_setProperty_atomic(color, newValue, newValue, 16);
   }
 }
 
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (void)setVariationMaxColor:(void *)a1
+- (void)setVariationMaxColor:(void *)color
 {
-  if (a1)
+  if (color)
   {
-    objc_setProperty_atomic(a1, newValue, newValue, 24);
+    objc_setProperty_atomic(color, newValue, newValue, 24);
   }
 }
 

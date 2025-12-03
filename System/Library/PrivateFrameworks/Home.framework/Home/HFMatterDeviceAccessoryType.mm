@@ -1,32 +1,32 @@
 @interface HFMatterDeviceAccessoryType
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HFMatterDeviceAccessoryType)initWithDeviceType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFMatterDeviceAccessoryType)initWithDeviceType:(id)type;
 - (id)description;
 - (id)equivalentServiceType;
 @end
 
 @implementation HFMatterDeviceAccessoryType
 
-- (HFMatterDeviceAccessoryType)initWithDeviceType:(id)a3
+- (HFMatterDeviceAccessoryType)initWithDeviceType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = HFMatterDeviceAccessoryType;
-  v6 = [(HFAccessoryType *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(HFAccessoryType *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, type);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -36,10 +36,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFMatterDeviceAccessoryType *)v5 deviceType];
-      v7 = [(HFMatterDeviceAccessoryType *)self deviceType];
-      if ([(HFMatterDeviceAccessoryType *)v6 isEqual:v7])
+      equivalentServiceType3 = equalCopy;
+      deviceType = [(HFMatterDeviceAccessoryType *)equivalentServiceType3 deviceType];
+      deviceType2 = [(HFMatterDeviceAccessoryType *)self deviceType];
+      if ([(HFMatterDeviceAccessoryType *)deviceType isEqual:deviceType2])
       {
         v8 = 1;
 LABEL_13:
@@ -47,9 +47,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = [(HFMatterDeviceAccessoryType *)v5 equivalentServiceType];
-      v10 = [(HFMatterDeviceAccessoryType *)self equivalentServiceType];
-      v8 = [v9 isEqualToString:v10];
+      equivalentServiceType = [(HFMatterDeviceAccessoryType *)equivalentServiceType3 equivalentServiceType];
+      equivalentServiceType2 = [(HFMatterDeviceAccessoryType *)self equivalentServiceType];
+      v8 = [equivalentServiceType isEqualToString:equivalentServiceType2];
 
 LABEL_10:
       goto LABEL_13;
@@ -58,17 +58,17 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HFMatterDeviceAccessoryType *)self equivalentServiceType];
-      v6 = v4;
-      v7 = [(HFMatterDeviceAccessoryType *)v6 serviceType];
-      if (![(HFMatterDeviceAccessoryType *)v5 isEqualToString:v7])
+      equivalentServiceType3 = [(HFMatterDeviceAccessoryType *)self equivalentServiceType];
+      deviceType = equalCopy;
+      deviceType2 = [(HFMatterDeviceAccessoryType *)deviceType serviceType];
+      if (![(HFMatterDeviceAccessoryType *)equivalentServiceType3 isEqualToString:deviceType2])
       {
         v8 = 0;
         goto LABEL_13;
       }
 
-      v9 = [(HFMatterDeviceAccessoryType *)v6 subtype];
-      v8 = v9 == 0;
+      equivalentServiceType = [(HFMatterDeviceAccessoryType *)deviceType subtype];
+      v8 = equivalentServiceType == 0;
       goto LABEL_10;
     }
 
@@ -90,8 +90,8 @@ LABEL_14:
   }
 
   v3 = qword_280E02598;
-  v4 = [(HFMatterDeviceAccessoryType *)self deviceType];
-  v5 = [v3 objectForKey:v4];
+  deviceType = [(HFMatterDeviceAccessoryType *)self deviceType];
+  v5 = [v3 objectForKey:deviceType];
 
   return v5;
 }
@@ -135,8 +135,8 @@ void __55__HFMatterDeviceAccessoryType__deviceTypeToServiceType__block_invoke_2(
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HFMatterDeviceAccessoryType *)self deviceType];
-  v4 = [v2 stringWithFormat:@"matterDeviceType: 0x%02x", objc_msgSend(v3, "intValue")];
+  deviceType = [(HFMatterDeviceAccessoryType *)self deviceType];
+  v4 = [v2 stringWithFormat:@"matterDeviceType: 0x%02x", objc_msgSend(deviceType, "intValue")];
 
   return v4;
 }

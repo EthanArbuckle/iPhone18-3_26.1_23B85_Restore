@@ -6,7 +6,7 @@
 - (PersonalizedItemPrioritizedStringAdornment)title;
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
-- (TrafficIncidentPersonalizedItem)initWithIncidentReport:(id)a3;
+- (TrafficIncidentPersonalizedItem)initWithIncidentReport:(id)report;
 @end
 
 @implementation TrafficIncidentPersonalizedItem
@@ -29,18 +29,18 @@
 
 - (GEOLabelGeometry)labelGeometry
 {
-  v2 = [(TrafficIncidentPersonalizedItem *)self mapItem];
-  v3 = [v2 _labelGeometry];
+  mapItem = [(TrafficIncidentPersonalizedItem *)self mapItem];
+  _labelGeometry = [mapItem _labelGeometry];
 
-  return v3;
+  return _labelGeometry;
 }
 
 - (GEOEnhancedPlacement)enhancedPlacement
 {
-  v2 = [(TrafficIncidentPersonalizedItem *)self mapItem];
-  v3 = [v2 _enhancedPlacement];
+  mapItem = [(TrafficIncidentPersonalizedItem *)self mapItem];
+  _enhancedPlacement = [mapItem _enhancedPlacement];
 
-  return v3;
+  return _enhancedPlacement;
 }
 
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes
@@ -64,30 +64,30 @@
 
 - (NSSet)keys
 {
-  v2 = [(TrafficIncidentReport *)self->_report uniqueID];
-  v3 = [NSSet setWithObject:v2];
+  uniqueID = [(TrafficIncidentReport *)self->_report uniqueID];
+  v3 = [NSSet setWithObject:uniqueID];
 
   return v3;
 }
 
-- (TrafficIncidentPersonalizedItem)initWithIncidentReport:(id)a3
+- (TrafficIncidentPersonalizedItem)initWithIncidentReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v28.receiver = self;
   v28.super_class = TrafficIncidentPersonalizedItem;
   v6 = [(TrafficIncidentPersonalizedItem *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_report, a3);
+    objc_storeStrong(&v6->_report, report);
     v8 = [MKPlacemark alloc];
-    v9 = [v5 mapItemLocation];
-    v10 = [v9 latLng];
-    [v10 lat];
+    mapItemLocation = [reportCopy mapItemLocation];
+    latLng = [mapItemLocation latLng];
+    [latLng lat];
     v12 = v11;
-    v13 = [v5 mapItemLocation];
-    v14 = [v13 latLng];
-    [v14 lng];
+    mapItemLocation2 = [reportCopy mapItemLocation];
+    latLng2 = [mapItemLocation2 latLng];
+    [latLng2 lng];
     v16 = CLLocationCoordinate2DMake(v12, v15);
     v17 = [v8 initWithCoordinate:{v16.latitude, v16.longitude}];
 
@@ -95,13 +95,13 @@
     mapItem = v7->_mapItem;
     v7->_mapItem = v18;
 
-    v20 = [v5 mapItemLocation];
-    v21 = [v20 latLng];
-    [v21 lat];
+    mapItemLocation3 = [reportCopy mapItemLocation];
+    latLng3 = [mapItemLocation3 latLng];
+    [latLng3 lat];
     v23 = v22;
-    v24 = [v5 mapItemLocation];
-    v25 = [v24 latLng];
-    [v25 lng];
+    mapItemLocation4 = [reportCopy mapItemLocation];
+    latLng4 = [mapItemLocation4 latLng];
+    [latLng4 lng];
     v7->_coordinate = CLLocationCoordinate2DMake(v23, v26);
   }
 

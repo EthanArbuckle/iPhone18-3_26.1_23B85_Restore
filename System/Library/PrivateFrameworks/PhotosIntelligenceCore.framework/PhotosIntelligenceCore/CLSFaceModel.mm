@@ -1,6 +1,6 @@
 @interface CLSFaceModel
-+ (unint64_t)baseFaceAnalysisVersionWithFaceAnalysisVersion:(unint64_t)a3;
-- (CLSFaceModel)initWithFaceAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseFaceAnalysisVersionWithFaceAnalysisVersion:(unint64_t)version;
+- (CLSFaceModel)initWithFaceAnalysisVersion:(unint64_t)version;
 - (void)setupVersion1;
 - (void)setupVersion12;
 @end
@@ -35,7 +35,7 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSFaceModel)initWithFaceAnalysisVersion:(unint64_t)a3
+- (CLSFaceModel)initWithFaceAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -44,9 +44,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0xC)
+    if (version < 0xC)
     {
-      if (a3)
+      if (version)
       {
         [(CLSFaceModel *)v4 setupVersion1];
       }
@@ -77,16 +77,16 @@
   return v5;
 }
 
-+ (unint64_t)baseFaceAnalysisVersionWithFaceAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseFaceAnalysisVersionWithFaceAnalysisVersion:(unint64_t)version
 {
-  if (a3 >= 0xC)
+  if (version >= 0xC)
   {
     return 12;
   }
 
   else
   {
-    return a3 != 0;
+    return version != 0;
   }
 }
 

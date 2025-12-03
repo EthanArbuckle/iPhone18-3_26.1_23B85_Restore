@@ -1,18 +1,18 @@
 @interface WatchedServiceInfo
-+ (int)processWatchCommand:(id)a3;
-- (WatchedServiceInfo)initWithWatchCommand:(id)a3;
++ (int)processWatchCommand:(id)command;
+- (WatchedServiceInfo)initWithWatchCommand:(id)command;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
-- (void)logService:(const char *)a3;
+- (void)logService:(const char *)service;
 @end
 
 @implementation WatchedServiceInfo
 
-+ (int)processWatchCommand:(id)a3
++ (int)processWatchCommand:(id)command
 {
-  v3 = a3;
-  v4 = [[WatchedServiceInfo alloc] initWithWatchCommand:v3];
+  commandCopy = command;
+  v4 = [[WatchedServiceInfo alloc] initWithWatchCommand:commandCopy];
   if (!v4)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -29,7 +29,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = xpc_dictionary_get_remote_connection(v3);
+  v5 = xpc_dictionary_get_remote_connection(commandCopy);
   if (!v5)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -44,7 +44,7 @@ LABEL_11:
   }
 
   v6 = v5;
-  reply = xpc_dictionary_create_reply(v3);
+  reply = xpc_dictionary_create_reply(commandCopy);
   if (reply)
   {
     xpc_dictionary_set_uint64(reply, "HB_PARAM_REF", [(WatchedServiceInfo *)v4 heartbeatRef]);
@@ -59,9 +59,9 @@ LABEL_12:
   return v8;
 }
 
-- (WatchedServiceInfo)initWithWatchCommand:(id)a3
+- (WatchedServiceInfo)initWithWatchCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v43.receiver = self;
   v43.super_class = WatchedServiceInfo;
   v5 = [(WatchedServiceInfo *)&v43 init];
@@ -106,7 +106,7 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v9 = xpc_dictionary_get_remote_connection(v4);
+  v9 = xpc_dictionary_get_remote_connection(commandCopy);
   v5[3] = xpc_connection_get_pid(v9);
 
   if (!v5[3])
@@ -121,7 +121,7 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  string = xpc_dictionary_get_string(v4, "HB_PARAM_HOSTID");
+  string = xpc_dictionary_get_string(commandCopy, "HB_PARAM_HOSTID");
   if (!string)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -154,7 +154,7 @@ LABEL_22:
   }
 
   *(v5 + 2) = mach_absolute_time();
-  v13 = xpc_dictionary_dup_fd(v4, "HB_PARAM_FD");
+  v13 = xpc_dictionary_dup_fd(commandCopy, "HB_PARAM_FD");
   v5[2] = v13;
   if (!v13)
   {
@@ -200,7 +200,7 @@ LABEL_31:
     goto LABEL_21;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, "HB_PARAM_THEIRFD");
+  uint64 = xpc_dictionary_get_uint64(commandCopy, "HB_PARAM_THEIRFD");
   if (!uint64 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -222,7 +222,7 @@ LABEL_31:
     }
   }
 
-  v24 = xpc_dictionary_get_string(v4, "HB_PARAM_CLIENTNAME");
+  v24 = xpc_dictionary_get_string(commandCopy, "HB_PARAM_CLIENTNAME");
   if (v24)
   {
     v25 = v24;
@@ -250,7 +250,7 @@ LABEL_31:
     goto LABEL_28;
   }
 
-  v28 = xpc_dictionary_get_string(v4, "HB_PARAM_HOSTNAME");
+  v28 = xpc_dictionary_get_string(commandCopy, "HB_PARAM_HOSTNAME");
   if (v28)
   {
     v29 = v28;
@@ -361,31 +361,31 @@ LABEL_51:
 
 - (id)description
 {
-  v3 = [(WatchedServiceInfo *)self descriptionOverride];
+  descriptionOverride = [(WatchedServiceInfo *)self descriptionOverride];
 
-  if (v3)
+  if (descriptionOverride)
   {
-    v4 = [(WatchedServiceInfo *)self descriptionOverride];
+    descriptionOverride2 = [(WatchedServiceInfo *)self descriptionOverride];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WatchedServiceInfo;
-    v4 = [(WatchedServiceInfo *)&v6 description];
+    descriptionOverride2 = [(WatchedServiceInfo *)&v6 description];
   }
 
-  return v4;
+  return descriptionOverride2;
 }
 
-- (void)logService:(const char *)a3
+- (void)logService:(const char *)service
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
-    v6 = a3;
+    serviceCopy = service;
     v7 = 2114;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%{public}s: %{public}@", &v5, 0x16u);
   }
 }

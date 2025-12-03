@@ -1,13 +1,13 @@
 @interface SCNRendererTransitionContext
 - (__C3DFXPass)transitionPass;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)prepareRendererAtIndex:(int)a3 withScene:(id)a4 renderSize:(CGSize)a5 pointOfView:(id)a6 parentRenderer:(id)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)prepareRendererAtIndex:(int)index withScene:(id)scene renderSize:(CGSize)size pointOfView:(id)view parentRenderer:(id)renderer;
 - (void)dealloc;
 @end
 
 @implementation SCNRendererTransitionContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCNRendererTransitionContext);
   [(SCNRendererTransitionContext *)self transitionStartTime];
@@ -36,40 +36,40 @@
   return result;
 }
 
-- (id)prepareRendererAtIndex:(int)a3 withScene:(id)a4 renderSize:(CGSize)a5 pointOfView:(id)a6 parentRenderer:(id)a7
+- (id)prepareRendererAtIndex:(int)index withScene:(id)scene renderSize:(CGSize)size pointOfView:(id)view parentRenderer:(id)renderer
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   renderers = self->_renderers;
-  v11 = self->_renderers[a3];
+  v11 = self->_renderers[index];
   if (!v11)
   {
     +[SCNTransaction begin];
     [SCNTransaction setImmediateMode:1];
-    if ([a7 renderingAPI])
+    if ([renderer renderingAPI])
     {
-      v15 = +[SCNOffscreenRenderer offscreenRendererWithContext:size:](SCNOffscreenRenderer, "offscreenRendererWithContext:size:", [a7 context], width, height);
+      v15 = +[SCNOffscreenRenderer offscreenRendererWithContext:size:](SCNOffscreenRenderer, "offscreenRendererWithContext:size:", [renderer context], width, height);
     }
 
     else
     {
-      v15 = +[SCNOffscreenRenderer offscreenRendererWithDevice:size:](SCNOffscreenRenderer, "offscreenRendererWithDevice:size:", [a7 device], width, height);
+      v15 = +[SCNOffscreenRenderer offscreenRendererWithDevice:size:](SCNOffscreenRenderer, "offscreenRendererWithDevice:size:", [renderer device], width, height);
     }
 
     v16 = v15;
-    renderers[a3] = v16;
-    [(SCNRenderer *)v16 setScene:a4];
-    [(SCNRenderer *)renderers[a3] setPointOfView:a6];
-    -[SCNRenderer setBackgroundColor:](renderers[a3], "setBackgroundColor:", [a7 backgroundColor]);
-    v17 = renderers[a3];
-    [a7 sceneTime];
+    renderers[index] = v16;
+    [(SCNRenderer *)v16 setScene:scene];
+    [(SCNRenderer *)renderers[index] setPointOfView:view];
+    -[SCNRenderer setBackgroundColor:](renderers[index], "setBackgroundColor:", [renderer backgroundColor]);
+    v17 = renderers[index];
+    [renderer sceneTime];
     [(SCNRenderer *)v17 setSceneTime:?];
     +[SCNTransaction commit];
-    v11 = renderers[a3];
+    v11 = renderers[index];
   }
 
   [(SCNOffscreenRenderer *)v11 setSize:width, height];
-  return renderers[a3];
+  return renderers[index];
 }
 
 - (void)dealloc

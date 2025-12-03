@@ -1,14 +1,14 @@
 @interface GPServiceSideExportedObject
-- (void)didDismissPickerWithStagedAssets:(id)a3;
+- (void)didDismissPickerWithStagedAssets:(id)assets;
 - (void)didFinishServiceConfiguration;
-- (void)routeTo:(int64_t)a3;
-- (void)setAllowedGenerationStyles:(id)a3;
-- (void)setIsLoadingRecipe:(BOOL)a3;
-- (void)setPreviewAspectRatio:(id)a3;
-- (void)setPromptElements:(id)a3;
-- (void)setRecipeData:(id)a3;
-- (void)setResponsibleAuditToken:(id)a3;
-- (void)setSourceImage:(id)a3;
+- (void)routeTo:(int64_t)to;
+- (void)setAllowedGenerationStyles:(id)styles;
+- (void)setIsLoadingRecipe:(BOOL)recipe;
+- (void)setPreviewAspectRatio:(id)ratio;
+- (void)setPromptElements:(id)elements;
+- (void)setRecipeData:(id)data;
+- (void)setResponsibleAuditToken:(id)token;
+- (void)setSourceImage:(id)image;
 - (void)startUpscaling;
 @end
 
@@ -32,9 +32,9 @@
   sub_1D22AE01C(0, 0, v5, &unk_1D28ACDF8, v8);
 }
 
-- (void)setResponsibleAuditToken:(id)a3
+- (void)setResponsibleAuditToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   sub_1D2870F78();
   v4 = sub_1D28716E8();
   v6 = v5;
@@ -43,7 +43,7 @@
   sub_1D22D6D60(v4, v6);
 }
 
-- (void)setPromptElements:(id)a3
+- (void)setPromptElements:(id)elements
 {
   sub_1D22BCFD0(0, &qword_1EC6D9418);
   v3 = sub_1D28783E8();
@@ -53,7 +53,7 @@
   sub_1D2855B38(sub_1D2852B54, 0, sub_1D285FB68, v4);
 }
 
-- (void)setAllowedGenerationStyles:(id)a3
+- (void)setAllowedGenerationStyles:(id)styles
 {
   sub_1D22BCFD0(0, &qword_1EC6D9420);
   v3 = sub_1D28783E8();
@@ -78,20 +78,20 @@ LABEL_3:
   }
 }
 
-- (void)setIsLoadingRecipe:(BOOL)a3
+- (void)setIsLoadingRecipe:(BOOL)recipe
 {
   v4 = swift_allocObject();
-  *(v4 + 16) = a3;
+  *(v4 + 16) = recipe;
   sub_1D2870F78();
   sub_1D2855B38(sub_1D2853740, 0, sub_1D285FB5C, v4);
 }
 
-- (void)setRecipeData:(id)a3
+- (void)setRecipeData:(id)data
 {
-  if (a3)
+  if (data)
   {
     sub_1D2870F78();
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_1D28716E8();
     v7 = v6;
 
@@ -105,16 +105,16 @@ LABEL_3:
   }
 }
 
-- (void)setSourceImage:(id)a3
+- (void)setSourceImage:(id)image
 {
   v4 = swift_allocObject();
-  *(v4 + 16) = a3;
-  v5 = a3;
+  *(v4 + 16) = image;
+  imageCopy = image;
   sub_1D2870F78();
   sub_1D2855B38(sub_1D2853E4C, 0, sub_1D285FB58, v4);
 }
 
-- (void)setPreviewAspectRatio:(id)a3
+- (void)setPreviewAspectRatio:(id)ratio
 {
   v4 = sub_1D2871DD8();
   v5 = *(v4 - 8);
@@ -123,9 +123,9 @@ LABEL_3:
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v8);
   v10 = &v14 - v9;
-  v11 = a3;
+  ratioCopy = ratio;
   sub_1D2870F78();
-  [v11 floatValue];
+  [ratioCopy floatValue];
   sub_1D2871DB8();
   (*(v5 + 16))(v7, v10, v4);
   v12 = (*(v5 + 80) + 16) & ~*(v5 + 80);
@@ -142,15 +142,15 @@ LABEL_3:
   sub_1D2855B38(sub_1D285521C, 0, sub_1D2855228, 0);
 }
 
-- (void)routeTo:(int64_t)a3
+- (void)routeTo:(int64_t)to
 {
   v4 = swift_allocObject();
-  *(v4 + 16) = a3;
+  *(v4 + 16) = to;
   sub_1D2870F78();
   sub_1D2855B38(sub_1D2855448, 0, sub_1D285FB50, v4);
 }
 
-- (void)didDismissPickerWithStagedAssets:(id)a3
+- (void)didDismissPickerWithStagedAssets:(id)assets
 {
   sub_1D22BCFD0(0, &qword_1EC6D9420);
   v3 = sub_1D28783E8();

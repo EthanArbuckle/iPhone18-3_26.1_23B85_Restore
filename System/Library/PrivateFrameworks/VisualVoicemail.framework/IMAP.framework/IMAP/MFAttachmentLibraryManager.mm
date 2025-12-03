@@ -1,45 +1,45 @@
 @interface MFAttachmentLibraryManager
-- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)a3;
-- (id)_dataProviderForAttachmentURL:(id)a3 error:(id *)a4;
-- (id)attachmentsForMessage:(id)a3 withSchemes:(id)a4;
-- (void)_messageAttachmentStorageLocationsDidChangeNotification:(id)a3;
+- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)library;
+- (id)_dataProviderForAttachmentURL:(id)l error:(id *)error;
+- (id)attachmentsForMessage:(id)message withSchemes:(id)schemes;
+- (void)_messageAttachmentStorageLocationsDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)removeProviderForBaseURL:(id)a3;
+- (void)removeProviderForBaseURL:(id)l;
 @end
 
 @implementation MFAttachmentLibraryManager
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MFAttachmentLibraryManager;
   [(MFAttachmentComposeManager *)&v4 dealloc];
 }
 
-- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)a3
+- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [(MFAttachmentManager *)self init];
   if (v5)
   {
-    v6 = [v4 dataProvider];
+    dataProvider = [libraryCopy dataProvider];
     v7 = [MEMORY[0x277CBEBC0] URLWithString:@"x-attach"];
-    [(MFAttachmentManager *)v5 addProvider:v6 forBaseURL:v7];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__messageAttachmentStorageLocationsDidChangeNotification_ name:@"MailMessageStoreMessagesAttachmentStorageLocationChanged" object:0];
+    [(MFAttachmentManager *)v5 addProvider:dataProvider forBaseURL:v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__messageAttachmentStorageLocationsDidChangeNotification_ name:@"MailMessageStoreMessagesAttachmentStorageLocationChanged" object:0];
   }
 
   return v5;
 }
 
-- (void)_messageAttachmentStorageLocationsDidChangeNotification:(id)a3
+- (void)_messageAttachmentStorageLocationsDidChangeNotification:(id)notification
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"messages"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"messages"];
 
   v25 = 0u;
   v26 = 0u;
@@ -60,13 +60,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) libraryID];
+        libraryID = [*(*(&v23 + 1) + 8 * i) libraryID];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [(NSMutableDictionary *)self->super.super._metadata allKeys];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        allKeys = [(NSMutableDictionary *)self->super.super._metadata allKeys];
+        v11 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = v11;
@@ -77,17 +77,17 @@
             {
               if (*v20 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v19 + 1) + 8 * j);
-              if ([v15 mf_rowID] == v9)
+              if ([v15 mf_rowID] == libraryID)
               {
                 [(NSMutableDictionary *)self->super.super._metadata removeObjectForKey:v15];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v12);
@@ -103,19 +103,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dataProviderForAttachmentURL:(id)a3 error:(id *)a4
+- (id)_dataProviderForAttachmentURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = MFAttachmentLibraryManager;
   v19 = 0;
-  v7 = [(MFAttachmentManager *)&v18 _dataProviderForAttachmentURL:v6 error:&v19];
+  v7 = [(MFAttachmentManager *)&v18 _dataProviderForAttachmentURL:lCopy error:&v19];
   v8 = v19;
   if (!v7)
   {
     providers = self->super.super._providers;
-    v10 = [v6 scheme];
-    v11 = [(NSMutableDictionary *)providers objectForKeyedSubscript:v10];
+    scheme = [lCopy scheme];
+    v11 = [(NSMutableDictionary *)providers objectForKeyedSubscript:scheme];
 
     if (v11)
     {
@@ -126,25 +126,25 @@
     {
       v12 = [(NSMutableDictionary *)self->super.super._providers objectForKeyedSubscript:@"x-attach"];
       v7 = v12;
-      if (a4 && !v12)
+      if (error && !v12)
       {
         if (v8)
         {
-          v13 = [v8 userInfo];
-          v14 = [v8 domain];
+          userInfo = [v8 userInfo];
+          domain = [v8 domain];
           v15 = 0;
           v16 = 0;
         }
 
         else
         {
-          v14 = @"MFMessageErrorDomain";
-          v13 = 0;
+          domain = @"MFMessageErrorDomain";
+          userInfo = 0;
           v16 = @"No Provider Found";
           v15 = @"Could not find a provider for the given URL.";
         }
 
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:v14 code:1030 localizedDescription:v15 title:v16 userInfo:v13];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:domain code:1030 localizedDescription:v15 title:v16 userInfo:userInfo];
 
         v7 = 0;
       }
@@ -154,27 +154,27 @@
   return v7;
 }
 
-- (void)removeProviderForBaseURL:(id)a3
+- (void)removeProviderForBaseURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v5 isEqualToString:@"x-attach://"];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v6 = [absoluteString isEqualToString:@"x-attach://"];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = MFAttachmentLibraryManager;
-    [(MFAttachmentManager *)&v7 removeProviderForBaseURL:v4];
+    [(MFAttachmentManager *)&v7 removeProviderForBaseURL:lCopy];
   }
 }
 
-- (id)attachmentsForMessage:(id)a3 withSchemes:(id)a4
+- (id)attachmentsForMessage:(id)message withSchemes:(id)schemes
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v22 = [MEMORY[0x277CBEB18] array];
-  [v6 messageBodyIfAvailable];
+  messageCopy = message;
+  schemesCopy = schemes;
+  array = [MEMORY[0x277CBEB18] array];
+  [messageCopy messageBodyIfAvailable];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -194,13 +194,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * i) mimePart];
-        v13 = [v12 partURL];
+        mimePart = [*(*(&v24 + 1) + 8 * i) mimePart];
+        partURL = [mimePart partURL];
 
-        if (([v6 messageFlags] & 8) != 0)
+        if (([messageCopy messageFlags] & 8) != 0)
         {
           v15 = 0;
-          if (v7)
+          if (schemesCopy)
           {
             goto LABEL_12;
           }
@@ -208,7 +208,7 @@
 
         else
         {
-          v14 = [(MFAttachmentLibraryManager *)self _dataProviderForAttachmentURL:v13 error:0];
+          v14 = [(MFAttachmentLibraryManager *)self _dataProviderForAttachmentURL:partURL error:0];
           objc_opt_class();
           v15 = 0;
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -216,11 +216,11 @@
             v15 = v21;
           }
 
-          if (v7)
+          if (schemesCopy)
           {
 LABEL_12:
-            v16 = [v13 scheme];
-            v17 = [v7 containsObject:v16];
+            scheme = [partURL scheme];
+            v17 = [schemesCopy containsObject:scheme];
 
             if (!v17)
             {
@@ -229,10 +229,10 @@ LABEL_12:
           }
         }
 
-        v18 = [(MFAttachmentManager *)self attachmentForURL:v13 withMimeBody:v15 error:0];
+        v18 = [(MFAttachmentManager *)self attachmentForURL:partURL withMimeBody:v15 error:0];
         if (v18)
         {
-          [v22 addObject:v18];
+          [array addObject:v18];
         }
 
 LABEL_16:
@@ -246,7 +246,7 @@ LABEL_16:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface NRLinkInfraRelay
-- (id)initLinkWithQueue:(id)a3 linkDelegate:(id)a4 nrUUID:(id)a5 wifiInterfaceName:(id)a6 localOuterEndpoint:(id)a7 remoteOuterEndpoint:(id)a8 listenerPortString:(id)a9;
+- (id)initLinkWithQueue:(id)queue linkDelegate:(id)delegate nrUUID:(id)d wifiInterfaceName:(id)name localOuterEndpoint:(id)endpoint remoteOuterEndpoint:(id)outerEndpoint listenerPortString:(id)string;
 - (unsigned)metric;
 @end
 
@@ -12,11 +12,11 @@
   return [(NRLinkWiFi *)&v3 metric]+ 18;
 }
 
-- (id)initLinkWithQueue:(id)a3 linkDelegate:(id)a4 nrUUID:(id)a5 wifiInterfaceName:(id)a6 localOuterEndpoint:(id)a7 remoteOuterEndpoint:(id)a8 listenerPortString:(id)a9
+- (id)initLinkWithQueue:(id)queue linkDelegate:(id)delegate nrUUID:(id)d wifiInterfaceName:(id)name localOuterEndpoint:(id)endpoint remoteOuterEndpoint:(id)outerEndpoint listenerPortString:(id)string
 {
   v11.receiver = self;
   v11.super_class = NRLinkInfraRelay;
-  v9 = [(NRLinkWiFi *)&v11 initLinkWithQueue:a3 linkDelegate:a4 nrUUID:a5 wifiInterfaceName:a6 localOuterEndpoint:a7 remoteOuterEndpoint:a8 listenerPortString:a9];
+  v9 = [(NRLinkWiFi *)&v11 initLinkWithQueue:queue linkDelegate:delegate nrUUID:d wifiInterfaceName:name localOuterEndpoint:endpoint remoteOuterEndpoint:outerEndpoint listenerPortString:string];
   [v9 setSubtype:104];
   return v9;
 }

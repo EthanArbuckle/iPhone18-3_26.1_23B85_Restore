@@ -1,34 +1,34 @@
 @interface BKAssetPresentingViewController
-- (void)_trackProgressForLibraryAsset:(id)a3;
-- (void)assetViewControllerRequestToBuy:(id)a3 completion:(id)a4;
+- (void)_trackProgressForLibraryAsset:(id)asset;
+- (void)assetViewControllerRequestToBuy:(id)buy completion:(id)completion;
 @end
 
 @implementation BKAssetPresentingViewController
 
-- (void)assetViewControllerRequestToBuy:(id)a3 completion:(id)a4
+- (void)assetViewControllerRequestToBuy:(id)buy completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKBasePresentingViewController *)self storeID];
-  if (v8)
+  buyCopy = buy;
+  completionCopy = completion;
+  storeID = [(BKBasePresentingViewController *)self storeID];
+  if (storeID)
   {
-    v9 = v8;
+    permanentAssetID = storeID;
 LABEL_4:
-    v11 = [(BKAssetPresentingViewController *)self ba_effectiveAnalyticsTracker];
+    ba_effectiveAnalyticsTracker = [(BKAssetPresentingViewController *)self ba_effectiveAnalyticsTracker];
     objc_initWeak(&location, self);
-    v12 = [(BKBasePresentingViewController *)self sampleProfileFuture];
+    sampleProfileFuture = [(BKBasePresentingViewController *)self sampleProfileFuture];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10006C32C;
     v16[3] = &unk_100A04278;
     objc_copyWeak(&v21, &location);
-    v13 = v11;
+    v13 = ba_effectiveAnalyticsTracker;
     v17 = v13;
-    v14 = v9;
+    v14 = permanentAssetID;
     v18 = v14;
-    v19 = v6;
-    v20 = v7;
-    [v12 get:v16];
+    v19 = buyCopy;
+    v20 = completionCopy;
+    [sampleProfileFuture get:v16];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -36,15 +36,15 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [(BKBasePresentingViewController *)self assetIdentifier];
-  v9 = [v10 permanentAssetID];
+  assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+  permanentAssetID = [assetIdentifier permanentAssetID];
 
-  if (v9)
+  if (permanentAssetID)
   {
     goto LABEL_4;
   }
 
-  v15 = objc_retainBlock(v7);
+  v15 = objc_retainBlock(completionCopy);
   v14 = v15;
   if (v15)
   {
@@ -54,41 +54,41 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)_trackProgressForLibraryAsset:(id)a3
+- (void)_trackProgressForLibraryAsset:(id)asset
 {
-  v4 = a3;
-  if (([v4 isSample] & 1) == 0 && (objc_msgSend(v4, "isAudiobook") & 1) == 0)
+  assetCopy = asset;
+  if (([assetCopy isSample] & 1) == 0 && (objc_msgSend(assetCopy, "isAudiobook") & 1) == 0)
   {
-    v5 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController = [(BKBasePresentingViewController *)self assetViewController];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(BKBasePresentingViewController *)self assetViewController];
-      v7 = [v6 pageCountIncludingUpsell];
+      assetViewController2 = [(BKBasePresentingViewController *)self assetViewController];
+      pageCountIncludingUpsell = [assetViewController2 pageCountIncludingUpsell];
     }
 
     else
     {
-      v7 = 0x7FFFFFFFFFFFFFFFLL;
+      pageCountIncludingUpsell = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v8 = [(BKBasePresentingViewController *)self assetViewController];
+    assetViewController3 = [(BKBasePresentingViewController *)self assetViewController];
     v9 = BUProtocolCast();
 
     v10 = BCProgressKitLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_100789C28(v4, v10);
+      sub_100789C28(assetCopy, v10);
     }
 
-    v11 = [v4 title];
-    if ([v11 length])
+    title = [assetCopy title];
+    if ([title length])
     {
-      [v4 title];
+      [assetCopy title];
     }
 
     else
     {
-      [v4 sortTitle];
+      [assetCopy sortTitle];
     }
     v12 = ;
 
@@ -106,31 +106,31 @@ LABEL_5:
       v12 = v14;
     }
 
-    v16 = [(BKBasePresentingViewController *)self assetIdentifier];
-    v17 = [v16 permanentAssetID];
+    assetIdentifier = [(BKBasePresentingViewController *)self assetIdentifier];
+    permanentAssetID = [assetIdentifier permanentAssetID];
 
     objc_initWeak(&location, self);
-    v18 = ([v4 isSample] & 1) == 0 && (objc_msgSend(v4, "isAudiobook") & 1) == 0 && objc_msgSend(v4, "contentType") != 3;
-    v19 = [v4 versionNumberHumanReadable];
-    v20 = [v4 storeID];
+    v18 = ([assetCopy isSample] & 1) == 0 && (objc_msgSend(assetCopy, "isAudiobook") & 1) == 0 && objc_msgSend(assetCopy, "contentType") != 3;
+    versionNumberHumanReadable = [assetCopy versionNumberHumanReadable];
+    storeID = [assetCopy storeID];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10006CE68;
     v26[3] = &unk_100A04318;
-    v21 = v17;
+    v21 = permanentAssetID;
     v27 = v21;
-    v22 = v19;
+    v22 = versionNumberHumanReadable;
     v28 = v22;
     v23 = v12;
     v29 = v23;
-    v32[1] = v7;
-    v24 = v20;
+    v32[1] = pageCountIncludingUpsell;
+    v24 = storeID;
     v30 = v24;
     objc_copyWeak(v32, &location);
     v33 = v18;
     v25 = v9;
     v31 = v25;
-    [BKLibraryManager fetchImageForAsset:v4 size:0 includeSpine:0 includeShadow:0 coverEffectsEnvironment:v26 completion:240.0, 240.0];
+    [BKLibraryManager fetchImageForAsset:assetCopy size:0 includeSpine:0 includeShadow:0 coverEffectsEnvironment:v26 completion:240.0, 240.0];
 
     objc_destroyWeak(v32);
     objc_destroyWeak(&location);

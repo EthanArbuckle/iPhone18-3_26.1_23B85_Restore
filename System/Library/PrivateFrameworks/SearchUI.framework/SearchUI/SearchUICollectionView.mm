@@ -1,7 +1,7 @@
 @interface SearchUICollectionView
-- (SearchUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (SearchUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)layoutSubviews;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation SearchUICollectionView
@@ -17,8 +17,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SearchUICollectionView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  subviews = [(SearchUICollectionView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,7 +30,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -47,18 +47,18 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (SearchUICollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (SearchUICollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = SearchUICollectionView;
-  v4 = [(SearchUICollectionView *)&v7 initWithFrame:a4 collectionViewLayout:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SearchUICollectionView *)&v7 initWithFrame:layout collectionViewLayout:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -68,10 +68,10 @@
   return v4;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = SearchUICollectionView;
@@ -79,8 +79,8 @@
   v6 = [MEMORY[0x1E696B098] valueWithSize:{width, height}];
   if ([MEMORY[0x1E69D9240] isSiri])
   {
-    v7 = [(SearchUICollectionView *)self calculatedSizes];
-    v8 = [v7 containsObject:v6];
+    calculatedSizes = [(SearchUICollectionView *)self calculatedSizes];
+    v8 = [calculatedSizes containsObject:v6];
 
     if ((v8 & 1) == 0)
     {
@@ -92,12 +92,12 @@
         _os_log_impl(&dword_1DA169000, v9, OS_LOG_TYPE_DEFAULT, "SearchUICollectionView setContentSize: %@", buf, 0xCu);
       }
 
-      v10 = [(SearchUICollectionView *)self calculatedSizes];
-      [v10 addObject:v6];
+      calculatedSizes2 = [(SearchUICollectionView *)self calculatedSizes];
+      [calculatedSizes2 addObject:v6];
 
-      v11 = [(SearchUICollectionView *)self collectionViewLayout];
-      v12 = [v11 sizingDelegate];
-      [v12 contentSizeDidChange:{width, height}];
+      collectionViewLayout = [(SearchUICollectionView *)self collectionViewLayout];
+      sizingDelegate = [collectionViewLayout sizingDelegate];
+      [sizingDelegate contentSizeDidChange:{width, height}];
     }
   }
 }

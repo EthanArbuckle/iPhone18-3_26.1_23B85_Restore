@@ -1,5 +1,5 @@
 @interface __KVOKeyPathBridgeMachinery.BridgeKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtCC10FoundationP33_6DA0945A07226B3278459E9368612FF427__KVOKeyPathBridgeMachinery9BridgeKey)init;
 - (int64_t)hash;
 @end
@@ -11,18 +11,18 @@
   Hasher.init()();
   v3 = type metadata accessor for __KVOKeyPathBridgeMachinery.BridgeKey();
   MEMORY[0x1865CD060](v3);
-  v4 = self;
+  selfCopy = self;
   String.hash(into:)();
   v5 = Hasher.finalize()();
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -31,7 +31,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = __KVOKeyPathBridgeMachinery.BridgeKey.isEqual(_:)(v8);

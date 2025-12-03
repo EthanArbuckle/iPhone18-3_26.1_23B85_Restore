@@ -1,18 +1,18 @@
 @interface UIViewWindowNotifier
 - (UIViewWindowListener)windowListener;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIViewWindowNotifier
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = UIViewWindowNotifier;
-  v4 = a3;
-  [(UIViewWindowNotifier *)&v6 willMoveToWindow:v4];
+  windowCopy = window;
+  [(UIViewWindowNotifier *)&v6 willMoveToWindow:windowCopy];
   v5 = [(UIViewWindowNotifier *)self windowListener:v6.receiver];
-  [v5 view:self willMoveToWindow:v4];
+  [v5 view:self willMoveToWindow:windowCopy];
 }
 
 - (UIViewWindowListener)windowListener

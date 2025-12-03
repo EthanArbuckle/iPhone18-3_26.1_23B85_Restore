@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorPredicateFilterByPhoneActivityType
 - (MOEventPatternDetectorPredicateFilterByPhoneActivityType)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorPredicateFilterByPhoneActivityType
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %lu", @"category", 16, @"provider", 7];
-  v6 = [v3 filteredArrayUsingPredicate:v5];
+  v6 = [eventsCopy filteredArrayUsingPredicate:v5];
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPatternDetection);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -36,7 +36,7 @@
   if ([v6 count])
   {
     v20 = v5;
-    v21 = v3;
+    v21 = eventsCopy;
     [v6 valueForKeyPath:@"@distinctUnionOfObjects.workoutType"];
     v23 = 0u;
     v24 = 0u;
@@ -77,7 +77,7 @@
     v18 = v4;
 
     v5 = v20;
-    v3 = v21;
+    eventsCopy = v21;
   }
 
   else

@@ -1,22 +1,22 @@
 @interface PLPositionalImageTableEntries
-- (void)enumerateImageIndexes:(id)a3 formatSideLength:(int)a4;
+- (void)enumerateImageIndexes:(id)indexes formatSideLength:(int)length;
 @end
 
 @implementation PLPositionalImageTableEntries
 
-- (void)enumerateImageIndexes:(id)a3 formatSideLength:(int)a4
+- (void)enumerateImageIndexes:(id)indexes formatSideLength:(int)length
 {
-  v6 = a3;
+  indexesCopy = indexes;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PLPositionalImageTableEntries_enumerateImageIndexes_formatSideLength___block_invoke;
   v9[3] = &unk_1E792F9B8;
-  v11 = a4;
+  lengthCopy = length;
   v9[4] = self;
-  v10 = v6;
+  v10 = indexesCopy;
   v8.receiver = self;
   v8.super_class = PLPositionalImageTableEntries;
-  v7 = v6;
+  v7 = indexesCopy;
   [(PLPositionalTableEntries *)&v8 enumerateIndexes:v9];
 }
 

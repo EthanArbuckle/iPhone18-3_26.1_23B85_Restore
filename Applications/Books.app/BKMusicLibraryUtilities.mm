@@ -1,17 +1,17 @@
 @interface BKMusicLibraryUtilities
-+ (void)storeIDsWithNonEmptyPurchasedToken:(id)a3 completion:(id)a4;
++ (void)storeIDsWithNonEmptyPurchasedToken:(id)token completion:(id)completion;
 @end
 
 @implementation BKMusicLibraryUtilities
 
-+ (void)storeIDsWithNonEmptyPurchasedToken:(id)a3 completion:(id)a4
++ (void)storeIDsWithNonEmptyPurchasedToken:(id)token completion:(id)completion
 {
-  v17 = a3;
-  v16 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v5 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyPurchaseHistoryID value:&off_100A436F8 comparison:2];
   v6 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyPurchaseHistoryToken value:&off_100A436F8 comparison:2];
   v7 = ML3TrackPropertyStoreItemID;
-  v8 = [ML3ContainsPredicate predicateWithProperty:ML3TrackPropertyStoreItemID valueSet:v17];
+  v8 = [ML3ContainsPredicate predicateWithProperty:ML3TrackPropertyStoreItemID valueSet:tokenCopy];
   v26[0] = v5;
   v26[1] = v6;
   v26[2] = v8;
@@ -34,7 +34,7 @@
   v18[4] = &v19;
   [v12 enumeratePersistentIDsAndProperties:v13 ordered:1 usingBlock:v18];
 
-  v14 = objc_retainBlock(v16);
+  v14 = objc_retainBlock(completionCopy);
   v15 = v14;
   if (v14)
   {

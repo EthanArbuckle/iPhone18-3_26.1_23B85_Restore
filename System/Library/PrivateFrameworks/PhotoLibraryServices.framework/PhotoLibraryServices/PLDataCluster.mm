@@ -1,10 +1,10 @@
 @interface PLDataCluster
-+ (id)clusterWithObjects:(id)a3 clustroid:(id)a4 diameter:(double)a5;
++ (id)clusterWithObjects:(id)objects clustroid:(id)clustroid diameter:(double)diameter;
 - (PLDataCluster)init;
-- (id)approximateRegionWithMaximumRadius:(double)a3;
+- (id)approximateRegionWithMaximumRadius:(double)radius;
 - (id)description;
 - (id)locations;
-- (id)meanRegion:(double)a3;
+- (id)meanRegion:(double)region;
 - (id)meanUniversalDate;
 - (id)universalDates;
 @end
@@ -18,8 +18,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(PLDataCluster *)self universalDates];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  universalDates = [(PLDataCluster *)self universalDates];
+  v4 = [universalDates countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -31,14 +31,14 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(universalDates);
         }
 
         [*(*(&v14 + 1) + 8 * i) timeIntervalSince1970];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [universalDates countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -49,23 +49,23 @@
     v7 = 0.0;
   }
 
-  v10 = [(PLDataCluster *)self objects];
-  v11 = v7 / [v10 count];
+  objects = [(PLDataCluster *)self objects];
+  v11 = v7 / [objects count];
 
   v12 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v11];
 
   return v12;
 }
 
-- (id)meanRegion:(double)a3
+- (id)meanRegion:(double)region
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = [(PLDataCluster *)self locations];
+  locations = [(PLDataCluster *)self locations];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v52 objects:v57 count:16];
+  v5 = [locations countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (!v5)
   {
     goto LABEL_44;
@@ -83,15 +83,15 @@
     {
       if (*v53 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(locations);
       }
 
       v12 = *(*(&v52 + 1) + 8 * v11);
       [v12 coordinate];
       v14 = v13;
       v16 = v15;
-      v17 = [MEMORY[0x1E695DFB0] null];
-      if (v12 == v17)
+      null = [MEMORY[0x1E695DFB0] null];
+      if (v12 == null)
       {
         goto LABEL_12;
       }
@@ -129,7 +129,7 @@ LABEL_12:
     }
 
     while (v6 != v11);
-    v20 = [v4 countByEnumeratingWithState:&v52 objects:v57 count:16];
+    v20 = [locations countByEnumeratingWithState:&v52 objects:v57 count:16];
     v6 = v20;
   }
 
@@ -140,14 +140,14 @@ LABEL_12:
     v22 = v10 / v7;
     v23 = v9 / v7;
     v47 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:v22 longitude:v23];
-    v24 = 10.0;
+    regionCopy = 10.0;
     if (v7 != 1)
     {
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v25 = v4;
+      v25 = locations;
       v26 = [v25 countByEnumeratingWithState:&v48 objects:v56 count:16];
       if (v26)
       {
@@ -168,8 +168,8 @@ LABEL_12:
             [v31 coordinate];
             v33 = v32;
             v35 = v34;
-            v36 = [MEMORY[0x1E695DFB0] null];
-            if (v31 == v36)
+            null2 = [MEMORY[0x1E695DFB0] null];
+            if (v31 == null2)
             {
               goto LABEL_34;
             }
@@ -218,22 +218,22 @@ LABEL_34:
         v29 = 0.0;
       }
 
-      if (v29 / v21 >= a3)
+      if (v29 / v21 >= region)
       {
-        v24 = v29 / v21;
+        regionCopy = v29 / v21;
       }
 
       else
       {
-        v24 = a3;
+        regionCopy = region;
       }
     }
 
     v42 = objc_alloc(MEMORY[0x1E695FBB0]);
     v43 = CLLocationCoordinate2DMake(v22, v23);
-    v44 = [MEMORY[0x1E696AFB0] UUID];
-    v45 = [v44 UUIDString];
-    v41 = [v42 initWithCenter:v45 radius:v43.latitude identifier:{v43.longitude, v24}];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v41 = [v42 initWithCenter:uUIDString radius:v43.latitude identifier:{v43.longitude, regionCopy}];
   }
 
   else
@@ -245,15 +245,15 @@ LABEL_44:
   return v41;
 }
 
-- (id)approximateRegionWithMaximumRadius:(double)a3
+- (id)approximateRegionWithMaximumRadius:(double)radius
 {
   v34 = *MEMORY[0x1E69E9840];
   v5 = [(PLDataClustering *)[PLDBSCANClustering alloc] initWithDistanceBlock:&__block_literal_global_92063];
-  [(PLDataDensityClustering *)v5 setMaximumDistance:a3];
+  [(PLDataDensityClustering *)v5 setMaximumDistance:radius];
   [(PLDataDensityClustering *)v5 setMinimumNumberOfObjects:1];
-  v6 = [(PLDataCluster *)self objects];
+  objects = [(PLDataCluster *)self objects];
   v25 = v5;
-  v7 = [(PLDBSCANClustering *)v5 performWithDataset:v6 progressBlock:0];
+  v7 = [(PLDBSCANClustering *)v5 performWithDataset:objects progressBlock:0];
 
   v31 = 0u;
   v32 = 0u;
@@ -278,7 +278,7 @@ LABEL_44:
 
         v13 = *(*(&v29 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 meanRegion:a3];
+        v15 = [v13 meanRegion:radius];
         if (v15)
         {
           if (!v11 || ([v10 objects], v27 = v10, v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "count"), objc_msgSend(v13, "objects"), v18 = objc_claimAutoreleasedReturnValue(), v19 = v11, v20 = objc_msgSend(v18, "count"), v18, v16, v10 = v27, v21 = v17 >= v20, v11 = v19, !v21))
@@ -333,15 +333,15 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PLDataCluster *)self objects];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  objects = [(PLDataCluster *)self objects];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(objects, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(PLDataCluster *)self objects];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objects2 = [(PLDataCluster *)self objects];
+  v7 = [objects2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -352,17 +352,17 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) pl_date];
-        if (v11)
+        pl_date = [*(*(&v13 + 1) + 8 * i) pl_date];
+        if (pl_date)
         {
-          [v5 addObject:v11];
+          [v5 addObject:pl_date];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [objects2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -375,15 +375,15 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PLDataCluster *)self objects];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  objects = [(PLDataCluster *)self objects];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(objects, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(PLDataCluster *)self objects];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  objects2 = [(PLDataCluster *)self objects];
+  v7 = [objects2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -394,7 +394,7 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects2);
         }
 
         [*(*(&v17 + 1) + 8 * i) pl_coordinate];
@@ -416,7 +416,7 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [objects2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -466,17 +466,17 @@ double __77__PLDataCluster_PLRegionsClusteringItem__approximateRegionWithMaximum
   return v2;
 }
 
-+ (id)clusterWithObjects:(id)a3 clustroid:(id)a4 diameter:(double)a5
++ (id)clusterWithObjects:(id)objects clustroid:(id)clustroid diameter:(double)diameter
 {
-  v7 = a4;
-  v8 = a3;
+  clustroidCopy = clustroid;
+  objectsCopy = objects;
   objc_opt_class();
   v9 = objc_opt_new();
-  [v9 setObjects:v8];
+  [v9 setObjects:objectsCopy];
 
-  [v9 setDiameter:a5];
+  [v9 setDiameter:diameter];
   [v9 setScore:1.0];
-  [v9 setClustroid:v7];
+  [v9 setClustroid:clustroidCopy];
 
   return v9;
 }

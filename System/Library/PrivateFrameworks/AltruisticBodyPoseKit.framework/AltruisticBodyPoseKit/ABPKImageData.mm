@@ -1,10 +1,10 @@
 @interface ABPKImageData
 - (ABPKImageData)init;
-- (ABPKImageData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4;
+- (ABPKImageData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp;
 - (__CVBuffer)pixelBuffer;
 - (double)timestamp;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
-- (void)setTimestamp:(double)a3;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
+- (void)setTimestamp:(double)timestamp;
 @end
 
 @implementation ABPKImageData
@@ -16,13 +16,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   v5 = OBJC_IVAR___ABPKImageData_pixelBuffer;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = buffer;
+  bufferCopy = buffer;
 }
 
 - (double)timestamp
@@ -32,23 +32,23 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTimestamp:(double)a3
+- (void)setTimestamp:(double)timestamp
 {
   v5 = OBJC_IVAR___ABPKImageData_timestamp;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = timestamp;
 }
 
-- (ABPKImageData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4
+- (ABPKImageData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp
 {
   v7 = OBJC_IVAR___ABPKImageData_pixelBuffer;
   *(&self->super.isa + OBJC_IVAR___ABPKImageData_pixelBuffer) = 0;
   swift_beginAccess();
-  *(&self->super.isa + v7) = a3;
-  *(&self->super.isa + OBJC_IVAR___ABPKImageData_timestamp) = a4;
+  *(&self->super.isa + v7) = buffer;
+  *(&self->super.isa + OBJC_IVAR___ABPKImageData_timestamp) = timestamp;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ABPKImageData();
-  v8 = a3;
+  bufferCopy = buffer;
   return [(ABPKImageData *)&v10 init];
 }
 

@@ -1,18 +1,18 @@
 @interface DOCThumbnailDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (DOCThumbnailDescriptor)initWithSize:(CGSize)a3 minimumSize:(double)a4 scale:(double)a5 style:(unint64_t)a6 isFolded:(BOOL)a7 isInteractive:(BOOL)a8 isFolder:(BOOL)a9;
+- (DOCThumbnailDescriptor)initWithSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale style:(unint64_t)style isFolded:(BOOL)folded isInteractive:(BOOL)interactive isFolder:(BOOL)folder;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation DOCThumbnailDescriptor
 
-- (DOCThumbnailDescriptor)initWithSize:(CGSize)a3 minimumSize:(double)a4 scale:(double)a5 style:(unint64_t)a6 isFolded:(BOOL)a7 isInteractive:(BOOL)a8 isFolder:(BOOL)a9
+- (DOCThumbnailDescriptor)initWithSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale style:(unint64_t)style isFolded:(BOOL)folded isInteractive:(BOOL)interactive isFolder:(BOOL)folder
 {
-  v9 = a9;
-  height = a3.height;
-  width = a3.width;
+  folderCopy = folder;
+  height = size.height;
+  width = size.width;
   v19.receiver = self;
   v19.super_class = DOCThumbnailDescriptor;
   result = [(DOCThumbnailDescriptor *)&v19 init];
@@ -20,21 +20,21 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_minimumSize = a4;
-    result->_scale = a5;
-    result->_folded = a7;
-    result->_interactive = a8;
-    if (v9)
+    result->_minimumSize = minimumSize;
+    result->_scale = scale;
+    result->_folded = folded;
+    result->_interactive = interactive;
+    if (folderCopy)
     {
-      v18 = a6;
+      styleCopy = style;
     }
 
     else
     {
-      v18 = 1;
+      styleCopy = 1;
     }
 
-    result->_style = v18;
+    result->_style = styleCopy;
   }
 
   return result;
@@ -47,10 +47,10 @@
   return 100 * self->_interactive - v3 + 32 * v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -58,7 +58,7 @@
   else
   {
     objc_opt_class();
-    v6 = (objc_opt_isKindOfClass() & 1) != 0 && (self->_size.width == v4->_size.width ? (v5 = self->_size.height == v4->_size.height) : (v5 = 0), v5 && self->_minimumSize == v4->_minimumSize && self->_scale == v4->_scale && self->_style == v4->_style && self->_folded == v4->_folded) && self->_interactive == v4->_interactive;
+    v6 = (objc_opt_isKindOfClass() & 1) != 0 && (self->_size.width == equalCopy->_size.width ? (v5 = self->_size.height == equalCopy->_size.height) : (v5 = 0), v5 && self->_minimumSize == equalCopy->_minimumSize && self->_scale == equalCopy->_scale && self->_style == equalCopy->_style && self->_folded == equalCopy->_folded) && self->_interactive == equalCopy->_interactive;
   }
 
   return v6;

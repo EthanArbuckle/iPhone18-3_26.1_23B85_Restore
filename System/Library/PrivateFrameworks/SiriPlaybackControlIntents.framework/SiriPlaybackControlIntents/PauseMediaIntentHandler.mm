@@ -1,15 +1,15 @@
 @interface PauseMediaIntentHandler
-- (void)handlePauseMedia:(id)a3 completion:(id)a4;
+- (void)handlePauseMedia:(id)media completion:(id)completion;
 @end
 
 @implementation PauseMediaIntentHandler
 
-- (void)handlePauseMedia:(id)a3 completion:(id)a4
+- (void)handlePauseMedia:(id)media completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v6;
-  v7 = a3;
-  v8 = self;
+  mediaCopy = media;
+  selfCopy = self;
   sub_268AEE8D8();
 }
 

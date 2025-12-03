@@ -1,25 +1,25 @@
 @interface AppleIRDeviceProvider
-- (AppleIRDeviceProvider)initWithBus:(id)a3 deviceUID:(unsigned __int8)a4;
-- (BOOL)_dispatchAppleVendorEventPage:(unsigned int)a3 usage:(unsigned int)a4 timestamp:(unint64_t)a5 toDevice:(id)a6;
-- (BOOL)_dispatchEventWithCommand:(unint64_t)a3 timestamp:(unint64_t)a4 toDevice:(id)a5;
-- (BOOL)dispatchEventsForCommand:(id)a3 toDevice:(id)a4;
-- (BOOL)pairAppleRemote:(id *)a3;
-- (BOOL)unpairAppleRemote:(id *)a3;
+- (AppleIRDeviceProvider)initWithBus:(id)bus deviceUID:(unsigned __int8)d;
+- (BOOL)_dispatchAppleVendorEventPage:(unsigned int)page usage:(unsigned int)usage timestamp:(unint64_t)timestamp toDevice:(id)device;
+- (BOOL)_dispatchEventWithCommand:(unint64_t)command timestamp:(unint64_t)timestamp toDevice:(id)device;
+- (BOOL)dispatchEventsForCommand:(id)command toDevice:(id)device;
+- (BOOL)pairAppleRemote:(id *)remote;
+- (BOOL)unpairAppleRemote:(id *)remote;
 - (void)_schedulePressAndHoldTimer;
-- (void)_synthesizeButtonReleaseWithTimestamp:(unint64_t)a3;
+- (void)_synthesizeButtonReleaseWithTimestamp:(unint64_t)timestamp;
 - (void)dealloc;
 @end
 
 @implementation AppleIRDeviceProvider
 
-- (AppleIRDeviceProvider)initWithBus:(id)a3 deviceUID:(unsigned __int8)a4
+- (AppleIRDeviceProvider)initWithBus:(id)bus deviceUID:(unsigned __int8)d
 {
   v6.receiver = self;
   v6.super_class = AppleIRDeviceProvider;
-  result = [(CoreIRDeviceProvider *)&v6 initWithBus:a3 local:0 deviceType:1];
+  result = [(CoreIRDeviceProvider *)&v6 initWithBus:bus local:0 deviceType:1];
   if (result)
   {
-    result->_deviceUID = a4;
+    result->_deviceUID = d;
     result->_lastAppleIRCommand = 0;
   }
 
@@ -33,30 +33,30 @@
   [(CoreIRDeviceProvider *)&v3 dealloc];
 }
 
-- (BOOL)pairAppleRemote:(id *)a3
+- (BOOL)pairAppleRemote:(id *)remote
 {
-  v5 = [(AppleIRDeviceProvider *)self busProvider];
+  busProvider = [(AppleIRDeviceProvider *)self busProvider];
 
-  return [v5 setPairedAppleRemote:self error:a3];
+  return [busProvider setPairedAppleRemote:self error:remote];
 }
 
-- (BOOL)unpairAppleRemote:(id *)a3
+- (BOOL)unpairAppleRemote:(id *)remote
 {
   v5 = 0;
   result = [-[AppleIRDeviceProvider busProvider](self "busProvider")];
-  if (a3)
+  if (remote)
   {
-    *a3 = v5;
+    *remote = v5;
   }
 
   return result;
 }
 
-- (BOOL)dispatchEventsForCommand:(id)a3 toDevice:(id)a4
+- (BOOL)dispatchEventsForCommand:(id)command toDevice:(id)device
 {
   v18 = 0;
   v7 = [-[AppleIRDeviceProvider busProvider](self "busProvider")];
-  v8 = [a3 timestamp];
+  timestamp = [command timestamp];
   lastCommandTimestamp = self->_lastCommandTimestamp;
   v17 = 0;
   v16 = 0;
@@ -68,7 +68,7 @@
     goto LABEL_71;
   }
 
-  v10 = v8 - lastCommandTimestamp;
+  v10 = timestamp - lastCommandTimestamp;
   if (gLogCategory_CoreRCDevice <= 40)
   {
     if (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize())
@@ -78,11 +78,11 @@
 
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      [AppleIRDeviceProvider dispatchEventsForCommand:a3 toDevice:?];
+      [AppleIRDeviceProvider dispatchEventsForCommand:command toDevice:?];
     }
   }
 
-  if ([a3 isRepeat])
+  if ([command isRepeat])
   {
     if (self->_lastCoreRCCommand)
     {
@@ -101,8 +101,8 @@
         [AppleIRDeviceProvider dispatchEventsForCommand:toDevice:];
       }
 
-      -[AppleIRDeviceProvider _dispatchEventWithCommand:timestamp:toDevice:](self, "_dispatchEventWithCommand:timestamp:toDevice:", self->_lastCoreRCCommand, v8, [-[AppleIRDeviceProvider busProvider](self "busProvider")]);
-      self->_lastCommandTimestamp = v8;
+      -[AppleIRDeviceProvider _dispatchEventWithCommand:timestamp:toDevice:](self, "_dispatchEventWithCommand:timestamp:toDevice:", self->_lastCoreRCCommand, timestamp, [-[AppleIRDeviceProvider busProvider](self "busProvider")]);
+      self->_lastCommandTimestamp = timestamp;
       goto LABEL_70;
     }
 
@@ -121,18 +121,18 @@ LABEL_71:
 
 LABEL_87:
 
-    self->_lastAppleIRCommand = a3;
-    self->_lastCommandTimestamp = v8;
+    self->_lastAppleIRCommand = command;
+    self->_lastCommandTimestamp = timestamp;
     return v12;
   }
 
-  if ([a3 vendorID] != kAppleIRVendorIDApple)
+  if ([command vendorID] != kAppleIRVendorIDApple)
   {
-    [(AppleIRDeviceProvider *)&v18 dispatchEventsForCommand:a3 toDevice:&v19];
+    [(AppleIRDeviceProvider *)&v18 dispatchEventsForCommand:command toDevice:&v19];
     goto LABEL_86;
   }
 
-  if (v7 && v7 != self && ([a3 isUnpairingRequest] & 1) == 0 && (objc_msgSend(a3, "isBTLEDiscoveryModeRequest") & 1) == 0)
+  if (v7 && v7 != self && ([command isUnpairingRequest] & 1) == 0 && (objc_msgSend(command, "isBTLEDiscoveryModeRequest") & 1) == 0)
   {
     [(AppleIRDeviceProvider *)&v18 dispatchEventsForCommand:&v19 toDevice:?];
 LABEL_86:
@@ -146,12 +146,12 @@ LABEL_86:
     goto LABEL_87;
   }
 
-  if (!self->_isB39 && [a3 isB39Command])
+  if (!self->_isB39 && [command isB39Command])
   {
     self->_isB39 = 1;
   }
 
-  if ([a3 isA39PlayPauseSelect])
+  if ([command isA39PlayPauseSelect])
   {
     if (self->_isB39)
     {
@@ -179,7 +179,7 @@ LABEL_41:
     }
   }
 
-  if ([a3 isPairingRequest])
+  if ([command isPairingRequest])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -190,7 +190,7 @@ LABEL_41:
     goto LABEL_70;
   }
 
-  if ([a3 isUnpairingRequest])
+  if ([command isUnpairingRequest])
   {
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
@@ -201,9 +201,9 @@ LABEL_41:
     goto LABEL_70;
   }
 
-  if ([a3 getVendorSpecificHIDUsagePage:&v17 + 4 usageID:&v17 ignoreRepeats:&v16])
+  if ([command getVendorSpecificHIDUsagePage:&v17 + 4 usageID:&v17 ignoreRepeats:&v16])
   {
-    if (v16 == 1 && [a3 isEqual:self->_lastAppleIRCommand] && v10 <= _maxRepeatIntervalTicks)
+    if (v16 == 1 && [command isEqual:self->_lastAppleIRCommand] && v10 <= _maxRepeatIntervalTicks)
     {
       if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
       {
@@ -213,27 +213,27 @@ LABEL_41:
 
     else
     {
-      if ([a3 isStackshotRequest] && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+      if ([command isStackshotRequest] && gLogCategory_CoreRCDevice <= 90 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
       {
         [AppleIRDeviceProvider dispatchEventsForCommand:toDevice:];
       }
 
-      [(AppleIRDeviceProvider *)self _dispatchAppleVendorEventPage:HIDWORD(v17) usage:v17 timestamp:v8 toDevice:a4];
+      [(AppleIRDeviceProvider *)self _dispatchAppleVendorEventPage:HIDWORD(v17) usage:v17 timestamp:timestamp toDevice:device];
     }
 
     goto LABEL_70;
   }
 
-  v14 = [a3 command];
-  if (v14)
+  command = [command command];
+  if (command)
   {
-    -[AppleIRDeviceProvider _dispatchEventWithCommand:timestamp:toDevice:](self, "_dispatchEventWithCommand:timestamp:toDevice:", v14, v8, [-[AppleIRDeviceProvider busProvider](self "busProvider")]);
+    -[AppleIRDeviceProvider _dispatchEventWithCommand:timestamp:toDevice:](self, "_dispatchEventWithCommand:timestamp:toDevice:", command, timestamp, [-[AppleIRDeviceProvider busProvider](self "busProvider")]);
 LABEL_70:
     v12 = 1;
     goto LABEL_71;
   }
 
-  [(AppleIRDeviceProvider *)&v18 dispatchEventsForCommand:a3 toDevice:&v19];
+  [(AppleIRDeviceProvider *)&v18 dispatchEventsForCommand:command toDevice:&v19];
   v13 = v19;
 LABEL_42:
   v12 = 1;
@@ -251,10 +251,10 @@ LABEL_72:
   return v12;
 }
 
-- (BOOL)_dispatchEventWithCommand:(unint64_t)a3 timestamp:(unint64_t)a4 toDevice:(id)a5
+- (BOOL)_dispatchEventWithCommand:(unint64_t)command timestamp:(unint64_t)timestamp toDevice:(id)device
 {
   [(AppleIRDeviceProvider *)self _cancelPressAndHoldTimer];
-  if (!a3)
+  if (!command)
   {
     [AppleIRDeviceProvider _dispatchEventWithCommand:&v13 timestamp:? toDevice:?];
     return v13;
@@ -271,22 +271,22 @@ LABEL_72:
     goto LABEL_9;
   }
 
-  if (lastCoreRCCommand != a3)
+  if (lastCoreRCCommand != command)
   {
-    [(AppleIRDeviceProvider *)self _synthesizeButtonReleaseWithTimestamp:a4];
+    [(AppleIRDeviceProvider *)self _synthesizeButtonReleaseWithTimestamp:timestamp];
 LABEL_9:
     if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
     {
-      [AppleIRDeviceProvider _dispatchEventWithCommand:a3 timestamp:? toDevice:?];
+      [AppleIRDeviceProvider _dispatchEventWithCommand:command timestamp:? toDevice:?];
     }
 
-    if (![(CoreIRDeviceProvider *)self dispatchButtonEventWithCommand:a3 pressed:1 timestamp:a4 toDevice:a5])
+    if (![(CoreIRDeviceProvider *)self dispatchButtonEventWithCommand:command pressed:1 timestamp:timestamp toDevice:device])
     {
       [AppleIRDeviceProvider _dispatchEventWithCommand:? timestamp:? toDevice:?];
       return v12;
     }
 
-    self->_lastCoreRCCommand = a3;
+    self->_lastCoreRCCommand = command;
     v10 = 1;
     goto LABEL_14;
   }
@@ -297,7 +297,7 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)_dispatchAppleVendorEventPage:(unsigned int)a3 usage:(unsigned int)a4 timestamp:(unint64_t)a5 toDevice:(id)a6
+- (BOOL)_dispatchAppleVendorEventPage:(unsigned int)page usage:(unsigned int)usage timestamp:(unint64_t)timestamp toDevice:(id)device
 {
   v8 = *MEMORY[0x277CBECE8];
   VendorDefinedEvent = IOHIDEventCreateVendorDefinedEvent();
@@ -308,7 +308,7 @@ LABEL_14:
     v12 = v11 != 0;
     if (v11)
     {
-      [a6 receivedHIDEvent:v11 fromDevice:self];
+      [device receivedHIDEvent:v11 fromDevice:self];
     }
 
     else
@@ -333,7 +333,7 @@ LABEL_14:
   return v12;
 }
 
-- (void)_synthesizeButtonReleaseWithTimestamp:(unint64_t)a3
+- (void)_synthesizeButtonReleaseWithTimestamp:(unint64_t)timestamp
 {
   lastCoreRCCommand = self->_lastCoreRCCommand;
   if (lastCoreRCCommand)
@@ -349,7 +349,7 @@ LABEL_14:
       }
     }
 
-    -[CoreIRDeviceProvider dispatchButtonEventWithCommand:pressed:timestamp:toDevice:](self, "dispatchButtonEventWithCommand:pressed:timestamp:toDevice:", lastCoreRCCommand, 0, a3, [-[AppleIRDeviceProvider busProvider](self busProvider]);
+    -[CoreIRDeviceProvider dispatchButtonEventWithCommand:pressed:timestamp:toDevice:](self, "dispatchButtonEventWithCommand:pressed:timestamp:toDevice:", lastCoreRCCommand, 0, timestamp, [-[AppleIRDeviceProvider busProvider](self busProvider]);
     self->_lastCoreRCCommand = 0;
   }
 

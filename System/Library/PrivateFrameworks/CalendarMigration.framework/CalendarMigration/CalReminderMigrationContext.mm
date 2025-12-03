@@ -1,50 +1,50 @@
 @interface CalReminderMigrationContext
 - (BOOL)_setup;
 - (BOOL)_tryBeginMigration;
-- (BOOL)ensureAccountsExist:(id)a3;
-- (BOOL)finishMigrationWithSave:(BOOL)a3;
+- (BOOL)ensureAccountsExist:(id)exist;
+- (BOOL)finishMigrationWithSave:(BOOL)save;
 - (BOOL)isCurrentOrderedListItemsContextEmpty;
 - (REMAccountChangeItem)localAccountChangeItem;
 - (REMSaveRequest)saveRequest;
-- (id)_initWithReminderKitProvider:(id)a3;
+- (id)_initWithReminderKitProvider:(id)provider;
 - (id)_sortedAddedListChangeItems;
 - (id)accountsForAccountIdentifiers;
-- (id)existingAccountChangeItemWithAccountIdentifier:(id)a3;
+- (id)existingAccountChangeItemWithAccountIdentifier:(id)identifier;
 - (id)reminderStore;
 - (void)_loadAccountsIfNeeded;
-- (void)_sortAddedReminderListsInAccountChangeItem:(id)a3;
-- (void)_verifyAccountHasNoLists:(id)a3 withAccountIdentifier:(id)a4;
-- (void)popOrderedListItemsContextAndSortListsInAccountChangeItem:(id)a3;
+- (void)_sortAddedReminderListsInAccountChangeItem:(id)item;
+- (void)_verifyAccountHasNoLists:(id)lists withAccountIdentifier:(id)identifier;
+- (void)popOrderedListItemsContextAndSortListsInAccountChangeItem:(id)item;
 - (void)pushOrderedListItemsContext;
-- (void)recordAddedListChangeItem:(id)a3 withOriginalIdentifier:(id)a4 order:(id)a5;
+- (void)recordAddedListChangeItem:(id)item withOriginalIdentifier:(id)identifier order:(id)order;
 @end
 
 @implementation CalReminderMigrationContext
 
 - (BOOL)_tryBeginMigration
 {
-  v3 = [(CalReminderMigrationContext *)self _setup];
-  if (!v3)
+  _setup = [(CalReminderMigrationContext *)self _setup];
+  if (!_setup)
   {
     [(CalReminderMigrationContext *)self finishMigrationWithSave:0];
   }
 
-  return v3;
+  return _setup;
 }
 
-- (id)_initWithReminderKitProvider:(id)a3
+- (id)_initWithReminderKitProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CalReminderMigrationContext;
   v6 = [(CalReminderMigrationContext *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reminderKitProvider, a3);
-    v8 = [v5 newDatabaseMigrationContext];
+    objc_storeStrong(&v6->_reminderKitProvider, provider);
+    newDatabaseMigrationContext = [providerCopy newDatabaseMigrationContext];
     remDatabaseMigrationContext = v7->_remDatabaseMigrationContext;
-    v7->_remDatabaseMigrationContext = v8;
+    v7->_remDatabaseMigrationContext = newDatabaseMigrationContext;
 
     v10 = objc_opt_new();
     orderedListChangeItemsStack = v7->_orderedListChangeItemsStack;
@@ -62,11 +62,11 @@
   }
 
   [(CalReminderMigrationContext *)self _willBeginMigration];
-  v3 = [(CalReminderMigrationContext *)self reminderStore];
-  if (v3)
+  reminderStore = [(CalReminderMigrationContext *)self reminderStore];
+  if (reminderStore)
   {
-    v4 = [(CalReminderMigrationContext *)self saveRequest];
-    v5 = v4 != 0;
+    saveRequest = [(CalReminderMigrationContext *)self saveRequest];
+    v5 = saveRequest != 0;
   }
 
   else
@@ -77,11 +77,11 @@
   return v5;
 }
 
-- (BOOL)ensureAccountsExist:(id)a3
+- (BOOL)ensureAccountsExist:(id)exist
 {
   remDatabaseMigrationContext = self->_remDatabaseMigrationContext;
   v9 = 0;
-  v5 = [(CalReminderKitDatabaseMigrationContext *)remDatabaseMigrationContext ensureAccountsExist:a3 error:&v9];
+  v5 = [(CalReminderKitDatabaseMigrationContext *)remDatabaseMigrationContext ensureAccountsExist:exist error:&v9];
   v6 = v9;
   if ((v5 & 1) == 0)
   {
@@ -102,9 +102,9 @@
   reminderStore = self->_reminderStore;
   if (!reminderStore)
   {
-    v4 = [(CalReminderKitDatabaseMigrationContext *)self->_remDatabaseMigrationContext reminderStore];
+    reminderStore = [(CalReminderKitDatabaseMigrationContext *)self->_remDatabaseMigrationContext reminderStore];
     v5 = self->_reminderStore;
-    self->_reminderStore = v4;
+    self->_reminderStore = reminderStore;
 
     reminderStore = self->_reminderStore;
     if (!reminderStore)
@@ -128,9 +128,9 @@
   saveRequest = self->_saveRequest;
   if (!saveRequest)
   {
-    v4 = [(CalReminderMigrationContext *)self reminderKitProvider];
-    v5 = [(CalReminderMigrationContext *)self reminderStore];
-    v6 = [v4 newSaveRequestWithStore:v5];
+    reminderKitProvider = [(CalReminderMigrationContext *)self reminderKitProvider];
+    reminderStore = [(CalReminderMigrationContext *)self reminderStore];
+    v6 = [reminderKitProvider newSaveRequestWithStore:reminderStore];
     v7 = self->_saveRequest;
     self->_saveRequest = v6;
 
@@ -163,8 +163,8 @@
     [(CalReminderMigrationContext *)self _loadAccountsIfNeeded];
     if (self->_localAccount)
     {
-      v4 = [(CalReminderMigrationContext *)self saveRequest];
-      v5 = [v4 updateAccount:self->_localAccount];
+      saveRequest = [(CalReminderMigrationContext *)self saveRequest];
+      v5 = [saveRequest updateAccount:self->_localAccount];
     }
 
     else
@@ -175,8 +175,8 @@
         [CalReminderMigrationContext localAccountChangeItem];
       }
 
-      v4 = [(CalReminderMigrationContext *)self saveRequest];
-      v5 = [v4 _addAccountWithType:1 name:@"Local"];
+      saveRequest = [(CalReminderMigrationContext *)self saveRequest];
+      v5 = [saveRequest _addAccountWithType:1 name:@"Local"];
     }
 
     v7 = self->_localAccountChangeItem;
@@ -190,9 +190,9 @@
   return v8;
 }
 
-- (id)existingAccountChangeItemWithAccountIdentifier:(id)a3
+- (id)existingAccountChangeItemWithAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accountChangeItemsForAccountIdentifiers = self->_accountChangeItemsForAccountIdentifiers;
   if (!accountChangeItemsForAccountIdentifiers)
   {
@@ -203,20 +203,20 @@
     accountChangeItemsForAccountIdentifiers = self->_accountChangeItemsForAccountIdentifiers;
   }
 
-  v8 = [(NSMutableDictionary *)accountChangeItemsForAccountIdentifiers objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)accountChangeItemsForAccountIdentifiers objectForKeyedSubscript:identifierCopy];
   if (!v8)
   {
-    v9 = [(CalReminderMigrationContext *)self accountsForAccountIdentifiers];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    accountsForAccountIdentifiers = [(CalReminderMigrationContext *)self accountsForAccountIdentifiers];
+    v10 = [accountsForAccountIdentifiers objectForKeyedSubscript:identifierCopy];
 
     if (v10)
     {
-      v11 = [(CalReminderMigrationContext *)self saveRequest];
-      v8 = [v11 updateAccount:v10];
+      saveRequest = [(CalReminderMigrationContext *)self saveRequest];
+      v8 = [saveRequest updateAccount:v10];
 
       if (v8)
       {
-        [(NSMutableDictionary *)self->_accountChangeItemsForAccountIdentifiers setObject:v8 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_accountChangeItemsForAccountIdentifiers setObject:v8 forKeyedSubscript:identifierCopy];
       }
 
       else
@@ -228,7 +228,7 @@
         }
       }
 
-      [(CalReminderMigrationContext *)self _verifyAccountHasNoLists:v10 withAccountIdentifier:v4];
+      [(CalReminderMigrationContext *)self _verifyAccountHasNoLists:v10 withAccountIdentifier:identifierCopy];
     }
 
     else
@@ -246,19 +246,19 @@
   return v8;
 }
 
-- (void)_verifyAccountHasNoLists:(id)a3 withAccountIdentifier:(id)a4
+- (void)_verifyAccountHasNoLists:(id)lists withAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  listsCopy = lists;
+  identifierCopy = identifier;
   v12 = 0;
-  v8 = [v6 fetchListsWithError:&v12];
+  v8 = [listsCopy fetchListsWithError:&v12];
   v9 = v12;
   if (!v8)
   {
     v10 = +[CalMigrationLog reminders];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(CalReminderMigrationContext *)v7 _verifyAccountHasNoLists:v6 withAccountIdentifier:v10];
+      [(CalReminderMigrationContext *)identifierCopy _verifyAccountHasNoLists:listsCopy withAccountIdentifier:v10];
     }
   }
 
@@ -270,7 +270,7 @@
       [CalReminderMigrationContext _verifyAccountHasNoLists:withAccountIdentifier:];
     }
 
-    [(CalReminderMigrationContext *)self recordMigrationFailureWithDescription:@"Migrating data into account with existing lists" inStage:2 underlyingError:0 relatedTo:v7];
+    [(CalReminderMigrationContext *)self recordMigrationFailureWithDescription:@"Migrating data into account with existing lists" inStage:2 underlyingError:0 relatedTo:identifierCopy];
   }
 }
 
@@ -291,44 +291,44 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordAddedListChangeItem:(id)a3 withOriginalIdentifier:(id)a4 order:(id)a5
+- (void)recordAddedListChangeItem:(id)item withOriginalIdentifier:(id)identifier order:(id)order
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  itemCopy = item;
+  identifierCopy = identifier;
+  orderCopy = order;
+  if (identifierCopy)
   {
-    v10 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
-    if (v10)
+    defaultListOriginalIdentifier = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
+    if (defaultListOriginalIdentifier)
     {
-      v11 = v10;
-      v12 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
-      v13 = [v8 isEqualToString:v12];
+      v11 = defaultListOriginalIdentifier;
+      defaultListOriginalIdentifier2 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
+      v13 = [identifierCopy isEqualToString:defaultListOriginalIdentifier2];
 
       if (v13)
       {
-        v14 = [v19 objectID];
+        objectID = [itemCopy objectID];
         defaultListMigratedIdentifier = self->_defaultListMigratedIdentifier;
-        self->_defaultListMigratedIdentifier = v14;
+        self->_defaultListMigratedIdentifier = objectID;
       }
     }
   }
 
   v16 = objc_opt_new();
-  [v16 setListChangeItem:v19];
-  if (v9)
+  [v16 setListChangeItem:itemCopy];
+  if (orderCopy)
   {
-    v17 = [v9 integerValue];
+    integerValue = [orderCopy integerValue];
   }
 
   else
   {
-    v17 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v16 setOrder:v17];
-  v18 = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
-  [v18 addObject:v16];
+  [v16 setOrder:integerValue];
+  lastObject = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
+  [lastObject addObject:v16];
 }
 
 - (void)pushOrderedListItemsContext
@@ -338,9 +338,9 @@
   [(NSMutableArray *)orderedListChangeItemsStack addObject:v3];
 }
 
-- (void)popOrderedListItemsContextAndSortListsInAccountChangeItem:(id)a3
+- (void)popOrderedListItemsContextAndSortListsInAccountChangeItem:(id)item
 {
-  [(CalReminderMigrationContext *)self _sortAddedReminderListsInAccountChangeItem:a3];
+  [(CalReminderMigrationContext *)self _sortAddedReminderListsInAccountChangeItem:item];
   orderedListChangeItemsStack = self->_orderedListChangeItemsStack;
 
   [(NSMutableArray *)orderedListChangeItemsStack removeLastObject];
@@ -348,16 +348,16 @@
 
 - (BOOL)isCurrentOrderedListItemsContextEmpty
 {
-  v2 = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
-  v3 = [v2 count] == 0;
+  lastObject = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
+  v3 = [lastObject count] == 0;
 
   return v3;
 }
 
-- (void)_sortAddedReminderListsInAccountChangeItem:(id)a3
+- (void)_sortAddedReminderListsInAccountChangeItem:(id)item
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   [(CalReminderMigrationContext *)self _sortedAddedListChangeItems];
   v27 = 0u;
   v28 = 0u;
@@ -368,16 +368,16 @@
   {
     v7 = v5;
     v8 = 0;
-    v9 = 0;
+    listChangeItem = 0;
     v10 = *v28;
     v11 = 0x278D6D000uLL;
     *&v6 = 138413314;
     v23 = v6;
-    v24 = v4;
+    v24 = itemCopy;
     do
     {
       v12 = 0;
-      v13 = v9;
+      v13 = listChangeItem;
       v25 = v7;
       do
       {
@@ -387,50 +387,50 @@
         }
 
         v14 = *(*(&v27 + 1) + 8 * v12);
-        v9 = [v14 listChangeItem];
-        v15 = [v14 order];
-        if (v15 == 0x7FFFFFFFFFFFFFFFLL)
+        listChangeItem = [v14 listChangeItem];
+        order = [v14 order];
+        if (order == 0x7FFFFFFFFFFFFFFFLL)
         {
           ++v8;
         }
 
         else
         {
-          v8 = v15;
+          v8 = order;
         }
 
-        v16 = [*(v11 + 312) reminders];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        reminders = [*(v11 + 312) reminders];
+        if (os_log_type_enabled(reminders, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v9 name];
-          v18 = [v9 objectID];
-          v19 = [v13 name];
+          name = [listChangeItem name];
+          objectID = [listChangeItem objectID];
+          name2 = [v13 name];
           [v13 objectID];
           v21 = v20 = v10;
           *buf = v23;
-          v32 = v17;
+          v32 = name;
           v33 = 2114;
-          v34 = v18;
+          v34 = objectID;
           v35 = 2112;
-          v36 = v19;
+          v36 = name2;
           v37 = 2114;
           v38 = v21;
           v39 = 2048;
           v40 = v8;
-          _os_log_impl(&dword_2428EA000, v16, OS_LOG_TYPE_DEFAULT, "Inserting List %@ (%{public}@) after list %@ (%{public}@) and assigning it order %li", buf, 0x34u);
+          _os_log_impl(&dword_2428EA000, reminders, OS_LOG_TYPE_DEFAULT, "Inserting List %@ (%{public}@) after list %@ (%{public}@) and assigning it order %li", buf, 0x34u);
 
           v10 = v20;
           v7 = v25;
 
-          v4 = v24;
+          itemCopy = v24;
           v11 = 0x278D6D000;
         }
 
-        [v9 setDaDisplayOrder:v8];
-        [v4 insertListChangeItem:v9 afterListChangeItem:v13];
+        [listChangeItem setDaDisplayOrder:v8];
+        [itemCopy insertListChangeItem:listChangeItem afterListChangeItem:v13];
 
         ++v12;
-        v13 = v9;
+        v13 = listChangeItem;
       }
 
       while (v7 != v12);
@@ -450,22 +450,22 @@
   v9[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
-  v5 = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
-  v6 = [v5 sortedArrayUsingDescriptors:v4];
+  lastObject = [(NSMutableArray *)self->_orderedListChangeItemsStack lastObject];
+  v6 = [lastObject sortedArrayUsingDescriptors:v4];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (BOOL)finishMigrationWithSave:(BOOL)a3
+- (BOOL)finishMigrationWithSave:(BOOL)save
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (save)
   {
-    v4 = [(CalReminderMigrationContext *)self saveRequest];
+    saveRequest = [(CalReminderMigrationContext *)self saveRequest];
     v18 = 0;
-    v5 = [v4 saveSynchronouslyWithError:&v18];
+    v5 = [saveRequest saveSynchronouslyWithError:&v18];
     v6 = v18;
 
     if ((v5 & 1) == 0)
@@ -488,9 +488,9 @@
   recordedAnyFatalFailures = self->_recordedAnyFatalFailures;
   if (!recordedAnyFatalFailures)
   {
-    v9 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
+    defaultListOriginalIdentifier = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
 
-    if (v9)
+    if (defaultListOriginalIdentifier)
     {
       defaultListMigratedIdentifier = self->_defaultListMigratedIdentifier;
       v11 = +[CalMigrationLog reminders];
@@ -499,17 +499,17 @@
       {
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
-          v14 = [(CalReminderMigrationContext *)self defaultListMigratedIdentifier];
+          defaultListOriginalIdentifier2 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
+          defaultListMigratedIdentifier = [(CalReminderMigrationContext *)self defaultListMigratedIdentifier];
           *buf = 138543618;
-          v20 = v13;
+          v20 = defaultListOriginalIdentifier2;
           v21 = 2114;
-          v22 = v14;
+          v22 = defaultListMigratedIdentifier;
           _os_log_impl(&dword_2428EA000, v12, OS_LOG_TYPE_DEFAULT, "Migrating default reminder list with original identifier %{public}@ and migrated identifier %{public}@", buf, 0x16u);
         }
 
-        v15 = [(CalReminderMigrationContext *)self reminderKitProvider];
-        [v15 setDefaultReminderListIdentifier:self->_defaultListMigratedIdentifier];
+        reminderKitProvider = [(CalReminderMigrationContext *)self reminderKitProvider];
+        [reminderKitProvider setDefaultReminderListIdentifier:self->_defaultListMigratedIdentifier];
       }
 
       else
@@ -519,18 +519,18 @@
           [(CalReminderMigrationContext *)self finishMigrationWithSave:v12];
         }
 
-        v15 = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
-        [(CalReminderMigrationContext *)self recordMigrationFailureWithDescription:@"Failed to find migrated default reminder list" inStage:5 underlyingError:0 relatedTo:v15 isFatal:0];
+        reminderKitProvider = [(CalReminderMigrationContext *)self defaultListOriginalIdentifier];
+        [(CalReminderMigrationContext *)self recordMigrationFailureWithDescription:@"Failed to find migrated default reminder list" inStage:5 underlyingError:0 relatedTo:reminderKitProvider isFatal:0];
       }
     }
 
     else
     {
-      v15 = +[CalMigrationLog reminders];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      reminderKitProvider = +[CalMigrationLog reminders];
+      if (os_log_type_enabled(reminderKitProvider, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2428EA000, v15, OS_LOG_TYPE_DEFAULT, "No default reminder list was set.", buf, 2u);
+        _os_log_impl(&dword_2428EA000, reminderKitProvider, OS_LOG_TYPE_DEFAULT, "No default reminder list was set.", buf, 2u);
       }
     }
   }

@@ -1,39 +1,39 @@
 @interface MPModelStoreGroupingsMusicKitResponseParser
-- (BOOL)featuredContentKindCorrespondsToItem:(id)a3;
-- (BOOL)isContentNodeAnEditorialElement:(id)a3;
-- (MPModelStoreGroupingsMusicKitResponseParser)initWithRawResponseOutput:(id)a3 sectionBuilder:(id)a4 contentItemBuilder:(id)a5 filteredFCKinds:(id)a6 userIdentity:(id)a7 rootObjectIdentifier:(id)a8 options:(unint64_t)a9 storeURLBag:(id)a10;
+- (BOOL)featuredContentKindCorrespondsToItem:(id)item;
+- (BOOL)isContentNodeAnEditorialElement:(id)element;
+- (MPModelStoreGroupingsMusicKitResponseParser)initWithRawResponseOutput:(id)output sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder filteredFCKinds:(id)kinds userIdentity:(id)identity rootObjectIdentifier:(id)identifier options:(unint64_t)options storeURLBag:(id)self0;
 - (MPSectionedCollection)results;
-- (id)_parsedContentNode:(id)a3 uniformContentItemTypeResolver:(id)a4 additionalAttributesFromParent:(id)a5 recommendationID:(id)a6;
-- (id)_parsedEditorialElement:(id)a3 recommendationID:(id)a4;
-- (id)_parsedEditorialElementX:(id)a3;
-- (id)_parsedEditorialElements:(id)a3;
+- (id)_parsedContentNode:(id)node uniformContentItemTypeResolver:(id)resolver additionalAttributesFromParent:(id)parent recommendationID:(id)d;
+- (id)_parsedEditorialElement:(id)element recommendationID:(id)d;
+- (id)_parsedEditorialElementX:(id)x;
+- (id)_parsedEditorialElements:(id)elements;
 - (id)_parsedSectionedCollection;
-- (id)attributesForContentNode:(id)a3;
+- (id)attributesForContentNode:(id)node;
 - (id)bagRoomURLRegularExpression;
-- (id)childrenOfContentNode:(id)a3;
+- (id)childrenOfContentNode:(id)node;
 - (id)description;
-- (id)firstChildOfContentNode:(id)a3;
-- (id)linkSectionWithDictionary:(id)a3;
-- (id)musicAPIURLWithLinkURLString:(id)a3;
-- (id)recommendationIDOfContentNode:(id)a3;
-- (int64_t)featuredContentKindForNode:(id)a3;
+- (id)firstChildOfContentNode:(id)node;
+- (id)linkSectionWithDictionary:(id)dictionary;
+- (id)musicAPIURLWithLinkURLString:(id)string;
+- (id)recommendationIDOfContentNode:(id)node;
+- (int64_t)featuredContentKindForNode:(id)node;
 @end
 
 @implementation MPModelStoreGroupingsMusicKitResponseParser
 
-- (id)_parsedContentNode:(id)a3 uniformContentItemTypeResolver:(id)a4 additionalAttributesFromParent:(id)a5 recommendationID:(id)a6
+- (id)_parsedContentNode:(id)node uniformContentItemTypeResolver:(id)resolver additionalAttributesFromParent:(id)parent recommendationID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nodeCopy = node;
+  resolverCopy = resolver;
+  parentCopy = parent;
+  dCopy = d;
   if (!_NSIsNSDictionary())
   {
     v22 = 0;
     goto LABEL_21;
   }
 
-  v14 = v10;
+  v14 = nodeCopy;
   v15 = [v14 objectForKey:@"id"];
   v16 = v15;
   if (v15)
@@ -52,7 +52,7 @@
       if (_NSIsNSDictionary())
       {
         v27 = v18;
-        v20 = [v12 mutableCopy];
+        v20 = [parentCopy mutableCopy];
         if (v20)
         {
           v21 = v20;
@@ -72,9 +72,9 @@
           [v21 setObject:v24 forKey:@"relationships"];
         }
 
-        if (v13)
+        if (dCopy)
         {
-          [v21 setObject:v13 forKey:@"recommendationId"];
+          [v21 setObject:dCopy forKey:@"recommendationId"];
         }
 
         v23 = [[MPStoreItemMetadata alloc] initWithStoreMusicAPIDictionary:v21];
@@ -87,7 +87,7 @@
         v23 = 0;
       }
 
-      [v11 addContentItemType:{-[MPModelStoreBrowseContentItemBuilder contentItemTypeForStoreItemMetadata:](self->_contentItemBuilder, "contentItemTypeForStoreItemMetadata:", v23)}];
+      [resolverCopy addContentItemType:{-[MPModelStoreBrowseContentItemBuilder contentItemTypeForStoreItemMetadata:](self->_contentItemBuilder, "contentItemTypeForStoreItemMetadata:", v23)}];
       v22 = [(MPStoreModelObjectBuilder *)self->_contentItemBuilder modelObjectWithStoreItemMetadata:v23 userIdentity:self->_userIdentity];
 
       goto LABEL_20;
@@ -107,12 +107,12 @@ LABEL_21:
   return v22;
 }
 
-- (BOOL)isContentNodeAnEditorialElement:(id)a3
+- (BOOL)isContentNodeAnEditorialElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 objectForKey:@"type"];
+    v4 = [elementCopy objectForKey:@"type"];
     if (_NSIsNSString())
     {
       v5 = [v4 isEqualToString:@"editorial-elements"];
@@ -132,12 +132,12 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)featuredContentKindCorrespondsToItem:(id)a3
+- (BOOL)featuredContentKindCorrespondsToItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (_NSIsNSDictionary())
   {
-    v5 = [(MPModelStoreGroupingsMusicKitResponseParser *)self featuredContentKindForNode:v4];
+    v5 = [(MPModelStoreGroupingsMusicKitResponseParser *)self featuredContentKindForNode:itemCopy];
     v7 = v5 != 317 && v5 != 383;
   }
 
@@ -149,12 +149,12 @@ LABEL_21:
   return v7;
 }
 
-- (id)childrenOfContentNode:(id)a3
+- (id)childrenOfContentNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 arrayAtKeyPath:@"relationships.children??contents.data"];
+    v4 = [nodeCopy arrayAtKeyPath:@"relationships.children??contents.data"];
   }
 
   else
@@ -165,12 +165,12 @@ LABEL_21:
   return v4;
 }
 
-- (id)recommendationIDOfContentNode:(id)a3
+- (id)recommendationIDOfContentNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 stringAtKeyPath:@"relationships.children??contents.meta.metrics.reco_id"];
+    v4 = [nodeCopy stringAtKeyPath:@"relationships.children??contents.meta.metrics.reco_id"];
   }
 
   else
@@ -181,20 +181,20 @@ LABEL_21:
   return v4;
 }
 
-- (id)firstChildOfContentNode:(id)a3
+- (id)firstChildOfContentNode:(id)node
 {
-  v3 = [(MPModelStoreGroupingsMusicKitResponseParser *)self childrenOfContentNode:a3];
-  v4 = [v3 firstObject];
+  v3 = [(MPModelStoreGroupingsMusicKitResponseParser *)self childrenOfContentNode:node];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)attributesForContentNode:(id)a3
+- (id)attributesForContentNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 objectForKey:@"attributes"];
+    v4 = [nodeCopy objectForKey:@"attributes"];
   }
 
   else
@@ -205,33 +205,33 @@ LABEL_21:
   return v4;
 }
 
-- (int64_t)featuredContentKindForNode:(id)a3
+- (int64_t)featuredContentKindForNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   if (_NSIsNSDictionary())
   {
-    v4 = [v3 stringAtKeyPath:@"attributes.editorialElementKind"];
-    v5 = [v4 integerValue];
+    v4 = [nodeCopy stringAtKeyPath:@"attributes.editorialElementKind"];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (id)linkSectionWithDictionary:(id)a3
+- (id)linkSectionWithDictionary:(id)dictionary
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (_NSIsNSDictionary())
   {
-    v5 = [v4 objectForKey:@"label"];
+    v5 = [dictionaryCopy objectForKey:@"label"];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"url"];
+      v6 = [dictionaryCopy objectForKey:@"url"];
       v7 = [(MPModelStoreGroupingsMusicKitResponseParser *)self musicAPIURLWithLinkURLString:v6];
 
       LOBYTE(v11) = 0;
@@ -244,7 +244,7 @@ LABEL_21:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v13 = v4;
+        v13 = dictionaryCopy;
         _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_ERROR, "Dropping link without label: %{public}@", buf, 0xCu);
       }
 
@@ -260,26 +260,26 @@ LABEL_21:
   return v8;
 }
 
-- (id)musicAPIURLWithLinkURLString:(id)a3
+- (id)musicAPIURLWithLinkURLString:(id)string
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 || (storeBagLinkRegularExpression = self->_storeBagLinkRegularExpression) == 0 && ([(MPModelStoreGroupingsMusicKitResponseParser *)self bagRoomURLRegularExpression], v6 = objc_claimAutoreleasedReturnValue(), v7 = self->_storeBagLinkRegularExpression, self->_storeBagLinkRegularExpression = v6, v7, (storeBagLinkRegularExpression = self->_storeBagLinkRegularExpression) == 0))
+  stringCopy = string;
+  if (!stringCopy || (storeBagLinkRegularExpression = self->_storeBagLinkRegularExpression) == 0 && ([(MPModelStoreGroupingsMusicKitResponseParser *)self bagRoomURLRegularExpression], v6 = objc_claimAutoreleasedReturnValue(), v7 = self->_storeBagLinkRegularExpression, self->_storeBagLinkRegularExpression = v6, v7, (storeBagLinkRegularExpression = self->_storeBagLinkRegularExpression) == 0))
   {
     v17 = 0;
     goto LABEL_21;
   }
 
   v8 = storeBagLinkRegularExpression;
-  v9 = -[NSRegularExpression matchesInString:options:range:](v8, "matchesInString:options:range:", v4, 0, 0, [v4 length]);
-  v10 = [v9 firstObject];
-  if (!v10)
+  v9 = -[NSRegularExpression matchesInString:options:range:](v8, "matchesInString:options:range:", stringCopy, 0, 0, [stringCopy length]);
+  firstObject = [v9 firstObject];
+  if (!firstObject)
   {
     v11 = os_log_create("com.apple.amp.mediaplayer", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = v4;
+      v23 = stringCopy;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_ERROR, "No match found, URL is not supported: %{public}@", buf, 0xCu);
     }
 
@@ -306,14 +306,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v12 = [v10 rangeWithName:@"identifier"];
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL || ([v4 substringWithRange:{v12, v13}], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+  v12 = [firstObject rangeWithName:@"identifier"];
+  if (v12 == 0x7FFFFFFFFFFFFFFFLL || ([stringCopy substringWithRange:{v12, v13}], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v15 = os_log_create("com.apple.amp.mediaplayer", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = v10;
+      v23 = firstObject;
       v18 = "Match didn't capture an identifier: %{public}@";
       v19 = v15;
       v20 = 12;
@@ -376,11 +376,11 @@ LABEL_21:
   return v5;
 }
 
-- (id)_parsedEditorialElement:(id)a3 recommendationID:(id)a4
+- (id)_parsedEditorialElement:(id)element recommendationID:(id)d
 {
   v77 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v64 = a4;
+  elementCopy = element;
+  dCopy = d;
   if (!_NSIsNSDictionary())
   {
     v12 = 0;
@@ -388,7 +388,7 @@ LABEL_21:
   }
 
   v7 = objc_opt_new();
-  v63 = v6;
+  v63 = elementCopy;
   v8 = [(MPModelStoreGroupingsMusicKitResponseParser *)self featuredContentKindForNode:?];
   filteredFCKinds = self->_filteredFCKinds;
   if (!filteredFCKinds || [(NSIndexSet *)filteredFCKinds containsIndex:v8])
@@ -441,15 +441,15 @@ LABEL_31:
               if (_NSIsNSDictionary())
               {
                 v20 = [v10 objectForKey:@"emphasize"];
-                v56 = [v20 BOOLValue];
+                bOOLValue = [v20 BOOLValue];
               }
 
               else
               {
-                v56 = 0;
+                bOOLValue = 0;
               }
 
-              v59 = v6;
+              v59 = elementCopy;
               v57 = v10;
               v61 = v11;
               if (_NSIsNSDictionary())
@@ -520,7 +520,7 @@ LABEL_31:
                   if (![(MPModelStoreGroupingsMusicKitResponseParser *)self isContentNodeAnEditorialElement:v33])
                   {
                     v38 = [(MPModelStoreGroupingsMusicKitResponseParser *)self attributesForContentNode:v63];
-                    v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedContentNode:v33 uniformContentItemTypeResolver:v25 additionalAttributesFromParent:v38 recommendationID:v64];
+                    v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedContentNode:v33 uniformContentItemTypeResolver:v25 additionalAttributesFromParent:v38 recommendationID:dCopy];
 
 LABEL_53:
                     v31 = 0;
@@ -538,12 +538,12 @@ LABEL_54:
                   {
                     v35 = [(MPModelStoreGroupingsMusicKitResponseParser *)self firstChildOfContentNode:v33];
                     v36 = [(MPModelStoreGroupingsMusicKitResponseParser *)self attributesForContentNode:v33];
-                    v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedContentNode:v35 uniformContentItemTypeResolver:v25 additionalAttributesFromParent:v36 recommendationID:v64];
+                    v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedContentNode:v35 uniformContentItemTypeResolver:v25 additionalAttributesFromParent:v36 recommendationID:dCopy];
 
                     goto LABEL_53;
                   }
 
-                  v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedEditorialElement:v33 recommendationID:v64];
+                  v37 = [(MPModelStoreGroupingsMusicKitResponseParser *)self _parsedEditorialElement:v33 recommendationID:dCopy];
                   if (v37)
                   {
                     goto LABEL_54;
@@ -605,19 +605,19 @@ LABEL_62:
                     v7 = v58;
                     if (v62 == 489 || v62 == 383)
                     {
-                      v48 = [v26 firstObject];
-                      v49 = [v48 radioStation];
+                      firstObject = [v26 firstObject];
+                      radioStation = [firstObject radioStation];
                     }
 
                     else
                     {
-                      v49 = 0;
+                      radioStation = 0;
                     }
 
                     sectionBuilder = self->_sectionBuilder;
                     LOBYTE(v53) = v31 & 1;
                     v47 = v60;
-                    v51 = -[MPModelStoreBrowseSectionBuilder modelObjectWithTitle:loadAdditionalContentURL:uniformContentItemType:isMemberOfChartSet:isBrick:displaysAsGridCellInCarPlay:displayStyle:previouslyRetrievedNestedResponse:onlyContainsEditorialElements:featuredContentKind:modelObject:](sectionBuilder, "modelObjectWithTitle:loadAdditionalContentURL:uniformContentItemType:isMemberOfChartSet:isBrick:displaysAsGridCellInCarPlay:displayStyle:previouslyRetrievedNestedResponse:onlyContainsEditorialElements:featuredContentKind:modelObject:", v61, v60, [v25 uniformContentItemType], v62 == 323, v62 == 325, v56, v55, 0, v53, v62, v49);
+                    v51 = -[MPModelStoreBrowseSectionBuilder modelObjectWithTitle:loadAdditionalContentURL:uniformContentItemType:isMemberOfChartSet:isBrick:displaysAsGridCellInCarPlay:displayStyle:previouslyRetrievedNestedResponse:onlyContainsEditorialElements:featuredContentKind:modelObject:](sectionBuilder, "modelObjectWithTitle:loadAdditionalContentURL:uniformContentItemType:isMemberOfChartSet:isBrick:displaysAsGridCellInCarPlay:displayStyle:previouslyRetrievedNestedResponse:onlyContainsEditorialElements:featuredContentKind:modelObject:", v61, v60, [v25 uniformContentItemType], v62 == 323, v62 == 325, bOOLValue, v55, 0, v53, v62, radioStation);
                     [v58 appendSection:v51];
                     [v58 appendItems:v26];
                     v12 = [v58 copy];
@@ -630,7 +630,7 @@ LABEL_62:
                     v47 = v60;
                   }
 
-                  v6 = v59;
+                  elementCopy = v59;
                   v10 = v57;
                   v11 = v61;
                   goto LABEL_83;
@@ -715,17 +715,17 @@ void __88__MPModelStoreGroupingsMusicKitResponseParser__parsedEditorialElement_r
   _parsedEditorialElement_recommendationID__featuredContentKindInWhichTitleCanBeIgnored = v0;
 }
 
-- (id)_parsedEditorialElementX:(id)a3
+- (id)_parsedEditorialElementX:(id)x
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  xCopy = x;
   if (!_NSIsNSDictionary())
   {
     v18 = MEMORY[0x1E695E0F0];
     goto LABEL_23;
   }
 
-  v5 = v4;
+  v5 = xCopy;
   v6 = [(MPModelStoreGroupingsMusicKitResponseParser *)self featuredContentKindForNode:v5];
   filteredFCKinds = self->_filteredFCKinds;
   if (filteredFCKinds && ![(NSIndexSet *)filteredFCKinds containsIndex:v6])
@@ -798,16 +798,16 @@ LABEL_23:
   return v18;
 }
 
-- (id)_parsedEditorialElements:(id)a3
+- (id)_parsedEditorialElements:(id)elements
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  elementsCopy = elements;
   v4 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v3;
+  obj = elementsCopy;
   v5 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v5)
   {
@@ -840,11 +840,11 @@ LABEL_23:
               }
 
               v11 = *(*(&v33 + 1) + 8 * j);
-              v12 = [v11 firstSection];
-              [v4 appendSection:v12];
+              firstSection = [v11 firstSection];
+              [v4 appendSection:firstSection];
 
-              v13 = [v11 allItems];
-              [v4 appendItems:v13];
+              allItems = [v11 allItems];
+              [v4 appendItems:allItems];
             }
 
             v8 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -1011,8 +1011,8 @@ LABEL_47:
 
         else
         {
-          v21 = [v12 firstObject];
-          if (!v21)
+          firstObject = [v12 firstObject];
+          if (!firstObject)
           {
             v12 = os_log_create("com.apple.amp.mediaplayer", "Default");
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1025,11 +1025,11 @@ LABEL_47:
             goto LABEL_47;
           }
 
-          v12 = v21;
+          v12 = firstObject;
         }
 
-        v22 = [v18 type];
-        if (v22 == 1)
+        type = [v18 type];
+        if (type == 1)
         {
           if ((_NSIsNSDictionary() & 1) == 0)
           {
@@ -1073,7 +1073,7 @@ LABEL_61:
           }
         }
 
-        else if (!v22 && (_NSIsNSArray() & 1) == 0)
+        else if (!type && (_NSIsNSArray() & 1) == 0)
         {
           v39 = [v18 key];
 
@@ -1276,30 +1276,30 @@ void __54__MPModelStoreGroupingsMusicKitResponseParser_results__block_invoke(uin
   *(v3 + 48) = v2;
 }
 
-- (MPModelStoreGroupingsMusicKitResponseParser)initWithRawResponseOutput:(id)a3 sectionBuilder:(id)a4 contentItemBuilder:(id)a5 filteredFCKinds:(id)a6 userIdentity:(id)a7 rootObjectIdentifier:(id)a8 options:(unint64_t)a9 storeURLBag:(id)a10
+- (MPModelStoreGroupingsMusicKitResponseParser)initWithRawResponseOutput:(id)output sectionBuilder:(id)builder contentItemBuilder:(id)itemBuilder filteredFCKinds:(id)kinds userIdentity:(id)identity rootObjectIdentifier:(id)identifier options:(unint64_t)options storeURLBag:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  obj = a8;
-  v24 = a8;
-  v19 = a10;
+  outputCopy = output;
+  builderCopy = builder;
+  itemBuilderCopy = itemBuilder;
+  kindsCopy = kinds;
+  identityCopy = identity;
+  obj = identifier;
+  identifierCopy = identifier;
+  bagCopy = bag;
   v28.receiver = self;
   v28.super_class = MPModelStoreGroupingsMusicKitResponseParser;
   v20 = [(MPModelStoreGroupingsMusicKitResponseParser *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_rawResponseOutput, a3);
-    objc_storeStrong(&v21->_sectionBuilder, a4);
-    objc_storeStrong(&v21->_contentItemBuilder, a5);
-    objc_storeStrong(&v21->_filteredFCKinds, a6);
-    objc_storeStrong(&v21->_userIdentity, a7);
+    objc_storeStrong(&v20->_rawResponseOutput, output);
+    objc_storeStrong(&v21->_sectionBuilder, builder);
+    objc_storeStrong(&v21->_contentItemBuilder, itemBuilder);
+    objc_storeStrong(&v21->_filteredFCKinds, kinds);
+    objc_storeStrong(&v21->_userIdentity, identity);
     objc_storeStrong(&v21->_rootObjectIdentifier, obj);
-    v21->_options = a9;
-    objc_storeStrong(&v21->_storeURLBag, a10);
+    v21->_options = options;
+    objc_storeStrong(&v21->_storeURLBag, bag);
   }
 
   return v21;

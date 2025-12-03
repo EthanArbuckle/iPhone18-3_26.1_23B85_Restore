@@ -1,10 +1,10 @@
 @interface EKUIOverlayCalendarSignificantDatesProvider
 - (EKUIOverlayCalendarSignificantDatesProvider)init;
-- (id)firstOfOverlayMonthsForCalendarMonth:(id)a3;
-- (id)firstOfOverlayYearsForCalendarMonth:(id)a3;
+- (id)firstOfOverlayMonthsForCalendarMonth:(id)month;
+- (id)firstOfOverlayYearsForCalendarMonth:(id)month;
 - (void)_invalidateCaches;
 - (void)_load;
-- (void)_requestDate:(id)a3;
+- (void)_requestDate:(id)date;
 - (void)dealloc;
 @end
 
@@ -21,8 +21,8 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__invalidateCaches name:*MEMORY[0x1E6993308] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__invalidateCaches name:*MEMORY[0x1E6993308] object:0];
   }
 
   return v2;
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6993308] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6993308] object:0];
 
   v4.receiver = self;
   v4.super_class = EKUIOverlayCalendarSignificantDatesProvider;
@@ -43,15 +43,15 @@
   currentRequest = self->_currentRequest;
   if (currentRequest)
   {
-    v4 = currentRequest;
+    midpoint = currentRequest;
   }
 
   else
   {
-    v4 = [(CalDateRange *)self->_cachedDateRange midpoint];
+    midpoint = [(CalDateRange *)self->_cachedDateRange midpoint];
   }
 
-  v11 = v4;
+  v11 = midpoint;
   cachedDateRange = self->_cachedDateRange;
   self->_cachedDateRange = 0;
 
@@ -82,32 +82,32 @@
   }
 }
 
-- (id)firstOfOverlayMonthsForCalendarMonth:(id)a3
+- (id)firstOfOverlayMonthsForCalendarMonth:(id)month
 {
-  v4 = a3;
-  [(EKUIOverlayCalendarSignificantDatesProvider *)self _requestDate:v4];
-  v5 = [(NSDictionary *)self->_cachedFirstsOfMonths objectForKeyedSubscript:v4];
+  monthCopy = month;
+  [(EKUIOverlayCalendarSignificantDatesProvider *)self _requestDate:monthCopy];
+  v5 = [(NSDictionary *)self->_cachedFirstsOfMonths objectForKeyedSubscript:monthCopy];
 
   return v5;
 }
 
-- (id)firstOfOverlayYearsForCalendarMonth:(id)a3
+- (id)firstOfOverlayYearsForCalendarMonth:(id)month
 {
-  v4 = a3;
-  [(EKUIOverlayCalendarSignificantDatesProvider *)self _requestDate:v4];
-  v5 = [(NSDictionary *)self->_cachedFirstsOfYears objectForKeyedSubscript:v4];
+  monthCopy = month;
+  [(EKUIOverlayCalendarSignificantDatesProvider *)self _requestDate:monthCopy];
+  v5 = [(NSDictionary *)self->_cachedFirstsOfYears objectForKeyedSubscript:monthCopy];
 
   return v5;
 }
 
-- (void)_requestDate:(id)a3
+- (void)_requestDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   v5 = CUIKGetOverlayCalendar();
 
   if (v5)
   {
-    if ([(CalDateRange *)self->_cachedCentralYear containsDate:v7])
+    if ([(CalDateRange *)self->_cachedCentralYear containsDate:dateCopy])
     {
       currentRequest = self->_currentRequest;
       ++self->_currentGeneration;
@@ -116,7 +116,7 @@
 
     else
     {
-      objc_storeStrong(&self->_currentRequest, a3);
+      objc_storeStrong(&self->_currentRequest, date);
       if (!self->_loadPending)
       {
         self->_loadPending = 1;

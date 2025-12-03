@@ -7,9 +7,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(TwoLinesOutlineCellAccessibility *)self safeValueForKey:@"_twoLinesContentView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CADSPMutableWireModel
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)a3;
-- (void)setAudioStreamConfigurationName:(id)a3;
-- (void)setBoxName:(id)a3 ofEndpoint:(unsigned int)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)configuration;
+- (void)setAudioStreamConfigurationName:(id)name;
+- (void)setBoxName:(id)name ofEndpoint:(unsigned int)endpoint;
 @end
 
 @implementation CADSPMutableWireModel
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CADSPMutableWireModel;
-  return [(CADSPWireModel *)&v4 mutableCopyWithZone:a3];
+  return [(CADSPWireModel *)&v4 mutableCopyWithZone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPWireModel allocWithZone:a3];
+  v4 = [CADSPWireModel allocWithZone:zone];
   std::string::operator=(&v4->_this, &self->super._this);
   v4->_this.source.var0 = self->super._this.source.var0;
   std::string::operator=(&v4->_this.var0, &self->super._this.var0);
@@ -26,22 +26,22 @@
   return v4;
 }
 
-- (void)setBoxName:(id)a3 ofEndpoint:(unsigned int)a4
+- (void)setBoxName:(id)name ofEndpoint:(unsigned int)endpoint
 {
-  v6 = a3;
-  std::string::__assign_external((&self->super._this.source + (a4 != 0)), [v6 UTF8String]);
+  nameCopy = name;
+  std::string::__assign_external((&self->super._this.source + (endpoint != 0)), [nameCopy UTF8String]);
 }
 
-- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)a3
+- (void)setAudioStreamConfiguration:(const CADSPAudioStreamConfiguration *)configuration
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (configuration)
   {
-    v3 = *&a3->var0.mBytesPerPacket;
-    v5[0] = *&a3->var0.mSampleRate;
+    v3 = *&configuration->var0.mBytesPerPacket;
+    v5[0] = *&configuration->var0.mSampleRate;
     v5[1] = v3;
-    v6 = *&a3->var0.mBitsPerChannel;
-    var1 = a3->var1;
+    v6 = *&configuration->var0.mBitsPerChannel;
+    var1 = configuration->var1;
     v8 = 1;
   }
 
@@ -55,15 +55,15 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAudioStreamConfigurationName:(id)a3
+- (void)setAudioStreamConfigurationName:(id)name
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
-    v6 = [v4 UTF8String];
-    v7 = strlen(v6);
+    uTF8String = [nameCopy UTF8String];
+    v7 = strlen(uTF8String);
     if (v7 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -78,7 +78,7 @@
     HIBYTE(v11) = v7;
     if (v7)
     {
-      memmove(&__dst, v6, v7);
+      memmove(&__dst, uTF8String, v7);
     }
 
     *(&__dst + v8) = 0;

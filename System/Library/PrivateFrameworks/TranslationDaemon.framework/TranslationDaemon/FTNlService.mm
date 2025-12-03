@@ -1,21 +1,21 @@
 @interface FTNlService
-- (void)performShortcutFuzzyMatch:(id)a3 requestBuilder:(id)a4 completion:(id)a5;
+- (void)performShortcutFuzzyMatch:(id)match requestBuilder:(id)builder completion:(id)completion;
 @end
 
 @implementation FTNlService
 
-- (void)performShortcutFuzzyMatch:(id)a3 requestBuilder:(id)a4 completion:(id)a5
+- (void)performShortcutFuzzyMatch:(id)match requestBuilder:(id)builder completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 flatbuffData];
+  builderCopy = builder;
+  completionCopy = completion;
+  flatbuffData = [match flatbuffData];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__FTNlService_performShortcutFuzzyMatch_requestBuilder_completion___block_invoke;
   v12[3] = &unk_2789B9158;
-  v11 = v9;
+  v11 = completionCopy;
   v13 = v11;
-  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Nl/ShortcutFuzzyMatch" requestData:v10 requestBuilder:v8 responseHandler:v12];
+  [(OspreyChannel *)self unaryRequestWithMethodName:@"/siri.speech.qss_fb.Nl/ShortcutFuzzyMatch" requestData:flatbuffData requestBuilder:builderCopy responseHandler:v12];
 }
 
 void __67__FTNlService_performShortcutFuzzyMatch_requestBuilder_completion___block_invoke(uint64_t a1, void *a2, void *a3)

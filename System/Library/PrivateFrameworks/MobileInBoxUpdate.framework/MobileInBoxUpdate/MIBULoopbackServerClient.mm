@@ -1,6 +1,6 @@
 @interface MIBULoopbackServerClient
 + (_TtC17MobileInBoxUpdate24MIBULoopbackServerClient)sharedInstance;
-- (BOOL)startServerWithWebPort:(unsigned __int16)a3 webRoot:(id)a4 waitTillDone:(BOOL)a5 error:(id *)a6;
+- (BOOL)startServerWithWebPort:(unsigned __int16)port webRoot:(id)root waitTillDone:(BOOL)done error:(id *)error;
 - (_TtC17MobileInBoxUpdate24MIBULoopbackServerClient)init;
 @end
 
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (BOOL)startServerWithWebPort:(unsigned __int16)a3 webRoot:(id)a4 waitTillDone:(BOOL)a5 error:(id *)a6
+- (BOOL)startServerWithWebPort:(unsigned __int16)port webRoot:(id)root waitTillDone:(BOOL)done error:(id *)error
 {
   v9 = sub_259AEBF14();
   v11 = v10;
-  v12 = self;
-  sub_259AD78E4(a3, v9, v11, a5);
+  selfCopy = self;
+  sub_259AD78E4(port, v9, v11, done);
 
   return 1;
 }

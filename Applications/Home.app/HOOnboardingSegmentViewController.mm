@@ -1,33 +1,33 @@
 @interface HOOnboardingSegmentViewController
-+ (id)_buildPocketViewControllerWithOptions:(unint64_t)a3 target:(id)a4 action:(SEL)a5;
++ (id)_buildPocketViewControllerWithOptions:(unint64_t)options target:(id)target action:(SEL)action;
 - (BOOL)showPocket;
 - (HOOnboardingChildViewControllerDelegate)delegate;
 - (HOOnboardingChildViewControllerNavigationBarDelegate)navigationBarDelegate;
-- (HOOnboardingSegmentViewController)initWithContentViewController:(id)a3 delegate:(id)a4;
+- (HOOnboardingSegmentViewController)initWithContentViewController:(id)controller delegate:(id)delegate;
 - (unint64_t)_numberOfPocketButtons;
-- (void)_buttonActivated:(id)a3;
-- (void)setShowPocket:(BOOL)a3;
+- (void)_buttonActivated:(id)activated;
+- (void)setShowPocket:(BOOL)pocket;
 - (void)viewDidLoad;
 @end
 
 @implementation HOOnboardingSegmentViewController
 
-+ (id)_buildPocketViewControllerWithOptions:(unint64_t)a3 target:(id)a4 action:(SEL)a5
++ (id)_buildPocketViewControllerWithOptions:(unint64_t)options target:(id)target action:(SEL)action
 {
-  v7 = a4;
-  if (a3)
+  targetCopy = target;
+  if (options)
   {
     v8 = objc_opt_new();
-    if ((a3 & 8) != 0)
+    if ((options & 8) != 0)
     {
       v13 = sub_100008E30(@"HOOnboardingGetStarted");
-      v14 = [HUPocketButtonDescriptor descriptorWithTitle:v13 style:0 target:v7 action:a5 userInfo:&off_1000CB668];
+      v14 = [HUPocketButtonDescriptor descriptorWithTitle:v13 style:0 target:targetCopy action:action userInfo:&off_1000CB668];
       [v8 addObject:v14];
 
-      if ((a3 & 4) == 0)
+      if ((options & 4) == 0)
       {
 LABEL_4:
-        if ((a3 & 1) == 0)
+        if ((options & 1) == 0)
         {
           goto LABEL_5;
         }
@@ -36,19 +36,19 @@ LABEL_4:
       }
     }
 
-    else if ((a3 & 4) == 0)
+    else if ((options & 4) == 0)
     {
       goto LABEL_4;
     }
 
     v15 = sub_100008E30(@"HOOnboardingSetUpLater");
-    v16 = [HUPocketButtonDescriptor descriptorWithTitle:v15 style:1 target:v7 action:a5 userInfo:&off_1000CB680];
+    v16 = [HUPocketButtonDescriptor descriptorWithTitle:v15 style:1 target:targetCopy action:action userInfo:&off_1000CB680];
     [v8 addObject:v16];
 
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
 LABEL_5:
-      if ((a3 & 2) == 0)
+      if ((options & 2) == 0)
       {
 LABEL_7:
         v11 = [[HUPocketButtonViewController alloc] initWithButtonDescriptors:v8];
@@ -58,7 +58,7 @@ LABEL_7:
 
 LABEL_6:
       v9 = sub_100008E30(@"HODoneButtonTitle");
-      v10 = [HUPocketButtonDescriptor descriptorWithTitle:v9 style:0 target:v7 action:a5 userInfo:&off_1000CB6B0];
+      v10 = [HUPocketButtonDescriptor descriptorWithTitle:v9 style:0 target:targetCopy action:action userInfo:&off_1000CB6B0];
       [v8 addObject:v10];
 
       goto LABEL_7;
@@ -66,10 +66,10 @@ LABEL_6:
 
 LABEL_14:
     v17 = HULocalizedString();
-    v18 = [HUPocketButtonDescriptor descriptorWithTitle:v17 style:0 target:v7 action:a5 userInfo:&off_1000CB698];
+    v18 = [HUPocketButtonDescriptor descriptorWithTitle:v17 style:0 target:targetCopy action:action userInfo:&off_1000CB698];
     [v8 addObject:v18];
 
-    if ((a3 & 2) == 0)
+    if ((options & 2) == 0)
     {
       goto LABEL_7;
     }
@@ -83,11 +83,11 @@ LABEL_9:
   return v11;
 }
 
-- (HOOnboardingSegmentViewController)initWithContentViewController:(id)a3 delegate:(id)a4
+- (HOOnboardingSegmentViewController)initWithContentViewController:(id)controller delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     sub_10007FAA0(a2, self);
   }
@@ -96,11 +96,11 @@ LABEL_9:
   v10 = [v9 _buildPocketViewControllerWithOptions:objc_msgSend(objc_opt_class() target:"pocketOptions") action:{self, "_buttonActivated:"}];
   v14.receiver = self;
   v14.super_class = HOOnboardingSegmentViewController;
-  v11 = [(HOOnboardingSegmentViewController *)&v14 initWithContentViewController:v7 pocketViewController:v10];
+  v11 = [(HOOnboardingSegmentViewController *)&v14 initWithContentViewController:controllerCopy pocketViewController:v10];
   v12 = v11;
   if (v11)
   {
-    [(HOOnboardingSegmentViewController *)v11 setDelegate:v8];
+    [(HOOnboardingSegmentViewController *)v11 setDelegate:delegateCopy];
   }
 
   return v12;
@@ -112,24 +112,24 @@ LABEL_9:
   v5.super_class = HOOnboardingSegmentViewController;
   [(HOOnboardingSegmentViewController *)&v5 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(HOOnboardingSegmentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(HOOnboardingSegmentViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
 - (BOOL)showPocket
 {
-  v2 = [(HOOnboardingSegmentViewController *)self pocketViewController];
-  v3 = v2 != 0;
+  pocketViewController = [(HOOnboardingSegmentViewController *)self pocketViewController];
+  v3 = pocketViewController != 0;
 
   return v3;
 }
 
-- (void)setShowPocket:(BOOL)a3
+- (void)setShowPocket:(BOOL)pocket
 {
-  if (a3)
+  if (pocket)
   {
-    v4 = [objc_opt_class() pocketOptions];
-    v5 = [objc_opt_class() _buildPocketViewControllerWithOptions:v4 target:self action:"_buttonActivated:"];
+    pocketOptions = [objc_opt_class() pocketOptions];
+    v5 = [objc_opt_class() _buildPocketViewControllerWithOptions:pocketOptions target:self action:"_buttonActivated:"];
     if (v5)
     {
       [(HOOnboardingSegmentViewController *)self setPocketViewController:v5];
@@ -145,38 +145,38 @@ LABEL_9:
   }
 }
 
-- (void)_buttonActivated:(id)a3
+- (void)_buttonActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [activatedCopy userInfo];
     v10 = 138412290;
-    v11 = v6;
+    v11 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[HOOnboardingSegmentViewController-_buttonActivated] User tapped button (%@)", &v10, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 unsignedIntegerValue];
+  userInfo2 = [activatedCopy userInfo];
+  unsignedIntegerValue = [userInfo2 unsignedIntegerValue];
 
-  if ((v8 - 1) < 2)
+  if ((unsignedIntegerValue - 1) < 2)
   {
     goto LABEL_6;
   }
 
-  if (v8 == 4)
+  if (unsignedIntegerValue == 4)
   {
-    v9 = [(HOOnboardingSegmentViewController *)self delegate];
-    [v9 childViewControllerDidFinish:self shouldSkipRelatedChildren:1];
+    delegate = [(HOOnboardingSegmentViewController *)self delegate];
+    [delegate childViewControllerDidFinish:self shouldSkipRelatedChildren:1];
     goto LABEL_8;
   }
 
-  if (v8 == 8)
+  if (unsignedIntegerValue == 8)
   {
 LABEL_6:
-    v9 = [(HOOnboardingSegmentViewController *)self delegate];
-    [v9 childViewControllerDidFinish:self];
+    delegate = [(HOOnboardingSegmentViewController *)self delegate];
+    [delegate childViewControllerDidFinish:self];
 LABEL_8:
   }
 }
@@ -184,10 +184,10 @@ LABEL_8:
 - (unint64_t)_numberOfPocketButtons
 {
   objc_opt_class();
-  v3 = [(HOOnboardingSegmentViewController *)self pocketViewController];
+  pocketViewController = [(HOOnboardingSegmentViewController *)self pocketViewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = pocketViewController;
   }
 
   else
@@ -197,9 +197,9 @@ LABEL_8:
 
   v5 = v4;
 
-  v6 = [v5 descriptors];
+  descriptors = [v5 descriptors];
 
-  v7 = [v6 count];
+  v7 = [descriptors count];
   return v7;
 }
 

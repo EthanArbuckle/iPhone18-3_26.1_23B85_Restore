@@ -5,22 +5,22 @@
 + (id)lightButtonShadowSettings;
 + (id)lightCardMacShadowSettings;
 + (id)lightCardShadowSettings;
-+ (id)settingsForTraitCollection:(id)a3 button:(BOOL)a4;
-- (CardShadowSettings)initWithRadius:(double)a3 opacity:(double)a4 rimOpacity:(double)a5 cornerRadius:(double)a6;
++ (id)settingsForTraitCollection:(id)collection button:(BOOL)button;
+- (CardShadowSettings)initWithRadius:(double)radius opacity:(double)opacity rimOpacity:(double)rimOpacity cornerRadius:(double)cornerRadius;
 @end
 
 @implementation CardShadowSettings
 
 + (id)lightButtonShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme buttonCornerRadius];
   v4 = [v2 initWithRadius:7.0 opacity:0.150000006 rimOpacity:0.0500000007 cornerRadius:v3];
 
   return v4;
 }
 
-- (CardShadowSettings)initWithRadius:(double)a3 opacity:(double)a4 rimOpacity:(double)a5 cornerRadius:(double)a6
+- (CardShadowSettings)initWithRadius:(double)radius opacity:(double)opacity rimOpacity:(double)rimOpacity cornerRadius:(double)cornerRadius
 {
   v14.receiver = self;
   v14.super_class = CardShadowSettings;
@@ -28,68 +28,68 @@
   v11 = v10;
   if (v10)
   {
-    v10->_radius = a3;
-    v10->_opacity = a4;
-    v10->_rimOpacity = a5;
-    v10->_cornerRadius = a6;
+    v10->_radius = radius;
+    v10->_opacity = opacity;
+    v10->_rimOpacity = rimOpacity;
+    v10->_cornerRadius = cornerRadius;
     v12 = v10;
   }
 
   return v11;
 }
 
-+ (id)settingsForTraitCollection:(id)a3 button:(BOOL)a4
++ (id)settingsForTraitCollection:(id)collection button:(BOOL)button
 {
-  v6 = a3;
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v6 userInterfaceIdiom];
+  collectionCopy = collection;
+  userInterfaceStyle = [collectionCopy userInterfaceStyle];
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
 
-  if (v7 == 2)
+  if (userInterfaceStyle == 2)
   {
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      v9 = [a1 darkCardMacShadowSettings];
+      darkCardMacShadowSettings = [self darkCardMacShadowSettings];
       goto LABEL_13;
     }
 
-    if (a4)
+    if (button)
     {
-      [a1 darkButtonShadowSettings];
+      [self darkButtonShadowSettings];
     }
 
     else
     {
-      [a1 darkCardShadowSettings];
+      [self darkCardShadowSettings];
     }
   }
 
   else
   {
-    if (v8 == 5)
+    if (userInterfaceIdiom == 5)
     {
-      v9 = [a1 lightCardMacShadowSettings];
+      darkCardMacShadowSettings = [self lightCardMacShadowSettings];
       goto LABEL_13;
     }
 
-    if (a4)
+    if (button)
     {
-      [a1 lightButtonShadowSettings];
+      [self lightButtonShadowSettings];
     }
 
     else
     {
-      [a1 lightCardShadowSettings];
+      [self lightCardShadowSettings];
     }
   }
-  v9 = ;
+  darkCardMacShadowSettings = ;
 LABEL_13:
 
-  return v9;
+  return darkCardMacShadowSettings;
 }
 
 + (id)darkCardMacShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme cardCornerRadius];
   v4 = [v2 initWithRadius:15.0 opacity:0.217999995 rimOpacity:0.135100007 cornerRadius:v3];
 
@@ -98,7 +98,7 @@ LABEL_13:
 
 + (id)lightCardMacShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme cardCornerRadius];
   v4 = [v2 initWithRadius:15.0 opacity:0.200000003 rimOpacity:0.100000001 cornerRadius:v3];
 
@@ -107,7 +107,7 @@ LABEL_13:
 
 + (id)darkButtonShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme buttonCornerRadius];
   v4 = [v2 initWithRadius:7.0 opacity:0.234999999 rimOpacity:0.116499998 cornerRadius:v3];
 
@@ -116,7 +116,7 @@ LABEL_13:
 
 + (id)darkCardShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme cardCornerRadius];
   v4 = [v2 initWithRadius:15.0 opacity:0.217999995 rimOpacity:0.135100007 cornerRadius:v3];
 
@@ -125,7 +125,7 @@ LABEL_13:
 
 + (id)lightCardShadowSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   +[MapsTheme cardCornerRadius];
   v4 = [v2 initWithRadius:15.0 opacity:0.0799999982 rimOpacity:0.0700000003 cornerRadius:v3];
 

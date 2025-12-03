@@ -6,9 +6,9 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)setFetchResponses:(id)a3;
-- (void)setStatus:(id)a3;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)setFetchResponses:(id)responses;
+- (void)setStatus:(id)status;
 @end
 
 @implementation ASItemOperationsResponse
@@ -22,7 +22,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_12 = v2;
     acceptsTopLevelLeaves___haveChecked_12 = 1;
   }
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_12 = v2;
     parsingLeafNode___haveChecked_12 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_12 = v2;
     parsingWithSubItems___haveChecked_12 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_12 = v2;
     frontingBasicTypes___haveChecked_12 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_12 = v2;
     notifyOfUnknownTokens___haveChecked_12 = 1;
   }
@@ -98,21 +98,21 @@
   return v2 & 1;
 }
 
-- (void)setFetchResponses:(id)a3
+- (void)setFetchResponses:(id)responses
 {
-  v5 = a3;
-  if (self->_fetchResponses != v5)
+  responsesCopy = responses;
+  if (self->_fetchResponses != responsesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fetchResponses, a3);
-    v5 = v6;
+    v6 = responsesCopy;
+    objc_storeStrong(&self->_fetchResponses, responses);
+    responsesCopy = v6;
   }
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -131,18 +131,18 @@
     v5 = [v19 dictionaryWithObjectsAndKeys:{v6, v7, v14, v15, 0}];
 
     v16 = +[ASItem parseRuleCache];
-    v17 = NSStringFromClass(a1);
+    v17 = NSStringFromClass(self);
     [v16 setObject:v5 forKey:v17];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v16.receiver = self;
   v16.super_class = ASItemOperationsResponse;
-  [(ASItem *)&v16 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v16 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -153,14 +153,14 @@
 
     else
     {
-      v10 = [(ASItemOperationsResponse *)self status];
-      v11 = [v10 intValue];
+      status = [(ASItemOperationsResponse *)self status];
+      intValue = [status intValue];
 
-      if (v11 == 1)
+      if (intValue == 1)
       {
-        v12 = [(ASItemOperationsResponse *)self fetchResponses];
+        fetchResponses = [(ASItemOperationsResponse *)self fetchResponses];
 
-        if (!v12)
+        if (!fetchResponses)
         {
           v13 = DALoggingwithCategory();
           v14 = *(MEMORY[0x277D03988] + 3);
@@ -188,14 +188,14 @@
   return v7;
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v5 = a3;
-  if (self->_status != v5)
+  statusCopy = status;
+  if (self->_status != statusCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_status, a3);
-    v5 = v6;
+    v6 = statusCopy;
+    objc_storeStrong(&self->_status, status);
+    statusCopy = v6;
   }
 }
 

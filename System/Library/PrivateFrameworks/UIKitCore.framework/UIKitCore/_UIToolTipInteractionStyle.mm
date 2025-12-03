@@ -1,21 +1,21 @@
 @interface _UIToolTipInteractionStyle
 - (UIToolTipProvider)provider;
 - (UIView)view;
-- (_UIToolTipInteractionStyle)initWithView:(id)a3 provider:(id)a4;
+- (_UIToolTipInteractionStyle)initWithView:(id)view provider:(id)provider;
 @end
 
 @implementation _UIToolTipInteractionStyle
 
-- (_UIToolTipInteractionStyle)initWithView:(id)a3 provider:(id)a4
+- (_UIToolTipInteractionStyle)initWithView:(id)view provider:(id)provider
 {
   v9.receiver = self;
   v9.super_class = _UIToolTipInteractionStyle;
-  v5 = a4;
-  v6 = a3;
+  providerCopy = provider;
+  viewCopy = view;
   v7 = [(_UIToolTipInteractionStyle *)&v9 init];
-  objc_storeWeak(&v7->_view, v6);
+  objc_storeWeak(&v7->_view, viewCopy);
 
-  objc_storeWeak(&v7->_provider, v5);
+  objc_storeWeak(&v7->_provider, providerCopy);
   return v7;
 }
 

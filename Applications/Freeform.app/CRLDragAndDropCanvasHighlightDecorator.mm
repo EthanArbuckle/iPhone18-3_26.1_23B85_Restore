@@ -1,38 +1,38 @@
 @interface CRLDragAndDropCanvasHighlightDecorator
 - (CRLCanvasShapeRenderable)dragAndDropHighlightRenderable;
 - (CRLDragAndDropCanvasHighlightDecorator)init;
-- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)a3;
-- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)a3 highlightPath:(CGPath *)a4;
+- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)controller;
+- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)controller highlightPath:(CGPath *)path;
 - (NSArray)decoratorOverlayRenderables;
-- (void)beginHighlightingWithPath:(CGPath *)a3;
+- (void)beginHighlightingWithPath:(CGPath *)path;
 - (void)endHighlighting;
-- (void)setHighlightPath:(CGPath *)a3;
+- (void)setHighlightPath:(CGPath *)path;
 @end
 
 @implementation CRLDragAndDropCanvasHighlightDecorator
 
-- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)a3
+- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CRLDragAndDropCanvasHighlightDecorator;
   v5 = [(CRLDragAndDropCanvasHighlightDecorator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mICC, v4);
+    objc_storeWeak(&v5->mICC, controllerCopy);
   }
 
   return v6;
 }
 
-- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)a3 highlightPath:(CGPath *)a4
+- (CRLDragAndDropCanvasHighlightDecorator)initWithInteractiveCanvasController:(id)controller highlightPath:(CGPath *)path
 {
-  v5 = [(CRLDragAndDropCanvasHighlightDecorator *)self initWithInteractiveCanvasController:a3];
+  v5 = [(CRLDragAndDropCanvasHighlightDecorator *)self initWithInteractiveCanvasController:controller];
   v6 = v5;
   if (v5)
   {
-    [(CRLDragAndDropCanvasHighlightDecorator *)v5 setHighlightPath:a4];
+    [(CRLDragAndDropCanvasHighlightDecorator *)v5 setHighlightPath:path];
   }
 
   return v6;
@@ -114,7 +114,7 @@
   return mDragAndDropHighlightRenderable;
 }
 
-- (void)beginHighlightingWithPath:(CGPath *)a3
+- (void)beginHighlightingWithPath:(CGPath *)path
 {
   if (self->mDragAndDropHighlightRenderable)
   {
@@ -145,15 +145,15 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:78 isFatal:0 description:"expected nil value for '%{public}s'", "mDragAndDropHighlightRenderable"];
   }
 
-  [(CRLDragAndDropCanvasHighlightDecorator *)self setHighlightPath:a3];
+  [(CRLDragAndDropCanvasHighlightDecorator *)self setHighlightPath:path];
   WeakRetained = objc_loadWeakRetained(&self->mICC);
   [WeakRetained addDecorator:self];
 }
 
-- (void)setHighlightPath:(CGPath *)a3
+- (void)setHighlightPath:(CGPath *)path
 {
-  v4 = [(CRLDragAndDropCanvasHighlightDecorator *)self dragAndDropHighlightRenderable];
-  [v4 setPath:a3];
+  dragAndDropHighlightRenderable = [(CRLDragAndDropCanvasHighlightDecorator *)self dragAndDropHighlightRenderable];
+  [dragAndDropHighlightRenderable setPath:path];
 }
 
 - (void)endHighlighting

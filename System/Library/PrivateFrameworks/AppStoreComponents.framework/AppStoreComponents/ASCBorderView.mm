@@ -1,119 +1,119 @@
 @interface ASCBorderView
-- (ASCBorderView)initWithCoder:(id)a3;
-- (ASCBorderView)initWithFrame:(CGRect)a3;
+- (ASCBorderView)initWithCoder:(id)coder;
+- (ASCBorderView)initWithFrame:(CGRect)frame;
 - (NSString)cornerCurve;
 - (double)cornerRadius;
 - (double)width;
 - (unint64_t)cornerMask;
-- (void)setColor:(id)a3;
-- (void)setCornerCurve:(id)a3;
-- (void)setCornerMask:(unint64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setWidth:(double)a3;
+- (void)setColor:(id)color;
+- (void)setCornerCurve:(id)curve;
+- (void)setCornerMask:(unint64_t)mask;
+- (void)setCornerRadius:(double)radius;
+- (void)setWidth:(double)width;
 - (void)updateBorderColor;
 @end
 
 @implementation ASCBorderView
 
-- (ASCBorderView)initWithFrame:(CGRect)a3
+- (ASCBorderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = ASCBorderView;
-  v3 = [(ASCBorderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCBorderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     color = v3->_color;
-    v3->_color = v4;
+    v3->_color = clearColor;
 
     [(ASCBorderView *)v3 updateBorderColor];
-    v6 = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
-    v7 = [(ASCBorderView *)v3 registerForTraitChanges:v6 withAction:sel_updateBorderColor];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x277D75C80] systemTraitsAffectingColorAppearance];
+    v7 = [(ASCBorderView *)v3 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_updateBorderColor];
   }
 
   return v3;
 }
 
-- (ASCBorderView)initWithCoder:(id)a3
+- (ASCBorderView)initWithCoder:(id)coder
 {
   [(ASCBorderView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
+  objc_storeStrong(&self->_color, color);
 
   [(ASCBorderView *)self updateBorderColor];
 }
 
 - (double)width
 {
-  v2 = [(ASCBorderView *)self layer];
-  [v2 borderWidth];
+  layer = [(ASCBorderView *)self layer];
+  [layer borderWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
-  v4 = [(ASCBorderView *)self layer];
-  [v4 setBorderWidth:a3];
+  layer = [(ASCBorderView *)self layer];
+  [layer setBorderWidth:width];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(ASCBorderView *)self layer];
-  [v2 cornerRadius];
+  layer = [(ASCBorderView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(ASCBorderView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(ASCBorderView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
 - (NSString)cornerCurve
 {
-  v2 = [(ASCBorderView *)self layer];
-  v3 = [v2 cornerCurve];
+  layer = [(ASCBorderView *)self layer];
+  cornerCurve = [layer cornerCurve];
 
-  return v3;
+  return cornerCurve;
 }
 
-- (void)setCornerCurve:(id)a3
+- (void)setCornerCurve:(id)curve
 {
-  v4 = a3;
-  v5 = [(ASCBorderView *)self layer];
-  [v5 setCornerCurve:v4];
+  curveCopy = curve;
+  layer = [(ASCBorderView *)self layer];
+  [layer setCornerCurve:curveCopy];
 }
 
 - (unint64_t)cornerMask
 {
-  v2 = [(ASCBorderView *)self layer];
-  v3 = [v2 maskedCorners];
+  layer = [(ASCBorderView *)self layer];
+  maskedCorners = [layer maskedCorners];
 
-  return v3;
+  return maskedCorners;
 }
 
-- (void)setCornerMask:(unint64_t)a3
+- (void)setCornerMask:(unint64_t)mask
 {
-  v4 = [(ASCBorderView *)self layer];
-  [v4 setMaskedCorners:a3];
+  layer = [(ASCBorderView *)self layer];
+  [layer setMaskedCorners:mask];
 }
 
 - (void)updateBorderColor
 {
-  v6 = [(ASCBorderView *)self color];
-  v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(ASCBorderView *)self layer];
-  [v5 setBorderColor:v4];
+  color = [(ASCBorderView *)self color];
+  v3 = color;
+  cGColor = [color CGColor];
+  layer = [(ASCBorderView *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
 @end

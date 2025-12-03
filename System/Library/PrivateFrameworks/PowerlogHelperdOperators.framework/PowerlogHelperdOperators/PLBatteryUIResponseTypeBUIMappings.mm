@@ -8,11 +8,11 @@
 
 - (void)run
 {
-  v5 = [(PLBatteryUIResponseTypeBUIMappings *)self getInstalledPluginMapping];
+  getInstalledPluginMapping = [(PLBatteryUIResponseTypeBUIMappings *)self getInstalledPluginMapping];
   v3 = +[PLBatteryUIResponseTypeUtilities getBundleIDToReplacementBundleIDMap];
-  [v5 addEntriesFromDictionary:v3];
+  [getInstalledPluginMapping addEntriesFromDictionary:v3];
 
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v5];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:getInstalledPluginMapping];
   [(PLBatteryUIResponseTypeBUIMappings *)self setBatteryUIMappings:v4];
 }
 
@@ -20,8 +20,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"buiMappings";
-  v2 = [(PLBatteryUIResponseTypeBUIMappings *)self batteryUIMappings];
-  v7[0] = v2;
+  batteryUIMappings = [(PLBatteryUIResponseTypeBUIMappings *)self batteryUIMappings];
+  v7[0] = batteryUIMappings;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -32,7 +32,7 @@
 - (id)getInstalledPluginMapping
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -54,16 +54,16 @@
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [v8 bundleIdentifier];
-        v10 = [v8 containingBundleRecord];
-        v11 = [v10 bundleIdentifier];
+        bundleIdentifier = [v8 bundleIdentifier];
+        containingBundleRecord = [v8 containingBundleRecord];
+        bundleIdentifier2 = [containingBundleRecord bundleIdentifier];
 
-        v12 = [v8 extensionPointRecord];
-        v13 = [v12 identifier];
+        extensionPointRecord = [v8 extensionPointRecord];
+        identifier = [extensionPointRecord identifier];
 
-        if (v9)
+        if (bundleIdentifier)
         {
-          v14 = v11 == 0;
+          v14 = bundleIdentifier2 == 0;
         }
 
         else
@@ -73,55 +73,55 @@
 
         if (!v14)
         {
-          if ([v13 isEqualToString:@"com.apple.posterkit.provider"])
+          if ([identifier isEqualToString:@"com.apple.posterkit.provider"])
           {
-            v15 = v2;
+            v15 = dictionary;
             v16 = @"HLS";
             goto LABEL_18;
           }
 
-          if ([v13 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
+          if ([identifier isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
           {
-            v15 = v2;
+            v15 = dictionary;
             v16 = @"com.apple.mobileslideshow";
             goto LABEL_18;
           }
 
-          if ([v13 isEqualToString:@"com.apple.sidecar.extension.capture"])
+          if ([identifier isEqualToString:@"com.apple.sidecar.extension.capture"])
           {
-            v15 = v2;
+            v15 = dictionary;
             v16 = @"ContinuityCamera";
             goto LABEL_18;
           }
 
-          if ([v13 isEqualToString:@"HomeKit"])
+          if ([identifier isEqualToString:@"HomeKit"])
           {
-            v15 = v2;
+            v15 = dictionary;
             v16 = @"com.apple.Home";
 LABEL_18:
-            [v15 setObject:v16 forKey:v9];
+            [v15 setObject:v16 forKey:bundleIdentifier];
 LABEL_19:
-            [v2 setObject:v11 forKey:v9];
+            [dictionary setObject:bundleIdentifier2 forKey:bundleIdentifier];
             goto LABEL_20;
           }
 
-          if ([v13 hasSuffix:@"/watch"])
+          if ([identifier hasSuffix:@"/watch"])
           {
-            v17 = [v13 length] - 6;
+            v17 = [identifier length] - 6;
           }
 
           else
           {
-            if (![v13 hasSuffix:@".watchkitextension"])
+            if (![identifier hasSuffix:@".watchkitextension"])
             {
               goto LABEL_19;
             }
 
-            v17 = [v13 length] - 18;
+            v17 = [identifier length] - 18;
           }
 
-          v18 = [v13 substringWithRange:{0, v17}];
-          [v2 setObject:v18 forKey:v9];
+          v18 = [identifier substringWithRange:{0, v17}];
+          [dictionary setObject:v18 forKey:bundleIdentifier];
 
           goto LABEL_19;
         }
@@ -141,7 +141,7 @@ LABEL_20:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return dictionary;
 }
 
 @end

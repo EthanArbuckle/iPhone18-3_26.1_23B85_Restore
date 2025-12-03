@@ -1,36 +1,36 @@
 @interface ESSharedCalendarContext
-- (ESSharedCalendarContext)initWithCalendarID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6;
-- (void)finishedWithError:(id)a3;
+- (ESSharedCalendarContext)initWithCalendarID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (void)finishedWithError:(id)error;
 @end
 
 @implementation ESSharedCalendarContext
 
-- (ESSharedCalendarContext)initWithCalendarID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6
+- (ESSharedCalendarContext)initWithCalendarID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!dCopy)
   {
     [ESSharedCalendarContext initWithCalendarID:accountID:queue:completionBlock:];
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
     [ESSharedCalendarContext initWithCalendarID:accountID:queue:completionBlock:];
   }
 
-  v15 = v14;
+  v15 = blockCopy;
   v21.receiver = self;
   v21.super_class = ESSharedCalendarContext;
   v16 = [(ESSharedCalendarContext *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_calendarID, a3);
-    objc_storeStrong(&v17->_accountID, a4);
-    objc_storeStrong(&v17->_queue, a5);
+    objc_storeStrong(&v16->_calendarID, d);
+    objc_storeStrong(&v17->_accountID, iD);
+    objc_storeStrong(&v17->_queue, queue);
     v18 = [v15 copy];
     completionBlock = v17->_completionBlock;
     v17->_completionBlock = v18;
@@ -39,10 +39,10 @@
   return v17;
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
@@ -56,7 +56,7 @@
     _os_log_impl(&dword_24A1B8000, v5, v6, "Share of calendar ID %@ for account %@ completed.", buf, 0x16u);
   }
 
-  if (!v4 && [(ESSharedCalendarContext *)self shouldSyncCalendar])
+  if (!errorCopy && [(ESSharedCalendarContext *)self shouldSyncCalendar])
   {
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -86,7 +86,7 @@
     v14[2] = __45__ESSharedCalendarContext_finishedWithError___block_invoke_2;
     v14[3] = &unk_278FCFB18;
     v14[4] = self;
-    v15 = v4;
+    v15 = errorCopy;
     dispatch_async(v12, v14);
   }
 

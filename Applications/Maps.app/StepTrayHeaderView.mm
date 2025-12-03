@@ -1,9 +1,9 @@
 @interface StepTrayHeaderView
 - (CGSize)intrinsicContentSize;
-- (StepTrayHeaderView)initWithDelegate:(id)a3 metrics:(id)a4;
+- (StepTrayHeaderView)initWithDelegate:(id)delegate metrics:(id)metrics;
 - (StepTrayHeaderViewDelegate)delegate;
-- (void)setDefaultTitle:(id)a3 defaultSubtitle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDefaultTitle:(id)title defaultSubtitle:(id)subtitle;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation StepTrayHeaderView
@@ -15,31 +15,31 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = StepTrayHeaderView;
-  v4 = a3;
-  [(StepTrayHeaderView *)&v15 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(StepTrayHeaderView *)&v15 traitCollectionDidChange:changeCopy];
   v5 = [(StepTrayHeaderView *)self traitCollection:v15.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     minimizedValueFontProvider = self->_minimizedValueFontProvider;
-    v9 = [(StepTrayHeaderView *)self traitCollection];
-    v10 = minimizedValueFontProvider[2](minimizedValueFontProvider, v9);
+    traitCollection = [(StepTrayHeaderView *)self traitCollection];
+    v10 = minimizedValueFontProvider[2](minimizedValueFontProvider, traitCollection);
 
-    v11 = [(NavTrayMetrics *)self->_metrics minimizedTitleTextStyle];
+    minimizedTitleTextStyle = [(NavTrayMetrics *)self->_metrics minimizedTitleTextStyle];
     [(NavTrayMetrics *)self->_metrics minimizedTitleFontWeight];
-    v12 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v11 weight:?];
+    v12 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:minimizedTitleTextStyle weight:?];
 
-    v13 = [(NavTrayStackedLabel *)self->_defaultLabel topLabel];
-    [v13 setFont:v10];
+    topLabel = [(NavTrayStackedLabel *)self->_defaultLabel topLabel];
+    [topLabel setFont:v10];
 
-    v14 = [(NavTrayStackedLabel *)self->_defaultLabel bottomLabel];
-    [v14 setFont:v12];
+    bottomLabel = [(NavTrayStackedLabel *)self->_defaultLabel bottomLabel];
+    [bottomLabel setFont:v12];
   }
 }
 
@@ -59,22 +59,22 @@
   return result;
 }
 
-- (void)setDefaultTitle:(id)a3 defaultSubtitle:(id)a4
+- (void)setDefaultTitle:(id)title defaultSubtitle:(id)subtitle
 {
   defaultLabel = self->_defaultLabel;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NavTrayStackedLabel *)defaultLabel topLabel];
-  [v9 setText:v8];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  topLabel = [(NavTrayStackedLabel *)defaultLabel topLabel];
+  [topLabel setText:titleCopy];
 
-  v10 = [(NavTrayStackedLabel *)self->_defaultLabel bottomLabel];
-  [v10 setText:v7];
+  bottomLabel = [(NavTrayStackedLabel *)self->_defaultLabel bottomLabel];
+  [bottomLabel setText:subtitleCopy];
 }
 
-- (StepTrayHeaderView)initWithDelegate:(id)a3 metrics:(id)a4
+- (StepTrayHeaderView)initWithDelegate:(id)delegate metrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  metricsCopy = metrics;
   v40.receiver = self;
   v40.super_class = StepTrayHeaderView;
   v8 = [(StepTrayHeaderView *)&v40 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -84,22 +84,22 @@
     v10 = NSStringFromClass(v9);
     [(StepTrayHeaderView *)v8 setAccessibilityIdentifier:v10];
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_metrics, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_metrics, metrics);
     v11 = [UIFont _maps_fontProviderWeight:UIContentSizeCategoryLarge minimumPointSize:UIContentSizeCategoryExtraExtraExtraLarge minimumSizeCategory:UIFontWeightBold maximumPointSize:25.0 maximumSizeCategory:33.0];
     minimizedValueFontProvider = v8->_minimizedValueFontProvider;
     v8->_minimizedValueFontProvider = v11;
 
     [(StepTrayHeaderView *)v8 setUserInteractionEnabled:1];
-    v13 = [[UITapGestureRecognizer alloc] initWithTarget:v6 action:"pressedHeaderView"];
+    v13 = [[UITapGestureRecognizer alloc] initWithTarget:delegateCopy action:"pressedHeaderView"];
     [(StepTrayHeaderView *)v8 addGestureRecognizer:v13];
     v14 = v8->_minimizedValueFontProvider;
-    v15 = [(StepTrayHeaderView *)v8 traitCollection];
-    v16 = v14[2](v14, v15);
+    traitCollection = [(StepTrayHeaderView *)v8 traitCollection];
+    v16 = v14[2](v14, traitCollection);
 
-    v17 = [v7 minimizedTitleTextStyle];
-    [v7 minimizedTitleFontWeight];
-    v18 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:v17 weight:?];
+    minimizedTitleTextStyle = [metricsCopy minimizedTitleTextStyle];
+    [metricsCopy minimizedTitleFontWeight];
+    v18 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:minimizedTitleTextStyle weight:?];
 
     v19 = objc_opt_new();
     defaultLabel = v8->_defaultLabel;
@@ -108,25 +108,25 @@
     [(NavTrayStackedLabel *)v8->_defaultLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NavTrayMetrics *)v8->_metrics minimizedValueToTitlePadding];
     [(NavTrayStackedLabel *)v8->_defaultLabel setInterLabelPadding:?];
-    v21 = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
-    [v21 setFont:v16];
+    topLabel = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
+    [topLabel setFont:v16];
 
-    v22 = [(NavTrayMetrics *)v8->_metrics minimizedValueTextColor];
-    v23 = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
-    [v23 setTextColor:v22];
+    minimizedValueTextColor = [(NavTrayMetrics *)v8->_metrics minimizedValueTextColor];
+    topLabel2 = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
+    [topLabel2 setTextColor:minimizedValueTextColor];
 
-    v24 = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
-    [v24 setAdjustsFontSizeToFitWidth:0];
+    topLabel3 = [(NavTrayStackedLabel *)v8->_defaultLabel topLabel];
+    [topLabel3 setAdjustsFontSizeToFitWidth:0];
 
-    v25 = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
-    [v25 setFont:v18];
+    bottomLabel = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
+    [bottomLabel setFont:v18];
 
-    v26 = [(NavTrayMetrics *)v8->_metrics minimizedTitleTextColor];
-    v27 = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
-    [v27 setTextColor:v26];
+    minimizedTitleTextColor = [(NavTrayMetrics *)v8->_metrics minimizedTitleTextColor];
+    bottomLabel2 = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
+    [bottomLabel2 setTextColor:minimizedTitleTextColor];
 
-    v28 = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
-    [v28 setAdjustsFontSizeToFitWidth:1];
+    bottomLabel3 = [(NavTrayStackedLabel *)v8->_defaultLabel bottomLabel];
+    [bottomLabel3 setAdjustsFontSizeToFitWidth:1];
 
     [(NavTrayStackedLabel *)v8->_defaultLabel setAccessibilityIdentifier:@"DefaultLabel"];
     [(StepTrayHeaderView *)v8 addSubview:v8->_defaultLabel];
@@ -136,12 +136,12 @@
     [(NavTrayMetrics *)v8->_metrics defaultVerticalPadding];
     LODWORD(v32) = 1148846080;
     v34 = [(NavTrayStackedLabel *)v8->_defaultLabel _maps_constraintsEqualToEdgesOfView:v8 insets:v33 priority:v31, v33, v31, v32];
-    v35 = [v34 allConstraints];
-    [v29 addObjectsFromArray:v35];
+    allConstraints = [v34 allConstraints];
+    [v29 addObjectsFromArray:allConstraints];
 
-    v36 = [(NavTrayStackedLabel *)v8->_defaultLabel centerYAnchor];
-    v37 = [(StepTrayHeaderView *)v8 centerYAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerYAnchor = [(NavTrayStackedLabel *)v8->_defaultLabel centerYAnchor];
+    centerYAnchor2 = [(StepTrayHeaderView *)v8 centerYAnchor];
+    v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v29 addObject:v38];
 
     [NSLayoutConstraint activateConstraints:v29];

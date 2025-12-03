@@ -1,28 +1,28 @@
 @interface ADAudioPowerCoreSpeechProvider
-- (ADAudioPowerCoreSpeechProvider)initWithChannel:(unint64_t)a3 speechController:(id)a4;
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4;
+- (ADAudioPowerCoreSpeechProvider)initWithChannel:(unint64_t)channel speechController:(id)controller;
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower;
 @end
 
 @implementation ADAudioPowerCoreSpeechProvider
 
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower
 {
   speechController = self->_speechController;
   if (speechController)
   {
-    if (a3 | a4)
+    if (power | peakPower)
     {
       [(CSSpeechController *)speechController updateMeters];
-      if (a3)
+      if (power)
       {
         [(CSSpeechController *)self->_speechController averagePowerForChannel:self->_channel];
-        *a3 = v8;
+        *power = v8;
       }
 
-      if (a4)
+      if (peakPower)
       {
         [(CSSpeechController *)self->_speechController peakPowerForChannel:self->_channel];
-        *a4 = v9;
+        *peakPower = v9;
       }
 
       LOBYTE(speechController) = 1;
@@ -37,17 +37,17 @@
   return speechController;
 }
 
-- (ADAudioPowerCoreSpeechProvider)initWithChannel:(unint64_t)a3 speechController:(id)a4
+- (ADAudioPowerCoreSpeechProvider)initWithChannel:(unint64_t)channel speechController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = ADAudioPowerCoreSpeechProvider;
   v8 = [(ADAudioPowerCoreSpeechProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_channel = a3;
-    objc_storeStrong(&v8->_speechController, a4);
+    v8->_channel = channel;
+    objc_storeStrong(&v8->_speechController, controller);
   }
 
   return v9;

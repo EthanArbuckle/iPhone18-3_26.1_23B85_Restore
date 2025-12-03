@@ -1,32 +1,32 @@
 @interface ATXMetrics
 + (id)_sharedInstance;
-+ (void)logActionExecuteForType:(int64_t)a3 inContext:(int64_t)a4;
-+ (void)logActionViewForType:(int64_t)a3 inContext:(int64_t)a4;
-+ (void)logError:(int64_t)a3 inContext:(int64_t)a4;
++ (void)logActionExecuteForType:(int64_t)type inContext:(int64_t)context;
++ (void)logActionViewForType:(int64_t)type inContext:(int64_t)context;
++ (void)logError:(int64_t)error inContext:(int64_t)context;
 - (ATXMetrics)init;
-- (void)_logActionExecuteForType:(int64_t)a3 inContext:(int64_t)a4;
-- (void)_logActionViewForType:(int64_t)a3 inContext:(int64_t)a4;
-- (void)_logError:(int64_t)a3 inContext:(int64_t)a4;
+- (void)_logActionExecuteForType:(int64_t)type inContext:(int64_t)context;
+- (void)_logActionViewForType:(int64_t)type inContext:(int64_t)context;
+- (void)_logError:(int64_t)error inContext:(int64_t)context;
 @end
 
 @implementation ATXMetrics
 
-+ (void)logError:(int64_t)a3 inContext:(int64_t)a4
++ (void)logError:(int64_t)error inContext:(int64_t)context
 {
-  v6 = [a1 _sharedInstance];
-  [v6 _logError:a3 inContext:a4];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _logError:error inContext:context];
 }
 
-+ (void)logActionViewForType:(int64_t)a3 inContext:(int64_t)a4
++ (void)logActionViewForType:(int64_t)type inContext:(int64_t)context
 {
-  v6 = [a1 _sharedInstance];
-  [v6 _logActionViewForType:a3 inContext:a4];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _logActionViewForType:type inContext:context];
 }
 
-+ (void)logActionExecuteForType:(int64_t)a3 inContext:(int64_t)a4
++ (void)logActionExecuteForType:(int64_t)type inContext:(int64_t)context
 {
-  v6 = [a1 _sharedInstance];
-  [v6 _logActionExecuteForType:a3 inContext:a4];
+  _sharedInstance = [self _sharedInstance];
+  [_sharedInstance _logActionExecuteForType:type inContext:context];
 }
 
 + (id)_sharedInstance
@@ -60,10 +60,10 @@ uint64_t __29__ATXMetrics__sharedInstance__block_invoke()
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_BACKGROUND, 0);
-    v8 = dispatch_queue_create(v5, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     loggingQueue = v2->_loggingQueue;
     v2->_loggingQueue = v8;
 
@@ -143,7 +143,7 @@ uint64_t __29__ATXMetrics__sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_logError:(int64_t)a3 inContext:(int64_t)a4
+- (void)_logError:(int64_t)error inContext:(int64_t)context
 {
   loggingQueue = self->_loggingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -151,8 +151,8 @@ uint64_t __29__ATXMetrics__sharedInstance__block_invoke()
   block[2] = __34__ATXMetrics__logError_inContext___block_invoke;
   block[3] = &unk_1E80C0E10;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = error;
+  block[6] = context;
   dispatch_async(loggingQueue, block);
 }
 
@@ -168,7 +168,7 @@ void __34__ATXMetrics__logError_inContext___block_invoke(void *a1)
   [v2 trackEventWithPropertyValues:v5];
 }
 
-- (void)_logActionViewForType:(int64_t)a3 inContext:(int64_t)a4
+- (void)_logActionViewForType:(int64_t)type inContext:(int64_t)context
 {
   loggingQueue = self->_loggingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -176,8 +176,8 @@ void __34__ATXMetrics__logError_inContext___block_invoke(void *a1)
   block[2] = __46__ATXMetrics__logActionViewForType_inContext___block_invoke;
   block[3] = &unk_1E80C0E10;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = type;
+  block[6] = context;
   dispatch_async(loggingQueue, block);
 }
 
@@ -193,7 +193,7 @@ void __46__ATXMetrics__logActionViewForType_inContext___block_invoke(void *a1)
   [v2 trackEventWithPropertyValues:v5];
 }
 
-- (void)_logActionExecuteForType:(int64_t)a3 inContext:(int64_t)a4
+- (void)_logActionExecuteForType:(int64_t)type inContext:(int64_t)context
 {
   loggingQueue = self->_loggingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -201,8 +201,8 @@ void __46__ATXMetrics__logActionViewForType_inContext___block_invoke(void *a1)
   block[2] = __49__ATXMetrics__logActionExecuteForType_inContext___block_invoke;
   block[3] = &unk_1E80C0E10;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = type;
+  block[6] = context;
   dispatch_async(loggingQueue, block);
 }
 

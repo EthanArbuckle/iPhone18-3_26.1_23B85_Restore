@@ -7,10 +7,10 @@
 - (BOOL)fp_isGSErrorWithCode:()FPAdditionsGS
 {
   v5 = *MEMORY[0x1E69A07C8];
-  v6 = [a1 domain];
-  if ([v5 isEqualToString:v6])
+  domain = [self domain];
+  if ([v5 isEqualToString:domain])
   {
-    v7 = [a1 code] == a3;
+    v7 = [self code] == a3;
   }
 
   else

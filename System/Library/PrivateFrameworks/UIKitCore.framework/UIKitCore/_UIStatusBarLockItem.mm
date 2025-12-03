@@ -1,140 +1,140 @@
 @interface _UIStatusBarLockItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
 - (_UIExpandingGlyphsView)stringView;
 - (_UIStatusBarLockView)lockView;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_lockView;
 - (void)_create_stringView;
 @end
 
 @implementation _UIStatusBarLockItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
   v8.receiver = self;
   v8.super_class = _UIStatusBarLockItem;
-  if (![(_UIStatusBarItem *)&v8 canEnableDisplayItem:a3 fromData:a4])
+  if (![(_UIStatusBarItem *)&v8 canEnableDisplayItem:item fromData:data])
   {
     return [(_UIStatusBarLockItem *)self showsLock];
   }
 
   v5 = 1;
   [(_UIStatusBarLockItem *)self setShowsLock:1];
-  v6 = [(_UIStatusBarLockItem *)self lockDisappearanceTimer];
-  [v6 invalidate];
+  lockDisappearanceTimer = [(_UIStatusBarLockItem *)self lockDisappearanceTimer];
+  [lockDisappearanceTimer invalidate];
 
   [(_UIStatusBarLockItem *)self setLockDisappearanceTimer:0];
   return v5;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = _UIStatusBarLockItem;
-  v8 = [(_UIStatusBarItem *)&v36 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 lockEntry];
+  v8 = [(_UIStatusBarItem *)&v36 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  lockEntry = [data lockEntry];
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() defaultDisplayIdentifier];
+  identifier = [itemCopy identifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v11 != v12)
+  if (identifier != defaultDisplayIdentifier)
   {
-    v13 = [v7 identifier];
-    v14 = [objc_opt_class() textDisplayIdentifier];
+    identifier2 = [itemCopy identifier];
+    textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-    if (v13 != v14)
+    if (identifier2 != textDisplayIdentifier)
     {
       goto LABEL_22;
     }
 
-    v15 = -[_UIStatusBarLockItem showsLock](self, "showsLock") ? [v10 isEnabled] ^ 1 : 0;
-    [v7 setEnabled:v15];
-    if (![v7 isEnabled])
+    v15 = -[_UIStatusBarLockItem showsLock](self, "showsLock") ? [lockEntry isEnabled] ^ 1 : 0;
+    [itemCopy setEnabled:v15];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_22;
     }
 
-    v34 = [(_UIStatusBarLockItem *)self stringView];
+    stringView = [(_UIStatusBarLockItem *)self stringView];
     v33 = _UILocalizedStringInSystemLanguage(@"UIStatusBar: Unlocked", @"Unlocked");
     v32 = objc_alloc(MEMORY[0x1E696AAB0]);
     v37[0] = *off_1E70EC918;
-    v22 = [v6 styleAttributes];
-    v23 = [v22 font];
-    v38[0] = v23;
+    styleAttributes = [updateCopy styleAttributes];
+    font = [styleAttributes font];
+    v38[0] = font;
     v37[1] = *off_1E70EC920;
-    v24 = [v6 styleAttributes];
-    v25 = [v24 textColor];
-    v38[1] = v25;
+    styleAttributes2 = [updateCopy styleAttributes];
+    textColor = [styleAttributes2 textColor];
+    v38[1] = textColor;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
     v27 = [v32 initWithString:v33 attributes:v26];
 
-    v21 = v34;
-    [v34 setAttributedString:v27];
-    [v34 baselineOffset];
+    lockView2 = stringView;
+    [stringView setAttributedString:v27];
+    [stringView baselineOffset];
     v29 = v28;
-    [v34 intrinsicContentSize];
-    [v7 setBaselineOffset:v29 - v30];
+    [stringView intrinsicContentSize];
+    [itemCopy setBaselineOffset:v29 - v30];
 
     goto LABEL_21;
   }
 
-  if (![v6 dataChanged])
+  if (![updateCopy dataChanged])
   {
     goto LABEL_22;
   }
 
-  if (([v10 isEnabled] & 1) == 0 && -[_UIStatusBarLockItem showsLock](self, "showsLock"))
+  if (([lockEntry isEnabled] & 1) == 0 && -[_UIStatusBarLockItem showsLock](self, "showsLock"))
   {
-    v16 = [(_UIStatusBarItem *)self statusBar];
-    v17 = [v16 areAnimationsEnabled];
+    statusBar = [(_UIStatusBarItem *)self statusBar];
+    areAnimationsEnabled = [statusBar areAnimationsEnabled];
 
-    if (!v17)
+    if (!areAnimationsEnabled)
     {
       [(_UIStatusBarLockItem *)self setShowsLock:0];
-      [v7 setEnabled:0];
+      [itemCopy setEnabled:0];
       goto LABEL_13;
     }
 
-    v18 = [(_UIStatusBarLockItem *)self lockView];
+    lockView = [(_UIStatusBarLockItem *)self lockView];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __50___UIStatusBarLockItem_applyUpdate_toDisplayItem___block_invoke;
     v35[3] = &unk_1E70F5AC0;
     v35[4] = self;
-    [v18 animateUnlockWithCompletionBlock:v35];
+    [lockView animateUnlockWithCompletionBlock:v35];
     goto LABEL_12;
   }
 
-  if ([v10 isEnabled])
+  if ([lockEntry isEnabled])
   {
-    v18 = [(_UIStatusBarLockItem *)self lockView];
-    [v18 resetLock];
+    lockView = [(_UIStatusBarLockItem *)self lockView];
+    [lockView resetLock];
 LABEL_12:
   }
 
 LABEL_13:
-  if ([v10 unlockFailureCount] != self->_unlockFailureCount)
+  if ([lockEntry unlockFailureCount] != self->_unlockFailureCount)
   {
-    self->_unlockFailureCount = [v10 unlockFailureCount];
-    if (([v6 enabilityChanged] & 1) == 0)
+    self->_unlockFailureCount = [lockEntry unlockFailureCount];
+    if (([updateCopy enabilityChanged] & 1) == 0)
     {
-      if ([v7 isEnabled])
+      if ([itemCopy isEnabled])
       {
-        v19 = [(_UIStatusBarItem *)self statusBar];
-        v20 = [v19 areAnimationsEnabled];
+        statusBar2 = [(_UIStatusBarItem *)self statusBar];
+        areAnimationsEnabled2 = [statusBar2 areAnimationsEnabled];
 
-        if (v20)
+        if (areAnimationsEnabled2)
         {
-          v21 = [(_UIStatusBarLockItem *)self lockView];
-          [v21 jiggleWithCompletionBlock:0];
+          lockView2 = [(_UIStatusBarLockItem *)self lockView];
+          [lockView2 jiggleWithCompletionBlock:0];
 LABEL_21:
         }
       }
@@ -146,15 +146,15 @@ LABEL_22:
   return v8;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = _UIStatusBarLockItem;
-  v4 = a3;
-  v5 = [(_UIStatusBarItem *)&v19 additionAnimationForDisplayItemWithIdentifier:v4];
-  v6 = [objc_opt_class() textDisplayIdentifier];
+  identifierCopy = identifier;
+  v5 = [(_UIStatusBarItem *)&v19 additionAnimationForDisplayItemWithIdentifier:identifierCopy];
+  textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-  if (v6 == v4)
+  if (textDisplayIdentifier == identifierCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -163,8 +163,8 @@ LABEL_22:
     v18[4] = self;
     v7 = [_UIStatusBarAnimation animationWithBlock:v18];
 
-    v8 = [objc_opt_class() defaultDisplayIdentifier];
-    v9 = [(_UIStatusBarItem *)self displayItemForIdentifier:v8];
+    defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+    v9 = [(_UIStatusBarItem *)self displayItemForIdentifier:defaultDisplayIdentifier];
 
     [v9 absoluteFrame];
     v17[0] = MEMORY[0x1E69E9820];
@@ -177,8 +177,8 @@ LABEL_22:
     v17[8] = v13;
     v17[4] = self;
     v14 = [_UIStatusBarAnimation animationWithBlock:v17];
-    v15 = [v9 identifier];
-    [v7 addSubAnimation:v14 forDisplayItemWithIdentifier:v15];
+    identifier = [v9 identifier];
+    [v7 addSubAnimation:v14 forDisplayItemWithIdentifier:identifier];
 
     v5 = v7;
   }
@@ -186,9 +186,9 @@ LABEL_22:
   return v5;
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:a4];
+  v4 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v4 setMass:2.0];
   [v4 setStiffness:300.0];
   [v4 setDamping:400.0];
@@ -204,24 +204,24 @@ LABEL_22:
   return v4;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() textDisplayIdentifier];
+  identifierCopy = identifier;
+  textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-  if (v5 == v4)
+  if (textDisplayIdentifier == identifierCopy)
   {
-    v7 = [(_UIStatusBarLockItem *)self showsLock];
+    showsLock = [(_UIStatusBarLockItem *)self showsLock];
 
-    if (v7)
+    if (showsLock)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
     v6 = [_UIStatusBarAnimationFactory fadeAnimationWithDuration:0.25];
-    v5 = [objc_opt_class() defaultDisplayIdentifier];
-    [v6 addSubAnimation:v6 forDisplayItemWithIdentifier:v5];
+    textDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+    [v6 addSubAnimation:v6 forDisplayItemWithIdentifier:textDisplayIdentifier];
   }
 
   else
@@ -278,34 +278,34 @@ LABEL_7:
   [(_UIExpandingGlyphsView *)v6 setFadesOut:0];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultDisplayIdentifier];
+  identifierCopy = identifier;
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v5 == v4)
+  if (defaultDisplayIdentifier == identifierCopy)
   {
-    v7 = [(_UIStatusBarLockItem *)self lockView];
+    lockView = [(_UIStatusBarLockItem *)self lockView];
   }
 
   else
   {
-    v6 = [objc_opt_class() textDisplayIdentifier];
+    textDisplayIdentifier = [objc_opt_class() textDisplayIdentifier];
 
-    if (v6 == v4)
+    if (textDisplayIdentifier == identifierCopy)
     {
-      v7 = [(_UIStatusBarLockItem *)self stringView];
+      lockView = [(_UIStatusBarLockItem *)self stringView];
     }
 
     else
     {
       v10.receiver = self;
       v10.super_class = _UIStatusBarLockItem;
-      v7 = [(_UIStatusBarItem *)&v10 viewForIdentifier:v4];
+      lockView = [(_UIStatusBarItem *)&v10 viewForIdentifier:identifierCopy];
     }
   }
 
-  v8 = v7;
+  v8 = lockView;
 
   return v8;
 }

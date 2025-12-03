@@ -1,20 +1,20 @@
 @interface RAPCorrectableEntryPoints
 - (NSArray)correctedPoints;
 - (NSArray)workingPoints;
-- (RAPCorrectableEntryPoints)initWithGEORoadAccessPoints:(id)a3;
-- (id)_entryPointWithCoordinates:(CLLocationCoordinate2D)a3 entryPointType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createEntryPointWithCoordinates:(CLLocationCoordinate2D)a3 entryPointType:(int64_t)a4;
-- (id)editedPointWithCorrectedPoint:(id)a3;
-- (void)modifyEntryPoint:(id)a3 withCoordinates:(CLLocationCoordinate2D)a4 entryPointType:(int64_t)a5;
-- (void)removeEntryPoint:(id)a3;
+- (RAPCorrectableEntryPoints)initWithGEORoadAccessPoints:(id)points;
+- (id)_entryPointWithCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createEntryPointWithCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type;
+- (id)editedPointWithCorrectedPoint:(id)point;
+- (void)modifyEntryPoint:(id)point withCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type;
+- (void)removeEntryPoint:(id)point;
 @end
 
 @implementation RAPCorrectableEntryPoints
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [NSMutableArray arrayWithArray:self->_originalPoints];
   v6 = v4[1];
   v4[1] = v5;
@@ -62,8 +62,8 @@
 
         v11 = *(*(&v16 + 1) + 8 * v9);
         v12 = [RAPEntryPoint alloc];
-        v13 = [v11 corrected];
-        v14 = [(RAPEntryPoint *)v12 initWithAccessPoint:v13];
+        corrected = [v11 corrected];
+        v14 = [(RAPEntryPoint *)v12 initWithAccessPoint:corrected];
         v4 = [v10 arrayByAddingObject:v14];
 
         v9 = v9 + 1;
@@ -87,33 +87,33 @@
   return v2;
 }
 
-- (id)editedPointWithCorrectedPoint:(id)a3
+- (id)editedPointWithCorrectedPoint:(id)point
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100E03A60;
   v9[3] = &unk_101655710;
-  v10 = a3;
-  v4 = v10;
+  pointCopy = point;
+  v4 = pointCopy;
   v5 = [NSPredicate predicateWithBlock:v9];
   v6 = [(NSMutableArray *)self->_correctedPoints filteredArrayUsingPredicate:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)removeEntryPoint:(id)a3
+- (void)removeEntryPoint:(id)point
 {
-  v6 = a3;
+  pointCopy = point;
   if ([(NSMutableArray *)self->_originalPoints containsObject:?])
   {
-    [(NSMutableArray *)self->_deletedPoints addObject:v6];
+    [(NSMutableArray *)self->_deletedPoints addObject:pointCopy];
   }
 
-  [(NSMutableArray *)self->_originalPoints removeObject:v6];
-  [(NSMutableArray *)self->_addedPoints removeObject:v6];
-  v4 = [v6 accessPoint];
-  v5 = [(RAPCorrectableEntryPoints *)self editedPointWithCorrectedPoint:v4];
+  [(NSMutableArray *)self->_originalPoints removeObject:pointCopy];
+  [(NSMutableArray *)self->_addedPoints removeObject:pointCopy];
+  accessPoint = [pointCopy accessPoint];
+  v5 = [(RAPCorrectableEntryPoints *)self editedPointWithCorrectedPoint:accessPoint];
 
   if (v5)
   {
@@ -121,74 +121,74 @@
   }
 }
 
-- (id)createEntryPointWithCoordinates:(CLLocationCoordinate2D)a3 entryPointType:(int64_t)a4
+- (id)createEntryPointWithCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type
 {
-  v5 = [(RAPCorrectableEntryPoints *)self _entryPointWithCoordinates:a4 entryPointType:a3.latitude, a3.longitude];
+  v5 = [(RAPCorrectableEntryPoints *)self _entryPointWithCoordinates:type entryPointType:coordinates.latitude, coordinates.longitude];
   [(NSMutableArray *)self->_addedPoints addObject:v5];
 
   return v5;
 }
 
-- (id)_entryPointWithCoordinates:(CLLocationCoordinate2D)a3 entryPointType:(int64_t)a4
+- (id)_entryPointWithCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
   v7 = objc_alloc_init(GEOLatLng);
   [v7 setLat:latitude];
   [v7 setLng:longitude];
   v8 = objc_alloc_init(GEORoadAccessPoint);
   [v8 setLocation:v7];
-  v9 = [[RAPEntryPoint alloc] initWithAccessPoint:v8 type:a4];
+  v9 = [[RAPEntryPoint alloc] initWithAccessPoint:v8 type:type];
 
   return v9;
 }
 
-- (void)modifyEntryPoint:(id)a3 withCoordinates:(CLLocationCoordinate2D)a4 entryPointType:(int64_t)a5
+- (void)modifyEntryPoint:(id)point withCoordinates:(CLLocationCoordinate2D)coordinates entryPointType:(int64_t)type
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v16 = a3;
-  v9 = [(RAPCorrectableEntryPoints *)self _entryPointWithCoordinates:a5 entryPointType:latitude, longitude];
-  if ([(NSMutableArray *)self->_originalPoints containsObject:v16])
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
+  pointCopy = point;
+  longitude = [(RAPCorrectableEntryPoints *)self _entryPointWithCoordinates:type entryPointType:latitude, longitude];
+  if ([(NSMutableArray *)self->_originalPoints containsObject:pointCopy])
   {
-    [(NSMutableArray *)self->_originalPoints removeObject:v16];
+    [(NSMutableArray *)self->_originalPoints removeObject:pointCopy];
     v10 = objc_alloc_init(GEORPEditedAccessPoint);
-    v11 = [v16 accessPoint];
-    [v10 setOriginal:v11];
+    accessPoint = [pointCopy accessPoint];
+    [v10 setOriginal:accessPoint];
 
-    v12 = [v9 accessPoint];
-    [v10 setCorrected:v12];
+    accessPoint2 = [longitude accessPoint];
+    [v10 setCorrected:accessPoint2];
 
     [(NSMutableArray *)self->_correctedPoints addObject:v10];
   }
 
-  else if ([(NSMutableArray *)self->_addedPoints containsObject:v16])
+  else if ([(NSMutableArray *)self->_addedPoints containsObject:pointCopy])
   {
-    [(NSMutableArray *)self->_addedPoints removeObject:v16];
-    [(NSMutableArray *)self->_addedPoints addObject:v9];
+    [(NSMutableArray *)self->_addedPoints removeObject:pointCopy];
+    [(NSMutableArray *)self->_addedPoints addObject:longitude];
   }
 
   else
   {
-    v13 = [v16 accessPoint];
-    v14 = [(RAPCorrectableEntryPoints *)self editedPointWithCorrectedPoint:v13];
+    accessPoint3 = [pointCopy accessPoint];
+    v14 = [(RAPCorrectableEntryPoints *)self editedPointWithCorrectedPoint:accessPoint3];
 
-    v15 = [v9 accessPoint];
-    [v14 setCorrected:v15];
+    accessPoint4 = [longitude accessPoint];
+    [v14 setCorrected:accessPoint4];
   }
 }
 
-- (RAPCorrectableEntryPoints)initWithGEORoadAccessPoints:(id)a3
+- (RAPCorrectableEntryPoints)initWithGEORoadAccessPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v44.receiver = self;
   v44.super_class = RAPCorrectableEntryPoints;
   v5 = [(RAPCorrectableEntryPoints *)&v44 init];
   if (v5)
   {
-    v38 = [v4 count];
-    v33 = v4;
-    v6 = sub_100021DB0(v4, &stru_1016556E8);
+    v38 = [pointsCopy count];
+    v33 = pointsCopy;
+    v6 = sub_100021DB0(pointsCopy, &stru_1016556E8);
     v7 = [NSPredicate predicateWithFormat:@"isDestinationEntryPoint == YES"];
     v8 = [NSPredicate predicateWithFormat:@"entryPointType == %d", 0];
     v9 = [NSPredicate predicateWithFormat:@"entryPointType == %d", 1];
@@ -269,7 +269,7 @@
     deletedPoints = v5->_deletedPoints;
     v5->_deletedPoints = v30;
 
-    v4 = v33;
+    pointsCopy = v33;
   }
 
   return v5;

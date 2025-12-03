@@ -26,8 +26,8 @@
 
 + (id)errorWithREMChangeErrorCode:()REMChangeError
 {
-  v5 = [a1 _defaultDescriptionForREMChangeErrorCode:?];
-  v6 = [a1 errorWithREMChangeErrorCode:a3 description:v5 underlyingError:0];
+  v5 = [self _defaultDescriptionForREMChangeErrorCode:?];
+  v6 = [self errorWithREMChangeErrorCode:a3 description:v5 underlyingError:0];
 
   return v6;
 }
@@ -36,7 +36,7 @@
 {
   v6 = MEMORY[0x1E696AEC0];
   v7 = a4;
-  v8 = [a1 _defaultDescriptionForREMChangeErrorCode:a3];
+  v8 = [self _defaultDescriptionForREMChangeErrorCode:a3];
   v9 = v8;
   v10 = &stru_1F0D67F00;
   if (v7)
@@ -46,7 +46,7 @@
 
   v11 = [v6 stringWithFormat:@"%@ {%@}", v8, v10];
 
-  v12 = [a1 errorWithREMChangeErrorCode:a3 description:v11 underlyingError:0];
+  v12 = [self errorWithREMChangeErrorCode:a3 description:v11 underlyingError:0];
 
   return v12;
 }
@@ -54,8 +54,8 @@
 + (id)errorWithREMChangeErrorCode:()REMChangeError underlyingError:
 {
   v6 = a4;
-  v7 = [a1 _defaultDescriptionForREMChangeErrorCode:a3];
-  v8 = [a1 errorWithREMChangeErrorCode:a3 description:v7 underlyingError:v6];
+  v7 = [self _defaultDescriptionForREMChangeErrorCode:a3];
+  v8 = [self errorWithREMChangeErrorCode:a3 description:v7 underlyingError:v6];
 
   return v8;
 }

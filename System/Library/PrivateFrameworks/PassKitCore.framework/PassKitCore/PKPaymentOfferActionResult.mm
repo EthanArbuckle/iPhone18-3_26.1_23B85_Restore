@@ -1,55 +1,55 @@
 @interface PKPaymentOfferActionResult
-+ (id)paymentOfferActionResultFromQueryItems:(id)a3;
-- (PKPaymentOfferActionResult)initWithCoder:(id)a3;
-- (PKPaymentOfferActionResult)initWithSessionIdentifier:(id)a3 provisioningCredentialIdentifier:(id)a4 provisioningCardIconURL:(id)a5 didSelectOffer:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)paymentOfferActionResultFromQueryItems:(id)items;
+- (PKPaymentOfferActionResult)initWithCoder:(id)coder;
+- (PKPaymentOfferActionResult)initWithSessionIdentifier:(id)identifier provisioningCredentialIdentifier:(id)credentialIdentifier provisioningCardIconURL:(id)l didSelectOffer:(BOOL)offer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferActionResult
 
-- (PKPaymentOfferActionResult)initWithSessionIdentifier:(id)a3 provisioningCredentialIdentifier:(id)a4 provisioningCardIconURL:(id)a5 didSelectOffer:(BOOL)a6
+- (PKPaymentOfferActionResult)initWithSessionIdentifier:(id)identifier provisioningCredentialIdentifier:(id)credentialIdentifier provisioningCardIconURL:(id)l didSelectOffer:(BOOL)offer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  credentialIdentifierCopy = credentialIdentifier;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = PKPaymentOfferActionResult;
   v13 = [(PKPaymentOfferActionResult *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     sessionIdentifier = v13->_sessionIdentifier;
     v13->_sessionIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [credentialIdentifierCopy copy];
     provisioningCredentialIdentifier = v13->_provisioningCredentialIdentifier;
     v13->_provisioningCredentialIdentifier = v16;
 
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     provisioningCardIconURL = v13->_provisioningCardIconURL;
     v13->_provisioningCardIconURL = v18;
 
-    v13->_didSelectOffer = a6;
+    v13->_didSelectOffer = offer;
   }
 
   return v13;
 }
 
-+ (id)paymentOfferActionResultFromQueryItems:(id)a3
++ (id)paymentOfferActionResultFromQueryItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 pk_firstObjectPassingTest:&__block_literal_global_82];
-  v6 = [v5 value];
+  itemsCopy = items;
+  v5 = [itemsCopy pk_firstObjectPassingTest:&__block_literal_global_82];
+  value = [v5 value];
 
-  v7 = [v4 pk_firstObjectPassingTest:&__block_literal_global_27_0];
-  v8 = [v7 value];
+  v7 = [itemsCopy pk_firstObjectPassingTest:&__block_literal_global_27_0];
+  value2 = [v7 value];
 
-  v9 = [v4 pk_firstObjectPassingTest:&__block_literal_global_29_0];
-  v10 = [v9 value];
+  v9 = [itemsCopy pk_firstObjectPassingTest:&__block_literal_global_29_0];
+  value3 = [v9 value];
 
-  if (v10)
+  if (value3)
   {
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:value3];
   }
 
   else
@@ -57,24 +57,24 @@
     v11 = 0;
   }
 
-  v12 = [v4 pk_firstObjectPassingTest:&__block_literal_global_31_0];
-  v13 = [v12 value];
+  v12 = [itemsCopy pk_firstObjectPassingTest:&__block_literal_global_31_0];
+  value4 = [v12 value];
 
-  if (v13)
+  if (value4)
   {
-    v14 = [v13 BOOLValue];
-    if (v6)
+    bOOLValue = [value4 BOOLValue];
+    if (value)
     {
 LABEL_6:
-      v15 = [[a1 alloc] initWithSessionIdentifier:v6 provisioningCredentialIdentifier:v8 provisioningCardIconURL:v11 didSelectOffer:v14];
+      v15 = [[self alloc] initWithSessionIdentifier:value provisioningCredentialIdentifier:value2 provisioningCardIconURL:v11 didSelectOffer:bOOLValue];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v14 = 1;
-    if (v6)
+    bOOLValue = 1;
+    if (value)
     {
       goto LABEL_6;
     }
@@ -174,40 +174,40 @@ uint64_t __69__PKPaymentOfferActionResult_paymentOfferActionResultFromQueryItems
   return v4;
 }
 
-- (PKPaymentOfferActionResult)initWithCoder:(id)a3
+- (PKPaymentOfferActionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferActionResult;
   v5 = [(PKPaymentOfferActionResult *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCredentialIdentifier"];
     provisioningCredentialIdentifier = v5->_provisioningCredentialIdentifier;
     v5->_provisioningCredentialIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCardIconURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningCardIconURL"];
     provisioningCardIconURL = v5->_provisioningCardIconURL;
     v5->_provisioningCardIconURL = v10;
 
-    v5->_didSelectOffer = [v4 decodeBoolForKey:@"didSelectOffer"];
+    v5->_didSelectOffer = [coderCopy decodeBoolForKey:@"didSelectOffer"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
-  [v5 encodeObject:self->_provisioningCardIconURL forKey:@"provisioningCardIconURL"];
-  [v5 encodeBool:self->_didSelectOffer forKey:@"didSelectOffer"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeObject:self->_provisioningCredentialIdentifier forKey:@"provisioningCredentialIdentifier"];
+  [coderCopy encodeObject:self->_provisioningCardIconURL forKey:@"provisioningCardIconURL"];
+  [coderCopy encodeBool:self->_didSelectOffer forKey:@"didSelectOffer"];
 }
 
 @end

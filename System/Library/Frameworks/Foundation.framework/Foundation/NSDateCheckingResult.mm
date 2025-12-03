@@ -1,26 +1,26 @@
 @interface NSDateCheckingResult
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3;
-- (NSDateCheckingResult)initWithCoder:(id)a3;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10 timeIsPast:(BOOL)a11;
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10 timeIsPast:(BOOL)a11 leadingText:(id)a12 trailingText:(id)a13;
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset;
+- (NSDateCheckingResult)initWithCoder:(id)coder;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0 timeIsPast:(BOOL)self1;
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0 timeIsPast:(BOOL)self1 leadingText:(id)self2 trailingText:(id)self3;
 - (_NSRange)range;
 - (id)description;
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3;
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSDateCheckingResult
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10 timeIsPast:(BOOL)a11 leadingText:(id)a12 trailingText:(id)a13
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0 timeIsPast:(BOOL)self1 leadingText:(id)self2 trailingText:(id)self3
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v24 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = NSDateCheckingResult;
@@ -30,61 +30,61 @@
   {
     v20->_range.location = location;
     v20->_range.length = length;
-    v20->_date = [a4 copy];
-    v21->_timeZone = [a5 copy];
-    v21->_duration = a6;
-    v21->_referenceDate = [a7 copy];
-    v21->_underlyingResult = a8;
-    v21->_timeIsSignificant = a9;
-    v21->_timeIsApproximate = a10;
-    v21->_timeIsPast = a11;
-    v21->_leadingText = [a12 copy];
-    v21->_trailingText = [a13 copy];
+    v20->_date = [date copy];
+    v21->_timeZone = [zone copy];
+    v21->_duration = duration;
+    v21->_referenceDate = [referenceDate copy];
+    v21->_underlyingResult = result;
+    v21->_timeIsSignificant = significant;
+    v21->_timeIsApproximate = approximate;
+    v21->_timeIsPast = past;
+    v21->_leadingText = [text copy];
+    v21->_trailingText = [trailingText copy];
   }
 
   return v21;
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10 timeIsPast:(BOOL)a11
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0 timeIsPast:(BOOL)self1
 {
   BYTE2(v12) = 0;
-  LOWORD(v12) = __PAIR16__(a10, a9);
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:a5 referenceDate:a7 underlyingResult:a8 timeIsSignificant:a6 timeIsApproximate:v12 timeIsPast:0 leadingText:0 trailingText:?];
+  LOWORD(v12) = __PAIR16__(approximate, significant);
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:zone referenceDate:referenceDate underlyingResult:result timeIsSignificant:duration timeIsApproximate:v12 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8 timeIsSignificant:(BOOL)a9 timeIsApproximate:(BOOL)a10
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result timeIsSignificant:(BOOL)significant timeIsApproximate:(BOOL)self0
 {
   BYTE2(v11) = 0;
-  LOWORD(v11) = __PAIR16__(a10, a9);
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:a5 referenceDate:a7 underlyingResult:a8 timeIsSignificant:a6 timeIsApproximate:v11 timeIsPast:0 leadingText:0 trailingText:?];
+  LOWORD(v11) = __PAIR16__(approximate, significant);
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:zone referenceDate:referenceDate underlyingResult:result timeIsSignificant:duration timeIsApproximate:v11 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7 underlyingResult:(void *)a8
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate underlyingResult:(void *)result
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:a5 referenceDate:a7 underlyingResult:a8 timeIsSignificant:a6 timeIsApproximate:v9 timeIsPast:0 leadingText:0 trailingText:?];
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:zone referenceDate:referenceDate underlyingResult:result timeIsSignificant:duration timeIsApproximate:v9 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6 referenceDate:(id)a7
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration referenceDate:(id)referenceDate
 {
   BYTE2(v8) = 0;
   LOWORD(v8) = 1;
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:a5 referenceDate:a7 underlyingResult:0 timeIsSignificant:a6 timeIsApproximate:v8 timeIsPast:0 leadingText:0 trailingText:?];
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:zone referenceDate:referenceDate underlyingResult:0 timeIsSignificant:duration timeIsApproximate:v8 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4 timeZone:(id)a5 duration:(double)a6
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date timeZone:(id)zone duration:(double)duration
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 1;
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:a5 referenceDate:0 underlyingResult:0 timeIsSignificant:a6 timeIsApproximate:v7 timeIsPast:0 leadingText:0 trailingText:?];
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:zone referenceDate:0 underlyingResult:0 timeIsSignificant:duration timeIsApproximate:v7 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
-- (NSDateCheckingResult)initWithRange:(_NSRange)a3 date:(id)a4
+- (NSDateCheckingResult)initWithRange:(_NSRange)range date:(id)date
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 1;
-  return [(NSDateCheckingResult *)self initWithRange:a3.location date:a3.length timeZone:a4 duration:0 referenceDate:0 underlyingResult:0 timeIsSignificant:0.0 timeIsApproximate:v5 timeIsPast:0 leadingText:0 trailingText:?];
+  return [(NSDateCheckingResult *)self initWithRange:range.location date:range.length timeZone:date duration:0 referenceDate:0 underlyingResult:0 timeIsSignificant:0.0 timeIsApproximate:v5 timeIsPast:0 leadingText:0 trailingText:?];
 }
 
 - (void)dealloc
@@ -99,79 +99,79 @@
 - (id)description
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(NSDateCheckingResult *)self date];
+  date = [(NSDateCheckingResult *)self date];
   [(NSDateCheckingResult *)self duration];
   if (v4 <= 0.0)
   {
     v7.receiver = self;
     v7.super_class = NSDateCheckingResult;
-    return [NSString stringWithFormat:@"%@{%@}", [(NSTextCheckingResult *)&v7 description], v3, v6];
+    return [NSString stringWithFormat:@"%@{%@}", [(NSTextCheckingResult *)&v7 description], date, v6];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NSDateCheckingResult;
-    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@{%@-%@}", -[NSTextCheckingResult description](&v8, sel_description), v3, [MEMORY[0x1E695DF00] dateWithTimeInterval:v3 sinceDate:v4]);
+    return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@{%@-%@}", -[NSTextCheckingResult description](&v8, sel_description), date, [MEMORY[0x1E695DF00] dateWithTimeInterval:date sinceDate:v4]);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(NSDateCheckingResult *)self date];
-  v6 = [(NSDateCheckingResult *)self referenceDate];
-  v7 = [(NSDateCheckingResult *)self timeZone];
+  date = [(NSDateCheckingResult *)self date];
+  referenceDate = [(NSDateCheckingResult *)self referenceDate];
+  timeZone = [(NSDateCheckingResult *)self timeZone];
   [(NSDateCheckingResult *)self duration];
   v9 = v8;
-  v10 = [a3 allowsKeyedCoding];
-  [(NSTextCheckingResult *)self encodeRangeWithCoder:a3];
-  if (v10)
+  allowsKeyedCoding = [coder allowsKeyedCoding];
+  [(NSTextCheckingResult *)self encodeRangeWithCoder:coder];
+  if (allowsKeyedCoding)
   {
-    [a3 encodeObject:v5 forKey:@"NSDate"];
-    [a3 encodeObject:v7 forKey:@"NSTimeZone"];
-    [a3 encodeDouble:@"NSDuration" forKey:v9];
+    [coder encodeObject:date forKey:@"NSDate"];
+    [coder encodeObject:timeZone forKey:@"NSTimeZone"];
+    [coder encodeDouble:@"NSDuration" forKey:v9];
 
-    [a3 encodeObject:v6 forKey:@"NSReferenceDate"];
+    [coder encodeObject:referenceDate forKey:@"NSReferenceDate"];
   }
 
   else
   {
-    [a3 encodeObject:v5];
-    [a3 encodeObject:v7];
-    [a3 encodeValueOfObjCType:"d" at:v11];
-    [a3 encodeObject:v6];
+    [coder encodeObject:date];
+    [coder encodeObject:timeZone];
+    [coder encodeValueOfObjCType:"d" at:v11];
+    [coder encodeObject:referenceDate];
   }
 }
 
-- (NSDateCheckingResult)initWithCoder:(id)a3
+- (NSDateCheckingResult)initWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v19[0] = 0;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v7;
-    v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSDate"];
-    v10 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSTimeZone"];
-    [a3 decodeDoubleForKey:@"NSDuration"];
+    decodeObject = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDate"];
+    decodeObject2 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSTimeZone"];
+    [coder decodeDoubleForKey:@"NSDuration"];
     v12 = v11;
     *v19 = v11;
-    v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSReferenceDate"];
-    return [(NSDateCheckingResult *)self initWithRange:v6 date:v8 timeZone:v9 duration:v10 referenceDate:v13, v12];
+    decodeObject3 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSReferenceDate"];
+    return [(NSDateCheckingResult *)self initWithRange:v6 date:v8 timeZone:decodeObject duration:decodeObject2 referenceDate:decodeObject3, v12];
   }
 
-  v14 = [a3 versionForClassName:@"NSTextCheckingResult"];
+  v14 = [coder versionForClassName:@"NSTextCheckingResult"];
   if (v14 == 1)
   {
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v15;
-    v9 = [a3 decodeObject];
-    v10 = [a3 decodeObject];
-    [a3 decodeValueOfObjCType:"d" at:v19 size:8];
-    v13 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
+    decodeObject2 = [coder decodeObject];
+    [coder decodeValueOfObjCType:"d" at:v19 size:8];
+    decodeObject3 = [coder decodeObject];
     v12 = *v19;
-    return [(NSDateCheckingResult *)self initWithRange:v6 date:v8 timeZone:v9 duration:v10 referenceDate:v13, v12];
+    return [(NSDateCheckingResult *)self initWithRange:v6 date:v8 timeZone:decodeObject duration:decodeObject2 referenceDate:decodeObject3, v12];
   }
 
   v17 = v14;
@@ -191,49 +191,49 @@
   return result;
 }
 
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset
 {
-  v6 = [(NSDateCheckingResult *)self range];
+  range = [(NSDateCheckingResult *)self range];
   v8 = v7;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (range != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && v6 < -a3)
+    if (offset < 0 && range < -offset)
     {
-      v16 = v6;
+      v16 = range;
       v17 = _NSFullMethodName(self, a2);
       v20.location = v16;
       v20.length = v8;
-      v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v17, a3, NSStringFromRange(v20)), 0}];
+      v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v17, offset, NSStringFromRange(v20)), 0}];
       objc_exception_throw(v18);
     }
 
-    v9 = v6 + a3;
+    v9 = range + offset;
   }
 
   v10 = objc_alloc(objc_opt_class());
-  v11 = [(NSDateCheckingResult *)self date];
-  v12 = [(NSDateCheckingResult *)self timeZone];
+  date = [(NSDateCheckingResult *)self date];
+  timeZone = [(NSDateCheckingResult *)self timeZone];
   [(NSDateCheckingResult *)self duration];
-  v14 = [v10 initWithRange:v9 date:v8 timeZone:v11 duration:v12 referenceDate:-[NSDateCheckingResult referenceDate](self underlyingResult:{"referenceDate"), -[NSDateCheckingResult underlyingResult](self, "underlyingResult"), v13}];
+  v14 = [v10 initWithRange:v9 date:v8 timeZone:date duration:timeZone referenceDate:-[NSDateCheckingResult referenceDate](self underlyingResult:{"referenceDate"), -[NSDateCheckingResult underlyingResult](self, "underlyingResult"), v13}];
 
   return v14;
 }
 
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset
 {
   location = self->_range.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && location < -a3)
+    if (offset < 0 && location < -offset)
     {
       p_range = &self->_range;
       v7 = _NSFullMethodName(self, a2);
-      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, a3, NSStringFromRange(*p_range)), 0}];
+      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, offset, NSStringFromRange(*p_range)), 0}];
       objc_exception_throw(v8);
     }
 
-    self->_range.location = location + a3;
+    self->_range.location = location + offset;
   }
 
   return 1;

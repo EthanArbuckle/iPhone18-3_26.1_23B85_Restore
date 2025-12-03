@@ -1,7 +1,7 @@
 @interface WiFiUsageBeaconParsingConfiguration
-+ (id)getConfigForKey:(id)a3;
++ (id)getConfigForKey:(id)key;
 + (void)initialize;
-+ (void)setConfig:(id)a3;
++ (void)setConfig:(id)config;
 @end
 
 @implementation WiFiUsageBeaconParsingConfiguration
@@ -12,26 +12,26 @@
   _beaconParsing = 0;
 }
 
-+ (void)setConfig:(id)a3
++ (void)setConfig:(id)config
 {
-  v4 = a3;
-  if (([v4 isEqualToDictionary:_beaconParsing] & 1) == 0)
+  configCopy = config;
+  if (([configCopy isEqualToDictionary:_beaconParsing] & 1) == 0)
   {
-    objc_storeStrong(&_beaconParsing, a3);
+    objc_storeStrong(&_beaconParsing, config);
     +[WiFiUsageParsedBeacon updateConfig];
     NSLog(&cfstr_SUpdatedWifius_0.isa, "+[WiFiUsageBeaconParsingConfiguration setConfig:]");
   }
 }
 
-+ (id)getConfigForKey:(id)a3
++ (id)getConfigForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (_beaconParsing)
   {
-    v4 = [_beaconParsing objectForKey:v3];
+    v4 = [_beaconParsing objectForKey:keyCopy];
     if (!v4)
     {
-      NSLog(&cfstr_SDoesNotContai.isa, "+[WiFiUsageBeaconParsingConfiguration getConfigForKey:]", @"BeaconParsing", v3);
+      NSLog(&cfstr_SDoesNotContai.isa, "+[WiFiUsageBeaconParsingConfiguration getConfigForKey:]", @"BeaconParsing", keyCopy);
     }
   }
 

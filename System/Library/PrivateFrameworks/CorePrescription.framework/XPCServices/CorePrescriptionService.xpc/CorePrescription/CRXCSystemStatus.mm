@@ -1,10 +1,10 @@
 @interface CRXCSystemStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRXCSystemStatus)init;
-- (CRXCSystemStatus)initWithCoder:(id)a3;
+- (CRXCSystemStatus)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)hardwareModel;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXCSystemStatus
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100081658();
     swift_unknownObjectRelease();
@@ -32,7 +32,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRXCSystemStatus.isEqual(_:)(v8);
@@ -43,7 +43,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRXCSystemStatus.description.getter();
 
   v3 = sub_100081288();
@@ -51,17 +51,17 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRXCSystemStatus.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRXCSystemStatus.encode(with:)(coderCopy);
 }
 
-- (CRXCSystemStatus)initWithCoder:(id)a3
+- (CRXCSystemStatus)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_10004C66C(v3);
+  coderCopy = coder;
+  v4 = sub_10004C66C(coderCopy);
 
   return v4;
 }

@@ -1,43 +1,43 @@
 @interface BKSHIDEventDeferringSelectionTarget
 + (BKSHIDEventDeferringSelectionTarget)new;
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 - (BKSHIDEventDeferringSelectionTarget)init;
-- (BKSHIDEventDeferringSelectionTarget)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BKSHIDEventDeferringSelectionTarget)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCopyOf:(id *)of;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_init;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringSelectionTarget
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSHIDEventDeferringSelectionTarget *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSHIDEventDeferringSelectionTarget *)of _init];
+    of = _init;
+    if (_init)
     {
-      objc_storeStrong(v4 + 1, v3[1]);
-      objc_storeStrong(a1 + 2, v3[2]);
-      objc_storeStrong(a1 + 3, v3[3]);
+      objc_storeStrong(_init + 1, v3[1]);
+      objc_storeStrong(of + 2, v3[2]);
+      objc_storeStrong(of + 3, v3[3]);
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (void)_init
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = BKSHIDEventDeferringSelectionTarget;
     v1 = objc_msgSendSuper2(&v12, sel_init);
     if (v1)
@@ -91,28 +91,28 @@
   return v1;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v7 = a3;
-  v4 = [v7 appendObject:self->_environment withName:@"environment"];
-  v5 = [v7 appendObject:self->_display withName:@"display"];
-  v6 = [v7 appendObject:self->_target withName:@"target"];
+  streamCopy = stream;
+  v4 = [streamCopy appendObject:self->_environment withName:@"environment"];
+  v5 = [streamCopy appendObject:self->_display withName:@"display"];
+  v6 = [streamCopy appendObject:self->_target withName:@"target"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableHIDEventDeferringSelectionTarget alloc];
 
   return [(BKSHIDEventDeferringSelectionTarget *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     environment = self->_environment;
     if (BSEqualObjects() && (v8 = v5[2], display = self->_display, BSEqualObjects()))
@@ -145,47 +145,47 @@
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   environment = self->_environment;
-  v8 = v4;
+  v8 = coderCopy;
   if (environment)
   {
-    [v4 encodeObject:environment forKey:@"environment"];
-    v4 = v8;
+    [coderCopy encodeObject:environment forKey:@"environment"];
+    coderCopy = v8;
   }
 
   display = self->_display;
   if (display)
   {
     [v8 encodeObject:display forKey:@"display"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   target = self->_target;
   if (target)
   {
     [v8 encodeObject:target forKey:@"target"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (BKSHIDEventDeferringSelectionTarget)initWithCoder:(id)a3
+- (BKSHIDEventDeferringSelectionTarget)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = BKSHIDEventDeferringSelectionTarget;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSHIDEventDeferringSelectionTarget *)&v12 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"environment", v12.receiver, v12.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"environment", v12.receiver, v12.super_class}];
   environment = v4->_environment;
   v4->_environment = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"display"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display"];
   display = v4->_display;
   v4->_display = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"target"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"target"];
 
   target = v4->_target;
   v4->_target = v9;
@@ -239,13 +239,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSHIDEventDeferringSelectionTarget *)[BKSMutableHIDEventDeferringSelectionTarget alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSHIDEventDeferringSelectionTarget *)[BKSMutableHIDEventDeferringSelectionTarget alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

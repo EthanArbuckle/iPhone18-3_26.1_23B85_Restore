@@ -1,12 +1,12 @@
 @interface NSString
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (NSString)allocWithZone:(_NSZone *)a3;
++ (NSString)allocWithZone:(_NSZone *)zone;
 + (NSString)localizedNameOfStringEncoding:(NSStringEncoding)encoding;
 + (NSString)localizedStringWithFormat:(NSString *)format;
 + (NSString)localizedStringWithValidatedFormat:(NSString *)format validFormatSpecifiers:(NSString *)validFormatSpecifiers error:(NSError *)error;
 + (NSString)string;
-+ (NSString)stringWithBytes:(const void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5;
++ (NSString)stringWithBytes:(const void *)bytes length:(unint64_t)length encoding:(unint64_t)encoding;
 + (NSString)stringWithCString:(const char *)cString encoding:(NSStringEncoding)enc;
 + (NSString)stringWithCharacters:(const unichar *)characters length:(NSUInteger)length;
 + (NSString)stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc error:(NSError *)error;
@@ -19,14 +19,14 @@
 + (NSStringEncoding)defaultCStringEncoding;
 + (NSStringEncoding)stringEncodingForData:(NSData *)data encodingOptions:(NSDictionary *)opts convertedString:(NSString *)string usedLossyConversion:(BOOL *)usedLossyConversion;
 + (const)availableStringEncodings;
-+ (id)_newStringFromUTF16InternalData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)_newZStringWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4;
-+ (id)_newZStringWithString:(id)a3;
-+ (id)_newZStringWithUTF8String:(const char *)a3;
-+ (id)_stringWithFormat:(id)a3 locale:(id)a4 options:(id)a5 arguments:(char *)a6;
-+ (id)_stringWithValidatedFormat:(id)a3 validFormatSpecifiers:(id)a4 locale:(id)a5 arguments:(char *)a6 error:(id *)a7;
-+ (id)_web_stringRepresentationForBytes:(int64_t)a3;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)_newStringFromUTF16InternalData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)_newZStringWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length;
++ (id)_newZStringWithString:(id)string;
++ (id)_newZStringWithUTF8String:(const char *)string;
++ (id)_stringWithFormat:(id)format locale:(id)locale options:(id)options arguments:(char *)arguments;
++ (id)_stringWithValidatedFormat:(id)format validFormatSpecifiers:(id)specifiers locale:(id)locale arguments:(char *)arguments error:(id *)error;
++ (id)_web_stringRepresentationForBytes:(int64_t)bytes;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 + (id)stringWithCString:(const char *)bytes;
 + (id)stringWithCString:(const char *)bytes length:(NSUInteger)length;
 + (id)stringWithContentsOfFile:(NSString *)path;
@@ -34,18 +34,18 @@
 + (void)initialize;
 - ($2F068FC02377E22BA03580A8162C781E)decimalValue;
 - (BOOL)BOOLValue;
-- (BOOL)__swiftFillFileSystemRepresentationWithPointer:(char *)a3 maxLength:(int64_t)a4;
-- (BOOL)_getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unsigned int)a5;
-- (BOOL)_web_domainMatches:(id)a3;
+- (BOOL)__swiftFillFileSystemRepresentationWithPointer:(char *)pointer maxLength:(int64_t)length;
+- (BOOL)_getCString:(char *)string maxLength:(unint64_t)length encoding:(unsigned int)encoding;
+- (BOOL)_web_domainMatches:(id)matches;
 - (BOOL)_web_hasCountryCodeTLD;
 - (BOOL)_web_looksLikeIPAddress;
 - (BOOL)canBeConvertedToEncoding:(NSStringEncoding)encoding;
 - (BOOL)getBytes:(void *)buffer maxLength:(NSUInteger)maxBufferCount usedLength:(NSUInteger *)usedBufferCount encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRangePointer)leftover;
 - (BOOL)getCString:(char *)buffer maxLength:(NSUInteger)maxBufferCount encoding:(NSStringEncoding)encoding;
-- (BOOL)getExternalRepresentation:(id *)a3 extendedAttributes:(id *)a4 forWritingToURLOrPath:(id)a5 usingEncoding:(unint64_t)a6 error:(id *)a7;
+- (BOOL)getExternalRepresentation:(id *)representation extendedAttributes:(id *)attributes forWritingToURLOrPath:(id)path usingEncoding:(unint64_t)encoding error:(id *)error;
 - (BOOL)getFileSystemRepresentation:(char *)cname maxLength:(NSUInteger)max;
 - (BOOL)isAbsolutePath;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile;
 - (BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically;
 - (NSArray)componentsSeparatedByCharactersInSet:(NSCharacterSet *)separator;
@@ -88,7 +88,7 @@
 - (NSString)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc error:(NSError *)error;
 - (NSString)initWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)enc error:(NSError *)error;
 - (NSString)initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
-- (NSString)initWithData:(id)a3 usedEncoding:(unint64_t *)a4;
+- (NSString)initWithData:(id)data usedEncoding:(unint64_t *)encoding;
 - (NSString)initWithString:(NSString *)aString;
 - (NSString)initWithUTF8String:(const char *)nullTerminatedCString;
 - (NSString)lastPathComponent;
@@ -128,7 +128,7 @@
 - (NSUInteger)completePathIntoString:(NSString *)outputName caseSensitive:(BOOL)flag matchesIntoArray:(NSArray *)outputArray filterTypes:(NSArray *)filterTypes;
 - (NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)enc;
 - (NSUInteger)maximumLengthOfBytesUsingEncoding:(NSStringEncoding)enc;
-- (_NSRange)_rangeOfRegularExpressionPattern:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6;
+- (_NSRange)_rangeOfRegularExpressionPattern:(id)pattern options:(unint64_t)options range:(_NSRange)range locale:(id)locale;
 - (_NSRange)_web_rangeOfURLHost;
 - (_NSRange)_web_rangeOfURLResourceSpecifier_nowarn;
 - (_NSRange)_web_rangeOfURLScheme_nowarn;
@@ -140,14 +140,14 @@
 - (double)doubleValue;
 - (float)floatValue;
 - (id)__escapeString5991;
-- (id)_copyFormatStringWithConfiguration:(id)a3;
-- (id)_createSubstringWithRange:(_NSRange)a3;
-- (id)_initWithBytesOfUnknownEncoding:(char *)a3 length:(unint64_t)a4 copy:(BOOL)a5 usedEncoding:(unint64_t *)a6;
-- (id)_initWithDataOfUnknownEncoding:(id)a3;
-- (id)_newSubstringWithRange:(_NSRange)a3 zone:(_NSZone *)a4;
-- (id)_stringByReplacingOccurrencesOfRegularExpressionPattern:(id)a3 withTemplate:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6;
-- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)a3;
-- (id)_stringByStandardizingPathUsingCache:(BOOL)a3;
+- (id)_copyFormatStringWithConfiguration:(id)configuration;
+- (id)_createSubstringWithRange:(_NSRange)range;
+- (id)_initWithBytesOfUnknownEncoding:(char *)encoding length:(unint64_t)length copy:(BOOL)copy usedEncoding:(unint64_t *)usedEncoding;
+- (id)_initWithDataOfUnknownEncoding:(id)encoding;
+- (id)_newSubstringWithRange:(_NSRange)range zone:(_NSZone *)zone;
+- (id)_stringByReplacingOccurrencesOfRegularExpressionPattern:(id)pattern withTemplate:(id)template options:(unint64_t)options range:(_NSRange)range;
+- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)cache;
+- (id)_stringByStandardizingPathUsingCache:(BOOL)cache;
 - (id)_stringRepresentation;
 - (id)_urlStringByRemovingResolveFlags;
 - (id)_web_HTTPStyleLanguageCode;
@@ -159,28 +159,28 @@
 - (id)_web_filenameByFixingIllegalCharacters;
 - (id)_web_fixedCarbonPOSIXPath;
 - (id)_web_mimeTypeFromContentTypeHeader_nowarn;
-- (id)_web_parseAsKeyValuePairHandleQuotes_nowarn:(BOOL)a3;
+- (id)_web_parseAsKeyValuePairHandleQuotes_nowarn:(BOOL)quotes_nowarn;
 - (id)_web_splitAtNonDateCommas_nowarn;
 - (id)_web_stringByCollapsingNonPrintingCharacters;
 - (id)_web_stringByExpandingTildeInPath;
 - (id)_web_stringByReplacingValidPercentEscapes_nowarn;
 - (id)_web_stringByTrimmingWhitespace;
 - (id)_widthVariants;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayableString;
 - (id)initWithCString:(const char *)bytes;
 - (id)initWithCString:(const char *)bytes length:(NSUInteger)length;
 - (id)initWithContentsOfFile:(NSString *)path;
 - (id)initWithContentsOfURL:(NSURL *)url;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)propertyList;
 - (id)quotedStringRepresentation;
 - (id)standardizedURLPath;
 - (id)stringByAddingPercentEscapes;
 - (id)stringByRemovingPercentEscapes;
 - (int)intValue;
-- (int64_t)_web_countOfString:(id)a3;
+- (int64_t)_web_countOfString:(id)string;
 - (uint64_t)longLongValue;
 - (unsigned)_encodingCantBeStoredInEightBitCFString;
 - (unsigned)_fastestEncodingInCFStringEncoding;
@@ -189,8 +189,8 @@
 - (unsigned)_smallestEncodingInCFStringEncoding;
 - (unsigned)_web_extractFourCharCode;
 - (void)__graphemeCount;
-- (void)_getBlockStart:(unint64_t *)a3 end:(unint64_t *)a4 contentsEnd:(unint64_t *)a5 forRange:(_NSRange)a6 stopAtLineSeparators:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (void)_getBlockStart:(unint64_t *)start end:(unint64_t *)end contentsEnd:(unint64_t *)contentsEnd forRange:(_NSRange)range stopAtLineSeparators:(BOOL)separators;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateLinesUsingBlock:(void *)block;
 - (void)enumerateLinguisticTagsInRange:(NSRange)range scheme:(NSLinguisticTagScheme)scheme options:(NSLinguisticTaggerOptions)options orthography:(NSOrthography *)orthography usingBlock:(void *)block;
 - (void)enumerateSubstringsInRange:(NSRange)range options:(NSStringEnumerationOptions)opts usingBlock:(void *)block;
@@ -205,14 +205,14 @@
 
 - (unsigned)_encodingCantBeStoredInEightBitCFString
 {
-  v2 = [(NSString *)self fastestEncoding];
+  fastestEncoding = [(NSString *)self fastestEncoding];
   v3 = *MEMORY[0x1E695E0A8];
   if (*MEMORY[0x1E695E0A8] == -1)
   {
     v3 = __CFStringComputeEightBitStringEncoding();
   }
 
-  return v2 != CFStringConvertEncodingToNSStringEncoding(v3);
+  return fastestEncoding != CFStringConvertEncodingToNSStringEncoding(v3);
 }
 
 - (id)_stringRepresentation
@@ -321,7 +321,7 @@ LABEL_22:
     *result = 34;
     v26 = 0;
     memset(v25, 0, sizeof(v25));
-    v23 = self;
+    selfCopy = self;
     v24 = v4;
     if (v4 >= 0x20)
     {
@@ -471,7 +471,7 @@ LABEL_36:
 
           *(&v24 + 1) += v21;
           v21 = v18;
-          [v23 getUid("getCharacters:v25 range:{v17, v18}")];
+          [selfCopy getUid("getCharacters:v25 range:{v17, v18}")];
           v9 = v25[0];
           LOWORD(v26) = v25[0];
           v22 = 1;
@@ -505,19 +505,19 @@ LABEL_45:
   return result;
 }
 
-- (BOOL)__swiftFillFileSystemRepresentationWithPointer:(char *)a3 maxLength:(int64_t)a4
+- (BOOL)__swiftFillFileSystemRepresentationWithPointer:(char *)pointer maxLength:(int64_t)length
 {
-  v6 = self;
-  LOBYTE(a4) = NSString.__swiftFillFileSystemRepresentation(pointer:maxLength:)(a3, a4);
+  selfCopy = self;
+  LOBYTE(length) = NSString.__swiftFillFileSystemRepresentation(pointer:maxLength:)(pointer, length);
 
-  return a4 & 1;
+  return length & 1;
 }
 
 - (unsigned)_fastestEncodingInCFStringEncoding
 {
-  v2 = [(NSString *)self fastestEncoding];
+  fastestEncoding = [(NSString *)self fastestEncoding];
 
-  return CFStringConvertNSStringEncodingToEncoding(v2);
+  return CFStringConvertNSStringEncodingToEncoding(fastestEncoding);
 }
 
 - (NSString)pathExtension
@@ -726,14 +726,14 @@ LABEL_11:
 
 + (NSString)string
 {
-  v2 = [objc_allocWithZone(a1) init];
+  v2 = [objc_allocWithZone(self) init];
 
   return v2;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((__NSDefaultStringEncodingFullyInited & 1) == 0)
     {
@@ -757,7 +757,7 @@ LABEL_11:
         return;
       }
 
-      class_setSuperclass(v4, a1);
+      class_setSuperclass(v4, self);
 
       [(objc_class *)v4 _setAsTaggedStringClass];
     }
@@ -872,7 +872,7 @@ LABEL_19:
   v23 = 0u;
   memset(v22, 0, sizeof(v22));
   v19 = 0u;
-  v20 = self;
+  selfCopy = self;
   v21 = v4;
   if (v4)
   {
@@ -920,7 +920,7 @@ LABEL_19:
 
           *&v22[0] += v19;
           *&v19 = v10;
-          [v20 getUid("getCharacters:v22 + 8 range:{v9, v10}")];
+          [selfCopy getUid("getCharacters:v22 + 8 range:{v9, v10}")];
           WORD4(v23) = WORD4(v22[0]);
           *(&v19 + 1) = 1;
           continue;
@@ -970,7 +970,7 @@ LABEL_45:
 
         *&v22[0] += v19;
         *&v19 = v15;
-        [v20 getUid("getCharacters:v22 + 8 range:{v14, v15}")];
+        [selfCopy getUid("getCharacters:v22 + 8 range:{v14, v15}")];
         v11 = WORD4(v22[0]);
         WORD4(v23) = WORD4(v22[0]);
         *(&v19 + 1) = 1;
@@ -1015,7 +1015,7 @@ LABEL_34:
 
           *&v22[0] += v19;
           *&v19 = v18;
-          [v20 getUid("getCharacters:v22 + 8 range:{v17, v18}")];
+          [selfCopy getUid("getCharacters:v22 + 8 range:{v17, v18}")];
           v11 = WORD4(v22[0]);
           WORD4(v23) = WORD4(v22[0]);
           *(&v19 + 1) = 1;
@@ -1186,7 +1186,7 @@ LABEL_10:
 - (unsigned)_pathResolveFlags
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)(self);
-  v3 = self;
+  selfCopy = self;
   *&v4 = String._pathResolveFlags(prefixLength:)(&prefixLength);
   v5 = v4;
 
@@ -1287,7 +1287,7 @@ LABEL_10:
 - (unsigned)_queryResolveFlags
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)(self);
-  v3 = self;
+  selfCopy = self;
   Resolve = String._queryResolveFlags()();
 
   return Resolve;
@@ -1295,9 +1295,9 @@ LABEL_10:
 
 - (NSString)localizedCapitalizedString
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self capitalizedStringWithLocale:v3];
+  return [(NSString *)self capitalizedStringWithLocale:currentLocale];
 }
 
 - (BOOL)_web_looksLikeIPAddress
@@ -1351,9 +1351,9 @@ LABEL_10:
 
 - (NSString)localizedUppercaseString
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self uppercaseStringWithLocale:v3];
+  return [(NSString *)self uppercaseStringWithLocale:currentLocale];
 }
 
 - (NSString)precomposedStringWithCompatibilityMapping
@@ -1367,7 +1367,7 @@ LABEL_10:
 
 - (id)_urlStringByRemovingResolveFlags
 {
-  v2 = self;
+  selfCopy = self;
   NSString._urlStringByRemovingResolveFlags()();
 
   v3 = String._bridgeToObjectiveCImpl()();
@@ -1377,9 +1377,9 @@ LABEL_10:
 
 - (NSString)variantFittingPresentationWidth:(NSInteger)width
 {
-  v3 = self;
+  selfCopy = self;
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_widthVariants
@@ -1389,10 +1389,10 @@ LABEL_10:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 }
 
-- (id)_createSubstringWithRange:(_NSRange)a3
+- (id)_createSubstringWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if (!_createSubstringWithRange__baseImp)
   {
     v7 = objc_opt_class();
@@ -1424,15 +1424,15 @@ LABEL_10:
 
 - (unsigned)_smallestEncodingInCFStringEncoding
 {
-  v2 = [(NSString *)self smallestEncoding];
+  smallestEncoding = [(NSString *)self smallestEncoding];
 
-  return CFStringConvertNSStringEncodingToEncoding(v2);
+  return CFStringConvertNSStringEncodingToEncoding(smallestEncoding);
 }
 
-- (BOOL)_getCString:(char *)a3 maxLength:(unint64_t)a4 encoding:(unsigned int)a5
+- (BOOL)_getCString:(char *)string maxLength:(unint64_t)length encoding:(unsigned int)encoding
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v8 = CFStringConvertEncodingToNSStringEncoding(a5);
+  v8 = CFStringConvertEncodingToNSStringEncoding(encoding);
   if (v8 == 0xFFFFFFFF)
   {
     LOBYTE(v9) = 0;
@@ -1441,15 +1441,15 @@ LABEL_10:
   else
   {
     v11[0] = 0;
-    v9 = [(NSString *)self getBytes:a3 maxLength:a4 filledLength:v11 encoding:v8 allowLossyConversion:0 range:0 remainingRange:[(NSString *)self length], 0];
+    v9 = [(NSString *)self getBytes:string maxLength:length filledLength:v11 encoding:v8 allowLossyConversion:0 range:0 remainingRange:[(NSString *)self length], 0];
     if (v9)
     {
-      a3 += v11[0];
+      string += v11[0];
       LOBYTE(v9) = 1;
     }
   }
 
-  *a3 = 0;
+  *string = 0;
   return v9;
 }
 
@@ -1625,7 +1625,7 @@ LABEL_30:
       v31 = 2048;
       v32 = v25;
       v33 = 2113;
-      v34 = self;
+      selfCopy = self;
       v35 = 2048;
       v36 = v26;
       _os_log_fault_impl(&dword_18075C000, v23, OS_LOG_TYPE_FAULT, "Appending path component %{private}@ (length: %lu) to string %{private}@ (length: %lu) resulted in an embedded NUL character", buf, 0x2Au);
@@ -1811,9 +1811,9 @@ LABEL_14:
   return v12;
 }
 
-- (id)_stringByStandardizingPathUsingCache:(BOOL)a3
+- (id)_stringByStandardizingPathUsingCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v9 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self length]> 1023)
   {
@@ -1827,13 +1827,13 @@ LABEL_14:
 
   [(NSString *)self getCharacters:v8 range:0, v5];
   _NSExpandTildeInPath(v8, &v7);
-  _NSStandardizePathUsingCache(v8, &v7, v3);
+  _NSStandardizePathUsingCache(v8, &v7, cacheCopy);
   return [NSPathStore2 pathStoreWithCharacters:v8 length:v7];
 }
 
-- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)a3
+- (id)_stringByResolvingSymlinksInPathUsingCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v9 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self length]> 1023)
   {
@@ -1847,8 +1847,8 @@ LABEL_14:
 
   [(NSString *)self getCharacters:v8 range:0, v5];
   _NSExpandTildeInPath(v8, &v7);
-  _NSResolveSymlinksInPathUsingCache(v8, &v7, v3);
-  _NSStandardizePathUsingCache(v8, &v7, v3);
+  _NSResolveSymlinksInPathUsingCache(v8, &v7, cacheCopy);
+  _NSStandardizePathUsingCache(v8, &v7, cacheCopy);
   return [NSPathStore2 pathStoreWithCharacters:v8 length:v7];
 }
 
@@ -1870,16 +1870,16 @@ LABEL_14:
   else
   {
     v8 = [(NSArray *)paths count];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v8 >= 1)
     {
       for (i = 0; i != v8; ++i)
       {
-        [(NSArray *)v9 addObject:[(NSString *)self stringByAppendingPathComponent:[(NSArray *)paths objectAtIndex:i]]];
+        [(NSArray *)array addObject:[(NSString *)self stringByAppendingPathComponent:[(NSArray *)paths objectAtIndex:i]]];
       }
     }
 
-    return v9;
+    return array;
   }
 }
 
@@ -1920,29 +1920,29 @@ LABEL_14:
     }
 
     endpwent();
-    v16 = [v10 allObjects];
+    allObjects = [v10 allObjects];
 
     if (outputName)
     {
-      *outputName = _NSFindCommonPrefixInStringArray(v16, v84);
+      *outputName = _NSFindCommonPrefixInStringArray(allObjects, v84);
     }
 
     if (outputArray)
     {
-      *outputArray = v16;
+      *outputArray = allObjects;
     }
 
-    return [(NSArray *)v16 count];
+    return [(NSArray *)allObjects count];
   }
 
   if ([(NSString *)self hasSuffix:@"/"]|| [(NSString *)self hasSuffix:@"\\""])
   {
-    v17 = &stru_1EEEFDF90;
+    lastPathComponent = &stru_1EEEFDF90;
   }
 
   else
   {
-    v17 = [(NSString *)self lastPathComponent];
+    lastPathComponent = [(NSString *)self lastPathComponent];
     self = [(NSString *)self stringByDeletingLastPathComponent];
   }
 
@@ -1965,17 +1965,17 @@ LABEL_14:
 
     else
     {
-      v87 = v17;
+      v87 = lastPathComponent;
       v77 = filterTypes;
-      v21 = [(NSString *)self pathComponents];
+      pathComponents = [(NSString *)self pathComponents];
       v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v119 = 0u;
       v120 = 0u;
       v121 = 0u;
       v122 = 0u;
-      obj = v21;
-      v24 = [(NSArray *)v21 countByEnumeratingWithState:&v119 objects:v123 count:16];
+      obj = pathComponents;
+      v24 = [(NSArray *)pathComponents countByEnumeratingWithState:&v119 objects:v123 count:16];
       if (v24)
       {
         v25 = v24;
@@ -2131,7 +2131,7 @@ LABEL_14:
 
       v20 = v23;
       filterTypes = v77;
-      v17 = v87;
+      lastPathComponent = v87;
       if (!v20)
       {
         return 0;
@@ -2143,9 +2143,9 @@ LABEL_14:
   }
 
   obja = v19;
-  v46 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v74 = 0;
-  v75 = v46;
+  v75 = array;
   while (1)
   {
     v99 = 0u;
@@ -2157,7 +2157,7 @@ LABEL_14:
     if (v80)
     {
       v78 = *v98;
-      v88 = v17;
+      v88 = lastPathComponent;
       do
       {
         for (n = 0; n != v80; ++n)
@@ -2167,27 +2167,27 @@ LABEL_14:
             objc_enumerationMutation(v76);
           }
 
-          v48 = *(*(&v97 + 1) + 8 * n);
-          v93 = v48;
-          if (![(NSString *)v48 length])
+          currentDirectoryPath = *(*(&v97 + 1) + 8 * n);
+          v93 = currentDirectoryPath;
+          if (![(NSString *)currentDirectoryPath length])
           {
-            v48 = [(NSFileManager *)v83 currentDirectoryPath];
+            currentDirectoryPath = [(NSFileManager *)v83 currentDirectoryPath];
           }
 
-          v49 = [(NSFileManager *)v83 contentsOfDirectoryAtPath:v48 error:0];
+          v49 = [(NSFileManager *)v83 contentsOfDirectoryAtPath:currentDirectoryPath error:0];
           if (!v49)
           {
-            v54 = [MEMORY[0x1E695DEC8] array];
+            array2 = [MEMORY[0x1E695DEC8] array];
             goto LABEL_108;
           }
 
           v50 = v49;
           v82 = n;
           v51 = [(NSArray *)v49 count];
-          v91 = [MEMORY[0x1E695DF70] array];
-          if (v17)
+          array3 = [MEMORY[0x1E695DF70] array];
+          if (lastPathComponent)
           {
-            v52 = [(NSString *)v17 isEqual:&stru_1EEEFDF90];
+            v52 = [(NSString *)lastPathComponent isEqual:&stru_1EEEFDF90];
             if (!filterTypes)
             {
               goto LABEL_82;
@@ -2220,16 +2220,16 @@ LABEL_83:
             v58 = v57;
             if ((v52 & 1) != 0 || [v57 rangeOfString:v88 options:obja] != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v59 = [v58 pathExtension];
+              pathExtension = [v58 pathExtension];
               if (v95)
               {
                 goto LABEL_88;
               }
 
-              v62 = v59;
+              v62 = pathExtension;
               if (v84)
               {
-                if ([(NSArray *)v55 containsObject:v59])
+                if ([(NSArray *)v55 containsObject:pathExtension])
                 {
                   goto LABEL_88;
                 }
@@ -2274,7 +2274,7 @@ LABEL_97:
 
 LABEL_88:
                   v60 = [(NSString *)v93 stringByAppendingPathComponent:v58];
-                  v61 = v91;
+                  v61 = array3;
 LABEL_89:
                   [v61 addObject:v60];
                   continue;
@@ -2290,7 +2290,7 @@ LABEL_103:
                 {
                   if (v106[0] == 1)
                   {
-                    v61 = v91;
+                    v61 = array3;
                     v60 = v67;
                     goto LABEL_89;
                   }
@@ -2300,13 +2300,13 @@ LABEL_103:
           }
 
           filterTypes = v55;
-          v17 = v88;
-          v46 = v75;
+          lastPathComponent = v88;
+          array = v75;
 LABEL_107:
           n = v82;
-          v54 = v91;
+          array2 = array3;
 LABEL_108:
-          [(NSArray *)v46 addObjectsFromArray:v54];
+          [(NSArray *)array addObjectsFromArray:array2];
         }
 
         v80 = [v76 countByEnumeratingWithState:&v97 objects:v96 count:16];
@@ -2315,7 +2315,7 @@ LABEL_108:
       while (v80);
     }
 
-    v68 = [(NSArray *)v46 count];
+    v68 = [(NSArray *)array count];
     v8 = v68;
     v123[0] = 0;
     v69 = v74;
@@ -2329,7 +2329,7 @@ LABEL_108:
       break;
     }
 
-    if (v68 != 1 || (v69 = [(NSArray *)v46 objectAtIndex:0], [(NSFileManager *)v83 fileExistsAtPath:v69 isDirectory:v123]) && (v123[0] & 1) == 0)
+    if (v68 != 1 || (v69 = [(NSArray *)array objectAtIndex:0], [(NSFileManager *)v83 fileExistsAtPath:v69 isDirectory:v123]) && (v123[0] & 1) == 0)
     {
       if (outputName)
       {
@@ -2340,7 +2340,7 @@ LABEL_108:
       {
         v70 = [MEMORY[0x1E695DEC8] arrayWithObject:v69];
         v71 = outputArray;
-        v46 = v70;
+        array = v70;
         v8 = 1;
         goto LABEL_124;
       }
@@ -2350,44 +2350,44 @@ LABEL_108:
 
     v74 = v69;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObject:v69];
-    [(NSArray *)v46 removeAllObjects];
-    v17 = &stru_1EEEFDF90;
+    [(NSArray *)array removeAllObjects];
+    lastPathComponent = &stru_1EEEFDF90;
   }
 
   if (outputName)
   {
-    *outputName = _NSFindCommonPrefixInStringArray(v46, v84);
+    *outputName = _NSFindCommonPrefixInStringArray(array, v84);
   }
 
   v71 = outputArray;
   if (outputArray)
   {
 LABEL_124:
-    *v71 = v46;
+    *v71 = array;
   }
 
   return v8;
 }
 
-+ (id)_newZStringWithCharacters:(const unsigned __int16 *)a3 length:(unint64_t)a4
++ (id)_newZStringWithCharacters:(const unsigned __int16 *)characters length:(unint64_t)length
 {
   v6 = [_NSClStr alloc];
 
-  return [(_NSClStr *)v6 initWithCharacters:a3 length:a4];
+  return [(_NSClStr *)v6 initWithCharacters:characters length:length];
 }
 
-+ (id)_newZStringWithString:(id)a3
++ (id)_newZStringWithString:(id)string
 {
   v4 = [_NSClStr alloc];
 
-  return [(_NSClStr *)v4 initWithString:a3];
+  return [(_NSClStr *)v4 initWithString:string];
 }
 
-+ (id)_newZStringWithUTF8String:(const char *)a3
++ (id)_newZStringWithUTF8String:(const char *)string
 {
   v4 = [_NSClStr alloc];
 
-  return [(_NSClStr *)v4 initWithUTF8String:a3];
+  return [(_NSClStr *)v4 initWithUTF8String:string];
 }
 
 + (NSStringEncoding)stringEncodingForData:(NSData *)data encodingOptions:(NSDictionary *)opts convertedString:(NSString *)string usedLossyConversion:(BOOL *)usedLossyConversion
@@ -2402,8 +2402,8 @@ LABEL_124:
     v15 = 0;
     v249 = 0;
     iterations = 0;
-    v238 = 0;
-    v16 = 1;
+    bOOLValue2 = 0;
+    bOOLValue = 1;
     v11 = @"\uFFFD";
     goto LABEL_29;
   }
@@ -2434,12 +2434,12 @@ LABEL_124:
       goto LABEL_475;
     }
 
-    v16 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
   }
 
   else
   {
-    v16 = 1;
+    bOOLValue = 1;
   }
 
   v14 = [(NSDictionary *)opts objectForKey:@"NSStringEncodingDetectionSuggestedEncodingsKey"];
@@ -2482,7 +2482,7 @@ LABEL_124:
       v13 = 0;
       v15 = 0;
       iterations = 0;
-      v238 = 0;
+      bOOLValue2 = 0;
       goto LABEL_29;
     }
   }
@@ -2504,12 +2504,12 @@ LABEL_20:
       goto LABEL_475;
     }
 
-    v238 = [v22 BOOLValue];
+    bOOLValue2 = [v22 BOOLValue];
   }
 
   else
   {
-    v238 = 0;
+    bOOLValue2 = 0;
   }
 
   v15 = [(NSDictionary *)opts objectForKey:@"NSStringEncodingDetectionLikelyLanguageKey"];
@@ -2538,7 +2538,7 @@ LABEL_29:
   {
     if (v240)
     {
-      v25 = [objc_msgSend(v14 objectAtIndex:{0), "integerValue"}];
+      integerValue = [objc_msgSend(v14 objectAtIndex:{0), "integerValue"}];
       if (!string)
       {
 LABEL_70:
@@ -2547,13 +2547,13 @@ LABEL_70:
           *usedLossyConversion = 0;
         }
 
-        return v25;
+        return integerValue;
       }
     }
 
     else
     {
-      v25 = 4;
+      integerValue = 4;
       if (!string)
       {
         goto LABEL_70;
@@ -2589,20 +2589,20 @@ LABEL_70:
   if (v24 == 1)
   {
     v254 = 0;
-    v25 = [objc_msgSend(v14 objectAtIndex:{0), "integerValue"}];
+    integerValue = [objc_msgSend(v14 objectAtIndex:{0), "integerValue"}];
     if (string)
     {
-      v26 = [[NSString alloc] initWithData:data encoding:v25];
+      v26 = [[NSString alloc] initWithData:data encoding:integerValue];
       if (!v26)
       {
-        v26 = [NSEncodingDetector detectorForCFStringEncoding:CFStringConvertNSStringEncodingToEncoding(v25) allowBackupDetectors:1];
+        v26 = [NSEncodingDetector detectorForCFStringEncoding:CFStringConvertNSStringEncodingToEncoding(integerValue) allowBackupDetectors:1];
         if (v26)
         {
           v27 = v26;
-          v28 = [(NSData *)data bytes];
+          bytes = [(NSData *)data bytes];
           v29 = [(NSData *)data length];
-          [(NSString *)v27 recognizeString:v28 withDataLength:v29 intoBuffer:0];
-          v26 = generateStringWithEncoding(v27, v28, v29, 0, v16, v11, &v254);
+          [(NSString *)v27 recognizeString:bytes withDataLength:v29 intoBuffer:0];
+          v26 = generateStringWithEncoding(v27, bytes, v29, 0, bOOLValue, v11, &v254);
         }
       }
 
@@ -2613,7 +2613,7 @@ LABEL_70:
       }
     }
 
-    return v25;
+    return integerValue;
   }
 
   v232 = v11;
@@ -2622,7 +2622,7 @@ LABEL_70:
   v242 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v243 = data;
   v234 = string;
-  v231 = v16;
+  v231 = bOOLValue;
   obj = v14;
   v230 = v15;
   if (v14 && (v293 = 0u, v294 = 0u, v291 = 0u, v292 = 0u, (v30 = [v14 countByEnumeratingWithState:&v291 objects:v290 count:16]) != 0))
@@ -2641,8 +2641,8 @@ LABEL_70:
         }
 
         v35 = *(*(&v291 + 1) + 8 * i);
-        v25 = [v35 integerValue];
-        v36 = CFStringConvertNSStringEncodingToEncoding(v25);
+        integerValue = [v35 integerValue];
+        v36 = CFStringConvertNSStringEncodingToEncoding(integerValue);
         v37 = [NSEncodingDetector detectorForCFStringEncoding:v36 allowBackupDetectors:v249];
         if (v37)
         {
@@ -2654,7 +2654,7 @@ LABEL_70:
 
         else if (v244 < 2 || v33 == v244)
         {
-          v39 = [[NSString alloc] initWithData:v243 encoding:v25];
+          v39 = [[NSString alloc] initWithData:v243 encoding:integerValue];
           if (v39)
           {
             if (v234)
@@ -2667,7 +2667,7 @@ LABEL_70:
               *v233 = 0;
             }
 
-            return v25;
+            return integerValue;
           }
         }
 
@@ -2735,7 +2735,7 @@ LABEL_70:
       while (v45);
     }
 
-    if (v238 & 1 | !iterations)
+    if (bOOLValue2 & 1 | !iterations)
     {
       v40 = v232;
       v42 = v233;
@@ -2755,7 +2755,7 @@ LABEL_70:
     v40 = v232;
     v42 = v233;
     v43 = v231;
-    if (v238 & 1 | !iterations)
+    if (bOOLValue2 & 1 | !iterations)
     {
       v41 = 0;
       goto LABEL_94;
@@ -2780,18 +2780,18 @@ LABEL_90:
   while (v49 != 14);
 LABEL_94:
   v254 = 0;
-  v52 = [(NSData *)v243 bytes];
+  bytes2 = [(NSData *)v243 bytes];
   v53 = [(NSData *)v243 length];
   v54 = [v247 objectForKey:{+[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", 1536)}];
   if (v54)
   {
     v55 = v54;
-    if ([v54 recognizeString:v52 withDataLength:v53 intoBuffer:0] && !v55[8])
+    if ([v54 recognizeString:bytes2 withDataLength:v53 intoBuffer:0] && !v55[8])
     {
       [v55 softReset];
       if (v234)
       {
-        *v234 = -[NSString initWithBytes:length:encoding:]([NSString alloc], "initWithBytes:length:encoding:", v52, v53, [v55 nsEncoding]);
+        *v234 = -[NSString initWithBytes:length:encoding:]([NSString alloc], "initWithBytes:length:encoding:", bytes2, v53, [v55 nsEncoding]);
         if (v42)
         {
           *v42 = v254;
@@ -2826,23 +2826,23 @@ LABEL_94:
 
     if (v57)
     {
-      if ([v57 recognizeString:v52 withDataLength:v53 intoBuffer:0])
+      if ([v57 recognizeString:bytes2 withDataLength:v53 intoBuffer:0])
       {
         if (*(v57 + 160) == 1)
         {
           if (!v57[8] || *(v57 + 41) && ([v57 bytesRatio], v59 >= 0.99))
           {
-            v60 = checkSuggestedEncodings(v52, v53, v247);
+            v60 = checkSuggestedEncodings(bytes2, v53, v247);
             if (v60)
             {
               v57 = v60;
             }
 
-            if (generateStringWithEncoding(v57, v52, v53, 1, 0, 0, 0))
+            if (generateStringWithEncoding(v57, bytes2, v53, 1, 0, 0, 0))
             {
               if (v234)
               {
-                *v234 = generateStringWithEncoding(v57, v52, v53, 1, v43, v40, &v254);
+                *v234 = generateStringWithEncoding(v57, bytes2, v53, 1, v43, v40, &v254);
                 if (v42)
                 {
                   *v42 = v254;
@@ -2890,7 +2890,7 @@ LABEL_119:
     goto LABEL_119;
   }
 
-  if ([v62 recognizeString:v52 withDataLength:v53 intoBuffer:0] && (objc_msgSend(v62, "bytesRatio"), v67 >= 0.85) && (objc_msgSend(v62, "multiBytesRatio"), v68 > 0.0) && ((*(v62 + 162) & 1) != 0 || !*(v62 + 8) || (objc_msgSend(v62, "multiBytesRatio"), v69 >= 0.7)) || v62[41] && ((*(v62 + 162) & 1) != 0 || (objc_msgSend(v62, "bytesRatio"), v70 >= 0.99) || (objc_msgSend(v62, "multiBytesRatio"), v71 > 0.7)))
+  if ([v62 recognizeString:bytes2 withDataLength:v53 intoBuffer:0] && (objc_msgSend(v62, "bytesRatio"), v67 >= 0.85) && (objc_msgSend(v62, "multiBytesRatio"), v68 > 0.0) && ((*(v62 + 162) & 1) != 0 || !*(v62 + 8) || (objc_msgSend(v62, "multiBytesRatio"), v69 >= 0.7)) || v62[41] && ((*(v62 + 162) & 1) != 0 || (objc_msgSend(v62, "bytesRatio"), v70 >= 0.99) || (objc_msgSend(v62, "multiBytesRatio"), v71 > 0.7)))
   {
     if (v62[41])
     {
@@ -2906,7 +2906,7 @@ LABEL_119:
     {
       if (v234)
       {
-        *v234 = generateStringWithEncoding(v62, v52, v53, 1, v43, v40, &v254);
+        *v234 = generateStringWithEncoding(v62, bytes2, v53, 1, v43, v40, &v254);
         if (v42)
         {
           *v42 = v254;
@@ -3049,7 +3049,7 @@ LABEL_183:
       while (v88);
     }
 
-    v245 = v52;
+    v245 = bytes2;
     v91 = [NSNumber numberWithUnsignedInt:201326848];
     if ([v41 objectForKey:v91])
     {
@@ -3420,7 +3420,7 @@ LABEL_267:
     }
 
     while (v138 != 14);
-    if (v238)
+    if (bOOLValue2)
     {
       for (n = 0; n != 14; ++n)
       {
@@ -3707,20 +3707,20 @@ LABEL_393:
 LABEL_397:
     v239 = v182;
     v198 = v183;
-    v25 = v248;
+    integerValue = v248;
     if (v248)
     {
-      v199 = [v248 nsEncoding];
+      nsEncoding = [v248 nsEncoding];
     }
 
     else
     {
-      v199 = 0x7FFFFFFFFFFFFFFFLL;
+      nsEncoding = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     v200 = v233;
     v201 = v226;
-    if (v175 >= 0.05 || ([obj containsObject:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", v199)}] & 1) != 0)
+    if (v175 >= 0.05 || ([obj containsObject:{+[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", nsEncoding)}] & 1) != 0)
     {
       v202 = v250;
     }
@@ -3850,11 +3850,11 @@ LABEL_397:
         while (v218);
       }
 
-      v25 = v248;
+      integerValue = v248;
       v202 = v250;
       if (v219)
       {
-        v25 = v219;
+        integerValue = v219;
       }
 
       v200 = v233;
@@ -3865,40 +3865,40 @@ LABEL_397:
       v202 = v239;
     }
 
-    if (v25 && v202 && v25 != v202)
+    if (integerValue && v202 && integerValue != v202)
     {
-      v203 = *(v25 + 64);
+      v203 = *(integerValue + 64);
       if (v203 && v203 > *(v202 + 64))
       {
-        v25 = v202;
+        integerValue = v202;
       }
     }
 
-    else if (!v25)
+    else if (!integerValue)
     {
-      v204 = 0x7FFFFFFFFFFFFFFFLL;
+      nsEncoding2 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_414:
-      if (v201 != 0 && v240 && v204 != [objc_msgSend(obj objectAtIndex:{0), "integerValue"}] || (v201 = v25) != 0)
+      if (v201 != 0 && v240 && nsEncoding2 != [objc_msgSend(obj objectAtIndex:{0), "integerValue"}] || (v201 = integerValue) != 0)
       {
-        v25 = [v201 nsEncoding];
+        integerValue = [v201 nsEncoding];
       }
 
-      if (((v25 == 0) & v231 & v240) == 1)
+      if (((integerValue == 0) & v231 & v240) == 1)
       {
         if (![obj count])
         {
           goto LABEL_431;
         }
 
-        v25 = [objc_msgSend(obj objectAtIndex:{0), "integerValue"}];
-        v205 = [NSEncodingDetector detectorForCFStringEncoding:CFStringConvertNSStringEncodingToEncoding(v25) allowBackupDetectors:1];
+        integerValue = [objc_msgSend(obj objectAtIndex:{0), "integerValue"}];
+        v205 = [NSEncodingDetector detectorForCFStringEncoding:CFStringConvertNSStringEncodingToEncoding(integerValue) allowBackupDetectors:1];
         if (v205)
         {
           v206 = v205;
-          v207 = [(NSData *)v243 bytes];
+          bytes3 = [(NSData *)v243 bytes];
           v208 = [(NSData *)v243 length];
-          [v206 recognizeString:v207 withDataLength:v208 intoBuffer:0];
-          v209 = generateStringWithEncoding(v206, v207, v208, 1, 1, v232, &v254);
+          [v206 recognizeString:bytes3 withDataLength:v208 intoBuffer:0];
+          v209 = generateStringWithEncoding(v206, bytes3, v208, 1, 1, v232, &v254);
           if (v186)
           {
             if (v209)
@@ -3923,7 +3923,7 @@ LABEL_414:
           goto LABEL_431;
         }
 
-        if (!v25)
+        if (!integerValue)
         {
           goto LABEL_431;
         }
@@ -3941,10 +3941,10 @@ LABEL_414:
 LABEL_431:
       free(v227);
       free(v228);
-      return v25;
+      return integerValue;
     }
 
-    v204 = [v25 nsEncoding];
+    nsEncoding2 = [integerValue nsEncoding];
     goto LABEL_414;
   }
 
@@ -3960,7 +3960,7 @@ LABEL_172:
     }
 
     v57 = *(*(&v281 + 1) + 8 * v85);
-    if ([v57 recognizeString:v52 withDataLength:v53 intoBuffer:0])
+    if ([v57 recognizeString:bytes2 withDataLength:v53 intoBuffer:0])
     {
       if (*(v57 + 162) == 1 && v57[9] <= 1uLL)
       {
@@ -3988,7 +3988,7 @@ LABEL_181:
 
   if (!v57[8])
   {
-    v86 = -[NSString initWithBytes:length:encoding:]([NSString alloc], "initWithBytes:length:encoding:", v52, v53, [v57 nsEncoding]);
+    v86 = -[NSString initWithBytes:length:encoding:]([NSString alloc], "initWithBytes:length:encoding:", bytes2, v53, [v57 nsEncoding]);
     if ([(NSString *)v86 length])
     {
       goto LABEL_193;
@@ -3997,7 +3997,7 @@ LABEL_181:
     goto LABEL_181;
   }
 
-  v86 = generateStringWithEncoding(v57, v52, v53, 1, v231, v232, &v254);
+  v86 = generateStringWithEncoding(v57, bytes2, v53, 1, v231, v232, &v254);
 LABEL_193:
   *v234 = v86;
   if (v233)
@@ -4010,95 +4010,95 @@ LABEL_195:
   return [v93 nsEncoding];
 }
 
-+ (id)_newStringFromUTF16InternalData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)_newStringFromUTF16InternalData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  if (![a3 length])
+  if (![data length])
   {
     return &stru_1EEEFDF90;
   }
 
-  if ([a3 length] < 2)
+  if ([data length] < 2)
   {
     result = 0;
   }
 
   else
   {
-    result = [objc_msgSend(a3 subdataWithRange:{0, 2), "bytes"}];
+    result = [objc_msgSend(data subdataWithRange:{0, 2), "bytes"}];
     if (result)
     {
       v14 = *result;
       if (v14 == 65534 || v14 == 65279)
       {
-        v15 = [a1 alloc];
+        v15 = [self alloc];
         v16 = 10;
       }
 
       else
       {
-        v15 = [a1 alloc];
+        v15 = [self alloc];
         v16 = 2483028224;
       }
 
-      result = [v15 initWithData:a3 encoding:v16];
+      result = [v15 initWithData:data encoding:v16];
     }
   }
 
-  if (a5)
+  if (error)
   {
     if (!result)
     {
-      v17 = _NSIPCocoaErrorWithCode(4864, 0, 0, @"The string representation of type “%@” contains invalid data.", v9, v10, v11, v12, a4);
+      v17 = _NSIPCocoaErrorWithCode(4864, 0, 0, @"The string representation of type “%@” contains invalid data.", v9, v10, v11, v12, identifier);
       result = 0;
-      *a5 = v17;
+      *error = v17;
     }
   }
 
   return result;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v26[0] = 0;
   v9 = _MergedGlobals_88[0]();
-  if ((off_1ED4398A0[0])(a4, v9))
+  if ((off_1ED4398A0[0])(identifier, v9))
   {
     goto LABEL_2;
   }
 
   v12 = off_1ED439878[0]();
-  if ((off_1ED4398A0[0])(a4, v12))
+  if ((off_1ED4398A0[0])(identifier, v12))
   {
-    v10 = [a1 alloc];
+    v10 = [self alloc];
     v11 = 10;
     goto LABEL_5;
   }
 
   v21 = off_1ED439880[0]();
-  if ((off_1ED4398A0[0])(a4, v21))
+  if ((off_1ED4398A0[0])(identifier, v21))
   {
-    v13 = [a1 _newStringFromUTF16InternalData:a3 typeIdentifier:a4 error:v26];
+    v13 = [self _newStringFromUTF16InternalData:data typeIdentifier:identifier error:v26];
     goto LABEL_6;
   }
 
   v22 = off_1ED439888[0]();
-  if ((off_1ED4398A0[0])(a4, v22))
+  if ((off_1ED4398A0[0])(identifier, v22))
   {
 LABEL_2:
-    v10 = [a1 alloc];
+    v10 = [self alloc];
     v11 = 4;
 LABEL_5:
-    v13 = [v10 initWithData:a3 encoding:v11];
+    v13 = [v10 initWithData:data encoding:v11];
 LABEL_6:
     v18 = v13;
     goto LABEL_7;
   }
 
   v23 = off_1ED439890[0]();
-  if ((off_1ED4398A0[0])(a4, v23))
+  if ((off_1ED4398A0[0])(identifier, v23))
   {
-    v24 = [MEMORY[0x1E695DFF8] objectWithItemProviderData:a3 typeIdentifier:a4 error:v26];
+    v24 = [MEMORY[0x1E695DFF8] objectWithItemProviderData:data typeIdentifier:identifier error:v26];
     if (v26[0])
     {
       v18 = 0;
@@ -4106,7 +4106,7 @@ LABEL_6:
 
     else
     {
-      v18 = [[a1 alloc] initWithString:{objc_msgSend(v24, "absoluteString")}];
+      v18 = [[self alloc] initWithString:{objc_msgSend(v24, "absoluteString")}];
     }
   }
 
@@ -4123,9 +4123,9 @@ LABEL_7:
     v26[0] = v19;
   }
 
-  if (a5 && v19)
+  if (error && v19)
   {
-    *a5 = v19;
+    *error = v19;
   }
 
   return v18;
@@ -4146,9 +4146,9 @@ LABEL_7:
   v4 = [MEMORY[0x1E695DFF8] URLWithString:self];
   if ([objc_msgSend(v4 "scheme")])
   {
-    v5 = [v4 isFileURL];
+    isFileURL = [v4 isFileURL];
     v6 = 4;
-    if (v5)
+    if (isFileURL)
     {
       v6 = 5;
     }
@@ -4159,48 +4159,48 @@ LABEL_7:
   return v3;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  if ([a3 isEqualToString:_MergedGlobals_88[0]()])
+  if ([identifier isEqualToString:_MergedGlobals_88[0]()])
   {
-    (*(a4 + 2))(a4, [(NSString *)self dataUsingEncoding:4], 0);
+    (*(handler + 2))(handler, [(NSString *)self dataUsingEncoding:4], 0);
     return 0;
   }
 
-  if (([a3 isEqualToString:off_1ED439890[0]()] & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", off_1ED439898[0]()))
+  if (([identifier isEqualToString:off_1ED439890[0]()] & 1) == 0 && !objc_msgSend(identifier, "isEqualToString:", off_1ED439898[0]()))
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
     return 0;
   }
 
   v8 = [MEMORY[0x1E695DFF8] URLWithString:self];
 
-  return [v8 loadDataWithTypeIdentifier:a3 forItemProviderCompletionHandler:a4];
+  return [v8 loadDataWithTypeIdentifier:identifier forItemProviderCompletionHandler:handler];
 }
 
-+ (NSString)allocWithZone:(_NSZone *)a3
++ (NSString)allocWithZone:(_NSZone *)zone
 {
-  if (__NSStringClass == a1)
+  if (__NSStringClass == self)
   {
     return &__placeholder;
   }
 
   else
   {
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, zone);
   }
 }
 
 + (NSString)stringWithString:(NSString *)string
 {
-  v3 = [objc_allocWithZone(a1) initWithString:string];
+  v3 = [objc_allocWithZone(self) initWithString:string];
 
   return v3;
 }
 
 + (NSString)stringWithCharacters:(const unichar *)characters length:(NSUInteger)length
 {
-  v4 = [objc_allocWithZone(a1) initWithCharacters:characters length:length];
+  v4 = [objc_allocWithZone(self) initWithCharacters:characters length:length];
 
   return v4;
 }
@@ -4209,18 +4209,18 @@ LABEL_7:
 {
   if (!bytes)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(a1, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v5);
   }
 
-  v3 = [objc_allocWithZone(a1) initWithCString:bytes];
+  v3 = [objc_allocWithZone(self) initWithCString:bytes];
 
   return v3;
 }
 
 + (id)stringWithCString:(const char *)bytes length:(NSUInteger)length
 {
-  v4 = [objc_allocWithZone(a1) initWithCString:bytes length:length];
+  v4 = [objc_allocWithZone(self) initWithCString:bytes length:length];
 
   return v4;
 }
@@ -4229,11 +4229,11 @@ LABEL_7:
 {
   if (!cString)
   {
-    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(a1, a2)), 0}];
+    v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  v4 = [objc_allocWithZone(a1) initWithBytes:cString length:strlen(cString) encoding:enc];
+  v4 = [objc_allocWithZone(self) initWithBytes:cString length:strlen(cString) encoding:enc];
 
   return v4;
 }
@@ -4242,24 +4242,24 @@ LABEL_7:
 {
   if (!nullTerminatedCString)
   {
-    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(a1, a2)), 0}];
+    v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v5);
   }
 
-  v3 = [objc_allocWithZone(a1) initWithBytes:nullTerminatedCString length:strlen(nullTerminatedCString) encoding:4];
+  v3 = [objc_allocWithZone(self) initWithBytes:nullTerminatedCString length:strlen(nullTerminatedCString) encoding:4];
 
   return v3;
 }
 
-+ (NSString)stringWithBytes:(const void *)a3 length:(unint64_t)a4 encoding:(unint64_t)a5
++ (NSString)stringWithBytes:(const void *)bytes length:(unint64_t)length encoding:(unint64_t)encoding
 {
-  if (!a3)
+  if (!bytes)
   {
-    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(a1, a2)), 0}];
+    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NULL cString", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v7);
   }
 
-  v5 = [objc_allocWithZone(a1) initWithBytes:a3 length:a4 encoding:a5];
+  v5 = [objc_allocWithZone(self) initWithBytes:bytes length:length encoding:encoding];
 
   return v5;
 }
@@ -4267,98 +4267,98 @@ LABEL_7:
 + (NSString)localizedStringWithValidatedFormat:(NSString *)format validFormatSpecifiers:(NSString *)validFormatSpecifiers error:(NSError *)error
 {
   va_start(va, error);
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   return [v8 initWithValidatedFormat:format validFormatSpecifiers:validFormatSpecifiers locale:objc_msgSend(MEMORY[0x1E695DF58] arguments:"currentLocale") error:va, error];
 }
 
 + (NSString)localizedStringWithFormat:(NSString *)format
 {
   va_start(va, format);
-  v4 = objc_allocWithZone(a1);
+  v4 = objc_allocWithZone(self);
   return [v4 initWithFormat:format locale:objc_msgSend(MEMORY[0x1E695DF58] arguments:"currentLocale"), va];
 }
 
 + (NSString)stringWithFormat:(NSString *)format
 {
   va_start(va, format);
-  v3 = [objc_allocWithZone(a1) initWithFormat:format locale:0 arguments:va];
+  v3 = [objc_allocWithZone(self) initWithFormat:format locale:0 arguments:va];
   v4 = v3;
   return v3;
 }
 
-+ (id)_stringWithFormat:(id)a3 locale:(id)a4 options:(id)a5 arguments:(char *)a6
++ (id)_stringWithFormat:(id)format locale:(id)locale options:(id)options arguments:(char *)arguments
 {
-  v6 = [[a1 alloc] _initWithFormat:a3 locale:a4 options:a5 arguments:a6];
+  v6 = [[self alloc] _initWithFormat:format locale:locale options:options arguments:arguments];
 
   return v6;
 }
 
-+ (id)_stringWithValidatedFormat:(id)a3 validFormatSpecifiers:(id)a4 locale:(id)a5 arguments:(char *)a6 error:(id *)a7
++ (id)_stringWithValidatedFormat:(id)format validFormatSpecifiers:(id)specifiers locale:(id)locale arguments:(char *)arguments error:(id *)error
 {
-  v7 = [[a1 alloc] initWithValidatedFormat:a3 validFormatSpecifiers:a4 locale:a5 arguments:a6 error:a7];
+  v7 = [[self alloc] initWithValidatedFormat:format validFormatSpecifiers:specifiers locale:locale arguments:arguments error:error];
 
   return v7;
 }
 
 + (id)stringWithContentsOfFile:(NSString *)path
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfFile:path];
+  v3 = [objc_allocWithZone(self) initWithContentsOfFile:path];
 
   return v3;
 }
 
 + (id)stringWithContentsOfURL:(NSURL *)url
 {
-  v3 = [objc_allocWithZone(a1) initWithContentsOfURL:url];
+  v3 = [objc_allocWithZone(self) initWithContentsOfURL:url];
 
   return v3;
 }
 
 + (NSString)stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc error:(NSError *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfURL:url encoding:enc error:error];
+  v5 = [objc_allocWithZone(self) initWithContentsOfURL:url encoding:enc error:error];
 
   return v5;
 }
 
 + (NSString)stringWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)enc error:(NSError *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfURL:url usedEncoding:enc error:error];
+  v5 = [objc_allocWithZone(self) initWithContentsOfURL:url usedEncoding:enc error:error];
 
   return v5;
 }
 
 + (NSString)stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc error:(NSError *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfFile:path encoding:enc error:error];
+  v5 = [objc_allocWithZone(self) initWithContentsOfFile:path encoding:enc error:error];
 
   return v5;
 }
 
 + (NSString)stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError *)error
 {
-  v5 = [objc_allocWithZone(a1) initWithContentsOfFile:path usedEncoding:enc error:error];
+  v5 = [objc_allocWithZone(self) initWithContentsOfFile:path usedEncoding:enc error:error];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NSString allocWithZone:a3];
+  v4 = [NSString allocWithZone:zone];
 
   return [(NSString *)v4 initWithString:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [NSMutableString allocWithZone:a3];
+  v4 = [NSMutableString allocWithZone:zone];
 
   return [(NSString *)v4 initWithString:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
@@ -4369,7 +4369,7 @@ LABEL_7:
     if (v5)
     {
 
-      LOBYTE(v5) = [(NSString *)self isEqualToString:a3];
+      LOBYTE(v5) = [(NSString *)self isEqualToString:equal];
     }
   }
 
@@ -4467,33 +4467,33 @@ LABEL_7:
 - (NSComparisonResult)localizedCompare:(NSString *)string
 {
   v5 = [(NSString *)self length];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self compare:string options:0 range:0 locale:v5, v6];
+  return [(NSString *)self compare:string options:0 range:0 locale:v5, currentLocale];
 }
 
 - (NSComparisonResult)localizedCaseInsensitiveCompare:(NSString *)string
 {
   v5 = [(NSString *)self length];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self compare:string options:1 range:0 locale:v5, v6];
+  return [(NSString *)self compare:string options:1 range:0 locale:v5, currentLocale];
 }
 
 - (NSComparisonResult)localizedStandardCompare:(NSString *)string
 {
   v5 = [(NSString *)self length];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self compare:string options:833 range:0 locale:v5, v6];
+  return [(NSString *)self compare:string options:833 range:0 locale:v5, currentLocale];
 }
 
 - (NSRange)rangeOfComposedCharacterSequenceAtIndex:(NSUInteger)index
 {
   if ([(NSString *)self length]<= index)
   {
-    v6 = [NSString stringWithFormat:@"The index %ld is invalid", index];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v6 userInfo:0]);
+    index = [NSString stringWithFormat:@"The index %ld is invalid", index];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:index userInfo:0]);
   }
 
   RangeOfCharacterClusterAtIndex = CFStringGetRangeOfCharacterClusterAtIndex();
@@ -4582,33 +4582,33 @@ LABEL_19:
   if ((mask & 0x400) != 0)
   {
 
-    v18 = [(NSString *)self _rangeOfRegularExpressionPattern:searchString options:mask range:location locale:length, locale];
+    locale = [(NSString *)self _rangeOfRegularExpressionPattern:searchString options:mask range:location locale:length, locale];
   }
 
   else
   {
     v17 = 0;
-    v18 = 0x7FFFFFFFFFFFFFFFLL;
+    locale = 0x7FFFFFFFFFFFFFFFLL;
     if (length && v13)
     {
       v27.location = location;
       v27.length = length;
       if (CFStringFindWithOptionsAndLocale(self, searchString, v27, ~(8 * mask) & 0x10 | mask, locale, &result))
       {
-        v18 = result.location;
+        locale = result.location;
         v17 = result.length;
       }
 
       else
       {
         v17 = 0;
-        v18 = 0x7FFFFFFFFFFFFFFFLL;
+        locale = 0x7FFFFFFFFFFFFFFFLL;
       }
     }
   }
 
   v26.length = v17;
-  v26.location = v18;
+  v26.location = locale;
   return v26;
 }
 
@@ -4735,13 +4735,13 @@ LABEL_16:
     v7 = v5;
     v8 = v6;
     v9 = [(NSString *)self length];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = [(NSString *)self zone];
     v12 = 0;
     do
     {
       v13 = [(NSString *)self _newSubstringWithRange:v12 zone:v7 - v12, v11];
-      [(NSArray *)v10 addObject:v13];
+      [(NSArray *)array addObject:v13];
 
       v12 = v7 + v8;
       v14 = v9 - (v7 + v8);
@@ -4751,16 +4751,16 @@ LABEL_16:
 
     while (v15);
     v16 = [(NSString *)self _newSubstringWithRange:v12 zone:v14, v11];
-    [(NSArray *)v10 addObject:v16];
+    [(NSArray *)array addObject:v16];
   }
 
   else
   {
     v16 = [(NSString *)self copy];
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObject:v16];
+    array = [MEMORY[0x1E695DEC8] arrayWithObject:v16];
   }
 
-  return v10;
+  return array;
 }
 
 - (NSArray)componentsSeparatedByCharactersInSet:(NSCharacterSet *)separator
@@ -4771,13 +4771,13 @@ LABEL_16:
     v7 = v5;
     v8 = v6;
     v9 = [(NSString *)self length];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = [(NSString *)self zone];
     v12 = 0;
     do
     {
       v13 = [(NSString *)self _newSubstringWithRange:v12 zone:v7 - v12, v11];
-      [(NSArray *)v10 addObject:v13];
+      [(NSArray *)array addObject:v13];
 
       v12 = v7 + v8;
       v14 = v9 - (v7 + v8);
@@ -4787,16 +4787,16 @@ LABEL_16:
 
     while (v15);
     v16 = [(NSString *)self _newSubstringWithRange:v12 zone:v14, v11];
-    [(NSArray *)v10 addObject:v16];
+    [(NSArray *)array addObject:v16];
   }
 
   else
   {
     v16 = [(NSString *)self copy];
-    v10 = [MEMORY[0x1E695DEC8] arrayWithObject:v16];
+    array = [MEMORY[0x1E695DEC8] arrayWithObject:v16];
   }
 
-  return v10;
+  return array;
 }
 
 - (NSString)commonPrefixWithString:(NSString *)str options:(NSStringCompareOptions)mask
@@ -4808,10 +4808,10 @@ LABEL_16:
   result = &stru_1EEEFDF90;
   if (v6 && v7)
   {
-    v9 = [(NSString *)self _fastCharacterContents];
-    if (v9)
+    _fastCharacterContents = [(NSString *)self _fastCharacterContents];
+    if (_fastCharacterContents)
     {
-      v10 = v9;
+      v10 = _fastCharacterContents;
       v21 = 0;
       v11 = v6;
     }
@@ -4924,9 +4924,9 @@ LABEL_13:
 - (NSRange)localizedStandardRangeOfString:(NSString *)str
 {
   v5 = [(NSString *)self length];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  v7 = [(NSString *)self rangeOfString:str options:129 range:0 locale:v5, v6];
+  v7 = [(NSString *)self rangeOfString:str options:129 range:0 locale:v5, currentLocale];
   result.length = v8;
   result.location = v7;
   return result;
@@ -5201,16 +5201,16 @@ LABEL_7:
     v12 = [(NSString *)self mutableCopy];
     if ([(NSString *)v12 replaceOccurrencesOfString:target withString:replacement options:options range:location, length])
     {
-      v13 = v12;
+      selfCopy = v12;
     }
 
     else
     {
 
-      v13 = self;
+      selfCopy = self;
     }
 
-    return v13;
+    return selfCopy;
   }
 }
 
@@ -5260,10 +5260,10 @@ LABEL_7:
   [(NSString *)self getCharacters:buffer range:0, v5];
 }
 
-- (id)_newSubstringWithRange:(_NSRange)a3 zone:(_NSZone *)a4
+- (id)_newSubstringWithRange:(_NSRange)range zone:(_NSZone *)zone
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8 = [(NSString *)self length];
   if (!length)
   {
@@ -5288,15 +5288,15 @@ LABEL_7:
 
     else
     {
-      v14 = a4;
-      if (!a4)
+      zoneCopy = zone;
+      if (!zone)
       {
-        v14 = malloc_default_zone();
+        zoneCopy = malloc_default_zone();
       }
 
-      v15 = malloc_type_zone_malloc(v14, 2 * length, 0x409734D7uLL);
+      v15 = malloc_type_zone_malloc(zoneCopy, 2 * length, 0x409734D7uLL);
       [(NSString *)self getCharacters:v15 range:location, length];
-      v16 = [NSString allocWithZone:a4];
+      v16 = [NSString allocWithZone:zone];
 
       return [(NSString *)v16 initWithCharactersNoCopy:v15 length:length freeWhenDone:1];
     }
@@ -5305,7 +5305,7 @@ LABEL_7:
   else
   {
 
-    return [(NSString *)self copyWithZone:a4];
+    return [(NSString *)self copyWithZone:zone];
   }
 }
 
@@ -5366,15 +5366,15 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = aString;
+    selfCopy = aString;
   }
 
-  v13 = [(NSString *)v14 copyWithZone:0];
+  v13 = [(NSString *)selfCopy copyWithZone:0];
 LABEL_8:
 
   return v13;
@@ -5392,9 +5392,9 @@ LABEL_8:
 
 - (NSString)localizedLowercaseString
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
 
-  return [(NSString *)self lowercaseStringWithLocale:v3];
+  return [(NSString *)self lowercaseStringWithLocale:currentLocale];
 }
 
 - (NSString)uppercaseStringWithLocale:(NSLocale *)locale
@@ -5468,11 +5468,11 @@ LABEL_8:
   }
 }
 
-- (void)_getBlockStart:(unint64_t *)a3 end:(unint64_t *)a4 contentsEnd:(unint64_t *)a5 forRange:(_NSRange)a6 stopAtLineSeparators:(BOOL)a7
+- (void)_getBlockStart:(unint64_t *)start end:(unint64_t *)end contentsEnd:(unint64_t *)contentsEnd forRange:(_NSRange)range stopAtLineSeparators:(BOOL)separators
 {
-  v7 = a7;
-  length = a6.length;
-  location = a6.location;
+  separatorsCopy = separators;
+  length = range.length;
+  location = range.location;
   v49 = *MEMORY[0x1E69E9840];
   v13 = [(NSString *)self length];
   v48 = 0u;
@@ -5498,16 +5498,16 @@ LABEL_8:
 
   if (location)
   {
-    v16 = a5;
-    if (a3)
+    contentsEndCopy6 = contentsEnd;
+    if (start)
     {
       *&v47[0] = location;
-      v42 = a4;
+      endCopy = end;
       if (v13 <= location)
       {
         v20 = 0;
         WORD4(v48) = -1;
-        v19 = self;
+        selfCopy2 = self;
         v18 = location;
       }
 
@@ -5526,7 +5526,7 @@ LABEL_8:
         [self getUid("getCharacters:v47 + 8 range:{location, v17}")];
         v18 = *&v47[0];
         WORD4(v48) = WORD4(v47[0]);
-        v19 = self;
+        selfCopy2 = self;
         v20 = WORD4(v47[0]) == 10;
       }
 
@@ -5541,7 +5541,7 @@ LABEL_8:
       }
 
       *&v47[0] = v18 - v22;
-      [v19 getUid("getCharacters:v47 + 8 range:{v18 - v22, v22}")];
+      [selfCopy2 getUid("getCharacters:v47 + 8 range:{v18 - v22, v22}")];
       v23 = v22;
       v24 = *(v47 + v22 + 3);
       WORD4(v48) = *(v47 + v22 + 3);
@@ -5585,7 +5585,7 @@ LABEL_8:
 
       while (1)
       {
-        if (v7)
+        if (separatorsCopy)
         {
           if ((v24 - 14) >= 0x77u)
           {
@@ -5653,25 +5653,25 @@ LABEL_59:
 
       v25 = 0;
 LABEL_61:
-      a4 = v42;
-      v21 = a3;
-      v16 = a5;
+      end = endCopy;
+      startCopy2 = start;
+      contentsEndCopy6 = contentsEnd;
       goto LABEL_62;
     }
   }
 
   else
   {
-    v21 = a3;
-    v16 = a5;
-    if (!a5 && v13 == length)
+    startCopy2 = start;
+    contentsEndCopy6 = contentsEnd;
+    if (!contentsEnd && v13 == length)
     {
-      if (a3)
+      if (start)
       {
-        *a3 = 0;
+        *start = 0;
       }
 
-      if (a4)
+      if (end)
       {
         goto LABEL_119;
       }
@@ -5679,15 +5679,15 @@ LABEL_61:
       return;
     }
 
-    if (a3)
+    if (start)
     {
       v25 = 0;
 LABEL_62:
-      *v21 = v25;
+      *startCopy2 = v25;
     }
   }
 
-  if (a4 | v16)
+  if (end | contentsEndCopy6)
   {
     v28 = location + length - (length != 0);
     v46 = v13;
@@ -5701,7 +5701,7 @@ LABEL_78:
       v34 = 1;
       while (1)
       {
-        if (v7)
+        if (separatorsCopy)
         {
           if ((v33 - 14) >= 0x77u)
           {
@@ -5727,7 +5727,7 @@ LABEL_101:
           if (v34 >= v45)
           {
             v38 = v45 + *&v47[0];
-            v16 = a5;
+            contentsEndCopy6 = contentsEnd;
             if (v46 <= v45 + *&v47[0])
             {
               v37 = 0xFFFF;
@@ -5757,7 +5757,7 @@ LABEL_101:
           {
             v37 = *(v47 + v34 + 4);
             WORD4(v48) = v37;
-            v16 = a5;
+            contentsEndCopy6 = contentsEnd;
           }
 
           v40 = v37 == 10;
@@ -5772,21 +5772,21 @@ LABEL_101:
             v32 = 1;
           }
 
-          if (!v16)
+          if (!contentsEndCopy6)
           {
             goto LABEL_117;
           }
 
 LABEL_116:
-          *v16 = v13;
+          *contentsEndCopy6 = v13;
           goto LABEL_117;
         }
 
         if (v34 + *&v47[0] - 1 == v13)
         {
           v32 = 0;
-          v16 = a5;
-          if (a5)
+          contentsEndCopy6 = contentsEnd;
+          if (contentsEnd)
           {
             goto LABEL_116;
           }
@@ -5874,7 +5874,7 @@ LABEL_116:
       }
 
       v13 = v30 - (*(v47 + v31 + 3) == 13);
-      if (v16)
+      if (contentsEndCopy6)
       {
         goto LABEL_116;
       }
@@ -5884,18 +5884,18 @@ LABEL_116:
     {
       v13 = 0;
       v32 = 1;
-      if (v16)
+      if (contentsEndCopy6)
       {
         goto LABEL_116;
       }
     }
 
 LABEL_117:
-    if (a4)
+    if (end)
     {
       length = v32 + v13;
 LABEL_119:
-      *a4 = length;
+      *end = length;
     }
   }
 }
@@ -6172,7 +6172,7 @@ LABEL_77:
         goto LABEL_106;
       }
 
-      v34 = self;
+      selfCopy3 = self;
       v35 = v27;
       v36 = v31;
       goto LABEL_105;
@@ -6230,10 +6230,10 @@ LABEL_77:
         goto LABEL_106;
       }
 
-      v34 = self;
+      selfCopy3 = self;
       v35 = v27;
 LABEL_105:
-      v39 = [(NSString *)v34 _newSubstringWithRange:v35 zone:v36, 0];
+      v39 = [(NSString *)selfCopy3 _newSubstringWithRange:v35 zone:v36, 0];
       goto LABEL_107;
     }
 
@@ -6366,7 +6366,7 @@ LABEL_103:
   {
     v36 = *(&v67 + 1);
     v35 = v67;
-    v34 = self;
+    selfCopy3 = self;
     goto LABEL_105;
   }
 
@@ -6595,7 +6595,7 @@ uint64_t __58__NSString_enumerateSubstringsInRange_options_usingBlock___block_in
 
 - (id)displayableString
 {
-  v2 = self;
+  selfCopy = self;
   v32 = *MEMORY[0x1E69E9840];
   v31 = 0u;
   memset(v30, 0, sizeof(v30));
@@ -6617,7 +6617,7 @@ uint64_t __58__NSString_enumerateSubstringsInRange_options_usingBlock___block_in
     }
 
     v24 = v5;
-    [v2 getUid("getCharacters:v30 + 8 range:{0, v5}")];
+    [selfCopy getUid("getCharacters:v30 + 8 range:{0, v5}")];
     v6 = WORD4(v30[0]);
   }
 
@@ -6671,7 +6671,7 @@ uint64_t __58__NSString_enumerateSubstringsInRange_options_usingBlock___block_in
 
       *&v30[0] += v24;
       v24 = v13;
-      [v2 getUid("getCharacters:v30 + 8 range:{v12, v13}")];
+      [selfCopy getUid("getCharacters:v30 + 8 range:{v12, v13}")];
       v6 = WORD4(v30[0]);
       WORD4(v31) = WORD4(v30[0]);
       v7 = 1;
@@ -6681,7 +6681,7 @@ LABEL_24:
         v14 = malloc_type_malloc(size, 0x100004077774924uLL);
         v29 = v4;
         *&v30[0] = 0;
-        v27 = v2;
+        v27 = selfCopy;
         if (v4)
         {
           if (v4 >= 0x20)
@@ -6690,7 +6690,7 @@ LABEL_24:
           }
 
           v25 = v4;
-          [v2 getUid("getCharacters:v30 + 8 range:{0, v4}")];
+          [selfCopy getUid("getCharacters:v30 + 8 range:{0, v4}")];
           v15 = WORD4(v30[0]);
           v26 = 1;
           WORD4(v31) = WORD4(v30[0]);
@@ -6794,22 +6794,22 @@ LABEL_23:
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)getExternalRepresentation:(id *)a3 extendedAttributes:(id *)a4 forWritingToURLOrPath:(id)a5 usingEncoding:(unint64_t)a6 error:(id *)a7
+- (BOOL)getExternalRepresentation:(id *)representation extendedAttributes:(id *)attributes forWritingToURLOrPath:(id)path usingEncoding:(unint64_t)encoding error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (attributes)
   {
-    v13 = _NSEncodingToNewDataForExtendedAttribute(a6);
+    v13 = _NSEncodingToNewDataForExtendedAttribute(encoding);
     if (!v13)
     {
-      if (a7)
+      if (error)
       {
-        v20 = _NSErrorWithFilePathAndEncoding(517, a5, a6);
+        v20 = _NSErrorWithFilePathAndEncoding(517, path, encoding);
         result = 0;
-        *a7 = v20;
+        *error = v20;
         return result;
       }
 
@@ -6817,10 +6817,10 @@ LABEL_23:
     }
 
     v14 = v13;
-    *a4 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v13, @"com.apple.TextEncoding", 0}];
+    *attributes = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v13, @"com.apple.TextEncoding", 0}];
   }
 
-  if (!a3)
+  if (!representation)
   {
     return 1;
   }
@@ -6828,30 +6828,30 @@ LABEL_23:
   v21 = 0;
   v22[0] = 0;
   v15 = [(NSString *)self length];
-  if ([(NSString *)self getBytes:0 maxLength:0x7FFFFFFFFFFFFFFELL filledLength:v22 encoding:a6 allowLossyConversion:0 range:0 remainingRange:v15, 0])
+  if ([(NSString *)self getBytes:0 maxLength:0x7FFFFFFFFFFFFFFELL filledLength:v22 encoding:encoding allowLossyConversion:0 range:0 remainingRange:v15, 0])
   {
     v16 = [MEMORY[0x1E695DF88] dataWithLength:v22[0]];
-    v17 = [v16 mutableBytes];
-    if ([(NSString *)self getBytes:v17 maxLength:v22[0] filledLength:&v21 encoding:a6 allowLossyConversion:0 range:0 remainingRange:v15, 0])
+    mutableBytes = [v16 mutableBytes];
+    if ([(NSString *)self getBytes:mutableBytes maxLength:v22[0] filledLength:&v21 encoding:encoding allowLossyConversion:0 range:0 remainingRange:v15, 0])
     {
-      *a3 = v16;
+      *representation = v16;
       return 1;
     }
 
-    if (!a7)
+    if (!error)
     {
       return 0;
     }
 
-    v19 = _NSErrorWithFilePath(512, a5);
+    v19 = _NSErrorWithFilePath(512, path);
     goto LABEL_15;
   }
 
-  if (a7)
+  if (error)
   {
-    v19 = _NSErrorWithFilePathAndEncoding(517, a5, a6);
+    v19 = _NSErrorWithFilePathAndEncoding(517, path, encoding);
 LABEL_15:
-    *a7 = v19;
+    *error = v19;
   }
 
   return 0;
@@ -6968,7 +6968,7 @@ LABEL_15:
 
 - (NSString)initWithCharacters:(const unichar *)characters length:(NSUInteger)length
 {
-  v4 = self;
+  selfCopy = self;
   if (length)
   {
     v5 = length;
@@ -6980,7 +6980,7 @@ LABEL_15:
 
     v8 = malloc_type_zone_malloc(v7, 2 * v5, 0x409734D7uLL);
     memmove(v8, characters, 2 * v5);
-    self = v4;
+    self = selfCopy;
     v9 = v8;
     length = v5;
     v10 = 1;
@@ -7016,7 +7016,7 @@ LABEL_15:
 
     v9 = v8;
     [(NSString *)aString getCharacters:v8 range:0, v6];
-    v10 = self;
+    selfCopy2 = self;
     v11 = v9;
     v12 = v6;
     v13 = 1;
@@ -7024,35 +7024,35 @@ LABEL_15:
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
     v12 = 0;
     v13 = 0;
   }
 
-  return [(NSString *)v10 initWithCharactersNoCopy:v11 length:v12 freeWhenDone:v13];
+  return [(NSString *)selfCopy2 initWithCharactersNoCopy:v11 length:v12 freeWhenDone:v13];
 }
 
 - (NSString)initWithData:(NSData *)data encoding:(NSStringEncoding)encoding
 {
-  v7 = [(NSData *)data bytes];
+  bytes = [(NSData *)data bytes];
   v8 = [(NSData *)data length];
 
-  return [(NSString *)self initWithBytes:v7 length:v8 encoding:encoding];
+  return [(NSString *)self initWithBytes:bytes length:v8 encoding:encoding];
 }
 
-- (id)_initWithBytesOfUnknownEncoding:(char *)a3 length:(unint64_t)a4 copy:(BOOL)a5 usedEncoding:(unint64_t *)a6
+- (id)_initWithBytesOfUnknownEncoding:(char *)encoding length:(unint64_t)length copy:(BOOL)copy usedEncoding:(unint64_t *)usedEncoding
 {
-  if (!a3)
+  if (!encoding)
   {
     return 0;
   }
 
-  if (a4 < 2 || (a4 & 1) != 0)
+  if (length < 2 || (length & 1) != 0)
   {
 LABEL_7:
     v9 = 4;
-    if (a5)
+    if (copy)
     {
       goto LABEL_8;
     }
@@ -7060,25 +7060,25 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v8 = *a3;
+  v8 = *encoding;
   if (v8 == 255)
   {
-    if (a3[1] != 254)
+    if (encoding[1] != 254)
     {
       goto LABEL_7;
     }
   }
 
-  else if (v8 != 254 || a3[1] != 255)
+  else if (v8 != 254 || encoding[1] != 255)
   {
     goto LABEL_7;
   }
 
   v9 = 10;
-  if (a5)
+  if (copy)
   {
 LABEL_8:
-    result = [NSString initWithBytes:"initWithBytes:length:encoding:" length:a3 encoding:?];
+    result = [NSString initWithBytes:"initWithBytes:length:encoding:" length:encoding encoding:?];
     if (!result)
     {
       return result;
@@ -7088,27 +7088,27 @@ LABEL_8:
   }
 
 LABEL_13:
-  result = [NSString initWithBytesNoCopy:"initWithBytesNoCopy:length:encoding:freeWhenDone:" length:a3 encoding:? freeWhenDone:?];
+  result = [NSString initWithBytesNoCopy:"initWithBytesNoCopy:length:encoding:freeWhenDone:" length:encoding encoding:? freeWhenDone:?];
   if (!result)
   {
-    free(a3);
+    free(encoding);
     return 0;
   }
 
 LABEL_14:
-  if (a6)
+  if (usedEncoding)
   {
-    *a6 = v9;
+    *usedEncoding = v9;
   }
 
   return result;
 }
 
-- (id)_initWithDataOfUnknownEncoding:(id)a3
+- (id)_initWithDataOfUnknownEncoding:(id)encoding
 {
-  v5 = [a3 length];
-  v6 = [a3 bytes];
-  if (!a3)
+  v5 = [encoding length];
+  bytes = [encoding bytes];
+  if (!encoding)
   {
     return 0;
   }
@@ -7120,16 +7120,16 @@ LABEL_14:
 
   if ((v5 & 1) == 0)
   {
-    v7 = *v6;
+    v7 = *bytes;
     if (v7 == 255)
     {
-      if (v6[1] != 254)
+      if (bytes[1] != 254)
       {
         goto LABEL_7;
       }
     }
 
-    else if (v7 != 254 || v6[1] != 255)
+    else if (v7 != 254 || bytes[1] != 255)
     {
       goto LABEL_7;
     }
@@ -7139,7 +7139,7 @@ LABEL_14:
   }
 
 LABEL_7:
-  if (v5 != 2 && *v6 == 239 && v6[1] == 187 && v6[2] == 191)
+  if (v5 != 2 && *bytes == 239 && bytes[1] == 187 && bytes[2] == 191)
   {
     v8 = 4;
     goto LABEL_16;
@@ -7158,7 +7158,7 @@ LABEL_12:
 
 LABEL_16:
 
-  return [(NSString *)self initWithData:a3 encoding:v8];
+  return [(NSString *)self initWithData:encoding encoding:v8];
 }
 
 - (id)initWithContentsOfFile:(NSString *)path
@@ -7228,8 +7228,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v9 = [(NSURL *)url _securePath];
-  if (!v9)
+  _securePath = [(NSURL *)url _securePath];
+  if (!_securePath)
   {
     if (error)
     {
@@ -7240,7 +7240,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  return [(NSString *)self initWithContentsOfFile:v9 encoding:enc error:error];
+  return [(NSString *)self initWithContentsOfFile:_securePath encoding:enc error:error];
 }
 
 - (NSString)initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc error:(NSError *)error
@@ -7336,8 +7336,8 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v9 = [(NSURL *)url _securePath];
-  if (!v9)
+  _securePath = [(NSURL *)url _securePath];
+  if (!_securePath)
   {
     if (error)
     {
@@ -7350,7 +7350,7 @@ LABEL_19:
     return 0;
   }
 
-  return [(NSString *)self initWithContentsOfFile:v9 usedEncoding:enc error:error];
+  return [(NSString *)self initWithContentsOfFile:_securePath usedEncoding:enc error:error];
 }
 
 - (NSString)initWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)enc error:(NSError *)error
@@ -7420,18 +7420,18 @@ LABEL_10:
   return result;
 }
 
-- (NSString)initWithData:(id)a3 usedEncoding:(unint64_t *)a4
+- (NSString)initWithData:(id)data usedEncoding:(unint64_t *)encoding
 {
-  v7 = [a3 bytes];
-  v8 = [a3 length];
+  bytes = [data bytes];
+  v8 = [data length];
 
-  return [(NSString *)self _initWithBytesOfUnknownEncoding:v7 length:v8 copy:1 usedEncoding:a4];
+  return [(NSString *)self _initWithBytesOfUnknownEncoding:bytes length:v8 copy:1 usedEncoding:encoding];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v9 = [(NSString *)self length];
     v10 = v9;
@@ -7449,7 +7449,7 @@ LABEL_10:
 
     if ([(NSString *)self getBytes:v8 maxLength:v11 filledLength:&v13 encoding:4 allowLossyConversion:0 range:0 remainingRange:v10, 0])
     {
-      [a3 encodeBytes:v8 length:v13];
+      [coder encodeBytes:v8 length:v13];
       goto LABEL_16;
     }
 
@@ -7458,7 +7458,7 @@ LABEL_19:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v12 userInfo:0]);
   }
 
-  if (object_getClass(a3) != NSKeyedArchiver)
+  if (object_getClass(coder) != NSKeyedArchiver)
   {
     v5 = [(NSString *)self length];
     v6 = v5;
@@ -7476,7 +7476,7 @@ LABEL_19:
 
     if ([(NSString *)self getBytes:v8 maxLength:v7 filledLength:&v13 encoding:4 allowLossyConversion:0 range:0 remainingRange:v6, 0])
     {
-      [a3 encodeBytes:v8 length:v13 forKey:@"NS.bytes"];
+      [coder encodeBytes:v8 length:v13 forKey:@"NS.bytes"];
 LABEL_16:
       if (v8 != v14)
       {
@@ -7489,7 +7489,7 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  [a3 _encodePropertyList:self forKey:@"NS.string"];
+  [coder _encodePropertyList:self forKey:@"NS.string"];
 }
 
 - (NSString)initWithCoder:(NSCoder *)coder
@@ -7541,10 +7541,10 @@ LABEL_16:
 
 - (NSDictionary)propertyListFromStringsFileFormat
 {
-  v2 = [(NSString *)self propertyList];
+  propertyList = [(NSString *)self propertyList];
   if (_NSIsNSDictionary())
   {
-    return v2;
+    return propertyList;
   }
 
   else
@@ -7553,7 +7553,7 @@ LABEL_16:
   }
 }
 
-- (id)_copyFormatStringWithConfiguration:(id)a3
+- (id)_copyFormatStringWithConfiguration:(id)configuration
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -7563,7 +7563,7 @@ LABEL_16:
 
   v5 = [__NSLocalizedString alloc];
 
-  return [(__NSLocalizedString *)v5 initWithString:self withFormatConfiguration:a3];
+  return [(__NSLocalizedString *)v5 initWithString:self withFormatConfiguration:configuration];
 }
 
 - (void)getCString:(char *)bytes maxLength:(NSUInteger)maxLength range:(NSRange)aRange remainingRange:(NSRangePointer)leftoverRange
@@ -7585,15 +7585,15 @@ LABEL_16:
   if (![(NSString *)self getBytes:bytes maxLength:maxLength filledLength:v17 encoding:v12 allowLossyConversion:0 range:location remainingRange:length, leftoverRange])
   {
     v13 = [(NSString *)self length];
-    v14 = self;
+    selfCopy = self;
     if (v13 >= 0x18)
     {
-      v14 = [[(NSString *)self substringWithRange:0 stringByAppendingString:"stringByAppendingString:", @"..."];
+      selfCopy = [[(NSString *)self substringWithRange:0 stringByAppendingString:"stringByAppendingString:", @"..."];
     }
 
     v15 = MEMORY[0x1E695DF30];
-    v16 = [NSString stringWithFormat:@"Conversion to cString failed for string %@", v14];
-    objc_exception_throw([v15 exceptionWithName:@"NSCharacterConversionException" reason:v16 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", self, @"_NSString", 0)}]);
+    selfCopy = [NSString stringWithFormat:@"Conversion to cString failed for string %@", selfCopy];
+    objc_exception_throw([v15 exceptionWithName:@"NSCharacterConversionException" reason:selfCopy userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", self, @"_NSString", 0)}]);
   }
 
   bytes[v17[0]] = 0;
@@ -7959,7 +7959,7 @@ LABEL_17:
   v2 = availableStringEncodings_encodings;
   if (!availableStringEncodings_encodings)
   {
-    v3 = MEMORY[0x1865CE910](a1, a2);
+    v3 = MEMORY[0x1865CE910](self, a2);
     if (*v3 == -1)
     {
       v5 = 0;
@@ -8032,7 +8032,7 @@ LABEL_17:
   return [v7 localizedStringForKey:v6 value:&stru_1EEEFDF90 table:@"EncodingNames"];
 }
 
-- (int64_t)_web_countOfString:(id)a3
+- (int64_t)_web_countOfString:(id)string
 {
   v5 = [(NSString *)self length];
   v6 = 0;
@@ -8040,7 +8040,7 @@ LABEL_17:
   v8 = v5;
   do
   {
-    v9 = [(NSString *)self rangeOfString:a3 options:2 range:v7, v8];
+    v9 = [(NSString *)self rangeOfString:string options:2 range:v7, v8];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
@@ -8066,7 +8066,7 @@ LABEL_17:
   return v4 == [(NSString *)self length]- 3;
 }
 
-- (BOOL)_web_domainMatches:(id)a3
+- (BOOL)_web_domainMatches:(id)matches
 {
   if ([(NSString *)self _web_isCaseInsensitiveEqualToString:?])
   {
@@ -8075,25 +8075,25 @@ LABEL_17:
 
   else
   {
-    v5 = [a3 length];
+    v5 = [matches length];
     if (v5)
     {
-      if ([a3 characterAtIndex:0] == 46 && !-[NSString _web_looksLikeIPAddress](self, "_web_looksLikeIPAddress"))
+      if ([matches characterAtIndex:0] == 46 && !-[NSString _web_looksLikeIPAddress](self, "_web_looksLikeIPAddress"))
       {
         v6 = [(NSString *)self length];
-        if (v6 >= [a3 length])
+        if (v6 >= [matches length])
         {
-          v7 = self;
-          v8 = a3;
+          matchesCopy2 = self;
+          selfCopy2 = matches;
         }
 
         else
         {
-          v7 = a3;
-          v8 = self;
+          matchesCopy2 = matches;
+          selfCopy2 = self;
         }
 
-        LOBYTE(v5) = [v7 rangeOfString:v8 options:13] != 0x7FFFFFFFFFFFFFFFLL;
+        LOBYTE(v5) = [matchesCopy2 rangeOfString:selfCopy2 options:13] != 0x7FFFFFFFFFFFFFFFLL;
       }
 
       else
@@ -8113,9 +8113,9 @@ LABEL_17:
     return self;
   }
 
-  v4 = [(NSString *)self _web_hasCountryCodeTLD];
+  _web_hasCountryCodeTLD = [(NSString *)self _web_hasCountryCodeTLD];
   v5 = [(NSString *)self _web_countOfString:@"."];
-  if (v4)
+  if (_web_hasCountryCodeTLD)
   {
     if (v5 > 2)
     {
@@ -8185,13 +8185,13 @@ LABEL_10:
 
 - (id)_web_stringByExpandingTildeInPath
 {
-  v3 = [(NSString *)self stringByExpandingTildeInPath];
-  if (![(NSString *)self hasSuffix:@"/"]|| [(NSString *)v3 hasSuffix:@"/"])
+  stringByExpandingTildeInPath = [(NSString *)self stringByExpandingTildeInPath];
+  if (![(NSString *)self hasSuffix:@"/"]|| [(NSString *)stringByExpandingTildeInPath hasSuffix:@"/"])
   {
-    return v3;
+    return stringByExpandingTildeInPath;
   }
 
-  return [(NSString *)v3 stringByAppendingString:@"/"];
+  return [(NSString *)stringByExpandingTildeInPath stringByAppendingString:@"/"];
 }
 
 - (id)_web_fixedCarbonPOSIXPath
@@ -8237,9 +8237,9 @@ LABEL_10:
 
 - (_NSRange)_web_rangeOfURLUserPasswordHostPort
 {
-  v3 = [(NSString *)self _web_rangeOfURLResourceSpecifier_nowarn];
+  _web_rangeOfURLResourceSpecifier_nowarn = [(NSString *)self _web_rangeOfURLResourceSpecifier_nowarn];
   v5 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v3, v7 = v4, [(NSString *)self rangeOfString:@"//" options:8 range:v3, v4]== 0x7FFFFFFFFFFFFFFFLL))
+  if (_web_rangeOfURLResourceSpecifier_nowarn == 0x7FFFFFFFFFFFFFFFLL || (v6 = _web_rangeOfURLResourceSpecifier_nowarn, v7 = v4, [(NSString *)self rangeOfString:@"//" options:8 range:_web_rangeOfURLResourceSpecifier_nowarn, v4]== 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = 0;
   }
@@ -8268,15 +8268,15 @@ LABEL_10:
 
 - (_NSRange)_web_rangeOfURLHost
 {
-  v3 = [(NSString *)self _web_rangeOfURLUserPasswordHostPort];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _web_rangeOfURLUserPasswordHostPort = [(NSString *)self _web_rangeOfURLUserPasswordHostPort];
+  if (_web_rangeOfURLUserPasswordHostPort == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_2;
   }
 
-  v6 = v3;
+  v6 = _web_rangeOfURLUserPasswordHostPort;
   v7 = v4;
-  v8 = [(NSString *)self rangeOfString:@"@" options:0 range:v3, v4];
+  v8 = [(NSString *)self rangeOfString:@"@" options:0 range:_web_rangeOfURLUserPasswordHostPort, v4];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v8 == 0x7FFFFFFFFFFFFFFELL)
@@ -8320,29 +8320,29 @@ LABEL_9:
   return [(NSString *)self substringFromIndex:v3];
 }
 
-+ (id)_web_stringRepresentationForBytes:(int64_t)a3
++ (id)_web_stringRepresentationForBytes:(int64_t)bytes
 {
-  if (a3 >= 0)
+  if (bytes >= 0)
   {
-    v3 = a3;
+    bytesCopy = bytes;
   }
 
   else
   {
-    v3 = -a3;
+    bytesCopy = -bytes;
   }
 
-  if (a3)
+  if (bytes)
   {
-    if (v3 == 1.0)
+    if (bytesCopy == 1.0)
     {
       result = NSURLLocalizedString("1 byte");
     }
 
-    else if (v3 >= 100.0)
+    else if (bytesCopy >= 100.0)
     {
-      v6 = v3 * 0.0009765625;
-      if (v3 >= 1000.0)
+      v6 = bytesCopy * 0.0009765625;
+      if (bytesCopy >= 1000.0)
       {
         if (v6 >= 9.95)
         {
@@ -8423,10 +8423,10 @@ LABEL_9:
 
     else
     {
-      result = [NSString localizedStringWithFormat:NSURLLocalizedString("%.0f bytes"), *&v3];
+      result = [NSString localizedStringWithFormat:NSURLLocalizedString("%.0f bytes"), *&bytesCopy];
     }
 
-    if (a3 < 0)
+    if (bytes < 0)
     {
 
       return [@"-" stringByAppendingString:result];
@@ -8594,13 +8594,13 @@ LABEL_15:
   return v3;
 }
 
-- (id)_web_parseAsKeyValuePairHandleQuotes_nowarn:(BOOL)a3
+- (id)_web_parseAsKeyValuePairHandleQuotes_nowarn:(BOOL)quotes_nowarn
 {
-  v3 = a3;
+  quotes_nowarnCopy = quotes_nowarn;
   v5 = [(NSString *)self rangeOfString:@"="];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(NSString *)self _web_stringByTrimmingWhitespace];
+    _web_stringByTrimmingWhitespace = [(NSString *)self _web_stringByTrimmingWhitespace];
     v7 = 0;
   }
 
@@ -8647,7 +8647,7 @@ LABEL_15:
     }
 
 LABEL_14:
-    v6 = [(NSString *)self substringWithRange:v10, v11];
+    _web_stringByTrimmingWhitespace = [(NSString *)self substringWithRange:v10, v11];
     v13 = v8 + 1;
     v14 = [(NSString *)self length];
     v15 = v14 - v13;
@@ -8672,7 +8672,7 @@ LABEL_14:
         }
       }
 
-      if (v15 != 1 && v3 && [(NSString *)self characterAtIndex:v13]== 34)
+      if (v15 != 1 && quotes_nowarnCopy && [(NSString *)self characterAtIndex:v13]== 34)
       {
         ++v13;
         v15 -= 2;
@@ -8683,7 +8683,7 @@ LABEL_25:
     v7 = [(NSString *)self substringWithRange:v13, v15];
   }
 
-  return [NSURLKeyValuePair pairWithKey:v6 value:v7];
+  return [NSURLKeyValuePair pairWithKey:_web_stringByTrimmingWhitespace value:v7];
 }
 
 - (_NSRange)_web_rangeOfURLScheme_nowarn
@@ -8902,21 +8902,21 @@ LABEL_27:
 - (id)_web_stringByReplacingValidPercentEscapes_nowarn
 {
   v3 = [(NSString *)self dataUsingEncoding:4];
-  v4 = [(NSData *)v3 bytes];
+  bytes = [(NSData *)v3 bytes];
   v5 = malloc_type_malloc([(NSData *)v3 length], 0x100004077774924uLL);
   v6 = [(NSData *)v3 length];
   v7 = v5;
   if (v6)
   {
-    v8 = &v4[v6];
+    v8 = &bytes[v6];
     v7 = v5;
     do
     {
-      v9 = *v4;
-      v10 = v9 != 37 || (v4 + 3) > v8;
-      if (v10 || (v11 = v4[1], v12 = v11 - 48, (v11 - 48) >= 0xAu) && (v4[1] - 65 <= 0x25 ? (v13 = ((1 << (v11 - 65)) & 0x3F0000003FLL) == 0) : (v13 = 1), v13) || (v14 = v4[2], v15 = v14 - 48, v16 = (v14 - 48), v16 >= 0xA) && (v4[2] - 65 <= 0x25 ? (v17 = ((1 << (v14 - 65)) & 0x3F0000003FLL) == 0) : (v17 = 1), v17))
+      v9 = *bytes;
+      v10 = v9 != 37 || (bytes + 3) > v8;
+      if (v10 || (v11 = bytes[1], v12 = v11 - 48, (v11 - 48) >= 0xAu) && (bytes[1] - 65 <= 0x25 ? (v13 = ((1 << (v11 - 65)) & 0x3F0000003FLL) == 0) : (v13 = 1), v13) || (v14 = bytes[2], v15 = v14 - 48, v16 = (v14 - 48), v16 >= 0xA) && (bytes[2] - 65 <= 0x25 ? (v17 = ((1 << (v14 - 65)) & 0x3F0000003FLL) == 0) : (v17 = 1), v17))
       {
-        ++v4;
+        ++bytes;
       }
 
       else
@@ -8977,13 +8977,13 @@ LABEL_27:
         }
 
         LOBYTE(v9) = v26 | v23;
-        v4 += 3;
+        bytes += 3;
       }
 
       *v7++ = v9;
     }
 
-    while (v4 != v8);
+    while (bytes != v8);
   }
 
   v27 = [[NSString alloc] initWithBytes:v5 length:v7 - v5 encoding:4];
@@ -9001,18 +9001,18 @@ LABEL_27:
 
 - (id)standardizedURLPath
 {
-  v3 = [(NSString *)self pathComponents];
-  if (![(NSArray *)v3 count]|| ![(NSString *)self length])
+  pathComponents = [(NSString *)self pathComponents];
+  if (![(NSArray *)pathComponents count]|| ![(NSString *)self length])
   {
     return &stru_1EEEFDF90;
   }
 
-  if (-[NSArray count](v3, "count") != 1 || (v4 = @"/", ([-[NSArray objectAtIndex:](v3 objectAtIndex:{0), "isEqualToString:", @"/"}] & 1) == 0))
+  if (-[NSArray count](pathComponents, "count") != 1 || (selfCopy = @"/", ([-[NSArray objectAtIndex:](pathComponents objectAtIndex:{0), "isEqualToString:", @"/"}] & 1) == 0))
   {
-    v5 = [(NSArray *)v3 objectAtIndex:0];
+    v5 = [(NSArray *)pathComponents objectAtIndex:0];
     if (([v5 isEqual:@"/"] & 1) != 0 || objc_msgSend(v5, "isEqual:", @"\\""))
     {
-      v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:v3];
+      v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:pathComponents];
       [v6 replaceObjectAtIndex:0 withObject:&stru_1EEEFDF90];
       v7 = 1;
     }
@@ -9027,20 +9027,20 @@ LABEL_27:
     {
       if (!v6)
       {
-        v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:v3];
+        v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:pathComponents];
       }
 
       [v6 addObject:&stru_1EEEFDF90];
     }
 
-    v8 = [(NSArray *)v3 count];
+    v8 = [(NSArray *)pathComponents count];
     if (v7 >= v8)
     {
 LABEL_22:
-      v4 = self;
+      selfCopy = self;
       if (!v6)
       {
-        return v4;
+        return selfCopy;
       }
 
       if ([v6 count])
@@ -9071,12 +9071,12 @@ LABEL_22:
           v13 = [v6 componentsJoinedByString:@"/"];
         }
 
-        v4 = v13;
+        selfCopy = v13;
       }
 
       else
       {
-        v4 = &stru_1EEEFDF90;
+        selfCopy = &stru_1EEEFDF90;
       }
     }
 
@@ -9085,19 +9085,19 @@ LABEL_22:
       v9 = v8;
       while (1)
       {
-        v10 = [(NSArray *)v3 objectAtIndex:v7];
-        v11 = [v10 stringByAddingPercentEscapes];
-        if (!v11)
+        v10 = [(NSArray *)pathComponents objectAtIndex:v7];
+        stringByAddingPercentEscapes = [v10 stringByAddingPercentEscapes];
+        if (!stringByAddingPercentEscapes)
         {
           break;
         }
 
-        v12 = v11;
-        if (v11 != v10)
+        v12 = stringByAddingPercentEscapes;
+        if (stringByAddingPercentEscapes != v10)
         {
           if (!v6)
           {
-            v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:v3];
+            v6 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithArray:pathComponents];
           }
 
           [v6 replaceObjectAtIndex:v7 withObject:v12];
@@ -9109,15 +9109,15 @@ LABEL_22:
         }
       }
 
-      v4 = 0;
+      selfCopy = 0;
       if (!v6)
       {
-        return v4;
+        return selfCopy;
       }
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)stringByRemovingPercentEscapes
@@ -9233,21 +9233,21 @@ LABEL_22:
   [(NSLinguisticTagger *)v15 enumerateTagsInRange:location scheme:length options:scheme usingBlock:options, block];
 }
 
-- (_NSRange)_rangeOfRegularExpressionPattern:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 locale:(id)a6
+- (_NSRange)_rangeOfRegularExpressionPattern:(id)pattern options:(unint64_t)options range:(_NSRange)range locale:(id)locale
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a4 & 1;
+  length = range.length;
+  location = range.location;
+  v11 = options & 1;
   if (_MergedGlobals_144 != -1)
   {
     dispatch_once(&_MergedGlobals_144, &__block_literal_global_70);
   }
 
-  v12 = [NSString stringWithFormat:@"%lx:%@", v11, a3];
-  v13 = [qword_1ED440028 objectForKey:v12];
+  pattern = [NSString stringWithFormat:@"%lx:%@", v11, pattern];
+  v13 = [qword_1ED440028 objectForKey:pattern];
   if (!v13)
   {
-    v14 = [[NSRegularExpression alloc] initWithPattern:a3 options:v11 error:0];
+    v14 = [[NSRegularExpression alloc] initWithPattern:pattern options:v11 error:0];
     if (!v14)
     {
       v18 = 0x7FFFFFFFFFFFFFFFLL;
@@ -9256,10 +9256,10 @@ LABEL_22:
     }
 
     v13 = v14;
-    [qword_1ED440028 setObject:v14 forKey:v12];
+    [qword_1ED440028 setObject:v14 forKey:pattern];
   }
 
-  v15 = [(NSRegularExpression *)v13 rangeOfFirstMatchInString:self options:(a4 >> 1) & 4 range:location, length];
+  v15 = [(NSRegularExpression *)v13 rangeOfFirstMatchInString:self options:(options >> 1) & 4 range:location, length];
   v17 = v16;
 
   v18 = v15;
@@ -9270,32 +9270,32 @@ LABEL_8:
   return result;
 }
 
-- (id)_stringByReplacingOccurrencesOfRegularExpressionPattern:(id)a3 withTemplate:(id)a4 options:(unint64_t)a5 range:(_NSRange)a6
+- (id)_stringByReplacingOccurrencesOfRegularExpressionPattern:(id)pattern withTemplate:(id)template options:(unint64_t)options range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a5 & 1;
+  length = range.length;
+  location = range.location;
+  v12 = options & 1;
   if (_MergedGlobals_144 != -1)
   {
     dispatch_once(&_MergedGlobals_144, &__block_literal_global_70);
   }
 
-  v13 = [NSString stringWithFormat:@"%lx:%@", v12, a3];
-  v14 = [qword_1ED440028 objectForKey:v13];
+  pattern = [NSString stringWithFormat:@"%lx:%@", v12, pattern];
+  v14 = [qword_1ED440028 objectForKey:pattern];
   if (v14)
   {
     goto LABEL_6;
   }
 
-  v15 = [[NSRegularExpression alloc] initWithPattern:a3 options:v12 error:0];
+  v15 = [[NSRegularExpression alloc] initWithPattern:pattern options:v12 error:0];
   if (v15)
   {
     v14 = v15;
-    [qword_1ED440028 setObject:v15 forKey:v13];
+    [qword_1ED440028 setObject:v15 forKey:pattern];
 LABEL_6:
-    v16 = [(NSRegularExpression *)v14 stringByReplacingMatchesInString:self options:(a5 >> 1) & 4 range:location withTemplate:length, a4];
+    template = [(NSRegularExpression *)v14 stringByReplacingMatchesInString:self options:(options >> 1) & 4 range:location withTemplate:length, template];
 
-    return v16;
+    return template;
   }
 
   return self;
@@ -9360,26 +9360,26 @@ LABEL_6:
 
 - (void)__graphemeCount
 {
-  v1 = a1;
+  selfCopy = self;
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
     v7 = 0x2020000000;
     v8 = 0;
-    v2 = [a1 length];
+    v2 = [self length];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __60__NSString_NSPersonNameComponentsFormatter____graphemeCount__block_invoke;
     v4[3] = &unk_1E69F6A68;
     v4[4] = &v5;
-    [v1 enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v4}];
-    v1 = v6[3];
+    [selfCopy enumerateSubstringsInRange:0 options:v2 usingBlock:{2, v4}];
+    selfCopy = v6[3];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface MASAutoAssetSetInfoControl
-+ (id)newServerMessageClasses:(id)a3;
-+ (id)newShimmedFromFramework:(id)a3;
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4;
-+ (id)newShimmedToFramework:(id)a3;
++ (id)newServerMessageClasses:(id)classes;
++ (id)newShimmedFromFramework:(id)framework;
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key;
++ (id)newShimmedToFramework:(id)framework;
 @end
 
 @implementation MASAutoAssetSetInfoControl
 
-+ (id)newServerMessageClasses:(id)a3
++ (id)newServerMessageClasses:(id)classes
 {
-  v3 = a3;
-  if (v3)
+  classesCopy = classes;
+  if (classesCopy)
   {
-    v4 = v3;
+    v4 = classesCopy;
     if (__isPlatformVersionAtLeast(2, 17, 0, 0))
     {
-      v4 = v3;
+      v4 = classesCopy;
       if (objc_opt_class())
       {
-        v4 = [v3 setByAddingObject:objc_opt_class()];
+        v4 = [classesCopy setByAddingObject:objc_opt_class()];
       }
     }
   }
@@ -31,16 +31,16 @@
   return v4;
 }
 
-+ (id)newShimmedToFramework:(id)a3
++ (id)newShimmedToFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetInfoControl alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetInfoControl alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
     v6 = [MAAutoAssetSetInfoControl alloc];
-    v7 = [v3 clearingAfter];
-    v8 = [v3 limitedToClientDomains];
-    v9 = [v3 limitedToSetIdentifiers];
-    v10 = [v6 initClearingAfter:v7 limitedToClientDomains:v8 limitedToSetIdentifiers:v9];
+    clearingAfter = [frameworkCopy clearingAfter];
+    limitedToClientDomains = [frameworkCopy limitedToClientDomains];
+    limitedToSetIdentifiers = [frameworkCopy limitedToSetIdentifiers];
+    v10 = [v6 initClearingAfter:clearingAfter limitedToClientDomains:limitedToClientDomains limitedToSetIdentifiers:limitedToSetIdentifiers];
   }
 
   else
@@ -51,18 +51,18 @@
   return v10;
 }
 
-+ (id)newShimmedFromFramework:(id)a3
++ (id)newShimmedFromFramework:(id)framework
 {
-  v3 = a3;
-  if (v3 && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetInfoControl alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  frameworkCopy = framework;
+  if (frameworkCopy && __isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v4 = [MAAutoAssetSetInfoControl alloc], v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
   {
-    v6 = v3;
+    v6 = frameworkCopy;
     v7 = [MANAutoAssetSetInfoControl alloc];
-    v8 = [v6 clearingAfter];
-    v9 = [v6 limitedToClientDomains];
-    v10 = [v6 limitedToSetIdentifiers];
+    clearingAfter = [v6 clearingAfter];
+    limitedToClientDomains = [v6 limitedToClientDomains];
+    limitedToSetIdentifiers = [v6 limitedToSetIdentifiers];
 
-    v11 = [(MANAutoAssetSetInfoControl *)v7 initClearingAfter:v8 limitedToClientDomains:v9 limitedToSetIdentifiers:v10];
+    v11 = [(MANAutoAssetSetInfoControl *)v7 initClearingAfter:clearingAfter limitedToClientDomains:limitedToClientDomains limitedToSetIdentifiers:limitedToSetIdentifiers];
   }
 
   else
@@ -73,17 +73,17 @@
   return v11;
 }
 
-+ (id)newShimmedFromFrameworkMessage:(id)a3 forKey:(id)a4
++ (id)newShimmedFromFrameworkMessage:(id)message forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  messageCopy = message;
+  keyCopy = key;
+  v7 = keyCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (messageCopy && keyCopy)
   {
     if (__isPlatformVersionAtLeast(2, 17, 0, 0) && objc_opt_class() && (v9 = [MAAutoAssetSetInfoControl alloc], v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
     {
-      v11 = [v5 safeObjectForKey:v7 ofClass:objc_opt_class()];
+      v11 = [messageCopy safeObjectForKey:v7 ofClass:objc_opt_class()];
       v8 = [MASAutoAssetSetInfoControl newShimmedFromFramework:v11];
     }
 

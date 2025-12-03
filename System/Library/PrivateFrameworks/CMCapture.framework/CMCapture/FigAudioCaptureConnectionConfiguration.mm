@@ -1,7 +1,7 @@
 @interface FigAudioCaptureConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigAudioCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigAudioCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
@@ -10,15 +10,15 @@
 
 - (id)description
 {
-  v3 = [(FigAudioCaptureConnectionConfiguration *)self audioCaptureMode];
-  if (v3 > 7)
+  audioCaptureMode = [(FigAudioCaptureConnectionConfiguration *)self audioCaptureMode];
+  if (audioCaptureMode > 7)
   {
     v4 = &stru_1F216A3D0;
   }
 
   else
   {
-    v4 = *(&off_1E7999A68 + v3);
+    v4 = *(&off_1E7999A68 + audioCaptureMode);
   }
 
   if ([(FigAudioCaptureConnectionConfiguration *)self builtInMicrophonePosition])
@@ -40,7 +40,7 @@
     v6 = [v8 stringWithFormat:@", SampleRate:%.2fHz", v9];
   }
 
-  v10 = [(FigAudioCaptureConnectionConfiguration *)self windNoiseRemovalEnabled];
+  windNoiseRemovalEnabled = [(FigAudioCaptureConnectionConfiguration *)self windNoiseRemovalEnabled];
   if ([(FigAudioCaptureConnectionConfiguration *)self spatialAudioChannelLayoutTag]== 6619138)
   {
     v11 = @", ACLT: kAudioChannelLayoutTag_Stereo";
@@ -56,7 +56,7 @@
     v11 = &stru_1F216A3D0;
   }
 
-  if (v10)
+  if (windNoiseRemovalEnabled)
   {
     v12 = @"YES";
   }
@@ -73,30 +73,30 @@
 {
   v6.receiver = self;
   v6.super_class = FigAudioCaptureConnectionConfiguration;
-  v3 = [(FigCaptureConnectionConfiguration *)&v6 copyXPCEncoding];
-  xpc_dictionary_set_int64(v3, "audioCaptureMode", [(FigAudioCaptureConnectionConfiguration *)self audioCaptureMode]);
-  xpc_dictionary_set_int64(v3, "windNoiseRemovalEnabled", [(FigAudioCaptureConnectionConfiguration *)self windNoiseRemovalEnabled]);
-  xpc_dictionary_set_int64(v3, "builtInMicrophonePosition", [(FigAudioCaptureConnectionConfiguration *)self builtInMicrophonePosition]);
+  copyXPCEncoding = [(FigCaptureConnectionConfiguration *)&v6 copyXPCEncoding];
+  xpc_dictionary_set_int64(copyXPCEncoding, "audioCaptureMode", [(FigAudioCaptureConnectionConfiguration *)self audioCaptureMode]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "windNoiseRemovalEnabled", [(FigAudioCaptureConnectionConfiguration *)self windNoiseRemovalEnabled]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "builtInMicrophonePosition", [(FigAudioCaptureConnectionConfiguration *)self builtInMicrophonePosition]);
   [(FigAudioCaptureConnectionConfiguration *)self builtInMicrophoneRequiredSampleRate];
-  xpc_dictionary_set_double(v3, "builtInMicrophoneRequiredSampleRate", v4);
-  xpc_dictionary_set_int64(v3, "spatialAudioChannelLayoutTag", [(FigAudioCaptureConnectionConfiguration *)self spatialAudioChannelLayoutTag]);
-  return v3;
+  xpc_dictionary_set_double(copyXPCEncoding, "builtInMicrophoneRequiredSampleRate", v4);
+  xpc_dictionary_set_int64(copyXPCEncoding, "spatialAudioChannelLayoutTag", [(FigAudioCaptureConnectionConfiguration *)self spatialAudioChannelLayoutTag]);
+  return copyXPCEncoding;
 }
 
-- (FigAudioCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigAudioCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v6.receiver = self;
     v6.super_class = FigAudioCaptureConnectionConfiguration;
     v4 = [(FigCaptureConnectionConfiguration *)&v6 initWithXPCEncoding:?];
     if (v4)
     {
-      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(a3, "audioCaptureMode");
-      LOBYTE(v4->_audioCaptureMode) = xpc_dictionary_get_int64(a3, "windNoiseRemovalEnabled") != 0;
-      *&v4->_windNoiseRemovalEnabled = xpc_dictionary_get_int64(a3, "builtInMicrophonePosition");
-      *&v4->_builtInMicrophonePosition = xpc_dictionary_get_double(a3, "builtInMicrophoneRequiredSampleRate");
-      LODWORD(v4->_builtInMicrophoneRequiredSampleRate) = xpc_dictionary_get_int64(a3, "spatialAudioChannelLayoutTag");
+      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(encoding, "audioCaptureMode");
+      LOBYTE(v4->_audioCaptureMode) = xpc_dictionary_get_int64(encoding, "windNoiseRemovalEnabled") != 0;
+      *&v4->_windNoiseRemovalEnabled = xpc_dictionary_get_int64(encoding, "builtInMicrophonePosition");
+      *&v4->_builtInMicrophonePosition = xpc_dictionary_get_double(encoding, "builtInMicrophoneRequiredSampleRate");
+      LODWORD(v4->_builtInMicrophoneRequiredSampleRate) = xpc_dictionary_get_int64(encoding, "spatialAudioChannelLayoutTag");
     }
   }
 
@@ -109,11 +109,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigAudioCaptureConnectionConfiguration;
-  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:zone];
   [v4 setAudioCaptureMode:{-[FigAudioCaptureConnectionConfiguration audioCaptureMode](self, "audioCaptureMode")}];
   [v4 setWindNoiseRemovalEnabled:{-[FigAudioCaptureConnectionConfiguration windNoiseRemovalEnabled](self, "windNoiseRemovalEnabled")}];
   [v4 setBuiltInMicrophonePosition:{-[FigAudioCaptureConnectionConfiguration builtInMicrophonePosition](self, "builtInMicrophonePosition")}];
@@ -123,7 +123,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v14.receiver = self;
   v14.super_class = FigAudioCaptureConnectionConfiguration;
@@ -131,10 +131,10 @@
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigAudioCaptureConnectionConfiguration audioCaptureMode](self, "audioCaptureMode"), v6 == [a3 audioCaptureMode]) && (v7 = -[FigAudioCaptureConnectionConfiguration windNoiseRemovalEnabled](self, "windNoiseRemovalEnabled"), v7 == objc_msgSend(a3, "windNoiseRemovalEnabled")) && (v8 = -[FigAudioCaptureConnectionConfiguration builtInMicrophonePosition](self, "builtInMicrophonePosition"), v8 == objc_msgSend(a3, "builtInMicrophonePosition")) && (-[FigAudioCaptureConnectionConfiguration builtInMicrophoneRequiredSampleRate](self, "builtInMicrophoneRequiredSampleRate"), v10 = v9, objc_msgSend(a3, "builtInMicrophoneRequiredSampleRate"), v10 == v11))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigAudioCaptureConnectionConfiguration audioCaptureMode](self, "audioCaptureMode"), v6 == [equal audioCaptureMode]) && (v7 = -[FigAudioCaptureConnectionConfiguration windNoiseRemovalEnabled](self, "windNoiseRemovalEnabled"), v7 == objc_msgSend(equal, "windNoiseRemovalEnabled")) && (v8 = -[FigAudioCaptureConnectionConfiguration builtInMicrophonePosition](self, "builtInMicrophonePosition"), v8 == objc_msgSend(equal, "builtInMicrophonePosition")) && (-[FigAudioCaptureConnectionConfiguration builtInMicrophoneRequiredSampleRate](self, "builtInMicrophoneRequiredSampleRate"), v10 = v9, objc_msgSend(equal, "builtInMicrophoneRequiredSampleRate"), v10 == v11))
     {
-      v12 = [(FigAudioCaptureConnectionConfiguration *)self spatialAudioChannelLayoutTag];
-      LOBYTE(v5) = v12 == [a3 spatialAudioChannelLayoutTag];
+      spatialAudioChannelLayoutTag = [(FigAudioCaptureConnectionConfiguration *)self spatialAudioChannelLayoutTag];
+      LOBYTE(v5) = spatialAudioChannelLayoutTag == [equal spatialAudioChannelLayoutTag];
     }
 
     else

@@ -1,28 +1,28 @@
 @interface INUserContextStore
-+ (id)findDataInValue:(id)a3;
-+ (id)keyForBundleIdentifier:(id)a3 andType:(int64_t)a4;
++ (id)findDataInValue:(id)value;
++ (id)keyForBundleIdentifier:(id)identifier andType:(int64_t)type;
 + (id)sharedStore;
 - (id)_init;
-- (id)_initWithKnowledgeStore:(id)a3;
-- (void)removeUserContextOfClass:(Class)a3 forBundleIdentifier:(id)a4;
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4;
-- (void)storeUserContextViaHelper:(id)a3 forBundleIdentifier:(id)a4;
-- (void)userContextOfClass:(Class)a3 forBundleIdentifiers:(id)a4 withCompletion:(id)a5;
-- (void)userContextOfClass:(Class)a3 withCompletion:(id)a4;
+- (id)_initWithKnowledgeStore:(id)store;
+- (void)removeUserContextOfClass:(Class)class forBundleIdentifier:(id)identifier;
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier;
+- (void)storeUserContextViaHelper:(id)helper forBundleIdentifier:(id)identifier;
+- (void)userContextOfClass:(Class)class forBundleIdentifiers:(id)identifiers withCompletion:(id)completion;
+- (void)userContextOfClass:(Class)class withCompletion:(id)completion;
 @end
 
 @implementation INUserContextStore
 
-- (id)_initWithKnowledgeStore:(id)a3
+- (id)_initWithKnowledgeStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = INUserContextStore;
   v6 = [(INUserContextStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_knowledgeStore, a3);
+    objc_storeStrong(&v6->_knowledgeStore, store);
   }
 
   return v7;
@@ -48,16 +48,16 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 defaultKnowledgeStore];
-  v6 = [(INUserContextStore *)self _initWithKnowledgeStore:v5];
+  defaultKnowledgeStore = [v3 defaultKnowledgeStore];
+  v6 = [(INUserContextStore *)self _initWithKnowledgeStore:defaultKnowledgeStore];
 
   return v6;
 }
 
-- (void)userContextOfClass:(Class)a3 withCompletion:(id)a4
+- (void)userContextOfClass:(Class)class withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [objc_opt_class() keyPrefixForType:{-[objc_class _type](a3, "_type")}];
+  completionCopy = completion;
+  v7 = [objc_opt_class() keyPrefixForType:{-[objc_class _type](class, "_type")}];
   v8 = [v7 length];
   v22 = 0;
   v23 = &v22;
@@ -83,12 +83,12 @@
   v15[1] = 3221225472;
   v15[2] = __56__INUserContextStore_userContextOfClass_withCompletion___block_invoke;
   v15[3] = &unk_1E7281980;
-  v18 = v6;
+  v18 = completionCopy;
   v19 = v8;
   v16 = v7;
-  v17 = self;
-  v20 = a3;
-  v13 = v6;
+  selfCopy = self;
+  classCopy = class;
+  v13 = completionCopy;
   v14 = v7;
   [(CKKnowledgeStore *)knowledgeStore dictionaryRepresentationForKeysMatching:v11 completionHandler:v15];
 }
@@ -212,18 +212,18 @@ void __56__INUserContextStore_userContextOfClass_withCompletion___block_invoke_1
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userContextOfClass:(Class)a3 forBundleIdentifiers:(id)a4 withCompletion:(id)a5
+- (void)userContextOfClass:(Class)class forBundleIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v23 = a5;
-  v9 = [v8 allObjects];
-  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  allObjects = [identifiersCopy allObjects];
+  v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allObjects, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v9;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v12)
   {
@@ -239,7 +239,7 @@ void __56__INUserContextStore_userContextOfClass_withCompletion___block_invoke_1
           objc_enumerationMutation(v11);
         }
 
-        v16 = [objc_opt_class() keyForBundleIdentifier:*(*(&v31 + 1) + 8 * v15) andType:{-[objc_class _type](a3, "_type")}];
+        v16 = [objc_opt_class() keyForBundleIdentifier:*(*(&v31 + 1) + 8 * v15) andType:{-[objc_class _type](class, "_type")}];
         [v10 addObject:v16];
 
         ++v15;
@@ -257,16 +257,16 @@ void __56__INUserContextStore_userContextOfClass_withCompletion___block_invoke_1
   v24[1] = 3221225472;
   v24[2] = __77__INUserContextStore_userContextOfClass_forBundleIdentifiers_withCompletion___block_invoke;
   v24[3] = &unk_1E7281930;
-  v25 = v8;
+  v25 = identifiersCopy;
   v26 = v11;
   v27 = v10;
-  v28 = self;
-  v29 = v23;
-  v30 = a3;
-  v18 = v23;
+  selfCopy = self;
+  v29 = completionCopy;
+  classCopy = class;
+  v18 = completionCopy;
   v19 = v10;
   v20 = v11;
-  v21 = v8;
+  v21 = identifiersCopy;
   [(CKKnowledgeStore *)knowledgeStore valuesForKeys:v19 completionHandler:v24];
 
   v22 = *MEMORY[0x1E69E9840];
@@ -381,29 +381,29 @@ void __77__INUserContextStore_userContextOfClass_forBundleIdentifiers_withComple
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeUserContextViaHelper:(id)a3 forBundleIdentifier:(id)a4
+- (void)storeUserContextViaHelper:(id)helper forBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  helperCopy = helper;
   v7 = +[INImageServiceConnection sharedConnection];
-  [v7 storeUserContext:v6 forBundleIdentifier:v5];
+  [v7 storeUserContext:helperCopy forBundleIdentifier:identifierCopy];
 }
 
-- (void)removeUserContextOfClass:(Class)a3 forBundleIdentifier:(id)a4
+- (void)removeUserContextOfClass:(Class)class forBundleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(objc_class *)a3 _type];
-  v8 = [objc_opt_class() keyForBundleIdentifier:v6 andType:v7];
+  identifierCopy = identifier;
+  _type = [(objc_class *)class _type];
+  v8 = [objc_opt_class() keyForBundleIdentifier:identifierCopy andType:_type];
   v9 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v16 = "[INUserContextStore removeUserContextOfClass:forBundleIdentifier:]";
     v17 = 2048;
-    v18 = v7;
+    v18 = _type;
     v19 = 2112;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&dword_18E991000, v9, OS_LOG_TYPE_INFO, "%s Removing UserContext of type:%ld for bundle:%@ at key:%@...", buf, 0x2Au);
@@ -431,31 +431,31 @@ void __77__INUserContextStore_userContextOfClass_forBundleIdentifiers_withComple
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeUserContext:(id)a3 forBundleIdentifier:(id)a4
+- (void)storeUserContext:(id)context forBundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _type];
-  v9 = [objc_opt_class() keyForBundleIdentifier:v7 andType:v8];
+  contextCopy = context;
+  identifierCopy = identifier;
+  _type = [objc_opt_class() _type];
+  v9 = [objc_opt_class() keyForBundleIdentifier:identifierCopy andType:_type];
   v10 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136316162;
     v18 = "[INUserContextStore storeUserContext:forBundleIdentifier:]";
     v19 = 2048;
-    v20 = v8;
+    v20 = _type;
     v21 = 2112;
-    v22 = v7;
+    v22 = identifierCopy;
     v23 = 2112;
     v24 = v9;
     v25 = 2112;
-    v26 = v6;
+    v26 = contextCopy;
     _os_log_impl(&dword_18E991000, v10, OS_LOG_TYPE_INFO, "%s Setting UserContext of type:%ld for bundle:%@ at key:%@, with value: %@...", buf, 0x34u);
   }
 
   v16 = 0;
-  v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v16];
+  v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v16];
   v12 = v16;
   if (v12)
   {
@@ -485,21 +485,21 @@ void __77__INUserContextStore_userContextOfClass_forBundleIdentifiers_withComple
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)keyForBundleIdentifier:(id)a3 andType:(int64_t)a4
++ (id)keyForBundleIdentifier:(id)identifier andType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [objc_opt_class() keyPrefixForType:a4];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v6, v5];
+  identifierCopy = identifier;
+  v6 = [objc_opt_class() keyPrefixForType:type];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v6, identifierCopy];
 
-  return v7;
+  return identifierCopy;
 }
 
-+ (id)findDataInValue:(id)a3
++ (id)findDataInValue:(id)value
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DFB0] null];
-  v5 = [v3 isEqual:v4];
+  valueCopy = value;
+  null = [MEMORY[0x1E695DFB0] null];
+  v5 = [valueCopy isEqual:null];
 
   if (v5)
   {
@@ -518,8 +518,8 @@ LABEL_2:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = [v3 reverseObjectEnumerator];
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      reverseObjectEnumerator = [valueCopy reverseObjectEnumerator];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -530,7 +530,7 @@ LABEL_2:
           {
             if (*v16 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v12 = *(*(&v15 + 1) + 8 * i);
@@ -543,7 +543,7 @@ LABEL_2:
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             continue;
@@ -557,7 +557,7 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  v6 = v3;
+  v6 = valueCopy;
 LABEL_16:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -571,7 +571,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __33__INUserContextStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStore_onceToken != -1)
   {
     dispatch_once(&sharedStore_onceToken, block);

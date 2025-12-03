@@ -1,15 +1,15 @@
 @interface ICBSettingsController
-+ (id)localizedDescriptionForStyle:(BOOL)a3;
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedDescriptionForStyle:(BOOL)style;
++ (id)localizedStringForKey:(id)key;
 + (id)shortTextForCurrentSelection;
 - (id)specifiers;
 - (int64_t)controllerParent;
 - (void)emitNavigationEvent;
 - (void)loadDataSource;
-- (void)refreshGroupForSpecifier:(id)a3;
+- (void)refreshGroupForSpecifier:(id)specifier;
 - (void)setGroupAliasLabelText;
 - (void)setGroupFooterText;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ICBSettingsController
@@ -17,7 +17,7 @@
 + (id)shortTextForCurrentSelection
 {
   v3 = +[ICSPreferences sharedPreferences];
-  v4 = [a1 localizedDescriptionForStyle:{objc_msgSend(v3, "hasBannersEnabled")}];
+  v4 = [self localizedDescriptionForStyle:{objc_msgSend(v3, "hasBannersEnabled")}];
 
   return v4;
 }
@@ -27,8 +27,8 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v21 = [v3 initWithKey:@"Apps" table:0 locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v21 = [v3 initWithKey:@"Apps" table:0 locale:v4 bundleURL:bundleURL];
 
   v7 = [[NSMutableArray alloc] initWithObjects:{v21, 0}];
   if ([(ICBSettingsController *)self controllerParent])
@@ -41,8 +41,8 @@
     v8 = [_NSLocalizedStringResource alloc];
     v9 = +[NSLocale currentLocale];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 bundleURL];
-    v12 = [v8 initWithKey:@"FaceTime" table:0 locale:v9 bundleURL:v11];
+    bundleURL2 = [v10 bundleURL];
+    v12 = [v8 initWithKey:@"FaceTime" table:0 locale:v9 bundleURL:bundleURL2];
     [v7 addObject:v12];
 
     v13 = @"com.apple.facetime";
@@ -60,8 +60,8 @@
   v16 = [_NSLocalizedStringResource alloc];
   v17 = +[NSLocale currentLocale];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
-  v19 = [v18 bundleURL];
-  v20 = [v16 initWithKey:@"Incoming Calls" table:0 locale:v17 bundleURL:v19];
+  bundleURL3 = [v18 bundleURL];
+  v20 = [v16 initWithKey:@"Incoming Calls" table:0 locale:v17 bundleURL:bundleURL3];
 
   [(ICBSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:v13 title:v20 localizedNavigationComponents:v7 deepLink:v15];
 LABEL_6:
@@ -100,31 +100,31 @@ LABEL_6:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = ICBSettingsController;
-  v6 = a4;
-  [(ICBSettingsController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ICBSettingsController *)self indexForIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  [(ICBSettingsController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ICBSettingsController *)self indexForIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   v8 = [(ICBSettingsController *)self specifierAtIndex:v7];
   [(ICBSettingsController *)self refreshGroupForSpecifier:v8];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_8758 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_8758 table:localizationTableName];
 
   return v7;
 }
 
-+ (id)localizedDescriptionForStyle:(BOOL)a3
++ (id)localizedDescriptionForStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = @"INCOMING_CALL_STYLE_LIST_BANNER";
   }
@@ -134,7 +134,7 @@ LABEL_6:
     v3 = @"INCOMING_CALL_STYLE_LIST_FULL_SCREEN";
   }
 
-  v4 = [a1 localizedStringForKey:v3];
+  v4 = [self localizedStringForKey:v3];
 
   return v4;
 }
@@ -142,9 +142,9 @@ LABEL_6:
 - (void)loadDataSource
 {
   v3 = +[ICSPreferences sharedPreferences];
-  v4 = [v3 hasBannersEnabled];
+  hasBannersEnabled = [v3 hasBannersEnabled];
 
-  if (v4)
+  if (hasBannersEnabled)
   {
     [(ICBSettingsController *)self bannerSpecifier];
   }
@@ -154,16 +154,16 @@ LABEL_6:
     [(ICBSettingsController *)self fullScreenSpecifier];
   }
   v6 = ;
-  v5 = [(ICBSettingsController *)self groupSpecifier];
-  [v5 setProperty:v6 forKey:PSRadioGroupCheckedSpecifierKey];
+  groupSpecifier = [(ICBSettingsController *)self groupSpecifier];
+  [groupSpecifier setProperty:v6 forKey:PSRadioGroupCheckedSpecifierKey];
 }
 
 - (void)setGroupAliasLabelText
 {
   v3 = +[FTDeviceSupport sharedInstance];
-  v4 = [v3 deviceType];
+  deviceType = [v3 deviceType];
 
-  if (v4 == &dword_0 + 3)
+  if (deviceType == &dword_0 + 3)
   {
     v5 = objc_opt_class();
     v6 = @"INCOMING_CALL_STYLE_ALIAS_LABEL_IPOD";
@@ -172,10 +172,10 @@ LABEL_6:
   else
   {
     v7 = +[FTDeviceSupport sharedInstance];
-    v8 = [v7 deviceType];
+    deviceType2 = [v7 deviceType];
 
     v5 = objc_opt_class();
-    if (v8 == &dword_4)
+    if (deviceType2 == &dword_4)
     {
       v6 = @"INCOMING_CALL_STYLE_ALIAS_LABEL_IPAD";
     }
@@ -187,23 +187,23 @@ LABEL_6:
   }
 
   v11 = [v5 localizedStringForKey:v6];
-  v9 = [(ICBSettingsController *)self groupSpecifier];
-  [v9 setProperty:v11 forKey:PSTitleKey];
+  groupSpecifier = [(ICBSettingsController *)self groupSpecifier];
+  [groupSpecifier setProperty:v11 forKey:PSTitleKey];
 
-  v10 = [(ICBSettingsController *)self groupSpecifier];
-  [v10 setName:v11];
+  groupSpecifier2 = [(ICBSettingsController *)self groupSpecifier];
+  [groupSpecifier2 setName:v11];
 }
 
 - (void)setGroupFooterText
 {
   v3 = +[FTDeviceSupport sharedInstance];
-  v4 = [v3 deviceType];
+  deviceType = [v3 deviceType];
 
-  if (v4 == &dword_0 + 2)
+  if (deviceType == &dword_0 + 2)
   {
-    v5 = [(ICBSettingsController *)self controllerParent];
+    controllerParent = [(ICBSettingsController *)self controllerParent];
     v6 = objc_opt_class();
-    if (v5 == 1)
+    if (controllerParent == 1)
     {
       v7 = @"INCOMING_CALL_STYLE_FACETIME_FOOTER_IPHONE";
     }
@@ -221,37 +221,37 @@ LABEL_6:
   }
 
   v9 = [v6 localizedStringForKey:v7];
-  v8 = [(ICBSettingsController *)self groupSpecifier];
-  [v8 setProperty:v9 forKey:PSFooterTextGroupKey];
+  groupSpecifier = [(ICBSettingsController *)self groupSpecifier];
+  [groupSpecifier setProperty:v9 forKey:PSFooterTextGroupKey];
 }
 
-- (void)refreshGroupForSpecifier:(id)a3
+- (void)refreshGroupForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICBSettingsController *)self bannerSpecifier];
+  specifierCopy = specifier;
+  bannerSpecifier = [(ICBSettingsController *)self bannerSpecifier];
 
-  v6 = [(ICBSettingsController *)self groupSpecifier];
-  [(ICBSettingsController *)self reloadSpecifier:v6];
+  groupSpecifier = [(ICBSettingsController *)self groupSpecifier];
+  [(ICBSettingsController *)self reloadSpecifier:groupSpecifier];
 
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v5 == v4;
+    v9[1] = bannerSpecifier == specifierCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "setting hasBannersEnabled to %d", v9, 8u);
   }
 
   v8 = +[ICSPreferences sharedPreferences];
-  [v8 setHasBannersEnabled:v5 == v4];
+  [v8 setHasBannersEnabled:bannerSpecifier == specifierCopy];
 }
 
 - (int64_t)controllerParent
 {
-  v2 = [(ICBSettingsController *)self specifier];
-  v3 = [v2 target];
-  v4 = [v3 parentListController];
-  v5 = [v4 specifierID];
-  v6 = [v5 isEqualToString:@"com.apple.preferences.facetime"];
+  specifier = [(ICBSettingsController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
+  v6 = [specifierID isEqualToString:@"com.apple.preferences.facetime"];
 
   return v6;
 }

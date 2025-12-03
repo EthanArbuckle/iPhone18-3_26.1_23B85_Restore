@@ -1,17 +1,17 @@
 @interface DMDiOSDeviceController
-+ (id)_stringFromSubscriptionSlot:(int64_t)a3;
-- (BOOL)_equipmentInfoHasEsimIdentifier:(id)a3;
++ (id)_stringFromSubscriptionSlot:(int64_t)slot;
+- (BOOL)_equipmentInfoHasEsimIdentifier:(id)identifier;
 - (id)EASIdentifier;
-- (id)_deviceInformationForEquipmentInfo:(id)a3 subscription:(id)a4 esimIdentifier:(id)a5 withClient:(id)a6;
-- (id)_esimIdentifierFromEquipmentInfoArray:(id)a3;
+- (id)_deviceInformationForEquipmentInfo:(id)info subscription:(id)subscription esimIdentifier:(id)identifier withClient:(id)client;
+- (id)_esimIdentifierFromEquipmentInfoArray:(id)array;
 - (id)_isCloudBackupEnabled;
 - (id)_isPersonalHotspotEnabled;
 - (id)_skippedSetupPanes;
 - (id)batteryLevel;
 - (id)cellularTechnology;
-- (id)deviceLocatorServiceEnabledWithError:(id *)a3;
+- (id)deviceLocatorServiceEnabledWithError:(id *)error;
 - (id)enforcedSoftwareUpdateDelay;
-- (id)isActivationLockEnabledWithError:(id *)a3;
+- (id)isActivationLockEnabledWithError:(id *)error;
 - (id)isAppAnalyticsEnabled;
 - (id)isDataRoamingEnabled;
 - (id)isDiagnosticSubmissionEnabled;
@@ -121,9 +121,9 @@
 - (id)EASIdentifier
 {
   v2 = +[DADConnection sharedConnection];
-  v3 = [v2 activeSyncDeviceIdentifier];
+  activeSyncDeviceIdentifier = [v2 activeSyncDeviceIdentifier];
 
-  return v3;
+  return activeSyncDeviceIdentifier;
 }
 
 - (id)enforcedSoftwareUpdateDelay
@@ -179,7 +179,7 @@
   return [NSNumber numberWithBool:v2];
 }
 
-+ (id)_stringFromSubscriptionSlot:(int64_t)a3
++ (id)_stringFromSubscriptionSlot:(int64_t)slot
 {
   v3 = CTSubscriptionSlotAsString();
   if (v3)
@@ -190,16 +190,16 @@
   return v3;
 }
 
-- (id)_deviceInformationForEquipmentInfo:(id)a3 subscription:(id)a4 esimIdentifier:(id)a5 withClient:(id)a6
+- (id)_deviceInformationForEquipmentInfo:(id)info subscription:(id)subscription esimIdentifier:(id)identifier withClient:(id)client
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v11)
+  infoCopy = info;
+  subscriptionCopy = subscription;
+  identifierCopy = identifier;
+  clientCopy = client;
+  v15 = clientCopy;
+  if (!infoCopy)
   {
-    if (!sub_100082430(a2, self, v14))
+    if (!sub_100082430(a2, self, clientCopy))
     {
 LABEL_61:
       v47 = &__NSDictionary0__struct;
@@ -211,7 +211,7 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  if (!v14)
+  if (!clientCopy)
   {
     goto LABEL_60;
   }
@@ -233,47 +233,47 @@ LABEL_60:
   }
 
   v60 = v20;
-  v21 = [objc_opt_class() _stringFromSubscriptionSlot:{objc_msgSend(v11, "slotId")}];
+  v21 = [objc_opt_class() _stringFromSubscriptionSlot:{objc_msgSend(infoCopy, "slotId")}];
   [v17 setObject:v21 forKeyedSubscript:DMFDeviceServiceSubscriptionSlotKey];
 
-  v22 = [v11 ICCID];
-  v23 = [DMDCoreTelephonyUtilities formattedICCIDStringFromString:v22];
+  iCCID = [infoCopy ICCID];
+  v23 = [DMDCoreTelephonyUtilities formattedICCIDStringFromString:iCCID];
   [v17 setObject:v23 forKeyedSubscript:DMFDeviceICCIDKey];
 
-  v24 = [v11 IMEI];
-  v25 = [DMDCoreTelephonyUtilities formattedIMEIStringFromString:v24];
+  iMEI = [infoCopy IMEI];
+  v25 = [DMDCoreTelephonyUtilities formattedIMEIStringFromString:iMEI];
   [v17 setObject:v25 forKeyedSubscript:DMFDeviceIMEIKey];
 
-  v26 = [v11 MEID];
-  [v17 setObject:v26 forKeyedSubscript:DMFDeviceMEIDKey];
+  mEID = [infoCopy MEID];
+  [v17 setObject:mEID forKeyedSubscript:DMFDeviceMEIDKey];
 
-  v27 = [v11 CSN];
+  v27 = [infoCopy CSN];
   v28 = DMFDeviceEIDKey;
   [v17 setObject:v27 forKeyedSubscript:DMFDeviceEIDKey];
 
-  if ([(DMDiOSDeviceController *)self _equipmentInfoHasEsimIdentifier:v11])
+  if ([(DMDiOSDeviceController *)self _equipmentInfoHasEsimIdentifier:infoCopy])
   {
-    [v17 setObject:v13 forKeyedSubscript:v28];
+    [v17 setObject:identifierCopy forKeyedSubscript:v28];
   }
 
-  v29 = [v11 slotId];
-  if (v13 && v29 == 2 && ![(DMDiOSDeviceController *)self _equipmentInfoHasEsimIdentifier:v11])
+  slotId = [infoCopy slotId];
+  if (identifierCopy && slotId == 2 && ![(DMDiOSDeviceController *)self _equipmentInfoHasEsimIdentifier:infoCopy])
   {
-    [v17 setObject:v13 forKeyedSubscript:v28];
+    [v17 setObject:identifierCopy forKeyedSubscript:v28];
   }
 
-  if (v12)
+  if (subscriptionCopy)
   {
     v68 = 0;
-    v30 = [v15 getPhoneNumber:v12 error:&v68];
+    v30 = [v15 getPhoneNumber:subscriptionCopy error:&v68];
     v31 = v68;
     v54 = v30;
     if (v30)
     {
-      v32 = [v30 number];
-      if (v32)
+      number = [v30 number];
+      if (number)
       {
-        [v17 setObject:v32 forKeyedSubscript:DMFDevicePhoneNumberKey];
+        [v17 setObject:number forKeyedSubscript:DMFDevicePhoneNumberKey];
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -288,22 +288,22 @@ LABEL_60:
     }
 
     v53 = v31;
-    v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isEqual:v61]);
+    v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [subscriptionCopy isEqual:v61]);
     [v17 setObject:v33 forKeyedSubscript:DMFDeviceServiceSubscriptionIsDataPreferredKey];
 
-    v34 = [v12 userDefaultVoice];
-    [v17 setObject:v34 forKeyedSubscript:DMFDeviceServiceSubscriptionIsVoicePreferredKey];
+    userDefaultVoice = [subscriptionCopy userDefaultVoice];
+    [v17 setObject:userDefaultVoice forKeyedSubscript:DMFDeviceServiceSubscriptionIsVoicePreferredKey];
 
     v67 = 0;
-    v35 = [v15 getSimLabel:v12 error:&v67];
+    v35 = [v15 getSimLabel:subscriptionCopy error:&v67];
     v59 = v67;
     v52 = v35;
     if (v35)
     {
-      v36 = [v35 text];
-      if (v36)
+      text = [v35 text];
+      if (text)
       {
-        [v17 setObject:v36 forKeyedSubscript:DMFDeviceServiceSubscriptionLabelKey];
+        [v17 setObject:text forKeyedSubscript:DMFDeviceServiceSubscriptionLabelKey];
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -311,10 +311,10 @@ LABEL_60:
         sub_100082010();
       }
 
-      v37 = [v35 unique_id];
-      if (v37)
+      unique_id = [v35 unique_id];
+      if (unique_id)
       {
-        [v17 setObject:v37 forKeyedSubscript:DMFDeviceServiceSubscriptionLabelIDKey];
+        [v17 setObject:unique_id forKeyedSubscript:DMFDeviceServiceSubscriptionLabelIDKey];
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -329,7 +329,7 @@ LABEL_60:
     }
 
     v66 = 0;
-    v38 = [v15 copyCarrierBundleVersion:v12 error:&v66];
+    v38 = [v15 copyCarrierBundleVersion:subscriptionCopy error:&v66];
     v39 = v66;
     if (v38)
     {
@@ -342,7 +342,7 @@ LABEL_60:
     }
 
     v65 = 0;
-    v40 = [v15 copyCarrierBundleValue:v12 key:@"CarrierName" bundleType:v16 error:&v65];
+    v40 = [v15 copyCarrierBundleValue:subscriptionCopy key:@"CarrierName" bundleType:v16 error:&v65];
     v58 = v65;
     v51 = v38;
     v49 = v40;
@@ -357,8 +357,8 @@ LABEL_60:
     }
 
     v64 = 0;
-    v41 = [v15 getLocalizedOperatorName:v12 error:&v64];
-    v56 = v13;
+    v41 = [v15 getLocalizedOperatorName:subscriptionCopy error:&v64];
+    v56 = identifierCopy;
     v57 = v64;
     v55 = v16;
     if (v41)
@@ -372,7 +372,7 @@ LABEL_60:
     }
 
     v63 = 0;
-    v42 = [v15 copyMobileCountryCode:v12 error:&v63];
+    v42 = [v15 copyMobileCountryCode:subscriptionCopy error:&v63];
     v43 = v63;
     v50 = v39;
     if (v42)
@@ -386,7 +386,7 @@ LABEL_60:
     }
 
     v62 = 0;
-    v44 = [v15 copyMobileNetworkCode:v12 error:&v62];
+    v44 = [v15 copyMobileNetworkCode:subscriptionCopy error:&v62];
     v45 = v62;
     if (v44)
     {
@@ -398,11 +398,11 @@ LABEL_60:
       sub_1000823AC();
     }
 
-    v46 = [NSNumber numberWithBool:[DMDCoreTelephonyUtilities isSubscriptionRoaming:v12 client:v15]];
+    v46 = [NSNumber numberWithBool:[DMDCoreTelephonyUtilities isSubscriptionRoaming:subscriptionCopy client:v15]];
     [v17 setObject:v46 forKeyedSubscript:DMFDeviceIsRoamingKey];
 
     v16 = v55;
-    v13 = v56;
+    identifierCopy = v56;
   }
 
   v47 = [v17 copy];
@@ -412,18 +412,18 @@ LABEL_56:
   return v47;
 }
 
-- (BOOL)_equipmentInfoHasEsimIdentifier:(id)a3
+- (BOOL)_equipmentInfoHasEsimIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [v3 displayCSN];
-  if (v4)
+  identifierCopy = identifier;
+  displayCSN = [identifierCopy displayCSN];
+  if (displayCSN)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 CSN];
+    v6 = [identifierCopy CSN];
     v5 = v6 != 0;
   }
 
@@ -445,8 +445,8 @@ LABEL_56:
   v6 = v69;
   if (v5)
   {
-    v7 = [v5 meInfoList];
-    if (!v7)
+    meInfoList = [v5 meInfoList];
+    if (!meInfoList)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -460,13 +460,13 @@ LABEL_56:
     v42 = a2;
     v47 = v6;
     v48 = v5;
-    v8 = [(DMDiOSDeviceController *)self _esimIdentifierFromEquipmentInfoArray:v7];
+    v8 = [(DMDiOSDeviceController *)self _esimIdentifierFromEquipmentInfoArray:meInfoList];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v46 = v7;
-    v9 = v7;
+    v46 = meInfoList;
+    v9 = meInfoList;
     v10 = [v9 countByEnumeratingWithState:&v65 objects:v72 count:16];
     if (v10)
     {
@@ -482,8 +482,8 @@ LABEL_56:
           }
 
           v14 = *(*(&v65 + 1) + 8 * i);
-          v15 = [v14 slotId];
-          if (!v15)
+          slotId = [v14 slotId];
+          if (!slotId)
           {
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
@@ -493,7 +493,7 @@ LABEL_56:
             goto LABEL_22;
           }
 
-          v16 = [NSNumber numberWithInteger:v15];
+          v16 = [NSNumber numberWithInteger:slotId];
           v17 = [v4 objectForKeyedSubscript:v16];
           if (v17 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
@@ -523,15 +523,15 @@ LABEL_22:
     v45 = v20;
     if (v20)
     {
-      v21 = [v20 subscriptionsInUse];
-      if (v21)
+      subscriptionsInUse = [v20 subscriptionsInUse];
+      if (subscriptionsInUse)
       {
         v43 = v3;
         v60 = 0u;
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v22 = v21;
+        v22 = subscriptionsInUse;
         v23 = [v22 countByEnumeratingWithState:&v58 objects:v71 count:16];
         if (v23)
         {
@@ -547,8 +547,8 @@ LABEL_22:
               }
 
               v27 = *(*(&v58 + 1) + 8 * j);
-              v28 = [v27 slotID];
-              if (!v28)
+              slotID = [v27 slotID];
+              if (!slotID)
               {
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                 {
@@ -558,7 +558,7 @@ LABEL_22:
                 goto LABEL_45;
               }
 
-              v29 = [NSNumber numberWithInteger:v28];
+              v29 = [NSNumber numberWithInteger:slotID];
               v30 = [v19 objectForKeyedSubscript:v29];
               if (v30 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
@@ -601,8 +601,8 @@ LABEL_46:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v32 = [v49 allValues];
-    v33 = [v32 countByEnumeratingWithState:&v52 objects:v70 count:16];
+    allValues = [v49 allValues];
+    v33 = [allValues countByEnumeratingWithState:&v52 objects:v70 count:16];
     if (v33)
     {
       v34 = v33;
@@ -613,7 +613,7 @@ LABEL_46:
         {
           if (*v53 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(allValues);
           }
 
           v37 = *(*(&v52 + 1) + 8 * k);
@@ -624,7 +624,7 @@ LABEL_46:
           [v51 addObject:v40];
         }
 
-        v34 = [v32 countByEnumeratingWithState:&v52 objects:v70 count:16];
+        v34 = [allValues countByEnumeratingWithState:&v52 objects:v70 count:16];
       }
 
       while (v34);
@@ -634,7 +634,7 @@ LABEL_46:
     v3 = v31;
     v5 = v48;
     v4 = v49;
-    v7 = v46;
+    meInfoList = v46;
     v6 = v47;
 LABEL_54:
 
@@ -652,14 +652,14 @@ LABEL_55:
   return v18;
 }
 
-- (id)_esimIdentifierFromEquipmentInfoArray:(id)a3
+- (id)_esimIdentifierFromEquipmentInfoArray:(id)array
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  arrayCopy = array;
+  v4 = [arrayCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = *v20;
@@ -669,22 +669,22 @@ LABEL_55:
       {
         if (*v20 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v7 = *(*(&v19 + 1) + 8 * i);
-        v8 = [v7 displayCSN];
-        if (v8)
+        displayCSN = [v7 displayCSN];
+        if (displayCSN)
         {
-          v9 = v8;
-          v10 = [v7 displayCSN];
-          v11 = [v10 length];
+          v9 = displayCSN;
+          displayCSN2 = [v7 displayCSN];
+          v11 = [displayCSN2 length];
 
           if (v11)
           {
-            v16 = [v7 displayCSN];
+            displayCSN3 = [v7 displayCSN];
 LABEL_15:
-            v4 = v16;
+            v4 = displayCSN3;
             goto LABEL_16;
           }
         }
@@ -698,13 +698,13 @@ LABEL_15:
 
           if (v15)
           {
-            v16 = [v7 CSN];
+            displayCSN3 = [v7 CSN];
             goto LABEL_15;
           }
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v4 = [arrayCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v4)
       {
         continue;
@@ -721,7 +721,7 @@ LABEL_16:
   return v17;
 }
 
-- (id)deviceLocatorServiceEnabledWithError:(id *)a3
+- (id)deviceLocatorServiceEnabledWithError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -749,30 +749,30 @@ LABEL_16:
   v7 = v19[5];
   if (v7)
   {
-    if (a3)
+    if (error)
     {
       v28 = NSUnderlyingErrorKey;
       v29 = v7;
       v8 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1, v11, v12, v13, v14];
       v9 = DMFErrorWithCodeAndUserInfo();
-      *a3 = v9;
+      *error = v9;
 
-      a3 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a3 = [NSNumber numberWithBool:*(v25 + 24), v11, v12, v13, v14];
+    error = [NSNumber numberWithBool:*(v25 + 24), v11, v12, v13, v14];
   }
 
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v24, 8);
 
-  return a3;
+  return error;
 }
 
-- (id)isActivationLockEnabledWithError:(id *)a3
+- (id)isActivationLockEnabledWithError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -797,7 +797,7 @@ LABEL_16:
   [v5 isActivationLockedWithCompletion:&v12];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
     v7 = v20[5];
     if (v7)
@@ -806,7 +806,7 @@ LABEL_16:
       v30 = v7;
       v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1, v12, v13, v14, v15];
       v9 = DMFErrorWithCodeAndUserInfo();
-      *a3 = v9;
+      *error = v9;
     }
   }
 
@@ -821,19 +821,19 @@ LABEL_16:
 - (id)_isCloudBackupEnabled
 {
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccountWithPreloadedDataclasses];
+  aa_primaryAppleAccountWithPreloadedDataclasses = [v2 aa_primaryAppleAccountWithPreloadedDataclasses];
 
-  if (v3 && [v3 isEnabledForDataclass:kAccountDataclassBackup])
+  if (aa_primaryAppleAccountWithPreloadedDataclasses && [aa_primaryAppleAccountWithPreloadedDataclasses isEnabledForDataclass:kAccountDataclassBackup])
   {
-    v4 = [v3 aa_isPrimaryEmailVerified];
+    aa_isPrimaryEmailVerified = [aa_primaryAppleAccountWithPreloadedDataclasses aa_isPrimaryEmailVerified];
   }
 
   else
   {
-    v4 = 0;
+    aa_isPrimaryEmailVerified = 0;
   }
 
-  v5 = [NSNumber numberWithBool:v4];
+  v5 = [NSNumber numberWithBool:aa_isPrimaryEmailVerified];
 
   return v5;
 }
@@ -843,15 +843,15 @@ LABEL_16:
   if (+[DMDMobileGestalt hasPersonalHotspotCapability])
   {
     v2 = +[DMDPersonalHotspotManager sharedManager];
-    v3 = [v2 enabled];
+    enabled = [v2 enabled];
   }
 
   else
   {
-    v3 = 0;
+    enabled = 0;
   }
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:enabled];
 }
 
 - (id)_skippedSetupPanes

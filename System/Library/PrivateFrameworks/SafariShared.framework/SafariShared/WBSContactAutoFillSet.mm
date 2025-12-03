@@ -1,40 +1,40 @@
 @interface WBSContactAutoFillSet
-+ (id)displayStringsForFillMatches:(id)a3 skipMatches:(id)a4 matchesForForm:(id)a5 label:(id)a6 formDataController:(id)a7;
-+ (id)displayStringsForSkipMatches:(id)a3 matchesForForm:(id)a4 formDataController:(id)a5;
-- (WBSContactAutoFillSet)initWithControlIDToValueMap:(id)a3 label:(id)a4 fillDisplayProperties:(id)a5 skipDisplayProperties:(id)a6 propertiesToFillOrSkip:(id)a7;
++ (id)displayStringsForFillMatches:(id)matches skipMatches:(id)skipMatches matchesForForm:(id)form label:(id)label formDataController:(id)controller;
++ (id)displayStringsForSkipMatches:(id)matches matchesForForm:(id)form formDataController:(id)controller;
+- (WBSContactAutoFillSet)initWithControlIDToValueMap:(id)map label:(id)label fillDisplayProperties:(id)properties skipDisplayProperties:(id)displayProperties propertiesToFillOrSkip:(id)skip;
 @end
 
 @implementation WBSContactAutoFillSet
 
-- (WBSContactAutoFillSet)initWithControlIDToValueMap:(id)a3 label:(id)a4 fillDisplayProperties:(id)a5 skipDisplayProperties:(id)a6 propertiesToFillOrSkip:(id)a7
+- (WBSContactAutoFillSet)initWithControlIDToValueMap:(id)map label:(id)label fillDisplayProperties:(id)properties skipDisplayProperties:(id)displayProperties propertiesToFillOrSkip:(id)skip
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  mapCopy = map;
+  labelCopy = label;
+  propertiesCopy = properties;
+  displayPropertiesCopy = displayProperties;
+  skipCopy = skip;
   v30.receiver = self;
   v30.super_class = WBSContactAutoFillSet;
   v17 = [(WBSContactAutoFillSet *)&v30 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [mapCopy copy];
     controlIDToValueMap = v17->_controlIDToValueMap;
     v17->_controlIDToValueMap = v18;
 
-    v20 = [v13 copy];
+    v20 = [labelCopy copy];
     label = v17->_label;
     v17->_label = v20;
 
-    v22 = [v14 copy];
+    v22 = [propertiesCopy copy];
     fillDisplayProperties = v17->_fillDisplayProperties;
     v17->_fillDisplayProperties = v22;
 
-    v24 = [v15 copy];
+    v24 = [displayPropertiesCopy copy];
     skipDisplayProperties = v17->_skipDisplayProperties;
     v17->_skipDisplayProperties = v24;
 
-    v26 = [v16 copy];
+    v26 = [skipCopy copy];
     propertiesToFillOrSkip = v17->_propertiesToFillOrSkip;
     v17->_propertiesToFillOrSkip = v26;
 
@@ -44,18 +44,18 @@
   return v17;
 }
 
-+ (id)displayStringsForSkipMatches:(id)a3 matchesForForm:(id)a4 formDataController:(id)a5
++ (id)displayStringsForSkipMatches:(id)matches matchesForForm:(id)form formDataController:(id)controller
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  matchesCopy = matches;
+  formCopy = form;
+  controllerCopy = controller;
   v10 = [MEMORY[0x1E695DFA8] set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v7;
+  v11 = matchesCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v12)
   {
@@ -70,8 +70,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v30 + 1) + 8 * i) property];
-        [v10 addObject:v16];
+        property = [*(*(&v30 + 1) + 8 * i) property];
+        [v10 addObject:property];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -85,7 +85,7 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v8;
+  v18 = formCopy;
   v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v19)
   {
@@ -100,10 +100,10 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * j) property];
-        if ([v10 containsObject:v23])
+        property2 = [*(*(&v26 + 1) + 8 * j) property];
+        if ([v10 containsObject:property2])
         {
-          v24 = addressBookStringToBeDisplayed(0, v23, 0, v9);
+          v24 = addressBookStringToBeDisplayed(0, property2, 0, controllerCopy);
           [v17 addObject:v24];
         }
       }
@@ -117,21 +117,21 @@
   return v17;
 }
 
-+ (id)displayStringsForFillMatches:(id)a3 skipMatches:(id)a4 matchesForForm:(id)a5 label:(id)a6 formDataController:(id)a7
++ (id)displayStringsForFillMatches:(id)matches skipMatches:(id)skipMatches matchesForForm:(id)form label:(id)label formDataController:(id)controller
 {
   v68 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v40 = a4;
-  v11 = a5;
-  v46 = a6;
-  v45 = a7;
+  matchesCopy = matches;
+  skipMatchesCopy = skipMatches;
+  formCopy = form;
+  labelCopy = label;
+  controllerCopy = controller;
   v47 = [MEMORY[0x1E695DFA8] set];
   v12 = [MEMORY[0x1E695DFA8] set];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v11;
+  obj = formCopy;
   v44 = [obj countByEnumeratingWithState:&v60 objects:v67 count:16];
   if (v44)
   {
@@ -150,8 +150,8 @@
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v15 = v43;
-        v16 = [v15 countByEnumeratingWithState:&v56 objects:v66 count:{16, v40}];
+        v15 = matchesCopy;
+        v16 = [v15 countByEnumeratingWithState:&v56 objects:v66 count:{16, skipMatchesCopy}];
         if (v16)
         {
           v17 = v16;
@@ -168,16 +168,16 @@
               v20 = *(*(&v56 + 1) + 8 * j);
               if ([v20 isEqual:v14])
               {
-                v21 = [v20 property];
-                [v12 addObject:v21];
-                if ([WBSFormDataController isNameProperty:v21])
+                property = [v20 property];
+                [v12 addObject:property];
+                if ([WBSFormDataController isNameProperty:property])
                 {
 
                   goto LABEL_18;
                 }
 
-                v22 = [v20 label];
-                v23 = addressBookStringToBeDisplayed(v46, v21, v22, v45);
+                label = [v20 label];
+                v23 = addressBookStringToBeDisplayed(labelCopy, property, label, controllerCopy);
                 [v47 addObject:v23];
               }
             }
@@ -205,7 +205,7 @@ LABEL_18:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v24 = v40;
+  v24 = skipMatchesCopy;
   v25 = [v24 countByEnumeratingWithState:&v52 objects:v65 count:16];
   if (v25)
   {
@@ -220,8 +220,8 @@ LABEL_18:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v52 + 1) + 8 * k) property];
-        [v12 addObject:v29];
+        property2 = [*(*(&v52 + 1) + 8 * k) property];
+        [v12 addObject:property2];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v52 objects:v65 count:16];
@@ -250,14 +250,14 @@ LABEL_18:
         }
 
         v35 = *(*(&v48 + 1) + 8 * m);
-        v36 = [v35 property];
-        if (([v12 containsObject:v36] & 1) == 0 && !+[WBSFormDataController isNameProperty:](WBSFormDataController, "isNameProperty:", v36))
+        property3 = [v35 property];
+        if (([v12 containsObject:property3] & 1) == 0 && !+[WBSFormDataController isNameProperty:](WBSFormDataController, "isNameProperty:", property3))
         {
-          v37 = [v35 label];
-          v38 = addressBookStringToBeDisplayed(v46, v36, v37, v45);
+          label2 = [v35 label];
+          v38 = addressBookStringToBeDisplayed(labelCopy, property3, label2, controllerCopy);
           [v47 addObject:v38];
 
-          [v12 addObject:v36];
+          [v12 addObject:property3];
         }
       }
 

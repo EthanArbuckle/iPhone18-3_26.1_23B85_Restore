@@ -3,12 +3,12 @@
 - (APPromotedContentLegacyInterface)init;
 - (id)_currentRateLimits;
 - (id)_loadRateLimitsFromUserDefaults;
-- (id)_rateLimitPlacementTypes:(id)a3 context:(id)a4 token:(id)a5 completionHandler:(id)a6;
-- (void)_handleAdRequesterResponseForToken:(id)a3 internalContent:(id)a4 completionHandler:(id)a5;
+- (id)_rateLimitPlacementTypes:(id)types context:(id)context token:(id)token completionHandler:(id)handler;
+- (void)_handleAdRequesterResponseForToken:(id)token internalContent:(id)content completionHandler:(id)handler;
 - (void)_loadRateLimitSettings;
-- (void)requestPromotedContentOfTypesAccumulating:(id)a3 forContext:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 completionHandler:(id)a9;
-- (void)requestPromotedContentOfTypesWithoutAccumulating:(id)a3 forContext:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 completionHandler:(id)a9;
-- (void)setRateLimitRequestsInFeed:(float)a3 inArticle:(float)a4 betweenArticle:(float)a5 videoInArticle:(float)a6 nativeInFeed:(float)a7 nativeInArticle:(float)a8;
+- (void)requestPromotedContentOfTypesAccumulating:(id)accumulating forContext:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account completionHandler:(id)handler;
+- (void)requestPromotedContentOfTypesWithoutAccumulating:(id)accumulating forContext:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account completionHandler:(id)handler;
+- (void)setRateLimitRequestsInFeed:(float)feed inArticle:(float)article betweenArticle:(float)betweenArticle videoInArticle:(float)inArticle nativeInFeed:(float)inFeed nativeInArticle:(float)nativeInArticle;
 @end
 
 @implementation APPromotedContentLegacyInterface
@@ -46,38 +46,38 @@
   return v2;
 }
 
-- (void)requestPromotedContentOfTypesWithoutAccumulating:(id)a3 forContext:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 completionHandler:(id)a9
+- (void)requestPromotedContentOfTypesWithoutAccumulating:(id)accumulating forContext:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account completionHandler:(id)handler
 {
-  v14 = a3;
-  v41 = a4;
-  v42 = a6;
-  v15 = a7;
-  v16 = a8;
-  v40 = a9;
+  accumulatingCopy = accumulating;
+  contextCopy = context;
+  dCopy = d;
+  infoCopy = info;
+  accountCopy = account;
+  handlerCopy = handler;
   v17 = APLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v41 identifier];
+    identifier = [contextCopy identifier];
     *buf = 136315650;
     v49 = "[APPromotedContentLegacyInterface requestPromotedContentOfTypesWithoutAccumulating:forContext:withToken:andBundleID:clientInfo:idAccount:completionHandler:]";
     v50 = 2114;
-    v51 = v18;
+    v51 = identifier;
     v52 = 2114;
-    v53 = v42;
+    v53 = dCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s: bundleID for context %{public}@ is %{public}@.", buf, 0x20u);
   }
 
-  if ([v14 count])
+  if ([accumulatingCopy count])
   {
-    v37 = self;
-    v38 = v15;
-    v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
+    selfCopy = self;
+    v38 = infoCopy;
+    v19 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [accumulatingCopy count]);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v39 = v14;
-    v20 = v14;
+    v39 = accumulatingCopy;
+    v20 = accumulatingCopy;
     v21 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v21)
     {
@@ -95,7 +95,7 @@
           v25 = *(*(&v43 + 1) + 8 * i);
           v26 = [APAdRequestParameters alloc];
           v27 = +[NSUUID UUID];
-          v28 = -[APAdRequestParameters initWithContext:bundleID:identifier:placement:completionHandler:](v26, "initWithContext:bundleID:identifier:placement:completionHandler:", v41, v42, v27, [v25 integerValue], v40);
+          v28 = -[APAdRequestParameters initWithContext:bundleID:identifier:placement:completionHandler:](v26, "initWithContext:bundleID:identifier:placement:completionHandler:", contextCopy, dCopy, v27, [v25 integerValue], handlerCopy);
 
           [v19 addObject:v28];
         }
@@ -106,30 +106,30 @@
       while (v22);
     }
 
-    v29 = [(APPromotedContentLegacyInterface *)v37 adRequesterLock];
-    [v29 lock];
+    adRequesterLock = [(APPromotedContentLegacyInterface *)selfCopy adRequesterLock];
+    [adRequesterLock lock];
 
-    v30 = [(APPromotedContentLegacyInterface *)v37 adRequesters];
-    v31 = [v30 objectForKeyedSubscript:v42];
+    adRequesters = [(APPromotedContentLegacyInterface *)selfCopy adRequesters];
+    v31 = [adRequesters objectForKeyedSubscript:dCopy];
 
-    v15 = v38;
+    infoCopy = v38;
     if (!v31)
     {
       v32 = [APAdRequester alloc];
       v33 = +[NSUUID UUID];
-      v31 = [(APAdRequester *)v32 initWithBundleID:v42 identifier:v33 clientInfo:v38 idAccount:v16 accumulateRequests:0];
+      v31 = [(APAdRequester *)v32 initWithBundleID:dCopy identifier:v33 clientInfo:v38 idAccount:accountCopy accumulateRequests:0];
 
-      v34 = [(APPromotedContentLegacyInterface *)v37 adRequesters];
-      [v34 setObject:v31 forKeyedSubscript:v42];
+      adRequesters2 = [(APPromotedContentLegacyInterface *)selfCopy adRequesters];
+      [adRequesters2 setObject:v31 forKeyedSubscript:dCopy];
     }
 
-    v35 = [(APPromotedContentLegacyInterface *)v37 adRequesterLock];
-    [v35 unlock];
+    adRequesterLock2 = [(APPromotedContentLegacyInterface *)selfCopy adRequesterLock];
+    [adRequesterLock2 unlock];
 
     v36 = [v19 copy];
     [(APAdRequester *)v31 requestAds:v36];
 
-    v14 = v39;
+    accumulatingCopy = v39;
   }
 
   else
@@ -143,31 +143,31 @@
   }
 }
 
-- (void)requestPromotedContentOfTypesAccumulating:(id)a3 forContext:(id)a4 withToken:(id)a5 andBundleID:(id)a6 clientInfo:(id)a7 idAccount:(id)a8 completionHandler:(id)a9
+- (void)requestPromotedContentOfTypesAccumulating:(id)accumulating forContext:(id)context withToken:(id)token andBundleID:(id)d clientInfo:(id)info idAccount:(id)account completionHandler:(id)handler
 {
-  v15 = a3;
-  v49 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  accumulatingCopy = accumulating;
+  contextCopy = context;
+  tokenCopy = token;
+  dCopy = d;
+  infoCopy = info;
+  accountCopy = account;
+  handlerCopy = handler;
   v21 = APLogForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [v49 identifier];
+    identifier = [contextCopy identifier];
     *buf = 136315650;
     v57 = "[APPromotedContentLegacyInterface requestPromotedContentOfTypesAccumulating:forContext:withToken:andBundleID:clientInfo:idAccount:completionHandler:]";
     v58 = 2114;
-    v59 = v22;
+    v59 = identifier;
     v60 = 2114;
-    v61 = v17;
+    v61 = dCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s: bundleID for context %{public}@ is %{public}@.", buf, 0x20u);
   }
 
-  if ([v15 count])
+  if ([accumulatingCopy count])
   {
-    v23 = [(APPromotedContentLegacyInterface *)self _rateLimitPlacementTypes:v15 context:v49 token:v16 completionHandler:v20];
+    v23 = [(APPromotedContentLegacyInterface *)self _rateLimitPlacementTypes:accumulatingCopy context:contextCopy token:tokenCopy completionHandler:handlerCopy];
     if ([v23 count])
     {
       block[0] = _NSConcreteStackBlock;
@@ -181,24 +181,24 @@
         dispatch_once(&qword_1004E6A70, block);
       }
 
-      v24 = [(APPromotedContentLegacyInterface *)self adRequesterLock];
-      [v24 lock];
+      adRequesterLock = [(APPromotedContentLegacyInterface *)self adRequesterLock];
+      [adRequesterLock lock];
 
-      v25 = [(APPromotedContentLegacyInterface *)self adRequesters];
-      v26 = [v25 objectForKeyedSubscript:v17];
+      adRequesters = [(APPromotedContentLegacyInterface *)self adRequesters];
+      v26 = [adRequesters objectForKeyedSubscript:dCopy];
 
       if (!v26)
       {
-        if (!v17)
+        if (!dCopy)
         {
-          v43 = [(APPromotedContentLegacyInterface *)self adRequesterLock];
-          [v43 unlock];
+          adRequesterLock2 = [(APPromotedContentLegacyInterface *)self adRequesterLock];
+          [adRequesterLock2 unlock];
 
-          v44 = [v49 identifier];
-          v39 = [NSString stringWithFormat:@"Request from context %@ is missing the bundle identifier. Cannot create ad requester.", v44];
+          identifier2 = [contextCopy identifier];
+          v39 = [NSString stringWithFormat:@"Request from context %@ is missing the bundle identifier. Cannot create ad requester.", identifier2];
 
           APSimulateCrash();
-          (*(v20 + 2))(v20, 0, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_18:
 
           v23 = v48;
@@ -207,24 +207,24 @@ LABEL_18:
 
         v27 = [APAdRequester alloc];
         v28 = +[NSUUID UUID];
-        v26 = [(APAdRequester *)v27 initWithBundleID:v17 identifier:v28 clientInfo:v18 idAccount:v19 accumulateRequests:1];
+        v26 = [(APAdRequester *)v27 initWithBundleID:dCopy identifier:v28 clientInfo:infoCopy idAccount:accountCopy accumulateRequests:1];
 
-        v29 = [(APPromotedContentLegacyInterface *)self adRequesters];
-        [v29 setObject:v26 forKeyedSubscript:v17];
+        adRequesters2 = [(APPromotedContentLegacyInterface *)self adRequesters];
+        [adRequesters2 setObject:v26 forKeyedSubscript:dCopy];
       }
 
       v45 = v26;
-      v46 = v18;
-      v30 = [(APPromotedContentLegacyInterface *)self adRequesterLock];
-      [v30 unlock];
+      v46 = infoCopy;
+      adRequesterLock3 = [(APPromotedContentLegacyInterface *)self adRequesterLock];
+      [adRequesterLock3 unlock];
 
       v31 = +[NSMutableArray array];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v47 = v15;
-      v32 = v15;
+      v47 = accumulatingCopy;
+      v32 = accumulatingCopy;
       v33 = [v32 countByEnumeratingWithState:&v50 objects:v55 count:16];
       if (v33)
       {
@@ -239,7 +239,7 @@ LABEL_18:
               objc_enumerationMutation(v32);
             }
 
-            v37 = -[APAdRequestParameters initWithContext:bundleID:identifier:placement:completionHandler:]([APAdRequestParameters alloc], "initWithContext:bundleID:identifier:placement:completionHandler:", v49, v17, v16, [*(*(&v50 + 1) + 8 * i) unsignedIntValue], v20);
+            v37 = -[APAdRequestParameters initWithContext:bundleID:identifier:placement:completionHandler:]([APAdRequestParameters alloc], "initWithContext:bundleID:identifier:placement:completionHandler:", contextCopy, dCopy, tokenCopy, [*(*(&v50 + 1) + 8 * i) unsignedIntValue], handlerCopy);
             [v31 addObject:v37];
           }
 
@@ -253,15 +253,15 @@ LABEL_18:
       v39 = v45;
       [(APAdRequester *)v45 accumulateAdRequests:v38];
 
-      v18 = v46;
-      v15 = v47;
+      infoCopy = v46;
+      accumulatingCopy = v47;
       goto LABEL_18;
     }
 
     v40 = APLogForCategory();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
-      [v49 identifier];
+      [contextCopy identifier];
       v42 = v41 = v23;
       *buf = 138543362;
       v57 = v42;
@@ -284,46 +284,46 @@ LABEL_18:
 LABEL_24:
 }
 
-- (void)_handleAdRequesterResponseForToken:(id)a3 internalContent:(id)a4 completionHandler:(id)a5
+- (void)_handleAdRequesterResponseForToken:(id)token internalContent:(id)content completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v9[2](v9, v8);
-  objc_sync_exit(v10);
+  tokenCopy = token;
+  contentCopy = content;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  handlerCopy[2](handlerCopy, contentCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setRateLimitRequestsInFeed:(float)a3 inArticle:(float)a4 betweenArticle:(float)a5 videoInArticle:(float)a6 nativeInFeed:(float)a7 nativeInArticle:(float)a8
+- (void)setRateLimitRequestsInFeed:(float)feed inArticle:(float)article betweenArticle:(float)betweenArticle videoInArticle:(float)inArticle nativeInFeed:(float)inFeed nativeInArticle:(float)nativeInArticle
 {
   if (+[APSystemInternal isAppleInternalInstall]&& ([(APPromotedContentLegacyInterface *)self _loadRateLimitsFromUserDefaults], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v15 = [(APPromotedContentLegacyInterface *)self rateLimitLock];
-    [v15 lock];
+    rateLimitLock = [(APPromotedContentLegacyInterface *)self rateLimitLock];
+    [rateLimitLock lock];
     [(APPromotedContentLegacyInterface *)self setRateLimits:v21];
     v16 = +[NSDate now];
     [v16 timeIntervalSince1970];
     [(APPromotedContentLegacyInterface *)self setRateLimitsLastUpdatedOn:?];
 
-    [v15 unlock];
+    [rateLimitLock unlock];
   }
 
   else
   {
     v17 = [APRateLimits alloc];
-    *&v18 = a3;
-    v21 = sub_100393B48(&v17->super.isa, v18, a4, a5, a6, a7, a8);
-    v15 = +[NSDate now];
-    v19 = [(APPromotedContentLegacyInterface *)self rateLimitLock];
-    [v19 lock];
+    *&v18 = feed;
+    v21 = sub_100393B48(&v17->super.isa, v18, article, betweenArticle, inArticle, inFeed, nativeInArticle);
+    rateLimitLock = +[NSDate now];
+    rateLimitLock2 = [(APPromotedContentLegacyInterface *)self rateLimitLock];
+    [rateLimitLock2 lock];
     v20 = objc_alloc_init(APRateLimitSettings);
-    [(APRateLimitSettings *)v20 setLastUpdated:v15];
+    [(APRateLimitSettings *)v20 setLastUpdated:rateLimitLock];
     [(APRateLimitSettings *)v20 setRateLimitsObject:v21];
-    [v15 timeIntervalSince1970];
+    [rateLimitLock timeIntervalSince1970];
     [(APPromotedContentLegacyInterface *)self setRateLimitsLastUpdatedOn:?];
     [(APPromotedContentLegacyInterface *)self setRateLimits:v21];
-    [v19 unlock];
+    [rateLimitLock2 unlock];
   }
 }
 
@@ -383,20 +383,20 @@ LABEL_24:
   else
   {
     v13 = objc_alloc_init(APRateLimitSettings);
-    v7 = [(APRateLimitSettings *)v13 lastUpdated];
-    if (v7)
+    lastUpdated = [(APRateLimitSettings *)v13 lastUpdated];
+    if (lastUpdated)
     {
       v8 = +[NSDate now];
-      [v8 timeIntervalSinceDate:v7];
+      [v8 timeIntervalSinceDate:lastUpdated];
       v10 = v9;
 
       if (v10 <= 86400.0)
       {
-        v11 = [(APRateLimitSettings *)v13 rateLimitsObject];
+        rateLimitsObject = [(APRateLimitSettings *)v13 rateLimitsObject];
         if (v13)
         {
-          objc_storeStrong(&self->_rateLimits, v11);
-          [v7 timeIntervalSince1970];
+          objc_storeStrong(&self->_rateLimits, rateLimitsObject);
+          [lastUpdated timeIntervalSince1970];
           self->_rateLimitsLastUpdatedOn = v12;
         }
       }
@@ -416,12 +416,12 @@ LABEL_24:
   [v3 timeIntervalSince1970];
   v5 = v4;
 
-  v6 = [(APPromotedContentLegacyInterface *)self rateLimitLock];
-  [v6 lock];
+  rateLimitLock = [(APPromotedContentLegacyInterface *)self rateLimitLock];
+  [rateLimitLock lock];
   [(APPromotedContentLegacyInterface *)self rateLimitsLastUpdatedOn];
   v8 = v7;
-  v9 = [(APPromotedContentLegacyInterface *)self rateLimits];
-  if (!v9 || v8 == 0.0)
+  rateLimits = [(APPromotedContentLegacyInterface *)self rateLimits];
+  if (!rateLimits || v8 == 0.0)
   {
   }
 
@@ -444,20 +444,20 @@ LABEL_24:
     }
   }
 
-  v12 = [(APPromotedContentLegacyInterface *)self rateLimits];
-  [v6 unlock];
+  rateLimits2 = [(APPromotedContentLegacyInterface *)self rateLimits];
+  [rateLimitLock unlock];
 
-  return v12;
+  return rateLimits2;
 }
 
-- (id)_rateLimitPlacementTypes:(id)a3 context:(id)a4 token:(id)a5 completionHandler:(id)a6
+- (id)_rateLimitPlacementTypes:(id)types context:(id)context token:(id)token completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v38 = COERCE_DOUBLE(a5);
-  v37 = a6;
-  v12 = [(APPromotedContentLegacyInterface *)self _currentRateLimits];
-  if (!v12)
+  typesCopy = types;
+  contextCopy = context;
+  v38 = COERCE_DOUBLE(token);
+  handlerCopy = handler;
+  _currentRateLimits = [(APPromotedContentLegacyInterface *)self _currentRateLimits];
+  if (!_currentRateLimits)
   {
     v32 = APLogForCategory();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -473,12 +473,12 @@ LABEL_25:
 
 LABEL_26:
 
-    v31 = v10;
+    v31 = typesCopy;
     goto LABEL_27;
   }
 
-  v13 = [v11 adPosition];
-  v14 = sub_100393DC0(v12, v13);
+  adPosition = [contextCopy adPosition];
+  v14 = sub_100393DC0(_currentRateLimits, adPosition);
   if (v14 >= 1.0)
   {
     v32 = APLogForCategory();
@@ -495,7 +495,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v35 = v12;
+  v35 = _currentRateLimits;
   if (v14 >= 0.0)
   {
     v15 = v14;
@@ -509,8 +509,8 @@ LABEL_26:
   v16 = APLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v10 count];
-    v18 = adPositionToString(v13);
+    v17 = [typesCopy count];
+    v18 = adPositionToString(adPosition);
     *buf = 134219010;
     v49 = v17;
     v50 = 2048;
@@ -524,13 +524,13 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Rate limiting %lu request(s) using %f rate. Ad position: %{public}@. Token: %{mask.hash}@", buf, 0x34u);
   }
 
-  v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+  v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(typesCopy, "count")}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v36 = v10;
-  v20 = v10;
+  v36 = typesCopy;
+  v20 = typesCopy;
   v21 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v21)
   {
@@ -548,16 +548,16 @@ LABEL_26:
         v25 = *(*(&v43 + 1) + 8 * i);
         if (arc4random_uniform(0x3E8u) >= (v15 * 1000.0))
         {
-          v26 = [(APPromotedContentLegacyInterface *)self queue];
+          queue = [(APPromotedContentLegacyInterface *)self queue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_1002B7D24;
           block[3] = &unk_10047D1A0;
           block[4] = v25;
-          v40 = v11;
+          v40 = contextCopy;
           v41 = *&v38;
-          v42 = v37;
-          dispatch_async(v26, block);
+          v42 = handlerCopy;
+          dispatch_async(queue, block);
         }
 
         else
@@ -590,8 +590,8 @@ LABEL_26:
   }
 
   v31 = [v19 copy];
-  v10 = v36;
-  v12 = v35;
+  typesCopy = v36;
+  _currentRateLimits = v35;
 LABEL_27:
 
   return v31;

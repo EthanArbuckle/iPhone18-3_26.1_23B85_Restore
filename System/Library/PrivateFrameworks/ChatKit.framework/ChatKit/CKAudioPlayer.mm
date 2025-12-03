@@ -1,24 +1,24 @@
 @interface CKAudioPlayer
 - (BOOL)isPlaying;
 - (BOOL)usesAVPlayer;
-- (CKAudioPlayer)initWithFileURL:(id)a3;
-- (CKAudioPlayer)initWithMediaObject:(id)a3 shouldUseAVPlayer:(BOOL)a4;
+- (CKAudioPlayer)initWithFileURL:(id)l;
+- (CKAudioPlayer)initWithMediaObject:(id)object shouldUseAVPlayer:(BOOL)player;
 - (CKAudioPlayerDelegate)delegate;
 - (double)currentTime;
 - (double)duration;
 - (double)playbackSpeed;
 - (float)volume;
-- (void)_handleAudioPlayerInterruption:(id)a3;
+- (void)_handleAudioPlayerInterruption:(id)interruption;
 - (void)dealloc;
-- (void)displayLinkFired:(id)a3;
-- (void)internalAudioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
-- (void)internalAudioPlayerDidPrepareAudioForPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)displayLinkFired:(id)fired;
+- (void)internalAudioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
+- (void)internalAudioPlayerDidPrepareAudioForPlaying:(id)playing successfully:(BOOL)successfully;
 - (void)pause;
-- (void)playAfterDelay:(double)a3 completion:(id)a4;
+- (void)playAfterDelay:(double)delay completion:(id)completion;
 - (void)prepareToPlay;
-- (void)setCurrentTime:(double)a3;
-- (void)setPlaybackSpeed:(double)a3;
-- (void)setVolume:(float)a3;
+- (void)setCurrentTime:(double)time;
+- (void)setPlaybackSpeed:(double)speed;
+- (void)setVolume:(float)volume;
 - (void)stop;
 @end
 
@@ -43,54 +43,54 @@
   [(CKAudioPlayer *)&v4 dealloc];
 }
 
-- (CKAudioPlayer)initWithMediaObject:(id)a3 shouldUseAVPlayer:(BOOL)a4
+- (CKAudioPlayer)initWithMediaObject:(id)object shouldUseAVPlayer:(BOOL)player
 {
-  v4 = a4;
-  v6 = a3;
+  playerCopy = player;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = CKAudioPlayer;
   v7 = [(CKAudioPlayer *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    [(CKAudioPlayer *)v7 setMediaObject:v6];
+    [(CKAudioPlayer *)v7 setMediaObject:objectCopy];
     v9 = [CKInternalAudioPlayer alloc];
-    v10 = [v6 fileURL];
-    v11 = [(CKInternalAudioPlayer *)v9 initWithContentsOfURL:v10 playerType:v4];
+    fileURL = [objectCopy fileURL];
+    v11 = [(CKInternalAudioPlayer *)v9 initWithContentsOfURL:fileURL playerType:playerCopy];
 
     [(CKInternalAudioPlayer *)v11 setDelegate:v8];
     [(CKAudioPlayer *)v8 setAudioPlayer:v11];
-    if (!v4)
+    if (!playerCopy)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v13 = *MEMORY[0x1E69580D8];
-      v14 = [MEMORY[0x1E6958460] sharedInstance];
-      [v12 addObserver:v8 selector:sel__handleAudioPlayerInterruption_ name:v13 object:v14];
+      mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+      [defaultCenter addObserver:v8 selector:sel__handleAudioPlayerInterruption_ name:v13 object:mEMORY[0x1E6958460]];
     }
   }
 
   return v8;
 }
 
-- (CKAudioPlayer)initWithFileURL:(id)a3
+- (CKAudioPlayer)initWithFileURL:(id)l
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CKAudioPlayer;
   v5 = [(CKAudioPlayer *)&v9 init];
   if (v5)
   {
-    v6 = [[CKInternalAudioPlayer alloc] initWithContentsOfURL:v4 playerType:0];
+    v6 = [[CKInternalAudioPlayer alloc] initWithContentsOfURL:lCopy playerType:0];
     [(CKInternalAudioPlayer *)v6 setDelegate:v5];
     [(CKAudioPlayer *)v5 setAudioPlayer:v6];
-    if ((!v4 || !v6) && IMOSLoggingEnabled())
+    if ((!lCopy || !v6) && IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v11 = v4;
+        v11 = lCopy;
         v12 = 2112;
         v13 = v6;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Couldn't create an audio player. URL=%@, audioPlayer=%@", buf, 0x16u);
@@ -101,38 +101,38 @@
   return v5;
 }
 
-- (void)playAfterDelay:(double)a3 completion:(id)a4
+- (void)playAfterDelay:(double)delay completion:(id)completion
 {
-  v6 = a4;
-  if (a3 < 0.0)
+  completionCopy = completion;
+  if (delay < 0.0)
   {
-    a3 = 0.0;
+    delay = 0.0;
   }
 
-  v12 = v6;
+  v12 = completionCopy;
   if (self->_block)
   {
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
-  else if (!v6)
+  else if (!completionCopy)
   {
     goto LABEL_7;
   }
 
   [(CKAudioPlayer *)self setBlock:v12];
 LABEL_7:
-  v7 = [(CKAudioPlayer *)self audioPlayer];
-  [v7 deviceCurrentTime];
-  [v7 playAtTime:a3 + v8];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer deviceCurrentTime];
+  [audioPlayer playAtTime:delay + v8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v10 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_displayLinkFired_];
     [v10 setPreferredFramesPerSecond:60];
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CKAudioPlayer *)self setDisplayLink:v10];
   }
@@ -140,22 +140,22 @@ LABEL_7:
 
 - (BOOL)usesAVPlayer
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  v3 = [v2 playerType] == 1;
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  v3 = [audioPlayer playerType] == 1;
 
   return v3;
 }
 
 - (void)stop
 {
-  v3 = [(CKAudioPlayer *)self audioPlayer];
-  [v3 stop];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer stop];
 
-  v4 = [(CKAudioPlayer *)self audioPlayer];
-  [v4 resetCurrentTime];
+  audioPlayer2 = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer2 resetCurrentTime];
 
-  v5 = [(CKAudioPlayer *)self displayLink];
-  [v5 invalidate];
+  displayLink = [(CKAudioPlayer *)self displayLink];
+  [displayLink invalidate];
 
   [(CKAudioPlayer *)self setDisplayLink:0];
 
@@ -164,57 +164,57 @@ LABEL_7:
 
 - (void)pause
 {
-  v3 = [(CKAudioPlayer *)self audioPlayer];
-  [v3 pause];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer pause];
 
-  v4 = [(CKAudioPlayer *)self displayLink];
-  [v4 invalidate];
+  displayLink = [(CKAudioPlayer *)self displayLink];
+  [displayLink invalidate];
 
   [(CKAudioPlayer *)self setDisplayLink:0];
 }
 
 - (void)prepareToPlay
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  [v2 prepareToPlay];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer prepareToPlay];
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  v3 = [v2 isPlaying];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  isPlaying = [audioPlayer isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  v5 = [(CKAudioPlayer *)self audioPlayer];
-  [v5 setCurrentTime:a3];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer setCurrentTime:time];
 
-  v6 = [(CKAudioPlayer *)self delegate];
-  [v6 audioPlayerCurrentTimeDidChange:self];
+  delegate = [(CKAudioPlayer *)self delegate];
+  [delegate audioPlayerCurrentTimeDidChange:self];
 }
 
 - (double)currentTime
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  [v2 currentTime];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer currentTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPlaybackSpeed:(double)a3
+- (void)setPlaybackSpeed:(double)speed
 {
-  v4 = [(CKAudioPlayer *)self audioPlayer];
-  [v4 setPlaybackSpeed:a3];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer setPlaybackSpeed:speed];
 }
 
 - (double)playbackSpeed
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  [v2 playbackSpeed];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer playbackSpeed];
   v4 = v3;
 
   return v4;
@@ -222,39 +222,39 @@ LABEL_7:
 
 - (double)duration
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  [v2 duration];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v5 = [(CKAudioPlayer *)self audioPlayer];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  *&v4 = volume;
+  [audioPlayer setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(CKAudioPlayer *)self audioPlayer];
-  [v2 volume];
+  audioPlayer = [(CKAudioPlayer *)self audioPlayer];
+  [audioPlayer volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)internalAudioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)internalAudioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v5 = self;
-  block = v5->_block;
-  v9 = v5;
+  successfullyCopy = successfully;
+  selfCopy = self;
+  block = selfCopy->_block;
+  v9 = selfCopy;
   if (block)
   {
-    block[2](block, 1, v4, 0);
-    v5 = v9;
+    block[2](block, 1, successfullyCopy, 0);
+    selfCopy = v9;
     v7 = v9->_block;
   }
 
@@ -263,41 +263,41 @@ LABEL_7:
     v7 = 0;
   }
 
-  v5->_block = 0;
+  selfCopy->_block = 0;
 
-  v8 = [(CKAudioPlayer *)v9 displayLink];
-  [v8 invalidate];
+  displayLink = [(CKAudioPlayer *)v9 displayLink];
+  [displayLink invalidate];
 
   [(CKAudioPlayer *)v9 setDisplayLink:0];
 }
 
-- (void)internalAudioPlayerDidPrepareAudioForPlaying:(id)a3 successfully:(BOOL)a4
+- (void)internalAudioPlayerDidPrepareAudioForPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v4 = a4;
-  v6 = [(CKAudioPlayer *)self delegate];
+  successfullyCopy = successfully;
+  delegate = [(CKAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 audioPlayerDidPrepareAudioToPlay:self successfully:v4];
+    [delegate audioPlayerDidPrepareAudioToPlay:self successfully:successfullyCopy];
   }
 }
 
-- (void)_handleAudioPlayerInterruption:(id)a3
+- (void)_handleAudioPlayerInterruption:(id)interruption
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6958100]];
-  v6 = [v5 integerValue];
+  userInfo = [interruption userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E6958100]];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
-    v7 = [(CKAudioPlayer *)self delegate];
-    [v7 audioPlayerDidGetInterrupted];
+    delegate = [(CKAudioPlayer *)self delegate];
+    [delegate audioPlayerDidGetInterrupted];
   }
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v4 = [(CKAudioPlayer *)self delegate];
-  [v4 audioPlayerCurrentTimeDidChange:self];
+  delegate = [(CKAudioPlayer *)self delegate];
+  [delegate audioPlayerCurrentTimeDidChange:self];
 }
 
 - (CKAudioPlayerDelegate)delegate

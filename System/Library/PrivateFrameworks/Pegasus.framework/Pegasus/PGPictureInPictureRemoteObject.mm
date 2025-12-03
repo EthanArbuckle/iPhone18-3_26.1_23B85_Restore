@@ -1,21 +1,21 @@
 @interface PGPictureInPictureRemoteObject
-+ (void)tetherRemoteObject:(id)a3 toRemoteObject:(id)a4 mode:(int64_t)a5;
-- (BOOL)_canTransitionToState:(int64_t)a3;
++ (void)tetherRemoteObject:(id)object toRemoteObject:(id)remoteObject mode:(int64_t)mode;
+- (BOOL)_canTransitionToState:(int64_t)state;
 - (BOOL)_currentStateAllowsProcessAssertion;
 - (BOOL)_isAppICS;
-- (BOOL)_isAssociatedWithOtherObject:(id)a3;
+- (BOOL)_isAssociatedWithOtherObject:(id)object;
 - (BOOL)_isICSVideoCall;
 - (BOOL)_isInActivitySession;
 - (BOOL)_wantsProcessAssertion;
-- (BOOL)canActivateUntetheredAlongsideOtherObject:(id)a3;
+- (BOOL)canActivateUntetheredAlongsideOtherObject:(id)object;
 - (BOOL)canCancelPictureInPicture;
 - (BOOL)canEndTwoStageStopPictureInPicture;
-- (BOOL)canPreventOrSuspendRemoteObject:(id)a3;
+- (BOOL)canPreventOrSuspendRemoteObject:(id)object;
 - (BOOL)canStartBackgroundPIPForCurrentActivitySessionIdentifier;
 - (BOOL)canStartMicroPIP;
-- (BOOL)canTetherRemoteObjectAsMicroPIP:(id)a3;
+- (BOOL)canTetherRemoteObjectAsMicroPIP:(id)p;
 - (BOOL)isStartingStoppingOrCancellingPictureInPicture;
-- (BOOL)matchesSceneSessionIdentifier:(id)a3;
+- (BOOL)matchesSceneSessionIdentifier:(id)identifier;
 - (BOOL)shouldStartPictureInPictureEnteringBackground;
 - (BOOL)supportsMicroPIP;
 - (CGRect)initialLayerFrameForInteractiveTransitionAnimationUponBackgrounding;
@@ -25,11 +25,11 @@
 - (NSXPCConnection)connection;
 - (PGPictureInPictureAnalyticsDelegate)analyticsDelegate;
 - (PGPictureInPictureRemoteObject)init;
-- (PGPictureInPictureRemoteObject)initWithConnection:(id)a3 interruptionAssistant:(id)a4;
+- (PGPictureInPictureRemoteObject)initWithConnection:(id)connection interruptionAssistant:(id)assistant;
 - (PGPictureInPictureRemoteObjectDelegate)delegate;
-- (id)_invalidationTimerWithTimeout:(double)a3 block:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_invalidationTimerWithTimeout:(double)timeout block:(id)block;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)sourceSceneSettingsInterfaceOrientation;
 - (void)_acquireOrInvalidateProcessAssertionIfNeeded;
@@ -37,81 +37,81 @@
 - (void)_invalidateAllAssertions;
 - (void)_invalidateForFailureToStartStopOrCancel;
 - (void)_invalidateInterruptionBeganFinishTaskAssertion;
-- (void)_notifyProxyOfStashedOrUnderLock:(BOOL)a3;
+- (void)_notifyProxyOfStashedOrUnderLock:(BOOL)lock;
 - (void)_queue_notifyProxyOfInterruptionBegan;
 - (void)_queue_notifyProxyOfInterruptionEnded;
-- (void)_setCurrentState:(int64_t)a3;
-- (void)_setResolvedResourcesUsageReductionReasons:(unint64_t)a3;
-- (void)_setUILockedResourcesUsageReductionReasons:(unint64_t)a3;
+- (void)_setCurrentState:(int64_t)state;
+- (void)_setResolvedResourcesUsageReductionReasons:(unint64_t)reasons;
+- (void)_setUILockedResourcesUsageReductionReasons:(unint64_t)reasons;
 - (void)_stopTethering;
 - (void)_updateActiveProxyAndViewControllerOfInterruptionIfNeeded;
-- (void)_updatePreferredContentSize:(CGSize)a3 withCompletionHandler:(id)a4;
-- (void)beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:(id)a3;
+- (void)_updatePreferredContentSize:(CGSize)size withCompletionHandler:(id)handler;
+- (void)beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)checkActivePictureInPictureCancellationPolicyWithCompletion:(id)a3;
-- (void)cleanupWithCompletionHandler:(id)a3;
+- (void)checkActivePictureInPictureCancellationPolicyWithCompletion:(id)completion;
+- (void)cleanupWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)endTwoStageStopPictureInPictureWithCompletionBlock:(id)a3;
-- (void)initializePictureInPictureWithControlsStyle:(int64_t)a3 preferredContentSize:(CGSize)a4 sceneIdentifier:(id)a5 affectsAppLifeCycle:(BOOL)a6 completionHandler:(id)a7;
+- (void)endTwoStageStopPictureInPictureWithCompletionBlock:(id)block;
+- (void)initializePictureInPictureWithControlsStyle:(int64_t)style preferredContentSize:(CGSize)size sceneIdentifier:(id)identifier affectsAppLifeCycle:(BOOL)cycle completionHandler:(id)handler;
 - (void)invalidate;
-- (void)pagingAccessorySetCurrentPage:(unint64_t)a3 numberOfPages:(unint64_t)a4;
-- (void)pagingSkipByNumberOfPages:(int64_t)a3;
-- (void)pictureInPictureInterruptionBeganWithReason:(int64_t)a3 attribution:(id)a4;
-- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)a3 attribution:(id)a4;
-- (void)pictureInPictureViewController:(id)a3 didReceiveCommand:(id)a4;
-- (void)pictureInPictureViewController:(id)a3 didTransitionToStashed:(BOOL)a4;
-- (void)pictureInPictureViewController:(id)a3 updateHostedWindowSize:(CGSize)a4 animationType:(int64_t)a5 initialSpringVelocity:(double)a6;
-- (void)pictureInPictureViewControllerDidRequestCancel:(id)a3;
-- (void)pictureInPictureViewControllerDidRequestStop:(id)a3;
-- (void)pictureInPictureViewControllerHostedWindowSizeChangeBegan:(id)a3;
-- (void)pictureInPictureViewControllerHostedWindowSizeChangeEnded:(id)a3;
+- (void)pagingAccessorySetCurrentPage:(unint64_t)page numberOfPages:(unint64_t)pages;
+- (void)pagingSkipByNumberOfPages:(int64_t)pages;
+- (void)pictureInPictureInterruptionBeganWithReason:(int64_t)reason attribution:(id)attribution;
+- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)reason attribution:(id)attribution;
+- (void)pictureInPictureViewController:(id)controller didReceiveCommand:(id)command;
+- (void)pictureInPictureViewController:(id)controller didTransitionToStashed:(BOOL)stashed;
+- (void)pictureInPictureViewController:(id)controller updateHostedWindowSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity;
+- (void)pictureInPictureViewControllerDidRequestCancel:(id)cancel;
+- (void)pictureInPictureViewControllerDidRequestStop:(id)stop;
+- (void)pictureInPictureViewControllerHostedWindowSizeChangeBegan:(id)began;
+- (void)pictureInPictureViewControllerHostedWindowSizeChangeEnded:(id)ended;
 - (void)resume;
-- (void)rotateContentContainer:(int64_t)a3 withCompletionHandler:(id)a4;
+- (void)rotateContentContainer:(int64_t)container withCompletionHandler:(id)handler;
 - (void)sendStartPictureInPictureTestAction;
-- (void)setActivitySessionIdentifier:(id)a3;
-- (void)setAnalyticsDelegate:(id)a3;
-- (void)setCurrentResourcesUsageReductionReasons:(unint64_t)a3;
-- (void)setExemptAttribution:(id)a3;
-- (void)setExemptAttributionOverride:(id)a3;
-- (void)setPictureInPicturePossible:(BOOL)a3;
-- (void)setPictureInPictureShouldStartWhenEnteringBackground:(BOOL)a3 completionHandler:(id)a4;
-- (void)setSourceSceneSessionPersistentIdentifier:(id)a3;
-- (void)setupStartAnimated:(BOOL)a3 hostedWindowHostingHandle:(id)a4 sceneSessionPersistentIdentifier:(id)a5 preferredContentSize:(CGSize)a6 initialInterfaceOrientation:(int64_t)a7 initialLayerFrame:(CGRect)a8 completionHandler:(id)a9;
-- (void)setupStopAnimated:(BOOL)a3 needsApplicationActivation:(BOOL)a4 completionHandler:(id)a5;
-- (void)startPictureInPictureAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)startPictureInPictureEnteringBackgroundAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)setActivitySessionIdentifier:(id)identifier;
+- (void)setAnalyticsDelegate:(id)delegate;
+- (void)setCurrentResourcesUsageReductionReasons:(unint64_t)reasons;
+- (void)setExemptAttribution:(id)attribution;
+- (void)setExemptAttributionOverride:(id)override;
+- (void)setPictureInPicturePossible:(BOOL)possible;
+- (void)setPictureInPictureShouldStartWhenEnteringBackground:(BOOL)background completionHandler:(id)handler;
+- (void)setSourceSceneSessionPersistentIdentifier:(id)identifier;
+- (void)setupStartAnimated:(BOOL)animated hostedWindowHostingHandle:(id)handle sceneSessionPersistentIdentifier:(id)identifier preferredContentSize:(CGSize)size initialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler;
+- (void)setupStopAnimated:(BOOL)animated needsApplicationActivation:(BOOL)activation completionHandler:(id)handler;
+- (void)startPictureInPictureAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)startPictureInPictureEnteringBackgroundAnimated:(BOOL)animated withCompletionHandler:(id)handler;
 - (void)startPictureInPictureFromBackground;
 - (void)stopPictureInPictureAndRestoreUserInterface;
-- (void)stopPictureInPictureAnimated:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)stopPictureInPictureAnimated:(BOOL)a3 withFinalInterfaceOrientation:(int64_t)a4 finalLayerFrame:(CGRect)a5 completionHandler:(id)a6;
+- (void)stopPictureInPictureAnimated:(BOOL)animated withCompletionHandler:(id)handler;
+- (void)stopPictureInPictureAnimated:(BOOL)animated withFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler;
 - (void)suspend;
-- (void)updateInitialLayerFrameForInteractiveTransitionAnimationUponBackgrounding:(CGRect)a3 withCompletionHandler:(id)a4;
-- (void)updateMenuItems:(id)a3;
-- (void)updatePlaybackStateWithDiff:(id)a3;
-- (void)updatePreferredContentSize:(CGSize)a3 withCompletionHandler:(id)a4;
-- (void)updateSourceSceneSessionPersistentIdentifierForInteractiveTransitionAnimationUponBackgrounding:(id)a3 withCompletionHandler:(id)a4;
+- (void)updateInitialLayerFrameForInteractiveTransitionAnimationUponBackgrounding:(CGRect)backgrounding withCompletionHandler:(id)handler;
+- (void)updateMenuItems:(id)items;
+- (void)updatePlaybackStateWithDiff:(id)diff;
+- (void)updatePreferredContentSize:(CGSize)size withCompletionHandler:(id)handler;
+- (void)updateSourceSceneSessionPersistentIdentifierForInteractiveTransitionAnimationUponBackgrounding:(id)backgrounding withCompletionHandler:(id)handler;
 @end
 
 @implementation PGPictureInPictureRemoteObject
 
-- (BOOL)matchesSceneSessionIdentifier:(id)a3
+- (BOOL)matchesSceneSessionIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(PGPictureInPictureRemoteObject *)self sourceSceneSessionPersistentIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  sourceSceneSessionPersistentIdentifier = [(PGPictureInPictureRemoteObject *)self sourceSceneSessionPersistentIdentifier];
+  v6 = [sourceSceneSessionPersistentIdentifier isEqualToString:identifierCopy];
 
   return v6;
 }
 
-- (PGPictureInPictureRemoteObject)initWithConnection:(id)a3 interruptionAssistant:(id)a4
+- (PGPictureInPictureRemoteObject)initWithConnection:(id)connection interruptionAssistant:(id)assistant
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  assistantCopy = assistant;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -124,15 +124,15 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_connection, v6);
+    objc_storeWeak(&v9->_connection, connectionCopy);
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pegasus.PGPictureInPictureRemoteObject %p", v10];
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
     queue = v10->_queue;
     v10->_queue = v14;
 
-    v16 = +[PGPictureInPictureApplication pictureInPictureApplicationWithProcessIdentifier:](PGPictureInPictureApplication, "pictureInPictureApplicationWithProcessIdentifier:", [v6 processIdentifier]);
+    v16 = +[PGPictureInPictureApplication pictureInPictureApplicationWithProcessIdentifier:](PGPictureInPictureApplication, "pictureInPictureApplicationWithProcessIdentifier:", [connectionCopy processIdentifier]);
     pictureInPictureApplication = v10->_pictureInPictureApplication;
     v10->_pictureInPictureApplication = v16;
 
@@ -145,10 +145,10 @@
     stateCaptureInvalidatable = v10->_stateCaptureInvalidatable;
     v10->_stateCaptureInvalidatable = v20;
 
-    objc_storeStrong(&v10->_interruptionAssistant, a4);
+    objc_storeStrong(&v10->_interruptionAssistant, assistant);
     interruptionAssistant = v10->_interruptionAssistant;
-    v23 = [(PGPictureInPictureApplication *)v10->_pictureInPictureApplication bundleIdentifier];
-    [(PGInterruptionAssistant *)interruptionAssistant setExemptAttribution:v23];
+    bundleIdentifier = [(PGPictureInPictureApplication *)v10->_pictureInPictureApplication bundleIdentifier];
+    [(PGInterruptionAssistant *)interruptionAssistant setExemptAttribution:bundleIdentifier];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
@@ -206,42 +206,42 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(PGPictureInPictureRemoteObject *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PGPictureInPictureRemoteObject *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PGPictureInPictureRemoteObject *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PGPictureInPictureRemoteObject *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(PGPictureInPictureRemoteObject *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(PGPictureInPictureRemoteObject *)self succinctDescriptionBuilder];
   v5 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication description];
-  [v4 appendString:v5 withName:@"application"];
+  [succinctDescriptionBuilder appendString:v5 withName:@"application"];
 
-  [v4 appendString:self->_sourceSceneSessionPersistentIdentifier withName:@"sourceSceneSessionPersistentIdentifier"];
-  v6 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
-  [v4 appendString:v6 withName:@"activitySessionIdentifier"];
+  [succinctDescriptionBuilder appendString:self->_sourceSceneSessionPersistentIdentifier withName:@"sourceSceneSessionPersistentIdentifier"];
+  activitySessionIdentifier = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
+  [succinctDescriptionBuilder appendString:activitySessionIdentifier withName:@"activitySessionIdentifier"];
 
   v7 = PGStringFromPictureInPictureControlsStyle(self->_controlsStyle);
-  [v4 appendString:v7 withName:@"controlsStyle"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"controlsStyle"];
 
-  v8 = [v4 appendBool:self->_isPictureInPicturePossible withName:@"isPictureInPicturePossible"];
-  [v4 appendString:self->_exemptAttribution withName:@"exemptAttribution"];
-  [v4 appendString:self->_exemptAttributionOverride withName:@"exemptAttributionOverride"];
-  v9 = [v4 appendBool:-[PGPictureInPictureRemoteObject isInterrupted](self withName:{"isInterrupted"), @"isInterrupted"}];
+  v8 = [succinctDescriptionBuilder appendBool:self->_isPictureInPicturePossible withName:@"isPictureInPicturePossible"];
+  [succinctDescriptionBuilder appendString:self->_exemptAttribution withName:@"exemptAttribution"];
+  [succinctDescriptionBuilder appendString:self->_exemptAttributionOverride withName:@"exemptAttributionOverride"];
+  v9 = [succinctDescriptionBuilder appendBool:-[PGPictureInPictureRemoteObject isInterrupted](self withName:{"isInterrupted"), @"isInterrupted"}];
   v10 = PGStringFromPictureInPictureRemoteObjectState(self->_currentState);
-  [v4 appendString:v10 withName:@"currentState"];
+  [succinctDescriptionBuilder appendString:v10 withName:@"currentState"];
 
-  v11 = [v4 appendBool:self->_pictureInPictureShouldStartWhenEnteringBackground withName:@"pictureInPictureShouldStartWhenEnteringBackground"];
-  v12 = [v4 appendBool:self->_stashed withName:@"stashed"];
+  v11 = [succinctDescriptionBuilder appendBool:self->_pictureInPictureShouldStartWhenEnteringBackground withName:@"pictureInPictureShouldStartWhenEnteringBackground"];
+  v12 = [succinctDescriptionBuilder appendBool:self->_stashed withName:@"stashed"];
   if (self->_tetheringRemoteObject)
   {
     v13 = 1;
@@ -252,12 +252,12 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
     v13 = self->_tetheredRemoteObject != 0;
   }
 
-  v14 = [v4 appendBool:v13 withName:@"isInMicroPIP"];
-  v15 = [v4 appendBool:-[PGPictureInPictureRemoteObject _isUnderLock](self withName:{"_isUnderLock"), @"isUnderLock"}];
+  v14 = [succinctDescriptionBuilder appendBool:v13 withName:@"isInMicroPIP"];
+  v15 = [succinctDescriptionBuilder appendBool:-[PGPictureInPictureRemoteObject _isUnderLock](self withName:{"_isUnderLock"), @"isUnderLock"}];
   v16 = NSStringFromCGRect(self->_initialLayerFrameForInteractiveTransitionAnimationUponBackgrounding);
-  [v4 appendString:v16 withName:@"initialLayerFrame"];
+  [succinctDescriptionBuilder appendString:v16 withName:@"initialLayerFrame"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (NSXPCConnection)connection
@@ -267,38 +267,38 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)setAnalyticsDelegate:(id)a3
+- (void)setAnalyticsDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_analyticsDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_analyticsDelegate, v4);
+    objc_storeWeak(&self->_analyticsDelegate, delegateCopy);
     analyticsSourceUUID = self->_analyticsSourceUUID;
     p_analyticsSourceUUID = &self->_analyticsSourceUUID;
-    v8 = analyticsSourceUUID;
-    v9 = [p_analyticsSourceUUID[18] bundleIdentifier];
-    v10 = v9;
+    uUID = analyticsSourceUUID;
+    bundleIdentifier = [p_analyticsSourceUUID[18] bundleIdentifier];
+    v10 = bundleIdentifier;
     v11 = @"com.apple.MissingBundleIdentifier";
-    if (v9)
+    if (bundleIdentifier)
     {
-      v11 = v9;
+      v11 = bundleIdentifier;
     }
 
     v12 = v11;
 
     [(__CFString *)v12 isEqualToString:@"com.apple.InCallService"];
-    if (!v8)
+    if (!uUID)
     {
-      v8 = [MEMORY[0x1E696AFB0] UUID];
-      objc_storeStrong(p_analyticsSourceUUID, v8);
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      objc_storeStrong(p_analyticsSourceUUID, uUID);
     }
 
-    v15 = v4;
-    v16 = v8;
+    v15 = delegateCopy;
+    v16 = uUID;
     v13 = v12;
-    v14 = v8;
+    v14 = uUID;
     BSDispatchMain();
   }
 }
@@ -306,18 +306,18 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
 - (BOOL)shouldStartPictureInPictureEnteringBackground
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(PGPictureInPictureRemoteObject *)self isPictureInPicturePossible];
+  isPictureInPicturePossible = [(PGPictureInPictureRemoteObject *)self isPictureInPicturePossible];
   pictureInPictureShouldStartWhenEnteringBackground = self->_pictureInPictureShouldStartWhenEnteringBackground;
   v5 = [(PGPictureInPictureRemoteObject *)self _canTransitionToState:3];
   v6 = (self->_currentState - 3) <= 2 && self->_pictureInPictureStartedAutomatically;
   v7 = v5 || v6;
-  v8 = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
-  v9 = v3 && pictureInPictureShouldStartWhenEnteringBackground && v7 && !v8;
+  isInterrupted = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
+  v9 = isPictureInPicturePossible && pictureInPictureShouldStartWhenEnteringBackground && v7 && !isInterrupted;
   v10 = PGLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v7;
-    if (v8)
+    if (isInterrupted)
     {
       v12 = [(PGInterruptionAssistant *)self->_interruptionAssistant description];
     }
@@ -328,21 +328,21 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
     }
 
     v14 = 134219522;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
     v17 = v9;
     v18 = 1024;
-    v19 = v3;
+    v19 = isPictureInPicturePossible;
     v20 = 1024;
     v21 = pictureInPictureShouldStartWhenEnteringBackground;
     v22 = 1024;
     v23 = v11;
     v24 = 1024;
-    v25 = v8;
+    v25 = isInterrupted;
     v26 = 2114;
     v27 = v12;
     _os_log_impl(&dword_1BB282000, v10, OS_LOG_TYPE_DEFAULT, "Remote object(%p) shouldStartPictureInPictureEnteringBackground check result:%{BOOL}u. State: possible(%{BOOL}u) shouldStartEnteringBackground(%{BOOL}u) canStartAutomaticallyOrIsStartingAutomatically(%{BOOL}u) isInterrupted(%{BOOL}u) %{public}@", &v14, 0x34u);
-    if (v8)
+    if (isInterrupted)
     {
     }
   }
@@ -390,9 +390,9 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
   return self->_hasBegunTwoStageStop;
 }
 
-- (void)setPictureInPicturePossible:(BOOL)a3
+- (void)setPictureInPicturePossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   v17 = *MEMORY[0x1E69E9840];
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -409,10 +409,10 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
     }
   }
 
-  if (self->_isPictureInPicturePossible != v3)
+  if (self->_isPictureInPicturePossible != possibleCopy)
   {
-    self->_isPictureInPicturePossible = v3;
-    if (v3)
+    self->_isPictureInPicturePossible = possibleCopy;
+    if (possibleCopy)
     {
       [(PGPIPRemoteObjectSceneController *)self->_sceneControllerIfExists activateIfNeeded];
     }
@@ -420,9 +420,9 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
     v8 = PGLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      v9 = [MEMORY[0x1E696AD98] numberWithBool:possibleCopy];
       *buf = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "isPictureInPicturePossible - %{public}@ %@", buf, 0x16u);
@@ -435,7 +435,7 @@ uint64_t __41__PGPictureInPictureRemoteObject_dealloc__block_invoke(uint64_t a1)
     block[3] = &unk_1E7F32A80;
     block[4] = self;
     block[5] = a2;
-    v12 = v3;
+    v12 = possibleCopy;
     dispatch_async(queue, block);
   }
 }
@@ -448,11 +448,11 @@ void __62__PGPictureInPictureRemoteObject_setPictureInPicturePossible___block_in
   [v3 updatePictureInPicturePossible:*(a1 + 48)];
 }
 
-- (void)setSourceSceneSessionPersistentIdentifier:(id)a3
+- (void)setSourceSceneSessionPersistentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_sourceSceneSessionPersistentIdentifier != v4 && ![(NSString *)v4 isEqualToString:?])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (self->_sourceSceneSessionPersistentIdentifier != identifierCopy && ![(NSString *)identifierCopy isEqualToString:?])
   {
     v6 = [(NSString *)v5 copy];
     sourceSceneSessionPersistentIdentifier = self->_sourceSceneSessionPersistentIdentifier;
@@ -478,15 +478,15 @@ void __62__PGPictureInPictureRemoteObject_setPictureInPicturePossible___block_in
 
       v9 = v8;
       _Block_object_dispose(&v19, 8);
-      v10 = [v8 sharedInstance];
+      sharedInstance = [v8 sharedInstance];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __76__PGPictureInPictureRemoteObject_setSourceSceneSessionPersistentIdentifier___block_invoke;
       v16 = &unk_1E7F32AA8;
       v17 = v5;
-      v11 = [v10 scenesPassingTest:&v13];
-      v12 = [v11 anyObject];
-      objc_storeWeak(&self->_sourceScene, v12);
+      v11 = [sharedInstance scenesPassingTest:&v13];
+      anyObject = [v11 anyObject];
+      objc_storeWeak(&self->_sourceScene, anyObject);
 
       [(PGPIPRemoteObjectSceneController *)self->_sceneControllerIfExists updateInterfaceOrientation];
     }
@@ -528,36 +528,36 @@ uint64_t __76__PGPictureInPictureRemoteObject_setSourceSceneSessionPersistentIde
 - (int64_t)sourceSceneSettingsInterfaceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_sourceScene);
-  v4 = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
-  v5 = 1;
-  if (!v4 && WeakRetained)
+  isStartingPictureInPicture = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
+  interfaceOrientation = 1;
+  if (!isStartingPictureInPicture && WeakRetained)
   {
-    v6 = [WeakRetained settings];
-    v5 = [v6 interfaceOrientation];
+    settings = [WeakRetained settings];
+    interfaceOrientation = [settings interfaceOrientation];
   }
 
-  return v5;
+  return interfaceOrientation;
 }
 
 - (FBSDisplayConfiguration)sourceSceneSettingsDisplayConfiguration
 {
-  v3 = [(PGPictureInPictureRemoteObject *)self delegate];
-  v4 = [v3 pictureInPictureRemoteObject:self displayConfigurationForApplication:self->_pictureInPictureApplication];
+  delegate = [(PGPictureInPictureRemoteObject *)self delegate];
+  v4 = [delegate pictureInPictureRemoteObject:self displayConfigurationForApplication:self->_pictureInPictureApplication];
 
   return v4;
 }
 
-- (void)startPictureInPictureEnteringBackgroundAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)startPictureInPictureEnteringBackgroundAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[PGPictureInPictureRemoteObject startPictureInPictureEnteringBackgroundAnimated:withCompletionHandler:]";
     v18 = 2048;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -581,15 +581,15 @@ uint64_t __76__PGPictureInPictureRemoteObject_setSourceSceneSessionPersistentIde
     v12[3] = &unk_1E7F32B70;
     v12[4] = self;
     v14 = a2;
-    v13 = v7;
-    v15 = a3;
+    v13 = handlerCopy;
+    animatedCopy = animated;
     dispatch_async(queue, v12);
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1002 userInfo:0];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -679,9 +679,9 @@ uint64_t __104__PGPictureInPictureRemoteObject_startPictureInPictureEnteringBack
   return result;
 }
 
-- (void)stopPictureInPictureAnimated:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)stopPictureInPictureAnimated:(BOOL)animated withCompletionHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v8 = PGLogCommon();
@@ -701,15 +701,15 @@ uint64_t __104__PGPictureInPictureRemoteObject_startPictureInPictureEnteringBack
     v11[3] = &unk_1E7F32B70;
     v11[4] = self;
     v13 = a2;
-    v14 = a3;
-    v12 = v7;
+    animatedCopy = animated;
+    v12 = handlerCopy;
     dispatch_async(queue, v11);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1002 userInfo:0];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 
@@ -753,9 +753,9 @@ uint64_t __85__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withC
   return result;
 }
 
-- (void)beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:(id)a3
+- (void)beginTwoStageStopPictureInPictureByRestoringUserInterfaceWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v6 = PGLogCommon();
@@ -776,11 +776,11 @@ uint64_t __85__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withC
     block[3] = &unk_1E7F32C10;
     block[4] = self;
     v11 = a2;
-    v10 = v5;
+    v10 = handlerCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v5)
+  else if (handlerCopy)
   {
     if ([(PGPictureInPictureRemoteObject *)self _canTransitionToState:6])
     {
@@ -789,7 +789,7 @@ uint64_t __85__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withC
 
     self->_hasBegunTwoStageStop = 0;
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1002 userInfo:0];
-    (*(v5 + 2))(v5, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
@@ -847,9 +847,9 @@ uint64_t __113__PGPictureInPictureRemoteObject_beginTwoStageStopPictureInPicture
   return result;
 }
 
-- (void)endTwoStageStopPictureInPictureWithCompletionBlock:(id)a3
+- (void)endTwoStageStopPictureInPictureWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v6 = PGLogCommon();
@@ -881,14 +881,14 @@ LABEL_9:
     block[3] = &unk_1E7F32C10;
     block[4] = self;
     v12 = a2;
-    v11 = v5;
+    v11 = blockCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v5)
+  else if (blockCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1002 userInfo:0];
-    (*(v5 + 2))(v5, 0, v9);
+    (*(blockCopy + 2))(blockCopy, 0, v9);
   }
 }
 
@@ -940,7 +940,7 @@ uint64_t __85__PGPictureInPictureRemoteObject_endTwoStageStopPictureInPictureWit
     *buf = 136315394;
     v9 = "[PGPictureInPictureRemoteObject sendStartPictureInPictureTestAction]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v4, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -975,8 +975,8 @@ void __69__PGPictureInPictureRemoteObject_sendStartPictureInPictureTestAction__b
 
 - (void)startPictureInPictureFromBackground
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PGPictureInPictureRemoteObject.m" lineNumber:534 description:{@"Tried to BG PIP a remote object %@ that has NO for pip is possible", a2}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"PGPictureInPictureRemoteObject.m" lineNumber:534 description:{@"Tried to BG PIP a remote object %@ that has NO for pip is possible", a2}];
 }
 
 uint64_t __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__block_invoke(uint64_t result)
@@ -1006,10 +1006,10 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   [v3 handleCommand:v5];
 }
 
-- (void)pictureInPictureInterruptionBeganWithReason:(int64_t)a3 attribution:(id)a4
+- (void)pictureInPictureInterruptionBeganWithReason:(int64_t)reason attribution:(id)attribution
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributionCopy = attribution;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v7 = PGLogCommon();
@@ -1019,8 +1019,8 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
     }
   }
 
-  [(PGInterruptionAssistant *)self->_interruptionAssistant addReason:a3 attribution:v6];
-  if (a3 == 2)
+  [(PGInterruptionAssistant *)self->_interruptionAssistant addReason:reason attribution:attributionCopy];
+  if (reason == 2)
   {
     exemptAttributionOverride = self->_exemptAttributionOverride;
     if (!exemptAttributionOverride)
@@ -1028,7 +1028,7 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
       exemptAttributionOverride = self->_exemptAttribution;
     }
 
-    if ([v6 isEqualToString:exemptAttributionOverride] && -[PGInterruptionAssistant hasInterruptionReason:](self->_interruptionAssistant, "hasInterruptionReason:", 4))
+    if ([attributionCopy isEqualToString:exemptAttributionOverride] && -[PGInterruptionAssistant hasInterruptionReason:](self->_interruptionAssistant, "hasInterruptionReason:", 4))
     {
       [(PGPictureInPictureRemoteObject *)self pictureInPictureInterruptionEndedWithReason:4 attribution:0];
     }
@@ -1037,25 +1037,25 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   v9 = PGLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 4)
+    if (reason > 4)
     {
       v10 = @"invalid";
     }
 
     else
     {
-      v10 = off_1E7F33090[a3];
+      v10 = off_1E7F33090[reason];
     }
 
-    v11 = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
+    isInterrupted = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
     v13 = 136315906;
     v14 = "[PGPictureInPictureRemoteObject pictureInPictureInterruptionBeganWithReason:attribution:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v10;
     v19 = 1024;
-    v20 = v11;
+    v20 = isInterrupted;
     _os_log_impl(&dword_1BB282000, v9, OS_LOG_TYPE_DEFAULT, "%s %p: %{public}@ isInterrupted %{BOOL}u ", &v13, 0x26u);
   }
 
@@ -1064,7 +1064,7 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
     [(PGPictureInPictureRemoteObject *)self _setUILockedResourcesUsageReductionReasons:1];
   }
 
-  if (a3 == 1)
+  if (reason == 1)
   {
     v12 = self->_stashed || [(PGPictureInPictureRemoteObject *)self _isUnderLock];
     [(PGPictureInPictureRemoteObject *)self _notifyProxyOfStashedOrUnderLock:v12];
@@ -1073,10 +1073,10 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   [(PGPictureInPictureRemoteObject *)self _updateActiveProxyAndViewControllerOfInterruptionIfNeeded];
 }
 
-- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)a3 attribution:(id)a4
+- (void)pictureInPictureInterruptionEndedWithReason:(int64_t)reason attribution:(id)attribution
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  attributionCopy = attribution;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v7 = PGLogCommon();
@@ -1086,8 +1086,8 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
     }
   }
 
-  [(PGInterruptionAssistant *)self->_interruptionAssistant removeReason:a3 attribution:v6];
-  if (a3 == 1)
+  [(PGInterruptionAssistant *)self->_interruptionAssistant removeReason:reason attribution:attributionCopy];
+  if (reason == 1)
   {
     v8 = self->_stashed || [(PGPictureInPictureRemoteObject *)self _isUnderLock];
     [(PGPictureInPictureRemoteObject *)self _notifyProxyOfStashedOrUnderLock:v8];
@@ -1096,23 +1096,23 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   v9 = PGLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 4)
+    if (reason > 4)
     {
       v10 = @"invalid";
     }
 
     else
     {
-      v10 = off_1E7F33090[a3];
+      v10 = off_1E7F33090[reason];
     }
 
-    v11 = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
+    isInterrupted = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
     v12 = 138543874;
     v13 = v10;
     v14 = 1024;
-    v15 = v11;
+    v15 = isInterrupted;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v9, OS_LOG_TYPE_DEFAULT, "pictureInPictureInterruptionEndedWithReason: %{public}@ isInterrupted %{BOOL}u %p", &v12, 0x1Cu);
   }
 
@@ -1125,7 +1125,7 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   [(PGPictureInPictureViewController *)self->_pictureInPictureViewController flashControls];
 }
 
-- (void)_notifyProxyOfStashedOrUnderLock:(BOOL)a3
+- (void)_notifyProxyOfStashedOrUnderLock:(BOOL)lock
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1134,7 +1134,7 @@ void __69__PGPictureInPictureRemoteObject_startPictureInPictureFromBackground__b
   block[3] = &unk_1E7F32A80;
   block[4] = self;
   block[5] = a2;
-  v5 = a3;
+  lockCopy = lock;
   dispatch_async(queue, block);
 }
 
@@ -1155,7 +1155,7 @@ void __67__PGPictureInPictureRemoteObject__notifyProxyOfStashedOrUnderLock___blo
     *buf = 136315394;
     v9 = "[PGPictureInPictureRemoteObject suspend]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v4, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -1233,7 +1233,7 @@ void __41__PGPictureInPictureRemoteObject_suspend__block_invoke_4(uint64_t a1)
     *buf = 136315394;
     v9 = "[PGPictureInPictureRemoteObject resume]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v4, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -1305,7 +1305,7 @@ void *__40__PGPictureInPictureRemoteObject_resume__block_invoke_3(uint64_t a1)
     *buf = 136315394;
     v10 = "[PGPictureInPictureRemoteObject cancel]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v4, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -1335,13 +1335,13 @@ void *__40__PGPictureInPictureRemoteObject_resume__block_invoke_3(uint64_t a1)
 
   else
   {
-    v7 = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
-    if (v7)
+    isStartingPictureInPicture = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
+    if (isStartingPictureInPicture)
     {
-      LOBYTE(v7) = [(PGPictureInPictureRemoteObject *)self canCancelPictureInPicture];
+      LOBYTE(isStartingPictureInPicture) = [(PGPictureInPictureRemoteObject *)self canCancelPictureInPicture];
     }
 
-    self->_hasPendingCancellationRequest = v7;
+    self->_hasPendingCancellationRequest = isStartingPictureInPicture;
     self->_hasPendingStopRequest = 0;
   }
 }
@@ -1364,19 +1364,19 @@ void __40__PGPictureInPictureRemoteObject_cancel__block_invoke(uint64_t a1)
     *buf = 136315394;
     v9 = "[PGPictureInPictureRemoteObject invalidate]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v3, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
   if ([(PGPictureInPictureRemoteObject *)self _canTransitionToState:13])
   {
     [(PGPictureInPictureRemoteObject *)self _setCurrentState:13];
-    v4 = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController parentViewController];
+    parentViewController = [(PGPictureInPictureViewController *)self->_pictureInPictureViewController parentViewController];
 
-    if (v4)
+    if (parentViewController)
     {
-      v5 = [(PGPictureInPictureRemoteObject *)self delegate];
-      [v5 pictureInPictureRemoteObject:self willHidePictureInPictureViewController:self->_pictureInPictureViewController];
+      delegate = [(PGPictureInPictureRemoteObject *)self delegate];
+      [delegate pictureInPictureRemoteObject:self willHidePictureInPictureViewController:self->_pictureInPictureViewController];
 
       [(PGPictureInPictureRemoteObject *)self _stopTethering];
       pictureInPictureViewController = self->_pictureInPictureViewController;
@@ -1417,7 +1417,7 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
   return result;
 }
 
-- (void)setCurrentResourcesUsageReductionReasons:(unint64_t)a3
+- (void)setCurrentResourcesUsageReductionReasons:(unint64_t)reasons
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = PGLogCommon();
@@ -1426,7 +1426,7 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
     v7 = 136315394;
     v8 = "[PGPictureInPictureRemoteObject setCurrentResourcesUsageReductionReasons:]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p ", &v7, 0x16u);
   }
 
@@ -1439,11 +1439,11 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
     }
   }
 
-  self->_externalResourcesUsageReductionReasons = a3;
-  [(PGPictureInPictureRemoteObject *)self _setResolvedResourcesUsageReductionReasons:self->_UILockedResourcesUsageReductionReasons | a3];
+  self->_externalResourcesUsageReductionReasons = reasons;
+  [(PGPictureInPictureRemoteObject *)self _setResolvedResourcesUsageReductionReasons:self->_UILockedResourcesUsageReductionReasons | reasons];
 }
 
-- (void)_setUILockedResourcesUsageReductionReasons:(unint64_t)a3
+- (void)_setUILockedResourcesUsageReductionReasons:(unint64_t)reasons
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = PGLogCommon();
@@ -1452,7 +1452,7 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
     v7 = 136315394;
     v8 = "[PGPictureInPictureRemoteObject _setUILockedResourcesUsageReductionReasons:]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p ", &v7, 0x16u);
   }
 
@@ -1465,11 +1465,11 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
     }
   }
 
-  self->_UILockedResourcesUsageReductionReasons = a3;
-  [(PGPictureInPictureRemoteObject *)self _setResolvedResourcesUsageReductionReasons:self->_externalResourcesUsageReductionReasons | a3];
+  self->_UILockedResourcesUsageReductionReasons = reasons;
+  [(PGPictureInPictureRemoteObject *)self _setResolvedResourcesUsageReductionReasons:self->_externalResourcesUsageReductionReasons | reasons];
 }
 
-- (void)_setResolvedResourcesUsageReductionReasons:(unint64_t)a3
+- (void)_setResolvedResourcesUsageReductionReasons:(unint64_t)reasons
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1477,7 +1477,7 @@ uint64_t __44__PGPictureInPictureRemoteObject_invalidate__block_invoke(uint64_t 
   block[2] = __77__PGPictureInPictureRemoteObject__setResolvedResourcesUsageReductionReasons___block_invoke;
   block[3] = &unk_1E7F32C58;
   block[4] = self;
-  block[5] = a3;
+  block[5] = reasons;
   block[6] = a2;
   dispatch_async(queue, block);
 }
@@ -1501,15 +1501,15 @@ void __77__PGPictureInPictureRemoteObject__setResolvedResourcesUsageReductionRea
   activitySessionIdentifier = self->_activitySessionIdentifier;
   if (activitySessionIdentifier)
   {
-    v3 = activitySessionIdentifier;
+    bundleIdentifier = activitySessionIdentifier;
   }
 
   else
   {
-    v3 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+    bundleIdentifier = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)canStartBackgroundPIPForCurrentActivitySessionIdentifier
@@ -1520,36 +1520,36 @@ void __77__PGPictureInPictureRemoteObject__setResolvedResourcesUsageReductionRea
   }
 
   activitySessionIdentifierForLastActivePIPSession = self->_activitySessionIdentifierForLastActivePIPSession;
-  v6 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
-  if ([(NSString *)activitySessionIdentifierForLastActivePIPSession isEqualToString:v6])
+  activitySessionIdentifier = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
+  if ([(NSString *)activitySessionIdentifierForLastActivePIPSession isEqualToString:activitySessionIdentifier])
   {
-    v3 = [(PGPictureInPictureRemoteObject *)self _isICSVideoCall];
+    _isICSVideoCall = [(PGPictureInPictureRemoteObject *)self _isICSVideoCall];
   }
 
   else
   {
-    v3 = 1;
+    _isICSVideoCall = 1;
   }
 
-  return v3;
+  return _isICSVideoCall;
 }
 
 - (BOOL)supportsMicroPIP
 {
-  v3 = [(PGPlaybackState *)self->_playbackState supportsMicroPIP];
-  if (v3)
+  supportsMicroPIP = [(PGPlaybackState *)self->_playbackState supportsMicroPIP];
+  if (supportsMicroPIP)
   {
 
-    LOBYTE(v3) = [(PGPictureInPictureRemoteObject *)self _isAppICS];
+    LOBYTE(supportsMicroPIP) = [(PGPictureInPictureRemoteObject *)self _isAppICS];
   }
 
-  return v3;
+  return supportsMicroPIP;
 }
 
 - (BOOL)canStartMicroPIP
 {
-  v3 = [(PGPictureInPictureRemoteObject *)self supportsMicroPIP];
-  if (v3)
+  supportsMicroPIP = [(PGPictureInPictureRemoteObject *)self supportsMicroPIP];
+  if (supportsMicroPIP)
   {
     if (self->_hasPendingStopRequest)
     {
@@ -1561,43 +1561,43 @@ void __77__PGPictureInPictureRemoteObject__setResolvedResourcesUsageReductionRea
       v4 = !self->_hasPendingCancellationRequest;
       if (!self->_hasPendingCancellationRequest && (self->_currentState - 2) >= 5)
       {
-        v5 = [(PGPictureInPictureRemoteObject *)self delegate];
-        v4 = [v5 pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:self];
+        delegate = [(PGPictureInPictureRemoteObject *)self delegate];
+        v4 = [delegate pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:self];
       }
     }
 
-    LOBYTE(v3) = [(PGPictureInPictureRemoteObject *)self supportsMicroPIP]& v4;
+    LOBYTE(supportsMicroPIP) = [(PGPictureInPictureRemoteObject *)self supportsMicroPIP]& v4;
   }
 
-  return v3;
+  return supportsMicroPIP;
 }
 
-- (BOOL)canTetherRemoteObjectAsMicroPIP:(id)a3
+- (BOOL)canTetherRemoteObjectAsMicroPIP:(id)p
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = (self->_currentState - 3) <= 3 && [v4 canStartMicroPIP] && !-[PGPictureInPictureRemoteObject canStartMicroPIP](self, "canStartMicroPIP") && !self->_tetheredRemoteObject && -[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:](self, "_isAssociatedWithOtherObject:", v5);
+  pCopy = p;
+  v5 = pCopy;
+  v6 = (self->_currentState - 3) <= 3 && [pCopy canStartMicroPIP] && !-[PGPictureInPictureRemoteObject canStartMicroPIP](self, "canStartMicroPIP") && !self->_tetheredRemoteObject && -[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:](self, "_isAssociatedWithOtherObject:", v5);
   v7 = PGLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+    bundleIdentifier = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
     v9 = PGStringFromPictureInPictureRemoteObjectState(self->_currentState);
-    v10 = [v5 canStartMicroPIP];
+    canStartMicroPIP = [v5 canStartMicroPIP];
     v11 = ![(PGPictureInPictureRemoteObject *)self canStartMicroPIP];
     v12 = self->_tetheredRemoteObject == 0;
     v14 = 136317186;
     v15 = "[PGPictureInPictureRemoteObject canTetherRemoteObjectAsMicroPIP:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v8;
+    v19 = bundleIdentifier;
     v20 = 1024;
     v21 = v6;
     v22 = 2114;
     v23 = v9;
     v24 = 1024;
-    v25 = v10;
+    v25 = canStartMicroPIP;
     v26 = 1024;
     v27 = v11;
     v28 = 1024;
@@ -1610,71 +1610,71 @@ void __77__PGPictureInPictureRemoteObject__setResolvedResourcesUsageReductionRea
   return v6;
 }
 
-- (BOOL)canActivateUntetheredAlongsideOtherObject:(id)a3
+- (BOOL)canActivateUntetheredAlongsideOtherObject:(id)object
 {
-  v4 = a3;
-  v5 = -[PGPictureInPictureRemoteObject contentType](self, "contentType") == 6 || [v4 contentType] == 6;
+  objectCopy = object;
+  v5 = -[PGPictureInPictureRemoteObject contentType](self, "contentType") == 6 || [objectCopy contentType] == 6;
 
   return v5;
 }
 
-+ (void)tetherRemoteObject:(id)a3 toRemoteObject:(id)a4 mode:(int64_t)a5
++ (void)tetherRemoteObject:(id)object toRemoteObject:(id)remoteObject mode:(int64_t)mode
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  objectCopy = object;
+  remoteObjectCopy = remoteObject;
   v11 = PGLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     v16 = 136316162;
     v17 = "+[PGPictureInPictureRemoteObject tetherRemoteObject:toRemoteObject:mode:]";
     v18 = 2048;
-    v19 = a1;
+    selfCopy = self;
     v20 = 2048;
-    v21 = v9;
+    v21 = objectCopy;
     v22 = 2048;
-    v23 = v10;
+    v23 = remoteObjectCopy;
     v24 = 2112;
     v25 = v12;
     _os_log_impl(&dword_1BB282000, v11, OS_LOG_TYPE_DEFAULT, "%s %p tether %p to %p for mode %@", &v16, 0x34u);
   }
 
-  if (v9 | v10)
+  if (objectCopy | remoteObjectCopy)
   {
-    v13 = [v10 canTetherRemoteObjectAsMicroPIP:v9];
-    if (v9 && v10 && (v13 & 1) == 0)
+    v13 = [remoteObjectCopy canTetherRemoteObjectAsMicroPIP:objectCopy];
+    if (objectCopy && remoteObjectCopy && (v13 & 1) == 0)
     {
       +[PGPictureInPictureRemoteObject tetherRemoteObject:toRemoteObject:mode:];
     }
 
     else
     {
-      [v9 setTetheringRemoteObject:v10];
-      if (!v9)
+      [objectCopy setTetheringRemoteObject:remoteObjectCopy];
+      if (!objectCopy)
       {
         goto LABEL_11;
       }
     }
 
-    if ([v9[32] stashed] && (objc_msgSend(v9[19], "hasInterruptionReason:", 4) & 1) == 0)
+    if ([objectCopy[32] stashed] && (objc_msgSend(objectCopy[19], "hasInterruptionReason:", 4) & 1) == 0)
     {
-      [v9 pictureInPictureInterruptionBeganWithReason:4 attribution:0];
+      [objectCopy pictureInPictureInterruptionBeganWithReason:4 attribution:0];
     }
   }
 
   else
   {
-    [PGPictureInPictureRemoteObject tetherRemoteObject:a2 toRemoteObject:a1 mode:?];
+    [PGPictureInPictureRemoteObject tetherRemoteObject:a2 toRemoteObject:self mode:?];
   }
 
 LABEL_11:
-  [v10 setTetheredRemoteObject:v9];
-  v14 = [v9 pictureInPictureViewController];
-  v15 = [v10 pictureInPictureViewController];
-  if (v14 | v15)
+  [remoteObjectCopy setTetheredRemoteObject:objectCopy];
+  pictureInPictureViewController = [objectCopy pictureInPictureViewController];
+  pictureInPictureViewController2 = [remoteObjectCopy pictureInPictureViewController];
+  if (pictureInPictureViewController | pictureInPictureViewController2)
   {
-    [PGPictureInPictureViewController tetherViewController:v14 toViewController:v15 mode:a5];
+    [PGPictureInPictureViewController tetherViewController:pictureInPictureViewController toViewController:pictureInPictureViewController2 mode:mode];
   }
 }
 
@@ -1695,31 +1695,31 @@ LABEL_11:
   }
 }
 
-- (void)_setCurrentState:(int64_t)a3
+- (void)_setCurrentState:(int64_t)state
 {
   v34 = *MEMORY[0x1E69E9840];
   currentState = self->_currentState;
   BSDispatchQueueAssertMain();
-  if (![(PGPictureInPictureRemoteObject *)self _canTransitionToState:a3])
+  if (![(PGPictureInPictureRemoteObject *)self _canTransitionToState:state])
   {
     [PGPictureInPictureRemoteObject _setCurrentState:];
   }
 
-  if (currentState == a3)
+  if (currentState == state)
   {
     return;
   }
 
-  self->_currentState = a3;
+  self->_currentState = state;
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = PGStringFromPictureInPictureRemoteObjectState(currentState);
-    v8 = PGStringFromPictureInPictureRemoteObjectState(a3);
+    v8 = PGStringFromPictureInPictureRemoteObjectState(state);
     *buf = 136315906;
     v27 = "[PGPictureInPictureRemoteObject _setCurrentState:]";
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
     v31 = v7;
     v32 = 2114;
@@ -1727,14 +1727,14 @@ LABEL_11:
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %p %{public}@ -> %{public}@", buf, 0x2Au);
   }
 
-  v9 = [(PGInterruptionAssistant *)self->_interruptionAssistant isProxyActive];
+  isProxyActive = [(PGInterruptionAssistant *)self->_interruptionAssistant isProxyActive];
   v10 = self->_currentState;
   if (v10 <= 0xC)
   {
     if (((1 << v10) & 0x1070) != 0)
     {
 LABEL_14:
-      v9 = 1;
+      isProxyActive = 1;
       goto LABEL_15;
     }
 
@@ -1745,7 +1745,7 @@ LABEL_14:
         [(PGPictureInPictureRemoteObject *)self pictureInPictureInterruptionEndedWithReason:4 attribution:0];
       }
 
-      v9 = 0;
+      isProxyActive = 0;
       self->_pictureInPictureStartedAutomatically = 0;
       goto LABEL_15;
     }
@@ -1758,27 +1758,27 @@ LABEL_14:
   }
 
 LABEL_15:
-  [(PGInterruptionAssistant *)self->_interruptionAssistant setProxyActive:v9];
+  [(PGInterruptionAssistant *)self->_interruptionAssistant setProxyActive:isProxyActive];
   [(PGPictureInPictureRemoteObject *)self _updateActiveProxyAndViewControllerOfInterruptionIfNeeded];
-  if (a3 == 6)
+  if (state == 6)
   {
-    v11 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
-    v12 = [v11 copy];
+    activitySessionIdentifier = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
+    v12 = [activitySessionIdentifier copy];
     activitySessionIdentifierForLastActivePIPSession = self->_activitySessionIdentifierForLastActivePIPSession;
     self->_activitySessionIdentifierForLastActivePIPSession = v12;
 
-    v14 = 1;
+    isStartingPictureInPicture = 1;
   }
 
   else
   {
-    v14 = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
+    isStartingPictureInPicture = [(PGPictureInPictureRemoteObject *)self isStartingPictureInPicture];
   }
 
   v15 = self->_hasPendingStopRequest || self->_hasPendingCancellationRequest;
-  v16 = [(PGPictureInPictureRemoteObject *)self isStoppingOrCancellingPictureInPicture];
+  isStoppingOrCancellingPictureInPicture = [(PGPictureInPictureRemoteObject *)self isStoppingOrCancellingPictureInPicture];
   cancelPictureInPictureFinishTaskAssertion = self->_cancelPictureInPictureFinishTaskAssertion;
-  if (!v16 && (!v14 || !v15))
+  if (!isStoppingOrCancellingPictureInPicture && (!isStartingPictureInPicture || !v15))
   {
     [(PGProcessAssertion *)cancelPictureInPictureFinishTaskAssertion invalidate];
     v18 = self->_cancelPictureInPictureFinishTaskAssertion;
@@ -1845,16 +1845,16 @@ uint64_t __51__PGPictureInPictureRemoteObject__setCurrentState___block_invoke(ui
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_canTransitionToState:(int64_t)a3
+- (BOOL)_canTransitionToState:(int64_t)state
 {
   currentState = self->_currentState;
-  hasBegunTwoStageStop = currentState == a3;
-  switch(a3)
+  hasBegunTwoStageStop = currentState == state;
+  switch(state)
   {
     case 0:
       return hasBegunTwoStageStop;
     case 1:
-      v7 = currentState == a3 || currentState == 0;
+      v7 = currentState == state || currentState == 0;
       goto LABEL_23;
     case 2:
       v7 = currentState == 1 || currentState == 11;
@@ -1914,9 +1914,9 @@ uint64_t __51__PGPictureInPictureRemoteObject__setCurrentState___block_invoke(ui
       v7 = currentState == 10;
       goto LABEL_23;
     case 13:
-      return currentState != 14 && currentState != a3;
+      return currentState != 14 && currentState != state;
     case 14:
-      v7 = currentState == a3 || currentState == 13;
+      v7 = currentState == state || currentState == 13;
 LABEL_23:
       hasBegunTwoStageStop = v7;
       break;
@@ -1952,7 +1952,7 @@ LABEL_35:
     v7 = 136315394;
     v8 = "[PGPictureInPictureRemoteObject _invalidateAllAssertions]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v3, OS_LOG_TYPE_DEFAULT, "%s %p ", &v7, 0x16u);
   }
 
@@ -1982,8 +1982,8 @@ LABEL_35:
     }
   }
 
-  v4 = [(PGPictureInPictureRemoteObject *)self delegate];
-  [v4 pictureInPictureRemoteObject:self willDestroyPictureInPictureViewController:self->_pictureInPictureViewController];
+  delegate = [(PGPictureInPictureRemoteObject *)self delegate];
+  [delegate pictureInPictureRemoteObject:self willDestroyPictureInPictureViewController:self->_pictureInPictureViewController];
 
   [(PGPictureInPictureViewController *)self->_pictureInPictureViewController deactivateAnalyticsSessionIfNeeded];
   [(PGPictureInPictureViewController *)self->_pictureInPictureViewController setDelegate:0];
@@ -1994,9 +1994,9 @@ LABEL_35:
   [(PGPictureInPictureRemoteObject *)self pictureInPictureViewController:0 didTransitionToStashed:0];
 }
 
-- (id)_invalidationTimerWithTimeout:(double)a3 block:(id)a4
+- (id)_invalidationTimerWithTimeout:(double)timeout block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E695DFF0];
   v11[0] = MEMORY[0x1E69E9820];
@@ -2004,9 +2004,9 @@ LABEL_35:
   v11[2] = __70__PGPictureInPictureRemoteObject__invalidationTimerWithTimeout_block___block_invoke;
   v11[3] = &unk_1E7F32CA8;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = blockCopy;
   v12 = v8;
-  v9 = [v7 scheduledTimerWithTimeInterval:0 repeats:v11 block:a3];
+  v9 = [v7 scheduledTimerWithTimeInterval:0 repeats:v11 block:timeout];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -2048,29 +2048,29 @@ void __70__PGPictureInPictureRemoteObject__invalidationTimerWithTimeout_block___
 
 - (BOOL)_isICSVideoCall
 {
-  v3 = [(PGPictureInPictureRemoteObject *)self isVideoCall];
-  if (v3)
+  isVideoCall = [(PGPictureInPictureRemoteObject *)self isVideoCall];
+  if (isVideoCall)
   {
 
-    LOBYTE(v3) = [(PGPictureInPictureRemoteObject *)self _isAppICS];
+    LOBYTE(isVideoCall) = [(PGPictureInPictureRemoteObject *)self _isAppICS];
   }
 
-  return v3;
+  return isVideoCall;
 }
 
 - (BOOL)_isAppICS
 {
-  v2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.InCallService"];
+  bundleIdentifier = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   return v3;
 }
 
-- (BOOL)_isAssociatedWithOtherObject:(id)a3
+- (BOOL)_isAssociatedWithOtherObject:(id)object
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(PGPictureInPictureRemoteObject *)self _isICSVideoCall]&& ![(PGPictureInPictureRemoteObject *)v4 _isICSVideoCall])
+  objectCopy = object;
+  if (![(PGPictureInPictureRemoteObject *)self _isICSVideoCall]&& ![(PGPictureInPictureRemoteObject *)objectCopy _isICSVideoCall])
   {
     v15 = 0;
     goto LABEL_24;
@@ -2078,70 +2078,70 @@ void __70__PGPictureInPictureRemoteObject__invalidationTimerWithTimeout_block___
 
   if ([(PGPictureInPictureRemoteObject *)self _isICSVideoCall])
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = v4;
+    selfCopy = objectCopy;
   }
 
-  v6 = [(PGPictureInPictureRemoteObject *)v5 activitySessionIdentifier];
+  activitySessionIdentifier = [(PGPictureInPictureRemoteObject *)selfCopy activitySessionIdentifier];
   if ([(PGPictureInPictureRemoteObject *)self _isICSVideoCall])
   {
-    v7 = v4;
+    selfCopy2 = objectCopy;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = [(PGPictureInPictureRemoteObject *)v7 pictureInPictureApplication];
-  v9 = [v8 bundleIdentifier];
+  pictureInPictureApplication = [(PGPictureInPictureRemoteObject *)selfCopy2 pictureInPictureApplication];
+  bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
 
-  if ([v6 isEqualToString:v9])
+  if ([activitySessionIdentifier isEqualToString:bundleIdentifier])
   {
     v10 = PGLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-      v12 = [(PGPictureInPictureRemoteObject *)v4 pictureInPictureApplication];
-      v13 = [v12 bundleIdentifier];
+      bundleIdentifier2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+      pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)objectCopy pictureInPictureApplication];
+      bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
       v24 = 136316162;
       v25 = "[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:]";
       v26 = 2048;
-      v27 = self;
+      selfCopy7 = self;
       v28 = 2114;
-      v29 = v11;
+      v29 = bundleIdentifier2;
       v30 = 2048;
-      v31 = v4;
+      v31 = objectCopy;
       v32 = 2114;
-      v33 = v13;
+      v33 = bundleIdentifier3;
       v14 = "%s Associating %p %{public}@ with %p %{public}@ because hasMatchingSessionIdentifierAndBundleIdentifier";
 LABEL_20:
       _os_log_impl(&dword_1BB282000, v10, OS_LOG_TYPE_DEFAULT, v14, &v24, 0x34u);
     }
   }
 
-  else if ([(PGPictureInPictureRemoteObject *)self _isAppICS]&& [(PGPictureInPictureRemoteObject *)v4 _isAppICS])
+  else if ([(PGPictureInPictureRemoteObject *)self _isAppICS]&& [(PGPictureInPictureRemoteObject *)objectCopy _isAppICS])
   {
     v10 = PGLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-      v12 = [(PGPictureInPictureRemoteObject *)v4 pictureInPictureApplication];
-      v13 = [v12 bundleIdentifier];
+      bundleIdentifier2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+      pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)objectCopy pictureInPictureApplication];
+      bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
       v24 = 136316162;
       v25 = "[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:]";
       v26 = 2048;
-      v27 = self;
+      selfCopy7 = self;
       v28 = 2114;
-      v29 = v11;
+      v29 = bundleIdentifier2;
       v30 = 2048;
-      v31 = v4;
+      v31 = objectCopy;
       v32 = 2114;
-      v33 = v13;
+      v33 = bundleIdentifier3;
       v14 = "%s Associating %p %{public}@ with %p %{public}@ because one of them is a video call and we always associate ICS with itself";
       goto LABEL_20;
     }
@@ -2149,9 +2149,9 @@ LABEL_20:
 
   else
   {
-    if (([(PGPictureInPictureRemoteObject *)v4 isEqual:self->_tetheringRemoteObject]& 1) == 0 && ![(PGPictureInPictureRemoteObject *)v4 isEqual:self->_tetheredRemoteObject])
+    if (([(PGPictureInPictureRemoteObject *)objectCopy isEqual:self->_tetheringRemoteObject]& 1) == 0 && ![(PGPictureInPictureRemoteObject *)objectCopy isEqual:self->_tetheredRemoteObject])
     {
-      if ([(PGPictureInPictureRemoteObject *)v4 _isICSVideoCall])
+      if ([(PGPictureInPictureRemoteObject *)objectCopy _isICSVideoCall])
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v18 = [WeakRetained pictureInPictureRemoteObjectHasBackgroundPIPAuthorization:self];
@@ -2164,33 +2164,33 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v11 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-          v12 = [(PGPictureInPictureRemoteObject *)v4 pictureInPictureApplication];
-          v13 = [v12 bundleIdentifier];
+          bundleIdentifier2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+          pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)objectCopy pictureInPictureApplication];
+          bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
           v24 = 136316162;
           v25 = "[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:]";
           v26 = 2048;
-          v27 = self;
+          selfCopy7 = self;
           v28 = 2114;
-          v29 = v11;
+          v29 = bundleIdentifier2;
           v30 = 2048;
-          v31 = v4;
+          v31 = objectCopy;
           v32 = 2114;
-          v33 = v13;
+          v33 = bundleIdentifier3;
           v14 = "%s Associating %p %{public}@ with %p %{public}@ because it has backgroundPIPAuthorization.";
           goto LABEL_20;
         }
       }
 
-      if ([(PGPictureInPictureRemoteObject *)v4 _isICSVideoCall])
+      if ([(PGPictureInPictureRemoteObject *)objectCopy _isICSVideoCall])
       {
-        v19 = [(PGPictureInPictureRemoteObject *)v4 activitySessionIdentifier];
-        if ([v19 isEqualToString:@"com.apple.InCallService"])
+        activitySessionIdentifier2 = [(PGPictureInPictureRemoteObject *)objectCopy activitySessionIdentifier];
+        if ([activitySessionIdentifier2 isEqualToString:@"com.apple.InCallService"])
         {
-          v20 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
-          v21 = [(PGPictureInPictureRemoteObject *)self pictureInPictureApplication];
-          v22 = [v21 bundleIdentifier];
-          v23 = [v20 isEqualToString:v22];
+          activitySessionIdentifier3 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
+          pictureInPictureApplication3 = [(PGPictureInPictureRemoteObject *)self pictureInPictureApplication];
+          bundleIdentifier4 = [pictureInPictureApplication3 bundleIdentifier];
+          v23 = [activitySessionIdentifier3 isEqualToString:bundleIdentifier4];
 
           if ((v23 & 1) == 0)
           {
@@ -2200,19 +2200,19 @@ LABEL_20:
               goto LABEL_21;
             }
 
-            v11 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-            v12 = [(PGPictureInPictureRemoteObject *)v4 pictureInPictureApplication];
-            v13 = [v12 bundleIdentifier];
+            bundleIdentifier2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+            pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)objectCopy pictureInPictureApplication];
+            bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
             v24 = 136316162;
             v25 = "[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:]";
             v26 = 2048;
-            v27 = self;
+            selfCopy7 = self;
             v28 = 2114;
-            v29 = v11;
+            v29 = bundleIdentifier2;
             v30 = 2048;
-            v31 = v4;
+            v31 = objectCopy;
             v32 = 2114;
-            v33 = v13;
+            v33 = bundleIdentifier3;
             v14 = "%s Associating %p %{public}@ with %p %{public}@ because it has an expanse-like activity session identifier and the facetime video call has an ICS bundle for its activity session identifier.";
             goto LABEL_20;
           }
@@ -2230,19 +2230,19 @@ LABEL_20:
     v10 = PGLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
-      v12 = [(PGPictureInPictureRemoteObject *)v4 pictureInPictureApplication];
-      v13 = [v12 bundleIdentifier];
+      bundleIdentifier2 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+      pictureInPictureApplication2 = [(PGPictureInPictureRemoteObject *)objectCopy pictureInPictureApplication];
+      bundleIdentifier3 = [pictureInPictureApplication2 bundleIdentifier];
       v24 = 136316162;
       v25 = "[PGPictureInPictureRemoteObject _isAssociatedWithOtherObject:]";
       v26 = 2048;
-      v27 = self;
+      selfCopy7 = self;
       v28 = 2114;
-      v29 = v11;
+      v29 = bundleIdentifier2;
       v30 = 2048;
-      v31 = v4;
+      v31 = objectCopy;
       v32 = 2114;
-      v33 = v13;
+      v33 = bundleIdentifier3;
       v14 = "%s Associating %p %{public}@ with %p %{public}@ because micropip is active between the objects";
       goto LABEL_20;
     }
@@ -2260,23 +2260,23 @@ LABEL_24:
 - (BOOL)_isInActivitySession
 {
   BSDispatchQueueAssertMain();
-  v3 = [(PGPictureInPictureRemoteObject *)self contentType];
+  contentType = [(PGPictureInPictureRemoteObject *)self contentType];
   if ([(PGPictureInPictureRemoteObject *)self contentType]== 6)
   {
     LOBYTE(v4) = 0;
   }
 
-  else if (v3 == 5)
+  else if (contentType == 5)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v5 = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
-    v6 = [(PGPictureInPictureRemoteObject *)self pictureInPictureApplication];
-    v7 = [v6 bundleIdentifier];
-    v4 = [v5 isEqualToString:v7] ^ 1;
+    activitySessionIdentifier = [(PGPictureInPictureRemoteObject *)self activitySessionIdentifier];
+    pictureInPictureApplication = [(PGPictureInPictureRemoteObject *)self pictureInPictureApplication];
+    bundleIdentifier = [pictureInPictureApplication bundleIdentifier];
+    v4 = [activitySessionIdentifier isEqualToString:bundleIdentifier] ^ 1;
   }
 
   return v4;
@@ -2292,8 +2292,8 @@ LABEL_24:
   v6 = _PGLogMethodProem(self, 1);
   v7 = [v5 PG_appProxyWithDebugMethodAndPointerProem:v6];
   v8 = +[PGCommand commandForInvalidateFromProxy];
-  v9 = [v8 dictionaryRepresentation];
-  [v7 handleCommand:v9];
+  dictionaryRepresentation = [v8 dictionaryRepresentation];
+  [v7 handleCommand:dictionaryRepresentation];
 
   v10 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -2332,13 +2332,13 @@ void __74__PGPictureInPictureRemoteObject__invalidateForFailureToStartStopOrCanc
   [WeakRetained invalidate];
 }
 
-- (void)initializePictureInPictureWithControlsStyle:(int64_t)a3 preferredContentSize:(CGSize)a4 sceneIdentifier:(id)a5 affectsAppLifeCycle:(BOOL)a6 completionHandler:(id)a7
+- (void)initializePictureInPictureWithControlsStyle:(int64_t)style preferredContentSize:(CGSize)size sceneIdentifier:(id)identifier affectsAppLifeCycle:(BOOL)cycle completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v16 = PGLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -2362,22 +2362,22 @@ void __74__PGPictureInPictureRemoteObject__invalidateForFailureToStartStopOrCanc
     }
   }
 
-  v18 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v18 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __153__PGPictureInPictureRemoteObject_initializePictureInPictureWithControlsStyle_preferredContentSize_sceneIdentifier_affectsAppLifeCycle_completionHandler___block_invoke;
     v23[3] = &unk_1E7F32D48;
     v23[4] = self;
-    v25 = v15;
-    v26 = a3;
+    v25 = handlerCopy;
+    styleCopy = style;
     v27 = width;
     v28 = height;
-    v30 = a6;
-    v24 = v14;
+    cycleCopy = cycle;
+    v24 = identifierCopy;
     v29 = a2;
     dispatch_async(MEMORY[0x1E69E96A0], v23);
   }
@@ -2385,7 +2385,7 @@ void __74__PGPictureInPictureRemoteObject__invalidateForFailureToStartStopOrCanc
   else
   {
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v15 + 2))(v15, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, v20);
   }
 }
 
@@ -2470,17 +2470,17 @@ void __153__PGPictureInPictureRemoteObject_initializePictureInPictureWithControl
   [WeakRetained pictureInPictureRemoteObjectNeedsActivationAndInterruptionPolicyUpdate:*(a1 + 32)];
 }
 
-- (void)setupStartAnimated:(BOOL)a3 hostedWindowHostingHandle:(id)a4 sceneSessionPersistentIdentifier:(id)a5 preferredContentSize:(CGSize)a6 initialInterfaceOrientation:(int64_t)a7 initialLayerFrame:(CGRect)a8 completionHandler:(id)a9
+- (void)setupStartAnimated:(BOOL)animated hostedWindowHostingHandle:(id)handle sceneSessionPersistentIdentifier:(id)identifier preferredContentSize:(CGSize)size initialInterfaceOrientation:(int64_t)orientation initialLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v15 = a6.height;
-  v16 = a6.width;
-  v21 = a4;
-  v22 = a5;
-  v23 = a9;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v15 = size.height;
+  v16 = size.width;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v24 = PGLogCommon();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
@@ -2496,10 +2496,10 @@ void __153__PGPictureInPictureRemoteObject_initializePictureInPictureWithControl
     }
   }
 
-  v26 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v26 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -2509,11 +2509,11 @@ void __153__PGPictureInPictureRemoteObject_initializePictureInPictureWithControl
     v34 = v15;
     block[4] = self;
     v35 = a2;
-    v32 = v23;
-    v30 = v22;
-    v41 = a3;
-    v31 = v21;
-    v36 = a7;
+    v32 = handlerCopy;
+    v30 = identifierCopy;
+    animatedCopy = animated;
+    v31 = handleCopy;
+    orientationCopy = orientation;
     v37 = x;
     v38 = y;
     v39 = width;
@@ -2524,7 +2524,7 @@ void __153__PGPictureInPictureRemoteObject_initializePictureInPictureWithControl
   else
   {
     v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v23 + 2))(v23, 0, v28);
+    (*(handlerCopy + 2))(handlerCopy, 0, v28);
   }
 }
 
@@ -2665,17 +2665,17 @@ void __197__PGPictureInPictureRemoteObject_setupStartAnimated_hostedWindowHostin
   dispatch_async(v1, block);
 }
 
-- (void)startPictureInPictureAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)startPictureInPictureAnimated:(BOOL)animated completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = PGLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[PGPictureInPictureRemoteObject startPictureInPictureAnimated:completionHandler:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v7, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -2688,25 +2688,25 @@ void __197__PGPictureInPictureRemoteObject_setupStartAnimated_hostedWindowHostin
     }
   }
 
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v9 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__PGPictureInPictureRemoteObject_startPictureInPictureAnimated_completionHandler___block_invoke;
     block[3] = &unk_1E7F32DE8;
     block[4] = self;
-    v13 = v6;
-    v14 = a3;
+    v13 = handlerCopy;
+    animatedCopy = animated;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v6 + 2))(v6, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -2815,14 +2815,14 @@ uint64_t __82__PGPictureInPictureRemoteObject_startPictureInPictureAnimated_comp
   return result;
 }
 
-- (void)updateInitialLayerFrameForInteractiveTransitionAnimationUponBackgrounding:(CGRect)a3 withCompletionHandler:(id)a4
+- (void)updateInitialLayerFrameForInteractiveTransitionAnimationUponBackgrounding:(CGRect)backgrounding withCompletionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = backgrounding.size.height;
+  width = backgrounding.size.width;
+  y = backgrounding.origin.y;
+  x = backgrounding.origin.x;
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  handlerCopy = handler;
   v10 = PGLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -2838,16 +2838,16 @@ uint64_t __82__PGPictureInPictureRemoteObject_startPictureInPictureAnimated_comp
     }
   }
 
-  v12 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v12 != WeakRetained)
+  if (currentConnection != WeakRetained)
   {
     v14 = MEMORY[0x1E696ABC0];
     v15 = -1001;
 LABEL_14:
     v17 = [v14 errorWithDomain:@"PGPegasusErrorDomain" code:v15 userInfo:0];
-    v9[2](v9, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 
     goto LABEL_15;
   }
@@ -2884,7 +2884,7 @@ LABEL_14:
   v23 = y;
   v24 = width;
   v25 = height;
-  v21 = v9;
+  v21 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 
 LABEL_15:
@@ -2905,10 +2905,10 @@ void __130__PGPictureInPictureRemoteObject_updateInitialLayerFrameForInteractive
   dispatch_async(v3, block);
 }
 
-- (void)updateSourceSceneSessionPersistentIdentifierForInteractiveTransitionAnimationUponBackgrounding:(id)a3 withCompletionHandler:(id)a4
+- (void)updateSourceSceneSessionPersistentIdentifierForInteractiveTransitionAnimationUponBackgrounding:(id)backgrounding withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  backgroundingCopy = backgrounding;
+  handlerCopy = handler;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -2924,25 +2924,25 @@ void __130__PGPictureInPictureRemoteObject_updateInitialLayerFrameForInteractive
     }
   }
 
-  v10 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v10 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __151__PGPictureInPictureRemoteObject_updateSourceSceneSessionPersistentIdentifierForInteractiveTransitionAnimationUponBackgrounding_withCompletionHandler___block_invoke;
     block[3] = &unk_1E7F32558;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = backgroundingCopy;
+    v15 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
@@ -2958,12 +2958,12 @@ void __151__PGPictureInPictureRemoteObject_updateSourceSceneSessionPersistentIde
   dispatch_async(v2, block);
 }
 
-- (void)updatePreferredContentSize:(CGSize)a3 withCompletionHandler:(id)a4
+- (void)updatePreferredContentSize:(CGSize)size withCompletionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2987,14 +2987,14 @@ void __151__PGPictureInPictureRemoteObject_updateSourceSceneSessionPersistentIde
     }
   }
 
-  v12 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v12 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     if (!self->_queue_outstandingRotationAnimationsCount)
     {
-      [(PGPictureInPictureRemoteObject *)self _updatePreferredContentSize:v7 withCompletionHandler:width, height];
+      [(PGPictureInPictureRemoteObject *)self _updatePreferredContentSize:handlerCopy withCompletionHandler:width, height];
       goto LABEL_12;
     }
 
@@ -3009,17 +3009,17 @@ void __151__PGPictureInPictureRemoteObject_updateSourceSceneSessionPersistentIde
   }
 
   v16 = [v14 errorWithDomain:@"PGPegasusErrorDomain" code:v15 userInfo:0];
-  v7[2](v7, 0, v16);
+  handlerCopy[2](handlerCopy, 0, v16);
 
 LABEL_12:
 }
 
-- (void)_updatePreferredContentSize:(CGSize)a3 withCompletionHandler:(id)a4
+- (void)_updatePreferredContentSize:(CGSize)size withCompletionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  handlerCopy = handler;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v8 = PGLogCommon();
@@ -3040,7 +3040,7 @@ LABEL_12:
       block[4] = self;
       v20 = width;
       v21 = height;
-      v19 = v7;
+      v19 = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
       v9 = v19;
     }
@@ -3054,7 +3054,7 @@ LABEL_12:
       v14[4] = self;
       v16 = width;
       v17 = height;
-      v15 = v7;
+      v15 = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v14);
       v9 = v15;
     }
@@ -3077,7 +3077,7 @@ LABEL_12:
     }
 
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1003 userInfo:0];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
@@ -3106,9 +3106,9 @@ void __84__PGPictureInPictureRemoteObject__updatePreferredContentSize_withComple
   dispatch_async(v1, block);
 }
 
-- (void)checkActivePictureInPictureCancellationPolicyWithCompletion:(id)a3
+- (void)checkActivePictureInPictureCancellationPolicyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3124,16 +3124,16 @@ void __84__PGPictureInPictureRemoteObject__updatePreferredContentSize_withComple
     }
   }
 
-  v7 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v7 != WeakRetained)
+  if (currentConnection != WeakRetained)
   {
     v9 = MEMORY[0x1E696ABC0];
     v10 = -1001;
 LABEL_12:
     v11 = [v9 errorWithDomain:@"PGPegasusErrorDomain" code:v10 userInfo:0];
-    v4[2](v4, 0, v11, 1, 1);
+    completionCopy[2](completionCopy, 0, v11, 1, 1);
 
     goto LABEL_13;
   }
@@ -3150,7 +3150,7 @@ LABEL_12:
   v12[2] = __94__PGPictureInPictureRemoteObject_checkActivePictureInPictureCancellationPolicyWithCompletion___block_invoke;
   v12[3] = &unk_1E7F32D98;
   v12[4] = self;
-  v13 = v4;
+  v13 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
 LABEL_13:
@@ -3169,9 +3169,9 @@ uint64_t __94__PGPictureInPictureRemoteObject_checkActivePictureInPictureCancell
   return v4();
 }
 
-- (void)rotateContentContainer:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)rotateContentContainer:(int64_t)container withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = PGLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -3187,16 +3187,16 @@ uint64_t __94__PGPictureInPictureRemoteObject_checkActivePictureInPictureCancell
     }
   }
 
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v9 != WeakRetained)
+  if (currentConnection != WeakRetained)
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = -1001;
 LABEL_12:
     v13 = [v11 errorWithDomain:@"PGPegasusErrorDomain" code:v12 userInfo:0];
-    (*(v6 + 2))(v6, 0, v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13, 0);
 
     goto LABEL_13;
   }
@@ -3214,8 +3214,8 @@ LABEL_12:
   block[2] = __79__PGPictureInPictureRemoteObject_rotateContentContainer_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7F32C10;
   block[4] = self;
-  v16 = a3;
-  v15 = v6;
+  containerCopy = container;
+  v15 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
 LABEL_13:
@@ -3284,9 +3284,9 @@ void __79__PGPictureInPictureRemoteObject_rotateContentContainer_withCompletionH
   }
 }
 
-- (void)setupStopAnimated:(BOOL)a3 needsApplicationActivation:(BOOL)a4 completionHandler:(id)a5
+- (void)setupStopAnimated:(BOOL)animated needsApplicationActivation:(BOOL)activation completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v9 = PGLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -3302,26 +3302,26 @@ void __79__PGPictureInPictureRemoteObject_rotateContentContainer_withCompletionH
     }
   }
 
-  v11 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v11 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __97__PGPictureInPictureRemoteObject_setupStopAnimated_needsApplicationActivation_completionHandler___block_invoke;
     v21[3] = &unk_1E7F32DE8;
     v21[4] = self;
-    v14 = v8;
+    v14 = handlerCopy;
     v22 = v14;
-    v23 = a4;
+    activationCopy = activation;
     v15 = MEMORY[0x1BFB0C680](v21);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __97__PGPictureInPictureRemoteObject_setupStopAnimated_needsApplicationActivation_completionHandler___block_invoke_7;
     block[3] = &unk_1E7F32ED8;
     block[4] = self;
-    v20 = a3;
+    animatedCopy = animated;
     v18 = v14;
     v19 = v15;
     v16 = v15;
@@ -3331,7 +3331,7 @@ void __79__PGPictureInPictureRemoteObject_rotateContentContainer_withCompletionH
   else
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v8 + 2))(v8, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -3471,21 +3471,21 @@ void __97__PGPictureInPictureRemoteObject_setupStopAnimated_needsApplicationActi
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)stopPictureInPictureAnimated:(BOOL)a3 withFinalInterfaceOrientation:(int64_t)a4 finalLayerFrame:(CGRect)a5 completionHandler:(id)a6
+- (void)stopPictureInPictureAnimated:(BOOL)animated withFinalInterfaceOrientation:(int64_t)orientation finalLayerFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31 = *MEMORY[0x1E69E9840];
-  v13 = a6;
+  handlerCopy = handler;
   v14 = PGLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v28 = "[PGPictureInPictureRemoteObject stopPictureInPictureAnimated:withFinalInterfaceOrientation:finalLayerFrame:completionHandler:]";
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v14, OS_LOG_TYPE_DEFAULT, "%s %p ", buf, 0x16u);
   }
 
@@ -3498,30 +3498,30 @@ void __97__PGPictureInPictureRemoteObject_setupStopAnimated_needsApplicationActi
     }
   }
 
-  v16 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v16 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __127__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withFinalInterfaceOrientation_finalLayerFrame_completionHandler___block_invoke;
     v19[3] = &unk_1E7F32F00;
     v19[4] = self;
-    v20 = v13;
+    v20 = handlerCopy;
     v21 = x;
     v22 = y;
     v23 = width;
     v24 = height;
-    v26 = a3;
-    v25 = a4;
+    animatedCopy = animated;
+    orientationCopy = orientation;
     dispatch_async(MEMORY[0x1E69E96A0], v19);
   }
 
   else
   {
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (*(v13 + 2))(v13, 0, v18, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18, 0);
   }
 }
 
@@ -3600,9 +3600,9 @@ void __127__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withFina
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cleanupWithCompletionHandler:(id)a3
+- (void)cleanupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3618,16 +3618,16 @@ void __127__PGPictureInPictureRemoteObject_stopPictureInPictureAnimated_withFina
     }
   }
 
-  v7 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v7 != WeakRetained)
+  if (currentConnection != WeakRetained)
   {
     v9 = MEMORY[0x1E696ABC0];
     v10 = -1001;
 LABEL_12:
     v11 = [v9 errorWithDomain:@"PGPegasusErrorDomain" code:v10 userInfo:0];
-    v4[2](v4, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 
     goto LABEL_13;
   }
@@ -3644,7 +3644,7 @@ LABEL_12:
   v12[2] = __63__PGPictureInPictureRemoteObject_cleanupWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7F32D98;
   v12[4] = self;
-  v13 = v4;
+  v13 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 
 LABEL_13:
@@ -3684,12 +3684,12 @@ void __63__PGPictureInPictureRemoteObject_cleanupWithCompletionHandler___block_i
   [WeakRetained pictureInPictureRemoteObjectNeedsActivationAndInterruptionPolicyUpdate:*(a1 + 32)];
 }
 
-- (void)setPictureInPictureShouldStartWhenEnteringBackground:(BOOL)a3 completionHandler:(id)a4
+- (void)setPictureInPictureShouldStartWhenEnteringBackground:(BOOL)background completionHandler:(id)handler
 {
-  v4 = a3;
+  backgroundCopy = background;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_pictureInPictureShouldStartWhenEnteringBackground != v4)
+  handlerCopy = handler;
+  if (self->_pictureInPictureShouldStartWhenEnteringBackground != backgroundCopy)
   {
     v7 = PGLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3697,9 +3697,9 @@ void __63__PGPictureInPictureRemoteObject_cleanupWithCompletionHandler___block_i
       v12 = 136315650;
       v13 = "[PGPictureInPictureRemoteObject setPictureInPictureShouldStartWhenEnteringBackground:completionHandler:]";
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
-      v17 = v4;
+      v17 = backgroundCopy;
       _os_log_impl(&dword_1BB282000, v7, OS_LOG_TYPE_DEFAULT, "%s %p %{BOOL}u", &v12, 0x1Cu);
     }
   }
@@ -3713,35 +3713,35 @@ void __63__PGPictureInPictureRemoteObject_cleanupWithCompletionHandler___block_i
     }
   }
 
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v9 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
-    self->_pictureInPictureShouldStartWhenEnteringBackground = v4;
-    v6[2](v6, 1, 0);
+    self->_pictureInPictureShouldStartWhenEnteringBackground = backgroundCopy;
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PGPegasusErrorDomain" code:-1001 userInfo:0];
-    (v6)[2](v6, 0, v11);
+    (handlerCopy)[2](handlerCopy, 0, v11);
   }
 }
 
-- (void)updatePlaybackStateWithDiff:(id)a3
+- (void)updatePlaybackStateWithDiff:(id)diff
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v12 = "[PGPictureInPictureRemoteObject updatePlaybackStateWithDiff:]";
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v4;
+    v16 = diffCopy;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p %@", buf, 0x20u);
   }
 
@@ -3754,17 +3754,17 @@ void __63__PGPictureInPictureRemoteObject_cleanupWithCompletionHandler___block_i
     }
   }
 
-  v7 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v7 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __62__PGPictureInPictureRemoteObject_updatePlaybackStateWithDiff___block_invoke;
     v9[3] = &unk_1E7F32508;
     v9[4] = self;
-    v10 = v4;
+    v10 = diffCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
@@ -3801,10 +3801,10 @@ void __62__PGPictureInPictureRemoteObject_updatePlaybackStateWithDiff___block_in
   }
 }
 
-- (void)updateMenuItems:(id)a3
+- (void)updateMenuItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v6 = PGLogCommon();
@@ -3820,16 +3820,16 @@ void __62__PGPictureInPictureRemoteObject_updatePlaybackStateWithDiff___block_in
     *buf = 136315650;
     v19 = "[PGPictureInPictureRemoteObject updateMenuItems:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v5;
+    v23 = itemsCopy;
     _os_log_impl(&dword_1BB282000, v7, OS_LOG_TYPE_DEFAULT, "%s %p %@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v10 = v8 == WeakRetained;
+  v10 = currentConnection == WeakRetained;
 
   if (v10)
   {
@@ -3840,11 +3840,11 @@ void __62__PGPictureInPictureRemoteObject_updatePlaybackStateWithDiff___block_in
     objc_copyWeak(v17, buf);
     v16[4] = self;
     v17[1] = a2;
-    v11 = [v5 bs_map:v16];
+    v11 = [itemsCopy bs_map:v16];
     v12 = objc_loadWeakRetained(&self->_connection);
-    v13 = [v12 PG_hasMenuItemProviderEntitlement];
+    pG_hasMenuItemProviderEntitlement = [v12 PG_hasMenuItemProviderEntitlement];
 
-    if (v13)
+    if (pG_hasMenuItemProviderEntitlement)
     {
       v15 = v11;
       BSDispatchMain();
@@ -3927,9 +3927,9 @@ uint64_t __50__PGPictureInPictureRemoteObject_updateMenuItems___block_invoke_4(u
   return [v6 setMenuItems:v5];
 }
 
-- (void)setActivitySessionIdentifier:(id)a3
+- (void)setActivitySessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v5 = PGLogCommon();
@@ -3939,17 +3939,17 @@ uint64_t __50__PGPictureInPictureRemoteObject_updateMenuItems___block_invoke_4(u
     }
   }
 
-  v6 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v6 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__PGPictureInPictureRemoteObject_setActivitySessionIdentifier___block_invoke;
     v8[3] = &unk_1E7F32508;
-    v9 = v4;
-    v10 = self;
+    v9 = identifierCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -4015,9 +4015,9 @@ void __63__PGPictureInPictureRemoteObject_setActivitySessionIdentifier___block_i
   }
 }
 
-- (void)setExemptAttributionOverride:(id)a3
+- (void)setExemptAttributionOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v5 = PGLogCommon();
@@ -4027,17 +4027,17 @@ void __63__PGPictureInPictureRemoteObject_setActivitySessionIdentifier___block_i
     }
   }
 
-  v6 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
 
-  if (v6 == WeakRetained)
+  if (currentConnection == WeakRetained)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__PGPictureInPictureRemoteObject_setExemptAttributionOverride___block_invoke;
     v8[3] = &unk_1E7F32508;
     v8[4] = self;
-    v9 = v4;
+    v9 = overrideCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -4078,13 +4078,13 @@ uint64_t __63__PGPictureInPictureRemoteObject_setExemptAttributionOverride___blo
   v3 = PGLogCommon();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
+    bundleIdentifier = [(PGPictureInPictureApplication *)self->_pictureInPictureApplication bundleIdentifier];
     *buf = 136315650;
     v6 = "[PGPictureInPictureRemoteObject stopPictureInPictureAndRestoreUserInterface]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = bundleIdentifier;
     _os_log_impl(&dword_1BB282000, v3, OS_LOG_TYPE_DEFAULT, "%s %p %@", buf, 0x20u);
   }
 
@@ -4094,15 +4094,15 @@ uint64_t __63__PGPictureInPictureRemoteObject_setExemptAttributionOverride___blo
   }
 }
 
-- (void)pagingAccessorySetCurrentPage:(unint64_t)a3 numberOfPages:(unint64_t)a4
+- (void)pagingAccessorySetCurrentPage:(unint64_t)page numberOfPages:(unint64_t)pages
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__PGPictureInPictureRemoteObject_pagingAccessorySetCurrentPage_numberOfPages___block_invoke;
   block[3] = &unk_1E7F32C58;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = page;
+  block[6] = pages;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -4113,15 +4113,15 @@ uint64_t __78__PGPictureInPictureRemoteObject_pagingAccessorySetCurrentPage_numb
   return [*(a1[4] + 256) pagingAccessorySetCurrentPage:a1[5] numberOfPages:?];
 }
 
-- (void)setExemptAttribution:(id)a3
+- (void)setExemptAttribution:(id)attribution
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attributionCopy = attribution;
   BSDispatchQueueAssertMain();
   exemptAttribution = self->_exemptAttribution;
-  if (exemptAttribution != v4 && ![(NSString *)exemptAttribution isEqualToString:v4])
+  if (exemptAttribution != attributionCopy && ![(NSString *)exemptAttribution isEqualToString:attributionCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)attributionCopy copy];
     v7 = self->_exemptAttribution;
     self->_exemptAttribution = v6;
 
@@ -4133,11 +4133,11 @@ uint64_t __78__PGPictureInPictureRemoteObject_pagingAccessorySetCurrentPage_numb
         v9 = 136315394;
         v10 = "[PGPictureInPictureRemoteObject setExemptAttribution:]";
         v11 = 2114;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1BB282000, v8, OS_LOG_TYPE_DEFAULT, "%s %{public}@", &v9, 0x16u);
       }
 
-      [(PGInterruptionAssistant *)self->_interruptionAssistant setExemptAttribution:v4];
+      [(PGInterruptionAssistant *)self->_interruptionAssistant setExemptAttribution:attributionCopy];
       [(PGPictureInPictureRemoteObject *)self _updateActiveProxyAndViewControllerOfInterruptionIfNeeded];
     }
   }
@@ -4201,29 +4201,29 @@ uint64_t __91__PGPictureInPictureRemoteObject__updateActiveProxyAndViewControlle
 - (BOOL)_wantsProcessAssertion
 {
   BSDispatchQueueAssertMain();
-  v3 = [(PGPictureInPictureRemoteObject *)self _currentStateAllowsProcessAssertion];
-  if (v3)
+  _currentStateAllowsProcessAssertion = [(PGPictureInPictureRemoteObject *)self _currentStateAllowsProcessAssertion];
+  if (_currentStateAllowsProcessAssertion)
   {
-    v4 = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
+    isInterrupted = [(PGInterruptionAssistant *)self->_interruptionAssistant isInterrupted];
     v5 = [(PGInterruptionAssistant *)self->_interruptionAssistant hasInterruptionReason:1];
-    LOBYTE(v3) = !v5;
-    if (!v5 && v4)
+    LOBYTE(_currentStateAllowsProcessAssertion) = !v5;
+    if (!v5 && isInterrupted)
     {
 
-      LOBYTE(v3) = [(PGPictureInPictureRemoteObject *)self isVideoCall];
+      LOBYTE(_currentStateAllowsProcessAssertion) = [(PGPictureInPictureRemoteObject *)self isVideoCall];
     }
   }
 
-  return v3;
+  return _currentStateAllowsProcessAssertion;
 }
 
 - (void)_acquireOrInvalidateProcessAssertionIfNeeded
 {
   v27 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
-  v3 = [(PGPictureInPictureRemoteObject *)self _wantsProcessAssertion];
+  _wantsProcessAssertion = [(PGPictureInPictureRemoteObject *)self _wantsProcessAssertion];
   processAssertion = self->_processAssertion;
-  if (v3)
+  if (_wantsProcessAssertion)
   {
     if (processAssertion)
     {
@@ -4236,7 +4236,7 @@ uint64_t __91__PGPictureInPictureRemoteObject__updateActiveProxyAndViewControlle
       *buf = 136315394;
       v24 = "[PGPictureInPictureRemoteObject _acquireOrInvalidateProcessAssertionIfNeeded]";
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "%s %p Acquiring process assertion", buf, 0x16u);
     }
 
@@ -4265,7 +4265,7 @@ uint64_t __91__PGPictureInPictureRemoteObject__updateActiveProxyAndViewControlle
       *buf = 136315394;
       v24 = "[PGPictureInPictureRemoteObject _acquireOrInvalidateProcessAssertionIfNeeded]";
       v25 = 2048;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BB282000, v10, OS_LOG_TYPE_DEFAULT, "%s %p Invalidating process assertion", buf, 0x16u);
     }
 
@@ -4283,7 +4283,7 @@ uint64_t __91__PGPictureInPictureRemoteObject__updateActiveProxyAndViewControlle
     v19 = __78__PGPictureInPictureRemoteObject__acquireOrInvalidateProcessAssertionIfNeeded__block_invoke;
     v20 = &unk_1E7F32508;
     v21 = v11;
-    v22 = self;
+    selfCopy3 = self;
     startBackgroundPIPAssertion = v11;
     dispatch_after(v15, MEMORY[0x1E69E96A0], &v17);
     [(PGProcessAssertion *)self->_processAssertion invalidate:v17];
@@ -4315,45 +4315,45 @@ void *__78__PGPictureInPictureRemoteObject__acquireOrInvalidateProcessAssertionI
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BB282000, v4, OS_LOG_TYPE_DEFAULT, "remote object %p notifying proxy of pictureInPictureInterruptionBegan", &v9, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v6 = _PGLogMethodProem(self, 1);
   v7 = [WeakRetained PG_appProxyWithDebugMethodAndPointerProem:v6];
-  v8 = [v3 dictionaryRepresentation];
-  [v7 handleCommand:v8];
+  dictionaryRepresentation = [v3 dictionaryRepresentation];
+  [v7 handleCommand:dictionaryRepresentation];
 }
 
 - (void)_queue_notifyProxyOfInterruptionEnded
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PGInterruptionAssistant *)self->_interruptionAssistant allowsResumingAfterInterruptionEnds];
+  allowsResumingAfterInterruptionEnds = [(PGInterruptionAssistant *)self->_interruptionAssistant allowsResumingAfterInterruptionEnds];
   [(PGInterruptionAssistant *)self->_interruptionAssistant noteDidNotifyProxyOfInterruptionEnded];
-  v4 = [PGCommand commandForEndInterruptionWithShouldResumeSuggestion:v3];
+  v4 = [PGCommand commandForEndInterruptionWithShouldResumeSuggestion:allowsResumingAfterInterruptionEnds];
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218240;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = v3;
+    v13 = allowsResumingAfterInterruptionEnds;
     _os_log_impl(&dword_1BB282000, v5, OS_LOG_TYPE_DEFAULT, "remote object %p notifying proxy of pictureInPictureInterruptionEnded shouldResumeSuggestion %{BOOL}u", &v10, 0x12u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v7 = _PGLogMethodProem(self, 1);
   v8 = [WeakRetained PG_appProxyWithDebugMethodAndPointerProem:v7];
-  v9 = [v4 dictionaryRepresentation];
-  [v8 handleCommand:v9];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  [v8 handleCommand:dictionaryRepresentation];
 }
 
-- (void)pictureInPictureViewController:(id)a3 updateHostedWindowSize:(CGSize)a4 animationType:(int64_t)a5 initialSpringVelocity:(double)a6
+- (void)pictureInPictureViewController:(id)controller updateHostedWindowSize:(CGSize)size animationType:(int64_t)type initialSpringVelocity:(double)velocity
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
   v13 = PGLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -4372,26 +4372,26 @@ void *__78__PGPictureInPictureRemoteObject__acquireOrInvalidateProcessAssertionI
   sceneControllerIfExists = self->_sceneControllerIfExists;
   if (sceneControllerIfExists)
   {
-    [(PGPIPRemoteObjectSceneController *)sceneControllerIfExists updateSize:a5 animationType:width initialSpringVelocity:height, a6];
+    [(PGPIPRemoteObjectSceneController *)sceneControllerIfExists updateSize:type animationType:width initialSpringVelocity:height, velocity];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
+    _synchronizedDrawingFence = [MEMORY[0x1E69DCE70] _synchronizedDrawingFence];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __124__PGPictureInPictureRemoteObject_pictureInPictureViewController_updateHostedWindowSize_animationType_initialSpringVelocity___block_invoke;
     block[3] = &unk_1E7F32F78;
-    v21 = v17;
+    v21 = _synchronizedDrawingFence;
     v22 = a2;
     v23 = width;
     v24 = height;
-    v25 = a5;
-    v26 = a6;
+    typeCopy = type;
+    velocityCopy = velocity;
     block[4] = self;
-    v19 = v17;
+    v19 = _synchronizedDrawingFence;
     dispatch_async(queue, block);
 
     objc_autoreleasePoolPop(v16);
@@ -4406,7 +4406,7 @@ void __124__PGPictureInPictureRemoteObject_pictureInPictureViewController_update
   [v3 updateHostedWindowSize:*(a1 + 72) animationType:*(a1 + 40) initialSpringVelocity:*(a1 + 56) synchronizationFence:{*(a1 + 64), *(a1 + 80)}];
 }
 
-- (void)pictureInPictureViewControllerHostedWindowSizeChangeBegan:(id)a3
+- (void)pictureInPictureViewControllerHostedWindowSizeChangeBegan:(id)began
 {
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4441,7 +4441,7 @@ void __92__PGPictureInPictureRemoteObject_pictureInPictureViewControllerHostedWi
   [v3 hostedWindowSizeChangeBegan];
 }
 
-- (void)pictureInPictureViewControllerHostedWindowSizeChangeEnded:(id)a3
+- (void)pictureInPictureViewControllerHostedWindowSizeChangeEnded:(id)ended
 {
   v5 = PGLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4476,30 +4476,30 @@ void __92__PGPictureInPictureRemoteObject_pictureInPictureViewControllerHostedWi
   [v3 hostedWindowSizeChangeEnded];
 }
 
-- (void)pictureInPictureViewControllerDidRequestStop:(id)a3
+- (void)pictureInPictureViewControllerDidRequestStop:(id)stop
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PGPictureInPictureRemoteObject *)self canStopPictureInPicture];
+  stopCopy = stop;
+  canStopPictureInPicture = [(PGPictureInPictureRemoteObject *)self canStopPictureInPicture];
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[PGPictureInPictureRemoteObject pictureInPictureViewControllerDidRequestStop:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = v5;
+    v15 = canStopPictureInPicture;
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %p canStop: %{BOOL}u", &v10, 0x1Cu);
   }
 
-  if (v5)
+  if (canStopPictureInPicture)
   {
     self->_hasPendingStopRequest = 0;
     [(PGPictureInPictureViewController *)self->_pictureInPictureViewController notePictureInPictureWillStopForAppRequest:0 preferredFullScreenRestore:1];
-    v7 = [(PGPictureInPictureRemoteObject *)self delegate];
-    v8 = [(PGPictureInPictureRemoteObject *)self sourceSceneSessionPersistentIdentifier];
-    [v7 pictureInPictureRemoteObject:self didRequestPictureInPictureStopForViewController:v4 sourceSceneSessionIdentifier:v8 animated:1];
+    delegate = [(PGPictureInPictureRemoteObject *)self delegate];
+    sourceSceneSessionPersistentIdentifier = [(PGPictureInPictureRemoteObject *)self sourceSceneSessionPersistentIdentifier];
+    [delegate pictureInPictureRemoteObject:self didRequestPictureInPictureStopForViewController:stopCopy sourceSceneSessionIdentifier:sourceSceneSessionPersistentIdentifier animated:1];
   }
 
   else
@@ -4509,10 +4509,10 @@ void __92__PGPictureInPictureRemoteObject_pictureInPictureViewControllerHostedWi
   }
 }
 
-- (void)pictureInPictureViewController:(id)a3 didReceiveCommand:(id)a4
+- (void)pictureInPictureViewController:(id)controller didReceiveCommand:(id)command
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  commandCopy = command;
   v9 = PGLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -4528,25 +4528,25 @@ void __92__PGPictureInPictureRemoteObject_pictureInPictureViewControllerHostedWi
     }
   }
 
-  v11 = [v8 systemAction];
-  if (v11 > 1)
+  systemAction = [commandCopy systemAction];
+  if (systemAction > 1)
   {
-    if (v11 == 2)
+    if (systemAction == 2)
     {
       [(PGPictureInPictureRemoteObject *)self _stopTethering];
-      [(PGPictureInPictureRemoteObject *)self pictureInPictureViewControllerDidRequestStop:v7];
+      [(PGPictureInPictureRemoteObject *)self pictureInPictureViewControllerDidRequestStop:controllerCopy];
     }
 
-    else if (v11 == 3)
+    else if (systemAction == 3)
     {
       [(PGPictureInPictureRemoteObject *)self _stopTethering];
-      [(PGPictureInPictureRemoteObject *)self pictureInPictureViewControllerDidRequestCancel:v7];
+      [(PGPictureInPictureRemoteObject *)self pictureInPictureViewControllerDidRequestCancel:controllerCopy];
     }
   }
 
-  else if (v11)
+  else if (systemAction)
   {
-    if (v11 == 1)
+    if (systemAction == 1)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x1E69E9820];
@@ -4568,7 +4568,7 @@ void __92__PGPictureInPictureRemoteObject_pictureInPictureViewControllerHostedWi
     v15[3] = &unk_1E7F32FA0;
     v15[4] = self;
     v17 = a2;
-    v16 = v8;
+    v16 = commandCopy;
     dispatch_async(v13, v15);
   }
 }
@@ -4590,7 +4590,7 @@ void __83__PGPictureInPictureRemoteObject_pictureInPictureViewController_didRece
   [v3 actionButtonTapped];
 }
 
-- (void)pictureInPictureViewControllerDidRequestCancel:(id)a3
+- (void)pictureInPictureViewControllerDidRequestCancel:(id)cancel
 {
   v13 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
@@ -4602,30 +4602,30 @@ void __83__PGPictureInPictureRemoteObject_pictureInPictureViewController_didRece
     }
   }
 
-  v5 = [(PGPictureInPictureRemoteObject *)self canCancelPictureInPicture];
+  canCancelPictureInPicture = [(PGPictureInPictureRemoteObject *)self canCancelPictureInPicture];
   v6 = PGLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[PGPictureInPictureRemoteObject pictureInPictureViewControllerDidRequestCancel:]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v5;
+    v12 = canCancelPictureInPicture;
     _os_log_impl(&dword_1BB282000, v6, OS_LOG_TYPE_DEFAULT, "%s %p canCancel: %{BOOL}u", &v7, 0x1Cu);
   }
 
-  if (v5)
+  if (canCancelPictureInPicture)
   {
     [(PGPictureInPictureRemoteObject *)self cancel];
   }
 }
 
-- (void)pictureInPictureViewController:(id)a3 didTransitionToStashed:(BOOL)a4
+- (void)pictureInPictureViewController:(id)controller didTransitionToStashed:(BOOL)stashed
 {
-  v4 = a4;
+  stashedCopy = stashed;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = PGLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4633,14 +4633,14 @@ void __83__PGPictureInPictureRemoteObject_pictureInPictureViewController_didRece
     *buf = 138543874;
     v16 = v8;
     v17 = 1024;
-    v18 = v4;
+    v18 = stashedCopy;
     v19 = 1024;
-    v20 = [(PGPictureInPictureRemoteObject *)self _isUnderLock];
+    _isUnderLock = [(PGPictureInPictureRemoteObject *)self _isUnderLock];
     _os_log_impl(&dword_1BB282000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ setStashed:%{BOOL}u [self _isUnderLock]:%{BOOL}u", buf, 0x18u);
   }
 
-  self->_stashed = v4;
-  if (v4)
+  self->_stashed = stashedCopy;
+  if (stashedCopy)
   {
     [(PGPictureInPictureRemoteObject *)self _notifyProxyOfStashedOrUnderLock:1];
     if ([(PGPlaybackState *)self->_playbackState backgroundAudioPolicy]== 2 && !self->_considerStashedPlaybackAsBackgroundAudioTimer)
@@ -4683,12 +4683,12 @@ void __88__PGPictureInPictureRemoteObject_pictureInPictureViewController_didTran
   }
 }
 
-- (BOOL)canPreventOrSuspendRemoteObject:(id)a3
+- (BOOL)canPreventOrSuspendRemoteObject:(id)object
 {
-  v4 = a3;
-  if (-[PGPictureInPictureRemoteObject _isICSVideoCall](self, "_isICSVideoCall") && [v4 isVideoCall])
+  objectCopy = object;
+  if (-[PGPictureInPictureRemoteObject _isICSVideoCall](self, "_isICSVideoCall") && [objectCopy isVideoCall])
   {
-    v5 = [v4 _isAppICS] ^ 1;
+    v5 = [objectCopy _isAppICS] ^ 1;
   }
 
   else
@@ -4699,7 +4699,7 @@ void __88__PGPictureInPictureRemoteObject_pictureInPictureViewController_didTran
   return v5;
 }
 
-- (void)pagingSkipByNumberOfPages:(int64_t)a3
+- (void)pagingSkipByNumberOfPages:(int64_t)pages
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -4708,7 +4708,7 @@ void __88__PGPictureInPictureRemoteObject_pictureInPictureViewController_didTran
   block[3] = &unk_1E7F32C58;
   block[4] = self;
   block[5] = a2;
-  block[6] = a3;
+  block[6] = pages;
   dispatch_async(queue, block);
 }
 

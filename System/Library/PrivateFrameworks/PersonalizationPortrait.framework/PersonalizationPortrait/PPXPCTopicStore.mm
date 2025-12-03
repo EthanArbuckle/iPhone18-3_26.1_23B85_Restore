@@ -1,24 +1,24 @@
 @interface PPXPCTopicStore
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4;
-- (BOOL)cloudSyncWithError:(id *)a3;
-- (BOOL)computeAndCacheTopicScores:(id *)a3;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)iterRankedTopicsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterScoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count;
+- (BOOL)cloudSyncWithError:(id *)error;
+- (BOOL)computeAndCacheTopicScores:(id *)scores;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)iterRankedTopicsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterScoresForTopicMapping:(id)mapping query:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block;
 - (id)_init;
-- (id)cachePath:(id *)a3;
-- (id)rankedTopicsWithQuery:(id)a3 error:(id *)a4;
-- (id)scoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5;
-- (id)topicCacheSandboxExtensionToken:(id *)a3;
-- (id)topicExtractionsFromText:(id)a3 error:(id *)a4;
-- (id)topicRecordsWithQuery:(id)a3 error:(id *)a4;
-- (id)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 error:(id *)a5;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4;
+- (id)cachePath:(id *)path;
+- (id)rankedTopicsWithQuery:(id)query error:(id *)error;
+- (id)scoresForTopicMapping:(id)mapping query:(id)query error:(id *)error;
+- (id)topicCacheSandboxExtensionToken:(id *)token;
+- (id)topicExtractionsFromText:(id)text error:(id *)error;
+- (id)topicRecordsWithQuery:(id)query error:(id *)error;
+- (id)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier error:(id *)error;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPXPCTopicStore
@@ -27,56 +27,56 @@
 {
   v6.receiver = self;
   v6.super_class = PPXPCTopicStore;
-  v2 = [(PPTopicStore *)&v6 _initFromSubclass];
-  if (v2)
+  _initFromSubclass = [(PPTopicStore *)&v6 _initFromSubclass];
+  if (_initFromSubclass)
   {
-    v3 = [[PPClientFeedbackHelper alloc] initWithParentObject:v2];
-    v4 = v2[1];
-    v2[1] = v3;
+    v3 = [[PPClientFeedbackHelper alloc] initWithParentObject:_initFromSubclass];
+    v4 = _initFromSubclass[1];
+    _initFromSubclass[1] = v3;
   }
 
-  return v2;
+  return _initFromSubclass;
 }
 
-- (id)cachePath:(id *)a3
+- (id)cachePath:(id *)path
 {
   v4 = +[PPTopicReadOnlyClient sharedInstance];
-  v5 = [v4 cachePath:a3];
+  v5 = [v4 cachePath:path];
 
   return v5;
 }
 
-- (id)topicCacheSandboxExtensionToken:(id *)a3
+- (id)topicCacheSandboxExtensionToken:(id *)token
 {
   v4 = +[PPTopicReadOnlyClient sharedInstance];
-  v5 = [v4 topicCacheSandboxExtensionToken:a3];
+  v5 = [v4 topicCacheSandboxExtensionToken:token];
 
   return v5;
 }
 
-- (BOOL)computeAndCacheTopicScores:(id *)a3
+- (BOOL)computeAndCacheTopicScores:(id *)scores
 {
   v4 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a3) = [v4 computeAndCacheTopicScores:a3];
+  LOBYTE(scores) = [v4 computeAndCacheTopicScores:scores];
 
-  return a3;
+  return scores;
 }
 
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PPXPCTopicStore *)self clientIdentifier];
-  v10 = [v9 length];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  clientIdentifier = [(PPXPCTopicStore *)self clientIdentifier];
+  v10 = [clientIdentifier length];
 
   if (!v10)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPXPCTopicStore.m" lineNumber:301 description:@"The clientIdentifier property must be set on the PPTopicStore in order to send feedback."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPXPCTopicStore.m" lineNumber:301 description:@"The clientIdentifier property must be set on the PPTopicStore in order to send feedback."];
   }
 
-  v11 = [(PPXPCTopicStore *)self clientIdentifier];
-  [v8 setClientIdentifier:v11];
+  clientIdentifier2 = [(PPXPCTopicStore *)self clientIdentifier];
+  [feedbackCopy setClientIdentifier:clientIdentifier2];
 
   v12 = +[PPTopicReadOnlyClient sharedInstance];
   v15[0] = MEMORY[0x1E69E9820];
@@ -84,9 +84,9 @@
   v15[2] = __71__PPXPCTopicStore_registerUniversalSearchSpotlightFeedback_completion___block_invoke;
   v15[3] = &unk_1E77F7D98;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
-  [v12 registerUniversalSearchSpotlightFeedback:v8 completion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [v12 registerUniversalSearchSpotlightFeedback:feedbackCopy completion:v15];
 }
 
 uint64_t __71__PPXPCTopicStore_registerUniversalSearchSpotlightFeedback_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -101,21 +101,21 @@ uint64_t __71__PPXPCTopicStore_registerUniversalSearchSpotlightFeedback_completi
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PPXPCTopicStore *)self clientIdentifier];
-  v10 = [v9 length];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  clientIdentifier = [(PPXPCTopicStore *)self clientIdentifier];
+  v10 = [clientIdentifier length];
 
   if (!v10)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPXPCTopicStore.m" lineNumber:271 description:@"The clientIdentifier property must be set on the PPTopicStore in order to send feedback."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPXPCTopicStore.m" lineNumber:271 description:@"The clientIdentifier property must be set on the PPTopicStore in order to send feedback."];
   }
 
-  v11 = [(PPXPCTopicStore *)self clientIdentifier];
-  [v8 setClientIdentifier:v11];
+  clientIdentifier2 = [(PPXPCTopicStore *)self clientIdentifier];
+  [feedbackCopy setClientIdentifier:clientIdentifier2];
 
   v12 = +[PPTopicReadOnlyClient sharedInstance];
   v15[0] = MEMORY[0x1E69E9820];
@@ -123,9 +123,9 @@ uint64_t __71__PPXPCTopicStore_registerUniversalSearchSpotlightFeedback_completi
   v15[2] = __47__PPXPCTopicStore_registerFeedback_completion___block_invoke;
   v15[3] = &unk_1E77F7D98;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
-  [v12 registerFeedback:v8 completion:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [v12 registerFeedback:feedbackCopy completion:v15];
 }
 
 uint64_t __47__PPXPCTopicStore_registerFeedback_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -140,73 +140,73 @@ uint64_t __47__PPXPCTopicStore_registerFeedback_completion___block_invoke(uint64
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)clearWithError:(id *)a3 deletedCount:(unint64_t *)a4
+- (BOOL)clearWithError:(id *)error deletedCount:(unint64_t *)count
 {
   v6 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a4) = [v6 clearWithError:a3 deletedCount:a4];
+  LOBYTE(count) = [v6 clearWithError:error deletedCount:count];
 
-  return a4;
+  return count;
 }
 
-- (BOOL)cloudSyncWithError:(id *)a3
+- (BOOL)cloudSyncWithError:(id *)error
 {
   v4 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a3) = [v4 cloudSyncWithError:a3];
+  LOBYTE(error) = [v4 cloudSyncWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
+  idCopy = id;
   v8 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a5) = [v8 deleteAllTopicsFromSourcesWithBundleId:v7 deletedCount:a4 error:a5];
+  LOBYTE(error) = [v8 deleteAllTopicsFromSourcesWithBundleId:idCopy deletedCount:count error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  idsCopy = ids;
+  idCopy = id;
   v11 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a6) = [v11 deleteAllTopicsFromSourcesWithBundleId:v10 groupIds:v9 deletedCount:a5 error:a6];
+  LOBYTE(error) = [v11 deleteAllTopicsFromSourcesWithBundleId:idCopy groupIds:idsCopy deletedCount:count error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
+  idsCopy = ids;
+  idCopy = id;
   v11 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a6) = [v11 deleteAllTopicsFromSourcesWithBundleId:v10 documentIds:v9 deletedCount:a5 error:a6];
+  LOBYTE(error) = [v11 deleteAllTopicsFromSourcesWithBundleId:idCopy documentIds:idsCopy deletedCount:count error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
+  idCopy = id;
   v8 = +[PPTopicReadWriteClient sharedInstance];
-  LOBYTE(a5) = [v8 deleteAllTopicsWithTopicId:v7 deletedCount:a4 error:a5];
+  LOBYTE(error) = [v8 deleteAllTopicsWithTopicId:idCopy deletedCount:count error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 error:(id *)a5
+- (id)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  mappingIdentifierCopy = mappingIdentifier;
+  identifierCopy = identifier;
   v9 = +[PPTopicReadOnlyClient sharedInstance];
-  v10 = [v9 unmapMappedTopicIdentifier:v8 mappingIdentifier:v7 error:a5];
+  v10 = [v9 unmapMappedTopicIdentifier:identifierCopy mappingIdentifier:mappingIdentifierCopy error:error];
 
   return v10;
 }
 
-- (id)topicExtractionsFromText:(id)a3 error:(id *)a4
+- (id)topicExtractionsFromText:(id)text error:(id *)error
 {
-  v5 = a3;
+  textCopy = text;
   v6 = objc_opt_new();
   v7 = pp_topics_signpost_handle();
   v8 = os_signpost_id_generate(v7);
@@ -226,7 +226,7 @@ uint64_t __47__PPXPCTopicStore_registerFeedback_completion___block_invoke(uint64
   v19[3] = &unk_1E77F6DC8;
   v20 = v6;
   v12 = v6;
-  v13 = [v11 topicExtractionsFromText:v5 error:a4 handleBatch:v19];
+  v13 = [v11 topicExtractionsFromText:textCopy error:error handleBatch:v19];
 
   v14 = pp_topics_signpost_handle();
   v15 = v14;
@@ -251,10 +251,10 @@ uint64_t __47__PPXPCTopicStore_registerFeedback_completion___block_invoke(uint64
   return v16;
 }
 
-- (id)topicRecordsWithQuery:(id)a3 error:(id *)a4
+- (id)topicRecordsWithQuery:(id)query error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -279,7 +279,7 @@ uint64_t __47__PPXPCTopicStore_registerFeedback_completion___block_invoke(uint64
   v12 = v6;
   v29 = v12;
   v30 = &v32;
-  v13 = [v11 topicRecordsWithQuery:v5 error:a4 handleBatch:v28];
+  v13 = [v11 topicRecordsWithQuery:queryCopy error:error handleBatch:v28];
 
   v14 = pp_topics_signpost_handle();
   v15 = v14;
@@ -342,10 +342,10 @@ void __47__PPXPCTopicStore_topicRecordsWithQuery_error___block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = pp_topics_signpost_handle();
   v10 = os_signpost_id_generate(v9);
 
@@ -362,9 +362,9 @@ void __47__PPXPCTopicStore_topicRecordsWithQuery_error___block_invoke(uint64_t a
   v19[1] = 3221225472;
   v19[2] = __57__PPXPCTopicStore_iterTopicRecordsWithQuery_error_block___block_invoke;
   v19[3] = &unk_1E77F7D70;
-  v20 = v7;
-  v14 = v7;
-  v15 = [v13 topicRecordsWithQuery:v8 error:a4 handleBatch:v19];
+  v20 = blockCopy;
+  v14 = blockCopy;
+  v15 = [v13 topicRecordsWithQuery:queryCopy error:error handleBatch:v19];
 
   v16 = pp_topics_signpost_handle();
   v17 = v16;
@@ -427,11 +427,11 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)scoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5
+- (id)scoresForTopicMapping:(id)mapping query:(id)query error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
+  mappingCopy = mapping;
+  queryCopy = query;
   v7 = objc_opt_new();
   v47 = 0;
   v48 = &v47;
@@ -456,7 +456,7 @@ LABEL_4:
   v31 = v7;
   v44 = v31;
   v45 = &v47;
-  v13 = [v12 scoresForTopicMapping:v32 query:v33 error:a5 handleBatch:v43];
+  v13 = [v12 scoresForTopicMapping:mappingCopy query:queryCopy error:error handleBatch:v43];
 
   v14 = pp_topics_signpost_handle();
   v15 = v14;
@@ -508,9 +508,9 @@ LABEL_4:
                 }
 
                 v26 = *(*(&v35 + 1) + 8 * j);
-                v27 = [v26 second];
-                v28 = [v26 first];
-                [v17 setObject:v27 forKeyedSubscript:v28];
+                second = [v26 second];
+                first = [v26 first];
+                [v17 setObject:second forKeyedSubscript:first];
               }
 
               v23 = [v22 countByEnumeratingWithState:&v35 objects:v51 count:16];
@@ -548,11 +548,11 @@ void __53__PPXPCTopicStore_scoresForTopicMapping_query_error___block_invoke(uint
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (BOOL)iterScoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5 block:(id)a6
+- (BOOL)iterScoresForTopicMapping:(id)mapping query:(id)query error:(id *)error block:(id)block
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  blockCopy = block;
+  queryCopy = query;
+  mappingCopy = mapping;
   v12 = pp_topics_signpost_handle();
   v13 = os_signpost_id_generate(v12);
 
@@ -569,9 +569,9 @@ void __53__PPXPCTopicStore_scoresForTopicMapping_query_error___block_invoke(uint
   v22[1] = 3221225472;
   v22[2] = __63__PPXPCTopicStore_iterScoresForTopicMapping_query_error_block___block_invoke;
   v22[3] = &unk_1E77F7D70;
-  v23 = v9;
-  v17 = v9;
-  v18 = [v16 scoresForTopicMapping:v11 query:v10 error:a5 handleBatch:v22];
+  v23 = blockCopy;
+  v17 = blockCopy;
+  v18 = [v16 scoresForTopicMapping:mappingCopy query:queryCopy error:error handleBatch:v22];
 
   v19 = pp_topics_signpost_handle();
   v20 = v19;
@@ -638,10 +638,10 @@ LABEL_4:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)rankedTopicsWithQuery:(id)a3 error:(id *)a4
+- (id)rankedTopicsWithQuery:(id)query error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -666,7 +666,7 @@ LABEL_4:
   v12 = v6;
   v29 = v12;
   v30 = &v32;
-  v13 = [v11 rankedTopicsWithQuery:v5 error:a4 handleBatch:v28];
+  v13 = [v11 rankedTopicsWithQuery:queryCopy error:error handleBatch:v28];
 
   v14 = pp_topics_signpost_handle();
   v15 = v14;
@@ -729,10 +729,10 @@ void __47__PPXPCTopicStore_rankedTopicsWithQuery_error___block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) += v5;
 }
 
-- (BOOL)iterRankedTopicsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterRankedTopicsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = pp_topics_signpost_handle();
   v10 = os_signpost_id_generate(v9);
 
@@ -749,9 +749,9 @@ void __47__PPXPCTopicStore_rankedTopicsWithQuery_error___block_invoke(uint64_t a
   v19[1] = 3221225472;
   v19[2] = __57__PPXPCTopicStore_iterRankedTopicsWithQuery_error_block___block_invoke;
   v19[3] = &unk_1E77F7D70;
-  v20 = v7;
-  v14 = v7;
-  v15 = [v13 rankedTopicsWithQuery:v8 error:a4 handleBatch:v19];
+  v20 = blockCopy;
+  v14 = blockCopy;
+  v15 = [v13 rankedTopicsWithQuery:queryCopy error:error handleBatch:v19];
 
   v16 = pp_topics_signpost_handle();
   v17 = v16;

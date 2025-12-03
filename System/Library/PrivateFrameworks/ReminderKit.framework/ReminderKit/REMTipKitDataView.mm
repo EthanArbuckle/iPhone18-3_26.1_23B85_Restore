@@ -1,36 +1,36 @@
 @interface REMTipKitDataView
-- (REMTipKitDataView)initWithStore:(id)a3;
-- (id)fetchCompletedRemindersCountInList:(id)a3 error:(id *)a4;
-- (id)fetchCompletedRemindersCountWithError:(id *)a3;
-- (id)fetchCustomSmartListsCountWithError:(id *)a3;
-- (id)fetchHashtagsCountWithError:(id *)a3;
-- (id)fetchListsCountWithError:(id *)a3;
-- (id)fetchListsWithCustomBadgeCountWithError:(id *)a3;
-- (id)fetchUncompletedRemindersCountWithError:(id *)a3;
+- (REMTipKitDataView)initWithStore:(id)store;
+- (id)fetchCompletedRemindersCountInList:(id)list error:(id *)error;
+- (id)fetchCompletedRemindersCountWithError:(id *)error;
+- (id)fetchCustomSmartListsCountWithError:(id *)error;
+- (id)fetchHashtagsCountWithError:(id *)error;
+- (id)fetchListsCountWithError:(id *)error;
+- (id)fetchListsWithCustomBadgeCountWithError:(id *)error;
+- (id)fetchUncompletedRemindersCountWithError:(id *)error;
 @end
 
 @implementation REMTipKitDataView
 
-- (REMTipKitDataView)initWithStore:(id)a3
+- (REMTipKitDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMTipKitDataView;
   v6 = [(REMTipKitDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchListsCountWithError:(id *)a3
+- (id)fetchListsCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchListsCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"ListsCount"];
@@ -44,20 +44,20 @@
       [REMTipKitDataView fetchListsCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v10;
 }
 
-- (id)fetchListsWithCustomBadgeCountWithError:(id *)a3
+- (id)fetchListsWithCustomBadgeCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchListsWithCustomBadgeCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"ListsWithCustomBadgeCount"];
@@ -71,20 +71,20 @@
       [REMTipKitDataView fetchListsWithCustomBadgeCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v10;
 }
 
-- (id)fetchUncompletedRemindersCountWithError:(id *)a3
+- (id)fetchUncompletedRemindersCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchUncompletedRemindersCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"UncompletedRemindersCount"];
@@ -98,20 +98,20 @@
       [REMTipKitDataView fetchUncompletedRemindersCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v10;
 }
 
-- (id)fetchCompletedRemindersCountWithError:(id *)a3
+- (id)fetchCompletedRemindersCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchCompletedRemindersCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"CompletedRemindersCountInList"];
@@ -125,22 +125,22 @@
       [REMTipKitDataView fetchCompletedRemindersCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v10;
 }
 
-- (id)fetchCompletedRemindersCountInList:(id)a3 error:(id *)a4
+- (id)fetchCompletedRemindersCountInList:(id)list error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMTipKitDataViewInvocation_fetchCompletedRemindersCountInList alloc] initWithListID:v6];
+  listCopy = list;
+  v7 = [[REMTipKitDataViewInvocation_fetchCompletedRemindersCountInList alloc] initWithListID:listCopy];
 
-  v8 = [(REMTipKitDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  store = [(REMTipKitDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = [v9 storedPropertyForKey:@"CompletedRemindersCount"];
@@ -154,20 +154,20 @@
       [REMTipKitDataView fetchCompletedRemindersCountInList:error:];
     }
 
-    if (a4 && !*a4)
+    if (error && !*error)
     {
-      *a4 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v12;
 }
 
-- (id)fetchCustomSmartListsCountWithError:(id *)a3
+- (id)fetchCustomSmartListsCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchCustomSmartListsCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"CustomSmartListsCount"];
@@ -181,20 +181,20 @@
       [REMTipKitDataView fetchCustomSmartListsCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v10;
 }
 
-- (id)fetchHashtagsCountWithError:(id *)a3
+- (id)fetchHashtagsCountWithError:(id *)error
 {
   v5 = objc_alloc_init(REMTipKitDataViewInvocation_fetchHashtagsCount);
-  v6 = [(REMTipKitDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMTipKitDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = [v7 storedPropertyForKey:@"HashtagsCount"];
@@ -208,9 +208,9 @@
       [REMTipKitDataView fetchHashtagsCountWithError:];
     }
 
-    if (a3 && !*a3)
+    if (error && !*error)
     {
-      *a3 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 

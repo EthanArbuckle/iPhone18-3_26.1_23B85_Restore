@@ -1,25 +1,25 @@
 @interface DownloadThroughputDelegate
 - (BOOL)checkLimits;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
 - (void)updateResultsWithByteCount;
 - (void)updateResultsWithFlowCount;
-- (void)updateResultsWithThroughput:(int64_t)a3 confidence:(int64_t)a4;
+- (void)updateResultsWithThroughput:(int64_t)throughput confidence:(int64_t)confidence;
 @end
 
 @implementation DownloadThroughputDelegate
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v7 = a5;
+  sessionCopy = session;
+  dataCopy = data;
   if (!self->super._canceled && !self->super._exitCriteriaMet)
   {
-    if ([(NSMutableArray *)self->super._probeSessions indexOfObject:v8]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->super._probeSessions indexOfObject:sessionCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSMutableArray *)self->super._probeSessions addObject:v8];
+      [(NSMutableArray *)self->super._probeSessions addObject:sessionCopy];
     }
 
-    -[ThroughputDelegate addNewThroughputMeasurement:](self, "addNewThroughputMeasurement:", [v7 length]);
+    -[ThroughputDelegate addNewThroughputMeasurement:](self, "addNewThroughputMeasurement:", [dataCopy length]);
   }
 }
 
@@ -41,16 +41,16 @@
   }
 }
 
-- (void)updateResultsWithThroughput:(int64_t)a3 confidence:(int64_t)a4
+- (void)updateResultsWithThroughput:(int64_t)throughput confidence:(int64_t)confidence
 {
   if (!self->super._canceled)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v8 = [(NetworkQualityResult *)self->super._results downlinkCapacity];
-    [v8 setValue:v7];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:throughput];
+    downlinkCapacity = [(NetworkQualityResult *)self->super._results downlinkCapacity];
+    [downlinkCapacity setValue:v7];
 
-    v9 = [(NetworkQualityResult *)self->super._results downlinkCapacity];
-    [v9 updateConfidence:a4];
+    downlinkCapacity2 = [(NetworkQualityResult *)self->super._results downlinkCapacity];
+    [downlinkCapacity2 updateConfidence:confidence];
 
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:self->super._currentBytesTransferred];
     [(NetworkQualityResult *)self->super._results setDownlinkBytesTransferred:v10];
@@ -79,7 +79,7 @@
         v29 = 2048;
         v30 = *&v5;
         v31 = 2048;
-        v32 = [(NetworkQualityConfiguration *)nqConfig maxDownlinkData];
+        maxDownlinkData = [(NetworkQualityConfiguration *)nqConfig maxDownlinkData];
         _os_log_impl(&dword_25B962000, v7, OS_LOG_TYPE_DEFAULT, "%s:%u - Downloaded too many bytes: %ld max: %ld", buf, 0x26u);
       }
 
@@ -123,7 +123,7 @@
     v29 = 2048;
     v30 = vcvtd_n_f64_s64(v10, 0x14uLL);
     v31 = 2048;
-    v32 = vcvtd_n_f64_s64([(NetworkQualityConfiguration *)v12 maxDownlinkThroughput], 0x14uLL);
+    maxDownlinkData = vcvtd_n_f64_s64([(NetworkQualityConfiguration *)v12 maxDownlinkThroughput], 0x14uLL);
     _os_log_impl(&dword_25B962000, v13, OS_LOG_TYPE_DEFAULT, "%s:%u - Downlink throughput exceeded: %.3f Mbps max: %.3f Mbps", buf, 0x26u);
   }
 

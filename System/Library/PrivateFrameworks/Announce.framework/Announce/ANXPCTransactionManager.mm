@@ -2,20 +2,20 @@
 + (id)sharedManager;
 - (ANXPCTransactionManager)init;
 - (NSArray)activeTransactions;
-- (id)_createTransaction:(id)a3;
+- (id)_createTransaction:(id)transaction;
 - (id)_overview;
 - (id)description;
-- (id)transaction:(id)a3 forEndpointUUID:(id)a4;
+- (id)transaction:(id)transaction forEndpointUUID:(id)d;
 - (unint64_t)_currentStatus;
 - (unint64_t)status;
-- (void)_createTransaction:(id)a3 expiration:(double)a4;
-- (void)_removeTransaction:(id)a3;
-- (void)_resetTimer:(id)a3 expiration:(double)a4;
-- (void)_startTimer:(id)a3 expiration:(double)a4;
-- (void)_transaction:(id)a3 setActive:(BOOL)a4;
-- (void)_transaction:(id)a3 setActiveForTimeInterval:(double)a4;
-- (void)transaction:(id)a3 setActive:(BOOL)a4;
-- (void)transaction:(id)a3 setActiveForTimeInterval:(double)a4;
+- (void)_createTransaction:(id)transaction expiration:(double)expiration;
+- (void)_removeTransaction:(id)transaction;
+- (void)_resetTimer:(id)timer expiration:(double)expiration;
+- (void)_startTimer:(id)timer expiration:(double)expiration;
+- (void)_transaction:(id)_transaction setActive:(BOOL)active;
+- (void)_transaction:(id)_transaction setActiveForTimeInterval:(double)interval;
+- (void)transaction:(id)transaction setActive:(BOOL)active;
+- (void)transaction:(id)transaction setActiveForTimeInterval:(double)interval;
 @end
 
 @implementation ANXPCTransactionManager
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __40__ANXPCTransactionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -73,14 +73,14 @@ uint64_t __40__ANXPCTransactionManager_sharedManager__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = &stru_2836DAA20;
-  v3 = [(ANXPCTransactionManager *)self queue];
+  queue = [(ANXPCTransactionManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__ANXPCTransactionManager_description__block_invoke;
   v6[3] = &unk_2784E1F98;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -104,14 +104,14 @@ uint64_t __38__ANXPCTransactionManager_description__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ANXPCTransactionManager *)self queue];
+  queue = [(ANXPCTransactionManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__ANXPCTransactionManager_status__block_invoke;
   v6[3] = &unk_2784E1F98;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -133,14 +133,14 @@ uint64_t __33__ANXPCTransactionManager_status__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = MEMORY[0x277CBEBF8];
-  v3 = [(ANXPCTransactionManager *)self queue];
+  queue = [(ANXPCTransactionManager *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ANXPCTransactionManager_activeTransactions__block_invoke;
   v6[3] = &unk_2784E1F98;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -157,14 +157,14 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)transaction:(id)a3 forEndpointUUID:(id)a4
+- (id)transaction:(id)transaction forEndpointUUID:(id)d
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CCAB68] stringWithString:a3];
-  if (v5)
+  dCopy = d;
+  v6 = [MEMORY[0x277CCAB68] stringWithString:transaction];
+  if (dCopy)
   {
-    v7 = [v5 UUIDString];
-    [v6 appendFormat:@".%@", v7];
+    uUIDString = [dCopy UUIDString];
+    [v6 appendFormat:@".%@", uUIDString];
   }
 
   v8 = [v6 copy];
@@ -172,56 +172,56 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)transaction:(id)a3 setActive:(BOOL)a4
+- (void)transaction:(id)transaction setActive:(BOOL)active
 {
-  v6 = a3;
-  v7 = [(ANXPCTransactionManager *)self queue];
+  transactionCopy = transaction;
+  queue = [(ANXPCTransactionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ANXPCTransactionManager_transaction_setActive___block_invoke;
   block[3] = &unk_2784E23A8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = transactionCopy;
+  activeCopy = active;
+  v8 = transactionCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)transaction:(id)a3 setActiveForTimeInterval:(double)a4
+- (void)transaction:(id)transaction setActiveForTimeInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [(ANXPCTransactionManager *)self queue];
+  transactionCopy = transaction;
+  queue = [(ANXPCTransactionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__ANXPCTransactionManager_transaction_setActiveForTimeInterval___block_invoke;
   block[3] = &unk_2784E23D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = transactionCopy;
+  intervalCopy = interval;
+  v8 = transactionCopy;
+  dispatch_async(queue, block);
 }
 
 - (unint64_t)_currentStatus
 {
-  v3 = [(ANXPCTransactionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ANXPCTransactionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ANXPCTransactionManager *)self transactions];
-  v5 = [v4 count] != 0;
+  transactions = [(ANXPCTransactionManager *)self transactions];
+  v5 = [transactions count] != 0;
 
   return v5;
 }
 
 - (id)_overview
 {
-  v3 = [(ANXPCTransactionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ANXPCTransactionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [MEMORY[0x277CCAB68] stringWithString:@"\n===== Active Transactions =====\n"];
-  v5 = [(ANXPCTransactionManager *)self transactions];
-  v6 = [v5 allKeys];
-  v7 = [v6 componentsJoinedByString:@"\n"];
+  transactions = [(ANXPCTransactionManager *)self transactions];
+  allKeys = [transactions allKeys];
+  v7 = [allKeys componentsJoinedByString:@"\n"];
   [v4 appendString:v7];
 
   [v4 appendString:@"\n==============================="];
@@ -230,18 +230,18 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_transaction:(id)a3 setActive:(BOOL)a4
+- (void)_transaction:(id)_transaction setActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ANXPCTransactionManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  _transactionCopy = _transaction;
+  queue = [(ANXPCTransactionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4)
+  if (activeCopy)
   {
-    v8 = [(ANXPCTransactionManager *)self transactions];
-    v9 = [v8 valueForKey:v6];
+    transactions = [(ANXPCTransactionManager *)self transactions];
+    v9 = [transactions valueForKey:_transactionCopy];
 
     if (v9)
     {
@@ -251,34 +251,34 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
         v13 = 138412546;
         v14 = &stru_2836DAA20;
         v15 = 2112;
-        v16 = v6;
+        v16 = _transactionCopy;
         _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "%@Request to set transaction active but already active: %@", &v13, 0x16u);
       }
     }
 
     else
     {
-      v11 = [(ANXPCTransactionManager *)self _createTransaction:v6];
+      v11 = [(ANXPCTransactionManager *)self _createTransaction:_transactionCopy];
     }
   }
 
   else
   {
-    [(ANXPCTransactionManager *)self _removeTransaction:v6];
+    [(ANXPCTransactionManager *)self _removeTransaction:_transactionCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transaction:(id)a3 setActiveForTimeInterval:(double)a4
+- (void)_transaction:(id)_transaction setActiveForTimeInterval:(double)interval
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ANXPCTransactionManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  _transactionCopy = _transaction;
+  queue = [(ANXPCTransactionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ANXPCTransactionManager *)self transactions];
-  v9 = [v8 valueForKey:v6];
+  transactions = [(ANXPCTransactionManager *)self transactions];
+  v9 = [transactions valueForKey:_transactionCopy];
 
   if (v9)
   {
@@ -288,37 +288,37 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
       v13 = 138412546;
       v14 = &stru_2836DAA20;
       v15 = 2112;
-      v16 = v6;
+      v16 = _transactionCopy;
       _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "%@Request to set transaction active but already active: %@", &v13, 0x16u);
     }
 
-    v11 = [v9 timer];
-    if (v11)
+    timer = [v9 timer];
+    if (timer)
     {
       [v9 expiration];
-      [(ANXPCTransactionManager *)self _resetTimer:v11 expiration:?];
+      [(ANXPCTransactionManager *)self _resetTimer:timer expiration:?];
     }
   }
 
   else
   {
-    [(ANXPCTransactionManager *)self _createTransaction:v6 expiration:a4];
+    [(ANXPCTransactionManager *)self _createTransaction:_transactionCopy expiration:interval];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createTransaction:(id)a3
+- (id)_createTransaction:(id)transaction
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 UTF8String];
+  transactionCopy = transaction;
+  [transactionCopy UTF8String];
   v5 = os_transaction_create();
   if (v5)
   {
     v6 = [ANTransactionInfo infoWithTransaction:v5];
-    v7 = [(ANXPCTransactionManager *)self transactions];
-    [v7 setValue:v6 forKey:v4];
+    transactions = [(ANXPCTransactionManager *)self transactions];
+    [transactions setValue:v6 forKey:transactionCopy];
   }
 
   else
@@ -338,7 +338,7 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
       v9 = @"FALSE";
     }
 
-    v17 = v4;
+    v17 = transactionCopy;
     v18 = 2112;
     v19 = v9;
     _os_log_impl(&dword_2237C8000, v8, OS_LOG_TYPE_DEFAULT, "%@Created Transaction %@: %@", &v14, 0x20u);
@@ -347,11 +347,11 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
   v10 = ANLogHandleXPCTransactionManager();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ANXPCTransactionManager *)self _overview];
+    _overview = [(ANXPCTransactionManager *)self _overview];
     v14 = 138412546;
     v15 = &stru_2836DAA20;
     v16 = 2112;
-    v17 = v11;
+    v17 = _overview;
     _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "%@%@", &v14, 0x16u);
   }
 
@@ -360,12 +360,12 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_createTransaction:(id)a3 expiration:(double)a4
+- (void)_createTransaction:(id)transaction expiration:(double)expiration
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ANXPCTransactionManager *)self queue];
-  v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
+  transactionCopy = transaction;
+  queue = [(ANXPCTransactionManager *)self queue];
+  v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
 
   v9 = ANLogHandleXPCTransactionManager();
   v10 = v9;
@@ -378,25 +378,25 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
       v22 = 2112;
       v23 = v8;
       v24 = 2112;
-      v25 = v6;
+      v25 = transactionCopy;
       _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_DEFAULT, "%@Created Transaction Timer %@ for %@", buf, 0x20u);
     }
 
-    v11 = [(ANXPCTransactionManager *)self _createTransaction:v6];
+    v11 = [(ANXPCTransactionManager *)self _createTransaction:transactionCopy];
     v10 = v11;
     if (v11)
     {
       [v11 setTimer:v8];
-      [v10 setExpiration:a4];
+      [v10 setExpiration:expiration];
       objc_initWeak(buf, self);
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __57__ANXPCTransactionManager__createTransaction_expiration___block_invoke;
       v17 = &unk_2784E2038;
       objc_copyWeak(&v19, buf);
-      v18 = v6;
+      v18 = transactionCopy;
       dispatch_source_set_event_handler(v8, &v14);
-      [(ANXPCTransactionManager *)self _startTimer:v8 expiration:a4, v14, v15, v16, v17];
+      [(ANXPCTransactionManager *)self _startTimer:v8 expiration:expiration, v14, v15, v16, v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(buf);
@@ -410,7 +410,7 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
         *buf = 138412546;
         v21 = &stru_2836DAA20;
         v22 = 2112;
-        v23 = v6;
+        v23 = transactionCopy;
         _os_log_impl(&dword_2237C8000, v12, OS_LOG_TYPE_ERROR, "%@Failed to create transaction: %@", buf, 0x16u);
       }
     }
@@ -421,7 +421,7 @@ void __45__ANXPCTransactionManager_activeTransactions__block_invoke(uint64_t a1)
     *buf = 138412546;
     v21 = &stru_2836DAA20;
     v22 = 2112;
-    v23 = v6;
+    v23 = transactionCopy;
     _os_log_impl(&dword_2237C8000, v10, OS_LOG_TYPE_ERROR, "%@Failed to create timer for transaction. Transaction not created: %@", buf, 0x16u);
   }
 
@@ -434,27 +434,27 @@ void __57__ANXPCTransactionManager__createTransaction_expiration___block_invoke(
   [WeakRetained _removeTransaction:*(a1 + 32)];
 }
 
-- (void)_removeTransaction:(id)a3
+- (void)_removeTransaction:(id)transaction
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANXPCTransactionManager *)self transactions];
-  v6 = [v5 valueForKey:v4];
+  transactionCopy = transaction;
+  transactions = [(ANXPCTransactionManager *)self transactions];
+  v6 = [transactions valueForKey:transactionCopy];
 
   if (v6)
   {
-    v7 = [(ANXPCTransactionManager *)self _currentStatus];
-    v8 = [v6 timer];
-    if (v8)
+    _currentStatus = [(ANXPCTransactionManager *)self _currentStatus];
+    timer = [v6 timer];
+    if (timer)
     {
-      [(ANXPCTransactionManager *)self _cancelTimer:v8];
+      [(ANXPCTransactionManager *)self _cancelTimer:timer];
     }
 
-    v9 = [(ANXPCTransactionManager *)self transactions];
-    [v9 removeObjectForKey:v4];
+    transactions2 = [(ANXPCTransactionManager *)self transactions];
+    [transactions2 removeObjectForKey:transactionCopy];
 
-    v10 = [(ANXPCTransactionManager *)self _currentStatus];
-    if (v7 == 1 && !v10)
+    _currentStatus2 = [(ANXPCTransactionManager *)self _currentStatus];
+    if (_currentStatus == 1 && !_currentStatus2)
     {
       v11 = ANLogHandleXPCTransactionManager();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -477,7 +477,7 @@ void __57__ANXPCTransactionManager__createTransaction_expiration___block_invoke(
     v17 = 138412802;
     v18 = &stru_2836DAA20;
     v19 = 2112;
-    v20 = v4;
+    v20 = transactionCopy;
     if (!v6)
     {
       v13 = @"FALSE";
@@ -491,57 +491,57 @@ void __57__ANXPCTransactionManager__createTransaction_expiration___block_invoke(
   v14 = ANLogHandleXPCTransactionManager();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(ANXPCTransactionManager *)self _overview];
+    _overview = [(ANXPCTransactionManager *)self _overview];
     v17 = 138412546;
     v18 = &stru_2836DAA20;
     v19 = 2112;
-    v20 = v15;
+    v20 = _overview;
     _os_log_impl(&dword_2237C8000, v14, OS_LOG_TYPE_DEFAULT, "%@%@", &v17, 0x16u);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startTimer:(id)a3 expiration:(double)a4
+- (void)_startTimer:(id)timer expiration:(double)expiration
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timerCopy = timer;
   v6 = ANLogHandleXPCTransactionManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412802;
     v11 = &stru_2836DAA20;
     v12 = 2112;
-    v13 = v5;
+    v13 = timerCopy;
     v14 = 2048;
-    v15 = a4;
+    expirationCopy = expiration;
     _os_log_impl(&dword_2237C8000, v6, OS_LOG_TYPE_DEFAULT, "%@Starting Transaction Timer (%@) for %f seconds", &v10, 0x20u);
   }
 
-  v7 = a4 * 1000000000.0;
+  v7 = expiration * 1000000000.0;
   v8 = dispatch_time(0, v7);
-  dispatch_source_set_timer(v5, v8, v7, 0);
-  dispatch_resume(v5);
+  dispatch_source_set_timer(timerCopy, v8, v7, 0);
+  dispatch_resume(timerCopy);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetTimer:(id)a3 expiration:(double)a4
+- (void)_resetTimer:(id)timer expiration:(double)expiration
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  timerCopy = timer;
   v7 = ANLogHandleXPCTransactionManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = &stru_2836DAA20;
     v11 = 2112;
-    v12 = v6;
+    v12 = timerCopy;
     _os_log_impl(&dword_2237C8000, v7, OS_LOG_TYPE_DEFAULT, "%@Restarting Transaction Timer %@", &v9, 0x16u);
   }
 
-  dispatch_suspend(v6);
-  [(ANXPCTransactionManager *)self _startTimer:v6 expiration:a4];
+  dispatch_suspend(timerCopy);
+  [(ANXPCTransactionManager *)self _startTimer:timerCopy expiration:expiration];
 
   v8 = *MEMORY[0x277D85DE8];
 }

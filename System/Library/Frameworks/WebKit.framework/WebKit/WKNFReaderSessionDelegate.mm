@@ -1,27 +1,27 @@
 @interface WKNFReaderSessionDelegate
-- (WKNFReaderSessionDelegate)initWithConnection:(void *)a3;
-- (uint64_t)readerSession:(WTF *)this didDetectTags:(void *)a2;
-- (void)readerSession:(id)a3 didDetectTags:(id)a4;
-- (void)readerSession:(uint64_t)a1 didDetectTags:;
-- (void)readerSession:(void *)a1 didDetectTags:(void *)a2;
+- (WKNFReaderSessionDelegate)initWithConnection:(void *)connection;
+- (uint64_t)readerSession:(WTF *)this didDetectTags:(void *)tags;
+- (void)readerSession:(id)session didDetectTags:(id)tags;
+- (void)readerSession:(uint64_t)session didDetectTags:;
+- (void)readerSession:(void *)session didDetectTags:(void *)tags;
 @end
 
 @implementation WKNFReaderSessionDelegate
 
-- (WKNFReaderSessionDelegate)initWithConnection:(void *)a3
+- (WKNFReaderSessionDelegate)initWithConnection:(void *)connection
 {
   v11.receiver = self;
   v11.super_class = WKNFReaderSessionDelegate;
   v5 = [(WKNFReaderSessionDelegate *)&v11 init];
   if (v5)
   {
-    if (!*a3)
+    if (!*connection)
     {
       v6 = WTF::fastCompactMalloc(0x10);
       *v6 = 1;
-      *(v6 + 8) = a3;
-      v7 = *a3;
-      *a3 = v6;
+      *(v6 + 8) = connection;
+      v7 = *connection;
+      *connection = v6;
       if (v7)
       {
         if (atomic_fetch_add(v7, 0xFFFFFFFF) == 1)
@@ -32,8 +32,8 @@
       }
     }
 
-    v8 = *a3;
-    atomic_fetch_add(*a3, 1u);
+    v8 = *connection;
+    atomic_fetch_add(*connection, 1u);
     m_ptr = v5->_connection.m_impl.m_ptr;
     v5->_connection.m_impl.m_ptr = v8;
     if (m_ptr && atomic_fetch_add(m_ptr, 0xFFFFFFFF) == 1)
@@ -46,7 +46,7 @@
   return v5;
 }
 
-- (void)readerSession:(id)a3 didDetectTags:(id)a4
+- (void)readerSession:(id)session didDetectTags:(id)tags
 {
   WTF::RunLoop::mainSingleton(self);
   m_ptr = self->_connection.m_impl.m_ptr;
@@ -55,15 +55,15 @@
     atomic_fetch_add(m_ptr, 1u);
   }
 
-  if (a4)
+  if (tags)
   {
-    v7 = a4;
+    tagsCopy = tags;
   }
 
   v8 = WTF::fastMalloc(0x18);
   *v8 = &unk_1F110BBC8;
   v8[1] = m_ptr;
-  v8[2] = a4;
+  v8[2] = tags;
   v9 = v8;
   WTF::RunLoop::dispatch();
   if (v9)
@@ -72,27 +72,27 @@
   }
 }
 
-- (void)readerSession:(void *)a1 didDetectTags:(void *)a2
+- (void)readerSession:(void *)session didDetectTags:(void *)tags
 {
-  *a1 = &unk_1F110BBC8;
-  v3 = a1[2];
-  a1[2] = 0;
+  *session = &unk_1F110BBC8;
+  v3 = session[2];
+  session[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = session[1];
+  session[1] = 0;
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, tags);
   }
 
-  return a1;
+  return session;
 }
 
-- (uint64_t)readerSession:(WTF *)this didDetectTags:(void *)a2
+- (uint64_t)readerSession:(WTF *)this didDetectTags:(void *)tags
 {
   *this = &unk_1F110BBC8;
   v3 = *(this + 2);
@@ -106,16 +106,16 @@
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, tags);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, tags);
 }
 
-- (void)readerSession:(uint64_t)a1 didDetectTags:
+- (void)readerSession:(uint64_t)session didDetectTags:
 {
   v47 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 8);
+  v1 = *(session + 8);
   if (v1)
   {
     v2 = *(v1 + 8);
@@ -127,7 +127,7 @@
         v4 = *(v3 + 8);
         if (v4)
         {
-          v5 = *(a1 + 16);
+          v5 = *(session + 16);
           ++*(v4 + 24);
           if ([v5 count])
           {
@@ -278,10 +278,10 @@ LABEL_62:
 
                     if (v26)
                     {
-                      v28 = [v26 bytes];
+                      bytes = [v26 bytes];
                       if ([v26 length] == 8)
                       {
-                        v29 = *v28;
+                        v29 = *bytes;
 
                         if (v29 == 0x9032565F463255)
                         {

@@ -1,45 +1,45 @@
 @interface TSTWPFormulaSelection
-- (BOOL)isEqual:(id)a3;
-- (TSTWPFormulaSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11 activeTokenCharIndex:(unint64_t)a12;
-- (TSTWPFormulaSelection)initWithType:(int64_t)a3 ranges:(id)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSTWPFormulaSelection)initWithType:(int64_t)type range:(_NSRange)range validVisualRanges:(BOOL)ranges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1 activeTokenCharIndex:(unint64_t)self2;
+- (TSTWPFormulaSelection)initWithType:(int64_t)type ranges:(id)ranges validVisualRanges:(BOOL)visualRanges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation TSTWPFormulaSelection
 
-- (TSTWPFormulaSelection)initWithType:(int64_t)a3 ranges:(id)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11
+- (TSTWPFormulaSelection)initWithType:(int64_t)type ranges:(id)ranges validVisualRanges:(BOOL)visualRanges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1
 {
-  v14 = a5;
-  v17 = a4;
-  v22 = objc_msgSend_superRange(v17, v18, v19, v20, v21);
-  v26 = a8;
-  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_activeTokenCharIndex = objc_msgSend_initWithType_range_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_activeTokenCharIndex_(self, v23, a3, v22, v23, v14, a6, a7, v26, a9, a10, a11, 0x7FFFFFFFFFFFFFFFLL);
+  visualRangesCopy = visualRanges;
+  rangesCopy = ranges;
+  v22 = objc_msgSend_superRange(rangesCopy, v18, v19, v20, v21);
+  edgeCopy = edge;
+  IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_activeTokenCharIndex = objc_msgSend_initWithType_range_validVisualRanges_styleInsertionBehavior_caretAffinity_caretIsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_activeTokenCharIndex_(self, v23, type, v22, v23, visualRangesCopy, behavior, affinity, edgeCopy, index, charIndex, tailCharIndex, 0x7FFFFFFFFFFFFFFFLL);
 
   return IsLeadingEdge_leadingCharIndex_headCharIndex_tailCharIndex_activeTokenCharIndex;
 }
 
-- (TSTWPFormulaSelection)initWithType:(int64_t)a3 range:(_NSRange)a4 validVisualRanges:(BOOL)a5 styleInsertionBehavior:(int64_t)a6 caretAffinity:(int64_t)a7 caretIsLeadingEdge:(BOOL)a8 leadingCharIndex:(unint64_t)a9 headCharIndex:(unint64_t)a10 tailCharIndex:(unint64_t)a11 activeTokenCharIndex:(unint64_t)a12
+- (TSTWPFormulaSelection)initWithType:(int64_t)type range:(_NSRange)range validVisualRanges:(BOOL)ranges styleInsertionBehavior:(int64_t)behavior caretAffinity:(int64_t)affinity caretIsLeadingEdge:(BOOL)edge leadingCharIndex:(unint64_t)index headCharIndex:(unint64_t)self0 tailCharIndex:(unint64_t)self1 activeTokenCharIndex:(unint64_t)self2
 {
-  v14 = a5;
-  v17 = objc_msgSend_rangeArrayWithRange_(MEMORY[0x277D80EE8], a2, a4.location, a4.length, a4.length);
+  rangesCopy = ranges;
+  v17 = objc_msgSend_rangeArrayWithRange_(MEMORY[0x277D80EE8], a2, range.location, range.length, range.length);
   v20.receiver = self;
   v20.super_class = TSTWPFormulaSelection;
-  v18 = [(TSWPSelection *)&v20 initWithType:a3 ranges:v17 validVisualRanges:v14 styleInsertionBehavior:a6 caretAffinity:a7 caretIsLeadingEdge:a8 leadingCharIndex:a9 headCharIndex:a10 tailCharIndex:a11];
+  v18 = [(TSWPSelection *)&v20 initWithType:type ranges:v17 validVisualRanges:rangesCopy styleInsertionBehavior:behavior caretAffinity:affinity caretIsLeadingEdge:edge leadingCharIndex:index headCharIndex:charIndex tailCharIndex:tailCharIndex];
 
   if (v18)
   {
-    v18->mActiveTokenCharIndex = a12;
+    v18->mActiveTokenCharIndex = tokenCharIndex;
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = TSTWPFormulaSelection;
-  if ([(TSWPSelection *)&v8 isEqual:v4])
+  if ([(TSWPSelection *)&v8 isEqual:equalCopy])
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
@@ -62,12 +62,12 @@
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v13.receiver = self;
   v13.super_class = TSTWPFormulaSelection;
-  v5 = [(TSWPSelection *)&v13 compare:v4];
+  v5 = [(TSWPSelection *)&v13 compare:compareCopy];
   if (!v5)
   {
     objc_opt_class();

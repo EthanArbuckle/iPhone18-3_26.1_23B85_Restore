@@ -1,27 +1,27 @@
 @interface WFSearchBar
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forVisualConfiguration:(id)a4;
-- (WFSearchBar)initWithStyle:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forVisualConfiguration:(id)configuration;
+- (WFSearchBar)initWithStyle:(unint64_t)style;
 - (WFSearchBarDelegate)delegate;
-- (double)_performHeightCalculationForVisualConfiguration:(id)a3;
+- (double)_performHeightCalculationForVisualConfiguration:(id)configuration;
 - (id)_currentVisualConfiguration;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_accessibilityBoldStatusDidChange:(id)a3;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_searchBarTextFieldDidChangeText:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_accessibilityBoldStatusDidChange:(id)change;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_searchBarTextFieldDidChangeText:(id)text;
 - (void)_updateCancelButtonFont;
 - (void)layoutSubviews;
 - (void)reset;
-- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)a3;
-- (void)setInactiveSearchConfiguration:(id)a3;
-- (void)setPortraitOrientation:(BOOL)a3;
-- (void)setSearchTextField:(id)a3;
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTextFieldDefaultAlignmentBehavior:(int64_t)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
+- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)boundaries;
+- (void)setInactiveSearchConfiguration:(id)configuration;
+- (void)setPortraitOrientation:(BOOL)orientation;
+- (void)setSearchTextField:(id)field;
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated;
+- (void)setTextFieldDefaultAlignmentBehavior:(int64_t)behavior;
+- (void)textFieldDidBeginEditing:(id)editing;
 - (void)textFieldDidResignFirstResponder;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFSearchBar
@@ -36,19 +36,19 @@
 - (void)_updateCancelButtonFont
 {
   v3 = MEMORY[0x277D75C80];
-  v4 = [(WFSearchBar *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = UIContentSizeCategoryClip(v5, *MEMORY[0x277D76830], *MEMORY[0x277D767F0]);
+  traitCollection = [(WFSearchBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v6 = UIContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x277D76830], *MEMORY[0x277D767F0]);
   v12 = [v3 traitCollectionWithPreferredContentSizeCategory:v6];
 
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v12];
-  v8 = [(UIButton *)self->_cancelButton titleLabel];
-  [v8 setFont:v7];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:v7];
 
   [(UIButton *)self->_cancelButton sizeToFit];
   cancelButton = self->_cancelButton;
-  v10 = [(WFSearchBar *)self traitCollection];
-  if ([v10 userInterfaceStyle] == 2)
+  traitCollection2 = [(WFSearchBar *)self traitCollection];
+  if ([traitCollection2 userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] systemWhiteColor];
   }
@@ -61,21 +61,21 @@
   [(UIButton *)cancelButton setTitleColor:v11 forState:0];
 }
 
-- (double)_performHeightCalculationForVisualConfiguration:(id)a3
+- (double)_performHeightCalculationForVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(WFSearchBar *)self searchTextField];
-  [v5 intrinsicContentSize];
+  configurationCopy = configuration;
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
   v7 = v6;
 
   if ([(WFSearchBar *)self isPortraitOrientation])
   {
-    [v4 textFieldPortraitLayoutInsets];
+    [configurationCopy textFieldPortraitLayoutInsets];
   }
 
   else
   {
-    [v4 textFieldLandscapeLayoutInsets];
+    [configurationCopy textFieldLandscapeLayoutInsets];
   }
 
   v10 = v8;
@@ -86,9 +86,9 @@
 
 - (id)_currentVisualConfiguration
 {
-  v3 = [(WFSearchBar *)self showsCancelButton];
+  showsCancelButton = [(WFSearchBar *)self showsCancelButton];
   v4 = &OBJC_IVAR___WFSearchBar__inactiveSearchConfiguration;
-  if (v3)
+  if (showsCancelButton)
   {
     v4 = &OBJC_IVAR___WFSearchBar__activeSearchConfiguration;
   }
@@ -100,41 +100,41 @@
 
 - (void)textFieldDidResignFirstResponder
 {
-  v3 = [(UISearchTextField *)self->_searchTextField text];
-  if (!v3 || (v4 = v3, -[UISearchTextField text](self->_searchTextField, "text"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
+  text = [(UISearchTextField *)self->_searchTextField text];
+  if (!text || (v4 = text, -[UISearchTextField text](self->_searchTextField, "text"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
   {
 
     [(WFSearchBar *)self setShowsCancelButton:0 animated:1];
   }
 }
 
-- (void)_searchBarTextFieldDidChangeText:(id)a3
+- (void)_searchBarTextFieldDidChangeText:(id)text
 {
-  v5 = [(WFSearchBar *)self delegate];
+  delegate = [(WFSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UISearchTextField *)self->_searchTextField text];
-    [v5 searchBar:self textDidChange:v4];
+    text = [(UISearchTextField *)self->_searchTextField text];
+    [delegate searchBar:self textDidChange:text];
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
   [(WFSearchBar *)self reset];
-  v5 = [(WFSearchBar *)self delegate];
+  delegate = [(WFSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UISearchTextField *)self->_searchTextField text];
-    [v5 searchBar:self textDidChange:v4];
+    text = [(UISearchTextField *)self->_searchTextField text];
+    [delegate searchBar:self textDidChange:text];
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = [(WFSearchBar *)self delegate];
+  delegate = [(WFSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchBarDidBeginEditing:self];
+    [delegate searchBarDidBeginEditing:self];
   }
 }
 
@@ -144,8 +144,8 @@
   [(WFSearchTextField *)self->_searchTextField setText:&stru_2883A0E78];
   [(WFSearchBar *)self setNeedsLayout];
   [(WFSearchBar *)self layoutIfNeeded];
-  v3 = [(WFSearchBar *)self searchTextField];
-  [v3 resignFirstResponder];
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField resignFirstResponder];
 
   [(WFSearchBar *)self setShowsCancelButton:0 animated:1];
 }
@@ -160,20 +160,20 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WFSearchBar *)self _currentVisualConfiguration];
-  v12 = [(WFSearchBar *)self traitCollection];
-  [v12 displayScale];
+  _currentVisualConfiguration = [(WFSearchBar *)self _currentVisualConfiguration];
+  traitCollection = [(WFSearchBar *)self traitCollection];
+  [traitCollection displayScale];
   v67 = v13;
 
   [(WFSearchBar *)self safeAreaInsets];
   if ([(WFSearchBar *)self isPortraitOrientation])
   {
-    [v11 textFieldPortraitLayoutInsets];
+    [_currentVisualConfiguration textFieldPortraitLayoutInsets];
   }
 
   else
   {
-    [v11 textFieldLandscapeLayoutInsets];
+    [_currentVisualConfiguration textFieldLandscapeLayoutInsets];
   }
 
   UIEdgeInsetsAdd();
@@ -181,7 +181,7 @@
   v17 = v6 + v16;
   v19 = v8 - (v14 + v18);
   v21 = v10 - (v16 + v20);
-  [v11 textFieldWidth];
+  [_currentVisualConfiguration textFieldWidth];
   v23 = v22;
   v24 = (v8 - v22) * 0.5;
   if (v23 > 0.0)
@@ -192,8 +192,8 @@
 
   [(UIButton *)self->_cancelButton frame];
   v66 = v25;
-  v26 = [(WFSearchBar *)self searchTextField];
-  [v26 intrinsicContentSize];
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
 
   textFieldCancelButtonSpacing = self->_textFieldCancelButtonSpacing;
   v27 = *MEMORY[0x277CBF348];
@@ -228,10 +228,10 @@
   v44 = MEMORY[0x277D76620];
   if (self->_showsCancelButton)
   {
-    v45 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v46 = v66 + textFieldCancelButtonSpacing + self->_cancelButtonTrailingPadding;
     v47 = v69;
-    if (v45 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v39 = v39 + v46;
     }
@@ -258,14 +258,14 @@
   v71.size.height = v61;
   CGRectGetMidY(v71);
   LODWORD(searchTextField) = self->_showsCancelButton;
-  v49 = [*v44 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection2 = [*v44 userInterfaceLayoutDirection];
   if (searchTextField == 1)
   {
     v50 = v63 + v59;
     v51 = rect + v60;
     v52 = v62 - (v59 + v57);
     v53 = v61 - (v60 + v58);
-    if (v49 == 1)
+    if (userInterfaceLayoutDirection2 == 1)
     {
       CGRectGetMinX(*&v50);
     }
@@ -276,7 +276,7 @@
     }
   }
 
-  else if (v49 == 1)
+  else if (userInterfaceLayoutDirection2 == 1)
   {
     v72.origin.x = v63;
     v72.origin.y = rect;
@@ -301,12 +301,12 @@
   [(UIButton *)cancelButton setCenter:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(WFSearchBar *)self _currentVisualConfiguration];
-  [(WFSearchBar *)self sizeThatFits:v6 forVisualConfiguration:width, height];
+  height = fits.height;
+  width = fits.width;
+  _currentVisualConfiguration = [(WFSearchBar *)self _currentVisualConfiguration];
+  [(WFSearchBar *)self sizeThatFits:_currentVisualConfiguration forVisualConfiguration:width, height];
   v8 = v7;
   v10 = v9;
 
@@ -319,12 +319,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(WFSearchBar *)self searchTextField];
-  [v3 intrinsicContentSize];
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField intrinsicContentSize];
   v5 = v4;
 
-  v6 = [(WFSearchBar *)self _currentVisualConfiguration];
-  [(WFSearchBar *)self _performHeightCalculationForVisualConfiguration:v6];
+  _currentVisualConfiguration = [(WFSearchBar *)self _currentVisualConfiguration];
+  [(WFSearchBar *)self _performHeightCalculationForVisualConfiguration:_currentVisualConfiguration];
   v8 = v7;
 
   v9 = v5;
@@ -334,16 +334,16 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forVisualConfiguration:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits forVisualConfiguration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(WFSearchBar *)self searchTextField];
-  [v8 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  configurationCopy = configuration;
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField sizeThatFits:{width, height}];
   v10 = v9;
 
-  [(WFSearchBar *)self _performHeightCalculationForVisualConfiguration:v7];
+  [(WFSearchBar *)self _performHeightCalculationForVisualConfiguration:configurationCopy];
   v12 = v11;
 
   v13 = v10;
@@ -353,31 +353,31 @@
   return result;
 }
 
-- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)a3
+- (void)setAlignsTextFieldOnPixelBoundaries:(BOOL)boundaries
 {
-  if (self->_alignsTextFieldOnPixelBoundaries != a3)
+  if (self->_alignsTextFieldOnPixelBoundaries != boundaries)
   {
-    self->_alignsTextFieldOnPixelBoundaries = a3;
+    self->_alignsTextFieldOnPixelBoundaries = boundaries;
     [(WFSearchBar *)self setNeedsLayout];
   }
 }
 
-- (void)setPortraitOrientation:(BOOL)a3
+- (void)setPortraitOrientation:(BOOL)orientation
 {
-  if (self->_portraitOrientation != a3)
+  if (self->_portraitOrientation != orientation)
   {
-    self->_portraitOrientation = a3;
+    self->_portraitOrientation = orientation;
     [(WFSearchBar *)self setNeedsLayout];
 
     [(WFSearchBar *)self _invalidateIntrinsicContentSizeAndNotify];
   }
 }
 
-- (void)setInactiveSearchConfiguration:(id)a3
+- (void)setInactiveSearchConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = self->_inactiveSearchConfiguration;
-  v6 = v4;
+  v6 = configurationCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -407,51 +407,51 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSearchTextField:(id)a3
+- (void)setSearchTextField:(id)field
 {
-  v5 = a3;
+  fieldCopy = field;
   searchTextField = self->_searchTextField;
-  if (searchTextField != v5)
+  if (searchTextField != fieldCopy)
   {
-    v7 = v5;
+    v7 = fieldCopy;
     [(WFSearchTextField *)searchTextField removeFromSuperview];
-    objc_storeStrong(&self->_searchTextField, a3);
+    objc_storeStrong(&self->_searchTextField, field);
     [(WFSearchBar *)self addSubview:self->_searchTextField];
     [(WFSearchBar *)self setNeedsLayout];
     [(WFSearchBar *)self _invalidateIntrinsicContentSizeAndNotify];
     [(WFSearchBar *)self layoutIfNeeded];
-    v5 = v7;
+    fieldCopy = v7;
   }
 }
 
-- (void)setShowsCancelButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsCancelButton:(BOOL)button animated:(BOOL)animated
 {
-  if (self->_showsCancelButton != a3)
+  if (self->_showsCancelButton != button)
   {
-    v4 = a4;
-    v5 = a3;
-    v7 = [MEMORY[0x277D75D18] _isInAnimationBlock];
+    animatedCopy = animated;
+    buttonCopy = button;
+    _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
     [(WFSearchBar *)self bounds];
     v9 = v8;
     v11 = v10;
     [(WFSearchBar *)self sizeThatFits:v8, v10];
     v13 = v12;
     v15 = v14;
-    self->_showsCancelButton = v5;
+    self->_showsCancelButton = buttonCopy;
     [(WFSearchBar *)self sizeThatFits:v9, v11];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __45__WFSearchBar_setShowsCancelButton_animated___block_invoke;
     v24[3] = &unk_279EE7970;
     v24[4] = self;
-    v25 = v5;
+    v25 = buttonCopy;
     v24[5] = v13;
     v24[6] = v15;
     v24[7] = v16;
     v24[8] = v17;
     v18 = _Block_copy(v24);
     v19 = v18;
-    if (v7 || !v4)
+    if (_isInAnimationBlock || !animatedCopy)
     {
       (*(v18 + 2))(v18);
     }
@@ -461,32 +461,32 @@ LABEL_9:
       [MEMORY[0x277D75D18] _animateUsingDefaultTimingWithOptions:6 animations:v18 completion:0];
     }
 
-    v20 = [(WFSearchBar *)self delegate];
-    if (v5)
+    delegate = [(WFSearchBar *)self delegate];
+    if (buttonCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v20 searchBarCancelButtonWillAppear:self];
+        [delegate searchBarCancelButtonWillAppear:self];
       }
 
-      v21 = [(WFSearchBar *)self searchTextField];
-      v22 = v21;
-      v23 = 1;
+      searchTextField = [(WFSearchBar *)self searchTextField];
+      searchTextField2 = searchTextField;
+      textFieldDefaultAlignmentBehavior = 1;
     }
 
     else
     {
       if (objc_opt_respondsToSelector())
       {
-        [v20 searchBarCancelButtonWillHide:self];
+        [delegate searchBarCancelButtonWillHide:self];
       }
 
-      v22 = [(WFSearchBar *)self searchTextField];
-      v23 = [(WFSearchBar *)self textFieldDefaultAlignmentBehavior];
-      v21 = v22;
+      searchTextField2 = [(WFSearchBar *)self searchTextField];
+      textFieldDefaultAlignmentBehavior = [(WFSearchBar *)self textFieldDefaultAlignmentBehavior];
+      searchTextField = searchTextField2;
     }
 
-    [v21 setAlignmentBehavior:v23 animated:1];
+    [searchTextField setAlignmentBehavior:textFieldDefaultAlignmentBehavior animated:1];
   }
 }
 
@@ -505,7 +505,7 @@ uint64_t __45__WFSearchBar_setShowsCancelButton_animated___block_invoke(uint64_t
   return [v4 layoutIfNeeded];
 }
 
-- (void)_accessibilityBoldStatusDidChange:(id)a3
+- (void)_accessibilityBoldStatusDidChange:(id)change
 {
   [(WFSearchBar *)self _updateCancelButtonFont];
   [(WFSearchBar *)self setNeedsLayout];
@@ -513,21 +513,21 @@ uint64_t __45__WFSearchBar_setShowsCancelButton_animated___block_invoke(uint64_t
   [(WFSearchBar *)self layoutIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = WFSearchBar;
-  [(WFSearchBar *)&v4 traitCollectionDidChange:a3];
+  [(WFSearchBar *)&v4 traitCollectionDidChange:change];
   [(WFSearchBar *)self _updateCancelButtonFont];
   [(WFSearchBar *)self setNeedsLayout];
   [(WFSearchBar *)self layoutIfNeeded];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = WFSearchBar;
-  v5 = [(WFSearchBar *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(WFSearchBar *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -542,14 +542,14 @@ uint64_t __45__WFSearchBar_setShowsCancelButton_animated___block_invoke(uint64_t
   return v7;
 }
 
-- (void)setTextFieldDefaultAlignmentBehavior:(int64_t)a3
+- (void)setTextFieldDefaultAlignmentBehavior:(int64_t)behavior
 {
-  self->_textFieldDefaultAlignmentBehavior = a3;
-  v4 = [(WFSearchBar *)self searchTextField];
-  [v4 setAlignmentBehavior:a3 animated:0];
+  self->_textFieldDefaultAlignmentBehavior = behavior;
+  searchTextField = [(WFSearchBar *)self searchTextField];
+  [searchTextField setAlignmentBehavior:behavior animated:0];
 }
 
-- (WFSearchBar)initWithStyle:(unint64_t)a3
+- (WFSearchBar)initWithStyle:(unint64_t)style
 {
   v18.receiver = self;
   v18.super_class = WFSearchBar;
@@ -568,15 +568,15 @@ uint64_t __45__WFSearchBar_setShowsCancelButton_animated___block_invoke(uint64_t
     [(UIButton *)v4->_cancelButton setAlpha:0.0];
     [(UIButton *)v4->_cancelButton addTarget:v4 action:sel__cancelButtonTapped_ forControlEvents:64];
     v9 = v4->_cancelButton;
-    v10 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIButton *)v9 setTitleColor:v10 forState:0];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIButton *)v9 setTitleColor:systemWhiteColor forState:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v4 selector:sel__accessibilityBoldStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__accessibilityBoldStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
 
     [(WFSearchBar *)v4 addSubview:v4->_cancelButton];
     [(WFSearchBar *)v4 _updateCancelButtonFont];
-    v12 = [[WFSearchTextField alloc] initWithStyle:a3];
+    v12 = [[WFSearchTextField alloc] initWithStyle:style];
     searchTextField = v4->_searchTextField;
     v4->_searchTextField = v12;
 
@@ -586,8 +586,8 @@ uint64_t __45__WFSearchBar_setShowsCancelButton_animated___block_invoke(uint64_t
     v15 = WFLocalizedString(@"Search Shortcuts");
     [(WFSearchTextField *)v14 setPlaceholder:v15];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v4 selector:sel__searchBarTextFieldDidChangeText_ name:*MEMORY[0x277D770B0] object:v4->_searchTextField];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel__searchBarTextFieldDidChangeText_ name:*MEMORY[0x277D770B0] object:v4->_searchTextField];
 
     [(WFSearchBar *)v4 addSubview:v4->_searchTextField];
     v4->_textFieldCancelButtonSpacing = 16.0;

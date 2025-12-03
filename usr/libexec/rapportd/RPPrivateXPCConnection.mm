@@ -1,15 +1,15 @@
 @interface RPPrivateXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
 - (void)xpcConnectionInvalidated;
-- (void)xpcPrivateAdvertiserActivate:(id)a3 completion:(id)a4;
-- (void)xpcPrivateAdvertiserUpdate:(id)a3 completion:(id)a4;
-- (void)xpcPrivateDiscoveryActivate:(id)a3 completion:(id)a4;
-- (void)xpcPrivateDiscoveryUpdate:(id)a3 completion:(id)a4;
+- (void)xpcPrivateAdvertiserActivate:(id)activate completion:(id)completion;
+- (void)xpcPrivateAdvertiserUpdate:(id)update completion:(id)completion;
+- (void)xpcPrivateDiscoveryActivate:(id)activate completion:(id)completion;
+- (void)xpcPrivateDiscoveryUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation RPPrivateXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -30,19 +30,19 @@
   if (dword_1001D4A70 <= 90 && (dword_1001D4A70 != -1 || _LogCategory_Initialize()))
   {
     sub_100126F00(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = RPErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
@@ -89,10 +89,10 @@ LABEL_9:
   self->_xpcCnx = 0;
 }
 
-- (void)xpcPrivateAdvertiserActivate:(id)a3 completion:(id)a4
+- (void)xpcPrivateAdvertiserActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   v12 = 0;
   v9 = [(RPPrivateXPCConnection *)self _entitledAndReturnError:&v12];
   v10 = v12;
@@ -104,17 +104,17 @@ LABEL_9:
       sub_100126FA4(self);
     }
 
-    objc_storeStrong(&self->_activatedAdvertiser, a3);
+    objc_storeStrong(&self->_activatedAdvertiser, activate);
     v11 = 0;
   }
 
-  (v8)[2](v8, v11);
+  (completionCopy)[2](completionCopy, v11);
 }
 
-- (void)xpcPrivateAdvertiserUpdate:(id)a3 completion:(id)a4
+- (void)xpcPrivateAdvertiserUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v11 = 0;
   v8 = [(RPPrivateXPCConnection *)self _entitledAndReturnError:&v11];
   v9 = v11;
@@ -129,13 +129,13 @@ LABEL_9:
     v10 = 0;
   }
 
-  (v7)[2](v7, v10);
+  (completionCopy)[2](completionCopy, v10);
 }
 
-- (void)xpcPrivateDiscoveryActivate:(id)a3 completion:(id)a4
+- (void)xpcPrivateDiscoveryActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   v12 = 0;
   v9 = [(RPPrivateXPCConnection *)self _entitledAndReturnError:&v12];
   v10 = v12;
@@ -147,17 +147,17 @@ LABEL_9:
       sub_10012703C(self);
     }
 
-    objc_storeStrong(&self->_activatedDiscovery, a3);
+    objc_storeStrong(&self->_activatedDiscovery, activate);
     v11 = 0;
   }
 
-  (v8)[2](v8, v11);
+  (completionCopy)[2](completionCopy, v11);
 }
 
-- (void)xpcPrivateDiscoveryUpdate:(id)a3 completion:(id)a4
+- (void)xpcPrivateDiscoveryUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  completionCopy = completion;
   v11 = 0;
   v8 = [(RPPrivateXPCConnection *)self _entitledAndReturnError:&v11];
   v9 = v11;
@@ -172,7 +172,7 @@ LABEL_9:
     v10 = 0;
   }
 
-  (v7)[2](v7, v10);
+  (completionCopy)[2](completionCopy, v10);
 }
 
 @end

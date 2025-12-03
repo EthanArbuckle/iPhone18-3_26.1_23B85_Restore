@@ -1,10 +1,10 @@
 @interface TelephonyProvider
-- (TelephonyProvider)initWithRegistry:(const void *)a3;
+- (TelephonyProvider)initWithRegistry:(const void *)registry;
 @end
 
 @implementation TelephonyProvider
 
-- (TelephonyProvider)initWithRegistry:(const void *)a3
+- (TelephonyProvider)initWithRegistry:(const void *)registry
 {
   v5 = objc_alloc_init(CXProviderConfiguration);
   [v5 setSupportsEmergency:1];
@@ -35,7 +35,7 @@
       dispatch_retain(v12);
     }
 
-    v13 = [(TelephonyProviderDelegate *)v11 initWithProvider:v7 registry:a3 queue:&object];
+    v13 = [(TelephonyProviderDelegate *)v11 initWithProvider:v7 registry:registry queue:&object];
     if (object)
     {
       dispatch_release(object);

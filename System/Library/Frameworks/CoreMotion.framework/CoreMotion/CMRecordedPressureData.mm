@@ -1,17 +1,17 @@
 @interface CMRecordedPressureData
-- (CMRecordedPressureData)initWithCoder:(id)a3;
-- (CMRecordedPressureData)initWithData:(CMPressure *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6;
+- (CMRecordedPressureData)initWithCoder:(id)coder;
+- (CMRecordedPressureData)initWithData:(CMPressure *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier;
 - (id)pressure;
 - (id)temperature;
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetWithData:(CMPressure *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetWithData:(CMPressure *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier;
 @end
 
 @implementation CMRecordedPressureData
 
-- (CMRecordedPressureData)initWithData:(CMPressure *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6
+- (CMRecordedPressureData)initWithData:(CMPressure *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier
 {
   v14.receiver = self;
   v14.super_class = CMRecordedPressureData;
@@ -19,20 +19,20 @@
   v12 = v10;
   if (v10)
   {
-    objc_msgSend_resetWithData_timestamp_walltime_identifier_(v10, v11, a3, a4, a6, a5);
+    objc_msgSend_resetWithData_timestamp_walltime_identifier_(v10, v11, data, timestamp, identifier, walltime);
   }
 
   return v12;
 }
 
-- (CMRecordedPressureData)initWithCoder:(id)a3
+- (CMRecordedPressureData)initWithCoder:(id)coder
 {
   v23.receiver = self;
   v23.super_class = CMRecordedPressureData;
   v5 = [(CMAmbientPressureData *)&v23 initWithCoder:?];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"startDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"startDate");
     v5->_startDateValue = v6;
     objc_msgSend_timestamp(v5, v7, v8);
     v5->_timestampValue = v9;
@@ -51,24 +51,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMRecordedPressureData;
   [(CMAmbientPressureData *)&v6 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"startDate", self->_startDateValue);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"startDate", self->_startDateValue);
 }
 
-- (void)resetWithData:(CMPressure *)a3 timestamp:(unint64_t)a4 walltime:(double)a5 identifier:(unint64_t)a6
+- (void)resetWithData:(CMPressure *)data timestamp:(unint64_t)timestamp walltime:(double)walltime identifier:(unint64_t)identifier
 {
   self->_pressureMeasurement = 0;
   self->_temperatureMeasurement = 0;
-  self->_pressureValue = a3->var0;
-  self->_temperatureValue = a3->var1;
-  v6 = *(&a3->var2 + 1);
-  self->_startDateValue = a5 - (a4 - v6) / 1000000.0;
+  self->_pressureValue = data->var0;
+  self->_temperatureValue = data->var1;
+  v6 = *(&data->var2 + 1);
+  self->_startDateValue = walltime - (timestamp - v6) / 1000000.0;
   self->_timestampValue = v6 / 1000000.0;
-  self->_identifier = a6;
+  self->_identifier = identifier;
 }
 
 - (void)dealloc
@@ -110,9 +110,9 @@
   return result;
 }
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
-  v5 = objc_msgSend_pressure(self, a2, a3);
+  v5 = objc_msgSend_pressure(self, a2, stream);
   objc_msgSend_doubleValue(v5, v6, v7);
   v9 = v8;
   v12 = objc_msgSend_temperature(self, v10, v11);
@@ -130,7 +130,7 @@
     return result;
   }
 
-  return MEMORY[0x1EEE66B58](a3, sel_write_maxLength_, byte_1EAFE3936);
+  return MEMORY[0x1EEE66B58](stream, sel_write_maxLength_, byte_1EAFE3936);
 }
 
 @end

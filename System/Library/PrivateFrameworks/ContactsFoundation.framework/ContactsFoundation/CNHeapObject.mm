@@ -12,47 +12,47 @@
   v11.super_class = CNHeapObject;
   v4 = [(CNHeapObject *)&v11 description];
   v5 = [(CNHeapObject *)self count];
-  v6 = [(CNHeapObject *)self bytes];
-  v7 = [(CNHeapObject *)self className];
-  v8 = [(CNHeapObject *)self binary];
-  v9 = [v3 stringWithFormat:@"%@, %ld objects \t %ld bytes \t %@ \t %@", v4, v5, v6, v7, v8];
+  bytes = [(CNHeapObject *)self bytes];
+  className = [(CNHeapObject *)self className];
+  binary = [(CNHeapObject *)self binary];
+  v9 = [v3 stringWithFormat:@"%@, %ld objects \t %ld bytes \t %@ \t %@", v4, v5, bytes, className, binary];
 
   return v9;
 }
 
 - (id)classAndBinaryKey
 {
-  v3 = [(CNHeapObject *)self className];
-  if (v3)
+  className = [(CNHeapObject *)self className];
+  if (className)
   {
-    v4 = v3;
-    v5 = [(CNHeapObject *)self binary];
+    v4 = className;
+    binary = [(CNHeapObject *)self binary];
 
-    if (v5)
+    if (binary)
     {
-      v6 = [(CNHeapObject *)self className];
-      v7 = [(CNHeapObject *)self binary];
-      v8 = [v6 stringByAppendingString:v7];
+      className2 = [(CNHeapObject *)self className];
+      binary2 = [(CNHeapObject *)self binary];
+      v8 = [className2 stringByAppendingString:binary2];
 
       goto LABEL_9;
     }
   }
 
-  v9 = [(CNHeapObject *)self className];
+  className3 = [(CNHeapObject *)self className];
 
-  if (v9)
+  if (className3)
   {
-    v10 = [(CNHeapObject *)self className];
+    className4 = [(CNHeapObject *)self className];
 LABEL_8:
-    v8 = v10;
+    v8 = className4;
     goto LABEL_9;
   }
 
-  v11 = [(CNHeapObject *)self binary];
+  binary3 = [(CNHeapObject *)self binary];
 
-  if (v11)
+  if (binary3)
   {
-    v10 = [(CNHeapObject *)self binary];
+    className4 = [(CNHeapObject *)self binary];
     goto LABEL_8;
   }
 

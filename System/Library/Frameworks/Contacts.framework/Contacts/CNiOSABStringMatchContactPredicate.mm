@@ -1,37 +1,37 @@
 @interface CNiOSABStringMatchContactPredicate
-- (CNiOSABStringMatchContactPredicate)initWithCoder:(id)a3;
-- (CNiOSABStringMatchContactPredicate)initWithSearchString:(id)a3 accountIdentifier:(id)a4 containerIdentifier:(id)a5 groupIdentifier:(id)a6;
+- (CNiOSABStringMatchContactPredicate)initWithCoder:(id)coder;
+- (CNiOSABStringMatchContactPredicate)initWithSearchString:(id)string accountIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier groupIdentifier:(id)groupIdentifier;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABStringMatchContactPredicate
 
-- (CNiOSABStringMatchContactPredicate)initWithSearchString:(id)a3 accountIdentifier:(id)a4 containerIdentifier:(id)a5 groupIdentifier:(id)a6
+- (CNiOSABStringMatchContactPredicate)initWithSearchString:(id)string accountIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier groupIdentifier:(id)groupIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  groupIdentifierCopy = groupIdentifier;
   v24.receiver = self;
   v24.super_class = CNiOSABStringMatchContactPredicate;
   v14 = [(CNPredicate *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [stringCopy copy];
     searchString = v14->_searchString;
     v14->_searchString = v15;
 
-    v17 = [v11 copy];
+    v17 = [identifierCopy copy];
     accountIdentifier = v14->_accountIdentifier;
     v14->_accountIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [containerIdentifierCopy copy];
     containerIdentifier = v14->_containerIdentifier;
     v14->_containerIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [groupIdentifierCopy copy];
     groupIdentifier = v14->_groupIdentifier;
     v14->_groupIdentifier = v21;
   }
@@ -39,30 +39,30 @@
   return v14;
 }
 
-- (CNiOSABStringMatchContactPredicate)initWithCoder:(id)a3
+- (CNiOSABStringMatchContactPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CNiOSABStringMatchContactPredicate;
-  v5 = [(CNPredicate *)&v20 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_searchString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_searchString"];
     v7 = [v6 copy];
     searchString = v5->_searchString;
     v5->_searchString = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
     v10 = [v9 copy];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_containerIdentifier"];
     v13 = [v12 copy];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
     v16 = [v15 copy];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v16;
@@ -73,52 +73,52 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABStringMatchContactPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_searchString forKey:{@"_searchString", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_accountIdentifier forKey:@"_accountIdentifier"];
-  [v4 encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
-  [v4 encodeObject:self->_groupIdentifier forKey:@"_groupIdentifier"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_searchString forKey:{@"_searchString", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"_accountIdentifier"];
+  [coderCopy encodeObject:self->_containerIdentifier forKey:@"_containerIdentifier"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"_groupIdentifier"];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E6996568];
-  v10 = [(CNiOSABStringMatchContactPredicate *)self searchString];
-  LODWORD(v9) = (*(v9 + 16))(v9, v10);
+  searchString = [(CNiOSABStringMatchContactPredicate *)self searchString];
+  LODWORD(v9) = (*(v9 + 16))(v9, searchString);
 
   if (v9)
   {
-    if (!a7)
+    if (!error)
     {
       return 0;
     }
 
     [CNErrorFactory errorWithCode:400 userInfo:0];
-    *a7 = v11 = 0;
+    *error = v11 = 0;
     return v11;
   }
 
-  v12 = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
+  groupIdentifier = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
 
-  if (v12)
+  if (groupIdentifier)
   {
-    v13 = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
-    v21[0] = v13;
+    groupIdentifier2 = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
+    v21[0] = groupIdentifier2;
     v14 = 1;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    v12 = ABAddressBookCopyGroupsWithUUIDs();
+    groupIdentifier = ABAddressBookCopyGroupsWithUUIDs();
 
-    if (v12)
+    if (groupIdentifier)
     {
-      if (CFArrayGetCount(v12))
+      if (CFArrayGetCount(groupIdentifier))
       {
-        CFArrayGetValueAtIndex(v12, 0);
+        CFArrayGetValueAtIndex(groupIdentifier, 0);
         v14 = 0;
       }
 
@@ -134,26 +134,26 @@
     v14 = 0;
   }
 
-  v15 = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
+  containerIdentifier = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
 
-  if (v15)
+  if (containerIdentifier)
   {
-    v16 = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
-    v20 = v16;
+    containerIdentifier2 = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
+    v20 = containerIdentifier2;
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    v15 = ABAddressBookCopySourcesWithUUIDs();
+    containerIdentifier = ABAddressBookCopySourcesWithUUIDs();
 
-    if (!v15)
+    if (!containerIdentifier)
     {
       goto LABEL_17;
     }
 
-    if (!CFArrayGetCount(v15))
+    if (!CFArrayGetCount(containerIdentifier))
     {
       goto LABEL_17;
     }
 
-    CFArrayGetValueAtIndex(v15, 0);
+    CFArrayGetValueAtIndex(containerIdentifier, 0);
     if (v14)
     {
       goto LABEL_17;
@@ -167,8 +167,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v17 = [(CNiOSABStringMatchContactPredicate *)self searchString];
-  v18 = [(CNiOSABStringMatchContactPredicate *)self accountIdentifier];
+  searchString2 = [(CNiOSABStringMatchContactPredicate *)self searchString];
+  accountIdentifier = [(CNiOSABStringMatchContactPredicate *)self accountIdentifier];
   v11 = ABAddressBookCopyArrayOfAllPeopleMatching();
 
   if (!v11)
@@ -177,14 +177,14 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (v12)
+  if (groupIdentifier)
   {
-    CFRelease(v12);
+    CFRelease(groupIdentifier);
   }
 
-  if (v15)
+  if (containerIdentifier)
   {
-    CFRelease(v15);
+    CFRelease(containerIdentifier);
   }
 
   return v11;
@@ -194,21 +194,21 @@ LABEL_18:
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingString:accountIdentifier:containerIdentifier:groupIdentifier:]"];
-  v5 = [(CNiOSABStringMatchContactPredicate *)self searchString];
-  v6 = [v3 appendName:@"searchString" object:v5];
+  searchString = [(CNiOSABStringMatchContactPredicate *)self searchString];
+  v6 = [v3 appendName:@"searchString" object:searchString];
 
-  v7 = [(CNiOSABStringMatchContactPredicate *)self accountIdentifier];
-  v8 = [v3 appendName:@"accountIdentifier" object:v7];
+  accountIdentifier = [(CNiOSABStringMatchContactPredicate *)self accountIdentifier];
+  v8 = [v3 appendName:@"accountIdentifier" object:accountIdentifier];
 
-  v9 = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
-  v10 = [v3 appendName:@"containerIdentifier" object:v9];
+  containerIdentifier = [(CNiOSABStringMatchContactPredicate *)self containerIdentifier];
+  v10 = [v3 appendName:@"containerIdentifier" object:containerIdentifier];
 
-  v11 = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
-  v12 = [v3 appendName:@"groupIdentifier" object:v11];
+  groupIdentifier = [(CNiOSABStringMatchContactPredicate *)self groupIdentifier];
+  v12 = [v3 appendName:@"groupIdentifier" object:groupIdentifier];
 
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface VSAudioPlaybackService
-+ (double)durationOfAudioDataLength:(unint64_t)a3 withAudioDescription:(AudioStreamBasicDescription *)a4;
-+ (unint64_t)bytesOfDuration:(double)a3 withAudioDescription:(AudioStreamBasicDescription *)a4;
++ (double)durationOfAudioDataLength:(unint64_t)length withAudioDescription:(AudioStreamBasicDescription *)description;
++ (unint64_t)bytesOfDuration:(double)duration withAudioDescription:(AudioStreamBasicDescription *)description;
 - (AudioStreamBasicDescription)asbd;
 - (id)start;
 - (void)flushAndStop;
-- (void)setTimingObserver:(id)a3;
+- (void)setTimingObserver:(id)observer;
 - (void)stop;
 @end
 
 @implementation VSAudioPlaybackService
 
-- (void)setTimingObserver:(id)a3
+- (void)setTimingObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(VSAudioPlaybackServiceProtocol *)self->_implementation removeTimeObserver:self->_timingObserver];
   timingObserver = self->_timingObserver;
-  self->_timingObserver = v4;
+  self->_timingObserver = observerCopy;
 }
 
 - (void)stop
@@ -57,9 +57,9 @@
     _os_signpost_emit_with_name_impl(&dword_2727E4000, v4, OS_SIGNPOST_INTERVAL_BEGIN, playbackIntervalId, "AudioPlayback", &unk_272838DAB, v8, 2u);
   }
 
-  v6 = [(VSAudioPlaybackServiceProtocol *)self->_implementation start];
+  start = [(VSAudioPlaybackServiceProtocol *)self->_implementation start];
 
-  return v6;
+  return start;
 }
 
 - (AudioStreamBasicDescription)asbd
@@ -76,22 +76,22 @@
   return result;
 }
 
-+ (unint64_t)bytesOfDuration:(double)a3 withAudioDescription:(AudioStreamBasicDescription *)a4
++ (unint64_t)bytesOfDuration:(double)duration withAudioDescription:(AudioStreamBasicDescription *)description
 {
-  mSampleRate = a4->mSampleRate;
-  LODWORD(mSampleRate) = a4->mBytesPerFrame;
-  return (a4->mSampleRate * a3 * *&mSampleRate);
+  mSampleRate = description->mSampleRate;
+  LODWORD(mSampleRate) = description->mBytesPerFrame;
+  return (description->mSampleRate * duration * *&mSampleRate);
 }
 
-+ (double)durationOfAudioDataLength:(unint64_t)a3 withAudioDescription:(AudioStreamBasicDescription *)a4
++ (double)durationOfAudioDataLength:(unint64_t)length withAudioDescription:(AudioStreamBasicDescription *)description
 {
-  mBytesPerFrame = a4->mBytesPerFrame;
+  mBytesPerFrame = description->mBytesPerFrame;
   result = 0.0;
   if (mBytesPerFrame)
   {
-    if (a4->mSampleRate != 0.0)
+    if (description->mSampleRate != 0.0)
     {
-      return a3 / (a4->mSampleRate * mBytesPerFrame);
+      return length / (description->mSampleRate * mBytesPerFrame);
     }
   }
 

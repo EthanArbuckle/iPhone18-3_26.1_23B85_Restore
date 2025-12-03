@@ -1,5 +1,5 @@
 @interface LockupViewTapGestureRecognizer
-- (_TtC12GameCenterUIP33_64554770326E76789B08F6F30099D03930LockupViewTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC12GameCenterUIP33_64554770326E76789B08F6F30099D03930LockupViewTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)execute;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1ED4F4();
 }
 
-- (_TtC12GameCenterUIP33_64554770326E76789B08F6F30099D03930LockupViewTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC12GameCenterUIP33_64554770326E76789B08F6F30099D03930LockupViewTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_24E3487A8();

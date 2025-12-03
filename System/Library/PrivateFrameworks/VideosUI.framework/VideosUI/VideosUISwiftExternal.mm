@@ -1,52 +1,52 @@
 @interface VideosUISwiftExternal
-+ (id)ascAppInstallerViewControllerWithTitle:(id)a3 subtitle:(id)a4 request:(id)a5 forceDSIDlessInstall:(BOOL)a6 onFlowCompletion:(id)a7;
-+ (id)createTVAppExtensionViewControllerWithURL:(id)a3;
-+ (id)createTVAppExtensionViewControllerWithURL:(id)a3 completionBlock:(id)a4;
-+ (void)buildMenuWithBuilder:(id)a3;
++ (id)ascAppInstallerViewControllerWithTitle:(id)title subtitle:(id)subtitle request:(id)request forceDSIDlessInstall:(BOOL)install onFlowCompletion:(id)completion;
++ (id)createTVAppExtensionViewControllerWithURL:(id)l;
++ (id)createTVAppExtensionViewControllerWithURL:(id)l completionBlock:(id)block;
++ (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation VideosUISwiftExternal
 
-+ (id)createTVAppExtensionViewControllerWithURL:(id)a3
++ (id)createTVAppExtensionViewControllerWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[_TtC8VideosUI32TVAppExtensionHostViewController alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[_TtC8VideosUI32TVAppExtensionHostViewController alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-+ (id)createTVAppExtensionViewControllerWithURL:(id)a3 completionBlock:(id)a4
++ (id)createTVAppExtensionViewControllerWithURL:(id)l completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_TtC8VideosUI32TVAppExtensionHostViewController alloc] initWithUrl:v6 completion:v5];
+  blockCopy = block;
+  lCopy = l;
+  v7 = [[_TtC8VideosUI32TVAppExtensionHostViewController alloc] initWithUrl:lCopy completion:blockCopy];
 
   return v7;
 }
 
-+ (id)ascAppInstallerViewControllerWithTitle:(id)a3 subtitle:(id)a4 request:(id)a5 forceDSIDlessInstall:(BOOL)a6 onFlowCompletion:(id)a7
++ (id)ascAppInstallerViewControllerWithTitle:(id)title subtitle:(id)subtitle request:(id)request forceDSIDlessInstall:(BOOL)install onFlowCompletion:(id)completion
 {
-  v7 = a6;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[VUIASCAppInstallerViewController alloc] initWithTitle:v14 subtitle:v13 request:v12 forceDSIDless:v7 onFlowComplete:v11];
+  installCopy = install;
+  completionCopy = completion;
+  requestCopy = request;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v15 = [[VUIASCAppInstallerViewController alloc] initWithTitle:titleCopy subtitle:subtitleCopy request:requestCopy forceDSIDless:installCopy onFlowComplete:completionCopy];
 
   return v15;
 }
 
-+ (void)buildMenuWithBuilder:(id)a3
++ (void)buildMenuWithBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   if (_UIEnhancedMainMenuEnabled())
   {
-    v3 = [v5 system];
-    v4 = [MEMORY[0x1E69DCC88] mainSystem];
+    system = [builderCopy system];
+    mainSystem = [MEMORY[0x1E69DCC88] mainSystem];
 
-    if (v3 == v4)
+    if (system == mainSystem)
     {
-      [_TtC8VideosUI8VideosUI buildCustomMenuWithBuilder:v5];
+      [_TtC8VideosUI8VideosUI buildCustomMenuWithBuilder:builderCopy];
     }
   }
 }

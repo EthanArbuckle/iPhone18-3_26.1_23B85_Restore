@@ -8,9 +8,9 @@
 {
   if ([(THGlossaryWPLayout *)self layoutRequirementsProvider])
   {
-    v3 = [(THGlossaryWPLayout *)self layoutRequirementsProvider];
+    layoutRequirementsProvider = [(THGlossaryWPLayout *)self layoutRequirementsProvider];
 
-    return [(THGlossaryLayoutRequirementsProvider *)v3 reliedOnLayoutsForLayout:self];
+    return [(THGlossaryLayoutRequirementsProvider *)layoutRequirementsProvider reliedOnLayoutsForLayout:self];
   }
 
   else

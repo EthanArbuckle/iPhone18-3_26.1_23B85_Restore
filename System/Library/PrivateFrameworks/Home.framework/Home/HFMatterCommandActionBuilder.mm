@@ -1,26 +1,26 @@
 @interface HFMatterCommandActionBuilder
-- (BOOL)canUpdateWithActionBuilder:(id)a3;
-- (BOOL)hasSameTargetAsAction:(id)a3;
-- (BOOL)updateWithActionBuilder:(id)a3;
-- (HFMatterCommandActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
-- (HFMatterCommandActionBuilder)initWithHome:(id)a3 commands:(id)a4 accessory:(id)a5 enforceExecutionOrder:(BOOL)a6;
+- (BOOL)canUpdateWithActionBuilder:(id)builder;
+- (BOOL)hasSameTargetAsAction:(id)action;
+- (BOOL)updateWithActionBuilder:(id)builder;
+- (HFMatterCommandActionBuilder)initWithExistingObject:(id)object inHome:(id)home;
+- (HFMatterCommandActionBuilder)initWithHome:(id)home commands:(id)commands accessory:(id)accessory enforceExecutionOrder:(BOOL)order;
 - (NSString)description;
-- (id)actionCommandFieldsFor:(id)a3;
-- (id)actionExpectedValuesFor:(id)a3;
+- (id)actionCommandFieldsFor:(id)for;
+- (id)actionExpectedValuesFor:(id)for;
 - (id)commitItem;
 - (id)containedAccessoryRepresentables;
 - (id)copyForCreatingNewAction;
 - (id)createNewAction;
-- (void)updateCommandsWith:(id)a3;
+- (void)updateCommandsWith:(id)with;
 @end
 
 @implementation HFMatterCommandActionBuilder
 
-- (id)actionExpectedValuesFor:(id)a3
+- (id)actionExpectedValuesFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = _sSo28HFMatterCommandActionBuilderC4HomeE20actionExpectedValues3forSaySDySSs8Sendable_pGGSgSo08HMMatterB0C_tF_0(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = _sSo28HFMatterCommandActionBuilderC4HomeE20actionExpectedValues3forSaySDySSs8Sendable_pGGSgSo08HMMatterB0C_tF_0(forCopy);
 
   if (v6)
   {
@@ -36,10 +36,10 @@
   return v7;
 }
 
-- (id)actionCommandFieldsFor:(id)a3
+- (id)actionCommandFieldsFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
+  forCopy = for;
+  selfCopy = self;
   v6 = _sSo28HFMatterCommandActionBuilderC4HomeE06actionB6Fields3forSDySSypGSgSo08HMMatterB0C_tF_0();
 
   if (v6)
@@ -55,17 +55,17 @@
   return v7;
 }
 
-- (void)updateCommandsWith:(id)a3
+- (void)updateCommandsWith:(id)with
 {
   sub_20DA0BEB0();
   v4 = sub_20DD64FD4();
-  v5 = self;
+  selfCopy = self;
   HFMatterCommandActionBuilder.updateCommands(with:)(v4);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HFMatterCommandActionBuilder.description.getter();
 
   v3 = sub_20DD64E74();
@@ -73,28 +73,28 @@
   return v3;
 }
 
-- (HFMatterCommandActionBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFMatterCommandActionBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v5 = a3;
-  v6 = [(HFItemBuilder *)self home];
+  objectCopy = object;
+  home = [(HFItemBuilder *)self home];
   v16.receiver = self;
   v16.super_class = HFMatterCommandActionBuilder;
-  v7 = [(HFItemBuilder *)&v16 initWithExistingObject:v5 inHome:v6];
+  v7 = [(HFItemBuilder *)&v16 initWithExistingObject:objectCopy inHome:home];
 
   if (v7)
   {
-    v8 = [(HFActionBuilder *)v7 action];
-    v9 = [v8 commands];
+    action = [(HFActionBuilder *)v7 action];
+    commands = [action commands];
     commands = v7->_commands;
-    v7->_commands = v9;
+    v7->_commands = commands;
 
-    v11 = [(HFActionBuilder *)v7 action];
-    v7->_enforceExecutionOrder = [v11 enforceExecutionOrder];
+    action2 = [(HFActionBuilder *)v7 action];
+    v7->_enforceExecutionOrder = [action2 enforceExecutionOrder];
 
-    v12 = [(HFActionBuilder *)v7 action];
-    v13 = [v12 representedAccessory];
+    action3 = [(HFActionBuilder *)v7 action];
+    representedAccessory = [action3 representedAccessory];
     accessory = v7->_accessory;
-    v7->_accessory = v13;
+    v7->_accessory = representedAccessory;
   }
 
   return v7;
@@ -103,30 +103,30 @@
 - (id)copyForCreatingNewAction
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [v3 initWithHome:v4];
+  home = [(HFItemBuilder *)self home];
+  v5 = [v3 initWithHome:home];
 
-  v6 = [(HFMatterCommandActionBuilder *)self commands];
-  [v5 setCommands:v6];
+  commands = [(HFMatterCommandActionBuilder *)self commands];
+  [v5 setCommands:commands];
 
   [v5 setEnforceExecutionOrder:{-[HFMatterCommandActionBuilder enforceExecutionOrder](self, "enforceExecutionOrder")}];
-  v7 = [(HFMatterCommandActionBuilder *)self accessory];
-  [v5 setAccessory:v7];
+  accessory = [(HFMatterCommandActionBuilder *)self accessory];
+  [v5 setAccessory:accessory];
 
   return v5;
 }
 
-- (HFMatterCommandActionBuilder)initWithHome:(id)a3 commands:(id)a4 accessory:(id)a5 enforceExecutionOrder:(BOOL)a6
+- (HFMatterCommandActionBuilder)initWithHome:(id)home commands:(id)commands accessory:(id)accessory enforceExecutionOrder:(BOOL)order
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HFItemBuilder *)self initWithHome:a3];
+  commandsCopy = commands;
+  accessoryCopy = accessory;
+  v13 = [(HFItemBuilder *)self initWithHome:home];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_commands, a4);
-    objc_storeStrong(&v14->_accessory, a5);
-    v14->_enforceExecutionOrder = a6;
+    objc_storeStrong(&v13->_commands, commands);
+    objc_storeStrong(&v14->_accessory, accessory);
+    v14->_enforceExecutionOrder = order;
   }
 
   return v14;
@@ -135,17 +135,17 @@
 - (id)containedAccessoryRepresentables
 {
   v2 = MEMORY[0x277CBEA60];
-  v3 = [(HFMatterCommandActionBuilder *)self accessory];
-  v4 = [v2 na_arrayWithSafeObject:v3];
+  accessory = [(HFMatterCommandActionBuilder *)self accessory];
+  v4 = [v2 na_arrayWithSafeObject:accessory];
 
   return v4;
 }
 
-- (BOOL)canUpdateWithActionBuilder:(id)a3
+- (BOOL)canUpdateWithActionBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   objc_opt_class();
-  v5 = v4;
+  v5 = builderCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -160,11 +160,11 @@
 
   if (v7)
   {
-    v8 = [(HFMatterCommandActionBuilder *)self accessory];
-    v9 = [v8 matterNodeID];
-    v10 = [v7 accessory];
-    v11 = [v10 matterNodeID];
-    v12 = v9 == v11;
+    accessory = [(HFMatterCommandActionBuilder *)self accessory];
+    matterNodeID = [accessory matterNodeID];
+    accessory2 = [v7 accessory];
+    matterNodeID2 = [accessory2 matterNodeID];
+    v12 = matterNodeID == matterNodeID2;
   }
 
   else
@@ -175,13 +175,13 @@
   return v12;
 }
 
-- (BOOL)updateWithActionBuilder:(id)a3
+- (BOOL)updateWithActionBuilder:(id)builder
 {
-  v4 = a3;
-  if ([(HFMatterCommandActionBuilder *)self canUpdateWithActionBuilder:v4])
+  builderCopy = builder;
+  if ([(HFMatterCommandActionBuilder *)self canUpdateWithActionBuilder:builderCopy])
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = builderCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -194,15 +194,15 @@
 
     v7 = v6;
 
-    v8 = [v7 commands];
-    [(HFMatterCommandActionBuilder *)self updateCommandsWith:v8];
+    commands = [v7 commands];
+    [(HFMatterCommandActionBuilder *)self updateCommandsWith:commands];
 
-    v9 = [(HFMatterCommandActionBuilder *)self commands];
-    v10 = [v7 commands];
-    if ([v9 isEqualToArray:v10])
+    commands2 = [(HFMatterCommandActionBuilder *)self commands];
+    commands3 = [v7 commands];
+    if ([commands2 isEqualToArray:commands3])
     {
-      v11 = [(HFMatterCommandActionBuilder *)self enforceExecutionOrder];
-      v12 = v11 ^ [v7 enforceExecutionOrder];
+      enforceExecutionOrder = [(HFMatterCommandActionBuilder *)self enforceExecutionOrder];
+      v12 = enforceExecutionOrder ^ [v7 enforceExecutionOrder];
     }
 
     else
@@ -221,21 +221,21 @@
 
 - (id)createNewAction
 {
-  v3 = [(HFMatterCommandActionBuilder *)self commands];
-  if (v3)
+  commands = [(HFMatterCommandActionBuilder *)self commands];
+  if (commands)
   {
-    v4 = v3;
-    v5 = [(HFMatterCommandActionBuilder *)self accessory];
-    if (v5)
+    v4 = commands;
+    accessory = [(HFMatterCommandActionBuilder *)self accessory];
+    if (accessory)
     {
-      v6 = v5;
-      v7 = [(HFMatterCommandActionBuilder *)self enforceExecutionOrder];
+      v6 = accessory;
+      enforceExecutionOrder = [(HFMatterCommandActionBuilder *)self enforceExecutionOrder];
 
-      if (v7)
+      if (enforceExecutionOrder)
       {
         v8 = objc_alloc(MEMORY[0x277CD1B70]);
-        v9 = [(HFMatterCommandActionBuilder *)self commands];
-        v10 = [v8 initWithMatterCommands:v9 enforceExecutionOrder:{-[HFMatterCommandActionBuilder enforceExecutionOrder](self, "enforceExecutionOrder")}];
+        commands2 = [(HFMatterCommandActionBuilder *)self commands];
+        v10 = [v8 initWithMatterCommands:commands2 enforceExecutionOrder:{-[HFMatterCommandActionBuilder enforceExecutionOrder](self, "enforceExecutionOrder")}];
         goto LABEL_7;
       }
     }
@@ -245,9 +245,9 @@
     }
   }
 
-  v9 = [(HFMatterCommandActionBuilder *)self commands];
-  v11 = [(HFMatterCommandActionBuilder *)self accessory];
-  NSLog(&cfstr_Hfmattercomman.isa, self, v9, v11, [(HFMatterCommandActionBuilder *)self enforceExecutionOrder]);
+  commands2 = [(HFMatterCommandActionBuilder *)self commands];
+  accessory2 = [(HFMatterCommandActionBuilder *)self accessory];
+  NSLog(&cfstr_Hfmattercomman.isa, self, commands2, accessory2, [(HFMatterCommandActionBuilder *)self enforceExecutionOrder]);
 
   v10 = 0;
 LABEL_7:
@@ -257,13 +257,13 @@ LABEL_7:
 
 - (id)commitItem
 {
-  v3 = [(HFMatterCommandActionBuilder *)self performValidation];
+  performValidation = [(HFMatterCommandActionBuilder *)self performValidation];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__HFMatterCommandActionBuilder_commitItem__block_invoke;
   v6[3] = &unk_277DF2CE0;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [performValidation flatMap:v6];
 
   return v4;
 }
@@ -285,11 +285,11 @@ id __42__HFMatterCommandActionBuilder_commitItem__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (BOOL)hasSameTargetAsAction:(id)a3
+- (BOOL)hasSameTargetAsAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v5 = v4;
+  v5 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -302,15 +302,15 @@ id __42__HFMatterCommandActionBuilder_commitItem__block_invoke(uint64_t a1)
 
   v7 = v6;
 
-  v8 = [(HFActionBuilder *)self action];
-  v9 = [v8 representedAccessory];
+  action = [(HFActionBuilder *)self action];
+  representedAccessory = [action representedAccessory];
 
   if (v7)
   {
-    v10 = [v9 uniqueIdentifier];
-    v11 = [(HFMatterCommandActionBuilder *)self accessory];
-    v12 = [v11 uniqueIdentifier];
-    v13 = v10 == v12;
+    uniqueIdentifier = [representedAccessory uniqueIdentifier];
+    accessory = [(HFMatterCommandActionBuilder *)self accessory];
+    uniqueIdentifier2 = [accessory uniqueIdentifier];
+    v13 = uniqueIdentifier == uniqueIdentifier2;
   }
 
   else

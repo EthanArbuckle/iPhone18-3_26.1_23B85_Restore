@@ -1,27 +1,27 @@
 @interface BFFStyle
 + (id)sharedStyle;
-- (CGSize)_effectiveSizeForIconSize:(CGSize)a3 inView:(id)a4;
-- (CGSize)sizeForContinueButtonInAncestor:(id)a3;
-- (UIEdgeInsets)edgeInsetsForHeaderView:(id)a3;
-- (UIEdgeInsets)edgeInsetsForTable:(id)a3;
-- (UIEdgeInsets)horizontalInsetsForContainingInView:(id)a3 width:(double)a4;
-- (double)headerIconBaselineOffsetForView:(id)a3;
-- (double)headerTitleBaselineOffsetForView:(id)a3 hasIcon:(BOOL)a4;
-- (double)headerTitleBaselineOffsetForView:(id)a3 iconSize:(CGSize)a4;
-- (double)headerYOffsetForIcon:(id)a3 inView:(id)a4;
-- (double)headerYOffsetForIconSize:(CGSize)a3 inView:(id)a4;
-- (id)continueButtonWithTitle:(id)a3 inView:(id)a4;
+- (CGSize)_effectiveSizeForIconSize:(CGSize)size inView:(id)view;
+- (CGSize)sizeForContinueButtonInAncestor:(id)ancestor;
+- (UIEdgeInsets)edgeInsetsForHeaderView:(id)view;
+- (UIEdgeInsets)edgeInsetsForTable:(id)table;
+- (UIEdgeInsets)horizontalInsetsForContainingInView:(id)view width:(double)width;
+- (double)headerIconBaselineOffsetForView:(id)view;
+- (double)headerTitleBaselineOffsetForView:(id)view hasIcon:(BOOL)icon;
+- (double)headerTitleBaselineOffsetForView:(id)view iconSize:(CGSize)size;
+- (double)headerYOffsetForIcon:(id)icon inView:(id)view;
+- (double)headerYOffsetForIconSize:(CGSize)size inView:(id)view;
+- (id)continueButtonWithTitle:(id)title inView:(id)view;
 - (id)headerTitleFont;
 - (id)tableCellFont;
-- (void)applyAutomaticScrollToEdgeBehaviorOnNavigationItem:(id)a3;
+- (void)applyAutomaticScrollToEdgeBehaviorOnNavigationItem:(id)item;
 - (void)applyThemeToAllTableViews;
-- (void)applyThemeToLabel:(id)a3;
-- (void)applyThemeToNavigationController:(id)a3 allowUnderlap:(BOOL)a4;
-- (void)applyThemeToRemoteUIWebViewController:(id)a3;
-- (void)applyThemeToSectionHeaderLabel:(id)a3;
-- (void)applyThemeToTableCell:(id)a3;
-- (void)applyThemeToTextView:(id)a3;
-- (void)applyThemeToTitleLabel:(id)a3;
+- (void)applyThemeToLabel:(id)label;
+- (void)applyThemeToNavigationController:(id)controller allowUnderlap:(BOOL)underlap;
+- (void)applyThemeToRemoteUIWebViewController:(id)controller;
+- (void)applyThemeToSectionHeaderLabel:(id)label;
+- (void)applyThemeToTableCell:(id)cell;
+- (void)applyThemeToTextView:(id)view;
+- (void)applyThemeToTitleLabel:(id)label;
 @end
 
 @implementation BFFStyle
@@ -58,17 +58,17 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return v7;
 }
 
-- (CGSize)_effectiveSizeForIconSize:(CGSize)a3 inView:(id)a4
+- (CGSize)_effectiveSizeForIconSize:(CGSize)size inView:(id)view
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
-  v7 = v6;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  v7 = viewCopy;
   v8 = *MEMORY[0x277CBF3A8];
   v9 = *(MEMORY[0x277CBF3A8] + 8);
   if (width != *MEMORY[0x277CBF3A8] || height != v9)
   {
-    [v6 bounds];
+    [viewCopy bounds];
     if (width >= v11)
     {
       v8 = v11;
@@ -99,12 +99,12 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return result;
 }
 
-- (double)headerYOffsetForIconSize:(CGSize)a3 inView:(id)a4
+- (double)headerYOffsetForIconSize:(CGSize)size inView:(id)view
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [(BFFStyle *)self _effectiveSizeForIconSize:v7 inView:width, height];
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  [(BFFStyle *)self _effectiveSizeForIconSize:viewCopy inView:width, height];
   v10 = v9;
   if (v9 >= 100.001)
   {
@@ -116,9 +116,9 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
     v12 = 0.0;
     if (v8 < 160.001)
     {
-      v13 = [v7 window];
-      [v13 frame];
-      v15 = -(_BFFIconTitleBaselineOffset(v7) - v14 * 0.34) - v10;
+      window = [viewCopy window];
+      [window frame];
+      v15 = -(_BFFIconTitleBaselineOffset(viewCopy) - v14 * 0.34) - v10;
 
       v12 = fmax(v15, 0.0);
     }
@@ -126,31 +126,31 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
 
   else
   {
-    v11 = _BFFCGFloatByDeviceHeight(v7, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
-    v12 = fmax(v11 - _CGFloatByIdiom(v7, 0.0, 24.0, 0.0) - v10, 0.0);
+    v11 = _BFFCGFloatByDeviceHeight(viewCopy, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
+    v12 = fmax(v11 - _CGFloatByIdiom(viewCopy, 0.0, 24.0, 0.0) - v10, 0.0);
   }
 
   return v12;
 }
 
-- (double)headerTitleBaselineOffsetForView:(id)a3 iconSize:(CGSize)a4
+- (double)headerTitleBaselineOffsetForView:(id)view iconSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
-  v9 = a3;
-  v10 = v9;
+  viewCopy = view;
+  v10 = viewCopy;
   if (width == v7 && height == v8)
   {
-    v18 = _BFFCGFloatByDeviceHeight(v9, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
+    v18 = _BFFCGFloatByDeviceHeight(viewCopy, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
 
     return v18;
   }
 
   else
   {
-    [(BFFStyle *)self _effectiveSizeForIconSize:v9 inView:width, height];
+    [(BFFStyle *)self _effectiveSizeForIconSize:viewCopy inView:width, height];
     v13 = v12;
     [(BFFStyle *)self headerYOffsetForIconSize:v10 inView:width, height];
     v15 = v14 + v13;
@@ -160,34 +160,34 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   }
 }
 
-- (double)headerYOffsetForIcon:(id)a3 inView:(id)a4
+- (double)headerYOffsetForIcon:(id)icon inView:(id)view
 {
-  v6 = a4;
-  [a3 size];
-  [(BFFStyle *)self headerYOffsetForIconSize:v6 inView:?];
+  viewCopy = view;
+  [icon size];
+  [(BFFStyle *)self headerYOffsetForIconSize:viewCopy inView:?];
   v8 = v7;
 
   return v8;
 }
 
-- (double)headerIconBaselineOffsetForView:(id)a3
+- (double)headerIconBaselineOffsetForView:(id)view
 {
-  v3 = a3;
-  v4 = _BFFCGFloatByDeviceHeight(v3, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
-  v5 = _CGFloatByIdiom(v3, 0.0, 24.0, 0.0);
+  viewCopy = view;
+  v4 = _BFFCGFloatByDeviceHeight(viewCopy, 37.0, 44.0, 44.0, 50.0, 119.0, 250.0, 119.0, 55.0);
+  v5 = _CGFloatByIdiom(viewCopy, 0.0, 24.0, 0.0);
 
   return v4 - v5;
 }
 
-- (double)headerTitleBaselineOffsetForView:(id)a3 hasIcon:(BOOL)a4
+- (double)headerTitleBaselineOffsetForView:(id)view hasIcon:(BOOL)icon
 {
-  v4 = a4;
-  v6 = a3;
-  [(BFFStyle *)self headerIconBaselineOffsetForView:v6];
+  iconCopy = icon;
+  viewCopy = view;
+  [(BFFStyle *)self headerIconBaselineOffsetForView:viewCopy];
   v8 = v7;
-  if (v4)
+  if (iconCopy)
   {
-    v9 = _BFFIconTitleBaselineOffset(v6);
+    v9 = _BFFIconTitleBaselineOffset(viewCopy);
 
     return v8 + v9;
   }
@@ -199,13 +199,13 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return v8;
 }
 
-- (UIEdgeInsets)edgeInsetsForHeaderView:(id)a3
+- (UIEdgeInsets)edgeInsetsForHeaderView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 _shouldReverseLayoutDirection];
-  v6 = _CGFloatByIdiom(v4, 15.0, 15.0, 15.0);
-  v7 = _CGFloatByIdiom(v4, 15.0, 0.0, 0.0);
-  if (v5)
+  viewCopy = view;
+  _shouldReverseLayoutDirection = [viewCopy _shouldReverseLayoutDirection];
+  v6 = _CGFloatByIdiom(viewCopy, 15.0, 15.0, 15.0);
+  v7 = _CGFloatByIdiom(viewCopy, 15.0, 0.0, 0.0);
+  if (_shouldReverseLayoutDirection)
   {
     v8 = v6;
   }
@@ -215,18 +215,18 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
     v8 = v7;
   }
 
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
     v6 = v7;
   }
 
   [(BFFStyle *)self baselineInsetForHeaderTitle];
   v10 = v9;
-  v11 = [(BFFStyle *)self headerTitleFont];
-  [v11 ascender];
+  headerTitleFont = [(BFFStyle *)self headerTitleFont];
+  [headerTitleFont ascender];
   v13 = v10 + v12;
 
-  v14 = _BFFCGFloatByDeviceHeight(v4, 27.5, 35.5, 39.3333333, 52.5, 52.5, 32.0, 32.0, 32.0);
+  v14 = _BFFCGFloatByDeviceHeight(viewCopy, 27.5, 35.5, 39.3333333, 52.5, 52.5, 32.0, 32.0, 32.0);
   v15 = v13;
   v16 = v6;
   v17 = v14;
@@ -241,9 +241,9 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
 - (id)tableCellFont
 {
   v2 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [v4 isEqualToString:@"ja"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [localeIdentifier isEqualToString:@"ja"];
 
   v6 = MEMORY[0x277D74410];
   if (v5)
@@ -257,28 +257,28 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return v8;
 }
 
-- (UIEdgeInsets)horizontalInsetsForContainingInView:(id)a3 width:(double)a4
+- (UIEdgeInsets)horizontalInsetsForContainingInView:(id)view width:(double)width
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = *MEMORY[0x277D768C8];
   v7 = *(MEMORY[0x277D768C8] + 16);
-  if (_useCompactMetrics(v5))
+  if (_useCompactMetrics(viewCopy))
   {
-    _BFFTableInset(v5);
+    _BFFTableInset(viewCopy);
     v9 = v8;
     v10 = v8;
   }
 
   else
   {
-    [v5 bounds];
+    [viewCopy bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v5 window];
-    if (v17)
+    window = [viewCopy window];
+    if (window)
     {
-      [v5 window];
+      [viewCopy window];
     }
 
     else
@@ -289,8 +289,8 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
     [v18 bounds];
     v20 = v19;
 
-    v21 = [v5 window];
-    [v5 convertRect:v21 toView:{v12, v14, a4, v16}];
+    window2 = [viewCopy window];
+    [viewCopy convertRect:window2 toView:{v12, v14, width, v16}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -341,16 +341,16 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return result;
 }
 
-- (UIEdgeInsets)edgeInsetsForTable:(id)a3
+- (UIEdgeInsets)edgeInsetsForTable:(id)table
 {
-  v3 = a3;
-  _BFFTableInset(v3);
+  tableCopy = table;
+  _BFFTableInset(tableCopy);
   v5 = v4;
-  [v3 contentInset];
+  [tableCopy contentInset];
   v7 = v6;
-  [v3 separatorInset];
+  [tableCopy separatorInset];
   v9 = v5 - v8;
-  v10 = _BFFHeightByDeviceSize(v3);
+  v10 = _BFFHeightByDeviceSize(tableCopy);
 
   if (v10 == 7)
   {
@@ -372,28 +372,28 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return result;
 }
 
-- (void)applyThemeToNavigationController:(id)a3 allowUnderlap:(BOOL)a4
+- (void)applyThemeToNavigationController:(id)controller allowUnderlap:(BOOL)underlap
 {
-  v4 = [a3 navigationBar];
-  [v4 _setHidesShadow:1];
+  navigationBar = [controller navigationBar];
+  [navigationBar _setHidesShadow:1];
 }
 
-- (void)applyAutomaticScrollToEdgeBehaviorOnNavigationItem:(id)a3
+- (void)applyAutomaticScrollToEdgeBehaviorOnNavigationItem:(id)item
 {
-  v3 = a3;
-  if (([v3 _isManualScrollEdgeAppearanceEnabled] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy _isManualScrollEdgeAppearanceEnabled] & 1) == 0)
   {
-    [v3 _setAutoScrollEdgeTransitionDistance:16.0];
-    [v3 _setManualScrollEdgeAppearanceEnabled:1];
+    [itemCopy _setAutoScrollEdgeTransitionDistance:16.0];
+    [itemCopy _setManualScrollEdgeAppearanceEnabled:1];
   }
 }
 
-- (id)continueButtonWithTitle:(id)a3 inView:(id)a4
+- (id)continueButtonWithTitle:(id)title inView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  titleCopy = title;
   v7 = [BFFContinueButton buttonWithType:0];
-  [v7 setTitle:v6 forState:0];
+  [v7 setTitle:titleCopy forState:0];
 
   v8 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76988]];
   [v7 frame];
@@ -411,16 +411,16 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   }
 
   [v7 setFrame:{v10, v12, 288.0, v14}];
-  [v5 addSubview:v7];
+  [viewCopy addSubview:v7];
 
   return v7;
 }
 
-- (CGSize)sizeForContinueButtonInAncestor:(id)a3
+- (CGSize)sizeForContinueButtonInAncestor:(id)ancestor
 {
-  v4 = a3;
-  [v4 bounds];
-  [(BFFStyle *)self horizontalInsetsForContainingInView:v4 width:v5];
+  ancestorCopy = ancestor;
+  [ancestorCopy bounds];
+  [(BFFStyle *)self horizontalInsetsForContainingInView:ancestorCopy width:v5];
   v7 = v6;
   v9 = v8;
   v10 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
@@ -435,7 +435,7 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
     v12 = 100.0;
   }
 
-  [v4 bounds];
+  [ancestorCopy bounds];
   v14 = v13;
 
   if (v14 - v7 - v9 <= 327.0)
@@ -455,112 +455,112 @@ uint64_t __23__BFFStyle_sharedStyle__block_invoke()
   return result;
 }
 
-- (void)applyThemeToLabel:(id)a3
+- (void)applyThemeToLabel:(id)label
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 _labelColor];
-  [v4 setTextColor:v5];
+  labelCopy = label;
+  _labelColor = [v3 _labelColor];
+  [labelCopy setTextColor:_labelColor];
 
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 }
 
-- (void)applyThemeToTextView:(id)a3
+- (void)applyThemeToTextView:(id)view
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 clearColor];
-  [v4 setBackgroundColor:v5];
+  viewCopy = view;
+  clearColor = [v3 clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 
-  v6 = [MEMORY[0x277D75348] _labelColor];
-  [v4 setTextColor:v6];
+  _labelColor = [MEMORY[0x277D75348] _labelColor];
+  [viewCopy setTextColor:_labelColor];
 }
 
-- (void)applyThemeToRemoteUIWebViewController:(id)a3
+- (void)applyThemeToRemoteUIWebViewController:(id)controller
 {
-  v5 = [a3 webView];
-  v4 = [(BFFStyle *)self backgroundColor];
-  [v5 setBackgroundColor:v4];
+  webView = [controller webView];
+  backgroundColor = [(BFFStyle *)self backgroundColor];
+  [webView setBackgroundColor:backgroundColor];
 }
 
 - (void)applyThemeToAllTableViews
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75B40] appearance];
+  appearance = [MEMORY[0x277D75B40] appearance];
   v4 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.300000012];
-  [v3 setSeparatorBottomShadowColor:v4];
+  [appearance setSeparatorBottomShadowColor:v4];
 
   v5 = MEMORY[0x277D756B8];
   v18[0] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v7 = [v5 appearanceWhenContainedInInstancesOfClasses:v6];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
   v9 = MEMORY[0x277D756B8];
   v17 = objc_opt_class();
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
   v11 = [v9 appearanceWhenContainedInInstancesOfClasses:v10];
-  v12 = [MEMORY[0x277D75348] _labelColor];
-  [v11 setTextColor:v12];
+  _labelColor = [MEMORY[0x277D75348] _labelColor];
+  [v11 setTextColor:_labelColor];
 
-  v13 = [MEMORY[0x277D75B40] appearance];
-  v14 = [MEMORY[0x277D75348] _systemBackgroundColor];
-  [v13 setBackgroundColor:v14];
+  appearance2 = [MEMORY[0x277D75B40] appearance];
+  _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+  [appearance2 setBackgroundColor:_systemBackgroundColor];
 
-  v15 = [MEMORY[0x277D75B48] appearance];
-  v16 = [(BFFStyle *)self backgroundColor];
-  [v15 setBackgroundColor:v16];
+  appearance3 = [MEMORY[0x277D75B48] appearance];
+  backgroundColor = [(BFFStyle *)self backgroundColor];
+  [appearance3 setBackgroundColor:backgroundColor];
 }
 
-- (void)applyThemeToTitleLabel:(id)a3
+- (void)applyThemeToTitleLabel:(id)label
 {
   v4 = MEMORY[0x277D75348];
-  v9 = a3;
-  v5 = [v4 _labelColor];
-  [v9 setTextColor:v5];
+  labelCopy = label;
+  _labelColor = [v4 _labelColor];
+  [labelCopy setTextColor:_labelColor];
 
-  v6 = [(BFFStyle *)self backgroundColor];
-  [v9 setBackgroundColor:v6];
+  backgroundColor = [(BFFStyle *)self backgroundColor];
+  [labelCopy setBackgroundColor:backgroundColor];
 
   v7 = +[BFFStyle sharedStyle];
-  v8 = [v7 headerTitleFont];
-  [v9 setFont:v8];
+  headerTitleFont = [v7 headerTitleFont];
+  [labelCopy setFont:headerTitleFont];
 
-  [v9 setTextAlignment:1];
-  [v9 setNumberOfLines:0];
+  [labelCopy setTextAlignment:1];
+  [labelCopy setNumberOfLines:0];
 }
 
-- (void)applyThemeToTableCell:(id)a3
+- (void)applyThemeToTableCell:(id)cell
 {
-  v3 = a3;
-  v8 = [v3 textLabel];
+  cellCopy = cell;
+  textLabel = [cellCopy textLabel];
   v4 = +[BFFStyle sharedStyle];
-  v5 = [v4 tableCellFont];
-  [v8 setFont:v5];
+  tableCellFont = [v4 tableCellFont];
+  [textLabel setFont:tableCellFont];
 
-  [v8 setAdjustsFontSizeToFitWidth:1];
-  v6 = [v8 font];
-  [v6 pointSize];
-  [v8 setMinimumScaleFactor:12.0 / v7];
+  [textLabel setAdjustsFontSizeToFitWidth:1];
+  font = [textLabel font];
+  [font pointSize];
+  [textLabel setMinimumScaleFactor:12.0 / v7];
 
-  [v3 setAccessoryType:1];
+  [cellCopy setAccessoryType:1];
 }
 
-- (void)applyThemeToSectionHeaderLabel:(id)a3
+- (void)applyThemeToSectionHeaderLabel:(id)label
 {
   v3 = MEMORY[0x277D75348];
-  v4 = a3;
-  v5 = [v3 _secondaryLabelColor];
-  [v4 setTextColor:v5];
+  labelCopy = label;
+  _secondaryLabelColor = [v3 _secondaryLabelColor];
+  [labelCopy setTextColor:_secondaryLabelColor];
 
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  [v4 setFont:v6];
+  [labelCopy setFont:v6];
 
-  [v4 setTextAlignment:4];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v7];
+  [labelCopy setTextAlignment:4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [labelCopy setBackgroundColor:clearColor];
 }
 
 @end

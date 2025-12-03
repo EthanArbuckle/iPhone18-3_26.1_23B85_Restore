@@ -1,8 +1,8 @@
 @interface HDWorkoutBuilderStatisticsDataSource
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7;
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler;
 - (HDProfile)profile;
 - (HDWorkoutBuilderStatisticsDataSource)init;
-- (HDWorkoutBuilderStatisticsDataSource)initWithProfile:(id)a3 quantityType:(id)a4 builderEntity:(id)a5;
+- (HDWorkoutBuilderStatisticsDataSource)initWithProfile:(id)profile quantityType:(id)type builderEntity:(id)entity;
 @end
 
 @implementation HDWorkoutBuilderStatisticsDataSource
@@ -17,51 +17,51 @@
   return 0;
 }
 
-- (HDWorkoutBuilderStatisticsDataSource)initWithProfile:(id)a3 quantityType:(id)a4 builderEntity:(id)a5
+- (HDWorkoutBuilderStatisticsDataSource)initWithProfile:(id)profile quantityType:(id)type builderEntity:(id)entity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  typeCopy = type;
+  entityCopy = entity;
   v16.receiver = self;
   v16.super_class = HDWorkoutBuilderStatisticsDataSource;
   v11 = [(HDWorkoutBuilderStatisticsDataSource *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_profile, profileCopy);
+    v13 = [typeCopy copy];
     quantityType = v12->_quantityType;
     v12->_quantityType = v13;
 
-    objc_storeStrong(&v12->_builderEntity, a5);
+    objc_storeStrong(&v12->_builderEntity, entity);
     v12->_enabled = 1;
   }
 
   return v12;
 }
 
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler
 {
-  v10 = a4;
-  v11 = a6;
+  intervalCopy = interval;
+  handlerCopy = handler;
   if (self->_enabled)
   {
-    v12 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v13 = [v12 features];
-    v14 = [v13 workoutSavingQueryPerf];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    features = [mEMORY[0x277CCDD30] features];
+    workoutSavingQueryPerf = [features workoutSavingQueryPerf];
 
     quantityType = self->_quantityType;
     builderEntity = self->_builderEntity;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    if (v14)
+    if (workoutSavingQueryPerf)
     {
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __111__HDWorkoutBuilderStatisticsDataSource_collectionCalculator_queryForInterval_error_sampleHandler_mergeHandler___block_invoke;
       v24[3] = &unk_2786193E8;
-      v25 = v10;
-      v26 = v11;
-      v18 = [(HDWorkoutBuilderEntity *)builderEntity enumerateAssociatedSampleValuesWithCustomQueryOfType:quantityType interval:v25 profile:WeakRetained error:a5 handler:v24];
+      v25 = intervalCopy;
+      v26 = handlerCopy;
+      v18 = [(HDWorkoutBuilderEntity *)builderEntity enumerateAssociatedSampleValuesWithCustomQueryOfType:quantityType interval:v25 profile:WeakRetained error:error handler:v24];
 
       v19 = v25;
     }
@@ -72,9 +72,9 @@
       v21[1] = 3221225472;
       v21[2] = __111__HDWorkoutBuilderStatisticsDataSource_collectionCalculator_queryForInterval_error_sampleHandler_mergeHandler___block_invoke_2;
       v21[3] = &unk_278619410;
-      v22 = v10;
-      v23 = v11;
-      v18 = [(HDWorkoutBuilderEntity *)builderEntity enumerateAssociatedSampleValuesOfType:quantityType interval:v22 profile:WeakRetained error:a5 sampleHandler:v21];
+      v22 = intervalCopy;
+      v23 = handlerCopy;
+      v18 = [(HDWorkoutBuilderEntity *)builderEntity enumerateAssociatedSampleValuesOfType:quantityType interval:v22 profile:WeakRetained error:error sampleHandler:v21];
 
       v19 = v22;
     }
@@ -82,7 +82,7 @@
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 format:@"Data source is disabled."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"Data source is disabled."];
     v18 = 0;
   }
 

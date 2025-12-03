@@ -7,11 +7,11 @@
 - (uint64_t)minimalFormInContext:()_NSCoreDataSQLPredicateCategories ofPredicates:
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [a1 operatorType];
-  if (v8 == 2)
+  array = [MEMORY[0x1E695DF70] array];
+  operatorType = [self operatorType];
+  if (operatorType == 2)
   {
-    v36 = a1;
+    selfCopy = self;
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
@@ -38,14 +38,14 @@
           {
             v33 = MEMORY[0x1E696AF08];
 LABEL_38:
-            v12 = [v33 defaultInstance];
+            defaultInstance = [v33 defaultInstance];
             objc_autoreleasePoolPop(v21);
             goto LABEL_43;
           }
 
           if (([objc_msgSend(MEMORY[0x1E696ABE8] "defaultInstance")] & 1) == 0)
           {
-            [v7 addObject:v30];
+            [array addObject:v30];
           }
 
           objc_autoreleasePoolPop(v21);
@@ -63,10 +63,10 @@ LABEL_38:
       }
     }
 
-    v31 = [v7 count];
+    v31 = [array count];
     if (v31 != 1)
     {
-      a1 = v36;
+      self = selfCopy;
       if (!v31)
       {
         v24 = MEMORY[0x1E696ABE8];
@@ -74,18 +74,18 @@ LABEL_38:
       }
 
 LABEL_41:
-      v32 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(a1 subpredicates:{"operatorType"), v7}];
+      defaultInstance2 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(self subpredicates:{"operatorType"), array}];
       goto LABEL_42;
     }
 
 LABEL_39:
-    v32 = [v7 objectAtIndex:0];
+    defaultInstance2 = [array objectAtIndex:0];
     goto LABEL_42;
   }
 
-  if (v8 == 1)
+  if (operatorType == 1)
   {
-    v35 = a1;
+    selfCopy2 = self;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -116,7 +116,7 @@ LABEL_39:
 
           if (([objc_msgSend(MEMORY[0x1E696AF08] "defaultInstance")] & 1) == 0)
           {
-            [v7 addObject:v22];
+            [array addObject:v22];
           }
 
           objc_autoreleasePoolPop(v21);
@@ -134,20 +134,20 @@ LABEL_39:
       }
     }
 
-    v23 = [v7 count];
+    v23 = [array count];
     if (v23 != 1)
     {
-      a1 = v35;
+      self = selfCopy2;
       if (!v23)
       {
         v24 = MEMORY[0x1E696AF08];
 LABEL_35:
-        v32 = [v24 defaultInstance];
+        defaultInstance2 = [v24 defaultInstance];
 LABEL_42:
-        v12 = v32;
+        defaultInstance = defaultInstance2;
 LABEL_43:
         v34 = *MEMORY[0x1E69E9840];
-        return v12;
+        return defaultInstance;
       }
 
       goto LABEL_41;
@@ -156,23 +156,23 @@ LABEL_43:
     goto LABEL_39;
   }
 
-  if (v8)
+  if (operatorType)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Bad compound predicate predicateOperator type" userInfo:0]);
   }
 
   v9 = [objc_msgSend(a4 objectAtIndex:{0), "minimalFormInContext:", a3}];
   v10 = [objc_msgSend(MEMORY[0x1E696AF08] "defaultInstance")];
-  v11 = [MEMORY[0x1E696ABE8] defaultInstance];
-  v12 = v11;
+  defaultInstance3 = [MEMORY[0x1E696ABE8] defaultInstance];
+  defaultInstance = defaultInstance3;
   if (v10)
   {
     goto LABEL_43;
   }
 
-  if (![v11 isEqual:v9])
+  if (![defaultInstance3 isEqual:v9])
   {
-    [v7 addObject:v9];
+    [array addObject:v9];
     goto LABEL_41;
   }
 

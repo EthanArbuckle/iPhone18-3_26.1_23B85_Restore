@@ -1,26 +1,26 @@
 @interface SiriSharedUIUtilities
-+ ($8D19A3D7F6B32A57CF9B882F3E1C418F)filterTranscriptItemsForRFPluginContent:(id)a3;
-+ (BOOL)applicationBundleIdentifierIsThirdParty:(id)a3;
-+ (BOOL)contentDiffersBetweenItems:(id)a3 andItems:(id)a4;
-+ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)a3;
++ ($8D19A3D7F6B32A57CF9B882F3E1C418F)filterTranscriptItemsForRFPluginContent:(id)content;
++ (BOOL)applicationBundleIdentifierIsThirdParty:(id)party;
++ (BOOL)contentDiffersBetweenItems:(id)items andItems:(id)andItems;
++ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)valid;
 + (BOOL)reportConcernButtonEnabled;
-+ (BOOL)stringIsBlank:(id)a3;
-+ (BOOL)utteranceViewEligibleForLightEffects:(id)a3;
++ (BOOL)stringIsBlank:(id)blank;
++ (BOOL)utteranceViewEligibleForLightEffects:(id)effects;
 + (id)_emojisToNotInclude;
 + (id)_ineligibleDialogCategoriesForLightEffects;
-+ (id)cardFromSnippet:(id)a3;
-+ (id)filterTranscriptItemsForSAEDialogBoxContent:(id)a3;
-+ (id)getAceObjectForSACardSnippetFromTranscriptItems:(id)a3;
-+ (id)substringRangesContainingEmojiInString:(id)a3;
-+ (int64_t)orbViewModeForSiriSessionState:(int64_t)a3;
-+ (int64_t)orbViewModeForSiriSessionState:(int64_t)a3 isAttending:(BOOL)a4;
++ (id)cardFromSnippet:(id)snippet;
++ (id)filterTranscriptItemsForSAEDialogBoxContent:(id)content;
++ (id)getAceObjectForSACardSnippetFromTranscriptItems:(id)items;
++ (id)substringRangesContainingEmojiInString:(id)string;
++ (int64_t)orbViewModeForSiriSessionState:(int64_t)state;
++ (int64_t)orbViewModeForSiriSessionState:(int64_t)state isAttending:(BOOL)attending;
 @end
 
 @implementation SiriSharedUIUtilities
 
-+ (id)substringRangesContainingEmojiInString:(id)a3
++ (id)substringRangesContainingEmojiInString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (CEMStringContainsEmoji())
   {
     v6 = 0;
@@ -28,8 +28,8 @@
     v8 = 0x3032000000;
     v9 = __Block_byref_object_copy__0;
     v10 = __Block_byref_object_dispose__0;
-    v11 = [MEMORY[0x277CBEB18] array];
-    [v3 length];
+    array = [MEMORY[0x277CBEB18] array];
+    [stringCopy length];
     CEMEnumerateEmojiTokensInStringWithBlock();
     v4 = v7[5];
     _Block_object_dispose(&v6, 8);
@@ -54,11 +54,11 @@ void __64__SiriSharedUIUtilities_substringRangesContainingEmojiInString___block_
   }
 }
 
-+ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)a3
++ (BOOL)emojiIsValid:(__EmojiTokenWrapper *)valid
 {
   v4 = CEMEmojiTokenGetString();
-  v5 = [a1 _emojisToNotInclude];
-  v6 = [v5 containsObject:v4];
+  _emojisToNotInclude = [self _emojisToNotInclude];
+  v6 = [_emojisToNotInclude containsObject:v4];
 
   return v6 ^ 1;
 }
@@ -84,39 +84,39 @@ uint64_t __44__SiriSharedUIUtilities__emojisToNotInclude__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (int64_t)orbViewModeForSiriSessionState:(int64_t)a3
++ (int64_t)orbViewModeForSiriSessionState:(int64_t)state
 {
-  if (a3 < 4)
+  if (state < 4)
   {
-    return qword_21E4E4B20[a3];
+    return qword_21E4E4B20[state];
   }
 
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
-    [(SiriSharedUIUtilities *)v5 orbViewModeForSiriSessionState:a3];
+    [(SiriSharedUIUtilities *)v5 orbViewModeForSiriSessionState:state];
   }
 
   return 0;
 }
 
-+ (int64_t)orbViewModeForSiriSessionState:(int64_t)a3 isAttending:(BOOL)a4
++ (int64_t)orbViewModeForSiriSessionState:(int64_t)state isAttending:(BOOL)attending
 {
-  v4 = a3;
-  if ((a3 - 1) >= 2)
+  stateCopy = state;
+  if ((state - 1) >= 2)
   {
-    if (a3 != 3 && a3)
+    if (state != 3 && state)
     {
       v5 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
       {
-        [SiriSharedUIUtilities orbViewModeForSiriSessionState:v5 isAttending:v4];
+        [SiriSharedUIUtilities orbViewModeForSiriSessionState:v5 isAttending:stateCopy];
       }
 
       return 0;
     }
 
-    else if (a4)
+    else if (attending)
     {
       return 1;
     }
@@ -127,26 +127,26 @@ uint64_t __44__SiriSharedUIUtilities__emojisToNotInclude__block_invoke()
     }
   }
 
-  return v4;
+  return stateCopy;
 }
 
-+ (BOOL)applicationBundleIdentifierIsThirdParty:(id)a3
++ (BOOL)applicationBundleIdentifierIsThirdParty:(id)party
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && (![v3 hasPrefix:@"com.apple."] || objc_msgSend(v4, "isEqualToString:", @"com.apple.siri.Caviar"));
+  partyCopy = party;
+  v4 = partyCopy;
+  v5 = partyCopy && (![partyCopy hasPrefix:@"com.apple."] || objc_msgSend(v4, "isEqualToString:", @"com.apple.siri.Caviar"));
 
   return v5;
 }
 
-+ ($8D19A3D7F6B32A57CF9B882F3E1C418F)filterTranscriptItemsForRFPluginContent:(id)a3
++ ($8D19A3D7F6B32A57CF9B882F3E1C418F)filterTranscriptItemsForRFPluginContent:(id)content
 {
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = content;
   v3 = 0;
   v4 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
@@ -165,17 +165,17 @@ uint64_t __44__SiriSharedUIUtilities__emojisToNotInclude__block_invoke()
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 aceObject];
+        aceObject = [v9 aceObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v12 = [v9 aceObject];
-          v13 = [v12 copy];
+          aceObject2 = [v9 aceObject];
+          v13 = [aceObject2 copy];
 
-          v14 = [v13 itemType];
-          v15 = [v14 isEqualToString:v6];
+          itemType = [v13 itemType];
+          v15 = [itemType isEqualToString:v6];
           if (v3)
           {
             v16 = 0;
@@ -191,8 +191,8 @@ uint64_t __44__SiriSharedUIUtilities__emojisToNotInclude__block_invoke()
             v3 = v13;
           }
 
-          v17 = [v13 itemType];
-          v18 = [v17 isEqualToString:v7];
+          itemType2 = [v13 itemType];
+          v18 = [itemType2 isEqualToString:v7];
 
           if (v18)
           {
@@ -235,17 +235,17 @@ uint64_t __44__SiriSharedUIUtilities__emojisToNotInclude__block_invoke()
   return v2;
 }
 
-+ (BOOL)utteranceViewEligibleForLightEffects:(id)a3
++ (BOOL)utteranceViewEligibleForLightEffects:(id)effects
 {
-  v3 = a3;
-  v4 = [v3 dialogCategory];
+  effectsCopy = effects;
+  dialogCategory = [effectsCopy dialogCategory];
 
   v8 = 1;
-  if (v4)
+  if (dialogCategory)
   {
-    v5 = [v3 dialogCategory];
-    v6 = [objc_opt_class() _ineligibleDialogCategoriesForLightEffects];
-    v7 = [v6 containsObject:v5];
+    dialogCategory2 = [effectsCopy dialogCategory];
+    _ineligibleDialogCategoriesForLightEffects = [objc_opt_class() _ineligibleDialogCategoriesForLightEffects];
+    v7 = [_ineligibleDialogCategoriesForLightEffects containsObject:dialogCategory2];
 
     if (v7)
     {
@@ -277,47 +277,47 @@ uint64_t __67__SiriSharedUIUtilities__ineligibleDialogCategoriesForLightEffects_
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)cardFromSnippet:(id)a3
++ (id)cardFromSnippet:(id)snippet
 {
-  v3 = a3;
-  v4 = [v3 siriui_card_compact];
-  v5 = [v4 backingCard];
-  v6 = [v5 cardSections];
-  if (v6)
+  snippetCopy = snippet;
+  siriui_card_compact = [snippetCopy siriui_card_compact];
+  backingCard = [siriui_card_compact backingCard];
+  cardSections = [backingCard cardSections];
+  if (cardSections)
   {
-    [v3 siriui_card_compact];
+    [snippetCopy siriui_card_compact];
   }
 
   else
   {
-    [v3 siriui_card];
+    [snippetCopy siriui_card];
   }
   v7 = ;
 
-  v8 = [v7 backingCard];
+  backingCard2 = [v7 backingCard];
 
-  return v8;
+  return backingCard2;
 }
 
-+ (BOOL)contentDiffersBetweenItems:(id)a3 andItems:(id)a4
++ (BOOL)contentDiffersBetweenItems:(id)items andItems:(id)andItems
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  itemsCopy = items;
+  andItemsCopy = andItems;
+  v7 = [itemsCopy count];
+  if (v7 == [andItemsCopy count])
   {
-    if ([v5 count])
+    if ([itemsCopy count])
     {
       v8 = 0;
-      v28 = v6;
-      v29 = v5;
+      v28 = andItemsCopy;
+      v29 = itemsCopy;
       while (1)
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v9 aceObject];
+        v9 = [itemsCopy objectAtIndex:v8];
+        aceObject = [v9 aceObject];
 
-        v11 = [v6 objectAtIndex:v8];
-        v12 = [v11 aceObject];
+        v11 = [andItemsCopy objectAtIndex:v8];
+        aceObject2 = [v11 aceObject];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -326,23 +326,23 @@ uint64_t __67__SiriSharedUIUtilities__ineligibleDialogCategoriesForLightEffects_
           goto LABEL_13;
         }
 
-        v13 = v10;
-        v14 = v12;
-        v15 = [v13 sash];
-        v16 = [v15 applicationBundleIdentifier];
-        v17 = [v14 sash];
-        v18 = [v17 applicationBundleIdentifier];
-        if (![v16 isEqualToString:v18])
+        v13 = aceObject;
+        v14 = aceObject2;
+        sash = [v13 sash];
+        applicationBundleIdentifier = [sash applicationBundleIdentifier];
+        sash2 = [v14 sash];
+        applicationBundleIdentifier2 = [sash2 applicationBundleIdentifier];
+        if (![applicationBundleIdentifier isEqualToString:applicationBundleIdentifier2])
         {
           break;
         }
 
         v30 = v8;
-        v19 = [v13 sash];
-        v20 = [v19 title];
-        v21 = [v14 sash];
-        v22 = [v21 title];
-        v31 = [v20 isEqualToString:v22];
+        sash3 = [v13 sash];
+        title = [sash3 title];
+        sash4 = [v14 sash];
+        title2 = [sash4 title];
+        v31 = [title isEqualToString:title2];
 
         if (!v31)
         {
@@ -353,8 +353,8 @@ uint64_t __67__SiriSharedUIUtilities__ineligibleDialogCategoriesForLightEffects_
         v24 = [objc_opt_class() cardFromSnippet:v14];
         v25 = [v23 afui_hasContentEqualTo:v24];
 
-        v6 = v28;
-        v5 = v29;
+        andItemsCopy = v28;
+        itemsCopy = v29;
         if (v25)
         {
           v8 = v30 + 1;
@@ -370,8 +370,8 @@ uint64_t __67__SiriSharedUIUtilities__ineligibleDialogCategoriesForLightEffects_
 
 LABEL_16:
       v26 = 1;
-      v6 = v28;
-      v5 = v29;
+      andItemsCopy = v28;
+      itemsCopy = v29;
     }
 
     else
@@ -391,14 +391,14 @@ LABEL_14:
   return v26;
 }
 
-+ (id)filterTranscriptItemsForSAEDialogBoxContent:(id)a3
++ (id)filterTranscriptItemsForSAEDialogBoxContent:(id)content
 {
   v61 = *MEMORY[0x277D85DE8];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = a3;
+  obj = content;
   v3 = [obj countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (!v3)
   {
@@ -422,7 +422,7 @@ LABEL_14:
       }
 
       v8 = *(*(&v51 + 1) + 8 * v7);
-      v9 = [v8 aceObject];
+      aceObject = [v8 aceObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -432,7 +432,7 @@ LABEL_14:
       }
 
       v39 = v8;
-      v43 = [v8 aceObject];
+      aceObject2 = [v8 aceObject];
       v11 = [SiriSharedUIUtilities cardFromSnippet:?];
       v44 = [v11 copy];
       v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -442,8 +442,8 @@ LABEL_14:
       v49 = 0u;
       v50 = 0u;
       v45 = v11;
-      v13 = [v11 cardSections];
-      v14 = [v13 countByEnumeratingWithState:&v47 objects:v59 count:16];
+      cardSections = [v11 cardSections];
+      v14 = [cardSections countByEnumeratingWithState:&v47 objects:v59 count:16];
       v42 = v14 != 0;
       if (v14)
       {
@@ -457,19 +457,19 @@ LABEL_14:
           {
             if (*v48 != v17)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(cardSections);
             }
 
             v19 = *(*(&v47 + 1) + 8 * i);
-            v20 = [v19 shouldShowInSmartDialog];
+            shouldShowInSmartDialog = [v19 shouldShowInSmartDialog];
             objc_opt_class();
             v21 = objc_opt_isKindOfClass();
-            if (v20)
+            if (shouldShowInSmartDialog)
             {
               if (v21)
               {
-                v22 = [v19 cardSections];
-                [v12 addObjectsFromArray:v22];
+                cardSections2 = [v19 cardSections];
+                [v12 addObjectsFromArray:cardSections2];
               }
 
               else
@@ -483,18 +483,18 @@ LABEL_14:
             else if (v21)
             {
               v23 = v19;
-              v24 = [v23 cardSections];
-              v25 = [v24 count];
+              cardSections3 = [v23 cardSections];
+              v25 = [cardSections3 count];
 
               if (v25)
               {
-                v26 = [v23 cardSections];
-                v27 = [v26 objectAtIndexedSubscript:0];
+                cardSections4 = [v23 cardSections];
+                v27 = [cardSections4 objectAtIndexedSubscript:0];
 
                 if ([v27 shouldShowInSmartDialog])
                 {
-                  v28 = [v23 cardSections];
-                  [v12 addObjectsFromArray:v28];
+                  cardSections5 = [v23 cardSections];
+                  [v12 addObjectsFromArray:cardSections5];
 
                   v16 = 1;
                 }
@@ -507,7 +507,7 @@ LABEL_14:
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v47 objects:v59 count:16];
+          v15 = [cardSections countByEnumeratingWithState:&v47 objects:v59 count:16];
         }
 
         while (v15);
@@ -518,14 +518,14 @@ LABEL_14:
           v6 = v37;
           v5 = v38;
           v7 = v41;
-          v30 = v43;
+          v30 = aceObject2;
           goto LABEL_36;
         }
 
         v29 = *MEMORY[0x277CEF098];
         v6 = v37;
         v7 = v41;
-        v30 = v43;
+        v30 = aceObject2;
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
         {
           *buf = v35;
@@ -536,10 +536,10 @@ LABEL_14:
         }
 
         [v45 setCardSections:v46];
-        v13 = [v43 copy];
+        cardSections = [aceObject2 copy];
         v31 = [objc_alloc(MEMORY[0x277D4C728]) initWithFacade:v45];
-        v32 = [v31 data];
-        [v13 setCardData:v32];
+        data = [v31 data];
+        [cardSections setCardData:data];
 
         if ([v46 count])
         {
@@ -558,7 +558,7 @@ LABEL_14:
 
       else
       {
-        v30 = v43;
+        v30 = aceObject2;
       }
 
       v33 = v42;
@@ -585,35 +585,35 @@ LABEL_40:
   return v36;
 }
 
-+ (id)getAceObjectForSACardSnippetFromTranscriptItems:(id)a3
++ (id)getAceObjectForSACardSnippetFromTranscriptItems:(id)items
 {
   v38 = *MEMORY[0x277D85DE8];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = a3;
-  v27 = [v3 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  itemsCopy = items;
+  v27 = [itemsCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (!v27)
   {
-    v21 = 0;
+    aceObject3 = 0;
     goto LABEL_28;
   }
 
   v4 = *v33;
   v23 = *v33;
-  v24 = v3;
+  v24 = itemsCopy;
   do
   {
     for (i = 0; i != v27; ++i)
     {
       if (*v33 != v4)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(itemsCopy);
       }
 
       v6 = *(*(&v32 + 1) + 8 * i);
-      v7 = [v6 aceObject];
+      aceObject = [v6 aceObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -622,15 +622,15 @@ LABEL_40:
         continue;
       }
 
-      v26 = [v6 aceObject];
+      aceObject2 = [v6 aceObject];
       v9 = [SiriSharedUIUtilities cardFromSnippet:?];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v25 = v9;
-      v10 = [v9 cardSections];
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      cardSections = [v9 cardSections];
+      v11 = [cardSections countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (!v11)
       {
         goto LABEL_20;
@@ -644,16 +644,16 @@ LABEL_40:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(cardSections);
           }
 
           v15 = *(*(&v28 + 1) + 8 * j);
           if ([v15 shouldShowInSmartDialog])
           {
-            v21 = [v6 aceObject];
+            aceObject3 = [v6 aceObject];
 LABEL_27:
 
-            v3 = v24;
+            itemsCopy = v24;
             goto LABEL_28;
           }
 
@@ -661,17 +661,17 @@ LABEL_27:
           if (objc_opt_isKindOfClass())
           {
             v16 = v15;
-            v17 = [v16 cardSections];
-            v18 = [v17 count];
+            cardSections2 = [v16 cardSections];
+            v18 = [cardSections2 count];
 
             if (v18)
             {
-              v19 = [v16 cardSections];
-              v20 = [v19 objectAtIndexedSubscript:0];
+              cardSections3 = [v16 cardSections];
+              v20 = [cardSections3 objectAtIndexedSubscript:0];
 
               if ([v20 shouldShowInSmartDialog])
               {
-                v21 = [v6 aceObject];
+                aceObject3 = [v6 aceObject];
 
                 goto LABEL_27;
               }
@@ -679,7 +679,7 @@ LABEL_27:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v12 = [cardSections countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v12)
         {
           continue;
@@ -691,30 +691,30 @@ LABEL_27:
 LABEL_20:
 
       v4 = v23;
-      v3 = v24;
+      itemsCopy = v24;
     }
 
-    v21 = 0;
-    v27 = [v3 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    aceObject3 = 0;
+    v27 = [itemsCopy countByEnumeratingWithState:&v32 objects:v37 count:16];
   }
 
   while (v27);
 LABEL_28:
 
-  return v21;
+  return aceObject3;
 }
 
-+ (BOOL)stringIsBlank:(id)a3
++ (BOOL)stringIsBlank:(id)blank
 {
-  if (!a3)
+  if (!blank)
   {
     return 1;
   }
 
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  blankCopy = blank;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [blankCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 length] == 0;
   return v7;

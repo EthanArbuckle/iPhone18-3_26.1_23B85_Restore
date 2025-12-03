@@ -1,23 +1,23 @@
 @interface SHLCloudFetchTaskTransformer
-- (SHLCloudFetchTaskTransformer)initWithConfiguration:(id)a3;
-- (id)cloudBackedDatabaseChangesOperationFromFetchTask:(id)a3 container:(id)a4 completion:(id)a5;
-- (id)cloudBackedZoneChangesOperationFromFetchTask:(id)a3 forChangedZones:(id)a4 container:(id)a5;
-- (id)configurationsByRecordZoneIDForTask:(id)a3 usingCache:(id)a4;
-- (id)recordIDsFromCloudBackedZones:(id)a3;
+- (SHLCloudFetchTaskTransformer)initWithConfiguration:(id)configuration;
+- (id)cloudBackedDatabaseChangesOperationFromFetchTask:(id)task container:(id)container completion:(id)completion;
+- (id)cloudBackedZoneChangesOperationFromFetchTask:(id)task forChangedZones:(id)zones container:(id)container;
+- (id)configurationsByRecordZoneIDForTask:(id)task usingCache:(id)cache;
+- (id)recordIDsFromCloudBackedZones:(id)zones;
 @end
 
 @implementation SHLCloudFetchTaskTransformer
 
-- (SHLCloudFetchTaskTransformer)initWithConfiguration:(id)a3
+- (SHLCloudFetchTaskTransformer)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = SHLCloudFetchTaskTransformer;
   v6 = [(SHLCloudFetchTaskTransformer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = objc_alloc_init(CKFetchDatabaseChangesOperation);
     databaseChangesOperation = v7->_databaseChangesOperation;
     v7->_databaseChangesOperation = v8;
@@ -33,40 +33,40 @@
   return v7;
 }
 
-- (id)cloudBackedDatabaseChangesOperationFromFetchTask:(id)a3 container:(id)a4 completion:(id)a5
+- (id)cloudBackedDatabaseChangesOperationFromFetchTask:(id)task container:(id)container completion:(id)completion
 {
-  v8 = a3;
-  v50 = a5;
-  v9 = a4;
-  v10 = [v9 container];
-  v11 = [v10 privateCloudDatabase];
-  v12 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v12 setDatabase:v11];
+  taskCopy = task;
+  completionCopy = completion;
+  containerCopy = container;
+  container = [containerCopy container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  databaseChangesOperation = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation setDatabase:privateCloudDatabase];
 
   v13 = [SHLCloudLibraryCache alloc];
-  v14 = [(SHLCloudFetchTaskTransformer *)self configuration];
-  v15 = [v14 callingProcessIdentifier];
-  v16 = [v9 container];
+  configuration = [(SHLCloudFetchTaskTransformer *)self configuration];
+  callingProcessIdentifier = [configuration callingProcessIdentifier];
+  container2 = [containerCopy container];
 
-  v17 = [v16 containerIdentifier];
-  v18 = [(SHLCloudFetchTaskTransformer *)self configuration];
-  v19 = [v18 sessionIdentifier];
-  v20 = [(SHLCloudLibraryCache *)v13 initWithCallingProcessIdentifier:v15 containerIdentifier:v17 transactionIdentifier:v19];
+  containerIdentifier = [container2 containerIdentifier];
+  configuration2 = [(SHLCloudFetchTaskTransformer *)self configuration];
+  sessionIdentifier = [configuration2 sessionIdentifier];
+  v20 = [(SHLCloudLibraryCache *)v13 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
 
-  if ([v8 fetchType] == 1)
+  if ([taskCopy fetchType] == 1)
   {
-    v21 = [(SHLCloudLibraryCache *)v20 databaseToken];
-    v22 = [v21 serverChangeToken];
-    v23 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-    [v23 setPreviousServerChangeToken:v22];
+    databaseToken = [(SHLCloudLibraryCache *)v20 databaseToken];
+    serverChangeToken = [databaseToken serverChangeToken];
+    databaseChangesOperation2 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+    [databaseChangesOperation2 setPreviousServerChangeToken:serverChangeToken];
 
     v24 = sub_1000317DC();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-      v26 = [v25 previousServerChangeToken];
+      databaseChangesOperation3 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+      previousServerChangeToken = [databaseChangesOperation3 previousServerChangeToken];
       *buf = 138412290;
-      v66 = v26;
+      v66 = previousServerChangeToken;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Using <token: %@> for database fetch", buf, 0xCu);
     }
   }
@@ -80,8 +80,8 @@
   v63 = v28;
   v29 = v27;
   v64 = v29;
-  v30 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v30 setRecordZoneWithIDChangedBlock:v62];
+  databaseChangesOperation4 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation4 setRecordZoneWithIDChangedBlock:v62];
 
   v59[0] = _NSConcreteStackBlock;
   v59[1] = 3221225472;
@@ -89,10 +89,10 @@
   v59[3] = &unk_10007DEE8;
   v31 = v28;
   v60 = v31;
-  v32 = v8;
+  v32 = taskCopy;
   v61 = v32;
-  v33 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v33 setRecordZoneWithIDWasDeletedBlock:v59];
+  databaseChangesOperation5 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation5 setRecordZoneWithIDWasDeletedBlock:v59];
 
   v56[0] = _NSConcreteStackBlock;
   v56[1] = 3221225472;
@@ -102,8 +102,8 @@
   v57 = v34;
   v35 = v32;
   v58 = v35;
-  v36 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v36 setRecordZoneWithIDWasPurgedBlock:v56];
+  databaseChangesOperation6 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation6 setRecordZoneWithIDWasPurgedBlock:v56];
 
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
@@ -112,58 +112,58 @@
   v52 = v34;
   v53 = v29;
   v54 = v35;
-  v55 = v50;
+  v55 = completionCopy;
   v37 = v35;
-  v38 = v50;
+  v38 = completionCopy;
   v39 = v29;
   v40 = v34;
-  v41 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v41 setFetchDatabaseChangesCompletionBlock:v51];
+  databaseChangesOperation7 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation7 setFetchDatabaseChangesCompletionBlock:v51];
 
   v42 = objc_alloc_init(CKOperationGroup);
   [v42 setExpectedReceiveSize:1];
   [v42 setQuantity:1];
-  v43 = [v37 syncStartCondition];
-  v44 = [NSString stringWithFormat:@"%@_%@", v43, @"FetchDatabaseChanges"];
+  syncStartCondition = [v37 syncStartCondition];
+  v44 = [NSString stringWithFormat:@"%@_%@", syncStartCondition, @"FetchDatabaseChanges"];
   [v42 setName:v44];
 
-  v45 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  [v45 setGroup:v42];
+  databaseChangesOperation8 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  [databaseChangesOperation8 setGroup:v42];
 
   v46 = [SHLCloudBackedOperation alloc];
-  v47 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
-  v48 = [(SHLCloudBackedOperation *)v46 initWithOperation:v47];
+  databaseChangesOperation9 = [(SHLCloudFetchTaskTransformer *)self databaseChangesOperation];
+  v48 = [(SHLCloudBackedOperation *)v46 initWithOperation:databaseChangesOperation9];
 
   return v48;
 }
 
-- (id)cloudBackedZoneChangesOperationFromFetchTask:(id)a3 forChangedZones:(id)a4 container:(id)a5
+- (id)cloudBackedZoneChangesOperationFromFetchTask:(id)task forChangedZones:(id)zones container:(id)container
 {
-  v52 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 container];
-  v11 = [v10 privateCloudDatabase];
-  v12 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v12 setDatabase:v11];
+  taskCopy = task;
+  zonesCopy = zones;
+  containerCopy = container;
+  container = [containerCopy container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  recordZoneChangesOperation = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation setDatabase:privateCloudDatabase];
 
-  v51 = v8;
-  v13 = [(SHLCloudFetchTaskTransformer *)self recordIDsFromCloudBackedZones:v8];
-  v14 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v14 setRecordZoneIDs:v13];
+  v51 = zonesCopy;
+  v13 = [(SHLCloudFetchTaskTransformer *)self recordIDsFromCloudBackedZones:zonesCopy];
+  recordZoneChangesOperation2 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation2 setRecordZoneIDs:v13];
 
   v15 = [SHLCloudLibraryCache alloc];
-  v16 = [(SHLCloudFetchTaskTransformer *)self configuration];
-  v17 = [v16 callingProcessIdentifier];
-  v18 = [v9 container];
-  v19 = [v18 containerIdentifier];
-  v20 = [(SHLCloudFetchTaskTransformer *)self configuration];
-  v21 = [v20 sessionIdentifier];
-  v22 = [(SHLCloudLibraryCache *)v15 initWithCallingProcessIdentifier:v17 containerIdentifier:v19 transactionIdentifier:v21];
+  configuration = [(SHLCloudFetchTaskTransformer *)self configuration];
+  callingProcessIdentifier = [configuration callingProcessIdentifier];
+  container2 = [containerCopy container];
+  containerIdentifier = [container2 containerIdentifier];
+  configuration2 = [(SHLCloudFetchTaskTransformer *)self configuration];
+  sessionIdentifier = [configuration2 sessionIdentifier];
+  v22 = [(SHLCloudLibraryCache *)v15 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
 
-  v23 = [(SHLCloudFetchTaskTransformer *)self configurationsByRecordZoneIDForTask:v52 usingCache:v22];
-  v24 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v24 setConfigurationsByRecordZoneID:v23];
+  v23 = [(SHLCloudFetchTaskTransformer *)self configurationsByRecordZoneIDForTask:taskCopy usingCache:v22];
+  recordZoneChangesOperation3 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation3 setConfigurationsByRecordZoneID:v23];
 
   v25 = +[NSMutableArray array];
   v26 = +[NSMutableArray array];
@@ -173,12 +173,12 @@
   v69[3] = &unk_10007DF38;
   v27 = v25;
   v70 = v27;
-  v28 = v9;
+  v28 = containerCopy;
   v71 = v28;
   v29 = v26;
   v72 = v29;
-  v30 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v30 setRecordWasChangedBlock:v69];
+  recordZoneChangesOperation4 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation4 setRecordWasChangedBlock:v69];
 
   +[NSMutableArray array];
   v67[0] = _NSConcreteStackBlock;
@@ -186,8 +186,8 @@
   v67[2] = sub_10003F790;
   v31 = v67[3] = &unk_10007DF60;
   v68 = v31;
-  v32 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v32 setRecordWithIDWasDeletedBlock:v67];
+  recordZoneChangesOperation5 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation5 setRecordWithIDWasDeletedBlock:v67];
 
   v65[0] = _NSConcreteStackBlock;
   v65[1] = 3221225472;
@@ -195,8 +195,8 @@
   v65[3] = &unk_10007DF88;
   v33 = v22;
   v66 = v33;
-  v34 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v34 setRecordZoneChangeTokensUpdatedBlock:v65];
+  recordZoneChangesOperation6 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation6 setRecordZoneChangeTokensUpdatedBlock:v65];
 
   v63[0] = 0;
   v63[1] = v63;
@@ -209,8 +209,8 @@
   v62 = v63;
   v35 = v33;
   v61 = v35;
-  v36 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v36 setRecordZoneFetchCompletionBlock:v60];
+  recordZoneChangesOperation7 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation7 setRecordZoneFetchCompletionBlock:v60];
 
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
@@ -218,7 +218,7 @@
   v53[3] = &unk_10007DFD8;
   v37 = v35;
   v54 = v37;
-  v38 = v52;
+  v38 = taskCopy;
   v55 = v38;
   v39 = v27;
   v56 = v39;
@@ -227,37 +227,37 @@
   v41 = v31;
   v58 = v41;
   v59 = v63;
-  v42 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v42 setFetchRecordZoneChangesCompletionBlock:v53];
+  recordZoneChangesOperation8 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation8 setFetchRecordZoneChangesCompletionBlock:v53];
 
   v43 = objc_alloc_init(CKOperationGroup);
   [v43 setExpectedReceiveSize:1];
   [v43 setQuantity:1];
-  v44 = [v38 syncStartCondition];
-  v45 = [NSString stringWithFormat:@"%@_%@", v44, @"FetchZoneChanges"];
+  syncStartCondition = [v38 syncStartCondition];
+  v45 = [NSString stringWithFormat:@"%@_%@", syncStartCondition, @"FetchZoneChanges"];
   [v43 setName:v45];
 
-  v46 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  [v46 setGroup:v43];
+  recordZoneChangesOperation9 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  [recordZoneChangesOperation9 setGroup:v43];
 
   v47 = [SHLCloudBackedOperation alloc];
-  v48 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  v49 = [(SHLCloudBackedOperation *)v47 initWithOperation:v48];
+  recordZoneChangesOperation10 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  v49 = [(SHLCloudBackedOperation *)v47 initWithOperation:recordZoneChangesOperation10];
 
   _Block_object_dispose(v63, 8);
 
   return v49;
 }
 
-- (id)recordIDsFromCloudBackedZones:(id)a3
+- (id)recordIDsFromCloudBackedZones:(id)zones
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  zonesCopy = zones;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [zonesCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = zonesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -273,8 +273,8 @@
         }
 
         v10 = [*(*(&v14 + 1) + 8 * i) zone];
-        v11 = [v10 zoneID];
-        [v4 addObject:v11];
+        zoneID = [v10 zoneID];
+        [v4 addObject:zoneID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -288,23 +288,23 @@
   return v12;
 }
 
-- (id)configurationsByRecordZoneIDForTask:(id)a3 usingCache:(id)a4
+- (id)configurationsByRecordZoneIDForTask:(id)task usingCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  v9 = [v8 recordZoneIDs];
-  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v9 count]);
+  taskCopy = task;
+  cacheCopy = cache;
+  recordZoneChangesOperation = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  recordZoneIDs = [recordZoneChangesOperation recordZoneIDs];
+  v10 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [recordZoneIDs count]);
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
-  v12 = [v11 recordZoneIDs];
+  recordZoneChangesOperation2 = [(SHLCloudFetchTaskTransformer *)self recordZoneChangesOperation];
+  recordZoneIDs2 = [recordZoneChangesOperation2 recordZoneIDs];
 
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  obj = recordZoneIDs2;
+  v13 = [recordZoneIDs2 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v13)
   {
     v15 = v13;
@@ -322,25 +322,25 @@
         }
 
         v19 = *(*(&v36 + 1) + 8 * i);
-        v20 = [v19 zoneName];
-        v21 = [v7 zoneTokenForZoneIdentifier:v20];
+        zoneName = [v19 zoneName];
+        v21 = [cacheCopy zoneTokenForZoneIdentifier:zoneName];
 
         v22 = objc_alloc_init(v17[173]);
-        if ([v6 fetchType] == 1 && v21)
+        if ([taskCopy fetchType] == 1 && v21)
         {
           [v21 serverChangeToken];
           v35 = v21;
           v23 = v15;
           v24 = v16;
           v25 = v10;
-          v26 = v7;
-          v27 = v6;
+          v26 = cacheCopy;
+          v27 = taskCopy;
           v29 = v28 = v17;
           [v22 setPreviousServerChangeToken:v29];
 
           v17 = v28;
-          v6 = v27;
-          v7 = v26;
+          taskCopy = v27;
+          cacheCopy = v26;
           v10 = v25;
           v16 = v24;
           v15 = v23;

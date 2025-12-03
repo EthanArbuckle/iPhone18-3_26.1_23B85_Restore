@@ -1,24 +1,24 @@
 @interface _DASDeviceActivityPolicy
-+ (BOOL)isDeviceInUse:(id)a3;
++ (BOOL)isDeviceInUse:(id)use;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)backgroundTaskAllowedWithType:(id)a3 withRequiredFileProtection:(id)a4 withRationale:(id)a5 withState:(id)a6;
-- (BOOL)consideredNonDiscretionary:(id)a3 withContext:(id)a4;
-- (BOOL)requiresDeviceInactivityForActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)backgroundTaskAllowedWithType:(id)type withRequiredFileProtection:(id)protection withRationale:(id)rationale withState:(id)state;
+- (BOOL)consideredNonDiscretionary:(id)discretionary withContext:(id)context;
+- (BOOL)requiresDeviceInactivityForActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (NSDate)lastPredictionTimelineUpdate;
 - (_DASDeviceActivityPolicy)init;
 - (_DASPredictionTimeline)deviceActivityTimeline;
-- (double)scoreForActivity:(id)a3 atDate:(id)a4;
-- (double)weightForActivity:(id)a3;
+- (double)scoreForActivity:(id)activity atDate:(id)date;
+- (double)weightForActivity:(id)activity;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (void)handleEarlyThermalNotification:(BOOL)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (void)handleEarlyThermalNotification:(BOOL)notification;
 - (void)initializeTimelines;
 - (void)printLowLikelihoodRegions;
 - (void)registerForEarlyThermalNotifications;
-- (void)setLastPredictionTimelineUpdate:(id)a3;
-- (void)updateRationaleForTransferSize:(id)a3 withActivity:(id)a4;
+- (void)setLastPredictionTimelineUpdate:(id)update;
+- (void)updateRationaleForTransferSize:(id)size withActivity:(id)activity;
 @end
 
 @implementation _DASDeviceActivityPolicy
@@ -33,8 +33,8 @@
   v3 = [(_DASPredictionManager *)self->_predictionManager objectForKeyedSubscript:@"kDeviceActivityTimelineKey"];
   predictionManager = self->_predictionManager;
   v5 = +[NSDate now];
-  v6 = [(_DASDeviceActivityPolicy *)self lastPredictionTimelineUpdate];
-  LOBYTE(predictionManager) = [(_DASPredictionManager *)predictionManager isPredictionTimeline:v3 validAtDate:v5 lastUpdatedAt:v6];
+  lastPredictionTimelineUpdate = [(_DASDeviceActivityPolicy *)self lastPredictionTimelineUpdate];
+  LOBYTE(predictionManager) = [(_DASPredictionManager *)predictionManager isPredictionTimeline:v3 validAtDate:v5 lastUpdatedAt:lastPredictionTimelineUpdate];
 
   if ((predictionManager & 1) == 0)
   {
@@ -66,28 +66,28 @@
 
 - (NSDate)lastPredictionTimelineUpdate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastPredictionTimelineUpdate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastPredictionTimelineUpdate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (void)printLowLikelihoodRegions
 {
-  v3 = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
-  v4 = [v3 lowLikelihoodPeriod];
+  deviceActivityTimeline = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
+  lowLikelihoodPeriod = [deviceActivityTimeline lowLikelihoodPeriod];
 
   v5 = +[NSLocale currentLocale];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v7 = log;
-    v8 = [v4 startDate];
-    v9 = [v8 descriptionWithLocale:v5];
-    v10 = [v4 endDate];
-    v11 = [v10 descriptionWithLocale:v5];
+    startDate = [lowLikelihoodPeriod startDate];
+    v9 = [startDate descriptionWithLocale:v5];
+    endDate = [lowLikelihoodPeriod endDate];
+    v11 = [endDate descriptionWithLocale:v5];
     v12 = 138412546;
     v13 = v9;
     v14 = 2112;
@@ -129,9 +129,9 @@
     inUseStatus = v3->_inUseStatus;
     v3->_inUseStatus = v5;
 
-    v7 = [(_DASDeviceActivityPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASDeviceActivityPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v7;
+    v3->_triggers = initializeTriggers;
 
     v9 = +[_DASPredictionManager sharedManager];
     predictionManager = v3->_predictionManager;
@@ -167,32 +167,32 @@
     sub_10011F268(self, v3);
   }
 
-  v4 = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
+  deviceActivityTimeline = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
 
-  if (v4)
+  if (deviceActivityTimeline)
   {
     v5 = +[_DASPLLogger sharedInstance];
-    v6 = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
-    [v5 recordPrediction:v6 key:@"deviceActivityPrediction" valueMultiplier:100];
+    deviceActivityTimeline2 = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
+    [v5 recordPrediction:deviceActivityTimeline2 key:@"deviceActivityPrediction" valueMultiplier:100];
   }
 }
 
 - (void)registerForEarlyThermalNotifications
 {
-  v3 = [@"com.apple.system.earlythermalnotification" UTF8String];
+  uTF8String = [@"com.apple.system.earlythermalnotification" UTF8String];
   queue = self->_queue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10004DE60;
   handler[3] = &unk_1001B5B78;
   handler[4] = self;
-  notify_register_dispatch(v3, &self->_earlyThermalNotificationToken, queue, handler);
+  notify_register_dispatch(uTF8String, &self->_earlyThermalNotificationToken, queue, handler);
 }
 
-- (void)handleEarlyThermalNotification:(BOOL)a3
+- (void)handleEarlyThermalNotification:(BOOL)notification
 {
-  self->_deviceWarm = a3;
-  if (a3)
+  self->_deviceWarm = notification;
+  if (notification)
   {
     v3 = +[_DASDaemon sharedInstance];
     v5 = @"com.apple.system.earlythermalnotification";
@@ -207,7 +207,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004E020;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B150 != -1)
   {
     dispatch_once(&qword_10020B150, block);
@@ -218,36 +218,36 @@
   return v2;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"com.apple.duetactivityscheduler.deviceactivitypolicy.inusestatus"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"com.apple.duetactivityscheduler.deviceactivitypolicy.inusestatus"])
   {
     v6 = +[_CDContextQueries keyPathForInUseStatus];
-    v7 = [v5 objectForKeyedSubscript:v6];
-    v8 = [v7 BOOLValue];
+    v7 = [stateCopy objectForKeyedSubscript:v6];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
+  activityCopy = activity;
+  v5 = activityCopy;
   if (self->_deviceWarm)
   {
     goto LABEL_2;
   }
 
-  v7 = [v4 fileProtection];
+  fileProtection = [activityCopy fileProtection];
   v8 = +[_DASFileProtection complete];
-  if ([v7 isEqual:v8])
+  if ([fileProtection isEqual:v8])
   {
 
 LABEL_6:
@@ -255,9 +255,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v5 fastPass];
+  fastPass = [v5 fastPass];
 
-  if (v9)
+  if (fastPass)
   {
     goto LABEL_6;
   }
@@ -269,13 +269,13 @@ LABEL_7:
   return v6;
 }
 
-- (double)weightForActivity:(id)a3
+- (double)weightForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = 20.0;
-  if (![(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:v4])
+  if (![(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:activityCopy])
   {
-    if ([v4 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
       v5 = 5.0;
     }
@@ -289,17 +289,17 @@ LABEL_7:
   return v5;
 }
 
-- (double)scoreForActivity:(id)a3 atDate:(id)a4
+- (double)scoreForActivity:(id)activity atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
-  if (v8)
+  activityCopy = activity;
+  dateCopy = date;
+  deviceActivityTimeline = [(_DASDeviceActivityPolicy *)self deviceActivityTimeline];
+  if (deviceActivityTimeline)
   {
-    v9 = [v6 duration];
-    if (v9 <= _DASActivityDurationModerate)
+    duration = [activityCopy duration];
+    if (duration <= _DASActivityDurationModerate)
     {
-      v17 = [v8 valueAtDate:v7];
+      v17 = [deviceActivityTimeline valueAtDate:dateCopy];
       v18 = v17;
       if (v17)
       {
@@ -315,13 +315,13 @@ LABEL_7:
 
     else
     {
-      v10 = v9;
+      v10 = duration;
       v11 = 0.0;
-      v12 = v7;
+      v12 = dateCopy;
       v13 = 1.0;
       do
       {
-        v14 = [v8 valueAtDate:v12];
+        v14 = [deviceActivityTimeline valueAtDate:v12];
         v15 = v14;
         v16 = 0.0025;
         if (v14)
@@ -330,10 +330,10 @@ LABEL_7:
         }
 
         v13 = v13 * (1.0 - v16);
-        v7 = [v12 dateByAddingTimeInterval:900.0];
+        dateCopy = [v12 dateByAddingTimeInterval:900.0];
 
         v11 = v11 + 900.0;
-        v12 = v7;
+        v12 = dateCopy;
       }
 
       while (v11 < v10);
@@ -348,38 +348,38 @@ LABEL_7:
   return v13;
 }
 
-+ (BOOL)isDeviceInUse:(id)a3
++ (BOOL)isDeviceInUse:(id)use
 {
-  v3 = a3;
+  useCopy = use;
   v4 = +[_CDContextQueries keyPathForInUseStatus];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [useCopy objectForKeyedSubscript:v4];
 
   LOBYTE(v4) = ([v5 unsignedLongLongValue] & 5) != 0;
   return v4;
 }
 
-- (BOOL)backgroundTaskAllowedWithType:(id)a3 withRequiredFileProtection:(id)a4 withRationale:(id)a5 withState:(id)a6
+- (BOOL)backgroundTaskAllowedWithType:(id)type withRequiredFileProtection:(id)protection withRationale:(id)rationale withState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (([v9 isEqualToString:_DASLaunchReasonBackgroundProcessing] & 1) == 0)
+  typeCopy = type;
+  protectionCopy = protection;
+  rationaleCopy = rationale;
+  stateCopy = state;
+  if (([typeCopy isEqualToString:_DASLaunchReasonBackgroundProcessing] & 1) == 0)
   {
-    if (![v9 isEqualToString:_DASLaunchReasonHealthResearch])
+    if (![typeCopy isEqualToString:_DASLaunchReasonHealthResearch])
     {
       goto LABEL_9;
     }
 
     v13 = +[_DASFileProtection complete];
-    if ([v10 isEqual:v13])
+    if ([protectionCopy isEqual:v13])
     {
       v15 = 1;
       goto LABEL_7;
     }
 
     v16 = +[_DASFileProtection completeUnlessOpen];
-    v17 = [v10 isEqual:v16];
+    v17 = [protectionCopy isEqual:v16];
 
     if (v17)
     {
@@ -387,7 +387,7 @@ LABEL_7:
     }
   }
 
-  if (![objc_opt_class() isDeviceInUse:v12])
+  if (![objc_opt_class() isDeviceInUse:stateCopy])
   {
 LABEL_9:
     v15 = 1;
@@ -396,7 +396,7 @@ LABEL_9:
 
   v13 = [NSNumber numberWithBool:1];
   v14 = [NSPredicate predicateWithFormat:@"launchType == PROCESSING AND deviceActive == %@", v13];
-  [v11 addRationaleWithCondition:v14];
+  [rationaleCopy addRationaleWithCondition:v14];
 
   v15 = 0;
 LABEL_7:
@@ -405,18 +405,18 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)requiresDeviceInactivityForActivity:(id)a3
+- (BOOL)requiresDeviceInactivityForActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requiresDeviceInactivity])
+  activityCopy = activity;
+  if ([activityCopy requiresDeviceInactivity])
   {
     v4 = 1;
   }
 
-  else if (+[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", v3) && [v3 transferSizeType] == 30)
+  else if (+[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", activityCopy) && [activityCopy transferSizeType] == 30)
   {
-    v5 = [v3 schedulingPriority];
-    v4 = v5 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v4 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   else
@@ -427,73 +427,73 @@ LABEL_10:
   return v4;
 }
 
-- (void)updateRationaleForTransferSize:(id)a3 withActivity:(id)a4
+- (void)updateRationaleForTransferSize:(id)size withActivity:(id)activity
 {
-  v5 = a3;
-  if ([a4 transferSizeType] == 30)
+  sizeCopy = size;
+  if ([activity transferSizeType] == 30)
   {
-    [v5 setResponseOptions:{objc_msgSend(v5, "responseOptions") | 1}];
+    [sizeCopy setResponseOptions:{objc_msgSend(sizeCopy, "responseOptions") | 1}];
   }
 }
 
-- (BOOL)consideredNonDiscretionary:(id)a3 withContext:(id)a4
+- (BOOL)consideredNonDiscretionary:(id)discretionary withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 schedulingPriority];
-  if (v7 >= _DASSchedulingPriorityUserInitiated || ([v5 userRequestedBackupTask] & 1) != 0)
+  discretionaryCopy = discretionary;
+  contextCopy = context;
+  schedulingPriority = [discretionaryCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUserInitiated || ([discretionaryCopy userRequestedBackupTask] & 1) != 0)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [_DASPhotosPolicy isActivity:v5 consideredNonDiscretionary:v6];
+    v8 = [_DASPhotosPolicy isActivity:discretionaryCopy consideredNonDiscretionary:contextCopy];
   }
 
   return v8;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Device Activity Policy"];
-  if (self->_considerAlwaysActive && [(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:v6])
+  if (self->_considerAlwaysActive && [(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:activityCopy])
   {
     v9 = [NSPredicate predicateWithFormat:@"considerAlwaysActive == YES && requiresDeviceInactivity == YES"];
     [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v9];
 
-    [(_DASDeviceActivityPolicy *)self updateRationaleForTransferSize:v8 withActivity:v6];
+    [(_DASDeviceActivityPolicy *)self updateRationaleForTransferSize:v8 withActivity:activityCopy];
     v10 = [_DASPolicyResponse policyResponseWithDecision:33 validityDuration:v8 rationale:0x384uLL];
     goto LABEL_26;
   }
 
   v11 = +[_CDContextQueries keyPathForInUseStatus];
-  v12 = [v7 objectForKeyedSubscript:v11];
+  v12 = [stateCopy objectForKeyedSubscript:v11];
 
-  if ([(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:v6]&& [_DASDeviceActivityPolicy isDeviceInUse:v7])
+  if ([(_DASDeviceActivityPolicy *)self requiresDeviceInactivityForActivity:activityCopy]&& [_DASDeviceActivityPolicy isDeviceInUse:stateCopy])
   {
     v13 = [NSPredicate predicateWithFormat:@"deviceActivity == %@", v12];
     [(_DASPolicyResponseRationale *)v8 addRationaleWithCondition:v13];
 
-    [(_DASDeviceActivityPolicy *)self updateRationaleForTransferSize:v8 withActivity:v6];
+    [(_DASDeviceActivityPolicy *)self updateRationaleForTransferSize:v8 withActivity:activityCopy];
 LABEL_23:
     v23 = 0x384uLL;
     goto LABEL_24;
   }
 
-  if ([v6 requestsApplicationLaunch] && (objc_msgSend(v6, "isContactTracingBackgroundActivity") & 1) == 0)
+  if ([activityCopy requestsApplicationLaunch] && (objc_msgSend(activityCopy, "isContactTracingBackgroundActivity") & 1) == 0)
   {
-    v19 = [v6 launchReason];
-    v20 = [v6 fileProtection];
-    v21 = [(_DASDeviceActivityPolicy *)self backgroundTaskAllowedWithType:v19 withRequiredFileProtection:v20 withRationale:v8 withState:v7];
+    launchReason = [activityCopy launchReason];
+    fileProtection = [activityCopy fileProtection];
+    v21 = [(_DASDeviceActivityPolicy *)self backgroundTaskAllowedWithType:launchReason withRequiredFileProtection:fileProtection withRationale:v8 withState:stateCopy];
 
     if ((v21 & 1) == 0)
     {
       v23 = 86400.0;
 LABEL_24:
-      v18 = [_DASPolicyResponse policyResponseWithDecision:33 validityDuration:v8 rationale:v23];
+      0x384uLL = [_DASPolicyResponse policyResponseWithDecision:33 validityDuration:v8 rationale:v23];
       goto LABEL_25;
     }
 
@@ -506,13 +506,13 @@ LABEL_24:
     }
 
     v15 = +[NSDate date];
-    [(_DASDeviceActivityPolicy *)self scoreForActivity:v6 atDate:v15];
+    [(_DASDeviceActivityPolicy *)self scoreForActivity:activityCopy atDate:v15];
     v17 = 1.0 - v22;
   }
 
   else
   {
-    if ([_DASDeviceActivityPolicy isDeviceInUse:v7]&& self->_deviceWarm && ![(_DASDeviceActivityPolicy *)self consideredNonDiscretionary:v6 withContext:v7])
+    if ([_DASDeviceActivityPolicy isDeviceInUse:stateCopy]&& self->_deviceWarm && ![(_DASDeviceActivityPolicy *)self consideredNonDiscretionary:activityCopy withContext:stateCopy])
     {
       v24 = [NSNumber numberWithBool:self->_deviceWarm];
       v25 = [NSPredicate predicateWithFormat:@"deviceActivity == %@ AND deviceWarm == %@", v12, v24];
@@ -533,26 +533,26 @@ LABEL_24:
     }
 
     v15 = +[NSDate date];
-    [(_DASDeviceActivityPolicy *)self scoreForActivity:v6 atDate:v15];
+    [(_DASDeviceActivityPolicy *)self scoreForActivity:activityCopy atDate:v15];
     v17 = v14 + v16 * 0.5;
   }
 
-  v18 = [_DASPolicyResponse policyResponseWithScore:0 validityDuration:fmax(v17 rationale:0.05), 0x384uLL];
+  0x384uLL = [_DASPolicyResponse policyResponseWithScore:0 validityDuration:fmax(v17 rationale:0.05), 0x384uLL];
 LABEL_25:
-  v10 = v18;
+  v10 = 0x384uLL;
 
 LABEL_26:
 
   return v10;
 }
 
-- (void)setLastPredictionTimelineUpdate:(id)a3
+- (void)setLastPredictionTimelineUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   obj = self;
   objc_sync_enter(obj);
   lastPredictionTimelineUpdate = obj->_lastPredictionTimelineUpdate;
-  obj->_lastPredictionTimelineUpdate = v4;
+  obj->_lastPredictionTimelineUpdate = updateCopy;
 
   objc_sync_exit(obj);
 }

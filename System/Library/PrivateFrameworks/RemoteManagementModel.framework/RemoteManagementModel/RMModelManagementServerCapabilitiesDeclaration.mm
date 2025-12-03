@@ -1,11 +1,11 @@
 @interface RMModelManagementServerCapabilitiesDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 version:(id)a4 supportedFeatures:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 version:(id)a4 supportedFeatures:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier version:(id)version supportedFeatures:(id)features;
++ (id)buildWithIdentifier:(id)identifier version:(id)version supportedFeatures:(id)features;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementServerCapabilitiesDeclaration
@@ -24,55 +24,55 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 version:(id)a4 supportedFeatures:(id)a5
++ (id)buildWithIdentifier:(id)identifier version:(id)version supportedFeatures:(id)features
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  featuresCopy = features;
+  versionCopy = version;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.management.server-capabilities"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadVersion:v9];
+  [v10 setPayloadVersion:versionCopy];
 
-  [v10 setPayloadSupportedFeatures:v8];
+  [v10 setPayloadSupportedFeatures:featuresCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 version:(id)a4 supportedFeatures:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier version:(id)version supportedFeatures:(id)features
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  featuresCopy = features;
+  versionCopy = version;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.management.server-capabilities"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadVersion:v9];
+  [v10 setPayloadVersion:versionCopy];
 
-  [v10 setPayloadSupportedFeatures:v8];
+  [v10 setPayloadSupportedFeatures:featuresCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -130,12 +130,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelManagementServerCapabilitiesDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -143,10 +143,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Version" forKeyPath:@"payloadVersion" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Version" forKeyPath:@"payloadVersion" isRequired:1 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"SupportedFeatures" forKeyPath:@"payloadSupportedFeatures" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"SupportedFeatures" forKeyPath:@"payloadSupportedFeatures" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -157,30 +157,30 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelManagementServerCapabilitiesDeclaration *)self payloadVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Version" value:v6 isRequired:1 defaultValue:0];
+  payloadVersion = [(RMModelManagementServerCapabilitiesDeclaration *)self payloadVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Version" value:payloadVersion isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelManagementServerCapabilitiesDeclaration *)self payloadSupportedFeatures];
+  payloadSupportedFeatures = [(RMModelManagementServerCapabilitiesDeclaration *)self payloadSupportedFeatures];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__RMModelManagementServerCapabilitiesDeclaration_serializePayloadWithType___block_invoke;
   v10[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v11 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SupportedFeatures" value:v7 dictSerializer:v10 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SupportedFeatures" value:payloadSupportedFeatures dictSerializer:v10 isRequired:1 defaultValue:0];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelManagementServerCapabilitiesDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVersion copy];
   v6 = v4[6];
   v4[6] = v5;

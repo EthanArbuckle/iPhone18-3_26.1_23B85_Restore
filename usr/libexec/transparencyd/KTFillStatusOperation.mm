@@ -1,6 +1,6 @@
 @interface KTFillStatusOperation
-+ (id)memoizedKTSelfStatusResult:(id)a3;
-- (KTFillStatusOperation)initWithApplication:(id)a3 initialFill:(BOOL)a4 dependencies:(id)a5 intendedState:(id)a6 errorState:(id)a7;
++ (id)memoizedKTSelfStatusResult:(id)result;
+- (KTFillStatusOperation)initWithApplication:(id)application initialFill:(BOOL)fill dependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState;
 - (void)fillBackgroundStatus;
 - (void)fillOptInState;
 - (void)fillSelfStatus;
@@ -10,32 +10,32 @@
 
 @implementation KTFillStatusOperation
 
-- (KTFillStatusOperation)initWithApplication:(id)a3 initialFill:(BOOL)a4 dependencies:(id)a5 intendedState:(id)a6 errorState:(id)a7
+- (KTFillStatusOperation)initWithApplication:(id)application initialFill:(BOOL)fill dependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  applicationCopy = application;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
   v20.receiver = self;
   v20.super_class = KTFillStatusOperation;
   v17 = [(KTGroupOperation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong((v17 + 142), a5);
-    objc_storeStrong((v18 + 150), a3);
-    objc_storeStrong((v18 + 126), a6);
-    objc_storeStrong((v18 + 134), a7);
-    v18[120] = a4;
+    objc_storeStrong((v17 + 142), dependencies);
+    objc_storeStrong((v18 + 150), application);
+    objc_storeStrong((v18 + 126), state);
+    objc_storeStrong((v18 + 134), errorState);
+    v18[120] = fill;
   }
 
   return v18;
 }
 
-+ (id)memoizedKTSelfStatusResult:(id)a3
++ (id)memoizedKTSelfStatusResult:(id)result
 {
-  v3 = [a3 smDataStore];
-  v4 = [v3 getSettingsData:@"KTSelfStatusResult"];
+  smDataStore = [result smDataStore];
+  v4 = [smDataStore getSettingsData:@"KTSelfStatusResult"];
 
   if (v4)
   {
@@ -64,13 +64,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "FillStatus: start", &v13, 2u);
   }
 
-  v4 = [(KTFillStatusOperation *)self deps];
-  v5 = [v4 stateMonitor];
+  deps = [(KTFillStatusOperation *)self deps];
+  stateMonitor = [deps stateMonitor];
 
-  v6 = [v5 ktStatus];
-  v7 = [v6 accountStatus];
+  ktStatus = [stateMonitor ktStatus];
+  accountStatus = [ktStatus accountStatus];
 
-  if (v7)
+  if (accountStatus)
   {
     [(KTFillStatusOperation *)self fillOptInState];
     [(KTFillStatusOperation *)self fillSystemStatus];
@@ -79,11 +79,11 @@
       [(KTFillStatusOperation *)self fillSelfStatus];
     }
 
-    [v5 setPendingChanges:0];
-    v8 = [v5 ktStatus];
-    if (v8)
+    [stateMonitor setPendingChanges:0];
+    ktStatus2 = [stateMonitor ktStatus];
+    if (ktStatus2)
     {
-      v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+      v9 = [NSKeyedArchiver archivedDataWithRootObject:ktStatus2 requiringSecureCoding:1 error:0];
     }
 
     else
@@ -91,9 +91,9 @@
       v9 = 0;
     }
 
-    v10 = [(KTFillStatusOperation *)self deps];
-    v11 = [v10 smDataStore];
-    [v11 setSettingsData:@"KTSelfStatusResult" data:v9];
+    deps2 = [(KTFillStatusOperation *)self deps];
+    smDataStore = [deps2 smDataStore];
+    [smDataStore setSettingsData:@"KTSelfStatusResult" data:v9];
 
     if (qword_10038BCB0 != -1)
     {
@@ -104,7 +104,7 @@
     if (os_log_type_enabled(qword_10038BCB8, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138412290;
-      v14 = v8;
+      v14 = ktStatus2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "FillStatus: filled: %@", &v13, 0xCu);
     }
   }
@@ -117,12 +117,12 @@
 
 - (void)fillBackgroundStatus
 {
-  v3 = [(KTFillStatusOperation *)self deps];
-  v4 = [v3 stateMonitor];
+  deps = [(KTFillStatusOperation *)self deps];
+  stateMonitor = [deps stateMonitor];
 
-  v5 = [(KTFillStatusOperation *)self deps];
-  v6 = [v5 smDataStore];
-  v7 = [v6 getSettingsNumber:off_100381AD8];
+  deps2 = [(KTFillStatusOperation *)self deps];
+  smDataStore = [deps2 smDataStore];
+  v7 = [smDataStore getSettingsNumber:off_100381AD8];
 
   if (v7)
   {
@@ -167,30 +167,30 @@
     v9 = 0;
   }
 
-  [v4 setSystemStatus:v9];
+  [stateMonitor setSystemStatus:v9];
 }
 
 - (void)fillSystemStatus
 {
-  v3 = [(KTFillStatusOperation *)self deps];
-  v4 = [v3 stateMonitor];
+  deps = [(KTFillStatusOperation *)self deps];
+  stateMonitor = [deps stateMonitor];
 
-  v5 = [v4 ktStatus];
-  v6 = [v5 systemStatus];
+  ktStatus = [stateMonitor ktStatus];
+  systemStatus = [ktStatus systemStatus];
 
-  if (v6 != 5)
+  if (systemStatus != 5)
   {
-    v7 = [(KTFillStatusOperation *)self deps];
-    v8 = [v7 publicKeyStore];
-    v9 = [(KTFillStatusOperation *)self application];
-    v10 = [v8 applicationPublicKeyStore:v9];
+    deps2 = [(KTFillStatusOperation *)self deps];
+    publicKeyStore = [deps2 publicKeyStore];
+    application = [(KTFillStatusOperation *)self application];
+    v10 = [publicKeyStore applicationPublicKeyStore:application];
 
     if (v10)
     {
       if ([v10 ready])
       {
-        v11 = [(KTFillStatusOperation *)self application];
-        v12 = [v4 treeStateUnstable:v11 logBeginTime:{objc_msgSend(v10, "patLogBeginningMs")}];
+        application2 = [(KTFillStatusOperation *)self application];
+        v12 = [stateMonitor treeStateUnstable:application2 logBeginTime:{objc_msgSend(v10, "patLogBeginningMs")}];
 
         if (v12)
         {
@@ -208,7 +208,7 @@
 
           if ((_os_feature_enabled_impl() & 1) == 0)
           {
-            v21 = v4;
+            v21 = stateMonitor;
             v22 = 3;
             goto LABEL_31;
           }
@@ -228,10 +228,10 @@
 
         if (_os_feature_enabled_impl())
         {
-          v15 = [v4 ktStatus];
-          v16 = [v15 optIn];
+          ktStatus2 = [stateMonitor ktStatus];
+          optIn = [ktStatus2 optIn];
 
-          if (v16)
+          if (optIn)
           {
             if (qword_10038BCB0 != -1)
             {
@@ -250,7 +250,7 @@
           }
         }
 
-        v21 = v4;
+        v21 = stateMonitor;
         v22 = 0;
 LABEL_31:
         [v21 setSystemStatus:v22];
@@ -268,7 +268,7 @@ LABEL_32:
       if (!os_log_type_enabled(qword_10038BCB8, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_30:
-        v21 = v4;
+        v21 = stateMonitor;
         v22 = 4;
         goto LABEL_31;
       }
@@ -305,28 +305,28 @@ LABEL_33:
 
 - (void)fillSelfStatus
 {
-  v3 = [(KTFillStatusOperation *)self deps];
-  v4 = [v3 stateMonitor];
+  deps = [(KTFillStatusOperation *)self deps];
+  stateMonitor = [deps stateMonitor];
 
-  v5 = [(KTFillStatusOperation *)self deps];
-  v6 = [v5 accountKeyService];
-  v7 = [(KTFillStatusOperation *)self application];
-  v8 = [v6 accountKeyService:v7];
+  deps2 = [(KTFillStatusOperation *)self deps];
+  accountKeyService = [deps2 accountKeyService];
+  application = [(KTFillStatusOperation *)self application];
+  v8 = [accountKeyService accountKeyService:application];
 
   v18 = 0;
   v9 = [v8 publicPublicKey:&v18];
   v10 = v18;
   if (v9)
   {
-    v11 = [(KTFillStatusOperation *)self deps];
-    v12 = [v11 dataStore];
-    v13 = [(KTFillStatusOperation *)self application];
+    deps3 = [(KTFillStatusOperation *)self deps];
+    dataStore = [deps3 dataStore];
+    application2 = [(KTFillStatusOperation *)self application];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10003927C;
     v16[3] = &unk_1003199C0;
-    v17 = v4;
-    [v12 performAndWaitForLatestSelfRequest:v13 accountKey:v9 block:v16];
+    v17 = stateMonitor;
+    [dataStore performAndWaitForLatestSelfRequest:application2 accountKey:v9 block:v16];
   }
 
   else
@@ -343,29 +343,29 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "FillStatus: unable to get account key for latest self status", v15, 2u);
     }
 
-    [v4 setSelfStatus:2];
+    [stateMonitor setSelfStatus:2];
   }
 }
 
 - (void)fillOptInState
 {
-  v3 = [(KTFillStatusOperation *)self deps];
-  v4 = [v3 stateMonitor];
+  deps = [(KTFillStatusOperation *)self deps];
+  stateMonitor = [deps stateMonitor];
 
-  v5 = [(KTFillStatusOperation *)self deps];
-  v6 = [v5 cloudRecords];
+  deps2 = [(KTFillStatusOperation *)self deps];
+  cloudRecords = [deps2 cloudRecords];
 
-  if (v6)
+  if (cloudRecords)
   {
-    v7 = [(KTFillStatusOperation *)self application];
-    v8 = [v6 getAggregateOptInStateForApplication:v7];
+    application = [(KTFillStatusOperation *)self application];
+    v8 = [cloudRecords getAggregateOptInStateForApplication:application];
 
     if (v8)
     {
-      v9 = [v8 state];
-      v10 = [v8 everOptIn];
-      v11 = v4;
-      v12 = v9;
+      state = [v8 state];
+      everOptIn = [v8 everOptIn];
+      v11 = stateMonitor;
+      v12 = state;
     }
 
     else
@@ -383,12 +383,12 @@ LABEL_33:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "FillStatus: unable to get opt-in for status: %@", &v15, 0xCu);
       }
 
-      v11 = v4;
+      v11 = stateMonitor;
       v12 = 2;
-      v10 = 0;
+      everOptIn = 0;
     }
 
-    [v11 setOptInState:v12 everOptIn:v10];
+    [v11 setOptInState:v12 everOptIn:everOptIn];
   }
 
   else
@@ -405,7 +405,7 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "FillStatus: No cloud records to fill status", &v15, 2u);
     }
 
-    [v4 setOptInState:2 everOptIn:0];
+    [stateMonitor setOptInState:2 everOptIn:0];
   }
 }
 

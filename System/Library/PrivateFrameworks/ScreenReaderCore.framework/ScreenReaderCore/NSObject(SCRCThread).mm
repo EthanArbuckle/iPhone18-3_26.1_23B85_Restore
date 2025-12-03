@@ -42,12 +42,12 @@
       {
         if (!v8)
         {
-          a3 = [a1 a3];
+          a3 = [self a3];
           goto LABEL_25;
         }
 
         v9 = [v7 objectAtIndex:0];
-        a3 = [a1 a3];
+        a3 = [self a3];
         goto LABEL_24;
       }
 
@@ -55,7 +55,7 @@
       {
         v9 = [v7 objectAtIndex:0];
         v10 = [v7 objectAtIndex:1];
-        a3 = [a1 a3];
+        a3 = [self a3];
 LABEL_23:
 
 LABEL_24:
@@ -65,7 +65,7 @@ LABEL_24:
       v9 = [v7 objectAtIndex:0];
       v10 = [v7 objectAtIndex:1];
       v11 = [v7 objectAtIndex:2];
-      a3 = [a1 a3];
+      a3 = [self a3];
 LABEL_22:
 
       goto LABEL_23;
@@ -81,7 +81,7 @@ LABEL_22:
         v12 = [v7 objectAtIndex:3];
         v13 = [v7 objectAtIndex:4];
         v14 = [v7 objectAtIndex:5];
-        a3 = [a1 a3];
+        a3 = [self a3];
       }
 
       else
@@ -93,7 +93,7 @@ LABEL_22:
         v13 = [v7 objectAtIndex:4];
         v14 = [v7 objectAtIndex:5];
         v15 = [v7 objectAtIndex:6];
-        a3 = [a1 a3];
+        a3 = [self a3];
       }
     }
 
@@ -105,7 +105,7 @@ LABEL_22:
         v10 = [v7 objectAtIndex:1];
         v11 = [v7 objectAtIndex:2];
         v12 = [v7 objectAtIndex:3];
-        a3 = [a1 a3];
+        a3 = [self a3];
 LABEL_21:
 
         goto LABEL_22;
@@ -116,7 +116,7 @@ LABEL_21:
       v11 = [v7 objectAtIndex:2];
       v12 = [v7 objectAtIndex:3];
       v13 = [v7 objectAtIndex:4];
-      a3 = [a1 a3];
+      a3 = [self a3];
     }
 
     goto LABEL_21;
@@ -137,12 +137,12 @@ LABEL_25:
   v9 = [v15 objectForKey:@"objects"];
   [v6 unlock];
   v10 = NSSelectorFromString(v7);
-  v11 = [v8 BOOLValue];
-  v12 = [a1 performSelector:v10 withObjectsAsArray:v9];
+  bOOLValue = [v8 BOOLValue];
+  v12 = [self performSelector:v10 withObjectsAsArray:v9];
   if (v12)
   {
     v13 = v12;
-    if (v11)
+    if (bOOLValue)
     {
       v14 = [v12 copy];
 
@@ -181,14 +181,14 @@ LABEL_25:
   [v6 lock];
   v7 = [v13 objectForKey:@"keypath"];
   v8 = [v13 objectForKey:@"copy"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   [v6 unlock];
-  v10 = [a1 valueForKeyPath:v7];
+  v10 = [self valueForKeyPath:v7];
   if (v10)
   {
     v11 = v10;
-    if (v9)
+    if (bOOLValue)
     {
       v12 = [v10 copy];
 
@@ -230,7 +230,7 @@ LABEL_25:
     [v8 setObject:v9 forKey:@"copy"];
   }
 
-  [a1 performSelectorOnMainThread:sel__scr_safeGetValueForKeyPath_ withObject:v8 waitUntilDone:1];
+  [self performSelectorOnMainThread:sel__scr_safeGetValueForKeyPath_ withObject:v8 waitUntilDone:1];
   v10 = [v8 objectForKey:@"result"];
 
   return v10;
@@ -238,7 +238,7 @@ LABEL_25:
 
 - (id)valueForKeyPathOnMainThread:()SCRCThread
 {
-  v3 = [a1 _getRetainedValueForKeyPathOnMainThread:a3 copy:0];
+  v3 = [self _getRetainedValueForKeyPathOnMainThread:a3 copy:0];
 
   return v3;
 }
@@ -258,7 +258,7 @@ LABEL_25:
     [v14 setObject:v15 forKey:@"copy"];
   }
 
-  [a1 performSelector:sel__scr_safeGetValueForKeyPath_lock_ withThreadKey:v10 waitTime:0 cancelMask:2 count:v14 objects:{a2, v13}];
+  [self performSelector:sel__scr_safeGetValueForKeyPath_lock_ withThreadKey:v10 waitTime:0 cancelMask:2 count:v14 objects:{a2, v13}];
   [v13 lock];
   v16 = [v14 objectForKey:@"result"];
   [v13 unlock];
@@ -268,7 +268,7 @@ LABEL_25:
 
 - (id)valueForKeyPath:()SCRCThread forThreadKey:waitTime:
 {
-  v4 = [a1 _getRetainedValueForKeyPath:a3 forThreadKey:a4 waitTime:0 copy:?];
+  v4 = [self _getRetainedValueForKeyPath:a3 forThreadKey:a4 waitTime:0 copy:?];
 
   return v4;
 }
@@ -307,7 +307,7 @@ LABEL_25:
     [v25 setObject:v26 forKey:@"copy"];
   }
 
-  [a1 performSelector:sel__scr_safeGetValueForSelector_lock_ withThreadKey:v15 waitTime:0 cancelMask:2 count:v25 objects:{a2, v17}];
+  [self performSelector:sel__scr_safeGetValueForSelector_lock_ withThreadKey:v15 waitTime:0 cancelMask:2 count:v25 objects:{a2, v17}];
   [v17 lock];
   v27 = [v25 objectForKey:@"result"];
   [v17 unlock];
@@ -327,7 +327,7 @@ LABEL_25:
   v14 = MEMORY[0x266744B50](v12);
   [v13 setObject:v14 forKey:@"block"];
 
-  [a1 performSelector:sel__scr_safeGetValueForBlock_lock_ withThreadKey:v9 waitTime:0 cancelMask:2 count:v13 objects:{a2, v11}];
+  [self performSelector:sel__scr_safeGetValueForBlock_lock_ withThreadKey:v9 waitTime:0 cancelMask:2 count:v13 objects:{a2, v11}];
   [v11 lock];
   v15 = [v13 objectForKey:@"result"];
   [v13 removeObjectForKey:@"block"];
@@ -347,7 +347,7 @@ LABEL_25:
   v10 = MEMORY[0x266744B50](v8);
   [v9 setObject:v10 forKey:@"block"];
 
-  [a1 performSelector:sel__scr_safePerformBlock_lock_ withThreadKey:v6 waitTime:0 cancelMask:2 count:v9 objects:{-1.0, v11}];
+  [self performSelector:sel__scr_safePerformBlock_lock_ withThreadKey:v6 waitTime:0 cancelMask:2 count:v9 objects:{-1.0, v11}];
   [v11 lock];
   [v11 unlock];
 }

@@ -1,13 +1,13 @@
 @interface MTLStructTypeInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isStructLayoutThreadSafeWith:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isStructLayoutThreadSafeWith:(id)with;
 - (MTLStructTypeInternal)init;
-- (MTLStructTypeInternal)initWithMembers:(id *)a3 count:(unint64_t)a4;
-- (MTLStructTypeInternal)initWithMembers:(id *)a3 count:(unint64_t)a4 typeName:(id)a5;
+- (MTLStructTypeInternal)initWithMembers:(id *)members count:(unint64_t)count;
+- (MTLStructTypeInternal)initWithMembers:(id *)members count:(unint64_t)count typeName:(id)name;
 - (id)description;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
-- (void)setMembers:(id *)a3 count:(unint64_t)a4;
+- (void)setMembers:(id *)members count:(unint64_t)count;
 @end
 
 @implementation MTLStructTypeInternal
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (MTLStructTypeInternal)initWithMembers:(id *)a3 count:(unint64_t)a4
+- (MTLStructTypeInternal)initWithMembers:(id *)members count:(unint64_t)count
 {
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = MTLStructTypeInternal;
   v6 = [(MTLStructTypeInternal *)&v19 init];
   v6->_dataType = 1;
-  v6->_members = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a3 count:a4];
+  v6->_members = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:members count:count];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v15 = 0u;
   v16 = 0u;
@@ -70,18 +70,18 @@
   return v6;
 }
 
-- (MTLStructTypeInternal)initWithMembers:(id *)a3 count:(unint64_t)a4 typeName:(id)a5
+- (MTLStructTypeInternal)initWithMembers:(id *)members count:(unint64_t)count typeName:(id)name
 {
-  v6 = [(MTLStructTypeInternal *)self initWithMembers:a3 count:a4];
-  v6->_typeName = [a5 copy];
+  v6 = [(MTLStructTypeInternal *)self initWithMembers:members count:count];
+  v6->_typeName = [name copy];
   return v6;
 }
 
-- (void)setMembers:(id *)a3 count:(unint64_t)a4
+- (void)setMembers:(id *)members count:(unint64_t)count
 {
   v19 = *MEMORY[0x1E69E9840];
 
-  self->_members = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:a3 count:a4];
+  self->_members = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:members count:count];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v14 = 0u;
   v15 = 0u;
@@ -115,16 +115,16 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v7 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v7 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:128];
   v28[0] = v7;
   v28[1] = @"DataType =";
   v28[2] = MTLDataTypeString(self->_dataType);
   [v8 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v28, 3)}];
-  if ([a4 containsObject:self])
+  if ([types containsObject:self])
   {
     v27[0] = v7;
     v27[1] = @"<Recursive>";
@@ -133,12 +133,12 @@
 
   else
   {
-    [a4 addObject:self];
+    [types addObject:self];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
+    selfCopy = self;
     obj = self->_members;
     v9 = [(NSArray *)obj countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v9)
@@ -161,7 +161,7 @@
           v25[0] = v7;
           v11 = (v14 + 1);
           v25[1] = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", v14];
-          v25[2] = [v15 formattedDescription:a3 + 4 withPrintedTypes:a4];
+          v25[2] = [v15 formattedDescription:description + 4 withPrintedTypes:types];
           [v8 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v25, 3)}];
           ++v13;
           v14 = v11;
@@ -174,8 +174,8 @@
       while (v10);
     }
 
-    [a4 removeLastObject];
-    self = v18;
+    [types removeLastObject];
+    self = selfCopy;
   }
 
   v20.receiver = self;
@@ -193,12 +193,12 @@
   return v4;
 }
 
-- (BOOL)isStructLayoutThreadSafeWith:(id)a3
+- (BOOL)isStructLayoutThreadSafeWith:(id)with
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [a3 members];
+  members = [with members];
   v5 = [(NSArray *)self->_members count];
-  if (v5 == [v4 count])
+  if (v5 == [members count])
   {
     v27 = 0u;
     v28 = 0u;
@@ -224,7 +224,7 @@
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v9 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v9 = [members countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v9)
           {
             v10 = v9;
@@ -236,19 +236,19 @@
               {
                 if (*v22 != v12)
                 {
-                  objc_enumerationMutation(v4);
+                  objc_enumerationMutation(members);
                 }
 
                 v14 = *(*(&v21 + 1) + 8 * j);
-                v15 = [v14 offset];
-                if (v15 == [v8 offset])
+                offset = [v14 offset];
+                if (offset == [v8 offset])
                 {
                   v6 &= [v8 isMemberLayoutThreadSafeWith:v14];
                   v11 = 1;
                 }
               }
 
-              v10 = [v4 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v10 = [members countByEnumeratingWithState:&v21 objects:v29 count:16];
             }
 
             while (v10);
@@ -283,30 +283,30 @@
   return v6 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_dataType == *(a3 + 1))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_dataType == *(equal + 1))
   {
     v5 = [(NSArray *)self->_members count];
-    if (v5 == [*(a3 + 3) count])
+    if (v5 == [*(equal + 3) count])
     {
       if (![(NSArray *)self->_members count])
       {
-        return self->_isIndirectArgumentBuffer == *(a3 + 32);
+        return self->_isIndirectArgumentBuffer == *(equal + 32);
       }
 
       v6 = 0;
-      while (([-[NSArray objectAtIndexedSubscript:](self->_members objectAtIndexedSubscript:{v6), "isEqual:", objc_msgSend(*(a3 + 3), "objectAtIndexedSubscript:", v6)}] & 1) != 0)
+      while (([-[NSArray objectAtIndexedSubscript:](self->_members objectAtIndexedSubscript:{v6), "isEqual:", objc_msgSend(*(equal + 3), "objectAtIndexedSubscript:", v6)}] & 1) != 0)
       {
         if ([(NSArray *)self->_members count]<= ++v6)
         {
-          return self->_isIndirectArgumentBuffer == *(a3 + 32);
+          return self->_isIndirectArgumentBuffer == *(equal + 32);
         }
       }
     }

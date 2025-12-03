@@ -9,7 +9,7 @@
 {
   v3 = OBJC_IVAR____TtC23IntelligentTrackingCore16DKRepeatingTimer_stateLock;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC23IntelligentTrackingCore16DKRepeatingTimer_stateLock);
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v4 + 4);
 
@@ -22,7 +22,7 @@
   os_unfair_lock_unlock(v6 + 4);
 
   sub_1BB671FA4();
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for DKRepeatingTimer();
   [(DKRepeatingTimer *)&v7 dealloc];
 }

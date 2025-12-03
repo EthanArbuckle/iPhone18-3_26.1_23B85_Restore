@@ -1,21 +1,21 @@
 @interface AVAudioConnectionPoint
-+ (AVAudioConnectionPoint)connectionPointWithNode:(id)a3 bus:(unint64_t)a4;
++ (AVAudioConnectionPoint)connectionPointWithNode:(id)node bus:(unint64_t)bus;
 - (AVAudioConnectionPoint)initWithNode:(AVAudioNode *)node bus:(AVAudioNodeBus)bus;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation AVAudioConnectionPoint
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && [a3 node] == self->_node && objc_msgSend(a3, "bus") == self->_bus;
+  return (objc_opt_isKindOfClass() & 1) != 0 && [equal node] == self->_node && objc_msgSend(equal, "bus") == self->_bus;
 }
 
 - (void)dealloc
@@ -48,9 +48,9 @@
   return result;
 }
 
-+ (AVAudioConnectionPoint)connectionPointWithNode:(id)a3 bus:(unint64_t)a4
++ (AVAudioConnectionPoint)connectionPointWithNode:(id)node bus:(unint64_t)bus
 {
-  v4 = [[AVAudioConnectionPoint alloc] initWithNode:a3 bus:a4];
+  v4 = [[AVAudioConnectionPoint alloc] initWithNode:node bus:bus];
 
   return v4;
 }

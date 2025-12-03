@@ -1,9 +1,9 @@
 @interface _STKImageGlyphRecencyObjCFacade
 - (_STKImageGlyphRecencyObjCFacade)init;
-- (void)didUseCharacter:(NSString *)a3 completionHandler:(id)a4;
-- (void)didUseEmoji:(NSString *)a3 completionHandler:(id)a4;
-- (void)didUseSticker:(STKSticker *)a3 completionHandler:(id)a4;
-- (void)resetRecentsWithCompletionHandler:(id)a3;
+- (void)didUseCharacter:(NSString *)character completionHandler:(id)handler;
+- (void)didUseEmoji:(NSString *)emoji completionHandler:(id)handler;
+- (void)didUseSticker:(STKSticker *)sticker completionHandler:(id)handler;
+- (void)resetRecentsWithCompletionHandler:(id)handler;
 @end
 
 @implementation _STKImageGlyphRecencyObjCFacade
@@ -27,15 +27,15 @@
   return [(_STKImageGlyphRecencyObjCFacade *)&v8 init];
 }
 
-- (void)didUseEmoji:(NSString *)a3 completionHandler:(id)a4
+- (void)didUseEmoji:(NSString *)emoji completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA92200, &qword_1B8A28000);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = emoji;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B8A24184();
@@ -50,20 +50,20 @@
   v15[3] = 0;
   v15[4] = &unk_1B8A29200;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  emojiCopy = emoji;
+  selfCopy = self;
   sub_1B8A12970(0, 0, v10, &unk_1B8A29208, v15);
 }
 
-- (void)didUseSticker:(STKSticker *)a3 completionHandler:(id)a4
+- (void)didUseSticker:(STKSticker *)sticker completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA92200, &qword_1B8A28000);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = sticker;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B8A24184();
@@ -78,20 +78,20 @@
   v15[3] = 0;
   v15[4] = &unk_1B8A291E0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  stickerCopy = sticker;
+  selfCopy = self;
   sub_1B8A12970(0, 0, v10, &unk_1B8A291E8, v15);
 }
 
-- (void)didUseCharacter:(NSString *)a3 completionHandler:(id)a4
+- (void)didUseCharacter:(NSString *)character completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA92200, &qword_1B8A28000);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = character;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B8A24184();
@@ -106,18 +106,18 @@
   v15[3] = 0;
   v15[4] = &unk_1B8A291C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  characterCopy = character;
+  selfCopy = self;
   sub_1B8A12970(0, 0, v10, &unk_1B8A291C8, v15);
 }
 
-- (void)resetRecentsWithCompletionHandler:(id)a3
+- (void)resetRecentsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA92200, &qword_1B8A28000);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -133,7 +133,7 @@
   v13[3] = 0;
   v13[4] = &unk_1B8A29180;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1B8A12970(0, 0, v8, &unk_1B8A29190, v13);
 }
 

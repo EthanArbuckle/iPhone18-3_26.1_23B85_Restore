@@ -1,25 +1,25 @@
 @interface _VOTElementExplorer
-- (_VOTElementExplorer)initWithElementManager:(id)a3 MatchBlock:(id)a4;
+- (_VOTElementExplorer)initWithElementManager:(id)manager MatchBlock:(id)block;
 - (void)_proceed;
 - (void)_wrapup;
-- (void)elementFetchFound:(id)a3;
-- (void)fetchElementsFrom:(id)a3 inDirection:(int64_t)a4 count:(unint64_t)a5 scroll:(BOOL)a6 block:(id)a7;
+- (void)elementFetchFound:(id)found;
+- (void)fetchElementsFrom:(id)from inDirection:(int64_t)direction count:(unint64_t)count scroll:(BOOL)scroll block:(id)block;
 @end
 
 @implementation _VOTElementExplorer
 
-- (_VOTElementExplorer)initWithElementManager:(id)a3 MatchBlock:(id)a4
+- (_VOTElementExplorer)initWithElementManager:(id)manager MatchBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = _VOTElementExplorer;
   v9 = [(_VOTElementExplorer *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_manager, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_manager, manager);
+    v11 = objc_retainBlock(blockCopy);
     matchBlock = v10->_matchBlock;
     v10->_matchBlock = v11;
 
@@ -29,11 +29,11 @@
   return v10;
 }
 
-- (void)fetchElementsFrom:(id)a3 inDirection:(int64_t)a4 count:(unint64_t)a5 scroll:(BOOL)a6 block:(id)a7
+- (void)fetchElementsFrom:(id)from inDirection:(int64_t)direction count:(unint64_t)count scroll:(BOOL)scroll block:(id)block
 {
-  v20 = a3;
-  v13 = a7;
-  if (v20 && (a4 - 3) >= 0xFFFFFFFFFFFFFFFELL && v13)
+  fromCopy = from;
+  blockCopy = block;
+  if (fromCopy && (direction - 3) >= 0xFFFFFFFFFFFFFFFELL && blockCopy)
   {
     if (!self->_fetcher)
     {
@@ -44,20 +44,20 @@
       [(VOTElementFetcher *)self->_fetcher setDelegate:self];
     }
 
-    v16 = objc_retainBlock(v13);
+    v16 = objc_retainBlock(blockCopy);
     foundBlock = self->_foundBlock;
     self->_foundBlock = v16;
 
-    self->_direction = a4;
-    self->_count = a5;
-    self->_remainingCount = a5;
-    objc_storeStrong(&self->_baseElement, a3);
-    objc_storeStrong(&self->_currentElement, a3);
+    self->_direction = direction;
+    self->_count = count;
+    self->_remainingCount = count;
+    objc_storeStrong(&self->_baseElement, from);
+    objc_storeStrong(&self->_currentElement, from);
     v18 = objc_opt_new();
     foundElements = self->_foundElements;
     self->_foundElements = v18;
 
-    self->_peeking = !a6;
+    self->_peeking = !scroll;
     [(_VOTElementExplorer *)self _proceed];
   }
 }
@@ -70,12 +70,12 @@
     currentElement = self->_currentElement;
     fetcher = self->_fetcher;
     matchBlock = self->_matchBlock;
-    v7 = [(VOTElement *)currentElement selectedTextRange];
+    selectedTextRange = [(VOTElement *)currentElement selectedTextRange];
     v9 = v8;
-    v10 = [VOTSharedWorkspace navigationStyleHonorsGroups];
+    navigationStyleHonorsGroups = [VOTSharedWorkspace navigationStyleHonorsGroups];
     BYTE1(v11) = self->_peeking;
-    LOBYTE(v11) = v10;
-    [(VOTElementFetcher *)fetcher searchForElementInDirection:direction fromElement:currentElement matchBlock:matchBlock rangeMatch:0 searchType:0 generation:0 startingRange:v7 groupNavigationStyle:v9 peeking:v11];
+    LOBYTE(v11) = navigationStyleHonorsGroups;
+    [(VOTElementFetcher *)fetcher searchForElementInDirection:direction fromElement:currentElement matchBlock:matchBlock rangeMatch:0 searchType:0 generation:0 startingRange:selectedTextRange groupNavigationStyle:v9 peeking:v11];
   }
 
   else
@@ -108,10 +108,10 @@
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 label];
-        if (v10)
+        label = [v9 label];
+        if (label)
         {
-          [v3 addObject:v10];
+          [v3 addObject:label];
         }
 
         else
@@ -132,13 +132,13 @@
   {
     v13 = [NSNumber numberWithUnsignedInteger:self->_count];
     v14 = [NSNumber numberWithInt:self->_direction == 1];
-    v15 = [(VOTElement *)self->_baseElement label];
+    label2 = [(VOTElement *)self->_baseElement label];
     *buf = 138413058;
     v23 = v13;
     v24 = 2112;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = label2;
     v28 = 2112;
     v29 = v3;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "_VOTElementExplorer found elements: count(%@) forward(%@) base(%@) result = %@", buf, 0x2Au);
@@ -156,9 +156,9 @@
   [(VOTElementManager *)self->_manager removeElementExplorer:self];
 }
 
-- (void)elementFetchFound:(id)a3
+- (void)elementFetchFound:(id)found
 {
-  obj = [a3 element];
+  obj = [found element];
   if (obj && ![(NSMutableArray *)self->_foundElements containsObject:obj])
   {
     if (self->_remainingCount)

@@ -1,6 +1,6 @@
 @interface PIAutoLoopAnalysisJob
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
 - (id)cacheKey;
 - (id)result;
 @end
@@ -10,16 +10,16 @@
 - (id)result
 {
   v3 = objc_alloc_init(_PIAutoLoopAnalysisResult);
-  v4 = [(PIAutoLoopAnalysisJob *)self recipe];
-  [(_PIAutoLoopAnalysisResult *)v3 setRecipe:v4];
+  recipe = [(PIAutoLoopAnalysisJob *)self recipe];
+  [(_PIAutoLoopAnalysisResult *)v3 setRecipe:recipe];
 
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v15 = NUAssertLogger_7107();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -41,8 +41,8 @@
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v23;
         v33 = 2114;
@@ -53,8 +53,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -69,7 +69,7 @@
   v7 = [v5 fileURLWithPath:v6];
 
   v31 = 0;
-  v8 = [(PIAutoLoopAnalysisJob *)self videoSource];
+  videoSource = [(PIAutoLoopAnalysisJob *)self videoSource];
   createAutoLoopSettingsForAsset();
 
   objc_initWeak(&location, self);
@@ -92,7 +92,7 @@ LABEL_13:
       v13 = autoloopErrorCodeToString();
       [v12 failureError:v13 object:objc_opt_class()];
     }
-    *a3 = ;
+    *render = ;
     goto LABEL_17;
   }
 
@@ -115,7 +115,7 @@ LABEL_13:
 
     else
     {
-      *a3 = [MEMORY[0x1E69B3A48] failureError:@"could not extract dictionary results" object:objc_opt_class()];
+      *render = [MEMORY[0x1E69B3A48] failureError:@"could not extract dictionary results" object:objc_opt_class()];
     }
   }
 
@@ -154,10 +154,10 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v13 = NUAssertLogger_7107();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -179,8 +179,8 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v21;
         v29 = 2114;
@@ -191,8 +191,8 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -208,12 +208,12 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v5 = [(NURenderJob *)self renderNode];
-  v6 = PIAutoLoopFindVideoSourceNode(v5);
+  renderNode = [(NURenderJob *)self renderNode];
+  v6 = PIAutoLoopFindVideoSourceNode(renderNode);
 
   if (v6)
   {
-    v7 = [v6 asset:a3];
+    v7 = [v6 asset:prepare];
     videoSource = self->_videoSource;
     self->_videoSource = v7;
 
@@ -223,8 +223,8 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
   else
   {
     v10 = MEMORY[0x1E69B3A48];
-    v11 = [(NURenderJob *)self renderNode];
-    *a3 = [v10 missingError:@"unable to find video source node" object:v11];
+    renderNode2 = [(NURenderJob *)self renderNode];
+    *prepare = [v10 missingError:@"unable to find video source node" object:renderNode2];
 
     v9 = 0;
   }
@@ -235,14 +235,14 @@ uint64_t __32__PIAutoLoopAnalysisJob_render___block_invoke(uint64_t a1)
 - (id)cacheKey
 {
   v3 = objc_alloc_init(MEMORY[0x1E69B3A38]);
-  v4 = [(NURenderJob *)self renderNode];
-  v5 = PIAutoLoopFindVideoSourceNode(v4);
+  renderNode = [(NURenderJob *)self renderNode];
+  v5 = PIAutoLoopFindVideoSourceNode(renderNode);
 
   [v5 nu_updateDigest:v3];
   [v3 finalize];
-  v6 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v6;
+  return stringValue;
 }
 
 @end

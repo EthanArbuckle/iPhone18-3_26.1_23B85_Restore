@@ -1,6 +1,6 @@
 @interface _NTKCCFacesCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityRoleDescription;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,14 +8,14 @@
 
 @implementation _NTKCCFacesCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"faceView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKFaceViewController" hasInstanceMethod:@"face" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_NTKCCFacesCollectionCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -31,7 +31,7 @@
   v8 = [v7 safeValueForKey:@"face"];
   v9 = __UIAccessibilityCastAsSafeCategory();
 
-  v10 = [v9 _accessibilityFaceEditOptionsDescription];
+  _accessibilityFaceEditOptionsDescription = [v9 _accessibilityFaceEditOptionsDescription];
   v11 = __UIAXStringForVariables();
 
   if (v3)
@@ -48,24 +48,24 @@
   return v12;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(_NTKCCFacesCollectionCellAccessibility *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(_NTKCCFacesCollectionCellAccessibility *)self pointInside:eventCopy withEvent:x, y])
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _NTKCCFacesCollectionCellAccessibility;
-    v8 = [(_NTKCCFacesCollectionCellAccessibility *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    selfCopy = [(_NTKCCFacesCollectionCellAccessibility *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }

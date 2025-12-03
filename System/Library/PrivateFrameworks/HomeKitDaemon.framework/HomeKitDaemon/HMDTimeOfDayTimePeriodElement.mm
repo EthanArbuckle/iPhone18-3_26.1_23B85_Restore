@@ -1,11 +1,11 @@
 @interface HMDTimeOfDayTimePeriodElement
-- (BOOL)isEqual:(id)a3;
-- (HMDTimeOfDayTimePeriodElement)initWithCoder:(id)a3;
-- (HMDTimeOfDayTimePeriodElement)initWithDictionary:(id)a3;
-- (HMDTimeOfDayTimePeriodElement)initWithHour:(unint64_t)a3 minute:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDTimeOfDayTimePeriodElement)initWithCoder:(id)coder;
+- (HMDTimeOfDayTimePeriodElement)initWithDictionary:(id)dictionary;
+- (HMDTimeOfDayTimePeriodElement)initWithHour:(unint64_t)hour minute:(unint64_t)minute;
 - (id)attributeDescriptions;
 - (id)serializedRegistrationForRemoteMessage;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDTimeOfDayTimePeriodElement
@@ -28,29 +28,29 @@
   return v9;
 }
 
-- (HMDTimeOfDayTimePeriodElement)initWithCoder:(id)a3
+- (HMDTimeOfDayTimePeriodElement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HMDTODTPE.ck.h"];
-  v6 = [v4 decodeIntegerForKey:@"HMDTODTPE.ck.m"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HMDTODTPE.ck.h"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMDTODTPE.ck.m"];
 
   return [(HMDTimeOfDayTimePeriodElement *)self initWithHour:v5 minute:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMDTimeOfDayTimePeriodElement hour](self forKey:{"hour"), @"HMDTODTPE.ck.h"}];
-  [v4 encodeInteger:-[HMDTimeOfDayTimePeriodElement minute](self forKey:{"minute"), @"HMDTODTPE.ck.m"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMDTimeOfDayTimePeriodElement hour](self forKey:{"hour"), @"HMDTODTPE.ck.h"}];
+  [coderCopy encodeInteger:-[HMDTimeOfDayTimePeriodElement minute](self forKey:{"minute"), @"HMDTODTPE.ck.m"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -61,8 +61,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMDTimeOfDayTimePeriodElement hour](self, "hour"), v7 == [v6 hour]))
   {
-    v8 = [(HMDTimeOfDayTimePeriodElement *)self minute];
-    v9 = v8 == [v6 minute];
+    minute = [(HMDTimeOfDayTimePeriodElement *)self minute];
+    v9 = minute == [v6 minute];
   }
 
   else
@@ -77,8 +77,8 @@
 {
   v8.receiver = self;
   v8.super_class = HMDTimeOfDayTimePeriodElement;
-  v3 = [(HMDTimePeriodElement *)&v8 serializedRegistrationForRemoteMessage];
-  v4 = [v3 mutableCopy];
+  serializedRegistrationForRemoteMessage = [(HMDTimePeriodElement *)&v8 serializedRegistrationForRemoteMessage];
+  v4 = [serializedRegistrationForRemoteMessage mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDTimeOfDayTimePeriodElement hour](self, "hour")}];
   [v4 setObject:v5 forKeyedSubscript:@"HMDTODTPE.ck.h"];
@@ -89,42 +89,42 @@
   return v4;
 }
 
-- (HMDTimeOfDayTimePeriodElement)initWithDictionary:(id)a3
+- (HMDTimeOfDayTimePeriodElement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_class();
-  v6 = [objc_opt_class() type];
-  LODWORD(v5) = [v5 doesTypeMatch:v4 against:v6];
+  type = [objc_opt_class() type];
+  LODWORD(v5) = [v5 doesTypeMatch:dictionaryCopy against:type];
 
   if (v5)
   {
-    v7 = [v4 objectForKeyedSubscript:@"HMDTODTPE.ck.h"];
-    v8 = [v7 integerValue];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"HMDTODTPE.ck.h"];
+    integerValue = [v7 integerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"HMDTODTPE.ck.m"];
-    v10 = [v9 integerValue];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"HMDTODTPE.ck.m"];
+    integerValue2 = [v9 integerValue];
 
-    self = [(HMDTimeOfDayTimePeriodElement *)self initWithHour:v8 minute:v10];
-    v11 = self;
+    self = [(HMDTimeOfDayTimePeriodElement *)self initWithHour:integerValue minute:integerValue2];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (HMDTimeOfDayTimePeriodElement)initWithHour:(unint64_t)a3 minute:(unint64_t)a4
+- (HMDTimeOfDayTimePeriodElement)initWithHour:(unint64_t)hour minute:(unint64_t)minute
 {
   v7.receiver = self;
   v7.super_class = HMDTimeOfDayTimePeriodElement;
   result = [(HMDTimeOfDayTimePeriodElement *)&v7 init];
   if (result)
   {
-    result->_hour = a3;
-    result->_minute = a4;
+    result->_hour = hour;
+    result->_minute = minute;
   }
 
   return result;

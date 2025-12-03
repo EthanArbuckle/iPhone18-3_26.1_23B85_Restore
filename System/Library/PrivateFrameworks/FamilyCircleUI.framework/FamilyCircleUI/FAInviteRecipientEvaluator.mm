@@ -1,23 +1,23 @@
 @interface FAInviteRecipientEvaluator
-- (id)parseRecipientAddresses:(id)a3;
-- (id)recipientAlreadyInFamily:(id)a3 emailOnly:(BOOL)a4 recipients:(id)a5;
-- (void)showAlreadyFamilyMember:(id)a3 presenter:(id)a4;
-- (void)validateRecipients:(id)a3 inviteContext:(id)a4 presenter:(id)a5 completion:(id)a6;
+- (id)parseRecipientAddresses:(id)addresses;
+- (id)recipientAlreadyInFamily:(id)family emailOnly:(BOOL)only recipients:(id)recipients;
+- (void)showAlreadyFamilyMember:(id)member presenter:(id)presenter;
+- (void)validateRecipients:(id)recipients inviteContext:(id)context presenter:(id)presenter completion:(id)completion;
 @end
 
 @implementation FAInviteRecipientEvaluator
 
-- (id)parseRecipientAddresses:(id)a3
+- (id)parseRecipientAddresses:(id)addresses
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  addressesCopy = addresses;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_alloc_init(MEMORY[0x277CFBE00]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = addressesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -35,7 +35,7 @@
         v11 = [v5 firstEmailAddressInString:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -47,21 +47,21 @@
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (id)recipientAlreadyInFamily:(id)a3 emailOnly:(BOOL)a4 recipients:(id)a5
+- (id)recipientAlreadyInFamily:(id)family emailOnly:(BOOL)only recipients:(id)recipients
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v37 = a5;
+  familyCopy = family;
+  recipientsCopy = recipients;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v29 = v6;
-  obj = [v6 members];
+  v29 = familyCopy;
+  obj = [familyCopy members];
   v34 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v34)
   {
@@ -76,8 +76,8 @@
         }
 
         v9 = *(*(&v53 + 1) + 8 * i);
-        v35 = [v9 appleID];
-        if (!v35)
+        appleID = [v9 appleID];
+        if (!appleID)
         {
           goto LABEL_20;
         }
@@ -86,37 +86,37 @@
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v10 = v37;
-        v11 = [v10 countByEnumeratingWithState:&v49 objects:v59 count:16];
-        if (v11)
+        v10 = recipientsCopy;
+        fullName2 = [v10 countByEnumeratingWithState:&v49 objects:v59 count:16];
+        if (fullName2)
         {
           v12 = *v50;
           while (2)
           {
-            for (j = 0; j != v11; ++j)
+            for (j = 0; j != fullName2; ++j)
             {
               if (*v50 != v12)
               {
                 objc_enumerationMutation(v10);
               }
 
-              if ([v35 ea_isEqualToEmailAddress:*(*(&v49 + 1) + 8 * j)])
+              if ([appleID ea_isEqualToEmailAddress:*(*(&v49 + 1) + 8 * j)])
               {
-                v14 = [v9 fullName];
+                fullName = [v9 fullName];
 
-                if (v14)
+                if (fullName)
                 {
-                  v11 = [v9 fullName];
-                  [v7 addObject:v11];
+                  fullName2 = [v9 fullName];
+                  [v7 addObject:fullName2];
 
-                  LOBYTE(v11) = 1;
+                  LOBYTE(fullName2) = 1;
                   goto LABEL_19;
                 }
               }
             }
 
-            v11 = [v10 countByEnumeratingWithState:&v49 objects:v59 count:16];
-            if (v11)
+            fullName2 = [v10 countByEnumeratingWithState:&v49 objects:v59 count:16];
+            if (fullName2)
             {
               continue;
             }
@@ -127,14 +127,14 @@
 
 LABEL_19:
 
-        if ((v11 & 1) == 0)
+        if ((fullName2 & 1) == 0)
         {
 LABEL_20:
-          if (!a4)
+          if (!only)
           {
             v32 = i;
-            v15 = [v9 memberPhoneNumbers];
-            v16 = [v15 componentsSeparatedByString:{@", "}];
+            memberPhoneNumbers = [v9 memberPhoneNumbers];
+            v16 = [memberPhoneNumbers componentsSeparatedByString:{@", "}];
 
             v47 = 0u;
             v48 = 0u;
@@ -162,7 +162,7 @@ LABEL_20:
                     v44 = 0u;
                     v41 = 0u;
                     v42 = 0u;
-                    v19 = v37;
+                    v19 = recipientsCopy;
                     v20 = [v19 countByEnumeratingWithState:&v41 objects:v57 count:16];
                     if (v20)
                     {
@@ -180,12 +180,12 @@ LABEL_20:
                           v24 = [MEMORY[0x277CBDB70] phoneNumberWithStringValue:*(*(&v41 + 1) + 8 * m)];
                           if ([v18 isEqual:v24])
                           {
-                            v25 = [v9 fullName];
+                            fullName3 = [v9 fullName];
 
-                            if (v25)
+                            if (fullName3)
                             {
-                              v26 = [v9 fullName];
-                              [v7 addObject:v26];
+                              fullName4 = [v9 fullName];
+                              [v7 addObject:fullName4];
                             }
                           }
                         }
@@ -222,19 +222,19 @@ LABEL_20:
   return v7;
 }
 
-- (void)showAlreadyFamilyMember:(id)a3 presenter:(id)a4
+- (void)showAlreadyFamilyMember:(id)member presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  memberCopy = member;
+  presenterCopy = presenter;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__FAInviteRecipientEvaluator_showAlreadyFamilyMember_presenter___block_invoke;
   block[3] = &unk_2782F3190;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = memberCopy;
+  selfCopy = self;
+  v13 = presenterCopy;
+  v8 = presenterCopy;
+  v9 = memberCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -270,15 +270,15 @@ void __64__FAInviteRecipientEvaluator_showAlreadyFamilyMember_presenter___block_
   [*(a1 + 48) presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)validateRecipients:(id)a3 inviteContext:(id)a4 presenter:(id)a5 completion:(id)a6
+- (void)validateRecipients:(id)recipients inviteContext:(id)context presenter:(id)presenter completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  recipientsCopy = recipients;
+  contextCopy = context;
+  presenterCopy = presenter;
+  completionCopy = completion;
+  if ([recipientsCopy count])
   {
-    if ([v11 validation])
+    if ([contextCopy validation])
     {
       v14 = objc_alloc_init(MEMORY[0x277D08280]);
       v15[0] = MEMORY[0x277D85DD0];
@@ -286,21 +286,21 @@ void __64__FAInviteRecipientEvaluator_showAlreadyFamilyMember_presenter___block_
       v15[2] = __84__FAInviteRecipientEvaluator_validateRecipients_inviteContext_presenter_completion___block_invoke;
       v15[3] = &unk_2782F31B8;
       v15[4] = self;
-      v16 = v10;
-      v18 = v13;
-      v17 = v12;
+      v16 = recipientsCopy;
+      v18 = completionCopy;
+      v17 = presenterCopy;
       [v14 startRequestWithCompletionHandler:v15];
     }
 
     else
     {
-      (*(v13 + 2))(v13, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

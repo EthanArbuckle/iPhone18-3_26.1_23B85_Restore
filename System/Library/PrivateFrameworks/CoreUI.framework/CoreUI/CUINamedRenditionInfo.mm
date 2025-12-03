@@ -1,27 +1,27 @@
 @interface CUINamedRenditionInfo
-+ (int)subtypeToIndexWithPlatform:(int64_t)a3 andInput:(unsigned __int16)a4;
++ (int)subtypeToIndexWithPlatform:(int64_t)platform andInput:(unsigned __int16)input;
 - (BOOL)containsVectorGlyphInterpolationSources;
-- (BOOL)contentEqualForAttribute:(int)a3 withRenditionInfo:(id)a4;
-- (BOOL)contentPresentForAttribute:(int)a3;
-- (BOOL)diverseContentPresentForAttribute:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNamedRenditionInfo:(id)a3;
-- (CUINamedRenditionInfo)initWithData:(id)a3 keyFormat:(const _renditionkeyfmt *)a4 andPlatform:(int64_t)a5;
-- (CUINamedRenditionInfo)initWithKeyFormat:(const _renditionkeyfmt *)a3 andPlatform:(int64_t)a4;
+- (BOOL)contentEqualForAttribute:(int)attribute withRenditionInfo:(id)info;
+- (BOOL)contentPresentForAttribute:(int)attribute;
+- (BOOL)diverseContentPresentForAttribute:(int)attribute;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNamedRenditionInfo:(id)info;
+- (CUINamedRenditionInfo)initWithData:(id)data keyFormat:(const _renditionkeyfmt *)format andPlatform:(int64_t)platform;
+- (CUINamedRenditionInfo)initWithKeyFormat:(const _renditionkeyfmt *)format andPlatform:(int64_t)platform;
 - (id)archivedData;
-- (id)bitwiseAndWith:(id)a3;
-- (id)bitwiseOrWith:(id)a3 forAttribute:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)bitwiseAndWith:(id)with;
+- (id)bitwiseOrWith:(id)with forAttribute:(int)attribute;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (int)attributePresent:(int)a3 withValue:(unsigned __int16)a4;
-- (unsigned)getClosestValueOfAttribute:(int)a3 withValue:(unsigned __int16)a4;
-- (unsigned)getValueOfAttribute:(int)a3;
-- (void)clearAttributePresent:(int)a3 withValue:(unsigned __int16)a4;
+- (int)attributePresent:(int)present withValue:(unsigned __int16)value;
+- (unsigned)getClosestValueOfAttribute:(int)attribute withValue:(unsigned __int16)value;
+- (unsigned)getValueOfAttribute:(int)attribute;
+- (void)clearAttributePresent:(int)present withValue:(unsigned __int16)value;
 - (void)dealloc;
-- (void)decrementValue:(int64_t *)a3 forAttribute:(int)a4;
-- (void)incrementIndex:(unint64_t *)a3 inValues:(id)a4 forAttribute:(int)a5;
-- (void)setAttributePresent:(int)a3 withValue:(unsigned __int16)a4;
+- (void)decrementValue:(int64_t *)value forAttribute:(int)attribute;
+- (void)incrementIndex:(unint64_t *)index inValues:(id)values forAttribute:(int)attribute;
+- (void)setAttributePresent:(int)present withValue:(unsigned __int16)value;
 @end
 
 @implementation CUINamedRenditionInfo
@@ -57,17 +57,17 @@
   return v3;
 }
 
-- (CUINamedRenditionInfo)initWithData:(id)a3 keyFormat:(const _renditionkeyfmt *)a4 andPlatform:(int64_t)a5
+- (CUINamedRenditionInfo)initWithData:(id)data keyFormat:(const _renditionkeyfmt *)format andPlatform:(int64_t)platform
 {
   v11.receiver = self;
   v11.super_class = CUINamedRenditionInfo;
   v8 = [(CUINamedRenditionInfo *)&v11 init];
-  v8->_keyFormat = a4;
-  v8->_platform = a5;
-  v9 = [a3 bytes];
-  if (*v9 == 1)
+  v8->_keyFormat = format;
+  v8->_platform = platform;
+  bytes = [data bytes];
+  if (*bytes == 1)
   {
-    v8->_bitmap = CUIBitVectorFromData(v9 + 3, v9[2]);
+    v8->_bitmap = CUIBitVectorFromData(bytes + 3, bytes[2]);
   }
 
   else
@@ -79,19 +79,19 @@
   return v8;
 }
 
-- (CUINamedRenditionInfo)initWithKeyFormat:(const _renditionkeyfmt *)a3 andPlatform:(int64_t)a4
+- (CUINamedRenditionInfo)initWithKeyFormat:(const _renditionkeyfmt *)format andPlatform:(int64_t)platform
 {
   v27.receiver = self;
   v27.super_class = CUINamedRenditionInfo;
   v6 = [(CUINamedRenditionInfo *)&v27 init];
-  *(v6 + 1) = CUIBitVectorCreate(32 * a3->var2);
-  *(v6 + 2) = a3;
-  *(v6 + 3) = a4;
-  var2 = a3->var2;
+  *(v6 + 1) = CUIBitVectorCreate(32 * format->var2);
+  *(v6 + 2) = format;
+  *(v6 + 3) = platform;
+  var2 = format->var2;
   if (var2)
   {
     v14 = 0;
-    var3 = a3->var3;
+    var3 = format->var3;
     do
     {
       v16 = var3[v14];
@@ -107,7 +107,7 @@
           v21 = var2;
         }
 
-        v22 = a3->var3;
+        v22 = format->var3;
         while (1)
         {
           v23 = *v22++;
@@ -155,7 +155,7 @@ LABEL_23:
         [(CUINamedRenditionInfo *)v24 initWithKeyFormat:v25 andPlatform:v7, v8, v9, v10, v11, v12];
       }
 
-      var2 = a3->var2;
+      var2 = format->var2;
 LABEL_25:
       ++v14;
     }
@@ -166,35 +166,35 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqualToNamedRenditionInfo:(id)a3
+- (BOOL)isEqualToNamedRenditionInfo:(id)info
 {
-  if (*(a3 + 3) != self->_platform)
+  if (*(info + 3) != self->_platform)
   {
     return 0;
   }
 
-  if (*(*(a3 + 2) + 8) != self->_keyFormat->var2)
+  if (*(*(info + 2) + 8) != self->_keyFormat->var2)
   {
     return 0;
   }
 
-  if (!CUIBitVectorEqual(self->_bitmap, *(a3 + 1)))
+  if (!CUIBitVectorEqual(self->_bitmap, *(info + 1)))
   {
     keyFormat = self->_keyFormat;
     if (keyFormat->var2)
     {
       v6 = 0;
-      while (keyFormat->var3[v6] == *(*(a3 + 2) + 4 * v6 + 12))
+      while (keyFormat->var3[v6] == *(*(info + 2) + 4 * v6 + 12))
       {
         v7 = v6;
         v8 = [(CUINamedRenditionInfo *)self contentPresentForAttribute:?];
-        if (v8 != [a3 contentPresentForAttribute:*(*(a3 + 2) + 4 * v7 + 12)])
+        if (v8 != [info contentPresentForAttribute:*(*(info + 2) + 4 * v7 + 12)])
         {
           break;
         }
 
         v9 = [(CUINamedRenditionInfo *)self diverseContentPresentForAttribute:self->_keyFormat->var3[v7]];
-        if (v9 != [a3 diverseContentPresentForAttribute:*(*(a3 + 2) + 4 * v7 + 12)])
+        if (v9 != [info diverseContentPresentForAttribute:*(*(info + 2) + 4 * v7 + 12)])
         {
           break;
         }
@@ -243,9 +243,9 @@ LABEL_25:
             while (v16 != 32);
           }
 
-          v19 = *(a3 + 3);
-          v20 = *(*(a3 + 2) + 4 * v7 + 12);
-          v21 = CUIBitVectorBucketValue(*(a3 + 1), 32 * v7);
+          v19 = *(info + 3);
+          v20 = *(*(info + 2) + 4 * v7 + 12);
+          v21 = CUIBitVectorBucketValue(*(info + 1), 32 * v7);
           if (v21 == -1)
           {
             [v11 addObject:@"<all>"];
@@ -307,9 +307,9 @@ LABEL_25:
   return 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -320,7 +320,7 @@ LABEL_25:
     return 0;
   }
 
-  return [(CUINamedRenditionInfo *)self isEqualToNamedRenditionInfo:a3];
+  return [(CUINamedRenditionInfo *)self isEqualToNamedRenditionInfo:equal];
 }
 
 - (id)description
@@ -406,12 +406,12 @@ LABEL_25:
   return v17;
 }
 
-- (int)attributePresent:(int)a3 withValue:(unsigned __int16)a4
+- (int)attributePresent:(int)present withValue:(unsigned __int16)value
 {
-  v8 = *&a3;
+  v8 = *&present;
   keyFormat = self->_keyFormat;
   platform = self->_platform;
-  if (a3 == 16 && platform == -1)
+  if (present == 16 && platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -435,27 +435,27 @@ LABEL_25:
     }
   }
 
-  if (a3 <= 0x1C)
+  if (present <= 0x1C)
   {
-    if (((1 << a3) & 0x100600E6) != 0)
+    if (((1 << present) & 0x100600E6) != 0)
     {
       return -1;
     }
 
-    if (a3 == 13)
+    if (present == 13)
     {
-      *&a4 = a4 != 0;
+      *&value = value != 0;
       goto LABEL_23;
     }
 
-    if (a3 != 16)
+    if (present != 16)
     {
       goto LABEL_23;
     }
 
     if (platform != -1)
     {
-      if (!a4)
+      if (!value)
       {
         goto LABEL_23;
       }
@@ -466,11 +466,11 @@ LABEL_25:
         {
           if (platform == 3)
           {
-            if (a4 != 3840)
+            if (value != 3840)
             {
-              if (a4 != 1088)
+              if (value != 1088)
               {
-                if (a4 != 720)
+                if (value != 720)
                 {
                   goto LABEL_102;
                 }
@@ -479,37 +479,37 @@ LABEL_25:
               }
 
 LABEL_109:
-              *&a4 = 5;
+              *&value = 5;
               goto LABEL_23;
             }
 
 LABEL_170:
-            *&a4 = 7;
+            *&value = 7;
             goto LABEL_23;
           }
 
           goto LABEL_65;
         }
 
-        if (a4 <= 1963)
+        if (value <= 1963)
         {
-          if (a4 == 1665)
+          if (value == 1665)
           {
             goto LABEL_177;
           }
 
-          if (a4 == 1864)
+          if (value == 1864)
           {
             goto LABEL_78;
           }
 
 LABEL_102:
-          [CUINamedRenditionInfo attributePresent:a4 withValue:platform];
+          [CUINamedRenditionInfo attributePresent:value withValue:platform];
         }
 
-        if (a4 != 1964)
+        if (value != 1964)
         {
-          if (a4 != 2234)
+          if (value != 2234)
           {
             goto LABEL_102;
           }
@@ -518,13 +518,13 @@ LABEL_102:
         }
 
 LABEL_131:
-        *&a4 = 26;
+        *&value = 26;
         goto LABEL_23;
       }
 
       if (platform == 5)
       {
-        if (a4 != 3648)
+        if (value != 3648)
         {
           goto LABEL_102;
         }
@@ -540,34 +540,34 @@ LABEL_65:
           goto LABEL_102;
         }
 
-        if (a4 > 2435)
+        if (value > 2435)
         {
-          if (a4 > 2735)
+          if (value > 2735)
           {
-            if (a4 > 2795)
+            if (value > 2795)
             {
-              if (a4 <= 3023)
+              if (value <= 3023)
               {
-                if (a4 != 2796)
+                if (value != 2796)
                 {
-                  if (a4 != 2868)
+                  if (value != 2868)
                   {
                     goto LABEL_102;
                   }
 
 LABEL_82:
-                  *&a4 = 14;
+                  *&value = 14;
                   goto LABEL_23;
                 }
 
 LABEL_135:
-                *&a4 = 30;
+                *&value = 30;
                 goto LABEL_23;
               }
 
-              if (a4 != 3024)
+              if (value != 3024)
               {
-                if (a4 != 32401)
+                if (value != 32401)
                 {
                   goto LABEL_102;
                 }
@@ -576,15 +576,15 @@ LABEL_135:
               }
 
 LABEL_188:
-              *&a4 = 6;
+              *&value = 6;
               goto LABEL_23;
             }
 
-            if (a4 != 2736)
+            if (value != 2736)
             {
-              if (a4 != 2752)
+              if (value != 2752)
               {
-                if (a4 != 2778)
+                if (value != 2778)
                 {
                   goto LABEL_102;
                 }
@@ -593,46 +593,46 @@ LABEL_188:
               }
 
 LABEL_178:
-              *&a4 = 8;
+              *&value = 8;
               goto LABEL_23;
             }
 
 LABEL_177:
-            *&a4 = 31;
+            *&value = 31;
             goto LABEL_23;
           }
 
-          if (a4 <= 2621)
+          if (value <= 2621)
           {
-            if (a4 != 2436)
+            if (value != 2436)
             {
-              if (a4 != 2532)
+              if (value != 2532)
               {
-                if (a4 != 2556)
+                if (value != 2556)
                 {
                   goto LABEL_102;
                 }
 
 LABEL_155:
-                *&a4 = 29;
+                *&value = 29;
                 goto LABEL_23;
               }
 
 LABEL_156:
-              *&a4 = 22;
+              *&value = 22;
               goto LABEL_23;
             }
 
 LABEL_160:
-            *&a4 = 11;
+            *&value = 11;
             goto LABEL_23;
           }
 
-          if (a4 != 2622)
+          if (value != 2622)
           {
-            if (a4 != 2688)
+            if (value != 2688)
             {
-              if (a4 != 2732)
+              if (value != 2732)
               {
                 goto LABEL_102;
               }
@@ -641,46 +641,46 @@ LABEL_160:
             }
 
 LABEL_184:
-            *&a4 = 12;
+            *&value = 12;
             goto LABEL_23;
           }
 
 LABEL_183:
-          *&a4 = 13;
+          *&value = 13;
           goto LABEL_23;
         }
 
-        if (a4 <= 2223)
+        if (value <= 2223)
         {
-          if (a4 <= 569)
+          if (value <= 569)
           {
-            if (a4 == 163)
+            if (value == 163)
             {
               goto LABEL_109;
             }
 
-            if (a4 != 568)
+            if (value != 568)
             {
-              if (a4 != 569)
+              if (value != 569)
               {
                 goto LABEL_102;
               }
 
 LABEL_157:
-              *&a4 = 2;
+              *&value = 2;
               goto LABEL_23;
             }
 
 LABEL_78:
-            *&a4 = 1;
+            *&value = 1;
             goto LABEL_23;
           }
 
-          if (a4 != 570)
+          if (value != 570)
           {
-            if (a4 != 1792)
+            if (value != 1792)
             {
-              if (a4 != 2160)
+              if (value != 2160)
               {
                 goto LABEL_102;
               }
@@ -689,22 +689,22 @@ LABEL_78:
             }
 
 LABEL_165:
-            *&a4 = 16;
+            *&value = 16;
             goto LABEL_23;
           }
 
 LABEL_166:
-          *&a4 = 3;
+          *&value = 3;
           goto LABEL_23;
         }
 
-        if (a4 <= 2359)
+        if (value <= 2359)
         {
-          if (a4 != 2224)
+          if (value != 2224)
           {
-            if (a4 != 2266)
+            if (value != 2266)
             {
-              if (a4 != 2340)
+              if (value != 2340)
               {
                 goto LABEL_102;
               }
@@ -713,20 +713,20 @@ LABEL_166:
             }
 
 LABEL_158:
-            *&a4 = 25;
+            *&value = 25;
             goto LABEL_23;
           }
 
 LABEL_159:
-          *&a4 = 10;
+          *&value = 10;
           goto LABEL_23;
         }
 
-        if (a4 != 2360)
+        if (value != 2360)
         {
-          if (a4 != 2388)
+          if (value != 2388)
           {
-            if (a4 != 2420)
+            if (value != 2420)
             {
               goto LABEL_102;
             }
@@ -735,25 +735,25 @@ LABEL_159:
           }
 
 LABEL_171:
-          *&a4 = 15;
+          *&value = 15;
           goto LABEL_23;
         }
 
 LABEL_172:
-        *&a4 = 20;
+        *&value = 20;
         goto LABEL_23;
       }
 
-      if (a4 <= 445)
+      if (value <= 445)
       {
-        if (a4 <= 383)
+        if (value <= 383)
         {
-          if (a4 == 320)
+          if (value == 320)
           {
             goto LABEL_178;
           }
 
-          if (a4 == 340)
+          if (value == 340)
           {
             goto LABEL_183;
           }
@@ -761,38 +761,38 @@ LABEL_172:
           goto LABEL_102;
         }
 
-        if (a4 != 384)
+        if (value != 384)
         {
-          if (a4 == 390)
+          if (value == 390)
           {
             goto LABEL_82;
           }
 
-          if (a4 != 430)
+          if (value != 430)
           {
             goto LABEL_102;
           }
 
 LABEL_138:
-          *&a4 = 23;
+          *&value = 23;
           goto LABEL_23;
         }
 
 LABEL_137:
-        *&a4 = 9;
+        *&value = 9;
         goto LABEL_23;
       }
 
-      if (a4 > 495)
+      if (value > 495)
       {
-        if (a4 == 496)
+        if (value == 496)
         {
           goto LABEL_135;
         }
 
-        if (a4 != 502)
+        if (value != 502)
         {
-          if (a4 == 514)
+          if (value == 514)
           {
             goto LABEL_177;
           }
@@ -801,101 +801,101 @@ LABEL_137:
         }
 
 LABEL_136:
-        *&a4 = 28;
+        *&value = 28;
         goto LABEL_23;
       }
 
-      if (a4 == 446)
+      if (value == 446)
       {
         goto LABEL_155;
       }
 
-      if (a4 != 484)
+      if (value != 484)
       {
         goto LABEL_102;
       }
 
 LABEL_154:
-      *&a4 = 24;
+      *&value = 24;
       goto LABEL_23;
     }
 
-    if (a4 > 2159)
+    if (value > 2159)
     {
-      if (a4 > 2531)
+      if (value > 2531)
       {
-        if (a4 > 2777)
+        if (value > 2777)
         {
-          if (a4 > 3839)
+          if (value > 3839)
           {
-            if (a4 == 3840)
+            if (value == 3840)
             {
               goto LABEL_170;
             }
 
-            if (a4 == 32401)
+            if (value == 32401)
             {
 LABEL_187:
-              *&a4 = 17;
+              *&value = 17;
               goto LABEL_23;
             }
           }
 
           else
           {
-            if (a4 == 2778)
+            if (value == 2778)
             {
 LABEL_176:
-              *&a4 = 19;
+              *&value = 19;
               goto LABEL_23;
             }
 
-            if (a4 == 2796)
+            if (value == 2796)
             {
               goto LABEL_135;
             }
           }
         }
 
-        else if (a4 > 2687)
+        else if (value > 2687)
         {
-          if (a4 == 2688)
+          if (value == 2688)
           {
             goto LABEL_184;
           }
 
-          if (a4 == 2732)
+          if (value == 2732)
           {
 LABEL_182:
-            *&a4 = 4;
+            *&value = 4;
             goto LABEL_23;
           }
         }
 
         else
         {
-          if (a4 == 2532)
+          if (value == 2532)
           {
             goto LABEL_156;
           }
 
-          if (a4 == 2556)
+          if (value == 2556)
           {
             goto LABEL_155;
           }
         }
       }
 
-      else if (a4 > 2339)
+      else if (value > 2339)
       {
-        if (a4 > 2387)
+        if (value > 2387)
         {
-          if (a4 == 2388)
+          if (value == 2388)
           {
             goto LABEL_171;
           }
 
-          if (a4 == 2436)
+          if (value == 2436)
           {
             goto LABEL_160;
           }
@@ -903,30 +903,30 @@ LABEL_182:
 
         else
         {
-          if (a4 == 2340)
+          if (value == 2340)
           {
 LABEL_143:
-            *&a4 = 18;
+            *&value = 18;
             goto LABEL_23;
           }
 
-          if (a4 == 2360)
+          if (value == 2360)
           {
             goto LABEL_172;
           }
         }
       }
 
-      else if (a4 > 2233)
+      else if (value > 2233)
       {
-        if (a4 == 2234)
+        if (value == 2234)
         {
 LABEL_116:
-          *&a4 = 27;
+          *&value = 27;
           goto LABEL_23;
         }
 
-        if (a4 == 2266)
+        if (value == 2266)
         {
           goto LABEL_158;
         }
@@ -934,32 +934,32 @@ LABEL_116:
 
       else
       {
-        if (a4 == 2160)
+        if (value == 2160)
         {
 LABEL_164:
-          *&a4 = 21;
+          *&value = 21;
           goto LABEL_23;
         }
 
-        if (a4 == 2224)
+        if (value == 2224)
         {
           goto LABEL_159;
         }
       }
     }
 
-    else if (a4 > 501)
+    else if (value > 501)
     {
-      if (a4 > 719)
+      if (value > 719)
       {
-        if (a4 > 1791)
+        if (value > 1791)
         {
-          if (a4 == 1792)
+          if (value == 1792)
           {
             goto LABEL_165;
           }
 
-          if (a4 == 1964)
+          if (value == 1964)
           {
             goto LABEL_131;
           }
@@ -967,26 +967,26 @@ LABEL_164:
 
         else
         {
-          if (a4 == 720)
+          if (value == 720)
           {
             goto LABEL_188;
           }
 
-          if (a4 == 1665)
+          if (value == 1665)
           {
             goto LABEL_177;
           }
         }
       }
 
-      else if (a4 > 568)
+      else if (value > 568)
       {
-        if (a4 == 569)
+        if (value == 569)
         {
           goto LABEL_157;
         }
 
-        if (a4 == 570)
+        if (value == 570)
         {
           goto LABEL_166;
         }
@@ -994,28 +994,28 @@ LABEL_164:
 
       else
       {
-        if (a4 == 502)
+        if (value == 502)
         {
           goto LABEL_136;
         }
 
-        if (a4 == 568)
+        if (value == 568)
         {
           goto LABEL_78;
         }
       }
     }
 
-    else if (a4 > 383)
+    else if (value > 383)
     {
-      if (a4 > 429)
+      if (value > 429)
       {
-        if (a4 == 430)
+        if (value == 430)
         {
           goto LABEL_138;
         }
 
-        if (a4 == 484)
+        if (value == 484)
         {
           goto LABEL_154;
         }
@@ -1023,26 +1023,26 @@ LABEL_164:
 
       else
       {
-        if (a4 == 384)
+        if (value == 384)
         {
           goto LABEL_137;
         }
 
-        if (a4 == 390)
+        if (value == 390)
         {
           goto LABEL_82;
         }
       }
     }
 
-    else if (a4 > 319)
+    else if (value > 319)
     {
-      if (a4 == 320)
+      if (value == 320)
       {
         goto LABEL_178;
       }
 
-      if (a4 == 340)
+      if (value == 340)
       {
         goto LABEL_183;
       }
@@ -1050,19 +1050,19 @@ LABEL_164:
 
     else
     {
-      if (!a4)
+      if (!value)
       {
         goto LABEL_23;
       }
 
-      if (a4 == 163)
+      if (value == 163)
       {
         goto LABEL_109;
       }
     }
 
-    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&a3, a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
-    *&a4 = 0xFFFFLL;
+    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&present, value, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+    *&value = 0xFFFFLL;
   }
 
 LABEL_23:
@@ -1073,11 +1073,11 @@ LABEL_23:
   }
 
   v17 = 0;
-  v18 = a4;
+  valueCopy = value;
   while (keyFormat->var3[v17] != v8)
   {
     ++v17;
-    v18 += 32;
+    valueCopy += 32;
     if (v16 == v17)
     {
       return -1;
@@ -1086,24 +1086,24 @@ LABEL_23:
 
   if (v17 >= 33)
   {
-    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, a4, v4, v5, v6, v7, v8);
+    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&present, value, v4, v5, v6, v7, v8);
     return -1;
   }
 
-  if ((v18 & 0x80000000) != 0)
+  if ((valueCopy & 0x80000000) != 0)
   {
     return -1;
   }
 
   bitmap = self->_bitmap;
 
-  return CUIBitVectorIsBitSet(bitmap, v18);
+  return CUIBitVectorIsBitSet(bitmap, valueCopy);
 }
 
-- (unsigned)getValueOfAttribute:(int)a3
+- (unsigned)getValueOfAttribute:(int)attribute
 {
   keyFormat = self->_keyFormat;
-  if (a3 == 16 && self->_platform == -1)
+  if (attribute == 16 && self->_platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1128,7 +1128,7 @@ LABEL_23:
     }
   }
 
-  if (a3 <= 0x1C && ((1 << a3) & 0x100600E6) != 0)
+  if (attribute <= 0x1C && ((1 << attribute) & 0x100600E6) != 0)
   {
     goto LABEL_10;
   }
@@ -1142,7 +1142,7 @@ LABEL_23:
   v16 = 0;
   v17 = 0;
   v18 = keyFormat->var3;
-  while (v18[v17] != a3)
+  while (v18[v17] != attribute)
   {
     result = 0;
     ++v17;
@@ -1155,7 +1155,7 @@ LABEL_23:
 
   if (v17 >= 33)
   {
-    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, v3, v4, v5, v6, v7, *&a3);
+    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&attribute, v3, v4, v5, v6, v7, *&attribute);
 LABEL_10:
     result = 0;
     goto LABEL_11;
@@ -1179,7 +1179,7 @@ LABEL_10:
 
   result = v20;
 LABEL_11:
-  if (a3 == 16)
+  if (attribute == 16)
   {
     return __CUISubtypeFromIndex(self->_platform, result);
   }
@@ -1187,11 +1187,11 @@ LABEL_11:
   return result;
 }
 
-- (unsigned)getClosestValueOfAttribute:(int)a3 withValue:(unsigned __int16)a4
+- (unsigned)getClosestValueOfAttribute:(int)attribute withValue:(unsigned __int16)value
 {
-  v8 = a4;
+  valueCopy = value;
   keyFormat = self->_keyFormat;
-  if (a3 == 16 && self->_platform == -1)
+  if (attribute == 16 && self->_platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1215,7 +1215,7 @@ LABEL_11:
     }
   }
 
-  if (a3 <= 0x1C && ((1 << a3) & 0x100600E6) != 0)
+  if (attribute <= 0x1C && ((1 << attribute) & 0x100600E6) != 0)
   {
     return 0;
   }
@@ -1229,7 +1229,7 @@ LABEL_11:
   v16 = 0;
   v17 = 0;
   v18 = keyFormat->var3;
-  while (v18[v17] != a3)
+  while (v18[v17] != attribute)
   {
     v13 = 0;
     ++v17;
@@ -1242,7 +1242,7 @@ LABEL_11:
 
   if (v17 >= 33)
   {
-    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, a4, v4, v5, v6, v7, *&a3);
+    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&attribute, value, v4, v5, v6, v7, *&attribute);
     return 0;
   }
 
@@ -1252,23 +1252,23 @@ LABEL_11:
   }
 
   v19 = CUIBitVectorBucketValue(self->_bitmap, v16);
-  while (((v19 >> v8) & 1) == 0)
+  while (((v19 >> valueCopy) & 1) == 0)
   {
     v13 = 0;
-    v20 = __OFSUB__(v8--, 1);
-    if (v8 < 0 != v20)
+    v20 = __OFSUB__(valueCopy--, 1);
+    if (valueCopy < 0 != v20)
     {
       return v13;
     }
   }
 
-  return v8;
+  return valueCopy;
 }
 
-- (BOOL)contentPresentForAttribute:(int)a3
+- (BOOL)contentPresentForAttribute:(int)attribute
 {
   keyFormat = self->_keyFormat;
-  if (a3 == 16 && self->_platform == -1)
+  if (attribute == 16 && self->_platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1292,7 +1292,7 @@ LABEL_11:
     }
   }
 
-  if ((a3 - 1) >= 0x1C || ((0x8030073u >> (a3 - 1)) & 1) == 0)
+  if ((attribute - 1) >= 0x1C || ((0x8030073u >> (attribute - 1)) & 1) == 0)
   {
     v12 = keyFormat->var2;
     if (v12)
@@ -1300,7 +1300,7 @@ LABEL_11:
       v13 = 0;
       v14 = 0;
       v15 = keyFormat->var3;
-      while (v15[v14] != a3)
+      while (v15[v14] != attribute)
       {
         ++v14;
         v13 += 32;
@@ -1320,7 +1320,7 @@ LABEL_11:
 
       else
       {
-        _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, v3, v4, v5, v6, v7, *&a3);
+        _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&attribute, v3, v4, v5, v6, v7, *&attribute);
       }
     }
   }
@@ -1328,10 +1328,10 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)contentEqualForAttribute:(int)a3 withRenditionInfo:(id)a4
+- (BOOL)contentEqualForAttribute:(int)attribute withRenditionInfo:(id)info
 {
   keyFormat = self->_keyFormat;
-  if (a3 == 16 && self->_platform == -1)
+  if (attribute == 16 && self->_platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1355,7 +1355,7 @@ LABEL_11:
     }
   }
 
-  if ((a3 - 1) >= 0x1C || ((0x8030073u >> (a3 - 1)) & 1) == 0)
+  if ((attribute - 1) >= 0x1C || ((0x8030073u >> (attribute - 1)) & 1) == 0)
   {
     v13 = keyFormat->var2;
     if (v13)
@@ -1363,7 +1363,7 @@ LABEL_11:
       v14 = 0;
       v15 = 0;
       v16 = keyFormat->var3;
-      while (v16[v15] != a3)
+      while (v16[v15] != attribute)
       {
         ++v15;
         v14 += 32;
@@ -1378,13 +1378,13 @@ LABEL_11:
         if ((v15 & 0x80000000) == 0)
         {
           v17 = CUIBitVectorBucketValue(self->_bitmap, v14);
-          return v17 == CUIBitVectorBucketValue(*(a4 + 1), v14);
+          return v17 == CUIBitVectorBucketValue(*(info + 1), v14);
         }
       }
 
       else
       {
-        _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, a4, v4, v5, v6, v7, *&a3);
+        _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&attribute, info, v4, v5, v6, v7, *&attribute);
       }
     }
   }
@@ -1392,10 +1392,10 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)diverseContentPresentForAttribute:(int)a3
+- (BOOL)diverseContentPresentForAttribute:(int)attribute
 {
   keyFormat = self->_keyFormat;
-  if (a3 == 16 && self->_platform == -1)
+  if (attribute == 16 && self->_platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1419,7 +1419,7 @@ LABEL_11:
     }
   }
 
-  if (a3 - 1) < 0x1C && ((0x8030073u >> (a3 - 1)))
+  if (attribute - 1) < 0x1C && ((0x8030073u >> (attribute - 1)))
   {
     return 0;
   }
@@ -1433,7 +1433,7 @@ LABEL_11:
   v14 = 0;
   v15 = 0;
   v16 = keyFormat->var3;
-  while (v16[v15] != a3)
+  while (v16[v15] != attribute)
   {
     ++v15;
     v14 += 32;
@@ -1445,19 +1445,19 @@ LABEL_11:
 
   if (v15 >= 33)
   {
-    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, v3, v4, v5, v6, v7, *&a3);
+    _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&attribute, v3, v4, v5, v6, v7, *&attribute);
     return 0;
   }
 
   return (v15 & 0x80000000) == 0 && (CUIBitVectorNumberOfBitsSetInBucket(self->_bitmap, v14) != 1 || CUIBitVectorIsBitSet(self->_bitmap, v14) != 1);
 }
 
-- (void)setAttributePresent:(int)a3 withValue:(unsigned __int16)a4
+- (void)setAttributePresent:(int)present withValue:(unsigned __int16)value
 {
-  v8 = *&a3;
+  v8 = *&present;
   keyFormat = self->_keyFormat;
   platform = self->_platform;
-  if (a3 == 16 && platform == -1)
+  if (present == 16 && platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -1481,105 +1481,105 @@ LABEL_11:
     }
   }
 
-  if (a3 > 0x1C)
+  if (present > 0x1C)
   {
     goto LABEL_23;
   }
 
-  if (((1 << a3) & 0x100600E6) != 0)
+  if (((1 << present) & 0x100600E6) != 0)
   {
     return;
   }
 
-  if (a3 == 13)
+  if (present == 13)
   {
-    *&a4 = a4 != 0;
+    *&value = value != 0;
     goto LABEL_23;
   }
 
-  if (a3 != 16)
+  if (present != 16)
   {
     goto LABEL_23;
   }
 
   if (platform == -1)
   {
-    if (a4 > 2159)
+    if (value > 2159)
     {
-      if (a4 > 2531)
+      if (value > 2531)
       {
-        if (a4 > 2777)
+        if (value > 2777)
         {
-          if (a4 > 3839)
+          if (value > 3839)
           {
-            if (a4 == 3840)
+            if (value == 3840)
             {
               goto LABEL_170;
             }
 
-            if (a4 == 32401)
+            if (value == 32401)
             {
 LABEL_187:
-              *&a4 = 17;
+              *&value = 17;
               goto LABEL_23;
             }
           }
 
           else
           {
-            if (a4 == 2778)
+            if (value == 2778)
             {
 LABEL_176:
-              *&a4 = 19;
+              *&value = 19;
               goto LABEL_23;
             }
 
-            if (a4 == 2796)
+            if (value == 2796)
             {
               goto LABEL_135;
             }
           }
         }
 
-        else if (a4 > 2687)
+        else if (value > 2687)
         {
-          if (a4 == 2688)
+          if (value == 2688)
           {
             goto LABEL_184;
           }
 
-          if (a4 == 2732)
+          if (value == 2732)
           {
 LABEL_182:
-            *&a4 = 4;
+            *&value = 4;
             goto LABEL_23;
           }
         }
 
         else
         {
-          if (a4 == 2532)
+          if (value == 2532)
           {
             goto LABEL_156;
           }
 
-          if (a4 == 2556)
+          if (value == 2556)
           {
             goto LABEL_155;
           }
         }
       }
 
-      else if (a4 > 2339)
+      else if (value > 2339)
       {
-        if (a4 > 2387)
+        if (value > 2387)
         {
-          if (a4 == 2388)
+          if (value == 2388)
           {
             goto LABEL_171;
           }
 
-          if (a4 == 2436)
+          if (value == 2436)
           {
             goto LABEL_160;
           }
@@ -1587,30 +1587,30 @@ LABEL_182:
 
         else
         {
-          if (a4 == 2340)
+          if (value == 2340)
           {
 LABEL_143:
-            *&a4 = 18;
+            *&value = 18;
             goto LABEL_23;
           }
 
-          if (a4 == 2360)
+          if (value == 2360)
           {
             goto LABEL_172;
           }
         }
       }
 
-      else if (a4 > 2233)
+      else if (value > 2233)
       {
-        if (a4 == 2234)
+        if (value == 2234)
         {
 LABEL_116:
-          *&a4 = 27;
+          *&value = 27;
           goto LABEL_23;
         }
 
-        if (a4 == 2266)
+        if (value == 2266)
         {
           goto LABEL_158;
         }
@@ -1618,32 +1618,32 @@ LABEL_116:
 
       else
       {
-        if (a4 == 2160)
+        if (value == 2160)
         {
 LABEL_164:
-          *&a4 = 21;
+          *&value = 21;
           goto LABEL_23;
         }
 
-        if (a4 == 2224)
+        if (value == 2224)
         {
           goto LABEL_159;
         }
       }
     }
 
-    else if (a4 > 501)
+    else if (value > 501)
     {
-      if (a4 > 719)
+      if (value > 719)
       {
-        if (a4 > 1791)
+        if (value > 1791)
         {
-          if (a4 == 1792)
+          if (value == 1792)
           {
             goto LABEL_165;
           }
 
-          if (a4 == 1964)
+          if (value == 1964)
           {
             goto LABEL_131;
           }
@@ -1651,26 +1651,26 @@ LABEL_164:
 
         else
         {
-          if (a4 == 720)
+          if (value == 720)
           {
             goto LABEL_188;
           }
 
-          if (a4 == 1665)
+          if (value == 1665)
           {
             goto LABEL_177;
           }
         }
       }
 
-      else if (a4 > 568)
+      else if (value > 568)
       {
-        if (a4 == 569)
+        if (value == 569)
         {
           goto LABEL_157;
         }
 
-        if (a4 == 570)
+        if (value == 570)
         {
           goto LABEL_166;
         }
@@ -1678,28 +1678,28 @@ LABEL_164:
 
       else
       {
-        if (a4 == 502)
+        if (value == 502)
         {
           goto LABEL_136;
         }
 
-        if (a4 == 568)
+        if (value == 568)
         {
           goto LABEL_78;
         }
       }
     }
 
-    else if (a4 > 383)
+    else if (value > 383)
     {
-      if (a4 > 429)
+      if (value > 429)
       {
-        if (a4 == 430)
+        if (value == 430)
         {
           goto LABEL_138;
         }
 
-        if (a4 == 484)
+        if (value == 484)
         {
           goto LABEL_154;
         }
@@ -1707,26 +1707,26 @@ LABEL_164:
 
       else
       {
-        if (a4 == 384)
+        if (value == 384)
         {
           goto LABEL_137;
         }
 
-        if (a4 == 390)
+        if (value == 390)
         {
           goto LABEL_82;
         }
       }
     }
 
-    else if (a4 > 319)
+    else if (value > 319)
     {
-      if (a4 == 320)
+      if (value == 320)
       {
         goto LABEL_178;
       }
 
-      if (a4 == 340)
+      if (value == 340)
       {
         goto LABEL_183;
       }
@@ -1734,23 +1734,23 @@ LABEL_164:
 
     else
     {
-      if (!a4)
+      if (!value)
       {
         goto LABEL_23;
       }
 
-      if (a4 == 163)
+      if (value == 163)
       {
         goto LABEL_109;
       }
     }
 
-    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&a3, a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
-    *&a4 = 0xFFFFLL;
+    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&present, value, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+    *&value = 0xFFFFLL;
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!value)
   {
     goto LABEL_23;
   }
@@ -1761,11 +1761,11 @@ LABEL_164:
     {
       if (platform == 3)
       {
-        if (a4 != 3840)
+        if (value != 3840)
         {
-          if (a4 != 1088)
+          if (value != 1088)
           {
-            if (a4 != 720)
+            if (value != 720)
             {
               goto LABEL_102;
             }
@@ -1774,37 +1774,37 @@ LABEL_164:
           }
 
 LABEL_109:
-          *&a4 = 5;
+          *&value = 5;
           goto LABEL_23;
         }
 
 LABEL_170:
-        *&a4 = 7;
+        *&value = 7;
         goto LABEL_23;
       }
 
       goto LABEL_65;
     }
 
-    if (a4 <= 1963)
+    if (value <= 1963)
     {
-      if (a4 == 1665)
+      if (value == 1665)
       {
         goto LABEL_177;
       }
 
-      if (a4 == 1864)
+      if (value == 1864)
       {
         goto LABEL_78;
       }
 
 LABEL_102:
-      [CUINamedRenditionInfo attributePresent:a4 withValue:platform];
+      [CUINamedRenditionInfo attributePresent:value withValue:platform];
     }
 
-    if (a4 != 1964)
+    if (value != 1964)
     {
-      if (a4 != 2234)
+      if (value != 2234)
       {
         goto LABEL_102;
       }
@@ -1813,13 +1813,13 @@ LABEL_102:
     }
 
 LABEL_131:
-    *&a4 = 26;
+    *&value = 26;
     goto LABEL_23;
   }
 
   if (platform == 5)
   {
-    if (a4 != 3648)
+    if (value != 3648)
     {
       goto LABEL_102;
     }
@@ -1829,16 +1829,16 @@ LABEL_131:
 
   if (platform == 4)
   {
-    if (a4 <= 445)
+    if (value <= 445)
     {
-      if (a4 <= 383)
+      if (value <= 383)
       {
-        if (a4 == 320)
+        if (value == 320)
         {
           goto LABEL_178;
         }
 
-        if (a4 == 340)
+        if (value == 340)
         {
           goto LABEL_183;
         }
@@ -1846,38 +1846,38 @@ LABEL_131:
         goto LABEL_102;
       }
 
-      if (a4 != 384)
+      if (value != 384)
       {
-        if (a4 == 390)
+        if (value == 390)
         {
           goto LABEL_82;
         }
 
-        if (a4 != 430)
+        if (value != 430)
         {
           goto LABEL_102;
         }
 
 LABEL_138:
-        *&a4 = 23;
+        *&value = 23;
         goto LABEL_23;
       }
 
 LABEL_137:
-      *&a4 = 9;
+      *&value = 9;
       goto LABEL_23;
     }
 
-    if (a4 > 495)
+    if (value > 495)
     {
-      if (a4 == 496)
+      if (value == 496)
       {
         goto LABEL_135;
       }
 
-      if (a4 != 502)
+      if (value != 502)
       {
-        if (a4 == 514)
+        if (value == 514)
         {
           goto LABEL_177;
         }
@@ -1886,22 +1886,22 @@ LABEL_137:
       }
 
 LABEL_136:
-      *&a4 = 28;
+      *&value = 28;
       goto LABEL_23;
     }
 
-    if (a4 == 446)
+    if (value == 446)
     {
       goto LABEL_155;
     }
 
-    if (a4 != 484)
+    if (value != 484)
     {
       goto LABEL_102;
     }
 
 LABEL_154:
-    *&a4 = 24;
+    *&value = 24;
     goto LABEL_23;
   }
 
@@ -1911,39 +1911,39 @@ LABEL_65:
     goto LABEL_102;
   }
 
-  if (a4 <= 2435)
+  if (value <= 2435)
   {
-    if (a4 <= 2223)
+    if (value <= 2223)
     {
-      if (a4 <= 569)
+      if (value <= 569)
       {
-        if (a4 == 163)
+        if (value == 163)
         {
           goto LABEL_109;
         }
 
-        if (a4 != 568)
+        if (value != 568)
         {
-          if (a4 != 569)
+          if (value != 569)
           {
             goto LABEL_102;
           }
 
 LABEL_157:
-          *&a4 = 2;
+          *&value = 2;
           goto LABEL_23;
         }
 
 LABEL_78:
-        *&a4 = 1;
+        *&value = 1;
         goto LABEL_23;
       }
 
-      if (a4 != 570)
+      if (value != 570)
       {
-        if (a4 != 1792)
+        if (value != 1792)
         {
-          if (a4 != 2160)
+          if (value != 2160)
           {
             goto LABEL_102;
           }
@@ -1952,22 +1952,22 @@ LABEL_78:
         }
 
 LABEL_165:
-        *&a4 = 16;
+        *&value = 16;
         goto LABEL_23;
       }
 
 LABEL_166:
-      *&a4 = 3;
+      *&value = 3;
       goto LABEL_23;
     }
 
-    if (a4 <= 2359)
+    if (value <= 2359)
     {
-      if (a4 != 2224)
+      if (value != 2224)
       {
-        if (a4 != 2266)
+        if (value != 2266)
         {
-          if (a4 != 2340)
+          if (value != 2340)
           {
             goto LABEL_102;
           }
@@ -1976,20 +1976,20 @@ LABEL_166:
         }
 
 LABEL_158:
-        *&a4 = 25;
+        *&value = 25;
         goto LABEL_23;
       }
 
 LABEL_159:
-      *&a4 = 10;
+      *&value = 10;
       goto LABEL_23;
     }
 
-    if (a4 != 2360)
+    if (value != 2360)
     {
-      if (a4 != 2388)
+      if (value != 2388)
       {
-        if (a4 != 2420)
+        if (value != 2420)
         {
           goto LABEL_102;
         }
@@ -1998,48 +1998,48 @@ LABEL_159:
       }
 
 LABEL_171:
-      *&a4 = 15;
+      *&value = 15;
       goto LABEL_23;
     }
 
 LABEL_172:
-    *&a4 = 20;
+    *&value = 20;
     goto LABEL_23;
   }
 
-  if (a4 <= 2735)
+  if (value <= 2735)
   {
-    if (a4 <= 2621)
+    if (value <= 2621)
     {
-      if (a4 != 2436)
+      if (value != 2436)
       {
-        if (a4 != 2532)
+        if (value != 2532)
         {
-          if (a4 != 2556)
+          if (value != 2556)
           {
             goto LABEL_102;
           }
 
 LABEL_155:
-          *&a4 = 29;
+          *&value = 29;
           goto LABEL_23;
         }
 
 LABEL_156:
-        *&a4 = 22;
+        *&value = 22;
         goto LABEL_23;
       }
 
 LABEL_160:
-      *&a4 = 11;
+      *&value = 11;
       goto LABEL_23;
     }
 
-    if (a4 != 2622)
+    if (value != 2622)
     {
-      if (a4 != 2688)
+      if (value != 2688)
       {
-        if (a4 != 2732)
+        if (value != 2732)
         {
           goto LABEL_102;
         }
@@ -2048,22 +2048,22 @@ LABEL_160:
       }
 
 LABEL_184:
-      *&a4 = 12;
+      *&value = 12;
       goto LABEL_23;
     }
 
 LABEL_183:
-    *&a4 = 13;
+    *&value = 13;
     goto LABEL_23;
   }
 
-  if (a4 <= 2795)
+  if (value <= 2795)
   {
-    if (a4 != 2736)
+    if (value != 2736)
     {
-      if (a4 != 2752)
+      if (value != 2752)
       {
-        if (a4 != 2778)
+        if (value != 2778)
         {
           goto LABEL_102;
         }
@@ -2072,37 +2072,37 @@ LABEL_183:
       }
 
 LABEL_178:
-      *&a4 = 8;
+      *&value = 8;
       goto LABEL_23;
     }
 
 LABEL_177:
-    *&a4 = 31;
+    *&value = 31;
     goto LABEL_23;
   }
 
-  if (a4 <= 3023)
+  if (value <= 3023)
   {
-    if (a4 != 2796)
+    if (value != 2796)
     {
-      if (a4 != 2868)
+      if (value != 2868)
       {
         goto LABEL_102;
       }
 
 LABEL_82:
-      *&a4 = 14;
+      *&value = 14;
       goto LABEL_23;
     }
 
 LABEL_135:
-    *&a4 = 30;
+    *&value = 30;
     goto LABEL_23;
   }
 
-  if (a4 != 3024)
+  if (value != 3024)
   {
-    if (a4 != 32401)
+    if (value != 32401)
     {
       goto LABEL_102;
     }
@@ -2111,17 +2111,17 @@ LABEL_135:
   }
 
 LABEL_188:
-  *&a4 = 6;
+  *&value = 6;
 LABEL_23:
   v15 = keyFormat->var2;
   if (v15)
   {
     v16 = 0;
-    v17 = a4;
+    valueCopy = value;
     while (keyFormat->var3[v16] != v8)
     {
       ++v16;
-      v17 += 32;
+      valueCopy += 32;
       if (v15 == v16)
       {
         return;
@@ -2130,27 +2130,27 @@ LABEL_23:
 
     if (v16 < 33)
     {
-      if ((v17 & 0x80000000) == 0)
+      if ((valueCopy & 0x80000000) == 0)
       {
         bitmap = self->_bitmap;
 
-        CUIBitVectorSetBit(bitmap, v17);
+        CUIBitVectorSetBit(bitmap, valueCopy);
       }
     }
 
     else
     {
-      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, a4, v4, v5, v6, v7, v8);
+      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&present, value, v4, v5, v6, v7, v8);
     }
   }
 }
 
-- (void)clearAttributePresent:(int)a3 withValue:(unsigned __int16)a4
+- (void)clearAttributePresent:(int)present withValue:(unsigned __int16)value
 {
-  v8 = *&a3;
+  v8 = *&present;
   keyFormat = self->_keyFormat;
   platform = self->_platform;
-  if (a3 == 16 && platform == -1)
+  if (present == 16 && platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -2174,105 +2174,105 @@ LABEL_23:
     }
   }
 
-  if (a3 > 0x1C)
+  if (present > 0x1C)
   {
     goto LABEL_23;
   }
 
-  if (((1 << a3) & 0x100600E6) != 0)
+  if (((1 << present) & 0x100600E6) != 0)
   {
     return;
   }
 
-  if (a3 == 13)
+  if (present == 13)
   {
-    *&a4 = a4 != 0;
+    *&value = value != 0;
     goto LABEL_23;
   }
 
-  if (a3 != 16)
+  if (present != 16)
   {
     goto LABEL_23;
   }
 
   if (platform == -1)
   {
-    if (a4 > 2159)
+    if (value > 2159)
     {
-      if (a4 > 2531)
+      if (value > 2531)
       {
-        if (a4 > 2777)
+        if (value > 2777)
         {
-          if (a4 > 3839)
+          if (value > 3839)
           {
-            if (a4 == 3840)
+            if (value == 3840)
             {
               goto LABEL_170;
             }
 
-            if (a4 == 32401)
+            if (value == 32401)
             {
 LABEL_187:
-              *&a4 = 17;
+              *&value = 17;
               goto LABEL_23;
             }
           }
 
           else
           {
-            if (a4 == 2778)
+            if (value == 2778)
             {
 LABEL_176:
-              *&a4 = 19;
+              *&value = 19;
               goto LABEL_23;
             }
 
-            if (a4 == 2796)
+            if (value == 2796)
             {
               goto LABEL_135;
             }
           }
         }
 
-        else if (a4 > 2687)
+        else if (value > 2687)
         {
-          if (a4 == 2688)
+          if (value == 2688)
           {
             goto LABEL_184;
           }
 
-          if (a4 == 2732)
+          if (value == 2732)
           {
 LABEL_182:
-            *&a4 = 4;
+            *&value = 4;
             goto LABEL_23;
           }
         }
 
         else
         {
-          if (a4 == 2532)
+          if (value == 2532)
           {
             goto LABEL_156;
           }
 
-          if (a4 == 2556)
+          if (value == 2556)
           {
             goto LABEL_155;
           }
         }
       }
 
-      else if (a4 > 2339)
+      else if (value > 2339)
       {
-        if (a4 > 2387)
+        if (value > 2387)
         {
-          if (a4 == 2388)
+          if (value == 2388)
           {
             goto LABEL_171;
           }
 
-          if (a4 == 2436)
+          if (value == 2436)
           {
             goto LABEL_160;
           }
@@ -2280,30 +2280,30 @@ LABEL_182:
 
         else
         {
-          if (a4 == 2340)
+          if (value == 2340)
           {
 LABEL_143:
-            *&a4 = 18;
+            *&value = 18;
             goto LABEL_23;
           }
 
-          if (a4 == 2360)
+          if (value == 2360)
           {
             goto LABEL_172;
           }
         }
       }
 
-      else if (a4 > 2233)
+      else if (value > 2233)
       {
-        if (a4 == 2234)
+        if (value == 2234)
         {
 LABEL_116:
-          *&a4 = 27;
+          *&value = 27;
           goto LABEL_23;
         }
 
-        if (a4 == 2266)
+        if (value == 2266)
         {
           goto LABEL_158;
         }
@@ -2311,32 +2311,32 @@ LABEL_116:
 
       else
       {
-        if (a4 == 2160)
+        if (value == 2160)
         {
 LABEL_164:
-          *&a4 = 21;
+          *&value = 21;
           goto LABEL_23;
         }
 
-        if (a4 == 2224)
+        if (value == 2224)
         {
           goto LABEL_159;
         }
       }
     }
 
-    else if (a4 > 501)
+    else if (value > 501)
     {
-      if (a4 > 719)
+      if (value > 719)
       {
-        if (a4 > 1791)
+        if (value > 1791)
         {
-          if (a4 == 1792)
+          if (value == 1792)
           {
             goto LABEL_165;
           }
 
-          if (a4 == 1964)
+          if (value == 1964)
           {
             goto LABEL_131;
           }
@@ -2344,26 +2344,26 @@ LABEL_164:
 
         else
         {
-          if (a4 == 720)
+          if (value == 720)
           {
             goto LABEL_188;
           }
 
-          if (a4 == 1665)
+          if (value == 1665)
           {
             goto LABEL_177;
           }
         }
       }
 
-      else if (a4 > 568)
+      else if (value > 568)
       {
-        if (a4 == 569)
+        if (value == 569)
         {
           goto LABEL_157;
         }
 
-        if (a4 == 570)
+        if (value == 570)
         {
           goto LABEL_166;
         }
@@ -2371,28 +2371,28 @@ LABEL_164:
 
       else
       {
-        if (a4 == 502)
+        if (value == 502)
         {
           goto LABEL_136;
         }
 
-        if (a4 == 568)
+        if (value == 568)
         {
           goto LABEL_78;
         }
       }
     }
 
-    else if (a4 > 383)
+    else if (value > 383)
     {
-      if (a4 > 429)
+      if (value > 429)
       {
-        if (a4 == 430)
+        if (value == 430)
         {
           goto LABEL_138;
         }
 
-        if (a4 == 484)
+        if (value == 484)
         {
           goto LABEL_154;
         }
@@ -2400,26 +2400,26 @@ LABEL_164:
 
       else
       {
-        if (a4 == 384)
+        if (value == 384)
         {
           goto LABEL_137;
         }
 
-        if (a4 == 390)
+        if (value == 390)
         {
           goto LABEL_82;
         }
       }
     }
 
-    else if (a4 > 319)
+    else if (value > 319)
     {
-      if (a4 == 320)
+      if (value == 320)
       {
         goto LABEL_178;
       }
 
-      if (a4 == 340)
+      if (value == 340)
       {
         goto LABEL_183;
       }
@@ -2427,23 +2427,23 @@ LABEL_164:
 
     else
     {
-      if (!a4)
+      if (!value)
       {
         goto LABEL_23;
       }
 
-      if (a4 == 163)
+      if (value == 163)
       {
         goto LABEL_109;
       }
     }
 
-    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&a3, a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
-    *&a4 = 0xFFFFLL;
+    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", *&present, value, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+    *&value = 0xFFFFLL;
     goto LABEL_23;
   }
 
-  if (!a4)
+  if (!value)
   {
     goto LABEL_23;
   }
@@ -2454,11 +2454,11 @@ LABEL_164:
     {
       if (platform == 3)
       {
-        if (a4 != 3840)
+        if (value != 3840)
         {
-          if (a4 != 1088)
+          if (value != 1088)
           {
-            if (a4 != 720)
+            if (value != 720)
             {
               goto LABEL_102;
             }
@@ -2467,37 +2467,37 @@ LABEL_164:
           }
 
 LABEL_109:
-          *&a4 = 5;
+          *&value = 5;
           goto LABEL_23;
         }
 
 LABEL_170:
-        *&a4 = 7;
+        *&value = 7;
         goto LABEL_23;
       }
 
       goto LABEL_65;
     }
 
-    if (a4 <= 1963)
+    if (value <= 1963)
     {
-      if (a4 == 1665)
+      if (value == 1665)
       {
         goto LABEL_177;
       }
 
-      if (a4 == 1864)
+      if (value == 1864)
       {
         goto LABEL_78;
       }
 
 LABEL_102:
-      [CUINamedRenditionInfo attributePresent:a4 withValue:platform];
+      [CUINamedRenditionInfo attributePresent:value withValue:platform];
     }
 
-    if (a4 != 1964)
+    if (value != 1964)
     {
-      if (a4 != 2234)
+      if (value != 2234)
       {
         goto LABEL_102;
       }
@@ -2506,13 +2506,13 @@ LABEL_102:
     }
 
 LABEL_131:
-    *&a4 = 26;
+    *&value = 26;
     goto LABEL_23;
   }
 
   if (platform == 5)
   {
-    if (a4 != 3648)
+    if (value != 3648)
     {
       goto LABEL_102;
     }
@@ -2522,16 +2522,16 @@ LABEL_131:
 
   if (platform == 4)
   {
-    if (a4 <= 445)
+    if (value <= 445)
     {
-      if (a4 <= 383)
+      if (value <= 383)
       {
-        if (a4 == 320)
+        if (value == 320)
         {
           goto LABEL_178;
         }
 
-        if (a4 == 340)
+        if (value == 340)
         {
           goto LABEL_183;
         }
@@ -2539,38 +2539,38 @@ LABEL_131:
         goto LABEL_102;
       }
 
-      if (a4 != 384)
+      if (value != 384)
       {
-        if (a4 == 390)
+        if (value == 390)
         {
           goto LABEL_82;
         }
 
-        if (a4 != 430)
+        if (value != 430)
         {
           goto LABEL_102;
         }
 
 LABEL_138:
-        *&a4 = 23;
+        *&value = 23;
         goto LABEL_23;
       }
 
 LABEL_137:
-      *&a4 = 9;
+      *&value = 9;
       goto LABEL_23;
     }
 
-    if (a4 > 495)
+    if (value > 495)
     {
-      if (a4 == 496)
+      if (value == 496)
       {
         goto LABEL_135;
       }
 
-      if (a4 != 502)
+      if (value != 502)
       {
-        if (a4 == 514)
+        if (value == 514)
         {
           goto LABEL_177;
         }
@@ -2579,22 +2579,22 @@ LABEL_137:
       }
 
 LABEL_136:
-      *&a4 = 28;
+      *&value = 28;
       goto LABEL_23;
     }
 
-    if (a4 == 446)
+    if (value == 446)
     {
       goto LABEL_155;
     }
 
-    if (a4 != 484)
+    if (value != 484)
     {
       goto LABEL_102;
     }
 
 LABEL_154:
-    *&a4 = 24;
+    *&value = 24;
     goto LABEL_23;
   }
 
@@ -2604,39 +2604,39 @@ LABEL_65:
     goto LABEL_102;
   }
 
-  if (a4 <= 2435)
+  if (value <= 2435)
   {
-    if (a4 <= 2223)
+    if (value <= 2223)
     {
-      if (a4 <= 569)
+      if (value <= 569)
       {
-        if (a4 == 163)
+        if (value == 163)
         {
           goto LABEL_109;
         }
 
-        if (a4 != 568)
+        if (value != 568)
         {
-          if (a4 != 569)
+          if (value != 569)
           {
             goto LABEL_102;
           }
 
 LABEL_157:
-          *&a4 = 2;
+          *&value = 2;
           goto LABEL_23;
         }
 
 LABEL_78:
-        *&a4 = 1;
+        *&value = 1;
         goto LABEL_23;
       }
 
-      if (a4 != 570)
+      if (value != 570)
       {
-        if (a4 != 1792)
+        if (value != 1792)
         {
-          if (a4 != 2160)
+          if (value != 2160)
           {
             goto LABEL_102;
           }
@@ -2645,22 +2645,22 @@ LABEL_78:
         }
 
 LABEL_165:
-        *&a4 = 16;
+        *&value = 16;
         goto LABEL_23;
       }
 
 LABEL_166:
-      *&a4 = 3;
+      *&value = 3;
       goto LABEL_23;
     }
 
-    if (a4 <= 2359)
+    if (value <= 2359)
     {
-      if (a4 != 2224)
+      if (value != 2224)
       {
-        if (a4 != 2266)
+        if (value != 2266)
         {
-          if (a4 != 2340)
+          if (value != 2340)
           {
             goto LABEL_102;
           }
@@ -2669,20 +2669,20 @@ LABEL_166:
         }
 
 LABEL_158:
-        *&a4 = 25;
+        *&value = 25;
         goto LABEL_23;
       }
 
 LABEL_159:
-      *&a4 = 10;
+      *&value = 10;
       goto LABEL_23;
     }
 
-    if (a4 != 2360)
+    if (value != 2360)
     {
-      if (a4 != 2388)
+      if (value != 2388)
       {
-        if (a4 != 2420)
+        if (value != 2420)
         {
           goto LABEL_102;
         }
@@ -2691,48 +2691,48 @@ LABEL_159:
       }
 
 LABEL_171:
-      *&a4 = 15;
+      *&value = 15;
       goto LABEL_23;
     }
 
 LABEL_172:
-    *&a4 = 20;
+    *&value = 20;
     goto LABEL_23;
   }
 
-  if (a4 <= 2735)
+  if (value <= 2735)
   {
-    if (a4 <= 2621)
+    if (value <= 2621)
     {
-      if (a4 != 2436)
+      if (value != 2436)
       {
-        if (a4 != 2532)
+        if (value != 2532)
         {
-          if (a4 != 2556)
+          if (value != 2556)
           {
             goto LABEL_102;
           }
 
 LABEL_155:
-          *&a4 = 29;
+          *&value = 29;
           goto LABEL_23;
         }
 
 LABEL_156:
-        *&a4 = 22;
+        *&value = 22;
         goto LABEL_23;
       }
 
 LABEL_160:
-      *&a4 = 11;
+      *&value = 11;
       goto LABEL_23;
     }
 
-    if (a4 != 2622)
+    if (value != 2622)
     {
-      if (a4 != 2688)
+      if (value != 2688)
       {
-        if (a4 != 2732)
+        if (value != 2732)
         {
           goto LABEL_102;
         }
@@ -2741,22 +2741,22 @@ LABEL_160:
       }
 
 LABEL_184:
-      *&a4 = 12;
+      *&value = 12;
       goto LABEL_23;
     }
 
 LABEL_183:
-    *&a4 = 13;
+    *&value = 13;
     goto LABEL_23;
   }
 
-  if (a4 <= 2795)
+  if (value <= 2795)
   {
-    if (a4 != 2736)
+    if (value != 2736)
     {
-      if (a4 != 2752)
+      if (value != 2752)
       {
-        if (a4 != 2778)
+        if (value != 2778)
         {
           goto LABEL_102;
         }
@@ -2765,37 +2765,37 @@ LABEL_183:
       }
 
 LABEL_178:
-      *&a4 = 8;
+      *&value = 8;
       goto LABEL_23;
     }
 
 LABEL_177:
-    *&a4 = 31;
+    *&value = 31;
     goto LABEL_23;
   }
 
-  if (a4 <= 3023)
+  if (value <= 3023)
   {
-    if (a4 != 2796)
+    if (value != 2796)
     {
-      if (a4 != 2868)
+      if (value != 2868)
       {
         goto LABEL_102;
       }
 
 LABEL_82:
-      *&a4 = 14;
+      *&value = 14;
       goto LABEL_23;
     }
 
 LABEL_135:
-    *&a4 = 30;
+    *&value = 30;
     goto LABEL_23;
   }
 
-  if (a4 != 3024)
+  if (value != 3024)
   {
-    if (a4 != 32401)
+    if (value != 32401)
     {
       goto LABEL_102;
     }
@@ -2804,17 +2804,17 @@ LABEL_135:
   }
 
 LABEL_188:
-  *&a4 = 6;
+  *&value = 6;
 LABEL_23:
   v15 = keyFormat->var2;
   if (v15)
   {
     v16 = 0;
-    v17 = a4;
+    valueCopy = value;
     while (keyFormat->var3[v16] != v8)
     {
       ++v16;
-      v17 += 32;
+      valueCopy += 32;
       if (v15 == v16)
       {
         return;
@@ -2823,28 +2823,28 @@ LABEL_23:
 
     if (v16 < 33)
     {
-      if ((v17 & 0x80000000) == 0)
+      if ((valueCopy & 0x80000000) == 0)
       {
         bitmap = self->_bitmap;
 
-        CUIBitVectorUnSetBit(bitmap, v17);
+        CUIBitVectorUnSetBit(bitmap, valueCopy);
       }
     }
 
     else
     {
-      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&a3, a4, v4, v5, v6, v7, v8);
+      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", *&present, value, v4, v5, v6, v7, v8);
     }
   }
 }
 
-- (void)decrementValue:(int64_t *)a3 forAttribute:(int)a4
+- (void)decrementValue:(int64_t *)value forAttribute:(int)attribute
 {
-  v8 = *&a4;
-  v11 = *a3;
+  v8 = *&attribute;
+  v11 = *value;
   keyFormat = self->_keyFormat;
   platform = self->_platform;
-  if (a4 == 16 && platform == -1)
+  if (attribute == 16 && platform == -1)
   {
     var2 = keyFormat->var2;
     if (!var2)
@@ -2868,30 +2868,30 @@ LABEL_23:
     }
   }
 
-  if (a4 <= 0x1C)
+  if (attribute <= 0x1C)
   {
-    if (((1 << a4) & 0x100600E6) != 0)
+    if (((1 << attribute) & 0x100600E6) != 0)
     {
       return;
     }
 
-    if (a4 == 13)
+    if (attribute == 13)
     {
-      LOWORD(v11) = *a3 != 0;
+      LOWORD(v11) = *value != 0;
     }
 
-    else if (a4 == 16)
+    else if (attribute == 16)
     {
       if (platform == -1)
       {
-        v29 = *a3;
+        v29 = *value;
         if (v29 > 0x86F)
         {
-          if (*a3 > 0x9E3u)
+          if (*value > 0x9E3u)
           {
-            if (*a3 > 0xAD9u)
+            if (*value > 0xAD9u)
             {
-              if (*a3 > 0xEFFu)
+              if (*value > 0xEFFu)
               {
                 if (v29 == 3840)
                 {
@@ -2922,7 +2922,7 @@ LABEL_363:
               }
             }
 
-            else if (*a3 > 0xA7Fu)
+            else if (*value > 0xA7Fu)
             {
               if (v29 == 2688)
               {
@@ -2951,9 +2951,9 @@ LABEL_369:
             }
           }
 
-          else if (*a3 > 0x923u)
+          else if (*value > 0x923u)
           {
-            if (*a3 > 0x953u)
+            if (*value > 0x953u)
             {
               if (v29 == 2388)
               {
@@ -2982,7 +2982,7 @@ LABEL_330:
             }
           }
 
-          else if (*a3 > 0x8B9u)
+          else if (*value > 0x8B9u)
           {
             if (v29 == 2234)
             {
@@ -3013,11 +3013,11 @@ LABEL_351:
           }
         }
 
-        else if (*a3 > 0x1F5u)
+        else if (*value > 0x1F5u)
         {
-          if (*a3 > 0x2CFu)
+          if (*value > 0x2CFu)
           {
-            if (*a3 > 0x6FFu)
+            if (*value > 0x6FFu)
             {
               if (v29 == 1792)
               {
@@ -3044,7 +3044,7 @@ LABEL_351:
             }
           }
 
-          else if (*a3 > 0x238u)
+          else if (*value > 0x238u)
           {
             if (v29 == 569)
             {
@@ -3071,9 +3071,9 @@ LABEL_351:
           }
         }
 
-        else if (*a3 > 0x17Fu)
+        else if (*value > 0x17Fu)
         {
-          if (*a3 > 0x1ADu)
+          if (*value > 0x1ADu)
           {
             if (v29 == 430)
             {
@@ -3100,7 +3100,7 @@ LABEL_351:
           }
         }
 
-        else if (*a3 > 0x13Fu)
+        else if (*value > 0x13Fu)
         {
           if (v29 == 320)
           {
@@ -3115,7 +3115,7 @@ LABEL_351:
 
         else
         {
-          if (!*a3)
+          if (!*value)
           {
             goto LABEL_23;
           }
@@ -3126,12 +3126,12 @@ LABEL_351:
           }
         }
 
-        _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", a3, *&a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+        _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", value, *&attribute, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
         LOWORD(v11) = -1;
         goto LABEL_23;
       }
 
-      if (*a3)
+      if (*value)
       {
         if (platform <= 3)
         {
@@ -3139,7 +3139,7 @@ LABEL_351:
           {
             if (platform == 3)
             {
-              v17 = *a3;
+              v17 = *value;
               if (v17 != 3840)
               {
                 if (v17 != 1088)
@@ -3166,14 +3166,14 @@ LABEL_252:
               goto LABEL_289;
             }
 
-            v31 = *a3;
+            v31 = *value;
             if (v31 > 0x983)
             {
-              if (*a3 > 0xAAFu)
+              if (*value > 0xAAFu)
               {
-                if (*a3 > 0xAEBu)
+                if (*value > 0xAEBu)
                 {
-                  if (*a3 <= 0xBCFu)
+                  if (*value <= 0xBCFu)
                   {
                     if (v31 != 2796)
                     {
@@ -3227,7 +3227,7 @@ LABEL_364:
                 goto LABEL_23;
               }
 
-              if (*a3 <= 0xA3Du)
+              if (*value <= 0xA3Du)
               {
                 if (v31 != 2436)
                 {
@@ -3275,9 +3275,9 @@ LABEL_370:
               goto LABEL_23;
             }
 
-            if (*a3 <= 0x8AFu)
+            if (*value <= 0x8AFu)
             {
-              if (*a3 <= 0x239u)
+              if (*value <= 0x239u)
               {
                 if (v31 != 163)
                 {
@@ -3323,7 +3323,7 @@ LABEL_353:
               goto LABEL_23;
             }
 
-            if (*a3 <= 0x937u)
+            if (*value <= 0x937u)
             {
               if (v31 != 2224)
               {
@@ -3369,7 +3369,7 @@ LABEL_359:
             goto LABEL_23;
           }
 
-          v32 = *a3;
+          v32 = *value;
           if (v32 <= 0x7AB)
           {
             if (v32 == 1665)
@@ -3404,7 +3404,7 @@ LABEL_318:
 
         if (platform == 5)
         {
-          if (*a3 != 3648)
+          if (*value != 3648)
           {
             goto LABEL_289;
           }
@@ -3417,10 +3417,10 @@ LABEL_318:
           goto LABEL_252;
         }
 
-        v30 = *a3;
+        v30 = *value;
         if (v30 <= 0x1BD)
         {
-          if (*a3 <= 0x17Fu)
+          if (*value <= 0x17Fu)
           {
             if (v30 == 320)
             {
@@ -3460,7 +3460,7 @@ LABEL_324:
           goto LABEL_23;
         }
 
-        if (*a3 > 0x1EFu)
+        if (*value > 0x1EFu)
         {
           if (v30 == 496)
           {
@@ -3520,11 +3520,11 @@ LABEL_23:
     if (v19 > 32)
     {
 LABEL_29:
-      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", a3, *&a4, v4, v5, v6, v7, v8);
+      _CUILog(4, "CoreUI: attribute %d > 32 bits its value is %d **************************************************", value, *&attribute, v4, v5, v6, v7, v8);
       return;
     }
 
-    if ((v20 & 0x80000000) == 0 && *a3)
+    if ((v20 & 0x80000000) == 0 && *value)
     {
       do
       {
@@ -3533,8 +3533,8 @@ LABEL_29:
           return;
         }
 
-        v21 = *a3 - 1;
-        *a3 = v21;
+        v21 = *value - 1;
+        *value = v21;
         v23 = self->_keyFormat;
         v22 = self->_platform;
         if (v8 == 16 && v22 == -1)
@@ -3781,7 +3781,7 @@ LABEL_205:
                     }
 
 LABEL_156:
-                    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", a3, *&a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+                    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", value, *&attribute, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
                     LOWORD(v21) = -1;
                     goto LABEL_211;
                   }
@@ -4222,17 +4222,17 @@ LABEL_211:
         }
       }
 
-      while (*a3 && (v20 & 0x80000000) == 0);
+      while (*value && (v20 & 0x80000000) == 0);
     }
   }
 }
 
-- (void)incrementIndex:(unint64_t *)a3 inValues:(id)a4 forAttribute:(int)a5
+- (void)incrementIndex:(unint64_t *)index inValues:(id)values forAttribute:(int)attribute
 {
-  v5 = *&a5;
-  v9 = [a4 count];
+  v5 = *&attribute;
+  v9 = [values count];
   platform = self->_platform;
-  v11 = [objc_msgSend(a4 objectAtIndex:{*a3), "integerValue"}];
+  v11 = [objc_msgSend(values objectAtIndex:{*index), "integerValue"}];
   keyFormat = self->_keyFormat;
   if (v5 == 16 && platform == -1)
   {
@@ -4909,7 +4909,7 @@ LABEL_29:
       return;
     }
 
-    if ((v24 & 0x80000000) == 0 && *a3 < (v9 - 1))
+    if ((v24 & 0x80000000) == 0 && *index < (v9 - 1))
     {
       do
       {
@@ -4918,9 +4918,9 @@ LABEL_29:
           return;
         }
 
-        ++*a3;
+        ++*index;
         v25 = self->_platform;
-        v26 = [objc_msgSend(a4 "objectAtIndex:"integerValue"")];
+        v26 = [objc_msgSend(values "objectAtIndex:"integerValue"")];
         v27 = self->_keyFormat;
         if (v5 == 16 && v25 == -1)
         {
@@ -5607,30 +5607,30 @@ LABEL_211:
         }
       }
 
-      while (*a3 < (v9 - 1) && (v24 & 0x80000000) == 0);
+      while (*index < (v9 - 1) && (v24 & 0x80000000) == 0);
     }
   }
 }
 
-+ (int)subtypeToIndexWithPlatform:(int64_t)a3 andInput:(unsigned __int16)a4
++ (int)subtypeToIndexWithPlatform:(int64_t)platform andInput:(unsigned __int16)input
 {
-  result = a4;
-  if (a3 == -1)
+  result = input;
+  if (platform == -1)
   {
-    if (a4 > 2159)
+    if (input > 2159)
     {
-      if (a4 > 2531)
+      if (input > 2531)
       {
-        if (a4 > 2777)
+        if (input > 2777)
         {
-          if (a4 > 3839)
+          if (input > 3839)
           {
-            if (a4 == 3840)
+            if (input == 3840)
             {
               return 7;
             }
 
-            if (a4 == 32401)
+            if (input == 32401)
             {
               return 17;
             }
@@ -5638,26 +5638,26 @@ LABEL_211:
 
           else
           {
-            if (a4 == 2778)
+            if (input == 2778)
             {
               return 19;
             }
 
-            if (a4 == 2796)
+            if (input == 2796)
             {
               return 30;
             }
           }
         }
 
-        else if (a4 > 2687)
+        else if (input > 2687)
         {
-          if (a4 == 2688)
+          if (input == 2688)
           {
             return 12;
           }
 
-          if (a4 == 2732)
+          if (input == 2732)
           {
             return 4;
           }
@@ -5665,28 +5665,28 @@ LABEL_211:
 
         else
         {
-          if (a4 == 2532)
+          if (input == 2532)
           {
             return 22;
           }
 
-          if (a4 == 2556)
+          if (input == 2556)
           {
             return 29;
           }
         }
       }
 
-      else if (a4 > 2339)
+      else if (input > 2339)
       {
-        if (a4 > 2387)
+        if (input > 2387)
         {
-          if (a4 == 2388)
+          if (input == 2388)
           {
             return 15;
           }
 
-          if (a4 == 2436)
+          if (input == 2436)
           {
             return 11;
           }
@@ -5694,26 +5694,26 @@ LABEL_211:
 
         else
         {
-          if (a4 == 2340)
+          if (input == 2340)
           {
             return 18;
           }
 
-          if (a4 == 2360)
+          if (input == 2360)
           {
             return 20;
           }
         }
       }
 
-      else if (a4 > 2233)
+      else if (input > 2233)
       {
-        if (a4 == 2234)
+        if (input == 2234)
         {
           return 27;
         }
 
-        if (a4 == 2266)
+        if (input == 2266)
         {
           return 25;
         }
@@ -5721,30 +5721,30 @@ LABEL_211:
 
       else
       {
-        if (a4 == 2160)
+        if (input == 2160)
         {
           return 21;
         }
 
-        if (a4 == 2224)
+        if (input == 2224)
         {
           return 10;
         }
       }
     }
 
-    else if (a4 > 501)
+    else if (input > 501)
     {
-      if (a4 > 719)
+      if (input > 719)
       {
-        if (a4 > 1791)
+        if (input > 1791)
         {
-          if (a4 == 1792)
+          if (input == 1792)
           {
             return 16;
           }
 
-          if (a4 == 1964)
+          if (input == 1964)
           {
             return 26;
           }
@@ -5752,26 +5752,26 @@ LABEL_211:
 
         else
         {
-          if (a4 == 720)
+          if (input == 720)
           {
             return 6;
           }
 
-          if (a4 == 1665)
+          if (input == 1665)
           {
             return 31;
           }
         }
       }
 
-      else if (a4 > 568)
+      else if (input > 568)
       {
-        if (a4 == 569)
+        if (input == 569)
         {
           return 2;
         }
 
-        if (a4 == 570)
+        if (input == 570)
         {
           return 3;
         }
@@ -5779,28 +5779,28 @@ LABEL_211:
 
       else
       {
-        if (a4 == 502)
+        if (input == 502)
         {
           return 28;
         }
 
-        if (a4 == 568)
+        if (input == 568)
         {
           return 1;
         }
       }
     }
 
-    else if (a4 > 383)
+    else if (input > 383)
     {
-      if (a4 > 429)
+      if (input > 429)
       {
-        if (a4 == 430)
+        if (input == 430)
         {
           return 23;
         }
 
-        if (a4 == 484)
+        if (input == 484)
         {
           return 24;
         }
@@ -5808,26 +5808,26 @@ LABEL_211:
 
       else
       {
-        if (a4 == 384)
+        if (input == 384)
         {
           return 9;
         }
 
-        if (a4 == 390)
+        if (input == 390)
         {
           return 14;
         }
       }
     }
 
-    else if (a4 > 319)
+    else if (input > 319)
     {
-      if (a4 == 320)
+      if (input == 320)
       {
         return 8;
       }
 
-      if (a4 == 340)
+      if (input == 340)
       {
         return 13;
       }
@@ -5835,37 +5835,37 @@ LABEL_211:
 
     else
     {
-      if (!a4)
+      if (!input)
       {
         return result;
       }
 
-      if (a4 == 163)
+      if (input == 163)
       {
         return 5;
       }
     }
 
-    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", -1, a4, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
+    _CUILog(4, "CoreUI: %s got a device subtype that it doesn't know about %d in unknown platform", -1, input, v4, v5, v6, v7, "int __CUISubtypeToIndex(CUIThemeSchemaPlatform, CUIRenditionKeyUInteger)");
     return -1;
   }
 
-  if (!a4)
+  if (!input)
   {
     return result;
   }
 
-  if (a3 <= 3)
+  if (platform <= 3)
   {
-    if (a3)
+    if (platform)
     {
-      if (a3 == 3)
+      if (platform == 3)
       {
-        if (a4 != 3840)
+        if (input != 3840)
         {
-          if (a4 != 1088)
+          if (input != 1088)
           {
-            if (a4 != 720)
+            if (input != 720)
             {
               goto LABEL_78;
             }
@@ -5882,25 +5882,25 @@ LABEL_211:
       goto LABEL_41;
     }
 
-    if (a4 <= 1963)
+    if (input <= 1963)
     {
-      if (a4 == 1665)
+      if (input == 1665)
       {
         return 31;
       }
 
-      if (a4 == 1864)
+      if (input == 1864)
       {
         return 1;
       }
 
 LABEL_78:
-      [CUINamedRenditionInfo attributePresent:a4 withValue:a3];
+      [CUINamedRenditionInfo attributePresent:input withValue:platform];
     }
 
-    if (a4 != 1964)
+    if (input != 1964)
     {
-      if (a4 != 2234)
+      if (input != 2234)
       {
         goto LABEL_78;
       }
@@ -5911,9 +5911,9 @@ LABEL_78:
     return 26;
   }
 
-  if (a3 == 5)
+  if (platform == 5)
   {
-    if (a4 != 3648)
+    if (input != 3648)
     {
       goto LABEL_78;
     }
@@ -5921,18 +5921,18 @@ LABEL_78:
     return 1;
   }
 
-  if (a3 == 4)
+  if (platform == 4)
   {
-    if (a4 <= 445)
+    if (input <= 445)
     {
-      if (a4 <= 383)
+      if (input <= 383)
       {
-        if (a4 == 320)
+        if (input == 320)
         {
           return 8;
         }
 
-        if (a4 == 340)
+        if (input == 340)
         {
           return 13;
         }
@@ -5940,14 +5940,14 @@ LABEL_78:
         goto LABEL_78;
       }
 
-      if (a4 != 384)
+      if (input != 384)
       {
-        if (a4 == 390)
+        if (input == 390)
         {
           return 14;
         }
 
-        if (a4 != 430)
+        if (input != 430)
         {
           goto LABEL_78;
         }
@@ -5958,16 +5958,16 @@ LABEL_78:
       return 9;
     }
 
-    if (a4 > 495)
+    if (input > 495)
     {
-      if (a4 == 496)
+      if (input == 496)
       {
         return 30;
       }
 
-      if (a4 != 502)
+      if (input != 502)
       {
-        if (a4 == 514)
+        if (input == 514)
         {
           return 31;
         }
@@ -5978,12 +5978,12 @@ LABEL_78:
       return 28;
     }
 
-    if (a4 == 446)
+    if (input == 446)
     {
       return 29;
     }
 
-    if (a4 != 484)
+    if (input != 484)
     {
       goto LABEL_78;
     }
@@ -5992,25 +5992,25 @@ LABEL_78:
   }
 
 LABEL_41:
-  if (a3 > 2)
+  if (platform > 2)
   {
     goto LABEL_78;
   }
 
-  if (a4 <= 2435)
+  if (input <= 2435)
   {
-    if (a4 <= 2223)
+    if (input <= 2223)
     {
-      if (a4 <= 569)
+      if (input <= 569)
       {
-        if (a4 == 163)
+        if (input == 163)
         {
           return 5;
         }
 
-        if (a4 != 568)
+        if (input != 568)
         {
-          if (a4 != 569)
+          if (input != 569)
           {
             goto LABEL_78;
           }
@@ -6021,11 +6021,11 @@ LABEL_41:
         return 1;
       }
 
-      if (a4 != 570)
+      if (input != 570)
       {
-        if (a4 != 1792)
+        if (input != 1792)
         {
-          if (a4 != 2160)
+          if (input != 2160)
           {
             goto LABEL_78;
           }
@@ -6039,13 +6039,13 @@ LABEL_41:
       return 3;
     }
 
-    if (a4 <= 2359)
+    if (input <= 2359)
     {
-      if (a4 != 2224)
+      if (input != 2224)
       {
-        if (a4 != 2266)
+        if (input != 2266)
         {
-          if (a4 != 2340)
+          if (input != 2340)
           {
             goto LABEL_78;
           }
@@ -6059,11 +6059,11 @@ LABEL_41:
       return 10;
     }
 
-    if (a4 != 2360)
+    if (input != 2360)
     {
-      if (a4 != 2388)
+      if (input != 2388)
       {
-        if (a4 != 2420)
+        if (input != 2420)
         {
           goto LABEL_78;
         }
@@ -6077,15 +6077,15 @@ LABEL_41:
     return 20;
   }
 
-  if (a4 <= 2735)
+  if (input <= 2735)
   {
-    if (a4 <= 2621)
+    if (input <= 2621)
     {
-      if (a4 != 2436)
+      if (input != 2436)
       {
-        if (a4 != 2532)
+        if (input != 2532)
         {
-          if (a4 != 2556)
+          if (input != 2556)
           {
             goto LABEL_78;
           }
@@ -6099,11 +6099,11 @@ LABEL_41:
       return 11;
     }
 
-    if (a4 != 2622)
+    if (input != 2622)
     {
-      if (a4 != 2688)
+      if (input != 2688)
       {
-        if (a4 != 2732)
+        if (input != 2732)
         {
           goto LABEL_78;
         }
@@ -6117,13 +6117,13 @@ LABEL_41:
     return 13;
   }
 
-  if (a4 <= 2795)
+  if (input <= 2795)
   {
-    if (a4 != 2736)
+    if (input != 2736)
     {
-      if (a4 != 2752)
+      if (input != 2752)
       {
-        if (a4 != 2778)
+        if (input != 2778)
         {
           goto LABEL_78;
         }
@@ -6137,11 +6137,11 @@ LABEL_41:
     return 31;
   }
 
-  if (a4 <= 3023)
+  if (input <= 3023)
   {
-    if (a4 != 2796)
+    if (input != 2796)
     {
-      if (a4 != 2868)
+      if (input != 2868)
       {
         goto LABEL_78;
       }
@@ -6152,9 +6152,9 @@ LABEL_41:
     return 30;
   }
 
-  if (a4 != 3024)
+  if (input != 3024)
   {
-    if (a4 != 32401)
+    if (input != 32401)
     {
       goto LABEL_78;
     }
@@ -6165,10 +6165,10 @@ LABEL_41:
   return 6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = CUIBitVectorCopy(self->_bitmap);
-  result = [CUINamedRenditionInfo allocWithZone:a3];
+  result = [CUINamedRenditionInfo allocWithZone:zone];
   if (result)
   {
     keyFormat = self->_keyFormat;
@@ -6184,9 +6184,9 @@ LABEL_41:
   return result;
 }
 
-- (id)bitwiseAndWith:(id)a3
+- (id)bitwiseAndWith:(id)with
 {
-  v4 = CUIBitVectorBitAnd(self->_bitmap, *(a3 + 1));
+  v4 = CUIBitVectorBitAnd(self->_bitmap, *(with + 1));
   v5 = [CUINamedRenditionInfo alloc];
   if (v5)
   {
@@ -6203,7 +6203,7 @@ LABEL_41:
   return v5;
 }
 
-- (id)bitwiseOrWith:(id)a3 forAttribute:(int)a4
+- (id)bitwiseOrWith:(id)with forAttribute:(int)attribute
 {
   keyFormat = self->_keyFormat;
   var2 = keyFormat->var2;
@@ -6214,7 +6214,7 @@ LABEL_41:
 
   v7 = 0;
   var3 = keyFormat->var3;
-  while (var3[v7] != a4)
+  while (var3[v7] != attribute)
   {
     if (var2 == ++v7)
     {
@@ -6230,7 +6230,7 @@ LABEL_8:
 
   else
   {
-    v9 = CUIBitVectorBitOrForBucket(self->_bitmap, *(a3 + 1), v7);
+    v9 = CUIBitVectorBitOrForBucket(self->_bitmap, *(with + 1), v7);
   }
 
   v10 = v9;

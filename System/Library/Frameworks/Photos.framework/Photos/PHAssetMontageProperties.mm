@@ -1,23 +1,23 @@
 @interface PHAssetMontageProperties
 + (id)propertiesToFetch;
-- (PHAssetMontageProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetMontageProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetMontageProperties
 
-- (PHAssetMontageProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetMontageProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v16.receiver = self;
   v16.super_class = PHAssetMontageProperties;
   v10 = [(PHAssetMontageProperties *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
       v12 = @"additionalAttributes.montage";
     }
@@ -27,7 +27,7 @@
       v12 = @"montage";
     }
 
-    v13 = [v8 objectForKeyedSubscript:v12];
+    v13 = [dictionaryCopy objectForKeyedSubscript:v12];
     montage = v11->_montage;
     v11->_montage = v13;
   }

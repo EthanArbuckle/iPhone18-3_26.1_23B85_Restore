@@ -1,14 +1,14 @@
 @interface FLSQLiteQuery
-+ (id)queryWithString:(id)a3;
++ (id)queryWithString:(id)string;
 @end
 
 @implementation FLSQLiteQuery
 
-+ (id)queryWithString:(id)a3
++ (id)queryWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(FLSQLiteQuery);
-  [(FLSQLiteQuery *)v4 setQueryString:v3];
+  [(FLSQLiteQuery *)v4 setQueryString:stringCopy];
 
   return v4;
 }

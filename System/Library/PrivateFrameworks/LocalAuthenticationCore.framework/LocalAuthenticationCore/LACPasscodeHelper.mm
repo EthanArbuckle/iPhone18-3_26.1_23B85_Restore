@@ -1,21 +1,21 @@
 @interface LACPasscodeHelper
 + (id)sharedInstance;
-- (BOOL)accountBlockedForUserID:(id)a3;
+- (BOOL)accountBlockedForUserID:(id)d;
 - (LACPasscodeHelper)init;
 - (double)passcodeSuccessAge;
 - (id)_currentUserID;
-- (id)_userNameFromUID:(id)a3;
-- (int)_verifyPasscodeUsingMKB:(id)a3 acmContext:(id)a4 userId:(id)a5 options:(id)a6;
-- (int64_t)_verifyPasscode:(id)a3;
-- (int64_t)createStash:(id)a3 mode:(int)a4 manifest:(id)a5;
-- (int64_t)verifyPasscode:(id)a3;
-- (int64_t)verifyPasscode:(id)a3 acmContext:(id)a4 userId:(id)a5 auditToken:(id *)a6;
-- (unsigned)_keybagHandleForUserId:(id)a3;
-- (void)_increaseFailedAttemptCountForUserID:(id)a3;
+- (id)_userNameFromUID:(id)d;
+- (int)_verifyPasscodeUsingMKB:(id)b acmContext:(id)context userId:(id)id options:(id)options;
+- (int64_t)_verifyPasscode:(id)passcode;
+- (int64_t)createStash:(id)stash mode:(int)mode manifest:(id)manifest;
+- (int64_t)verifyPasscode:(id)passcode;
+- (int64_t)verifyPasscode:(id)passcode acmContext:(id)context userId:(id)id auditToken:(id *)token;
+- (unsigned)_keybagHandleForUserId:(id)id;
+- (void)_increaseFailedAttemptCountForUserID:(id)d;
 - (void)_notifyObserversAboutUpdate;
-- (void)_resetFailedAttemptCountForUserID:(id)a3;
-- (void)_updatePasscodeSuccessAgeWithUptime:(id)a3;
-- (void)keybagStateDidChange:(id)a3;
+- (void)_resetFailedAttemptCountForUserID:(id)d;
+- (void)_updatePasscodeSuccessAgeWithUptime:(id)uptime;
+- (void)keybagStateDidChange:(id)change;
 @end
 
 @implementation LACPasscodeHelper
@@ -46,9 +46,9 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
   v2 = [(LACPasscodeHelper *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = [[LACKeyBagMKBAdapter alloc] initWithUserId:geteuid()];
     keyBagAdapter = v2->_keyBagAdapter;
@@ -75,18 +75,18 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_updatePasscodeSuccessAgeWithUptime:(id)a3
+- (void)_updatePasscodeSuccessAgeWithUptime:(id)uptime
 {
-  if (a3)
+  if (uptime)
   {
-    [a3 doubleValue];
+    [uptime doubleValue];
     self->_lastPasscodeSuccessUptime = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AE30] processInfo];
-    [v6 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     self->_lastPasscodeSuccessUptime = v5;
   }
 }
@@ -96,8 +96,8 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
   result = 0.0;
   if (self->_lastPasscodeSuccessUptime > 0.0)
   {
-    v4 = [MEMORY[0x1E696AE30] processInfo];
-    [v4 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v6 = v5;
 
     return v6 - self->_lastPasscodeSuccessUptime;
@@ -106,12 +106,12 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
   return result;
 }
 
-- (BOOL)accountBlockedForUserID:(id)a3
+- (BOOL)accountBlockedForUserID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LACPasscodeHelper *)self failedAttemptsForUserID:v4];
-  v6 = [(LACPasscodeHelper *)self maxUnlockAttemptsForUserID:v4];
+  dCopy = d;
+  v5 = [(LACPasscodeHelper *)self failedAttemptsForUserID:dCopy];
+  v6 = [(LACPasscodeHelper *)self maxUnlockAttemptsForUserID:dCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = LACLogPasscode();
@@ -128,9 +128,9 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
 
     if (os_log_type_enabled(v7, v9))
     {
-      if (v4)
+      if (dCopy)
       {
-        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"user %d", objc_msgSend(v4, "intValue")];
+        v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"user %d", objc_msgSend(dCopy, "intValue")];
       }
 
       else
@@ -145,7 +145,7 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
       v17 = 1024;
       v18 = v6;
       _os_log_impl(&dword_1B0233000, v8, v9, "%{public}@ has %d failed passcode attempts out of %d", buf, 0x18u);
-      if (v4)
+      if (dCopy)
       {
       }
     }
@@ -155,17 +155,17 @@ uint64_t __35__LACPasscodeHelper_sharedInstance__block_invoke()
   return v5 >= v6;
 }
 
-- (int64_t)createStash:(id)a3 mode:(int)a4 manifest:(id)a5
+- (int64_t)createStash:(id)stash mode:(int)mode manifest:(id)manifest
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  manifestCopy = manifest;
   v7 = MEMORY[0x1E695DEF0];
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  stashCopy = stash;
+  bytes = [stashCopy bytes];
+  v10 = [stashCopy length];
 
-  v11 = [v7 dataWithBytes:v9 length:v10];
-  if (v6)
+  v11 = [v7 dataWithBytes:bytes length:v10];
+  if (manifestCopy)
   {
     v12 = MKBKeyBagKeyStashCreateWithManifest();
     v13 = LACLogPasscode();
@@ -228,33 +228,33 @@ LABEL_12:
   return v18;
 }
 
-- (int64_t)verifyPasscode:(id)a3 acmContext:(id)a4 userId:(id)a5 auditToken:(id *)a6
+- (int64_t)verifyPasscode:(id)passcode acmContext:(id)context userId:(id)id auditToken:(id *)token
 {
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  passcodeCopy = passcode;
   v11 = [LACMutablePasscodeVerificationRequest alloc];
-  v12 = *&a6->var0[4];
-  v16[0] = *a6->var0;
+  v12 = *&token->var0[4];
+  v16[0] = *token->var0;
   v16[1] = v12;
-  v13 = [(LACMutablePasscodeVerificationRequest *)v11 initWithPasscode:v10 acmContext:v9 rawAuditToken:v16];
+  v13 = [(LACMutablePasscodeVerificationRequest *)v11 initWithPasscode:passcodeCopy acmContext:contextCopy rawAuditToken:v16];
 
   v14 = [(LACPasscodeHelper *)self verifyPasscode:v13];
   return v14;
 }
 
-- (int64_t)verifyPasscode:(id)a3
+- (int64_t)verifyPasscode:(id)passcode
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = LACLogPasscode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = passcodeCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Passcode verification will start: %{public}@", &v11, 0xCu);
   }
 
-  v6 = [(LACPasscodeHelper *)self _verifyPasscode:v4];
+  v6 = [(LACPasscodeHelper *)self _verifyPasscode:passcodeCopy];
   v7 = LACLogPasscode();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -268,33 +268,33 @@ LABEL_12:
   return v6;
 }
 
-- (int64_t)_verifyPasscode:(id)a3
+- (int64_t)_verifyPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [v4 passcode];
-  v6 = [v4 acmContext];
-  v7 = [v4 userId];
-  v8 = [v4 policy];
-  v9 = [v4 options];
-  v10 = [v4 bioLockoutRecovery];
+  passcodeCopy = passcode;
+  passcode = [passcodeCopy passcode];
+  acmContext = [passcodeCopy acmContext];
+  userId = [passcodeCopy userId];
+  policy = [passcodeCopy policy];
+  options = [passcodeCopy options];
+  bioLockoutRecovery = [passcodeCopy bioLockoutRecovery];
 
-  if ([v6 length])
+  if ([acmContext length])
   {
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __37__LACPasscodeHelper__verifyPasscode___block_invoke;
     v42[3] = &unk_1E7A965E0;
     v42[4] = self;
-    v39 = v5;
-    v37 = v5;
+    v39 = passcode;
+    v37 = passcode;
     v43 = v37;
-    v11 = v6;
+    v11 = acmContext;
     v44 = v11;
-    v12 = v7;
+    v12 = userId;
     v45 = v12;
-    v13 = v9;
+    v13 = options;
     v46 = v13;
-    v47 = v10;
+    v47 = bioLockoutRecovery;
     v14 = __37__LACPasscodeHelper__verifyPasscode___block_invoke(v42);
     if ((v14 + 14) < 2)
     {
@@ -324,7 +324,7 @@ LABEL_12:
     else
     {
       [(LACPasscodeHelper *)self _resetFailedAttemptCountForUserID:v12];
-      if (v8 == 1010)
+      if (policy == 1010)
       {
         v15 = [MEMORY[0x1E696AD98] numberWithInteger:1026];
         v16 = [v13 objectForKeyedSubscript:v15];
@@ -334,24 +334,24 @@ LABEL_12:
 
         if (v18)
         {
-          v19 = [v18 intValue];
+          intValue = [v18 intValue];
         }
 
         else
         {
-          v19 = 1;
+          intValue = 1;
         }
 
-        v21 = [(LACPasscodeHelper *)self createStash:v37 mode:v19 manifest:v16, v37];
+        v21 = [(LACPasscodeHelper *)self createStash:v37 mode:intValue manifest:v16, v37];
       }
 
       else
       {
         v22 = [MEMORY[0x1E696AD98] numberWithInteger:1044];
         v23 = [v13 objectForKeyedSubscript:v22];
-        v24 = [v23 BOOLValue];
+        bOOLValue = [v23 BOOLValue];
 
-        if (v24)
+        if (bOOLValue)
         {
           v25 = [[LACACMHelper alloc] initWithExternalizedContext:v11];
           v41 = 0;
@@ -369,15 +369,15 @@ LABEL_12:
 
         v29 = [MEMORY[0x1E696AD98] numberWithInteger:{1060, v37}];
         v30 = [v13 objectForKeyedSubscript:v29];
-        v31 = [v30 BOOLValue];
+        bOOLValue2 = [v30 BOOLValue];
 
-        if (v31)
+        if (bOOLValue2)
         {
           v32 = [[LACACMHelper alloc] initWithExternalizedContext:v11];
           v40 = 0;
           v33 = [(LACACMHelper *)v32 setData:v38 type:7 error:&v40];
           v34 = v40;
-          v5 = v39;
+          passcode = v39;
           if (!v33)
           {
             v35 = LACLogPasscode();
@@ -395,7 +395,7 @@ LABEL_12:
       }
     }
 
-    v5 = v39;
+    passcode = v39;
 LABEL_32:
 
     goto LABEL_33;
@@ -425,19 +425,19 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (int)_verifyPasscodeUsingMKB:(id)a3 acmContext:(id)a4 userId:(id)a5 options:(id)a6
+- (int)_verifyPasscodeUsingMKB:(id)b acmContext:(id)context userId:(id)id options:(id)options
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  bCopy = b;
+  optionsCopy = options;
+  contextCopy = context;
   v30 = @"DeviceHandle";
   v13 = [(LACPasscodeHelper *)self];
   v14 = [MEMORY[0x1E696AD98] numberWithInt:v13];
   v31[0] = v14;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
 
-  v15 = [v10 data];
+  data = [bCopy data];
   v16 = MKBVerifyPasswordWithContext();
 
   v17 = LACLogPasscode();
@@ -451,12 +451,12 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithInteger:1043];
-  v19 = [v11 objectForKeyedSubscript:v18];
+  v19 = [optionsCopy objectForKeyedSubscript:v18];
 
-  v20 = [v19 BOOLValue];
-  if (v20)
+  bOOLValue = [v19 BOOLValue];
+  if (bOOLValue)
   {
-    v21 = [v10 data];
+    data2 = [bCopy data];
     v16 = MKBUnlockDevice();
 
     v22 = LACLogPasscode();
@@ -483,8 +483,8 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(NSHashTable *)self->_observers allObjects];
-  v5 = [v3 arrayWithArray:v4];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v5 = [v3 arrayWithArray:allObjects];
 
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
@@ -520,13 +520,13 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)keybagStateDidChange:(id)a3
+- (void)keybagStateDidChange:(id)change
 {
-  v4 = [a3 state];
+  state = [change state];
   keyBagDisabled = self->_keyBagDisabled;
-  if (!keyBagDisabled || (v4 == 1) != [(NSNumber *)keyBagDisabled BOOLValue])
+  if (!keyBagDisabled || (state == 1) != [(NSNumber *)keyBagDisabled BOOLValue])
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v4 == 1];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:state == 1];
     v7 = self->_keyBagDisabled;
     self->_keyBagDisabled = v6;
 
@@ -534,7 +534,7 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   }
 }
 
-- (unsigned)_keybagHandleForUserId:(id)a3
+- (unsigned)_keybagHandleForUserId:(id)id
 {
   if (+[LACMobileGestalt isSharedIPad])
   {
@@ -555,9 +555,9 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   return [v2 numberWithUnsignedInt:v3];
 }
 
-- (id)_userNameFromUID:(id)a3
+- (id)_userNameFromUID:(id)d
 {
-  v3 = getpwuid([a3 unsignedIntValue]);
+  v3 = getpwuid([d unsignedIntValue]);
   if (v3)
   {
     if (*v3)
@@ -574,54 +574,54 @@ uint64_t __37__LACPasscodeHelper__verifyPasscode___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_increaseFailedAttemptCountForUserID:(id)a3
+- (void)_increaseFailedAttemptCountForUserID:(id)d
 {
-  v11 = a3;
+  dCopy = d;
   if (!+[LACMobileGestalt isSecureBootCapable])
   {
-    v4 = v11;
-    if (!v11)
+    _currentUserID = dCopy;
+    if (!dCopy)
     {
-      v4 = [(LACPasscodeHelper *)self _currentUserID];
+      _currentUserID = [(LACPasscodeHelper *)self _currentUserID];
     }
 
-    v11 = v4;
-    v5 = [(NSMutableDictionary *)self->_failedAttemptsDictionary objectForKey:v4];
+    dCopy = _currentUserID;
+    v5 = [(NSMutableDictionary *)self->_failedAttemptsDictionary objectForKey:_currentUserID];
 
     if (!v5)
     {
-      [(NSMutableDictionary *)self->_failedAttemptsDictionary setObject:&unk_1F26935C8 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_failedAttemptsDictionary setObject:&unk_1F26935C8 forKeyedSubscript:dCopy];
     }
 
-    v6 = [(NSMutableDictionary *)self->_failedAttemptsDictionary objectForKeyedSubscript:v11];
-    v7 = [v6 integerValue];
+    v6 = [(NSMutableDictionary *)self->_failedAttemptsDictionary objectForKeyedSubscript:dCopy];
+    integerValue = [v6 integerValue];
 
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v7 + 1];
-    [(NSMutableDictionary *)self->_failedAttemptsDictionary setObject:v8 forKeyedSubscript:v11];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
+    [(NSMutableDictionary *)self->_failedAttemptsDictionary setObject:v8 forKeyedSubscript:dCopy];
 
-    if (v7 >= 14)
+    if (integerValue >= 14)
     {
-      v9 = [MEMORY[0x1E695DF00] date];
-      v10 = [v9 dateByAddingTimeInterval:5.0];
-      [(NSMutableDictionary *)self->_backoffEndTimeDictionary setObject:v10 forKeyedSubscript:v11];
+      date = [MEMORY[0x1E695DF00] date];
+      v10 = [date dateByAddingTimeInterval:5.0];
+      [(NSMutableDictionary *)self->_backoffEndTimeDictionary setObject:v10 forKeyedSubscript:dCopy];
     }
   }
 }
 
-- (void)_resetFailedAttemptCountForUserID:(id)a3
+- (void)_resetFailedAttemptCountForUserID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (!+[LACMobileGestalt isSecureBootCapable])
   {
-    v4 = v5;
-    if (!v5)
+    _currentUserID = dCopy;
+    if (!dCopy)
     {
-      v4 = [(LACPasscodeHelper *)self _currentUserID];
+      _currentUserID = [(LACPasscodeHelper *)self _currentUserID];
     }
 
-    v5 = v4;
-    [(NSMutableDictionary *)self->_failedAttemptsDictionary removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_backoffEndTimeDictionary removeObjectForKey:v5];
+    dCopy = _currentUserID;
+    [(NSMutableDictionary *)self->_failedAttemptsDictionary removeObjectForKey:_currentUserID];
+    [(NSMutableDictionary *)self->_backoffEndTimeDictionary removeObjectForKey:dCopy];
   }
 }
 

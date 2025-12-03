@@ -1,30 +1,30 @@
 @interface CSWeekStartController
 - (id)specifiers;
-- (void)showLanguageAndRegionSettings:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showLanguageAndRegionSettings:(id)settings;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CSWeekStartController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = CSWeekStartController;
-  [(CSWeekStartController *)&v17 viewDidAppear:a3];
+  [(CSWeekStartController *)&v17 viewDidAppear:appear];
   v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal/startWeekOn"];
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Start Week On" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Start Week On" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:bundleURL2];
 
   v18 = v14;
   v15 = [NSArray arrayWithObjects:&v18 count:1];
@@ -34,11 +34,11 @@
   [v16 addObserver:self selector:"_weekStartChanged" name:CUIKPreferencesNotification_WeekStart object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CSWeekStartController;
-  [(CSWeekStartController *)&v5 viewDidDisappear:a3];
+  [(CSWeekStartController *)&v5 viewDidDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:CUIKPreferencesNotification_WeekStart object:0];
 }
@@ -50,8 +50,8 @@
   {
     v46 = OBJC_IVAR___PSListController__specifiers;
     v4 = +[CUIKPreferences sharedPreferences];
-    v5 = [v4 weekStart];
-    v47 = [v5 integerValue];
+    weekStart = [v4 weekStart];
+    integerValue = [weekStart integerValue];
 
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = objc_alloc_init(NSMutableArray);
@@ -98,7 +98,7 @@
     self->_systemWeekStartItem = v25;
 
     v27 = PSRadioGroupCheckedSpecifierKey;
-    if (!v47)
+    if (!integerValue)
     {
       [(PSSpecifier *)self->_systemWeekStartGroup setProperty:self->_systemWeekStartItem forKey:PSRadioGroupCheckedSpecifierKey];
     }
@@ -125,7 +125,7 @@
       v36 = CUIKStringForDayOfWeek();
       v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-      if (v47 - 1 == v35)
+      if (integerValue - 1 == v35)
       {
         [(PSSpecifier *)self->_customWeekStartGroup setProperty:v37 forKey:v27];
       }
@@ -145,23 +145,23 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = CSWeekStartController;
-  [(CSWeekStartController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(CSWeekStartController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(CSWeekStartController *)self indexPathForSpecifier:self->_systemWeekStartItem];
-  v8 = [v7 section];
+  section = [v7 section];
 
-  v9 = [(NSMutableArray *)self->_customWeekStartItems firstObject];
-  v10 = [(CSWeekStartController *)self indexPathForSpecifier:v9];
-  v11 = [v10 section];
+  firstObject = [(NSMutableArray *)self->_customWeekStartItems firstObject];
+  v10 = [(CSWeekStartController *)self indexPathForSpecifier:firstObject];
+  section2 = [v10 section];
 
-  if ([v6 section] == v8)
+  if ([pathCopy section] == section)
   {
     v12 = +[CUIKPreferences sharedPreferences];
-    v13 = [v6 row];
+    v13 = [pathCopy row];
 LABEL_5:
     v14 = [NSNumber numberWithInteger:v13];
     [v12 setWeekStart:v14];
@@ -169,10 +169,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v6 section] == v11)
+  if ([pathCopy section] == section2)
   {
     v12 = +[CUIKPreferences sharedPreferences];
-    v13 = [v6 row] + 1;
+    v13 = [pathCopy row] + 1;
     goto LABEL_5;
   }
 
@@ -180,7 +180,7 @@ LABEL_6:
   [(CSWeekStartController *)self reloadSpecifiers];
 }
 
-- (void)showLanguageAndRegionSettings:(id)a3
+- (void)showLanguageAndRegionSettings:(id)settings
 {
   v4 = [NSURL URLWithString:@"prefs:root=General&path=INTERNATIONAL"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];

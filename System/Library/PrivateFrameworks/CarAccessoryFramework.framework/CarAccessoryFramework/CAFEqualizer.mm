@@ -15,25 +15,25 @@
 - (id)name;
 - (unsigned)sortOrder;
 - (unsigned)type;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFEqualizer
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFEqualizer;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -46,12 +46,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -66,40 +66,40 @@
 
 - (id)name
 {
-  v3 = [(CAFService *)self typeName];
-  v4 = [(CAFEqualizer *)self typeCharacteristic];
-  v5 = [v4 formattedValue];
+  typeName = [(CAFService *)self typeName];
+  typeCharacteristic = [(CAFEqualizer *)self typeCharacteristic];
+  formattedValue = [typeCharacteristic formattedValue];
 
-  if ([v5 length])
+  if ([formattedValue length])
   {
-    v6 = [v3 stringByAppendingFormat:@"-%@", v5];
+    v6 = [typeName stringByAppendingFormat:@"-%@", formattedValue];
 
-    v3 = v6;
+    typeName = v6;
   }
 
-  v7 = [(CAFEqualizer *)self sortOrderCharacteristic];
-  v8 = [v7 formattedValue];
+  sortOrderCharacteristic = [(CAFEqualizer *)self sortOrderCharacteristic];
+  formattedValue2 = [sortOrderCharacteristic formattedValue];
 
-  if ([v8 length])
+  if ([formattedValue2 length])
   {
-    v9 = [v3 stringByAppendingFormat:@"-%@", v8];
+    v9 = [typeName stringByAppendingFormat:@"-%@", formattedValue2];
 
-    v3 = v9;
+    typeName = v9;
   }
 
-  return v3;
+  return typeName;
 }
 
 - (CAFEqualizerTypeCharacteristic)typeCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000033000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000033000007"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000033000007"];
@@ -118,22 +118,22 @@
 
 - (unsigned)type
 {
-  v2 = [(CAFEqualizer *)self typeCharacteristic];
-  v3 = [v2 equalizerTypeValue];
+  typeCharacteristic = [(CAFEqualizer *)self typeCharacteristic];
+  equalizerTypeValue = [typeCharacteristic equalizerTypeValue];
 
-  return v3;
+  return equalizerTypeValue;
 }
 
 - (CAFUInt8Characteristic)sortOrderCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000003"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000003"];
@@ -152,22 +152,22 @@
 
 - (unsigned)sortOrder
 {
-  v2 = [(CAFEqualizer *)self sortOrderCharacteristic];
-  v3 = [v2 uint8Value];
+  sortOrderCharacteristic = [(CAFEqualizer *)self sortOrderCharacteristic];
+  uint8Value = [sortOrderCharacteristic uint8Value];
 
-  return v3;
+  return uint8Value;
 }
 
 - (CAFInt8Characteristic)valueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000033000008"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000033000008"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000033000008"];
@@ -186,30 +186,30 @@
 
 - (char)value
 {
-  v2 = [(CAFEqualizer *)self valueCharacteristic];
-  v3 = [v2 int8Value];
+  valueCharacteristic = [(CAFEqualizer *)self valueCharacteristic];
+  int8Value = [valueCharacteristic int8Value];
 
-  return v3;
+  return int8Value;
 }
 
 - (CAFInt8Range)valueRange
 {
-  v2 = [(CAFEqualizer *)self valueCharacteristic];
-  v3 = [v2 range];
+  valueCharacteristic = [(CAFEqualizer *)self valueCharacteristic];
+  range = [valueCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (CAFStringCharacteristic)userVisibleLabelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000001"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000001"];
@@ -228,16 +228,16 @@
 
 - (NSString)userVisibleLabel
 {
-  v2 = [(CAFEqualizer *)self userVisibleLabelCharacteristic];
-  v3 = [v2 stringValue];
+  userVisibleLabelCharacteristic = [(CAFEqualizer *)self userVisibleLabelCharacteristic];
+  stringValue = [userVisibleLabelCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasUserVisibleLabel
 {
-  v2 = [(CAFEqualizer *)self userVisibleLabelCharacteristic];
-  v3 = v2 != 0;
+  userVisibleLabelCharacteristic = [(CAFEqualizer *)self userVisibleLabelCharacteristic];
+  v3 = userVisibleLabelCharacteristic != 0;
 
   return v3;
 }
@@ -245,13 +245,13 @@
 - (BOOL)registeredForEqualizerType
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000033000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000033000007"];
 
   return v10;
 }
@@ -259,13 +259,13 @@
 - (BOOL)registeredForSortOrder
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000003"];
 
   return v10;
 }
@@ -273,13 +273,13 @@
 - (BOOL)registeredForEqualizerValue
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000033000008"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000033000008"];
 
   return v10;
 }
@@ -287,13 +287,13 @@
 - (BOOL)registeredForUserVisibleLabel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000001"];
 
   return v10;
 }

@@ -1,18 +1,18 @@
 @interface OZFxPlugGamutNotificationReceiver
-- (OZFxPlugGamutNotificationReceiver)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
+- (OZFxPlugGamutNotificationReceiver)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
 - (id).cxx_construct;
-- (void)handleAllParameterResetNotification:(id)a3;
-- (void)handleProjectColorChangeNotification:(id)a3;
+- (void)handleAllParameterResetNotification:(id)notification;
+- (void)handleProjectColorChangeNotification:(id)notification;
 @end
 
 @implementation OZFxPlugGamutNotificationReceiver
 
-- (OZFxPlugGamutNotificationReceiver)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPlugGamutNotificationReceiver)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v10.receiver = self;
   v10.super_class = OZFxPlugGamutNotificationReceiver;
-  v4 = [(OZFxPlugGamutNotificationReceiver *)&v10 init:a3.__ptr_];
+  v4 = [(OZFxPlugGamutNotificationReceiver *)&v10 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -35,7 +35,7 @@
   return v5;
 }
 
-- (void)handleProjectColorChangeNotification:(id)a3
+- (void)handleProjectColorChangeNotification:(id)notification
 {
   cntrl = self->_pluginLock.__cntrl_;
   ptr = self->_pluginLock.__ptr_;
@@ -59,7 +59,7 @@
   OZFxPlugLockSentinel::~OZFxPlugLockSentinel(v7);
 }
 
-- (void)handleAllParameterResetNotification:(id)a3
+- (void)handleAllParameterResetNotification:(id)notification
 {
   cntrl = self->_pluginLock.__cntrl_;
   ptr = self->_pluginLock.__ptr_;

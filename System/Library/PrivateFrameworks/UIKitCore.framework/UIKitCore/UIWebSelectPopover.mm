@@ -1,26 +1,26 @@
 @interface UIWebSelectPopover
-- (UIWebSelectPopover)initWithDOMHTMLSelectElement:(id)a3 cachedItems:(id)a4 singleSelectionItem:(id)a5 singleSelectionIndex:(unint64_t)a6 multipleSelection:(BOOL)a7;
+- (UIWebSelectPopover)initWithDOMHTMLSelectElement:(id)element cachedItems:(id)items singleSelectionItem:(id)item singleSelectionIndex:(unint64_t)index multipleSelection:(BOOL)selection;
 - (void)dealloc;
 @end
 
 @implementation UIWebSelectPopover
 
-- (UIWebSelectPopover)initWithDOMHTMLSelectElement:(id)a3 cachedItems:(id)a4 singleSelectionItem:(id)a5 singleSelectionIndex:(unint64_t)a6 multipleSelection:(BOOL)a7
+- (UIWebSelectPopover)initWithDOMHTMLSelectElement:(id)element cachedItems:(id)items singleSelectionItem:(id)item singleSelectionIndex:(unint64_t)index multipleSelection:(BOOL)selection
 {
-  v7 = a7;
+  selectionCopy = selection;
   v21.receiver = self;
   v21.super_class = UIWebSelectPopover;
-  v11 = [(UIWebFormRotatingAccessoryPopover *)&v21 initWithDOMNode:a3, a4, a5];
-  if (v11)
+  item = [(UIWebFormRotatingAccessoryPopover *)&v21 initWithDOMNode:element, items, item];
+  if (item)
   {
     +[UIKeyboard defaultSizeForInterfaceOrientation:](UIKeyboard, "defaultSizeForInterfaceOrientation:", [UIApp _defaultSceneInterfaceOrientationReturningUnknownForNilScene:0]);
-    [(UIWebSelectPopover *)v11 set_tableViewController:[[UIWebSelectTableViewController alloc] initWithDOMHTMLSelectNode:a3 cachedItems:a4 singleSelectionIndex:a6 multipleSelection:v7]];
-    [(UIWebSelectTableViewController *)v11->_tableViewController set_popover:v11];
-    tableViewController = v11->_tableViewController;
-    v13 = [objc_msgSend(a3 "title")];
+    [(UIWebSelectPopover *)item set_tableViewController:[[UIWebSelectTableViewController alloc] initWithDOMHTMLSelectNode:element cachedItems:items singleSelectionIndex:index multipleSelection:selectionCopy]];
+    [(UIWebSelectTableViewController *)item->_tableViewController set_popover:item];
+    tableViewController = item->_tableViewController;
+    v13 = [objc_msgSend(element "title")];
     if (v13)
     {
-      v14 = [[UINavigationController alloc] initWithRootViewController:v11->_tableViewController];
+      v14 = [[UINavigationController alloc] initWithRootViewController:item->_tableViewController];
       tableViewController = v14;
     }
 
@@ -29,22 +29,22 @@
       v14 = 0;
     }
 
-    [[(UITableViewController *)v11->_tableViewController tableView] sizeThatFits:320.0, 1.79769313e308];
+    [[(UITableViewController *)item->_tableViewController tableView] sizeThatFits:320.0, 1.79769313e308];
     v16 = v15;
     v18 = v17;
-    v19 = tableViewController;
+    topViewController = tableViewController;
     if (v13)
     {
-      v19 = [tableViewController topViewController];
+      topViewController = [tableViewController topViewController];
     }
 
-    [v19 setPreferredContentSize:{v16, v18}];
-    [(UIWebRotatingNodePopover *)v11 setPopoverController:[[UIPopoverController alloc] initWithContentViewController:tableViewController]];
+    [topViewController setPreferredContentSize:{v16, v18}];
+    [(UIWebRotatingNodePopover *)item setPopoverController:[[UIPopoverController alloc] initWithContentViewController:tableViewController]];
 
-    [+[UIKeyboardImpl sharedInstance](UIKeyboardImpl setDelegate:"setDelegate:", v11->_tableViewController];
+    [+[UIKeyboardImpl sharedInstance](UIKeyboardImpl setDelegate:"setDelegate:", item->_tableViewController];
   }
 
-  return v11;
+  return item;
 }
 
 - (void)dealloc

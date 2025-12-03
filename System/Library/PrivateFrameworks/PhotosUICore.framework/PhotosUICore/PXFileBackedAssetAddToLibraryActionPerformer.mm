@@ -6,24 +6,24 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  if (([v3 isAnyItemSelected] & 1) == 0)
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  if (([selectionSnapshot isAnyItemSelected] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"No items selected for add to library action"];
-    [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:v4];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"No items selected for add to library action"];
+    [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:px_deprecated_appPhotoLibrary];
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [v3 dataSource];
-  if (!v6)
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  array = [MEMORY[0x1E695DF70] array];
+  dataSource = [selectionSnapshot dataSource];
+  if (!dataSource)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFileBackedAssetAddToLibraryActionPerformer performUserInteractionTask]"];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v11 handleFailureInFunction:v12 file:@"PXFileBackedAssetAddToLibraryActionPerformer.m" lineNumber:36 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"snapshot.dataSource", v14}];
+    [currentHandler handleFailureInFunction:v12 file:@"PXFileBackedAssetAddToLibraryActionPerformer.m" lineNumber:36 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"snapshot.dataSource", v14}];
 LABEL_12:
 
     goto LABEL_4;
@@ -32,29 +32,29 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFileBackedAssetAddToLibraryActionPerformer performUserInteractionTask]"];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v6 px_descriptionForAssertionMessage];
-    [v11 handleFailureInFunction:v12 file:@"PXFileBackedAssetAddToLibraryActionPerformer.m" lineNumber:36 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"snapshot.dataSource", v14, v16}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInFunction:v12 file:@"PXFileBackedAssetAddToLibraryActionPerformer.m" lineNumber:36 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"snapshot.dataSource", v14, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
 
 LABEL_4:
-  v7 = [v3 selectedIndexPaths];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__PXFileBackedAssetAddToLibraryActionPerformer_performUserInteractionTask__block_invoke;
   v22[3] = &unk_1E7744508;
-  v8 = v6;
+  v8 = dataSource;
   v23 = v8;
-  v9 = v5;
+  v9 = array;
   v24 = v9;
-  [v7 enumerateItemIndexPathsUsingBlock:v22];
+  [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v22];
 
-  if (v4)
+  if (px_deprecated_appPhotoLibrary)
   {
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -67,7 +67,7 @@ LABEL_4:
     v17[2] = __74__PXFileBackedAssetAddToLibraryActionPerformer_performUserInteractionTask__block_invoke_3;
     v17[3] = &unk_1E7749D00;
     objc_copyWeak(&v18, &location);
-    [v4 performChanges:v19 completionHandler:v17];
+    [px_deprecated_appPhotoLibrary performChanges:v19 completionHandler:v17];
     objc_destroyWeak(&v18);
 
     objc_destroyWeak(&location);

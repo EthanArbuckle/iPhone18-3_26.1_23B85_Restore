@@ -1,16 +1,16 @@
 @interface ISOXpcSubscriptionClientResponse
 - (ISOXpcSubscriptionClientResponse)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISOXpcSubscriptionClientResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___ISOXpcSubscriptionClientResponse_proto;
-  v5 = a3;
-  v6 = self;
-  sub_275AE351C(self + v4, v5);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_275AE351C(self + v4, coderCopy);
 }
 
 - (ISOXpcSubscriptionClientResponse)init

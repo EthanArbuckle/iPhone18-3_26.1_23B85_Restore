@@ -1,16 +1,16 @@
 @interface ICThumbnailGeneratorAttachment
-- (void)generateThumbnailForMediaURL:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4;
+- (void)generateThumbnailForMediaURL:(id)l configuration:(id)configuration completion:(id)completion;
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation ICThumbnailGeneratorAttachment
 
-- (void)generateThumbnailWithConfiguration:(id)a3 completion:(id)a4
+- (void)generateThumbnailWithConfiguration:(id)configuration completion:(id)completion
 {
   v65[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 associatedObjectIdentifier];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  associatedObjectIdentifier = [configurationCopy associatedObjectIdentifier];
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -43,25 +43,25 @@
   v37[3] = __Block_byref_object_copy__67;
   v37[4] = __Block_byref_object_dispose__67;
   v38 = 0;
-  v9 = [(ICThumbnailGenerator *)self managedObjectContext];
+  managedObjectContext = [(ICThumbnailGenerator *)self managedObjectContext];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __80__ICThumbnailGeneratorAttachment_generateThumbnailWithConfiguration_completion___block_invoke;
   v27[3] = &unk_1E846DC90;
   v31 = v37;
-  v10 = v8;
+  v10 = associatedObjectIdentifier;
   v28 = v10;
-  v29 = self;
+  selfCopy = self;
   v32 = &v45;
   v33 = &v59;
   v34 = &v39;
-  v11 = v6;
+  v11 = configurationCopy;
   v30 = v11;
   v35 = &v49;
   v36 = &v55;
-  [v9 performBlockAndWait:v27];
+  [managedObjectContext performBlockAndWait:v27];
 
-  v12 = v7;
+  v12 = completionCopy;
   v13 = [[ICThumbnailDescription alloc] initWithConfiguration:v11];
   [(ICThumbnailDescription *)v13 setThumbnailDecorationType:v46[3]];
   [(ICThumbnailDescription *)v13 setImageScaling:v56[3]];
@@ -100,14 +100,14 @@
     v24 = v12;
     [(ICThumbnailGeneratorAttachment *)self generateThumbnailForMediaURL:v20 configuration:v22 completion:v21];
 
-    v19 = v22;
+    loadOrientedImage = v22;
     goto LABEL_10;
   }
 
-  v19 = [v50[5] loadOrientedImage];
-  if (v19)
+  loadOrientedImage = [v50[5] loadOrientedImage];
+  if (loadOrientedImage)
   {
-    [(ICThumbnailDescription *)v13 setImage:v19];
+    [(ICThumbnailDescription *)v13 setImage:loadOrientedImage];
     (v12)[2](v12, v13);
 LABEL_10:
   }
@@ -216,12 +216,12 @@ void __80__ICThumbnailGeneratorAttachment_generateThumbnailWithConfiguration_com
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)generateThumbnailForMediaURL:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)generateThumbnailForMediaURL:(id)l configuration:(id)configuration completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 scale];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  lCopy = l;
+  [configurationCopy scale];
   if (v10 <= 0.0)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"configuration.scale > 0." functionName:"-[ICThumbnailGeneratorAttachment generateThumbnailForMediaURL:configuration:completion:]" simulateCrash:1 showAlert:0 format:@"Passing invalid scale to QLThumbnailGenerationRequest"];
@@ -229,22 +229,22 @@ void __80__ICThumbnailGeneratorAttachment_generateThumbnailWithConfiguration_com
 
   gotLoadHelper_x8__OBJC_CLASS___QLThumbnailGenerationRequest(v10);
   v12 = objc_alloc(*(v11 + 224));
-  [v8 preferredSize];
+  [configurationCopy preferredSize];
   v14 = v13;
   v16 = v15;
-  [v8 scale];
+  [configurationCopy scale];
   v18 = v17;
 
-  v19 = [v12 initWithFileAtURL:v9 size:-1 scale:v14 representationTypes:{v16, v18}];
+  v19 = [v12 initWithFileAtURL:lCopy size:-1 scale:v14 representationTypes:{v16, v18}];
   Helper_x8__OBJC_CLASS___QLThumbnailGenerator = gotLoadHelper_x8__OBJC_CLASS___QLThumbnailGenerator(v20);
-  v23 = [*(v22 + 232) sharedGenerator];
+  sharedGenerator = [*(v22 + 232) sharedGenerator];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __88__ICThumbnailGeneratorAttachment_generateThumbnailForMediaURL_configuration_completion___block_invoke;
   v25[3] = &unk_1E846DCE0;
-  v26 = v7;
-  v24 = v7;
-  [v23 generateBestRepresentationForRequest:v19 completionHandler:v25];
+  v26 = completionCopy;
+  v24 = completionCopy;
+  [sharedGenerator generateBestRepresentationForRequest:v19 completionHandler:v25];
 }
 
 void __88__ICThumbnailGeneratorAttachment_generateThumbnailForMediaURL_configuration_completion___block_invoke(uint64_t a1, void *a2, void *a3)

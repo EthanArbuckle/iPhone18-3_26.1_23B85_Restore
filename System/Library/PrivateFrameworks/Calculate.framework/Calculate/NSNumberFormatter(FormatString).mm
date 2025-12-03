@@ -11,46 +11,46 @@
 
 - (uint64_t)usesLatinDigits
 {
-  v2 = objc_getAssociatedObject(a1, &usesLatinDigits_latin);
+  v2 = objc_getAssociatedObject(self, &usesLatinDigits_latin);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:0];
-    v5 = [a1 stringFromNumber:v4];
+    v5 = [self stringFromNumber:v4];
 
-    v3 = [v5 compare:@"0" options:10] == 0;
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    objc_setAssociatedObject(a1, &usesLatinDigits_latin, v6, 1);
+    bOOLValue = [v5 compare:@"0" options:10] == 0;
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    objc_setAssociatedObject(self, &usesLatinDigits_latin, v6, 1);
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)usesEastArabicDigits
 {
-  v2 = objc_getAssociatedObject(a1, &usesEastArabicDigits_eastArabic);
+  v2 = objc_getAssociatedObject(self, &usesEastArabicDigits_eastArabic);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:0];
-    v5 = [a1 stringFromNumber:v4];
+    v5 = [self stringFromNumber:v4];
 
-    v3 = [v5 compare:@"٠" options:10] == 0;
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    objc_setAssociatedObject(a1, &usesEastArabicDigits_eastArabic, v6, 1);
+    bOOLValue = [v5 compare:@"٠" options:10] == 0;
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    objc_setAssociatedObject(self, &usesEastArabicDigits_eastArabic, v6, 1);
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)formatString:()FormatString byAppendingExponent:withNumberingSystem:
@@ -64,11 +64,11 @@
 
   else
   {
-    v11 = [a1 stringFromNumber:&unk_1F4199C58];
+    v11 = [self stringFromNumber:&unk_1F4199C58];
     if (v9)
     {
-      v12 = [a1 locale];
-      v13 = [Localize localizeString:v11 withNumberingSystem:v9 locale:v12];
+      locale = [self locale];
+      v13 = [Localize localizeString:v11 withNumberingSystem:v9 locale:locale];
 
       v11 = v13;
     }
@@ -96,9 +96,9 @@
         }
       }
 
-      v19 = [v14 reverseObjectEnumerator];
-      v20 = [v19 allObjects];
-      v21 = [v20 componentsJoinedByString:&stru_1F418FCD8];
+      reverseObjectEnumerator = [v14 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v21 = [allObjects componentsJoinedByString:&stru_1F418FCD8];
 
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, v21];
     }
@@ -106,12 +106,12 @@
     else
     {
       v22 = [MEMORY[0x1E696AD98] numberWithInt:a4];
-      v14 = [a1 stringFromNumber:v22];
+      v14 = [self stringFromNumber:v22];
 
       if (v9)
       {
-        v23 = [a1 locale];
-        v24 = [Localize localizeString:v14 withNumberingSystem:v9 locale:v23];
+        locale2 = [self locale];
+        v24 = [Localize localizeString:v14 withNumberingSystem:v9 locale:locale2];
 
         v14 = v24;
       }
@@ -128,7 +128,7 @@
   v13 = a3;
   v14 = a5;
   v15 = a6;
-  if ([a1 numberStyle] != 1)
+  if ([self numberStyle] != 1)
   {
     v18 = v13;
     goto LABEL_51;
@@ -145,7 +145,7 @@
 
   if (a9)
   {
-    v16 = [a1 stringFromNumber:&unk_1F4199C40];
+    v16 = [self stringFromNumber:&unk_1F4199C40];
     if ([(__CFString *)v16 length]!= 1)
     {
       v17 = v13;
@@ -207,11 +207,11 @@
     v27 = 0x7FFFFFFF;
     if (a4)
     {
-      v28 = [a1 groupingSize];
-      v29 = v28;
-      if (v28)
+      groupingSize = [self groupingSize];
+      v29 = groupingSize;
+      if (groupingSize)
       {
-        v30 = v28;
+        v30 = groupingSize;
       }
 
       else
@@ -219,10 +219,10 @@
         v30 = 0x7FFFFFFF;
       }
 
-      v31 = [a1 secondaryGroupingSize];
-      if (v31)
+      secondaryGroupingSize = [self secondaryGroupingSize];
+      if (secondaryGroupingSize)
       {
-        v32 = v31;
+        v32 = secondaryGroupingSize;
       }
 
       else
@@ -317,18 +317,18 @@ LABEL_51:
 - (id)formatString:()FormatString usesGroupingSeparator:
 {
   v6 = a3;
-  if ([a1 numberStyle] == 1)
+  if ([self numberStyle] == 1)
   {
-    v7 = [a1 groupingSeparator];
-    v8 = [a1 decimalSeparator];
+    groupingSeparator = [self groupingSeparator];
+    decimalSeparator = [self decimalSeparator];
     LOBYTE(v11) = 1;
-    v9 = [a1 formatString:v6 usesGroupingSeparator:a4 groupingSeparator:v7 decimalSeparator:v8 maximumIntegerDigits:objc_msgSend(a1 maximumFractionDigits:"maximumIntegerDigits") localizeDigits:{objc_msgSend(a1, "maximumFractionDigits"), v11}];
+    v9 = [self formatString:v6 usesGroupingSeparator:a4 groupingSeparator:groupingSeparator decimalSeparator:decimalSeparator maximumIntegerDigits:objc_msgSend(self maximumFractionDigits:"maximumIntegerDigits") localizeDigits:{objc_msgSend(self, "maximumFractionDigits"), v11}];
   }
 
   else
   {
-    v7 = [a1 numberFromString:v6];
-    v9 = [a1 stringFromNumber:v7];
+    groupingSeparator = [self numberFromString:v6];
+    v9 = [self stringFromNumber:groupingSeparator];
   }
 
   return v9;
@@ -337,19 +337,19 @@ LABEL_51:
 - (id)formatString:()FormatString
 {
   v4 = a3;
-  if ([a1 numberStyle] == 1)
+  if ([self numberStyle] == 1)
   {
-    v5 = [a1 usesGroupingSeparator];
-    v6 = [a1 groupingSeparator];
-    v7 = [a1 decimalSeparator];
+    usesGroupingSeparator = [self usesGroupingSeparator];
+    groupingSeparator = [self groupingSeparator];
+    decimalSeparator = [self decimalSeparator];
     LOBYTE(v10) = 1;
-    v8 = [a1 formatString:v4 usesGroupingSeparator:v5 groupingSeparator:v6 decimalSeparator:v7 maximumIntegerDigits:objc_msgSend(a1 maximumFractionDigits:"maximumIntegerDigits") localizeDigits:{objc_msgSend(a1, "maximumFractionDigits"), v10}];
+    v8 = [self formatString:v4 usesGroupingSeparator:usesGroupingSeparator groupingSeparator:groupingSeparator decimalSeparator:decimalSeparator maximumIntegerDigits:objc_msgSend(self maximumFractionDigits:"maximumIntegerDigits") localizeDigits:{objc_msgSend(self, "maximumFractionDigits"), v10}];
   }
 
   else
   {
-    v6 = [a1 numberFromString:v4];
-    v8 = [a1 stringFromNumber:v6];
+    groupingSeparator = [self numberFromString:v4];
+    v8 = [self stringFromNumber:groupingSeparator];
   }
 
   return v8;

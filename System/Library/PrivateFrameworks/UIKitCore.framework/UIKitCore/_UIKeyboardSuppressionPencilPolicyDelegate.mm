@@ -1,5 +1,5 @@
 @interface _UIKeyboardSuppressionPencilPolicyDelegate
-- (BOOL)_shouldSuppressForDelegate:(id)a3;
+- (BOOL)_shouldSuppressForDelegate:(id)delegate;
 - (id)_recognitionLocaleIdentifier;
 @end
 
@@ -33,20 +33,20 @@
 
     v5 = v4;
     _Block_object_dispose(&v14, 8);
-    v6 = [v4 sharedSettings];
-    v7 = [(_UIKeyboardSuppressionPencilPolicyDelegate *)self _overrideLocaleIdentifier];
-    v8 = v7;
-    if (v7)
+    sharedSettings = [v4 sharedSettings];
+    _overrideLocaleIdentifier = [(_UIKeyboardSuppressionPencilPolicyDelegate *)self _overrideLocaleIdentifier];
+    v8 = _overrideLocaleIdentifier;
+    if (_overrideLocaleIdentifier)
     {
-      v9 = v7;
+      recognitionLocaleIdentifier = _overrideLocaleIdentifier;
     }
 
     else
     {
-      v9 = [v6 recognitionLocaleIdentifier];
+      recognitionLocaleIdentifier = [sharedSettings recognitionLocaleIdentifier];
     }
 
-    v10 = v9;
+    v10 = recognitionLocaleIdentifier;
 
     self->_isQueryingLocaleIdentifier = 0;
     if ([(_UIKeyboardSuppressionPencilPolicyDelegate *)self _suppressLocaleIdentifier])
@@ -65,35 +65,35 @@
   return v2;
 }
 
-- (BOOL)_shouldSuppressForDelegate:(id)a3
+- (BOOL)_shouldSuppressForDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardSuppressionPencilPolicyDelegate *)self _recognitionLocaleIdentifier];
+  delegateCopy = delegate;
+  _recognitionLocaleIdentifier = [(_UIKeyboardSuppressionPencilPolicyDelegate *)self _recognitionLocaleIdentifier];
 
-  if (v5)
+  if (_recognitionLocaleIdentifier)
   {
     if (objc_opt_respondsToSelector())
     {
-      LODWORD(v5) = [v4 isSecureTextEntry] ^ 1;
+      LODWORD(_recognitionLocaleIdentifier) = [delegateCopy isSecureTextEntry] ^ 1;
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(_recognitionLocaleIdentifier) = 1;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      LOBYTE(v5) = ([v4 _textInputSource] == 3) & v5;
+      LOBYTE(_recognitionLocaleIdentifier) = ([delegateCopy _textInputSource] == 3) & _recognitionLocaleIdentifier;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(_recognitionLocaleIdentifier) = 0;
     }
   }
 
-  return v5;
+  return _recognitionLocaleIdentifier;
 }
 
 @end

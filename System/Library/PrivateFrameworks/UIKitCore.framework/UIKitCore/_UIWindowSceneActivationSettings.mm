@@ -14,35 +14,35 @@
   [(_UIWindowSceneActivationSettings *)self setPinchEndingProjectionDuration:0.15];
   [(_UIWindowSceneActivationSettings *)self setPinchPlatterMaxShadowIntensity:0.5];
   [(_UIWindowSceneActivationSettings *)self setPinchEndPlatterVelocityMultiplier:5.0];
-  v3 = [(_UIWindowSceneActivationSettings *)self pinchInteractiveScale];
-  [v3 setDampingRatio:0.85];
+  pinchInteractiveScale = [(_UIWindowSceneActivationSettings *)self pinchInteractiveScale];
+  [pinchInteractiveScale setDampingRatio:0.85];
 
-  v4 = [(_UIWindowSceneActivationSettings *)self pinchInteractiveScale];
-  [v4 setResponse:0.25];
+  pinchInteractiveScale2 = [(_UIWindowSceneActivationSettings *)self pinchInteractiveScale];
+  [pinchInteractiveScale2 setResponse:0.25];
 
-  v5 = [(_UIWindowSceneActivationSettings *)self pinchSettle];
-  [v5 setDampingRatio:0.85];
+  pinchSettle = [(_UIWindowSceneActivationSettings *)self pinchSettle];
+  [pinchSettle setDampingRatio:0.85];
 
-  v6 = [(_UIWindowSceneActivationSettings *)self pinchSettle];
-  [v6 setResponse:0.45];
+  pinchSettle2 = [(_UIWindowSceneActivationSettings *)self pinchSettle];
+  [pinchSettle2 setResponse:0.45];
 
-  v7 = [(_UIWindowSceneActivationSettings *)self pinchShadow];
-  [v7 setDampingRatio:1.0];
+  pinchShadow = [(_UIWindowSceneActivationSettings *)self pinchShadow];
+  [pinchShadow setDampingRatio:1.0];
 
-  v8 = [(_UIWindowSceneActivationSettings *)self pinchShadow];
-  [v8 setResponse:0.4];
+  pinchShadow2 = [(_UIWindowSceneActivationSettings *)self pinchShadow];
+  [pinchShadow2 setResponse:0.4];
 
-  v9 = [(_UIWindowSceneActivationSettings *)self morph];
-  [v9 setDampingRatio:1.1];
+  morph = [(_UIWindowSceneActivationSettings *)self morph];
+  [morph setDampingRatio:1.1];
 
-  v10 = [(_UIWindowSceneActivationSettings *)self morph];
-  [v10 setResponse:0.336];
+  morph2 = [(_UIWindowSceneActivationSettings *)self morph];
+  [morph2 setResponse:0.336];
 
-  v11 = [(_UIWindowSceneActivationSettings *)self morphMenuDismissal];
-  [v11 setDampingRatio:1.0];
+  morphMenuDismissal = [(_UIWindowSceneActivationSettings *)self morphMenuDismissal];
+  [morphMenuDismissal setDampingRatio:1.0];
 
-  v12 = [(_UIWindowSceneActivationSettings *)self morphMenuDismissal];
-  [v12 setResponse:0.1];
+  morphMenuDismissal2 = [(_UIWindowSceneActivationSettings *)self morphMenuDismissal];
+  [morphMenuDismissal2 setResponse:0.1];
 }
 
 + (id)settingsControllerModule
@@ -80,8 +80,8 @@
 
   v13 = MEMORY[0x1E69C6638];
   v30[0] = v12;
-  v14 = [MEMORY[0x1E69C65E8] restoreDefaultSettingsButton];
-  v29 = v14;
+  restoreDefaultSettingsButton = [MEMORY[0x1E69C65E8] restoreDefaultSettingsButton];
+  v29 = restoreDefaultSettingsButton;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
   v16 = [v13 sectionWithRows:v15];
   v30[1] = v16;

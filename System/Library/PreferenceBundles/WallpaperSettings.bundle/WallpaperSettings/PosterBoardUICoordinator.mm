@@ -1,7 +1,7 @@
 @interface PosterBoardUICoordinator
 - (_TtC17WallpaperSettings24PosterBoardUICoordinator)init;
-- (void)modalController:(id)a3 didDismissSheetWithResponse:(id)a4;
-- (void)modalController:(id)a3 willDismissSheetWithResponse:(id)a4;
+- (void)modalController:(id)controller didDismissSheetWithResponse:(id)response;
+- (void)modalController:(id)controller willDismissSheetWithResponse:(id)response;
 - (void)start;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_5D2C();
 }
 
@@ -20,19 +20,19 @@
   return result;
 }
 
-- (void)modalController:(id)a3 willDismissSheetWithResponse:(id)a4
+- (void)modalController:(id)controller willDismissSheetWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_6410(v7);
+  controllerCopy = controller;
+  responseCopy = response;
+  selfCopy = self;
+  sub_6410(responseCopy);
 }
 
-- (void)modalController:(id)a3 didDismissSheetWithResponse:(id)a4
+- (void)modalController:(id)controller didDismissSheetWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  responseCopy = response;
+  selfCopy = self;
   sub_6884();
 }
 

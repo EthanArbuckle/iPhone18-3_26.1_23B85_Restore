@@ -9,9 +9,9 @@
 - (void)_becomeCurrentNoHelper
 {
   store = self->_store;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v5 bundleIdentifier];
-  [(INUserContextStore *)store storeUserContext:self forBundleIdentifier:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [(INUserContextStore *)store storeUserContext:self forBundleIdentifier:bundleIdentifier];
 }
 
 - (id)_init
@@ -32,9 +32,9 @@
 - (void)becomeCurrent
 {
   store = self->_store;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v5 bundleIdentifier];
-  [(INUserContextStore *)store storeUserContextViaHelper:self forBundleIdentifier:v4];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [(INUserContextStore *)store storeUserContextViaHelper:self forBundleIdentifier:bundleIdentifier];
 }
 
 @end

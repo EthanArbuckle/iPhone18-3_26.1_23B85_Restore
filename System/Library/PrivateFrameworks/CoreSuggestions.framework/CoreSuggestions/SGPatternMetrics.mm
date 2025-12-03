@@ -1,6 +1,6 @@
 @interface SGPatternMetrics
 + (id)instance;
-+ (void)recordSelfIdMatchWithPatternType:(SGMSIPatternType_)a3 patternHash:(id)a4 nameTokenCount:(unint64_t)a5 nameClassification:(SGMSINameClassification_)a6 messageIndex:(unint64_t)a7;
++ (void)recordSelfIdMatchWithPatternType:(SGMSIPatternType_)type patternHash:(id)hash nameTokenCount:(unint64_t)count nameClassification:(SGMSINameClassification_)classification messageIndex:(unint64_t)index;
 - (SGPatternMetrics)init;
 @end
 
@@ -20,28 +20,28 @@
   return v2;
 }
 
-+ (void)recordSelfIdMatchWithPatternType:(SGMSIPatternType_)a3 patternHash:(id)a4 nameTokenCount:(unint64_t)a5 nameClassification:(SGMSINameClassification_)a6 messageIndex:(unint64_t)a7
++ (void)recordSelfIdMatchWithPatternType:(SGMSIPatternType_)type patternHash:(id)hash nameTokenCount:(unint64_t)count nameClassification:(SGMSINameClassification_)classification messageIndex:(unint64_t)index
 {
-  v12 = a4;
-  v13 = [a1 instance];
-  v14 = [v13 selfIdPatternMatched];
-  [v14 trackEventWithScalar:1 patternType:a3.var0 patternHash:v12 nameTokens:a5 nameClass:a6.var0 messageIndex:a7];
+  hashCopy = hash;
+  instance = [self instance];
+  selfIdPatternMatched = [instance selfIdPatternMatched];
+  [selfIdPatternMatched trackEventWithScalar:1 patternType:type.var0 patternHash:hashCopy nameTokens:count nameClass:classification.var0 messageIndex:index];
 
   v20 = objc_opt_new();
-  [v20 setPatternType:a3.var0];
-  [v20 setPatternHash:v12];
+  [v20 setPatternType:type.var0];
+  [v20 setPatternHash:hashCopy];
 
-  [v20 setNameTokens:a5];
-  [v20 setNameClass:a6.var0];
-  [v20 setMessageIndex:a7];
-  v15 = [MEMORY[0x1E69C5B48] sharedInstance];
-  [v15 trackScalarForMessage:v20];
+  [v20 setNameTokens:count];
+  [v20 setNameClass:classification.var0];
+  [v20 setMessageIndex:index];
+  mEMORY[0x1E69C5B48] = [MEMORY[0x1E69C5B48] sharedInstance];
+  [mEMORY[0x1E69C5B48] trackScalarForMessage:v20];
 
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17 = [v20 key];
   v18 = [v16 initWithFormat:@"%@.%@", @"com.apple.Proactive.CoreSuggestions", v17];
 
-  v19 = [v20 dictionaryRepresentation];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 

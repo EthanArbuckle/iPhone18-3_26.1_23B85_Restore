@@ -1,50 +1,50 @@
 @interface CLSSocialServiceCoreNameParser
-+ (id)_dictionaryKeyForPersonRelationship:(unint64_t)a3;
-+ (unint64_t)_personRelationshipFromString:(id)a3;
++ (id)_dictionaryKeyForPersonRelationship:(unint64_t)relationship;
++ (unint64_t)_personRelationshipFromString:(id)string;
 - (CLSSocialServiceCoreNameParser)init;
-- (id)_normalizeName:(id)a3;
-- (id)_regularExpressionForRelationship:(unint64_t)a3 languageCode:(id)a4;
-- (unint64_t)_sexHintForRelationship:(unint64_t)a3;
-- (unint64_t)relationshipHintForPerson:(id)a3 usingLocales:(id)a4;
-- (unint64_t)sexHintForPerson:(id)a3 usingLocales:(id)a4;
+- (id)_normalizeName:(id)name;
+- (id)_regularExpressionForRelationship:(unint64_t)relationship languageCode:(id)code;
+- (unint64_t)_sexHintForRelationship:(unint64_t)relationship;
+- (unint64_t)relationshipHintForPerson:(id)person usingLocales:(id)locales;
+- (unint64_t)sexHintForPerson:(id)person usingLocales:(id)locales;
 - (void)invalidateMemoryCaches;
 @end
 
 @implementation CLSSocialServiceCoreNameParser
 
-- (id)_regularExpressionForRelationship:(unint64_t)a3 languageCode:(id)a4
+- (id)_regularExpressionForRelationship:(unint64_t)relationship languageCode:(id)code
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_regularExpressionByRelationshipByLocale objectForKeyedSubscript:v6];
-  if (v7)
+  codeCopy = code;
+  dictionary = [(NSMutableDictionary *)self->_regularExpressionByRelationshipByLocale objectForKeyedSubscript:codeCopy];
+  if (dictionary)
   {
     goto LABEL_5;
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(NSDictionary *)self->_vocabularyByRelationshipByLocale objectForKeyedSubscript:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v8 = [(NSDictionary *)self->_vocabularyByRelationshipByLocale objectForKeyedSubscript:codeCopy];
   if (v8)
   {
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_languageCode___block_invoke;
     v18 = &unk_2788A8788;
-    v9 = v7;
+    v9 = dictionary;
     v19 = v9;
-    v10 = v6;
+    v10 = codeCopy;
     v20 = v10;
     [v8 enumerateKeysAndObjectsUsingBlock:&v15];
     [(NSMutableDictionary *)self->_regularExpressionByRelationshipByLocale setObject:v9 forKeyedSubscript:v10, v15, v16, v17, v18];
   }
 
-  if (v7)
+  if (dictionary)
   {
 LABEL_5:
-    v11 = [objc_opt_class() _dictionaryKeyForPersonRelationship:a3];
+    v11 = [objc_opt_class() _dictionaryKeyForPersonRelationship:relationship];
     if (v11)
     {
       v12 = v11;
-      v13 = [v7 objectForKeyedSubscript:v11];
+      v13 = [dictionary objectForKeyedSubscript:v11];
     }
 
     else
@@ -94,17 +94,17 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
   }
 }
 
-- (unint64_t)relationshipHintForPerson:(id)a3 usingLocales:(id)a4
+- (unint64_t)relationshipHintForPerson:(id)person usingLocales:(id)locales
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fullName];
-  v9 = [(CLSSocialServiceCoreNameParser *)self _normalizeName:v8];
+  personCopy = person;
+  localesCopy = locales;
+  fullName = [personCopy fullName];
+  v9 = [(CLSSocialServiceCoreNameParser *)self _normalizeName:fullName];
 
-  v10 = [v6 nickname];
-  v46 = self;
-  v45 = [(CLSSocialServiceCoreNameParser *)self _normalizeName:v10];
+  nickname = [personCopy nickname];
+  selfCopy = self;
+  v45 = [(CLSSocialServiceCoreNameParser *)self _normalizeName:nickname];
 
   if ([v9 length] || objc_msgSend(v45, "length"))
   {
@@ -113,7 +113,7 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v12 = v7;
+    v12 = localesCopy;
     v13 = [v12 countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v13)
     {
@@ -128,10 +128,10 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v55 + 1) + 8 * i) languageCode];
-          if (v17)
+          languageCode = [*(*(&v55 + 1) + 8 * i) languageCode];
+          if (languageCode)
           {
-            [v11 addObject:v17];
+            [v11 addObject:languageCode];
           }
         }
 
@@ -142,7 +142,7 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
     }
 
     v18 = [MEMORY[0x277CBEB58] set];
-    v19 = [(CLSSocialServiceCoreNameParser *)v46 _parentRelationships];
+    _parentRelationships = [(CLSSocialServiceCoreNameParser *)selfCopy _parentRelationships];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
@@ -153,9 +153,9 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
     {
       v22 = v21;
       v23 = *v52;
-      v39 = v7;
-      v40 = v6;
-      v43 = v19;
+      v39 = localesCopy;
+      v40 = personCopy;
+      v43 = _parentRelationships;
       v44 = v18;
       v42 = v20;
       v37 = *v52;
@@ -179,7 +179,7 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
             v50 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v26 = v19;
+            v26 = _parentRelationships;
             v27 = [v26 countByEnumeratingWithState:&v47 objects:v59 count:16];
             if (v27)
             {
@@ -194,8 +194,8 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
                     objc_enumerationMutation(v26);
                   }
 
-                  v31 = [*(*(&v47 + 1) + 8 * j) unsignedIntegerValue];
-                  v32 = [(CLSSocialServiceCoreNameParser *)v46 _regularExpressionForRelationship:v31 languageCode:v25];
+                  unsignedIntegerValue = [*(*(&v47 + 1) + 8 * j) unsignedIntegerValue];
+                  v32 = [(CLSSocialServiceCoreNameParser *)selfCopy _regularExpressionForRelationship:unsignedIntegerValue languageCode:v25];
                   if (v32)
                   {
                     v33 = [v32 matchesInString:v9 options:0 range:{0, objc_msgSend(v9, "length")}];
@@ -211,9 +211,9 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
                     if (v35)
                     {
 
-                      v7 = v39;
-                      v6 = v40;
-                      v19 = v43;
+                      localesCopy = v39;
+                      personCopy = v40;
+                      _parentRelationships = v43;
                       v18 = v44;
                       v20 = v42;
                       goto LABEL_35;
@@ -231,7 +231,7 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
               }
             }
 
-            v19 = v43;
+            _parentRelationships = v43;
             v18 = v44;
             v24 = v41;
             v20 = v42;
@@ -244,9 +244,9 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
 
         while (v24 != v22);
         v22 = [v20 countByEnumeratingWithState:&v51 objects:v60 count:16];
-        v31 = 0;
-        v7 = v39;
-        v6 = v40;
+        unsignedIntegerValue = 0;
+        localesCopy = v39;
+        personCopy = v40;
       }
 
       while (v22);
@@ -254,7 +254,7 @@ void __81__CLSSocialServiceCoreNameParser__regularExpressionForRelationship_lang
 
     else
     {
-      v31 = 0;
+      unsignedIntegerValue = 0;
     }
 
 LABEL_35:
@@ -262,28 +262,28 @@ LABEL_35:
 
   else
   {
-    v31 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v31;
+  return unsignedIntegerValue;
 }
 
-- (id)_normalizeName:(id)a3
+- (id)_normalizeName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [v5 mutableCopy];
+    lowercaseString = [nameCopy lowercaseString];
+    v6 = [lowercaseString mutableCopy];
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [v6 length];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __49__CLSSocialServiceCoreNameParser__normalizeName___block_invoke;
     v27 = &unk_2788A8760;
-    v8 = v7;
+    v8 = array;
     v28 = v8;
     CEMEnumerateEmojiTokensInStringWithBlock();
     if ([v8 count])
@@ -292,8 +292,8 @@ LABEL_35:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v8 reverseObjectEnumerator];
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -304,17 +304,17 @@ LABEL_35:
           {
             if (*v21 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v14 = *(*(&v20 + 1) + 8 * i);
             v15 = objc_autoreleasePoolPush();
-            v16 = [v14 rangeValue];
-            [v6 deleteCharactersInRange:{v16, v17}];
+            rangeValue = [v14 rangeValue];
+            [v6 deleteCharactersInRange:{rangeValue, v17}];
             objc_autoreleasePoolPop(v15);
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v20 objects:v29 count:16];
+          v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v20 objects:v29 count:16];
         }
 
         while (v11);
@@ -339,125 +339,125 @@ void __49__CLSSocialServiceCoreNameParser__normalizeName___block_invoke(uint64_t
   [v1 addObject:v2];
 }
 
-- (unint64_t)_sexHintForRelationship:(unint64_t)a3
+- (unint64_t)_sexHintForRelationship:(unint64_t)relationship
 {
-  if (a3 > 0x11)
+  if (relationship > 0x11)
   {
     return 0;
   }
 
   else
   {
-    return qword_22F992780[a3];
+    return qword_22F992780[relationship];
   }
 }
 
-- (unint64_t)sexHintForPerson:(id)a3 usingLocales:(id)a4
+- (unint64_t)sexHintForPerson:(id)person usingLocales:(id)locales
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 CNIdentifier];
-  v9 = [(NSMutableDictionary *)self->_sexHintByCNIdentifier objectForKeyedSubscript:v8];
+  personCopy = person;
+  localesCopy = locales;
+  cNIdentifier = [personCopy CNIdentifier];
+  v9 = [(NSMutableDictionary *)self->_sexHintByCNIdentifier objectForKeyedSubscript:cNIdentifier];
   v10 = v9;
   if (!v9)
   {
-    v12 = [v6 firstName];
-    v13 = [v12 lowercaseString];
+    firstName = [personCopy firstName];
+    lowercaseString = [firstName lowercaseString];
 
-    if ([v13 length])
+    if ([lowercaseString length])
     {
-      if ([v13 UTF8String])
+      if ([lowercaseString UTF8String])
       {
-        v14 = [(NPNameParser *)self->_nameParser genderMajorityForGivenName:v13];
+        v14 = [(NPNameParser *)self->_nameParser genderMajorityForGivenName:lowercaseString];
         if (v14)
         {
           if (v14 == 2)
           {
-            v11 = 2;
+            integerValue = 2;
           }
 
           else
           {
-            v11 = v14 == 1;
+            integerValue = v14 == 1;
           }
         }
 
         else
         {
-          v17 = [v6 relationship];
-          if (!v17)
+          relationship = [personCopy relationship];
+          if (!relationship)
           {
-            v17 = [(CLSSocialServiceCoreNameParser *)self relationshipHintForPerson:v6 usingLocales:v7];
+            relationship = [(CLSSocialServiceCoreNameParser *)self relationshipHintForPerson:personCopy usingLocales:localesCopy];
           }
 
-          v11 = [(CLSSocialServiceCoreNameParser *)self _sexHintForRelationship:v17];
+          integerValue = [(CLSSocialServiceCoreNameParser *)self _sexHintForRelationship:relationship];
         }
       }
 
       else
       {
         v15 = +[CLSLogging sharedLogging];
-        v16 = [v15 loggingConnection];
+        loggingConnection = [v15 loggingConnection];
 
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           v24 = 138412546;
-          v25 = v6;
+          v25 = personCopy;
           v26 = 2112;
-          v27 = v13;
-          _os_log_error_impl(&dword_22F907000, v16, OS_LOG_TYPE_ERROR, "[CLSSocialServiceCoreNameParser] Person %@ has an invalid UTF8 given name (%@)", &v24, 0x16u);
+          v27 = lowercaseString;
+          _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "[CLSSocialServiceCoreNameParser] Person %@ has an invalid UTF8 given name (%@)", &v24, 0x16u);
         }
 
-        v11 = 0;
+        integerValue = 0;
       }
 
-      if ([v8 length])
+      if ([cNIdentifier length])
       {
-        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-        [(NSMutableDictionary *)self->_sexHintByCNIdentifier setObject:v18 forKeyedSubscript:v8];
+        loggingConnection2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue];
+        [(NSMutableDictionary *)self->_sexHintByCNIdentifier setObject:loggingConnection2 forKeyedSubscript:cNIdentifier];
       }
 
       else
       {
         v19 = +[CLSLogging sharedLogging];
-        v18 = [v19 loggingConnection];
+        loggingConnection2 = [v19 loggingConnection];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
         {
           v24 = 138412290;
-          v25 = v6;
-          _os_log_impl(&dword_22F907000, v18, OS_LOG_TYPE_INFO, "[CLSSocialServiceCoreNameParser] Person %@ does not have cnIdentifier, not adding to sex hint cache", &v24, 0xCu);
+          v25 = personCopy;
+          _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "[CLSSocialServiceCoreNameParser] Person %@ does not have cnIdentifier, not adding to sex hint cache", &v24, 0xCu);
         }
       }
 
-      if (v11)
+      if (integerValue)
       {
         goto LABEL_24;
       }
 
       v20 = +[CLSLogging sharedLogging];
-      v21 = [v20 loggingConnection];
+      loggingConnection3 = [v20 loggingConnection];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
       {
-        v22 = [v6 fullName];
+        fullName = [personCopy fullName];
         v24 = 138412290;
-        v25 = v22;
-        _os_log_impl(&dword_22F907000, v21, OS_LOG_TYPE_INFO, "[CLSSocialServiceCoreNameParser] No sex hint extracted from name %@", &v24, 0xCu);
+        v25 = fullName;
+        _os_log_impl(&dword_22F907000, loggingConnection3, OS_LOG_TYPE_INFO, "[CLSSocialServiceCoreNameParser] No sex hint extracted from name %@", &v24, 0xCu);
       }
     }
 
-    v11 = 0;
+    integerValue = 0;
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v11 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 LABEL_25:
 
-  return v11;
+  return integerValue;
 }
 
 - (void)invalidateMemoryCaches
@@ -466,9 +466,9 @@ LABEL_25:
   sexHintByCNIdentifier = self->_sexHintByCNIdentifier;
   self->_sexHintByCNIdentifier = v3;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   vocabularyByRelationshipByLocale = self->_vocabularyByRelationshipByLocale;
-  self->_vocabularyByRelationshipByLocale = v5;
+  self->_vocabularyByRelationshipByLocale = dictionary;
 
   self->_regularExpressionByRelationshipByLocale = [MEMORY[0x277CBEB38] dictionary];
 
@@ -486,9 +486,9 @@ LABEL_25:
     nameParser = v2->_nameParser;
     v2->_nameParser = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sexHintByCNIdentifier = v2->_sexHintByCNIdentifier;
-    v2->_sexHintByCNIdentifier = v5;
+    v2->_sexHintByCNIdentifier = dictionary;
 
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 URLForResource:@"personRelationshipVocabulary" withExtension:@"plist"];
@@ -497,28 +497,28 @@ LABEL_25:
     vocabularyByRelationshipByLocale = v2->_vocabularyByRelationshipByLocale;
     v2->_vocabularyByRelationshipByLocale = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     regularExpressionByRelationshipByLocale = v2->_regularExpressionByRelationshipByLocale;
-    v2->_regularExpressionByRelationshipByLocale = v11;
+    v2->_regularExpressionByRelationshipByLocale = dictionary2;
 
-    v13 = [MEMORY[0x277CCA900] letterCharacterSet];
-    v14 = [v13 invertedSet];
+    letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+    invertedSet = [letterCharacterSet invertedSet];
     nonLetterCharacterSet = v2->_nonLetterCharacterSet;
-    v2->_nonLetterCharacterSet = v14;
+    v2->_nonLetterCharacterSet = invertedSet;
   }
 
   return v2;
 }
 
-+ (unint64_t)_personRelationshipFromString:(id)a3
++ (unint64_t)_personRelationshipFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"mother"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"mother"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"father"])
+  else if ([stringCopy isEqualToString:@"father"])
   {
     v4 = 10;
   }
@@ -531,15 +531,15 @@ LABEL_25:
   return v4;
 }
 
-+ (id)_dictionaryKeyForPersonRelationship:(unint64_t)a3
++ (id)_dictionaryKeyForPersonRelationship:(unint64_t)relationship
 {
   v3 = @"father";
-  if (a3 != 10)
+  if (relationship != 10)
   {
     v3 = 0;
   }
 
-  if (a3 == 9)
+  if (relationship == 9)
   {
     return @"mother";
   }

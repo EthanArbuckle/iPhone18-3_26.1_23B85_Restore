@@ -1,31 +1,31 @@
 @interface QLPreviewExtensionHostContext
 - (QLRemoteItemViewController)remoteItemViewController;
-- (id)protocolServiceWithErrorHandler:(id)a3;
-- (void)generatePreviewForURL:(id)a3 completion:(id)a4;
-- (void)getARQLInlineProxy2WithCompletionHandler:(id)a3;
-- (void)getARQLInlineProxy3WithCompletionHandler:(id)a3;
-- (void)getARQLInlineProxyWithCompletionHandler:(id)a3;
-- (void)getPrinterProxyWithCompletionHandler:(id)a3;
-- (void)invalidateServiceWithCompletionHandler:(id)a3;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)previewControllerDidUpdatePreferredContentSize:(id)a3;
-- (void)previewControllerDidUpdateTitle:(id)a3;
-- (void)setHostViewControllerProxy:(id)a3;
+- (id)protocolServiceWithErrorHandler:(id)handler;
+- (void)generatePreviewForURL:(id)l completion:(id)completion;
+- (void)getARQLInlineProxy2WithCompletionHandler:(id)handler;
+- (void)getARQLInlineProxy3WithCompletionHandler:(id)handler;
+- (void)getARQLInlineProxyWithCompletionHandler:(id)handler;
+- (void)getPrinterProxyWithCompletionHandler:(id)handler;
+- (void)invalidateServiceWithCompletionHandler:(id)handler;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)previewControllerDidUpdatePreferredContentSize:(id)size;
+- (void)previewControllerDidUpdateTitle:(id)title;
+- (void)setHostViewControllerProxy:(id)proxy;
 @end
 
 @implementation QLPreviewExtensionHostContext
 
-- (id)protocolServiceWithErrorHandler:(id)a3
+- (id)protocolServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionHostContext *)self _auxiliaryConnection];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(QLPreviewExtensionHostContext *)self _auxiliaryConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__QLPreviewExtensionHostContext_protocolServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_278B58D18;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -66,10 +66,10 @@ void __66__QLPreviewExtensionHostContext_previewControllerWantsFullScreen___bloc
   [WeakRetained previewControllerWantsFullScreen:*(a1 + 40)];
 }
 
-- (void)previewControllerDidUpdateTitle:(id)a3
+- (void)previewControllerDidUpdateTitle:(id)title
 {
-  v4 = a3;
-  v3 = v4;
+  titleCopy = title;
+  v3 = titleCopy;
   QLRunInMainThread();
 }
 
@@ -79,10 +79,10 @@ void __65__QLPreviewExtensionHostContext_previewControllerDidUpdateTitle___block
   [WeakRetained previewControllerDidUpdateTitle:*(a1 + 40)];
 }
 
-- (void)previewControllerDidUpdatePreferredContentSize:(id)a3
+- (void)previewControllerDidUpdatePreferredContentSize:(id)size
 {
-  v4 = a3;
-  v3 = v4;
+  sizeCopy = size;
+  v3 = sizeCopy;
   QLRunInMainThread();
 }
 
@@ -92,19 +92,19 @@ void __80__QLPreviewExtensionHostContext_previewControllerDidUpdatePreferredCont
   [WeakRetained previewControllerDidUpdatePreferredContentSize:*(a1 + 40)];
 }
 
-- (void)setHostViewControllerProxy:(id)a3
+- (void)setHostViewControllerProxy:(id)proxy
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionHostContext *)self protocolService];
-  [v5 setHostViewControllerProxy:v4];
+  proxyCopy = proxy;
+  protocolService = [(QLPreviewExtensionHostContext *)self protocolService];
+  [protocolService setHostViewControllerProxy:proxyCopy];
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
-  v11 = a4;
+  contentsCopy = contents;
+  handlerCopy = handler;
+  v10 = contentsCopy;
+  contextCopy = context;
   objc_opt_class();
   v12 = v10;
   if (objc_opt_isKindOfClass())
@@ -117,7 +117,7 @@ void __80__QLPreviewExtensionHostContext_previewControllerDidUpdatePreferredCont
   v19[1] = 3221225472;
   v19[2] = __93__QLPreviewExtensionHostContext_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v19[3] = &unk_278B58D18;
-  v14 = v9;
+  v14 = handlerCopy;
   v20 = v14;
   v15 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v19];
   v17[0] = MEMORY[0x277D85DD0];
@@ -126,7 +126,7 @@ void __80__QLPreviewExtensionHostContext_previewControllerDidUpdatePreferredCont
   v17[3] = &unk_278B58D68;
   v18 = v14;
   v16 = v14;
-  [v15 loadPreviewControllerWithContents:v12 context:v11 completionHandler:v17];
+  [v15 loadPreviewControllerWithContents:v12 context:contextCopy completionHandler:v17];
 }
 
 void __93__QLPreviewExtensionHostContext_loadPreviewControllerWithContents_context_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -147,14 +147,14 @@ void __93__QLPreviewExtensionHostContext_loadPreviewControllerWithContents_conte
   QLRunInMainThread();
 }
 
-- (void)getPrinterProxyWithCompletionHandler:(id)a3
+- (void)getPrinterProxyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__QLPreviewExtensionHostContext_getPrinterProxyWithCompletionHandler___block_invoke;
   v10[3] = &unk_278B58D18;
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
@@ -180,62 +180,62 @@ void __70__QLPreviewExtensionHostContext_getPrinterProxyWithCompletionHandler___
   QLRunInMainThread();
 }
 
-- (void)invalidateServiceWithCompletionHandler:(id)a3
+- (void)invalidateServiceWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(QLPreviewExtensionHostContext *)self protocolService];
-  [v5 invalidateServiceWithCompletionHandler:v4];
+  handlerCopy = handler;
+  protocolService = [(QLPreviewExtensionHostContext *)self protocolService];
+  [protocolService invalidateServiceWithCompletionHandler:handlerCopy];
 }
 
-- (void)generatePreviewForURL:(id)a3 completion:(id)a4
+- (void)generatePreviewForURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__QLPreviewExtensionHostContext_generatePreviewForURL_completion___block_invoke;
   v10[3] = &unk_278B58D18;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  lCopy = l;
   v9 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v10];
-  [v9 generatePreviewForURL:v8 completion:v7];
+  [v9 generatePreviewForURL:lCopy completion:v7];
 }
 
-- (void)getARQLInlineProxyWithCompletionHandler:(id)a3
+- (void)getARQLInlineProxyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__QLPreviewExtensionHostContext_getARQLInlineProxyWithCompletionHandler___block_invoke;
   v7[3] = &unk_278B58D18;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v7];
   [v6 getARQLInlineProxyWithCompletionHandler:v5];
 }
 
-- (void)getARQLInlineProxy2WithCompletionHandler:(id)a3
+- (void)getARQLInlineProxy2WithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__QLPreviewExtensionHostContext_getARQLInlineProxy2WithCompletionHandler___block_invoke;
   v7[3] = &unk_278B58D18;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v7];
   [v6 getARQLInlineProxy2WithCompletionHandler:v5];
 }
 
-- (void)getARQLInlineProxy3WithCompletionHandler:(id)a3
+- (void)getARQLInlineProxy3WithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__QLPreviewExtensionHostContext_getARQLInlineProxy3WithCompletionHandler___block_invoke;
   v7[3] = &unk_278B58D18;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(QLPreviewExtensionHostContext *)self protocolServiceWithErrorHandler:v7];
   [v6 getARQLInlineProxy3WithCompletionHandler:v5];
 }

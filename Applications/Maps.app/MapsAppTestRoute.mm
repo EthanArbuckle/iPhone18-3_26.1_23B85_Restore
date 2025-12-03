@@ -1,38 +1,38 @@
 @interface MapsAppTestRoute
 - (BOOL)runTest;
-- (void)_requestRouteWithResolvedDestination:(id)a3;
-- (void)_showDirectionSearchView:(id)a3;
-- (void)didDisplayRoutes:(id)a3;
-- (void)didEndGEOPPTTest_PlaceDataRequest_GEOD:(id)a3;
-- (void)didEndGEOPPTTest_PlaceRequest:(id)a3;
-- (void)didEndGEOPPTTest_PlaceRequest_RequestPreparing:(id)a3;
-- (void)didEndGEOPPTTest_PlaceRequest_ResponseHandling:(id)a3;
-- (void)didEndGEOPPTTest_RouteManager_DirectionsRequest:(id)a3;
-- (void)didEndMapsPPTTest_ComposeWaypoint:(id)a3;
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan:(id)a3;
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)a3;
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)a3;
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)a3;
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)a3;
-- (void)didResolveWaypointsForRouting:(id)a3;
+- (void)_requestRouteWithResolvedDestination:(id)destination;
+- (void)_showDirectionSearchView:(id)view;
+- (void)didDisplayRoutes:(id)routes;
+- (void)didEndGEOPPTTest_PlaceDataRequest_GEOD:(id)d;
+- (void)didEndGEOPPTTest_PlaceRequest:(id)request;
+- (void)didEndGEOPPTTest_PlaceRequest_RequestPreparing:(id)preparing;
+- (void)didEndGEOPPTTest_PlaceRequest_ResponseHandling:(id)handling;
+- (void)didEndGEOPPTTest_RouteManager_DirectionsRequest:(id)request;
+- (void)didEndMapsPPTTest_ComposeWaypoint:(id)waypoint;
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan:(id)plan;
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)search;
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)started;
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)picking;
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)waypoints;
+- (void)didResolveWaypointsForRouting:(id)routing;
 - (void)registerGEOSubtestsForRouting;
-- (void)willBeginGEOPPTTest_PlaceDataRequest_GEOD:(id)a3;
-- (void)willBeginGEOPPTTest_PlaceRequest:(id)a3;
-- (void)willBeginGEOPPTTest_PlaceRequest_RequestPreparing:(id)a3;
-- (void)willBeginGEOPPTTest_PlaceRequest_ResponseHandling:(id)a3;
-- (void)willBeginGEOPPTTest_RouteManager_DirectionsRequest:(id)a3;
-- (void)willBeginMapsPPTTest_ComposeWaypoint:(id)a3;
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan:(id)a3;
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)a3;
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)a3;
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)a3;
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)a3;
-- (void)willResolveWaypointsForRouting:(id)a3;
+- (void)willBeginGEOPPTTest_PlaceDataRequest_GEOD:(id)d;
+- (void)willBeginGEOPPTTest_PlaceRequest:(id)request;
+- (void)willBeginGEOPPTTest_PlaceRequest_RequestPreparing:(id)preparing;
+- (void)willBeginGEOPPTTest_PlaceRequest_ResponseHandling:(id)handling;
+- (void)willBeginGEOPPTTest_RouteManager_DirectionsRequest:(id)request;
+- (void)willBeginMapsPPTTest_ComposeWaypoint:(id)waypoint;
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan:(id)plan;
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)search;
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)started;
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)picking;
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)waypoints;
+- (void)willResolveWaypointsForRouting:(id)routing;
 @end
 
 @implementation MapsAppTestRoute
 
-- (void)didDisplayRoutes:(id)a3
+- (void)didDisplayRoutes:(id)routes
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"MapsRoutePlanningShowingRoutesNotification" object:0];
@@ -46,21 +46,21 @@
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_RouteManager_DirectionsRequest:(id)a3
+- (void)didEndGEOPPTTest_RouteManager_DirectionsRequest:(id)request
 {
-  v23 = a3;
-  v4 = [v23 object];
+  requestCopy = request;
+  object = [requestCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v23;
+  v6 = requestCopy;
   if (isKindOfClass)
   {
-    v7 = [v23 object];
-    if ([v7 count])
+    object2 = [requestCopy object];
+    if ([object2 count])
     {
-      v8 = [v7 firstObject];
-      v9 = [v8 transportType] - 1;
+      firstObject = [object2 firstObject];
+      v9 = [firstObject transportType] - 1;
       if (v9 > 5)
       {
         v10 = 1;
@@ -73,34 +73,34 @@
 
       if (v10 == [(MapsAppTestRoute *)self transportType])
       {
-        v11 = [v8 _maps_traceRecordingData];
-        v12 = [v11 initialDirectionsRequest];
-        v13 = [v11 initialDirectionsResponse];
-        v14 = [v12 data];
-        v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 length]);
-        v16 = [(MapsAppTest *)self results];
-        [v16 setObject:v15 forKeyedSubscript:@"extras:routeRequestSize:bytes"];
+        _maps_traceRecordingData = [firstObject _maps_traceRecordingData];
+        initialDirectionsRequest = [_maps_traceRecordingData initialDirectionsRequest];
+        initialDirectionsResponse = [_maps_traceRecordingData initialDirectionsResponse];
+        data = [initialDirectionsRequest data];
+        v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
+        results = [(MapsAppTest *)self results];
+        [results setObject:v15 forKeyedSubscript:@"extras:routeRequestSize:bytes"];
 
-        v17 = [v13 data];
-        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 length]);
-        v19 = [(MapsAppTest *)self results];
-        [v19 setObject:v18 forKeyedSubscript:@"extras:routeResponseSize:bytes"];
+        data2 = [initialDirectionsResponse data];
+        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data2 length]);
+        results2 = [(MapsAppTest *)self results];
+        [results2 setObject:v18 forKeyedSubscript:@"extras:routeResponseSize:bytes"];
 
-        v20 = [v13 suggestedRoutes];
-        v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v20 count]);
-        v22 = [(MapsAppTest *)self results];
-        [v22 setObject:v21 forKeyedSubscript:@"extras:routeResponseSuggestedNumRoutes:count"];
+        suggestedRoutes = [initialDirectionsResponse suggestedRoutes];
+        v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [suggestedRoutes count]);
+        results3 = [(MapsAppTest *)self results];
+        [results3 setObject:v21 forKeyedSubscript:@"extras:routeResponseSuggestedNumRoutes:count"];
 
         [(MapsAppTest *)self finishedSubTest:@"routeRequestWaiting"];
         [(MapsAppTest *)self startedSubTest:@"displayRoutes"];
       }
     }
 
-    v6 = v23;
+    v6 = requestCopy;
   }
 }
 
-- (void)willBeginGEOPPTTest_RouteManager_DirectionsRequest:(id)a3
+- (void)willBeginGEOPPTTest_RouteManager_DirectionsRequest:(id)request
 {
   [(MapsAppTest *)self finishedSubTest:@"routeRequestPrep"];
   [(MapsAppTest *)self startedSubTest:@"routeRequestWaiting"];
@@ -108,7 +108,7 @@
   [v4 addObserver:self selector:"didDisplayRoutes:" name:@"MapsRoutePlanningShowingRoutesNotification" object:0];
 }
 
-- (void)didEndMapsPPTTest_ComposeWaypoint:(id)a3
+- (void)didEndMapsPPTTest_ComposeWaypoint:(id)waypoint
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -118,7 +118,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_ComposeWaypoint:(id)a3
+- (void)willBeginMapsPPTTest_ComposeWaypoint:(id)waypoint
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -128,7 +128,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)a3
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)search
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -138,7 +138,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)a3
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsSearch:(id)search
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -148,7 +148,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)a3
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)waypoints
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -158,7 +158,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)a3
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking_LoadingFromWaypoints:(id)waypoints
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -168,7 +168,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)a3
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)picking
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -178,7 +178,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)a3
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_RoutePicking:(id)picking
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -188,7 +188,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)a3
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)started
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -198,7 +198,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)a3
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan_DirectionsStarted:(id)started
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -208,7 +208,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndMapsPPTTest_Route_SetDirectionsPlan:(id)a3
+- (void)didEndMapsPPTTest_Route_SetDirectionsPlan:(id)plan
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -218,7 +218,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan:(id)a3
+- (void)willBeginMapsPPTTest_Route_SetDirectionsPlan:(id)plan
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -228,55 +228,55 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_PlaceDataRequest_GEOD:(id)a3
+- (void)didEndGEOPPTTest_PlaceDataRequest_GEOD:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100586CA4;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dCopy = d;
+  v3 = dCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)willBeginGEOPPTTest_PlaceDataRequest_GEOD:(id)a3
+- (void)willBeginGEOPPTTest_PlaceDataRequest_GEOD:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100586DCC;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  dCopy = d;
+  v3 = dCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)didEndGEOPPTTest_PlaceRequest_ResponseHandling:(id)a3
+- (void)didEndGEOPPTTest_PlaceRequest_ResponseHandling:(id)handling
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100586EFC;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  handlingCopy = handling;
+  v3 = handlingCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)willBeginGEOPPTTest_PlaceRequest_ResponseHandling:(id)a3
+- (void)willBeginGEOPPTTest_PlaceRequest_ResponseHandling:(id)handling
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100587024;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  handlingCopy = handling;
+  v3 = handlingCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)didEndGEOPPTTest_PlaceRequest_RequestPreparing:(id)a3
+- (void)didEndGEOPPTTest_PlaceRequest_RequestPreparing:(id)preparing
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -286,7 +286,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_PlaceRequest_RequestPreparing:(id)a3
+- (void)willBeginGEOPPTTest_PlaceRequest_RequestPreparing:(id)preparing
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -296,7 +296,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didEndGEOPPTTest_PlaceRequest:(id)a3
+- (void)didEndGEOPPTTest_PlaceRequest:(id)request
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -306,7 +306,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)willBeginGEOPPTTest_PlaceRequest:(id)a3
+- (void)willBeginGEOPPTTest_PlaceRequest:(id)request
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -316,7 +316,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didResolveWaypointsForRouting:(id)a3
+- (void)didResolveWaypointsForRouting:(id)routing
 {
   numWaypointsLoaded = self->_numWaypointsLoaded;
   self->_numWaypointsLoaded = numWaypointsLoaded + 1;
@@ -340,7 +340,7 @@
   }
 }
 
-- (void)willResolveWaypointsForRouting:(id)a3
+- (void)willResolveWaypointsForRouting:(id)routing
 {
   self->_numWaypointsLoaded = 0;
   v4 = +[NSNotificationCenter defaultCenter];
@@ -358,29 +358,29 @@
   [(MapsAppTest *)self startedSubTest:@"waypointResolution2"];
 }
 
-- (void)_showDirectionSearchView:(id)a3
+- (void)_showDirectionSearchView:(id)view
 {
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(MapsAppTest *)self options];
-  v6 = [v5 objectForKeyedSubscript:@"transportType"];
+  options = [(MapsAppTest *)self options];
+  v6 = [options objectForKeyedSubscript:@"transportType"];
 
-  v7 = [(MapsAppTest *)self options];
-  v8 = v7;
+  options2 = [(MapsAppTest *)self options];
+  v8 = options2;
   if (v6)
   {
-    v9 = [v7 _mapstest_transportType];
+    _mapstest_transportType = [options2 _mapstest_transportType];
     v10 = 1;
-    if (v9 > 3)
+    if (_mapstest_transportType > 3)
     {
-      if (v9 == 4)
+      if (_mapstest_transportType == 4)
       {
         v14 = 0;
         goto LABEL_19;
       }
 
-      if (v9 != 5)
+      if (_mapstest_transportType != 5)
       {
-        v12 = v9 == 6;
+        v12 = _mapstest_transportType == 6;
         v11 = 4;
 LABEL_14:
         if (v12)
@@ -397,15 +397,15 @@ LABEL_14:
       }
     }
 
-    else if (v9 != 1)
+    else if (_mapstest_transportType != 1)
     {
       v11 = 2;
-      if (v9 == 3)
+      if (_mapstest_transportType == 3)
       {
         v10 = 5;
       }
 
-      v12 = v9 == 2;
+      v12 = _mapstest_transportType == 2;
       goto LABEL_14;
     }
 
@@ -413,7 +413,7 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"mapType"];
+  v13 = [options2 objectForKeyedSubscript:@"mapType"];
 
   if ([v13 isEqualToString:@"transit"])
   {
@@ -428,13 +428,13 @@ LABEL_14:
   v8 = v13;
 LABEL_19:
 
-  v15 = [(MapsAppTest *)self options];
-  v16 = [v15 objectForKeyedSubscript:@"startAddr"];
+  options3 = [(MapsAppTest *)self options];
+  v16 = [options3 objectForKeyedSubscript:@"startAddr"];
 
   v17 = objc_alloc_init(SearchFieldItem);
   [(SearchFieldItem *)v17 setSearchString:v16];
-  v18 = [(MapsAppTest *)self options];
-  v19 = [v18 objectForKeyedSubscript:@"endAddr"];
+  options4 = [(MapsAppTest *)self options];
+  v19 = [options4 objectForKeyedSubscript:@"endAddr"];
 
   v20 = objc_alloc_init(SearchFieldItem);
   [(SearchFieldItem *)v20 setSearchString:v19];
@@ -445,8 +445,8 @@ LABEL_19:
   v23 = [(DirectionItem *)v21 initWithItems:v22 transportType:v14];
 
   [v4 addObserver:self selector:"willResolveWaypointsForRouting:" name:@"MapsWaypointResolutionDidBeginNotification" object:0];
-  v24 = [(MapsAppTest *)self testCoordinator];
-  [v24 pptTestDoDirectionItem:v23];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestDoDirectionItem:v23];
 }
 
 - (void)registerGEOSubtestsForRouting
@@ -552,10 +552,10 @@ LABEL_19:
   [v35 setEnabled:1 forSubTestWithName:@"GEOPPTTest_RouteManager_DirectionsRequest"];
 }
 
-- (void)_requestRouteWithResolvedDestination:(id)a3
+- (void)_requestRouteWithResolvedDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self options];
+  destinationCopy = destination;
+  options = [(MapsAppTest *)self options];
   [(MapsAppTestRoute *)self registerGEOSubtestsForRouting];
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"willResolveWaypointsForRouting:" name:@"MapsWaypointResolutionDidBeginNotification" object:0];
@@ -565,18 +565,18 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_100587E68;
   block[3] = &unk_101661A40;
-  v11 = v5;
-  v12 = v4;
-  v13 = self;
-  v8 = v4;
-  v9 = v5;
+  v11 = options;
+  v12 = destinationCopy;
+  selfCopy = self;
+  v8 = destinationCopy;
+  v9 = options;
   dispatch_after(v7, &_dispatch_main_q, block);
 }
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_waypointStrings];
+  options = [(MapsAppTest *)self options];
+  _mapstest_waypointStrings = [options _mapstest_waypointStrings];
   if ([(MapsAppTest *)self isRunningOnCarPlay])
   {
     [(MapsAppTest *)self startedTest];
@@ -586,12 +586,12 @@ LABEL_19:
 
   else
   {
-    v6 = [(MapsAppTest *)self testCoordinator];
-    [v6 pptTestResetForLaunchURL];
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    [testCoordinator pptTestResetForLaunchURL];
 
-    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [v3 _mapstest_mapType]);
-    v7 = [(MapsAppTest *)self options];
-    v8 = [v7 objectForKeyedSubscript:@"mapType"];
+    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [options _mapstest_mapType]);
+    options2 = [(MapsAppTest *)self options];
+    v8 = [options2 objectForKeyedSubscript:@"mapType"];
 
     if ([v8 isEqualToString:@"transit"])
     {
@@ -605,20 +605,20 @@ LABEL_19:
   }
 
   [(MapsAppTestRoute *)self setTransportType:v5];
-  v9 = [v3 _mapstest_originString];
-  v10 = [(MapsAppTest *)self isRunningOnCarPlay];
-  v11 = [v3 _mapstest_destinationString];
-  v12 = v11;
-  if (v10)
+  _mapstest_originString = [options _mapstest_originString];
+  isRunningOnCarPlay = [(MapsAppTest *)self isRunningOnCarPlay];
+  _mapstest_destinationString = [options _mapstest_destinationString];
+  v12 = _mapstest_destinationString;
+  if (isRunningOnCarPlay)
   {
-    if (v11)
+    if (_mapstest_destinationString)
     {
-      v13 = v11;
+      v13 = _mapstest_destinationString;
     }
 
     else
     {
-      v13 = [v3 objectForKeyedSubscript:@"endAddr"];
+      v13 = [options objectForKeyedSubscript:@"endAddr"];
     }
 
     v14 = v13;
@@ -626,10 +626,10 @@ LABEL_19:
     v12 = v14;
   }
 
-  if (v9 | v12)
+  if (_mapstest_originString | v12)
   {
 LABEL_15:
-    if (v4)
+    if (_mapstest_waypointStrings)
     {
       goto LABEL_18;
     }
@@ -637,22 +637,22 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 count] == 2)
+  if ([_mapstest_waypointStrings count] == 2)
   {
-    v9 = [v4 objectAtIndexedSubscript:0];
-    v12 = [v4 objectAtIndexedSubscript:1];
+    _mapstest_originString = [_mapstest_waypointStrings objectAtIndexedSubscript:0];
+    v12 = [_mapstest_waypointStrings objectAtIndexedSubscript:1];
     goto LABEL_15;
   }
 
-  v9 = 0;
+  _mapstest_originString = 0;
   v12 = 0;
-  if (v4)
+  if (_mapstest_waypointStrings)
   {
     goto LABEL_18;
   }
 
 LABEL_16:
-  if (!v9 && !v12)
+  if (!_mapstest_originString && !v12)
   {
     v20 = NSInvalidArgumentException;
     v21 = @"No waypoints provided for route test";
@@ -660,7 +660,7 @@ LABEL_16:
   }
 
 LABEL_18:
-  if (v4 && [v4 count] <= 1)
+  if (_mapstest_waypointStrings && [_mapstest_waypointStrings count] <= 1)
   {
     v20 = NSInvalidArgumentException;
     v21 = @"Not enough waypoints provided for route test";
@@ -669,7 +669,7 @@ LABEL_36:
     objc_exception_throw(v22);
   }
 
-  if ((([v9 _mapstest_isCurrentLocationString] & 1) != 0 || -[MapsAppTest isRunningOnCarPlay](self, "isRunningOnCarPlay")) && objc_msgSend(v4, "count") <= 2)
+  if ((([_mapstest_originString _mapstest_isCurrentLocationString] & 1) != 0 || -[MapsAppTest isRunningOnCarPlay](self, "isRunningOnCarPlay")) && objc_msgSend(_mapstest_waypointStrings, "count") <= 2)
   {
     v30[0] = 0;
     v30[1] = v30;
@@ -722,8 +722,8 @@ LABEL_36:
     [(SearchFieldItem *)v15 setSearchString:v12];
     if ([(MapsAppTest *)self isRunningOnCarPlay])
     {
-      v16 = [(MapsAppTest *)self testCoordinator];
-      [v16 pptTestEnterSearchMode];
+      testCoordinator2 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator2 pptTestEnterSearchMode];
 
       v17 = dispatch_time(0, 2000000000);
       v23[0] = _NSConcreteStackBlock;
@@ -737,8 +737,8 @@ LABEL_36:
 
     else
     {
-      v18 = [(MapsAppTest *)self testCoordinator];
-      [v18 pptTestSearchForFieldItem:v15];
+      testCoordinator3 = [(MapsAppTest *)self testCoordinator];
+      [testCoordinator3 pptTestSearchForFieldItem:v15];
     }
 
     _Block_object_dispose(v30, 8);

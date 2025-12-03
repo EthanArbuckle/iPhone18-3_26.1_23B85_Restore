@@ -1,33 +1,33 @@
 @interface CKTranscriptLayoutMessageEditingContext
-- (BOOL)isEqualToContext:(id)a3;
-- (CKTranscriptLayoutMessageEditingContext)initWithEditedMessageGuid:(id)a3 editedMessageHeight:(double)a4;
+- (BOOL)isEqualToContext:(id)context;
+- (CKTranscriptLayoutMessageEditingContext)initWithEditedMessageGuid:(id)guid editedMessageHeight:(double)height;
 @end
 
 @implementation CKTranscriptLayoutMessageEditingContext
 
-- (CKTranscriptLayoutMessageEditingContext)initWithEditedMessageGuid:(id)a3 editedMessageHeight:(double)a4
+- (CKTranscriptLayoutMessageEditingContext)initWithEditedMessageGuid:(id)guid editedMessageHeight:(double)height
 {
-  v6 = a3;
+  guidCopy = guid;
   v11.receiver = self;
   v11.super_class = CKTranscriptLayoutMessageEditingContext;
   v7 = [(CKTranscriptLayoutMessageEditingContext *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [guidCopy copy];
     editedMessageGuid = v7->_editedMessageGuid;
     v7->_editedMessageGuid = v8;
 
-    v7->_editedMessageHeight = a4;
+    v7->_editedMessageHeight = height;
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToContext:(id)a3
+- (BOOL)isEqualToContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (editedMessageGuid = self->_editedMessageGuid, [v4 editedMessageGuid], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(editedMessageGuid) = -[NSString isEqualToString:](editedMessageGuid, "isEqualToString:", v7), v7, editedMessageGuid))
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy && (editedMessageGuid = self->_editedMessageGuid, [contextCopy editedMessageGuid], v7 = objc_claimAutoreleasedReturnValue(), LODWORD(editedMessageGuid) = -[NSString isEqualToString:](editedMessageGuid, "isEqualToString:", v7), v7, editedMessageGuid))
   {
     editedMessageHeight = self->_editedMessageHeight;
     [v5 editedMessageHeight];

@@ -1,5 +1,5 @@
 @interface ADAnalyticsIdentifiersUtils
-+ (BOOL)isPartOfHome:(id)a3;
++ (BOOL)isPartOfHome:(id)home;
 + (id)idWhenNotPartOfHome;
 + (id)logger;
 @end
@@ -18,16 +18,16 @@
   return v3;
 }
 
-+ (BOOL)isPartOfHome:(id)a3
++ (BOOL)isPartOfHome:(id)home
 {
-  if (!a3)
+  if (!home)
   {
     return 0;
   }
 
-  v3 = a3;
+  homeCopy = home;
   v4 = +[ADAnalyticsIdentifiersUtils idWhenNotPartOfHome];
-  v5 = [v3 isEqual:v4];
+  v5 = [homeCopy isEqual:v4];
 
   v6 = v5 ^ 1;
   return v6;

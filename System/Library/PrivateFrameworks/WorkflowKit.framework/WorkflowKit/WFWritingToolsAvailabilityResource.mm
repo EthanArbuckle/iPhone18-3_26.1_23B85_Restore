@@ -1,5 +1,5 @@
 @interface WFWritingToolsAvailabilityResource
-- (WFWritingToolsAvailabilityResource)initWithDefinition:(id)a3;
+- (WFWritingToolsAvailabilityResource)initWithDefinition:(id)definition;
 - (id)actionsUnavailableError;
 - (void)refreshAvailability;
 @end
@@ -75,18 +75,18 @@
     _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s WritingToolsController told us WT is unavailable", &buf, 0xCu);
   }
 
-  v7 = [(WFWritingToolsAvailabilityResource *)self actionsUnavailableError];
-  [(WFResource *)self updateAvailability:0 withError:v7];
+  actionsUnavailableError = [(WFWritingToolsAvailabilityResource *)self actionsUnavailableError];
+  [(WFResource *)self updateAvailability:0 withError:actionsUnavailableError];
 
 LABEL_12:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (WFWritingToolsAvailabilityResource)initWithDefinition:(id)a3
+- (WFWritingToolsAvailabilityResource)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFWritingToolsAvailabilityResource;
-  v3 = [(WFResource *)&v7 initWithDefinition:a3];
+  v3 = [(WFResource *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

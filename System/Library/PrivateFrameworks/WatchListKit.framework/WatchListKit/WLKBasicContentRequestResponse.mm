@@ -1,20 +1,20 @@
 @interface WLKBasicContentRequestResponse
-- (WLKBasicContentRequestResponse)initWithDictionary:(id)a3;
+- (WLKBasicContentRequestResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKBasicContentRequestResponse
 
-- (WLKBasicContentRequestResponse)initWithDictionary:(id)a3
+- (WLKBasicContentRequestResponse)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = WLKBasicContentRequestResponse;
   v5 = [(WLKBasicContentRequestResponse *)&v24 init];
   if (v5)
   {
-    v6 = [v4 wlk_arrayForKey:@"data"];
-    v7 = [MEMORY[0x277CBEB18] array];
+    v6 = [dictionaryCopy wlk_arrayForKey:@"data"];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -43,7 +43,7 @@
             v15 = [(WLKBasicContentMetadata *)v14 initWithDictionary:v13, v20];
             if (v15)
             {
-              [v7 addObject:v15];
+              [array addObject:v15];
             }
           }
 
@@ -57,7 +57,7 @@
       while (v10);
     }
 
-    v16 = [v7 copy];
+    v16 = [array copy];
     items = v5->_items;
     v5->_items = v16;
   }

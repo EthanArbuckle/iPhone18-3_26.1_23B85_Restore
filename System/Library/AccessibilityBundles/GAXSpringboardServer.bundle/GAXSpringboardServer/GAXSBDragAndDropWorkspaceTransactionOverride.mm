@@ -1,31 +1,31 @@
 @interface GAXSBDragAndDropWorkspaceTransactionOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_updateCurrentDropActionForSession:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_updateCurrentDropActionForSession:(id)session;
 @end
 
 @implementation GAXSBDragAndDropWorkspaceTransactionOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDragAndDropWorkspaceTransaction" hasInstanceMethod:@"_updateCurrentDropActionForSession:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBDragAndDropWorkspaceTransaction" hasInstanceVariable:@"_dropSession" withType:"SBApplicationDropSession"];
-  [v3 validateClass:@"SBApplicationDropSession" hasInstanceMethod:@"systemSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIDraggingSystemSession" hasInstanceMethod:@"info" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIDraggingSystemSessionInfo" hasInstanceMethod:@"processIdentifier" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"SBApplicationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithPid:" withFullSignature:{"@", "i", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationDropSession" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDragAndDropWorkspaceTransaction" hasInstanceMethod:@"_updateCurrentDropActionForSession:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBDragAndDropWorkspaceTransaction" hasInstanceVariable:@"_dropSession" withType:"SBApplicationDropSession"];
+  [validationsCopy validateClass:@"SBApplicationDropSession" hasInstanceMethod:@"systemSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIDraggingSystemSession" hasInstanceMethod:@"info" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIDraggingSystemSessionInfo" hasInstanceMethod:@"processIdentifier" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"SBApplicationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithPid:" withFullSignature:{"@", "i", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationDropSession" hasInstanceMethod:@"application" withFullSignature:{"@", 0}];
 }
 
-- (void)_updateCurrentDropActionForSession:(id)a3
+- (void)_updateCurrentDropActionForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = +[GAXSpringboard sharedInstanceIfExists];
-  v6 = [v5 isActive];
+  isActive = [v5 isActive];
 
-  if (!v6)
+  if (!isActive)
   {
     goto LABEL_5;
   }
@@ -67,7 +67,7 @@
 LABEL_5:
       v18.receiver = self;
       v18.super_class = GAXSBDragAndDropWorkspaceTransactionOverride;
-      [(GAXSBDragAndDropWorkspaceTransactionOverride *)&v18 _updateCurrentDropActionForSession:v4];
+      [(GAXSBDragAndDropWorkspaceTransactionOverride *)&v18 _updateCurrentDropActionForSession:sessionCopy];
       goto LABEL_12;
     }
   }

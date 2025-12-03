@@ -1,13 +1,13 @@
 @interface CACompressionView.ControlAccessibilityElement
 - (_TtCC12CoreAudioKit17CACompressionView27ControlAccessibilityElement)init;
-- (_TtCC12CoreAudioKit17CACompressionView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC12CoreAudioKit17CACompressionView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)container;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
 @end
 
 @implementation CACompressionView.ControlAccessibilityElement
 
-- (_TtCC12CoreAudioKit17CACompressionView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC12CoreAudioKit17CACompressionView27ControlAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_23719682C();
@@ -17,13 +17,13 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_237161A54();
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_237161DAC();
 }
 

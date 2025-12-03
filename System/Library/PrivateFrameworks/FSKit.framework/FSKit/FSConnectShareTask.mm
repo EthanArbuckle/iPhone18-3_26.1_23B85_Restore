@@ -1,12 +1,12 @@
 @interface FSConnectShareTask
-- (void)didCompleteWithVolume:(id)a3;
+- (void)didCompleteWithVolume:(id)volume;
 @end
 
 @implementation FSConnectShareTask
 
-- (void)didCompleteWithVolume:(id)a3
+- (void)didCompleteWithVolume:(id)volume
 {
-  objc_storeStrong(&self->_result, a3);
+  objc_storeStrong(&self->_result, volume);
 
   [(FSTask *)self didCompleteWithError:0];
 }

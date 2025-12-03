@@ -1,14 +1,14 @@
 @interface TESTriggerPhraseLoader
-- (TESTriggerPhraseLoader)initWithLocaleIdentifier:(id)a3;
+- (TESTriggerPhraseLoader)initWithLocaleIdentifier:(id)identifier;
 @end
 
 @implementation TESTriggerPhraseLoader
 
-- (TESTriggerPhraseLoader)initWithLocaleIdentifier:(id)a3
+- (TESTriggerPhraseLoader)initWithLocaleIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = TESTriggerPhraseLoader;
-  v3 = [(TESLocalizedPListLoader *)&v6 initWithLocaleIdentifier:a3];
+  v3 = [(TESLocalizedPListLoader *)&v6 initWithLocaleIdentifier:identifier];
   v4 = v3;
   if (v3)
   {

@@ -1,9 +1,9 @@
 @interface ATXUserEducationSuggestionModeChangeNotifier
 + (id)sharedInstance;
 - (ATXUserEducationSuggestionModeChangeNotifier)init;
-- (void)processModeChangeEvent:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)processModeChangeEvent:(id)event;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXUserEducationSuggestionModeChangeNotifier
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __62__ATXUserEducationSuggestionModeChangeNotifier_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_2, block);
@@ -73,9 +73,9 @@ void __62__ATXUserEducationSuggestionModeChangeNotifier_sharedInstance__block_in
     v31 = 0x2020000000;
     v32 = 0;
     v11 = BiomeLibrary();
-    v12 = [v11 UserFocus];
-    v13 = [v12 ComputedMode];
-    v14 = [v13 atx_publisherWithStartTime:0 endTime:0 maxEvents:&unk_283A552B0 lastN:&unk_283A552B0 reversed:0];
+    userFocus = [v11 UserFocus];
+    computedMode = [userFocus ComputedMode];
+    v14 = [computedMode atx_publisherWithStartTime:0 endTime:0 maxEvents:&unk_283A552B0 lastN:&unk_283A552B0 reversed:0];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __52__ATXUserEducationSuggestionModeChangeNotifier_init__block_invoke_18;
@@ -85,10 +85,10 @@ void __62__ATXUserEducationSuggestionModeChangeNotifier_sharedInstance__block_in
 
     objc_initWeak(&location, v2);
     v16 = BiomeLibrary();
-    v17 = [v16 UserFocus];
-    v18 = [v17 ComputedMode];
-    v19 = [v18 atx_DSLPublisher];
-    v20 = [v19 subscribeOn:v2->_scheduler];
+    userFocus2 = [v16 UserFocus];
+    computedMode2 = [userFocus2 ComputedMode];
+    atx_DSLPublisher = [computedMode2 atx_DSLPublisher];
+    v20 = [atx_DSLPublisher subscribeOn:v2->_scheduler];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __52__ATXUserEducationSuggestionModeChangeNotifier_init__block_invoke_22;
@@ -211,10 +211,10 @@ void __52__ATXUserEducationSuggestionModeChangeNotifier_init__block_invoke_22(ui
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processModeChangeEvent:(id)a3
+- (void)processModeChangeEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_observers;
   objc_sync_enter(v5);
   v11 = 0u;
@@ -236,7 +236,7 @@ void __52__ATXUserEducationSuggestionModeChangeNotifier_init__block_invoke_22(ui
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) processModeChangeEvent:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) processModeChangeEvent:{eventCopy, v11}];
       }
 
       while (v7 != v9);
@@ -250,21 +250,21 @@ void __52__ATXUserEducationSuggestionModeChangeNotifier_init__block_invoke_22(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 

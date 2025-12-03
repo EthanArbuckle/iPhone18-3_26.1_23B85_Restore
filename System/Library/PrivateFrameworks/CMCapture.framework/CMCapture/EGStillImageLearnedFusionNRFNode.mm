@@ -1,54 +1,54 @@
 @interface EGStillImageLearnedFusionNRFNode
-- (EGStillImageLearnedFusionNRFNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 provideInferenceInputImageForProcessing:(BOOL)a6 addSyncErrorRecoveryPorts:(BOOL)a7 portType:(id)a8 delegate:(id)a9;
+- (EGStillImageLearnedFusionNRFNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration provideInferenceInputImageForProcessing:(BOOL)processing addSyncErrorRecoveryPorts:(BOOL)ports portType:(id)type delegate:(id)delegate;
 - (uint64_t)_handleAnyErrorRecoveryLogicWithErr:(_DWORD *)val;
 - (void)_releaseErrorRecoveryResources;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingBuffer:(__CVBuffer *)a4 metadata:(id)a5 type:(unint64_t)a6 captureFrameFlags:(unint64_t)a7 processorInput:(id)a8 err:(int)a9;
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)processorController:(id)a3 didSelectFusionMode:(int)a4 processorInput:(id)a5;
-- (void)queueManagedReceiveData:(id)a3 fromInput:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(unint64_t)type captureFrameFlags:(unint64_t)flags processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didSelectFusionMode:(int)mode processorInput:(id)input;
+- (void)queueManagedReceiveData:(id)data fromInput:(id)input;
 @end
 
 @implementation EGStillImageLearnedFusionNRFNode
 
-- (EGStillImageLearnedFusionNRFNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 provideInferenceInputImageForProcessing:(BOOL)a6 addSyncErrorRecoveryPorts:(BOOL)a7 portType:(id)a8 delegate:(id)a9
+- (EGStillImageLearnedFusionNRFNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration provideInferenceInputImageForProcessing:(BOOL)processing addSyncErrorRecoveryPorts:(BOOL)ports portType:(id)type delegate:(id)delegate
 {
-  v10 = a7;
+  portsCopy = ports;
   v27.receiver = self;
   v27.super_class = EGStillImageLearnedFusionNRFNode;
-  v14 = [(EGStillImageProcessorControllerDelegateNode *)&v27 initWithName:a3 delegate:a9];
+  v14 = [(EGStillImageProcessorControllerDelegateNode *)&v27 initWithName:name delegate:delegate];
   if (v14)
   {
-    v14->_stillImageSettings = a4;
-    v14->_nodeConfiguration = a5;
-    v14->_portType = a8;
+    v14->_stillImageSettings = settings;
+    v14->_nodeConfiguration = configuration;
+    v14->_portType = type;
     v15 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v14->_processorInput = v15;
     [(EGNode *)v14 installInput:v15];
     v16 = [[EGInput alloc] initWithName:@"referenceFrame"];
     v14->_referenceFrameInput = v16;
     [(EGNode *)v14 installInput:v16];
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0;
     do
     {
       v19 = [EGStillImageProcessorControllerDelegateNode newSbufInputWithIndex:v18];
       [(EGNode *)v14 installInput:v19];
-      [v17 addObject:v19];
+      [array addObject:v19];
       v18 = (v18 + 1);
     }
 
     while (v18 != 3);
-    v14->_primarySbufInputs = [v17 copy];
+    v14->_primarySbufInputs = [array copy];
     v20 = +[EGStillImageProcessorControllerDelegateNode newSbufOutput];
     v14->_sbufOutput = v20;
     [(EGNode *)v14 installOutput:v20];
     v21 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"fusionMode"];
     v14->_fusionModeOutput = v21;
     [(EGNode *)v14 installOutput:v21];
-    v14->_provideInferenceInputImageForProcessing = a6;
-    if (a6)
+    v14->_provideInferenceInputImageForProcessing = processing;
+    if (processing)
     {
       v22 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"inferenceInputImage"];
       v14->_inferenceInputImageOutput = v22;
@@ -57,7 +57,7 @@
 
     v23 = [(BWPhotonicEngineNodeConfiguration *)v14->_nodeConfiguration resolvedProcessingResolutionFlavorForSettings:v14->_stillImageSettings portType:v14->_portType];
     v14->_nrfProcessorControllerInput = [[BWNRFProcessorInput alloc] initWithSettings:v14->_stillImageSettings portType:v14->_portType resolutionFlavor:v23];
-    if (v10)
+    if (portsCopy)
     {
       v14->_handleSyncErrorRecovery = 1;
       v24 = [[EGInput alloc] initWithName:@"hdrErrorRecoveryEVZero"];
@@ -80,17 +80,17 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInput:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInput:(id)input
 {
-  if (self->_processorInput != a4)
+  if (self->_processorInput != input)
   {
-    if ([(NSArray *)self->_primarySbufInputs containsObject:a4])
+    if ([(NSArray *)self->_primarySbufInputs containsObject:input])
     {
-      v7 = [a3 sampleBuffer];
-      if (v7)
+      sampleBuffer = [data sampleBuffer];
+      if (sampleBuffer)
       {
-        v8 = v7;
-        [(BWNRFProcessorInput *)self->_nrfProcessorControllerInput addFrame:v7];
+        v8 = sampleBuffer;
+        [(BWNRFProcessorInput *)self->_nrfProcessorControllerInput addFrame:sampleBuffer];
         if (!self->_nrfProcessorControllerErrorRecoveryInput || (BWStillImageCaptureFrameFlagsForSampleBuffer(v8) & 0xA) == 0)
         {
           return;
@@ -104,12 +104,12 @@
       goto LABEL_23;
     }
 
-    if (self->_hdrErrorRecoveryEVZeroInput == a4)
+    if (self->_hdrErrorRecoveryEVZeroInput == input)
     {
-      v17 = [a3 sampleBuffer];
-      if (v17)
+      sampleBuffer2 = [data sampleBuffer];
+      if (sampleBuffer2)
       {
-        v10 = v17;
+        v10 = sampleBuffer2;
         nrfProcessorControllerErrorRecoveryInput = self->_nrfProcessorControllerErrorRecoveryInput;
         if (!nrfProcessorControllerErrorRecoveryInput)
         {
@@ -125,15 +125,15 @@ LABEL_20:
       goto LABEL_23;
     }
 
-    if (self->_referenceFrameInput != a4)
+    if (self->_referenceFrameInput != input)
     {
       return;
     }
 
-    v14 = [a3 sampleBuffer];
-    if (v14)
+    sampleBuffer3 = [data sampleBuffer];
+    if (sampleBuffer3)
     {
-      v15 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], v14, 1u);
+      v15 = CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], sampleBuffer3, 1u);
       [(BWNRFProcessorInput *)self->_nrfProcessorControllerInput setReferenceFrameAttachments:v15];
       v16 = self->_nrfProcessorControllerErrorRecoveryInput;
       if (v16)
@@ -152,19 +152,19 @@ LABEL_25:
     return;
   }
 
-  v11 = [a3 processorController];
-  if (!v11)
+  processorController = [data processorController];
+  if (!processorController)
   {
     goto LABEL_23;
   }
 
-  v12 = v11;
+  v12 = processorController;
   BYTE3(v20) = 1;
   BYTE2(v20) = self->_processSmartStyleRenderingInput;
   BYTE1(v20) = self->_provideInferenceInputImageForProcessing;
   LOBYTE(v20) = 1;
   LOBYTE(v19) = 0;
-  v13 = [v11 enqueueInputForProcessing:self->_nrfProcessorControllerInput delegate:self processErrorRecoveryFrame:0 processErrorRecoveryProxy:0 processOriginalImage:0 processToneMapping:0 processInferenceInputImage:v19 clientBracketSequenceNumber:v20 processSemanticRendering:? provideInferenceInputImageForProcessing:? processSmartStyleRenderingInput:? inferencesAvailable:?];
+  v13 = [processorController enqueueInputForProcessing:self->_nrfProcessorControllerInput delegate:self processErrorRecoveryFrame:0 processErrorRecoveryProxy:0 processOriginalImage:0 processToneMapping:0 processInferenceInputImage:v19 clientBracketSequenceNumber:v20 processSemanticRendering:? provideInferenceInputImageForProcessing:? processSmartStyleRenderingInput:? inferencesAvailable:?];
   if (v13)
   {
     v18 = v13;
@@ -177,9 +177,9 @@ LABEL_25:
   }
 }
 
-- (void)processorController:(id)a3 didSelectFusionMode:(int)a4 processorInput:(id)a5
+- (void)processorController:(id)controller didSelectFusionMode:(int)mode processorInput:(id)input
 {
-  v5 = *&a4;
+  v5 = *&mode;
   fusionModeOutput = self->_fusionModeOutput;
   v7 = [EGStillImageGraphPayload alloc];
   v8 = -[EGStillImageGraphPayload initWithNumber:](v7, "initWithNumber:", [MEMORY[0x1E696AD98] numberWithInt:v5]);
@@ -187,23 +187,23 @@ LABEL_25:
   [(EGStillImageOutput *)fusionModeOutput emitPayload:v8];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!buffer)
   {
 LABEL_5:
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_6:
-    [EGStillImageLearnedFusionNRFNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageLearnedFusionNRFNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  if (a5 == 15)
+  if (type == 15)
   {
     inferenceInputImageOutput = self->_inferenceInputImageOutput;
     if (!inferenceInputImageOutput)
@@ -215,7 +215,7 @@ LABEL_6:
   else
   {
     inferenceInputImageOutput = self->_sbufOutput;
-    BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(a4);
+    BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(buffer);
     attemptErrorRecoveryOutput = self->_attemptErrorRecoveryOutput;
     if (attemptErrorRecoveryOutput && !self->_errorCodeTriggeringErrorRecovery)
     {
@@ -225,27 +225,27 @@ LABEL_6:
     }
   }
 
-  v12 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v12 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)inferenceInputImageOutput emitPayload:v12];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingBuffer:(__CVBuffer *)a4 metadata:(id)a5 type:(unint64_t)a6 captureFrameFlags:(unint64_t)a7 processorInput:(id)a8 err:(int)a9
+- (void)processorController:(id)controller didFinishProcessingBuffer:(__CVBuffer *)buffer metadata:(id)metadata type:(unint64_t)type captureFrameFlags:(unint64_t)flags processorInput:(id)input err:(int)err
 {
-  if (a9)
+  if (err)
   {
     v10 = EGStillImageGraphManagerForGraphElement(self);
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Encountered err:%d in %s", a9, "-[EGStillImageLearnedFusionNRFNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]"];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Encountered err:%d in %s", err, "-[EGStillImageLearnedFusionNRFNode processorController:didFinishProcessingBuffer:metadata:type:captureFrameFlags:processorInput:err:]"];
 
-    [v10 didEncounterError:a9 description:v11 element:self];
+    [v10 didEncounterError:err description:v11 element:self];
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err
 {
-  v5 = *&a5;
+  v5 = *&err;
   p_nrfProcessorControllerInput = &self->_nrfProcessorControllerInput;
   nrfProcessorControllerInput = self->_nrfProcessorControllerInput;
-  if (nrfProcessorControllerInput == a4 || (p_nrfProcessorControllerInput = &self->_nrfProcessorControllerErrorRecoveryInput, nrfProcessorControllerInput = self->_nrfProcessorControllerErrorRecoveryInput, nrfProcessorControllerInput == a4))
+  if (nrfProcessorControllerInput == input || (p_nrfProcessorControllerInput = &self->_nrfProcessorControllerErrorRecoveryInput, nrfProcessorControllerInput = self->_nrfProcessorControllerErrorRecoveryInput, nrfProcessorControllerInput == input))
   {
 
     *p_nrfProcessorControllerInput = 0;
@@ -253,7 +253,7 @@ LABEL_6:
 
   if (v5)
   {
-    [EGStillImageLearnedFusionNRFNode processorController:v5 didFinishProcessingInput:a4 err:?];
+    [EGStillImageLearnedFusionNRFNode processorController:v5 didFinishProcessingInput:input err:?];
   }
 
   else
@@ -265,13 +265,13 @@ LABEL_6:
 
 - (void)_releaseErrorRecoveryResources
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 240) == 1)
+    if (*(self + 240) == 1)
     {
 
-      *(a1 + 232) = 0;
-      *(a1 + 216) = 0;
+      *(self + 232) = 0;
+      *(self + 216) = 0;
     }
   }
 }

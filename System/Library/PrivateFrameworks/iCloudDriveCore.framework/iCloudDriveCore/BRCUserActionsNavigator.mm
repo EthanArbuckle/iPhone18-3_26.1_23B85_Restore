@@ -1,7 +1,7 @@
 @interface BRCUserActionsNavigator
 + (id)defaultNavigator;
-- (void)openAppStoreForBundleID:(id)a3;
-- (void)openShareURLInWebBrowser:(id)a3 withReason:(id)a4;
+- (void)openAppStoreForBundleID:(id)d;
+- (void)openShareURLInWebBrowser:(id)browser withReason:(id)reason;
 - (void)openiCloudSettings;
 @end
 
@@ -26,15 +26,15 @@ uint64_t __43__BRCUserActionsNavigator_defaultNavigator__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)openShareURLInWebBrowser:(id)a3 withReason:(id)a4
+- (void)openShareURLInWebBrowser:(id)browser withReason:(id)reason
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  browserCopy = browser;
+  reasonCopy = reason;
+  v7 = reasonCopy;
+  if (browserCopy)
   {
-    if (v6)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -51,13 +51,13 @@ uint64_t __43__BRCUserActionsNavigator_defaultNavigator__block_invoke()
 
   [BRCUserActionsNavigator openShareURLInWebBrowser:withReason:];
 LABEL_3:
-  v8 = [MEMORY[0x277CCACE0] componentsWithURL:v5 resolvingAgainstBaseURL:0];
+  v8 = [MEMORY[0x277CCACE0] componentsWithURL:browserCopy resolvingAgainstBaseURL:0];
   [v8 setScheme:@"https"];
-  v9 = [v8 query];
-  v10 = v9;
-  if (v9)
+  query = [v8 query];
+  v10 = query;
+  if (query)
   {
-    if ([v9 rangeOfString:@"redirectReason"] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([query rangeOfString:@"redirectReason"] != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_8;
     }
@@ -74,17 +74,17 @@ LABEL_3:
   [v8 setQuery:v11];
 
 LABEL_8:
-  v13 = [v8 fragment];
-  v14 = [v13 hasSuffix:@":nooverride"];
+  fragment = [v8 fragment];
+  v14 = [fragment hasSuffix:@":nooverride"];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [v8 fragment];
-    v16 = v15;
+    fragment2 = [v8 fragment];
+    v16 = fragment2;
     v17 = &stru_2837504F0;
-    if (v15)
+    if (fragment2)
     {
-      v17 = v15;
+      v17 = fragment2;
     }
 
     v18 = v17;
@@ -109,11 +109,11 @@ LABEL_8:
     _os_log_debug_impl(&dword_223E7A000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] Opening in web browser (reason: %@) %@%@", buf, 0x20u);
   }
 
-  v23 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v29 = *MEMORY[0x277CC1DF0];
   v30 = MEMORY[0x277CBEC38];
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-  v25 = [v23 openURL:v20 withOptions:v24];
+  v25 = [defaultWorkspace openURL:v20 withOptions:v24];
 
   if ((v25 & 1) == 0)
   {
@@ -131,18 +131,18 @@ LABEL_8:
 - (void)openiCloudSettings
 {
   v3 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/com.apple.Dataclass.Ubiquity"];
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v2 openSensitiveURL:v3 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)openAppStoreForBundleID:(id)a3
+- (void)openAppStoreForBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"itms-apps://?bundleIdentifier=%@", a3];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"itms-apps://?bundleIdentifier=%@", d];
     v3 = [MEMORY[0x277CBEBC0] URLWithString:v7];
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v4 openSensitiveURL:v3 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:v3 withOptions:0];
   }
 
   else

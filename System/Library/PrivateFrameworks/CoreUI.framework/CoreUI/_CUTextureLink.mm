@@ -1,9 +1,9 @@
 @interface _CUTextureLink
-- (id)provideImageInfoAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5;
+- (id)provideImageInfoAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face;
 - (id)provideTextureInfo;
 - (void)dealloc;
-- (void)setBufferAllocator:(id)a3;
-- (void)setNamedTexture:(id)a3;
+- (void)setBufferAllocator:(id)allocator;
+- (void)setNamedTexture:(id)texture;
 @end
 
 @implementation _CUTextureLink
@@ -22,28 +22,28 @@
   return [v2 provideTextureInfo];
 }
 
-- (void)setNamedTexture:(id)a3
+- (void)setNamedTexture:(id)texture
 {
-  if (self->_namedTexture != a3)
+  if (self->_namedTexture != texture)
   {
-    self->_namedTexture = a3;
+    self->_namedTexture = texture;
   }
 }
 
-- (void)setBufferAllocator:(id)a3
+- (void)setBufferAllocator:(id)allocator
 {
-  if (self->_bufferAllocator != a3)
+  if (self->_bufferAllocator != allocator)
   {
-    self->_bufferAllocator = a3;
+    self->_bufferAllocator = allocator;
   }
 }
 
-- (id)provideImageInfoAtLevel:(unint64_t)a3 element:(unint64_t)a4 face:(unint64_t)a5
+- (id)provideImageInfoAtLevel:(unint64_t)level element:(unint64_t)element face:(unint64_t)face
 {
   v9 = [-[_CUTextureLink namedTexture](self "namedTexture")];
-  v10 = [(_CUTextureLink *)self bufferAllocator];
+  bufferAllocator = [(_CUTextureLink *)self bufferAllocator];
 
-  return [v9 provideImageInfoAtLevel:a3 element:a4 face:a5 withBufferAllocator:v10];
+  return [v9 provideImageInfoAtLevel:level element:element face:face withBufferAllocator:bufferAllocator];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface NSAttributedString__UIKitStringObserver__Foundation
-- (void)drawAtPoint:(CGPoint)a3;
+- (void)drawAtPoint:(CGPoint)point;
 @end
 
 @implementation NSAttributedString__UIKitStringObserver__Foundation
 
-- (void)drawAtPoint:(CGPoint)a3
+- (void)drawAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (AXCaptureStringDrawingText == 1)
   {
     v6 = AXCapturedString;
-    v7 = [(NSAttributedString__UIKitStringObserver__Foundation *)self string];
-    [v6 appendString:v7];
+    string = [(NSAttributedString__UIKitStringObserver__Foundation *)self string];
+    [v6 appendString:string];
   }
 
   v8.receiver = self;

@@ -7,8 +7,8 @@
 - (void)dealloc;
 - (void)disconnectActivity;
 - (void)disconnectStatus;
-- (void)onAudioAccessoryDeviceMotion:(const void *)a3;
-- (void)startMslLoggingPrivateWithFilenamePrefix:(id)a3 filePath:(id)a4;
+- (void)onAudioAccessoryDeviceMotion:(const void *)motion;
+- (void)startMslLoggingPrivateWithFilenamePrefix:(id)prefix filePath:(id)path;
 - (void)stopMslLoggingPrivate;
 - (void)updatePreferences;
 @end
@@ -97,7 +97,7 @@
   return self->_enableMSL;
 }
 
-- (void)startMslLoggingPrivateWithFilenamePrefix:(id)a3 filePath:(id)a4
+- (void)startMslLoggingPrivateWithFilenamePrefix:(id)prefix filePath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_dispatchQueue);
@@ -133,8 +133,8 @@
       }
     }
 
-    objc_msgSend_cStringUsingEncoding_(a3, v11, 1);
-    objc_msgSend_cStringUsingEncoding_(a4, v13, 1);
+    objc_msgSend_cStringUsingEncoding_(prefix, v11, 1);
+    objc_msgSend_cStringUsingEncoding_(path, v13, 1);
     operator new();
   }
 
@@ -242,13 +242,13 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryDeviceMotion:(const void *)a3
+- (void)onAudioAccessoryDeviceMotion:(const void *)motion
 {
   v25 = *MEMORY[0x1E69E9840];
   ptr = self->fLogger.__ptr_;
   if (ptr)
   {
-    sub_19B5E57B8(ptr, a3);
+    sub_19B5E57B8(ptr, motion);
   }
 
   if (qword_1ED71C7B8 != -1)
@@ -259,10 +259,10 @@
   v6 = qword_1ED71C7C8;
   if (os_log_type_enabled(qword_1ED71C7C8, OS_LOG_TYPE_DEBUG))
   {
-    v7 = *(a3 + 141);
-    v8 = *(a3 + 32);
-    v9 = *(a3 + 33);
-    v10 = *(a3 + 34);
+    v7 = *(motion + 141);
+    v8 = *(motion + 32);
+    v9 = *(motion + 33);
+    v10 = *(motion + 34);
     *buf = 67240961;
     *&buf[4] = v7;
     v21[0] = 2049;
@@ -283,10 +283,10 @@
       dispatch_once(&qword_1ED71C7B8, &unk_1F0E3B388);
     }
 
-    v16 = *(a3 + 141);
-    v17 = *(a3 + 32);
-    v18 = *(a3 + 33);
-    v19 = *(a3 + 34);
+    v16 = *(motion + 141);
+    v17 = *(motion + 32);
+    v18 = *(motion + 33);
+    v19 = *(motion + 34);
     v12 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMHeadphoneActivityManagerInternal onAudioAccessoryDeviceMotion:]", "CoreLocation: %s\n", v12);
     if (v12 != buf)
@@ -295,10 +295,10 @@
     }
   }
 
-  if (!self->_isGyroBiasValid && *(a3 + 140) == 1)
+  if (!self->_isGyroBiasValid && *(motion + 140) == 1)
   {
-    v13 = *(a3 + 34);
-    v14 = *(a3 + 16);
+    v13 = *(motion + 34);
+    v14 = *(motion + 16);
     operator new();
   }
 

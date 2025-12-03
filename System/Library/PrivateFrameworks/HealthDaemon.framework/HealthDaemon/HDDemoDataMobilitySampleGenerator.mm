@@ -1,11 +1,11 @@
 @interface HDDemoDataMobilitySampleGenerator
 - (HDDemoDataMobilitySampleGenerator)init;
-- (HDDemoDataMobilitySampleGenerator)initWithCoder:(id)a3;
-- (double)_generateWalkingDataSamplesForDemoPerson:(void *)a3 atTime:(int)a4 sampleDate:(int)a5 duration:(void *)a6 addFromWatch:(void *)a7 shouldDecreaseDuringRehab:(void *)a8 objectCollection:(double)a9 nextSampleTime:(double)a10 typeIdentifier:(double)a11 unit:(double)a12 sampleMean:(double)a13 sampleMeanStdDev:(double)a14 sampleFrequency:(double)a15 sampleFrequencyStdDev:;
+- (HDDemoDataMobilitySampleGenerator)initWithCoder:(id)coder;
+- (double)_generateWalkingDataSamplesForDemoPerson:(void *)person atTime:(int)time sampleDate:(int)date duration:(void *)duration addFromWatch:(void *)watch shouldDecreaseDuringRehab:(void *)rehab objectCollection:(double)collection nextSampleTime:(double)self0 typeIdentifier:(double)self1 unit:(double)self2 sampleMean:(double)self3 sampleMeanStdDev:(double)self4 sampleFrequency:(double)self5 sampleFrequencyStdDev:;
 - (uint64_t)_isDemoPersonWalkingAboveAverage;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
 @end
 
 @implementation HDDemoDataMobilitySampleGenerator
@@ -30,82 +30,82 @@
   return result;
 }
 
-- (HDDemoDataMobilitySampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataMobilitySampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HDDemoDataMobilitySampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_NextStepLengthSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextStepLengthSampleTimeKey"];
     v5->_nextStepLengthSampleTime = v6;
-    [v4 decodeDoubleForKey:@"_NextWalkingSpeedSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextWalkingSpeedSampleTimeKey"];
     v5->_nextWalkingSpeedSampleTime = v7;
-    [v4 decodeDoubleForKey:@"_NextAsymmetryPercentageSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextAsymmetryPercentageSampleTimeKey"];
     v5->_nextAsymmetryPercentageSampleTime = v8;
-    [v4 decodeDoubleForKey:@"_NextDoubleSupportPercentageSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextDoubleSupportPercentageSampleTimeKey"];
     v5->_nextDoubleSupportPercentageSampleTime = v9;
-    [v4 decodeDoubleForKey:@"_NextSixMinuteWalkTestDistanceSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextSixMinuteWalkTestDistanceSampleTimeKey"];
     v5->_nextSixMinuteWalkTestDistanceSampleTime = v10;
-    [v4 decodeDoubleForKey:@"_NextStairAscentSpeedSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextStairAscentSpeedSampleTimeKey"];
     v5->_nextStairAscentSpeedSampleTime = v11;
-    [v4 decodeDoubleForKey:@"_NextStairDescentSpeedSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextStairDescentSpeedSampleTimeKey"];
     v5->_nextStairDescentSpeedSampleTime = v12;
-    [v4 decodeDoubleForKey:@"_NextWalkingSteadinessSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"_NextWalkingSteadinessSampleTimeKey"];
     v5->_nextWalkingSteadinessSampleTime = v13;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HDDemoDataMobilitySampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:coderCopy];
   if (self)
   {
-    [v4 encodeDouble:@"_NextStepLengthSampleTimeKey" forKey:{self->_nextStepLengthSampleTime, v6.receiver, v6.super_class}];
-    [v4 encodeDouble:@"_NextWalkingSpeedSampleTimeKey" forKey:self->_nextWalkingSpeedSampleTime];
-    [v4 encodeDouble:@"_NextAsymmetryPercentageSampleTimeKey" forKey:self->_nextAsymmetryPercentageSampleTime];
-    [v4 encodeDouble:@"_NextDoubleSupportPercentageSampleTimeKey" forKey:self->_nextDoubleSupportPercentageSampleTime];
-    [v4 encodeDouble:@"_NextSixMinuteWalkTestDistanceSampleTimeKey" forKey:self->_nextSixMinuteWalkTestDistanceSampleTime];
-    [v4 encodeDouble:@"_NextStairAscentSpeedSampleTimeKey" forKey:self->_nextStairAscentSpeedSampleTime];
-    [v4 encodeDouble:@"_NextStairDescentSpeedSampleTimeKey" forKey:self->_nextStairDescentSpeedSampleTime];
+    [coderCopy encodeDouble:@"_NextStepLengthSampleTimeKey" forKey:{self->_nextStepLengthSampleTime, v6.receiver, v6.super_class}];
+    [coderCopy encodeDouble:@"_NextWalkingSpeedSampleTimeKey" forKey:self->_nextWalkingSpeedSampleTime];
+    [coderCopy encodeDouble:@"_NextAsymmetryPercentageSampleTimeKey" forKey:self->_nextAsymmetryPercentageSampleTime];
+    [coderCopy encodeDouble:@"_NextDoubleSupportPercentageSampleTimeKey" forKey:self->_nextDoubleSupportPercentageSampleTime];
+    [coderCopy encodeDouble:@"_NextSixMinuteWalkTestDistanceSampleTimeKey" forKey:self->_nextSixMinuteWalkTestDistanceSampleTime];
+    [coderCopy encodeDouble:@"_NextStairAscentSpeedSampleTimeKey" forKey:self->_nextStairAscentSpeedSampleTime];
+    [coderCopy encodeDouble:@"_NextStairDescentSpeedSampleTimeKey" forKey:self->_nextStairDescentSpeedSampleTime];
     nextWalkingSteadinessSampleTime = self->_nextWalkingSteadinessSampleTime;
   }
 
   else
   {
-    [v4 encodeDouble:@"_NextStepLengthSampleTimeKey" forKey:{0.0, v6.receiver, v6.super_class}];
-    [v4 encodeDouble:@"_NextWalkingSpeedSampleTimeKey" forKey:0.0];
-    [v4 encodeDouble:@"_NextAsymmetryPercentageSampleTimeKey" forKey:0.0];
-    [v4 encodeDouble:@"_NextDoubleSupportPercentageSampleTimeKey" forKey:0.0];
-    [v4 encodeDouble:@"_NextSixMinuteWalkTestDistanceSampleTimeKey" forKey:0.0];
-    [v4 encodeDouble:@"_NextStairAscentSpeedSampleTimeKey" forKey:0.0];
-    [v4 encodeDouble:@"_NextStairDescentSpeedSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextStepLengthSampleTimeKey" forKey:{0.0, v6.receiver, v6.super_class}];
+    [coderCopy encodeDouble:@"_NextWalkingSpeedSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextAsymmetryPercentageSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextDoubleSupportPercentageSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextSixMinuteWalkTestDistanceSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextStairAscentSpeedSampleTimeKey" forKey:0.0];
+    [coderCopy encodeDouble:@"_NextStairDescentSpeedSampleTimeKey" forKey:0.0];
     nextWalkingSteadinessSampleTime = 0.0;
   }
 
-  [v4 encodeDouble:@"_NextWalkingSteadinessSampleTimeKey" forKey:nextWalkingSteadinessSampleTime];
+  [coderCopy encodeDouble:@"_NextWalkingSteadinessSampleTimeKey" forKey:nextWalkingSteadinessSampleTime];
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v70 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  dateCopy = date;
   if (self)
   {
-    v9 = [v7 birthDateComponents];
-    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(v9, v8);
+    birthDateComponents = [personCopy birthDateComponents];
+    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, dateCopy);
 
     if (v10 >= *MEMORY[0x277CCE588])
     {
-      v11 = [(HDDemoDataBaseSampleGenerator *)self profile];
-      v12 = [v11 profileExtensionsConformingToProtocol:&unk_283D71258];
+      profile = [(HDDemoDataBaseSampleGenerator *)self profile];
+      v12 = [profile profileExtensionsConformingToProtocol:&unk_283D71258];
 
       v63 = 0u;
       v64 = 0u;
@@ -147,16 +147,16 @@ LABEL_5:
 
         v21 = v19;
 
-        v22 = [MEMORY[0x277CBEAF8] currentLocale];
-        v23 = [v22 countryCode];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        countryCode = [currentLocale countryCode];
 
         v60 = 0;
-        v24 = [v21 onboardingEligibilityForCountryCode:v23 error:&v60];
+        v24 = [v21 onboardingEligibilityForCountryCode:countryCode error:&v60];
         v25 = v60;
         if (v25 && (_HKInitializeLogging(), v26 = *MEMORY[0x277CCC2B8], os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_ERROR)))
         {
           *buf = 138543618;
-          v66 = self;
+          selfCopy = self;
           v67 = 2114;
           v68 = v25;
           _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "[%{public}@] Error while determining onboarding eligibility for Walking Steadiness %{public}@", buf, 0x16u);
@@ -176,15 +176,15 @@ LABEL_5:
           v53 = v24;
           v55 = v25;
           v27 = objc_alloc(MEMORY[0x277CCD740]);
-          v28 = [MEMORY[0x277CBEAA8] date];
-          v56 = v23;
-          v29 = [v27 initWithFeatureIdentifier:v17 version:1 completionDate:v28 countryCode:v23 countryCodeProvenance:102];
+          date = [MEMORY[0x277CBEAA8] date];
+          v56 = countryCode;
+          v29 = [v27 initWithFeatureIdentifier:v17 version:1 completionDate:date countryCode:countryCode countryCodeProvenance:102];
 
-          v30 = [(HDDemoDataBaseSampleGenerator *)self profile];
-          v31 = [v30 onboardingCompletionManager];
+          profile2 = [(HDDemoDataBaseSampleGenerator *)self profile];
+          onboardingCompletionManager = [profile2 onboardingCompletionManager];
           v59 = 0;
           v54 = v29;
-          LOBYTE(v29) = [v31 insertOnboardingCompletion:v29 error:&v59];
+          LOBYTE(v29) = [onboardingCompletionManager insertOnboardingCompletion:v29 error:&v59];
           v32 = v59;
 
           if ((v29 & 1) == 0)
@@ -195,16 +195,16 @@ LABEL_5:
             {
               *buf = 138543362;
               v41 = v32;
-              v66 = v32;
+              selfCopy = v32;
               _os_log_impl(&dword_228986000, v48, OS_LOG_TYPE_DEFAULT, "Failed to insert Walking Steadiness onboarding completion: %{public}@", buf, 0xCu);
               v25 = v55;
-              v23 = v56;
+              countryCode = v56;
             }
 
             else
             {
               v25 = v55;
-              v23 = v56;
+              countryCode = v56;
               v41 = v32;
             }
 
@@ -213,11 +213,11 @@ LABEL_5:
             goto LABEL_33;
           }
 
-          v33 = [(HDDemoDataBaseSampleGenerator *)self profile];
-          v34 = [v33 featureSettingsManager];
+          profile3 = [(HDDemoDataBaseSampleGenerator *)self profile];
+          featureSettingsManager = [profile3 featureSettingsManager];
           v35 = *MEMORY[0x277CCC120];
           v58 = v32;
-          v36 = [v34 setFeatureSettingsNumber:MEMORY[0x277CBEC38] forKey:v35 featureIdentifier:v17 suppressNotificationsToObserver:0 error:&v58];
+          v36 = [featureSettingsManager setFeatureSettingsNumber:MEMORY[0x277CBEC38] forKey:v35 featureIdentifier:v17 suppressNotificationsToObserver:0 error:&v58];
           v52 = v58;
 
           if ((v36 & 1) == 0)
@@ -229,20 +229,20 @@ LABEL_5:
             if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v66 = v52;
+              selfCopy = v52;
               _os_log_impl(&dword_228986000, v49, OS_LOG_TYPE_DEFAULT, "Failed to update feature settings enablement key for Walking Steadiness: %{public}@", buf, 0xCu);
             }
 
             v25 = v55;
-            v23 = v56;
+            countryCode = v56;
             goto LABEL_32;
           }
 
-          v37 = [(HDDemoDataBaseSampleGenerator *)self profile];
-          v38 = [v37 featureSettingsManager];
+          profile4 = [(HDDemoDataBaseSampleGenerator *)self profile];
+          featureSettingsManager2 = [profile4 featureSettingsManager];
           v39 = *MEMORY[0x277CCC130];
           v57 = v52;
-          v40 = [v38 setFeatureSettingsNumber:MEMORY[0x277CBEC38] forKey:v39 featureIdentifier:v17 suppressNotificationsToObserver:0 error:&v57];
+          v40 = [featureSettingsManager2 setFeatureSettingsNumber:MEMORY[0x277CBEC38] forKey:v39 featureIdentifier:v17 suppressNotificationsToObserver:0 error:&v57];
           v41 = v57;
 
           _HKInitializeLogging();
@@ -252,7 +252,7 @@ LABEL_5:
           if (v40)
           {
             v25 = v55;
-            v23 = v56;
+            countryCode = v56;
             if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
             {
               *buf = 0;
@@ -268,11 +268,11 @@ LABEL_31:
           else
           {
             v25 = v55;
-            v23 = v56;
+            countryCode = v56;
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v66 = v41;
+              selfCopy = v41;
               v44 = "Failed to update feature settings onboarding acknowledgement key for Walking Steadiness: %{public}@";
               v45 = v42;
               v46 = OS_LOG_TYPE_DEFAULT;
@@ -308,20 +308,20 @@ LABEL_35:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v143.receiver = self;
   v143.super_class = HDDemoDataMobilitySampleGenerator;
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v143 generateObjectsForDemoPerson:v13 fromTime:v12 toTime:v11 currentDate:a5 objectCollection:a5];
-  v142 = v12;
+  collectionCopy = collection;
+  dateCopy = date;
+  personCopy = person;
+  [(HDDemoDataBaseSampleGenerator *)&v143 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
+  v142 = dateCopy;
   if (self)
   {
-    v14 = v11;
-    v15 = v12;
-    v16 = v13;
+    v14 = collectionCopy;
+    v15 = dateCopy;
+    v16 = personCopy;
     [v16 stepLengthMean];
     v18 = v17;
     [v16 stepLengthStdDev];
@@ -344,8 +344,8 @@ LABEL_35:
     }
 
     v27 = *MEMORY[0x277CCCCC8];
-    v28 = [MEMORY[0x277CCDAB0] meterUnit];
-    v29 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v16 atTime:v15 sampleDate:0 duration:0 addFromWatch:v14 shouldDecreaseDuringRehab:v27 objectCollection:v28 nextSampleTime:a5 typeIdentifier:0.0 unit:nextStepLengthSampleTime sampleMean:v18 sampleMeanStdDev:v20 sampleFrequency:v22 sampleFrequencyStdDev:v24];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    v29 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v16 atTime:v15 sampleDate:0 duration:0 addFromWatch:v14 shouldDecreaseDuringRehab:v27 objectCollection:meterUnit nextSampleTime:toTime typeIdentifier:0.0 unit:nextStepLengthSampleTime sampleMean:v18 sampleMeanStdDev:v20 sampleFrequency:v22 sampleFrequencyStdDev:v24];
 
     self->_nextStepLengthSampleTime = v29;
     v30 = v16;
@@ -370,7 +370,7 @@ LABEL_35:
     nextWalkingSpeedSampleTime = self->_nextWalkingSpeedSampleTime;
     v42 = *MEMORY[0x277CCCCC0];
     v43 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-    v44 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v30 atTime:v32 sampleDate:0 duration:0 addFromWatch:v31 shouldDecreaseDuringRehab:v42 objectCollection:v43 nextSampleTime:a5 typeIdentifier:0.0 unit:nextWalkingSpeedSampleTime sampleMean:v34 sampleMeanStdDev:v36 sampleFrequency:v38 sampleFrequencyStdDev:v40];
+    v44 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v30 atTime:v32 sampleDate:0 duration:0 addFromWatch:v31 shouldDecreaseDuringRehab:v42 objectCollection:v43 nextSampleTime:toTime typeIdentifier:0.0 unit:nextWalkingSpeedSampleTime sampleMean:v34 sampleMeanStdDev:v36 sampleFrequency:v38 sampleFrequencyStdDev:v40];
 
     self->_nextWalkingSpeedSampleTime = v44;
     v45 = v31;
@@ -386,8 +386,8 @@ LABEL_35:
     v55 = v54;
     nextAsymmetryPercentageSampleTime = self->_nextAsymmetryPercentageSampleTime;
     v57 = *MEMORY[0x277CCCCA8];
-    v58 = [MEMORY[0x277CCDAB0] percentUnit];
-    v59 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v47 atTime:v46 sampleDate:0 duration:1 addFromWatch:v45 shouldDecreaseDuringRehab:v57 objectCollection:v58 nextSampleTime:a5 typeIdentifier:0.0 unit:nextAsymmetryPercentageSampleTime sampleMean:v49 sampleMeanStdDev:v51 sampleFrequency:v53 sampleFrequencyStdDev:v55];
+    percentUnit = [MEMORY[0x277CCDAB0] percentUnit];
+    v59 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v47 atTime:v46 sampleDate:0 duration:1 addFromWatch:v45 shouldDecreaseDuringRehab:v57 objectCollection:percentUnit nextSampleTime:toTime typeIdentifier:0.0 unit:nextAsymmetryPercentageSampleTime sampleMean:v49 sampleMeanStdDev:v51 sampleFrequency:v53 sampleFrequencyStdDev:v55];
 
     self->_nextAsymmetryPercentageSampleTime = v59;
     v60 = v45;
@@ -403,8 +403,8 @@ LABEL_35:
     v70 = v69;
     nextDoubleSupportPercentageSampleTime = self->_nextDoubleSupportPercentageSampleTime;
     v72 = *MEMORY[0x277CCCCB0];
-    v73 = [MEMORY[0x277CCDAB0] percentUnit];
-    v74 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v62 atTime:v61 sampleDate:0 duration:1 addFromWatch:v60 shouldDecreaseDuringRehab:v72 objectCollection:v73 nextSampleTime:a5 typeIdentifier:0.0 unit:nextDoubleSupportPercentageSampleTime sampleMean:v64 sampleMeanStdDev:v66 sampleFrequency:v68 sampleFrequencyStdDev:v70];
+    percentUnit2 = [MEMORY[0x277CCDAB0] percentUnit];
+    v74 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v62 atTime:v61 sampleDate:0 duration:1 addFromWatch:v60 shouldDecreaseDuringRehab:v72 objectCollection:percentUnit2 nextSampleTime:toTime typeIdentifier:0.0 unit:nextDoubleSupportPercentageSampleTime sampleMean:v64 sampleMeanStdDev:v66 sampleFrequency:v68 sampleFrequencyStdDev:v70];
 
     self->_nextDoubleSupportPercentageSampleTime = v74;
     v75 = v60;
@@ -420,8 +420,8 @@ LABEL_35:
     v85 = v84;
     nextSixMinuteWalkTestDistanceSampleTime = self->_nextSixMinuteWalkTestDistanceSampleTime;
     v87 = *MEMORY[0x277CCCC58];
-    v88 = [MEMORY[0x277CCDAB0] meterUnit];
-    v89 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v77 atTime:v76 sampleDate:1 duration:0 addFromWatch:v75 shouldDecreaseDuringRehab:v87 objectCollection:v88 nextSampleTime:a5 typeIdentifier:0.0 unit:nextSixMinuteWalkTestDistanceSampleTime sampleMean:v79 sampleMeanStdDev:v81 sampleFrequency:v83 sampleFrequencyStdDev:v85];
+    meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+    v89 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v77 atTime:v76 sampleDate:1 duration:0 addFromWatch:v75 shouldDecreaseDuringRehab:v87 objectCollection:meterUnit2 nextSampleTime:toTime typeIdentifier:0.0 unit:nextSixMinuteWalkTestDistanceSampleTime sampleMean:v79 sampleMeanStdDev:v81 sampleFrequency:v83 sampleFrequencyStdDev:v85];
 
     self->_nextSixMinuteWalkTestDistanceSampleTime = v89;
     v90 = v75;
@@ -438,7 +438,7 @@ LABEL_35:
     nextStairAscentSpeedSampleTime = self->_nextStairAscentSpeedSampleTime;
     v102 = *MEMORY[0x277CCCC60];
     v103 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-    v104 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v92 atTime:v91 sampleDate:1 duration:0 addFromWatch:v90 shouldDecreaseDuringRehab:v102 objectCollection:v103 nextSampleTime:a5 typeIdentifier:0.0 unit:nextStairAscentSpeedSampleTime sampleMean:v94 sampleMeanStdDev:v96 sampleFrequency:v98 sampleFrequencyStdDev:v100];
+    v104 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v92 atTime:v91 sampleDate:1 duration:0 addFromWatch:v90 shouldDecreaseDuringRehab:v102 objectCollection:v103 nextSampleTime:toTime typeIdentifier:0.0 unit:nextStairAscentSpeedSampleTime sampleMean:v94 sampleMeanStdDev:v96 sampleFrequency:v98 sampleFrequencyStdDev:v100];
 
     self->_nextStairAscentSpeedSampleTime = v104;
     v105 = v90;
@@ -455,14 +455,14 @@ LABEL_35:
     nextStairDescentSpeedSampleTime = self->_nextStairDescentSpeedSampleTime;
     v117 = *MEMORY[0x277CCCC68];
     v118 = [MEMORY[0x277CCDAB0] unitFromString:@"m/s"];
-    v119 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v107 atTime:v106 sampleDate:1 duration:0 addFromWatch:v105 shouldDecreaseDuringRehab:v117 objectCollection:v118 nextSampleTime:a5 typeIdentifier:0.0 unit:nextStairDescentSpeedSampleTime sampleMean:v109 sampleMeanStdDev:v111 sampleFrequency:v113 sampleFrequencyStdDev:v115];
+    v119 = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v107 atTime:v106 sampleDate:1 duration:0 addFromWatch:v105 shouldDecreaseDuringRehab:v117 objectCollection:v118 nextSampleTime:toTime typeIdentifier:0.0 unit:nextStairDescentSpeedSampleTime sampleMean:v109 sampleMeanStdDev:v111 sampleFrequency:v113 sampleFrequencyStdDev:v115];
 
     self->_nextStairDescentSpeedSampleTime = v119;
     v120 = v107;
     v121 = v106;
     v122 = v105;
-    v123 = [v120 birthDateComponents];
-    v124 = HDDemoData_ageBetweenNSDateComponentsAndDate(v123, v121);
+    birthDateComponents = [v120 birthDateComponents];
+    v124 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v121);
 
     if (v124 >= *MEMORY[0x277CCE588])
     {
@@ -478,96 +478,96 @@ LABEL_35:
       v134 = v133 * 86400.0;
       nextWalkingSteadinessSampleTime = self->_nextWalkingSteadinessSampleTime;
       v136 = *MEMORY[0x277CCC948];
-      v137 = [MEMORY[0x277CCDAB0] percentUnit];
-      self->_nextWalkingSteadinessSampleTime = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v120 atTime:v121 sampleDate:0 duration:0 addFromWatch:v122 shouldDecreaseDuringRehab:v136 objectCollection:v137 nextSampleTime:a5 typeIdentifier:v134 unit:nextWalkingSteadinessSampleTime sampleMean:v126 sampleMeanStdDev:v128 sampleFrequency:v130 sampleFrequencyStdDev:v132];
+      percentUnit3 = [MEMORY[0x277CCDAB0] percentUnit];
+      self->_nextWalkingSteadinessSampleTime = [(HDDemoDataMobilitySampleGenerator *)self _generateWalkingDataSamplesForDemoPerson:v120 atTime:v121 sampleDate:0 duration:0 addFromWatch:v122 shouldDecreaseDuringRehab:v136 objectCollection:percentUnit3 nextSampleTime:toTime typeIdentifier:v134 unit:nextWalkingSteadinessSampleTime sampleMean:v126 sampleMeanStdDev:v128 sampleFrequency:v130 sampleFrequencyStdDev:v132];
     }
   }
 
   else
   {
-    v138 = v13;
+    v138 = personCopy;
 
     v139 = v138;
-    v140 = v12;
-    v141 = v11;
+    v140 = dateCopy;
+    v141 = collectionCopy;
   }
 }
 
 - (uint64_t)_isDemoPersonWalkingAboveAverage
 {
-  v2 = [a1 demoDataGenerator];
-  v3 = [v2 generatorState];
-  if ([v3 isWalking])
+  demoDataGenerator = [self demoDataGenerator];
+  generatorState = [demoDataGenerator generatorState];
+  if ([generatorState isWalking])
   {
-    v4 = 1;
+    isHiking = 1;
   }
 
   else
   {
-    v5 = [a1 demoDataGenerator];
-    v6 = [v5 generatorState];
-    v4 = [v6 isHiking];
+    demoDataGenerator2 = [self demoDataGenerator];
+    generatorState2 = [demoDataGenerator2 generatorState];
+    isHiking = [generatorState2 isHiking];
   }
 
-  return v4;
+  return isHiking;
 }
 
-- (double)_generateWalkingDataSamplesForDemoPerson:(void *)a3 atTime:(int)a4 sampleDate:(int)a5 duration:(void *)a6 addFromWatch:(void *)a7 shouldDecreaseDuringRehab:(void *)a8 objectCollection:(double)a9 nextSampleTime:(double)a10 typeIdentifier:(double)a11 unit:(double)a12 sampleMean:(double)a13 sampleMeanStdDev:(double)a14 sampleFrequency:(double)a15 sampleFrequencyStdDev:
+- (double)_generateWalkingDataSamplesForDemoPerson:(void *)person atTime:(int)time sampleDate:(int)date duration:(void *)duration addFromWatch:(void *)watch shouldDecreaseDuringRehab:(void *)rehab objectCollection:(double)collection nextSampleTime:(double)self0 typeIdentifier:(double)self1 unit:(double)self2 sampleMean:(double)self3 sampleMeanStdDev:(double)self4 sampleFrequency:(double)self5 sampleFrequencyStdDev:
 {
   v29 = a2;
-  v30 = a3;
-  v31 = a6;
-  v32 = a7;
-  v33 = a8;
-  if (a9 >= a11)
+  personCopy = person;
+  durationCopy = duration;
+  watchCopy = watch;
+  rehabCopy = rehab;
+  if (collection >= identifier)
   {
-    v34 = [a1 demoDataGenerator];
-    v35 = [v34 sleepSampleGenerator];
-    if ([v35 isDemoPersonAwake:v29 atTime:a9])
+    demoDataGenerator = [self demoDataGenerator];
+    sleepSampleGenerator = [demoDataGenerator sleepSampleGenerator];
+    if ([sleepSampleGenerator isDemoPersonAwake:v29 atTime:collection])
     {
-      v62 = a5;
-      v63 = a4;
-      v64 = v31;
-      v36 = [a1 demoDataGenerator];
-      v37 = [v36 activitySampleGenerator];
-      v38 = [v37 _isDemoPersonSedentary:v29 atTime:a9];
+      dateCopy = date;
+      timeCopy = time;
+      v64 = durationCopy;
+      demoDataGenerator2 = [self demoDataGenerator];
+      activitySampleGenerator = [demoDataGenerator2 activitySampleGenerator];
+      v38 = [activitySampleGenerator _isDemoPersonSedentary:v29 atTime:collection];
 
       if (v38)
       {
-        v31 = v64;
+        durationCopy = v64;
         goto LABEL_16;
       }
 
-      v39 = [a1 demoDataGenerator];
-      v40 = [v39 statisticsSampleGenerator];
-      [v40 computeStatisticalTimeFromCurrentTime:a9 mean:a14 stdDev:a15];
-      a11 = v41 + a11;
+      demoDataGenerator3 = [self demoDataGenerator];
+      statisticsSampleGenerator = [demoDataGenerator3 statisticsSampleGenerator];
+      [statisticsSampleGenerator computeStatisticalTimeFromCurrentTime:collection mean:dev stdDev:frequency];
+      identifier = v41 + identifier;
 
-      v34 = [v30 dateByAddingTimeInterval:-a10];
-      v35 = v30;
-      v42 = [a1 demoDataGenerator];
-      v43 = [v42 firstSampleDate];
-      v44 = [v34 compare:v43];
+      demoDataGenerator = [personCopy dateByAddingTimeInterval:-sampleTime];
+      sleepSampleGenerator = personCopy;
+      demoDataGenerator4 = [self demoDataGenerator];
+      firstSampleDate = [demoDataGenerator4 firstSampleDate];
+      v44 = [demoDataGenerator compare:firstSampleDate];
 
       if (v44 == -1)
       {
-        v31 = v64;
+        durationCopy = v64;
       }
 
       else
       {
-        v45 = [v29 profileType];
+        profileType = [v29 profileType];
         v46 = 1.0;
-        if (v45 == 3)
+        if (profileType == 3)
         {
-          v47 = [a1 demoDataGenerator];
-          v48 = [v47 configuration];
-          v49 = [v48 generationPeriodInDays];
+          demoDataGenerator5 = [self demoDataGenerator];
+          configuration = [demoDataGenerator5 configuration];
+          generationPeriodInDays = [configuration generationPeriodInDays];
 
           [v29 rehabLogarithmicConstant];
           v51 = v50;
-          v52 = log(v51 + (2.71828183 - v51) * (a9 / v49));
-          if (v62)
+          v52 = log(v51 + (2.71828183 - v51) * (collection / generationPeriodInDays));
+          if (dateCopy)
           {
             v52 = log(v51) + 1.0 - v52;
           }
@@ -575,17 +575,17 @@ LABEL_35:
           v46 = fmin(v52, 1.0);
         }
 
-        v53 = v46 * a12;
-        v54 = [a1 demoDataGenerator];
-        v55 = [v54 statisticsSampleGenerator];
-        [v55 computeNoiseFromTime:a9 stdDev:a13];
+        v53 = v46 * unit;
+        demoDataGenerator6 = [self demoDataGenerator];
+        statisticsSampleGenerator2 = [demoDataGenerator6 statisticsSampleGenerator];
+        [statisticsSampleGenerator2 computeNoiseFromTime:collection stdDev:mean];
         v57 = v53 + v56;
 
-        v58 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v32];
-        v59 = [MEMORY[0x277CCD7E8] quantityWithUnit:v33 doubleValue:v57];
-        v60 = [MEMORY[0x277CCD800] quantitySampleWithType:v58 quantity:v59 startDate:v34 endDate:v35];
-        v31 = v64;
-        if (v63)
+        v58 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:watchCopy];
+        v59 = [MEMORY[0x277CCD7E8] quantityWithUnit:rehabCopy doubleValue:v57];
+        v60 = [MEMORY[0x277CCD800] quantitySampleWithType:v58 quantity:v59 startDate:demoDataGenerator endDate:sleepSampleGenerator];
+        durationCopy = v64;
+        if (timeCopy)
         {
           [v64 addObjectFromWatch:v60];
         }
@@ -600,7 +600,7 @@ LABEL_35:
 
 LABEL_16:
 
-  return a11;
+  return identifier;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SUUIPlaceholderIndexBarEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)_calculatedContentSize;
 - (CGSize)placeholderSize;
-- (SUUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)a3;
+- (SUUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)size;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SUUIPlaceholderIndexBarEntry
 
-- (SUUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)a3
+- (SUUIPlaceholderIndexBarEntry)initWithPlaceholderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = SUUIPlaceholderIndexBarEntry;
   v5 = [(SUUIPlaceholderIndexBarEntry *)&v8 init];
@@ -45,10 +45,10 @@
   return [(SUUIIndexBarEntry *)&v3 hash]^ (self->_placeholderSize.width * 1000.0) ^ (self->_placeholderSize.height * 10000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -56,7 +56,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = SUUIPlaceholderIndexBarEntry, [(SUUIIndexBarEntry *)&v7 isEqual:v4]) && v4->_placeholderSize.height == self->_placeholderSize.height && v4->_placeholderSize.width == self->_placeholderSize.width;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = SUUIPlaceholderIndexBarEntry, [(SUUIIndexBarEntry *)&v7 isEqual:equalCopy]) && equalCopy->_placeholderSize.height == self->_placeholderSize.height && equalCopy->_placeholderSize.width == self->_placeholderSize.width;
   }
 
   return v5;

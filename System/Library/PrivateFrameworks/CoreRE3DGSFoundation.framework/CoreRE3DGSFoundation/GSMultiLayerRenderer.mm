@@ -1,54 +1,54 @@
 @interface GSMultiLayerRenderer
-- (BOOL)renderMultiLayerWith:(id)a3 asset:(id)a4 convertMXIOption:(id)a5 multiLayerCallback:(id)a6 error:(id *)a7;
-- (BOOL)startWarmupThread:(id)a3 multiLayerCallback:(id)a4 error:(id *)a5;
-- (GSMultiLayerRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5;
-- (GSMultiLayerRenderer)initWithDevice:(id)a3 convertMXIOption:(id)a4 colorPixelFormat:(unint64_t)a5 depthPixelFormat:(unint64_t)a6 error:(id *)a7;
+- (BOOL)renderMultiLayerWith:(id)with asset:(id)asset convertMXIOption:(id)option multiLayerCallback:(id)callback error:(id *)error;
+- (BOOL)startWarmupThread:(id)thread multiLayerCallback:(id)callback error:(id *)error;
+- (GSMultiLayerRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat;
+- (GSMultiLayerRenderer)initWithDevice:(id)device convertMXIOption:(id)option colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat error:(id *)error;
 - (id).cxx_construct;
 - (shared_ptr<apple3dgs::MultiLayerRenderer>)impl;
 - (uint64_t)renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:;
 - (uint64_t)startWarmupThread:multiLayerCallback:error:;
 - (void)renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:;
-- (void)setImpl:(shared_ptr<apple3dgs::MultiLayerRenderer>)a3;
+- (void)setImpl:(shared_ptr<apple3dgs::MultiLayerRenderer>)impl;
 - (void)startWarmupThread:multiLayerCallback:error:;
 @end
 
 @implementation GSMultiLayerRenderer
 
-- (GSMultiLayerRenderer)initWithDevice:(id)a3 colorPixelFormat:(unint64_t)a4 depthPixelFormat:(unint64_t)a5
+- (GSMultiLayerRenderer)initWithDevice:(id)device colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat
 {
-  v6 = a3;
+  deviceCopy = device;
   v8.receiver = self;
   v8.super_class = GSMultiLayerRenderer;
   [(GSMultiLayerRenderer *)&v8 init];
   operator new();
 }
 
-- (GSMultiLayerRenderer)initWithDevice:(id)a3 convertMXIOption:(id)a4 colorPixelFormat:(unint64_t)a5 depthPixelFormat:(unint64_t)a6 error:(id *)a7
+- (GSMultiLayerRenderer)initWithDevice:(id)device convertMXIOption:(id)option colorPixelFormat:(unint64_t)format depthPixelFormat:(unint64_t)pixelFormat error:(id *)error
 {
-  v18 = a3;
-  v12 = a4;
-  v16 = a6;
-  v17 = a5;
+  deviceCopy = device;
+  optionCopy = option;
+  pixelFormatCopy = pixelFormat;
+  formatCopy = format;
   v14.receiver = self;
   v14.super_class = GSMultiLayerRenderer;
-  v15 = a7;
+  errorCopy = error;
   [(GSMultiLayerRenderer *)&v14 init];
-  [v12 impl];
+  [optionCopy impl];
   std::allocate_shared[abi:ne200100]<apple3dgs::MultiLayerRenderer,std::allocator<apple3dgs::MultiLayerRenderer>,objc_object  {objcproto9MTLDevice}* {__strong}&,apple3dgs::MultiLayerOptions &,MTLPixelFormat &,MTLPixelFormat,NSError * {__autoreleasing}*&,0>();
 }
 
-- (BOOL)renderMultiLayerWith:(id)a3 asset:(id)a4 convertMXIOption:(id)a5 multiLayerCallback:(id)a6 error:(id *)a7
+- (BOOL)renderMultiLayerWith:(id)with asset:(id)asset convertMXIOption:(id)option multiLayerCallback:(id)callback error:(id *)error
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  withCopy = with;
+  assetCopy = asset;
+  optionCopy = option;
+  callbackCopy = callback;
   v15 = MEMORY[0x24C1A2460]();
   ptr = self->_impl.__ptr_;
-  if (v12)
+  if (assetCopy)
   {
-    [v12 impl];
+    [assetCopy impl];
     v17 = v38;
   }
 
@@ -58,7 +58,7 @@
   }
 
   v39 = v17;
-  [v13 impl];
+  [optionCopy impl];
   v18 = *(v36 + 16);
   v42[0] = *v36;
   v42[1] = v18;
@@ -93,7 +93,7 @@
   v40[0] = &unk_28593CD58;
   v40[1] = v31;
   v41 = v40;
-  v32 = apple3dgs::MultiLayerRenderer::Render(ptr, v11, &v39, v42);
+  v32 = apple3dgs::MultiLayerRenderer::Render(ptr, withCopy, &v39, v42);
   if (v41 == v40)
   {
     (*(*v41 + 32))(v41);
@@ -121,17 +121,17 @@
   return v32;
 }
 
-- (BOOL)startWarmupThread:(id)a3 multiLayerCallback:(id)a4 error:(id *)a5
+- (BOOL)startWarmupThread:(id)thread multiLayerCallback:(id)callback error:(id *)error
 {
   v11[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  threadCopy = thread;
+  callbackCopy = callback;
   MEMORY[0x24C1A2460]();
   ptr = self->_impl.__ptr_;
   v11[0] = &unk_28593CDE8;
   v11[1] = MEMORY[0x24C1A2460]();
   v11[3] = v11;
-  apple3dgs::MultiLayerRenderer::StartWarmUpThread(ptr, v7, v11, 200);
+  apple3dgs::MultiLayerRenderer::StartWarmUpThread(ptr, threadCopy, v11, 200);
 }
 
 - (shared_ptr<apple3dgs::MultiLayerRenderer>)impl
@@ -149,10 +149,10 @@
   return result;
 }
 
-- (void)setImpl:(shared_ptr<apple3dgs::MultiLayerRenderer>)a3
+- (void)setImpl:(shared_ptr<apple3dgs::MultiLayerRenderer>)impl
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *impl.__ptr_;
+  v3 = *(impl.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -189,7 +189,7 @@
   v19 = *a2;
   v12 = v10;
   v13 = v11;
-  v14 = *(a1 + 8);
+  v14 = *(self + 8);
   if (v14)
   {
     (*(v14 + 16))(v14, v19, v8, v9, v12, v13, v18, v17, v16, v15);
@@ -201,7 +201,7 @@
   v2 = *(a2 + 8);
   if (v2 == "Z93[GSMultiLayerRenderer renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:]E3$_0")
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   if (((v2 & "Z93[GSMultiLayerRenderer renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:]E3$_0" & 0x8000000000000000) != 0) == __OFSUB__(v2, "Z93[GSMultiLayerRenderer renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:]E3$_0"))
@@ -209,12 +209,12 @@
     return 0;
   }
 
-  v4 = a1;
+  selfCopy = self;
   v5 = strcmp((v2 & 0x7FFFFFFFFFFFFFFFLL), ("Z93[GSMultiLayerRenderer renderMultiLayerWith:asset:convertMXIOption:multiLayerCallback:error:]E3$_0" & 0x7FFFFFFFFFFFFFFFLL));
-  a1 = v4;
+  self = selfCopy;
   if (!v5)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   return 0;
@@ -233,7 +233,7 @@
   v19 = *a2;
   v12 = v10;
   v13 = v11;
-  v14 = *(a1 + 8);
+  v14 = *(self + 8);
   if (v14)
   {
     (*(v14 + 16))(v14, v19, v8, v9, v12, v13, v18, v17, v16, v15);
@@ -245,7 +245,7 @@
   v2 = *(a2 + 8);
   if (v2 == "Z67[GSMultiLayerRenderer startWarmupThread:multiLayerCallback:error:]E3$_1")
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   if (((v2 & "Z67[GSMultiLayerRenderer startWarmupThread:multiLayerCallback:error:]E3$_1" & 0x8000000000000000) != 0) == __OFSUB__(v2, "Z67[GSMultiLayerRenderer startWarmupThread:multiLayerCallback:error:]E3$_1"))
@@ -253,12 +253,12 @@
     return 0;
   }
 
-  v4 = a1;
+  selfCopy = self;
   v5 = strcmp((v2 & 0x7FFFFFFFFFFFFFFFLL), ("Z67[GSMultiLayerRenderer startWarmupThread:multiLayerCallback:error:]E3$_1" & 0x7FFFFFFFFFFFFFFFLL));
-  a1 = v4;
+  self = selfCopy;
   if (!v5)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   return 0;

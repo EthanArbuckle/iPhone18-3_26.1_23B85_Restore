@@ -4,28 +4,28 @@
 - (_UIFocusMovementInfo)movementInfo;
 - (_UIFocusMovementRequest)fallbackRequest;
 - (_UIFocusMovementRequest)init;
-- (_UIFocusMovementRequest)initWithFocusSystem:(id)a3;
+- (_UIFocusMovementRequest)initWithFocusSystem:(id)system;
 - (_UIFocusSearchInfo)searchInfo;
-- (id)_requestByRedirectingRequestToFocusSystem:(id)a3;
+- (id)_requestByRedirectingRequestToFocusSystem:(id)system;
 @end
 
 @implementation _UIFocusMovementRequest
 
 - (_UIFocusMovementRequest)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusMovementRequest.m" lineNumber:18 description:@"-init is not a valid initializer for this class."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMovementRequest.m" lineNumber:18 description:@"-init is not a valid initializer for this class."];
 
   return 0;
 }
 
-- (_UIFocusMovementRequest)initWithFocusSystem:(id)a3
+- (_UIFocusMovementRequest)initWithFocusSystem:(id)system
 {
-  v5 = a3;
-  if (!v5)
+  systemCopy = system;
+  if (!systemCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusMovementRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMovementRequest.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"focusSystem"}];
   }
 
   v10.receiver = self;
@@ -34,16 +34,16 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_focusSystem, v5);
+    objc_storeWeak(&v6->_focusSystem, systemCopy);
   }
 
   return v7;
 }
 
-- (id)_requestByRedirectingRequestToFocusSystem:(id)a3
+- (id)_requestByRedirectingRequestToFocusSystem:(id)system
 {
-  v4 = a3;
-  v5 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v4];
+  systemCopy = system;
+  v5 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:systemCopy];
 
   objc_storeStrong(&v5->_movementInfo, self->_movementInfo);
 
@@ -55,9 +55,9 @@
   focusedItemInfo = self->_focusedItemInfo;
   if (!focusedItemInfo)
   {
-    v4 = [(_UIFocusMovementRequest *)self focusSystem];
-    v5 = [v4 focusedItem];
-    v6 = [_UIFocusItemInfo infoWithItem:v5];
+    focusSystem = [(_UIFocusMovementRequest *)self focusSystem];
+    focusedItem = [focusSystem focusedItem];
+    v6 = [_UIFocusItemInfo infoWithItem:focusedItem];
     v7 = self->_focusedItemInfo;
     self->_focusedItemInfo = v6;
 
@@ -100,11 +100,11 @@
 - (_UIFocusMovementRequest)fallbackRequest
 {
   WeakRetained = objc_loadWeakRetained(&self->_focusSystem);
-  v4 = [WeakRetained _hostFocusSystem];
+  _hostFocusSystem = [WeakRetained _hostFocusSystem];
 
-  if (v4)
+  if (_hostFocusSystem)
   {
-    v5 = [(_UIFocusMovementRequest *)self _requestByRedirectingRequestToFocusSystem:v4];
+    v5 = [(_UIFocusMovementRequest *)self _requestByRedirectingRequestToFocusSystem:_hostFocusSystem];
   }
 
   else

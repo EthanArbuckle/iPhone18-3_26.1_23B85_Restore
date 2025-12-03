@@ -1,37 +1,37 @@
 @interface FMDSecureLocationMonitor
 - (FMDSecureLocationMonitor)init;
-- (double)_clLocationAccuracyFromConfigValue:(id)a3;
+- (double)_clLocationAccuracyFromConfigValue:(id)value;
 - (id)_createLocationManager;
 - (id)_createLocationManagerForStewie;
-- (id)_createLocationManagerWithQueue:(id)a3;
+- (id)_createLocationManagerWithQueue:(id)queue;
 - (void)_publishHeartbeatIfNeeded;
-- (void)_publishLocation:(id)a3;
-- (void)_publishLocationInfo:(id)a3 completion:(id)a4;
-- (void)_publishPeriodicShallowIfNeeded:(id)a3;
+- (void)_publishLocation:(id)location;
+- (void)_publishLocationInfo:(id)info completion:(id)completion;
+- (void)_publishPeriodicShallowIfNeeded:(id)needed;
 - (void)_registerForOnDemandPublishRequest;
 - (void)_registerForStewiePublishRequest;
 - (void)_scheduleXPCActivity;
 - (void)_unregisterFromOnDemandPublishRequest;
 - (void)_unregisterFromStewiePublishRequest;
-- (void)activeConfigChanged:(id)a3;
-- (void)activeConfigExtended:(id)a3;
+- (void)activeConfigChanged:(id)changed;
+- (void)activeConfigExtended:(id)extended;
 - (void)dealloc;
-- (void)forcePublishOndemandLocationIfNeeded:(id)a3;
-- (void)liteLocationPublishRequestNotification:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)publishLocationToStewie:(id)a3;
-- (void)publishOnDemandLocation:(id)a3;
-- (void)publishOneTimeShallowLocation:(id)a3;
+- (void)forcePublishOndemandLocationIfNeeded:(id)needed;
+- (void)liteLocationPublishRequestNotification:(id)notification;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)publishLocationToStewie:(id)stewie;
+- (void)publishOnDemandLocation:(id)location;
+- (void)publishOneTimeShallowLocation:(id)location;
 - (void)requestForcedShallowLocation;
-- (void)startLocationMonitor:(id)a3;
+- (void)startLocationMonitor:(id)monitor;
 - (void)startLocationMonitorAfterRestart;
-- (void)startLocationMonitorWithContext:(id)a3 completion:(id)a4;
-- (void)startLocationMonitorWithContext:(id)a3 forcePublish:(BOOL)a4 completion:(id)a5;
-- (void)stopLocationMonitor:(id)a3;
-- (void)stopLocationMonitorWithContext:(id)a3 completion:(id)a4;
-- (void)updateMonitorConfig:(id)a3;
+- (void)startLocationMonitorWithContext:(id)context completion:(id)completion;
+- (void)startLocationMonitorWithContext:(id)context forcePublish:(BOOL)publish completion:(id)completion;
+- (void)stopLocationMonitor:(id)monitor;
+- (void)stopLocationMonitorWithContext:(id)context completion:(id)completion;
+- (void)updateMonitorConfig:(id)config;
 @end
 
 @implementation FMDSecureLocationMonitor
@@ -61,13 +61,13 @@
     *(v2 + 14) = v9;
 
     [*(v2 + 14) setDelegate:v2];
-    v11 = [*(v2 + 14) activeConfig];
+    activeConfig = [*(v2 + 14) activeConfig];
 
-    if (v11)
+    if (activeConfig)
     {
       v12 = [FMDSecureLocationPublisher alloc];
-      v13 = [*(v2 + 14) activeConfig];
-      v14 = [(FMDSecureLocationPublisher *)v12 initWithConfiguration:v13];
+      activeConfig2 = [*(v2 + 14) activeConfig];
+      v14 = [(FMDSecureLocationPublisher *)v12 initWithConfiguration:activeConfig2];
       v15 = *(v2 + 13);
       *(v2 + 13) = v14;
     }
@@ -101,9 +101,9 @@
   [(FMDSecureLocationMonitor *)&v3 dealloc];
 }
 
-- (void)startLocationMonitor:(id)a3
+- (void)startLocationMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v5 = sub_1000029E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,67 +118,67 @@
   block[3] = &unk_1002D0B08;
   objc_copyWeak(&v9, buf);
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = monitorCopy;
+  v6 = monitorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
 }
 
-- (void)startLocationMonitorWithContext:(id)a3 completion:(id)a4
+- (void)startLocationMonitorWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = sub_1000029E0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "startLocationMonitorWithContext %@", &v10, 0xCu);
   }
 
-  v9 = [(FMDSecureLocationMonitor *)self configManager];
-  [v9 requestMonitorWithContext:v6];
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  [configManager requestMonitorWithContext:contextCopy];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)startLocationMonitorWithContext:(id)a3 forcePublish:(BOOL)a4 completion:(id)a5
+- (void)startLocationMonitorWithContext:(id)context forcePublish:(BOOL)publish completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  publishCopy = publish;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = sub_1000029E0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v8;
+    v20 = contextCopy;
     v21 = 1024;
-    v22 = v6;
+    v22 = publishCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "startLocationMonitorWithContext %@ forcePublish %d", buf, 0x12u);
   }
 
-  if (v6)
+  if (publishCopy)
   {
     objc_initWeak(buf, self);
-    v11 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
+    forcePushOndemandLocationQueue = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1001B6728;
     v16 = &unk_1002CD288;
     objc_copyWeak(&v18, buf);
-    v17 = self;
-    dispatch_async(v11, &v13);
+    selfCopy = self;
+    dispatch_async(forcePushOndemandLocationQueue, &v13);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
   }
 
   v12 = [(FMDSecureLocationMonitor *)self configManager:v13];
-  [v12 requestMonitorWithContext:v8];
+  [v12 requestMonitorWithContext:contextCopy];
 
-  v9[2](v9, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (void)startLocationMonitorAfterRestart
@@ -201,9 +201,9 @@ LABEL_6:
     v6 = sub_1000029E0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 mode];
+      mode = [v5 mode];
       v9 = 138412290;
-      v10 = v7;
+      v10 = mode;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "starting location monitoring after restart with policy %@", &v9, 0xCu);
     }
 
@@ -235,57 +235,57 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)stopLocationMonitorWithContext:(id)a3 completion:(id)a4
+- (void)stopLocationMonitorWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = sub_1000029E0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "stopLocationMonitorWithContext %@", &v10, 0xCu);
   }
 
-  v9 = [(FMDSecureLocationMonitor *)self configManager];
-  [v9 removeMonitorWithContext:v6];
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  [configManager removeMonitorWithContext:contextCopy];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)stopLocationMonitor:(id)a3
+- (void)stopLocationMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B6C4C;
   block[3] = &unk_1002CDEF0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = monitorCopy;
+  v5 = monitorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (double)_clLocationAccuracyFromConfigValue:(id)a3
+- (double)_clLocationAccuracyFromConfigValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"best"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"best"])
   {
     v4 = kCLLocationAccuracyBest;
     v5 = @"kCLLocationAccuracyBest";
   }
 
-  else if ([v3 isEqualToString:@"navigation"])
+  else if ([valueCopy isEqualToString:@"navigation"])
   {
     v4 = kCLLocationAccuracyBestForNavigation;
     v5 = @"kCLLocationAccuracyBestForNavigation";
   }
 
-  else if ([v3 isEqualToString:@"10meters"])
+  else if ([valueCopy isEqualToString:@"10meters"])
   {
     v4 = kCLLocationAccuracyNearestTenMeters;
     v5 = @"kCLLocationAccuracyNearestTenMeters";
@@ -295,15 +295,15 @@ LABEL_10:
   {
     v4 = kCLLocationAccuracyHundredMeters;
     v5 = @"kCLLocationAccuracyHundredMeters";
-    if (([v3 isEqualToString:@"100meters"] & 1) == 0)
+    if (([valueCopy isEqualToString:@"100meters"] & 1) == 0)
     {
-      if ([v3 isEqualToString:@"1kilometer"])
+      if ([valueCopy isEqualToString:@"1kilometer"])
       {
         v4 = kCLLocationAccuracyKilometer;
         v5 = @"kCLLocationAccuracyKilometer";
       }
 
-      else if ([v3 isEqualToString:@"3kilometers"])
+      else if ([valueCopy isEqualToString:@"3kilometers"])
       {
         v5 = @"kCLLocationAccuracyThreeKilometers";
         v4 = kCLLocationAccuracyThreeKilometers;
@@ -317,17 +317,17 @@ LABEL_10:
     v8 = 138412546;
     v9 = v5;
     v10 = 2112;
-    v11 = v3;
+    v11 = valueCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: returning CL accuracy %@ for config value %@", &v8, 0x16u);
   }
 
   return v4;
 }
 
-- (void)_publishLocation:(id)a3
+- (void)_publishLocation:(id)location
 {
-  v4 = a3;
-  if ([v4 isLocationValid])
+  locationCopy = location;
+  if ([locationCopy isLocationValid])
   {
     v5 = +[FMDRestrictedRegions sharedInstance];
     if ([v5 isRestrictedSKU])
@@ -348,13 +348,13 @@ LABEL_11:
 
     else
     {
-      v10 = [v4 locationInfo];
-      v11 = [v10 latitude];
-      [v11 doubleValue];
+      locationInfo = [locationCopy locationInfo];
+      latitude = [locationInfo latitude];
+      [latitude doubleValue];
       v13 = v12;
-      v14 = [v4 locationInfo];
-      v15 = [v14 longitude];
-      [v15 doubleValue];
+      locationInfo2 = [locationCopy locationInfo];
+      longitude = [locationInfo2 longitude];
+      [longitude doubleValue];
       v17 = [v5 isRestrictedLocationWithLatitude:v13 longitude:v16];
 
       if (!v17)
@@ -364,7 +364,7 @@ LABEL_11:
         v18[2] = sub_1001B7470;
         v18[3] = &unk_1002CD478;
         v18[4] = self;
-        v19 = v4;
+        v19 = locationCopy;
         _os_activity_initiate(&_mh_execute_header, "FMDSecureLocationMonitor.publishLocation", OS_ACTIVITY_FLAG_DEFAULT, v18);
 
         goto LABEL_13;
@@ -399,59 +399,59 @@ LABEL_11:
 LABEL_13:
 }
 
-- (void)_publishLocationInfo:(id)a3 completion:(id)a4
+- (void)_publishLocationInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 convertToSecureLocationObject];
+  completionCopy = completion;
+  convertToSecureLocationObject = [info convertToSecureLocationObject];
   if (_os_feature_enabled_impl())
   {
-    v8 = [(FMDSecureLocationMonitor *)self findMyLocate];
+    findMyLocate = [(FMDSecureLocationMonitor *)self findMyLocate];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1001B77EC;
     v16[3] = &unk_1002D0B98;
     v9 = v17;
-    v17[0] = v7;
+    v17[0] = convertToSecureLocationObject;
     v17[1] = self;
     v10 = &v18;
-    v18 = v6;
-    v11 = v6;
-    [v8 publishLocation:v7 completionHandler:v16];
+    v18 = completionCopy;
+    v11 = completionCopy;
+    [findMyLocate publishLocation:convertToSecureLocationObject completionHandler:v16];
   }
 
   else
   {
-    v8 = [(FMDSecureLocationMonitor *)self secureLocationsManager];
+    findMyLocate = [(FMDSecureLocationMonitor *)self secureLocationsManager];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1001B7924;
     v13[3] = &unk_1002D0B98;
     v9 = v14;
-    v14[0] = v7;
+    v14[0] = convertToSecureLocationObject;
     v14[1] = self;
     v10 = &v15;
-    v15 = v6;
-    v12 = v6;
-    [v8 publishLocation:v7 completion:v13];
+    v15 = completionCopy;
+    v12 = completionCopy;
+    [findMyLocate publishLocation:convertToSecureLocationObject completion:v13];
   }
 }
 
 - (void)_publishHeartbeatIfNeeded
 {
-  v3 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
+  lastPublishedTime = [(FMDSecureLocationMonitor *)self lastPublishedTime];
 
-  v4 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
-  [v4 timeIntervalSinceNow];
+  lastPublishedTime2 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
+  [lastPublishedTime2 timeIntervalSinceNow];
   v6 = v5;
-  v7 = [(FMDSecureLocationMonitor *)self configManager];
-  v8 = [v7 activeConfig];
-  [v8 heartbeatPublish];
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  activeConfig = [configManager activeConfig];
+  [activeConfig heartbeatPublish];
   v10 = v9;
 
   v11 = sub_1000029E0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (lastPublishedTime)
     {
       v12 = @"NO";
     }
@@ -461,12 +461,12 @@ LABEL_13:
       v12 = @"YES";
     }
 
-    v13 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
-    [v13 timeIntervalSinceNow];
+    lastPublishedTime3 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
+    [lastPublishedTime3 timeIntervalSinceNow];
     v15 = -v14;
-    v16 = [(FMDSecureLocationMonitor *)self configManager];
-    v17 = [v16 activeConfig];
-    [v17 heartbeatPublish];
+    configManager2 = [(FMDSecureLocationMonitor *)self configManager];
+    activeConfig2 = [configManager2 activeConfig];
+    [activeConfig2 heartbeatPublish];
     *buf = 138412802;
     v22 = v12;
     v23 = 2048;
@@ -476,9 +476,9 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: Heartbeat isfirstpublish %@. Time since last publish %f configLimit %f", buf, 0x20u);
   }
 
-  v19 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
+  lastPublishedTime4 = [(FMDSecureLocationMonitor *)self lastPublishedTime];
 
-  if (!v19 || v10 <= -v6)
+  if (!lastPublishedTime4 || v10 <= -v6)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -489,22 +489,22 @@ LABEL_13:
   }
 }
 
-- (void)_publishPeriodicShallowIfNeeded:(id)a3
+- (void)_publishPeriodicShallowIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(FMDSecureLocationMonitor *)self configManager];
-  v6 = [v5 configForPolicy:kFMDSecureLocationModeProactiveShallow];
+  neededCopy = needed;
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  v6 = [configManager configForPolicy:kFMDSecureLocationModeProactiveShallow];
 
   v7 = +[NSDate date];
-  v8 = [(FMDSecureLocationMonitor *)self lastShallowPublishTime];
-  if (!v8)
+  lastShallowPublishTime = [(FMDSecureLocationMonitor *)self lastShallowPublishTime];
+  if (!lastShallowPublishTime)
   {
     goto LABEL_3;
   }
 
-  v9 = v8;
-  v10 = [(FMDSecureLocationMonitor *)self lastShallowPublishTime];
-  [v10 timeIntervalSinceNow];
+  v9 = lastShallowPublishTime;
+  lastShallowPublishTime2 = [(FMDSecureLocationMonitor *)self lastShallowPublishTime];
+  [lastShallowPublishTime2 timeIntervalSinceNow];
   v12 = -v11;
   [v6 minTimeBetweenPublish];
   v14 = v13;
@@ -512,11 +512,11 @@ LABEL_13:
   if (v14 <= v12)
   {
 LABEL_3:
-    v15 = [[CLLocationFMGeoLocatableAdapter alloc] initWithLocation:v4];
+    v15 = [[CLLocationFMGeoLocatableAdapter alloc] initWithLocation:neededCopy];
     v16 = [FMDSecureLocationInfo alloc];
-    v17 = [(FMDSecureLocationMonitor *)self motionMonitor];
-    v18 = [v17 lastKnownDeviceMotion];
-    v19 = [(FMDSecureLocationInfo *)v16 initWithLocation:v15 motion:v18 publishReason:6];
+    motionMonitor = [(FMDSecureLocationMonitor *)self motionMonitor];
+    lastKnownDeviceMotion = [motionMonitor lastKnownDeviceMotion];
+    v19 = [(FMDSecureLocationInfo *)v16 initWithLocation:v15 motion:lastKnownDeviceMotion publishReason:6];
 
     [(FMDSecureLocationMonitor *)self _publishLocation:v19];
     [(FMDSecureLocationMonitor *)self setLastShallowPublishTime:v7];
@@ -529,18 +529,18 @@ LABEL_3:
   }
 }
 
-- (void)publishOnDemandLocation:(id)a3
+- (void)publishOnDemandLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(FMDSecureLocationMonitor *)self locationPublishQueue];
+  locationCopy = location;
+  locationPublishQueue = [(FMDSecureLocationMonitor *)self locationPublishQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B7FBC;
   v7[3] = &unk_1002CE228;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationCopy;
+  v6 = locationCopy;
+  dispatch_async(locationPublishQueue, v7);
 }
 
 - (void)_registerForOnDemandPublishRequest
@@ -562,11 +562,11 @@ LABEL_3:
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.icloud.searchparty.secureLocations.OnDemandPublishRequest", 0);
 }
 
-- (void)publishLocationToStewie:(id)a3
+- (void)publishLocationToStewie:(id)stewie
 {
-  v4 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
+  stewieLocationManager = [(FMDSecureLocationMonitor *)self stewieLocationManager];
 
-  if (!v4)
+  if (!stewieLocationManager)
   {
     v5 = sub_1000029E0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -576,21 +576,21 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: %@ No location manager - creating one", buf, 0xCu);
     }
 
-    v6 = [(FMDSecureLocationMonitor *)self _createLocationManagerForStewie];
-    [(FMDSecureLocationMonitor *)self setStewieLocationManager:v6];
+    _createLocationManagerForStewie = [(FMDSecureLocationMonitor *)self _createLocationManagerForStewie];
+    [(FMDSecureLocationMonitor *)self setStewieLocationManager:_createLocationManagerForStewie];
   }
 
-  v7 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
+  stewieLocationManager2 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
 
-  if (v7)
+  if (stewieLocationManager2)
   {
-    v8 = [(FMDSecureLocationMonitor *)self locationPublishQueue];
+    locationPublishQueue = [(FMDSecureLocationMonitor *)self locationPublishQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001B8498;
     block[3] = &unk_1002CD4C8;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(locationPublishQueue, block);
   }
 
   else
@@ -650,7 +650,7 @@ LABEL_6:
   }
 }
 
-- (void)liteLocationPublishRequestNotification:(id)a3
+- (void)liteLocationPublishRequestNotification:(id)notification
 {
   v4 = _os_feature_enabled_impl();
   v5 = sub_1000029E0();
@@ -680,8 +680,8 @@ LABEL_6:
 
 - (id)_createLocationManagerForStewie
 {
-  v3 = [(FMDSecureLocationMonitor *)self stewieLocationManagerQueue];
-  v4 = [(FMDSecureLocationMonitor *)self _createLocationManagerWithQueue:v3];
+  stewieLocationManagerQueue = [(FMDSecureLocationMonitor *)self stewieLocationManagerQueue];
+  v4 = [(FMDSecureLocationMonitor *)self _createLocationManagerWithQueue:stewieLocationManagerQueue];
 
   [v4 setDelegate:self];
   [v4 setDesiredAccuracy:kCLLocationAccuracyBest];
@@ -697,26 +697,26 @@ LABEL_6:
   return v3;
 }
 
-- (id)_createLocationManagerWithQueue:(id)a3
+- (id)_createLocationManagerWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/FindMyDevice.framework"];
-  v6 = [[CLLocationManager alloc] initWithEffectiveBundle:v5 delegate:self onQueue:v4];
+  v6 = [[CLLocationManager alloc] initWithEffectiveBundle:v5 delegate:self onQueue:queueCopy];
 
   return v6;
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v5 = a4;
+  visitCopy = visit;
   v6 = sub_1000029E0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    [v5 coordinate];
+    [visitCopy coordinate];
     v8 = v7;
-    [v5 coordinate];
+    [visitCopy coordinate];
     v27 = 138412803;
-    v28 = v5;
+    v28 = visitCopy;
     v29 = 2049;
     v30 = v8;
     v31 = 2049;
@@ -724,37 +724,37 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "didVisit %@ %{private}f %{private}f", &v27, 0x20u);
   }
 
-  v10 = [(FMDSecureLocationMonitor *)self locationPublisher];
+  locationPublisher = [(FMDSecureLocationMonitor *)self locationPublisher];
 
-  if (v10)
+  if (locationPublisher)
   {
-    if ([v5 hasArrivalDate] && (objc_msgSend(v5, "hasDepartureDate") & 1) == 0)
+    if ([visitCopy hasArrivalDate] && (objc_msgSend(visitCopy, "hasDepartureDate") & 1) == 0)
     {
       v12 = [CLLocation alloc];
-      [v5 coordinate];
+      [visitCopy coordinate];
       v14 = v13;
       v16 = v15;
-      [v5 horizontalAccuracy];
+      [visitCopy horizontalAccuracy];
       v18 = v17;
       v19 = +[NSDate date];
       v11 = [v12 initWithCoordinate:v19 altitude:v14 horizontalAccuracy:v16 verticalAccuracy:0.0 timestamp:{v18, 0.0}];
 
       v20 = [[CLLocationFMGeoLocatableAdapter alloc] initWithLocation:v11];
       v21 = [FMDSecureLocationInfo alloc];
-      v22 = [(FMDSecureLocationMonitor *)self motionMonitor];
-      v23 = [v22 lastKnownDeviceMotion];
-      v24 = [(FMDSecureLocationInfo *)v21 initWithLocation:v20 motion:v23 publishReason:2];
+      motionMonitor = [(FMDSecureLocationMonitor *)self motionMonitor];
+      lastKnownDeviceMotion = [motionMonitor lastKnownDeviceMotion];
+      v24 = [(FMDSecureLocationInfo *)v21 initWithLocation:v20 motion:lastKnownDeviceMotion publishReason:2];
 
       v25 = +[FMSystemInfo sharedInstance];
-      LODWORD(v23) = [v25 isInternalBuild];
+      LODWORD(lastKnownDeviceMotion) = [v25 isInternalBuild];
 
-      if (v23 && [FMPreferencesUtil BOOLForKey:@"PublishVisitImmediately" inDomain:kFMDNotBackedUpPrefDomain])
+      if (lastKnownDeviceMotion && [FMPreferencesUtil BOOLForKey:@"PublishVisitImmediately" inDomain:kFMDNotBackedUpPrefDomain])
       {
         [(FMDSecureLocationMonitor *)self _publishLocation:v24];
       }
 
-      v26 = [(FMDSecureLocationMonitor *)self locationPublisher];
-      [v26 processUpdatedLocation:v24];
+      locationPublisher2 = [(FMDSecureLocationMonitor *)self locationPublisher];
+      [locationPublisher2 processUpdatedLocation:v24];
     }
 
     else
@@ -769,37 +769,37 @@ LABEL_6:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = sub_1000029E0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10022D838(v8);
   }
 
-  if (![v7 count])
+  if (![locationsCopy count])
   {
-    v21 = sub_1000029E0();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    lastObject2 = sub_1000029E0();
+    if (os_log_type_enabled(lastObject2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor didUpdateLocations but location count is zero", buf, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor didUpdateLocations but location count is zero", buf, 2u);
     }
 
     goto LABEL_57;
   }
 
-  v9 = [(FMDSecureLocationMonitor *)self bystanderLocationManager];
+  bystanderLocationManager = [(FMDSecureLocationMonitor *)self bystanderLocationManager];
 
-  if (v9 == v6)
+  if (bystanderLocationManager == managerCopy)
   {
-    v22 = v7;
-    v23 = [(FMDSecureLocationMonitor *)self configManager];
-    v24 = [v23 activeConfig];
-    v25 = [v24 policyName];
-    v26 = [v25 isEqualToString:kFMDSecureLocationModeOwnerProactive];
+    v22 = locationsCopy;
+    configManager = [(FMDSecureLocationMonitor *)self configManager];
+    activeConfig = [configManager activeConfig];
+    policyName = [activeConfig policyName];
+    v26 = [policyName isEqualToString:kFMDSecureLocationModeOwnerProactive];
 
     if (v26)
     {
@@ -812,10 +812,10 @@ LABEL_6:
 
     else
     {
-      v27 = [(FMDSecureLocationMonitor *)self configManager];
-      v28 = [v27 activeConfig];
-      v29 = [v28 policyName];
-      v30 = [v29 isEqualToString:kFMDSecureLocationModeBackgroundProactive];
+      configManager2 = [(FMDSecureLocationMonitor *)self configManager];
+      activeConfig2 = [configManager2 activeConfig];
+      policyName2 = [activeConfig2 policyName];
+      v30 = [policyName2 isEqualToString:kFMDSecureLocationModeBackgroundProactive];
 
       v16 = 0;
       v17 = 0;
@@ -832,14 +832,14 @@ LABEL_6:
       }
     }
 
-    v7 = v22;
+    locationsCopy = v22;
   }
 
   else
   {
-    v10 = [(FMDSecureLocationMonitor *)self slcLocationManager];
+    slcLocationManager = [(FMDSecureLocationMonitor *)self slcLocationManager];
 
-    if (v10 == v6)
+    if (slcLocationManager == managerCopy)
     {
       v17 = 0;
       v18 = 0;
@@ -850,22 +850,22 @@ LABEL_6:
 
     else
     {
-      v11 = [(FMDSecureLocationMonitor *)self heartbeatLocationManager];
+      heartbeatLocationManager = [(FMDSecureLocationMonitor *)self heartbeatLocationManager];
 
-      if (v11 == v6)
+      if (heartbeatLocationManager == managerCopy)
       {
-        v31 = [(FMDSecureLocationMonitor *)self configManager];
-        v32 = [v31 activeConfig];
-        v33 = [v32 policyName];
-        v34 = v7;
-        v35 = [v33 isEqualToString:kFMDSecureLocationModeOwnerProactive];
+        configManager3 = [(FMDSecureLocationMonitor *)self configManager];
+        activeConfig3 = [configManager3 activeConfig];
+        policyName3 = [activeConfig3 policyName];
+        v34 = locationsCopy;
+        v35 = [policyName3 isEqualToString:kFMDSecureLocationModeOwnerProactive];
 
         v16 = 0;
         v17 = 0;
         v18 = 0;
         v19 = 0;
         v36 = v35 == 0;
-        v7 = v34;
+        locationsCopy = v34;
         if (v36)
         {
           v20 = 3;
@@ -879,9 +879,9 @@ LABEL_6:
 
       else
       {
-        v12 = [(FMDSecureLocationMonitor *)self ondemandLocationManager];
+        ondemandLocationManager = [(FMDSecureLocationMonitor *)self ondemandLocationManager];
 
-        if (v12 == v6)
+        if (ondemandLocationManager == managerCopy)
         {
           v16 = 0;
           v17 = 0;
@@ -892,9 +892,9 @@ LABEL_6:
 
         else
         {
-          v13 = [(FMDSecureLocationMonitor *)self liveLocationManager];
+          liveLocationManager = [(FMDSecureLocationMonitor *)self liveLocationManager];
 
-          if (v13 == v6)
+          if (liveLocationManager == managerCopy)
           {
             v16 = 0;
             v17 = 0;
@@ -905,11 +905,11 @@ LABEL_6:
 
           else
           {
-            v14 = [(FMDSecureLocationMonitor *)self shallowLocationManager];
+            shallowLocationManager = [(FMDSecureLocationMonitor *)self shallowLocationManager];
 
-            if (v14 == v6)
+            if (shallowLocationManager == managerCopy)
             {
-              [v6 setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+              [managerCopy setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
               v16 = 0;
               v17 = 0;
               v18 = 0;
@@ -919,9 +919,9 @@ LABEL_6:
 
             else
             {
-              v15 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
+              stewieLocationManager = [(FMDSecureLocationMonitor *)self stewieLocationManager];
 
-              if (v15 == v6)
+              if (stewieLocationManager == managerCopy)
               {
                 v37 = sub_1000029E0();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -952,8 +952,8 @@ LABEL_6:
     }
   }
 
-  v38 = [v7 lastObject];
-  [(FMDSecureLocationMonitor *)self forcePublishOndemandLocationIfNeeded:v38];
+  lastObject = [locationsCopy lastObject];
+  [(FMDSecureLocationMonitor *)self forcePublishOndemandLocationIfNeeded:lastObject];
 
   v39 = sub_1000029E0();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -961,29 +961,29 @@ LABEL_6:
     sub_10022D87C(v20, v39);
   }
 
-  v40 = [(FMDSecureLocationMonitor *)self locationPublisher];
+  locationPublisher = [(FMDSecureLocationMonitor *)self locationPublisher];
 
-  if (v40)
+  if (locationPublisher)
   {
     v41 = v17;
     v65 = v19;
-    v66 = v7;
-    v67 = v6;
+    v66 = locationsCopy;
+    v67 = managerCopy;
     v42 = v18;
-    v21 = [v7 lastObject];
-    v43 = [[CLLocationFMGeoLocatableAdapter alloc] initWithLocation:v21];
+    lastObject2 = [locationsCopy lastObject];
+    v43 = [[CLLocationFMGeoLocatableAdapter alloc] initWithLocation:lastObject2];
     v44 = [FMDSecureLocationInfo alloc];
-    v45 = [(FMDSecureLocationMonitor *)self motionMonitor];
-    v46 = [v45 lastKnownDeviceMotion];
-    v47 = [(FMDSecureLocationInfo *)v44 initWithLocation:v43 motion:v46 publishReason:v20];
+    motionMonitor = [(FMDSecureLocationMonitor *)self motionMonitor];
+    lastKnownDeviceMotion = [motionMonitor lastKnownDeviceMotion];
+    v47 = [(FMDSecureLocationInfo *)v44 initWithLocation:v43 motion:lastKnownDeviceMotion publishReason:v20];
 
     if (v16)
     {
-      v48 = [(FMDSecureLocationMonitor *)self configManager];
-      v49 = [v48 configForPolicy:kFMDSecureLocationModeProactive];
+      configManager4 = [(FMDSecureLocationMonitor *)self configManager];
+      v49 = [configManager4 configForPolicy:kFMDSecureLocationModeProactive];
 
-      v50 = [v21 timestamp];
-      [v50 timeIntervalSinceNow];
+      timestamp = [lastObject2 timestamp];
+      [timestamp timeIntervalSinceNow];
       v52 = -v51;
 
       [v49 minTimeBetweenPublish];
@@ -1001,28 +1001,28 @@ LABEL_6:
       }
 
       v58 = +[FMSystemInfo sharedInstance];
-      v59 = [v58 isInternalBuild];
+      isInternalBuild = [v58 isInternalBuild];
 
-      if (v59 && [FMPreferencesUtil BOOLForKey:@"PublishSLCImmediately" inDomain:kFMDNotBackedUpPrefDomain])
+      if (isInternalBuild && [FMPreferencesUtil BOOLForKey:@"PublishSLCImmediately" inDomain:kFMDNotBackedUpPrefDomain])
       {
         [(FMDSecureLocationMonitor *)self _publishLocation:v47];
 LABEL_38:
-        v6 = v67;
+        managerCopy = v67;
 
-        v7 = v66;
+        locationsCopy = v66;
 LABEL_57:
 
         goto LABEL_58;
       }
 
       v18 = v42;
-      v6 = v67;
+      managerCopy = v67;
     }
 
     else
     {
       v18 = v42;
-      v6 = v67;
+      managerCopy = v67;
       if (v41)
       {
         v55 = sub_1000029E0();
@@ -1034,54 +1034,54 @@ LABEL_57:
         }
 
         [(FMDSecureLocationMonitor *)self _publishLocation:v47];
-        v56 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
-        [v56 stopUpdatingLocation];
+        stewieLocationManager2 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
+        [stewieLocationManager2 stopUpdatingLocation];
 
-        v57 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
-        [v57 setDelegate:0];
+        stewieLocationManager3 = [(FMDSecureLocationMonitor *)self stewieLocationManager];
+        [stewieLocationManager3 setDelegate:0];
 
         [(FMDSecureLocationMonitor *)self setStewieLocationManager:0];
       }
     }
 
-    v60 = [(FMDSecureLocationMonitor *)self locationPublisher];
-    [v60 processUpdatedLocation:v47];
+    locationPublisher2 = [(FMDSecureLocationMonitor *)self locationPublisher];
+    [locationPublisher2 processUpdatedLocation:v47];
 
     v19 = v65;
-    v7 = v66;
+    locationsCopy = v66;
   }
 
   else
   {
-    v21 = sub_1000029E0();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    lastObject2 = sub_1000029E0();
+    if (os_log_type_enabled(lastObject2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor - anomalous condition - received locations but no publisher setup", buf, 2u);
+      _os_log_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor - anomalous condition - received locations but no publisher setup", buf, 2u);
     }
   }
 
   if ((v18 | v19) == 1)
   {
-    v61 = [(FMDSecureLocationMonitor *)self configManager];
-    v62 = v61;
+    configManager5 = [(FMDSecureLocationMonitor *)self configManager];
+    lastObject3 = configManager5;
     if (v18)
     {
-      v21 = [v61 expirationTimeFor:kFMDSecureLocationModeLive];
+      lastObject2 = [configManager5 expirationTimeFor:kFMDSecureLocationModeLive];
 
-      v62 = [v7 lastObject];
-      [(FMDSecureLocationMonitor *)self _publishPeriodicShallowIfNeeded:v62];
+      lastObject3 = [locationsCopy lastObject];
+      [(FMDSecureLocationMonitor *)self _publishPeriodicShallowIfNeeded:lastObject3];
     }
 
     else
     {
-      v21 = [v61 expirationTimeFor:kFMDSecureLocationModeProactiveShallow];
+      lastObject2 = [configManager5 expirationTimeFor:kFMDSecureLocationModeProactiveShallow];
     }
 
-    if (v21)
+    if (lastObject2)
     {
       v63 = +[NSDate date];
-      v64 = [v63 compare:v21];
+      v64 = [v63 compare:lastObject2];
 
       if (v64 == 1)
       {
@@ -1100,32 +1100,32 @@ LABEL_57:
 LABEL_58:
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000029E0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_10022D920(v5, v6);
+    sub_10022D920(errorCopy, v6);
   }
 
-  v7 = [v5 domain];
-  if (![v7 isEqualToString:kCLErrorDomain])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:kCLErrorDomain])
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v5 code];
+  code = [errorCopy code];
 
-  if (v8)
+  if (code)
   {
 LABEL_8:
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001B97D4;
     v10[3] = &unk_1002CD868;
-    v11 = v5;
+    v11 = errorCopy;
     [(FMDSecureLocationMonitor *)self stopLocationMonitor:v10];
     v9 = v11;
     goto LABEL_9;
@@ -1145,19 +1145,19 @@ LABEL_9:
 {
   v3 = xpc_dictionary_create(0, 0, 0);
   v4 = kFMDSecureLocationModeProactive;
-  v5 = [(FMDSecureLocationMonitor *)self configManager];
-  v6 = [v5 activeConfig];
-  v7 = [v6 policyName];
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  activeConfig = [configManager activeConfig];
+  policyName = [activeConfig policyName];
   v8 = kFMDSecureLocationModeOwnerProactive;
-  v9 = [v7 caseInsensitiveCompare:kFMDSecureLocationModeOwnerProactive];
+  v9 = [policyName caseInsensitiveCompare:kFMDSecureLocationModeOwnerProactive];
 
   if (v9)
   {
-    v10 = [(FMDSecureLocationMonitor *)self configManager];
-    v11 = [v10 activeConfig];
-    v12 = [v11 policyName];
+    configManager2 = [(FMDSecureLocationMonitor *)self configManager];
+    activeConfig2 = [configManager2 activeConfig];
+    policyName2 = [activeConfig2 policyName];
     v8 = kFMDSecureLocationModeBackgroundProactive;
-    v13 = [v12 caseInsensitiveCompare:kFMDSecureLocationModeBackgroundProactive];
+    v13 = [policyName2 caseInsensitiveCompare:kFMDSecureLocationModeBackgroundProactive];
 
     if (v13)
     {
@@ -1188,19 +1188,19 @@ LABEL_7:
   v15 = v8;
   v4 = v15;
 LABEL_9:
-  v16 = [(FMDSecureLocationMonitor *)self configManager];
-  v17 = [v16 configForPolicy:v4];
+  configManager3 = [(FMDSecureLocationMonitor *)self configManager];
+  v17 = [configManager3 configForPolicy:v4];
 
   if (v17)
   {
     [v17 heartbeatPublish];
     v19 = v18;
-    v20 = [v17 shouldWakeDevice];
+    shouldWakeDevice = [v17 shouldWakeDevice];
   }
 
   else
   {
-    v20 = 1;
+    shouldWakeDevice = 1;
     v19 = 1080;
   }
 
@@ -1208,7 +1208,7 @@ LABEL_9:
   xpc_dictionary_set_int64(v3, XPC_ACTIVITY_DELAY, v19);
   xpc_dictionary_set_string(v3, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_MAINTENANCE);
   xpc_dictionary_set_BOOL(v3, XPC_ACTIVITY_ALLOW_BATTERY, 1);
-  xpc_dictionary_set_BOOL(v3, XPC_ACTIVITY_SHOULD_WAKE_DEVICE, v20);
+  xpc_dictionary_set_BOOL(v3, XPC_ACTIVITY_SHOULD_WAKE_DEVICE, shouldWakeDevice);
   xpc_dictionary_set_int64(v3, XPC_ACTIVITY_GRACE_PERIOD, XPC_ACTIVITY_INTERVAL_15_MIN);
   xpc_dictionary_set_BOOL(v3, XPC_ACTIVITY_REQUIRE_NETWORK_CONNECTIVITY, 1);
   v21 = sub_1000029E0();
@@ -1217,7 +1217,7 @@ LABEL_9:
     *buf = 134218240;
     v25 = v19;
     v26 = 1024;
-    v27 = v20;
+    v27 = shouldWakeDevice;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: Configuring Heartbeat XPC activity with duration %lld. shouldWake: %i", buf, 0x12u);
   }
 
@@ -1235,9 +1235,9 @@ LABEL_9:
   }
 }
 
-- (void)updateMonitorConfig:(id)a3
+- (void)updateMonitorConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = sub_1000029E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1245,25 +1245,25 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "updateMonitorConfig", v7, 2u);
   }
 
-  v6 = [(FMDSecureLocationMonitor *)self configManager];
-  [v6 updateConfigData:v4];
+  configManager = [(FMDSecureLocationMonitor *)self configManager];
+  [configManager updateConfigData:configCopy];
 }
 
-- (void)activeConfigChanged:(id)a3
+- (void)activeConfigChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_1000029E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: Active Config Changed: %{public}@.", buf, 0xCu);
   }
 
-  v6 = [(FMDSecureLocationMonitor *)self isRunning];
+  isRunning = [(FMDSecureLocationMonitor *)self isRunning];
   v7 = sub_1000029E0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isRunning)
   {
     if (v8)
     {
@@ -1275,8 +1275,8 @@ LABEL_9:
     v9[1] = 3221225472;
     v9[2] = sub_1001BA1C0;
     v9[3] = &unk_1002CE320;
-    v10 = v4;
-    v11 = self;
+    v10 = changedCopy;
+    selfCopy = self;
     [(FMDSecureLocationMonitor *)self stopLocationMonitor:v9];
   }
 
@@ -1292,15 +1292,15 @@ LABEL_9:
   }
 }
 
-- (void)activeConfigExtended:(id)a3
+- (void)activeConfigExtended:(id)extended
 {
-  v4 = a3;
+  extendedCopy = extended;
   v5 = sub_1000029E0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 policyName];
+    policyName = [extendedCopy policyName];
     v10 = 138412290;
-    v11 = v6;
+    v11 = policyName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: Active Config Extended %@", &v10, 0xCu);
   }
 
@@ -1313,8 +1313,8 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "SecureLocationMonitor: activeConfig already running", &v10, 2u);
     }
 
-    v8 = [v4 policyName];
-    v9 = [v8 caseInsensitiveCompare:kFMDSecureLocationModeProactive];
+    policyName2 = [extendedCopy policyName];
+    v9 = [policyName2 caseInsensitiveCompare:kFMDSecureLocationModeProactive];
 
     if (!v9)
     {
@@ -1328,25 +1328,25 @@ LABEL_9:
   }
 }
 
-- (void)forcePublishOndemandLocationIfNeeded:(id)a3
+- (void)forcePublishOndemandLocationIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (dispatch_get_specific("com.apple.findmydevice.forcePublishQueueKey") == "com.apple.findmydevice.forcePublishQueueKey")
   {
-    [(FMDSecureLocationMonitor *)self publishOneTimeShallowLocation:v4];
+    [(FMDSecureLocationMonitor *)self publishOneTimeShallowLocation:neededCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v5 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
+    forcePushOndemandLocationQueue = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001BA844;
     block[3] = &unk_1002CD288;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = neededCopy;
+    dispatch_async(forcePushOndemandLocationQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -1355,38 +1355,38 @@ LABEL_9:
 
 - (void)requestForcedShallowLocation
 {
-  v3 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
-  dispatch_assert_queue_V2(v3);
+  forcePushOndemandLocationQueue = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
+  dispatch_assert_queue_V2(forcePushOndemandLocationQueue);
 
-  v4 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+  forceShallowLocationManager = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
 
-  if (v4)
+  if (forceShallowLocationManager)
   {
-    v5 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
-    [v5 stopUpdatingLocation];
+    forceShallowLocationManager2 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+    [forceShallowLocationManager2 stopUpdatingLocation];
 
     [(FMDSecureLocationMonitor *)self setForceShallowLocationManager:0];
   }
 
-  v6 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
-  v7 = [(FMDSecureLocationMonitor *)self _createLocationManagerWithQueue:v6];
+  forcePushOndemandLocationQueue2 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
+  v7 = [(FMDSecureLocationMonitor *)self _createLocationManagerWithQueue:forcePushOndemandLocationQueue2];
   [(FMDSecureLocationMonitor *)self setForceShallowLocationManager:v7];
 
-  v8 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
-  [v8 setDelegate:self];
+  forceShallowLocationManager3 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+  [forceShallowLocationManager3 setDelegate:self];
 
-  v9 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
-  [v9 setDesiredAccuracy:kCLLocationAccuracyThreeKilometers];
+  forceShallowLocationManager4 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+  [forceShallowLocationManager4 setDesiredAccuracy:kCLLocationAccuracyThreeKilometers];
 
-  v10 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
-  [v10 requestLocation];
+  forceShallowLocationManager5 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+  [forceShallowLocationManager5 requestLocation];
 }
 
-- (void)publishOneTimeShallowLocation:(id)a3
+- (void)publishOneTimeShallowLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
-  dispatch_assert_queue_V2(v5);
+  locationCopy = location;
+  forcePushOndemandLocationQueue = [(FMDSecureLocationMonitor *)self forcePushOndemandLocationQueue];
+  dispatch_assert_queue_V2(forcePushOndemandLocationQueue);
 
   if (![(FMDSecureLocationMonitor *)self forcePushOndemandlocation])
   {
@@ -1401,7 +1401,7 @@ LABEL_9:
     if (v8)
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = locationCopy;
       v9 = "SecureLocationMonitor: Sending force location to FML to publish %@";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v9, &v19, 0xCu);
@@ -1411,28 +1411,28 @@ LABEL_7:
   else if (v8)
   {
     v19 = 138412290;
-    v20 = v4;
+    v20 = locationCopy;
     v9 = "SecureLocationMonitor: Sending force location to searchpartyd to publish %@";
     goto LABEL_7;
   }
 
   v10 = [CLLocationFMGeoLocatableAdapter alloc];
   v11 = +[NSDate now];
-  v12 = [(CLLocationFMGeoLocatableAdapter *)v10 initWithLocation:v4 timeStamp:v11];
+  v12 = [(CLLocationFMGeoLocatableAdapter *)v10 initWithLocation:locationCopy timeStamp:v11];
 
   v13 = [FMDSecureLocationInfo alloc];
-  v14 = [(FMDSecureLocationMonitor *)self motionMonitor];
-  v15 = [v14 lastKnownDeviceMotion];
-  v16 = [(FMDSecureLocationInfo *)v13 initWithLocation:v12 motion:v15 publishReason:6];
+  motionMonitor = [(FMDSecureLocationMonitor *)self motionMonitor];
+  lastKnownDeviceMotion = [motionMonitor lastKnownDeviceMotion];
+  v16 = [(FMDSecureLocationInfo *)v13 initWithLocation:v12 motion:lastKnownDeviceMotion publishReason:6];
 
   [(FMDSecureLocationMonitor *)self _publishLocation:v16];
   [(FMDSecureLocationMonitor *)self setForcePushOndemandlocation:0];
-  v17 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+  forceShallowLocationManager = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
 
-  if (v17)
+  if (forceShallowLocationManager)
   {
-    v18 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
-    [v18 stopUpdatingLocation];
+    forceShallowLocationManager2 = [(FMDSecureLocationMonitor *)self forceShallowLocationManager];
+    [forceShallowLocationManager2 stopUpdatingLocation];
 
     [(FMDSecureLocationMonitor *)self setForceShallowLocationManager:0];
   }

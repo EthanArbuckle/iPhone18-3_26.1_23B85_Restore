@@ -1,26 +1,26 @@
 @interface SBRecordingIndicatorPortalView
-- (SBRecordingIndicatorPortalView)initWithFrame:(CGRect)a3 containerView:(id)a4;
+- (SBRecordingIndicatorPortalView)initWithFrame:(CGRect)frame containerView:(id)view;
 - (double)blurRadius;
-- (void)setBlurRadius:(double)a3;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation SBRecordingIndicatorPortalView
 
-- (SBRecordingIndicatorPortalView)initWithFrame:(CGRect)a3 containerView:(id)a4
+- (SBRecordingIndicatorPortalView)initWithFrame:(CGRect)frame containerView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = SBRecordingIndicatorPortalView;
-  v10 = [(_UIPortalView *)&v13 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(_UIPortalView *)&v13 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_containerView, v9);
-    [(_UIPortalView *)v11 setSourceView:v9];
+    objc_storeWeak(&height->_containerView, viewCopy);
+    [(_UIPortalView *)v11 setSourceView:viewCopy];
   }
 
   return v11;
@@ -35,10 +35,10 @@
   return v4;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   WeakRetained = objc_loadWeakRetained(&self->_containerView);
-  [WeakRetained setBlurRadius:a3];
+  [WeakRetained setBlurRadius:radius];
 }
 
 @end

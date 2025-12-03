@@ -1,14 +1,14 @@
 @interface SBActivateAppClipFromPlaceholderWorkspaceTransaction
 - (void)_begin;
-- (void)transactionDidComplete:(id)a3;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBActivateAppClipFromPlaceholderWorkspaceTransaction
 
 - (void)_begin
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBActivateAppClipFromPlaceholderWorkspaceTransaction.m" lineNumber:38 description:@"Expected non-nil applicationSceneEntity"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBActivateAppClipFromPlaceholderWorkspaceTransaction.m" lineNumber:38 description:@"Expected non-nil applicationSceneEntity"];
 }
 
 void __62__SBActivateAppClipFromPlaceholderWorkspaceTransaction__begin__block_invoke(uint64_t a1, void *a2)
@@ -20,10 +20,10 @@ void __62__SBActivateAppClipFromPlaceholderWorkspaceTransaction__begin__block_in
   [v4 setAnimationSettings:v5];
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   rotateScenesTransaction = self->_rotateScenesTransaction;
-  if (rotateScenesTransaction == a3)
+  if (rotateScenesTransaction == complete)
   {
     v8 = v3;
     v9 = v4;

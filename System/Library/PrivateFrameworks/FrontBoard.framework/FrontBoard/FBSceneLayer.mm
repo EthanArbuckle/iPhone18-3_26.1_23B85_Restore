@@ -1,11 +1,11 @@
 @interface FBSceneLayer
-+ (id)layerWithFBSSceneLayer:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)layerWithFBSSceneLayer:(id)layer;
+- (BOOL)isEqual:(id)equal;
 - (FBSceneLayer)init;
-- (FBSceneLayer)initWithContextID:(unsigned int)a3 renderID:(unint64_t)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSceneLayer)initWithContextID:(unsigned int)d renderID:(unint64_t)iD;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)initAsKeyboard;
-- (id)initAsKeyboardProxyWithOwner:(id)a3;
+- (id)initAsKeyboardProxyWithOwner:(id)owner;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -15,14 +15,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendInteger:self->_type];
-  v5 = [v3 appendUnsignedInteger:self->_contextID];
-  v6 = [v3 appendInt64:self->_renderID];
-  v7 = [v3 appendObject:self->_proxiedKeyboardOwner];
-  v8 = [v3 appendCGFloat:self->_level];
-  v9 = [v3 appendInteger:self->_alignment];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendInteger:self->_type];
+  v5 = [builder appendUnsignedInteger:self->_contextID];
+  v6 = [builder appendInt64:self->_renderID];
+  v7 = [builder appendObject:self->_proxiedKeyboardOwner];
+  v8 = [builder appendCGFloat:self->_level];
+  v9 = [builder appendInteger:self->_alignment];
+  v10 = [builder hash];
 
   return v10;
 }
@@ -36,8 +36,8 @@
   contextID = self->_contextID;
   if (contextID)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x (%u)", self->_contextID, contextID];
-    v8 = [v3 appendObject:v7 withName:@"contextID"];
+    contextID = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%x (%u)", self->_contextID, contextID];
+    v8 = [v3 appendObject:contextID withName:@"contextID"];
   }
 
   if (self->_renderID)
@@ -66,43 +66,43 @@
   return result;
 }
 
-+ (id)layerWithFBSSceneLayer:(id)a3
++ (id)layerWithFBSSceneLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 2)
+  layerCopy = layer;
+  type = [layerCopy type];
+  if (type == 2)
   {
-    v7 = [v4 keyboardOwner];
+    keyboardOwner = [layerCopy keyboardOwner];
 
-    v8 = [a1 alloc];
+    v8 = [self alloc];
     v9 = v8;
-    if (v7)
+    if (keyboardOwner)
     {
-      v10 = [v4 keyboardOwner];
-      v11 = [v9 initAsKeyboardProxyWithOwner:v10];
+      keyboardOwner2 = [layerCopy keyboardOwner];
+      v11 = [v9 initAsKeyboardProxyWithOwner:keyboardOwner2];
 
       goto LABEL_9;
     }
 
-    v6 = [v8 initAsKeyboard];
+    initAsKeyboard = [v8 initAsKeyboard];
   }
 
   else
   {
-    if (v5 != 1)
+    if (type != 1)
     {
       v11 = 0;
       goto LABEL_9;
     }
 
-    v6 = [[a1 alloc] initWithContextID:objc_msgSend(v4 renderID:{"contextID"), objc_msgSend(v4, "renderID")}];
+    initAsKeyboard = [[self alloc] initWithContextID:objc_msgSend(layerCopy renderID:{"contextID"), objc_msgSend(layerCopy, "renderID")}];
   }
 
-  v11 = v6;
+  v11 = initAsKeyboard;
 LABEL_9:
-  [v4 level];
+  [layerCopy level];
   [v11 setLevel:?];
-  [v11 setAlignment:{objc_msgSend(v4, "alignment")}];
+  [v11 setAlignment:{objc_msgSend(layerCopy, "alignment")}];
 
   return v11;
 }
@@ -120,7 +120,7 @@ LABEL_9:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBSceneLayer.m";
     v17 = 1024;
@@ -136,9 +136,9 @@ LABEL_9:
   return result;
 }
 
-- (id)initAsKeyboardProxyWithOwner:(id)a3
+- (id)initAsKeyboardProxyWithOwner:(id)owner
 {
-  v5 = a3;
+  ownerCopy = owner;
   v9.receiver = self;
   v9.super_class = FBSceneLayer;
   v6 = [(FBSceneLayer *)&v9 init];
@@ -146,37 +146,37 @@ LABEL_9:
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_proxiedKeyboardOwner, a3);
+    objc_storeStrong(&v6->_proxiedKeyboardOwner, owner);
   }
 
   return v7;
 }
 
-- (FBSceneLayer)initWithContextID:(unsigned int)a3 renderID:(unint64_t)a4
+- (FBSceneLayer)initWithContextID:(unsigned int)d renderID:(unint64_t)iD
 {
   v7.receiver = self;
   v7.super_class = FBSceneLayer;
   result = [(FBSceneLayer *)&v7 init];
   if (result)
   {
-    result->_contextID = a3;
-    result->_renderID = a4;
+    result->_contextID = d;
+    result->_renderID = iD;
     result->_type = 1;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   type = self->_type;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __24__FBSceneLayer_isEqual___block_invoke;
   v38[3] = &unk_1E783CDC0;
-  v7 = v4;
+  v7 = equalCopy;
   v39 = v7;
   v8 = [v5 appendInteger:type counterpart:v38];
   contextID = self->_contextID;
@@ -226,18 +226,18 @@ LABEL_9:
 
 - (id)succinctDescription
 {
-  v2 = [(FBSceneLayer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSceneLayer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSceneLayer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSceneLayer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

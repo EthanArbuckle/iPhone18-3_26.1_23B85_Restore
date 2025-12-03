@@ -1,35 +1,35 @@
 @interface DTSysmonTapMessage
 - (id)sessionMetadata;
 - (unsigned)tapVersion;
-- (void)setSessionMetadata:(id)a3;
+- (void)setSessionMetadata:(id)metadata;
 @end
 
 @implementation DTSysmonTapMessage
 
 - (unsigned)tapVersion
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"tv"];
-  v4 = [v3 unsignedIntValue];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"tv"];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (id)sessionMetadata
 {
-  v2 = [(DTTapMessage *)self plist];
-  v3 = [v2 objectForKey:@"sm"];
+  plist = [(DTTapMessage *)self plist];
+  v3 = [plist objectForKey:@"sm"];
 
   return v3;
 }
 
-- (void)setSessionMetadata:(id)a3
+- (void)setSessionMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(DTTapMessage *)self plist];
-  v5 = [v4 copy];
+  metadataCopy = metadata;
+  plist = [(DTTapMessage *)self plist];
+  v5 = [metadataCopy copy];
 
-  [v6 setObject:v5 forKey:@"sm"];
+  [plist setObject:v5 forKey:@"sm"];
 }
 
 @end

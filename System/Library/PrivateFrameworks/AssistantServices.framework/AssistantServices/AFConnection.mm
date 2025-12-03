@@ -1,9 +1,9 @@
 @interface AFConnection
 + (BOOL)assistantIsSupported;
-+ (BOOL)assistantIsSupportedForLanguageCode:(id)a3 error:(id *)a4;
++ (BOOL)assistantIsSupportedForLanguageCode:(id)code error:(id *)error;
 + (BOOL)isAvailable;
 + (BOOL)isNetworkAvailable;
-+ (BOOL)siriIsSupportedForLanguageCode:(id)a3 productName:(id)a4 productVersion:(id)a5 error:(id *)a6;
++ (BOOL)siriIsSupportedForLanguageCode:(id)code productName:(id)name productVersion:(id)version error:(id *)error;
 + (id)currentLanguageCode;
 + (id)outputVoice;
 + (void)beginMonitoringAvailability;
@@ -11,170 +11,170 @@
 + (void)initialize;
 + (void)stopMonitoringAvailability;
 - (AFAssistantUIService)delegate;
-- (AFConnection)initWithTargetQueue:(id)a3 instanceContext:(id)a4;
+- (AFConnection)initWithTargetQueue:(id)queue instanceContext:(id)context;
 - (AFSpeechDelegate)speechDelegate;
-- (BOOL)_shouldEmitUEIRequestLinkForRequestInfo:(id)a3 speechRequestOptions:(id)a4;
-- (BOOL)_startInputAudioPowerUpdatesWithXPCWrapper:(id)a3;
+- (BOOL)_shouldEmitUEIRequestLinkForRequestInfo:(id)info speechRequestOptions:(id)options;
+- (BOOL)_startInputAudioPowerUpdatesWithXPCWrapper:(id)wrapper;
 - (id)_clientConfiguration;
 - (id)_clientService;
-- (id)_clientServiceWithErrorHandler:(id)a3;
+- (id)_clientServiceWithErrorHandler:(id)handler;
 - (id)_connection;
-- (id)_metricContextValueForUseDeviceSpeakerForTTS:(int64_t)a3;
+- (id)_metricContextValueForUseDeviceSpeakerForTTS:(int64_t)s;
 - (id)_siriClientStateManager;
 - (id)_startRequestMetricSettings;
-- (id)startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:(id)a3;
+- (id)startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:(id)options;
 - (void)_barrier;
-- (void)_beginInterstitialsForReason:(id)a3;
-- (void)_cancelRequestTimeoutForReason:(id)a3;
-- (void)_checkAndSetIsCapturingSpeech:(BOOL)a3;
-- (void)_clearAssistantInfoForAccountWithIdentifier:(id)a3;
+- (void)_beginInterstitialsForReason:(id)reason;
+- (void)_cancelRequestTimeoutForReason:(id)reason;
+- (void)_checkAndSetIsCapturingSpeech:(BOOL)speech;
+- (void)_clearAssistantInfoForAccountWithIdentifier:(id)identifier;
 - (void)_clearConnection;
-- (void)_completeRequestWithUUID:(id)a3 forReason:(int64_t)a4 error:(id)a5;
-- (void)_connectionFailedWithError:(id)a3;
-- (void)_dispatchCallbackGroupBlock:(id)a3;
-- (void)_dispatchCommand:(id)a3 isInterstitial:(BOOL)a4 interstitialPhase:(int64_t)a5 interstitialDelay:(double)a6 reply:(id)a7;
-- (void)_emitServerExecutionValuesReportedMessage:(id)a3 requestUUID:(id)a4;
-- (void)_endInterstitialsForReason:(id)a3;
-- (void)_enqueueInterstitialCommand:(id)a3;
-- (void)_extendExistingRequestTimeoutForReason:(id)a3;
+- (void)_completeRequestWithUUID:(id)d forReason:(int64_t)reason error:(id)error;
+- (void)_connectionFailedWithError:(id)error;
+- (void)_dispatchCallbackGroupBlock:(id)block;
+- (void)_dispatchCommand:(id)command isInterstitial:(BOOL)interstitial interstitialPhase:(int64_t)phase interstitialDelay:(double)delay reply:(id)reply;
+- (void)_emitServerExecutionValuesReportedMessage:(id)message requestUUID:(id)d;
+- (void)_endInterstitialsForReason:(id)reason;
+- (void)_enqueueInterstitialCommand:(id)command;
+- (void)_extendExistingRequestTimeoutForReason:(id)reason;
 - (void)_extendExpiringRequestTimeout;
-- (void)_extendRequestTimeoutForReason:(id)a3 durationInSeconds:(double)a4;
-- (void)_fetchShouldSpeak:(id)a3;
-- (void)_handleCommand:(id)a3 reply:(id)a4;
-- (void)_handleInterstitialPhase:(int64_t)a3 fromProvider:(id)a4 displayText:(id)a5 speakableText:(id)a6 expectedDelay:(double)a7 context:(id)a8 completion:(id)a9;
-- (void)_invokeRequestTimeoutForReason:(id)a3;
+- (void)_extendRequestTimeoutForReason:(id)reason durationInSeconds:(double)seconds;
+- (void)_fetchShouldSpeak:(id)speak;
+- (void)_handleCommand:(id)command reply:(id)reply;
+- (void)_handleInterstitialPhase:(int64_t)phase fromProvider:(id)provider displayText:(id)text speakableText:(id)speakableText expectedDelay:(double)delay context:(id)context completion:(id)completion;
+- (void)_invokeRequestTimeoutForReason:(id)reason;
 - (void)_markIsDucking;
 - (void)_markIsTwoShot;
 - (void)_markNetworkDidBecomeActive;
 - (void)_markSpeechRecognized;
-- (void)_pauseRequestTimeoutForReason:(id)a3;
+- (void)_pauseRequestTimeoutForReason:(id)reason;
 - (void)_requestDidEnd;
-- (void)_resumeRequestTimeoutForReason:(id)a3;
-- (void)_scheduleRequestTimeoutForReason:(id)a3 durationInSeconds:(double)a4;
-- (void)_setAudioSessionID:(unsigned int)a3;
-- (void)_setRecordRoute:(id)a3;
-- (void)_setShouldSpeak:(BOOL)a3;
-- (void)_speechRecordingDidFailWithError:(id)a3;
-- (void)_startRequestTimeoutTimerWithTimeInterval:(double)a3 reason:(id)a4;
-- (void)_startRequestWithAceCommand:(id)a3 turnIdentifier:(id)a4 suppressAlert:(BOOL)a5;
-- (void)_startRequestWithInfo:(id)a3;
-- (void)_startUIRequestWithInfo:(id)a3 completion:(id)a4;
-- (void)_startUIRequestWithText:(id)a3 completion:(id)a4;
+- (void)_resumeRequestTimeoutForReason:(id)reason;
+- (void)_scheduleRequestTimeoutForReason:(id)reason durationInSeconds:(double)seconds;
+- (void)_setAudioSessionID:(unsigned int)d;
+- (void)_setRecordRoute:(id)route;
+- (void)_setShouldSpeak:(BOOL)speak;
+- (void)_speechRecordingDidFailWithError:(id)error;
+- (void)_startRequestTimeoutTimerWithTimeInterval:(double)interval reason:(id)reason;
+- (void)_startRequestWithAceCommand:(id)command turnIdentifier:(id)identifier suppressAlert:(BOOL)alert;
+- (void)_startRequestWithInfo:(id)info;
+- (void)_startUIRequestWithInfo:(id)info completion:(id)completion;
+- (void)_startUIRequestWithText:(id)text completion:(id)completion;
 - (void)_stopInputAudioPowerUpdates;
-- (void)_tellDelegateAudioPlaybackRequestDidStart:(id)a3;
-- (void)_tellDelegateAudioPlaybackRequestDidStop:(id)a3 error:(id)a4;
-- (void)_tellDelegateAudioPlaybackRequestWillStart:(id)a3;
-- (void)_tellDelegateAudioSessionDidBeginInterruptionWithUserInfo:(id)a3;
-- (void)_tellDelegateCacheImage:(id)a3;
+- (void)_tellDelegateAudioPlaybackRequestDidStart:(id)start;
+- (void)_tellDelegateAudioPlaybackRequestDidStop:(id)stop error:(id)error;
+- (void)_tellDelegateAudioPlaybackRequestWillStart:(id)start;
+- (void)_tellDelegateAudioSessionDidBeginInterruptionWithUserInfo:(id)info;
+- (void)_tellDelegateCacheImage:(id)image;
 - (void)_tellDelegateDidDetectMusic;
-- (void)_tellDelegateExtensionRequestFinishedForApplication:(id)a3 error:(id)a4;
-- (void)_tellDelegateExtensionRequestWillStartForApplication:(id)a3;
-- (void)_tellDelegateFailedToLaunchAppWithBundleIdentifier:(id)a3;
+- (void)_tellDelegateExtensionRequestFinishedForApplication:(id)application error:(id)error;
+- (void)_tellDelegateExtensionRequestWillStartForApplication:(id)application;
+- (void)_tellDelegateFailedToLaunchAppWithBundleIdentifier:(id)identifier;
 - (void)_tellDelegateInvalidateCurrentUserActivity;
 - (void)_tellDelegateRequestWillStart;
-- (void)_tellDelegateSetUserActivityInfo:(id)a3 webpageURL:(id)a4;
-- (void)_tellDelegateStartPlaybackDidFail:(int64_t)a3;
-- (void)_tellDelegateWillProcessAppLaunchWithBundleIdentifier:(id)a3;
-- (void)_tellDelegateWillProcessStartPlayback:(int64_t)a3 intent:(id)a4 completion:(id)a5;
+- (void)_tellDelegateSetUserActivityInfo:(id)info webpageURL:(id)l;
+- (void)_tellDelegateStartPlaybackDidFail:(int64_t)fail;
+- (void)_tellDelegateWillProcessAppLaunchWithBundleIdentifier:(id)identifier;
+- (void)_tellDelegateWillProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion;
 - (void)_tellDelegateWillStartAcousticIDRequest;
-- (void)_tellSpeechDelegateRecognitionDidFail:(id)a3;
-- (void)_tellSpeechDelegateRecognitionUpdateWillBeginForTask:(id)a3;
-- (void)_tellSpeechDelegateRecognizedAdditionalSpeechInterpretation:(id)a3 refId:(id)a4;
-- (void)_tellSpeechDelegateRecordingDidBeginOnAVRecordRoute:(id)a3 audioSessionID:(unsigned int)a4;
+- (void)_tellSpeechDelegateRecognitionDidFail:(id)fail;
+- (void)_tellSpeechDelegateRecognitionUpdateWillBeginForTask:(id)task;
+- (void)_tellSpeechDelegateRecognizedAdditionalSpeechInterpretation:(id)interpretation refId:(id)id;
+- (void)_tellSpeechDelegateRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d;
 - (void)_tellSpeechDelegateRecordingDidCancel;
-- (void)_tellSpeechDelegateRecordingDidChangeAVRecordRoute:(id)a3;
+- (void)_tellSpeechDelegateRecordingDidChangeAVRecordRoute:(id)route;
 - (void)_tellSpeechDelegateRecordingDidDetectStartpoint;
 - (void)_tellSpeechDelegateRecordingDidEnd;
-- (void)_tellSpeechDelegateRecordingDidFail:(id)a3;
-- (void)_tellSpeechDelegateRecordingDidUpdateRecognitionPhrases:(id)a3 utterances:(id)a4 refId:(id)a5;
-- (void)_tellSpeechDelegateRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)a3;
-- (void)_tellSpeechDelegateSpeechRecognized:(id)a3;
-- (void)_tellSpeechDelegateSpeechRecognizedPartialResult:(id)a3;
-- (void)_tellSpeechDelegateToPerformTwoShotPromptWithType:(int64_t)a3 reply:(id)a4;
+- (void)_tellSpeechDelegateRecordingDidFail:(id)fail;
+- (void)_tellSpeechDelegateRecordingDidUpdateRecognitionPhrases:(id)phrases utterances:(id)utterances refId:(id)id;
+- (void)_tellSpeechDelegateRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)wrapper;
+- (void)_tellSpeechDelegateSpeechRecognized:(id)recognized;
+- (void)_tellSpeechDelegateSpeechRecognizedPartialResult:(id)result;
+- (void)_tellSpeechDelegateToPerformTwoShotPromptWithType:(int64_t)type reply:(id)reply;
 - (void)_updateClientConfiguration;
-- (void)_updateSpeechEndHostTime:(unint64_t)a3;
+- (void)_updateSpeechEndHostTime:(unint64_t)time;
 - (void)_updateState;
 - (void)_updateStateIfNotInSync;
 - (void)_willCancelRequest;
 - (void)_willCompleteRequest;
 - (void)_willEndSession;
-- (void)_willFailRequestWithError:(id)a3;
-- (void)_willPresentUsefulUserResultWithType:(int64_t)a3;
-- (void)_willStartRequestWithSpeech:(BOOL)a3 speechRequestOptions:(id)a4 requestInfo:(id)a5 analyticsEventProvider:(id)a6;
-- (void)accessibilityObserver:(id)a3 stateDidChangeFrom:(id)a4 to:(id)a5;
-- (void)acquireAudioSessionWithContext:(id)a3 completion:(id)a4;
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5;
-- (void)boostedPreheatWithStyle:(int64_t)a3 completion:(id)a4;
-- (void)broadcastCommandDictionary:(id)a3;
+- (void)_willFailRequestWithError:(id)error;
+- (void)_willPresentUsefulUserResultWithType:(int64_t)type;
+- (void)_willStartRequestWithSpeech:(BOOL)speech speechRequestOptions:(id)options requestInfo:(id)info analyticsEventProvider:(id)provider;
+- (void)accessibilityObserver:(id)observer stateDidChangeFrom:(id)from to:(id)to;
+- (void)acquireAudioSessionWithContext:(id)context completion:(id)completion;
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower;
+- (void)boostedPreheatWithStyle:(int64_t)style completion:(id)completion;
+- (void)broadcastCommandDictionary:(id)dictionary;
 - (void)cancelRequest;
-- (void)cancelRequestForReason:(int64_t)a3;
+- (void)cancelRequestForReason:(int64_t)reason;
 - (void)cancelSpeech;
-- (void)checkLanguageReady:(id)a3 completion:(id)a4;
+- (void)checkLanguageReady:(id)ready completion:(id)completion;
 - (void)clearContext;
 - (void)dealloc;
-- (void)deviceRingerObserver:(id)a3 didChangeState:(int64_t)a4;
+- (void)deviceRingerObserver:(id)observer didChangeState:(int64_t)state;
 - (void)didDismissUI;
 - (void)endSession;
-- (void)failRequestWithError:(id)a3;
-- (void)fetchAppicationContextForApplicationInfo:(id)a3 supplementalContext:(id)a4 refID:(id)a5;
-- (void)forceAudioSessionActiveWithContext:(id)a3 completion:(id)a4;
-- (void)forceAudioSessionActiveWithOptions:(unint64_t)a3 reason:(int64_t)a4 speechRequestOptions:(id)a5 completion:(id)a6;
-- (void)forceAudioSessionInactiveWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)getCachedObjectsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)getDeferredObjectsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)getRemoteClockTimerSnapshotWithCompletion:(id)a3;
-- (void)interstitialProvider:(id)a3 handlePhase:(int64_t)a4 displayText:(id)a5 speakableText:(id)a6 expectedDelay:(double)a7 context:(id)a8 completion:(id)a9;
+- (void)failRequestWithError:(id)error;
+- (void)fetchAppicationContextForApplicationInfo:(id)info supplementalContext:(id)context refID:(id)d;
+- (void)forceAudioSessionActiveWithContext:(id)context completion:(id)completion;
+- (void)forceAudioSessionActiveWithOptions:(unint64_t)options reason:(int64_t)reason speechRequestOptions:(id)requestOptions completion:(id)completion;
+- (void)forceAudioSessionInactiveWithOptions:(unint64_t)options completion:(id)completion;
+- (void)getCachedObjectsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)getDeferredObjectsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)getRemoteClockTimerSnapshotWithCompletion:(id)completion;
+- (void)interstitialProvider:(id)provider handlePhase:(int64_t)phase displayText:(id)text speakableText:(id)speakableText expectedDelay:(double)delay context:(id)context completion:(id)completion;
 - (void)invalidate;
-- (void)preheatWithStyle:(int64_t)a3 forOptions:(id)a4;
+- (void)preheatWithStyle:(int64_t)style forOptions:(id)options;
 - (void)prepareForPhoneCall;
-- (void)reportIssueForError:(id)a3 type:(int64_t)a4 context:(id)a5;
-- (void)reportIssueForError:(id)a3 type:(int64_t)a4 subtype:(id)a5 context:(id)a6;
-- (void)reportIssueForType:(id)a3 subtype:(id)a4 context:(id)a5;
-- (void)requestBarrier:(id)a3;
-- (void)requestBarrierIfNecessary:(id)a3;
-- (void)requestDidAskForTimeoutExtension:(double)a3;
+- (void)reportIssueForError:(id)error type:(int64_t)type context:(id)context;
+- (void)reportIssueForError:(id)error type:(int64_t)type subtype:(id)subtype context:(id)context;
+- (void)reportIssueForType:(id)type subtype:(id)subtype context:(id)context;
+- (void)requestBarrier:(id)barrier;
+- (void)requestBarrierIfNecessary:(id)necessary;
+- (void)requestDidAskForTimeoutExtension:(double)extension;
 - (void)resumeInterruptedAudioPlaybackIfNeeded;
 - (void)rollbackClearContext;
 - (void)rollbackRequest;
-- (void)sendGenericAceCommand:(id)a3 turnIdentifier:(id)a4 conflictHandler:(id)a5;
-- (void)sendReplyCommand:(id)a3;
-- (void)setAccessibilityState:(id)a3;
-- (void)setAlertContextWithBulletins:(id)a3;
-- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a3;
-- (void)setApplicationContext:(id)a3;
-- (void)setApplicationContextForApplicationInfos:(id)a3;
-- (void)setApplicationContextForApplicationInfos:(id)a3 withRefId:(id)a4;
-- (void)setCarDNDActive:(BOOL)a3;
-- (void)setCarOwnsMainAudio:(BOOL)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceRingerSwitchState:(int64_t)a3;
-- (void)setIsDeviceInStarkMode:(BOOL)a3;
-- (void)setIsEyesFree:(BOOL)a3;
-- (void)setModesConfiguration:(id)a3;
-- (void)setMyriadDecisionResult:(BOOL)a3;
-- (void)setOverriddenApplicationContext:(id)a3 withContext:(id)a4;
-- (void)setShouldWaitForMyriad:(BOOL)a3;
-- (void)setSupportsCarPlayVehicleData:(BOOL)a3;
-- (void)setVoiceOverIsActive:(BOOL)a3;
-- (void)setWatchAuthenticated:(BOOL)a3;
-- (void)startAcousticIDRequestWithOptions:(id)a3;
-- (void)startAudioPlaybackRequest:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)startContinuationRequestWithUserInfo:(id)a3;
-- (void)startDirectActionRequestWithString:(id)a3;
-- (void)startRecordingForPendingSpeechRequestWithOptions:(id)a3 completion:(id)a4;
-- (void)startRequestWithCorrectedText:(id)a3 forSpeechIdentifier:(id)a4 userSelectionResults:(id)a5 turnIdentifier:(id)a6;
-- (void)startRequestWithInfo:(id)a3 activationEvent:(int64_t)a4;
-- (void)startRequestWithText:(id)a3;
-- (void)startSpeechPronunciationRequestWithOptions:(id)a3 pronunciationContext:(id)a4;
-- (void)startSpeechRequestWithOptions:(id)a3;
-- (void)stopSpeechWithOptions:(id)a3;
+- (void)sendGenericAceCommand:(id)command turnIdentifier:(id)identifier conflictHandler:(id)handler;
+- (void)sendReplyCommand:(id)command;
+- (void)setAccessibilityState:(id)state;
+- (void)setAlertContextWithBulletins:(id)bulletins;
+- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active;
+- (void)setApplicationContext:(id)context;
+- (void)setApplicationContextForApplicationInfos:(id)infos;
+- (void)setApplicationContextForApplicationInfos:(id)infos withRefId:(id)id;
+- (void)setCarDNDActive:(BOOL)active;
+- (void)setCarOwnsMainAudio:(BOOL)audio;
+- (void)setConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceRingerSwitchState:(int64_t)state;
+- (void)setIsDeviceInStarkMode:(BOOL)mode;
+- (void)setIsEyesFree:(BOOL)free;
+- (void)setModesConfiguration:(id)configuration;
+- (void)setMyriadDecisionResult:(BOOL)result;
+- (void)setOverriddenApplicationContext:(id)context withContext:(id)withContext;
+- (void)setShouldWaitForMyriad:(BOOL)myriad;
+- (void)setSupportsCarPlayVehicleData:(BOOL)data;
+- (void)setVoiceOverIsActive:(BOOL)active;
+- (void)setWatchAuthenticated:(BOOL)authenticated;
+- (void)startAcousticIDRequestWithOptions:(id)options;
+- (void)startAudioPlaybackRequest:(id)request options:(unint64_t)options completion:(id)completion;
+- (void)startContinuationRequestWithUserInfo:(id)info;
+- (void)startDirectActionRequestWithString:(id)string;
+- (void)startRecordingForPendingSpeechRequestWithOptions:(id)options completion:(id)completion;
+- (void)startRequestWithCorrectedText:(id)text forSpeechIdentifier:(id)identifier userSelectionResults:(id)results turnIdentifier:(id)turnIdentifier;
+- (void)startRequestWithInfo:(id)info activationEvent:(int64_t)event;
+- (void)startRequestWithText:(id)text;
+- (void)startSpeechPronunciationRequestWithOptions:(id)options pronunciationContext:(id)context;
+- (void)startSpeechRequestWithOptions:(id)options;
+- (void)stopSpeechWithOptions:(id)options;
 - (void)telephonyRequestCompleted;
-- (void)updateSpeechOptions:(id)a3;
-- (void)updateSpeechSynthesisRecord:(id)a3;
+- (void)updateSpeechOptions:(id)options;
+- (void)updateSpeechSynthesisRecord:(id)record;
 - (void)willPresentUI;
-- (void)willPresentUsefulUserResultWithType:(int64_t)a3 forCommand:(id)a4;
-- (void)willSetApplicationContextWithRefId:(id)a3;
+- (void)willPresentUsefulUserResultWithType:(int64_t)type forCommand:(id)command;
+- (void)willSetApplicationContextWithRefId:(id)id;
 @end
 
 @implementation AFConnection
@@ -182,9 +182,9 @@
 + (id)outputVoice
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 outputVoice];
+  outputVoice = [v2 outputVoice];
 
-  return v3;
+  return outputVoice;
 }
 
 + (BOOL)isAvailable
@@ -255,27 +255,27 @@ LABEL_15:
 {
   if (!sAvailabilityObserver)
   {
-    [a1 beginMonitoringAvailability];
+    [self beginMonitoringAvailability];
   }
 
-  v3 = [a1 _networkAvailability];
-  v4 = [v3 isAvailable];
+  _networkAvailability = [self _networkAvailability];
+  isAvailable = [_networkAvailability isAvailable];
 
-  return v4;
+  return isAvailable;
 }
 
 - (void)clearContext
 {
-  v2 = [(AFConnection *)self _clientService];
-  [v2 clearContext];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService clearContext];
 }
 
 - (id)_clientService
 {
-  v2 = [(AFConnection *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(AFConnection *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
@@ -350,11 +350,11 @@ LABEL_15:
 
 - (void)willPresentUI
 {
-  v3 = [(AFConnection *)self _clientService];
-  [v3 willPresentUIWithReply:&__block_literal_global_317];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService willPresentUIWithReply:&__block_literal_global_317];
 
-  v4 = [(AFConnection *)self _siriClientStateManager];
-  [v4 beginSessionForClient:self->_clientID];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginSessionForClient:self->_clientID];
 }
 
 - (id)_siriClientStateManager
@@ -380,10 +380,10 @@ LABEL_15:
     v4 = +[AFAccessibilityObserver sharedObserver];
     v5 = +[AFDeviceRingerSwitchObserver sharedObserver];
     v6 = [AFClientConfiguration alloc];
-    v7 = [v4 currentState];
+    currentState = [v4 currentState];
     LOWORD(v13) = 0;
     LOBYTE(v12) = 0;
-    v8 = -[AFClientConfiguration initWithAccessibilityState:deviceRingerSwitchState:isDeviceInCarDNDMode:isDeviceInStarkMode:supportsCarPlayVehicleData:isDeviceWatchAuthenticated:areAnnouncementRequestsPermittedByPresentationWhileActive:outputVolume:tapToSiriAudioPlaybackRequest:twoShotAudioPlaybackRequest:deviceSetupFlowBeginDate:deviceSetupFlowEndDate:carOwnsMainAudio:isEyesFreeDevice:](v6, "initWithAccessibilityState:deviceRingerSwitchState:isDeviceInCarDNDMode:isDeviceInStarkMode:supportsCarPlayVehicleData:isDeviceWatchAuthenticated:areAnnouncementRequestsPermittedByPresentationWhileActive:outputVolume:tapToSiriAudioPlaybackRequest:twoShotAudioPlaybackRequest:deviceSetupFlowBeginDate:deviceSetupFlowEndDate:carOwnsMainAudio:isEyesFreeDevice:", v7, [v5 state], 0, 0, 0, 0, 0.0, v12, 0, 0, 0, 0, v13);
+    v8 = -[AFClientConfiguration initWithAccessibilityState:deviceRingerSwitchState:isDeviceInCarDNDMode:isDeviceInStarkMode:supportsCarPlayVehicleData:isDeviceWatchAuthenticated:areAnnouncementRequestsPermittedByPresentationWhileActive:outputVolume:tapToSiriAudioPlaybackRequest:twoShotAudioPlaybackRequest:deviceSetupFlowBeginDate:deviceSetupFlowEndDate:carOwnsMainAudio:isEyesFreeDevice:](v6, "initWithAccessibilityState:deviceRingerSwitchState:isDeviceInCarDNDMode:isDeviceInStarkMode:supportsCarPlayVehicleData:isDeviceWatchAuthenticated:areAnnouncementRequestsPermittedByPresentationWhileActive:outputVolume:tapToSiriAudioPlaybackRequest:twoShotAudioPlaybackRequest:deviceSetupFlowBeginDate:deviceSetupFlowEndDate:carOwnsMainAudio:isEyesFreeDevice:", currentState, [v5 state], 0, 0, 0, 0, 0.0, v12, 0, 0, 0, 0, v13);
     v9 = self->_clientConfiguration;
     self->_clientConfiguration = v8;
 
@@ -400,10 +400,10 @@ LABEL_15:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = self->_preferences;
-  v5 = [(AFPreferences *)v4 languageCode];
-  if (v5)
+  languageCode = [(AFPreferences *)v4 languageCode];
+  if (languageCode)
   {
-    [v3 setValue:v5 forKey:@"siriInputLanguage"];
+    [v3 setValue:languageCode forKey:@"siriInputLanguage"];
   }
 
   if (AFIsHorseman_onceToken != -1)
@@ -442,9 +442,9 @@ LABEL_15:
 {
   if ((*(self + 280) & 1) == 0)
   {
-    v3 = [(AFConnection *)self _clientService];
-    v4 = [(AFConnection *)self _clientConfiguration];
-    [v3 setConfiguration:v4];
+    _clientService = [(AFConnection *)self _clientService];
+    _clientConfiguration = [(AFConnection *)self _clientConfiguration];
+    [_clientService setConfiguration:_clientConfiguration];
 
     *(self + 280) |= 1u;
   }
@@ -463,7 +463,7 @@ LABEL_15:
       *buf = 136315650;
       v21 = "[AFConnection _willCancelRequest]";
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2112;
       v25 = activeRequestUUID;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
@@ -478,8 +478,8 @@ LABEL_15:
     v9 = self->_activeRequestUUID;
     if (v9)
     {
-      v10 = [(NSUUID *)v9 UUIDString];
-      v19 = v10;
+      uUIDString = [(NSUUID *)v9 UUIDString];
+      v19 = uUIDString;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       [(AFAnalytics *)analytics logEventWithType:1912 context:v11];
     }
@@ -496,8 +496,8 @@ LABEL_15:
     v13 = +[AFAccessibilityObserver sharedObserver];
     [v13 removeListener:self];
 
-    v14 = [(AFConnection *)self _siriClientStateManager];
-    [v14 endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
+    _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+    [_siriClientStateManager endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
 
     _LogUEIRequestCategorization(self->_activeTurnIdentifier, 1, self->_activeRequestTypeForRequestCategorization);
     activeTurnIdentifier = self->_activeTurnIdentifier;
@@ -527,7 +527,7 @@ LABEL_15:
     v8 = 136315394;
     v9 = "[AFConnection _requestDidEnd]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %p", &v8, 0x16u);
   }
 
@@ -552,13 +552,13 @@ LABEL_15:
 
 - (void)_updateState
 {
-  v3 = [(AFConnection *)self _clientService];
+  _clientService = [(AFConnection *)self _clientService];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __28__AFConnection__updateState__block_invoke;
   v4[3] = &unk_1E73417B8;
   v4[4] = self;
-  [v3 requestStateUpdateWithReply:v4];
+  [_clientService requestStateUpdateWithReply:v4];
 }
 
 - (void)_tellDelegateRequestWillStart
@@ -657,9 +657,9 @@ uint64_t __28__AFConnection__updateState__block_invoke_2(uint64_t a1)
 + (id)currentLanguageCode
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 - (void)_willCompleteRequest
@@ -675,7 +675,7 @@ uint64_t __28__AFConnection__updateState__block_invoke_2(uint64_t a1)
       *buf = 136315650;
       v22 = "[AFConnection _willCompleteRequest]";
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
       v26 = activeRequestUUID;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
@@ -690,8 +690,8 @@ uint64_t __28__AFConnection__updateState__block_invoke_2(uint64_t a1)
     v9 = self->_activeRequestUUID;
     if (v9)
     {
-      v10 = [(NSUUID *)v9 UUIDString];
-      v20 = v10;
+      uUIDString = [(NSUUID *)v9 UUIDString];
+      v20 = uUIDString;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
       [(AFAnalytics *)analytics logEventWithType:1914 context:v11];
     }
@@ -708,8 +708,8 @@ uint64_t __28__AFConnection__updateState__block_invoke_2(uint64_t a1)
     v13 = +[AFAccessibilityObserver sharedObserver];
     [v13 removeListener:self];
 
-    v14 = [(AFConnection *)self _siriClientStateManager];
-    [v14 endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
+    _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+    [_siriClientStateManager endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
 
     _LogUEIRequestCategorization(self->_activeTurnIdentifier, 3, self->_activeRequestTypeForRequestCategorization);
     activeTurnIdentifier = self->_activeTurnIdentifier;
@@ -734,8 +734,8 @@ uint64_t __28__AFConnection__updateState__block_invoke_2(uint64_t a1)
     if (AFIsPad_isPad == 1)
     {
 LABEL_13:
-      v16 = [(AFConnection *)self _clientService];
-      [v16 emitHomeMetricInvocationEvent];
+      _clientService = [(AFConnection *)self _clientService];
+      [_clientService emitHomeMetricInvocationEvent];
     }
 
     *&self->_activeRequestHasSpeechRecognition = 0;
@@ -761,9 +761,9 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)_speechRecordingDidFailWithError:(id)a3
+- (void)_speechRecordingDidFailWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (self->_activeRequestType == 1)
   {
     v5 = NSStringFromSelector(a2);
@@ -772,30 +772,30 @@ LABEL_13:
 
   [(AFConnection *)self _updateStateIfNotInSync];
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:0];
-  [(AFConnection *)self _tellSpeechDelegateRecordingDidFail:v6];
+  [(AFConnection *)self _tellSpeechDelegateRecordingDidFail:errorCopy];
 }
 
-- (void)updateSpeechSynthesisRecord:(id)a3
+- (void)updateSpeechSynthesisRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 updateSpeechSynthesisRecord:v4];
+  recordCopy = record;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService updateSpeechSynthesisRecord:recordCopy];
 }
 
-- (void)startAudioPlaybackRequest:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)startAudioPlaybackRequest:(id)request options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __61__AFConnection_startAudioPlaybackRequest_options_completion___block_invoke;
   v16 = &unk_1E7348AD0;
-  v17 = v8;
-  v18 = v9;
-  v10 = v9;
-  v11 = v8;
+  v17 = requestCopy;
+  v18 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   v12 = [(AFConnection *)self _clientServiceWithErrorHandler:&v13];
-  [v12 startAudioPlaybackRequest:v11 options:a4 reply:{v10, v13, v14, v15, v16}];
+  [v12 startAudioPlaybackRequest:v11 options:options reply:{v10, v13, v14, v15, v16}];
 }
 
 void __61__AFConnection_startAudioPlaybackRequest_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -824,19 +824,19 @@ void __61__AFConnection_startAudioPlaybackRequest_options_completion___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkLanguageReady:(id)a3 completion:(id)a4
+- (void)checkLanguageReady:(id)ready completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)willPresentUsefulUserResultWithType:(int64_t)a3 forCommand:(id)a4
+- (void)willPresentUsefulUserResultWithType:(int64_t)type forCommand:(id)command
 {
   v16 = *MEMORY[0x1E69E9840];
   analytics = self->_analytics;
-  v7 = AFAnalyticsContextCreateWithCommand(a4);
+  v7 = AFAnalyticsContextCreateWithCommand(command);
   [(AFAnalytics *)analytics logEventWithType:1420 context:v7];
 
   if (self->_uufrID && self->_activeRequestUUID && self->_activeRequestType)
@@ -854,89 +854,89 @@ void __61__AFConnection_startAudioPlaybackRequest_options_completion___block_inv
     }
   }
 
-  [(AFConnection *)self _willPresentUsefulUserResultWithType:a3];
+  [(AFConnection *)self _willPresentUsefulUserResultWithType:type];
   v11 = *MEMORY[0x1E69E9840];
 }
 
 - (void)telephonyRequestCompleted
 {
-  v2 = [(AFConnection *)self _clientService];
-  [v2 telephonyRequestCompleted];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService telephonyRequestCompleted];
 }
 
 - (void)prepareForPhoneCall
 {
-  v2 = [(AFConnection *)self _clientService];
-  [v2 prepareForPhoneCall];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService prepareForPhoneCall];
 }
 
-- (void)setAlertContextWithBulletins:(id)a3
+- (void)setAlertContextWithBulletins:(id)bulletins
 {
-  v4 = [a3 copy];
+  v4 = [bulletins copy];
   cachedBulletins = self->_cachedBulletins;
   self->_cachedBulletins = v4;
 
-  v6 = [(AFConnection *)self _clientService];
-  [v6 setAlertContextDirty];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService setAlertContextDirty];
 }
 
-- (void)setOverriddenApplicationContext:(id)a3 withContext:(id)a4
+- (void)setOverriddenApplicationContext:(id)context withContext:(id)withContext
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFConnection *)self _clientService];
-  [v8 setOverriddenApplicationContext:v7 withContext:v6];
+  withContextCopy = withContext;
+  contextCopy = context;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService setOverriddenApplicationContext:contextCopy withContext:withContextCopy];
 }
 
-- (void)setApplicationContextForApplicationInfos:(id)a3
+- (void)setApplicationContextForApplicationInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 fetchAppicationContextForApplicationInfo:v4 supplementalContext:0 refID:0];
+  infosCopy = infos;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService fetchAppicationContextForApplicationInfo:infosCopy supplementalContext:0 refID:0];
 }
 
-- (void)setApplicationContextForApplicationInfos:(id)a3 withRefId:(id)a4
+- (void)setApplicationContextForApplicationInfos:(id)infos withRefId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFConnection *)self _clientService];
-  [v8 fetchAppicationContextForApplicationInfo:v7 supplementalContext:0 refID:v6];
+  idCopy = id;
+  infosCopy = infos;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService fetchAppicationContextForApplicationInfo:infosCopy supplementalContext:0 refID:idCopy];
 }
 
-- (void)fetchAppicationContextForApplicationInfo:(id)a3 supplementalContext:(id)a4 refID:(id)a5
+- (void)fetchAppicationContextForApplicationInfo:(id)info supplementalContext:(id)context refID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(AFConnection *)self _clientService];
-  [v11 fetchAppicationContextForApplicationInfo:v10 supplementalContext:v9 refID:v8];
+  dCopy = d;
+  contextCopy = context;
+  infoCopy = info;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService fetchAppicationContextForApplicationInfo:infoCopy supplementalContext:contextCopy refID:dCopy];
 }
 
-- (void)setApplicationContext:(id)a3
+- (void)setApplicationContext:(id)context
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 setApplicationContext:v4];
+  contextCopy = context;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService setApplicationContext:contextCopy];
 }
 
-- (void)willSetApplicationContextWithRefId:(id)a3
+- (void)willSetApplicationContextWithRefId:(id)id
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 willSetApplicationContextWithRefId:v4];
+  idCopy = id;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService willSetApplicationContextWithRefId:idCopy];
 }
 
-- (void)getRemoteClockTimerSnapshotWithCompletion:(id)a3
+- (void)getRemoteClockTimerSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__AFConnection_getRemoteClockTimerSnapshotWithCompletion___block_invoke;
     v10[3] = &unk_1E7348AA8;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
     v7 = [(AFConnection *)self _clientServiceWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
@@ -948,18 +948,18 @@ void __61__AFConnection_startAudioPlaybackRequest_options_completion___block_inv
   }
 }
 
-- (void)getCachedObjectsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)getCachedObjectsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFConnection *)self _clientService];
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  _clientService = [(AFConnection *)self _clientService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invoke;
   v10[3] = &unk_1E73454F0;
-  v11 = v6;
-  v9 = v6;
-  [v8 getSerializedCachedObjectsWithIdentifiers:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [_clientService getSerializedCachedObjectsWithIdentifiers:identifiersCopy completion:v10];
 }
 
 void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invoke(uint64_t a1, void *a2)
@@ -1036,44 +1036,44 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDeferredObjectsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)getDeferredObjectsWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFConnection *)self _clientService];
-  [v8 getDeferredObjectsWithIdentifiers:v7 completion:v6];
+  completionCopy = completion;
+  identifiersCopy = identifiers;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService getDeferredObjectsWithIdentifiers:identifiersCopy completion:completionCopy];
 }
 
-- (void)sendReplyCommand:(id)a3
+- (void)sendReplyCommand:(id)command
 {
-  v7 = a3;
-  v4 = [v7 refId];
-  if (v4)
+  commandCopy = command;
+  refId = [commandCopy refId];
+  if (refId)
   {
-    v5 = [(NSMutableDictionary *)self->_replyHandlerForAceId objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_replyHandlerForAceId objectForKey:refId];
     v6 = v5;
     if (v5)
     {
-      (*(v5 + 16))(v5, v7);
-      [(NSMutableDictionary *)self->_replyHandlerForAceId removeObjectForKey:v4];
+      (*(v5 + 16))(v5, commandCopy);
+      [(NSMutableDictionary *)self->_replyHandlerForAceId removeObjectForKey:refId];
     }
   }
 }
 
-- (void)sendGenericAceCommand:(id)a3 turnIdentifier:(id)a4 conflictHandler:(id)a5
+- (void)sendGenericAceCommand:(id)command turnIdentifier:(id)identifier conflictHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v37 = a4;
-  v9 = a5;
-  if (v8)
+  commandCopy = command;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (commandCopy)
   {
-    v10 = [v8 aceId];
+    aceId = [commandCopy aceId];
 
-    if (!v10)
+    if (!aceId)
     {
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v11 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
       v13 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -1081,32 +1081,32 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
         *buf = 136315394;
         v49 = "[AFConnection sendGenericAceCommand:turnIdentifier:conflictHandler:]";
         v50 = 2112;
-        v51 = v12;
+        v51 = uUIDString;
         _os_log_impl(&dword_1912FE000, v13, OS_LOG_TYPE_INFO, "%s passed command without ACE ID; inventing one (%@)", buf, 0x16u);
       }
 
-      [v8 setAceId:v12];
+      [commandCopy setAceId:uUIDString];
     }
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v34 = v8;
+    v34 = commandCopy;
     if (isKindOfClass)
     {
-      v14 = [v8 commands];
+      commands = [commandCopy commands];
     }
 
     else
     {
-      v47 = v8;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
+      v47 = commandCopy;
+      commands = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
     }
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v14;
+    obj = commands;
     v15 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v15)
     {
@@ -1124,7 +1124,7 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
           }
 
           v19 = *(*(&v42 + 1) + 8 * i);
-          v20 = [v19 encodedClassName];
+          encodedClassName = [v19 encodedClassName];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -1135,9 +1135,9 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
 
           else
           {
-            v23 = [v20 isEqualToString:v38];
+            v23 = [encodedClassName isEqualToString:v38];
             v24 = 0x1E69C7AB0;
-            if ((v23 & 1) != 0 || (v25 = [v20 isEqualToString:v35], v24 = 0x1E69C7AA8, v25))
+            if ((v23 & 1) != 0 || (v25 = [encodedClassName isEqualToString:v35], v24 = 0x1E69C7AA8, v25))
             {
               v26 = *v24;
               v21 = objc_opt_class();
@@ -1151,8 +1151,8 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
                 else
                 {
                   v27 = [v21 alloc];
-                  v28 = [v19 dictionary];
-                  v21 = [v27 initWithDictionary:v28];
+                  dictionary = [v19 dictionary];
+                  v21 = [v27 initWithDictionary:dictionary];
                 }
               }
 
@@ -1170,7 +1170,7 @@ void __59__AFConnection_getCachedObjectsWithIdentifiers_completion___block_invok
           {
             if ((v22 & 1) == 0)
             {
-              [(AFConnection *)self _startRequestWithAceCommand:v21 turnIdentifier:v37 suppressAlert:isKindOfClass & 1];
+              [(AFConnection *)self _startRequestWithAceCommand:v21 turnIdentifier:identifierCopy suppressAlert:isKindOfClass & 1];
               goto LABEL_32;
             }
 
@@ -1183,8 +1183,8 @@ LABEL_28:
               _os_log_impl(&dword_1912FE000, v29, OS_LOG_TYPE_INFO, "%s Performing BackgroundUpdateRequest outside normal request processing flow.", buf, 0xCu);
             }
 
-            v30 = [v19 encodedClassName];
-            [(AFConnection *)self _requestWillBeginWithRequestClass:v30 isSpeechRequest:0 speechRequestOptions:0 requestInfo:0 isBackgroundRequest:1 analyticsEventProvider:0];
+            encodedClassName2 = [v19 encodedClassName];
+            [(AFConnection *)self _requestWillBeginWithRequestClass:encodedClassName2 isSpeechRequest:0 speechRequestOptions:0 requestInfo:0 isBackgroundRequest:1 analyticsEventProvider:0];
 
             goto LABEL_31;
           }
@@ -1195,14 +1195,14 @@ LABEL_28:
           }
 
 LABEL_31:
-          v31 = [(AFConnection *)self _clientService];
-          v32 = [v19 dictionary];
+          _clientService = [(AFConnection *)self _clientService];
+          dictionary2 = [v19 dictionary];
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __69__AFConnection_sendGenericAceCommand_turnIdentifier_conflictHandler___block_invoke;
           v40[3] = &unk_1E7345518;
-          v41 = v9;
-          [v31 performGenericAceCommand:v32 interruptOutstandingRequest:v9 == 0 reply:v40];
+          v41 = handlerCopy;
+          [_clientService performGenericAceCommand:dictionary2 interruptOutstandingRequest:handlerCopy == 0 reply:v40];
 
 LABEL_32:
         }
@@ -1213,7 +1213,7 @@ LABEL_32:
       while (v16);
     }
 
-    v8 = v34;
+    commandCopy = v34;
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -1238,46 +1238,46 @@ uint64_t __69__AFConnection_sendGenericAceCommand_turnIdentifier_conflictHandler
   v3 = NSStringFromSelector(a2);
   [(AFConnection *)self _cancelRequestTimeoutForReason:v3];
 
-  v4 = [(AFConnection *)self _clientService];
-  [v4 rollbackRequest];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService rollbackRequest];
 }
 
 - (void)rollbackClearContext
 {
-  v2 = [(AFConnection *)self _clientService];
-  [v2 rollbackClearContext];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService rollbackClearContext];
 }
 
-- (void)updateSpeechOptions:(id)a3
+- (void)updateSpeechOptions:(id)options
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v10 = 136315650;
     v11 = "[AFConnection updateSpeechOptions:]";
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = optionsCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", &v10, 0x20u);
   }
 
   analytics = self->_analytics;
-  v7 = AFAnalyticsContextCreateWithSpeechRequestOptions(v4);
+  v7 = AFAnalyticsContextCreateWithSpeechRequestOptions(optionsCopy);
   [(AFAnalytics *)analytics logEventWithType:1909 context:v7 contextNoCopy:0];
 
-  v8 = [(AFConnection *)self _clientService];
-  [v8 updateSpeechOptions:v4];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService updateSpeechOptions:optionsCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopSpeechWithOptions:(id)a3
+- (void)stopSpeechWithOptions:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   kdebug_trace();
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -1285,31 +1285,31 @@ uint64_t __69__AFConnection_sendGenericAceCommand_turnIdentifier_conflictHandler
     v15 = 136315650;
     v16 = "[AFConnection stopSpeechWithOptions:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = optionsCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", &v15, 0x20u);
   }
 
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:0];
   analytics = self->_analytics;
-  v7 = AFAnalyticsContextCreateWithSpeechRequestOptions(v4);
+  v7 = AFAnalyticsContextCreateWithSpeechRequestOptions(optionsCopy);
   [(AFAnalytics *)analytics logEventWithType:1910 context:v7 contextNoCopy:0];
 
-  v8 = [(AFConnection *)self _clientService];
-  [v8 stopSpeechWithOptions:v4];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService stopSpeechWithOptions:optionsCopy];
 
   if (self->_activeRequestType == 1 && self->_activeRequestStopSpeechTimeAPICalled == 0.0)
   {
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    [v9 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     self->_activeRequestStopSpeechTimeAPICalled = v10;
 
-    if (v4)
+    if (optionsCopy)
     {
-      if ([v4 stopRecordingHostTime])
+      if ([optionsCopy stopRecordingHostTime])
       {
-        v11 = [v4 stopRecordingHostTime];
+        stopRecordingHostTime = [optionsCopy stopRecordingHostTime];
         if (_AFMachAbsoluteTimeRate_onceToken == -1)
         {
           goto LABEL_8;
@@ -1318,23 +1318,23 @@ uint64_t __69__AFConnection_sendGenericAceCommand_turnIdentifier_conflictHandler
 
       else
       {
-        [v4 activationEventTime];
+        [optionsCopy activationEventTime];
         if (v13 > 0.0)
         {
-          [v4 activationEventTime];
+          [optionsCopy activationEventTime];
           goto LABEL_11;
         }
 
-        if (![v4 activationEventMachAbsoluteTime])
+        if (![optionsCopy activationEventMachAbsoluteTime])
         {
           goto LABEL_12;
         }
 
-        v11 = [v4 activationEventMachAbsoluteTime];
+        stopRecordingHostTime = [optionsCopy activationEventMachAbsoluteTime];
         if (_AFMachAbsoluteTimeRate_onceToken == -1)
         {
 LABEL_8:
-          v12 = *&_AFMachAbsoluteTimeRate_rate * v11 / 1000000000.0;
+          v12 = *&_AFMachAbsoluteTimeRate_rate * stopRecordingHostTime / 1000000000.0;
 LABEL_11:
           self->_activeRequestStopSpeechTimeRequested = v12;
           goto LABEL_12;
@@ -1351,11 +1351,11 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportIssueForType:(id)a3 subtype:(id)a4 context:(id)a5
+- (void)reportIssueForType:(id)type subtype:(id)subtype context:(id)context
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
   if (AFIsInternalInstall_onceToken != -1)
   {
     dispatch_once(&AFIsInternalInstall_onceToken, &__block_literal_global_164_46064);
@@ -1363,16 +1363,16 @@ LABEL_12:
 
   if (AFIsInternalInstall_isInternal == 1)
   {
-    v10 = [(AFConnection *)self _clientService];
-    [v10 reportIssueForType:v11 subtype:v8 context:v9];
+    _clientService = [(AFConnection *)self _clientService];
+    [_clientService reportIssueForType:typeCopy subtype:subtypeCopy context:contextCopy];
   }
 }
 
-- (void)reportIssueForError:(id)a3 type:(int64_t)a4 subtype:(id)a5 context:(id)a6
+- (void)reportIssueForError:(id)error type:(int64_t)type subtype:(id)subtype context:(id)context
 {
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
+  errorCopy = error;
+  subtypeCopy = subtype;
+  contextCopy = context;
   if (AFIsInternalInstall_onceToken != -1)
   {
     dispatch_once(&AFIsInternalInstall_onceToken, &__block_literal_global_164_46064);
@@ -1380,15 +1380,15 @@ LABEL_12:
 
   if (AFIsInternalInstall_isInternal == 1)
   {
-    v12 = [(AFConnection *)self _clientService];
-    [v12 reportIssueForError:v13 type:a4 subtype:v10 context:v11];
+    _clientService = [(AFConnection *)self _clientService];
+    [_clientService reportIssueForError:errorCopy type:type subtype:subtypeCopy context:contextCopy];
   }
 }
 
-- (void)reportIssueForError:(id)a3 type:(int64_t)a4 context:(id)a5
+- (void)reportIssueForError:(id)error type:(int64_t)type context:(id)context
 {
-  v10 = a3;
-  v8 = a5;
+  errorCopy = error;
+  contextCopy = context;
   if (AFIsInternalInstall_onceToken != -1)
   {
     dispatch_once(&AFIsInternalInstall_onceToken, &__block_literal_global_164_46064);
@@ -1396,67 +1396,67 @@ LABEL_12:
 
   if (AFIsInternalInstall_isInternal == 1)
   {
-    v9 = [(AFConnection *)self _clientService];
-    [v9 reportIssueForError:v10 type:a4 context:v8];
+    _clientService = [(AFConnection *)self _clientService];
+    [_clientService reportIssueForError:errorCopy type:type context:contextCopy];
   }
 }
 
-- (void)failRequestWithError:(id)a3
+- (void)failRequestWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
   {
     v14 = 136315650;
     v15 = "[AFConnection failRequestWithError:]";
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = errorCopy;
     _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %p %@", &v14, 0x20u);
   }
 
-  v6 = [(AFConnection *)self _siriClientStateManager];
-  [v6 beginTransactionForReason:3];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginTransactionForReason:3];
 
-  v7 = [v4 domain];
-  if (![v7 isEqualToString:@"kAFAssistantErrorDomain"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"kAFAssistantErrorDomain"])
   {
     goto LABEL_8;
   }
 
-  v8 = [v4 code];
+  code = [errorCopy code];
 
-  if (v8 == 1)
+  if (code == 1)
   {
     if (self->_lastRetryError)
     {
-      v9 = [v4 userInfo];
-      v10 = [v9 objectForKey:*MEMORY[0x1E696AA08]];
+      userInfo = [errorCopy userInfo];
+      v10 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
       if (!v10)
       {
         [AFError errorWithCode:1 description:@"kAFAssistantErrorDomain" underlyingError:self->_lastRetryError];
-        v4 = v7 = v4;
+        errorCopy = domain = errorCopy;
 LABEL_8:
       }
     }
   }
 
-  [(AFConnection *)self _willFailRequestWithError:v4];
+  [(AFConnection *)self _willFailRequestWithError:errorCopy];
   [(AFConnection *)self _requestDidEnd];
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:0];
-  v11 = [(AFConnection *)self _clientService];
-  [v11 cancelRequestForReason:3 withError:v4];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService cancelRequestForReason:3 withError:errorCopy];
 
-  v12 = [(AFConnection *)self _siriClientStateManager];
-  [v12 endTransactionForReason:3];
+  _siriClientStateManager2 = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager2 endTransactionForReason:3];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelRequestForReason:(int64_t)a3
+- (void)cancelRequestForReason:(int64_t)reason
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = AFSiriLogContextConnection;
@@ -1465,21 +1465,21 @@ LABEL_8:
     v10 = 136315394;
     v11 = "[AFConnection cancelRequestForReason:]";
     v12 = 2048;
-    v13 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s reason = %ld", &v10, 0x16u);
   }
 
-  v6 = [(AFConnection *)self _siriClientStateManager];
-  [v6 beginTransactionForReason:2];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginTransactionForReason:2];
 
   [(AFConnection *)self _willCancelRequest];
   [(AFConnection *)self _requestDidEnd];
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:0];
-  v7 = [(AFConnection *)self _clientService];
-  [v7 cancelRequestForReason:a3 withError:0];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService cancelRequestForReason:reason withError:0];
 
-  v8 = [(AFConnection *)self _siriClientStateManager];
-  [v8 endTransactionForReason:2];
+  _siriClientStateManager2 = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager2 endTransactionForReason:2];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -1493,7 +1493,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[AFConnection cancelRequest]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v5, 0x16u);
   }
 
@@ -1510,7 +1510,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[AFConnection cancelSpeech]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v5, 0x16u);
   }
 
@@ -1518,17 +1518,17 @@ LABEL_8:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startAcousticIDRequestWithOptions:(id)a3
+- (void)startAcousticIDRequestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:1];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__AFConnection_startAcousticIDRequestWithOptions___block_invoke;
   v14[3] = &unk_1E73419C8;
-  v15 = v4;
-  v16 = self;
-  v5 = v4;
+  v15 = optionsCopy;
+  selfCopy = self;
+  v5 = optionsCopy;
   [(AFConnection *)self _requestWillBeginWithRequestClass:0 isSpeechRequest:1 speechRequestOptions:v5 requestInfo:0 analyticsEventProvider:v14];
   v6 = self->_activeRequestUUID;
   v12[0] = MEMORY[0x1E69E9820];
@@ -1642,27 +1642,27 @@ void __50__AFConnection_startAcousticIDRequestWithOptions___block_invoke_2_350(u
   dispatch_async(v6, block);
 }
 
-- (void)startSpeechPronunciationRequestWithOptions:(id)a3 pronunciationContext:(id)a4
+- (void)startSpeechPronunciationRequestWithOptions:(id)options pronunciationContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  contextCopy = context;
   v9 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v25 = "[AFConnection startSpeechPronunciationRequestWithOptions:pronunciationContext:]";
     v26 = 2112;
-    v27 = v7;
+    v27 = optionsCopy;
     v28 = 2112;
-    v29 = v8;
+    v29 = contextCopy;
     _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s %@ %@", buf, 0x20u);
   }
 
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:1];
-  v10 = [v7 serverCommandId];
+  serverCommandId = [optionsCopy serverCommandId];
 
-  if (v10)
+  if (serverCommandId)
   {
     v11 = NSStringFromSelector(a2);
     [(AFConnection *)self _extendRequestTimeoutForReason:v11 durationInSeconds:0.0];
@@ -1674,8 +1674,8 @@ void __50__AFConnection_startAcousticIDRequestWithOptions___block_invoke_2_350(u
     v21[1] = 3221225472;
     v21[2] = __80__AFConnection_startSpeechPronunciationRequestWithOptions_pronunciationContext___block_invoke;
     v21[3] = &unk_1E73419C8;
-    v22 = v7;
-    v23 = self;
+    v22 = optionsCopy;
+    selfCopy = self;
     [(AFConnection *)self _requestWillBeginWithRequestClass:0 isSpeechRequest:1 speechRequestOptions:v22 requestInfo:0 analyticsEventProvider:v21];
     v11 = v22;
   }
@@ -1696,7 +1696,7 @@ void __50__AFConnection_startAcousticIDRequestWithOptions___block_invoke_2_350(u
   v17[4] = self;
   v18 = v13;
   v15 = v13;
-  [v14 startSpeechPronunciationRequestWithOptions:v7 context:v8 completion:v17];
+  [v14 startSpeechPronunciationRequestWithOptions:optionsCopy context:contextCopy completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1794,34 +1794,34 @@ void __80__AFConnection_startSpeechPronunciationRequestWithOptions_pronunciation
   dispatch_async(v6, block);
 }
 
-- (id)startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:(id)a3
+- (id)startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:(id)options
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v40 = "[AFConnection startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:]";
     v41 = 2048;
-    v42 = self;
+    selfCopy = self;
     v43 = 2112;
-    v44 = v4;
+    v44 = optionsCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
   }
 
-  +[AFAggregator logSiriInvokedVia:](AFAggregator, "logSiriInvokedVia:", [v4 activationEvent]);
-  v6 = [(AFConnection *)self _siriClientStateManager];
-  [v6 beginTransactionForReason:1];
+  +[AFAggregator logSiriInvokedVia:](AFAggregator, "logSiriInvokedVia:", [optionsCopy activationEvent]);
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginTransactionForReason:1];
 
   [(AFConnection *)self _checkAndSetIsCapturingSpeech:1];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions___block_invoke;
   v36[3] = &unk_1E73419C8;
-  v7 = v4;
+  v7 = optionsCopy;
   v37 = v7;
-  v38 = self;
+  selfCopy2 = self;
   [(AFConnection *)self _requestWillBeginWithRequestClass:0 isSpeechRequest:1 speechRequestOptions:v7 requestInfo:0 analyticsEventProvider:v36];
   pendingSpeechRequestCounter = self->_pendingSpeechRequestCounter;
   self->_pendingSpeechRequestCounter = pendingSpeechRequestCounter + 1;
@@ -1868,15 +1868,15 @@ void __80__AFConnection_startSpeechPronunciationRequestWithOptions_pronunciation
     self->_speechCallbackGroup = 0;
   }
 
-  v19 = [(AFConnection *)self _siriClientStateManager];
-  [v19 endTransactionForReason:1];
+  _siriClientStateManager2 = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager2 endTransactionForReason:1];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions___block_invoke_5;
   v25[3] = &unk_1E73464F0;
   v26 = v7;
-  v27 = self;
+  selfCopy3 = self;
   v28 = v16;
   v29 = pendingSpeechRequestCounter;
   v20 = v16;
@@ -2032,29 +2032,29 @@ void __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequest
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRecordingForPendingSpeechRequestWithOptions:(id)a3 completion:(id)a4
+- (void)startRecordingForPendingSpeechRequestWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(AFConnection *)self startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:a3];
-  v6[2](v6, v7);
+  completionCopy = completion;
+  v7 = [(AFConnection *)self startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:options];
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)startSpeechRequestWithOptions:(id)a3
+- (void)startSpeechRequestWithOptions:(id)options
 {
-  v3 = [(AFConnection *)self startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:a3];
+  v3 = [(AFConnection *)self startRecordingAndGetContinueBlockForPendingSpeechRequestWithOptions:options];
   v3[2]();
 }
 
-- (void)_startRequestWithAceCommand:(id)a3 turnIdentifier:(id)a4 suppressAlert:(BOOL)a5
+- (void)_startRequestWithAceCommand:(id)command turnIdentifier:(id)identifier suppressAlert:(BOOL)alert
 {
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
+  alertCopy = alert;
+  commandCopy = command;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(AFRequestInfo);
-  -[AFRequestInfo setActivationEvent:](v9, "setActivationEvent:", [v10 af_activationEvent]);
-  [(AFRequestInfo *)v9 setTurnIdentifier:v8];
+  -[AFRequestInfo setActivationEvent:](v9, "setActivationEvent:", [commandCopy af_activationEvent]);
+  [(AFRequestInfo *)v9 setTurnIdentifier:identifierCopy];
 
-  if (v5)
+  if (alertCopy)
   {
     [(AFRequestInfo *)v9 setOptions:1];
   }
@@ -2062,7 +2062,7 @@ void __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequest
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AFRequestInfo *)v9 setStartLocalRequest:v10];
+    [(AFRequestInfo *)v9 setStartLocalRequest:commandCopy];
   }
 
   else
@@ -2070,48 +2070,48 @@ void __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequest
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(AFRequestInfo *)v9 setStartRequest:v10];
+      [(AFRequestInfo *)v9 setStartRequest:commandCopy];
     }
   }
 
   [(AFConnection *)self _startRequestWithInfo:v9];
 }
 
-- (id)_metricContextValueForUseDeviceSpeakerForTTS:(int64_t)a3
+- (id)_metricContextValueForUseDeviceSpeakerForTTS:(int64_t)s
 {
-  if ((a3 - 1) > 2)
+  if ((s - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7341AD8[a3 - 1];
+    return off_1E7341AD8[s - 1];
   }
 }
 
-- (void)_startRequestWithInfo:(id)a3
+- (void)_startRequestWithInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[AFConnection _startRequestWithInfo:]";
     v23 = 2048;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v4;
+    v26 = infoCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p %@", buf, 0x20u);
   }
 
-  if ([v4 activationEvent] == 2)
+  if ([infoCopy activationEvent] == 2)
   {
-    v6 = [v4 speechRequestOptions];
-    v7 = [v6 activationEvent];
+    speechRequestOptions = [infoCopy speechRequestOptions];
+    activationEvent = [speechRequestOptions activationEvent];
 
-    if (v7 == 9)
+    if (activationEvent == 9)
     {
       kdebug_trace();
     }
@@ -2121,9 +2121,9 @@ void __84__AFConnection_startRecordingAndGetContinueBlockForPendingSpeechRequest
   v18[1] = 3221225472;
   v18[2] = __38__AFConnection__startRequestWithInfo___block_invoke;
   v18[3] = &unk_1E73419C8;
-  v19 = v4;
-  v20 = self;
-  v8 = v4;
+  v19 = infoCopy;
+  selfCopy2 = self;
+  v8 = infoCopy;
   [(AFConnection *)self _requestWillBeginWithRequestClass:0 isSpeechRequest:0 speechRequestOptions:0 requestInfo:v8 analyticsEventProvider:v18];
   v9 = self->_activeRequestUUID;
   v16[0] = MEMORY[0x1E69E9820];
@@ -2278,117 +2278,117 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRequestWithInfo:(id)a3 activationEvent:(int64_t)a4
+- (void)startRequestWithInfo:(id)info activationEvent:(int64_t)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  infoCopy = info;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a4 > 0xC)
+    if (event > 0xC)
     {
       v9 = @"Unknown";
     }
 
     else
     {
-      v9 = off_1E73429D0[a4];
+      v9 = off_1E73429D0[event];
     }
 
     v10 = v9;
     v12 = 136315650;
     v13 = "[AFConnection startRequestWithInfo:activationEvent:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = infoCopy;
     v16 = 2112;
     v17 = v10;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s Overriding activation event in info %@ %@", &v12, 0x20u);
   }
 
-  [v6 setActivationEvent:a4];
-  [(AFConnection *)self _startRequestWithInfo:v6];
+  [infoCopy setActivationEvent:event];
+  [(AFConnection *)self _startRequestWithInfo:infoCopy];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startRequestWithCorrectedText:(id)a3 forSpeechIdentifier:(id)a4 userSelectionResults:(id)a5 turnIdentifier:(id)a6
+- (void)startRequestWithCorrectedText:(id)text forSpeechIdentifier:(id)identifier userSelectionResults:(id)results turnIdentifier:(id)turnIdentifier
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  resultsCopy = results;
+  turnIdentifierCopy = turnIdentifier;
+  identifierCopy = identifier;
+  textCopy = text;
   v14 = objc_alloc_init(AFRequestInfo);
   [(AFRequestInfo *)v14 setActivationEvent:4];
-  [(AFRequestInfo *)v14 setCorrectedSpeech:v13];
+  [(AFRequestInfo *)v14 setCorrectedSpeech:textCopy];
 
-  [(AFRequestInfo *)v14 setCorrectedSpeechContext:v12];
-  [(AFRequestInfo *)v14 setTurnIdentifier:v11];
+  [(AFRequestInfo *)v14 setCorrectedSpeechContext:identifierCopy];
+  [(AFRequestInfo *)v14 setTurnIdentifier:turnIdentifierCopy];
 
-  v24 = v10;
-  v15 = [v24 combinedRank];
-  [(AFRequestInfo *)v14 setCombinedRank:v15];
+  v24 = resultsCopy;
+  combinedRank = [v24 combinedRank];
+  [(AFRequestInfo *)v14 setCombinedRank:combinedRank];
 
-  v16 = [v24 combinedScore];
-  [(AFRequestInfo *)v14 setCombinedScore:v16];
+  combinedScore = [v24 combinedScore];
+  [(AFRequestInfo *)v14 setCombinedScore:combinedScore];
 
-  v17 = [v24 interactionId];
-  [(AFRequestInfo *)v14 setInteractionId:v17];
+  interactionId = [v24 interactionId];
+  [(AFRequestInfo *)v14 setInteractionId:interactionId];
 
-  v18 = [v24 onDeviceUtterancesPresent];
-  [(AFRequestInfo *)v14 setOnDeviceUtterancesPresent:v18];
+  onDeviceUtterancesPresent = [v24 onDeviceUtterancesPresent];
+  [(AFRequestInfo *)v14 setOnDeviceUtterancesPresent:onDeviceUtterancesPresent];
 
-  v19 = [v24 originalRank];
-  [(AFRequestInfo *)v14 setOriginalRank:v19];
+  originalRank = [v24 originalRank];
+  [(AFRequestInfo *)v14 setOriginalRank:originalRank];
 
-  v20 = [v24 originalScore];
-  [(AFRequestInfo *)v14 setOriginalScore:v20];
+  originalScore = [v24 originalScore];
+  [(AFRequestInfo *)v14 setOriginalScore:originalScore];
 
-  v21 = [v24 previousUtterance];
-  [(AFRequestInfo *)v14 setPreviousUtterance:v21];
+  previousUtterance = [v24 previousUtterance];
+  [(AFRequestInfo *)v14 setPreviousUtterance:previousUtterance];
 
-  v22 = [v24 sessionId];
-  [(AFRequestInfo *)v14 setSessionId:v22];
+  sessionId = [v24 sessionId];
+  [(AFRequestInfo *)v14 setSessionId:sessionId];
 
-  v23 = [v24 utteranceSource];
+  utteranceSource = [v24 utteranceSource];
 
-  [(AFRequestInfo *)v14 setUtteranceSource:v23];
+  [(AFRequestInfo *)v14 setUtteranceSource:utteranceSource];
   [(AFConnection *)self _startRequestWithInfo:v14];
 }
 
-- (void)startContinuationRequestWithUserInfo:(id)a3
+- (void)startContinuationRequestWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(AFRequestInfo);
-  v5 = [v4 objectForKey:@"Data"];
+  v5 = [infoCopy objectForKey:@"Data"];
 
   [(AFRequestInfo *)v6 setHandoffRequestData:v5];
   [(AFConnection *)self _startRequestWithInfo:v6];
 }
 
-- (void)startDirectActionRequestWithString:(id)a3
+- (void)startDirectActionRequestWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(AFRequestInfo);
   [(AFRequestInfo *)v5 setActivationEvent:2];
-  [(AFRequestInfo *)v5 setLegacyDirectActionIdentifier:v4];
+  [(AFRequestInfo *)v5 setLegacyDirectActionIdentifier:stringCopy];
 
   [(AFConnection *)self _startRequestWithInfo:v5];
 }
 
-- (void)startRequestWithText:(id)a3
+- (void)startRequestWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(AFRequestInfo);
   [(AFRequestInfo *)v5 setActivationEvent:5];
-  [(AFRequestInfo *)v5 setText:v4];
+  [(AFRequestInfo *)v5 setText:textCopy];
 
   [(AFConnection *)self _startRequestWithInfo:v5];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v4;
 
@@ -2397,9 +2397,9 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   [(AFConnection *)self _updateClientConfiguration];
 }
 
-- (void)setVoiceOverIsActive:(BOOL)a3
+- (void)setVoiceOverIsActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 2;
   }
@@ -2412,7 +2412,7 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   *(self + 280) = *(self + 280) & 0xFD | v3;
 }
 
-- (void)setMyriadDecisionResult:(BOOL)a3
+- (void)setMyriadDecisionResult:(BOOL)result
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = AFSiriLogContextConnection;
@@ -2426,7 +2426,7 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setShouldWaitForMyriad:(BOOL)a3
+- (void)setShouldWaitForMyriad:(BOOL)myriad
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = AFSiriLogContextConnection;
@@ -2440,15 +2440,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeviceRingerSwitchState:(int64_t)a3
+- (void)setDeviceRingerSwitchState:(int64_t)state
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__AFConnection_setDeviceRingerSwitchState___block_invoke;
   v8[3] = &__block_descriptor_40_e41_v16__0___AFClientConfigurationMutating__8l;
-  v8[4] = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  v8[4] = state;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2459,17 +2459,17 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setAccessibilityState:(id)a3
+- (void)setAccessibilityState:(id)state
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientConfiguration];
+  stateCopy = state;
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__AFConnection_setAccessibilityState___block_invoke;
   v9[3] = &unk_1E7341980;
-  v6 = v4;
+  v6 = stateCopy;
   v10 = v6;
-  v7 = [v5 mutatedCopyWithMutator:v9];
+  v7 = [_clientConfiguration mutatedCopyWithMutator:v9];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v7;
 
@@ -2480,15 +2480,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setWatchAuthenticated:(BOOL)a3
+- (void)setWatchAuthenticated:(BOOL)authenticated
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__AFConnection_setWatchAuthenticated___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  authenticatedCopy = authenticated;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2499,15 +2499,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a3
+- (void)setAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__AFConnection_setAnnouncementRequestsPermittedByPresentationWhileActive___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  activeCopy = active;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2518,10 +2518,10 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setModesConfiguration:(id)a3
+- (void)setModesConfiguration:(id)configuration
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (+[AFFeatureFlags isResponseFrameworkEnabled])
   {
     v5 = AFSiriLogContextConnection;
@@ -2532,14 +2532,14 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s #modes set modesConfiguration", &v8, 0xCu);
     }
 
-    v6 = [(AFConnection *)self _clientService];
-    [v6 setModesConfiguration:v4];
+    _clientService = [(AFConnection *)self _clientService];
+    [_clientService setModesConfiguration:configurationCopy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIsEyesFree:(BOOL)a3
+- (void)setIsEyesFree:(BOOL)free
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = AFSiriLogContextConnection;
@@ -2550,13 +2550,13 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s AFConnection: Setting IsEyesFree", buf, 0xCu);
   }
 
-  v6 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __30__AFConnection_setIsEyesFree___block_invoke;
   v10[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v11 = a3;
-  v7 = [v6 mutatedCopyWithMutator:v10];
+  freeCopy = free;
+  v7 = [_clientConfiguration mutatedCopyWithMutator:v10];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v7;
 
@@ -2569,15 +2569,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCarDNDActive:(BOOL)a3
+- (void)setCarDNDActive:(BOOL)active
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__AFConnection_setCarDNDActive___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  activeCopy = active;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2588,15 +2588,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setCarOwnsMainAudio:(BOOL)a3
+- (void)setCarOwnsMainAudio:(BOOL)audio
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__AFConnection_setCarOwnsMainAudio___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  audioCopy = audio;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2607,15 +2607,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setSupportsCarPlayVehicleData:(BOOL)a3
+- (void)setSupportsCarPlayVehicleData:(BOOL)data
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__AFConnection_setSupportsCarPlayVehicleData___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  dataCopy = data;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2626,15 +2626,15 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
   }
 }
 
-- (void)setIsDeviceInStarkMode:(BOOL)a3
+- (void)setIsDeviceInStarkMode:(BOOL)mode
 {
-  v5 = [(AFConnection *)self _clientConfiguration];
+  _clientConfiguration = [(AFConnection *)self _clientConfiguration];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__AFConnection_setIsDeviceInStarkMode___block_invoke;
   v8[3] = &__block_descriptor_33_e41_v16__0___AFClientConfigurationMutating__8l;
-  v9 = a3;
-  v6 = [v5 mutatedCopyWithMutator:v8];
+  modeCopy = mode;
+  v6 = [_clientConfiguration mutatedCopyWithMutator:v8];
   clientConfiguration = self->_clientConfiguration;
   self->_clientConfiguration = v6;
 
@@ -2647,11 +2647,11 @@ void __38__AFConnection__startRequestWithInfo___block_invoke_2_327(uint64_t a1, 
 
 - (void)didDismissUI
 {
-  v3 = [(AFConnection *)self _clientService];
-  [v3 didDismissUI];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService didDismissUI];
 
-  v4 = [(AFConnection *)self _siriClientStateManager];
-  [v4 endSessionForClient:self->_clientID];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager endSessionForClient:self->_clientID];
 }
 
 void __29__AFConnection_willPresentUI__block_invoke()
@@ -2691,19 +2691,19 @@ void __54__AFConnection_resumeInterruptedAudioPlaybackIfNeeded__block_invoke(uin
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forceAudioSessionInactiveWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)forceAudioSessionInactiveWithOptions:(unint64_t)options completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[AFConnection forceAudioSessionInactiveWithOptions:completion:]";
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = a3;
+    optionsCopy = options;
     _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_DEFAULT, "%s %p %lu", buf, 0x20u);
   }
 
@@ -2711,8 +2711,8 @@ void __54__AFConnection_resumeInterruptedAudioPlaybackIfNeeded__block_invoke(uin
   v18[1] = 3221225472;
   v18[2] = __64__AFConnection_forceAudioSessionInactiveWithOptions_completion___block_invoke;
   v18[3] = &unk_1E73494D8;
-  v19 = v6;
-  v8 = v6;
+  v19 = completionCopy;
+  v8 = completionCopy;
   v9 = MEMORY[0x193AFB7B0](v18);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -2721,7 +2721,7 @@ void __54__AFConnection_resumeInterruptedAudioPlaybackIfNeeded__block_invoke(uin
   v17 = v9;
   v10 = v9;
   v11 = [(AFConnection *)self _clientServiceWithErrorHandler:&v13];
-  [v11 forceAudioSessionInactiveWithOptions:a3 completion:{v10, v13, v14, v15, v16}];
+  [v11 forceAudioSessionInactiveWithOptions:options completion:{v10, v13, v14, v15, v16}];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -2756,35 +2756,35 @@ void __64__AFConnection_forceAudioSessionInactiveWithOptions_completion___block_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acquireAudioSessionWithContext:(id)a3 completion:(id)a4
+- (void)acquireAudioSessionWithContext:(id)context completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[AFConnection acquireAudioSessionWithContext:completion:]";
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v6;
+    v23 = contextCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEFAULT, "%s %p %@", buf, 0x20u);
   }
 
-  v9 = [(AFConnection *)self _siriClientStateManager];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__AFConnection_acquireAudioSessionWithContext_completion___block_invoke;
   v14[3] = &unk_1E7341938;
   v14[4] = self;
-  v15 = v6;
-  v16 = v9;
-  v17 = v7;
-  v10 = v9;
-  v11 = v6;
-  v12 = v7;
+  v15 = contextCopy;
+  v16 = _siriClientStateManager;
+  v17 = completionCopy;
+  v10 = _siriClientStateManager;
+  v11 = contextCopy;
+  v12 = completionCopy;
   [(AFConnection *)self forceAudioSessionActiveWithContext:v11 completion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -2853,20 +2853,20 @@ uint64_t __58__AFConnection_acquireAudioSessionWithContext_completion___block_in
   return result;
 }
 
-- (void)forceAudioSessionActiveWithContext:(id)a3 completion:(id)a4
+- (void)forceAudioSessionActiveWithContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v24 = "[AFConnection forceAudioSessionActiveWithContext:completion:]";
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v6;
+    v28 = contextCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEFAULT, "%s %p %@", buf, 0x20u);
   }
 
@@ -2876,8 +2876,8 @@ uint64_t __58__AFConnection_acquireAudioSessionWithContext_completion___block_in
   v21[2] = __62__AFConnection_forceAudioSessionActiveWithContext_completion___block_invoke;
   v21[3] = &unk_1E7341878;
   v21[4] = self;
-  v22 = v7;
-  v10 = v7;
+  v22 = completionCopy;
+  v10 = completionCopy;
   v11 = [AFSetAudioSessionActiveResult newWithBuilder:&__block_literal_global_302];
   v12 = [(AFOneArgumentSafetyBlock *)v9 initWithBlock:v21 defaultValue:v11];
 
@@ -2894,7 +2894,7 @@ uint64_t __58__AFConnection_acquireAudioSessionWithContext_completion___block_in
   v17[3] = &unk_1E73418E8;
   v18 = v13;
   v15 = v13;
-  [v14 forceAudioSessionActiveWithContext:v6 completion:v17];
+  [v14 forceAudioSessionActiveWithContext:contextCopy completion:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -2968,25 +2968,25 @@ void __62__AFConnection_forceAudioSessionActiveWithContext_completion___block_in
   [v2 setError:v3];
 }
 
-- (void)forceAudioSessionActiveWithOptions:(unint64_t)a3 reason:(int64_t)a4 speechRequestOptions:(id)a5 completion:(id)a6
+- (void)forceAudioSessionActiveWithOptions:(unint64_t)options reason:(int64_t)reason speechRequestOptions:(id)requestOptions completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  requestOptionsCopy = requestOptions;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __90__AFConnection_forceAudioSessionActiveWithOptions_reason_speechRequestOptions_completion___block_invoke;
   v17[3] = &unk_1E7342378;
-  v19 = a3;
-  v20 = a4;
-  v18 = v10;
-  v12 = v10;
+  optionsCopy = options;
+  reasonCopy = reason;
+  v18 = requestOptionsCopy;
+  v12 = requestOptionsCopy;
   v13 = [AFSetAudioSessionActiveContext newWithBuilder:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__AFConnection_forceAudioSessionActiveWithOptions_reason_speechRequestOptions_completion___block_invoke_2;
   v15[3] = &unk_1E7341850;
-  v16 = v11;
-  v14 = v11;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [(AFConnection *)self forceAudioSessionActiveWithContext:v13 completion:v15];
 }
 
@@ -3012,19 +3012,19 @@ void __90__AFConnection_forceAudioSessionActiveWithOptions_reason_speechRequestO
   }
 }
 
-- (void)boostedPreheatWithStyle:(int64_t)a3 completion:(id)a4
+- (void)boostedPreheatWithStyle:(int64_t)style completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v16 = "[AFConnection boostedPreheatWithStyle:completion:]";
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    styleCopy = style;
     _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_INFO, "%s %p %ld", buf, 0x20u);
   }
 
@@ -3032,8 +3032,8 @@ void __90__AFConnection_forceAudioSessionActiveWithOptions_reason_speechRequestO
   v13[1] = 3221225472;
   v13[2] = __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke;
   v13[3] = &unk_1E7348AA8;
-  v14 = v6;
-  v8 = v6;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = [(AFConnection *)self _clientServiceWithErrorHandler:v13];
   v10 = v9;
   if (v8)
@@ -3046,7 +3046,7 @@ void __90__AFConnection_forceAudioSessionActiveWithOptions_reason_speechRequestO
     v11 = &__block_literal_global_293;
   }
 
-  [v9 boostedPreheatWithStyle:a3 completion:v11];
+  [v9 boostedPreheatWithStyle:style completion:v11];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -3062,27 +3062,27 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
   return result;
 }
 
-- (void)preheatWithStyle:(int64_t)a3 forOptions:(id)a4
+- (void)preheatWithStyle:(int64_t)style forOptions:(id)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  optionsCopy = options;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v12 = 136315906;
     v13 = "[AFConnection preheatWithStyle:forOptions:]";
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = a3;
+    styleCopy = style;
     v18 = 2112;
-    v19 = v6;
+    v19 = optionsCopy;
     _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_INFO, "%s %p %ld %@", &v12, 0x2Au);
   }
 
   [(AFAnalytics *)self->_analytics logEventWithType:1915 context:0];
-  v8 = [(AFConnection *)self _clientService];
-  [v8 preheatWithStyle:a3 forOptions:v6];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService preheatWithStyle:style forOptions:optionsCopy];
 
   v9 = +[AFAccessibilityObserver sharedObserver];
   v10 = +[AFDeviceRingerSwitchObserver sharedObserver];
@@ -3099,13 +3099,13 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
     v6 = 136315394;
     v7 = "[AFConnection invalidate]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v6, 0x16u);
   }
 
   [(AFConnection *)self _clearConnection];
-  v4 = [(AFConnection *)self _siriClientStateManager];
-  [v4 invalidateClient:self->_clientID];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager invalidateClient:self->_clientID];
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -3119,7 +3119,7 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
     v9 = 136315394;
     v10 = "[AFConnection endSession]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v9, 0x16u);
   }
 
@@ -3139,23 +3139,23 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
     v4 = AFMyriadCoordinator;
   }
 
-  v5 = [(__objc2_class *)v4 currentCoordinator];
-  v6 = v5;
-  if (v5)
+  currentCoordinator = [(__objc2_class *)v4 currentCoordinator];
+  v6 = currentCoordinator;
+  if (currentCoordinator)
   {
-    [v5 endTask];
+    [currentCoordinator endTask];
   }
 
-  v7 = [(AFConnection *)self _clientService];
-  [v7 endSession];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService endSession];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_endInterstitialsForReason:(id)a3
+- (void)_endInterstitialsForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_interstitialProvider)
   {
     v5 = AFSiriLogContextConnection;
@@ -3164,7 +3164,7 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
       v9 = 136315394;
       v10 = "[AFConnection _endInterstitialsForReason:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s reason = %@", &v9, 0x16u);
     }
 
@@ -3180,28 +3180,28 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleInterstitialPhase:(int64_t)a3 fromProvider:(id)a4 displayText:(id)a5 speakableText:(id)a6 expectedDelay:(double)a7 context:(id)a8 completion:(id)a9
+- (void)_handleInterstitialPhase:(int64_t)phase fromProvider:(id)provider displayText:(id)text speakableText:(id)speakableText expectedDelay:(double)delay context:(id)context completion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  if (self->_interstitialProvider == v17 && ([(NSUUID *)self->_activeRequestUUID isEqual:v20]& 1) != 0)
+  providerCopy = provider;
+  textCopy = text;
+  speakableTextCopy = speakableText;
+  contextCopy = context;
+  completionCopy = completion;
+  if (self->_interstitialProvider == providerCopy && ([(NSUUID *)self->_activeRequestUUID isEqual:contextCopy]& 1) != 0)
   {
     v22 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       v23 = v22;
-      if (a3 > 4)
+      if (phase > 4)
       {
         v24 = @"(unknown)";
       }
 
       else
       {
-        v24 = off_1E7345CA8[a3];
+        v24 = off_1E7345CA8[phase];
       }
 
       v26 = v24;
@@ -3210,19 +3210,19 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
       v36 = 2112;
       v37 = v26;
       v38 = 2112;
-      v39 = v18;
+      v39 = textCopy;
       v40 = 2112;
-      v41 = v19;
+      v41 = speakableTextCopy;
       v42 = 2048;
-      v43 = a7;
+      delayCopy = delay;
       v44 = 2112;
-      v45 = v20;
+      v45 = contextCopy;
       _os_log_impl(&dword_1912FE000, v23, OS_LOG_TYPE_INFO, "%s phase = %@, displayText = %@, speakableText = %@, expectedDelay = %f, context = %@", buf, 0x3Eu);
     }
 
-    if ((a3 - 1) >= 3)
+    if ((phase - 1) >= 3)
     {
-      if (a3 == 4)
+      if (phase == 4)
       {
         v30 = NSStringFromSelector(a2);
         [(AFConnection *)self _endInterstitialsForReason:v30];
@@ -3232,13 +3232,13 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
 
     else
     {
-      v27 = [(AFQueue *)self->_interstitialCommandQueue dequeueObject];
-      if (!v27)
+      dequeueObject = [(AFQueue *)self->_interstitialCommandQueue dequeueObject];
+      if (!dequeueObject)
       {
-        if ([v18 length] || objc_msgSend(v19, "length"))
+        if ([textCopy length] || objc_msgSend(speakableTextCopy, "length"))
         {
-          v28 = [(NSUUID *)self->_activeRequestUUID UUIDString];
-          v27 = AFInterstitialCreateCommand(a3, v18, v19, v28);
+          uUIDString = [(NSUUID *)self->_activeRequestUUID UUIDString];
+          dequeueObject = AFInterstitialCreateCommand(phase, textCopy, speakableTextCopy, uUIDString);
         }
 
         else
@@ -3251,7 +3251,7 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
             _os_log_impl(&dword_1912FE000, v31, OS_LOG_TYPE_INFO, "%s Unable to create an interstitial command because display text and speakable text are both empty.", buf, 0xCu);
           }
 
-          v27 = 0;
+          dequeueObject = 0;
         }
       }
 
@@ -3261,31 +3261,31 @@ uint64_t __51__AFConnection_boostedPreheatWithStyle_completion___block_invoke(ui
         *buf = 136315394;
         v35 = "[AFConnection _handleInterstitialPhase:fromProvider:displayText:speakableText:expectedDelay:context:completion:]";
         v36 = 2112;
-        v37 = v27;
+        v37 = dequeueObject;
         _os_log_impl(&dword_1912FE000, v29, OS_LOG_TYPE_INFO, "%s interstitialCommand = %@", buf, 0x16u);
       }
 
-      if (v27)
+      if (dequeueObject)
       {
         ++self->_activeRequestNumberOfPresentedInterstitials;
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speakableText_expectedDelay_context_completion___block_invoke;
         v32[3] = &unk_1E7341828;
-        v33 = v21;
-        [(AFConnection *)self _dispatchCommand:v27 isInterstitial:1 interstitialPhase:a3 interstitialDelay:v32 reply:a7];
+        v33 = completionCopy;
+        [(AFConnection *)self _dispatchCommand:dequeueObject isInterstitial:1 interstitialPhase:phase interstitialDelay:v32 reply:delay];
       }
 
-      else if (v21)
+      else if (completionCopy)
       {
-        v21[2](v21);
+        completionCopy[2](completionCopy);
       }
     }
   }
 
-  else if (v21)
+  else if (completionCopy)
   {
-    v21[2](v21);
+    completionCopy[2](completionCopy);
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -3331,10 +3331,10 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_beginInterstitialsForReason:(id)a3
+- (void)_beginInterstitialsForReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if (!self->_interstitialProvider)
   {
     if (self->_activeRequestType)
@@ -3397,7 +3397,7 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
             *buf = 136315394;
             v13 = "[AFConnection _beginInterstitialsForReason:]";
             v14 = 2114;
-            v15 = v4;
+            v15 = reasonCopy;
             _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_DEFAULT, "%s reason = %{public}@", buf, 0x16u);
           }
 
@@ -3412,17 +3412,17 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enqueueInterstitialCommand:(id)a3
+- (void)_enqueueInterstitialCommand:(id)command
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  commandCopy = command;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v10 = 136315394;
     v11 = "[AFConnection _enqueueInterstitialCommand:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = commandCopy;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s command = %@", &v10, 0x16u);
   }
 
@@ -3436,12 +3436,12 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
     interstitialCommandQueue = self->_interstitialCommandQueue;
   }
 
-  [(AFQueue *)interstitialCommandQueue enqueueObject:v4];
+  [(AFQueue *)interstitialCommandQueue enqueueObject:commandCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_willPresentUsefulUserResultWithType:(int64_t)a3
+- (void)_willPresentUsefulUserResultWithType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = NSStringFromSelector(a2);
@@ -3455,13 +3455,13 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
       v11 = 136315650;
       v12 = "[AFConnection _willPresentUsefulUserResultWithType:]";
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
-      v16 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_INFO, "%s %p %ld", &v11, 0x20u);
     }
 
-    self->_activeRequestUsefulUserResultType = a3;
+    self->_activeRequestUsefulUserResultType = type;
     if (AFIsInternalInstall_onceToken != -1)
     {
       dispatch_once(&AFIsInternalInstall_onceToken, &__block_literal_global_164_46064);
@@ -3479,7 +3479,7 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
           v11 = 136315394;
           v12 = "[AFConnection _willPresentUsefulUserResultWithType:]";
           v13 = 2048;
-          v14 = *&v8;
+          selfCopy = *&v8;
           _os_log_error_impl(&dword_1912FE000, v9, OS_LOG_TYPE_ERROR, "%s Initial interstitial fired %f seconds right before UUFR!", &v11, 0x16u);
         }
 
@@ -3496,10 +3496,10 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_willFailRequestWithError:(id)a3
+- (void)_willFailRequestWithError:(id)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   if (!self->_activeRequestType)
   {
     goto LABEL_46;
@@ -3513,13 +3513,13 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
     *buf = 136316162;
     v59 = "[AFConnection _willFailRequestWithError:]";
     v60 = 2048;
-    v61 = self;
+    selfCopy = self;
     v62 = 2112;
     v63 = activeRequestUUID;
     v64 = 2112;
     v65 = activeTurnIdentifier;
     v66 = 2112;
-    v67 = v6;
+    v67 = errorCopy;
     _os_log_error_impl(&dword_1912FE000, v7, OS_LOG_TYPE_ERROR, "%s %p activeRequestUUID = %@ turnId = %@ %@", buf, 0x34u);
   }
 
@@ -3528,8 +3528,8 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
 
   self->_activeRequestType = 0;
   self->_activeRequestUsefulUserResultType = 0;
-  v9 = [(AFConnection *)v6 domain];
-  v10 = [v9 isEqualToString:@"kAFAssistantErrorDomain"];
+  domain = [(AFConnection *)errorCopy domain];
+  v10 = [domain isEqualToString:@"kAFAssistantErrorDomain"];
 
   if ((v10 & 1) == 0)
   {
@@ -3539,13 +3539,13 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
       *buf = 136315394;
       v59 = "[AFConnection _willFailRequestWithError:]";
       v60 = 2112;
-      v61 = v6;
+      selfCopy = errorCopy;
       _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s Wrapping up non-siri error in generic error %@", buf, 0x16u);
     }
 
-    v12 = [AFError errorWithCode:0 description:0 underlyingError:v6];
+    v12 = [AFError errorWithCode:0 description:0 underlyingError:errorCopy];
 
-    v6 = v12;
+    errorCopy = v12;
   }
 
   v53[4] = self;
@@ -3554,7 +3554,7 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   v53[1] = 3221225472;
   v53[2] = __42__AFConnection__willFailRequestWithError___block_invoke_2;
   v53[3] = &unk_1E7341800;
-  v13 = AFErrorSetUnderlyingError(v6, &v54, &__block_literal_global_267, v53);
+  v13 = AFErrorSetUnderlyingError(errorCopy, &v54, &__block_literal_global_267, v53);
   v14 = v54;
   if (v13)
   {
@@ -3564,13 +3564,13 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
       *buf = 136315394;
       v59 = "[AFConnection _willFailRequestWithError:]";
       v60 = 2112;
-      v61 = v6;
+      selfCopy = errorCopy;
       _os_log_impl(&dword_1912FE000, v15, OS_LOG_TYPE_INFO, "%s Appending additional details to error %@", buf, 0x16u);
     }
 
     v16 = v14;
 
-    v6 = v16;
+    errorCopy = v16;
   }
 
   v52 = v14;
@@ -3578,8 +3578,8 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   if (v17)
   {
     v55 = @"id";
-    v3 = [(NSUUID *)v17 UUIDString];
-    v56 = v3;
+    uUIDString = [(NSUUID *)v17 UUIDString];
+    v56 = uUIDString;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
   }
 
@@ -3589,7 +3589,7 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   }
 
   v57[0] = v18;
-  v19 = AFAnalyticsContextCreateWithError(v6);
+  v19 = AFAnalyticsContextCreateWithError(errorCopy);
   v57[1] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
   v21 = AFAnalyticsContextsMerge(v20);
@@ -3604,8 +3604,8 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
   v24 = self->_analytics;
   v25 = v22;
   v26 = v23;
-  v6 = v6;
-  if (!v6)
+  errorCopy = errorCopy;
+  if (!errorCopy)
   {
     v27 = AFSiriLogContextConnection;
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -3616,7 +3616,7 @@ void __113__AFConnection__handleInterstitialPhase_fromProvider_displayText_speak
     *buf = 136315650;
     v59 = "_EmitPNRFatalError";
     v60 = 2112;
-    v61 = v25;
+    selfCopy = v25;
     v62 = 2112;
     v63 = v26;
     v37 = "%s error is nil. Instrumentation logging is skipped. requestUUID = %@ turnId = %@";
@@ -3633,29 +3633,29 @@ LABEL_48:
       *buf = 136315906;
       v59 = "_EmitPNRFatalError";
       v60 = 2112;
-      v61 = v25;
+      selfCopy = v25;
       v62 = 2112;
       v63 = v26;
       v64 = 2112;
-      v65 = v6;
+      v65 = errorCopy;
       _os_log_impl(&dword_1912FE000, v27, OS_LOG_TYPE_INFO, "%s Logging instrumentation for requestUUID = %@ turnId = %@ error = %@", buf, 0x2Au);
     }
 
     v28 = objc_alloc_init(MEMORY[0x1E69CF5C8]);
-    v29 = _PNRFatalErrorInfo(v6);
+    v29 = _PNRFatalErrorInfo(errorCopy);
     [v28 setError:v29];
 
-    v30 = [(AFConnection *)v6 userInfo];
+    userInfo = [(AFConnection *)errorCopy userInfo];
     v31 = *MEMORY[0x1E696AA08];
-    v32 = [v30 objectForKey:*MEMORY[0x1E696AA08]];
+    v32 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if (v32)
     {
       v33 = _PNRFatalErrorInfo(v32);
       [v28 setUnderlyingError:v33];
 
-      v34 = [v32 userInfo];
-      v35 = [v34 objectForKey:v31];
+      userInfo2 = [v32 userInfo];
+      v35 = [userInfo2 objectForKey:v31];
 
       if (v35)
       {
@@ -3674,16 +3674,16 @@ LABEL_48:
     *buf = 136315650;
     v59 = "_EmitPNRFatalError";
     v60 = 2112;
-    v61 = v25;
+    selfCopy = v25;
     v62 = 2112;
-    v63 = v6;
+    v63 = errorCopy;
     v37 = "%s turnId is nil. Instrumentation logging is skipped. requestUUID = %@ error = %@";
     goto LABEL_48;
   }
 
 LABEL_29:
 
-  [AFAggregator logSiriRequestFailedWithError:v6];
+  [AFAggregator logSiriRequestFailedWithError:errorCopy];
   if (AFIsInternalInstall_onceToken != -1)
   {
     dispatch_once(&AFIsInternalInstall_onceToken, &__block_literal_global_164_46064);
@@ -3691,7 +3691,7 @@ LABEL_29:
 
   if (AFIsInternalInstall_isInternal == 1)
   {
-    v38 = [(AFConnection *)self _clientService];
+    _clientService = [(AFConnection *)self _clientService];
     activeRequestSpeechEvent = self->_activeRequestSpeechEvent;
     if (activeRequestSpeechEvent > 0x24)
     {
@@ -3704,10 +3704,10 @@ LABEL_29:
     }
 
     v41 = v40;
-    [v38 reportIssueForError:v6 type:1913 subtype:v41 context:v21];
+    [_clientService reportIssueForError:errorCopy type:1913 subtype:v41 context:v21];
   }
 
-  if (!_AFConnectionIsErrorDeallocation(v6))
+  if (!_AFConnectionIsErrorDeallocation(errorCopy))
   {
     v42 = +[AFDeviceRingerSwitchObserver sharedObserver];
     [v42 removeListener:self];
@@ -3715,8 +3715,8 @@ LABEL_29:
     v43 = +[AFAccessibilityObserver sharedObserver];
     [v43 removeListener:self];
 
-    v44 = [(AFConnection *)self _siriClientStateManager];
-    [v44 endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
+    _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+    [_siriClientStateManager endRequestWithUUID:self->_activeRequestUUID forClient:self->_clientID];
   }
 
   _LogUEIRequestCategorization(self->_activeTurnIdentifier, 2, self->_activeRequestTypeForRequestCategorization);
@@ -3742,8 +3742,8 @@ LABEL_29:
   if (AFIsPad_isPad == 1)
   {
 LABEL_44:
-    v46 = [(AFConnection *)self _clientService];
-    [v46 emitHomeMetricInvocationEvent];
+    _clientService2 = [(AFConnection *)self _clientService];
+    [_clientService2 emitHomeMetricInvocationEvent];
   }
 
   *&self->_activeRequestHasSpeechRecognition = 0;
@@ -3843,7 +3843,7 @@ LABEL_9:
     v6 = 136315394;
     v7 = "[AFConnection _willEndSession]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", &v6, 0x16u);
   }
 
@@ -3857,90 +3857,90 @@ LABEL_9:
     [(AFConnection *)self _willCancelRequest];
   }
 
-  v4 = [(AFConnection *)self _siriClientStateManager];
-  [v4 endSessionForClient:self->_clientID];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager endSessionForClient:self->_clientID];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_willStartRequestWithSpeech:(BOOL)a3 speechRequestOptions:(id)a4 requestInfo:(id)a5 analyticsEventProvider:(id)a6
+- (void)_willStartRequestWithSpeech:(BOOL)speech speechRequestOptions:(id)options requestInfo:(id)info analyticsEventProvider:(id)provider
 {
-  v80 = a3;
+  speechCopy = speech;
   v102 = *MEMORY[0x1E69E9840];
-  v83 = a4;
-  v9 = a5;
-  v79 = a6;
+  optionsCopy = options;
+  infoCopy = info;
+  providerCopy = provider;
   v78 = self->_activeRequestUUID;
-  v82 = v9;
-  v10 = [v9 startRequest];
-  if (v10)
+  v82 = infoCopy;
+  startRequest = [infoCopy startRequest];
+  if (startRequest)
   {
-    v11 = [v82 startRequest];
-    v12 = [v11 aceId];
-    v13 = [v12 length];
+    startRequest2 = [v82 startRequest];
+    aceId = [startRequest2 aceId];
+    v13 = [aceId length];
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v15 = [v82 startRequest];
+      startRequest3 = [v82 startRequest];
 LABEL_7:
-      v20 = v15;
-      v21 = [v15 aceId];
-      v22 = [v14 initWithUUIDString:v21];
+      v20 = startRequest3;
+      aceId2 = [startRequest3 aceId];
+      v22 = [v14 initWithUUIDString:aceId2];
 
       goto LABEL_9;
     }
   }
 
-  v16 = [v82 startLocalRequest];
-  if (v16)
+  startLocalRequest = [v82 startLocalRequest];
+  if (startLocalRequest)
   {
-    v17 = [v82 startLocalRequest];
-    v18 = [v17 aceId];
-    v19 = [v18 length];
+    startLocalRequest2 = [v82 startLocalRequest];
+    aceId3 = [startLocalRequest2 aceId];
+    v19 = [aceId3 length];
 
     if (v19)
     {
       v14 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v15 = [v82 startLocalRequest];
+      startRequest3 = [v82 startLocalRequest];
       goto LABEL_7;
     }
   }
 
   v22 = 0;
 LABEL_9:
-  v23 = [v83 intuitiveConversationRequestId];
+  intuitiveConversationRequestId = [optionsCopy intuitiveConversationRequestId];
 
-  if (v23)
+  if (intuitiveConversationRequestId)
   {
-    v24 = [v83 intuitiveConversationRequestId];
+    intuitiveConversationRequestId2 = [optionsCopy intuitiveConversationRequestId];
 
     v25 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       v26 = v25;
-      v27 = [v24 UUIDString];
+      uUIDString = [intuitiveConversationRequestId2 UUIDString];
       *buf = 136315394;
       v93 = "[AFConnection _willStartRequestWithSpeech:speechRequestOptions:requestInfo:analyticsEventProvider:]";
       v94 = 2112;
-      v95 = v27;
+      selfCopy = uUIDString;
       _os_log_impl(&dword_1912FE000, v26, OS_LOG_TYPE_INFO, "%s Setting IntuitiveConversationRequestId = %@ from AFSpeechRequestOptions", buf, 0x16u);
     }
   }
 
   else
   {
-    v24 = v22;
+    intuitiveConversationRequestId2 = v22;
   }
 
-  obj = v24;
-  if (!v24)
+  obj = intuitiveConversationRequestId2;
+  if (!intuitiveConversationRequestId2)
   {
     obj = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v28 = [(AFConnection *)self _siriClientStateManager];
-  [v28 beginRequestWithUUID:obj forClient:self->_clientID];
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginRequestWithUUID:obj forClient:self->_clientID];
 
   [(AFConnection *)self _willCancelRequest];
   [(AFConnection *)self _completeRequestWithUUID:v78 forReason:1 error:0];
@@ -3950,21 +3950,21 @@ LABEL_9:
     *buf = 136316162;
     v93 = "[AFConnection _willStartRequestWithSpeech:speechRequestOptions:requestInfo:analyticsEventProvider:]";
     v94 = 2048;
-    v95 = self;
+    selfCopy = self;
     v96 = 2112;
     v97 = obj;
     v98 = 1024;
-    v99 = v80;
+    v99 = speechCopy;
     v100 = 2112;
-    v101 = v83;
+    v101 = optionsCopy;
     _os_log_impl(&dword_1912FE000, v29, OS_LOG_TYPE_INFO, "%s %p %@ %d (%@)", buf, 0x30u);
   }
 
-  v30 = [MEMORY[0x1E696AE30] processInfo];
-  [v30 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v32 = v31;
 
-  if (v79 && (v34 = v79[2](v79, obj)) != 0)
+  if (providerCopy && (v34 = providerCopy[2](providerCopy, obj)) != 0)
   {
     v35 = v33;
   }
@@ -3972,15 +3972,15 @@ LABEL_9:
   else
   {
     v89[0] = @"isSpeechRequest";
-    v36 = [MEMORY[0x1E696AD98] numberWithBool:v80];
+    v36 = [MEMORY[0x1E696AD98] numberWithBool:speechCopy];
     v90[0] = v36;
     v89[1] = @"id";
-    v37 = [obj UUIDString];
-    v90[1] = v37;
+    uUIDString2 = [obj UUIDString];
+    v90[1] = uUIDString2;
     v89[2] = @"unixTime";
     v38 = MEMORY[0x1E696AD98];
-    v39 = [MEMORY[0x1E695DF00] date];
-    [v39 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v40 = [v38 numberWithDouble:?];
     v90[2] = v40;
     v89[3] = @"systemVersion";
@@ -3988,8 +3988,8 @@ LABEL_9:
     v90[3] = v41;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:4];
     v91[0] = v42;
-    v43 = [(AFConnection *)self _startRequestMetricSettings];
-    v91[1] = v43;
+    _startRequestMetricSettings = [(AFConnection *)self _startRequestMetricSettings];
+    v91[1] = _startRequestMetricSettings;
     v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
     v45 = AFAnalyticsContextsMerge(v44);
 
@@ -4015,9 +4015,9 @@ LABEL_9:
   }
 
   [(AFAnalytics *)self->_analytics logEvent:v34];
-  if (v80)
+  if (speechCopy)
   {
-    v49 = v83;
+    v49 = optionsCopy;
   }
 
   else
@@ -4025,8 +4025,8 @@ LABEL_9:
     v49 = v82;
   }
 
-  v50 = [v49 turnIdentifier];
-  objc_storeStrong(&self->_activeTurnIdentifier, v50);
+  turnIdentifier = [v49 turnIdentifier];
+  objc_storeStrong(&self->_activeTurnIdentifier, turnIdentifier);
   v51 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -4036,10 +4036,10 @@ LABEL_9:
   }
 
   v52 = obj;
-  if (v50)
+  if (turnIdentifier)
   {
     v53 = MEMORY[0x1E69CF640];
-    v54 = v50;
+    v54 = turnIdentifier;
     v55 = [[v53 alloc] initWithNSUUID:v52];
     v56 = objc_alloc_init(MEMORY[0x1E69CF608]);
     [v56 setMteRequestId:v55];
@@ -4048,43 +4048,43 @@ LABEL_9:
     [v57 logInstrumentation:v56 machAbsoluteTime:mach_absolute_time() turnIdentifier:v54];
   }
 
-  if ([(AFConnection *)self _shouldEmitUEIRequestLinkForRequestInfo:v82 speechRequestOptions:v83])
+  if ([(AFConnection *)self _shouldEmitUEIRequestLinkForRequestInfo:v82 speechRequestOptions:optionsCopy])
   {
     v58 = AFSiriLogContextConnection;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
     {
-      v59 = [v50 UUIDString];
-      v60 = [v52 UUIDString];
+      uUIDString3 = [turnIdentifier UUIDString];
+      uUIDString4 = [v52 UUIDString];
       *buf = 136315650;
       v93 = "[AFConnection _willStartRequestWithSpeech:speechRequestOptions:requestInfo:analyticsEventProvider:]";
       v94 = 2112;
-      v95 = v59;
+      selfCopy = uUIDString3;
       v96 = 2112;
-      v97 = v60;
+      v97 = uUIDString4;
       _os_log_impl(&dword_1912FE000, v58, OS_LOG_TYPE_INFO, "%s Emitting Request link message between turnID: %@ and RequestID: %@", buf, 0x20u);
     }
 
-    v61 = [v52 UUIDString];
-    v62 = [v50 UUIDString];
-    v63 = ADCreateRequestLinkInfo(v61, 1);
-    v64 = ADCreateRequestLinkInfo(v62, 2);
+    uUIDString5 = [v52 UUIDString];
+    uUIDString6 = [turnIdentifier UUIDString];
+    v63 = ADCreateRequestLinkInfo(uUIDString5, 1);
+    v64 = ADCreateRequestLinkInfo(uUIDString6, 2);
 
     ADEmitRequestLinkEventMessage(v63, v64);
   }
 
   objc_storeStrong(&self->_activeRequestUUID, obj);
   v65 = 1;
-  if (!v80)
+  if (!speechCopy)
   {
     v65 = 2;
   }
 
   self->_activeRequestType = v65;
-  self->_activeRequestSpeechEvent = [v83 activationEvent];
+  self->_activeRequestSpeechEvent = [optionsCopy activationEvent];
   self->_activeRequestActivationEvent = [v82 activationEvent];
   self->_activeRequestBeginTime = v32;
   self->_activeRequestTypeForRequestCategorization = v35;
-  if (!v80)
+  if (!speechCopy)
   {
     self->_activeRequestStartSpeechTimeRequested = 0.0;
     self->_activeRequestStartSpeechTimeAPICalled = 0.0;
@@ -4092,31 +4092,31 @@ LABEL_9:
   }
 
   self->_activeRequestStartSpeechTimeAPICalled = v32;
-  if (!v83)
+  if (!optionsCopy)
   {
     goto LABEL_48;
   }
 
-  [v83 activationEventTime];
+  [optionsCopy activationEventTime];
   if (v66 <= 0.0)
   {
-    if (![v83 activationEventMachAbsoluteTime])
+    if (![optionsCopy activationEventMachAbsoluteTime])
     {
       goto LABEL_48;
     }
 
-    v68 = [v83 activationEventMachAbsoluteTime];
+    activationEventMachAbsoluteTime = [optionsCopy activationEventMachAbsoluteTime];
     if (_AFMachAbsoluteTimeRate_onceToken != -1)
     {
       dispatch_once(&_AFMachAbsoluteTimeRate_onceToken, &__block_literal_global_1033);
     }
 
-    v67 = *&_AFMachAbsoluteTimeRate_rate * v68 / 1000000000.0;
+    v67 = *&_AFMachAbsoluteTimeRate_rate * activationEventMachAbsoluteTime / 1000000000.0;
   }
 
   else
   {
-    [v83 activationEventTime];
+    [optionsCopy activationEventTime];
   }
 
   self->_activeRequestStartSpeechTimeRequested = v67;
@@ -4133,8 +4133,8 @@ LABEL_48:
 
   self->_uufrID = 0;
   [(AFConnection *)self _updateClientConfiguration];
-  _EmitHomePodLaunchContextTime(self->_analytics, self->_activeRequestUUID, self->_activeTurnIdentifier, v83);
-  if (v80)
+  _EmitHomePodLaunchContextTime(self->_analytics, self->_activeRequestUUID, self->_activeTurnIdentifier, optionsCopy);
+  if (speechCopy)
   {
     +[AFAggregator logSiriSpeechRequestStarted];
   }
@@ -4152,40 +4152,40 @@ LABEL_48:
 
   if (AFSupportsSCDAFramework_scdaFrameworkEnabled != 1)
   {
-    v70 = +[AFMyriadCoordinator currentCoordinator];
-    v71 = v70;
-    if (v70)
+    currentCoordinator = +[AFMyriadCoordinator currentCoordinator];
+    v71 = currentCoordinator;
+    if (currentCoordinator)
     {
       goto LABEL_55;
     }
 
-    v72 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
     v84 = @"requestId";
-    v73 = [v52 UUIDString];
-    v85 = v73;
+    uUIDString7 = [v52 UUIDString];
+    v85 = uUIDString7;
     v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-    [v72 postNotificationName:@"RequestIdForMyriad" object:0 userInfo:v74 deliverImmediately:1];
+    [defaultCenter postNotificationName:@"RequestIdForMyriad" object:0 userInfo:v74 deliverImmediately:1];
 LABEL_60:
 
     v71 = 0;
     goto LABEL_61;
   }
 
-  v70 = [MEMORY[0x1E69CE398] currentCoordinator];
-  v71 = v70;
-  if (!v70)
+  currentCoordinator = [MEMORY[0x1E69CE398] currentCoordinator];
+  v71 = currentCoordinator;
+  if (!currentCoordinator)
   {
-    v72 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
     v86 = @"requestId";
-    v73 = [v52 UUIDString];
-    v87 = v73;
+    uUIDString7 = [v52 UUIDString];
+    v87 = uUIDString7;
     v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
-    [v72 postNotificationName:@"RequestIdForMyriad" object:0 userInfo:v74 deliverImmediately:1];
+    [defaultCenter postNotificationName:@"RequestIdForMyriad" object:0 userInfo:v74 deliverImmediately:1];
     goto LABEL_60;
   }
 
 LABEL_55:
-  [v70 setCurrentRequestId:v52];
+  [currentCoordinator setCurrentRequestId:v52];
 LABEL_61:
 
   v75 = +[AFAccessibilityObserver sharedObserver];
@@ -4197,27 +4197,27 @@ LABEL_61:
   v77 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldEmitUEIRequestLinkForRequestInfo:(id)a3 speechRequestOptions:(id)a4
+- (BOOL)_shouldEmitUEIRequestLinkForRequestInfo:(id)info speechRequestOptions:(id)options
 {
-  v5 = a4;
-  v6 = [a3 activationEvent];
-  v7 = [v5 activationEvent];
+  optionsCopy = options;
+  activationEvent = [info activationEvent];
+  activationEvent2 = [optionsCopy activationEvent];
 
-  return v6 == 6 || v7 == 17 || (v6 - 9) < 2;
+  return activationEvent == 6 || activationEvent2 == 17 || (activationEvent - 9) < 2;
 }
 
-- (void)_fetchShouldSpeak:(id)a3
+- (void)_fetchShouldSpeak:(id)speak
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
+  speakCopy = speak;
+  _clientService = [(AFConnection *)self _clientService];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__AFConnection__fetchShouldSpeak___block_invoke;
   v7[3] = &unk_1E73477F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 requestShouldSpeakStateWithReply:v7];
+  v8 = speakCopy;
+  v6 = speakCopy;
+  [_clientService requestShouldSpeakStateWithReply:v7];
 }
 
 void __34__AFConnection__fetchShouldSpeak___block_invoke(uint64_t a1, char a2)
@@ -4296,57 +4296,57 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_extendExistingRequestTimeoutForReason:(id)a3
+- (void)_extendExistingRequestTimeoutForReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[AFConnection _extendExistingRequestTimeoutForReason:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEFAULT, "%s reason = %{public}@", &v7, 0x16u);
   }
 
   if (self->_requestTimeoutTimer)
   {
-    [(AFConnection *)self _extendRequestTimeoutForReason:v4 durationInSeconds:0.0];
+    [(AFConnection *)self _extendRequestTimeoutForReason:reasonCopy durationInSeconds:0.0];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_extendRequestTimeoutForReason:(id)a3 durationInSeconds:(double)a4
+- (void)_extendRequestTimeoutForReason:(id)reason durationInSeconds:(double)seconds
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  reasonCopy = reason;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[AFConnection _extendRequestTimeoutForReason:durationInSeconds:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = reasonCopy;
     v13 = 2050;
-    v14 = a4;
+    secondsCopy = seconds;
     _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_DEFAULT, "%s reason = %{public}@, durationInSeconds: %{public}f", &v9, 0x20u);
   }
 
-  [(AFConnection *)self _cancelRequestTimeoutForReason:v6];
+  [(AFConnection *)self _cancelRequestTimeoutForReason:reasonCopy];
   if (self->_activeRequestType && !self->_activeRequestUsefulUserResultType)
   {
-    [(AFConnection *)self _scheduleRequestTimeoutForReason:v6 durationInSeconds:a4];
+    [(AFConnection *)self _scheduleRequestTimeoutForReason:reasonCopy durationInSeconds:seconds];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_cancelRequestTimeoutForReason:(id)a3
+- (void)_cancelRequestTimeoutForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   requestTimeoutTimer = self->_requestTimeoutTimer;
   if (requestTimeoutTimer)
   {
@@ -4356,7 +4356,7 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
       v9 = 136315394;
       v10 = "[AFConnection _cancelRequestTimeoutForReason:]";
       v11 = 2114;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_DEFAULT, "%s Canceling request timeout for reason %{public}@", &v9, 0x16u);
       requestTimeoutTimer = self->_requestTimeoutTimer;
     }
@@ -4369,10 +4369,10 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_resumeRequestTimeoutForReason:(id)a3
+- (void)_resumeRequestTimeoutForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   requestTimeoutTimer = self->_requestTimeoutTimer;
   if (requestTimeoutTimer)
   {
@@ -4382,7 +4382,7 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
       v8 = 136315394;
       v9 = "[AFConnection _resumeRequestTimeoutForReason:]";
       v10 = 2114;
-      v11 = v4;
+      v11 = reasonCopy;
       _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_DEFAULT, "%s Resuming request timeout for reason %{public}@", &v8, 0x16u);
       requestTimeoutTimer = self->_requestTimeoutTimer;
     }
@@ -4393,10 +4393,10 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pauseRequestTimeoutForReason:(id)a3
+- (void)_pauseRequestTimeoutForReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   requestTimeoutTimer = self->_requestTimeoutTimer;
   if (requestTimeoutTimer)
   {
@@ -4406,7 +4406,7 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
       v8 = 136315394;
       v9 = "[AFConnection _pauseRequestTimeoutForReason:]";
       v10 = 2114;
-      v11 = v4;
+      v11 = reasonCopy;
       _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_DEFAULT, "%s Pausing request timeout for reason %{public}@", &v8, 0x16u);
       requestTimeoutTimer = self->_requestTimeoutTimer;
     }
@@ -4417,21 +4417,21 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_invokeRequestTimeoutForReason:(id)a3
+- (void)_invokeRequestTimeoutForReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[AFConnection _invokeRequestTimeoutForReason:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEFAULT, "%s Invoking request timeout for reason %{public}@", &v12, 0x16u);
   }
 
-  [(AFConnection *)self _cancelRequestTimeoutForReason:v4];
+  [(AFConnection *)self _cancelRequestTimeoutForReason:reasonCopy];
   if (self->_connectionHadActiveNetwork || AFDeviceSupportsSiriUOD() && (+[AFConnection currentLanguageCode], v7 = objc_claimAutoreleasedReturnValue(), v8 = [AFFeatureFlags isSiriUODAvailableForLanguage:v7], v7, v8))
   {
     v6 = 1;
@@ -4443,26 +4443,26 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   }
 
   v9 = [AFError errorWithCode:v6 description:0 underlyingError:self->_lastRetryError];
-  v10 = [(AFConnection *)self _clientService];
-  [v10 cancelRequestForReason:4 withError:v9];
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService cancelRequestForReason:4 withError:v9];
 
   [(AFConnection *)self _completeRequestWithUUID:self->_activeRequestUUID forReason:3 error:v9];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startRequestTimeoutTimerWithTimeInterval:(double)a3 reason:(id)a4
+- (void)_startRequestTimeoutTimerWithTimeInterval:(double)interval reason:(id)reason
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  reasonCopy = reason;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v21 = "[AFConnection _startRequestTimeoutTimerWithTimeInterval:reason:]";
     v22 = 2048;
-    v23 = a3;
+    intervalCopy = interval;
     v24 = 2114;
-    v25 = v7;
+    v25 = reasonCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEFAULT, "%s Scheduling request timeout for %f seconds for reason %{public}@", buf, 0x20u);
   }
 
@@ -4475,7 +4475,7 @@ uint64_t __34__AFConnection__fetchShouldSpeak___block_invoke_2(uint64_t a1)
   v18 = &unk_1E7346CF0;
   objc_copyWeak(v19, buf);
   v19[1] = a2;
-  v11 = [(AFWatchdogTimer *)v9 initWithTimeoutInterval:targetQueue onQueue:&v15 timeoutHandler:a3];
+  v11 = [(AFWatchdogTimer *)v9 initWithTimeoutInterval:targetQueue onQueue:&v15 timeoutHandler:interval];
   requestTimeoutTimer = self->_requestTimeoutTimer;
   p_requestTimeoutTimer = &self->_requestTimeoutTimer;
   *p_requestTimeoutTimer = v11;
@@ -4494,44 +4494,44 @@ void __65__AFConnection__startRequestTimeoutTimerWithTimeInterval_reason___block
   [WeakRetained _invokeRequestTimeoutForReason:v2];
 }
 
-- (void)_scheduleRequestTimeoutForReason:(id)a3 durationInSeconds:(double)a4
+- (void)_scheduleRequestTimeoutForReason:(id)reason durationInSeconds:(double)seconds
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(AFConnection *)self _cancelRequestTimeoutForReason:v6];
+  reasonCopy = reason;
+  [(AFConnection *)self _cancelRequestTimeoutForReason:reasonCopy];
   if (!self->_requestTimeoutTimer)
   {
-    if (a4 == 0.0)
+    if (seconds == 0.0)
     {
       v7 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.assistant"];
       [v7 doubleForKey:@"defaultTimeout"];
       if (v8 == 0.0)
       {
-        a4 = 12.0;
+        seconds = 12.0;
       }
 
       else
       {
-        a4 = v8;
+        seconds = v8;
         v9 = AFSiriLogContextConnection;
         if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
         {
           v11 = 136315394;
           v12 = "[AFConnection _scheduleRequestTimeoutForReason:durationInSeconds:]";
           v13 = 2048;
-          v14 = a4;
+          secondsCopy = seconds;
           _os_log_debug_impl(&dword_1912FE000, v9, OS_LOG_TYPE_DEBUG, "%s Using timeout interval of %f seconds based on UserDefaults", &v11, 0x16u);
         }
       }
     }
 
-    [(AFConnection *)self _startRequestTimeoutTimerWithTimeInterval:v6 reason:a4];
+    [(AFConnection *)self _startRequestTimeoutTimerWithTimeInterval:reasonCopy reason:seconds];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestDidAskForTimeoutExtension:(double)a3
+- (void)requestDidAskForTimeoutExtension:(double)extension
 {
   v13 = *MEMORY[0x1E69E9840];
   v6 = AFSiriLogContextDaemon;
@@ -4540,12 +4540,12 @@ void __65__AFConnection__startRequestTimeoutTimerWithTimeInterval_reason___block
     v9 = 136315394;
     v10 = "[AFConnection requestDidAskForTimeoutExtension:]";
     v11 = 2048;
-    v12 = a3;
+    extensionCopy = extension;
     _os_log_debug_impl(&dword_1912FE000, v6, OS_LOG_TYPE_DEBUG, "%s durationInSeconds: %f", &v9, 0x16u);
   }
 
   v7 = NSStringFromSelector(a2);
-  [(AFConnection *)self _extendRequestTimeoutForReason:v7 durationInSeconds:a3];
+  [(AFConnection *)self _extendRequestTimeoutForReason:v7 durationInSeconds:extension];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -4630,12 +4630,12 @@ void __27__AFConnection__connection__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_connectionFailedWithError:(id)a3
+- (void)_connectionFailedWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AFConnection *)self _siriClientStateManager];
-  [v5 beginTransactionForReason:4];
+  errorCopy = error;
+  _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager beginTransactionForReason:4];
 
   v6 = *(self + 224);
   *(self + 224) = v6 & 0xFE;
@@ -4655,49 +4655,49 @@ void __27__AFConnection__connection__block_invoke_2(uint64_t a1)
         _os_log_error_impl(&dword_1912FE000, v8, OS_LOG_TYPE_ERROR, "%s Reporting speech error on connection tear down", &v12, 0xCu);
       }
 
-      [(AFConnection *)self _tellSpeechDelegateRecordingDidFail:v4];
+      [(AFConnection *)self _tellSpeechDelegateRecordingDidFail:errorCopy];
     }
 
-    if (!_AFConnectionIsErrorDeallocation(v4))
+    if (!_AFConnectionIsErrorDeallocation(errorCopy))
     {
-      v9 = [(AFConnection *)self _siriClientStateManager];
-      [v9 endListeningForClient:self->_clientID];
+      _siriClientStateManager2 = [(AFConnection *)self _siriClientStateManager];
+      [_siriClientStateManager2 endListeningForClient:self->_clientID];
     }
   }
 
-  [(AFConnection *)self _completeRequestWithUUID:self->_activeRequestUUID forReason:4 error:v4];
+  [(AFConnection *)self _completeRequestWithUUID:self->_activeRequestUUID forReason:4 error:errorCopy];
   [(AFConnection *)self _stopInputAudioPowerUpdates];
-  v10 = [(AFConnection *)self _siriClientStateManager];
-  [v10 endTransactionForReason:4];
+  _siriClientStateManager3 = [(AFConnection *)self _siriClientStateManager];
+  [_siriClientStateManager3 endTransactionForReason:4];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)interstitialProvider:(id)a3 handlePhase:(int64_t)a4 displayText:(id)a5 speakableText:(id)a6 expectedDelay:(double)a7 context:(id)a8 completion:(id)a9
+- (void)interstitialProvider:(id)provider handlePhase:(int64_t)phase displayText:(id)text speakableText:(id)speakableText expectedDelay:(double)delay context:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  providerCopy = provider;
+  textCopy = text;
+  speakableTextCopy = speakableText;
+  contextCopy = context;
+  completionCopy = completion;
   targetQueue = self->_targetQueue;
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __108__AFConnection_interstitialProvider_handlePhase_displayText_speakableText_expectedDelay_context_completion___block_invoke;
   v27[3] = &unk_1E7341790;
-  v32 = v20;
-  v33 = a4;
+  v32 = completionCopy;
+  phaseCopy = phase;
   v27[4] = self;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
-  v34 = a7;
-  v31 = v19;
-  v22 = v20;
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
+  v28 = providerCopy;
+  v29 = textCopy;
+  v30 = speakableTextCopy;
+  delayCopy = delay;
+  v31 = contextCopy;
+  v22 = completionCopy;
+  v23 = contextCopy;
+  v24 = speakableTextCopy;
+  v25 = textCopy;
+  v26 = providerCopy;
   dispatch_async(targetQueue, v27);
 }
 
@@ -4731,7 +4731,7 @@ uint64_t __108__AFConnection_interstitialProvider_handlePhase_displayText_speaka
   return result;
 }
 
-- (void)deviceRingerObserver:(id)a3 didChangeState:(int64_t)a4
+- (void)deviceRingerObserver:(id)observer didChangeState:(int64_t)state
 {
   targetQueue = self->_targetQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -4739,27 +4739,27 @@ uint64_t __108__AFConnection_interstitialProvider_handlePhase_displayText_speaka
   v5[2] = __52__AFConnection_deviceRingerObserver_didChangeState___block_invoke;
   v5[3] = &unk_1E7348498;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = state;
   dispatch_async(targetQueue, v5);
 }
 
-- (void)accessibilityObserver:(id)a3 stateDidChangeFrom:(id)a4 to:(id)a5
+- (void)accessibilityObserver:(id)observer stateDidChangeFrom:(id)from to:(id)to
 {
-  v6 = a5;
+  toCopy = to;
   targetQueue = self->_targetQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__AFConnection_accessibilityObserver_stateDidChangeFrom_to___block_invoke;
   v9[3] = &unk_1E7349860;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = toCopy;
+  v8 = toCopy;
   dispatch_async(targetQueue, v9);
 }
 
-- (void)audioPowerUpdaterDidUpdate:(id)a3 averagePower:(float)a4 peakPower:(float)a5
+- (void)audioPowerUpdaterDidUpdate:(id)update averagePower:(float)power peakPower:(float)peakPower
 {
-  if (self->_inputAudioPowerUpdater == a3)
+  if (self->_inputAudioPowerUpdater == update)
   {
     WeakRetained = objc_loadWeakRetained(&self->_speechDelegate);
     v7 = objc_opt_respondsToSelector();
@@ -4772,16 +4772,16 @@ uint64_t __108__AFConnection_interstitialProvider_handlePhase_displayText_speaka
   }
 }
 
-- (void)_tellSpeechDelegateRecognitionDidFail:(id)a3
+- (void)_tellSpeechDelegateRecognitionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__AFConnection__tellSpeechDelegateRecognitionDidFail___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = failCopy;
+  v5 = failCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -4794,16 +4794,16 @@ void __54__AFConnection__tellSpeechDelegateRecognitionDidFail___block_invoke(uin
   }
 }
 
-- (void)_tellSpeechDelegateSpeechRecognizedPartialResult:(id)a3
+- (void)_tellSpeechDelegateSpeechRecognizedPartialResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__AFConnection__tellSpeechDelegateSpeechRecognizedPartialResult___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -4816,16 +4816,16 @@ void __65__AFConnection__tellSpeechDelegateSpeechRecognizedPartialResult___block
   }
 }
 
-- (void)_tellSpeechDelegateRecognitionUpdateWillBeginForTask:(id)a3
+- (void)_tellSpeechDelegateRecognitionUpdateWillBeginForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__AFConnection__tellSpeechDelegateRecognitionUpdateWillBeginForTask___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = taskCopy;
+  v5 = taskCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -4838,22 +4838,22 @@ void __69__AFConnection__tellSpeechDelegateRecognitionUpdateWillBeginForTask___b
   }
 }
 
-- (void)_tellSpeechDelegateRecordingDidUpdateRecognitionPhrases:(id)a3 utterances:(id)a4 refId:(id)a5
+- (void)_tellSpeechDelegateRecordingDidUpdateRecognitionPhrases:(id)phrases utterances:(id)utterances refId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  phrasesCopy = phrases;
+  utterancesCopy = utterances;
+  idCopy = id;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__AFConnection__tellSpeechDelegateRecordingDidUpdateRecognitionPhrases_utterances_refId___block_invoke;
   v14[3] = &unk_1E7341768;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = phrasesCopy;
+  v16 = utterancesCopy;
+  v17 = idCopy;
+  v11 = idCopy;
+  v12 = utterancesCopy;
+  v13 = phrasesCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v14];
 }
 
@@ -4866,19 +4866,19 @@ void __89__AFConnection__tellSpeechDelegateRecordingDidUpdateRecognitionPhrases_
   }
 }
 
-- (void)_tellSpeechDelegateRecognizedAdditionalSpeechInterpretation:(id)a3 refId:(id)a4
+- (void)_tellSpeechDelegateRecognizedAdditionalSpeechInterpretation:(id)interpretation refId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  interpretationCopy = interpretation;
+  idCopy = id;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__AFConnection__tellSpeechDelegateRecognizedAdditionalSpeechInterpretation_refId___block_invoke;
   v10[3] = &unk_1E7341740;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = interpretationCopy;
+  v12 = idCopy;
+  v8 = idCopy;
+  v9 = interpretationCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v10];
 }
 
@@ -4891,9 +4891,9 @@ void __82__AFConnection__tellSpeechDelegateRecognizedAdditionalSpeechInterpretat
   }
 }
 
-- (void)_tellSpeechDelegateSpeechRecognized:(id)a3
+- (void)_tellSpeechDelegateSpeechRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (self->_activeRequestType == 1)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -4905,8 +4905,8 @@ void __82__AFConnection__tellSpeechDelegateRecognizedAdditionalSpeechInterpretat
   v7[2] = __52__AFConnection__tellSpeechDelegateSpeechRecognized___block_invoke;
   v7[3] = &unk_1E7341678;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recognizedCopy;
+  v6 = recognizedCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v7];
 }
 
@@ -4919,16 +4919,16 @@ void __52__AFConnection__tellSpeechDelegateSpeechRecognized___block_invoke(uint6
   }
 }
 
-- (void)_tellSpeechDelegateRecordingDidFail:(id)a3
+- (void)_tellSpeechDelegateRecordingDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__AFConnection__tellSpeechDelegateRecordingDidFail___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = failCopy;
+  v5 = failCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -4985,17 +4985,17 @@ void __50__AFConnection__tellSpeechDelegateRecordingDidEnd__block_invoke(uint64_
   }
 }
 
-- (void)_tellSpeechDelegateToPerformTwoShotPromptWithType:(int64_t)a3 reply:(id)a4
+- (void)_tellSpeechDelegateToPerformTwoShotPromptWithType:(int64_t)type reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__AFConnection__tellSpeechDelegateToPerformTwoShotPromptWithType_reply___block_invoke;
   v8[3] = &unk_1E7341718;
-  v9 = v6;
-  v10 = a3;
+  v9 = replyCopy;
+  typeCopy = type;
   v8[4] = self;
-  v7 = v6;
+  v7 = replyCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v8];
 }
 
@@ -5072,16 +5072,16 @@ void __63__AFConnection__tellSpeechDelegateRecordingDidDetectStartpoint__block_i
   }
 }
 
-- (void)_tellSpeechDelegateRecordingDidChangeAVRecordRoute:(id)a3
+- (void)_tellSpeechDelegateRecordingDidChangeAVRecordRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__AFConnection__tellSpeechDelegateRecordingDidChangeAVRecordRoute___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = routeCopy;
+  v5 = routeCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -5094,17 +5094,17 @@ void __67__AFConnection__tellSpeechDelegateRecordingDidChangeAVRecordRoute___blo
   }
 }
 
-- (void)_tellSpeechDelegateRecordingDidBeginOnAVRecordRoute:(id)a3 audioSessionID:(unsigned int)a4
+- (void)_tellSpeechDelegateRecordingDidBeginOnAVRecordRoute:(id)route audioSessionID:(unsigned int)d
 {
-  v6 = a3;
+  routeCopy = route;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__AFConnection__tellSpeechDelegateRecordingDidBeginOnAVRecordRoute_audioSessionID___block_invoke;
   v8[3] = &unk_1E73416A0;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = routeCopy;
+  dCopy = d;
+  v7 = routeCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v8];
 }
 
@@ -5122,16 +5122,16 @@ void __83__AFConnection__tellSpeechDelegateRecordingDidBeginOnAVRecordRoute_audi
   }
 }
 
-- (void)_tellSpeechDelegateRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)a3
+- (void)_tellSpeechDelegateRecordingWillBeginWithInputAudioPowerXPCWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__AFConnection__tellSpeechDelegateRecordingWillBeginWithInputAudioPowerXPCWrapper___block_invoke;
   v6[3] = &unk_1E7341678;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = wrapperCopy;
+  v5 = wrapperCopy;
   [(AFConnection *)self _dispatchCallbackGroupBlock:v6];
 }
 
@@ -5149,10 +5149,10 @@ void __83__AFConnection__tellSpeechDelegateRecordingWillBeginWithInputAudioPower
   }
 }
 
-- (void)_dispatchCallbackGroupBlock:(id)a3
+- (void)_dispatchCallbackGroupBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     if (self->_speechCallbackGroup)
     {
@@ -5163,7 +5163,7 @@ void __83__AFConnection__tellSpeechDelegateRecordingWillBeginWithInputAudioPower
       block[1] = 3221225472;
       block[2] = __44__AFConnection__dispatchCallbackGroupBlock___block_invoke;
       block[3] = &unk_1E7344098;
-      v9 = v4;
+      v9 = blockCopy;
       objc_copyWeak(&v10, &to);
       dispatch_group_notify(speechCallbackGroup, targetQueue, block);
       objc_destroyWeak(&v10);
@@ -5174,7 +5174,7 @@ void __83__AFConnection__tellSpeechDelegateRecordingWillBeginWithInputAudioPower
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_speechDelegate);
-      (*(v4 + 2))(v4, WeakRetained);
+      (*(blockCopy + 2))(blockCopy, WeakRetained);
     }
   }
 }
@@ -5186,33 +5186,33 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
   (*(v1 + 16))(v1, WeakRetained);
 }
 
-- (void)_tellDelegateFailedToLaunchAppWithBundleIdentifier:(id)a3
+- (void)_tellDelegateFailedToLaunchAppWithBundleIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self appLaunchFailedWithBundleIdentifier:v7];
+    [v6 assistantConnection:self appLaunchFailedWithBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)_tellDelegateWillProcessAppLaunchWithBundleIdentifier:(id)a3
+- (void)_tellDelegateWillProcessAppLaunchWithBundleIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self willProcessAppLaunchWithBundleIdentifier:v7];
+    [v6 assistantConnection:self willProcessAppLaunchWithBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)_tellDelegateStartPlaybackDidFail:(int64_t)a3
+- (void)_tellDelegateStartPlaybackDidFail:(int64_t)fail
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -5220,14 +5220,14 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 assistantConnection:self startPlaybackDidFail:a3];
+    [v7 assistantConnection:self startPlaybackDidFail:fail];
   }
 }
 
-- (void)_tellDelegateWillProcessStartPlayback:(int64_t)a3 intent:(id)a4 completion:(id)a5
+- (void)_tellDelegateWillProcessStartPlayback:(int64_t)playback intent:(id)intent completion:(id)completion
 {
-  v15 = a4;
-  v8 = a5;
+  intentCopy = intent;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_respondsToSelector();
 
@@ -5235,7 +5235,7 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
   v12 = v11;
   if (v10)
   {
-    [v11 assistantConnection:self willProcessStartPlayback:a3 intent:v15 completion:v8];
+    [v11 assistantConnection:self willProcessStartPlayback:playback intent:intentCopy completion:completionCopy];
   }
 
   else
@@ -5245,59 +5245,59 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
     if (v13)
     {
       v14 = objc_loadWeakRetained(&self->_delegate);
-      [v14 assistantConnection:self willProcessStartPlayback:a3];
+      [v14 assistantConnection:self willProcessStartPlayback:playback];
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1, 1);
+      completionCopy[2](completionCopy, 1, 1);
     }
   }
 }
 
-- (void)_tellDelegateAudioPlaybackRequestDidStop:(id)a3 error:(id)a4
+- (void)_tellDelegateAudioPlaybackRequestDidStop:(id)stop error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  stopCopy = stop;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 assistantConnection:self didStopAudioPlaybackRequest:v10 error:v6];
+    [v9 assistantConnection:self didStopAudioPlaybackRequest:stopCopy error:errorCopy];
   }
 }
 
-- (void)_tellDelegateAudioPlaybackRequestDidStart:(id)a3
+- (void)_tellDelegateAudioPlaybackRequestDidStart:(id)start
 {
-  v7 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self didStartAudioPlaybackRequest:v7];
+    [v6 assistantConnection:self didStartAudioPlaybackRequest:startCopy];
   }
 }
 
-- (void)_tellDelegateAudioPlaybackRequestWillStart:(id)a3
+- (void)_tellDelegateAudioPlaybackRequestWillStart:(id)start
 {
-  v7 = a3;
+  startCopy = start;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self willStartAudioPlaybackRequest:v7];
+    [v6 assistantConnection:self willStartAudioPlaybackRequest:startCopy];
   }
 }
 
-- (void)_tellDelegateAudioSessionDidBeginInterruptionWithUserInfo:(id)a3
+- (void)_tellDelegateAudioSessionDidBeginInterruptionWithUserInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
@@ -5305,7 +5305,7 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
   v7 = v6;
   if (v5)
   {
-    [v6 assistantConnectionAudioSessionDidBeginInterruption:self userInfo:v9];
+    [v6 assistantConnectionAudioSessionDidBeginInterruption:self userInfo:infoCopy];
   }
 
   else
@@ -5324,57 +5324,57 @@ void __44__AFConnection__dispatchCallbackGroupBlock___block_invoke(uint64_t a1)
 LABEL_6:
 }
 
-- (void)_tellDelegateExtensionRequestFinishedForApplication:(id)a3 error:(id)a4
+- (void)_tellDelegateExtensionRequestFinishedForApplication:(id)application error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 assistantConnection:self extensionRequestFinishedForApplication:v10 error:v6];
+    [v9 assistantConnection:self extensionRequestFinishedForApplication:applicationCopy error:errorCopy];
   }
 }
 
-- (void)_tellDelegateExtensionRequestWillStartForApplication:(id)a3
+- (void)_tellDelegateExtensionRequestWillStartForApplication:(id)application
 {
-  v7 = a3;
+  applicationCopy = application;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self extensionRequestWillStartForApplication:v7];
+    [v6 assistantConnection:self extensionRequestWillStartForApplication:applicationCopy];
   }
 }
 
-- (void)_tellDelegateCacheImage:(id)a3
+- (void)_tellDelegateCacheImage:(id)image
 {
-  v7 = a3;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 assistantConnection:self wantsToCacheImage:v7];
+    [v6 assistantConnection:self wantsToCacheImage:imageCopy];
   }
 }
 
-- (void)_tellDelegateSetUserActivityInfo:(id)a3 webpageURL:(id)a4
+- (void)_tellDelegateSetUserActivityInfo:(id)info webpageURL:(id)l
 {
-  v10 = a3;
-  v6 = a4;
+  infoCopy = info;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 assistantConnection:self setUserActivtiyInfoAndMakeCurrent:v10 webpageURL:v6];
+    [v9 assistantConnection:self setUserActivtiyInfoAndMakeCurrent:infoCopy webpageURL:lCopy];
   }
 }
 
@@ -5403,11 +5403,11 @@ LABEL_6:
   }
 }
 
-- (void)_completeRequestWithUUID:(id)a3 forReason:(int64_t)a4 error:(id)a5
+- (void)_completeRequestWithUUID:(id)d forReason:(int64_t)reason error:(id)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  errorCopy = error;
   v10 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -5415,20 +5415,20 @@ LABEL_6:
     v29 = 136316162;
     v30 = "[AFConnection _completeRequestWithUUID:forReason:error:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = activeTurnIdentifier;
+    reasonCopy2 = activeTurnIdentifier;
     v35 = 2048;
-    v36 = a4;
+    reasonCopy = reason;
     v37 = 2112;
-    v38 = v9;
+    v38 = errorCopy;
     _os_log_impl(&dword_1912FE000, v10, OS_LOG_TYPE_INFO, "%s requestUUID = %@, turnId = %@, reason %ld, error = %@", &v29, 0x34u);
   }
 
   activeRequestType = self->_activeRequestType;
   if (activeRequestType == 1)
   {
-    v13 = [(NSUUID *)self->_activeRequestUUID isEqual:v8];
+    v13 = [(NSUUID *)self->_activeRequestUUID isEqual:dCopy];
     if (self->_activeRequestType)
     {
       goto LABEL_5;
@@ -5444,7 +5444,7 @@ LABEL_10:
     }
 
     p_activeRequestUUID = &self->_activeRequestUUID;
-    if (([(NSUUID *)self->_activeRequestUUID isEqual:v8]& 1) != 0)
+    if (([(NSUUID *)self->_activeRequestUUID isEqual:dCopy]& 1) != 0)
     {
       goto LABEL_18;
     }
@@ -5460,9 +5460,9 @@ LABEL_13:
       v31 = 2112;
       v32 = activeRequestUUID;
       v33 = 2112;
-      v34 = v8;
+      reasonCopy2 = dCopy;
       v35 = 2112;
-      v36 = v21;
+      reasonCopy = v21;
       _os_log_impl(&dword_1912FE000, v19, OS_LOG_TYPE_INFO, "%s Dropping delegate callback because request is different (_activeRequestUUID = %@, requestUUID = %@, turnId = %@)", &v29, 0x2Au);
     }
 
@@ -5477,21 +5477,21 @@ LABEL_13:
 
 LABEL_5:
   p_activeRequestUUID = &self->_activeRequestUUID;
-  if (([(NSUUID *)self->_activeRequestUUID isEqual:v8]& 1) == 0)
+  if (([(NSUUID *)self->_activeRequestUUID isEqual:dCopy]& 1) == 0)
   {
     goto LABEL_13;
   }
 
-  if (v9)
+  if (errorCopy)
   {
-    [(AFConnection *)self _willFailRequestWithError:v9];
+    [(AFConnection *)self _willFailRequestWithError:errorCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
       v17 = objc_loadWeakRetained(&self->_delegate);
-      [v17 assistantConnection:self requestFailedWithError:v9 requestClass:self->_outstandingRequestClass];
+      [v17 assistantConnection:self requestFailedWithError:errorCopy requestClass:self->_outstandingRequestClass];
 LABEL_17:
     }
   }
@@ -5511,7 +5511,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (*p_activeRequestUUID && ![*p_activeRequestUUID isEqual:v8])
+  if (*p_activeRequestUUID && ![*p_activeRequestUUID isEqual:dCopy])
   {
     v26 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -5523,9 +5523,9 @@ LABEL_18:
       v31 = 2112;
       v32 = v27;
       v33 = 2112;
-      v34 = v8;
+      reasonCopy2 = dCopy;
       v35 = 2112;
-      v36 = v28;
+      reasonCopy = v28;
       _os_log_impl(&dword_1912FE000, v26, OS_LOG_TYPE_INFO, "%s Not ending the ongoing request because the active request ID is different than the completed request ID: (_activeRequestUUID = %@, requestUUID = %@, turnId = %@)", &v29, 0x2Au);
     }
   }
@@ -5543,9 +5543,9 @@ LABEL_18:
       v29 = 136315650;
       v30 = "[AFConnection _completeRequestWithUUID:forReason:error:]";
       v31 = 2112;
-      v32 = v8;
+      v32 = dCopy;
       v33 = 2048;
-      v34 = a4;
+      reasonCopy2 = reason;
       _os_log_impl(&dword_1912FE000, v24, OS_LOG_TYPE_INFO, "%s Resetting isCapturingSpeech for %@ for reason: %ld", &v29, 0x20u);
     }
 
@@ -5555,7 +5555,7 @@ LABEL_18:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSpeechEndHostTime:(unint64_t)a3
+- (void)_updateSpeechEndHostTime:(unint64_t)time
 {
   v23 = *MEMORY[0x1E69E9840];
   activeRequestType = self->_activeRequestType;
@@ -5571,7 +5571,7 @@ LABEL_18:
     *buf = 136315650;
     v18 = "[AFConnection _updateSpeechEndHostTime:]";
     v19 = 2048;
-    v20 = activeRequestType;
+    timeCopy2 = activeRequestType;
     v21 = 2112;
     v22 = activeRequestUUID;
     v12 = "%s Unable to update speech end host time. (_activeRequestType = %zd, _activeRequestUUID = %@)";
@@ -5585,13 +5585,13 @@ LABEL_18:
     *buf = 136315394;
     v18 = "[AFConnection _updateSpeechEndHostTime:]";
     v19 = 2048;
-    v20 = a3;
+    timeCopy2 = time;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s updating speech end host time: %llu", buf, 0x16u);
   }
 
-  if (self->_activeRequestSpeechEndHostTime != a3)
+  if (self->_activeRequestSpeechEndHostTime != time)
   {
-    self->_activeRequestSpeechEndHostTime = a3;
+    self->_activeRequestSpeechEndHostTime = time;
     if (+[AFFeatureFlags isStateFeedbackEnabled])
     {
       v16[0] = MEMORY[0x1E69E9820];
@@ -5599,7 +5599,7 @@ LABEL_18:
       v16[2] = __41__AFConnection__updateSpeechEndHostTime___block_invoke;
       v16[3] = &unk_1E7341650;
       v16[4] = self;
-      v16[5] = a3;
+      v16[5] = time;
       [(AFConnection *)self _dispatchCallbackGroupBlock:v16];
       goto LABEL_8;
     }
@@ -5629,7 +5629,7 @@ LABEL_18:
           *buf = 136315394;
           v18 = "[AFConnection _updateSpeechEndHostTime:]";
           v19 = 2048;
-          v20 = a3;
+          timeCopy2 = time;
           _os_log_impl(&dword_1912FE000, v10, OS_LOG_TYPE_INFO, "%s No interstitial has been presented yet, adjusting timings based on updated speech end host time %llu.", buf, 0x16u);
         }
 
@@ -5648,7 +5648,7 @@ LABEL_18:
       *buf = 136315394;
       v18 = "[AFConnection _updateSpeechEndHostTime:]";
       v19 = 2048;
-      v20 = activeRequestNumberOfPresentedInterstitials;
+      timeCopy2 = activeRequestNumberOfPresentedInterstitials;
       v12 = "%s Skipped timing adjustment because %lu interstitials have been presented.";
       v13 = v10;
       v14 = 22;
@@ -5755,24 +5755,24 @@ void __41__AFConnection__updateSpeechEndHostTime___block_invoke(uint64_t a1, voi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setRecordRoute:(id)a3
+- (void)_setRecordRoute:(id)route
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routeCopy = route;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[AFConnection _setRecordRoute:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = routeCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s recordRoute = %@", &v10, 0x16u);
   }
 
   recordRoute = self->_recordRoute;
-  if (recordRoute != v4 && ![(NSString *)recordRoute isEqualToString:v4])
+  if (recordRoute != routeCopy && ![(NSString *)recordRoute isEqualToString:routeCopy])
   {
-    v7 = [(NSString *)v4 copy];
+    v7 = [(NSString *)routeCopy copy];
     v8 = self->_recordRoute;
     self->_recordRoute = v7;
   }
@@ -5780,7 +5780,7 @@ void __41__AFConnection__updateSpeechEndHostTime___block_invoke(uint64_t a1, voi
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setAudioSessionID:(unsigned int)a3
+- (void)_setAudioSessionID:(unsigned int)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = AFSiriLogContextConnection;
@@ -5789,13 +5789,13 @@ void __41__AFConnection__updateSpeechEndHostTime___block_invoke(uint64_t a1, voi
     *buf = 136315394;
     v10 = "[AFConnection _setAudioSessionID:]";
     v11 = 2048;
-    v12 = a3;
+    dCopy = d;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s audioSessionID = %lu", buf, 0x16u);
   }
 
-  if (self->_audioSessionID != a3)
+  if (self->_audioSessionID != d)
   {
-    self->_audioSessionID = a3;
+    self->_audioSessionID = d;
     targetQueue = self->_targetQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -5831,14 +5831,14 @@ void __41__AFConnection__updateSpeechEndHostTime___block_invoke(uint64_t a1, voi
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_startInputAudioPowerUpdatesWithXPCWrapper:(id)a3
+- (BOOL)_startInputAudioPowerUpdatesWithXPCWrapper:(id)wrapper
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  wrapperCopy = wrapper;
   [(AFConnection *)self _stopInputAudioPowerUpdates];
-  if (v4 && (WeakRetained = objc_loadWeakRetained(&self->_speechDelegate), v6 = objc_opt_respondsToSelector(), WeakRetained, (v6 & 1) != 0))
+  if (wrapperCopy && (WeakRetained = objc_loadWeakRetained(&self->_speechDelegate), v6 = objc_opt_respondsToSelector(), WeakRetained, (v6 & 1) != 0))
   {
-    v7 = [[AFAudioPowerXPCProvider alloc] initWithXPCWrapper:v4];
+    v7 = [[AFAudioPowerXPCProvider alloc] initWithXPCWrapper:wrapperCopy];
     v8 = [[AFAudioPowerUpdater alloc] initWithProvider:v7 queue:self->_targetQueue frequency:1 delegate:self];
     inputAudioPowerUpdater = self->_inputAudioPowerUpdater;
     self->_inputAudioPowerUpdater = v8;
@@ -5897,9 +5897,9 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setShouldSpeak:(BOOL)a3
+- (void)_setShouldSpeak:(BOOL)speak
 {
-  v3 = a3;
+  speakCopy = speak;
   v14 = *MEMORY[0x1E69E9840];
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -5907,13 +5907,13 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
     *buf = 136315394;
     v11 = "[AFConnection _setShouldSpeak:]";
     v12 = 1024;
-    v13 = v3;
+    v13 = speakCopy;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s shouldSpeak = %d", buf, 0x12u);
   }
 
-  if ([(AFConnection *)self shouldSpeak]!= v3)
+  if ([(AFConnection *)self shouldSpeak]!= speakCopy)
   {
-    if (v3)
+    if (speakCopy)
     {
       v6 = 2;
     }
@@ -5936,12 +5936,12 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchCommand:(id)a3 isInterstitial:(BOOL)a4 interstitialPhase:(int64_t)a5 interstitialDelay:(double)a6 reply:(id)a7
+- (void)_dispatchCommand:(id)command isInterstitial:(BOOL)interstitial interstitialPhase:(int64_t)phase interstitialDelay:(double)delay reply:(id)reply
 {
-  v10 = a4;
+  interstitialCopy = interstitial;
   v50 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a7;
+  commandCopy = command;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = objc_opt_respondsToSelector();
   v17 = AFSiriLogContextConnection;
@@ -5952,9 +5952,9 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
       *buf = 136315650;
       v45 = "[AFConnection _dispatchCommand:isInterstitial:interstitialPhase:interstitialDelay:reply:]";
       v46 = 2112;
-      v47 = v13;
+      v47 = commandCopy;
       v48 = 1024;
-      LODWORD(v49) = v10;
+      LODWORD(v49) = interstitialCopy;
       _os_log_impl(&dword_1912FE000, v17, OS_LOG_TYPE_DEFAULT, "%s command = %@, isInterstitial = %d", buf, 0x1Cu);
     }
 
@@ -5963,14 +5963,14 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
     v36[2] = __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_interstitialDelay_reply___block_invoke;
     v36[3] = &unk_1E73415D8;
     v36[4] = self;
-    v18 = v13;
-    v43 = v10;
+    v18 = commandCopy;
+    v43 = interstitialCopy;
     v37 = v18;
-    v40 = a5;
+    phaseCopy = phase;
     v41 = a2;
-    v42 = a6;
+    delayCopy = delay;
     v38 = WeakRetained;
-    v19 = v14;
+    v19 = replyCopy;
     v39 = v19;
     v20 = MEMORY[0x193AFB7B0](v36);
     v21 = v20;
@@ -5982,7 +5982,7 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
       v30[1] = 3221225472;
       v30[2] = __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_interstitialDelay_reply___block_invoke_126;
       v30[3] = &unk_1E7341600;
-      v35 = v10;
+      v35 = interstitialCopy;
       v30[4] = self;
       v31 = v18;
       v32 = v19;
@@ -5994,7 +5994,7 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
     else
     {
       (*(v20 + 16))(v20);
-      if (!v10)
+      if (!interstitialCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6011,20 +6011,20 @@ void __59__AFConnection__startInputAudioPowerUpdatesWithXPCWrapper___block_invok
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
       v28 = v17;
-      v29 = [v13 encodedClassName];
+      encodedClassName = [commandCopy encodedClassName];
       *buf = 136315650;
       v45 = "[AFConnection _dispatchCommand:isInterstitial:interstitialPhase:interstitialDelay:reply:]";
       v46 = 2112;
       v47 = WeakRetained;
       v48 = 2112;
-      v49 = v29;
+      v49 = encodedClassName;
       _os_log_error_impl(&dword_1912FE000, v28, OS_LOG_TYPE_ERROR, "%s no delegate method on %@ to handle command: %@", buf, 0x20u);
     }
 
     v24 = [AFError errorWithCode:26];
-    (*(v14 + 2))(v14, 0, v24);
+    (*(replyCopy + 2))(replyCopy, 0, v24);
 
-    if (!v10)
+    if (!interstitialCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -6616,11 +6616,11 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_emitServerExecutionValuesReportedMessage:(id)a3 requestUUID:(id)a4
+- (void)_emitServerExecutionValuesReportedMessage:(id)message requestUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  dCopy = d;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -6631,21 +6631,21 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
 
   v8 = objc_alloc_init(MEMORY[0x1E69CF310]);
   v9 = objc_alloc_init(MEMORY[0x1E69CF318]);
-  v10 = [v6 UUIDString];
-  v11 = _ConvertIdToSchemaUUID(v10);
+  uUIDString = [dCopy UUIDString];
+  v11 = _ConvertIdToSchemaUUID(uUIDString);
 
   [v9 setRequestId:v11];
   [v8 setEventMetadata:v9];
   v12 = objc_alloc_init(MEMORY[0x1E69CF3D8]);
-  v13 = [v5 domain];
-  if (v13)
+  domain = [messageCopy domain];
+  if (domain)
   {
-    [v12 setServerExecutedDomain:v13];
+    [v12 setServerExecutedDomain:domain];
   }
 
   [v8 setServerExecutionValuesReported:v12];
-  v14 = [MEMORY[0x1E69CE1E8] sharedStream];
-  [v14 emitMessage:v8];
+  mEMORY[0x1E69CE1E8] = [MEMORY[0x1E69CE1E8] sharedStream];
+  [mEMORY[0x1E69CE1E8] emitMessage:v8];
 
   v15 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -6658,33 +6658,33 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleCommand:(id)a3 reply:(id)a4
+- (void)_handleCommand:(id)command reply:(id)reply
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  replyCopy = reply;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315394;
     v17 = "[AFConnection _handleCommand:reply:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = commandCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEFAULT, "%s command = %@", &v16, 0x16u);
   }
 
-  if (AFInterstitialIsCommandInterstitial(v6))
+  if (AFInterstitialIsCommandInterstitial(commandCopy))
   {
     if (self->_activeRequestType && !self->_activeRequestUsefulUserResultType)
     {
-      [(AFConnection *)self _enqueueInterstitialCommand:v6];
+      [(AFConnection *)self _enqueueInterstitialCommand:commandCopy];
       v11 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
       {
         v16 = 136315394;
         v17 = "[AFConnection _handleCommand:reply:]";
         v18 = 2112;
-        v19 = v6;
+        v19 = commandCopy;
         _os_log_debug_impl(&dword_1912FE000, v11, OS_LOG_TYPE_DEBUG, "%s Enqueued command %@ because it is an interstitial and active request has not presented UUFR yet.", &v16, 0x16u);
       }
 
@@ -6699,7 +6699,7 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
         v16 = 136315394;
         v17 = "[AFConnection _handleCommand:reply:]";
         v18 = 2112;
-        v19 = v6;
+        v19 = commandCopy;
         _os_log_debug_impl(&dword_1912FE000, v9, OS_LOG_TYPE_DEBUG, "%s Ignored command %@ because it is an interstitial but there's no active request or active request has presented UUFR already.", &v16, 0x16u);
       }
 
@@ -6708,96 +6708,96 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
 
     v12 = *v10;
     v13 = objc_opt_new();
-    v14 = [v6 aceId];
-    [v13 setRefId:v14];
+    aceId = [commandCopy aceId];
+    [v13 setRefId:aceId];
 
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, v13, 0);
+      replyCopy[2](replyCopy, v13, 0);
     }
   }
 
   else
   {
-    [(AFConnection *)self _dispatchCommand:v6 isInterstitial:0 interstitialPhase:0 interstitialDelay:v7 reply:0.0];
+    [(AFConnection *)self _dispatchCommand:commandCopy isInterstitial:0 interstitialPhase:0 interstitialDelay:replyCopy reply:0.0];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startUIRequestWithInfo:(id)a3 completion:(id)a4
+- (void)_startUIRequestWithInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 assistantConnection:self startUIRequestWithInfo:v10 completion:v6];
+    [v9 assistantConnection:self startUIRequestWithInfo:infoCopy completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_startUIRequestWithText:(id)a3 completion:(id)a4
+- (void)_startUIRequestWithText:(id)text completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  textCopy = text;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 assistantConnection:self startUIRequestWithText:v10 completion:v6];
+    [v9 assistantConnection:self startUIRequestWithText:textCopy completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_checkAndSetIsCapturingSpeech:(BOOL)a3
+- (void)_checkAndSetIsCapturingSpeech:(BOOL)speech
 {
-  if (a3)
+  if (speech)
   {
     v4 = *(self + 224);
     if ((v4 & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"AFConnection.m" lineNumber:389 description:@"Client is already capturing speech"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"AFConnection.m" lineNumber:389 description:@"Client is already capturing speech"];
 
       v4 = *(self + 224);
     }
 
     *(self + 224) = v4 | 4;
-    v7 = [(AFConnection *)self _siriClientStateManager];
-    [v7 beginListeningForClient:self->_clientID];
+    _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+    [_siriClientStateManager beginListeningForClient:self->_clientID];
   }
 
   else
   {
     [(AFConnection *)self _stopInputAudioPowerUpdates];
     *(self + 224) &= ~4u;
-    v7 = [(AFConnection *)self _siriClientStateManager];
-    [v7 endListeningForClient:self->_clientID];
+    _siriClientStateManager = [(AFConnection *)self _siriClientStateManager];
+    [_siriClientStateManager endListeningForClient:self->_clientID];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = objc_storeWeak(&self->_delegate, a3);
-  v5 = a3;
-  if (!a3)
+  v4 = objc_storeWeak(&self->_delegate, delegate);
+  delegateCopy = delegate;
+  if (!delegate)
   {
     [(AFConnection *)self _clearConnection];
-    v5 = 0;
+    delegateCopy = 0;
   }
 }
 
@@ -6824,7 +6824,7 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
     *buf = 136315394;
     v9 = "[AFConnection dealloc]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -6834,11 +6834,11 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (AFConnection)initWithTargetQueue:(id)a3 instanceContext:(id)a4
+- (AFConnection)initWithTargetQueue:(id)queue instanceContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v42.receiver = self;
   v42.super_class = AFConnection;
   v9 = [(AFConnection *)&v42 init];
@@ -6889,9 +6889,9 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
     initiationCallSiteInfo = v10->_initiationCallSiteInfo;
     v10->_initiationCallSiteInfo = v13;
 
-    if (v7)
+    if (queueCopy)
     {
-      v19 = v7;
+      v19 = queueCopy;
       targetQueue = v10->_targetQueue;
       v10->_targetQueue = v19;
     }
@@ -6905,9 +6905,9 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
     }
 
     *(v10 + 224) |= 2u;
-    if (v8)
+    if (contextCopy)
     {
-      v23 = v8;
+      v23 = contextCopy;
     }
 
     else
@@ -6918,7 +6918,7 @@ void __90__AFConnection__dispatchCommand_isInterstitial_interstitialPhase_inters
     instanceContext = v10->_instanceContext;
     v10->_instanceContext = v23;
 
-    v25 = [[AFAnalytics alloc] initWithInstanceContext:v8];
+    v25 = [[AFAnalytics alloc] initWithInstanceContext:contextCopy];
     analytics = v10->_analytics;
     v10->_analytics = v25;
 
@@ -7018,8 +7018,8 @@ void __23__AFConnection_defrost__block_invoke_2(uint64_t a1)
 {
   if (sAvailabilityObserver)
   {
-    v2 = [a1 _networkAvailability];
-    [v2 removeObserver:sAvailabilityObserver];
+    _networkAvailability = [self _networkAvailability];
+    [_networkAvailability removeObserver:sAvailabilityObserver];
 
     v3 = sAvailabilityObserver;
     sAvailabilityObserver = 0;
@@ -7035,8 +7035,8 @@ void __23__AFConnection_defrost__block_invoke_2(uint64_t a1)
     v4 = sAvailabilityObserver;
     sAvailabilityObserver = v3;
 
-    v5 = [a1 _networkAvailability];
-    [v5 addObserver:sAvailabilityObserver];
+    _networkAvailability = [self _networkAvailability];
+    [_networkAvailability addObserver:sAvailabilityObserver];
   }
 
   os_unfair_lock_unlock(&sAvailabilityObserverLock);
@@ -7052,28 +7052,28 @@ void __23__AFConnection_defrost__block_invoke_2(uint64_t a1)
   return AFAssistantCapable_isCapable;
 }
 
-+ (BOOL)siriIsSupportedForLanguageCode:(id)a3 productName:(id)a4 productVersion:(id)a5 error:(id *)a6
++ (BOOL)siriIsSupportedForLanguageCode:(id)code productName:(id)name productVersion:(id)version error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9 || !v11)
+  codeCopy = code;
+  nameCopy = name;
+  versionCopy = version;
+  v12 = versionCopy;
+  if (!codeCopy || !versionCopy)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantErrorDomain" code:402 userInfo:0];
-    if (!a6)
+    if (!error)
     {
       goto LABEL_7;
     }
 
 LABEL_6:
     v15 = v14;
-    *a6 = v14;
+    *error = v14;
     goto LABEL_7;
   }
 
-  v13 = AFPreferencesSupportedLanguagesForRemote(v10, v11);
-  if ([v13 containsObject:v9])
+  v13 = AFPreferencesSupportedLanguagesForRemote(nameCopy, versionCopy);
+  if ([v13 containsObject:codeCopy])
   {
     v14 = 0;
   }
@@ -7083,7 +7083,7 @@ LABEL_6:
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantErrorDomain" code:401 userInfo:0];
   }
 
-  if (a6)
+  if (error)
   {
     goto LABEL_6;
   }
@@ -7093,9 +7093,9 @@ LABEL_7:
   return v14 == 0;
 }
 
-+ (BOOL)assistantIsSupportedForLanguageCode:(id)a3 error:(id *)a4
++ (BOOL)assistantIsSupportedForLanguageCode:(id)code error:(id *)error
 {
-  v5 = a3;
+  codeCopy = code;
   if (AFAssistantCapable_onceToken != -1)
   {
     dispatch_once(&AFAssistantCapable_onceToken, &__block_literal_global_65);
@@ -7104,12 +7104,12 @@ LABEL_7:
   if (AFAssistantCapable_isCapable == 1)
   {
     v6 = +[AFPreferences sharedPreferences];
-    v7 = [v6 isLocaleIdentifierNativelySupported:v5];
+    v7 = [v6 isLocaleIdentifierNativelySupported:codeCopy];
 
     if (v7)
     {
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -7126,11 +7126,11 @@ LABEL_7:
   }
 
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"kAFAssistantErrorDomain" code:v9 userInfo:0];
-  if (a4)
+  if (error)
   {
 LABEL_10:
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_11:
@@ -7147,22 +7147,22 @@ LABEL_11:
   }
 }
 
-- (void)broadcastCommandDictionary:(id)a3
+- (void)broadcastCommandDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 _broadcastCommandDictionary:v4];
+  dictionaryCopy = dictionary;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService _broadcastCommandDictionary:dictionaryCopy];
 }
 
-- (void)requestBarrierIfNecessary:(id)a3
+- (void)requestBarrierIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__AFConnection_Private__requestBarrierIfNecessary___block_invoke;
   v7[3] = &unk_1E7348AA8;
-  v8 = v4;
-  v5 = v4;
+  v8 = necessaryCopy;
+  v5 = necessaryCopy;
   v6 = [(AFConnection *)self _clientServiceWithErrorHandler:v7];
   [v6 _requestBarrierIfNecessaryWithReply:v5];
 }
@@ -7178,15 +7178,15 @@ uint64_t __51__AFConnection_Private__requestBarrierIfNecessary___block_invoke(ui
   return result;
 }
 
-- (void)requestBarrier:(id)a3
+- (void)requestBarrier:(id)barrier
 {
-  v4 = a3;
+  barrierCopy = barrier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__AFConnection_Private__requestBarrier___block_invoke;
   v7[3] = &unk_1E7348AA8;
-  v8 = v4;
-  v5 = v4;
+  v8 = barrierCopy;
+  v5 = barrierCopy;
   v6 = [(AFConnection *)self _clientServiceWithErrorHandler:v7];
   [v6 _requestBarrierWithReply:v5];
 }
@@ -7232,20 +7232,20 @@ uint64_t __76__AFConnection_Private__startSpeechRequestWithSpeechFileAtURL_isNar
   return v13;
 }
 
-- (id)_clientServiceWithErrorHandler:(id)a3
+- (id)_clientServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(AFConnection *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)_clearAssistantInfoForAccountWithIdentifier:(id)a3
+- (void)_clearAssistantInfoForAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AFConnection *)self _clientService];
-  [v5 _clearAssistantInfoForAccountIdentifier:v4];
+  identifierCopy = identifier;
+  _clientService = [(AFConnection *)self _clientService];
+  [_clientService _clearAssistantInfoForAccountIdentifier:identifierCopy];
 }
 
 - (void)_barrier

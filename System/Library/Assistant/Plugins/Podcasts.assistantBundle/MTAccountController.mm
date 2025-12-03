@@ -1,5 +1,5 @@
 @interface MTAccountController
-+ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)a3;
++ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)notification;
 - (BOOL)activeAccountIsManagedAppleID;
 - (BOOL)isPrimaryUserActiveAccount;
 - (BOOL)isUserLoggedIn;
@@ -12,9 +12,9 @@
 - (id)activeStorefront;
 - (void)_updateActiveAccount;
 - (void)dealloc;
-- (void)didChangeStoreAccount:(id)a3;
-- (void)fetchActiveAccountWithCompletion:(id)a3;
-- (void)setActiveAccount:(id)a3;
+- (void)didChangeStoreAccount:(id)account;
+- (void)fetchActiveAccountWithCompletion:(id)completion;
+- (void)setActiveAccount:(id)account;
 @end
 
 @implementation MTAccountController
@@ -82,17 +82,17 @@
   return v3;
 }
 
-- (void)setActiveAccount:(id)a3
+- (void)setActiveAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   accountQueue = self->_accountQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_233535C2C;
   v7[3] = &unk_2789DE5B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = accountCopy;
+  selfCopy = self;
+  v6 = accountCopy;
   dispatch_async(accountQueue, v7);
 }
 
@@ -114,17 +114,17 @@
   return isEqualToNumber;
 }
 
-- (void)fetchActiveAccountWithCompletion:(id)a3
+- (void)fetchActiveAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accountQueue = self->_accountQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_233535E18;
   v7[3] = &unk_2789DE600;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accountQueue, v7);
 }
 
@@ -177,9 +177,9 @@
   return isManagedAppleID;
 }
 
-- (void)didChangeStoreAccount:(id)a3
+- (void)didChangeStoreAccount:(id)account
 {
-  if (objc_msgSend_iTunesAccountDidChangeForACAccountNotification_(MTAccountController, a2, a3, v3, v4))
+  if (objc_msgSend_iTunesAccountDidChangeForACAccountNotification_(MTAccountController, a2, account, v3, v4))
   {
     objc_msgSend__updateActiveAccount(self, v6, v7, v8, v9);
     if (objc_msgSend_isUserLoggedIn(self, v10, v11, v12, v13))
@@ -214,15 +214,15 @@
   dispatch_async(accountQueue, v14);
 }
 
-+ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)a3
++ (BOOL)iTunesAccountDidChangeForACAccountNotification:(id)notification
 {
-  v3 = a3;
-  v8 = objc_msgSend_userInfo(v3, v4, v5, v6, v7);
+  notificationCopy = notification;
+  v8 = objc_msgSend_userInfo(notificationCopy, v4, v5, v6, v7);
   v9 = *MEMORY[0x277CB8C90];
   v17 = objc_msgSend_objectForKeyedSubscript_(v8, v10, *MEMORY[0x277CB8C90], v11, v12);
   if (v17)
   {
-    v18 = objc_msgSend_userInfo(v3, v13, v14, v15, v16);
+    v18 = objc_msgSend_userInfo(notificationCopy, v13, v14, v15, v16);
     v22 = objc_msgSend_objectForKeyedSubscript_(v18, v19, v9, v20, v21);
     isEqualToString = objc_msgSend_isEqualToString_(v22, v23, *MEMORY[0x277CB8D58], v24, v25);
   }

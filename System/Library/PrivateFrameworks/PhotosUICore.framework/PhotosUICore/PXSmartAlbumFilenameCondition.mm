@@ -1,10 +1,10 @@
 @interface PXSmartAlbumFilenameCondition
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 @end
 
 @implementation PXSmartAlbumFilenameCondition
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:400];

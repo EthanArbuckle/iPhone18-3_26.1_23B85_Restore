@@ -1,9 +1,9 @@
 @interface NMSPodcastIdentifierSet
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPodcastIdentifierSet:(id)a3;
-- (NMSPodcastIdentifierSet)initWithDictionary:(id)a3;
-- (NMSPodcastIdentifierSet)initWithStoreID:(id)a3 feedURL:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPodcastIdentifierSet:(id)set;
+- (NMSPodcastIdentifierSet)initWithDictionary:(id)dictionary;
+- (NMSPodcastIdentifierSet)initWithStoreID:(id)d feedURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -11,34 +11,34 @@
 
 @implementation NMSPodcastIdentifierSet
 
-- (NMSPodcastIdentifierSet)initWithStoreID:(id)a3 feedURL:(id)a4
+- (NMSPodcastIdentifierSet)initWithStoreID:(id)d feedURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = NMSPodcastIdentifierSet;
   v9 = [(NMSPodcastIdentifierSet *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeID, a3);
-    objc_storeStrong(&v10->_feedURL, a4);
+    objc_storeStrong(&v9->_storeID, d);
+    objc_storeStrong(&v10->_feedURL, l);
   }
 
   return v10;
 }
 
-- (NMSPodcastIdentifierSet)initWithDictionary:(id)a3
+- (NMSPodcastIdentifierSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"storeID"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"storeID"];
   if ([v5 isEqualToNumber:&unk_286C8D778])
   {
 
     v5 = 0;
   }
 
-  v6 = [v4 objectForKey:@"feedURL"];
+  v6 = [dictionaryCopy objectForKey:@"feedURL"];
   if (![v6 length])
   {
 
@@ -54,8 +54,8 @@
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"storeID";
-  v3 = [(NMSPodcastIdentifierSet *)self storeID];
-  v4 = [v3 copy];
+  storeID = [(NMSPodcastIdentifierSet *)self storeID];
+  v4 = [storeID copy];
   v5 = v4;
   if (v4)
   {
@@ -69,8 +69,8 @@
 
   v14[1] = @"feedURL";
   v15[0] = v6;
-  v7 = [(NMSPodcastIdentifierSet *)self feedURL];
-  v8 = [v7 copy];
+  feedURL = [(NMSPodcastIdentifierSet *)self feedURL];
+  v8 = [feedURL copy];
   v9 = v8;
   v10 = &stru_286C836D8;
   if (v8)
@@ -86,20 +86,20 @@
   return v11;
 }
 
-- (BOOL)isEqualToPodcastIdentifierSet:(id)a3
+- (BOOL)isEqualToPodcastIdentifierSet:(id)set
 {
-  v4 = a3;
-  v5 = [(NMSPodcastIdentifierSet *)self storeID];
-  if (v5)
+  setCopy = set;
+  storeID = [(NMSPodcastIdentifierSet *)self storeID];
+  if (storeID)
   {
-    v6 = v5;
-    v7 = [v4 storeID];
+    v6 = storeID;
+    storeID2 = [setCopy storeID];
 
-    if (v7)
+    if (storeID2)
     {
-      v8 = [(NMSPodcastIdentifierSet *)self storeID];
-      v9 = [v4 storeID];
-      v10 = [v8 isEqualToNumber:v9];
+      storeID3 = [(NMSPodcastIdentifierSet *)self storeID];
+      storeID4 = [setCopy storeID];
+      v10 = [storeID3 isEqualToNumber:storeID4];
 LABEL_7:
       v14 = v10;
 
@@ -107,43 +107,43 @@ LABEL_7:
     }
   }
 
-  v11 = [(NMSPodcastIdentifierSet *)self feedURL];
-  if (v11)
+  feedURL = [(NMSPodcastIdentifierSet *)self feedURL];
+  if (feedURL)
   {
-    v12 = v11;
-    v13 = [v4 feedURL];
+    v12 = feedURL;
+    feedURL2 = [setCopy feedURL];
 
-    if (v13)
+    if (feedURL2)
     {
-      v8 = [(NMSPodcastIdentifierSet *)self feedURL];
-      v9 = [v4 feedURL];
-      v10 = [v8 isEqualToString:v9];
+      storeID3 = [(NMSPodcastIdentifierSet *)self feedURL];
+      storeID4 = [setCopy feedURL];
+      v10 = [storeID3 isEqualToString:storeID4];
       goto LABEL_7;
     }
   }
 
-  v15 = [(NMSPodcastIdentifierSet *)self storeID];
-  if (v15)
+  storeID5 = [(NMSPodcastIdentifierSet *)self storeID];
+  if (storeID5)
   {
     v16 = 0;
   }
 
   else
   {
-    v17 = [v4 storeID];
-    v16 = v17 == 0;
+    storeID6 = [setCopy storeID];
+    v16 = storeID6 == 0;
   }
 
-  v18 = [(NMSPodcastIdentifierSet *)self feedURL];
-  if (v18)
+  feedURL3 = [(NMSPodcastIdentifierSet *)self feedURL];
+  if (feedURL3)
   {
     v19 = 0;
   }
 
   else
   {
-    v20 = [v4 feedURL];
-    v19 = v20 == 0;
+    feedURL4 = [setCopy feedURL];
+    v19 = feedURL4 == 0;
   }
 
   v14 = v16 && v19;
@@ -152,10 +152,10 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -163,7 +163,7 @@ LABEL_15:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NMSPodcastIdentifierSet *)self isEqualToPodcastIdentifierSet:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NMSPodcastIdentifierSet *)self isEqualToPodcastIdentifierSet:equalCopy];
   }
 
   return v5;
@@ -171,8 +171,8 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(NMSPodcastIdentifierSet *)self storeID];
-  v3 = [v2 hash];
+  storeID = [(NMSPodcastIdentifierSet *)self storeID];
+  v3 = [storeID hash];
 
   return v3;
 }
@@ -183,18 +183,18 @@ LABEL_15:
   v9.receiver = self;
   v9.super_class = NMSPodcastIdentifierSet;
   v4 = [(NMSPodcastIdentifierSet *)&v9 description];
-  v5 = [(NMSPodcastIdentifierSet *)self storeID];
-  v6 = [(NMSPodcastIdentifierSet *)self feedURL];
-  v7 = [v3 stringWithFormat:@"%@ storeID <%@> feedURL <%@>", v4, v5, v6];
+  storeID = [(NMSPodcastIdentifierSet *)self storeID];
+  feedURL = [(NMSPodcastIdentifierSet *)self feedURL];
+  v7 = [v3 stringWithFormat:@"%@ storeID <%@> feedURL <%@>", v4, storeID, feedURL];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(NSNumber *)self->_storeID copyWithZone:?];
-  v6 = [(NSString *)self->_feedURL copyWithZone:a3];
-  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithStoreID:feedURL:", v5, v6}];
+  v6 = [(NSString *)self->_feedURL copyWithZone:zone];
+  v7 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithStoreID:feedURL:", v5, v6}];
 
   return v7;
 }

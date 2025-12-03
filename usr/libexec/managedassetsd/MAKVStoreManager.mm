@@ -1,57 +1,57 @@
 @interface MAKVStoreManager
 + (id)defaultManager;
-- (BOOL)dedupeCoreRX:(id)a3 store:(id)a4 attributes:(id)a5 error:(id *)a6;
-- (BOOL)deleteProfile:(id)a3 error:(id *)a4;
-- (BOOL)didReceiveKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8;
-- (BOOL)didReceiveKVSDataDelete:(id)a3 recordHandle:(id)a4 assetType:(unint64_t)a5 storeName:(id)a6 storeGroup:(id)a7 profileType:(unint64_t)a8;
-- (BOOL)didReceiveKVSDataZoneDelete:(id)a3 reason:(unint64_t)a4;
-- (BOOL)didSyncUpKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8;
-- (BOOL)didSyncUpKVSDataDelete:(id)a3 recordHandle:(id)a4 assetType:(unint64_t)a5 storeName:(id)a6 storeGroup:(id)a7 profileType:(unint64_t)a8;
-- (BOOL)fetchCoreRxLensData:(id)a3 accPayload:(id)a4 rxIdL:(int64_t)a5 rxIdR:(int64_t)a6 axisL:(int64_t)a7 axisR:(int64_t)a8 calRequiredL:(BOOL)a9 calRequiredR:(BOOL)a10 version:(unint64_t)a11 leftLensOnly:(BOOL)a12 rightLensOnly:(BOOL)a13 attributes:(id)a14 records:(id)a15 cloudSync:(BOOL)a16 store:(id)a17 recordUUIDOut:(id *)a18 error:(id *)a19;
-- (BOOL)queryNominalDataFor:(int64_t)a3 rxId2:(int64_t)a4 record:(id *)a5 record2:(id *)a6 error:(id *)a7;
-- (BOOL)removeStore:(id)a3 error:(id *)a4;
-- (BOOL)resetKVCloudStateWithError:(id *)a3;
-- (BOOL)resetKVCloudStateWithProfile:(id)a3 error:(id *)a4;
-- (BOOL)updateWithNominalData:(id)a3 accPayload:(id)a4 rxIdL:(int64_t)a5 rxIdR:(int64_t)a6 axisL:(int64_t)a7 axisR:(int64_t)a8 calRequiredL:(BOOL)a9 calRequiredR:(BOOL)a10 version:(unint64_t)a11 leftLensOnly:(BOOL)a12 rightLensOnly:(BOOL)a13 attributes:(id)a14 records:(id)a15 cloudSync:(BOOL)a16 store:(id)a17 needsCloudFetch:(BOOL *)a18 uuidOut:(id *)a19 error:(id *)a20;
+- (BOOL)dedupeCoreRX:(id)x store:(id)store attributes:(id)attributes error:(id *)error;
+- (BOOL)deleteProfile:(id)profile error:(id *)error;
+- (BOOL)didReceiveKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8;
+- (BOOL)didReceiveKVSDataDelete:(id)delete recordHandle:(id)handle assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType;
+- (BOOL)didReceiveKVSDataZoneDelete:(id)delete reason:(unint64_t)reason;
+- (BOOL)didSyncUpKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8;
+- (BOOL)didSyncUpKVSDataDelete:(id)delete recordHandle:(id)handle assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType;
+- (BOOL)fetchCoreRxLensData:(id)data accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)requiredL calRequiredR:(BOOL)self0 version:(unint64_t)self1 leftLensOnly:(BOOL)self2 rightLensOnly:(BOOL)self3 attributes:(id)self4 records:(id)self5 cloudSync:(BOOL)self6 store:(id)self7 recordUUIDOut:(id *)self8 error:(id *)self9;
+- (BOOL)queryNominalDataFor:(int64_t)for rxId2:(int64_t)id2 record:(id *)record record2:(id *)record2 error:(id *)error;
+- (BOOL)removeStore:(id)store error:(id *)error;
+- (BOOL)resetKVCloudStateWithError:(id *)error;
+- (BOOL)resetKVCloudStateWithProfile:(id)profile error:(id *)error;
+- (BOOL)updateWithNominalData:(id)data accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)requiredL calRequiredR:(BOOL)self0 version:(unint64_t)self1 leftLensOnly:(BOOL)self2 rightLensOnly:(BOOL)self3 attributes:(id)self4 records:(id)self5 cloudSync:(BOOL)self6 store:(id)self7 needsCloudFetch:(BOOL *)self8 uuidOut:(id *)self9 error:(id *)error;
 - (MAKVStoreManager)init;
-- (id)getStore:(id)a3 groupPath:(id)a4 profile:(id)a5 attributes:(id)a6 isCreateOp:(BOOL)a7 isBaseStore:(BOOL)a8 isNew:(BOOL *)a9 storeChain:(id *)a10 error:(id *)a11;
-- (id)getStoreChainFor:(id)a3 error:(id *)a4;
-- (id)openCoreRXDataSharingStoreAndCheckUpgrade:(id)a3 profile:(id)a4 attributes:(id)a5 groupDB:(id)a6 storeIdentifier:(id)a7 error:(id *)a8;
-- (id)openCoreRXUserStoreAndCheckUpgrade:(id)a3 profile:(id)a4 attributes:(id)a5 groupDB:(id)a6 storeIdentifier:(id)a7 error:(id *)a8;
-- (id)registerStore:(id)a3 isCreateOp:(BOOL)a4 storeChain:(id *)a5 error:(id *)a6;
-- (void)checkStoreForUploadWithOption:(unint64_t)a3 completionHandler:(id)a4;
-- (void)checkStoreForUploadWithOption:(unint64_t)a3 profile:(id)a4 completionHandler:(id)a5;
+- (id)getStore:(id)store groupPath:(id)path profile:(id)profile attributes:(id)attributes isCreateOp:(BOOL)op isBaseStore:(BOOL)baseStore isNew:(BOOL *)new storeChain:(id *)self0 error:(id *)self1;
+- (id)getStoreChainFor:(id)for error:(id *)error;
+- (id)openCoreRXDataSharingStoreAndCheckUpgrade:(id)upgrade profile:(id)profile attributes:(id)attributes groupDB:(id)b storeIdentifier:(id)identifier error:(id *)error;
+- (id)openCoreRXUserStoreAndCheckUpgrade:(id)upgrade profile:(id)profile attributes:(id)attributes groupDB:(id)b storeIdentifier:(id)identifier error:(id *)error;
+- (id)registerStore:(id)store isCreateOp:(BOOL)op storeChain:(id *)chain error:(id *)error;
+- (void)checkStoreForUploadWithOption:(unint64_t)option completionHandler:(id)handler;
+- (void)checkStoreForUploadWithOption:(unint64_t)option profile:(id)profile completionHandler:(id)handler;
 - (void)close;
 - (void)deleteAllStores;
-- (void)failedToDeleteKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 error:(id)a8;
-- (void)failedToDeleteKVSZone:(id)a3 error:(id)a4;
-- (void)failedToUploadKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8 error:(id)a9;
-- (void)unloadGroupDb:(id)a3;
+- (void)failedToDeleteKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType error:(id)error;
+- (void)failedToDeleteKVSZone:(id)zone error:(id)error;
+- (void)failedToUploadKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8 error:(id)error;
+- (void)unloadGroupDb:(id)db;
 @end
 
 @implementation MAKVStoreManager
 
-- (id)openCoreRXUserStoreAndCheckUpgrade:(id)a3 profile:(id)a4 attributes:(id)a5 groupDB:(id)a6 storeIdentifier:(id)a7 error:(id *)a8
+- (id)openCoreRXUserStoreAndCheckUpgrade:(id)upgrade profile:(id)profile attributes:(id)attributes groupDB:(id)b storeIdentifier:(id)identifier error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  upgradeCopy = upgrade;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  bCopy = b;
+  identifierCopy = identifier;
   v22 = 1;
   v18 = MAGenCoreRxUserFields();
-  v19 = [v16 upgradeTable:v13 fields:v18 attributes:v15 missingNewColumn:0 hasDeletedColumn:kMAKVCol_ckSyncState migrateData:&v22 error:a8];
+  v19 = [bCopy upgradeTable:upgradeCopy fields:v18 attributes:attributesCopy missingNewColumn:0 hasDeletedColumn:kMAKVCol_ckSyncState migrateData:&v22 error:error];
 
   if (v19)
   {
-    v20 = [[MAKVStore alloc] initWithName:v13 identifier:v17 profile:v14 db:v16 attributes:v15 error:a8];
+    v20 = [[MAKVStore alloc] initWithName:upgradeCopy identifier:identifierCopy profile:profileCopy db:bCopy attributes:attributesCopy error:error];
   }
 
   else
   {
     if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_ERROR))
     {
-      sub_100028CBC(v13, a8);
+      sub_100028CBC(upgradeCopy, error);
     }
 
     v20 = 0;
@@ -60,27 +60,27 @@
   return v20;
 }
 
-- (id)openCoreRXDataSharingStoreAndCheckUpgrade:(id)a3 profile:(id)a4 attributes:(id)a5 groupDB:(id)a6 storeIdentifier:(id)a7 error:(id *)a8
+- (id)openCoreRXDataSharingStoreAndCheckUpgrade:(id)upgrade profile:(id)profile attributes:(id)attributes groupDB:(id)b storeIdentifier:(id)identifier error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  upgradeCopy = upgrade;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  bCopy = b;
+  identifierCopy = identifier;
   v22 = 1;
   v18 = MAGenCoreRxDataSharingFields();
-  v19 = [v16 upgradeTable:v13 fields:v18 attributes:v15 missingNewColumn:kMARxUserCol_sn hasDeletedColumn:0 migrateData:&v22 error:a8];
+  v19 = [bCopy upgradeTable:upgradeCopy fields:v18 attributes:attributesCopy missingNewColumn:kMARxUserCol_sn hasDeletedColumn:0 migrateData:&v22 error:error];
 
   if (v19)
   {
-    v20 = [[MAKVStore alloc] initWithName:v13 identifier:v17 profile:v14 db:v16 attributes:v15 error:a8];
+    v20 = [[MAKVStore alloc] initWithName:upgradeCopy identifier:identifierCopy profile:profileCopy db:bCopy attributes:attributesCopy error:error];
   }
 
   else
   {
     if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_ERROR))
     {
-      sub_100028CBC(v13, a8);
+      sub_100028CBC(upgradeCopy, error);
     }
 
     v20 = 0;
@@ -89,7 +89,7 @@
   return v20;
 }
 
-- (BOOL)queryNominalDataFor:(int64_t)a3 rxId2:(int64_t)a4 record:(id *)a5 record2:(id *)a6 error:(id *)a7
+- (BOOL)queryNominalDataFor:(int64_t)for rxId2:(int64_t)id2 record:(id *)record record2:(id *)record2 error:(id *)error
 {
   v21 = 0;
   v13 = kMANominalCalibrationDataStore;
@@ -97,19 +97,19 @@
   v28 = kMAGroupKey;
   v29 = kMACoreRXNominalGroup;
   v15 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  v16 = [(MAKVStoreManager *)self getStore:v13 groupPath:v14 profile:0 attributes:v15 isCreateOp:0 isBaseStore:0 isNew:&v21 storeChain:0 error:a7];
+  v16 = [(MAKVStoreManager *)self getStore:v13 groupPath:v14 profile:0 attributes:v15 isCreateOp:0 isBaseStore:0 isNew:&v21 storeChain:0 error:error];
 
   if (!v16)
   {
-    if (!*a7)
+    if (!*error)
     {
-      *a7 = createManagedAssetError();
+      *error = createManagedAssetError();
     }
 
     v18 = off_100127CF0;
     if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_ERROR))
     {
-      v20 = *a7;
+      v20 = *error;
       *buf = 138412802;
       v23 = v13;
       v24 = 2112;
@@ -122,7 +122,7 @@
     goto LABEL_10;
   }
 
-  if (!sub_100027B7C(v16, a3, a5, a7) || (a4 & 0x8000000000000000) == 0 && !sub_100027B7C(v16, a4, a6, a7))
+  if (!sub_100027B7C(v16, for, record, error) || (id2 & 0x8000000000000000) == 0 && !sub_100027B7C(v16, id2, record2, error))
   {
 LABEL_10:
     v17 = 0;
@@ -135,13 +135,13 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)updateWithNominalData:(id)a3 accPayload:(id)a4 rxIdL:(int64_t)a5 rxIdR:(int64_t)a6 axisL:(int64_t)a7 axisR:(int64_t)a8 calRequiredL:(BOOL)a9 calRequiredR:(BOOL)a10 version:(unint64_t)a11 leftLensOnly:(BOOL)a12 rightLensOnly:(BOOL)a13 attributes:(id)a14 records:(id)a15 cloudSync:(BOOL)a16 store:(id)a17 needsCloudFetch:(BOOL *)a18 uuidOut:(id *)a19 error:(id *)a20
+- (BOOL)updateWithNominalData:(id)data accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)requiredL calRequiredR:(BOOL)self0 version:(unint64_t)self1 leftLensOnly:(BOOL)self2 rightLensOnly:(BOOL)self3 attributes:(id)self4 records:(id)self5 cloudSync:(BOOL)self6 store:(id)self7 needsCloudFetch:(BOOL *)self8 uuidOut:(id *)self9 error:(id *)error
 {
-  v90 = a3;
-  v89 = a4;
-  v93 = a14;
-  v25 = a15;
-  v87 = a17;
+  dataCopy = data;
+  payloadCopy = payload;
+  attributesCopy = attributes;
+  recordsCopy = records;
+  storeCopy = store;
   v110[0] = kMARxUserCol_owner;
   v111[0] = objc_opt_class();
   v110[1] = kMARxUserCol_sn;
@@ -151,12 +151,12 @@ LABEL_11:
   v110[3] = kMARxUserCol_issueDate;
   v111[3] = objc_opt_class();
   v92 = [NSDictionary dictionaryWithObjects:v111 forKeys:v110 count:4];
-  v88 = v25;
-  if ([v25 count] == 1)
+  v88 = recordsCopy;
+  if ([recordsCopy count] == 1)
   {
-    v26 = [v25 objectAtIndexedSubscript:0];
+    v26 = [recordsCopy objectAtIndexedSubscript:0];
     v27 = [v26 objectForKeyedSubscript:kMAKVCol_uuid];
-    *a19 = v27;
+    *out = v27;
     if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_DEBUG))
     {
       sub_100028E0C();
@@ -170,24 +170,24 @@ LABEL_11:
     v32 = [v28 isEqual:v31];
 
     v91 = v26;
-    if (v30 & a12 & 1) != 0 || (v30 & v32)
+    if (v30 & only & 1) != 0 || (v30 & v32)
     {
       goto LABEL_8;
     }
 
     if (v32)
     {
-      if (a13)
+      if (lensOnly)
       {
 LABEL_8:
-        *a18 = 0;
+        *fetch = 0;
         v33 = off_100127CF0;
         v34 = 1;
         if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v35 = v90;
-          v109 = v90;
+          v35 = dataCopy;
+          v109 = dataCopy;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "factory data is already fetched for: %@, skipping the fetching", buf, 0xCu);
           v36 = 0;
           v37 = 0;
@@ -199,11 +199,11 @@ LABEL_8:
           v36 = 0;
           v37 = 0;
           v38 = 0;
-          v35 = v90;
+          v35 = dataCopy;
         }
 
-        v45 = v89;
-        v46 = v87;
+        v45 = payloadCopy;
+        v46 = storeCopy;
         goto LABEL_89;
       }
 
@@ -235,16 +235,16 @@ LABEL_8:
   v103[1] = 3221225472;
   v103[2] = sub_100028AA8;
   v103[3] = &unk_1001162B8;
-  v41 = v93;
+  v41 = attributesCopy;
   v104 = v41;
   v42 = v40;
   v105 = v42;
   [v92 enumerateKeysAndObjectsUsingBlock:v103];
-  if ((v39 | a12) & 1) != 0 || ((v30 | a13))
+  if ((v39 | only) & 1) != 0 || ((v30 | lensOnly))
   {
-    if ((v30 | a13))
+    if ((v30 | lensOnly))
     {
-      if ((v39 | a12))
+      if ((v39 | only))
       {
         v38 = 0;
         v37 = 0;
@@ -254,7 +254,7 @@ LABEL_8:
 
       v96 = 0;
       v97 = 0;
-      v43 = [(MAKVStoreManager *)self queryNominalDataFor:a6 rxId2:-1 record:&v97 record2:0 error:&v96];
+      v43 = [(MAKVStoreManager *)self queryNominalDataFor:r rxId2:-1 record:&v97 record2:0 error:&v96];
       v86 = v97;
       v44 = v96;
       v38 = v44;
@@ -265,7 +265,7 @@ LABEL_8:
     {
       v98 = 0;
       v99 = 0;
-      v43 = [(MAKVStoreManager *)self queryNominalDataFor:a5 rxId2:-1 record:&v99 record2:0 error:&v98];
+      v43 = [(MAKVStoreManager *)self queryNominalDataFor:l rxId2:-1 record:&v99 record2:0 error:&v98];
       v37 = v99;
       v44 = v98;
       v38 = v44;
@@ -278,7 +278,7 @@ LABEL_8:
     v101 = 0;
     v102 = 0;
     v100 = 0;
-    v43 = [(MAKVStoreManager *)self queryNominalDataFor:a5 rxId2:a6 record:&v102 record2:&v101 error:&v100];
+    v43 = [(MAKVStoreManager *)self queryNominalDataFor:l rxId2:r record:&v102 record2:&v101 error:&v100];
     v37 = v102;
     v86 = v101;
     v44 = v100;
@@ -288,41 +288,41 @@ LABEL_8:
   if (v43)
   {
     v81 = v44;
-    if ((a5 & 0x8000000000000000) == 0)
+    if ((l & 0x8000000000000000) == 0)
     {
-      v47 = [NSNumber numberWithInteger:a5];
+      v47 = [NSNumber numberWithInteger:l];
       [v42 setObject:v47 forKeyedSubscript:kMARxUserCol_idRXL];
     }
 
-    if ((a6 & 0x8000000000000000) == 0)
+    if ((r & 0x8000000000000000) == 0)
     {
-      v48 = [NSNumber numberWithInteger:a6];
+      v48 = [NSNumber numberWithInteger:r];
       [v42 setObject:v48 forKeyedSubscript:kMARxUserCol_idRXR];
     }
 
-    if ((a7 & 0x8000000000000000) == 0)
+    if ((axisL & 0x8000000000000000) == 0)
     {
-      v49 = [NSNumber numberWithInteger:a7];
+      v49 = [NSNumber numberWithInteger:axisL];
       [v42 setObject:v49 forKeyedSubscript:kMARxUserCol_axisL];
     }
 
-    v82 = a9;
-    if ((a8 & 0x8000000000000000) == 0)
+    requiredLCopy = requiredL;
+    if ((axisR & 0x8000000000000000) == 0)
     {
       v50 = [NSNumber numberWithInteger:?];
       [v42 setObject:v50 forKeyedSubscript:kMARxUserCol_axisR];
     }
 
-    v51 = a10;
-    if (!a13)
+    requiredRCopy = requiredR;
+    if (!lensOnly)
     {
-      v52 = [NSNumber numberWithBool:a9];
+      v52 = [NSNumber numberWithBool:requiredL];
       [v42 setObject:v52 forKeyedSubscript:kMARxUserCol_facCalRequiredLeft];
     }
 
-    if (!a12)
+    if (!only)
     {
-      v53 = [NSNumber numberWithBool:a10];
+      v53 = [NSNumber numberWithBool:requiredR];
       [v42 setObject:v53 forKeyedSubscript:kMARxUserCol_facCalRequiredRight];
     }
 
@@ -348,9 +348,9 @@ LABEL_49:
             }
 
             v34 = 0;
-            v45 = v89;
-            v35 = v90;
-            v46 = v87;
+            v45 = payloadCopy;
+            v35 = dataCopy;
+            v46 = storeCopy;
             goto LABEL_86;
           }
 
@@ -365,7 +365,7 @@ LABEL_49:
             _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "calibrationDataRight by input: %@", buf, 0xCu);
           }
 
-          v51 = 0;
+          requiredRCopy = 0;
         }
 
         else
@@ -389,30 +389,30 @@ LABEL_49:
       }
 
       v57 = v84;
-      if (a12)
+      if (only)
       {
         v69 = kMARxUserCol_accPayloadLeft;
 
         v57 = v69;
       }
 
-      else if (a13)
+      else if (lensOnly)
       {
         v70 = kMARxUserCol_accPayloadRight;
 
         v57 = v70;
-        v82 = v51;
+        requiredLCopy = requiredRCopy;
       }
 
       else
       {
-        v82 |= v51;
+        requiredLCopy |= requiredRCopy;
       }
 
-      v45 = v89;
-      v35 = v90;
-      v46 = v87;
-      if (!v89 && v82)
+      v45 = payloadCopy;
+      v35 = dataCopy;
+      v46 = storeCopy;
+      if (!payloadCopy && requiredLCopy)
       {
         v38 = createManagedAssetError();
 
@@ -421,9 +421,9 @@ LABEL_85:
         goto LABEL_86;
       }
 
-      if (v89)
+      if (payloadCopy)
       {
-        [v42 setObject:v89 forKeyedSubscript:v57];
+        [v42 setObject:payloadCopy forKeyedSubscript:v57];
       }
 
       if (v91)
@@ -437,13 +437,13 @@ LABEL_85:
         }
 
         v94 = v81;
-        v72 = [v87 updateFor:v71 value:v42 attributes:0 error:&v94];
+        v72 = [storeCopy updateFor:v71 value:v42 attributes:0 error:&v94];
         v38 = v94;
 
         if (v72)
         {
 LABEL_76:
-          *a18 = v82;
+          *fetch = requiredLCopy;
           v34 = 1;
           goto LABEL_86;
         }
@@ -453,14 +453,14 @@ LABEL_76:
       {
         v85 = v57;
         v74 = +[NSUUID UUID];
-        v75 = [v74 UUIDString];
+        uUIDString = [v74 UUIDString];
 
-        v76 = v75;
-        v27 = v75;
-        *a19 = v75;
-        [v42 setObject:v75 forKeyedSubscript:kMAKVCol_uuid];
-        [v42 setObject:v90 forKeyedSubscript:kMARxUserCol_name];
-        v77 = [NSNumber numberWithUnsignedInteger:a11];
+        v76 = uUIDString;
+        v27 = uUIDString;
+        *out = uUIDString;
+        [v42 setObject:uUIDString forKeyedSubscript:kMAKVCol_uuid];
+        [v42 setObject:dataCopy forKeyedSubscript:kMARxUserCol_name];
+        v77 = [NSNumber numberWithUnsignedInteger:version];
         [v42 setObject:v77 forKeyedSubscript:kMARxUserCol_version];
 
         if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_DEBUG))
@@ -469,7 +469,7 @@ LABEL_76:
         }
 
         v95 = v81;
-        v78 = [v87 putDictionay:v42 attributes:0 error:&v95];
+        v78 = [storeCopy putDictionay:v42 attributes:0 error:&v95];
         v38 = v95;
 
         v57 = v85;
@@ -519,7 +519,7 @@ LABEL_76:
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "calibrationDataLeft by input: %@", buf, 0xCu);
       }
 
-      v82 = 0;
+      requiredLCopy = 0;
 LABEL_48:
       v60 = [v37 objectForKeyedSubscript:@"airgapP2"];
       [v42 setObject:v60 forKeyedSubscript:kMARxUserCol_airgapLeft];
@@ -541,7 +541,7 @@ LABEL_48:
 LABEL_43:
   if (os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_ERROR))
   {
-    v35 = v90;
+    v35 = dataCopy;
     sub_1000290C8();
     v34 = 0;
     goto LABEL_45;
@@ -549,16 +549,16 @@ LABEL_43:
 
 LABEL_44:
   v34 = 0;
-  v35 = v90;
+  v35 = dataCopy;
 LABEL_45:
-  v45 = v89;
-  v46 = v87;
+  v45 = payloadCopy;
+  v46 = storeCopy;
   v57 = v84;
 LABEL_86:
   if (v38)
   {
     v79 = v38;
-    *a20 = v38;
+    *error = v38;
   }
 
   v36 = v86;
@@ -567,16 +567,16 @@ LABEL_89:
   return v34;
 }
 
-- (BOOL)fetchCoreRxLensData:(id)a3 accPayload:(id)a4 rxIdL:(int64_t)a5 rxIdR:(int64_t)a6 axisL:(int64_t)a7 axisR:(int64_t)a8 calRequiredL:(BOOL)a9 calRequiredR:(BOOL)a10 version:(unint64_t)a11 leftLensOnly:(BOOL)a12 rightLensOnly:(BOOL)a13 attributes:(id)a14 records:(id)a15 cloudSync:(BOOL)a16 store:(id)a17 recordUUIDOut:(id *)a18 error:(id *)a19
+- (BOOL)fetchCoreRxLensData:(id)data accPayload:(id)payload rxIdL:(int64_t)l rxIdR:(int64_t)r axisL:(int64_t)axisL axisR:(int64_t)axisR calRequiredL:(BOOL)requiredL calRequiredR:(BOOL)self0 version:(unint64_t)self1 leftLensOnly:(BOOL)self2 rightLensOnly:(BOOL)self3 attributes:(id)self4 records:(id)self5 cloudSync:(BOOL)self6 store:(id)self7 recordUUIDOut:(id *)self8 error:(id *)self9
 {
   v37[0] = 0;
   v35 = 0;
   v36 = 0;
-  LOBYTE(v29) = a16;
-  v20 = a3;
-  LOWORD(v28) = __PAIR16__(a13, a12);
-  LOWORD(v27) = __PAIR16__(a10, a9);
-  v21 = [MAKVStoreManager updateWithNominalData:"updateWithNominalData:accPayload:rxIdL:rxIdR:axisL:axisR:calRequiredL:calRequiredR:version:leftLensOnly:rightLensOnly:attributes:records:cloudSync:store:needsCloudFetch:uuidOut:error:" accPayload:v20 rxIdL:a4 rxIdR:a5 axisL:a6 axisR:a7 calRequiredL:a8 calRequiredR:v27 version:a11 leftLensOnly:v28 rightLensOnly:a14 attributes:a15 records:v29 cloudSync:a17 store:v37 needsCloudFetch:&v36 uuidOut:&v35 error:?];
+  LOBYTE(v29) = sync;
+  dataCopy = data;
+  LOWORD(v28) = __PAIR16__(lensOnly, only);
+  LOWORD(v27) = __PAIR16__(requiredR, requiredL);
+  v21 = [MAKVStoreManager updateWithNominalData:"updateWithNominalData:accPayload:rxIdL:rxIdR:axisL:axisR:calRequiredL:calRequiredR:version:leftLensOnly:rightLensOnly:attributes:records:cloudSync:store:needsCloudFetch:uuidOut:error:" accPayload:dataCopy rxIdL:payload rxIdR:l axisL:r axisR:axisL calRequiredL:axisR calRequiredR:v27 version:version leftLensOnly:v28 rightLensOnly:attributes attributes:records records:v29 cloudSync:store store:v37 needsCloudFetch:&v36 uuidOut:&v35 error:?];
   v22 = v36;
   v23 = v35;
   if (!v21 && os_log_type_enabled(off_100127CF0, OS_LOG_TYPE_ERROR))
@@ -585,24 +585,24 @@ LABEL_89:
   }
 
   v24 = v22;
-  *a18 = v22;
+  *out = v22;
   v25 = v23;
-  *a19 = v23;
+  *error = v23;
 
   return v21;
 }
 
-- (void)unloadGroupDb:(id)a3
+- (void)unloadGroupDb:(id)db
 {
-  v4 = [(NSMutableDictionary *)self->_dbs objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_dbs objectForKeyedSubscript:db];
   if (v4)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(NSMutableDictionary *)self->_stores allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allKeys = [(NSMutableDictionary *)self->_stores allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -613,7 +613,7 @@ LABEL_89:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -626,15 +626,15 @@ LABEL_89:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
     }
 
     dbs = self->_dbs;
-    v14 = [v4 identifier];
-    [(NSMutableDictionary *)dbs removeObjectForKey:v14];
+    identifier = [v4 identifier];
+    [(NSMutableDictionary *)dbs removeObjectForKey:identifier];
 
     [v4 close];
   }
@@ -646,7 +646,7 @@ LABEL_89:
   block[1] = 3221225472;
   block[2] = sub_1000293C4;
   block[3] = &unk_100115D08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100129428 != -1)
   {
     dispatch_once(&qword_100129428, block);
@@ -670,13 +670,13 @@ LABEL_89:
     notificationEngine = v2->_notificationEngine;
     v2->_notificationEngine = v5;
 
-    v7 = [v4 marootPath];
-    v8 = [v4 maUsersPath];
+    marootPath = [v4 marootPath];
+    maUsersPath = [v4 maUsersPath];
     maUsersPath = v2->_maUsersPath;
-    v2->_maUsersPath = v8;
+    v2->_maUsersPath = maUsersPath;
 
     v26 = 0;
-    v10 = [MAStorage ensureDirectoryExists:"kvStores/" parent:v7 fileMgr:v3 error:&v26];
+    v10 = [MAStorage ensureDirectoryExists:"kvStores/" parent:marootPath fileMgr:v3 error:&v26];
     v11 = v26;
     topDir = v2->_topDir;
     v2->_topDir = v10;
@@ -742,22 +742,22 @@ LABEL_89:
   dispatch_sync(serialQueue, block);
 }
 
-- (BOOL)deleteProfile:(id)a3 error:(id *)a4
+- (BOOL)deleteProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%@%@/kvStore", self->_maUsersPath, v6];
+  profileCopy = profile;
+  profileCopy = [NSString stringWithFormat:@"%@%@/kvStore", self->_maUsersPath, profileCopy];
   v8 = +[NSFileManager defaultManager];
-  if ([v8 fileExistsAtPath:v7])
+  if ([v8 fileExistsAtPath:profileCopy])
   {
     v9 = off_100127CF8;
     if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = profileCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "deleting profile %@", buf, 0xCu);
     }
 
-    v10 = [v6 stringByAppendingString:@"$"];
+    v10 = [profileCopy stringByAppendingString:@"$"];
     serialQueue = self->_serialQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -767,7 +767,7 @@ LABEL_89:
     v16 = v10;
     v12 = v10;
     dispatch_sync(serialQueue, block);
-    v13 = [v8 removeItemAtPath:v7 error:a4];
+    v13 = [v8 removeItemAtPath:profileCopy error:error];
   }
 
   else
@@ -789,34 +789,34 @@ LABEL_89:
   dispatch_sync(serialQueue, block);
 }
 
-- (id)getStore:(id)a3 groupPath:(id)a4 profile:(id)a5 attributes:(id)a6 isCreateOp:(BOOL)a7 isBaseStore:(BOOL)a8 isNew:(BOOL *)a9 storeChain:(id *)a10 error:(id *)a11
+- (id)getStore:(id)store groupPath:(id)path profile:(id)profile attributes:(id)attributes isCreateOp:(BOOL)op isBaseStore:(BOOL)baseStore isNew:(BOOL *)new storeChain:(id *)self0 error:(id *)self1
 {
-  v11 = a7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  if (v18)
+  opCopy = op;
+  storeCopy = store;
+  pathCopy = path;
+  profileCopy = profile;
+  attributesCopy = attributes;
+  if (profileCopy)
   {
-    v20 = [NSString stringWithFormat:@"%@%@/kvStore/%@.sqlite", self->_maUsersPath, v18, v17];
-    v21 = [NSString stringWithFormat:@"%@$%@", v18, v17];
+    pathCopy = [NSString stringWithFormat:@"%@%@/kvStore/%@.sqlite", self->_maUsersPath, profileCopy, pathCopy];
+    pathCopy2 = [NSString stringWithFormat:@"%@$%@", profileCopy, pathCopy];
     v22 = 0;
   }
 
   else
   {
-    v20 = [qword_100129438 objectForKeyedSubscript:v17];
-    v22 = v20 != 0;
-    if (!v20)
+    pathCopy = [qword_100129438 objectForKeyedSubscript:pathCopy];
+    v22 = pathCopy != 0;
+    if (!pathCopy)
     {
-      v20 = [NSString stringWithFormat:@"%@%@.sqlite", self->_topDir, v17];
+      pathCopy = [NSString stringWithFormat:@"%@%@.sqlite", self->_topDir, pathCopy];
     }
 
-    v21 = v17;
+    pathCopy2 = pathCopy;
   }
 
-  v51 = [NSString stringWithFormat:@"%@.sqlite/%@", v21, v16];
-  v52 = v21;
+  storeCopy = [NSString stringWithFormat:@"%@.sqlite/%@", pathCopy2, storeCopy];
+  v52 = pathCopy2;
   v49 = v22;
   v95 = 0;
   v96 = &v95;
@@ -846,33 +846,33 @@ LABEL_89:
   v76 = sub_10002A804;
   v77 = sub_10002A814;
   v78 = 0;
-  v23 = [v19 objectForKeyedSubscript:kMAGroupKey];
+  v23 = [attributesCopy objectForKeyedSubscript:kMAGroupKey];
   v24 = kMACoreRXUserGroup;
-  v48 = v18;
+  v48 = profileCopy;
   if ([kMACoreRXUserGroup isEqual:v23])
   {
-    v25 = [kMAUserCalibrationDataStore isEqualToString:v16];
-    v26 = v19;
-    v27 = v11;
+    v25 = [kMAUserCalibrationDataStore isEqualToString:storeCopy];
+    v26 = attributesCopy;
+    v27 = opCopy;
   }
 
   else
   {
-    v26 = v19;
-    v27 = v11;
+    v26 = attributesCopy;
+    v27 = opCopy;
     v25 = 0;
   }
 
   v47 = v23;
   if ([v24 isEqual:v23])
   {
-    v28 = [kMARXDataSharingStore isEqualToString:v16];
-    v29 = v17;
+    v28 = [kMARXDataSharingStore isEqualToString:storeCopy];
+    v29 = pathCopy;
   }
 
   else
   {
-    v29 = v17;
+    v29 = pathCopy;
     v28 = 0;
   }
 
@@ -880,11 +880,11 @@ LABEL_89:
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v102 = v20;
+    v102 = pathCopy;
     v103 = 2112;
     v104 = v52;
     v105 = 2112;
-    v106 = v51;
+    v106 = storeCopy;
     _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "dbFile:%@ db:%@ store:%@", buf, 0x20u);
   }
 
@@ -897,31 +897,31 @@ LABEL_89:
   block[4] = self;
   v46 = v52;
   v55 = v46;
-  v32 = v20;
+  v32 = pathCopy;
   v56 = v32;
   v66 = ((v27 | v25 | v28) & 1) == 0;
   v67 = v49;
-  v68 = a8;
+  baseStoreCopy = baseStore;
   v53 = v26;
   v57 = v53;
   v62 = &v83;
   v63 = &v79;
   v64 = &v89;
-  v33 = v51;
+  v33 = storeCopy;
   v58 = v33;
   v69 = v25;
-  v34 = v16;
+  v34 = storeCopy;
   v59 = v34;
   v35 = v48;
   v70 = v28;
-  v71 = a10 != 0;
+  v71 = chain != 0;
   v60 = v35;
   v65 = &v73;
   v72 = v27;
   dispatch_sync(serialQueue, block);
-  if (a10)
+  if (chain)
   {
-    *a10 = v74[5];
+    *chain = v74[5];
   }
 
   if (*(v80 + 24) == 1)
@@ -941,7 +941,7 @@ LABEL_89:
     v38 = v37;
 LABEL_21:
     v39 = 0;
-    *a11 = v38;
+    *error = v38;
     goto LABEL_30;
   }
 
@@ -956,19 +956,19 @@ LABEL_27:
       goto LABEL_30;
     }
 
-    if (v27 || ([v40 tableExists:v34 error:a11] & 1) != 0)
+    if (v27 || ([v40 tableExists:v34 error:error] & 1) != 0)
     {
       v42 = [MAKVStore alloc];
-      v43 = [(MAKVStore *)v42 initWithName:v34 identifier:v33 profile:v35 db:v96[5] attributes:v53 error:a11];
+      v43 = [(MAKVStore *)v42 initWithName:v34 identifier:v33 profile:v35 db:v96[5] attributes:v53 error:error];
       v44 = v90[5];
       v90[5] = v43;
 
-      *a9 = 1;
+      *new = 1;
       v41 = v90[5];
       goto LABEL_27;
     }
 
-    if (!*a11)
+    if (!*error)
     {
       v38 = createManagedAssetError();
       goto LABEL_21;
@@ -988,9 +988,9 @@ LABEL_30:
   return v39;
 }
 
-- (id)registerStore:(id)a3 isCreateOp:(BOOL)a4 storeChain:(id *)a5 error:(id *)a6
+- (id)registerStore:(id)store isCreateOp:(BOOL)op storeChain:(id *)chain error:(id *)error
 {
-  v10 = a3;
+  storeCopy = store;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -1009,7 +1009,7 @@ LABEL_30:
   v27 = sub_10002A804;
   v28 = sub_10002A814;
   v29 = 0;
-  v11 = [v10 identifier];
+  identifier = [storeCopy identifier];
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEBUG))
   {
     sub_10002E79C();
@@ -1022,18 +1022,18 @@ LABEL_30:
   block[3] = &unk_100116308;
   v20 = &v36;
   block[4] = self;
-  v13 = v11;
+  v13 = identifier;
   v18 = v13;
   v21 = &v24;
-  v14 = v10;
+  v14 = storeCopy;
   v19 = v14;
   v22 = &v30;
-  v23 = a4;
+  opCopy = op;
   dispatch_sync(serialQueue, block);
-  *a6 = v31[5];
-  if (a5)
+  *error = v31[5];
+  if (chain)
   {
-    *a5 = v25[5];
+    *chain = v25[5];
   }
 
   v15 = v37[5];
@@ -1046,9 +1046,9 @@ LABEL_30:
   return v15;
 }
 
-- (id)getStoreChainFor:(id)a3 error:(id *)a4
+- (id)getStoreChainFor:(id)for error:(id *)error
 {
-  v6 = a3;
+  forCopy = for;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1066,12 +1066,12 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = sub_10002B2C4;
   block[3] = &unk_100116330;
-  v12 = v6;
+  v12 = forCopy;
   v13 = &v21;
   v14 = &v15;
-  v8 = v6;
+  v8 = forCopy;
   dispatch_sync(serialQueue, block);
-  *a4 = v16[5];
+  *error = v16[5];
   v9 = v22[5];
 
   _Block_object_dispose(&v15, 8);
@@ -1080,9 +1080,9 @@ LABEL_30:
   return v9;
 }
 
-- (BOOL)removeStore:(id)a3 error:(id *)a4
+- (BOOL)removeStore:(id)store error:(id *)error
 {
-  v6 = a3;
+  storeCopy = store;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1095,69 +1095,69 @@ LABEL_30:
   block[2] = sub_10002B460;
   block[3] = &unk_100116358;
   block[4] = self;
-  v11 = v6;
+  v11 = storeCopy;
   v12 = &v13;
-  v8 = v6;
+  v8 = storeCopy;
   dispatch_sync(serialQueue, block);
-  *a4 = v14[5];
-  LOBYTE(a4) = v14[5] == 0;
+  *error = v14[5];
+  LOBYTE(error) = v14[5] == 0;
 
   _Block_object_dispose(&v13, 8);
-  return a4;
+  return error;
 }
 
-- (BOOL)didReceiveKVSDataDelete:(id)a3 recordHandle:(id)a4 assetType:(unint64_t)a5 storeName:(id)a6 storeGroup:(id)a7 profileType:(unint64_t)a8
+- (BOOL)didReceiveKVSDataDelete:(id)delete recordHandle:(id)handle assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  deleteCopy = delete;
+  handleCopy = handle;
+  nameCopy = name;
+  groupCopy = group;
   v17 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v63 = v13;
+    v63 = deleteCopy;
     v64 = 2112;
-    v65 = v15;
+    v65 = nameCopy;
     v66 = 2112;
-    v67 = v16;
+    v67 = groupCopy;
     v68 = 2048;
-    v69 = a8;
+    profileTypeCopy = profileType;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "KVSData delete sync down, recordName:%@ store:%@ group:%@ profileType:%lu", buf, 0x2Au);
   }
 
   v53 = 0;
   v60[0] = kMAGroupKey;
   v60[1] = kMAKVStoreOptionsKey;
-  v61[0] = v16;
+  v61[0] = groupCopy;
   v61[1] = &off_10011DC70;
   v18 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:2];
   v51 = 0;
   v52 = 0;
-  v19 = sub_10002BBF0(a8, &v52, &v51);
+  v19 = sub_10002BBF0(profileType, &v52, &v51);
   v20 = v52;
   v21 = v51;
   v22 = v21;
   if (v19)
   {
     v50 = v21;
-    v23 = [(MAKVStoreManager *)self getStore:v15 groupPath:v16 profile:v20 attributes:v18 isCreateOp:0 isBaseStore:0 isNew:&v53 storeChain:0 error:&v50];
+    v23 = [(MAKVStoreManager *)self getStore:nameCopy groupPath:groupCopy profile:v20 attributes:v18 isCreateOp:0 isBaseStore:0 isNew:&v53 storeChain:0 error:&v50];
     v24 = v50;
 
     v25 = off_100127CF8;
     v26 = os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO);
     if (v23)
     {
-      v45 = v14;
+      v45 = handleCopy;
       if (v26)
       {
         *buf = 138412290;
-        v63 = v13;
+        v63 = deleteCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Deleting local record for KVSData delete sync down, recordName:%@", buf, 0xCu);
       }
 
       v58 = kMAKVCol_recordName;
-      v59 = v13;
+      v59 = deleteCopy;
       v27 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
       v49 = v24;
       v28 = [v23 deleteFor:v27 attributes:v18 error:&v49];
@@ -1169,9 +1169,9 @@ LABEL_30:
         if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v63 = v15;
+          v63 = nameCopy;
           v64 = 2112;
-          v65 = v13;
+          v65 = deleteCopy;
           v66 = 2112;
           v67 = v22;
           _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "KVS store to be deleted failed to be deleted, store: %@ recordName: %@ with error=%@", buf, 0x20u);
@@ -1181,21 +1181,21 @@ LABEL_30:
         goto LABEL_21;
       }
 
-      v14 = v45;
+      handleCopy = v45;
       if (!v45)
       {
         v35 = 1;
         goto LABEL_32;
       }
 
-      v42 = [v23 recordHandleField];
-      v56 = v42;
+      recordHandleField = [v23 recordHandleField];
+      v56 = recordHandleField;
       v57 = v45;
       v29 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-      v30 = [v23 recordHandleField];
+      recordHandleField2 = [v23 recordHandleField];
       v47 = v22;
       v48 = 0;
-      v40 = [v23 queryForColumn:v29 column:v30 attributes:v18 values:&v48 error:&v47];
+      v40 = [v23 queryForColumn:v29 column:recordHandleField2 attributes:v18 values:&v48 error:&v47];
       v31 = v48;
       v44 = v47;
 
@@ -1213,8 +1213,8 @@ LABEL_30:
         }
 
         v43 = v31;
-        v41 = [v23 recordHandleField];
-        v54 = v41;
+        recordHandleField3 = [v23 recordHandleField];
+        v54 = recordHandleField3;
         v55 = v45;
         v32 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v46 = v44;
@@ -1229,7 +1229,7 @@ LABEL_27:
 
           v35 = 1;
 LABEL_21:
-          v14 = v45;
+          handleCopy = v45;
           goto LABEL_32;
         }
 
@@ -1237,14 +1237,14 @@ LABEL_21:
         if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v63 = v15;
+          v63 = nameCopy;
           v64 = 2112;
-          v65 = v13;
+          v65 = deleteCopy;
           v66 = 2112;
-          v14 = v45;
+          handleCopy = v45;
           v67 = v45;
           v68 = 2112;
-          v69 = v22;
+          profileTypeCopy = v22;
           _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Failed to delete by recordHandle after delete with recordName, store: %@ recordName: %@ recordHandle: %@ with error=%@", buf, 0x2Au);
           v24 = v22;
         }
@@ -1252,7 +1252,7 @@ LABEL_21:
         else
         {
           v24 = v34;
-          v14 = v45;
+          handleCopy = v45;
         }
       }
 
@@ -1263,22 +1263,22 @@ LABEL_21:
         if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v63 = v15;
+          v63 = nameCopy;
           v64 = 2112;
-          v65 = v13;
+          v65 = deleteCopy;
           v66 = 2112;
           v24 = v44;
-          v14 = v45;
+          handleCopy = v45;
           v67 = v45;
           v68 = 2112;
-          v69 = v44;
+          profileTypeCopy = v44;
           _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Failed to query by recordHandle after delete with recordName, store: %@ recordName: %@ recordHandle: %@ with error=%@", buf, 0x2Au);
         }
 
         else
         {
           v24 = v44;
-          v14 = v45;
+          handleCopy = v45;
         }
       }
 
@@ -1288,7 +1288,7 @@ LABEL_21:
     else if (v26)
     {
       *buf = 138412290;
-      v63 = v13;
+      v63 = deleteCopy;
       v35 = 1;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "KVS store to be deleted does not exist, recordName: %@", buf, 0xCu);
       v23 = 0;
@@ -1311,47 +1311,47 @@ LABEL_32:
   return v35;
 }
 
-- (BOOL)didReceiveKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8
+- (BOOL)didReceiveKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  nameCopy = name;
+  groupCopy = group;
   v16 = a8;
   v17 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v46 = v13;
+    v46 = dataCopy;
     v47 = 2112;
-    v48 = v14;
+    v48 = nameCopy;
     v49 = 2112;
-    v50 = v15;
+    v50 = groupCopy;
     v51 = 2048;
-    v52 = a7;
+    profileTypeCopy = profileType;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "didReceiveKVSData recordName:%@ storeName:%@ group:%@ profileType:%lu", buf, 0x2Au);
   }
 
-  v37 = v13;
+  v37 = dataCopy;
   buf[0] = 0;
   v43 = kMAGroupKey;
-  v44 = v15;
+  v44 = groupCopy;
   v18 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   v40 = 0;
   v41 = 0;
-  v19 = sub_10002BBF0(a7, &v41, &v40);
+  v19 = sub_10002BBF0(profileType, &v41, &v40);
   v20 = v41;
   v21 = v40;
   v22 = v21;
   if (v19)
   {
     v39 = v21;
-    v23 = [(MAKVStoreManager *)self getStore:v14 groupPath:v15 profile:v20 attributes:v18 isCreateOp:0 isBaseStore:0 isNew:buf storeChain:0 error:&v39];
+    v23 = [(MAKVStoreManager *)self getStore:nameCopy groupPath:groupCopy profile:v20 attributes:v18 isCreateOp:0 isBaseStore:0 isNew:buf storeChain:0 error:&v39];
     v24 = v39;
 
     if ([v23 cloudSync])
     {
       v35 = v16;
-      v36 = v14;
+      v36 = nameCopy;
       v38 = 0;
       v25 = [(MAKVStoreManager *)self dedupeCoreRX:v16 store:v23 attributes:v18 error:&v38];
       v26 = v38;
@@ -1362,17 +1362,17 @@ LABEL_32:
 
       [(MANotificationEngine *)self->_notificationEngine postNotificationWheniCloudSyncedDown];
       notificationEngine = self->_notificationEngine;
-      v27 = [v23 name];
-      v42 = v27;
+      name = [v23 name];
+      v42 = name;
       v28 = 1;
       v29 = [NSArray arrayWithObjects:&v42 count:1];
       [v23 profile];
       v30 = v34 = v26;
-      v31 = [v23 group];
-      [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x400000 kvStores:v29 profile:v30 sharingGroup:v31];
+      group = [v23 group];
+      [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x400000 kvStores:v29 profile:v30 sharingGroup:group];
 
       v16 = v35;
-      v14 = v36;
+      nameCopy = v36;
     }
 
     else
@@ -1396,27 +1396,27 @@ LABEL_32:
   return v28;
 }
 
-- (BOOL)didReceiveKVSDataZoneDelete:(id)a3 reason:(unint64_t)a4
+- (BOOL)didReceiveKVSDataZoneDelete:(id)delete reason:(unint64_t)reason
 {
-  v5 = a3;
+  deleteCopy = delete;
   v6 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = deleteCopy;
     v10 = 2048;
-    v11 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Zone %@ was deleted, reason: %lu", &v8, 0x16u);
   }
 
   return 1;
 }
 
-- (BOOL)didSyncUpKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8
+- (BOOL)didSyncUpKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  dataCopy = data;
+  nameCopy = name;
+  groupCopy = group;
   v16 = a8;
   v17 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEFAULT))
@@ -1425,34 +1425,34 @@ LABEL_32:
     v19 = v17;
     v20 = [v16 objectForKeyedSubscript:v18];
     *buf = 138413314;
-    v56 = v13;
+    v56 = dataCopy;
     v57 = 2112;
     v58 = v20;
     v59 = 2112;
-    v60 = v14;
+    v60 = nameCopy;
     v61 = 2112;
-    v62 = v15;
+    v62 = groupCopy;
     v63 = 2048;
-    v64 = a7;
+    profileTypeCopy = profileType;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "KVSData uploaded to cloud, recordHandle:%@ recordName:%@ store:%@ group:%@ profileType:%lu", buf, 0x34u);
   }
 
   v43 = v16;
-  v44 = v13;
+  v44 = dataCopy;
   v49 = 0;
   v53 = kMAGroupKey;
-  v54 = v15;
+  v54 = groupCopy;
   v21 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
   v47 = 0;
   v48 = 0;
-  v22 = sub_10002BBF0(a7, &v48, &v47);
+  v22 = sub_10002BBF0(profileType, &v48, &v47);
   v23 = v48;
   v24 = v47;
   v25 = v24;
   if (v22)
   {
     v46 = v24;
-    v26 = [(MAKVStoreManager *)self getStore:v14 groupPath:v15 profile:v23 attributes:v21 isCreateOp:0 isBaseStore:0 isNew:&v49 storeChain:0 error:&v46];
+    v26 = [(MAKVStoreManager *)self getStore:nameCopy groupPath:groupCopy profile:v23 attributes:v21 isCreateOp:0 isBaseStore:0 isNew:&v49 storeChain:0 error:&v46];
     v27 = v46;
 
     if (([v26 cloudSync] & 1) == 0)
@@ -1466,10 +1466,10 @@ LABEL_32:
       goto LABEL_15;
     }
 
-    v28 = [v26 recordHandleField];
-    v51[0] = v28;
+    recordHandleField = [v26 recordHandleField];
+    v51[0] = recordHandleField;
     v51[1] = kMAKVCol_stagingFrom;
-    v52[0] = v13;
+    v52[0] = dataCopy;
     v52[1] = &off_10011DC88;
     v29 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
     v45 = v27;
@@ -1479,22 +1479,22 @@ LABEL_32:
     if (v30)
     {
       notificationEngine = self->_notificationEngine;
-      v50 = v14;
+      v50 = nameCopy;
       v32 = 1;
       v33 = [NSArray arrayWithObjects:&v50 count:1];
-      v34 = [v26 profile];
-      [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x1000000 kvStores:v33 profile:v34 sharingGroup:v15];
+      profile = [v26 profile];
+      [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x1000000 kvStores:v33 profile:profile sharingGroup:groupCopy];
 
       [(MANotificationEngine *)self->_notificationEngine postNotificationWheniCloudSyncedUp];
       v35 = off_100127CF8;
       if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEFAULT))
       {
         v36 = v35;
-        v37 = [v26 name];
+        name = [v26 name];
         *buf = 138412546;
         v56 = v44;
         v57 = 2112;
-        v58 = v37;
+        v58 = name;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "updated record %@ for cloud sync up, store: %@", buf, 0x16u);
 
         v32 = 1;
@@ -1507,11 +1507,11 @@ LABEL_32:
       if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
       {
         v40 = v38;
-        v41 = [v26 name];
+        name2 = [v26 name];
         *buf = 138412802;
         v56 = v44;
         v57 = 2112;
-        v58 = v41;
+        v58 = name2;
         v59 = 2112;
         v60 = v42;
         _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "failed to update record %@ for cloud sync up, store: %@, error: %@", buf, 0x20u);
@@ -1537,83 +1537,83 @@ LABEL_16:
   return v32;
 }
 
-- (BOOL)didSyncUpKVSDataDelete:(id)a3 recordHandle:(id)a4 assetType:(unint64_t)a5 storeName:(id)a6 storeGroup:(id)a7 profileType:(unint64_t)a8
+- (BOOL)didSyncUpKVSDataDelete:(id)delete recordHandle:(id)handle assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  deleteCopy = delete;
+  handleCopy = handle;
+  nameCopy = name;
+  groupCopy = group;
   v16 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138413314;
-    v19 = v12;
+    v19 = deleteCopy;
     v20 = 2112;
-    v21 = v13;
+    v21 = handleCopy;
     v22 = 2112;
-    v23 = v14;
+    v23 = nameCopy;
     v24 = 2112;
-    v25 = v15;
+    v25 = groupCopy;
     v26 = 2048;
-    v27 = a8;
+    profileTypeCopy = profileType;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "KVSData delete synced up to cloud, recordName:%@ recordHandle:%@ store:%@ group:%@ profileType:%lu", &v18, 0x34u);
   }
 
   return 1;
 }
 
-- (void)failedToDeleteKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 error:(id)a8
+- (void)failedToDeleteKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType error:(id)error
 {
-  v9 = a3;
-  v10 = a8;
+  dataCopy = data;
+  errorCopy = error;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
   {
     sub_10002E9B8();
   }
 }
 
-- (void)failedToDeleteKVSZone:(id)a3 error:(id)a4
+- (void)failedToDeleteKVSZone:(id)zone error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  zoneCopy = zone;
+  errorCopy = error;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
   {
     sub_10002EA20();
   }
 }
 
-- (void)failedToUploadKVSData:(id)a3 assetType:(unint64_t)a4 storeName:(id)a5 storeGroup:(id)a6 profileType:(unint64_t)a7 data:(id)a8 error:(id)a9
+- (void)failedToUploadKVSData:(id)data assetType:(unint64_t)type storeName:(id)name storeGroup:(id)group profileType:(unint64_t)profileType data:(id)a8 error:(id)error
 {
-  v35 = a3;
-  v34 = a5;
-  v14 = a6;
+  dataCopy = data;
+  nameCopy = name;
+  groupCopy = group;
   v33 = a8;
-  v15 = a9;
+  errorCopy = error;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
   {
     sub_10002EA88();
   }
 
-  if ([v15 code] == -20602 && os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
+  if ([errorCopy code] == -20602 && os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
   {
     sub_10002EAF0();
   }
 
   v40 = 0;
   v49 = kMAGroupKey;
-  v50 = v14;
+  v50 = groupCopy;
   v16 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
   v38 = 0;
   v39 = 0;
-  v17 = sub_10002BBF0(a7, &v39, &v38);
+  v17 = sub_10002BBF0(profileType, &v39, &v38);
   v18 = v39;
   v19 = v38;
   v20 = v19;
-  v21 = v34;
+  v21 = nameCopy;
   if (v17)
   {
     v37 = v19;
-    v22 = [(MAKVStoreManager *)self getStore:v34 groupPath:v14 profile:v18 attributes:v16 isCreateOp:0 isBaseStore:0 isNew:&v40 storeChain:0 error:&v37];
+    v22 = [(MAKVStoreManager *)self getStore:nameCopy groupPath:groupCopy profile:v18 attributes:v16 isCreateOp:0 isBaseStore:0 isNew:&v40 storeChain:0 error:&v37];
     v23 = v37;
 
     if (([v22 cloudSync] & 1) == 0)
@@ -1626,10 +1626,10 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v24 = [v22 recordHandleField];
-    v47[0] = v24;
+    recordHandleField = [v22 recordHandleField];
+    v47[0] = recordHandleField;
     v47[1] = kMAKVCol_stagingFrom;
-    v48[0] = v35;
+    v48[0] = dataCopy;
     v48[1] = &off_10011DC88;
     v25 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:2];
     v36 = v23;
@@ -1642,11 +1642,11 @@ LABEL_16:
       if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO))
       {
         v28 = v27;
-        v29 = [v22 name];
+        name = [v22 name];
         *buf = 138412546;
-        v42 = v35;
+        v42 = dataCopy;
         v43 = 2112;
-        v44 = v29;
+        v44 = name;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "updated record %@ state for cloud sync up error, store: %@", buf, 0x16u);
       }
     }
@@ -1654,11 +1654,11 @@ LABEL_16:
     else if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
     {
       v30 = v27;
-      v31 = [v22 name];
+      name2 = [v22 name];
       *buf = 138412802;
-      v42 = v35;
+      v42 = dataCopy;
       v43 = 2112;
-      v44 = v31;
+      v44 = name2;
       v45 = 2112;
       v23 = v32;
       v46 = v32;
@@ -1669,14 +1669,14 @@ LABEL_16:
 
     v23 = v32;
 LABEL_15:
-    v21 = v34;
+    v21 = nameCopy;
 LABEL_16:
 
     v20 = v23;
   }
 }
 
-- (BOOL)resetKVCloudStateWithError:(id *)a3
+- (BOOL)resetKVCloudStateWithError:(id *)error
 {
   v12 = 0;
   v5 = [(MAKVStoreManager *)self resetKVCloudStateWithProfile:kMASDDefaultLocalUser error:&v12];
@@ -1690,26 +1690,26 @@ LABEL_16:
     v8 = v6;
   }
 
-  *a3 = v8;
+  *error = v8;
 
   return v5 & v7;
 }
 
-- (BOOL)resetKVCloudStateWithProfile:(id)a3 error:(id *)a4
+- (BOOL)resetKVCloudStateWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
+  profileCopy = profile;
   v59 = 0;
   v7 = +[NSMutableDictionary dictionary];
   v8 = kMACoreRXUserGroup;
   [v7 setObject:kMACoreRXUserGroup forKeyedSubscript:kMAGroupKey];
   v9 = kMARXDataSharingStore;
-  v10 = [(MAKVStoreManager *)self getStore:kMARXDataSharingStore groupPath:v8 profile:v6 attributes:v7 isCreateOp:0 isBaseStore:0 isNew:&v59 storeChain:0 error:a4];
+  v10 = [(MAKVStoreManager *)self getStore:kMARXDataSharingStore groupPath:v8 profile:profileCopy attributes:v7 isCreateOp:0 isBaseStore:0 isNew:&v59 storeChain:0 error:error];
   v11 = v10;
-  if (*a4)
+  if (*error)
   {
     if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
     {
-      sub_10002EB60(v9, a4);
+      sub_10002EB60(v9, error);
     }
 
     v12 = 0;
@@ -1732,27 +1732,27 @@ LABEL_16:
     v75 = v14;
     v15 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
     v58 = 0;
-    [v11 queryFor:v13 attributes:v15 records:&v58 error:a4];
+    [v11 queryFor:v13 attributes:v15 records:&v58 error:error];
     v16 = v58;
 
-    v12 = *a4 == 0;
-    if (*a4)
+    v12 = *error == 0;
+    if (*error)
     {
       v17 = v16;
       if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
       {
-        sub_10002EBD8(v9, a4);
+        sub_10002EBD8(v9, error);
       }
     }
 
     else
     {
-      v42 = self;
-      v47 = a4;
+      selfCopy = self;
+      errorCopy = error;
       v48 = v11;
       v40 = v7;
-      v41 = v6;
-      v18 = [MAKVStore queryOutputToArrayOfDictionaries:v16 error:a4];
+      v41 = profileCopy;
+      v18 = [MAKVStore queryOutputToArrayOfDictionaries:v16 error:error];
       v17 = v16;
       if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_DEBUG))
       {
@@ -1784,7 +1784,7 @@ LABEL_16:
 
             v24 = *(*(&v54 + 1) + 8 * v22);
             v25 = [v24 objectForKeyedSubscript:v20];
-            v26 = [v25 intValue];
+            intValue = [v25 intValue];
             v27 = [v24 objectForKeyedSubscript:v21];
             v28 = [v24 objectForKeyedSubscript:v45];
             v29 = off_100127CF8;
@@ -1795,7 +1795,7 @@ LABEL_16:
               v62 = 2112;
               v63 = v25;
               v64 = 2048;
-              v65 = v26 & 0xFFFFFFFFFFFFE1DFLL;
+              v65 = intValue & 0xFFFFFFFFFFFFE1DFLL;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "updating record %@ from %@ to %ld", buf, 0x20u);
             }
 
@@ -1805,17 +1805,17 @@ LABEL_16:
             v71[1] = &off_10011DC88;
             v30 = [NSDictionary dictionaryWithObjects:v71 forKeys:v70 count:2];
             v68 = v51;
-            v31 = [NSNumber numberWithInteger:v26 & 0xFFFFFFFFFFFFE1DFLL];
-            v69 = v31;
+            0xFFFFFFFFFFFFE1DFLL = [NSNumber numberWithInteger:intValue & 0xFFFFFFFFFFFFE1DFLL];
+            v69 = 0xFFFFFFFFFFFFE1DFLL;
             v32 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-            v33 = [v48 updateFor:v30 value:v32 attributes:&off_10011E4B8 error:v47];
+            v33 = [v48 updateFor:v30 value:v32 attributes:&off_10011E4B8 error:errorCopy];
 
             if (v33)
             {
               v17 = v23;
               if (v28)
               {
-                maServer = v42->_maServer;
+                maServer = selfCopy->_maServer;
                 v52[0] = _NSConcreteStackBlock;
                 v52[1] = 3221225472;
                 v52[2] = sub_10002D248;
@@ -1832,14 +1832,14 @@ LABEL_16:
               if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
               {
                 v36 = v35;
-                v37 = [v48 name];
-                v38 = *v47;
+                name = [v48 name];
+                v38 = *errorCopy;
                 *buf = 138413058;
                 v61 = v27;
                 v62 = 2048;
-                v63 = v26;
+                v63 = intValue;
                 v64 = 2112;
-                v65 = v37;
+                v65 = name;
                 v66 = 2112;
                 v67 = v38;
                 _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "failed to update record %@ for setting sync state %ld, store: %@, error: %@", buf, 0x2Au);
@@ -1860,7 +1860,7 @@ LABEL_16:
       }
 
       v7 = v40;
-      v6 = v41;
+      profileCopy = v41;
       v11 = v48;
       v12 = 1;
     }
@@ -1874,28 +1874,28 @@ LABEL_16:
     }
 
     createManagedAssetError();
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   return v12;
 }
 
-- (BOOL)dedupeCoreRX:(id)a3 store:(id)a4 attributes:(id)a5 error:(id *)a6
+- (BOOL)dedupeCoreRX:(id)x store:(id)store attributes:(id)attributes error:(id *)error
 {
-  v82 = a3;
-  v76 = a4;
-  v75 = a5;
+  xCopy = x;
+  storeCopy = store;
+  attributesCopy = attributes;
   v8 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = MACoreRxDataSharingRecordDescription(v82);
+    v10 = MACoreRxDataSharingRecordDescription(xCopy);
     *buf = 138412802;
     *&buf[4] = v10;
     *&buf[12] = 2112;
-    *&buf[14] = v76;
+    *&buf[14] = storeCopy;
     *&buf[22] = 2112;
-    v102 = v75;
+    v102 = attributesCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "dedupe core prescription record %@ store %@ attributes %@", buf, 0x20u);
   }
 
@@ -1906,13 +1906,13 @@ LABEL_16:
   [v81 setLocale:v11];
 
   v85 = kMAKVCol_RXUUID;
-  v78 = [v82 objectForKeyedSubscript:?];
+  v78 = [xCopy objectForKeyedSubscript:?];
   if (!v78)
   {
-    *a6 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
     {
-      sub_10002EE94(a6);
+      sub_10002EE94(error);
     }
 
     v44 = 0;
@@ -1920,25 +1920,25 @@ LABEL_16:
   }
 
   [v72 setObject:v78 forKeyedSubscript:v85];
-  v71 = [v75 mutableCopy];
+  v71 = [attributesCopy mutableCopy];
   v68 = kMAKVStoreOptionsKey;
   [v71 setObject:&off_10011DC70 forKeyedSubscript:?];
   v94 = 0;
-  v12 = [v76 queryFor:v72 attributes:v71 records:&v94 error:a6];
+  v12 = [storeCopy queryFor:v72 attributes:v71 records:&v94 error:error];
   v13 = v94;
   v70 = v13;
   if ((v12 & 1) == 0)
   {
     if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
     {
-      sub_10002EDAC(a6);
+      sub_10002EDAC(error);
     }
 
     v44 = 0;
     goto LABEL_67;
   }
 
-  v14 = [MAKVStore queryOutputToArrayOfDictionaries:v13 error:a6];
+  v14 = [MAKVStore queryOutputToArrayOfDictionaries:v13 error:error];
   v15 = off_100127CF8;
   if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_INFO))
   {
@@ -1991,7 +1991,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v23 = [v82 objectForKeyedSubscript:v84];
+        v23 = [xCopy objectForKeyedSubscript:v84];
         if (v23)
         {
 
@@ -2004,7 +2004,7 @@ LABEL_16:
         {
 LABEL_17:
           v25 = [v20 objectForKeyedSubscript:@"enrollmentTime"];
-          v26 = [v82 objectForKeyedSubscript:@"enrollmentTime"];
+          v26 = [xCopy objectForKeyedSubscript:@"enrollmentTime"];
           v27 = v26;
           if (v25)
           {
@@ -2046,7 +2046,7 @@ LABEL_17:
               v37 = [v20 objectForKeyedSubscript:v79];
               [v36 setObject:v37 forKeyedSubscript:v79];
 
-              v38 = [v76 deleteFor:v36 attributes:v75 error:a6];
+              v38 = [storeCopy deleteFor:v36 attributes:attributesCopy error:error];
               v39 = off_100127CF8;
               if (v38)
               {
@@ -2060,7 +2060,7 @@ LABEL_17:
 
               else if (os_log_type_enabled(off_100127CF8, OS_LOG_TYPE_ERROR))
               {
-                v43 = *a6;
+                v43 = *error;
                 *buf = 138412802;
                 *&buf[4] = v73;
                 *&buf[12] = 2112;
@@ -2119,42 +2119,42 @@ LABEL_64:
   }
 
 LABEL_50:
-  v45 = [v82 mutableCopy];
+  v45 = [xCopy mutableCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v102 = 0;
-  v46 = [v75 objectForKeyedSubscript:v68];
-  v47 = [v46 intValue];
+  v46 = [attributesCopy objectForKeyedSubscript:v68];
+  intValue = [v46 intValue];
   [v45 setObject:&off_10011DC88 forKeyedSubscript:kMAKVCol_stagingFrom];
   *(*&buf[8] + 24) = 0x2000;
-  v48 = [v76 putDictionay:v45 attributes:v75 error:a6];
+  v48 = [storeCopy putDictionay:v45 attributes:attributesCopy error:error];
   v49 = off_100127CF8;
   v50 = v49;
   if (v48)
   {
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
-      v51 = [v76 name];
+      name = [storeCopy name];
       *v96 = 138412546;
-      v97 = v51;
+      v97 = name;
       v98 = 2112;
-      v99 = v75;
+      v99 = attributesCopy;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "put new record for store:%@, attributes:%@", v96, 0x16u);
     }
 
     notificationEngine = self->_notificationEngine;
-    v53 = [v76 name];
-    v95 = v53;
+    name2 = [storeCopy name];
+    v95 = name2;
     v54 = [NSArray arrayWithObjects:&v95 count:1];
-    v55 = [v76 profile];
-    v56 = [v76 group];
-    [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x8000 kvStores:v54 profile:v55 sharingGroup:v56];
+    profile = [storeCopy profile];
+    group = [storeCopy group];
+    [(MANotificationEngine *)notificationEngine notifyKVStoreEventWith:0x8000 kvStores:v54 profile:profile sharingGroup:group];
 
-    if ((v47 & 0x80) != 0)
+    if ((intValue & 0x80) != 0)
     {
-      v57 = [v76 profile];
-      v58 = v57 == 0;
+      profile2 = [storeCopy profile];
+      v58 = profile2 == 0;
 
       if (v58)
       {
@@ -2163,8 +2163,8 @@ LABEL_50:
 
       else
       {
-        v59 = [v76 profile];
-        v60 = [v59 isEqualToString:kMASDDefaultLocalUser];
+        profile3 = [storeCopy profile];
+        v60 = [profile3 isEqualToString:kMASDDefaultLocalUser];
 
         if (v60)
         {
@@ -2178,17 +2178,17 @@ LABEL_50:
       }
 
       maServer = self->_maServer;
-      v64 = [v76 assetType];
-      v65 = [v76 name];
-      v66 = [v76 group];
+      assetType = [storeCopy assetType];
+      name3 = [storeCopy name];
+      group2 = [storeCopy group];
       v86[0] = _NSConcreteStackBlock;
       v86[1] = 3221225472;
       v86[2] = sub_10002DE1C;
       v86[3] = &unk_100116380;
       v89 = buf;
-      v87 = v76;
-      v88 = self;
-      [(MAServer *)maServer saveKVSDataToCloudWithRecordHandle:v78 assetType:v64 storeName:v65 storeGroup:v66 profileType:v61 data:v82 options:0 completionHandler:v86];
+      v87 = storeCopy;
+      selfCopy = self;
+      [(MAServer *)maServer saveKVSDataToCloudWithRecordHandle:v78 assetType:assetType storeName:name3 storeGroup:group2 profileType:v61 data:xCopy options:0 completionHandler:v86];
 
       v50 = v87;
       goto LABEL_62;
@@ -2199,8 +2199,8 @@ LABEL_50:
   {
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
     {
-      v62 = [v76 name];
-      sub_10002EE34(v62, v45, v96, v50);
+      name4 = [storeCopy name];
+      sub_10002EE34(name4, v45, v96, v50);
     }
 
 LABEL_62:
@@ -2221,25 +2221,25 @@ LABEL_68:
   return v44;
 }
 
-- (void)checkStoreForUploadWithOption:(unint64_t)a3 completionHandler:(id)a4
+- (void)checkStoreForUploadWithOption:(unint64_t)option completionHandler:(id)handler
 {
   v6 = kMASDDefaultLocalUser;
-  v7 = a4;
-  [(MAKVStoreManager *)self checkStoreForUploadWithOption:a3 profile:v6 completionHandler:v7];
-  [(MAKVStoreManager *)self checkStoreForUploadWithOption:a3 profile:0 completionHandler:v7];
+  handlerCopy = handler;
+  [(MAKVStoreManager *)self checkStoreForUploadWithOption:option profile:v6 completionHandler:handlerCopy];
+  [(MAKVStoreManager *)self checkStoreForUploadWithOption:option profile:0 completionHandler:handlerCopy];
 }
 
-- (void)checkStoreForUploadWithOption:(unint64_t)a3 profile:(id)a4 completionHandler:(id)a5
+- (void)checkStoreForUploadWithOption:(unint64_t)option profile:(id)profile completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  profileCopy = profile;
+  handlerCopy = handler;
   v62 = 0;
   v10 = +[NSMutableDictionary dictionary];
   v11 = kMACoreRXUserGroup;
   [v10 setObject:kMACoreRXUserGroup forKeyedSubscript:kMAGroupKey];
   v61 = 0;
-  v46 = self;
-  v12 = [(MAKVStoreManager *)self getStore:kMARXDataSharingStore groupPath:v11 profile:v8 attributes:v10 isCreateOp:0 isBaseStore:0 isNew:&v62 storeChain:0 error:&v61];
+  selfCopy = self;
+  v12 = [(MAKVStoreManager *)self getStore:kMARXDataSharingStore groupPath:v11 profile:profileCopy attributes:v10 isCreateOp:0 isBaseStore:0 isNew:&v62 storeChain:0 error:&v61];
   v13 = v61;
   v14 = v13;
   v47 = v12;
@@ -2252,7 +2252,7 @@ LABEL_68:
 
     v15 = createManagedAssetError();
 
-    v9[2](v9, v15);
+    handlerCopy[2](handlerCopy, v15);
     v14 = v15;
     goto LABEL_36;
   }
@@ -2264,11 +2264,11 @@ LABEL_68:
       sub_10002EFF8();
     }
 
-    v9[2](v9, v14);
+    handlerCopy[2](handlerCopy, v14);
     goto LABEL_36;
   }
 
-  v16 = a3 == 3;
+  v16 = option == 3;
   v68 = kMAKVCol_stagingFrom;
   v69 = &off_10011DC88;
   v17 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
@@ -2281,9 +2281,9 @@ LABEL_68:
   if (!v14)
   {
     v44 = v16;
-    v45 = v9;
+    v45 = handlerCopy;
     v41 = v10;
-    v42 = v8;
+    v42 = profileCopy;
     v58 = 0;
     v39 = v18;
     v19 = [MAKVStore queryOutputToArrayOfDictionaries:v18 error:&v58];
@@ -2303,7 +2303,7 @@ LABEL_68:
     v21 = kMAKVCol_recordName;
     v49 = kMAKVCol_ckSyncState;
     v50 = kMAKVCol_RXUUID;
-    if (v8)
+    if (profileCopy)
     {
       v22 = -1;
     }
@@ -2350,18 +2350,18 @@ LABEL_68:
           {
 
 LABEL_31:
-            maServer = v46->_maServer;
+            maServer = selfCopy->_maServer;
             v35 = [v25 objectForKeyedSubscript:v50];
-            v36 = [v47 assetType];
-            v37 = [v47 name];
-            v38 = [v47 group];
+            assetType = [v47 assetType];
+            name = [v47 name];
+            group = [v47 group];
             v52[0] = _NSConcreteStackBlock;
             v52[1] = 3221225472;
             v52[2] = sub_10002E678;
             v52[3] = &unk_1001163A8;
             v52[4] = v25;
             v53 = v45;
-            [(MAServer *)maServer saveKVSDataToCloudWithRecordHandle:v35 assetType:v36 storeName:v37 storeGroup:v38 profileType:v43 data:v25 options:v44 completionHandler:v52];
+            [(MAServer *)maServer saveKVSDataToCloudWithRecordHandle:v35 assetType:assetType storeName:name storeGroup:group profileType:v43 data:v25 options:v44 completionHandler:v52];
 
             v23 = &selRef_queryInUseStatusWithAuditToken_completion_;
             continue;
@@ -2387,8 +2387,8 @@ LABEL_31:
 LABEL_34:
 
         v10 = v41;
-        v8 = v42;
-        v9 = v45;
+        profileCopy = v42;
+        handlerCopy = v45;
         v18 = v39;
         v14 = v40;
         goto LABEL_35;
@@ -2401,7 +2401,7 @@ LABEL_34:
     sub_10002F060();
   }
 
-  v9[2](v9, v14);
+  handlerCopy[2](handlerCopy, v14);
 LABEL_35:
 
 LABEL_36:

@@ -1,28 +1,28 @@
 @interface CADMCProfileConnectionManagedConfigurationHandler
 - (BOOL)isOpenInRestrictionInEffect;
-- (CADMCProfileConnectionManagedConfigurationHandler)initWithMCProfileConnection:(id)a3;
+- (CADMCProfileConnectionManagedConfigurationHandler)initWithMCProfileConnection:(id)connection;
 @end
 
 @implementation CADMCProfileConnectionManagedConfigurationHandler
 
 - (BOOL)isOpenInRestrictionInEffect
 {
-  v2 = [(CADMCProfileConnectionManagedConfigurationHandler *)self connection];
-  v3 = [v2 isOpenInRestrictionInEffect];
+  connection = [(CADMCProfileConnectionManagedConfigurationHandler *)self connection];
+  isOpenInRestrictionInEffect = [connection isOpenInRestrictionInEffect];
 
-  return v3;
+  return isOpenInRestrictionInEffect;
 }
 
-- (CADMCProfileConnectionManagedConfigurationHandler)initWithMCProfileConnection:(id)a3
+- (CADMCProfileConnectionManagedConfigurationHandler)initWithMCProfileConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CADMCProfileConnectionManagedConfigurationHandler;
   v6 = [(CADMCProfileConnectionManagedConfigurationHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;

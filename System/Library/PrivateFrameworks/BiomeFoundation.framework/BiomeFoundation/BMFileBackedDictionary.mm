@@ -1,26 +1,26 @@
 @interface BMFileBackedDictionary
-- (BOOL)_loadDictionaryOrCreate:(BOOL)a3 readOnly:(BOOL)a4 initialDictionary:(id)a5 error:(id *)a6;
-- (BOOL)clear:(id *)a3;
-- (BOOL)clearObjectForKey:(id)a3 error:(id *)a4;
+- (BOOL)_loadDictionaryOrCreate:(BOOL)create readOnly:(BOOL)only initialDictionary:(id)dictionary error:(id *)error;
+- (BOOL)clear:(id *)clear;
+- (BOOL)clearObjectForKey:(id)key error:(id *)error;
 - (BOOL)isReadOnly;
-- (BOOL)writeUpdatedObject:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)writeUpdatedObjects:(id)a3 forKeys:(id)a4 error:(id *)a5;
+- (BOOL)writeUpdatedObject:(id)object forKey:(id)key error:(id *)error;
+- (BOOL)writeUpdatedObjects:(id)objects forKeys:(id)keys error:(id *)error;
 - (id)description;
-- (id)mutableDictionaryForKey:(id)a3 error:(id *)a4;
-- (id)objectForKey:(id)a3;
+- (id)mutableDictionaryForKey:(id)key error:(id *)error;
+- (id)objectForKey:(id)key;
 @end
 
 @implementation BMFileBackedDictionary
 
-- (BOOL)_loadDictionaryOrCreate:(BOOL)a3 readOnly:(BOOL)a4 initialDictionary:(id)a5 error:(id *)a6
+- (BOOL)_loadDictionaryOrCreate:(BOOL)create readOnly:(BOOL)only initialDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a4;
+  onlyCopy = only;
   v58[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = [(NSURL *)self->_fileURL path];
+  dictionaryCopy = dictionary;
+  path = [(NSURL *)self->_fileURL path];
   fileURL = self->_fileURL;
   v50 = 0;
-  v13 = BMReadPropertyList(fileURL, !v7, &v50);
+  v13 = BMReadPropertyList(fileURL, !onlyCopy, &v50);
   v14 = v50;
   dictionary = self->_dictionary;
   self->_dictionary = v13;
@@ -30,7 +30,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v7)
+      if (onlyCopy)
       {
         goto LABEL_24;
       }
@@ -42,8 +42,8 @@
         goto LABEL_24;
       }
 
-      v48 = a6;
-      v49 = v10;
+      errorCopy2 = error;
+      v49 = dictionaryCopy;
       v17 = MEMORY[0x1E696ABC0];
       v57 = *MEMORY[0x1E696A578];
       v18 = MEMORY[0x1E696AEC0];
@@ -52,7 +52,7 @@
       v21 = self->_dictionary;
       v22 = objc_opt_class();
       v23 = NSStringFromClass(v22);
-      v24 = [v18 stringWithFormat:@"Expected mutable plist class (%@) but received class (%@) for object: %@ at path: %@", v20, v23, self->_dictionary, v11];
+      v24 = [v18 stringWithFormat:@"Expected mutable plist class (%@) but received class (%@) for object: %@ at path: %@", v20, v23, self->_dictionary, path];
       v58[0] = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
       v26 = [v17 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:5 userInfo:v25];
@@ -62,15 +62,15 @@
 
     else
     {
-      v48 = a6;
-      v49 = v10;
+      errorCopy2 = error;
+      v49 = dictionaryCopy;
       v34 = MEMORY[0x1E696ABC0];
       v55 = *MEMORY[0x1E696A578];
       v35 = MEMORY[0x1E696AEC0];
       v36 = self->_dictionary;
       v37 = objc_opt_class();
       v20 = NSStringFromClass(v37);
-      v23 = [v35 stringWithFormat:@"Unexpected plist class (%@) of object: %@ at path: %@", v20, self->_dictionary, v11];
+      v23 = [v35 stringWithFormat:@"Unexpected plist class (%@) of object: %@ at path: %@", v20, self->_dictionary, path];
       v56 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
       v26 = [v34 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:5 userInfo:v24];
@@ -83,16 +83,16 @@
     }
 
     v14 = v26;
-    a6 = v48;
-    v10 = v49;
+    error = errorCopy2;
+    dictionaryCopy = v49;
   }
 
   else
   {
-    v27 = [v14 code];
+    code = [v14 code];
     v28 = __biome_log_for_category(16);
     v29 = v28;
-    if (v27 == 260)
+    if (code == 260)
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
@@ -135,14 +135,14 @@
     v14 = v38;
   }
 
-  if (!a3)
+  if (!create)
   {
-    BMSetError(a6, v14);
+    BMSetError(error, v14);
     v40 = 0;
     goto LABEL_32;
   }
 
-  if (v7)
+  if (onlyCopy)
   {
     v39 = self->_dictionary;
     self->_dictionary = MEMORY[0x1E695E0F8];
@@ -158,7 +158,7 @@ LABEL_24:
     [BMFileBackedDictionary _loadDictionaryOrCreate:readOnly:initialDictionary:error:];
   }
 
-  v42 = [v10 mutableCopy];
+  v42 = [dictionaryCopy mutableCopy];
   v43 = v42;
   if (v42)
   {
@@ -173,7 +173,7 @@ LABEL_24:
   v45 = self->_dictionary;
   self->_dictionary = v44;
 
-  v40 = BMWritePropertyList(self->_dictionary, self->_fileURL, self->_protectionClass, a6);
+  v40 = BMWritePropertyList(self->_dictionary, self->_fileURL, self->_protectionClass, error);
 LABEL_32:
 
   v46 = *MEMORY[0x1E69E9840];
@@ -185,8 +185,8 @@ LABEL_32:
   v7.receiver = self;
   v7.super_class = BMFileBackedDictionary;
   v3 = [(BMFileBackedDictionary *)&v7 description];
-  v4 = [(NSURL *)self->_fileURL path];
-  v5 = [v3 stringByAppendingFormat:@" fileBackedDictionary: %@", v4];
+  path = [(NSURL *)self->_fileURL path];
+  v5 = [v3 stringByAppendingFormat:@" fileBackedDictionary: %@", path];
 
   return v5;
 }
@@ -198,19 +198,19 @@ LABEL_32:
   return (objc_opt_isKindOfClass() & 1) == 0;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:key];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)mutableDictionaryForKey:(id)a3 error:(id *)a4
+- (id)mutableDictionaryForKey:(id)key error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BMFileBackedDictionary *)self objectForKey:v6];
+  keyCopy = key;
+  v7 = [(BMFileBackedDictionary *)self objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -238,12 +238,12 @@ LABEL_10:
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v10 stringWithFormat:@"Unexpected object: %@ for key: %@ expected: %@", v7, v6, v12, v20];
+  v13 = [v10 stringWithFormat:@"Unexpected object: %@ for key: %@ expected: %@", v7, keyCopy, v12, v20];
   v21[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
   v15 = [v9 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:4 userInfo:v14];
 
-  BMSetError(a4, v15);
+  BMSetError(error, v15);
   v16 = __biome_log_for_category(16);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -258,20 +258,20 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)writeUpdatedObject:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)writeUpdatedObject:(id)object forKey:(id)key error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (object && key)
   {
-    v22 = a3;
+    objectCopy = object;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a4;
-    v10 = a3;
-    v11 = [v8 arrayWithObjects:&v22 count:1];
-    v21 = v9;
+    keyCopy = key;
+    objectCopy2 = object;
+    keyCopy2 = [v8 arrayWithObjects:&objectCopy count:1];
+    v21 = keyCopy;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
 
-    v13 = [(BMFileBackedDictionary *)self writeUpdatedObjects:v11 forKeys:v12 error:a5];
+    v13 = [(BMFileBackedDictionary *)self writeUpdatedObjects:keyCopy2 forKeys:v12 error:error];
   }
 
   else
@@ -279,14 +279,14 @@ LABEL_11:
     v14 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
     v15 = MEMORY[0x1E696AEC0];
-    v16 = a4;
-    v17 = a3;
-    v11 = [v15 stringWithFormat:@"Invalid {object: %@ key: %@}", v17, v16];
-    v24[0] = v11;
+    keyCopy2 = key;
+    objectCopy3 = object;
+    keyCopy2 = [v15 stringWithFormat:@"Invalid {object: %@ key: %@}", objectCopy3, keyCopy2];
+    v24[0] = keyCopy2;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v18 = [v14 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:1 userInfo:v12];
 
-    BMSetError(a5, v18);
+    BMSetError(error, v18);
     v13 = 0;
   }
 
@@ -294,50 +294,50 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)writeUpdatedObjects:(id)a3 forKeys:(id)a4 error:(id *)a5
+- (BOOL)writeUpdatedObjects:(id)objects forKeys:(id)keys error:(id *)error
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectsCopy = objects;
+  keysCopy = keys;
   if ([(BMFileBackedDictionary *)self isReadOnly])
   {
     v10 = MEMORY[0x1E696ABC0];
     v59 = *MEMORY[0x1E696A578];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"instance: %@ is read only.", self];
-    v60[0] = v11;
+    keysCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"instance: %@ is read only.", self];
+    v60[0] = keysCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v60 forKeys:&v59 count:1];
     v13 = v10;
     v14 = 3;
 LABEL_18:
     v24 = [v13 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:v14 userInfo:v12];
-    BMSetError(a5, v24);
+    BMSetError(error, v24);
     v25 = 0;
     goto LABEL_19;
   }
 
-  v15 = [v8 count];
-  if (v15 != [v9 count])
+  v15 = [objectsCopy count];
+  if (v15 != [keysCopy count])
   {
     v23 = MEMORY[0x1E696ABC0];
     v57 = *MEMORY[0x1E696A578];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected number of objects: %@ for keys: %@", v8, v9];
-    v58 = v11;
+    keysCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected number of objects: %@ for keys: %@", objectsCopy, keysCopy];
+    v58 = keysCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
     v13 = v23;
     v14 = 1;
     goto LABEL_18;
   }
 
-  v44 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v16 = [v8 count];
-  if ([v8 count])
+  errorCopy = error;
+  keysCopy = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(keysCopy, "count")}];
+  v16 = [objectsCopy count];
+  if ([objectsCopy count])
   {
-    for (i = 0; i < [v8 count]; ++i)
+    for (i = 0; i < [objectsCopy count]; ++i)
     {
-      v18 = [v8 objectAtIndex:i];
-      v19 = [v9 objectAtIndex:i];
-      v20 = [v11 objectForKey:v19];
+      v18 = [objectsCopy objectAtIndex:i];
+      v19 = [keysCopy objectAtIndex:i];
+      v20 = [keysCopy objectForKey:v19];
       if (v20)
       {
         v21 = v20;
@@ -368,7 +368,7 @@ LABEL_18:
         goto LABEL_15;
       }
 
-      [v11 setObject:v21 forKey:v19];
+      [keysCopy setObject:v21 forKey:v19];
 LABEL_14:
       [(NSDictionary *)self->_dictionary setObject:v18 forKey:v19];
 LABEL_15:
@@ -394,11 +394,11 @@ LABEL_15:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v51 = v8;
+      v51 = objectsCopy;
       v52 = 2112;
-      v53 = v9;
+      v53 = keysCopy;
       v54 = 2112;
-      v55 = v11;
+      v55 = keysCopy;
       _os_log_debug_impl(&dword_1AC15D000, v24, OS_LOG_TYPE_DEBUG, "Updated object(s): %@ for key(s): %@ replacing prior object(s): %@", buf, 0x20u);
     }
   }
@@ -411,7 +411,7 @@ LABEL_15:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v32 = v9;
+    v32 = keysCopy;
     v33 = [v32 countByEnumeratingWithState:&v45 objects:v56 count:16];
     if (v33)
     {
@@ -427,7 +427,7 @@ LABEL_15:
           }
 
           v37 = *(*(&v45 + 1) + 8 * j);
-          v38 = [v11 objectForKey:v37];
+          v38 = [keysCopy objectForKey:v37];
           v39 = self->_dictionary;
           if (v38)
           {
@@ -447,7 +447,7 @@ LABEL_15:
     }
 
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write updated object(s): %@ for key(s): %@ reverting to prior object(s): %@", v8, v32, v11];
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write updated object(s): %@ for key(s): %@ reverting to prior object(s): %@", objectsCopy, v32, keysCopy];
     [v24 setObject:v40 forKey:*MEMORY[0x1E696A578]];
 
     if (v42)
@@ -457,7 +457,7 @@ LABEL_15:
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:8 userInfo:v24];
 
-    BMSetError(v44, v12);
+    BMSetError(errorCopy, v12);
     v41 = __biome_log_for_category(16);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -474,10 +474,10 @@ LABEL_20:
   return v25;
 }
 
-- (BOOL)clearObjectForKey:(id)a3 error:(id *)a4
+- (BOOL)clearObjectForKey:(id)key error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   if ([(BMFileBackedDictionary *)self isReadOnly])
   {
     v7 = MEMORY[0x1E696ABC0];
@@ -489,13 +489,13 @@ LABEL_20:
     v11 = 3;
 LABEL_10:
     v19 = [v10 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:v11 userInfo:v9];
-    BMSetError(a4, v19);
+    BMSetError(error, v19);
 
     v15 = 0;
     goto LABEL_20;
   }
 
-  if (!v6)
+  if (!keyCopy)
   {
     v18 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A578];
@@ -507,10 +507,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [(NSDictionary *)self->_dictionary objectForKey:v6];
+  v8 = [(NSDictionary *)self->_dictionary objectForKey:keyCopy];
   if (v8)
   {
-    [(NSDictionary *)self->_dictionary removeObjectForKey:v6];
+    [(NSDictionary *)self->_dictionary removeObjectForKey:keyCopy];
     fileURL = self->_fileURL;
     dictionary = self->_dictionary;
     protectionClass = self->_protectionClass;
@@ -530,9 +530,9 @@ LABEL_10:
 
     else
     {
-      [(NSDictionary *)self->_dictionary setObject:v8 forKey:v6];
+      [(NSDictionary *)self->_dictionary setObject:v8 forKey:keyCopy];
       v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write removal for key: %@ reverting to prior object: %@", v6, v8];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write removal for key: %@ reverting to prior object: %@", keyCopy, v8];
       [v17 setObject:v20 forKey:*MEMORY[0x1E696A578]];
 
       if (v16)
@@ -542,7 +542,7 @@ LABEL_10:
 
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:8 userInfo:v17];
 
-      BMSetError(a4, v9);
+      BMSetError(error, v9);
       v21 = __biome_log_for_category(16);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -568,23 +568,23 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)clear:(id *)a3
+- (BOOL)clear:(id *)clear
 {
   v20[1] = *MEMORY[0x1E69E9840];
   if (![(BMFileBackedDictionary *)self isReadOnly])
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [(NSURL *)self->_fileURL path];
-    if (v8 && [v7 fileExistsAtPath:v8])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [(NSURL *)self->_fileURL path];
+    if (path && [defaultManager fileExistsAtPath:path])
     {
       fileURL = self->_fileURL;
       v18 = 0;
-      v11 = [v7 removeItemAtURL:fileURL error:&v18];
+      v11 = [defaultManager removeItemAtURL:fileURL error:&v18];
       v12 = v18;
       if ((v11 & 1) == 0)
       {
         v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to remove file-backed dictionary at path: %@", v8];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to remove file-backed dictionary at path: %@", path];
         [v13 setObject:v14 forKey:*MEMORY[0x1E696A578]];
 
         if (v12)
@@ -594,7 +594,7 @@ LABEL_20:
 
         v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:8 userInfo:v13];
 
-        BMSetError(a3, v6);
+        BMSetError(clear, v6);
         v15 = __biome_log_for_category(16);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
@@ -620,9 +620,9 @@ LABEL_20:
   v19 = *MEMORY[0x1E696A578];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"instance: %@ is read only.", self];
   v20[0] = v6;
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  v8 = [v5 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:3 userInfo:v7];
-  BMSetError(a3, v8);
+  defaultManager = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+  path = [v5 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedDictionary" code:3 userInfo:defaultManager];
+  BMSetError(clear, path);
 LABEL_3:
   v9 = 0;
 LABEL_14:

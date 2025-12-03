@@ -1,20 +1,20 @@
 @interface DADocumentHelper
-- (DADocumentHelper)initWithConsentHandles:(id)a3;
-- (id)base64String:(id)a3;
+- (DADocumentHelper)initWithConsentHandles:(id)handles;
+- (id)base64String:(id)string;
 - (id)consentBody;
 - (id)currentDate;
 - (id)generatePDFData;
-- (id)getLocalizedConsentTextWithHandle:(id)a3;
-- (void)attachConsentFormToSessionWithData:(id)a3;
-- (void)saveConsentDocument:(id)a3;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (id)getLocalizedConsentTextWithHandle:(id)handle;
+- (void)attachConsentFormToSessionWithData:(id)data;
+- (void)saveConsentDocument:(id)document;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation DADocumentHelper
 
-- (DADocumentHelper)initWithConsentHandles:(id)a3
+- (DADocumentHelper)initWithConsentHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   v22.receiver = self;
   v22.super_class = DADocumentHelper;
   v5 = [(DADocumentHelper *)&v22 init];
@@ -33,7 +33,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = v4;
+    v11 = handlesCopy;
     v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v12)
     {
@@ -80,15 +80,15 @@
   width = v17.size.width;
   height = v17.size.height;
   v7 = objc_alloc_init(UIPrintPageRenderer);
-  v8 = [(DADocumentHelper *)self webView];
-  v9 = [v8 viewPrintFormatter];
-  [v7 addPrintFormatter:v9 startingAtPageAtIndex:0];
+  webView = [(DADocumentHelper *)self webView];
+  viewPrintFormatter = [webView viewPrintFormatter];
+  [v7 addPrintFormatter:viewPrintFormatter startingAtPageAtIndex:0];
 
   v10 = [NSValue valueWithCGRect:0.0, 0.0, 595.200012, 841.799988];
   [v7 setValue:v10 forKey:@"paperRect"];
 
-  v11 = [NSValue valueWithCGRect:x, y, width, height];
-  [v7 setValue:v11 forKey:@"printableRect"];
+  height = [NSValue valueWithCGRect:x, y, width, height];
+  [v7 setValue:height forKey:@"printableRect"];
 
   v12 = +[NSMutableData data];
   v18.origin.x = 0.0;
@@ -114,18 +114,18 @@
   return v12;
 }
 
-- (void)saveConsentDocument:(id)a3
+- (void)saveConsentDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(DADocumentHelper *)self saveDataTimer];
+  documentCopy = document;
+  saveDataTimer = [(DADocumentHelper *)self saveDataTimer];
 
-  if (v5)
+  if (saveDataTimer)
   {
-    v6 = [(DADocumentHelper *)self saveDataTimer];
-    [v6 invalidate];
+    saveDataTimer2 = [(DADocumentHelper *)self saveDataTimer];
+    [saveDataTimer2 invalidate];
   }
 
-  v7 = [v4 copy];
+  v7 = [documentCopy copy];
   [(DADocumentHelper *)self setOnSavePDFData:v7];
 
   v12[0] = _NSConcreteStackBlock;
@@ -136,14 +136,14 @@
   v8 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v12 block:3.0];
   [(DADocumentHelper *)self setSaveDataTimer:v8];
 
-  v9 = [(DADocumentHelper *)self webView];
-  v10 = [(DADocumentHelper *)self consentBody];
-  v11 = [v9 loadHTMLString:v10 baseURL:0];
+  webView = [(DADocumentHelper *)self webView];
+  consentBody = [(DADocumentHelper *)self consentBody];
+  v11 = [webView loadHTMLString:consentBody baseURL:0];
 }
 
-- (id)base64String:(id)a3
+- (id)base64String:(id)string
 {
-  v3 = UIImagePNGRepresentation(a3);
+  v3 = UIImagePNGRepresentation(string);
   v4 = [v3 base64EncodedStringWithOptions:1];
 
   return v4;
@@ -165,8 +165,8 @@
 
 - (id)consentBody
 {
-  v3 = [(DADocumentHelper *)self imageSignature];
-  v22 = [(DADocumentHelper *)self base64String:v3];
+  imageSignature = [(DADocumentHelper *)self imageSignature];
+  v22 = [(DADocumentHelper *)self base64String:imageSignature];
 
   v4 = [@"ELS_HEALTH_CONSENT_DOCUMENT_TITLE" localizedStringForTableName:0 arguments:0];
   v21 = [NSString stringWithFormat:@"<center><h3>%@</h3></center>", v4];
@@ -175,8 +175,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(DADocumentHelper *)self contentsText];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  contentsText = [(DADocumentHelper *)self contentsText];
+  v6 = [contentsText countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -190,7 +190,7 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentsText);
         }
 
         v12 = [NSString stringWithFormat:@"<p>%@</p>", *(*(&v23 + 1) + 8 * v10)];
@@ -201,7 +201,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [contentsText countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
@@ -213,22 +213,22 @@
   }
 
   v13 = [@"ELS_HEALTH_CONSENT_DOCUMENT_NAME" localizedStringForTableName:0 arguments:0];
-  v14 = [(DADocumentHelper *)self fullName];
+  fullName = [(DADocumentHelper *)self fullName];
   v15 = [@"ELS_HEALTH_CONSENT_DOCUMENT_SIGN" localizedStringForTableName:0 arguments:0];
   v16 = [@"ELS_HEALTH_CONSENT_DOCUMENT_DATE" localizedStringForTableName:0 arguments:0];
-  v17 = [(DADocumentHelper *)self currentDate];
-  v18 = [NSString stringWithFormat:@"<h3>%@</h3><p>%@</p><h3>%@</h3><img src=data:image/pngbase64, %@ /><h3>%@</h3><p>%@</p>", v13, v14, v15, v22, v16, v17];;
+  currentDate = [(DADocumentHelper *)self currentDate];
+  v18 = [NSString stringWithFormat:@"<h3>%@</h3><p>%@</p><h3>%@</h3><img src=data:image/pngbase64, %@ /><h3>%@</h3><p>%@</p>", v13, fullName, v15, v22, v16, currentDate];;
 
   v19 = [NSString stringWithFormat:@"%@%@%@%@%@</body></html>", @"<html dir=ltr>", @"<head><style>body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbolfont-size:14px;}</style></head><body>", v21, v9, v18];;
 
   return v19;
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = [(DADocumentHelper *)self generatePDFData:a3];
-  v6 = [(DADocumentHelper *)self saveDataTimer];
-  [v6 invalidate];
+  v5 = [(DADocumentHelper *)self generatePDFData:view];
+  saveDataTimer = [(DADocumentHelper *)self saveDataTimer];
+  [saveDataTimer invalidate];
 
   [(DADocumentHelper *)self attachConsentFormToSessionWithData:v5];
   block[0] = _NSConcreteStackBlock;
@@ -239,7 +239,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)getLocalizedConsentTextWithHandle:(id)a3
+- (id)getLocalizedConsentTextWithHandle:(id)handle
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_100045B38();
@@ -249,10 +249,10 @@
   return v3;
 }
 
-- (void)attachConsentFormToSessionWithData:(id)a3
+- (void)attachConsentFormToSessionWithData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 

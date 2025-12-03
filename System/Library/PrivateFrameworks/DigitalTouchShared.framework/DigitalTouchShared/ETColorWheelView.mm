@@ -3,17 +3,17 @@
 + (double)colorWheelWidth;
 + (double)pickerDiameter;
 - (BOOL)pickerShouldDismissClockwise;
-- (ETColorWheelView)initWithFrame:(CGRect)a3;
+- (ETColorWheelView)initWithFrame:(CGRect)frame;
 - (double)colorWheelDismissalRotation;
 - (id)pickerViewHighlightedColor;
-- (void)addPickerCircleForPaletteCircle:(id)a3;
+- (void)addPickerCircleForPaletteCircle:(id)circle;
 - (void)animatePickerToOriginalPosition;
-- (void)beganTouches:(id)a3;
+- (void)beganTouches:(id)touches;
 - (void)finishedTouches;
-- (void)hideColorWheelPickingColor:(BOOL)a3;
+- (void)hideColorWheelPickingColor:(BOOL)color;
 - (void)hideDoneButton;
 - (void)hideDoneButtonAnimated;
-- (void)showColorWheelFromPaletteCircle:(id)a3 rotation:(double)a4;
+- (void)showColorWheelFromPaletteCircle:(id)circle rotation:(double)rotation;
 - (void)showDoneButtonAnimated;
 @end
 
@@ -42,16 +42,16 @@
 + (CGColor)pickerBorderColor
 {
   v2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-  v3 = [v2 CGColor];
+  cGColor = [v2 CGColor];
 
-  return v3;
+  return cGColor;
 }
 
-- (ETColorWheelView)initWithFrame:(CGRect)a3
+- (ETColorWheelView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = ETColorWheelView;
-  v3 = [(ETColorWheelView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETColorWheelView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (SetupSpecValuesIfNeeded_onceToken_0 != -1)
@@ -69,10 +69,10 @@
     [(ETColorWheelView *)v3 gradientWidth];
     UIRectCenteredIntegralRect();
     [(DTSColorWheel *)v3 createDoneButtonWithFrame:?];
-    v10 = [(DTSColorWheel *)v3 doneButton];
-    v11 = [v10 titleLabel];
+    doneButton = [(DTSColorWheel *)v3 doneButton];
+    titleLabel = [doneButton titleLabel];
     v12 = [MEMORY[0x277D74300] systemFontOfSize:13.5];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
     [(ETColorWheelView *)v3 setHidden:1];
     [(ETColorWheelView *)v3 hideDoneButton];
@@ -93,29 +93,29 @@
 
 - (void)hideDoneButton
 {
-  v2 = [(DTSColorWheel *)self doneButton];
-  [v2 setAlpha:0.0];
+  doneButton = [(DTSColorWheel *)self doneButton];
+  [doneButton setAlpha:0.0];
   CGAffineTransformMakeScale(&v3, 0.7, 0.7);
-  [v2 setTransform:&v3];
+  [doneButton setTransform:&v3];
 }
 
-- (void)showColorWheelFromPaletteCircle:(id)a3 rotation:(double)a4
+- (void)showColorWheelFromPaletteCircle:(id)circle rotation:(double)rotation
 {
   v17 = 0.0;
-  v6 = a3;
-  v7 = [v6 backgroundColor];
-  [v7 getHue:&v17 saturation:0 brightness:0 alpha:0];
+  circleCopy = circle;
+  backgroundColor = [circleCopy backgroundColor];
+  [backgroundColor getHue:&v17 saturation:0 brightness:0 alpha:0];
 
   [(DTSColorWheel *)self setHueRotation:RadiansFromHue(v17)];
   [(DTSColorWheel *)self hueRotation];
-  v9 = v8 + a4;
+  v9 = v8 + rotation;
   self->_originalRotation = v9;
   CGAffineTransformMakeRotation(&v16, v9);
   gradientView = self->_gradientView;
   v15 = v16;
   [(ETColorGradientView *)gradientView setTransform:&v15];
   [(ETColorWheelView *)self setHidden:0];
-  [(ETColorWheelView *)self addPickerCircleForPaletteCircle:v6];
+  [(ETColorWheelView *)self addPickerCircleForPaletteCircle:circleCopy];
 
   [(ETColorWheelView *)self showDoneButtonAnimated];
   v11 = self->_gradientView;
@@ -161,30 +161,30 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
   [MEMORY[0x277D75D18] animateWithDuration:v2 animations:0.2];
 }
 
-- (void)addPickerCircleForPaletteCircle:(id)a3
+- (void)addPickerCircleForPaletteCircle:(id)circle
 {
-  v4 = a3;
+  circleCopy = circle;
   [(ETColorWheelView *)self pickerDiameter];
   v6 = v5;
   v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v6, v6}];
-  v7 = [v21 layer];
-  [v7 setCornerRadius:v6 * 0.5];
+  layer = [v21 layer];
+  [layer setCornerRadius:v6 * 0.5];
 
-  v8 = [v21 layer];
+  layer2 = [v21 layer];
   v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-  [v8 setBorderColor:{objc_msgSend(v9, "CGColor")}];
+  [layer2 setBorderColor:{objc_msgSend(v9, "CGColor")}];
 
-  v10 = [v21 layer];
-  [v10 setBorderWidth:1.0];
+  layer3 = [v21 layer];
+  [layer3 setBorderWidth:1.0];
 
   [(DTSColorWheel *)self setPickerCircle:v21];
   [(ETColorWheelView *)self addSubview:v21];
-  [v4 center];
+  [circleCopy center];
   v12 = v11;
   v14 = v13;
-  v15 = [v4 superview];
+  superview = [circleCopy superview];
 
-  [(ETColorWheelView *)self convertPoint:v15 fromView:v12, v14];
+  [(ETColorWheelView *)self convertPoint:superview fromView:v12, v14];
   v17 = v16;
   v19 = v18;
 
@@ -194,12 +194,12 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
   self->_originalPickerRotation = v20;
 }
 
-- (void)beganTouches:(id)a3
+- (void)beganTouches:(id)touches
 {
   self->_handlingTouches = 1;
   v3.receiver = self;
   v3.super_class = ETColorWheelView;
-  [(DTSColorWheel *)&v3 beganTouches:a3];
+  [(DTSColorWheel *)&v3 beganTouches:touches];
 }
 
 - (void)finishedTouches
@@ -240,8 +240,8 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
   originalPickerRotation = self->_originalPickerRotation;
   [(DTSColorWheel *)self pickerRotation];
   v5 = originalPickerRotation - v4;
-  v6 = [(ETColorWheelView *)self pickerShouldDismissClockwise];
-  if (v6 && v5 < 0.0)
+  pickerShouldDismissClockwise = [(ETColorWheelView *)self pickerShouldDismissClockwise];
+  if (pickerShouldDismissClockwise && v5 < 0.0)
   {
     do
     {
@@ -253,7 +253,7 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = v5 <= 0.0 || v6;
+    v7 = v5 <= 0.0 || pickerShouldDismissClockwise;
     if ((v7 & 1) == 0)
     {
       if (v5 < 0.0)
@@ -276,29 +276,29 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)hideColorWheelPickingColor:(BOOL)a3
+- (void)hideColorWheelPickingColor:(BOOL)color
 {
-  v3 = a3;
-  v5 = [(DTSColorWheel *)self pickerCircle];
-  v6 = v5;
-  if (v3)
+  colorCopy = color;
+  pickerCircle = [(DTSColorWheel *)self pickerCircle];
+  v6 = pickerCircle;
+  if (colorCopy)
   {
-    v7 = [v5 backgroundColor];
+    backgroundColor = [pickerCircle backgroundColor];
   }
 
   else
   {
-    v7 = 0;
+    backgroundColor = 0;
   }
 
   [(ETColorWheelView *)self resignFirstResponder];
-  v8 = [(DTSColorWheel *)self delegate];
+  delegate = [(DTSColorWheel *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DTSColorWheel *)self delegate];
-    [v10 colorWheel:self willPickColor:v7];
+    delegate2 = [(DTSColorWheel *)self delegate];
+    [delegate2 colorWheel:self willPickColor:backgroundColor];
   }
 
   gradientView = self->_gradientView;
@@ -315,8 +315,8 @@ void __42__ETColorWheelView_showDoneButtonAnimated__block_invoke(uint64_t a1)
   v18[3] = &unk_278F79F60;
   v18[4] = self;
   v19 = v6;
-  v20 = v7;
-  v16 = v7;
+  v20 = backgroundColor;
+  v16 = backgroundColor;
   v17 = v6;
   [(ETColorGradientView *)v13 hideColorWheelWithRotation:v18 completion:v15];
 }
@@ -356,10 +356,10 @@ void __47__ETColorWheelView_hideColorWheelPickingColor___block_invoke(uint64_t a
   [(ETColorWheelView *)self colorWheelRadius];
   v12 = v10 + v11 * -0.5;
   Mutable = CGPathCreateMutable();
-  v14 = [(ETColorWheelView *)self pickerShouldDismissClockwise];
+  pickerShouldDismissClockwise = [(ETColorWheelView *)self pickerShouldDismissClockwise];
   [(DTSColorWheel *)self pickerRotation];
-  CGPathAddArc(Mutable, 0, MidX, MidY, v12, v15, self->_originalPickerRotation, !v14);
-  v16 = [(DTSColorWheel *)self pickerCircle];
+  CGPathAddArc(Mutable, 0, MidX, MidY, v12, v15, self->_originalPickerRotation, !pickerShouldDismissClockwise);
+  pickerCircle = [(DTSColorWheel *)self pickerCircle];
   v17 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position"];
   v18 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
   [v17 setTimingFunction:v18];
@@ -368,8 +368,8 @@ void __47__ETColorWheelView_hideColorWheelPickingColor___block_invoke(uint64_t a
   [v17 setPath:Mutable];
   [v17 setFillMode:*MEMORY[0x277CDA238]];
   [v17 setRemovedOnCompletion:0];
-  v19 = [v16 layer];
-  [v19 addAnimation:v17 forKey:@"position"];
+  layer = [pickerCircle layer];
+  [layer addAnimation:v17 forKey:@"position"];
 
   CFRelease(Mutable);
   v20 = MEMORY[0x277D75D18];
@@ -377,7 +377,7 @@ void __47__ETColorWheelView_hideColorWheelPickingColor___block_invoke(uint64_t a
   v24[1] = 3221225472;
   v24[2] = __51__ETColorWheelView_animatePickerToOriginalPosition__block_invoke;
   v24[3] = &unk_278F79ED0;
-  v25 = v16;
+  v25 = pickerCircle;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __51__ETColorWheelView_animatePickerToOriginalPosition__block_invoke_2;

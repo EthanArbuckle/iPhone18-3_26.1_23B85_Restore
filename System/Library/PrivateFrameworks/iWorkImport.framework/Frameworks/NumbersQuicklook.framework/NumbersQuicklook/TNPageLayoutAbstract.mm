@@ -2,24 +2,24 @@
 - (CGRect)pageBounds;
 - (Class)repClassOverride;
 - (TNPageController)pageController;
-- (TNPageLayoutAbstract)initWithPageController:(id)a3 pageCoordinate:(TSUCellCoord)a4;
+- (TNPageLayoutAbstract)initWithPageController:(id)controller pageCoordinate:(TSUCellCoord)coordinate;
 - (id)computeLayoutGeometry;
 - (id)description;
 @end
 
 @implementation TNPageLayoutAbstract
 
-- (TNPageLayoutAbstract)initWithPageController:(id)a3 pageCoordinate:(TSUCellCoord)a4
+- (TNPageLayoutAbstract)initWithPageController:(id)controller pageCoordinate:(TSUCellCoord)coordinate
 {
-  v6 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = TNPageLayoutAbstract;
   v7 = [(TNPageLayoutAbstract *)&v10 initWithInfo:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_pageController, v6);
-    v8->_pageCoordinate = a4;
+    objc_storeWeak(&v7->_pageController, controllerCopy);
+    v8->_pageCoordinate = coordinate;
   }
 
   return v8;

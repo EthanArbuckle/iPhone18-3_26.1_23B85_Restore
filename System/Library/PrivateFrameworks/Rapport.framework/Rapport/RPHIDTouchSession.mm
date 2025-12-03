@@ -1,12 +1,12 @@
 @interface RPHIDTouchSession
 - (CGSize)screenSize;
 - (RPHIDTouchSession)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_invalidateWithCompletion:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_invalidateWithCompletion:(id)completion;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)invalidateWithCompletion:(id)a3;
-- (void)sendTouchEvent:(id)a3 completion:(id)a4;
+- (void)invalidateWithCompletion:(id)completion;
+- (void)sendTouchEvent:(id)event completion:(id)completion;
 @end
 
 @implementation RPHIDTouchSession
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -45,15 +45,15 @@
   v9[2] = __44__RPHIDTouchSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_messenger;
   if (!v5)
   {
@@ -61,20 +61,20 @@
     if (gLogCategory_RPHIDTouchSession <= 90 && (gLogCategory_RPHIDTouchSession != -1 || _LogCategory_Initialize()))
     {
       [RPHIDTouchSession _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v4[2](v4, v10);
+    completionCopy[2](completionCopy, v10);
     goto LABEL_11;
   }
 
@@ -99,7 +99,7 @@ LABEL_11:
   v12[2] = __45__RPHIDTouchSession__activateWithCompletion___block_invoke;
   v12[3] = &unk_1E7C94750;
   v12[4] = self;
-  v13 = v4;
+  v13 = completionCopy;
   [(RPMessageable *)v5 sendRequestID:@"_touchStart" request:v9 destinationID:@"rapport:rdid:DirectPeer" options:0 responseHandler:v12];
 
 LABEL_12:
@@ -171,24 +171,24 @@ void __45__RPHIDTouchSession__activateWithCompletion___block_invoke(uint64_t a1,
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__RPHIDTouchSession_invalidateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_invalidateWithCompletion:(id)a3
+- (void)_invalidateWithCompletion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_RPHIDTouchSession <= 30 && (gLogCategory_RPHIDTouchSession != -1 || _LogCategory_Initialize()))
   {
     [RPHIDTouchSession _invalidateWithCompletion:];
@@ -207,7 +207,7 @@ void __45__RPHIDTouchSession__activateWithCompletion___block_invoke(uint64_t a1,
     v13[1] = 3221225472;
     v13[2] = __47__RPHIDTouchSession__invalidateWithCompletion___block_invoke;
     v13[3] = &unk_1E7C93780;
-    v14 = v4;
+    v14 = completionCopy;
     [(RPMessageable *)messenger sendRequestID:@"_touchStop" request:v8 destinationID:@"rapport:rdid:DirectPeer" options:0 responseHandler:v13];
     v10 = self->_touchSessionID;
     self->_touchSessionID = 0;
@@ -244,26 +244,26 @@ void __47__RPHIDTouchSession__invalidateWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)sendTouchEvent:(id)a3 completion:(id)a4
+- (void)sendTouchEvent:(id)event completion:(id)completion
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = self->_messenger;
   if (v8)
   {
-    [v6 location];
+    [eventCopy location];
     v10 = (v9 * self->_screenSize.width);
     v12 = (v11 * self->_screenSize.height);
-    [v6 timestampSeconds];
+    [eventCopy timestampSeconds];
     v21[0] = @"_ns";
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:(v13 * 1000000000.0)];
     v22[0] = v14;
     v21[1] = @"_tFg";
-    v15 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "finger")}];
+    v15 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "finger")}];
     v22[1] = v15;
     v21[2] = @"_tPh";
-    v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "phase")}];
+    v16 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "phase")}];
     v22[2] = v16;
     v21[3] = @"_cx";
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v10];
@@ -273,7 +273,7 @@ void __47__RPHIDTouchSession__invalidateWithCompletion___block_invoke(uint64_t a
     v22[4] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:5];
 
-    [(RPMessageable *)v8 sendEventID:@"_hidT" event:v19 destinationID:@"rapport:rdid:DirectPeer" options:0 completion:v7];
+    [(RPMessageable *)v8 sendEventID:@"_hidT" event:v19 destinationID:@"rapport:rdid:DirectPeer" options:0 completion:completionCopy];
   }
 
   else if (gLogCategory_RPHIDTouchSession <= 90 && (gLogCategory_RPHIDTouchSession != -1 || _LogCategory_Initialize()))

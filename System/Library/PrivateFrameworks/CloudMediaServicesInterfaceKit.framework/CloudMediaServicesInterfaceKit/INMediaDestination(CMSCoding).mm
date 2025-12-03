@@ -8,18 +8,18 @@
 - (id)cmsCoded
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 mediaDestinationType];
-  if (v2 == 2)
+  mediaDestinationType = [self mediaDestinationType];
+  if (mediaDestinationType == 2)
   {
     v15[0] = @"mediaDestinationType";
     v15[1] = @"playlistName";
     v16[0] = @"playlist";
-    v3 = [a1 playlistName];
-    v4 = v3;
+    playlistName = [self playlistName];
+    v4 = playlistName;
     v5 = &stru_2856A7BB0;
-    if (v3)
+    if (playlistName)
     {
-      v5 = v3;
+      v5 = playlistName;
     }
 
     v16[1] = v5;
@@ -32,7 +32,7 @@
   else
   {
     v13 = @"mediaDestinationType";
-    v4 = INMediaDestinationTypeToString(v2);
+    v4 = INMediaDestinationTypeToString(mediaDestinationType);
     v14 = v4;
     v6 = MEMORY[0x277CBEAC0];
     v7 = &v14;
@@ -58,7 +58,7 @@
 
     if (v6 == 1)
     {
-      v7 = [MEMORY[0x277CD3DA8] libraryDestination];
+      libraryDestination = [MEMORY[0x277CD3DA8] libraryDestination];
     }
 
     else
@@ -73,16 +73,16 @@
 
       v11 = v10;
 
-      v7 = [MEMORY[0x277CD3DA8] playlistDestinationWithName:v11];
+      libraryDestination = [MEMORY[0x277CD3DA8] playlistDestinationWithName:v11];
     }
   }
 
   else
   {
-    v7 = 0;
+    libraryDestination = 0;
   }
 
-  return v7;
+  return libraryDestination;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface NUVideoCorruptionInfo
-- (NUVideoCorruptionInfo)initWithType:(unint64_t)a3;
-- (NUVideoCorruptionInfo)initWithType:(unint64_t)a3 corruptedRanges:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUVideoCorruptionInfo)initWithType:(unint64_t)type;
+- (NUVideoCorruptionInfo)initWithType:(unint64_t)type corruptedRanges:(id)ranges;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -9,34 +9,34 @@
 
 - (id)description
 {
-  v3 = [(NUVideoCorruptionInfo *)self type];
-  if (v3 <= 2)
+  type = [(NUVideoCorruptionInfo *)self type];
+  if (type <= 2)
   {
     v5 = @"Unknown";
     v6 = @"CorruptedMainVideoTrack";
     v7 = @"DuplicatePTSInMainVideo";
-    if (v3 != 2)
+    if (type != 2)
     {
       v7 = 0;
     }
 
-    if (v3 != 1)
+    if (type != 1)
     {
       v6 = v7;
     }
 
-    v8 = v3 == 0;
+    v8 = type == 0;
   }
 
   else
   {
-    if (v3 <= 4)
+    if (type <= 4)
     {
-      if (v3 == 3)
+      if (type == 3)
       {
         v15 = MEMORY[0x1E696AEC0];
-        v16 = [(NUVideoCorruptionInfo *)self trackMediaCharateristic];
-        v4 = [v15 stringWithFormat:@"MissingAuxiliaryTrack (%@)", v16];
+        trackMediaCharateristic = [(NUVideoCorruptionInfo *)self trackMediaCharateristic];
+        v4 = [v15 stringWithFormat:@"MissingAuxiliaryTrack (%@)", trackMediaCharateristic];
       }
 
       else
@@ -49,12 +49,12 @@
 
     v5 = @"MissingStyleMetadataTrack";
     v6 = @"MalformedStyleMetadataTrack";
-    if (v3 != 6)
+    if (type != 6)
     {
       v6 = 0;
     }
 
-    v8 = v3 == 5;
+    v8 = type == 5;
   }
 
   if (v8)
@@ -68,7 +68,7 @@
   }
 
 LABEL_16:
-  v9 = [(NUVideoCorruptionInfo *)self corruptedRanges];
+  corruptedRanges = [(NUVideoCorruptionInfo *)self corruptedRanges];
   v10 = PFMap();
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Issue: %@", v4];
@@ -96,10 +96,10 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(NUVideoCorruptionInfo);
-  v6 = [(NSArray *)self->_corruptedRanges copyWithZone:a3];
+  v6 = [(NSArray *)self->_corruptedRanges copyWithZone:zone];
   corruptedRanges = v5->_corruptedRanges;
   v5->_corruptedRanges = v6;
 
@@ -107,11 +107,11 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
   return v5;
 }
 
-- (NUVideoCorruptionInfo)initWithType:(unint64_t)a3 corruptedRanges:(id)a4
+- (NUVideoCorruptionInfo)initWithType:(unint64_t)type corruptedRanges:(id)ranges
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6)
+  rangesCopy = ranges;
+  if (!rangesCopy)
   {
     v12 = NUAssertLogger_15131();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -132,8 +132,8 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -144,8 +144,8 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -154,8 +154,8 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
     _NUAssertFailHandler("[NUVideoCorruptionInfo initWithType:corruptedRanges:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUVideoUtilities.m", 79, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "ranges != nil");
   }
 
-  v7 = v6;
-  v8 = [(NUVideoCorruptionInfo *)self initWithType:a3];
+  v7 = rangesCopy;
+  v8 = [(NUVideoCorruptionInfo *)self initWithType:type];
   v9 = [v7 copy];
   corruptedRanges = v8->_corruptedRanges;
   v8->_corruptedRanges = v9;
@@ -163,12 +163,12 @@ id __36__NUVideoCorruptionInfo_description__block_invoke(int a1, CFDictionaryRef
   return v8;
 }
 
-- (NUVideoCorruptionInfo)initWithType:(unint64_t)a3
+- (NUVideoCorruptionInfo)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = NUVideoCorruptionInfo;
   result = [(NUVideoCorruptionInfo *)&v5 init];
-  result->_type = a3;
+  result->_type = type;
   return result;
 }
 

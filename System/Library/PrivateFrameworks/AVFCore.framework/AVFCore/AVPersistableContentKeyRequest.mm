@@ -33,10 +33,10 @@
 
   if (![(AVContentKeyRequest *)self _requestID])
   {
-    v20 = [(AVContentKeyRequest *)self figCryptor];
-    if (v20)
+    figCryptor = [(AVContentKeyRequest *)self figCryptor];
+    if (figCryptor)
     {
-      v21 = v20;
+      v21 = figCryptor;
       v22 = *MEMORY[0x1E695E4D0];
       v35 = *MEMORY[0x1E6962B30];
       v36 = v22;
@@ -79,15 +79,15 @@ LABEL_31:
     objc_exception_throw(v32);
   }
 
-  v14 = [(AVContentKeyRequest *)self _copyContentKeyBoss];
-  if (v14)
+  _copyContentKeyBoss = [(AVContentKeyRequest *)self _copyContentKeyBoss];
+  if (_copyContentKeyBoss)
   {
-    v15 = v14;
-    v16 = [(AVContentKeyRequest *)self _requestID];
+    v15 = _copyContentKeyBoss;
+    _requestID = [(AVContentKeyRequest *)self _requestID];
     v17 = *(*(CMBaseObjectGetVTable() + 16) + 24);
     if (v17)
     {
-      v18 = v17(v15, v16, keyVendorResponse, &v34);
+      v18 = v17(v15, _requestID, keyVendorResponse, &v34);
     }
 
     else

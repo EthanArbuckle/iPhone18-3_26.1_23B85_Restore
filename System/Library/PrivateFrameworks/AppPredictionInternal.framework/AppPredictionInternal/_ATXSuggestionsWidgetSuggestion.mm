@@ -1,20 +1,20 @@
 @interface _ATXSuggestionsWidgetSuggestion
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3;
-- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)a3 containingStack:(id)a4 suggestionDeduplicator:(id)a5 hyperParameters:(id)a6;
-- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)a3 containingStack:(id)a4 suggestionLayout:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7;
-- (id)initForPreviewOfSize:(unint64_t)a3 hyperParameters:(id)a4;
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion;
+- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)widget containingStack:(id)stack suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
+- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)widget containingStack:(id)stack suggestionLayout:(id)layout suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
+- (id)initForPreviewOfSize:(unint64_t)size hyperParameters:(id)parameters;
 @end
 
 @implementation _ATXSuggestionsWidgetSuggestion
 
-- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)a3 containingStack:(id)a4 suggestionDeduplicator:(id)a5 hyperParameters:(id)a6
+- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)widget containingStack:(id)stack suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 extensionBundleId];
-  v16 = [v15 isEqualToString:*MEMORY[0x277CEBBA0]];
+  widgetCopy = widget;
+  stackCopy = stack;
+  deduplicatorCopy = deduplicator;
+  parametersCopy = parameters;
+  extensionBundleId = [widgetCopy extensionBundleId];
+  v16 = [extensionBundleId isEqualToString:*MEMORY[0x277CEBBA0]];
 
   if (v16)
   {
@@ -26,14 +26,14 @@
     {
 LABEL_13:
       self = self;
-      v27 = self;
+      selfCopy = self;
       goto LABEL_14;
     }
 
-    objc_storeWeak(&v17->super._stack, v12);
-    objc_storeStrong(&self->super._widget, a3);
-    objc_storeStrong(&self->super._suggestionDeduplicator, a5);
-    objc_storeStrong(&self->super._hyperParameters, a6);
+    objc_storeWeak(&v17->super._stack, stackCopy);
+    objc_storeStrong(&self->super._widget, widget);
+    objc_storeStrong(&self->super._suggestionDeduplicator, deduplicator);
+    objc_storeStrong(&self->super._hyperParameters, parameters);
     if (![(ATXHomeScreenWidgetIdentifiable *)self->super._widget size])
     {
       v18 = 5;
@@ -74,24 +74,24 @@ LABEL_12:
     }
   }
 
-  v27 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v27;
+  return selfCopy;
 }
 
-- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)a3 containingStack:(id)a4 suggestionLayout:(id)a5 suggestionDeduplicator:(id)a6 hyperParameters:(id)a7
+- (_ATXSuggestionsWidgetSuggestion)initWithSuggestionsWidget:(id)widget containingStack:(id)stack suggestionLayout:(id)layout suggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
-  v13 = a5;
-  v14 = [(_ATXSuggestionsWidgetSuggestion *)self initWithSuggestionsWidget:a3 containingStack:a4 suggestionDeduplicator:a6 hyperParameters:a7];
+  layoutCopy = layout;
+  v14 = [(_ATXSuggestionsWidgetSuggestion *)self initWithSuggestionsWidget:widget containingStack:stack suggestionDeduplicator:deduplicator hyperParameters:parameters];
   if (!v14)
   {
     goto LABEL_4;
   }
 
-  if ([v13 layoutType] == v14->super._layoutType)
+  if ([layoutCopy layoutType] == v14->super._layoutType)
   {
-    objc_storeStrong(&v14->super._suggestionLayout, a5);
+    objc_storeStrong(&v14->super._suggestionLayout, layout);
 LABEL_4:
     v15 = v14;
     goto LABEL_8;
@@ -109,9 +109,9 @@ LABEL_8:
   return v15;
 }
 
-- (id)initForPreviewOfSize:(unint64_t)a3 hyperParameters:(id)a4
+- (id)initForPreviewOfSize:(unint64_t)size hyperParameters:(id)parameters
 {
-  v7 = a4;
+  parametersCopy = parameters;
   v28.receiver = self;
   v28.super_class = _ATXSuggestionsWidgetSuggestion;
   v8 = [(_ATXSuggestionsWidgetSuggestion *)&v28 init];
@@ -121,7 +121,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v8->super._hyperParameters, a4);
+  objc_storeStrong(&v8->super._hyperParameters, parameters);
   v10 = objc_opt_new();
   widget = v9->super._widget;
   v9->super._widget = v10;
@@ -132,7 +132,7 @@ LABEL_8:
   v13 = ATXSpecialWidgetKindSiriSuggestions();
   [(ATXHomeScreenWidgetIdentifiable *)v9->super._widget setWidgetKind:v13];
 
-  [(ATXHomeScreenWidgetIdentifiable *)v9->super._widget setSize:a3];
+  [(ATXHomeScreenWidgetIdentifiable *)v9->super._widget setSize:size];
   if (![(ATXHomeScreenWidgetIdentifiable *)v9->super._widget size])
   {
     v14 = MEMORY[0x277CEBBA8];
@@ -175,12 +175,12 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)containsIdenticalContentOfSuggestion:(id)a3
+- (BOOL)containsIdenticalContentOfSuggestion:(id)suggestion
 {
   suggestionDeduplicator = self->super._suggestionDeduplicator;
-  v5 = a3;
-  v6 = [(_ATXCompositeLayoutWidgetSuggestionBase *)self _existingSuggestionsInLayout];
-  LOBYTE(suggestionDeduplicator) = [(ATXSuggestionDeduplicatorProtocol *)suggestionDeduplicator suggestionIsDuplicate:v5 existingSuggestions:v6 shouldCompareAcrossTypes:1];
+  suggestionCopy = suggestion;
+  _existingSuggestionsInLayout = [(_ATXCompositeLayoutWidgetSuggestionBase *)self _existingSuggestionsInLayout];
+  LOBYTE(suggestionDeduplicator) = [(ATXSuggestionDeduplicatorProtocol *)suggestionDeduplicator suggestionIsDuplicate:suggestionCopy existingSuggestions:_existingSuggestionsInLayout shouldCompareAcrossTypes:1];
 
   return suggestionDeduplicator;
 }

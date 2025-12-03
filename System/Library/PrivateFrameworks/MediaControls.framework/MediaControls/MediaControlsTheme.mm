@@ -1,15 +1,15 @@
 @interface MediaControlsTheme
 + (UIImage)volumeMaxImage;
 + (UIImage)volumeMinImage;
-+ (id)goBackwardImageForTimeInterval:(double)a3;
-+ (id)goForwardImageForTimeInterval:(double)a3;
++ (id)goBackwardImageForTimeInterval:(double)interval;
++ (id)goForwardImageForTimeInterval:(double)interval;
 @end
 
 @implementation MediaControlsTheme
 
-+ (id)goBackwardImageForTimeInterval:(double)a3
++ (id)goBackwardImageForTimeInterval:(double)interval
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gobackward.%i", llround(fabs(a3))];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"gobackward.%i", llround(fabs(interval))];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
   v5 = v4;
   if (v4)
@@ -27,9 +27,9 @@
   return v7;
 }
 
-+ (id)goForwardImageForTimeInterval:(double)a3
++ (id)goForwardImageForTimeInterval:(double)interval
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"goforward.%i", llround(fabs(a3))];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"goforward.%i", llround(fabs(interval))];
   v4 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v3];
   v5 = v4;
   if (v4)

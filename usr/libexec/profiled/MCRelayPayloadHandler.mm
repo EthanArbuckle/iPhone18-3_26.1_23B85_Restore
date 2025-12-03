@@ -1,8 +1,8 @@
 @interface MCRelayPayloadHandler
-+ (id)internalErrorWithUnderlyingError:(id)a3;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
-- (MCRelayPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4;
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4;
++ (id)internalErrorWithUnderlyingError:(id)error;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
+- (MCRelayPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler;
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -10,49 +10,49 @@
 
 @implementation MCRelayPayloadHandler
 
-- (MCRelayPayloadHandler)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCRelayPayloadHandler)initWithPayload:(id)payload profileHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = MCRelayPayloadHandler;
-  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:a3 profileHandler:v6];
+  v7 = [(MCNewPayloadHandler *)&v11 initWithPayload:payload profileHandler:handlerCopy];
   if (v7)
   {
-    v8 = [v6 profile];
+    profile = [handlerCopy profile];
     profile = v7->_profile;
-    v7->_profile = v8;
+    v7->_profile = profile;
   }
 
   return v7;
 }
 
-+ (id)internalErrorWithUnderlyingError:(id)a3
++ (id)internalErrorWithUnderlyingError:(id)error
 {
   v3 = MCRelayErrorDomain;
-  v4 = a3;
+  errorCopy = error;
   v5 = MCErrorArray();
-  v6 = [NSError MCErrorWithDomain:v3 code:61000 descriptionArray:v5 underlyingError:v4 errorType:MCErrorTypeFatal, 0];
+  v6 = [NSError MCErrorWithDomain:v3 code:61000 descriptionArray:v5 underlyingError:errorCopy errorType:MCErrorTypeFatal, 0];
 
   return v6;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v9 = a4;
-  v10 = [(MCNewPayloadHandler *)self payload];
-  v11 = [v10 type];
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v88 = objc_alloc_init(NSMutableArray);
-  v12 = [v10 relayUUID];
-  if (v12)
+  relayUUID = [payload relayUUID];
+  if (relayUUID)
   {
 
     goto LABEL_6;
   }
 
   v13 = +[MDMConfiguration sharedConfiguration];
-  v14 = [v13 isUserEnrollment];
+  isUserEnrollment = [v13 isUserEnrollment];
 
-  if (!v14)
+  if (!isUserEnrollment)
   {
 LABEL_6:
     v17 = MCNEProfileIngestionHandlerClassForPayload();
@@ -63,54 +63,54 @@ LABEL_6:
 
     if (([v17 lockConfigurations] & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
-        v53 = [objc_opt_class() internalError];
-        v54 = a6;
-        LOBYTE(a6) = 0;
-        *v54 = v53;
+        internalError = [objc_opt_class() internalError];
+        errorCopy = error;
+        LOBYTE(error) = 0;
+        *errorCopy = internalError;
       }
 
       goto LABEL_78;
     }
 
-    v86 = v9;
+    v86 = optionsCopy;
     [v17 loadConfigurationsForceReloadFromDisk];
-    v18 = [v10 configurationDictionary];
-    v19 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:v18];
+    configurationDictionary = [payload configurationDictionary];
+    v19 = [MCVPNPayloadBase NEVPNPayloadBaseDelegateWithConfigurationDict:configurationDictionary];
 
     if (!v19)
     {
       sub_1000C2748(a2, self);
     }
 
-    [v17 createConfigurationFromPayload:v19 payloadType:v11];
-    v20 = [v17 ingestedConfiguration];
-    v21 = v20;
-    if (!v20)
+    [v17 createConfigurationFromPayload:v19 payloadType:type];
+    ingestedConfiguration = [v17 ingestedConfiguration];
+    v21 = ingestedConfiguration;
+    if (!ingestedConfiguration)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [objc_opt_class() internalError];
+        *error = [objc_opt_class() internalError];
       }
 
       [v17 unlockConfigurations];
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_77;
     }
 
-    v22 = [v20 getPendingCertificateInfo:v19];
+    v22 = [ingestedConfiguration getPendingCertificateInfo:v19];
     v85 = v21;
     v91 = v22;
     if (v22)
     {
       v23 = v22;
-      v80 = a6;
-      v81 = v11;
-      v24 = self;
+      errorCopy2 = error;
+      v81 = type;
+      selfCopy = self;
       v83 = v19;
       v84 = v17;
-      v87 = v10;
+      v87 = payload;
       v90 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v22, "count")}];
       v102 = 0u;
       v103 = 0u;
@@ -138,15 +138,15 @@ LABEL_6:
             v33 = [v31 objectForKeyedSubscript:@"AccessGroup"];
             if (v33)
             {
-              v34 = [(MCRelayPayloadHandler *)v24 _copyCertificateWithPayloadUUID:v32 intoKeychainAccessGroup:v33];
+              v34 = [(MCRelayPayloadHandler *)selfCopy _copyCertificateWithPayloadUUID:v32 intoKeychainAccessGroup:v33];
               if (!v34)
               {
                 goto LABEL_24;
               }
 
               v35 = v34;
-              v36 = [v87 UUID];
-              [(MCNewPayloadHandler *)v24 _retainDependencyBetweenPersistentID:v35 andUUID:v36];
+              uUID = [v87 UUID];
+              [(MCNewPayloadHandler *)selfCopy _retainDependencyBetweenPersistentID:v35 andUUID:uUID];
 
               v26 = v91;
               [v88 addObject:v35];
@@ -158,8 +158,8 @@ LABEL_23:
 
             if (v32)
             {
-              v37 = [(MCNewPayloadHandler *)v24 profileHandler];
-              v35 = [v37 persistentIDForCertificateUUID:v32];
+              profileHandler = [(MCNewPayloadHandler *)selfCopy profileHandler];
+              v35 = [profileHandler persistentIDForCertificateUUID:v32];
 
               v26 = v91;
               if (v35)
@@ -181,16 +181,16 @@ LABEL_24:
       v21 = v85;
       if (v38 != [v90 count] || (objc_msgSend(v85, "setCertificates:", v90) & 1) == 0)
       {
-        v10 = v87;
-        v11 = v81;
+        payload = v87;
+        type = v81;
         v19 = v83;
         v17 = v84;
-        v55 = v24;
-        if (v80)
+        v55 = selfCopy;
+        if (errorCopy2)
         {
           v56 = MCRelayErrorDomain;
           v57 = MCErrorArray();
-          *v80 = [NSError MCErrorWithDomain:v56 code:61001 descriptionArray:v57 errorType:MCErrorTypeFatal, 0];
+          *errorCopy2 = [NSError MCErrorWithDomain:v56 code:61001 descriptionArray:v57 errorType:MCErrorTypeFatal, 0];
         }
 
         [v84 unlockConfigurations];
@@ -198,11 +198,11 @@ LABEL_24:
         v101 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v52 = v88;
-        v58 = [v52 countByEnumeratingWithState:&v98 objects:v107 count:16];
+        displayName = v88;
+        v58 = [displayName countByEnumeratingWithState:&v98 objects:v107 count:16];
         if (!v58)
         {
-          LOBYTE(a6) = 0;
+          LOBYTE(error) = 0;
           goto LABEL_74;
         }
 
@@ -214,43 +214,43 @@ LABEL_24:
           {
             if (*v99 != v60)
             {
-              objc_enumerationMutation(v52);
+              objc_enumerationMutation(displayName);
             }
 
             v62 = *(*(&v98 + 1) + 8 * j);
-            v63 = [v87 UUID];
-            [(MCNewPayloadHandler *)v55 _releaseDependencyBetweenPersistentID:v62 andUUID:v63];
+            uUID2 = [v87 UUID];
+            [(MCNewPayloadHandler *)v55 _releaseDependencyBetweenPersistentID:v62 andUUID:uUID2];
           }
 
-          v59 = [v52 countByEnumeratingWithState:&v98 objects:v107 count:16];
+          v59 = [displayName countByEnumeratingWithState:&v98 objects:v107 count:16];
         }
 
         while (v59);
-        LOBYTE(a6) = 0;
+        LOBYTE(error) = 0;
 LABEL_73:
         v19 = v83;
         v17 = v84;
         goto LABEL_74;
       }
 
-      v10 = v87;
-      v11 = v81;
+      payload = v87;
+      type = v81;
       v19 = v83;
       v17 = v84;
-      self = v24;
-      a6 = v80;
+      self = selfCopy;
+      error = errorCopy2;
     }
 
-    v39 = [v10 UUID];
-    v40 = [v10 organization];
-    [v21 setPayloadInfoCommon:v39 payloadOrganization:v40];
+    uUID3 = [payload UUID];
+    organization = [payload organization];
+    [v21 setPayloadInfoCommon:uUID3 payloadOrganization:organization];
 
-    v41 = [v10 relayUUID];
-    if (v41)
+    relayUUID2 = [payload relayUUID];
+    if (relayUUID2)
     {
-      v42 = v41;
-      v43 = [v10 relayUUID];
-      v44 = [v21 setPerAppUUID:v43 andSafariDomains:0];
+      v42 = relayUUID2;
+      relayUUID3 = [payload relayUUID];
+      v44 = [v21 setPerAppUUID:relayUUID3 andSafariDomains:0];
 
       if ((v44 & 1) == 0)
       {
@@ -261,32 +261,32 @@ LABEL_73:
           _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "Could not configure relay UUID", buf, 2u);
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_76;
         }
 
         v70 = MCRelayErrorDomain;
-        v66 = [(MCNewPayloadHandler *)self payload];
-        v52 = [v66 displayName];
+        payload2 = [(MCNewPayloadHandler *)self payload];
+        displayName = [payload2 displayName];
         v71 = MCErrorArray();
-        *a6 = [NSError MCErrorWithDomain:v70 code:61002 descriptionArray:v71 errorType:MCErrorTypeFatal, v52, 0];
+        *error = [NSError MCErrorWithDomain:v70 code:61002 descriptionArray:v71 errorType:MCErrorTypeFatal, displayName, 0];
 
-        LOBYTE(a6) = 0;
+        LOBYTE(error) = 0;
 LABEL_75:
 
         v21 = v85;
 LABEL_76:
 
 LABEL_77:
-        v9 = v86;
+        optionsCopy = v86;
 LABEL_78:
 
         goto LABEL_79;
       }
     }
 
-    if (([v21 setRestrictDomains:{objc_msgSend(v10, "restrictDomains")}] & 1) == 0)
+    if (([v21 setRestrictDomains:{objc_msgSend(payload, "restrictDomains")}] & 1) == 0)
     {
       v64 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -296,34 +296,34 @@ LABEL_78:
       }
 
       v65 = MCRelayErrorDomain;
-      v66 = [(MCNewPayloadHandler *)self payload];
-      v52 = [v66 displayName];
+      payload2 = [(MCNewPayloadHandler *)self payload];
+      displayName = [payload2 displayName];
       v67 = MCErrorArray();
-      v68 = [NSError MCErrorWithDomain:v65 code:61002 descriptionArray:v67 errorType:MCErrorTypeFatal, v52, 0];
-      LOBYTE(a6) = v68 != 0;
+      v68 = [NSError MCErrorWithDomain:v65 code:61002 descriptionArray:v67 errorType:MCErrorTypeFatal, displayName, 0];
+      LOBYTE(error) = v68 != 0;
 
       goto LABEL_75;
     }
 
     v45 = objc_alloc_init(NSMutableDictionary);
-    v46 = [(MCProfile *)self->_profile UUID];
+    uUID4 = [(MCProfile *)self->_profile UUID];
 
-    if (v46)
+    if (uUID4)
     {
-      v47 = [(MCProfile *)self->_profile UUID];
-      [v45 setObject:v47 forKeyedSubscript:kMCPayloadUUIDKey];
+      uUID5 = [(MCProfile *)self->_profile UUID];
+      [v45 setObject:uUID5 forKeyedSubscript:kMCPayloadUUIDKey];
     }
 
     v90 = v45;
-    v48 = [(MCProfile *)self->_profile identifier];
+    identifier = [(MCProfile *)self->_profile identifier];
 
-    if (v48)
+    if (identifier)
     {
-      v49 = [(MCProfile *)self->_profile identifier];
-      [v45 setObject:v49 forKeyedSubscript:kMCPayloadIdentifierKey];
+      identifier2 = [(MCProfile *)self->_profile identifier];
+      [v45 setObject:identifier2 forKeyedSubscript:kMCPayloadIdentifierKey];
     }
 
-    v50 = a6;
+    errorCopy3 = error;
     if (v86)
     {
       [v45 addEntriesFromDictionary:?];
@@ -331,25 +331,25 @@ LABEL_78:
 
     [v21 setProfileInfo:v45];
     [v17 updateDefaultAfterAddingConfiguration];
-    v51 = [v21 getConfigurationIdentifier];
-    [v10 setPersistentResourceID:v51];
+    getConfigurationIdentifier = [v21 getConfigurationIdentifier];
+    [payload setPersistentResourceID:getConfigurationIdentifier];
 
     v96 = 0;
-    LOBYTE(a6) = [v17 saveIngestedConfiguration:&v96];
-    v52 = v96;
-    if (a6)
+    LOBYTE(error) = [v17 saveIngestedConfiguration:&v96];
+    displayName = v96;
+    if (error)
     {
       [v17 unlockConfigurations];
 LABEL_74:
-      v66 = v90;
+      payload2 = v90;
       goto LABEL_75;
     }
 
-    v82 = v11;
+    v82 = type;
     v83 = v19;
-    if (v50)
+    if (errorCopy3)
     {
-      *v50 = [objc_opt_class() internalErrorWithUnderlyingError:v52];
+      *errorCopy3 = [objc_opt_class() internalErrorWithUnderlyingError:displayName];
     }
 
     v84 = v17;
@@ -374,8 +374,8 @@ LABEL_74:
           }
 
           v77 = *(*(&v92 + 1) + 8 * k);
-          v78 = [v10 UUID];
-          [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v77 andUUID:v78];
+          uUID6 = [payload UUID];
+          [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v77 andUUID:uUID6];
         }
 
         v74 = [v72 countByEnumeratingWithState:&v92 objects:v106 count:16];
@@ -384,36 +384,36 @@ LABEL_74:
       while (v74);
     }
 
-    v11 = v82;
+    type = v82;
     goto LABEL_73;
   }
 
-  if (a6)
+  if (error)
   {
     v15 = MCRelayErrorDomain;
     v16 = MCErrorArray();
-    *a6 = [NSError MCErrorWithDomain:v15 code:61003 descriptionArray:v16 errorType:MCErrorTypeFatal, 0];
+    *error = [NSError MCErrorWithDomain:v15 code:61003 descriptionArray:v16 errorType:MCErrorTypeFatal, 0];
 
-    LOBYTE(a6) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_79:
 
-  return a6;
+  return error;
 }
 
 - (void)setAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -431,16 +431,16 @@ LABEL_79:
 
 - (void)unsetAside
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 type];
+  payload = [(MCNewPayloadHandler *)self payload];
+  type = [payload type];
   v5 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v5 lockConfigurations])
   {
     [v5 loadConfigurationsForceReloadFromDisk];
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v7 = [v6 persistentResourceID];
-    v8 = [v5 setAsideConfigurationName:v7 unsetAside:0];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    v8 = [v5 setAsideConfigurationName:persistentResourceID unsetAside:0];
 
     [v5 unlockConfigurations];
   }
@@ -458,19 +458,19 @@ LABEL_79:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self payload];
-  v4 = [v3 persistentResourceID];
+  payload = [(MCNewPayloadHandler *)self payload];
+  persistentResourceID = [payload persistentResourceID];
 
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = [v5 type];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  type = [payload2 type];
   v7 = MCNEProfileIngestionHandlerClassForPayload();
 
   if ([v7 lockConfigurations])
   {
     [v7 loadConfigurationsForceReloadFromDisk];
-    if (v4)
+    if (persistentResourceID)
     {
-      [v7 removeConfigurationWithIdentifier:v4];
+      [v7 removeConfigurationWithIdentifier:persistentResourceID];
     }
 
     else
@@ -498,12 +498,12 @@ LABEL_79:
   }
 }
 
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCNewPayloadHandler *)self profileHandler];
-  v9 = [v8 payloadHandlerWithUUID:v6];
+  dCopy = d;
+  groupCopy = group;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v9 = [profileHandler payloadHandlerWithUUID:dCopy];
 
   if (v9)
   {
@@ -519,7 +519,7 @@ LABEL_79:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v25 = v6;
+      v25 = dCopy;
       v26 = 2114;
       v27 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Relay: Failed to get the identity for UUID %{public}@: %{public}@", buf, 0x16u);
@@ -528,28 +528,28 @@ LABEL_79:
     if (v10)
     {
 LABEL_7:
-      v13 = [v9 accessibility];
+      accessibility = [v9 accessibility];
       v14 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v25 = v13;
+        v25 = accessibility;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Relay identity, storing with accessibility %@", buf, 0xCu);
       }
 
-      v15 = [@"NE:" stringByAppendingString:v6];
-      v16 = [(MCNewPayloadHandler *)self profileHandler];
-      v17 = [v16 profile];
-      v7 = v22;
-      v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, v15, v22, [v17 isInstalledForSystem], v13);
+      v15 = [@"NE:" stringByAppendingString:dCopy];
+      profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler2 profile];
+      groupCopy = v22;
+      v18 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:accessibility:", v10, v15, v22, [profile isInstalledForSystem], accessibility);
 
       if (v18)
       {
-        v19 = [(MCNewPayloadHandler *)self payload];
-        v20 = [v19 UUID];
-        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:v20];
+        payload = [(MCNewPayloadHandler *)self payload];
+        uUID = [payload UUID];
+        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v18 andUUID:uUID];
 
-        v7 = v22;
+        groupCopy = v22;
       }
 
       CFRelease(v10);

@@ -1,18 +1,18 @@
 @interface NTKCUltraCubePreviewViewController
-- (NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)a3;
-- (void)_ultracubePreviewViewControllerDidDismiss:(id)a3;
-- (void)_ultracubePreviewViewControllerWantsToCancel:(id)a3;
-- (void)_ultracubePreviewViewControllerWantsToDelete:(id)a3;
-- (void)_ultracubePreviewViewControllerWantsToSave:(id)a3;
+- (NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)provider;
+- (void)_ultracubePreviewViewControllerDidDismiss:(id)dismiss;
+- (void)_ultracubePreviewViewControllerWantsToCancel:(id)cancel;
+- (void)_ultracubePreviewViewControllerWantsToDelete:(id)delete;
+- (void)_ultracubePreviewViewControllerWantsToSave:(id)save;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKCUltraCubePreviewViewController
 
-- (NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)a3
+- (NTKCUltraCubePreviewViewController)initWithPreviewProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[_NTKCUltraCubePreviewViewController alloc] initWithPreviewProvider:v4];
+  providerCopy = provider;
+  v5 = [[_NTKCUltraCubePreviewViewController alloc] initWithPreviewProvider:providerCopy];
 
   v14.receiver = self;
   v14.super_class = NTKCUltraCubePreviewViewController;
@@ -24,17 +24,17 @@
     [(_NTKCUltraCubePreviewViewController *)v7->_implementationVC setDelegate:v7];
     v8 = objc_alloc_init(UINavigationBarAppearance);
     [v8 configureWithOpaqueBackground];
-    v9 = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
-    [v9 setStandardAppearance:v8];
+    navigationBar = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
+    [navigationBar setStandardAppearance:v8];
 
-    v10 = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
-    [v10 setScrollEdgeAppearance:v8];
+    navigationBar2 = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
+    [navigationBar2 setScrollEdgeAppearance:v8];
 
-    v11 = [(NTKCUltraCubePreviewViewController *)v7 navigationItem];
-    [v11 setLargeTitleDisplayMode:2];
+    navigationItem = [(NTKCUltraCubePreviewViewController *)v7 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v12 = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
-    [v12 setPrefersLargeTitles:0];
+    navigationBar3 = [(NTKCUltraCubePreviewViewController *)v7 navigationBar];
+    [navigationBar3 setPrefersLargeTitles:0];
   }
 
   return v7;
@@ -48,28 +48,28 @@
   [(NTKCUltraCubePreviewViewController *)self setToolbarHidden:0];
 }
 
-- (void)_ultracubePreviewViewControllerWantsToCancel:(id)a3
+- (void)_ultracubePreviewViewControllerWantsToCancel:(id)cancel
 {
-  v4 = [(NTKCUltraCubePreviewViewController *)self delegate];
-  [v4 ultracubePreviewViewControllerWantsToCancel:self];
+  delegate = [(NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate ultracubePreviewViewControllerWantsToCancel:self];
 }
 
-- (void)_ultracubePreviewViewControllerWantsToDelete:(id)a3
+- (void)_ultracubePreviewViewControllerWantsToDelete:(id)delete
 {
-  v4 = [(NTKCUltraCubePreviewViewController *)self delegate];
-  [v4 ultracubePreviewViewControllerWantsToDelete:self];
+  delegate = [(NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate ultracubePreviewViewControllerWantsToDelete:self];
 }
 
-- (void)_ultracubePreviewViewControllerWantsToSave:(id)a3
+- (void)_ultracubePreviewViewControllerWantsToSave:(id)save
 {
-  v4 = [(NTKCUltraCubePreviewViewController *)self delegate];
-  [v4 ultracubePreviewViewControllerWantsToSave:self];
+  delegate = [(NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate ultracubePreviewViewControllerWantsToSave:self];
 }
 
-- (void)_ultracubePreviewViewControllerDidDismiss:(id)a3
+- (void)_ultracubePreviewViewControllerDidDismiss:(id)dismiss
 {
-  v4 = [(NTKCUltraCubePreviewViewController *)self delegate];
-  [v4 ultracubePreviewViewControllerDidDismiss:self];
+  delegate = [(NTKCUltraCubePreviewViewController *)self delegate];
+  [delegate ultracubePreviewViewControllerDidDismiss:self];
 }
 
 @end

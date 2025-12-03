@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneSearchIndexSearcher_$2
 - (id)newCollector;
-- (id)reduceWithJavaUtilCollection:(id)a3;
+- (id)reduceWithJavaUtilCollection:(id)collection;
 @end
 
 @implementation OrgApacheLuceneSearchIndexSearcher_$2
@@ -12,19 +12,19 @@
   return v2;
 }
 
-- (id)reduceWithJavaUtilCollection:(id)a3
+- (id)reduceWithJavaUtilCollection:(id)collection
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  if (!a3)
+  if (!collection)
   {
 LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [collection countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -36,7 +36,7 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -48,7 +48,7 @@ LABEL_13:
         v6 += [v9 getTotalHits];
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [collection countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

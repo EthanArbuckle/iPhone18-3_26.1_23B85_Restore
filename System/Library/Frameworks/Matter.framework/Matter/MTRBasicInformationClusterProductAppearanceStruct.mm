@@ -1,6 +1,6 @@
 @interface MTRBasicInformationClusterProductAppearanceStruct
 - (MTRBasicInformationClusterProductAppearanceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBasicInformationClusterProductAppearanceStruct);
-  v5 = [(MTRBasicInformationClusterProductAppearanceStruct *)self finish];
-  [(MTRBasicInformationClusterProductAppearanceStruct *)v4 setFinish:v5];
+  finish = [(MTRBasicInformationClusterProductAppearanceStruct *)self finish];
+  [(MTRBasicInformationClusterProductAppearanceStruct *)v4 setFinish:finish];
 
-  v6 = [(MTRBasicInformationClusterProductAppearanceStruct *)self primaryColor];
-  [(MTRBasicInformationClusterProductAppearanceStruct *)v4 setPrimaryColor:v6];
+  primaryColor = [(MTRBasicInformationClusterProductAppearanceStruct *)self primaryColor];
+  [(MTRBasicInformationClusterProductAppearanceStruct *)v4 setPrimaryColor:primaryColor];
 
   return v4;
 }

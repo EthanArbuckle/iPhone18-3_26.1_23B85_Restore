@@ -3,7 +3,7 @@
 + (id)secureCodedPropertyKeys;
 + (id)typeToConstantMap;
 + (id)typeToConstantMapMetrics;
-- (GKPlayerActivityItemInternal)initWithDictionary:(id)a3;
+- (GKPlayerActivityItemInternal)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -49,62 +49,62 @@ void __55__GKPlayerActivityItemInternal_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityItemInternal)initWithDictionary:(id)a3
+- (GKPlayerActivityItemInternal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = GKPlayerActivityItemInternal;
   v5 = [(GKPlayerActivityItemInternal *)&v31 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
-    [(GKPlayerActivityItemInternal *)v5 setUuid:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(GKPlayerActivityItemInternal *)v5 setUuid:uUIDString];
 
     v8 = MEMORY[0x277CBEAA8];
-    v9 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     v10 = [v8 _gkDateFromServerTimestamp:v9];
     [(GKPlayerActivityItemInternal *)v5 setTimeStamp:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"message"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"message"];
     [(GKPlayerActivityItemInternal *)v5 setMessage:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"summary"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"summary"];
     [(GKPlayerActivityItemInternal *)v5 setSummaryMessage:v12];
 
-    v13 = [v4 objectForKeyedSubscript:@"id"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     [(GKPlayerActivityItemInternal *)v5 setScrollId:v13];
 
-    v14 = [(GKPlayerActivityItemInternal *)v5 scrollId];
-    v15 = [v14 length];
+    scrollId = [(GKPlayerActivityItemInternal *)v5 scrollId];
+    v15 = [scrollId length];
 
     if (!v15)
     {
-      v16 = [(GKPlayerActivityItemInternal *)v5 uuid];
-      [(GKPlayerActivityItemInternal *)v5 setScrollId:v16];
+      uuid = [(GKPlayerActivityItemInternal *)v5 uuid];
+      [(GKPlayerActivityItemInternal *)v5 setScrollId:uuid];
     }
 
     v17 = +[GKPlayerActivityItemInternal constantToTypeMap];
-    v18 = [v4 objectForKeyedSubscript:@"type"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     v19 = [v17 objectForKeyedSubscript:v18];
 
     if (v19)
     {
-      v20 = [v19 integerValue];
+      integerValue = [v19 integerValue];
     }
 
     else
     {
-      v20 = 0;
+      integerValue = 0;
     }
 
-    [(GKPlayerActivityItemInternal *)v5 setActivityType:v20];
+    [(GKPlayerActivityItemInternal *)v5 setActivityType:integerValue];
     v21 = [GKPlayerActivityRelationships alloc];
-    v22 = [v4 objectForKeyedSubscript:@"relationships"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"relationships"];
     v23 = [(GKPlayerActivityRelationships *)v21 initWithDictionary:v22];
     [(GKPlayerActivityItemInternal *)v5 setRelationships:v23];
 
-    v24 = [v4 objectForKeyedSubscript:@"style"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"style"];
     v25 = [v24 objectForKeyedSubscript:@"layout"];
     if ([v25 isEqualToString:@"MILESTONE"])
     {
@@ -118,7 +118,7 @@ void __55__GKPlayerActivityItemInternal_secureCodedPropertyKeys__block_invoke()
 
     [(GKPlayerActivityItemInternal *)v5 setLayoutType:v26];
 
-    v27 = [v4 objectForKeyedSubscript:@"instKey"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"instKey"];
     v28 = v27;
     if (v27)
     {
@@ -240,19 +240,19 @@ void __49__GKPlayerActivityItemInternal_constantToTypeMap__block_invoke()
 
 - (id)description
 {
-  v16 = self;
+  selfCopy = self;
   v15 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(GKPlayerActivityItemInternal *)self uuid];
-  v5 = [(GKPlayerActivityItemInternal *)self scrollId];
+  uuid = [(GKPlayerActivityItemInternal *)self uuid];
+  scrollId = [(GKPlayerActivityItemInternal *)self scrollId];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKPlayerActivityItemInternal activityType](self, "activityType")}];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[GKPlayerActivityItemInternal layoutType](self, "layoutType")}];
-  v8 = [(GKPlayerActivityItemInternal *)self message];
-  v9 = [(GKPlayerActivityItemInternal *)self summaryMessage];
-  v10 = [(GKPlayerActivityItemInternal *)self timeStamp];
-  v11 = [(GKPlayerActivityItemInternal *)self relationships];
-  v12 = [(GKPlayerActivityItemInternal *)self instrumentationKey];
-  v13 = [v15 stringWithFormat:@"<%@ %p>: {\n            \tuuid: %@ \n            \tscrollId: %@ \n            \tactivityType: %@ \n            \tlayoutType: %@ \n            \tmessage: %@ \n            \tsummaryMessage: %@ \n            \ttimestamp: %@ \n            \trelations: %@ \n            \tinstrumentationKey: %@ \n            }", v3, &v16, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  message = [(GKPlayerActivityItemInternal *)self message];
+  summaryMessage = [(GKPlayerActivityItemInternal *)self summaryMessage];
+  timeStamp = [(GKPlayerActivityItemInternal *)self timeStamp];
+  relationships = [(GKPlayerActivityItemInternal *)self relationships];
+  instrumentationKey = [(GKPlayerActivityItemInternal *)self instrumentationKey];
+  v13 = [v15 stringWithFormat:@"<%@ %p>: {\n            \tuuid: %@ \n            \tscrollId: %@ \n            \tactivityType: %@ \n            \tlayoutType: %@ \n            \tmessage: %@ \n            \tsummaryMessage: %@ \n            \ttimestamp: %@ \n            \trelations: %@ \n            \tinstrumentationKey: %@ \n            }", v3, &selfCopy, uuid, scrollId, v6, v7, message, summaryMessage, timeStamp, relationships, instrumentationKey];
 
   return v13;
 }

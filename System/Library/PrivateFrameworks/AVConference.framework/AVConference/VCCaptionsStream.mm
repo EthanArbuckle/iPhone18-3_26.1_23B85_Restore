@@ -1,12 +1,12 @@
 @interface VCCaptionsStream
 - (VCCaptionsStream)init;
-- (VCCaptionsStream)initWithTransportSessionID:(unsigned int)a3 idsParticipantID:(unint64_t)a4 ssrc:(unsigned int)a5 streamToken:(int64_t)a6;
+- (VCCaptionsStream)initWithTransportSessionID:(unsigned int)d idsParticipantID:(unint64_t)iD ssrc:(unsigned int)ssrc streamToken:(int64_t)token;
 - (tagVCVideoReceiverDelegateRealtimeInstanceVTable)videoReceiverDelegateFunctions;
 - (void)dealloc;
-- (void)didReceiveCaptions:(id)a3;
-- (void)onStartWithCompletionHandler:(id)a3;
-- (void)onStopWithCompletionHandler:(id)a3;
-- (void)registerCaptionsEventDelegate:(id)a3;
+- (void)didReceiveCaptions:(id)captions;
+- (void)onStartWithCompletionHandler:(id)handler;
+- (void)onStopWithCompletionHandler:(id)handler;
+- (void)registerCaptionsEventDelegate:(id)delegate;
 @end
 
 @implementation VCCaptionsStream
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (VCCaptionsStream)initWithTransportSessionID:(unsigned int)a3 idsParticipantID:(unint64_t)a4 ssrc:(unsigned int)a5 streamToken:(int64_t)a6
+- (VCCaptionsStream)initWithTransportSessionID:(unsigned int)d idsParticipantID:(unint64_t)iD ssrc:(unsigned int)ssrc streamToken:(int64_t)token
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCCaptionsStream;
-  v6 = [(VCVideoStream *)&v8 initWithTransportSessionID:*&a3 idsParticipantID:a4 ssrc:*&a5 streamToken:a6];
+  v6 = [(VCVideoStream *)&v8 initWithTransportSessionID:*&d idsParticipantID:iD ssrc:*&ssrc streamToken:token];
   if (v6)
   {
     *&v6->super._isListeningForThermalEvents = [[VCCaptionsReceiver alloc] initWithDelegate:v6];
@@ -49,12 +49,12 @@
   [(VCVideoStream *)&v3 dealloc];
 }
 
-- (void)onStartWithCompletionHandler:(id)a3
+- (void)onStartWithCompletionHandler:(id)handler
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
   v4.super_class = VCCaptionsStream;
-  [(VCVideoStream *)&v4 onStartWithCompletionHandler:a3];
+  [(VCVideoStream *)&v4 onStartWithCompletionHandler:handler];
   [+[VCCaptionsManager defaultManager](VCCaptionsManager "defaultManager")];
 }
 
@@ -67,16 +67,16 @@
   return result;
 }
 
-- (void)onStopWithCompletionHandler:(id)a3
+- (void)onStopWithCompletionHandler:(id)handler
 {
   v6 = *MEMORY[0x1E69E9840];
   [+[VCCaptionsManager defaultManager](VCCaptionsManager "defaultManager")];
   v5.receiver = self;
   v5.super_class = VCCaptionsStream;
-  [(VCVideoStream *)&v5 onStopWithCompletionHandler:a3];
+  [(VCVideoStream *)&v5 onStopWithCompletionHandler:handler];
 }
 
-- (void)didReceiveCaptions:(id)a3
+- (void)didReceiveCaptions:(id)captions
 {
   v25 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -129,7 +129,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v8 = " [%s] %s:%d %@(%p) Received remote captions transcription!";
         v9 = v12;
         v10 = 48;
@@ -144,7 +144,7 @@ LABEL_11:
   v14[2] = __39__VCCaptionsStream_didReceiveCaptions___block_invoke;
   v14[3] = &unk_1E85F37F0;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = captions;
   dispatch_async(global_queue, v14);
 }
 
@@ -158,12 +158,12 @@ uint64_t __39__VCCaptionsStream_didReceiveCaptions___block_invoke(uint64_t a1)
   return [v3 streamToken:v4 didUpdateCaptions:v5];
 }
 
-- (void)registerCaptionsEventDelegate:(id)a3
+- (void)registerCaptionsEventDelegate:(id)delegate
 {
-  if ([a3 conformsToProtocol:&unk_1F57B5080])
+  if ([delegate conformsToProtocol:&unk_1F57B5080])
   {
 
-    objc_storeWeak(&self->_captionsReceiver, a3);
+    objc_storeWeak(&self->_captionsReceiver, delegate);
   }
 }
 

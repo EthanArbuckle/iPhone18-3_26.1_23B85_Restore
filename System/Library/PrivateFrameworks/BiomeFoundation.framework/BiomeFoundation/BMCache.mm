@@ -1,28 +1,28 @@
 @interface BMCache
 + (id)strongCache;
-+ (id)strongCacheWithFallbackCache:(id)a3;
++ (id)strongCacheWithFallbackCache:(id)cache;
 + (id)weakCache;
-- (id)_initWithMapTable:(id)a3 fallback:(id)a4;
-- (id)cachedObjectWithKey:(id)a3 missHandler:(id)a4;
-- (void)pruneCacheWithBlock:(id)a3 completion:(id)a4;
-- (void)removeCachedObjectForKey:(id)a3 performWhileLocked:(id)a4;
+- (id)_initWithMapTable:(id)table fallback:(id)fallback;
+- (id)cachedObjectWithKey:(id)key missHandler:(id)handler;
+- (void)pruneCacheWithBlock:(id)block completion:(id)completion;
+- (void)removeCachedObjectForKey:(id)key performWhileLocked:(id)locked;
 @end
 
 @implementation BMCache
 
 + (id)weakCache
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-  v4 = [v2 _initWithMapTable:v3 fallback:0];
+  v2 = [self alloc];
+  strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+  v4 = [v2 _initWithMapTable:strongToWeakObjectsMapTable fallback:0];
 
   return v4;
 }
 
-- (id)_initWithMapTable:(id)a3 fallback:(id)a4
+- (id)_initWithMapTable:(id)table fallback:(id)fallback
 {
-  v7 = a3;
-  v8 = a4;
+  tableCopy = table;
+  fallbackCopy = fallback;
   v12.receiver = self;
   v12.super_class = BMCache;
   v9 = [(BMCache *)&v12 init];
@@ -30,8 +30,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_mapTable, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_mapTable, table);
+    objc_storeStrong(p_isa + 3, fallback);
   }
 
   return p_isa;
@@ -39,60 +39,60 @@
 
 + (id)strongCache
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v4 = [v2 _initWithMapTable:v3 fallback:0];
+  v2 = [self alloc];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  v4 = [v2 _initWithMapTable:strongToStrongObjectsMapTable fallback:0];
 
   return v4;
 }
 
-+ (id)strongCacheWithFallbackCache:(id)a3
++ (id)strongCacheWithFallbackCache:(id)cache
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v7 = [v5 _initWithMapTable:v6 fallback:v4];
+  cacheCopy = cache;
+  v5 = [self alloc];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  v7 = [v5 _initWithMapTable:strongToStrongObjectsMapTable fallback:cacheCopy];
 
   return v7;
 }
 
-- (id)cachedObjectWithKey:(id)a3 missHandler:(id)a4
+- (id)cachedObjectWithKey:(id)key missHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMapTable *)self->_mapTable objectForKey:v6];
+  v8 = [(NSMapTable *)self->_mapTable objectForKey:keyCopy];
   if (v8)
   {
-    v9 = [(BMCache *)self isExpiredBlock];
-    v10 = v9;
-    if (!v9 || !(*(v9 + 16))(v9, v8))
+    isExpiredBlock = [(BMCache *)self isExpiredBlock];
+    v10 = isExpiredBlock;
+    if (!isExpiredBlock || !(*(isExpiredBlock + 16))(isExpiredBlock, v8))
     {
       v13 = v8;
 
       goto LABEL_14;
     }
 
-    [(NSMapTable *)self->_mapTable removeObjectForKey:v6];
+    [(NSMapTable *)self->_mapTable removeObjectForKey:keyCopy];
   }
 
   fallback = self->_fallback;
   if (fallback)
   {
-    v12 = [(BMCache *)fallback cachedObjectWithKey:v6 missHandler:v7];
+    v12 = [(BMCache *)fallback cachedObjectWithKey:keyCopy missHandler:handlerCopy];
     goto LABEL_10;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = v7[2](v7);
+    v12 = handlerCopy[2](handlerCopy);
     objc_autoreleasePoolPop(v14);
 LABEL_10:
     if (v12)
     {
       mapTable = self->_mapTable;
-      v16 = [v6 copyWithZone:0];
+      v16 = [keyCopy copyWithZone:0];
       [(NSMapTable *)mapTable setObject:v12 forKey:v16];
     }
 
@@ -109,28 +109,28 @@ LABEL_14:
   return v13;
 }
 
-- (void)removeCachedObjectForKey:(id)a3 performWhileLocked:(id)a4
+- (void)removeCachedObjectForKey:(id)key performWhileLocked:(id)locked
 {
-  v8 = a3;
-  v6 = a4;
+  keyCopy = key;
+  lockedCopy = locked;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_mapTable removeObjectForKey:v8];
-  if (v6)
+  [(NSMapTable *)self->_mapTable removeObjectForKey:keyCopy];
+  if (lockedCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v6[2](v6);
+    lockedCopy[2](lockedCopy);
     objc_autoreleasePoolPop(v7);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)pruneCacheWithBlock:(id)a3 completion:(id)a4
+- (void)pruneCacheWithBlock:(id)block completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v25 = a4;
-  if (!v7)
+  blockCopy = block;
+  completionCopy = completion;
+  if (!blockCopy)
   {
     [BMCache pruneCacheWithBlock:a2 completion:self];
   }
@@ -159,8 +159,8 @@ LABEL_5:
       }
 
       v14 = *(*(&v30 + 1) + 8 * v13);
-      v15 = [(NSMapTable *)self->_mapTable objectForKey:v14, context];
-      if (!v15 || v7[2](v7, v14, v15, &v34))
+      context = [(NSMapTable *)self->_mapTable objectForKey:v14, context];
+      if (!context || blockCopy[2](blockCopy, v14, context, &v34))
       {
         [v9 addObject:v14];
       }
@@ -213,12 +213,12 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(context);
-  v21 = v25;
-  if (v25)
+  v21 = completionCopy;
+  if (completionCopy)
   {
     v22 = objc_autoreleasePoolPush();
-    v21 = v25;
-    (*(v25 + 2))(v25);
+    v21 = completionCopy;
+    (*(completionCopy + 2))(completionCopy);
     objc_autoreleasePoolPop(v22);
   }
 

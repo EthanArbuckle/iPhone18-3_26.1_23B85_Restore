@@ -4,10 +4,10 @@
 - (BOOL)_reloadAppleMusicMagicAuthCapableAccounts;
 - (BOOL)isUsingiCloud;
 - (HFMediaDispatcher)init;
-- (void)_accountsStoreWasUpdated:(id)a3;
+- (void)_accountsStoreWasUpdated:(id)updated;
 - (void)_setupAppleMusicAccountStoreIfNecessary;
-- (void)addAppleMusicAccountObserver:(id)a3;
-- (void)removeAppleMusicAccountObserver:(id)a3;
+- (void)addAppleMusicAccountObserver:(id)observer;
+- (void)removeAppleMusicAccountObserver:(id)observer;
 @end
 
 @implementation HFMediaDispatcher
@@ -45,9 +45,9 @@ void __37__HFMediaDispatcher_sharedDispatcher__block_invoke_2()
       _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Initializing HomeKit Media Dispatcher", v7, 2u);
     }
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     appleMusicAccountObservers = v2->_appleMusicAccountObservers;
-    v2->_appleMusicAccountObservers = v4;
+    v2->_appleMusicAccountObservers = weakObjectsHashTable;
   }
 
   return v2;
@@ -58,9 +58,9 @@ void __37__HFMediaDispatcher_sharedDispatcher__block_invoke_2()
   appleMusicAccountStore = self->_appleMusicAccountStore;
   if (!appleMusicAccountStore)
   {
-    v4 = [MEMORY[0x277CB8F48] defaultStore];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
     v5 = self->_appleMusicAccountStore;
-    self->_appleMusicAccountStore = v4;
+    self->_appleMusicAccountStore = defaultStore;
 
     appleMusicAccountStore = self->_appleMusicAccountStore;
   }
@@ -70,38 +70,38 @@ void __37__HFMediaDispatcher_sharedDispatcher__block_invoke_2()
   return v6;
 }
 
-- (void)addAppleMusicAccountObserver:(id)a3
+- (void)addAppleMusicAccountObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   [(HFMediaDispatcher *)self _setupAppleMusicAccountStoreIfNecessary];
-  v5 = [(HFMediaDispatcher *)self appleMusicAccountObservers];
-  [v5 addObject:v4];
+  appleMusicAccountObservers = [(HFMediaDispatcher *)self appleMusicAccountObservers];
+  [appleMusicAccountObservers addObject:observerCopy];
 }
 
-- (void)removeAppleMusicAccountObserver:(id)a3
+- (void)removeAppleMusicAccountObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFMediaDispatcher *)self appleMusicAccountObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  appleMusicAccountObservers = [(HFMediaDispatcher *)self appleMusicAccountObservers];
+  [appleMusicAccountObservers removeObject:observerCopy];
 }
 
 - (BOOL)isUsingiCloud
 {
-  v2 = [(HFMediaDispatcher *)self appleMusicAccountStore];
-  v3 = [v2 aa_isUsingiCloud];
+  appleMusicAccountStore = [(HFMediaDispatcher *)self appleMusicAccountStore];
+  aa_isUsingiCloud = [appleMusicAccountStore aa_isUsingiCloud];
 
-  return v3;
+  return aa_isUsingiCloud;
 }
 
 - (BOOL)_reloadAppleMusicMagicAuthCapableAccounts
 {
-  v3 = [(HFMediaDispatcher *)self appleMusicAccountStore];
-  v4 = [v3 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8D58]];
-  v5 = [v3 accountsWithAccountType:v4];
+  appleMusicAccountStore = [(HFMediaDispatcher *)self appleMusicAccountStore];
+  v4 = [appleMusicAccountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8D58]];
+  v5 = [appleMusicAccountStore accountsWithAccountType:v4];
   v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_8_0];
 
-  v7 = [(HFMediaDispatcher *)self appleMusicMagicAuthCapableAccounts];
-  v8 = [v6 isEqual:v7];
+  appleMusicMagicAuthCapableAccounts = [(HFMediaDispatcher *)self appleMusicMagicAuthCapableAccounts];
+  v8 = [v6 isEqual:appleMusicMagicAuthCapableAccounts];
 
   if ((v8 & 1) == 0)
   {
@@ -121,7 +121,7 @@ uint64_t __62__HFMediaDispatcher__reloadAppleMusicMagicAuthCapableAccounts__bloc
   return v7;
 }
 
-- (void)_accountsStoreWasUpdated:(id)a3
+- (void)_accountsStoreWasUpdated:(id)updated
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(HFMediaDispatcher *)self _reloadAppleMusicMagicAuthCapableAccounts])
@@ -130,8 +130,8 @@ uint64_t __62__HFMediaDispatcher__reloadAppleMusicMagicAuthCapableAccounts__bloc
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(HFMediaDispatcher *)self appleMusicAccountObservers];
-    v5 = [v4 copy];
+    appleMusicAccountObservers = [(HFMediaDispatcher *)self appleMusicAccountObservers];
+    v5 = [appleMusicAccountObservers copy];
 
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
@@ -151,8 +151,8 @@ uint64_t __62__HFMediaDispatcher__reloadAppleMusicMagicAuthCapableAccounts__bloc
           v10 = *(*(&v13 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            v11 = [(HFMediaDispatcher *)self appleMusicMagicAuthCapableAccounts];
-            [v10 dispatcher:self appleMusicAccountsDidUpdate:v11];
+            appleMusicMagicAuthCapableAccounts = [(HFMediaDispatcher *)self appleMusicMagicAuthCapableAccounts];
+            [v10 dispatcher:self appleMusicAccountsDidUpdate:appleMusicMagicAuthCapableAccounts];
           }
 
           ++v9;
@@ -174,8 +174,8 @@ uint64_t __62__HFMediaDispatcher__reloadAppleMusicMagicAuthCapableAccounts__bloc
   if (!self->_appleMusicAccountStore)
   {
     [(HFMediaDispatcher *)self _reloadAppleMusicMagicAuthCapableAccounts];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__accountsStoreWasUpdated_ name:*MEMORY[0x277CB8B78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__accountsStoreWasUpdated_ name:*MEMORY[0x277CB8B78] object:0];
   }
 }
 

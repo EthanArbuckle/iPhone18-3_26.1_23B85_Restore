@@ -6,10 +6,10 @@
 
 - (id)indexPathForSelectedItem
 {
-  v2 = [(UICollectionView *)self indexPathsForSelectedItems];
-  v3 = [v2 firstObject];
+  indexPathsForSelectedItems = [(UICollectionView *)self indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

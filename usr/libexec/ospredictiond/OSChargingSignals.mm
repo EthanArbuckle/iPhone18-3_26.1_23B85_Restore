@@ -47,27 +47,27 @@
 
 - (id)determineNextEvent
 {
-  v3 = [(OSChargingSignals *)self walletMonitor];
-  v4 = [v3 relevantEventDeadline];
+  walletMonitor = [(OSChargingSignals *)self walletMonitor];
+  relevantEventDeadline = [walletMonitor relevantEventDeadline];
 
-  v5 = [(OSChargingSignals *)self calendarMonitor];
-  v6 = [v5 relevantEventDeadline];
+  calendarMonitor = [(OSChargingSignals *)self calendarMonitor];
+  relevantEventDeadline2 = [calendarMonitor relevantEventDeadline];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v4;
+    v16 = relevantEventDeadline;
     v17 = 2112;
-    v18 = v6;
+    v18 = relevantEventDeadline2;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "walletEvent %@, calendarEvent %@", &v15, 0x16u);
   }
 
   v8 = +[NSDate distantFuture];
-  if ([v4 isEqualToDate:v8])
+  if ([relevantEventDeadline isEqualToDate:v8])
   {
     v9 = +[NSDate distantFuture];
-    v10 = [v6 isEqualToDate:v9];
+    v10 = [relevantEventDeadline2 isEqualToDate:v9];
 
     if (v10)
     {
@@ -84,7 +84,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = relevantEventDeadline;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found flight information at %@", &v15, 0xCu);
   }
 

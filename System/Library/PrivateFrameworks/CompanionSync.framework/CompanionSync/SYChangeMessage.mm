@@ -1,32 +1,32 @@
 @interface SYChangeMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addChanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChanges:(id)changes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYChangeMessage
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   changes = self->_changes;
-  v8 = v4;
+  v8 = changesCopy;
   if (!changes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_changes;
     self->_changes = v6;
 
-    v4 = v8;
+    changesCopy = v8;
     changes = self->_changes;
   }
 
-  [(NSMutableArray *)changes addObject:v4];
+  [(NSMutableArray *)changes addObject:changesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = SYChangeMessage;
   v4 = [(SYChangeMessage *)&v8 description];
-  v5 = [(SYChangeMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYChangeMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   if ([(NSMutableArray *)self->_changes count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,24 +84,24 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"changes"];
+    [dictionary setObject:v6 forKey:@"changes"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYChangeMessage writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   v15 = 0u;
   v16 = 0u;
@@ -138,31 +138,31 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setHeader:self->_header];
+  toCopy = to;
+  [toCopy setHeader:self->_header];
   if ([(SYChangeMessage *)self changesCount])
   {
-    [v8 clearChanges];
-    v4 = [(SYChangeMessage *)self changesCount];
-    if (v4)
+    [toCopy clearChanges];
+    changesCount = [(SYChangeMessage *)self changesCount];
+    if (changesCount)
     {
-      v5 = v4;
+      v5 = changesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SYChangeMessage *)self changesAtIndex:i];
-        [v8 addChanges:v7];
+        [toCopy addChanges:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addChanges:v13];
 
         ++v12;
@@ -203,13 +203,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | v4[2])) || -[SYMessageHeader isEqual:](header, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((header = self->_header, !(header | equalCopy[2])) || -[SYMessageHeader isEqual:](header, "isEqual:")))
   {
     changes = self->_changes;
-    if (changes | v4[1])
+    if (changes | equalCopy[1])
     {
       v7 = [(NSMutableArray *)changes isEqual:?];
     }
@@ -228,12 +228,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (header)
   {
     if (v6)
@@ -251,7 +251,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

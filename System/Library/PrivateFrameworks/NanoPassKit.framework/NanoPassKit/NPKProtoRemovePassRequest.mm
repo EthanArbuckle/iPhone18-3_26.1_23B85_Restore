@@ -1,21 +1,21 @@
 @interface NPKProtoRemovePassRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResyncID:(BOOL)a3;
-- (void)setHasSyncID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResyncID:(BOOL)d;
+- (void)setHasSyncID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoRemovePassRequest
 
-- (void)setHasResyncID:(BOOL)a3
+- (void)setHasResyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSyncID:(BOOL)a3
+- (void)setHasSyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = NPKProtoRemovePassRequest;
   v4 = [(NPKProtoRemovePassRequest *)&v8 description];
-  v5 = [(NPKProtoRemovePassRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoRemovePassRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passID = self->_passID;
   if (passID)
   {
-    [v3 setObject:passID forKey:@"passID"];
+    [dictionary setObject:passID forKey:@"passID"];
   }
 
   libraryHash = self->_libraryHash;
   if (libraryHash)
   {
-    v7 = [(NPKProtoHash *)libraryHash dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"libraryHash"];
+    dictionaryRepresentation = [(NPKProtoHash *)libraryHash dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"libraryHash"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -81,8 +81,8 @@
   catalog = self->_catalog;
   if (catalog)
   {
-    v10 = [(NPKProtoCatalog *)catalog dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"catalog"];
+    dictionaryRepresentation2 = [(NPKProtoCatalog *)catalog dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"catalog"];
   }
 
   has = self->_has;
@@ -103,15 +103,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_passID)
   {
     [NPKProtoRemovePassRequest writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_libraryHash)
   {
@@ -148,26 +148,26 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
-  [v6 setPassID:self->_passID];
+  toCopy = to;
+  [toCopy setPassID:self->_passID];
   if (self->_libraryHash)
   {
-    [v6 setLibraryHash:?];
+    [toCopy setLibraryHash:?];
   }
 
-  v4 = v6;
+  v4 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    *(v6 + 10) = self->_resyncID;
-    *(v6 + 48) |= 2u;
+    *(toCopy + 10) = self->_resyncID;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_catalog)
   {
-    [v6 setCatalog:?];
-    v4 = v6;
+    [toCopy setCatalog:?];
+    v4 = toCopy;
   }
 
   has = self->_has;
@@ -185,14 +185,14 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_passID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_passID copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NPKProtoHash *)self->_libraryHash copyWithZone:a3];
+  v8 = [(NPKProtoHash *)self->_libraryHash copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -202,7 +202,7 @@
     *(v5 + 48) |= 2u;
   }
 
-  v10 = [(NPKProtoCatalog *)self->_catalog copyWithZone:a3];
+  v10 = [(NPKProtoCatalog *)self->_catalog copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -223,16 +223,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   passID = self->_passID;
-  if (passID | *(v4 + 4))
+  if (passID | *(equalCopy + 4))
   {
     if (![(NSString *)passID isEqual:?])
     {
@@ -241,7 +241,7 @@
   }
 
   libraryHash = self->_libraryHash;
-  if (libraryHash | *(v4 + 3))
+  if (libraryHash | *(equalCopy + 3))
   {
     if (![(NPKProtoHash *)libraryHash isEqual:?])
     {
@@ -250,22 +250,22 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_resyncID != *(v4 + 10))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_resyncID != *(equalCopy + 10))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   catalog = self->_catalog;
-  if (catalog | *(v4 + 1))
+  if (catalog | *(equalCopy + 1))
   {
     if (![(NPKProtoCatalog *)catalog isEqual:?])
     {
@@ -279,21 +279,21 @@ LABEL_23:
 
   if (has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_lastKnownResyncID != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_lastKnownResyncID != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_23;
   }
 
-  v10 = (*(v4 + 48) & 4) == 0;
+  v10 = (*(equalCopy + 48) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_syncID != *(v4 + 11))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_syncID != *(equalCopy + 11))
     {
       goto LABEL_23;
     }
@@ -345,18 +345,18 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v10 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NPKProtoRemovePassRequest *)self setPassID:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
   libraryHash = self->_libraryHash;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (libraryHash)
   {
     if (!v6)
@@ -377,16 +377,16 @@ LABEL_6:
     [(NPKProtoRemovePassRequest *)self setLibraryHash:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_9:
-  if ((v4[12] & 2) != 0)
+  if ((fromCopy[12] & 2) != 0)
   {
-    self->_resyncID = v4[10];
+    self->_resyncID = fromCopy[10];
     *&self->_has |= 2u;
   }
 
   catalog = self->_catalog;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (catalog)
   {
     if (!v8)
@@ -407,19 +407,19 @@ LABEL_9:
     [(NPKProtoRemovePassRequest *)self setCatalog:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_17:
-  v9 = *(v4 + 48);
+  v9 = *(fromCopy + 48);
   if (v9)
   {
-    self->_lastKnownResyncID = v4[4];
+    self->_lastKnownResyncID = fromCopy[4];
     *&self->_has |= 1u;
-    v9 = *(v4 + 48);
+    v9 = *(fromCopy + 48);
   }
 
   if ((v9 & 4) != 0)
   {
-    self->_syncID = v4[11];
+    self->_syncID = fromCopy[11];
     *&self->_has |= 4u;
   }
 }

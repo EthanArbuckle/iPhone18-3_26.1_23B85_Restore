@@ -6,8 +6,8 @@
 
 - (id)orderedDescription
 {
-  v3 = [(NSDictionary *)self allKeys];
-  v4 = [v3 sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
+  allKeys = [(NSDictionary *)self allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:"localizedCaseInsensitiveCompare:"];
 
   v5 = objc_opt_new();
   v15 = 0u;
@@ -30,8 +30,8 @@
         }
 
         v11 = [(NSDictionary *)self objectForKeyedSubscript:*(*(&v15 + 1) + 8 * i), v15];
-        v12 = [v11 orderedDescription];
-        [v5 addObject:v12];
+        orderedDescription = [v11 orderedDescription];
+        [v5 addObject:orderedDescription];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];

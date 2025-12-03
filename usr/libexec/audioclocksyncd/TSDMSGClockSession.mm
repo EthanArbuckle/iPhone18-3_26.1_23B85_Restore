@@ -1,25 +1,25 @@
 @interface TSDMSGClockSession
-+ (BOOL)checkRemoveKernelClock:(unsigned int)a3;
-+ (id)createSession:(unsigned int)a3 nominalSyncDuration:(id)a4 clockId:(unint64_t)a5 error:(id *)a6;
++ (BOOL)checkRemoveKernelClock:(unsigned int)clock;
++ (id)createSession:(unsigned int)session nominalSyncDuration:(id)duration clockId:(unint64_t)id error:(id *)error;
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)nominalSyncDuration;
 - (_opaque_pthread_cond_t)clockSessionCond;
 - (_opaque_pthread_mutex_t)clockSessionMutex;
-- (int)isMSGSyncRunning:(BOOL *)a3;
+- (int)isMSGSyncRunning:(BOOL *)running;
 - (int)start;
-- (int)startClockThread:(unint64_t)a3;
+- (int)startClockThread:(unint64_t)thread;
 - (int)stop;
-- (int)stopClockThread:(unint64_t)a3;
+- (int)stopClockThread:(unint64_t)thread;
 - (timespec)startTime;
 - (void)runClockSessionThread;
-- (void)setClockSessionCond:(_opaque_pthread_cond_t *)a3;
-- (void)setClockSessionMutex:(_opaque_pthread_mutex_t *)a3;
+- (void)setClockSessionCond:(_opaque_pthread_cond_t *)cond;
+- (void)setClockSessionMutex:(_opaque_pthread_mutex_t *)mutex;
 @end
 
 @implementation TSDMSGClockSession
 
-+ (BOOL)checkRemoveKernelClock:(unsigned int)a3
++ (BOOL)checkRemoveKernelClock:(unsigned int)clock
 {
-  v3 = [a1 getClkUserIdForSyncId:?];
+  v3 = [self getClkUserIdForSyncId:?];
   v4 = +[TSDClockManager sharedClockManager];
   v5 = 0;
   v6 = 0;
@@ -61,9 +61,9 @@ LABEL_10:
   return v10;
 }
 
-+ (id)createSession:(unsigned int)a3 nominalSyncDuration:(id)a4 clockId:(unint64_t)a5 error:(id *)a6
++ (id)createSession:(unsigned int)session nominalSyncDuration:(id)duration clockId:(unint64_t)id error:(id *)error
 {
-  if (a3)
+  if (session)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -72,12 +72,12 @@ LABEL_10:
 
 LABEL_4:
     [NSError errorWithDomain:@"TSDErrorDomain" code:-536870206 userInfo:0];
-    *a6 = v7 = 0;
+    *error = v7 = 0;
     goto LABEL_5;
   }
 
-  var1 = a4.var1;
-  if (!a4.var1)
+  var1 = duration.var1;
+  if (!duration.var1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -87,14 +87,14 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  var0 = a4.var0;
+  var0 = duration.var0;
   v12 = objc_alloc_init(TSDMSGClockSession);
   v7 = v12;
   if (v12)
   {
     v12->_syncId = 0;
     v12->_threadRestarts = 0;
-    v12->_clockId = a5;
+    v12->_clockId = id;
     [(TSDMSGClockSession *)v12 setClockThreadShouldRun:0];
     v7->_nominalSyncDuration.denominator = var1;
     v7->_clockSessionCond.__sig = 1018212795;
@@ -120,11 +120,11 @@ LABEL_5:
   return v7;
 }
 
-- (int)isMSGSyncRunning:(BOOL *)a3
+- (int)isMSGSyncRunning:(BOOL *)running
 {
-  *a3 = 0;
+  *running = 0;
   MSGController::MSGController(v7, 0, 1);
-  Status = MSGController::SyncGetStatus(v7, [(TSDMSGClockSession *)self syncId], a3);
+  Status = MSGController::SyncGetStatus(v7, [(TSDMSGClockSession *)self syncId], running);
   if (Status && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10002D074();
@@ -134,7 +134,7 @@ LABEL_5:
   return Status;
 }
 
-- (int)startClockThread:(unint64_t)a3
+- (int)startClockThread:(unint64_t)thread
 {
   objc_initWeak(&location, self);
   pthread_mutex_lock(&self->_clockSessionMutex);
@@ -161,8 +161,8 @@ LABEL_5:
     v9[3] = &unk_10004D100;
     objc_copyWeak(&v10, &location);
     [NSThread detachNewThreadWithBlock:v9];
-    v8.tv_sec = a3 / 0x3B9ACA00;
-    v8.tv_nsec = a3 % 0x3B9ACA00;
+    v8.tv_sec = thread / 0x3B9ACA00;
+    v8.tv_nsec = thread % 0x3B9ACA00;
     v6 = pthread_cond_timedwait_relative_np(&self->_clockSessionCond, &self->_clockSessionMutex, &v8);
     if (v6 == 60)
     {
@@ -196,15 +196,15 @@ LABEL_5:
   return v5;
 }
 
-- (int)stopClockThread:(unint64_t)a3
+- (int)stopClockThread:(unint64_t)thread
 {
   v5 = -536870199;
   pthread_mutex_lock(&self->_clockSessionMutex);
   if ([(TSDMSGClockSession *)self clockThreadRunning])
   {
     [(TSDMSGClockSession *)self setClockThreadShouldRun:0];
-    v8.tv_sec = a3 / 0x3B9ACA00;
-    v8.tv_nsec = a3 % 0x3B9ACA00;
+    v8.tv_sec = thread / 0x3B9ACA00;
+    v8.tv_nsec = thread % 0x3B9ACA00;
     v6 = pthread_cond_timedwait_relative_np(&self->_clockSessionCond, &self->_clockSessionMutex, &v8);
     if (v6 == 60)
     {
@@ -266,22 +266,22 @@ LABEL_18:
   if ([(TSDMSGClockSession *)self clockId]== -1)
   {
     v5 = [v3 machAbsoluteNanosecondsToTicks:{-[TSDMSGClockSession nominalSyncDurationNsRounded](self, "nominalSyncDurationNsRounded")}];
-    v6 = [(TSDMSGClockSession *)self nominalSyncDurationNsRounded];
-    v7 = [(TSDMSGClockSession *)self userId];
+    nominalSyncDurationNsRounded = [(TSDMSGClockSession *)self nominalSyncDurationNsRounded];
+    userId = [(TSDMSGClockSession *)self userId];
     v16 = 0;
-    v8 = [v3 addPersistentUserFilteredClockWithMachInterval:v5 domainInterval:v6 usingFilterShift:0 isAdaptive:0 withUserID:v7 error:&v16];
+    v8 = [v3 addPersistentUserFilteredClockWithMachInterval:v5 domainInterval:nominalSyncDurationNsRounded usingFilterShift:0 isAdaptive:0 withUserID:userId error:&v16];
     v9 = v16;
     self->_clockId = v8;
 
-    v10 = -536870212;
+    code = -536870212;
     if (v9 && [v9 code])
     {
-      v10 = [v9 code];
+      code = [v9 code];
     }
 
     if (self->_clockId == -1)
     {
-      sub_10002D39C(v10, v5, v9, &v18, &v19, buf);
+      sub_10002D39C(code, v5, v9, &v18, &v19, buf);
       v11 = v18;
       v5 = v19;
       v9 = *buf;
@@ -306,15 +306,15 @@ LABEL_12:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(TSDMSGClockSession *)self syncId];
-    v13 = [(TSDMSGClockSession *)self nominalSyncDuration];
+    syncId = [(TSDMSGClockSession *)self syncId];
+    nominalSyncDuration = [(TSDMSGClockSession *)self nominalSyncDuration];
     [(TSDMSGClockSession *)self nominalSyncDuration];
     *buf = 67109888;
-    *&buf[4] = v12;
+    *&buf[4] = syncId;
     v21 = 2048;
     v22 = v5;
     v23 = 2048;
-    v24 = v13;
+    v24 = nominalSyncDuration;
     v25 = 2048;
     v26 = v14;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Added MSG clock with:\nsyncId: %u\nnominal machInterval: %llu\nnominal syncDuration: (%llu/%llu)", buf, 0x26u);
@@ -332,9 +332,9 @@ LABEL_15:
   v3 = +[TSDClockManager sharedClockManager];
   if (v3)
   {
-    v4 = [(TSDMSGClockSession *)self userId];
+    userId = [(TSDMSGClockSession *)self userId];
     v11 = 0;
-    v5 = [v3 removePersistentUserFilteredClock:v4 error:&v11];
+    v5 = [v3 removePersistentUserFilteredClock:userId error:&v11];
     v6 = v11;
 
     v7 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
@@ -342,18 +342,18 @@ LABEL_15:
     {
       if (v7)
       {
-        v8 = [(TSDMSGClockSession *)self syncId];
+        syncId = [(TSDMSGClockSession *)self syncId];
         *buf = 67109120;
-        *&buf[4] = v8;
+        *&buf[4] = syncId;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Removed MSG clock with syncId: %u\n", buf, 8u);
       }
 
-      v9 = 0;
+      code = 0;
     }
 
     else
     {
-      v9 = -536870212;
+      code = -536870212;
       if (sub_10002D548(v7, v6))
       {
         v6 = 0;
@@ -361,7 +361,7 @@ LABEL_15:
 
       else if ([v6 code])
       {
-        v9 = [v6 code];
+        code = [v6 code];
       }
     }
   }
@@ -370,10 +370,10 @@ LABEL_15:
   {
     sub_10002D5FC();
     v6 = *buf;
-    v9 = v12;
+    code = v12;
   }
 
-  return v9;
+  return code;
 }
 
 - (void)runClockSessionThread
@@ -381,7 +381,7 @@ LABEL_15:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v66 = [(TSDMSGClockSession *)self syncId];
+    syncId = [(TSDMSGClockSession *)self syncId];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "MSG clock thread starting for syncId: %u\n", buf, 8u);
   }
 
@@ -400,7 +400,7 @@ LABEL_15:
   policy_info = 0;
   v3 = +[TSDClockManager sharedClockManager];
   thread_info_outCnt = 28;
-  v4 = [(TSDMSGClockSession *)self nominalSyncDurationNsRounded];
+  nominalSyncDurationNsRounded = [(TSDMSGClockSession *)self nominalSyncDurationNsRounded];
   [(TSDMSGClockSession *)self nominalSyncDurationNs];
   v6 = v5;
   [(TSDMSGClockSession *)self nominalSyncDurationNs];
@@ -455,17 +455,17 @@ LABEL_16:
   }
 
   policy_info = HIDWORD(v60);
-  v15 = [(TSDMSGClockSession *)self userId];
+  userId = [(TSDMSGClockSession *)self userId];
   v47 = 0;
-  v16 = [v3 getPersistentUserFilteredClockIdentifier:v15 error:&v47];
+  v16 = [v3 getPersistentUserFilteredClockIdentifier:userId error:&v47];
   v10 = v47;
 
   if (v16 == -1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(TSDMSGClockSession *)self userId];
-      sub_10002DC9C(v17, [v10 code], v55);
+      userId2 = [(TSDMSGClockSession *)self userId];
+      sub_10002DC9C(userId2, [v10 code], v55);
     }
 
     goto LABEL_16;
@@ -494,21 +494,21 @@ LABEL_16:
 
   else
   {
-    v43 = 0x7735940 / v4 + 1;
+    v43 = 0x7735940 / nominalSyncDurationNsRounded + 1;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(TSDMSGClockSession *)self nominalSyncDuration];
+      nominalSyncDuration = [(TSDMSGClockSession *)self nominalSyncDuration];
       [(TSDMSGClockSession *)self nominalSyncDuration];
       v22 = v21;
-      v23 = [(TSDMSGClockSession *)self syncId];
+      syncId2 = [(TSDMSGClockSession *)self syncId];
       LODWORD(v55[0]) = 134219008;
-      *(v55 + 4) = v20;
+      *(v55 + 4) = nominalSyncDuration;
       WORD2(v55[1]) = 2048;
       *(&v55[1] + 6) = v22;
       HIWORD(v55[2]) = 2048;
       v55[3] = v43;
       LOWORD(v56) = 1024;
-      *(&v56 + 2) = v23;
+      *(&v56 + 2) = syncId2;
       HIWORD(v56) = 2048;
       v57 = -v8;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Nominal sync period: (%llu/%llu), nominal syncs per poll: %llu, syncId: %u, matOffset: %lli\n", v55, 0x30u);
@@ -670,13 +670,13 @@ LABEL_51:
                       v10 = v39;
                       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                       {
-                        v40 = [(TSDMSGClockSession *)self syncId];
+                        syncId3 = [(TSDMSGClockSession *)self syncId];
                         LODWORD(v55[0]) = v42;
                         *(v55 + 4) = v37;
                         WORD2(v55[1]) = 2048;
                         *(&v55[1] + 6) = v36;
                         HIWORD(v55[2]) = 1024;
-                        LODWORD(v55[3]) = v40;
+                        LODWORD(v55[3]) = syncId3;
                         _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Added cross-timestamp: (%llu : %llu), syncId: %u\n", v55, 0x1Cu);
                         v10 = v39;
                       }
@@ -727,15 +727,15 @@ LABEL_17:
     ++self->_threadRestarts;
     if ([(TSDMSGClockSession *)self threadRestarts]> 9)
     {
-      v12 = 10;
+      threadRestarts = 10;
     }
 
     else
     {
-      v12 = [(TSDMSGClockSession *)self threadRestarts];
+      threadRestarts = [(TSDMSGClockSession *)self threadRestarts];
     }
 
-    v14 = 100 << v12;
+    v14 = 100 << threadRestarts;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10002DDF4();
@@ -757,9 +757,9 @@ LABEL_17:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(TSDMSGClockSession *)self syncId];
+      syncId4 = [(TSDMSGClockSession *)self syncId];
       thread_info_out[0] = 67109120;
-      thread_info_out[1] = v13;
+      thread_info_out[1] = syncId4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "MSG clock thread exiting for syncId: %u\n", thread_info_out, 8u);
     }
 
@@ -797,11 +797,11 @@ LABEL_17:
   return self;
 }
 
-- (void)setClockSessionCond:(_opaque_pthread_cond_t *)a3
+- (void)setClockSessionCond:(_opaque_pthread_cond_t *)cond
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  *&self->_clockSessionCond.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&cond->__sig;
+  v4 = *&cond->__opaque[8];
+  *&self->_clockSessionCond.__opaque[24] = *&cond->__opaque[24];
   *&self->_clockSessionCond.__opaque[8] = v4;
   *&self->_clockSessionCond.__sig = v3;
 }
@@ -817,12 +817,12 @@ LABEL_17:
   return self;
 }
 
-- (void)setClockSessionMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setClockSessionMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[24];
-  *&self->_clockSessionMutex.__opaque[40] = *&a3->__opaque[40];
+  v3 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  v5 = *&mutex->__opaque[24];
+  *&self->_clockSessionMutex.__opaque[40] = *&mutex->__opaque[40];
   *&self->_clockSessionMutex.__opaque[24] = v5;
   *&self->_clockSessionMutex.__opaque[8] = v4;
   *&self->_clockSessionMutex.__sig = v3;

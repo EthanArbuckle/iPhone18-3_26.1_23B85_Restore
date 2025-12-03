@@ -1,98 +1,98 @@
 @interface NUMediaViewRenderer
-+ (BOOL)_forceUpdateForNewVideoComposition:(id)a3 previousComposition:(id)a4 newAsset:(id)a5 previousAsset:(id)a6 isPlaying:(BOOL)a7;
++ (BOOL)_forceUpdateForNewVideoComposition:(id)composition previousComposition:(id)previousComposition newAsset:(id)asset previousAsset:(id)previousAsset isPlaying:(BOOL)playing;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentSeekTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)mediaDuration;
-- (BOOL)_isVideoSourceChangedInComposition:(id)a3;
+- (BOOL)_isVideoSourceChangedInComposition:(id)composition;
 - (BOOL)isReady;
 - (BOOL)isZoomedToFit;
 - (BOOL)pipelineFilersHaveChanged;
-- (CGPoint)convertPoint:(CGPoint)a3 fromImageToView:(id)a4;
-- (CGPoint)convertPoint:(CGPoint)a3 toImageFromView:(id)a4;
+- (CGPoint)convertPoint:(CGPoint)point fromImageToView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toImageFromView:(id)view;
 - (CGRect)_scrollBounds;
 - (CGRect)_zoomTargetRect;
-- (CGRect)convertRect:(CGRect)a3 fromImageToView:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toImageFromView:(id)a4;
+- (CGRect)convertRect:(CGRect)rect fromImageToView:(id)view;
+- (CGRect)convertRect:(CGRect)rect toImageFromView:(id)view;
 - (CGSize)overrideZoomToFitSize;
 - (CGSize)targetSize;
 - (NSArray)loadedTimeRanges;
 - (NUMediaView)mediaView;
 - (NUMediaViewRenderer)init;
-- (NUMediaViewRenderer)initWithMediaView:(id)a3;
+- (NUMediaViewRenderer)initWithMediaView:(id)view;
 - (double)_lastRenderDuration;
 - (double)_targetZoomScale;
 - (double)playbackRate;
-- (id)_backfillRenderRequestForComposition:(id)a3;
-- (id)_backfillRenderRequestForMedia:(id)a3;
+- (id)_backfillRenderRequestForComposition:(id)composition;
+- (id)_backfillRenderRequestForMedia:(id)media;
 - (id)_backfillRenderResponseHandler;
-- (id)_livePhotoFromResponse:(id)a3;
+- (id)_livePhotoFromResponse:(id)response;
 - (id)_livePhotoRenderResponseHandler;
-- (id)_regionPolicyForZoomTargetRect:(CGRect)a3;
-- (id)_roiRenderRequestForComposition:(id)a3;
-- (id)_roiRenderRequestForMedia:(id)a3;
+- (id)_regionPolicyForZoomTargetRect:(CGRect)rect;
+- (id)_roiRenderRequestForComposition:(id)composition;
+- (id)_roiRenderRequestForMedia:(id)media;
 - (id)_roiRenderResponseHandler;
 - (id)_scalePolicyForVideoCompositionRender;
-- (id)_updateImageLayer:(id)a3 withRenderResponse:(id)a4;
+- (id)_updateImageLayer:(id)layer withRenderResponse:(id)response;
 - (id)_videoFrameImageRenderResponseHandler;
-- (id)_videoRenderRequestForMedia:(id)a3;
+- (id)_videoRenderRequestForMedia:(id)media;
 - (id)_videoRenderResponseHandler;
-- (id)addExternalPlaybackObserver:(id)a3;
-- (id)addPlaybackStateObserver:(id)a3;
-- (id)addPlaybackTimeObserver:(id)a3;
+- (id)addExternalPlaybackObserver:(id)observer;
+- (id)addPlaybackStateObserver:(id)observer;
+- (id)addPlaybackTimeObserver:(id)observer;
 - (id)cacheVideoRenderFilter;
-- (int64_t)_playbackStateFromPlayerStatus:(int64_t)a3 rate:(float)a4;
+- (int64_t)_playbackStateFromPlayerStatus:(int64_t)status rate:(float)rate;
 - (int64_t)playbackState;
-- (void)_addFullExtentConstraintsForView:(id)a3;
+- (void)_addFullExtentConstraintsForView:(id)view;
 - (void)_beginAnimating;
-- (void)_coalesceUpdateLivePhotoComposition:(id)a3;
-- (void)_coalesceUpdateVideoComposition:(id)a3;
+- (void)_coalesceUpdateLivePhotoComposition:(id)composition;
+- (void)_coalesceUpdateVideoComposition:(id)composition;
 - (void)_endAnimating;
-- (void)_notifyExternalPlaybackChange:(BOOL)a3;
-- (void)_notifyPlaybackStateChange:(int64_t)a3;
-- (void)_notifyPlaybackTimeChange:(id *)a3;
-- (void)_playerStatusDidChange:(int64_t)a3;
+- (void)_notifyExternalPlaybackChange:(BOOL)change;
+- (void)_notifyPlaybackStateChange:(int64_t)change;
+- (void)_notifyPlaybackTimeChange:(id *)change;
+- (void)_playerStatusDidChange:(int64_t)change;
 - (void)_releaseAVObjects;
-- (void)_renderFinishedWithGeometry:(id)a3 layer:(id)a4;
-- (void)_setDisplayType:(unint64_t)a3;
+- (void)_renderFinishedWithGeometry:(id)geometry layer:(id)layer;
+- (void)_setDisplayType:(unint64_t)type;
 - (void)_setupAVPlayerController;
-- (void)_setupRenderRequest:(id)a3;
+- (void)_setupRenderRequest:(id)request;
 - (void)_tearDownAVPlayerController;
 - (void)_updateBackfillLayerWithLatestRenderResponse;
-- (void)_updateBackfillLayerWithRenderResponse:(id)a3;
-- (void)_updateDisplayForMediaType:(int64_t)a3;
-- (void)_updateImageRenderForComposition:(id)a3;
-- (void)_updateLivePhotoComposition:(id)a3;
+- (void)_updateBackfillLayerWithRenderResponse:(id)response;
+- (void)_updateDisplayForMediaType:(int64_t)type;
+- (void)_updateImageRenderForComposition:(id)composition;
+- (void)_updateLivePhotoComposition:(id)composition;
 - (void)_updateLivePhotoViewWithLatestRenderResponse;
-- (void)_updateLivePhotoViewWithRenderResponse:(id)a3;
-- (void)_updateLivePhotoWithResponse:(id)a3;
+- (void)_updateLivePhotoViewWithRenderResponse:(id)response;
+- (void)_updateLivePhotoWithResponse:(id)response;
 - (void)_updateROILayerWithLatestRenderResponse;
-- (void)_updateROILayerWithRenderResponse:(id)a3;
-- (void)_updateVideoComposition:(id)a3;
+- (void)_updateROILayerWithRenderResponse:(id)response;
+- (void)_updateVideoComposition:(id)composition;
 - (void)_updateVideoPlayerWithLatestRenderResponse;
-- (void)_updateVideoPlayerWithRenderResponse:(id)a3;
-- (void)_updateVideoViewLayoutWithGeometry:(id)a3;
-- (void)_updateVideoWithResult:(id)a3 sourceChanged:(BOOL)a4;
+- (void)_updateVideoPlayerWithRenderResponse:(id)response;
+- (void)_updateVideoViewLayoutWithGeometry:(id)geometry;
+- (void)_updateVideoWithResult:(id)result sourceChanged:(BOOL)changed;
 - (void)beginZooming;
 - (void)cancelPendingRenders;
 - (void)endZooming;
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4;
-- (void)livePhotoViewDidBeginScrubbing:(id)a3;
-- (void)livePhotoViewDidEndScrubbing:(id)a3;
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style;
+- (void)livePhotoViewDidBeginScrubbing:(id)scrubbing;
+- (void)livePhotoViewDidEndScrubbing:(id)scrubbing;
 - (void)play;
-- (void)removeObserver:(id)a3;
-- (void)seekToTime:(id *)a3 exact:(BOOL)a4 forceSeek:(BOOL)a5;
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5;
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6;
-- (void)setMuted:(BOOL)a3;
-- (void)setPipelineFilters:(id)a3;
-- (void)setPlaybackMode:(int64_t)a3;
-- (void)setPlaybackRate:(double)a3;
-- (void)setVideoEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)stepByCount:(int64_t)a3;
-- (void)sweep:(id)a3 withBlock:(id)a4;
-- (void)updateComposition:(id)a3;
-- (void)updateMedia:(id)a3 displayType:(int64_t)a4;
+- (void)removeObserver:(id)observer;
+- (void)seekToTime:(id *)time exact:(BOOL)exact forceSeek:(BOOL)seek;
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after;
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)seek;
+- (void)setMuted:(BOOL)muted;
+- (void)setPipelineFilters:(id)filters;
+- (void)setPlaybackMode:(int64_t)mode;
+- (void)setPlaybackRate:(double)rate;
+- (void)setVideoEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)stepByCount:(int64_t)count;
+- (void)sweep:(id)sweep withBlock:(id)block;
+- (void)updateComposition:(id)composition;
+- (void)updateMedia:(id)media displayType:(int64_t)type;
 - (void)wait;
 @end
 
@@ -114,47 +114,47 @@
   return WeakRetained;
 }
 
-- (void)livePhotoViewDidEndScrubbing:(id)a3
+- (void)livePhotoViewDidEndScrubbing:(id)scrubbing
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v5 = [WeakRetained _livePhotoView];
-  [v5 setHidden:1];
+  _livePhotoView = [WeakRetained _livePhotoView];
+  [_livePhotoView setHidden:1];
 
   [(NUMediaViewRenderer *)self setLivePhotoViewIsScrubbing:0];
 }
 
-- (void)livePhotoViewDidBeginScrubbing:(id)a3
+- (void)livePhotoViewDidBeginScrubbing:(id)scrubbing
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v5 = [WeakRetained _livePhotoView];
-  [v5 setHidden:0];
+  _livePhotoView = [WeakRetained _livePhotoView];
+  [_livePhotoView setHidden:0];
 
   [(NUMediaViewRenderer *)self setLivePhotoViewIsScrubbing:1];
 }
 
-- (void)livePhotoView:(id)a3 didEndPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view didEndPlaybackWithStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v4 = [WeakRetained _livePhotoView];
-  [v4 setHidden:1];
+  _livePhotoView = [WeakRetained _livePhotoView];
+  [_livePhotoView setHidden:1];
 
   [WeakRetained _livephotoPlaybackDidEnd];
 }
 
-- (void)livePhotoView:(id)a3 willBeginPlaybackWithStyle:(int64_t)a4
+- (void)livePhotoView:(id)view willBeginPlaybackWithStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v4 = [WeakRetained _livePhotoView];
-  [v4 setHidden:0];
+  _livePhotoView = [WeakRetained _livePhotoView];
+  [_livePhotoView setHidden:0];
 
   [WeakRetained _livephotoPlaybackWillBegin];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v5 = NUAssertLogger_467();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -176,8 +176,8 @@
         v13 = dispatch_get_specific(*v7);
         v14 = MEMORY[0x277CCACC8];
         v15 = v13;
-        v16 = [v14 callStackSymbols];
-        v17 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v14 callStackSymbols];
+        v17 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v20 = v13;
         v21 = 2114;
@@ -188,8 +188,8 @@
 
     else if (v10)
     {
-      v11 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v12;
       _os_log_error_impl(&dword_25BD29000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -198,11 +198,11 @@
     _NUAssertFailHandler();
   }
 
-  v18 = v4;
-  [(NUObservatory *)self->_observatory removeObserver:v4];
+  v18 = observerCopy;
+  [(NUObservatory *)self->_observatory removeObserver:observerCopy];
 }
 
-- (void)_notifyPlaybackTimeChange:(id *)a3
+- (void)_notifyPlaybackTimeChange:(id *)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
@@ -210,7 +210,7 @@
   v4[2] = __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke;
   v4[3] = &unk_279974010;
   v4[4] = self;
-  v5 = *a3;
+  v5 = *change;
   [(NUObservatory *)observatory notifyAllObserversForKey:1 withBlock:v4];
 }
 
@@ -223,11 +223,11 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
   return v4(a2, v3, &v6);
 }
 
-- (id)addPlaybackTimeObserver:(id)a3
+- (id)addPlaybackTimeObserver:(id)observer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v8 = NUAssertLogger_467();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -249,8 +249,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
         v16 = dispatch_get_specific(*v10);
         v17 = MEMORY[0x277CCACC8];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v16;
         v23 = 2114;
@@ -261,8 +261,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
 
     else if (v13)
     {
-      v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v15;
       _os_log_error_impl(&dword_25BD29000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -271,13 +271,13 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(NUObservatory *)self->_observatory addObserverForKey:1 queue:0 block:v4];
+  v5 = observerCopy;
+  v6 = [(NUObservatory *)self->_observatory addObserverForKey:1 queue:0 block:observerCopy];
 
   return v6;
 }
 
-- (void)_notifyExternalPlaybackChange:(BOOL)a3
+- (void)_notifyExternalPlaybackChange:(BOOL)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
@@ -285,15 +285,15 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
   v4[2] = __53__NUMediaViewRenderer__notifyExternalPlaybackChange___block_invoke;
   v4[3] = &unk_279973FE8;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   [(NUObservatory *)observatory notifyAllObserversForKey:2 withBlock:v4];
 }
 
-- (id)addExternalPlaybackObserver:(id)a3
+- (id)addExternalPlaybackObserver:(id)observer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v8 = NUAssertLogger_467();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -315,8 +315,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
         v16 = dispatch_get_specific(*v10);
         v17 = MEMORY[0x277CCACC8];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v16;
         v23 = 2114;
@@ -327,8 +327,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
 
     else if (v13)
     {
-      v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v15;
       _os_log_error_impl(&dword_25BD29000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -337,13 +337,13 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(NUObservatory *)self->_observatory addObserverForKey:2 queue:0 block:v4];
+  v5 = observerCopy;
+  v6 = [(NUObservatory *)self->_observatory addObserverForKey:2 queue:0 block:observerCopy];
 
   return v6;
 }
 
-- (void)_notifyPlaybackStateChange:(int64_t)a3
+- (void)_notifyPlaybackStateChange:(int64_t)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
@@ -351,15 +351,15 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
   v4[2] = __50__NUMediaViewRenderer__notifyPlaybackStateChange___block_invoke;
   v4[3] = &unk_279973FC0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = change;
   [(NUObservatory *)observatory notifyAllObserversForKey:0 withBlock:v4];
 }
 
-- (id)addPlaybackStateObserver:(id)a3
+- (id)addPlaybackStateObserver:(id)observer
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v8 = NUAssertLogger_467();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -381,8 +381,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
         v16 = dispatch_get_specific(*v10);
         v17 = MEMORY[0x277CCACC8];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v22 = v16;
         v23 = 2114;
@@ -393,8 +393,8 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
 
     else if (v13)
     {
-      v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v22 = v15;
       _os_log_error_impl(&dword_25BD29000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -403,92 +403,92 @@ uint64_t __49__NUMediaViewRenderer__notifyPlaybackTimeChange___block_invoke(uint
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(NUObservatory *)self->_observatory addObserverForKey:0 queue:0 block:v4];
+  v5 = observerCopy;
+  v6 = [(NUObservatory *)self->_observatory addObserverForKey:0 queue:0 block:observerCopy];
 
   return v6;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  if (self->_muted != a3)
+  if (self->_muted != muted)
   {
-    v4 = a3;
-    v9 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-    if (v9)
+    mutedCopy = muted;
+    nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+    if (nuAVPlayerController)
     {
-      [v9 setMuted:v4];
+      [nuAVPlayerController setMuted:mutedCopy];
     }
 
-    v6 = [(NUMediaViewRenderer *)self mediaView];
-    v7 = [v6 _livePhotoView];
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-    [v7 setValue:v8 forKey:@"muted"];
+    mediaView = [(NUMediaViewRenderer *)self mediaView];
+    _livePhotoView = [mediaView _livePhotoView];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:mutedCopy];
+    [_livePhotoView setValue:v8 forKey:@"muted"];
 
-    self->_muted = v4;
+    self->_muted = mutedCopy;
   }
 }
 
-- (void)setPlaybackMode:(int64_t)a3
+- (void)setPlaybackMode:(int64_t)mode
 {
-  if (self->_playbackMode == a3)
+  if (self->_playbackMode == mode)
   {
     return;
   }
 
-  v6 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  if (v6)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  if (nuAVPlayerController)
   {
-    if (!a3)
+    if (!mode)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
       v7 = 1;
 LABEL_7:
-      v8 = v6;
-      [v6 setLoopsVideo:v7];
-      v6 = v8;
+      v8 = nuAVPlayerController;
+      [nuAVPlayerController setLoopsVideo:v7];
+      nuAVPlayerController = v8;
     }
   }
 
-  self->_playbackMode = a3;
+  self->_playbackMode = mode;
 }
 
-- (void)setPlaybackRate:(double)a3
+- (void)setPlaybackRate:(double)rate
 {
-  v4 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  if (v4)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  if (nuAVPlayerController)
   {
-    v11 = v4;
-    v5 = [v4 player];
-    [v5 rate];
+    v11 = nuAVPlayerController;
+    player = [nuAVPlayerController player];
+    [player rate];
     v7 = v6;
 
-    v4 = v11;
-    if (v7 != a3)
+    nuAVPlayerController = v11;
+    if (v7 != rate)
     {
-      v9 = [v11 player];
-      v8 = a3;
-      *&v10 = v8;
-      [v9 setRate:v10];
+      player2 = [v11 player];
+      rateCopy = rate;
+      *&v10 = rateCopy;
+      [player2 setRate:v10];
 
-      v4 = v11;
+      nuAVPlayerController = v11;
     }
   }
 }
 
 - (double)playbackRate
 {
-  v2 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v3 = v2;
-  if (v2)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  v3 = nuAVPlayerController;
+  if (nuAVPlayerController)
   {
-    v4 = [v2 player];
-    [v4 rate];
+    player = [nuAVPlayerController player];
+    [player rate];
     v6 = v5;
   }
 
@@ -512,7 +512,7 @@ LABEL_7:
   else
   {
     objc_initWeak(&location, self);
-    v3 = [(NUMediaViewRenderer *)self nuAVPlayerController];
+    nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __27__NUMediaViewRenderer_play__block_invoke;
@@ -521,7 +521,7 @@ LABEL_7:
     time1 = **&MEMORY[0x277CC08F0];
     time2 = time1;
     v4 = time1;
-    [v3 seek:&time1 toleranceBefore:&time2 toleranceAfter:&v4 forceSeek:1 completionHandler:v5];
+    [nuAVPlayerController seek:&time1 toleranceBefore:&time2 toleranceAfter:&v4 forceSeek:1 completionHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -534,25 +534,25 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   [WeakRetained setPlaybackRate:1.0];
 }
 
-- (void)stepByCount:(int64_t)a3
+- (void)stepByCount:(int64_t)count
 {
-  v4 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  if (v4)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  if (nuAVPlayerController)
   {
-    v5 = v4;
-    [v4 step:a3];
-    v4 = v5;
+    v5 = nuAVPlayerController;
+    [nuAVPlayerController step:count];
+    nuAVPlayerController = v5;
   }
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentSeekTime
 {
-  v4 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  if (v4)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  if (nuAVPlayerController)
   {
-    v6 = v4;
-    [v4 currentSeekTime];
-    v4 = v6;
+    v6 = nuAVPlayerController;
+    [nuAVPlayerController currentSeekTime];
+    nuAVPlayerController = v6;
   }
 
   else
@@ -565,36 +565,36 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)seek
 {
-  v6 = a6;
-  v10 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v11 = v10;
-  if (v10)
+  seekCopy = seek;
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  v11 = nuAVPlayerController;
+  if (nuAVPlayerController)
   {
-    v16 = *&a3->var0;
-    var3 = a3->var3;
-    v14 = *&a4->var0;
-    v15 = a4->var3;
-    v12 = *&a5->var0;
-    v13 = a5->var3;
-    [v10 seek:&v16 toleranceBefore:&v14 toleranceAfter:&v12 forceSeek:v6];
+    v16 = *&time->var0;
+    var3 = time->var3;
+    v14 = *&before->var0;
+    v15 = before->var3;
+    v12 = *&after->var0;
+    v13 = after->var3;
+    [nuAVPlayerController seek:&v16 toleranceBefore:&v14 toleranceAfter:&v12 forceSeek:seekCopy];
   }
 }
 
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after
 {
-  v7 = *a3;
-  v6 = *a4;
-  v5 = *a5;
+  v7 = *time;
+  v6 = *before;
+  v5 = *after;
   [(NUMediaViewRenderer *)self seekToTime:&v7 toleranceBefore:&v6 toleranceAfter:&v5 forceSeek:0];
 }
 
-- (void)seekToTime:(id *)a3 exact:(BOOL)a4 forceSeek:(BOOL)a5
+- (void)seekToTime:(id *)time exact:(BOOL)exact forceSeek:(BOOL)seek
 {
-  v5 = a5;
+  seekCopy = seek;
   memset(&v12, 0, sizeof(v12));
-  if (a4)
+  if (exact)
   {
     v12 = **&MEMORY[0x277CC08F0];
   }
@@ -604,32 +604,32 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
     CMTimeMake(&v12, 5, 30);
   }
 
-  v10 = *&a3->var0;
-  var3 = a3->var3;
+  v10 = *&time->var0;
+  var3 = time->var3;
   v9 = v12;
   v8 = v12;
-  [(NUMediaViewRenderer *)self seekToTime:&v10 toleranceBefore:&v9 toleranceAfter:&v8 forceSeek:v5];
+  [(NUMediaViewRenderer *)self seekToTime:&v10 toleranceBefore:&v9 toleranceAfter:&v8 forceSeek:seekCopy];
 }
 
 - (NSArray)loadedTimeRanges
 {
-  v2 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v3 = [v2 player];
-  v4 = [v3 currentItem];
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  player = [nuAVPlayerController player];
+  currentItem = [player currentItem];
 
-  v5 = [v4 loadedTimeRanges];
+  loadedTimeRanges = [currentItem loadedTimeRanges];
 
-  return v5;
+  return loadedTimeRanges;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v4 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  if (v4)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  if (nuAVPlayerController)
   {
-    v7 = v4;
-    [v4 currentTime];
-    v4 = v7;
+    v7 = nuAVPlayerController;
+    [nuAVPlayerController currentTime];
+    nuAVPlayerController = v7;
   }
 
   else
@@ -642,21 +642,21 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)_playbackStateFromPlayerStatus:(int64_t)a3 rate:(float)a4
+- (int64_t)_playbackStateFromPlayerStatus:(int64_t)status rate:(float)rate
 {
   v4 = 1;
   v5 = 2;
-  if (a4 != 0.0)
+  if (rate != 0.0)
   {
     v5 = 3;
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
     v4 = 4;
   }
 
-  if (a3 == 1)
+  if (status == 1)
   {
     return v5;
   }
@@ -669,14 +669,14 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
 
 - (int64_t)playbackState
 {
-  v3 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v4 = v3;
-  if (v3 && ([v3 videoAsset], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  v4 = nuAVPlayerController;
+  if (nuAVPlayerController && ([nuAVPlayerController videoAsset], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 player];
-    v7 = [v6 status];
-    [v6 rate];
-    v8 = [(NUMediaViewRenderer *)self _playbackStateFromPlayerStatus:v7 rate:?];
+    player = [v4 player];
+    status = [player status];
+    [player rate];
+    v8 = [(NUMediaViewRenderer *)self _playbackStateFromPlayerStatus:status rate:?];
   }
 
   else
@@ -689,12 +689,12 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)mediaDuration
 {
-  v8 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v4 = [v8 videoAsset];
-  v5 = v4;
-  if (v4)
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  videoAsset = [nuAVPlayerController videoAsset];
+  v5 = videoAsset;
+  if (videoAsset)
   {
-    [v4 duration];
+    [videoAsset duration];
   }
 
   else
@@ -709,78 +709,78 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
 
 - (void)cancelPendingRenders
 {
-  v3 = [(NUSurfaceRenderRequest *)self->_backfillRenderRequest renderContext];
-  [v3 cancelAllRequests];
+  renderContext = [(NUSurfaceRenderRequest *)self->_backfillRenderRequest renderContext];
+  [renderContext cancelAllRequests];
 
-  v4 = [(NUSurfaceRenderRequest *)self->_roiRenderRequest renderContext];
-  [v4 cancelAllRequests];
+  renderContext2 = [(NUSurfaceRenderRequest *)self->_roiRenderRequest renderContext];
+  [renderContext2 cancelAllRequests];
 
-  v5 = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
-  [v5 cancelAllRequests];
+  renderContext3 = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
+  [renderContext3 cancelAllRequests];
 
-  v6 = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
-  [v6 cancelAllRequests];
+  renderContext4 = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
+  [renderContext4 cancelAllRequests];
 }
 
-- (void)setVideoEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setVideoEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  [WeakRetained setVideoPlayerVisible:v5 animated:v4];
+  [WeakRetained setVideoPlayerVisible:enabledCopy animated:animatedCopy];
 
-  [(NUMediaViewRenderer *)self _setVideoEnabled:v5];
+  [(NUMediaViewRenderer *)self _setVideoEnabled:enabledCopy];
 }
 
-- (void)_addFullExtentConstraintsForView:(id)a3
+- (void)_addFullExtentConstraintsForView:(id)view
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = MEMORY[0x277CCAAD0];
   v12 = @"v";
-  v13[0] = v3;
+  v13[0] = viewCopy;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v6 = [v4 constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:0 views:v5];
   [v4 activateConstraints:v6];
 
   v7 = MEMORY[0x277CCAAD0];
   v10 = @"v";
-  v11 = v3;
+  v11 = viewCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v9 = [v7 constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:0 views:v8];
   [v7 activateConstraints:v9];
 }
 
-- (id)_videoRenderRequestForMedia:(id)a3
+- (id)_videoRenderRequestForMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   atomic_fetch_add(&self->_videoRenderInFlightCount, 1u);
   if (!self->_videoRenderRequest)
   {
-    v5 = [objc_alloc(MEMORY[0x277D2D040]) initWithMedia:v4];
+    v5 = [objc_alloc(MEMORY[0x277D2D040]) initWithMedia:mediaCopy];
     videoRenderRequest = self->_videoRenderRequest;
     self->_videoRenderRequest = v5;
 
     [(NUVideoRenderRequest *)self->_videoRenderRequest setSampleMode:2];
   }
 
-  v7 = [(NUMediaViewRenderer *)self _scalePolicyForVideoCompositionRender];
-  [(NUVideoRenderRequest *)self->_videoRenderRequest setScalePolicy:v7];
-  [(NUVideoRenderRequest *)self->_videoRenderRequest setMedia:v4];
+  _scalePolicyForVideoCompositionRender = [(NUMediaViewRenderer *)self _scalePolicyForVideoCompositionRender];
+  [(NUVideoRenderRequest *)self->_videoRenderRequest setScalePolicy:_scalePolicyForVideoCompositionRender];
+  [(NUVideoRenderRequest *)self->_videoRenderRequest setMedia:mediaCopy];
   v8 = self->_videoRenderRequest;
   v9 = v8;
 
   return v8;
 }
 
-- (id)_roiRenderRequestForMedia:(id)a3
+- (id)_roiRenderRequestForMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   roiRenderRequest = self->_roiRenderRequest;
   if (!roiRenderRequest)
   {
-    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithMedia:v4];
+    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithMedia:mediaCopy];
     v7 = self->_roiRenderRequest;
     self->_roiRenderRequest = v6;
     v8 = v6;
@@ -796,7 +796,7 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   }
 
   [(NUMediaViewRenderer *)self _setupRenderRequest:roiRenderRequest];
-  [(NUSurfaceRenderRequest *)self->_roiRenderRequest setMedia:v4];
+  [(NUSurfaceRenderRequest *)self->_roiRenderRequest setMedia:mediaCopy];
   v11 = self->_roiRenderRequest;
   v12 = objc_alloc(MEMORY[0x277D2D058]);
   [(NUMediaViewRenderer *)self _targetZoomScale];
@@ -816,13 +816,13 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   return v17;
 }
 
-- (id)_roiRenderRequestForComposition:(id)a3
+- (id)_roiRenderRequestForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   roiRenderRequest = self->_roiRenderRequest;
   if (!roiRenderRequest)
   {
-    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithComposition:v4];
+    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithComposition:compositionCopy];
     v7 = self->_roiRenderRequest;
     self->_roiRenderRequest = v6;
     v8 = v6;
@@ -837,7 +837,7 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
     roiRenderRequest = self->_roiRenderRequest;
   }
 
-  [(NUSurfaceRenderRequest *)roiRenderRequest setComposition:v4];
+  [(NUSurfaceRenderRequest *)roiRenderRequest setComposition:compositionCopy];
   v11 = self->_roiRenderRequest;
   v12 = objc_alloc(MEMORY[0x277D2D058]);
   [(NUMediaViewRenderer *)self _targetZoomScale];
@@ -858,13 +858,13 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   return v17;
 }
 
-- (id)_backfillRenderRequestForMedia:(id)a3
+- (id)_backfillRenderRequestForMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   backfillRenderRequest = self->_backfillRenderRequest;
   if (!backfillRenderRequest)
   {
-    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithMedia:v4];
+    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithMedia:mediaCopy];
     v7 = self->_backfillRenderRequest;
     self->_backfillRenderRequest = v6;
     v8 = v6;
@@ -879,7 +879,7 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
     backfillRenderRequest = self->_backfillRenderRequest;
   }
 
-  [(NUSurfaceRenderRequest *)backfillRenderRequest setMedia:v4];
+  [(NUSurfaceRenderRequest *)backfillRenderRequest setMedia:mediaCopy];
   v11 = self->_backfillRenderRequest;
   v12 = objc_alloc(MEMORY[0x277D2CFA0]);
   [(NUMediaViewRenderer *)self targetSize];
@@ -897,13 +897,13 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (id)_backfillRenderRequestForComposition:(id)a3
+- (id)_backfillRenderRequestForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   backfillRenderRequest = self->_backfillRenderRequest;
   if (!backfillRenderRequest)
   {
-    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithComposition:v4];
+    v6 = [objc_alloc(MEMORY[0x277D2D020]) initWithComposition:compositionCopy];
     v7 = self->_backfillRenderRequest;
     self->_backfillRenderRequest = v6;
     v8 = v6;
@@ -918,7 +918,7 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
     backfillRenderRequest = self->_backfillRenderRequest;
   }
 
-  [(NUSurfaceRenderRequest *)backfillRenderRequest setComposition:v4];
+  [(NUSurfaceRenderRequest *)backfillRenderRequest setComposition:compositionCopy];
   v11 = self->_backfillRenderRequest;
   v12 = objc_alloc(MEMORY[0x277D2CFA0]);
   [(NUMediaViewRenderer *)self targetSize];
@@ -1022,63 +1022,63 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
 - (double)_targetZoomScale
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v3 = [WeakRetained _scrollView];
+  _scrollView = [WeakRetained _scrollView];
 
-  [v3 zoomScale];
+  [_scrollView zoomScale];
   v5 = v4;
-  [v3 minimumZoomScale];
+  [_scrollView minimumZoomScale];
   v7 = v6;
-  [v3 maximumZoomScale];
+  [_scrollView maximumZoomScale];
   v9 = fmax(v7, fmin(v5, v8));
 
   return v9;
 }
 
-- (void)_updateLivePhotoWithResponse:(id)a3
+- (void)_updateLivePhotoWithResponse:(id)response
 {
-  v22 = a3;
+  responseCopy = response;
   if ([(NUMediaViewRenderer *)self computedDisplayType]== 3)
   {
-    v4 = [(NUMediaViewRenderer *)self _livePhotoFromResponse:v22];
+    v4 = [(NUMediaViewRenderer *)self _livePhotoFromResponse:responseCopy];
     WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-    v6 = [WeakRetained _livePhotoView];
-    v7 = [v6 valueForKey:@"livePhoto"];
+    _livePhotoView = [WeakRetained _livePhotoView];
+    v7 = [_livePhotoView valueForKey:@"livePhoto"];
 
     if (v7)
     {
-      v21 = [v22 video];
+      video = [responseCopy video];
       v8 = [v7 valueForKey:@"videoAsset"];
       v9 = [v7 valueForKey:@"videoComposition"];
-      v10 = [v22 videoComposition];
+      videoComposition = [responseCopy videoComposition];
       [(NUMediaViewRenderer *)self mediaView];
       v12 = v11 = v4;
-      v13 = [v12 player];
-      v14 = [v13 playbackState] == 3;
+      player = [v12 player];
+      v14 = [player playbackState] == 3;
 
       v4 = v11;
       v15 = v8;
-      v16 = v21;
-      if ([objc_opt_class() _forceUpdateForNewVideoComposition:v10 previousComposition:v9 newAsset:v21 previousAsset:v15 isPlaying:v14])
+      _livePhotoView5 = video;
+      if ([objc_opt_class() _forceUpdateForNewVideoComposition:videoComposition previousComposition:v9 newAsset:video previousAsset:v15 isPlaying:v14])
       {
-        v17 = [WeakRetained _livePhotoView];
-        [v17 performSelector:NSSelectorFromString(&cfstr_Setlivephoto.isa) withObject:v4];
+        _livePhotoView2 = [WeakRetained _livePhotoView];
+        [_livePhotoView2 performSelector:NSSelectorFromString(&cfstr_Setlivephoto.isa) withObject:v4];
       }
 
-      v18 = [WeakRetained _livePhotoView];
+      _livePhotoView3 = [WeakRetained _livePhotoView];
       NSSelectorFromString(&cfstr_Setoverridepho.isa);
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [WeakRetained _livePhotoView];
-        [v20 performSelector:NSSelectorFromString(&cfstr_Setoverridepho.isa) withObject:{objc_msgSend(v22, "photo")}];
+        _livePhotoView4 = [WeakRetained _livePhotoView];
+        [_livePhotoView4 performSelector:NSSelectorFromString(&cfstr_Setoverridepho.isa) withObject:{objc_msgSend(responseCopy, "photo")}];
       }
     }
 
     else
     {
-      v16 = [WeakRetained _livePhotoView];
-      [v16 performSelector:NSSelectorFromString(&cfstr_Setlivephoto.isa) withObject:v4];
+      _livePhotoView5 = [WeakRetained _livePhotoView];
+      [_livePhotoView5 performSelector:NSSelectorFromString(&cfstr_Setlivephoto.isa) withObject:v4];
     }
 
     [WeakRetained _rendererDidUpdateLivePhoto];
@@ -1087,57 +1087,57 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   MEMORY[0x2821F9730]();
 }
 
-- (id)_livePhotoFromResponse:(id)a3
+- (id)_livePhotoFromResponse:(id)response
 {
-  v3 = a3;
-  v4 = [v3 video];
-  v5 = [v3 videoComposition];
+  responseCopy = response;
+  video = [responseCopy video];
+  videoComposition = [responseCopy videoComposition];
   v12 = 0uLL;
   v13 = 0;
-  if (v3)
+  if (responseCopy)
   {
-    [v3 photoTime];
+    [responseCopy photoTime];
   }
 
   v6 = objc_alloc(NSClassFromString(&cfstr_Phlivephoto.isa));
-  v7 = [v3 photo];
+  photo = [responseCopy photo];
   v10 = v12;
   v11 = v13;
-  v8 = [v6 initWithImage:v7 uiOrientation:0 videoAsset:v4 photoTime:&v10 asset:0 options:1 videoComposition:v5];
+  v8 = [v6 initWithImage:photo uiOrientation:0 videoAsset:video photoTime:&v10 asset:0 options:1 videoComposition:videoComposition];
 
   return v8;
 }
 
-- (void)_updateLivePhotoComposition:(id)a3
+- (void)_updateLivePhotoComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   livePhotoRenderRequest = self->_livePhotoRenderRequest;
-  v17 = v4;
+  v17 = compositionCopy;
   if (!livePhotoRenderRequest)
   {
-    v6 = [objc_alloc(MEMORY[0x277D2CFD8]) initWithComposition:v4];
+    v6 = [objc_alloc(MEMORY[0x277D2CFD8]) initWithComposition:compositionCopy];
     v7 = self->_livePhotoRenderRequest;
     self->_livePhotoRenderRequest = v6;
 
     [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest setResponseQueue:MEMORY[0x277D85CD0]];
-    v4 = v17;
+    compositionCopy = v17;
     livePhotoRenderRequest = self->_livePhotoRenderRequest;
   }
 
-  [(NULivePhotoRenderRequest *)livePhotoRenderRequest setComposition:v4];
+  [(NULivePhotoRenderRequest *)livePhotoRenderRequest setComposition:compositionCopy];
   [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest setName:@"NUMediaViewRenderer-livePhoto"];
   [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest setPipelineFilters:self->_pipelineFilters];
   v8 = objc_alloc(MEMORY[0x277D2CFA0]);
   [(NUMediaViewRenderer *)self targetSize];
   v9 = [v8 initWithTargetSize:?];
   [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest setScalePolicy:v9];
-  v10 = [(NUMediaViewRenderer *)self colorSpace];
+  colorSpace = [(NUMediaViewRenderer *)self colorSpace];
 
-  if (v10)
+  if (colorSpace)
   {
     v11 = self->_livePhotoRenderRequest;
-    v12 = [(NUMediaViewRenderer *)self colorSpace];
-    [(NULivePhotoRenderRequest *)v11 setColorSpace:v12];
+    colorSpace2 = [(NUMediaViewRenderer *)self colorSpace];
+    [(NULivePhotoRenderRequest *)v11 setColorSpace:colorSpace2];
   }
 
   v13 = self->_livePhotoRenderRequest;
@@ -1145,13 +1145,13 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   [(NULivePhotoRenderRequest *)v13 setPriority:v14];
 
   v15 = self->_livePhotoRenderRequest;
-  v16 = [(NUMediaViewRenderer *)self _livePhotoRenderResponseHandler];
-  [(NULivePhotoRenderRequest *)v15 submit:v16];
+  _livePhotoRenderResponseHandler = [(NUMediaViewRenderer *)self _livePhotoRenderResponseHandler];
+  [(NULivePhotoRenderRequest *)v15 submit:_livePhotoRenderResponseHandler];
 }
 
-- (void)_coalesceUpdateLivePhotoComposition:(id)a3
+- (void)_coalesceUpdateLivePhotoComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   objc_initWeak(&location, self);
   livePhotoUpdateCoalescer = self->_livePhotoUpdateCoalescer;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1159,7 +1159,7 @@ void __27__NUMediaViewRenderer_play__block_invoke(uint64_t a1)
   v7[2] = __59__NUMediaViewRenderer__coalesceUpdateLivePhotoComposition___block_invoke;
   v7[3] = &unk_279973F98;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = compositionCopy;
   v8 = v6;
   [(NUCoalescer *)livePhotoUpdateCoalescer coalesceBlock:v7];
 
@@ -1173,9 +1173,9 @@ void __59__NUMediaViewRenderer__coalesceUpdateLivePhotoComposition___block_invok
   [WeakRetained _updateLivePhotoComposition:*(a1 + 32)];
 }
 
-- (void)_coalesceUpdateVideoComposition:(id)a3
+- (void)_coalesceUpdateVideoComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   objc_initWeak(&location, self);
   videoUpdateCoalescer = self->_videoUpdateCoalescer;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1183,7 +1183,7 @@ void __59__NUMediaViewRenderer__coalesceUpdateLivePhotoComposition___block_invok
   v7[2] = __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke;
   v7[3] = &unk_279973F98;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = compositionCopy;
   v8 = v6;
   [(NUCoalescer *)videoUpdateCoalescer coalesceBlock:v7];
 
@@ -1197,14 +1197,14 @@ void __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke(ui
   [WeakRetained _updateVideoComposition:*(a1 + 32)];
 }
 
-- (void)_updateVideoViewLayoutWithGeometry:(id)a3
+- (void)_updateVideoViewLayoutWithGeometry:(id)geometry
 {
-  v4 = a3;
-  if (v4 && [(NUMediaViewRenderer *)self isZoomedToFit])
+  geometryCopy = geometry;
+  if (geometryCopy && [(NUMediaViewRenderer *)self isZoomedToFit])
   {
     WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-    v6 = [WeakRetained _renderView];
-    v7 = [WeakRetained _scrollView];
+    _renderView = [WeakRetained _renderView];
+    _scrollView = [WeakRetained _scrollView];
     [(NUMediaViewRenderer *)self _scrollBounds];
     v9 = v8;
     v11 = v10;
@@ -1213,8 +1213,8 @@ void __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke(ui
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v6 _roiLayer];
-    [v20 nu_contentsAreFlipped];
+    _roiLayer = [_renderView _roiLayer];
+    [_roiLayer nu_contentsAreFlipped];
     v21 = v9 - (v19 + v15);
     if (v21 <= 0.0)
     {
@@ -1234,7 +1234,7 @@ void __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke(ui
 
     v31 = v22;
 
-    [v4 size];
+    [geometryCopy size];
     NUPixelSizeToCGSize();
     v29 = v24;
     v30 = v23;
@@ -1252,45 +1252,45 @@ void __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke(ui
       v27 = v26.f64[0];
     }
 
-    [v7 setMinimumZoomScale:{1.17549435e-38, v29, v30}];
-    [v7 setMaximumZoomScale:3.40282347e38];
-    [v7 setMinimumZoomScale:v27];
-    [v7 setZoomScale:v27];
+    [_scrollView setMinimumZoomScale:{1.17549435e-38, v29, v30}];
+    [_scrollView setMaximumZoomScale:3.40282347e38];
+    [_scrollView setMinimumZoomScale:v27];
+    [_scrollView setZoomScale:v27];
     maximumZoomScale = self->_maximumZoomScale;
     if (maximumZoomScale < v27)
     {
       maximumZoomScale = v27;
     }
 
-    [v7 setMaximumZoomScale:maximumZoomScale];
-    [v6 setGeometry:v4];
+    [_scrollView setMaximumZoomScale:maximumZoomScale];
+    [_renderView setGeometry:geometryCopy];
   }
 }
 
-- (void)_updateVideoComposition:(id)a3
+- (void)_updateVideoComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   if (!self->_didReleaseAVObjects)
   {
     atomic_fetch_add(&self->_videoRenderInFlightCount, 1u);
-    v18 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"source"];
-    v6 = [v5 assetIdentifier];
+    v18 = compositionCopy;
+    v5 = [compositionCopy objectForKeyedSubscript:@"source"];
+    assetIdentifier = [v5 assetIdentifier];
 
-    objc_storeStrong(&self->_currentVideoSourceAssetIdentifier, v6);
-    v7 = [(NUMediaViewRenderer *)self mediaView];
-    v8 = [(NUMediaViewRenderer *)self canRenderVideoLive];
-    v9 = [(NUMediaViewRenderer *)self pipelineFilters];
-    if (!v8)
+    objc_storeStrong(&self->_currentVideoSourceAssetIdentifier, assetIdentifier);
+    mediaView = [(NUMediaViewRenderer *)self mediaView];
+    canRenderVideoLive = [(NUMediaViewRenderer *)self canRenderVideoLive];
+    pipelineFilters = [(NUMediaViewRenderer *)self pipelineFilters];
+    if (!canRenderVideoLive)
     {
-      v10 = [(NUMediaViewRenderer *)self cacheVideoRenderFilter];
-      v11 = [v9 arrayByAddingObject:v10];
+      cacheVideoRenderFilter = [(NUMediaViewRenderer *)self cacheVideoRenderFilter];
+      v11 = [pipelineFilters arrayByAddingObject:cacheVideoRenderFilter];
 
-      [v7 _rendererDidStartPreparingVideo];
-      v9 = v11;
+      [mediaView _rendererDidStartPreparingVideo];
+      pipelineFilters = v11;
     }
 
-    v12 = [(NUMediaViewRenderer *)self _scalePolicyForVideoCompositionRender];
+    _scalePolicyForVideoCompositionRender = [(NUMediaViewRenderer *)self _scalePolicyForVideoCompositionRender];
     videoRenderRequest = self->_videoRenderRequest;
     if (!videoRenderRequest)
     {
@@ -1303,30 +1303,30 @@ void __55__NUMediaViewRenderer__coalesceUpdateVideoComposition___block_invoke(ui
       videoRenderRequest = self->_videoRenderRequest;
     }
 
-    [(NUVideoRenderRequest *)videoRenderRequest setScalePolicy:v12];
-    [(NUVideoRenderRequest *)self->_videoRenderRequest setPipelineFilters:v9];
+    [(NUVideoRenderRequest *)videoRenderRequest setScalePolicy:_scalePolicyForVideoCompositionRender];
+    [(NUVideoRenderRequest *)self->_videoRenderRequest setPipelineFilters:pipelineFilters];
     [(NUVideoRenderRequest *)self->_videoRenderRequest setComposition:v18];
     v16 = self->_videoRenderRequest;
-    v17 = [(NUMediaViewRenderer *)self _videoRenderResponseHandler];
-    [(NUVideoRenderRequest *)v16 submit:v17];
+    _videoRenderResponseHandler = [(NUMediaViewRenderer *)self _videoRenderResponseHandler];
+    [(NUVideoRenderRequest *)v16 submit:_videoRenderResponseHandler];
 
-    v4 = v18;
+    compositionCopy = v18;
   }
 }
 
-- (BOOL)_isVideoSourceChangedInComposition:(id)a3
+- (BOOL)_isVideoSourceChangedInComposition:(id)composition
 {
-  v4 = [a3 objectForKeyedSubscript:@"source"];
-  v5 = [v4 assetIdentifier];
+  v4 = [composition objectForKeyedSubscript:@"source"];
+  assetIdentifier = [v4 assetIdentifier];
 
-  if ((v5 == 0) == (self->_currentVideoSourceAssetIdentifier != 0))
+  if ((assetIdentifier == 0) == (self->_currentVideoSourceAssetIdentifier != 0))
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:?] ^ 1;
+    v6 = [assetIdentifier isEqualToString:?] ^ 1;
   }
 
   return v6;
@@ -1447,17 +1447,17 @@ LABEL_29:
   return v23;
 }
 
-- (void)_updateVideoWithResult:(id)a3 sourceChanged:(BOOL)a4
+- (void)_updateVideoWithResult:(id)result sourceChanged:(BOOL)changed
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   if ([(NUMediaViewRenderer *)self computedDisplayType]== 2 && !self->_didReleaseAVObjects)
   {
     v7 = self->_nuAVPlayerController;
-    v8 = [(NUAVPlayerController *)v7 videoAsset];
-    v9 = [(NUAVPlayerController *)v7 videoComposition];
-    v10 = [v6 avAsset];
-    if (!v10)
+    videoAsset = [(NUAVPlayerController *)v7 videoAsset];
+    videoComposition = [(NUAVPlayerController *)v7 videoComposition];
+    avAsset = [resultCopy avAsset];
+    if (!avAsset)
     {
       if (*MEMORY[0x277D2D078] != -1)
       {
@@ -1475,49 +1475,49 @@ LABEL_29:
     }
 
     v57 = v7;
-    [v6 videoComposition];
-    v11 = v10;
-    v13 = v12 = v8;
-    v59 = [v6 audioMix];
-    v14 = [(NUMediaViewRenderer *)self mediaView];
-    [v14 player];
-    v15 = v60 = v9;
-    v16 = [v15 playbackState];
+    [resultCopy videoComposition];
+    v11 = avAsset;
+    v13 = v12 = videoAsset;
+    audioMix = [resultCopy audioMix];
+    mediaView = [(NUMediaViewRenderer *)self mediaView];
+    [mediaView player];
+    v15 = v60 = videoComposition;
+    playbackState = [v15 playbackState];
 
     v17 = objc_opt_class();
     v58 = v13;
     v18 = v13;
-    v8 = v12;
-    v10 = v11;
-    v19 = [v17 _forceUpdateForNewVideoComposition:v18 previousComposition:v9 newAsset:v11 previousAsset:v8 isPlaying:v16 == 3];
+    videoAsset = v12;
+    avAsset = v11;
+    v19 = [v17 _forceUpdateForNewVideoComposition:v18 previousComposition:videoComposition newAsset:v11 previousAsset:videoAsset isPlaying:playbackState == 3];
     v20 = 0;
-    if ((v19 & 1) == 0 && v16 == 3)
+    if ((v19 & 1) == 0 && playbackState == 3)
     {
-      v20 = [MEMORY[0x277D2D048] compositionInstructions:v58 areEqualToCompositionInstructions:v9] ^ 1;
+      v20 = [MEMORY[0x277D2D048] compositionInstructions:v58 areEqualToCompositionInstructions:videoComposition] ^ 1;
     }
 
     v56 = v20;
     v7 = v57;
-    if (v8 != v10)
+    if (videoAsset != avAsset)
     {
-      v21 = [(NUMediaViewRenderer *)self composition];
+      composition = [(NUMediaViewRenderer *)self composition];
 
-      if (v21)
+      if (composition)
       {
-        v55 = v8;
+        v55 = videoAsset;
         v22 = objc_alloc(MEMORY[0x277D2CFD0]);
-        v23 = [(NUMediaViewRenderer *)self composition];
-        v24 = [v22 initWithComposition:v23];
+        composition2 = [(NUMediaViewRenderer *)self composition];
+        v24 = [v22 initWithComposition:composition2];
 
         [v24 setName:@"PXSubjectTrackingView-getUnadjustedImageSize"];
         v63 = 0;
         v25 = [v24 submitSynchronous:&v63];
         v26 = v63;
-        v27 = [v25 properties];
+        properties = [v25 properties];
 
         if (!v26)
         {
-          [v27 size];
+          [properties size];
           NUPixelSizeToCGSize();
           v29 = v28;
           v31 = v30;
@@ -1525,15 +1525,15 @@ LABEL_29:
           [WeakRetained set_masterSizeWithoutGeometry:{v29, v31}];
         }
 
-        v8 = v55;
+        videoAsset = v55;
       }
     }
 
-    v33 = [(NUMediaViewRenderer *)self pipelineFilersHaveChanged];
-    v34 = v19 | v33;
+    pipelineFilersHaveChanged = [(NUMediaViewRenderer *)self pipelineFilersHaveChanged];
+    v34 = v19 | pipelineFilersHaveChanged;
     v35 = objc_loadWeakRetained(&self->_mediaView);
-    v36 = [v6 geometry];
-    [(NUMediaViewRenderer *)self _updateVideoViewLayoutWithGeometry:v36];
+    geometry = [resultCopy geometry];
+    [(NUMediaViewRenderer *)self _updateVideoViewLayoutWithGeometry:geometry];
     if (v34)
     {
       if (!v57)
@@ -1558,8 +1558,8 @@ LABEL_29:
             v50 = dispatch_get_specific(*v44);
             v51 = MEMORY[0x277CCACC8];
             v52 = v50;
-            v53 = [v51 callStackSymbols];
-            v54 = [v53 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v51 callStackSymbols];
+            v54 = [callStackSymbols componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v50;
             *&buf[12] = 2114;
@@ -1570,8 +1570,8 @@ LABEL_29:
 
         else if (v47)
         {
-          v48 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v49 = [v48 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v49 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           *&buf[4] = v49;
           _os_log_error_impl(&dword_25BD29000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1580,12 +1580,12 @@ LABEL_29:
         _NUAssertFailHandler();
       }
 
-      if (v8 == v10 && ![v35 isHidden])
+      if (videoAsset == avAsset && ![v35 isHidden])
       {
         v38 = v58;
         [(NUAVPlayerController *)v57 updateVideoComposition:v58];
-        [(NUAVPlayerController *)v57 updateAudioMix:v59];
-        if (!v33)
+        [(NUAVPlayerController *)v57 updateAudioMix:audioMix];
+        if (!pipelineFilersHaveChanged)
         {
           goto LABEL_34;
         }
@@ -1595,7 +1595,7 @@ LABEL_29:
 
       *buf = *MEMORY[0x277CC0898];
       *&buf[16] = *(MEMORY[0x277CC0898] + 16);
-      if (!a4)
+      if (!changed)
       {
         if ([(NUAVPlayerController *)v57 currentlySeeking])
         {
@@ -1612,7 +1612,7 @@ LABEL_29:
       v61 = *buf;
       v62 = *&buf[16];
       v38 = v58;
-      if ([(NUAVPlayerController *)v57 prepareWithAVAsset:v10 videoComposition:v58 audioMix:v59 loopsVideo:v40 seekToTime:&v61])
+      if ([(NUAVPlayerController *)v57 prepareWithAVAsset:avAsset videoComposition:v58 audioMix:audioMix loopsVideo:v40 seekToTime:&v61])
       {
         [v35 _rendererDidCreateAVPlayerController:v57];
         [(NUMediaViewRenderer *)self _notifyPlaybackStateChange:1];
@@ -1621,7 +1621,7 @@ LABEL_29:
 
     else
     {
-      [(NUAVPlayerController *)v57 updateAudioMix:v59];
+      [(NUAVPlayerController *)v57 updateAudioMix:audioMix];
       v38 = v58;
       if (v58)
       {
@@ -1636,7 +1636,7 @@ LABEL_29:
       if (v39 == 1)
       {
         [(NUAVPlayerController *)v57 updateWithVideoPrepareNodeFromVideoComposition:v58];
-        if (!v33)
+        if (!pipelineFilersHaveChanged)
         {
           goto LABEL_34;
         }
@@ -1645,13 +1645,13 @@ LABEL_29:
       }
     }
 
-    if (!v33)
+    if (!pipelineFilersHaveChanged)
     {
 LABEL_34:
-      v41 = [v6 statistics];
-      [v35 _rendererDidFinishWithStatistics:v41];
+      statistics = [resultCopy statistics];
+      [v35 _rendererDidFinishWithStatistics:statistics];
 
-      v9 = v60;
+      videoComposition = v60;
 LABEL_35:
 
       goto LABEL_36;
@@ -1711,15 +1711,15 @@ id __45__NUMediaViewRenderer_cacheVideoRenderFilter__block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_playerStatusDidChange:(int64_t)a3
+- (void)_playerStatusDidChange:(int64_t)change
 {
-  v9 = [(NUMediaViewRenderer *)self nuAVPlayerController];
-  v5 = [v9 player];
-  [v5 rate];
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  player = [nuAVPlayerController player];
+  [player rate];
   v7 = v6;
 
   LODWORD(v8) = v7;
-  [(NUMediaViewRenderer *)self _notifyPlaybackStateChange:[(NUMediaViewRenderer *)self _playbackStateFromPlayerStatus:a3 rate:v8]];
+  [(NUMediaViewRenderer *)self _notifyPlaybackStateChange:[(NUMediaViewRenderer *)self _playbackStateFromPlayerStatus:change rate:v8]];
 }
 
 - (void)_setupAVPlayerController
@@ -1806,57 +1806,57 @@ void __47__NUMediaViewRenderer__setupAVPlayerController__block_invoke_4(uint64_t
   [WeakRetained _notifyExternalPlaybackChange:a2];
 }
 
-- (void)_setDisplayType:(unint64_t)a3
+- (void)_setDisplayType:(unint64_t)type
 {
-  if (self->_computedDisplayType == a3)
+  if (self->_computedDisplayType == type)
   {
     return;
   }
 
-  v21 = [(NUMediaViewRenderer *)self mediaView];
-  v6 = self->_livePhotoView;
-  if (a3 != 3)
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  _livePhotoView = self->_livePhotoView;
+  if (type != 3)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v12 = [v21 _renderView];
-      [v12 setHidden:0];
+      _renderView = [mediaView _renderView];
+      [_renderView setHidden:0];
 
-      v13 = [v21 _videoPlayerView];
-      v14 = [v21 _renderView];
-      [v14 addSubview:v13];
+      _videoPlayerView = [mediaView _videoPlayerView];
+      _renderView2 = [mediaView _renderView];
+      [_renderView2 addSubview:_videoPlayerView];
 
-      [(NUMediaViewRenderer *)self _addFullExtentConstraintsForView:v13];
+      [(NUMediaViewRenderer *)self _addFullExtentConstraintsForView:_videoPlayerView];
       [(NUMediaViewRenderer *)self _setupAVPlayerController];
-      if (v6)
+      if (_livePhotoView)
       {
-        [(UIView *)v6 setHidden:1];
+        [(UIView *)_livePhotoView setHidden:1];
       }
 
-      v15 = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
-      [v15 cancelAllRequests];
+      renderContext = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
+      [renderContext cancelAllRequests];
 
       livePhotoRenderRequest = self->_livePhotoRenderRequest;
       self->_livePhotoRenderRequest = 0;
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
-      v7 = [v21 _renderView];
-      [v7 setHidden:0];
+      _renderView3 = [mediaView _renderView];
+      [_renderView3 setHidden:0];
 
       [(NUMediaViewRenderer *)self _tearDownAVPlayerController];
-      [v21 _rendererDidCreateAVPlayerController:0];
-      if (v6)
+      [mediaView _rendererDidCreateAVPlayerController:0];
+      if (_livePhotoView)
       {
-        [(UIView *)v6 setHidden:1];
+        [(UIView *)_livePhotoView setHidden:1];
       }
 
-      v8 = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
-      [v8 cancelAllRequests];
+      renderContext2 = [(NULivePhotoRenderRequest *)self->_livePhotoRenderRequest renderContext];
+      [renderContext2 cancelAllRequests];
 
-      v9 = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
-      [v9 cancelAllRequests];
+      renderContext3 = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
+      [renderContext3 cancelAllRequests];
 
       v10 = self->_livePhotoRenderRequest;
       self->_livePhotoRenderRequest = 0;
@@ -1868,28 +1868,28 @@ void __47__NUMediaViewRenderer__setupAVPlayerController__block_invoke_4(uint64_t
     goto LABEL_16;
   }
 
-  v17 = [v21 _renderView];
-  [v17 setHidden:0];
+  _renderView4 = [mediaView _renderView];
+  [_renderView4 setHidden:0];
 
   [(NUMediaViewRenderer *)self _tearDownAVPlayerController];
-  [v21 _rendererDidCreateAVPlayerController:0];
-  if (v6)
+  [mediaView _rendererDidCreateAVPlayerController:0];
+  if (_livePhotoView)
   {
-    livePhotoView = v6;
+    livePhotoView = _livePhotoView;
     v19 = 0;
 LABEL_15:
     [(UIView *)livePhotoView setHidden:v19];
     goto LABEL_16;
   }
 
-  v6 = [v21 _livePhotoView];
-  if (v6)
+  _livePhotoView = [mediaView _livePhotoView];
+  if (_livePhotoView)
   {
-    v20 = [v21 _renderView];
-    [v20 addSubview:v6];
+    _renderView5 = [mediaView _renderView];
+    [_renderView5 addSubview:_livePhotoView];
 
-    [(NUMediaViewRenderer *)self _addFullExtentConstraintsForView:v6];
-    objc_storeStrong(&self->_livePhotoView, v6);
+    [(NUMediaViewRenderer *)self _addFullExtentConstraintsForView:_livePhotoView];
+    objc_storeStrong(&self->_livePhotoView, _livePhotoView);
     [(UIView *)self->_livePhotoView performSelector:sel_setDelegate_ withObject:self];
     livePhotoView = self->_livePhotoView;
     v19 = 1;
@@ -1897,13 +1897,13 @@ LABEL_15:
   }
 
 LABEL_16:
-  self->_computedDisplayType = a3;
+  self->_computedDisplayType = type;
 }
 
-- (void)_updateDisplayForMediaType:(int64_t)a3
+- (void)_updateDisplayForMediaType:(int64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     v3 = NUAssertLogger_467();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1925,8 +1925,8 @@ LABEL_16:
         v11 = dispatch_get_specific(*v5);
         v12 = MEMORY[0x277CCACC8];
         v13 = v11;
-        v14 = [v12 callStackSymbols];
-        v15 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v12 callStackSymbols];
+        v15 = [callStackSymbols componentsJoinedByString:@"\n"];
         v20 = 138543618;
         v21 = v11;
         v22 = 2114;
@@ -1937,8 +1937,8 @@ LABEL_16:
 
     else if (v8)
     {
-      v9 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v10 = [v9 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v10 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v20 = 138543362;
       v21 = v10;
       _os_log_error_impl(&dword_25BD29000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v20, 0xCu);
@@ -1955,11 +1955,11 @@ LABEL_16:
   }
 }
 
-- (id)_updateImageLayer:(id)a3 withRenderResponse:(id)a4
+- (id)_updateImageLayer:(id)layer withRenderResponse:(id)response
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  specific = a4;
+  layerCopy = layer;
+  specific = response;
   WeakRetained = 0x277CCA000;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
@@ -1975,8 +1975,8 @@ LABEL_16:
 
     v11 = MEMORY[0x277D2CF60];
     specific = dispatch_get_specific(*MEMORY[0x277D2CF60]);
-    v7 = NUAssertLogger_467();
-    v19 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
+    layerCopy = NUAssertLogger_467();
+    v19 = os_log_type_enabled(layerCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v19)
@@ -1990,7 +1990,7 @@ LABEL_16:
         v23 = specific;
         v24 = 2114;
         v25 = v11;
-        _os_log_error_impl(&dword_25BD29000, v7, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_25BD29000, layerCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
@@ -2000,7 +2000,7 @@ LABEL_16:
       WeakRetained = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = WeakRetained;
-      _os_log_error_impl(&dword_25BD29000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_25BD29000, layerCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     _NUAssertFailHandler();
@@ -2018,12 +2018,12 @@ LABEL_19:
   v11 = v21;
   if (v10)
   {
-    v12 = [v10 geometry];
-    v13 = [v10 image];
-    [v7 setImage:v13];
+    geometry = [v10 geometry];
+    image = [v10 image];
+    [layerCopy setImage:image];
 
-    [(NUMediaViewRenderer *)self _renderFinishedWithGeometry:v12 layer:v7];
-    v14 = [v10 statistics];
+    [(NUMediaViewRenderer *)self _renderFinishedWithGeometry:geometry layer:layerCopy];
+    statistics = [v10 statistics];
 
     goto LABEL_8;
   }
@@ -2042,46 +2042,46 @@ LABEL_5:
     _os_log_error_impl(&dword_25BD29000, v15, OS_LOG_TYPE_ERROR, "Error: %{public}@", buf, 0xCu);
   }
 
-  [v7 setImage:0];
-  v14 = 0;
+  [layerCopy setImage:0];
+  statistics = 0;
 LABEL_8:
-  [WeakRetained _rendererDidFinishWithStatistics:v14];
+  [WeakRetained _rendererDidFinishWithStatistics:statistics];
   [*(v4 + 4080) commit];
 
-  return v14;
+  return statistics;
 }
 
-- (void)_updateBackfillLayerWithRenderResponse:(id)a3
+- (void)_updateBackfillLayerWithRenderResponse:(id)response
 {
-  v12 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v5 = [WeakRetained _renderView];
-  v6 = v5;
-  if (v5)
+  _renderView = [WeakRetained _renderView];
+  v6 = _renderView;
+  if (_renderView)
   {
-    v7 = [v5 _backfillLayer];
-    v8 = [(NUMediaViewRenderer *)self _updateImageLayer:v7 withRenderResponse:v12];
+    _backfillLayer = [_renderView _backfillLayer];
+    v8 = [(NUMediaViewRenderer *)self _updateImageLayer:_backfillLayer withRenderResponse:responseCopy];
     lastBackfillRenderStatictics = self->_lastBackfillRenderStatictics;
     self->_lastBackfillRenderStatictics = v8;
 
-    v10 = [WeakRetained _livePhotoView];
-    [v10 setHidden:1];
+    _livePhotoView = [WeakRetained _livePhotoView];
+    [_livePhotoView setHidden:1];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 postNotificationName:@"NUMediaViewSnapshotAvailable" object:WeakRetained];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NUMediaViewSnapshotAvailable" object:WeakRetained];
   }
 }
 
-- (void)_updateROILayerWithRenderResponse:(id)a3
+- (void)_updateROILayerWithRenderResponse:(id)response
 {
-  v10 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v5 = [WeakRetained _renderView];
-  v6 = v5;
-  if (v5)
+  _renderView = [WeakRetained _renderView];
+  v6 = _renderView;
+  if (_renderView)
   {
-    v7 = [v5 _roiLayer];
-    v8 = [(NUMediaViewRenderer *)self _updateImageLayer:v7 withRenderResponse:v10];
+    _roiLayer = [_renderView _roiLayer];
+    v8 = [(NUMediaViewRenderer *)self _updateImageLayer:_roiLayer withRenderResponse:responseCopy];
     lastZoomRenderStatistics = self->_lastZoomRenderStatistics;
     self->_lastZoomRenderStatistics = v8;
   }
@@ -2151,15 +2151,15 @@ void __62__NUMediaViewRenderer__updateROILayerWithLatestRenderResponse__block_in
   *(v2 + 128) = 0;
 }
 
-- (void)_updateVideoPlayerWithRenderResponse:(id)a3
+- (void)_updateVideoPlayerWithRenderResponse:(id)response
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NUMediaViewRenderer *)self mediaView];
-  v6 = [(NUMediaViewRenderer *)self nuAVPlayerController];
+  responseCopy = response;
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  nuAVPlayerController = [(NUMediaViewRenderer *)self nuAVPlayerController];
   add = atomic_fetch_add(&self->_videoRenderInFlightCount, 0xFFFFFFFF);
   v13 = 0;
-  v8 = [v4 result:&v13];
+  v8 = [responseCopy result:&v13];
 
   v9 = v13;
   if (!v8)
@@ -2180,12 +2180,12 @@ void __62__NUMediaViewRenderer__updateROILayerWithLatestRenderResponse__block_in
 
   if ([(NUMediaViewRenderer *)self isVideoEnabled]|| [(NUMediaViewRenderer *)self displayType]== 2)
   {
-    v11 = [(NUMediaViewRenderer *)self composition];
+    composition = [(NUMediaViewRenderer *)self composition];
 
-    if (v11)
+    if (composition)
     {
-      v12 = [(NUMediaViewRenderer *)self composition];
-      [(NUMediaViewRenderer *)self _updateVideoWithResult:v8 sourceChanged:[(NUMediaViewRenderer *)self _isVideoSourceChangedInComposition:v12]];
+      composition2 = [(NUMediaViewRenderer *)self composition];
+      [(NUMediaViewRenderer *)self _updateVideoWithResult:v8 sourceChanged:[(NUMediaViewRenderer *)self _isVideoSourceChangedInComposition:composition2]];
     }
 
     else
@@ -2195,11 +2195,11 @@ void __62__NUMediaViewRenderer__updateROILayerWithLatestRenderResponse__block_in
 
     if (add == 1 && ![(NUMediaViewRenderer *)self canRenderVideoLive])
     {
-      [v5 _rendererDidFinishPreparingVideo];
-      [v5 setVideoPlayerVisible:1 animated:1];
+      [mediaView _rendererDidFinishPreparingVideo];
+      [mediaView setVideoPlayerVisible:1 animated:1];
       if ([(NUMediaViewRenderer *)self playbackMode]== 1)
       {
-        [v6 play];
+        [nuAVPlayerController play];
       }
     }
   }
@@ -2237,11 +2237,11 @@ void __65__NUMediaViewRenderer__updateVideoPlayerWithLatestRenderResponse__block
   *(v2 + 144) = 0;
 }
 
-- (void)_updateLivePhotoViewWithRenderResponse:(id)a3
+- (void)_updateLivePhotoViewWithRenderResponse:(id)response
 {
   v10 = *MEMORY[0x277D85DE8];
   v7 = 0;
-  v4 = [a3 result:&v7];
+  v4 = [response result:&v7];
   v5 = v7;
   if (v4)
   {
@@ -2424,17 +2424,17 @@ void __48__NUMediaViewRenderer__roiRenderResponseHandler__block_invoke(uint64_t 
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_updateImageRenderForComposition:(id)a3
+- (void)_updateImageRenderForComposition:(id)composition
 {
-  v4 = a3;
+  compositionCopy = composition;
   v5 = _os_activity_create(&dword_25BD29000, "Update Composition", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__NUMediaViewRenderer__updateImageRenderForComposition___block_invoke;
   v7[3] = &unk_279973E60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = compositionCopy;
+  v6 = compositionCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -2476,20 +2476,20 @@ uint64_t __56__NUMediaViewRenderer__updateImageRenderForComposition___block_invo
   return [MEMORY[0x277D2D018] commitAndNotifyOnQueue:v10 withBlock:v12];
 }
 
-- (void)_renderFinishedWithGeometry:(id)a3 layer:(id)a4
+- (void)_renderFinishedWithGeometry:(id)geometry layer:(id)layer
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  specific = a4;
-  v9 = [(NUMediaViewRenderer *)self mediaView];
-  v10 = [v9 _renderView];
-  v11 = [v9 _scrollView];
-  v12 = [v10 _backfillLayer];
+  geometryCopy = geometry;
+  specific = layer;
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  _renderView = [mediaView _renderView];
+  _scrollView = [mediaView _scrollView];
+  _backfillLayer = [_renderView _backfillLayer];
 
-  [v7 scaledSize];
-  if ([(NUMediaViewRenderer *)self isZoomedToFit]&& v12 == specific)
+  [geometryCopy scaledSize];
+  if ([(NUMediaViewRenderer *)self isZoomedToFit]&& _backfillLayer == specific)
   {
-    [v7 renderScale];
+    [geometryCopy renderScale];
     if ((NUScaleCompare() & 0x8000000000000000) == 0)
     {
       [(NUMediaViewRenderer *)self targetSize];
@@ -2499,21 +2499,21 @@ uint64_t __56__NUMediaViewRenderer__updateImageRenderForComposition___block_invo
 
     NUScaleToDouble();
     v4 = v13;
-    [v9 setScrollUpdatesSuppressed:1];
-    [v11 minimumZoomScale];
-    if (vabdd_f64(v14, v4) > 0.00000011920929 || ([v11 zoomScale], vabdd_f64(v15, v4) > 0.00000011920929) || (objc_msgSend(v11, "maximumZoomScale"), vabdd_f64(v37, v4) > 0.00000011920929) && (objc_msgSend(v11, "maximumZoomScale"), vabdd_f64(v38, self->_maximumZoomScale) > 0.00000011920929))
+    [mediaView setScrollUpdatesSuppressed:1];
+    [_scrollView minimumZoomScale];
+    if (vabdd_f64(v14, v4) > 0.00000011920929 || ([_scrollView zoomScale], vabdd_f64(v15, v4) > 0.00000011920929) || (objc_msgSend(_scrollView, "maximumZoomScale"), vabdd_f64(v37, v4) > 0.00000011920929) && (objc_msgSend(_scrollView, "maximumZoomScale"), vabdd_f64(v38, self->_maximumZoomScale) > 0.00000011920929))
     {
-      [v11 setMinimumZoomScale:1.17549435e-38];
-      [v11 setMaximumZoomScale:3.40282347e38];
-      [v11 setMinimumZoomScale:v4];
+      [_scrollView setMinimumZoomScale:1.17549435e-38];
+      [_scrollView setMaximumZoomScale:3.40282347e38];
+      [_scrollView setMinimumZoomScale:v4];
       maximumZoomScale = self->_maximumZoomScale;
       if (v4 >= maximumZoomScale)
       {
         maximumZoomScale = v4;
       }
 
-      [v11 setMaximumZoomScale:maximumZoomScale];
-      [v11 setZoomScale:v4];
+      [_scrollView setMaximumZoomScale:maximumZoomScale];
+      [_scrollView setZoomScale:v4];
       if (*MEMORY[0x277D2D078] == -1)
       {
         goto LABEL_10;
@@ -2525,14 +2525,14 @@ uint64_t __56__NUMediaViewRenderer__updateImageRenderForComposition___block_invo
 
   while (1)
   {
-    [v10 setGeometry:v7];
+    [_renderView setGeometry:geometryCopy];
     if (specific)
     {
       break;
     }
 
     v43 = NUAssertLogger_467();
-    v10 = &off_25BD44000;
+    _renderView = &off_25BD44000;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"nil render layer"];
@@ -2541,34 +2541,34 @@ uint64_t __56__NUMediaViewRenderer__updateImageRenderForComposition___block_invo
       _os_log_error_impl(&dword_25BD29000, v43, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v9 = MEMORY[0x277D2CF60];
+    mediaView = MEMORY[0x277D2CF60];
     specific = dispatch_get_specific(*MEMORY[0x277D2CF60]);
-    v7 = NUAssertLogger_467();
-    v45 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
+    geometryCopy = NUAssertLogger_467();
+    v45 = os_log_type_enabled(geometryCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v45)
       {
-        specific = dispatch_get_specific(*v9);
+        specific = dispatch_get_specific(*mediaView);
         v46 = MEMORY[0x277CCACC8];
-        v10 = specific;
-        v9 = [v46 callStackSymbols];
-        self = [v9 componentsJoinedByString:@"\n"];
+        _renderView = specific;
+        mediaView = [v46 callStackSymbols];
+        self = [mediaView componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = *&specific;
         v49 = 2114;
-        v50 = self;
-        _os_log_error_impl(&dword_25BD29000, v7, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        selfCopy = self;
+        _os_log_error_impl(&dword_25BD29000, geometryCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v45)
     {
       specific = [MEMORY[0x277CCACC8] callStackSymbols];
-      v9 = [specific componentsJoinedByString:@"\n"];
+      mediaView = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v48 = *&v9;
-      _os_log_error_impl(&dword_25BD29000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v48 = *&mediaView;
+      _os_log_error_impl(&dword_25BD29000, geometryCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     _NUAssertFailHandler();
@@ -2579,13 +2579,13 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
     {
       v39 = v17;
-      [v11 minimumZoomScale];
+      [_scrollView minimumZoomScale];
       v41 = v40;
-      [v11 maximumZoomScale];
+      [_scrollView maximumZoomScale];
       *buf = 134218496;
       v48 = v4;
       v49 = 2048;
-      v50 = v41;
+      selfCopy = v41;
       v51 = 2048;
       v52 = v42;
       _os_log_debug_impl(&dword_25BD29000, v39, OS_LOG_TYPE_DEBUG, "renderedScale = %g, minimumScale = %g, maximumScale = %g", buf, 0x20u);
@@ -2595,9 +2595,9 @@ LABEL_10:
   v18 = *MEMORY[0x277CBF348];
   v19 = *(MEMORY[0x277CBF348] + 8);
   [specific setAnchorPoint:{*MEMORY[0x277CBF348], v19}];
-  [specific setGeometry:v7];
+  [specific setGeometry:geometryCopy];
   NUPixelSizeToCGRect();
-  if (v12 == specific)
+  if (_backfillLayer == specific)
   {
     v28 = v20;
     v29 = v21;
@@ -2616,34 +2616,34 @@ LABEL_10:
     [(NUMediaViewRenderer *)self _scrollBounds];
     v25 = v24;
     v27 = v26;
-    [v10 convertRect:v11 fromView:?];
-    [v10 convertRectToImage:?];
+    [_renderView convertRect:_scrollView fromView:?];
+    [_renderView convertRectToImage:?];
     [specific setPosition:?];
     [specific setBounds:{0.0, 0.0, v25 * self->_backingScale, v27 * self->_backingScale}];
   }
 
-  v36 = [v10 _roiLayer];
-  [v36 setHidden:{-[NUMediaViewRenderer isZoomedToFit](self, "isZoomedToFit")}];
+  _roiLayer = [_renderView _roiLayer];
+  [_roiLayer setHidden:{-[NUMediaViewRenderer isZoomedToFit](self, "isZoomedToFit")}];
 
-  [v9 setScrollUpdatesSuppressed:0];
-  [v9 geometryUpdated];
+  [mediaView setScrollUpdatesSuppressed:0];
+  [mediaView geometryUpdated];
 }
 
-- (id)_regionPolicyForZoomTargetRect:(CGRect)a3
+- (id)_regionPolicyForZoomTargetRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(NUMediaViewRenderer *)self mediaView];
-  v9 = [v8 _renderView];
-  v10 = [v8 _scrollView];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  _renderView = [mediaView _renderView];
+  _scrollView = [mediaView _scrollView];
   v11 = [[NUViewport alloc] initWithSize:width backingScaleFactor:height, self->_backingScale];
   [(NUViewport *)v11 setPosition:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-  [v9 convertRect:v10 fromView:{x, y, width, height}];
-  [v9 bounds];
-  v12 = [v9 _roiLayer];
-  [v12 nu_contentsAreFlipped];
+  [_renderView convertRect:_scrollView fromView:{x, y, width, height}];
+  [_renderView bounds];
+  _roiLayer = [_renderView _roiLayer];
+  [_roiLayer nu_contentsAreFlipped];
   NUCGRectConvertFromRectToRect();
   v14 = v13;
   v16 = v15;
@@ -2657,9 +2657,9 @@ LABEL_10:
 - (CGRect)_scrollBounds
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v3 = [WeakRetained _scrollView];
+  _scrollView = [WeakRetained _scrollView];
 
-  [v3 bounds];
+  [_scrollView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2687,9 +2687,9 @@ LABEL_10:
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [WeakRetained _renderView];
-  v17 = [v16 _roiLayer];
-  [v17 nu_contentsAreFlipped];
+  _renderView = [WeakRetained _renderView];
+  _roiLayer = [_renderView _roiLayer];
+  [_roiLayer nu_contentsAreFlipped];
   if (v5 - (v15 + v11) > 0.0)
   {
     v18 = v5 - (v15 + v11);
@@ -2740,20 +2740,20 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromImageToView:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromImageToView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v11 = [WeakRetained _renderView];
+  _renderView = [WeakRetained _renderView];
 
-  v12 = [v11 _containerLayer];
-  v13 = [v9 layer];
+  _containerLayer = [_renderView _containerLayer];
+  layer = [viewCopy layer];
 
-  [v12 convertRect:v13 toLayer:{x, y, width, height}];
+  [_containerLayer convertRect:layer toLayer:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -2770,20 +2770,20 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toImageFromView:(id)a4
+- (CGRect)convertRect:(CGRect)rect toImageFromView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v11 = [WeakRetained _renderView];
+  _renderView = [WeakRetained _renderView];
 
-  v12 = [v11 _containerLayer];
-  v13 = [v9 layer];
+  _containerLayer = [_renderView _containerLayer];
+  layer = [viewCopy layer];
 
-  [v12 convertRect:v13 fromLayer:{x, y, width, height}];
+  [_containerLayer convertRect:layer fromLayer:{x, y, width, height}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -2800,18 +2800,18 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromImageToView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromImageToView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v9 = [WeakRetained _renderView];
+  _renderView = [WeakRetained _renderView];
 
-  v10 = [v9 _containerLayer];
-  v11 = [v7 layer];
+  _containerLayer = [_renderView _containerLayer];
+  layer = [viewCopy layer];
 
-  [v10 convertPoint:v11 toLayer:{x, y}];
+  [_containerLayer convertPoint:layer toLayer:{x, y}];
   v13 = v12;
   v15 = v14;
 
@@ -2822,18 +2822,18 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 toImageFromView:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point toImageFromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v9 = [WeakRetained _renderView];
+  _renderView = [WeakRetained _renderView];
 
-  v10 = [v9 _containerLayer];
-  v11 = [v7 layer];
+  _containerLayer = [_renderView _containerLayer];
+  layer = [viewCopy layer];
 
-  [v10 convertPoint:v11 fromLayer:{x, y}];
+  [_containerLayer convertPoint:layer fromLayer:{x, y}];
   v13 = v12;
   v15 = v14;
 
@@ -2846,10 +2846,10 @@ LABEL_10:
 
 - (BOOL)isReady
 {
-  v2 = [(NUMediaViewRenderer *)self mediaView];
-  v3 = [v2 _renderView];
-  v4 = [v3 _backfillLayer];
-  v5 = v4 != 0;
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  _renderView = [mediaView _renderView];
+  _backfillLayer = [_renderView _backfillLayer];
+  v5 = _backfillLayer != 0;
 
   return v5;
 }
@@ -2857,11 +2857,11 @@ LABEL_10:
 - (BOOL)isZoomedToFit
 {
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v3 = [WeakRetained _scrollView];
+  _scrollView = [WeakRetained _scrollView];
 
-  [v3 zoomScale];
+  [_scrollView zoomScale];
   v5 = v4;
-  [v3 minimumZoomScale];
+  [_scrollView minimumZoomScale];
   LOBYTE(WeakRetained) = v5 == v6;
 
   return WeakRetained;
@@ -2881,15 +2881,15 @@ LABEL_10:
   }
 }
 
-- (void)setPipelineFilters:(id)a3
+- (void)setPipelineFilters:(id)filters
 {
   pipelineFilters = self->_pipelineFilters;
-  v5 = a3;
+  filtersCopy = filters;
   v6 = [(NSArray *)pipelineFilters copy];
   previousPipelineFilters = self->_previousPipelineFilters;
   self->_previousPipelineFilters = v6;
 
-  v8 = [v5 copy];
+  v8 = [filtersCopy copy];
   v9 = self->_pipelineFilters;
   self->_pipelineFilters = v8;
 }
@@ -2958,62 +2958,62 @@ LABEL_10:
 {
   self->_isZooming = 1;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v4 = [WeakRetained _scrollView];
-  [v4 zoomScale];
+  _scrollView = [WeakRetained _scrollView];
+  [_scrollView zoomScale];
   self->_lastZoomScale = v5;
 
   [(NUMediaViewRenderer *)self _beginAnimating];
 }
 
-- (void)updateMedia:(id)a3 displayType:(int64_t)a4
+- (void)updateMedia:(id)media displayType:(int64_t)type
 {
-  v18 = a3;
-  [(NUMediaViewRenderer *)self _updateDisplayForMediaType:a4];
-  self->_mediaType = a4;
-  if (a4 == 2)
+  mediaCopy = media;
+  [(NUMediaViewRenderer *)self _updateDisplayForMediaType:type];
+  self->_mediaType = type;
+  if (type == 2)
   {
-    v8 = [(NUMediaViewRenderer *)self _backfillRenderRequestForMedia:v18];
-    v10 = [(NUMediaViewRenderer *)self _videoFrameImageRenderResponseHandler];
-    [v8 submit:v10];
+    v8 = [(NUMediaViewRenderer *)self _backfillRenderRequestForMedia:mediaCopy];
+    _videoFrameImageRenderResponseHandler = [(NUMediaViewRenderer *)self _videoFrameImageRenderResponseHandler];
+    [v8 submit:_videoFrameImageRenderResponseHandler];
 
-    v11 = [(NUMediaViewRenderer *)self _videoRenderRequestForMedia:v18];
-    v12 = [(NUMediaViewRenderer *)self mediaView];
-    [v12 _rendererDidStartPreparingVideo];
+    v11 = [(NUMediaViewRenderer *)self _videoRenderRequestForMedia:mediaCopy];
+    mediaView = [(NUMediaViewRenderer *)self mediaView];
+    [mediaView _rendererDidStartPreparingVideo];
 
-    v13 = [(NUMediaViewRenderer *)self canRenderVideoLive];
-    v14 = [(NUMediaViewRenderer *)self pipelineFilters];
-    if (!v13)
+    canRenderVideoLive = [(NUMediaViewRenderer *)self canRenderVideoLive];
+    pipelineFilters = [(NUMediaViewRenderer *)self pipelineFilters];
+    if (!canRenderVideoLive)
     {
-      v15 = [(NUMediaViewRenderer *)self cacheVideoRenderFilter];
-      v16 = [v14 arrayByAddingObject:v15];
+      cacheVideoRenderFilter = [(NUMediaViewRenderer *)self cacheVideoRenderFilter];
+      v16 = [pipelineFilters arrayByAddingObject:cacheVideoRenderFilter];
 
-      v14 = v16;
+      pipelineFilters = v16;
     }
 
-    [v11 setPipelineFilters:v14];
-    v17 = [(NUMediaViewRenderer *)self _videoRenderResponseHandler];
-    [v11 submit:v17];
+    [v11 setPipelineFilters:pipelineFilters];
+    _videoRenderResponseHandler = [(NUMediaViewRenderer *)self _videoRenderResponseHandler];
+    [v11 submit:_videoRenderResponseHandler];
 
     self->_displayType = 2;
   }
 
   else
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
 
     if (![(NUMediaViewRenderer *)self isZoomedToFit])
     {
-      v6 = [(NUMediaViewRenderer *)self _roiRenderRequestForMedia:v18];
-      v7 = [(NUMediaViewRenderer *)self _roiRenderResponseHandler];
-      [v6 submit:v7];
+      v6 = [(NUMediaViewRenderer *)self _roiRenderRequestForMedia:mediaCopy];
+      _roiRenderResponseHandler = [(NUMediaViewRenderer *)self _roiRenderResponseHandler];
+      [v6 submit:_roiRenderResponseHandler];
     }
 
-    v8 = [(NUMediaViewRenderer *)self _backfillRenderRequestForMedia:v18];
-    v9 = [(NUMediaViewRenderer *)self _backfillRenderResponseHandler];
-    [v8 submit:v9];
+    v8 = [(NUMediaViewRenderer *)self _backfillRenderRequestForMedia:mediaCopy];
+    _backfillRenderResponseHandler = [(NUMediaViewRenderer *)self _backfillRenderResponseHandler];
+    [v8 submit:_backfillRenderResponseHandler];
 
     self->_displayType = 1;
   }
@@ -3021,57 +3021,57 @@ LABEL_10:
 LABEL_10:
 }
 
-- (void)updateComposition:(id)a3
+- (void)updateComposition:(id)composition
 {
   v27 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v4 = [(NUMediaViewRenderer *)self mediaView];
-  if (self->_displayType == 2 || [v22 mediaType] == 3 && objc_msgSend(v4, "loopsVideoPlayback") && objc_msgSend(v4, "isVideoEnabled"))
+  compositionCopy = composition;
+  mediaView = [(NUMediaViewRenderer *)self mediaView];
+  if (self->_displayType == 2 || [compositionCopy mediaType] == 3 && objc_msgSend(mediaView, "loopsVideoPlayback") && objc_msgSend(mediaView, "isVideoEnabled"))
   {
-    [v22 setMediaType:2];
+    [compositionCopy setMediaType:2];
   }
 
-  v5 = [v22 mediaType];
+  mediaType = [compositionCopy mediaType];
   if (!self->_displayType)
   {
-    [(NUMediaViewRenderer *)self _updateDisplayForMediaType:v5];
+    [(NUMediaViewRenderer *)self _updateDisplayForMediaType:mediaType];
   }
 
-  if (v5 > 1)
+  if (mediaType > 1)
   {
-    if (v5 == 2)
+    if (mediaType == 2)
     {
       if ([(NUMediaViewRenderer *)self canRenderVideoLive])
       {
-        [(NUMediaViewRenderer *)self _updateVideoComposition:v22];
+        [(NUMediaViewRenderer *)self _updateVideoComposition:compositionCopy];
       }
 
       else
       {
         [(NUAVPlayerController *)self->_nuAVPlayerController pause];
-        [(NUMediaViewRenderer *)self _updateImageRenderForComposition:v22];
-        [(NUMediaViewRenderer *)self _coalesceUpdateVideoComposition:v22];
+        [(NUMediaViewRenderer *)self _updateImageRenderForComposition:compositionCopy];
+        [(NUMediaViewRenderer *)self _coalesceUpdateVideoComposition:compositionCopy];
       }
     }
 
-    else if (v5 == 3)
+    else if (mediaType == 3)
     {
-      [(NUMediaViewRenderer *)self _updateImageRenderForComposition:v22];
-      [(NUMediaViewRenderer *)self _coalesceUpdateLivePhotoComposition:v22];
+      [(NUMediaViewRenderer *)self _updateImageRenderForComposition:compositionCopy];
+      [(NUMediaViewRenderer *)self _coalesceUpdateLivePhotoComposition:compositionCopy];
     }
 
     goto LABEL_23;
   }
 
-  if (v5 == 1)
+  if (mediaType == 1)
   {
-    [(NUMediaViewRenderer *)self _updateImageRenderForComposition:v22];
+    [(NUMediaViewRenderer *)self _updateImageRenderForComposition:compositionCopy];
 LABEL_23:
 
     return;
   }
 
-  if (v5)
+  if (mediaType)
   {
     goto LABEL_23;
   }
@@ -3079,9 +3079,9 @@ LABEL_23:
   v6 = NUAssertLogger_467();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown mediaType for composition: %@", v22];
+    compositionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown mediaType for composition: %@", compositionCopy];
     *buf = 138543362;
-    v24 = v7;
+    v24 = compositionCopy;
     _os_log_error_impl(&dword_25BD29000, v6, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
   }
 
@@ -3096,8 +3096,8 @@ LABEL_23:
       v14 = dispatch_get_specific(*v8);
       v15 = MEMORY[0x277CCACC8];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v24 = v14;
       v25 = 2114;
@@ -3108,8 +3108,8 @@ LABEL_23:
 
   else if (v11)
   {
-    v12 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v13 = [v12 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v24 = v13;
     _os_log_error_impl(&dword_25BD29000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3119,44 +3119,44 @@ LABEL_23:
   [(NUMediaViewRenderer *)v19 _setupRenderRequest:v20, v21];
 }
 
-- (void)_setupRenderRequest:(id)a3
+- (void)_setupRenderRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NUMediaViewRenderer *)self colorSpace];
+  requestCopy = request;
+  colorSpace = [(NUMediaViewRenderer *)self colorSpace];
 
-  if (v5)
+  if (colorSpace)
   {
-    v6 = [(NUMediaViewRenderer *)self colorSpace];
-    [v4 setColorSpace:v6];
+    colorSpace2 = [(NUMediaViewRenderer *)self colorSpace];
+    [requestCopy setColorSpace:colorSpace2];
   }
 
-  v7 = [(NUMediaViewRenderer *)self pixelFormat];
+  pixelFormat = [(NUMediaViewRenderer *)self pixelFormat];
 
-  if (v7)
+  if (pixelFormat)
   {
-    v8 = [(NUMediaViewRenderer *)self pixelFormat];
-    [v4 setPixelFormat:v8];
+    pixelFormat2 = [(NUMediaViewRenderer *)self pixelFormat];
+    [requestCopy setPixelFormat:pixelFormat2];
   }
 
   [(NUMediaViewRenderer *)self displayMaximumEDRHeadroom];
   if (v9 > 1.0)
   {
     [(NUMediaViewRenderer *)self displayMaximumEDRHeadroom];
-    [v4 setMaxEDRHeadroom:?];
+    [requestCopy setMaxEDRHeadroom:?];
     [(NUMediaViewRenderer *)self displayCurrentEDRHeadroom];
-    [v4 setCurrentEDRHeadroom:?];
+    [requestCopy setCurrentEDRHeadroom:?];
   }
 
-  v10 = [(NUMediaViewRenderer *)self pipelineFilters];
-  [v4 setPipelineFilters:v10];
+  pipelineFilters = [(NUMediaViewRenderer *)self pipelineFilters];
+  [requestCopy setPipelineFilters:pipelineFilters];
 
   v15 = 0uLL;
   v16 = 0;
-  v11 = [(NUAVPlayerController *)self->_nuAVPlayerController player];
-  v12 = v11;
-  if (v11)
+  player = [(NUAVPlayerController *)self->_nuAVPlayerController player];
+  v12 = player;
+  if (player)
   {
-    [v11 currentTime];
+    [player currentTime];
   }
 
   else
@@ -3169,7 +3169,7 @@ LABEL_23:
   {
     v13 = v15;
     v14 = v16;
-    [v4 setTime:&v13];
+    [requestCopy setTime:&v13];
   }
 }
 
@@ -3214,8 +3214,8 @@ LABEL_11:
           v20 = MEMORY[0x277CCACC8];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -3242,8 +3242,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x277CCACC8];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_25BD29000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3261,11 +3261,11 @@ LABEL_14:
   }
 }
 
-- (NUMediaViewRenderer)initWithMediaView:(id)a3
+- (NUMediaViewRenderer)initWithMediaView:(id)view
 {
   v23.receiver = self;
   v23.super_class = NUMediaViewRenderer;
-  v3 = a3;
+  viewCopy = view;
   v4 = [(NUMediaViewRenderer *)&v23 init];
   v5 = dispatch_group_create();
   renderGroup = v4->_renderGroup;
@@ -3278,7 +3278,7 @@ LABEL_14:
 
   v4->_backingScale = 1.0;
   v4->_maximumZoomScale = 1.0;
-  objc_storeWeak(&v4->_mediaView, v3);
+  objc_storeWeak(&v4->_mediaView, viewCopy);
 
   v10 = objc_alloc(MEMORY[0x277D2CF90]);
   v11 = [v10 initWithDelay:{0.25, v23.receiver, v23.super_class}];
@@ -3293,8 +3293,8 @@ LABEL_14:
   backfillUpdateCoalescer = v4->_backfillUpdateCoalescer;
   v4->_backfillUpdateCoalescer = v15;
 
-  v17 = [MEMORY[0x277D2CFF8] currentPlatform];
-  v4->_canRenderLoopingVideoLive = [v17 supportsLiveVideoRendering];
+  currentPlatform = [MEMORY[0x277D2CFF8] currentPlatform];
+  v4->_canRenderLoopingVideoLive = [currentPlatform supportsLiveVideoRendering];
 
   v18 = objc_alloc_init(MEMORY[0x277D2CFE8]);
   observatory = v4->_observatory;
@@ -3308,37 +3308,37 @@ LABEL_14:
   return v4;
 }
 
-+ (BOOL)_forceUpdateForNewVideoComposition:(id)a3 previousComposition:(id)a4 newAsset:(id)a5 previousAsset:(id)a6 isPlaying:(BOOL)a7
++ (BOOL)_forceUpdateForNewVideoComposition:(id)composition previousComposition:(id)previousComposition newAsset:(id)asset previousAsset:(id)previousAsset isPlaying:(BOOL)playing
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v13 != v14 || !v11 && v12 || v11 && !v12)
+  compositionCopy = composition;
+  previousCompositionCopy = previousComposition;
+  assetCopy = asset;
+  previousAssetCopy = previousAsset;
+  if (assetCopy != previousAssetCopy || !compositionCopy && previousCompositionCopy || compositionCopy && !previousCompositionCopy)
   {
     LOBYTE(v15) = 1;
     goto LABEL_7;
   }
 
-  if (!v11 || !v12)
+  if (!compositionCopy || !previousCompositionCopy)
   {
-    if (a7)
+    if (playing)
     {
       LOBYTE(v15) = 0;
       goto LABEL_7;
     }
 
 LABEL_18:
-    v15 = [MEMORY[0x277D2D048] compositionInstructions:v11 areEqualToCompositionInstructions:v12] ^ 1;
+    v15 = [MEMORY[0x277D2D048] compositionInstructions:compositionCopy areEqualToCompositionInstructions:previousCompositionCopy] ^ 1;
     goto LABEL_7;
   }
 
-  [v11 renderSize];
+  [compositionCopy renderSize];
   v18 = v17;
   v20 = v19;
-  [v12 renderSize];
+  [previousCompositionCopy renderSize];
   LOBYTE(v15) = v20 != v22 || v18 != v21;
-  if ((v15 & 1) == 0 && !a7)
+  if ((v15 & 1) == 0 && !playing)
   {
     goto LABEL_18;
   }
@@ -3348,27 +3348,27 @@ LABEL_7:
   return v15;
 }
 
-- (void)sweep:(id)a3 withBlock:(id)a4
+- (void)sweep:(id)sweep withBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
+  sweepCopy = sweep;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_mediaView);
-  v8 = [WeakRetained _renderView];
-  if (v8)
+  _renderView = [WeakRetained _renderView];
+  if (_renderView)
   {
     if ([(NUMediaViewRenderer *)self isZoomedToFit])
     {
-      v9 = [(NUMediaViewRenderer *)self _backfillRenderRequestForComposition:v11];
+      v9 = [(NUMediaViewRenderer *)self _backfillRenderRequestForComposition:sweepCopy];
       [(NUMediaViewRenderer *)self _backfillRenderResponseHandler];
     }
 
     else
     {
-      v9 = [(NUMediaViewRenderer *)self _roiRenderRequestForComposition:v11];
+      v9 = [(NUMediaViewRenderer *)self _roiRenderRequestForComposition:sweepCopy];
       [(NUMediaViewRenderer *)self _roiRenderResponseHandler];
     }
     v10 = ;
-    v6[2](v6, v9, v10);
+    blockCopy[2](blockCopy, v9, v10);
   }
 }
 
@@ -3421,8 +3421,8 @@ LABEL_12:
         v16 = MEMORY[0x277CCACC8];
         v17 = specific;
         v18 = v14;
-        v19 = [v16 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         v29 = 138543618;
         v30 = specific;
         v31 = 2114;
@@ -3440,8 +3440,8 @@ LABEL_23:
     {
       v25 = MEMORY[0x277CCACC8];
       v26 = v24;
-      v27 = [v25 callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v25 callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v29 = 138543362;
       v30 = v28;
       _os_log_error_impl(&dword_25BD29000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v29, 0xCu);
@@ -3453,13 +3453,13 @@ LABEL_23:
   if (!self->_didReleaseAVObjects)
   {
     self->_didReleaseAVObjects = 1;
-    v3 = [(NUMediaViewRenderer *)self mediaView];
-    v4 = [v3 _videoPlayerView];
-    v5 = [v4 snapshotViewAfterScreenUpdates:0];
+    mediaView = [(NUMediaViewRenderer *)self mediaView];
+    _videoPlayerView = [mediaView _videoPlayerView];
+    v5 = [_videoPlayerView snapshotViewAfterScreenUpdates:0];
     if (v5)
     {
-      v6 = [v3 _renderView];
-      [v6 addSubview:v5];
+      _renderView = [mediaView _renderView];
+      [_renderView addSubview:v5];
 
       [(NUMediaViewRenderer *)self _addFullExtentConstraintsForView:v5];
     }
@@ -3480,9 +3480,9 @@ LABEL_23:
     }
 
     [(NUMediaViewRenderer *)self _tearDownAVPlayerController];
-    [v3 _rendererDidCreateAVPlayerController:0];
-    v22 = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
-    [v22 cancelAllRequests];
+    [mediaView _rendererDidCreateAVPlayerController:0];
+    renderContext = [(NUVideoRenderRequest *)self->_videoRenderRequest renderContext];
+    [renderContext cancelAllRequests];
 
     videoRenderRequest = self->_videoRenderRequest;
     self->_videoRenderRequest = 0;

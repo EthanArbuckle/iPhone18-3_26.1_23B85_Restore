@@ -1,10 +1,10 @@
 @interface HUSimpleItemModuleTableViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HUSimpleItemModuleTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (HUSimpleItemModuleTableViewController)initWithTableViewStyle:(int64_t)a3 moduleCreator:(id)a4 moduleControllerBuilder:(id)a5;
-- (id)buildItemModuleControllerForModule:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HUSimpleItemModuleTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (HUSimpleItemModuleTableViewController)initWithTableViewStyle:(int64_t)style moduleCreator:(id)creator moduleControllerBuilder:(id)builder;
+- (id)buildItemModuleControllerForModule:(id)module;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (void)_updateTitle;
 - (void)dismissTextViewController;
 - (void)viewDidLayoutSubviews;
@@ -12,14 +12,14 @@
 
 @implementation HUSimpleItemModuleTableViewController
 
-- (HUSimpleItemModuleTableViewController)initWithTableViewStyle:(int64_t)a3 moduleCreator:(id)a4 moduleControllerBuilder:(id)a5
+- (HUSimpleItemModuleTableViewController)initWithTableViewStyle:(int64_t)style moduleCreator:(id)creator moduleControllerBuilder:(id)builder
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  creatorCopy = creator;
+  builderCopy = builder;
+  v11 = builderCopy;
+  if (creatorCopy)
   {
-    if (v10)
+    if (builderCopy)
     {
       goto LABEL_3;
     }
@@ -27,8 +27,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"moduleCreator"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"moduleCreator"}];
 
     if (v11)
     {
@@ -36,15 +36,15 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"moduleControllerBuilder"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"moduleControllerBuilder"}];
 
 LABEL_3:
   v12 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:0];
-  [v12 setItemModuleCreator:v9];
+  [v12 setItemModuleCreator:creatorCopy];
   v18.receiver = self;
   v18.super_class = HUSimpleItemModuleTableViewController;
-  v13 = [(HUItemTableViewController *)&v18 initWithItemManager:v12 tableViewStyle:a3];
+  v13 = [(HUItemTableViewController *)&v18 initWithItemManager:v12 tableViewStyle:style];
   v14 = v13;
   if (v13)
   {
@@ -54,29 +54,29 @@ LABEL_3:
   return v14;
 }
 
-- (HUSimpleItemModuleTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUSimpleItemModuleTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithTableViewStyle_moduleCreator_moduleControllerBuilder_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HUSimpleItemModuleTableViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSimpleItemModuleTableViewController.m" lineNumber:45 description:{@"%s is unavailable; use %@ instead", "-[HUSimpleItemModuleTableViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = [(HUSimpleItemModuleTableViewController *)self moduleControllerBuilder];
-  v6 = (v5)[2](v5, v4);
+  moduleCopy = module;
+  moduleControllerBuilder = [(HUSimpleItemModuleTableViewController *)self moduleControllerBuilder];
+  v6 = (moduleControllerBuilder)[2](moduleControllerBuilder, moduleCopy);
 
   return v6;
 }
 
 - (void)_updateTitle
 {
-  v4 = [(HUSimpleItemModuleTableViewController *)self title];
-  v3 = [(HUSimpleItemModuleTableViewController *)self navigationItem];
-  [v3 setTitle:v4];
+  title = [(HUSimpleItemModuleTableViewController *)self title];
+  navigationItem = [(HUSimpleItemModuleTableViewController *)self navigationItem];
+  [navigationItem setTitle:title];
 }
 
 - (void)viewDidLayoutSubviews
@@ -86,17 +86,17 @@ LABEL_3:
   [(HUItemTableViewController *)&v4 viewDidLayoutSubviews];
   if ([(HUItemTableViewController *)self wantsPreferredContentSize])
   {
-    v3 = [(HUSimpleItemModuleTableViewController *)self tableView];
-    [v3 contentSize];
+    tableView = [(HUSimpleItemModuleTableViewController *)self tableView];
+    [tableView contentSize];
     [(HUSimpleItemModuleTableViewController *)self setPreferredContentSize:?];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = HUSimpleItemModuleTableViewController;
-  v5 = [(HUItemTableViewController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(HUItemTableViewController *)&v11 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   v6 = v5;
   if (objc_opt_isKindOfClass())
@@ -113,35 +113,35 @@ LABEL_3:
 
   if (v8)
   {
-    v9 = [v8 messageTextView];
-    [v9 setDelegate:self];
+    messageTextView = [v8 messageTextView];
+    [messageTextView setDelegate:self];
   }
 
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 attributedFooterTitleForSection:a4];
+  viewCopy = view;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v8 = [itemManager attributedFooterTitleForSection:section];
 
   if (v8)
   {
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"footerReuseIdentifier"];
 
     if (!v9)
     {
       v9 = [[HUItemTableSectionHeaderFooterView alloc] initWithReuseIdentifier:@"footerReuseIdentifier"];
     }
 
-    v10 = [(HUItemTableViewController *)self itemManager];
-    v11 = [v10 displayedSectionIdentifierForSectionIndex:a4];
-    v12 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    [v12 setIdentifier:v11];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    v11 = [itemManager2 displayedSectionIdentifierForSectionIndex:section];
+    messageTextView = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    [messageTextView setIdentifier:v11];
 
-    v13 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
-    [v13 setDelegate:self];
+    messageTextView2 = [(HUItemTableSectionHeaderFooterView *)v9 messageTextView];
+    [messageTextView2 setDelegate:self];
 
     [(HUItemTableSectionHeaderFooterView *)v9 setType:1];
     [(HUItemTableSectionHeaderFooterView *)v9 setMessage:v8];
@@ -151,47 +151,47 @@ LABEL_3:
   {
     v15.receiver = self;
     v15.super_class = HUSimpleItemModuleTableViewController;
-    v9 = [(HUItemTableViewController *)&v15 tableView:v6 viewForFooterInSection:a4];
+    v9 = [(HUItemTableViewController *)&v15 tableView:viewCopy viewForFooterInSection:section];
   }
 
   return v9;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v7;
+    v15 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v12, 0x16u);
   }
 
-  v9 = [MEMORY[0x277D148E8] sharedInstance];
-  v10 = [v9 openURL:v7];
+  mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+  v10 = [mEMORY[0x277D148E8] openURL:lCopy];
 
   return 1;
 }
 
 - (void)dismissTextViewController
 {
-  v3 = [(HUSimpleItemModuleTableViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(HUSimpleItemModuleTableViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    selfCopy = navigationController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   [(HUSimpleItemModuleTableViewController *)v6 dismissViewControllerAnimated:1 completion:0];
 }

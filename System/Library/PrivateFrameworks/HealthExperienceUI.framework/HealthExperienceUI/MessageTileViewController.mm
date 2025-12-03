@@ -1,5 +1,5 @@
 @interface MessageTileViewController
-- (_TtC18HealthExperienceUI25MessageTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI25MessageTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -14,9 +14,9 @@
   sub_1BA02BC68();
 }
 
-- (_TtC18HealthExperienceUI25MessageTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI25MessageTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v7 = v6;
@@ -28,8 +28,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return MessageTileViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return MessageTileViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -7,11 +7,11 @@
 
 + (id)defaultActionButtonConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-  [v2 setButtonSize:1];
-  [v2 setTitleTextAttributesTransformer:&__block_literal_global_41651];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+  [grayButtonConfiguration setButtonSize:1];
+  [grayButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_41651];
 
-  return v2;
+  return grayButtonConfiguration;
 }
 
 id __62__CNSharedProfileBannerStyle_defaultActionButtonConfiguration__block_invoke(uint64_t a1, void *a2)
@@ -31,8 +31,8 @@ id __62__CNSharedProfileBannerStyle_defaultActionButtonConfiguration__block_invo
 + (id)defaultStyle
 {
   v3 = objc_alloc_init(CNSharedProfileBannerStyle);
-  v4 = [MEMORY[0x1E69DC888] labelColor];
-  [(CNSharedProfileBannerStyle *)v3 setTitleTextColor:v4];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(CNSharedProfileBannerStyle *)v3 setTitleTextColor:labelColor];
 
   v5 = +[CNUIColorRepository sharedProfileBannerSubtitleDefaultColor];
   [(CNSharedProfileBannerStyle *)v3 setSubtitleTextColor:v5];
@@ -44,16 +44,16 @@ id __62__CNSharedProfileBannerStyle_defaultActionButtonConfiguration__block_invo
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];
   [(CNSharedProfileBannerStyle *)v3 setSubtitleFont:v8];
 
-  v9 = [a1 defaultActionButtonConfiguration];
-  [(CNSharedProfileBannerStyle *)v3 setActionButtonConfiguration:v9];
+  defaultActionButtonConfiguration = [self defaultActionButtonConfiguration];
+  [(CNSharedProfileBannerStyle *)v3 setActionButtonConfiguration:defaultActionButtonConfiguration];
 
   v10 = MEMORY[0x1E69DCAD8];
-  v11 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v12 = [v10 configurationWithHierarchicalColor:v11];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  v12 = [v10 configurationWithHierarchicalColor:tertiaryLabelColor];
   [(CNSharedProfileBannerStyle *)v3 setXmarkButtonColorConfiguration:v12];
 
-  v13 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [(CNSharedProfileBannerStyle *)v3 setBackgroundColor:v13];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [(CNSharedProfileBannerStyle *)v3 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   [(CNSharedProfileBannerStyle *)v3 setLeadingTrailingInset:0.0];
 

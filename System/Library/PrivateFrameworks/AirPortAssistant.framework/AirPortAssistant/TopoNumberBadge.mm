@@ -1,14 +1,14 @@
 @interface TopoNumberBadge
-+ (id)imageBadgeForCount:(int64_t)a3;
++ (id)imageBadgeForCount:(int64_t)count;
 + (int)initImageCache;
 - (CGImage)newNumberBadge;
 - (CGSize)preferredFrameSize;
-- (TopoNumberBadge)initWithOwningView:(id)a3;
+- (TopoNumberBadge)initWithOwningView:(id)view;
 - (void)calculateBadgeMetrics;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setCount:(int64_t)a3;
-- (void)setOwningView:(id)a3;
+- (void)setCount:(int64_t)count;
+- (void)setOwningView:(id)view;
 @end
 
 @implementation TopoNumberBadge
@@ -35,7 +35,7 @@
   }
 }
 
-- (TopoNumberBadge)initWithOwningView:(id)a3
+- (TopoNumberBadge)initWithOwningView:(id)view
 {
   v15.receiver = self;
   v15.super_class = TopoNumberBadge;
@@ -43,7 +43,7 @@
   v6 = v4;
   if (v4)
   {
-    objc_msgSend_setOwningView_(v4, v5, a3);
+    objc_msgSend_setOwningView_(v4, v5, view);
     v9 = objc_msgSend_boldSystemFontOfSize_(MEMORY[0x277D74300], v7, v8, 17.0);
     v6->_font = v9;
     v10 = v9;
@@ -54,10 +54,10 @@
   return v6;
 }
 
-- (void)setOwningView:(id)a3
+- (void)setOwningView:(id)view
 {
-  self->_owningView = a3;
-  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, a3);
+  self->_owningView = view;
+  v4 = objc_msgSend_mainScreen(MEMORY[0x277D759A0], a2, view);
   objc_msgSend_scale(v4, v5, v6);
 
   MEMORY[0x2821F9670](self, sel_setContentsScale_, v7);
@@ -85,12 +85,12 @@
   [(TopoNumberBadge *)&v4 dealloc];
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
-    MEMORY[0x2821F9670](self, sel_calculateBadgeMetrics, a3);
+    self->_count = count;
+    MEMORY[0x2821F9670](self, sel_calculateBadgeMetrics, count);
   }
 }
 
@@ -154,28 +154,28 @@
   objc_msgSend_setNeedsLayout(self, a2, v2);
 }
 
-+ (id)imageBadgeForCount:(int64_t)a3
++ (id)imageBadgeForCount:(int64_t)count
 {
-  v3 = a3;
-  if (a3)
+  countCopy = count;
+  if (count)
   {
     v4 = objc_alloc_init(TopoNumberBadge);
     v6 = v4;
     if (v4)
     {
-      objc_msgSend_setCount_(v4, v5, v3);
+      objc_msgSend_setCount_(v4, v5, countCopy);
       v7 = *MEMORY[0x277CBF348];
       v8 = *(MEMORY[0x277CBF348] + 8);
       objc_msgSend_preferredFrameSize(v6, v9, v10);
       objc_msgSend_setFrame_(v6, v11, v12, v7, v8, v13, v14);
       v17 = objc_msgSend_newNumberBadge(v6, v15, v16);
-      v3 = objc_msgSend_imageWithCGImage_(MEMORY[0x277D755B8], v18, v17);
+      countCopy = objc_msgSend_imageWithCGImage_(MEMORY[0x277D755B8], v18, v17);
       CGImageRelease(v17);
     }
 
     else
     {
-      v3 = 0;
+      countCopy = 0;
     }
   }
 
@@ -184,7 +184,7 @@
     v6 = 0;
   }
 
-  return v3;
+  return countCopy;
 }
 
 - (CGImage)newNumberBadge

@@ -1,7 +1,7 @@
 @interface _UIEditMenuListPage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_NSRange)range;
-- (_UIEditMenuListPage)initWithStartIndex:(int64_t)a3;
+- (_UIEditMenuListPage)initWithStartIndex:(int64_t)index;
 - (double)width;
 - (id)description;
 - (int64_t)_resolvedNumberOfPagesForItemSpacing;
@@ -9,14 +9,14 @@
 
 @implementation _UIEditMenuListPage
 
-- (_UIEditMenuListPage)initWithStartIndex:(int64_t)a3
+- (_UIEditMenuListPage)initWithStartIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = _UIEditMenuListPage;
   result = [(_UIEditMenuListPage *)&v5 init];
   if (result)
   {
-    result->_range.location = a3;
+    result->_range.location = index;
     result->_range.length = 0;
     result->_width = 0.0;
     result->_itemSpacing = 0.0;
@@ -75,10 +75,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -88,14 +88,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(_UIEditMenuListPage *)v4 range];
+      range = [(_UIEditMenuListPage *)equalCopy range];
       v7 = v6;
       v9 = 0;
-      if (v5 == [(_UIEditMenuListPage *)self range]&& v7 == v8)
+      if (range == [(_UIEditMenuListPage *)self range]&& v7 == v8)
       {
         [(_UIEditMenuListPage *)self width];
         v11 = v10;
-        [(_UIEditMenuListPage *)v4 width];
+        [(_UIEditMenuListPage *)equalCopy width];
         v9 = v11 == v12;
       }
     }

@@ -1,23 +1,23 @@
 @interface FCChannelUpsellConfig
-- (FCChannelUpsellConfig)initWithChannelID:(id)a3 configDictionary:(id)a4;
+- (FCChannelUpsellConfig)initWithChannelID:(id)d configDictionary:(id)dictionary;
 @end
 
 @implementation FCChannelUpsellConfig
 
-- (FCChannelUpsellConfig)initWithChannelID:(id)a3 configDictionary:(id)a4
+- (FCChannelUpsellConfig)initWithChannelID:(id)d configDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v39.receiver = self;
   v39.super_class = FCChannelUpsellConfig;
   v9 = [(FCChannelUpsellConfig *)&v39 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_channelID, a3);
-    v34 = v8;
-    v11 = FCAppConfigurationArrayValueWithDefaultValue(v8, @"triggers", 0);
+    objc_storeStrong(&v9->_channelID, d);
+    v34 = dictionaryCopy;
+    v11 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"triggers", 0);
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v11, "count")}];
     v35 = 0u;
     v36 = 0u;
@@ -53,7 +53,7 @@
     triggersByMethod = v10->_triggersByMethod;
     v10->_triggersByMethod = v20;
 
-    v8 = v34;
+    dictionaryCopy = v34;
     v10->_presentationCap = FCAppConfigurationIntegerValue(v34, @"presentationCap", 1);
     v10->_presentationCountResetInterval = FCAppConfigurationIntegerValue(v34, @"presentationCountResetInterval", 0);
     v10->_quiescenceInterval = FCAppConfigurationIntegerValue(v34, @"quiescenceInterval", 0);

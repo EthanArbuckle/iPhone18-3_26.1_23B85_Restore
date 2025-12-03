@@ -1,6 +1,6 @@
 @interface CAMZoomFactorLabel
-+ (id)_minimizedImageWithScale:(double)a3;
-- (CAMZoomFactorLabel)initWithFrame:(CGRect)a3;
++ (id)_minimizedImageWithScale:(double)scale;
+- (CAMZoomFactorLabel)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (UIColor)textColor;
 - (UIEdgeInsets)_labelInsets;
@@ -11,23 +11,23 @@
 - (void)_updateMinimizedGlyph;
 - (void)_updateShadow;
 - (void)layoutSubviews;
-- (void)setMinimized:(BOOL)a3;
-- (void)setPreferDefaultSizing:(BOOL)a3;
-- (void)setShadowStrength:(int64_t)a3;
-- (void)setShowZoomFactorSymbol:(BOOL)a3;
-- (void)setTextColor:(id)a3;
-- (void)setUseLeadingZero:(BOOL)a3;
-- (void)setZoomFactor:(double)a3;
+- (void)setMinimized:(BOOL)minimized;
+- (void)setPreferDefaultSizing:(BOOL)sizing;
+- (void)setShadowStrength:(int64_t)strength;
+- (void)setShowZoomFactorSymbol:(BOOL)symbol;
+- (void)setTextColor:(id)color;
+- (void)setUseLeadingZero:(BOOL)zero;
+- (void)setZoomFactor:(double)factor;
 @end
 
 @implementation CAMZoomFactorLabel
 
-- (CAMZoomFactorLabel)initWithFrame:(CGRect)a3
+- (CAMZoomFactorLabel)initWithFrame:(CGRect)frame
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CAMZoomFactorLabel;
-  v3 = [(CAMZoomFactorLabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMZoomFactorLabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,8 +39,8 @@
     v4->__label = v6;
 
     [(UILabel *)v4->__label setTextAlignment:1];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->__label setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->__label setTextColor:whiteColor];
 
     [(UILabel *)v4->__label setAdjustsFontSizeToFitWidth:1];
     [(CAMZoomFactorLabel *)v4 _updateFont];
@@ -59,16 +59,16 @@
 {
   if ([(CAMZoomFactorLabel *)self preferDefaultSizing])
   {
-    v5 = *MEMORY[0x1E69DDC70];
+    preferredContentSizeCategory = *MEMORY[0x1E69DDC70];
   }
 
   else
   {
-    v3 = [(CAMZoomFactorLabel *)self traitCollection];
-    v5 = [v3 preferredContentSizeCategory];
+    traitCollection = [(CAMZoomFactorLabel *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   }
 
-  [CAMZoomButton fontSizeForContentSize:v5];
+  [CAMZoomButton fontSizeForContentSize:preferredContentSizeCategory];
   v4 = [CAMFont cameraAltTypeFontOfSize:"cameraAltTypeFontOfSize:weight:" weight:?];
   [(UILabel *)self->__label setFont:v4];
 }
@@ -86,95 +86,95 @@
 
 - (UIColor)textColor
 {
-  v2 = [(CAMZoomFactorLabel *)self _label];
-  v3 = [v2 textColor];
+  _label = [(CAMZoomFactorLabel *)self _label];
+  textColor = [_label textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CAMZoomFactorLabel *)self _label];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  _label = [(CAMZoomFactorLabel *)self _label];
+  [_label setTextColor:colorCopy];
 }
 
-- (void)setUseLeadingZero:(BOOL)a3
+- (void)setUseLeadingZero:(BOOL)zero
 {
-  if (self->_useLeadingZero != a3)
+  if (self->_useLeadingZero != zero)
   {
-    self->_useLeadingZero = a3;
+    self->_useLeadingZero = zero;
     [(CAMZoomFactorLabel *)self _updateLabelText];
   }
 }
 
-- (void)setPreferDefaultSizing:(BOOL)a3
+- (void)setPreferDefaultSizing:(BOOL)sizing
 {
-  if (self->_preferDefaultSizing != a3)
+  if (self->_preferDefaultSizing != sizing)
   {
-    self->_preferDefaultSizing = a3;
+    self->_preferDefaultSizing = sizing;
     [(CAMZoomFactorLabel *)self _updateFont];
   }
 }
 
-- (void)setShadowStrength:(int64_t)a3
+- (void)setShadowStrength:(int64_t)strength
 {
-  if (self->_shadowStrength != a3)
+  if (self->_shadowStrength != strength)
   {
-    self->_shadowStrength = a3;
+    self->_shadowStrength = strength;
     [(CAMZoomFactorLabel *)self _updateShadow];
   }
 }
 
 - (void)_updateShadow
 {
-  v13 = [(CAMZoomFactorLabel *)self _label];
-  v3 = [(CAMZoomFactorLabel *)self shadowStrength];
-  if (v3 == 2)
+  _label = [(CAMZoomFactorLabel *)self _label];
+  shadowStrength = [(CAMZoomFactorLabel *)self shadowStrength];
+  if (shadowStrength == 2)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     CEKPixelWidthForView();
     v5 = v7 + 1.0;
     v6 = 1063675494;
   }
 
-  else if (v3 == 1)
+  else if (shadowStrength == 1)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v5 = 2.0;
     v6 = 1051931443;
   }
 
   else
   {
-    v4 = 0;
+    blackColor = 0;
     v5 = 0.0;
     v6 = 0;
   }
 
-  v8 = [v13 layer];
-  [v8 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+  layer = [_label layer];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v9 = [v13 layer];
+  layer2 = [_label layer];
   LODWORD(v10) = v6;
-  [v9 setShadowOpacity:v10];
+  [layer2 setShadowOpacity:v10];
 
-  v11 = [v13 layer];
-  [v11 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  layer3 = [_label layer];
+  [layer3 setShadowOffset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
 
-  v12 = [v13 layer];
-  [v12 setShadowRadius:v5];
+  layer4 = [_label layer];
+  [layer4 setShadowRadius:v5];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CAMZoomFactorLabel *)self _label];
+  _label = [(CAMZoomFactorLabel *)self _label];
   [(CAMZoomFactorLabel *)self _labelInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 intrinsicContentSize];
+  [_label intrinsicContentSize];
   v13 = v12 + v7 + v11;
   v15 = v14 + v5 + v9;
 
@@ -211,16 +211,16 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMZoomFactorLabel *)self _label];
+  _label = [(CAMZoomFactorLabel *)self _label];
   [(CAMZoomFactorLabel *)self _labelInsets];
-  [v11 setFrame:{v4 + v15, v6 + v12, v8 - (v15 + v13), v10 - (v12 + v14)}];
-  v16 = [(CAMZoomFactorLabel *)self _minimizedGlyph];
-  v17 = v16;
-  if (v16)
+  [_label setFrame:{v4 + v15, v6 + v12, v8 - (v15 + v13), v10 - (v12 + v14)}];
+  _minimizedGlyph = [(CAMZoomFactorLabel *)self _minimizedGlyph];
+  v17 = _minimizedGlyph;
+  if (_minimizedGlyph)
   {
-    [v16 bounds];
-    v18 = [(CAMZoomFactorLabel *)self traitCollection];
-    [v18 displayScale];
+    [_minimizedGlyph bounds];
+    traitCollection = [(CAMZoomFactorLabel *)self traitCollection];
+    [traitCollection displayScale];
     v20 = v19;
     UIRectCenteredIntegralRectScale();
     [v17 setFrame:v20];
@@ -234,20 +234,20 @@
   [(CAMZoomFactorLabel *)self setNeedsLayout];
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
-  if (self->_zoomFactor != a3)
+  if (self->_zoomFactor != factor)
   {
-    self->_zoomFactor = a3;
+    self->_zoomFactor = factor;
     [(CAMZoomFactorLabel *)self _updateLabelText];
   }
 }
 
-- (void)setShowZoomFactorSymbol:(BOOL)a3
+- (void)setShowZoomFactorSymbol:(BOOL)symbol
 {
-  if (self->_showZoomFactorSymbol != a3)
+  if (self->_showZoomFactorSymbol != symbol)
   {
-    self->_showZoomFactorSymbol = a3;
+    self->_showZoomFactorSymbol = symbol;
     [(CAMZoomFactorLabel *)self _updateLabelText];
   }
 }
@@ -259,49 +259,49 @@
   {
     [(CAMZoomFactorLabel *)self zoomFactor];
     v6 = [CAMZoomButton textForZoomFactor:[(CAMZoomFactorLabel *)self showZoomFactorSymbol] showZoomFactorSymbol:[(CAMZoomFactorLabel *)self useLeadingZero] useLeadingZero:v4];
-    v5 = [(CAMZoomFactorLabel *)self _label];
-    [v5 setText:v6];
+    _label = [(CAMZoomFactorLabel *)self _label];
+    [_label setText:v6];
   }
 }
 
-- (void)setMinimized:(BOOL)a3
+- (void)setMinimized:(BOOL)minimized
 {
-  if (self->_minimized != a3)
+  if (self->_minimized != minimized)
   {
-    self->_minimized = a3;
+    self->_minimized = minimized;
     [(CAMZoomFactorLabel *)self _updateMinimizedGlyph];
   }
 }
 
 - (void)_updateMinimizedGlyph
 {
-  v8 = [(CAMZoomFactorLabel *)self _minimizedGlyph];
-  v3 = [(CAMZoomFactorLabel *)self minimized];
-  if (v3 && !v8)
+  _minimizedGlyph = [(CAMZoomFactorLabel *)self _minimizedGlyph];
+  minimized = [(CAMZoomFactorLabel *)self minimized];
+  if (minimized && !_minimizedGlyph)
   {
     v4 = objc_opt_class();
-    v5 = [(CAMZoomFactorLabel *)self traitCollection];
-    [v5 displayScale];
+    traitCollection = [(CAMZoomFactorLabel *)self traitCollection];
+    [traitCollection displayScale];
     v6 = [v4 _minimizedImageWithScale:?];
 
-    v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
-    [(CAMZoomFactorLabel *)self addSubview:v8];
-    [(CAMZoomFactorLabel *)self set_minimizedGlyph:v8];
+    _minimizedGlyph = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v6];
+    [(CAMZoomFactorLabel *)self addSubview:_minimizedGlyph];
+    [(CAMZoomFactorLabel *)self set_minimizedGlyph:_minimizedGlyph];
   }
 
-  v7 = [(CAMZoomFactorLabel *)self _label];
-  [v7 setAlpha:(v3 ^ 1)];
+  _label = [(CAMZoomFactorLabel *)self _label];
+  [_label setAlpha:(minimized ^ 1)];
 
-  [v8 setAlpha:v3];
+  [_minimizedGlyph setAlpha:minimized];
 }
 
-+ (id)_minimizedImageWithScale:(double)a3
++ (id)_minimizedImageWithScale:(double)scale
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CAMZoomFactorLabel__minimizedImageWithScale___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  *&block[4] = a3;
+  *&block[4] = scale;
   if (_minimizedImageWithScale__onceToken != -1)
   {
     dispatch_once(&_minimizedImageWithScale__onceToken, block);

@@ -1,21 +1,21 @@
 @interface GHSBloodGlucoseMeterDevice
-- (BOOL)extractHealthObservationBloodGlucoseWithStream:(id)a3 observationType:(unsigned int)a4 timestamp:(id)a5 isLive:(BOOL)a6;
-- (GHSBloodGlucoseMeterDevice)initWithProperties:(id)a3 healthStore:(id)a4;
-- (void)healthDataSyncBloodGlucose:(double)a3 unit:(id)a4 startTime:(id)a5 endTime:(id)a6;
+- (BOOL)extractHealthObservationBloodGlucoseWithStream:(id)stream observationType:(unsigned int)type timestamp:(id)timestamp isLive:(BOOL)live;
+- (GHSBloodGlucoseMeterDevice)initWithProperties:(id)properties healthStore:(id)store;
+- (void)healthDataSyncBloodGlucose:(double)glucose unit:(id)unit startTime:(id)time endTime:(id)endTime;
 @end
 
 @implementation GHSBloodGlucoseMeterDevice
 
-- (GHSBloodGlucoseMeterDevice)initWithProperties:(id)a3 healthStore:(id)a4
+- (GHSBloodGlucoseMeterDevice)initWithProperties:(id)properties healthStore:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  propertiesCopy = properties;
   v8 = [HKSampleType quantityTypeForIdentifier:HKQuantityTypeIdentifierBloodGlucose];
   v9 = [NSSet setWithObjects:v8, 0];
 
   v13.receiver = self;
   v13.super_class = GHSBloodGlucoseMeterDevice;
-  v10 = [(GHSBluetoothDevice *)&v13 initWithProperties:v7 healthStore:v6 healthSampleTypes:v9];
+  v10 = [(GHSBluetoothDevice *)&v13 initWithProperties:propertiesCopy healthStore:storeCopy healthSampleTypes:v9];
 
   if (v10)
   {
@@ -25,43 +25,43 @@
   return v10;
 }
 
-- (void)healthDataSyncBloodGlucose:(double)a3 unit:(id)a4 startTime:(id)a5 endTime:(id)a6
+- (void)healthDataSyncBloodGlucose:(double)glucose unit:(id)unit startTime:(id)time endTime:(id)endTime
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(GHSBluetoothDevice *)self debugLoggingEnabled];
-  v14 = [v13 BOOLValue];
+  unitCopy = unit;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  debugLoggingEnabled = [(GHSBluetoothDevice *)self debugLoggingEnabled];
+  bOOLValue = [debugLoggingEnabled BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     v15 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v30 = a3;
+      glucoseCopy = glucose;
       v31 = 2112;
-      v32 = v10;
+      v32 = unitCopy;
       v33 = 2112;
-      v34 = v11;
+      v34 = timeCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "GHSS HealthDataSync bloodGlucose=%f, unit=%@, date=%@", buf, 0x20u);
     }
   }
 
-  v16 = [(GHSBluetoothDevice *)self peripheral];
-  v17 = [v16 customProperty:@"UpdateHealth"];
+  peripheral = [(GHSBluetoothDevice *)self peripheral];
+  v17 = [peripheral customProperty:@"UpdateHealth"];
   v18 = [v17 isEqualToString:@"1"];
 
   if (v18)
   {
     v19 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBloodGlucose];
-    v20 = [HKUnit unitFromString:v10];
-    v21 = [HKQuantity quantityWithUnit:v20 doubleValue:a3];
+    v20 = [HKUnit unitFromString:unitCopy];
+    v21 = [HKQuantity quantityWithUnit:v20 doubleValue:glucose];
 
-    v22 = [(GHSBluetoothDevice *)self hkDevice];
-    v23 = [HKQuantitySample quantitySampleWithType:v19 quantity:v21 startDate:v11 endDate:v12 device:v22 metadata:0];
+    hkDevice = [(GHSBluetoothDevice *)self hkDevice];
+    v23 = [HKQuantitySample quantitySampleWithType:v19 quantity:v21 startDate:timeCopy endDate:endTimeCopy device:hkDevice metadata:0];
 
-    v24 = [(GHSBluetoothDevice *)self hkStore];
+    hkStore = [(GHSBluetoothDevice *)self hkStore];
     v28 = v23;
     v25 = [NSArray arrayWithObjects:&v28 count:1];
     v27[0] = _NSConcreteStackBlock;
@@ -69,7 +69,7 @@
     v27[2] = sub_1000130E4;
     v27[3] = &unk_1000BD528;
     v27[4] = self;
-    [v24 saveObjects:v25 withCompletion:v27];
+    [hkStore saveObjects:v25 withCompletion:v27];
   }
 
   else
@@ -83,15 +83,15 @@
   }
 }
 
-- (BOOL)extractHealthObservationBloodGlucoseWithStream:(id)a3 observationType:(unsigned int)a4 timestamp:(id)a5 isLive:(BOOL)a6
+- (BOOL)extractHealthObservationBloodGlucoseWithStream:(id)stream observationType:(unsigned int)type timestamp:(id)timestamp isLive:(BOOL)live
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 == 160184)
+  streamCopy = stream;
+  timestampCopy = timestamp;
+  if (type == 160184)
   {
     v21 = 0;
     v20 = 0.0;
-    if ([v9 readUint16:&v21])
+    if ([streamCopy readUint16:&v21])
     {
       if (v21 == 2130)
       {
@@ -124,7 +124,7 @@
       v11 = 1;
     }
 
-    if (([v9 readIEEEFloat:&v20] & 1) == 0)
+    if (([streamCopy readIEEEFloat:&v20] & 1) == 0)
     {
       v14 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -139,19 +139,19 @@
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [(GHSBluetoothDevice *)self peripheral];
-        v18 = [v17 name];
+        peripheral = [(GHSBluetoothDevice *)self peripheral];
+        name = [peripheral name];
         *buf = 141558275;
         v23 = 1752392040;
         v24 = 2113;
-        v25 = v18;
+        v25 = name;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Peripheral %{private, mask.hash}@ observation value not saved due to invalid value", buf, 0x16u);
       }
     }
 
     else
     {
-      [(GHSBloodGlucoseMeterDevice *)self healthDataSyncBloodGlucose:v12 unit:v10 startTime:v10 endTime:v20];
+      [(GHSBloodGlucoseMeterDevice *)self healthDataSyncBloodGlucose:v12 unit:timestampCopy startTime:timestampCopy endTime:v20];
     }
   }
 

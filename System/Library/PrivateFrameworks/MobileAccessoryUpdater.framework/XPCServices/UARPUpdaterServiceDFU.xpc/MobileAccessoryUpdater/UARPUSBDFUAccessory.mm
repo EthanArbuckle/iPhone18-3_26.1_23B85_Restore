@@ -1,36 +1,36 @@
 @interface UARPUSBDFUAccessory
-+ (id)matchingDictionaryForIdentifier:(id)a3 serialNumber:(id)a4;
-+ (id)matchingDictionaryHIDForIdentifier:(id)a3 serialNumber:(id)a4;
-- (BOOL)updateQueriesCompleted:(id)a3;
-- (BOOL)waitForQueriesCompletion:(id)a3;
-- (UARPUSBDFUAccessory)initWithIdentifier:(id)a3 serialNumber:(id)a4 fwVersion:(UARPVersion *)a5;
++ (id)matchingDictionaryForIdentifier:(id)identifier serialNumber:(id)number;
++ (id)matchingDictionaryHIDForIdentifier:(id)identifier serialNumber:(id)number;
+- (BOOL)updateQueriesCompleted:(id)completed;
+- (BOOL)waitForQueriesCompletion:(id)completion;
+- (UARPUSBDFUAccessory)initWithIdentifier:(id)identifier serialNumber:(id)number fwVersion:(UARPVersion *)version;
 - (UARPVersion)activeFW;
 - (UARPVersion)stagedFW;
 - (id)description;
 - (int)applyFirmware;
 - (int)disableDisconnectCallback;
-- (int)enableDisconnectCallback:(void *)a3 reference:(void *)a4;
-- (unsigned)connectUarpController:(id)a3 options:(uarpPlatformOptionsObj *)a4;
+- (int)enableDisconnectCallback:(void *)callback reference:(void *)reference;
+- (unsigned)connectUarpController:(id)controller options:(uarpPlatformOptionsObj *)options;
 - (unsigned)disconnectUarpController;
-- (unsigned)recvMessage:(id)a3;
-- (void)setStagedFW:(UARPVersion)a3;
+- (unsigned)recvMessage:(id)message;
+- (void)setStagedFW:(UARPVersion)w;
 @end
 
 @implementation UARPUSBDFUAccessory
 
-+ (id)matchingDictionaryForIdentifier:(id)a3 serialNumber:(id)a4
++ (id)matchingDictionaryForIdentifier:(id)identifier serialNumber:(id)number
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [UARPSupportedAccessory findByAppleModelNumber:v5];
-  v8 = [v7 hardwareID];
+  identifierCopy = identifier;
+  numberCopy = number;
+  v7 = [UARPSupportedAccessory findByAppleModelNumber:identifierCopy];
+  hardwareID = [v7 hardwareID];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 hardwareID];
-    v11 = +[USBDFUUpdater matchingDictionaryForVendorID:productId:serialNumber:](USBDFUUpdater, "matchingDictionaryForVendorID:productId:serialNumber:", [v10 vendorID], objc_msgSend(v10, "productID"), v6);
+    hardwareID2 = [v7 hardwareID];
+    v11 = +[USBDFUUpdater matchingDictionaryForVendorID:productId:serialNumber:](USBDFUUpdater, "matchingDictionaryForVendorID:productId:serialNumber:", [hardwareID2 vendorID], objc_msgSend(hardwareID2, "productID"), numberCopy);
   }
 
   else
@@ -47,19 +47,19 @@
   return v11;
 }
 
-+ (id)matchingDictionaryHIDForIdentifier:(id)a3 serialNumber:(id)a4
++ (id)matchingDictionaryHIDForIdentifier:(id)identifier serialNumber:(id)number
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [UARPSupportedAccessory findByAppleModelNumber:v5];
-  v8 = [v7 hardwareID];
+  identifierCopy = identifier;
+  numberCopy = number;
+  v7 = [UARPSupportedAccessory findByAppleModelNumber:identifierCopy];
+  hardwareID = [v7 hardwareID];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v7 hardwareID];
-    v11 = +[USBDFUUpdater matchingDictionaryHIDForVendorID:productId:serialNumber:](USBDFUUpdater, "matchingDictionaryHIDForVendorID:productId:serialNumber:", [v10 vendorID], objc_msgSend(v10, "productID"), v6);
+    hardwareID2 = [v7 hardwareID];
+    v11 = +[USBDFUUpdater matchingDictionaryHIDForVendorID:productId:serialNumber:](USBDFUUpdater, "matchingDictionaryHIDForVendorID:productId:serialNumber:", [hardwareID2 vendorID], objc_msgSend(hardwareID2, "productID"), numberCopy);
   }
 
   else
@@ -76,10 +76,10 @@
   return v11;
 }
 
-- (UARPUSBDFUAccessory)initWithIdentifier:(id)a3 serialNumber:(id)a4 fwVersion:(UARPVersion *)a5
+- (UARPUSBDFUAccessory)initWithIdentifier:(id)identifier serialNumber:(id)number fwVersion:(UARPVersion *)version
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v40.receiver = self;
   v40.super_class = UARPUSBDFUAccessory;
   v10 = [(UARPUSBDFUAccessory *)&v40 init];
@@ -100,31 +100,31 @@ LABEL_11:
     sub_100017074(v13);
   }
 
-  v14 = [UARPSupportedAccessory findByAppleModelNumber:v8];
+  v14 = [UARPSupportedAccessory findByAppleModelNumber:identifierCopy];
   if (v14)
   {
-    v10->_activeFW = *a5;
-    v15 = [v8 copy];
+    v10->_activeFW = *version;
+    v15 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v15;
 
-    v17 = [(UARPUSBDFUAccessory *)v14 modelName];
+    modelName = [(UARPUSBDFUAccessory *)v14 modelName];
     modelName = v10->_modelName;
-    v10->_modelName = v17;
+    v10->_modelName = modelName;
 
-    v19 = [(UARPUSBDFUAccessory *)v14 appleModelNumber];
+    appleModelNumber = [(UARPUSBDFUAccessory *)v14 appleModelNumber];
     modelNumber = v10->_modelNumber;
-    v10->_modelNumber = v19;
+    v10->_modelNumber = appleModelNumber;
 
-    v21 = [(UARPUSBDFUAccessory *)v14 vendorName];
+    vendorName = [(UARPUSBDFUAccessory *)v14 vendorName];
     vendorName = v10->_vendorName;
-    v10->_vendorName = v21;
+    v10->_vendorName = vendorName;
 
     pRxSuperBinaries = v10->_pRxSuperBinaries;
     v10->_pRxSuperBinaries = 0;
 
-    v24 = [(UARPUSBDFUAccessory *)v14 hardwareID];
-    v25 = -[USBDFUUpdater initWithVendorID:productID:serialNumber:dfuModeActive:simulator:]([USBDFUUpdater alloc], "initWithVendorID:productID:serialNumber:dfuModeActive:simulator:", [v24 vendorID], objc_msgSend(v24, "productID"), v9, -[UARPUSBDFUAccessory dfuMode](v14, "dfuMode"), -[UARPUSBDFUAccessory isSimulator](v14, "isSimulator"));
+    hardwareID = [(UARPUSBDFUAccessory *)v14 hardwareID];
+    v25 = -[USBDFUUpdater initWithVendorID:productID:serialNumber:dfuModeActive:simulator:]([USBDFUUpdater alloc], "initWithVendorID:productID:serialNumber:dfuModeActive:simulator:", [hardwareID vendorID], objc_msgSend(hardwareID, "productID"), numberCopy, -[UARPUSBDFUAccessory dfuMode](v14, "dfuMode"), -[UARPUSBDFUAccessory isSimulator](v14, "isSimulator"));
     usbDfuAccessory = v10->_usbDfuAccessory;
     v10->_usbDfuAccessory = v25;
 
@@ -146,12 +146,12 @@ LABEL_11:
       [(USBDFUUpdater *)v10->_usbDfuAccessory closeDfuDevice];
     }
 
-    v29 = [[UARPAccessory alloc] initWithModelNumber:v8];
+    v29 = [[UARPAccessory alloc] initWithModelNumber:identifierCopy];
     uarpAccessory = v10->_uarpAccessory;
     v10->_uarpAccessory = v29;
 
     [(UARPAccessory *)v10->_uarpAccessory setCapability:[(UARPUSBDFUAccessory *)v14 capabilities]];
-    [(UARPAccessory *)v10->_uarpAccessory setSerialNumber:v9];
+    [(UARPAccessory *)v10->_uarpAccessory setSerialNumber:numberCopy];
     v10->_requiresPowerAssertion = [(UARPUSBDFUAccessory *)v14 updateRequiresPowerAssertion];
     v31 = dispatch_queue_create("com.apple.accessoryupdater.uarpdfuotp.notification.queue", 0);
     notificationQueue = v10->_notificationQueue;
@@ -175,12 +175,12 @@ LABEL_12:
   return v14;
 }
 
-- (unsigned)connectUarpController:(id)a3 options:(uarpPlatformOptionsObj *)a4
+- (unsigned)connectUarpController:(id)controller options:(uarpPlatformOptionsObj *)options
 {
-  v6 = a3;
-  v7 = *&a4->upgradeOnly;
-  v8 = *&a4->responseTimeout;
-  *&self->_options.maxTxPayloadLength = *&a4->maxTxPayloadLength;
+  controllerCopy = controller;
+  v7 = *&options->upgradeOnly;
+  v8 = *&options->responseTimeout;
+  *&self->_options.maxTxPayloadLength = *&options->maxTxPayloadLength;
   *&self->_options.responseTimeout = v8;
   *&self->_options.upgradeOnly = v7;
   *&self->_options.maxTxPayloadLength = 0x100000001000;
@@ -228,11 +228,11 @@ LABEL_12:
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_INFO))
     {
       v29 = 138412290;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Link Controller to Accessory %@", &v29, 0xCu);
     }
 
-    v12 = uarpPlatformRemoteEndpointAdd(&self->_localEP, &self->_remoteEP, &self->_options, v6);
+    v12 = uarpPlatformRemoteEndpointAdd(&self->_localEP, &self->_remoteEP, &self->_options, controllerCopy);
     if (v12)
     {
       v20 = self->_log;
@@ -261,19 +261,19 @@ LABEL_12:
   return v3;
 }
 
-- (int)enableDisconnectCallback:(void *)a3 reference:(void *)a4
+- (int)enableDisconnectCallback:(void *)callback reference:(void *)reference
 {
   IONotificationPortSetDispatchQueue(self->_mNotificationPort, self->_notificationQueue);
   identifier = self->_identifier;
-  v8 = [(UARPAccessory *)self->_uarpAccessory serialNumber];
-  v9 = [UARPUSBDFUAccessory matchingDictionaryForIdentifier:identifier serialNumber:v8];
+  serialNumber = [(UARPAccessory *)self->_uarpAccessory serialNumber];
+  v9 = [UARPUSBDFUAccessory matchingDictionaryForIdentifier:identifier serialNumber:serialNumber];
 
   Current = CFRunLoopGetCurrent();
   RunLoopSource = IONotificationPortGetRunLoopSource(self->_mNotificationPort);
   CFRunLoopAddSource(Current, RunLoopSource, kCFRunLoopDefaultMode);
   mNotificationPort = self->_mNotificationPort;
   v13 = v9;
-  v14 = IOServiceAddMatchingNotification(mNotificationPort, "IOServiceTerminate", v13, a3, a4, &self->_notificationIterator);
+  v14 = IOServiceAddMatchingNotification(mNotificationPort, "IOServiceTerminate", v13, callback, reference, &self->_notificationIterator);
   if (!v14)
   {
     while (1)
@@ -293,7 +293,7 @@ LABEL_12:
       v18 = 136315394;
       v19 = "[UARPUSBDFUAccessory enableDisconnectCallback:reference:]";
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Enabled disconnect callback for %@", &v18, 0x16u);
     }
   }
@@ -313,7 +313,7 @@ LABEL_12:
       v7 = 136315394;
       v8 = "[UARPUSBDFUAccessory disableDisconnectCallback]";
       v9 = 2112;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Disabling disconnect callback for %@", &v7, 0x16u);
     }
 
@@ -326,22 +326,22 @@ LABEL_12:
     v7 = 136315394;
     v8 = "[UARPUSBDFUAccessory disableDisconnectCallback]";
     v9 = 2112;
-    v10 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Disconnect callback is already disabled for %@", &v7, 0x16u);
   }
 
   return 0;
 }
 
-- (BOOL)waitForQueriesCompletion:(id)a3
+- (BOOL)waitForQueriesCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NSCondition *)self->_queriesCompleteLock lock];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v6)
   {
@@ -394,9 +394,9 @@ LABEL_12:
   return queriesCompleted;
 }
 
-- (BOOL)updateQueriesCompleted:(id)a3
+- (BOOL)updateQueriesCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   [(NSCondition *)self->_queriesCompleteLock lock];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -404,11 +404,11 @@ LABEL_12:
     v8 = 136315394;
     v9 = "[UARPUSBDFUAccessory updateQueriesCompleted:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = completedCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Removing pending property query %@", &v8, 0x16u);
   }
 
-  [(NSMutableSet *)self->_pendingProperties removeObject:v4];
+  [(NSMutableSet *)self->_pendingProperties removeObject:completedCopy];
   if (![(NSMutableSet *)self->_pendingProperties count])
   {
     self->_queriesCompleted = 1;
@@ -421,22 +421,22 @@ LABEL_12:
   return queriesCompleted;
 }
 
-- (unsigned)recvMessage:(id)a3
+- (unsigned)recvMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_1000171E8(log);
   }
 
-  v6 = uarpPlatformEndpointRecvMessage(&self->_localEP, &self->_remoteEP._options.maxTxPayloadLength, [v4 bytes], objc_msgSend(v4, "length"));
+  v6 = uarpPlatformEndpointRecvMessage(&self->_localEP, &self->_remoteEP._options.maxTxPayloadLength, [messageCopy bytes], objc_msgSend(messageCopy, "length"));
   if (v6)
   {
     v7 = self->_log;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100017280(v4, v6, v7);
+      sub_100017280(messageCopy, v6, v7);
     }
   }
 
@@ -448,7 +448,7 @@ LABEL_12:
   identifier = self->_identifier;
   v4 = [(USBDFUUpdater *)self->_usbDfuAccessory vid];
   v5 = [(USBDFUUpdater *)self->_usbDfuAccessory pid];
-  v6 = [(UARPUSBDFUAccessory *)self serialNumber];
+  serialNumber = [(UARPUSBDFUAccessory *)self serialNumber];
   if ([(UARPUSBDFUAccessory *)self dfuModeActive])
   {
     v7 = "DFU";
@@ -459,24 +459,24 @@ LABEL_12:
     v7 = "APP";
   }
 
-  v8 = [(UARPUSBDFUAccessory *)self simulator];
+  simulator = [(UARPUSBDFUAccessory *)self simulator];
   v9 = "NO";
-  if (v8)
+  if (simulator)
   {
     v9 = "YES";
   }
 
-  v10 = [NSString stringWithFormat:@"<%@, vid=%d, pid=%d, %@, dfuMode=<%s> simulator=<%s>>", identifier, v4, v5, v6, v7, v9];
+  v10 = [NSString stringWithFormat:@"<%@, vid=%d, pid=%d, %@, dfuMode=<%s> simulator=<%s>>", identifier, v4, v5, serialNumber, v7, v9];
 
   return v10;
 }
 
 - (int)applyFirmware
 {
-  v3 = [(USBDFUUpdater *)self->_usbDfuAccessory openDfuDevice];
-  if (v3)
+  openDfuDevice = [(USBDFUUpdater *)self->_usbDfuAccessory openDfuDevice];
+  if (openDfuDevice)
   {
-    v4 = v3;
+    v4 = openDfuDevice;
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
@@ -522,11 +522,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)setStagedFW:(UARPVersion)a3
+- (void)setStagedFW:(UARPVersion)w
 {
-  v3 = *&a3.release;
-  v4 = *&a3.major;
-  self->_stagedFW = a3;
+  v3 = *&w.release;
+  v4 = *&w.major;
+  self->_stagedFW = w;
   if ([(USBDFUUpdater *)self->_usbDfuAccessory simulator]&& [(USBDFUUpdater *)self->_usbDfuAccessory dfuSetVersionCmdMajor:v4 minor:HIDWORD(v4) release:v3 build:HIDWORD(v3)])
   {
     usbDfuAccessory = self->_usbDfuAccessory;

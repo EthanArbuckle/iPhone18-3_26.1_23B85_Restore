@@ -1,21 +1,21 @@
 @interface CAAnimationDelegateBlockHelper
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 @end
 
 @implementation CAAnimationDelegateBlockHelper
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   animationDidStopBlock = self->_animationDidStopBlock;
   if (animationDidStopBlock)
   {
-    animationDidStopBlock[2](animationDidStopBlock, a4);
+    animationDidStopBlock[2](animationDidStopBlock, finished);
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   animationDidStartBlock = self->_animationDidStartBlock;
   if (animationDidStartBlock)

@@ -1,38 +1,38 @@
 @interface AKURLConfiguration
-- (AKURLConfiguration)initWithCoder:(id)a3;
-- (AKURLConfiguration)initWithDictionary:(id)a3;
-- (AKURLConfiguration)initWithDictionary:(id)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (AKURLConfiguration)initWithCoder:(id)coder;
+- (AKURLConfiguration)initWithDictionary:(id)dictionary;
+- (AKURLConfiguration)initWithDictionary:(id)dictionary device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKURLConfiguration
 
-- (AKURLConfiguration)initWithDictionary:(id)a3
+- (AKURLConfiguration)initWithDictionary:(id)dictionary
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v9;
+  objc_storeStrong(location, dictionary);
+  v5 = selfCopy;
   v4 = location[0];
   v6 = +[AKDevice currentDevice];
-  v9 = 0;
-  v9 = [(AKURLConfiguration *)v5 initWithDictionary:v4 device:?];
-  v7 = MEMORY[0x1E69E5928](v9);
+  selfCopy = 0;
+  selfCopy = [(AKURLConfiguration *)v5 initWithDictionary:v4 device:?];
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   MEMORY[0x1E69E5920](v6);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKURLConfiguration)initWithDictionary:(id)a3 device:(id)a4
+- (AKURLConfiguration)initWithDictionary:(id)dictionary device:(id)device
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, device);
   v24 = [location[0] objectForKeyedSubscript:@"url"];
   v23 = 0;
   if (v24)
@@ -45,15 +45,15 @@
 
   if (v23)
   {
-    v6 = v27;
-    v27 = 0;
+    v6 = selfCopy;
+    selfCopy = 0;
     v21.receiver = v6;
     v21.super_class = AKURLConfiguration;
-    v27 = [(AKURLConfiguration *)&v21 init];
-    objc_storeStrong(&v27, v27);
-    if (v27)
+    selfCopy = [(AKURLConfiguration *)&v21 init];
+    objc_storeStrong(&selfCopy, selfCopy);
+    if (selfCopy)
     {
-      objc_storeStrong(v27 + 2, v23);
+      objc_storeStrong(selfCopy + 2, v23);
       v14 = [location[0] objectForKeyedSubscript:@"uiType"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -61,10 +61,10 @@
       if (isKindOfClass)
       {
         v12 = [location[0] objectForKeyedSubscript:@"uiType"];
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
         MEMORY[0x1E69E5920](v12);
-        v20 = v13;
-        if (v13 == 1 && ([v25 isInRecoveryPartition] & 1) != 0)
+        v20 = intValue;
+        if (intValue == 1 && ([v25 isInRecoveryPartition] & 1) != 0)
         {
           v19 = _AKLogSystem();
           v18 = 2;
@@ -80,21 +80,21 @@
           v20 = 0;
         }
 
-        *(v27 + 3) = v20;
+        *(selfCopy + 3) = v20;
       }
 
       else
       {
-        *(v27 + 3) = 0;
+        *(selfCopy + 3) = 0;
       }
 
       v9 = [location[0] objectForKeyedSubscript:@"baa"];
-      v7 = [v9 BOOLValue];
-      *(v27 + 8) = v7;
+      bOOLValue = [v9 BOOLValue];
+      *(selfCopy + 8) = bOOLValue;
       MEMORY[0x1E69E5920](v9);
     }
 
-    v28 = MEMORY[0x1E69E5928](v27);
+    v28 = MEMORY[0x1E69E5928](selfCopy);
     v22 = 1;
   }
 
@@ -108,49 +108,49 @@
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v28;
 }
 
-- (AKURLConfiguration)initWithCoder:(id)a3
+- (AKURLConfiguration)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKURLConfiguration;
-  v12 = [(AKURLConfiguration *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKURLConfiguration *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_url"];
-    url = v12->_url;
-    v12->_url = v4;
+    url = selfCopy->_url;
+    selfCopy->_url = v4;
     MEMORY[0x1E69E5920](url);
     v6 = [location[0] decodeIntegerForKey:@"_uiType"];
-    v12->_uiType = v6;
+    selfCopy->_uiType = v6;
     v7 = [location[0] decodeBoolForKey:@"_isBaaEnabled"];
-    v12->_isBaaEnabled = v7;
+    selfCopy->_isBaaEnabled = v7;
   }
 
-  v9 = MEMORY[0x1E69E5928](v12);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_url forKey:@"_url"];
-  [location[0] encodeInteger:v4->_uiType forKey:@"_uiType"];
-  [location[0] encodeBool:v4->_isBaaEnabled forKey:@"_isBaaEnabled"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_url forKey:@"_url"];
+  [location[0] encodeInteger:selfCopy->_uiType forKey:@"_uiType"];
+  [location[0] encodeBool:selfCopy->_isBaaEnabled forKey:@"_isBaaEnabled"];
   objc_storeStrong(location, 0);
 }
 

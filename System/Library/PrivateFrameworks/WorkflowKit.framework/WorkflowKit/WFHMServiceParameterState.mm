@@ -1,8 +1,8 @@
 @interface WFHMServiceParameterState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMService)service;
-- (WFHMServiceParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFHMServiceParameterState)initWithService:(id)a3 homeIdentifier:(id)a4;
+- (WFHMServiceParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFHMServiceParameterState)initWithService:(id)service homeIdentifier:(id)identifier;
 - (WFPropertyListObject)serializedRepresentation;
 - (unint64_t)hash;
 @end
@@ -12,20 +12,20 @@
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFHMServiceParameterState *)self serializedService];
-  v5 = [v3 combine:v4];
+  serializedService = [(WFHMServiceParameterState *)self serializedService];
+  v5 = [v3 combine:serializedService];
 
-  v6 = [(WFHMServiceParameterState *)self homeIdentifier];
-  v7 = [v3 combine:v6];
+  homeIdentifier = [(WFHMServiceParameterState *)self homeIdentifier];
+  v7 = [v3 combine:homeIdentifier];
 
   v8 = [v3 finalize];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -35,15 +35,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFHMServiceParameterState *)v6 serializedService];
-      v8 = [(WFHMServiceParameterState *)self serializedService];
-      if (v7 == v8 || (-[WFHMServiceParameterState serializedService](v6, "serializedService"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHMServiceParameterState serializedService](self, "serializedService"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      serializedService = [(WFHMServiceParameterState *)equalCopy serializedService];
+      serializedService2 = [(WFHMServiceParameterState *)self serializedService];
+      if (serializedService == serializedService2 || (-[WFHMServiceParameterState serializedService](equalCopy, "serializedService"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHMServiceParameterState serializedService](self, "serializedService"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v10 = [(WFHMServiceParameterState *)v6 homeIdentifier];
-        v11 = [(WFHMServiceParameterState *)self homeIdentifier];
-        v9 = [v10 isEqualToString:v11];
+        homeIdentifier = [(WFHMServiceParameterState *)equalCopy homeIdentifier];
+        homeIdentifier2 = [(WFHMServiceParameterState *)self homeIdentifier];
+        v9 = [homeIdentifier isEqualToString:homeIdentifier2];
 
-        if (v7 == v8)
+        if (serializedService == serializedService2)
         {
 LABEL_10:
 
@@ -78,16 +78,16 @@ LABEL_6:
   }
 
   v4 = +[WFHomeManager sharedManager];
-  v5 = [(WFHMServiceParameterState *)self homeIdentifier];
-  v6 = [v4 homeWithIdentifier:v5];
+  homeIdentifier = [(WFHMServiceParameterState *)self homeIdentifier];
+  v6 = [v4 homeWithIdentifier:homeIdentifier];
 
   if (v6)
   {
     if (self->_serializedService)
     {
       HMServiceClass = getHMServiceClass();
-      v8 = [(WFHMServiceParameterState *)self serializedService];
-      v9 = [(objc_class *)HMServiceClass serviceWithSerializedDictionaryRepresentation:v8 home:v6];
+      serializedService = [(WFHMServiceParameterState *)self serializedService];
+      v9 = [(objc_class *)HMServiceClass serviceWithSerializedDictionaryRepresentation:serializedService home:v6];
       v10 = self->_service;
       self->_service = v9;
     }
@@ -105,29 +105,29 @@ LABEL_7:
 - (WFPropertyListObject)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFHMServiceParameterState *)self homeIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"HomeIdentifier"];
+  homeIdentifier = [(WFHMServiceParameterState *)self homeIdentifier];
+  [v3 setObject:homeIdentifier forKeyedSubscript:@"HomeIdentifier"];
 
-  v5 = [(WFHMServiceParameterState *)self serializedService];
+  serializedService = [(WFHMServiceParameterState *)self serializedService];
 
-  if (v5)
+  if (serializedService)
   {
-    v6 = [(WFHMServiceParameterState *)self serializedService];
-    [v3 setObject:v6 forKeyedSubscript:@"HomeService"];
+    serializedService2 = [(WFHMServiceParameterState *)self serializedService];
+    [v3 setObject:serializedService2 forKeyedSubscript:@"HomeService"];
   }
 
   return v3;
 }
 
-- (WFHMServiceParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFHMServiceParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v6 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = WFHMServiceParameterState;
   v7 = [(WFHMServiceParameterState *)&v14 init];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = v6;
+    v8 = representationCopy;
     v9 = [v8 objectForKeyedSubscript:@"HomeIdentifier"];
     if (v9)
     {
@@ -153,14 +153,14 @@ LABEL_7:
   return v12;
 }
 
-- (WFHMServiceParameterState)initWithService:(id)a3 homeIdentifier:(id)a4
+- (WFHMServiceParameterState)initWithService:(id)service homeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  serviceCopy = service;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFHMServiceParameterState.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHMServiceParameterState.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
   }
 
   v17.receiver = self;
@@ -169,12 +169,12 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeIdentifier, a4);
-    v12 = [v8 serializedDictionaryRepresentation];
+    objc_storeStrong(&v10->_homeIdentifier, identifier);
+    serializedDictionaryRepresentation = [serviceCopy serializedDictionaryRepresentation];
     serializedService = v11->_serializedService;
-    v11->_serializedService = v12;
+    v11->_serializedService = serializedDictionaryRepresentation;
 
-    objc_storeStrong(&v11->_service, a3);
+    objc_storeStrong(&v11->_service, service);
     v14 = v11;
   }
 

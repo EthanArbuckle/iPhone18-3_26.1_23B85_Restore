@@ -1,48 +1,48 @@
 @interface PKSectionedDashboardDataSource
-- (PKSectionedDashboardDataSource)initWithSectionDataSources:(id)a3;
+- (PKSectionedDashboardDataSource)initWithSectionDataSources:(id)sources;
 - (PKSectionedDashboardDataSourcePresentationProviding)presentationProvider;
-- (id)footerTextItemForSection:(unint64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)presentationWindowForSectionDataSource:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)_sectionOffsetForDataSource:(id)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)footerTextItemForSection:(unint64_t)section;
+- (id)itemAtIndexPath:(id)path;
+- (id)presentationWindowForSectionDataSource:(id)source;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)_sectionOffsetForDataSource:(id)source;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
 - (void)_notifyContentLoadedIfNecessary;
 - (void)_reloadSectionMap;
-- (void)setDataSourceDelegate:(id)a3;
-- (void)updateSectionDataSource:(id)a3 withUpdates:(id)a4 diff:(id)a5;
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4;
+- (void)setDataSourceDelegate:(id)delegate;
+- (void)updateSectionDataSource:(id)source withUpdates:(id)updates diff:(id)diff;
+- (void)updateWithBlock:(id)block andDiff:(id)diff;
 @end
 
 @implementation PKSectionedDashboardDataSource
 
-- (PKSectionedDashboardDataSource)initWithSectionDataSources:(id)a3
+- (PKSectionedDashboardDataSource)initWithSectionDataSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   v12.receiver = self;
   v12.super_class = PKSectionedDashboardDataSource;
   v6 = [(PKSectionedDashboardDataSource *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionDataSources, a3);
+    objc_storeStrong(&v6->_sectionDataSources, sources);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__PKSectionedDashboardDataSource_initWithSectionDataSources___block_invoke;
     v10[3] = &unk_1E801C300;
     v8 = v7;
     v11 = v8;
-    [v5 enumerateObjectsUsingBlock:v10];
+    [sourcesCopy enumerateObjectsUsingBlock:v10];
     [(PKSectionedDashboardDataSource *)v8 _reloadSectionMap];
   }
 
   return v7;
 }
 
-- (void)setDataSourceDelegate:(id)a3
+- (void)setDataSourceDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(PKSectionedDashboardDataSource *)self _notifyContentLoadedIfNecessary];
 }
@@ -56,7 +56,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = self;
+  selfCopy = self;
   obj = self->_sectionDataSources;
   v5 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
@@ -73,12 +73,12 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 sectionIdentifiers];
+        sectionIdentifiers = [v9 sectionIdentifiers];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v11 = [sectionIdentifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v11)
         {
           v12 = v11;
@@ -89,19 +89,19 @@
             {
               if (*v22 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(sectionIdentifiers);
               }
 
               [v4 setObject:v9 forKey:*(*(&v21 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v12 = [sectionIdentifiers countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v12);
         }
 
-        [v3 addObjectsFromArray:v10];
+        [v3 addObjectsFromArray:sectionIdentifiers];
       }
 
       v6 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -111,18 +111,18 @@
   }
 
   v15 = [v3 copy];
-  sectionIdentifiers = v19->_sectionIdentifiers;
-  v19->_sectionIdentifiers = v15;
+  sectionIdentifiers = selfCopy->_sectionIdentifiers;
+  selfCopy->_sectionIdentifiers = v15;
 
   v17 = [v4 copy];
-  sectionMap = v19->_sectionMap;
-  v19->_sectionMap = v17;
+  sectionMap = selfCopy->_sectionMap;
+  selfCopy->_sectionMap = v17;
 }
 
-- (unint64_t)_sectionOffsetForDataSource:(id)a3
+- (unint64_t)_sectionOffsetForDataSource:(id)source
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourceCopy = source;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -144,13 +144,13 @@ LABEL_3:
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if (v11 == v5)
+      if (v11 == sourceCopy)
       {
         break;
       }
 
-      v12 = [v11 sectionIdentifiers];
-      v3 += [v12 count];
+      sectionIdentifiers = [v11 sectionIdentifiers];
+      v3 += [sectionIdentifiers count];
 
       if (v8 == ++v10)
       {
@@ -189,27 +189,27 @@ LABEL_9:
   }
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   sectionIdentifiers = self->_sectionIdentifiers;
-  v5 = a3;
-  v6 = -[NSArray objectAtIndexedSubscript:](sectionIdentifiers, "objectAtIndexedSubscript:", [v5 section]);
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](sectionIdentifiers, "objectAtIndexedSubscript:", [pathCopy section]);
   v7 = [(NSDictionary *)self->_sectionMap objectForKeyedSubscript:v6];
-  v8 = [v5 item];
+  item = [pathCopy item];
 
-  v9 = [v7 itemForSectionIdentifier:v6 atIndex:v8];
+  v9 = [v7 itemForSectionIdentifier:v6 atIndex:item];
 
   return v9;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
   if (!self->_isAllContentLoaded)
   {
     return 0;
   }
 
-  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
   v5 = [(NSDictionary *)self->_sectionMap objectForKeyedSubscript:v4];
   v6 = [v5 numberOfItemsInSection:v4];
 
@@ -229,44 +229,44 @@ LABEL_9:
   }
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
   v5 = [(NSDictionary *)self->_sectionMap objectForKeyedSubscript:v4];
   v6 = [v5 titleForSectionIdentifier:v4];
 
   return v6;
 }
 
-- (id)footerTextItemForSection:(unint64_t)a3
+- (id)footerTextItemForSection:(unint64_t)section
 {
-  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
+  v4 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
   v5 = [(NSDictionary *)self->_sectionMap objectForKeyedSubscript:v4];
   v6 = [v5 footerTextItemForSectionIdentifier:v4];
 
   return v6;
 }
 
-- (void)updateSectionDataSource:(id)a3 withUpdates:(id)a4 diff:(id)a5
+- (void)updateSectionDataSource:(id)source withUpdates:(id)updates diff:(id)diff
 {
-  v8 = a4;
-  v9 = a5;
+  updatesCopy = updates;
+  diffCopy = diff;
   if (self->_isAllContentLoaded)
   {
-    v10 = [(PKSectionedDashboardDataSource *)self _sectionOffsetForDataSource:a3];
+    v10 = [(PKSectionedDashboardDataSource *)self _sectionOffsetForDataSource:source];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75__PKSectionedDashboardDataSource_updateSectionDataSource_withUpdates_diff___block_invoke;
     v12[3] = &unk_1E8010E20;
     v12[4] = self;
-    v13 = v8;
-    v11 = v9[2](v9, v10);
+    v13 = updatesCopy;
+    v11 = diffCopy[2](diffCopy, v10);
     [(PKSectionedDashboardDataSource *)self updateWithBlock:v12 andDiff:v11];
   }
 
   else
   {
-    v8[2](v8);
+    updatesCopy[2](updatesCopy);
     [(PKSectionedDashboardDataSource *)self _reloadSectionMap];
     [(PKSectionedDashboardDataSource *)self _notifyContentLoadedIfNecessary];
   }
@@ -280,11 +280,11 @@ uint64_t __75__PKSectionedDashboardDataSource_updateSectionDataSource_withUpdate
   return [v2 _reloadSectionMap];
 }
 
-- (void)updateWithBlock:(id)a3 andDiff:(id)a4
+- (void)updateWithBlock:(id)block andDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  diffCopy = diff;
+  if (diffCopy)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -293,8 +293,8 @@ uint64_t __75__PKSectionedDashboardDataSource_updateSectionDataSource_withUpdate
     v14[2] = __58__PKSectionedDashboardDataSource_updateWithBlock_andDiff___block_invoke;
     v14[3] = &unk_1E8011108;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
-    v9 = v7;
+    v16 = blockCopy;
+    v9 = diffCopy;
     v15 = v9;
     [WeakRetained performBatchUpdates:v14 completion:0];
 
@@ -414,7 +414,7 @@ void __58__PKSectionedDashboardDataSource_updateWithBlock_andDiff___block_invoke
   }
 }
 
-- (id)presentationWindowForSectionDataSource:(id)a3
+- (id)presentationWindowForSectionDataSource:(id)source
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationProvider);
   v5 = [WeakRetained presentationWindowForSectionedDataSource:self];

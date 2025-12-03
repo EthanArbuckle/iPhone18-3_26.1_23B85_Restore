@@ -1,7 +1,7 @@
 @interface _MKMultiPartLabelMetrics
-- (BOOL)_shiftLocationOfStrings:(id)a3 startingAtIndex:(unint64_t)a4 shiftValue:(int64_t)a5;
-- (BOOL)replaceSeparatorAtIndex:(unint64_t)a3 withString:(id)a4;
-- (_MKMultiPartLabelMetrics)initWithMultiPartString:(id)a3;
+- (BOOL)_shiftLocationOfStrings:(id)strings startingAtIndex:(unint64_t)index shiftValue:(int64_t)value;
+- (BOOL)replaceSeparatorAtIndex:(unint64_t)index withString:(id)string;
+- (_MKMultiPartLabelMetrics)initWithMultiPartString:(id)string;
 - (void)reset;
 @end
 
@@ -15,8 +15,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(_MKMultiPartLabelMetrics *)self separators];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  separators = [(_MKMultiPartLabelMetrics *)self separators];
+  v4 = [separators countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,15 +27,15 @@
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(separators);
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [v8 originalRange];
-        [v8 setRange:{v9, v10}];
+        originalRange = [v8 originalRange];
+        [v8 setRange:{originalRange, v10}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v5 = [separators countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v5);
@@ -45,8 +45,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(_MKMultiPartLabelMetrics *)self components];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  components = [(_MKMultiPartLabelMetrics *)self components];
+  v12 = [components countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -57,30 +57,30 @@
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(components);
         }
 
         v16 = *(*(&v22 + 1) + 8 * j);
-        v17 = [v16 originalRange];
-        [v16 setRange:{v17, v18}];
+        originalRange2 = [v16 originalRange];
+        [v16 setRange:{originalRange2, v18}];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v13 = [components countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v13);
   }
 
-  v19 = [(_MKMultiPartLabelMetrics *)self originalAttributedString];
-  v20 = [v19 mutableCopy];
+  originalAttributedString = [(_MKMultiPartLabelMetrics *)self originalAttributedString];
+  v20 = [originalAttributedString mutableCopy];
   attributedString = self->_attributedString;
   self->_attributedString = v20;
 }
 
-- (BOOL)_shiftLocationOfStrings:(id)a3 startingAtIndex:(unint64_t)a4 shiftValue:(int64_t)a5
+- (BOOL)_shiftLocationOfStrings:(id)strings startingAtIndex:(unint64_t)index shiftValue:(int64_t)value
 {
-  v7 = a3;
-  if ([v7 count] <= a4)
+  stringsCopy = strings;
+  if ([stringsCopy count] <= index)
   {
 LABEL_4:
     v11 = 1;
@@ -90,8 +90,8 @@ LABEL_4:
   {
     while (1)
     {
-      v8 = [v7 objectAtIndexedSubscript:a4];
-      v10 = [v8 range] + a5;
+      v8 = [stringsCopy objectAtIndexedSubscript:index];
+      v10 = [v8 range] + value;
       if (v10 < 0)
       {
         break;
@@ -99,7 +99,7 @@ LABEL_4:
 
       [v8 setRange:{v10, v9}];
 
-      if (++a4 >= [v7 count])
+      if (++index >= [stringsCopy count])
       {
         goto LABEL_4;
       }
@@ -111,43 +111,43 @@ LABEL_4:
   return v11;
 }
 
-- (BOOL)replaceSeparatorAtIndex:(unint64_t)a3 withString:(id)a4
+- (BOOL)replaceSeparatorAtIndex:(unint64_t)index withString:(id)string
 {
-  v6 = a4;
-  v7 = [(_MKMultiPartLabelMetrics *)self separators];
-  v8 = [v7 count];
+  stringCopy = string;
+  separators = [(_MKMultiPartLabelMetrics *)self separators];
+  v8 = [separators count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v30 = 0;
-    v10 = v6;
+    v10 = stringCopy;
   }
 
   else
   {
     v9 = &stru_1F15B23C0;
-    if (v6)
+    if (stringCopy)
     {
-      v9 = v6;
+      v9 = stringCopy;
     }
 
     v10 = v9;
 
-    v11 = [(_MKMultiPartLabelMetrics *)self separators];
-    v12 = [v11 objectAtIndexedSubscript:a3];
+    separators2 = [(_MKMultiPartLabelMetrics *)self separators];
+    v12 = [separators2 objectAtIndexedSubscript:index];
 
-    v13 = [(_MKMultiPartLabelMetrics *)self attributedString];
-    v14 = [v13 string];
-    v15 = [v12 range];
-    v17 = [v14 substringWithRange:{v15, v16}];
-    v18 = [v12 attributedString];
-    v19 = [v18 string];
-    v20 = [v17 isEqualToString:v19];
+    attributedString = [(_MKMultiPartLabelMetrics *)self attributedString];
+    string = [attributedString string];
+    range = [v12 range];
+    v17 = [string substringWithRange:{range, v16}];
+    attributedString2 = [v12 attributedString];
+    string2 = [attributedString2 string];
+    v20 = [v17 isEqualToString:string2];
 
-    if (v20 && (-[_MKMultiPartLabelMetrics attributedString](self, "attributedString"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v12 range], objc_msgSend(v21, "replaceCharactersInRange:withString:", v22, v23, v10), v21, objc_msgSend(v12, "setRange:", objc_msgSend(v12, "range"), -[__CFString length](v10, "length")), v24 = -[__CFString length](v10, "length"), objc_msgSend(v12, "attributedString"), v25 = objc_claimAutoreleasedReturnValue(), v26 = v24 - objc_msgSend(v25, "length"), v25, -[_MKMultiPartLabelMetrics separators](self, "separators"), v27 = objc_claimAutoreleasedReturnValue(), v28 = -[_MKMultiPartLabelMetrics _shiftLocationOfStrings:startingAtIndex:shiftValue:](self, "_shiftLocationOfStrings:startingAtIndex:shiftValue:", v27, a3 + 1, v26), v27, v28))
+    if (v20 && (-[_MKMultiPartLabelMetrics attributedString](self, "attributedString"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v12 range], objc_msgSend(v21, "replaceCharactersInRange:withString:", v22, v23, v10), v21, objc_msgSend(v12, "setRange:", objc_msgSend(v12, "range"), -[__CFString length](v10, "length")), v24 = -[__CFString length](v10, "length"), objc_msgSend(v12, "attributedString"), v25 = objc_claimAutoreleasedReturnValue(), v26 = v24 - objc_msgSend(v25, "length"), v25, -[_MKMultiPartLabelMetrics separators](self, "separators"), v27 = objc_claimAutoreleasedReturnValue(), v28 = -[_MKMultiPartLabelMetrics _shiftLocationOfStrings:startingAtIndex:shiftValue:](self, "_shiftLocationOfStrings:startingAtIndex:shiftValue:", v27, index + 1, v26), v27, v28))
     {
-      v29 = [(_MKMultiPartLabelMetrics *)self components];
-      v30 = [(_MKMultiPartLabelMetrics *)self _shiftLocationOfStrings:v29 startingAtIndex:a3 + 1 shiftValue:v26];
+      components = [(_MKMultiPartLabelMetrics *)self components];
+      v30 = [(_MKMultiPartLabelMetrics *)self _shiftLocationOfStrings:components startingAtIndex:index + 1 shiftValue:v26];
     }
 
     else
@@ -159,10 +159,10 @@ LABEL_4:
   return v30;
 }
 
-- (_MKMultiPartLabelMetrics)initWithMultiPartString:(id)a3
+- (_MKMultiPartLabelMetrics)initWithMultiPartString:(id)string
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v43.receiver = self;
   v43.super_class = _MKMultiPartLabelMetrics;
   v5 = [(_MKMultiPartLabelMetrics *)&v43 init];
@@ -171,19 +171,19 @@ LABEL_4:
   {
     v36 = v5;
     v7 = MEMORY[0x1E695DF70];
-    v8 = [v4 components];
-    v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    components = [stringCopy components];
+    v9 = [v7 arrayWithCapacity:{objc_msgSend(components, "count")}];
 
     v10 = MEMORY[0x1E695DF70];
-    v11 = [v4 separators];
-    v37 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+    separators = [stringCopy separators];
+    v37 = [v10 arrayWithCapacity:{objc_msgSend(separators, "count")}];
 
     v12 = objc_alloc_init(MEMORY[0x1E696AD40]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    obj = [v4 components];
+    obj = [stringCopy components];
     v13 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (!v13)
     {
@@ -209,16 +209,16 @@ LABEL_4:
 
         [(NSMutableAttributedString *)v12 appendAttributedString:v19];
         ++v15;
-        v21 = [v4 components];
-        v22 = [v21 count];
+        components2 = [stringCopy components];
+        v22 = [components2 count];
 
         if (v18 + 1 < v22)
         {
-          v23 = [v4 separators];
-          if (v18 < [v23 count])
+          separators2 = [stringCopy separators];
+          if (v18 < [separators2 count])
           {
-            v24 = [v4 separators];
-            v25 = [v24 objectAtIndexedSubscript:v18];
+            separators3 = [stringCopy separators];
+            v25 = [separators3 objectAtIndexedSubscript:v18];
 
             if (!v25)
             {
@@ -229,7 +229,7 @@ LABEL_4:
             [v37 addObject:v26];
 
             [(NSMutableAttributedString *)v12 appendAttributedString:v25];
-            v23 = v25;
+            separators2 = v25;
           }
         }
       }

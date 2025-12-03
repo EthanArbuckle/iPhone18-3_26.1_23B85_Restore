@@ -1,145 +1,145 @@
 @interface SPRPINData
-- (SPRPINData)initWithCoder:(id)a3;
-- (SPRPINData)initWithPinBlock:(id)a3 casd:(id)a4 pinAppletAttestationData:(id)a5 pinKEKHash:(id)a6;
-- (SPRPINData)initWithPinBlock:(id)a3 casd:(id)a4 pinAppletAttestationData:(id)a5 pinKEKHash:(id)a6 isPinBypass:(BOOL)a7;
-- (SPRPINData)initWithPinCipherBlob:(id)a3 pinKeyBlob:(id)a4 casd:(id)a5 pinAppletAttestationData:(id)a6 pinKEKHash:(id)a7 isPinBypass:(BOOL)a8;
-- (void)encodeWithCoder:(id)a3;
+- (SPRPINData)initWithCoder:(id)coder;
+- (SPRPINData)initWithPinBlock:(id)block casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash;
+- (SPRPINData)initWithPinBlock:(id)block casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash isPinBypass:(BOOL)bypass;
+- (SPRPINData)initWithPinCipherBlob:(id)blob pinKeyBlob:(id)keyBlob casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash isPinBypass:(BOOL)bypass;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPRPINData
 
-- (SPRPINData)initWithPinCipherBlob:(id)a3 pinKeyBlob:(id)a4 casd:(id)a5 pinAppletAttestationData:(id)a6 pinKEKHash:(id)a7 isPinBypass:(BOOL)a8
+- (SPRPINData)initWithPinCipherBlob:(id)blob pinKeyBlob:(id)keyBlob casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash isPinBypass:(BOOL)bypass
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  blobCopy = blob;
+  keyBlobCopy = keyBlob;
+  casdCopy = casd;
+  dataCopy = data;
+  hashCopy = hash;
   pinBlock = self->_pinBlock;
   self->_pinBlock = 0;
 
   pinCipherBlob = self->_pinCipherBlob;
-  self->_pinCipherBlob = v14;
-  v21 = v14;
+  self->_pinCipherBlob = blobCopy;
+  v21 = blobCopy;
 
   pinKeyBlob = self->_pinKeyBlob;
-  self->_pinKeyBlob = v15;
-  v23 = v15;
+  self->_pinKeyBlob = keyBlobCopy;
+  v23 = keyBlobCopy;
 
   casd = self->_casd;
-  self->_casd = v16;
-  v25 = v16;
+  self->_casd = casdCopy;
+  v25 = casdCopy;
 
   pinAppletAttestationData = self->_pinAppletAttestationData;
-  self->_pinAppletAttestationData = v17;
-  v27 = v17;
+  self->_pinAppletAttestationData = dataCopy;
+  v27 = dataCopy;
 
   pinKEKHash = self->_pinKEKHash;
-  self->_pinKEKHash = v18;
+  self->_pinKEKHash = hashCopy;
 
-  self->_isPinBypass = a8;
+  self->_isPinBypass = bypass;
   return self;
 }
 
-- (SPRPINData)initWithPinBlock:(id)a3 casd:(id)a4 pinAppletAttestationData:(id)a5 pinKEKHash:(id)a6
+- (SPRPINData)initWithPinBlock:(id)block casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  blockCopy = block;
+  casdCopy = casd;
+  dataCopy = data;
+  hashCopy = hash;
   pinBlock = self->_pinBlock;
-  self->_pinBlock = v10;
-  v15 = v10;
+  self->_pinBlock = blockCopy;
+  v15 = blockCopy;
 
   casd = self->_casd;
-  self->_casd = v11;
-  v17 = v11;
+  self->_casd = casdCopy;
+  v17 = casdCopy;
 
   pinAppletAttestationData = self->_pinAppletAttestationData;
-  self->_pinAppletAttestationData = v12;
-  v19 = v12;
+  self->_pinAppletAttestationData = dataCopy;
+  v19 = dataCopy;
 
   pinKEKHash = self->_pinKEKHash;
-  self->_pinKEKHash = v13;
+  self->_pinKEKHash = hashCopy;
 
   self->_isPinBypass = 0;
   return self;
 }
 
-- (SPRPINData)initWithPinBlock:(id)a3 casd:(id)a4 pinAppletAttestationData:(id)a5 pinKEKHash:(id)a6 isPinBypass:(BOOL)a7
+- (SPRPINData)initWithPinBlock:(id)block casd:(id)casd pinAppletAttestationData:(id)data pinKEKHash:(id)hash isPinBypass:(BOOL)bypass
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  blockCopy = block;
+  casdCopy = casd;
+  dataCopy = data;
+  hashCopy = hash;
   pinBlock = self->_pinBlock;
-  self->_pinBlock = v12;
-  v17 = v12;
+  self->_pinBlock = blockCopy;
+  v17 = blockCopy;
 
   casd = self->_casd;
-  self->_casd = v13;
-  v19 = v13;
+  self->_casd = casdCopy;
+  v19 = casdCopy;
 
   pinAppletAttestationData = self->_pinAppletAttestationData;
-  self->_pinAppletAttestationData = v14;
-  v21 = v14;
+  self->_pinAppletAttestationData = dataCopy;
+  v21 = dataCopy;
 
   pinKEKHash = self->_pinKEKHash;
-  self->_pinKEKHash = v15;
+  self->_pinKEKHash = hashCopy;
 
-  self->_isPinBypass = a7;
+  self->_isPinBypass = bypass;
   return self;
 }
 
-- (SPRPINData)initWithCoder:(id)a3
+- (SPRPINData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"pinBlock", v7);
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"pinBlock", v7);
   pinBlock = self->_pinBlock;
   self->_pinBlock = v8;
 
   v10 = objc_opt_class();
-  v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"pinCipherBlob", v12);
+  v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"pinCipherBlob", v12);
   pinCipherBlob = self->_pinCipherBlob;
   self->_pinCipherBlob = v13;
 
   v15 = objc_opt_class();
-  v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"pinKeyBlob", v17);
+  v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"pinKeyBlob", v17);
   pinKeyBlob = self->_pinKeyBlob;
   self->_pinKeyBlob = v18;
 
   v20 = objc_opt_class();
-  v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"casd", v22);
+  v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"casd", v22);
   casd = self->_casd;
   self->_casd = v23;
 
   v25 = objc_opt_class();
-  v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"pinAppletAttestationData", v27);
+  v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"pinAppletAttestationData", v27);
   pinAppletAttestationData = self->_pinAppletAttestationData;
   self->_pinAppletAttestationData = v28;
 
   v30 = objc_opt_class();
-  v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v31, v30, @"pinKEKHash", v32);
+  v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v31, v30, @"pinKEKHash", v32);
   pinKEKHash = self->_pinKEKHash;
   self->_pinKEKHash = v33;
 
-  v38 = objc_msgSend_decodeBoolForKey_(v4, v35, @"isPinBypass", v36, v37);
+  v38 = objc_msgSend_decodeBoolForKey_(coderCopy, v35, @"isPinBypass", v36, v37);
   self->_isPinBypass = v38;
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pinBlock = self->_pinBlock;
-  v19 = a3;
-  objc_msgSend_encodeObject_forKey_(v19, v5, pinBlock, @"pinBlock", v6);
-  objc_msgSend_encodeObject_forKey_(v19, v7, self->_pinCipherBlob, @"pinCipherBlob", v8);
-  objc_msgSend_encodeObject_forKey_(v19, v9, self->_pinKeyBlob, @"pinKeyBlob", v10);
-  objc_msgSend_encodeObject_forKey_(v19, v11, self->_casd, @"casd", v12);
-  objc_msgSend_encodeObject_forKey_(v19, v13, self->_pinAppletAttestationData, @"pinAppletAttestationData", v14);
-  objc_msgSend_encodeObject_forKey_(v19, v15, self->_pinKEKHash, @"pinKEKHash", v16);
-  objc_msgSend_encodeBool_forKey_(v19, v17, self->_isPinBypass, @"isPinBypass", v18);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, pinBlock, @"pinBlock", v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_pinCipherBlob, @"pinCipherBlob", v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_pinKeyBlob, @"pinKeyBlob", v10);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->_casd, @"casd", v12);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->_pinAppletAttestationData, @"pinAppletAttestationData", v14);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, self->_pinKEKHash, @"pinKEKHash", v16);
+  objc_msgSend_encodeBool_forKey_(coderCopy, v17, self->_isPinBypass, @"isPinBypass", v18);
 }
 
 @end

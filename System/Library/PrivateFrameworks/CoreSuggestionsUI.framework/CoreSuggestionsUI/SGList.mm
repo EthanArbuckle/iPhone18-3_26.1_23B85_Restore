@@ -1,10 +1,10 @@
 @interface SGList
-- (BOOL)addItem:(id)a3;
-- (BOOL)removeItem:(id)a3;
+- (BOOL)addItem:(id)item;
+- (BOOL)removeItem:(id)item;
 - (SGList)init;
 - (SGListDelegate)delegate;
 - (void)removeAllItems;
-- (void)setComparator:(id)a3;
+- (void)setComparator:(id)comparator;
 @end
 
 @implementation SGList
@@ -16,26 +16,26 @@
   return WeakRetained;
 }
 
-- (void)setComparator:(id)a3
+- (void)setComparator:(id)comparator
 {
-  v4 = a3;
-  if (self->_comparator != v4)
+  comparatorCopy = comparator;
+  if (self->_comparator != comparatorCopy)
   {
-    v10 = v4;
-    v5 = _Block_copy(v4);
+    v10 = comparatorCopy;
+    v5 = _Block_copy(comparatorCopy);
     comparator = self->_comparator;
     self->_comparator = v5;
 
-    v7 = [(SGList *)self comparator];
+    comparator = [(SGList *)self comparator];
 
-    v4 = v10;
-    if (v7)
+    comparatorCopy = v10;
+    if (comparator)
     {
       array = self->_array;
-      v9 = [(SGList *)self comparator];
-      [(NSMutableArray *)array sortUsingComparator:v9];
+      comparator2 = [(SGList *)self comparator];
+      [(NSMutableArray *)array sortUsingComparator:comparator2];
 
-      v4 = v10;
+      comparatorCopy = v10;
     }
   }
 }
@@ -46,9 +46,9 @@
   [(NSMutableArray *)self->_array removeAllObjects];
   if ([v3 count])
   {
-    v4 = [(SGList *)self delegate];
+    delegate = [(SGList *)self delegate];
 
-    if (v4)
+    if (delegate)
     {
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
@@ -68,39 +68,39 @@ void __24__SGList_removeAllItems__block_invoke(uint64_t a1, void *a2, uint64_t a
   [v7 list:*(a1 + 32) didRemoveItem:v6 atIndex:a3];
 }
 
-- (BOOL)removeItem:(id)a3
+- (BOOL)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_array indexOfObjectIdenticalTo:v4];
+  itemCopy = item;
+  v5 = [(NSMutableArray *)self->_array indexOfObjectIdenticalTo:itemCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_array removeObjectAtIndex:v5];
-    v6 = [(SGList *)self delegate];
-    [v6 list:self didRemoveItem:v4 atIndex:v5];
+    delegate = [(SGList *)self delegate];
+    [delegate list:self didRemoveItem:itemCopy atIndex:v5];
   }
 
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_array containsObject:v4];
+  itemCopy = item;
+  v5 = [(NSMutableArray *)self->_array containsObject:itemCopy];
   if ((v5 & 1) == 0)
   {
-    [(NSMutableArray *)self->_array addObject:v4];
-    v6 = [(SGList *)self comparator];
+    [(NSMutableArray *)self->_array addObject:itemCopy];
+    comparator = [(SGList *)self comparator];
 
-    if (v6)
+    if (comparator)
     {
       array = self->_array;
-      v8 = [(SGList *)self comparator];
-      [(NSMutableArray *)array sortUsingComparator:v8];
+      comparator2 = [(SGList *)self comparator];
+      [(NSMutableArray *)array sortUsingComparator:comparator2];
     }
 
-    v9 = [(NSMutableArray *)self->_array indexOfObject:v4];
-    v10 = [(SGList *)self delegate];
-    [v10 list:self didAddItem:v4 atIndex:v9];
+    v9 = [(NSMutableArray *)self->_array indexOfObject:itemCopy];
+    delegate = [(SGList *)self delegate];
+    [delegate list:self didAddItem:itemCopy atIndex:v9];
   }
 
   return v5 ^ 1;

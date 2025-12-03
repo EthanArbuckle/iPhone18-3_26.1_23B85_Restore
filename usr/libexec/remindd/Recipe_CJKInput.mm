@@ -1,6 +1,6 @@
 @interface Recipe_CJKInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation Recipe_CJKInput
@@ -14,7 +14,7 @@
   return v2.super.isa;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   if (static String._unconditionallyBridgeFromObjectiveC(_:)() == 1954047348 && v4 == 0xE400000000000000)
   {

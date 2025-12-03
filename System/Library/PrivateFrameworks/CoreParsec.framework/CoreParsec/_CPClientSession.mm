@@ -1,14 +1,14 @@
 @interface _CPClientSession
-- (BOOL)getResourceVersions:(id *)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getResourceVersions:(id *)versions forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)addExperimentInfo:(id)a3;
-- (void)addFeedback:(id)a3;
-- (void)setExperimentInfo:(id)a3;
-- (void)setFeedback:(id)a3;
-- (void)setResourceVersions:(id)a3;
-- (void)setResourceVersions:(id)a3 forKey:(id)a4;
-- (void)writeTo:(id)a3;
+- (void)addExperimentInfo:(id)info;
+- (void)addFeedback:(id)feedback;
+- (void)setExperimentInfo:(id)info;
+- (void)setFeedback:(id)feedback;
+- (void)setResourceVersions:(id)versions;
+- (void)setResourceVersions:(id)versions forKey:(id)key;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPClientSession
@@ -47,28 +47,28 @@
   return v26 ^ v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ [(NSArray *)self->_feedbacks hash]^ v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
-  v5 = [(_CPClientSession *)self agent];
-  v6 = [v4 agent];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self agent];
+  agent2 = [equalCopy agent];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v7 = [(_CPClientSession *)self agent];
-  if (v7)
+  agent3 = [(_CPClientSession *)self agent];
+  if (agent3)
   {
-    v8 = v7;
-    v9 = [(_CPClientSession *)self agent];
-    v10 = [v4 agent];
-    v11 = [v9 isEqual:v10];
+    v8 = agent3;
+    agent4 = [(_CPClientSession *)self agent];
+    agent5 = [equalCopy agent];
+    v11 = [agent4 isEqual:agent5];
 
     if (!v11)
     {
@@ -80,20 +80,20 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self userGuidString];
-  v6 = [v4 userGuidString];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self userGuidString];
+  agent2 = [equalCopy userGuidString];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v12 = [(_CPClientSession *)self userGuidString];
-  if (v12)
+  userGuidString = [(_CPClientSession *)self userGuidString];
+  if (userGuidString)
   {
-    v13 = v12;
-    v14 = [(_CPClientSession *)self userGuidString];
-    v15 = [v4 userGuidString];
-    v16 = [v14 isEqual:v15];
+    v13 = userGuidString;
+    userGuidString2 = [(_CPClientSession *)self userGuidString];
+    userGuidString3 = [equalCopy userGuidString];
+    v16 = [userGuidString2 isEqual:userGuidString3];
 
     if (!v16)
     {
@@ -105,20 +105,20 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self resourceVersions];
-  v6 = [v4 resourceVersions];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self resourceVersions];
+  agent2 = [equalCopy resourceVersions];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v17 = [(_CPClientSession *)self resourceVersions];
-  if (v17)
+  resourceVersions = [(_CPClientSession *)self resourceVersions];
+  if (resourceVersions)
   {
-    v18 = v17;
-    v19 = [(_CPClientSession *)self resourceVersions];
-    v20 = [v4 resourceVersions];
-    v21 = [v19 isEqual:v20];
+    v18 = resourceVersions;
+    resourceVersions2 = [(_CPClientSession *)self resourceVersions];
+    resourceVersions3 = [equalCopy resourceVersions];
+    v21 = [resourceVersions2 isEqual:resourceVersions3];
 
     if (!v21)
     {
@@ -131,38 +131,38 @@
   }
 
   sessionStart = self->_sessionStart;
-  [v4 sessionStart];
+  [equalCopy sessionStart];
   if (sessionStart != v23)
   {
     goto LABEL_65;
   }
 
   previousSessionEndReason = self->_previousSessionEndReason;
-  if (previousSessionEndReason != [v4 previousSessionEndReason])
+  if (previousSessionEndReason != [equalCopy previousSessionEndReason])
   {
     goto LABEL_65;
   }
 
   removeTimestamps = self->_removeTimestamps;
-  if (removeTimestamps != [v4 removeTimestamps])
+  if (removeTimestamps != [equalCopy removeTimestamps])
   {
     goto LABEL_65;
   }
 
-  v5 = [(_CPClientSession *)self parsecDeveloperID];
-  v6 = [v4 parsecDeveloperID];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self parsecDeveloperID];
+  agent2 = [equalCopy parsecDeveloperID];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v26 = [(_CPClientSession *)self parsecDeveloperID];
-  if (v26)
+  parsecDeveloperID = [(_CPClientSession *)self parsecDeveloperID];
+  if (parsecDeveloperID)
   {
-    v27 = v26;
-    v28 = [(_CPClientSession *)self parsecDeveloperID];
-    v29 = [v4 parsecDeveloperID];
-    v30 = [v28 isEqual:v29];
+    v27 = parsecDeveloperID;
+    parsecDeveloperID2 = [(_CPClientSession *)self parsecDeveloperID];
+    parsecDeveloperID3 = [equalCopy parsecDeveloperID];
+    v30 = [parsecDeveloperID2 isEqual:parsecDeveloperID3];
 
     if (!v30)
     {
@@ -175,25 +175,25 @@
   }
 
   duEnabled = self->_duEnabled;
-  if (duEnabled != [v4 duEnabled])
+  if (duEnabled != [equalCopy duEnabled])
   {
     goto LABEL_65;
   }
 
-  v5 = [(_CPClientSession *)self countryCode];
-  v6 = [v4 countryCode];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self countryCode];
+  agent2 = [equalCopy countryCode];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v32 = [(_CPClientSession *)self countryCode];
-  if (v32)
+  countryCode = [(_CPClientSession *)self countryCode];
+  if (countryCode)
   {
-    v33 = v32;
-    v34 = [(_CPClientSession *)self countryCode];
-    v35 = [v4 countryCode];
-    v36 = [v34 isEqual:v35];
+    v33 = countryCode;
+    countryCode2 = [(_CPClientSession *)self countryCode];
+    countryCode3 = [equalCopy countryCode];
+    v36 = [countryCode2 isEqual:countryCode3];
 
     if (!v36)
     {
@@ -205,20 +205,20 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self locale];
-  v6 = [v4 locale];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self locale];
+  agent2 = [equalCopy locale];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v37 = [(_CPClientSession *)self locale];
-  if (v37)
+  locale = [(_CPClientSession *)self locale];
+  if (locale)
   {
-    v38 = v37;
-    v39 = [(_CPClientSession *)self locale];
-    v40 = [v4 locale];
-    v41 = [v39 isEqual:v40];
+    v38 = locale;
+    locale2 = [(_CPClientSession *)self locale];
+    locale3 = [equalCopy locale];
+    v41 = [locale2 isEqual:locale3];
 
     if (!v41)
     {
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self usageSinceLookback];
-  v6 = [v4 usageSinceLookback];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self usageSinceLookback];
+  agent2 = [equalCopy usageSinceLookback];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v42 = [(_CPClientSession *)self usageSinceLookback];
-  if (v42)
+  usageSinceLookback = [(_CPClientSession *)self usageSinceLookback];
+  if (usageSinceLookback)
   {
-    v43 = v42;
-    v44 = [(_CPClientSession *)self usageSinceLookback];
-    v45 = [v4 usageSinceLookback];
-    v46 = [v44 isEqual:v45];
+    v43 = usageSinceLookback;
+    usageSinceLookback2 = [(_CPClientSession *)self usageSinceLookback];
+    usageSinceLookback3 = [equalCopy usageSinceLookback];
+    v46 = [usageSinceLookback2 isEqual:usageSinceLookback3];
 
     if (!v46)
     {
@@ -255,20 +255,20 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self cohortsFeedback];
-  v6 = [v4 cohortsFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self cohortsFeedback];
+  agent2 = [equalCopy cohortsFeedback];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v47 = [(_CPClientSession *)self cohortsFeedback];
-  if (v47)
+  cohortsFeedback = [(_CPClientSession *)self cohortsFeedback];
+  if (cohortsFeedback)
   {
-    v48 = v47;
-    v49 = [(_CPClientSession *)self cohortsFeedback];
-    v50 = [v4 cohortsFeedback];
-    v51 = [v49 isEqual:v50];
+    v48 = cohortsFeedback;
+    cohortsFeedback2 = [(_CPClientSession *)self cohortsFeedback];
+    cohortsFeedback3 = [equalCopy cohortsFeedback];
+    v51 = [cohortsFeedback2 isEqual:cohortsFeedback3];
 
     if (!v51)
     {
@@ -281,37 +281,37 @@
   }
 
   devicePersistentD20 = self->_devicePersistentD20;
-  if (devicePersistentD20 != [v4 devicePersistentD20])
+  if (devicePersistentD20 != [equalCopy devicePersistentD20])
   {
     goto LABEL_65;
   }
 
   privateRelayStatus = self->_privateRelayStatus;
-  if (privateRelayStatus != [v4 privateRelayStatus])
+  if (privateRelayStatus != [equalCopy privateRelayStatus])
   {
     goto LABEL_65;
   }
 
   isInternalCarry = self->_isInternalCarry;
-  if (isInternalCarry != [v4 isInternalCarry])
+  if (isInternalCarry != [equalCopy isInternalCarry])
   {
     goto LABEL_65;
   }
 
-  v5 = [(_CPClientSession *)self experimentInfos];
-  v6 = [v4 experimentInfos];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self experimentInfos];
+  agent2 = [equalCopy experimentInfos];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v55 = [(_CPClientSession *)self experimentInfos];
-  if (v55)
+  experimentInfos = [(_CPClientSession *)self experimentInfos];
+  if (experimentInfos)
   {
-    v56 = v55;
-    v57 = [(_CPClientSession *)self experimentInfos];
-    v58 = [v4 experimentInfos];
-    v59 = [v57 isEqual:v58];
+    v56 = experimentInfos;
+    experimentInfos2 = [(_CPClientSession *)self experimentInfos];
+    experimentInfos3 = [equalCopy experimentInfos];
+    v59 = [experimentInfos2 isEqual:experimentInfos3];
 
     if (!v59)
     {
@@ -324,25 +324,25 @@
   }
 
   searchOptOut = self->_searchOptOut;
-  if (searchOptOut != [v4 searchOptOut])
+  if (searchOptOut != [equalCopy searchOptOut])
   {
     goto LABEL_65;
   }
 
-  v5 = [(_CPClientSession *)self jsonFeedback];
-  v6 = [v4 jsonFeedback];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self jsonFeedback];
+  agent2 = [equalCopy jsonFeedback];
+  if ((agent != 0) == (agent2 == 0))
   {
     goto LABEL_64;
   }
 
-  v61 = [(_CPClientSession *)self jsonFeedback];
-  if (v61)
+  jsonFeedback = [(_CPClientSession *)self jsonFeedback];
+  if (jsonFeedback)
   {
-    v62 = v61;
-    v63 = [(_CPClientSession *)self jsonFeedback];
-    v64 = [v4 jsonFeedback];
-    v65 = [v63 isEqual:v64];
+    v62 = jsonFeedback;
+    jsonFeedback2 = [(_CPClientSession *)self jsonFeedback];
+    jsonFeedback3 = [equalCopy jsonFeedback];
+    v65 = [jsonFeedback2 isEqual:jsonFeedback3];
 
     if (!v65)
     {
@@ -354,17 +354,17 @@
   {
   }
 
-  v5 = [(_CPClientSession *)self feedbacks];
-  v6 = [v4 feedbacks];
-  if ((v5 != 0) == (v6 == 0))
+  agent = [(_CPClientSession *)self feedbacks];
+  agent2 = [equalCopy feedbacks];
+  if ((agent != 0) == (agent2 == 0))
   {
 LABEL_64:
 
     goto LABEL_65;
   }
 
-  v66 = [(_CPClientSession *)self feedbacks];
-  if (!v66)
+  feedbacks = [(_CPClientSession *)self feedbacks];
+  if (!feedbacks)
   {
 
 LABEL_68:
@@ -372,10 +372,10 @@ LABEL_68:
     goto LABEL_66;
   }
 
-  v67 = v66;
-  v68 = [(_CPClientSession *)self feedbacks];
-  v69 = [v4 feedbacks];
-  v70 = [v68 isEqual:v69];
+  v67 = feedbacks;
+  feedbacks2 = [(_CPClientSession *)self feedbacks];
+  feedbacks3 = [equalCopy feedbacks];
+  v70 = [feedbacks2 isEqual:feedbacks3];
 
   if (v70)
   {
@@ -389,21 +389,21 @@ LABEL_66:
   return v71;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_CPClientSession *)self agent];
+  toCopy = to;
+  agent = [(_CPClientSession *)self agent];
 
-  if (v5)
+  if (agent)
   {
     agent = self->_agent;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_CPClientSession *)self userGuidString];
+  userGuidString = [(_CPClientSession *)self userGuidString];
 
-  if (v7)
+  if (userGuidString)
   {
     userGuidString = self->_userGuidString;
     PBDataWriterWriteStringField();
@@ -466,9 +466,9 @@ LABEL_66:
     PBDataWriterWriteBOOLField();
   }
 
-  v20 = [(_CPClientSession *)self parsecDeveloperID];
+  parsecDeveloperID = [(_CPClientSession *)self parsecDeveloperID];
 
-  if (v20)
+  if (parsecDeveloperID)
   {
     parsecDeveloperID = self->_parsecDeveloperID;
     PBDataWriterWriteStringField();
@@ -480,35 +480,35 @@ LABEL_66:
     PBDataWriterWriteBOOLField();
   }
 
-  v23 = [(_CPClientSession *)self countryCode];
+  countryCode = [(_CPClientSession *)self countryCode];
 
-  if (v23)
+  if (countryCode)
   {
     countryCode = self->_countryCode;
     PBDataWriterWriteStringField();
   }
 
-  v25 = [(_CPClientSession *)self locale];
+  locale = [(_CPClientSession *)self locale];
 
-  if (v25)
+  if (locale)
   {
     locale = self->_locale;
     PBDataWriterWriteStringField();
   }
 
-  v27 = [(_CPClientSession *)self usageSinceLookback];
+  usageSinceLookback = [(_CPClientSession *)self usageSinceLookback];
 
-  if (v27)
+  if (usageSinceLookback)
   {
-    v28 = [(_CPClientSession *)self usageSinceLookback];
+    usageSinceLookback2 = [(_CPClientSession *)self usageSinceLookback];
     PBDataWriterWriteSubmessage();
   }
 
-  v29 = [(_CPClientSession *)self cohortsFeedback];
+  cohortsFeedback = [(_CPClientSession *)self cohortsFeedback];
 
-  if (v29)
+  if (cohortsFeedback)
   {
-    v30 = [(_CPClientSession *)self cohortsFeedback];
+    cohortsFeedback2 = [(_CPClientSession *)self cohortsFeedback];
     PBDataWriterWriteSubmessage();
   }
 
@@ -568,9 +568,9 @@ LABEL_66:
     PBDataWriterWriteBOOLField();
   }
 
-  v41 = [(_CPClientSession *)self jsonFeedback];
+  jsonFeedback = [(_CPClientSession *)self jsonFeedback];
 
-  if (v41)
+  if (jsonFeedback)
   {
     jsonFeedback = self->_jsonFeedback;
     PBDataWriterWriteDataField();
@@ -611,73 +611,73 @@ LABEL_66:
   v49 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFeedback:(id)a3
+- (void)addFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   feedbacks = self->_feedbacks;
-  v8 = v4;
+  v8 = feedbackCopy;
   if (!feedbacks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_feedbacks;
-    self->_feedbacks = v6;
+    self->_feedbacks = array;
 
-    v4 = v8;
+    feedbackCopy = v8;
     feedbacks = self->_feedbacks;
   }
 
-  [(NSArray *)feedbacks addObject:v4];
+  [(NSArray *)feedbacks addObject:feedbackCopy];
 }
 
-- (void)setFeedback:(id)a3
+- (void)setFeedback:(id)feedback
 {
-  v4 = [a3 mutableCopy];
+  v4 = [feedback mutableCopy];
   feedbacks = self->_feedbacks;
   self->_feedbacks = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addExperimentInfo:(id)a3
+- (void)addExperimentInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   experimentInfos = self->_experimentInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!experimentInfos)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_experimentInfos;
-    self->_experimentInfos = v6;
+    self->_experimentInfos = array;
 
-    v4 = v8;
+    infoCopy = v8;
     experimentInfos = self->_experimentInfos;
   }
 
-  [(NSArray *)experimentInfos addObject:v4];
+  [(NSArray *)experimentInfos addObject:infoCopy];
 }
 
-- (void)setExperimentInfo:(id)a3
+- (void)setExperimentInfo:(id)info
 {
-  v4 = [a3 mutableCopy];
+  v4 = [info mutableCopy];
   experimentInfos = self->_experimentInfos;
   self->_experimentInfos = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setResourceVersions:(id)a3 forKey:(id)a4
+- (void)setResourceVersions:(id)versions forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  versionsCopy = versions;
+  keyCopy = key;
   if (!self->_resourceVersions)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     resourceVersions = self->_resourceVersions;
-    self->_resourceVersions = v8;
+    self->_resourceVersions = dictionary;
   }
 
-  v10 = v7;
-  v11 = v6;
+  v10 = keyCopy;
+  v11 = versionsCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -689,13 +689,13 @@ LABEL_66:
   }
 }
 
-- (BOOL)getResourceVersions:(id *)a3 forKey:(id)a4
+- (BOOL)getResourceVersions:(id *)versions forKey:(id)key
 {
-  v5 = [(NSDictionary *)self->_resourceVersions objectForKeyedSubscript:a4];
-  if (a3 && v5)
+  v5 = [(NSDictionary *)self->_resourceVersions objectForKeyedSubscript:key];
+  if (versions && v5)
   {
     v5 = v5;
-    *a3 = v5;
+    *versions = v5;
   }
 
   v6 = v5 != 0;
@@ -703,9 +703,9 @@ LABEL_66:
   return v6;
 }
 
-- (void)setResourceVersions:(id)a3
+- (void)setResourceVersions:(id)versions
 {
-  v4 = [a3 mutableCopy];
+  v4 = [versions mutableCopy];
   resourceVersions = self->_resourceVersions;
   self->_resourceVersions = v4;
 

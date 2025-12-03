@@ -15,7 +15,7 @@
   v4 = MEMORY[0x277CBEAC0];
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [a1 addLearnMoreButtonWithTarget:a1 action:sel__handleSubtitleTouchForOpenURL_ userInfo:v6];
+  [self addLearnMoreButtonWithTarget:self action:sel__handleSubtitleTouchForOpenURL_ userInfo:v6];
 }
 
 - (void)appendButtonWithKey:()HUAdditions target:action:userInfo:
@@ -24,17 +24,17 @@
   v9 = a3;
   v10 = a6;
   v11 = a4;
-  v12 = [a1 subtitle];
+  subtitle = [self subtitle];
 
-  if (!v12)
+  if (!subtitle)
   {
-    [a1 setSubtitle:@" "];
+    [self setSubtitle:@" "];
   }
 
-  v13 = [a1 contentView];
-  v14 = [v13 subtitleLabel];
+  contentView = [self contentView];
+  subtitleLabel = [contentView subtitleLabel];
 
-  if (v12)
+  if (subtitle)
   {
     v15 = _HULocalizedStringWithDefaultValue(v9, v9, 1);
   }
@@ -47,31 +47,31 @@
 
   v17 = objc_alloc(MEMORY[0x277CCA898]);
   v27 = *MEMORY[0x277D740C0];
-  v18 = [MEMORY[0x277D75348] hf_keyColor];
-  v28[0] = v18;
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  v28[0] = hf_keyColor;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   v20 = [v17 initWithString:v15 attributes:v19];
 
-  if (v12)
+  if (subtitle)
   {
     v21 = objc_alloc(MEMORY[0x277CCAB48]);
-    v22 = [a1 subtitle];
-    v23 = [v21 initWithString:v22];
+    subtitle2 = [self subtitle];
+    v23 = [v21 initWithString:subtitle2];
 
     [v23 appendAttributedString:v20];
     v24 = [v23 copy];
-    [v14 setAttributedText:v24];
+    [subtitleLabel setAttributedText:v24];
   }
 
   else
   {
-    [v14 setAttributedText:v20];
+    [subtitleLabel setAttributedText:v20];
   }
 
-  [v14 setUserInteractionEnabled:1];
+  [subtitleLabel setUserInteractionEnabled:1];
   v25 = [[HUStringInLabelTapGestureRecognizer alloc] initWithTarget:v11 action:a5 hitBoxString:v15 userInfo:v10];
 
-  [v14 addGestureRecognizer:v25];
+  [subtitleLabel addGestureRecognizer:v25];
 }
 
 - (void)openURL:()HUAdditions
@@ -81,20 +81,20 @@
   v7 = [[v4 alloc] initWithURL:v5];
 
   [v7 setModalPresentationStyle:1];
-  v6 = [MEMORY[0x277D75348] hf_keyColor];
-  [v7 setPreferredControlTintColor:v6];
+  hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+  [v7 setPreferredControlTintColor:hf_keyColor];
 
-  [a1 presentViewController:v7 animated:1 completion:0];
+  [self presentViewController:v7 animated:1 completion:0];
 }
 
 - (void)_handleSubtitleTouchForOpenURL:()HUAdditions
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"URL_KEY"];
+  userInfo = [a3 userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"URL_KEY"];
 
   if (v5)
   {
-    [a1 openURL:v5];
+    [self openURL:v5];
   }
 
   else

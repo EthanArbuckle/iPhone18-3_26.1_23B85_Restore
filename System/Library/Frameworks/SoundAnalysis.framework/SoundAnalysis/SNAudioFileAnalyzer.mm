@@ -1,7 +1,7 @@
 @interface SNAudioFileAnalyzer
-- (SNAudioFileAnalyzer)initWithImpl:(id)a3;
+- (SNAudioFileAnalyzer)initWithImpl:(id)impl;
 - (SNAudioFileAnalyzer)initWithURL:(NSURL *)url error:(NSError *)error;
-- (void)analyzeInRange:(id *)a3;
+- (void)analyzeInRange:(id *)range;
 @end
 
 @implementation SNAudioFileAnalyzer
@@ -25,28 +25,28 @@
   return v10;
 }
 
-- (SNAudioFileAnalyzer)initWithImpl:(id)a3
+- (SNAudioFileAnalyzer)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = SNAudioFileAnalyzer;
   v6 = [(SNAudioFileAnalyzer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
   }
 
   return v7;
 }
 
-- (void)analyzeInRange:(id *)a3
+- (void)analyzeInRange:(id *)range
 {
   impl = self->_impl;
-  v4 = *&a3->var0.var3;
-  v5[0] = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v5[0] = *&range->var0.var0;
   v5[1] = v4;
-  v5[2] = *&a3->var1.var1;
+  v5[2] = *&range->var1.var1;
   [(_SNAudioFileAnalyzer *)impl analyzeInRange:v5];
 }
 

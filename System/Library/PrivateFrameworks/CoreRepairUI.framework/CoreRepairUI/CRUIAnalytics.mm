@@ -1,7 +1,7 @@
 @interface CRUIAnalytics
 - (CRUIAnalytics)init;
-- (void)sendAsyncAnalyticsForEvent:(id)a3 moduleName:(id)a4;
-- (void)sendAsyncAnalyticsForEventIfNeeded:(id)a3 moduleName:(id)a4;
+- (void)sendAsyncAnalyticsForEvent:(id)event moduleName:(id)name;
+- (void)sendAsyncAnalyticsForEventIfNeeded:(id)needed moduleName:(id)name;
 @end
 
 @implementation CRUIAnalytics
@@ -38,24 +38,24 @@ void *__54__CRUIAnalytics_sendAnalyticsForRepairHistoryMismatch__block_invoke()
   return &unk_28597F170;
 }
 
-- (void)sendAsyncAnalyticsForEventIfNeeded:(id)a3 moduleName:(id)a4
+- (void)sendAsyncAnalyticsForEventIfNeeded:(id)needed moduleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  neededCopy = needed;
+  nameCopy = name;
+  if (neededCopy)
   {
-    v8 = [v6 length];
-    if (v7)
+    v8 = [neededCopy length];
+    if (nameCopy)
     {
-      if (v8 && [v7 length])
+      if (v8 && [nameCopy length])
       {
         serialAsyncQueue = self->serialAsyncQueue;
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __63__CRUIAnalytics_sendAsyncAnalyticsForEventIfNeeded_moduleName___block_invoke;
         v10[3] = &unk_278EB1D00;
-        v11 = v7;
-        v12 = v6;
+        v11 = nameCopy;
+        v12 = neededCopy;
         dispatch_async(serialAsyncQueue, v10);
       }
     }
@@ -102,24 +102,24 @@ id __63__CRUIAnalytics_sendAsyncAnalyticsForEventIfNeeded_moduleName___block_inv
   return v2;
 }
 
-- (void)sendAsyncAnalyticsForEvent:(id)a3 moduleName:(id)a4
+- (void)sendAsyncAnalyticsForEvent:(id)event moduleName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  eventCopy = event;
+  nameCopy = name;
+  if (eventCopy)
   {
-    v8 = [v6 length];
-    if (v7)
+    v8 = [eventCopy length];
+    if (nameCopy)
     {
-      if (v8 && [v7 length])
+      if (v8 && [nameCopy length])
       {
         serialAsyncQueue = self->serialAsyncQueue;
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __55__CRUIAnalytics_sendAsyncAnalyticsForEvent_moduleName___block_invoke;
         v10[3] = &unk_278EB1D00;
-        v11 = v6;
-        v12 = v7;
+        v11 = eventCopy;
+        v12 = nameCopy;
         dispatch_async(serialAsyncQueue, v10);
       }
     }

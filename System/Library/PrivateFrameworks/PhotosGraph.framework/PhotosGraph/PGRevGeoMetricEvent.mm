@@ -1,5 +1,5 @@
 @interface PGRevGeoMetricEvent
-- (PGRevGeoMetricEvent)initWithNumberOfAssetClustersPerMomentMean:(double)a3 numberOfAssetClustersPerMomentStdDev:(double)a4 numberOfAssetsPerClusterMean:(double)a5 numberOfAssetsPerClusterStdDev:(double)a6 ratioAssetClustersWithin10mOfCenter:(double)a7 ratioAssetClustersWithin20mOfCenter:(double)a8 ratioAssetClustersWithin50mOfCenter:(double)a9 ratioAssetClustersWithin100mOfCenter:(double)a10 ratioAssetClusters100mPlusFromCenter:(double)a11;
+- (PGRevGeoMetricEvent)initWithNumberOfAssetClustersPerMomentMean:(double)mean numberOfAssetClustersPerMomentStdDev:(double)dev numberOfAssetsPerClusterMean:(double)clusterMean numberOfAssetsPerClusterStdDev:(double)stdDev ratioAssetClustersWithin10mOfCenter:(double)center ratioAssetClustersWithin20mOfCenter:(double)ofCenter ratioAssetClustersWithin50mOfCenter:(double)within50mOfCenter ratioAssetClustersWithin100mOfCenter:(double)self0 ratioAssetClusters100mPlusFromCenter:(double)self1;
 - (id)payload;
 @end
 
@@ -41,22 +41,22 @@
   return v12;
 }
 
-- (PGRevGeoMetricEvent)initWithNumberOfAssetClustersPerMomentMean:(double)a3 numberOfAssetClustersPerMomentStdDev:(double)a4 numberOfAssetsPerClusterMean:(double)a5 numberOfAssetsPerClusterStdDev:(double)a6 ratioAssetClustersWithin10mOfCenter:(double)a7 ratioAssetClustersWithin20mOfCenter:(double)a8 ratioAssetClustersWithin50mOfCenter:(double)a9 ratioAssetClustersWithin100mOfCenter:(double)a10 ratioAssetClusters100mPlusFromCenter:(double)a11
+- (PGRevGeoMetricEvent)initWithNumberOfAssetClustersPerMomentMean:(double)mean numberOfAssetClustersPerMomentStdDev:(double)dev numberOfAssetsPerClusterMean:(double)clusterMean numberOfAssetsPerClusterStdDev:(double)stdDev ratioAssetClustersWithin10mOfCenter:(double)center ratioAssetClustersWithin20mOfCenter:(double)ofCenter ratioAssetClustersWithin50mOfCenter:(double)within50mOfCenter ratioAssetClustersWithin100mOfCenter:(double)self0 ratioAssetClusters100mPlusFromCenter:(double)self1
 {
   v20.receiver = self;
   v20.super_class = PGRevGeoMetricEvent;
   result = [(PGRevGeoMetricEvent *)&v20 init];
   if (result)
   {
-    result->_numberOfAssetClustersPerMomentMean = a3;
-    result->_numberOfAssetClustersPerMomentStdDev = a4;
-    result->_numberOfAssetsPerClusterMean = a5;
-    result->_numberOfAssetsPerClusterStdDev = a6;
-    result->_ratioAssetClustersWithin10mOfCenter = a7;
-    result->_ratioAssetClustersWithin20mOfCenter = a8;
-    result->_ratioAssetClustersWithin50mOfCenter = a9;
-    result->_ratioAssetClustersWithin100mOfCenter = a10;
-    result->_ratioAssetClusters100mPlusFromCenter = a11;
+    result->_numberOfAssetClustersPerMomentMean = mean;
+    result->_numberOfAssetClustersPerMomentStdDev = dev;
+    result->_numberOfAssetsPerClusterMean = clusterMean;
+    result->_numberOfAssetsPerClusterStdDev = stdDev;
+    result->_ratioAssetClustersWithin10mOfCenter = center;
+    result->_ratioAssetClustersWithin20mOfCenter = ofCenter;
+    result->_ratioAssetClustersWithin50mOfCenter = within50mOfCenter;
+    result->_ratioAssetClustersWithin100mOfCenter = within100mOfCenter;
+    result->_ratioAssetClusters100mPlusFromCenter = fromCenter;
   }
 
   return result;

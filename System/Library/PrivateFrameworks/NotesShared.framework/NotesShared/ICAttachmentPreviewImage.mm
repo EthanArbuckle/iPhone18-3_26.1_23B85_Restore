@@ -1,28 +1,28 @@
 @interface ICAttachmentPreviewImage
-+ (id)attachmentPreviewImageIdentifiersForAccount:(id)a3;
-+ (id)attachmentPreviewImageWithIdentifier:(id)a3 inContext:(id)a4;
++ (id)attachmentPreviewImageIdentifiersForAccount:(id)account;
++ (id)attachmentPreviewImageWithIdentifier:(id)identifier inContext:(id)context;
 + (id)concurrentFileLoadLimitSemaphore;
 + (id)fileGlobalQueue;
 + (id)fileQueueGroup;
-+ (id)newAttachmentPreviewImageWithIdentifier:(id)a3 attachment:(id)a4;
-+ (id)previewImageURLsForIdentifier:(id)a3 account:(id)a4;
-+ (int64_t)updateFileWriteCounterBy:(int64_t)a3 identifier:(id)a4;
-+ (void)deleteStrandedAttachmentPreviewImagesInContext:(id)a3;
-+ (void)purgeAllAttachmentPreviewImagesInContext:(id)a3;
-+ (void)purgePreviewImageFilesForIdentifiers:(id)a3 account:(id)a4;
++ (id)newAttachmentPreviewImageWithIdentifier:(id)identifier attachment:(id)attachment;
++ (id)previewImageURLsForIdentifier:(id)identifier account:(id)account;
++ (int64_t)updateFileWriteCounterBy:(int64_t)by identifier:(id)identifier;
++ (void)deleteStrandedAttachmentPreviewImagesInContext:(id)context;
++ (void)purgeAllAttachmentPreviewImagesInContext:(id)context;
++ (void)purgePreviewImageFilesForIdentifiers:(id)identifiers account:(id)account;
 + (void)waitUntilAllFileWritesAreFinished;
 - (BOOL)hasAnyPNGPreviewImageFiles;
 - (BOOL)imageIsValid;
 - (BOOL)imageIsWriting;
-- (BOOL)makeSurePreviewImageDirectoryExists:(id *)a3;
-- (BOOL)setImageData:(id)a3 withSize:(CGSize)a4 scale:(double)a5 appearanceType:(unint64_t)a6;
-- (BOOL)setScaledImageFromImageSrc:(CGImageSource *)a3 typeUTI:(__CFString *)a4;
+- (BOOL)makeSurePreviewImageDirectoryExists:(id *)exists;
+- (BOOL)setImageData:(id)data withSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type;
+- (BOOL)setScaledImageFromImageSrc:(CGImageSource *)src typeUTI:(__CFString *)i;
 - (BOOL)shouldSyncToCloud;
 - (CGAffineTransform)orientedImageTransform;
 - (CGSize)size;
 - (ICAccount)placeholderAccount;
 - (ICAssetGenerationManager)generationManager;
-- (ICAttachmentPreviewImage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ICAttachmentPreviewImage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSData)metadata;
 - (OS_dispatch_queue)fileQueue;
 - (id)cloudAccount;
@@ -40,9 +40,9 @@
 - (id)previewImagePathExtension;
 - (id)previewImageURL;
 - (id)primaryEncryptedData;
-- (id)primaryEncryptedDataFromRecord:(id)a3;
+- (id)primaryEncryptedDataFromRecord:(id)record;
 - (id)urls;
-- (void)accountWillChangeToAccount:(id)a3;
+- (void)accountWillChangeToAccount:(id)account;
 - (void)awakeFromFetch;
 - (void)clearDecryptedData;
 - (void)containerAccount;
@@ -53,20 +53,20 @@
 - (void)invalidateOrientedImage;
 - (void)prepareForDeletion;
 - (void)previewImageURL;
-- (void)removeItemAtURL:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setPrimaryEncryptedData:(id)a3;
+- (void)removeItemAtURL:(id)l;
+- (void)setMetadata:(id)metadata;
+- (void)setPrimaryEncryptedData:(id)data;
 - (void)updateFlagToExcludeFromCloudBackup;
 - (void)willTurnIntoFault;
 @end
 
 @implementation ICAttachmentPreviewImage
 
-- (ICAttachmentPreviewImage)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ICAttachmentPreviewImage)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = ICAttachmentPreviewImage;
-  result = [(ICCloudSyncingObject *)&v5 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  result = [(ICCloudSyncingObject *)&v5 initWithEntity:entity insertIntoManagedObjectContext:context];
   __dmb(0xBu);
   return result;
 }
@@ -91,17 +91,17 @@
   return result;
 }
 
-+ (void)purgePreviewImageFilesForIdentifiers:(id)a3 account:(id)a4
++ (void)purgePreviewImageFilesForIdentifiers:(id)identifiers account:(id)account
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  identifiersCopy = identifiers;
+  accountCopy = account;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v22 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
   v7 = 0;
   if (v22)
@@ -120,7 +120,7 @@
         v24 = v8;
         v9 = *(*(&v30 + 1) + 8 * v8);
         context = objc_autoreleasePoolPush();
-        v10 = [a1 previewImageURLsForIdentifier:v9 account:v21];
+        v10 = [self previewImageURLsForIdentifier:v9 account:accountCopy];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -143,7 +143,7 @@
 
               v16 = *(*(&v26 + 1) + 8 * v14);
               v25 = v7;
-              [v6 removeItemAtURL:v16 error:&v25];
+              [defaultManager removeItemAtURL:v16 error:&v25];
               v7 = v25;
 
               if (v7 && [v7 code] != 4)
@@ -183,15 +183,15 @@
 
 - (OS_dispatch_queue)fileQueue
 {
-  v3 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
   v4 = +[ICAttachmentPreviewImage fileGlobalQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__ICAttachmentPreviewImage_fileQueue__block_invoke;
   v9[3] = &unk_278194AD8;
   v9[4] = self;
-  v10 = v3;
-  v5 = v3;
+  v10 = identifier;
+  v5 = identifier;
   dispatch_sync(v4, v9);
 
   fileQueue = self->_fileQueue;
@@ -238,9 +238,9 @@ void __37__ICAttachmentPreviewImage_fileQueue__block_invoke(uint64_t a1)
   }
 }
 
-+ (int64_t)updateFileWriteCounterBy:(int64_t)a3 identifier:(id)a4
++ (int64_t)updateFileWriteCounterBy:(int64_t)by identifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -250,10 +250,10 @@ void __37__ICAttachmentPreviewImage_fileQueue__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __64__ICAttachmentPreviewImage_updateFileWriteCounterBy_identifier___block_invoke;
   block[3] = &unk_278196870;
-  v11 = v5;
+  v11 = identifierCopy;
   v12 = &v14;
-  v13 = a3;
-  v7 = v5;
+  byCopy = by;
+  v7 = identifierCopy;
   dispatch_sync(v6, block);
 
   v8 = v15[3];
@@ -358,8 +358,8 @@ void __42__ICAttachmentPreviewImage_fileQueueGroup__block_invoke()
 
 - (void)prepareForDeletion
 {
-  v2 = [a1 identifier];
-  v3 = [a1 objectID];
+  identifier = [self identifier];
+  objectID = [self objectID];
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_4_7(&dword_214D51000, v4, v5, "Not deleting files for attachment preview image - identifier: %@, object ID: %@", v6, v7, v8, v9, 2u);
 }
@@ -372,23 +372,23 @@ void __42__ICAttachmentPreviewImage_fileQueueGroup__block_invoke()
   [(ICAttachmentPreviewImage *)self invalidateCache];
 }
 
-- (void)accountWillChangeToAccount:(id)a3
+- (void)accountWillChangeToAccount:(id)account
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(ICAttachmentPreviewImage *)self containerAccount];
+  accountCopy = account;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  containerAccount = [(ICAttachmentPreviewImage *)self containerAccount];
   v7 = objc_opt_class();
-  v8 = [(ICAttachmentPreviewImage *)self identifier];
-  v9 = [v7 previewImageURLsForIdentifier:v8 account:v6];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
+  v9 = [v7 previewImageURLsForIdentifier:identifier account:containerAccount];
 
   v10 = objc_opt_class();
-  v31 = self;
-  v11 = [(ICAttachmentPreviewImage *)self identifier];
-  v12 = [v10 previewImageURLsForIdentifier:v11 account:v4];
+  selfCopy = self;
+  identifier2 = [(ICAttachmentPreviewImage *)self identifier];
+  v12 = [v10 previewImageURLsForIdentifier:identifier2 account:accountCopy];
 
-  v32 = v6;
-  if ([v6 isEqual:v4])
+  v32 = containerAccount;
+  if ([containerAccount isEqual:accountCopy])
   {
     v13 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -410,11 +410,11 @@ void __42__ICAttachmentPreviewImage_fileQueueGroup__block_invoke()
         goto LABEL_24;
       }
 
-      if (v4)
+      if (accountCopy)
       {
         v16 = [v9 objectAtIndexedSubscript:v15];
-        v17 = [v16 path];
-        if (![v5 fileExistsAtPath:v17])
+        path = [v16 path];
+        if (![defaultManager fileExistsAtPath:path])
         {
           goto LABEL_19;
         }
@@ -437,9 +437,9 @@ LABEL_20:
     }
 
     v21 = [v12 objectAtIndexedSubscript:v15];
-    v22 = [v21 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v21 URLByDeletingLastPathComponent];
     v35 = v33;
-    [v5 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:&v35];
+    [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v35];
     v23 = v35;
 
     if (v23)
@@ -456,7 +456,7 @@ LABEL_20:
     v25 = [v9 objectAtIndexedSubscript:v15];
     v26 = [v12 objectAtIndexedSubscript:v15];
     v34 = v23;
-    [v5 moveItemAtURL:v25 toURL:v26 error:&v34];
+    [defaultManager moveItemAtURL:v25 toURL:v26 error:&v34];
     v27 = v34;
 
     v33 = v27;
@@ -466,19 +466,19 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    v17 = os_log_create("com.apple.notes", "PreviewGeneration");
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    path = os_log_create("com.apple.notes", "PreviewGeneration");
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
       v28 = [v9 objectAtIndexedSubscript:v15];
-      v29 = [v28 lastPathComponent];
+      lastPathComponent = [v28 lastPathComponent];
       *buf = 138412546;
-      v37 = v29;
+      v37 = lastPathComponent;
       v38 = 2112;
       v39 = v33;
-      _os_log_error_impl(&dword_214D51000, v17, OS_LOG_TYPE_ERROR, "Error moving preview image file %@, error %@", buf, 0x16u);
+      _os_log_error_impl(&dword_214D51000, path, OS_LOG_TYPE_ERROR, "Error moving preview image file %@, error %@", buf, 0x16u);
     }
 
-    v16 = v17;
+    v16 = path;
 LABEL_19:
 
     goto LABEL_20;
@@ -486,22 +486,22 @@ LABEL_19:
 
   v33 = 0;
 LABEL_24:
-  if (v4)
+  if (accountCopy)
   {
-    [(ICAttachmentPreviewImage *)v31 setPlaceholderAccount:v4];
+    [(ICAttachmentPreviewImage *)selfCopy setPlaceholderAccount:accountCopy];
   }
 }
 
-- (void)removeItemAtURL:(id)a3
+- (void)removeItemAtURL:(id)l
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (l)
   {
     v3 = MEMORY[0x277CCAA00];
-    v4 = a3;
-    v5 = [v3 defaultManager];
+    lCopy = l;
+    defaultManager = [v3 defaultManager];
     v9 = 0;
-    v6 = [v5 removeItemAtURL:v4 error:&v9];
+    v6 = [defaultManager removeItemAtURL:lCopy error:&v9];
 
     v7 = v9;
     if ((v6 & 1) == 0 && [v7 code] != 4)
@@ -525,8 +525,8 @@ LABEL_24:
     [(ICAttachmentPreviewImage *)self clearCachedOrientedImage];
   }
 
-  v3 = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
-  [(ICAttachmentPreviewImage *)self removeItemAtURL:v3];
+  orientedPreviewImageURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
+  [(ICAttachmentPreviewImage *)self removeItemAtURL:orientedPreviewImageURLWithoutCreating];
 }
 
 - (void)invalidateImage
@@ -552,15 +552,15 @@ LABEL_24:
 
 - (CGAffineTransform)orientedImageTransform
 {
-  v4 = [(ICAttachmentPreviewImage *)self attachment];
-  if (v4)
+  attachment = [(ICAttachmentPreviewImage *)self attachment];
+  if (attachment)
   {
-    v10 = v4;
-    v5 = [v4 attachmentModel];
-    v6 = v5;
-    if (v5)
+    v10 = attachment;
+    attachmentModel = [attachment attachmentModel];
+    v6 = attachmentModel;
+    if (attachmentModel)
     {
-      [v5 previewImageOrientationTransform];
+      [attachmentModel previewImageOrientationTransform];
     }
 
     else
@@ -570,7 +570,7 @@ LABEL_24:
       *&retstr->a = 0u;
     }
 
-    v4 = v10;
+    attachment = v10;
   }
 
   else
@@ -592,9 +592,9 @@ LABEL_24:
     return 1;
   }
 
-  v4 = [(ICAttachmentPreviewImage *)self isPasswordProtected];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if (v4)
+  isPasswordProtected = [(ICAttachmentPreviewImage *)self isPasswordProtected];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (isPasswordProtected)
   {
     [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
   }
@@ -604,90 +604,90 @@ LABEL_24:
     [(ICAttachmentPreviewImage *)self previewImageURL];
   }
   v6 = ;
-  v7 = [v6 path];
-  v8 = [v5 fileExistsAtPath:v7];
+  path = [v6 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   return v8;
 }
 
 - (BOOL)imageIsWriting
 {
-  v2 = [(ICAttachmentPreviewImage *)self identifier];
-  v3 = [ICAttachmentPreviewImage updateFileWriteCounterBy:0 identifier:v2]> 0;
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
+  v3 = [ICAttachmentPreviewImage updateFileWriteCounterBy:0 identifier:identifier]> 0;
 
   return v3;
 }
 
-- (BOOL)setImageData:(id)a3 withSize:(CGSize)a4 scale:(double)a5 appearanceType:(unint64_t)a6
+- (BOOL)setImageData:(id)data withSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
+  typeCopy = type;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 1;
-  v12 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (!v12)
+  if (!identifier)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.identifier != ((void*)0)" functionName:"-[ICAttachmentPreviewImage setImageData:withSize:scale:appearanceType:]" simulateCrash:1 showAlert:0 format:@"Why doesn't the preview image have an identifier?"];
   }
 
-  v13 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier2 = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (!v13)
+  if (!identifier2)
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [(ICAttachmentPreviewImage *)self setIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(ICAttachmentPreviewImage *)self setIdentifier:uUIDString];
   }
 
   [(ICAttachmentPreviewImage *)self invalidateImage];
-  v16 = [(ICAttachmentPreviewImage *)self generationManager];
-  v17 = [v16 beginGeneration];
+  generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+  beginGeneration = [generationManager beginGeneration];
 
-  if (v17)
+  if (beginGeneration)
   {
-    v18 = [(ICAttachmentPreviewImage *)self previewImageURL];
-    v19 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
-    v20 = [(ICAttachmentPreviewImage *)self isPasswordProtected];
-    v21 = [(ICAttachmentPreviewImage *)self fileQueue];
-    v22 = [(ICAttachmentPreviewImage *)self identifier];
+    previewImageURL = [(ICAttachmentPreviewImage *)self previewImageURL];
+    encryptedPreviewImageURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
+    isPasswordProtected = [(ICAttachmentPreviewImage *)self isPasswordProtected];
+    fileQueue = [(ICAttachmentPreviewImage *)self fileQueue];
+    identifier3 = [(ICAttachmentPreviewImage *)self identifier];
     [(ICAttachmentPreviewImage *)self setWidth:width];
     [(ICAttachmentPreviewImage *)self setHeight:height];
-    [(ICAttachmentPreviewImage *)self setScale:a5];
-    v23 = [MEMORY[0x277CBEAA8] date];
-    [(ICAttachmentPreviewImage *)self setModifiedDate:v23];
+    [(ICAttachmentPreviewImage *)self setScale:scale];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(ICAttachmentPreviewImage *)self setModifiedDate:date];
 
-    [(ICAttachmentPreviewImage *)self setAppearanceType:v6];
+    [(ICAttachmentPreviewImage *)self setAppearanceType:typeCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__ICAttachmentPreviewImage_setImageData_withSize_scale_appearanceType___block_invoke;
     block[3] = &unk_278199EF8;
-    v24 = v22;
+    v24 = identifier3;
     v32 = v24;
-    v33 = self;
+    selfCopy = self;
     v37 = &v39;
-    v38 = v20;
-    v34 = v11;
-    v25 = v18;
+    v38 = isPasswordProtected;
+    v34 = dataCopy;
+    v25 = previewImageURL;
     v35 = v25;
-    v26 = v19;
+    v26 = encryptedPreviewImageURL;
     v36 = v26;
-    dispatch_sync(v21, block);
+    dispatch_sync(fileQueue, block);
     if (*(v40 + 24) == 1)
     {
-      v27 = [(ICAttachmentPreviewImage *)self generationManager];
-      v28 = [v27 commitGeneration];
-      *(v40 + 24) = v28;
+      generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+      commitGeneration = [generationManager2 commitGeneration];
+      *(v40 + 24) = commitGeneration;
     }
 
     else
     {
-      v27 = [(ICAttachmentPreviewImage *)self generationManager];
-      [v27 rollbackGeneration];
+      generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+      [generationManager2 rollbackGeneration];
     }
 
     v29 = *(v40 + 24);
@@ -793,38 +793,38 @@ void __71__ICAttachmentPreviewImage_setImageData_withSize_scale_appearanceType__
   dispatch_group_leave(v21);
 }
 
-- (BOOL)setScaledImageFromImageSrc:(CGImageSource *)a3 typeUTI:(__CFString *)a4
+- (BOOL)setScaledImageFromImageSrc:(CGImageSource *)src typeUTI:(__CFString *)i
 {
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  v7 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (!v7)
+  if (!identifier)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.identifier != ((void*)0)" functionName:"-[ICAttachmentPreviewImage setScaledImageFromImageSrc:typeUTI:]" simulateCrash:1 showAlert:0 format:@"Why doesn't the preview image have an identifier?"];
   }
 
-  v8 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier2 = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (!v8)
+  if (!identifier2)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    [(ICAttachmentPreviewImage *)self setIdentifier:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(ICAttachmentPreviewImage *)self setIdentifier:uUIDString];
   }
 
   [(ICAttachmentPreviewImage *)self invalidateImage];
-  v11 = [(ICAttachmentPreviewImage *)self generationManager];
-  v12 = [v11 beginGeneration];
+  generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+  beginGeneration = [generationManager beginGeneration];
 
-  if (v12)
+  if (beginGeneration)
   {
-    v13 = [(ICAttachmentPreviewImage *)self previewImageURL];
-    v14 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
-    v15 = [(ICAttachmentPreviewImage *)self identifier];
-    v16 = [(ICAttachmentPreviewImage *)self isPasswordProtected];
+    previewImageURL = [(ICAttachmentPreviewImage *)self previewImageURL];
+    encryptedPreviewImageURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
+    identifier3 = [(ICAttachmentPreviewImage *)self identifier];
+    isPasswordProtected = [(ICAttachmentPreviewImage *)self isPasswordProtected];
     [(ICAttachmentPreviewImage *)self width];
     v18 = v17;
     [(ICAttachmentPreviewImage *)self height];
@@ -833,37 +833,37 @@ void __71__ICAttachmentPreviewImage_setImageData_withSize_scale_appearanceType__
       v18 = v19;
     }
 
-    CFRetain(a3);
-    v20 = [(ICAttachmentPreviewImage *)self fileQueue];
+    CFRetain(src);
+    fileQueue = [(ICAttachmentPreviewImage *)self fileQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__ICAttachmentPreviewImage_setScaledImageFromImageSrc_typeUTI___block_invoke;
     block[3] = &unk_278199F20;
-    v21 = v15;
+    v21 = identifier3;
     v29 = v21;
-    v30 = self;
-    v37 = v16;
-    v34 = a4;
-    v22 = v13;
-    v35 = a3;
+    selfCopy = self;
+    v37 = isPasswordProtected;
+    iCopy = i;
+    v22 = previewImageURL;
+    srcCopy = src;
     v36 = v18;
     v31 = v22;
     v33 = &v38;
-    v23 = v14;
+    v23 = encryptedPreviewImageURL;
     v32 = v23;
-    dispatch_sync(v20, block);
+    dispatch_sync(fileQueue, block);
 
     if (*(v39 + 24) == 1)
     {
-      v24 = [(ICAttachmentPreviewImage *)self generationManager];
-      v25 = [v24 commitGeneration];
-      *(v39 + 24) = v25;
+      generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+      commitGeneration = [generationManager2 commitGeneration];
+      *(v39 + 24) = commitGeneration;
     }
 
     else
     {
-      v24 = [(ICAttachmentPreviewImage *)self generationManager];
-      [v24 rollbackGeneration];
+      generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+      [generationManager2 rollbackGeneration];
     }
 
     v26 = *(v39 + 24);
@@ -983,55 +983,55 @@ LABEL_12:
   dispatch_group_leave(v22);
 }
 
-- (BOOL)makeSurePreviewImageDirectoryExists:(id *)a3
+- (BOOL)makeSurePreviewImageDirectoryExists:(id *)exists
 {
-  v4 = [(ICAttachmentPreviewImage *)self containerAccount];
-  v5 = [v4 previewImageDirectoryURL];
-  v6 = v5;
-  if (v5)
+  containerAccount = [(ICAttachmentPreviewImage *)self containerAccount];
+  previewImageDirectoryURL = [containerAccount previewImageDirectoryURL];
+  v6 = previewImageDirectoryURL;
+  if (previewImageDirectoryURL)
   {
-    v7 = v5;
+    defaultPreviewImageDirectoryURL = previewImageDirectoryURL;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
+    defaultPreviewImageDirectoryURL = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
   }
 
-  v8 = v7;
+  v8 = defaultPreviewImageDirectoryURL;
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:exists];
 
   return v10;
 }
 
 - (id)containerAccount
 {
-  v3 = [(ICAttachmentPreviewImage *)self attachment];
-  v4 = [v3 note];
-  v5 = [v4 account];
-  v6 = v5;
-  if (v5)
+  attachment = [(ICAttachmentPreviewImage *)self attachment];
+  note = [attachment note];
+  account = [note account];
+  v6 = account;
+  if (account)
   {
-    v7 = v5;
+    account2 = account;
   }
 
   else
   {
-    v8 = [(ICAttachmentPreviewImage *)self attachment];
-    v9 = [v8 note];
-    v10 = [v9 folder];
-    v7 = [v10 account];
+    attachment2 = [(ICAttachmentPreviewImage *)self attachment];
+    note2 = [attachment2 note];
+    folder = [note2 folder];
+    account2 = [folder account];
   }
 
-  if (!v7)
+  if (!account2)
   {
-    v7 = [(ICAttachmentPreviewImage *)self placeholderAccount];
-    if (!v7)
+    account2 = [(ICAttachmentPreviewImage *)self placeholderAccount];
+    if (!account2)
     {
-      v11 = [(ICAttachmentPreviewImage *)self managedObjectContext];
-      v7 = [ICAccount defaultAccountInContext:v11];
+      managedObjectContext = [(ICAttachmentPreviewImage *)self managedObjectContext];
+      account2 = [ICAccount defaultAccountInContext:managedObjectContext];
 
       v12 = os_log_create("com.apple.notes", "PreviewGeneration");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1041,19 +1041,19 @@ LABEL_12:
     }
   }
 
-  [(ICAttachmentPreviewImage *)self setPlaceholderAccount:v7];
+  [(ICAttachmentPreviewImage *)self setPlaceholderAccount:account2];
 
-  return v7;
+  return account2;
 }
 
 - (id)previewImagePathExtension
 {
-  v2 = [(ICAttachmentPreviewImage *)self attachment];
-  v3 = [v2 attachmentModel];
-  v4 = [v3 previewImageTypeUTI];
+  attachment = [(ICAttachmentPreviewImage *)self attachment];
+  attachmentModel = [attachment attachmentModel];
+  previewImageTypeUTI = [attachmentModel previewImageTypeUTI];
   v5 = *MEMORY[0x277CE1DC0];
-  v6 = [*MEMORY[0x277CE1DC0] identifier];
-  if ([v4 isEqualToString:v6])
+  identifier = [*MEMORY[0x277CE1DC0] identifier];
+  if ([previewImageTypeUTI isEqualToString:identifier])
   {
     v7 = v5;
   }
@@ -1063,40 +1063,40 @@ LABEL_12:
     v7 = *MEMORY[0x277CE1E10];
   }
 
-  v8 = [v7 preferredFilenameExtension];
+  preferredFilenameExtension = [v7 preferredFilenameExtension];
 
-  return v8;
+  return preferredFilenameExtension;
 }
 
 - (id)previewImageDirectoryURL
 {
-  v2 = [(ICAttachmentPreviewImage *)self containerAccount];
-  v3 = [v2 previewImageDirectoryURL];
-  v4 = v3;
-  if (v3)
+  containerAccount = [(ICAttachmentPreviewImage *)self containerAccount];
+  previewImageDirectoryURL = [containerAccount previewImageDirectoryURL];
+  v4 = previewImageDirectoryURL;
+  if (previewImageDirectoryURL)
   {
-    v5 = v3;
+    defaultPreviewImageDirectoryURL = previewImageDirectoryURL;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
+    defaultPreviewImageDirectoryURL = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
   }
 
-  v6 = v5;
+  v6 = defaultPreviewImageDirectoryURL;
 
   return v6;
 }
 
 - (id)containerDirectoryURL
 {
-  v3 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(ICAttachmentPreviewImage *)self previewImageDirectoryURL];
-    v5 = [(ICAttachmentPreviewImage *)self identifier];
-    v6 = [v4 URLByAppendingPathComponent:v5 isDirectory:1];
+    previewImageDirectoryURL = [(ICAttachmentPreviewImage *)self previewImageDirectoryURL];
+    identifier2 = [(ICAttachmentPreviewImage *)self identifier];
+    v6 = [previewImageDirectoryURL URLByAppendingPathComponent:identifier2 isDirectory:1];
   }
 
   else
@@ -1109,16 +1109,16 @@ LABEL_12:
 
 - (id)previewImageFallbackURL
 {
-  v3 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(ICAttachmentPreviewImage *)self previewImageDirectoryURL];
-    v5 = [(ICAttachmentPreviewImage *)self identifier];
-    v6 = [v4 URLByAppendingPathComponent:v5 isDirectory:0];
+    previewImageDirectoryURL = [(ICAttachmentPreviewImage *)self previewImageDirectoryURL];
+    identifier2 = [(ICAttachmentPreviewImage *)self identifier];
+    v6 = [previewImageDirectoryURL URLByAppendingPathComponent:identifier2 isDirectory:0];
 
-    v7 = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
-    v8 = [v6 URLByAppendingPathExtension:v7];
+    previewImagePathExtension = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
+    v8 = [v6 URLByAppendingPathExtension:previewImagePathExtension];
   }
 
   else
@@ -1131,43 +1131,43 @@ LABEL_12:
 
 - (id)previewImageURL
 {
-  v3 = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
-  v4 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
-  v5 = [(ICAttachmentPreviewImage *)self generationManager];
-  v6 = [v5 generationURL];
+  previewImageFallbackURL = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
+  encryptedPreviewImageFallbackURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
+  generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+  generationURL = [generationManager generationURL];
 
-  if (!v6)
+  if (!generationURL)
   {
-    v16 = v3;
+    v16 = previewImageFallbackURL;
     v14 = 0;
     goto LABEL_18;
   }
 
-  if (v3)
+  if (previewImageFallbackURL)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v23 = 0;
-    v8 = [v7 removeItemAtURL:v3 error:&v23];
+    v8 = [defaultManager removeItemAtURL:previewImageFallbackURL error:&v23];
     v9 = v23;
     v10 = v9;
     if ((v8 & 1) == 0)
     {
-      v11 = [v9 code];
+      code = [v9 code];
 
-      if (v11 == 4)
+      if (code == 4)
       {
         goto LABEL_8;
       }
 
-      v7 = os_log_create("com.apple.notes", "PreviewGeneration");
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      defaultManager = os_log_create("com.apple.notes", "PreviewGeneration");
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
         [ICAttachmentPreviewImage previewImageURL];
       }
     }
 
 LABEL_8:
-    if (v4)
+    if (encryptedPreviewImageFallbackURL)
     {
       goto LABEL_9;
     }
@@ -1178,15 +1178,15 @@ LABEL_16:
   }
 
   v10 = 0;
-  if (!v4)
+  if (!encryptedPreviewImageFallbackURL)
   {
     goto LABEL_16;
   }
 
 LABEL_9:
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v22 = v10;
-  v13 = [v12 removeItemAtURL:v4 error:&v22];
+  v13 = [defaultManager2 removeItemAtURL:encryptedPreviewImageFallbackURL error:&v22];
   v14 = v22;
 
   if (v13)
@@ -1196,12 +1196,12 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v15 = [v14 code];
+  code2 = [v14 code];
 
-  if (v15 != 4)
+  if (code2 != 4)
   {
-    v12 = os_log_create("com.apple.notes", "PreviewGeneration");
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    defaultManager2 = os_log_create("com.apple.notes", "PreviewGeneration");
+    if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_ERROR))
     {
       [ICAttachmentPreviewImage previewImageURL];
     }
@@ -1210,12 +1210,12 @@ LABEL_13:
   }
 
 LABEL_17:
-  v17 = [(ICAttachmentPreviewImage *)self generationManager];
-  v18 = [v17 generationURL];
-  v19 = [v18 URLByAppendingPathComponent:@"Preview" isDirectory:0];
+  generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+  generationURL2 = [generationManager2 generationURL];
+  v19 = [generationURL2 URLByAppendingPathComponent:@"Preview" isDirectory:0];
 
-  v20 = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
-  v16 = [v19 URLByAppendingPathExtension:v20];
+  previewImagePathExtension = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
+  v16 = [v19 URLByAppendingPathExtension:previewImagePathExtension];
 
 LABEL_18:
 
@@ -1224,77 +1224,77 @@ LABEL_18:
 
 - (id)encryptedPreviewImageFallbackURL
 {
-  v2 = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
-  v3 = [v2 URLByAppendingPathExtension:@"encrypted"];
+  previewImageFallbackURL = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
+  v3 = [previewImageFallbackURL URLByAppendingPathExtension:@"encrypted"];
 
   return v3;
 }
 
 - (id)encryptedPreviewImageURL
 {
-  v3 = [(ICAttachmentPreviewImage *)self generationManager];
-  v4 = [v3 generationURL];
+  generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+  generationURL = [generationManager generationURL];
 
-  if (v4)
+  if (generationURL)
   {
-    v5 = [(ICAttachmentPreviewImage *)self previewImageURL];
-    v6 = [v5 URLByAppendingPathExtension:@"encrypted"];
+    previewImageURL = [(ICAttachmentPreviewImage *)self previewImageURL];
+    encryptedPreviewImageFallbackURL = [previewImageURL URLByAppendingPathExtension:@"encrypted"];
   }
 
   else
   {
-    v6 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
+    encryptedPreviewImageFallbackURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
   }
 
-  return v6;
+  return encryptedPreviewImageFallbackURL;
 }
 
 - (id)orientedPreviewImageFallbackURLWithoutCreating
 {
-  v3 = [(ICAttachmentPreviewImage *)self identifier];
-  v4 = [v3 stringByAppendingString:@"-oriented"];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
+  v4 = [identifier stringByAppendingString:@"-oriented"];
 
-  v5 = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
-  v6 = [v4 stringByAppendingPathExtension:v5];
+  previewImagePathExtension = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
+  v6 = [v4 stringByAppendingPathExtension:previewImagePathExtension];
 
-  v7 = [(ICAttachmentPreviewImage *)self containerAccount];
-  v8 = [v7 previewImageDirectoryURL];
-  v9 = [v8 URLByAppendingPathComponent:v6 isDirectory:0];
+  containerAccount = [(ICAttachmentPreviewImage *)self containerAccount];
+  previewImageDirectoryURL = [containerAccount previewImageDirectoryURL];
+  v9 = [previewImageDirectoryURL URLByAppendingPathComponent:v6 isDirectory:0];
 
   return v9;
 }
 
 - (id)orientedPreviewImageURLWithoutCreating
 {
-  v3 = [(ICAttachmentPreviewImage *)self identifier];
+  identifier = [(ICAttachmentPreviewImage *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
-    v4 = [(ICAttachmentPreviewImage *)self generationManager];
-    v5 = [v4 generationURL];
+    generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+    generationURL = [generationManager generationURL];
 
-    if (v5)
+    if (generationURL)
     {
-      v6 = [(ICAttachmentPreviewImage *)self generationManager];
-      v7 = [v6 generationURL];
-      v8 = [v7 URLByAppendingPathComponent:@"OrientedPreview" isDirectory:0];
+      generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+      generationURL2 = [generationManager2 generationURL];
+      v8 = [generationURL2 URLByAppendingPathComponent:@"OrientedPreview" isDirectory:0];
 
-      v9 = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
-      v10 = [v8 URLByAppendingPathExtension:v9];
+      previewImagePathExtension = [(ICAttachmentPreviewImage *)self previewImagePathExtension];
+      orientedPreviewImageFallbackURLWithoutCreating = [v8 URLByAppendingPathExtension:previewImagePathExtension];
     }
 
     else
     {
-      v10 = [(ICAttachmentPreviewImage *)self orientedPreviewImageFallbackURLWithoutCreating];
+      orientedPreviewImageFallbackURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageFallbackURLWithoutCreating];
     }
   }
 
   else
   {
-    v10 = 0;
+    orientedPreviewImageFallbackURLWithoutCreating = 0;
   }
 
-  return v10;
+  return orientedPreviewImageFallbackURLWithoutCreating;
 }
 
 - (id)orientedPreviewImageURL
@@ -1307,14 +1307,14 @@ LABEL_18:
 - (id)urls
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(ICAttachmentPreviewImage *)self previewImageURL];
-  [v3 ic_addNonNilObject:v4];
+  previewImageURL = [(ICAttachmentPreviewImage *)self previewImageURL];
+  [v3 ic_addNonNilObject:previewImageURL];
 
-  v5 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
-  [v3 ic_addNonNilObject:v5];
+  encryptedPreviewImageURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
+  [v3 ic_addNonNilObject:encryptedPreviewImageURL];
 
-  v6 = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
-  [v3 ic_addNonNilObject:v6];
+  orientedPreviewImageURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
+  [v3 ic_addNonNilObject:orientedPreviewImageURLWithoutCreating];
 
   v7 = [v3 copy];
 
@@ -1324,54 +1324,54 @@ LABEL_18:
 - (ICAssetGenerationManager)generationManager
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachmentPreviewImage *)self containerDirectoryURL];
-  if (v3)
+  containerDirectoryURL = [(ICAttachmentPreviewImage *)self containerDirectoryURL];
+  if (containerDirectoryURL)
   {
-    v4 = v3;
-    v5 = [(ICAttachmentPreviewImage *)self containerAccount];
+    v4 = containerDirectoryURL;
+    containerAccount = [(ICAttachmentPreviewImage *)self containerAccount];
 
-    if (v5)
+    if (containerAccount)
     {
       generationManager = self->_generationManager;
       if (!generationManager)
       {
         v7 = NSStringFromSelector(sel_generation);
         v8 = [ICAssetGenerationManager alloc];
-        v9 = [(ICAttachmentPreviewImage *)self containerDirectoryURL];
-        v10 = [(ICAssetGenerationManager *)v8 initWithObject:self generationKeyPath:v7 containerURL:v9];
+        containerDirectoryURL2 = [(ICAttachmentPreviewImage *)self containerDirectoryURL];
+        v10 = [(ICAssetGenerationManager *)v8 initWithObject:self generationKeyPath:v7 containerURL:containerDirectoryURL2];
         v11 = self->_generationManager;
         self->_generationManager = v10;
 
-        v12 = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
-        v13 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
-        v17[1] = v13;
-        v14 = [(ICAttachmentPreviewImage *)self orientedPreviewImageFallbackURLWithoutCreating];
-        v17[2] = v14;
+        previewImageFallbackURL = [(ICAttachmentPreviewImage *)self previewImageFallbackURL];
+        encryptedPreviewImageFallbackURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageFallbackURL];
+        v17[1] = encryptedPreviewImageFallbackURL;
+        orientedPreviewImageFallbackURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageFallbackURLWithoutCreating];
+        v17[2] = orientedPreviewImageFallbackURLWithoutCreating;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
         [(ICAssetGenerationManager *)self->_generationManager setFallbackURLs:v15];
 
         generationManager = self->_generationManager;
       }
 
-      v3 = generationManager;
+      containerDirectoryURL = generationManager;
     }
 
     else
     {
-      v3 = 0;
+      containerDirectoryURL = 0;
     }
   }
 
-  return v3;
+  return containerDirectoryURL;
 }
 
 - (BOOL)hasAnyPNGPreviewImageFiles
 {
-  v3 = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
-  v4 = [v3 URLByDeletingPathExtension];
+  orientedPreviewImageURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
+  uRLByDeletingPathExtension = [orientedPreviewImageURLWithoutCreating URLByDeletingPathExtension];
   v5 = *MEMORY[0x277CE1E10];
-  v6 = [*MEMORY[0x277CE1E10] preferredFilenameExtension];
-  v7 = [v4 URLByAppendingPathExtension:v6];
+  preferredFilenameExtension = [*MEMORY[0x277CE1E10] preferredFilenameExtension];
+  v7 = [uRLByDeletingPathExtension URLByAppendingPathExtension:preferredFilenameExtension];
 
   if ([v7 checkResourceIsReachableAndReturnError:0])
   {
@@ -1380,10 +1380,10 @@ LABEL_18:
 
   else
   {
-    v9 = [(ICAttachmentPreviewImage *)self previewImageURL];
-    v10 = [v9 URLByDeletingPathExtension];
-    v11 = [v5 preferredFilenameExtension];
-    v12 = [v10 URLByAppendingPathExtension:v11];
+    previewImageURL = [(ICAttachmentPreviewImage *)self previewImageURL];
+    uRLByDeletingPathExtension2 = [previewImageURL URLByDeletingPathExtension];
+    preferredFilenameExtension2 = [v5 preferredFilenameExtension];
+    v12 = [uRLByDeletingPathExtension2 URLByAppendingPathExtension:preferredFilenameExtension2];
 
     if ([(ICAttachmentPreviewImage *)self isPasswordProtected])
     {
@@ -1400,25 +1400,25 @@ LABEL_18:
 
 - (void)createOrientedPreviewIfNeeded
 {
-  v1 = [a1 identifier];
+  identifier = [self identifier];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if ([(ICAttachmentPreviewImage *)self isPasswordProtected])
   {
-    v5 = [(ICCloudSyncingObject *)self cryptoStrategy];
-    [v5 writeEncryptedMetadata:v4];
+    cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+    [cryptoStrategy writeEncryptedMetadata:metadataCopy];
   }
 
   else
   {
     [(ICAttachmentPreviewImage *)self willChangeValueForKey:@"metadata"];
-    [(ICAttachmentPreviewImage *)self setPrimitiveValue:v4 forKey:@"metadata"];
+    [(ICAttachmentPreviewImage *)self setPrimitiveValue:metadataCopy forKey:@"metadata"];
 
     [(ICAttachmentPreviewImage *)self didChangeValueForKey:@"metadata"];
   }
@@ -1429,50 +1429,50 @@ LABEL_18:
   [(ICAttachmentPreviewImage *)self willAccessValueForKey:@"metadata"];
   if ([(ICAttachmentPreviewImage *)self isPasswordProtected])
   {
-    v3 = [(ICCloudSyncingObject *)self cryptoStrategy];
-    v4 = [v3 decryptedMetadata];
+    cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+    decryptedMetadata = [cryptoStrategy decryptedMetadata];
   }
 
   else
   {
-    v4 = [(ICAttachmentPreviewImage *)self primitiveValueForKey:@"metadata"];
+    decryptedMetadata = [(ICAttachmentPreviewImage *)self primitiveValueForKey:@"metadata"];
   }
 
   [(ICAttachmentPreviewImage *)self didAccessValueForKey:@"metadata"];
 
-  return v4;
+  return decryptedMetadata;
 }
 
-+ (id)previewImageURLsForIdentifier:(id)a3 account:(id)a4
++ (id)previewImageURLsForIdentifier:(id)identifier account:(id)account
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  accountCopy = account;
+  if (identifierCopy)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     context = objc_autoreleasePoolPush();
-    v8 = [v6 previewImageDirectoryURL];
-    v9 = v8;
-    v30 = v6;
-    if (v8)
+    previewImageDirectoryURL = [accountCopy previewImageDirectoryURL];
+    v9 = previewImageDirectoryURL;
+    v30 = accountCopy;
+    if (previewImageDirectoryURL)
     {
-      v10 = v8;
+      defaultPreviewImageDirectoryURL = previewImageDirectoryURL;
     }
 
     else
     {
-      v10 = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
+      defaultPreviewImageDirectoryURL = [MEMORY[0x277D36230] defaultPreviewImageDirectoryURL];
     }
 
-    v12 = v10;
+    v12 = defaultPreviewImageDirectoryURL;
 
-    v13 = [v12 URLByAppendingPathComponent:v5 isDirectory:0];
-    [v7 addObject:v13];
-    v14 = [*MEMORY[0x277CE1E10] preferredFilenameExtension];
-    v38[0] = v14;
-    v15 = [*MEMORY[0x277CE1DC0] preferredFilenameExtension];
-    v38[1] = v15;
+    v13 = [v12 URLByAppendingPathComponent:identifierCopy isDirectory:0];
+    [array addObject:v13];
+    preferredFilenameExtension = [*MEMORY[0x277CE1E10] preferredFilenameExtension];
+    v38[0] = preferredFilenameExtension;
+    preferredFilenameExtension2 = [*MEMORY[0x277CE1DC0] preferredFilenameExtension];
+    v38[1] = preferredFilenameExtension2;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
 
     v35 = 0u;
@@ -1495,23 +1495,23 @@ LABEL_18:
           }
 
           v20 = *(*(&v33 + 1) + 8 * i);
-          v21 = [v5 stringByAppendingPathExtension:v20];
+          v21 = [identifierCopy stringByAppendingPathExtension:v20];
           v22 = [v12 URLByAppendingPathComponent:v21 isDirectory:0];
 
-          [v7 addObject:v22];
+          [array addObject:v22];
           v23 = [v12 URLByAppendingPathComponent:v21 isDirectory:0];
           v24 = [v23 URLByAppendingPathExtension:@"encrypted"];
 
-          [v7 addObject:v24];
-          v25 = [v5 stringByAppendingString:@"-oriented"];
+          [array addObject:v24];
+          v25 = [identifierCopy stringByAppendingString:@"-oriented"];
           v26 = [v25 stringByAppendingPathExtension:v20];
 
           v27 = [v12 URLByAppendingPathComponent:v26 isDirectory:0];
 
-          [v7 addObject:v27];
-          v13 = [v12 URLByAppendingPathComponent:v5 isDirectory:1];
+          [array addObject:v27];
+          v13 = [v12 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         v18 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1521,7 +1521,7 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(context);
-    v6 = v30;
+    accountCopy = v30;
   }
 
   else
@@ -1532,38 +1532,38 @@ LABEL_18:
       [ICAttachmentPreviewImage previewImageURLsForIdentifier:v11 account:?];
     }
 
-    v7 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v7;
+  return array;
 }
 
 - (BOOL)shouldSyncToCloud
 {
-  v2 = self;
-  v3 = [(ICAttachmentPreviewImage *)self attachment];
-  v4 = [v3 attachmentModel];
-  LOBYTE(v2) = [v4 shouldSyncPreviewImageToCloud:v2];
+  selfCopy = self;
+  attachment = [(ICAttachmentPreviewImage *)self attachment];
+  attachmentModel = [attachment attachmentModel];
+  LOBYTE(selfCopy) = [attachmentModel shouldSyncPreviewImageToCloud:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)ic_loggingValues
 {
   v12.receiver = self;
   v12.super_class = ICAttachmentPreviewImage;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICAttachmentPreviewImage *)self managedObjectContext];
+  managedObjectContext = [(ICAttachmentPreviewImage *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke;
   v9[3] = &unk_278194AD8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v6;
   return v6;
@@ -1626,8 +1626,8 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ICAttachmentPreviewImage *)self urls];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  urls = [(ICAttachmentPreviewImage *)self urls];
+  v3 = [urls countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1639,14 +1639,14 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(urls);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) ic_updateFlagToExcludeFromBackup:1];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [urls countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -1655,74 +1655,74 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
 
 - (void)deleteFromLocalDatabase
 {
-  v3 = [(ICAttachmentPreviewImage *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(ICAttachmentPreviewImage *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 - (id)cloudAccount
 {
-  v2 = [(ICAttachmentPreviewImage *)self attachment];
-  v3 = [v2 cloudAccount];
+  attachment = [(ICAttachmentPreviewImage *)self attachment];
+  cloudAccount = [attachment cloudAccount];
 
-  return v3;
+  return cloudAccount;
 }
 
 - (id)decryptedImageData
 {
-  v2 = [(ICCloudSyncingObject *)self cryptoStrategy];
-  v3 = [v2 decryptedImageData];
+  cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+  decryptedImageData = [cryptoStrategy decryptedImageData];
 
-  return v3;
+  return decryptedImageData;
 }
 
 - (id)primaryEncryptedData
 {
   v2 = MEMORY[0x277CBEA90];
-  v3 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
-  v4 = [v2 dataWithContentsOfURL:v3];
+  encryptedPreviewImageURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
+  v4 = [v2 dataWithContentsOfURL:encryptedPreviewImageURL];
 
   return v4;
 }
 
-- (void)setPrimaryEncryptedData:(id)a3
+- (void)setPrimaryEncryptedData:(id)data
 {
-  v10 = a3;
-  v4 = [(ICAttachmentPreviewImage *)self generationManager];
-  v5 = [v4 beginGeneration];
+  dataCopy = data;
+  generationManager = [(ICAttachmentPreviewImage *)self generationManager];
+  beginGeneration = [generationManager beginGeneration];
 
-  if (v5)
+  if (beginGeneration)
   {
-    v6 = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
-    v7 = [v10 writeToURL:v6 atomically:1];
+    encryptedPreviewImageURL = [(ICAttachmentPreviewImage *)self encryptedPreviewImageURL];
+    v7 = [dataCopy writeToURL:encryptedPreviewImageURL atomically:1];
 
-    v8 = [(ICAttachmentPreviewImage *)self generationManager];
-    v9 = v8;
+    generationManager2 = [(ICAttachmentPreviewImage *)self generationManager];
+    v9 = generationManager2;
     if (v7)
     {
-      [v8 commitGeneration];
+      [generationManager2 commitGeneration];
     }
 
     else
     {
-      [v8 rollbackGeneration];
+      [generationManager2 rollbackGeneration];
     }
   }
 }
 
-- (id)primaryEncryptedDataFromRecord:(id)a3
+- (id)primaryEncryptedDataFromRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"PreviewImages"];
+  v4 = [recordCopy objectForKeyedSubscript:@"PreviewImages"];
 
   v5 = ICDynamicCast();
 
-  v6 = [v5 firstObject];
-  v7 = [v6 fileURL];
+  firstObject = [v5 firstObject];
+  fileURL = [firstObject fileURL];
 
-  if (v7)
+  if (fileURL)
   {
-    v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7];
+    v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileURL];
   }
 
   else
@@ -1735,10 +1735,10 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
 
 - (void)clearDecryptedData
 {
-  v3 = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
-  if (v3)
+  orientedPreviewImageURLWithoutCreating = [(ICAttachmentPreviewImage *)self orientedPreviewImageURLWithoutCreating];
+  if (orientedPreviewImageURLWithoutCreating)
   {
-    [(ICAttachmentPreviewImage *)self removeItemAtURL:v3];
+    [(ICAttachmentPreviewImage *)self removeItemAtURL:orientedPreviewImageURLWithoutCreating];
   }
 
   if (objc_opt_respondsToSelector())
@@ -1763,32 +1763,32 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-+ (id)newAttachmentPreviewImageWithIdentifier:(id)a3 attachment:(id)a4
++ (id)newAttachmentPreviewImageWithIdentifier:(id)identifier attachment:(id)attachment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 managedObjectContext];
-  v9 = [a1 newObjectWithIdentifier:v7 context:v8];
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  managedObjectContext = [attachmentCopy managedObjectContext];
+  v9 = [self newObjectWithIdentifier:identifierCopy context:managedObjectContext];
 
-  [v9 setAttachment:v6];
-  v10 = [v6 note];
+  [v9 setAttachment:attachmentCopy];
+  note = [attachmentCopy note];
 
-  v11 = [v10 account];
-  v12 = [v11 persistentStore];
-  [v9 assignToPersistentStore:v12];
+  account = [note account];
+  persistentStore = [account persistentStore];
+  [v9 assignToPersistentStore:persistentStore];
 
   return v9;
 }
 
-+ (void)purgeAllAttachmentPreviewImagesInContext:(id)a3
++ (void)purgeAllAttachmentPreviewImagesInContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 allAttachmentPreviewImagesInContext:{v4, 0}];
+  v5 = [self allAttachmentPreviewImagesInContext:{contextCopy, 0}];
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1804,13 +1804,13 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 attachment];
-        [v11 removePreviewImagesObject:v10];
+        attachment = [v10 attachment];
+        [attachment removePreviewImagesObject:v10];
 
-        v12 = [v10 attachment];
-        [v12 setPreviewUpdateDate:0];
+        attachment2 = [v10 attachment];
+        [attachment2 setPreviewUpdateDate:0];
 
-        [v4 deleteObject:v10];
+        [contextCopy deleteObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1819,7 +1819,7 @@ void __44__ICAttachmentPreviewImage_ic_loggingValues__block_invoke(uint64_t a1)
     while (v7);
   }
 
-  [ICAttachment enumerateAttachmentsInContext:v4 batchSize:5 visibleOnly:0 saveAfterBatch:1 usingBlock:&__block_literal_global_347];
+  [ICAttachment enumerateAttachmentsInContext:contextCopy batchSize:5 visibleOnly:0 saveAfterBatch:1 usingBlock:&__block_literal_global_347];
 }
 
 void __81__ICAttachmentPreviewImage_Management__purgeAllAttachmentPreviewImagesInContext___block_invoke(uint64_t a1, void *a2)
@@ -1829,32 +1829,32 @@ void __81__ICAttachmentPreviewImage_Management__purgeAllAttachmentPreviewImagesI
   [v2 ic_postNotificationOnMainThreadWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
 }
 
-+ (id)attachmentPreviewImageWithIdentifier:(id)a3 inContext:(id)a4
++ (id)attachmentPreviewImageWithIdentifier:(id)identifier inContext:(id)context
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K == %@", @"identifier", a3];
-  v9 = [a1 attachmentPreviewImagesMatchingPredicate:v8 inContext:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"%K == %@", @"identifier", identifier];
+  v9 = [self attachmentPreviewImagesMatchingPredicate:identifier inContext:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)attachmentPreviewImageIdentifiersForAccount:(id)a3
++ (id)attachmentPreviewImageIdentifiersForAccount:(id)account
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  accountCopy = account;
   v5 = [v3 set];
-  v6 = [v4 managedObjectContext];
+  managedObjectContext = [accountCopy managedObjectContext];
   v7 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"ICAttachmentPreviewImage"];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"attachment.note.account == %@", v4];
+  accountCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"attachment.note.account == %@", accountCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:accountCopy];
   [v7 setResultType:2];
   [v7 setPropertiesToFetch:&unk_282748108];
   v14 = 0;
-  v9 = [v6 executeFetchRequest:v7 error:&v14];
+  v9 = [managedObjectContext executeFetchRequest:v7 error:&v14];
   v10 = v14;
   if (v10)
   {
@@ -1879,10 +1879,10 @@ void __81__ICAttachmentPreviewImage_Management__purgeAllAttachmentPreviewImagesI
   return v5;
 }
 
-+ (void)deleteStrandedAttachmentPreviewImagesInContext:(id)a3
++ (void)deleteStrandedAttachmentPreviewImagesInContext:(id)context
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = MEMORY[0x277CCA920];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"attachment == nil"];
   v20[0] = v6;
@@ -1891,7 +1891,7 @@ void __81__ICAttachmentPreviewImage_Management__purgeAllAttachmentPreviewImagesI
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v9 = [v5 andPredicateWithSubpredicates:v8];
 
-  v10 = [a1 attachmentPreviewImagesMatchingPredicate:v9 inContext:v4];
+  v10 = [self attachmentPreviewImagesMatchingPredicate:v9 inContext:contextCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1964,8 +1964,8 @@ void __63__ICAttachmentPreviewImage_setScaledImageFromImageSrc_typeUTI___block_i
 
 - (void)containerAccount
 {
-  v3 = [a1 identifier];
-  v4 = [a2 identifier];
+  identifier = [self identifier];
+  identifier2 = [a2 identifier];
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_4_7(&dword_214D51000, v5, v6, "Couldn't find account for media %@, using default account %@ for container directory.", v7, v8, v9, v10, 2u);
 }

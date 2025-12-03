@@ -1,30 +1,30 @@
 @interface _SAUIElementViewControllerSnapshotAssertion
-- (_SAUIElementViewControllerSnapshotAssertion)initWithElement:(id)a3 snapshotReason:(id)a4;
+- (_SAUIElementViewControllerSnapshotAssertion)initWithElement:(id)element snapshotReason:(id)reason;
 - (id)_descriptionConstituents;
 @end
 
 @implementation _SAUIElementViewControllerSnapshotAssertion
 
-- (_SAUIElementViewControllerSnapshotAssertion)initWithElement:(id)a3 snapshotReason:(id)a4
+- (_SAUIElementViewControllerSnapshotAssertion)initWithElement:(id)element snapshotReason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  reasonCopy = reason;
   v18.receiver = self;
   v18.super_class = _SAUIElementViewControllerSnapshotAssertion;
   v8 = [(SAAssertion *)&v18 init];
   if (v8)
   {
-    v9 = [v6 clientIdentifier];
-    v10 = [v9 copy];
+    clientIdentifier = [elementCopy clientIdentifier];
+    v10 = [clientIdentifier copy];
     clientIdentifier = v8->_clientIdentifier;
     v8->_clientIdentifier = v10;
 
-    v12 = [v6 elementIdentifier];
-    v13 = [v12 copy];
+    elementIdentifier = [elementCopy elementIdentifier];
+    v13 = [elementIdentifier copy];
     elementIdentifier = v8->_elementIdentifier;
     v8->_elementIdentifier = v13;
 
-    v15 = [v7 copy];
+    v15 = [reasonCopy copy];
     snapshotReason = v8->_snapshotReason;
     v8->_snapshotReason = v15;
   }
@@ -46,8 +46,8 @@
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
   v9.receiver = self;
   v9.super_class = _SAUIElementViewControllerSnapshotAssertion;
-  v6 = [(SAAssertion *)&v9 _descriptionConstituents];
-  v7 = [v6 arrayByAddingObject:v5];
+  _descriptionConstituents = [(SAAssertion *)&v9 _descriptionConstituents];
+  v7 = [_descriptionConstituents arrayByAddingObject:v5];
 
   return v7;
 }

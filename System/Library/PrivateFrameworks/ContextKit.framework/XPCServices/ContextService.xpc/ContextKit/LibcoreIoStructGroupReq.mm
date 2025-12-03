@@ -1,15 +1,15 @@
 @interface LibcoreIoStructGroupReq
-- (LibcoreIoStructGroupReq)initWithInt:(int)a3 withJavaNetInetAddress:(id)a4;
+- (LibcoreIoStructGroupReq)initWithInt:(int)int withJavaNetInetAddress:(id)address;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation LibcoreIoStructGroupReq
 
-- (LibcoreIoStructGroupReq)initWithInt:(int)a3 withJavaNetInetAddress:(id)a4
+- (LibcoreIoStructGroupReq)initWithInt:(int)int withJavaNetInetAddress:(id)address
 {
-  self->gr_interface_ = a3;
-  JreStrongAssign(&self->gr_group_, a4);
+  self->gr_interface_ = int;
+  JreStrongAssign(&self->gr_group_, address);
   return self;
 }
 

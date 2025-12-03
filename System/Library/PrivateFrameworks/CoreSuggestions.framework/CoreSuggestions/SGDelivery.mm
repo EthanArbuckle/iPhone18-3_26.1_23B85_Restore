@@ -1,36 +1,36 @@
 @interface SGDelivery
-+ (id)stringForProvider:(unint64_t)a3;
-+ (unint64_t)providerForString:(id)a3;
-- (SGDelivery)initWithCoder:(id)a3;
-- (SGDelivery)initWithRecordId:(id)a3 origin:(id)a4 parentURL:(id)a5 provider:(unint64_t)a6 trackingNumber:(id)a7;
++ (id)stringForProvider:(unint64_t)provider;
++ (unint64_t)providerForString:(id)string;
+- (SGDelivery)initWithCoder:(id)coder;
+- (SGDelivery)initWithRecordId:(id)id origin:(id)origin parentURL:(id)l provider:(unint64_t)provider trackingNumber:(id)number;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGDelivery
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGDelivery;
-  v4 = a3;
-  [(SGObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parentURL forKey:{@"parentURL", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_provider forKey:@"provider"];
-  [v4 encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
-  [v4 encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
+  coderCopy = coder;
+  [(SGObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parentURL forKey:{@"parentURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_provider forKey:@"provider"];
+  [coderCopy encodeObject:self->_trackingNumber forKey:@"trackingNumber"];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:@"externalIdentifier"];
 }
 
-- (SGDelivery)initWithCoder:(id)a3
+- (SGDelivery)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SGDelivery;
-  v6 = [(SGObject *)&v20 initWithCoder:v5];
+  v6 = [(SGObject *)&v20 initWithCoder:coderCopy];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"parentURL"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"parentURL"];
 
     if (v8)
     {
@@ -45,9 +45,9 @@
       [parentURL handleFailureInMethod:a2 object:v6 file:@"SGDelivery.m" lineNumber:50 description:{@"nonnull property %s *%s was null when decoded", "NSURL", "parentURL"}];
     }
 
-    v6->_provider = [v5 decodeInt64ForKey:@"provider"];
+    v6->_provider = [coderCopy decodeInt64ForKey:@"provider"];
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"trackingNumber"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"trackingNumber"];
 
     if (v12)
     {
@@ -63,7 +63,7 @@
     }
 
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v16 = [v5 decodeObjectOfClasses:v15 forKey:@"externalIdentifier"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"externalIdentifier"];
 
     if (v16)
     {
@@ -89,16 +89,16 @@
   return v2;
 }
 
-- (SGDelivery)initWithRecordId:(id)a3 origin:(id)a4 parentURL:(id)a5 provider:(unint64_t)a6 trackingNumber:(id)a7
+- (SGDelivery)initWithRecordId:(id)id origin:(id)origin parentURL:(id)l provider:(unint64_t)provider trackingNumber:(id)number
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (v13)
+  idCopy = id;
+  originCopy = origin;
+  lCopy = l;
+  numberCopy = number;
+  if (idCopy)
   {
-    if (v14)
+    if (originCopy)
     {
       goto LABEL_3;
     }
@@ -106,22 +106,22 @@
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
 
-    if (v14)
+    if (originCopy)
     {
 LABEL_3:
-      if (v15)
+      if (lCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"parentURL"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"parentURL"}];
 
-      if (v16)
+      if (numberCopy)
       {
         goto LABEL_5;
       }
@@ -130,34 +130,34 @@ LABEL_10:
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"origin"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"origin"}];
 
-  if (!v15)
+  if (!lCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v16)
+  if (numberCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"trackingNumber"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"SGDelivery.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"trackingNumber"}];
 
 LABEL_5:
   v29.receiver = self;
   v29.super_class = SGDelivery;
-  v17 = [(SGObject *)&v29 initWithRecordId:v13 origin:v14];
+  v17 = [(SGObject *)&v29 initWithRecordId:idCopy origin:originCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_parentURL, a5);
-    v18->_provider = a6;
-    objc_storeStrong(&v18->_trackingNumber, a7);
+    objc_storeStrong(&v17->_parentURL, l);
+    v18->_provider = provider;
+    objc_storeStrong(&v18->_trackingNumber, number);
     v19 = [objc_opt_class() stringForProvider:v18->_provider];
     v30[0] = v19;
     v30[1] = v18->_trackingNumber;
@@ -171,55 +171,55 @@ LABEL_5:
   return v18;
 }
 
-+ (unint64_t)providerForString:(id)a3
++ (unint64_t)providerForString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 isEqualToString:@"fedex"])
+  lowercaseString = [string lowercaseString];
+  if ([lowercaseString isEqualToString:@"fedex"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ups"])
+  else if ([lowercaseString isEqualToString:@"ups"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"usps"])
+  else if ([lowercaseString isEqualToString:@"usps"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ontrac"])
+  else if ([lowercaseString isEqualToString:@"ontrac"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"dhl"])
+  else if ([lowercaseString isEqualToString:@"dhl"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"tnt"])
+  else if ([lowercaseString isEqualToString:@"tnt"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ems"])
+  else if ([lowercaseString isEqualToString:@"ems"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"canadapost"])
+  else if ([lowercaseString isEqualToString:@"canadapost"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"chronopost"])
+  else if ([lowercaseString isEqualToString:@"chronopost"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"colissimo"])
+  else if ([lowercaseString isEqualToString:@"colissimo"])
   {
     v4 = 10;
   }
@@ -232,16 +232,16 @@ LABEL_5:
   return v4;
 }
 
-+ (id)stringForProvider:(unint64_t)a3
++ (id)stringForProvider:(unint64_t)provider
 {
-  if (a3 > 0xA)
+  if (provider > 0xA)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7EFCF80[a3];
+    return off_1E7EFCF80[provider];
   }
 }
 

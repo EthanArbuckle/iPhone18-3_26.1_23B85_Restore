@@ -1,29 +1,29 @@
 @interface HKSimpleDataEntryPlainTextItem
-- (HKSimpleDataEntryPlainTextItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 defaultText:(id)a5 intention:(int64_t)a6;
+- (HKSimpleDataEntryPlainTextItem)initWithTitle:(id)title registrantModelKey:(id)key defaultText:(id)text intention:(int64_t)intention;
 - (id)cell;
 - (id)formattedKeyAndValue;
-- (void)doneButtonTapped:(id)a3;
-- (void)textFieldDidChangeValue:(id)a3 forCell:(id)a4;
+- (void)doneButtonTapped:(id)tapped;
+- (void)textFieldDidChangeValue:(id)value forCell:(id)cell;
 - (void)updateCellDisplay;
 @end
 
 @implementation HKSimpleDataEntryPlainTextItem
 
-- (HKSimpleDataEntryPlainTextItem)initWithTitle:(id)a3 registrantModelKey:(id)a4 defaultText:(id)a5 intention:(int64_t)a6
+- (HKSimpleDataEntryPlainTextItem)initWithTitle:(id)title registrantModelKey:(id)key defaultText:(id)text intention:(int64_t)intention
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  keyCopy = key;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = HKSimpleDataEntryPlainTextItem;
   v14 = [(HKSimpleDataEntryPlainTextItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_title, a3);
-    objc_storeStrong(&v15->_registrantModelKey, a4);
-    objc_storeStrong(&v15->_text, a5);
-    v15->_intention = a6;
+    objc_storeStrong(&v14->_title, title);
+    objc_storeStrong(&v15->_registrantModelKey, key);
+    objc_storeStrong(&v15->_text, text);
+    v15->_intention = intention;
   }
 
   return v15;
@@ -59,25 +59,25 @@
     v5 = self->_cell;
     self->_cell = v4;
 
-    v6 = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
-    [v6 setText:self->_title];
+    titleLabel = [(HKSimpleDataEntryPlainTextCell *)self->_cell titleLabel];
+    [titleLabel setText:self->_title];
 
-    v7 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    [v7 setText:self->_text];
+    inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    [inputTextField setText:self->_text];
 
-    v8 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [v8 setTextColor:v9];
+    inputTextField2 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [inputTextField2 setTextColor:labelColor];
 
     [(HKSimpleDataEntryPlainTextCell *)self->_cell setDelegate:self];
-    v10 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-    v11 = [(HKSimpleDataEntryItem *)self accessoryToolbar];
-    [v10 setInputAccessoryView:v11];
+    inputTextField3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+    accessoryToolbar = [(HKSimpleDataEntryItem *)self accessoryToolbar];
+    [inputTextField3 setInputAccessoryView:accessoryToolbar];
 
-    v12 = [(HKSimpleDataEntryItem *)self placeholderType];
-    if (v12 == 1)
+    placeholderType = [(HKSimpleDataEntryItem *)self placeholderType];
+    if (placeholderType == 1)
     {
-      v13 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+      inputTextField4 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
       v16 = objc_alloc(MEMORY[0x1E696AAB0]);
       v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v17 = [v14 localizedStringForKey:@"OD_PLACEHOLDER_REQUIRED" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -86,12 +86,12 @@
       v23[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v20 = [v16 initWithString:v17 attributes:v19];
-      [v13 setAttributedPlaceholder:v20];
+      [inputTextField4 setAttributedPlaceholder:v20];
     }
 
     else
     {
-      if (v12)
+      if (placeholderType)
       {
 LABEL_7:
         [(HKSimpleDataEntryPlainTextItem *)self updateCellDisplay];
@@ -99,10 +99,10 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v13 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+      inputTextField4 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
       v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v15 = [v14 localizedStringForKey:@"OD_PLACEHOLDER_OPTIONAL" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      [v13 setPlaceholder:v15];
+      [inputTextField4 setPlaceholder:v15];
     }
 
     goto LABEL_7;
@@ -115,32 +115,32 @@ LABEL_8:
 
 - (void)updateCellDisplay
 {
-  v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-  [v3 setText:self->_text];
+  inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+  [inputTextField setText:self->_text];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v3 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
-  [v3 resignFirstResponder];
+  inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+  [inputTextField resignFirstResponder];
 }
 
-- (void)textFieldDidChangeValue:(id)a3 forCell:(id)a4
+- (void)textFieldDidChangeValue:(id)value forCell:(id)cell
 {
-  v10 = a3;
-  v5 = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
+  valueCopy = value;
+  inputTextField = [(HKSimpleDataEntryPlainTextCell *)self->_cell inputTextField];
 
-  v6 = v10;
-  if (v5 == v10)
+  v6 = valueCopy;
+  if (inputTextField == valueCopy)
   {
-    v7 = [v10 text];
+    text = [valueCopy text];
     text = self->_text;
-    self->_text = v7;
+    self->_text = text;
 
-    v9 = [(HKSimpleDataEntryItem *)self delegate];
-    [v9 dataEntryItemDidUpdateValue:self];
+    delegate = [(HKSimpleDataEntryItem *)self delegate];
+    [delegate dataEntryItemDidUpdateValue:self];
 
-    v6 = v10;
+    v6 = valueCopy;
   }
 }
 

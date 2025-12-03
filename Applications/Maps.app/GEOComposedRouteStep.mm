@@ -5,88 +5,88 @@
 - (NSString)accessibilityDistance;
 - (NSString)distanceString;
 - (NSString)notice;
-- (id)attributedChargeStringForWaypointType:(unint64_t)a3 font:(id)a4 textColor:(id)a5 includeDaysAgo:(BOOL)a6;
+- (id)attributedChargeStringForWaypointType:(unint64_t)type font:(id)font textColor:(id)color includeDaysAgo:(BOOL)ago;
 - (id)chargingStationInfo;
 - (id)representativeSignGuidanceEvent;
-- (id)transitInstructionInContext:(int64_t)a3;
+- (id)transitInstructionInContext:(int64_t)context;
 @end
 
 @implementation GEOComposedRouteStep
 
 - (BOOL)isEVChargerStep
 {
-  v2 = [(GEOComposedRouteStep *)self chargingStationInfo];
-  v3 = v2 != 0;
+  chargingStationInfo = [(GEOComposedRouteStep *)self chargingStationInfo];
+  v3 = chargingStationInfo != 0;
 
   return v3;
 }
 
 - (id)chargingStationInfo
 {
-  v3 = [(GEOComposedRouteStep *)self composedRoute];
-  v4 = [v3 legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self, "stepIndex")}];
+  composedRoute = [(GEOComposedRouteStep *)self composedRoute];
+  v4 = [composedRoute legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self, "stepIndex")}];
 
-  v5 = [(GEOComposedRouteStep *)self composedRoute];
-  v6 = [v5 legs];
-  v7 = [v6 count];
+  composedRoute2 = [(GEOComposedRouteStep *)self composedRoute];
+  legs = [composedRoute2 legs];
+  v7 = [legs count];
 
   if (v4 >= v7)
   {
-    v12 = 0;
+    chargingStationInfo = 0;
   }
 
   else
   {
-    v8 = [(GEOComposedRouteStep *)self composedRoute];
-    v9 = [v8 legs];
-    v10 = [v9 objectAtIndexedSubscript:v4];
+    composedRoute3 = [(GEOComposedRouteStep *)self composedRoute];
+    legs2 = [composedRoute3 legs];
+    v10 = [legs2 objectAtIndexedSubscript:v4];
 
-    v11 = [(GEOComposedRouteStep *)self stepIndex];
-    if (v11 == [v10 endStepIndex])
+    stepIndex = [(GEOComposedRouteStep *)self stepIndex];
+    if (stepIndex == [v10 endStepIndex])
     {
-      v12 = [v10 chargingStationInfo];
+      chargingStationInfo = [v10 chargingStationInfo];
     }
 
     else
     {
-      v12 = 0;
+      chargingStationInfo = 0;
     }
   }
 
-  return v12;
+  return chargingStationInfo;
 }
 
-- (id)attributedChargeStringForWaypointType:(unint64_t)a3 font:(id)a4 textColor:(id)a5 includeDaysAgo:(BOOL)a6
+- (id)attributedChargeStringForWaypointType:(unint64_t)type font:(id)font textColor:(id)color includeDaysAgo:(BOOL)ago
 {
-  v9 = a4;
-  v10 = a5;
+  fontCopy = font;
+  colorCopy = color;
   if (qword_10195D968 != -1)
   {
     dispatch_once(&qword_10195D968, &stru_10162B558);
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
     v15 = 0;
   }
 
   else
   {
-    v11 = off_10162B578[a3];
+    v11 = off_10162B578[type];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:v11 value:@"localized string not found" table:0];
-    v14 = [(GEOComposedRouteStep *)self evInfo];
-    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v13, [v14 remainingBatteryPercentage]);
+    evInfo = [(GEOComposedRouteStep *)self evInfo];
+    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v13, [evInfo remainingBatteryPercentage]);
   }
 
   v16 = objc_opt_new();
-  [v9 pointSize];
+  [fontCopy pointSize];
   v18 = v17;
-  v19 = [(GEOComposedRouteStep *)self evInfo];
-  v20 = +[UIImage chargeImageOfSize:batteryLevel:](UIImage, "chargeImageOfSize:batteryLevel:", [v19 remainingBatteryPercentage], v18);
+  evInfo2 = [(GEOComposedRouteStep *)self evInfo];
+  v20 = +[UIImage chargeImageOfSize:batteryLevel:](UIImage, "chargeImageOfSize:batteryLevel:", [evInfo2 remainingBatteryPercentage], v18);
 
   [v16 setImage:v20];
-  [v9 capHeight];
+  [fontCopy capHeight];
   v22 = v21;
   [v20 size];
   v24 = (v22 - v23) * 0.5;
@@ -103,18 +103,18 @@
   v31 = [[NSAttributedString alloc] initWithString:v15];
   [v29 appendAttributedString:v31];
 
-  v32 = [v29 string];
-  v33 = [v32 length];
+  string = [v29 string];
+  v33 = [string length];
 
   v39 = NSFontAttributeName;
-  v40 = v9;
+  v40 = fontCopy;
   v34 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
   [v29 addAttributes:v34 range:{0, v33}];
 
-  if (v10)
+  if (colorCopy)
   {
     v37 = NSForegroundColorAttributeName;
-    v38 = v10;
+    v38 = colorCopy;
     v35 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     [v29 addAttributes:v35 range:{0, v33}];
   }
@@ -124,25 +124,25 @@
 
 - (GEOComposedWaypoint)waypoint
 {
-  v3 = [(GEOComposedRouteStep *)self composedRoute];
-  v4 = [v3 legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self, "stepIndex")}];
-  v5 = [v3 legs];
-  v6 = [v5 count];
+  composedRoute = [(GEOComposedRouteStep *)self composedRoute];
+  v4 = [composedRoute legIndexForStepIndex:{-[GEOComposedRouteStep stepIndex](self, "stepIndex")}];
+  legs = [composedRoute legs];
+  v6 = [legs count];
 
   if (v4 >= v6)
   {
-    v9 = 0;
+    destination = 0;
   }
 
   else
   {
-    v7 = [v3 legs];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    legs2 = [composedRoute legs];
+    v8 = [legs2 objectAtIndexedSubscript:v4];
 
-    v9 = [v8 destination];
+    destination = [v8 destination];
   }
 
-  return v9;
+  return destination;
 }
 
 - ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectAroundStartCoordinate
@@ -184,19 +184,19 @@
 
 - (NSString)notice
 {
-  v2 = [(GEOComposedRouteStep *)self geoStep];
-  v3 = [v2 notice];
+  geoStep = [(GEOComposedRouteStep *)self geoStep];
+  notice = [geoStep notice];
 
-  return v3;
+  return notice;
 }
 
-- (id)transitInstructionInContext:(int64_t)a3
+- (id)transitInstructionInContext:(int64_t)context
 {
-  v5 = [(GEOComposedRouteStep *)self transitStep];
+  transitStep = [(GEOComposedRouteStep *)self transitStep];
 
-  if (v5)
+  if (transitStep)
   {
-    v6 = [MNTransitStepInstruction instructionForStep:self context:a3];
+    v6 = [MNTransitStepInstruction instructionForStep:self context:context];
   }
 
   else
@@ -228,9 +228,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v5 = [(GEOComposedRouteStep *)self geoStep];
-  v6 = [v5 guidanceEvents];
-  v4 = sub_100B687D0(v6);
+  geoStep = [(GEOComposedRouteStep *)self geoStep];
+  guidanceEvents = [geoStep guidanceEvents];
+  v4 = sub_100B687D0(guidanceEvents);
 
   if (v4)
   {

@@ -54,14 +54,14 @@
   inputImage = self->inputImage;
   if (v3 >= 0.001)
   {
-    v7 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-    v8 = [(CIColorMonochrome *)self _kernel];
+    imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+    _kernel = [(CIColorMonochrome *)self _kernel];
     [(CIImage *)self->inputImage extent];
     inputColor = self->inputColor;
-    v14[0] = v7;
+    v14[0] = imageByUnpremultiplyingAlpha;
     v14[1] = inputColor;
     v14[2] = self->inputIntensity;
-    return [objc_msgSend(v8 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
   }
 
   else

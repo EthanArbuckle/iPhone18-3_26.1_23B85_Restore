@@ -5,11 +5,11 @@
 + (id)logHandle;
 + (id)readAliasesFromDefaults;
 + (id)sharedInstance;
-+ (void)addConditionChecks:(unint64_t)a3 toCriteria:(id)a4;
++ (void)addConditionChecks:(unint64_t)checks toCriteria:(id)criteria;
 + (void)calculateAndSaveAliasesToDefaults;
 - (BOOL)PCSKeyRollPending;
 - (BOOL)_accountNeedsRepairOverride;
-- (BOOL)_checkIfEnabledByServerBagOrDefault:(id)a3;
+- (BOOL)_checkIfEnabledByServerBagOrDefault:(id)default;
 - (BOOL)_deviceActive;
 - (BOOL)_isInExitState;
 - (BOOL)_isSyncingPausedOverride;
@@ -27,13 +27,13 @@
 - (BOOL)deviceIsPhoneOrWatch;
 - (BOOL)enableAttachmentMetricCollection;
 - (BOOL)iCloudAccountMatchesiMessageAccount;
-- (BOOL)isCKPartialError:(id)a3;
+- (BOOL)isCKPartialError:(id)error;
 - (BOOL)isDeviceCharging;
 - (BOOL)isDeviceOnWifi;
 - (BOOL)isInCloudKitDemoMode;
 - (BOOL)isLocalCachedSaltPresent;
 - (BOOL)isSyncingPaused;
-- (BOOL)readServerBagBoolForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)readServerBagBoolForKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)removeFromBackUpAllowed;
 - (BOOL)serverAllowsAnalyticDetailsSubmission;
 - (BOOL)serverAllowsAnalyticSubmission;
@@ -41,7 +41,7 @@
 - (BOOL)shouldAttemptMiCOnByDefault;
 - (BOOL)shouldForceArchivedMessagesSync;
 - (BOOL)shouldPresentTTROnCloudKitError;
-- (BOOL)shouldRepairAccountWithAccountStatus:(int64_t)a3 securityLevel:(unint64_t)a4;
+- (BOOL)shouldRepairAccountWithAccountStatus:(int64_t)status securityLevel:(unint64_t)level;
 - (BOOL)shouldUseDevContainer;
 - (BOOL)shouldUseDevNickNameContainer;
 - (BOOL)signedIntoiCloudAccount;
@@ -50,14 +50,14 @@
 - (FTDeviceSupport)deviceSupport;
 - (IDSServerBag)serverBag;
 - (IMDCKSyncState)syncState;
-- (IMDCKUtilities)initWithServerBag:(id)a3 lockDownmanager:(id)a4 deviceSupport:(id)a5 imDefaults:(id)a6;
+- (IMDCKUtilities)initWithServerBag:(id)bag lockDownmanager:(id)downmanager deviceSupport:(id)support imDefaults:(id)defaults;
 - (IMDSyncTelemetryReporter)telemetryReporter;
 - (IMDefaults)imDefaults;
 - (IMLockdownManager)lockdownManager;
 - (id)_accountManager;
 - (id)_accountStore;
 - (id)_authenticationController;
-- (id)_createAccountError:(id)a3;
+- (id)_createAccountError:(id)error;
 - (id)_getKeepMessagesValue;
 - (id)_primaryAccountCountryCode;
 - (id)_primaryiCloudAccount;
@@ -67,17 +67,17 @@
 - (id)deviceActiveString;
 - (id)deviceConditions;
 - (id)dsid;
-- (id)extractServerRecordFromCKServerErrorRecordChanged:(id)a3;
-- (id)finalSyncStateFor:(int64_t)a3;
-- (id)findRootCauses:(id)a3;
+- (id)extractServerRecordFromCKServerErrorRecordChanged:(id)changed;
+- (id)finalSyncStateFor:(int64_t)for;
+- (id)findRootCauses:(id)causes;
 - (id)internalQueue;
 - (id)lastDeviceBackUpDate;
 - (id)logHandle;
-- (id)newfilteredArrayRemovingCKRecordDupes:(id)a3;
-- (id)newfilteredArrayRemovingCKRecordIDDupes:(id)a3;
-- (id)recordNameForMessageWithGUID:(id)a3 usingSalt:(id)a4;
-- (id)simplifiedError:(id)a3;
-- (id)syncFailureMetricString:(id)a3 isRecoverable:(BOOL)a4 error:(id)a5;
+- (id)newfilteredArrayRemovingCKRecordDupes:(id)dupes;
+- (id)newfilteredArrayRemovingCKRecordIDDupes:(id)dupes;
+- (id)recordNameForMessageWithGUID:(id)d usingSalt:(id)salt;
+- (id)simplifiedError:(id)error;
+- (id)syncFailureMetricString:(id)string isRecoverable:(BOOL)recoverable error:(id)error;
 - (int64_t)_mininimumServerBagClientValue;
 - (int64_t)overrideNumberOfChatsToFetch;
 - (int64_t)overrideNumberOfChatsToWrite;
@@ -85,37 +85,37 @@
 - (unint64_t)currentStorageOnDevice;
 - (unint64_t)messageDatabaseSize;
 - (unsigned)PCSReportManateeStatus;
-- (void)PCSKeyRollPendingAsync:(id)a3 timeout:(double)a4;
-- (void)PCSReportManateeStatusAsync:(id)a3 timeout:(double)a4;
-- (void)_askToTapToRadarWithString:(id)a3 internalOnly:(BOOL)a4;
-- (void)_fetchPrimaryAccountWithCompletion:(id)a3;
+- (void)PCSKeyRollPendingAsync:(id)async timeout:(double)timeout;
+- (void)PCSReportManateeStatusAsync:(id)async timeout:(double)timeout;
+- (void)_askToTapToRadarWithString:(id)string internalOnly:(BOOL)only;
+- (void)_fetchPrimaryAccountWithCompletion:(id)completion;
 - (void)_resetKeepMessagesSettingandBroadcastToAllDevices;
-- (void)_showCKLogNotificationWithCompletion:(id)a3;
+- (void)_showCKLogNotificationWithCompletion:(id)completion;
 - (void)broadcastCloudKitState;
 - (void)broadcastCloudKitStateAfterClearingErrors;
 - (void)broadcastCloudKitStateAfterFetchingAccountStatus;
-- (void)checkiCloudQuota:(id)a3;
-- (void)clearLocalCloudKitSyncState:(unint64_t)a3;
-- (void)disableAllDevicesWithCompletion:(id)a3;
+- (void)checkiCloudQuota:(id)quota;
+- (void)clearLocalCloudKitSyncState:(unint64_t)state;
+- (void)disableAllDevicesWithCompletion:(id)completion;
 - (void)downgradingFromHSA2AndDisablingMOC;
-- (void)eligibleForTruthZoneWithCompletion:(id)a3;
-- (void)estimateQuotaAvailability:(id)a3;
+- (void)eligibleForTruthZoneWithCompletion:(id)completion;
+- (void)estimateQuotaAvailability:(id)availability;
 - (void)evalToggleiCloudSettingsSwitch;
 - (void)fetchAccountStatusAndUpdateMiCSwitchEligibilityIfNeededOnImagentLaunch;
-- (void)fetchCloudKitAccountStatusAndUpdateEligibilityAndNeedsRepairStatusWithCompletion:(id)a3;
-- (void)fetchCloudKitAccountStatusWithCompletion:(id)a3;
-- (void)fetchiCloudAccountPersonID:(id)a3;
-- (void)isFirstSyncWithActivity:(id)a3 completion:(id)a4;
+- (void)fetchCloudKitAccountStatusAndUpdateEligibilityAndNeedsRepairStatusWithCompletion:(id)completion;
+- (void)fetchCloudKitAccountStatusWithCompletion:(id)completion;
+- (void)fetchiCloudAccountPersonID:(id)d;
+- (void)isFirstSyncWithActivity:(id)activity completion:(id)completion;
 - (void)keyRollPendingStateDidChange;
-- (void)postSyncStateToCloudKit:(id)a3;
-- (void)postSyncStateToRTC:(id)a3 category:(int64_t)a4 reportDictionary:(id)a5;
-- (void)primaryAccountHasiCloudBackupEnabledWithCompletion:(id)a3;
+- (void)postSyncStateToCloudKit:(id)kit;
+- (void)postSyncStateToRTC:(id)c category:(int64_t)category reportDictionary:(id)dictionary;
+- (void)primaryAccountHasiCloudBackupEnabledWithCompletion:(id)completion;
 - (void)repairACAccountEnablementStatusIfNeeded;
-- (void)reportErrorForSyncType:(int64_t)a3 syncStep:(id)a4 response:(int64_t)a5 error:(id)a6;
-- (void)reportZoneCreation:(id)a3;
+- (void)reportErrorForSyncType:(int64_t)type syncStep:(id)step response:(int64_t)response error:(id)error;
+- (void)reportZoneCreation:(id)creation;
 - (void)resetLastSyncDate;
-- (void)setCloudKitEnabled:(BOOL)a3;
-- (void)syncStateWillUpdate:(id)a3;
+- (void)setCloudKitEnabled:(BOOL)enabled;
+- (void)syncStateWillUpdate:(id)update;
 @end
 
 @implementation IMDCKUtilities
@@ -123,8 +123,8 @@
 - (BOOL)_serverAllowsSync
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKUtilities *)self _mininimumServerBagClientValue];
-  if (v2 >= 1 && IMOSLoggingEnabled())
+  _mininimumServerBagClientValue = [(IMDCKUtilities *)self _mininimumServerBagClientValue];
+  if (_mininimumServerBagClientValue >= 1 && IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -132,12 +132,12 @@
       v6[0] = 67109376;
       v6[1] = 0;
       v7 = 2048;
-      v8 = v2;
+      v8 = _mininimumServerBagClientValue;
       _os_log_impl(&dword_22B4CC000, v3, OS_LOG_TYPE_INFO, "Madrid server bag does not allow us to sync. Our client version %d server client version %ld", v6, 0x12u);
     }
   }
 
-  result = v2 < 1;
+  result = _mininimumServerBagClientValue < 1;
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -146,18 +146,18 @@
 {
   if (IMAllowMessagesIniCloud())
   {
-    v3 = [(IMDCKUtilities *)self _serverAllowsSync];
+    _serverAllowsSync = [(IMDCKUtilities *)self _serverAllowsSync];
     v4 = *MEMORY[0x277D19A08];
-    if (v3)
+    if (_serverAllowsSync)
     {
       v5 = *MEMORY[0x277D19B40];
       v6 = *MEMORY[0x277D19A08];
       if ((IMGetCachedDomainBoolForKey() & 1) == 0)
       {
-        v7 = [(IMDCKUtilities *)self syncState];
-        v8 = [v7 isFeatureEnabled];
+        syncState = [(IMDCKUtilities *)self syncState];
+        isFeatureEnabled = [syncState isFeatureEnabled];
 
-        return v8;
+        return isFeatureEnabled;
       }
     }
 
@@ -200,11 +200,11 @@
 
 - (int64_t)_mininimumServerBagClientValue
 {
-  v2 = [(IMDCKUtilities *)self serverBag];
-  v3 = [v2 objectForKey:@"ck-client-min-version"];
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v3 = [serverBag objectForKey:@"ck-client-min-version"];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 + (id)sharedInstance
@@ -213,7 +213,7 @@
   block[1] = 3221225472;
   block[2] = sub_22B4EF168;
   block[3] = &unk_278702AF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_281421090 != -1)
   {
     dispatch_once(&qword_281421090, block);
@@ -252,10 +252,10 @@
     self->_syncState = v7;
 
     [(IMDCKSyncState *)self->_syncState setDelegate:self];
-    v9 = [(IMDCKUtilities *)self logHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    logHandle = [(IMDCKUtilities *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
     {
-      sub_22B7CF6B4(v9);
+      sub_22B7CF6B4(logHandle);
     }
 
     syncState = self->_syncState;
@@ -267,9 +267,9 @@
 - (id)_truthContainer
 {
   v2 = +[IMDCKDatabaseManager sharedInstance];
-  v3 = [v2 truthContainer];
+  truthContainer = [v2 truthContainer];
 
-  return v3;
+  return truthContainer;
 }
 
 - (BOOL)_isSyncingPausedOverride
@@ -313,16 +313,16 @@
 
 - (unint64_t)_primaryiCloudAccountSecurityLevel
 {
-  v3 = [(IMDCKUtilities *)self _primaryiCloudAccountAltDSID];
-  if ([v3 length])
+  _primaryiCloudAccountAltDSID = [(IMDCKUtilities *)self _primaryiCloudAccountAltDSID];
+  if ([_primaryiCloudAccountAltDSID length])
   {
-    v4 = [(IMDCKUtilities *)self _accountManager];
-    v5 = [v4 authKitAccountWithAltDSID:v3];
+    _accountManager = [(IMDCKUtilities *)self _accountManager];
+    v5 = [_accountManager authKitAccountWithAltDSID:_primaryiCloudAccountAltDSID];
 
     if (v5)
     {
-      v6 = [(IMDCKUtilities *)self _accountManager];
-      v7 = [v6 securityLevelForAccount:v5];
+      _accountManager2 = [(IMDCKUtilities *)self _accountManager];
+      v7 = [_accountManager2 securityLevelForAccount:v5];
     }
 
     else
@@ -341,11 +341,11 @@
 
 - (id)_primaryiCloudAccountAltDSID
 {
-  v3 = [(IMDCKUtilities *)self _primaryiCloudAccount];
-  if (v3)
+  _primaryiCloudAccount = [(IMDCKUtilities *)self _primaryiCloudAccount];
+  if (_primaryiCloudAccount)
   {
-    v4 = [(IMDCKUtilities *)self _accountManager];
-    v5 = [v4 altDSIDForAccount:v3];
+    _accountManager = [(IMDCKUtilities *)self _accountManager];
+    v5 = [_accountManager altDSIDForAccount:_primaryiCloudAccount];
   }
 
   else
@@ -358,10 +358,10 @@
 
 - (id)_primaryiCloudAccount
 {
-  v2 = [(IMDCKUtilities *)self _accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  _accountStore = [(IMDCKUtilities *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (id)_accountStore
@@ -391,12 +391,12 @@
   v20 = *MEMORY[0x277D85DE8];
   if (![(IMDCKUtilities *)self _isSyncingPausedOverride])
   {
-    v5 = [(IMDCKUtilities *)self syncState];
-    if ([v5 isSyncingEnabled])
+    syncState = [(IMDCKUtilities *)self syncState];
+    if ([syncState isSyncingEnabled])
     {
-      v6 = [v5 lastSyncDate];
+      lastSyncDate = [syncState lastSyncDate];
 
-      if (v6)
+      if (lastSyncDate)
       {
         if (IMOSLoggingEnabled())
         {
@@ -413,7 +413,7 @@ LABEL_16:
 
       else
       {
-        if ([v5 isSyncing])
+        if ([syncState isSyncing])
         {
           if (!IMOSLoggingEnabled())
           {
@@ -430,10 +430,10 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v10 = [(IMDCKUtilities *)self isDeviceCharging];
-        v11 = [(IMDCKUtilities *)self isDeviceOnWifi];
+        isDeviceCharging = [(IMDCKUtilities *)self isDeviceCharging];
+        isDeviceOnWifi = [(IMDCKUtilities *)self isDeviceOnWifi];
         v12 = IMOSLoggingEnabled();
-        if (!v10 || !v11)
+        if (!isDeviceCharging || !isDeviceOnWifi)
         {
           if (v12)
           {
@@ -441,7 +441,7 @@ LABEL_16:
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
               v14 = @"NO";
-              if (v11)
+              if (isDeviceOnWifi)
               {
                 v15 = @"YES";
               }
@@ -451,7 +451,7 @@ LABEL_16:
                 v15 = @"NO";
               }
 
-              if (v10)
+              if (isDeviceCharging)
               {
                 v14 = @"YES";
               }
@@ -519,14 +519,14 @@ LABEL_19:
 
 - (void)broadcastCloudKitState
 {
-  v3 = [(IMDCKUtilities *)self syncState];
-  v4 = [(IMDCKUtilities *)self logHandle];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  syncState = [(IMDCKUtilities *)self syncState];
+  logHandle = [(IMDCKUtilities *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    sub_22B7CF784(v3);
+    sub_22B7CF784(syncState);
   }
 
-  [v3 broadcastSyncState];
+  [syncState broadcastSyncState];
 }
 
 - (id)_accountManager
@@ -546,9 +546,9 @@ LABEL_19:
   lockdownManager = self->_lockdownManager;
   if (!lockdownManager)
   {
-    v4 = [MEMORY[0x277D19268] sharedInstance];
+    mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
     v5 = self->_lockdownManager;
-    self->_lockdownManager = v4;
+    self->_lockdownManager = mEMORY[0x277D19268];
 
     lockdownManager = self->_lockdownManager;
   }
@@ -561,9 +561,9 @@ LABEL_19:
   deviceSupport = self->_deviceSupport;
   if (!deviceSupport)
   {
-    v4 = [MEMORY[0x277D07DB0] sharedInstance];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
     v5 = self->_deviceSupport;
-    self->_deviceSupport = v4;
+    self->_deviceSupport = mEMORY[0x277D07DB0];
 
     deviceSupport = self->_deviceSupport;
   }
@@ -574,9 +574,9 @@ LABEL_19:
 - (id)_truthDatabase
 {
   v2 = +[IMDCKDatabaseManager sharedInstance];
-  v3 = [v2 truthDatabase];
+  truthDatabase = [v2 truthDatabase];
 
-  return v3;
+  return truthDatabase;
 }
 
 - (IMDefaults)imDefaults
@@ -609,48 +609,48 @@ LABEL_19:
   return telemetryReporter;
 }
 
-- (IMDCKUtilities)initWithServerBag:(id)a3 lockDownmanager:(id)a4 deviceSupport:(id)a5 imDefaults:(id)a6
+- (IMDCKUtilities)initWithServerBag:(id)bag lockDownmanager:(id)downmanager deviceSupport:(id)support imDefaults:(id)defaults
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  bagCopy = bag;
+  downmanagerCopy = downmanager;
+  supportCopy = support;
+  defaultsCopy = defaults;
   v19.receiver = self;
   v19.super_class = IMDCKUtilities;
   v15 = [(IMDCKUtilities *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_serverBag, a3);
-    objc_storeStrong(&v16->_lockdownManager, a4);
-    objc_storeStrong(&v16->_deviceSupport, a5);
-    objc_storeStrong(&v16->_imDefaults, a6);
-    v17 = [(IMDCKUtilities *)v16 _authenticationController];
+    objc_storeStrong(&v15->_serverBag, bag);
+    objc_storeStrong(&v16->_lockdownManager, downmanager);
+    objc_storeStrong(&v16->_deviceSupport, support);
+    objc_storeStrong(&v16->_imDefaults, defaults);
+    _authenticationController = [(IMDCKUtilities *)v16 _authenticationController];
   }
 
   return v16;
 }
 
-- (void)syncStateWillUpdate:(id)a3
+- (void)syncStateWillUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setSyncingEnabled:{-[IMDCKUtilities cloudKitSyncingEnabled](self, "cloudKitSyncingEnabled")}];
-  [v4 setSyncingPaused:{-[IMDCKUtilities isSyncingPaused](self, "isSyncingPaused")}];
-  v5 = [(IMDCKUtilities *)self backupController];
-  [v4 setRemovedFromBackup:{objc_msgSend(v5, "iCloudBackupsDisabled")}];
+  updateCopy = update;
+  [updateCopy setSyncingEnabled:{-[IMDCKUtilities cloudKitSyncingEnabled](self, "cloudKitSyncingEnabled")}];
+  [updateCopy setSyncingPaused:{-[IMDCKUtilities isSyncingPaused](self, "isSyncingPaused")}];
+  backupController = [(IMDCKUtilities *)self backupController];
+  [updateCopy setRemovedFromBackup:{objc_msgSend(backupController, "iCloudBackupsDisabled")}];
 
-  v6 = [(IMDCKUtilities *)self cloudKitSyncingEnabled];
-  if ([(IMDCKUtilities *)self didKeyRollPendingCheck]|| !v6)
+  cloudKitSyncingEnabled = [(IMDCKUtilities *)self cloudKitSyncingEnabled];
+  if ([(IMDCKUtilities *)self didKeyRollPendingCheck]|| !cloudKitSyncingEnabled)
   {
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(IMDCKUtilities *)self didKeyRollPendingCheck];
+        didKeyRollPendingCheck = [(IMDCKUtilities *)self didKeyRollPendingCheck];
         v10 = @"NO";
-        if (v9)
+        if (didKeyRollPendingCheck)
         {
           v11 = @"YES";
         }
@@ -660,7 +660,7 @@ LABEL_19:
           v11 = @"NO";
         }
 
-        if (v6)
+        if (cloudKitSyncingEnabled)
         {
           v10 = @"YES";
         }
@@ -682,14 +682,14 @@ LABEL_19:
     v14[1] = 3221225472;
     v14[2] = sub_22B4EF4E0;
     v14[3] = &unk_278702B20;
-    v15 = v4;
+    v15 = updateCopy;
     [v7 PCSKeyRollPendingAsync:v14 timeout:10.0];
   }
 
-  v12 = [(IMDCKUtilities *)self logHandle];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  logHandle = [(IMDCKUtilities *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    sub_22B7CF6F8(v4);
+    sub_22B7CF6F8(updateCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -697,8 +697,8 @@ LABEL_19:
 
 - (void)broadcastCloudKitStateAfterClearingErrors
 {
-  v3 = [(IMDCKUtilities *)self syncState];
-  [v3 clearSyncErrors];
+  syncState = [(IMDCKUtilities *)self syncState];
+  [syncState clearSyncErrors];
   [(IMDCKUtilities *)self broadcastCloudKitStateAfterFetchingAccountStatus];
 }
 
@@ -725,10 +725,10 @@ LABEL_19:
   v5 = IMGetCachedDomainBoolForKey();
   if (v5)
   {
-    v6 = [(IMDCKUtilities *)self lockdownManager];
-    v7 = [v6 isInternalInstall];
+    lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+    isInternalInstall = [lockdownManager isInternalInstall];
 
-    LOBYTE(v5) = v7;
+    LOBYTE(v5) = isInternalInstall;
   }
 
   return v5;
@@ -741,10 +741,10 @@ LABEL_19:
   v5 = IMGetCachedDomainBoolForKey();
   if (v5)
   {
-    v6 = [(IMDCKUtilities *)self lockdownManager];
-    v7 = [v6 isInternalInstall];
+    lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+    isInternalInstall = [lockdownManager isInternalInstall];
 
-    LOBYTE(v5) = v7;
+    LOBYTE(v5) = isInternalInstall;
   }
 
   return v5;
@@ -757,16 +757,16 @@ LABEL_19:
     return 0;
   }
 
-  v3 = [(IMDCKUtilities *)self lockdownManager];
-  v4 = [v3 isInternalInstall];
+  lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+  isInternalInstall = [lockdownManager isInternalInstall];
 
-  return v4;
+  return isInternalInstall;
 }
 
 - (int64_t)overrideNumberOfChatsToFetch
 {
-  v2 = [(IMDCKUtilities *)self lockdownManager];
-  if ([v2 isInternalInstall])
+  lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+  if ([lockdownManager isInternalInstall])
   {
     v3 = IMIsRunningInUnitTesting();
 
@@ -783,22 +783,22 @@ LABEL_19:
       return -1;
     }
 
-    v2 = v6;
-    v7 = [v6 integerValue];
+    lockdownManager = v6;
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (int64_t)overrideNumberOfChatsToWrite
 {
-  v2 = [(IMDCKUtilities *)self lockdownManager];
-  if ([v2 isInternalInstall])
+  lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+  if ([lockdownManager isInternalInstall])
   {
     v3 = IMIsRunningInUnitTesting();
 
@@ -815,30 +815,30 @@ LABEL_19:
       return -1;
     }
 
-    v2 = v6;
-    v7 = [v6 integerValue];
+    lockdownManager = v6;
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)isFirstSyncWithActivity:(id)a3 completion:(id)a4
+- (void)isFirstSyncWithActivity:(id)activity completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  activityCopy = activity;
   v7 = +[IMDCKChatSyncController sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_22B4EFA48;
   v9[3] = &unk_278702930;
-  v10 = v5;
-  v8 = v5;
-  [v7 anyChatExistsOnServerWithActivity:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 anyChatExistsOnServerWithActivity:activityCopy completion:v9];
 }
 
 - (unint64_t)messageDatabaseSize
@@ -864,7 +864,7 @@ LABEL_19:
 
 - (unint64_t)currentStorageOnDevice
 {
-  v22 = self;
+  selfCopy = self;
   v41[3] = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
   {
@@ -907,7 +907,7 @@ LABEL_19:
 
         v8 = *(*(&v30 + 1) + 8 * i);
         v29 = 0;
-        v9 = [v8 getResourceValue:&v29 forKey:v6 error:{0, v22}];
+        v9 = [v8 getResourceValue:&v29 forKey:v6 error:{0, selfCopy}];
         v10 = v29;
         v11 = v10;
         if (v9)
@@ -915,7 +915,7 @@ LABEL_19:
           [v10 BOOLValue];
         }
 
-        v12 = [v8 path];
+        path = [v8 path];
         v13 = IMCalculateFileSizeForPath();
 
         if (IMOSLoggingEnabled())
@@ -923,9 +923,9 @@ LABEL_19:
           v14 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [v8 path];
+            path2 = [v8 path];
             *buf = 138412546;
-            v35 = v15;
+            v35 = path2;
             v36 = 2048;
             v37 = v13;
             _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "Calculated file size on path %@ as: %llu", buf, 0x16u);
@@ -941,7 +941,7 @@ LABEL_19:
     while (v4);
   }
 
-  [(IMDCKUtilities *)v22 _iCloudStorageSizeFudgeFactorBagValue];
+  [(IMDCKUtilities *)selfCopy _iCloudStorageSizeFudgeFactorBagValue];
   v17 = v16;
   v18 = (v16 * v3);
   if (IMOSLoggingEnabled())
@@ -963,12 +963,12 @@ LABEL_19:
   return v18;
 }
 
-- (void)estimateQuotaAvailability:(id)a3
+- (void)estimateQuotaAvailability:(id)availability
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  availabilityCopy = availability;
   v4 = +[IMDCKBackupController sharedInstance];
-  v5 = [v4 iCloudBackupsDisabled];
+  iCloudBackupsDisabled = [v4 iCloudBackupsDisabled];
 
   if (IMOSLoggingEnabled())
   {
@@ -976,7 +976,7 @@ LABEL_19:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"YES";
-      if (v5)
+      if (iCloudBackupsDisabled)
       {
         v7 = @"NO";
       }
@@ -987,28 +987,28 @@ LABEL_19:
     }
   }
 
-  if (v5)
+  if (iCloudBackupsDisabled)
   {
     v8 = +[IMDCKUtilities sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = sub_22B4F0108;
     v10[3] = &unk_278702930;
-    v11 = v3;
+    v11 = availabilityCopy;
     [v8 isFirstSyncWithActivity:0 completion:v10];
   }
 
-  else if (v3)
+  else if (availabilityCopy)
   {
-    (*(v3 + 2))(v3, 0, 0, 0);
+    (*(availabilityCopy + 2))(availabilityCopy, 0, 0, 0);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkiCloudQuota:(id)a3
+- (void)checkiCloudQuota:(id)quota
 {
-  v4 = a3;
+  quotaCopy = quota;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -1028,9 +1028,9 @@ LABEL_19:
   v11 = 3221225472;
   v12 = sub_22B4F04F0;
   v13 = &unk_278702B98;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v15 = quotaCopy;
+  v8 = quotaCopy;
   [v6 setFetchUserQuotaCompletionBlock:&v10];
   v9 = [(IMDCKUtilities *)self _truthDatabase:v10];
   [v9 addOperation:v6];
@@ -1045,10 +1045,10 @@ LABEL_19:
 
 - (BOOL)_mocFeatureEnabled
 {
-  v2 = [(IMDCKUtilities *)self syncState];
-  v3 = [v2 isFeatureEnabled];
+  syncState = [(IMDCKUtilities *)self syncState];
+  isFeatureEnabled = [syncState isFeatureEnabled];
 
-  return v3;
+  return isFeatureEnabled;
 }
 
 - (BOOL)_shouldiCloudSwitchBeEnabled
@@ -1059,11 +1059,11 @@ LABEL_19:
     v10 = *MEMORY[0x277D19A08];
     v11 = *MEMORY[0x277D19758];
     IMSetDomainBoolForKey();
-    v12 = [(IMDCKUtilities *)self syncState];
-    [v12 setFeatureEnabled:0];
+    syncState = [(IMDCKUtilities *)self syncState];
+    [syncState setFeatureEnabled:0];
 
-    v13 = [(IMDCKUtilities *)self backupController];
-    [v13 setICloudBackupsDisabled:0];
+    backupController = [(IMDCKUtilities *)self backupController];
+    [backupController setICloudBackupsDisabled:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -1082,9 +1082,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v3 = [(IMDCKUtilities *)self _serverAllowsSync];
-  v4 = [(IMDCKUtilities *)self _mocFeatureEnabled];
-  if (!v3)
+  _serverAllowsSync = [(IMDCKUtilities *)self _serverAllowsSync];
+  _mocFeatureEnabled = [(IMDCKUtilities *)self _mocFeatureEnabled];
+  if (!_serverAllowsSync)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1103,10 +1103,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v5 = v4;
-  v6 = [(IMDCKUtilities *)self _isInExitState];
+  v5 = _mocFeatureEnabled;
+  _isInExitState = [(IMDCKUtilities *)self _isInExitState];
   v7 = IMOSLoggingEnabled();
-  if (v6)
+  if (_isInExitState)
   {
     if (v7)
     {
@@ -1142,15 +1142,15 @@ LABEL_17:
 
 - (BOOL)cloudKitSyncDownloadAssetsOnly
 {
-  v2 = [(IMDCKUtilities *)self syncState];
-  v3 = [v2 isFeatureEnabled];
+  syncState = [(IMDCKUtilities *)self syncState];
+  isFeatureEnabled = [syncState isFeatureEnabled];
 
-  return v3 ^ 1;
+  return isFeatureEnabled ^ 1;
 }
 
-- (void)setCloudKitEnabled:(BOOL)a3
+- (void)setCloudKitEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v23 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
   {
@@ -1158,7 +1158,7 @@ LABEL_17:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (enabledCopy)
       {
         v6 = @"YES";
       }
@@ -1169,7 +1169,7 @@ LABEL_17:
     }
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v7 = 1;
   }
@@ -1184,7 +1184,7 @@ LABEL_17:
   v10 = *MEMORY[0x277D19C00];
   IMSetDomainValueForKey();
 
-  if (v3)
+  if (enabledCopy)
   {
     v11 = *MEMORY[0x277D19A50];
     v12 = *MEMORY[0x277D19A60];
@@ -1212,7 +1212,7 @@ LABEL_17:
     v19[2] = sub_22B4F0CF4;
     v19[3] = &unk_278702BE8;
     v19[4] = self;
-    v20 = v3;
+    v20 = enabledCopy;
     [v16 exitRecordDateWithCompletion:v19];
   }
 
@@ -1229,7 +1229,7 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearLocalCloudKitSyncState:(unint64_t)a3
+- (void)clearLocalCloudKitSyncState:(unint64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -1238,25 +1238,25 @@ LABEL_17:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v14[0] = 67109120;
-      v14[1] = a3;
+      v14[1] = state;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Clearing local sync state, flags %x", v14, 8u);
     }
   }
 
   v5 = +[IMDCKChatSyncController sharedInstance];
-  [v5 clearLocalSyncState:a3];
+  [v5 clearLocalSyncState:state];
 
   v6 = +[IMDCKMessageSyncController sharedInstance];
-  [v6 clearLocalSyncState:a3];
+  [v6 clearLocalSyncState:state];
 
   v7 = +[IMDCKAttachmentSyncController sharedInstance];
-  [v7 clearLocalSyncState:a3];
+  [v7 clearLocalSyncState:state];
 
   v8 = +[IMDCKUpdateSyncController sharedInstance];
-  [v8 clearLocalSyncState:a3];
+  [v8 clearLocalSyncState:state];
 
   v9 = +[IMDCKRecoverableMessageSyncController sharedInstance];
-  [v9 clearLocalSyncState:a3];
+  [v9 clearLocalSyncState:state];
 
   v10 = +[IMDCKRecordSaltManager sharedInstance];
   [v10 clearLocalSyncState];
@@ -1264,8 +1264,8 @@ LABEL_17:
   v11 = +[IMDCKSyncController sharedInstance];
   [v11 clearCKRelatedDefaults];
 
-  v12 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  LODWORD(v9) = [v12 isMessagesIniCloudVersion2];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  LODWORD(v9) = [mEMORY[0x277D1A9B8] isMessagesIniCloudVersion2];
 
   if (v9)
   {
@@ -1284,12 +1284,12 @@ LABEL_17:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 3;
+    unsignedIntegerValue = 3;
   }
 
   if (IMOSLoggingEnabled())
@@ -1297,10 +1297,10 @@ LABEL_17:
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
+      v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       v8 = v7;
       v9 = @"NO";
-      if (v5 < 3)
+      if (unsignedIntegerValue < 3)
       {
         v9 = @"YES";
       }
@@ -1316,7 +1316,7 @@ LABEL_17:
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v5 < 3;
+  return unsignedIntegerValue < 3;
 }
 
 - (BOOL)serverAllowsAnalyticSubmission
@@ -1324,16 +1324,16 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v3 = [v2 objectForKey:@"ck-submit-analytics-min-version"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       v7 = v6;
       v8 = @"NO";
-      if (v4 < 3)
+      if (unsignedIntegerValue < 3)
       {
         v8 = @"YES";
       }
@@ -1349,7 +1349,7 @@ LABEL_17:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 < 3;
+  return unsignedIntegerValue < 3;
 }
 
 - (BOOL)serverAllowsAnalyticDetailsSubmission
@@ -1357,16 +1357,16 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v3 = [v2 objectForKey:@"ck-submit-analytics-details-min-version"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       v7 = v6;
       v8 = @"NO";
-      if (v4 < 3)
+      if (unsignedIntegerValue < 3)
       {
         v8 = @"YES";
       }
@@ -1382,7 +1382,7 @@ LABEL_17:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 < 3;
+  return unsignedIntegerValue < 3;
 }
 
 - (id)_getKeepMessagesValue
@@ -1395,21 +1395,21 @@ LABEL_17:
 - (BOOL)_shouldDisplayPopUpForResettingKeepMessages
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKUtilities *)self _getKeepMessagesValue];
-  v3 = [v2 integerValue];
-  if (v3 && IMOSLoggingEnabled())
+  _getKeepMessagesValue = [(IMDCKUtilities *)self _getKeepMessagesValue];
+  integerValue = [_getKeepMessagesValue integerValue];
+  if (integerValue && IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v2;
+      v8 = _getKeepMessagesValue;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Keep Messages value should be altered from %@ to 0", &v7, 0xCu);
     }
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3 != 0;
+  return integerValue != 0;
 }
 
 - (void)_resetKeepMessagesSettingandBroadcastToAllDevices
@@ -1465,16 +1465,16 @@ LABEL_17:
 - (BOOL)_serverAllowsCacheDelete
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKUtilities *)self serverBag];
-  v3 = [v2 objectForKey:@"ck-cache-delete-version-V3"];
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v3 = [serverBag objectForKey:@"ck-cache-delete-version-V3"];
 
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      if (v4 >= 2)
+      if (unsignedIntegerValue >= 2)
       {
         v6 = @"NO";
       }
@@ -1485,7 +1485,7 @@ LABEL_17:
       }
 
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       v11 = 138412802;
       v12 = v6;
       v13 = 2112;
@@ -1497,16 +1497,16 @@ LABEL_17:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 < 2;
+  return unsignedIntegerValue < 2;
 }
 
 - (BOOL)enableAttachmentMetricCollection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D19268] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if (v4 && (-[IMDCKUtilities serverBag](self, "serverBag"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKey:@"ck-enable-attachment-validation"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if (isInternalInstall && (-[IMDCKUtilities serverBag](self, "serverBag"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKey:@"ck-enable-attachment-validation"], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     if (IMOSLoggingEnabled())
     {
@@ -1552,18 +1552,18 @@ LABEL_17:
   v13 = *MEMORY[0x277D85DE8];
   if ([(IMDCKUtilities *)self _allowDestructiveMOCFeaturesBasedOnDSID])
   {
-    v3 = [(IMDCKUtilities *)self _serverAllowsCacheDelete];
+    _serverAllowsCacheDelete = [(IMDCKUtilities *)self _serverAllowsCacheDelete];
   }
 
   else
   {
-    v3 = 0;
+    _serverAllowsCacheDelete = 0;
   }
 
-  v4 = [MEMORY[0x277D19268] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  v6 = ((v5 | v3) & 1) != 0 && [(IMDCKUtilities *)self cloudKitSyncingEnabled];
+  v6 = ((isInternalInstall | _serverAllowsCacheDelete) & 1) != 0 && [(IMDCKUtilities *)self cloudKitSyncingEnabled];
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -1588,19 +1588,19 @@ LABEL_17:
 - (BOOL)_serverAllowsRemovalFromBackUp
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKUtilities *)self serverBag];
-  v3 = [v2 objectForKey:@"ck-remove-from-backup-version-V3"];
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v3 = [serverBag objectForKey:@"ck-remove-from-backup-version-V3"];
 
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       v7 = v6;
       v8 = @"NO";
-      if (v4)
+      if (unsignedIntegerValue)
       {
         v8 = @"YES";
       }
@@ -1614,17 +1614,17 @@ LABEL_17:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4 != 0;
+  return unsignedIntegerValue != 0;
 }
 
 - (BOOL)removeFromBackUpAllowed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDCKUtilities *)self _allowDestructiveMOCFeaturesBasedOnDSID]&& [(IMDCKUtilities *)self _serverAllowsRemovalFromBackUp]&& [(IMDCKUtilities *)self cloudKitSyncingEnabled];
-  v4 = [MEMORY[0x277D19268] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  cloudKitSyncingEnabled = [(IMDCKUtilities *)self _allowDestructiveMOCFeaturesBasedOnDSID]&& [(IMDCKUtilities *)self _serverAllowsRemovalFromBackUp]&& [(IMDCKUtilities *)self cloudKitSyncingEnabled];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if (v5)
+  if (isInternalInstall)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1636,7 +1636,7 @@ LABEL_17:
       }
     }
 
-    v3 = 1;
+    cloudKitSyncingEnabled = 1;
   }
 
   if (IMOSLoggingEnabled())
@@ -1645,7 +1645,7 @@ LABEL_17:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v3)
+      if (cloudKitSyncingEnabled)
       {
         v8 = @"YES";
       }
@@ -1657,7 +1657,7 @@ LABEL_17:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return cloudKitSyncingEnabled;
 }
 
 - (id)internalQueue
@@ -1692,7 +1692,7 @@ LABEL_17:
     }
   }
 
-  v6 = [(IMDCKUtilities *)self internalQueue];
+  internalQueue = [(IMDCKUtilities *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B4F2904;
@@ -1701,7 +1701,7 @@ LABEL_17:
   v17 = &v18;
   v7 = v3;
   v16 = v7;
-  dispatch_async(v6, block);
+  dispatch_async(internalQueue, block);
 
   if (IMOSLoggingEnabled())
   {
@@ -1758,15 +1758,15 @@ LABEL_17:
   return v3;
 }
 
-- (id)_createAccountError:(id)a3
+- (id)_createAccountError:(id)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
     v9 = *MEMORY[0x277CCA450];
-    v10[0] = v3;
+    v10[0] = errorCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -1782,10 +1782,10 @@ LABEL_17:
   return v6;
 }
 
-- (void)fetchCloudKitAccountStatusWithCompletion:(id)a3
+- (void)fetchCloudKitAccountStatusWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   keyExistsAndHasValidFormat = 0;
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"isEligibleForTruthZoneOverride", *MEMORY[0x277D19A08], &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
@@ -1818,7 +1818,7 @@ LABEL_17:
       v9 = 3;
     }
 
-    v4[2](v4, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
@@ -1827,7 +1827,7 @@ LABEL_17:
     aBlock[1] = 3221225472;
     aBlock[2] = sub_22B4F2F4C;
     aBlock[3] = &unk_278702C78;
-    v22 = v4;
+    v22 = completionCopy;
     v10 = _Block_copy(aBlock);
     if (IMOSLoggingEnabled())
     {
@@ -1847,20 +1847,20 @@ LABEL_17:
     v20 = v10;
     v12 = v10;
     v13 = _Block_copy(v19);
-    v14 = [(IMDCKUtilities *)self _truthContainer];
+    _truthContainer = [(IMDCKUtilities *)self _truthContainer];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_22B4F3600;
     v17[3] = &unk_278702CF0;
     v18 = v13;
     v15 = v13;
-    [v14 accountInfoWithCompletionHandler:v17];
+    [_truthContainer accountInfoWithCompletionHandler:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRepairAccountWithAccountStatus:(int64_t)a3 securityLevel:(unint64_t)a4
+- (BOOL)shouldRepairAccountWithAccountStatus:(int64_t)status securityLevel:(unint64_t)level
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([(IMDCKUtilities *)self _accountNeedsRepairOverride])
@@ -1880,12 +1880,12 @@ LABEL_17:
 
   else
   {
-    v9 = [(IMDCKUtilities *)self syncState];
-    v10 = [v9 isSyncingEnabled];
+    syncState = [(IMDCKUtilities *)self syncState];
+    isSyncingEnabled = [syncState isSyncingEnabled];
 
-    if (v10)
+    if (isSyncingEnabled)
     {
-      v8 = a3 == 3 && a4 == 4 || a3 == 2;
+      v8 = status == 3 && level == 4 || status == 2;
       if (IMOSLoggingEnabled())
       {
         v13 = OSLogHandleForIMFoundationCategory();
@@ -1897,14 +1897,14 @@ LABEL_17:
             v14 = @"YES";
           }
 
-          if (a3 > 4)
+          if (status > 4)
           {
             v15 = 0;
           }
 
           else
           {
-            v15 = off_278702EC0[a3];
+            v15 = off_278702EC0[status];
           }
 
           v19 = 138412546;
@@ -1936,24 +1936,24 @@ LABEL_17:
   return v8;
 }
 
-- (void)fetchCloudKitAccountStatusAndUpdateEligibilityAndNeedsRepairStatusWithCompletion:(id)a3
+- (void)fetchCloudKitAccountStatusAndUpdateEligibilityAndNeedsRepairStatusWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDCKUtilities *)self _primaryiCloudAccountSecurityLevel];
+  completionCopy = completion;
+  _primaryiCloudAccountSecurityLevel = [(IMDCKUtilities *)self _primaryiCloudAccountSecurityLevel];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      if (v5 >= 6)
+      if (_primaryiCloudAccountSecurityLevel >= 6)
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"AKAppleIDSecurityLevel(%ld)", v5];
+        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"AKAppleIDSecurityLevel(%ld)", _primaryiCloudAccountSecurityLevel];
       }
 
       else
       {
-        v7 = off_278702EE8[v5];
+        v7 = off_278702EE8[_primaryiCloudAccountSecurityLevel];
       }
 
       *buf = 138412290;
@@ -1966,10 +1966,10 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B4F3C10;
   aBlock[3] = &unk_278702D18;
-  v12 = v4;
-  v13 = v5;
+  v12 = completionCopy;
+  v13 = _primaryiCloudAccountSecurityLevel;
   aBlock[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   [(IMDCKUtilities *)self fetchCloudKitAccountStatusWithCompletion:v9];
 
@@ -1996,21 +1996,21 @@ LABEL_17:
   }
 }
 
-- (BOOL)_checkIfEnabledByServerBagOrDefault:(id)a3
+- (BOOL)_checkIfEnabledByServerBagOrDefault:(id)default
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDCKUtilities *)self serverBag];
-  v6 = [v5 objectForKey:v4];
+  defaultCopy = default;
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v6 = [serverBag objectForKey:defaultCopy];
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   if (IMOSLoggingEnabled())
@@ -2019,13 +2019,13 @@ LABEL_17:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = @"NO";
-      if (v7)
+      if (bOOLValue)
       {
         v9 = @"YES";
       }
 
       v18 = 138412546;
-      v19 = v4;
+      v19 = defaultCopy;
       v20 = 2112;
       v21 = v9;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Server allowing %@: %@", &v18, 0x16u);
@@ -2046,21 +2046,21 @@ LABEL_17:
       }
 
       v18 = 138412546;
-      v19 = v4;
+      v19 = defaultCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Defaults over allowing %@: %@", &v18, 0x16u);
     }
   }
 
-  v14 = [(IMDCKUtilities *)self lockdownManager];
-  if (![v14 isInternalInstall])
+  lockdownManager = [(IMDCKUtilities *)self lockdownManager];
+  if (![lockdownManager isInternalInstall])
   {
 
     goto LABEL_20;
   }
 
-  if (((v7 | v11) & 1) == 0)
+  if (((bOOLValue | v11) & 1) == 0)
   {
 LABEL_20:
     v15 = 0;
@@ -2084,18 +2084,18 @@ LABEL_21:
   return MEMORY[0x2821F9670](self, sel__checkIfEnabledByServerBagOrDefault_);
 }
 
-- (void)_askToTapToRadarWithString:(id)a3 internalOnly:(BOOL)a4
+- (void)_askToTapToRadarWithString:(id)string internalOnly:(BOOL)only
 {
-  v4 = a3;
+  stringCopy = string;
   if (qword_27D8CFD10 != -1)
   {
     sub_22B7CF8D4();
   }
 
-  v5 = v4;
+  v5 = stringCopy;
   v6 = MEMORY[0x277D192D0];
-  v7 = [MEMORY[0x277CCACA8] stringGUID];
-  v8 = [v6 userNotificationWithIdentifier:v7 title:@"Messages on iCloud Debug UI" message:v5 defaultButton:@"File a radar" alternateButton:@"Dismiss" otherButton:0];
+  stringGUID = [MEMORY[0x277CCACA8] stringGUID];
+  v8 = [v6 userNotificationWithIdentifier:stringGUID title:@"Messages on iCloud Debug UI" message:v5 defaultButton:@"File a radar" alternateButton:@"Dismiss" otherButton:0];
 
   if (v8)
   {
@@ -2109,29 +2109,29 @@ LABEL_21:
       }
     }
 
-    v10 = [MEMORY[0x277D1AAA8] sharedInstance];
-    [v10 trackEvent:*MEMORY[0x277D1A1E0]];
+    mEMORY[0x277D1AAA8] = [MEMORY[0x277D1AAA8] sharedInstance];
+    [mEMORY[0x277D1AAA8] trackEvent:*MEMORY[0x277D1A1E0]];
 
     [v8 setUsesNotificationCenter:0];
     [v8 setRepresentedApplicationBundle:*MEMORY[0x277D192F0]];
-    v11 = [MEMORY[0x277D192D8] sharedInstance];
+    mEMORY[0x277D192D8] = [MEMORY[0x277D192D8] sharedInstance];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_22B4F44D8;
     v12[3] = &unk_278702D40;
     v13 = v5;
-    [v11 addUserNotification:v8 listener:0 completionHandler:v12];
+    [mEMORY[0x277D192D8] addUserNotification:v8 listener:0 completionHandler:v12];
   }
 }
 
-- (id)recordNameForMessageWithGUID:(id)a3 usingSalt:(id)a4
+- (id)recordNameForMessageWithGUID:(id)d usingSalt:(id)salt
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  dCopy = d;
+  saltCopy = salt;
+  if ([saltCopy length] && objc_msgSend(dCopy, "length"))
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v5, v6];
+    saltCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", dCopy, saltCopy];
   }
 
   else
@@ -2141,27 +2141,27 @@ LABEL_21:
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(saltCopy, "length")}];
         *buf = 138412546;
         v13 = v9;
         v14 = 2112;
-        v15 = v5;
+        v15 = dCopy;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "IMDCKUtilities recordNameForMessageWithGUID invalid parameters [key length] %@ guid %@", buf, 0x16u);
       }
     }
 
-    v7 = 0;
+    saltCopy = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return saltCopy;
 }
 
-- (id)syncFailureMetricString:(id)a3 isRecoverable:(BOOL)a4 error:(id)a5
+- (id)syncFailureMetricString:(id)string isRecoverable:(BOOL)recoverable error:(id)error
 {
   v6 = MEMORY[0x277CCACA8];
-  if (a4)
+  if (recoverable)
   {
     v7 = @"RecoverableError";
   }
@@ -2171,26 +2171,26 @@ LABEL_21:
     v7 = @"NonRecoverableError";
   }
 
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 domain];
+  errorCopy = error;
+  stringCopy = string;
+  domain = [errorCopy domain];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [v8 code];
+  code = [errorCopy code];
 
-  v13 = [v11 numberWithInteger:v12];
-  v14 = [v6 stringWithFormat:@"%@-%@-%@-%@", v9, v7, v10, v13];
+  v13 = [v11 numberWithInteger:code];
+  v14 = [v6 stringWithFormat:@"%@-%@-%@-%@", stringCopy, v7, domain, v13];
 
   return v14;
 }
 
-- (id)extractServerRecordFromCKServerErrorRecordChanged:(id)a3
+- (id)extractServerRecordFromCKServerErrorRecordChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 code] == 14)
+  changedCopy = changed;
+  if ([changedCopy code] == 14)
   {
-    v4 = [v3 userInfo];
-    v5 = [v4 valueForKey:*MEMORY[0x277CBBFE8]];
+    userInfo = [changedCopy userInfo];
+    v5 = [userInfo valueForKey:*MEMORY[0x277CBBFE8]];
   }
 
   else
@@ -2201,7 +2201,7 @@ LABEL_21:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = v3;
+        v10 = changedCopy;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "******** IMDCKUtilities not a partial error %@", &v9, 0xCu);
       }
     }
@@ -2226,8 +2226,8 @@ LABEL_21:
     }
   }
 
-  v4 = [(IMDCKUtilities *)self syncState];
-  [v4 removeObjectFromAnalyticSyncDatesDictionaryForKey:*MEMORY[0x277D199E0]];
+  syncState = [(IMDCKUtilities *)self syncState];
+  [syncState removeObjectFromAnalyticSyncDatesDictionaryForKey:*MEMORY[0x277D199E0]];
 
   [(IMDCKUtilities *)self reportMOCDebuggingErrorWithString:@"Last sync date was reset to nil" internalOnly:0 initialSync:0];
 }
@@ -2249,14 +2249,14 @@ LABEL_21:
     v9 = *MEMORY[0x277D199A0];
     if (IMGetCachedDomainIntForKeyWithDefaultValue() < 1)
     {
-      v11 = [(IMDCKUtilities *)self _shouldiCloudSwitchBeEnabled];
+      _shouldiCloudSwitchBeEnabled = [(IMDCKUtilities *)self _shouldiCloudSwitchBeEnabled];
       if (IMOSLoggingEnabled())
       {
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = @"NO";
-          if (v11)
+          if (_shouldiCloudSwitchBeEnabled)
           {
             v13 = @"YES";
           }
@@ -2267,7 +2267,7 @@ LABEL_21:
         }
       }
 
-      [(IMDCKUtilities *)self _setiCloudSettingsSwitchEnabled:v11];
+      [(IMDCKUtilities *)self _setiCloudSettingsSwitchEnabled:_shouldiCloudSwitchBeEnabled];
       IMSetDomainIntForKey();
     }
 
@@ -2287,77 +2287,77 @@ LABEL_21:
 
 - (void)evalToggleiCloudSettingsSwitch
 {
-  v3 = [(IMDCKUtilities *)self _shouldiCloudSwitchBeEnabled];
+  _shouldiCloudSwitchBeEnabled = [(IMDCKUtilities *)self _shouldiCloudSwitchBeEnabled];
 
-  [(IMDCKUtilities *)self _setiCloudSettingsSwitchEnabled:v3];
+  [(IMDCKUtilities *)self _setiCloudSettingsSwitchEnabled:_shouldiCloudSwitchBeEnabled];
 }
 
-- (void)_fetchPrimaryAccountWithCompletion:(id)a3
+- (void)_fetchPrimaryAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IMDCKUtilities *)self _accountStore];
+  completionCopy = completion;
+  _accountStore = [(IMDCKUtilities *)self _accountStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22B4F509C;
   v7[3] = &unk_278702D88;
-  v8 = v4;
-  v6 = v4;
-  [v5 aa_primaryAppleAccountWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [_accountStore aa_primaryAppleAccountWithCompletion:v7];
 }
 
-- (void)fetchiCloudAccountPersonID:(id)a3
+- (void)fetchiCloudAccountPersonID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22B4F5268;
   v6[3] = &unk_278702DB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(IMDCKUtilities *)self _fetchPrimaryAccountWithCompletion:v6];
 }
 
-- (void)primaryAccountHasiCloudBackupEnabledWithCompletion:(id)a3
+- (void)primaryAccountHasiCloudBackupEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22B4F54E0;
   v6[3] = &unk_278702D88;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(IMDCKUtilities *)self _fetchPrimaryAccountWithCompletion:v6];
 }
 
 - (BOOL)isDeviceCharging
 {
-  v2 = [MEMORY[0x277D1A998] sharedInstance];
-  v3 = [v2 isDeviceCharging];
+  mEMORY[0x277D1A998] = [MEMORY[0x277D1A998] sharedInstance];
+  isDeviceCharging = [mEMORY[0x277D1A998] isDeviceCharging];
 
-  return v3;
+  return isDeviceCharging;
 }
 
 - (BOOL)isDeviceOnWifi
 {
-  v2 = [MEMORY[0x277D1A998] sharedInstance];
-  v3 = [v2 isDeviceOnWifi];
+  mEMORY[0x277D1A998] = [MEMORY[0x277D1A998] sharedInstance];
+  isDeviceOnWifi = [mEMORY[0x277D1A998] isDeviceOnWifi];
 
-  return v3;
+  return isDeviceOnWifi;
 }
 
 - (id)deviceConditions
 {
-  v3 = [(IMDCKUtilities *)self isDeviceCharging];
-  v4 = [(IMDCKUtilities *)self isDeviceOnWifi];
-  v5 = [(IMDCKUtilities *)self syncState];
-  v6 = [v5 lastSyncDate];
+  isDeviceCharging = [(IMDCKUtilities *)self isDeviceCharging];
+  isDeviceOnWifi = [(IMDCKUtilities *)self isDeviceOnWifi];
+  syncState = [(IMDCKUtilities *)self syncState];
+  lastSyncDate = [syncState lastSyncDate];
 
-  v7 = [(IMDCKUtilities *)self syncState];
-  v8 = [v7 getAnalyticSyncDatesObjectForKey:*MEMORY[0x277D199E0]];
+  syncState2 = [(IMDCKUtilities *)self syncState];
+  v8 = [syncState2 getAnalyticSyncDatesObjectForKey:*MEMORY[0x277D199E0]];
 
   v9 = @"NO";
-  if (v3 && v4)
+  if (isDeviceCharging && isDeviceOnWifi)
   {
     v10 = @"YES";
   }
@@ -2367,7 +2367,7 @@ LABEL_21:
     v10 = @"NO";
   }
 
-  if (v3)
+  if (isDeviceCharging)
   {
     v11 = @"YES";
   }
@@ -2377,12 +2377,12 @@ LABEL_21:
     v11 = @"NO";
   }
 
-  if (v4)
+  if (isDeviceOnWifi)
   {
     v9 = @"YES";
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"isOnWifiAndPower %@, Is charging %@, isOnWifi %@, lastSyncDate %@ lastCompleteSyncedDBDate %@", v10, v11, v9, v6, v8];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"isOnWifiAndPower %@, Is charging %@, isOnWifi %@, lastSyncDate %@ lastCompleteSyncedDBDate %@", v10, v11, v9, lastSyncDate, v8];
 
   return v12;
 }
@@ -2390,10 +2390,10 @@ LABEL_21:
 - (BOOL)deviceConditionsAllowPeriodicSync
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDCKUtilities *)self isDeviceCharging];
-  v4 = [(IMDCKUtilities *)self isDeviceOnWifi];
-  v5 = v4;
-  v6 = v3 && v4;
+  isDeviceCharging = [(IMDCKUtilities *)self isDeviceCharging];
+  isDeviceOnWifi = [(IMDCKUtilities *)self isDeviceOnWifi];
+  v5 = isDeviceOnWifi;
+  v6 = isDeviceCharging && isDeviceOnWifi;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -2410,7 +2410,7 @@ LABEL_21:
         v9 = @"NO";
       }
 
-      if (v3)
+      if (isDeviceCharging)
       {
         v10 = @"YES";
       }
@@ -2439,17 +2439,17 @@ LABEL_21:
   return v6;
 }
 
-- (id)newfilteredArrayRemovingCKRecordDupes:(id)a3
+- (id)newfilteredArrayRemovingCKRecordDupes:(id)dupes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dupesCopy = dupes;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dupesCopy, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dupesCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = dupesCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
@@ -2466,13 +2466,13 @@ LABEL_21:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 recordID];
-        v13 = [v12 recordName];
+        recordID = [v11 recordID];
+        recordName = [recordID recordName];
 
-        if (v13 && ([v4 containsObject:v13] & 1) == 0)
+        if (recordName && ([v4 containsObject:recordName] & 1) == 0)
         {
           [v5 addObject:v11];
-          [v4 addObject:v13];
+          [v4 addObject:recordName];
         }
 
         else if (IMOSLoggingEnabled())
@@ -2497,17 +2497,17 @@ LABEL_21:
   return v5;
 }
 
-- (id)newfilteredArrayRemovingCKRecordIDDupes:(id)a3
+- (id)newfilteredArrayRemovingCKRecordIDDupes:(id)dupes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dupesCopy = dupes;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(dupesCopy, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dupesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = dupesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -2524,11 +2524,11 @@ LABEL_21:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 recordName];
-        if (v12 && ([v4 containsObject:v12] & 1) == 0)
+        recordName = [v11 recordName];
+        if (recordName && ([v4 containsObject:recordName] & 1) == 0)
         {
           [v5 addObject:v11];
-          [v4 addObject:v12];
+          [v4 addObject:recordName];
         }
 
         else if (IMOSLoggingEnabled())
@@ -2556,9 +2556,9 @@ LABEL_21:
 - (id)lastDeviceBackUpDate
 {
   v2 = +[IMDCKBackupController sharedInstance];
-  v3 = [v2 dateOfLastBackUp];
+  dateOfLastBackUp = [v2 dateOfLastBackUp];
 
-  return v3;
+  return dateOfLastBackUp;
 }
 
 - (id)deviceActiveString
@@ -2582,8 +2582,8 @@ LABEL_21:
   v4 = IMGetCachedDomainValueForKey();
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [v5 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v4];
     v7 = v6 > 86400.0;
   }
 
@@ -2615,52 +2615,52 @@ LABEL_21:
   return !v7;
 }
 
-- (void)_showCKLogNotificationWithCompletion:(id)a3
+- (void)_showCKLogNotificationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x277D192D0];
-  v5 = [MEMORY[0x277CCACA8] stringGUID];
-  v6 = [v4 userNotificationWithIdentifier:v5 title:@"Messages on iCloud Debug UI" message:@"Messages will automatically send Apple a sysdiagnose when Messages detects an issue with Messages on iCloud.  You will be notified if a radar is created defaultButton:otherwise the data will be automatically deleted after seven days.  You may turn this off in Internal Settings > Messages" alternateButton:@"Just send" otherButton:{@"Notify me each time", 0}];
+  stringGUID = [MEMORY[0x277CCACA8] stringGUID];
+  v6 = [v4 userNotificationWithIdentifier:stringGUID title:@"Messages on iCloud Debug UI" message:@"Messages will automatically send Apple a sysdiagnose when Messages detects an issue with Messages on iCloud.  You will be notified if a radar is created defaultButton:otherwise the data will be automatically deleted after seven days.  You may turn this off in Internal Settings > Messages" alternateButton:@"Just send" otherButton:{@"Notify me each time", 0}];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D192D8] sharedInstance];
+    mEMORY[0x277D192D8] = [MEMORY[0x277D192D8] sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_22B4F6160;
     v8[3] = &unk_278702DD8;
-    v9 = v3;
-    [v7 addUserNotification:v6 listener:0 completionHandler:v8];
+    v9 = completionCopy;
+    [mEMORY[0x277D192D8] addUserNotification:v6 listener:0 completionHandler:v8];
   }
 }
 
 - (BOOL)isLocalCachedSaltPresent
 {
   v2 = +[IMDCKRecordSaltManager sharedInstance];
-  v3 = [v2 cachedSalt];
-  v4 = [v3 length] != 0;
+  cachedSalt = [v2 cachedSalt];
+  v4 = [cachedSalt length] != 0;
 
   return v4;
 }
 
-- (BOOL)readServerBagBoolForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)readServerBagBoolForKey:(id)key defaultValue:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(IMDCKUtilities *)self serverBag];
-  v8 = [v7 objectForKey:v6];
+  keyCopy = key;
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v8 = [serverBag objectForKey:keyCopy];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v8 BOOLValue];
+    valueCopy = [v8 BOOLValue];
     if (IMOSLoggingEnabled())
     {
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = @"NO";
-        if (v4)
+        if (valueCopy)
         {
           v10 = @"YES";
         }
@@ -2668,7 +2668,7 @@ LABEL_21:
         v14 = 138412546;
         v15 = v10;
         v16 = 2112;
-        v17 = v6;
+        v17 = keyCopy;
         _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Read server bag BOOL: [%@] for key: [%@]", &v14, 0x16u);
       }
 
@@ -2682,7 +2682,7 @@ LABEL_14:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = @"NO";
-      if (v4)
+      if (valueCopy)
       {
         v11 = @"YES";
       }
@@ -2690,7 +2690,7 @@ LABEL_14:
       v14 = 138412546;
       v15 = v11;
       v16 = 2112;
-      v17 = v6;
+      v17 = keyCopy;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Server bag BOOL default: [%@] for key: [%@]", &v14, 0x16u);
     }
 
@@ -2698,89 +2698,89 @@ LABEL_14:
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v4;
+  return valueCopy;
 }
 
-- (void)postSyncStateToCloudKit:(id)a3
+- (void)postSyncStateToCloudKit:(id)kit
 {
-  v9 = a3;
+  kitCopy = kit;
   if ([(IMDCKUtilities *)self shouldReportToRTC])
   {
-    v4 = [(IMDCKUtilities *)self syncState];
-    v5 = [v4 syncReportDictionary];
-    [(IMDCKUtilities *)self postSyncStateToRTC:v9 category:2 reportDictionary:v5];
+    syncState = [(IMDCKUtilities *)self syncState];
+    syncReportDictionary = [syncState syncReportDictionary];
+    [(IMDCKUtilities *)self postSyncStateToRTC:kitCopy category:2 reportDictionary:syncReportDictionary];
   }
 
   if ([(IMDCKUtilities *)self shouldReportToAnalytics]&& [(IMDCKUtilities *)self serverAllowsAnalyticDetailsSubmission])
   {
-    v6 = [(IMDCKUtilities *)self exitManager];
-    v7 = [(IMDCKUtilities *)self syncState];
-    v8 = [v7 syncReportDictionary];
-    [v6 submitCloudKitAnalyticWithOperationGroupName:v9 analyticDictionary:v8];
+    exitManager = [(IMDCKUtilities *)self exitManager];
+    syncState2 = [(IMDCKUtilities *)self syncState];
+    syncReportDictionary2 = [syncState2 syncReportDictionary];
+    [exitManager submitCloudKitAnalyticWithOperationGroupName:kitCopy analyticDictionary:syncReportDictionary2];
   }
 }
 
-- (void)postSyncStateToRTC:(id)a3 category:(int64_t)a4 reportDictionary:(id)a5
+- (void)postSyncStateToRTC:(id)c category:(int64_t)category reportDictionary:(id)dictionary
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v15[0] = @"groupName";
   v15[1] = @"deviceState";
-  v16[0] = a3;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(IMDCKUtilities *)self deviceActiveString];
-  v16[1] = v10;
+  v16[0] = c;
+  dictionaryCopy = dictionary;
+  cCopy = c;
+  deviceActiveString = [(IMDCKUtilities *)self deviceActiveString];
+  v16[1] = deviceActiveString;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v12 = [v11 mutableCopy];
-  [v12 addEntriesFromDictionary:v8];
+  [v12 addEntriesFromDictionary:dictionaryCopy];
 
-  v13 = [(IMDCKUtilities *)self telemetryReporter];
-  [v13 postMessage:v12 category:a4];
+  telemetryReporter = [(IMDCKUtilities *)self telemetryReporter];
+  [telemetryReporter postMessage:v12 category:category];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportZoneCreation:(id)a3
+- (void)reportZoneCreation:(id)creation
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"ZoneCreateDate-%@", a3];
-  v4 = [(IMDCKUtilities *)self syncState];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v4 setAnalyticSyncDatesDictionaryObject:v5 forKey:v6 shouldOverrideIfExists:0];
+  creation = [MEMORY[0x277CCACA8] stringWithFormat:@"ZoneCreateDate-%@", creation];
+  syncState = [(IMDCKUtilities *)self syncState];
+  date = [MEMORY[0x277CBEAA8] date];
+  [syncState setAnalyticSyncDatesDictionaryObject:date forKey:creation shouldOverrideIfExists:0];
 }
 
-- (void)reportErrorForSyncType:(int64_t)a3 syncStep:(id)a4 response:(int64_t)a5 error:(id)a6
+- (void)reportErrorForSyncType:(int64_t)type syncStep:(id)step response:(int64_t)response error:(id)error
 {
-  if (a6)
+  if (error)
   {
-    v7 = a6;
-    v8 = [(IMDCKUtilities *)self syncState];
-    [v8 addSyncError:v7];
+    errorCopy = error;
+    syncState = [(IMDCKUtilities *)self syncState];
+    [syncState addSyncError:errorCopy];
   }
 }
 
-- (id)finalSyncStateFor:(int64_t)a3
+- (id)finalSyncStateFor:(int64_t)for
 {
-  if (a3 > 5)
+  if (for > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_278702F18[a3];
+    v4 = *off_278702F18[for];
   }
 
   return v4;
 }
 
-- (BOOL)isCKPartialError:(id)a3
+- (BOOL)isCKPartialError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CBBF50]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CBBF50]])
   {
-    v5 = [v3 code] == 2;
+    v5 = [errorCopy code] == 2;
   }
 
   else
@@ -2791,18 +2791,18 @@ LABEL_14:
   return v5;
 }
 
-- (id)findRootCauses:(id)a3
+- (id)findRootCauses:(id)causes
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  causesCopy = causes;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (![(IMDCKUtilities *)self isCKPartialError:v4])
+  if (![(IMDCKUtilities *)self isCKPartialError:causesCopy])
   {
     goto LABEL_18;
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+  userInfo = [causesCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2811,7 +2811,7 @@ LABEL_14:
   }
 
   v19 = v7;
-  v20 = v4;
+  v20 = causesCopy;
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
@@ -2839,8 +2839,8 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v14 domain];
-        if (![v15 isEqualToString:v12])
+        domain = [v14 domain];
+        if (![domain isEqualToString:v12])
         {
 
 LABEL_13:
@@ -2848,9 +2848,9 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v16 = [v14 code];
+        code = [v14 code];
 
-        if (v16 != 22)
+        if (code != 22)
         {
           goto LABEL_13;
         }
@@ -2866,13 +2866,13 @@ LABEL_14:
 LABEL_16:
 
   v7 = v19;
-  v4 = v20;
+  causesCopy = v20;
 LABEL_17:
 
 LABEL_18:
   if (![v5 count])
   {
-    [v5 addObject:v4];
+    [v5 addObject:causesCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2880,14 +2880,14 @@ LABEL_18:
   return v5;
 }
 
-- (id)simplifiedError:(id)a3
+- (id)simplifiedError:(id)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 localizedDescription];
-  if (v4)
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  if (localizedDescription)
   {
-    v5 = v4;
+    v5 = localizedDescription;
     v6 = *MEMORY[0x277CCA450];
 LABEL_4:
     v14 = v6;
@@ -2896,9 +2896,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [v3 userInfo];
+  userInfo = [errorCopy userInfo];
   v6 = *MEMORY[0x277CCA450];
-  v5 = [v7 objectForKey:*MEMORY[0x277CCA450]];
+  v5 = [userInfo objectForKey:*MEMORY[0x277CCA450]];
 
   if (v5)
   {
@@ -2908,8 +2908,8 @@ LABEL_4:
   v8 = 0;
 LABEL_5:
   v9 = MEMORY[0x277CCA9B8];
-  v10 = [v3 domain];
-  v11 = [v9 errorWithDomain:v10 code:objc_msgSend(v3 userInfo:{"code"), v8}];
+  domain = [errorCopy domain];
+  v11 = [v9 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v8}];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -2932,23 +2932,23 @@ LABEL_5:
   return v3(@"Messages3");
 }
 
-- (void)PCSKeyRollPendingAsync:(id)a3 timeout:(double)a4
+- (void)PCSKeyRollPendingAsync:(id)async timeout:(double)timeout
 {
-  v6 = a3;
+  asyncCopy = async;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v18 = 0;
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B4F75E8;
   block[3] = &unk_278702E00;
   v16 = v17;
-  v8 = v6;
+  v8 = asyncCopy;
   v15 = v8;
   dispatch_after(v7, MEMORY[0x277D85CD0], block);
-  v9 = [(IMDCKUtilities *)self internalQueue];
+  internalQueue = [(IMDCKUtilities *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B4F7620;
@@ -2957,7 +2957,7 @@ LABEL_5:
   v13 = v17;
   v11[4] = self;
   v10 = v8;
-  dispatch_async(v9, v11);
+  dispatch_async(internalQueue, v11);
 
   _Block_object_dispose(v17, 8);
 }
@@ -2992,23 +2992,23 @@ LABEL_5:
   }
 }
 
-- (void)PCSReportManateeStatusAsync:(id)a3 timeout:(double)a4
+- (void)PCSReportManateeStatusAsync:(id)async timeout:(double)timeout
 {
-  v6 = a3;
+  asyncCopy = async;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v18 = 0;
-  v7 = dispatch_time(0, (a4 * 1000000000.0));
+  v7 = dispatch_time(0, (timeout * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B4F7A9C;
   block[3] = &unk_278702E00;
   v16 = v17;
-  v8 = v6;
+  v8 = asyncCopy;
   v15 = v8;
   dispatch_after(v7, MEMORY[0x277D85CD0], block);
-  v9 = [(IMDCKUtilities *)self internalQueue];
+  internalQueue = [(IMDCKUtilities *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B4F7AD4;
@@ -3017,7 +3017,7 @@ LABEL_5:
   v13 = v17;
   v11[4] = self;
   v10 = v8;
-  dispatch_async(v9, v11);
+  dispatch_async(internalQueue, v11);
 
   _Block_object_dispose(v17, 8);
 }
@@ -3025,26 +3025,26 @@ LABEL_5:
 - (id)dsid
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(IMDCKUtilities *)self _accountStore];
-  v5 = [v4 aa_primaryAppleAccount];
+  _accountStore = [(IMDCKUtilities *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
-  v6 = [v5 aa_personID];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
 
   objc_autoreleasePoolPop(v3);
 
-  return v6;
+  return aa_personID;
 }
 
 - (id)_primaryAccountCountryCode
 {
-  v3 = [(IMDCKUtilities *)self _accountManager];
-  v4 = [v3 primaryAuthKitAccount];
-  v5 = v4;
+  _accountManager = [(IMDCKUtilities *)self _accountManager];
+  primaryAuthKitAccount = [_accountManager primaryAuthKitAccount];
+  v5 = primaryAuthKitAccount;
   v6 = 0;
-  if (v3 && v4)
+  if (_accountManager && primaryAuthKitAccount)
   {
-    v7 = [(IMDCKUtilities *)self _accountManager];
-    v6 = [v7 appleIDCountryCodeForAccount:v5];
+    _accountManager2 = [(IMDCKUtilities *)self _accountManager];
+    v6 = [_accountManager2 appleIDCountryCodeForAccount:v5];
   }
 
   return v6;
@@ -3052,32 +3052,32 @@ LABEL_5:
 
 - (BOOL)deviceIsPhoneOrWatch
 {
-  v2 = [MEMORY[0x277D07DB0] sharedInstance];
-  v3 = [v2 deviceType] != 4;
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  v3 = [mEMORY[0x277D07DB0] deviceType] != 4;
 
   return v3;
 }
 
 - (BOOL)shouldAttemptMiCOnByDefault
 {
-  v2 = [(IMDCKUtilities *)self serverBag];
-  v3 = [v2 objectForKey:*MEMORY[0x277D19A10]];
+  serverBag = [(IMDCKUtilities *)self serverBag];
+  v3 = [serverBag objectForKey:*MEMORY[0x277D19A10]];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(serverBag) = [v3 BOOLValue];
+  return serverBag;
 }
 
 - (BOOL)iCloudAccountMatchesiMessageAccount
 {
   v45 = *MEMORY[0x277D85DE8];
-  v31 = [(IMDCKUtilities *)self deviceIsPhoneOrWatch];
+  deviceIsPhoneOrWatch = [(IMDCKUtilities *)self deviceIsPhoneOrWatch];
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = @"NO";
-      if (v31)
+      if (deviceIsPhoneOrWatch)
       {
         v4 = @"YES";
       }
@@ -3088,9 +3088,9 @@ LABEL_5:
     }
   }
 
-  v30 = [(IMDCKUtilities *)self _primaryiCloudAccount];
-  v5 = [(IMDCKUtilities *)self dsid];
-  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"D:%@", v5];
+  _primaryiCloudAccount = [(IMDCKUtilities *)self _primaryiCloudAccount];
+  dsid = [(IMDCKUtilities *)self dsid];
+  v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"D:%@", dsid];
 
   if (IMOSLoggingEnabled())
   {
@@ -3103,7 +3103,7 @@ LABEL_5:
     }
   }
 
-  if (v30 && [(__CFString *)v33 length])
+  if (_primaryiCloudAccount && [(__CFString *)v33 length])
   {
     v7 = +[IMDServiceController sharedController];
     v29 = [v7 serviceWithName:*MEMORY[0x277D1A620]];
@@ -3120,7 +3120,7 @@ LABEL_5:
     if (v11)
     {
       v12 = *v35;
-      v32 = v31;
+      v32 = deviceIsPhoneOrWatch;
       while (2)
       {
         for (i = 0; i != v11; ++i)
@@ -3134,9 +3134,9 @@ LABEL_5:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 idsAccount];
-            v16 = [v15 profileID];
-            if (v16 && [v15 accountType] == 1)
+            idsAccount = [v14 idsAccount];
+            profileID = [idsAccount profileID];
+            if (profileID && [idsAccount accountType] == 1)
             {
               if (IMOSLoggingEnabled())
               {
@@ -3144,12 +3144,12 @@ LABEL_5:
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v39 = v16;
+                  v39 = profileID;
                   _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "iMessage account DSID %@", buf, 0xCu);
                 }
               }
 
-              v18 = [(__CFString *)v16 isEqualToString:v33];
+              v18 = [(__CFString *)profileID isEqualToString:v33];
               v19 = IMOSLoggingEnabled();
               if (v18)
               {
@@ -3158,25 +3158,25 @@ LABEL_5:
                   v20 = OSLogHandleForIMFoundationCategory();
                   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
                   {
-                    v21 = [v15 profileID];
-                    v22 = [v14 isActive];
+                    profileID2 = [idsAccount profileID];
+                    isActive = [v14 isActive];
                     *buf = 138412802;
                     v23 = @"NO";
-                    if (v22)
+                    if (isActive)
                     {
                       v23 = @"YES";
                     }
 
                     v39 = v33;
                     v40 = 2112;
-                    v41 = v21;
+                    v41 = profileID2;
                     v42 = 2112;
                     v43 = v23;
                     _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "We found one that matches up (icloud: %@, iMessage: %@), the ids account is active: [%@]", buf, 0x20u);
                   }
                 }
 
-                if (v31 || [v14 isActive])
+                if (deviceIsPhoneOrWatch || [v14 isActive])
                 {
 
                   v26 = 1;
@@ -3191,11 +3191,11 @@ LABEL_5:
                   v24 = OSLogHandleForIMFoundationCategory();
                   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
                   {
-                    v25 = [v15 profileID];
+                    profileID3 = [idsAccount profileID];
                     *buf = 138412546;
                     v39 = v33;
                     v40 = 2112;
-                    v41 = v25;
+                    v41 = profileID3;
                     _os_log_impl(&dword_22B4CC000, v24, OS_LOG_TYPE_INFO, "iCloud account %@ and iMessage account %@ DO NOT match up", buf, 0x16u);
                   }
                 }
@@ -3218,7 +3218,7 @@ LABEL_5:
 
     else
     {
-      v26 = v31;
+      v26 = deviceIsPhoneOrWatch;
 LABEL_47:
       v32 = v26;
     }
@@ -3235,8 +3235,8 @@ LABEL_47:
 
 - (BOOL)signedIntoiCloudAccount
 {
-  v2 = [(IMDCKUtilities *)self _primaryiCloudAccount];
-  v3 = v2 != 0;
+  _primaryiCloudAccount = [(IMDCKUtilities *)self _primaryiCloudAccount];
+  v3 = _primaryiCloudAccount != 0;
 
   return v3;
 }
@@ -3272,8 +3272,8 @@ LABEL_47:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 idsAccount];
-          if ([v11 accountType] == 1 && (objc_msgSend(v11, "isActive") & 1) != 0)
+          idsAccount = [v10 idsAccount];
+          if ([idsAccount accountType] == 1 && (objc_msgSend(idsAccount, "isActive") & 1) != 0)
           {
 
             LOBYTE(v7) = 1;
@@ -3300,11 +3300,11 @@ LABEL_14:
 
 - (BOOL)signedIntoiCloudAndiMessageAndiCloudAccountMatchesiMessageAccount
 {
-  v3 = [(IMDCKUtilities *)self _primaryiCloudAccount];
-  if (v3)
+  _primaryiCloudAccount = [(IMDCKUtilities *)self _primaryiCloudAccount];
+  if (_primaryiCloudAccount)
   {
-    v4 = [(IMDCKUtilities *)self dsid];
-    v5 = [v4 length] == 0;
+    dsid = [(IMDCKUtilities *)self dsid];
+    v5 = [dsid length] == 0;
   }
 
   else
@@ -3312,8 +3312,8 @@ LABEL_14:
     v5 = 1;
   }
 
-  v6 = [(IMDCKUtilities *)self signedIntoiMessageAccount];
-  if (v5 || !v6)
+  signedIntoiMessageAccount = [(IMDCKUtilities *)self signedIntoiMessageAccount];
+  if (v5 || !signedIntoiMessageAccount)
   {
     return 0;
   }
@@ -3339,10 +3339,10 @@ LABEL_14:
   [(IMDCKUtilities *)self setCloudKitSyncingEnabled:0];
 }
 
-- (void)eligibleForTruthZoneWithCompletion:(id)a3
+- (void)eligibleForTruthZoneWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -3402,9 +3402,9 @@ LABEL_14:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, *(v17 + 24));
+    completionCopy[2](completionCopy, *(v17 + 24));
   }
 
   _Block_object_dispose(&v16, 8);
@@ -3421,9 +3421,9 @@ LABEL_14:
   return byte_27D8CFD50;
 }
 
-- (void)disableAllDevicesWithCompletion:(id)a3
+- (void)disableAllDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -3437,16 +3437,16 @@ LABEL_14:
   v6 = *MEMORY[0x277D19A08];
   v7 = *MEMORY[0x277D19BF8];
   IMSetDomainBoolForKey();
-  v8 = [(IMDCKUtilities *)self exitManager];
-  v9 = [MEMORY[0x277CBEAA8] date];
+  exitManager = [(IMDCKUtilities *)self exitManager];
+  date = [MEMORY[0x277CBEAA8] date];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B4F8C0C;
   v11[3] = &unk_278702EA0;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v8 writeExitRecordWithDate:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [exitManager writeExitRecordWithDate:date completion:v11];
 }
 
 + (id)im_AKSecurityLevelKey
@@ -3476,16 +3476,16 @@ LABEL_14:
 + (id)readAliasesFromDefaults
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"IMD-IDS-Aliases" inDomain:*MEMORY[0x277D19A08]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"IMD-IDS-Aliases" inDomain:*MEMORY[0x277D19A08]];
 
   if (v3)
   {
-    v4 = [v3 allKeys];
-    if ([v4 containsObject:@"allAliases"])
+    allKeys = [v3 allKeys];
+    if ([allKeys containsObject:@"allAliases"])
     {
-      v5 = [v3 allKeys];
-      if ([v5 containsObject:@"selectedAliases"])
+      allKeys2 = [v3 allKeys];
+      if ([allKeys2 containsObject:@"selectedAliases"])
       {
         v15[0] = @"allAliases";
         v6 = MEMORY[0x277CBEB98];
@@ -3537,21 +3537,21 @@ LABEL_14:
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [MEMORY[0x277D1A8F8] IMPhoneNumbersEnabledForMultipleSubscriptionDevice];
-  if ([v6 count])
+  iMPhoneNumbersEnabledForMultipleSubscriptionDevice = [MEMORY[0x277D1A8F8] IMPhoneNumbersEnabledForMultipleSubscriptionDevice];
+  if ([iMPhoneNumbersEnabledForMultipleSubscriptionDevice count])
   {
-    [v4 addObjectsFromArray:v6];
-    [v5 addObjectsFromArray:v6];
+    [v4 addObjectsFromArray:iMPhoneNumbersEnabledForMultipleSubscriptionDevice];
+    [v5 addObjectsFromArray:iMPhoneNumbersEnabledForMultipleSubscriptionDevice];
   }
 
-  v7 = [a1 _idsAccountController];
-  v8 = [v7 accounts];
+  _idsAccountController = [self _idsAccountController];
+  accounts = [_idsAccountController accounts];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v8;
+  v9 = accounts;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v10)
   {
@@ -3566,16 +3566,16 @@ LABEL_14:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 im_registeredURIs];
-        if ([v14 count])
+        im_registeredURIs = [v13 im_registeredURIs];
+        if ([im_registeredURIs count])
         {
-          [v4 addObjectsFromArray:v14];
+          [v4 addObjectsFromArray:im_registeredURIs];
         }
 
-        v15 = [v13 vettedAliases];
-        if ([v15 count])
+        vettedAliases = [v13 vettedAliases];
+        if ([vettedAliases count])
         {
-          [v5 addObjectsFromArray:v15];
+          [v5 addObjectsFromArray:vettedAliases];
         }
       }
 
@@ -3586,11 +3586,11 @@ LABEL_14:
   }
 
   v26[0] = @"allAliases";
-  v16 = [v5 allObjects];
+  allObjects = [v5 allObjects];
   v26[1] = @"selectedAliases";
-  v27[0] = v16;
-  v17 = [v4 allObjects];
-  v27[1] = v17;
+  v27[0] = allObjects;
+  allObjects2 = [v4 allObjects];
+  v27[1] = allObjects2;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3601,7 +3601,7 @@ LABEL_14:
 + (void)calculateAndSaveAliasesToDefaults
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [a1 calculateAliasesForDefaults];
+  calculateAliasesForDefaults = [self calculateAliasesForDefaults];
   v3 = IMOSLoggingEnabled();
   v4 = MEMORY[0x277D19A08];
   if (v3)
@@ -3613,33 +3613,33 @@ LABEL_14:
       v9 = 138412546;
       v10 = v6;
       v11 = 2112;
-      v12 = v2;
+      v12 = calculateAliasesForDefaults;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Saving (domain %@) selected aliases %@", &v9, 0x16u);
     }
   }
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setObject:v2 forKey:@"IMD-IDS-Aliases" inDomain:*v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:calculateAliasesForDefaults forKey:@"IMD-IDS-Aliases" inDomain:*v4];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addConditionChecks:(unint64_t)a3 toCriteria:(id)a4
++ (void)addConditionChecks:(unint64_t)checks toCriteria:(id)criteria
 {
-  v5 = a4;
-  xdict = v5;
-  if (a3 != 1)
+  criteriaCopy = criteria;
+  xdict = criteriaCopy;
+  if (checks != 1)
   {
-    if (a3 != 2)
+    if (checks != 2)
     {
       goto LABEL_5;
     }
 
-    xpc_dictionary_set_BOOL(v5, *MEMORY[0x277D86390], 1);
+    xpc_dictionary_set_BOOL(criteriaCopy, *MEMORY[0x277D86390], 1);
   }
 
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86230], 0);
-  v5 = xdict;
+  criteriaCopy = xdict;
 LABEL_5:
 }
 

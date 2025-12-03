@@ -25,7 +25,7 @@
       v12 = [v10 cmsOptionalStringForKey:@"playbackQueueLocationToConfirm"];
       v13 = INPlaybackQueueLocationFromString(v12);
 
-      v14 = [MEMORY[0x277CD3EF0] confirmationRequiredWithPlaybackQueueLocationToConfirm:v13];
+      unsupported = [MEMORY[0x277CD3EF0] confirmationRequiredWithPlaybackQueueLocationToConfirm:v13];
     }
 
     else
@@ -34,7 +34,7 @@
 
       if (v15)
       {
-        v14 = [MEMORY[0x277CD3EF0] unsupported];
+        unsupported = [MEMORY[0x277CD3EF0] unsupported];
       }
 
       else
@@ -43,7 +43,7 @@
 
         if (v16)
         {
-          v14 = [MEMORY[0x277CD3EF0] needsValue];
+          unsupported = [MEMORY[0x277CD3EF0] needsValue];
         }
 
         else
@@ -57,12 +57,12 @@ LABEL_14:
             goto LABEL_15;
           }
 
-          v14 = [MEMORY[0x277CD3EF0] notRequired];
+          unsupported = [MEMORY[0x277CD3EF0] notRequired];
         }
       }
     }
 
-    v9 = v14;
+    v9 = unsupported;
     goto LABEL_14;
   }
 

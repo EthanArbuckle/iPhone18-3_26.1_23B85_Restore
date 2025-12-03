@@ -9,27 +9,27 @@
 - (void)applyToAssertionTransientState:()RBProcessState attributePath:context:
 {
   v5 = a3;
-  v4 = [v5 maxCPUUsageViolationPolicyForRole:{objc_msgSend(a1, "role")}];
-  if (v4 < [a1 violationPolicy])
+  v4 = [v5 maxCPUUsageViolationPolicyForRole:{objc_msgSend(self, "role")}];
+  if (v4 < [self violationPolicy])
   {
-    [v5 setMaxCPUUsageViolationPolicy:objc_msgSend(a1 forRole:{"violationPolicy"), objc_msgSend(a1, "role")}];
+    [v5 setMaxCPUUsageViolationPolicy:objc_msgSend(self forRole:{"violationPolicy"), objc_msgSend(self, "role")}];
   }
 }
 
 - (void)applyToProcessState:()RBProcessState attributePath:context:
 {
   v14 = a3;
-  v7 = [a5 targetProcess];
-  v8 = [v7 isPlatformBinary];
+  targetProcess = [a5 targetProcess];
+  isPlatformBinary = [targetProcess isPlatformBinary];
 
-  if ((v8 & 1) == 0)
+  if ((isPlatformBinary & 1) == 0)
   {
-    v9 = [a1 role];
+    role = [self role];
     v10 = [RBProcessCPUMaximumLimits alloc];
-    v11 = [a1 percentage];
-    [a1 duration];
-    v13 = -[RBProcessCPUMaximumLimits initWithPercentage:duration:violationPolicy:](v10, "initWithPercentage:duration:violationPolicy:", v11, vcvtpd_u64_f64(v12), [a1 violationPolicy]);
-    [v14 setMaxCPUUsageLimits:v13 forRole:v9];
+    percentage = [self percentage];
+    [self duration];
+    v13 = -[RBProcessCPUMaximumLimits initWithPercentage:duration:violationPolicy:](v10, "initWithPercentage:duration:violationPolicy:", percentage, vcvtpd_u64_f64(v12), [self violationPolicy]);
+    [v14 setMaxCPUUsageLimits:v13 forRole:role];
   }
 }
 
@@ -42,7 +42,7 @@
   {
     if (a4)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", a1, v6];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Attribute conflict: attribute %@ conflicts with attribute %@", self, v6];
       v8 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277D47050];
       v13 = *MEMORY[0x277CCA470];

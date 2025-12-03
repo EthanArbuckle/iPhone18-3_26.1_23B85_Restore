@@ -1,5 +1,5 @@
 @interface TNAnnotationPrintingHelper
-- (TNAnnotationPrintingHelper)initWithDataSource:(id)a3 documentLocale:(id)a4;
+- (TNAnnotationPrintingHelper)initWithDataSource:(id)source documentLocale:(id)locale;
 - (TNAnnotationPrintingHelperDataSource)dataSource;
 - (double)heightForAdditionalContent;
 - (unint64_t)numberOfAdditionalPages;
@@ -7,16 +7,16 @@
 
 @implementation TNAnnotationPrintingHelper
 
-- (TNAnnotationPrintingHelper)initWithDataSource:(id)a3 documentLocale:(id)a4
+- (TNAnnotationPrintingHelper)initWithDataSource:(id)source documentLocale:(id)locale
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = TNAnnotationPrintingHelper;
   v6 = [(TNAnnotationPrintingHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_dataSource, v5);
+    objc_storeWeak(&v6->_dataSource, sourceCopy);
   }
 
   return v7;

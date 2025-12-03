@@ -1,37 +1,37 @@
 @interface DTProcessControlService
-+ (void)registerCapabilities:(id)a3;
-- (DTProcessControlService)initWithChannel:(id)a3;
-- (id)isPidDebuggable:(id)a3;
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7;
-- (id)requestDisableMemoryLimitsForPid:(int)a3;
-- (void)_performMemoryWarningForPid:(int)a3;
-- (void)resumePid:(id)a3;
-- (void)sendProcessControlEvent:(id)a3 toPid:(id)a4;
-- (void)sendSignal:(id)a3 toPid:(id)a4;
-- (void)startObservingPid:(id)a3;
-- (void)stopObservingPid:(id)a3;
-- (void)suspendPid:(id)a3;
-- (void)watchOutputFileDescriptor:(int)a3 forPid:(int)a4;
-- (void)watchOutputFileName:(id)a3 directory:(id)a4 forPid:(int)a5;
++ (void)registerCapabilities:(id)capabilities;
+- (DTProcessControlService)initWithChannel:(id)channel;
+- (id)isPidDebuggable:(id)debuggable;
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options;
+- (id)requestDisableMemoryLimitsForPid:(int)pid;
+- (void)_performMemoryWarningForPid:(int)pid;
+- (void)resumePid:(id)pid;
+- (void)sendProcessControlEvent:(id)event toPid:(id)pid;
+- (void)sendSignal:(id)signal toPid:(id)pid;
+- (void)startObservingPid:(id)pid;
+- (void)stopObservingPid:(id)pid;
+- (void)suspendPid:(id)pid;
+- (void)watchOutputFileDescriptor:(int)descriptor forPid:(int)pid;
+- (void)watchOutputFileName:(id)name directory:(id)directory forPid:(int)pid;
 @end
 
 @implementation DTProcessControlService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.signal" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.memorylimits" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.viewdebuggingutils" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.isdebuggable" withVersion:1 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.signal" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.memorylimits" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.viewdebuggingutils" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.processcontrol.capability.isdebuggable" withVersion:1 forClass:self];
 }
 
-- (DTProcessControlService)initWithChannel:(id)a3
+- (DTProcessControlService)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v19.receiver = self;
   v19.super_class = DTProcessControlService;
-  v5 = [(DTXService *)&v19 initWithChannel:v4];
+  v5 = [(DTXService *)&v19 initWithChannel:channelCopy];
   if (v5)
   {
     v6 = dispatch_queue_create("process death queue", 0);
@@ -59,31 +59,31 @@
     v17[2] = sub_247FAF59C;
     v17[3] = &unk_278EF1070;
     v18 = v5;
-    [v4 registerDisconnectHandler:v17];
+    [channelCopy registerDisconnectHandler:v17];
   }
 
   return v5;
 }
 
-- (void)startObservingPid:(id)a3
+- (void)startObservingPid:(id)pid
 {
-  v4 = a3;
-  v5 = [v4 intValue];
+  pidCopy = pid;
+  intValue = [pidCopy intValue];
   deathNoteQueue = self->_deathNoteQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_247FAF784;
   block[3] = &unk_278EF2898;
   block[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v7 = v4;
+  v9 = pidCopy;
+  v10 = intValue;
+  v7 = pidCopy;
   dispatch_sync(deathNoteQueue, block);
 }
 
-- (void)stopObservingPid:(id)a3
+- (void)stopObservingPid:(id)pid
 {
-  v8 = a3;
+  pidCopy = pid;
   v4 = [(NSMutableArray *)self->_pids indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -91,7 +91,7 @@
     dispatch_source_cancel(v5);
   }
 
-  v6 = [(NSMutableDictionary *)self->_activeIODispatchSources objectForKeyedSubscript:v8];
+  v6 = [(NSMutableDictionary *)self->_activeIODispatchSources objectForKeyedSubscript:pidCopy];
   v7 = v6;
   if (v6)
   {
@@ -99,11 +99,11 @@
   }
 }
 
-- (id)isPidDebuggable:(id)a3
+- (id)isPidDebuggable:(id)debuggable
 {
   name = 0;
   v3 = MEMORY[0x277D85F48];
-  v4 = task_for_pid(*MEMORY[0x277D85F48], [a3 intValue], &name);
+  v4 = task_for_pid(*MEMORY[0x277D85F48], [debuggable intValue], &name);
   v5 = name;
   if (name)
   {
@@ -126,17 +126,17 @@
   return v8;
 }
 
-- (void)resumePid:(id)a3
+- (void)resumePid:(id)pid
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [a3 intValue];
-  if (!v3)
+  intValue = [pid intValue];
+  if (!intValue)
   {
     goto LABEL_12;
   }
 
-  v4 = v3;
-  if (v3 == getpid())
+  v4 = intValue;
+  if (intValue == getpid())
   {
     goto LABEL_12;
   }
@@ -184,11 +184,11 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suspendPid:(id)a3
+- (void)suspendPid:(id)pid
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [a3 intValue];
-  if (!v3 || (v4 = v3, v3 == getpid()))
+  intValue = [pid intValue];
+  if (!intValue || (v4 = intValue, intValue == getpid()))
   {
 LABEL_3:
     v5 = *MEMORY[0x277D85DE8];
@@ -227,7 +227,7 @@ LABEL_3:
   mach_port_deallocate(v8, v7);
 }
 
-- (id)launchSuspendedProcessWithDevicePath:(id)a3 bundleIdentifier:(id)a4 environment:(id)a5 arguments:(id)a6 options:(id)a7
+- (id)launchSuspendedProcessWithDevicePath:(id)path bundleIdentifier:(id)identifier environment:(id)environment arguments:(id)arguments options:(id)options
 {
   v7 = MEMORY[0x277CBEAD8];
   v8 = objc_opt_class();
@@ -237,35 +237,35 @@ LABEL_3:
   return 0;
 }
 
-- (void)sendSignal:(id)a3 toPid:(id)a4
+- (void)sendSignal:(id)signal toPid:(id)pid
 {
-  v14 = a3;
-  v6 = [a4 intValue];
-  if (v6)
+  signalCopy = signal;
+  intValue = [pid intValue];
+  if (intValue)
   {
-    v7 = v6;
-    if (v6 != getpid())
+    v7 = intValue;
+    if (intValue != getpid())
     {
-      v8 = [v14 intValue];
-      HIDWORD(v10) = v8 - 9;
-      LODWORD(v10) = v8 - 9;
+      intValue2 = [signalCopy intValue];
+      HIDWORD(v10) = intValue2 - 9;
+      LODWORD(v10) = intValue2 - 9;
       v9 = v10 >> 1;
       v11 = v9 > 5;
       v12 = (1 << v9) & 0x39;
       if (v11 || v12 == 0)
       {
-        [MEMORY[0x277CBEAD8] raise:@"DTProcessControlServiceSendSignalException" format:{@"Unsupported signal %i", v8}];
+        [MEMORY[0x277CBEAD8] raise:@"DTProcessControlServiceSendSignalException" format:{@"Unsupported signal %i", intValue2}];
       }
 
-      if (kill(v7, v8) == -1)
+      if (kill(v7, intValue2) == -1)
       {
-        if (v8 != 15 && v8 != 9 || *__error() != 3)
+        if (intValue2 != 15 && intValue2 != 9 || *__error() != 3)
         {
-          [MEMORY[0x277CBEAD8] raise:@"DTProcessControlServiceSendSignalException" format:{@"Failed to send signal %i to process %i: %i", v8, v7, *__error()}];
+          [MEMORY[0x277CBEAD8] raise:@"DTProcessControlServiceSendSignalException" format:{@"Failed to send signal %i to process %i: %i", intValue2, v7, *__error()}];
         }
       }
 
-      else if (v8 == 15 || v8 == 9)
+      else if (intValue2 == 15 || intValue2 == 9)
       {
         [(DTProcessControlService *)self cleanupPid:v7];
       }
@@ -273,28 +273,28 @@ LABEL_3:
   }
 }
 
-- (void)_performMemoryWarningForPid:(int)a3
+- (void)_performMemoryWarningForPid:(int)pid
 {
-  v3 = a3;
-  if (a3 >= 1)
+  pidCopy = pid;
+  if (pid >= 1)
   {
-    if (sysctlbyname("kern.memorystatus_vm_pressure_send", 0, 0, &v3, 4uLL))
+    if (sysctlbyname("kern.memorystatus_vm_pressure_send", 0, 0, &pidCopy, 4uLL))
     {
-      [MEMORY[0x277CBEAD8] raise:@"DTSpringBoardProcessControlServiceException" format:{@"failed to send memory warning to %d", v3}];
+      [MEMORY[0x277CBEAD8] raise:@"DTSpringBoardProcessControlServiceException" format:{@"failed to send memory warning to %d", pidCopy}];
     }
   }
 }
 
-- (void)sendProcessControlEvent:(id)a3 toPid:(id)a4
+- (void)sendProcessControlEvent:(id)event toPid:(id)pid
 {
-  v6 = a4;
-  v7 = DTProcessControlEventUnarchive(a3);
-  v8 = [v6 intValue];
+  pidCopy = pid;
+  v7 = DTProcessControlEventUnarchive(event);
+  intValue = [pidCopy intValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(DTProcessControlService *)self _performMemoryWarningForPid:v8];
+    [(DTProcessControlService *)self _performMemoryWarningForPid:intValue];
   }
 
   else
@@ -306,7 +306,7 @@ LABEL_3:
       v10 = [v9 objectForKey:@"PCEventType"];
       if ([v10 isEqualToString:@"MemoryEvent"])
       {
-        [(DTProcessControlService *)self _performMemoryWarningForPid:v8];
+        [(DTProcessControlService *)self _performMemoryWarningForPid:intValue];
       }
 
       else if ([v10 isEqualToString:@"MetricPayloadsExample"])
@@ -315,8 +315,8 @@ LABEL_3:
         v12 = v11;
         if (v11 && [v11 length] && NSClassFromString(&cfstr_Mxsourcemanage.isa))
         {
-          v13 = [MEMORY[0x277D28738] sharedManager];
-          [v13 simulatePayloadDeliveryForClient:v12];
+          mEMORY[0x277D28738] = [MEMORY[0x277D28738] sharedManager];
+          [mEMORY[0x277D28738] simulatePayloadDeliveryForClient:v12];
         }
 
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -329,7 +329,7 @@ LABEL_3:
   }
 }
 
-- (id)requestDisableMemoryLimitsForPid:(int)a3
+- (id)requestDisableMemoryLimitsForPid:(int)pid
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = memorystatus_control();
@@ -339,7 +339,7 @@ LABEL_3:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
-      v9 = a3;
+      pidCopy2 = pid;
       v10 = 1024;
       v11 = v5;
       _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to disable active and inactive memory limits for pid %d (result = %d)", buf, 0xEu);
@@ -353,7 +353,7 @@ LABEL_3:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v9 = a3;
+      pidCopy2 = pid;
       v10 = 1024;
       v11 = 0;
       _os_log_impl(&dword_247F67000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Disabled active and inactive memory limits for pid %d (result = %d)", buf, 0xEu);
@@ -366,11 +366,11 @@ LABEL_3:
   return result;
 }
 
-- (void)watchOutputFileDescriptor:(int)a3 forPid:(int)a4
+- (void)watchOutputFileDescriptor:(int)descriptor forPid:(int)pid
 {
-  if ((a3 & 0x80000000) == 0)
+  if ((descriptor & 0x80000000) == 0)
   {
-    v6 = dup(a3);
+    v6 = dup(descriptor);
     v7 = fcntl(v6, 3);
     if (v7 != -1)
     {
@@ -386,7 +386,7 @@ LABEL_3:
       handler[3] = &unk_278EF13C0;
       handler[4] = self;
       v25 = v6;
-      v26 = a4;
+      pidCopy = pid;
       dispatch_source_set_cancel_handler(v8, handler);
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -394,7 +394,7 @@ LABEL_3:
       v20[3] = &unk_278EF2A50;
       v20[4] = self;
       v22 = v6;
-      v23 = a4;
+      pidCopy2 = pid;
       v9 = v8;
       v21 = v9;
       dispatch_source_set_registration_handler(v9, v20);
@@ -404,7 +404,7 @@ LABEL_3:
       v16[3] = &unk_278EF2A50;
       v16[4] = self;
       v18 = v6;
-      v19 = a4;
+      pidCopy3 = pid;
       v10 = v9;
       v17 = v10;
       dispatch_source_set_event_handler(v10, v16);
@@ -413,7 +413,7 @@ LABEL_3:
       block[1] = 3221225472;
       block[2] = sub_247FB1164;
       block[3] = &unk_278EF2898;
-      v15 = a4;
+      pidCopy4 = pid;
       block[4] = self;
       v14 = v10;
       v12 = v10;
@@ -422,21 +422,21 @@ LABEL_3:
   }
 }
 
-- (void)watchOutputFileName:(id)a3 directory:(id)a4 forPid:(int)a5
+- (void)watchOutputFileName:(id)name directory:(id)directory forPid:(int)pid
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  nameCopy = name;
+  directoryCopy = directory;
+  if (nameCopy)
   {
     synchronousRedirectionQueue = self->_synchronousRedirectionQueue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_247FB12B8;
     v11[3] = &unk_278EF28C0;
-    v12 = v8;
-    v13 = self;
-    v15 = a5;
-    v14 = v9;
+    v12 = nameCopy;
+    selfCopy = self;
+    pidCopy = pid;
+    v14 = directoryCopy;
     dispatch_async(synchronousRedirectionQueue, v11);
   }
 }

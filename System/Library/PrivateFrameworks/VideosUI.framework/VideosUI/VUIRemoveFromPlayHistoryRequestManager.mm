@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (VUIRemoveFromPlayHistoryRequestManager)init;
 - (id)_init;
-- (void)sendRequestForDeleteID:(id)a3 isContinueWatching:(BOOL)a4;
+- (void)sendRequestForDeleteID:(id)d isContinueWatching:(BOOL)watching;
 @end
 
 @implementation VUIRemoveFromPlayHistoryRequestManager
@@ -33,9 +33,9 @@ void __56__VUIRemoveFromPlayHistoryRequestManager_sharedInstance__block_invoke()
   v2 = [(VUIRemoveFromPlayHistoryRequestManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingDeleteIDOperationDictionary = v2->_ongoingDeleteIDOperationDictionary;
-    v2->_ongoingDeleteIDOperationDictionary = v3;
+    v2->_ongoingDeleteIDOperationDictionary = dictionary;
   }
 
   return v2;
@@ -47,14 +47,14 @@ void __56__VUIRemoveFromPlayHistoryRequestManager_sharedInstance__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (void)sendRequestForDeleteID:(id)a3 isContinueWatching:(BOOL)a4
+- (void)sendRequestForDeleteID:(id)d isContinueWatching:(BOOL)watching
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_ongoingDeleteIDOperationDictionary objectForKey:v6];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_ongoingDeleteIDOperationDictionary objectForKey:dCopy];
   v8 = v7;
   if (!v7 || [v7 isCancelled])
   {
-    v9 = [objc_alloc(MEMORY[0x1E69E15B8]) initWithItemID:v6];
+    v9 = [objc_alloc(MEMORY[0x1E69E15B8]) initWithItemID:dCopy];
     if (v9)
     {
       objc_initWeak(&location, v9);
@@ -64,14 +64,14 @@ void __56__VUIRemoveFromPlayHistoryRequestManager_sharedInstance__block_invoke()
       v14 = __84__VUIRemoveFromPlayHistoryRequestManager_sendRequestForDeleteID_isContinueWatching___block_invoke;
       v15 = &unk_1E872F3C8;
       objc_copyWeak(&v17, &location);
-      v10 = v6;
+      v10 = dCopy;
       v16 = v10;
       objc_copyWeak(&v18, &from);
-      v19 = a4;
+      watchingCopy = watching;
       [v9 setCompletionBlock:&v12];
       [(NSMutableDictionary *)self->_ongoingDeleteIDOperationDictionary setValue:v9 forKey:v10, v12, v13, v14, v15];
-      v11 = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
-      [v11 addOperation:v9];
+      wlkDefaultQueue = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
+      [wlkDefaultQueue addOperation:v9];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&v17);

@@ -1,41 +1,41 @@
 @interface MCLImageView
-+ (id)bitmapImage:(id)a3;
++ (id)bitmapImage:(id)image;
 - (void)backgroundDecompressImage;
 - (void)didMoveToWindow;
-- (void)setImage:(id)a3;
-- (void)setImageDelayed:(id)a3;
+- (void)setImage:(id)image;
+- (void)setImageDelayed:(id)delayed;
 @end
 
 @implementation MCLImageView
 
 - (void)didMoveToWindow
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = MCLImageView;
   [(MCLImageView *)&v4 didMoveToWindow];
-  v2 = [(MCLImageView *)v6 window];
+  window = [(MCLImageView *)selfCopy window];
   v3 = 0;
-  if (v2)
+  if (window)
   {
-    v3 = v6->_image != 0;
+    v3 = selfCopy->_image != 0;
   }
 
-  MEMORY[0x277D82BD8](v2);
+  MEMORY[0x277D82BD8](window);
   if (v3)
   {
-    [(MCLImageView *)v6 setImageDelayed:v6->_image];
+    [(MCLImageView *)selfCopy setImageDelayed:selfCopy->_image];
   }
 }
 
-- (void)setImageDelayed:(id)a3
+- (void)setImageDelayed:(id)delayed
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v10, v12);
+  objc_storeStrong(location, delayed);
+  objc_initWeak(&v10, selfCopy);
   queue = dispatch_get_global_queue(-2, 0);
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -59,7 +59,7 @@ uint64_t __32__MCLImageView_setImageDelayed___block_invoke(uint64_t a1)
 
 - (void)backgroundDecompressImage
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = MEMORY[0x277D82BE0](self->_image);
   if (v14[0])
@@ -78,7 +78,7 @@ uint64_t __32__MCLImageView_setImageDelayed___block_invoke(uint64_t a1)
     v8 = __41__MCLImageView_backgroundDecompressImage__block_invoke;
     v9 = &unk_2797EE270;
     v10 = MEMORY[0x277D82BE0](v14[0]);
-    v11 = MEMORY[0x277D82BE0](v15);
+    v11 = MEMORY[0x277D82BE0](selfCopy);
     dispatch_async(queue, &v5);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(&v11, 0);
@@ -114,26 +114,26 @@ uint64_t __41__MCLImageView_backgroundDecompressImage__block_invoke(uint64_t res
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_image, location[0]);
+  objc_storeStrong(location, image);
+  objc_storeStrong(&selfCopy->_image, location[0]);
   if (location[0])
   {
-    v3 = [(MCLImageView *)v6 window];
-    MEMORY[0x277D82BD8](v3);
-    if (v3)
+    window = [(MCLImageView *)selfCopy window];
+    MEMORY[0x277D82BD8](window);
+    if (window)
     {
-      [(MCLImageView *)v6 setImageDelayed:location[0]];
+      [(MCLImageView *)selfCopy setImageDelayed:location[0]];
     }
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = MCLImageView;
     [(MCLImageView *)&v4 setImage:0];
   }
@@ -141,12 +141,12 @@ uint64_t __41__MCLImageView_backgroundDecompressImage__block_invoke(uint64_t res
   objc_storeStrong(location, 0);
 }
 
-+ (id)bitmapImage:(id)a3
++ (id)bitmapImage:(id)image
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   v21 = &bitmapImage__onceToken;
   v20 = 0;
   objc_storeStrong(&v20, &__block_literal_global_4);
@@ -158,8 +158,8 @@ uint64_t __41__MCLImageView_backgroundDecompressImage__block_invoke(uint64_t res
   objc_storeStrong(&v20, 0);
   v7 = location[0];
   v3 = location[0];
-  v18 = [v7 CGImage];
-  v17 = CGImageGetBitmapInfo(v18) & 0x1F;
+  cGImage = [v7 CGImage];
+  v17 = CGImageGetBitmapInfo(cGImage) & 0x1F;
   v8 = 1;
   if (v17 != 4)
   {
@@ -175,8 +175,8 @@ uint64_t __41__MCLImageView_backgroundDecompressImage__block_invoke(uint64_t res
   }
 
   v16 = v8;
-  Width = CGImageGetWidth(v18);
-  Height = CGImageGetHeight(v18);
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v13 = 8;
   if (v8)
   {
@@ -191,7 +191,7 @@ uint64_t __41__MCLImageView_backgroundDecompressImage__block_invoke(uint64_t res
   v12 = CGBitmapContextCreate(0, Width, Height, 8uLL, 0, bitmapImage__rgbColorSpaceRef, v4 | 0x2000u);
   CGRectMake();
   rect = v23;
-  CGContextDrawImage(v12, v23, v18);
+  CGContextDrawImage(v12, v23, cGImage);
   image = CGBitmapContextCreateImage(v12);
   CGContextRelease(v12);
   v9 = [objc_alloc(MEMORY[0x277D755B8]) initWithCGImage:image];

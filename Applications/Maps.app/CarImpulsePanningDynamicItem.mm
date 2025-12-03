@@ -2,17 +2,17 @@
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGRect)bounds;
-- (CarImpulsePanningDynamicItem)initWithBounds:(CGRect)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (CarImpulsePanningDynamicItem)initWithBounds:(CGRect)bounds;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CarImpulsePanningDynamicItem
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v4;
   *&self->_transform.a = v3;
 }
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (CarImpulsePanningDynamicItem)initWithBounds:(CGRect)a3
+- (CarImpulsePanningDynamicItem)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   result = [(CarImpulsePanningDynamicItem *)self init];
   if (result)
   {

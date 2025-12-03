@@ -1,58 +1,58 @@
 @interface BRCPrimeMMCSCacheOperation
-- (BRCPrimeMMCSCacheOperation)initWithExistingContentsURL:(id)a3 item:(id)a4 sessionContext:(id)a5;
+- (BRCPrimeMMCSCacheOperation)initWithExistingContentsURL:(id)l item:(id)item sessionContext:(id)context;
 - (void)main;
 @end
 
 @implementation BRCPrimeMMCSCacheOperation
 
-- (BRCPrimeMMCSCacheOperation)initWithExistingContentsURL:(id)a3 item:(id)a4 sessionContext:(id)a5
+- (BRCPrimeMMCSCacheOperation)initWithExistingContentsURL:(id)l item:(id)item sessionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 isFinderBookmark])
+  lCopy = l;
+  itemCopy = item;
+  contextCopy = context;
+  if ([itemCopy isFinderBookmark])
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v13 = [v10 itemID];
-    v14 = [v13 itemIDString];
-    v15 = [@"prime-cache-" stringByAppendingString:v14];
+    itemID = [itemCopy itemID];
+    itemIDString = [itemID itemIDString];
+    v15 = [@"prime-cache-" stringByAppendingString:itemIDString];
 
-    v16 = [v10 appLibrary];
-    v17 = [v16 transferSyncContext];
+    appLibrary = [itemCopy appLibrary];
+    transferSyncContext = [appLibrary transferSyncContext];
     v28.receiver = self;
     v28.super_class = BRCPrimeMMCSCacheOperation;
-    v18 = [(_BRCOperation *)&v28 initWithName:v15 syncContext:v17 sessionContext:v11];
+    v18 = [(_BRCOperation *)&v28 initWithName:v15 syncContext:transferSyncContext sessionContext:contextCopy];
 
     if (v18)
     {
-      v19 = [v10 baseRecord];
+      baseRecord = [itemCopy baseRecord];
       record = v18->_record;
-      v18->_record = v19;
+      v18->_record = baseRecord;
 
-      objc_storeStrong(&v18->_existingContents, a3);
-      v21 = [v10 clientZone];
-      v22 = [v10 itemID];
-      v23 = [v10 db];
-      v24 = [v21 contentBoundaryKeyForItemID:v22 withDB:v23];
+      objc_storeStrong(&v18->_existingContents, l);
+      clientZone = [itemCopy clientZone];
+      itemID2 = [itemCopy itemID];
+      v23 = [itemCopy db];
+      v24 = [clientZone contentBoundaryKeyForItemID:itemID2 withDB:v23];
       boundaryKey = v18->_boundaryKey;
       v18->_boundaryKey = v24;
 
-      v26 = [MEMORY[0x277CBC4F8] br_primeMMCSCache];
-      [(_BRCOperation *)v18 setGroup:v26];
+      br_primeMMCSCache = [MEMORY[0x277CBC4F8] br_primeMMCSCache];
+      [(_BRCOperation *)v18 setGroup:br_primeMMCSCache];
 
       [(_BRCOperation *)v18 setNonDiscretionary:1];
     }
 
     self = v18;
 
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)main

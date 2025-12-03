@@ -1,15 +1,15 @@
 @interface INMessageLinkMetadata
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INMessageLinkMetadata)init;
-- (INMessageLinkMetadata)initWithCoder:(id)a3;
+- (INMessageLinkMetadata)initWithCoder:(id)coder;
 - (INMessageLinkMetadata)initWithSiteName:(NSString *)siteName summary:(NSString *)summary title:(NSString *)title openGraphType:(NSString *)openGraphType linkURL:(NSURL *)linkURL;
-- (INMessageLinkMetadata)initWithSiteName:(id)a3 summary:(id)a4 title:(id)a5 openGraphType:(id)a6 itemType:(id)a7 linkURL:(id)a8 originalURL:(id)a9 imageURLs:(id)a10 iconURLs:(id)a11 creator:(id)a12 linkMediaType:(int64_t)a13 iTunesStoreIdentifier:(id)a14 iTunesStoreFrontIdentifier:(id)a15 songTitle:(id)a16 songArtist:(id)a17 songAlbum:(id)a18 albumName:(id)a19 albumArtist:(id)a20 musicVideoName:(id)a21 musicVideoArtist:(id)a22 artistName:(id)a23 artistGenre:(id)a24 playlistName:(id)a25 playlistCurator:(id)a26 radioName:(id)a27 radioCurator:(id)a28 softwareName:(id)a29 softwareGenre:(id)a30 softwarePlatform:(id)a31 bookName:(id)a32 bookAuthor:(id)a33 audioBookName:(id)a34 audioBookAuthor:(id)a35 audioBookNarrator:(id)a36 podcastName:(id)a37 podcastArtist:(id)a38 podcastEpisodeName:(id)a39 podcastEpisodePodcastName:(id)a40 podcastEpisodeArtist:(id)a41 podcastEpisodeReleaseDate:(id)a42 tvEpisodeEpisodeName:(id)a43 tvEpisodeSeasonName:(id)a44 tvEpisodeGenre:(id)a45 tvSeasonName:(id)a46 tvSeasonGenre:(id)a47 movieName:(id)a48 movieGenre:(id)a49 tvShowName:(id)a50 movieBundleName:(id)a51 movieBundleGenre:(id)a52 appleTvTitle:(id)a53 appleTvSubtitle:(id)a54;
+- (INMessageLinkMetadata)initWithSiteName:(id)name summary:(id)summary title:(id)title openGraphType:(id)type itemType:(id)itemType linkURL:(id)l originalURL:(id)rL imageURLs:(id)self0 iconURLs:(id)self1 creator:(id)self2 linkMediaType:(int64_t)self3 iTunesStoreIdentifier:(id)self4 iTunesStoreFrontIdentifier:(id)self5 songTitle:(id)self6 songArtist:(id)self7 songAlbum:(id)self8 albumName:(id)self9 albumArtist:(id)albumArtist musicVideoName:(id)videoName musicVideoArtist:(id)videoArtist artistName:(id)artistName artistGenre:(id)genre playlistName:(id)playlistName playlistCurator:(id)curator radioName:(id)radioName radioCurator:(id)radioCurator softwareName:(id)softwareName softwareGenre:(id)name0 softwarePlatform:(id)name1 bookName:(id)name2 bookAuthor:(id)name3 audioBookName:(id)name4 audioBookAuthor:(id)name5 audioBookNarrator:(id)name6 podcastName:(id)name7 podcastArtist:(id)name8 podcastEpisodeName:(id)name9 podcastEpisodePodcastName:(id)summary0 podcastEpisodeArtist:(id)summary1 podcastEpisodeReleaseDate:(id)summary2 tvEpisodeEpisodeName:(id)summary3 tvEpisodeSeasonName:(id)summary4 tvEpisodeGenre:(id)summary5 tvSeasonName:(id)summary6 tvSeasonGenre:(id)summary7 movieName:(id)summary8 movieGenre:(id)summary9 tvShowName:(id)title0 movieBundleName:(id)title1 movieBundleGenre:(id)title2 appleTvTitle:(id)title3 appleTvSubtitle:(id)title4;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMessageLinkMetadata
@@ -465,68 +465,68 @@
   v160[45] = movieName;
   v159[46] = @"movieGenre";
   movieGenre = self->_movieGenre;
-  v49 = movieGenre;
+  null = movieGenre;
   if (!movieGenre)
   {
-    v49 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v133 = albumArtist;
   v139 = songArtist;
-  v67 = v49;
-  v160[46] = v49;
+  v67 = null;
+  v160[46] = null;
   v159[47] = @"tvShowName";
   tvShowName = self->_tvShowName;
-  v51 = tvShowName;
+  null2 = tvShowName;
   if (!tvShowName)
   {
-    v51 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v135 = albumName;
   v145 = iTunesStoreIdentifier;
-  v66 = v51;
-  v160[47] = v51;
+  v66 = null2;
+  v160[47] = null2;
   v159[48] = @"movieBundleName";
   movieBundleName = self->_movieBundleName;
-  v53 = movieBundleName;
+  null3 = movieBundleName;
   if (!movieBundleName)
   {
-    v53 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v131 = musicVideoName;
   v137 = songAlbum;
-  v64 = v53;
-  v160[48] = v53;
+  v64 = null3;
+  v160[48] = null3;
   v159[49] = @"movieBundleGenre";
   movieBundleGenre = self->_movieBundleGenre;
-  v55 = movieBundleGenre;
+  null4 = movieBundleGenre;
   if (!movieBundleGenre)
   {
-    v55 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v56 = musicVideoArtist;
-  v160[49] = v55;
+  v160[49] = null4;
   v159[50] = @"appleTvTitle";
   appleTvTitle = self->_appleTvTitle;
-  v58 = appleTvTitle;
+  null5 = appleTvTitle;
   if (!appleTvTitle)
   {
-    v58 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v160[50] = v58;
+  v160[50] = null5;
   v159[51] = @"appleTvSubtitle";
   appleTvSubtitle = self->_appleTvSubtitle;
-  v60 = appleTvSubtitle;
+  null6 = appleTvSubtitle;
   if (!appleTvSubtitle)
   {
-    v60 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v160[51] = v60;
+  v160[51] = null6;
   v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v160 forKeys:v159 count:{52, v64}];
   if (!appleTvSubtitle)
   {
@@ -796,53 +796,53 @@
   return v102;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INMessageLinkMetadata;
   v6 = [(INMessageLinkMetadata *)&v11 description];
-  v7 = [(INMessageLinkMetadata *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INMessageLinkMetadata *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_siteName];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"siteName"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_siteName];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"siteName"];
 
-  v9 = [v6 encodeObject:self->_summary];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"summary"];
+  v9 = [encoderCopy encodeObject:self->_summary];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"summary"];
 
-  v10 = [v6 encodeObject:self->_title];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"title"];
+  v10 = [encoderCopy encodeObject:self->_title];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"title"];
 
-  v11 = [v6 encodeObject:self->_openGraphType];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"openGraphType"];
+  v11 = [encoderCopy encodeObject:self->_openGraphType];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"openGraphType"];
 
-  v12 = [v6 encodeObject:self->_itemType];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"itemType"];
+  v12 = [encoderCopy encodeObject:self->_itemType];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"itemType"];
 
-  v13 = [v6 encodeObject:self->_linkURL];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"linkURL"];
+  v13 = [encoderCopy encodeObject:self->_linkURL];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"linkURL"];
 
-  v14 = [v6 encodeObject:self->_originalURL];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"originalURL"];
+  v14 = [encoderCopy encodeObject:self->_originalURL];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"originalURL"];
 
-  v15 = [v6 encodeObject:self->_imageURLs];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"imageURLs"];
+  v15 = [encoderCopy encodeObject:self->_imageURLs];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"imageURLs"];
 
-  v16 = [v6 encodeObject:self->_iconURLs];
-  [v7 if_setObjectIfNonNil:v16 forKey:@"iconURLs"];
+  v16 = [encoderCopy encodeObject:self->_iconURLs];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"iconURLs"];
 
-  v17 = [v6 encodeObject:self->_creator];
-  [v7 if_setObjectIfNonNil:v17 forKey:@"creator"];
+  v17 = [encoderCopy encodeObject:self->_creator];
+  [dictionary if_setObjectIfNonNil:v17 forKey:@"creator"];
 
   v18 = self->_linkMediaType - 1;
   if (v18 > 0x10)
@@ -856,227 +856,227 @@
   }
 
   v20 = v19;
-  [v7 if_setObjectIfNonNil:v20 forKey:@"linkMediaType"];
+  [dictionary if_setObjectIfNonNil:v20 forKey:@"linkMediaType"];
 
-  v21 = [v6 encodeObject:self->_iTunesStoreIdentifier];
-  [v7 if_setObjectIfNonNil:v21 forKey:@"iTunesStoreIdentifier"];
+  v21 = [encoderCopy encodeObject:self->_iTunesStoreIdentifier];
+  [dictionary if_setObjectIfNonNil:v21 forKey:@"iTunesStoreIdentifier"];
 
-  v22 = [v6 encodeObject:self->_iTunesStoreFrontIdentifier];
-  [v7 if_setObjectIfNonNil:v22 forKey:@"iTunesStoreFrontIdentifier"];
+  v22 = [encoderCopy encodeObject:self->_iTunesStoreFrontIdentifier];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"iTunesStoreFrontIdentifier"];
 
-  v23 = [v6 encodeObject:self->_songTitle];
-  [v7 if_setObjectIfNonNil:v23 forKey:@"songTitle"];
+  v23 = [encoderCopy encodeObject:self->_songTitle];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"songTitle"];
 
-  v24 = [v6 encodeObject:self->_songArtist];
-  [v7 if_setObjectIfNonNil:v24 forKey:@"songArtist"];
+  v24 = [encoderCopy encodeObject:self->_songArtist];
+  [dictionary if_setObjectIfNonNil:v24 forKey:@"songArtist"];
 
-  v25 = [v6 encodeObject:self->_songAlbum];
-  [v7 if_setObjectIfNonNil:v25 forKey:@"songAlbum"];
+  v25 = [encoderCopy encodeObject:self->_songAlbum];
+  [dictionary if_setObjectIfNonNil:v25 forKey:@"songAlbum"];
 
-  v26 = [v6 encodeObject:self->_albumName];
-  [v7 if_setObjectIfNonNil:v26 forKey:@"albumName"];
+  v26 = [encoderCopy encodeObject:self->_albumName];
+  [dictionary if_setObjectIfNonNil:v26 forKey:@"albumName"];
 
-  v27 = [v6 encodeObject:self->_albumArtist];
-  [v7 if_setObjectIfNonNil:v27 forKey:@"albumArtist"];
+  v27 = [encoderCopy encodeObject:self->_albumArtist];
+  [dictionary if_setObjectIfNonNil:v27 forKey:@"albumArtist"];
 
-  v28 = [v6 encodeObject:self->_musicVideoName];
-  [v7 if_setObjectIfNonNil:v28 forKey:@"musicVideoName"];
+  v28 = [encoderCopy encodeObject:self->_musicVideoName];
+  [dictionary if_setObjectIfNonNil:v28 forKey:@"musicVideoName"];
 
-  v29 = [v6 encodeObject:self->_musicVideoArtist];
-  [v7 if_setObjectIfNonNil:v29 forKey:@"musicVideoArtist"];
+  v29 = [encoderCopy encodeObject:self->_musicVideoArtist];
+  [dictionary if_setObjectIfNonNil:v29 forKey:@"musicVideoArtist"];
 
-  v30 = [v6 encodeObject:self->_artistName];
-  [v7 if_setObjectIfNonNil:v30 forKey:@"artistName"];
+  v30 = [encoderCopy encodeObject:self->_artistName];
+  [dictionary if_setObjectIfNonNil:v30 forKey:@"artistName"];
 
-  v31 = [v6 encodeObject:self->_artistGenre];
-  [v7 if_setObjectIfNonNil:v31 forKey:@"artistGenre"];
+  v31 = [encoderCopy encodeObject:self->_artistGenre];
+  [dictionary if_setObjectIfNonNil:v31 forKey:@"artistGenre"];
 
-  v32 = [v6 encodeObject:self->_playlistName];
-  [v7 if_setObjectIfNonNil:v32 forKey:@"playlistName"];
+  v32 = [encoderCopy encodeObject:self->_playlistName];
+  [dictionary if_setObjectIfNonNil:v32 forKey:@"playlistName"];
 
-  v33 = [v6 encodeObject:self->_playlistCurator];
-  [v7 if_setObjectIfNonNil:v33 forKey:@"playlistCurator"];
+  v33 = [encoderCopy encodeObject:self->_playlistCurator];
+  [dictionary if_setObjectIfNonNil:v33 forKey:@"playlistCurator"];
 
-  v34 = [v6 encodeObject:self->_radioName];
-  [v7 if_setObjectIfNonNil:v34 forKey:@"radioName"];
+  v34 = [encoderCopy encodeObject:self->_radioName];
+  [dictionary if_setObjectIfNonNil:v34 forKey:@"radioName"];
 
-  v35 = [v6 encodeObject:self->_radioCurator];
-  [v7 if_setObjectIfNonNil:v35 forKey:@"radioCurator"];
+  v35 = [encoderCopy encodeObject:self->_radioCurator];
+  [dictionary if_setObjectIfNonNil:v35 forKey:@"radioCurator"];
 
-  v36 = [v6 encodeObject:self->_softwareName];
-  [v7 if_setObjectIfNonNil:v36 forKey:@"softwareName"];
+  v36 = [encoderCopy encodeObject:self->_softwareName];
+  [dictionary if_setObjectIfNonNil:v36 forKey:@"softwareName"];
 
-  v37 = [v6 encodeObject:self->_softwareGenre];
-  [v7 if_setObjectIfNonNil:v37 forKey:@"softwareGenre"];
+  v37 = [encoderCopy encodeObject:self->_softwareGenre];
+  [dictionary if_setObjectIfNonNil:v37 forKey:@"softwareGenre"];
 
-  v38 = [v6 encodeObject:self->_softwarePlatform];
-  [v7 if_setObjectIfNonNil:v38 forKey:@"softwarePlatform"];
+  v38 = [encoderCopy encodeObject:self->_softwarePlatform];
+  [dictionary if_setObjectIfNonNil:v38 forKey:@"softwarePlatform"];
 
-  v39 = [v6 encodeObject:self->_bookName];
-  [v7 if_setObjectIfNonNil:v39 forKey:@"bookName"];
+  v39 = [encoderCopy encodeObject:self->_bookName];
+  [dictionary if_setObjectIfNonNil:v39 forKey:@"bookName"];
 
-  v40 = [v6 encodeObject:self->_bookAuthor];
-  [v7 if_setObjectIfNonNil:v40 forKey:@"bookAuthor"];
+  v40 = [encoderCopy encodeObject:self->_bookAuthor];
+  [dictionary if_setObjectIfNonNil:v40 forKey:@"bookAuthor"];
 
-  v41 = [v6 encodeObject:self->_audioBookName];
-  [v7 if_setObjectIfNonNil:v41 forKey:@"audioBookName"];
+  v41 = [encoderCopy encodeObject:self->_audioBookName];
+  [dictionary if_setObjectIfNonNil:v41 forKey:@"audioBookName"];
 
-  v42 = [v6 encodeObject:self->_audioBookAuthor];
-  [v7 if_setObjectIfNonNil:v42 forKey:@"audioBookAuthor"];
+  v42 = [encoderCopy encodeObject:self->_audioBookAuthor];
+  [dictionary if_setObjectIfNonNil:v42 forKey:@"audioBookAuthor"];
 
-  v43 = [v6 encodeObject:self->_audioBookNarrator];
-  [v7 if_setObjectIfNonNil:v43 forKey:@"audioBookNarrator"];
+  v43 = [encoderCopy encodeObject:self->_audioBookNarrator];
+  [dictionary if_setObjectIfNonNil:v43 forKey:@"audioBookNarrator"];
 
-  v44 = [v6 encodeObject:self->_podcastName];
-  [v7 if_setObjectIfNonNil:v44 forKey:@"podcastName"];
+  v44 = [encoderCopy encodeObject:self->_podcastName];
+  [dictionary if_setObjectIfNonNil:v44 forKey:@"podcastName"];
 
-  v45 = [v6 encodeObject:self->_podcastArtist];
-  [v7 if_setObjectIfNonNil:v45 forKey:@"podcastArtist"];
+  v45 = [encoderCopy encodeObject:self->_podcastArtist];
+  [dictionary if_setObjectIfNonNil:v45 forKey:@"podcastArtist"];
 
-  v46 = [v6 encodeObject:self->_podcastEpisodeName];
-  [v7 if_setObjectIfNonNil:v46 forKey:@"podcastEpisodeName"];
+  v46 = [encoderCopy encodeObject:self->_podcastEpisodeName];
+  [dictionary if_setObjectIfNonNil:v46 forKey:@"podcastEpisodeName"];
 
-  v47 = [v6 encodeObject:self->_podcastEpisodePodcastName];
-  [v7 if_setObjectIfNonNil:v47 forKey:@"podcastEpisodePodcastName"];
+  v47 = [encoderCopy encodeObject:self->_podcastEpisodePodcastName];
+  [dictionary if_setObjectIfNonNil:v47 forKey:@"podcastEpisodePodcastName"];
 
-  v48 = [v6 encodeObject:self->_podcastEpisodeArtist];
-  [v7 if_setObjectIfNonNil:v48 forKey:@"podcastEpisodeArtist"];
+  v48 = [encoderCopy encodeObject:self->_podcastEpisodeArtist];
+  [dictionary if_setObjectIfNonNil:v48 forKey:@"podcastEpisodeArtist"];
 
-  v49 = [v6 encodeObject:self->_podcastEpisodeReleaseDate];
-  [v7 if_setObjectIfNonNil:v49 forKey:@"podcastEpisodeReleaseDate"];
+  v49 = [encoderCopy encodeObject:self->_podcastEpisodeReleaseDate];
+  [dictionary if_setObjectIfNonNil:v49 forKey:@"podcastEpisodeReleaseDate"];
 
-  v50 = [v6 encodeObject:self->_tvEpisodeEpisodeName];
-  [v7 if_setObjectIfNonNil:v50 forKey:@"tvEpisodeEpisodeName"];
+  v50 = [encoderCopy encodeObject:self->_tvEpisodeEpisodeName];
+  [dictionary if_setObjectIfNonNil:v50 forKey:@"tvEpisodeEpisodeName"];
 
-  v51 = [v6 encodeObject:self->_tvEpisodeSeasonName];
-  [v7 if_setObjectIfNonNil:v51 forKey:@"tvEpisodeSeasonName"];
+  v51 = [encoderCopy encodeObject:self->_tvEpisodeSeasonName];
+  [dictionary if_setObjectIfNonNil:v51 forKey:@"tvEpisodeSeasonName"];
 
-  v52 = [v6 encodeObject:self->_tvEpisodeGenre];
-  [v7 if_setObjectIfNonNil:v52 forKey:@"tvEpisodeGenre"];
+  v52 = [encoderCopy encodeObject:self->_tvEpisodeGenre];
+  [dictionary if_setObjectIfNonNil:v52 forKey:@"tvEpisodeGenre"];
 
-  v53 = [v6 encodeObject:self->_tvSeasonName];
-  [v7 if_setObjectIfNonNil:v53 forKey:@"tvSeasonName"];
+  v53 = [encoderCopy encodeObject:self->_tvSeasonName];
+  [dictionary if_setObjectIfNonNil:v53 forKey:@"tvSeasonName"];
 
-  v54 = [v6 encodeObject:self->_tvSeasonGenre];
-  [v7 if_setObjectIfNonNil:v54 forKey:@"tvSeasonGenre"];
+  v54 = [encoderCopy encodeObject:self->_tvSeasonGenre];
+  [dictionary if_setObjectIfNonNil:v54 forKey:@"tvSeasonGenre"];
 
-  v55 = [v6 encodeObject:self->_movieName];
-  [v7 if_setObjectIfNonNil:v55 forKey:@"movieName"];
+  v55 = [encoderCopy encodeObject:self->_movieName];
+  [dictionary if_setObjectIfNonNil:v55 forKey:@"movieName"];
 
-  v56 = [v6 encodeObject:self->_movieGenre];
-  [v7 if_setObjectIfNonNil:v56 forKey:@"movieGenre"];
+  v56 = [encoderCopy encodeObject:self->_movieGenre];
+  [dictionary if_setObjectIfNonNil:v56 forKey:@"movieGenre"];
 
-  v57 = [v6 encodeObject:self->_tvShowName];
-  [v7 if_setObjectIfNonNil:v57 forKey:@"tvShowName"];
+  v57 = [encoderCopy encodeObject:self->_tvShowName];
+  [dictionary if_setObjectIfNonNil:v57 forKey:@"tvShowName"];
 
-  v58 = [v6 encodeObject:self->_movieBundleName];
-  [v7 if_setObjectIfNonNil:v58 forKey:@"movieBundleName"];
+  v58 = [encoderCopy encodeObject:self->_movieBundleName];
+  [dictionary if_setObjectIfNonNil:v58 forKey:@"movieBundleName"];
 
-  v59 = [v6 encodeObject:self->_movieBundleGenre];
-  [v7 if_setObjectIfNonNil:v59 forKey:@"movieBundleGenre"];
+  v59 = [encoderCopy encodeObject:self->_movieBundleGenre];
+  [dictionary if_setObjectIfNonNil:v59 forKey:@"movieBundleGenre"];
 
-  v60 = [v6 encodeObject:self->_appleTvTitle];
-  [v7 if_setObjectIfNonNil:v60 forKey:@"appleTvTitle"];
+  v60 = [encoderCopy encodeObject:self->_appleTvTitle];
+  [dictionary if_setObjectIfNonNil:v60 forKey:@"appleTvTitle"];
 
-  v61 = [v6 encodeObject:self->_appleTvSubtitle];
+  v61 = [encoderCopy encodeObject:self->_appleTvSubtitle];
 
-  [v7 if_setObjectIfNonNil:v61 forKey:@"appleTvSubtitle"];
+  [dictionary if_setObjectIfNonNil:v61 forKey:@"appleTvSubtitle"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   siteName = self->_siteName;
-  v5 = a3;
-  [v5 encodeObject:siteName forKey:@"siteName"];
-  [v5 encodeObject:self->_summary forKey:@"summary"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_openGraphType forKey:@"openGraphType"];
-  [v5 encodeObject:self->_itemType forKey:@"itemType"];
-  [v5 encodeObject:self->_linkURL forKey:@"linkURL"];
-  [v5 encodeObject:self->_originalURL forKey:@"originalURL"];
-  [v5 encodeObject:self->_imageURLs forKey:@"imageURLs"];
-  [v5 encodeObject:self->_iconURLs forKey:@"iconURLs"];
-  [v5 encodeObject:self->_creator forKey:@"creator"];
-  [v5 encodeInteger:self->_linkMediaType forKey:@"linkMediaType"];
-  [v5 encodeObject:self->_iTunesStoreIdentifier forKey:@"iTunesStoreIdentifier"];
-  [v5 encodeObject:self->_iTunesStoreFrontIdentifier forKey:@"iTunesStoreFrontIdentifier"];
-  [v5 encodeObject:self->_songTitle forKey:@"songTitle"];
-  [v5 encodeObject:self->_songArtist forKey:@"songArtist"];
-  [v5 encodeObject:self->_songAlbum forKey:@"songAlbum"];
-  [v5 encodeObject:self->_albumName forKey:@"albumName"];
-  [v5 encodeObject:self->_albumArtist forKey:@"albumArtist"];
-  [v5 encodeObject:self->_musicVideoName forKey:@"musicVideoName"];
-  [v5 encodeObject:self->_musicVideoArtist forKey:@"musicVideoArtist"];
-  [v5 encodeObject:self->_artistName forKey:@"artistName"];
-  [v5 encodeObject:self->_artistGenre forKey:@"artistGenre"];
-  [v5 encodeObject:self->_playlistName forKey:@"playlistName"];
-  [v5 encodeObject:self->_playlistCurator forKey:@"playlistCurator"];
-  [v5 encodeObject:self->_radioName forKey:@"radioName"];
-  [v5 encodeObject:self->_radioCurator forKey:@"radioCurator"];
-  [v5 encodeObject:self->_softwareName forKey:@"softwareName"];
-  [v5 encodeObject:self->_softwareGenre forKey:@"softwareGenre"];
-  [v5 encodeObject:self->_softwarePlatform forKey:@"softwarePlatform"];
-  [v5 encodeObject:self->_bookName forKey:@"bookName"];
-  [v5 encodeObject:self->_bookAuthor forKey:@"bookAuthor"];
-  [v5 encodeObject:self->_audioBookName forKey:@"audioBookName"];
-  [v5 encodeObject:self->_audioBookAuthor forKey:@"audioBookAuthor"];
-  [v5 encodeObject:self->_audioBookNarrator forKey:@"audioBookNarrator"];
-  [v5 encodeObject:self->_podcastName forKey:@"podcastName"];
-  [v5 encodeObject:self->_podcastArtist forKey:@"podcastArtist"];
-  [v5 encodeObject:self->_podcastEpisodeName forKey:@"podcastEpisodeName"];
-  [v5 encodeObject:self->_podcastEpisodePodcastName forKey:@"podcastEpisodePodcastName"];
-  [v5 encodeObject:self->_podcastEpisodeArtist forKey:@"podcastEpisodeArtist"];
-  [v5 encodeObject:self->_podcastEpisodeReleaseDate forKey:@"podcastEpisodeReleaseDate"];
-  [v5 encodeObject:self->_tvEpisodeEpisodeName forKey:@"tvEpisodeEpisodeName"];
-  [v5 encodeObject:self->_tvEpisodeSeasonName forKey:@"tvEpisodeSeasonName"];
-  [v5 encodeObject:self->_tvEpisodeGenre forKey:@"tvEpisodeGenre"];
-  [v5 encodeObject:self->_tvSeasonName forKey:@"tvSeasonName"];
-  [v5 encodeObject:self->_tvSeasonGenre forKey:@"tvSeasonGenre"];
-  [v5 encodeObject:self->_movieName forKey:@"movieName"];
-  [v5 encodeObject:self->_movieGenre forKey:@"movieGenre"];
-  [v5 encodeObject:self->_tvShowName forKey:@"tvShowName"];
-  [v5 encodeObject:self->_movieBundleName forKey:@"movieBundleName"];
-  [v5 encodeObject:self->_movieBundleGenre forKey:@"movieBundleGenre"];
-  [v5 encodeObject:self->_appleTvTitle forKey:@"appleTvTitle"];
-  [v5 encodeObject:self->_appleTvSubtitle forKey:@"appleTvSubtitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:siteName forKey:@"siteName"];
+  [coderCopy encodeObject:self->_summary forKey:@"summary"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_openGraphType forKey:@"openGraphType"];
+  [coderCopy encodeObject:self->_itemType forKey:@"itemType"];
+  [coderCopy encodeObject:self->_linkURL forKey:@"linkURL"];
+  [coderCopy encodeObject:self->_originalURL forKey:@"originalURL"];
+  [coderCopy encodeObject:self->_imageURLs forKey:@"imageURLs"];
+  [coderCopy encodeObject:self->_iconURLs forKey:@"iconURLs"];
+  [coderCopy encodeObject:self->_creator forKey:@"creator"];
+  [coderCopy encodeInteger:self->_linkMediaType forKey:@"linkMediaType"];
+  [coderCopy encodeObject:self->_iTunesStoreIdentifier forKey:@"iTunesStoreIdentifier"];
+  [coderCopy encodeObject:self->_iTunesStoreFrontIdentifier forKey:@"iTunesStoreFrontIdentifier"];
+  [coderCopy encodeObject:self->_songTitle forKey:@"songTitle"];
+  [coderCopy encodeObject:self->_songArtist forKey:@"songArtist"];
+  [coderCopy encodeObject:self->_songAlbum forKey:@"songAlbum"];
+  [coderCopy encodeObject:self->_albumName forKey:@"albumName"];
+  [coderCopy encodeObject:self->_albumArtist forKey:@"albumArtist"];
+  [coderCopy encodeObject:self->_musicVideoName forKey:@"musicVideoName"];
+  [coderCopy encodeObject:self->_musicVideoArtist forKey:@"musicVideoArtist"];
+  [coderCopy encodeObject:self->_artistName forKey:@"artistName"];
+  [coderCopy encodeObject:self->_artistGenre forKey:@"artistGenre"];
+  [coderCopy encodeObject:self->_playlistName forKey:@"playlistName"];
+  [coderCopy encodeObject:self->_playlistCurator forKey:@"playlistCurator"];
+  [coderCopy encodeObject:self->_radioName forKey:@"radioName"];
+  [coderCopy encodeObject:self->_radioCurator forKey:@"radioCurator"];
+  [coderCopy encodeObject:self->_softwareName forKey:@"softwareName"];
+  [coderCopy encodeObject:self->_softwareGenre forKey:@"softwareGenre"];
+  [coderCopy encodeObject:self->_softwarePlatform forKey:@"softwarePlatform"];
+  [coderCopy encodeObject:self->_bookName forKey:@"bookName"];
+  [coderCopy encodeObject:self->_bookAuthor forKey:@"bookAuthor"];
+  [coderCopy encodeObject:self->_audioBookName forKey:@"audioBookName"];
+  [coderCopy encodeObject:self->_audioBookAuthor forKey:@"audioBookAuthor"];
+  [coderCopy encodeObject:self->_audioBookNarrator forKey:@"audioBookNarrator"];
+  [coderCopy encodeObject:self->_podcastName forKey:@"podcastName"];
+  [coderCopy encodeObject:self->_podcastArtist forKey:@"podcastArtist"];
+  [coderCopy encodeObject:self->_podcastEpisodeName forKey:@"podcastEpisodeName"];
+  [coderCopy encodeObject:self->_podcastEpisodePodcastName forKey:@"podcastEpisodePodcastName"];
+  [coderCopy encodeObject:self->_podcastEpisodeArtist forKey:@"podcastEpisodeArtist"];
+  [coderCopy encodeObject:self->_podcastEpisodeReleaseDate forKey:@"podcastEpisodeReleaseDate"];
+  [coderCopy encodeObject:self->_tvEpisodeEpisodeName forKey:@"tvEpisodeEpisodeName"];
+  [coderCopy encodeObject:self->_tvEpisodeSeasonName forKey:@"tvEpisodeSeasonName"];
+  [coderCopy encodeObject:self->_tvEpisodeGenre forKey:@"tvEpisodeGenre"];
+  [coderCopy encodeObject:self->_tvSeasonName forKey:@"tvSeasonName"];
+  [coderCopy encodeObject:self->_tvSeasonGenre forKey:@"tvSeasonGenre"];
+  [coderCopy encodeObject:self->_movieName forKey:@"movieName"];
+  [coderCopy encodeObject:self->_movieGenre forKey:@"movieGenre"];
+  [coderCopy encodeObject:self->_tvShowName forKey:@"tvShowName"];
+  [coderCopy encodeObject:self->_movieBundleName forKey:@"movieBundleName"];
+  [coderCopy encodeObject:self->_movieBundleGenre forKey:@"movieBundleGenre"];
+  [coderCopy encodeObject:self->_appleTvTitle forKey:@"appleTvTitle"];
+  [coderCopy encodeObject:self->_appleTvSubtitle forKey:@"appleTvSubtitle"];
 }
 
-- (INMessageLinkMetadata)initWithCoder:(id)a3
+- (INMessageLinkMetadata)initWithCoder:(id)coder
 {
   v208[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  v206 = [v4 decodeObjectOfClasses:v6 forKey:@"siteName"];
+  v206 = [coderCopy decodeObjectOfClasses:v6 forKey:@"siteName"];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v205 = [v4 decodeObjectOfClasses:v9 forKey:@"summary"];
+  v205 = [coderCopy decodeObjectOfClasses:v9 forKey:@"summary"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v204 = [v4 decodeObjectOfClasses:v12 forKey:@"title"];
+  v204 = [coderCopy decodeObjectOfClasses:v12 forKey:@"title"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v203 = [v4 decodeObjectOfClasses:v15 forKey:@"openGraphType"];
+  v203 = [coderCopy decodeObjectOfClasses:v15 forKey:@"openGraphType"];
 
   v16 = MEMORY[0x1E695DFD8];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-  v202 = [v4 decodeObjectOfClasses:v18 forKey:@"itemType"];
+  v202 = [coderCopy decodeObjectOfClasses:v18 forKey:@"itemType"];
 
-  v201 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
+  v201 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkURL"];
   v19 = MEMORY[0x1E695DFD8];
   v20 = objc_opt_class();
   v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-  v200 = [v4 decodeObjectOfClasses:v21 forKey:@"originalURL"];
+  v200 = [coderCopy decodeObjectOfClasses:v21 forKey:@"originalURL"];
 
   v22 = MEMORY[0x1E695DFD8];
   v208[0] = objc_opt_class();
@@ -1084,7 +1084,7 @@
   v208[2] = objc_opt_class();
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v208 count:3];
   v24 = [v22 setWithArray:v23];
-  v199 = [v4 decodeObjectOfClasses:v24 forKey:@"imageURLs"];
+  v199 = [coderCopy decodeObjectOfClasses:v24 forKey:@"imageURLs"];
 
   v25 = MEMORY[0x1E695DFD8];
   v207[0] = objc_opt_class();
@@ -1092,224 +1092,224 @@
   v207[2] = objc_opt_class();
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v207 count:3];
   v27 = [v25 setWithArray:v26];
-  v198 = [v4 decodeObjectOfClasses:v27 forKey:@"iconURLs"];
+  v198 = [coderCopy decodeObjectOfClasses:v27 forKey:@"iconURLs"];
 
   v28 = MEMORY[0x1E695DFD8];
   v29 = objc_opt_class();
   v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-  v197 = [v4 decodeObjectOfClasses:v30 forKey:@"creator"];
+  v197 = [coderCopy decodeObjectOfClasses:v30 forKey:@"creator"];
 
-  v168 = [v4 decodeIntegerForKey:@"linkMediaType"];
+  v168 = [coderCopy decodeIntegerForKey:@"linkMediaType"];
   v31 = MEMORY[0x1E695DFD8];
   v32 = objc_opt_class();
   v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-  v196 = [v4 decodeObjectOfClasses:v33 forKey:@"iTunesStoreIdentifier"];
+  v196 = [coderCopy decodeObjectOfClasses:v33 forKey:@"iTunesStoreIdentifier"];
 
   v34 = MEMORY[0x1E695DFD8];
   v35 = objc_opt_class();
   v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-  v195 = [v4 decodeObjectOfClasses:v36 forKey:@"iTunesStoreFrontIdentifier"];
+  v195 = [coderCopy decodeObjectOfClasses:v36 forKey:@"iTunesStoreFrontIdentifier"];
 
   v37 = MEMORY[0x1E695DFD8];
   v38 = objc_opt_class();
   v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-  v194 = [v4 decodeObjectOfClasses:v39 forKey:@"songTitle"];
+  v194 = [coderCopy decodeObjectOfClasses:v39 forKey:@"songTitle"];
 
   v40 = MEMORY[0x1E695DFD8];
   v41 = objc_opt_class();
   v42 = [v40 setWithObjects:{v41, objc_opt_class(), 0}];
-  v193 = [v4 decodeObjectOfClasses:v42 forKey:@"songArtist"];
+  v193 = [coderCopy decodeObjectOfClasses:v42 forKey:@"songArtist"];
 
   v43 = MEMORY[0x1E695DFD8];
   v44 = objc_opt_class();
   v45 = [v43 setWithObjects:{v44, objc_opt_class(), 0}];
-  v192 = [v4 decodeObjectOfClasses:v45 forKey:@"songAlbum"];
+  v192 = [coderCopy decodeObjectOfClasses:v45 forKey:@"songAlbum"];
 
   v46 = MEMORY[0x1E695DFD8];
   v47 = objc_opt_class();
   v48 = [v46 setWithObjects:{v47, objc_opt_class(), 0}];
-  v191 = [v4 decodeObjectOfClasses:v48 forKey:@"albumName"];
+  v191 = [coderCopy decodeObjectOfClasses:v48 forKey:@"albumName"];
 
   v49 = MEMORY[0x1E695DFD8];
   v50 = objc_opt_class();
   v51 = [v49 setWithObjects:{v50, objc_opt_class(), 0}];
-  v190 = [v4 decodeObjectOfClasses:v51 forKey:@"albumArtist"];
+  v190 = [coderCopy decodeObjectOfClasses:v51 forKey:@"albumArtist"];
 
   v52 = MEMORY[0x1E695DFD8];
   v53 = objc_opt_class();
   v54 = [v52 setWithObjects:{v53, objc_opt_class(), 0}];
-  v189 = [v4 decodeObjectOfClasses:v54 forKey:@"musicVideoName"];
+  v189 = [coderCopy decodeObjectOfClasses:v54 forKey:@"musicVideoName"];
 
   v55 = MEMORY[0x1E695DFD8];
   v56 = objc_opt_class();
   v57 = [v55 setWithObjects:{v56, objc_opt_class(), 0}];
-  v188 = [v4 decodeObjectOfClasses:v57 forKey:@"musicVideoArtist"];
+  v188 = [coderCopy decodeObjectOfClasses:v57 forKey:@"musicVideoArtist"];
 
   v58 = MEMORY[0x1E695DFD8];
   v59 = objc_opt_class();
   v60 = [v58 setWithObjects:{v59, objc_opt_class(), 0}];
-  v187 = [v4 decodeObjectOfClasses:v60 forKey:@"artistName"];
+  v187 = [coderCopy decodeObjectOfClasses:v60 forKey:@"artistName"];
 
   v61 = MEMORY[0x1E695DFD8];
   v62 = objc_opt_class();
   v63 = [v61 setWithObjects:{v62, objc_opt_class(), 0}];
-  v186 = [v4 decodeObjectOfClasses:v63 forKey:@"artistGenre"];
+  v186 = [coderCopy decodeObjectOfClasses:v63 forKey:@"artistGenre"];
 
   v64 = MEMORY[0x1E695DFD8];
   v65 = objc_opt_class();
   v66 = [v64 setWithObjects:{v65, objc_opt_class(), 0}];
-  v185 = [v4 decodeObjectOfClasses:v66 forKey:@"playlistName"];
+  v185 = [coderCopy decodeObjectOfClasses:v66 forKey:@"playlistName"];
 
   v67 = MEMORY[0x1E695DFD8];
   v68 = objc_opt_class();
   v69 = [v67 setWithObjects:{v68, objc_opt_class(), 0}];
-  v184 = [v4 decodeObjectOfClasses:v69 forKey:@"playlistCurator"];
+  v184 = [coderCopy decodeObjectOfClasses:v69 forKey:@"playlistCurator"];
 
   v70 = MEMORY[0x1E695DFD8];
   v71 = objc_opt_class();
   v72 = [v70 setWithObjects:{v71, objc_opt_class(), 0}];
-  v183 = [v4 decodeObjectOfClasses:v72 forKey:@"radioName"];
+  v183 = [coderCopy decodeObjectOfClasses:v72 forKey:@"radioName"];
 
   v73 = MEMORY[0x1E695DFD8];
   v74 = objc_opt_class();
   v75 = [v73 setWithObjects:{v74, objc_opt_class(), 0}];
-  v182 = [v4 decodeObjectOfClasses:v75 forKey:@"radioCurator"];
+  v182 = [coderCopy decodeObjectOfClasses:v75 forKey:@"radioCurator"];
 
   v76 = MEMORY[0x1E695DFD8];
   v77 = objc_opt_class();
   v78 = [v76 setWithObjects:{v77, objc_opt_class(), 0}];
-  v181 = [v4 decodeObjectOfClasses:v78 forKey:@"softwareName"];
+  v181 = [coderCopy decodeObjectOfClasses:v78 forKey:@"softwareName"];
 
   v79 = MEMORY[0x1E695DFD8];
   v80 = objc_opt_class();
   v81 = [v79 setWithObjects:{v80, objc_opt_class(), 0}];
-  v180 = [v4 decodeObjectOfClasses:v81 forKey:@"softwareGenre"];
+  v180 = [coderCopy decodeObjectOfClasses:v81 forKey:@"softwareGenre"];
 
   v82 = MEMORY[0x1E695DFD8];
   v83 = objc_opt_class();
   v84 = [v82 setWithObjects:{v83, objc_opt_class(), 0}];
-  v179 = [v4 decodeObjectOfClasses:v84 forKey:@"softwarePlatform"];
+  v179 = [coderCopy decodeObjectOfClasses:v84 forKey:@"softwarePlatform"];
 
   v85 = MEMORY[0x1E695DFD8];
   v86 = objc_opt_class();
   v87 = [v85 setWithObjects:{v86, objc_opt_class(), 0}];
-  v178 = [v4 decodeObjectOfClasses:v87 forKey:@"bookName"];
+  v178 = [coderCopy decodeObjectOfClasses:v87 forKey:@"bookName"];
 
   v88 = MEMORY[0x1E695DFD8];
   v89 = objc_opt_class();
   v90 = [v88 setWithObjects:{v89, objc_opt_class(), 0}];
-  v177 = [v4 decodeObjectOfClasses:v90 forKey:@"bookAuthor"];
+  v177 = [coderCopy decodeObjectOfClasses:v90 forKey:@"bookAuthor"];
 
   v91 = MEMORY[0x1E695DFD8];
   v92 = objc_opt_class();
   v93 = [v91 setWithObjects:{v92, objc_opt_class(), 0}];
-  v176 = [v4 decodeObjectOfClasses:v93 forKey:@"audioBookName"];
+  v176 = [coderCopy decodeObjectOfClasses:v93 forKey:@"audioBookName"];
 
   v94 = MEMORY[0x1E695DFD8];
   v95 = objc_opt_class();
   v96 = [v94 setWithObjects:{v95, objc_opt_class(), 0}];
-  v175 = [v4 decodeObjectOfClasses:v96 forKey:@"audioBookAuthor"];
+  v175 = [coderCopy decodeObjectOfClasses:v96 forKey:@"audioBookAuthor"];
 
   v97 = MEMORY[0x1E695DFD8];
   v98 = objc_opt_class();
   v99 = [v97 setWithObjects:{v98, objc_opt_class(), 0}];
-  v174 = [v4 decodeObjectOfClasses:v99 forKey:@"audioBookNarrator"];
+  v174 = [coderCopy decodeObjectOfClasses:v99 forKey:@"audioBookNarrator"];
 
   v100 = MEMORY[0x1E695DFD8];
   v101 = objc_opt_class();
   v102 = [v100 setWithObjects:{v101, objc_opt_class(), 0}];
-  v173 = [v4 decodeObjectOfClasses:v102 forKey:@"podcastName"];
+  v173 = [coderCopy decodeObjectOfClasses:v102 forKey:@"podcastName"];
 
   v103 = MEMORY[0x1E695DFD8];
   v104 = objc_opt_class();
   v105 = [v103 setWithObjects:{v104, objc_opt_class(), 0}];
-  v172 = [v4 decodeObjectOfClasses:v105 forKey:@"podcastArtist"];
+  v172 = [coderCopy decodeObjectOfClasses:v105 forKey:@"podcastArtist"];
 
   v106 = MEMORY[0x1E695DFD8];
   v107 = objc_opt_class();
   v108 = [v106 setWithObjects:{v107, objc_opt_class(), 0}];
-  v171 = [v4 decodeObjectOfClasses:v108 forKey:@"podcastEpisodeName"];
+  v171 = [coderCopy decodeObjectOfClasses:v108 forKey:@"podcastEpisodeName"];
 
   v109 = MEMORY[0x1E695DFD8];
   v110 = objc_opt_class();
   v111 = [v109 setWithObjects:{v110, objc_opt_class(), 0}];
-  v167 = [v4 decodeObjectOfClasses:v111 forKey:@"podcastEpisodePodcastName"];
+  v167 = [coderCopy decodeObjectOfClasses:v111 forKey:@"podcastEpisodePodcastName"];
 
   v112 = MEMORY[0x1E695DFD8];
   v113 = objc_opt_class();
   v114 = [v112 setWithObjects:{v113, objc_opt_class(), 0}];
-  v166 = [v4 decodeObjectOfClasses:v114 forKey:@"podcastEpisodeArtist"];
+  v166 = [coderCopy decodeObjectOfClasses:v114 forKey:@"podcastEpisodeArtist"];
 
-  v165 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"podcastEpisodeReleaseDate"];
+  v165 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"podcastEpisodeReleaseDate"];
   v115 = MEMORY[0x1E695DFD8];
   v116 = objc_opt_class();
   v117 = [v115 setWithObjects:{v116, objc_opt_class(), 0}];
-  v164 = [v4 decodeObjectOfClasses:v117 forKey:@"tvEpisodeEpisodeName"];
+  v164 = [coderCopy decodeObjectOfClasses:v117 forKey:@"tvEpisodeEpisodeName"];
 
   v118 = MEMORY[0x1E695DFD8];
   v119 = objc_opt_class();
   v120 = [v118 setWithObjects:{v119, objc_opt_class(), 0}];
-  v163 = [v4 decodeObjectOfClasses:v120 forKey:@"tvEpisodeSeasonName"];
+  v163 = [coderCopy decodeObjectOfClasses:v120 forKey:@"tvEpisodeSeasonName"];
 
   v121 = MEMORY[0x1E695DFD8];
   v122 = objc_opt_class();
   v123 = [v121 setWithObjects:{v122, objc_opt_class(), 0}];
-  v162 = [v4 decodeObjectOfClasses:v123 forKey:@"tvEpisodeGenre"];
+  v162 = [coderCopy decodeObjectOfClasses:v123 forKey:@"tvEpisodeGenre"];
 
   v124 = MEMORY[0x1E695DFD8];
   v125 = objc_opt_class();
   v126 = [v124 setWithObjects:{v125, objc_opt_class(), 0}];
-  v161 = [v4 decodeObjectOfClasses:v126 forKey:@"tvSeasonName"];
+  v161 = [coderCopy decodeObjectOfClasses:v126 forKey:@"tvSeasonName"];
 
   v127 = MEMORY[0x1E695DFD8];
   v128 = objc_opt_class();
   v129 = [v127 setWithObjects:{v128, objc_opt_class(), 0}];
-  v160 = [v4 decodeObjectOfClasses:v129 forKey:@"tvSeasonGenre"];
+  v160 = [coderCopy decodeObjectOfClasses:v129 forKey:@"tvSeasonGenre"];
 
   v130 = MEMORY[0x1E695DFD8];
   v131 = objc_opt_class();
   v132 = [v130 setWithObjects:{v131, objc_opt_class(), 0}];
-  v159 = [v4 decodeObjectOfClasses:v132 forKey:@"movieName"];
+  v159 = [coderCopy decodeObjectOfClasses:v132 forKey:@"movieName"];
 
   v133 = MEMORY[0x1E695DFD8];
   v134 = objc_opt_class();
   v135 = [v133 setWithObjects:{v134, objc_opt_class(), 0}];
-  v158 = [v4 decodeObjectOfClasses:v135 forKey:@"movieGenre"];
+  v158 = [coderCopy decodeObjectOfClasses:v135 forKey:@"movieGenre"];
 
   v136 = MEMORY[0x1E695DFD8];
   v137 = objc_opt_class();
   v138 = [v136 setWithObjects:{v137, objc_opt_class(), 0}];
-  v157 = [v4 decodeObjectOfClasses:v138 forKey:@"tvShowName"];
+  v157 = [coderCopy decodeObjectOfClasses:v138 forKey:@"tvShowName"];
 
   v139 = MEMORY[0x1E695DFD8];
   v140 = objc_opt_class();
   v141 = [v139 setWithObjects:{v140, objc_opt_class(), 0}];
-  v156 = [v4 decodeObjectOfClasses:v141 forKey:@"movieBundleName"];
+  v156 = [coderCopy decodeObjectOfClasses:v141 forKey:@"movieBundleName"];
 
   v142 = MEMORY[0x1E695DFD8];
   v143 = objc_opt_class();
   v144 = [v142 setWithObjects:{v143, objc_opt_class(), 0}];
-  v155 = [v4 decodeObjectOfClasses:v144 forKey:@"movieBundleGenre"];
+  v155 = [coderCopy decodeObjectOfClasses:v144 forKey:@"movieBundleGenre"];
 
   v145 = MEMORY[0x1E695DFD8];
   v146 = objc_opt_class();
   v147 = [v145 setWithObjects:{v146, objc_opt_class(), 0}];
-  v154 = [v4 decodeObjectOfClasses:v147 forKey:@"appleTvTitle"];
+  v154 = [coderCopy decodeObjectOfClasses:v147 forKey:@"appleTvTitle"];
 
   v148 = MEMORY[0x1E695DFD8];
   v149 = objc_opt_class();
   v150 = [v148 setWithObjects:{v149, objc_opt_class(), 0}];
-  v151 = [v4 decodeObjectOfClasses:v150 forKey:@"appleTvSubtitle"];
+  v151 = [coderCopy decodeObjectOfClasses:v150 forKey:@"appleTvSubtitle"];
 
   v170 = [(INMessageLinkMetadata *)self initWithSiteName:v206 summary:v205 title:v204 openGraphType:v203 itemType:v202 linkURL:v201 originalURL:v200 imageURLs:v199 iconURLs:v198 creator:v197 linkMediaType:v168 iTunesStoreIdentifier:v196 iTunesStoreFrontIdentifier:v195 songTitle:v194 songArtist:v193 songAlbum:v192 albumName:v191 albumArtist:v190 musicVideoName:v189 musicVideoArtist:v188 artistName:v187 artistGenre:v186 playlistName:v185 playlistCurator:v184 radioName:v183 radioCurator:v182 softwareName:v181 softwareGenre:v180 softwarePlatform:v179 bookName:v178 bookAuthor:v177 audioBookName:v176 audioBookAuthor:v175 audioBookNarrator:v174 podcastName:v173 podcastArtist:v172 podcastEpisodeName:v171 podcastEpisodePodcastName:v167 podcastEpisodeArtist:v166 podcastEpisodeReleaseDate:v165 tvEpisodeEpisodeName:v164 tvEpisodeSeasonName:v163 tvEpisodeGenre:v162 tvSeasonName:v161 tvSeasonGenre:v160 movieName:v159 movieGenre:v158 tvShowName:v157 movieBundleName:v156 movieBundleGenre:v155 appleTvTitle:v154 appleTvSubtitle:v151];
   v152 = *MEMORY[0x1E69E9840];
   return v170;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v57 = 1;
   }
@@ -1319,7 +1319,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       siteName = self->_siteName;
       if (siteName != v5->_siteName && ![(NSString *)siteName isEqual:?])
       {
@@ -1669,266 +1669,266 @@ LABEL_109:
   return v49 ^ v55;
 }
 
-- (INMessageLinkMetadata)initWithSiteName:(id)a3 summary:(id)a4 title:(id)a5 openGraphType:(id)a6 itemType:(id)a7 linkURL:(id)a8 originalURL:(id)a9 imageURLs:(id)a10 iconURLs:(id)a11 creator:(id)a12 linkMediaType:(int64_t)a13 iTunesStoreIdentifier:(id)a14 iTunesStoreFrontIdentifier:(id)a15 songTitle:(id)a16 songArtist:(id)a17 songAlbum:(id)a18 albumName:(id)a19 albumArtist:(id)a20 musicVideoName:(id)a21 musicVideoArtist:(id)a22 artistName:(id)a23 artistGenre:(id)a24 playlistName:(id)a25 playlistCurator:(id)a26 radioName:(id)a27 radioCurator:(id)a28 softwareName:(id)a29 softwareGenre:(id)a30 softwarePlatform:(id)a31 bookName:(id)a32 bookAuthor:(id)a33 audioBookName:(id)a34 audioBookAuthor:(id)a35 audioBookNarrator:(id)a36 podcastName:(id)a37 podcastArtist:(id)a38 podcastEpisodeName:(id)a39 podcastEpisodePodcastName:(id)a40 podcastEpisodeArtist:(id)a41 podcastEpisodeReleaseDate:(id)a42 tvEpisodeEpisodeName:(id)a43 tvEpisodeSeasonName:(id)a44 tvEpisodeGenre:(id)a45 tvSeasonName:(id)a46 tvSeasonGenre:(id)a47 movieName:(id)a48 movieGenre:(id)a49 tvShowName:(id)a50 movieBundleName:(id)a51 movieBundleGenre:(id)a52 appleTvTitle:(id)a53 appleTvSubtitle:(id)a54
+- (INMessageLinkMetadata)initWithSiteName:(id)name summary:(id)summary title:(id)title openGraphType:(id)type itemType:(id)itemType linkURL:(id)l originalURL:(id)rL imageURLs:(id)self0 iconURLs:(id)self1 creator:(id)self2 linkMediaType:(int64_t)self3 iTunesStoreIdentifier:(id)self4 iTunesStoreFrontIdentifier:(id)self5 songTitle:(id)self6 songArtist:(id)self7 songAlbum:(id)self8 albumName:(id)self9 albumArtist:(id)albumArtist musicVideoName:(id)videoName musicVideoArtist:(id)videoArtist artistName:(id)artistName artistGenre:(id)genre playlistName:(id)playlistName playlistCurator:(id)curator radioName:(id)radioName radioCurator:(id)radioCurator softwareName:(id)softwareName softwareGenre:(id)name0 softwarePlatform:(id)name1 bookName:(id)name2 bookAuthor:(id)name3 audioBookName:(id)name4 audioBookAuthor:(id)name5 audioBookNarrator:(id)name6 podcastName:(id)name7 podcastArtist:(id)name8 podcastEpisodeName:(id)name9 podcastEpisodePodcastName:(id)summary0 podcastEpisodeArtist:(id)summary1 podcastEpisodeReleaseDate:(id)summary2 tvEpisodeEpisodeName:(id)summary3 tvEpisodeSeasonName:(id)summary4 tvEpisodeGenre:(id)summary5 tvSeasonName:(id)summary6 tvSeasonGenre:(id)summary7 movieName:(id)summary8 movieGenre:(id)summary9 tvShowName:(id)title0 movieBundleName:(id)title1 movieBundleGenre:(id)title2 appleTvTitle:(id)title3 appleTvSubtitle:(id)title4
 {
-  v204 = a3;
-  v205 = a4;
-  v214 = a5;
-  v213 = a6;
-  v212 = a7;
-  v210 = a8;
-  v209 = a9;
-  v208 = a10;
-  v207 = a11;
-  v206 = a12;
-  v58 = a14;
-  v59 = a15;
-  v60 = a16;
-  v61 = a17;
-  v62 = a18;
-  v63 = a19;
-  v64 = a20;
-  v65 = a21;
-  v66 = a22;
-  v203 = a23;
-  v202 = a24;
-  v201 = a25;
-  v200 = a26;
-  v199 = a27;
-  v198 = a28;
-  v197 = a29;
-  v196 = a30;
-  v195 = a31;
-  v194 = a32;
-  v193 = a33;
-  v192 = a34;
-  v191 = a35;
-  v190 = a36;
-  v189 = a37;
-  v188 = a38;
-  v187 = a39;
-  v186 = a40;
-  v185 = a41;
-  v184 = a42;
-  v183 = a43;
-  v182 = a44;
-  v181 = a45;
-  v180 = a46;
-  v179 = a47;
-  v178 = a48;
-  v177 = a49;
-  v176 = a50;
-  v175 = a51;
-  v174 = a52;
-  v173 = a53;
-  v172 = a54;
+  nameCopy = name;
+  summaryCopy = summary;
+  titleCopy = title;
+  typeCopy = type;
+  itemTypeCopy = itemType;
+  lCopy = l;
+  rLCopy = rL;
+  lsCopy = ls;
+  rLsCopy = rLs;
+  creatorCopy = creator;
+  identifierCopy = identifier;
+  frontIdentifierCopy = frontIdentifier;
+  songTitleCopy = songTitle;
+  artistCopy = artist;
+  albumCopy = album;
+  albumNameCopy = albumName;
+  albumArtistCopy = albumArtist;
+  videoNameCopy = videoName;
+  videoArtistCopy = videoArtist;
+  artistNameCopy = artistName;
+  genreCopy = genre;
+  playlistNameCopy = playlistName;
+  curatorCopy = curator;
+  radioNameCopy = radioName;
+  radioCuratorCopy = radioCurator;
+  softwareNameCopy = softwareName;
+  softwareGenreCopy = softwareGenre;
+  platformCopy = platform;
+  bookNameCopy = bookName;
+  authorCopy = author;
+  audioBookNameCopy = audioBookName;
+  bookAuthorCopy = bookAuthor;
+  narratorCopy = narrator;
+  podcastNameCopy = podcastName;
+  podcastArtistCopy = podcastArtist;
+  episodeNameCopy = episodeName;
+  episodePodcastNameCopy = episodePodcastName;
+  episodeArtistCopy = episodeArtist;
+  dateCopy = date;
+  episodeEpisodeNameCopy = episodeEpisodeName;
+  seasonNameCopy = seasonName;
+  episodeGenreCopy = episodeGenre;
+  tvSeasonNameCopy = tvSeasonName;
+  seasonGenreCopy = seasonGenre;
+  movieNameCopy = movieName;
+  movieGenreCopy = movieGenre;
+  showNameCopy = showName;
+  bundleNameCopy = bundleName;
+  bundleGenreCopy = bundleGenre;
+  tvTitleCopy = tvTitle;
+  subtitleCopy = subtitle;
   v215.receiver = self;
   v215.super_class = INMessageLinkMetadata;
   v67 = [(INMessageLinkMetadata *)&v215 init];
   if (v67)
   {
-    v68 = [v204 copy];
+    v68 = [nameCopy copy];
     siteName = v67->_siteName;
     v67->_siteName = v68;
 
-    v70 = [v205 copy];
+    v70 = [summaryCopy copy];
     summary = v67->_summary;
     v67->_summary = v70;
 
-    v72 = [v214 copy];
+    v72 = [titleCopy copy];
     title = v67->_title;
     v67->_title = v72;
 
-    v74 = [v213 copy];
+    v74 = [typeCopy copy];
     openGraphType = v67->_openGraphType;
     v67->_openGraphType = v74;
 
-    v76 = [v212 copy];
+    v76 = [itemTypeCopy copy];
     itemType = v67->_itemType;
     v67->_itemType = v76;
 
-    v78 = [v210 copy];
+    v78 = [lCopy copy];
     linkURL = v67->_linkURL;
     v67->_linkURL = v78;
 
-    v80 = [v209 copy];
+    v80 = [rLCopy copy];
     originalURL = v67->_originalURL;
     v67->_originalURL = v80;
 
-    v82 = [v208 copy];
+    v82 = [lsCopy copy];
     imageURLs = v67->_imageURLs;
     v67->_imageURLs = v82;
 
-    v84 = [v207 copy];
+    v84 = [rLsCopy copy];
     iconURLs = v67->_iconURLs;
     v67->_iconURLs = v84;
 
-    v86 = [v206 copy];
+    v86 = [creatorCopy copy];
     creator = v67->_creator;
     v67->_creator = v86;
 
-    v67->_linkMediaType = a13;
-    v88 = [v58 copy];
+    v67->_linkMediaType = mediaType;
+    v88 = [identifierCopy copy];
     iTunesStoreIdentifier = v67->_iTunesStoreIdentifier;
     v67->_iTunesStoreIdentifier = v88;
 
-    v90 = [v59 copy];
+    v90 = [frontIdentifierCopy copy];
     iTunesStoreFrontIdentifier = v67->_iTunesStoreFrontIdentifier;
     v67->_iTunesStoreFrontIdentifier = v90;
 
-    v92 = [v60 copy];
+    v92 = [songTitleCopy copy];
     songTitle = v67->_songTitle;
     v67->_songTitle = v92;
 
-    v94 = [v61 copy];
+    v94 = [artistCopy copy];
     songArtist = v67->_songArtist;
     v67->_songArtist = v94;
 
-    v96 = [v62 copy];
+    v96 = [albumCopy copy];
     songAlbum = v67->_songAlbum;
     v67->_songAlbum = v96;
 
-    v98 = [v63 copy];
+    v98 = [albumNameCopy copy];
     albumName = v67->_albumName;
     v67->_albumName = v98;
 
-    v100 = [v64 copy];
+    v100 = [albumArtistCopy copy];
     albumArtist = v67->_albumArtist;
     v67->_albumArtist = v100;
 
-    v102 = [v65 copy];
+    v102 = [videoNameCopy copy];
     musicVideoName = v67->_musicVideoName;
     v67->_musicVideoName = v102;
 
-    v104 = [v66 copy];
+    v104 = [videoArtistCopy copy];
     musicVideoArtist = v67->_musicVideoArtist;
     v67->_musicVideoArtist = v104;
 
-    v106 = [v203 copy];
+    v106 = [artistNameCopy copy];
     artistName = v67->_artistName;
     v67->_artistName = v106;
 
-    v108 = [v202 copy];
+    v108 = [genreCopy copy];
     artistGenre = v67->_artistGenre;
     v67->_artistGenre = v108;
 
-    v110 = [v201 copy];
+    v110 = [playlistNameCopy copy];
     playlistName = v67->_playlistName;
     v67->_playlistName = v110;
 
-    v112 = [v200 copy];
+    v112 = [curatorCopy copy];
     playlistCurator = v67->_playlistCurator;
     v67->_playlistCurator = v112;
 
-    v114 = [v199 copy];
+    v114 = [radioNameCopy copy];
     radioName = v67->_radioName;
     v67->_radioName = v114;
 
-    v116 = [v198 copy];
+    v116 = [radioCuratorCopy copy];
     radioCurator = v67->_radioCurator;
     v67->_radioCurator = v116;
 
-    v118 = [v197 copy];
+    v118 = [softwareNameCopy copy];
     softwareName = v67->_softwareName;
     v67->_softwareName = v118;
 
-    v120 = [v196 copy];
+    v120 = [softwareGenreCopy copy];
     softwareGenre = v67->_softwareGenre;
     v67->_softwareGenre = v120;
 
-    v122 = [v195 copy];
+    v122 = [platformCopy copy];
     softwarePlatform = v67->_softwarePlatform;
     v67->_softwarePlatform = v122;
 
-    v124 = [v194 copy];
+    v124 = [bookNameCopy copy];
     bookName = v67->_bookName;
     v67->_bookName = v124;
 
-    v126 = [v193 copy];
+    v126 = [authorCopy copy];
     bookAuthor = v67->_bookAuthor;
     v67->_bookAuthor = v126;
 
-    v128 = [v192 copy];
+    v128 = [audioBookNameCopy copy];
     audioBookName = v67->_audioBookName;
     v67->_audioBookName = v128;
 
-    v130 = [v191 copy];
+    v130 = [bookAuthorCopy copy];
     audioBookAuthor = v67->_audioBookAuthor;
     v67->_audioBookAuthor = v130;
 
-    v132 = [v190 copy];
+    v132 = [narratorCopy copy];
     audioBookNarrator = v67->_audioBookNarrator;
     v67->_audioBookNarrator = v132;
 
-    v134 = [v189 copy];
+    v134 = [podcastNameCopy copy];
     podcastName = v67->_podcastName;
     v67->_podcastName = v134;
 
-    v136 = [v188 copy];
+    v136 = [podcastArtistCopy copy];
     podcastArtist = v67->_podcastArtist;
     v67->_podcastArtist = v136;
 
-    v138 = [v187 copy];
+    v138 = [episodeNameCopy copy];
     podcastEpisodeName = v67->_podcastEpisodeName;
     v67->_podcastEpisodeName = v138;
 
-    v140 = [v186 copy];
+    v140 = [episodePodcastNameCopy copy];
     podcastEpisodePodcastName = v67->_podcastEpisodePodcastName;
     v67->_podcastEpisodePodcastName = v140;
 
-    v142 = [v185 copy];
+    v142 = [episodeArtistCopy copy];
     podcastEpisodeArtist = v67->_podcastEpisodeArtist;
     v67->_podcastEpisodeArtist = v142;
 
-    v144 = [v184 copy];
+    v144 = [dateCopy copy];
     podcastEpisodeReleaseDate = v67->_podcastEpisodeReleaseDate;
     v67->_podcastEpisodeReleaseDate = v144;
 
-    v146 = [v183 copy];
+    v146 = [episodeEpisodeNameCopy copy];
     tvEpisodeEpisodeName = v67->_tvEpisodeEpisodeName;
     v67->_tvEpisodeEpisodeName = v146;
 
-    v148 = [v182 copy];
+    v148 = [seasonNameCopy copy];
     tvEpisodeSeasonName = v67->_tvEpisodeSeasonName;
     v67->_tvEpisodeSeasonName = v148;
 
-    v150 = [v181 copy];
+    v150 = [episodeGenreCopy copy];
     tvEpisodeGenre = v67->_tvEpisodeGenre;
     v67->_tvEpisodeGenre = v150;
 
-    v152 = [v180 copy];
+    v152 = [tvSeasonNameCopy copy];
     tvSeasonName = v67->_tvSeasonName;
     v67->_tvSeasonName = v152;
 
-    v154 = [v179 copy];
+    v154 = [seasonGenreCopy copy];
     tvSeasonGenre = v67->_tvSeasonGenre;
     v67->_tvSeasonGenre = v154;
 
-    v156 = [v178 copy];
+    v156 = [movieNameCopy copy];
     movieName = v67->_movieName;
     v67->_movieName = v156;
 
-    v158 = [v177 copy];
+    v158 = [movieGenreCopy copy];
     movieGenre = v67->_movieGenre;
     v67->_movieGenre = v158;
 
-    v160 = [v176 copy];
+    v160 = [showNameCopy copy];
     tvShowName = v67->_tvShowName;
     v67->_tvShowName = v160;
 
-    v162 = [v175 copy];
+    v162 = [bundleNameCopy copy];
     movieBundleName = v67->_movieBundleName;
     v67->_movieBundleName = v162;
 
-    v164 = [v174 copy];
+    v164 = [bundleGenreCopy copy];
     movieBundleGenre = v67->_movieBundleGenre;
     v67->_movieBundleGenre = v164;
 
-    v166 = [v173 copy];
+    v166 = [tvTitleCopy copy];
     appleTvTitle = v67->_appleTvTitle;
     v67->_appleTvTitle = v166;
 
-    v168 = [v172 copy];
+    v168 = [subtitleCopy copy];
     appleTvSubtitle = v67->_appleTvSubtitle;
     v67->_appleTvSubtitle = v168;
   }
@@ -1979,78 +1979,78 @@ LABEL_109:
   return [(INMessageLinkMetadata *)&v3 init];
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v69 = [v8 objectForKeyedSubscript:@"siteName"];
-    v68 = [v8 objectForKeyedSubscript:@"summary"];
-    v67 = [v8 objectForKeyedSubscript:@"title"];
-    v66 = [v8 objectForKeyedSubscript:@"openGraphType"];
-    v65 = [v8 objectForKeyedSubscript:@"itemType"];
+    v69 = [fromCopy objectForKeyedSubscript:@"siteName"];
+    v68 = [fromCopy objectForKeyedSubscript:@"summary"];
+    v67 = [fromCopy objectForKeyedSubscript:@"title"];
+    v66 = [fromCopy objectForKeyedSubscript:@"openGraphType"];
+    v65 = [fromCopy objectForKeyedSubscript:@"itemType"];
     v9 = objc_opt_class();
-    [v8 objectForKeyedSubscript:@"linkURL"];
-    v10 = v29 = a1;
-    v64 = [v7 decodeObjectOfClass:v9 from:v10];
+    [fromCopy objectForKeyedSubscript:@"linkURL"];
+    v10 = v29 = self;
+    v64 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v63 = [v8 objectForKeyedSubscript:@"originalURL"];
-    v62 = [v8 objectForKeyedSubscript:@"imageURLs"];
-    v61 = [v8 objectForKeyedSubscript:@"iconURLs"];
-    v60 = [v8 objectForKeyedSubscript:@"creator"];
-    v11 = [v8 objectForKeyedSubscript:@"linkMediaType"];
+    v63 = [fromCopy objectForKeyedSubscript:@"originalURL"];
+    v62 = [fromCopy objectForKeyedSubscript:@"imageURLs"];
+    v61 = [fromCopy objectForKeyedSubscript:@"iconURLs"];
+    v60 = [fromCopy objectForKeyedSubscript:@"creator"];
+    v11 = [fromCopy objectForKeyedSubscript:@"linkMediaType"];
     v28 = INMessageLinkMediaTypeWithString(v11);
 
-    v59 = [v8 objectForKeyedSubscript:@"iTunesStoreIdentifier"];
-    v58 = [v8 objectForKeyedSubscript:@"iTunesStoreFrontIdentifier"];
-    v57 = [v8 objectForKeyedSubscript:@"songTitle"];
-    v56 = [v8 objectForKeyedSubscript:@"songArtist"];
-    v55 = [v8 objectForKeyedSubscript:@"songAlbum"];
-    v54 = [v8 objectForKeyedSubscript:@"albumName"];
-    v53 = [v8 objectForKeyedSubscript:@"albumArtist"];
-    v52 = [v8 objectForKeyedSubscript:@"musicVideoName"];
-    v51 = [v8 objectForKeyedSubscript:@"musicVideoArtist"];
-    v50 = [v8 objectForKeyedSubscript:@"artistName"];
-    v49 = [v8 objectForKeyedSubscript:@"artistGenre"];
-    v48 = [v8 objectForKeyedSubscript:@"playlistName"];
-    v47 = [v8 objectForKeyedSubscript:@"playlistCurator"];
-    v44 = [v8 objectForKeyedSubscript:@"radioName"];
-    v46 = [v8 objectForKeyedSubscript:@"radioCurator"];
-    v43 = [v8 objectForKeyedSubscript:@"softwareName"];
-    v45 = [v8 objectForKeyedSubscript:@"softwareGenre"];
-    v40 = [v8 objectForKeyedSubscript:@"softwarePlatform"];
-    v42 = [v8 objectForKeyedSubscript:@"bookName"];
-    v39 = [v8 objectForKeyedSubscript:@"bookAuthor"];
-    v38 = [v8 objectForKeyedSubscript:@"audioBookName"];
-    v41 = [v8 objectForKeyedSubscript:@"audioBookAuthor"];
-    v37 = [v8 objectForKeyedSubscript:@"audioBookNarrator"];
-    v27 = [v8 objectForKeyedSubscript:@"podcastName"];
-    v36 = [v8 objectForKeyedSubscript:@"podcastArtist"];
-    v26 = [v8 objectForKeyedSubscript:@"podcastEpisodeName"];
-    v25 = [v8 objectForKeyedSubscript:@"podcastEpisodePodcastName"];
-    v35 = [v8 objectForKeyedSubscript:@"podcastEpisodeArtist"];
+    v59 = [fromCopy objectForKeyedSubscript:@"iTunesStoreIdentifier"];
+    v58 = [fromCopy objectForKeyedSubscript:@"iTunesStoreFrontIdentifier"];
+    v57 = [fromCopy objectForKeyedSubscript:@"songTitle"];
+    v56 = [fromCopy objectForKeyedSubscript:@"songArtist"];
+    v55 = [fromCopy objectForKeyedSubscript:@"songAlbum"];
+    v54 = [fromCopy objectForKeyedSubscript:@"albumName"];
+    v53 = [fromCopy objectForKeyedSubscript:@"albumArtist"];
+    v52 = [fromCopy objectForKeyedSubscript:@"musicVideoName"];
+    v51 = [fromCopy objectForKeyedSubscript:@"musicVideoArtist"];
+    v50 = [fromCopy objectForKeyedSubscript:@"artistName"];
+    v49 = [fromCopy objectForKeyedSubscript:@"artistGenre"];
+    v48 = [fromCopy objectForKeyedSubscript:@"playlistName"];
+    v47 = [fromCopy objectForKeyedSubscript:@"playlistCurator"];
+    v44 = [fromCopy objectForKeyedSubscript:@"radioName"];
+    v46 = [fromCopy objectForKeyedSubscript:@"radioCurator"];
+    v43 = [fromCopy objectForKeyedSubscript:@"softwareName"];
+    v45 = [fromCopy objectForKeyedSubscript:@"softwareGenre"];
+    v40 = [fromCopy objectForKeyedSubscript:@"softwarePlatform"];
+    v42 = [fromCopy objectForKeyedSubscript:@"bookName"];
+    v39 = [fromCopy objectForKeyedSubscript:@"bookAuthor"];
+    v38 = [fromCopy objectForKeyedSubscript:@"audioBookName"];
+    v41 = [fromCopy objectForKeyedSubscript:@"audioBookAuthor"];
+    v37 = [fromCopy objectForKeyedSubscript:@"audioBookNarrator"];
+    v27 = [fromCopy objectForKeyedSubscript:@"podcastName"];
+    v36 = [fromCopy objectForKeyedSubscript:@"podcastArtist"];
+    v26 = [fromCopy objectForKeyedSubscript:@"podcastEpisodeName"];
+    v25 = [fromCopy objectForKeyedSubscript:@"podcastEpisodePodcastName"];
+    v35 = [fromCopy objectForKeyedSubscript:@"podcastEpisodeArtist"];
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"podcastEpisodeReleaseDate"];
-    v34 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"podcastEpisodeReleaseDate"];
+    v34 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
-    v33 = [v8 objectForKeyedSubscript:@"tvEpisodeEpisodeName"];
-    v32 = [v8 objectForKeyedSubscript:@"tvEpisodeSeasonName"];
-    v31 = [v8 objectForKeyedSubscript:@"tvEpisodeGenre"];
-    v14 = [v8 objectForKeyedSubscript:@"tvSeasonName"];
-    v24 = [v8 objectForKeyedSubscript:@"tvSeasonGenre"];
-    v15 = [v8 objectForKeyedSubscript:@"movieName"];
-    v23 = [v8 objectForKeyedSubscript:@"movieGenre"];
-    v16 = [v8 objectForKeyedSubscript:@"tvShowName"];
-    v22 = [v8 objectForKeyedSubscript:@"movieBundleName"];
-    [v8 objectForKeyedSubscript:@"movieBundleGenre"];
-    v21 = v30 = v7;
-    v17 = [v8 objectForKeyedSubscript:@"appleTvTitle"];
-    v18 = [v8 objectForKeyedSubscript:@"appleTvSubtitle"];
+    v33 = [fromCopy objectForKeyedSubscript:@"tvEpisodeEpisodeName"];
+    v32 = [fromCopy objectForKeyedSubscript:@"tvEpisodeSeasonName"];
+    v31 = [fromCopy objectForKeyedSubscript:@"tvEpisodeGenre"];
+    v14 = [fromCopy objectForKeyedSubscript:@"tvSeasonName"];
+    v24 = [fromCopy objectForKeyedSubscript:@"tvSeasonGenre"];
+    v15 = [fromCopy objectForKeyedSubscript:@"movieName"];
+    v23 = [fromCopy objectForKeyedSubscript:@"movieGenre"];
+    v16 = [fromCopy objectForKeyedSubscript:@"tvShowName"];
+    v22 = [fromCopy objectForKeyedSubscript:@"movieBundleName"];
+    [fromCopy objectForKeyedSubscript:@"movieBundleGenre"];
+    v21 = v30 = decoderCopy;
+    v17 = [fromCopy objectForKeyedSubscript:@"appleTvTitle"];
+    v18 = [fromCopy objectForKeyedSubscript:@"appleTvSubtitle"];
     v19 = [[v29 alloc] initWithSiteName:v69 summary:v68 title:v67 openGraphType:v66 itemType:v65 linkURL:v64 originalURL:v63 imageURLs:v62 iconURLs:v61 creator:v60 linkMediaType:v28 iTunesStoreIdentifier:v59 iTunesStoreFrontIdentifier:v58 songTitle:v57 songArtist:v56 songAlbum:v55 albumName:v54 albumArtist:v53 musicVideoName:v52 musicVideoArtist:v51 artistName:v50 artistGenre:v49 playlistName:v48 playlistCurator:v47 radioName:v44 radioCurator:v46 softwareName:v43 softwareGenre:v45 softwarePlatform:v40 bookName:v42 bookAuthor:v39 audioBookName:v38 audioBookAuthor:v41 audioBookNarrator:v37 podcastName:v27 podcastArtist:v36 podcastEpisodeName:v26 podcastEpisodePodcastName:v25 podcastEpisodeArtist:v35 podcastEpisodeReleaseDate:v34 tvEpisodeEpisodeName:v33 tvEpisodeSeasonName:v32 tvEpisodeGenre:v31 tvSeasonName:v14 tvSeasonGenre:v24 movieName:v15 movieGenre:v23 tvShowName:v16 movieBundleName:v22 movieBundleGenre:v21 appleTvTitle:v17 appleTvSubtitle:v18];
 
-    v7 = v30;
+    decoderCopy = v30;
   }
 
   else

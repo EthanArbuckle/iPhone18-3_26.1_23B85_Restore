@@ -1,29 +1,29 @@
 @interface CBDRemoteXPCMessageSetup
-+ (id)setProxyWithServer:(id)a3 port:(id)a4 token:(id)a5;
-- (CBDRemoteXPCMessageSetup)initWithCoder:(id)a3;
-- (CBDRemoteXPCMessageSetup)initWithServer:(id)a3 port:(id)a4 token:(id)a5;
++ (id)setProxyWithServer:(id)server port:(id)port token:(id)token;
+- (CBDRemoteXPCMessageSetup)initWithCoder:(id)coder;
+- (CBDRemoteXPCMessageSetup)initWithServer:(id)server port:(id)port token:(id)token;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CBDRemoteXPCMessageSetup
 
-+ (id)setProxyWithServer:(id)a3 port:(id)a4 token:(id)a5
++ (id)setProxyWithServer:(id)server port:(id)port token:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithServer:v10 port:v9 token:v8];
+  tokenCopy = token;
+  portCopy = port;
+  serverCopy = server;
+  v11 = [[self alloc] initWithServer:serverCopy port:portCopy token:tokenCopy];
 
   return v11;
 }
 
-- (CBDRemoteXPCMessageSetup)initWithServer:(id)a3 port:(id)a4 token:(id)a5
+- (CBDRemoteXPCMessageSetup)initWithServer:(id)server port:(id)port token:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serverCopy = server;
+  portCopy = port;
+  tokenCopy = token;
   v16.receiver = self;
   v16.super_class = CBDRemoteXPCMessageSetup;
   v12 = [(CBDRemoteXPCMessageSetup *)&v16 init];
@@ -33,9 +33,9 @@
     uuid = v12->_uuid;
     v12->_uuid = v13;
 
-    objc_storeStrong(&v12->_server, a3);
-    objc_storeStrong(&v12->_port, a4);
-    objc_storeStrong(&v12->_token, a5);
+    objc_storeStrong(&v12->_server, server);
+    objc_storeStrong(&v12->_port, port);
+    objc_storeStrong(&v12->_token, token);
   }
 
   return v12;
@@ -45,36 +45,36 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CBDRemoteXPCMessageSetup *)self uuid];
-  v6 = [(CBDRemoteXPCMessageSetup *)self server];
-  v7 = [(CBDRemoteXPCMessageSetup *)self port];
-  v8 = [(CBDRemoteXPCMessageSetup *)self token];
-  v9 = [NSString stringWithFormat:@"<%@: %p uuid = %@, server = %@, port = %@, token = %@>", v4, self, v5, v6, v7, v8];;
+  uuid = [(CBDRemoteXPCMessageSetup *)self uuid];
+  server = [(CBDRemoteXPCMessageSetup *)self server];
+  port = [(CBDRemoteXPCMessageSetup *)self port];
+  token = [(CBDRemoteXPCMessageSetup *)self token];
+  v9 = [NSString stringWithFormat:@"<%@: %p uuid = %@, server = %@, port = %@, token = %@>", v4, self, uuid, server, port, token];;
 
   return v9;
 }
 
-- (CBDRemoteXPCMessageSetup)initWithCoder:(id)a3
+- (CBDRemoteXPCMessageSetup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CBDRemoteXPCMessageSetup;
   v5 = [(CBDRemoteXPCMessageSetup *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"server"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"server"];
     server = v5->_server;
     v5->_server = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"port"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"port"];
     port = v5->_port;
     v5->_port = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     token = v5->_token;
     v5->_token = v12;
   }
@@ -82,42 +82,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CBDRemoteXPCMessageSetup *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(CBDRemoteXPCMessageSetup *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v6 = [(CBDRemoteXPCMessageSetup *)self server];
-  [v4 encodeObject:v6 forKey:@"server"];
+  server = [(CBDRemoteXPCMessageSetup *)self server];
+  [coderCopy encodeObject:server forKey:@"server"];
 
-  v7 = [(CBDRemoteXPCMessageSetup *)self port];
-  [v4 encodeObject:v7 forKey:@"port"];
+  port = [(CBDRemoteXPCMessageSetup *)self port];
+  [coderCopy encodeObject:port forKey:@"port"];
 
-  v8 = [(CBDRemoteXPCMessageSetup *)self token];
-  [v4 encodeObject:v8 forKey:@"token"];
+  token = [(CBDRemoteXPCMessageSetup *)self token];
+  [coderCopy encodeObject:token forKey:@"token"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CBDRemoteXPCMessageSetup);
-  v5 = [(CBDRemoteXPCMessageSetup *)self uuid];
-  v6 = [v5 copy];
+  uuid = [(CBDRemoteXPCMessageSetup *)self uuid];
+  v6 = [uuid copy];
   uuid = v4->_uuid;
   v4->_uuid = v6;
 
-  v8 = [(CBDRemoteXPCMessageSetup *)self server];
-  v9 = [v8 copy];
+  server = [(CBDRemoteXPCMessageSetup *)self server];
+  v9 = [server copy];
   server = v4->_server;
   v4->_server = v9;
 
-  v11 = [(CBDRemoteXPCMessageSetup *)self port];
-  v12 = [v11 copy];
+  port = [(CBDRemoteXPCMessageSetup *)self port];
+  v12 = [port copy];
   port = v4->_port;
   v4->_port = v12;
 
-  v14 = [(CBDRemoteXPCMessageSetup *)self token];
-  v15 = [v14 copy];
+  token = [(CBDRemoteXPCMessageSetup *)self token];
+  v15 = [token copy];
   token = v4->_token;
   v4->_token = v15;
 

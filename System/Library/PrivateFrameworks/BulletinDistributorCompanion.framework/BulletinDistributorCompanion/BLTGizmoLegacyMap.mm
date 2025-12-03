@@ -1,14 +1,14 @@
 @interface BLTGizmoLegacyMap
 - (BLTGizmoLegacyMap)init;
-- (id)categoryIDForBulletinKey:(id)a3;
-- (id)gizmoPublisherBulletinIDForPhoneKey:(id)a3;
-- (id)gizmoSectionInfoForPhoneKey:(id)a3;
-- (id)phonePublisherBulletinIDForGizmoKey:(id)a3;
-- (id)phoneSectionIDForGizmoKey:(id)a3;
-- (id)sectionSubtypeForBulletinKey:(id)a3;
-- (void)_addMapKey:(id)a3 value:(id)a4 bulletinKey:(id)a5 version:(unint64_t)a6 versionDictionary:(id)a7;
-- (void)mapNotification:(id)a3 sectionID:(id)a4;
-- (void)unmapNotification:(id)a3 sectionID:(id)a4;
+- (id)categoryIDForBulletinKey:(id)key;
+- (id)gizmoPublisherBulletinIDForPhoneKey:(id)key;
+- (id)gizmoSectionInfoForPhoneKey:(id)key;
+- (id)phonePublisherBulletinIDForGizmoKey:(id)key;
+- (id)phoneSectionIDForGizmoKey:(id)key;
+- (id)sectionSubtypeForBulletinKey:(id)key;
+- (void)_addMapKey:(id)key value:(id)value bulletinKey:(id)bulletinKey version:(unint64_t)version versionDictionary:(id)dictionary;
+- (void)mapNotification:(id)notification sectionID:(id)d;
+- (void)unmapNotification:(id)notification sectionID:(id)d;
 @end
 
 @implementation BLTGizmoLegacyMap
@@ -28,54 +28,54 @@
   return v2;
 }
 
-- (void)_addMapKey:(id)a3 value:(id)a4 bulletinKey:(id)a5 version:(unint64_t)a6 versionDictionary:(id)a7
+- (void)_addMapKey:(id)key value:(id)value bulletinKey:(id)bulletinKey version:(unint64_t)version versionDictionary:(id)dictionary
 {
-  v22 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  keyCopy = key;
+  valueCopy = value;
+  bulletinKeyCopy = bulletinKey;
+  dictionaryCopy = dictionary;
   dispatch_assert_queue_V2(self->_queue);
-  v15 = [v14 objectForKeyedSubscript:v22];
+  v15 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v16 = v15;
-  if ((!v15 || [v15 intValue] > a6) && (objc_msgSend(MEMORY[0x277D2BCC8], "activePairedDeviceSupportIsGreaterEqualVersion:", a6) & 1) == 0)
+  if ((!v15 || [v15 intValue] > version) && (objc_msgSend(MEMORY[0x277D2BCC8], "activePairedDeviceSupportIsGreaterEqualVersion:", version) & 1) == 0)
   {
     phoneBulletinKeyMap = self->_phoneBulletinKeyMap;
     if (!phoneBulletinKeyMap)
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v19 = self->_phoneBulletinKeyMap;
-      self->_phoneBulletinKeyMap = v18;
+      self->_phoneBulletinKeyMap = dictionary;
 
       phoneBulletinKeyMap = self->_phoneBulletinKeyMap;
     }
 
-    v20 = [(NSMutableDictionary *)phoneBulletinKeyMap objectForKeyedSubscript:v13];
-    if (!v20)
+    dictionary2 = [(NSMutableDictionary *)phoneBulletinKeyMap objectForKeyedSubscript:bulletinKeyCopy];
+    if (!dictionary2)
     {
-      v20 = [MEMORY[0x277CBEB38] dictionary];
-      [(NSMutableDictionary *)self->_phoneBulletinKeyMap setObject:v20 forKeyedSubscript:v13];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      [(NSMutableDictionary *)self->_phoneBulletinKeyMap setObject:dictionary2 forKeyedSubscript:bulletinKeyCopy];
     }
 
-    [v20 setObject:v12 forKeyedSubscript:v22];
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-    [v14 setObject:v21 forKeyedSubscript:v22];
+    [dictionary2 setObject:valueCopy forKeyedSubscript:keyCopy];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
+    [dictionaryCopy setObject:v21 forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)mapNotification:(id)a3 sectionID:(id)a4
+- (void)mapNotification:(id)notification sectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__BLTGizmoLegacyMap_mapNotification_sectionID___block_invoke;
   block[3] = &unk_278D316C8;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = notificationCopy;
+  v13 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
+  v10 = notificationCopy;
   dispatch_barrier_async(queue, block);
 }
 
@@ -381,20 +381,20 @@ LABEL_22:
 LABEL_26:
 }
 
-- (void)unmapNotification:(id)a3 sectionID:(id)a4
+- (void)unmapNotification:(id)notification sectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__BLTGizmoLegacyMap_unmapNotification_sectionID___block_invoke;
   block[3] = &unk_278D316C8;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = notificationCopy;
+  selfCopy = self;
+  v9 = notificationCopy;
+  v10 = dCopy;
   dispatch_barrier_async(queue, block);
 }
 
@@ -457,17 +457,17 @@ LABEL_7:
   [*(*(a1 + 48) + 16) removeObjectForKey:v12];
 }
 
-- (id)categoryIDForBulletinKey:(id)a3
+- (id)categoryIDForBulletinKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -476,7 +476,7 @@ LABEL_7:
     block[3] = &unk_278D313D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -502,17 +502,17 @@ void __46__BLTGizmoLegacyMap_categoryIDForBulletinKey___block_invoke(void *a1)
   *(v3 + 40) = v2;
 }
 
-- (id)sectionSubtypeForBulletinKey:(id)a3
+- (id)sectionSubtypeForBulletinKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__5;
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -521,7 +521,7 @@ void __46__BLTGizmoLegacyMap_categoryIDForBulletinKey___block_invoke(void *a1)
     block[3] = &unk_278D313D8;
     v16 = &v17;
     block[4] = self;
-    v15 = v4;
+    v15 = keyCopy;
     dispatch_sync(queue, block);
     if (v18[5])
     {
@@ -574,17 +574,17 @@ void __50__BLTGizmoLegacyMap_sectionSubtypeForBulletinKey___block_invoke(void *a
   *(v3 + 40) = v2;
 }
 
-- (id)phonePublisherBulletinIDForGizmoKey:(id)a3
+- (id)phonePublisherBulletinIDForGizmoKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -593,7 +593,7 @@ void __50__BLTGizmoLegacyMap_sectionSubtypeForBulletinKey___block_invoke(void *a
     block[3] = &unk_278D313D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -626,17 +626,17 @@ void __57__BLTGizmoLegacyMap_phonePublisherBulletinIDForGizmoKey___block_invoke(
   }
 }
 
-- (id)gizmoPublisherBulletinIDForPhoneKey:(id)a3
+- (id)gizmoPublisherBulletinIDForPhoneKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -645,7 +645,7 @@ void __57__BLTGizmoLegacyMap_phonePublisherBulletinIDForGizmoKey___block_invoke(
     block[3] = &unk_278D313D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -678,17 +678,17 @@ void __57__BLTGizmoLegacyMap_gizmoPublisherBulletinIDForPhoneKey___block_invoke(
   }
 }
 
-- (id)phoneSectionIDForGizmoKey:(id)a3
+- (id)phoneSectionIDForGizmoKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -697,7 +697,7 @@ void __57__BLTGizmoLegacyMap_gizmoPublisherBulletinIDForPhoneKey___block_invoke(
     block[3] = &unk_278D313D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -730,17 +730,17 @@ void __47__BLTGizmoLegacyMap_phoneSectionIDForGizmoKey___block_invoke(uint64_t a
   }
 }
 
-- (id)gizmoSectionInfoForPhoneKey:(id)a3
+- (id)gizmoSectionInfoForPhoneKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  if (v4)
+  if (keyCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -749,7 +749,7 @@ void __47__BLTGizmoLegacyMap_phoneSectionIDForGizmoKey___block_invoke(uint64_t a
     block[3] = &unk_278D313D8;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = keyCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];

@@ -1,39 +1,39 @@
 @interface AAChargingNotificationTracker
-+ (id)trackerKeyForIdentifier:(id)a3 andType:(unsigned __int8)a4;
-- (AAChargingNotificationTracker)initWithCoder:(id)a3;
++ (id)trackerKeyForIdentifier:(id)identifier andType:(unsigned __int8)type;
+- (AAChargingNotificationTracker)initWithCoder:(id)coder;
 - (BOOL)posted;
 - (NSString)trackerKey;
 - (double)durationTillCleared;
 - (double)durationTillDismissed;
 - (int64_t)reportedHour;
 - (int64_t)reportedWeekday;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAChargingNotificationTracker
 
-+ (id)trackerKeyForIdentifier:(id)a3 andType:(unsigned __int8)a4
++ (id)trackerKeyForIdentifier:(id)identifier andType:(unsigned __int8)type
 {
-  if (a4 > 2u)
+  if (type > 2u)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = off_1002B7C78[a4];
+    v6 = off_1002B7C78[type];
   }
 
-  return [NSString stringWithFormat:@"%@--%s", a3, v6, v4, v5];
+  return [NSString stringWithFormat:@"%@--%s", identifier, v6, v4, v5];
 }
 
-- (AAChargingNotificationTracker)initWithCoder:(id)a3
+- (AAChargingNotificationTracker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAChargingNotificationTracker *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"baCo"])
     {
       v5->_backoffCount = [v6 decodeInt64ForKey:@"baCo"];
@@ -142,125 +142,125 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   backoffCount = self->_backoffCount;
-  v12 = v4;
+  v12 = coderCopy;
   if (backoffCount)
   {
-    [v4 encodeInt64:backoffCount forKey:@"baCo"];
-    v4 = v12;
+    [coderCopy encodeInt64:backoffCount forKey:@"baCo"];
+    coderCopy = v12;
   }
 
   backoffCountTillDismiss = self->_backoffCountTillDismiss;
   if (backoffCountTillDismiss)
   {
     [v12 encodeInt64:backoffCountTillDismiss forKey:@"bCTD"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_clearBatteryLevel != 0.0)
   {
     [v12 encodeDouble:@"clBL" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_cleared)
   {
     [v12 encodeBool:1 forKey:@"clrd"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_clearTime != 0.0)
   {
     [v12 encodeDouble:@"clTi" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   deviceAddress = self->_deviceAddress;
   if (deviceAddress)
   {
     [v12 encodeObject:deviceAddress forKey:@"daAd"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_dismissBatteryLevel != 0.0)
   {
     [v12 encodeDouble:@"diBl" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   dismissReason = self->_dismissReason;
   if (dismissReason)
   {
     [v12 encodeInteger:dismissReason forKey:@"diRe"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_dismissTime != 0.0)
   {
     [v12 encodeDouble:@"diTi" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v12 encodeObject:identifier forKey:@"iden"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_lastBatteryLevel != 0.0)
   {
     [v12 encodeDouble:@"laBL" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_lastSeenTime != 0.0)
   {
     [v12 encodeDouble:@"laST" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   notificationIdentifier = self->_notificationIdentifier;
   if (notificationIdentifier)
   {
     [v12 encodeObject:notificationIdentifier forKey:@"NoId"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   productID = self->_productID;
   if (productID)
   {
     [v12 encodeInt64:productID forKey:@"prID"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_reportBatteryLevel != 0.0)
   {
     [v12 encodeDouble:@"reBL" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_reportTime != 0.0)
   {
     [v12 encodeDouble:@"reTi" forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_type)
   {
     [v12 encodeInteger:? forKey:?];
-    v4 = v12;
+    coderCopy = v12;
   }
 }
 
 - (double)durationTillCleared
 {
-  v3 = [(AAChargingNotificationTracker *)self cleared];
+  cleared = [(AAChargingNotificationTracker *)self cleared];
   result = 0.0;
-  if (v3)
+  if (cleared)
   {
     [(AAChargingNotificationTracker *)self clearTime];
     v6 = v5;
@@ -273,9 +273,9 @@
 
 - (double)durationTillDismissed
 {
-  v3 = [(AAChargingNotificationTracker *)self dismissed];
+  dismissed = [(AAChargingNotificationTracker *)self dismissed];
   result = 0.0;
-  if (v3)
+  if (dismissed)
   {
     [(AAChargingNotificationTracker *)self dismissTime];
     v6 = v5;
@@ -288,8 +288,8 @@
 
 - (BOOL)posted
 {
-  v2 = [(AAChargingNotificationTracker *)self notificationIdentifier];
-  v3 = v2 != 0;
+  notificationIdentifier = [(AAChargingNotificationTracker *)self notificationIdentifier];
+  v3 = notificationIdentifier != 0;
 
   return v3;
 }
@@ -316,8 +316,8 @@
 
 - (NSString)trackerKey
 {
-  v3 = [(AAChargingNotificationTracker *)self identifier];
-  v4 = [AAChargingNotificationTracker trackerKeyForIdentifier:v3 andType:[(AAChargingNotificationTracker *)self type]];
+  identifier = [(AAChargingNotificationTracker *)self identifier];
+  v4 = [AAChargingNotificationTracker trackerKeyForIdentifier:identifier andType:[(AAChargingNotificationTracker *)self type]];
 
   return v4;
 }

@@ -1,18 +1,18 @@
 @interface VOTUIRotorDisplay
-- (VOTUIRotorDisplay)initWithFrame:(CGRect)a3;
+- (VOTUIRotorDisplay)initWithFrame:(CGRect)frame;
 - (void)hide;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)show;
 @end
 
 @implementation VOTUIRotorDisplay
 
-- (VOTUIRotorDisplay)initWithFrame:(CGRect)a3
+- (VOTUIRotorDisplay)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
+  width = frame.size.width;
   v56.receiver = self;
   v56.super_class = VOTUIRotorDisplay;
-  v4 = [(VOTUIRotorDisplay *)&v56 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(VOTUIRotorDisplay *)&v56 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = UIFontTextStyleHeadline;
   v6 = 10.0;
   if (_UISolariumEnabled())
@@ -21,8 +21,8 @@
     v6 = v7;
   }
 
-  v8 = [(VOTUIRotorDisplay *)v4 layer];
-  [v8 setCornerRadius:v6];
+  layer = [(VOTUIRotorDisplay *)v4 layer];
+  [layer setCornerRadius:v6];
 
   v9 = [UIBlurEffect effectWithStyle:1203];
   if (_UISolariumEnabled())
@@ -37,8 +37,8 @@
   v4->_backdropView = v10;
 
   [(VOTUIRotorDisplay *)v4 _setOverrideUserInterfaceStyle:2];
-  v12 = [(UIVisualEffectView *)v4->_backdropView layer];
-  [v12 setCornerRadius:v6];
+  layer2 = [(UIVisualEffectView *)v4->_backdropView layer];
+  [layer2 setCornerRadius:v6];
 
   [(UIVisualEffectView *)v4->_backdropView ax_setWantsGlassAppearance:1];
   [(VOTUIRotorDisplay *)v4 addSubview:v4->_backdropView];
@@ -151,18 +151,18 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UILabel *)self->_title1Label text];
-  if ([v4 isEqualToString:v5] && self->_title1Active)
+  titleCopy = title;
+  text = [(UILabel *)self->_title1Label text];
+  if ([titleCopy isEqualToString:text] && self->_title1Active)
   {
   }
 
   else
   {
-    v6 = [(UILabel *)self->_title2Label text];
-    if ([v4 isEqualToString:v6])
+    text2 = [(UILabel *)self->_title2Label text];
+    if ([titleCopy isEqualToString:text2])
     {
       title1Active = self->_title1Active;
 
@@ -249,7 +249,7 @@
     v21[2] = sub_E1A8;
     v21[3] = &unk_3D380;
     v21[4] = self;
-    v22 = v4;
+    v22 = titleCopy;
     [UIView animateWithDuration:v21 animations:0.400000006];
   }
 

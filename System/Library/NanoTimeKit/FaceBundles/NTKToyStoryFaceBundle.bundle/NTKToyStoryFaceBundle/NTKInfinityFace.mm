@@ -1,13 +1,13 @@
 @interface NTKInfinityFace
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKInfinityFace
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = [(NTKInfinityFace *)self device:12];
     v5 = [NTKInfinityStyleEditOption optionWithStyle:0 forDevice:v4];
@@ -53,37 +53,37 @@
   return v5;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKInfinityFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKInfinityFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKInfinityFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKInfinityFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKInfinityFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKInfinityFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKInfinityFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKInfinityFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKInfinityFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKInfinityFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKInfinityFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKInfinityFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = objc_opt_class();
   }
@@ -96,26 +96,26 @@
   return v4;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotDate])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotDate])
   {
     v10.receiver = self;
     v10.super_class = NTKInfinityFace;
-    v5 = [(NTKInfinityFace *)&v10 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKInfinityFace *)&v10 _localizedNameForComplicationSlot:slotCopy];
   }
 
   else
   {
-    if ([v4 isEqualToString:NTKComplicationSlotTopRight])
+    if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
     {
       v6 = @"TOP";
     }
 
     else
     {
-      v7 = [v4 isEqualToString:NTKComplicationSlotBottom];
+      v7 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
       v6 = @"BOTTOM";
       if (!v7)
       {
@@ -130,20 +130,20 @@
   return v5;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v4 = [@"EDIT_MODE_LABEL_INFINITY_CONTENT" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_INFINITY_CONTENT" stringByAppendingString:{@"_COMPANION", device}];
     v5 = [@"ToyBox" stringByAppendingString:@"-Companion"];
     v6 = [NTKToyStoryFaceBundle localizedStringForKey:v4 table:v5 comment:@"Characters"];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NTKInfinityFace;
-    v6 = objc_msgSendSuper2(&v8, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v6 = objc_msgSendSuper2(&v8, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v6;

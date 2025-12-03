@@ -1,6 +1,6 @@
 @interface ACAccountStoreClientSideListener
 - (ACAccountStoreClientSideListener)init;
-- (void)accountCredentialsDidChangeForAccountWithIdentifier:(id)a3;
+- (void)accountCredentialsDidChangeForAccountWithIdentifier:(id)identifier;
 @end
 
 @implementation ACAccountStoreClientSideListener
@@ -12,23 +12,23 @@
   return [(ACAccountStoreClientSideListener *)&v3 init];
 }
 
-- (void)accountCredentialsDidChangeForAccountWithIdentifier:(id)a3
+- (void)accountCredentialsDidChangeForAccountWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __88__ACAccountStoreClientSideListener_accountCredentialsDidChangeForAccountWithIdentifier___block_invoke;
     block[3] = &unk_1E7975AD8;
-    v5 = v3;
+    v5 = identifierCopy;
     v12 = v5;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v6 = +[ACAccountStore defaultStore];
-    v7 = [v6 _cache];
-    v8 = [v7 credentialCache];
-    [v8 clearCachedCredentialsForAccountID:v5];
+    _cache = [v6 _cache];
+    credentialCache = [_cache credentialCache];
+    [credentialCache clearCachedCredentialsForAccountID:v5];
 
     v9 = v12;
   }

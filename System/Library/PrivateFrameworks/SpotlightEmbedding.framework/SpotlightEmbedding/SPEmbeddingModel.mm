@@ -4,27 +4,27 @@
 + (unint64_t)version;
 - (BOOL)deviceCanGenerateEmbeddings;
 - (SPEmbeddingModel)init;
-- (id)_processAttributedString:(id)a3;
-- (id)_processText:(id)a3;
-- (id)_processTextInputs:(id)a3 error:(id *)a4;
-- (id)_processTokenIDs:(id)a3;
-- (id)generateEmbeddingForTextInputs:(id)a3 extendedContextLength:(BOOL)a4 bundleID:(id)a5 queryID:(int64_t)a6 clientBundleID:(id)a7 timeout:(int64_t)a8 useCLIPSafety:(BOOL)a9 computeThreshold:(BOOL)a10 workCost:(int64_t *)a11 error:(id *)a12;
+- (id)_processAttributedString:(id)string;
+- (id)_processText:(id)text;
+- (id)_processTextInputs:(id)inputs error:(id *)error;
+- (id)_processTokenIDs:(id)ds;
+- (id)generateEmbeddingForTextInputs:(id)inputs extendedContextLength:(BOOL)length bundleID:(id)d queryID:(int64_t)iD clientBundleID:(id)bundleID timeout:(int64_t)timeout useCLIPSafety:(BOOL)safety computeThreshold:(BOOL)self0 workCost:(int64_t *)self1 error:(id *)self2;
 - (void)_initModel;
-- (void)cancelQueryID:(int64_t)a3;
-- (void)cancelRequestID:(int)a3;
+- (void)cancelQueryID:(int64_t)d;
+- (void)cancelRequestID:(int)d;
 - (void)clear;
-- (void)clearQueryID:(int64_t)a3 requestID:(int)a4;
-- (void)preheatWithCompletionHandler:(id)a3;
+- (void)clearQueryID:(int64_t)d requestID:(int)iD;
+- (void)preheatWithCompletionHandler:(id)handler;
 @end
 
 @implementation SPEmbeddingModel
 
 - (BOOL)deviceCanGenerateEmbeddings
 {
-  v2 = [MEMORY[0x277CC3410] sharedInstance];
-  v3 = [v2 isSemanticSearchAvailable];
+  mEMORY[0x277CC3410] = [MEMORY[0x277CC3410] sharedInstance];
+  isSemanticSearchAvailable = [mEMORY[0x277CC3410] isSemanticSearchAvailable];
 
-  return v3;
+  return isSemanticSearchAvailable;
 }
 
 + (id)sharedInstance
@@ -103,7 +103,7 @@ uint64_t __34__SPEmbeddingModel_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __23__SPEmbeddingModel_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -127,9 +127,9 @@ void __23__SPEmbeddingModel_log__block_invoke(uint64_t a1)
 {
   if (!self->_service)
   {
-    v3 = [MEMORY[0x277D26888] service];
+    service = [MEMORY[0x277D26888] service];
     service = self->_service;
-    self->_service = v3;
+    self->_service = service;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
     requestIDs = self->_requestIDs;
@@ -169,10 +169,10 @@ void *__25__SPEmbeddingModel_clear__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)preheatWithCompletionHandler:(id)a3
+- (void)preheatWithCompletionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SPEmbeddingModel *)self deviceCanGenerateEmbeddings])
   {
     queue = self->_queue;
@@ -181,7 +181,7 @@ void *__25__SPEmbeddingModel_clear__block_invoke(uint64_t a1)
     block[2] = __49__SPEmbeddingModel_preheatWithCompletionHandler___block_invoke;
     block[3] = &unk_279D01A78;
     block[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     dispatch_async(queue, v6);
   }
@@ -194,7 +194,7 @@ void *__25__SPEmbeddingModel_clear__block_invoke(uint64_t a1)
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v9 = [v7 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8003 userInfo:v8];
 
-    (*(v4 + 2))(v4, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -266,18 +266,18 @@ void __49__SPEmbeddingModel_preheatWithCompletionHandler___block_invoke_207(uint
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearQueryID:(int64_t)a3 requestID:(int)a4
+- (void)clearQueryID:(int64_t)d requestID:(int)iD
 {
-  if ([(SPEmbeddingModel *)self deviceCanGenerateEmbeddings]&& a4 != -1 && (a3 & 0x7FFFFFFFFFFFFFFFLL) != 0x7FFFFFFFFFFFFFFFLL)
+  if ([(SPEmbeddingModel *)self deviceCanGenerateEmbeddings]&& iD != -1 && (d & 0x7FFFFFFFFFFFFFFFLL) != 0x7FFFFFFFFFFFFFFFLL)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __43__SPEmbeddingModel_clearQueryID_requestID___block_invoke;
     block[3] = &unk_279D01AA0;
-    v9 = a4;
+    iDCopy = iD;
     block[4] = self;
-    block[5] = a3;
+    block[5] = d;
     dispatch_async(queue, block);
   }
 }
@@ -298,17 +298,17 @@ void __43__SPEmbeddingModel_clearQueryID_requestID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelQueryID:(int64_t)a3
+- (void)cancelQueryID:(int64_t)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = [(SPEmbeddingModel *)self deviceCanGenerateEmbeddings];
-  if ((~a3 & 0x7FFFFFFFFFFFFFFFLL) != 0 && v5)
+  deviceCanGenerateEmbeddings = [(SPEmbeddingModel *)self deviceCanGenerateEmbeddings];
+  if ((~d & 0x7FFFFFFFFFFFFFFFLL) != 0 && deviceCanGenerateEmbeddings)
   {
     v6 = [objc_opt_class() log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v11 = a3;
+      dCopy = d;
       _os_log_impl(&dword_26B793000, v6, OS_LOG_TYPE_INFO, "[qid=%ld] cancelQueryID", buf, 0xCu);
     }
 
@@ -318,7 +318,7 @@ void __43__SPEmbeddingModel_clearQueryID_requestID___block_invoke(uint64_t a1)
     v9[2] = __34__SPEmbeddingModel_cancelQueryID___block_invoke;
     v9[3] = &unk_279D01AC8;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = d;
     dispatch_async(queue, v9);
   }
 
@@ -361,17 +361,17 @@ void __34__SPEmbeddingModel_cancelQueryID___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRequestID:(int)a3
+- (void)cancelRequestID:(int)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [(SPEmbeddingModel *)self deviceCanGenerateEmbeddings];
-  if (a3 != -1 && v5)
+  deviceCanGenerateEmbeddings = [(SPEmbeddingModel *)self deviceCanGenerateEmbeddings];
+  if (d != -1 && deviceCanGenerateEmbeddings)
   {
     v6 = [objc_opt_class() log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v12 = a3;
+      dCopy = d;
       _os_log_impl(&dword_26B793000, v6, OS_LOG_TYPE_INFO, "cancelRequestID, requestID: %d", buf, 8u);
     }
 
@@ -381,7 +381,7 @@ void __34__SPEmbeddingModel_cancelQueryID___block_invoke(uint64_t a1)
     v9[2] = __36__SPEmbeddingModel_cancelRequestID___block_invoke;
     v9[3] = &unk_279D01AF0;
     v9[4] = self;
-    v10 = a3;
+    dCopy2 = d;
     dispatch_async(queue, v9);
   }
 
@@ -425,16 +425,16 @@ void __36__SPEmbeddingModel_cancelRequestID___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_processTextInputs:(id)a3 error:(id *)a4
+- (id)_processTextInputs:(id)inputs error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  inputsCopy = inputs;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(inputsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = v6;
+  v8 = inputsCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v9)
   {
@@ -450,30 +450,30 @@ void __36__SPEmbeddingModel_cancelRequestID___block_invoke(uint64_t a1)
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 type];
-        switch(v14)
+        type = [v13 type];
+        switch(type)
         {
           case 3:
-            v15 = [v13 attributedString];
-            v16 = [(SPEmbeddingModel *)self _processAttributedString:v15];
+            attributedString = [v13 attributedString];
+            v16 = [(SPEmbeddingModel *)self _processAttributedString:attributedString];
             break;
           case 2:
-            v15 = [v13 tokenIDs];
-            v16 = [(SPEmbeddingModel *)self _processTokenIDs:v15];
+            attributedString = [v13 tokenIDs];
+            v16 = [(SPEmbeddingModel *)self _processTokenIDs:attributedString];
             break;
           case 1:
-            v15 = [v13 text];
-            v16 = [(SPEmbeddingModel *)self _processText:v15];
+            attributedString = [v13 text];
+            v16 = [(SPEmbeddingModel *)self _processText:attributedString];
             break;
           default:
-            if (a4)
+            if (error)
             {
               v23 = MEMORY[0x277CCA9B8];
               v32 = *MEMORY[0x277CCA450];
               v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid input format (%lu)", objc_msgSend(v13, "type")];
               v33 = v24;
               v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-              *a4 = [v23 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8004 userInfo:v25];
+              *error = [v23 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8004 userInfo:v25];
             }
 
             v20 = 0;
@@ -484,13 +484,13 @@ void __36__SPEmbeddingModel_cancelRequestID___block_invoke(uint64_t a1)
 
         if (!v17)
         {
-          if (a4)
+          if (error)
           {
             v18 = MEMORY[0x277CCA9B8];
             v30 = *MEMORY[0x277CCA450];
             v31 = @"Processing text input failed";
             v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-            *a4 = [v18 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8004 userInfo:v19];
+            *error = [v18 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8004 userInfo:v19];
           }
 
           goto LABEL_18;
@@ -519,12 +519,12 @@ LABEL_19:
   return v20;
 }
 
-- (id)_processText:(id)a3
+- (id)_processText:(id)text
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  textCopy = text;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [textCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v6 length])
   {
@@ -547,13 +547,13 @@ LABEL_19:
   return v7;
 }
 
-- (id)_processTokenIDs:(id)a3
+- (id)_processTokenIDs:(id)ds
 {
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x277D268A0]);
-    v5 = [MEMORY[0x277CBEB18] arrayWithArray:v3];
+    v5 = [MEMORY[0x277CBEB18] arrayWithArray:dsCopy];
     if ([v5 count])
     {
       v6 = [v5 objectAtIndexedSubscript:0];
@@ -567,8 +567,8 @@ LABEL_19:
 
     if ([v5 count])
     {
-      v8 = [v5 lastObject];
-      v9 = [v8 isEqualToNumber:&unk_287C3C940];
+      lastObject = [v5 lastObject];
+      v9 = [lastObject isEqualToNumber:&unk_287C3C940];
 
       if (v9)
       {
@@ -595,12 +595,12 @@ LABEL_19:
   return v4;
 }
 
-- (id)_processAttributedString:(id)a3
+- (id)_processAttributedString:(id)string
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
     *v46 = 0;
     v47 = v46;
@@ -614,7 +614,7 @@ LABEL_19:
     v44 = 0;
     v45 = 0;
     v43 = &unk_26B79B05E;
-    v5 = [v3 length];
+    v5 = [stringCopy length];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __45__SPEmbeddingModel__processAttributedString___block_invoke;
@@ -625,8 +625,8 @@ LABEL_19:
     v6 = objc_alloc_init(MEMORY[0x277D268A0]);
     if (!*(v47 + 5))
     {
-      v7 = [v4 string];
-      [v6 addText:v7];
+      string = [v4 string];
+      [v6 addText:string];
     }
 
     v8 = v41[5];
@@ -666,11 +666,11 @@ LABEL_19:
         goto LABEL_29;
       }
 
-      v28 = [v4 string];
-      v29 = [v28 substringWithRange:{v26, v27}];
+      string2 = [v4 string];
+      v29 = [string2 substringWithRange:{v26, v27}];
 
-      v30 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v31 = [v29 stringByTrimmingCharactersInSet:v30];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v31 = [v29 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if ([v31 length])
       {
@@ -712,11 +712,11 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v13 = [v4 string];
-    v14 = [v13 substringWithRange:{0, v12}];
+    string3 = [v4 string];
+    v14 = [string3 substringWithRange:{0, v12}];
 
-    v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v16 = [v14 stringByTrimmingCharactersInSet:v15];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
     if ([v16 length])
     {
@@ -793,29 +793,29 @@ void __45__SPEmbeddingModel__processAttributedString___block_invoke_2(uint64_t a
   }
 }
 
-- (id)generateEmbeddingForTextInputs:(id)a3 extendedContextLength:(BOOL)a4 bundleID:(id)a5 queryID:(int64_t)a6 clientBundleID:(id)a7 timeout:(int64_t)a8 useCLIPSafety:(BOOL)a9 computeThreshold:(BOOL)a10 workCost:(int64_t *)a11 error:(id *)a12
+- (id)generateEmbeddingForTextInputs:(id)inputs extendedContextLength:(BOOL)length bundleID:(id)d queryID:(int64_t)iD clientBundleID:(id)bundleID timeout:(int64_t)timeout useCLIPSafety:(BOOL)safety computeThreshold:(BOOL)self0 workCost:(int64_t *)self1 error:(id *)self2
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v42 = a5;
-  v18 = a7;
-  v41 = v17;
-  if (!-[SPEmbeddingModel deviceCanGenerateEmbeddings](self, "deviceCanGenerateEmbeddings") || (v19 = [v17 count]) == 0)
+  inputsCopy = inputs;
+  dCopy = d;
+  bundleIDCopy = bundleID;
+  v41 = inputsCopy;
+  if (!-[SPEmbeddingModel deviceCanGenerateEmbeddings](self, "deviceCanGenerateEmbeddings") || (v19 = [inputsCopy count]) == 0)
   {
     v33 = 0;
     goto LABEL_26;
   }
 
   v20 = v19;
-  v39 = [(SPEmbeddingModel *)self _processTextInputs:v17 error:a12];
+  v39 = [(SPEmbeddingModel *)self _processTextInputs:inputsCopy error:error];
   if ([v39 count] == v20)
   {
-    if (![v18 length])
+    if (![bundleIDCopy length])
     {
-      v21 = [MEMORY[0x277CCA8D8] mainBundle];
-      v22 = [v21 bundleIdentifier];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
-      v18 = v22;
+      bundleIDCopy = bundleIdentifier;
     }
 
     v80 = 0;
@@ -852,12 +852,12 @@ void __45__SPEmbeddingModel__processAttributedString___block_invoke_2(uint64_t a
     block[2] = __159__SPEmbeddingModel_generateEmbeddingForTextInputs_extendedContextLength_bundleID_queryID_clientBundleID_timeout_useCLIPSafety_computeThreshold_workCost_error___block_invoke;
     block[3] = &unk_279D01B90;
     block[4] = self;
-    v53 = a6;
-    v18 = v18;
-    v44 = v18;
-    v57 = a10;
-    v58 = a9;
-    v59 = a4;
+    iDCopy = iD;
+    bundleIDCopy = bundleIDCopy;
+    v44 = bundleIDCopy;
+    thresholdCopy = threshold;
+    safetyCopy = safety;
+    lengthCopy = length;
     v24 = v23;
     v45 = v24;
     v46 = v39;
@@ -865,34 +865,34 @@ void __45__SPEmbeddingModel__processAttributedString___block_invoke_2(uint64_t a
     v49 = &v70;
     v50 = &v64;
     v54 = v20;
-    v55 = a11;
+    costCopy = cost;
     v51 = &v80;
-    v56 = a8;
-    v47 = v42;
+    timeoutCopy = timeout;
+    v47 = dCopy;
     v52 = &v76;
     v25 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     dispatch_async(queue, v25);
 
-    if (a8)
+    if (timeout)
     {
-      v26 = dispatch_time(0, 1000000 * a8);
-      v27 = a12;
+      v26 = dispatch_time(0, 1000000 * timeout);
+      errorCopy2 = error;
       if (dispatch_group_wait(v24, v26))
       {
         v28 = atomic_load(v77 + 6);
         [(SPEmbeddingModel *)self cancelRequestID:v28];
         *(v61 + 24) = 1;
-        if (a12)
+        if (error)
         {
           v29 = MEMORY[0x277CCA9B8];
           v86 = *MEMORY[0x277CCA450];
-          v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Text embedding generation timeout (timeout=%lums)", a8];
-          v87[0] = v30;
+          timeout = [MEMORY[0x277CCACA8] stringWithFormat:@"Text embedding generation timeout (timeout=%lums)", timeout];
+          v87[0] = timeout;
           v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v87 forKeys:&v86 count:1];
-          *a12 = [v29 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8007 userInfo:v31];
+          *error = [v29 errorWithDomain:@"com.apple.SpotlightEmbedding.EmbeddingModelError" code:-8007 userInfo:v31];
         }
 
-        if ((~a6 & 0x7FFFFFFFFFFFFFFFLL) != 0)
+        if ((~iD & 0x7FFFFFFFFFFFFFFFLL) != 0)
         {
           v32 = 2;
         }
@@ -902,7 +902,7 @@ void __45__SPEmbeddingModel__processAttributedString___block_invoke_2(uint64_t a
           v32 = 1;
         }
 
-        sendSpotlightEmbeddingAnalyticsEvent(1, v32, v18);
+        sendSpotlightEmbeddingAnalyticsEvent(1, v32, bundleIDCopy);
         goto LABEL_23;
       }
     }
@@ -910,15 +910,15 @@ void __45__SPEmbeddingModel__processAttributedString___block_invoke_2(uint64_t a
     else
     {
       dispatch_group_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
-      v27 = a12;
+      errorCopy2 = error;
     }
 
     v34 = atomic_load(v77 + 6);
-    [(SPEmbeddingModel *)self clearQueryID:a6 requestID:v34];
+    [(SPEmbeddingModel *)self clearQueryID:iD requestID:v34];
     v35 = v71[5];
     if (v35)
     {
-      if (!v27)
+      if (!errorCopy2)
       {
 LABEL_23:
         v33 = 0;
@@ -936,14 +936,14 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      if (!v27)
+      if (!errorCopy2)
       {
         goto LABEL_23;
       }
     }
 
     v33 = 0;
-    *a12 = v35;
+    *error = v35;
 LABEL_24:
 
     _Block_object_dispose(&v60, 8);

@@ -1,16 +1,16 @@
 @interface UIAlertControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation UIAlertControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIAlertController" isKindOfClass:@"UIViewController"];
   [location[0] validateClass:?];
   [location[0] validateClass:@"_UIAlertControllerView" hasProperty:@"_contentView" withType:"@"];
@@ -19,21 +19,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = UIAlertControllerAccessibility;
-  [(UIAlertControllerAccessibility *)&v9 viewDidAppear:a3];
+  [(UIAlertControllerAccessibility *)&v9 viewDidAppear:appear];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7380], 0);
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
   v5 = 0;
   v6 = __48__UIAlertControllerAccessibility_viewDidAppear___block_invoke;
   v7 = &unk_29F30C7C8;
-  v8 = MEMORY[0x29EDC9748](v12);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThreadAfterDelay();
   objc_storeStrong(&v8, 0);
 }

@@ -1,10 +1,10 @@
 @interface VCPCNNModel
 - (VCPCNNModel)init;
-- (VCPCNNModel)initWithParameters:(signed __int16)a3 useGPU:(BOOL)a4;
-- (int)add:(id)a3;
-- (int)dynamicForward:(id)a3 paramFileUrl:(id)a4 cancel:(id)a5;
-- (int)forward:(id)a3;
-- (int)prepareNetworkFromURL:(id)a3 withInputSize:(id)a4;
+- (VCPCNNModel)initWithParameters:(signed __int16)parameters useGPU:(BOOL)u;
+- (int)add:(id)add;
+- (int)dynamicForward:(id)forward paramFileUrl:(id)url cancel:(id)cancel;
+- (int)forward:(id)forward;
+- (int)prepareNetworkFromURL:(id)l withInputSize:(id)size;
 - (int)size;
 @end
 
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (VCPCNNModel)initWithParameters:(signed __int16)a3 useGPU:(BOOL)a4
+- (VCPCNNModel)initWithParameters:(signed __int16)parameters useGPU:(BOOL)u
 {
-  v4 = a4;
+  uCopy = u;
   v13.receiver = self;
   v13.super_class = VCPCNNModel;
   v6 = [(VCPCNNModel *)&v13 init];
@@ -39,9 +39,9 @@
   }
 
   bzero(v6->_blocks, 0x640uLL);
-  v7->_quantFactor = a3;
-  v7->_useGPU = v4;
-  if (!v4)
+  v7->_quantFactor = parameters;
+  v7->_useGPU = uCopy;
+  if (!uCopy)
   {
     context = v7->_context;
     v7->_context = 0;
@@ -85,13 +85,13 @@ LABEL_7:
   return v3;
 }
 
-- (int)add:(id)a3
+- (int)add:(id)add
 {
-  v5 = a3;
+  addCopy = add;
   v6 = [(VCPCNNModel *)self size];
   if (v6 <= 199)
   {
-    objc_storeStrong(&self->_blocks[v6], a3);
+    objc_storeStrong(&self->_blocks[v6], add);
     v7 = 0;
   }
 
@@ -103,11 +103,11 @@ LABEL_7:
   return v7;
 }
 
-- (int)prepareNetworkFromURL:(id)a3 withInputSize:(id)a4
+- (int)prepareNetworkFromURL:(id)l withInputSize:(id)size
 {
-  v6 = a4;
-  v7 = [a3 path];
-  v8 = fopen([v7 UTF8String], "rb");
+  sizeCopy = size;
+  path = [l path];
+  v8 = fopen([path UTF8String], "rb");
 
   v9 = [(VCPCNNModel *)self size];
   if (v8)
@@ -125,7 +125,7 @@ LABEL_7:
       context = 0;
     }
 
-    v13 = [(VCPCNNBlock *)v11 constructBlock:v6 context:context];
+    v13 = [(VCPCNNBlock *)v11 constructBlock:sizeCopy context:context];
     if (!v13)
     {
       v13 = [(VCPCNNBlock *)self->_blocks[0] readFromDisk:v8 quantFactor:self->_quantFactor];
@@ -143,7 +143,7 @@ LABEL_7:
           do
           {
             v16 = *v14;
-            v17 = [*(v14 - 1) outputSize];
+            outputSize = [*(v14 - 1) outputSize];
             if ([*v14 supportGPU])
             {
               v18 = self->_context;
@@ -154,7 +154,7 @@ LABEL_7:
               v18 = 0;
             }
 
-            v13 = [v16 constructBlock:v17 context:v18];
+            v13 = [v16 constructBlock:outputSize context:v18];
 
             if (v13)
             {
@@ -187,15 +187,15 @@ LABEL_7:
   return v13;
 }
 
-- (int)forward:(id)a3
+- (int)forward:(id)forward
 {
-  v4 = a3;
-  v5 = [v4 size];
+  forwardCopy = forward;
+  v5 = [forwardCopy size];
   v6 = [v5 count];
 
   if (v6 == 3)
   {
-    if (self->_useGPU && (v7 = [v4 convertCPUData2GPU]) != 0)
+    if (self->_useGPU && (forward = [forwardCopy convertCPUData2GPU]) != 0)
     {
       v8 = 0;
       v9 = 0;
@@ -203,7 +203,7 @@ LABEL_7:
 
     else
     {
-      [(VCPCNNBlock *)self->_blocks[0] setInput:v4];
+      [(VCPCNNBlock *)self->_blocks[0] setInput:forwardCopy];
       v10 = 0;
       v11 = 0;
       v9 = 0;
@@ -213,8 +213,8 @@ LABEL_7:
       {
         v11 = self->_blocks[v10];
 
-        v7 = [(VCPCNNBlock *)v11 forward];
-        if (v7)
+        forward = [(VCPCNNBlock *)v11 forward];
+        if (forward)
         {
           v8 = v11;
           goto LABEL_17;
@@ -226,21 +226,21 @@ LABEL_7:
         {
           v12 = self->_blocks[v10];
 
-          v13 = [(VCPCNNBlock *)v11 output];
-          [(VCPCNNBlock *)v12 setInput:v13];
+          output = [(VCPCNNBlock *)v11 output];
+          [(VCPCNNBlock *)v12 setInput:output];
 
           v9 = v12;
           goto LABEL_7;
         }
       }
 
-      if (!self->_useGPU || (v7 = -[VCPCNNMetalContext execute](self->_context, "execute")) == 0 && ([*(&self->super.isa + -[VCPCNNModel size](self "size"))], v14 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v14, "convertGPUData2CPU"), v14, !v7))
+      if (!self->_useGPU || (forward = -[VCPCNNMetalContext execute](self->_context, "execute")) == 0 && ([*(&self->super.isa + -[VCPCNNModel size](self "size"))], v14 = objc_claimAutoreleasedReturnValue(), forward = objc_msgSend(v14, "convertGPUData2CPU"), v14, !forward))
       {
         v15 = [*(&self->super.isa + -[VCPCNNModel size](self "size"))];
         output = self->_output;
         self->_output = v15;
 
-        v7 = 0;
+        forward = 0;
       }
     }
   }
@@ -249,20 +249,20 @@ LABEL_7:
   {
     v8 = 0;
     v9 = 0;
-    v7 = -50;
+    forward = -50;
   }
 
 LABEL_17:
 
-  return v7;
+  return forward;
 }
 
-- (int)dynamicForward:(id)a3 paramFileUrl:(id)a4 cancel:(id)a5
+- (int)dynamicForward:(id)forward paramFileUrl:(id)url cancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 path];
-  v11 = fopen([v10 UTF8String], "rb");
+  forwardCopy = forward;
+  cancelCopy = cancel;
+  path = [url path];
+  v11 = fopen([path UTF8String], "rb");
 
   v12 = [(VCPCNNModel *)self size];
   if (v11)
@@ -271,19 +271,19 @@ LABEL_17:
     blocks = self->_blocks;
     v15 = v12 - 1;
     [(VCPCNNBlock *)self->_blocks[v15] setGenerateOutput:1];
-    v16 = [v8 size];
+    v16 = [forwardCopy size];
     v17 = [v16 count];
 
     if (v17 != 3)
     {
-      v18 = -50;
+      convertCPUData2GPU = -50;
       goto LABEL_39;
     }
 
     if (self->_useGPU)
     {
-      v18 = [v8 convertCPUData2GPU];
-      if (v18)
+      convertCPUData2GPU = [forwardCopy convertCPUData2GPU];
+      if (convertCPUData2GPU)
       {
         goto LABEL_39;
       }
@@ -292,23 +292,23 @@ LABEL_17:
     v19 = *blocks;
     if (*blocks)
     {
-      v20 = [v8 size];
-      v18 = [v19 constructBlock:v20 context:self->_context];
+      v20 = [forwardCopy size];
+      convertCPUData2GPU = [v19 constructBlock:v20 context:self->_context];
 
-      if (v18)
+      if (convertCPUData2GPU)
       {
         goto LABEL_39;
       }
 
-      v18 = [(VCPCNNBlock *)self->_blocks[0] readFromDisk:v11 quantFactor:self->_quantFactor];
-      if (v18)
+      convertCPUData2GPU = [(VCPCNNBlock *)self->_blocks[0] readFromDisk:v11 quantFactor:self->_quantFactor];
+      if (convertCPUData2GPU)
       {
         goto LABEL_39;
       }
 
-      [*blocks setInput:v8];
-      v18 = [*blocks forward];
-      if (v18)
+      [*blocks setInput:forwardCopy];
+      convertCPUData2GPU = [*blocks forward];
+      if (convertCPUData2GPU)
       {
         goto LABEL_39;
       }
@@ -320,16 +320,16 @@ LABEL_17:
 
       else
       {
-        if (v9[2](v9))
+        if (cancelCopy[2](cancelCopy))
         {
-          v18 = -128;
+          convertCPUData2GPU = -128;
 LABEL_39:
           fclose(v11);
           goto LABEL_40;
         }
 
-        v25 = [*blocks output];
-        [(VCPCNNBlock *)self->_blocks[1] setInput:v25];
+        output = [*blocks output];
+        [(VCPCNNBlock *)self->_blocks[1] setInput:output];
 
         v26 = 0;
         v39 = 0;
@@ -342,8 +342,8 @@ LABEL_39:
           if (v29)
           {
             context = v27;
-            v30 = [v28[1] outputSize];
-            v31 = [v29 constructBlock:v30 context:self->_context];
+            outputSize = [v28[1] outputSize];
+            v31 = [v29 constructBlock:outputSize context:self->_context];
 
             if (v31)
             {
@@ -364,8 +364,8 @@ LABEL_39:
               {
                 if (v26 + 1 < v15)
                 {
-                  v34 = [v28[2] output];
-                  [v28[3] setInput:v34];
+                  output2 = [v28[2] output];
+                  [v28[3] setInput:output2];
                 }
 
                 v35 = v28[1];
@@ -387,7 +387,7 @@ LABEL_39:
           objc_autoreleasePoolPop(v27);
           if ((v32 & 1) == 0)
           {
-            v18 = v39;
+            convertCPUData2GPU = v39;
             goto LABEL_39;
           }
 
@@ -409,27 +409,27 @@ LABEL_39:
         }
       }
 
-      if (!self->_useGPU || (v18 = -[VCPCNNMetalContext execute](self->_context, "execute")) == 0 && ([*blocks output], v22 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v22, "convertGPUData2CPU"), v22, !v18))
+      if (!self->_useGPU || (convertCPUData2GPU = -[VCPCNNMetalContext execute](self->_context, "execute")) == 0 && ([*blocks output], v22 = objc_claimAutoreleasedReturnValue(), convertCPUData2GPU = objc_msgSend(v22, "convertGPUData2CPU"), v22, !convertCPUData2GPU))
       {
-        v23 = [*blocks output];
+        output3 = [*blocks output];
         output = self->_output;
-        self->_output = v23;
+        self->_output = output3;
 
-        v18 = v21;
+        convertCPUData2GPU = v21;
       }
 
       goto LABEL_39;
     }
 
 LABEL_38:
-    v18 = -18;
+    convertCPUData2GPU = -18;
     goto LABEL_39;
   }
 
-  v18 = -23;
+  convertCPUData2GPU = -23;
 LABEL_40:
 
-  return v18;
+  return convertCPUData2GPU;
 }
 
 @end

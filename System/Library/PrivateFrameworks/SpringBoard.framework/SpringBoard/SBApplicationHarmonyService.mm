@@ -1,7 +1,7 @@
 @interface SBApplicationHarmonyService
 + (id)sharedInstance;
 - (SBApplicationHarmonyService)init;
-- (void)applicationServer:(id)a3 client:(id)a4 fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a5 withCompletion:(id)a6;
+- (void)applicationServer:(id)server client:(id)client fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletion:(id)completion;
 @end
 
 @implementation SBApplicationHarmonyService
@@ -39,25 +39,25 @@ void __45__SBApplicationHarmonyService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)a5 withCompletion:(id)a6
+- (void)applicationServer:(id)server client:(id)client fetchWhitePointAdaptivityStyleForDisplayId:(unsigned int)id withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  if (v10)
+  serverCopy = server;
+  clientCopy = client;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [MEMORY[0x277D0AAF8] sharedUIAppClientAuthenticator];
-    v12 = [v11 authenticateClient:v9];
+    mEMORY[0x277D0AAF8] = [MEMORY[0x277D0AAF8] sharedUIAppClientAuthenticator];
+    v12 = [mEMORY[0x277D0AAF8] authenticateClient:clientCopy];
 
     if (v12)
     {
-      v13 = v10;
+      v13 = completionCopy;
       BSDispatchMain();
     }
 
     else
     {
-      (*(v10 + 2))(v10, -1);
+      (*(completionCopy + 2))(completionCopy, -1);
     }
   }
 }

@@ -1,14 +1,14 @@
 @interface HDCodableSharingAuthorization
-- (BOOL)isEqual:(id)a3;
-- (HDCodableSharingAuthorization)initWithSharingAuthorization:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDCodableSharingAuthorization)initWithSharingAuthorization:(id)authorization;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sharingAuthorization;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSharingAuthorization
@@ -19,20 +19,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableSharingAuthorization;
   v4 = [(HDCodableSharingAuthorization *)&v8 description];
-  v5 = [(HDCodableSharingAuthorization *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSharingAuthorization *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   authorizationIdentifier = self->_authorizationIdentifier;
   if (authorizationIdentifier)
   {
-    [v3 setObject:authorizationIdentifier forKey:@"authorizationIdentifier"];
+    [dictionary setObject:authorizationIdentifier forKey:@"authorizationIdentifier"];
   }
 
   displayName = self->_displayName;
@@ -50,77 +50,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_authorizationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displaySubtitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_authorizationIdentifier)
   {
-    [v4 setAuthorizationIdentifier:?];
-    v4 = v5;
+    [toCopy setAuthorizationIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displaySubtitle)
   {
     [v5 setDisplaySubtitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_authorizationIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_authorizationIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_displaySubtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_displaySubtitle copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((authorizationIdentifier = self->_authorizationIdentifier, !(authorizationIdentifier | v4[1])) || -[NSString isEqual:](authorizationIdentifier, "isEqual:")) && ((displayName = self->_displayName, !(displayName | v4[2])) || -[NSString isEqual:](displayName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((authorizationIdentifier = self->_authorizationIdentifier, !(authorizationIdentifier | equalCopy[1])) || -[NSString isEqual:](authorizationIdentifier, "isEqual:")) && ((displayName = self->_displayName, !(displayName | equalCopy[2])) || -[NSString isEqual:](displayName, "isEqual:")))
   {
     displaySubtitle = self->_displaySubtitle;
-    if (displaySubtitle | v4[3])
+    if (displaySubtitle | equalCopy[3])
     {
       v8 = [(NSString *)displaySubtitle isEqual:?];
     }
@@ -146,54 +146,54 @@
   return v4 ^ [(NSString *)self->_displaySubtitle hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(HDCodableSharingAuthorization *)self setAuthorizationIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCodableSharingAuthorization *)self setDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(HDCodableSharingAuthorization *)self setDisplaySubtitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
-- (HDCodableSharingAuthorization)initWithSharingAuthorization:(id)a3
+- (HDCodableSharingAuthorization)initWithSharingAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v12.receiver = self;
   v12.super_class = HDCodableSharingAuthorization;
   v5 = [(HDCodableSharingAuthorization *)&v12 init];
   if (v5)
   {
-    v6 = [v4 authorizationIdentifier];
-    [(HDCodableSharingAuthorization *)v5 setAuthorizationIdentifier:v6];
+    authorizationIdentifier = [authorizationCopy authorizationIdentifier];
+    [(HDCodableSharingAuthorization *)v5 setAuthorizationIdentifier:authorizationIdentifier];
 
-    v7 = [v4 displayName];
+    displayName = [authorizationCopy displayName];
 
-    if (v7)
+    if (displayName)
     {
-      v8 = [v4 displayName];
-      [(HDCodableSharingAuthorization *)v5 setDisplayName:v8];
+      displayName2 = [authorizationCopy displayName];
+      [(HDCodableSharingAuthorization *)v5 setDisplayName:displayName2];
     }
 
-    v9 = [v4 displaySubtitle];
+    displaySubtitle = [authorizationCopy displaySubtitle];
 
-    if (v9)
+    if (displaySubtitle)
     {
-      v10 = [v4 displaySubtitle];
-      [(HDCodableSharingAuthorization *)v5 setDisplaySubtitle:v10];
+      displaySubtitle2 = [authorizationCopy displaySubtitle];
+      [(HDCodableSharingAuthorization *)v5 setDisplaySubtitle:displaySubtitle2];
     }
   }
 
@@ -203,10 +203,10 @@
 - (id)sharingAuthorization
 {
   v3 = objc_alloc(MEMORY[0x277CCD960]);
-  v4 = [(HDCodableSharingAuthorization *)self authorizationIdentifier];
-  v5 = [(HDCodableSharingAuthorization *)self displayName];
-  v6 = [(HDCodableSharingAuthorization *)self displaySubtitle];
-  v7 = [v3 initWithAuthorizationIdentifier:v4 displayName:v5 displaySubtitle:v6];
+  authorizationIdentifier = [(HDCodableSharingAuthorization *)self authorizationIdentifier];
+  displayName = [(HDCodableSharingAuthorization *)self displayName];
+  displaySubtitle = [(HDCodableSharingAuthorization *)self displaySubtitle];
+  v7 = [v3 initWithAuthorizationIdentifier:authorizationIdentifier displayName:displayName displaySubtitle:displaySubtitle];
 
   return v7;
 }

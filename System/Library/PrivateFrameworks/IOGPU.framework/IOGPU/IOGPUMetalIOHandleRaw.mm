@@ -1,12 +1,12 @@
 @interface IOGPUMetalIOHandleRaw
-- (IOGPUMetalIOHandleRaw)initWithDevice:(id)a3 path:(const char *)a4 error:(id *)a5 uncached:(BOOL)a6;
+- (IOGPUMetalIOHandleRaw)initWithDevice:(id)device path:(const char *)path error:(id *)error uncached:(BOOL)uncached;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation IOGPUMetalIOHandleRaw
 
-- (IOGPUMetalIOHandleRaw)initWithDevice:(id)a3 path:(const char *)a4 error:(id *)a5 uncached:(BOOL)a6
+- (IOGPUMetalIOHandleRaw)initWithDevice:(id)device path:(const char *)path error:(id *)error uncached:(BOOL)uncached
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -14,18 +14,18 @@
   v8 = [_MTLIOHandleRaw initWithDevice:sel_initWithDevice_path_error_uncached_ path:? error:? uncached:?];
   if (v8)
   {
-    v9 = a3;
-    v8->_dev = v9;
-    v10 = [(MTLDevice *)v9 deviceRef];
-    if (IOGPUDeviceCreateVNIODesc(v10, *(&v8->super.super.super.isa + *MEMORY[0x1E69743A0]), &v8->_vnioID, &v8->_globalTraceObjectID))
+    deviceCopy = device;
+    v8->_dev = deviceCopy;
+    deviceRef = [(MTLDevice *)deviceCopy deviceRef];
+    if (IOGPUDeviceCreateVNIODesc(deviceRef, *(&v8->super.super.super.isa + *MEMORY[0x1E69743A0]), &v8->_vnioID, &v8->_globalTraceObjectID))
     {
-      if (a5)
+      if (error)
       {
         v11 = objc_alloc(MEMORY[0x1E696ABC0]);
         v12 = *MEMORY[0x1E6973F90];
         v16 = *MEMORY[0x1E696A578];
         v17[0] = [MEMORY[0x1E696AEC0] stringWithUTF8String:"Internal Error"];
-        *a5 = [v11 initWithDomain:v12 code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v17, &v16, 1)}];
+        *error = [v11 initWithDomain:v12 code:2 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v17, &v16, 1)}];
       }
 
       v8 = 0;
@@ -54,19 +54,19 @@
   [(_MTLIOHandleRaw *)&v3 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v9.receiver = self;
   v9.super_class = IOGPUMetalIOHandleRaw;
   [(_MTLObjectWithLabel *)&v9 setLabel:?];
   if (*__globalGPUCommPage)
   {
-    v5 = [*(&self->super.super.super.isa + *MEMORY[0x1E6974398]) deviceRef];
+    deviceRef = [*(&self->super.super.super.isa + *MEMORY[0x1E6974398]) deviceRef];
     globalTraceObjectID = self->_globalTraceObjectID;
     v7 = *MEMORY[0x1E69743A8];
     v8 = *(&self->super.super.super.isa + v7);
-    [a3 cStringUsingEncoding:1];
-    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(v5, 8, 0, globalTraceObjectID, v8);
+    [label cStringUsingEncoding:1];
+    *(&self->super.super.super.isa + v7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, globalTraceObjectID, v8);
   }
 }
 

@@ -1,20 +1,20 @@
 @interface OTCheckHealthOperation
 + (BOOL)checkIfPasscodeIsSetForDevice;
-- (OTCheckHealthOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 skipRateLimitedCheck:(BOOL)a7 reportRateLimitingError:(BOOL)a8 repair:(BOOL)a9 danglingPeerCleanup:(BOOL)a10 caesarPeerCleanup:(BOOL)a11 updateIdMS:(BOOL)a12;
+- (OTCheckHealthOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info skipRateLimitedCheck:(BOOL)check reportRateLimitingError:(BOOL)error repair:(BOOL)repair danglingPeerCleanup:(BOOL)self0 caesarPeerCleanup:(BOOL)self1 updateIdMS:(BOOL)self2;
 - (void)checkMachineID;
 - (void)groupStart;
-- (void)handleRepairSuggestions:(id)a3;
+- (void)handleRepairSuggestions:(id)suggestions;
 @end
 
 @implementation OTCheckHealthOperation
 
-- (void)handleRepairSuggestions:(id)a3
+- (void)handleRepairSuggestions:(id)suggestions
 {
-  [(OTCheckHealthOperation *)self setResults:a3];
-  v4 = [(OTCheckHealthOperation *)self results];
-  v5 = [v4 resetOctagon];
+  [(OTCheckHealthOperation *)self setResults:suggestions];
+  results = [(OTCheckHealthOperation *)self results];
+  resetOctagon = [results resetOctagon];
 
-  if (v5)
+  if (resetOctagon)
   {
     v6 = sub_100006274("octagon-health");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -28,13 +28,13 @@
 
   else
   {
-    v8 = [(OTCheckHealthOperation *)self results];
-    v9 = [v8 leaveTrust];
+    results2 = [(OTCheckHealthOperation *)self results];
+    leaveTrust = [results2 leaveTrust];
 
-    if (!v9)
+    if (!leaveTrust)
     {
-      v11 = [(OTCheckHealthOperation *)self intendedState];
-      [(OTCheckHealthOperation *)self setNextState:v11];
+      intendedState = [(OTCheckHealthOperation *)self intendedState];
+      [(OTCheckHealthOperation *)self setNextState:intendedState];
 
       goto LABEL_11;
     }
@@ -51,8 +51,8 @@
 
   [(OTCheckHealthOperation *)self setNextState:v7];
 LABEL_11:
-  v12 = [(OTCheckHealthOperation *)self finishOp];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v12];
+  finishOp = [(OTCheckHealthOperation *)self finishOp];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp];
 }
 
 - (void)groupStart
@@ -67,14 +67,14 @@ LABEL_11:
   v4 = objc_alloc_init(NSOperation);
   [(OTCheckHealthOperation *)self setFinishOp:v4];
 
-  v5 = [(OTCheckHealthOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishOp = [(OTCheckHealthOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
   [(OTCheckHealthOperation *)self checkMachineID];
-  v6 = [(OTCheckHealthOperation *)self skipRateLimitingCheck];
+  skipRateLimitingCheck = [(OTCheckHealthOperation *)self skipRateLimitingCheck];
   v7 = sub_100006274("octagon-health");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (skipRateLimitingCheck)
   {
     if (v8)
     {
@@ -92,19 +92,19 @@ LABEL_11:
   }
 
   [(CKKSResultOperation *)self setError:0];
-  v19 = [(OTCheckHealthOperation *)self deps];
-  v20 = [v19 stateHolder];
+  deps = [(OTCheckHealthOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v59 = 0;
-  v7 = [v20 lastHealthCheckupDate:&v59];
+  v7 = [stateHolder lastHealthCheckupDate:&v59];
   v21 = v59;
 
-  v22 = [(OTCheckHealthOperation *)self deps];
-  v23 = [v22 lockStateTracker];
-  LODWORD(v20) = [v23 isLockedError:v21];
+  deps2 = [(OTCheckHealthOperation *)self deps];
+  lockStateTracker = [deps2 lockStateTracker];
+  LODWORD(stateHolder) = [lockStateTracker isLockedError:v21];
 
   v24 = sub_100006274("octagon-health");
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-  if (v20)
+  if (stateHolder)
   {
     if (v25)
     {
@@ -112,8 +112,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "device is locked, not performing cuttlefish check", buf, 2u);
     }
 
-    v26 = [(OTCheckHealthOperation *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v26];
+    finishOp2 = [(OTCheckHealthOperation *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp2];
 
     return;
   }
@@ -153,25 +153,25 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Not rate-limiting: last updated %@ vs %@", buf, 0x16u);
     }
 
-    v37 = [(OTCheckHealthOperation *)self deps];
-    v38 = [v37 stateHolder];
+    deps3 = [(OTCheckHealthOperation *)self deps];
+    stateHolder2 = [deps3 stateHolder];
     v58 = 0;
-    v39 = [v38 persistLastHealthCheck:v29 error:&v58];
+    v39 = [stateHolder2 persistLastHealthCheck:v29 error:&v58];
     v40 = v58;
 
-    v41 = [(OTCheckHealthOperation *)self deps];
-    v42 = [v41 lockStateTracker];
-    LOBYTE(v38) = [v42 isLockedError:v40];
+    deps4 = [(OTCheckHealthOperation *)self deps];
+    lockStateTracker2 = [deps4 lockStateTracker];
+    LOBYTE(stateHolder2) = [lockStateTracker2 isLockedError:v40];
 
-    if (v38)
+    if (stateHolder2)
     {
       v43 = sub_100006274("octagon-health");
       if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_41:
 
-        v50 = [(OTCheckHealthOperation *)self finishOp];
-        [(CKKSGroupOperation *)self runBeforeGroupFinished:v50];
+        finishOp3 = [(OTCheckHealthOperation *)self finishOp];
+        [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp3];
 
         return;
       }
@@ -199,26 +199,26 @@ LABEL_41:
 
 LABEL_6:
         objc_initWeak(buf, self);
-        v9 = [(OTCheckHealthOperation *)self deps];
-        v54 = [v9 cuttlefishXPCWrapper];
-        v10 = [(OTCheckHealthOperation *)self deps];
-        v53 = [v10 activeAccount];
+        deps5 = [(OTCheckHealthOperation *)self deps];
+        cuttlefishXPCWrapper = [deps5 cuttlefishXPCWrapper];
+        deps6 = [(OTCheckHealthOperation *)self deps];
+        activeAccount = [deps6 activeAccount];
         v52 = +[OTCheckHealthOperation checkIfPasscodeIsSetForDevice];
-        v51 = [(OTCheckHealthOperation *)self repair];
-        v11 = [(OTCheckHealthOperation *)self danglingPeerCleanup];
-        v12 = [(OTCheckHealthOperation *)self caesarPeerCleanup];
-        v13 = [(OTCheckHealthOperation *)self updateIdMS];
+        repair = [(OTCheckHealthOperation *)self repair];
+        danglingPeerCleanup = [(OTCheckHealthOperation *)self danglingPeerCleanup];
+        caesarPeerCleanup = [(OTCheckHealthOperation *)self caesarPeerCleanup];
+        updateIdMS = [(OTCheckHealthOperation *)self updateIdMS];
         v14 = [SecureBackup knownICDPFederations:0];
-        v15 = [(OTCheckHealthOperation *)self deps];
-        v16 = [v15 flowID];
-        v17 = [(OTCheckHealthOperation *)self deps];
-        v18 = [v17 deviceSessionID];
+        deps7 = [(OTCheckHealthOperation *)self deps];
+        flowID = [deps7 flowID];
+        deps8 = [(OTCheckHealthOperation *)self deps];
+        deviceSessionID = [deps8 deviceSessionID];
         v56[0] = _NSConcreteStackBlock;
         v56[1] = 3221225472;
         v56[2] = sub_1000ADE34;
         v56[3] = &unk_100336648;
         objc_copyWeak(&v57, buf);
-        [v54 requestHealthCheckWithSpecificUser:v53 requiresEscrowCheck:v52 repair:v51 danglingPeerCleanup:v11 caesarPeerCleanup:v12 updateIdMS:v13 knownFederations:v14 flowID:v16 deviceSessionID:v18 reply:v56];
+        [cuttlefishXPCWrapper requestHealthCheckWithSpecificUser:activeAccount requiresEscrowCheck:v52 repair:repair danglingPeerCleanup:danglingPeerCleanup caesarPeerCleanup:caesarPeerCleanup updateIdMS:updateIdMS knownFederations:v14 flowID:flowID deviceSessionID:deviceSessionID reply:v56];
 
         objc_destroyWeak(&v57);
         objc_destroyWeak(buf);
@@ -271,38 +271,38 @@ LABEL_6:
 
   else
   {
-    v48 = [(OTCheckHealthOperation *)self intendedState];
-    [(OTCheckHealthOperation *)self setNextState:v48];
+    intendedState = [(OTCheckHealthOperation *)self intendedState];
+    [(OTCheckHealthOperation *)self setNextState:intendedState];
   }
 
-  v49 = [(OTCheckHealthOperation *)self finishOp];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v49];
+  finishOp4 = [(OTCheckHealthOperation *)self finishOp];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp4];
 }
 
 - (void)checkMachineID
 {
-  v3 = [(OTCheckHealthOperation *)self deps];
-  v4 = [v3 stateHolder];
+  deps = [(OTCheckHealthOperation *)self deps];
+  stateHolder = [deps stateHolder];
   v29 = 0;
-  v5 = [v4 loadOrCreateAccountMetadata:&v29];
+  v5 = [stateHolder loadOrCreateAccountMetadata:&v29];
   v6 = v29;
 
   if (v5 && !v6)
   {
     v27 = v5;
-    v26 = [v5 machineID];
-    v25 = [(OTCheckHealthOperation *)self deps];
-    v7 = [v25 authKitAdapter];
-    v24 = [(OTCheckHealthOperation *)self deps];
-    v23 = [v24 activeAccount];
-    v8 = [v23 altDSID];
-    v9 = [(OTCheckHealthOperation *)self deps];
-    v10 = [v9 flowID];
-    v11 = [(OTCheckHealthOperation *)self deps];
-    v12 = [v11 deviceSessionID];
-    v13 = [(OTCheckHealthOperation *)self deps];
+    machineID = [v5 machineID];
+    deps2 = [(OTCheckHealthOperation *)self deps];
+    authKitAdapter = [deps2 authKitAdapter];
+    deps3 = [(OTCheckHealthOperation *)self deps];
+    activeAccount = [deps3 activeAccount];
+    altDSID = [activeAccount altDSID];
+    deps4 = [(OTCheckHealthOperation *)self deps];
+    flowID = [deps4 flowID];
+    deps5 = [(OTCheckHealthOperation *)self deps];
+    deviceSessionID = [deps5 deviceSessionID];
+    deps6 = [(OTCheckHealthOperation *)self deps];
     v28 = 0;
-    v14 = [v7 machineID:v8 flowID:v10 deviceSessionID:v12 canSendMetrics:objc_msgSend(v13 error:{"permittedToSendMetrics"), &v28}];
+    v14 = [authKitAdapter machineID:altDSID flowID:flowID deviceSessionID:deviceSessionID canSendMetrics:objc_msgSend(deps6 error:{"permittedToSendMetrics"), &v28}];
     v15 = v28;
 
     if (!v14 || v15)
@@ -317,15 +317,15 @@ LABEL_6:
 
       v6 = 0;
       v5 = v27;
-      v16 = v26;
+      v16 = machineID;
     }
 
     else
     {
-      v16 = v26;
+      v16 = machineID;
       v6 = 0;
       v5 = v27;
-      if ([v14 isEqualToString:v26])
+      if ([v14 isEqualToString:machineID])
       {
 LABEL_20:
 
@@ -336,7 +336,7 @@ LABEL_20:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v31 = v26;
+        v31 = machineID;
         v32 = 2112;
         v33 = v14;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "machineID %@ -> %@", buf, 0x16u);
@@ -359,9 +359,9 @@ LABEL_20:
         }
 
         v19 = [[OctagonPendingFlag alloc] initWithFlag:@"reroll_identity" conditions:3];
-        v21 = [(OTCheckHealthOperation *)self deps];
-        v22 = [v21 flagHandler];
-        [v22 handlePendingFlag:v19];
+        deps7 = [(OTCheckHealthOperation *)self deps];
+        flagHandler = [deps7 flagHandler];
+        [flagHandler handlePendingFlag:v19];
       }
 
       else if (v20)
@@ -385,31 +385,31 @@ LABEL_20:
 LABEL_21:
 }
 
-- (OTCheckHealthOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 skipRateLimitedCheck:(BOOL)a7 reportRateLimitingError:(BOOL)a8 repair:(BOOL)a9 danglingPeerCleanup:(BOOL)a10 caesarPeerCleanup:(BOOL)a11 updateIdMS:(BOOL)a12
+- (OTCheckHealthOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info skipRateLimitedCheck:(BOOL)check reportRateLimitingError:(BOOL)error repair:(BOOL)repair danglingPeerCleanup:(BOOL)self0 caesarPeerCleanup:(BOOL)self1 updateIdMS:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = OTCheckHealthOperation;
   v22 = [(CKKSGroupOperation *)&v27 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong((v22 + 166), a3);
-    objc_storeStrong((v23 + 134), a4);
-    objc_storeStrong((v23 + 142), a5);
+    objc_storeStrong((v22 + 166), dependencies);
+    objc_storeStrong((v23 + 134), state);
+    objc_storeStrong((v23 + 142), errorState);
     v24 = *(v23 + 158);
     *(v23 + 158) = 0;
 
-    objc_storeStrong((v23 + 150), a6);
-    v23[128] = a7;
-    v23[129] = a8;
-    v23[130] = a9;
-    v23[131] = a10;
-    v23[132] = a11;
-    v23[133] = a12;
+    objc_storeStrong((v23 + 150), info);
+    v23[128] = check;
+    v23[129] = error;
+    v23[130] = repair;
+    v23[131] = cleanup;
+    v23[132] = peerCleanup;
+    v23[133] = s;
   }
 
   return v23;

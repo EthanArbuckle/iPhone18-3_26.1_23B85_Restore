@@ -1,45 +1,45 @@
 @interface CMContinuityCaptureStateMachine
-- (BOOL)postEventWithName:(id)a3 data:(id)a4;
-- (BOOL)postSameStateAction:(id)a3 transition:(id)a4 event:(id)a5;
-- (BOOL)postStateChangeAction:(id)a3 transition:(id)a4 event:(id)a5;
-- (CMContinuityCaptureStateMachine)initWithActionDelegate:(id)a3 queue:(id)a4;
+- (BOOL)postEventWithName:(id)name data:(id)data;
+- (BOOL)postSameStateAction:(id)action transition:(id)transition event:(id)event;
+- (BOOL)postStateChangeAction:(id)action transition:(id)transition event:(id)event;
+- (CMContinuityCaptureStateMachine)initWithActionDelegate:(id)delegate queue:(id)queue;
 - (id)description;
-- (id)getDeferredEventsToPostForState:(id)a3;
-- (id)getNewStateAfterPostingDeferredEvents:(id)a3 deferredEventsToPost:(id *)a4;
-- (void)_enqueueEventWithNameToPost:(id)a3 data:(id)a4;
-- (void)_notifyCompletion:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)addStateTransitions:(id)a3;
+- (id)getDeferredEventsToPostForState:(id)state;
+- (id)getNewStateAfterPostingDeferredEvents:(id)events deferredEventsToPost:(id *)post;
+- (void)_enqueueEventWithNameToPost:(id)post data:(id)data;
+- (void)_notifyCompletion:(id)completion;
+- (void)addEvents:(id)events;
+- (void)addStateTransitions:(id)transitions;
 - (void)aggregateEvents;
-- (void)enqueueEventWithNameToPost:(id)a3 data:(id)a4;
-- (void)notifyCompletion:(id)a3;
+- (void)enqueueEventWithNameToPost:(id)post data:(id)data;
+- (void)notifyCompletion:(id)completion;
 @end
 
 @implementation CMContinuityCaptureStateMachine
 
-- (void)addStateTransitions:(id)a3
+- (void)addStateTransitions:(id)transitions
 {
-  v4 = a3;
-  if (v4)
+  transitionsCopy = transitions;
+  if (transitionsCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableArray *)v5->_transactions addObjectsFromArray:v6];
-    objc_sync_exit(v5);
+    v6 = transitionsCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableArray *)selfCopy->_transactions addObjectsFromArray:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    transitionsCopy = v6;
   }
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__CMContinuityCaptureStateMachine_addEvents___block_invoke;
   v3[3] = &unk_278D5C9A0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [events enumerateObjectsUsingBlock:v3];
 }
 
 void __45__CMContinuityCaptureStateMachine_addEvents___block_invoke(uint64_t a1, void *a2)
@@ -50,75 +50,75 @@ void __45__CMContinuityCaptureStateMachine_addEvents___block_invoke(uint64_t a1,
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (BOOL)postSameStateAction:(id)a3 transition:(id)a4 event:(id)a5
+- (BOOL)postSameStateAction:(id)action transition:(id)transition event:(id)event
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 action];
+  actionCopy = action;
+  transitionCopy = transition;
+  eventCopy = event;
+  action = [transitionCopy action];
 
-  if (v11)
+  if (action)
   {
-    v12 = [v9 action];
-    (v12)[2](v12, v10);
+    action2 = [transitionCopy action];
+    (action2)[2](action2, eventCopy);
   }
 
   v13 = CMContinuityCaptureLog(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-    v15 = [v8 name];
-    v16 = [(CMContinuityCaptureStateMachine *)self currentState];
-    v17 = [v16 name];
-    v18 = [(CMContinuityCaptureStateMachine *)self currentState];
-    [v18 pendingEvents];
-    v19 = v22 = v8;
+    name = [actionCopy name];
+    currentState = [(CMContinuityCaptureStateMachine *)self currentState];
+    name2 = [currentState name];
+    currentState2 = [(CMContinuityCaptureStateMachine *)self currentState];
+    [currentState2 pendingEvents];
+    v19 = v22 = actionCopy;
     deferredEvents = self->_deferredEvents;
     *buf = 138544642;
     v24 = WeakRetained;
     v25 = 2114;
-    v26 = v15;
+    v26 = name;
     v27 = 2114;
-    v28 = v17;
+    v28 = name2;
     v29 = 2114;
-    v30 = v10;
+    v30 = eventCopy;
     v31 = 2114;
     v32 = v19;
     v33 = 2114;
     v34 = deferredEvents;
     _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Transition to state %{public}@ from %{public}@ on event %{public}@ state pendingEvents %{public}@ deferredEvents %{public}@", buf, 0x3Eu);
 
-    v8 = v22;
+    actionCopy = v22;
   }
 
   return 1;
 }
 
-- (id)getDeferredEventsToPostForState:(id)a3
+- (id)getDeferredEventsToPostForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(NSMutableArray *)self->_deferredEvents count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [v4 name];
-    v7 = [v6 isEqualToString:@"kCMContinuityCaptureStateStreaming"];
+    name = [stateCopy name];
+    v7 = [name isEqualToString:@"kCMContinuityCaptureStateStreaming"];
 
     if (v7)
     {
       v8 = [(NSMutableArray *)self->_deferredEvents objectAtIndexedSubscript:0];
-      v9 = [v8 isEntry];
+      isEntry = [v8 isEntry];
 
-      v10 = v9;
+      v10 = isEntry;
       v11 = 1;
       if ([(NSMutableArray *)self->_deferredEvents count]>= 2)
       {
         do
         {
           v12 = [(NSMutableArray *)self->_deferredEvents objectAtIndexedSubscript:0];
-          v13 = [v12 name];
+          name2 = [v12 name];
           v14 = [(NSMutableArray *)self->_deferredEvents objectAtIndexedSubscript:v11];
-          v15 = [v14 name];
-          v16 = CMContinuityCaptureSMValidSameStateEventName(v13, v15);
+          name3 = [v14 name];
+          v16 = CMContinuityCaptureSMValidSameStateEventName(name2, name3);
 
           if (!v16)
           {
@@ -126,9 +126,9 @@ void __45__CMContinuityCaptureStateMachine_addEvents___block_invoke(uint64_t a1,
           }
 
           v17 = [(NSMutableArray *)self->_deferredEvents objectAtIndexedSubscript:v11];
-          v18 = [v17 isEntry];
+          isEntry2 = [v17 isEntry];
 
-          if (v18)
+          if (isEntry2)
           {
             ++v10;
           }
@@ -148,9 +148,9 @@ void __45__CMContinuityCaptureStateMachine_addEvents___block_invoke(uint64_t a1,
       while (1)
       {
         v20 = [(NSMutableArray *)self->_deferredEvents objectAtIndexedSubscript:v19];
-        v21 = [v20 isEntry];
+        isEntry3 = [v20 isEntry];
 
-        if (((v10 == 0) ^ v21))
+        if (((v10 == 0) ^ isEntry3))
         {
           break;
         }
@@ -196,18 +196,18 @@ LABEL_17:
   return v5;
 }
 
-- (id)getNewStateAfterPostingDeferredEvents:(id)a3 deferredEventsToPost:(id *)a4
+- (id)getNewStateAfterPostingDeferredEvents:(id)events deferredEventsToPost:(id *)post
 {
-  v6 = a3;
+  eventsCopy = events;
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = [(CMContinuityCaptureStateMachine *)self getDeferredEventsToPostForState:v6];
+  v8 = [(CMContinuityCaptureStateMachine *)self getDeferredEventsToPostForState:eventsCopy];
   v9 = [v7 initWithArray:v8];
 
   v10 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
     v32 = v9;
     _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Deferred to post %{public}@", &v29, 0x16u);
@@ -215,14 +215,14 @@ LABEL_17:
 
   if (v9 && [v9 count])
   {
-    if (!v6)
+    if (!eventsCopy)
     {
 LABEL_8:
-      v15 = [v9 firstObject];
-      if (([v15 isEntry] & 1) != 0 || (objc_msgSend(v15, "name"), v16 = objc_claimAutoreleasedReturnValue(), valid = CMContinuityCaptureSMIsValidExitEventForState(v16, @"kCMContinuityCaptureStateStreaming"), v16, (valid & 1) == 0))
+      firstObject = [v9 firstObject];
+      if (([firstObject isEntry] & 1) != 0 || (objc_msgSend(firstObject, "name"), v16 = objc_claimAutoreleasedReturnValue(), valid = CMContinuityCaptureSMIsValidExitEventForState(v16, @"kCMContinuityCaptureStateStreaming"), v16, (valid & 1) == 0))
       {
         v26 = v9;
-        *a4 = v9;
+        *post = v9;
       }
 
       else if ([(NSMutableArray *)self->_previousStates count])
@@ -231,48 +231,48 @@ LABEL_8:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-          v20 = [(NSMutableArray *)self->_previousStates lastObject];
+          lastObject = [(NSMutableArray *)self->_previousStates lastObject];
           v29 = 138544130;
-          v30 = WeakRetained;
+          selfCopy = WeakRetained;
           v31 = 2114;
           v32 = v9;
           v33 = 2114;
-          v34 = v6;
+          v34 = eventsCopy;
           v35 = 2114;
-          v36 = v20;
+          v36 = lastObject;
           _os_log_impl(&dword_242545000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Deferred exit event %{public}@ for state %{public}@ , move to previous state %{public}@", &v29, 0x2Au);
         }
 
-        v21 = [v6 exitAction];
+        exitAction = [eventsCopy exitAction];
 
-        if (v21)
+        if (exitAction)
         {
-          v22 = [v6 exitAction];
-          v23 = [v9 firstObject];
-          (v22)[2](v22, v23);
+          exitAction2 = [eventsCopy exitAction];
+          firstObject2 = [v9 firstObject];
+          (exitAction2)[2](exitAction2, firstObject2);
         }
 
-        v24 = [(NSMutableArray *)self->_previousStates lastObject];
+        lastObject2 = [(NSMutableArray *)self->_previousStates lastObject];
         [(NSMutableArray *)self->_previousStates removeLastObject];
         [v9 removeObjectAtIndex:0];
         v25 = v9;
-        *a4 = v9;
+        *post = v9;
         goto LABEL_18;
       }
 
-      v24 = v6;
+      lastObject2 = eventsCopy;
 LABEL_18:
 
       goto LABEL_21;
     }
 
-    v11 = [v6 name];
-    v12 = [v11 isEqualToString:@"kCMContinuityCaptureStateTerminated"];
+    name = [eventsCopy name];
+    v12 = [name isEqualToString:@"kCMContinuityCaptureStateTerminated"];
 
     if (!v12)
     {
-      v13 = [v6 name];
-      v14 = [v13 isEqualToString:@"kCMContinuityCaptureStateStreaming"];
+      name2 = [eventsCopy name];
+      v14 = [name2 isEqualToString:@"kCMContinuityCaptureStateStreaming"];
 
       if (v14)
       {
@@ -280,22 +280,22 @@ LABEL_18:
       }
 
       v27 = v9;
-      *a4 = v9;
+      *post = v9;
     }
   }
 
-  v24 = v6;
+  lastObject2 = eventsCopy;
 LABEL_21:
 
-  return v24;
+  return lastObject2;
 }
 
-- (BOOL)postStateChangeAction:(id)a3 transition:(id)a4 event:(id)a5
+- (BOOL)postStateChangeAction:(id)action transition:(id)transition event:(id)event
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEntry])
+  actionCopy = action;
+  transitionCopy = transition;
+  eventCopy = event;
+  if ([eventCopy isEntry])
   {
     goto LABEL_4;
   }
@@ -305,10 +305,10 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v11 = [(NSMutableArray *)self->_previousStates lastObject];
-  v12 = [v11 name];
-  v13 = [v8 name];
-  v14 = [v12 isEqualToString:v13];
+  lastObject = [(NSMutableArray *)self->_previousStates lastObject];
+  name = [lastObject name];
+  name2 = [actionCopy name];
+  v14 = [name isEqualToString:name2];
 
   if (v14)
   {
@@ -317,48 +317,48 @@ LABEL_4:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-      v17 = [v8 name];
-      v18 = [(CMContinuityCaptureStateMachine *)self currentState];
-      [v18 name];
-      v49 = v8;
-      v20 = v19 = v9;
-      v21 = [(CMContinuityCaptureStateMachine *)self currentState];
-      v22 = [v21 pendingEvents];
+      name3 = [actionCopy name];
+      currentState = [(CMContinuityCaptureStateMachine *)self currentState];
+      [currentState name];
+      v49 = actionCopy;
+      v20 = v19 = transitionCopy;
+      currentState2 = [(CMContinuityCaptureStateMachine *)self currentState];
+      pendingEvents = [currentState2 pendingEvents];
       deferredEvents = self->_deferredEvents;
       *buf = 138544642;
       v54 = WeakRetained;
       v55 = 2114;
-      v56 = v17;
+      v56 = name3;
       v57 = 2114;
       v58 = v20;
       v59 = 2114;
-      v60 = v10;
+      v60 = eventCopy;
       v61 = 2114;
-      v62 = v22;
+      v62 = pendingEvents;
       v63 = 2114;
       v64 = deferredEvents;
       _os_log_impl(&dword_242545000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Transition to state %{public}@ from %{public}@ on event %{public}@ state pendingEvents %{public}@ deferredEvents %{public}@", buf, 0x3Eu);
 
-      v9 = v19;
-      v8 = v49;
+      transitionCopy = v19;
+      actionCopy = v49;
     }
 
-    v24 = [(CMContinuityCaptureStateMachine *)self currentState];
-    v25 = [v24 exitAction];
+    currentState3 = [(CMContinuityCaptureStateMachine *)self currentState];
+    exitAction = [currentState3 exitAction];
 
-    if (v25)
+    if (exitAction)
     {
-      v26 = [(CMContinuityCaptureStateMachine *)self currentState];
-      v27 = [v26 exitAction];
-      (v27)[2](v27, v10);
+      currentState4 = [(CMContinuityCaptureStateMachine *)self currentState];
+      exitAction2 = [currentState4 exitAction];
+      (exitAction2)[2](exitAction2, eventCopy);
     }
 
-    v28 = [v10 isEntry];
+    isEntry = [eventCopy isEntry];
     previousStates = self->_previousStates;
-    if (v28)
+    if (isEntry)
     {
-      v30 = [(CMContinuityCaptureStateMachine *)self currentState];
-      [(NSMutableArray *)previousStates addObject:v30];
+      currentState5 = [(CMContinuityCaptureStateMachine *)self currentState];
+      [(NSMutableArray *)previousStates addObject:currentState5];
     }
 
     else if ([(NSMutableArray *)self->_previousStates count])
@@ -372,42 +372,42 @@ LABEL_4:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
         v47 = objc_loadWeakRetained(&self->_actionDelegate);
-        v48 = [(CMContinuityCaptureStateMachine *)self currentState];
+        currentState6 = [(CMContinuityCaptureStateMachine *)self currentState];
         *buf = 138413058;
         v54 = v47;
         v55 = 2112;
-        v56 = v10;
+        v56 = eventCopy;
         v57 = 2112;
-        v58 = v48;
+        v58 = currentState6;
         v59 = 2112;
-        v60 = v8;
+        v60 = actionCopy;
         _os_log_fault_impl(&dword_242545000, v33, OS_LOG_TYPE_FAULT, "%@ Unexpected SM event %@ current %@ dst %@", buf, 0x2Au);
       }
     }
 
-    v34 = [v9 action];
+    action = [transitionCopy action];
 
-    if (v34)
+    if (action)
     {
-      v35 = [v9 action];
-      (v35)[2](v35, v10);
+      action2 = [transitionCopy action];
+      (action2)[2](action2, eventCopy);
     }
 
     [(CMContinuityCaptureStateMachine *)self willChangeValueForKey:@"currentState"];
     v52 = 0;
-    v36 = [(CMContinuityCaptureStateMachine *)self getNewStateAfterPostingDeferredEvents:v8 deferredEventsToPost:&v52];
+    v36 = [(CMContinuityCaptureStateMachine *)self getNewStateAfterPostingDeferredEvents:actionCopy deferredEventsToPost:&v52];
     v32 = v52;
     [(CMContinuityCaptureStateMachine *)self setCurrentState:v36];
 
     [(CMContinuityCaptureStateMachine *)self didChangeValueForKey:@"currentState"];
-    v37 = [(CMContinuityCaptureStateMachine *)self currentState];
-    v38 = [v37 entryAction];
+    currentState7 = [(CMContinuityCaptureStateMachine *)self currentState];
+    entryAction = [currentState7 entryAction];
 
-    if (v38)
+    if (entryAction)
     {
-      v39 = [(CMContinuityCaptureStateMachine *)self currentState];
-      v40 = [v39 entryAction];
-      (v40)[2](v40, v10);
+      currentState8 = [(CMContinuityCaptureStateMachine *)self currentState];
+      entryAction2 = [currentState8 entryAction];
+      (entryAction2)[2](entryAction2, eventCopy);
     }
 
     if (v32 && [v32 count])
@@ -416,13 +416,13 @@ LABEL_4:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         v42 = objc_loadWeakRetained(&self->_actionDelegate);
-        v43 = [(CMContinuityCaptureStateMachine *)self currentState];
+        currentState9 = [(CMContinuityCaptureStateMachine *)self currentState];
         *buf = 138543874;
         v54 = v42;
         v55 = 2114;
         v56 = v32;
         v57 = 2114;
-        v58 = v43;
+        v58 = currentState9;
         _os_log_impl(&dword_242545000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ Post Deferred event %{public}@ on current state %{public}@", buf, 0x20u);
       }
 
@@ -459,15 +459,15 @@ void __74__CMContinuityCaptureStateMachine_postStateChangeAction_transition_even
   [v2 postDeferredEvent:v5 data:v4];
 }
 
-- (void)_enqueueEventWithNameToPost:(id)a3 data:(id)a4
+- (void)_enqueueEventWithNameToPost:(id)post data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if (CMContinuityCaptureValidSMEvent(v6))
+  postCopy = post;
+  dataCopy = data;
+  if (CMContinuityCaptureValidSMEvent(postCopy))
   {
-    if (v7)
+    if (dataCopy)
     {
-      v8 = v7;
+      v8 = dataCopy;
     }
 
     else
@@ -481,9 +481,9 @@ void __74__CMContinuityCaptureStateMachine_postStateChangeAction_transition_even
     {
       currentState = self->_currentState;
       *buf = 138543874;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
-      v28 = v6;
+      v28 = postCopy;
       v29 = 2114;
       v30 = currentState;
       _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ enqueueEvent %{public}@ on current state %{public}@", buf, 0x20u);
@@ -493,7 +493,7 @@ void __74__CMContinuityCaptureStateMachine_postStateChangeAction_transition_even
     eventQueue = self->_eventQueue;
     if (v14)
     {
-      v22[0] = v6;
+      v22[0] = postCopy;
       v19 = @"kCMContinuityCaptureEventName";
       v20 = @"kCMContinuityCaptureEventEnqueueTime";
       v11 = CMContinuityCaptureGetCurrentTimeString();
@@ -506,7 +506,7 @@ void __74__CMContinuityCaptureStateMachine_postStateChangeAction_transition_even
 
     else
     {
-      v24[0] = v6;
+      v24[0] = postCopy;
       v23[0] = @"kCMContinuityCaptureEventName";
       v23[1] = @"kCMContinuityCaptureEventEnqueueTime";
       v17 = CMContinuityCaptureGetCurrentTimeString();
@@ -516,7 +516,7 @@ void __74__CMContinuityCaptureStateMachine_postStateChangeAction_transition_even
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
       [(NSMutableArray *)eventQueue addObject:v18];
 
-      if ([(CMContinuityCaptureStateMachine *)self postEventWithName:v6 data:v8])
+      if ([(CMContinuityCaptureStateMachine *)self postEventWithName:postCopy data:v8])
       {
 LABEL_17:
 
@@ -535,16 +535,16 @@ LABEL_16:
   v9 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [(CMContinuityCaptureStateMachine *)self _enqueueEventWithNameToPost:v6 data:v9];
+    [(CMContinuityCaptureStateMachine *)self _enqueueEventWithNameToPost:postCopy data:v9];
   }
 
-  if (v7)
+  if (dataCopy)
   {
-    v10 = [v7 objectForKeyedSubscript:@"CMContinuityCaptureStateMachineEventDataCompletionBlock"];
+    v10 = [dataCopy objectForKeyedSubscript:@"CMContinuityCaptureStateMachineEventDataCompletionBlock"];
 
     if (v10)
     {
-      v8 = [v7 objectForKeyedSubscript:@"CMContinuityCaptureStateMachineEventDataCompletionBlock"];
+      v8 = [dataCopy objectForKeyedSubscript:@"CMContinuityCaptureStateMachineEventDataCompletionBlock"];
       v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:2 userInfo:0];
       (*(v8 + 2))(v8, v11);
       goto LABEL_16;
@@ -554,10 +554,10 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)enqueueEventWithNameToPost:(id)a3 data:(id)a4
+- (void)enqueueEventWithNameToPost:(id)post data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  postCopy = post;
+  dataCopy = data;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -565,10 +565,10 @@ LABEL_18:
   v11[2] = __67__CMContinuityCaptureStateMachine_enqueueEventWithNameToPost_data___block_invoke;
   v11[3] = &unk_278D5C120;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = postCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = postCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -596,9 +596,9 @@ void __67__CMContinuityCaptureStateMachine_enqueueEventWithNameToPost_data___blo
   self->_eventQueue = v5;
 }
 
-- (void)notifyCompletion:(id)a3
+- (void)notifyCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -606,8 +606,8 @@ void __67__CMContinuityCaptureStateMachine_enqueueEventWithNameToPost_data___blo
   block[2] = __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -625,12 +625,12 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
   }
 }
 
-- (void)_notifyCompletion:(id)a3
+- (void)_notifyCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-  v39 = self;
+  selfCopy = self;
   eventQueue = self->_eventQueue;
   p_eventQueue = &self->_eventQueue;
   if ([(NSMutableArray *)eventQueue count])
@@ -638,12 +638,12 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
     v8 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = objc_loadWeakRetained(&v39->_actionDelegate);
-      currentState = v39->_currentState;
-      v11 = [(NSMutableArray *)v39->_eventQueue firstObject];
-      v12 = [v11 objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
-      v13 = [(NSMutableArray *)v39->_eventQueue firstObject];
-      v14 = [v13 objectForKeyedSubscript:@"kCMContinuityCaptureEventEnqueueTime"];
+      v9 = objc_loadWeakRetained(&selfCopy->_actionDelegate);
+      currentState = selfCopy->_currentState;
+      firstObject = [(NSMutableArray *)selfCopy->_eventQueue firstObject];
+      v12 = [firstObject objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
+      firstObject2 = [(NSMutableArray *)selfCopy->_eventQueue firstObject];
+      v14 = [firstObject2 objectForKeyedSubscript:@"kCMContinuityCaptureEventEnqueueTime"];
       *buf = 138544130;
       v46 = v9;
       v47 = 2114;
@@ -657,12 +657,12 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
 
     if (WeakRetained)
     {
-      v15 = objc_loadWeakRetained(&v39->_actionDelegate);
-      v16 = [(NSMutableArray *)*p_eventQueue firstObject];
-      v17 = [v16 objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
-      v18 = [(NSMutableArray *)*p_eventQueue firstObject];
-      v19 = [v18 objectForKeyedSubscript:@"kCMContinuityCaptureEventData"];
-      [v15 postActionCompletionForEventName:v17 eventData:v19 error:v4];
+      v15 = objc_loadWeakRetained(&selfCopy->_actionDelegate);
+      firstObject3 = [(NSMutableArray *)*p_eventQueue firstObject];
+      v17 = [firstObject3 objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
+      firstObject4 = [(NSMutableArray *)*p_eventQueue firstObject];
+      v19 = [firstObject4 objectForKeyedSubscript:@"kCMContinuityCaptureEventData"];
+      [v15 postActionCompletionForEventName:v17 eventData:v19 error:completionCopy];
     }
 
     [(NSMutableArray *)*p_eventQueue removeObjectAtIndex:0];
@@ -671,13 +671,13 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
       v20 = CMContinuityCaptureLog(0);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [(CMContinuityCaptureStateMachine *)&v39->_actionDelegate _notifyCompletion:v20];
+        [(CMContinuityCaptureStateMachine *)&selfCopy->_actionDelegate _notifyCompletion:v20];
       }
     }
 
     if ([(NSMutableArray *)*p_eventQueue count])
     {
-      v38 = v4;
+      v38 = completionCopy;
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -702,7 +702,7 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
             v27 = CMContinuityCaptureLog(0);
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
             {
-              v28 = objc_loadWeakRetained(&v39->_actionDelegate);
+              v28 = objc_loadWeakRetained(&selfCopy->_actionDelegate);
               v29 = [v26 objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
               v30 = [v26 objectForKeyedSubscript:@"kCMContinuityCaptureEventEnqueueTime"];
               *buf = 138543874;
@@ -721,96 +721,96 @@ void __52__CMContinuityCaptureStateMachine_notifyCompletion___block_invoke(uint6
         while (v23);
       }
 
-      [(CMContinuityCaptureStateMachine *)v39 aggregateEvents];
-      v4 = v38;
+      [(CMContinuityCaptureStateMachine *)selfCopy aggregateEvents];
+      completionCopy = v38;
       p_eventQueue = v37;
     }
 
     if ([(NSMutableArray *)*p_eventQueue count])
     {
-      v31 = [(NSMutableArray *)v39->_eventQueue objectAtIndexedSubscript:0];
+      v31 = [(NSMutableArray *)selfCopy->_eventQueue objectAtIndexedSubscript:0];
       v32 = [v31 objectForKeyedSubscript:@"kCMContinuityCaptureEventName"];
-      v33 = [(NSMutableArray *)v39->_eventQueue objectAtIndexedSubscript:0];
+      v33 = [(NSMutableArray *)selfCopy->_eventQueue objectAtIndexedSubscript:0];
       v34 = [v33 objectForKeyedSubscript:@"kCMContinuityCaptureEventData"];
-      v35 = [(CMContinuityCaptureStateMachine *)v39 postEventWithName:v32 data:v34];
+      v35 = [(CMContinuityCaptureStateMachine *)selfCopy postEventWithName:v32 data:v34];
 
       if (!v35)
       {
         v36 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:2 userInfo:0];
-        [(CMContinuityCaptureStateMachine *)v39 _notifyCompletion:v36];
+        [(CMContinuityCaptureStateMachine *)selfCopy _notifyCompletion:v36];
       }
     }
   }
 }
 
-- (BOOL)postEventWithName:(id)a3 data:(id)a4
+- (BOOL)postEventWithName:(id)name data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dataCopy = data;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v8->_transactions];
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:selfCopy->_transactions];
+  objc_sync_exit(selfCopy);
 
   if (v9)
   {
-    v10 = [(CMContinuityCaptureStateMachine *)v8 currentState];
+    currentState = [(CMContinuityCaptureStateMachine *)selfCopy currentState];
 
-    if (v10)
+    if (currentState)
     {
-      v11 = [(NSMutableDictionary *)v8->_events objectForKeyedSubscript:v6];
-      v10 = v11;
+      v11 = [(NSMutableDictionary *)selfCopy->_events objectForKeyedSubscript:nameCopy];
+      currentState = v11;
       if (v11)
       {
-        [v11 setData:v7];
+        [v11 setData:dataCopy];
         v12 = CMContinuityCaptureLog(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          WeakRetained = objc_loadWeakRetained(&v8->_actionDelegate);
-          v14 = [(CMContinuityCaptureStateMachine *)v8 currentState];
-          v15 = [v14 name];
+          WeakRetained = objc_loadWeakRetained(&selfCopy->_actionDelegate);
+          currentState2 = [(CMContinuityCaptureStateMachine *)selfCopy currentState];
+          name = [currentState2 name];
           *buf = 138543874;
           v24 = WeakRetained;
           v25 = 2114;
-          v26 = v10;
+          v26 = currentState;
           v27 = 2114;
-          v28 = v15;
+          v28 = name;
           _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Post event %{public}@ on currentState %{public}@", buf, 0x20u);
         }
 
-        v16 = [v10 action];
+        action = [currentState action];
 
-        if (v16)
+        if (action)
         {
-          v17 = [v10 action];
-          v17[2]();
+          action2 = [currentState action];
+          action2[2]();
         }
 
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __58__CMContinuityCaptureStateMachine_postEventWithName_data___block_invoke;
         v20[3] = &unk_278D5C9C8;
-        v20[4] = v8;
-        v18 = v10;
+        v20[4] = selfCopy;
+        v18 = currentState;
         v21 = v18;
         v22 = &v29;
         [v9 enumerateObjectsUsingBlock:v20];
-        LOBYTE(v10) = *(v30 + 24);
+        LOBYTE(currentState) = *(v30 + 24);
       }
     }
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(currentState) = 0;
   }
 
   _Block_object_dispose(&v29, 8);
-  return v10 & 1;
+  return currentState & 1;
 }
 
 void __58__CMContinuityCaptureStateMachine_postEventWithName_data___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -847,15 +847,15 @@ void __58__CMContinuityCaptureStateMachine_postEventWithName_data___block_invoke
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_actionDelegate);
-  v5 = [v3 stringWithFormat:@"<%p> %@", self, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"<%p> %@", self, WeakRetained];
 
-  return v5;
+  return weakRetained;
 }
 
-- (CMContinuityCaptureStateMachine)initWithActionDelegate:(id)a3 queue:(id)a4
+- (CMContinuityCaptureStateMachine)initWithActionDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = CMContinuityCaptureStateMachine;
   v8 = [(CMContinuityCaptureStateMachine *)&v22 init];
@@ -868,7 +868,7 @@ void __58__CMContinuityCaptureStateMachine_postEventWithName_data___block_invoke
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v8->_queue, a4);
+  objc_storeStrong(&v8->_queue, queue);
   if (!v8->_queue)
   {
     goto LABEL_10;
@@ -905,7 +905,7 @@ void __58__CMContinuityCaptureStateMachine_postEventWithName_data___block_invoke
   eventQueue = v8->_eventQueue;
   v8->_eventQueue = v17;
 
-  if (v8->_eventQueue && (v19 = objc_storeWeak(&v8->_actionDelegate, v6), v6, v6))
+  if (v8->_eventQueue && (v19 = objc_storeWeak(&v8->_actionDelegate, delegateCopy), delegateCopy, delegateCopy))
   {
     v20 = v8;
   }

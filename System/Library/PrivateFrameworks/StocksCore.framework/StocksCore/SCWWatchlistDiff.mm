@@ -1,38 +1,38 @@
 @interface SCWWatchlistDiff
-+ (id)reorderedSymbolsFrom:(id)a3 to:(id)a4;
++ (id)reorderedSymbolsFrom:(id)from to:(id)to;
 - (BOOL)isEmpty;
-- (SCWWatchlistDiff)initWithOldSymbols:(id)a3 newSymbols:(id)a4 updatedName:(id)a5 updatedSortState:(id)a6 updatedSortOrderState:(id)a7 updatedDisplayState:(id)a8;
+- (SCWWatchlistDiff)initWithOldSymbols:(id)symbols newSymbols:(id)newSymbols updatedName:(id)name updatedSortState:(id)state updatedSortOrderState:(id)orderState updatedDisplayState:(id)displayState;
 @end
 
 @implementation SCWWatchlistDiff
 
-- (SCWWatchlistDiff)initWithOldSymbols:(id)a3 newSymbols:(id)a4 updatedName:(id)a5 updatedSortState:(id)a6 updatedSortOrderState:(id)a7 updatedDisplayState:(id)a8
+- (SCWWatchlistDiff)initWithOldSymbols:(id)symbols newSymbols:(id)newSymbols updatedName:(id)name updatedSortState:(id)state updatedSortOrderState:(id)orderState updatedDisplayState:(id)displayState
 {
   v94 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  symbolsCopy = symbols;
+  newSymbolsCopy = newSymbols;
+  nameCopy = name;
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
   v91.receiver = self;
   v91.super_class = SCWWatchlistDiff;
   v20 = [(SCWWatchlistDiff *)&v91 init];
   if (v20)
   {
-    v76 = v19;
-    v77 = v18;
-    v79 = v17;
-    v81 = v14;
-    v21 = [MEMORY[0x1E695DFD8] setWithArray:v14];
-    v22 = [MEMORY[0x1E695DFD8] setWithArray:v15];
+    v76 = displayStateCopy;
+    v77 = orderStateCopy;
+    v79 = stateCopy;
+    v81 = symbolsCopy;
+    v21 = [MEMORY[0x1E695DFD8] setWithArray:symbolsCopy];
+    v22 = [MEMORY[0x1E695DFD8] setWithArray:newSymbolsCopy];
     v80 = [v21 mutableCopy];
     [v80 minusSet:v22];
     v74 = v22;
     v23 = [v22 mutableCopy];
     v75 = v21;
     [v23 minusSet:v21];
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
@@ -53,8 +53,8 @@
           }
 
           v29 = *(*(&v87 + 1) + 8 * i);
-          v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "indexOfObject:", v29)}];
-          [(NSDictionary *)v24 setObject:v30 forKey:v29];
+          v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(newSymbolsCopy, "indexOfObject:", v29)}];
+          [(NSDictionary *)dictionary setObject:v30 forKey:v29];
         }
 
         v26 = [obj countByEnumeratingWithState:&v87 objects:v93 count:16];
@@ -66,7 +66,7 @@
     v31 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v81];
     [v31 minusSet:v80];
     [v31 minusSet:obj];
-    v32 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v15];
+    v32 = [MEMORY[0x1E695DFA0] orderedSetWithArray:newSymbolsCopy];
     [v32 minusSet:v80];
     [v32 minusSet:obj];
     v33 = [objc_opt_class() reorderedSymbolsFrom:v31 to:v32];
@@ -88,7 +88,7 @@
     }
 
     v37 = v36;
-    v38 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -109,8 +109,8 @@
           }
 
           v44 = *(*(&v83 + 1) + 8 * j);
-          v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "indexOfObject:", v44)}];
-          [(NSDictionary *)v38 setObject:v45 forKey:v44];
+          v45 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(newSymbolsCopy, "indexOfObject:", v44)}];
+          [(NSDictionary *)dictionary2 setObject:v45 forKey:v44];
         }
 
         v41 = [v39 countByEnumeratingWithState:&v83 objects:v92 count:16];
@@ -119,51 +119,51 @@
       while (v41);
     }
 
-    v46 = [v16 copy];
+    v46 = [nameCopy copy];
     updatedName = v78->_updatedName;
     v78->_updatedName = v46;
 
-    v14 = v81;
+    symbolsCopy = v81;
     v48 = [v81 copy];
     symbolsPreDiff = v78->_symbolsPreDiff;
     v78->_symbolsPreDiff = v48;
 
-    v50 = [v15 copy];
+    v50 = [newSymbolsCopy copy];
     symbolsPostDiff = v78->_symbolsPostDiff;
     v78->_symbolsPostDiff = v50;
 
-    v52 = [obj allObjects];
+    allObjects = [obj allObjects];
     addedSymbols = v78->_addedSymbols;
-    v78->_addedSymbols = v52;
+    v78->_addedSymbols = allObjects;
 
     indexesOfAddedSymbols = v78->_indexesOfAddedSymbols;
-    v78->_indexesOfAddedSymbols = v24;
-    v69 = v24;
+    v78->_indexesOfAddedSymbols = dictionary;
+    v69 = dictionary;
 
-    v55 = [v80 allObjects];
+    allObjects2 = [v80 allObjects];
     removedSymbols = v78->_removedSymbols;
-    v78->_removedSymbols = v55;
+    v78->_removedSymbols = allObjects2;
 
-    v57 = [v39 allObjects];
+    allObjects3 = [v39 allObjects];
     reorderedSymbols = v78->_reorderedSymbols;
-    v78->_reorderedSymbols = v57;
+    v78->_reorderedSymbols = allObjects3;
 
     indexesOfReorderedSymbols = v78->_indexesOfReorderedSymbols;
-    v78->_indexesOfReorderedSymbols = v38;
-    v60 = v38;
+    v78->_indexesOfReorderedSymbols = dictionary2;
+    v60 = dictionary2;
 
     v20 = v78;
-    v17 = v79;
+    stateCopy = v79;
     v61 = [v79 copy];
     updatedSortState = v78->_updatedSortState;
     v78->_updatedSortState = v61;
 
-    v18 = v77;
+    orderStateCopy = v77;
     v63 = [v77 copy];
     updatedSortOrderState = v78->_updatedSortOrderState;
     v78->_updatedSortOrderState = v63;
 
-    v19 = v76;
+    displayStateCopy = v76;
     v65 = [v76 copy];
     updatedDisplayState = v78->_updatedDisplayState;
     v78->_updatedDisplayState = v65;
@@ -173,21 +173,21 @@
   return v20;
 }
 
-+ (id)reorderedSymbolsFrom:(id)a3 to:(id)a4
++ (id)reorderedSymbolsFrom:(id)from to:(id)to
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  toCopy = to;
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [v5 mutableCopy];
-  v9 = [v6 mutableCopy];
+  v8 = [fromCopy mutableCopy];
+  v9 = [toCopy mutableCopy];
   v10 = v9;
   while ([v9 count])
   {
-    v11 = [v10 firstObject];
-    v12 = [v8 indexOfObject:v11];
+    firstObject = [v10 firstObject];
+    v12 = [v8 indexOfObject:firstObject];
     if (v12)
     {
-      [v7 addObject:v11];
+      [v7 addObject:firstObject];
     }
 
     [v10 removeObjectAtIndex:0];
@@ -201,56 +201,56 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(SCWWatchlistDiff *)self addedSymbols];
-  if ([v3 count])
+  addedSymbols = [(SCWWatchlistDiff *)self addedSymbols];
+  if ([addedSymbols count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SCWWatchlistDiff *)self removedSymbols];
-    if ([v5 count])
+    removedSymbols = [(SCWWatchlistDiff *)self removedSymbols];
+    if ([removedSymbols count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(SCWWatchlistDiff *)self reorderedSymbols];
-      if ([v6 count])
+      reorderedSymbols = [(SCWWatchlistDiff *)self reorderedSymbols];
+      if ([reorderedSymbols count])
       {
         v4 = 0;
       }
 
       else
       {
-        v7 = [(SCWWatchlistDiff *)self updatedName];
-        if ([v7 length])
+        updatedName = [(SCWWatchlistDiff *)self updatedName];
+        if ([updatedName length])
         {
           v4 = 0;
         }
 
         else
         {
-          v8 = [(SCWWatchlistDiff *)self updatedSortState];
-          if (v8)
+          updatedSortState = [(SCWWatchlistDiff *)self updatedSortState];
+          if (updatedSortState)
           {
             v4 = 0;
           }
 
           else
           {
-            v9 = [(SCWWatchlistDiff *)self updatedSortOrderState];
-            if (v9)
+            updatedSortOrderState = [(SCWWatchlistDiff *)self updatedSortOrderState];
+            if (updatedSortOrderState)
             {
               v4 = 0;
             }
 
             else
             {
-              v10 = [(SCWWatchlistDiff *)self updatedDisplayState];
-              v4 = v10 == 0;
+              updatedDisplayState = [(SCWWatchlistDiff *)self updatedDisplayState];
+              v4 = updatedDisplayState == 0;
             }
           }
         }

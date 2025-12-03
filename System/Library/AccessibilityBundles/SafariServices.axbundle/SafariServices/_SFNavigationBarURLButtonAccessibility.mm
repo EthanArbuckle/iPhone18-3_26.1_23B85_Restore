@@ -1,36 +1,36 @@
 @interface _SFNavigationBarURLButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
-- (CGRect)accessibilityFrame:(id)a3;
+- (CGRect)accessibilityFrame:(id)frame;
 - (id)accessibilityElements;
-- (id)accessibilityLabel:(id)a3;
-- (id)accessibilityValue:(id)a3;
+- (id)accessibilityLabel:(id)label;
+- (id)accessibilityValue:(id)value;
 @end
 
 @implementation _SFNavigationBarURLButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_progressView" withType:"_SFFluidProgressView"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLLabel" withType:"SFURLLabel"];
-  [v3 validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
-  [v3 validateClass:@"_SFFluidProgressView" hasInstanceVariable:@"_state" withType:"WBSFluidProgressState"];
-  [v3 validateClass:@"_SFNavigationBarURLButton" isKindOfClass:@"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_progressView" withType:"_SFFluidProgressView"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLLabel" withType:"SFURLLabel"];
+  [validationsCopy validateClass:@"_SFNavigationBar" hasInstanceVariable:@"_URLOutline" withType:"_SFNavigationBarURLButton"];
+  [validationsCopy validateClass:@"_SFFluidProgressView" hasInstanceVariable:@"_state" withType:"WBSFluidProgressState"];
+  [validationsCopy validateClass:@"_SFNavigationBarURLButton" isKindOfClass:@"UIButton"];
 }
 
-- (id)accessibilityLabel:(id)a3
+- (id)accessibilityLabel:(id)label
 {
-  v3 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2EB320](@"_SFNavigationBar", a2, a3)];
+  v3 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2EB320](@"_SFNavigationBar", a2, label)];
   v4 = [v3 safeValueForKey:@"_URLOutline"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
-- (CGRect)accessibilityFrame:(id)a3
+- (CGRect)accessibilityFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v5 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2EB320](@"_SFNavigationBar")];
   objc_opt_class();
   v6 = [v5 safeValueForKey:@"_URLLabel"];
@@ -53,9 +53,9 @@
   return result;
 }
 
-- (id)accessibilityValue:(id)a3
+- (id)accessibilityValue:(id)value
 {
-  v3 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2EB320](@"_SFNavigationBar", a2, a3)];
+  v3 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityViewAncestorIsKindOf:MEMORY[0x29C2EB320](@"_SFNavigationBar", a2, value)];
   v4 = [v3 safeValueForKey:@"_progressView"];
   v5 = [v4 safeValueForKey:@"_state"];
   v6 = [v5 safeValueForKey:@"fluidProgressValue"];
@@ -69,7 +69,7 @@
   }
 
   v10 = [v3 safeValueForKey:@"_URLOutline"];
-  v13 = [v10 accessibilityValue];
+  accessibilityValue = [v10 accessibilityValue];
   v11 = __UIAXStringForVariables();
 
   return v11;
@@ -81,14 +81,14 @@
   if ([(_SFNavigationBarURLButtonAccessibility *)self isUserInteractionEnabled])
   {
     v3 = MEMORY[0x29EDC7620];
-    v4 = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-    if (!v4)
+    array = [(_SFNavigationBarURLButtonAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+    if (!array)
     {
-      v4 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v5 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
       [v5 setAccessibilityDelegate:self];
-      v6 = [(_SFNavigationBarURLButtonAccessibility *)self accessibilityIdentifier];
-      [v5 setAccessibilityIdentifier:v6];
+      accessibilityIdentifier = [(_SFNavigationBarURLButtonAccessibility *)self accessibilityIdentifier];
+      [v5 setAccessibilityIdentifier:accessibilityIdentifier];
 
       objc_opt_class();
       v7 = __UIAccessibilityCastAsClass();
@@ -100,11 +100,11 @@
       v11 = [MEMORY[0x29EDB8D80] arrayWithObjects:v15 count:1];
       [v5 setAccessibilityDropPointDescriptors:v11];
 
-      [v4 addObject:v5];
-      [(_SFNavigationBarURLButtonAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:*v3];
+      [array addObject:v5];
+      [(_SFNavigationBarURLButtonAccessibility *)self _accessibilitySetRetainedValue:array forKey:*v3];
     }
 
-    v12 = [v4 mutableCopy];
+    v12 = [array mutableCopy];
 
     v13 = [(_SFNavigationBarURLButtonAccessibility *)self safeValueForKey:@"_accessibleSubviews"];
     [v12 addObjectsFromArray:v13];

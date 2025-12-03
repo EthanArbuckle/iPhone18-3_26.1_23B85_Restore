@@ -1,26 +1,26 @@
 @interface NTKCFaceDetailTitleValueEditOptionCell
-- (NTKCFaceDetailTitleValueEditOptionCell)initWithEditOption:(id)a3;
+- (NTKCFaceDetailTitleValueEditOptionCell)initWithEditOption:(id)option;
 - (double)_reservedSizeForImage;
 - (id)_checkmarkImage;
 - (void)_setupSubviews;
-- (void)setActive:(BOOL)a3;
-- (void)setTitleText:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)setTitleText:(id)text;
+- (void)setValueText:(id)text;
 @end
 
 @implementation NTKCFaceDetailTitleValueEditOptionCell
 
-- (NTKCFaceDetailTitleValueEditOptionCell)initWithEditOption:(id)a3
+- (NTKCFaceDetailTitleValueEditOptionCell)initWithEditOption:(id)option
 {
-  v5 = a3;
-  v6 = [objc_opt_class() reuseIdentifier];
+  optionCopy = option;
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
   v18.receiver = self;
   v18.super_class = NTKCFaceDetailTitleValueEditOptionCell;
-  v7 = [(NTKCDetailTableViewCell *)&v18 initWithStyle:0 reuseIdentifier:v6];
+  v7 = [(NTKCDetailTableViewCell *)&v18 initWithStyle:0 reuseIdentifier:reuseIdentifier];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_editOption, a3);
+    objc_storeStrong(&v7->_editOption, option);
     v7->_active = 0;
     v8 = objc_opt_new();
     leadingAccessoryView = v7->_leadingAccessoryView;
@@ -72,31 +72,31 @@
   [(UIStackView *)self->_alignmentView addArrangedSubview:self->_titleLabel];
   [(UIStackView *)self->_alignmentView addArrangedSubview:v32];
   [(UIStackView *)self->_alignmentView addArrangedSubview:self->_valueLabel];
-  v3 = [(NTKCFaceDetailTitleValueEditOptionCell *)self contentView];
-  [v3 addSubview:self->_alignmentView];
+  contentView = [(NTKCFaceDetailTitleValueEditOptionCell *)self contentView];
+  [contentView addSubview:self->_alignmentView];
 
   [(UIStackView *)self->_alignmentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_alignmentView setPreservesSuperviewLayoutMargins:1];
-  v4 = [(NTKCFaceDetailTitleValueEditOptionCell *)self contentView];
-  v5 = [v4 layoutMarginsGuide];
+  contentView2 = [(NTKCFaceDetailTitleValueEditOptionCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
   v25 = MEMORY[0x277CCAAD0];
-  v30 = [(UIStackView *)self->_alignmentView leadingAnchor];
-  v29 = [v5 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [(UIStackView *)self->_alignmentView leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[0] = v28;
-  v27 = [(UIStackView *)self->_alignmentView trailingAnchor];
-  v26 = [v5 trailingAnchor];
-  v6 = [v27 constraintEqualToAnchor:v26];
+  trailingAnchor = [(UIStackView *)self->_alignmentView trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v33[1] = v6;
-  v7 = [(UIStackView *)self->_alignmentView topAnchor];
-  v31 = v5;
-  v8 = [v5 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(UIStackView *)self->_alignmentView topAnchor];
+  v31 = layoutMarginsGuide;
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[2] = v9;
-  v10 = [(UIStackView *)self->_alignmentView bottomAnchor];
-  v11 = [v5 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor = [(UIStackView *)self->_alignmentView bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[3] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
   [v25 activateConstraints:v13];
@@ -104,9 +104,9 @@
   [(UIStackView *)self->_alignmentView setAxis:0];
   [(UIStackView *)self->_alignmentView setAlignment:3];
   [(UIStackView *)self->_alignmentView setSpacing:8.0];
-  v14 = [(UIImageView *)self->_leadingAccessoryView widthAnchor];
+  widthAnchor = [(UIImageView *)self->_leadingAccessoryView widthAnchor];
   [(NTKCFaceDetailTitleValueEditOptionCell *)self _reservedSizeForImage];
-  v15 = [v14 constraintEqualToConstant:?];
+  v15 = [widthAnchor constraintEqualToConstant:?];
   [v15 setActive:1];
 
   titleLabel = self->_titleLabel;
@@ -115,30 +115,30 @@
   [(UILabel *)titleLabel setFont:v18];
 
   v19 = self->_titleLabel;
-  v20 = [MEMORY[0x277D75348] labelColor];
-  [(UILabel *)v19 setTextColor:v20];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(UILabel *)v19 setTextColor:labelColor];
 
   valueLabel = self->_valueLabel;
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:v17];
   [(UILabel *)valueLabel setFont:v22];
 
   v23 = self->_valueLabel;
-  v24 = [MEMORY[0x277D75348] tintColor];
-  [(UILabel *)v23 setTextColor:v24];
+  tintColor = [MEMORY[0x277D75348] tintColor];
+  [(UILabel *)v23 setTextColor:tintColor];
 
   [(NTKCDetailTableViewCell *)self setShowsSeparator:1];
   [(NTKCFaceDetailTitleValueEditOptionCell *)self setAccessoryType:1];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
-      v4 = [(NTKCFaceDetailTitleValueEditOptionCell *)self _checkmarkImage];
-      [(UIImageView *)self->_leadingAccessoryView setImage:v4];
+      _checkmarkImage = [(NTKCFaceDetailTitleValueEditOptionCell *)self _checkmarkImage];
+      [(UIImageView *)self->_leadingAccessoryView setImage:_checkmarkImage];
     }
 
     else
@@ -162,25 +162,25 @@
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_titleText isEqualToString:?])
   {
-    objc_storeStrong(&self->_titleText, a3);
-    [(UILabel *)self->_titleLabel setText:v5];
+    objc_storeStrong(&self->_titleText, text);
+    [(UILabel *)self->_titleLabel setText:textCopy];
   }
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_valueText isEqualToString:?])
   {
-    objc_storeStrong(&self->_valueText, a3);
+    objc_storeStrong(&self->_valueText, text);
     if (self->_active)
     {
-      v5 = v6;
+      v5 = textCopy;
     }
 
     else

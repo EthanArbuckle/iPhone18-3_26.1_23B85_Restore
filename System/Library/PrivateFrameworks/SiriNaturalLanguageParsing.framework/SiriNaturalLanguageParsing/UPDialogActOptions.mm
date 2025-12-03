@@ -1,33 +1,33 @@
 @interface UPDialogActOptions
-- (UPDialogActOptions)initWithIntent:(id)a3 entityType:(id)a4 entityName:(id)a5 entityValues:(id)a6;
+- (UPDialogActOptions)initWithIntent:(id)intent entityType:(id)type entityName:(id)name entityValues:(id)values;
 @end
 
 @implementation UPDialogActOptions
 
-- (UPDialogActOptions)initWithIntent:(id)a3 entityType:(id)a4 entityName:(id)a5 entityValues:(id)a6
+- (UPDialogActOptions)initWithIntent:(id)intent entityType:(id)type entityName:(id)name entityValues:(id)values
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  intentCopy = intent;
+  typeCopy = type;
+  nameCopy = name;
+  valuesCopy = values;
   v24.receiver = self;
   v24.super_class = UPDialogActOptions;
   v14 = [(UPDialogActOptions *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [intentCopy copy];
     intent = v14->_intent;
     v14->_intent = v15;
 
-    v17 = [v11 copy];
+    v17 = [typeCopy copy];
     entityType = v14->_entityType;
     v14->_entityType = v17;
 
-    v19 = [v12 copy];
+    v19 = [nameCopy copy];
     entityName = v14->_entityName;
     v14->_entityName = v19;
 
-    v21 = [v13 copy];
+    v21 = [valuesCopy copy];
     entityValues = v14->_entityValues;
     v14->_entityValues = v21;
   }

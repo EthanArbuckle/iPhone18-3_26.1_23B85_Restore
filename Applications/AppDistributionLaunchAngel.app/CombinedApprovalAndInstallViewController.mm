@@ -1,13 +1,13 @@
 @interface CombinedApprovalAndInstallViewController
-- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredStatusBarStyle;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CombinedApprovalAndInstallViewController
 
-- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -17,11 +17,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_1000222CC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -31,8 +31,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_10001EB10(a3);
+  selfCopy = self;
+  sub_10001EB10(appear);
 }
 
 - (int64_t)preferredStatusBarStyle
@@ -50,7 +50,7 @@
   return ~v3 & 1;
 }
 
-- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AppDistributionLaunchAngel40CombinedApprovalAndInstallViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

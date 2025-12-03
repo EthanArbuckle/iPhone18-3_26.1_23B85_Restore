@@ -1,16 +1,16 @@
 @interface INJSONEncoder
 - (INJSONEncoder)init;
-- (INJSONEncoder)initWithConfiguration:(id)a3;
+- (INJSONEncoder)initWithConfiguration:(id)configuration;
 - (INJSONEncoderConfiguration)configuration;
-- (id)_encodeObject:(id)a3 codableAttribute:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)encodeObject:(id)a3 withCodableAttribute:(id)a4;
-- (id)encodeObject:(id)a3 withCodableDescription:(id)a4;
+- (id)_encodeObject:(id)object codableAttribute:(id)attribute;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)encodeObject:(id)object withCodableAttribute:(id)attribute;
+- (id)encodeObject:(id)object withCodableDescription:(id)description;
 @end
 
 @implementation INJSONEncoder
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [INJSONEncoder alloc];
   configuration = self->_configuration;
@@ -18,12 +18,12 @@
   return [(INJSONEncoder *)v4 initWithConfiguration:configuration];
 }
 
-- (id)_encodeObject:(id)a3 codableAttribute:(id)a4
+- (id)_encodeObject:(id)object codableAttribute:(id)attribute
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  attributeCopy = attribute;
+  if (!objectCopy)
   {
     goto LABEL_32;
   }
@@ -31,7 +31,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = attributeCopy;
     if (v8)
     {
       objc_opt_class();
@@ -55,7 +55,7 @@
 
     if ([v20 type] == 8 || objc_msgSend(v20, "type") == 7)
     {
-      v21 = v6;
+      v21 = objectCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -69,12 +69,12 @@
 
       v23 = v22;
 
-      v14 = [(INJSONEncoder *)self encodeObject:v23];
+      name3 = [(INJSONEncoder *)self encodeObject:v23];
     }
 
     else
     {
-      v14 = v6;
+      name3 = objectCopy;
     }
 
     goto LABEL_59;
@@ -86,7 +86,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v7;
+      v18 = attributeCopy;
       if (v18)
       {
         objc_opt_class();
@@ -108,22 +108,22 @@
 
       v20 = v19;
 
-      v41 = [v20 codableDescription];
-      v42 = [v41 _nullable_schema];
-      v28 = [v42 _objectDescriptionForTypeOfClass:objc_opt_class()];
+      codableDescription = [v20 codableDescription];
+      _nullable_schema = [codableDescription _nullable_schema];
+      v28 = [_nullable_schema _objectDescriptionForTypeOfClass:objc_opt_class()];
 
       if (v28)
       {
-        v43 = v28;
+        codableDescription2 = v28;
       }
 
       else
       {
-        v43 = [v20 codableDescription];
+        codableDescription2 = [v20 codableDescription];
       }
 
-      v44 = v43;
-      v14 = [(INJSONEncoder *)self encodeObject:v6 withCodableDescription:v43];
+      v44 = codableDescription2;
+      name3 = [(INJSONEncoder *)self encodeObject:objectCopy withCodableDescription:codableDescription2];
 
 LABEL_58:
 LABEL_59:
@@ -134,17 +134,17 @@ LABEL_59:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = v7;
+      v20 = attributeCopy;
       if (v20)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v24 = +[INSchema systemSchema];
-          v25 = [v24 _types];
-          v26 = [v20 typeName];
-          v27 = INIntentDefinitionNamespacedName(@"System", v26);
-          v28 = [v25 objectForKeyedSubscript:v27];
+          _types = [v24 _types];
+          typeName = [v20 typeName];
+          v27 = INIntentDefinitionNamespacedName(@"System", typeName);
+          v28 = [_types objectForKeyedSubscript:v27];
         }
 
         else
@@ -161,16 +161,16 @@ LABEL_59:
         v28 = 0;
       }
 
-      v14 = [(INJSONEncoder *)self encodeObject:v6 withCodableDescription:v28];
+      name3 = [(INJSONEncoder *)self encodeObject:objectCopy withCodableDescription:v28];
       goto LABEL_58;
     }
 
 LABEL_32:
-    v14 = 0;
+    name3 = 0;
     goto LABEL_60;
   }
 
-  v10 = v6;
+  v10 = objectCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -185,11 +185,11 @@ LABEL_32:
 
   v13 = v12;
 
-  v14 = 0;
+  name3 = 0;
   if (isKindOfClass)
   {
-    v15 = [v10 integerValue];
-    v16 = v7;
+    integerValue = [v10 integerValue];
+    v16 = attributeCopy;
     if (v16)
     {
       objc_opt_class();
@@ -211,8 +211,8 @@ LABEL_32:
 
     v29 = v17;
 
-    v30 = [v29 codableEnum];
-    if ([v30 type] == 2)
+    codableEnum = [v29 codableEnum];
+    if ([codableEnum type] == 2)
     {
       v48 = v29;
       v49 = v13;
@@ -221,9 +221,9 @@ LABEL_32:
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v47 = v30;
-      v32 = [v30 values];
-      v33 = [v32 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v47 = codableEnum;
+      values = [codableEnum values];
+      v33 = [values countByEnumeratingWithState:&v50 objects:v54 count:16];
       if (v33)
       {
         v34 = v33;
@@ -234,45 +234,45 @@ LABEL_32:
           {
             if (*v51 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(values);
             }
 
             v37 = *(*(&v50 + 1) + 8 * i);
-            if ((v15 >> [v37 index]))
+            if ((integerValue >> [v37 index]))
             {
-              v38 = [v37 name];
+              name = [v37 name];
 
-              if (v38)
+              if (name)
               {
-                v39 = [v37 name];
-                [v31 addObject:v39];
+                name2 = [v37 name];
+                [v31 addObject:name2];
               }
             }
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v50 objects:v54 count:16];
+          v34 = [values countByEnumeratingWithState:&v50 objects:v54 count:16];
         }
 
         while (v34);
       }
 
-      v14 = [v31 copy];
+      name3 = [v31 copy];
       v29 = v48;
       v13 = v49;
-      v30 = v47;
+      codableEnum = v47;
     }
 
     else
     {
-      v40 = [v29 valueForIndex:v15];
-      v14 = [v40 name];
+      v40 = [v29 valueForIndex:integerValue];
+      name3 = [v40 name];
     }
   }
 
 LABEL_60:
   v45 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return name3;
 }
 
 - (INJSONEncoderConfiguration)configuration
@@ -282,12 +282,12 @@ LABEL_60:
   return v2;
 }
 
-- (id)encodeObject:(id)a3 withCodableAttribute:(id)a4
+- (id)encodeObject:(id)object withCodableAttribute:(id)attribute
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  objectCopy = object;
+  attributeCopy = attribute;
+  v8 = objectCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
@@ -310,7 +310,7 @@ LABEL_60:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [(INJSONEncoder *)self _encodeObject:*(*(&v19 + 1) + 8 * i) codableAttribute:v7, v19];
+          v15 = [(INJSONEncoder *)self _encodeObject:*(*(&v19 + 1) + 8 * i) codableAttribute:attributeCopy, v19];
           if (v15)
           {
             [v9 addObject:v15];
@@ -329,7 +329,7 @@ LABEL_60:
   else
   {
 
-    v16 = [(INJSONEncoder *)self _encodeObject:v8 codableAttribute:v7];
+    v16 = [(INJSONEncoder *)self _encodeObject:v8 codableAttribute:attributeCopy];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -337,12 +337,12 @@ LABEL_60:
   return v16;
 }
 
-- (id)encodeObject:(id)a3 withCodableDescription:(id)a4
+- (id)encodeObject:(id)object withCodableDescription:(id)description
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  objectCopy = object;
+  descriptionCopy = description;
+  if (!objectCopy)
   {
 LABEL_27:
     v7 = 0;
@@ -350,23 +350,23 @@ LABEL_27:
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) == 0 && [v5 conformsToProtocol:&unk_1F02E9CC0] && (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) == 0 && [objectCopy conformsToProtocol:&unk_1F02E9CC0] && (objc_opt_respondsToSelector())
   {
-    v7 = [v5 _intents_encodeWithJSONEncoder:self codableDescription:v6];
+    v7 = [objectCopy _intents_encodeWithJSONEncoder:self codableDescription:descriptionCopy];
     goto LABEL_28;
   }
 
-  if (!v6)
+  if (!descriptionCopy)
   {
     v8 = +[INSchema systemSchema];
-    v6 = [v8 _objectDescriptionForTypeOfClass:objc_opt_class()];
+    descriptionCopy = [v8 _objectDescriptionForTypeOfClass:objc_opt_class()];
 
-    if (!v6)
+    if (!descriptionCopy)
     {
-      if ([v5 conformsToProtocol:&unk_1F02E9CC0] & 1) != 0 || (objc_opt_respondsToSelector())
+      if ([objectCopy conformsToProtocol:&unk_1F02E9CC0] & 1) != 0 || (objc_opt_respondsToSelector())
       {
-        v7 = [v5 _intents_encodeWithJSONEncoder:self codableDescription:0];
-        v6 = 0;
+        v7 = [objectCopy _intents_encodeWithJSONEncoder:self codableDescription:0];
+        descriptionCopy = 0;
         goto LABEL_28;
       }
 
@@ -383,7 +383,7 @@ LABEL_27:
         _os_log_error_impl(&dword_18E991000, v24, OS_LOG_TYPE_ERROR, "%s %@ is not JSON encodable", buf, 0x16u);
       }
 
-      v6 = 0;
+      descriptionCopy = 0;
       goto LABEL_27;
     }
   }
@@ -393,11 +393,11 @@ LABEL_27:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v27 = v6;
-  v10 = [v6 attributes];
-  v11 = [v10 allValues];
+  v27 = descriptionCopy;
+  attributes = [descriptionCopy attributes];
+  allValues = [attributes allValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v12 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v12)
   {
     v13 = v12;
@@ -408,30 +408,30 @@ LABEL_27:
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        v17 = [v16 propertyName];
-        if (([v17 hasPrefix:@"_"] & 1) == 0 && objc_msgSend(v5, "_intents_isValidKey:", v17))
+        propertyName = [v16 propertyName];
+        if (([propertyName hasPrefix:@"_"] & 1) == 0 && objc_msgSend(objectCopy, "_intents_isValidKey:", propertyName))
         {
-          v18 = [v5 valueForKey:v17];
+          v18 = [objectCopy valueForKey:propertyName];
           v19 = [(INJSONEncoder *)self encodeObject:v18 withCodableAttribute:v16];
-          [v9 if_setObjectIfNonNil:v19 forKey:v17];
+          [v9 if_setObjectIfNonNil:v19 forKey:propertyName];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v13);
   }
 
-  v6 = v27;
-  v20 = [v27 semanticRoot];
-  if (v20)
+  descriptionCopy = v27;
+  semanticRoot = [v27 semanticRoot];
+  if (semanticRoot)
   {
-    [v9 setObject:v20 forKey:@"_type"];
+    [v9 setObject:semanticRoot forKey:@"_type"];
   }
 
   v7 = [v9 copy];
@@ -442,15 +442,15 @@ LABEL_28:
   return v7;
 }
 
-- (INJSONEncoder)initWithConfiguration:(id)a3
+- (INJSONEncoder)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = INJSONEncoder;
   v5 = [(INJSONEncoder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
   }

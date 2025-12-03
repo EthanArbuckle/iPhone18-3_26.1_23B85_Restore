@@ -11,7 +11,7 @@
   v5[1] = 3221225472;
   v5[2] = __44__MCMUserIdentitySharedCache_sharedInstance__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   if (sharedInstance_onceToken_10329 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_10329, v5);

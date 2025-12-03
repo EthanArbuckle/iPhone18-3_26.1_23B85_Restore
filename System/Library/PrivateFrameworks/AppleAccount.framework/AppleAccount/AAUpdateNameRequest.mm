@@ -1,23 +1,23 @@
 @interface AAUpdateNameRequest
-- (AAUpdateNameRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4 firstName:(id)a5 lastName:(id)a6;
+- (AAUpdateNameRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store firstName:(id)name lastName:(id)lastName;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AAUpdateNameRequest
 
-- (AAUpdateNameRequest)initWithGrandSlamAccount:(id)a3 accountStore:(id)a4 firstName:(id)a5 lastName:(id)a6
+- (AAUpdateNameRequest)initWithGrandSlamAccount:(id)account accountStore:(id)store firstName:(id)name lastName:(id)lastName
 {
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v16.receiver = self;
   v16.super_class = AAUpdateNameRequest;
-  v13 = [(AAAppleIDSettingsRequest *)&v16 initWithGrandSlamAccount:a3 accountStore:a4];
+  v13 = [(AAAppleIDSettingsRequest *)&v16 initWithGrandSlamAccount:account accountStore:store];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_newFirstName, a5);
-    objc_storeStrong(&v14->_newLastName, a6);
+    objc_storeStrong(&v13->_newFirstName, name);
+    objc_storeStrong(&v14->_newLastName, lastName);
   }
 
   return v14;
@@ -26,9 +26,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 updateNameURL];
+  updateNameURL = [v2 updateNameURL];
 
-  return v3;
+  return updateNameURL;
 }
 
 - (id)urlRequest
@@ -36,8 +36,8 @@
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = AAUpdateNameRequest;
-  v3 = [(AAAppleIDSettingsRequest *)&v10 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAAppleIDSettingsRequest *)&v10 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   newFirstName = self->_newFirstName;
   if (newFirstName)

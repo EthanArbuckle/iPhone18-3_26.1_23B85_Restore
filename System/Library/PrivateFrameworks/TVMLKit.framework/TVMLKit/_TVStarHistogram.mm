@@ -1,30 +1,30 @@
 @interface _TVStarHistogram
-+ (id)_histogramViewWithElement:(id)a3 existingView:(id)a4;
-+ (id)histogramViewWithElement:(id)a3 existingView:(id)a4;
-- (void)drawRect:(CGRect)a3;
++ (id)_histogramViewWithElement:(id)element existingView:(id)view;
++ (id)histogramViewWithElement:(id)element existingView:(id)view;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _TVStarHistogram
 
-+ (id)histogramViewWithElement:(id)a3 existingView:(id)a4
++ (id)histogramViewWithElement:(id)element existingView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  elementCopy = element;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [v7 contentView];
-    v9 = [v8 subviews];
-    v10 = [v9 firstObject];
+    v7 = viewCopy;
+    contentView = [v7 contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
-      v12 = [v11 contentView];
-      v13 = [v12 subviews];
-      v14 = [v13 firstObject];
+      v11 = firstObject;
+      contentView2 = [v11 contentView];
+      subviews2 = [contentView2 subviews];
+      firstObject2 = [subviews2 firstObject];
     }
 
     else
@@ -32,25 +32,25 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = v10;
+        firstObject2 = firstObject;
       }
 
       else
       {
-        v14 = 0;
+        firstObject2 = 0;
       }
 
       v11 = 0;
     }
 
-    v15 = [v7 contentView];
-    v16 = [v15 subviews];
-    [v16 makeObjectsPerformSelector:sel_removeFromSuperview];
+    contentView3 = [v7 contentView];
+    subviews3 = [contentView3 subviews];
+    [subviews3 makeObjectsPerformSelector:sel_removeFromSuperview];
 
-    v17 = [objc_opt_class() _histogramViewWithElement:v6 existingView:v14];
+    v17 = [objc_opt_class() _histogramViewWithElement:elementCopy existingView:firstObject2];
 
-    v18 = [v7 contentView];
-    [v18 addSubview:v17];
+    contentView4 = [v7 contentView];
+    [contentView4 addSubview:v17];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -61,23 +61,23 @@
 
   else
   {
-    v7 = [objc_opt_class() _histogramViewWithElement:v6 existingView:v5];
-    v10 = v6;
+    v7 = [objc_opt_class() _histogramViewWithElement:elementCopy existingView:viewCopy];
+    firstObject = elementCopy;
   }
 
   return v7;
 }
 
-+ (id)_histogramViewWithElement:(id)a3 existingView:(id)a4
++ (id)_histogramViewWithElement:(id)element existingView:(id)view
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  viewCopy = view;
   objc_opt_class();
-  v50 = v6;
+  v50 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
   }
 
   else
@@ -87,26 +87,26 @@
   }
 
   v9 = v7;
-  v10 = [v5 style];
-  [v10 tv_width];
+  style = [elementCopy style];
+  [style tv_width];
   v12 = v11;
-  v13 = [v5 style];
-  [v13 tv_height];
+  style2 = [elementCopy style];
+  [style2 tv_height];
   v49 = v9;
   [(_TVStarHistogram *)v9 setFrame:0.0, 0.0, v12, v14];
 
-  v51 = v5;
+  v51 = elementCopy;
   v52 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = [v5 children];
+  obj = [elementCopy children];
   v15 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v15)
   {
     v16 = v15;
-    v17 = 0;
+    color = 0;
     v18 = *v55;
     do
     {
@@ -121,36 +121,36 @@
         if ([v20 tv_elementType] == 84)
         {
           v21 = objc_alloc_init(_TVStarBar);
-          v22 = [v20 attributes];
-          v23 = [v22 objectForKeyedSubscript:@"numStars"];
+          attributes = [v20 attributes];
+          v23 = [attributes objectForKeyedSubscript:@"numStars"];
           -[_TVStarBar setNumStars:](v21, "setNumStars:", [v23 integerValue]);
 
-          v24 = [v20 attributes];
-          v25 = [v24 objectForKeyedSubscript:@"value"];
+          attributes2 = [v20 attributes];
+          v25 = [attributes2 objectForKeyedSubscript:@"value"];
           [v25 floatValue];
           [(_TVStarBar *)v21 setValue:v26];
 
           [v52 addObject:v21];
-          if (!v17)
+          if (!color)
           {
-            v27 = [v20 style];
-            v28 = [v27 tv_tintColor];
-            v17 = [v28 color];
+            style3 = [v20 style];
+            tv_tintColor = [style3 tv_tintColor];
+            color = [tv_tintColor color];
           }
 
-          v29 = [v20 tv_attributedString];
-          [(_TVStarBar *)v21 setCountStr:v29];
+          tv_attributedString = [v20 tv_attributedString];
+          [(_TVStarBar *)v21 setCountStr:tv_attributedString];
 
-          v30 = [v20 style];
-          [v30 tv_margin];
+          style4 = [v20 style];
+          [style4 tv_margin];
           [(_TVStarBar *)v21 setBarMargin:?];
 
-          v31 = [v20 style];
-          [v31 tv_width];
+          style5 = [v20 style];
+          [style5 tv_width];
           [(_TVStarBar *)v21 setBarWidth:?];
 
-          v32 = [v20 style];
-          [v32 tv_height];
+          style6 = [v20 style];
+          [style6 tv_height];
           [(_TVStarBar *)v21 setHeight:?];
         }
       }
@@ -163,24 +163,24 @@
 
   else
   {
-    v17 = 0;
+    color = 0;
   }
 
-  v33 = [v51 style];
-  v34 = [v33 tv_backgroundColor];
-  v35 = [v34 color];
-  v36 = v35;
-  if (v35)
+  style7 = [v51 style];
+  tv_backgroundColor = [style7 tv_backgroundColor];
+  color2 = [tv_backgroundColor color];
+  v36 = color2;
+  if (color2)
   {
-    v37 = v35;
+    clearColor = color2;
   }
 
   else
   {
-    v37 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v38 = v37;
+  v38 = clearColor;
 
   [(_TVStarHistogram *)v49 setBackgroundColor:v38];
   [(_TVStarHistogram *)v49 setStarBars:v52];
@@ -188,32 +188,32 @@
   v40 = +[TVMLUtilities TVMLKitBundle];
   v41 = [v39 imageNamed:@"star_mask_s" inBundle:v40];
 
-  if (!v17)
+  if (!color)
   {
-    v17 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
+    color = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
   }
 
-  v42 = [v17 colorWithAlphaComponent:0.3];
+  v42 = [color colorWithAlphaComponent:0.3];
   v43 = [v41 _flatImageWithColor:v42];
   [(_TVStarHistogram *)v49 setStarImage:v43];
 
-  v44 = [v17 colorWithAlphaComponent:0.15];
+  v44 = [color colorWithAlphaComponent:0.15];
   [(_TVStarHistogram *)v49 setBarEmptyColor:v44];
 
-  v45 = [v17 colorWithAlphaComponent:0.6];
+  v45 = [color colorWithAlphaComponent:0.6];
   [(_TVStarHistogram *)v49 setBarFillColor:v45];
 
-  v46 = [v51 style];
-  [v46 tv_lineSpacing];
+  style8 = [v51 style];
+  [style8 tv_lineSpacing];
   [(_TVStarHistogram *)v49 setLineSpacing:?];
 
   v47 = v49;
   return v49;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  width = a3.size.width;
+  width = rect.size.width;
   v72 = *MEMORY[0x277D85DE8];
   v66 = 0u;
   v67 = 0u;
@@ -238,8 +238,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v13 = [*(*(&v66 + 1) + 8 * i) countStr];
-        [v13 boundingRectWithSize:1 options:0 context:{v8, v9}];
+        countStr = [*(*(&v66 + 1) + 8 * i) countStr];
+        [countStr boundingRectWithSize:1 options:0 context:{v8, v9}];
         v15 = v14;
         v17 = v16;
 
@@ -345,10 +345,10 @@
         [v50 fill];
         [v31 barWidth];
         v52 = v43 + v36 + v51;
-        v53 = [v31 countStr];
+        countStr2 = [v31 countStr];
         v54 = v29 + (v60 - v58) * 0.5;
         v27 = v61;
-        [v53 drawInRect:{v52, floorf(v54), v61}];
+        [countStr2 drawInRect:{v52, floorf(v54), v61}];
 
         v29 = v29 + v60 + self->_lineSpacing;
         CGContextRestoreGState(CurrentContext);

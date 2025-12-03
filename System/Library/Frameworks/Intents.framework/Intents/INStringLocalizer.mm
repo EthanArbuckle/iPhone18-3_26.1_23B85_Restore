@@ -1,17 +1,17 @@
 @interface INStringLocalizer
-+ (id)localizerForLanguage:(id)a3;
++ (id)localizerForLanguage:(id)language;
 + (id)siriLocalizer;
-- (BOOL)matchesBundleLocalizations:(__CFBundle *)a3;
-- (INStringLocalizer)initWithLanguageCode:(id)a3;
+- (BOOL)matchesBundleLocalizations:(__CFBundle *)localizations;
+- (INStringLocalizer)initWithLanguageCode:(id)code;
 - (NSLocale)locale;
-- (__CFBundle)bundleWithIdentifier:(id)a3 fileURL:(id)a4;
-- (id)localizationsForBundle:(__CFBundle *)a3;
-- (id)preferredLocalizationsForBundle:(__CFBundle *)a3;
+- (__CFBundle)bundleWithIdentifier:(id)identifier fileURL:(id)l;
+- (id)localizationsForBundle:(__CFBundle *)bundle;
+- (id)preferredLocalizationsForBundle:(__CFBundle *)bundle;
 @end
 
 @implementation INStringLocalizer
 
-- (BOOL)matchesBundleLocalizations:(__CFBundle *)a3
+- (BOOL)matchesBundleLocalizations:(__CFBundle *)localizations
 {
   v5 = self->_languageCode;
   if (v5)
@@ -23,7 +23,7 @@
     v14[3] = &unk_1E72882F8;
     v14[4] = self;
     v6 = MEMORY[0x193AD7780](v14);
-    v7 = [(INStringLocalizer *)self localizationsForBundle:a3];
+    v7 = [(INStringLocalizer *)self localizationsForBundle:localizations];
     if ([v7 containsObject:v5])
     {
       v8 = 1;
@@ -32,8 +32,8 @@
     else
     {
       v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v5];
-      v10 = [v9 languageCode];
-      if ([v7 containsObject:v10])
+      languageCode = [v9 languageCode];
+      if ([v7 containsObject:languageCode])
       {
         v8 = 1;
       }
@@ -57,10 +57,10 @@
   return v8;
 }
 
-- (id)preferredLocalizationsForBundle:(__CFBundle *)a3
+- (id)preferredLocalizationsForBundle:(__CFBundle *)bundle
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (bundle)
   {
     os_unfair_lock_lock(&self->_lock);
     v18[0] = MEMORY[0x1E69E9820];
@@ -69,7 +69,7 @@
     v18[3] = &unk_1E72882F8;
     v18[4] = self;
     v5 = MEMORY[0x193AD7780](v18);
-    v6 = [(NSMapTable *)self->_preferredBundleLocalizations objectForKey:a3];
+    v6 = [(NSMapTable *)self->_preferredBundleLocalizations objectForKey:bundle];
     if (v6)
     {
       v7 = v6;
@@ -77,7 +77,7 @@
 
     else
     {
-      v8 = [(INStringLocalizer *)self localizationsForBundle:a3];
+      v8 = [(INStringLocalizer *)self localizationsForBundle:bundle];
       v9 = self->_preferredLanguages;
       if (self->_languageCode && ([v8 containsObject:?] & 1) == 0)
       {
@@ -88,15 +88,15 @@
         {
           v19[0] = v11;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-          v13 = [MEMORY[0x1E695DF58] preferredLanguages];
-          v14 = [v12 arrayByAddingObjectsFromArray:v13];
+          preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+          v14 = [v12 arrayByAddingObjectsFromArray:preferredLanguages];
 
           v9 = v14;
         }
       }
 
       v15 = CFBundleCopyLocalizationsForPreferences(v8, v9);
-      [(NSMapTable *)self->_preferredBundleLocalizations setObject:v15 forKey:a3];
+      [(NSMapTable *)self->_preferredBundleLocalizations setObject:v15 forKey:bundle];
       v7 = v15;
     }
 
@@ -113,16 +113,16 @@
   return v7;
 }
 
-- (id)localizationsForBundle:(__CFBundle *)a3
+- (id)localizationsForBundle:(__CFBundle *)bundle
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  if (a3)
+  if (bundle)
   {
-    v5 = [(NSMapTable *)self->_bundleLocalizations objectForKey:a3];
+    v5 = [(NSMapTable *)self->_bundleLocalizations objectForKey:bundle];
     if (!v5)
     {
-      v5 = CFBundleCopyBundleLocalizations(a3);
-      [(NSMapTable *)self->_bundleLocalizations setObject:v5 forKey:a3];
+      v5 = CFBundleCopyBundleLocalizations(bundle);
+      [(NSMapTable *)self->_bundleLocalizations setObject:v5 forKey:bundle];
     }
 
     v6 = v5;
@@ -136,11 +136,11 @@
   return v6;
 }
 
-- (__CFBundle)bundleWithIdentifier:(id)a3 fileURL:(id)a4
+- (__CFBundle)bundleWithIdentifier:(id)identifier fileURL:(id)l
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -148,22 +148,22 @@
   v27[3] = &unk_1E72882F8;
   v27[4] = self;
   v8 = MEMORY[0x193AD7780](v27);
-  v9 = [(NSMapTable *)self->_bundlesByIdentifier objectForKey:v6];
+  v9 = [(NSMapTable *)self->_bundlesByIdentifier objectForKey:identifierCopy];
   if (!v9)
   {
-    v9 = [(NSMapTable *)self->_bundlesByURL objectForKey:v7];
+    v9 = [(NSMapTable *)self->_bundlesByURL objectForKey:lCopy];
     if (!v9)
     {
-      if ([(__CFString *)v6 isEqualToString:@"com.apple.Intents"])
+      if ([(__CFString *)identifierCopy isEqualToString:@"com.apple.Intents"])
       {
         v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v11 = [v10 bundleURL];
+        bundleURL = [v10 bundleURL];
 
-        v7 = v11;
+        lCopy = bundleURL;
       }
 
-      v12 = [(__CFURL *)v7 isFileURL]^ 1;
-      if (!v6)
+      v12 = [(__CFURL *)lCopy isFileURL]^ 1;
+      if (!identifierCopy)
       {
         LOBYTE(v12) = 1;
       }
@@ -175,11 +175,11 @@
         v9 = Unique;
         if (Unique)
         {
-          if (([(__CFString *)CFBundleGetIdentifier(Unique) isEqualToString:v6]& 1) != 0)
+          if (([(__CFString *)CFBundleGetIdentifier(Unique) isEqualToString:identifierCopy]& 1) != 0)
           {
 LABEL_31:
-            [(NSMapTable *)self->_bundlesByIdentifier setObject:v9 forKey:v6];
-            [(NSMapTable *)self->_bundlesByURL setObject:v9 forKey:v7];
+            [(NSMapTable *)self->_bundlesByIdentifier setObject:v9 forKey:identifierCopy];
+            [(NSMapTable *)self->_bundlesByURL setObject:v9 forKey:lCopy];
             CFAutorelease(v9);
             goto LABEL_32;
           }
@@ -188,7 +188,7 @@ LABEL_31:
         }
       }
 
-      if ([(__CFURL *)v7 isFileURL])
+      if ([(__CFURL *)lCopy isFileURL])
       {
         v15 = *MEMORY[0x1E695E480];
         v16 = _CFBundleCreateUnique();
@@ -199,22 +199,22 @@ LABEL_31:
         }
       }
 
-      if (!v6)
+      if (!identifierCopy)
       {
         v9 = 0;
         goto LABEL_32;
       }
 
-      v17 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:v6];
-      v18 = [v17 bundleURL];
-      if ([(__CFURL *)v18 isFileURL])
+      v17 = [MEMORY[0x1E6963618] bundleProxyForIdentifier:identifierCopy];
+      bundleURL2 = [v17 bundleURL];
+      if ([(__CFURL *)bundleURL2 isFileURL])
       {
         v19 = *MEMORY[0x1E695E480];
         v9 = _CFBundleCreateUnique();
         if (v9)
         {
 
-          v7 = v18;
+          lCopy = bundleURL2;
           goto LABEL_30;
         }
       }
@@ -222,14 +222,14 @@ LABEL_31:
       v20 = _INVCIntentDefinitionManagerClass();
       if (objc_opt_respondsToSelector())
       {
-        v21 = [v20 intentDefinitionBundleURLForBundleID:v6];
+        v21 = [v20 intentDefinitionBundleURLForBundleID:identifierCopy];
 
-        v7 = v21;
+        lCopy = v21;
       }
 
-      if (v7)
+      if (lCopy)
       {
-        v9 = [(NSMapTable *)self->_bundlesByURL objectForKey:v7];
+        v9 = [(NSMapTable *)self->_bundlesByURL objectForKey:lCopy];
         if (v9)
         {
           goto LABEL_32;
@@ -242,14 +242,14 @@ LABEL_31:
         {
 LABEL_13:
           CFBundleGetIdentifier(v16);
-          v6 = v17 = v6;
+          identifierCopy = v17 = identifierCopy;
 LABEL_30:
 
           goto LABEL_31;
         }
       }
 
-      if (([(__CFString *)v6 isEqualToString:@"com.apple.siri.IntentsTests"]& 1) == 0)
+      if (([(__CFString *)identifierCopy isEqualToString:@"com.apple.siri.IntentsTests"]& 1) == 0)
       {
         v23 = INSiriLogContextIntents;
         if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
@@ -257,18 +257,18 @@ LABEL_30:
           *buf = 136315394;
           v29 = "[INStringLocalizer bundleWithIdentifier:fileURL:]";
           v30 = 2114;
-          v31 = v6;
+          v31 = identifierCopy;
           _os_log_error_impl(&dword_18E991000, v23, OS_LOG_TYPE_ERROR, "%s This should not happen! Unable to get a bundle for %{public}@", buf, 0x16u);
         }
       }
 
-      BundleWithIdentifier = CFBundleGetBundleWithIdentifier(v6);
+      BundleWithIdentifier = CFBundleGetBundleWithIdentifier(identifierCopy);
       v9 = BundleWithIdentifier;
       if (BundleWithIdentifier)
       {
         CFRetain(BundleWithIdentifier);
-        v17 = v7;
-        v7 = CFBundleCopyBundleURL(v9);
+        v17 = lCopy;
+        lCopy = CFBundleCopyBundleURL(v9);
         goto LABEL_30;
       }
     }
@@ -297,42 +297,42 @@ LABEL_32:
   return v2;
 }
 
-- (INStringLocalizer)initWithLanguageCode:(id)a3
+- (INStringLocalizer)initWithLanguageCode:(id)code
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  codeCopy = code;
   v23.receiver = self;
   v23.super_class = INStringLocalizer;
   v5 = [(INStringLocalizer *)&v23 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     languageCode = v5->_languageCode;
     v5->_languageCode = v6;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     bundlesByIdentifier = v5->_bundlesByIdentifier;
-    v5->_bundlesByIdentifier = v8;
+    v5->_bundlesByIdentifier = strongToStrongObjectsMapTable;
 
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     bundlesByURL = v5->_bundlesByURL;
-    v5->_bundlesByURL = v10;
+    v5->_bundlesByURL = strongToStrongObjectsMapTable2;
 
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     bundleLocalizations = v5->_bundleLocalizations;
-    v5->_bundleLocalizations = v12;
+    v5->_bundleLocalizations = strongToStrongObjectsMapTable3;
 
-    v14 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     preferredBundleLocalizations = v5->_preferredBundleLocalizations;
-    v5->_preferredBundleLocalizations = v14;
+    v5->_preferredBundleLocalizations = strongToStrongObjectsMapTable4;
 
-    if (v4)
+    if (codeCopy)
     {
-      v24[0] = v4;
+      v24[0] = codeCopy;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-      v17 = [MEMORY[0x1E695DF58] preferredLanguages];
-      v18 = [v16 arrayByAddingObjectsFromArray:v17];
+      preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+      v18 = [v16 arrayByAddingObjectsFromArray:preferredLanguages];
       preferredLanguages = v5->_preferredLanguages;
       v5->_preferredLanguages = v18;
     }
@@ -344,10 +344,10 @@ LABEL_32:
   return v5;
 }
 
-+ (id)localizerForLanguage:(id)a3
++ (id)localizerForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLanguageCode:v4];
+  languageCopy = language;
+  v5 = [[self alloc] initWithLanguageCode:languageCopy];
 
   return v5;
 }
@@ -355,7 +355,7 @@ LABEL_32:
 + (id)siriLocalizer
 {
   v3 = +[INPreferences siriLanguageCode];
-  v4 = [a1 localizerForLanguage:v3];
+  v4 = [self localizerForLanguage:v3];
 
   return v4;
 }

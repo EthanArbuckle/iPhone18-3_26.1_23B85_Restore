@@ -1,39 +1,39 @@
 @interface TVStoreApplicationSetupHelper
-+ (id)_parsedQueryParametersForURL:(id)a3;
-+ (id)bootURLWithBagBootURL:(id)a3 defaultBootURL:(id)a4;
++ (id)_parsedQueryParametersForURL:(id)l;
++ (id)bootURLWithBagBootURL:(id)l defaultBootURL:(id)rL;
 + (id)fallbackBootURL;
-+ (id)launchContextWithLaunchOptions:(id)a3 bootURL:(id)a4 appLocalBootURL:(id)a5;
-+ (id)launchContextWithLaunchOptions:(id)a3 bootURL:(id)a4 bagBootURLKey:(id)a5 useCache:(BOOL)a6;
++ (id)launchContextWithLaunchOptions:(id)options bootURL:(id)l appLocalBootURL:(id)rL;
++ (id)launchContextWithLaunchOptions:(id)options bootURL:(id)l bagBootURLKey:(id)key useCache:(BOOL)cache;
 + (id)preferredBootURL;
-- (TVStoreApplicationSetupHelper)initWithDefaultBootURL:(id)a3 bagCache:(id)a4;
-- (void)obtainBootURLWithCompletion:(id)a3;
+- (TVStoreApplicationSetupHelper)initWithDefaultBootURL:(id)l bagCache:(id)cache;
+- (void)obtainBootURLWithCompletion:(id)completion;
 @end
 
 @implementation TVStoreApplicationSetupHelper
 
-- (TVStoreApplicationSetupHelper)initWithDefaultBootURL:(id)a3 bagCache:(id)a4
+- (TVStoreApplicationSetupHelper)initWithDefaultBootURL:(id)l bagCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  cacheCopy = cache;
   v14.receiver = self;
   v14.super_class = TVStoreApplicationSetupHelper;
   v8 = [(TVStoreApplicationSetupHelper *)&v14 init];
   if (v8)
   {
-    if (v7)
+    if (cacheCopy)
     {
-      v9 = v7;
+      mEMORY[0x277D1B110] = cacheCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x277D1B110] sharedCache];
+      mEMORY[0x277D1B110] = [MEMORY[0x277D1B110] sharedCache];
     }
 
     bagCache = v8->_bagCache;
-    v8->_bagCache = v9;
+    v8->_bagCache = mEMORY[0x277D1B110];
 
-    v11 = [v6 copy];
+    v11 = [lCopy copy];
     defaultBootURL = v8->_defaultBootURL;
     v8->_defaultBootURL = v11;
   }
@@ -41,19 +41,19 @@
   return v8;
 }
 
-- (void)obtainBootURLWithCompletion:(id)a3
+- (void)obtainBootURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(TVStoreApplicationSetupHelper *)self bagCache];
+  bagCache = [(TVStoreApplicationSetupHelper *)self bagCache];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_invoke;
   v7[3] = &unk_279D6E610;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 loadValueForKey:@"itml-app-url" completion:v7];
+  [bagCache loadValueForKey:@"itml-app-url" completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -91,29 +91,29 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
   }
 }
 
-+ (id)launchContextWithLaunchOptions:(id)a3 bootURL:(id)a4 bagBootURLKey:(id)a5 useCache:(BOOL)a6
++ (id)launchContextWithLaunchOptions:(id)options bootURL:(id)l bagBootURLKey:(id)key useCache:(BOOL)cache
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
+  cacheCopy = cache;
+  lCopy = l;
+  keyCopy = key;
+  optionsCopy = options;
   v13 = objc_alloc_init(TVApplicationControllerContext);
-  [(TVApplicationControllerContext *)v13 setBagBootURLKey:v11];
+  [(TVApplicationControllerContext *)v13 setBagBootURLKey:keyCopy];
 
-  [(TVApplicationControllerContext *)v13 setJavaScriptApplicationURL:v10];
-  v14 = [v12 mutableCopy];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 bundleIdentifier];
-  [v14 setObject:v16 forKey:@"reqApp"];
+  [(TVApplicationControllerContext *)v13 setJavaScriptApplicationURL:lCopy];
+  v14 = [optionsCopy mutableCopy];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v14 setObject:bundleIdentifier forKey:@"reqApp"];
 
-  v17 = [v12 objectForKey:*MEMORY[0x277D76690]];
+  v17 = [optionsCopy objectForKey:*MEMORY[0x277D76690]];
 
   if (v17)
   {
     [v14 setObject:v17 forKey:@"refApp"];
   }
 
-  v18 = [a1 _parsedQueryParametersForURL:v10];
+  v18 = [self _parsedQueryParametersForURL:lCopy];
   if ([v18 count])
   {
     [v14 setObject:v18 forKey:@"query"];
@@ -122,14 +122,14 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
   v19 = [v14 copy];
   [(TVApplicationControllerContext *)v13 setLaunchOptions:v19];
 
-  if (v6)
+  if (cacheCopy)
   {
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = [v20 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
 
     v22 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v23 = [v22 firstObject];
-    v24 = [v23 stringByAppendingPathComponent:v21];
+    firstObject = [v22 firstObject];
+    v24 = [firstObject stringByAppendingPathComponent:bundleIdentifier2];
 
     v25 = [MEMORY[0x277CBEBC0] fileURLWithPath:v24];
     [(TVApplicationControllerContext *)v13 setAppJSCachePath:v25];
@@ -138,25 +138,25 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
   return v13;
 }
 
-+ (id)launchContextWithLaunchOptions:(id)a3 bootURL:(id)a4 appLocalBootURL:(id)a5
++ (id)launchContextWithLaunchOptions:(id)options bootURL:(id)l appLocalBootURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  lCopy = l;
   v10 = TVMLKitLogObject;
   if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
   {
     [TVStoreApplicationSetupHelper launchContextWithLaunchOptions:v10 bootURL:? appLocalBootURL:?];
   }
 
-  v11 = [a1 launchContextWithLaunchOptions:v8 bootURL:v9 useCache:a5 != 0];
+  v11 = [self launchContextWithLaunchOptions:optionsCopy bootURL:lCopy useCache:rL != 0];
 
   return v11;
 }
 
 + (id)preferredBootURL
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 stringForKey:@"boot-url"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"boot-url"];
 
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
 
@@ -165,10 +165,10 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
 
 + (id)fallbackBootURL
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 infoDictionary];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v4 = [v3 objectForKey:@"TVBootURL"];
+  v4 = [infoDictionary objectForKey:@"TVBootURL"];
   if ([v4 length])
   {
     v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
@@ -182,15 +182,15 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
   return v5;
 }
 
-+ (id)bootURLWithBagBootURL:(id)a3 defaultBootURL:(id)a4
++ (id)bootURLWithBagBootURL:(id)l defaultBootURL:(id)rL
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() preferredBootURL];
-  if (v7)
+  lCopy = l;
+  rLCopy = rL;
+  preferredBootURL = [objc_opt_class() preferredBootURL];
+  if (preferredBootURL)
   {
-    v8 = v7;
+    fallbackBootURL = preferredBootURL;
     v9 = TVMLKitLogObject;
     if (!os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
     {
@@ -198,17 +198,17 @@ void __61__TVStoreApplicationSetupHelper_obtainBootURLWithCompletion___block_inv
     }
 
     v13 = 138412290;
-    v14 = v8;
+    v14 = fallbackBootURL;
     v10 = "Started application with defaults boot-url: %@";
 LABEL_7:
     _os_log_impl(&dword_26CD9A000, v9, OS_LOG_TYPE_DEFAULT, v10, &v13, 0xCu);
     goto LABEL_8;
   }
 
-  v11 = v5;
+  v11 = lCopy;
   if (v11)
   {
-    v8 = v11;
+    fallbackBootURL = v11;
     v9 = TVMLKitLogObject;
     if (!os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_DEFAULT))
     {
@@ -216,27 +216,27 @@ LABEL_7:
     }
 
     v13 = 138412290;
-    v14 = v8;
+    v14 = fallbackBootURL;
     v10 = "Started application with URLBag boot-url: %@";
     goto LABEL_7;
   }
 
-  v8 = [objc_opt_class() fallbackBootURL];
-  if (!v8)
+  fallbackBootURL = [objc_opt_class() fallbackBootURL];
+  if (!fallbackBootURL)
   {
-    v8 = v6;
+    fallbackBootURL = rLCopy;
   }
 
 LABEL_8:
 
-  return v8;
+  return fallbackBootURL;
 }
 
-+ (id)_parsedQueryParametersForURL:(id)a3
++ (id)_parsedQueryParametersForURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [a3 query];
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  query = [l query];
+  v4 = [query componentsSeparatedByString:@"&"];
 
   v5 = [v4 count];
   if (v5)
@@ -261,8 +261,8 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) stringByRemovingPercentEncoding];
-          v13 = [v12 componentsSeparatedByString:@"="];
+          stringByRemovingPercentEncoding = [*(*(&v18 + 1) + 8 * i) stringByRemovingPercentEncoding];
+          v13 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"="];
 
           if ([v13 count] == 2)
           {

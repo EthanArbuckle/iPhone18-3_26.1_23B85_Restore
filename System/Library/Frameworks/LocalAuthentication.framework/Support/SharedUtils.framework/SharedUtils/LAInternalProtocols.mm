@@ -1,24 +1,24 @@
 @interface LAInternalProtocols
-+ (id)interfaceWithInternalProtocol:(id)a3;
++ (id)interfaceWithInternalProtocol:(id)protocol;
 @end
 
 @implementation LAInternalProtocols
 
-+ (id)interfaceWithInternalProtocol:(id)a3
++ (id)interfaceWithInternalProtocol:(id)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   if (interfaceWithInternalProtocol__onceToken != -1)
   {
     +[LAInternalProtocols interfaceWithInternalProtocol:];
   }
 
-  v4 = [interfaceWithInternalProtocol__protocolCache objectForKey:v3];
+  v4 = [interfaceWithInternalProtocol__protocolCache objectForKey:protocolCopy];
   if (!v4)
   {
-    v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v3];
-    if (&unk_1F5A7CE08 != v3)
+    v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:protocolCopy];
+    if (&unk_1F5A7CE08 != protocolCopy)
     {
-      if (&unk_1F5A7CF18 == v3)
+      if (&unk_1F5A7CF18 == protocolCopy)
       {
         v6 = [LAInternalProtocols interfaceWithInternalProtocol:&unk_1F5A7CFF0];
         [v4 setInterface:v6 forSelector:sel_connectToExistingContext_callback_clientId_flags_reply_ argumentIndex:0 ofReply:1];
@@ -39,7 +39,7 @@
         goto LABEL_14;
       }
 
-      if (&unk_1F5A7CFF0 == v3)
+      if (&unk_1F5A7CFF0 == protocolCopy)
       {
         v11 = [LAInternalProtocols interfaceWithInternalProtocol:&unk_1F5A7D178];
         [v4 setInterface:v11 forSelector:? argumentIndex:? ofReply:?];
@@ -71,7 +71,7 @@
         goto LABEL_14;
       }
 
-      if (&unk_1F5A7D178 == v3)
+      if (&unk_1F5A7D178 == protocolCopy)
       {
         v37 = MEMORY[0x1E695DFD8];
         v27 = objc_opt_class();
@@ -86,18 +86,18 @@
         goto LABEL_14;
       }
 
-      if (&unk_1F5A7D278 != v3 && &unk_1F5A7D360 != v3)
+      if (&unk_1F5A7D278 != protocolCopy && &unk_1F5A7D360 != protocolCopy)
       {
         goto LABEL_15;
       }
     }
 
-    [MEMORY[0x1E69AD2D0] interfaceForXPCProtocol:v3];
+    [MEMORY[0x1E69AD2D0] interfaceForXPCProtocol:protocolCopy];
     v4 = v5 = v4;
 LABEL_14:
 
 LABEL_15:
-    [interfaceWithInternalProtocol__protocolCache setObject:v4 forKey:v3];
+    [interfaceWithInternalProtocol__protocolCache setObject:v4 forKey:protocolCopy];
   }
 
   v34 = v4;

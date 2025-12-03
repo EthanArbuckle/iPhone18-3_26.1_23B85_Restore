@@ -1,49 +1,49 @@
 @interface SDActivityScanner
 + (id)sharedScanner;
-- (BOOL)activeAdvertisementForDeviceWithIdentifier:(id)a3;
+- (BOOL)activeAdvertisementForDeviceWithIdentifier:(id)identifier;
 - (BOOL)restart;
 - (SDActivityScanner)init;
 - (id)remoteObjectInterface;
 - (id)state;
 - (os_state_data_s)dumpState;
 - (void)_createOSTransactionIfNeeded;
-- (void)activityPayloadFromDeviceUniqueID:(id)a3 forAdvertisementPayload:(id)a4 command:(id)a5 timeout:(int64_t)a6 withCompletionHandler:(id)a7;
-- (void)activityServiceDevicesChanged:(id)a3;
+- (void)activityPayloadFromDeviceUniqueID:(id)d forAdvertisementPayload:(id)payload command:(id)command timeout:(int64_t)timeout withCompletionHandler:(id)handler;
+- (void)activityServiceDevicesChanged:(id)changed;
 - (void)addObservers;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
-- (void)consoleUserChanged:(id)a3;
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6;
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 withError:(id)a5;
-- (void)continuity:(id)a3 didStartScanningForType:(int64_t)a4;
-- (void)continuity:(id)a3 didStopScanningForType:(int64_t)a4;
-- (void)continuityDidUpdateState:(id)a3;
-- (void)didLosePeer:(id)a3;
-- (void)didLosePeerTimer:(id)a3;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
+- (void)consoleUserChanged:(id)changed;
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer;
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type withError:(id)error;
+- (void)continuity:(id)continuity didStartScanningForType:(int64_t)type;
+- (void)continuity:(id)continuity didStopScanningForType:(int64_t)type;
+- (void)continuityDidUpdateState:(id)state;
+- (void)didLosePeer:(id)peer;
+- (void)didLosePeerTimer:(id)timer;
 - (void)lostAllDevices;
-- (void)nearbyServiceDevicesChanged:(id)a3;
-- (void)postNotification:(id)a3 userInfo:(id)a4;
+- (void)nearbyServiceDevicesChanged:(id)changed;
+- (void)postNotification:(id)notification userInfo:(id)info;
 - (void)removeObservers;
-- (void)scanForTypes:(unint64_t)a3;
+- (void)scanForTypes:(unint64_t)types;
 - (void)stop;
-- (void)systemHasPoweredOn:(id)a3;
-- (void)systemWillSleep:(id)a3;
+- (void)systemHasPoweredOn:(id)on;
+- (void)systemWillSleep:(id)sleep;
 @end
 
 @implementation SDActivityScanner
 
 - (BOOL)restart
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SDActivityController *)v2 shouldStart];
-  v4 = [(SDActivityScanner *)v2 shouldScanForCopyPaste];
-  v5 = [(SDActivityScanner *)v2 shouldScanForHandoff];
-  if (v2->_scannerEnabled && (([(IDSContinuity *)v2->_continuity state]== 3) & v3) == 1 && ((v4 | v5) & 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldStart = [(SDActivityController *)selfCopy shouldStart];
+  shouldScanForCopyPaste = [(SDActivityScanner *)selfCopy shouldScanForCopyPaste];
+  shouldScanForHandoff = [(SDActivityScanner *)selfCopy shouldScanForHandoff];
+  if (selfCopy->_scannerEnabled && (([(IDSContinuity *)selfCopy->_continuity state]== 3) & shouldStart) == 1 && ((shouldScanForCopyPaste | shouldScanForHandoff) & 1) != 0)
   {
-    [(SDActivityScanner *)v2 _createOSTransactionIfNeeded];
-    v6 = [(SDActivityController *)v2 allPeerBTIdentifiers];
-    if (v5 & 1 | ((v4 & 1) == 0))
+    [(SDActivityScanner *)selfCopy _createOSTransactionIfNeeded];
+    allPeerBTIdentifiers = [(SDActivityController *)selfCopy allPeerBTIdentifiers];
+    if (shouldScanForHandoff & 1 | ((shouldScanForCopyPaste & 1) == 0))
     {
       v7 = 0;
     }
@@ -55,15 +55,15 @@
       *[v7 mutableBytes] = 8;
     }
 
-    v42 = [(SDActivityScanner *)v2 shouldBoostScan];
-    os_unfair_lock_lock(&v2->_lock);
-    v21 = [(NSMutableDictionary *)v2->_deviceIdentifierToDeviceRecord allValues];
-    os_unfair_lock_unlock(&v2->_lock);
+    shouldBoostScan = [(SDActivityScanner *)selfCopy shouldBoostScan];
+    os_unfair_lock_lock(&selfCopy->_lock);
+    allValues = [(NSMutableDictionary *)selfCopy->_deviceIdentifierToDeviceRecord allValues];
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v22 = v21;
+    v22 = allValues;
     v23 = [v22 countByEnumeratingWithState:&v44 objects:v53 count:16];
     if (v23)
     {
@@ -101,8 +101,8 @@ LABEL_43:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v39 = v7;
-      v28 = v6;
-      if (v5)
+      v28 = allPeerBTIdentifiers;
+      if (shouldScanForHandoff)
       {
         v29 = @" Handoff";
       }
@@ -112,7 +112,7 @@ LABEL_43:
         v29 = &stru_1008EFBD0;
       }
 
-      if (v4)
+      if (shouldScanForCopyPaste)
       {
         v30 = @" CopyPaste";
       }
@@ -122,7 +122,7 @@ LABEL_43:
         v30 = &stru_1008EFBD0;
       }
 
-      if (v42)
+      if (shouldBoostScan)
       {
         v31 = @" Boosted";
       }
@@ -157,18 +157,18 @@ LABEL_43:
       *&v50[12] = v34;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Starting%@%@%@ scanning with duplicates:%@ for peers [%@]", buf, 0x34u);
 
-      v6 = v40;
+      allPeerBTIdentifiers = v40;
       v7 = v39;
     }
 
     LOBYTE(v38) = v26;
-    [(IDSContinuity *)v2->_continuity startScanningForType:0 withData:v7 mask:v7 peers:v6 withOptions:0 boostedScan:v42 duplicates:v38];
-    stopScanLostDeviceTimer = v2->_stopScanLostDeviceTimer;
+    [(IDSContinuity *)selfCopy->_continuity startScanningForType:0 withData:v7 mask:v7 peers:allPeerBTIdentifiers withOptions:0 boostedScan:shouldBoostScan duplicates:v38];
+    stopScanLostDeviceTimer = selfCopy->_stopScanLostDeviceTimer;
     if (stopScanLostDeviceTimer)
     {
       dispatch_source_cancel(stopScanLostDeviceTimer);
-      v36 = v2->_stopScanLostDeviceTimer;
-      v2->_stopScanLostDeviceTimer = 0;
+      v36 = selfCopy->_stopScanLostDeviceTimer;
+      selfCopy->_stopScanLostDeviceTimer = 0;
     }
 
     v20 = 1;
@@ -176,7 +176,7 @@ LABEL_43:
 
   else
   {
-    if (v2->_isScanning)
+    if (selfCopy->_isScanning)
     {
       v8 = @"Stopped";
     }
@@ -186,12 +186,12 @@ LABEL_43:
       v8 = @"Skipping request for";
     }
 
-    v6 = v8;
+    allPeerBTIdentifiers = v8;
     v9 = handoff_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = v5;
-      if (v2->_scannerEnabled)
+      v41 = shouldScanForHandoff;
+      if (selfCopy->_scannerEnabled)
       {
         v10 = @"YES";
       }
@@ -201,17 +201,17 @@ LABEL_43:
         v10 = @"NO";
       }
 
-      if (([(IDSContinuity *)v2->_continuity state]& 0x8000000000000000) != 0 || [(IDSContinuity *)v2->_continuity state]> 3)
+      if (([(IDSContinuity *)selfCopy->_continuity state]& 0x8000000000000000) != 0 || [(IDSContinuity *)selfCopy->_continuity state]> 3)
       {
         v11 = "UnexpectedState";
       }
 
       else
       {
-        v11 = off_1008D43E0[[(IDSContinuity *)v2->_continuity state]];
+        v11 = off_1008D43E0[[(IDSContinuity *)selfCopy->_continuity state]];
       }
 
-      if (v3)
+      if (shouldStart)
       {
         v12 = @"YES";
       }
@@ -222,7 +222,7 @@ LABEL_43:
       }
 
       *buf = 138413570;
-      if (v4)
+      if (shouldScanForCopyPaste)
       {
         v13 = @"YES";
       }
@@ -232,7 +232,7 @@ LABEL_43:
         v13 = @"NO";
       }
 
-      *&buf[4] = v6;
+      *&buf[4] = allPeerBTIdentifiers;
       *&buf[12] = 2112;
       if (v41)
       {
@@ -256,16 +256,16 @@ LABEL_43:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ enabled: %@, state: %s, shouldStart: %@, scanForCopyPaste: %@, scanForHandoff: %@", buf, 0x3Eu);
     }
 
-    if (v2->_isScanning)
+    if (selfCopy->_isScanning)
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
       v49 = sub_10020EAFC;
       *v50 = sub_10020EB0C;
-      *&v50[8] = v2->_scanningTransaction;
-      [(IDSContinuity *)v2->_continuity stopScanningForType:0];
-      v15 = v2->_stopScanLostDeviceTimer;
+      *&v50[8] = selfCopy->_scanningTransaction;
+      [(IDSContinuity *)selfCopy->_continuity stopScanningForType:0];
+      v15 = selfCopy->_stopScanLostDeviceTimer;
       if (!v15)
       {
         v16 = &_dispatch_main_q;
@@ -273,14 +273,14 @@ LABEL_43:
         v43[1] = 3221225472;
         v43[2] = sub_10020EB14;
         v43[3] = &unk_1008CE0B8;
-        v43[4] = v2;
+        v43[4] = selfCopy;
         v43[5] = buf;
         v17 = sub_1001F0548(0, &_dispatch_main_q, v43);
-        v18 = v2->_stopScanLostDeviceTimer;
-        v2->_stopScanLostDeviceTimer = v17;
+        v18 = selfCopy->_stopScanLostDeviceTimer;
+        selfCopy->_stopScanLostDeviceTimer = v17;
 
-        dispatch_resume(v2->_stopScanLostDeviceTimer);
-        v15 = v2->_stopScanLostDeviceTimer;
+        dispatch_resume(selfCopy->_stopScanLostDeviceTimer);
+        v15 = selfCopy->_stopScanLostDeviceTimer;
       }
 
       v19 = sub_1001F0530(10.0);
@@ -291,7 +291,7 @@ LABEL_43:
     v20 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v20;
 }
 
@@ -306,11 +306,11 @@ LABEL_43:
 
   NSAppendPrintF();
   v4 = 0;
-  v5 = [(SDActivityScanner *)self state];
-  v6 = v5;
-  if (v5)
+  state = [(SDActivityScanner *)self state];
+  v6 = state;
+  if (state)
   {
-    v23 = v5;
+    v23 = state;
     NSAppendPrintF();
     v7 = v4;
 
@@ -318,11 +318,11 @@ LABEL_43:
   }
 
   v8 = +[SDActivityAdvertiser sharedAdvertiser];
-  v9 = [v8 state];
+  state2 = [v8 state];
 
-  if (v9)
+  if (state2)
   {
-    v24 = v9;
+    v24 = state2;
     NSAppendPrintF();
     v10 = v4;
 
@@ -330,11 +330,11 @@ LABEL_43:
   }
 
   v11 = +[SDActivityEncryptionManager sharedEncryptionManager];
-  v12 = [v11 state];
+  state3 = [v11 state];
 
-  if (v12)
+  if (state3)
   {
-    v25 = v12;
+    v25 = state3;
     NSAppendPrintF();
     v13 = v4;
 
@@ -342,9 +342,9 @@ LABEL_43:
   }
 
   v14 = +[SDActivityPayloadManager sharedPayloadManager];
-  v15 = [v14 state];
+  state4 = [v14 state];
 
-  if (v15)
+  if (state4)
   {
     NSAppendPrintF();
     v16 = v4;
@@ -492,15 +492,15 @@ LABEL_43:
   }
 }
 
-- (void)activityServiceDevicesChanged:(id)a3
+- (void)activityServiceDevicesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v25 = +[NSMutableSet set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = changedCopy;
   v5 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v5)
   {
@@ -524,8 +524,8 @@ LABEL_43:
         v12 = v8[666];
         os_unfair_lock_lock((self + v12));
         v13 = *(&self->super.super.super.isa + v9[671]);
-        v14 = [v11 uniqueIDOverride];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        uniqueIDOverride = [v11 uniqueIDOverride];
+        v15 = [v13 objectForKeyedSubscript:uniqueIDOverride];
 
         os_unfair_lock_unlock((self + v12));
         if (v15)
@@ -548,8 +548,8 @@ LABEL_43:
             v18 = v9;
             v19 = v8;
             v20 = +[SDActivityEncryptionManager sharedEncryptionManager];
-            v21 = [v16 uniqueID];
-            v22 = [v20 cachedDecryptionKeyForDeviceIdentifier:v21];
+            uniqueID = [v16 uniqueID];
+            v22 = [v20 cachedDecryptionKeyForDeviceIdentifier:uniqueID];
 
             if (v22)
             {
@@ -585,13 +585,13 @@ LABEL_43:
   [(SDActivityScanner *)self _enumerateRemoteObjectProxiesUsingBlock:v28];
 }
 
-- (void)nearbyServiceDevicesChanged:(id)a3
+- (void)nearbyServiceDevicesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = handoff_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002110BC(v4, v5);
+    sub_1002110BC(changedCopy, v5);
   }
 
   if (![(SDActivityController *)self shouldStart])
@@ -600,7 +600,7 @@ LABEL_43:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = changedCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -618,8 +618,8 @@ LABEL_43:
           v11 = *(*(&v13 + 1) + 8 * i);
           if ([v11 isLocallyPaired] && (objc_msgSend(v11, "isNearby") & 1) == 0)
           {
-            v12 = [v11 uniqueIDOverride];
-            [(SDActivityScanner *)self didLosePeer:v12];
+            uniqueIDOverride = [v11 uniqueIDOverride];
+            [(SDActivityScanner *)self didLosePeer:uniqueIDOverride];
           }
         }
 
@@ -631,39 +631,39 @@ LABEL_43:
   }
 }
 
-- (BOOL)activeAdvertisementForDeviceWithIdentifier:(id)a3
+- (BOOL)activeAdvertisementForDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v6 = [v5 deviceTracked];
+    deviceTracked = [v5 deviceTracked];
   }
 
   else
   {
-    v6 = 0;
+    deviceTracked = 0;
   }
 
   v7 = handoff_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "no";
-    if (v6)
+    if (deviceTracked)
     {
       v8 = "yes";
     }
 
     v10 = 138412546;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = 2080;
     v13 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handoff active for device %@ : %s", &v10, 0x16u);
   }
 
-  return v6;
+  return deviceTracked;
 }
 
 - (id)remoteObjectInterface
@@ -681,7 +681,7 @@ LABEL_43:
   return v2;
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
   v4 = handoff_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -695,13 +695,13 @@ LABEL_43:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allValues];
+  allValues = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allValues];
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v5;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -735,7 +735,7 @@ LABEL_43:
   }
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
   v4 = handoff_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -743,8 +743,8 @@ LABEL_43:
     sub_1002112C4();
   }
 
-  v5 = [(SDXPCDaemon *)self activeConnections];
-  v6 = [v5 count];
+  activeConnections = [(SDXPCDaemon *)self activeConnections];
+  v6 = [activeConnections count];
 
   if (!v6)
   {
@@ -767,7 +767,7 @@ LABEL_43:
   [v3 removeObserver:self];
 }
 
-- (void)systemWillSleep:(id)a3
+- (void)systemWillSleep:(id)sleep
 {
   v4 = handoff_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -780,7 +780,7 @@ LABEL_43:
   [(SDActivityScanner *)self stop];
 }
 
-- (void)systemHasPoweredOn:(id)a3
+- (void)systemHasPoweredOn:(id)on
 {
   if ([(SDStatusMonitor *)self->_monitor currentConsoleUser])
   {
@@ -796,12 +796,12 @@ LABEL_43:
   }
 }
 
-- (void)consoleUserChanged:(id)a3
+- (void)consoleUserChanged:(id)changed
 {
-  v4 = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
+  currentConsoleUser = [(SDStatusMonitor *)self->_monitor currentConsoleUser];
   v5 = handoff_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (currentConsoleUser)
   {
     if (v6)
     {
@@ -826,9 +826,9 @@ LABEL_43:
   }
 }
 
-- (void)continuityDidUpdateState:(id)a3
+- (void)continuityDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityScanner/continuityDidUpdateState", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
@@ -836,14 +836,14 @@ LABEL_43:
   v6 = handoff_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 3)
+    if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 3)
     {
       v7 = "UnexpectedState";
     }
 
     else
     {
-      v7 = off_1008D43E0[[v4 state]];
+      v7 = off_1008D43E0[[stateCopy state]];
     }
 
     *buf = 136315138;
@@ -851,10 +851,10 @@ LABEL_43:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Did update state to %s", buf, 0xCu);
   }
 
-  v8 = [v4 state];
-  if (v8 > 1)
+  state = [stateCopy state];
+  if (state > 1)
   {
-    if (v8 == 2)
+    if (state == 2)
     {
       v11 = handoff_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -865,7 +865,7 @@ LABEL_43:
       [(SDActivityScanner *)self lostAllDevices];
     }
 
-    else if (v8 == 3)
+    else if (state == 3)
     {
       v10 = handoff_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -879,7 +879,7 @@ LABEL_43:
 
   else
   {
-    if (!v8)
+    if (!state)
     {
       v9 = handoff_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -890,7 +890,7 @@ LABEL_43:
       goto LABEL_19;
     }
 
-    if (v8 == 1)
+    if (state == 1)
     {
       v9 = handoff_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -905,14 +905,14 @@ LABEL_19:
   os_activity_scope_leave(&v12);
 }
 
-- (void)continuity:(id)a3 didStartScanningForType:(int64_t)a4
+- (void)continuity:(id)continuity didStartScanningForType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityScanner/continuityDidStartScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v9.opaque[0] = 0;
   v9.opaque[1] = 0;
   os_activity_scope_enter(v7, &v9);
-  if (!a4)
+  if (!type)
   {
     self->_isScanning = 1;
   }
@@ -920,20 +920,20 @@ LABEL_19:
   v8 = handoff_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1002112F8(a4, v8);
+    sub_1002112F8(type, v8);
   }
 
   os_activity_scope_leave(&v9);
 }
 
-- (void)continuity:(id)a3 didStopScanningForType:(int64_t)a4
+- (void)continuity:(id)continuity didStopScanningForType:(int64_t)type
 {
-  v6 = a3;
+  continuityCopy = continuity;
   v7 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityScanner/continuityDidStopScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(v7, &v10);
-  if (!a4)
+  if (!type)
   {
     self->_isScanning = 0;
   }
@@ -941,7 +941,7 @@ LABEL_19:
   v8 = handoff_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100211390(a4, v8);
+    sub_100211390(type, v8);
   }
 
   scanningTransaction = self->_scanningTransaction;
@@ -950,15 +950,15 @@ LABEL_19:
   os_activity_scope_leave(&v10);
 }
 
-- (void)continuity:(id)a3 didFailToStartScanningForType:(int64_t)a4 withError:(id)a5
+- (void)continuity:(id)continuity didFailToStartScanningForType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  continuityCopy = continuity;
+  errorCopy = error;
   v10 = _os_activity_create(&_mh_execute_header, "Sharing/SDActivityScanner/continuityDidFailToStartScanningForType", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(v10, &v15);
-  if (!a4)
+  if (!type)
   {
     self->_isScanning = 0;
   }
@@ -966,18 +966,18 @@ LABEL_19:
   v11 = handoff_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    if (a4 > 3)
+    if (type > 3)
     {
       v12 = "UnexpectedType";
     }
 
     else
     {
-      v12 = off_1008D4450[a4];
+      v12 = off_1008D4450[type];
     }
 
-    v13 = [v9 localizedDescription];
-    sub_100211428(v12, v13, buf, v11);
+    localizedDescription = [errorCopy localizedDescription];
+    sub_100211428(v12, localizedDescription, buf, v11);
   }
 
   scanningTransaction = self->_scanningTransaction;
@@ -986,16 +986,16 @@ LABEL_19:
   os_activity_scope_leave(&v15);
 }
 
-- (void)continuity:(id)a3 didDiscoverType:(int64_t)a4 withData:(id)a5 fromPeer:(id)a6
+- (void)continuity:(id)continuity didDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer
 {
-  v9 = a5;
-  if (!a4)
+  dataCopy = data;
+  if (!type)
   {
-    v10 = [a6 UUIDString];
-    v11 = [(SDActivityController *)self idsDeviceFromBTIdentifier:v10];
+    uUIDString = [peer UUIDString];
+    v11 = [(SDActivityController *)self idsDeviceFromBTIdentifier:uUIDString];
     if (v11)
     {
-      [(SDActivityScanner *)self handleNewAdvertisementDevice:v11 data:v9 receivedViaScanning:1 withSuccessHandler:0];
+      [(SDActivityScanner *)self handleNewAdvertisementDevice:v11 data:dataCopy receivedViaScanning:1 withSuccessHandler:0];
     }
 
     else
@@ -1003,25 +1003,25 @@ LABEL_19:
       v12 = handoff_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_100211490(v10, v12);
+        sub_100211490(uUIDString, v12);
       }
     }
   }
 }
 
-- (void)didLosePeer:(id)a3
+- (void)didLosePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = handoff_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = peerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Lost IDS device %@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:peerCopy];
   os_unfair_lock_unlock(&self->_lock);
   if ([v6 deviceTracked])
   {
@@ -1036,13 +1036,13 @@ LABEL_19:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allValues];
+  allValues = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allValues];
   os_unfair_lock_unlock(&self->_lock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v7;
+  v8 = allValues;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v9)
   {
@@ -1091,13 +1091,13 @@ LABEL_15:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allKeys];
+  allKeys = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord allKeys];
   os_unfair_lock_unlock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -1127,18 +1127,18 @@ LABEL_15:
   }
 }
 
-- (void)didLosePeerTimer:(id)a3
+- (void)didLosePeerTimer:(id)timer
 {
-  v5 = [a3 userInfo];
-  [(NSMutableDictionary *)self->_deviceIdentifierToLostDeviceTimers removeObjectForKey:v5];
+  userInfo = [timer userInfo];
+  [(NSMutableDictionary *)self->_deviceIdentifierToLostDeviceTimers removeObjectForKey:userInfo];
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:v5];
+  v4 = [(NSMutableDictionary *)self->_deviceIdentifierToDeviceRecord objectForKeyedSubscript:userInfo];
   os_unfair_lock_unlock(&self->_lock);
   [v4 setDisableDuplicateFilterOnce:1];
-  [(SDActivityScanner *)self didLosePeer:v5];
+  [(SDActivityScanner *)self didLosePeer:userInfo];
 }
 
-- (void)scanForTypes:(unint64_t)a3
+- (void)scanForTypes:(unint64_t)types
 {
   v5 = handoff_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1154,37 +1154,37 @@ LABEL_15:
   v7[2] = sub_100210C70;
   v7[3] = &unk_1008CFD30;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = types;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)activityPayloadFromDeviceUniqueID:(id)a3 forAdvertisementPayload:(id)a4 command:(id)a5 timeout:(int64_t)a6 withCompletionHandler:(id)a7
+- (void)activityPayloadFromDeviceUniqueID:(id)d forAdvertisementPayload:(id)payload command:(id)command timeout:(int64_t)timeout withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  payloadCopy = payload;
+  commandCopy = command;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100210D98;
   block[3] = &unk_1008D4478;
-  v19 = v11;
-  v20 = v12;
-  v22 = a7;
-  v23 = a6;
-  v21 = v13;
-  v14 = v22;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = dCopy;
+  v20 = payloadCopy;
+  handlerCopy = handler;
+  timeoutCopy = timeout;
+  v21 = commandCopy;
+  v14 = handlerCopy;
+  v15 = commandCopy;
+  v16 = payloadCopy;
+  v17 = dCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)postNotification:(id)a3 userInfo:(id)a4
+- (void)postNotification:(id)notification userInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  notificationCopy = notification;
   v7 = +[NSNotificationCenter defaultCenter];
-  [v7 postNotificationName:v6 object:0 userInfo:v5];
+  [v7 postNotificationName:notificationCopy object:0 userInfo:infoCopy];
 }
 
 @end

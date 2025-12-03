@@ -1,8 +1,8 @@
 @interface PreviewViewController
-- (_TtC5TeaUI21PreviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC5TeaUI21PreviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PreviewViewController.viewDidLoad()();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  PreviewViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  PreviewViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  PreviewViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  PreviewViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PreviewViewController.viewWillLayoutSubviews()();
 }
 
-- (_TtC5TeaUI21PreviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI21PreviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PreviewViewController.init(nibName:bundle:)();
 }
 

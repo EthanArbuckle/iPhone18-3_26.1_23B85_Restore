@@ -1,6 +1,6 @@
 @interface AEMachServiceXPCConnectionOrigin
 - (id)makeConnection;
-- (void)initWithMachServiceName:(uint64_t)a3 options:;
+- (void)initWithMachServiceName:(uint64_t)name options:;
 @end
 
 @implementation AEMachServiceXPCConnectionOrigin
@@ -25,25 +25,25 @@
   return v6;
 }
 
-- (void)initWithMachServiceName:(uint64_t)a3 options:
+- (void)initWithMachServiceName:(uint64_t)name options:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = AEMachServiceXPCConnectionOrigin;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel_init);
+    if (self)
     {
       v6 = [v5 copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = self[1];
+      self[1] = v6;
 
-      a1[2] = a3;
+      self[2] = name;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

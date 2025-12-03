@@ -1,38 +1,38 @@
 @interface CKRecordSystemFieldsTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CKRecordSystemFieldsTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v3 = MEMORY[0x277CCAAB0];
-    v4 = a3;
+    valueCopy = value;
     v5 = [[v3 alloc] initRequiringSecureCoding:1];
-    [v4 encodeSystemFieldsWithCoder:v5];
+    [valueCopy encodeSystemFieldsWithCoder:v5];
 
-    v6 = [v5 encodedData];
+    encodedData = [v5 encodedData];
   }
 
   else
   {
-    v6 = 0;
+    encodedData = 0;
   }
 
-  return v6;
+  return encodedData;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v3 = MEMORY[0x277CCAAC8];
-    v4 = a3;
+    valueCopy = value;
     v10 = 0;
-    v5 = [[v3 alloc] initForReadingFromData:v4 error:&v10];
+    v5 = [[v3 alloc] initForReadingFromData:valueCopy error:&v10];
 
     v6 = v10;
     if (v6)

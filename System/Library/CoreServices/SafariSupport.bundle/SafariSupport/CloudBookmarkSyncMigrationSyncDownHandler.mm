@@ -1,54 +1,54 @@
 @interface CloudBookmarkSyncMigrationSyncDownHandler
-- (BOOL)shouldApplyReference:(id)a3 withGeneration:(id)a4 toAttribute:(id)a5 inRecordWithName:(id)a6;
+- (BOOL)shouldApplyReference:(id)reference withGeneration:(id)generation toAttribute:(id)attribute inRecordWithName:(id)name;
 - (CloudBookmarkSyncMigrationSyncDownHandlerDelegate)delegate;
-- (id)_cloudBookmarkForRecord:(id)a3 isNewBookmark:(BOOL *)a4;
-- (void)_didDeleteRecordWithName:(id)a3;
-- (void)_didFinishSyncingReceivingRecordNames:(id)a3 error:(id)a4;
-- (void)_performSyncDownInOperationGroup:(id)a3;
-- (void)_performSyncDownInOperationGroup:(id)a3 withRetryManager:(id)a4;
-- (void)_updateLocalBookmarkWithCKRecord:(id)a3;
-- (void)beginSyncDownInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)beginSyncDownInOperationGroup:(id)a3 keepingRecordsMarkedAsDeletedLocally:(BOOL)a4 completionHandler:(id)a5;
+- (id)_cloudBookmarkForRecord:(id)record isNewBookmark:(BOOL *)bookmark;
+- (void)_didDeleteRecordWithName:(id)name;
+- (void)_didFinishSyncingReceivingRecordNames:(id)names error:(id)error;
+- (void)_performSyncDownInOperationGroup:(id)group;
+- (void)_performSyncDownInOperationGroup:(id)group withRetryManager:(id)manager;
+- (void)_updateLocalBookmarkWithCKRecord:(id)record;
+- (void)beginSyncDownInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)beginSyncDownInOperationGroup:(id)group keepingRecordsMarkedAsDeletedLocally:(BOOL)locally completionHandler:(id)handler;
 @end
 
 @implementation CloudBookmarkSyncMigrationSyncDownHandler
 
-- (void)beginSyncDownInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)beginSyncDownInOperationGroup:(id)group completionHandler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000863CC;
   v7[3] = &unk_1001353A8;
-  v8 = a4;
-  v6 = v8;
-  [(CloudBookmarkSyncMigrationSyncDownHandler *)self beginSyncDownInOperationGroup:a3 keepingRecordsMarkedAsDeletedLocally:0 completionHandler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(CloudBookmarkSyncMigrationSyncDownHandler *)self beginSyncDownInOperationGroup:group keepingRecordsMarkedAsDeletedLocally:0 completionHandler:v7];
 }
 
-- (void)beginSyncDownInOperationGroup:(id)a3 keepingRecordsMarkedAsDeletedLocally:(BOOL)a4 completionHandler:(id)a5
+- (void)beginSyncDownInOperationGroup:(id)group keepingRecordsMarkedAsDeletedLocally:(BOOL)locally completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  locallyCopy = locally;
+  groupCopy = group;
+  handlerCopy = handler;
   v9 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v13 = v6;
+    v13 = locallyCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Sync down handler starting sync, keep records marked as deleted locally = %d", buf, 8u);
   }
 
-  v10 = v7;
-  v11 = v8;
+  v10 = groupCopy;
+  v11 = handlerCopy;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
 
-- (void)_didFinishSyncingReceivingRecordNames:(id)a3 error:(id)a4
+- (void)_didFinishSyncingReceivingRecordNames:(id)names error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  errorCopy = error;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -78,35 +78,35 @@
   self->_completionHandler = 0;
 
   self->_isSyncing = 0;
-  v19 = v6;
+  v19 = namesCopy;
   v20 = v11;
-  v21 = v7;
-  v15 = v7;
+  v21 = errorCopy;
+  v15 = errorCopy;
   v16 = v11;
-  v17 = v6;
+  v17 = namesCopy;
   v18 = v13;
   WBSDispatchAsyncToMainQueueWithAutoreleasePool();
 }
 
-- (void)_performSyncDownInOperationGroup:(id)a3
+- (void)_performSyncDownInOperationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:-[CloudTabGroupSyncCoordinator _bookmarksLog]_0()];
-  [(CloudBookmarkSyncMigrationSyncDownHandler *)self _performSyncDownInOperationGroup:v4 withRetryManager:v5];
+  [(CloudBookmarkSyncMigrationSyncDownHandler *)self _performSyncDownInOperationGroup:groupCopy withRetryManager:v5];
 }
 
-- (void)_performSyncDownInOperationGroup:(id)a3 withRetryManager:(id)a4
+- (void)_performSyncDownInOperationGroup:(id)group withRetryManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  managerCopy = manager;
   objc_initWeak(&location, self);
-  v8 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-  v9 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  v10 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:v8 databaseAccessor:v9];
+  databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+  databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  v10 = [WBBookmarkDatabaseSyncData databaseSyncDataInDatabase:databaseRef databaseAccessor:databaseAccessor];
 
-  v11 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
-  v12 = [v11 bookmarksRecordZoneID];
-  v13 = [v10 lastServerChangeTokenForRecordZoneID:v12];
+  bookmarkStore = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
+  bookmarksRecordZoneID = [bookmarkStore bookmarksRecordZoneID];
+  v13 = [v10 lastServerChangeTokenForRecordZoneID:bookmarksRecordZoneID];
 
   v14 = +[NSMutableSet set];
   v15 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -117,7 +117,7 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Sync down handler fetching record changes from server change token: %{public}@", buf, 0xCu);
   }
 
-  v16 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
+  bookmarkStore2 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100086B70;
@@ -136,39 +136,39 @@
   v22[2] = sub_100086D88;
   v22[3] = &unk_100135420;
   v22[4] = self;
-  v18 = v7;
+  v18 = managerCopy;
   v23 = v18;
   objc_copyWeak(&v27, &location);
-  v19 = v6;
+  v19 = groupCopy;
   v24 = v19;
   v20 = v13;
   v25 = v20;
   v21 = v17;
   v26 = v21;
-  [v16 fetchBookmarksRecordChangesSinceServerChangeToken:v20 inOperationGroup:v19 recordChangedBlock:v30 recordWithIDWasDeletedBlock:v28 completionHandler:v22];
+  [bookmarkStore2 fetchBookmarksRecordChangesSinceServerChangeToken:v20 inOperationGroup:v19 recordChangedBlock:v30 recordWithIDWasDeletedBlock:v28 completionHandler:v22];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
 }
 
-- (void)_didDeleteRecordWithName:(id)a3
+- (void)_didDeleteRecordWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cloudBookmarkSyncMigrationSyncDownHandler:self didDeleteBookmarkWithRecordName:v4];
+  [WeakRetained cloudBookmarkSyncMigrationSyncDownHandler:self didDeleteBookmarkWithRecordName:nameCopy];
 }
 
-- (void)_updateLocalBookmarkWithCKRecord:(id)a3
+- (void)_updateLocalBookmarkWithCKRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v15 = 0;
-  v5 = [(CloudBookmarkSyncMigrationSyncDownHandler *)self _cloudBookmarkForRecord:v4 isNewBookmark:&v15];
+  v5 = [(CloudBookmarkSyncMigrationSyncDownHandler *)self _cloudBookmarkForRecord:recordCopy isNewBookmark:&v15];
   if (v5)
   {
-    v6 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
-    v7 = [v6 bookmarkHashGenerator];
-    v8 = [v5 configuration];
-    [v7 verifyIdentityHashInBookmarkRecord:v4 configuration:v8];
+    bookmarkStore = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
+    bookmarkHashGenerator = [bookmarkStore bookmarkHashGenerator];
+    configuration = [v5 configuration];
+    [bookmarkHashGenerator verifyIdentityHashInBookmarkRecord:recordCopy configuration:configuration];
 
     if (v15 == 1)
     {
@@ -179,7 +179,7 @@
       goto LABEL_13;
     }
 
-    v10 = [v5 resultFromMergingRecord:v4 usingUpdater:self];
+    v10 = [v5 resultFromMergingRecord:recordCopy usingUpdater:self];
     if ((v10 & 1) != 0 && (v11 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0(), os_log_type_enabled(v11, OS_LOG_TYPE_ERROR)))
     {
       sub_100087B14(v11, v5);
@@ -214,8 +214,8 @@ LABEL_11:
         }
 
 LABEL_12:
-        v13 = [v5 recordName];
-        [(CloudBookmarkSyncMigrationSyncDownHandler *)self _didDeleteRecordWithName:v13];
+        recordName = [v5 recordName];
+        [(CloudBookmarkSyncMigrationSyncDownHandler *)self _didDeleteRecordWithName:recordName];
 
         goto LABEL_13;
       }
@@ -240,32 +240,32 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_cloudBookmarkForRecord:(id)a3 isNewBookmark:(BOOL *)a4
+- (id)_cloudBookmarkForRecord:(id)record isNewBookmark:(BOOL *)bookmark
 {
-  v6 = a3;
-  *a4 = 0;
-  v7 = [v6 safari_recordName];
-  if ([v7 isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
+  recordCopy = record;
+  *bookmark = 0;
+  safari_recordName = [recordCopy safari_recordName];
+  if ([safari_recordName isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
   {
     v8 = 0;
     goto LABEL_11;
   }
 
-  v9 = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
-  v10 = [v9 cloudBookmarkItemConfigurationForRecord:v6];
+  bookmarkStore = [(CloudBookmarkDatabaseHandler *)self bookmarkStore];
+  v10 = [bookmarkStore cloudBookmarkItemConfigurationForRecord:recordCopy];
 
   if (!v10)
   {
     goto LABEL_9;
   }
 
-  v11 = [(CloudBookmarkDatabaseHandler *)self databaseRef];
-  v12 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-  v8 = [CloudBookmark cloudBookmarkWithRecordName:v7 inDatabase:v11 databaseAccessor:v12 updater:self];
+  databaseRef = [(CloudBookmarkDatabaseHandler *)self databaseRef];
+  databaseAccessor = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+  v8 = [CloudBookmark cloudBookmarkWithRecordName:safari_recordName inDatabase:databaseRef databaseAccessor:databaseAccessor updater:self];
 
   if (!v8)
   {
-    if ([v6 safari_minimumAPIVersion] > 4)
+    if ([recordCopy safari_minimumAPIVersion] > 4)
     {
       v13 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -276,7 +276,7 @@ LABEL_9:
       }
 
       v21 = 138543362;
-      v22 = v7;
+      v22 = safari_recordName;
       v14 = "Record %{public}@ does not locally exist and cannot be saved locally because of its minimum API version";
       v15 = v13;
 LABEL_8:
@@ -284,7 +284,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ([v6 safari_state] == 1)
+    if ([recordCopy safari_state] == 1)
     {
       recordNamesToDelete = self->_recordNamesToDelete;
       v18 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -297,7 +297,7 @@ LABEL_8:
         }
 
         v21 = 138543362;
-        v22 = v7;
+        v22 = safari_recordName;
         v14 = "Record %{public}@ does not exist locally and is deleted remotely";
         v15 = v18;
         goto LABEL_8;
@@ -306,16 +306,16 @@ LABEL_8:
       if (v19)
       {
         v21 = 138543362;
-        v22 = v7;
+        v22 = safari_recordName;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Writing locally record %{public}@ despite the record not existing locally and being deleted remotely for merging", &v21, 0xCu);
       }
 
-      [(NSMutableSet *)self->_recordNamesToDelete addObject:v7];
+      [(NSMutableSet *)self->_recordNamesToDelete addObject:safari_recordName];
     }
 
-    *a4 = 1;
-    v20 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
-    v8 = [CloudBookmark cloudBookmarkWithAddedRecord:v6 configuration:v10 inDatabase:v11 databaseAccessor:v20 updater:self];
+    *bookmark = 1;
+    databaseAccessor2 = [(CloudBookmarkDatabaseHandler *)self databaseAccessor];
+    v8 = [CloudBookmark cloudBookmarkWithAddedRecord:recordCopy configuration:v10 inDatabase:databaseRef databaseAccessor:databaseAccessor2 updater:self];
   }
 
 LABEL_10:
@@ -325,14 +325,14 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)shouldApplyReference:(id)a3 withGeneration:(id)a4 toAttribute:(id)a5 inRecordWithName:(id)a6
+- (BOOL)shouldApplyReference:(id)reference withGeneration:(id)generation toAttribute:(id)attribute inRecordWithName:(id)name
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  nameCopy = name;
+  attributeCopy = attribute;
+  generationCopy = generation;
+  referenceCopy = reference;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained cloudBookmarkSyncMigrationSyncDownHandler:self shouldApplyReference:v13 withGeneration:v12 toAttribute:v11 inRecordWithName:v10];
+  LOBYTE(self) = [WeakRetained cloudBookmarkSyncMigrationSyncDownHandler:self shouldApplyReference:referenceCopy withGeneration:generationCopy toAttribute:attributeCopy inRecordWithName:nameCopy];
 
   return self;
 }

@@ -15,78 +15,78 @@
 
 - (uint64_t)hmd_isForXPCTransportEntitledForHomeLocationFeedbackAccess
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 isEntitledForHomeLocationFeedbackAccess];
+  hmd_message = [self hmd_message];
+  isEntitledForHomeLocationFeedbackAccess = [hmd_message isEntitledForHomeLocationFeedbackAccess];
 
-  return v2;
+  return isEntitledForHomeLocationFeedbackAccess;
 }
 
 - (uint64_t)hmd_isForXPCTransportEntitledForAssistantIdentifiers
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 isEntitledForAssistantIdentifiers];
+  hmd_message = [self hmd_message];
+  isEntitledForAssistantIdentifiers = [hmd_message isEntitledForAssistantIdentifiers];
 
-  return v2;
+  return isEntitledForAssistantIdentifiers;
 }
 
 - (uint64_t)hmd_isForXPCTransportEntitledForHomeLocationAccess
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 isEntitledForHomeLocationAccess];
+  hmd_message = [self hmd_message];
+  isEntitledForHomeLocationAccess = [hmd_message isEntitledForHomeLocationAccess];
 
-  return v2;
+  return isEntitledForHomeLocationAccess;
 }
 
 - (uint64_t)hmd_isForXPCTransportAuthorizedForLocationAccess
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 isAuthorizedForLocationAccess];
+  hmd_message = [self hmd_message];
+  isAuthorizedForLocationAccess = [hmd_message isAuthorizedForLocationAccess];
 
-  return v2;
+  return isAuthorizedForLocationAccess;
 }
 
 - (uint64_t)hmd_isForXPCTransportEntitledForSPIAccess
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 isEntitledForSPIAccess];
+  hmd_message = [self hmd_message];
+  isEntitledForSPIAccess = [hmd_message isEntitledForSPIAccess];
 
-  return v2;
+  return isEntitledForSPIAccess;
 }
 
 - (id)hmd_clientIdentifier
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 clientIdentifier];
+  hmd_message = [self hmd_message];
+  clientIdentifier = [hmd_message clientIdentifier];
 
-  return v2;
+  return clientIdentifier;
 }
 
 - (uint64_t)hmd_entitlements
 {
-  v1 = [a1 hmd_message];
-  v2 = [v1 entitlements];
+  hmd_message = [self hmd_message];
+  entitlements = [hmd_message entitlements];
 
-  return v2;
+  return entitlements;
 }
 
 - (uint64_t)hmd_homeManagerOptions
 {
-  v2 = [a1 hmd_message];
+  hmd_message = [self hmd_message];
 
-  if (!v2)
+  if (!hmd_message)
   {
     return -1;
   }
 
-  v3 = [a1 hmd_message];
-  v4 = [v3 homeManagerOptions];
+  hmd_message2 = [self hmd_message];
+  homeManagerOptions = [hmd_message2 homeManagerOptions];
 
-  return v4;
+  return homeManagerOptions;
 }
 
 - (void)hmd_message
 {
-  v1 = objc_getAssociatedObject(a1, @"kXPCMessageKey");
+  v1 = objc_getAssociatedObject(self, @"kXPCMessageKey");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -105,18 +105,18 @@
 
 - (uint64_t)hmd_isForXPCTransport
 {
-  v1 = objc_getAssociatedObject(a1, @"kXPCTransportTypeAssociationKey");
+  v1 = objc_getAssociatedObject(self, @"kXPCTransportTypeAssociationKey");
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

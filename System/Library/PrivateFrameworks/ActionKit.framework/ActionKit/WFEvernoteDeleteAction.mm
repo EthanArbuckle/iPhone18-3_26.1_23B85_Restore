@@ -1,18 +1,18 @@
 @interface WFEvernoteDeleteAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFEvernoteDeleteAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__WFEvernoteDeleteAction_runAsynchronouslyWithInput___block_invoke;
   v4[3] = &unk_278C1D740;
   v4[4] = self;
-  v3 = a3;
-  [v3 getObjectRepresentations:v4 forClass:objc_opt_class()];
+  inputCopy = input;
+  [inputCopy getObjectRepresentations:v4 forClass:objc_opt_class()];
 }
 
 void __53__WFEvernoteDeleteAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

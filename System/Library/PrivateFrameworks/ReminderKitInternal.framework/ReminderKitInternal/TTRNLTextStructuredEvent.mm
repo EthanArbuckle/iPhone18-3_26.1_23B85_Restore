@@ -1,21 +1,21 @@
 @interface TTRNLTextStructuredEvent
 - (NSArray)locations;
-- (TTRNLTextStructuredEvent)initWithStructuredEvent:(void *)a3;
+- (TTRNLTextStructuredEvent)initWithStructuredEvent:(void *)event;
 - (TTRNLTextStructuredEventRecurrentEvent)recurrentEvent;
 - (void)dealloc;
 @end
 
 @implementation TTRNLTextStructuredEvent
 
-- (TTRNLTextStructuredEvent)initWithStructuredEvent:(void *)a3
+- (TTRNLTextStructuredEvent)initWithStructuredEvent:(void *)event
 {
   v6.receiver = self;
   v6.super_class = TTRNLTextStructuredEvent;
   v4 = [(TTRNLTextStructuredEvent *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_structuredEvent = a3;
+    CFRetain(event);
+    v4->_structuredEvent = event;
   }
 
   return v4;

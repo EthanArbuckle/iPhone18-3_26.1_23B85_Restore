@@ -1,9 +1,9 @@
 @interface HDFitnessFriendActivitySnapshotEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)enumerateSnapshotsWithPredicate:(id)a3 anchor:(id *)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)enumerateSnapshotsWithPredicate:(id)predicate anchor:(id *)anchor profile:(id)profile error:(id *)error handler:(id)handler;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler;
 + (id)uniquedColumns;
 @end
 
@@ -21,28 +21,28 @@
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDFitnessFriendActivitySnapshotEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDFitnessFriendActivitySnapshotEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v28[19] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a5;
+  objectCopy = object;
+  dCopy = d;
+  databaseCopy = database;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"HDFitnessFriendActivitySnapshotEntity.m" lineNumber:121 description:{@"Subclasses must override %s", "+[HDFitnessFriendActivitySnapshotEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDFitnessFriendActivitySnapshotEntity.m" lineNumber:121 description:{@"Subclasses must override %s", "+[HDFitnessFriendActivitySnapshotEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v28[0] = @"data_id";
@@ -69,11 +69,11 @@
   v25[1] = 3221225472;
   v25[2] = __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v25[3] = &unk_278613DE8;
-  v26 = v13;
-  v27 = v12;
-  v17 = v12;
-  v18 = v13;
-  v19 = [a1 insertOrReplaceEntity:1 database:v14 properties:v16 error:a7 bindingHandler:v25];
+  v26 = dCopy;
+  v27 = objectCopy;
+  v17 = objectCopy;
+  v18 = dCopy;
+  v19 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v16 error:error bindingHandler:v25];
 
   if (v19)
   {
@@ -140,22 +140,22 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
   MEMORY[0x22AAC6B90](a2, @"timezone_offset", [v8 integerValue]);
 }
 
-+ (id)mergeDataObject:(id)a3 provenance:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7 insertHandler:(id)a8
++ (id)mergeDataObject:(id)object provenance:(id)provenance profile:(id)profile transaction:(id)transaction error:(id *)error insertHandler:(id)handler
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v34 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = [v13 friendUUID];
+  objectCopy = object;
+  provenanceCopy = provenance;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  friendUUID = [objectCopy friendUUID];
   v18 = HDFitnessFriendActivitySnapshotEntityPredicateForFriendUUID();
 
-  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v13, "snapshotIndex")}];
+  v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(objectCopy, "snapshotIndex")}];
   v20 = [MEMORY[0x277D10B18] predicateWithProperty:@"snapshot_index" equalToValue:v19];
 
   v21 = MEMORY[0x277D10B18];
-  v22 = [v13 sourceUUID];
+  sourceUUID = [objectCopy sourceUUID];
   v23 = _HDSQLiteValueForUUID();
   v24 = [v21 predicateWithProperty:@"source_uuid" equalToValue:v23];
 
@@ -182,10 +182,10 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
   v36[3] = &unk_278622358;
   v36[4] = &v43;
   v36[5] = &v37;
-  [a1 deleteSamplesWithPredicate:v27 limit:0 generateDeletedObjects:0 transaction:v15 profile:v14 recursiveDeleteAuthorizationBlock:0 completionHandler:v36];
+  [self deleteSamplesWithPredicate:v27 limit:0 generateDeletedObjects:0 transaction:transactionCopy profile:profileCopy recursiveDeleteAuthorizationBlock:0 completionHandler:v36];
   if (v44[3])
   {
-    v28 = v16[2](v16, v13, a7);
+    v28 = handlerCopy[2](handlerCopy, objectCopy, error);
   }
 
   else
@@ -194,10 +194,10 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
     v30 = v29;
     if (v29)
     {
-      if (a7)
+      if (error)
       {
         v31 = v29;
-        *a7 = v30;
+        *error = v30;
       }
 
       else
@@ -217,25 +217,25 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
   return v28;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addFitnessFriendActivitySnapshots:a3];
+    [collection addFitnessFriendActivitySnapshots:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (BOOL)enumerateSnapshotsWithPredicate:(id)a3 anchor:(id *)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7
++ (BOOL)enumerateSnapshotsWithPredicate:(id)predicate anchor:(id *)anchor profile:(id)profile error:(id *)error handler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  if (a4)
+  predicateCopy = predicate;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (anchor)
   {
-    v13 = *a4;
+    v13 = *anchor;
     v14 = *MEMORY[0x277D10A40];
     if (v13)
     {
@@ -255,14 +255,14 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
     v14 = *MEMORY[0x277D10A40];
   }
 
-  v16 = [(HDDataEntity *)HDFitnessFriendActivitySnapshotEntity entityEnumeratorWithProfile:v11];
-  v17 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v10 otherPredicate:v15];
+  v16 = [(HDDataEntity *)HDFitnessFriendActivitySnapshotEntity entityEnumeratorWithProfile:profileCopy];
+  v17 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:predicateCopy otherPredicate:v15];
   [v16 setPredicate:v17];
 
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
-  v31 = [v13 longLongValue];
+  longLongValue = [v13 longLongValue];
   v18 = [MEMORY[0x277D10B68] orderingTermWithProperty:v14 entityClass:objc_opt_class() ascending:1];
   v32[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
@@ -273,12 +273,12 @@ void __103__HDFitnessFriendActivitySnapshotEntity_insertDataObject_withProvenanc
   v25[2] = __102__HDFitnessFriendActivitySnapshotEntity_enumerateSnapshotsWithPredicate_anchor_profile_error_handler___block_invoke;
   v25[3] = &unk_278622330;
   v27 = &v28;
-  v20 = v12;
+  v20 = handlerCopy;
   v26 = v20;
-  v21 = [v16 enumerateWithError:a6 handler:v25];
-  if (a4)
+  v21 = [v16 enumerateWithError:error handler:v25];
+  if (anchor)
   {
-    *a4 = [MEMORY[0x277CCABB0] numberWithLongLong:v29[3]];
+    *anchor = [MEMORY[0x277CCABB0] numberWithLongLong:v29[3]];
   }
 
   _Block_object_dispose(&v28, 8);

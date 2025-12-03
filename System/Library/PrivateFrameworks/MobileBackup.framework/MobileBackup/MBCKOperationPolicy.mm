@@ -2,8 +2,8 @@
 + (id)authPromptReason;
 + (id)expensiveCellularPolicy;
 - (MBCKOperationPolicy)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)operationGroupWithName:(id)a3 processName:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)operationGroupWithName:(id)name processName:(id)processName;
 @end
 
 @implementation MBCKOperationPolicy
@@ -61,11 +61,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(MBCKOperationPolicy *)self cellularAccess];
-  v6 = [v5 copy];
+  cellularAccess = [(MBCKOperationPolicy *)self cellularAccess];
+  v6 = [cellularAccess copy];
   [v4 setCellularAccess:v6];
 
   [v4 setAutomaticallyRetryNetworkFailures:{-[MBCKOperationPolicy automaticallyRetryNetworkFailures](self, "automaticallyRetryNetworkFailures")}];
@@ -86,66 +86,66 @@
   return v4;
 }
 
-- (id)operationGroupWithName:(id)a3 processName:(id)a4
+- (id)operationGroupWithName:(id)name processName:(id)processName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  processNameCopy = processName;
   v8 = objc_opt_new();
-  v9 = [(MBCKOperationPolicy *)self cellularAccess];
-  v10 = v9;
-  if (v9)
+  cellularAccess = [(MBCKOperationPolicy *)self cellularAccess];
+  v10 = cellularAccess;
+  if (cellularAccess)
   {
-    v11 = [v9 allowsExpensiveNetworkAccess];
+    allowsExpensiveNetworkAccess = [cellularAccess allowsExpensiveNetworkAccess];
     [v8 setAllowsCellularAccess:1];
-    [v8 setAllowsExpensiveNetworkAccess:v11];
+    [v8 setAllowsExpensiveNetworkAccess:allowsExpensiveNetworkAccess];
   }
 
   else
   {
     [v8 setAllowsCellularAccess:0];
-    LODWORD(v11) = 0;
+    LODWORD(allowsExpensiveNetworkAccess) = 0;
   }
 
   [v8 setQualityOfService:{-[MBCKOperationPolicy qualityOfService](self, "qualityOfService")}];
   [v8 setDiscretionaryNetworkBehavior:0];
   [v8 setAutomaticallyRetryNetworkFailures:{-[MBCKOperationPolicy automaticallyRetryNetworkFailures](self, "automaticallyRetryNetworkFailures")}];
   v12 = objc_opt_new();
-  if (v6 && v7)
+  if (nameCopy && processNameCopy)
   {
-    v13 = [[NSString alloc] initWithFormat:@"%@|%@", v6, v7];
+    processNameCopy = [[NSString alloc] initWithFormat:@"%@|%@", nameCopy, processNameCopy];
 
-    v6 = v13;
+    nameCopy = processNameCopy;
   }
 
-  if (v6)
+  if (nameCopy)
   {
-    [v12 setName:v6];
+    [v12 setName:nameCopy];
   }
 
   [v12 setDefaultConfiguration:v8];
-  v14 = [objc_opt_class() authPromptReason];
-  [v12 setAuthPromptReason:v14];
+  authPromptReason = [objc_opt_class() authPromptReason];
+  [v12 setAuthPromptReason:authPromptReason];
 
-  v15 = [v12 name];
+  name = [v12 name];
 
   v16 = MBGetDefaultLog();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
-  if (v15)
+  if (name)
   {
     if (!v17)
     {
       goto LABEL_15;
     }
 
-    v29 = v7;
+    v29 = processNameCopy;
     v18 = v10 != 0;
-    v19 = [v12 name];
+    name2 = [v12 name];
     [v12 operationGroupID];
     v20 = v28 = v10;
     [(MBCKOperationPolicy *)self qualityOfService];
     v21 = MBLogStringForNSQualityOfService();
     *buf = 138544386;
-    v31 = v19;
+    v31 = name2;
     v32 = 2114;
     v33 = v20;
     v34 = 2112;
@@ -153,12 +153,12 @@
     *&v35[8] = 1024;
     v36 = v18;
     v37 = 1024;
-    v38 = v11;
+    v38 = allowsExpensiveNetworkAccess;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "=ck-op= Created operation group, gn:%{public}@, gid:%{public}@, qos:%@, ac:%d(%d)", buf, 0x2Cu);
 
     v10 = v28;
-    v22 = [v12 name];
-    v23 = [v12 operationGroupID];
+    name3 = [v12 name];
+    operationGroupID = [v12 operationGroupID];
     [(MBCKOperationPolicy *)self qualityOfService];
     v27 = MBLogStringForNSQualityOfService();
     _MBLog();
@@ -171,27 +171,27 @@
       goto LABEL_15;
     }
 
-    v29 = v7;
-    v24 = [v12 operationGroupID];
+    v29 = processNameCopy;
+    operationGroupID2 = [v12 operationGroupID];
     [(MBCKOperationPolicy *)self qualityOfService];
     v25 = MBLogStringForNSQualityOfService();
     *buf = 138544130;
-    v31 = v24;
+    v31 = operationGroupID2;
     v32 = 2114;
     v33 = v25;
     v34 = 1024;
     *v35 = v10 != 0;
     *&v35[4] = 1024;
-    *&v35[6] = v11;
+    *&v35[6] = allowsExpensiveNetworkAccess;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "=ck-op= Created operation group, gid:%{public}@, qos:%{public}@, ac:%d(%d)", buf, 0x22u);
 
-    v22 = [v12 operationGroupID];
+    name3 = [v12 operationGroupID];
     [(MBCKOperationPolicy *)self qualityOfService];
-    v23 = MBLogStringForNSQualityOfService();
+    operationGroupID = MBLogStringForNSQualityOfService();
     _MBLog();
   }
 
-  v7 = v29;
+  processNameCopy = v29;
 LABEL_15:
 
   if (!v12)

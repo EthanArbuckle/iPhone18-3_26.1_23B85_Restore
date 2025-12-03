@@ -1,25 +1,25 @@
 @interface MFMailDropBannerView
 - (MFMailDropBannerDelegate)delegate;
-- (MFMailDropBannerView)initWithFrame:(CGRect)a3;
+- (MFMailDropBannerView)initWithFrame:(CGRect)frame;
 - (void)_setupDownloadIcon;
 - (void)_setupDownloadLabel;
 - (void)_setupExpirationLabel;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)setBannerState:(unint64_t)a3;
-- (void)setBottomSeparatorIsHidden:(BOOL)a3;
-- (void)setDownloadProgress:(double)a3;
-- (void)startDownload:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)setBannerState:(unint64_t)state;
+- (void)setBottomSeparatorIsHidden:(BOOL)hidden;
+- (void)setDownloadProgress:(double)progress;
+- (void)startDownload:(id)download;
 - (void)updateConstraints;
 @end
 
 @implementation MFMailDropBannerView
 
-- (MFMailDropBannerView)initWithFrame:(CGRect)a3
+- (MFMailDropBannerView)initWithFrame:(CGRect)frame
 {
   v75[11] = *MEMORY[0x277D85DE8];
   v74.receiver = self;
   v74.super_class = MFMailDropBannerView;
-  v3 = [(MFMessageHeaderViewBlock *)&v74 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageHeaderViewBlock *)&v74 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,8 +34,8 @@
     v4->_downloadLabel = v10;
 
     v12 = v4->_downloadLabel;
-    v13 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v12 setTextColor:labelColor];
 
     v14 = v4->_downloadLabel;
     v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
@@ -49,8 +49,8 @@
     v4->_expirationLabel = v16;
 
     v18 = v4->_expirationLabel;
-    v19 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v18 setTextColor:secondaryLabelColor];
 
     v20 = v4->_expirationLabel;
     v21 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
@@ -59,8 +59,8 @@
     [(UILabel *)v4->_expirationLabel setNumberOfLines:0];
     [(UILabel *)v4->_expirationLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFMailDropBannerView *)v4 addSubview:v4->_expirationLabel];
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x277D76810] object:0];
 
     v23 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v6, v7, v8, v9}];
     downloadIcon = v4->_downloadIcon;
@@ -69,8 +69,8 @@
     LODWORD(v25) = -16.0;
     [(UIButton *)v4->_downloadIcon setCharge:v25];
     [(UIButton *)v4->_downloadIcon setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(MFMailDropBannerView *)v4 tintColor];
-    [(UIButton *)v4->_downloadIcon setTintColor:v26];
+    tintColor = [(MFMailDropBannerView *)v4 tintColor];
+    [(UIButton *)v4->_downloadIcon setTintColor:tintColor];
 
     [(MFMailDropBannerView *)v4 addSubview:v4->_downloadIcon];
     v27 = [objc_alloc(MEMORY[0x277CD68A8]) initWithProgressViewStyle:0 stroke:2.0 frame:{0.0, 0.0, 26.0, 26.0}];
@@ -80,64 +80,64 @@
     [(MFProgressView *)v4->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MFProgressView *)v4->_progressView setHidden:1];
     [(MFMailDropBannerView *)v4 addSubview:v4->_progressView];
-    v73 = [(MFMailDropBannerView *)v4 layoutMarginsGuide];
-    v29 = [(UILabel *)v4->_downloadLabel firstBaselineAnchor];
-    v30 = [(MFMailDropBannerView *)v4 topAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:0.0];
+    layoutMarginsGuide = [(MFMailDropBannerView *)v4 layoutMarginsGuide];
+    firstBaselineAnchor = [(UILabel *)v4->_downloadLabel firstBaselineAnchor];
+    topAnchor = [(MFMailDropBannerView *)v4 topAnchor];
+    v31 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:0.0];
     labelFirstBaseline = v4->_labelFirstBaseline;
     v4->_labelFirstBaseline = v31;
 
-    v33 = [(UILabel *)v4->_expirationLabel firstBaselineAnchor];
-    v34 = [(UILabel *)v4->_downloadLabel lastBaselineAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:0.0];
+    firstBaselineAnchor2 = [(UILabel *)v4->_expirationLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_downloadLabel lastBaselineAnchor];
+    v35 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:0.0];
     expirationFirstBaseline = v4->_expirationFirstBaseline;
     v4->_expirationFirstBaseline = v35;
 
-    v37 = [(UILabel *)v4->_expirationLabel bottomAnchor];
-    v38 = [(MFMailDropBannerView *)v4 bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38 constant:0.0];
+    bottomAnchor = [(UILabel *)v4->_expirationLabel bottomAnchor];
+    bottomAnchor2 = [(MFMailDropBannerView *)v4 bottomAnchor];
+    v39 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     expirationBottom = v4->_expirationBottom;
     v4->_expirationBottom = v39;
 
     v75[0] = v4->_labelFirstBaseline;
-    v72 = [(UILabel *)v4->_downloadLabel leadingAnchor];
-    v67 = [v73 leadingAnchor];
-    v66 = [v72 constraintEqualToAnchor:?];
+    leadingAnchor = [(UILabel *)v4->_downloadLabel leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v66 = [leadingAnchor constraintEqualToAnchor:?];
     v75[1] = v66;
-    v71 = [(UILabel *)v4->_downloadLabel trailingAnchor];
-    v65 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
-    v64 = [v65 leadingAnchor];
-    v63 = [v71 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor = [(UILabel *)v4->_downloadLabel trailingAnchor];
+    trailingAccessoryViewLayoutGuide = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
+    leadingAnchor3 = [trailingAccessoryViewLayoutGuide leadingAnchor];
+    v63 = [trailingAnchor constraintLessThanOrEqualToAnchor:?];
     v75[2] = v63;
     v75[3] = v4->_expirationFirstBaseline;
     v75[4] = v4->_expirationBottom;
-    v70 = [(UILabel *)v4->_expirationLabel leadingAnchor];
-    v62 = [(UILabel *)v4->_downloadLabel leadingAnchor];
-    v61 = [v70 constraintEqualToAnchor:?];
+    leadingAnchor4 = [(UILabel *)v4->_expirationLabel leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v4->_downloadLabel leadingAnchor];
+    v61 = [leadingAnchor4 constraintEqualToAnchor:?];
     v75[5] = v61;
-    v69 = [(UILabel *)v4->_expirationLabel trailingAnchor];
-    v60 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
-    v59 = [v60 leadingAnchor];
-    v58 = [v69 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor2 = [(UILabel *)v4->_expirationLabel trailingAnchor];
+    trailingAccessoryViewLayoutGuide2 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
+    leadingAnchor6 = [trailingAccessoryViewLayoutGuide2 leadingAnchor];
+    v58 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:?];
     v75[6] = v58;
-    v68 = [(UIButton *)v4->_downloadIcon centerXAnchor];
-    v57 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
-    v56 = [v57 centerXAnchor];
-    v55 = [v68 constraintEqualToAnchor:?];
+    centerXAnchor = [(UIButton *)v4->_downloadIcon centerXAnchor];
+    trailingAccessoryViewLayoutGuide3 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
+    centerXAnchor2 = [trailingAccessoryViewLayoutGuide3 centerXAnchor];
+    v55 = [centerXAnchor constraintEqualToAnchor:?];
     v75[7] = v55;
-    v54 = [(UIButton *)v4->_downloadIcon centerYAnchor];
-    v41 = [(MFMailDropBannerView *)v4 centerYAnchor];
-    v53 = [v54 constraintEqualToAnchor:v41];
+    centerYAnchor = [(UIButton *)v4->_downloadIcon centerYAnchor];
+    centerYAnchor2 = [(MFMailDropBannerView *)v4 centerYAnchor];
+    v53 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v75[8] = v53;
-    v42 = [(MFProgressView *)v4->_progressView centerXAnchor];
-    v43 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
-    v44 = [v43 centerXAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44];
+    centerXAnchor3 = [(MFProgressView *)v4->_progressView centerXAnchor];
+    trailingAccessoryViewLayoutGuide4 = [(MFMessageHeaderViewBlock *)v4 trailingAccessoryViewLayoutGuide];
+    centerXAnchor4 = [trailingAccessoryViewLayoutGuide4 centerXAnchor];
+    v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v75[9] = v45;
-    v46 = [(MFProgressView *)v4->_progressView centerYAnchor];
-    v47 = [(MFMailDropBannerView *)v4 centerYAnchor];
-    v48 = v41;
-    v49 = [v46 constraintEqualToAnchor:v47];
+    centerYAnchor3 = [(MFProgressView *)v4->_progressView centerYAnchor];
+    centerYAnchor4 = [(MFMailDropBannerView *)v4 centerYAnchor];
+    v48 = centerYAnchor2;
+    v49 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v75[10] = v49;
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:11];
 
@@ -148,12 +148,12 @@
   return v4;
 }
 
-- (void)setBannerState:(unint64_t)a3
+- (void)setBannerState:(unint64_t)state
 {
   if (self->_metaData)
   {
-    v3 = [MEMORY[0x277D071B8] mainThreadScheduler];
-    [v3 performBlock:&v4];
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+    [mainThreadScheduler performBlock:&v4];
   }
 }
 
@@ -201,8 +201,8 @@ LABEL_7:
 {
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
-  v5 = [(MFMessageHeaderViewBlock *)self displayMetrics];
-  [v5 avatarDiameterForCurrentContentSize];
+  displayMetrics = [(MFMessageHeaderViewBlock *)self displayMetrics];
+  [displayMetrics avatarDiameterForCurrentContentSize];
   [(NSLayoutConstraint *)self->_iconWrapperWidth setConstant:?];
 
   [v3 _bodyLeading];
@@ -218,7 +218,7 @@ LABEL_7:
 
 - (void)_setupDownloadLabel
 {
-  v3 = [(EMMailDropMetadata *)self->_metaData flags];
+  flags = [(EMMailDropMetadata *)self->_metaData flags];
   bannerState = self->_bannerState;
   if (bannerState <= 2)
   {
@@ -228,28 +228,28 @@ LABEL_7:
       {
         if (([(EMMailDropMetadata *)self->_metaData flags]& 4) != 0)
         {
-          v5 = [MEMORY[0x277CCA8D8] mainBundle];
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_MIXED" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_MIXED" value:&stru_2826D1AD8 table:@"Main"];
         }
 
         else
         {
-          v5 = [MEMORY[0x277CCA8D8] mainBundle];
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_IMAGE" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_IMAGE" value:&stru_2826D1AD8 table:@"Main"];
         }
       }
 
       else
       {
         [MEMORY[0x277CCA8D8] mainBundle];
-        if ((v3 & 0x10) != 0)
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_NONIMAGE_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
+        if ((flags & 0x10) != 0)
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_NONIMAGE_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
         }
 
         else
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_NONIMAGE" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_SAVE_NONIMAGE" value:&stru_2826D1AD8 table:@"Main"];
         }
       }
     }
@@ -259,8 +259,8 @@ LABEL_7:
       if (bannerState != 2)
       {
 LABEL_19:
-        v5 = [MEMORY[0x277CCA8D8] mainBundle];
-        v6 = [v5 localizedStringForKey:@"MAIL_DROP_BANNER_ERROR" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v6 = [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_ERROR" value:&stru_2826D1AD8 table:@"Main"];
         goto LABEL_20;
       }
 
@@ -268,34 +268,34 @@ LABEL_19:
       {
         if (([(EMMailDropMetadata *)self->_metaData flags]& 4) == 0)
         {
-          v5 = [MEMORY[0x277CCA8D8] mainBundle];
-          v6 = [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_IMAGES" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v6 = [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_IMAGES" value:&stru_2826D1AD8 table:@"Main"];
           goto LABEL_20;
         }
 
         [MEMORY[0x277CCA8D8] mainBundle];
-        if ((v3 & 0x10) != 0)
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_MIXED_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
+        if ((flags & 0x10) != 0)
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_MIXED_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
         }
 
         else
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_MIXED" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_MIXED" value:&stru_2826D1AD8 table:@"Main"];
         }
       }
 
       else
       {
         [MEMORY[0x277CCA8D8] mainBundle];
-        if ((v3 & 0x10) != 0)
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_NONIMAGE_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
+        if ((flags & 0x10) != 0)
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_NONIMAGE_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
         }
 
         else
-          v5 = {;
-          [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_NONIMAGE" value:&stru_2826D1AD8 table:@"Main"];
+          mainBundle = {;
+          [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADING_NONIMAGE" value:&stru_2826D1AD8 table:@"Main"];
         }
       }
     }
@@ -307,28 +307,28 @@ LABEL_19:
     {
       if (([(EMMailDropMetadata *)self->_metaData flags]& 4) != 0)
       {
-        v5 = [MEMORY[0x277CCA8D8] mainBundle];
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_MIXED" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_MIXED" value:&stru_2826D1AD8 table:@"Main"];
       }
 
       else
       {
-        v5 = [MEMORY[0x277CCA8D8] mainBundle];
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_IMAGE" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_IMAGE" value:&stru_2826D1AD8 table:@"Main"];
       }
     }
 
     else
     {
       [MEMORY[0x277CCA8D8] mainBundle];
-      if ((v3 & 0x10) != 0)
-        v5 = {;
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
+      if ((flags & 0x10) != 0)
+        mainBundle = {;
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
       }
 
       else
-        v5 = {;
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = {;
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_DOWNLOADED" value:&stru_2826D1AD8 table:@"Main"];
       }
     }
   }
@@ -344,28 +344,28 @@ LABEL_19:
     {
       if (([(EMMailDropMetadata *)self->_metaData flags]& 4) != 0)
       {
-        v5 = [MEMORY[0x277CCA8D8] mainBundle];
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT" value:&stru_2826D1AD8 table:@"Main"];
       }
 
       else
       {
-        v5 = [MEMORY[0x277CCA8D8] mainBundle];
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_FULL_RES" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_FULL_RES" value:&stru_2826D1AD8 table:@"Main"];
       }
     }
 
     else
     {
       [MEMORY[0x277CCA8D8] mainBundle];
-      if ((v3 & 0x10) != 0)
-        v5 = {;
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
+      if ((flags & 0x10) != 0)
+        mainBundle = {;
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT_PLURAL" value:&stru_2826D1AD8 table:@"Main"];
       }
 
       else
-        v5 = {;
-        [v5 localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT" value:&stru_2826D1AD8 table:@"Main"];
+        mainBundle = {;
+        [mainBundle localizedStringForKey:@"MAIL_DROP_BANNER_ATTACHMENT" value:&stru_2826D1AD8 table:@"Main"];
       }
     }
   }
@@ -379,7 +379,7 @@ LABEL_20:
 - (void)_setupExpirationLabel
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = a2;
   _os_log_error_impl(&dword_2149C9000, log, OS_LOG_TYPE_ERROR, "#Attachments nil date string result for meta data [%@] expiration [%@]", buf, 0x16u);
@@ -400,8 +400,8 @@ LABEL_20:
   v6[4] = self;
   v4 = v3;
   v7 = v4;
-  v5 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  [v5 performBlock:v6];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v6];
 }
 
 void __42__MFMailDropBannerView__setupDownloadIcon__block_invoke(uint64_t a1, void *a2, int a3)
@@ -475,25 +475,25 @@ LABEL_11:
   return [v8 setNeedsDisplay];
 }
 
-- (void)startDownload:(id)a3
+- (void)startDownload:(id)download
 {
   [(MFMailDropBannerView *)self setBannerState:2];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained mailDropBannerDidTriggerDownload:self];
 }
 
-- (void)setDownloadProgress:(double)a3
+- (void)setDownloadProgress:(double)progress
 {
-  self->_downloadProgress = a3;
+  self->_downloadProgress = progress;
   if ([(MFMailDropBannerView *)self _shouldDisplayProgress])
   {
     progressView = self->_progressView;
 
-    [(MFProgressView *)progressView setProgress:a3];
+    [(MFProgressView *)progressView setProgress:progress];
   }
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   downloadLabel = self->_downloadLabel;
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
@@ -508,7 +508,7 @@ LABEL_11:
   [(MFMailDropBannerView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setBottomSeparatorIsHidden:(BOOL)a3
+- (void)setBottomSeparatorIsHidden:(BOOL)hidden
 {
   v3.receiver = self;
   v3.super_class = MFMailDropBannerView;

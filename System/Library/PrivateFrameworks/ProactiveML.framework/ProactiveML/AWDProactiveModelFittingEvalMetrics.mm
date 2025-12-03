@@ -1,63 +1,63 @@
 @interface AWDProactiveModelFittingEvalMetrics
-+ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)a3 f1:(float)a4;
-+ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)a3 f1:(float)a4 truePositives:(unint64_t)a5 trueNegatives:(unint64_t)a6 falsePositives:(unint64_t)a7 falseNegatives:(unint64_t)a8;
-- (BOOL)isEqual:(id)a3;
-- (float)negativeScoresAtIndex:(unint64_t)a3;
-- (float)positiveScoresAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)rmse f1:(float)f1;
++ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)rmse f1:(float)f1 truePositives:(unint64_t)positives trueNegatives:(unint64_t)negatives falsePositives:(unint64_t)falsePositives falseNegatives:(unint64_t)falseNegatives;
+- (BOOL)isEqual:(id)equal;
+- (float)negativeScoresAtIndex:(unint64_t)index;
+- (float)positiveScoresAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)toDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasF1:(BOOL)a3;
-- (void)setHasFalsePositives:(BOOL)a3;
-- (void)setHasRmse:(BOOL)a3;
-- (void)setHasSecsToExecute:(BOOL)a3;
-- (void)setHasTrueNegatives:(BOOL)a3;
-- (void)setHasTruePositives:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasF1:(BOOL)f1;
+- (void)setHasFalsePositives:(BOOL)positives;
+- (void)setHasRmse:(BOOL)rmse;
+- (void)setHasSecsToExecute:(BOOL)execute;
+- (void)setHasTrueNegatives:(BOOL)negatives;
+- (void)setHasTruePositives:(BOOL)positives;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingEvalMetrics
 
-+ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)a3 f1:(float)a4 truePositives:(unint64_t)a5 trueNegatives:(unint64_t)a6 falsePositives:(unint64_t)a7 falseNegatives:(unint64_t)a8
++ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)rmse f1:(float)f1 truePositives:(unint64_t)positives trueNegatives:(unint64_t)negatives falsePositives:(unint64_t)falsePositives falseNegatives:(unint64_t)falseNegatives
 {
   v14 = objc_opt_new();
-  *&v15 = a3;
+  *&v15 = rmse;
   [v14 setRmse:v15];
-  *&v16 = a4;
+  *&v16 = f1;
   [v14 setF1:v16];
-  [v14 setTruePositives:a5];
-  [v14 setTrueNegatives:a6];
-  [v14 setFalsePositives:a7];
-  [v14 setFalseNegatives:a8];
+  [v14 setTruePositives:positives];
+  [v14 setTrueNegatives:negatives];
+  [v14 setFalsePositives:falsePositives];
+  [v14 setFalseNegatives:falseNegatives];
 
   return v14;
 }
 
-+ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)a3 f1:(float)a4
++ (AWDProactiveModelFittingEvalMetrics)evalMetricsWithRmse:(float)rmse f1:(float)f1
 {
   v6 = objc_opt_new();
-  *&v7 = a3;
+  *&v7 = rmse;
   [v6 setRmse:v7];
-  *&v8 = a4;
+  *&v8 = f1;
   [v6 setF1:v8];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 100);
+  fromCopy = from;
+  v5 = *(fromCopy + 100);
   if ((v5 & 0x20) != 0)
   {
-    self->_rmse = *(v4 + 23);
+    self->_rmse = *(fromCopy + 23);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 100);
+    v5 = *(fromCopy + 100);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -70,14 +70,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) == 0)
+  else if ((*(fromCopy + 100) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_f1 = *(v4 + 22);
+  self->_f1 = *(fromCopy + 22);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -90,9 +90,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_truePositives = *(v4 + 10);
+  self->_truePositives = *(fromCopy + 10);
   *&self->_has |= 8u;
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -105,9 +105,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_trueNegatives = *(v4 + 9);
+  self->_trueNegatives = *(fromCopy + 9);
   *&self->_has |= 4u;
-  v5 = *(v4 + 100);
+  v5 = *(fromCopy + 100);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -120,21 +120,21 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_falsePositives = *(v4 + 8);
+  self->_falsePositives = *(fromCopy + 8);
   *&self->_has |= 2u;
-  if (*(v4 + 100))
+  if (*(fromCopy + 100))
   {
 LABEL_7:
-    self->_falseNegatives = *(v4 + 7);
+    self->_falseNegatives = *(fromCopy + 7);
     *&self->_has |= 1u;
   }
 
 LABEL_8:
-  v12 = v4;
-  v6 = [v4 positiveScoresCount];
-  if (v6)
+  v12 = fromCopy;
+  positiveScoresCount = [fromCopy positiveScoresCount];
+  if (positiveScoresCount)
   {
-    v7 = v6;
+    v7 = positiveScoresCount;
     for (i = 0; i != v7; ++i)
     {
       [v12 positiveScoresAtIndex:i];
@@ -142,10 +142,10 @@ LABEL_8:
     }
   }
 
-  v9 = [v12 negativeScoresCount];
-  if (v9)
+  negativeScoresCount = [v12 negativeScoresCount];
+  if (negativeScoresCount)
   {
-    v10 = v9;
+    v10 = negativeScoresCount;
     for (j = 0; j != v10; ++j)
     {
       [v12 negativeScoresAtIndex:j];
@@ -332,24 +332,24 @@ LABEL_28:
   return v10 ^ v5 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(equalCopy + 100);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 100) & 0x20) == 0 || self->_rmse != *(v4 + 23))
+    if ((*(equalCopy + 100) & 0x20) == 0 || self->_rmse != *(equalCopy + 23))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 100) & 0x20) != 0)
+  else if ((*(equalCopy + 100) & 0x20) != 0)
   {
 LABEL_38:
     v6 = 0;
@@ -358,65 +358,65 @@ LABEL_38:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 100) & 0x10) == 0 || self->_f1 != *(v4 + 22))
+    if ((*(equalCopy + 100) & 0x10) == 0 || self->_f1 != *(equalCopy + 22))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) != 0)
+  else if ((*(equalCopy + 100) & 0x10) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 100) & 8) == 0 || self->_truePositives != *(v4 + 10))
+    if ((*(equalCopy + 100) & 8) == 0 || self->_truePositives != *(equalCopy + 10))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 100) & 8) != 0)
+  else if ((*(equalCopy + 100) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_trueNegatives != *(v4 + 9))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_trueNegatives != *(equalCopy + 9))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_falsePositives != *(v4 + 8))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_falsePositives != *(equalCopy + 8))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_falseNegatives != *(v4 + 7))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_falseNegatives != *(equalCopy + 7))
     {
       goto LABEL_38;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_38;
   }
@@ -426,10 +426,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v6 = (*(v4 + 100) & 0x40) == 0;
+  v6 = (*(equalCopy + 100) & 0x40) == 0;
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 100) & 0x40) == 0 || self->_secsToExecute != *(v4 + 24))
+    if ((*(equalCopy + 100) & 0x40) == 0 || self->_secsToExecute != *(equalCopy + 24))
     {
       goto LABEL_38;
     }
@@ -442,9 +442,9 @@ LABEL_39:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -535,14 +535,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[23] = LODWORD(self->_rmse);
-    *(v4 + 100) |= 0x20u;
+    toCopy[23] = LODWORD(self->_rmse);
+    *(toCopy + 100) |= 0x20u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -561,8 +561,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[22] = LODWORD(self->_f1);
-  *(v4 + 100) |= 0x10u;
+  toCopy[22] = LODWORD(self->_f1);
+  *(toCopy + 100) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -576,8 +576,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_truePositives;
-  *(v4 + 100) |= 8u;
+  *(toCopy + 10) = self->_truePositives;
+  *(toCopy + 100) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -588,8 +588,8 @@ LABEL_5:
     }
 
 LABEL_25:
-    *(v4 + 8) = self->_falsePositives;
-    *(v4 + 100) |= 2u;
+    *(toCopy + 8) = self->_falsePositives;
+    *(toCopy + 100) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_8;
@@ -599,8 +599,8 @@ LABEL_25:
   }
 
 LABEL_24:
-  *(v4 + 9) = self->_trueNegatives;
-  *(v4 + 100) |= 4u;
+  *(toCopy + 9) = self->_trueNegatives;
+  *(toCopy + 100) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -611,19 +611,19 @@ LABEL_6:
   if (has)
   {
 LABEL_7:
-    *(v4 + 7) = self->_falseNegatives;
-    *(v4 + 100) |= 1u;
+    *(toCopy + 7) = self->_falseNegatives;
+    *(toCopy + 100) |= 1u;
   }
 
 LABEL_8:
-  v12 = v4;
+  v12 = toCopy;
   if ([(AWDProactiveModelFittingEvalMetrics *)self positiveScoresCount])
   {
     [v12 clearPositiveScores];
-    v6 = [(AWDProactiveModelFittingEvalMetrics *)self positiveScoresCount];
-    if (v6)
+    positiveScoresCount = [(AWDProactiveModelFittingEvalMetrics *)self positiveScoresCount];
+    if (positiveScoresCount)
     {
-      v7 = v6;
+      v7 = positiveScoresCount;
       for (i = 0; i != v7; ++i)
       {
         [(AWDProactiveModelFittingEvalMetrics *)self positiveScoresAtIndex:i];
@@ -635,10 +635,10 @@ LABEL_8:
   if ([(AWDProactiveModelFittingEvalMetrics *)self negativeScoresCount])
   {
     [v12 clearNegativeScores];
-    v9 = [(AWDProactiveModelFittingEvalMetrics *)self negativeScoresCount];
-    if (v9)
+    negativeScoresCount = [(AWDProactiveModelFittingEvalMetrics *)self negativeScoresCount];
+    if (negativeScoresCount)
     {
-      v10 = v9;
+      v10 = negativeScoresCount;
       for (j = 0; j != v10; ++j)
       {
         [(AWDProactiveModelFittingEvalMetrics *)self negativeScoresAtIndex:j];
@@ -654,9 +654,9 @@ LABEL_8:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -782,13 +782,13 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     *&v4 = self->_rmse;
     v12 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v12 forKey:@"rmse"];
+    [dictionary setObject:v12 forKey:@"rmse"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -810,7 +810,7 @@ LABEL_3:
 
   *&v4 = self->_f1;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v13 forKey:@"f1"];
+  [dictionary setObject:v13 forKey:@"f1"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -826,7 +826,7 @@ LABEL_4:
 
 LABEL_15:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_truePositives];
-  [v3 setObject:v14 forKey:@"truePositives"];
+  [dictionary setObject:v14 forKey:@"truePositives"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -842,7 +842,7 @@ LABEL_5:
 
 LABEL_16:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_trueNegatives];
-  [v3 setObject:v15 forKey:@"trueNegatives"];
+  [dictionary setObject:v15 forKey:@"trueNegatives"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -858,30 +858,30 @@ LABEL_6:
 
 LABEL_17:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_falsePositives];
-  [v3 setObject:v16 forKey:@"falsePositives"];
+  [dictionary setObject:v16 forKey:@"falsePositives"];
 
   if (*&self->_has)
   {
 LABEL_7:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_falseNegatives];
-    [v3 setObject:v6 forKey:@"falseNegatives"];
+    [dictionary setObject:v6 forKey:@"falseNegatives"];
   }
 
 LABEL_8:
   v7 = PBRepeatedFloatNSArray();
-  [v3 setObject:v7 forKey:@"positiveScores"];
+  [dictionary setObject:v7 forKey:@"positiveScores"];
 
   v8 = PBRepeatedFloatNSArray();
-  [v3 setObject:v8 forKey:@"negativeScores"];
+  [dictionary setObject:v8 forKey:@"negativeScores"];
 
   if ((*&self->_has & 0x40) != 0)
   {
     *&v9 = self->_secsToExecute;
     v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-    [v3 setObject:v10 forKey:@"secsToExecute"];
+    [dictionary setObject:v10 forKey:@"secsToExecute"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -890,15 +890,15 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingEvalMetrics;
   v4 = [(AWDProactiveModelFittingEvalMetrics *)&v8 description];
-  v5 = [(AWDProactiveModelFittingEvalMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingEvalMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSecsToExecute:(BOOL)a3
+- (void)setHasSecsToExecute:(BOOL)execute
 {
-  if (a3)
+  if (execute)
   {
     v3 = 64;
   }
@@ -911,41 +911,41 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (float)negativeScoresAtIndex:(unint64_t)a3
+- (float)negativeScoresAtIndex:(unint64_t)index
 {
   p_negativeScores = &self->_negativeScores;
   count = self->_negativeScores.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_negativeScores->list[a3];
+  return p_negativeScores->list[index];
 }
 
-- (float)positiveScoresAtIndex:(unint64_t)a3
+- (float)positiveScoresAtIndex:(unint64_t)index
 {
   p_positiveScores = &self->_positiveScores;
   count = self->_positiveScores.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_positiveScores->list[a3];
+  return p_positiveScores->list[index];
 }
 
-- (void)setHasFalsePositives:(BOOL)a3
+- (void)setHasFalsePositives:(BOOL)positives
 {
-  if (a3)
+  if (positives)
   {
     v3 = 2;
   }
@@ -958,9 +958,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTrueNegatives:(BOOL)a3
+- (void)setHasTrueNegatives:(BOOL)negatives
 {
-  if (a3)
+  if (negatives)
   {
     v3 = 4;
   }
@@ -973,9 +973,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTruePositives:(BOOL)a3
+- (void)setHasTruePositives:(BOOL)positives
 {
-  if (a3)
+  if (positives)
   {
     v3 = 8;
   }
@@ -988,9 +988,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasF1:(BOOL)a3
+- (void)setHasF1:(BOOL)f1
 {
-  if (a3)
+  if (f1)
   {
     v3 = 16;
   }
@@ -1003,9 +1003,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasRmse:(BOOL)a3
+- (void)setHasRmse:(BOOL)rmse
 {
-  if (a3)
+  if (rmse)
   {
     v3 = 32;
   }

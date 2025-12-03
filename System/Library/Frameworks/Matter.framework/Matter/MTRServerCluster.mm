@@ -1,9 +1,9 @@
 @interface MTRServerCluster
 + (id)newDescriptorCluster;
-- (BOOL)addAttribute:(id)a3;
-- (BOOL)addToEndpoint:(unsigned __int16)a3;
-- (BOOL)associateWithController:(id)a3;
-- (MTRServerCluster)initWithClusterID:(id)a3 revision:(id)a4;
+- (BOOL)addAttribute:(id)attribute;
+- (BOOL)addToEndpoint:(unsigned __int16)endpoint;
+- (BOOL)associateWithController:(id)controller;
+- (MTRServerCluster)initWithClusterID:(id)d revision:(id)revision;
 - (NSArray)acceptedCommands;
 - (NSArray)accessGrants;
 - (NSArray)attributes;
@@ -15,25 +15,25 @@
 - (unsigned)matterAcceptedCommands;
 - (unsigned)matterGeneratedCommands;
 - (unsigned)parentEndpoint;
-- (void)addAccessGrant:(id)a3;
+- (void)addAccessGrant:(id)grant;
 - (void)invalidate;
 - (void)registerMatterCluster;
-- (void)removeAccessGrant:(id)a3;
-- (void)setAcceptedCommands:(id)a3;
-- (void)setGeneratedCommands:(id)a3;
+- (void)removeAccessGrant:(id)grant;
+- (void)setAcceptedCommands:(id)commands;
+- (void)setGeneratedCommands:(id)commands;
 - (void)unregisterMatterCluster;
 @end
 
 @implementation MTRServerCluster
 
-- (MTRServerCluster)initWithClusterID:(id)a3 revision:(id)a4
+- (MTRServerCluster)initWithClusterID:(id)d revision:(id)revision
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 unsignedLongLongValue];
-  v9 = v8;
-  if (HIDWORD(v8))
+  dCopy = d;
+  revisionCopy = revision;
+  unsignedLongLongValue = [dCopy unsignedLongLongValue];
+  v9 = unsignedLongLongValue;
+  if (HIDWORD(unsignedLongLongValue))
   {
     v11 = sub_2393D9044(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -51,14 +51,14 @@
     goto LABEL_23;
   }
 
-  if (v8 > 0xFFF4FFFF)
+  if (unsignedLongLongValue > 0xFFF4FFFF)
   {
     goto LABEL_20;
   }
 
-  if (v8 >= 0x8000)
+  if (unsignedLongLongValue >= 0x8000)
   {
-    if (v8 >= 0x10000 && (v8 + 1024) < 0x3FFu)
+    if (unsignedLongLongValue >= 0x10000 && (unsignedLongLongValue + 1024) < 0x3FFu)
     {
       goto LABEL_15;
     }
@@ -80,7 +80,7 @@ LABEL_20:
     goto LABEL_23;
   }
 
-  if (v8 == 29)
+  if (unsignedLongLongValue == 29)
   {
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -98,13 +98,13 @@ LABEL_20:
   }
 
 LABEL_15:
-  v12 = [v7 unsignedLongLongValue];
-  if ((v12 - 0x10000) > 0xFFFFFFFFFFFF0000)
+  unsignedLongLongValue2 = [revisionCopy unsignedLongLongValue];
+  if ((unsignedLongLongValue2 - 0x10000) > 0xFFFFFFFFFFFF0000)
   {
     v18 = [MEMORY[0x277CBEB98] set];
-    self = sub_238DC4C2C(self, v6, v7, v18, MEMORY[0x277CBEBF8]);
+    self = sub_238DC4C2C(self, dCopy, revisionCopy, v18, MEMORY[0x277CBEBF8]);
 
-    v15 = self;
+    selfCopy = self;
     goto LABEL_25;
   }
 
@@ -112,7 +112,7 @@ LABEL_15:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v20 = v12;
+    v20 = unsignedLongLongValue2;
     _os_log_impl(&dword_238DAE000, v13, OS_LOG_TYPE_ERROR, "MTRServerCluster provided invalid cluster revision: 0x%llx", buf, 0xCu);
   }
 
@@ -123,11 +123,11 @@ LABEL_23:
   }
 
 LABEL_24:
-  v15 = 0;
+  selfCopy = 0;
 LABEL_25:
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
 + (id)newDescriptorCluster
@@ -139,20 +139,20 @@ LABEL_25:
   return v4;
 }
 
-- (void)addAccessGrant:(id)a3
+- (void)addAccessGrant:(id)grant
 {
-  v4 = a3;
+  grantCopy = grant;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_accessGrants addObject:v4];
+  [(NSMutableSet *)self->_accessGrants addObject:grantCopy];
   sub_238DC4F8C(self);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeAccessGrant:(id)a3
+- (void)removeAccessGrant:(id)grant
 {
-  v4 = a3;
+  grantCopy = grant;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_accessGrants removeObject:v4];
+  [(NSMutableSet *)self->_accessGrants removeObject:grantCopy];
   sub_238DC4F8C(self);
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -160,16 +160,16 @@ LABEL_25:
 - (NSArray)matterAccessGrants
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSSet *)self->_matterAccessGrants allObjects];
+  allObjects = [(NSSet *)self->_matterAccessGrants allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (BOOL)addAttribute:(id)a3
+- (BOOL)addAttribute:(id)attribute
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributeCopy = attribute;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_deviceController);
   if (WeakRetained)
@@ -177,9 +177,9 @@ LABEL_25:
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)self->_clusterID unsignedLongLongValue];
       *buf = 134217984;
-      v34 = v7;
+      v34 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "Cannot add attribute on cluster %llx which is already in use", buf, 0xCu);
     }
 
@@ -191,19 +191,19 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  v8 = [v4 attributeID];
-  v9 = [v8 unsignedLongLongValue];
+  attributeID = [attributeCopy attributeID];
+  unsignedLongLongValue2 = [attributeID unsignedLongLongValue];
 
-  if (v9 - 65528 <= 5 && ((1 << (v9 + 8)) & 0x2B) != 0)
+  if (unsignedLongLongValue2 - 65528 <= 5 && ((1 << (unsignedLongLongValue2 + 8)) & 0x2B) != 0)
   {
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+      unsignedLongLongValue3 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
       *buf = 134218240;
-      v34 = v9;
+      v34 = unsignedLongLongValue2;
       v35 = 2048;
-      v36 = v11;
+      v36 = unsignedLongLongValue3;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "Cannot add global attribute %llx on cluster %llx", buf, 0x16u);
     }
 
@@ -219,7 +219,7 @@ LABEL_11:
   }
 
   v15 = [(NSNumber *)self->_clusterID isEqual:&unk_284C3E3C0];
-  if (v9 < 4)
+  if (unsignedLongLongValue2 < 4)
   {
     v16 = v15;
   }
@@ -235,7 +235,7 @@ LABEL_11:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v34 = v9;
+      v34 = unsignedLongLongValue2;
       _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_ERROR, "Cannot add attribute with id %llx on descriptor cluster", buf, 0xCu);
     }
 
@@ -265,19 +265,19 @@ LABEL_11:
             objc_enumerationMutation(obj);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * i) attributeID];
-          v22 = [v21 unsignedLongLongValue] == v9;
+          attributeID2 = [*(*(&v28 + 1) + 8 * i) attributeID];
+          v22 = [attributeID2 unsignedLongLongValue] == unsignedLongLongValue2;
 
           if (v22)
           {
             v25 = sub_2393D9044(0);
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
             {
-              v26 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+              unsignedLongLongValue4 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
               *buf = 134218240;
-              v34 = v9;
+              v34 = unsignedLongLongValue2;
               v35 = 2048;
-              v36 = v26;
+              v36 = unsignedLongLongValue4;
               _os_log_impl(&dword_238DAE000, v25, OS_LOG_TYPE_ERROR, "Cannot add second attribute with ID %llx on cluster %llx", buf, 0x16u);
             }
 
@@ -302,12 +302,12 @@ LABEL_11:
     }
 
     parentEndpoint = self->_parentEndpoint;
-    v24 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+    unsignedLongLongValue5 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
     *buf = parentEndpoint;
-    LODWORD(v34) = v24;
-    if ([v4 addToCluster:buf])
+    LODWORD(v34) = unsignedLongLongValue5;
+    if ([attributeCopy addToCluster:buf])
     {
-      [(NSMutableArray *)self->_attributes addObject:v4];
+      [(NSMutableArray *)self->_attributes addObject:attributeCopy];
       v12 = 1;
       goto LABEL_13;
     }
@@ -322,10 +322,10 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)associateWithController:(id)a3
+- (BOOL)associateWithController:(id)controller
 {
   v100 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_deviceController);
   if (!WeakRetained)
@@ -334,8 +334,8 @@ LABEL_13:
     v94 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v8 = self->_attributes;
-    v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v91 objects:v99 count:16];
+    uniqueIdentifier3 = self->_attributes;
+    v9 = [(NSMutableArray *)uniqueIdentifier3 countByEnumeratingWithState:&v91 objects:v99 count:16];
     if (v9)
     {
       v10 = *v92;
@@ -345,16 +345,16 @@ LABEL_13:
         {
           if (*v92 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(uniqueIdentifier3);
           }
 
-          if (([*(*(&v91 + 1) + 8 * i) associateWithController:v4] & 1) == 0)
+          if (([*(*(&v91 + 1) + 8 * i) associateWithController:controllerCopy] & 1) == 0)
           {
             goto LABEL_6;
           }
         }
 
-        v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v91 objects:v99 count:16];
+        v9 = [(NSMutableArray *)uniqueIdentifier3 countByEnumeratingWithState:&v91 objects:v99 count:16];
       }
 
       while (v9);
@@ -383,8 +383,8 @@ LABEL_13:
             objc_enumerationMutation(v15);
           }
 
-          v19 = [*(*(&v87 + 1) + 8 * j) attributeID];
-          v20 = [v19 isEqual:&unk_284C3E3F0];
+          attributeID = [*(*(&v87 + 1) + 8 * j) attributeID];
+          v20 = [attributeID isEqual:&unk_284C3E3F0];
 
           if (v20)
           {
@@ -420,13 +420,13 @@ LABEL_25:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         v42 = [(NSNumber *)self->_clusterID unsignedLongLongValue]>> 16;
-        v43 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+        unsignedLongLongValue = [(NSNumber *)self->_clusterID unsignedLongLongValue];
         buf[0] = 134218496;
         *&buf[1] = v23;
         v96 = 1024;
         *v97 = v42;
         *&v97[4] = 1024;
-        *&v97[6] = v43;
+        *&v97[6] = unsignedLongLongValue;
         _os_log_impl(&dword_238DAE000, v41, OS_LOG_TYPE_ERROR, "Unable to have %llu attributes in a single cluster (clusterID: 0x%04X_%04X)", buf, 0x18u);
       }
 
@@ -444,8 +444,8 @@ LABEL_25:
     for (k = 0; k < [(NSMutableArray *)self->_attributes count]; ++k)
     {
       v25 = [(NSMutableArray *)self->_attributes objectAtIndexedSubscript:k];
-      v26 = [v25 attributeID];
-      v27 = [v26 unsignedLongLongValue];
+      attributeID2 = [v25 attributeID];
+      unsignedLongLongValue2 = [attributeID2 unsignedLongLongValue];
       end = self->_matterAttributeMetadata.__end_;
       cap = self->_matterAttributeMetadata.__cap_;
       if (end >= cap)
@@ -481,7 +481,7 @@ LABEL_25:
 
         v36 = (16 * v32);
         *v36 = 0;
-        *(v36 + 2) = v27;
+        *(v36 + 2) = unsignedLongLongValue2;
         *(v36 + 3) = 810024960;
         v30 = (16 * v32 + 16);
         v37 = self->_matterAttributeMetadata.__begin_;
@@ -502,7 +502,7 @@ LABEL_25:
       {
         *end = 0;
         v30 = (end + 16);
-        *(end + 2) = v27;
+        *(end + 2) = unsignedLongLongValue2;
         *(end + 3) = 810024960;
       }
 
@@ -707,19 +707,19 @@ LABEL_78:
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [WeakRetained uniqueIdentifier];
+    uniqueIdentifier = [controllerCopy uniqueIdentifier];
+    uniqueIdentifier2 = [WeakRetained uniqueIdentifier];
     buf[0] = 138412546;
-    *&buf[1] = v6;
+    *&buf[1] = uniqueIdentifier;
     v96 = 2112;
-    *v97 = v7;
+    *v97 = uniqueIdentifier2;
     _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_ERROR, "Cannot associate MTRServerCluster with controller %@; already associated with controller %@", buf, 0x16u);
   }
 
   if (sub_2393D5398(1u))
   {
-    v8 = [v4 uniqueIdentifier];
-    v82 = [WeakRetained uniqueIdentifier];
+    uniqueIdentifier3 = [controllerCopy uniqueIdentifier];
+    uniqueIdentifier4 = [WeakRetained uniqueIdentifier];
     sub_2393D5320(0, 1);
 
 LABEL_6:
@@ -808,11 +808,11 @@ LABEL_47:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       parentEndpoint = self->_parentEndpoint;
-      v6 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)self->_clusterID unsignedLongLongValue];
       *buf = 67109376;
       v10 = parentEndpoint;
       v11 = 2048;
-      v12 = v6;
+      v12 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v4, OS_LOG_TYPE_ERROR, "Could not register AttributeAccessInterface for endpoint %u, cluster 0x%llx", buf, 0x12u);
     }
 
@@ -844,10 +844,10 @@ LABEL_47:
 - (NSArray)accessGrants
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableSet *)self->_accessGrants allObjects];
+  allObjects = [(NSMutableSet *)self->_accessGrants allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)attributes
@@ -859,15 +859,15 @@ LABEL_47:
   return v3;
 }
 
-- (BOOL)addToEndpoint:(unsigned __int16)a3
+- (BOOL)addToEndpoint:(unsigned __int16)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   v33 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   parentEndpoint = self->_parentEndpoint;
   if (parentEndpoint == 0xFFFF)
   {
-    self->_parentEndpoint = v3;
+    self->_parentEndpoint = endpointCopy;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -887,9 +887,9 @@ LABEL_47:
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
-          *buf = v3;
-          v26 = v16;
+          unsignedLongLongValue = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+          *buf = endpointCopy;
+          v26 = unsignedLongLongValue;
           [v15 updateParentCluster:buf];
         }
 
@@ -906,14 +906,14 @@ LABEL_47:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = [(NSNumber *)self->_clusterID unsignedLongLongValue]>> 16;
-      v8 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
+      unsignedLongLongValue2 = [(NSNumber *)self->_clusterID unsignedLongLongValue];
       v9 = self->_parentEndpoint;
       *buf = 67109888;
       v26 = v7;
       v27 = 1024;
-      v28 = v8;
+      v28 = unsignedLongLongValue2;
       v29 = 1024;
-      v30 = v3;
+      v30 = endpointCopy;
       v31 = 1024;
       v32 = v9;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_ERROR, "Cannot add cluster 0x%04X_%04X to endpoint %u; already added to endpoint %u", buf, 0x1Au);
@@ -953,11 +953,11 @@ LABEL_47:
   return result;
 }
 
-- (void)setAcceptedCommands:(id)a3
+- (void)setAcceptedCommands:(id)commands
 {
-  v6 = a3;
+  commandsCopy = commands;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [v6 copy];
+  v4 = [commandsCopy copy];
   acceptedCommands = self->_acceptedCommands;
   self->_acceptedCommands = v4;
 
@@ -973,11 +973,11 @@ LABEL_47:
   return v3;
 }
 
-- (void)setGeneratedCommands:(id)a3
+- (void)setGeneratedCommands:(id)commands
 {
-  v6 = a3;
+  commandsCopy = commands;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [v6 copy];
+  v4 = [commandsCopy copy];
   generatedCommands = self->_generatedCommands;
   self->_generatedCommands = v4;
 

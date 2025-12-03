@@ -1,35 +1,35 @@
 @interface _CHSRelevanceCacheBufBuilder
 - (id)_finish;
-- (id)initWithBufferBuilder:(id *)a1;
+- (id)initWithBufferBuilder:(id *)builder;
 - (void)dealloc;
-- (void)setArchivedObjects:(id)a3;
-- (void)setGroups:(id)a3;
+- (void)setArchivedObjects:(id)objects;
+- (void)setGroups:(id)groups;
 @end
 
 @implementation _CHSRelevanceCacheBufBuilder
 
-- (id)initWithBufferBuilder:(id *)a1
+- (id)initWithBufferBuilder:(id *)builder
 {
   v4 = a2;
-  if (a1)
+  if (builder)
   {
-    v8.receiver = a1;
+    v8.receiver = builder;
     v8.super_class = _CHSRelevanceCacheBufBuilder;
     v5 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v5;
+    builder = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
-      v6 = [v4 firstError];
+      firstError = [v4 firstError];
 
-      if (!v6)
+      if (!firstError)
       {
         operator new();
       }
     }
   }
 
-  return a1;
+  return builder;
 }
 
 - (void)dealloc
@@ -45,42 +45,42 @@
   [(_CHSRelevanceCacheBufBuilder *)&v4 dealloc];
 }
 
-- (void)setArchivedObjects:(id)a3
+- (void)setArchivedObjects:(id)objects
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  objectsCopy = objects;
+  if (!objectsCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = objectsCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(self->_bldr->var0, 4, [v7 unsignedIntValue]);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGroups:(id)a3
+- (void)setGroups:(id)groups
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  groupsCopy = groups;
+  if (!groupsCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_CHSRelevanceCache_generated.mm" lineNumber:414 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
   }
 
-  v6 = [(AFBBufferBuilder *)self->_owner firstError];
+  firstError = [(AFBBufferBuilder *)self->_owner firstError];
 
-  if (!v6)
+  if (!firstError)
   {
-    v7 = v5;
+    v7 = groupsCopy;
     apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(self->_bldr->var0, 6, [v7 unsignedIntValue]);
   }
 
@@ -89,24 +89,24 @@
 
 - (id)_finish
 {
-  if (a1)
+  if (self)
   {
-    v3 = [OUTLINED_FUNCTION_0_1(a1) firstError];
+    firstError = [OUTLINED_FUNCTION_0_1(self) firstError];
 
-    if (v3)
+    if (firstError)
     {
-      a1 = &unk_1F0A7A058;
+      self = &unk_1F0A7A058;
     }
 
     else
     {
-      a1 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:{OUTLINED_FUNCTION_1_1(objc_msgSend(*(v1 + 8), "fbb"))}];
+      self = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:{OUTLINED_FUNCTION_1_1(objc_msgSend(*(v1 + 8), "fbb"))}];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

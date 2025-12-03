@@ -1,117 +1,117 @@
 @interface NUArticleViewStyler
-- (NUArticleViewStyler)initWithBackgroundColor:(id)a3 topBackgroundColor:(id)a4;
-- (int64_t)statusBarStyleForBackgroundColor:(id)a3;
+- (NUArticleViewStyler)initWithBackgroundColor:(id)color topBackgroundColor:(id)backgroundColor;
+- (int64_t)statusBarStyleForBackgroundColor:(id)color;
 - (int64_t)topBackgroundStatusBarStyle;
-- (void)styleTabBar:(id)a3;
-- (void)styleToolbar:(id)a3;
-- (void)unstyleTabBar:(id)a3 overrideRestoreColor:(id)a4;
-- (void)unstyleToolbar:(id)a3 overrideRestoreColor:(id)a4;
+- (void)styleTabBar:(id)bar;
+- (void)styleToolbar:(id)toolbar;
+- (void)unstyleTabBar:(id)bar overrideRestoreColor:(id)color;
+- (void)unstyleToolbar:(id)toolbar overrideRestoreColor:(id)color;
 @end
 
 @implementation NUArticleViewStyler
 
-- (NUArticleViewStyler)initWithBackgroundColor:(id)a3 topBackgroundColor:(id)a4
+- (NUArticleViewStyler)initWithBackgroundColor:(id)color topBackgroundColor:(id)backgroundColor
 {
-  v7 = a3;
-  v8 = a4;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
   v12.receiver = self;
   v12.super_class = NUArticleViewStyler;
   v9 = [(NUArticleViewStyler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mainBackgroundColor, a3);
-    objc_storeStrong(&v10->_topContentColor, a4);
-    v10->_statusBarStyle = [(NUArticleViewStyler *)v10 statusBarStyleForBackgroundColor:v7];
+    objc_storeStrong(&v9->_mainBackgroundColor, color);
+    objc_storeStrong(&v10->_topContentColor, backgroundColor);
+    v10->_statusBarStyle = [(NUArticleViewStyler *)v10 statusBarStyleForBackgroundColor:colorCopy];
   }
 
   return v10;
 }
 
-- (void)styleTabBar:(id)a3
+- (void)styleTabBar:(id)bar
 {
-  v6 = a3;
-  v4 = [(NUArticleViewStyler *)self tabBarTintColor];
-  if (!v4)
+  barCopy = bar;
+  tabBarTintColor = [(NUArticleViewStyler *)self tabBarTintColor];
+  if (!tabBarTintColor)
   {
     if ([(NUArticleViewStyler *)self statusBarStyle]!= 1)
     {
       goto LABEL_5;
     }
 
-    v5 = [v6 barTintColor];
-    [(NUArticleViewStyler *)self setTabBarTintColor:v5];
+    barTintColor = [barCopy barTintColor];
+    [(NUArticleViewStyler *)self setTabBarTintColor:barTintColor];
 
-    v4 = [(NUArticleViewStyler *)self mainBackgroundColor];
-    [v6 setBarTintColor:v4];
+    tabBarTintColor = [(NUArticleViewStyler *)self mainBackgroundColor];
+    [barCopy setBarTintColor:tabBarTintColor];
   }
 
 LABEL_5:
 }
 
-- (void)unstyleTabBar:(id)a3 overrideRestoreColor:(id)a4
+- (void)unstyleTabBar:(id)bar overrideRestoreColor:(id)color
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NUArticleViewStyler *)self tabBarTintColor];
-  v8 = v6 | v7;
+  barCopy = bar;
+  colorCopy = color;
+  tabBarTintColor = [(NUArticleViewStyler *)self tabBarTintColor];
+  v8 = colorCopy | tabBarTintColor;
 
   if (v8)
   {
-    if (v6)
+    if (colorCopy)
     {
-      [v10 setBarTintColor:v6];
+      [barCopy setBarTintColor:colorCopy];
     }
 
     else
     {
-      v9 = [(NUArticleViewStyler *)self tabBarTintColor];
-      [v10 setBarTintColor:v9];
+      tabBarTintColor2 = [(NUArticleViewStyler *)self tabBarTintColor];
+      [barCopy setBarTintColor:tabBarTintColor2];
     }
 
     [(NUArticleViewStyler *)self setTabBarTintColor:0];
   }
 }
 
-- (void)styleToolbar:(id)a3
+- (void)styleToolbar:(id)toolbar
 {
-  v6 = a3;
-  v4 = [(NUArticleViewStyler *)self toolbarTintColor];
-  if (!v4)
+  toolbarCopy = toolbar;
+  toolbarTintColor = [(NUArticleViewStyler *)self toolbarTintColor];
+  if (!toolbarTintColor)
   {
     if ([(NUArticleViewStyler *)self statusBarStyle]!= 1)
     {
       goto LABEL_5;
     }
 
-    v5 = [v6 barTintColor];
-    [(NUArticleViewStyler *)self setToolbarTintColor:v5];
+    barTintColor = [toolbarCopy barTintColor];
+    [(NUArticleViewStyler *)self setToolbarTintColor:barTintColor];
 
-    v4 = [(NUArticleViewStyler *)self mainBackgroundColor];
-    [v6 setBarTintColor:v4];
+    toolbarTintColor = [(NUArticleViewStyler *)self mainBackgroundColor];
+    [toolbarCopy setBarTintColor:toolbarTintColor];
   }
 
 LABEL_5:
 }
 
-- (void)unstyleToolbar:(id)a3 overrideRestoreColor:(id)a4
+- (void)unstyleToolbar:(id)toolbar overrideRestoreColor:(id)color
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NUArticleViewStyler *)self toolbarTintColor];
-  v8 = v6 | v7;
+  toolbarCopy = toolbar;
+  colorCopy = color;
+  toolbarTintColor = [(NUArticleViewStyler *)self toolbarTintColor];
+  v8 = colorCopy | toolbarTintColor;
 
   if (v8)
   {
-    if (v6)
+    if (colorCopy)
     {
-      [v10 setBarTintColor:v6];
+      [toolbarCopy setBarTintColor:colorCopy];
     }
 
     else
     {
-      v9 = [(NUArticleViewStyler *)self toolbarTintColor];
-      [v10 setBarTintColor:v9];
+      toolbarTintColor2 = [(NUArticleViewStyler *)self toolbarTintColor];
+      [toolbarCopy setBarTintColor:toolbarTintColor2];
     }
 
     [(NUArticleViewStyler *)self setToolbarTintColor:0];
@@ -134,13 +134,13 @@ LABEL_5:
   return v4;
 }
 
-- (int64_t)statusBarStyleForBackgroundColor:(id)a3
+- (int64_t)statusBarStyleForBackgroundColor:(id)color
 {
   v7 = 0;
   v5 = 0.0;
   v6 = 0;
   v4 = 0;
-  [a3 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4];
+  [color getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4];
   return v5 < 0.7;
 }
 

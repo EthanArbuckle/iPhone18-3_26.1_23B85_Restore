@@ -1,17 +1,17 @@
 @interface ICSettingsNavigationController
-- (ICSettingsNavigationController)initWithRootViewController:(id)a3 supportedInterfaceOrientations:(unint64_t)a4;
+- (ICSettingsNavigationController)initWithRootViewController:(id)controller supportedInterfaceOrientations:(unint64_t)orientations;
 @end
 
 @implementation ICSettingsNavigationController
 
-- (ICSettingsNavigationController)initWithRootViewController:(id)a3 supportedInterfaceOrientations:(unint64_t)a4
+- (ICSettingsNavigationController)initWithRootViewController:(id)controller supportedInterfaceOrientations:(unint64_t)orientations
 {
   v6.receiver = self;
   v6.super_class = ICSettingsNavigationController;
-  result = [(ICSettingsNavigationController *)&v6 initWithRootViewController:a3];
+  result = [(ICSettingsNavigationController *)&v6 initWithRootViewController:controller];
   if (result)
   {
-    result->_supportedInterfaceOrientationsMask = a4;
+    result->_supportedInterfaceOrientationsMask = orientations;
   }
 
   return result;

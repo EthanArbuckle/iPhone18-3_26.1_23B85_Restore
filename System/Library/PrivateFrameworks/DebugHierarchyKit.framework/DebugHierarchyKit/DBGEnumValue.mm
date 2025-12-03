@@ -1,37 +1,37 @@
 @interface DBGEnumValue
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(id)a3;
-- (DBGEnumValue)initWithCustomValue:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(id)value;
+- (DBGEnumValue)initWithCustomValue:(id)value;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)stringValue;
 - (int64_t)integerValue;
 - (unint64_t)unsignedIntegerValue;
-- (void)setIntegerValue:(int64_t)a3;
-- (void)setStringValue:(id)a3;
-- (void)setUnsignedIntegerValue:(unint64_t)a3;
+- (void)setIntegerValue:(int64_t)value;
+- (void)setStringValue:(id)value;
+- (void)setUnsignedIntegerValue:(unint64_t)value;
 @end
 
 @implementation DBGEnumValue
 
-+ (id)withValue:(id)a3
++ (id)withValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCustomValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithCustomValue:valueCopy];
 
   return v5;
 }
 
-- (DBGEnumValue)initWithCustomValue:(id)a3
+- (DBGEnumValue)initWithCustomValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = DBGEnumValue;
   v6 = [(DBGEnumValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_enumValue, a3);
+    objc_storeStrong(&v6->_enumValue, value);
   }
 
   return v7;
@@ -39,70 +39,70 @@
 
 - (int64_t)integerValue
 {
-  v3 = [(DBGEnumValue *)self enumValue];
-  if (v3)
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v4 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGEnumValue *)self enumValue];
-  v6 = [v5 integerValue];
+  enumValue3 = [(DBGEnumValue *)self enumValue];
+  integerValue = [enumValue3 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
-  v5 = [(DBGEnumValue *)self enumValue];
-  if (v5)
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v6 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:value];
   [(DBGEnumValue *)self setEnumValue:v7];
 }
 
 - (unint64_t)unsignedIntegerValue
 {
-  v3 = [(DBGEnumValue *)self enumValue];
-  if (v3)
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v4 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v5 = [(DBGEnumValue *)self enumValue];
-  v6 = [v5 unsignedIntegerValue];
+  enumValue3 = [(DBGEnumValue *)self enumValue];
+  unsignedIntegerValue = [enumValue3 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)setUnsignedIntegerValue:(unint64_t)a3
+- (void)setUnsignedIntegerValue:(unint64_t)value
 {
-  v5 = [(DBGEnumValue *)self enumValue];
-  if (v5)
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v6 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:value];
   [(DBGEnumValue *)self setEnumValue:v7];
 }
 
 - (id)stringValue
 {
-  v3 = [(DBGEnumValue *)self enumValue];
-  if (v3)
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v4 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
@@ -110,24 +110,24 @@
   return [(DBGEnumValue *)self enumValue];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v6 = a3;
-  v4 = [(DBGEnumValue *)self enumValue];
-  if (v4)
+  valueCopy = value;
+  enumValue = [(DBGEnumValue *)self enumValue];
+  if (enumValue)
   {
-    v5 = [(DBGEnumValue *)self enumValue];
+    enumValue2 = [(DBGEnumValue *)self enumValue];
     objc_opt_class();
     objc_opt_isKindOfClass();
   }
 
-  [(DBGEnumValue *)self setEnumValue:v6];
+  [(DBGEnumValue *)self setEnumValue:valueCopy];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGEnumValue *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGEnumValue *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -142,18 +142,18 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
   if (v8)
   {
 
-    if (a5)
+    if (error)
     {
       v9 = v8;
       v7 = 0;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -162,7 +162,7 @@
     }
   }
 
-  v10 = [a1 withValue:v7];
+  v10 = [self withValue:v7];
 
   return v10;
 }

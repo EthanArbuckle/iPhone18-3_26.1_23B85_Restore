@@ -1,22 +1,22 @@
 @interface DisplayFilterPageImageViewController
-- (DisplayFilterPageImageViewController)initWithImageName:(id)a3 stretchHorizontal:(BOOL)a4;
+- (DisplayFilterPageImageViewController)initWithImageName:(id)name stretchHorizontal:(BOOL)horizontal;
 - (UIImage)displayImage;
 - (void)loadView;
-- (void)setDisplayImage:(id)a3;
+- (void)setDisplayImage:(id)image;
 @end
 
 @implementation DisplayFilterPageImageViewController
 
-- (DisplayFilterPageImageViewController)initWithImageName:(id)a3 stretchHorizontal:(BOOL)a4
+- (DisplayFilterPageImageViewController)initWithImageName:(id)name stretchHorizontal:(BOOL)horizontal
 {
-  v4 = a4;
+  horizontalCopy = horizontal;
   v10.receiver = self;
   v10.super_class = DisplayFilterPageImageViewController;
-  v5 = a3;
+  nameCopy = name;
   v6 = [(DisplayFilterPageImageViewController *)&v10 init];
-  [(DisplayFilterPageImageViewController *)v6 setStretchHorizontal:v4, v10.receiver, v10.super_class];
+  [(DisplayFilterPageImageViewController *)v6 setStretchHorizontal:horizontalCopy, v10.receiver, v10.super_class];
   v7 = AXSettingsBundle();
-  v8 = [UIImage imageNamed:v5 inBundle:v7];
+  v8 = [UIImage imageNamed:nameCopy inBundle:v7];
 
   [(DisplayFilterPageImageViewController *)v6 setDisplayImage:v8];
   return v6;
@@ -30,8 +30,8 @@
   [v16 bounds];
   v4 = [v3 initWithFrame:?];
   [(DisplayFilterPageImageViewController *)self setImageView:v4];
-  v5 = [(DisplayFilterPageImageViewController *)self imageView];
-  [v5 setAccessibilityIgnoresInvertColors:1];
+  imageView = [(DisplayFilterPageImageViewController *)self imageView];
+  [imageView setAccessibilityIgnoresInvertColors:1];
 
   [v16 addSubview:v4];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -77,32 +77,32 @@
 
 - (UIImage)displayImage
 {
-  v3 = [(DisplayFilterPageImageViewController *)self view];
-  v4 = [(DisplayFilterPageImageViewController *)self imageView];
-  v5 = [v4 image];
+  view = [(DisplayFilterPageImageViewController *)self view];
+  imageView = [(DisplayFilterPageImageViewController *)self imageView];
+  image = [imageView image];
 
-  return v5;
+  return image;
 }
 
-- (void)setDisplayImage:(id)a3
+- (void)setDisplayImage:(id)image
 {
-  v4 = a3;
-  v5 = [(DisplayFilterPageImageViewController *)self view];
-  v13 = [(DisplayFilterPageImageViewController *)self imageView];
-  [v13 setImage:v4];
-  [v4 size];
+  imageCopy = image;
+  view = [(DisplayFilterPageImageViewController *)self view];
+  imageView = [(DisplayFilterPageImageViewController *)self imageView];
+  [imageView setImage:imageCopy];
+  [imageCopy size];
   v7 = v6;
-  [v4 size];
+  [imageCopy size];
   v9 = v8;
 
-  v10 = [(DisplayFilterPageImageViewController *)self imageAspectConstraint];
-  [v13 removeConstraint:v10];
+  imageAspectConstraint = [(DisplayFilterPageImageViewController *)self imageAspectConstraint];
+  [imageView removeConstraint:imageAspectConstraint];
 
-  v11 = [NSLayoutConstraint constraintWithItem:v13 attribute:8 relatedBy:0 toItem:v13 attribute:7 multiplier:v7 / v9 constant:0.0];
+  v11 = [NSLayoutConstraint constraintWithItem:imageView attribute:8 relatedBy:0 toItem:imageView attribute:7 multiplier:v7 / v9 constant:0.0];
   [(DisplayFilterPageImageViewController *)self setImageAspectConstraint:v11];
 
-  v12 = [(DisplayFilterPageImageViewController *)self imageAspectConstraint];
-  [v13 addConstraint:v12];
+  imageAspectConstraint2 = [(DisplayFilterPageImageViewController *)self imageAspectConstraint];
+  [imageView addConstraint:imageAspectConstraint2];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface AFUIPasscodeBlurView
-- (AFUIPasscodeBlurView)initWithFrame:(CGRect)a3;
-- (void)_setPlusDBackgroundColorWithWeighting:(double)a3;
+- (AFUIPasscodeBlurView)initWithFrame:(CGRect)frame;
+- (void)_setPlusDBackgroundColorWithWeighting:(double)weighting;
 - (void)layoutSubviews;
 @end
 
 @implementation AFUIPasscodeBlurView
 
-- (AFUIPasscodeBlurView)initWithFrame:(CGRect)a3
+- (AFUIPasscodeBlurView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = AFUIPasscodeBlurView;
-  v3 = [(AFUIPasscodeBlurView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AFUIPasscodeBlurView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277D26720];
@@ -21,8 +21,8 @@
 
     [(MTMaterialView *)v3->_materialView setShouldCrossfade:1];
     [(AFUIPasscodeBlurView *)v3 addSubview:v3->_materialView];
-    v8 = [(AFUIPasscodeBlurView *)v3 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer = [(AFUIPasscodeBlurView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
     lightenSourceOverView = v3->_lightenSourceOverView;
@@ -32,9 +32,9 @@
     v12 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.25];
     [(UIView *)v11 setBackgroundColor:v12];
 
-    v13 = [(UIView *)v3->_lightenSourceOverView layer];
+    layer2 = [(UIView *)v3->_lightenSourceOverView layer];
     v14 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA550]];
-    [v13 setCompositingFilter:v14];
+    [layer2 setCompositingFilter:v14];
 
     [(AFUIPasscodeBlurView *)v3 addSubview:v3->_lightenSourceOverView];
     v15 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -42,9 +42,9 @@
     v3->_plusDView = v15;
 
     [(AFUIPasscodeBlurView *)v3 _setPlusDBackgroundColorWithWeighting:1.0];
-    v17 = [(UIView *)v3->_plusDView layer];
+    layer3 = [(UIView *)v3->_plusDView layer];
     v18 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-    [v17 setCompositingFilter:v18];
+    [layer3 setCompositingFilter:v18];
 
     [(AFUIPasscodeBlurView *)v3 addSubview:v3->_plusDView];
   }
@@ -67,10 +67,10 @@
   [(UIView *)self->_plusDView setFrame:v4, v6, v8, v10];
 }
 
-- (void)_setPlusDBackgroundColorWithWeighting:(double)a3
+- (void)_setPlusDBackgroundColorWithWeighting:(double)weighting
 {
   plusDView = self->_plusDView;
-  v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:a3 * 0.2];
+  v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:weighting * 0.2];
   [(UIView *)plusDView setBackgroundColor:v4];
 }
 

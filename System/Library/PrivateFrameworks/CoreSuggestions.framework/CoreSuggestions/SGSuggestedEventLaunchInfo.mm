@@ -1,8 +1,8 @@
 @interface SGSuggestedEventLaunchInfo
 - (NSUserActivity)userActivity;
-- (SGSuggestedEventLaunchInfo)initWithBundleId:(id)a3 localizedShowInString:(id)a4 userActivity:(id)a5 intent:(id)a6 sourceURL:(id)a7;
-- (SGSuggestedEventLaunchInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SGSuggestedEventLaunchInfo)initWithBundleId:(id)id localizedShowInString:(id)string userActivity:(id)activity intent:(id)intent sourceURL:(id)l;
+- (SGSuggestedEventLaunchInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGSuggestedEventLaunchInfo
@@ -22,27 +22,27 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleId = self->_bundleId;
-  v5 = a3;
-  [v5 encodeObject:bundleId forKey:@"bundleId"];
-  [v5 encodeObject:self->_localizedShowInString forKey:@"localizedShowInString"];
-  [v5 encodeObject:self->_userActivityString forKey:@"userActivityString"];
-  [v5 encodeObject:self->_intent forKey:@"intent"];
-  [v5 encodeObject:self->_sourceURL forKey:@"sourceURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleId forKey:@"bundleId"];
+  [coderCopy encodeObject:self->_localizedShowInString forKey:@"localizedShowInString"];
+  [coderCopy encodeObject:self->_userActivityString forKey:@"userActivityString"];
+  [coderCopy encodeObject:self->_intent forKey:@"intent"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"sourceURL"];
 }
 
-- (SGSuggestedEventLaunchInfo)initWithCoder:(id)a3
+- (SGSuggestedEventLaunchInfo)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = SGSuggestedEventLaunchInfo;
   v6 = [(SGSuggestedEventLaunchInfo *)&v25 init];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v8 = [v5 decodeObjectOfClasses:v7 forKey:@"bundleId"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"bundleId"];
 
     if (v8)
     {
@@ -58,7 +58,7 @@
     }
 
     v11 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v12 = [v5 decodeObjectOfClasses:v11 forKey:@"localizedShowInString"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"localizedShowInString"];
 
     if (v12)
     {
@@ -74,17 +74,17 @@
     }
 
     v15 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v16 = [v5 decodeObjectOfClasses:v15 forKey:@"userActivityString"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"userActivityString"];
     userActivityString = v6->_userActivityString;
     v6->_userActivityString = v16;
 
     v18 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v19 = [v5 decodeObjectOfClasses:v18 forKey:@"intent"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"intent"];
     intent = v6->_intent;
     v6->_intent = v19;
 
     v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v22 = [v5 decodeObjectOfClasses:v21 forKey:@"sourceURL"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"sourceURL"];
     sourceURL = v6->_sourceURL;
     v6->_sourceURL = v22;
   }
@@ -92,28 +92,28 @@
   return v6;
 }
 
-- (SGSuggestedEventLaunchInfo)initWithBundleId:(id)a3 localizedShowInString:(id)a4 userActivity:(id)a5 intent:(id)a6 sourceURL:(id)a7
+- (SGSuggestedEventLaunchInfo)initWithBundleId:(id)id localizedShowInString:(id)string userActivity:(id)activity intent:(id)intent sourceURL:(id)l
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  idCopy = id;
+  stringCopy = string;
+  activityCopy = activity;
+  intentCopy = intent;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = SGSuggestedEventLaunchInfo;
   v18 = [(SGSuggestedEventLaunchInfo *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_bundleId, a3);
-    objc_storeStrong(&v19->_localizedShowInString, a4);
-    objc_storeStrong(&v19->_intent, a6);
-    objc_storeStrong(&v19->_sourceURL, a7);
-    if (v15)
+    objc_storeStrong(&v18->_bundleId, id);
+    objc_storeStrong(&v19->_localizedShowInString, string);
+    objc_storeStrong(&v19->_intent, intent);
+    objc_storeStrong(&v19->_sourceURL, l);
+    if (activityCopy)
     {
-      v20 = [v15 sg_serialize];
+      sg_serialize = [activityCopy sg_serialize];
       userActivityString = v19->_userActivityString;
-      v19->_userActivityString = v20;
+      v19->_userActivityString = sg_serialize;
     }
   }
 

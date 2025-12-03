@@ -1,16 +1,16 @@
 @interface MSCMSCompressedData
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error;
 - (MSCMSCompressedData)init;
-- (MSCMSCompressedData)initWithDataContent:(id)a3 error:(id *)a4;
+- (MSCMSCompressedData)initWithDataContent:(id)content error:(id *)error;
 - (MSCMSMessage)embeddedContent;
 - (MSOID)contentType;
 - (MSOID)type;
 - (NSData)dataContent;
-- (id)encodeMessageSecurityObject:(id *)a3;
-- (void)setContentType:(id)a3;
-- (void)setDataContent:(id)a3;
-- (void)setEmbeddedContent:(id)a3;
-- (void)setType:(id)a3;
+- (id)encodeMessageSecurityObject:(id *)object;
+- (void)setContentType:(id)type;
+- (void)setDataContent:(id)content;
+- (void)setEmbeddedContent:(id)content;
+- (void)setType:(id)type;
 @end
 
 @implementation MSCMSCompressedData
@@ -22,13 +22,13 @@
   return *(self + v3);
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
   v5 = OBJC_IVAR___MSCMSCompressedData_type;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = type;
+  typeCopy = type;
 }
 
 - (NSData)dataContent
@@ -49,20 +49,20 @@
   return v3;
 }
 
-- (void)setDataContent:(id)a3
+- (void)setDataContent:(id)content
 {
-  v3 = a3;
-  if (a3)
+  contentCopy = content;
+  if (content)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_258CBEA80();
+    selfCopy = self;
+    v6 = contentCopy;
+    contentCopy = sub_258CBEA80();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -70,7 +70,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = contentCopy;
   v10[1] = v8;
   sub_258CA8728(v11, v12);
 }
@@ -85,12 +85,12 @@
   return v5;
 }
 
-- (void)setEmbeddedContent:(id)a3
+- (void)setEmbeddedContent:(id)content
 {
   v5 = OBJC_IVAR___MSCMSCompressedData_embeddedContent;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = content;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -102,27 +102,27 @@
   return *(self + v3);
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
   v5 = OBJC_IVAR___MSCMSCompressedData_contentType;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = type;
+  typeCopy = type;
 }
 
-- (MSCMSCompressedData)initWithDataContent:(id)a3 error:(id *)a4
+- (MSCMSCompressedData)initWithDataContent:(id)content error:(id *)error
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = sub_258CBEA80();
   v7 = v6;
 
   return MSCMSCompressedData.init(dataContent:)(v5, v7);
 }
 
-- (id)encodeMessageSecurityObject:(id *)a3
+- (id)encodeMessageSecurityObject:(id *)object
 {
-  v3 = self;
+  selfCopy = self;
   v4 = MSCMSCompressedData.encodeSecurityObject()();
   v6 = v5;
 
@@ -132,14 +132,14 @@
   return v7;
 }
 
-+ (id)decodeMessageSecurityObject:(id)a3 options:(id)a4 error:(id *)a5
++ (id)decodeMessageSecurityObject:(id)object options:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  optionsCopy = options;
   v8 = sub_258CBEA80();
   v10 = v9;
 
-  v11 = sub_258CB200C(v8, v10, a4);
+  v11 = sub_258CB200C(v8, v10, options);
   sub_258CA82B8(v8, v10);
 
   return v11;

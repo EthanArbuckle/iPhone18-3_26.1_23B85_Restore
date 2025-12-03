@@ -1,20 +1,20 @@
 @interface MTMediaLibraryUpdater
 + (id)numberFormatter;
 + (id)sharedInstance;
-- (BOOL)haveMediaLibraryPropertiesChangedForEpisode:(id)a3;
+- (BOOL)haveMediaLibraryPropertiesChangedForEpisode:(id)episode;
 - (MTMediaLibraryUpdater)init;
-- (id)_findOrAddPodcastForMediaItem:(id)a3 updaterCache:(id)a4;
+- (id)_findOrAddPodcastForMediaItem:(id)item updaterCache:(id)cache;
 - (id)propertiesForMediaLibrary;
-- (unint64_t)importPlaylist:(id)a3 intoContext:(id)a4 mediaLibraryCache:(id)a5 knownPlaylistIds:(id)a6;
-- (void)_addEpisodeInCtx:(id)a3 mediaItem:(id)a4 episodeCache:(id)a5 podcastUuid:(id)a6 isRestoreDownloadCandidate:(BOOL)a7 canSendNotifications:(BOOL)a8 outEpisodeUUID:(id *)a9;
-- (void)_printMediaItemPropertiesForItem:(id)a3;
+- (unint64_t)importPlaylist:(id)playlist intoContext:(id)context mediaLibraryCache:(id)cache knownPlaylistIds:(id)ids;
+- (void)_addEpisodeInCtx:(id)ctx mediaItem:(id)item episodeCache:(id)cache podcastUuid:(id)uuid isRestoreDownloadCandidate:(BOOL)candidate canSendNotifications:(BOOL)notifications outEpisodeUUID:(id *)d;
+- (void)_printMediaItemPropertiesForItem:(id)item;
 - (void)_updateDatabaseFromMediaLibrary;
-- (void)forceUpdateDatabaseFromMediaLibraryWithCompletion:(id)a3;
-- (void)importPlaylists:(id)a3 knownPlaylistIds:(id)a4 mediaLibraryCache:(id)a5 playlists:(id)a6;
-- (void)libraryDidChange:(id)a3;
+- (void)forceUpdateDatabaseFromMediaLibraryWithCompletion:(id)completion;
+- (void)importPlaylists:(id)playlists knownPlaylistIds:(id)ids mediaLibraryCache:(id)cache playlists:(id)a6;
+- (void)libraryDidChange:(id)change;
 - (void)startObservingMediaLibrary;
 - (void)stopObservingMediaLibrary;
-- (void)updateMediaLibraryFromNotification:(id)a3;
+- (void)updateMediaLibraryFromNotification:(id)notification;
 @end
 
 @implementation MTMediaLibraryUpdater
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006F648;
   block[3] = &unk_1004D86F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100583AA0 != -1)
   {
     dispatch_once(&qword_100583AA0, block);
@@ -40,7 +40,7 @@
 {
   if (+[MTApplication localLibraryUpdatesDisabled])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -81,28 +81,28 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_updateDatabaseFromMediaLibrary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTMediaLibraryUpdater *)v2 didUpdateCompletionBlocks];
-  v62 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  didUpdateCompletionBlocks = [(MTMediaLibraryUpdater *)selfCopy didUpdateCompletionBlocks];
+  v62 = [didUpdateCompletionBlocks copy];
 
-  v4 = [(MTMediaLibraryUpdater *)v2 didUpdateCompletionBlocks];
-  [v4 removeAllObjects];
+  didUpdateCompletionBlocks2 = [(MTMediaLibraryUpdater *)selfCopy didUpdateCompletionBlocks];
+  [didUpdateCompletionBlocks2 removeAllObjects];
 
-  objc_sync_exit(v2);
-  v59 = v2;
+  objc_sync_exit(selfCopy);
+  v59 = selfCopy;
 
   v5 = +[MPMediaLibrary defaultMediaLibrary];
-  v6 = [v5 lastModifiedDate];
-  [v6 timeIntervalSinceReferenceDate];
+  lastModifiedDate = [v5 lastModifiedDate];
+  [lastModifiedDate timeIntervalSinceReferenceDate];
   v8 = v7;
 
   v9 = +[MPMediaQuery mt_allItemsForPodcastsApp];
@@ -133,8 +133,8 @@
       v84 = v9;
       v15 = v9;
       v16 = [v10 objectsPassingTest:v83];
-      v17 = [v16 allObjects];
-      v9 = [v15 arrayByAddingObjectsFromArray:v17];
+      allObjects = [v16 allObjects];
+      v9 = [v15 arrayByAddingObjectsFromArray:allObjects];
     }
 
     v18 = [v9 sortedArrayUsingComparator:&stru_1004D9358];
@@ -147,10 +147,10 @@
 
   v20 = objc_opt_new();
   v21 = +[MTDB sharedInstance];
-  v22 = [v21 importContext];
+  importContext = [v21 importContext];
 
   v23 = [MTEpisode predicateForDownloaded:1 excludeHidden:0];
-  v24 = [MTEpisodeUpdaterCache episodeCacheWithPredicate:v23 inCtx:v22];
+  v24 = [MTEpisodeUpdaterCache episodeCacheWithPredicate:v23 inCtx:importContext];
 
   *buf = 0;
   *&v89 = buf;
@@ -163,7 +163,7 @@
   v80[2] = sub_1000701F4;
   v80[3] = &unk_1004D9068;
   v82 = buf;
-  v25 = v22;
+  v25 = importContext;
   v81 = v25;
   [v25 performBlockAndWait:v80];
   v26 = [MTEntityUpdaterCache alloc];
@@ -189,7 +189,7 @@
   v70 = v53;
   v58 = v20;
   v71 = v58;
-  v72 = v2;
+  v72 = selfCopy;
   v56 = v30;
   v73 = v56;
   v74 = v25;
@@ -205,18 +205,18 @@
   v61 = v74;
   [v74 performBlockAndWaitWithSave:v68];
   v34 = +[MTMediaContentSourceiOSMusicLibrary sharedInstance];
-  v35 = [v34 iTunesMatchEnabled];
+  iTunesMatchEnabled = [v34 iTunesMatchEnabled];
 
-  if ((v35 & 1) == 0)
+  if ((iTunesMatchEnabled & 1) == 0)
   {
     v51 = +[MPMediaQuery mt_podcastsQuery];
-    v36 = [v51 collections];
+    collections = [v51 collections];
     v37 = objc_alloc_init(NSMutableArray);
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v38 = v36;
+    v38 = collections;
     v39 = 0;
     v40 = [v38 countByEnumeratingWithState:&v64 objects:v85 count:16];
     if (v40)
@@ -276,18 +276,18 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)forceUpdateDatabaseFromMediaLibraryWithCompletion:(id)a3
+- (void)forceUpdateDatabaseFromMediaLibraryWithCompletion:(id)completion
 {
-  v7 = a3;
-  if (v7)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(MTMediaLibraryUpdater *)v4 didUpdateCompletionBlocks];
-    v6 = objc_retainBlock(v7);
-    [v5 addObject:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    didUpdateCompletionBlocks = [(MTMediaLibraryUpdater *)selfCopy didUpdateCompletionBlocks];
+    v6 = objc_retainBlock(completionCopy);
+    [didUpdateCompletionBlocks addObject:v6];
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   dispatch_source_merge_data(self->_updateDatabaseDispatchSource, 1uLL);
@@ -315,22 +315,22 @@
   [v3 endGeneratingLibraryChangeNotifications:v4];
 }
 
-- (unint64_t)importPlaylist:(id)a3 intoContext:(id)a4 mediaLibraryCache:(id)a5 knownPlaylistIds:(id)a6
+- (unint64_t)importPlaylist:(id)playlist intoContext:(id)context mediaLibraryCache:(id)cache knownPlaylistIds:(id)ids
 {
-  v9 = a3;
-  v33 = a4;
-  v37 = a5;
-  v34 = a6;
+  playlistCopy = playlist;
+  contextCopy = context;
+  cacheCopy = cache;
+  idsCopy = ids;
   v36 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v35 = v9;
-  v10 = [v9 playlist];
-  v11 = [v10 items];
+  v35 = playlistCopy;
+  playlist = [playlistCopy playlist];
+  items = [playlist items];
 
-  v12 = [v11 countByEnumeratingWithState:&v55 objects:v62 count:16];
+  v12 = [items countByEnumeratingWithState:&v55 objects:v62 count:16];
   if (v12)
   {
     v13 = *v56;
@@ -340,34 +340,34 @@
       {
         if (*v56 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(items);
         }
 
         v15 = [*(*(&v55 + 1) + 8 * i) valueForProperty:MPMediaEntityPropertyPersistentID];
-        v16 = [v37 objectForKey:v15];
+        v16 = [cacheCopy objectForKey:v15];
         v17 = v16;
         if (v16)
         {
-          v18 = [v16 assetUrl];
-          v19 = [v18 length] == 0;
+          assetUrl = [v16 assetUrl];
+          v19 = [assetUrl length] == 0;
 
           if (!v19)
           {
-            v20 = [v17 assetUrl];
-            [v36 addObject:v20];
+            assetUrl2 = [v17 assetUrl];
+            [v36 addObject:assetUrl2];
             v21 = _MTLogCategoryMediaLibrary();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [v17 title];
+              title = [v17 title];
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v22;
+              *(&buf + 4) = title;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
             }
           }
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v55 objects:v62 count:16];
+      v12 = [items countByEnumeratingWithState:&v55 objects:v62 count:16];
     }
 
     while (v12);
@@ -382,7 +382,7 @@
     goto LABEL_22;
   }
 
-  v23 = [v35 mediaLibraryId];
+  mediaLibraryId = [v35 mediaLibraryId];
   if (([v35 isGenius] & 1) == 0 && (objc_msgSend(v35, "isOnTheGo") & 1) == 0 && (objc_msgSend(v35, "isHidden") & 1) == 0)
   {
     v53[0] = _NSConcreteStackBlock;
@@ -401,18 +401,18 @@
     v49[2] = sub_100071600;
     v49[3] = &unk_1004D9068;
     v51 = v52;
-    v27 = v33;
+    v27 = contextCopy;
     v50 = v27;
     [v27 performBlockAndWait:v49];
-    if ([v34 containsObject:v23])
+    if ([idsCopy containsObject:mediaLibraryId])
     {
-      [v34 removeObject:v23];
+      [idsCopy removeObject:mediaLibraryId];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_1000718D4;
       v38[3] = &unk_1004D9438;
       v39 = v27;
-      v40 = v23;
+      v40 = mediaLibraryId;
       v41 = v25;
       v43[0] = v26;
       v42 = v35;
@@ -457,12 +457,12 @@ LABEL_23:
   return v24;
 }
 
-- (void)importPlaylists:(id)a3 knownPlaylistIds:(id)a4 mediaLibraryCache:(id)a5 playlists:(id)a6
+- (void)importPlaylists:(id)playlists knownPlaylistIds:(id)ids mediaLibraryCache:(id)cache playlists:(id)a6
 {
-  v28 = self;
-  v30 = a3;
-  v31 = a4;
-  v29 = a5;
+  selfCopy = self;
+  playlistsCopy = playlists;
+  idsCopy = ids;
+  cacheCopy = cache;
   v9 = a6;
   v10 = +[NSMutableDictionary dictionary];
   v45 = 0;
@@ -487,9 +487,9 @@ LABEL_23:
           objc_enumerationMutation(obj);
         }
 
-        v14 = [MTMLPlaylist playlistWithMPPlaylist:*(*(&v41 + 1) + 8 * i), v28];
-        v15 = [v14 mediaLibraryId];
-        [v10 setObject:v14 forKey:v15];
+        selfCopy = [MTMLPlaylist playlistWithMPPlaylist:*(*(&v41 + 1) + 8 * i), selfCopy];
+        mediaLibraryId = [selfCopy mediaLibraryId];
+        [v10 setObject:selfCopy forKey:mediaLibraryId];
       }
 
       v11 = [obj countByEnumeratingWithState:&v41 objects:v50 count:16];
@@ -503,8 +503,8 @@ LABEL_23:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v17 = [v10 allValues];
-  v18 = [v17 countByEnumeratingWithState:&v37 objects:v49 count:16];
+  allValues = [v10 allValues];
+  v18 = [allValues countByEnumeratingWithState:&v37 objects:v49 count:16];
   if (v18)
   {
     v19 = *v38;
@@ -514,24 +514,24 @@ LABEL_23:
       {
         if (*v38 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allValues);
         }
 
         v21 = *(*(&v37 + 1) + 8 * j);
-        v22 = [v21 parentMediaLibraryId];
-        if ([v22 isEqualToNumber:&off_100500B98])
+        parentMediaLibraryId = [v21 parentMediaLibraryId];
+        if ([parentMediaLibraryId isEqualToNumber:&off_100500B98])
         {
           [v16 addObject:v21];
         }
 
         else
         {
-          v23 = [v10 objectForKeyedSubscript:v22];
+          v23 = [v10 objectForKeyedSubscript:parentMediaLibraryId];
           [v23 addChild:v21];
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v37 objects:v49 count:16];
+      v18 = [allValues countByEnumeratingWithState:&v37 objects:v49 count:16];
     }
 
     while (v18);
@@ -545,40 +545,40 @@ LABEL_23:
       break;
     }
 
-    v17 = [v16 objectAtIndex:0];
-    if (([v17 isEmpty] & 1) == 0)
+    allValues = [v16 objectAtIndex:0];
+    if (([allValues isEmpty] & 1) == 0)
     {
-      v24 = [(MTMediaLibraryUpdater *)v28 importPlaylist:v17 intoContext:v30 mediaLibraryCache:v29 knownPlaylistIds:v31];
+      v24 = [(MTMediaLibraryUpdater *)selfCopy importPlaylist:allValues intoContext:playlistsCopy mediaLibraryCache:cacheCopy knownPlaylistIds:idsCopy];
       v46[3] += v24;
-      v25 = [v17 children];
-      [v16 addObjectsFromArray:v25];
+      children = [allValues children];
+      [v16 addObjectsFromArray:children];
     }
 
-    [v16 removeObjectAtIndex:{0, v28}];
+    [v16 removeObjectAtIndex:{0, selfCopy}];
   }
 
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100072070;
   v33[3] = &unk_1004D92B0;
-  v26 = v30;
+  v26 = playlistsCopy;
   v34 = v26;
   v36 = &v45;
-  v27 = v31;
+  v27 = idsCopy;
   v35 = v27;
   [v26 performBlockAndWaitWithSave:v33];
 
   _Block_object_dispose(&v45, 8);
 }
 
-- (void)updateMediaLibraryFromNotification:(id)a3
+- (void)updateMediaLibraryFromNotification:(id)notification
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"doLibraryUpdateFromNotification" object:0];
 
   [(MTMediaLibraryUpdater *)self performSelector:"doLibraryUpdateFromNotification" withObject:0 afterDelay:1.5];
 }
 
-- (void)_printMediaItemPropertiesForItem:(id)a3
+- (void)_printMediaItemPropertiesForItem:(id)item
 {
   v11 = MPMediaItemPropertyPodcastGUID;
   v10 = MPMediaItemPropertyFilePath;
@@ -586,7 +586,7 @@ LABEL_23:
   v7 = MPMediaItemPropertyStoreID;
   v6 = MPMediaItemPropertyHasBeenPlayed;
   v5 = MPMediaItemPropertyDescriptionInfo;
-  v9 = a3;
+  itemCopy = item;
   v3 = [NSSet setWithObjects:MPMediaItemPropertyTitle, MPMediaItemPropertyArtist, MPMediaItemPropertyPodcastTitle, MPMediaItemPropertyPodcastPersistentID, v11, v10, MPMediaItemPropertyPersistentID, MPMediaItemPropertyLastPlayedDate, MPMediaItemPropertyRating, MPMediaItemPropertyComments, MPMediaItemPropertyReleaseDate, MPMediaItemPropertyArtwork, MPMediaItemPropertyAlbumArtist, v8, v7, MPMediaItemPropertyBookmarkTime, v6, MPMediaItemPropertyPlaybackDuration, v5, MPMediaItemPropertyAlbumTitle, MPMediaItemPropertyPersistentID, MPMediaItemPropertyMediaType, MPMediaItemPropertyAlbumPersistentID, MPMediaItemPropertyArtistPersistentID, MPMediaItemPropertyAlbumArtistPersistentID, MPMediaItemPropertyGenre, MPMediaItemPropertyGenrePersistentID, MPMediaItemPropertyComposer, MPMediaItemPropertyComposerPersistentID, MPMediaItemPropertyPlaybackDuration, MPMediaItemPropertyAlbumTrackNumber, MPMediaItemPropertyAlbumTrackCount, MPMediaItemPropertyDiscNumber, MPMediaItemPropertyDiscCount, MPMediaItemPropertyLyrics, MPMediaItemPropertyIsCompilation, MPMediaItemPropertyBeatsPerMinute, MPMediaItemPropertyPlayCount, MPMediaItemPropertySkipCount, MPMediaItemPropertyUserGrouping, 0];
   v4 = _MTLogCategoryMediaLibrary();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -595,25 +595,25 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "----------------------------------------------------------------", buf, 2u);
   }
 
-  [v9 enumerateValuesForProperties:v3 usingBlock:&stru_1004D94A0];
+  [itemCopy enumerateValuesForProperties:v3 usingBlock:&stru_1004D94A0];
 }
 
-- (id)_findOrAddPodcastForMediaItem:(id)a3 updaterCache:(id)a4
+- (id)_findOrAddPodcastForMediaItem:(id)item updaterCache:(id)cache
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 feedUrl];
+  itemCopy = item;
+  cacheCopy = cache;
+  feedUrl = [itemCopy feedUrl];
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = v8;
-  if (v7)
+  if (feedUrl)
   {
-    [v8 setObject:v7 forKeyedSubscript:kPodcastFeedUrl];
-    [v9 setObject:v7 forKeyedSubscript:kPodcastUpdatedFeedUrl];
+    [v8 setObject:feedUrl forKeyedSubscript:kPodcastFeedUrl];
+    [v9 setObject:feedUrl forKeyedSubscript:kPodcastUpdatedFeedUrl];
   }
 
   if ([v9 count])
   {
-    v10 = [v6 propertyDictionaryForSearchItem:v9];
+    v10 = [cacheCopy propertyDictionaryForSearchItem:v9];
   }
 
   else
@@ -621,14 +621,14 @@ LABEL_23:
     v10 = 0;
   }
 
-  v11 = [v5 podcastTitle];
-  v12 = [v11 stringByStrippingHTML];
+  podcastTitle = [itemCopy podcastTitle];
+  stringByStrippingHTML = [podcastTitle stringByStrippingHTML];
 
   if (!v10)
   {
-    if ([(__CFString *)v12 length])
+    if ([(__CFString *)stringByStrippingHTML length])
     {
-      if (!v12)
+      if (!stringByStrippingHTML)
       {
         v13 = 0;
         goto LABEL_27;
@@ -638,20 +638,20 @@ LABEL_23:
     else
     {
 
-      v12 = @"Untitled";
+      stringByStrippingHTML = @"Untitled";
     }
 
-    [v9 setObject:v12 forKeyedSubscript:kPodcastTitle];
-    v10 = [v6 propertyDictionaryForSearchItem:v9];
+    [v9 setObject:stringByStrippingHTML forKeyedSubscript:kPodcastTitle];
+    v10 = [cacheCopy propertyDictionaryForSearchItem:v9];
   }
 
   v14 = +[MTDB sharedInstance];
-  v15 = [v14 importContext];
+  importContext = [v14 importContext];
 
   if (v10)
   {
     v16 = [v10 objectForKey:kPodcastUuid];
-    v13 = [v15 podcastForUuid:v16];
+    v13 = [importContext podcastForUuid:v16];
 
     if (v13)
     {
@@ -661,53 +661,53 @@ LABEL_23:
         [v13 setNeedsArtworkUpdate:1];
       }
 
-      v17 = [v5 podcastPersistentId];
-      v18 = [v17 longLongValue];
+      podcastPersistentId = [itemCopy podcastPersistentId];
+      longLongValue = [podcastPersistentId longLongValue];
 
-      [v13 setPodcastPID:v18];
+      [v13 setPodcastPID:longLongValue];
     }
   }
 
   else
   {
-    v19 = [v5 artist];
-    v29 = [v19 stringByStrippingHTML];
+    artist = [itemCopy artist];
+    stringByStrippingHTML2 = [artist stringByStrippingHTML];
 
     v20 = _MTLogCategoryMediaLibrary();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v31 = v12;
+      v31 = stringByStrippingHTML;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Adding Podcast from Feed: %@", buf, 0xCu);
     }
 
-    v13 = +[MTPodcast insertNewPodcastInManagedObjectContext:subscribed:feedUrl:showType:title:author:provider:imageUrl:description:](MTPodcast, "insertNewPodcastInManagedObjectContext:subscribed:feedUrl:showType:title:author:provider:imageUrl:description:", v15, 0, v7, +[MTPodcast defaultShowType], v12, v29, 0, 0, 0);
+    v13 = +[MTPodcast insertNewPodcastInManagedObjectContext:subscribed:feedUrl:showType:title:author:provider:imageUrl:description:](MTPodcast, "insertNewPodcastInManagedObjectContext:subscribed:feedUrl:showType:title:author:provider:imageUrl:description:", importContext, 0, feedUrl, +[MTPodcast defaultShowType], stringByStrippingHTML, stringByStrippingHTML2, 0, 0, 0);
     if (v13)
     {
-      v21 = [v5 storeCollectionId];
-      v22 = [v5 podcastPersistentId];
-      [v13 setPodcastPID:{objc_msgSend(v22, "longLongValue")}];
+      storeCollectionId = [itemCopy storeCollectionId];
+      podcastPersistentId2 = [itemCopy podcastPersistentId];
+      [v13 setPodcastPID:{objc_msgSend(podcastPersistentId2, "longLongValue")}];
 
-      v28 = v21;
-      [v13 setStoreCollectionId:{objc_msgSend(v21, "longLongValue")}];
-      if ([v5 isItunesU])
+      v28 = storeCollectionId;
+      [v13 setStoreCollectionId:{objc_msgSend(storeCollectionId, "longLongValue")}];
+      if ([itemCopy isItunesU])
       {
         [v13 setDeletePlayedEpisodes:0];
         [v13 setShowTypeSetting:2];
         [v13 setEpisodeLimit:&_mh_execute_header];
       }
 
-      [v6 addEntityToCache:v13];
+      [cacheCopy addEntityToCache:v13];
       v23 = _MTLogCategoryMediaLibrary();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v13 uuid];
-        v24 = [v13 title];
+        uuid = [v13 uuid];
+        title = [v13 title];
         *buf = 138412546;
-        v31 = v27;
+        v31 = uuid;
         v32 = 2112;
-        v33 = v24;
-        v25 = v24;
+        v33 = title;
+        v25 = title;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Inserting new podcast:%@ (%@)", buf, 0x16u);
       }
     }
@@ -718,27 +718,27 @@ LABEL_27:
   return v13;
 }
 
-- (void)_addEpisodeInCtx:(id)a3 mediaItem:(id)a4 episodeCache:(id)a5 podcastUuid:(id)a6 isRestoreDownloadCandidate:(BOOL)a7 canSendNotifications:(BOOL)a8 outEpisodeUUID:(id *)a9
+- (void)_addEpisodeInCtx:(id)ctx mediaItem:(id)item episodeCache:(id)cache podcastUuid:(id)uuid isRestoreDownloadCandidate:(BOOL)candidate canSendNotifications:(BOOL)notifications outEpisodeUUID:(id *)d
 {
-  v9 = a8;
-  v10 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [v15 assetUrl];
-  v19 = [v15 downloadIdentifier];
-  v20 = _MTLogCategoryMediaLibrary();
-  v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-  v135 = v19;
-  v136 = v18;
-  if (v19 && !v18 && !v10)
+  notificationsCopy = notifications;
+  candidateCopy = candidate;
+  ctxCopy = ctx;
+  itemCopy = item;
+  cacheCopy = cache;
+  uuidCopy = uuid;
+  assetUrl = [itemCopy assetUrl];
+  downloadIdentifier = [itemCopy downloadIdentifier];
+  firstObject = _MTLogCategoryMediaLibrary();
+  v21 = os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT);
+  v135 = downloadIdentifier;
+  v136 = assetUrl;
+  if (downloadIdentifier && !assetUrl && !candidateCopy)
   {
     if (v21)
     {
       *buf = 138412290;
-      v142 = v19;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "addEpisodeInCtx will skip item with nil assetURL, download id: %@", buf, 0xCu);
+      v142 = downloadIdentifier;
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "addEpisodeInCtx will skip item with nil assetURL, download id: %@", buf, 0xCu);
     }
 
     goto LABEL_101;
@@ -746,28 +746,28 @@ LABEL_27:
 
   if (v21)
   {
-    v22 = [v15 title];
-    v23 = [v15 assetUrl];
+    title = [itemCopy title];
+    assetUrl2 = [itemCopy assetUrl];
     *buf = 138543874;
-    v142 = v22;
+    v142 = title;
     v143 = 2114;
-    v144 = v23;
+    v144 = assetUrl2;
     v145 = 1024;
-    LODWORD(v146) = v10;
-    _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "addEpisodeInCtx will add item '%{public}@' with assetUrl %{public}@, isRestoreDownloadCandidate = %d", buf, 0x1Cu);
+    LODWORD(v146) = candidateCopy;
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, "addEpisodeInCtx will add item '%{public}@' with assetUrl %{public}@, isRestoreDownloadCandidate = %d", buf, 0x1Cu);
   }
 
-  v131 = v9;
-  v133 = v10;
+  v131 = notificationsCopy;
+  v133 = candidateCopy;
 
-  v20 = [v16 searchCacheForEpisodeMatchingMediaItem:v15];
-  v24 = [v20 podcastUuid];
-  v25 = [v24 isEqualToString:v17];
+  firstObject = [cacheCopy searchCacheForEpisodeMatchingMediaItem:itemCopy];
+  podcastUuid = [firstObject podcastUuid];
+  v25 = [podcastUuid isEqualToString:uuidCopy];
 
-  v134 = v17;
+  v134 = uuidCopy;
   if (v25)
   {
-    if (v20)
+    if (firstObject)
     {
       goto LABEL_15;
     }
@@ -777,30 +777,30 @@ LABEL_27:
   {
   }
 
-  v26 = [v15 guid];
-  v27 = [v15 title];
-  v28 = [v27 stringByStrippingHTML];
+  guid = [itemCopy guid];
+  title2 = [itemCopy title];
+  stringByStrippingHTML = [title2 stringByStrippingHTML];
 
-  if (v26)
+  if (guid)
   {
     v29 = kMTEpisodeEntityName;
-    v30 = [MTEpisode predicateForEpisodeGuid:v26 onPodcastUuid:v17];
+    v30 = [MTEpisode predicateForEpisodeGuid:guid onPodcastUuid:uuidCopy];
     v31 = +[MTEpisodeUpdaterCache defaultPropertiesToFetch];
-    v32 = [v14 objectsInEntity:v29 predicate:v30 propertiesToFetch:v31 batchSize:0];
-    v20 = [v32 firstObject];
+    v32 = [ctxCopy objectsInEntity:v29 predicate:v30 propertiesToFetch:v31 batchSize:0];
+    firstObject = [v32 firstObject];
   }
 
   else
   {
-    if (!v28)
+    if (!stringByStrippingHTML)
     {
       goto LABEL_35;
     }
 
     v42 = kMTEpisodeEntityName;
-    v43 = [MTEpisode predicateForEpisodeTitle:v28 onPodcastUuid:v17];
+    v43 = [MTEpisode predicateForEpisodeTitle:stringByStrippingHTML onPodcastUuid:uuidCopy];
     v44 = +[MTEpisodeUpdaterCache defaultPropertiesToFetch];
-    v45 = [v14 objectsInEntity:v42 predicate:v43 propertiesToFetch:v44 batchSize:0];
+    v45 = [ctxCopy objectsInEntity:v42 predicate:v43 propertiesToFetch:v44 batchSize:0];
 
     v139 = 0u;
     v140 = 0u;
@@ -811,9 +811,9 @@ LABEL_27:
     if (v46)
     {
       v47 = v46;
-      v129 = v16;
-      v130 = v14;
-      v20 = 0;
+      v129 = cacheCopy;
+      v130 = ctxCopy;
+      firstObject = 0;
       v48 = *v138;
       v49 = 1.79769313e308;
       do
@@ -826,10 +826,10 @@ LABEL_27:
           }
 
           v51 = *(*(&v137 + 1) + 8 * i);
-          [v20 pubDate];
+          [firstObject pubDate];
           v53 = v52;
-          v54 = [v15 pubDate];
-          [v54 timeIntervalSinceReferenceDate];
+          pubDate = [itemCopy pubDate];
+          [pubDate timeIntervalSinceReferenceDate];
           v56 = vabdd_f64(v53, v55);
 
           if (v56 < v49)
@@ -837,7 +837,7 @@ LABEL_27:
             v57 = v51;
 
             v49 = v56;
-            v20 = v57;
+            firstObject = v57;
           }
         }
 
@@ -846,104 +846,104 @@ LABEL_27:
 
       while (v47);
       v30 = v31;
-      v16 = v129;
-      v14 = v130;
+      cacheCopy = v129;
+      ctxCopy = v130;
     }
 
     else
     {
-      v20 = 0;
+      firstObject = 0;
       v30 = v31;
     }
   }
 
-  v17 = v134;
-  if (v20)
+  uuidCopy = v134;
+  if (firstObject)
   {
     goto LABEL_15;
   }
 
 LABEL_35:
-  v58 = [v14 podcastForUuid:v17];
+  v58 = [ctxCopy podcastForUuid:uuidCopy];
   v59 = v58;
   if (!v58 || ([v58 isDeleted]& 1) != 0)
   {
-    v20 = v59;
+    firstObject = v59;
 LABEL_101:
 
     goto LABEL_102;
   }
 
-  v20 = [MTEpisode insertNewEpisodeInManagedObjectContext:v14 canSendNotifications:v131];
-  [v20 setPodcast:v59];
-  v123 = [v15 title];
-  v124 = [v123 stringByStrippingHTML];
+  firstObject = [MTEpisode insertNewEpisodeInManagedObjectContext:ctxCopy canSendNotifications:v131];
+  [firstObject setPodcast:v59];
+  title3 = [itemCopy title];
+  stringByStrippingHTML2 = [title3 stringByStrippingHTML];
 
-  [v20 setTitle:v124];
-  v125 = [v59 title];
-  v126 = [v124 cleanedTitleStringWithPrefix:v125];
-  [v20 setCleanedTitle:v126];
+  [firstObject setTitle:stringByStrippingHTML2];
+  title4 = [v59 title];
+  v126 = [stringByStrippingHTML2 cleanedTitleStringWithPrefix:title4];
+  [firstObject setCleanedTitle:v126];
 
-  v127 = [v15 uti];
-  [v20 setUti:v127];
+  v127 = [itemCopy uti];
+  [firstObject setUti:v127];
 
-  v128 = [v15 guid];
-  [v20 setGuid:v128];
+  guid2 = [itemCopy guid];
+  [firstObject setGuid:guid2];
 
-  [v20 setImportSource:1];
-  [v20 setEpisodeLevel:0x7FFFFFFFFFFFFFFFLL];
+  [firstObject setImportSource:1];
+  [firstObject setEpisodeLevel:0x7FFFFFFFFFFFFFFFLL];
   if (v133)
   {
-    [v20 suppressAutomaticDownloadsIfNeeded];
+    [firstObject suppressAutomaticDownloadsIfNeeded];
   }
 
-  [v20 setFeedDeleted:1];
-  [IMMetrics recordUserAction:@"media_library_import_new_episode" dataSource:v20];
+  [firstObject setFeedDeleted:1];
+  [IMMetrics recordUserAction:@"media_library_import_new_episode" dataSource:firstObject];
 
-  v17 = v134;
-  if (v20)
+  uuidCopy = v134;
+  if (firstObject)
   {
 LABEL_15:
-    v33 = [v15 persistentId];
-    v34 = [v33 unsignedLongLongValue];
+    persistentId = [itemCopy persistentId];
+    unsignedLongLongValue = [persistentId unsignedLongLongValue];
 
-    if ([v20 persistentID]!= v34)
+    if ([firstObject persistentID]!= unsignedLongLongValue)
     {
-      [v20 setPersistentID:v34];
+      [firstObject setPersistentID:unsignedLongLongValue];
     }
 
-    v132 = v34;
-    v35 = [v20 assetURL];
-    if (v35 == v136)
+    v132 = unsignedLongLongValue;
+    assetURL = [firstObject assetURL];
+    if (assetURL == v136)
     {
       goto LABEL_23;
     }
 
-    v36 = [v20 assetURL];
-    v37 = [v36 isEqualToString:v136];
+    assetURL2 = [firstObject assetURL];
+    v37 = [assetURL2 isEqualToString:v136];
 
     if (v37)
     {
       goto LABEL_42;
     }
 
-    v38 = [v20 assetURL];
-    v39 = [NSURL URLWithString:v38];
+    assetURL3 = [firstObject assetURL];
+    v39 = [NSURL URLWithString:assetURL3];
     if ([v39 isFileURL])
     {
       v40 = [v136 hasPrefix:@"ipod-library"];
 
       if (v40)
       {
-        v35 = _MTLogCategoryMediaLibrary();
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+        assetURL = _MTLogCategoryMediaLibrary();
+        if (os_log_type_enabled(assetURL, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [v20 assetURL];
+          assetURL4 = [firstObject assetURL];
           *buf = 138543618;
           v142 = v136;
           v143 = 2114;
-          v144 = v41;
-          _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Ignoring Media Library asset url %{public}@. Keep using podcasts asset url %{public}@", buf, 0x16u);
+          v144 = assetURL4;
+          _os_log_impl(&_mh_execute_header, assetURL, OS_LOG_TYPE_DEFAULT, "Ignoring Media Library asset url %{public}@. Keep using podcasts asset url %{public}@", buf, 0x16u);
         }
 
 LABEL_23:
@@ -959,105 +959,105 @@ LABEL_23:
     v60 = _MTLogCategoryMediaLibrary();
     if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
     {
-      v61 = [v20 uuid];
-      v62 = [v20 assetURL];
+      uuid = [firstObject uuid];
+      assetURL5 = [firstObject assetURL];
       *buf = 138543874;
-      v142 = v61;
+      v142 = uuid;
       v143 = 2112;
-      v144 = v62;
+      v144 = assetURL5;
       v145 = 2112;
       v146 = *&v136;
       _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Episode %{public}@ updated assetURL from %@ to %@", buf, 0x20u);
     }
 
-    [v20 setAssetURL:v136];
+    [firstObject setAssetURL:v136];
 LABEL_42:
-    v63 = [v20 isFromITunesSync];
-    if (v63 != [v15 isFromITunesSync])
+    isFromITunesSync = [firstObject isFromITunesSync];
+    if (isFromITunesSync != [itemCopy isFromITunesSync])
     {
-      -[NSObject setIsFromITunesSync:](v20, "setIsFromITunesSync:", [v15 isFromITunesSync]);
+      -[NSObject setIsFromITunesSync:](firstObject, "setIsFromITunesSync:", [itemCopy isFromITunesSync]);
     }
 
-    v64 = [v20 byteSize];
-    v65 = [v15 byteSize];
-    v66 = [v65 unsignedLongLongValue];
+    byteSize = [firstObject byteSize];
+    byteSize2 = [itemCopy byteSize];
+    unsignedLongLongValue2 = [byteSize2 unsignedLongLongValue];
 
-    if (v64 != v66)
+    if (byteSize != unsignedLongLongValue2)
     {
-      v67 = [v15 byteSize];
-      -[NSObject setByteSize:](v20, "setByteSize:", [v67 unsignedLongLongValue]);
+      byteSize3 = [itemCopy byteSize];
+      -[NSObject setByteSize:](firstObject, "setByteSize:", [byteSize3 unsignedLongLongValue]);
     }
 
-    v68 = [v15 duration];
-    [v68 doubleValue];
+    duration = [itemCopy duration];
+    [duration doubleValue];
     v70 = v69;
 
-    if ([v20 allowsDurationUpdateFromSource:7])
+    if ([firstObject allowsDurationUpdateFromSource:7])
     {
       if (v70 > 0.0)
       {
-        [v20 duration];
+        [firstObject duration];
         if (v70 != v71)
         {
-          [v20 setDuration:v70];
+          [firstObject setDuration:v70];
         }
       }
     }
 
-    v72 = [v15 category];
-    v73 = [v20 category];
-    v74 = v73;
-    if (v72 == v73)
+    category = [itemCopy category];
+    category2 = [firstObject category];
+    v74 = category2;
+    if (category == category2)
     {
     }
 
     else
     {
-      v75 = [v20 category];
-      v76 = [v75 isEqual:v72];
+      category3 = [firstObject category];
+      v76 = [category3 isEqual:category];
 
       if ((v76 & 1) == 0)
       {
-        [v20 setCategory:v72];
+        [firstObject setCategory:category];
       }
     }
 
-    v77 = v16;
-    v78 = [v20 author];
-    v79 = [v15 artist];
-    v80 = v79;
-    if (v78 == v79)
+    v77 = cacheCopy;
+    author = [firstObject author];
+    artist = [itemCopy artist];
+    v80 = artist;
+    if (author == artist)
     {
     }
 
     else
     {
-      v81 = [v20 author];
-      v82 = [v15 artist];
-      v83 = [v81 isEqual:v82];
+      author2 = [firstObject author];
+      artist2 = [itemCopy artist];
+      v83 = [author2 isEqual:artist2];
 
-      v17 = v134;
+      uuidCopy = v134;
       if (v83)
       {
 LABEL_59:
-        v84 = [v15 pubDate];
-        [v84 timeIntervalSinceReferenceDate];
+        pubDate2 = [itemCopy pubDate];
+        [pubDate2 timeIntervalSinceReferenceDate];
         v86 = v85;
 
-        [v20 pubDate];
+        [firstObject pubDate];
         if (v87 == 0.0)
         {
-          [v20 setPubDate:v86];
+          [firstObject setPubDate:v86];
         }
 
-        v88 = [v20 explicit];
-        v16 = v77;
-        if (v88 != [v15 isExplicit])
+        explicit = [firstObject explicit];
+        cacheCopy = v77;
+        if (explicit != [itemCopy isExplicit])
         {
           v89 = _MTLogCategoryMediaLibrary();
           if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
           {
-            if ([v15 isExplicit])
+            if ([itemCopy isExplicit])
             {
               v90 = @"ON";
             }
@@ -1067,47 +1067,47 @@ LABEL_59:
               v90 = @"OFF";
             }
 
-            v91 = [v20 title];
-            v92 = [v20 podcast];
-            v93 = [v92 title];
+            title5 = [firstObject title];
+            podcast = [firstObject podcast];
+            title6 = [podcast title];
             *buf = 138412802;
             v142 = v90;
             v143 = 2112;
-            v144 = v91;
+            v144 = title5;
             v145 = 2112;
-            v146 = *&v93;
+            v146 = *&title6;
             _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEBUG, "Ignoring: ML has different explict flag (%@) for %@ by %@", buf, 0x20u);
 
-            v17 = v134;
+            uuidCopy = v134;
           }
         }
 
-        if ([v15 isFromITunesSync])
+        if ([itemCopy isFromITunesSync])
         {
-          v94 = [v15 playhead];
-          [v94 floatValue];
+          playhead = [itemCopy playhead];
+          [playhead floatValue];
           v96 = v95;
 
-          [v20 playhead];
+          [firstObject playhead];
           if (v96 > *&v97)
           {
             *&v97 = v96;
-            [v20 setPlayhead:v97];
+            [firstObject setPlayhead:v97];
           }
 
-          v98 = [v15 playCount];
-          v99 = [v98 integerValue];
+          playCount = [itemCopy playCount];
+          integerValue = [playCount integerValue];
 
-          if ([v20 playCount]!= v99)
+          if ([firstObject playCount]!= integerValue)
           {
-            [v20 setPlayCount:v99];
+            [firstObject setPlayCount:integerValue];
           }
 
-          v100 = [v15 lastPlayedDate];
-          [v100 timeIntervalSinceReferenceDate];
+          lastPlayedDate = [itemCopy lastPlayedDate];
+          [lastPlayedDate timeIntervalSinceReferenceDate];
           v102 = v101;
 
-          [v20 lastDatePlayed];
+          [firstObject lastDatePlayed];
           if (v103 != v102)
           {
             v104 = +[_TtC18PodcastsFoundation17FutureDateChecker sharedInstance];
@@ -1117,10 +1117,10 @@ LABEL_59:
             v107 = _MTLogCategoryMediaLibrary();
             if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
             {
-              v108 = [v20 uuid];
-              [v20 lastDatePlayed];
+              uuid2 = [firstObject uuid];
+              [firstObject lastDatePlayed];
               *buf = 138412802;
-              v142 = v108;
+              v142 = uuid2;
               v143 = 2048;
               v144 = v109;
               v145 = 2048;
@@ -1128,19 +1128,19 @@ LABEL_59:
               _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEBUG, "Changing last date played for %@ from %lf to %lf", buf, 0x20u);
             }
 
-            [v20 setLastDatePlayed:v106];
+            [firstObject setLastDatePlayed:v106];
           }
 
-          v110 = +[MTLibraryLegacyUtil playStateFromHasBeenPlayed:andPlayCount:](MTLibraryLegacyUtil, "playStateFromHasBeenPlayed:andPlayCount:", [v15 hasBeenPlayed], v99);
+          v110 = +[MTLibraryLegacyUtil playStateFromHasBeenPlayed:andPlayCount:](MTLibraryLegacyUtil, "playStateFromHasBeenPlayed:andPlayCount:", [itemCopy hasBeenPlayed], integerValue);
           v112 = fabs(v102) > 2.22044605e-16 && v110 == 2;
-          [v20 setPlayState:v110 manually:v112 source:7];
-          v113 = [v20 explicit];
-          if (v113 != [v15 isExplicit])
+          [firstObject setPlayState:v110 manually:v112 source:7];
+          explicit2 = [firstObject explicit];
+          if (explicit2 != [itemCopy isExplicit])
           {
             v114 = _MTLogCategoryMediaLibrary();
             if (os_log_type_enabled(v114, OS_LOG_TYPE_DEBUG))
             {
-              if ([v15 isExplicit])
+              if ([itemCopy isExplicit])
               {
                 v115 = @"ON";
               }
@@ -1150,32 +1150,32 @@ LABEL_59:
                 v115 = @"OFF";
               }
 
-              v116 = [v20 title];
-              v117 = [v20 podcast];
-              v118 = [v117 title];
+              title7 = [firstObject title];
+              podcast2 = [firstObject podcast];
+              title8 = [podcast2 title];
               *buf = 138412802;
               v142 = v115;
               v143 = 2112;
-              v144 = v116;
+              v144 = title7;
               v145 = 2112;
-              v146 = *&v118;
+              v146 = *&title8;
               _os_log_impl(&_mh_execute_header, v114, OS_LOG_TYPE_DEBUG, "Importing: ML has different explict flag (%@) for %@ by %@", buf, 0x20u);
 
-              v17 = v134;
+              uuidCopy = v134;
             }
 
-            -[NSObject setExplicit:](v20, "setExplicit:", [v15 isExplicit]);
+            -[NSObject setExplicit:](firstObject, "setExplicit:", [itemCopy isExplicit]);
           }
 
-          [IMMetrics recordUserAction:@"media_library_import_from_itunes" dataSource:v20];
+          [IMMetrics recordUserAction:@"media_library_import_from_itunes" dataSource:firstObject];
         }
 
-        v119 = [v15 storeTrackId];
-        v120 = [v119 longLongValue];
+        storeTrackId = [itemCopy storeTrackId];
+        longLongValue = [storeTrackId longLongValue];
 
-        if (v120 >= 1 && [v20 storeTrackId]!= v120)
+        if (longLongValue >= 1 && [firstObject storeTrackId]!= longLongValue)
         {
-          [v20 setStoreTrackId:v120];
+          [firstObject setStoreTrackId:longLongValue];
         }
 
         if (v133)
@@ -1189,19 +1189,19 @@ LABEL_59:
             _os_log_impl(&_mh_execute_header, v121, OS_LOG_TYPE_DEFAULT, "Setting persistent id for item that is being retored: %{public}@", buf, 0xCu);
           }
 
-          [v20 setPersistentID:v132];
+          [firstObject setPersistentID:v132];
         }
 
-        if (a9)
+        if (d)
         {
-          *a9 = [v20 uuid];
+          *d = [firstObject uuid];
         }
 
         goto LABEL_101;
       }
 
-      v78 = [v15 artist];
-      [v20 setAuthor:v78];
+      author = [itemCopy artist];
+      [firstObject setAuthor:author];
     }
 
     goto LABEL_59;
@@ -1226,61 +1226,61 @@ LABEL_102:
   return v2;
 }
 
-- (void)libraryDidChange:(id)a3
+- (void)libraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = kMTEpisodeEntityName;
-  v6 = [v4 changesForEntityName:kMTEpisodeEntityName];
-  v7 = [v6 hasChanges];
+  v6 = [changeCopy changesForEntityName:kMTEpisodeEntityName];
+  hasChanges = [v6 hasChanges];
 
-  if (v7)
+  if (hasChanges)
   {
-    v8 = [v4 changesForEntityName:v5];
+    v8 = [changeCopy changesForEntityName:v5];
     if ([v8 hasUpdates])
     {
       v9 = +[MTDB sharedInstance];
-      v10 = [v9 importContext];
+      importContext = [v9 importContext];
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100073A5C;
       v12[3] = &unk_1004D94C8;
       v13 = v8;
-      v14 = v10;
-      v15 = self;
-      v11 = v10;
+      v14 = importContext;
+      selfCopy = self;
+      v11 = importContext;
       v8 = v8;
       [v11 performBlock:v12];
     }
   }
 }
 
-- (BOOL)haveMediaLibraryPropertiesChangedForEpisode:(id)a3
+- (BOOL)haveMediaLibraryPropertiesChangedForEpisode:(id)episode
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v5 length];
+  episodeCopy = episode;
+  uuid = [episodeCopy uuid];
+  propertiesForMediaLibrary = [uuid length];
 
-  if (v6)
+  if (propertiesForMediaLibrary)
   {
     episodeCache = self->_episodeCache;
-    v8 = [v4 uuid];
-    v9 = [(NSMutableDictionary *)episodeCache objectForKeyedSubscript:v8];
+    uuid2 = [episodeCopy uuid];
+    v9 = [(NSMutableDictionary *)episodeCache objectForKeyedSubscript:uuid2];
 
-    v6 = [(MTMediaLibraryUpdater *)self propertiesForMediaLibrary];
-    v10 = [v4 dictionaryWithValuesForKeys:v6];
+    propertiesForMediaLibrary = [(MTMediaLibraryUpdater *)self propertiesForMediaLibrary];
+    v10 = [episodeCopy dictionaryWithValuesForKeys:propertiesForMediaLibrary];
 
     v11 = [v10 isEqualToDictionary:v9];
-    LOBYTE(v6) = v11 ^ 1;
+    LOBYTE(propertiesForMediaLibrary) = v11 ^ 1;
     if ((v11 & 1) == 0)
     {
       v12 = self->_episodeCache;
-      v13 = [v4 uuid];
-      [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:v13];
+      uuid3 = [episodeCopy uuid];
+      [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:uuid3];
     }
   }
 
-  return v6;
+  return propertiesForMediaLibrary;
 }
 
 - (id)propertiesForMediaLibrary

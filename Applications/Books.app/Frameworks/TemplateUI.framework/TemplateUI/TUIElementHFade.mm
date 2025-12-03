@@ -1,20 +1,20 @@
 @interface TUIElementHFade
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementHFade
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v11 = a3;
-  [v8 floatForAttribute:147 node:var0];
-  [v11 setPadding:?];
-  [v8 floatForAttribute:90 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [attributesCopy floatForAttribute:147 node:var0];
+  [boxCopy setPadding:?];
+  [attributesCopy floatForAttribute:90 node:var0];
   v10 = v9;
 
-  [v11 setGradientWidth:v10];
+  [boxCopy setGradientWidth:v10];
 }
 
 @end

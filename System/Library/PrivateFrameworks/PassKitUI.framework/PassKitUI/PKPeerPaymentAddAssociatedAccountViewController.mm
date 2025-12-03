@@ -1,49 +1,49 @@
 @interface PKPeerPaymentAddAssociatedAccountViewController
-- (PKPeerPaymentAddAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 webService:(id)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7 context:(int64_t)a8 setupType:(int64_t)a9;
+- (PKPeerPaymentAddAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection webService:(id)service passLibraryDataProvider:(id)provider delegate:(id)delegate context:(int64_t)context setupType:(int64_t)type;
 - (id)_imageForWatchView;
 - (void)_invalidateCLInUseAssertion;
-- (void)_presentDisplayableError:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_presentDisplayableError:(id)error;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_terminateAddAssociatedAccountFlow;
 - (void)dealloc;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)explanationViewDidSelectBodyButton:(id)button;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentAddAssociatedAccountViewController
 
-- (PKPeerPaymentAddAssociatedAccountViewController)initWithFamilyMember:(id)a3 familyCollection:(id)a4 webService:(id)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7 context:(int64_t)a8 setupType:(int64_t)a9
+- (PKPeerPaymentAddAssociatedAccountViewController)initWithFamilyMember:(id)member familyCollection:(id)collection webService:(id)service passLibraryDataProvider:(id)provider delegate:(id)delegate context:(int64_t)context setupType:(int64_t)type
 {
-  v16 = a3;
-  v17 = a4;
-  v32 = a5;
-  v18 = a6;
-  v19 = a7;
+  memberCopy = member;
+  collectionCopy = collection;
+  serviceCopy = service;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = PKPeerPaymentAddAssociatedAccountViewController;
-  v20 = [(PKExplanationViewController *)&v33 initWithContext:a8];
+  v20 = [(PKExplanationViewController *)&v33 initWithContext:context];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_familyMember, a3);
-    objc_storeStrong(&v21->_familyCollection, a4);
-    objc_storeStrong(&v21->_webService, a5);
-    v21->_setupType = a9;
-    v22 = [(PKPeerPaymentWebService *)v21->_webService peerPaymentService];
-    v23 = [v22 account];
+    objc_storeStrong(&v20->_familyMember, member);
+    objc_storeStrong(&v21->_familyCollection, collection);
+    objc_storeStrong(&v21->_webService, service);
+    v21->_setupType = type;
+    peerPaymentService = [(PKPeerPaymentWebService *)v21->_webService peerPaymentService];
+    account = [peerPaymentService account];
     peerPaymentAccount = v21->_peerPaymentAccount;
-    v21->_peerPaymentAccount = v23;
+    v21->_peerPaymentAccount = account;
 
-    v25 = [[PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration alloc] initWithFamilyMember:v21->_familyMember associatedAccountSetupDelegate:v19 setupType:v21->_setupType];
+    v25 = [[PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration alloc] initWithFamilyMember:v21->_familyMember associatedAccountSetupDelegate:delegateCopy setupType:v21->_setupType];
     configuration = v21->_configuration;
     v21->_configuration = v25;
 
     v27 = [objc_alloc(MEMORY[0x1E69B8F38]) initWithPeerPaymentAccount:v21->_peerPaymentAccount];
-    v28 = [[PKPeerPaymentSetupFlowController alloc] initWithPeerPaymentCredential:v27 provisioningController:0 passLibraryDataProvider:v18 configuration:v21->_configuration context:a8 campaignAttributionReferrerIdentifier:0];
+    v28 = [[PKPeerPaymentSetupFlowController alloc] initWithPeerPaymentCredential:v27 provisioningController:0 passLibraryDataProvider:providerCopy configuration:v21->_configuration context:context campaignAttributionReferrerIdentifier:0];
     peerPaymentSetupFlowController = v21->_peerPaymentSetupFlowController;
     v21->_peerPaymentSetupFlowController = v28;
 
@@ -68,9 +68,9 @@
     IsBridge = PKPaymentSetupContextIsBridge();
     [(PKExplanationViewController *)self context];
     IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
-    v5 = [(PKExplanationViewController *)self explanationView];
-    [v5 setDelegate:self];
-    [v5 setShowPrivacyView:1];
+    explanationView = [(PKExplanationViewController *)self explanationView];
+    [explanationView setDelegate:self];
+    [explanationView setShowPrivacyView:1];
     if ((IsBridge & 1) == 0)
     {
       v6 = PKPassKitUIBundle();
@@ -78,27 +78,27 @@
       v8 = PKUIScreenScale();
       v9 = PKUIImageFromPDF(v7, 80.0, 80.0, v8);
 
-      [v5 setImage:v9];
-      v10 = [v5 imageView];
-      [v10 setClipsToBounds:1];
-      [v10 _setContinuousCornerRadius:20.0];
+      [explanationView setImage:v9];
+      imageView = [explanationView imageView];
+      [imageView setClipsToBounds:1];
+      [imageView _setContinuousCornerRadius:20.0];
     }
 
-    v11 = [v5 dockView];
-    v12 = [v11 footerView];
+    dockView = [explanationView dockView];
+    footerView = [dockView footerView];
     v13 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_5.isa);
-    [v5 setBodyButtonText:v13];
+    [explanationView setBodyButtonText:v13];
 
-    [v5 setBodyButtonUsesLearnMoreStyle:1];
+    [explanationView setBodyButtonUsesLearnMoreStyle:1];
     setupType = self->_setupType;
     if (setupType == 1)
     {
       v19 = PKLocalizedFeatureString();
-      [v5 setTitleText:v19];
+      [explanationView setTitleText:v19];
 
-      v20 = [(PKFamilyMember *)self->_familyMember firstName];
+      firstName = [(PKFamilyMember *)self->_familyMember firstName];
       v21 = PKLocalizedFeatureString();
-      [v5 setBodyText:v21, v20];
+      [explanationView setBodyText:v21, firstName];
 
       if (!IsSetupAssistant)
       {
@@ -110,16 +110,16 @@ LABEL_13:
           self->_watchDeviceImageView = v23;
 
           v25 = self->_watchDeviceImageView;
-          v26 = [(PKPeerPaymentAddAssociatedAccountViewController *)self _imageForWatchView];
-          [(PKWatchDeviceImageOverlayView *)v25 setOverlayImage:v26];
+          _imageForWatchView = [(PKPeerPaymentAddAssociatedAccountViewController *)self _imageForWatchView];
+          [(PKWatchDeviceImageOverlayView *)v25 setOverlayImage:_imageForWatchView];
 
-          [v5 setBodyView:self->_watchDeviceImageView];
+          [explanationView setBodyView:self->_watchDeviceImageView];
         }
 
         goto LABEL_16;
       }
 
-      v17 = [v12 setUpLaterButton];
+      setUpLaterButton = [footerView setUpLaterButton];
       v18 = PKLocalizedFeatureString();
     }
 
@@ -131,41 +131,41 @@ LABEL_13:
       }
 
       v15 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_6.isa);
-      [v5 setTitleText:v15];
+      [explanationView setTitleText:v15];
 
       v16 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_7.isa);
-      [v5 setBodyText:v16];
+      [explanationView setBodyText:v16];
 
       if (!IsSetupAssistant)
       {
         goto LABEL_13;
       }
 
-      v17 = [v12 setUpLaterButton];
+      setUpLaterButton = [footerView setUpLaterButton];
       v18 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAdd_8.isa);
     }
 
     v22 = v18;
-    [v17 setTitle:v18 forState:0];
+    [setUpLaterButton setTitle:v18 forState:0];
 
     goto LABEL_13;
   }
 
-  v5 = PKLogFacilityTypeGetObject();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  explanationView = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(explanationView, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Peer Payment family sharing feature not supported.", buf, 2u);
+    _os_log_impl(&dword_1BD026000, explanationView, OS_LOG_TYPE_DEFAULT, "Peer Payment family sharing feature not supported.", buf, 2u);
   }
 
 LABEL_16:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = PKPeerPaymentAddAssociatedAccountViewController;
-  [(PKPeerPaymentAddAssociatedAccountViewController *)&v13 viewDidAppear:a3];
+  [(PKPeerPaymentAddAssociatedAccountViewController *)&v13 viewDidAppear:appear];
   if (([(PKPeerPaymentAccount *)self->_peerPaymentAccount supportsFamilySharing]& 1) == 0)
   {
     v4 = PKLogFacilityTypeGetObject();
@@ -189,13 +189,13 @@ LABEL_16:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(PKPeerPaymentAddAssociatedAccountViewController *)self _invalidateCLInUseAssertion];
   v5.receiver = self;
   v5.super_class = PKPeerPaymentAddAssociatedAccountViewController;
-  [(PKPeerPaymentAddAssociatedAccountViewController *)&v5 viewWillDisappear:v3];
+  [(PKPeerPaymentAddAssociatedAccountViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)dealloc
@@ -217,7 +217,7 @@ LABEL_16:
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   [(PKPeerPaymentAddAssociatedAccountViewController *)self _showSpinner:1];
   if (!self->_inUseAssertion)
@@ -276,13 +276,13 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
-  v4 = [(PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration *)self->_configuration associatedAccountSetupDelegate];
-  v5 = v4;
-  if (v4)
+  associatedAccountSetupDelegate = [(PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration *)self->_configuration associatedAccountSetupDelegate];
+  v5 = associatedAccountSetupDelegate;
+  if (associatedAccountSetupDelegate)
   {
-    [v4 addPeerPaymentAssociatedAccountDidSkipSetupForFamilyMember:self->_familyMember];
+    [associatedAccountSetupDelegate addPeerPaymentAssociatedAccountDidSkipSetupForFamilyMember:self->_familyMember];
   }
 
   else
@@ -291,7 +291,7 @@ LABEL_7:
   }
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
   v5 = [MEMORY[0x1E695DFF8] URLWithString:@"https://www.apple.com/legal/privacy/en-ww/parent-disclosure/"];
   v4 = [objc_alloc(MEMORY[0x1E697A838]) initWithURL:v5];
@@ -299,18 +299,18 @@ LABEL_7:
   [(PKPeerPaymentAddAssociatedAccountViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__PKPeerPaymentAddAssociatedAccountViewController__presentDisplayableError___block_invoke;
   v6[3] = &unk_1E8010970;
   v6[4] = self;
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, v6, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, v6, 0);
   if (v4)
   {
-    v5 = [(PKPeerPaymentAddAssociatedAccountViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKPeerPaymentAddAssociatedAccountViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -328,11 +328,11 @@ LABEL_7:
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Terminating peer payment add associated account", v6, 2u);
   }
 
-  v4 = [(PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration *)self->_configuration associatedAccountSetupDelegate];
-  v5 = v4;
-  if (v4)
+  associatedAccountSetupDelegate = [(PKPeerPaymentSetupFlowControllerAssociatedAccountConfiguration *)self->_configuration associatedAccountSetupDelegate];
+  v5 = associatedAccountSetupDelegate;
+  if (associatedAccountSetupDelegate)
   {
-    [v4 addPeerPaymentAssociatedAccountSetupCompletedWithSucess:0 updatedAccount:0 forFamilyMember:self->_familyMember];
+    [associatedAccountSetupDelegate addPeerPaymentAssociatedAccountSetupCompletedWithSucess:0 updatedAccount:0 forFamilyMember:self->_familyMember];
   }
 
   else
@@ -341,22 +341,22 @@ LABEL_7:
   }
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v10 = [v5 dockView];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  v6 = [v10 primaryButton];
-  [v6 setShowSpinner:v3];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:spinnerCopy];
 
-  [v10 setButtonsEnabled:v3 ^ 1];
-  v7 = [(PKPeerPaymentAddAssociatedAccountViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3 ^ 1];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
+  navigationItem = [(PKPeerPaymentAddAssociatedAccountViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:spinnerCopy ^ 1];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3 ^ 1];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:spinnerCopy ^ 1];
 }
 
 - (id)_imageForWatchView

@@ -1,21 +1,21 @@
 @interface VCAggregatorRecordingAndTranscriptionService
-- (VCAggregatorRecordingAndTranscriptionService)initWithDelegate:(id)a3;
+- (VCAggregatorRecordingAndTranscriptionService)initWithDelegate:(id)delegate;
 - (id)aggregatedCallReports;
 - (id)dispatchedAggregatedCallReport;
 - (id)reportingAndTranscriptionServiceAggregatedReport;
 - (void)dealloc;
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5;
-- (void)processRecordingAndTranscriptionServiceRealtimeEventWithPayload:(id)a3;
-- (void)processRecordingAndTranscriptionServiceUsageWithPayload:(id)a3;
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload;
+- (void)processRecordingAndTranscriptionServiceRealtimeEventWithPayload:(id)payload;
+- (void)processRecordingAndTranscriptionServiceUsageWithPayload:(id)payload;
 @end
 
 @implementation VCAggregatorRecordingAndTranscriptionService
 
-- (VCAggregatorRecordingAndTranscriptionService)initWithDelegate:(id)a3
+- (VCAggregatorRecordingAndTranscriptionService)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = VCAggregatorRecordingAndTranscriptionService;
-  v3 = [(VCAggregator *)&v5 initWithDelegate:a3 nwParentActivity:0];
+  v3 = [(VCAggregator *)&v5 initWithDelegate:delegate nwParentActivity:0];
   if (!v3)
   {
     [VCAggregatorRecordingAndTranscriptionService initWithDelegate:];
@@ -31,31 +31,31 @@
   [(VCAggregator *)&v3 dealloc];
 }
 
-- (void)processRecordingAndTranscriptionServiceUsageWithPayload:(id)a3
+- (void)processRecordingAndTranscriptionServiceUsageWithPayload:(id)payload
 {
   dispatch_assert_queue_V2(self->super._stateQueue);
-  self->_uuid = [a3 objectForKeyedSubscript:@"AMUUID"];
-  self->_usage = [objc_msgSend(a3 objectForKeyedSubscript:{@"RATSU", "intValue"}];
+  self->_uuid = [payload objectForKeyedSubscript:@"AMUUID"];
+  self->_usage = [objc_msgSend(payload objectForKeyedSubscript:{@"RATSU", "intValue"}];
 }
 
-- (void)processRecordingAndTranscriptionServiceRealtimeEventWithPayload:(id)a3
+- (void)processRecordingAndTranscriptionServiceRealtimeEventWithPayload:(id)payload
 {
-  v4 = [(VCAggregator *)self captionsDataCollector];
+  captionsDataCollector = [(VCAggregator *)self captionsDataCollector];
 
-  [(VCCaptionsDataCollector *)v4 processCaptionsMetrics:a3];
+  [(VCCaptionsDataCollector *)captionsDataCollector processCaptionsMetrics:payload];
 }
 
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__VCAggregatorRecordingAndTranscriptionService_processEventWithCategory_type_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a5;
+  block[5] = payload;
   dispatch_sync(stateQueue, block);
 }
 
@@ -82,27 +82,27 @@
 - (id)dispatchedAggregatedCallReport
 {
   dispatch_assert_queue_V2(self->super._stateQueue);
-  v3 = [(VCAggregatorRecordingAndTranscriptionService *)self reportingAndTranscriptionServiceAggregatedReport];
+  reportingAndTranscriptionServiceAggregatedReport = [(VCAggregatorRecordingAndTranscriptionService *)self reportingAndTranscriptionServiceAggregatedReport];
   v6.receiver = self;
   v6.super_class = VCAggregatorRecordingAndTranscriptionService;
-  [v3 addEntriesFromDictionary:{-[VCAggregator dispatchedAggregatedCallReport](&v6, sel_dispatchedAggregatedCallReport)}];
-  [v3 setObject:&unk_284FA5798 forKeyedSubscript:@"RVER"];
+  [reportingAndTranscriptionServiceAggregatedReport addEntriesFromDictionary:{-[VCAggregator dispatchedAggregatedCallReport](&v6, sel_dispatchedAggregatedCallReport)}];
+  [reportingAndTranscriptionServiceAggregatedReport setObject:&unk_284FA5798 forKeyedSubscript:@"RVER"];
   usage = self->_usage;
   if (usage >= 2)
   {
     if (usage == 2)
     {
-      [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] addAggregatedCaptionsMetricsToReport:v3];
+      [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] addAggregatedCaptionsMetricsToReport:reportingAndTranscriptionServiceAggregatedReport];
     }
   }
 
   else
   {
-    [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] addAggregatedCaptionsMetricsToReport:v3];
-    [(VCMediaRecorderDataCollector *)[(VCAggregator *)self mediaRecorderDataCollector] addAggregatedMediaRecorderMetricsToReport:v3];
+    [(VCCaptionsDataCollector *)[(VCAggregator *)self captionsDataCollector] addAggregatedCaptionsMetricsToReport:reportingAndTranscriptionServiceAggregatedReport];
+    [(VCMediaRecorderDataCollector *)[(VCAggregator *)self mediaRecorderDataCollector] addAggregatedMediaRecorderMetricsToReport:reportingAndTranscriptionServiceAggregatedReport];
   }
 
-  return v3;
+  return reportingAndTranscriptionServiceAggregatedReport;
 }
 
 - (id)aggregatedCallReports

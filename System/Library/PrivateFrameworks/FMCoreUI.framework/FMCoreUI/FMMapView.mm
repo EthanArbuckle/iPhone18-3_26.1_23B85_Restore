@@ -1,106 +1,106 @@
 @interface FMMapView
 - ($B5E4F2499D3E0A90C7E8AF059312C337)lastVisibleMapRect;
-- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectForAnnotations:(id)a3 shouldIncludeRadius:(BOOL)a4;
-- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)a3 andRadius:(double)a4;
-- ($B5E4F2499D3E0A90C7E8AF059312C337)normalizeMapRect:(id)a3 toZoomScale:(double)a4;
-- ($B5E4F2499D3E0A90C7E8AF059312C337)repositionOnAnnotation:(id)a3 withZoom:(BOOL)a4;
+- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectForAnnotations:(id)annotations shouldIncludeRadius:(BOOL)radius;
+- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(double)radius;
+- ($B5E4F2499D3E0A90C7E8AF059312C337)normalizeMapRect:(id)rect toZoomScale:(double)scale;
+- ($B5E4F2499D3E0A90C7E8AF059312C337)repositionOnAnnotation:(id)annotation withZoom:(BOOL)zoom;
 - (BOOL)isCurrentlyRotated;
-- (BOOL)isOverlayOnMap:(id)a3;
-- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)a3;
+- (BOOL)isOverlayOnMap:(id)map;
+- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)view;
 - (FMAnnotation)currentDeviceAnnotation;
 - (FMAnnotation)lastSelectedAnnotationBeforeTracking;
 - (FMAnnotation)selectedAnnotation;
 - (FMMapView)init;
-- (FMMapView)initWithCoder:(id)a3;
+- (FMMapView)initWithCoder:(id)coder;
 - (FMMapViewDelegate)delegate;
 - (MKAnnotation)otherSelectedAnnotation;
 - (MKUserLocationView)userLocationView;
 - (UIEdgeInsets)lastVisibleInsets;
-- (double)distanceBetweenOrigin:(CLLocationCoordinate2D)a3 andDestination:(CLLocationCoordinate2D)a4;
-- (float)dampingForAltitude:(double)a3 andDistance:(double)a4;
+- (double)distanceBetweenOrigin:(CLLocationCoordinate2D)origin andDestination:(CLLocationCoordinate2D)destination;
+- (float)dampingForAltitude:(double)altitude andDistance:(double)distance;
 - (id)annotationsSortedByDistance;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
 - (id)nearbyAnnotations;
-- (id)viewForAnnotation:(id)a3;
+- (id)viewForAnnotation:(id)annotation;
 - (int64_t)userTrackingMode;
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5;
-- (void)addAnnotation:(id)a3;
-- (void)addAnnotations:(id)a3;
-- (void)addOverlay:(id)a3;
-- (void)addOverlays:(id)a3;
-- (void)animateMapToPosition:(double)a3 withInsets:(double)a4 attributionInsets:(double)a5 andZoom:(double)a6;
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button;
+- (void)addAnnotation:(id)annotation;
+- (void)addAnnotations:(id)annotations;
+- (void)addOverlay:(id)overlay;
+- (void)addOverlays:(id)overlays;
+- (void)animateMapToPosition:(double)position withInsets:(double)insets attributionInsets:(double)attributionInsets andZoom:(double)zoom;
 - (void)animateRenderingModeChange;
 - (void)animateToAllAnnotation;
-- (void)calloutButtonTapped:(id)a3;
+- (void)calloutButtonTapped:(id)tapped;
 - (void)clearUserLocation;
 - (void)createMKMapView;
 - (void)createUserTrackingButton;
 - (void)dealloc;
 - (void)depthSortAnnotations;
 - (void)deselectAllAnnotations;
-- (void)deselectAnnotationView:(id)a3;
-- (void)deselectAnnotationViewIfNeeded:(id)a3;
-- (void)didDoubleSelectAnnotation:(id)a3;
+- (void)deselectAnnotationView:(id)view;
+- (void)deselectAnnotationViewIfNeeded:(id)needed;
+- (void)didDoubleSelectAnnotation:(id)annotation;
 - (void)didMoveToSuperview;
-- (void)didSelectAnnotation:(id)a3;
+- (void)didSelectAnnotation:(id)annotation;
 - (void)displayAllAnnotations;
-- (void)doubleSelectAnnotation:(id)a3;
-- (void)fingerOffAnnotation:(id)a3;
-- (void)fingerOnAnnotation:(id)a3;
-- (void)flashMapInset:(UIEdgeInsets)a3;
+- (void)doubleSelectAnnotation:(id)annotation;
+- (void)fingerOffAnnotation:(id)annotation;
+- (void)fingerOnAnnotation:(id)annotation;
+- (void)flashMapInset:(UIEdgeInsets)inset;
 - (void)initialize;
 - (void)invalidateLayoutTimer;
 - (void)layoutMapView;
 - (void)layoutSubviews;
-- (void)mapSwiped:(id)a3 withPercent:(double)a4;
-- (void)mapSwipedBegin:(id)a3;
-- (void)mapSwipedEnd:(id)a3 withPercent:(double)a4;
-- (void)mapTapped:(id)a3;
-- (void)mapTouchEnded:(id)a3;
-- (void)mapTouchMoved:(id)a3;
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4;
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5;
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)moveCenterByOffset:(CGPoint)a3 from:(CLLocationCoordinate2D)a4;
+- (void)mapSwiped:(id)swiped withPercent:(double)percent;
+- (void)mapSwipedBegin:(id)begin;
+- (void)mapSwipedEnd:(id)end withPercent:(double)percent;
+- (void)mapTapped:(id)tapped;
+- (void)mapTouchEnded:(id)ended;
+- (void)mapTouchMoved:(id)moved;
+- (void)mapView:(id)view didAddAnnotationViews:(id)views;
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated;
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)moveCenterByOffset:(CGPoint)offset from:(CLLocationCoordinate2D)from;
 - (void)recenterVisibleAnnotations;
 - (void)refreshCameraPosition;
-- (void)refreshOverlayForAnnotation:(id)a3 andCoordinate:(CLLocationCoordinate2D)a4;
-- (void)removeAllOverlaysAndCurrentAnnotationOverlay:(id)a3;
-- (void)removeAnnotation:(id)a3;
-- (void)removeAnnotations:(id)a3;
-- (void)removeOverlay:(id)a3;
-- (void)removeOverlays:(id)a3;
-- (void)removeUserAnnotationIfNeeded:(id)a3;
-- (void)repositionOnMapRectIfNeeded:(id)a3;
-- (void)repositionToMapRect:(id)a3 withZoom:(BOOL)a4;
-- (void)selectAnnotation:(id)a3;
-- (void)selectAnnotationForPreview:(id)a3;
-- (void)selectOrDeselectAnnotationView:(id)a3;
-- (void)setIsPreviewing:(BOOL)a3;
-- (void)setIsSwipeGestureEnabled:(BOOL)a3;
-- (void)setRenderingMode:(int64_t)a3;
-- (void)setUserLocationTintColor:(id)a3;
+- (void)refreshOverlayForAnnotation:(id)annotation andCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)removeAllOverlaysAndCurrentAnnotationOverlay:(id)overlay;
+- (void)removeAnnotation:(id)annotation;
+- (void)removeAnnotations:(id)annotations;
+- (void)removeOverlay:(id)overlay;
+- (void)removeOverlays:(id)overlays;
+- (void)removeUserAnnotationIfNeeded:(id)needed;
+- (void)repositionOnMapRectIfNeeded:(id)needed;
+- (void)repositionToMapRect:(id)rect withZoom:(BOOL)zoom;
+- (void)selectAnnotation:(id)annotation;
+- (void)selectAnnotationForPreview:(id)preview;
+- (void)selectOrDeselectAnnotationView:(id)view;
+- (void)setIsPreviewing:(BOOL)previewing;
+- (void)setIsSwipeGestureEnabled:(BOOL)enabled;
+- (void)setRenderingMode:(int64_t)mode;
+- (void)setUserLocationTintColor:(id)color;
 - (void)setupCamera;
 - (void)setupConstraints;
 - (void)setupGestures;
-- (void)slideAnnotationIntoViewIfNeeded:(id)a3;
+- (void)slideAnnotationIntoViewIfNeeded:(id)needed;
 - (void)synchronize;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAccordingToUserTrackingMode;
-- (void)updateAnnotationPositionAfterPreview:(id)a3;
-- (void)updateAnnotationStyle:(id)a3;
-- (void)updateCameraPositionForAnnotation:(id)a3;
-- (void)updateCameraPositionForMapRect:(id)a3 withZoom:(BOOL)a4;
+- (void)updateAnnotationPositionAfterPreview:(id)preview;
+- (void)updateAnnotationStyle:(id)style;
+- (void)updateCameraPositionForAnnotation:(id)annotation;
+- (void)updateCameraPositionForMapRect:(id)rect withZoom:(BOOL)zoom;
 - (void)updateCameraPositionForNoLocation;
-- (void)updateCameraPositionWithLocation:(CLLocationCoordinate2D)a3 andAltitude:(double)a4;
-- (void)updateOverlayForAnnotation:(id)a3 withForce:(BOOL)a4;
-- (void)updatePreviewLocationForAnnotation:(id)a3;
+- (void)updateCameraPositionWithLocation:(CLLocationCoordinate2D)location andAltitude:(double)altitude;
+- (void)updateOverlayForAnnotation:(id)annotation withForce:(BOOL)force;
+- (void)updatePreviewLocationForAnnotation:(id)annotation;
 - (void)updateUserTrackingButtonState;
-- (void)userLocationTapped:(id)a3;
+- (void)userLocationTapped:(id)tapped;
 @end
 
 @implementation FMMapView
@@ -119,11 +119,11 @@
   return v3;
 }
 
-- (FMMapView)initWithCoder:(id)a3
+- (FMMapView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FMMapView;
-  v3 = [(FMMapView *)&v6 initWithCoder:a3];
+  v3 = [(FMMapView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -138,58 +138,58 @@
   v10.receiver = self;
   v10.super_class = FMMapView;
   [(FMMapView *)&v10 didMoveToSuperview];
-  v3 = [(FMMapView *)self superview];
+  superview = [(FMMapView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(FMMapView *)self setupConstraints];
     [(FMMapView *)self setupGestures];
-    v4 = [(FMMapView *)self mapView];
-    [v4 setDelegate:self];
+    mapView = [(FMMapView *)self mapView];
+    [mapView setDelegate:self];
 
     v5 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_synchronize];
     [(FMMapView *)self setDisplayLink:v5];
 
-    v6 = [(FMMapView *)self displayLink];
-    v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v6 addToRunLoop:v7 forMode:*MEMORY[0x277CBE738]];
+    displayLink = [(FMMapView *)self displayLink];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [displayLink addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 
   else
   {
-    v8 = [(FMMapView *)self displayLink];
+    displayLink2 = [(FMMapView *)self displayLink];
 
-    if (v8)
+    if (displayLink2)
     {
-      v9 = [(FMMapView *)self displayLink];
-      [v9 invalidate];
+      displayLink3 = [(FMMapView *)self displayLink];
+      [displayLink3 invalidate];
 
       [(FMMapView *)self setDisplayLink:0];
       [(FMMapView *)self setUserTrackingButton:0];
     }
 
     [(FMMapView *)self invalidateLayoutTimer];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self];
+    displayLink = [MEMORY[0x277CCAB98] defaultCenter];
+    [displayLink removeObserver:self];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(FMMapView *)self displayLink];
+  displayLink = [(FMMapView *)self displayLink];
 
-  if (v3)
+  if (displayLink)
   {
-    v4 = [(FMMapView *)self displayLink];
-    [v4 invalidate];
+    displayLink2 = [(FMMapView *)self displayLink];
+    [displayLink2 invalidate];
 
     [(FMMapView *)self setDisplayLink:0];
     [(FMMapView *)self setUserTrackingButton:0];
   }
 
   [(FMMapView *)self invalidateLayoutTimer];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = FMMapView;
@@ -199,8 +199,8 @@
 - (void)initialize
 {
   v3 = *MEMORY[0x277CE4250];
-  v4 = [MEMORY[0x277CD4E48] sharedLocationManager];
-  [v4 setDesiredAccuracy:v3];
+  mEMORY[0x277CD4E48] = [MEMORY[0x277CD4E48] sharedLocationManager];
+  [mEMORY[0x277CD4E48] setDesiredAccuracy:v3];
 
   +[FMAnnotationView preloadAssets];
   [(FMMapView *)self setCurrentTrackingMode:0];
@@ -217,13 +217,13 @@
   [(FMMapView *)self setAccuracyOverlays:v6];
 
   [(FMMapView *)self setTintAdjustmentMode:1];
-  v7 = [MEMORY[0x277CBFC10] sharedManager];
-  v10 = [v7 location];
+  mEMORY[0x277CBFC10] = [MEMORY[0x277CBFC10] sharedManager];
+  location = [mEMORY[0x277CBFC10] location];
 
-  if (v10)
+  if (location)
   {
     v8 = objc_alloc_init(MEMORY[0x277CD4F58]);
-    v9 = [v10 copy];
+    v9 = [location copy];
     [v8 setLocation:v9];
 
     [(FMMapView *)self setUserLocation:v8];
@@ -241,8 +241,8 @@
   [(MKMapView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKMapView *)v3 setCompassEnabled:0];
   [(MKMapView *)v3 setShowsUserLocation:1];
-  v4 = [MEMORY[0x277CD4F10] filterIncludingAllCategories];
-  [(MKMapView *)v3 setPointOfInterestFilter:v4];
+  filterIncludingAllCategories = [MEMORY[0x277CD4F10] filterIncludingAllCategories];
+  [(MKMapView *)v3 setPointOfInterestFilter:filterIncludingAllCategories];
 
   [(MKMapView *)v3 setShowsBuildings:1];
   [(MKMapView *)v3 setShowsAttribution:0];
@@ -262,10 +262,10 @@
 
 - (void)setupCamera
 {
-  v3 = [(FMMapView *)self delegate];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 objectForKey:@"FMMapViewLastVisibleRect"];
-  v6 = [v4 objectForKey:@"FMMapViewLastVisibleInsets"];
+  delegate = [(FMMapView *)self delegate];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:@"FMMapViewLastVisibleRect"];
+  v6 = [standardUserDefaults objectForKey:@"FMMapViewLastVisibleInsets"];
   if (v5)
   {
     v7 = MEMORY[0x277D85DD0];
@@ -274,8 +274,8 @@
     v10 = &unk_278FDB8E0;
     v11 = v5;
     v12 = v6;
-    v13 = self;
-    v14 = v3;
+    selfCopy = self;
+    v14 = delegate;
     dispatch_async(MEMORY[0x277D85CD0], &v7);
     [(FMMapView *)self setIsUserLocationUpdated:1, v7, v8, v9, v10];
   }
@@ -351,8 +351,8 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"mapView";
-  v3 = [(FMMapView *)self mapView];
-  v8[0] = v3;
+  mapView = [(FMMapView *)self mapView];
+  v8[0] = mapView;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-0-[mapView]-0-|" options:0 metrics:0 views:v4];
@@ -366,14 +366,14 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
   v4 = objc_alloc_init(FMMapGestureRecognizer);
   [(FMMapGestureRecognizer *)v4 setTouchDelegate:self];
   [(FMMapView *)self setMapGesture:v4];
-  v3 = [(FMMapView *)self mapView];
-  [v3 addGestureRecognizer:v4];
+  mapView = [(FMMapView *)self mapView];
+  [mapView addGestureRecognizer:v4];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(FMMapView *)self mapView];
-  if ([v3 mapType])
+  mapView = [(FMMapView *)self mapView];
+  if ([mapView mapType])
   {
     v4 = 0.5;
   }
@@ -394,19 +394,19 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
 - (void)layoutMapView
 {
   [(FMMapView *)self setLayoutTimer:0];
-  v5 = [(FMMapView *)self selectedAnnotation];
-  v3 = [(FMMapView *)self mapView];
-  if ([v3 userTrackingMode] == 2 || -[FMMapView isPreventingMapUpdates](self, "isPreventingMapUpdates") || -[FMMapView isMapMoved](self, "isMapMoved"))
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  mapView = [(FMMapView *)self mapView];
+  if ([mapView userTrackingMode] == 2 || -[FMMapView isPreventingMapUpdates](self, "isPreventingMapUpdates") || -[FMMapView isMapMoved](self, "isMapMoved"))
   {
   }
 
   else
   {
-    v4 = [(FMMapView *)self isMapPositioningDisabled];
+    isMapPositioningDisabled = [(FMMapView *)self isMapPositioningDisabled];
 
-    if (!v4)
+    if (!isMapPositioningDisabled)
     {
-      if (v5)
+      if (selectedAnnotation)
       {
         [(FMMapView *)self updateCameraPositionForAnnotation:?];
       }
@@ -425,63 +425,63 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = FMMapView;
-  [(FMMapView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(FMMapView *)self selectedAnnotation];
+  [(FMMapView *)&v5 traitCollectionDidChange:change];
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
 
-  if (!v4)
+  if (!selectedAnnotation)
   {
     [(FMMapView *)self setIsAllAnnotationsShown:1];
   }
 }
 
-- (void)setUserLocationTintColor:(id)a3
+- (void)setUserLocationTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  v6 = [(FMMapView *)self mapView];
-  v7 = [v6 userLocation];
-  v8 = [v5 viewForAnnotation:v7];
-  [v8 setTintColor:v4];
+  colorCopy = color;
+  mapView = [(FMMapView *)self mapView];
+  mapView2 = [(FMMapView *)self mapView];
+  userLocation = [mapView2 userLocation];
+  v8 = [mapView viewForAnnotation:userLocation];
+  [v8 setTintColor:colorCopy];
 
   userLocationTintColor = self->_userLocationTintColor;
-  self->_userLocationTintColor = v4;
+  self->_userLocationTintColor = colorCopy;
 }
 
-- (void)addAnnotation:(id)a3
+- (void)addAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 addAnnotation:v4];
+  annotationCopy = annotation;
+  mapView = [(FMMapView *)self mapView];
+  [mapView addAnnotation:annotationCopy];
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 addAnnotations:v4];
+  annotationsCopy = annotations;
+  mapView = [(FMMapView *)self mapView];
+  [mapView addAnnotations:annotationsCopy];
 }
 
-- (void)removeAnnotation:(id)a3
+- (void)removeAnnotation:(id)annotation
 {
-  v4 = a3;
-  [(FMMapView *)self removeUserAnnotationIfNeeded:v4];
-  v5 = [(FMMapView *)self mapView];
-  [v5 removeAnnotation:v4];
+  annotationCopy = annotation;
+  [(FMMapView *)self removeUserAnnotationIfNeeded:annotationCopy];
+  mapView = [(FMMapView *)self mapView];
+  [mapView removeAnnotation:annotationCopy];
 }
 
-- (void)removeAnnotations:(id)a3
+- (void)removeAnnotations:(id)annotations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationsCopy = annotations;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [annotationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -493,192 +493,192 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(annotationsCopy);
         }
 
         [(FMMapView *)self removeUserAnnotationIfNeeded:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [annotationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(FMMapView *)self mapView];
-  [v9 removeAnnotations:v4];
+  mapView = [(FMMapView *)self mapView];
+  [mapView removeAnnotations:annotationsCopy];
 }
 
-- (id)viewForAnnotation:(id)a3
+- (id)viewForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  v6 = [v5 viewForAnnotation:v4];
+  annotationCopy = annotation;
+  mapView = [(FMMapView *)self mapView];
+  v6 = [mapView viewForAnnotation:annotationCopy];
 
   return v6;
 }
 
 - (void)deselectAllAnnotations
 {
-  v3 = [(FMMapView *)self mapView];
-  v4 = [(FMMapView *)self mapView];
-  v5 = [v4 overlays];
-  [v3 removeOverlays:v5];
+  mapView = [(FMMapView *)self mapView];
+  mapView2 = [(FMMapView *)self mapView];
+  overlays = [mapView2 overlays];
+  [mapView removeOverlays:overlays];
 
   [(FMMapView *)self deselectAnnotationViewIfNeeded:0];
 }
 
-- (void)selectAnnotation:(id)a3
+- (void)selectAnnotation:(id)annotation
 {
-  v16 = a3;
+  annotationCopy = annotation;
   [(FMMapView *)self deselectAnnotationViewIfNeeded:0];
-  v4 = [(FMMapView *)self delegate];
-  v5 = [(FMMapView *)self viewForAnnotation:v16];
+  delegate = [(FMMapView *)self delegate];
+  v5 = [(FMMapView *)self viewForAnnotation:annotationCopy];
   [(FMMapView *)self setCurrentSelectedState:1];
   [(FMMapView *)self setSelectedAnnotationView:v5];
-  [(FMMapView *)self setSelectedAnnotation:v16];
-  v6 = [(FMMapView *)self selectedAnnotationView];
-  [v6 setSelected:1 animated:1 delay:0.400000006];
+  [(FMMapView *)self setSelectedAnnotation:annotationCopy];
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+  [selectedAnnotationView setSelected:1 animated:1 delay:0.400000006];
 
   [(FMMapView *)self _setUserTrackingMode:0 animated:1 fromTrackingButton:0];
-  v7 = [(FMMapView *)self mapView];
-  v8 = [v7 selectedAnnotations];
-  v9 = [v8 firstObject];
-  v10 = [(FMMapView *)self userLocation];
-  v11 = [v9 isEqual:v10];
+  mapView = [(FMMapView *)self mapView];
+  selectedAnnotations = [mapView selectedAnnotations];
+  firstObject = [selectedAnnotations firstObject];
+  userLocation = [(FMMapView *)self userLocation];
+  v11 = [firstObject isEqual:userLocation];
 
   if (v11)
   {
-    v12 = [(FMMapView *)self mapView];
-    v13 = [(FMMapView *)self mapView];
-    v14 = [v13 userLocation];
-    [v12 deselectAnnotation:v14 animated:1];
+    mapView2 = [(FMMapView *)self mapView];
+    mapView3 = [(FMMapView *)self mapView];
+    userLocation2 = [mapView3 userLocation];
+    [mapView2 deselectAnnotation:userLocation2 animated:1];
   }
 
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 didSelectAnnotation:v16];
+    [delegate didSelectAnnotation:annotationCopy];
   }
 
-  if (v16)
+  if (annotationCopy)
   {
     [(FMMapView *)self depthSortAnnotations];
   }
 
   [(FMMapView *)self setIsMapAnimating:0];
   [(FMMapView *)self setLastVisibleMapRect:*MEMORY[0x277CD4BB0], *(MEMORY[0x277CD4BB0] + 8), *(MEMORY[0x277CD4BB0] + 16), *(MEMORY[0x277CD4BB0] + 24)];
-  v15 = [(FMMapView *)self layoutTimer];
-  [v15 invalidate];
+  layoutTimer = [(FMMapView *)self layoutTimer];
+  [layoutTimer invalidate];
 
   [(FMMapView *)self setLayoutTimer:0];
-  [(FMMapView *)self repositionOnAnnotation:v16 withZoom:1];
+  [(FMMapView *)self repositionOnAnnotation:annotationCopy withZoom:1];
 }
 
 - (void)invalidateLayoutTimer
 {
-  v3 = [(FMMapView *)self layoutTimer];
+  layoutTimer = [(FMMapView *)self layoutTimer];
 
-  if (v3)
+  if (layoutTimer)
   {
-    v4 = [(FMMapView *)self layoutTimer];
-    [v4 invalidate];
+    layoutTimer2 = [(FMMapView *)self layoutTimer];
+    [layoutTimer2 invalidate];
 
     [(FMMapView *)self setLayoutTimer:0];
   }
 }
 
-- (void)doubleSelectAnnotation:(id)a3
+- (void)doubleSelectAnnotation:(id)annotation
 {
-  v5 = a3;
+  annotationCopy = annotation;
   [(FMMapView *)self invalidateLayoutTimer];
   [(FMMapView *)self setIsMapPositioningDisabled:0];
-  v4 = [(FMMapView *)self selectedAnnotationView];
-  [v4 setSelected:0 animated:1];
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+  [selectedAnnotationView setSelected:0 animated:1];
 
-  [(FMMapView *)self didDoubleSelectAnnotation:v5];
+  [(FMMapView *)self didDoubleSelectAnnotation:annotationCopy];
 }
 
-- (void)removeUserAnnotationIfNeeded:(id)a3
+- (void)removeUserAnnotationIfNeeded:(id)needed
 {
-  v6 = a3;
-  v4 = [(FMMapView *)self userLocationView];
-  v5 = [(FMMapView *)self currentDeviceAnnotation];
-  if ([v6 isEqual:v4])
+  neededCopy = needed;
+  userLocationView = [(FMMapView *)self userLocationView];
+  currentDeviceAnnotation = [(FMMapView *)self currentDeviceAnnotation];
+  if ([neededCopy isEqual:userLocationView])
   {
     [(FMMapView *)self setUserLocationView:0];
   }
 
-  else if ([v6 isEqual:v5])
+  else if ([neededCopy isEqual:currentDeviceAnnotation])
   {
     [(FMMapView *)self setCurrentDeviceAnnotation:0];
   }
 }
 
-- (void)deselectAnnotationViewIfNeeded:(id)a3
+- (void)deselectAnnotationViewIfNeeded:(id)needed
 {
-  v6 = a3;
-  v4 = [(FMMapView *)self selectedAnnotationView];
+  neededCopy = needed;
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = neededCopy;
+  if (selectedAnnotationView != neededCopy)
   {
-    [(FMMapView *)self deselectAnnotationView:v6];
-    v5 = v6;
+    [(FMMapView *)self deselectAnnotationView:neededCopy];
+    v5 = neededCopy;
   }
 }
 
-- (void)deselectAnnotationView:(id)a3
+- (void)deselectAnnotationView:(id)view
 {
-  v9 = a3;
-  v4 = [(FMMapView *)self delegate];
+  viewCopy = view;
+  delegate = [(FMMapView *)self delegate];
   v5 = objc_opt_new();
-  v6 = [(FMMapView *)self selectedAnnotation];
-  [v6 setOverlay:v5];
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  [selectedAnnotation setOverlay:v5];
 
   [(FMMapView *)self setCurrentSelectedState:0];
-  v7 = [(FMMapView *)self selectedAnnotationView];
-  [v7 setSelected:0 animated:1];
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+  [selectedAnnotationView setSelected:0 animated:1];
 
   [(FMMapView *)self setSelectedAnnotationView:0];
   [(FMMapView *)self setSelectedAnnotation:0];
-  v8 = [v9 annotation];
-  [(FMMapView *)self updateOverlayForAnnotation:v8 withForce:1];
+  annotation = [viewCopy annotation];
+  [(FMMapView *)self updateOverlayForAnnotation:annotation withForce:1];
 
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 didDeselectAnnotationView:v9];
+    [delegate didDeselectAnnotationView:viewCopy];
   }
 }
 
-- (void)didSelectAnnotation:(id)a3
+- (void)didSelectAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self delegate];
-  v6 = [(FMMapView *)self isAllAnnotationsShown];
-  v7 = [(FMMapView *)self viewForAnnotation:v4];
+  annotationCopy = annotation;
+  delegate = [(FMMapView *)self delegate];
+  isAllAnnotationsShown = [(FMMapView *)self isAllAnnotationsShown];
+  v7 = [(FMMapView *)self viewForAnnotation:annotationCopy];
   [(FMMapView *)self setCurrentSelectedState:1];
   [(FMMapView *)self setSelectedAnnotationView:v7];
-  [(FMMapView *)self setSelectedAnnotation:v4];
-  v8 = [(FMMapView *)self selectedAnnotationView];
-  v9 = v8;
-  if (v6)
+  [(FMMapView *)self setSelectedAnnotation:annotationCopy];
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+  v9 = selectedAnnotationView;
+  if (isAllAnnotationsShown)
   {
-    [v8 setSelected:1 animated:1 delay:0.400000006];
+    [selectedAnnotationView setSelected:1 animated:1 delay:0.400000006];
   }
 
   else
   {
-    [v8 setSelected:1 animated:1];
+    [selectedAnnotationView setSelected:1 animated:1];
   }
 
   [(FMMapView *)self setCanSelectUserAnnotation:0];
-  v10 = [(FMMapView *)self userSelectionTimer];
+  userSelectionTimer = [(FMMapView *)self userSelectionTimer];
 
-  if (v10)
+  if (userSelectionTimer)
   {
-    v11 = [(FMMapView *)self userSelectionTimer];
-    [v11 invalidate];
+    userSelectionTimer2 = [(FMMapView *)self userSelectionTimer];
+    [userSelectionTimer2 invalidate];
 
     [(FMMapView *)self setUserSelectionTimer:0];
   }
@@ -686,20 +686,20 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
   v12 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel_updateCanSelectUserAnnotation selector:0 userInfo:0 repeats:0.5];
   [(FMMapView *)self setUserSelectionTimer:v12];
 
-  v13 = [v7 annotation];
-  [(FMMapView *)self updateOverlayForAnnotation:v13 withForce:1];
+  annotation = [v7 annotation];
+  [(FMMapView *)self updateOverlayForAnnotation:annotation withForce:1];
 
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 didSelectAnnotation:v4];
+    [delegate didSelectAnnotation:annotationCopy];
   }
 
   if ([(FMMapView *)self showUserLocationCallout])
   {
-    v14 = [(FMMapView *)self mapView];
-    v15 = [(FMMapView *)self mapView];
-    v16 = [v15 userLocation];
-    [v14 deselectAnnotation:v16 animated:1];
+    mapView = [(FMMapView *)self mapView];
+    mapView2 = [(FMMapView *)self mapView];
+    userLocation = [mapView2 userLocation];
+    [mapView deselectAnnotation:userLocation animated:1];
   }
 
   if (![(FMMapView *)self isMapPositioningDisabled])
@@ -714,43 +714,43 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
 
   if ([(FMMapView *)self renderingMode])
   {
-    [(FMMapView *)self updateCameraPositionForAnnotation:v4];
+    [(FMMapView *)self updateCameraPositionForAnnotation:annotationCopy];
   }
 
-  else if (v6)
+  else if (isAllAnnotationsShown)
   {
     v17 = dispatch_time(0, 400000000);
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __33__FMMapView_didSelectAnnotation___block_invoke;
     v21 = &unk_278FDB908;
-    v22 = self;
-    v23 = v4;
+    selfCopy = self;
+    v23 = annotationCopy;
     dispatch_after(v17, MEMORY[0x277D85CD0], &v18);
   }
 
   else
   {
-    [(FMMapView *)self slideAnnotationIntoViewIfNeeded:v4];
+    [(FMMapView *)self slideAnnotationIntoViewIfNeeded:annotationCopy];
   }
 
   [(FMMapView *)self depthSortAnnotations:v18];
 }
 
-- (void)didDoubleSelectAnnotation:(id)a3
+- (void)didDoubleSelectAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self delegate];
-  v6 = [(FMMapView *)self viewForAnnotation:v4];
+  annotationCopy = annotation;
+  delegate = [(FMMapView *)self delegate];
+  v6 = [(FMMapView *)self viewForAnnotation:annotationCopy];
   [(FMMapView *)self setIsMapPositioningDisabled:0];
   [(FMMapView *)self _setUserTrackingMode:0 animated:1 fromTrackingButton:0];
   [(FMMapView *)self setCurrentSelectedState:2];
   [(FMMapView *)self setSelectedAnnotationView:v6];
-  [(FMMapView *)self setSelectedAnnotation:v4];
+  [(FMMapView *)self setSelectedAnnotation:annotationCopy];
   [v6 setSelected:1 animated:1];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 didDoubleSelectAnnotation:v4];
+    [delegate didDoubleSelectAnnotation:annotationCopy];
   }
 
   if ([(FMMapView *)self doubleSelectionMode])
@@ -767,30 +767,30 @@ void __24__FMMapView_setupCamera__block_invoke(uint64_t a1)
 
   else
   {
-    [(FMMapView *)self repositionOnAnnotation:v4 withZoom:1];
+    [(FMMapView *)self repositionOnAnnotation:annotationCopy withZoom:1];
   }
 }
 
-- (void)selectOrDeselectAnnotationView:(id)a3
+- (void)selectOrDeselectAnnotationView:(id)view
 {
-  v7 = a3;
+  viewCopy = view;
   [(FMMapView *)self deselectAnnotationViewIfNeeded:?];
-  v4 = [(FMMapView *)self currentSelectedState];
-  switch(v4)
+  currentSelectedState = [(FMMapView *)self currentSelectedState];
+  switch(currentSelectedState)
   {
     case 2:
-      v6 = [v7 annotation];
-      [(FMMapView *)self didSelectAnnotation:v6];
+      annotation = [viewCopy annotation];
+      [(FMMapView *)self didSelectAnnotation:annotation];
       goto LABEL_8;
     case 1:
-      v6 = [v7 annotation];
-      [(FMMapView *)self didDoubleSelectAnnotation:v6];
+      annotation = [viewCopy annotation];
+      [(FMMapView *)self didDoubleSelectAnnotation:annotation];
 LABEL_8:
 
       break;
     case 0:
-      v5 = [v7 annotation];
-      [(FMMapView *)self didSelectAnnotation:v5];
+      annotation2 = [viewCopy annotation];
+      [(FMMapView *)self didSelectAnnotation:annotation2];
 
       if (![(FMMapView *)self renderingMode])
       {
@@ -803,52 +803,52 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)addOverlay:(id)a3
+- (void)addOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 addOverlay:v4];
+  overlayCopy = overlay;
+  mapView = [(FMMapView *)self mapView];
+  [mapView addOverlay:overlayCopy];
 }
 
-- (void)addOverlays:(id)a3
+- (void)addOverlays:(id)overlays
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 addOverlays:v4];
+  overlaysCopy = overlays;
+  mapView = [(FMMapView *)self mapView];
+  [mapView addOverlays:overlaysCopy];
 }
 
-- (void)removeOverlay:(id)a3
+- (void)removeOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 removeOverlay:v4];
+  overlayCopy = overlay;
+  mapView = [(FMMapView *)self mapView];
+  [mapView removeOverlay:overlayCopy];
 }
 
-- (void)removeOverlays:(id)a3
+- (void)removeOverlays:(id)overlays
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  [v5 removeOverlays:v4];
+  overlaysCopy = overlays;
+  mapView = [(FMMapView *)self mapView];
+  [mapView removeOverlays:overlaysCopy];
 }
 
-- (void)updateOverlayForAnnotation:(id)a3 withForce:(BOOL)a4
+- (void)updateOverlayForAnnotation:(id)annotation withForce:(BOOL)force
 {
-  v4 = a4;
-  v41 = a3;
-  if (![v41 hasKnownLocation] || (objc_msgSend(v41, "isThisDevice") & 1) != 0 || (-[FMMapView selectedAnnotation](self, "selectedAnnotation"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != v41))
+  forceCopy = force;
+  annotationCopy = annotation;
+  if (![annotationCopy hasKnownLocation] || (objc_msgSend(annotationCopy, "isThisDevice") & 1) != 0 || (-[FMMapView selectedAnnotation](self, "selectedAnnotation"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != annotationCopy))
   {
-    [(FMMapView *)self removeAllOverlaysAndCurrentAnnotationOverlay:v41];
+    [(FMMapView *)self removeAllOverlaysAndCurrentAnnotationOverlay:annotationCopy];
     goto LABEL_5;
   }
 
-  v7 = [(FMMapView *)self mapView];
-  [v7 _zoomLevel];
+  mapView = [(FMMapView *)self mapView];
+  [mapView _zoomLevel];
   v9 = v8;
 
-  [v41 coordinate];
+  [annotationCopy coordinate];
   v11 = v10;
   v13 = v12;
-  v14 = [(FMMapView *)self viewForAnnotation:v41];
+  v14 = [(FMMapView *)self viewForAnnotation:annotationCopy];
   if (v14)
   {
     [(FMMapView *)self coordinateForAnnotationView:v14];
@@ -862,32 +862,32 @@ LABEL_8:
 LABEL_13:
     if ([(FMMapView *)self shouldDisplayOverlay])
     {
-      v18 = [v41 overlay];
-      v19 = [(FMMapView *)self isOverlayOnMap:v18];
+      overlay = [annotationCopy overlay];
+      v19 = [(FMMapView *)self isOverlayOnMap:overlay];
 
-      if (v19 && !v4)
+      if (v19 && !forceCopy)
       {
         goto LABEL_32;
       }
     }
 
-    v20 = [v41 overlay];
-    [v20 coordinate];
+    overlay2 = [annotationCopy overlay];
+    [overlay2 coordinate];
     if (vabdd_f64(v21, v11) <= v17)
     {
-      v22 = [v41 overlay];
-      [v22 coordinate];
+      overlay3 = [annotationCopy overlay];
+      [overlay3 coordinate];
       if (vabdd_f64(v23, v13) <= v17)
       {
-        [v41 horizontalAccuracy];
+        [annotationCopy horizontalAccuracy];
         v25 = v24;
-        v26 = [v41 overlay];
-        [v26 radius];
-        if (v25 == v27 && !v4)
+        overlay4 = [annotationCopy overlay];
+        [overlay4 radius];
+        if (v25 == v27 && !forceCopy)
         {
-          v28 = [(FMMapView *)self shouldDisplayOverlay];
+          shouldDisplayOverlay = [(FMMapView *)self shouldDisplayOverlay];
 
-          if (v28)
+          if (shouldDisplayOverlay)
           {
             goto LABEL_32;
           }
@@ -899,22 +899,22 @@ LABEL_13:
 
 LABEL_30:
     [(FMMapView *)self setShouldDisplayOverlay:1];
-    [v41 coordinate];
-    v33 = v41;
+    [annotationCopy coordinate];
+    v33 = annotationCopy;
     v11 = v34;
     v13 = v35;
     goto LABEL_31;
   }
 
-  v29 = [v41 overlay];
-  [v29 coordinate];
+  overlay5 = [annotationCopy overlay];
+  [overlay5 coordinate];
   if (vabdd_f64(v30, v11) > v17)
   {
     goto LABEL_25;
   }
 
-  v31 = [v41 overlay];
-  [v31 coordinate];
+  overlay6 = [annotationCopy overlay];
+  [overlay6 coordinate];
   if (vabdd_f64(v32, v13) > v17)
   {
 
@@ -922,10 +922,10 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  [v41 horizontalAccuracy];
+  [annotationCopy horizontalAccuracy];
   v37 = v36;
-  v38 = [v41 overlay];
-  [v38 radius];
+  overlay7 = [annotationCopy overlay];
+  [overlay7 radius];
   v40 = v39;
 
   if (v37 == v40)
@@ -935,7 +935,7 @@ LABEL_25:
 
 LABEL_26:
   [(FMMapView *)self setShouldDisplayOverlay:0];
-  v33 = v41;
+  v33 = annotationCopy;
 LABEL_31:
   [(FMMapView *)self refreshOverlayForAnnotation:v33 andCoordinate:v11, v13];
 LABEL_32:
@@ -943,56 +943,56 @@ LABEL_32:
 LABEL_5:
 }
 
-- (void)refreshOverlayForAnnotation:(id)a3 andCoordinate:(CLLocationCoordinate2D)a4
+- (void)refreshOverlayForAnnotation:(id)annotation andCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
-  [(FMMapView *)self removeAllOverlaysAndCurrentAnnotationOverlay:v7];
-  [v7 horizontalAccuracy];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  annotationCopy = annotation;
+  [(FMMapView *)self removeAllOverlaysAndCurrentAnnotationOverlay:annotationCopy];
+  [annotationCopy horizontalAccuracy];
   v9 = [(MKCircle *)FMAccuracyOverlay circleWithCenterCoordinate:latitude radius:longitude, v8];
-  [v7 setOverlay:v9];
+  [annotationCopy setOverlay:v9];
 
-  v10 = [v7 overlay];
-  [v10 setParentAnnotation:v7];
+  overlay = [annotationCopy overlay];
+  [overlay setParentAnnotation:annotationCopy];
 
-  v11 = [(FMMapView *)self mapView];
-  v12 = [v7 overlay];
-  [v11 addOverlay:v12];
+  mapView = [(FMMapView *)self mapView];
+  overlay2 = [annotationCopy overlay];
+  [mapView addOverlay:overlay2];
 
-  v14 = [(FMMapView *)self accuracyOverlays];
-  v13 = [v7 overlay];
+  accuracyOverlays = [(FMMapView *)self accuracyOverlays];
+  overlay3 = [annotationCopy overlay];
 
-  [v14 addObject:v13];
+  [accuracyOverlays addObject:overlay3];
 }
 
-- (void)removeAllOverlaysAndCurrentAnnotationOverlay:(id)a3
+- (void)removeAllOverlaysAndCurrentAnnotationOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self mapView];
-  v6 = [v4 overlay];
+  overlayCopy = overlay;
+  mapView = [(FMMapView *)self mapView];
+  overlay = [overlayCopy overlay];
 
-  [v5 removeOverlay:v6];
-  v7 = [(FMMapView *)self mapView];
-  v8 = [(FMMapView *)self accuracyOverlays];
-  [v7 removeOverlays:v8];
+  [mapView removeOverlay:overlay];
+  mapView2 = [(FMMapView *)self mapView];
+  accuracyOverlays = [(FMMapView *)self accuracyOverlays];
+  [mapView2 removeOverlays:accuracyOverlays];
 
-  v9 = [(FMMapView *)self accuracyOverlays];
-  [v9 removeAllObjects];
+  accuracyOverlays2 = [(FMMapView *)self accuracyOverlays];
+  [accuracyOverlays2 removeAllObjects];
 }
 
-- (BOOL)isOverlayOnMap:(id)a3
+- (BOOL)isOverlayOnMap:(id)map
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(FMMapView *)self mapView];
-  v6 = [v5 overlays];
+  mapView = [(FMMapView *)self mapView];
+  overlays = [mapView overlays];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [overlays countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -1002,17 +1002,17 @@ LABEL_5:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(overlays);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) isEqual:v4])
+        if ([*(*(&v11 + 1) + 8 * i) isEqual:mapCopy])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [overlays countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -1027,42 +1027,42 @@ LABEL_11:
   return v7;
 }
 
-- (void)updateCameraPositionWithLocation:(CLLocationCoordinate2D)a3 andAltitude:(double)a4
+- (void)updateCameraPositionWithLocation:(CLLocationCoordinate2D)location andAltitude:(double)altitude
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = location.longitude;
+  latitude = location.latitude;
   if (![(FMMapView *)self isUserSwiping])
   {
-    v9 = [(FMMapView *)self mapView];
-    v8 = [MEMORY[0x277CD4E58] cameraLookingAtCenterCoordinate:latitude fromEyeCoordinate:longitude eyeAltitude:{latitude, longitude, a4}];
-    [v9 setCamera:v8 animated:0];
+    mapView = [(FMMapView *)self mapView];
+    v8 = [MEMORY[0x277CD4E58] cameraLookingAtCenterCoordinate:latitude fromEyeCoordinate:longitude eyeAltitude:{latitude, longitude, altitude}];
+    [mapView setCamera:v8 animated:0];
   }
 }
 
-- (void)updateCameraPositionForAnnotation:(id)a3
+- (void)updateCameraPositionForAnnotation:(id)annotation
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(FMMapView *)self selectedAnnotation];
-  v6 = [(FMMapView *)self currentDeviceAnnotation];
-  v7 = [(FMMapView *)self otherSelectedAnnotation];
-  v8 = [(FMMapView *)self userLocation];
+  annotationCopy = annotation;
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  currentDeviceAnnotation = [(FMMapView *)self currentDeviceAnnotation];
+  otherSelectedAnnotation = [(FMMapView *)self otherSelectedAnnotation];
+  userLocation = [(FMMapView *)self userLocation];
   if (![(FMMapView *)self isUserSwiping]&& [(FMMapView *)self currentTrackingMode]!= 2 && ![(FMMapView *)self isPreventingMapUpdates])
   {
-    if ([v4 isEqual:v5] && !-[FMMapView isMapAnimating](self, "isMapAnimating"))
+    if ([annotationCopy isEqual:selectedAnnotation] && !-[FMMapView isMapAnimating](self, "isMapAnimating"))
     {
       if (![(FMMapView *)self isMapPositioningDisabled]&& [(FMMapView *)self currentTrackingMode]!= 2)
       {
         if ([(FMMapView *)self currentTrackingMode]|| [(FMMapView *)self isAllAnnotationsShown])
         {
-          if (v5)
+          if (selectedAnnotation)
           {
-            if (v8)
+            if (userLocation)
             {
-              if (([v6 isEqual:v5] & 1) == 0)
+              if (([currentDeviceAnnotation isEqual:selectedAnnotation] & 1) == 0)
               {
-                v38[0] = v5;
-                v38[1] = v8;
+                v38[0] = selectedAnnotation;
+                v38[1] = userLocation;
                 v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
                 [(FMMapView *)self mapRectForAnnotations:v20 shouldIncludeRadius:1];
                 v22 = v21;
@@ -1072,8 +1072,8 @@ LABEL_11:
 
                 if (v22 != *MEMORY[0x277CD4BB0] || v24 != *(MEMORY[0x277CD4BB0] + 8))
                 {
-                  v29 = [(FMMapView *)self mapView];
-                  [v29 bounds];
+                  mapView = [(FMMapView *)self mapView];
+                  [mapView bounds];
                   v31 = v30 / v26;
 
                   [(FMMapView *)self maxZoomLevel];
@@ -1094,23 +1094,23 @@ LABEL_11:
           }
         }
 
-        else if (-[FMMapView currentSelectedState](self, "currentSelectedState") == 2 || -[FMMapView currentSelectedState](self, "currentSelectedState") == 1 || [v4 isEqual:v6])
+        else if (-[FMMapView currentSelectedState](self, "currentSelectedState") == 2 || -[FMMapView currentSelectedState](self, "currentSelectedState") == 1 || [annotationCopy isEqual:currentDeviceAnnotation])
         {
-          [(FMMapView *)self repositionOnAnnotation:v5 withZoom:1];
+          [(FMMapView *)self repositionOnAnnotation:selectedAnnotation withZoom:1];
         }
       }
 
-      [(FMMapView *)self updateOverlayForAnnotation:v4 withForce:1];
+      [(FMMapView *)self updateOverlayForAnnotation:annotationCopy withForce:1];
     }
 
-    else if (![(FMMapView *)self isAllAnnotationsShown]|| [(FMMapView *)self currentSelectedState]|| v7)
+    else if (![(FMMapView *)self isAllAnnotationsShown]|| [(FMMapView *)self currentSelectedState]|| otherSelectedAnnotation)
     {
-      if ([(FMMapView *)self userTrackingMode]== 1 && v8 && !v5 && ![(FMMapView *)self currentSelectedState]&& !v7)
+      if ([(FMMapView *)self userTrackingMode]== 1 && userLocation && !selectedAnnotation && ![(FMMapView *)self currentSelectedState]&& !otherSelectedAnnotation)
       {
-        v18 = [(FMMapView *)self nearbyAnnotations];
-        v19 = [v18 mutableCopy];
+        nearbyAnnotations = [(FMMapView *)self nearbyAnnotations];
+        v19 = [nearbyAnnotations mutableCopy];
 
-        [v19 addObject:v8];
+        [v19 addObject:userLocation];
         [(FMMapView *)self mapRectForAnnotations:v19 shouldIncludeRadius:1];
         [(FMMapView *)self repositionOnMapRectIfNeeded:?];
       }
@@ -1118,8 +1118,8 @@ LABEL_11:
 
     else
     {
-      v9 = [(FMMapView *)self nearbyAnnotations];
-      [(FMMapView *)self mapRectForAnnotations:v9 shouldIncludeRadius:1];
+      nearbyAnnotations2 = [(FMMapView *)self nearbyAnnotations];
+      [(FMMapView *)self mapRectForAnnotations:nearbyAnnotations2 shouldIncludeRadius:1];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -1130,12 +1130,12 @@ LABEL_11:
   }
 }
 
-- (void)repositionOnMapRectIfNeeded:(id)a3
+- (void)repositionOnMapRectIfNeeded:(id)needed
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = needed.var1.var1;
+  var0 = needed.var1.var0;
+  v5 = needed.var0.var1;
+  v6 = needed.var0.var0;
   [(FMMapView *)self lastVisibleMapRect];
   v9 = v8;
   [(FMMapView *)self lastVisibleMapRect];
@@ -1165,16 +1165,16 @@ LABEL_11:
 {
   if (![(FMMapView *)self isPreventingMapUpdates])
   {
-    v3 = [(FMMapView *)self selectedAnnotation];
-    [(FMMapView *)self setIsGoingBackToAllAnnotation:v3 != 0];
+    selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+    [(FMMapView *)self setIsGoingBackToAllAnnotation:selectedAnnotation != 0];
 
     [(FMMapView *)self deselectAllAnnotations];
     [(FMMapView *)self setSelectedAnnotation:0];
     [(FMMapView *)self setSelectedAnnotationView:0];
     [(FMMapView *)self setIsAllAnnotationsShown:1];
     [(FMMapView *)self setIsMapPositioningDisabled:0];
-    v4 = [(FMMapView *)self layoutTimer];
-    [v4 invalidate];
+    layoutTimer = [(FMMapView *)self layoutTimer];
+    [layoutTimer invalidate];
 
     [(FMMapView *)self setLayoutTimer:0];
     [(FMMapView *)self animateToAllAnnotation];
@@ -1186,8 +1186,8 @@ LABEL_11:
 - (void)animateToAllAnnotation
 {
   [(FMMapView *)self setRenderingMode:0];
-  v3 = [(FMMapView *)self nearbyAnnotations];
-  [(FMMapView *)self mapRectForAnnotations:v3 shouldIncludeRadius:1];
+  nearbyAnnotations = [(FMMapView *)self nearbyAnnotations];
+  [(FMMapView *)self mapRectForAnnotations:nearbyAnnotations shouldIncludeRadius:1];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1201,12 +1201,12 @@ LABEL_11:
   }
 }
 
-- (void)setRenderingMode:(int64_t)a3
+- (void)setRenderingMode:(int64_t)mode
 {
-  if (self->_renderingMode != a3)
+  if (self->_renderingMode != mode)
   {
-    self->_renderingMode = a3;
-    if (a3 == 1)
+    self->_renderingMode = mode;
+    if (mode == 1)
     {
       [(FMMapView *)self setCurrentTrackingMode:0];
       [(FMMapView *)self _setUserTrackingMode:0 animated:0 fromTrackingButton:0];
@@ -1221,8 +1221,8 @@ LABEL_11:
   [(FMMapView *)self setIsMapAnimating:0];
   [(FMMapView *)self setIsMapPositioningDisabled:0];
   [(FMMapView *)self setIsAllAnnotationsShown:0];
-  v3 = [(FMMapView *)self selectedAnnotation];
-  [(FMMapView *)self updateCameraPositionForAnnotation:v3];
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  [(FMMapView *)self updateCameraPositionForAnnotation:selectedAnnotation];
 }
 
 - (void)refreshCameraPosition
@@ -1236,20 +1236,20 @@ LABEL_11:
   }
 }
 
-- (void)updateCameraPositionForMapRect:(id)a3 withZoom:(BOOL)a4
+- (void)updateCameraPositionForMapRect:(id)rect withZoom:(BOOL)zoom
 {
-  v4 = a4;
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v7 = a3.var0.var1;
-  v8 = a3.var0.var0;
+  zoomCopy = zoom;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
   v44 = *MEMORY[0x277D85DE8];
   if (![(FMMapView *)self isMapPositioningDisabled]&& ![(FMMapView *)self isUserSwiping])
   {
-    v10 = [(FMMapView *)self delegate];
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(FMMapView *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v10 edgeInsetsForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
+      [delegate edgeInsetsForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
       v12 = v11;
       v38 = v14;
       v39 = v13;
@@ -1265,7 +1265,7 @@ LABEL_11:
         *buf = 138412546;
         v41 = v18;
         v42 = 2048;
-        v43 = [(FMMapView *)self currentSelectedState];
+        currentSelectedState = [(FMMapView *)self currentSelectedState];
         _os_log_impl(&dword_24A315000, v17, OS_LOG_TYPE_DEFAULT, "FMMapView: delegate insets %@ currentState: %ld", buf, 0x16u);
       }
     }
@@ -1281,7 +1281,7 @@ LABEL_11:
     v37 = v16;
     if (objc_opt_respondsToSelector())
     {
-      [v10 attributionInsetsForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
+      [delegate attributionInsetsForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
       v36 = v19;
       v21 = v20;
       v23 = v22;
@@ -1302,32 +1302,32 @@ LABEL_11:
       [(FMMapView *)self lastVisibleMapRect];
       if (v31 != v8 || v28 != v7 || v29 != var0 || v30 != var1 || ([(FMMapView *)self lastVisibleInsets], v35 != v39) || v32 != v12 || v34 != v38 || v33 != v37 || [(FMMapView *)self isMapMoved])
       {
-        [(FMMapView *)self animateMapToPosition:v4 withInsets:v8 attributionInsets:v7 andZoom:var0, var1, v12, v39, v37, v38, v36, v21, *&v23, v25];
+        [(FMMapView *)self animateMapToPosition:zoomCopy withInsets:v8 attributionInsets:v7 andZoom:var0, var1, v12, v39, v37, v38, v36, v21, *&v23, v25];
       }
     }
   }
 }
 
-- (void)animateMapToPosition:(double)a3 withInsets:(double)a4 attributionInsets:(double)a5 andZoom:(double)a6
+- (void)animateMapToPosition:(double)position withInsets:(double)insets attributionInsets:(double)attributionInsets andZoom:(double)zoom
 {
   *&v172[9] = *MEMORY[0x277D85DE8];
-  v28 = [a1 selectedAnnotation];
-  v29 = [a1 mapView];
-  [v29 visibleMapRect];
+  selectedAnnotation = [self selectedAnnotation];
+  mapView = [self mapView];
+  [mapView visibleMapRect];
   v31 = v30;
 
-  v166 = a5;
-  v167 = a4;
-  v165 = a3;
-  v32 = a3 + a5 * 0.5;
-  v33 = [a1 mapView];
-  [v33 visibleMapRect];
+  attributionInsetsCopy = attributionInsets;
+  insetsCopy = insets;
+  positionCopy = position;
+  v32 = position + attributionInsets * 0.5;
+  mapView2 = [self mapView];
+  [mapView2 visibleMapRect];
   v36 = v35 + v34 * 0.5;
-  v37 = [a1 mapView];
-  [v37 visibleMapRect];
+  mapView3 = [self mapView];
+  [mapView3 visibleMapRect];
   v40 = v39 + v38 * 0.5;
 
-  v173.x = a2 + a4 * 0.5;
+  v173.x = a2 + insets * 0.5;
   v173.y = v32;
   v175.x = v36;
   v175.y = v40;
@@ -1335,20 +1335,20 @@ LABEL_11:
   v42 = LogCategory_Unspecified();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
   {
-    [(FMMapView *)a1 animateMapToPosition:v42 withInsets:a6 attributionInsets:a7 andZoom:a8, a9];
+    [(FMMapView *)self animateMapToPosition:v42 withInsets:zoom attributionInsets:a7 andZoom:a8, a9];
   }
 
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   v44 = v43;
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   v46 = v45;
-  v47 = [a1 isAllAnnotationsShown];
-  v48 = [a1 isAllAnnotationsShown];
-  v49 = [a1 mapView];
-  [v49 _zoomLevel];
+  isAllAnnotationsShown = [self isAllAnnotationsShown];
+  isAllAnnotationsShown2 = [self isAllAnnotationsShown];
+  mapView4 = [self mapView];
+  [mapView4 _zoomLevel];
   if (v41 <= 600000.0 / v50)
   {
-    v52 = fmin(vabdd_f64(v31, v167) / 10000.0, 0.5);
+    v52 = fmin(vabdd_f64(v31, insetsCopy) / 10000.0, 0.5);
     if (v52 < 0.4)
     {
       v53 = 1;
@@ -1356,7 +1356,7 @@ LABEL_11:
 
     else
     {
-      v53 = v47;
+      v53 = isAllAnnotationsShown;
     }
 
     if (v53)
@@ -1364,7 +1364,7 @@ LABEL_11:
       v52 = 0.4;
     }
 
-    if ((v48 & (v28 != 0)) != 0)
+    if ((isAllAnnotationsShown2 & (selectedAnnotation != 0)) != 0)
     {
       v52 = 0.5;
     }
@@ -1383,7 +1383,7 @@ LABEL_11:
   else
   {
 
-    if (![a1 isAllAnnotationsShown] || v28 || objc_msgSend(a1, "isGoingBackToAllAnnotation"))
+    if (![self isAllAnnotationsShown] || selectedAnnotation || objc_msgSend(self, "isGoingBackToAllAnnotation"))
     {
       v51 = 0.0;
     }
@@ -1397,23 +1397,23 @@ LABEL_11:
   v54 = LogCategory_Unspecified();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
   {
-    v55 = [a1 isMapAnimating];
-    v56 = [a1 layoutTimer];
+    isMapAnimating = [self isMapAnimating];
+    layoutTimer = [self layoutTimer];
     *buf = 67109888;
-    *v170 = v55;
+    *v170 = isMapAnimating;
     *&v170[4] = 1024;
-    *&v170[6] = v56 != 0;
+    *&v170[6] = layoutTimer != 0;
     LOWORD(v171) = 1024;
-    *(&v171 + 2) = [a1 isPreventingMapUpdates];
+    *(&v171 + 2) = [self isPreventingMapUpdates];
     HIWORD(v171) = 2048;
     *v172 = v51;
     _os_log_impl(&dword_24A315000, v54, OS_LOG_TYPE_DEFAULT, "animateMapToPosition isMapAnimating(%d) layoutTimer(%d) isPreventingMapUpdates(%d) duration(%f)", buf, 0x1Eu);
   }
 
-  if (([a1 isMapAnimating] & 1) == 0)
+  if (([self isMapAnimating] & 1) == 0)
   {
-    v57 = [a1 layoutTimer];
-    if (!v57 && ![a1 isPreventingMapUpdates])
+    layoutTimer2 = [self layoutTimer];
+    if (!layoutTimer2 && ![self isPreventingMapUpdates])
     {
       goto LABEL_27;
     }
@@ -1423,59 +1423,59 @@ LABEL_11:
   {
 LABEL_27:
     v160 = v51;
-    v158 = a6;
+    zoomCopy = zoom;
     v159 = a8;
-    v163 = a6 + v44;
+    v163 = zoom + v44;
     v164 = a8 + v46;
-    [a1 setIsMapAnimating:{1, a19, a20}];
-    [a1 setIsMapMoved:0];
-    v58 = [a1 renderingMode];
-    v59 = [a1 mapView];
-    v60 = v59;
-    if (v58)
+    [self setIsMapAnimating:{1, a19, a20}];
+    [self setIsMapMoved:0];
+    renderingMode = [self renderingMode];
+    mapView5 = [self mapView];
+    mapView6 = mapView5;
+    if (renderingMode)
     {
-      [v59 _setEdgeInsets:{v163, a7, v164, a9}];
-      v61 = v166;
-      v62 = v167;
+      [mapView5 _setEdgeInsets:{v163, a7, v164, a9}];
+      v61 = attributionInsetsCopy;
+      v62 = insetsCopy;
       v63 = a2;
-      v64 = v165;
+      v64 = positionCopy;
     }
 
     else
     {
-      [v59 mapRectThatFits:a2 edgePadding:{v165, v167, v166, v163, a7, v164, a9}];
+      [mapView5 mapRectThatFits:a2 edgePadding:{positionCopy, insetsCopy, attributionInsetsCopy, v163, a7, v164, a9}];
       v63 = v65;
       v64 = v66;
       v62 = v67;
       v61 = v68;
 
-      v60 = [a1 mapView];
-      [v60 _setEdgeInsets:{38.0, 38.0, 38.0, 38.0}];
+      mapView6 = [self mapView];
+      [mapView6 _setEdgeInsets:{38.0, 38.0, 38.0, 38.0}];
     }
 
-    v69 = [a1 mapView];
-    [v69 _setAttributionInsets:{a17, a18, v156, v157}];
+    mapView7 = [self mapView];
+    [mapView7 _setAttributionInsets:{a17, a18, v156, v157}];
 
-    v70 = [a1 mapView];
-    [v70 bounds];
+    mapView8 = [self mapView];
+    [mapView8 bounds];
     v72 = v71 - (a7 + a9);
     v74 = v73 - (v163 + v164);
 
     v75 = [MEMORY[0x277CD4E58] _cameraLookingAtMapRect:v63 forViewSize:{v64, v62, v61, v72, v74}];
-    v76 = [a1 mapView];
-    v77 = [v76 camera];
-    [v77 altitude];
+    mapView9 = [self mapView];
+    camera = [mapView9 camera];
+    [camera altitude];
     v79 = v78;
     [v75 altitude];
     v81 = vabdd_f64(v79, v80);
-    v82 = [a1 mapView];
-    v83 = [v82 camera];
-    [v83 centerCoordinate];
+    mapView10 = [self mapView];
+    camera2 = [mapView10 camera];
+    [camera2 centerCoordinate];
     v85 = v84;
     v87 = v86;
     [v75 centerCoordinate];
-    [a1 distanceBetweenOrigin:v85 andDestination:{v87, v88, v89}];
-    [a1 dampingForAltitude:v81 andDistance:v90];
+    [self distanceBetweenOrigin:v85 andDestination:{v87, v88, v89}];
+    [self dampingForAltitude:v81 andDistance:v90];
     v92 = v91;
 
     v93 = LogCategory_Unspecified();
@@ -1484,8 +1484,8 @@ LABEL_27:
       v174.width = v72;
       v174.height = v74;
       v152 = NSStringFromCGSize(v174);
-      v153 = [a1 mapView];
-      [v153 bounds];
+      mapView11 = [self mapView];
+      [mapView11 bounds];
       v154 = NSStringFromCGRect(v176);
       v177.top = v163;
       v177.bottom = v164;
@@ -1501,7 +1501,7 @@ LABEL_27:
       _os_log_debug_impl(&dword_24A315000, v93, OS_LOG_TYPE_DEBUG, "FMMapView: viewSize: %@ bounds: %@ safeInsets: %@", buf, 0x20u);
     }
 
-    v94 = [a1 renderingMode];
+    renderingMode2 = [self renderingMode];
     [v75 centerCoordinate];
     v97 = fabs(v96) <= 180.0;
     if (fabs(v95) > 90.0)
@@ -1509,26 +1509,26 @@ LABEL_27:
       v97 = 0;
     }
 
-    if (v94)
+    if (renderingMode2)
     {
       if (v97)
       {
         v98 = [MEMORY[0x277CD4E58] cameraLookingAtCenterCoordinate:v95 fromDistance:v96 pitch:400.0 heading:{50.0, 0.0}];
 
-        v99 = [a1 mapView];
-        v100 = [v99 camera];
-        [v100 altitude];
+        mapView12 = [self mapView];
+        camera3 = [mapView12 camera];
+        [camera3 altitude];
         v102 = v101;
         [v98 altitude];
         v104 = vabdd_f64(v102, v103);
-        v105 = [a1 mapView];
-        v106 = [v105 camera];
-        [v106 centerCoordinate];
+        mapView13 = [self mapView];
+        camera4 = [mapView13 camera];
+        [camera4 centerCoordinate];
         v108 = v107;
         v110 = v109;
         [v98 centerCoordinate];
-        [a1 distanceBetweenOrigin:v108 andDestination:{v110, v111, v112}];
-        [a1 dampingForAltitude:v104 andDistance:v113];
+        [self distanceBetweenOrigin:v108 andDestination:{v110, v111, v112}];
+        [self dampingForAltitude:v104 andDistance:v113];
         v92 = v114;
 
         v75 = v98;
@@ -1545,8 +1545,8 @@ LABEL_27:
           [FMMapView animateMapToPosition:v75 withInsets:v119 attributionInsets:? andZoom:?];
         }
 
-        v120 = [a1 mapView];
-        v122 = v120;
+        mapView14 = [self mapView];
+        v122 = mapView14;
         LODWORD(v123) = 1128792064;
         LODWORD(v124) = 1.0;
         v125 = v75;
@@ -1561,40 +1561,40 @@ LABEL_27:
       if (v97)
       {
         v118 = a9;
-        v127 = [a1 cameraBefore3DRendering];
+        cameraBefore3DRendering = [self cameraBefore3DRendering];
 
-        v120 = [a1 mapView];
-        v122 = v120;
-        if (v127)
+        mapView14 = [self mapView];
+        v122 = mapView14;
+        if (cameraBefore3DRendering)
         {
-          v128 = [v120 camera];
-          [v128 altitude];
+          camera5 = [mapView14 camera];
+          [camera5 altitude];
           v130 = v129;
-          v131 = [a1 cameraBefore3DRendering];
-          [v131 altitude];
+          cameraBefore3DRendering2 = [self cameraBefore3DRendering];
+          [cameraBefore3DRendering2 altitude];
           v133 = vabdd_f64(v130, v132);
-          v134 = [a1 mapView];
-          v135 = [v134 camera];
-          [v135 centerCoordinate];
+          mapView15 = [self mapView];
+          camera6 = [mapView15 camera];
+          [camera6 centerCoordinate];
           v137 = v136;
           v139 = v138;
-          v140 = [a1 cameraBefore3DRendering];
-          [v140 centerCoordinate];
-          [a1 distanceBetweenOrigin:v137 andDestination:{v139, v141, v142}];
-          [a1 dampingForAltitude:v133 andDistance:v143];
+          cameraBefore3DRendering3 = [self cameraBefore3DRendering];
+          [cameraBefore3DRendering3 centerCoordinate];
+          [self distanceBetweenOrigin:v137 andDestination:{v139, v141, v142}];
+          [self dampingForAltitude:v133 andDistance:v143];
           LODWORD(v133) = v144;
 
-          v145 = [a1 cameraBefore3DRendering];
-          [v145 setPitch:0.0];
+          cameraBefore3DRendering4 = [self cameraBefore3DRendering];
+          [cameraBefore3DRendering4 setPitch:0.0];
 
-          v146 = [a1 mapView];
-          v147 = [a1 cameraBefore3DRendering];
+          mapView16 = [self mapView];
+          cameraBefore3DRendering5 = [self cameraBefore3DRendering];
           LODWORD(v148) = 1128792064;
           LODWORD(v149) = 1.0;
           LODWORD(v150) = LODWORD(v133);
-          [v146 setCamera:v147 duration:v160 springMass:v149 springStiffness:v148 springDamping:v150 springVelocity:0.0];
+          [mapView16 setCamera:cameraBefore3DRendering5 duration:v160 springMass:v149 springStiffness:v148 springDamping:v150 springVelocity:0.0];
 
-          [a1 setCameraBefore3DRendering:0];
+          [self setCameraBefore3DRendering:0];
           goto LABEL_47;
         }
 
@@ -1604,22 +1604,22 @@ LABEL_27:
         v126 = v160;
 LABEL_42:
         LODWORD(v121) = v92;
-        [v120 setCamera:v125 duration:v126 springMass:v124 springStiffness:v123 springDamping:v121 springVelocity:0.0];
+        [mapView14 setCamera:v125 duration:v126 springMass:v124 springStiffness:v123 springDamping:v121 springVelocity:0.0];
 
 LABEL_47:
-        [a1 setLastVisibleMapRect:{a2, v165, v167, v166}];
-        [a1 setLastVisibleInsets:{v158, v117, v159, v118}];
+        [self setLastVisibleMapRect:{a2, positionCopy, insetsCopy, attributionInsetsCopy}];
+        [self setLastVisibleInsets:{zoomCopy, v117, v159, v118}];
         v151 = dispatch_time(0, (v160 * 1000000000.0));
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom___block_invoke;
         block[3] = &unk_278FDB950;
-        block[4] = a1;
+        block[4] = self;
         *&block[5] = a2;
-        *&block[6] = v165;
-        *&block[7] = v167;
-        *&block[8] = v166;
-        *&block[9] = v158;
+        *&block[6] = positionCopy;
+        *&block[7] = insetsCopy;
+        *&block[8] = attributionInsetsCopy;
+        *&block[9] = zoomCopy;
         *&block[10] = v117;
         *&block[11] = v159;
         *&block[12] = v118;
@@ -1718,22 +1718,22 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
   }
 }
 
-- ($B5E4F2499D3E0A90C7E8AF059312C337)repositionOnAnnotation:(id)a3 withZoom:(BOOL)a4
+- ($B5E4F2499D3E0A90C7E8AF059312C337)repositionOnAnnotation:(id)annotation withZoom:(BOOL)zoom
 {
-  v4 = a4;
-  v6 = a3;
+  zoomCopy = zoom;
+  annotationCopy = annotation;
   v7 = *MEMORY[0x277CD4BB0];
   v8 = *(MEMORY[0x277CD4BB0] + 8);
   v9 = *(MEMORY[0x277CD4BB0] + 16);
   v10 = *(MEMORY[0x277CD4BB0] + 24);
-  v11 = [(FMMapView *)self delegate];
+  delegate = [(FMMapView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v12 = v8;
     v13 = v7;
     if (objc_opt_respondsToSelector())
     {
-      [v11 mapPositionForAnnotation:v6];
+      [delegate mapPositionForAnnotation:annotationCopy];
       v13 = v14;
       v12 = v15;
       v9 = v16;
@@ -1742,18 +1742,18 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
 
     if (v13 == v7 && v12 == v8)
     {
-      v19 = [(FMMapView *)self userLocation];
-      [v6 coordinate];
+      userLocation = [(FMMapView *)self userLocation];
+      [annotationCopy coordinate];
       v21 = v20;
       v23 = v22;
-      if (v19 && [v6 isThisDevice])
+      if (userLocation && [annotationCopy isThisDevice])
       {
-        [v19 coordinate];
+        [userLocation coordinate];
         v21 = v24;
         v23 = v25;
       }
 
-      [v6 horizontalAccuracy];
+      [annotationCopy horizontalAccuracy];
       [(FMMapView *)self mapRectMakeWithRadialDistanceForCoordinate:v21 andRadius:v23, v26];
       v13 = v27;
       v12 = v28;
@@ -1765,7 +1765,7 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
     {
       [(FMMapView *)self setIsAllAnnotationsShown:0];
       [(FMMapView *)self setIsMapPositioningDisabled:0];
-      [(FMMapView *)self repositionToMapRect:v4 withZoom:v13, v12, v9, v10];
+      [(FMMapView *)self repositionToMapRect:zoomCopy withZoom:v13, v12, v9, v10];
     }
   }
 
@@ -1786,17 +1786,17 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
   return result;
 }
 
-- (void)repositionToMapRect:(id)a3 withZoom:(BOOL)a4
+- (void)repositionToMapRect:(id)rect withZoom:(BOOL)zoom
 {
-  var1 = a3.var0.var1;
-  var0 = a3.var0.var0;
-  if (a3.var0.var0 != *MEMORY[0x277CD4BB0] || a3.var0.var1 != *(MEMORY[0x277CD4BB0] + 8))
+  var1 = rect.var0.var1;
+  var0 = rect.var0.var0;
+  if (rect.var0.var0 != *MEMORY[0x277CD4BB0] || rect.var0.var1 != *(MEMORY[0x277CD4BB0] + 8))
   {
-    v7 = a4;
-    v8 = a3.var1.var1;
-    v9 = a3.var1.var0;
-    v11 = [(FMMapView *)self mapView];
-    [v11 bounds];
+    zoomCopy = zoom;
+    v8 = rect.var1.var1;
+    v9 = rect.var1.var0;
+    mapView = [(FMMapView *)self mapView];
+    [mapView bounds];
     v13 = v12 / v9;
 
     [(FMMapView *)self maxZoomLevel];
@@ -1810,14 +1810,14 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
       v8 = v19;
     }
 
-    [(FMMapView *)self updateCameraPositionForMapRect:v7 withZoom:var0, var1, v9, v8];
+    [(FMMapView *)self updateCameraPositionForMapRect:zoomCopy withZoom:var0, var1, v9, v8];
   }
 }
 
 - (void)recenterVisibleAnnotations
 {
-  v3 = [(FMMapView *)self nearbyAnnotations];
-  [(FMMapView *)self mapRectForAnnotations:v3 shouldIncludeRadius:0];
+  nearbyAnnotations = [(FMMapView *)self nearbyAnnotations];
+  [(FMMapView *)self mapRectForAnnotations:nearbyAnnotations shouldIncludeRadius:0];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1825,8 +1825,8 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
 
   if (v5 != *MEMORY[0x277CD4BB0] || v7 != *(MEMORY[0x277CD4BB0] + 8))
   {
-    v13 = [(FMMapView *)self mapView];
-    [v13 bounds];
+    mapView = [(FMMapView *)self mapView];
+    [mapView bounds];
     v15 = v14 / v9;
 
     [(FMMapView *)self maxZoomLevel];
@@ -1846,22 +1846,22 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
   }
 }
 
-- (void)slideAnnotationIntoViewIfNeeded:(id)a3
+- (void)slideAnnotationIntoViewIfNeeded:(id)needed
 {
-  v27 = a3;
-  v4 = [(FMMapView *)self delegate];
-  v5 = [(FMMapView *)self mapView];
-  [v27 coordinate];
+  neededCopy = needed;
+  delegate = [(FMMapView *)self delegate];
+  mapView = [(FMMapView *)self mapView];
+  [neededCopy coordinate];
   v7 = v6;
   v9 = v8;
-  v10 = [(FMMapView *)self mapView];
-  [v5 convertCoordinate:v10 toPointToView:{v7, v9}];
+  mapView2 = [(FMMapView *)self mapView];
+  [mapView convertCoordinate:mapView2 toPointToView:{v7, v9}];
   v12 = v11;
   v14 = v13;
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 annotationOnScreenTopThresholdForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
+    [delegate annotationOnScreenTopThresholdForState:{-[FMMapView currentSelectedState](self, "currentSelectedState")}];
   }
 
   else
@@ -1876,8 +1876,8 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
     goto LABEL_12;
   }
 
-  v17 = [(FMMapView *)self mapView];
-  [v17 frame];
+  mapView3 = [(FMMapView *)self mapView];
+  [mapView3 frame];
   v19 = v18 + -82.0;
 
   if (v16 <= 0.0 && v12 <= v19)
@@ -1886,15 +1886,15 @@ void __71__FMMapView_animateMapToPosition_withInsets_attributionInsets_andZoom__
   }
 
   v21 = 0.0;
-  v22 = v27;
+  v22 = neededCopy;
   if (v12 > v19)
   {
-    v23 = [(FMMapView *)self mapView];
-    [v23 frame];
+    mapView4 = [(FMMapView *)self mapView];
+    [mapView4 frame];
     v21 = v24 + -82.0 - v12;
 
 LABEL_12:
-    v22 = v27;
+    v22 = neededCopy;
   }
 
   [v22 coordinate];
@@ -1902,23 +1902,23 @@ LABEL_12:
 LABEL_14:
 }
 
-- (void)moveCenterByOffset:(CGPoint)a3 from:(CLLocationCoordinate2D)a4
+- (void)moveCenterByOffset:(CGPoint)offset from:(CLLocationCoordinate2D)from
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(FMMapView *)self mapView:a3.x];
-  v8 = [(FMMapView *)self mapView];
-  [v8 centerCoordinate];
+  y = offset.y;
+  x = offset.x;
+  v7 = [(FMMapView *)self mapView:offset.x];
+  mapView = [(FMMapView *)self mapView];
+  [mapView centerCoordinate];
   v10 = v9;
   v12 = v11;
-  v13 = [(FMMapView *)self mapView];
-  [v7 convertCoordinate:v13 toPointToView:{v10, v12}];
+  mapView2 = [(FMMapView *)self mapView];
+  [v7 convertCoordinate:mapView2 toPointToView:{v10, v12}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(FMMapView *)self mapView];
-  v19 = [(FMMapView *)self mapView];
-  [v18 convertPoint:v19 toCoordinateFromView:{v15 - x, v17 - y}];
+  mapView3 = [(FMMapView *)self mapView];
+  mapView4 = [(FMMapView *)self mapView];
+  [mapView3 convertPoint:mapView4 toCoordinateFromView:{v15 - x, v17 - y}];
   v21 = v20;
   v23 = v22;
 
@@ -1926,26 +1926,26 @@ LABEL_14:
   v26.longitude = v23;
   if (CLLocationCoordinate2DIsValid(v26))
   {
-    v24 = [(FMMapView *)self mapView];
-    [v24 setCenterCoordinate:1 animated:{v21, v23}];
+    mapView5 = [(FMMapView *)self mapView];
+    [mapView5 setCenterCoordinate:1 animated:{v21, v23}];
   }
 }
 
-- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectForAnnotations:(id)a3 shouldIncludeRadius:(BOOL)a4
+- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectForAnnotations:(id)annotations shouldIncludeRadius:(BOOL)radius
 {
-  v4 = a4;
+  radiusCopy = radius;
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  annotationsCopy = annotations;
   x = *MEMORY[0x277CD4BB0];
   y = *(MEMORY[0x277CD4BB0] + 8);
   width = *(MEMORY[0x277CD4BB0] + 16);
   height = *(MEMORY[0x277CD4BB0] + 24);
-  v56 = [(FMMapView *)self selectedAnnotation];
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v11 = v6;
+  v11 = annotationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v59 objects:v63 count:16];
   if (!v12)
   {
@@ -1954,7 +1954,7 @@ LABEL_14:
   }
 
   v13 = v12;
-  v54 = !v4;
+  v54 = !radiusCopy;
   v55 = 0;
   v14 = *v60;
   do
@@ -1977,8 +1977,8 @@ LABEL_14:
           goto LABEL_10;
         }
 
-        v17 = [(FMMapView *)self otherSelectedAnnotation];
-        if ([v16 isEqual:v17])
+        otherSelectedAnnotation = [(FMMapView *)self otherSelectedAnnotation];
+        if ([v16 isEqual:otherSelectedAnnotation])
         {
 
 LABEL_10:
@@ -2001,7 +2001,7 @@ LABEL_10:
           v29 = v28;
           v31 = v30;
           v33 = v32;
-          if ([v16 isEqual:v56])
+          if ([v16 isEqual:selectedAnnotation])
           {
             [(FMMapView *)self mapRectMakeWithRadialDistanceForCoordinate:v20 andRadius:v22, 400.0];
             v27 = v34;
@@ -2033,9 +2033,9 @@ LABEL_10:
           goto LABEL_16;
         }
 
-        v38 = [v16 hasKnownLocation];
+        hasKnownLocation = [v16 hasKnownLocation];
 
-        if (v38)
+        if (hasKnownLocation)
         {
           goto LABEL_10;
         }
@@ -2064,10 +2064,10 @@ LABEL_16:
       v40 = height / *(MEMORY[0x277CD4BB8] + 24);
     }
 
-    [v56 coordinate];
+    [selectedAnnotation coordinate];
     v42 = v41;
     v44 = v43;
-    [v56 horizontalAccuracy];
+    [selectedAnnotation horizontalAccuracy];
     [(FMMapView *)self mapRectMakeWithRadialDistanceForCoordinate:v42 andRadius:v44, v45];
     v71.origin.x = v46;
     v71.size.width = v47;
@@ -2097,15 +2097,15 @@ LABEL_29:
   return result;
 }
 
-- ($B5E4F2499D3E0A90C7E8AF059312C337)normalizeMapRect:(id)a3 toZoomScale:(double)a4
+- ($B5E4F2499D3E0A90C7E8AF059312C337)normalizeMapRect:(id)rect toZoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v7 = a3.var0.var1;
-  v8 = a3.var0.var0;
-  v9 = [(FMMapView *)self mapView];
-  [v9 bounds];
-  v11 = var0 - v10 / a4;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
+  mapView = [(FMMapView *)self mapView];
+  [mapView bounds];
+  v11 = var0 - v10 / scale;
 
   v12 = v8;
   v13 = v7;
@@ -2115,9 +2115,9 @@ LABEL_29:
   return MKMapRectInset(*&v12, v11 * 0.5, v11 * 0.5);
 }
 
-- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)a3 andRadius:(double)a4
+- ($B5E4F2499D3E0A90C7E8AF059312C337)mapRectMakeWithRadialDistanceForCoordinate:(CLLocationCoordinate2D)coordinate andRadius:(double)radius
 {
-  MEMORY[0x2821236A8](self, a2, a3, *&a3.longitude, a4);
+  MEMORY[0x2821236A8](self, a2, coordinate, *&coordinate.longitude, radius);
   result.var1.var1 = v7;
   result.var1.var0 = v6;
   result.var0.var1 = v5;
@@ -2125,14 +2125,14 @@ LABEL_29:
   return result;
 }
 
-- (void)flashMapInset:(UIEdgeInsets)a3
+- (void)flashMapInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(FMMapView *)self mapView];
-  [v8 frame];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  mapView = [(FMMapView *)self mapView];
+  [mapView frame];
   v10 = left + v9;
   v12 = top + v11;
   v14 = v13 - (left + right);
@@ -2140,17 +2140,17 @@ LABEL_29:
 
   v17 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v10, v12, v14, v16}];
   [v17 setUserInteractionEnabled:0];
-  v18 = [MEMORY[0x277D75348] greenColor];
-  v19 = [v18 colorWithAlphaComponent:0.5];
+  greenColor = [MEMORY[0x277D75348] greenColor];
+  v19 = [greenColor colorWithAlphaComponent:0.5];
   [v17 setDebugHighlight:v19];
 
-  v20 = [MEMORY[0x277D75348] redColor];
-  v21 = [v20 CGColor];
-  v22 = [v17 layer];
-  [v22 setBorderColor:v21];
+  redColor = [MEMORY[0x277D75348] redColor];
+  cGColor = [redColor CGColor];
+  layer = [v17 layer];
+  [layer setBorderColor:cGColor];
 
-  v23 = [v17 layer];
-  [v23 setBorderWidth:1.0];
+  layer2 = [v17 layer];
+  [layer2 setBorderWidth:1.0];
 
   [(FMMapView *)self addSubview:v17];
   v24 = MEMORY[0x277D75D18];
@@ -2171,22 +2171,22 @@ LABEL_29:
 - (id)nearbyAnnotations
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(FMMapView *)self userLocation];
+  userLocation = [(FMMapView *)self userLocation];
   v4 = objc_opt_new();
-  v5 = [(FMMapView *)self annotationsSortedByDistance];
+  annotationsSortedByDistance = [(FMMapView *)self annotationsSortedByDistance];
   if ([(FMMapView *)self isNearbyModeDisabled])
   {
     goto LABEL_2;
   }
 
-  if ([v5 count])
+  if ([annotationsSortedByDistance count])
   {
-    v24 = v3;
+    v24 = userLocation;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = v5;
+    v9 = annotationsSortedByDistance;
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v10)
     {
@@ -2229,23 +2229,23 @@ LABEL_29:
 
 LABEL_23:
 
-    v3 = v24;
+    userLocation = v24;
   }
 
   if (![v4 count])
   {
-    if (!v3 || ([v3 coordinate], v22 == 0.0) || (objc_msgSend(v3, "coordinate"), v23 == 0.0))
+    if (!userLocation || ([userLocation coordinate], v22 == 0.0) || (objc_msgSend(userLocation, "coordinate"), v23 == 0.0))
     {
 LABEL_2:
-      v6 = [(FMMapView *)self mapView];
-      v7 = [v6 annotations];
-      v8 = [v7 mutableCopy];
+      mapView = [(FMMapView *)self mapView];
+      annotations = [mapView annotations];
+      v8 = [annotations mutableCopy];
 
       v4 = v8;
       goto LABEL_25;
     }
 
-    [v4 addObject:v3];
+    [v4 addObject:userLocation];
   }
 
 LABEL_25:
@@ -2256,24 +2256,24 @@ LABEL_25:
 - (id)annotationsSortedByDistance
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(FMMapView *)self userLocation];
+  userLocation = [(FMMapView *)self userLocation];
   v4 = objc_opt_new();
-  if (v3)
+  if (userLocation)
   {
     v5 = objc_alloc(MEMORY[0x277CE41F8]);
-    [v3 coordinate];
+    [userLocation coordinate];
     v7 = v6;
-    v25 = v3;
-    [v3 coordinate];
+    v25 = userLocation;
+    [userLocation coordinate];
     v8 = [v5 initWithLatitude:v7 longitude:?];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [(FMMapView *)self mapView];
-    v10 = [v9 annotations];
+    mapView = [(FMMapView *)self mapView];
+    annotations = [mapView annotations];
 
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v11 = [annotations countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2284,7 +2284,7 @@ LABEL_25:
         {
           if (*v27 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(annotations);
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
@@ -2308,7 +2308,7 @@ LABEL_25:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v12 = [annotations countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v12);
@@ -2316,7 +2316,7 @@ LABEL_25:
 
     v23 = [v4 sortedArrayUsingComparator:&__block_literal_global_2];
 
-    v3 = v25;
+    userLocation = v25;
   }
 
   else
@@ -2343,11 +2343,11 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)a3
+- (CLLocationCoordinate2D)coordinateForAnnotationView:(id)view
 {
-  v4 = [a3 layer];
-  v5 = [v4 presentationLayer];
-  [v5 frame];
+  layer = [view layer];
+  presentationLayer = [layer presentationLayer];
+  [presentationLayer frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -2363,9 +2363,9 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   v26.size.width = v11;
   v26.size.height = v13;
   MidY = CGRectGetMidY(v26);
-  v16 = [(FMMapView *)self mapView];
-  v17 = [(FMMapView *)self mapView];
-  [v16 convertPoint:v17 toCoordinateFromView:{MidX, MidY}];
+  mapView = [(FMMapView *)self mapView];
+  mapView2 = [(FMMapView *)self mapView];
+  [mapView convertPoint:mapView2 toCoordinateFromView:{MidX, MidY}];
   v19 = v18;
   v21 = v20;
 
@@ -2376,11 +2376,11 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   return result;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [(FMMapView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 customViewForAnnotation:v5], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  annotationCopy = annotation;
+  delegate = [(FMMapView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate customViewForAnnotation:annotationCopy], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
   }
@@ -2389,34 +2389,34 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v10 = [(FMMapView *)self mapView];
-    v11 = v10;
+    mapView = [(FMMapView *)self mapView];
+    v11 = mapView;
     if (isKindOfClass)
     {
-      v8 = [v10 dequeueReusableAnnotationViewWithIdentifier:@"FMMKUserAnnotationReuseIdentifier"];
+      v8 = [mapView dequeueReusableAnnotationViewWithIdentifier:@"FMMKUserAnnotationReuseIdentifier"];
 
       if (!v8)
       {
-        v8 = [(MKUserLocationView *)[FMUserLocationView alloc] initWithAnnotation:v5 reuseIdentifier:@"FMMKUserAnnotationReuseIdentifier"];
+        v8 = [(MKUserLocationView *)[FMUserLocationView alloc] initWithAnnotation:annotationCopy reuseIdentifier:@"FMMKUserAnnotationReuseIdentifier"];
         [(MKAnnotationView *)v8 setEnabled:0];
         [(FMUserLocationView *)v8 setUserInteractionEnabled:0];
         [(MKUserLocationView *)v8 setCanShowCallout:[(FMMapView *)self showUserLocationCallout]];
-        v12 = [(FMMapView *)self userLocationTintColor];
-        [(FMUserLocationView *)v8 setTintColor:v12];
+        userLocationTintColor = [(FMMapView *)self userLocationTintColor];
+        [(FMUserLocationView *)v8 setTintColor:userLocationTintColor];
 
         [(FMMapView *)self setUserLocationView:v8];
-        [(FMMapView *)self setUserLocation:v5];
+        [(FMMapView *)self setUserLocation:annotationCopy];
         if ([(FMMapView *)self showUserLocationCallout])
         {
           v13 = [MEMORY[0x277D75220] buttonWithType:4];
-          v14 = [(FMMapView *)self tintColor];
-          [v13 setTintColor:v14];
+          tintColor = [(FMMapView *)self tintColor];
+          [v13 setTintColor:tintColor];
 
           [(MKAnnotationView *)v8 setEnabled:0];
           [(MKUserLocationView *)v8 setRightCalloutAccessoryView:v13];
           if (objc_opt_respondsToSelector())
           {
-            [v6 updateTitlesForAnnotation:v5];
+            [delegate updateTitlesForAnnotation:annotationCopy];
           }
         }
       }
@@ -2424,47 +2424,47 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
 
     else
     {
-      v8 = [v10 dequeueReusableAnnotationViewWithIdentifier:@"FMAnnotationViewReuseIdentifier"];
+      v8 = [mapView dequeueReusableAnnotationViewWithIdentifier:@"FMAnnotationViewReuseIdentifier"];
 
       if (!v8)
       {
         v15 = objc_alloc_init(FMMapAnnotationGestureRecognizer);
         v16 = [FMAnnotationView alloc];
-        v17 = [(FMMapView *)v5 tintColor];
-        if (v17)
+        tintColor2 = [(FMMapView *)annotationCopy tintColor];
+        if (tintColor2)
         {
-          v18 = v5;
+          selfCopy = annotationCopy;
         }
 
         else
         {
-          v18 = self;
+          selfCopy = self;
         }
 
-        v19 = [(FMMapView *)v18 tintColor];
-        v8 = [(FMAnnotationView *)v16 initWithAnnotation:v5 reuseIdentifier:@"FMAnnotationViewReuseIdentifier" tintColor:v19];
+        tintColor3 = [(FMMapView *)selfCopy tintColor];
+        v8 = [(FMAnnotationView *)v16 initWithAnnotation:annotationCopy reuseIdentifier:@"FMAnnotationViewReuseIdentifier" tintColor:tintColor3];
 
         [(MKAnnotationView *)v8 setEnabled:0];
         [(FMMapAnnotationGestureRecognizer *)v15 setTouchDelegate:self];
         [(FMUserLocationView *)v8 addGestureRecognizer:v15];
         if (objc_opt_respondsToSelector())
         {
-          v20 = [(FMMapView *)self delegate];
-          [v20 annotationViewOfferedForLocationPreview:v8];
+          delegate2 = [(FMMapView *)self delegate];
+          [delegate2 annotationViewOfferedForLocationPreview:v8];
         }
       }
 
-      if ([(FMMapView *)v5 isThisDevice])
+      if ([(FMMapView *)annotationCopy isThisDevice])
       {
-        [(FMMapView *)self setCurrentDeviceAnnotation:v5];
+        [(FMMapView *)self setCurrentDeviceAnnotation:annotationCopy];
       }
 
-      v21 = [(FMMapView *)self selectedAnnotation];
-      v22 = [(FMMapView *)v5 isEqual:v21];
+      selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+      v22 = [(FMMapView *)annotationCopy isEqual:selectedAnnotation];
 
       if (v22)
       {
-        v23 = [(FMMapView *)self renderingMode];
+        renderingMode = [(FMMapView *)self renderingMode];
         if ([(FMMapView *)self isFingerOnMap])
         {
           [(MKAnnotationView *)v8 setSelected:1 animated:1];
@@ -2472,26 +2472,26 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
 
         else
         {
-          [(FMUserLocationView *)v8 setSelected:1 animated:1 delay:dbl_24A330050[v23 == 1]];
+          [(FMUserLocationView *)v8 setSelected:1 animated:1 delay:dbl_24A330050[renderingMode == 1]];
         }
       }
 
-      [(FMUserLocationView *)v8 updateStyleForAnnotation:v5];
+      [(FMUserLocationView *)v8 updateStyleForAnnotation:annotationCopy];
     }
   }
 
   return v8;
 }
 
-- (void)mapView:(id)a3 didAddAnnotationViews:(id)a4
+- (void)mapView:(id)view didAddAnnotationViews:(id)views
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  viewsCopy = views;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [viewsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2502,13 +2502,13 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 annotation];
-        v12 = [(FMMapView *)self selectedAnnotation];
-        v13 = [v11 isEqual:v12];
+        annotation = [v10 annotation];
+        selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+        v13 = [annotation isEqual:selectedAnnotation];
 
         if (v13)
         {
@@ -2518,12 +2518,12 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v10 annotation];
-          [v10 updateStyleForAnnotation:v14];
+          annotation2 = [v10 annotation];
+          [v10 updateStyleForAnnotation:annotation2];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [viewsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -2532,13 +2532,13 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   [(FMMapView *)self depthSortAnnotations];
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
-  v6 = [(FMMapView *)self delegate];
+  overlayCopy = overlay;
+  delegate = [(FMMapView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 customRendererForOverlay:v5];
+    v7 = [delegate customRendererForOverlay:overlayCopy];
     if (v7)
     {
       goto LABEL_18;
@@ -2553,24 +2553,24 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
-    v9 = [v8 parentAnnotation];
+    v8 = overlayCopy;
+    parentAnnotation = [v8 parentAnnotation];
     v7 = [objc_alloc(MEMORY[0x277CD4DA8]) initWithCircle:v8];
-    if ([v9 conformsToProtocol:&unk_285DA7C08])
+    if ([parentAnnotation conformsToProtocol:&unk_285DA7C08])
     {
-      v10 = v9;
+      v10 = parentAnnotation;
       v11 = [(FMMapView *)self viewForAnnotation:v10];
-      v12 = [(FMMapView *)self mapView];
-      v13 = [v12 mapType];
+      mapView = [(FMMapView *)self mapView];
+      mapType = [mapView mapType];
 
-      if (v13)
+      if (mapType)
       {
         v22 = 0.0;
         v23 = 0.0;
         v20 = 0.0;
         v21 = 0.0;
-        v14 = [v10 tintColor];
-        [v14 getHue:&v23 saturation:&v22 brightness:&v21 alpha:&v20];
+        tintColor = [v10 tintColor];
+        [tintColor getHue:&v23 saturation:&v22 brightness:&v21 alpha:&v20];
 
         v15 = [MEMORY[0x277D75348] colorWithHue:v23 saturation:v22 brightness:v21 + 0.4 alpha:v20];
         [v7 setFillColor:v15];
@@ -2579,8 +2579,8 @@ uint64_t __40__FMMapView_annotationsSortedByDistance__block_invoke(uint64_t a1, 
 
       else
       {
-        v17 = [v11 tintColor];
-        [v7 setFillColor:v17];
+        tintColor2 = [v11 tintColor];
+        [v7 setFillColor:tintColor2];
 
         [v7 setAlpha:0.2];
       }
@@ -2595,7 +2595,7 @@ LABEL_15:
         [FMMapView mapView:rendererForOverlay:];
       }
 
-      v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:v5];
+      v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:overlayCopy];
     }
   }
 
@@ -2607,7 +2607,7 @@ LABEL_15:
       [FMMapView mapView:rendererForOverlay:];
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:v5];
+    v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:overlayCopy];
     if (!v7)
     {
       goto LABEL_15;
@@ -2619,14 +2619,14 @@ LABEL_18:
   return v7;
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v11 = a4;
+  annotationViewCopy = annotationView;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) == 0 || ([v11 isUserInteractionEnabled])
+  if (objc_opt_isKindOfClass() & 1) == 0 || ([annotationViewCopy isUserInteractionEnabled])
   {
-    v5 = [(FMMapView *)self selectedAnnotationView];
-    if (v5 == v11)
+    selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+    if (selectedAnnotationView == annotationViewCopy)
     {
     }
 
@@ -2637,17 +2637,17 @@ LABEL_18:
 
       if (isKindOfClass)
       {
-        [(FMMapView *)self setPotentiallySelectedAnnotationView:v11];
-        v7 = [(FMMapView *)self potentiallySelectedAnnotationView];
-        [(FMMapView *)self selectOrDeselectAnnotationView:v7];
+        [(FMMapView *)self setPotentiallySelectedAnnotationView:annotationViewCopy];
+        potentiallySelectedAnnotationView = [(FMMapView *)self potentiallySelectedAnnotationView];
+        [(FMMapView *)self selectOrDeselectAnnotationView:potentiallySelectedAnnotationView];
 LABEL_11:
 
         goto LABEL_14;
       }
     }
 
-    v8 = [v11 annotation];
-    [(FMMapView *)self setOtherSelectedAnnotation:v8];
+    annotation = [annotationViewCopy annotation];
+    [(FMMapView *)self setOtherSelectedAnnotation:annotation];
 
     [(FMMapView *)self setLastVisibleMapRect:*MEMORY[0x277CD4BB0], *(MEMORY[0x277CD4BB0] + 8), *(MEMORY[0x277CD4BB0] + 16), *(MEMORY[0x277CD4BB0] + 24)];
     goto LABEL_14;
@@ -2655,40 +2655,40 @@ LABEL_11:
 
   if ([(FMMapView *)self showUserLocationCallout]&& [(FMMapView *)self canSelectUserAnnotation])
   {
-    v7 = [(FMMapView *)self selectedAnnotationView];
-    [(FMMapView *)self deselectAnnotationView:v7];
+    potentiallySelectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
+    [(FMMapView *)self deselectAnnotationView:potentiallySelectedAnnotationView];
     goto LABEL_11;
   }
 
   if (![(FMMapView *)self canSelectUserAnnotation])
   {
-    v9 = [(FMMapView *)self mapView];
-    v10 = [v11 annotation];
-    [v9 deselectAnnotation:v10 animated:0];
+    mapView = [(FMMapView *)self mapView];
+    annotation2 = [annotationViewCopy annotation];
+    [mapView deselectAnnotation:annotation2 animated:0];
 
-    [v11 setSelected:0 animated:0];
+    [annotationViewCopy setSelected:0 animated:0];
   }
 
 LABEL_14:
   [(FMMapView *)self depthSortAnnotations];
 }
 
-- (void)mapView:(id)a3 didDeselectAnnotationView:(id)a4
+- (void)mapView:(id)view didDeselectAnnotationView:(id)annotationView
 {
-  v11 = a4;
-  [v11 setSelected:1 animated:0];
-  v5 = [v11 annotation];
-  v6 = [(FMMapView *)self userLocation];
-  v7 = [v5 isEqual:v6];
+  annotationViewCopy = annotationView;
+  [annotationViewCopy setSelected:1 animated:0];
+  annotation = [annotationViewCopy annotation];
+  userLocation = [(FMMapView *)self userLocation];
+  v7 = [annotation isEqual:userLocation];
 
   if (v7)
   {
-    [v11 setEnabled:0];
+    [annotationViewCopy setEnabled:0];
   }
 
-  v8 = [v11 annotation];
-  v9 = [(FMMapView *)self otherSelectedAnnotation];
-  v10 = [v8 isEqual:v9];
+  annotation2 = [annotationViewCopy annotation];
+  otherSelectedAnnotation = [(FMMapView *)self otherSelectedAnnotation];
+  v10 = [annotation2 isEqual:otherSelectedAnnotation];
 
   if (v10)
   {
@@ -2702,8 +2702,8 @@ LABEL_14:
 {
   hasUserLocation = 0;
   [(FMMapView *)self setUserLocation:0];
-  v3 = [(FMMapView *)self currentDeviceAnnotation];
-  [(FMMapView *)self updateAnnotationStyle:v3];
+  currentDeviceAnnotation = [(FMMapView *)self currentDeviceAnnotation];
+  [(FMMapView *)self updateAnnotationStyle:currentDeviceAnnotation];
 }
 
 - (void)depthSortAnnotations
@@ -2716,10 +2716,10 @@ LABEL_14:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v3 = [(FMMapView *)self mapView];
-  v4 = [v3 _annotationViews];
+  mapView = [(FMMapView *)self mapView];
+  _annotationViews = [mapView _annotationViews];
 
-  v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v5 = [_annotationViews countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2733,11 +2733,11 @@ LABEL_14:
       {
         if (*v26 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_annotationViews);
         }
 
         v10 = *(*(&v25 + 1) + 8 * v9);
-        v11 = [v10 annotation];
+        annotation = [v10 annotation];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2748,9 +2748,9 @@ LABEL_8:
           goto LABEL_12;
         }
 
-        if ([v11 conformsToProtocol:&unk_285DA7C08])
+        if ([annotation conformsToProtocol:&unk_285DA7C08])
         {
-          v12 = v11;
+          v12 = annotation;
           if ([v12 isThisDevice])
           {
             v13 = v10;
@@ -2772,7 +2772,7 @@ LABEL_12:
       }
 
       while (v6 != v9);
-      v14 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [_annotationViews countByEnumeratingWithState:&v25 objects:v29 count:16];
       v6 = v14;
       if (!v14)
       {
@@ -2786,8 +2786,8 @@ LABEL_12:
 LABEL_18:
 
   [v24 _setZIndex:19];
-  v15 = [(FMMapView *)v21 selectedAnnotationView];
-  if ([v15 isEqual:v24])
+  selectedAnnotationView = [(FMMapView *)v21 selectedAnnotationView];
+  if ([selectedAnnotationView isEqual:v24])
   {
 
     v16 = 2147483645;
@@ -2795,9 +2795,9 @@ LABEL_18:
 
   else
   {
-    v17 = [(FMMapView *)v21 currentTrackingMode];
+    currentTrackingMode = [(FMMapView *)v21 currentTrackingMode];
 
-    if (v17)
+    if (currentTrackingMode)
     {
       v16 = 2147483645;
     }
@@ -2823,13 +2823,13 @@ LABEL_18:
     [v7 _setZIndex:2147483645];
   }
 
-  v18 = [(FMMapView *)v21 selectedAnnotationView];
-  [v18 _setZIndex:2147483646];
+  selectedAnnotationView2 = [(FMMapView *)v21 selectedAnnotationView];
+  [selectedAnnotationView2 _setZIndex:2147483646];
 
   if (v22)
   {
-    v19 = [(FMMapView *)v21 mapView];
-    v20 = [v19 viewForAnnotation:v22];
+    mapView2 = [(FMMapView *)v21 mapView];
+    v20 = [mapView2 viewForAnnotation:v22];
 
     if (v20)
     {
@@ -2840,9 +2840,9 @@ LABEL_18:
   [v23 stop];
 }
 
-- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5
+- (void)mapView:(id)view didChangeUserTrackingMode:(int64_t)mode animated:(BOOL)animated
 {
-  if ([(FMMapView *)self canChangeUserTrackingMode:a3])
+  if ([(FMMapView *)self canChangeUserTrackingMode:view])
   {
     [(FMMapView *)self setCanChangeUserTrackingMode:0];
 
@@ -2853,10 +2853,10 @@ LABEL_18:
 - (void)updateAccordingToUserTrackingMode
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v3 = [(FMMapView *)self userLocation];
-  v4 = [(FMMapView *)self lastSelectedAnnotationBeforeTracking];
-  v5 = [(FMMapView *)self selectedAnnotation];
-  v6 = [(FMMapView *)self otherSelectedAnnotation];
+  userLocation = [(FMMapView *)self userLocation];
+  lastSelectedAnnotationBeforeTracking = [(FMMapView *)self lastSelectedAnnotationBeforeTracking];
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  otherSelectedAnnotation = [(FMMapView *)self otherSelectedAnnotation];
   v7 = *MEMORY[0x277CD4BB0];
   v8 = *(MEMORY[0x277CD4BB0] + 8);
   v9 = *(MEMORY[0x277CD4BB0] + 16);
@@ -2865,19 +2865,19 @@ LABEL_18:
   [(FMMapView *)self setIsAllAnnotationsShown:0];
   [(FMMapView *)self setIsSwitchingTrackingMode:1];
   [(FMMapView *)self setLastVisibleMapRect:v7, v8, v9, v10];
-  v11 = [(FMMapView *)self mapView];
-  v12 = [v11 userTrackingMode];
+  mapView = [(FMMapView *)self mapView];
+  userTrackingMode = [mapView userTrackingMode];
 
-  if (v12 == 2)
+  if (userTrackingMode == 2)
   {
     goto LABEL_14;
   }
 
-  if (v12 != 1)
+  if (userTrackingMode != 1)
   {
-    if (v4)
+    if (lastSelectedAnnotationBeforeTracking)
     {
-      [(FMMapView *)self updateCameraPositionForAnnotation:v4];
+      [(FMMapView *)self updateCameraPositionForAnnotation:lastSelectedAnnotationBeforeTracking];
       [(FMMapView *)self setLastSelectedAnnotationBeforeTracking:0];
     }
 
@@ -2893,21 +2893,21 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [(FMMapView *)self setLastSelectedAnnotationBeforeTracking:v5];
-  if (v5 | v6 && v3)
+  [(FMMapView *)self setLastSelectedAnnotationBeforeTracking:selectedAnnotation];
+  if (selectedAnnotation | otherSelectedAnnotation && userLocation)
   {
-    if (v5)
+    if (selectedAnnotation)
     {
-      v13 = v5;
+      v13 = selectedAnnotation;
     }
 
     else
     {
-      v13 = v6;
+      v13 = otherSelectedAnnotation;
     }
 
     v41[0] = v13;
-    v41[1] = v3;
+    v41[1] = userLocation;
     v14 = MEMORY[0x277CBEA60];
     v15 = v13;
     v16 = [v14 arrayWithObjects:v41 count:2];
@@ -2923,12 +2923,12 @@ LABEL_14:
   {
     v20 = v8;
     v18 = v7;
-    if (v3)
+    if (userLocation)
     {
-      v23 = [(FMMapView *)self nearbyAnnotations];
-      v24 = [v23 mutableCopy];
+      nearbyAnnotations = [(FMMapView *)self nearbyAnnotations];
+      v24 = [nearbyAnnotations mutableCopy];
 
-      [v24 addObject:v3];
+      [v24 addObject:userLocation];
       [(FMMapView *)self mapRectForAnnotations:v24 shouldIncludeRadius:1];
       v18 = v25;
       v20 = v26;
@@ -2946,8 +2946,8 @@ LABEL_15:
 
   else
   {
-    v30 = [(FMMapView *)self mapView];
-    [v30 bounds];
+    mapView2 = [(FMMapView *)self mapView];
+    [mapView2 bounds];
     v32 = v31 / v9;
 
     [(FMMapView *)self maxZoomLevel];
@@ -2988,16 +2988,16 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
   dispatch_after(v2, MEMORY[0x277D85CD0], block);
 }
 
-- (void)_setUserTrackingMode:(int64_t)a3 animated:(BOOL)a4 fromTrackingButton:(BOOL)a5
+- (void)_setUserTrackingMode:(int64_t)mode animated:(BOOL)animated fromTrackingButton:(BOOL)button
 {
-  v7 = [(FMMapView *)self userTrackingMode:a3];
-  if (a3 == 1)
+  v7 = [(FMMapView *)self userTrackingMode:mode];
+  if (mode == 1)
   {
     v9 = 2;
     v8 = 1;
   }
 
-  else if (a3 == 2)
+  else if (mode == 2)
   {
     [(FMMapView *)self setIsMapPositioningDisabled:0];
     v8 = 2;
@@ -3010,14 +3010,14 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
     v8 = 0;
   }
 
-  v10 = [(FMMapView *)self userTrackingButton];
-  [v10 _setState:v9];
+  userTrackingButton = [(FMMapView *)self userTrackingButton];
+  [userTrackingButton _setState:v9];
 
   [(FMMapView *)self setCurrentTrackingMode:v8];
-  v11 = [(FMMapView *)self mapView];
-  [v11 setUserTrackingMode:a3 animated:1];
+  mapView = [(FMMapView *)self mapView];
+  [mapView setUserTrackingMode:mode animated:1];
 
-  if (v7 != a3)
+  if (v7 != mode)
   {
 
     [(FMMapView *)self depthSortAnnotations];
@@ -3026,25 +3026,25 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
 
 - (int64_t)userTrackingMode
 {
-  v2 = [(FMMapView *)self currentTrackingMode];
-  if (v2 == 1)
+  currentTrackingMode = [(FMMapView *)self currentTrackingMode];
+  if (currentTrackingMode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 2);
+    return 2 * (currentTrackingMode == 2);
   }
 }
 
 - (BOOL)isCurrentlyRotated
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"FMMapView.m" lineNumber:1476 description:@"FIXME: Test this code path.  As of Whitetail MapKit was never calling this method and it was just added for protocol conformance."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"FMMapView.m" lineNumber:1476 description:@"FIXME: Test this code path.  As of Whitetail MapKit was never calling this method and it was just added for protocol conformance."];
 
-  v5 = [(FMMapView *)self mapView];
-  LOBYTE(self) = [v5 isCurrentlyRotated];
+  mapView = [(FMMapView *)self mapView];
+  LOBYTE(self) = [mapView isCurrentlyRotated];
 
   return self;
 }
@@ -3052,30 +3052,30 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
 - (void)updateUserTrackingButtonState
 {
   v2 = hasUserLocation;
-  v3 = [(FMMapView *)self userTrackingButton];
-  [v3 setEnabled:v2];
+  userTrackingButton = [(FMMapView *)self userTrackingButton];
+  [userTrackingButton setEnabled:v2];
 }
 
 - (void)synchronize
 {
   v22 = [MEMORY[0x277D07B40] stopwatchWithLabel:@"FMMapView.synchronize"];
-  v3 = [(FMMapView *)self userLocation];
-  v4 = [(FMMapView *)self userLocationView];
-  v5 = [(FMMapView *)self currentDeviceAnnotation];
-  v6 = v5;
-  if (v3)
+  userLocation = [(FMMapView *)self userLocation];
+  userLocationView = [(FMMapView *)self userLocationView];
+  currentDeviceAnnotation = [(FMMapView *)self currentDeviceAnnotation];
+  v6 = currentDeviceAnnotation;
+  if (userLocation)
   {
-    if (v5)
+    if (currentDeviceAnnotation)
     {
-      [v4 center];
-      if (v4)
+      [userLocationView center];
+      if (userLocationView)
       {
         v9 = v7;
         v10 = v8;
         v11 = [(FMMapView *)self viewForAnnotation:v6];
-        [v4 center];
+        [userLocationView center];
         v13 = v12;
-        [v4 center];
+        [userLocationView center];
         v15 = v14;
         [v11 center];
         v17 = v16;
@@ -3088,13 +3088,13 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
     }
   }
 
-  v19 = [(FMMapView *)self selectedAnnotationView];
+  selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
 
-  if (v19)
+  if (selectedAnnotationView)
   {
-    v20 = [(FMMapView *)self selectedAnnotationView];
-    v21 = [v20 annotation];
-    [(FMMapView *)self updateOverlayForAnnotation:v21 withForce:0];
+    selectedAnnotationView2 = [(FMMapView *)self selectedAnnotationView];
+    annotation = [selectedAnnotationView2 annotation];
+    [(FMMapView *)self updateOverlayForAnnotation:annotation withForce:0];
   }
 
   if (![(FMMapView *)self isMapAnimating])
@@ -3105,22 +3105,22 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
   [v22 stop];
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
-  v13 = a4;
-  v5 = [(FMMapView *)self currentDeviceAnnotation];
-  v6 = [(FMMapView *)self delegate];
-  [(FMMapView *)self setUserLocation:v13];
-  if (v13 && v5)
+  locationCopy = location;
+  currentDeviceAnnotation = [(FMMapView *)self currentDeviceAnnotation];
+  delegate = [(FMMapView *)self delegate];
+  [(FMMapView *)self setUserLocation:locationCopy];
+  if (locationCopy && currentDeviceAnnotation)
   {
-    [v13 coordinate];
+    [locationCopy coordinate];
     v8 = v7;
-    [v5 coordinate];
-    if (vabdd_f64(v8, v9) >= 0.0001 || ([v13 coordinate], v11 = v10, objc_msgSend(v5, "coordinate"), vabdd_f64(v11, v12) >= 0.0001))
+    [currentDeviceAnnotation coordinate];
+    if (vabdd_f64(v8, v9) >= 0.0001 || ([locationCopy coordinate], v11 = v10, objc_msgSend(currentDeviceAnnotation, "coordinate"), vabdd_f64(v11, v12) >= 0.0001))
     {
-      [v13 coordinate];
-      [v5 setCoordinate:?];
-      [(FMMapView *)self updateCameraPositionForAnnotation:v5];
+      [locationCopy coordinate];
+      [currentDeviceAnnotation setCoordinate:?];
+      [(FMMapView *)self updateCameraPositionForAnnotation:currentDeviceAnnotation];
       [(FMMapView *)self setIsMapAnimating:0];
       [(FMMapView *)self synchronize];
     }
@@ -3128,7 +3128,7 @@ void __46__FMMapView_updateAccordingToUserTrackingMode__block_invoke(uint64_t a1
 LABEL_11:
     if ([(FMMapView *)self showUserLocationCallout]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v6 updateTitlesForAnnotation:v13];
+      [delegate updateTitlesForAnnotation:locationCopy];
     }
 
     goto LABEL_14;
@@ -3139,7 +3139,7 @@ LABEL_11:
     [(FMMapView *)self displayAllAnnotations];
   }
 
-  if (v13)
+  if (locationCopy)
   {
     goto LABEL_11;
   }
@@ -3148,9 +3148,9 @@ LABEL_14:
   if ((hasUserLocation & 1) == 0)
   {
     hasUserLocation = 1;
-    if (v5)
+    if (currentDeviceAnnotation)
     {
-      [(FMMapView *)self updateAnnotationStyle:v5];
+      [(FMMapView *)self updateAnnotationStyle:currentDeviceAnnotation];
     }
 
     if ([(FMMapView *)self isAllAnnotationsShown]&& ![(FMMapView *)self isMapPositioningDisabled])
@@ -3162,23 +3162,23 @@ LABEL_14:
   }
 }
 
-- (void)updateAnnotationStyle:(id)a3
+- (void)updateAnnotationStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self viewForAnnotation:v4];
-  [v5 updateStyleForAnnotation:v4];
+  styleCopy = style;
+  v5 = [(FMMapView *)self viewForAnnotation:styleCopy];
+  [v5 updateStyleForAnnotation:styleCopy];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  if ([(FMMapView *)self isMapMoved:a3])
+  if ([(FMMapView *)self isMapMoved:view])
   {
 
     [(FMMapView *)self setIsFingerOnMap:0];
   }
 }
 
-- (void)mapTouchEnded:(id)a3
+- (void)mapTouchEnded:(id)ended
 {
   if (![(FMMapView *)self isMapMoved])
   {
@@ -3187,53 +3187,53 @@ LABEL_14:
   }
 }
 
-- (void)mapTouchMoved:(id)a3
+- (void)mapTouchMoved:(id)moved
 {
   if (![(FMMapView *)self isPreviewing])
   {
-    v6 = [(FMMapView *)self delegate];
+    delegate = [(FMMapView *)self delegate];
     [(FMMapView *)self setIsMapPositioningDisabled:1];
     [(FMMapView *)self setIsMapMoved:1];
-    v4 = [(FMMapView *)self mapView];
-    v5 = [v4 userTrackingMode];
+    mapView = [(FMMapView *)self mapView];
+    userTrackingMode = [mapView userTrackingMode];
 
-    if (v5 != 2)
+    if (userTrackingMode != 2)
     {
       [(FMMapView *)self _setUserTrackingMode:0 animated:1 fromTrackingButton:0];
     }
 
     [(FMMapView *)self depthSortAnnotations];
-    if (![(FMMapView *)self renderingMode]&& v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (![(FMMapView *)self renderingMode]&& delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v6 userDidMoveMap];
+      [delegate userDidMoveMap];
     }
 
     MEMORY[0x2821F9730]();
   }
 }
 
-- (void)calloutButtonTapped:(id)a3
+- (void)calloutButtonTapped:(id)tapped
 {
-  v4 = [(FMMapView *)self delegate];
+  delegate = [(FMMapView *)self delegate];
   if (![(FMMapView *)self isFingerOnAnnotation]&& [(FMMapView *)self showUserLocationCallout]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 userDidTapUserLocationCallOut];
+    [delegate userDidTapUserLocationCallOut];
   }
 }
 
-- (void)userLocationTapped:(id)a3
+- (void)userLocationTapped:(id)tapped
 {
   if ([(FMMapView *)self showUserLocationCallout])
   {
-    v4 = [(FMMapView *)self mapView];
-    v5 = [v4 userLocation];
+    mapView = [(FMMapView *)self mapView];
+    userLocation = [mapView userLocation];
 
-    if (v5)
+    if (userLocation)
     {
-      v6 = [(FMMapView *)self mapView];
-      v7 = [(FMMapView *)self mapView];
-      v8 = [v7 userLocation];
-      v9 = [v6 viewForAnnotation:v8];
+      mapView2 = [(FMMapView *)self mapView];
+      mapView3 = [(FMMapView *)self mapView];
+      userLocation2 = [mapView3 userLocation];
+      v9 = [mapView2 viewForAnnotation:userLocation2];
 
       v10 = dispatch_time(0, 500000000);
       v12[0] = MEMORY[0x277D85DD0];
@@ -3241,7 +3241,7 @@ LABEL_14:
       v12[2] = __32__FMMapView_userLocationTapped___block_invoke;
       v12[3] = &unk_278FDB908;
       v13 = v9;
-      v14 = self;
+      selfCopy = self;
       v11 = v9;
       dispatch_after(v10, MEMORY[0x277D85CD0], v12);
     }
@@ -3271,14 +3271,14 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
   }
 }
 
-- (void)mapTapped:(id)a3
+- (void)mapTapped:(id)tapped
 {
   if (![(FMMapView *)self isPreviewing])
   {
-    v7 = [(FMMapView *)self delegate];
+    delegate = [(FMMapView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v7 shouldTapDeselectAnnotation] ^ 1;
+      v4 = [delegate shouldTapDeselectAnnotation] ^ 1;
     }
 
     else
@@ -3290,19 +3290,19 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
     if (![(FMMapView *)self renderingMode]&& (v4 & 1) == 0)
     {
       [(FMMapView *)self _setUserTrackingMode:0 animated:1 fromTrackingButton:0];
-      v5 = [(FMMapView *)self selectedAnnotationView];
+      selectedAnnotationView = [(FMMapView *)self selectedAnnotationView];
 
-      if (v5)
+      if (selectedAnnotationView)
       {
         [(FMMapView *)self setIsMapPositioningDisabled:1];
-        v6 = [(FMMapView *)self selectedAnnotationView];
-        [(FMMapView *)self deselectAnnotationView:v6];
+        selectedAnnotationView2 = [(FMMapView *)self selectedAnnotationView];
+        [(FMMapView *)self deselectAnnotationView:selectedAnnotationView2];
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 userDidTapMap];
+      [delegate userDidTapMap];
     }
 
     if (![(FMMapView *)self renderingMode]&& ![(FMMapView *)self isMapPositioningDisabled]&& [(FMMapView *)self isAllAnnotationsShown])
@@ -3315,53 +3315,53 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
   }
 }
 
-- (void)mapSwiped:(id)a3 withPercent:(double)a4
+- (void)mapSwiped:(id)swiped withPercent:(double)percent
 {
-  v6 = [(FMMapView *)self delegate];
+  delegate = [(FMMapView *)self delegate];
   if (![(FMMapView *)self renderingMode]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 userDidSwipeMapWithPercent:{fmin(a4, 1.0)}];
+    [delegate userDidSwipeMapWithPercent:{fmin(percent, 1.0)}];
   }
 
   [(FMMapView *)self setIsUserSwiping:1];
 }
 
-- (void)mapSwipedBegin:(id)a3
+- (void)mapSwipedBegin:(id)begin
 {
-  v4 = [(FMMapView *)self mapView];
-  [v4 setUserInteractionEnabled:0];
+  mapView = [(FMMapView *)self mapView];
+  [mapView setUserInteractionEnabled:0];
 
   [(FMMapView *)self setIsUserSwiping:1];
 }
 
-- (void)mapSwipedEnd:(id)a3 withPercent:(double)a4
+- (void)mapSwipedEnd:(id)end withPercent:(double)percent
 {
-  v8 = [(FMMapView *)self delegate];
+  delegate = [(FMMapView *)self delegate];
   [(FMMapView *)self setIsUserSwiping:0];
-  v6 = [(FMMapView *)self layoutTimer];
-  [v6 invalidate];
+  layoutTimer = [(FMMapView *)self layoutTimer];
+  [layoutTimer invalidate];
 
   [(FMMapView *)self setLayoutTimer:0];
-  if (a4 < 1.0 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (percent < 1.0 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 userDidSwipeCancel];
+    [delegate userDidSwipeCancel];
   }
 
-  v7 = [(FMMapView *)self mapView];
-  [v7 setUserInteractionEnabled:1];
+  mapView = [(FMMapView *)self mapView];
+  [mapView setUserInteractionEnabled:1];
 }
 
-- (void)setIsSwipeGestureEnabled:(BOOL)a3
+- (void)setIsSwipeGestureEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_isSwipeGestureEnabled = a3;
-  v4 = [(FMMapView *)self mapGesture];
-  [v4 setIsSwipeEnabled:v3];
+  enabledCopy = enabled;
+  self->_isSwipeGestureEnabled = enabled;
+  mapGesture = [(FMMapView *)self mapGesture];
+  [mapGesture setIsSwipeEnabled:enabledCopy];
 }
 
-- (float)dampingForAltitude:(double)a3 andDistance:(double)a4
+- (float)dampingForAltitude:(double)altitude andDistance:(double)distance
 {
-  v4 = sqrt(a4 * a4 + a3 * a3);
+  v4 = sqrt(distance * distance + altitude * altitude);
   if (v4 <= 350000.0)
   {
     v5 = 26.0;
@@ -3372,8 +3372,8 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
     v5 = 30.0;
   }
 
-  v6 = [(FMMapView *)self selectedAnnotation];
-  if (v6)
+  selectedAnnotation = [(FMMapView *)self selectedAnnotation];
+  if (selectedAnnotation)
   {
     v7 = 2.0;
   }
@@ -3386,11 +3386,11 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
   return fminf((powf(v4, v4 / 350000.0) + 17.0) + v7, v5);
 }
 
-- (double)distanceBetweenOrigin:(CLLocationCoordinate2D)a3 andDestination:(CLLocationCoordinate2D)a4
+- (double)distanceBetweenOrigin:(CLLocationCoordinate2D)origin andDestination:(CLLocationCoordinate2D)destination
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v6 = MKMapPointForCoordinate(a3);
+  longitude = destination.longitude;
+  latitude = destination.latitude;
+  v6 = MKMapPointForCoordinate(origin);
   v14.latitude = latitude;
   v14.longitude = longitude;
   v7 = MKMapPointForCoordinate(v14);
@@ -3402,56 +3402,56 @@ void __32__FMMapView_userLocationTapped___block_invoke(uint64_t a1)
   return MKMetersBetweenMapPoints(*&v10, *&x);
 }
 
-- (void)fingerOnAnnotation:(id)a3
+- (void)fingerOnAnnotation:(id)annotation
 {
-  v4 = [(FMMapView *)self userLocationView];
+  userLocationView = [(FMMapView *)self userLocationView];
   [(FMMapView *)self setPotentiallySelectedAnnotationView:0];
   [(FMMapView *)self setIsFingerOnAnnotation:1];
-  if ([(FMMapView *)self showUserLocationCallout]&& v4)
+  if ([(FMMapView *)self showUserLocationCallout]&& userLocationView)
   {
-    [v4 setSelected:0];
+    [userLocationView setSelected:0];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)fingerOffAnnotation:(id)a3
+- (void)fingerOffAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(FMMapView *)self userLocationView];
+  annotationCopy = annotation;
+  userLocationView = [(FMMapView *)self userLocationView];
   if (![(FMMapView *)self isMapAnimating])
   {
-    v6 = [(FMMapView *)self potentiallySelectedAnnotationView];
+    potentiallySelectedAnnotationView = [(FMMapView *)self potentiallySelectedAnnotationView];
 
-    if (!v6)
+    if (!potentiallySelectedAnnotationView)
     {
-      v7 = [v4 view];
-      [(FMMapView *)self setPotentiallySelectedAnnotationView:v7];
+      view = [annotationCopy view];
+      [(FMMapView *)self setPotentiallySelectedAnnotationView:view];
     }
 
-    v8 = [(FMMapView *)self potentiallySelectedAnnotationView];
-    [(FMMapView *)self selectOrDeselectAnnotationView:v8];
+    potentiallySelectedAnnotationView2 = [(FMMapView *)self potentiallySelectedAnnotationView];
+    [(FMMapView *)self selectOrDeselectAnnotationView:potentiallySelectedAnnotationView2];
   }
 
   [(FMMapView *)self setIsFingerOnAnnotation:0];
-  if ([(FMMapView *)self showUserLocationCallout]&& v5)
+  if ([(FMMapView *)self showUserLocationCallout]&& userLocationView)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __33__FMMapView_fingerOffAnnotation___block_invoke;
     block[3] = &unk_278FDB978;
-    v10 = v5;
+    v10 = userLocationView;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)updatePreviewLocationForAnnotation:(id)a3
+- (void)updatePreviewLocationForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  annotationCopy = annotation;
+  v5 = annotationCopy;
+  if (annotationCopy)
   {
-    [v4 coordinate];
+    [annotationCopy coordinate];
     v7 = v6 + -0.0002;
     [v5 coordinate];
     v9 = CLLocationCoordinate2DMake(v7, v8);
@@ -3479,10 +3479,10 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
   [v3 setSelected:1 animated:0];
 }
 
-- (void)updateAnnotationPositionAfterPreview:(id)a3
+- (void)updateAnnotationPositionAfterPreview:(id)preview
 {
-  v48 = a3;
-  v4 = [(FMMapView *)self delegate];
+  previewCopy = preview;
+  delegate = [(FMMapView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = MEMORY[0x277CD4BB0];
@@ -3490,7 +3490,7 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
     v7 = *(MEMORY[0x277CD4BB0] + 8);
     if (objc_opt_respondsToSelector())
     {
-      [v4 mapPositionForAnnotation:v48];
+      [delegate mapPositionForAnnotation:previewCopy];
       v9 = v8;
       v11 = v10;
       v13 = v12;
@@ -3507,18 +3507,18 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
 
     if (v9 == v6 && v11 == v7)
     {
-      v17 = [(FMMapView *)self userLocation];
-      [v48 coordinate];
+      userLocation = [(FMMapView *)self userLocation];
+      [previewCopy coordinate];
       v19 = v18;
       v21 = v20;
-      if (v17 && [v48 isThisDevice])
+      if (userLocation && [previewCopy isThisDevice])
       {
-        [v17 coordinate];
+        [userLocation coordinate];
         v19 = v22;
         v21 = v23;
       }
 
-      [v48 horizontalAccuracy];
+      [previewCopy horizontalAccuracy];
       [(FMMapView *)self mapRectMakeWithRadialDistanceForCoordinate:v19 andRadius:v21, v24];
       v9 = v25;
       v11 = v26;
@@ -3530,8 +3530,8 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
     {
       [(FMMapView *)self setIsAllAnnotationsShown:0];
       [(FMMapView *)self setIsMapPositioningDisabled:0];
-      v30 = [(FMMapView *)self mapView];
-      [v30 bounds];
+      mapView = [(FMMapView *)self mapView];
+      [mapView bounds];
       v32 = v31 / v13;
 
       [(FMMapView *)self maxZoomLevel];
@@ -3548,11 +3548,11 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
       v50.x = v13 * 0.5 + v9;
       v50.y = v15 * 0.5 + v11;
       v39 = MKCoordinateForMapPoint(v50);
-      v40 = [(FMMapView *)self mapView];
-      if ([v40 mapType])
+      mapView2 = [(FMMapView *)self mapView];
+      if ([mapView2 mapType])
       {
-        v41 = [(FMMapView *)self traitCollection];
-        v42 = v39.latitude - dbl_24A330060[[v41 verticalSizeClass] == 2];
+        traitCollection = [(FMMapView *)self traitCollection];
+        v42 = v39.latitude - dbl_24A330060[[traitCollection verticalSizeClass] == 2];
       }
 
       else
@@ -3563,33 +3563,33 @@ void __48__FMMapView_updatePreviewLocationForAnnotation___block_invoke(uint64_t 
       if (fabs(v39.longitude) <= 180.0 && fabs(v42) <= 90.0)
       {
         v43 = [MEMORY[0x277CD4E58] cameraLookingAtCenterCoordinate:v42 fromDistance:v39.longitude pitch:400.0 heading:{50.0, 0.0}];
-        v44 = [(FMMapView *)self mapView];
+        mapView3 = [(FMMapView *)self mapView];
         LODWORD(v45) = 1.0;
         LODWORD(v46) = 1.0;
         LODWORD(v47) = 20.0;
-        [v44 setCamera:v43 duration:0.0 springMass:v45 springStiffness:v46 springDamping:v47 springVelocity:0.0];
+        [mapView3 setCamera:v43 duration:0.0 springMass:v45 springStiffness:v46 springDamping:v47 springVelocity:0.0];
       }
     }
   }
 }
 
-- (void)setIsPreviewing:(BOOL)a3
+- (void)setIsPreviewing:(BOOL)previewing
 {
-  v3 = a3;
-  self->_isPreviewing = a3;
-  v4 = [(FMMapView *)self mapGesture];
-  [v4 setEnabled:!v3];
+  previewingCopy = previewing;
+  self->_isPreviewing = previewing;
+  mapGesture = [(FMMapView *)self mapGesture];
+  [mapGesture setEnabled:!previewingCopy];
 }
 
-- (void)selectAnnotationForPreview:(id)a3
+- (void)selectAnnotationForPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   [(FMMapView *)self deselectAnnotationViewIfNeeded:0];
-  v5 = [(FMMapView *)self viewForAnnotation:v4];
+  v5 = [(FMMapView *)self viewForAnnotation:previewCopy];
   [(FMMapView *)self setCurrentSelectedState:1];
   [(FMMapView *)self setSelectedAnnotationView:v5];
-  [(FMMapView *)self setSelectedAnnotation:v4];
-  [(FMMapView *)self updatePreviewLocationForAnnotation:v4];
+  [(FMMapView *)self setSelectedAnnotation:previewCopy];
+  [(FMMapView *)self updatePreviewLocationForAnnotation:previewCopy];
 
   v6 = dispatch_time(0, 200000000);
   block[0] = MEMORY[0x277D85DD0];

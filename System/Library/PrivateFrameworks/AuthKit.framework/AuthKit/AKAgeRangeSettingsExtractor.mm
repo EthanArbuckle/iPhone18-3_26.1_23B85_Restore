@@ -1,6 +1,6 @@
 @interface AKAgeRangeSettingsExtractor
 + (id)defaultConfigDictionary;
-+ (id)extractAgeRangeConfigFromGlobalConfig:(id)a3;
++ (id)extractAgeRangeConfigFromGlobalConfig:(id)config;
 @end
 
 @implementation AKAgeRangeSettingsExtractor
@@ -8,7 +8,7 @@
 + (id)defaultConfigDictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v18[2] = a1;
+  v18[2] = self;
   v18[1] = a2;
   context = objc_autoreleasePoolPush();
   v18[0] = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -72,23 +72,23 @@
   return v2;
 }
 
-+ (id)extractAgeRangeConfigFromGlobalConfig:(id)a3
++ (id)extractAgeRangeConfigFromGlobalConfig:(id)config
 {
-  v38 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v23 = [MEMORY[0x1E695DF58] currentLocale];
-  v22 = [v23 objectForKey:*MEMORY[0x1E695D978]];
-  v36 = [v22 uppercaseString];
+  objc_storeStrong(location, config);
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v22 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+  uppercaseString = [v22 uppercaseString];
   MEMORY[0x1E69E5920](v22);
-  MEMORY[0x1E69E5920](v23);
+  MEMORY[0x1E69E5920](currentLocale);
   v35 = [location[0] objectForKeyedSubscript:@"countries"];
   v33 = 0;
   v24 = 1;
   if (v35)
   {
-    v34 = [v35 objectForKeyedSubscript:v36];
+    v34 = [v35 objectForKeyedSubscript:uppercaseString];
     v33 = 1;
     v24 = v34 == 0;
   }
@@ -111,16 +111,16 @@
     }
 
     objc_storeStrong(&v32, 0);
-    v19 = [v38 defaultConfigDictionary];
-    v3 = [v19 objectForKeyedSubscript:@"countries"];
+    defaultConfigDictionary = [selfCopy defaultConfigDictionary];
+    v3 = [defaultConfigDictionary objectForKeyedSubscript:@"countries"];
     v4 = v35;
     v35 = v3;
     MEMORY[0x1E69E5920](v4);
-    MEMORY[0x1E69E5920](v19);
+    MEMORY[0x1E69E5920](defaultConfigDictionary);
   }
 
   v17 = objc_opt_class();
-  v18 = [v35 objectForKeyedSubscript:v36];
+  v18 = [v35 objectForKeyedSubscript:uppercaseString];
   v29 = _AKSafeCast_10(v17, v18);
   MEMORY[0x1E69E5920](v18);
   if (!v29)
@@ -147,16 +147,16 @@
 
   v9 = [AKAgeRangeSettings alloc];
   v11 = [v29 objectForKeyedSubscript:@"U13"];
-  v8 = [v11 intValue];
+  intValue = [v11 intValue];
   v10 = [v29 objectForKeyedSubscript:@"U18"];
-  v25 = -[AKAgeRangeSettings initWithU13Limit:u18Limit:](v9, "initWithU13Limit:u18Limit:", v8, [v10 intValue]);
+  v25 = -[AKAgeRangeSettings initWithU13Limit:u18Limit:](v9, "initWithU13Limit:u18Limit:", intValue, [v10 intValue]);
   MEMORY[0x1E69E5920](v10);
   MEMORY[0x1E69E5920](v11);
   v12 = MEMORY[0x1E69E5928](v25);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v35, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&uppercaseString, 0);
   objc_storeStrong(location, 0);
 
   return v12;

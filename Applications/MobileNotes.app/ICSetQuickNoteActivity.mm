@@ -1,20 +1,20 @@
 @interface ICSetQuickNoteActivity
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICSetQuickNoteActivity
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v4 = +[ICQuickNoteSessionManager sharedManager];
   [v4 saveSession];
 
   [(ICSetQuickNoteActivity *)self activityDidFinish:1];
-  if (v6)
+  if (completionCopy)
   {
-    v5 = [(ICSetQuickNoteActivity *)self activityType];
-    v6[2](v6, 1, v5);
+    activityType = [(ICSetQuickNoteActivity *)self activityType];
+    completionCopy[2](completionCopy, 1, activityType);
   }
 }
 

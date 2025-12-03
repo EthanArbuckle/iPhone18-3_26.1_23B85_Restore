@@ -1,13 +1,13 @@
 @interface CommunicationsFilterBlockList
 + (id)sharedInstance;
-- (BOOL)isItemInList:(id)a3;
+- (BOOL)isItemInList:(id)list;
 - (CommunicationsFilterBlockList)init;
-- (CommunicationsFilterBlockList)initWithXPCService:(id)a3;
-- (id)areItemsInList:(id)a3;
+- (CommunicationsFilterBlockList)initWithXPCService:(id)service;
+- (id)areItemsInList:(id)list;
 - (id)copyAllItems;
-- (void)addItemForAllServices:(id)a3;
+- (void)addItemForAllServices:(id)services;
 - (void)dealloc;
-- (void)removeItemForAllServices:(id)a3;
+- (void)removeItemForAllServices:(id)services;
 @end
 
 @implementation CommunicationsFilterBlockList
@@ -96,7 +96,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   return v4;
 }
 
-- (CommunicationsFilterBlockList)initWithXPCService:(id)a3
+- (CommunicationsFilterBlockList)initWithXPCService:(id)service
 {
   v6.receiver = self;
   v6.super_class = CommunicationsFilterBlockList;
@@ -105,7 +105,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   {
     v4->_cache = objc_alloc_init(CommunicationsFilterBlockListCache);
     v4->_queue = dispatch_queue_create("com.apple.cmfblocklist", 0);
-    v4->_xpcService = a3;
+    v4->_xpcService = service;
   }
 
   return v4;
@@ -120,12 +120,12 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   [(CommunicationsFilterBlockList *)&v3 dealloc];
 }
 
-- (void)addItemForAllServices:(id)a3
+- (void)addItemForAllServices:(id)services
 {
-  v5 = [a3 dictionaryRepresentation];
-  if (v5)
+  dictionaryRepresentation = [services dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    v6 = v5;
+    v6 = dictionaryRepresentation;
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, CMFXPCEventCode, 0);
     IMInsertDictionariesToXPCDictionary();
@@ -133,7 +133,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
     xpc_release(v7);
     cache = self->_cache;
 
-    [(CommunicationsFilterBlockListCache *)cache removeItemFromCache:a3];
+    [(CommunicationsFilterBlockListCache *)cache removeItemFromCache:services];
   }
 
   else
@@ -146,12 +146,12 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   }
 }
 
-- (void)removeItemForAllServices:(id)a3
+- (void)removeItemForAllServices:(id)services
 {
-  v5 = [a3 dictionaryRepresentation];
-  if (v5)
+  dictionaryRepresentation = [services dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    v6 = v5;
+    v6 = dictionaryRepresentation;
     v7 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v7, CMFXPCEventCode, 1);
     IMInsertDictionariesToXPCDictionary();
@@ -159,7 +159,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
     xpc_release(v7);
     cache = self->_cache;
 
-    [(CommunicationsFilterBlockListCache *)cache removeItemFromCache:a3];
+    [(CommunicationsFilterBlockListCache *)cache removeItemFromCache:services];
   }
 
   else
@@ -172,7 +172,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   }
 }
 
-- (BOOL)isItemInList:(id)a3
+- (BOOL)isItemInList:(id)list
 {
   v5 = [(CommunicationsFilterBlockListCache *)self->_cache cachedResponseForItem:?];
   v6 = CMFDefaultLog();
@@ -187,9 +187,9 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
 
     v9 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v9, CMFXPCEventCode, 3);
-    v13 = [a3 dictionaryRepresentation];
+    dictionaryRepresentation = [list dictionaryRepresentation];
     IMInsertDictionariesToXPCDictionary();
-    v10 = [(CMFXPCServiceProtocol *)self->_xpcService sendSynchronousXPCRequest:v9, v13, 0];
+    v10 = [(CMFXPCServiceProtocol *)self->_xpcService sendSynchronousXPCRequest:v9, dictionaryRepresentation, 0];
     xpc_release(v9);
     v8 = [v10 objectForKey:CMFDictionaryResultKey];
     if (v8)
@@ -198,7 +198,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[CommunicationsFilterBlockListCache setResponse:forItem:](self->_cache, "setResponse:forItem:", [v11 BOOLValue], a3);
+        -[CommunicationsFilterBlockListCache setResponse:forItem:](self->_cache, "setResponse:forItem:", [v11 BOOLValue], list);
         LOBYTE(v8) = [v11 BOOLValue];
       }
 
@@ -223,18 +223,18 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
   return v8;
 }
 
-- (id)areItemsInList:(id)a3
+- (id)areItemsInList:(id)list
 {
   v46 = *MEMORY[0x277D85DE8];
-  if (a3 && [a3 count])
+  if (list && [list count])
   {
-    v30 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(a3, "count")}];
+    v30 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(list, "count")}];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    v6 = [list countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v6)
     {
       v7 = v6;
@@ -245,7 +245,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
         {
           if (*v40 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(list);
           }
 
           v10 = *(*(&v39 + 1) + 8 * i);
@@ -268,7 +268,7 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v7 = [list countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v7);
@@ -295,10 +295,10 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
               objc_enumerationMutation(v5);
             }
 
-            v17 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-            if (v17)
+            dictionaryRepresentation = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+            if (dictionaryRepresentation)
             {
-              [v12 addObject:v17];
+              [v12 addObject:dictionaryRepresentation];
             }
           }
 
@@ -341,23 +341,23 @@ CommunicationsFilterBlockList *__47__CommunicationsFilterBlockList_sharedInstanc
                   }
 
                   v26 = *(*(&v31 + 1) + 8 * k);
-                  v27 = [v21 objectForKey:{objc_msgSend(v26, "unformattedID")}];
-                  if (v27)
+                  bOOLValue = [v21 objectForKey:{objc_msgSend(v26, "unformattedID")}];
+                  if (bOOLValue)
                   {
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v27 = [v27 BOOLValue];
+                      bOOLValue = [bOOLValue BOOLValue];
                     }
 
                     else
                     {
-                      v27 = 0;
+                      bOOLValue = 0;
                     }
                   }
 
-                  [(CommunicationsFilterBlockListCache *)self->_cache setResponse:v27 forItem:v26];
-                  [v30 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", v27), v26}];
+                  [(CommunicationsFilterBlockListCache *)self->_cache setResponse:bOOLValue forItem:v26];
+                  [v30 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithBool:", bOOLValue), v26}];
                 }
 
                 v23 = [v5 countByEnumeratingWithState:&v31 objects:v43 count:16];

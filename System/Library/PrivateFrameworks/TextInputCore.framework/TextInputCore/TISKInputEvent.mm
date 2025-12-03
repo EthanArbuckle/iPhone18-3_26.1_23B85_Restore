@@ -2,72 +2,72 @@
 - (BOOL)isMissingATouch;
 - (double)downUpTimeDelta;
 - (void)_computeErrorDistance;
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4;
-- (void)reportToSession:(id)a3;
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKInputEvent
 
-- (void)reportInterKeyTiming:(id)a3 previousEvent:(id)a4
+- (void)reportInterKeyTiming:(id)timing previousEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  timingCopy = timing;
+  eventCopy = event;
+  if (eventCopy)
   {
     v23.receiver = self;
     v23.super_class = TISKInputEvent;
-    [(TISKEvent *)&v23 reportInterKeyTiming:v6 previousEvent:v7];
-    if ([v7 type] == 10 || (objc_msgSend(v7, "tap"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) != 0))
+    [(TISKEvent *)&v23 reportInterKeyTiming:timingCopy previousEvent:eventCopy];
+    if ([eventCopy type] == 10 || (objc_msgSend(eventCopy, "tap"), (v8 = objc_claimAutoreleasedReturnValue()) != 0) && (v9 = v8, objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) != 0))
     {
       [(TISKEvent *)self touchDownTimestamp];
       v12 = v11;
-      [v7 touchDownTimestamp];
+      [eventCopy touchDownTimestamp];
       v14 = v12 - v13;
       [(TISKEvent *)self touchDownTimestamp];
       v16 = v15;
-      [v7 touchUpTimestamp];
+      [eventCopy touchUpTimestamp];
       v18 = [MEMORY[0x277CCABB0] numberWithDouble:v16 - v17];
-      [v6 addSample:v18 forKey:kTISKTouchUpDownMetric];
+      [timingCopy addSample:v18 forKey:kTISKTouchUpDownMetric];
 
-      v19 = [v7 type];
-      if (v19 == 10)
+      type = [eventCopy type];
+      if (type == 10)
       {
         v21 = &kTISK123ToAnyTapMetric;
       }
 
       else
       {
-        if (!v19)
+        if (!type)
         {
           v20 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-          [v6 addSample:v20 forKey:kTISKCharToAnyTapMetric];
+          [timingCopy addSample:v20 forKey:kTISKCharToAnyTapMetric];
         }
 
         v21 = &kTISKTouchDownDownMetric;
       }
 
       v22 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-      [v6 addSample:v22 forKey:*v21];
+      [timingCopy addSample:v22 forKey:*v21];
     }
   }
 }
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
-  v13 = a3;
-  [v13 addSample:&unk_28400BF10 forKey:kTISKNumberOfTappedKeysCounter];
-  [v13 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+  sessionCopy = session;
+  [sessionCopy addSample:&unk_28400BF10 forKey:kTISKNumberOfTappedKeysCounter];
+  [sessionCopy addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
   v4 = MEMORY[0x277CCABB0];
   v5 = [(TISKEvent *)self tap];
   v6 = [v4 numberWithInteger:{objc_msgSend(v5, "numberOfDrags")}];
-  [v13 addSample:v6 forKey:kTISKNumberOfDragsCounter];
+  [sessionCopy addSample:v6 forKey:kTISKNumberOfDragsCounter];
 
   if (!self->_ignoreTapData)
   {
     v7 = MEMORY[0x277CCABB0];
     [(TISKInputEvent *)self downUpTimeDelta];
     v8 = [v7 numberWithDouble:?];
-    [v13 addSample:v8 forKey:kTISKTouchDownUpMetric];
+    [sessionCopy addSample:v8 forKey:kTISKTouchDownUpMetric];
 
     [(TISKInputEvent *)self _computeErrorDistance];
     if (self->_canComputeErrorDistance)
@@ -75,37 +75,37 @@
       v9 = MEMORY[0x277CCABB0];
       [(TISKInputEvent *)self touchDownErrorDistance];
       v10 = [v9 numberWithDouble:?];
-      [v13 addSample:v10 forKey:kTISKDownErrorDistance];
+      [sessionCopy addSample:v10 forKey:kTISKDownErrorDistance];
 
       v11 = MEMORY[0x277CCABB0];
       [(TISKInputEvent *)self touchUpErrorDistance];
       v12 = [v11 numberWithDouble:?];
-      [v13 addSample:v12 forKey:kTISKUpErrorDistance];
+      [sessionCopy addSample:v12 forKey:kTISKUpErrorDistance];
     }
   }
 }
 
 - (void)_computeErrorDistance
 {
-  v3 = [(TISKInputEvent *)self input];
-  v19 = [v3 string];
+  input = [(TISKInputEvent *)self input];
+  string = [input string];
 
-  if (!v19)
+  if (!string)
   {
-    v4 = [(TISKInputEvent *)self input];
-    v5 = [v4 isBackspace];
+    input2 = [(TISKInputEvent *)self input];
+    isBackspace = [input2 isBackspace];
 
-    if ((v5 & 1) == 0)
+    if ((isBackspace & 1) == 0)
     {
       self->_canComputeErrorDistance = 0;
       return;
     }
 
-    v19 = @"delete";
+    string = @"delete";
   }
 
   v6 = [(TISKEvent *)self tap];
-  [v6 getFrameForKey:v19];
+  [v6 getFrameForKey:string];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -135,12 +135,12 @@
 - (double)downUpTimeDelta
 {
   v3 = [(TISKEvent *)self tap];
-  v4 = [v3 lastTouch];
-  [v4 timestamp];
+  lastTouch = [v3 lastTouch];
+  [lastTouch timestamp];
   v6 = v5;
   v7 = [(TISKEvent *)self tap];
-  v8 = [v7 firstTouch];
-  [v8 timestamp];
+  firstTouch = [v7 firstTouch];
+  [firstTouch timestamp];
   v10 = v6 - v9;
 
   return v10;
@@ -152,9 +152,9 @@
   if (v3)
   {
     v4 = [(TISKEvent *)self tap];
-    v5 = [v4 isDownUpTap];
+    isDownUpTap = [v4 isDownUpTap];
 
-    v6 = v5 ^ 1;
+    v6 = isDownUpTap ^ 1;
   }
 
   else

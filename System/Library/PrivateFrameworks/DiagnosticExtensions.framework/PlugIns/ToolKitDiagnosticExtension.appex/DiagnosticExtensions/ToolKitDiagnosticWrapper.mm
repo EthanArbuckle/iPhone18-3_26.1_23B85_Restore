@@ -20,7 +20,7 @@
   sub_100009A20();
   __chkstk_darwin(v6);
   v8 = &v15 - v7;
-  v9 = self;
+  selfCopy = self;
   ToolKitDiagnosticWrapper.getToolKitDatabaseURL()();
 
   v10 = sub_10000A820();

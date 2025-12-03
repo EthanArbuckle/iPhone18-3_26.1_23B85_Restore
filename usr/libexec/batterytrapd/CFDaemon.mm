@@ -17,7 +17,7 @@
 - (void)set24hMode
 {
   nvramHelper = self->nvramHelper;
-  v3 = [(CFHelper *)self->cfPrefsHelper read24HrMode];
+  read24HrMode = [(CFHelper *)self->cfPrefsHelper read24HrMode];
   [(NVRAMHelper *)nvramHelper writeNVRAM:@"alpm-24h-mode"];
 }
 
@@ -36,21 +36,21 @@
 - (void)setUTCOffset
 {
   nvramHelper = self->nvramHelper;
-  v3 = [(CFHelper *)self->cfPrefsHelper readUTCOffset];
+  readUTCOffset = [(CFHelper *)self->cfPrefsHelper readUTCOffset];
   [(NVRAMHelper *)nvramHelper writeNVRAM:@"utc-offset"];
 }
 
 - (void)setNumberingSystem
 {
   nvramHelper = self->nvramHelper;
-  v3 = [(CFHelper *)self->cfPrefsHelper readNumberingSystem];
+  readNumberingSystem = [(CFHelper *)self->cfPrefsHelper readNumberingSystem];
   [(NVRAMHelper *)nvramHelper writeNVRAM:@"alpm-number-system"];
 }
 
 - (void)setLanguageDirection
 {
   nvramHelper = self->nvramHelper;
-  v3 = [(CFHelper *)self->cfPrefsHelper readLanguageDirection];
+  readLanguageDirection = [(CFHelper *)self->cfPrefsHelper readLanguageDirection];
   [(NVRAMHelper *)nvramHelper writeNVRAM:@"alpm-language-direction"];
 }
 

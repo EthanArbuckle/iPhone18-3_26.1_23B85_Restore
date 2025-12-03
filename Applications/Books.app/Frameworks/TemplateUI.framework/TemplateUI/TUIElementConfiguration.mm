@@ -1,14 +1,14 @@
 @interface TUIElementConfiguration
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementConfiguration
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v6 = a3;
-  v7 = [a4 finalizeConfiguration];
-  [v6 setData:v7];
+  objectCopy = object;
+  finalizeConfiguration = [builder finalizeConfiguration];
+  [objectCopy setData:finalizeConfiguration];
 }
 
 @end

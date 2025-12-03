@@ -1,6 +1,6 @@
 @interface ModalityPickerItemCellAccessibility
 - (unint64_t)accessibilityTraits;
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4;
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled;
 @end
 
 @implementation ModalityPickerItemCellAccessibility
@@ -12,28 +12,28 @@
   return *MEMORY[0x29EDC7F70] | [(ModalityPickerItemCellAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)accessibilityApplyState:(BOOL)a3 disabled:(BOOL)a4
+- (void)accessibilityApplyState:(BOOL)state disabled:(BOOL)disabled
 {
-  v4 = a4;
-  v5 = a3;
+  disabledCopy = disabled;
+  stateCopy = state;
   v11.receiver = self;
   v11.super_class = ModalityPickerItemCellAccessibility;
   [ModalityPickerItemCellAccessibility accessibilityApplyState:sel_accessibilityApplyState_disabled_ disabled:?];
-  if (!v5 || !v4)
+  if (!stateCopy || !disabledCopy)
   {
-    if (v4)
+    if (disabledCopy)
     {
-      v7 = [(ModalityPickerItemCellAccessibility *)self accessibilityTraits];
-      [(ModalityPickerItemCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | v7];
+      accessibilityTraits = [(ModalityPickerItemCellAccessibility *)self accessibilityTraits];
+      [(ModalityPickerItemCellAccessibility *)self setAccessibilityTraits:*MEMORY[0x29EDC7FA8] | accessibilityTraits];
     }
 
     else
     {
       [(ModalityPickerItemCellAccessibility *)self setAccessibilityTraits:[(ModalityPickerItemCellAccessibility *)self accessibilityTraits]& ~*MEMORY[0x29EDC7FA8]];
-      if (v5)
+      if (stateCopy)
       {
-        v8 = [(ModalityPickerItemCellAccessibility *)self accessibilityTraits];
-        v9 = *MEMORY[0x29EDC7FC0] | v8;
+        accessibilityTraits2 = [(ModalityPickerItemCellAccessibility *)self accessibilityTraits];
+        v9 = *MEMORY[0x29EDC7FC0] | accessibilityTraits2;
 LABEL_8:
         [(ModalityPickerItemCellAccessibility *)self setAccessibilityTraits:v9];
         return;

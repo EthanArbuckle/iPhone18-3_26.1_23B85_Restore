@@ -1,19 +1,19 @@
 @interface PKInkParser
-+ (BOOL)hasDefinitionForIdentifier:(uint64_t)a1;
-+ (PKInkBehavior)inkBehaviorVariantWithDictionary:(void *)a3 renderingDescriptor:(void *)a4 identifier:(uint64_t)a5 version:(void *)a6 variant:;
-+ (PKInkRenderingDescriptor)inkRenderingDescriptorWithDictionary:(uint64_t)a1;
-+ (id)inkBehaviorFromDictionary:(void *)a3 identifier:(uint64_t)a4 version:(void *)a5 variant:;
-+ (id)inkBehaviorsWithIdentifer:(uint64_t)a3 version:;
-+ (id)plistDictionaryForInk:(uint64_t)a1;
-+ (id)plistPathForIdentifier:(uint64_t)a1;
-+ (id)v2plistPathForIdentifier:(uint64_t)a1;
-+ (void)loadFunction:(void *)a3;
-+ (void)loadOutput:(void *)a3;
++ (BOOL)hasDefinitionForIdentifier:(uint64_t)identifier;
++ (PKInkBehavior)inkBehaviorVariantWithDictionary:(void *)dictionary renderingDescriptor:(void *)descriptor identifier:(uint64_t)identifier version:(void *)version variant:;
++ (PKInkRenderingDescriptor)inkRenderingDescriptorWithDictionary:(uint64_t)dictionary;
++ (id)inkBehaviorFromDictionary:(void *)dictionary identifier:(uint64_t)identifier version:(void *)version variant:;
++ (id)inkBehaviorsWithIdentifer:(uint64_t)identifer version:;
++ (id)plistDictionaryForInk:(uint64_t)ink;
++ (id)plistPathForIdentifier:(uint64_t)identifier;
++ (id)v2plistPathForIdentifier:(uint64_t)identifier;
++ (void)loadFunction:(void *)function;
++ (void)loadOutput:(void *)output;
 @end
 
 @implementation PKInkParser
 
-+ (BOOL)hasDefinitionForIdentifier:(uint64_t)a1
++ (BOOL)hasDefinitionForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -32,7 +32,7 @@
   return v4;
 }
 
-+ (id)plistPathForIdentifier:(uint64_t)a1
++ (id)plistPathForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -42,7 +42,7 @@
   return v4;
 }
 
-+ (id)v2plistPathForIdentifier:(uint64_t)a1
++ (id)v2plistPathForIdentifier:(uint64_t)identifier
 {
   v2 = a2;
   objc_opt_self();
@@ -60,7 +60,7 @@
   return v6;
 }
 
-+ (id)plistDictionaryForInk:(uint64_t)a1
++ (id)plistDictionaryForInk:(uint64_t)ink
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -79,22 +79,22 @@
   return v6;
 }
 
-+ (id)inkBehaviorFromDictionary:(void *)a3 identifier:(uint64_t)a4 version:(void *)a5 variant:
++ (id)inkBehaviorFromDictionary:(void *)dictionary identifier:(uint64_t)identifier version:(void *)version variant:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  versionCopy = version;
   objc_opt_self();
-  v11 = [v8 objectForKeyedSubscript:v9];
+  v11 = [v8 objectForKeyedSubscript:dictionaryCopy];
   v12 = [PKInkParser inkRenderingDescriptorWithDictionary:v11];
 
-  v13 = [v8 objectForKeyedSubscript:v10];
-  v14 = [PKInkParser inkBehaviorVariantWithDictionary:v13 renderingDescriptor:v12 identifier:v9 version:a4 variant:v10];
+  v13 = [v8 objectForKeyedSubscript:versionCopy];
+  v14 = [PKInkParser inkBehaviorVariantWithDictionary:v13 renderingDescriptor:v12 identifier:dictionaryCopy version:identifier variant:versionCopy];
 
   return v14;
 }
 
-+ (PKInkRenderingDescriptor)inkRenderingDescriptorWithDictionary:(uint64_t)a1
++ (PKInkRenderingDescriptor)inkRenderingDescriptorWithDictionary:(uint64_t)dictionary
 {
   v62[2] = *MEMORY[0x1E69E9840];
   v53 = a2;
@@ -128,8 +128,8 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v12 = [v2 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  allKeys = [v2 allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v13)
   {
     v14 = *v56;
@@ -139,7 +139,7 @@
       {
         if (*v56 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v55 + 1) + 8 * i);
@@ -163,7 +163,7 @@
         [v18 removeObject:v16];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v55 objects:v59 count:16];
     }
 
     while (v13);
@@ -181,19 +181,19 @@
   {
     v23 = [v2 objectForKeyedSubscript:@"blend-mode"];
     v24 = [&unk_1F47C22C0 objectForKeyedSubscript:v23];
-    v25 = [v24 unsignedIntegerValue];
+    unsignedIntegerValue = [v24 unsignedIntegerValue];
   }
 
   else
   {
-    v25 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v26 = [v2 objectForKeyedSubscript:@"type"];
   v27 = [&unk_1F47C22E8 objectForKeyedSubscript:v26];
-  v28 = [v27 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-  if (v28 == 1)
+  if (unsignedIntegerValue2 == 1)
   {
     v29 = [v2 objectForKeyedSubscript:@"texture"];
     v30 = [v2 objectForKeyedSubscript:@"particle-spacing"];
@@ -204,12 +204,12 @@
     if (v33)
     {
       v34 = [v2 objectForKeyedSubscript:@"particle-count"];
-      v35 = [v34 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v34 unsignedIntegerValue];
     }
 
     else
     {
-      v35 = 1;
+      unsignedIntegerValue3 = 1;
     }
 
     v37 = [v2 objectForKeyedSubscript:@"particle-width"];
@@ -221,13 +221,13 @@
 
     v43 = [v2 objectForKeyedSubscript:@"particle-rotation"];
     v44 = [&unk_1F47C2310 objectForKeyedSubscript:v43];
-    v45 = [v44 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v44 unsignedIntegerValue];
 
     v46 = [v2 objectForKeyedSubscript:@"particle-adjust-end-cap-alpha"];
-    v47 = [v46 BOOLValue];
+    bOOLValue = [v46 BOOLValue];
 
-    v36 = [PKInkParticleDescriptor particleDescriptorWithName:v29 particleSpacing:v35 particleCount:v45 particleSize:v32 particleRotation:v39, v42];
-    [v36 setAdjustEndCapParticleAlpha:v47];
+    v36 = [PKInkParticleDescriptor particleDescriptorWithName:v29 particleSpacing:unsignedIntegerValue3 particleCount:unsignedIntegerValue4 particleSize:v32 particleRotation:v39, v42];
+    [v36 setAdjustEndCapParticleAlpha:bOOLValue];
     v48 = [v2 objectForKeyedSubscript:@"particle-spacing-function"];
 
     if (v48)
@@ -249,20 +249,20 @@
     v36 = 0;
   }
 
-  v51 = [[PKInkRenderingDescriptor alloc] initWithType:v28 blendMode:v25 alternateMode:0 particleDescriptor:v36 secondaryParticleDescriptor:0];
+  v51 = [[PKInkRenderingDescriptor alloc] initWithType:unsignedIntegerValue2 blendMode:unsignedIntegerValue alternateMode:0 particleDescriptor:v36 secondaryParticleDescriptor:0];
 
   return v51;
 }
 
-+ (PKInkBehavior)inkBehaviorVariantWithDictionary:(void *)a3 renderingDescriptor:(void *)a4 identifier:(uint64_t)a5 version:(void *)a6 variant:
++ (PKInkBehavior)inkBehaviorVariantWithDictionary:(void *)dictionary renderingDescriptor:(void *)descriptor identifier:(uint64_t)identifier version:(void *)version variant:
 {
   v175 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v129 = a3;
-  v127 = a4;
-  v128 = a6;
+  dictionaryCopy = dictionary;
+  descriptorCopy = descriptor;
+  versionCopy = version;
   objc_opt_self();
-  v117 = a5;
+  identifierCopy = identifier;
   v11 = v10;
   objc_opt_self();
   v12 = MEMORY[0x1E695DF70];
@@ -298,8 +298,8 @@
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v15 = [v11 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v144 objects:&v148 count:16];
+  allKeys = [v11 allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v144 objects:&v148 count:16];
   if (v16)
   {
     v17 = *v145;
@@ -309,7 +309,7 @@
       {
         if (*v145 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v144 + 1) + 8 * i);
@@ -319,7 +319,7 @@
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v144 objects:&v148 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v144 objects:&v148 count:16];
     }
 
     while (v16);
@@ -379,7 +379,7 @@
 
   v126 = [[PKInkSmoothingDescriptor alloc] initWithStylusSmoothing:v23 touch:v27 velocity:v31 angle:v35 radius:0.0];
   v36 = [v11 objectForKeyedSubscript:@"show-brush-indicator"];
-  v37 = [v36 BOOLValue];
+  bOOLValue = [v36 BOOLValue];
 
   v38 = [v11 objectForKeyedSubscript:@"ruler-offset-scale"];
   if (v38)
@@ -426,7 +426,7 @@
   v125 = [PKInkFeatheringDescriptor descriptorWithStartCapTime:v57 startCapFade:v54 endCapTime:v51 endCapFade:v48];
   v58 = 0.0;
   v59 = 0.0;
-  if ([v129 blendMode] == 1)
+  if ([dictionaryCopy blendMode] == 1)
   {
     v60 = [v11 objectForKeyedSubscript:@"blendAlpha"];
     [v60 floatValue];
@@ -443,10 +443,10 @@
   v67 = v66;
 
   v68 = [v11 objectForKeyedSubscript:@"unclamped-weight"];
-  v69 = [v68 BOOLValue];
+  bOOLValue2 = [v68 BOOLValue];
 
   v70 = [v11 objectForKeyedSubscript:@"supports-combining-strokes"];
-  v71 = [v70 BOOLValue];
+  bOOLValue3 = [v70 BOOLValue];
   v121 = v67;
   v118 = v59;
   v119 = v58;
@@ -559,10 +559,10 @@
   std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v131, v140, v141, 0xAAAAAAAAAAAAAAABLL * ((v141 - v140) >> 4));
   memset(v130, 0, sizeof(v130));
   std::vector<PKOutputFunction>::__init_with_size[abi:ne200100]<PKOutputFunction*,PKOutputFunction*>(v130, v138, v139, 0xAAAAAAAAAAAAAAABLL * ((v139 - v138) >> 4));
-  BYTE2(v115) = v71;
-  BYTE1(v115) = v37;
+  BYTE2(v115) = bOOLValue3;
+  BYTE1(v115) = bOOLValue;
   LOBYTE(v115) = 0;
-  v109 = [PKInkBehavior initWithRenderingDescriptor:v108 blendAlpha:"initWithRenderingDescriptor:blendAlpha:targetMultiple:baseAlpha:inkTransform:useUnclampedWeight:smoothingDescriptor:featheringDescriptor:pencilFeatheringDescriptor:animationDescriptor:identifier:version:variant:uiWidths:defaultWidth:uiAzimuthControl:showBrushIndicator:supportsCombiningStrokes:rulerOffsetScale:rulerOffsetConstant:weightFunction:radiusOutput:radius2Output:azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:" targetMultiple:v129 baseAlpha:&v150 inkTransform:v69 useUnclampedWeight:v126 smoothingDescriptor:v125 featheringDescriptor:0 pencilFeatheringDescriptor:v119 animationDescriptor:v118 identifier:v121 version:0.0 variant:v123 uiWidths:v122 defaultWidth:v124 uiAzimuthControl:v127 showBrushIndicator:v117 supportsCombiningStrokes:v128 rulerOffsetScale:MEMORY[0x1E695E0F0] rulerOffsetConstant:v115 weightFunction:v94 radiusOutput:v137 radius2Output:v136 azimuthOutput:v135 thresholdOutput:v134 opacityOutput:v133 edgeWidthOutput:v132 aspectRatioOutput:v131 brushOpacityOutput:v130];
+  v109 = [PKInkBehavior initWithRenderingDescriptor:v108 blendAlpha:"initWithRenderingDescriptor:blendAlpha:targetMultiple:baseAlpha:inkTransform:useUnclampedWeight:smoothingDescriptor:featheringDescriptor:pencilFeatheringDescriptor:animationDescriptor:identifier:version:variant:uiWidths:defaultWidth:uiAzimuthControl:showBrushIndicator:supportsCombiningStrokes:rulerOffsetScale:rulerOffsetConstant:weightFunction:radiusOutput:radius2Output:azimuthOutput:thresholdOutput:opacityOutput:edgeWidthOutput:aspectRatioOutput:brushOpacityOutput:" targetMultiple:dictionaryCopy baseAlpha:&v150 inkTransform:bOOLValue2 useUnclampedWeight:v126 smoothingDescriptor:v125 featheringDescriptor:0 pencilFeatheringDescriptor:v119 animationDescriptor:v118 identifier:v121 version:0.0 variant:v123 uiWidths:v122 defaultWidth:v124 uiAzimuthControl:descriptorCopy showBrushIndicator:identifierCopy supportsCombiningStrokes:versionCopy rulerOffsetScale:MEMORY[0x1E695E0F0] rulerOffsetConstant:v115 weightFunction:v94 radiusOutput:v137 radius2Output:v136 azimuthOutput:v135 thresholdOutput:v134 opacityOutput:v133 edgeWidthOutput:v132 aspectRatioOutput:v131 brushOpacityOutput:v130];
   v150 = v130;
   std::vector<PKOutputFunction>::__destroy_vector::operator()[abi:ne200100](&v150);
   v150 = v131;
@@ -581,16 +581,16 @@
   std::vector<PKOutputFunction>::__destroy_vector::operator()[abi:ne200100](&v150);
   v110 = v109;
   objc_opt_self();
-  v111 = [(PKInkBehavior *)v110 renderingDescriptor];
-  v112 = [v111 type] == 1;
+  renderingDescriptor = [(PKInkBehavior *)v110 renderingDescriptor];
+  v112 = [renderingDescriptor type] == 1;
 
   if (v112)
   {
     [(PKInkBehavior *)v110 particleDescriptor];
   }
 
-  v113 = [(PKInkBehavior *)v110 renderingDescriptor];
-  [v113 blendMode];
+  renderingDescriptor2 = [(PKInkBehavior *)v110 renderingDescriptor];
+  [renderingDescriptor2 blendMode];
 
   v150 = &v138;
   std::vector<PKOutputFunction>::__destroy_vector::operator()[abi:ne200100](&v150);
@@ -606,23 +606,23 @@
   return v110;
 }
 
-+ (id)inkBehaviorsWithIdentifer:(uint64_t)a3 version:
++ (id)inkBehaviorsWithIdentifer:(uint64_t)identifer version:
 {
   v46[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = objc_opt_self();
-  v33 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu", v3, a3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  identifer = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu", v3, identifer];
   v31 = [(PKInkParser *)v4 v2plistPathForIdentifier:v3];
   if (v31 && ([MEMORY[0x1E695DFF8] fileURLWithPath:v31], v6 = objc_claimAutoreleasedReturnValue(), +[PKInkBehavior loadInkV2WithURL:](PKInkBehavior, "loadInkV2WithURL:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
   {
     v34 = v7;
-    if ([v7 version] == a3)
+    if ([v7 version] == identifer)
     {
       v8 = [PKInkKey alloc];
-      v9 = [v7 version];
-      v10 = [v7 variant];
-      v11 = [(PKInkKey *)v8 initWithIdentifier:v3 version:v9 variant:v10];
+      version = [v7 version];
+      variant = [v7 variant];
+      v11 = [(PKInkKey *)v8 initWithIdentifier:v3 version:version variant:variant];
 
       v45 = v11;
       v46[0] = v7;
@@ -635,7 +635,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v42 = a3;
+        identiferCopy2 = identifer;
         v43 = 2112;
         v44 = v3;
         _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Couldn't find version: %lu for V2 ink: %@", buf, 0x16u);
@@ -659,7 +659,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v42 = v3;
+        identiferCopy2 = v3;
         _os_log_fault_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_FAULT, "Could not find ink for %@", buf, 0xCu);
       }
 
@@ -668,7 +668,7 @@
     }
 
     v34 = v13;
-    v16 = [v13 objectForKeyedSubscript:v5];
+    v16 = [v13 objectForKeyedSubscript:identifer];
     v17 = v16 == 0;
 
     if (v17)
@@ -677,7 +677,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v42 = a3;
+        identiferCopy2 = identifer;
         v43 = 2112;
         v44 = v14;
         _os_log_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_DEFAULT, "Couldn't find version: %lu for ink: %@", buf, 0x16u);
@@ -685,18 +685,18 @@
 
       v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%lu", v14, 0];
 
-      v5 = v19;
+      identifer = v19;
     }
 
-    v20 = [v34 objectForKeyedSubscript:v5];
+    v20 = [v34 objectForKeyedSubscript:identifer];
     v32 = [PKInkParser inkRenderingDescriptorWithDictionary:v20];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v21 = [v34 allKeys];
-    v22 = [v21 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    allKeys = [v34 allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v22)
     {
       v23 = *v37;
@@ -706,27 +706,27 @@
         {
           if (*v37 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
           v25 = *(*(&v36 + 1) + 8 * i);
-          if (([v25 isEqualToString:v5] & 1) == 0 && objc_msgSend(v25, "hasPrefix:", v5))
+          if (([v25 isEqualToString:identifer] & 1) == 0 && objc_msgSend(v25, "hasPrefix:", identifer))
           {
-            v26 = [v25 substringFromIndex:{objc_msgSend(v5, "length") + 1}];
+            v26 = [v25 substringFromIndex:{objc_msgSend(identifer, "length") + 1}];
             v27 = [v34 objectForKeyedSubscript:v25];
-            v28 = [PKInkParser inkBehaviorVariantWithDictionary:v27 renderingDescriptor:v32 identifier:v14 version:a3 variant:v26];
-            v29 = [[PKInkKey alloc] initWithIdentifier:v14 version:a3 variant:v26];
-            [v33 setObject:v28 forKeyedSubscript:v29];
+            v28 = [PKInkParser inkBehaviorVariantWithDictionary:v27 renderingDescriptor:v32 identifier:v14 version:identifer variant:v26];
+            v29 = [[PKInkKey alloc] initWithIdentifier:v14 version:identifer variant:v26];
+            [dictionary setObject:v28 forKeyedSubscript:v29];
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v22);
     }
 
-    v12 = v33;
+    v12 = dictionary;
     v3 = v14;
     v11 = v32;
   }
@@ -734,19 +734,19 @@
   return v12;
 }
 
-+ (void)loadFunction:(void *)a3
++ (void)loadFunction:(void *)function
 {
   v19 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  functionCopy = function;
   objc_opt_self();
-  v3 = v12;
+  v3 = functionCopy;
   objc_opt_self();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:buf count:16];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v14 objects:buf count:16];
   if (v5)
   {
     v6 = *v15;
@@ -756,7 +756,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -766,7 +766,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:buf count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:buf count:16];
     }
 
     while (v5);
@@ -803,23 +803,23 @@
     operator new();
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
-+ (void)loadOutput:(void *)a3
++ (void)loadOutput:(void *)output
 {
   v42 = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  outputCopy = output;
   objc_opt_self();
-  *a1 = 0;
-  *(a1 + 8) = 0;
-  *(a1 + 16) = 0;
+  *self = 0;
+  *(self + 8) = 0;
+  *(self + 16) = 0;
   v30 = +[PKInkProperties inputNames];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v28;
+  obj = outputCopy;
   v4 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v4)
   {
@@ -835,7 +835,7 @@
 
         v7 = *(*(&v37 + 1) + 8 * i);
         v36 = 0;
-        v8 = [v7 objectForKeyedSubscript:{@"input-mask", v28}];
+        v8 = [v7 objectForKeyedSubscript:{@"input-mask", outputCopy}];
         v9 = [v8 componentsSeparatedByString:{@", "}];
 
         LODWORD(v8) = [v9 containsObject:@"touch"];
@@ -901,7 +901,7 @@
         }
 
         v33 = v19;
-        v34 = 0;
+        integerValue = 0;
         v20 = [v7 objectForKeyedSubscript:@"input"];
         if (v20)
         {
@@ -909,11 +909,11 @@
           v22 = v21;
           if (v21)
           {
-            v34 = [v21 integerValue];
+            integerValue = [v21 integerValue];
           }
         }
 
-        if (v34 != 5)
+        if (integerValue != 5)
         {
           v23 = [v7 objectForKeyedSubscript:@"function"];
           [(PKInkParser *)&v31 loadFunction:v23];
@@ -925,19 +925,19 @@
           }
         }
 
-        v25 = *(a1 + 8);
-        if (v25 >= *(a1 + 16))
+        v25 = *(self + 8);
+        if (v25 >= *(self + 16))
         {
-          v26 = std::vector<PKOutputFunction>::__emplace_back_slow_path<PKOutputFunction>(a1, v32);
+          v26 = std::vector<PKOutputFunction>::__emplace_back_slow_path<PKOutputFunction>(self, v32);
         }
 
         else
         {
-          PKOutputFunction::PKOutputFunction(*(a1 + 8), v32);
+          PKOutputFunction::PKOutputFunction(*(self + 8), v32);
           v26 = v25 + 48;
         }
 
-        *(a1 + 8) = v26;
+        *(self + 8) = v26;
 
         v27 = v36;
         v36 = 0;

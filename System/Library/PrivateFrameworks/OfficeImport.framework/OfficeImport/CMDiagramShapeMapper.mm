@@ -1,9 +1,9 @@
 @interface CMDiagramShapeMapper
 - (CGRect)circumscribedBounds;
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (CMDiagramShapeMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7;
-- (float)setFonSizeForChildNode:(id)a3 atIndex:(unint64_t)a4 level:(int)a5;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (CMDiagramShapeMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent;
+- (float)setFonSizeForChildNode:(id)node atIndex:(unint64_t)index level:(int)level;
+- (void)mapAt:(id)at withState:(id)state;
 - (void)setDefaultFonSize;
 @end
 
@@ -11,14 +11,14 @@
 
 - (void)setDefaultFonSize
 {
-  v6 = [(ODDDiagram *)self->super.mDiagram documentPoint];
-  v3 = [v6 children];
+  documentPoint = [(ODDDiagram *)self->super.mDiagram documentPoint];
+  children = [documentPoint children];
   if (self->mChildCount)
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndex:v4];
+      v5 = [children objectAtIndex:v4];
       [(CMDiagramShapeMapper *)self setFonSizeForChildNode:v5 atIndex:v4];
 
       ++v4;
@@ -28,23 +28,23 @@
   }
 }
 
-- (CMDiagramShapeMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7
+- (CMDiagramShapeMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  diagramCopy = diagram;
+  contextCopy = context;
+  boundsCopy = bounds;
+  identifierCopy = identifier;
+  parentCopy = parent;
   v22.receiver = self;
   v22.super_class = CMDiagramShapeMapper;
-  v17 = [(CMDiagramMapper *)&v22 initWithOddDiagram:v12 drawingContext:v13 orientedBounds:v14 parent:v16];
+  v17 = [(CMDiagramMapper *)&v22 initWithOddDiagram:diagramCopy drawingContext:contextCopy orientedBounds:boundsCopy parent:parentCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->mIdentifier, a6);
-    v19 = [(ODDDiagram *)v18->super.mDiagram documentPoint];
-    v20 = [v19 children];
-    v18->mChildCount = [v20 count];
+    objc_storeStrong(&v17->mIdentifier, identifier);
+    documentPoint = [(ODDDiagram *)v18->super.mDiagram documentPoint];
+    children = [documentPoint children];
+    v18->mChildCount = [children count];
 
     v18->mDefaultFontSize = 65.0;
     v18->mMaxMappableTreeDepth = 0;
@@ -54,10 +54,10 @@
   return v18;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   [(CMDiagramShapeMapper *)self circumscribedBounds];
   v9 = v8;
   v11 = v10;
@@ -80,19 +80,19 @@
   self->mDefaultScale = v22;
   [(OADOrientedBounds *)self->mDiagramShapeBounds bounds];
   [(CMDrawableStyle *)v17 addPositionProperties:?];
-  [v6 addChild:v18];
+  [atCopy addChild:v18];
   v27.receiver = self;
   v27.super_class = CMDiagramShapeMapper;
   [(CMMapper *)&v27 addStyleUsingGlobalCacheTo:v18 style:v17];
   v23 = v18;
 
-  v24 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.super.mOrientedBounds bounds];
   v26 = v25;
   [(OADOrientedBounds *)self->super.super.mOrientedBounds bounds];
-  [v24 translateXBy:v26 yBy:?];
-  [(CMDrawingContext *)self->super.mDrawingContext addTransform:v24];
-  [(CMDiagramShapeMapper *)self mapChildrenAt:v23 withState:v7];
+  [transform translateXBy:v26 yBy:?];
+  [(CMDrawingContext *)self->super.mDrawingContext addTransform:transform];
+  [(CMDiagramShapeMapper *)self mapChildrenAt:v23 withState:stateCopy];
   [(CMDrawingContext *)self->super.mDrawingContext restoreLastTransform];
 }
 
@@ -109,23 +109,23 @@
   return result;
 }
 
-- (float)setFonSizeForChildNode:(id)a3 atIndex:(unint64_t)a4 level:(int)a5
+- (float)setFonSizeForChildNode:(id)node atIndex:(unint64_t)index level:(int)level
 {
-  v8 = a3;
-  v37 = v8;
-  v9 = [[CMDiagramPointMapper alloc] initWithPoint:v8 drawingContext:self->super.mDrawingContext orientedBounds:self->super.super.mOrientedBounds parent:self];
-  [(CMDiagramShapeMapper *)self sizeForNode:v8 atIndex:a4];
+  nodeCopy = node;
+  v37 = nodeCopy;
+  v9 = [[CMDiagramPointMapper alloc] initWithPoint:nodeCopy drawingContext:self->super.mDrawingContext orientedBounds:self->super.super.mOrientedBounds parent:self];
+  [(CMDiagramShapeMapper *)self sizeForNode:nodeCopy atIndex:index];
   v11 = v10;
   v13 = v12;
-  v14 = [(CMDiagramPointMapper *)v9 transformPresentationName];
-  v35 = v14;
-  if (v14)
+  transformPresentationName = [(CMDiagramPointMapper *)v9 transformPresentationName];
+  v35 = transformPresentationName;
+  if (transformPresentationName)
   {
-    v15 = [(CMDiagramPointMapper *)v9 transformForPresentationWithName:v14, v14, v8];
-    v16 = v15;
-    if (v15)
+    nodeCopy = [(CMDiagramPointMapper *)v9 transformForPresentationWithName:transformPresentationName, transformPresentationName, nodeCopy];
+    v16 = nodeCopy;
+    if (nodeCopy)
     {
-      [v15 transformSize:{v11, v13}];
+      [nodeCopy transformSize:{v11, v13}];
       v11 = v17;
       v13 = v18;
     }
@@ -134,8 +134,8 @@
   [(CMDiagramShapeMapper *)self textSizeForShapeSize:v11, v13, v35];
   v20 = v19;
   v22 = v21;
-  v23 = [(CMDiagramPointMapper *)v9 plainText];
-  [CMShapeUtils fontSizeForText:v23 insideRectangle:v20, v22];
+  plainText = [(CMDiagramPointMapper *)v9 plainText];
+  [CMShapeUtils fontSizeForText:plainText insideRectangle:v20, v22];
   v25 = v24;
 
   if (self->mDefaultFontSize > v25)
@@ -143,18 +143,18 @@
     self->mDefaultFontSize = v25;
   }
 
-  v26 = [v8 children];
-  v27 = [v26 count];
+  children = [nodeCopy children];
+  v27 = [children count];
   if (v27)
   {
     v28 = 0;
     v29 = 1.0;
     do
     {
-      v30 = [v26 objectAtIndex:v28];
-      [(CMDiagramShapeMapper *)self setFonSizeForChildNode:v30 atIndex:v28 level:(a5 + 1)];
+      v30 = [children objectAtIndex:v28];
+      [(CMDiagramShapeMapper *)self setFonSizeForChildNode:v30 atIndex:v28 level:(level + 1)];
       v32 = v29 + v31;
-      if (self->mMaxMappableTreeDepth <= a5)
+      if (self->mMaxMappableTreeDepth <= level)
       {
         v29 = v32;
       }
@@ -170,7 +170,7 @@
     v29 = 1.0;
   }
 
-  if (self->mMaxMappableTreeDepth == a5 && v13 < ((v29 * self->mDefaultFontSize) * 1.2))
+  if (self->mMaxMappableTreeDepth == level && v13 < ((v29 * self->mDefaultFontSize) * 1.2))
   {
     v33 = v13 / v29 / 1.20000005;
     self->mDefaultFontSize = v33;
@@ -179,9 +179,9 @@
   return v29;
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  [(OADOrientedBounds *)self->mDiagramShapeBounds bounds:a3];
+  [(OADOrientedBounds *)self->mDiagramShapeBounds bounds:node];
   Width = CGRectGetWidth(v9);
   [(OADOrientedBounds *)self->mDiagramShapeBounds bounds];
   Height = CGRectGetHeight(v10);

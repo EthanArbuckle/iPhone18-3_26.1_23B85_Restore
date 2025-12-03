@@ -1,7 +1,7 @@
 @interface CDDPrivacyMonitor
 - (BOOL)isManagedConfigurationSettingOn;
 - (BOOL)loadCurrentPrivacySetting;
-- (CDDPrivacyMonitor)initWithCDDinstance:(id)a3;
+- (CDDPrivacyMonitor)initWithCDDinstance:(id)dinstance;
 - (void)privacyCloak;
 @end
 
@@ -41,16 +41,16 @@ LABEL_7:
   return v5;
 }
 
-- (CDDPrivacyMonitor)initWithCDDinstance:(id)a3
+- (CDDPrivacyMonitor)initWithCDDinstance:(id)dinstance
 {
-  v4 = a3;
+  dinstanceCopy = dinstance;
   v13.receiver = self;
   v13.super_class = CDDPrivacyMonitor;
   v5 = [(CDDPrivacyMonitor *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(CDDPrivacyMonitor *)v5 setCdd:v4];
+    [(CDDPrivacyMonitor *)v5 setCdd:dinstanceCopy];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.coreduetdPrivacyDispatchQueue", v7);
     privacyDispatchQ = v6->privacyDispatchQ;
@@ -91,9 +91,9 @@ LABEL_7:
 - (BOOL)isManagedConfigurationSettingOn
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isAutomaticAppUpdatesAllowed];
+  isAutomaticAppUpdatesAllowed = [v2 isAutomaticAppUpdatesAllowed];
 
-  return v3;
+  return isAutomaticAppUpdatesAllowed;
 }
 
 @end

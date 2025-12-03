@@ -1,14 +1,14 @@
 @interface NCStartCaptureRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCaptureMode:(id)a3;
+- (int)StringAsCaptureMode:(id)mode;
 - (int)captureMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCStartCaptureRequest
@@ -26,55 +26,55 @@
   }
 }
 
-- (int)StringAsCaptureMode:(id)a3
+- (int)StringAsCaptureMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Square"])
+  else if ([modeCopy isEqualToString:@"Square"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Timelapse"])
+  else if ([modeCopy isEqualToString:@"Timelapse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([modeCopy isEqualToString:@"Portrait"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Slomo"])
+  else if ([modeCopy isEqualToString:@"Slomo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Panorama"])
+  else if ([modeCopy isEqualToString:@"Panorama"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cinematic"])
+  else if ([modeCopy isEqualToString:@"Cinematic"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SpatialVideo"])
+  else if ([modeCopy isEqualToString:@"SpatialVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([modeCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 12;
   }
@@ -92,8 +92,8 @@
   v7.receiver = self;
   v7.super_class = NCStartCaptureRequest;
   v3 = [(NCStartCaptureRequest *)&v7 description];
-  v4 = [(NCStartCaptureRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCStartCaptureRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -120,7 +120,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -129,18 +129,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_captureMode;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_captureMode;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_captureMode;
@@ -150,18 +150,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_captureMode == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_captureMode == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -189,11 +189,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_captureMode = *(a3 + 2);
+    self->_captureMode = *(from + 2);
     *&self->_has |= 1u;
   }
 }

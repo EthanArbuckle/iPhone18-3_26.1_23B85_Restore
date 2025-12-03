@@ -1,6 +1,6 @@
 @interface PodcastsMediaLibrary.TaskMetricsDelegate
 - (_TtCC18PodcastsFoundation20PodcastsMediaLibrary19TaskMetricsDelegate)init;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 @end
 
 @implementation PodcastsMediaLibrary.TaskMetricsDelegate
@@ -18,13 +18,13 @@
   return v4;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1D90BA814(v10);
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
+  selfCopy = self;
+  sub_1D90BA814(metricsCopy);
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface KVItemConverter
-+ (id)_convertFromKVItemType_AppInfo:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_AppIntentsEntity:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_AppIntentsEnum:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_AppShortcut:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_AutoShortcut:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_CalendarEvent:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_Contact:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_CustomTerm:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_FindMy:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_Fitness:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_GlobalTerm:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_Health:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_HomeEntity:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_HomeServiceArea:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_LearnedContact:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_LearnedMediaEntity:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_LocationOfInterest:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_MediaEntity:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_Podcast:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_RadioEntity:(id)a3 error:(id *)a4;
-+ (id)_convertFromKVItemType_UserAccount:(id)a3 error:(id *)a4;
-+ (id)cascadeItemFromItem:(id)a3 error:(id *)a4;
-+ (id)itemFromCascadeItem:(id)a3 error:(id *)a4;
-+ (int64_t)fieldTypeFromCascadeFieldType:(unsigned __int16)a3;
-+ (unsigned)cascadeFieldTypeFromFieldType:(int64_t)a3;
-+ (unsigned)cascadeItemTypeFromItemType:(int64_t)a3;
++ (id)_convertFromKVItemType_AppInfo:(id)info error:(id *)error;
++ (id)_convertFromKVItemType_AppIntentsEntity:(id)entity error:(id *)error;
++ (id)_convertFromKVItemType_AppIntentsEnum:(id)enum error:(id *)error;
++ (id)_convertFromKVItemType_AppShortcut:(id)shortcut error:(id *)error;
++ (id)_convertFromKVItemType_AutoShortcut:(id)shortcut error:(id *)error;
++ (id)_convertFromKVItemType_CalendarEvent:(id)event error:(id *)error;
++ (id)_convertFromKVItemType_Contact:(id)contact error:(id *)error;
++ (id)_convertFromKVItemType_CustomTerm:(id)term error:(id *)error;
++ (id)_convertFromKVItemType_FindMy:(id)my error:(id *)error;
++ (id)_convertFromKVItemType_Fitness:(id)fitness error:(id *)error;
++ (id)_convertFromKVItemType_GlobalTerm:(id)term error:(id *)error;
++ (id)_convertFromKVItemType_Health:(id)health error:(id *)error;
++ (id)_convertFromKVItemType_HomeEntity:(id)entity error:(id *)error;
++ (id)_convertFromKVItemType_HomeServiceArea:(id)area error:(id *)error;
++ (id)_convertFromKVItemType_LearnedContact:(id)contact error:(id *)error;
++ (id)_convertFromKVItemType_LearnedMediaEntity:(id)entity error:(id *)error;
++ (id)_convertFromKVItemType_LocationOfInterest:(id)interest error:(id *)error;
++ (id)_convertFromKVItemType_MediaEntity:(id)entity error:(id *)error;
++ (id)_convertFromKVItemType_Podcast:(id)podcast error:(id *)error;
++ (id)_convertFromKVItemType_RadioEntity:(id)entity error:(id *)error;
++ (id)_convertFromKVItemType_UserAccount:(id)account error:(id *)error;
++ (id)cascadeItemFromItem:(id)item error:(id *)error;
++ (id)itemFromCascadeItem:(id)item error:(id *)error;
++ (int64_t)fieldTypeFromCascadeFieldType:(unsigned __int16)type;
++ (unsigned)cascadeFieldTypeFromFieldType:(int64_t)type;
++ (unsigned)cascadeItemTypeFromItemType:(int64_t)type;
 @end
 
 @implementation KVItemConverter
 
-+ (id)itemFromCascadeItem:(id)a3 error:(id *)a4
++ (id)itemFromCascadeItem:(id)item error:(id *)error
 {
-  v5 = a3;
-  v11 = objc_msgSend_content(v5, v6, v7, v8, v9, v10);
+  itemCopy = item;
+  v11 = objc_msgSend_content(itemCopy, v6, v7, v8, v9, v10);
   v12 = objc_opt_class();
   v18 = objc_msgSend_itemType(v12, v13, v14, v15, v16, v17);
   v19 = objc_opt_class();
@@ -40,14 +40,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v30 = objc_msgSend_metaContent(v5, v25, v26, v27, v28, v29);
+    v30 = objc_msgSend_metaContent(itemCopy, v25, v26, v27, v28, v29);
     v36 = objc_msgSend_sourceItemIdentifier(v30, v31, v32, v33, v34, v35);
   }
 
   else
   {
     v37 = MEMORY[0x277CCACA8];
-    v38 = objc_msgSend_sharedIdentifier(v5, v25, v26, v27, v28, v29);
+    v38 = objc_msgSend_sharedIdentifier(itemCopy, v25, v26, v27, v28, v29);
     v44 = objc_msgSend_unsignedLongLongValue(v38, v39, v40, v41, v42, v43);
     v36 = objc_msgSend_stringWithFormat_(v37, v45, @"%llx", v46, v47, v48, v44);
 
@@ -67,7 +67,7 @@
 
   if (v52)
   {
-    v81 = a4;
+    errorCopy = error;
     v103 = 0;
     v104 = &v103;
     v105 = 0x2020000000;
@@ -88,21 +88,21 @@
       v58 = v57;
       if ((v56 & 1) == 0)
       {
-        v59 = sub_2559B75F0(v57, v5);
+        v59 = sub_2559B75F0(v57, itemCopy);
         goto LABEL_14;
       }
 
       if (*(v104 + 24) == 1)
       {
-        v59 = sub_2559B72B0(v109[5], v5);
+        v59 = sub_2559B72B0(v109[5], itemCopy);
 LABEL_14:
-        if (a4)
+        if (error)
         {
           v36 = v82;
           if (v59)
           {
             v59 = v59;
-            *a4 = v59;
+            *error = v59;
           }
         }
 
@@ -137,7 +137,7 @@ LABEL_14:
     v84[3] = &unk_279803F60;
     v87 = &v103;
     v88 = &v92;
-    v64 = v5;
+    v64 = itemCopy;
     v85 = v64;
     v65 = v49;
     v86 = v65;
@@ -164,10 +164,10 @@ LABEL_23:
         else
         {
           v79 = sub_2559B72B0(v109[5], v64);
-          if (v81 && v79)
+          if (errorCopy && v79)
           {
             v79 = v79;
-            *v81 = v79;
+            *errorCopy = v79;
           }
 
           v77 = 0;
@@ -186,9 +186,9 @@ LABEL_39:
       v70 = v93[5];
       if (v70)
       {
-        if (v81)
+        if (errorCopy)
         {
-          *v81 = v70;
+          *errorCopy = v70;
         }
 
         goto LABEL_23;
@@ -202,13 +202,13 @@ LABEL_39:
       v78 = sub_2559B75F0(v58, v64);
     }
 
-    if (v81)
+    if (errorCopy)
     {
       v36 = v82;
       if (v78)
       {
         v78 = v78;
-        *v81 = v78;
+        *errorCopy = v78;
       }
     }
 
@@ -222,14 +222,14 @@ LABEL_39:
     goto LABEL_38;
   }
 
-  v60 = sub_2559B72B0(v109[5], v5);
+  v60 = sub_2559B72B0(v109[5], itemCopy);
   v58 = v60;
   v61 = 0;
-  if (a4 && v60)
+  if (error && v60)
   {
     v62 = v60;
     v61 = 0;
-    *a4 = v58;
+    *error = v58;
   }
 
 LABEL_40:
@@ -239,9 +239,9 @@ LABEL_40:
   return v61;
 }
 
-+ (id)_convertFromKVItemType_HomeServiceArea:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_HomeServiceArea:(id)area error:(id *)error
 {
-  v5 = a3;
+  areaCopy = area;
   v87 = 0;
   v88 = &v87;
   v89 = 0x3032000000;
@@ -281,7 +281,7 @@ LABEL_40:
   v62[6] = &v69;
   v62[7] = &v75;
   v62[8] = &v63;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v62, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(areaCopy, v6, v62, v7, v8, v9);
   v10 = objc_alloc_init(MEMORY[0x277CCABB8]);
   v57 = objc_msgSend_numberFromString_(v10, v11, v70[5], v12, v13, v14);
   if (v88[5])
@@ -306,23 +306,23 @@ LABEL_3:
       if (v33)
       {
         v35 = objc_alloc(MEMORY[0x277D21020]);
-        v41 = objc_msgSend_itemId(v5, v36, v37, v38, v39, v40);
+        v41 = objc_msgSend_itemId(areaCopy, v36, v37, v38, v39, v40);
         v58 = v34;
         v45 = objc_msgSend_initWithSourceItemIdentifier_error_(v35, v42, v41, &v58, v43, v44);
         v24 = v58;
 
         if (v45)
         {
-          v46 = sub_2559B96C0(v33, v45, v5, a4);
+          v46 = sub_2559B96C0(v33, v45, areaCopy, error);
         }
 
         else
         {
-          v55 = sub_2559B95D0(v24, v5);
-          if (a4 && v55)
+          v55 = sub_2559B95D0(v24, areaCopy);
+          if (error && v55)
           {
             v55 = v55;
-            *a4 = v55;
+            *error = v55;
           }
 
           v45 = 0;
@@ -332,14 +332,14 @@ LABEL_3:
 
       else
       {
-        v53 = sub_2559B95D0(v34, v5);
+        v53 = sub_2559B95D0(v34, areaCopy);
         v45 = v53;
         v46 = 0;
-        if (a4 && v53)
+        if (error && v53)
         {
           v54 = v53;
           v46 = 0;
-          *a4 = v45;
+          *error = v45;
         }
 
         v24 = v34;
@@ -363,14 +363,14 @@ LABEL_3:
     }
   }
 
-  v51 = sub_2559B95D0(v24, v5);
+  v51 = sub_2559B95D0(v24, areaCopy);
   v30 = v51;
   v46 = 0;
-  if (a4 && v51)
+  if (error && v51)
   {
     v52 = v51;
     v46 = 0;
-    *a4 = v30;
+    *error = v30;
   }
 
 LABEL_19:
@@ -386,9 +386,9 @@ LABEL_19:
   return v46;
 }
 
-+ (id)_convertFromKVItemType_AppIntentsEnum:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_AppIntentsEnum:(id)enum error:(id *)error
 {
-  v5 = a3;
+  enumCopy = enum;
   v96 = 0;
   v97 = &v96;
   v98 = 0x3032000000;
@@ -472,17 +472,17 @@ LABEL_19:
   v56 = v74;
   v57 = v72;
   v58 = v70;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v8, v49, v9, v10, v11);
+  objc_msgSend_enumerateFieldsUsingBlock_(enumCopy, v8, v49, v9, v10, v11);
   if (*(v61 + 24) == 1 || (v7[2](v7) & 1) == 0)
   {
-    v38 = sub_2559B95D0(v65[5], v5);
+    v38 = sub_2559B95D0(v65[5], enumCopy);
     v18 = v38;
     v37 = 0;
-    if (a4 && v38)
+    if (error && v38)
     {
       v39 = v38;
       v37 = 0;
-      *a4 = v18;
+      *error = v18;
     }
   }
 
@@ -507,7 +507,7 @@ LABEL_19:
       if (v24)
       {
         v25 = objc_alloc(MEMORY[0x277D20F18]);
-        v31 = objc_msgSend_itemId(v5, v26, v27, v28, v29, v30);
+        v31 = objc_msgSend_itemId(enumCopy, v26, v27, v28, v29, v30);
         v32 = (v65 + 5);
         v46 = v65[5];
         v36 = objc_msgSend_initWithSourceItemIdentifier_error_(v25, v33, v31, &v46, v34, v35);
@@ -515,16 +515,16 @@ LABEL_19:
 
         if (v36)
         {
-          v37 = sub_2559B96C0(v24, v36, v5, a4);
+          v37 = sub_2559B96C0(v24, v36, enumCopy, error);
         }
 
         else
         {
-          v44 = sub_2559B95D0(v65[5], v5);
-          if (a4 && v44)
+          v44 = sub_2559B95D0(v65[5], enumCopy);
+          if (error && v44)
           {
             v44 = v44;
-            *a4 = v44;
+            *error = v44;
           }
 
           v36 = 0;
@@ -534,28 +534,28 @@ LABEL_19:
 
       else
       {
-        v42 = sub_2559B95D0(v65[5], v5);
+        v42 = sub_2559B95D0(v65[5], enumCopy);
         v36 = v42;
         v37 = 0;
-        if (a4 && v42)
+        if (error && v42)
         {
           v43 = v42;
           v37 = 0;
-          *a4 = v36;
+          *error = v36;
         }
       }
     }
 
     else
     {
-      v40 = sub_2559B95D0(v65[5], v5);
+      v40 = sub_2559B95D0(v65[5], enumCopy);
       v24 = v40;
       v37 = 0;
-      if (a4 && v40)
+      if (error && v40)
       {
         v41 = v40;
         v37 = 0;
-        *a4 = v24;
+        *error = v24;
       }
     }
   }
@@ -578,9 +578,9 @@ LABEL_19:
   return v37;
 }
 
-+ (id)_convertFromKVItemType_AppIntentsEntity:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_AppIntentsEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v84 = 0;
   v85 = &v84;
   v86 = 0x3032000000;
@@ -627,7 +627,7 @@ LABEL_19:
   v53[7] = &v78;
   v53[8] = &v72;
   v53[9] = &v66;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v53, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(entityCopy, v6, v53, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20E38]);
   v11 = v79[5];
   v12 = v73[5];
@@ -656,23 +656,23 @@ LABEL_19:
       if (v28)
       {
         v30 = objc_alloc(MEMORY[0x277D20F08]);
-        v36 = objc_msgSend_itemId(v5, v31, v32, v33, v34, v35);
+        v36 = objc_msgSend_itemId(entityCopy, v31, v32, v33, v34, v35);
         v49 = v29;
         v39 = objc_msgSend_initWithSourceItemIdentifier_rank_error_(v30, v37, v36, 0, &v49, v38);
         v24 = v49;
 
         if (v39)
         {
-          v40 = sub_2559B96C0(v28, v39, v5, a4);
+          v40 = sub_2559B96C0(v28, v39, entityCopy, error);
         }
 
         else
         {
-          v47 = sub_2559B95D0(v24, v5);
-          if (a4 && v47)
+          v47 = sub_2559B95D0(v24, entityCopy);
+          if (error && v47)
           {
             v47 = v47;
-            *a4 = v47;
+            *error = v47;
           }
 
           v39 = 0;
@@ -682,14 +682,14 @@ LABEL_19:
 
       else
       {
-        v45 = sub_2559B95D0(v29, v5);
+        v45 = sub_2559B95D0(v29, entityCopy);
         v39 = v45;
         v40 = 0;
-        if (a4 && v45)
+        if (error && v45)
         {
           v46 = v45;
           v40 = 0;
-          *a4 = v39;
+          *error = v39;
         }
 
         v24 = v29;
@@ -698,14 +698,14 @@ LABEL_19:
 
     else
     {
-      v43 = sub_2559B95D0(v24, v5);
+      v43 = sub_2559B95D0(v24, entityCopy);
       v28 = v43;
       v40 = 0;
-      if (a4 && v43)
+      if (error && v43)
       {
         v44 = v43;
         v40 = 0;
-        *a4 = v28;
+        *error = v28;
       }
     }
 
@@ -714,14 +714,14 @@ LABEL_19:
 
   else
   {
-    v41 = sub_2559B95D0(v16, v5);
+    v41 = sub_2559B95D0(v16, entityCopy);
     v23 = v41;
     v40 = 0;
-    if (a4 && v41)
+    if (error && v41)
     {
       v42 = v41;
       v40 = 0;
-      *a4 = v23;
+      *error = v23;
     }
   }
 
@@ -737,9 +737,9 @@ LABEL_19:
   return v40;
 }
 
-+ (id)_convertFromKVItemType_LearnedMediaEntity:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_LearnedMediaEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v71 = 0;
   v72 = &v71;
   v73 = 0x3032000000;
@@ -786,7 +786,7 @@ LABEL_19:
   v40[7] = &v47;
   v40[8] = &v53;
   v40[9] = &v41;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v40, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(entityCopy, v6, v40, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D21140]);
   v11 = v72[5];
   v12 = v66[5];
@@ -801,23 +801,23 @@ LABEL_19:
   if (v18)
   {
     v21 = objc_alloc(MEMORY[0x277D21148]);
-    v27 = objc_msgSend_itemId(v5, v22, v23, v24, v25, v26);
+    v27 = objc_msgSend_itemId(entityCopy, v22, v23, v24, v25, v26);
     v38 = v20;
     v31 = objc_msgSend_initWithSourceItemIdentifier_error_(v21, v28, v27, &v38, v29, v30);
     v32 = v38;
 
     if (v31)
     {
-      v33 = sub_2559B96C0(v18, v31, v5, a4);
+      v33 = sub_2559B96C0(v18, v31, entityCopy, error);
     }
 
     else
     {
-      v36 = sub_2559B95D0(v32, v5);
-      if (a4 && v36)
+      v36 = sub_2559B95D0(v32, entityCopy);
+      if (error && v36)
       {
         v36 = v36;
-        *a4 = v36;
+        *error = v36;
       }
 
       v31 = 0;
@@ -827,14 +827,14 @@ LABEL_19:
 
   else
   {
-    v34 = sub_2559B95D0(v19, v5);
+    v34 = sub_2559B95D0(v19, entityCopy);
     v31 = v34;
     v33 = 0;
-    if (a4 && v34)
+    if (error && v34)
     {
       v35 = v34;
       v33 = 0;
-      *a4 = v31;
+      *error = v31;
     }
 
     v32 = v20;
@@ -852,9 +852,9 @@ LABEL_19:
   return v33;
 }
 
-+ (id)_convertFromKVItemType_LearnedContact:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_LearnedContact:(id)contact error:(id *)error
 {
-  v5 = a3;
+  contactCopy = contact;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -873,7 +873,7 @@ LABEL_19:
   v37[3] = &unk_279803E70;
   v37[4] = &v38;
   v37[5] = &v44;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(contactCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D21130]);
   v11 = v45[5];
   v12 = v39[5];
@@ -884,23 +884,23 @@ LABEL_19:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D21138]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(contactCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, contactCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, contactCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -910,14 +910,14 @@ LABEL_19:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, contactCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -929,9 +929,9 @@ LABEL_19:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_FindMy:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_FindMy:(id)my error:(id *)error
 {
-  v5 = a3;
+  myCopy = my;
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
@@ -957,7 +957,7 @@ LABEL_19:
   v43[4] = &v56;
   v43[5] = &v50;
   v43[6] = &v44;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v43, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(myCopy, v6, v43, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20FA8]);
   v11 = v51[5];
   v12 = v45[5];
@@ -973,23 +973,23 @@ LABEL_19:
   if (v21)
   {
     v23 = objc_alloc(MEMORY[0x277D20FA0]);
-    v29 = objc_msgSend_itemId(v5, v24, v25, v26, v27, v28);
+    v29 = objc_msgSend_itemId(myCopy, v24, v25, v26, v27, v28);
     v40 = v22;
     v33 = objc_msgSend_initWithSourceItemIdentifier_error_(v23, v30, v29, &v40, v31, v32);
     v34 = v40;
 
     if (v33)
     {
-      v35 = sub_2559B96C0(v21, v33, v5, a4);
+      v35 = sub_2559B96C0(v21, v33, myCopy, error);
     }
 
     else
     {
-      v38 = sub_2559B95D0(v34, v5);
-      if (a4 && v38)
+      v38 = sub_2559B95D0(v34, myCopy);
+      if (error && v38)
       {
         v38 = v38;
-        *a4 = v38;
+        *error = v38;
       }
 
       v33 = 0;
@@ -999,14 +999,14 @@ LABEL_19:
 
   else
   {
-    v36 = sub_2559B95D0(v22, v5);
+    v36 = sub_2559B95D0(v22, myCopy);
     v33 = v36;
     v35 = 0;
-    if (a4 && v36)
+    if (error && v36)
     {
       v37 = v36;
       v35 = 0;
-      *a4 = v33;
+      *error = v33;
     }
 
     v34 = v22;
@@ -1020,9 +1020,9 @@ LABEL_19:
   return v35;
 }
 
-+ (id)_convertFromKVItemType_UserAccount:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_UserAccount:(id)account error:(id *)error
 {
-  v5 = a3;
+  accountCopy = account;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -1041,7 +1041,7 @@ LABEL_19:
   v37[3] = &unk_279803E70;
   v37[4] = &v44;
   v37[5] = &v38;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(accountCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D21180]);
   v11 = v45[5];
   v12 = v39[5];
@@ -1052,23 +1052,23 @@ LABEL_19:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D21188]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(accountCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, accountCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, accountCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -1078,14 +1078,14 @@ LABEL_19:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, accountCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -1097,9 +1097,9 @@ LABEL_19:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_Health:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_Health:(id)health error:(id *)error
 {
-  v5 = a3;
+  healthCopy = health;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -1118,7 +1118,7 @@ LABEL_19:
   v37[3] = &unk_279803E70;
   v37[4] = &v44;
   v37[5] = &v38;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(healthCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20FC0]);
   v11 = v45[5];
   v12 = v39[5];
@@ -1129,23 +1129,23 @@ LABEL_19:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D20FC8]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(healthCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, healthCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, healthCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -1155,14 +1155,14 @@ LABEL_19:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, healthCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -1174,9 +1174,9 @@ LABEL_19:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_Fitness:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_Fitness:(id)fitness error:(id *)error
 {
-  v5 = a3;
+  fitnessCopy = fitness;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -1188,7 +1188,7 @@ LABEL_19:
   v37[2] = sub_2559BBC4C;
   v37[3] = &unk_279803E98;
   v37[4] = &v38;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(fitnessCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20FB0]);
   v11 = v39[5];
   v36 = 0;
@@ -1198,23 +1198,23 @@ LABEL_19:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D20FB8]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(fitnessCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, fitnessCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, fitnessCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -1224,14 +1224,14 @@ LABEL_19:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, fitnessCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -1242,9 +1242,9 @@ LABEL_19:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_Podcast:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_Podcast:(id)podcast error:(id *)error
 {
-  v5 = a3;
+  podcastCopy = podcast;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2020000000;
@@ -1268,7 +1268,7 @@ LABEL_19:
   v52[4] = &v65;
   v52[5] = &v59;
   v52[6] = &v53;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v52, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(podcastCopy, v6, v52, v7, v8, v9);
   v10 = *(v66 + 6);
   if (v10 == 1)
   {
@@ -1306,23 +1306,23 @@ LABEL_7:
   if (v29)
   {
     v31 = objc_alloc(MEMORY[0x277D210F0]);
-    v37 = objc_msgSend_itemId(v5, v32, v33, v34, v35, v36);
+    v37 = objc_msgSend_itemId(podcastCopy, v32, v33, v34, v35, v36);
     v48 = v30;
     v41 = objc_msgSend_initWithSourceItemIdentifier_error_(v31, v38, v37, &v48, v39, v40);
     v42 = v48;
 
     if (v41)
     {
-      v43 = sub_2559B96C0(v29, v41, v5, a4);
+      v43 = sub_2559B96C0(v29, v41, podcastCopy, error);
     }
 
     else
     {
-      v46 = sub_2559B95D0(v42, v5);
-      if (a4 && v46)
+      v46 = sub_2559B95D0(v42, podcastCopy);
+      if (error && v46)
       {
         v46 = v46;
-        *a4 = v46;
+        *error = v46;
       }
 
       v41 = 0;
@@ -1332,14 +1332,14 @@ LABEL_7:
 
   else
   {
-    v44 = sub_2559B95D0(v30, v5);
+    v44 = sub_2559B95D0(v30, podcastCopy);
     v41 = v44;
     v43 = 0;
-    if (a4 && v44)
+    if (error && v44)
     {
       v45 = v44;
       v43 = 0;
-      *a4 = v41;
+      *error = v41;
     }
 
     v42 = v30;
@@ -1353,9 +1353,9 @@ LABEL_7:
   return v43;
 }
 
-+ (id)_convertFromKVItemType_CalendarEvent:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_CalendarEvent:(id)event error:(id *)error
 {
-  v5 = a3;
+  eventCopy = event;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -1374,7 +1374,7 @@ LABEL_7:
   v37[3] = &unk_279803E70;
   v37[4] = &v44;
   v37[5] = &v38;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(eventCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20F40]);
   v11 = v45[5];
   v12 = v39[5];
@@ -1385,23 +1385,23 @@ LABEL_7:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D20F48]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(eventCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, eventCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, eventCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -1411,14 +1411,14 @@ LABEL_7:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, eventCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -1430,9 +1430,9 @@ LABEL_7:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_LocationOfInterest:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_LocationOfInterest:(id)interest error:(id *)error
 {
-  v5 = a3;
+  interestCopy = interest;
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
@@ -1489,7 +1489,7 @@ LABEL_7:
   v45[9] = &v63;
   v45[10] = &v57;
   v45[11] = &v51;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, byte_279803E48, v45, v6, v7, v8);
+  objc_msgSend_enumerateFieldsUsingBlock_(interestCopy, byte_279803E48, v45, v6, v7, v8);
   if (v47[3])
   {
     v9 = objc_alloc(MEMORY[0x277D21118]);
@@ -1503,14 +1503,14 @@ LABEL_7:
     v17 = v16;
     if (!v15)
     {
-      v18 = sub_2559B95D0(v16, v5);
+      v18 = sub_2559B95D0(v16, interestCopy);
       v15 = v18;
       v19 = 0;
-      if (a4 && v18)
+      if (error && v18)
       {
         v20 = v18;
         v19 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       goto LABEL_19;
@@ -1533,23 +1533,23 @@ LABEL_7:
   if (v25)
   {
     v27 = objc_alloc(MEMORY[0x277D21128]);
-    v33 = objc_msgSend_itemId(v5, v28, v29, v30, v31, v32);
+    v33 = objc_msgSend_itemId(interestCopy, v28, v29, v30, v31, v32);
     v42 = v26;
     v37 = objc_msgSend_initWithSourceItemIdentifier_error_(v27, v34, v33, &v42, v35, v36);
     v17 = v42;
 
     if (v37)
     {
-      v19 = sub_2559B96C0(v25, v37, v5, a4);
+      v19 = sub_2559B96C0(v25, v37, interestCopy, error);
     }
 
     else
     {
-      v40 = sub_2559B95D0(v17, v5);
-      if (a4 && v40)
+      v40 = sub_2559B95D0(v17, interestCopy);
+      if (error && v40)
       {
         v40 = v40;
-        *a4 = v40;
+        *error = v40;
       }
 
       v37 = 0;
@@ -1559,14 +1559,14 @@ LABEL_7:
 
   else
   {
-    v38 = sub_2559B95D0(v26, v5);
+    v38 = sub_2559B95D0(v26, interestCopy);
     v37 = v38;
     v19 = 0;
-    if (a4 && v38)
+    if (error && v38)
     {
       v39 = v38;
       v19 = 0;
-      *a4 = v37;
+      *error = v37;
     }
 
     v17 = v26;
@@ -1588,9 +1588,9 @@ LABEL_19:
   return v19;
 }
 
-+ (id)_convertFromKVItemType_RadioEntity:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_RadioEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -1628,7 +1628,7 @@ LABEL_19:
   v39[6] = &v50;
   v39[7] = &v44;
   v39[8] = &v40;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v39, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(entityCopy, v6, v39, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D21108]);
   v11 = v63[5];
   v12 = v57[5];
@@ -1642,23 +1642,23 @@ LABEL_19:
   if (v17)
   {
     v20 = objc_alloc(MEMORY[0x277D21110]);
-    v26 = objc_msgSend_itemId(v5, v21, v22, v23, v24, v25);
+    v26 = objc_msgSend_itemId(entityCopy, v21, v22, v23, v24, v25);
     v37 = v19;
     v30 = objc_msgSend_initWithSourceItemIdentifier_error_(v20, v27, v26, &v37, v28, v29);
     v31 = v37;
 
     if (v30)
     {
-      v32 = sub_2559B96C0(v17, v30, v5, a4);
+      v32 = sub_2559B96C0(v17, v30, entityCopy, error);
     }
 
     else
     {
-      v35 = sub_2559B95D0(v31, v5);
-      if (a4 && v35)
+      v35 = sub_2559B95D0(v31, entityCopy);
+      if (error && v35)
       {
         v35 = v35;
-        *a4 = v35;
+        *error = v35;
       }
 
       v30 = 0;
@@ -1668,14 +1668,14 @@ LABEL_19:
 
   else
   {
-    v33 = sub_2559B95D0(v18, v5);
+    v33 = sub_2559B95D0(v18, entityCopy);
     v30 = v33;
     v32 = 0;
-    if (a4 && v33)
+    if (error && v33)
     {
       v34 = v33;
       v32 = 0;
-      *a4 = v30;
+      *error = v30;
     }
 
     v31 = v19;
@@ -1692,9 +1692,9 @@ LABEL_19:
   return v32;
 }
 
-+ (id)_convertFromKVItemType_AppShortcut:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_AppShortcut:(id)shortcut error:(id *)error
 {
-  v5 = a3;
+  shortcutCopy = shortcut;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
@@ -1734,7 +1734,7 @@ LABEL_19:
   v39[6] = &v52;
   v39[7] = &v46;
   v39[8] = &v40;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v39, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(shortcutCopy, v6, v39, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20F20]);
   v11 = v65[5];
   v12 = v59[5];
@@ -1748,23 +1748,23 @@ LABEL_19:
   if (v17)
   {
     v20 = objc_alloc(MEMORY[0x277D20F28]);
-    v26 = objc_msgSend_itemId(v5, v21, v22, v23, v24, v25);
+    v26 = objc_msgSend_itemId(shortcutCopy, v21, v22, v23, v24, v25);
     v37 = v19;
     v30 = objc_msgSend_initWithSourceItemIdentifier_error_(v20, v27, v26, &v37, v28, v29);
     v31 = v37;
 
     if (v30)
     {
-      v32 = sub_2559B96C0(v17, v30, v5, a4);
+      v32 = sub_2559B96C0(v17, v30, shortcutCopy, error);
     }
 
     else
     {
-      v35 = sub_2559B95D0(v31, v5);
-      if (a4 && v35)
+      v35 = sub_2559B95D0(v31, shortcutCopy);
+      if (error && v35)
       {
         v35 = v35;
-        *a4 = v35;
+        *error = v35;
       }
 
       v30 = 0;
@@ -1774,14 +1774,14 @@ LABEL_19:
 
   else
   {
-    v33 = sub_2559B95D0(v18, v5);
+    v33 = sub_2559B95D0(v18, shortcutCopy);
     v30 = v33;
     v32 = 0;
-    if (a4 && v33)
+    if (error && v33)
     {
       v34 = v33;
       v32 = 0;
-      *a4 = v30;
+      *error = v30;
     }
 
     v31 = v19;
@@ -1798,9 +1798,9 @@ LABEL_19:
   return v32;
 }
 
-+ (id)_convertFromKVItemType_AutoShortcut:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_AutoShortcut:(id)shortcut error:(id *)error
 {
-  v5 = a3;
+  shortcutCopy = shortcut;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -1826,7 +1826,7 @@ LABEL_19:
   v37[4] = &v50;
   v37[5] = &v44;
   v37[6] = &v38;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v37, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(shortcutCopy, v6, v37, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20F30]);
   v11 = v51[5];
   v12 = v45[5];
@@ -1838,23 +1838,23 @@ LABEL_19:
   if (v15)
   {
     v18 = objc_alloc(MEMORY[0x277D20F38]);
-    v24 = objc_msgSend_itemId(v5, v19, v20, v21, v22, v23);
+    v24 = objc_msgSend_itemId(shortcutCopy, v19, v20, v21, v22, v23);
     v35 = v17;
     v28 = objc_msgSend_initWithSourceItemIdentifier_error_(v18, v25, v24, &v35, v26, v27);
     v29 = v35;
 
     if (v28)
     {
-      v30 = sub_2559B96C0(v15, v28, v5, a4);
+      v30 = sub_2559B96C0(v15, v28, shortcutCopy, error);
     }
 
     else
     {
-      v33 = sub_2559B95D0(v29, v5);
-      if (a4 && v33)
+      v33 = sub_2559B95D0(v29, shortcutCopy);
+      if (error && v33)
       {
         v33 = v33;
-        *a4 = v33;
+        *error = v33;
       }
 
       v28 = 0;
@@ -1864,14 +1864,14 @@ LABEL_19:
 
   else
   {
-    v31 = sub_2559B95D0(v16, v5);
+    v31 = sub_2559B95D0(v16, shortcutCopy);
     v28 = v31;
     v30 = 0;
-    if (a4 && v31)
+    if (error && v31)
     {
       v32 = v31;
       v30 = 0;
-      *a4 = v28;
+      *error = v28;
     }
 
     v29 = v17;
@@ -1885,9 +1885,9 @@ LABEL_19:
   return v30;
 }
 
-+ (id)_convertFromKVItemType_MediaEntity:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_MediaEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v69 = 0;
   v70 = &v69;
   v71 = 0x2020000000;
@@ -1931,17 +1931,17 @@ LABEL_19:
   v43 = &v69;
   v44 = &v63;
   v45 = &v51;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v8, v40, v9, v10, v11);
+  objc_msgSend_enumerateFieldsUsingBlock_(entityCopy, v8, v40, v9, v10, v11);
   if (*(v48 + 24) == 1)
   {
-    v12 = sub_2559B95D0(v52[5], v5);
+    v12 = sub_2559B95D0(v52[5], entityCopy);
     v13 = v12;
     v14 = 0;
-    if (a4 && v12)
+    if (error && v12)
     {
       v15 = v12;
       v14 = 0;
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -1957,7 +1957,7 @@ LABEL_19:
     if (v13)
     {
       v22 = objc_alloc(MEMORY[0x277D21088]);
-      v28 = objc_msgSend_itemId(v5, v23, v24, v25, v26, v27);
+      v28 = objc_msgSend_itemId(entityCopy, v23, v24, v25, v26, v27);
       v29 = v58[5];
       v30 = (v52 + 5);
       v38 = v52[5];
@@ -1966,16 +1966,16 @@ LABEL_19:
 
       if (v33)
       {
-        v14 = sub_2559B96C0(v13, v33, v5, a4);
+        v14 = sub_2559B96C0(v13, v33, entityCopy, error);
       }
 
       else
       {
-        v36 = sub_2559B95D0(v52[5], v5);
-        if (a4 && v36)
+        v36 = sub_2559B95D0(v52[5], entityCopy);
+        if (error && v36)
         {
           v36 = v36;
-          *a4 = v36;
+          *error = v36;
         }
 
         v33 = 0;
@@ -1985,14 +1985,14 @@ LABEL_19:
 
     else
     {
-      v34 = sub_2559B95D0(v52[5], v5);
+      v34 = sub_2559B95D0(v52[5], entityCopy);
       v33 = v34;
       v14 = 0;
-      if (a4 && v34)
+      if (error && v34)
       {
         v35 = v34;
         v14 = 0;
-        *a4 = v33;
+        *error = v33;
       }
     }
   }
@@ -2008,9 +2008,9 @@ LABEL_19:
   return v14;
 }
 
-+ (id)_convertFromKVItemType_HomeEntity:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_HomeEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
+  entityCopy = entity;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -2041,7 +2041,7 @@ LABEL_19:
   v36[5] = &v49;
   v36[6] = &v37;
   v36[7] = &v43;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v36, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(entityCopy, v6, v36, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D20FE0]);
   v11 = v50[5];
   v12 = *(v56 + 6);
@@ -2052,7 +2052,7 @@ LABEL_19:
   if (v16)
   {
     v17 = objc_alloc(MEMORY[0x277D20FE8]);
-    v23 = objc_msgSend_itemId(v5, v18, v19, v20, v21, v22);
+    v23 = objc_msgSend_itemId(entityCopy, v18, v19, v20, v21, v22);
     v24 = v44[5];
     v25 = (v38 + 5);
     v34 = v38[5];
@@ -2061,16 +2061,16 @@ LABEL_19:
 
     if (v28)
     {
-      v29 = sub_2559B96C0(v16, v28, v5, a4);
+      v29 = sub_2559B96C0(v16, v28, entityCopy, error);
     }
 
     else
     {
-      v32 = sub_2559B95D0(v38[5], v5);
-      if (a4 && v32)
+      v32 = sub_2559B95D0(v38[5], entityCopy);
+      if (error && v32)
       {
         v32 = v32;
-        *a4 = v32;
+        *error = v32;
       }
 
       v28 = 0;
@@ -2080,14 +2080,14 @@ LABEL_19:
 
   else
   {
-    v30 = sub_2559B95D0(v38[5], v5);
+    v30 = sub_2559B95D0(v38[5], entityCopy);
     v28 = v30;
     v29 = 0;
-    if (a4 && v30)
+    if (error && v30)
     {
       v31 = v30;
       v29 = 0;
-      *a4 = v28;
+      *error = v28;
     }
   }
 
@@ -2100,9 +2100,9 @@ LABEL_19:
   return v29;
 }
 
-+ (id)_convertFromKVItemType_AppInfo:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_AppInfo:(id)info error:(id *)error
 {
-  v5 = a3;
+  infoCopy = info;
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -2142,7 +2142,7 @@ LABEL_19:
   v38[6] = &v51;
   v38[7] = &v39;
   v38[8] = &v45;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v38, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(infoCopy, v6, v38, v7, v8, v9);
   v10 = objc_alloc(MEMORY[0x277D21040]);
   v11 = v64[5];
   v12 = v58[5];
@@ -2155,7 +2155,7 @@ LABEL_19:
   if (v16)
   {
     v19 = objc_alloc(MEMORY[0x277D21048]);
-    v25 = objc_msgSend_itemId(v5, v20, v21, v22, v23, v24);
+    v25 = objc_msgSend_itemId(infoCopy, v20, v21, v22, v23, v24);
     v26 = v40[5];
     v36 = v18;
     v29 = objc_msgSend_initWithSourceItemIdentifier_bundleVersion_error_(v19, v27, v25, v26, &v36, v28);
@@ -2163,16 +2163,16 @@ LABEL_19:
 
     if (v29)
     {
-      v31 = sub_2559B96C0(v16, v29, v5, a4);
+      v31 = sub_2559B96C0(v16, v29, infoCopy, error);
     }
 
     else
     {
-      v34 = sub_2559B95D0(v30, v5);
-      if (a4 && v34)
+      v34 = sub_2559B95D0(v30, infoCopy);
+      if (error && v34)
       {
         v34 = v34;
-        *a4 = v34;
+        *error = v34;
       }
 
       v29 = 0;
@@ -2182,14 +2182,14 @@ LABEL_19:
 
   else
   {
-    v32 = sub_2559B95D0(v17, v5);
+    v32 = sub_2559B95D0(v17, infoCopy);
     v29 = v32;
     v31 = 0;
-    if (a4 && v32)
+    if (error && v32)
     {
       v33 = v32;
       v31 = 0;
-      *a4 = v29;
+      *error = v29;
     }
 
     v30 = v18;
@@ -2206,9 +2206,9 @@ LABEL_19:
   return v31;
 }
 
-+ (id)_convertFromKVItemType_Contact:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_Contact:(id)contact error:(id *)error
 {
-  v5 = a3;
+  contactCopy = contact;
   v182 = 0;
   v183 = &v182;
   v184 = 0x3032000000;
@@ -2372,17 +2372,17 @@ LABEL_19:
   v51[24] = &v74;
   v51[25] = &v68;
   v51[26] = &v62;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, &v128, v51, &v116, &v110, &v104);
+  objc_msgSend_enumerateFieldsUsingBlock_(contactCopy, &v128, v51, &v116, &v110, &v104);
   if (*(v53 + 24) == 1)
   {
-    v6 = sub_2559B95D0(v57[5], v5);
+    v6 = sub_2559B95D0(v57[5], contactCopy);
     v7 = v6;
     v8 = 0;
-    if (a4 && v6)
+    if (error && v6)
     {
       v9 = v6;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
@@ -2417,7 +2417,7 @@ LABEL_19:
     if (v7)
     {
       v33 = objc_alloc(MEMORY[0x277D20F68]);
-      v39 = objc_msgSend_itemId(v5, v34, v35, v36, v37, v38);
+      v39 = objc_msgSend_itemId(contactCopy, v34, v35, v36, v37, v38);
       v40 = (v57 + 5);
       v49 = v57[5];
       v44 = objc_msgSend_initWithSourceItemIdentifier_error_(v33, v41, v39, &v49, v42, v43);
@@ -2425,16 +2425,16 @@ LABEL_19:
 
       if (v44)
       {
-        v8 = sub_2559B96C0(v7, v44, v5, a4);
+        v8 = sub_2559B96C0(v7, v44, contactCopy, error);
       }
 
       else
       {
-        v47 = sub_2559B95D0(v57[5], v5);
-        if (a4 && v47)
+        v47 = sub_2559B95D0(v57[5], contactCopy);
+        if (error && v47)
         {
           v47 = v47;
-          *a4 = v47;
+          *error = v47;
         }
 
         v44 = 0;
@@ -2444,14 +2444,14 @@ LABEL_19:
 
     else
     {
-      v45 = sub_2559B95D0(v57[5], v5);
+      v45 = sub_2559B95D0(v57[5], contactCopy);
       v44 = v45;
       v8 = 0;
-      if (a4 && v45)
+      if (error && v45)
       {
         v46 = v45;
         v8 = 0;
-        *a4 = v44;
+        *error = v44;
       }
     }
   }
@@ -2494,10 +2494,10 @@ LABEL_19:
   return v8;
 }
 
-+ (id)_convertFromKVItemType_GlobalTerm:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_GlobalTerm:(id)term error:(id *)error
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  termCopy = term;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2050000000;
@@ -2519,7 +2519,7 @@ LABEL_19:
   v49[4] = &v60;
   v49[5] = &v56;
   v49[6] = &v50;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v49, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(termCopy, v6, v49, v7, v8, v9);
   v14 = v61[3];
   if (v14 && v57[3])
   {
@@ -2532,23 +2532,23 @@ LABEL_19:
     if (v20)
     {
       v23 = objc_alloc(v57[3]);
-      v29 = objc_msgSend_itemId(v5, v24, v25, v26, v27, v28);
+      v29 = objc_msgSend_itemId(termCopy, v24, v25, v26, v27, v28);
       v47 = v22;
       v33 = objc_msgSend_initWithSourceItemIdentifier_error_(v23, v30, v29, &v47, v31, v32);
       v34 = v47;
 
       if (v33)
       {
-        v35 = sub_2559B96C0(v20, v33, v5, a4);
+        v35 = sub_2559B96C0(v20, v33, termCopy, error);
       }
 
       else
       {
-        v44 = sub_2559B95D0(v34, v5);
-        if (a4 && v44)
+        v44 = sub_2559B95D0(v34, termCopy);
+        if (error && v44)
         {
           v44 = v44;
-          *a4 = v44;
+          *error = v44;
         }
 
         v33 = 0;
@@ -2560,15 +2560,15 @@ LABEL_19:
 
     else
     {
-      v42 = sub_2559B95D0(v21, v5);
+      v42 = sub_2559B95D0(v21, termCopy);
       v33 = v42;
       v20 = 0;
-      if (a4 && v42)
+      if (error && v42)
       {
         v43 = v42;
         v20 = 0;
         v35 = 0;
-        *a4 = v33;
+        *error = v33;
       }
 
       else
@@ -2582,14 +2582,14 @@ LABEL_19:
   {
     v36 = MEMORY[0x277CCA9B8];
     v64 = *MEMORY[0x277CCA068];
-    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"No supported conversion for CustomTerm KVItem: %@", v11, v12, v13, v5);
+    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"No supported conversion for CustomTerm KVItem: %@", v11, v12, v13, termCopy);
     v65[0] = v20;
     v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, v65, &v64, 1, v38);
     v41 = objc_msgSend_errorWithDomain_code_userInfo_(v36, v39, @"com.apple.koa.item.converter", 1, v33, v40);
-    if (a4 && v41)
+    if (error && v41)
     {
       v41 = v41;
-      *a4 = v41;
+      *error = v41;
     }
 
     v22 = 0;
@@ -2605,10 +2605,10 @@ LABEL_19:
   return v35;
 }
 
-+ (id)_convertFromKVItemType_CustomTerm:(id)a3 error:(id *)a4
++ (id)_convertFromKVItemType_CustomTerm:(id)term error:(id *)error
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  termCopy = term;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2050000000;
@@ -2637,7 +2637,7 @@ LABEL_19:
   v49[5] = &v62;
   v49[6] = &v56;
   v49[7] = &v50;
-  objc_msgSend_enumerateFieldsUsingBlock_(v5, v6, v49, v7, v8, v9);
+  objc_msgSend_enumerateFieldsUsingBlock_(termCopy, v6, v49, v7, v8, v9);
   v14 = v67[3];
   if (v14 && v63[3])
   {
@@ -2651,23 +2651,23 @@ LABEL_19:
     if (v20)
     {
       v23 = objc_alloc(v63[3]);
-      v29 = objc_msgSend_itemId(v5, v24, v25, v26, v27, v28);
+      v29 = objc_msgSend_itemId(termCopy, v24, v25, v26, v27, v28);
       v47 = v22;
       v33 = objc_msgSend_initWithSourceItemIdentifier_error_(v23, v30, v29, &v47, v31, v32);
       v34 = v47;
 
       if (v33)
       {
-        v35 = sub_2559B96C0(v20, v33, v5, a4);
+        v35 = sub_2559B96C0(v20, v33, termCopy, error);
       }
 
       else
       {
-        v44 = sub_2559B95D0(v34, v5);
-        if (a4 && v44)
+        v44 = sub_2559B95D0(v34, termCopy);
+        if (error && v44)
         {
           v44 = v44;
-          *a4 = v44;
+          *error = v44;
         }
 
         v33 = 0;
@@ -2679,15 +2679,15 @@ LABEL_19:
 
     else
     {
-      v42 = sub_2559B95D0(v21, v5);
+      v42 = sub_2559B95D0(v21, termCopy);
       v33 = v42;
       v20 = 0;
-      if (a4 && v42)
+      if (error && v42)
       {
         v43 = v42;
         v20 = 0;
         v35 = 0;
-        *a4 = v33;
+        *error = v33;
       }
 
       else
@@ -2701,14 +2701,14 @@ LABEL_19:
   {
     v36 = MEMORY[0x277CCA9B8];
     v70 = *MEMORY[0x277CCA068];
-    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"No supported conversion for CustomTerm KVItem: %@", v11, v12, v13, v5);
+    v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"No supported conversion for CustomTerm KVItem: %@", v11, v12, v13, termCopy);
     v71[0] = v20;
     v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, v71, &v70, 1, v38);
     v41 = objc_msgSend_errorWithDomain_code_userInfo_(v36, v39, @"com.apple.koa.item.converter", 1, v33, v40);
-    if (a4 && v41)
+    if (error && v41)
     {
       v41 = v41;
-      *a4 = v41;
+      *error = v41;
     }
 
     v22 = 0;
@@ -2726,30 +2726,30 @@ LABEL_19:
   return v35;
 }
 
-+ (id)cascadeItemFromItem:(id)a3 error:(id *)a4
++ (id)cascadeItemFromItem:(id)item error:(id *)error
 {
   v132[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = objc_opt_class();
-    v16 = objc_msgSend_itemType(v5, v11, v12, v13, v14, v15);
+    v16 = objc_msgSend_itemType(itemCopy, v11, v12, v13, v14, v15);
     v26 = objc_msgSend_cascadeItemTypeFromItemType_(v10, v17, v16, v18, v19, v20);
     if (v26 == *MEMORY[0x277CF94A8])
     {
-      v27 = objc_msgSend_itemType(v5, v21, v22, v23, v24, v25);
+      v27 = objc_msgSend_itemType(itemCopy, v21, v22, v23, v24, v25);
       if (v27 == 14)
       {
         v54 = objc_opt_class();
-        v32 = objc_msgSend__convertFromKVItemType_GlobalTerm_error_(v54, v55, v5, a4, v56, v57);
+        v32 = objc_msgSend__convertFromKVItemType_GlobalTerm_error_(v54, v55, itemCopy, error, v56, v57);
         goto LABEL_30;
       }
 
       if (v27 == 1)
       {
         v28 = objc_opt_class();
-        v32 = objc_msgSend__convertFromKVItemType_CustomTerm_error_(v28, v29, v5, a4, v30, v31);
+        v32 = objc_msgSend__convertFromKVItemType_CustomTerm_error_(v28, v29, itemCopy, error, v30, v31);
 LABEL_30:
         v41 = v32;
         goto LABEL_31;
@@ -2765,14 +2765,14 @@ LABEL_30:
           if (v26 == 12010)
           {
             v84 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_AutoShortcut_error_(v84, v85, v5, a4, v86, v87);
+            v32 = objc_msgSend__convertFromKVItemType_AutoShortcut_error_(v84, v85, itemCopy, error, v86, v87);
             goto LABEL_30;
           }
 
           if (v26 == 12996)
           {
             v64 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_Health_error_(v64, v65, v5, a4, v66, v67);
+            v32 = objc_msgSend__convertFromKVItemType_Health_error_(v64, v65, itemCopy, error, v66, v67);
             goto LABEL_30;
           }
         }
@@ -2782,14 +2782,14 @@ LABEL_30:
           if (v26 == 7690)
           {
             v80 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_HomeEntity_error_(v80, v81, v5, a4, v82, v83);
+            v32 = objc_msgSend__convertFromKVItemType_HomeEntity_error_(v80, v81, itemCopy, error, v82, v83);
             goto LABEL_30;
           }
 
           if (v26 == 7822)
           {
             v60 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_AppShortcut_error_(v60, v61, v5, a4, v62, v63);
+            v32 = objc_msgSend__convertFromKVItemType_AppShortcut_error_(v60, v61, itemCopy, error, v62, v63);
             goto LABEL_30;
           }
         }
@@ -2800,14 +2800,14 @@ LABEL_30:
         if (v26 == 15757)
         {
           v104 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_LocationOfInterest_error_(v104, v105, v5, a4, v106, v107);
+          v32 = objc_msgSend__convertFromKVItemType_LocationOfInterest_error_(v104, v105, itemCopy, error, v106, v107);
           goto LABEL_30;
         }
 
         if (v26 == 17034)
         {
           v68 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_HomeServiceArea_error_(v68, v69, v5, a4, v70, v71);
+          v32 = objc_msgSend__convertFromKVItemType_HomeServiceArea_error_(v68, v69, itemCopy, error, v70, v71);
           goto LABEL_30;
         }
       }
@@ -2818,15 +2818,15 @@ LABEL_30:
         {
           case 18540:
             v92 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_MediaEntity_error_(v92, v93, v5, a4, v94, v95);
+            v32 = objc_msgSend__convertFromKVItemType_MediaEntity_error_(v92, v93, itemCopy, error, v94, v95);
             goto LABEL_30;
           case 19668:
             v88 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_Contact_error_(v88, v89, v5, a4, v90, v91);
+            v32 = objc_msgSend__convertFromKVItemType_Contact_error_(v88, v89, itemCopy, error, v90, v91);
             goto LABEL_30;
           case 27122:
             v46 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_FindMy_error_(v46, v47, v5, a4, v48, v49);
+            v32 = objc_msgSend__convertFromKVItemType_FindMy_error_(v46, v47, itemCopy, error, v48, v49);
             goto LABEL_30;
         }
       }
@@ -2839,14 +2839,14 @@ LABEL_30:
         if (v26 == 53601)
         {
           v120 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_LearnedContact_error_(v120, v121, v5, a4, v122, v123);
+          v32 = objc_msgSend__convertFromKVItemType_LearnedContact_error_(v120, v121, itemCopy, error, v122, v123);
           goto LABEL_30;
         }
 
         if (v26 == 53614)
         {
           v76 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_Fitness_error_(v76, v77, v5, a4, v78, v79);
+          v32 = objc_msgSend__convertFromKVItemType_Fitness_error_(v76, v77, itemCopy, error, v78, v79);
           goto LABEL_30;
         }
       }
@@ -2857,15 +2857,15 @@ LABEL_30:
         {
           case 54385:
             v112 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_CalendarEvent_error_(v112, v113, v5, a4, v114, v115);
+            v32 = objc_msgSend__convertFromKVItemType_CalendarEvent_error_(v112, v113, itemCopy, error, v114, v115);
             goto LABEL_30;
           case 61509:
             v100 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_UserAccount_error_(v100, v101, v5, a4, v102, v103);
+            v32 = objc_msgSend__convertFromKVItemType_UserAccount_error_(v100, v101, itemCopy, error, v102, v103);
             goto LABEL_30;
           case 62158:
             v50 = objc_opt_class();
-            v32 = objc_msgSend__convertFromKVItemType_LearnedMediaEntity_error_(v50, v51, v5, a4, v52, v53);
+            v32 = objc_msgSend__convertFromKVItemType_LearnedMediaEntity_error_(v50, v51, itemCopy, error, v52, v53);
             goto LABEL_30;
         }
       }
@@ -2876,14 +2876,14 @@ LABEL_30:
       if (v26 == 36434)
       {
         v116 = objc_opt_class();
-        v32 = objc_msgSend__convertFromKVItemType_AppInfo_error_(v116, v117, v5, a4, v118, v119);
+        v32 = objc_msgSend__convertFromKVItemType_AppInfo_error_(v116, v117, itemCopy, error, v118, v119);
         goto LABEL_30;
       }
 
       if (v26 == 42184)
       {
         v72 = objc_opt_class();
-        v32 = objc_msgSend__convertFromKVItemType_Podcast_error_(v72, v73, v5, a4, v74, v75);
+        v32 = objc_msgSend__convertFromKVItemType_Podcast_error_(v72, v73, itemCopy, error, v74, v75);
         goto LABEL_30;
       }
     }
@@ -2894,21 +2894,21 @@ LABEL_30:
       {
         case 42611:
           v108 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_AppIntentsEnum_error_(v108, v109, v5, a4, v110, v111);
+          v32 = objc_msgSend__convertFromKVItemType_AppIntentsEnum_error_(v108, v109, itemCopy, error, v110, v111);
           goto LABEL_30;
         case 47341:
           v96 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_AppIntentsEntity_error_(v96, v97, v5, a4, v98, v99);
+          v32 = objc_msgSend__convertFromKVItemType_AppIntentsEntity_error_(v96, v97, itemCopy, error, v98, v99);
           goto LABEL_30;
         case 49066:
           v42 = objc_opt_class();
-          v32 = objc_msgSend__convertFromKVItemType_RadioEntity_error_(v42, v43, v5, a4, v44, v45);
+          v32 = objc_msgSend__convertFromKVItemType_RadioEntity_error_(v42, v43, itemCopy, error, v44, v45);
           goto LABEL_30;
       }
     }
 
     v124 = MEMORY[0x277CCA9B8];
-    v34 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"No supported conversion for KVItem: %@", v23, v24, v25, v5, *MEMORY[0x277CCA068]);
+    v34 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v21, @"No supported conversion for KVItem: %@", v23, v24, v25, itemCopy, *MEMORY[0x277CCA068]);
     v130 = v34;
     v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v125, &v130, &v129, 1, v126);
     objc_msgSend_errorWithDomain_code_userInfo_(v124, v127, @"com.apple.koa.item.converter", 1, v37, v128);
@@ -2918,16 +2918,16 @@ LABEL_30:
   {
     v33 = MEMORY[0x277CCA9B8];
     v131 = *MEMORY[0x277CCA068];
-    v34 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"Cannot convert invalid KVItem: %@", v7, v8, v9, v5);
+    v34 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"Cannot convert invalid KVItem: %@", v7, v8, v9, itemCopy);
     v132[0] = v34;
     v37 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v35, v132, &v131, 1, v36);
     objc_msgSend_errorWithDomain_code_userInfo_(v33, v38, @"com.apple.koa.item.converter", 2, v37, v39);
   }
   v40 = ;
-  if (a4 && v40)
+  if (error && v40)
   {
     v40 = v40;
-    *a4 = v40;
+    *error = v40;
   }
 
   v41 = 0;
@@ -2938,24 +2938,24 @@ LABEL_31:
   return v41;
 }
 
-+ (unsigned)cascadeFieldTypeFromFieldType:(int64_t)a3
++ (unsigned)cascadeFieldTypeFromFieldType:(int64_t)type
 {
-  if (a3 > 299)
+  if (type > 299)
   {
-    if (a3 > 899)
+    if (type > 899)
     {
-      if (a3 > 1099)
+      if (type > 1099)
       {
-        if (a3 <= 1149)
+        if (type <= 1149)
         {
-          if (a3 <= 1102)
+          if (type <= 1102)
           {
-            if (a3 == 1100)
+            if (type == 1100)
             {
               return -18182;
             }
 
-            if (a3 == 1101)
+            if (type == 1101)
             {
               return -18184;
             }
@@ -2963,7 +2963,7 @@ LABEL_31:
             return -18183;
           }
 
-          switch(a3)
+          switch(type)
           {
             case 1103:
               return -18189;
@@ -2976,14 +2976,14 @@ LABEL_31:
 
         else
         {
-          if (a3 <= 1152)
+          if (type <= 1152)
           {
-            if (a3 == 1150)
+            if (type == 1150)
             {
               return -22924;
             }
 
-            if (a3 == 1151)
+            if (type == 1151)
             {
               return -22915;
             }
@@ -2991,9 +2991,9 @@ LABEL_31:
             return -22914;
           }
 
-          if (a3 <= 1154)
+          if (type <= 1154)
           {
-            if (a3 == 1153)
+            if (type == 1153)
             {
               return -22919;
             }
@@ -3004,23 +3004,23 @@ LABEL_31:
             }
           }
 
-          if (a3 == 1155)
+          if (type == 1155)
           {
             return -22917;
           }
 
-          if (a3 == 1156)
+          if (type == 1156)
           {
             return -22916;
           }
         }
       }
 
-      else if (a3 <= 1000)
+      else if (type <= 1000)
       {
-        if (a3 > 950)
+        if (type > 950)
         {
-          switch(a3)
+          switch(type)
           {
             case 951:
               return 27131;
@@ -3033,7 +3033,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 900:
               return -4024;
@@ -3045,9 +3045,9 @@ LABEL_31:
         }
       }
 
-      else if (a3 <= 1051)
+      else if (type <= 1051)
       {
-        switch(a3)
+        switch(type)
         {
           case 1001:
             return -11932;
@@ -3060,9 +3060,9 @@ LABEL_31:
 
       else
       {
-        if (a3 <= 1053)
+        if (type <= 1053)
         {
-          if (a3 == 1052)
+          if (type == 1052)
           {
             return -3375;
           }
@@ -3073,25 +3073,25 @@ LABEL_31:
           }
         }
 
-        if (a3 == 1054)
+        if (type == 1054)
         {
           return -3374;
         }
 
-        if (a3 == 1055)
+        if (type == 1055)
         {
           return -3372;
         }
       }
     }
 
-    else if (a3 > 649)
+    else if (type > 649)
     {
-      if (a3 <= 799)
+      if (type <= 799)
       {
-        if (a3 > 700)
+        if (type > 700)
         {
-          switch(a3)
+          switch(type)
           {
             case 701:
               return -23346;
@@ -3104,7 +3104,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 650:
               return -11148;
@@ -3118,14 +3118,14 @@ LABEL_31:
 
       else
       {
-        if (a3 <= 802)
+        if (type <= 802)
         {
-          if (a3 == 800)
+          if (type == 800)
           {
             return 7826;
           }
 
-          if (a3 == 801)
+          if (type == 801)
           {
             return 7825;
           }
@@ -3133,14 +3133,14 @@ LABEL_31:
           return 7827;
         }
 
-        if (a3 > 849)
+        if (type > 849)
         {
-          if (a3 == 850)
+          if (type == 850)
           {
             return 12999;
           }
 
-          if (a3 == 851)
+          if (type == 851)
           {
             return 13000;
           }
@@ -3148,12 +3148,12 @@ LABEL_31:
 
         else
         {
-          if (a3 == 803)
+          if (type == 803)
           {
             return 7828;
           }
 
-          if (a3 == 804)
+          if (type == 804)
           {
             return 7830;
           }
@@ -3161,16 +3161,16 @@ LABEL_31:
       }
     }
 
-    else if (a3 <= 353)
+    else if (type <= 353)
     {
-      if (a3 > 350)
+      if (type > 350)
       {
-        if (a3 == 351)
+        if (type == 351)
         {
           return -16467;
         }
 
-        if (a3 == 352)
+        if (type == 352)
         {
           return -16466;
         }
@@ -3178,7 +3178,7 @@ LABEL_31:
         return -16465;
       }
 
-      switch(a3)
+      switch(type)
       {
         case 300:
           return 12013;
@@ -3189,9 +3189,9 @@ LABEL_31:
       }
     }
 
-    else if (a3 <= 600)
+    else if (type <= 600)
     {
-      switch(a3)
+      switch(type)
       {
         case 354:
           return -16464;
@@ -3204,9 +3204,9 @@ LABEL_31:
 
     else
     {
-      if (a3 <= 602)
+      if (type <= 602)
       {
-        if (a3 == 601)
+        if (type == 601)
         {
           return 3620;
         }
@@ -3217,12 +3217,12 @@ LABEL_31:
         }
       }
 
-      if (a3 == 603)
+      if (type == 603)
       {
         return 14030;
       }
 
-      if (a3 == 604)
+      if (type == 604)
       {
         return -29472;
       }
@@ -3232,7 +3232,7 @@ LABEL_31:
   }
 
   result = -4181;
-  switch(a3)
+  switch(type)
   {
     case 1:
       return result;
@@ -3425,7 +3425,7 @@ LABEL_31:
       result = -29095;
       break;
     default:
-      switch(a3)
+      switch(type)
       {
         case 150:
           result = 7701;
@@ -3532,19 +3532,19 @@ LABEL_31:
   return result;
 }
 
-+ (int64_t)fieldTypeFromCascadeFieldType:(unsigned __int16)a3
++ (int64_t)fieldTypeFromCascadeFieldType:(unsigned __int16)type
 {
-  if (a3 > 19746)
+  if (type > 19746)
   {
-    if (a3 <= 42621)
+    if (type <= 42621)
     {
-      if (a3 <= 34311)
+      if (type <= 34311)
       {
-        if (a3 > 26514)
+        if (type > 26514)
         {
-          if (a3 > 27131)
+          if (type > 27131)
           {
-            switch(a3)
+            switch(type)
             {
               case 0x69FCu:
                 return 952;
@@ -3557,7 +3557,7 @@ LABEL_31:
 
           else
           {
-            switch(a3)
+            switch(type)
             {
               case 0x6793u:
                 return 10;
@@ -3571,16 +3571,16 @@ LABEL_31:
           return 0;
         }
 
-        if (a3 > 19758)
+        if (type > 19758)
         {
-          if (a3 != 19759)
+          if (type != 19759)
           {
-            if (a3 == 19765)
+            if (type == 19765)
             {
               return 58;
             }
 
-            if (a3 == 25886)
+            if (type == 25886)
             {
               return 9;
             }
@@ -3591,17 +3591,17 @@ LABEL_31:
 
         else
         {
-          if (a3 == 19747)
+          if (type == 19747)
           {
             return 57;
           }
 
-          if (a3 == 19749)
+          if (type == 19749)
           {
             return 59;
           }
 
-          if (a3 != 19758)
+          if (type != 19758)
           {
             return 0;
           }
@@ -3610,11 +3610,11 @@ LABEL_31:
         return 63;
       }
 
-      if (a3 <= 42188)
+      if (type <= 42188)
       {
-        if (a3 > 36440)
+        if (type > 36440)
         {
-          switch(a3)
+          switch(type)
           {
             case 0x8E59u:
               return 104;
@@ -3627,7 +3627,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0x8608u:
               return 600;
@@ -3641,9 +3641,9 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 <= 42618)
+      if (type <= 42618)
       {
-        switch(a3)
+        switch(type)
         {
           case 0xA4CDu:
             return 700;
@@ -3656,12 +3656,12 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 == 42619)
+      if (type == 42619)
       {
         return 1155;
       }
 
-      else if (a3 == 42620)
+      else if (type == 42620)
       {
         return 1156;
       }
@@ -3674,13 +3674,13 @@ LABEL_31:
 
     else
     {
-      if (a3 <= 53484)
+      if (type <= 53484)
       {
-        if (a3 > 47352)
+        if (type > 47352)
         {
-          if (a3 > 49070)
+          if (type > 49070)
           {
-            switch(a3)
+            switch(type)
             {
               case 0xBFAFu:
                 return 353;
@@ -3693,7 +3693,7 @@ LABEL_31:
 
           else
           {
-            switch(a3)
+            switch(type)
             {
               case 0xB8F9u:
                 return 1102;
@@ -3705,9 +3705,9 @@ LABEL_31:
           }
         }
 
-        else if (a3 > 47347)
+        else if (type > 47347)
         {
-          switch(a3)
+          switch(type)
           {
             case 0xB8F4u:
               return 1104;
@@ -3720,7 +3720,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0xA67Eu:
               return 1152;
@@ -3734,11 +3734,11 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 <= 61511)
+      if (type <= 61511)
       {
-        if (a3 > 54387)
+        if (type > 54387)
         {
-          switch(a3)
+          switch(type)
           {
             case 0xD474u:
               return 650;
@@ -3751,7 +3751,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0xD0EDu:
               return 4;
@@ -3765,9 +3765,9 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 <= 62159)
+      if (type <= 62159)
       {
-        switch(a3)
+        switch(type)
         {
           case 0xF048u:
             return 900;
@@ -3780,14 +3780,14 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 > 62161)
+      if (type > 62161)
       {
-        if (a3 == 62162)
+        if (type == 62162)
         {
           return 1054;
         }
 
-        if (a3 == 63372)
+        if (type == 63372)
         {
           return 2;
         }
@@ -3795,7 +3795,7 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 == 62160)
+      if (type == 62160)
       {
         return 1051;
       }
@@ -3809,15 +3809,15 @@ LABEL_31:
 
   else
   {
-    if (a3 <= 15767)
+    if (type <= 15767)
     {
-      if (a3 > 7721)
+      if (type > 7721)
       {
-        if (a3 > 12999)
+        if (type > 12999)
         {
-          if (a3 > 14708)
+          if (type > 14708)
           {
-            switch(a3)
+            switch(type)
             {
               case 0x3975u:
                 return 14;
@@ -3830,7 +3830,7 @@ LABEL_31:
 
           else
           {
-            switch(a3)
+            switch(type)
             {
               case 0x32C8u:
                 return 851;
@@ -3842,9 +3842,9 @@ LABEL_31:
           }
         }
 
-        else if (a3 > 8198)
+        else if (type > 8198)
         {
-          switch(a3)
+          switch(type)
           {
             case 0x2007u:
               return 602;
@@ -3857,7 +3857,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0x1E2Au:
               return 13;
@@ -3869,11 +3869,11 @@ LABEL_31:
         }
       }
 
-      else if (a3 > 7703)
+      else if (type > 7703)
       {
-        if (a3 > 7707)
+        if (type > 7707)
         {
-          switch(a3)
+          switch(type)
           {
             case 0x1E1Cu:
               return 154;
@@ -3886,7 +3886,7 @@ LABEL_31:
 
         else
         {
-          switch(a3)
+          switch(type)
           {
             case 0x1E18u:
               return 152;
@@ -3898,9 +3898,9 @@ LABEL_31:
         }
       }
 
-      else if (a3 > 7699)
+      else if (type > 7699)
       {
-        switch(a3)
+        switch(type)
         {
           case 0x1E14u:
             return 158;
@@ -3913,7 +3913,7 @@ LABEL_31:
 
       else
       {
-        switch(a3)
+        switch(type)
         {
           case 0x323u:
             return 7;
@@ -3927,16 +3927,16 @@ LABEL_31:
       return 0;
     }
 
-    if (a3 <= 18559)
+    if (type <= 18559)
     {
-      if (a3 <= 16253)
+      if (type <= 16253)
       {
-        if ((a3 - 15770) < 4)
+        if ((type - 15770) < 4)
         {
           return 552;
         }
 
-        if ((a3 - 15768) < 2)
+        if ((type - 15768) < 2)
         {
           return 551;
         }
@@ -3944,9 +3944,9 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 <= 18556)
+      if (type <= 18556)
       {
-        switch(a3)
+        switch(type)
         {
           case 0x3F7Eu:
             return 8;
@@ -3959,12 +3959,12 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 == 18557)
+      if (type == 18557)
       {
         return 208;
       }
 
-      else if (a3 == 18558)
+      else if (type == 18558)
       {
         return 206;
       }
@@ -3977,11 +3977,11 @@ LABEL_31:
 
     else
     {
-      if (a3 > 18565)
+      if (type > 18565)
       {
-        if (a3 <= 19680)
+        if (type <= 19680)
         {
-          switch(a3)
+          switch(type)
           {
             case 0x4886u:
               return 232;
@@ -3994,9 +3994,9 @@ LABEL_31:
 
         else
         {
-          if (a3 <= 19682)
+          if (type <= 19682)
           {
-            if (a3 == 19681)
+            if (type == 19681)
             {
               return 52;
             }
@@ -4007,12 +4007,12 @@ LABEL_31:
             }
           }
 
-          if (a3 == 19683)
+          if (type == 19683)
           {
             return 54;
           }
 
-          if (a3 == 19693)
+          if (type == 19693)
           {
             return 64;
           }
@@ -4021,14 +4021,14 @@ LABEL_31:
         return 0;
       }
 
-      if (a3 > 18562)
+      if (type > 18562)
       {
-        if (a3 == 18563)
+        if (type == 18563)
         {
           return 228;
         }
 
-        else if (a3 == 18564)
+        else if (type == 18564)
         {
           return 226;
         }
@@ -4039,12 +4039,12 @@ LABEL_31:
         }
       }
 
-      else if (a3 == 18560)
+      else if (type == 18560)
       {
         return 212;
       }
 
-      else if (a3 == 18561)
+      else if (type == 18561)
       {
         return 214;
       }
@@ -4057,11 +4057,11 @@ LABEL_31:
   }
 }
 
-+ (unsigned)cascadeItemTypeFromItemType:(int64_t)a3
++ (unsigned)cascadeItemTypeFromItemType:(int64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
   result = 19668;
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 1:
@@ -4133,7 +4133,7 @@ LABEL_31:
       if (os_log_type_enabled(qword_28106B3C0, OS_LOG_TYPE_ERROR))
       {
         v7 = v6;
-        v13 = KVItemTypeDescription(a3, v8, v9, v10, v11, v12);
+        v13 = KVItemTypeDescription(type, v8, v9, v10, v11, v12);
         v14 = 136315394;
         v15 = "+[KVItemConverter cascadeItemTypeFromItemType:]";
         v16 = 2112;

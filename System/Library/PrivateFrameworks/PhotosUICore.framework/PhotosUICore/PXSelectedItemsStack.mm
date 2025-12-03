@@ -1,18 +1,18 @@
 @interface PXSelectedItemsStack
-- (PXSelectedItemsStack)initWithDepth:(int64_t)a3;
-- (void)performChanges:(id)a3;
-- (void)setTopItems:(id)a3;
-- (void)updateWithSelectedItemsSnapshot:(id)a3;
+- (PXSelectedItemsStack)initWithDepth:(int64_t)depth;
+- (void)performChanges:(id)changes;
+- (void)setTopItems:(id)items;
+- (void)updateWithSelectedItemsSnapshot:(id)snapshot;
 @end
 
 @implementation PXSelectedItemsStack
 
-- (void)updateWithSelectedItemsSnapshot:(id)a3
+- (void)updateWithSelectedItemsSnapshot:(id)snapshot
 {
-  v24 = a3;
-  v4 = [(PXSelectedItemsStack *)self depth];
-  v5 = [(PXSelectedItemsStack *)self topItemReferences];
-  v6 = [v5 mutableCopy];
+  snapshotCopy = snapshot;
+  depth = [(PXSelectedItemsStack *)self depth];
+  topItemReferences = [(PXSelectedItemsStack *)self topItemReferences];
+  v6 = [topItemReferences mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -21,13 +21,13 @@
 
   else
   {
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:depth];
   }
 
   v9 = v8;
 
-  v10 = [(PXSelectedItemsStack *)self topItems];
-  v11 = [v10 mutableCopy];
+  topItems = [(PXSelectedItemsStack *)self topItems];
+  v11 = [topItems mutableCopy];
   v12 = v11;
   if (v11)
   {
@@ -36,7 +36,7 @@
 
   else
   {
-    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
+    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:depth];
   }
 
   v14 = v13;
@@ -47,7 +47,7 @@
     do
     {
       v16 = [v9 objectAtIndexedSubscript:v15];
-      v17 = [v24 containsItemReference:v16];
+      v17 = [snapshotCopy containsItemReference:v16];
 
       if (v17)
       {
@@ -64,24 +64,24 @@
     while (v15 < [v9 count]);
   }
 
-  v18 = [v24 count];
+  v18 = [snapshotCopy count];
   if (v18 >= 1)
   {
     v19 = v18;
     for (i = 0; i != v19; ++i)
     {
-      if ([v14 count] >= v4)
+      if ([v14 count] >= depth)
       {
         break;
       }
 
-      v21 = [v24 itemReferenceAtIndex:i];
+      v21 = [snapshotCopy itemReferenceAtIndex:i];
       if (([v9 containsObject:v21] & 1) == 0)
       {
-        v22 = [v24 itemForItemReference:v21];
-        v23 = [MEMORY[0x1E695DFB0] null];
+        v22 = [snapshotCopy itemForItemReference:v21];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v22 != v23)
+        if (v22 != null)
         {
           [v9 addObject:v21];
           [v14 addObject:v22];
@@ -94,21 +94,21 @@
   [(PXSelectedItemsStack *)self setTopItems:v14];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXSelectedItemsStack;
-  [(PXSelectedItemsStack *)&v3 performChanges:a3];
+  [(PXSelectedItemsStack *)&v3 performChanges:changes];
 }
 
-- (void)setTopItems:(id)a3
+- (void)setTopItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_topItems != v4)
+  itemsCopy = items;
+  v5 = itemsCopy;
+  if (self->_topItems != itemsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = itemsCopy;
+    v6 = [(NSArray *)itemsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -122,14 +122,14 @@
   }
 }
 
-- (PXSelectedItemsStack)initWithDepth:(int64_t)a3
+- (PXSelectedItemsStack)initWithDepth:(int64_t)depth
 {
   v5.receiver = self;
   v5.super_class = PXSelectedItemsStack;
   result = [(PXSelectedItemsStack *)&v5 init];
   if (result)
   {
-    result->_depth = a3;
+    result->_depth = depth;
   }
 
   return result;

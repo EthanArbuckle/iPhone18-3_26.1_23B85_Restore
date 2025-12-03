@@ -1,5 +1,5 @@
 @interface CATIBitVector
-- (CATIBitVector)initWithNumberOfBits:(unint64_t)a3;
+- (CATIBitVector)initWithNumberOfBits:(unint64_t)bits;
 - (id)data;
 - (void)dealloc;
 @end
@@ -21,7 +21,7 @@
   [(CATIBitVector *)&v3 dealloc];
 }
 
-- (CATIBitVector)initWithNumberOfBits:(unint64_t)a3
+- (CATIBitVector)initWithNumberOfBits:(unint64_t)bits
 {
   v8.receiver = self;
   v8.super_class = CATIBitVector;
@@ -30,8 +30,8 @@
   if (v4)
   {
     *(v4 + 8) = xmmword_1DC52F2F0;
-    v6 = vcvtps_u32_f32(vcvts_n_f32_u64(a3, 3uLL));
-    v5->_numberOfBits = a3;
+    v6 = vcvtps_u32_f32(vcvts_n_f32_u64(bits, 3uLL));
+    v5->_numberOfBits = bits;
     v5->_numberOfBytes = v6;
     v5->_data = malloc_type_calloc(v6, 1uLL, 0x100004077774924uLL);
   }

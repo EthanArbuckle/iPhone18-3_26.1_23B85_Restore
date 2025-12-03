@@ -1,49 +1,49 @@
 @interface PXPhotoKitCollectionsDataSource
-+ (int64_t)estimatedCountForAssetCollection:(id)a3 withConfiguration:(id)a4;
-- (PXPhotoKitCollectionsDataSource)initWithRootCollectionList:(id)a3 collectionListBySection:(id)a4 collectionsFetchResultBySection:(id)a5 keyAssetsFetchResultsByCollection:(id)a6 collectionsIndexPathsByCollection:(id)a7 itemFetchResultByCollection:(id)a8 virtualCollections:(id)a9 collectionsFetchResult:(id)a10 sharingFilter:(unsigned __int16)a11 dataSourceConfiguration:(id)a12;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (id)_assetAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)_collectionAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)_collectionListAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)collectionAtIndexPath:(id)a3;
-- (id)collectionListForSection:(int64_t)a3;
++ (int64_t)estimatedCountForAssetCollection:(id)collection withConfiguration:(id)configuration;
+- (PXPhotoKitCollectionsDataSource)initWithRootCollectionList:(id)list collectionListBySection:(id)section collectionsFetchResultBySection:(id)bySection keyAssetsFetchResultsByCollection:(id)collection collectionsIndexPathsByCollection:(id)byCollection itemFetchResultByCollection:(id)resultByCollection virtualCollections:(id)collections collectionsFetchResult:(id)self0 sharingFilter:(unsigned __int16)self1 dataSourceConfiguration:(id)self2;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (id)_assetAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)_collectionAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)_collectionListAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)collectionAtIndexPath:(id)path;
+- (id)collectionListForSection:(int64_t)section;
 - (id)description;
-- (id)existingAssetsFetchResultAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)indexPathForCollection:(id)a3;
-- (id)keyAssetsForCollection:(id)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)assetCollectionsCountForFetchResult:(id)a3;
-- (int64_t)assetCollectionsCountForSection:(int64_t)a3;
-- (int64_t)collectionsListCountForFetchResult:(id)a3;
-- (int64_t)collectionsListCountForSection:(int64_t)a3;
-- (int64_t)countForCollection:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)existingAssetsFetchResultAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)indexPathForCollection:(id)collection;
+- (id)keyAssetsForCollection:(id)collection;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)assetCollectionsCountForFetchResult:(id)result;
+- (int64_t)assetCollectionsCountForSection:(int64_t)section;
+- (int64_t)collectionsListCountForFetchResult:(id)result;
+- (int64_t)collectionsListCountForSection:(int64_t)section;
+- (int64_t)countForCollection:(id)collection;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)numberOfSubitemsInItem:(int64_t)a3 section:(int64_t)a4;
-- (void)enumerateCollectionsUsingBlock:(id)a3;
+- (int64_t)numberOfSubitemsInItem:(int64_t)item section:(int64_t)section;
+- (void)enumerateCollectionsUsingBlock:(id)block;
 @end
 
 @implementation PXPhotoKitCollectionsDataSource
 
-- (void)enumerateCollectionsUsingBlock:(id)a3
+- (void)enumerateCollectionsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  blockCopy = block;
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PXPhotoKitCollectionsDataSource_enumerateCollectionsUsingBlock___block_invoke;
   v7[3] = &unk_1E774C008;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [_collectionsFetchResultBySection enumerateObjectsUsingBlock:v7];
 }
 
-- (int64_t)collectionsListCountForFetchResult:(id)a3
+- (int64_t)collectionsListCountForFetchResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    return [a3 countOfCollectionsLists];
+    return [result countOfCollectionsLists];
   }
 
   else
@@ -52,11 +52,11 @@
   }
 }
 
-- (int64_t)assetCollectionsCountForFetchResult:(id)a3
+- (int64_t)assetCollectionsCountForFetchResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    return [a3 countOfAssetCollections];
+    return [result countOfAssetCollections];
   }
 
   else
@@ -65,9 +65,9 @@
   }
 }
 
-- (int64_t)collectionsListCountForSection:(int64_t)a3
+- (int64_t)collectionsListCountForSection:(int64_t)section
 {
-  if (a3 < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= a3)
+  if (section < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= section)
   {
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -81,17 +81,17 @@
 
   else
   {
-    v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+    v6 = [_collectionsFetchResultBySection objectAtIndexedSubscript:section];
     v7 = [(PXPhotoKitCollectionsDataSource *)self collectionsListCountForFetchResult:v6];
 
     return v7;
   }
 }
 
-- (int64_t)assetCollectionsCountForSection:(int64_t)a3
+- (int64_t)assetCollectionsCountForSection:(int64_t)section
 {
-  if (a3 < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= a3)
+  if (section < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= section)
   {
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -105,24 +105,24 @@
 
   else
   {
-    v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+    v6 = [_collectionsFetchResultBySection objectAtIndexedSubscript:section];
     v7 = [(PXPhotoKitCollectionsDataSource *)self assetCollectionsCountForFetchResult:v6];
 
     return v7;
   }
 }
 
-- (id)existingAssetsFetchResultAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)existingAssetsFetchResultAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = *&a3->item;
-  v9[0] = *&a3->dataSourceIdentifier;
+  v4 = *&path->item;
+  v9[0] = *&path->dataSourceIdentifier;
   v9[1] = v4;
   v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionAtSimpleIndexPath:v9];
   if ([v5 canContainAssets])
   {
-    v6 = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    itemFetchResultByCollection = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
+    v7 = [itemFetchResultByCollection objectForKeyedSubscript:v5];
   }
 
   else
@@ -133,26 +133,26 @@
   return v7;
 }
 
-- (int64_t)countForCollection:(id)a3
+- (int64_t)countForCollection:(id)collection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXPhotoKitCollectionsDataSource *)self sectionedDataSourceLog];
-  v7 = os_signpost_id_generate(v6);
-  v8 = v6;
+  collectionCopy = collection;
+  sectionedDataSourceLog = [(PXPhotoKitCollectionsDataSource *)self sectionedDataSourceLog];
+  v7 = os_signpost_id_generate(sectionedDataSourceLog);
+  v8 = sectionedDataSourceLog;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    v10 = [v5 px_cheapLogIdentifier];
+    px_cheapLogIdentifier = [collectionCopy px_cheapLogIdentifier];
     *buf = 138543362;
-    v35 = v10;
+    v35 = px_cheapLogIdentifier;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "CountForCollection", "collection==%{public}@", buf, 0xCu);
   }
 
-  v11 = [v5 px_isFolder];
-  v12 = v5;
+  px_isFolder = [collectionCopy px_isFolder];
+  v12 = collectionCopy;
   v13 = v12;
-  if (v11)
+  if (px_isFolder)
   {
     if (v12)
     {
@@ -160,24 +160,24 @@
       if (objc_opt_isKindOfClass())
       {
 LABEL_7:
-        v14 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v13 options:0];
-        v15 = [(PXPhotoKitCollectionsDataSource *)self assetCollectionsCountForFetchResult:v14];
+        configuration = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v13 options:0];
+        v15 = [(PXPhotoKitCollectionsDataSource *)self assetCollectionsCountForFetchResult:configuration];
         goto LABEL_20;
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v30 = objc_opt_class();
       v26 = NSStringFromClass(v30);
-      v31 = [v13 px_descriptionForAssertionMessage];
-      [v24 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:228 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, v31}];
+      px_descriptionForAssertionMessage = [v13 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:228 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v26, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      [v24 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:228 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:228 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v26}];
     }
 
     goto LABEL_7;
@@ -185,10 +185,10 @@ LABEL_7:
 
   if (!v12)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
-    [v27 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v29}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"collection", v29}];
 LABEL_32:
 
     goto LABEL_10;
@@ -197,32 +197,32 @@ LABEL_32:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v32 = objc_opt_class();
     v29 = NSStringFromClass(v32);
-    v33 = [v13 px_descriptionForAssertionMessage];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v29, v33}];
+    px_descriptionForAssertionMessage2 = [v13 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:233 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"collection", v29, px_descriptionForAssertionMessage2}];
 
     goto LABEL_32;
   }
 
 LABEL_10:
-  v16 = [v13 px_containsPrivateContent];
+  px_containsPrivateContent = [v13 px_containsPrivateContent];
   if ([v13 assetCollectionType] == 2 || objc_msgSend(v13, "assetCollectionType") == 9 || -[PXPhotoKitCollectionsDataSource sharingFilter](self, "sharingFilter") != 2)
   {
-    if ((v16 & 1) == 0)
+    if ((px_containsPrivateContent & 1) == 0)
     {
 LABEL_18:
-      v20 = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
-      v14 = [v20 objectForKeyedSubscript:v13];
+      itemFetchResultByCollection = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
+      configuration = [itemFetchResultByCollection objectForKeyedSubscript:v13];
 
-      if (!v14)
+      if (!configuration)
       {
         v19 = 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_21;
       }
 
-      v15 = [v14 count];
+      v15 = [configuration count];
 LABEL_20:
       v19 = v15;
 LABEL_21:
@@ -233,15 +233,15 @@ LABEL_21:
 
   else
   {
-    v17 = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
-    v18 = [v17 objectForKeyedSubscript:v13];
+    itemFetchResultByCollection2 = [(PXPhotoKitCollectionsDataSource *)self itemFetchResultByCollection];
+    v18 = [itemFetchResultByCollection2 objectForKeyedSubscript:v13];
 
-    if ((v16 & 1) == 0)
+    if ((px_containsPrivateContent & 1) == 0)
     {
       if (!v18)
       {
-        v14 = [(PXPhotoKitCollectionsDataSource *)self configuration];
-        v15 = [PXPhotoKitCollectionsDataSource estimatedCountForAssetCollection:v13 withConfiguration:v14];
+        configuration = [(PXPhotoKitCollectionsDataSource *)self configuration];
+        v15 = [PXPhotoKitCollectionsDataSource estimatedCountForAssetCollection:v13 withConfiguration:configuration];
         goto LABEL_20;
       }
 
@@ -263,9 +263,9 @@ LABEL_22:
   return v19;
 }
 
-- (id)collectionListForSection:(int64_t)a3
+- (id)collectionListForSection:(int64_t)section
 {
-  if (a3 < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= a3)
+  if (section < 0 || [(PXPhotoKitCollectionsDataSource *)self numberOfSections]<= section)
   {
     v7 = PLUIGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -279,36 +279,36 @@ LABEL_22:
 
   else
   {
-    v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionListBySection];
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    _collectionListBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionListBySection];
+    v6 = [_collectionListBySection objectAtIndexedSubscript:section];
   }
 
   return v6;
 }
 
-- (id)collectionAtIndexPath:(id)a3
+- (id)collectionAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (([v4 section] & 0x8000000000000000) == 0)
+  pathCopy = path;
+  if (([pathCopy section] & 0x8000000000000000) == 0)
   {
-    v5 = [v4 section];
-    v6 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-    if (v5 >= [v6 count] || objc_msgSend(v4, "item") < 0)
+    section = [pathCopy section];
+    _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+    if (section >= [_collectionsFetchResultBySection count] || objc_msgSend(pathCopy, "item") < 0)
     {
     }
 
     else
     {
-      v7 = [v4 item];
-      v8 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+      item = [pathCopy item];
+      _collectionsFetchResultBySection2 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+      v9 = [_collectionsFetchResultBySection2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
       v10 = [v9 count];
 
-      if (v7 < v10)
+      if (item < v10)
       {
-        v11 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-        v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
-        v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+        _collectionsFetchResultBySection3 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+        v12 = [_collectionsFetchResultBySection3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+        v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
         goto LABEL_10;
       }
@@ -328,11 +328,11 @@ LABEL_10:
   return v13;
 }
 
-- (id)indexPathForCollection:(id)a3
+- (id)indexPathForCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionsIndexPathsByCollection];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  collectionCopy = collection;
+  _collectionsIndexPathsByCollection = [(PXPhotoKitCollectionsDataSource *)self _collectionsIndexPathsByCollection];
+  v6 = [_collectionsIndexPathsByCollection objectForKeyedSubscript:collectionCopy];
 
   if (!v6)
   {
@@ -344,15 +344,15 @@ LABEL_10:
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 0x7FFFFFFFFFFFFFFFLL;
-    v7 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+    _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_invoke;
     v10[3] = &unk_1E7746EE8;
-    v11 = v4;
+    v11 = collectionCopy;
     v12 = &v18;
     v13 = &v14;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [_collectionsFetchResultBySection enumerateObjectsUsingBlock:v10];
 
     v8 = v15[3];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -385,7 +385,7 @@ uint64_t __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_in
   return result;
 }
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v6 = a4;
   v7 = v6;
@@ -395,8 +395,8 @@ uint64_t __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_in
     if (v26 == [(PXPhotoKitCollectionsDataSource *)self identifier])
     {
       [v7 indexPath];
-      v9 = v24;
-      v8 = v23;
+      section = v24;
+      identifier = v23;
       v10 = v25;
       goto LABEL_19;
     }
@@ -410,8 +410,8 @@ uint64_t __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_in
   {
     if (![(PXPhotoKitCollectionsDataSource *)self identifier])
     {
-      v8 = 0;
-      v9 = 0;
+      identifier = 0;
+      section = 0;
       v10 = 0uLL;
       goto LABEL_19;
     }
@@ -421,27 +421,27 @@ uint64_t __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_in
     v22 = 0u;
   }
 
-  v8 = *off_1E7722228;
-  v9 = *(off_1E7722228 + 1);
+  identifier = *off_1E7722228;
+  section = *(off_1E7722228 + 1);
   v10 = *(off_1E7722228 + 1);
   v13 = v12 != *off_1E7721F68 && !v11;
   if (v13 && *(&v22 + 1) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v20 = *(off_1E7722228 + 1);
-    v14 = [v7 itemObject];
+    itemObject = [v7 itemObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [(PXPhotoKitCollectionsDataSource *)self indexPathForCollection:v14];
+      v15 = [(PXPhotoKitCollectionsDataSource *)self indexPathForCollection:itemObject];
       if (v15)
       {
-        v8 = [(PXPhotoKitCollectionsDataSource *)self identifier];
-        v9 = [v15 section];
-        v16 = [v15 item];
+        identifier = [(PXPhotoKitCollectionsDataSource *)self identifier];
+        section = [v15 section];
+        item = [v15 item];
         v17.f64[0] = NAN;
         v17.f64[1] = NAN;
         v18 = vnegq_f64(v17);
-        *&v18.f64[0] = v16;
+        *&v18.f64[0] = item;
         v20 = v18;
       }
     }
@@ -450,124 +450,124 @@ uint64_t __58__PXPhotoKitCollectionsDataSource_indexPathForCollection___block_in
   }
 
 LABEL_19:
-  retstr->dataSourceIdentifier = v8;
-  retstr->section = v9;
+  retstr->dataSourceIdentifier = identifier;
+  retstr->section = section;
   *&retstr->item = v10;
 
   return result;
 }
 
-- (id)keyAssetsForCollection:(id)a3
+- (id)keyAssetsForCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  collectionCopy = collection;
+  _keyAssetsFetchResultsByCollection = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
+  v6 = [_keyAssetsFetchResultsByCollection objectForKeyedSubscript:collectionCopy];
 
   return v6;
 }
 
-- (id)_assetAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)_assetAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v6 = [v5 objectAtIndexedSubscript:a3->section];
-  v7 = [v6 objectAtIndexedSubscript:a3->item];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v6 = [_collectionsFetchResultBySection objectAtIndexedSubscript:path->section];
+  v7 = [v6 objectAtIndexedSubscript:path->item];
 
-  v8 = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v9 objectAtIndexedSubscript:a3->subitem];
+  _keyAssetsFetchResultsByCollection = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
+  v9 = [_keyAssetsFetchResultsByCollection objectForKeyedSubscript:v7];
+  v10 = [v9 objectAtIndexedSubscript:path->subitem];
 
   return v10;
 }
 
-- (id)_collectionAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)_collectionAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v5 = [v4 objectAtIndexedSubscript:a3->section];
-  v6 = [v5 objectAtIndexedSubscript:a3->item];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v5 = [_collectionsFetchResultBySection objectAtIndexedSubscript:path->section];
+  v6 = [v5 objectAtIndexedSubscript:path->item];
 
   return v6;
 }
 
-- (id)_collectionListAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)_collectionListAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(PXPhotoKitCollectionsDataSource *)self _collectionListBySection];
-  v5 = [v4 objectAtIndexedSubscript:a3->section];
+  _collectionListBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionListBySection];
+  v5 = [_collectionListBySection objectAtIndexedSubscript:path->section];
 
   return v5;
 }
 
-- (id)objectsInIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectsInIndexPath:(PXSimpleIndexPath *)path
 {
-  dataSourceIdentifier = a3->dataSourceIdentifier;
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->section == 0x7FFFFFFFFFFFFFFFLL || a3->item != 0x7FFFFFFFFFFFFFFFLL)
+  dataSourceIdentifier = path->dataSourceIdentifier;
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->section == 0x7FFFFFFFFFFFFFFFLL || path->item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:129 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
 
-    dataSourceIdentifier = a3->dataSourceIdentifier;
+    dataSourceIdentifier = path->dataSourceIdentifier;
   }
 
   if (dataSourceIdentifier != [(PXPhotoKitCollectionsDataSource *)self identifier])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitCollectionsDataSource.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"indexPath.dataSourceIdentifier == self.identifier"}];
   }
 
-  v9 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v10 = [v9 objectAtIndexedSubscript:a3->section];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v10 = [_collectionsFetchResultBySection objectAtIndexedSubscript:path->section];
 
   return v10;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  if (a3->dataSourceIdentifier == *off_1E7721F68)
+  if (path->dataSourceIdentifier == *off_1E7721F68)
   {
     goto LABEL_2;
   }
 
-  item = a3->item;
-  if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->section == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_2:
-      v3 = *&a3->item;
-      v8 = *&a3->dataSourceIdentifier;
+      v3 = *&path->item;
+      v8 = *&path->dataSourceIdentifier;
       v9 = v3;
-      v4 = [(PXPhotoKitCollectionsDataSource *)self _assetAtSimpleIndexPath:&v8];
+      null = [(PXPhotoKitCollectionsDataSource *)self _assetAtSimpleIndexPath:&v8];
       goto LABEL_3;
     }
   }
 
   else if (item == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_3;
   }
 
-  if (a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_2;
   }
 
-  v7 = *&a3->item;
-  v8 = *&a3->dataSourceIdentifier;
+  v7 = *&path->item;
+  v8 = *&path->dataSourceIdentifier;
   v9 = v7;
-  v4 = [(PXPhotoKitCollectionsDataSource *)self _collectionAtSimpleIndexPath:&v8];
+  null = [(PXPhotoKitCollectionsDataSource *)self _collectionAtSimpleIndexPath:&v8];
 LABEL_3:
 
-  return v4;
+  return null;
 }
 
-- (int64_t)numberOfSubitemsInItem:(int64_t)a3 section:(int64_t)a4
+- (int64_t)numberOfSubitemsInItem:(int64_t)item section:(int64_t)section
 {
-  v7 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v8 = [_collectionsFetchResultBySection objectAtIndexedSubscript:section];
 
-  v9 = [v8 objectAtIndexedSubscript:a3];
-  v10 = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  v9 = [v8 objectAtIndexedSubscript:item];
+  _keyAssetsFetchResultsByCollection = [(PXPhotoKitCollectionsDataSource *)self _keyAssetsFetchResultsByCollection];
+  v11 = [_keyAssetsFetchResultsByCollection objectForKeyedSubscript:v9];
 
   v12 = [v11 count];
   if (v12 <= 1)
@@ -583,10 +583,10 @@ LABEL_3:
   return v13;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v5 = [_collectionsFetchResultBySection objectAtIndexedSubscript:section];
 
   v6 = [v5 count];
   return v6;
@@ -594,19 +594,19 @@ LABEL_3:
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
-  v3 = [v2 count];
+  _collectionsFetchResultBySection = [(PXPhotoKitCollectionsDataSource *)self _collectionsFetchResultBySection];
+  v3 = [_collectionsFetchResultBySection count];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(PXPhotoKitCollectionsDataSource *)self numberOfSections];
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
-  if (v3 >= 1)
+  numberOfSections = [(PXPhotoKitCollectionsDataSource *)self numberOfSections];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v3; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[PXPhotoKitCollectionsDataSource numberOfItemsInSection:](self, "numberOfItemsInSection:", i)];
       [v4 addObject:v6];
@@ -616,85 +616,85 @@ LABEL_3:
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 stringWithFormat:@"<%@: %p, numberOfSections:%ld sectionCounts:[%@]>", v9, self, v3, v4];
+  v10 = [v7 stringWithFormat:@"<%@: %p, numberOfSections:%ld sectionCounts:[%@]>", v9, self, numberOfSections, v4];
 
   return v10;
 }
 
-- (PXPhotoKitCollectionsDataSource)initWithRootCollectionList:(id)a3 collectionListBySection:(id)a4 collectionsFetchResultBySection:(id)a5 keyAssetsFetchResultsByCollection:(id)a6 collectionsIndexPathsByCollection:(id)a7 itemFetchResultByCollection:(id)a8 virtualCollections:(id)a9 collectionsFetchResult:(id)a10 sharingFilter:(unsigned __int16)a11 dataSourceConfiguration:(id)a12
+- (PXPhotoKitCollectionsDataSource)initWithRootCollectionList:(id)list collectionListBySection:(id)section collectionsFetchResultBySection:(id)bySection keyAssetsFetchResultsByCollection:(id)collection collectionsIndexPathsByCollection:(id)byCollection itemFetchResultByCollection:(id)resultByCollection virtualCollections:(id)collections collectionsFetchResult:(id)self0 sharingFilter:(unsigned __int16)self1 dataSourceConfiguration:(id)self2
 {
-  v43 = a3;
-  v44 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a12;
+  listCopy = list;
+  sectionCopy = section;
+  bySectionCopy = bySection;
+  collectionCopy = collection;
+  byCollectionCopy = byCollection;
+  resultByCollectionCopy = resultByCollection;
+  collectionsCopy = collections;
+  resultCopy = result;
+  configurationCopy = configuration;
   v45.receiver = self;
   v45.super_class = PXPhotoKitCollectionsDataSource;
   v26 = [(PXPhotoKitCollectionsDataSource *)&v45 init];
   v27 = v26;
   if (v26)
   {
-    objc_storeStrong(&v26->_collectionList, a3);
-    v28 = [v44 copy];
+    objc_storeStrong(&v26->_collectionList, list);
+    v28 = [sectionCopy copy];
     collectionListBySection = v27->__collectionListBySection;
     v27->__collectionListBySection = v28;
 
-    v30 = [v19 copy];
+    v30 = [bySectionCopy copy];
     collectionsFetchResultBySection = v27->__collectionsFetchResultBySection;
     v27->__collectionsFetchResultBySection = v30;
 
-    v32 = [v20 copy];
+    v32 = [collectionCopy copy];
     keyAssetsFetchResultsByCollection = v27->__keyAssetsFetchResultsByCollection;
     v27->__keyAssetsFetchResultsByCollection = v32;
 
-    v34 = [v21 copy];
+    v34 = [byCollectionCopy copy];
     collectionsIndexPathsByCollection = v27->__collectionsIndexPathsByCollection;
     v27->__collectionsIndexPathsByCollection = v34;
 
-    v36 = [v22 copy];
+    v36 = [resultByCollectionCopy copy];
     itemFetchResultByCollection = v27->_itemFetchResultByCollection;
     v27->_itemFetchResultByCollection = v36;
 
-    v38 = [v24 copy];
+    v38 = [resultCopy copy];
     collectionsFetchResult = v27->_collectionsFetchResult;
     v27->_collectionsFetchResult = v38;
 
-    objc_storeStrong(&v27->_configuration, a12);
-    v40 = [v23 copy];
+    objc_storeStrong(&v27->_configuration, configuration);
+    v40 = [collectionsCopy copy];
     virtualCollections = v27->__virtualCollections;
     v27->__virtualCollections = v40;
 
-    v27->_sharingFilter = a11;
+    v27->_sharingFilter = filter;
   }
 
   return v27;
 }
 
-+ (int64_t)estimatedCountForAssetCollection:(id)a3 withConfiguration:(id)a4
++ (int64_t)estimatedCountForAssetCollection:(id)collection withConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 assetsFilterPredicate];
+  collectionCopy = collection;
+  configurationCopy = configuration;
+  assetsFilterPredicate = [configurationCopy assetsFilterPredicate];
 
-  v8 = [v6 assetTypesToInclude];
-  if (!v7)
+  assetTypesToInclude = [configurationCopy assetTypesToInclude];
+  if (!assetsFilterPredicate)
   {
-    if (v8 != -1 && (~v8 & 3) != 0)
+    if (assetTypesToInclude != -1 && (~assetTypesToInclude & 3) != 0)
     {
-      if ((v8 & 1) == 0)
+      if ((assetTypesToInclude & 1) == 0)
       {
-        if ((v8 & 2) == 0)
+        if ((assetTypesToInclude & 2) == 0)
         {
           v9 = 0;
           goto LABEL_12;
         }
 
 LABEL_17:
-        v10 = [v5 estimatedVideosCount];
+        estimatedVideosCount = [collectionCopy estimatedVideosCount];
         goto LABEL_11;
       }
 
@@ -702,24 +702,24 @@ LABEL_17:
     }
 
 LABEL_10:
-    v10 = [v5 estimatedAssetCount];
+    estimatedVideosCount = [collectionCopy estimatedAssetCount];
 LABEL_11:
-    v9 = v10;
+    v9 = estimatedVideosCount;
     goto LABEL_12;
   }
 
-  if ((~v8 & 7) == 0)
+  if ((~assetTypesToInclude & 7) == 0)
   {
     goto LABEL_10;
   }
 
-  if ((v8 & 4) == 0)
+  if ((assetTypesToInclude & 4) == 0)
   {
-    if ((~v8 & 3) != 0)
+    if ((~assetTypesToInclude & 3) != 0)
     {
-      if ((v8 & 1) == 0)
+      if ((assetTypesToInclude & 1) == 0)
       {
-        if ((v8 & 2) == 0)
+        if ((assetTypesToInclude & 2) == 0)
         {
           goto LABEL_7;
         }
@@ -728,7 +728,7 @@ LABEL_11:
       }
 
 LABEL_16:
-      v10 = [v5 estimatedPhotosCount];
+      estimatedVideosCount = [collectionCopy estimatedPhotosCount];
       goto LABEL_11;
     }
 

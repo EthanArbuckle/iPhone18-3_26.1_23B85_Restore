@@ -7,13 +7,13 @@
 
 - (void)startPrintLiveActivity
 {
-  v2 = self;
+  selfCopy = self;
   PrintActivityObject.startPrintLiveActivity()();
 }
 
 - (void)stopPrintLiveActivity
 {
-  v2 = self;
+  selfCopy = self;
   PrintActivityObject.stopPrintLiveActivity()();
 }
 

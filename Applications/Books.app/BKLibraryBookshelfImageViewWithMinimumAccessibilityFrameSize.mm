@@ -1,15 +1,15 @@
 @interface BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize
-- (BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize)initWithFrame:(CGRect)frame;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize
 
-- (BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize;
-  v3 = [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     +[BKLibraryBookshelfImageViewWithMinimumAccessibilityFrameSize accessibilityAcceptableMinimumSizeForDimension];

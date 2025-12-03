@@ -1,20 +1,20 @@
 @interface RecentCallsViewController
 + (NSString)defaultPNGName;
 - (_TtC11MobilePhone25RecentCallsViewController)init;
-- (_TtC11MobilePhone25RecentCallsViewController)initWithCoder:(id)a3;
-- (_TtC11MobilePhone25RecentCallsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11MobilePhone25RecentCallsViewController)initWithRecentsController:(id)a3;
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4;
+- (_TtC11MobilePhone25RecentCallsViewController)initWithCoder:(id)coder;
+- (_TtC11MobilePhone25RecentCallsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11MobilePhone25RecentCallsViewController)initWithRecentsController:(id)controller;
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RecentCallsViewController
 
-- (_TtC11MobilePhone25RecentCallsViewController)initWithRecentsController:(id)a3
+- (_TtC11MobilePhone25RecentCallsViewController)initWithRecentsController:(id)controller
 {
-  v3 = a3;
-  v4 = specialized RecentCallsViewController.init(recentsController:)(v3);
+  controllerCopy = controller;
+  v4 = specialized RecentCallsViewController.init(recentsController:)(controllerCopy);
 
   return v4;
 }
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (_TtC11MobilePhone25RecentCallsViewController)initWithCoder:(id)a3
+- (_TtC11MobilePhone25RecentCallsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11MobilePhone25RecentCallsViewController_observers) = _swiftEmptyArrayStorage;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -35,29 +35,29 @@
   return result;
 }
 
-- (void)recentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4
+- (void)recentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count
 {
-  v5 = self;
-  RecentCallsViewController.updateTabBarItemBadge(count:)(a4);
+  selfCopy = self;
+  RecentCallsViewController.updateTabBarItemBadge(count:)(count);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   RecentCallsViewController.viewDidLoad()();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(RecentCallsViewController *)&v5 viewWillDisappear:v3];
+  [(RecentCallsViewController *)&v5 viewWillDisappear:disappearCopy];
   [*(*&v4[OBJC_IVAR____TtC11MobilePhone25RecentCallsViewController_observableRecentsController] + OBJC_IVAR____TtC11MobilePhone27ObservableRecentsController_recentsController) markRecentCallsAsRead];
 }
 
-- (_TtC11MobilePhone25RecentCallsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MobilePhone25RecentCallsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

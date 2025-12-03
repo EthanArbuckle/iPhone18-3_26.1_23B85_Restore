@@ -1,6 +1,6 @@
 @interface ADNetworkController
 + (id)sharedNetworkController;
-- (id)getDataContext:(id)a3;
+- (id)getDataContext:(id)context;
 - (int)cellNetworkType;
 - (int)networkType;
 - (void)_checkForNetwork;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __46__ADNetworkController_sharedNetworkController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedNetworkController_onceToken != -1)
   {
     dispatch_once(&sharedNetworkController_onceToken, block);
@@ -80,16 +80,16 @@ LABEL_7:
 
 - (int)networkType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  networkType = v2->_networkType;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  networkType = selfCopy->_networkType;
   if (!networkType)
   {
-    [(ADNetworkController *)v2 _checkForNetworkAndNotify];
-    networkType = v2->_networkType;
+    [(ADNetworkController *)selfCopy _checkForNetworkAndNotify];
+    networkType = selfCopy->_networkType;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return networkType;
 }
@@ -123,10 +123,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)getDataContext:(id)a3
+- (id)getDataContext:(id)context
 {
   v8 = 0;
-  v3 = [a3 getPreferredDataSubscriptionContextSync:&v8];
+  v3 = [context getPreferredDataSubscriptionContextSync:&v8];
   v4 = v8;
   v5 = v4;
   if (!v3 || v4)

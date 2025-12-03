@@ -1,14 +1,14 @@
 @interface RatingControlViewController.RatingControl
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithCoder:(id)a3;
-- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithCoder:(id)coder;
+- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation RatingControlViewController.RatingControl
 
-- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithCoder:(id)a3
+- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl_starButtons) = _swiftEmptyArrayStorage;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -18,13 +18,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005EC4FC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005ED700();
   v5 = v4;
   v7 = v6;
@@ -36,12 +36,12 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(RatingControlViewController.RatingControl *)v6 bounds];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(RatingControlViewController.RatingControl *)selfCopy bounds];
   if (qword_10117F958 != -1)
   {
     v13 = v7;
@@ -63,7 +63,7 @@
   return v11;
 }
 
-- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithFrame:(CGRect)a3
+- (_TtCC5Music27RatingControlViewControllerP33_74EAAB04F169518A744BEF384CEBD97713RatingControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface HDSQLiteSchemaEntity
 + (BOOL)hasROWID;
-+ (Class)entityForProperty:(id)a3;
-+ (const)_cachedColumnDefinitionsWithCount:(unint64_t *)a3;
++ (Class)entityForProperty:(id)property;
++ (const)_cachedColumnDefinitionsWithCount:(unint64_t *)count;
 + (id)_columnDefinitionObjects;
 + (id)createTableSQL;
 + (id)databaseTable;
-+ (id)deleteStatementWithProperty:(id)a3 database:(id)a4;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)insertSQLForProperties:(id)a3 shouldReplace:(BOOL)a4;
++ (id)deleteStatementWithProperty:(id)property database:(id)database;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)insertSQLForProperties:(id)properties shouldReplace:(BOOL)replace;
 + (id)primaryKeyColumns;
-+ (id)updateSQLForProperties:(id)a3 predicate:(id)a4;
-+ (uint64_t)_copyDeleteSQLWithTableName:(void *)a3 columnName:;
++ (id)updateSQLForProperties:(id)properties predicate:(id)predicate;
++ (uint64_t)_copyDeleteSQLWithTableName:(void *)name columnName:;
 @end
 
 @implementation HDSQLiteSchemaEntity
@@ -25,11 +25,11 @@
   return v2;
 }
 
-+ (const)_cachedColumnDefinitionsWithCount:(unint64_t *)a3
++ (const)_cachedColumnDefinitionsWithCount:(unint64_t *)count
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [a1 columnDefinitionsWithCount:?];
-  if (!*a3)
+  v5 = [self columnDefinitionsWithCount:?];
+  if (!*count)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
@@ -42,24 +42,24 @@
     if (v9)
     {
       os_unfair_lock_unlock(&+[HDSQLiteSchemaEntity _cachedColumnDefinitionsWithCount:]::_columnCacheLock);
-      *a3 = [v9 count];
-      v6 = [v9 columnDefinitions];
+      *count = [v9 count];
+      columnDefinitions = [v9 columnDefinitions];
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v10 = [a1 _columnDefinitionObjects];
-    if ([v10 count])
+    _columnDefinitionObjects = [self _columnDefinitionObjects];
+    if ([_columnDefinitionObjects count])
     {
-      v11 = [[HDColumnCacheEntry alloc] initWithDefinitions:v10];
+      v11 = [[HDColumnCacheEntry alloc] initWithDefinitions:_columnDefinitionObjects];
       v12 = v11;
       if (v11 && [(HDColumnCacheEntry *)v11 count])
       {
         [+[HDSQLiteSchemaEntity _cachedColumnDefinitionsWithCount:]::columnCache setObject:v12 forKey:v8];
         os_unfair_lock_unlock(&+[HDSQLiteSchemaEntity _cachedColumnDefinitionsWithCount:]::_columnCacheLock);
-        *a3 = [(HDColumnCacheEntry *)v12 count];
-        v6 = [(HDColumnCacheEntry *)v12 columnDefinitions];
+        *count = [(HDColumnCacheEntry *)v12 count];
+        columnDefinitions = [(HDColumnCacheEntry *)v12 columnDefinitions];
 
 LABEL_18:
         goto LABEL_19;
@@ -74,8 +74,8 @@ LABEL_18:
     }
 
     os_unfair_lock_unlock(&+[HDSQLiteSchemaEntity _cachedColumnDefinitionsWithCount:]::_columnCacheLock);
-    v14 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if (![v14 isAppleInternalInstall] || (objc_msgSend(v8, "isEqualToString:", @"HDHealthEntity") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"HDSQLiteEntity") & 1) != 0)
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if (![mEMORY[0x277CCDD30] isAppleInternalInstall] || (objc_msgSend(v8, "isEqualToString:", @"HDHealthEntity") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"HDSQLiteEntity") & 1) != 0)
     {
     }
 
@@ -96,20 +96,20 @@ LABEL_18:
       }
     }
 
-    v6 = 0;
-    *a3 = 0;
+    columnDefinitions = 0;
+    *count = 0;
     goto LABEL_18;
   }
 
-  v6 = v5;
+  columnDefinitions = v5;
 LABEL_20:
   v15 = *MEMORY[0x277D85DE8];
-  return v6;
+  return columnDefinitions;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v3 = HDSQLiteEntityDisambiguatedSQLForProperty(a1, a3);
+  v3 = HDSQLiteEntityDisambiguatedSQLForProperty(self, property);
 
   return v3;
 }
@@ -117,31 +117,31 @@ LABEL_20:
 + (id)createTableSQL
 {
   v12 = 0;
-  v3 = [a1 _cachedColumnDefinitionsWithCount:&v12];
-  v4 = [a1 disambiguatedDatabaseTable];
+  v3 = [self _cachedColumnDefinitionsWithCount:&v12];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
   v5 = v12;
-  v6 = [a1 foreignKeys];
-  v7 = [a1 primaryKeyColumns];
-  v8 = [a1 uniquedColumns];
-  v9 = [a1 checkConstraints];
-  v10 = HDSQLiteEntityCreateTableSQL(v4, v3, v5, v6, v7, v8, v9, [a1 hasROWID]);
+  foreignKeys = [self foreignKeys];
+  primaryKeyColumns = [self primaryKeyColumns];
+  uniquedColumns = [self uniquedColumns];
+  checkConstraints = [self checkConstraints];
+  v10 = HDSQLiteEntityCreateTableSQL(disambiguatedDatabaseTable, v3, v5, foreignKeys, primaryKeyColumns, uniquedColumns, checkConstraints, [self hasROWID]);
 
   return v10;
 }
 
-+ (Class)entityForProperty:(id)a3
++ (Class)entityForProperty:(id)property
 {
-  v3 = HDSQLiteEntityForProperty(a1, a3);
+  v3 = HDSQLiteEntityForProperty(self, property);
 
   return v3;
 }
 
-+ (id)insertSQLForProperties:(id)a3 shouldReplace:(BOOL)a4
++ (id)insertSQLForProperties:(id)properties shouldReplace:(BOOL)replace
 {
-  v4 = a4;
-  v6 = a3;
+  replaceCopy = replace;
+  propertiesCopy = properties;
   v7 = MEMORY[0x277CCAB68];
-  if (v4)
+  if (replaceCopy)
   {
     v8 = @" OR REPLACE";
   }
@@ -151,11 +151,11 @@ LABEL_20:
     v8 = &stru_28637B800;
   }
 
-  v9 = [a1 disambiguatedDatabaseTable];
-  v10 = [v6 componentsJoinedByString:{@", "}];
-  v11 = objc_msgSend(v7, "stringWithFormat:", @"INSERT%@ INTO %@ (%@) VALUES ("), v8, v9, v10;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v10 = [propertiesCopy componentsJoinedByString:{@", "}];
+  v11 = objc_msgSend(v7, "stringWithFormat:", @"INSERT%@ INTO %@ (%@) VALUES ("), v8, disambiguatedDatabaseTable, v10;
 
-  v12 = [v6 count];
+  v12 = [propertiesCopy count];
   if (v12)
   {
     v13 = @"?";
@@ -174,15 +174,15 @@ LABEL_20:
   return v11;
 }
 
-+ (id)updateSQLForProperties:(id)a3 predicate:(id)a4
++ (id)updateSQLForProperties:(id)properties predicate:(id)predicate
 {
-  v6 = a4;
-  v7 = [a3 hk_map:&__block_literal_global_7];
+  predicateCopy = predicate;
+  v7 = [properties hk_map:&__block_literal_global_7];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [a1 disambiguatedDatabaseTable];
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
   v10 = [v7 componentsJoinedByString:{@", "}];
   v11 = &stru_28637B800;
-  if (v6)
+  if (predicateCopy)
   {
     v12 = @" WHERE ";
   }
@@ -192,13 +192,13 @@ LABEL_20:
     v12 = &stru_28637B800;
   }
 
-  if (v6)
+  if (predicateCopy)
   {
-    v11 = [v6 SQLForEntityClass:objc_opt_class()];
+    v11 = [predicateCopy SQLForEntityClass:objc_opt_class()];
   }
 
-  v13 = [v8 stringWithFormat:@"UPDATE %@ SET %@%@%@", v9, v10, v12, v11];
-  if (v6)
+  v13 = [v8 stringWithFormat:@"UPDATE %@ SET %@%@%@", disambiguatedDatabaseTable, v10, v12, v11];
+  if (predicateCopy)
   {
   }
 
@@ -212,24 +212,24 @@ id __57__HDSQLiteSchemaEntity_updateSQLForProperties_predicate___block_invoke(ui
   return v2;
 }
 
-+ (uint64_t)_copyDeleteSQLWithTableName:(void *)a3 columnName:
++ (uint64_t)_copyDeleteSQLWithTableName:(void *)name columnName:
 {
   v4 = a2;
-  v5 = a3;
+  nameCopy = name;
   objc_opt_self();
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", v4, v5];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"DELETE FROM %@ WHERE %@ = ?;", v4, nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
-+ (id)deleteStatementWithProperty:(id)a3 database:(id)a4
++ (id)deleteStatementWithProperty:(id)property database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 disambiguatedDatabaseTable];
-  v9 = [(HDSQLiteSchemaEntity *)a1 _copyDeleteSQLWithTableName:v8 columnName:v6];
+  propertyCopy = property;
+  databaseCopy = database;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v9 = [(HDSQLiteSchemaEntity *)self _copyDeleteSQLWithTableName:disambiguatedDatabaseTable columnName:propertyCopy];
 
-  v10 = [[HDSQLiteStatement alloc] initWithSQL:v9 database:v7];
+  v10 = [[HDSQLiteStatement alloc] initWithSQL:v9 database:databaseCopy];
 
   return v10;
 }

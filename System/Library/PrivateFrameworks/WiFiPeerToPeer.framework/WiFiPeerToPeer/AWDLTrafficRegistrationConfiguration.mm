@@ -1,26 +1,26 @@
 @interface AWDLTrafficRegistrationConfiguration
-+ (id)localizedErrorForConflictBetweenExistingService:(id)a3 withNewService:(id)a4 localDeviceName:(id)a5 localization:(id)a6;
-- (AWDLTrafficRegistrationConfiguration)initWithCoder:(id)a3;
-- (AWDLTrafficRegistrationConfiguration)initWithDictionary:(__CFDictionary *)a3 isActive:(BOOL *)a4;
-- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)a3 peerAddress:(id)a4;
-- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)a3 peerIPv6Address:(in6_addr)a4;
-- (BOOL)hasSimilarOptionsTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)localizedErrorForConflictBetweenExistingService:(id)service withNewService:(id)newService localDeviceName:(id)name localization:(id)localization;
+- (AWDLTrafficRegistrationConfiguration)initWithCoder:(id)coder;
+- (AWDLTrafficRegistrationConfiguration)initWithDictionary:(__CFDictionary *)dictionary isActive:(BOOL *)active;
+- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)identifier peerAddress:(id)address;
+- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)identifier peerIPv6Address:(in6_addr)address;
+- (BOOL)hasSimilarOptionsTo:(id)to;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isKnownService;
 - (NSString)localization;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AWDLTrafficRegistrationConfiguration
 
-- (AWDLTrafficRegistrationConfiguration)initWithCoder:(id)a3
+- (AWDLTrafficRegistrationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.uniqueIdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.peerAddressKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.uniqueIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.peerAddressKey"];
   if (v6)
   {
     v7 = v5 == 0;
@@ -33,7 +33,7 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -42,64 +42,64 @@
     v10 = v9;
     if (v9)
     {
-      v9->_options = [v4 decodeIntegerForKey:@"AWDLTrafficRegistrationConfiguration.optionsKey"];
-      v10->_preferredChannel = [v4 decodeInt32ForKey:@"AWDLTrafficRegistrationConfiguration.preferredChannelKey"];
-      v10->_secondaryPreferredChannel = [v4 decodeInt32ForKey:@"AWDLTrafficRegistrationConfiguration.secondaryPreferredChannelKey"];
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.localization"];
+      v9->_options = [coderCopy decodeIntegerForKey:@"AWDLTrafficRegistrationConfiguration.optionsKey"];
+      v10->_preferredChannel = [coderCopy decodeInt32ForKey:@"AWDLTrafficRegistrationConfiguration.preferredChannelKey"];
+      v10->_secondaryPreferredChannel = [coderCopy decodeInt32ForKey:@"AWDLTrafficRegistrationConfiguration.secondaryPreferredChannelKey"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AWDLTrafficRegistrationConfiguration.localization"];
       derivedLocalization = v10->_derivedLocalization;
       v10->_derivedLocalization = v11;
 
       if ([v5 isEqualToString:@"airplay"])
       {
-        v10->_legacyUpgradeRequired = [v4 decodeBoolForKey:@"AWDLTrafficRegistrationConfiguration.legacyUpgradeRequired"];
+        v10->_legacyUpgradeRequired = [coderCopy decodeBoolForKey:@"AWDLTrafficRegistrationConfiguration.legacyUpgradeRequired"];
       }
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  [v9 encodeObject:v4 forKey:@"AWDLTrafficRegistrationConfiguration.uniqueIdentifierKey"];
+  coderCopy = coder;
+  uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"AWDLTrafficRegistrationConfiguration.uniqueIdentifierKey"];
 
-  v5 = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
-  [v9 encodeObject:v5 forKey:@"AWDLTrafficRegistrationConfiguration.peerAddressKey"];
+  peerAddress = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
+  [coderCopy encodeObject:peerAddress forKey:@"AWDLTrafficRegistrationConfiguration.peerAddressKey"];
 
-  [v9 encodeInteger:-[AWDLTrafficRegistrationConfiguration options](self forKey:{"options"), @"AWDLTrafficRegistrationConfiguration.optionsKey"}];
+  [coderCopy encodeInteger:-[AWDLTrafficRegistrationConfiguration options](self forKey:{"options"), @"AWDLTrafficRegistrationConfiguration.optionsKey"}];
   v6 = +[WiFiP2PXPCConnection localization];
-  [v9 encodeObject:v6 forKey:@"AWDLTrafficRegistrationConfiguration.localization"];
+  [coderCopy encodeObject:v6 forKey:@"AWDLTrafficRegistrationConfiguration.localization"];
 
-  [v9 encodeInt32:-[AWDLTrafficRegistrationConfiguration preferredChannel](self forKey:{"preferredChannel"), @"AWDLTrafficRegistrationConfiguration.preferredChannelKey"}];
-  [v9 encodeInt32:-[AWDLTrafficRegistrationConfiguration secondaryPreferredChannel](self forKey:{"secondaryPreferredChannel"), @"AWDLTrafficRegistrationConfiguration.secondaryPreferredChannelKey"}];
-  v7 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  v8 = [v7 isEqualToString:@"airplay"];
+  [coderCopy encodeInt32:-[AWDLTrafficRegistrationConfiguration preferredChannel](self forKey:{"preferredChannel"), @"AWDLTrafficRegistrationConfiguration.preferredChannelKey"}];
+  [coderCopy encodeInt32:-[AWDLTrafficRegistrationConfiguration secondaryPreferredChannel](self forKey:{"secondaryPreferredChannel"), @"AWDLTrafficRegistrationConfiguration.secondaryPreferredChannelKey"}];
+  uniqueIdentifier2 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  v8 = [uniqueIdentifier2 isEqualToString:@"airplay"];
 
   if (v8)
   {
-    [v9 encodeBool:-[AWDLTrafficRegistrationConfiguration legacyUpgradeRequired](self forKey:{"legacyUpgradeRequired"), @"AWDLTrafficRegistrationConfiguration.legacyUpgradeRequired"}];
+    [coderCopy encodeBool:-[AWDLTrafficRegistrationConfiguration legacyUpgradeRequired](self forKey:{"legacyUpgradeRequired"), @"AWDLTrafficRegistrationConfiguration.legacyUpgradeRequired"}];
   }
 }
 
-- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)a3 peerAddress:(id)a4
+- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)identifier peerAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  addressCopy = address;
   v15.receiver = self;
   v15.super_class = AWDLTrafficRegistrationConfiguration;
   v8 = [(AWDLTrafficRegistrationConfiguration *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     v10 = *(v8 + 3);
     *(v8 + 3) = v9;
 
-    v11 = [v7 copy];
+    v11 = [addressCopy copy];
     v12 = *(v8 + 4);
     *(v8 + 4) = v11;
 
@@ -109,36 +109,36 @@
     *(v8 + 1) = 0;
 
     v8[17] = 0;
-    v8[16] = [v6 isEqualToString:@"airplay"];
+    v8[16] = [identifierCopy isEqualToString:@"airplay"];
   }
 
   return v8;
 }
 
-- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)a3 peerIPv6Address:(in6_addr)a4
+- (AWDLTrafficRegistrationConfiguration)initWithUniqueIdentifier:(id)identifier peerIPv6Address:(in6_addr)address
 {
-  v4 = *&a4.__u6_addr32[2];
-  v5 = *a4.__u6_addr8;
-  v7 = a3;
+  v4 = *&address.__u6_addr32[2];
+  v5 = *address.__u6_addr8;
+  identifierCopy = identifier;
   v8 = [[WiFiMACAddress alloc] initWithLinkLocalIPv6Address:v5, v4];
   if (v8)
   {
-    self = [(AWDLTrafficRegistrationConfiguration *)self initWithUniqueIdentifier:v7 peerAddress:v8];
-    v9 = self;
+    self = [(AWDLTrafficRegistrationConfiguration *)self initWithUniqueIdentifier:identifierCopy peerAddress:v8];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
   }
@@ -153,10 +153,10 @@
       goto LABEL_11;
     }
 
-    v5 = v4;
-    v6 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-    v7 = [(AWDLTrafficRegistrationConfiguration *)v5 uniqueIdentifier];
-    if (([v6 isEqual:v7] & 1) == 0)
+    v5 = equalCopy;
+    uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+    uniqueIdentifier2 = [(AWDLTrafficRegistrationConfiguration *)v5 uniqueIdentifier];
+    if (([uniqueIdentifier isEqual:uniqueIdentifier2] & 1) == 0)
     {
 
 LABEL_10:
@@ -164,9 +164,9 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v8 = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
-    v9 = [(AWDLTrafficRegistrationConfiguration *)v5 peerAddress];
-    v10 = [v8 isEqual:v9];
+    peerAddress = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
+    peerAddress2 = [(AWDLTrafficRegistrationConfiguration *)v5 peerAddress];
+    v10 = [peerAddress isEqual:peerAddress2];
 
     if (!v10)
     {
@@ -182,22 +182,22 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  v4 = [v3 hash];
-  v5 = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
-  v6 = [v5 hash];
+  uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  v4 = [uniqueIdentifier hash];
+  peerAddress = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
+  v6 = [peerAddress hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)hasSimilarOptionsTo:(id)a3
+- (BOOL)hasSimilarOptionsTo:(id)to
 {
-  v4 = a3;
-  v5 = [(AWDLTrafficRegistrationConfiguration *)self options];
-  if (v5 == [v4 options] && (v6 = -[AWDLTrafficRegistrationConfiguration preferredChannel](self, "preferredChannel"), v6 == objc_msgSend(v4, "preferredChannel")))
+  toCopy = to;
+  options = [(AWDLTrafficRegistrationConfiguration *)self options];
+  if (options == [toCopy options] && (v6 = -[AWDLTrafficRegistrationConfiguration preferredChannel](self, "preferredChannel"), v6 == objc_msgSend(toCopy, "preferredChannel")))
   {
-    v7 = [(AWDLTrafficRegistrationConfiguration *)self secondaryPreferredChannel];
-    v8 = v7 == [v4 secondaryPreferredChannel];
+    secondaryPreferredChannel = [(AWDLTrafficRegistrationConfiguration *)self secondaryPreferredChannel];
+    v8 = secondaryPreferredChannel == [toCopy secondaryPreferredChannel];
   }
 
   else
@@ -224,19 +224,19 @@ LABEL_11:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AWDLTrafficRegistrationConfiguration alloc];
-  v5 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  v6 = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
-  v7 = [(AWDLTrafficRegistrationConfiguration *)v4 initWithUniqueIdentifier:v5 peerAddress:v6];
+  uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  peerAddress = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
+  v7 = [(AWDLTrafficRegistrationConfiguration *)v4 initWithUniqueIdentifier:uniqueIdentifier peerAddress:peerAddress];
 
   [(AWDLTrafficRegistrationConfiguration *)v7 setOptions:[(AWDLTrafficRegistrationConfiguration *)self options]];
   [(AWDLTrafficRegistrationConfiguration *)v7 setPreferredChannel:[(AWDLTrafficRegistrationConfiguration *)self preferredChannel]];
   [(AWDLTrafficRegistrationConfiguration *)v7 setSecondaryPreferredChannel:[(AWDLTrafficRegistrationConfiguration *)self secondaryPreferredChannel]];
   [(AWDLTrafficRegistrationConfiguration *)v7 setLegacyUpgradeRequired:[(AWDLTrafficRegistrationConfiguration *)self legacyUpgradeRequired]];
-  v8 = [(AWDLTrafficRegistrationConfiguration *)self invalidationHandler];
-  [(AWDLTrafficRegistrationConfiguration *)v7 setInvalidationHandler:v8];
+  invalidationHandler = [(AWDLTrafficRegistrationConfiguration *)self invalidationHandler];
+  [(AWDLTrafficRegistrationConfiguration *)v7 setInvalidationHandler:invalidationHandler];
 
   return v7;
 }
@@ -244,16 +244,16 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  v5 = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
-  v6 = [v3 stringWithFormat:@"<AWDLTrafficRegistrationConfiguration %@ to %@>", v4, v5];
+  uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  peerAddress = [(AWDLTrafficRegistrationConfiguration *)self peerAddress];
+  v6 = [v3 stringWithFormat:@"<AWDLTrafficRegistrationConfiguration %@ to %@>", uniqueIdentifier, peerAddress];
 
   return v6;
 }
 
-- (AWDLTrafficRegistrationConfiguration)initWithDictionary:(__CFDictionary *)a3 isActive:(BOOL *)a4
+- (AWDLTrafficRegistrationConfiguration)initWithDictionary:(__CFDictionary *)dictionary isActive:(BOOL *)active
 {
-  Value = CFDictionaryGetValue(a3, @"TR_ACTIVE");
+  Value = CFDictionaryGetValue(dictionary, @"TR_ACTIVE");
   if (!Value)
   {
     goto LABEL_36;
@@ -266,7 +266,7 @@ LABEL_11:
     goto LABEL_36;
   }
 
-  v10 = CFDictionaryGetValue(a3, @"TR_PEER_CONTEXTS");
+  v10 = CFDictionaryGetValue(dictionary, @"TR_PEER_CONTEXTS");
   if (v10 && (v11 = v10, v12 = CFGetTypeID(v10), v12 == CFArrayGetTypeID()))
   {
     if (CFArrayGetCount(v11) >= 1 && (ValueAtIndex = CFArrayGetValueAtIndex(v11, 0)) != 0 && (v14 = ValueAtIndex, v15 = CFGetTypeID(ValueAtIndex), v15 == CFDictionaryGetTypeID()) && (v16 = CFDictionaryGetValue(v14, @"TR_PEER_ADDRESS")) != 0 && (v17 = v16, v18 = CFGetTypeID(v16), v18 == CFDataGetTypeID()) && CFDataGetLength(v17) == 6)
@@ -280,12 +280,12 @@ LABEL_11:
       v20 = 0;
     }
 
-    v25 = CFDictionaryGetValue(a3, @"TR_SESSION_FLAGS");
+    v25 = CFDictionaryGetValue(dictionary, @"TR_SESSION_FLAGS");
   }
 
   else
   {
-    v21 = CFDictionaryGetValue(a3, @"AWDL_TR_ADDR");
+    v21 = CFDictionaryGetValue(dictionary, @"AWDL_TR_ADDR");
     if (v21 && (v22 = v21, v23 = CFGetTypeID(v21), v23 == CFDataGetTypeID()) && CFDataGetLength(v22) == 6)
     {
       v24 = CFDataGetBytePtr(v22);
@@ -297,19 +297,19 @@ LABEL_11:
       v20 = 0;
     }
 
-    v25 = CFDictionaryGetValue(a3, @"AWDL_TR_RT_FLAGS");
-    v26 = CFDictionaryGetValue(a3, @"AWDL_TR_UID");
+    v25 = CFDictionaryGetValue(dictionary, @"AWDL_TR_RT_FLAGS");
+    v26 = CFDictionaryGetValue(dictionary, @"AWDL_TR_UID");
     if (v26)
     {
       goto LABEL_22;
     }
   }
 
-  v26 = CFDictionaryGetValue(a3, @"TR_SRV_NAME");
+  v26 = CFDictionaryGetValue(dictionary, @"TR_SRV_NAME");
   if (!v26)
   {
 LABEL_36:
-    v39 = 0;
+    selfCopy = 0;
     goto LABEL_37;
   }
 
@@ -321,8 +321,8 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  v29 = [[WiFiMACAddress alloc] initWithAddress:v20 & 0xFFFFFFFFFFFFLL];
-  v30 = [(AWDLTrafficRegistrationConfiguration *)self initWithUniqueIdentifier:v27 peerAddress:v29];
+  0xFFFFFFFFFFFFLL = [[WiFiMACAddress alloc] initWithAddress:v20 & 0xFFFFFFFFFFFFLL];
+  v30 = [(AWDLTrafficRegistrationConfiguration *)self initWithUniqueIdentifier:v27 peerAddress:0xFFFFFFFFFFFFLL];
 
   if (v25)
   {
@@ -345,7 +345,7 @@ LABEL_22:
     }
   }
 
-  v33 = CFDictionaryGetValue(a3, @"AWDL_TR_CHANNEL");
+  v33 = CFDictionaryGetValue(dictionary, @"AWDL_TR_CHANNEL");
   if (v33)
   {
     v34 = v33;
@@ -358,7 +358,7 @@ LABEL_22:
     }
   }
 
-  v36 = CFDictionaryGetValue(a3, @"AWDL_TR_SEC_CHANNEL");
+  v36 = CFDictionaryGetValue(dictionary, @"AWDL_TR_SEC_CHANNEL");
   if (v36)
   {
     v37 = v36;
@@ -371,25 +371,25 @@ LABEL_22:
     }
   }
 
-  *a4 = CFBooleanGetValue(v8) != 0;
+  *active = CFBooleanGetValue(v8) != 0;
   self = v30;
-  v39 = self;
+  selfCopy = self;
 LABEL_37:
 
-  return v39;
+  return selfCopy;
 }
 
-+ (id)localizedErrorForConflictBetweenExistingService:(id)a3 withNewService:(id)a4 localDeviceName:(id)a5 localization:(id)a6
++ (id)localizedErrorForConflictBetweenExistingService:(id)service withNewService:(id)newService localDeviceName:(id)name localization:(id)localization
 {
   v82[4] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  nameCopy = name;
+  localizationCopy = localization;
+  newServiceCopy = newService;
+  serviceCopy = service;
   v79 = [WiFiP2PXPCConnection convertError:5];
-  v13 = canonicalService(v12);
+  v13 = canonicalService(serviceCopy);
 
-  v14 = canonicalService(v11);
+  v14 = canonicalService(newServiceCopy);
 
   if ([v14 isEqual:v13])
   {
@@ -400,7 +400,7 @@ LABEL_37:
   {
     if ([v13 isEqual:@"sidecar"])
     {
-      if (v9)
+      if (nameCopy)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
         v17 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -416,7 +416,7 @@ LABEL_37:
 
     else if ([v13 isEqual:@"RemoteCamera"])
     {
-      if (v9)
+      if (nameCopy)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
         v17 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -432,7 +432,7 @@ LABEL_37:
 
     else if ([v13 isEqual:@"RemoteScreen"])
     {
-      if (v9)
+      if (nameCopy)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
         v17 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -448,7 +448,7 @@ LABEL_37:
 
     else if ([v13 isEqual:@"spatialStreaming"])
     {
-      if (v9)
+      if (nameCopy)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
         v17 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -467,11 +467,11 @@ LABEL_37:
       if (![v13 isEqual:@"MacVirtualDisplay"])
       {
 LABEL_2:
-        v15 = &stru_2841A3278;
+        nameCopy = &stru_2841A3278;
         goto LABEL_30;
       }
 
-      if (v9)
+      if (nameCopy)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
         v17 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -486,11 +486,11 @@ LABEL_2:
     }
 
 LABEL_28:
-    v15 = [v20 localizedStringForKey:v21 value:0 table:0 localization:v10];
+    nameCopy = [v20 localizedStringForKey:v21 value:0 table:0 localization:localizationCopy];
     goto LABEL_29;
   }
 
-  if (!v9)
+  if (!nameCopy)
   {
     v20 = +[WiFiP2PXPCConnection frameworkBundle];
     v18 = v20;
@@ -503,44 +503,44 @@ LABEL_28:
   v18 = v17;
   v19 = @"%@ is currently using AirPlay.";
 LABEL_24:
-  v22 = [v17 localizedStringForKey:v19 value:0 table:0 localization:v10];
-  v23 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-  v15 = [v16 initWithFormat:v22 locale:v23, v9];
+  v22 = [v17 localizedStringForKey:v19 value:0 table:0 localization:localizationCopy];
+  v23 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+  nameCopy = [v16 initWithFormat:v22 locale:v23, nameCopy];
 
 LABEL_29:
 LABEL_30:
-  v80 = v9;
+  v80 = nameCopy;
   v78 = v14;
   if ([v14 isEqual:@"airplay"])
   {
     v24 = +[WiFiP2PXPCConnection frameworkBundle];
-    v77 = [v24 localizedStringForKey:@"Unable to Connect to AirPlay" value:0 table:0 localization:v10];
+    v77 = [v24 localizedStringForKey:@"Unable to Connect to AirPlay" value:0 table:0 localization:localizationCopy];
 
     if ([v13 isEqual:@"airplay"])
     {
-      if (v9)
+      if (nameCopy)
       {
         v25 = objc_alloc(MEMORY[0x277CCACA8]);
         v26 = +[WiFiP2PXPCConnection frameworkBundle];
-        v27 = [v26 localizedStringForKey:@"%@ unable to connect to AirPlay while active with another device." value:0 table:0 localization:v10];
-        v28 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-        v29 = [v25 initWithFormat:v27 locale:v28, v9];
+        v27 = [v26 localizedStringForKey:@"%@ unable to connect to AirPlay while active with another device." value:0 table:0 localization:localizationCopy];
+        v28 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+        nameCopy2 = [v25 initWithFormat:v27 locale:v28, nameCopy];
 
-        v15 = v27;
+        nameCopy = v27;
       }
 
       else
       {
         v26 = +[WiFiP2PXPCConnection frameworkBundle];
-        v29 = [v26 localizedStringForKey:@"Unable to connect while the other device is active in a different AirPlay session." value:0 table:0 localization:v10];
+        nameCopy2 = [v26 localizedStringForKey:@"Unable to connect while the other device is active in a different AirPlay session." value:0 table:0 localization:localizationCopy];
       }
 
       v40 = +[WiFiP2PXPCConnection frameworkBundle];
       v32 = v40;
       v41 = @"To connect AirPlay to another device, disconnect the previous one first.";
 LABEL_52:
-      v42 = [v40 localizedStringForKey:v41 value:0 table:0 localization:v10];
-      v15 = v29;
+      v42 = [v40 localizedStringForKey:v41 value:0 table:0 localization:localizationCopy];
+      nameCopy = nameCopy2;
 LABEL_127:
       v51 = v13;
 
@@ -595,7 +595,7 @@ LABEL_127:
     if ([v14 isEqual:@"RemoteCamera"])
     {
       v34 = +[WiFiP2PXPCConnection frameworkBundle];
-      v77 = [v34 localizedStringForKey:@"Unable to Connect to Continuity Camera" value:0 table:0 localization:v10];
+      v77 = [v34 localizedStringForKey:@"Unable to Connect to Continuity Camera" value:0 table:0 localization:localizationCopy];
 
       if ([v13 isEqual:@"airplay"])
       {
@@ -615,21 +615,21 @@ LABEL_127:
 
       if ([v13 isEqual:@"RemoteCamera"])
       {
-        if (v9)
+        if (nameCopy)
         {
           v44 = objc_alloc(MEMORY[0x277CCACA8]);
           v45 = +[WiFiP2PXPCConnection frameworkBundle];
-          v46 = [v45 localizedStringForKey:@"%@ unable to connect to Continuity Camera while active with another device." value:0 table:0 localization:v10];
-          v47 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-          v29 = [v44 initWithFormat:v46 locale:v47, v9];
+          v46 = [v45 localizedStringForKey:@"%@ unable to connect to Continuity Camera while active with another device." value:0 table:0 localization:localizationCopy];
+          v47 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+          nameCopy2 = [v44 initWithFormat:v46 locale:v47, nameCopy];
 
-          v15 = v46;
+          nameCopy = v46;
         }
 
         else
         {
           v45 = +[WiFiP2PXPCConnection frameworkBundle];
-          v29 = [v45 localizedStringForKey:@"Unable to connect while the other device is active in a different Continuity Camera session." value:0 table:0 localization:v10];
+          nameCopy2 = [v45 localizedStringForKey:@"Unable to connect while the other device is active in a different Continuity Camera session." value:0 table:0 localization:localizationCopy];
         }
 
         v40 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -668,7 +668,7 @@ LABEL_127:
     if ([v14 isEqual:@"RemoteScreen"])
     {
       v39 = +[WiFiP2PXPCConnection frameworkBundle];
-      v77 = [v39 localizedStringForKey:@"Unable to Connect to iPhone Mirroring" value:0 table:0 localization:v10];
+      v77 = [v39 localizedStringForKey:@"Unable to Connect to iPhone Mirroring" value:0 table:0 localization:localizationCopy];
 
       if ([v13 isEqual:@"airplay"])
       {
@@ -704,21 +704,21 @@ LABEL_127:
 
       if ([v13 isEqual:@"RemoteScreen"])
       {
-        if (v9)
+        if (nameCopy)
         {
           v52 = objc_alloc(MEMORY[0x277CCACA8]);
           v53 = +[WiFiP2PXPCConnection frameworkBundle];
-          v54 = [v53 localizedStringForKey:@"%@ unable to connect to iPhone Mirroring while active with another device." value:0 table:0 localization:v10];
-          v55 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-          v29 = [v52 initWithFormat:v54 locale:v55, v9];
+          v54 = [v53 localizedStringForKey:@"%@ unable to connect to iPhone Mirroring while active with another device." value:0 table:0 localization:localizationCopy];
+          v55 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+          nameCopy2 = [v52 initWithFormat:v54 locale:v55, nameCopy];
 
-          v15 = v54;
+          nameCopy = v54;
         }
 
         else
         {
           v53 = +[WiFiP2PXPCConnection frameworkBundle];
-          v29 = [v53 localizedStringForKey:@"Unable to connect while the other device is active in a different iPhone Mirroring session." value:0 table:0 localization:v10];
+          nameCopy2 = [v53 localizedStringForKey:@"Unable to connect while the other device is active in a different iPhone Mirroring session." value:0 table:0 localization:localizationCopy];
         }
 
         v40 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -741,7 +741,7 @@ LABEL_127:
     if ([v14 isEqual:@"spatialStreaming"])
     {
       v43 = +[WiFiP2PXPCConnection frameworkBundle];
-      v77 = [v43 localizedStringForKey:@"Unable to Connect to macOS Spatial Rendering" value:0 table:0 localization:v10];
+      v77 = [v43 localizedStringForKey:@"Unable to Connect to macOS Spatial Rendering" value:0 table:0 localization:localizationCopy];
 
       if ([v13 isEqual:@"airplay"])
       {
@@ -777,21 +777,21 @@ LABEL_127:
 
       if ([v13 isEqual:@"spatialStreaming"])
       {
-        if (v9)
+        if (nameCopy)
         {
           v56 = objc_alloc(MEMORY[0x277CCACA8]);
           v57 = +[WiFiP2PXPCConnection frameworkBundle];
-          v58 = [v57 localizedStringForKey:@"%@ unable to connect to macOS Spatial Rendering while active with another device." value:0 table:0 localization:v10];
-          v59 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-          v29 = [v56 initWithFormat:v58 locale:v59, v9];
+          v58 = [v57 localizedStringForKey:@"%@ unable to connect to macOS Spatial Rendering while active with another device." value:0 table:0 localization:localizationCopy];
+          v59 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+          nameCopy2 = [v56 initWithFormat:v58 locale:v59, nameCopy];
 
-          v15 = v58;
+          nameCopy = v58;
         }
 
         else
         {
           v57 = +[WiFiP2PXPCConnection frameworkBundle];
-          v29 = [v57 localizedStringForKey:@"Unable to connect while the other device is active in a different macOS Spatial Rendering session." value:0 table:0 localization:v10];
+          nameCopy2 = [v57 localizedStringForKey:@"Unable to connect while the other device is active in a different macOS Spatial Rendering session." value:0 table:0 localization:localizationCopy];
         }
 
         v40 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -820,17 +820,17 @@ LABEL_127:
     }
 
     v48 = +[WiFiP2PXPCConnection frameworkBundle];
-    v77 = [v48 localizedStringForKey:@"Unable to Connect to Mac Virtual Display" value:0 table:0 localization:v10];
+    v77 = [v48 localizedStringForKey:@"Unable to Connect to Mac Virtual Display" value:0 table:0 localization:localizationCopy];
 
     if ([v13 isEqual:@"airplay"])
     {
       v49 = @"To use Mac Virtual Display, disconnect AirPlay first.";
-      v50 = v9;
+      v50 = nameCopy;
     }
 
     else
     {
-      v50 = v9;
+      v50 = nameCopy;
       if ([v13 isEqual:@"sidecar"])
       {
         v49 = @"To use Mac Virtual Display, disconnect Sidecar first.";
@@ -859,7 +859,7 @@ LABEL_127:
     }
 
     v60 = +[WiFiP2PXPCConnection frameworkBundle];
-    v42 = [v60 localizedStringForKey:v49 value:0 table:0 localization:v10];
+    v42 = [v60 localizedStringForKey:v49 value:0 table:0 localization:localizationCopy];
 
 LABEL_118:
     if (![v13 isEqual:@"MacVirtualDisplay"])
@@ -873,29 +873,29 @@ LABEL_118:
       v61 = v50;
       v62 = objc_alloc(MEMORY[0x277CCACA8]);
       v63 = +[WiFiP2PXPCConnection frameworkBundle];
-      v64 = [v63 localizedStringForKey:@"%@ unable to connect to Mac Virtual Display while active with another device." value:0 table:0 localization:v10];
-      v65 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
+      v64 = [v63 localizedStringForKey:@"%@ unable to connect to Mac Virtual Display while active with another device." value:0 table:0 localization:localizationCopy];
+      v65 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
       v66 = [v62 initWithFormat:v64 locale:v65, v61];
 
-      v15 = v64;
+      nameCopy = v64;
     }
 
     else
     {
       v63 = +[WiFiP2PXPCConnection frameworkBundle];
-      v66 = [v63 localizedStringForKey:@"Unable to connect while the other device is active in a different Mac Virtual Display session." value:0 table:0 localization:v10];
+      v66 = [v63 localizedStringForKey:@"Unable to connect while the other device is active in a different Mac Virtual Display session." value:0 table:0 localization:localizationCopy];
     }
 
     v32 = +[WiFiP2PXPCConnection frameworkBundle];
-    v67 = [v32 localizedStringForKey:@"To connect Mac Virtual Display to another device value:disconnect the previous one first." table:0 localization:{0, v10}];
+    v67 = [v32 localizedStringForKey:@"To connect Mac Virtual Display to another device value:disconnect the previous one first." table:0 localization:{0, localizationCopy}];
 
-    v15 = v66;
+    nameCopy = v66;
     v42 = v67;
     goto LABEL_127;
   }
 
   v30 = +[WiFiP2PXPCConnection frameworkBundle];
-  v77 = [v30 localizedStringForKey:@"Unable to Connect to Sidecar" value:0 table:0 localization:v10];
+  v77 = [v30 localizedStringForKey:@"Unable to Connect to Sidecar" value:0 table:0 localization:localizationCopy];
 
   if ([v13 isEqual:@"airplay"])
   {
@@ -903,27 +903,27 @@ LABEL_118:
     v32 = v31;
     v33 = @"To use Sidecar, disconnect AirPlay first.";
 LABEL_126:
-    v42 = [v31 localizedStringForKey:v33 value:0 table:0 localization:v10];
+    v42 = [v31 localizedStringForKey:v33 value:0 table:0 localization:localizationCopy];
     goto LABEL_127;
   }
 
   if ([v13 isEqual:@"sidecar"])
   {
-    if (v9)
+    if (nameCopy)
     {
       v35 = objc_alloc(MEMORY[0x277CCACA8]);
       v36 = +[WiFiP2PXPCConnection frameworkBundle];
-      v37 = [v36 localizedStringForKey:@"%@ unable to connect to Sidecar while active with another device." value:0 table:0 localization:v10];
-      v38 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v10];
-      v29 = [v35 initWithFormat:v37 locale:v38, v9];
+      v37 = [v36 localizedStringForKey:@"%@ unable to connect to Sidecar while active with another device." value:0 table:0 localization:localizationCopy];
+      v38 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:localizationCopy];
+      nameCopy2 = [v35 initWithFormat:v37 locale:v38, nameCopy];
 
-      v15 = v37;
+      nameCopy = v37;
     }
 
     else
     {
       v36 = +[WiFiP2PXPCConnection frameworkBundle];
-      v29 = [v36 localizedStringForKey:@"Unable to connect while the other device is active in a different Sidecar session." value:0 table:0 localization:v10];
+      nameCopy2 = [v36 localizedStringForKey:@"Unable to connect while the other device is active in a different Sidecar session." value:0 table:0 localization:localizationCopy];
     }
 
     v40 = +[WiFiP2PXPCConnection frameworkBundle];
@@ -973,7 +973,7 @@ LABEL_128:
   v81[0] = *MEMORY[0x277CCA450];
   v81[1] = v69;
   v82[0] = v77;
-  v82[1] = v15;
+  v82[1] = nameCopy;
   v70 = *MEMORY[0x277CCA498];
   v82[2] = v42;
   v71 = *MEMORY[0x277CCA068];
@@ -992,8 +992,8 @@ LABEL_128:
 - (BOOL)isKnownService
 {
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"airdrop", @"airplay", @"airplay-connectivity-check", @"timeSync", @"sidecar", @"ensemble", @"D2DMigration", @"catspolicy", @"airplay-sink", @"CARPLAY_UUID", @"wifid-assisted-discovery", @"ranging-Intiator", @"ranging-responder", @"avconference", @"FACETIME_UUID", @"WiFiCallingUUID", @"RemoteCamera", @"TVRemoteCamera", @"MPRemoteCamera", @"rtmode", @"EdgeKit", @"RemoteScreen", @"spatialStreaming", 0}];
-  v4 = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
-  v5 = [v3 containsObject:v4];
+  uniqueIdentifier = [(AWDLTrafficRegistrationConfiguration *)self uniqueIdentifier];
+  v5 = [v3 containsObject:uniqueIdentifier];
 
   return v5;
 }

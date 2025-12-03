@@ -1,20 +1,20 @@
 @interface VUIActionUpdateSportsFavorite
-+ (void)performFavoritesOperation:(BOOL)a3 teamId:(id)a4 teamName:(id)a5 confirmRemoval:(BOOL)a6 fireBackgroundEvent:(BOOL)a7 requestExecutionHandler:(id)a8;
-- (VUIActionUpdateSportsFavorite)initWithContextData:(id)a3;
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
++ (void)performFavoritesOperation:(BOOL)operation teamId:(id)id teamName:(id)name confirmRemoval:(BOOL)removal fireBackgroundEvent:(BOOL)event requestExecutionHandler:(id)handler;
+- (VUIActionUpdateSportsFavorite)initWithContextData:(id)data;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionUpdateSportsFavorite
 
-- (VUIActionUpdateSportsFavorite)initWithContextData:(id)a3
+- (VUIActionUpdateSportsFavorite)initWithContextData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = VUIActionUpdateSportsFavorite;
   v5 = [(VUIActionUpdateSportsFavorite *)&v13 init];
   if (v5)
   {
-    v6 = [v4 vui_stringForKey:@"sportsTeamID"];
+    v6 = [dataCopy vui_stringForKey:@"sportsTeamID"];
     v7 = v6;
     if (v6)
     {
@@ -28,7 +28,7 @@
 
     objc_storeStrong(&v5->_sportsTeamID, v8);
 
-    v9 = [v4 vui_stringForKey:@"sportsTeamName"];
+    v9 = [dataCopy vui_stringForKey:@"sportsTeamName"];
     v10 = v9;
     if (v9)
     {
@@ -42,24 +42,24 @@
 
     objc_storeStrong(&v5->_sportsTeamName, v11);
 
-    v5->isFavorite = [v4 vui_BOOLForKey:@"sportsTeamIsFavorite" defaultValue:0];
-    v5->confirmsRemoval = [v4 vui_BOOLForKey:@"confirmsRemoval" defaultValue:0];
-    v5->firesBackgroundEvent = [v4 vui_BOOLForKey:@"firesBackgroundEvent" defaultValue:0];
+    v5->isFavorite = [dataCopy vui_BOOLForKey:@"sportsTeamIsFavorite" defaultValue:0];
+    v5->confirmsRemoval = [dataCopy vui_BOOLForKey:@"confirmsRemoval" defaultValue:0];
+    v5->firesBackgroundEvent = [dataCopy vui_BOOLForKey:@"firesBackgroundEvent" defaultValue:0];
   }
 
   return v5;
 }
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responderCopy = responder;
+  handlerCopy = handler;
   v8 = self->_sportsTeamID;
   v9 = self->_sportsTeamName;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
+    v10 = responderCopy;
   }
 
   else
@@ -81,9 +81,9 @@
   v28 = confirmsRemoval;
   v29 = firesBackgroundEvent;
   v25 = v9;
-  v26 = v7;
+  v26 = handlerCopy;
   v15 = MEMORY[0x1E696AF00];
-  v16 = v7;
+  v16 = handlerCopy;
   v17 = v9;
   v18 = v8;
   v19 = v11;
@@ -140,38 +140,38 @@ void __78__VUIActionUpdateSportsFavorite_performWithTargetResponder_completionHa
   }
 }
 
-+ (void)performFavoritesOperation:(BOOL)a3 teamId:(id)a4 teamName:(id)a5 confirmRemoval:(BOOL)a6 fireBackgroundEvent:(BOOL)a7 requestExecutionHandler:(id)a8
++ (void)performFavoritesOperation:(BOOL)operation teamId:(id)id teamName:(id)name confirmRemoval:(BOOL)removal fireBackgroundEvent:(BOOL)event requestExecutionHandler:(id)handler
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  idCopy = id;
+  nameCopy = name;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __134__VUIActionUpdateSportsFavorite_performFavoritesOperation_teamId_teamName_confirmRemoval_fireBackgroundEvent_requestExecutionHandler___block_invoke;
   aBlock[3] = &unk_1E8733D90;
-  v34 = a3;
-  v31 = v13;
-  v16 = v14;
+  operationCopy = operation;
+  v31 = idCopy;
+  v16 = nameCopy;
   v32 = v16;
-  v35 = a7;
-  v17 = v15;
+  eventCopy = event;
+  v17 = handlerCopy;
   v33 = v17;
-  v18 = v13;
+  v18 = idCopy;
   v19 = _Block_copy(aBlock);
-  v20 = [MEMORY[0x1E69E15D8] defaultManager];
+  defaultManager = [MEMORY[0x1E69E15D8] defaultManager];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __134__VUIActionUpdateSportsFavorite_performFavoritesOperation_teamId_teamName_confirmRemoval_fireBackgroundEvent_requestExecutionHandler___block_invoke_2;
   v24[3] = &unk_1E8733E08;
-  v28 = a3;
-  v29 = a6;
+  operationCopy2 = operation;
+  removalCopy = removal;
   v25 = v16;
   v26 = v19;
   v27 = v17;
   v21 = v17;
   v22 = v16;
   v23 = v19;
-  [v20 isOnboarded:v24];
+  [defaultManager isOnboarded:v24];
 }
 
 uint64_t __134__VUIActionUpdateSportsFavorite_performFavoritesOperation_teamId_teamName_confirmRemoval_fireBackgroundEvent_requestExecutionHandler___block_invoke(uint64_t a1)

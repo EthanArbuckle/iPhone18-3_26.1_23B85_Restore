@@ -2,38 +2,38 @@
 - (BOOL)_hasPendingAttachmentJobs;
 - (BOOL)_hasPendingChatJobs;
 - (BOOL)_hasPendingDeleteJobs;
-- (BOOL)_hasPendingJobsBasedOnLastSyncDate:(id)a3;
+- (BOOL)_hasPendingJobsBasedOnLastSyncDate:(id)date;
 - (BOOL)_needsSyndicationFullIndexSync;
-- (BOOL)_supportsSyndicationQueryType:(int64_t)a3;
-- (BOOL)syncManager:(id)a3 shouldContinueWithLibrary:(id)a4;
-- (PLSyndicationSyncServiceWrapper)initWithPhotoLibrary:(id)a3 ingestClient:(unsigned __int8)a4;
-- (id)_workItemsBatchedFromDate:(id)a3 type:(int64_t)a4;
+- (BOOL)_supportsSyndicationQueryType:(int64_t)type;
+- (BOOL)syncManager:(id)manager shouldContinueWithLibrary:(id)library;
+- (PLSyndicationSyncServiceWrapper)initWithPhotoLibrary:(id)library ingestClient:(unsigned __int8)client;
+- (id)_workItemsBatchedFromDate:(id)date type:(int64_t)type;
 - (id)workItemsNeedingProcessing;
 - (void)_findSyndicationStartingDate;
 - (void)cancelWorkOnCurrentItem;
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 batchHandler:(id)a7 completionHandler:(id)a8;
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 itemHandler:(id)a7 completionHandler:(id)a8;
-- (void)performWorkOnItem:(id)a3 completion:(id)a4;
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate batchHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)performWorkOnItem:(id)item completion:(id)completion;
 @end
 
 @implementation PLSyndicationSyncServiceWrapper
 
-- (BOOL)syncManager:(id)a3 shouldContinueWithLibrary:(id)a4
+- (BOOL)syncManager:(id)manager shouldContinueWithLibrary:(id)library
 {
-  v5 = [a4 libraryServicesManager];
-  v6 = [v5 databaseContext];
-  v7 = [v6 syndicationIngestMutex];
-  LOBYTE(self) = [v7 shouldStopUsingSyndicationIngestLibraryWithIdentifier:self->_ingestClientIdentifier];
+  libraryServicesManager = [library libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  syndicationIngestMutex = [databaseContext syndicationIngestMutex];
+  LOBYTE(self) = [syndicationIngestMutex shouldStopUsingSyndicationIngestLibraryWithIdentifier:self->_ingestClientIdentifier];
 
   return self ^ 1;
 }
 
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 batchHandler:(id)a7 completionHandler:(id)a8
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate batchHandler:(id)handler completionHandler:(id)completionHandler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v13 = a7;
-  v14 = a8;
-  v15 = PLSyndicationSyncQueryWithDates(a5, a6, a4);
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v15 = PLSyndicationSyncQueryWithDates(date, endDate, type);
   if (v15)
   {
     v22[0] = MEMORY[0x1E69E9820];
@@ -41,13 +41,13 @@
     v22[2] = __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_startDate_endDate_batchHandler_completionHandler___block_invoke;
     v22[3] = &unk_1E7569FC0;
     v22[4] = self;
-    v23 = v13;
+    v23 = handlerCopy;
     [v15 setFoundItemsHandler:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_startDate_endDate_batchHandler_completionHandler___block_invoke_77;
     v20[3] = &unk_1E7577430;
-    v21 = v14;
+    v21 = completionHandlerCopy;
     [v15 setCompletionHandler:v20];
     [v15 start];
     os_unfair_lock_lock(&self->_lock);
@@ -69,14 +69,14 @@
     v16 = PLSyndicationGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      if ((a4 - 1) > 3)
+      if ((type - 1) > 3)
       {
         v17 = 0;
       }
 
       else
       {
-        v17 = off_1E756A5A8[a4 - 1];
+        v17 = off_1E756A5A8[type - 1];
       }
 
       v18 = v17;
@@ -86,7 +86,7 @@
     }
 
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-    (*(v14 + 2))(v14, v19);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, v19);
   }
 }
 
@@ -117,15 +117,15 @@ void __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_star
   }
 }
 
-- (void)executeQueryForSyncManager:(id)a3 type:(int64_t)a4 startDate:(id)a5 endDate:(id)a6 itemHandler:(id)a7 completionHandler:(id)a8
+- (void)executeQueryForSyncManager:(id)manager type:(int64_t)type startDate:(id)date endDate:(id)endDate itemHandler:(id)handler completionHandler:(id)completionHandler
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = PLSyndicationSyncQueryWithDates(v15, v16, a4);
+  managerCopy = manager;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v19 = PLSyndicationSyncQueryWithDates(dateCopy, endDateCopy, type);
   if (v19)
   {
     objc_initWeak(location, self);
@@ -135,13 +135,13 @@ void __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_star
     v29[3] = &unk_1E7569F98;
     objc_copyWeak(&v31, location);
     v29[4] = self;
-    v30 = v17;
+    v30 = handlerCopy;
     [v19 setFoundItemsHandler:v29];
     v24 = MEMORY[0x1E69E9820];
     v25 = 3221225472;
     v26 = __115__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_startDate_endDate_itemHandler_completionHandler___block_invoke_74;
     v27 = &unk_1E7577430;
-    v28 = v18;
+    v28 = completionHandlerCopy;
     [v19 setCompletionHandler:&v24];
     [v19 start];
     os_unfair_lock_lock(&self->_lock);
@@ -166,14 +166,14 @@ void __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_star
     v20 = PLSyndicationGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      if ((a4 - 1) > 3)
+      if ((type - 1) > 3)
       {
         v21 = 0;
       }
 
       else
       {
-        v21 = off_1E756A5A8[a4 - 1];
+        v21 = off_1E756A5A8[type - 1];
       }
 
       v22 = v21;
@@ -183,7 +183,7 @@ void __116__PLSyndicationSyncServiceWrapper_executeQueryForSyncManager_type_star
     }
 
     v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46309 userInfo:0];
-    (*(v18 + 2))(v18, v23);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, v23);
   }
 }
 
@@ -390,10 +390,10 @@ void __63__PLSyndicationSyncServiceWrapper__findSyndicationStartingDate__block_i
   }
 }
 
-- (BOOL)_supportsSyndicationQueryType:(int64_t)a3
+- (BOOL)_supportsSyndicationQueryType:(int64_t)type
 {
   supportedQueryTypes = self->_supportedQueryTypes;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   LOBYTE(supportedQueryTypes) = [(NSSet *)supportedQueryTypes containsObject:v4];
 
   return supportedQueryTypes;
@@ -405,12 +405,12 @@ void __63__PLSyndicationSyncServiceWrapper__findSyndicationStartingDate__block_i
   v3 = self->_photoLibrary;
   if ([(PLSyndicationSyncServiceWrapper *)self _supportsSyndicationQueryType:3])
   {
-    v4 = [(PLPhotoLibrary *)v3 globalValues];
-    v5 = [v4 lastDeleteSyndicationSyncDate];
+    globalValues = [(PLPhotoLibrary *)v3 globalValues];
+    lastDeleteSyndicationSyncDate = [globalValues lastDeleteSyndicationSyncDate];
 
-    [v5 timeIntervalSinceNow];
+    [lastDeleteSyndicationSyncDate timeIntervalSinceNow];
     v7 = v6;
-    if (![(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:v5])
+    if (![(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:lastDeleteSyndicationSyncDate])
     {
       if (v7 >= -604800.0)
       {
@@ -447,10 +447,10 @@ LABEL_11:
   v3 = self->_photoLibrary;
   if ([(PLSyndicationSyncServiceWrapper *)self _supportsSyndicationQueryType:2])
   {
-    v4 = [(PLPhotoLibrary *)v3 globalValues];
-    v5 = [v4 lastChatSyndicationSyncDate];
+    globalValues = [(PLPhotoLibrary *)v3 globalValues];
+    lastChatSyndicationSyncDate = [globalValues lastChatSyndicationSyncDate];
 
-    v6 = [(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:v5];
+    v6 = [(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:lastChatSyndicationSyncDate];
   }
 
   else
@@ -466,10 +466,10 @@ LABEL_11:
   v3 = self->_photoLibrary;
   if ([(PLSyndicationSyncServiceWrapper *)self _supportsSyndicationQueryType:1])
   {
-    v4 = [(PLPhotoLibrary *)v3 globalValues];
-    v5 = [v4 lastAttachmentSyndicationSyncDate];
+    globalValues = [(PLPhotoLibrary *)v3 globalValues];
+    lastAttachmentSyndicationSyncDate = [globalValues lastAttachmentSyndicationSyncDate];
 
-    v6 = [(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:v5];
+    v6 = [(PLSyndicationSyncServiceWrapper *)self _hasPendingJobsBasedOnLastSyncDate:lastAttachmentSyndicationSyncDate];
   }
 
   else
@@ -480,15 +480,15 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_hasPendingJobsBasedOnLastSyncDate:(id)a3
+- (BOOL)_hasPendingJobsBasedOnLastSyncDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     v4 = PLSpotlightReceiverLastUpdate();
     if (v4)
     {
-      v5 = [v3 compare:v4] != 1;
+      v5 = [dateCopy compare:v4] != 1;
     }
 
     else
@@ -508,35 +508,35 @@ LABEL_11:
 - (BOOL)_needsSyndicationFullIndexSync
 {
   v2 = self->_photoLibrary;
-  v3 = [(PLPhotoLibrary *)v2 libraryServicesManager];
-  v4 = [v3 wellKnownPhotoLibraryIdentifier];
+  libraryServicesManager = [(PLPhotoLibrary *)v2 libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v4 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
-    v5 = [(PLPhotoLibrary *)v2 globalValues];
-    v6 = [v5 inProgressFullIndexSyndicationSyncDate];
+    globalValues = [(PLPhotoLibrary *)v2 globalValues];
+    inProgressFullIndexSyndicationSyncDate = [globalValues inProgressFullIndexSyndicationSyncDate];
 
-    if (v6)
+    if (inProgressFullIndexSyndicationSyncDate)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(PLPhotoLibrary *)v2 globalValues];
-      v9 = [v8 lastDeleteSyndicationSyncDate];
+      globalValues2 = [(PLPhotoLibrary *)v2 globalValues];
+      lastDeleteSyndicationSyncDate = [globalValues2 lastDeleteSyndicationSyncDate];
 
-      if (v9)
+      if (lastDeleteSyndicationSyncDate)
       {
-        v10 = [MEMORY[0x1E695DF00] date];
-        [v10 timeIntervalSinceDate:v9];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:lastDeleteSyndicationSyncDate];
         v12 = v11;
-        v13 = [(PLPhotoLibrary *)v2 globalValues];
-        v14 = [v13 lastFullIndexSyndicationSyncStartDate];
+        globalValues3 = [(PLPhotoLibrary *)v2 globalValues];
+        lastFullIndexSyndicationSyncStartDate = [globalValues3 lastFullIndexSyndicationSyncStartDate];
 
-        if (v14)
+        if (lastFullIndexSyndicationSyncStartDate)
         {
-          [v10 timeIntervalSinceDate:v14];
+          [date timeIntervalSinceDate:lastFullIndexSyndicationSyncStartDate];
           if (v12 >= v15)
           {
             v12 = v15;
@@ -548,9 +548,9 @@ LABEL_11:
 
       else
       {
-        v10 = [(PLPhotoLibrary *)v2 globalValues];
-        v14 = [v10 lastFullIndexSyndicationSyncStartDate];
-        v7 = v14 == 0;
+        date = [(PLPhotoLibrary *)v2 globalValues];
+        lastFullIndexSyndicationSyncStartDate = [date lastFullIndexSyndicationSyncStartDate];
+        v7 = lastFullIndexSyndicationSyncStartDate == 0;
       }
     }
   }
@@ -563,20 +563,20 @@ LABEL_11:
   return v7;
 }
 
-- (id)_workItemsBatchedFromDate:(id)a3 type:(int64_t)a4
+- (id)_workItemsBatchedFromDate:(id)date type:(int64_t)type
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = self->_photoLibrary;
-  [v6 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   if (v8 <= 0.0)
   {
     v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
 
-    v6 = v9;
+    dateCopy = v9;
   }
 
-  v10 = [(PLPhotoLibrary *)v7 globalValues];
-  [v10 syndicationSyncRangeDenominator];
+  globalValues = [(PLPhotoLibrary *)v7 globalValues];
+  [globalValues syndicationSyncRangeDenominator];
   v12 = v11;
 
   +[PLSyndicationSyncEngine maxSpotlightQueryTimeInterval];
@@ -594,7 +594,7 @@ LABEL_11:
   }
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v18 = v6;
+  v18 = dateCopy;
   [v18 timeIntervalSinceNow];
   v19 = v18;
   if (v20 <= 0.0)
@@ -603,7 +603,7 @@ LABEL_11:
     while ([v17 count] <= 0x3E7)
     {
       v19 = [v21 dateByAddingTimeInterval:v14];
-      v22 = [[PLSyndicationSyncWorkItem alloc] initWithSyndicationQueryType:a4 startDate:v21 endDate:v19];
+      v22 = [[PLSyndicationSyncWorkItem alloc] initWithSyndicationQueryType:type startDate:v21 endDate:v19];
       [v17 addObject:v22];
 
       [v19 timeIntervalSinceNow];
@@ -636,38 +636,38 @@ LABEL_13:
   [(CSSearchQuery *)v4 cancel];
 }
 
-- (void)performWorkOnItem:(id)a3 completion:(id)a4
+- (void)performWorkOnItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_invoke;
   v19 = &unk_1E7578848;
-  v20 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = itemCopy;
   v21 = v8;
   PLRunWithUnfairLock();
   if ([v8 shouldFindSyncDate])
   {
     [(PLSyndicationSyncServiceWrapper *)self _findSyndicationStartingDate];
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     syncEngine = self->_syncEngine;
-    v10 = [v8 startDate];
-    v11 = [v8 endDate];
-    v12 = [v8 queryType];
+    startDate = [v8 startDate];
+    endDate = [v8 endDate];
+    queryType = [v8 queryType];
     photoLibrary = self->_photoLibrary;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_invoke_2;
     v14[3] = &unk_1E7576FF8;
     v14[4] = self;
-    v15 = v7;
-    [(PLSyndicationSyncEngine *)syncEngine syncSyndicationItemsWithStartDate:v10 endDate:v11 queryType:v12 library:photoLibrary completion:v14];
+    v15 = completionCopy;
+    [(PLSyndicationSyncEngine *)syncEngine syncSyndicationItemsWithStartDate:startDate endDate:endDate queryType:queryType library:photoLibrary completion:v14];
   }
 }
 
@@ -696,10 +696,10 @@ void __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_
   v39[1] = *MEMORY[0x1E69E9840];
   v3 = self->_photoLibrary;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PLPhotoLibrary *)v3 globalValues];
-  v6 = [v5 syndicationStartDate];
+  globalValues = [(PLPhotoLibrary *)v3 globalValues];
+  syndicationStartDate = [globalValues syndicationStartDate];
 
-  if (!v6)
+  if (!syndicationStartDate)
   {
     v19 = PLSyndicationGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -725,17 +725,17 @@ void __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "[sync.worker] requires full index reset sync", v38, 2u);
     }
 
-    v8 = [(PLPhotoLibrary *)v3 globalValues];
-    v9 = [v8 inProgressFullIndexSyndicationSyncDate];
-    v10 = v9;
-    if (v9)
+    globalValues2 = [(PLPhotoLibrary *)v3 globalValues];
+    inProgressFullIndexSyndicationSyncDate = [globalValues2 inProgressFullIndexSyndicationSyncDate];
+    v10 = inProgressFullIndexSyndicationSyncDate;
+    if (inProgressFullIndexSyndicationSyncDate)
     {
-      v11 = v9;
+      v11 = inProgressFullIndexSyndicationSyncDate;
     }
 
     else
     {
-      v11 = v6;
+      v11 = syndicationStartDate;
     }
 
     v12 = v11;
@@ -754,12 +754,12 @@ void __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "[sync.worker] has delete jobs", v38, 2u);
     }
 
-    v15 = [(PLPhotoLibrary *)v3 globalValues];
-    v16 = [v15 lastDeleteSyndicationSyncDate];
-    v17 = v16;
-    if (v16)
+    globalValues3 = [(PLPhotoLibrary *)v3 globalValues];
+    lastDeleteSyndicationSyncDate = [globalValues3 lastDeleteSyndicationSyncDate];
+    v17 = lastDeleteSyndicationSyncDate;
+    if (lastDeleteSyndicationSyncDate)
     {
-      v18 = v16;
+      v18 = lastDeleteSyndicationSyncDate;
     }
 
     else
@@ -782,17 +782,17 @@ void __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_
       _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "[sync.worker] has attachment jobs", v38, 2u);
     }
 
-    v25 = [(PLPhotoLibrary *)v3 globalValues];
-    v26 = [v25 lastAttachmentSyndicationSyncDate];
-    v27 = v26;
-    if (v26)
+    globalValues4 = [(PLPhotoLibrary *)v3 globalValues];
+    lastAttachmentSyndicationSyncDate = [globalValues4 lastAttachmentSyndicationSyncDate];
+    v27 = lastAttachmentSyndicationSyncDate;
+    if (lastAttachmentSyndicationSyncDate)
     {
-      v28 = v26;
+      v28 = lastAttachmentSyndicationSyncDate;
     }
 
     else
     {
-      v28 = v6;
+      v28 = syndicationStartDate;
     }
 
     v29 = v28;
@@ -811,17 +811,17 @@ void __64__PLSyndicationSyncServiceWrapper_performWorkOnItem_completion___block_
       _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEBUG, "[sync.worker] has chat jobs", v38, 2u);
     }
 
-    v32 = [(PLPhotoLibrary *)v3 globalValues];
-    v33 = [v32 lastChatSyndicationSyncDate];
-    v34 = v33;
-    if (v33)
+    globalValues5 = [(PLPhotoLibrary *)v3 globalValues];
+    lastChatSyndicationSyncDate = [globalValues5 lastChatSyndicationSyncDate];
+    v34 = lastChatSyndicationSyncDate;
+    if (lastChatSyndicationSyncDate)
     {
-      v35 = v33;
+      v35 = lastChatSyndicationSyncDate;
     }
 
     else
     {
-      v35 = v6;
+      v35 = syndicationStartDate;
     }
 
     v36 = v35;
@@ -835,26 +835,26 @@ LABEL_33:
   return v4;
 }
 
-- (PLSyndicationSyncServiceWrapper)initWithPhotoLibrary:(id)a3 ingestClient:(unsigned __int8)a4
+- (PLSyndicationSyncServiceWrapper)initWithPhotoLibrary:(id)library ingestClient:(unsigned __int8)client
 {
-  v4 = a4;
-  v8 = a3;
+  clientCopy = client;
+  libraryCopy = library;
   v31.receiver = self;
   v31.super_class = PLSyndicationSyncServiceWrapper;
   v9 = [(PLSyndicationSyncServiceWrapper *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    if (v4)
+    if (clientCopy)
     {
-      v9->_ingestClientIdentifier = v4;
-      v11 = PLSyndicationIngestClientStringFromIdentifier(v4);
+      v9->_ingestClientIdentifier = clientCopy;
+      v11 = PLSyndicationIngestClientStringFromIdentifier(clientCopy);
     }
 
     else
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:v10 file:@"PLSyndicationSyncServiceWrapper.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"clientIdentifier != PLSyndicationIngestClientIdentifierNone"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PLSyndicationSyncServiceWrapper.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"clientIdentifier != PLSyndicationIngestClientIdentifierNone"}];
 
       v10->_ingestClientIdentifier = 0;
       v11 = @"None";
@@ -863,7 +863,7 @@ LABEL_33:
     name = v10->_name;
     v10->_name = &v11->isa;
 
-    objc_storeStrong(&v10->_photoLibrary, a3);
+    objc_storeStrong(&v10->_photoLibrary, library);
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -883,20 +883,20 @@ LABEL_33:
     v14->_supportedQueryTypes = v17;
 
     v14->_lock._os_unfair_lock_opaque = 0;
-    v19 = [(PLPhotoLibrary *)v10->_photoLibrary libraryBundle];
-    v20 = [v19 isSystemPhotoLibrary];
+    libraryBundle = [(PLPhotoLibrary *)v10->_photoLibrary libraryBundle];
+    isSystemPhotoLibrary = [libraryBundle isSystemPhotoLibrary];
 
-    if (v20)
+    if (isSystemPhotoLibrary)
     {
-      v21 = [MEMORY[0x1E69BF328] maskForSyndicationSyncWorkerInSystemPhotoLibrary];
+      maskForSyndicationSyncWorkerInSystemPhotoLibrary = [MEMORY[0x1E69BF328] maskForSyndicationSyncWorkerInSystemPhotoLibrary];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E69BF328] maskForSyndicationSyncWorkerInSyndicationLibrary];
+      maskForSyndicationSyncWorkerInSystemPhotoLibrary = [MEMORY[0x1E69BF328] maskForSyndicationSyncWorkerInSyndicationLibrary];
     }
 
-    v22 = [[PLSyndicationSyncEngine alloc] initWithQueryTypes:v14->_supportedQueryTypes savedAssetTypeMask:v21 delegate:v14];
+    v22 = [[PLSyndicationSyncEngine alloc] initWithQueryTypes:v14->_supportedQueryTypes savedAssetTypeMask:maskForSyndicationSyncWorkerInSystemPhotoLibrary delegate:v14];
     syncEngine = v14->_syncEngine;
     v14->_syncEngine = v22;
   }

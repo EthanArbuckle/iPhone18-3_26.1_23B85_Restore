@@ -1,10 +1,10 @@
 @interface CLHeading
-- (CLHeading)initWithClientHeading:(id *)a3;
-- (CLHeading)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLHeading)initWithClientHeading:(id *)heading;
+- (CLHeading)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)shortDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLHeading
@@ -16,7 +16,7 @@
   [(CLHeading *)&v3 dealloc];
 }
 
-- (CLHeading)initWithClientHeading:(id *)a3
+- (CLHeading)initWithClientHeading:(id *)heading
 {
   v11.receiver = self;
   v11.super_class = CLHeading;
@@ -24,13 +24,13 @@
   if (v4)
   {
     v5 = [CLHeadingInternal alloc];
-    v6 = *&a3->var6;
-    v9[2] = *&a3->var4;
+    v6 = *&heading->var6;
+    v9[2] = *&heading->var4;
     v9[3] = v6;
-    v9[4] = *&a3->var8;
-    v10 = *&a3->var10;
-    v7 = *&a3->var2;
-    v9[0] = *&a3->var0;
+    v9[4] = *&heading->var8;
+    v10 = *&heading->var10;
+    v7 = *&heading->var2;
+    v9[0] = *&heading->var0;
     v9[1] = v7;
     v4->_internal = [(CLHeadingInternal *)v5 initWithClientHeading:v9];
   }
@@ -38,7 +38,7 @@
   return v4;
 }
 
-- (CLHeading)initWithCoder:(id)a3
+- (CLHeading)initWithCoder:(id)coder
 {
   v20 = 0;
   v18 = 0u;
@@ -46,35 +46,35 @@
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyMagneticHeading"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyMagneticHeading"];
     *(&v16 + 1) = v5;
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyTrueHeading"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyTrueHeading"];
     *&v17 = v6;
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyAccuracy"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyAccuracy"];
     *(&v17 + 1) = v7;
-    HIDWORD(v20) = [a3 decodeIntForKey:@"kCLHeadingCodingKeyHeadingMode"];
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyX"];
+    HIDWORD(v20) = [coder decodeIntForKey:@"kCLHeadingCodingKeyHeadingMode"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyX"];
     *&v15 = v8;
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyY"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyY"];
     *(&v15 + 1) = v9;
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyZ"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyZ"];
     *&v16 = v10;
-    [a3 decodeDoubleForKey:@"kCLHeadingCodingKeyTimestamp"];
+    [coder decodeDoubleForKey:@"kCLHeadingCodingKeyTimestamp"];
     *&v18 = v11;
   }
 
   else
   {
-    [a3 decodeValueOfObjCType:"d" at:&v16 + 8];
-    [a3 decodeValueOfObjCType:"d" at:&v17];
-    [a3 decodeValueOfObjCType:"d" at:&v17 + 8];
-    [a3 decodeValueOfObjCType:"i" at:&v20 + 4];
-    [a3 decodeValueOfObjCType:"d" at:&v15];
-    [a3 decodeValueOfObjCType:"d" at:&v15 + 8];
-    [a3 decodeValueOfObjCType:"d" at:&v16];
-    [a3 decodeValueOfObjCType:"d" at:&v18];
+    [coder decodeValueOfObjCType:"d" at:&v16 + 8];
+    [coder decodeValueOfObjCType:"d" at:&v17];
+    [coder decodeValueOfObjCType:"d" at:&v17 + 8];
+    [coder decodeValueOfObjCType:"i" at:&v20 + 4];
+    [coder decodeValueOfObjCType:"d" at:&v15];
+    [coder decodeValueOfObjCType:"d" at:&v15 + 8];
+    [coder decodeValueOfObjCType:"d" at:&v16];
+    [coder decodeValueOfObjCType:"d" at:&v18];
   }
 
   v13[2] = v17;
@@ -86,41 +86,41 @@
   return [(CLHeading *)self initWithClientHeading:v13];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internal = self->_internal;
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeDouble:@"kCLHeadingCodingKeyMagneticHeading" forKey:internal[4]];
-    [a3 encodeDouble:@"kCLHeadingCodingKeyTrueHeading" forKey:internal[5]];
-    [a3 encodeDouble:@"kCLHeadingCodingKeyAccuracy" forKey:internal[6]];
-    [a3 encodeInt:*(internal + 23) forKey:@"kCLHeadingCodingKeyHeadingMode"];
-    [a3 encodeDouble:@"kCLHeadingCodingKeyX" forKey:internal[1]];
-    [a3 encodeDouble:@"kCLHeadingCodingKeyY" forKey:internal[2]];
-    [a3 encodeDouble:@"kCLHeadingCodingKeyZ" forKey:internal[3]];
+    [coder encodeDouble:@"kCLHeadingCodingKeyMagneticHeading" forKey:internal[4]];
+    [coder encodeDouble:@"kCLHeadingCodingKeyTrueHeading" forKey:internal[5]];
+    [coder encodeDouble:@"kCLHeadingCodingKeyAccuracy" forKey:internal[6]];
+    [coder encodeInt:*(internal + 23) forKey:@"kCLHeadingCodingKeyHeadingMode"];
+    [coder encodeDouble:@"kCLHeadingCodingKeyX" forKey:internal[1]];
+    [coder encodeDouble:@"kCLHeadingCodingKeyY" forKey:internal[2]];
+    [coder encodeDouble:@"kCLHeadingCodingKeyZ" forKey:internal[3]];
     v5 = internal[7];
 
-    [a3 encodeDouble:@"kCLHeadingCodingKeyTimestamp" forKey:v5];
+    [coder encodeDouble:@"kCLHeadingCodingKeyTimestamp" forKey:v5];
   }
 
   else
   {
-    [a3 encodeValueOfObjCType:"d" at:internal + 4];
-    [a3 encodeValueOfObjCType:"d" at:internal + 5];
-    [a3 encodeValueOfObjCType:"d" at:internal + 6];
-    [a3 encodeValueOfObjCType:"i" at:internal + 92];
-    [a3 encodeValueOfObjCType:"d" at:internal + 1];
-    [a3 encodeValueOfObjCType:"d" at:internal + 2];
-    [a3 encodeValueOfObjCType:"d" at:internal + 3];
+    [coder encodeValueOfObjCType:"d" at:internal + 4];
+    [coder encodeValueOfObjCType:"d" at:internal + 5];
+    [coder encodeValueOfObjCType:"d" at:internal + 6];
+    [coder encodeValueOfObjCType:"i" at:internal + 92];
+    [coder encodeValueOfObjCType:"d" at:internal + 1];
+    [coder encodeValueOfObjCType:"d" at:internal + 2];
+    [coder encodeValueOfObjCType:"d" at:internal + 3];
 
-    [a3 encodeValueOfObjCType:"d" at:internal + 7];
+    [coder encodeValueOfObjCType:"d" at:internal + 7];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[1] = [self->_internal copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[1] = [self->_internal copyWithZone:zone];
   return v5;
 }
 

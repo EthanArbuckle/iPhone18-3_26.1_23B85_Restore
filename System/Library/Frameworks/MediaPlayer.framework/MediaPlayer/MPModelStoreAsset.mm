@@ -13,44 +13,44 @@
 
 + (void)__MPModelPropertyStoreAssetNeedsUserUpload__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:37 description:@"Translator was missing mapping for MPModelPropertyStoreAssetNeedsUserUpload"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:37 description:@"Translator was missing mapping for MPModelPropertyStoreAssetNeedsUserUpload"];
 }
 
 + (void)__MPModelPropertyStoreAssetSubscriptionRequired__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertyStoreAssetSubscriptionRequired"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:36 description:@"Translator was missing mapping for MPModelPropertyStoreAssetSubscriptionRequired"];
 }
 
 + (void)__MPModelPropertyStoreAssetShouldReportPlayEvents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertyStoreAssetShouldReportPlayEvents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:35 description:@"Translator was missing mapping for MPModelPropertyStoreAssetShouldReportPlayEvents"];
 }
 
 + (void)__MPModelPropertyStoreAssetAccountIdentifier__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertyStoreAssetAccountIdentifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:34 description:@"Translator was missing mapping for MPModelPropertyStoreAssetAccountIdentifier"];
 }
 
 + (void)__MPModelPropertyStoreAssetRedownloadable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertyStoreAssetRedownloadable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:33 description:@"Translator was missing mapping for MPModelPropertyStoreAssetRedownloadable"];
 }
 
 + (void)__MPModelPropertyStoreAssetRedownloadParameters__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertyStoreAssetRedownloadParameters"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:32 description:@"Translator was missing mapping for MPModelPropertyStoreAssetRedownloadParameters"];
 }
 
 + (void)__MPModelPropertyStoreAssetEndpointType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelStoreAsset.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertyStoreAssetEndpointType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelStoreAsset.m" lineNumber:31 description:@"Translator was missing mapping for MPModelPropertyStoreAssetEndpointType"];
 }
 
 + (id)allSupportedProperties

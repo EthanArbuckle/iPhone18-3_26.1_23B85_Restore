@@ -1,19 +1,19 @@
 @interface TodayActivityTileAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation TodayActivityTileAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"moveLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"exerciseLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"standLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"ringsView" withSwiftType:"ARUIRingsView"];
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"stepsLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
-  [v3 validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"distanceLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"moveLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"exerciseLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"standLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"ringsView" withSwiftType:"ARUIRingsView"];
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"stepsLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
+  [validationsCopy validateClass:@"FitnessApp.TodayActivityTile" hasSwiftField:@"distanceLabelPair" withSwiftType:"DayViewTitleAndValueLabelPair"];
 }
 
 - (id)accessibilityElements

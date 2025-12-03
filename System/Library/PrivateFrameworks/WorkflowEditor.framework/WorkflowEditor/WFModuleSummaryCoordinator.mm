@@ -1,58 +1,58 @@
 @interface WFModuleSummaryCoordinator
-+ (double)heightForWidth:(double)a3 withSummaryFormatString:(id)a4 parameters:(id)a5 editableParameters:(id)a6 parameterStates:(id)a7 stagedParameterStates:(id)a8 horizontalPadding:(double)a9 font:(id)a10 unpopulatedFont:(id)a11 textAlignment:(int64_t)a12;
-+ (id)parameterStatesByApplyingStaging:(id)a3 toOriginal:(id)a4;
-+ (void)enumerateVariableAttachmentsInContents:(id)a3 withBlock:(id)a4;
-- (BOOL)slotTemplateView:(id)a3 shouldChangeText:(id)a4 forSlotWithIdentifier:(id)a5;
-- (BOOL)slotTemplateView:(id)a3 shouldTapTextAttachment:(id)a4 inSlotWithIdentifier:(id)a5;
-- (Class)editorClassForParameter:(id)a3;
++ (double)heightForWidth:(double)width withSummaryFormatString:(id)string parameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states stagedParameterStates:(id)parameterStates horizontalPadding:(double)padding font:(id)self0 unpopulatedFont:(id)self1 textAlignment:(int64_t)self2;
++ (id)parameterStatesByApplyingStaging:(id)staging toOriginal:(id)original;
++ (void)enumerateVariableAttachmentsInContents:(id)contents withBlock:(id)block;
+- (BOOL)slotTemplateView:(id)view shouldChangeText:(id)text forSlotWithIdentifier:(id)identifier;
+- (BOOL)slotTemplateView:(id)view shouldTapTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier;
+- (Class)editorClassForParameter:(id)parameter;
 - (NSDictionary)stagedParameterStates;
 - (WFEditorAuxiliaryViewPresenter)auxiliaryViewPresenter;
 - (WFModuleSummaryCoordinator)init;
 - (WFModuleSummaryCoordinatorDelegate)delegate;
 - (WFVariableProvider)variableProvider;
 - (WFVariableUIDelegate)variableUIDelegate;
-- (id)addElementToArrayForParameterKey:(id)a3;
-- (id)createSummaryEditorForSlotWithIdentifier:(id)a3;
-- (id)currentParameterStateForParameterKey:(id)a3;
-- (id)firstSlotIdentifierWithParameterKey:(id)a3;
-- (id)initialStateForSummaryEditor:(id)a3;
-- (id)parameterForKey:(id)a3;
-- (id)presentationAnchorForSlotWithIdentifier:(id)a3;
-- (id)slotTemplateView:(id)a3 menuForSlotIdentifier:(id)a4 style:(unint64_t)a5;
-- (id)transformParameterStateForSerialization:(id)a3 arrayIndex:(unint64_t)a4 parameter:(id)a5;
-- (void)beginEditingSlotWithIdentifier:(id)a3 fromTextAttachment:(id)a4;
-- (void)cancelEditingWithCompletionHandler:(id)a3;
-- (void)commitParameterState:(id)a3 forKey:(id)a4;
+- (id)addElementToArrayForParameterKey:(id)key;
+- (id)createSummaryEditorForSlotWithIdentifier:(id)identifier;
+- (id)currentParameterStateForParameterKey:(id)key;
+- (id)firstSlotIdentifierWithParameterKey:(id)key;
+- (id)initialStateForSummaryEditor:(id)editor;
+- (id)parameterForKey:(id)key;
+- (id)presentationAnchorForSlotWithIdentifier:(id)identifier;
+- (id)slotTemplateView:(id)view menuForSlotIdentifier:(id)identifier style:(unint64_t)style;
+- (id)transformParameterStateForSerialization:(id)serialization arrayIndex:(unint64_t)index parameter:(id)parameter;
+- (void)beginEditingSlotWithIdentifier:(id)identifier fromTextAttachment:(id)attachment;
+- (void)cancelEditingWithCompletionHandler:(id)handler;
+- (void)commitParameterState:(id)state forKey:(id)key;
 - (void)destroyCurrentEditor;
-- (void)menuDidDismissInSlotTemplateView:(id)a3;
-- (void)removeElementFromArrayAtIndex:(unint64_t)a3 forParameterKey:(id)a4;
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6;
-- (void)setParameters:(id)a3;
-- (void)setSummaryFormatString:(id)a3 withParameters:(id)a4 editableParameters:(id)a5 parameterStates:(id)a6;
-- (void)setTemplateView:(id)a3;
-- (void)setVariableProvider:(id)a3;
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5;
-- (void)showParameterEditingHint:(id)a3;
-- (void)showVariableEditorWithOptions:(id)a3 fromSourceRect:(CGRect)a4;
-- (void)slotTemplateView:(id)a3 deletePressedOnSlotWithIdentifier:(id)a4 allowResettingValue:(BOOL)a5;
-- (void)slotTemplateView:(id)a3 didChangeText:(id)a4 forSlotWithIdentifier:(id)a5;
-- (void)slotTemplateView:(id)a3 didEndTypingInSlotWithIdentifier:(id)a4;
-- (void)slotTemplateView:(id)a3 didSelectSlotWithIdentifier:(id)a4;
-- (void)slotTemplateView:(id)a3 didTapTextAttachment:(id)a4 inSlotWithIdentifier:(id)a5;
-- (void)slotTemplateView:(id)a3 disclosureArrowDidChange:(BOOL)a4;
-- (void)slotTemplateView:(id)a3 outputButtonDidChange:(BOOL)a4;
-- (void)slotTemplateView:(id)a3 typingDidCopyWithOriginalBlock:(id)a4;
-- (void)slotTemplateView:(id)a3 typingDidCutWithOriginalBlock:(id)a4;
-- (void)slotTemplateView:(id)a3 typingDidPasteWithRange:(_NSRange)a4 originalBlock:(id)a5;
-- (void)slotTemplateView:(id)a3 willBeginTypingInSlotWithIdentifier:(id)a4 usingTextEntry:(id)a5 allowMultipleLines:(BOOL *)a6;
-- (void)slotTemplateViewDidInvalidateSize:(id)a3;
-- (void)slotTemplateViewTintColorDidChange:(id)a3;
-- (void)summaryEditor:(id)a3 didCommitParameterState:(id)a4;
-- (void)summaryEditor:(id)a3 didRequestEditingSlotWithIdentifier:(id)a4;
-- (void)summaryEditor:(id)a3 didStageParameterState:(id)a4;
-- (void)summaryEditorDidFinish:(id)a3 returnToKeyboard:(BOOL)a4 withTextAttachmentToEdit:(id)a5;
-- (void)summaryEditorDidRequestTextEntry:(id)a3;
-- (void)updateTemplateContentsAnimated:(BOOL)a3;
+- (void)menuDidDismissInSlotTemplateView:(id)view;
+- (void)removeElementFromArrayAtIndex:(unint64_t)index forParameterKey:(id)key;
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler;
+- (void)setParameters:(id)parameters;
+- (void)setSummaryFormatString:(id)string withParameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states;
+- (void)setTemplateView:(id)view;
+- (void)setVariableProvider:(id)provider;
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler;
+- (void)showParameterEditingHint:(id)hint;
+- (void)showVariableEditorWithOptions:(id)options fromSourceRect:(CGRect)rect;
+- (void)slotTemplateView:(id)view deletePressedOnSlotWithIdentifier:(id)identifier allowResettingValue:(BOOL)value;
+- (void)slotTemplateView:(id)view didChangeText:(id)text forSlotWithIdentifier:(id)identifier;
+- (void)slotTemplateView:(id)view didEndTypingInSlotWithIdentifier:(id)identifier;
+- (void)slotTemplateView:(id)view didSelectSlotWithIdentifier:(id)identifier;
+- (void)slotTemplateView:(id)view didTapTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier;
+- (void)slotTemplateView:(id)view disclosureArrowDidChange:(BOOL)change;
+- (void)slotTemplateView:(id)view outputButtonDidChange:(BOOL)change;
+- (void)slotTemplateView:(id)view typingDidCopyWithOriginalBlock:(id)block;
+- (void)slotTemplateView:(id)view typingDidCutWithOriginalBlock:(id)block;
+- (void)slotTemplateView:(id)view typingDidPasteWithRange:(_NSRange)range originalBlock:(id)block;
+- (void)slotTemplateView:(id)view willBeginTypingInSlotWithIdentifier:(id)identifier usingTextEntry:(id)entry allowMultipleLines:(BOOL *)lines;
+- (void)slotTemplateViewDidInvalidateSize:(id)size;
+- (void)slotTemplateViewTintColorDidChange:(id)change;
+- (void)summaryEditor:(id)editor didCommitParameterState:(id)state;
+- (void)summaryEditor:(id)editor didRequestEditingSlotWithIdentifier:(id)identifier;
+- (void)summaryEditor:(id)editor didStageParameterState:(id)state;
+- (void)summaryEditorDidFinish:(id)finish returnToKeyboard:(BOOL)keyboard withTextAttachmentToEdit:(id)edit;
+- (void)summaryEditorDidRequestTextEntry:(id)entry;
+- (void)updateTemplateContentsAnimated:(BOOL)animated;
 @end
 
 @implementation WFModuleSummaryCoordinator
@@ -85,63 +85,63 @@
   return WeakRetained;
 }
 
-- (void)showVariableEditorWithOptions:(id)a3 fromSourceRect:(CGRect)a4
+- (void)showVariableEditorWithOptions:(id)options fromSourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v9 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  variableUIDelegate = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
-    [v11 showVariableEditorWithOptions:v12 fromSourceRect:{x, y, width, height}];
+    variableUIDelegate2 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+    [variableUIDelegate2 showVariableEditorWithOptions:optionsCopy fromSourceRect:{x, y, width, height}];
   }
 }
 
-- (void)showParameterEditingHint:(id)a3
+- (void)showParameterEditingHint:(id)hint
 {
-  v7 = a3;
-  v4 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+  hintCopy = hint;
+  variableUIDelegate = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
-    [v6 showParameterEditingHint:v7];
+    variableUIDelegate2 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+    [variableUIDelegate2 showParameterEditingHint:hintCopy];
   }
 }
 
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
-  [v14 revealAction:v13 preScrollHandler:v12 goBackHandler:v11 scrolledAwayHandler:v10];
+  awayHandlerCopy = awayHandler;
+  backHandlerCopy = backHandler;
+  handlerCopy = handler;
+  actionCopy = action;
+  variableUIDelegate = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+  [variableUIDelegate revealAction:actionCopy preScrollHandler:handlerCopy goBackHandler:backHandlerCopy scrolledAwayHandler:awayHandlerCopy];
 }
 
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(WFModuleSummaryCoordinator *)self currentEditorIsEditing];
+  inputCopy = input;
+  handlerCopy = handler;
+  providerCopy = provider;
+  currentEditorIsEditing = [(WFModuleSummaryCoordinator *)self currentEditorIsEditing];
   [(WFModuleSummaryCoordinator *)self setCurrentEditorIsEditing:1];
-  v11 = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
+  variableUIDelegate = [(WFModuleSummaryCoordinator *)self variableUIDelegate];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __109__WFModuleSummaryCoordinator_showActionOutputPickerAllowingShortcutInput_variableProvider_completionHandler___block_invoke;
   v13[3] = &unk_279EDB868;
-  v15 = v10;
+  v15 = currentEditorIsEditing;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v11 showActionOutputPickerAllowingShortcutInput:v6 variableProvider:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [variableUIDelegate showActionOutputPickerAllowingShortcutInput:inputCopy variableProvider:providerCopy completionHandler:v13];
 }
 
 uint64_t __109__WFModuleSummaryCoordinator_showActionOutputPickerAllowingShortcutInput_variableProvider_completionHandler___block_invoke(uint64_t a1)
@@ -157,18 +157,18 @@ uint64_t __109__WFModuleSummaryCoordinator_showActionOutputPickerAllowingShortcu
   return result;
 }
 
-- (id)transformParameterStateForSerialization:(id)a3 arrayIndex:(unint64_t)a4 parameter:(id)a5
+- (id)transformParameterStateForSerialization:(id)serialization arrayIndex:(unint64_t)index parameter:(id)parameter
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 || a4 == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !v9) || (isKindOfClass & 1) != 0)
+  serializationCopy = serialization;
+  parameterCopy = parameter;
+  if (!serializationCopy || index == 0x7FFFFFFFFFFFFFFFLL || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !parameterCopy) || (isKindOfClass & 1) != 0)
   {
-    v17 = v8;
+    v17 = serializationCopy;
     goto LABEL_15;
   }
 
-  v11 = [v9 key];
+  v11 = [parameterCopy key];
   v12 = [(WFModuleSummaryCoordinator *)self currentParameterStateForParameterKey:v11];
 
   objc_opt_class();
@@ -178,33 +178,33 @@ uint64_t __109__WFModuleSummaryCoordinator_showActionOutputPickerAllowingShortcu
   }
 
   v13 = v12;
-  v14 = [v13 value];
-  v15 = [v14 count];
+  value = [v13 value];
+  v15 = [value count];
 
-  if (v15 <= a4)
+  if (v15 <= index)
   {
-    if ([v9 isRangedSizeArray])
+    if ([parameterCopy isRangedSizeArray])
     {
-      v18 = [v9 arrayMaxCountForWidgetFamily:3];
-      v19 = [v13 value];
-      v20 = [v19 count];
+      v18 = [parameterCopy arrayMaxCountForWidgetFamily:3];
+      value2 = [v13 value];
+      v20 = [value2 count];
 
       if (v20 < v18)
       {
-        v16 = [v13 stateByAppendingValue:v8];
+        v16 = [v13 stateByAppendingValue:serializationCopy];
         goto LABEL_14;
       }
     }
 
 LABEL_13:
-    v21 = objc_alloc([v9 multipleStateClass]);
-    v23[0] = v8;
+    v21 = objc_alloc([parameterCopy multipleStateClass]);
+    v23[0] = serializationCopy;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     v16 = [v21 initWithParameterStates:v13];
     goto LABEL_14;
   }
 
-  v16 = [v13 stateByReplacingValueAtIndex:a4 withValue:v8];
+  v16 = [v13 stateByReplacingValueAtIndex:index withValue:serializationCopy];
 LABEL_14:
   v17 = v16;
 
@@ -213,32 +213,32 @@ LABEL_15:
   return v17;
 }
 
-- (void)commitParameterState:(id)a3 forKey:(id)a4
+- (void)commitParameterState:(id)state forKey:(id)key
 {
-  v24 = a4;
-  v6 = a3;
-  v7 = [(WFModuleSummaryCoordinator *)self parameterForKey:v24];
-  v8 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  v9 = [v8 parameter];
-  v10 = [v9 key];
-  if ([v10 isEqualToString:v24])
+  keyCopy = key;
+  stateCopy = state;
+  v7 = [(WFModuleSummaryCoordinator *)self parameterForKey:keyCopy];
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  parameter = [currentEditor parameter];
+  v10 = [parameter key];
+  if ([v10 isEqualToString:keyCopy])
   {
-    v11 = [(WFModuleSummaryCoordinator *)self currentEditor];
-    v12 = [v11 arrayIndex];
+    currentEditor2 = [(WFModuleSummaryCoordinator *)self currentEditor];
+    arrayIndex = [currentEditor2 arrayIndex];
   }
 
   else
   {
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    arrayIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v13 = [(WFModuleSummaryCoordinator *)self transformParameterStateForSerialization:v6 arrayIndex:v12 parameter:v7];
+  v13 = [(WFModuleSummaryCoordinator *)self transformParameterStateForSerialization:stateCopy arrayIndex:arrayIndex parameter:v7];
 
-  v14 = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
-  [v14 removeObjectForKey:v24];
+  mutableStagedParameterStates = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
+  [mutableStagedParameterStates removeObjectForKey:keyCopy];
 
-  v15 = [(WFModuleSummaryCoordinator *)self parameterStates];
-  v16 = [v15 mutableCopy];
+  parameterStates = [(WFModuleSummaryCoordinator *)self parameterStates];
+  v16 = [parameterStates mutableCopy];
   v17 = v16;
   if (v16)
   {
@@ -254,12 +254,12 @@ LABEL_15:
 
   if (v13)
   {
-    [v19 setObject:v13 forKey:v24];
+    [v19 setObject:v13 forKey:keyCopy];
   }
 
   else
   {
-    [v19 removeObjectForKey:v24];
+    [v19 removeObjectForKey:keyCopy];
   }
 
   v20 = [v19 copy];
@@ -267,144 +267,144 @@ LABEL_15:
   self->_parameterStates = v20;
 
   [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:0];
-  v22 = [(WFModuleSummaryCoordinator *)self updateBlock];
+  updateBlock = [(WFModuleSummaryCoordinator *)self updateBlock];
 
-  if (v22)
+  if (updateBlock)
   {
-    v23 = [(WFModuleSummaryCoordinator *)self updateBlock];
-    (v23)[2](v23, v24, v13);
+    updateBlock2 = [(WFModuleSummaryCoordinator *)self updateBlock];
+    (updateBlock2)[2](updateBlock2, keyCopy, v13);
   }
 }
 
-- (void)summaryEditor:(id)a3 didCommitParameterState:(id)a4
+- (void)summaryEditor:(id)editor didCommitParameterState:(id)state
 {
-  v6 = a4;
-  v8 = [a3 parameter];
-  v7 = [v8 key];
-  [(WFModuleSummaryCoordinator *)self commitParameterState:v6 forKey:v7];
+  stateCopy = state;
+  parameter = [editor parameter];
+  v7 = [parameter key];
+  [(WFModuleSummaryCoordinator *)self commitParameterState:stateCopy forKey:v7];
 }
 
-- (void)summaryEditor:(id)a3 didStageParameterState:(id)a4
+- (void)summaryEditor:(id)editor didStageParameterState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 parameter];
-  v16 = [v8 key];
+  stateCopy = state;
+  editorCopy = editor;
+  parameter = [editorCopy parameter];
+  v16 = [parameter key];
 
-  v9 = [v7 arrayIndex];
-  v10 = [v7 parameter];
+  arrayIndex = [editorCopy arrayIndex];
+  parameter2 = [editorCopy parameter];
 
-  v11 = [(WFModuleSummaryCoordinator *)self transformParameterStateForSerialization:v6 arrayIndex:v9 parameter:v10];
+  v11 = [(WFModuleSummaryCoordinator *)self transformParameterStateForSerialization:stateCopy arrayIndex:arrayIndex parameter:parameter2];
 
-  v12 = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
-  v13 = v12;
+  mutableStagedParameterStates = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
+  v13 = mutableStagedParameterStates;
   if (v11)
   {
-    [v12 setObject:v11 forKey:v16];
+    [mutableStagedParameterStates setObject:v11 forKey:v16];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB68] null];
-    [v13 setObject:v14 forKey:v16];
+    null = [MEMORY[0x277CBEB68] null];
+    [v13 setObject:null forKey:v16];
   }
 
-  v15 = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
+  currentlyTypingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
 
-  if (!v15)
+  if (!currentlyTypingSlotIdentifier)
   {
     [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:0];
   }
 }
 
-- (void)summaryEditorDidFinish:(id)a3 returnToKeyboard:(BOOL)a4 withTextAttachmentToEdit:(id)a5
+- (void)summaryEditorDidFinish:(id)finish returnToKeyboard:(BOOL)keyboard withTextAttachmentToEdit:(id)edit
 {
-  v5 = a4;
-  v13 = a5;
-  v7 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+  keyboardCopy = keyboard;
+  editCopy = edit;
+  currentlyEditingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
   [(WFModuleSummaryCoordinator *)self destroyCurrentEditor];
-  if (v7)
+  if (currentlyEditingSlotIdentifier)
   {
-    if (v5)
+    if (keyboardCopy)
     {
-      v8 = [(WFModuleSummaryCoordinator *)self templateView];
-      [v8 selectSlotWithIdentifier:v7];
+      templateView = [(WFModuleSummaryCoordinator *)self templateView];
+      [templateView selectSlotWithIdentifier:currentlyEditingSlotIdentifier];
 
-      v9 = self;
-      v10 = v7;
+      selfCopy2 = self;
+      v10 = currentlyEditingSlotIdentifier;
       v11 = 0;
     }
 
     else
     {
-      if (!v13)
+      if (!editCopy)
       {
         goto LABEL_7;
       }
 
-      v12 = [(WFModuleSummaryCoordinator *)self templateView];
-      [v12 endTyping];
+      templateView2 = [(WFModuleSummaryCoordinator *)self templateView];
+      [templateView2 endTyping];
 
-      v9 = self;
-      v10 = v7;
-      v11 = v13;
+      selfCopy2 = self;
+      v10 = currentlyEditingSlotIdentifier;
+      v11 = editCopy;
     }
 
-    [(WFModuleSummaryCoordinator *)v9 beginEditingSlotWithIdentifier:v10 fromTextAttachment:v11];
+    [(WFModuleSummaryCoordinator *)selfCopy2 beginEditingSlotWithIdentifier:v10 fromTextAttachment:v11];
   }
 
 LABEL_7:
 }
 
-- (void)summaryEditorDidRequestTextEntry:(id)a3
+- (void)summaryEditorDidRequestTextEntry:(id)entry
 {
-  v4 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
-  [(WFModuleSummaryCoordinator *)self setCurrentlyTypingSlotIdentifier:v4];
+  currentlyEditingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+  [(WFModuleSummaryCoordinator *)self setCurrentlyTypingSlotIdentifier:currentlyEditingSlotIdentifier];
 
-  v6 = [(WFModuleSummaryCoordinator *)self templateView];
-  v5 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
-  [v6 beginTypingInSlotWithIdentifier:v5];
+  templateView = [(WFModuleSummaryCoordinator *)self templateView];
+  currentlyEditingSlotIdentifier2 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+  [templateView beginTypingInSlotWithIdentifier:currentlyEditingSlotIdentifier2];
 }
 
-- (void)summaryEditor:(id)a3 didRequestEditingSlotWithIdentifier:(id)a4
+- (void)summaryEditor:(id)editor didRequestEditingSlotWithIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(WFModuleSummaryCoordinator *)self currentEditor];
+  editorCopy = editor;
+  identifierCopy = identifier;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
 
-  if (v7 == v12)
+  if (currentEditor == editorCopy)
   {
-    v8 = [(WFModuleSummaryCoordinator *)self presentationAnchorForSlotWithIdentifier:v6];
+    v8 = [(WFModuleSummaryCoordinator *)self presentationAnchorForSlotWithIdentifier:identifierCopy];
     if (v8)
     {
       [(WFModuleSummaryCoordinator *)self setCurrentEditorIsEditing:1];
-      [(WFModuleSummaryCoordinator *)self setCurrentlyEditingSlotIdentifier:v6];
-      v9 = [(WFModuleSummaryCoordinator *)self delegate];
+      [(WFModuleSummaryCoordinator *)self setCurrentlyEditingSlotIdentifier:identifierCopy];
+      delegate = [(WFModuleSummaryCoordinator *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [(WFModuleSummaryCoordinator *)self delegate];
-        [v11 summaryCoordinatorWillBeginEditing:self];
+        delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+        [delegate2 summaryCoordinatorWillBeginEditing:self];
       }
 
-      [v12 beginEditingSlotWithIdentifier:v6 presentationAnchor:v8];
+      [editorCopy beginEditingSlotWithIdentifier:identifierCopy presentationAnchor:v8];
     }
   }
 }
 
-- (id)initialStateForSummaryEditor:(id)a3
+- (id)initialStateForSummaryEditor:(id)editor
 {
-  v4 = a3;
-  v5 = [(WFModuleSummaryCoordinator *)self parameterStates];
-  v6 = [v4 parameter];
-  v7 = [v6 key];
-  v8 = [v5 objectForKey:v7];
+  editorCopy = editor;
+  parameterStates = [(WFModuleSummaryCoordinator *)self parameterStates];
+  parameter = [editorCopy parameter];
+  v7 = [parameter key];
+  v8 = [parameterStates objectForKey:v7];
 
-  v9 = [v4 parameter];
+  parameter2 = [editorCopy parameter];
 
-  LODWORD(v4) = [v9 parameterStateIsValid:v8];
-  if (v4)
+  LODWORD(editorCopy) = [parameter2 parameterStateIsValid:v8];
+  if (editorCopy)
   {
     v10 = v8;
   }
@@ -417,20 +417,20 @@ LABEL_7:
   return v10;
 }
 
-- (void)cancelEditingWithCompletionHandler:(id)a3
+- (void)cancelEditingWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  if (v4)
+  handlerCopy = handler;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  if (currentEditor)
   {
-    v5 = [(WFModuleSummaryCoordinator *)self templateView];
-    [v5 endTyping];
+    templateView = [(WFModuleSummaryCoordinator *)self templateView];
+    [templateView endTyping];
 
     [(WFModuleSummaryCoordinator *)self destroyCurrentEditor];
-    [v4 setDelegate:0];
-    if (v7)
+    [currentEditor setDelegate:0];
+    if (handlerCopy)
     {
-      v6 = v7;
+      v6 = handlerCopy;
     }
 
     else
@@ -438,25 +438,25 @@ LABEL_7:
       v6 = &__block_literal_global_140;
     }
 
-    [v4 cancelEditingWithCompletionHandler:v6];
+    [currentEditor cancelEditingWithCompletionHandler:v6];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    v7[2]();
+    handlerCopy[2]();
   }
 }
 
-- (id)firstSlotIdentifierWithParameterKey:(id)a3
+- (id)firstSlotIdentifierWithParameterKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(WFModuleSummaryCoordinator *)self contents];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  contents = [(WFModuleSummaryCoordinator *)self contents];
+  v6 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -467,7 +467,7 @@ LABEL_7:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contents);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -475,9 +475,9 @@ LABEL_7:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 identifier];
-          v13 = [v12 parameterKey];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v11 identifier];
+          parameterKey = [identifier parameterKey];
+          v14 = [parameterKey isEqualToString:keyCopy];
 
           if (v14)
           {
@@ -487,7 +487,7 @@ LABEL_7:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -497,10 +497,10 @@ LABEL_7:
     }
   }
 
-  v12 = 0;
+  identifier = 0;
 LABEL_13:
 
-  return v12;
+  return identifier;
 }
 
 - (void)destroyCurrentEditor
@@ -509,59 +509,59 @@ LABEL_13:
   [(WFModuleSummaryCoordinator *)self setCurrentlyTypingSlotIdentifier:0];
   [(WFModuleSummaryCoordinator *)self setCurrentlyEditingSlotIdentifier:0];
   [(WFModuleSummaryCoordinator *)self setCurrentEditorIsEditing:0];
-  v3 = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
-  [v3 removeAllObjects];
+  mutableStagedParameterStates = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
+  [mutableStagedParameterStates removeAllObjects];
 
-  v4 = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
+  variableBeingEdited = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
 
-  if (v4)
+  if (variableBeingEdited)
   {
     [(WFModuleSummaryCoordinator *)self setVariableBeingEdited:0];
     [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:1];
   }
 
-  v5 = [(WFModuleSummaryCoordinator *)self delegate];
+  delegate = [(WFModuleSummaryCoordinator *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFModuleSummaryCoordinator *)self delegate];
-    [v7 summaryCoordinatorDidEndEditing:self];
+    delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+    [delegate2 summaryCoordinatorDidEndEditing:self];
   }
 
-  v8 = [(WFModuleSummaryCoordinator *)self templateView];
-  [v8 deselectSlot];
+  templateView = [(WFModuleSummaryCoordinator *)self templateView];
+  [templateView deselectSlot];
 }
 
-- (void)removeElementFromArrayAtIndex:(unint64_t)a3 forParameterKey:(id)a4
+- (void)removeElementFromArrayAtIndex:(unint64_t)index forParameterKey:(id)key
 {
-  v6 = a4;
-  v7 = [(WFModuleSummaryCoordinator *)self parameterForKey:v6];
+  keyCopy = key;
+  v7 = [(WFModuleSummaryCoordinator *)self parameterForKey:keyCopy];
   if (v7)
   {
-    v8 = [(WFModuleSummaryCoordinator *)self currentParameterStateForParameterKey:v6];
-    v9 = [(WFModuleSummaryCoordinator *)self updateBlock];
-    if (v9)
+    v8 = [(WFModuleSummaryCoordinator *)self currentParameterStateForParameterKey:keyCopy];
+    updateBlock = [(WFModuleSummaryCoordinator *)self updateBlock];
+    if (updateBlock)
     {
-      v10 = v9;
+      v10 = updateBlock;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v12 = v8;
-        v13 = [v12 value];
-        v14 = [v13 count];
+        value = [v12 value];
+        v14 = [value count];
 
-        if (v14 > a3)
+        if (v14 > index)
         {
-          v15 = [v12 stateByRemovingValueAtIndex:a3];
+          v15 = [v12 stateByRemovingValueAtIndex:index];
           v17[0] = MEMORY[0x277D85DD0];
           v17[1] = 3221225472;
           v17[2] = __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameterKey___block_invoke;
           v17[3] = &unk_279EDC130;
           v17[4] = self;
-          v18 = v6;
+          v18 = keyCopy;
           v19 = v15;
           v16 = v15;
           [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:v17];
@@ -577,55 +577,55 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (id)addElementToArrayForParameterKey:(id)a3
+- (id)addElementToArrayForParameterKey:(id)key
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFModuleSummaryCoordinator *)self parameterForKey:v4];
+  keyCopy = key;
+  v5 = [(WFModuleSummaryCoordinator *)self parameterForKey:keyCopy];
   if (v5)
   {
-    v6 = [(WFModuleSummaryCoordinator *)self currentParameterStateForParameterKey:v4];
+    v6 = [(WFModuleSummaryCoordinator *)self currentParameterStateForParameterKey:keyCopy];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 defaultStateForNewArrayElement];
+      defaultStateForNewArrayElement = [v5 defaultStateForNewArrayElement];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v6 stateByAppendingValue:v7];
+        v8 = [v6 stateByAppendingValue:defaultStateForNewArrayElement];
       }
 
       else
       {
         v10 = objc_alloc([v5 multipleStateClass]);
-        v22[0] = v7;
+        v22[0] = defaultStateForNewArrayElement;
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
         v8 = [v10 initWithParameterStates:v11];
       }
 
-      v12 = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
-      [v12 setObject:v8 forKey:v4];
+      mutableStagedParameterStates = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
+      [mutableStagedParameterStates setObject:v8 forKey:keyCopy];
 
-      v13 = [v8 value];
-      v14 = [v13 count] - 1;
+      value = [v8 value];
+      v14 = [value count] - 1;
 
-      v9 = [v5 moduleSummarySlotForState:v7];
-      v15 = [v9 identifier];
-      v16 = [v15 identifierBySettingParameterKey:v4 arrayIndex:v14];
+      v9 = [v5 moduleSummarySlotForState:defaultStateForNewArrayElement];
+      identifier = [v9 identifier];
+      v16 = [identifier identifierBySettingParameterKey:keyCopy arrayIndex:v14];
       [v9 setIdentifier:v16];
 
       [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:1];
-      v17 = [(WFModuleSummaryCoordinator *)self delegate];
-      LOBYTE(v15) = objc_opt_respondsToSelector();
+      delegate = [(WFModuleSummaryCoordinator *)self delegate];
+      LOBYTE(identifier) = objc_opt_respondsToSelector();
 
-      if (v15)
+      if (identifier)
       {
-        v18 = [(WFModuleSummaryCoordinator *)self delegate];
-        [v18 summaryCoordinatorDidInvalidateSize:self];
+        delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+        [delegate2 summaryCoordinatorDidInvalidateSize:self];
       }
 
-      v19 = [(WFModuleSummaryCoordinator *)self templateView];
-      v20 = [v9 identifier];
-      [v19 selectSlotWithIdentifier:v20];
+      templateView = [(WFModuleSummaryCoordinator *)self templateView];
+      identifier2 = [v9 identifier];
+      [templateView selectSlotWithIdentifier:identifier2];
     }
 
     else
@@ -642,49 +642,49 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
   return v9;
 }
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 fromTextAttachment:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier fromTextAttachment:(id)attachment
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = [(WFModuleSummaryCoordinator *)self currentEditor];
+  identifierCopy = identifier;
+  attachmentCopy = attachment;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
 
-  if (v8)
+  if (currentEditor)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFModuleSummaryCoordinator.m" lineNumber:364 description:@"There's an active editor that hasn't been cancelled"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFModuleSummaryCoordinator.m" lineNumber:364 description:@"There's an active editor that hasn't been cancelled"];
   }
 
-  v9 = [(WFModuleSummaryCoordinator *)self createSummaryEditorForSlotWithIdentifier:v22];
-  v10 = [(WFModuleSummaryCoordinator *)self presentationAnchorForSlotWithIdentifier:v22];
+  v9 = [(WFModuleSummaryCoordinator *)self createSummaryEditorForSlotWithIdentifier:identifierCopy];
+  v10 = [(WFModuleSummaryCoordinator *)self presentationAnchorForSlotWithIdentifier:identifierCopy];
   if (v10)
   {
-    v11 = [(WFModuleSummaryCoordinator *)self templateView];
-    v12 = [v22 key];
+    templateView = [(WFModuleSummaryCoordinator *)self templateView];
+    v12 = [identifierCopy key];
     v13 = v12;
-    if (v11 && v12)
+    if (templateView && v12)
     {
       [(WFModuleSummaryCoordinator *)self setCurrentEditor:v9];
-      [(WFModuleSummaryCoordinator *)self setCurrentlyEditingSlotIdentifier:v22];
+      [(WFModuleSummaryCoordinator *)self setCurrentlyEditingSlotIdentifier:identifierCopy];
       [(WFModuleSummaryCoordinator *)self setCurrentEditorIsEditing:1];
-      v14 = [(WFModuleSummaryCoordinator *)self delegate];
+      delegate = [(WFModuleSummaryCoordinator *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(WFModuleSummaryCoordinator *)self delegate];
-        [v16 summaryCoordinatorWillBeginEditing:self];
+        delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+        [delegate2 summaryCoordinatorWillBeginEditing:self];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v7 token];
-        if (v17)
+        token = [attachmentCopy token];
+        if (token)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = v17;
+            v18 = token;
           }
 
           else
@@ -700,9 +700,9 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
 
         v19 = v18;
 
-        v20 = [v19 variable];
+        variable = [v19 variable];
 
-        [(WFModuleSummaryCoordinator *)self setVariableBeingEdited:v20];
+        [(WFModuleSummaryCoordinator *)self setVariableBeingEdited:variable];
         [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:1];
       }
 
@@ -711,32 +711,32 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
         [v9 beginEditingNewArrayElementFromPresentationAnchor:v10];
       }
 
-      else if (v7)
+      else if (attachmentCopy)
       {
-        [v9 beginEditingTextAttachment:v7 inSlotWithIdentifier:v22 presentationAnchor:v10];
+        [v9 beginEditingTextAttachment:attachmentCopy inSlotWithIdentifier:identifierCopy presentationAnchor:v10];
       }
 
       else
       {
-        [v9 beginEditingSlotWithIdentifier:v22 presentationAnchor:v10];
+        [v9 beginEditingSlotWithIdentifier:identifierCopy presentationAnchor:v10];
       }
     }
   }
 }
 
-- (id)presentationAnchorForSlotWithIdentifier:(id)a3
+- (id)presentationAnchorForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFModuleSummaryCoordinator *)self templateView];
-  if (v5)
+  identifierCopy = identifier;
+  templateView = [(WFModuleSummaryCoordinator *)self templateView];
+  if (templateView)
   {
-    v6 = [(WFModuleSummaryCoordinator *)self delegate];
-    v7 = [v6 viewControllerForCoordinator:self];
+    delegate = [(WFModuleSummaryCoordinator *)self delegate];
+    v7 = [delegate viewControllerForCoordinator:self];
 
     if (v7)
     {
-      [v5 sourceRectForSlotWithIdentifier:v4];
-      v12 = [[WFModalPresentationAnchor alloc] initWithSourceViewController:v7 sourceView:v5 sourceRect:v8, v9, v10, v11];
+      [templateView sourceRectForSlotWithIdentifier:identifierCopy];
+      v12 = [[WFModalPresentationAnchor alloc] initWithSourceViewController:v7 sourceView:templateView sourceRect:v8, v9, v10, v11];
     }
 
     else
@@ -753,27 +753,27 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
   return v12;
 }
 
-- (id)createSummaryEditorForSlotWithIdentifier:(id)a3
+- (id)createSummaryEditorForSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 parameterKey];
-  v6 = [v4 key];
-  v7 = [v4 arrayIndex];
+  identifierCopy = identifier;
+  parameterKey = [identifierCopy parameterKey];
+  v6 = [identifierCopy key];
+  arrayIndex = [identifierCopy arrayIndex];
 
   v8 = 0;
-  if (v5 && v6)
+  if (parameterKey && v6)
   {
-    v9 = [(WFModuleSummaryCoordinator *)self parameterForKey:v5];
+    v9 = [(WFModuleSummaryCoordinator *)self parameterForKey:parameterKey];
     if (v9)
     {
-      v8 = [objc_alloc(-[WFModuleSummaryCoordinator editorClassForParameter:](self editorClassForParameter:{v9)), "initWithParameter:arrayIndex:processing:", v9, v7, -[WFModuleSummaryCoordinator processing](self, "processing")}];
+      v8 = [objc_alloc(-[WFModuleSummaryCoordinator editorClassForParameter:](self editorClassForParameter:{v9)), "initWithParameter:arrayIndex:processing:", v9, arrayIndex, -[WFModuleSummaryCoordinator processing](self, "processing")}];
       [v8 setDelegate:self];
-      v10 = [(WFModuleSummaryCoordinator *)self variableProvider];
-      [v8 setVariableProvider:v10];
+      variableProvider = [(WFModuleSummaryCoordinator *)self variableProvider];
+      [v8 setVariableProvider:variableProvider];
 
       [v8 setVariableUIDelegate:self];
-      v11 = [(WFModuleSummaryCoordinator *)self auxiliaryViewPresenter];
-      [v8 setAuxiliaryViewPresenter:v11];
+      auxiliaryViewPresenter = [(WFModuleSummaryCoordinator *)self auxiliaryViewPresenter];
+      [v8 setAuxiliaryViewPresenter:auxiliaryViewPresenter];
 
       [v8 setAllowsPickingVariables:{-[WFModuleSummaryCoordinator allowsPickingVariables](self, "allowsPickingVariables")}];
     }
@@ -787,18 +787,18 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
   return v8;
 }
 
-- (Class)editorClassForParameter:(id)a3
+- (Class)editorClassForParameter:(id)parameter
 {
   v3 = objc_opt_class();
 
   return WFModuleSummaryEditorClassForParameterClass(v3);
 }
 
-- (id)currentParameterStateForParameterKey:(id)a3
+- (id)currentParameterStateForParameterKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFModuleSummaryCoordinator *)self stagedParameterStates];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  stagedParameterStates = [(WFModuleSummaryCoordinator *)self stagedParameterStates];
+  v6 = [stagedParameterStates objectForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -807,23 +807,23 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
 
   else
   {
-    v9 = [(WFModuleSummaryCoordinator *)self parameterStates];
-    v8 = [v9 objectForKey:v4];
+    parameterStates = [(WFModuleSummaryCoordinator *)self parameterStates];
+    v8 = [parameterStates objectForKey:keyCopy];
   }
 
   return v8;
 }
 
-- (id)parameterForKey:(id)a3
+- (id)parameterForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WFModuleSummaryCoordinator *)self parameters];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  parameters = [(WFModuleSummaryCoordinator *)self parameters];
+  v6 = [parameters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -833,12 +833,12 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(parameters);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = [v9 key];
-        v11 = [v10 isEqualToString:v4];
+        v11 = [v10 isEqualToString:keyCopy];
 
         if (v11)
         {
@@ -847,7 +847,7 @@ void __76__WFModuleSummaryCoordinator_removeElementFromArrayAtIndex_forParameter
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [parameters countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -864,80 +864,80 @@ LABEL_11:
 
 - (NSDictionary)stagedParameterStates
 {
-  v2 = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
-  v3 = [v2 copy];
+  mutableStagedParameterStates = [(WFModuleSummaryCoordinator *)self mutableStagedParameterStates];
+  v3 = [mutableStagedParameterStates copy];
 
   return v3;
 }
 
-- (void)slotTemplateView:(id)a3 outputButtonDidChange:(BOOL)a4
+- (void)slotTemplateView:(id)view outputButtonDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(WFModuleSummaryCoordinator *)self delegate];
+  changeCopy = change;
+  delegate = [(WFModuleSummaryCoordinator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WFModuleSummaryCoordinator *)self delegate];
-    [v8 summaryCoordinator:self outputButtonDidChange:v4];
+    delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+    [delegate2 summaryCoordinator:self outputButtonDidChange:changeCopy];
   }
 }
 
-- (void)slotTemplateView:(id)a3 disclosureArrowDidChange:(BOOL)a4
+- (void)slotTemplateView:(id)view disclosureArrowDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(WFModuleSummaryCoordinator *)self delegate];
+  changeCopy = change;
+  delegate = [(WFModuleSummaryCoordinator *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WFModuleSummaryCoordinator *)self delegate];
-    [v8 summaryCoordinator:self disclosureArrowDidChange:v4];
+    delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+    [delegate2 summaryCoordinator:self disclosureArrowDidChange:changeCopy];
   }
 }
 
-- (void)slotTemplateViewDidInvalidateSize:(id)a3
+- (void)slotTemplateViewDidInvalidateSize:(id)size
 {
-  v4 = [(WFModuleSummaryCoordinator *)self delegate];
+  delegate = [(WFModuleSummaryCoordinator *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFModuleSummaryCoordinator *)self delegate];
-    [v6 summaryCoordinatorDidInvalidateSize:self];
+    delegate2 = [(WFModuleSummaryCoordinator *)self delegate];
+    [delegate2 summaryCoordinatorDidInvalidateSize:self];
   }
 }
 
-- (void)slotTemplateView:(id)a3 deletePressedOnSlotWithIdentifier:(id)a4 allowResettingValue:(BOOL)a5
+- (void)slotTemplateView:(id)view deletePressedOnSlotWithIdentifier:(id)identifier allowResettingValue:(BOOL)value
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [v7 parameterKey];
-  if (v8)
+  valueCopy = value;
+  identifierCopy = identifier;
+  parameterKey = [identifierCopy parameterKey];
+  if (parameterKey)
   {
-    v9 = [v7 key];
+    v9 = [identifierCopy key];
     v10 = [v9 isEqualToString:@"_array_add_"];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v7 arrayIndex];
-      if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+      arrayIndex = [identifierCopy arrayIndex];
+      if (arrayIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (v5)
+        if (valueCopy)
         {
-          v12 = [(WFModuleSummaryCoordinator *)self parameterForKey:v8];
+          v12 = [(WFModuleSummaryCoordinator *)self parameterForKey:parameterKey];
           if (v12)
           {
-            v13 = [(WFModuleSummaryCoordinator *)self updateBlock];
+            updateBlock = [(WFModuleSummaryCoordinator *)self updateBlock];
 
-            if (v13)
+            if (updateBlock)
             {
               v14[0] = MEMORY[0x277D85DD0];
               v14[1] = 3221225472;
               v14[2] = __101__WFModuleSummaryCoordinator_slotTemplateView_deletePressedOnSlotWithIdentifier_allowResettingValue___block_invoke;
               v14[3] = &unk_279EDBC70;
               v14[4] = self;
-              v15 = v8;
+              v15 = parameterKey;
               [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:v14];
             }
           }
@@ -946,7 +946,7 @@ LABEL_11:
 
       else
       {
-        [(WFModuleSummaryCoordinator *)self removeElementFromArrayAtIndex:v11 forParameterKey:v8];
+        [(WFModuleSummaryCoordinator *)self removeElementFromArrayAtIndex:arrayIndex forParameterKey:parameterKey];
       }
     }
   }
@@ -958,71 +958,71 @@ void __101__WFModuleSummaryCoordinator_slotTemplateView_deletePressedOnSlotWithI
   (*(v2 + 2))(v2, *(a1 + 40), 0);
 }
 
-- (void)slotTemplateView:(id)a3 didEndTypingInSlotWithIdentifier:(id)a4
+- (void)slotTemplateView:(id)view didEndTypingInSlotWithIdentifier:(id)identifier
 {
-  v4 = [(WFModuleSummaryCoordinator *)self currentEditor:a3];
+  v4 = [(WFModuleSummaryCoordinator *)self currentEditor:view];
   [v4 textEntryDidFinish];
 }
 
-- (void)slotTemplateView:(id)a3 typingDidPasteWithRange:(_NSRange)a4 originalBlock:(id)a5
+- (void)slotTemplateView:(id)view typingDidPasteWithRange:(_NSRange)range originalBlock:(id)block
 {
-  v6 = a5;
-  v7 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v7 textEntryDidPasteWithOriginalBlock:v6];
+  blockCopy = block;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor textEntryDidPasteWithOriginalBlock:blockCopy];
 }
 
-- (void)slotTemplateView:(id)a3 typingDidCopyWithOriginalBlock:(id)a4
+- (void)slotTemplateView:(id)view typingDidCopyWithOriginalBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v6 textEntryDidCopyWithOriginalBlock:v5];
+  blockCopy = block;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor textEntryDidCopyWithOriginalBlock:blockCopy];
 }
 
-- (void)slotTemplateView:(id)a3 typingDidCutWithOriginalBlock:(id)a4
+- (void)slotTemplateView:(id)view typingDidCutWithOriginalBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v6 textEntryDidCutWithOriginalBlock:v5];
+  blockCopy = block;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor textEntryDidCutWithOriginalBlock:blockCopy];
 }
 
-- (void)slotTemplateView:(id)a3 didChangeText:(id)a4 forSlotWithIdentifier:(id)a5
+- (void)slotTemplateView:(id)view didChangeText:(id)text forSlotWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v7 textEntryTextDidChange:v6];
+  textCopy = text;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor textEntryTextDidChange:textCopy];
 }
 
-- (BOOL)slotTemplateView:(id)a3 shouldChangeText:(id)a4 forSlotWithIdentifier:(id)a5
+- (BOOL)slotTemplateView:(id)view shouldChangeText:(id)text forSlotWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  v8 = [v7 textEntryShouldChangeText:v6];
+  textCopy = text;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  v8 = [currentEditor textEntryShouldChangeText:textCopy];
 
   return v8;
 }
 
-- (void)slotTemplateView:(id)a3 willBeginTypingInSlotWithIdentifier:(id)a4 usingTextEntry:(id)a5 allowMultipleLines:(BOOL *)a6
+- (void)slotTemplateView:(id)view willBeginTypingInSlotWithIdentifier:(id)identifier usingTextEntry:(id)entry allowMultipleLines:(BOOL *)lines
 {
-  v8 = a5;
-  v9 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v9 textEntryWillBegin:v8 allowMultipleLines:a6];
+  entryCopy = entry;
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor textEntryWillBegin:entryCopy allowMultipleLines:lines];
 }
 
-- (void)slotTemplateView:(id)a3 didTapTextAttachment:(id)a4 inSlotWithIdentifier:(id)a5
+- (void)slotTemplateView:(id)view didTapTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
-    v10 = [v9 token];
-    if (v10)
+    v9 = attachmentCopy;
+    token = [v9 token];
+    if (token)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = token;
       }
 
       else
@@ -1038,11 +1038,11 @@ void __101__WFModuleSummaryCoordinator_slotTemplateView_deletePressedOnSlotWithI
 
     v12 = v11;
 
-    v13 = [v12 variable];
+    variable = [v12 variable];
 
-    v14 = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
+    variableBeingEdited = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
 
-    if (v13 == v14)
+    if (variable == variableBeingEdited)
     {
       [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:0];
 
@@ -1055,31 +1055,31 @@ void __101__WFModuleSummaryCoordinator_slotTemplateView_deletePressedOnSlotWithI
   v15[2] = __89__WFModuleSummaryCoordinator_slotTemplateView_didTapTextAttachment_inSlotWithIdentifier___block_invoke;
   v15[3] = &unk_279EDC130;
   v15[4] = self;
-  v16 = v8;
-  v17 = v7;
+  v16 = identifierCopy;
+  v17 = attachmentCopy;
   [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:v15];
 
 LABEL_10:
 }
 
-- (BOOL)slotTemplateView:(id)a3 shouldTapTextAttachment:(id)a4 inSlotWithIdentifier:(id)a5
+- (BOOL)slotTemplateView:(id)view shouldTapTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 parameterKey];
-  v10 = [v8 key];
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  parameterKey = [identifierCopy parameterKey];
+  v10 = [identifierCopy key];
   v11 = v10;
   v12 = 0;
-  if (v9 && v10)
+  if (parameterKey && v10)
   {
-    v13 = [(WFModuleSummaryCoordinator *)self parameterForKey:v9];
-    v12 = [(objc_class *)[(WFModuleSummaryCoordinator *)self editorClassForParameter:v13] supportsEditingTextAttachment:v7 inSlotWithIdentifier:v8];
+    v13 = [(WFModuleSummaryCoordinator *)self parameterForKey:parameterKey];
+    v12 = [(objc_class *)[(WFModuleSummaryCoordinator *)self editorClassForParameter:v13] supportsEditingTextAttachment:attachmentCopy inSlotWithIdentifier:identifierCopy];
   }
 
   return v12;
 }
 
-- (void)menuDidDismissInSlotTemplateView:(id)a3
+- (void)menuDidDismissInSlotTemplateView:(id)view
 {
   if (![(WFModuleSummaryCoordinator *)self currentEditorIsEditing])
   {
@@ -1088,11 +1088,11 @@ LABEL_10:
   }
 }
 
-- (id)slotTemplateView:(id)a3 menuForSlotIdentifier:(id)a4 style:(unint64_t)a5
+- (id)slotTemplateView:(id)view menuForSlotIdentifier:(id)identifier style:(unint64_t)style
 {
-  v7 = a4;
-  v8 = [(WFModuleSummaryCoordinator *)self createSummaryEditorForSlotWithIdentifier:v7];
-  v9 = [v8 menuForSlotWithIdentifier:v7 style:a5];
+  identifierCopy = identifier;
+  v8 = [(WFModuleSummaryCoordinator *)self createSummaryEditorForSlotWithIdentifier:identifierCopy];
+  v9 = [v8 menuForSlotWithIdentifier:identifierCopy style:style];
   if (v9)
   {
     v12[0] = MEMORY[0x277D85DD0];
@@ -1101,7 +1101,7 @@ LABEL_10:
     v12[3] = &unk_279EDC130;
     v12[4] = self;
     v13 = v8;
-    v14 = v7;
+    v14 = identifierCopy;
     [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:v12];
     v10 = v9;
   }
@@ -1118,19 +1118,19 @@ uint64_t __75__WFModuleSummaryCoordinator_slotTemplateView_menuForSlotIdentifier
   return [v3 setCurrentlyEditingSlotIdentifier:v2];
 }
 
-- (void)slotTemplateView:(id)a3 didSelectSlotWithIdentifier:(id)a4
+- (void)slotTemplateView:(id)view didSelectSlotWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__WFModuleSummaryCoordinator_slotTemplateView_didSelectSlotWithIdentifier___block_invoke;
   v10[3] = &unk_279EDC130;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = viewCopy;
+  selfCopy = self;
+  v8 = viewCopy;
+  v9 = identifierCopy;
   [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:v10];
 }
 
@@ -1158,26 +1158,26 @@ void __75__WFModuleSummaryCoordinator_slotTemplateView_didSelectSlotWithIdentifi
   [a1[6] beginEditingSlotWithIdentifier:v8 fromTextAttachment:0];
 }
 
-- (void)setVariableProvider:(id)a3
+- (void)setVariableProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_variableProvider, v4);
-  v5 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v5 setVariableProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_variableProvider, providerCopy);
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor setVariableProvider:providerCopy];
 }
 
-- (void)slotTemplateViewTintColorDidChange:(id)a3
+- (void)slotTemplateViewTintColorDidChange:(id)change
 {
-  v3 = [(WFModuleSummaryCoordinator *)self currentEditor];
-  [v3 sourceViewTintColorDidChange];
+  currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+  [currentEditor sourceViewTintColorDidChange];
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = self->_parameters;
-  v6 = v4;
+  v6 = parametersCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -1271,15 +1271,15 @@ void __75__WFModuleSummaryCoordinator_slotTemplateView_didSelectSlotWithIdentifi
 LABEL_27:
 }
 
-- (void)setSummaryFormatString:(id)a3 withParameters:(id)a4 editableParameters:(id)a5 parameterStates:(id)a6
+- (void)setSummaryFormatString:(id)string withParameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v50 = a4;
-  v11 = a5;
-  v51 = a6;
+  stringCopy = string;
+  parametersCopy = parameters;
+  editableParametersCopy = editableParameters;
+  statesCopy = states;
   summaryFormatString = self->_summaryFormatString;
-  v13 = v10;
+  v13 = stringCopy;
   v14 = summaryFormatString;
   v15 = v14;
   if (v14 == v13)
@@ -1292,11 +1292,11 @@ LABEL_27:
   if (!v13)
   {
 LABEL_6:
-    v17 = v50;
+    v17 = parametersCopy;
     goto LABEL_7;
   }
 
-  v17 = v50;
+  v17 = parametersCopy;
   if (v14)
   {
     v16 = [(NSString *)v13 isEqualToString:v14];
@@ -1305,10 +1305,10 @@ LABEL_6:
 LABEL_7:
 
   editableParameters = self->_editableParameters;
-  v19 = v11;
-  v20 = editableParameters;
-  v21 = v20;
-  if (v20 == v19)
+  v19 = editableParametersCopy;
+  editableParametersCopy2 = editableParameters;
+  v21 = editableParametersCopy2;
+  if (editableParametersCopy2 == v19)
   {
     v22 = 1;
   }
@@ -1316,9 +1316,9 @@ LABEL_7:
   else
   {
     v22 = 0;
-    if (v19 && v20)
+    if (v19 && editableParametersCopy2)
     {
-      v22 = [(NSSet *)v19 isEqual:v20];
+      v22 = [(NSSet *)v19 isEqual:editableParametersCopy2];
     }
   }
 
@@ -1326,9 +1326,9 @@ LABEL_7:
   {
     parameters = self->_parameters;
     v24 = v17;
-    v25 = parameters;
-    v26 = v25;
-    if (v25 == v24)
+    parametersCopy2 = parameters;
+    v26 = parametersCopy2;
+    if (parametersCopy2 == v24)
     {
 
       if (!v22)
@@ -1339,14 +1339,14 @@ LABEL_7:
 
     else
     {
-      if (!v24 || !v25)
+      if (!v24 || !parametersCopy2)
       {
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      v27 = [v24 isEqual:v25] & v22;
+      v27 = [v24 isEqual:parametersCopy2] & v22;
 
       if ((v27 & 1) == 0)
       {
@@ -1355,7 +1355,7 @@ LABEL_24:
     }
 
     parameterStates = self->_parameterStates;
-    v24 = v51;
+    v24 = statesCopy;
     v29 = parameterStates;
     v26 = v29;
     if (v29 == v24)
@@ -1389,7 +1389,7 @@ LABEL_25:
   v34 = self->_editableParameters;
   self->_editableParameters = v33;
 
-  v35 = [v51 copy];
+  v35 = [statesCopy copy];
   v36 = self->_parameterStates;
   self->_parameterStates = v35;
 
@@ -1402,17 +1402,17 @@ LABEL_25:
   }
 
   [(WFModuleSummaryCoordinator *)self updateTemplateContentsAnimated:v22 ^ 1u];
-  v38 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+  currentlyEditingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
 
-  if (v38)
+  if (currentlyEditingSlotIdentifier)
   {
     v49 = v13;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v39 = [(WFModuleSummaryCoordinator *)self contents];
-    v40 = [v39 countByEnumeratingWithState:&v52 objects:v56 count:16];
+    contents = [(WFModuleSummaryCoordinator *)self contents];
+    v40 = [contents countByEnumeratingWithState:&v52 objects:v56 count:16];
     if (v40)
     {
       v41 = v40;
@@ -1423,16 +1423,16 @@ LABEL_25:
         {
           if (*v53 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(contents);
           }
 
           v44 = *(*(&v52 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v45 = [v44 identifier];
-            v46 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
-            v47 = [v45 isEqual:v46];
+            identifier = [v44 identifier];
+            currentlyEditingSlotIdentifier2 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+            v47 = [identifier isEqual:currentlyEditingSlotIdentifier2];
 
             if (v47)
             {
@@ -1442,7 +1442,7 @@ LABEL_25:
           }
         }
 
-        v41 = [v39 countByEnumeratingWithState:&v52 objects:v56 count:16];
+        v41 = [contents countByEnumeratingWithState:&v52 objects:v56 count:16];
         if (v41)
         {
           continue;
@@ -1452,55 +1452,55 @@ LABEL_25:
       }
     }
 
-    v48 = [(WFModuleSummaryCoordinator *)self currentEditor];
-    [v48 setDelegate:0];
+    currentEditor = [(WFModuleSummaryCoordinator *)self currentEditor];
+    [currentEditor setDelegate:0];
 
     [(WFModuleSummaryCoordinator *)self cancelEditingWithCompletionHandler:0];
 LABEL_39:
     v13 = v49;
-    v17 = v50;
+    v17 = parametersCopy;
   }
 
 LABEL_40:
 }
 
-- (void)updateTemplateContentsAnimated:(BOOL)a3
+- (void)updateTemplateContentsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_opt_class();
-  v6 = [(WFModuleSummaryCoordinator *)self stagedParameterStates];
-  v7 = [(WFModuleSummaryCoordinator *)self parameterStates];
-  v15 = [v5 parameterStatesByApplyingStaging:v6 toOriginal:v7];
+  stagedParameterStates = [(WFModuleSummaryCoordinator *)self stagedParameterStates];
+  parameterStates = [(WFModuleSummaryCoordinator *)self parameterStates];
+  v15 = [v5 parameterStatesByApplyingStaging:stagedParameterStates toOriginal:parameterStates];
 
-  v8 = [(WFModuleSummaryCoordinator *)self templateBuilder];
-  v9 = [(WFModuleSummaryCoordinator *)self parameters];
-  v10 = [(WFModuleSummaryCoordinator *)self editableParameters];
-  v11 = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
-  v12 = [v8 buildContentWithParameters:v9 editableParameters:v10 parameterStates:v15 variableBeingEdited:v11];
+  templateBuilder = [(WFModuleSummaryCoordinator *)self templateBuilder];
+  parameters = [(WFModuleSummaryCoordinator *)self parameters];
+  editableParameters = [(WFModuleSummaryCoordinator *)self editableParameters];
+  variableBeingEdited = [(WFModuleSummaryCoordinator *)self variableBeingEdited];
+  v12 = [templateBuilder buildContentWithParameters:parameters editableParameters:editableParameters parameterStates:v15 variableBeingEdited:variableBeingEdited];
   [(WFModuleSummaryCoordinator *)self setContents:v12];
 
-  v13 = [(WFModuleSummaryCoordinator *)self templateView];
-  v14 = [(WFModuleSummaryCoordinator *)self contents];
-  [v13 setContents:v14 animated:v3];
+  templateView = [(WFModuleSummaryCoordinator *)self templateView];
+  contents = [(WFModuleSummaryCoordinator *)self contents];
+  [templateView setContents:contents animated:animatedCopy];
 }
 
-- (void)setTemplateView:(id)a3
+- (void)setTemplateView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_templateView = &self->_templateView;
-  v7 = self->_templateView;
-  v8 = v5;
+  currentlyTypingSlotIdentifier2 = self->_templateView;
+  v8 = viewCopy;
   v15 = v8;
-  if (v7 == v8)
+  if (currentlyTypingSlotIdentifier2 == v8)
   {
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  if (v8 && v7)
+  if (v8 && currentlyTypingSlotIdentifier2)
   {
-    v9 = [(WFSlotTemplateView *)v7 isEqual:v8];
+    v9 = [(WFSlotTemplateView *)currentlyTypingSlotIdentifier2 isEqual:v8];
 
     if (v9)
     {
@@ -1514,31 +1514,31 @@ LABEL_13:
 
   [(WFSlotTemplateView *)*p_templateView setDelegate:0];
   [(WFSlotTemplateView *)*p_templateView deselectSlot];
-  v10 = [(WFSlotTemplateView *)*p_templateView typingSlotIdentifier];
+  typingSlotIdentifier = [(WFSlotTemplateView *)*p_templateView typingSlotIdentifier];
 
-  if (v10)
+  if (typingSlotIdentifier)
   {
     [(WFSlotTemplateView *)*p_templateView endTyping];
   }
 
-  objc_storeStrong(&self->_templateView, a3);
+  objc_storeStrong(&self->_templateView, view);
   [(WFSlotTemplateView *)v15 setDelegate:self];
-  v11 = [(WFModuleSummaryCoordinator *)self contents];
-  [(WFSlotTemplateView *)v15 setContents:v11 animated:0];
+  contents = [(WFModuleSummaryCoordinator *)self contents];
+  [(WFSlotTemplateView *)v15 setContents:contents animated:0];
 
-  v12 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+  currentlyEditingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
 
-  if (v12)
+  if (currentlyEditingSlotIdentifier)
   {
-    v13 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
-    [(WFSlotTemplateView *)v15 selectSlotWithIdentifier:v13];
+    currentlyEditingSlotIdentifier2 = [(WFModuleSummaryCoordinator *)self currentlyEditingSlotIdentifier];
+    [(WFSlotTemplateView *)v15 selectSlotWithIdentifier:currentlyEditingSlotIdentifier2];
 
-    v14 = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
+    currentlyTypingSlotIdentifier = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
 
-    if (v14)
+    if (currentlyTypingSlotIdentifier)
     {
-      v7 = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
-      [(WFSlotTemplateView *)v15 beginTypingInSlotWithIdentifier:v7];
+      currentlyTypingSlotIdentifier2 = [(WFModuleSummaryCoordinator *)self currentlyTypingSlotIdentifier];
+      [(WFSlotTemplateView *)v15 beginTypingInSlotWithIdentifier:currentlyTypingSlotIdentifier2];
       goto LABEL_13;
     }
   }
@@ -1567,17 +1567,17 @@ LABEL_14:
   return v2;
 }
 
-+ (double)heightForWidth:(double)a3 withSummaryFormatString:(id)a4 parameters:(id)a5 editableParameters:(id)a6 parameterStates:(id)a7 stagedParameterStates:(id)a8 horizontalPadding:(double)a9 font:(id)a10 unpopulatedFont:(id)a11 textAlignment:(int64_t)a12
++ (double)heightForWidth:(double)width withSummaryFormatString:(id)string parameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states stagedParameterStates:(id)parameterStates horizontalPadding:(double)padding font:(id)self0 unpopulatedFont:(id)self1 textAlignment:(int64_t)self2
 {
-  v20 = a10;
-  v21 = a11;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = [a1 parameterStatesByApplyingStaging:a8 toOriginal:a7];
-  v26 = [[WFModuleSummaryTemplateBuilder alloc] initWithFormatString:v24];
+  fontCopy = font;
+  unpopulatedFontCopy = unpopulatedFont;
+  editableParametersCopy = editableParameters;
+  parametersCopy = parameters;
+  stringCopy = string;
+  v25 = [self parameterStatesByApplyingStaging:parameterStates toOriginal:states];
+  v26 = [[WFModuleSummaryTemplateBuilder alloc] initWithFormatString:stringCopy];
 
-  v27 = [(WFModuleSummaryTemplateBuilder *)v26 buildContentWithParameters:v23 editableParameters:v22 parameterStates:v25 variableBeingEdited:0];
+  v27 = [(WFModuleSummaryTemplateBuilder *)v26 buildContentWithParameters:parametersCopy editableParameters:editableParametersCopy parameterStates:v25 variableBeingEdited:0];
 
   if ([v27 count])
   {
@@ -1586,10 +1586,10 @@ LABEL_14:
     v33[1] = 3221225472;
     v33[2] = __190__WFModuleSummaryCoordinator_heightForWidth_withSummaryFormatString_parameters_editableParameters_parameterStates_stagedParameterStates_horizontalPadding_font_unpopulatedFont_textAlignment___block_invoke;
     v33[3] = &unk_279EDB840;
-    v29 = v20;
+    v29 = fontCopy;
     v34 = v29;
     [v28 enumerateVariableAttachmentsInContents:v27 withBlock:v33];
-    [MEMORY[0x277D7D7C0] heightForWidth:v27 withContents:v29 horizontalPadding:v21 font:a12 unpopulatedFont:0 alignment:a3 useCase:a9];
+    [MEMORY[0x277D7D7C0] heightForWidth:v27 withContents:v29 horizontalPadding:unpopulatedFontCopy font:alignment unpopulatedFont:0 alignment:width useCase:padding];
     v31 = v30;
   }
 
@@ -1601,14 +1601,14 @@ LABEL_14:
   return v31;
 }
 
-+ (id)parameterStatesByApplyingStaging:(id)a3 toOriginal:(id)a4
++ (id)parameterStatesByApplyingStaging:(id)staging toOriginal:(id)original
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if ([v5 count])
+  stagingCopy = staging;
+  originalCopy = original;
+  v7 = originalCopy;
+  if ([stagingCopy count])
   {
-    v8 = [v6 mutableCopy];
+    v8 = [originalCopy mutableCopy];
     v9 = v8;
     if (v8)
     {
@@ -1628,7 +1628,7 @@ LABEL_14:
     v14[3] = &unk_279EDB818;
     v12 = v11;
     v15 = v12;
-    [v5 enumerateKeysAndObjectsUsingBlock:v14];
+    [stagingCopy enumerateKeysAndObjectsUsingBlock:v14];
     v7 = v12;
   }
 
@@ -1653,17 +1653,17 @@ void __74__WFModuleSummaryCoordinator_parameterStatesByApplyingStaging_toOrigina
   }
 }
 
-+ (void)enumerateVariableAttachmentsInContents:(id)a3 withBlock:(id)a4
++ (void)enumerateVariableAttachmentsInContents:(id)contents withBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v16 = a4;
-  obj = v5;
+  contentsCopy = contents;
+  blockCopy = block;
+  obj = contentsCopy;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v6 = [contentsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1684,15 +1684,15 @@ void __74__WFModuleSummaryCoordinator_parameterStatesByApplyingStaging_toOrigina
         if (objc_opt_isKindOfClass())
         {
           v12 = v11;
-          v13 = [v12 contentAttributedString];
-          v14 = [v12 contentAttributedString];
-          v15 = [v14 length];
+          contentAttributedString = [v12 contentAttributedString];
+          contentAttributedString2 = [v12 contentAttributedString];
+          v15 = [contentAttributedString2 length];
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = __79__WFModuleSummaryCoordinator_enumerateVariableAttachmentsInContents_withBlock___block_invoke;
           v18[3] = &unk_279EDB7F0;
-          v19 = v16;
-          [v13 enumerateAttribute:v9 inRange:0 options:v15 usingBlock:{0, v18}];
+          v19 = blockCopy;
+          [contentAttributedString enumerateAttribute:v9 inRange:0 options:v15 usingBlock:{0, v18}];
         }
 
         ++v10;

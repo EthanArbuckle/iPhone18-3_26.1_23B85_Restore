@@ -1,23 +1,23 @@
 @interface DOCModalBlurViewControllerTransition
 - (_TtC26DocumentManagerExecutables36DOCModalBlurViewControllerTransition)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation DOCModalBlurViewControllerTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables36DOCModalBlurViewControllerTransition_direction);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   if (v5)
   {
-    DOCModalBlurViewControllerTransition.dismiss(using:)(a3);
+    DOCModalBlurViewControllerTransition.dismiss(using:)(transition);
   }
 
   else
   {
-    DOCModalBlurViewControllerTransition.present(using:)(a3);
+    DOCModalBlurViewControllerTransition.present(using:)(transition);
   }
 
   swift_unknownObjectRelease();

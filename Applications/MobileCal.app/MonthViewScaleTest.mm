@@ -9,12 +9,12 @@
   v3 = +[CUIKPreferences sharedPreferences];
   [v3 setMonthViewScaleSize:1];
 
-  v4 = [(ApplicationTest *)self application];
-  v7 = [v4 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
-  v5 = [v7 resetToMonthView];
+  resetToMonthView = [rootNavigationController resetToMonthView];
   monthViewController = self->_monthViewController;
-  self->_monthViewController = v5;
+  self->_monthViewController = resetToMonthView;
 }
 
 @end

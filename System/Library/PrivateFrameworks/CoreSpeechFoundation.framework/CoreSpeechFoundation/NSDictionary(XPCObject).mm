@@ -14,7 +14,7 @@
   v5[3] = &unk_1E865B4A8;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateKeysAndObjectsUsingBlock:v5];
+  [self enumerateKeysAndObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -44,19 +44,19 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = v8;
-  if (v8)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = dictionary;
+  if (dictionary)
   {
     applier[0] = MEMORY[0x1E69E9820];
     applier[1] = 3221225472;
     applier[2] = __49__NSDictionary_XPCObject___cs_initWithXPCObject___block_invoke;
     applier[3] = &unk_1E865B480;
-    v13 = v8;
+    v13 = dictionary;
     xpc_dictionary_apply(v5, applier);
   }
 
-  v7 = [a1 initWithDictionary:v9];
+  v7 = [self initWithDictionary:v9];
 
 LABEL_9:
   v10 = *MEMORY[0x1E69E9840];

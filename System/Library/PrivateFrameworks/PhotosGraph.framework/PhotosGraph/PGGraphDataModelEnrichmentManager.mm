@@ -1,13 +1,13 @@
 @interface PGGraphDataModelEnrichmentManager
 + (NSArray)lightWeightEnrichmentProcessors;
-+ (id)_allEnrichmentProcessorsWithTailorOptions:(unint64_t)a3;
-+ (id)enrichmentProcessorsForDataModelEnrichmentContext:(unint64_t)a3;
++ (id)_allEnrichmentProcessorsWithTailorOptions:(unint64_t)options;
++ (id)enrichmentProcessorsForDataModelEnrichmentContext:(unint64_t)context;
 + (id)liveUpdateEnrichmentProcessors;
-- (BOOL)_enrichDataModelWithGraphUpdateInventory:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)enrichDataModelForHighlightUUIDs:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)enrichDataModelWithProgressReporter:(id)a3 error:(id *)a4;
-- (PGGraphDataModelEnrichmentManager)initWithManager:(id)a3 enrichmentContext:(unint64_t)a4;
-- (PGGraphDataModelEnrichmentManager)initWithManager:(id)a3 enrichmentProcessors:(id)a4;
+- (BOOL)_enrichDataModelWithGraphUpdateInventory:(id)inventory progressReporter:(id)reporter error:(id *)error;
+- (BOOL)enrichDataModelForHighlightUUIDs:(id)ds progressReporter:(id)reporter error:(id *)error;
+- (BOOL)enrichDataModelWithProgressReporter:(id)reporter error:(id *)error;
+- (PGGraphDataModelEnrichmentManager)initWithManager:(id)manager enrichmentContext:(unint64_t)context;
+- (PGGraphDataModelEnrichmentManager)initWithManager:(id)manager enrichmentProcessors:(id)processors;
 - (PGGraphDataModelEnrichmentManagerDelegate)delegate;
 @end
 
@@ -20,33 +20,33 @@
   return WeakRetained;
 }
 
-- (BOOL)_enrichDataModelWithGraphUpdateInventory:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)_enrichDataModelWithGraphUpdateInventory:(id)inventory progressReporter:(id)reporter error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v8 = a4;
+  inventoryCopy = inventory;
+  reporterCopy = reporter;
   if ([(NSArray *)self->_enrichmentProcessors count])
   {
-    if (!a5)
+    if (!error)
     {
       v65 = 0;
-      a5 = &v65;
+      error = &v65;
     }
 
-    v9 = [(PGManager *)self->_manager enrichmentLoggingConnection];
+    enrichmentLoggingConnection = [(PGManager *)self->_manager enrichmentLoggingConnection];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v10 = self->_enrichmentProcessors;
     v11 = [(NSArray *)v10 countByEnumeratingWithState:&v61 objects:v71 count:16];
-    v52 = v9;
-    v53 = a5;
+    v52 = enrichmentLoggingConnection;
+    errorCopy = error;
     if (v11)
     {
       v12 = v11;
-      v13 = v8;
-      v14 = 0;
+      v13 = reporterCopy;
+      requiresValidGraph = 0;
       v15 = *v62;
       v16 = &selRef_prefix;
       while (2)
@@ -65,20 +65,20 @@
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
 
-            v8 = v13;
-            v9 = v52;
-            v21 = v53;
+            reporterCopy = v13;
+            enrichmentLoggingConnection = v52;
+            v21 = errorCopy;
             goto LABEL_18;
           }
 
-          if (v14)
+          if (requiresValidGraph)
           {
-            v14 = 1;
+            requiresValidGraph = 1;
           }
 
           else
           {
-            v14 = [v20 requiresValidGraph];
+            requiresValidGraph = [v20 requiresValidGraph];
           }
 
           ++v17;
@@ -95,10 +95,10 @@
         break;
       }
 
-      v8 = v13;
-      v9 = v52;
-      v21 = v53;
-      if ((v14 & 1) == 0)
+      reporterCopy = v13;
+      enrichmentLoggingConnection = v52;
+      v21 = errorCopy;
+      if ((requiresValidGraph & 1) == 0)
       {
         goto LABEL_24;
       }
@@ -109,7 +109,7 @@ LABEL_18:
         goto LABEL_26;
       }
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(enrichmentLoggingConnection, OS_LOG_TYPE_ERROR))
       {
         manager = self->_manager;
         v47 = *v21;
@@ -117,7 +117,7 @@ LABEL_18:
         v68 = manager;
         v69 = 2112;
         v70 = v47;
-        _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "DataModelEnrichment failed because DataModelEnrichmentManager has no graph - graph manager: %@, error: %@", buf, 0x16u);
+        _os_log_error_impl(&dword_22F0FC000, enrichmentLoggingConnection, OS_LOG_TYPE_ERROR, "DataModelEnrichment failed because DataModelEnrichmentManager has no graph - graph manager: %@, error: %@", buf, 0x16u);
       }
 
       LOBYTE(v22) = 0;
@@ -127,15 +127,15 @@ LABEL_18:
     {
 
 LABEL_24:
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(enrichmentLoggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "DataModelEnrichmentManager skip graph is ready check", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, enrichmentLoggingConnection, OS_LOG_TYPE_INFO, "DataModelEnrichmentManager skip graph is ready check", buf, 2u);
       }
 
 LABEL_26:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v24 = v9;
+      v24 = enrichmentLoggingConnection;
       v25 = os_signpost_id_generate(v24);
       v26 = v24;
       v27 = v26;
@@ -152,7 +152,7 @@ LABEL_26:
       mach_timebase_info(&info);
       v50 = mach_absolute_time();
       v28 = [(NSArray *)self->_enrichmentProcessors count];
-      v29 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:v8];
+      v29 = [objc_alloc(MEMORY[0x277D22C88]) initWithProgressReporter:reporterCopy];
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
@@ -161,7 +161,7 @@ LABEL_26:
       v30 = [(NSArray *)obj countByEnumeratingWithState:&v56 objects:v66 count:16];
       if (v30)
       {
-        v49 = v8;
+        v49 = reporterCopy;
         v31 = 1.0 / v28;
         v32 = *v57;
         v33 = 0.0;
@@ -187,7 +187,7 @@ LABEL_26:
 
             if (self->_forceRun || !WeakRetained || [WeakRetained enrichmentManager:self shouldRunProcessor:v35])
             {
-              [v35 enrichDataModelWithManager:self->_manager curationContext:self->_curationContext graphUpdateInventory:v55 progressReporter:v37];
+              [v35 enrichDataModelWithManager:self->_manager curationContext:self->_curationContext graphUpdateInventory:inventoryCopy progressReporter:v37];
               if ([v37 isCancelled])
               {
                 v30 = [PGError errorForCode:-4];
@@ -215,8 +215,8 @@ LABEL_26:
 
         v22 = 1;
 LABEL_45:
-        v8 = v49;
-        v9 = v52;
+        reporterCopy = v49;
+        enrichmentLoggingConnection = v52;
       }
 
       else
@@ -225,7 +225,7 @@ LABEL_45:
       }
 
       v38 = v30;
-      *v53 = v30;
+      *errorCopy = v30;
       v39 = mach_absolute_time();
       numer = info.numer;
       denom = info.denom;
@@ -259,34 +259,34 @@ LABEL_45:
   return v22;
 }
 
-- (BOOL)enrichDataModelWithProgressReporter:(id)a3 error:(id *)a4
+- (BOOL)enrichDataModelWithProgressReporter:(id)reporter error:(id *)error
 {
-  v6 = a3;
+  reporterCopy = reporter;
   v7 = [PGGraphUpdate alloc];
-  v8 = [(PGManager *)self->_manager photoLibrary];
-  v9 = [(PGGraphUpdate *)v7 initWithPhotoLibrary:v8 updateType:4];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  v9 = [(PGGraphUpdate *)v7 initWithPhotoLibrary:photoLibrary updateType:4];
 
   [(PGGraphUpdate *)v9 setIsResumingFullAnalysis:1];
-  LOBYTE(a4) = [(PGGraphDataModelEnrichmentManager *)self _enrichDataModelWithGraphUpdateInventory:v9 progressReporter:v6 error:a4];
+  LOBYTE(error) = [(PGGraphDataModelEnrichmentManager *)self _enrichDataModelWithGraphUpdateInventory:v9 progressReporter:reporterCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)enrichDataModelForHighlightUUIDs:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)enrichDataModelForHighlightUUIDs:(id)ds progressReporter:(id)reporter error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  reporterCopy = reporter;
   v10 = [PGGraphUpdate alloc];
-  v11 = [(PGManager *)self->_manager photoLibrary];
-  v12 = [(PGGraphUpdate *)v10 initWithPhotoLibrary:v11 updateType:0];
+  photoLibrary = [(PGManager *)self->_manager photoLibrary];
+  v12 = [(PGGraphUpdate *)v10 initWithPhotoLibrary:photoLibrary updateType:0];
 
   [(PGGraphUpdate *)v12 setIsResumingFullAnalysis:0];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v8;
+  v13 = dsCopy;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -317,27 +317,27 @@ LABEL_45:
     while (v15);
   }
 
-  v21 = [(PGGraphDataModelEnrichmentManager *)self _enrichDataModelWithGraphUpdateInventory:v12 progressReporter:v9 error:a5];
+  v21 = [(PGGraphDataModelEnrichmentManager *)self _enrichDataModelWithGraphUpdateInventory:v12 progressReporter:reporterCopy error:error];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (PGGraphDataModelEnrichmentManager)initWithManager:(id)a3 enrichmentProcessors:(id)a4
+- (PGGraphDataModelEnrichmentManager)initWithManager:(id)manager enrichmentProcessors:(id)processors
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  processorsCopy = processors;
   v16.receiver = self;
   v16.super_class = PGGraphDataModelEnrichmentManager;
   v9 = [(PGGraphDataModelEnrichmentManager *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_enrichmentProcessors, a4);
-    objc_storeStrong(&v10->_manager, a3);
+    objc_storeStrong(&v9->_enrichmentProcessors, processors);
+    objc_storeStrong(&v10->_manager, manager);
     v10->_enrichmentContext = 0;
     v11 = objc_alloc(MEMORY[0x277D3C790]);
-    v12 = [(PGManager *)v10->_manager photoLibrary];
-    v13 = [v11 initWithPhotoLibrary:v12];
+    photoLibrary = [(PGManager *)v10->_manager photoLibrary];
+    v13 = [v11 initWithPhotoLibrary:photoLibrary];
     curationContext = v10->_curationContext;
     v10->_curationContext = v13;
 
@@ -347,38 +347,38 @@ LABEL_45:
   return v10;
 }
 
-- (PGGraphDataModelEnrichmentManager)initWithManager:(id)a3 enrichmentContext:(unint64_t)a4
+- (PGGraphDataModelEnrichmentManager)initWithManager:(id)manager enrichmentContext:(unint64_t)context
 {
-  v6 = a3;
-  v7 = [PGGraphDataModelEnrichmentManager enrichmentProcessorsForDataModelEnrichmentContext:a4];
-  v8 = [(PGGraphDataModelEnrichmentManager *)self initWithManager:v6 enrichmentProcessors:v7];
+  managerCopy = manager;
+  v7 = [PGGraphDataModelEnrichmentManager enrichmentProcessorsForDataModelEnrichmentContext:context];
+  v8 = [(PGGraphDataModelEnrichmentManager *)self initWithManager:managerCopy enrichmentProcessors:v7];
 
   if (v8)
   {
-    v8->_enrichmentContext = a4;
+    v8->_enrichmentContext = context;
   }
 
   return v8;
 }
 
-+ (id)enrichmentProcessorsForDataModelEnrichmentContext:(unint64_t)a3
++ (id)enrichmentProcessorsForDataModelEnrichmentContext:(unint64_t)context
 {
-  if (a3 == 3)
+  if (context == 3)
   {
-    v3 = [a1 liveUpdateEnrichmentProcessors];
+    liveUpdateEnrichmentProcessors = [self liveUpdateEnrichmentProcessors];
   }
 
-  else if (a3 == 1)
+  else if (context == 1)
   {
-    v3 = [a1 backgroundEnrichmentProcessors];
+    liveUpdateEnrichmentProcessors = [self backgroundEnrichmentProcessors];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    liveUpdateEnrichmentProcessors = MEMORY[0x277CBEBF8];
   }
 
-  return v3;
+  return liveUpdateEnrichmentProcessors;
 }
 
 + (id)liveUpdateEnrichmentProcessors
@@ -416,12 +416,12 @@ LABEL_45:
   return v5;
 }
 
-+ (id)_allEnrichmentProcessorsWithTailorOptions:(unint64_t)a3
++ (id)_allEnrichmentProcessorsWithTailorOptions:(unint64_t)options
 {
   v13[6] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(PGGraphPeopleSuggestionEnrichmentProcessor);
   v13[0] = v4;
-  v5 = [[PGGraphPhotosHighlightEnrichmentProcessor alloc] initWithHighlightTailorOptions:a3];
+  v5 = [[PGGraphPhotosHighlightEnrichmentProcessor alloc] initWithHighlightTailorOptions:options];
   v13[1] = v5;
   v6 = objc_alloc_init(PGGraphHighlightCollectionEnrichmentProcessor);
   v13[2] = v6;

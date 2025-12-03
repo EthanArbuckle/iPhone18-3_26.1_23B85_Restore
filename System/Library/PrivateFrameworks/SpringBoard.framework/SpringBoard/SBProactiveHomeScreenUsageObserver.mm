@@ -1,33 +1,33 @@
 @interface SBProactiveHomeScreenUsageObserver
 - (SBHIconManager)iconManager;
-- (SBProactiveHomeScreenUsageObserver)initWithIconManager:(id)a3;
+- (SBProactiveHomeScreenUsageObserver)initWithIconManager:(id)manager;
 - (SBProactiveHomeScreenUsageObserverDelegate)delegate;
 - (id)iconModel;
-- (id)proactiveStackForWidgetIcon:(id)a3 atIndex:(unint64_t)a4 gridCellInfo:(id)a5;
-- (id)proactiveWidgetForIconDataSource:(id)a3 ofIcon:(id)a4;
-- (id)proactiveWidgetForWidget:(id)a3 ofIcon:(id)a4;
+- (id)proactiveStackForWidgetIcon:(id)icon atIndex:(unint64_t)index gridCellInfo:(id)info;
+- (id)proactiveWidgetForIconDataSource:(id)source ofIcon:(id)icon;
+- (id)proactiveWidgetForWidget:(id)widget ofIcon:(id)icon;
 - (id)rootFolder;
-- (id)widgetIdentifiablesDictionaryForIconListModel:(id)a3;
-- (void)deviceLockStateDidChange:(id)a3;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidAppear:(id)a4 forWidgetIcon:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidDisappear:(id)a4 forWidgetIcon:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteTodayViewAtLocation:(int64_t)a4 scrolledWithIconVisibility:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserAddedWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedWidgetIconStackSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5;
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 widgetDiscoverabilityDidAcceptSuggestion:(id)a4;
-- (void)homeScreenUsageAggregator:(id)a3 widgetDiscoverabilityDidRejectSuggestion:(id)a4;
-- (void)homeScreenUsageAggregatorDidStartDiscoveringWidgets:(id)a3;
-- (void)homeScreenUsageAggregatorWidgetDiscoverabilityDidEnterEditingMode:(id)a3;
-- (void)logHomeScreenPageDidAppearWithPageIndex:(unint64_t)a3;
+- (id)widgetIdentifiablesDictionaryForIconListModel:(id)model;
+- (void)deviceLockStateDidChange:(id)change;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidAppear:(id)appear forWidgetIcon:(id)icon;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidDisappear:(id)disappear forWidgetIcon:(id)icon;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteTodayViewAtLocation:(int64_t)location scrolledWithIconVisibility:(id)visibility;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserAddedWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedWidgetIconStackSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l;
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget;
+- (void)homeScreenUsageAggregator:(id)aggregator widgetDiscoverabilityDidAcceptSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregator:(id)aggregator widgetDiscoverabilityDidRejectSuggestion:(id)suggestion;
+- (void)homeScreenUsageAggregatorDidStartDiscoveringWidgets:(id)widgets;
+- (void)homeScreenUsageAggregatorWidgetDiscoverabilityDidEnterEditingMode:(id)mode;
+- (void)logHomeScreenPageDidAppearWithPageIndex:(unint64_t)index;
 - (void)logTodayViewDidAppear;
 - (void)pushCurrentDockConfiguration;
 - (void)pushCurrentHomeScreenConfiguration;
 - (void)pushCurrentHomeScreenPagesConfiguration;
 - (void)pushCurrentTodayConfiguration;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SBProactiveHomeScreenUsageObserver
@@ -83,18 +83,18 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
 
 - (id)iconModel
 {
-  v2 = [(SBProactiveHomeScreenUsageObserver *)self iconManager];
-  v3 = [v2 iconModel];
+  iconManager = [(SBProactiveHomeScreenUsageObserver *)self iconManager];
+  iconModel = [iconManager iconModel];
 
-  return v3;
+  return iconModel;
 }
 
 - (id)rootFolder
 {
-  v2 = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
+  rootFolder = [iconModel rootFolder];
 
-  return v3;
+  return rootFolder;
 }
 
 - (SBProactiveHomeScreenUsageObserverDelegate)delegate
@@ -113,13 +113,13 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
 
 - (void)logTodayViewDidAppear
 {
-  v3 = [(SBProactiveHomeScreenUsageObserver *)self rootFolder];
-  v7 = [v3 todayList];
+  rootFolder = [(SBProactiveHomeScreenUsageObserver *)self rootFolder];
+  todayList = [rootFolder todayList];
 
-  v4 = [(SBProactiveHomeScreenUsageObserver *)self widgetIdentifiablesDictionaryForIconListModel:v7];
-  v5 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v6 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v5 logSpecialPageDidAppear:2 widgetsByStackId:v4 prediction:v6];
+  v4 = [(SBProactiveHomeScreenUsageObserver *)self widgetIdentifiablesDictionaryForIconListModel:todayList];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logSpecialPageDidAppear:2 widgetsByStackId:v4 prediction:currentPrediction];
 }
 
 - (void)pushCurrentHomeScreenConfiguration
@@ -131,9 +131,9 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "Gathering new home screen configuration", buf, 2u);
   }
 
-  v4 = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
-  v5 = [v4 rootFolder];
-  if (v5)
+  iconModel = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  if (rootFolder)
   {
     [(SBProactiveHomeScreenUsageObserver *)self pushCurrentHomeScreenPagesConfiguration];
     [(SBProactiveHomeScreenUsageObserver *)self pushCurrentDockConfiguration];
@@ -224,21 +224,21 @@ void __67__SBProactiveHomeScreenUsageObserver_pushCurrentTodayConfiguration__blo
 - (void)pushCurrentHomeScreenPagesConfiguration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
-  v4 = [v3 rootFolder];
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  iconModel = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v6 = SBLogProactiveHome();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v26 = v5;
+    v26 = uUID;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "(%{public}@) Preparing to push current home screen configuration", buf, 0xCu);
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
-  v9 = [v3 maxRowCountForListInRootFolderWithInterfaceOrientation:1];
-  v10 = [v3 maxColumnCountForListInRootFolderWithInterfaceOrientation:1];
+  v9 = [iconModel maxRowCountForListInRootFolderWithInterfaceOrientation:1];
+  v10 = [iconModel maxColumnCountForListInRootFolderWithInterfaceOrientation:1];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfiguration__block_invoke;
@@ -246,12 +246,12 @@ void __67__SBProactiveHomeScreenUsageObserver_pushCurrentTodayConfiguration__blo
   v22 = v9;
   v23 = v10;
   v24 = v8;
-  v11 = v5;
+  v11 = uUID;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v12 = v7;
   v21 = v12;
-  [v4 enumerateListsWithOptions:4 usingBlock:v18];
+  [rootFolder enumerateListsWithOptions:4 usingBlock:v18];
   v13 = SBLogProactiveHome();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -262,27 +262,27 @@ void __67__SBProactiveHomeScreenUsageObserver_pushCurrentTodayConfiguration__blo
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "(%{public}@) Pushing home screen configuration: %@", buf, 0x16u);
   }
 
-  v14 = [MEMORY[0x277CEB5A0] sharedInstance];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfiguration__block_invoke_25;
   v16[3] = &unk_2783B0F28;
   v17 = v11;
   v15 = v11;
-  [v14 writeHomeScreenPageConfigurations:v12 completionHandler:v16];
+  [mEMORY[0x277CEB5A0] writeHomeScreenPageConfigurations:v12 completionHandler:v16];
 }
 
 - (void)pushCurrentTodayConfiguration
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v18 = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
-  v17 = [v18 rootFolder];
-  v3 = [v17 todayList];
-  v16 = v3;
-  if (v3)
+  iconModel = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  todayList = [rootFolder todayList];
+  v16 = todayList;
+  if (todayList)
   {
-    v33[0] = v3;
-    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:{1, v3}];
+    v33[0] = todayList;
+    v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:{1, todayList}];
   }
 
   else
@@ -341,8 +341,8 @@ void __67__SBProactiveHomeScreenUsageObserver_pushCurrentTodayConfiguration__blo
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_INFO, "Pushing today list stacks: %@, app prediction stacks: %@", buf, 0x16u);
   }
 
-  v15 = [MEMORY[0x277CEB5A0] sharedInstance];
-  [v15 writeTodayPageStacks:v5 appPredictionPanels:v6 completionHandler:&__block_literal_global_32_1];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  [mEMORY[0x277CEB5A0] writeTodayPageStacks:v5 appPredictionPanels:v6 completionHandler:&__block_literal_global_32_1];
 }
 
 void __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfiguration__block_invoke_20(uint64_t a1, void *a2, void *a3)
@@ -377,17 +377,17 @@ void __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfigur
 - (void)pushCurrentDockConfiguration
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(SBProactiveHomeScreenUsageObserver *)self iconModel];
+  rootFolder = [iconModel rootFolder];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [v3 dock];
+  dock = [rootFolder dock];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__block_invoke;
   v9[3] = &unk_2783B6A48;
   v6 = v4;
   v10 = v6;
-  [v5 enumerateIconsUsingBlock:v9];
+  [dock enumerateIconsUsingBlock:v9];
 
   v7 = SBLogProactiveHome();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -397,8 +397,8 @@ void __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfigur
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "Pushing dock app list: %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CEB5A0] sharedInstance];
-  [v8 writeDockAppList:v6 completionHandler:&__block_literal_global_168];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  [mEMORY[0x277CEB5A0] writeDockAppList:v6 completionHandler:&__block_literal_global_168];
 }
 
 void __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfiguration__block_invoke_2(uint64_t a1, void *a2, uint64_t a3)
@@ -518,30 +518,30 @@ LABEL_13:
 LABEL_14:
 }
 
-- (SBProactiveHomeScreenUsageObserver)initWithIconManager:(id)a3
+- (SBProactiveHomeScreenUsageObserver)initWithIconManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = SBProactiveHomeScreenUsageObserver;
   v5 = [(SBProactiveHomeScreenUsageObserver *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_iconManager, v4);
-    [v4 setUsageMonitoringEnabled:1];
-    v7 = [v4 usageMonitor];
-    [v7 addObserver:v6];
+    objc_storeWeak(&v5->_iconManager, managerCopy);
+    [managerCopy setUsageMonitoringEnabled:1];
+    usageMonitor = [managerCopy usageMonitor];
+    [usageMonitor addObserver:v6];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel_deviceLockStateDidChange_ name:*MEMORY[0x277D67A48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_deviceLockStateDidChange_ name:*MEMORY[0x277D67A48] object:0];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -570,19 +570,19 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
   }
 }
 
-- (id)proactiveStackForWidgetIcon:(id)a3 atIndex:(unint64_t)a4 gridCellInfo:(id)a5
+- (id)proactiveStackForWidgetIcon:(id)icon atIndex:(unint64_t)index gridCellInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  iconCopy = icon;
+  infoCopy = info;
   v10 = objc_alloc_init(MEMORY[0x277CEB598]);
-  v11 = [v8 uniqueIdentifier];
-  [v10 setIdentifier:v11];
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  [v10 setIdentifier:uniqueIdentifier];
 
-  v12 = [v8 gridSizeClass];
+  gridSizeClass = [iconCopy gridSizeClass];
   [v10 setStackLayoutSize:SBHIconGridSizeClassToStackLayoutSize()];
 
-  v13 = [v9 coordinateForGridCellIndex:{objc_msgSend(v9, "gridCellIndexForIconIndex:", a4)}];
+  v13 = [infoCopy coordinateForGridCellIndex:{objc_msgSend(infoCopy, "gridCellIndexForIconIndex:", index)}];
   [v10 setCoordinateRow:v14 - 1];
   [v10 setCoordinateColumn:v13 - 1];
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -590,8 +590,8 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = [v8 iconDataSources];
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  iconDataSources = [iconCopy iconDataSources];
+  v17 = [iconDataSources countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v17)
   {
     v18 = v17;
@@ -602,17 +602,17 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(iconDataSources);
         }
 
-        v21 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:*(*(&v24 + 1) + 8 * i) ofIcon:v8];
+        v21 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:*(*(&v24 + 1) + 8 * i) ofIcon:iconCopy];
         if (v21)
         {
           [v15 addObject:v21];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [iconDataSources countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v18);
@@ -622,30 +622,30 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
   if ([v15 count] < 2)
   {
     [v10 setAllowsSmartRotate:0];
-    v22 = 0;
+    allowsExternalSuggestions = 0;
   }
 
   else
   {
-    [v10 setAllowsSmartRotate:{objc_msgSend(v8, "allowsSuggestions")}];
-    v22 = [v8 allowsExternalSuggestions];
+    [v10 setAllowsSmartRotate:{objc_msgSend(iconCopy, "allowsSuggestions")}];
+    allowsExternalSuggestions = [iconCopy allowsExternalSuggestions];
   }
 
-  [v10 setAllowsNewWidget:v22];
+  [v10 setAllowsNewWidget:allowsExternalSuggestions];
 
   return v10;
 }
 
-- (id)proactiveWidgetForIconDataSource:(id)a3 ofIcon:(id)a4
+- (id)proactiveWidgetForIconDataSource:(id)source ofIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  iconCopy = icon;
   v8 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForWidget:v6 ofIcon:v7];
+    v10 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForWidget:sourceCopy ofIcon:iconCopy];
   }
 
   else
@@ -655,19 +655,19 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
 
     if (v12)
     {
-      v13 = v6;
-      v14 = [objc_opt_class() elementIdentifier];
+      v13 = sourceCopy;
+      elementIdentifier = [objc_opt_class() elementIdentifier];
       v10 = objc_alloc_init(MEMORY[0x277CEB5B0]);
-      [v10 setExtensionBundleId:v14];
-      v15 = [objc_opt_class() elementKind];
-      [v10 setWidgetKind:v15];
-      v16 = [v13 uniqueIdentifier];
-      [v10 setWidgetUniqueId:v16];
+      [v10 setExtensionBundleId:elementIdentifier];
+      elementKind = [objc_opt_class() elementKind];
+      [v10 setWidgetKind:elementKind];
+      uniqueIdentifier = [v13 uniqueIdentifier];
+      [v10 setWidgetUniqueId:uniqueIdentifier];
 
       [v10 setSuggestedWidget:{objc_msgSend(v13, "suggestionSource") == 1}];
-      v17 = [v13 suggestionSource];
+      suggestionSource = [v13 suggestionSource];
 
-      [v10 setOnboardingWidget:v17 == 2];
+      [v10 setOnboardingWidget:suggestionSource == 2];
     }
 
     else
@@ -676,43 +676,43 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
     }
   }
 
-  v18 = [v7 gridSizeClass];
+  gridSizeClass = [iconCopy gridSizeClass];
   [v10 setSize:SBHIconGridSizeClassToStackLayoutSize()];
 
   return v10;
 }
 
-- (id)proactiveWidgetForWidget:(id)a3 ofIcon:(id)a4
+- (id)proactiveWidgetForWidget:(id)widget ofIcon:(id)icon
 {
   v6 = MEMORY[0x277CEB5B0];
-  v7 = a4;
-  v8 = a3;
+  iconCopy = icon;
+  widgetCopy = widget;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 extensionBundleIdentifier];
-  [v9 setExtensionBundleId:v10];
+  extensionBundleIdentifier = [widgetCopy extensionBundleIdentifier];
+  [v9 setExtensionBundleId:extensionBundleIdentifier];
 
-  v11 = [v8 containerBundleIdentifier];
-  [v9 setAppBundleId:v11];
+  containerBundleIdentifier = [widgetCopy containerBundleIdentifier];
+  [v9 setAppBundleId:containerBundleIdentifier];
 
-  v12 = [v8 uniqueIdentifier];
-  [v9 setWidgetUniqueId:v12];
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  [v9 setWidgetUniqueId:uniqueIdentifier];
 
-  v13 = [v8 kind];
-  [v9 setWidgetKind:v13];
+  kind = [widgetCopy kind];
+  [v9 setWidgetKind:kind];
 
-  [v9 setSuggestedWidget:{objc_msgSend(v8, "suggestionSource") == 1}];
-  [v9 setOnboardingWidget:{objc_msgSend(v8, "suggestionSource") == 2}];
-  v14 = [(SBProactiveHomeScreenUsageObserver *)self delegate];
-  v15 = [v14 proactiveHomeScreenUsageObserver:self intentForWidget:v8 ofIcon:v7];
+  [v9 setSuggestedWidget:{objc_msgSend(widgetCopy, "suggestionSource") == 1}];
+  [v9 setOnboardingWidget:{objc_msgSend(widgetCopy, "suggestionSource") == 2}];
+  delegate = [(SBProactiveHomeScreenUsageObserver *)self delegate];
+  v15 = [delegate proactiveHomeScreenUsageObserver:self intentForWidget:widgetCopy ofIcon:iconCopy];
 
   [v9 setIntent:v15];
 
   return v9;
 }
 
-- (id)widgetIdentifiablesDictionaryForIconListModel:(id)a3
+- (id)widgetIdentifiablesDictionaryForIconListModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -725,7 +725,7 @@ void __66__SBProactiveHomeScreenUsageObserver_pushCurrentDockConfiguration__bloc
   v7[3] = &unk_2783B6A98;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateIconsUsingBlock:v7];
+  [modelCopy enumerateIconsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -772,23 +772,23 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
   }
 }
 
-- (void)logHomeScreenPageDidAppearWithPageIndex:(unint64_t)a3
+- (void)logHomeScreenPageDidAppearWithPageIndex:(unint64_t)index
 {
-  v9 = [(SBProactiveHomeScreenUsageObserver *)self rootFolder];
-  if ([v9 isValidListIndex:a3])
+  rootFolder = [(SBProactiveHomeScreenUsageObserver *)self rootFolder];
+  if ([rootFolder isValidListIndex:index])
   {
-    v5 = [v9 listAtIndex:a3];
+    v5 = [rootFolder listAtIndex:index];
     v6 = [(SBProactiveHomeScreenUsageObserver *)self widgetIdentifiablesDictionaryForIconListModel:v5];
-    v7 = [MEMORY[0x277CEB5A0] sharedInstance];
-    v8 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-    [v7 logHomeScreenPageDidAppear:a3 topWidgetsByStackIdentifier:v6 prediction:v8];
+    mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+    currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+    [mEMORY[0x277CEB5A0] logHomeScreenPageDidAppear:index topWidgetsByStackIdentifier:v6 prediction:currentPrediction];
   }
 }
 
-- (void)deviceLockStateDidChange:(id)a3
+- (void)deviceLockStateDidChange:(id)change
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D67B18]];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D67B18]];
   v5 = objc_opt_class();
   v6 = v4;
   if (v5)
@@ -811,25 +811,25 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
 
   v8 = v7;
 
-  v9 = [v8 BOOLValue];
-  v10 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v11 = v10;
-  if (v9)
+  bOOLValue = [v8 BOOLValue];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  v11 = mEMORY[0x277CEB5A0];
+  if (bOOLValue)
   {
-    [v10 logDeviceLock];
+    [mEMORY[0x277CEB5A0] logDeviceLock];
   }
 
   else
   {
-    [v10 logDeviceUnlock];
+    [mEMORY[0x277CEB5A0] logDeviceUnlock];
   }
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteWidgetIconStackChangedActiveWidget:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteWidgetIconStackChangedActiveWidget:(id)widget
 {
-  v12 = a4;
-  v5 = [v12 activeDataSource];
-  v6 = [v12 stackChangeReason] - 1;
+  widgetCopy = widget;
+  activeDataSource = [widgetCopy activeDataSource];
+  v6 = [widgetCopy stackChangeReason] - 1;
   if (v6 > 5)
   {
     v7 = 0;
@@ -840,9 +840,9 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v7 = qword_21F8A6C10[v6];
   }
 
-  if (v5)
+  if (activeDataSource)
   {
-    v8 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v5 ofIcon:v12];
+    v8 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:activeDataSource ofIcon:widgetCopy];
   }
 
   else
@@ -850,19 +850,19 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v10 = [v12 uniqueIdentifier];
-  v11 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v9 logStackStatusDidChange:v10 widgetOnTop:v8 reason:v7 prediction:v11];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logStackStatusDidChange:uniqueIdentifier widgetOnTop:v8 reason:v7 prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserAddedWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserAddedWidgetIconStackSuggestion:(id)suggestion
 {
-  v10 = a4;
-  v5 = [v10 firstSuggestedIconDataSource];
-  if (v5)
+  suggestionCopy = suggestion;
+  firstSuggestedIconDataSource = [suggestionCopy firstSuggestedIconDataSource];
+  if (firstSuggestedIconDataSource)
   {
-    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v5 ofIcon:v10];
+    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:firstSuggestedIconDataSource ofIcon:suggestionCopy];
   }
 
   else
@@ -870,19 +870,19 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v8 = [v10 uniqueIdentifier];
-  v9 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v7 logSupplementaryActionInContextMenu:3 stackId:v8 widgetOnTop:v6 prediction:v9];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  uniqueIdentifier = [suggestionCopy uniqueIdentifier];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logSupplementaryActionInContextMenu:3 stackId:uniqueIdentifier widgetOnTop:v6 prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedWidgetIconStackSuggestion:(id)suggestion
 {
-  v10 = a4;
-  v5 = [v10 firstSuggestedIconDataSource];
-  if (v5)
+  suggestionCopy = suggestion;
+  firstSuggestedIconDataSource = [suggestionCopy firstSuggestedIconDataSource];
+  if (firstSuggestedIconDataSource)
   {
-    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v5 ofIcon:v10];
+    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:firstSuggestedIconDataSource ofIcon:suggestionCopy];
   }
 
   else
@@ -890,19 +890,19 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v8 = [v10 uniqueIdentifier];
-  v9 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v7 logSupplementaryActionInContextMenu:2 stackId:v8 widgetOnTop:v6 prediction:v9];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  uniqueIdentifier = [suggestionCopy uniqueIdentifier];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logSupplementaryActionInContextMenu:2 stackId:uniqueIdentifier widgetOnTop:v6 prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:(id)suggestion
 {
-  v10 = a4;
-  v5 = [v10 firstSuggestedIconDataSource];
-  if (v5)
+  suggestionCopy = suggestion;
+  firstSuggestedIconDataSource = [suggestionCopy firstSuggestedIconDataSource];
+  if (firstSuggestedIconDataSource)
   {
-    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v5 ofIcon:v10];
+    v6 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:firstSuggestedIconDataSource ofIcon:suggestionCopy];
   }
 
   else
@@ -910,20 +910,20 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v8 = [v10 uniqueIdentifier];
-  v9 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v7 logSupplementaryActionInContextMenu:1 stackId:v8 widgetOnTop:v6 prediction:v9];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  uniqueIdentifier = [suggestionCopy uniqueIdentifier];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logSupplementaryActionInContextMenu:1 stackId:uniqueIdentifier widgetOnTop:v6 prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteUserTappedWidgetIcon:(id)a4 withURL:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteUserTappedWidgetIcon:(id)icon withURL:(id)l
 {
-  v18 = a4;
-  v7 = a5;
-  v8 = [v18 activeDataSource];
-  if (v8)
+  iconCopy = icon;
+  lCopy = l;
+  activeDataSource = [iconCopy activeDataSource];
+  if (activeDataSource)
   {
-    v9 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v8 ofIcon:v18];
+    v9 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:activeDataSource ofIcon:iconCopy];
   }
 
   else
@@ -931,18 +931,18 @@ void __84__SBProactiveHomeScreenUsageObserver_widgetIdentifiablesDictionaryForIc
     v9 = 0;
   }
 
-  v10 = [v18 activeWidget];
-  v11 = [v10 extensionBundleIdentifier];
-  if ([v11 hasPrefix:@"com.apple.news"])
+  activeWidget = [iconCopy activeWidget];
+  extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
+  if ([extensionBundleIdentifier hasPrefix:@"com.apple.news"])
   {
 
 LABEL_7:
-    v14 = v7;
+    v14 = lCopy;
     goto LABEL_9;
   }
 
-  v12 = [v10 containerBundleIdentifier];
-  v13 = [v12 hasPrefix:@"com.apple.news"];
+  containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+  v13 = [containerBundleIdentifier hasPrefix:@"com.apple.news"];
 
   if (v13)
   {
@@ -951,20 +951,20 @@ LABEL_7:
 
   v14 = 0;
 LABEL_9:
-  v15 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v16 = [v18 uniqueIdentifier];
-  v17 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v15 logStackDidTap:v16 engagedUrl:v14 widgetOnTop:v9 prediction:v17];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logStackDidTap:uniqueIdentifier engagedUrl:v14 widgetOnTop:v9 prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidAppear:(id)a4 forWidgetIcon:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidAppear:(id)appear forWidgetIcon:(id)icon
 {
-  v11 = a5;
-  v6 = [v11 uniqueIdentifier];
-  v7 = [v11 activeDataSource];
-  if (v7)
+  iconCopy = icon;
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  activeDataSource = [iconCopy activeDataSource];
+  if (activeDataSource)
   {
-    v8 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v7 ofIcon:v11];
+    v8 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:activeDataSource ofIcon:iconCopy];
   }
 
   else
@@ -972,19 +972,19 @@ LABEL_9:
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v10 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v9 logWidgetDidAppear:v8 stackId:v6 prediction:v10];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logWidgetDidAppear:v8 stackId:uniqueIdentifier prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteDataSourceDidDisappear:(id)a4 forWidgetIcon:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteDataSourceDidDisappear:(id)disappear forWidgetIcon:(id)icon
 {
-  v12 = a4;
-  v7 = a5;
-  v8 = [v7 uniqueIdentifier];
-  if (v12)
+  disappearCopy = disappear;
+  iconCopy = icon;
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  if (disappearCopy)
   {
-    v9 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v12 ofIcon:v7];
+    v9 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:disappearCopy ofIcon:iconCopy];
   }
 
   else
@@ -992,20 +992,20 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x277CEB5A0] sharedInstance];
-  v11 = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
-  [v10 logWidgetDidDisappear:v9 stackId:v8 prediction:v11];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  currentPrediction = [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
+  [mEMORY[0x277CEB5A0] logWidgetDidDisappear:v9 stackId:uniqueIdentifier prediction:currentPrediction];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 didNoteTodayViewAtLocation:(int64_t)a4 scrolledWithIconVisibility:(id)a5
+- (void)homeScreenUsageAggregator:(id)aggregator didNoteTodayViewAtLocation:(int64_t)location scrolledWithIconVisibility:(id)visibility
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  visibilityCopy = visibility;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v7 = [visibilityCopy countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1018,18 +1018,18 @@ LABEL_9:
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibilityCopy);
         }
 
         v11 = *(*(&v29 + 1) + 8 * v10);
         if ([v11 isWidgetIcon])
         {
           v12 = v11;
-          v13 = [v12 uniqueIdentifier];
-          v14 = [v12 activeDataSource];
-          if (v14)
+          uniqueIdentifier = [v12 uniqueIdentifier];
+          activeDataSource = [v12 activeDataSource];
+          if (activeDataSource)
           {
-            v15 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:v14 ofIcon:v12];
+            v15 = [(SBProactiveHomeScreenUsageObserver *)self proactiveWidgetForIconDataSource:activeDataSource ofIcon:v12];
           }
 
           else
@@ -1037,17 +1037,17 @@ LABEL_9:
             v15 = 0;
           }
 
-          v16 = [v6 objectForKey:v12];
+          v16 = [visibilityCopy objectForKey:v12];
           [v16 bs_CGRectValue];
           v18 = v17;
           v20 = v19;
           v22 = v21;
           v24 = v23;
 
-          v25 = [MEMORY[0x277CEB5A0] sharedInstance];
+          mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
           [(SBProactiveHomeScreenUsageObserver *)self currentPrediction];
           v27 = v26 = self;
-          [v25 logStackVisibilityChanged:v13 visibleRect:v15 topWidget:v27 prediction:{v18, v20, v22, v24}];
+          [mEMORY[0x277CEB5A0] logStackVisibilityChanged:uniqueIdentifier visibleRect:v15 topWidget:v27 prediction:{v18, v20, v22, v24}];
 
           self = v26;
           v8 = v28;
@@ -1057,39 +1057,39 @@ LABEL_9:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v8 = [visibilityCopy countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)homeScreenUsageAggregatorDidStartDiscoveringWidgets:(id)a3
+- (void)homeScreenUsageAggregatorDidStartDiscoveringWidgets:(id)widgets
 {
-  v3 = [MEMORY[0x277CEB5A0] sharedInstance];
-  [v3 logUserDidStartWidgetOnboarding];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  [mEMORY[0x277CEB5A0] logUserDidStartWidgetOnboarding];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 widgetDiscoverabilityDidAcceptSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator widgetDiscoverabilityDidAcceptSuggestion:(id)suggestion
 {
   v4 = MEMORY[0x277CEB5A0];
-  v5 = a4;
-  v6 = [v4 sharedInstance];
-  [v6 logUserDidAcceptWidgetOnboardingSuggestion:v5];
+  suggestionCopy = suggestion;
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance logUserDidAcceptWidgetOnboardingSuggestion:suggestionCopy];
 }
 
-- (void)homeScreenUsageAggregator:(id)a3 widgetDiscoverabilityDidRejectSuggestion:(id)a4
+- (void)homeScreenUsageAggregator:(id)aggregator widgetDiscoverabilityDidRejectSuggestion:(id)suggestion
 {
   v4 = MEMORY[0x277CEB5A0];
-  v5 = a4;
-  v6 = [v4 sharedInstance];
-  [v6 logUserDidRejectWidgetOnboardingSuggestion:v5];
+  suggestionCopy = suggestion;
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance logUserDidRejectWidgetOnboardingSuggestion:suggestionCopy];
 }
 
-- (void)homeScreenUsageAggregatorWidgetDiscoverabilityDidEnterEditingMode:(id)a3
+- (void)homeScreenUsageAggregatorWidgetDiscoverabilityDidEnterEditingMode:(id)mode
 {
-  v3 = [MEMORY[0x277CEB5A0] sharedInstance];
-  [v3 logUserDidEnterEditModeForWidgetOnboarding];
+  mEMORY[0x277CEB5A0] = [MEMORY[0x277CEB5A0] sharedInstance];
+  [mEMORY[0x277CEB5A0] logUserDidEnterEditModeForWidgetOnboarding];
 }
 
 void __77__SBProactiveHomeScreenUsageObserver_pushCurrentHomeScreenPagesConfiguration__block_invoke_25_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

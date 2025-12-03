@@ -1,44 +1,44 @@
 @interface MSPerformanceLogger
 + (id)sharedLogger;
-+ (void)nukeCompletionBlock:(id)a3;
-- (BOOL)dbQueueUpgradeFromDatabaseVersion:(int)a3 currentVersion:(int)a4;
++ (void)nukeCompletionBlock:(id)block;
+- (BOOL)dbQueueUpgradeFromDatabaseVersion:(int)version currentVersion:(int)currentVersion;
 - (MSPerformanceLogger)init;
-- (void)_logSqliteErrorLine:(int)a3;
-- (void)dbQueueDiscardOperation:(id)a3 itemGUID:(id)a4;
-- (void)discardOperation:(id)a3 itemGUID:(id)a4;
-- (void)startOperation:(id)a3 itemGUID:(id)a4;
-- (void)stopOperation:(id)a3 itemGUID:(id)a4;
-- (void)summarizeOperation:(id)a3 itemGUID:(id)a4 formatBlock:(id)a5;
+- (void)_logSqliteErrorLine:(int)line;
+- (void)dbQueueDiscardOperation:(id)operation itemGUID:(id)d;
+- (void)discardOperation:(id)operation itemGUID:(id)d;
+- (void)startOperation:(id)operation itemGUID:(id)d;
+- (void)stopOperation:(id)operation itemGUID:(id)d;
+- (void)summarizeOperation:(id)operation itemGUID:(id)d formatBlock:(id)block;
 @end
 
 @implementation MSPerformanceLogger
 
-- (void)summarizeOperation:(id)a3 itemGUID:(id)a4 formatBlock:(id)a5
+- (void)summarizeOperation:(id)operation itemGUID:(id)d formatBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  blockCopy = block;
   v11 = MSPlatform();
   if (objc_opt_respondsToSelector())
   {
     v12 = MSPlatform();
-    v13 = [v12 isPerformanceLoggingEnabled];
+    isPerformanceLoggingEnabled = [v12 isPerformanceLoggingEnabled];
 
-    if (v13)
+    if (isPerformanceLoggingEnabled)
     {
-      v14 = [MEMORY[0x277CBEAA8] date];
-      v15 = [(MSASModelBase *)self dbQueue];
+      date = [MEMORY[0x277CBEAA8] date];
+      dbQueue = [(MSASModelBase *)self dbQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __63__MSPerformanceLogger_summarizeOperation_itemGUID_formatBlock___block_invoke;
       block[3] = &unk_278E921D0;
       block[4] = self;
-      v18 = v8;
-      v19 = v9;
-      v20 = v14;
-      v21 = v10;
-      v16 = v14;
-      dispatch_async(v15, block);
+      v18 = operationCopy;
+      v19 = dCopy;
+      v20 = date;
+      v21 = blockCopy;
+      v16 = date;
+      dispatch_async(dbQueue, block);
     }
   }
 
@@ -257,41 +257,41 @@ LABEL_7:
   return result;
 }
 
-- (void)discardOperation:(id)a3 itemGUID:(id)a4
+- (void)discardOperation:(id)operation itemGUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v16 = v6;
+    v16 = operationCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@ - %{public}@ Discarding measurements.", buf, 0x16u);
   }
 
-  v8 = [(MSASModelBase *)self dbQueue];
+  dbQueue = [(MSASModelBase *)self dbQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__MSPerformanceLogger_discardOperation_itemGUID___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = operationCopy;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = operationCopy;
+  dispatch_async(dbQueue, block);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dbQueueDiscardOperation:(id)a3 itemGUID:(id)a4
+- (void)dbQueueDiscardOperation:(id)operation itemGUID:(id)d
 {
-  v14 = a4;
-  v6 = a3;
+  dCopy = d;
+  operationCopy = operation;
   v7 = [(MSASModelBase *)self statementForString:@"delete from PerfLog where operation = ? and GUID = ?;"];
-  v8 = MSSqliteBindStringOrNull(v7, 1, v6);
+  v8 = MSSqliteBindStringOrNull(v7, 1, operationCopy);
 
   MSSqliteTrapForDBLockError(v8);
   if (v8)
@@ -301,7 +301,7 @@ LABEL_7:
 
   else
   {
-    v10 = MSSqliteBindStringOrNull(v7, 2, v14);
+    v10 = MSSqliteBindStringOrNull(v7, 2, dCopy);
     v11 = v10;
     MSSqliteTrapForDBLockError(v10);
     if (v11)
@@ -331,30 +331,30 @@ LABEL_8:
   }
 }
 
-- (void)stopOperation:(id)a3 itemGUID:(id)a4
+- (void)stopOperation:(id)operation itemGUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  dCopy = d;
   v8 = MSPlatform();
   if (objc_opt_respondsToSelector())
   {
     v9 = MSPlatform();
-    v10 = [v9 isPerformanceLoggingEnabled];
+    isPerformanceLoggingEnabled = [v9 isPerformanceLoggingEnabled];
 
-    if (v10)
+    if (isPerformanceLoggingEnabled)
     {
-      v11 = [MEMORY[0x277CBEAA8] date];
-      v12 = [(MSASModelBase *)self dbQueue];
+      date = [MEMORY[0x277CBEAA8] date];
+      dbQueue = [(MSASModelBase *)self dbQueue];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __46__MSPerformanceLogger_stopOperation_itemGUID___block_invoke;
       v14[3] = &unk_278E92660;
       v14[4] = self;
-      v15 = v6;
-      v16 = v7;
-      v17 = v11;
-      v13 = v11;
-      dispatch_async(v12, v14);
+      v15 = operationCopy;
+      v16 = dCopy;
+      v17 = date;
+      v13 = date;
+      dispatch_async(dbQueue, v14);
     }
   }
 
@@ -440,30 +440,30 @@ LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 itemGUID:(id)a4
+- (void)startOperation:(id)operation itemGUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  dCopy = d;
   v8 = MSPlatform();
   if (objc_opt_respondsToSelector())
   {
     v9 = MSPlatform();
-    v10 = [v9 isPerformanceLoggingEnabled];
+    isPerformanceLoggingEnabled = [v9 isPerformanceLoggingEnabled];
 
-    if (v10)
+    if (isPerformanceLoggingEnabled)
     {
-      v11 = [MEMORY[0x277CBEAA8] date];
-      v12 = [(MSASModelBase *)self dbQueue];
+      date = [MEMORY[0x277CBEAA8] date];
+      dbQueue = [(MSASModelBase *)self dbQueue];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __47__MSPerformanceLogger_startOperation_itemGUID___block_invoke;
       v14[3] = &unk_278E92660;
       v14[4] = self;
-      v15 = v6;
-      v16 = v7;
-      v17 = v11;
-      v13 = v11;
-      dispatch_async(v12, v14);
+      v15 = operationCopy;
+      v16 = dCopy;
+      v17 = date;
+      v13 = date;
+      dispatch_async(dbQueue, v14);
     }
   }
 
@@ -520,7 +520,7 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)dbQueueUpgradeFromDatabaseVersion:(int)a3 currentVersion:(int)a4
+- (BOOL)dbQueueUpgradeFromDatabaseVersion:(int)version currentVersion:(int)currentVersion
 {
   v17 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
@@ -531,7 +531,7 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  if (a3 < 0)
+  if (version < 0)
   {
     errmsg = 0;
     if (sqlite3_exec([(MSASModelBase *)self dbQueueDB], "pragma journal_mode = wal;", 0, 0, &errmsg) && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -589,12 +589,12 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (a3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (version && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 67109376;
-    *v15 = a3;
+    *v15 = version;
     *&v15[4] = 1024;
-    *&v15[6] = a4;
+    *&v15[6] = currentVersion;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot migrate performance log database from version %d to %d. Recreating.", buf, 0xEu);
   }
 
@@ -613,7 +613,7 @@ LABEL_20:
   return v4;
 }
 
-- (void)_logSqliteErrorLine:(int)a3
+- (void)_logSqliteErrorLine:(int)line
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -621,7 +621,7 @@ LABEL_20:
     v6 = 136446722;
     v7 = "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/coremediastream/MSPerformanceLogger.m";
     v8 = 1024;
-    v9 = a3;
+    lineCopy = line;
     v10 = 2082;
     v11 = sqlite3_errmsg([(MSASModelBase *)self dbQueueDB]);
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}s:%d: SQL operation failed: %{public}s", &v6, 0x1Cu);
@@ -630,10 +630,10 @@ LABEL_20:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)nukeCompletionBlock:(id)a3
++ (void)nukeCompletionBlock:(id)block
 {
-  v3 = a3;
-  v4 = v3;
+  blockCopy = block;
+  v4 = blockCopy;
   v5 = logger;
   if (logger)
   {
@@ -641,15 +641,15 @@ LABEL_20:
     v9[1] = 3221225472;
     v9[2] = __43__MSPerformanceLogger_nukeCompletionBlock___block_invoke;
     v9[3] = &unk_278E921A8;
-    v10 = v3;
+    v10 = blockCopy;
     [v5 shutDownForDestruction:1 completionBlock:v9];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = MSPathPerfDB();
-    [v6 removeItemAtPath:v7 error:0];
+    [defaultManager removeItemAtPath:v7 error:0];
 
     if (v4)
     {
@@ -685,10 +685,10 @@ void __43__MSPerformanceLogger_nukeCompletionBlock___block_invoke(uint64_t a1)
   }
 
   v3 = MSPlatform();
-  v4 = [v3 isPerformanceLoggingEnabled];
+  isPerformanceLoggingEnabled = [v3 isPerformanceLoggingEnabled];
 
   v5 = logger;
-  if (v4 && !logger)
+  if (isPerformanceLoggingEnabled && !logger)
   {
     v6 = objc_alloc_init(MSPerformanceLogger);
     v2 = logger;

@@ -1,12 +1,12 @@
 @interface PXDisplayLink.Target
-- (void)tickWithDisplayLink:(id)a3;
+- (void)tickWithDisplayLink:(id)link;
 @end
 
 @implementation PXDisplayLink.Target
 
-- (void)tickWithDisplayLink:(id)a3
+- (void)tickWithDisplayLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
 
   sub_1B3FB4310();
 }

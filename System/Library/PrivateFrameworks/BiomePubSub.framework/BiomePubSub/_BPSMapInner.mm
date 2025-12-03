@@ -1,57 +1,57 @@
 @interface _BPSMapInner
-- (_BPSMapInner)initWithDownstream:(id)a3 transform:(id)a4;
-- (int64_t)receiveInput:(id)a3;
+- (_BPSMapInner)initWithDownstream:(id)downstream transform:(id)transform;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSMapInner
 
-- (_BPSMapInner)initWithDownstream:(id)a3 transform:(id)a4
+- (_BPSMapInner)initWithDownstream:(id)downstream transform:(id)transform
 {
-  v7 = a3;
-  v8 = a4;
+  downstreamCopy = downstream;
+  transformCopy = transform;
   v13.receiver = self;
   v13.super_class = _BPSMapInner;
   v9 = [(_BPSMapInner *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [transformCopy copy];
     transform = v9->_transform;
     v9->_transform = v10;
 
-    objc_storeStrong(&v9->_downstream, a3);
+    objc_storeStrong(&v9->_downstream, downstream);
   }
 
   return v9;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSMapInner *)self downstream];
-  [v5 receiveSubscription:v4];
+  subscriptionCopy = subscription;
+  downstream = [(_BPSMapInner *)self downstream];
+  [downstream receiveSubscription:subscriptionCopy];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(_BPSMapInner *)v4 transform];
-  v7 = (v6)[2](v6, v5);
+  selfCopy = self;
+  inputCopy = input;
+  transform = [(_BPSMapInner *)selfCopy transform];
+  v7 = (transform)[2](transform, inputCopy);
 
-  v8 = [(_BPSMapInner *)v4 downstream];
-  v9 = [v8 receiveInput:v7];
+  downstream = [(_BPSMapInner *)selfCopy downstream];
+  v9 = [downstream receiveInput:v7];
 
   return v9;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  completionCopy = completion;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -61,17 +61,17 @@
     _os_log_impl(&dword_1C871B000, v6, OS_LOG_TYPE_INFO, "%@ - completion", &v10, 0xCu);
   }
 
-  v8 = [(_BPSMapInner *)v4 downstream];
-  [v8 receiveCompletion:v5];
+  downstream = [(_BPSMapInner *)selfCopy downstream];
+  [downstream receiveCompletion:completionCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
 - (void)cancel
 {
-  v3 = self;
-  v2 = [(_BPSMapInner *)v3 downstream];
-  [v2 cancel];
+  selfCopy = self;
+  downstream = [(_BPSMapInner *)selfCopy downstream];
+  [downstream cancel];
 }
 
 @end

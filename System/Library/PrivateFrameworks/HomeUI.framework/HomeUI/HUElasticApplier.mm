@@ -1,30 +1,30 @@
 @interface HUElasticApplier
-- (BOOL)complete:(BOOL)a3;
+- (BOOL)complete:(BOOL)complete;
 - (BOOL)start;
 - (HUElasticApplier)init;
-- (HUElasticApplier)initWithProgressInputBlock:(id)a3;
+- (HUElasticApplier)initWithProgressInputBlock:(id)block;
 - (void)_invalidateDisplayLinkIfNecessary;
-- (void)_updateProgressForInitialUpdate:(BOOL)a3;
+- (void)_updateProgressForInitialUpdate:(BOOL)update;
 @end
 
 @implementation HUElasticApplier
 
 - (HUElasticApplier)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithProgressInputBlock_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUElasticApplier.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUElasticApplier init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUElasticApplier.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HUElasticApplier init]", v5}];
 
   return 0;
 }
 
-- (HUElasticApplier)initWithProgressInputBlock:(id)a3
+- (HUElasticApplier)initWithProgressInputBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HUElasticApplier.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"progressInputBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUElasticApplier.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"progressInputBlock"}];
   }
 
   v10.receiver = self;
@@ -33,7 +33,7 @@
   v7 = v6;
   if (v6)
   {
-    [(HUElasticApplier *)v6 setProgressInputBlock:v5];
+    [(HUElasticApplier *)v6 setProgressInputBlock:blockCopy];
     v7->_applyOnlyOnProgressChanges = 1;
     v7->_completesWhenAtRest = 1;
     v7->_tension = 200.0;
@@ -47,37 +47,37 @@
 {
   v10.receiver = self;
   v10.super_class = HUElasticApplier;
-  v3 = [(HUApplier *)&v10 start];
-  if (v3)
+  start = [(HUApplier *)&v10 start];
+  if (start)
   {
     v4 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel__displayLinkTick];
     [(HUElasticApplier *)self setDisplayLink:v4];
 
-    v5 = [(HUElasticApplier *)self displayLink];
-    v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    displayLink = [(HUElasticApplier *)self displayLink];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [displayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
-    v7 = [(HUElasticApplier *)self displayLink];
+    displayLink2 = [(HUElasticApplier *)self displayLink];
     v11 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v7 setPreferredFrameRateRange:{*&v11.minimum, *&v11.maximum, *&v11.preferred}];
+    [displayLink2 setPreferredFrameRateRange:{*&v11.minimum, *&v11.maximum, *&v11.preferred}];
 
-    v8 = [(HUElasticApplier *)self displayLink];
-    [v8 setHighFrameRateReason:1769473];
+    displayLink3 = [(HUElasticApplier *)self displayLink];
+    [displayLink3 setHighFrameRateReason:1769473];
 
     [(HUElasticApplier *)self _updateProgressForInitialUpdate:1];
   }
 
-  return v3;
+  return start;
 }
 
-- (void)_updateProgressForInitialUpdate:(BOOL)a3
+- (void)_updateProgressForInitialUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v5 = [(HUElasticApplier *)self frameCount]* 0.0166666667;
-  v6 = [(HUElasticApplier *)self progressInputBlock];
-  v7 = v6[2](v5);
+  progressInputBlock = [(HUElasticApplier *)self progressInputBlock];
+  v7 = progressInputBlock[2](v5);
 
-  if (!v3 || (v8 = v7, ![(HUElasticApplier *)self progressBeginsFromInitialInputProgress]))
+  if (!updateCopy || (v8 = v7, ![(HUElasticApplier *)self progressBeginsFromInitialInputProgress]))
   {
     [(HUApplier *)self progress];
     v8 = v9;
@@ -85,7 +85,7 @@
 
   [(HUElasticApplier *)self tension];
   v11 = v10 * (v7 - v8);
-  if (v3)
+  if (updateCopy)
   {
     v12 = 0.0;
   }
@@ -105,7 +105,7 @@
   [(HUElasticApplier *)self setPreviousForce:v13];
   [(HUElasticApplier *)self setCurrentVelocity:v17];
   [(HUElasticApplier *)self setFrameCount:[(HUElasticApplier *)self frameCount]+ 1];
-  if (v19 > 0.001 || v3 || ![(HUElasticApplier *)self applyOnlyOnProgressChanges])
+  if (v19 > 0.001 || updateCopy || ![(HUElasticApplier *)self applyOnlyOnProgressChanges])
   {
     [(HUApplier *)self updateProgress:v18];
   }
@@ -129,17 +129,17 @@
 
 - (void)_invalidateDisplayLinkIfNecessary
 {
-  v3 = [(HUElasticApplier *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(HUElasticApplier *)self displayLink];
+  [displayLink invalidate];
 
   [(HUElasticApplier *)self setDisplayLink:0];
 }
 
-- (BOOL)complete:(BOOL)a3
+- (BOOL)complete:(BOOL)complete
 {
   v6.receiver = self;
   v6.super_class = HUElasticApplier;
-  v4 = [(HUApplier *)&v6 complete:a3];
+  v4 = [(HUApplier *)&v6 complete:complete];
   if (v4)
   {
     [(HUElasticApplier *)self _invalidateDisplayLinkIfNecessary];

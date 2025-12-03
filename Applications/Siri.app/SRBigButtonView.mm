@@ -1,17 +1,17 @@
 @interface SRBigButtonView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRBigButtonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRBigButtonView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)layoutSubviews;
 @end
 
 @implementation SRBigButtonView
 
-- (SRBigButtonView)initWithFrame:(CGRect)a3
+- (SRBigButtonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SRBigButtonView;
-  v3 = [(SRBigButtonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRBigButtonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriUIContentButton buttonWithMediumWeightFont];
@@ -50,10 +50,10 @@
   [(SiriUIContentButton *)self->_button setFrame:v9, v10, v11, v12];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(SRBigButtonView *)self traitCollection:a3.width];
+  width = fits.width;
+  v5 = [(SRBigButtonView *)self traitCollection:fits.width];
   if ([v5 isAmbientPresented])
   {
     v6 = 64.0;

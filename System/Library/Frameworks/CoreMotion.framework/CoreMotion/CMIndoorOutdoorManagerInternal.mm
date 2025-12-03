@@ -1,6 +1,6 @@
 @interface CMIndoorOutdoorManagerInternal
 - (CMIndoorOutdoorManagerInternal)init;
-- (void)_lastKnownIndoorOutdoorStateWithHandler:(id)a3;
+- (void)_lastKnownIndoorOutdoorStateWithHandler:(id)handler;
 - (void)_startIndoorOutdoorUpdates;
 - (void)_stopIndoorOutdoorUpdates;
 - (void)_teardown;
@@ -73,7 +73,7 @@
   dispatch_sync(internalQueue, block);
 }
 
-- (void)_lastKnownIndoorOutdoorStateWithHandler:(id)a3
+- (void)_lastKnownIndoorOutdoorStateWithHandler:(id)handler
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -81,7 +81,7 @@
   v4[2] = sub_19B65B140;
   v4[3] = &unk_1E7532B68;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(internalQueue, v4);
 }
 

@@ -1,8 +1,8 @@
 @interface IDSEntitlements
-- (BOOL)hasEntitlement:(id)a3;
-- (BOOL)hasService:(id)a3 forAnyOfEntitlements:(id)a4;
-- (BOOL)hasService:(id)a3 forEntitlement:(id)a4;
-- (IDSEntitlements)initWithEntitlements:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (BOOL)hasService:(id)service forAnyOfEntitlements:(id)entitlements;
+- (BOOL)hasService:(id)service forEntitlement:(id)entitlement;
+- (IDSEntitlements)initWithEntitlements:(id)entitlements;
 - (id)debugDescription;
 - (id)dictionaryRepresentation;
 - (void)dealloc;
@@ -133,9 +133,9 @@ LABEL_18:
   [(IDSEntitlements *)&v11 dealloc];
 }
 
-- (IDSEntitlements)initWithEntitlements:(id)a3
+- (IDSEntitlements)initWithEntitlements:(id)entitlements
 {
-  v4 = a3;
+  entitlementsCopy = entitlements;
   v61.receiver = self;
   v61.super_class = IDSEntitlements;
   v5 = [(IDSEntitlements *)&v61 init];
@@ -143,15 +143,15 @@ LABEL_18:
   {
     v43 = objc_autoreleasePoolPush();
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [v4 count];
+    v7 = [entitlementsCopy count];
     v5->_specificEntitlementCount = v7;
     v5->_specificEntitlements = malloc_type_calloc(v7, 0x18uLL, 0x1012040FC628917uLL);
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v44 = v4;
-    v8 = v4;
+    v44 = entitlementsCopy;
+    v8 = entitlementsCopy;
     v9 = [v8 countByEnumeratingWithState:&v57 objects:v67 count:16];
     if (v9)
     {
@@ -357,7 +357,7 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v43);
-    v4 = v44;
+    entitlementsCopy = v44;
   }
 
   return v5;
@@ -365,21 +365,21 @@ LABEL_18:
 
 - (id)debugDescription
 {
-  v2 = [(IDSEntitlements *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(IDSEntitlements *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
 
-- (BOOL)hasService:(id)a3 forAnyOfEntitlements:(id)a4
+- (BOOL)hasService:(id)service forAnyOfEntitlements:(id)entitlements
 {
-  v6 = a3;
+  serviceCopy = service;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  entitlementsCopy = entitlements;
+  v8 = [entitlementsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -390,17 +390,17 @@ LABEL_18:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(entitlementsCopy);
         }
 
-        if ([(IDSEntitlements *)self hasService:v6 forEntitlement:*(*(&v14 + 1) + 8 * i), v14])
+        if ([(IDSEntitlements *)self hasService:serviceCopy forEntitlement:*(*(&v14 + 1) + 8 * i), v14])
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [entitlementsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -416,10 +416,10 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)hasService:(id)a3 forEntitlement:(id)a4
+- (BOOL)hasService:(id)service forEntitlement:(id)entitlement
 {
-  v6 = a3;
-  v7 = sub_100003BE4(a4);
+  serviceCopy = service;
+  v7 = sub_100003BE4(entitlement);
   if (!v7)
   {
     goto LABEL_25;
@@ -450,10 +450,10 @@ LABEL_11:
   var0 = p_var1->var0;
   if (var1 == 57007)
   {
-    v13 = sub_100003A80(v6);
-    v14 = [v13 UTF8String];
+    v13 = sub_100003A80(serviceCopy);
+    uTF8String = [v13 UTF8String];
 
-    v12 = strcmp(v14, self->_shrunkenServiceIdentifiers[var0]) == 0;
+    v12 = strcmp(uTF8String, self->_shrunkenServiceIdentifiers[var0]) == 0;
     goto LABEL_26;
   }
 
@@ -463,8 +463,8 @@ LABEL_11:
     goto LABEL_26;
   }
 
-  v15 = sub_100003A80(v6);
-  v16 = [v15 UTF8String];
+  v15 = sub_100003A80(serviceCopy);
+  uTF8String2 = [v15 UTF8String];
 
   serviceIdentifierCount = self->_serviceIdentifierCount;
   if (!self->_serviceIdentifierCount)
@@ -474,7 +474,7 @@ LABEL_11:
 
   v18 = 0;
   shrunkenServiceIdentifiers = self->_shrunkenServiceIdentifiers;
-  while (strcmp(v16, shrunkenServiceIdentifiers[v18]))
+  while (strcmp(uTF8String2, shrunkenServiceIdentifiers[v18]))
   {
     v12 = 0;
     if (serviceIdentifierCount == ++v18)
@@ -503,9 +503,9 @@ LABEL_26:
   return v12;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = sub_100003BE4(a3);
+  v4 = sub_100003BE4(entitlement);
   if (v4)
   {
     specificEntitlementCount = self->_specificEntitlementCount;

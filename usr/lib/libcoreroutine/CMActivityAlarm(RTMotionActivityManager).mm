@@ -10,7 +10,7 @@
   v9 = *MEMORY[0x277D85DE8];
   if (a3 < 0x1D && ((0x10003FDFu >> a3) & 1) != 0)
   {
-    v4 = off_2788D2EB0[a3];
+    stringValue = off_2788D2EB0[a3];
   }
 
   else
@@ -24,18 +24,18 @@
     }
 
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3];
-    v4 = [v6 stringValue];
+    stringValue = [v6 stringValue];
   }
 
-  return v4;
+  return stringValue;
 }
 
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  [a1 duration];
+  [self duration];
   v4 = v3;
-  v5 = [MEMORY[0x277CC1C10] triggerToString:{objc_msgSend(a1, "trigger")}];
+  v5 = [MEMORY[0x277CC1C10] triggerToString:{objc_msgSend(self, "trigger")}];
   v6 = [v2 stringWithFormat:@"CMActivityAlarm, duration, %f, trigger, %@", v4, v5];
 
   return v6;

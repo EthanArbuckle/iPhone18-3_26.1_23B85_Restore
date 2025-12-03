@@ -1,14 +1,14 @@
 @interface STUIStatusBarVisualProvider_CarPlayTopStatus
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3;
-- (id)_regionWithIdentifier:(id)a3;
-- (id)_regionWithIdentifier:(id)a3 interspace:(double)a4;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)setupInContainerView:(id)a3;
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation;
+- (id)_regionWithIdentifier:(id)identifier;
+- (id)_regionWithIdentifier:(id)identifier interspace:(double)interspace;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)setupInContainerView:(id)view;
 @end
 
 @implementation STUIStatusBarVisualProvider_CarPlayTopStatus
 
-+ (CGSize)intrinsicContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicContentSizeForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x277D77260];
   v4 = 35.0;
@@ -17,264 +17,264 @@
   return result;
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v145[12] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v141 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"time"];
   [(STUIStatusBarVisualProvider_CarPlay *)self setTimeRegion:v5];
   v6 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"pill"];
   [v6 setActionInsets:{-10.0, -10.0, -10.0, -10.0}];
-  v7 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
   v139 = v6;
-  [v7 setPillRegion:v6];
+  [pillRegionCoordinator setPillRegion:v6];
 
   v8 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"pillContent"];
-  v9 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-  v10 = [v9 pillRegion];
+  pillRegionCoordinator2 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+  pillRegion = [pillRegionCoordinator2 pillRegion];
   v138 = v8;
-  [v8 setEnabilityRegion:v10];
+  [v8 setEnabilityRegion:pillRegion];
 
   v11 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"sensorActivity"];
   v12 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"oppositeDriver" interspace:8.0];
   [v12 setActionInsets:{-10.0, -10.0, -10.0, -10.0}];
   v13 = [(STUIStatusBarVisualProvider_CarPlayTopStatus *)self _regionWithIdentifier:@"driver" interspace:12.0];
   [v13 setActionInsets:{-10.0, -10.0, -10.0, -10.0}];
-  v14 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-  v15 = [v14 targetScreen];
-  LODWORD(v10) = [v15 _isRightHandDrive];
+  statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+  targetScreen = [statusBar targetScreen];
+  LODWORD(pillRegion) = [targetScreen _isRightHandDrive];
 
-  v16 = [v5 layoutItem];
+  layoutItem = [v5 layoutItem];
   v136 = v11;
-  v137 = v4;
+  v137 = viewCopy;
   v140 = v5;
   v134 = v13;
   v135 = v12;
-  v132 = v16;
-  if (v10)
+  v132 = layoutItem;
+  if (pillRegion)
   {
-    v17 = [v16 centerYAnchor];
-    v128 = [v4 safeAreaLayoutGuide];
-    [v128 centerYAnchor];
-    v126 = v130 = v17;
-    v124 = [v17 constraintEqualToAnchor:?];
+    centerYAnchor = [layoutItem centerYAnchor];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide centerYAnchor];
+    v126 = v130 = centerYAnchor;
+    v124 = [centerYAnchor constraintEqualToAnchor:?];
     v145[0] = v124;
-    v122 = [v5 layoutItem];
-    v120 = [v122 heightAnchor];
-    v118 = [v120 constraintEqualToConstant:18.0];
+    layoutItem2 = [v5 layoutItem];
+    heightAnchor = [layoutItem2 heightAnchor];
+    v118 = [heightAnchor constraintEqualToConstant:18.0];
     v145[1] = v118;
-    v116 = [v5 layoutItem];
-    v114 = [v116 widthAnchor];
-    v112 = [v114 constraintEqualToConstant:39.0];
-    v145[2] = v112;
-    v110 = [v5 layoutItem];
-    v18 = [v110 rightAnchor];
-    v106 = [v4 safeAreaLayoutGuide];
-    [v106 rightAnchor];
-    v104 = v108 = v18;
-    v102 = [v18 constraintEqualToAnchor:-10.0 constant:?];
+    layoutItem3 = [v5 layoutItem];
+    widthAnchor = [layoutItem3 widthAnchor];
+    safeAreaLayoutGuide7 = [widthAnchor constraintEqualToConstant:39.0];
+    v145[2] = safeAreaLayoutGuide7;
+    layoutItem4 = [v5 layoutItem];
+    rightAnchor = [layoutItem4 rightAnchor];
+    safeAreaLayoutGuide2 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide2 rightAnchor];
+    heightAnchor4 = v108 = rightAnchor;
+    v102 = [rightAnchor constraintEqualToAnchor:-10.0 constant:?];
     v145[3] = v102;
-    v100 = [v11 layoutItem];
-    v19 = [v100 centerYAnchor];
-    v96 = [v4 safeAreaLayoutGuide];
-    [v96 centerYAnchor];
-    v94 = v98 = v19;
-    v92 = [v19 constraintEqualToAnchor:?];
+    layoutItem5 = [v11 layoutItem];
+    centerYAnchor2 = [layoutItem5 centerYAnchor];
+    safeAreaLayoutGuide3 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide3 centerYAnchor];
+    v94 = v98 = centerYAnchor2;
+    v92 = [centerYAnchor2 constraintEqualToAnchor:?];
     v145[4] = v92;
-    v90 = [v11 layoutItem];
-    v20 = [v90 rightAnchor];
-    v86 = [v5 layoutItem];
-    [v86 leftAnchor];
-    v84 = v88 = v20;
-    v82 = [v20 constraintEqualToAnchor:-12.0 constant:?];
+    layoutItem6 = [v11 layoutItem];
+    rightAnchor2 = [layoutItem6 rightAnchor];
+    layoutItem7 = [v5 layoutItem];
+    [layoutItem7 leftAnchor];
+    v84 = v88 = rightAnchor2;
+    v82 = [rightAnchor2 constraintEqualToAnchor:-12.0 constant:?];
     v145[5] = v82;
-    v80 = [v12 layoutItem];
-    v78 = [v80 heightAnchor];
-    v76 = [v78 constraintEqualToConstant:10.0];
+    layoutItem8 = [v12 layoutItem];
+    heightAnchor2 = [layoutItem8 heightAnchor];
+    v76 = [heightAnchor2 constraintEqualToConstant:10.0];
     v145[6] = v76;
-    v74 = [v12 layoutItem];
-    v21 = [v74 leftAnchor];
-    v71 = [v4 safeAreaLayoutGuide];
-    [v71 leftAnchor];
-    v70 = v72 = v21;
-    v69 = [v21 constraintEqualToAnchor:10.0 constant:?];
+    layoutItem9 = [v12 layoutItem];
+    leftAnchor = [layoutItem9 leftAnchor];
+    safeAreaLayoutGuide4 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide4 leftAnchor];
+    v70 = v72 = leftAnchor;
+    v69 = [leftAnchor constraintEqualToAnchor:10.0 constant:?];
     v145[7] = v69;
-    v68 = [v12 layoutItem];
-    v22 = [v68 centerYAnchor];
-    v66 = [v4 safeAreaLayoutGuide];
-    [v66 centerYAnchor];
-    v65 = v67 = v22;
-    v64 = [v22 constraintEqualToAnchor:?];
+    layoutItem10 = [v12 layoutItem];
+    centerYAnchor3 = [layoutItem10 centerYAnchor];
+    safeAreaLayoutGuide5 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide5 centerYAnchor];
+    v65 = v67 = centerYAnchor3;
+    v64 = [centerYAnchor3 constraintEqualToAnchor:?];
     v145[8] = v64;
-    v63 = [v13 layoutItem];
-    v23 = [v63 centerYAnchor];
-    v61 = [v4 safeAreaLayoutGuide];
-    [v61 centerYAnchor];
-    v60 = v62 = v23;
-    v24 = [v23 constraintEqualToAnchor:?];
+    layoutItem11 = [v13 layoutItem];
+    centerYAnchor4 = [layoutItem11 centerYAnchor];
+    safeAreaLayoutGuide6 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide6 centerYAnchor];
+    v60 = v62 = centerYAnchor4;
+    v24 = [centerYAnchor4 constraintEqualToAnchor:?];
     v145[9] = v24;
-    v25 = [v13 layoutItem];
-    v26 = [v25 heightAnchor];
-    v27 = [v26 constraintEqualToConstant:35.0];
-    v145[10] = v27;
-    v28 = [v5 layoutItem];
-    v29 = [v28 leftAnchor];
-    v30 = [v13 layoutItem];
-    v31 = [v30 rightAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31 constant:10.0];
+    layoutItem12 = [v13 layoutItem];
+    heightAnchor3 = [layoutItem12 heightAnchor];
+    safeAreaLayoutGuide8 = [heightAnchor3 constraintEqualToConstant:35.0];
+    v145[10] = safeAreaLayoutGuide8;
+    layoutItem13 = [v5 layoutItem];
+    leftAnchor2 = [layoutItem13 leftAnchor];
+    layoutItem14 = [v13 layoutItem];
+    rightAnchor3 = [layoutItem14 rightAnchor];
+    v32 = [leftAnchor2 constraintEqualToAnchor:rightAnchor3 constant:10.0];
     v145[11] = v32;
     v33 = v145;
   }
 
   else
   {
-    v34 = [v16 leftAnchor];
-    v128 = [v4 safeAreaLayoutGuide];
-    [v128 leftAnchor];
-    v126 = v130 = v34;
-    v124 = [v34 constraintEqualToAnchor:12.0 constant:?];
+    leftAnchor3 = [layoutItem leftAnchor];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide leftAnchor];
+    v126 = v130 = leftAnchor3;
+    v124 = [leftAnchor3 constraintEqualToAnchor:12.0 constant:?];
     v144[0] = v124;
-    v122 = [v5 layoutItem];
-    v120 = [v122 widthAnchor];
-    v118 = [v120 constraintEqualToConstant:39.0];
+    layoutItem2 = [v5 layoutItem];
+    heightAnchor = [layoutItem2 widthAnchor];
+    v118 = [heightAnchor constraintEqualToConstant:39.0];
     v144[1] = v118;
-    v116 = [v5 layoutItem];
-    v35 = [v116 centerYAnchor];
-    v112 = [v4 safeAreaLayoutGuide];
-    [v112 centerYAnchor];
-    v110 = v114 = v35;
-    v108 = [v35 constraintEqualToAnchor:?];
+    layoutItem3 = [v5 layoutItem];
+    centerYAnchor5 = [layoutItem3 centerYAnchor];
+    safeAreaLayoutGuide7 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide7 centerYAnchor];
+    layoutItem4 = widthAnchor = centerYAnchor5;
+    v108 = [centerYAnchor5 constraintEqualToAnchor:?];
     v144[2] = v108;
-    v106 = [v5 layoutItem];
-    v104 = [v106 heightAnchor];
-    v102 = [v104 constraintEqualToConstant:18.0];
+    safeAreaLayoutGuide2 = [v5 layoutItem];
+    heightAnchor4 = [safeAreaLayoutGuide2 heightAnchor];
+    v102 = [heightAnchor4 constraintEqualToConstant:18.0];
     v144[3] = v102;
-    v100 = [v13 layoutItem];
-    v36 = [v100 leftAnchor];
-    v96 = [v5 layoutItem];
-    [v96 rightAnchor];
-    v94 = v98 = v36;
-    v92 = [v36 constraintEqualToAnchor:10.0 constant:?];
+    layoutItem5 = [v13 layoutItem];
+    leftAnchor4 = [layoutItem5 leftAnchor];
+    safeAreaLayoutGuide3 = [v5 layoutItem];
+    [safeAreaLayoutGuide3 rightAnchor];
+    v94 = v98 = leftAnchor4;
+    v92 = [leftAnchor4 constraintEqualToAnchor:10.0 constant:?];
     v144[4] = v92;
-    v90 = [v13 layoutItem];
-    v37 = [v90 centerYAnchor];
-    v86 = [v4 safeAreaLayoutGuide];
-    [v86 centerYAnchor];
-    v84 = v88 = v37;
-    v82 = [v37 constraintEqualToAnchor:?];
+    layoutItem6 = [v13 layoutItem];
+    centerYAnchor6 = [layoutItem6 centerYAnchor];
+    layoutItem7 = [viewCopy safeAreaLayoutGuide];
+    [layoutItem7 centerYAnchor];
+    v84 = v88 = centerYAnchor6;
+    v82 = [centerYAnchor6 constraintEqualToAnchor:?];
     v144[5] = v82;
-    v80 = [v13 layoutItem];
-    v78 = [v80 heightAnchor];
-    v76 = [v78 constraintEqualToConstant:35.0];
+    layoutItem8 = [v13 layoutItem];
+    heightAnchor2 = [layoutItem8 heightAnchor];
+    v76 = [heightAnchor2 constraintEqualToConstant:35.0];
     v144[6] = v76;
-    v74 = [v11 layoutItem];
-    v38 = [v74 leftAnchor];
-    v71 = [v13 layoutItem];
-    [v71 rightAnchor];
-    v70 = v72 = v38;
-    v69 = [v38 constraintEqualToAnchor:12.0 constant:?];
+    layoutItem9 = [v11 layoutItem];
+    leftAnchor5 = [layoutItem9 leftAnchor];
+    safeAreaLayoutGuide4 = [v13 layoutItem];
+    [safeAreaLayoutGuide4 rightAnchor];
+    v70 = v72 = leftAnchor5;
+    v69 = [leftAnchor5 constraintEqualToAnchor:12.0 constant:?];
     v144[7] = v69;
-    v68 = [v11 layoutItem];
-    v39 = [v68 centerYAnchor];
-    v66 = [v4 safeAreaLayoutGuide];
-    [v66 centerYAnchor];
-    v65 = v67 = v39;
-    v64 = [v39 constraintEqualToAnchor:?];
+    layoutItem10 = [v11 layoutItem];
+    centerYAnchor7 = [layoutItem10 centerYAnchor];
+    safeAreaLayoutGuide5 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide5 centerYAnchor];
+    v65 = v67 = centerYAnchor7;
+    v64 = [centerYAnchor7 constraintEqualToAnchor:?];
     v144[8] = v64;
-    v63 = [v12 layoutItem];
-    v40 = [v63 rightAnchor];
-    v61 = [v4 safeAreaLayoutGuide];
-    [v61 rightAnchor];
-    v60 = v62 = v40;
-    v24 = [v40 constraintEqualToAnchor:-12.0 constant:?];
+    layoutItem11 = [v12 layoutItem];
+    rightAnchor4 = [layoutItem11 rightAnchor];
+    safeAreaLayoutGuide6 = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide6 rightAnchor];
+    v60 = v62 = rightAnchor4;
+    v24 = [rightAnchor4 constraintEqualToAnchor:-12.0 constant:?];
     v144[9] = v24;
-    v25 = [v12 layoutItem];
-    v26 = [v25 centerYAnchor];
-    v27 = [v4 safeAreaLayoutGuide];
-    v28 = [v27 centerYAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
-    v144[10] = v29;
-    v30 = [v12 layoutItem];
-    v31 = [v30 heightAnchor];
-    v32 = [v31 constraintEqualToConstant:35.0];
+    layoutItem12 = [v12 layoutItem];
+    heightAnchor3 = [layoutItem12 centerYAnchor];
+    safeAreaLayoutGuide8 = [viewCopy safeAreaLayoutGuide];
+    layoutItem13 = [safeAreaLayoutGuide8 centerYAnchor];
+    leftAnchor2 = [heightAnchor3 constraintEqualToAnchor:layoutItem13];
+    v144[10] = leftAnchor2;
+    layoutItem14 = [v12 layoutItem];
+    rightAnchor3 = [layoutItem14 heightAnchor];
+    v32 = [rightAnchor3 constraintEqualToConstant:35.0];
     v144[11] = v32;
     v33 = v144;
   }
 
   v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:12];
-  [v141 addObjectsFromArray:v41];
+  [array addObjectsFromArray:v41];
 
-  v133 = [v139 layoutItem];
-  v129 = [v133 topAnchor];
-  v131 = [v140 layoutItem];
-  v127 = [v131 topAnchor];
-  v125 = [v129 constraintEqualToAnchor:v127];
+  layoutItem15 = [v139 layoutItem];
+  topAnchor = [layoutItem15 topAnchor];
+  layoutItem16 = [v140 layoutItem];
+  topAnchor2 = [layoutItem16 topAnchor];
+  v125 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v143[0] = v125;
-  v123 = [v139 layoutItem];
-  v119 = [v123 bottomAnchor];
-  v121 = [v140 layoutItem];
-  v117 = [v121 bottomAnchor];
-  v115 = [v119 constraintEqualToAnchor:v117];
+  layoutItem17 = [v139 layoutItem];
+  bottomAnchor = [layoutItem17 bottomAnchor];
+  layoutItem18 = [v140 layoutItem];
+  bottomAnchor2 = [layoutItem18 bottomAnchor];
+  v115 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v143[1] = v115;
-  v113 = [v139 layoutItem];
-  v109 = [v113 leadingAnchor];
-  v111 = [v140 layoutItem];
-  v107 = [v111 leadingAnchor];
-  v105 = [v109 constraintEqualToAnchor:v107];
+  layoutItem19 = [v139 layoutItem];
+  leadingAnchor = [layoutItem19 leadingAnchor];
+  layoutItem20 = [v140 layoutItem];
+  leadingAnchor2 = [layoutItem20 leadingAnchor];
+  v105 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v143[2] = v105;
-  v103 = [v139 layoutItem];
-  v99 = [v103 trailingAnchor];
-  v101 = [v140 layoutItem];
-  v97 = [v101 trailingAnchor];
-  v95 = [v99 constraintEqualToAnchor:v97];
+  layoutItem21 = [v139 layoutItem];
+  trailingAnchor = [layoutItem21 trailingAnchor];
+  layoutItem22 = [v140 layoutItem];
+  trailingAnchor2 = [layoutItem22 trailingAnchor];
+  v95 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v143[3] = v95;
-  v93 = [v138 layoutItem];
-  v89 = [v93 topAnchor];
-  v91 = [v139 layoutItem];
-  v87 = [v91 topAnchor];
-  v85 = [v89 constraintEqualToAnchor:v87];
+  layoutItem23 = [v138 layoutItem];
+  topAnchor3 = [layoutItem23 topAnchor];
+  layoutItem24 = [v139 layoutItem];
+  topAnchor4 = [layoutItem24 topAnchor];
+  v85 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v143[4] = v85;
-  v83 = [v138 layoutItem];
-  v79 = [v83 bottomAnchor];
-  v81 = [v139 layoutItem];
-  v77 = [v81 bottomAnchor];
-  v75 = [v79 constraintEqualToAnchor:v77];
+  layoutItem25 = [v138 layoutItem];
+  bottomAnchor3 = [layoutItem25 bottomAnchor];
+  layoutItem26 = [v139 layoutItem];
+  bottomAnchor4 = [layoutItem26 bottomAnchor];
+  v75 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v143[5] = v75;
-  v73 = [v138 layoutItem];
-  v42 = [v73 leadingAnchor];
-  v43 = [v139 layoutItem];
-  v44 = [v43 leadingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  layoutItem27 = [v138 layoutItem];
+  leadingAnchor3 = [layoutItem27 leadingAnchor];
+  layoutItem28 = [v139 layoutItem];
+  leadingAnchor4 = [layoutItem28 leadingAnchor];
+  v45 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v143[6] = v45;
-  v46 = [v138 layoutItem];
-  v47 = [v46 trailingAnchor];
-  v48 = [v139 layoutItem];
-  v49 = [v48 trailingAnchor];
-  v50 = [v47 constraintEqualToAnchor:v49];
+  layoutItem29 = [v138 layoutItem];
+  trailingAnchor3 = [layoutItem29 trailingAnchor];
+  layoutItem30 = [v139 layoutItem];
+  trailingAnchor4 = [layoutItem30 trailingAnchor];
+  v50 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v143[7] = v50;
   v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:8];
-  [v141 addObjectsFromArray:v51];
+  [array addObjectsFromArray:v51];
 
-  v52 = [v140 layoutItem];
-  [v137 _ui_addSubLayoutItem:v52];
+  layoutItem31 = [v140 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem31];
 
-  v53 = [v136 layoutItem];
-  [v137 _ui_addSubLayoutItem:v53];
+  layoutItem32 = [v136 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem32];
 
-  v54 = [v135 layoutItem];
-  [v137 _ui_addSubLayoutItem:v54];
+  layoutItem33 = [v135 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem33];
 
-  v55 = [v134 layoutItem];
-  [v137 _ui_addSubLayoutItem:v55];
+  layoutItem34 = [v134 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem34];
 
-  v56 = [v139 layoutItem];
-  [v137 _ui_addSubLayoutItem:v56];
+  layoutItem35 = [v139 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem35];
 
-  v57 = [v138 layoutItem];
-  [v137 _ui_addSubLayoutItem:v57];
+  layoutItem36 = [v138 layoutItem];
+  [v137 _ui_addSubLayoutItem:layoutItem36];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v141];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
   v142[0] = v138;
   v142[1] = v139;
   v142[2] = v140;
@@ -286,14 +286,14 @@
   return v58;
 }
 
-- (id)_regionWithIdentifier:(id)a3 interspace:(double)a4
+- (id)_regionWithIdentifier:(id)identifier interspace:(double)interspace
 {
-  v5 = a3;
-  v6 = [[STUIStatusBarRegion alloc] initWithIdentifier:v5];
+  identifierCopy = identifier;
+  v6 = [[STUIStatusBarRegion alloc] initWithIdentifier:identifierCopy];
 
   v7 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v8 = objc_alloc_init(STUIStatusBarRegionAxisCenteringLayout);
-  [(STUIStatusBarRegionAxisCenteringLayout *)v8 setInterspace:a4];
+  [(STUIStatusBarRegionAxisCenteringLayout *)v8 setInterspace:interspace];
   [(STUIStatusBarRegionAxesLayout *)v7 setHorizontalLayout:v8];
   v9 = [STUIStatusBarRegionAxisAligningLayout aligningLayoutWithAlignment:1];
   [(STUIStatusBarRegionAxesLayout *)v7 setVerticalLayout:v9];
@@ -303,10 +303,10 @@
   return v6;
 }
 
-- (id)_regionWithIdentifier:(id)a3
+- (id)_regionWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[STUIStatusBarRegion alloc] initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[STUIStatusBarRegion alloc] initWithIdentifier:identifierCopy];
 
   v5 = objc_alloc_init(STUIStatusBarRegionAxesLayout);
   v6 = +[STUIStatusBarRegionAxisFillingLayout fillingLayout];
@@ -320,14 +320,14 @@
   return v4;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v172[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   orderedDisplayItemPlacements = self->_orderedDisplayItemPlacements;
   if (!orderedDisplayItemPlacements)
   {
-    v104 = v4;
+    v104 = identifierCopy;
     v6 = +[STUIStatusBarTimeItem shortTimeDisplayIdentifier];
     v7 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v6 priority:500];
 
@@ -348,8 +348,8 @@
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v171 count:1];
     v16 = [v14 excludingPlacements:v15];
 
-    v17 = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
-    [v17 setPillIconPlacement:v16];
+    pillRegionCoordinator = [(STUIStatusBarVisualProvider_CarPlay *)self pillRegionCoordinator];
+    [pillRegionCoordinator setPillIconPlacement:v16];
 
     v18 = +[(STUIStatusBarBackgroundActivityItem *)STUIStatusBarPillBackgroundActivityItem];
     v19 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v18 priority:574];
@@ -382,7 +382,7 @@
     v32 = +[STUIStatusBarWifiItem signalStrengthDisplayIdentifier];
     v33 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v32 priority:400];
     v167 = v29;
-    v142 = self;
+    selfCopy = self;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v167 count:1];
     v35 = [v33 excludingPlacements:v34];
 
@@ -492,12 +492,12 @@
     v76 = [MEMORY[0x277CBEA60] arrayWithObjects:v161 count:2];
     v108 = [v75 requiringAllPlacements:v76];
 
-    v77 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v78 = [v77 additionalDataDelegate];
-    v79 = [v78 additionalEntriesByRelativePriority];
+    statusBar = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+    additionalDataDelegate = [statusBar additionalDataDelegate];
+    additionalEntriesByRelativePriority = [additionalDataDelegate additionalEntriesByRelativePriority];
 
-    v102 = v79;
-    v107 = [STUIStatusBarDisplayItemPlacementAdditionalEntriesGroup groupWithHighPriority:299 lowPriority:200 inAsscendingPriority:1 identifiersByPriority:v79];
+    v102 = additionalEntriesByRelativePriority;
+    v107 = [STUIStatusBarDisplayItemPlacementAdditionalEntriesGroup groupWithHighPriority:299 lowPriority:200 inAsscendingPriority:1 identifiersByPriority:additionalEntriesByRelativePriority];
     v80 = [STUIStatusBarDisplayItemPlacement separatorPlacementWithLineHeight:19 lineWidth:12.0 priority:1.0];
     v81 = [STUIStatusBarDisplayItemPlacement spacerPlacementWithSize:18 priority:-4.0, 0.0];
     v160 = v80;
@@ -509,12 +509,12 @@
     v84 = [MEMORY[0x277CBEA60] arrayWithObjects:&v159 count:1];
     v105 = [v83 requiringAnyPlacements:v84];
 
-    v85 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
-    v86 = [v85 targetScreen];
-    LODWORD(v79) = [v86 _isRightHandDrive];
+    statusBar2 = [(STUIStatusBarVisualProvider_CarPlay *)self statusBar];
+    targetScreen = [statusBar2 targetScreen];
+    LODWORD(additionalEntriesByRelativePriority) = [targetScreen _isRightHandDrive];
 
     v103 = v42;
-    if (v79)
+    if (additionalEntriesByRelativePriority)
     {
       v157[0] = @"time";
       v156 = v141;
@@ -571,9 +571,9 @@
       v151[26] = v109;
       v151[27] = v108;
       v151[28] = v110;
-      v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v151 count:29];
-      v92 = [v107 placements];
-      v93 = [v91 arrayByAddingObjectsFromArray:v92];
+      placements2 = [MEMORY[0x277CBEA60] arrayWithObjects:v151 count:29];
+      placements = [v107 placements];
+      v93 = [placements2 arrayByAddingObjectsFromArray:placements];
       v158[5] = v93;
       v94 = MEMORY[0x277CBEAC0];
       v95 = v158;
@@ -607,7 +607,7 @@
       v90 = [MEMORY[0x277CBEA60] arrayWithObjects:v144 count:3];
       v150[4] = v90;
       v149[5] = @"oppositeDriver";
-      v91 = [v107 placements];
+      placements2 = [v107 placements];
       v143[0] = v109;
       v143[1] = v108;
       v143[2] = v110;
@@ -638,8 +638,8 @@
       v143[27] = v44;
       v143[28] = v128;
       v143[29] = v129;
-      v92 = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:30];
-      v93 = [v91 arrayByAddingObjectsFromArray:v92];
+      placements = [MEMORY[0x277CBEA60] arrayWithObjects:v143 count:30];
+      v93 = [placements2 arrayByAddingObjectsFromArray:placements];
       v150[5] = v93;
       v94 = MEMORY[0x277CBEAC0];
       v95 = v150;
@@ -647,14 +647,14 @@
     }
 
     v97 = [v94 dictionaryWithObjects:v95 forKeys:v96 count:6];
-    v98 = v142->_orderedDisplayItemPlacements;
-    v142->_orderedDisplayItemPlacements = v97;
+    v98 = selfCopy->_orderedDisplayItemPlacements;
+    selfCopy->_orderedDisplayItemPlacements = v97;
 
-    orderedDisplayItemPlacements = v142->_orderedDisplayItemPlacements;
-    v4 = v104;
+    orderedDisplayItemPlacements = selfCopy->_orderedDisplayItemPlacements;
+    identifierCopy = v104;
   }
 
-  v99 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:v4];
+  v99 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:identifierCopy];
 
   return v99;
 }

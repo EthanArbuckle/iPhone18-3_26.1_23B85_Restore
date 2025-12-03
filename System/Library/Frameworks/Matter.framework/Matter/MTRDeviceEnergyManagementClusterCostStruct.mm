@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterCostStruct
 - (MTRDeviceEnergyManagementClusterCostStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterCostStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterCostStruct *)self costType];
-  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setCostType:v5];
+  costType = [(MTRDeviceEnergyManagementClusterCostStruct *)self costType];
+  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setCostType:costType];
 
-  v6 = [(MTRDeviceEnergyManagementClusterCostStruct *)self value];
-  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setValue:v6];
+  value = [(MTRDeviceEnergyManagementClusterCostStruct *)self value];
+  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setValue:value];
 
-  v7 = [(MTRDeviceEnergyManagementClusterCostStruct *)self decimalPoints];
-  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setDecimalPoints:v7];
+  decimalPoints = [(MTRDeviceEnergyManagementClusterCostStruct *)self decimalPoints];
+  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setDecimalPoints:decimalPoints];
 
-  v8 = [(MTRDeviceEnergyManagementClusterCostStruct *)self currency];
-  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setCurrency:v8];
+  currency = [(MTRDeviceEnergyManagementClusterCostStruct *)self currency];
+  [(MTRDeviceEnergyManagementClusterCostStruct *)v4 setCurrency:currency];
 
   return v4;
 }

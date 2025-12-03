@@ -1,52 +1,52 @@
 @interface FTTextToSpeechStreamingStreamingRequest
-+ (Class)content_immutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForImmutableObject:(id)a3;
++ (Class)content_immutableClassForType:(int64_t)type;
++ (int64_t)content_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)content;
 - (FTStartTextToSpeechStreamingRequest)contentAsFTStartTextToSpeechStreamingRequest;
-- (FTTextToSpeechStreamingStreamingRequest)initWithFlatbuffData:(id)a3 root:(const TextToSpeechStreamingStreamingRequest *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::qss_fb::TextToSpeechStreamingStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (FTTextToSpeechStreamingStreamingRequest)initWithFlatbuffData:(id)data root:(const TextToSpeechStreamingStreamingRequest *)root verify:(BOOL)verify;
+- (Offset<siri::speech::qss_fb::TextToSpeechStreamingStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)content_type;
 @end
 
 @implementation FTTextToSpeechStreamingStreamingRequest
 
-- (FTTextToSpeechStreamingStreamingRequest)initWithFlatbuffData:(id)a3 root:(const TextToSpeechStreamingStreamingRequest *)a4 verify:(BOOL)a5
+- (FTTextToSpeechStreamingStreamingRequest)initWithFlatbuffData:(id)data root:(const TextToSpeechStreamingStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTTextToSpeechStreamingStreamingRequest;
   v10 = [(FTTextToSpeechStreamingStreamingRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -63,9 +63,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -126,20 +126,20 @@ LABEL_16:
 {
   if ([(FTTextToSpeechStreamingStreamingRequest *)self content_type]== 1)
   {
-    v3 = [(FTTextToSpeechStreamingStreamingRequest *)self contentAsFTStartTextToSpeechStreamingRequest];
+    contentAsFTStartTextToSpeechStreamingRequest = [(FTTextToSpeechStreamingStreamingRequest *)self contentAsFTStartTextToSpeechStreamingRequest];
   }
 
   else
   {
-    v3 = 0;
+    contentAsFTStartTextToSpeechStreamingRequest = 0;
   }
 
-  return v3;
+  return contentAsFTStartTextToSpeechStreamingRequest;
 }
 
-+ (Class)content_immutableClassForType:(int64_t)a3
++ (Class)content_immutableClassForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = objc_opt_class();
   }
@@ -152,21 +152,21 @@ LABEL_16:
   return v4;
 }
 
-+ (int64_t)content_typeForImmutableObject:(id)a3
++ (int64_t)content_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  objectCopy = object;
+  v4 = [objectCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::TextToSpeechStreamingStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::TextToSpeechStreamingStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTTextToSpeechStreamingStreamingRequest *)self content_type];
+  content_type = [(FTTextToSpeechStreamingStreamingRequest *)self content_type];
   if ([(FTTextToSpeechStreamingStreamingRequest *)self content_type]== 1)
   {
-    v6 = [(FTTextToSpeechStreamingStreamingRequest *)self contentAsFTStartTextToSpeechStreamingRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsFTStartTextToSpeechStreamingRequest = [(FTTextToSpeechStreamingStreamingRequest *)self contentAsFTStartTextToSpeechStreamingRequest];
+    v7 = [contentAsFTStartTextToSpeechStreamingRequest addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -176,17 +176,17 @@ LABEL_16:
     v8 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 5);
-  v9 = *(a3 + 6);
-  v11 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 5);
+  v9 = *(buffer + 6);
+  v11 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type, 0);
   if ([(FTTextToSpeechStreamingStreamingRequest *)self content_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v8);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v8);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v11 - v9 + v10);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v11 - v9 + v10);
 }
 
 - (id)flatbuffData

@@ -1,7 +1,7 @@
 @interface SUICKPMapCardSectionViewController
 + (id)cardSectionClasses;
 - (BOOL)_shouldAttemptToSnapshotMapView;
-- (id)_initWithCardSection:(id)a3;
+- (id)_initWithCardSection:(id)section;
 - (id)_mapCardSection;
 - (id)_viewSnapshot;
 - (void)_loadCardSectionView;
@@ -10,7 +10,7 @@
 - (void)_snapshotCardSectionView;
 - (void)_updateContentSize;
 - (void)dealloc;
-- (void)didEngageCardSection:(id)a3;
+- (void)didEngageCardSection:(id)section;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -24,12 +24,12 @@
   return [v2 setWithObject:v3];
 }
 
-- (id)_initWithCardSection:(id)a3
+- (id)_initWithCardSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v11.receiver = self;
   v11.super_class = SUICKPMapCardSectionViewController;
-  v5 = [(CRKCardSectionViewController *)&v11 _initWithCardSection:v4];
+  v5 = [(CRKCardSectionViewController *)&v11 _initWithCardSection:sectionCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
@@ -95,24 +95,24 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
   if ([(SUICKPMapCardSectionViewController *)self _shouldAttemptToSnapshotMapView]&& !self->_needsToLoadCardSectionView)
   {
     v3 = objc_alloc(MEMORY[0x277D75D18]);
-    v4 = [(SUICKPMapCardSectionViewController *)self view];
-    [v4 bounds];
+    view = [(SUICKPMapCardSectionViewController *)self view];
+    [view bounds];
     v11 = [v3 initWithFrame:?];
 
     [v11 setClipsToBounds:1];
     v5 = objc_alloc(MEMORY[0x277D755E8]);
-    v6 = [(SUICKPMapCardSectionViewController *)self _viewSnapshot];
-    v7 = [v5 initWithImage:v6];
+    _viewSnapshot = [(SUICKPMapCardSectionViewController *)self _viewSnapshot];
+    v7 = [v5 initWithImage:_viewSnapshot];
 
     [v7 setContentMode:2];
-    v8 = [(SUICKPMapCardSectionViewController *)self view];
-    [v8 bounds];
+    view2 = [(SUICKPMapCardSectionViewController *)self view];
+    [view2 bounds];
     [v7 setFrame:?];
 
     [v7 setAutoresizingMask:18];
     [v11 addSubview:v7];
-    v9 = [(SUICKPMapCardSectionViewController *)self view];
-    [v9 setContentView:v11];
+    view3 = [(SUICKPMapCardSectionViewController *)self view];
+    [view3 setContentView:v11];
 
     mapSectionView = self->_mapSectionView;
     self->_mapSectionView = 0;
@@ -144,37 +144,37 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
   v18[1] = *MEMORY[0x277D85DE8];
   if (!self->_mapSectionView)
   {
-    v3 = [(CRKCardSectionViewController *)self viewConfiguration];
+    viewConfiguration = [(CRKCardSectionViewController *)self viewConfiguration];
 
-    if (v3)
+    if (viewConfiguration)
     {
-      v4 = [(CRKCardSectionViewController *)self viewConfiguration];
-      v5 = [v4 cardSectionView];
+      viewConfiguration2 = [(CRKCardSectionViewController *)self viewConfiguration];
+      cardSectionView = [viewConfiguration2 cardSectionView];
       mapSectionView = self->_mapSectionView;
-      self->_mapSectionView = v5;
+      self->_mapSectionView = cardSectionView;
     }
 
     else
     {
       v7 = MEMORY[0x277D4C818];
-      v8 = [(SUICKPMapCardSectionViewController *)self _mapCardSection];
-      v18[0] = v8;
+      _mapCardSection = [(SUICKPMapCardSectionViewController *)self _mapCardSection];
+      v18[0] = _mapCardSection;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
       v10 = [v7 viewsForCardSections:v9 feedbackListener:self];
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
       v12 = self->_mapSectionView;
-      self->_mapSectionView = v11;
+      self->_mapSectionView = firstObject;
     }
 
-    v13 = [(SUICKPMapCardSectionViewController *)self view];
+    view = [(SUICKPMapCardSectionViewController *)self view];
     v14 = self->_mapSectionView;
-    v15 = [(CRKCardSectionViewController *)self delegate];
-    [v15 boundingSizeForCardSectionViewController:self];
+    delegate = [(CRKCardSectionViewController *)self delegate];
+    [delegate boundingSizeForCardSectionViewController:self];
     [(CRKCardSectionView *)v14 sizeThatFits:?];
-    [v13 setContentSize:?];
+    [view setContentSize:?];
 
-    v16 = [(SUICKPMapCardSectionViewController *)self view];
-    [v16 setContentView:self->_mapSectionView];
+    view2 = [(SUICKPMapCardSectionViewController *)self view];
+    [view2 setContentView:self->_mapSectionView];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -198,32 +198,32 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
 {
   if (self->_mapSectionView)
   {
-    v5 = [(SUICKPMapCardSectionViewController *)self view];
+    view = [(SUICKPMapCardSectionViewController *)self view];
     mapSectionView = self->_mapSectionView;
-    v4 = [(CRKCardSectionViewController *)self delegate];
-    [v4 boundingSizeForCardSectionViewController:self];
+    delegate = [(CRKCardSectionViewController *)self delegate];
+    [delegate boundingSizeForCardSectionViewController:self];
     [(CRKCardSectionView *)mapSectionView sizeThatFits:?];
-    [v5 setContentSize:?];
+    [view setContentSize:?];
   }
 }
 
 - (id)_viewSnapshot
 {
-  v3 = [(SUICKPMapCardSectionViewController *)self view];
-  [v3 bounds];
+  view = [(SUICKPMapCardSectionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
   v16.width = v5;
   v16.height = v7;
   UIGraphicsBeginImageContextWithOptions(v16, 0, v10);
 
-  v11 = [(SUICKPMapCardSectionViewController *)self view];
-  v12 = [(SUICKPMapCardSectionViewController *)self view];
-  [v12 bounds];
-  [v11 drawViewHierarchyInRect:0 afterScreenUpdates:?];
+  view2 = [(SUICKPMapCardSectionViewController *)self view];
+  view3 = [(SUICKPMapCardSectionViewController *)self view];
+  [view3 bounds];
+  [view2 drawViewHierarchyInRect:0 afterScreenUpdates:?];
 
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -233,69 +233,69 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
 
 - (id)_mapCardSection
 {
-  v2 = [(CRKCardSectionViewController *)self cardSection];
-  v3 = [v2 backingCardSection];
+  cardSection = [(CRKCardSectionViewController *)self cardSection];
+  backingCardSection = [cardSection backingCardSection];
 
-  return v3;
+  return backingCardSection;
 }
 
 - (BOOL)_shouldAttemptToSnapshotMapView
 {
-  v3 = [(SUICKPMapCardSectionViewController *)self _mapCardSection];
-  if ([v3 interactive])
+  _mapCardSection = [(SUICKPMapCardSectionViewController *)self _mapCardSection];
+  if ([_mapCardSection interactive])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(CRKCardSectionViewController *)self _remoteViewController];
-    v4 = v5 == 0;
+    _remoteViewController = [(CRKCardSectionViewController *)self _remoteViewController];
+    v4 = _remoteViewController == 0;
   }
 
   return v4;
 }
 
-- (void)didEngageCardSection:(id)a3
+- (void)didEngageCardSection:(id)section
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionCopy = section;
   v32.receiver = self;
   v32.super_class = SUICKPMapCardSectionViewController;
-  [(SUICKPInteractiveCardSectionViewController *)&v32 didEngageCardSection:v4];
+  [(SUICKPInteractiveCardSectionViewController *)&v32 didEngageCardSection:sectionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CRKCardSectionViewController *)self delegate];
+    v5 = sectionCopy;
+    delegate = [(CRKCardSectionViewController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [v5 triggerEvent];
-      if (v8 == 14 || [v5 triggerEvent] == 2)
+      triggerEvent = [v5 triggerEvent];
+      if (triggerEvent == 14 || [v5 triggerEvent] == 2)
       {
-        v9 = [(CRKCardSectionViewController *)self cardSection];
+        cardSection = [(CRKCardSectionViewController *)self cardSection];
         v10 = objc_opt_respondsToSelector();
 
         if (v10)
         {
-          v11 = [(CRKCardSectionViewController *)self cardSection];
-          v12 = [v11 actionCommands];
+          cardSection2 = [(CRKCardSectionViewController *)self cardSection];
+          actionCommands = [cardSection2 actionCommands];
 
-          v13 = [(CRKCardSectionViewController *)self _extraCommands];
+          _extraCommands = [(CRKCardSectionViewController *)self _extraCommands];
 
-          v26 = v12;
-          v27 = v4;
-          if (v13)
+          v26 = actionCommands;
+          v27 = sectionCopy;
+          if (_extraCommands)
           {
-            v14 = [(CRKCardSectionViewController *)self _extraCommands];
-            v15 = [v12 arrayByAddingObjectsFromArray:v14];
+            _extraCommands2 = [(CRKCardSectionViewController *)self _extraCommands];
+            v15 = [actionCommands arrayByAddingObjectsFromArray:_extraCommands2];
           }
 
           else
           {
-            v15 = v12;
+            v15 = actionCommands;
           }
 
           v30 = 0u;
@@ -318,7 +318,7 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
                 }
 
                 v21 = *(*(&v28 + 1) + 8 * i);
-                if (v8 == 14)
+                if (triggerEvent == 14)
                 {
                   v33 = @"CRKMapCardSectionPlacemarkData";
                   [v5 modifiedPlacemarkData];
@@ -339,7 +339,7 @@ void __59__SUICKPMapCardSectionViewController__initWithCardSection___block_invok
             while (v18);
           }
 
-          v4 = v27;
+          sectionCopy = v27;
         }
       }
     }

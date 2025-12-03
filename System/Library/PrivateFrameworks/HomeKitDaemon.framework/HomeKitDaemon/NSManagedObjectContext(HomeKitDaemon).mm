@@ -11,11 +11,11 @@
 
 - (uint64_t)hmd_transactionAuthor
 {
-  v1 = [a1 transactionAuthor];
-  v2 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:v1];
+  transactionAuthor = [self transactionAuthor];
+  v2 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:transactionAuthor];
 
-  v3 = [v2 type];
-  return v3;
+  type = [v2 type];
+  return type;
 }
 
 - (void)hmd_logPendingChangesWithReason:()HomeKitDaemon
@@ -30,45 +30,45 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [a1 transactionAuthor];
+    transactionAuthor = [self transactionAuthor];
     *buf = 138544130;
     v26 = v10;
     v27 = 2114;
-    v28 = a1;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v11;
+    v30 = transactionAuthor;
     v31 = 2114;
     v32 = v4;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@%{public}@ (%{public}@) - %{public}@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [a1 insertedObjects];
+  insertedObjects = [self insertedObjects];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __73__NSManagedObjectContext_HomeKitDaemon__hmd_logPendingChangesWithReason___block_invoke;
   v23[3] = &unk_27867D4B0;
   v13 = v8;
   v24 = v13;
-  [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
+  [insertedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v23];
 
-  v14 = [a1 updatedObjects];
+  updatedObjects = [self updatedObjects];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __73__NSManagedObjectContext_HomeKitDaemon__hmd_logPendingChangesWithReason___block_invoke_30;
   v21[3] = &unk_27867D4B0;
   v15 = v13;
   v22 = v15;
-  [v14 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
+  [updatedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
 
-  v16 = [a1 deletedObjects];
+  deletedObjects = [self deletedObjects];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __73__NSManagedObjectContext_HomeKitDaemon__hmd_logPendingChangesWithReason___block_invoke_34;
   v19[3] = &unk_27867D4B0;
   v17 = v15;
   v20 = v17;
-  [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v19];
+  [deletedObjects hmf_enumerateWithAutoreleasePoolUsingBlock:v19];
 
   objc_autoreleasePoolPop(v6);
   v18 = *MEMORY[0x277D85DE8];
@@ -80,12 +80,12 @@
   v6 = a3;
   v7 = a4;
   v16 = 0;
-  v8 = [a1 hmd_fetchExistingObjectWithID:v6 propertiesToFetch:v7 error:&v16];
+  v8 = [self hmd_fetchExistingObjectWithID:v6 propertiesToFetch:v7 error:&v16];
   v9 = v16;
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -113,28 +113,28 @@
   v9 = a4;
   v10 = a3;
   v11 = [v8 alloc];
-  v12 = [v10 entity];
-  v13 = [v12 name];
-  v14 = [v11 initWithEntityName:v13];
+  entity = [v10 entity];
+  name = [entity name];
+  v14 = [v11 initWithEntityName:name];
 
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self == %@", v10];
 
   [v14 setPredicate:v15];
   [v14 setPropertiesToFetch:v9];
 
-  v16 = [a1 executeFetchRequest:v14 error:a5];
+  v16 = [self executeFetchRequest:v14 error:a5];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 firstObject];
+    firstObject = [v16 firstObject];
   }
 
   else
   {
-    v18 = 0;
+    firstObject = 0;
   }
 
-  return v18;
+  return firstObject;
 }
 
 - (uint64_t)hmd_saveWithTransactionAuthor:()HomeKitDaemon clientIdentifier:allowQoSEscalation:error:
@@ -156,7 +156,7 @@ LABEL_8:
 
 LABEL_9:
         v17 = objc_autoreleasePoolPush();
-        v18 = a1;
+        selfCopy = self;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -221,7 +221,7 @@ LABEL_6:
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = a1;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
@@ -240,18 +240,18 @@ LABEL_6:
   v21 = [HMDCoreDataContextTransactionAuthor contextAuthorWithType:a3 clientIdentifier:v11];
 LABEL_21:
   v27 = v21;
-  v28 = [v21 string];
-  if (!a3 || (v29 = v28) == 0)
+  string = [v21 string];
+  if (!a3 || (v29 = string) == 0)
   {
     _HMFPreconditionFailure();
   }
 
-  v30 = [a1 transactionAuthor];
-  [a1 setTransactionAuthor:v29];
+  transactionAuthor = [self transactionAuthor];
+  [self setTransactionAuthor:v29];
   v50 = 0;
-  v31 = [a1 save:&v50];
+  v31 = [self save:&v50];
   v32 = v50;
-  [a1 setTransactionAuthor:v30];
+  [self setTransactionAuthor:transactionAuthor];
   if ((v31 & 1) == 0)
   {
     if (a3 != 2)
@@ -295,8 +295,8 @@ LABEL_21:
 
 - (id)hmd_homeUUID
 {
-  v1 = [a1 name];
-  v2 = HMDHomeUUIDFromWorkingContextName(v1);
+  name = [self name];
+  v2 = HMDHomeUUIDFromWorkingContextName(name);
 
   return v2;
 }

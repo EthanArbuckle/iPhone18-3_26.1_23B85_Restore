@@ -3,8 +3,8 @@
 - (id)fetchPersistedInferenceEvents;
 - (id)inferenceEventsToTryAgain;
 - (void)fetchPersistedInferenceEvents;
-- (void)persistInferenceEvent:(id)a3;
-- (void)trackInferenceStartedForInferenceEvent:(id)a3;
+- (void)persistInferenceEvent:(id)event;
+- (void)trackInferenceStartedForInferenceEvent:(id)event;
 @end
 
 @implementation ATXAnchorModelInferenceTracker
@@ -25,26 +25,26 @@
   return v2;
 }
 
-- (void)trackInferenceStartedForInferenceEvent:(id)a3
+- (void)trackInferenceStartedForInferenceEvent:(id)event
 {
   v4 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v5 = [v7 retryCount];
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "integerValue") + 1}];
-  [v7 setRetryCount:v6];
+  eventCopy = event;
+  retryCount = [eventCopy retryCount];
+  v6 = [v4 numberWithInteger:{objc_msgSend(retryCount, "integerValue") + 1}];
+  [eventCopy setRetryCount:v6];
 
-  [(ATXAnchorModelInferenceTracker *)self persistInferenceEvent:v7];
+  [(ATXAnchorModelInferenceTracker *)self persistInferenceEvent:eventCopy];
 }
 
 - (id)inferenceEventsToTryAgain
 {
-  v3 = [(ATXAnchorModelInferenceTracker *)self fetchPersistedInferenceEvents];
+  fetchPersistedInferenceEvents = [(ATXAnchorModelInferenceTracker *)self fetchPersistedInferenceEvents];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__ATXAnchorModelInferenceTracker_inferenceEventsToTryAgain__block_invoke;
   v6[3] = &unk_27859F8E8;
   v6[4] = self;
-  v4 = [v3 _pas_filteredArrayWithTest:v6];
+  v4 = [fetchPersistedInferenceEvents _pas_filteredArrayWithTest:v6];
 
   return v4;
 }
@@ -108,10 +108,10 @@ LABEL_12:
   return v12;
 }
 
-- (void)persistInferenceEvent:(id)a3
+- (void)persistInferenceEvent:(id)event
 {
   v9 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:event requiringSecureCoding:1 error:&v9];
   v5 = v9;
   v6 = v5;
   if (v4)
@@ -210,7 +210,7 @@ LABEL_12:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2263AA000, a2, OS_LOG_TYPE_ERROR, "Unable to unarchive ATXAnchorModelIncompleteInferenceEvent with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

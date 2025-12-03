@@ -1,18 +1,18 @@
 @interface SCATAlternateKeysManager
 - (BOOL)canBeActiveElementManager;
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4;
-- (CGPoint)_fingerControllerPointForKeyboardKey:(id)a3;
+- (BOOL)handleInputAction:(id)action withElement:(id)element;
+- (CGPoint)_fingerControllerPointForKeyboardKey:(id)key;
 - (SCATAlternateKeysManager)init;
 - (SCATAlternateKeysManagerDelegate)delegate;
 - (id)_fingerController;
 - (void)_cleanUpAlternateKeyOperations;
 - (void)_releaseLastShownKey;
-- (void)_selectAlternateKey:(id)a3;
+- (void)_selectAlternateKey:(id)key;
 - (void)_updateAlternateKeys;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
 - (void)dealloc;
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6;
-- (void)showAlternateKeysForKey:(id)a3;
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager;
+- (void)showAlternateKeysForKey:(id)key;
 @end
 
 @implementation SCATAlternateKeysManager
@@ -43,39 +43,39 @@
 
 - (BOOL)canBeActiveElementManager
 {
-  v2 = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
-  v3 = v2 != 0;
+  currentKeyForAlternates = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
+  v3 = currentKeyForAlternates != 0;
 
   return v3;
 }
 
 - (void)_updateAlternateKeys
 {
-  v4 = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
-  v3 = [v4 scatAlternateKeys];
-  [(SCATAlternateKeysManager *)self setAlternateKeys:v3];
+  currentKeyForAlternates = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
+  scatAlternateKeys = [currentKeyForAlternates scatAlternateKeys];
+  [(SCATAlternateKeysManager *)self setAlternateKeys:scatAlternateKeys];
 }
 
 - (id)_fingerController
 {
   v2 = +[HNDHandManager sharedManager];
-  v3 = [v2 fingerController];
+  fingerController = [v2 fingerController];
 
-  return v3;
+  return fingerController;
 }
 
-- (CGPoint)_fingerControllerPointForKeyboardKey:(id)a3
+- (CGPoint)_fingerControllerPointForKeyboardKey:(id)key
 {
-  [a3 scatFrame];
+  [key scatFrame];
   AX_CGRectGetCenter();
   v5 = v4;
   v7 = v6;
-  v8 = [(SCATAlternateKeysManager *)self _fingerController];
-  v9 = [v8 fingerContainerView];
-  v10 = [v8 fingerContainerView];
-  v11 = [v10 window];
-  [v11 convertPoint:0 fromWindow:{v5, v7}];
-  [v9 convertPoint:0 fromView:?];
+  _fingerController = [(SCATAlternateKeysManager *)self _fingerController];
+  fingerContainerView = [_fingerController fingerContainerView];
+  fingerContainerView2 = [_fingerController fingerContainerView];
+  window = [fingerContainerView2 window];
+  [window convertPoint:0 fromWindow:{v5, v7}];
+  [fingerContainerView convertPoint:0 fromView:?];
   v13 = v12;
   v15 = v14;
 
@@ -86,16 +86,16 @@
   return result;
 }
 
-- (void)showAlternateKeysForKey:(id)a3
+- (void)showAlternateKeysForKey:(id)key
 {
-  v4 = a3;
-  [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:v4];
+  keyCopy = key;
+  [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:keyCopy];
   v6 = v5;
   v8 = v7;
-  v9 = [(SCATAlternateKeysManager *)self _fingerController];
-  [v9 performDownAtPoint:{v6, v8}];
+  _fingerController = [(SCATAlternateKeysManager *)self _fingerController];
+  [_fingerController performDownAtPoint:{v6, v8}];
 
-  [(SCATAlternateKeysManager *)self setCurrentKeyForAlternates:v4];
+  [(SCATAlternateKeysManager *)self setCurrentKeyForAlternates:keyCopy];
   v10 = +[SCATScannerManager sharedManager];
   [v10 endScanning];
 }
@@ -107,55 +107,55 @@
   [(SCATAlternateKeysManager *)self setCurrentKeyForAlternates:0];
 }
 
-- (void)_selectAlternateKey:(id)a3
+- (void)_selectAlternateKey:(id)key
 {
-  v4 = a3;
-  [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:v4];
+  keyCopy = key;
+  [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:keyCopy];
   v6 = v5;
   v8 = v7;
-  v10 = [(SCATAlternateKeysManager *)self _fingerController];
-  [v10 performMoveToPoint:{v6, v8}];
-  [v10 performUpAtPoint:{v6, v8}];
+  _fingerController = [(SCATAlternateKeysManager *)self _fingerController];
+  [_fingerController performMoveToPoint:{v6, v8}];
+  [_fingerController performUpAtPoint:{v6, v8}];
   [(SCATAlternateKeysManager *)self _cleanUpAlternateKeyOperations];
-  v9 = [(SCATAlternateKeysManager *)self delegate];
-  [v9 alternateKeysManager:self didSelectAlternateKey:v4];
+  delegate = [(SCATAlternateKeysManager *)self delegate];
+  [delegate alternateKeysManager:self didSelectAlternateKey:keyCopy];
 }
 
 - (void)_releaseLastShownKey
 {
-  v3 = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
+  currentKeyForAlternates = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
 
-  if (v3)
+  if (currentKeyForAlternates)
   {
-    v4 = [(SCATAlternateKeysManager *)self _fingerController];
-    v5 = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
-    [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:v5];
-    [v4 performUpAtPoint:?];
+    _fingerController = [(SCATAlternateKeysManager *)self _fingerController];
+    currentKeyForAlternates2 = [(SCATAlternateKeysManager *)self currentKeyForAlternates];
+    [(SCATAlternateKeysManager *)self _fingerControllerPointForKeyboardKey:currentKeyForAlternates2];
+    [_fingerController performUpAtPoint:?];
   }
 
   [(SCATAlternateKeysManager *)self _cleanUpAlternateKeyOperations];
 }
 
-- (void)didFetchElements:(id)a3 foundNewElements:(BOOL)a4 currentFocusContext:(id)a5 didChangeActiveElementManager:(BOOL)a6
+- (void)didFetchElements:(id)elements foundNewElements:(BOOL)newElements currentFocusContext:(id)context didChangeActiveElementManager:(BOOL)manager
 {
-  v9 = a3;
+  elementsCopy = elements;
   v7 = +[HNDAccessibilityManager sharedManager];
-  v8 = [v7 firstKeyboardItem];
+  firstKeyboardItem = [v7 firstKeyboardItem];
 
-  if (!v8)
+  if (!firstKeyboardItem)
   {
     [(SCATAlternateKeysManager *)self _releaseLastShownKey];
-    [v9 beginScanningWithFocusContext:0];
+    [elementsCopy beginScanningWithFocusContext:0];
   }
 }
 
-- (BOOL)handleInputAction:(id)a3 withElement:(id)a4
+- (BOOL)handleInputAction:(id)action withElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 action] == 100 || objc_msgSend(v6, "action") == 103 || objc_msgSend(v6, "action") == 109)
+  actionCopy = action;
+  elementCopy = element;
+  if ([actionCopy action] == 100 || objc_msgSend(actionCopy, "action") == 103 || objc_msgSend(actionCopy, "action") == 109)
   {
-    [(SCATAlternateKeysManager *)self _selectAlternateKey:v7];
+    [(SCATAlternateKeysManager *)self _selectAlternateKey:elementCopy];
     v8 = 1;
   }
 
@@ -167,11 +167,11 @@
   return v8;
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  if (a4 == 9)
+  if (event == 9)
   {
-    v6 = [(SCATAlternateKeysManager *)self currentKeyForAlternates:a3];
+    v6 = [(SCATAlternateKeysManager *)self currentKeyForAlternates:manager];
 
     if (v6)
     {

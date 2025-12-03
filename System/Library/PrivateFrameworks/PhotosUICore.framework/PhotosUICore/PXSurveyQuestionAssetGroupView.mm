@@ -1,23 +1,23 @@
 @interface PXSurveyQuestionAssetGroupView
 - (NSMutableArray)imageViews;
 - (OS_dispatch_queue)imageViewsQueue;
-- (PXSurveyQuestionAssetGroupView)initWithAssetCollection:(id)a3 customMaximumPreviewAssetCount:(id)a4 keyAssetLocalIdentifier:(id)a5;
+- (PXSurveyQuestionAssetGroupView)initWithAssetCollection:(id)collection customMaximumPreviewAssetCount:(id)count keyAssetLocalIdentifier:(id)identifier;
 - (PXSurveyQuestionAssetGroupViewDelegate)delegate;
-- (double)minXPositionForViewPosition:(unsigned __int8)a3 totalNumberOfViews:(unsigned __int8)a4;
-- (double)minYPositionForViewPosition:(unsigned __int8)a3 totalNumberOfViews:(unsigned __int8)a4;
-- (id)_arrangeAssetsForDisplay:(id)a3;
-- (id)_imageViewForPosition:(unsigned __int8)a3 totalViewCount:(unsigned __int8)a4;
-- (id)validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:(id)a3;
+- (double)minXPositionForViewPosition:(unsigned __int8)position totalNumberOfViews:(unsigned __int8)views;
+- (double)minYPositionForViewPosition:(unsigned __int8)position totalNumberOfViews:(unsigned __int8)views;
+- (id)_arrangeAssetsForDisplay:(id)display;
+- (id)_imageViewForPosition:(unsigned __int8)position totalViewCount:(unsigned __int8)count;
+- (id)validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:(id)count;
 - (unsigned)_getTotalViews;
-- (unsigned)getHorizontalViewCountForTotalNumberOfViews:(unsigned __int8)a3;
-- (unsigned)getVerticalViewCountForTotalNumberOfViews:(unsigned __int8)a3;
+- (unsigned)getHorizontalViewCountForTotalNumberOfViews:(unsigned __int8)views;
+- (unsigned)getVerticalViewCountForTotalNumberOfViews:(unsigned __int8)views;
 - (void)_beginImageFetchFromCollection;
 - (void)_handleViewTap;
-- (void)_loadAndApplyImagesFromAssets:(id)a3;
+- (void)_loadAndApplyImagesFromAssets:(id)assets;
 - (void)_setupMetadataView;
 - (void)_setupViews;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrameForSubview:(id)a3 inPosition:(unsigned __int8)a4;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrameForSubview:(id)subview inPosition:(unsigned __int8)position;
 @end
 
 @implementation PXSurveyQuestionAssetGroupView
@@ -29,14 +29,14 @@
   return WeakRetained;
 }
 
-- (double)minYPositionForViewPosition:(unsigned __int8)a3 totalNumberOfViews:(unsigned __int8)a4
+- (double)minYPositionForViewPosition:(unsigned __int8)position totalNumberOfViews:(unsigned __int8)views
 {
-  v4 = a3;
-  v6 = [(PXSurveyQuestionAssetGroupView *)self getVerticalViewCountForTotalNumberOfViews:a4];
+  positionCopy = position;
+  v6 = [(PXSurveyQuestionAssetGroupView *)self getVerticalViewCountForTotalNumberOfViews:views];
   result = 0.0;
-  if (v4 > 6)
+  if (positionCopy > 6)
   {
-    if ((v4 - 7) >= 3)
+    if ((positionCopy - 7) >= 3)
     {
       return result;
     }
@@ -48,14 +48,14 @@
 
   else
   {
-    if ((v4 - 5) < 2)
+    if ((positionCopy - 5) < 2)
     {
 LABEL_6:
       [(PXSurveyQuestionAssetGroupView *)self frame];
       return v8 / 3.0 + self->_imagePadding * 0.5;
     }
 
-    if (v4 == 3)
+    if (positionCopy == 3)
     {
       if (v6 != 2)
       {
@@ -65,7 +65,7 @@ LABEL_6:
 
     else
     {
-      if (v4 != 4)
+      if (positionCopy != 4)
       {
         return result;
       }
@@ -84,14 +84,14 @@ LABEL_6:
   return imagePadding + v10;
 }
 
-- (double)minXPositionForViewPosition:(unsigned __int8)a3 totalNumberOfViews:(unsigned __int8)a4
+- (double)minXPositionForViewPosition:(unsigned __int8)position totalNumberOfViews:(unsigned __int8)views
 {
-  v4 = a3;
-  v6 = [(PXSurveyQuestionAssetGroupView *)self getHorizontalViewCountForTotalNumberOfViews:a4];
+  positionCopy = position;
+  v6 = [(PXSurveyQuestionAssetGroupView *)self getHorizontalViewCountForTotalNumberOfViews:views];
   result = 0.0;
-  if (v4 <= 9)
+  if (positionCopy <= 9)
   {
-    if (((1 << v4) & 0x124) != 0)
+    if (((1 << positionCopy) & 0x124) != 0)
     {
       if (v6 == 3)
       {
@@ -115,7 +115,7 @@ LABEL_11:
       return imagePadding + v9;
     }
 
-    if (((1 << v4) & 0x248) != 0)
+    if (((1 << positionCopy) & 0x248) != 0)
     {
       if (v6 == 2)
       {
@@ -125,7 +125,7 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    if (v4 == 4 && v6 == 2)
+    if (positionCopy == 4 && v6 == 2)
     {
       goto LABEL_11;
     }
@@ -134,18 +134,18 @@ LABEL_11:
   return result;
 }
 
-- (void)setFrameForSubview:(id)a3 inPosition:(unsigned __int8)a4
+- (void)setFrameForSubview:(id)subview inPosition:(unsigned __int8)position
 {
-  v6 = a3;
-  [v6 bounds];
+  subviewCopy = subview;
+  [subviewCopy bounds];
   v5 = v4;
-  [v6 bounds];
-  [v6 setFrame:{0.0, 0.0, v5}];
+  [subviewCopy bounds];
+  [subviewCopy setFrame:{0.0, 0.0, v5}];
 }
 
-- (unsigned)getHorizontalViewCountForTotalNumberOfViews:(unsigned __int8)a3
+- (unsigned)getHorizontalViewCountForTotalNumberOfViews:(unsigned __int8)views
 {
-  if (a3 == 9)
+  if (views == 9)
   {
     v3 = 3;
   }
@@ -155,7 +155,7 @@ LABEL_11:
     v3 = 0;
   }
 
-  if (a3 >= 5u)
+  if (views >= 5u)
   {
     v4 = v3;
   }
@@ -165,7 +165,7 @@ LABEL_11:
     v4 = 2;
   }
 
-  if (a3 >= 2u)
+  if (views >= 2u)
   {
     return v4;
   }
@@ -176,9 +176,9 @@ LABEL_11:
   }
 }
 
-- (unsigned)getVerticalViewCountForTotalNumberOfViews:(unsigned __int8)a3
+- (unsigned)getVerticalViewCountForTotalNumberOfViews:(unsigned __int8)views
 {
-  if (a3 == 9)
+  if (views == 9)
   {
     v3 = 3;
   }
@@ -188,12 +188,12 @@ LABEL_11:
     v3 = 0;
   }
 
-  if (a3 == 4)
+  if (views == 4)
   {
     v3 = 2;
   }
 
-  if (a3 < 3u)
+  if (views < 3u)
   {
     return 1;
   }
@@ -204,14 +204,14 @@ LABEL_11:
   }
 }
 
-- (id)_imageViewForPosition:(unsigned __int8)a3 totalViewCount:(unsigned __int8)a4
+- (id)_imageViewForPosition:(unsigned __int8)position totalViewCount:(unsigned __int8)count
 {
-  v4 = a4;
-  v5 = a3;
+  countCopy = count;
+  positionCopy = position;
   v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v9 = [(PXSurveyQuestionAssetGroupView *)self getHorizontalViewCountForTotalNumberOfViews:v4];
-  v10 = [(PXSurveyQuestionAssetGroupView *)self getVerticalViewCountForTotalNumberOfViews:v4];
+  v9 = [(PXSurveyQuestionAssetGroupView *)self getHorizontalViewCountForTotalNumberOfViews:countCopy];
+  v10 = [(PXSurveyQuestionAssetGroupView *)self getVerticalViewCountForTotalNumberOfViews:countCopy];
   [(PXSurveyQuestionAssetGroupView *)self frame];
   v12 = v11;
   if (v9 != 1)
@@ -230,25 +230,25 @@ LABEL_11:
     v14 = v13 / 0.0 + self->_imagePadding * -0.5;
   }
 
-  [(PXSurveyQuestionAssetGroupView *)self minXPositionForViewPosition:v5 totalNumberOfViews:v4];
+  [(PXSurveyQuestionAssetGroupView *)self minXPositionForViewPosition:positionCopy totalNumberOfViews:countCopy];
   v16 = v15;
-  [(PXSurveyQuestionAssetGroupView *)self minYPositionForViewPosition:v5 totalNumberOfViews:v4];
+  [(PXSurveyQuestionAssetGroupView *)self minYPositionForViewPosition:positionCopy totalNumberOfViews:countCopy];
   [v8 setFrame:{v16, v17, v12, v14}];
 
   return v8;
 }
 
-- (void)_loadAndApplyImagesFromAssets:(id)a3
+- (void)_loadAndApplyImagesFromAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PXSurveyQuestionAssetGroupView *)self presentedAssetIds];
-  [v5 removeAllObjects];
+  assetsCopy = assets;
+  presentedAssetIds = [(PXSurveyQuestionAssetGroupView *)self presentedAssetIds];
+  [presentedAssetIds removeAllObjects];
 
-  v6 = [(PXSurveyQuestionAssetGroupView *)self assetCollection];
-  v7 = [v6 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  assetCollection = [(PXSurveyQuestionAssetGroupView *)self assetCollection];
+  photoLibrary = [assetCollection photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v9 = [MEMORY[0x1E6978630] fetchAssetsWithUUIDs:v4 options:v8];
+  v9 = [MEMORY[0x1E6978630] fetchAssetsWithUUIDs:assetsCopy options:librarySpecificFetchOptions];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -361,59 +361,59 @@ void __64__PXSurveyQuestionAssetGroupView__loadAndApplyImagesFromAssets___block_
   [v3 addObject:v2];
 }
 
-- (id)_arrangeAssetsForDisplay:(id)a3
+- (id)_arrangeAssetsForDisplay:(id)display
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  displayCopy = display;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v3 count] < 3 || objc_msgSend(v3, "count") == 4 || objc_msgSend(v3, "count") == 9)
+  if ([displayCopy count] < 3 || objc_msgSend(displayCopy, "count") == 4 || objc_msgSend(displayCopy, "count") == 9)
   {
-    v5 = v3;
+    v5 = displayCopy;
 
     v4 = v5;
     goto LABEL_5;
   }
 
-  v7 = [v3 firstObject];
-  [v4 addObject:v7];
+  firstObject = [displayCopy firstObject];
+  [v4 addObject:firstObject];
 
-  [v3 removeObjectAtIndex:0];
-  v8 = 0;
-  if ([v3 count] >= 2)
+  [displayCopy removeObjectAtIndex:0];
+  lastObject = 0;
+  if ([displayCopy count] >= 2)
   {
-    v8 = [v3 lastObject];
-    [v3 removeLastObject];
+    lastObject = [displayCopy lastObject];
+    [displayCopy removeLastObject];
   }
 
-  if ([v3 count] >= 4)
+  if ([displayCopy count] >= 4)
   {
-    v9 = [v3 objectAtIndexedSubscript:0];
+    v9 = [displayCopy objectAtIndexedSubscript:0];
     v23[0] = v9;
-    v10 = [v3 objectAtIndexedSubscript:1];
+    v10 = [displayCopy objectAtIndexedSubscript:1];
     v23[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     [v4 addObjectsFromArray:v11];
 
-    if ([v3 count] >= 9)
+    if ([displayCopy count] >= 9)
     {
-      v12 = ([v3 count] >> 1) - 1;
-      v13 = [v3 objectAtIndexedSubscript:?];
+      v12 = ([displayCopy count] >> 1) - 1;
+      v13 = [displayCopy objectAtIndexedSubscript:?];
       v22[0] = v13;
-      v14 = [v3 objectAtIndexedSubscript:v12];
+      v14 = [displayCopy objectAtIndexedSubscript:v12];
       v22[1] = v14;
-      v15 = [v3 objectAtIndexedSubscript:v12];
+      v15 = [displayCopy objectAtIndexedSubscript:v12];
       v22[2] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
       [v4 addObjectsFromArray:v16];
     }
 
-    v17 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 2}];
-    v18 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count", v17) - 1}];
+    v17 = [displayCopy objectAtIndexedSubscript:{objc_msgSend(displayCopy, "count") - 2}];
+    v18 = [displayCopy objectAtIndexedSubscript:{objc_msgSend(displayCopy, "count", v17) - 1}];
     v21[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     [v4 addObjectsFromArray:v19];
 
-    if (!v8)
+    if (!lastObject)
     {
       goto LABEL_17;
     }
@@ -421,13 +421,13 @@ void __64__PXSurveyQuestionAssetGroupView__loadAndApplyImagesFromAssets___block_
     goto LABEL_16;
   }
 
-  v20 = v3;
+  v20 = displayCopy;
 
   v4 = v20;
-  if (v8)
+  if (lastObject)
   {
 LABEL_16:
-    [v4 addObject:v8];
+    [v4 addObject:lastObject];
   }
 
 LABEL_17:
@@ -501,74 +501,74 @@ void __64__PXSurveyQuestionAssetGroupView__beginImageFetchFromCollection__block_
 
 - (void)_handleViewTap
 {
-  v3 = [(PXSurveyQuestionAssetGroupView *)self delegate];
-  [v3 px_surveyQuestionAssetGroupViewWasTapped:self];
+  delegate = [(PXSurveyQuestionAssetGroupView *)self delegate];
+  [delegate px_surveyQuestionAssetGroupViewWasTapped:self];
 }
 
 - (void)_setupMetadataView
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-  v4 = [v3 superview];
+  metadataView = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+  superview = [metadataView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-    [(PXSurveyQuestionAssetGroupView *)self addSubview:v5];
+    metadataView2 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+    [(PXSurveyQuestionAssetGroupView *)self addSubview:metadataView2];
 
-    v6 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-    v7 = [v6 layer];
-    [v7 setZPosition:1.79769313e308];
+    metadataView3 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+    layer = [metadataView3 layer];
+    [layer setZPosition:1.79769313e308];
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-    [v9 setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    locationLabel = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+    [locationLabel setTextColor:whiteColor];
 
     v10 = *MEMORY[0x1E69DB970];
     v11 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:*MEMORY[0x1E69DB970]];
-    v12 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-    [v12 setFont:v11];
+    locationLabel2 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+    [locationLabel2 setFont:v11];
 
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    v14 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
-    [v14 setTextColor:v13];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    dateRangeLabel = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
+    [dateRangeLabel setTextColor:whiteColor2];
 
     v15 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0 weight:v10];
-    v16 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
-    [v16 setFont:v15];
+    dateRangeLabel2 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
+    [dateRangeLabel2 setFont:v15];
 
-    v17 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-    [v17 addSubview:self->_locationLabel];
+    metadataView4 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+    [metadataView4 addSubview:self->_locationLabel];
 
-    v18 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-    [v18 addSubview:self->_dateRangeLabel];
+    metadataView5 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+    [metadataView5 addSubview:self->_dateRangeLabel];
 
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    v67[0] = [v19 CGColor];
-    v20 = [MEMORY[0x1E69DC888] blackColor];
-    v21 = [v20 colorWithAlphaComponent:0.8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v67[0] = [clearColor CGColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v21 = [blackColor colorWithAlphaComponent:0.8];
     v67[1] = [v21 CGColor];
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
-    v23 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
-    [v23 setColors:v22];
+    metadataViewGradient = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
+    [metadataViewGradient setColors:v22];
 
     [(PXSurveyQuestionAssetGroupView *)self bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
-    [v32 setFrame:{v25, v27, v29, v31}];
+    metadataViewGradient2 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
+    [metadataViewGradient2 setFrame:{v25, v27, v29, v31}];
 
-    v33 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
-    [v33 setLocations:&unk_1F19111D0];
+    metadataViewGradient3 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
+    [metadataViewGradient3 setLocations:&unk_1F19111D0];
 
-    v34 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
-    [v34 setZPosition:1000.0];
+    metadataViewGradient4 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
+    [metadataViewGradient4 setZPosition:1000.0];
 
-    v35 = [(PXSurveyQuestionAssetGroupView *)self layer];
-    v36 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
-    [v35 addSublayer:v36];
+    layer2 = [(PXSurveyQuestionAssetGroupView *)self layer];
+    metadataViewGradient5 = [(PXSurveyQuestionAssetGroupView *)self metadataViewGradient];
+    [layer2 addSublayer:metadataViewGradient5];
   }
 
   [(PXSurveyQuestionAssetGroupView *)self bounds];
@@ -577,70 +577,70 @@ void __64__PXSurveyQuestionAssetGroupView__beginImageFetchFromCollection__block_
   v40 = v39;
   [(PXSurveyQuestionAssetGroupView *)self bounds];
   v42 = v41 / 3.0;
-  v43 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-  [v43 setFrame:{0.0, v38, v40, v42}];
+  metadataView6 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+  [metadataView6 setFrame:{0.0, v38, v40, v42}];
 
-  v44 = [(PXSurveyQuestionAssetGroupView *)self delegate];
-  v45 = [v44 px_surveyQuestionAssetGroupViewMetadataLocationString:self];
-  v46 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-  [v46 setText:v45];
+  delegate = [(PXSurveyQuestionAssetGroupView *)self delegate];
+  v45 = [delegate px_surveyQuestionAssetGroupViewMetadataLocationString:self];
+  locationLabel3 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+  [locationLabel3 setText:v45];
 
-  v47 = [(PXSurveyQuestionAssetGroupView *)self delegate];
-  v48 = [v47 px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:self->_dateFormatter assetGroupView:self];
-  v49 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
-  [v49 setText:v48];
+  delegate2 = [(PXSurveyQuestionAssetGroupView *)self delegate];
+  v48 = [delegate2 px_surveyQuestionAssetGroupViewMetadataDateRangeStringWithFormatter:self->_dateFormatter assetGroupView:self];
+  dateRangeLabel3 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
+  [dateRangeLabel3 setText:v48];
 
-  v50 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-  v51 = [v50 text];
-  if ([v51 length])
+  locationLabel4 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+  text = [locationLabel4 text];
+  if ([text length])
   {
     goto LABEL_6;
   }
 
-  v52 = [(PXSurveyQuestionAssetGroupView *)self delegate];
+  delegate3 = [(PXSurveyQuestionAssetGroupView *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v50 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeAdditionalReasonExhaustiveMomentLabelingNoLocation", @"PhotosUICore");
-    v51 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-    [v51 setText:v50];
+    locationLabel4 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeAdditionalReasonExhaustiveMomentLabelingNoLocation", @"PhotosUICore");
+    text = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+    [text setText:locationLabel4];
 LABEL_6:
   }
 
-  v54 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-  [v54 bounds];
+  metadataView7 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+  [metadataView7 bounds];
   v56 = v55 + -40.0;
-  v57 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
-  [v57 bounds];
+  metadataView8 = [(PXSurveyQuestionAssetGroupView *)self metadataView];
+  [metadataView8 bounds];
   v59 = v58 + -20.0;
-  v60 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
-  [v60 setFrame:{10.0, v56, v59, 40.0}];
+  dateRangeLabel4 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
+  [dateRangeLabel4 setFrame:{10.0, v56, v59, 40.0}];
 
-  v61 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
-  [v61 frame];
+  dateRangeLabel5 = [(PXSurveyQuestionAssetGroupView *)self dateRangeLabel];
+  [dateRangeLabel5 frame];
   v63 = v62 + -20.0;
   [(PXSurveyQuestionAssetGroupView *)self bounds];
   v65 = v64 + -20.0;
-  v66 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
-  [v66 setFrame:{10.0, v63, v65, 40.0}];
+  locationLabel5 = [(PXSurveyQuestionAssetGroupView *)self locationLabel];
+  [locationLabel5 setFrame:{10.0, v63, v65, 40.0}];
 }
 
 - (void)_setupViews
 {
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [(PXSurveyQuestionAssetGroupView *)self setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [(PXSurveyQuestionAssetGroupView *)self setBackgroundColor:systemGroupedBackgroundColor];
 
-  v4 = [(PXSurveyQuestionAssetGroupView *)self _getTotalViews];
+  _getTotalViews = [(PXSurveyQuestionAssetGroupView *)self _getTotalViews];
   v5 = dispatch_group_create();
-  if (v4)
+  if (_getTotalViews)
   {
     v6 = 1;
     do
     {
       dispatch_group_enter(v5);
-      v7 = [(PXSurveyQuestionAssetGroupView *)self _imageViewForPosition:v6 totalViewCount:v4];
+      v7 = [(PXSurveyQuestionAssetGroupView *)self _imageViewForPosition:v6 totalViewCount:_getTotalViews];
       [v7 setContentMode:2];
       [v7 setClipsToBounds:1];
       if (v6)
@@ -655,7 +655,7 @@ LABEL_6:
       v8 = ;
       [v7 setBackgroundColor:v8];
 
-      v9 = [(PXSurveyQuestionAssetGroupView *)self imageViewsQueue];
+      imageViewsQueue = [(PXSurveyQuestionAssetGroupView *)self imageViewsQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __45__PXSurveyQuestionAssetGroupView__setupViews__block_invoke;
@@ -664,12 +664,12 @@ LABEL_6:
       v13 = v7;
       v14 = v5;
       v10 = v7;
-      dispatch_sync(v9, block);
+      dispatch_sync(imageViewsQueue, block);
 
       ++v6;
     }
 
-    while (v4 >= v6);
+    while (_getTotalViews >= v6);
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -762,12 +762,12 @@ void __45__PXSurveyQuestionAssetGroupView__setupViews__block_invoke_2(uint64_t a
   return imageViewsQueue;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PXSurveyQuestionAssetGroupView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -786,13 +786,13 @@ void __45__PXSurveyQuestionAssetGroupView__setupViews__block_invoke_2(uint64_t a
   v20.size.height = v15;
   if (!CGRectEqualToRect(v19, v20))
   {
-    v16 = [(PXSurveyQuestionAssetGroupView *)self imageViewsQueue];
+    imageViewsQueue = [(PXSurveyQuestionAssetGroupView *)self imageViewsQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__PXSurveyQuestionAssetGroupView_setFrame___block_invoke;
     block[3] = &unk_1E774C648;
     block[4] = self;
-    dispatch_sync(v16, block);
+    dispatch_sync(imageViewsQueue, block);
   }
 }
 
@@ -812,14 +812,14 @@ void __43__PXSurveyQuestionAssetGroupView_setFrame___block_invoke(uint64_t a1)
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:(id)a3
+- (id)validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:(id)count
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  countCopy = count;
+  v4 = countCopy;
+  if (countCopy)
   {
-    v5 = [v3 intValue];
-    if (v5 <= 9 && ((1 << v5) & 0x216) != 0)
+    intValue = [countCopy intValue];
+    if (intValue <= 9 && ((1 << intValue) & 0x216) != 0)
     {
       v6 = v4;
       goto LABEL_8;
@@ -838,18 +838,18 @@ LABEL_8:
   return v6;
 }
 
-- (PXSurveyQuestionAssetGroupView)initWithAssetCollection:(id)a3 customMaximumPreviewAssetCount:(id)a4 keyAssetLocalIdentifier:(id)a5
+- (PXSurveyQuestionAssetGroupView)initWithAssetCollection:(id)collection customMaximumPreviewAssetCount:(id)count keyAssetLocalIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  countCopy = count;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = PXSurveyQuestionAssetGroupView;
   v12 = [(PXSurveyQuestionAssetGroupView *)&v31 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetCollection, a3);
+    objc_storeStrong(&v12->_assetCollection, collection);
     v13->_imagePadding = 2.0;
     v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     presentedAssetIds = v13->_presentedAssetIds;
@@ -859,8 +859,8 @@ LABEL_8:
     dateFormatter = v13->_dateFormatter;
     v13->_dateFormatter = v16;
 
-    v18 = [MEMORY[0x1E695DF58] currentLocale];
-    [(NSDateFormatter *)v13->_dateFormatter setLocale:v18];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(NSDateFormatter *)v13->_dateFormatter setLocale:currentLocale];
 
     [(NSDateFormatter *)v13->_dateFormatter setDateStyle:1];
     [(NSDateFormatter *)v13->_dateFormatter setTimeStyle:0];
@@ -868,9 +868,9 @@ LABEL_8:
     metadataView = v13->_metadataView;
     v13->_metadataView = v19;
 
-    v21 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     metadataViewGradient = v13->_metadataViewGradient;
-    v13->_metadataViewGradient = v21;
+    v13->_metadataViewGradient = layer;
 
     v23 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     locationLabel = v13->_locationLabel;
@@ -882,11 +882,11 @@ LABEL_8:
 
     v27 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v13 action:sel__handleViewTap];
     [(PXSurveyQuestionAssetGroupView *)v13 addGestureRecognizer:v27];
-    v28 = [(PXSurveyQuestionAssetGroupView *)v13 validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:v10];
+    v28 = [(PXSurveyQuestionAssetGroupView *)v13 validCustomMaximumPreviewAssetCountForCustomMaximumPreviewAssetCount:countCopy];
     customMaximumPreviewAssetCount = v13->_customMaximumPreviewAssetCount;
     v13->_customMaximumPreviewAssetCount = v28;
 
-    objc_storeStrong(&v13->_keyAssetLocalIdentifier, a5);
+    objc_storeStrong(&v13->_keyAssetLocalIdentifier, identifier);
   }
 
   return v13;

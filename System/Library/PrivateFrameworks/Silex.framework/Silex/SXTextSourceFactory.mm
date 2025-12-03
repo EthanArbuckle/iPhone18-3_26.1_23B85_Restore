@@ -1,38 +1,38 @@
 @interface SXTextSourceFactory
-- (SXTextSourceFactory)initWithSmartFieldFactory:(id)a3 documentLanguageProvider:(id)a4 fontAttributesConstructor:(id)a5;
-- (id)createTextSourceWithString:(id)a3 dataSource:(id)a4;
+- (SXTextSourceFactory)initWithSmartFieldFactory:(id)factory documentLanguageProvider:(id)provider fontAttributesConstructor:(id)constructor;
+- (id)createTextSourceWithString:(id)string dataSource:(id)source;
 @end
 
 @implementation SXTextSourceFactory
 
-- (SXTextSourceFactory)initWithSmartFieldFactory:(id)a3 documentLanguageProvider:(id)a4 fontAttributesConstructor:(id)a5
+- (SXTextSourceFactory)initWithSmartFieldFactory:(id)factory documentLanguageProvider:(id)provider fontAttributesConstructor:(id)constructor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  providerCopy = provider;
+  constructorCopy = constructor;
   v15.receiver = self;
   v15.super_class = SXTextSourceFactory;
   v12 = [(SXTextSourceFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_smartFieldFactory, a3);
-    objc_storeStrong(&v13->_documentLanguageProvider, a4);
-    objc_storeStrong(&v13->_fontAttributesConstructor, a5);
+    objc_storeStrong(&v12->_smartFieldFactory, factory);
+    objc_storeStrong(&v13->_documentLanguageProvider, provider);
+    objc_storeStrong(&v13->_fontAttributesConstructor, constructor);
   }
 
   return v13;
 }
 
-- (id)createTextSourceWithString:(id)a3 dataSource:(id)a4
+- (id)createTextSourceWithString:(id)string dataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  stringCopy = string;
   v8 = [SXTextSource alloc];
-  v9 = [(SXTextSourceFactory *)self smartFieldFactory];
-  v10 = [(SXTextSourceFactory *)self documentLanguageProvider];
-  v11 = [(SXTextSourceFactory *)self fontAttributesConstructor];
-  v12 = [(SXTextSource *)v8 initWithString:v7 smartFieldFactory:v9 dataSource:v6 documentLanguageProvider:v10 fontAttributesConstructor:v11];
+  smartFieldFactory = [(SXTextSourceFactory *)self smartFieldFactory];
+  documentLanguageProvider = [(SXTextSourceFactory *)self documentLanguageProvider];
+  fontAttributesConstructor = [(SXTextSourceFactory *)self fontAttributesConstructor];
+  v12 = [(SXTextSource *)v8 initWithString:stringCopy smartFieldFactory:smartFieldFactory dataSource:sourceCopy documentLanguageProvider:documentLanguageProvider fontAttributesConstructor:fontAttributesConstructor];
 
   return v12;
 }

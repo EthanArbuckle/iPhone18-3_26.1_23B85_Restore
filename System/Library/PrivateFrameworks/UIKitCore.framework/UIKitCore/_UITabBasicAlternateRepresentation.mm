@@ -1,32 +1,32 @@
 @interface _UITabBasicAlternateRepresentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UITabBasicAlternateRepresentation)initWithTitle:(id)a3 image:(id)a4;
+- (_UITabBasicAlternateRepresentation)initWithTitle:(id)title image:(id)image;
 @end
 
 @implementation _UITabBasicAlternateRepresentation
 
-- (_UITabBasicAlternateRepresentation)initWithTitle:(id)a3 image:(id)a4
+- (_UITabBasicAlternateRepresentation)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = _UITabBasicAlternateRepresentation;
   v8 = [(_UITabBasicAlternateRepresentation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(_UITabBasicAlternateRepresentation *)v8 setTitle:v6];
-    [(_UITabBasicAlternateRepresentation *)v9 setImage:v7];
+    [(_UITabBasicAlternateRepresentation *)v8 setTitle:titleCopy];
+    [(_UITabBasicAlternateRepresentation *)v9 setImage:imageCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -36,16 +36,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UITabBasicAlternateRepresentation *)v5 title];
-      v7 = [(_UITabBasicAlternateRepresentation *)self title];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      title = [(_UITabBasicAlternateRepresentation *)v5 title];
+      title2 = [(_UITabBasicAlternateRepresentation *)self title];
+      v8 = [title isEqual:title2];
 
       if (v8)
       {
-        v9 = [(_UITabBasicAlternateRepresentation *)v5 image];
-        v10 = [(_UITabBasicAlternateRepresentation *)self image];
-        v11 = [v9 isEqual:v10];
+        image = [(_UITabBasicAlternateRepresentation *)v5 image];
+        image2 = [(_UITabBasicAlternateRepresentation *)self image];
+        v11 = [image isEqual:image2];
       }
 
       else

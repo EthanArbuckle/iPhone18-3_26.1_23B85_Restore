@@ -7,33 +7,33 @@
 - (NSURL)destinationFileURL;
 - (NSURLRequest)URLRequest;
 - (SSAuthenticationContext)authenticationContext;
-- (SSURLConnectionRequest)initWithRequestProperties:(id)a3;
-- (SSURLConnectionRequest)initWithURLRequest:(id)a3;
-- (SSURLConnectionRequest)initWithXPCEncoding:(id)a3;
+- (SSURLConnectionRequest)initWithRequestProperties:(id)properties;
+- (SSURLConnectionRequest)initWithURLRequest:(id)request;
+- (SSURLConnectionRequest)initWithXPCEncoding:(id)encoding;
 - (SSURLRequestProperties)requestProperties;
 - (SSVFairPlaySAPSession)SAPSession;
 - (SSVSAPSignaturePolicy)SAPSignaturePolicy;
 - (SSVURLDataConsumer)dataConsumer;
 - (id)copyXPCEncoding;
-- (void)configureWithURLBag:(id)a3;
+- (void)configureWithURLBag:(id)bag;
 - (void)dealloc;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setDataConsumer:(id)a3;
-- (void)setDestinationFileURL:(id)a3;
-- (void)setRunsInProcess:(BOOL)a3;
-- (void)setSAPSession:(id)a3;
-- (void)setSAPSignaturePolicy:(id)a3;
-- (void)setSendsResponseForHTTPFailures:(BOOL)a3;
-- (void)setShouldMescalSign:(BOOL)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setDataConsumer:(id)consumer;
+- (void)setDestinationFileURL:(id)l;
+- (void)setRunsInProcess:(BOOL)process;
+- (void)setSAPSession:(id)session;
+- (void)setSAPSignaturePolicy:(id)policy;
+- (void)setSendsResponseForHTTPFailures:(BOOL)failures;
+- (void)setShouldMescalSign:(BOOL)sign;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SSURLConnectionRequest
 
-- (SSURLConnectionRequest)initWithRequestProperties:(id)a3
+- (SSURLConnectionRequest)initWithRequestProperties:(id)properties
 {
-  if (!a3)
+  if (!properties)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"properties must not be nil"];
   }
@@ -43,20 +43,20 @@
   v5 = [(SSRequest *)&v7 init];
   if (v5)
   {
-    v5->_requestProperties = [a3 copy];
+    v5->_requestProperties = [properties copy];
   }
 
   return v5;
 }
 
-- (SSURLConnectionRequest)initWithURLRequest:(id)a3
+- (SSURLConnectionRequest)initWithURLRequest:(id)request
 {
-  if (!a3)
+  if (!request)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"URLRequest must not be nil"];
   }
 
-  v5 = [[SSURLRequestProperties alloc] initWithURLRequest:a3];
+  v5 = [[SSURLRequestProperties alloc] initWithURLRequest:request];
   v6 = [(SSURLConnectionRequest *)self initWithRequestProperties:v5];
 
   return v6;
@@ -104,7 +104,7 @@ uint64_t __44__SSURLConnectionRequest_destinationFileURL__block_invoke(uint64_t 
   return v2;
 }
 
-- (void)setDestinationFileURL:(id)a3
+- (void)setDestinationFileURL:(id)l
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -112,7 +112,7 @@ uint64_t __44__SSURLConnectionRequest_destinationFileURL__block_invoke(uint64_t 
   v4[2] = __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = l;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -130,7 +130,7 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
   return result;
 }
 
-- (void)setShouldMescalSign:(BOOL)a3
+- (void)setShouldMescalSign:(BOOL)sign
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -138,7 +138,7 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
   v4[2] = __46__SSURLConnectionRequest_setShouldMescalSign___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  signCopy = sign;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -161,19 +161,19 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
   return v3;
 }
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
   v30 = *MEMORY[0x1E69E9840];
   if ([(SSURLConnectionRequest *)self _canRunInProcess])
   {
     v5 = [[SSVLoadURLOperation alloc] initWithURLRequestProperties:self->_requestProperties];
-    v6 = [(SSURLConnectionRequest *)self dataConsumer];
-    if (!v6)
+    dataConsumer = [(SSURLConnectionRequest *)self dataConsumer];
+    if (!dataConsumer)
     {
-      v6 = +[(SSVURLDataConsumer *)SSVURLConnectionConsumer];
+      dataConsumer = +[(SSVURLDataConsumer *)SSVURLConnectionConsumer];
     }
 
-    [(SSVLoadURLOperation *)v5 setDataConsumer:v6];
+    [(SSVLoadURLOperation *)v5 setDataConsumer:dataConsumer];
     dispatchQueue = self->super._dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -182,13 +182,13 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
     block[4] = self;
     block[5] = v5;
     dispatch_sync(dispatchQueue, block);
-    if (a3)
+    if (block)
     {
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __59__SSURLConnectionRequest_startWithConnectionResponseBlock___block_invoke_2;
       v26[3] = &unk_1E84ADF30;
-      v26[4] = a3;
+      v26[4] = block;
       [(SSVLoadURLOperation *)v5 setOutputBlock:v26];
     }
 
@@ -211,15 +211,15 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
         v9 = +[SSLogConfig sharedConfig];
       }
 
-      v10 = [v9 shouldLog];
+      shouldLog = [v9 shouldLog];
       if ([v9 shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
       if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -254,7 +254,7 @@ uint64_t __48__SSURLConnectionRequest_setDestinationFileURL___block_invoke(uint6
     v24[2] = __59__SSURLConnectionRequest_startWithConnectionResponseBlock___block_invoke_24;
     v24[3] = &unk_1E84AC760;
     v24[4] = self;
-    v24[5] = a3;
+    v24[5] = block;
     [(SSRequest *)self _startWithMessageID:62 messageBlock:v24, v22];
   }
 }
@@ -323,9 +323,9 @@ uint64_t __59__SSURLConnectionRequest_startWithConnectionResponseBlock___block_i
 
 - (NSURLRequest)URLRequest
 {
-  v2 = [(SSURLRequestProperties *)self->_requestProperties copyURLRequest];
+  copyURLRequest = [(SSURLRequestProperties *)self->_requestProperties copyURLRequest];
 
-  return v2;
+  return copyURLRequest;
 }
 
 - (BOOL)start
@@ -385,13 +385,13 @@ uint64_t __31__SSURLConnectionRequest_start__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__SSURLConnectionRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84ADF30;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSURLConnectionRequest *)self startWithConnectionResponseBlock:v3];
 }
 
@@ -434,13 +434,13 @@ id __47__SSURLConnectionRequest_authenticationContext__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)configureWithURLBag:(id)a3
+- (void)configureWithURLBag:(id)bag
 {
   urlBag = self->_urlBag;
-  if (urlBag != a3)
+  if (urlBag != bag)
   {
 
-    self->_urlBag = a3;
+    self->_urlBag = bag;
   }
 }
 
@@ -566,7 +566,7 @@ uint64_t __44__SSURLConnectionRequest_SAPSignaturePolicy__block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -574,7 +574,7 @@ uint64_t __44__SSURLConnectionRequest_SAPSignaturePolicy__block_invoke(uint64_t 
   v4[2] = __51__SSURLConnectionRequest_setAuthenticationContext___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = context;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -592,7 +592,7 @@ uint64_t __51__SSURLConnectionRequest_setAuthenticationContext___block_invoke(ui
   return result;
 }
 
-- (void)setDataConsumer:(id)a3
+- (void)setDataConsumer:(id)consumer
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -600,7 +600,7 @@ uint64_t __51__SSURLConnectionRequest_setAuthenticationContext___block_invoke(ui
   v4[2] = __42__SSURLConnectionRequest_setDataConsumer___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = consumer;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -618,7 +618,7 @@ void *__42__SSURLConnectionRequest_setDataConsumer___block_invoke(void *result)
   return result;
 }
 
-- (void)setRunsInProcess:(BOOL)a3
+- (void)setRunsInProcess:(BOOL)process
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -626,11 +626,11 @@ void *__42__SSURLConnectionRequest_setDataConsumer___block_invoke(void *result)
   v4[2] = __43__SSURLConnectionRequest_setRunsInProcess___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  processCopy = process;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setSAPSession:(id)a3
+- (void)setSAPSession:(id)session
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -638,7 +638,7 @@ void *__42__SSURLConnectionRequest_setDataConsumer___block_invoke(void *result)
   v4[2] = __40__SSURLConnectionRequest_setSAPSession___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -656,7 +656,7 @@ void *__40__SSURLConnectionRequest_setSAPSession___block_invoke(void *result)
   return result;
 }
 
-- (void)setSAPSignaturePolicy:(id)a3
+- (void)setSAPSignaturePolicy:(id)policy
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -664,7 +664,7 @@ void *__40__SSURLConnectionRequest_setSAPSession___block_invoke(void *result)
   v4[2] = __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = policy;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -682,7 +682,7 @@ uint64_t __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke(uint6
   return result;
 }
 
-- (void)setSendsResponseForHTTPFailures:(BOOL)a3
+- (void)setSendsResponseForHTTPFailures:(BOOL)failures
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -690,19 +690,19 @@ uint64_t __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke(uint6
   v4[2] = __58__SSURLConnectionRequest_setSendsResponseForHTTPFailures___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  failuresCopy = failures;
   dispatch_async(dispatchQueue, v4);
 }
 
 - (BOOL)_canRunInProcess
 {
-  v3 = [(SSURLConnectionRequest *)self runsInProcess];
-  if (v3)
+  runsInProcess = [(SSURLConnectionRequest *)self runsInProcess];
+  if (runsInProcess)
   {
-    LOBYTE(v3) = [(SSURLRequestProperties *)self->_requestProperties URL]!= 0;
+    LOBYTE(runsInProcess) = [(SSURLRequestProperties *)self->_requestProperties URL]!= 0;
   }
 
-  return v3;
+  return runsInProcess;
 }
 
 - (id)copyXPCEncoding
@@ -716,9 +716,9 @@ uint64_t __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke(uint6
   return v3;
 }
 
-- (SSURLConnectionRequest)initWithXPCEncoding:(id)a3
+- (SSURLConnectionRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v10.receiver = self;
     v10.super_class = SSURLConnectionRequest;
@@ -727,9 +727,9 @@ uint64_t __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke(uint6
     if (v7)
     {
 
-      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "50")];
+      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "50")];
       objc_opt_class();
-      v8 = SSXPCDictionaryCopyCFObjectWithClass(a3, "54");
+      v8 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "54");
 
       if (v8)
       {
@@ -743,9 +743,9 @@ uint64_t __48__SSURLConnectionRequest_setSAPSignaturePolicy___block_invoke(uint6
 
       v5->_destinationFileURL = v9;
 
-      v5->_requestProperties = [[SSURLRequestProperties alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "51")];
-      [(SSURLConnectionRequest *)v5 setSendsResponseForHTTPFailures:xpc_dictionary_get_BOOL(a3, "53")];
-      [(SSURLConnectionRequest *)v5 setShouldMescalSign:xpc_dictionary_get_BOOL(a3, "52")];
+      v5->_requestProperties = [[SSURLRequestProperties alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "51")];
+      [(SSURLConnectionRequest *)v5 setSendsResponseForHTTPFailures:xpc_dictionary_get_BOOL(encoding, "53")];
+      [(SSURLConnectionRequest *)v5 setShouldMescalSign:xpc_dictionary_get_BOOL(encoding, "52")];
     }
   }
 

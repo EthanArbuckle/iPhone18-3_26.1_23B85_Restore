@@ -4,18 +4,18 @@
 - (NSString)url;
 - (int)columnNumber;
 - (int)lineNumber;
-- (void)setFunctionName:(id)a3;
-- (void)setScriptId:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setFunctionName:(id)name;
+- (void)setScriptId:(id)id;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolConsoleCallFrame
 
-- (void)setFunctionName:(id)a3
+- (void)setFunctionName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleCallFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"functionName"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"functionName"];
 }
 
 - (NSString)functionName
@@ -27,11 +27,11 @@
   return v2;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleCallFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (void)setScriptId:(id)a3
+- (void)setScriptId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleCallFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"scriptId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"scriptId"];
 }
 
 - (NSString)scriptId

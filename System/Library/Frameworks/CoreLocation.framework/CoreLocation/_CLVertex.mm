@@ -1,23 +1,23 @@
 @interface _CLVertex
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)coordinate;
-- (_CLVertex)initWithClientCoordinate:(id)a3;
-- (_CLVertex)initWithCoder:(id)a3;
-- (_CLVertex)initWithCoordinate:(CLLocationCoordinate2D)a3;
-- (double)getDistanceFrom:(CLLocationCoordinate2D)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CLVertex)initWithClientCoordinate:(id)coordinate;
+- (_CLVertex)initWithCoder:(id)coder;
+- (_CLVertex)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (double)getDistanceFrom:(CLLocationCoordinate2D)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CLVertex
 
-- (_CLVertex)initWithCoordinate:(CLLocationCoordinate2D)a3
+- (_CLVertex)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v6.receiver = self;
   v6.super_class = _CLVertex;
   result = [(_CLVertex *)&v6 init];
@@ -30,10 +30,10 @@
   return result;
 }
 
-- (_CLVertex)initWithClientCoordinate:(id)a3
+- (_CLVertex)initWithClientCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v6.receiver = self;
   v6.super_class = _CLVertex;
   result = [(_CLVertex *)&v6 init];
@@ -53,10 +53,10 @@
   [(_CLVertex *)&v2 dealloc];
 }
 
-- (double)getDistanceFrom:(CLLocationCoordinate2D)a3
+- (double)getDistanceFrom:(CLLocationCoordinate2D)from
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = from.longitude;
+  latitude = from.latitude;
   [(_CLVertex *)self coordinate];
   v7 = v6;
   [(_CLVertex *)self coordinate];
@@ -64,25 +64,25 @@
   return sub_19B87E164(latitude, longitude, v7, v8);
 }
 
-- (_CLVertex)initWithCoder:(id)a3
+- (_CLVertex)initWithCoder:(id)coder
 {
-  [a3 decodeDoubleForKey:@"kCLVertexCodingKeyLatitude"];
+  [coder decodeDoubleForKey:@"kCLVertexCodingKeyLatitude"];
   self->_coordinate.latitude = v5;
-  [a3 decodeDoubleForKey:@"kCLVertexCodingKeyLongitude"];
+  [coder decodeDoubleForKey:@"kCLVertexCodingKeyLongitude"];
   self->_coordinate.longitude = v6;
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(_CLVertex *)self coordinate];
-  [a3 encodeDouble:@"kCLVertexCodingKeyLatitude" forKey:?];
+  [coder encodeDouble:@"kCLVertexCodingKeyLatitude" forKey:?];
   [(_CLVertex *)self coordinate];
 
-  [a3 encodeDouble:@"kCLVertexCodingKeyLongitude" forKey:v5];
+  [coder encodeDouble:@"kCLVertexCodingKeyLongitude" forKey:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(_CLVertex *)self coordinate];
@@ -90,26 +90,26 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithCoordinate_);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
       [(_CLVertex *)self coordinate];
       v7 = v6;
-      [a3 coordinate];
+      [equal coordinate];
       if (v7 == v8)
       {
         [(_CLVertex *)self coordinate];
         v10 = v9;
-        [a3 coordinate];
+        [equal coordinate];
         LOBYTE(v5) = v10 == v11;
       }
 

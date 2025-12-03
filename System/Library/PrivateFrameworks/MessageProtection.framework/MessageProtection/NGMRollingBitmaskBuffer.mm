@@ -1,7 +1,7 @@
 @interface NGMRollingBitmaskBuffer
-- (BOOL)processIncomingCounter:(unsigned int)a3;
+- (BOOL)processIncomingCounter:(unsigned int)counter;
 - (NGMRollingBitmaskBuffer)init;
-- (NGMRollingBitmaskBuffer)initWithData:(id)a3 upperBufferIndex:(unsigned int)a4;
+- (NGMRollingBitmaskBuffer)initWithData:(id)data upperBufferIndex:(unsigned int)index;
 - (id)bufferData;
 - (void)dealloc;
 @end
@@ -25,38 +25,38 @@
   return v3;
 }
 
-- (NGMRollingBitmaskBuffer)initWithData:(id)a3 upperBufferIndex:(unsigned int)a4
+- (NGMRollingBitmaskBuffer)initWithData:(id)data upperBufferIndex:(unsigned int)index
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = NGMRollingBitmaskBuffer;
   v7 = [(NGMRollingBitmaskBuffer *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_upper_buffer_index = a4;
-    v9 = [v6 length];
+    v7->_upper_buffer_index = index;
+    v9 = [dataCopy length];
     v8->_valid_values_buffer_size = v9;
     v10 = malloc_type_malloc(v9, 0x2373B4C4uLL);
     v8->_valid_values_buffer = v10;
-    memcpy(v10, [v6 bytes], v8->_valid_values_buffer_size);
+    memcpy(v10, [dataCopy bytes], v8->_valid_values_buffer_size);
   }
 
   return v8;
 }
 
-- (BOOL)processIncomingCounter:(unsigned int)a3
+- (BOOL)processIncomingCounter:(unsigned int)counter
 {
   upper_buffer_index = self->_upper_buffer_index;
   valid_values_buffer_size = self->_valid_values_buffer_size;
-  if (a3 < 8 * (upper_buffer_index - valid_values_buffer_size))
+  if (counter < 8 * (upper_buffer_index - valid_values_buffer_size))
   {
     return 0;
   }
 
-  v6 = a3;
-  v8 = a3 >> 3;
-  if (8 * upper_buffer_index - 1 < a3)
+  counterCopy = counter;
+  v8 = counter >> 3;
+  if (8 * upper_buffer_index - 1 < counter)
   {
     v9 = v8 + 1;
     v10 = v8 + 1 - upper_buffer_index;
@@ -106,14 +106,14 @@
     self->_valid_values_buffer_size = v11;
     v17 = &v16[(v11 - 1)];
     LOBYTE(v18) = *v17;
-    v19 = v6 & 7;
+    v19 = counterCopy & 7;
     goto LABEL_17;
   }
 
   v17 = &self->_valid_values_buffer[v8 - (upper_buffer_index - valid_values_buffer_size)];
   v18 = *v17;
-  v19 = a3 & 7;
-  if ((v18 >> (a3 & 7)))
+  v19 = counter & 7;
+  if ((v18 >> (counter & 7)))
   {
 LABEL_17:
     result = 1;

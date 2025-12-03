@@ -9,44 +9,44 @@
 
 - (id)ck_fontDescriptorByRemovingSymbolicTrait:()Helper
 {
-  if (([a1 symbolicTraits] & a3) != 0)
+  if (([self symbolicTraits] & a3) != 0)
   {
-    v5 = [a1 fontDescriptorWithSymbolicTraits:{objc_msgSend(a1, "symbolicTraits") & ~a3}];
+    selfCopy = [self fontDescriptorWithSymbolicTraits:{objc_msgSend(self, "symbolicTraits") & ~a3}];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)ck_fontDescriptorByAddingSymbolicTrait:()Helper
 {
-  if (([a1 symbolicTraits] & a3) != 0)
+  if (([self symbolicTraits] & a3) != 0)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [a1 fontDescriptorWithSymbolicTraits:{objc_msgSend(a1, "symbolicTraits") | a3}];
+    selfCopy = [self fontDescriptorWithSymbolicTraits:{objc_msgSend(self, "symbolicTraits") | a3}];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)ck_fontDescriptorBySettingBoldEnabled:()Helper
 {
   if (a3)
   {
-    [a1 ck_fontDescriptorByAddingSymbolicTrait:2];
+    [self ck_fontDescriptorByAddingSymbolicTrait:2];
   }
 
   else
   {
-    [a1 ck_fontDescriptorByRemovingSymbolicTrait:2];
+    [self ck_fontDescriptorByRemovingSymbolicTrait:2];
   }
   v3 = ;
 
@@ -57,12 +57,12 @@
 {
   if (a3)
   {
-    [a1 ck_fontDescriptorByAddingSymbolicTrait:1];
+    [self ck_fontDescriptorByAddingSymbolicTrait:1];
   }
 
   else
   {
-    [a1 ck_fontDescriptorByRemovingSymbolicTrait:1];
+    [self ck_fontDescriptorByRemovingSymbolicTrait:1];
   }
   v3 = ;
 

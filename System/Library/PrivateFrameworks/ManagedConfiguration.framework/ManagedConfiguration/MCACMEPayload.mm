@@ -1,5 +1,5 @@
 @interface MCACMEPayload
-- (MCACMEPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCACMEPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)subtitle1Description;
@@ -8,21 +8,21 @@
 
 @implementation MCACMEPayload
 
-- (MCACMEPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCACMEPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v130 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v119.receiver = self;
   v119.super_class = MCACMEPayload;
-  v10 = [(MCCertificatePayload *)&v119 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCCertificatePayload *)&v119 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_15;
   }
 
   v118 = 0;
-  v11 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"HardwareBound" isRequired:1 outError:&v118];
+  v11 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"HardwareBound" isRequired:1 outError:&v118];
   v12 = v118;
   if (v12)
   {
@@ -32,10 +32,10 @@ LABEL_4:
 LABEL_5:
     v14 = [(MCPayload *)v10 malformedPayloadErrorWithError:v13];
     v11 = v14;
-    if (a5)
+    if (error)
     {
       v15 = v14;
-      *a5 = v11;
+      *error = v11;
     }
 
     v16 = _MCLogObjects;
@@ -44,11 +44,11 @@ LABEL_5:
       v17 = v16;
       v18 = objc_opt_class();
       v19 = v18;
-      v20 = [v11 MCVerboseDescription];
+      mCVerboseDescription = [v11 MCVerboseDescription];
       *buf = 138543618;
       v121 = v18;
       v122 = 2114;
-      v123 = v20;
+      v123 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -57,7 +57,7 @@ LABEL_5:
   }
 
   v10->_isHardwareBound = [v11 BOOLValue];
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v13 = 0;
 LABEL_10:
@@ -66,7 +66,7 @@ LABEL_10:
   }
 
   v117 = 0;
-  v26 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"DirectoryURL" isRequired:1 outError:&v117];
+  v26 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"DirectoryURL" isRequired:1 outError:&v117];
   v13 = v117;
   directoryURLString = v10->_directoryURLString;
   v10->_directoryURLString = v26;
@@ -89,13 +89,13 @@ LABEL_10:
   }
 
   v116 = v32;
-  v33 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ClientIdentifier" isRequired:1 outError:&v116];
+  v33 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ClientIdentifier" isRequired:1 outError:&v116];
   v13 = v116;
 
   clientIdentifier = v10->_clientIdentifier;
   v10->_clientIdentifier = v33;
 
-  if (v13 || (v115 = 0, [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"KeyType" isRequired:1 outError:&v115], v35 = objc_claimAutoreleasedReturnValue(), v13 = v115, keyType = v10->_keyType, v10->_keyType = v35, keyType, v13))
+  if (v13 || (v115 = 0, [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"KeyType" isRequired:1 outError:&v115], v35 = objc_claimAutoreleasedReturnValue(), v13 = v115, keyType = v10->_keyType, v10->_keyType = v35, keyType, v13))
   {
 
     goto LABEL_4;
@@ -108,20 +108,20 @@ LABEL_10:
   }
 
   v114 = 0;
-  v37 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"KeySize" isRequired:1 outError:&v114];
+  v37 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"KeySize" isRequired:1 outError:&v114];
   v38 = v114;
   if (v38)
   {
     goto LABEL_29;
   }
 
-  v39 = [v37 integerValue];
-  if ((v39 & 0x8000000000000000) == 0)
+  integerValue = [v37 integerValue];
+  if ((integerValue & 0x8000000000000000) == 0)
   {
     v84 = v37;
-    v10->_keySize = v39;
+    v10->_keySize = integerValue;
     v113 = 0;
-    v89 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Subject" isRequired:1 outError:&v113];
+    v89 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Subject" isRequired:1 outError:&v113];
     v13 = v113;
     subject = v10->_subject;
     v10->_subject = v89;
@@ -256,7 +256,7 @@ LABEL_63:
     }
 
     v100 = 0;
-    v52 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SubjectAltName" isRequired:0 outError:&v100];
+    v52 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SubjectAltName" isRequired:0 outError:&v100];
     v13 = v100;
     if (v13)
     {
@@ -267,7 +267,7 @@ LABEL_88:
 
     v86 = v11;
     v88 = v52;
-    obja = v9;
+    obja = profileCopy;
     v53 = [v52 mutableCopy];
     v125[0] = @"dNSName";
     v126[0] = objc_opt_class();
@@ -292,7 +292,7 @@ LABEL_88:
 LABEL_87:
 
       v13 = v59;
-      v9 = obja;
+      profileCopy = obja;
       v11 = v86;
       v52 = v88;
       v10 = v91;
@@ -300,21 +300,21 @@ LABEL_87:
     }
 
     v98 = 0;
-    v79 = v8;
-    v60 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"UsageFlags" isRequired:0 outError:&v98];
+    v79 = dictionaryCopy;
+    v60 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"UsageFlags" isRequired:0 outError:&v98];
     v61 = v98;
     if (v61)
     {
       v59 = v61;
 LABEL_86:
 
-      v8 = v79;
+      dictionaryCopy = v79;
       goto LABEL_87;
     }
 
     v91->_usageFlags = [v60 unsignedIntValue];
     v97 = 0;
-    v62 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ExtendedKeyUsage" isRequired:0 outError:&v97];
+    v62 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"ExtendedKeyUsage" isRequired:0 outError:&v97];
     v63 = v97;
     extendedKeyUsage = v91->_extendedKeyUsage;
     v91->_extendedKeyUsage = v62;
@@ -447,17 +447,17 @@ LABEL_91:
   }
 
 LABEL_11:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v21 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v22 = v21;
-      v23 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v121 = v23;
+      v121 = friendlyName;
       v122 = 2114;
-      v123 = v8;
+      v123 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v22, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -471,19 +471,19 @@ LABEL_15:
 {
   v6.receiver = self;
   v6.super_class = MCACMEPayload;
-  v3 = [(MCCertificatePayload *)&v6 stubDictionary];
+  stubDictionary = [(MCCertificatePayload *)&v6 stubDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isHardwareBound];
-  [v3 setObject:v4 forKey:@"HardwareBound"];
+  [stubDictionary setObject:v4 forKey:@"HardwareBound"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v6.receiver = self;
   v6.super_class = MCACMEPayload;
-  v3 = [(MCCertificatePayload *)&v6 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCCertificatePayload *)&v6 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_directoryURLString)
   {
@@ -535,19 +535,19 @@ LABEL_15:
 
 - (id)subtitle1Description
 {
-  v3 = [(MCCertificatePayload *)self issuer];
-  v4 = v3;
-  if (v3)
+  issuer = [(MCCertificatePayload *)self issuer];
+  v4 = issuer;
+  if (issuer)
   {
-    v5 = v3;
+    v5 = issuer;
   }
 
   else
   {
-    v6 = [(MCPayload *)self profile];
-    v7 = [v6 isStub];
+    profile = [(MCPayload *)self profile];
+    isStub = [profile isStub];
 
-    if (v7)
+    if (isStub)
     {
       v8 = @"ISSUED_BY_MISSING";
     }
@@ -569,10 +569,10 @@ LABEL_15:
 {
   v32[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCPayload *)self profile];
-  v5 = [v4 isStub];
+  profile = [(MCPayload *)self profile];
+  isStub = [profile isStub];
 
-  if ((v5 & 1) == 0)
+  if ((isStub & 1) == 0)
   {
     if (self->_directoryURLString)
     {

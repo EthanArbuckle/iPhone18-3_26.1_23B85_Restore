@@ -1,7 +1,7 @@
 @interface _AFHomeAccessoryInfoMutation
 - (BOOL)getHasActiveThirdPartyMusicSubscription;
 - (BOOL)getIsSpeaker;
-- (_AFHomeAccessoryInfoMutation)initWithBase:(id)a3;
+- (_AFHomeAccessoryInfoMutation)initWithBase:(id)base;
 - (id)getAssistantIdentifier;
 - (id)getCategoryType;
 - (id)getLoggingUniqueIdentifier;
@@ -32,30 +32,30 @@
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_categoryType;
+    categoryType = self->_categoryType;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base categoryType];
+    categoryType = [(AFHomeAccessoryInfo *)self->_base categoryType];
   }
 
-  return v2;
+  return categoryType;
 }
 
 - (id)getManufacturer
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_manufacturer;
+    manufacturer = self->_manufacturer;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base manufacturer];
+    manufacturer = [(AFHomeAccessoryInfo *)self->_base manufacturer];
   }
 
-  return v2;
+  return manufacturer;
 }
 
 - (BOOL)getHasActiveThirdPartyMusicSubscription
@@ -88,102 +88,102 @@
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_assistantIdentifier;
+    assistantIdentifier = self->_assistantIdentifier;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base assistantIdentifier];
+    assistantIdentifier = [(AFHomeAccessoryInfo *)self->_base assistantIdentifier];
   }
 
-  return v2;
+  return assistantIdentifier;
 }
 
 - (id)getRoomName
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_roomName;
+    roomName = self->_roomName;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base roomName];
+    roomName = [(AFHomeAccessoryInfo *)self->_base roomName];
   }
 
-  return v2;
+  return roomName;
 }
 
 - (id)getModel
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_model;
+    model = self->_model;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base model];
+    model = [(AFHomeAccessoryInfo *)self->_base model];
   }
 
-  return v2;
+  return model;
 }
 
 - (id)getName
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_name;
+    name = self->_name;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base name];
+    name = [(AFHomeAccessoryInfo *)self->_base name];
   }
 
-  return v2;
+  return name;
 }
 
 - (id)getLoggingUniqueIdentifier
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_loggingUniqueIdentifier;
+    loggingUniqueIdentifier = self->_loggingUniqueIdentifier;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base loggingUniqueIdentifier];
+    loggingUniqueIdentifier = [(AFHomeAccessoryInfo *)self->_base loggingUniqueIdentifier];
   }
 
-  return v2;
+  return loggingUniqueIdentifier;
 }
 
 - (id)getUniqueIdentifier
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_uniqueIdentifier;
+    uniqueIdentifier = self->_uniqueIdentifier;
   }
 
   else
   {
-    v2 = [(AFHomeAccessoryInfo *)self->_base uniqueIdentifier];
+    uniqueIdentifier = [(AFHomeAccessoryInfo *)self->_base uniqueIdentifier];
   }
 
-  return v2;
+  return uniqueIdentifier;
 }
 
-- (_AFHomeAccessoryInfoMutation)initWithBase:(id)a3
+- (_AFHomeAccessoryInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFHomeAccessoryInfoMutation;
   v6 = [(_AFHomeAccessoryInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

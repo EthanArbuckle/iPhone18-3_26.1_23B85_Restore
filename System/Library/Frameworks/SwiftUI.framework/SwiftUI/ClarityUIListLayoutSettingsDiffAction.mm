@@ -1,19 +1,19 @@
 @interface ClarityUIListLayoutSettingsDiffAction
 - (_TtC7SwiftUI37ClarityUIListLayoutSettingsDiffAction)init;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation ClarityUIListLayoutSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  specialized ClarityUIListLayoutSettingsDiffAction._performActions(for:withUpdatedFBSScene:settingsDiff:from:transitionContext:lifecycleActionType:)(a5);
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  selfCopy = self;
+  specialized ClarityUIListLayoutSettingsDiffAction._performActions(for:withUpdatedFBSScene:settingsDiff:from:transitionContext:lifecycleActionType:)(diff);
 }
 
 - (_TtC7SwiftUI37ClarityUIListLayoutSettingsDiffAction)init

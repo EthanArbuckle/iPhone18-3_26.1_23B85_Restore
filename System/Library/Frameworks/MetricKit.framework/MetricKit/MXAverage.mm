@@ -1,27 +1,27 @@
 @interface MXAverage
-- (MXAverage)initWithCoder:(id)a3;
-- (MXAverage)initWithDoubleValue:(double)a3 sampleCount:(int64_t)a4 standardDeviation:(double)a5 unit:(id)a6;
-- (MXAverage)initWithMeasurement:(id)a3 sampleCount:(int64_t)a4 standardDeviation:(double)a5;
+- (MXAverage)initWithCoder:(id)coder;
+- (MXAverage)initWithDoubleValue:(double)value sampleCount:(int64_t)count standardDeviation:(double)deviation unit:(id)unit;
+- (MXAverage)initWithMeasurement:(id)measurement sampleCount:(int64_t)count standardDeviation:(double)deviation;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXAverage
 
-- (MXAverage)initWithDoubleValue:(double)a3 sampleCount:(int64_t)a4 standardDeviation:(double)a5 unit:(id)a6
+- (MXAverage)initWithDoubleValue:(double)value sampleCount:(int64_t)count standardDeviation:(double)deviation unit:(id)unit
 {
-  v10 = a6;
+  unitCopy = unit;
   v19.receiver = self;
   v19.super_class = MXAverage;
   v11 = [(MXAverage *)&v19 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCAB10]) initWithDoubleValue:v10 unit:a3];
+    v12 = [objc_alloc(MEMORY[0x277CCAB10]) initWithDoubleValue:unitCopy unit:value];
     averageMeasurement = v11->_averageMeasurement;
     v11->_averageMeasurement = v12;
 
-    v11->_sampleCount = a4;
-    v11->_standardDeviation = a5;
+    v11->_sampleCount = count;
+    v11->_standardDeviation = deviation;
     v14 = objc_alloc_init(MEMORY[0x277CCAB18]);
     averageMeasurementFormatter = v11->_averageMeasurementFormatter;
     v11->_averageMeasurementFormatter = v14;
@@ -31,25 +31,25 @@
     [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter setLocale:v16];
 
     [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter setUnitStyle:2];
-    v17 = [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter numberFormatter];
-    [v17 setMaximumFractionDigits:0];
+    numberFormatter = [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter numberFormatter];
+    [numberFormatter setMaximumFractionDigits:0];
   }
 
   return v11;
 }
 
-- (MXAverage)initWithMeasurement:(id)a3 sampleCount:(int64_t)a4 standardDeviation:(double)a5
+- (MXAverage)initWithMeasurement:(id)measurement sampleCount:(int64_t)count standardDeviation:(double)deviation
 {
-  v9 = a3;
+  measurementCopy = measurement;
   v17.receiver = self;
   v17.super_class = MXAverage;
   v10 = [(MXAverage *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_averageMeasurement, a3);
-    v11->_sampleCount = a4;
-    v11->_standardDeviation = a5;
+    objc_storeStrong(&v10->_averageMeasurement, measurement);
+    v11->_sampleCount = count;
+    v11->_standardDeviation = deviation;
     v12 = objc_alloc_init(MEMORY[0x277CCAB18]);
     averageMeasurementFormatter = v11->_averageMeasurementFormatter;
     v11->_averageMeasurementFormatter = v12;
@@ -59,44 +59,44 @@
     [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter setLocale:v14];
 
     [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter setUnitStyle:2];
-    v15 = [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter numberFormatter];
-    [v15 setMaximumFractionDigits:0];
+    numberFormatter = [(NSMeasurementFormatter *)v11->_averageMeasurementFormatter numberFormatter];
+    [numberFormatter setMaximumFractionDigits:0];
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"NSMeasurement cannot be encoded by non-keyed archivers"];
   }
 
-  [v4 encodeObject:self->_averageMeasurement forKey:@"averageValue"];
-  [v4 encodeInteger:self->_sampleCount forKey:@"sampleCount"];
-  [v4 encodeDouble:@"standardDeviation" forKey:self->_standardDeviation];
+  [coderCopy encodeObject:self->_averageMeasurement forKey:@"averageValue"];
+  [coderCopy encodeInteger:self->_sampleCount forKey:@"sampleCount"];
+  [coderCopy encodeDouble:@"standardDeviation" forKey:self->_standardDeviation];
 }
 
-- (MXAverage)initWithCoder:(id)a3
+- (MXAverage)initWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"averageValue"];
-    v6 = [v4 decodeIntegerForKey:@"sampleCount"];
-    [v4 decodeDoubleForKey:@"standardDeviation"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"averageValue"];
+    v6 = [coderCopy decodeIntegerForKey:@"sampleCount"];
+    [coderCopy decodeDoubleForKey:@"standardDeviation"];
     if (v5)
     {
       v8 = v7;
       [v5 doubleValue];
       v10 = v9;
-      v11 = [v5 unit];
-      self = [(MXAverage *)self initWithDoubleValue:v6 sampleCount:v11 standardDeviation:v10 unit:v8];
+      unit = [v5 unit];
+      self = [(MXAverage *)self initWithDoubleValue:v6 sampleCount:unit standardDeviation:v10 unit:v8];
 
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -107,20 +107,20 @@
       v20[0] = @"Measurement class object has been corrupted!";
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v16 = [v13 errorWithDomain:v14 code:4864 userInfo:v15];
-      [v4 failWithError:v16];
+      [coderCopy failWithError:v16];
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"NSMeasurement cannot be decoded by non-keyed archivers"];
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
 - (id)toDictionary

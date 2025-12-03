@@ -1,21 +1,21 @@
 @interface HUIdentifierAndBlockPair
-- (HUIdentifierAndBlockPair)initWithIdentifier:(id)a3 andBlock:(id)a4;
+- (HUIdentifierAndBlockPair)initWithIdentifier:(id)identifier andBlock:(id)block;
 @end
 
 @implementation HUIdentifierAndBlockPair
 
-- (HUIdentifierAndBlockPair)initWithIdentifier:(id)a3 andBlock:(id)a4
+- (HUIdentifierAndBlockPair)initWithIdentifier:(id)identifier andBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = HUIdentifierAndBlockPair;
   v8 = [(HUIdentifierAndBlockPair *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_identifier = v6;
-    v10 = [v7 copy];
+    v8->_identifier = identifierCopy;
+    v10 = [blockCopy copy];
     block = v9->_block;
     v9->_block = v10;
   }

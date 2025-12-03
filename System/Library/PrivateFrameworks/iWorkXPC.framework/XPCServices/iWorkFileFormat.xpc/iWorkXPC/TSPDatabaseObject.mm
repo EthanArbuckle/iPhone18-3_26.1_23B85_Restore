@@ -4,7 +4,7 @@
 - (NSString)fileState;
 - (NSURL)fileURL;
 - (TSPDatabaseObject)init;
-- (TSPDatabaseObject)initWithIdentifier:(int64_t)a3 classType:(int)a4;
+- (TSPDatabaseObject)initWithIdentifier:(int64_t)identifier classType:(int)type;
 - (int64_t)dataState;
 @end
 
@@ -44,15 +44,15 @@
   objc_exception_throw(v7);
 }
 
-- (TSPDatabaseObject)initWithIdentifier:(int64_t)a3 classType:(int)a4
+- (TSPDatabaseObject)initWithIdentifier:(int64_t)identifier classType:(int)type
 {
   v7.receiver = self;
   v7.super_class = TSPDatabaseObject;
   result = [(TSPDatabaseObject *)&v7 init];
   if (result)
   {
-    result->_identifier = a3;
-    result->_classType = a4;
+    result->_identifier = identifier;
+    result->_classType = type;
   }
 
   return result;

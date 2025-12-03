@@ -1,89 +1,89 @@
 @interface EMMessageContentCachedMetadata
-- (EMMessageContentCachedMetadata)initWithDelegate:(id)a3;
-- (_BYTE)_cachedValueForKeyPath:(void *)a3 fromJSONData:;
+- (EMMessageContentCachedMetadata)initWithDelegate:(id)delegate;
+- (_BYTE)_cachedValueForKeyPath:(void *)path fromJSONData:;
 - (id)_cachedMetadataJSONFromResult;
-- (id)_cachedValueForKeyPath:(void *)a3 fromDictionary:;
-- (id)cachedValueForKeyPath:(uint64_t)a1;
-- (uint64_t)_BOOLValueForKeyPath:(uint64_t)a1;
-- (void)_setBoolValue:(void *)a3 forKeyPath:;
+- (id)_cachedValueForKeyPath:(void *)path fromDictionary:;
+- (id)cachedValueForKeyPath:(uint64_t)path;
+- (uint64_t)_BOOLValueForKeyPath:(uint64_t)path;
+- (void)_setBoolValue:(void *)value forKeyPath:;
 @end
 
 @implementation EMMessageContentCachedMetadata
 
-- (EMMessageContentCachedMetadata)initWithDelegate:(id)a3
+- (EMMessageContentCachedMetadata)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = EMMessageContentCachedMetadata;
   v5 = [(EMMessageContentCachedMetadata *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     localCache = v6->_localCache;
-    v6->_localCache = v7;
+    v6->_localCache = dictionary;
   }
 
   return v6;
 }
 
-- (uint64_t)_BOOLValueForKeyPath:(uint64_t)a1
+- (uint64_t)_BOOLValueForKeyPath:(uint64_t)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v4 = [*(a1 + 24) objectForKeyedSubscript:v3];
+    os_unfair_lock_lock((path + 8));
+    v4 = [*(path + 24) objectForKeyedSubscript:v3];
     if (!v4)
     {
-      v4 = [(EMMessageContentCachedMetadata *)a1 cachedValueForKeyPath:v3];
+      v4 = [(EMMessageContentCachedMetadata *)path cachedValueForKeyPath:v3];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
 
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v5];
-    [*(a1 + 24) setObject:v6 forKeyedSubscript:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+    [*(path + 24) setObject:v6 forKeyedSubscript:v3];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((path + 8));
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_setBoolValue:(void *)a3 forKeyPath:
+- (void)_setBoolValue:(void *)value forKeyPath:
 {
-  v8 = a3;
-  if (a1)
+  valueCopy = value;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a2];
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v7 = [WeakRetained contentMessage];
-    [v7 setCachedMetadata:v5 forKey:v8];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    contentMessage = [WeakRetained contentMessage];
+    [contentMessage setCachedMetadata:v5 forKey:valueCopy];
 
-    [*(a1 + 24) setObject:v5 forKeyedSubscript:v8];
-    os_unfair_lock_unlock((a1 + 8));
+    [*(self + 24) setObject:v5 forKeyedSubscript:valueCopy];
+    os_unfair_lock_unlock((self + 8));
   }
 }
 
-- (id)cachedValueForKeyPath:(uint64_t)a1
+- (id)cachedValueForKeyPath:(uint64_t)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
     v4 = EMLogCategoryMessageLoading();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -91,8 +91,8 @@
       [(EMMessageContentCachedMetadata *)v3 cachedValueForKeyPath:v4];
     }
 
-    v5 = [(EMMessageContentCachedMetadata *)a1 _cachedMetadataJSONFromResult];
-    if (v5)
+    _cachedMetadataJSONFromResult = [(EMMessageContentCachedMetadata *)path _cachedMetadataJSONFromResult];
+    if (_cachedMetadataJSONFromResult)
     {
       v6 = EMLogCategoryMessageLoading();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -100,7 +100,7 @@
         [(EMMessageContentCachedMetadata *)v3 cachedValueForKeyPath:v6];
       }
 
-      v7 = [(EMMessageContentCachedMetadata *)a1 _cachedValueForKeyPath:v3 fromJSONData:v5];
+      v7 = [(EMMessageContentCachedMetadata *)path _cachedValueForKeyPath:v3 fromJSONData:_cachedMetadataJSONFromResult];
     }
 
     else
@@ -111,9 +111,9 @@
         [(EMMessageContentCachedMetadata *)v3 cachedValueForKeyPath:v8];
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v10 = [WeakRetained contentMessage];
-      v7 = [v10 cachedMetadataOfClass:objc_opt_class() forKey:v3];
+      WeakRetained = objc_loadWeakRetained((path + 16));
+      contentMessage = [WeakRetained contentMessage];
+      v7 = [contentMessage cachedMetadataOfClass:objc_opt_class() forKey:v3];
     }
   }
 
@@ -127,79 +127,79 @@
 
 - (id)_cachedMetadataJSONFromResult
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v2 = [WeakRetained contentRepresentation];
-    v3 = [v2 cachedMetadataJSON];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    contentRepresentation = [WeakRetained contentRepresentation];
+    cachedMetadataJSON = [contentRepresentation cachedMetadataJSON];
   }
 
   else
   {
-    v3 = 0;
+    cachedMetadataJSON = 0;
   }
 
-  return v3;
+  return cachedMetadataJSON;
 }
 
-- (_BYTE)_cachedValueForKeyPath:(void *)a3 fromJSONData:
+- (_BYTE)_cachedValueForKeyPath:(void *)path fromJSONData:
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  pathCopy = path;
+  v7 = pathCopy;
+  if (self)
   {
-    if ([v6 length])
+    if ([pathCopy length])
     {
       v14 = 0;
       v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:24 error:&v14];
       v9 = v14;
       if (v8)
       {
-        a1 = [(EMMessageContentCachedMetadata *)a1 _cachedValueForKeyPath:v5 fromDictionary:v8];
+        self = [(EMMessageContentCachedMetadata *)self _cachedValueForKeyPath:v5 fromDictionary:v8];
       }
 
       else
       {
-        if ((a1[12] & 1) == 0)
+        if ((self[12] & 1) == 0)
         {
-          a1[12] = 1;
+          self[12] = 1;
           v10 = EMLogCategoryMessageLoading();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
           {
-            v11 = [v9 ef_publicDescription];
-            [(EMMessageContentCachedMetadata *)v11 _cachedValueForKeyPath:buf fromJSONData:v10];
+            ef_publicDescription = [v9 ef_publicDescription];
+            [(EMMessageContentCachedMetadata *)ef_publicDescription _cachedValueForKeyPath:buf fromJSONData:v10];
           }
         }
 
-        a1 = 0;
+        self = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)_cachedValueForKeyPath:(void *)a3 fromDictionary:
+- (id)_cachedValueForKeyPath:(void *)path fromDictionary:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  pathCopy = path;
+  if (self && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v18[0] = 0;
     v18[1] = v18;
     v18[2] = 0x3032000000;
     v18[3] = __Block_byref_object_copy__5;
     v18[4] = __Block_byref_object_dispose__5;
-    v19 = v6;
+    v19 = pathCopy;
     v7 = [v5 componentsSeparatedByString:@"."];
     v8 = [v7 count];
     v12 = 0;

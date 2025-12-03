@@ -1,23 +1,23 @@
 @interface LPStreamingAudioPlayButtonControl
-- (LPStreamingAudioPlayButtonControl)initWithAudio:(id)a3 style:(id)a4 theme:(id)a5 player:(id)a6;
-- (void)audioPlayer:(id)a3 didChangeProgress:(float)a4;
-- (void)audioPlayer:(id)a3 didTransitionToState:(unint64_t)a4;
-- (void)buttonPressed:(id)a3;
+- (LPStreamingAudioPlayButtonControl)initWithAudio:(id)audio style:(id)style theme:(id)theme player:(id)player;
+- (void)audioPlayer:(id)player didChangeProgress:(float)progress;
+- (void)audioPlayer:(id)player didTransitionToState:(unint64_t)state;
+- (void)buttonPressed:(id)pressed;
 - (void)dealloc;
 @end
 
 @implementation LPStreamingAudioPlayButtonControl
 
-- (LPStreamingAudioPlayButtonControl)initWithAudio:(id)a3 style:(id)a4 theme:(id)a5 player:(id)a6
+- (LPStreamingAudioPlayButtonControl)initWithAudio:(id)audio style:(id)style theme:(id)theme player:(id)player
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(LPPlayButtonControl *)self initWithStyle:v9 theme:v10];
+  styleCopy = style;
+  themeCopy = theme;
+  playerCopy = player;
+  v12 = [(LPPlayButtonControl *)self initWithStyle:styleCopy theme:themeCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_player, a6);
+    objc_storeStrong(&v12->_player, player);
     v14 = [[LPAudioPlayerMediaPlayableAdaptor alloc] initWithPlayer:v13->_player];
     playableAdaptor = v13->_playableAdaptor;
     v13->_playableAdaptor = v14;
@@ -41,11 +41,11 @@
   [(LPStreamingAudioPlayButtonControl *)&v3 dealloc];
 }
 
-- (void)audioPlayer:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)audioPlayer:(id)player didTransitionToState:(unint64_t)state
 {
-  [(LPPlayButtonControl *)self setPlayButtonState:(a4 & 0xFFFFFFFFFFFFFFFBLL) != 0];
-  [(LPPlayButtonControl *)self showPlayIndicator:a4 - 3 < 0xFFFFFFFFFFFFFFFELL];
-  if (a4 == 1)
+  [(LPPlayButtonControl *)self setPlayButtonState:(state & 0xFFFFFFFFFFFFFFFBLL) != 0];
+  [(LPPlayButtonControl *)self showPlayIndicator:state - 3 < 0xFFFFFFFFFFFFFFFELL];
+  if (state == 1)
   {
 
     [(LPPlayButtonControl *)self beginIndeterminateAnimation];
@@ -58,14 +58,14 @@
   }
 }
 
-- (void)audioPlayer:(id)a3 didChangeProgress:(float)a4
+- (void)audioPlayer:(id)player didChangeProgress:(float)progress
 {
   [(LPAudioPlayer *)self->_player progress];
 
   [(LPPlayButtonControl *)self setProgress:1 animated:?];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   if ([(LPAudioPlayer *)self->_player state]== 1 || [(LPAudioPlayer *)self->_player state]== 2)
   {

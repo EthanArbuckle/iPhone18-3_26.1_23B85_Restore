@@ -6,10 +6,10 @@
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(PRUISPosterSnapshotDescriptor *)self->_snapshotDescriptor interfaceOrientation];
+  interfaceOrientation = [(PRUISPosterSnapshotDescriptor *)self->_snapshotDescriptor interfaceOrientation];
   if (BSInterfaceOrientationIsValid())
   {
-    return v2;
+    return interfaceOrientation;
   }
 
   else

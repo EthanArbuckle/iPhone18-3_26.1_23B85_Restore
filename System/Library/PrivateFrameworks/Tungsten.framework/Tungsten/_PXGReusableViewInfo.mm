@@ -1,28 +1,28 @@
 @interface _PXGReusableViewInfo
-- (_OWORD)initWithReusableView:(_OWORD *)a1;
+- (_OWORD)initWithReusableView:(_OWORD *)view;
 - (id)description;
 - (void)removeFromSuperViewInfo;
 @end
 
 @implementation _PXGReusableViewInfo
 
-- (_OWORD)initWithReusableView:(_OWORD *)a1
+- (_OWORD)initWithReusableView:(_OWORD *)view
 {
   v4 = a2;
-  if (a1)
+  if (view)
   {
-    v7.receiver = a1;
+    v7.receiver = view;
     v7.super_class = _PXGReusableViewInfo;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    view = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 5, a2);
-      a1[1] = xmmword_21AE2D4F0;
+      view[1] = xmmword_21AE2D4F0;
     }
   }
 
-  return a1;
+  return view;
 }
 
 - (id)description
@@ -41,22 +41,22 @@
     view = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@:%p view = %@>", v5, self, view];;
+  view = [v3 stringWithFormat:@"<%@:%p view = %@>", v5, self, view];;
 
-  return v8;
+  return view;
 }
 
 - (void)removeFromSuperViewInfo
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    WeakRetained = objc_loadWeakRetained((self + 48));
     if (WeakRetained)
     {
       v3 = WeakRetained;
-      [*(a1 + 40) pxg_removeFromSuperview];
-      [v3[1] removeObject:a1];
-      objc_storeWeak((a1 + 48), 0);
+      [*(self + 40) pxg_removeFromSuperview];
+      [v3[1] removeObject:self];
+      objc_storeWeak((self + 48), 0);
       WeakRetained = v3;
     }
   }

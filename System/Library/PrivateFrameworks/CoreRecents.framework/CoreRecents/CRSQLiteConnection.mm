@@ -1,14 +1,14 @@
 @interface CRSQLiteConnection
 + (id)connectionToNewInMemoryStore;
 - (BOOL)isStatementCacheTooLarge;
-- (CRSQLiteConnection)initWithPath:(id)a3;
-- (CRSQLiteConnection)initWithPath:(id)a3 databaseName:(id)a4;
+- (CRSQLiteConnection)initWithPath:(id)path;
+- (CRSQLiteConnection)initWithPath:(id)path databaseName:(id)name;
 - (const)_vfsModuleName;
-- (int)beginTransactionWithType:(int)a3;
+- (int)beginTransactionWithType:(int)type;
 - (int)commitTransaction;
 - (int)open;
 - (int)rollbackTransaction;
-- (sqlite3_stmt)preparedStatementForPattern:(id)a3;
+- (sqlite3_stmt)preparedStatementForPattern:(id)pattern;
 - (void)clearStatementCache;
 - (void)close;
 - (void)dealloc;
@@ -77,14 +77,14 @@
 
 + (id)connectionToNewInMemoryStore
 {
-  v2 = [[a1 alloc] initWithPath:@":memory:"];
+  v2 = [[self alloc] initWithPath:@":memory:"];
 
   return v2;
 }
 
-- (CRSQLiteConnection)initWithPath:(id)a3
+- (CRSQLiteConnection)initWithPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     sub_100018910();
   }
@@ -94,21 +94,21 @@
   v4 = [(CRSQLiteConnection *)&v6 init];
   if (v4)
   {
-    v4->_path = [a3 copy];
+    v4->_path = [path copy];
     v4->_log = os_log_create("com.apple.contacts.recentsd", "statement-cache");
   }
 
   return v4;
 }
 
-- (CRSQLiteConnection)initWithPath:(id)a3 databaseName:(id)a4
+- (CRSQLiteConnection)initWithPath:(id)path databaseName:(id)name
 {
-  if (!a4)
+  if (!name)
   {
     sub_10001893C();
   }
 
-  v5 = [a3 stringByAppendingPathComponent:a4];
+  v5 = [path stringByAppendingPathComponent:name];
 
   return [(CRSQLiteConnection *)self initWithPath:v5];
 }
@@ -165,21 +165,21 @@
     sub_1000189A8();
   }
 
-  v3 = [(NSString *)self->_path UTF8String];
-  v4 = [(CRSQLiteConnection *)self _vfsModuleName];
+  uTF8String = [(NSString *)self->_path UTF8String];
+  _vfsModuleName = [(CRSQLiteConnection *)self _vfsModuleName];
   ppDb = 0;
   [(NSString *)self->_path stringByDeletingLastPathComponent];
-  if (sqlite3_open_v2(v3, &ppDb, 6, v4))
+  if (sqlite3_open_v2(uTF8String, &ppDb, 6, _vfsModuleName))
   {
     CPFileBuildDirectoriesToPath();
-    if (sqlite3_open_v2(v3, &ppDb, 6, v4))
+    if (sqlite3_open_v2(uTF8String, &ppDb, 6, _vfsModuleName))
     {
-      chmod(v3, 0x180u);
-      v5 = sqlite3_open_v2(v3, &ppDb, 6, v4);
+      chmod(uTF8String, 0x180u);
+      v5 = sqlite3_open_v2(uTF8String, &ppDb, 6, _vfsModuleName);
       if (v5)
       {
         v6 = v5;
-        v7 = [NSString stringWithFormat:@"opening database %s", v3];
+        v7 = [NSString stringWithFormat:@"opening database %s", uTF8String];
 LABEL_33:
         CRLogSQLiteError(ppDb, v7);
         sqlite3_close(ppDb);
@@ -350,7 +350,7 @@ LABEL_33:
   }
 }
 
-- (sqlite3_stmt)preparedStatementForPattern:(id)a3
+- (sqlite3_stmt)preparedStatementForPattern:(id)pattern
 {
   if (!self->_db)
   {
@@ -376,7 +376,7 @@ LABEL_33:
     self->_statementCache = statementCache;
   }
 
-  ValueIfPresent = CFDictionaryGetValueIfPresent(statementCache, a3, &value);
+  ValueIfPresent = CFDictionaryGetValueIfPresent(statementCache, pattern, &value);
   v7 = os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG);
   if (ValueIfPresent)
   {
@@ -394,7 +394,7 @@ LABEL_33:
     }
 
     +[NSDate timeIntervalSinceReferenceDate];
-    sqlite3_prepare_v2(self->_db, [a3 UTF8String], -1, &value, 0);
+    sqlite3_prepare_v2(self->_db, [pattern UTF8String], -1, &value, 0);
     +[NSDate timeIntervalSinceReferenceDate];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -403,12 +403,12 @@ LABEL_33:
 
     if (value)
     {
-      CFDictionarySetValue(self->_statementCache, a3, value);
+      CFDictionarySetValue(self->_statementCache, pattern, value);
     }
 
     else
     {
-      CRLogSQLiteError(self->_db, [NSString stringWithFormat:@"preparing statement for query %@", a3]);
+      CRLogSQLiteError(self->_db, [NSString stringWithFormat:@"preparing statement for query %@", pattern]);
       v8 = sqlite3_errcode(self->_db);
       if (v8 == 10)
       {
@@ -440,7 +440,7 @@ LABEL_33:
   return value;
 }
 
-- (int)beginTransactionWithType:(int)a3
+- (int)beginTransactionWithType:(int)type
 {
   db = self->_db;
   if (!db)
@@ -451,7 +451,7 @@ LABEL_33:
   transactionCount = self->_transactionCount;
   if (transactionCount)
   {
-    if (self->_transactionType != a3)
+    if (self->_transactionType != type)
     {
       sub_100018DB8();
     }
@@ -459,13 +459,13 @@ LABEL_33:
     goto LABEL_4;
   }
 
-  if (a3 >= 3)
+  if (type >= 3)
   {
     sub_100018DE4();
   }
 
-  result = sub_100001444(db, (&off_10002D378)[a3], 0, 0, 0);
-  self->_transactionType = a3;
+  result = sub_100001444(db, (&off_10002D378)[type], 0, 0, 0);
+  self->_transactionType = type;
   if (!result)
   {
     transactionCount = self->_transactionCount;

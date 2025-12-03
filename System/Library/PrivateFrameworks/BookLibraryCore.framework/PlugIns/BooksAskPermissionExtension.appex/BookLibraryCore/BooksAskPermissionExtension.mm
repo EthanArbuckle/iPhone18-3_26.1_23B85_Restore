@@ -1,8 +1,8 @@
 @interface BooksAskPermissionExtension
 - (void)_finish;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)checkDownloadQueue;
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4;
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion;
 @end
 
 @implementation BooksAskPermissionExtension
@@ -20,60 +20,60 @@
   [v3 reloadFromServerWithCompletion:&stru_100004158];
 }
 
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v7 = BLBooksAskPermissionExtensionLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 compile];
+    compile = [resultCopy compile];
     *buf = 138412290;
-    v18 = v8;
+    v18 = compile;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "BooksAskPermissionExtension: Request updated. Result: %@", buf, 0xCu);
   }
 
-  v9 = [v5 buyParams];
-  v10 = [v5 itemIdentifier];
-  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v10 longLongValue]);
-  v12 = [BLPurchaseRequest requestWithBuyParameters:v9 storeIdentifier:v11];
+  buyParams = [resultCopy buyParams];
+  itemIdentifier = [resultCopy itemIdentifier];
+  v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [itemIdentifier longLongValue]);
+  v12 = [BLPurchaseRequest requestWithBuyParameters:buyParams storeIdentifier:v11];
 
   v13 = +[BLDownloadQueueNonUI sharedInstance];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100001080;
   v15[3] = &unk_100004180;
-  v16 = v6;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [v13 purchaseWithRequest:v12 completion:v15];
 }
 
 - (void)_finish
 {
-  v2 = [(BooksAskPermissionExtension *)self extensionContext];
-  [v2 completeRequestReturningItems:0 completionHandler:&stru_1000041C0];
+  extensionContext = [(BooksAskPermissionExtension *)self extensionContext];
+  [extensionContext completeRequestReturningItems:0 completionHandler:&stru_1000041C0];
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  [(BooksAskPermissionExtension *)self setExtensionContext:v4];
-  v5 = [v4 inputItems];
-  v6 = [v5 firstObject];
+  contextCopy = context;
+  [(BooksAskPermissionExtension *)self setExtensionContext:contextCopy];
+  inputItems = [contextCopy inputItems];
+  firstObject = [inputItems firstObject];
 
-  v7 = [v6 userInfo];
+  userInfo = [firstObject userInfo];
   v8 = BLBooksAskPermissionExtensionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "BooksAskPermissionExtension: Begining extension. User info: %@", &buf, 0xCu);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"checkDownloadQueue"];
-  v10 = [v9 BOOLValue];
+  v9 = [userInfo objectForKeyedSubscript:@"checkDownloadQueue"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     [(BooksAskPermissionExtension *)self checkDownloadQueue];
     [(BooksAskPermissionExtension *)self _finish];
@@ -100,7 +100,7 @@
     v12 = v11;
     _Block_object_dispose(&v20, 8);
     v13 = [v11 alloc];
-    v14 = [v7 objectForKeyedSubscript:@"result"];
+    v14 = [userInfo objectForKeyedSubscript:@"result"];
     v15 = [v13 initWithDictionary:v14];
 
     v16 = BLBooksAskPermissionExtensionLog();

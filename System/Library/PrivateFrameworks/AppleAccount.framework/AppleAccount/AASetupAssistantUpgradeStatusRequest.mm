@@ -1,21 +1,21 @@
 @interface AASetupAssistantUpgradeStatusRequest
-- (AASetupAssistantUpgradeStatusRequest)initWithAccount:(id)a3;
+- (AASetupAssistantUpgradeStatusRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AASetupAssistantUpgradeStatusRequest
 
-- (AASetupAssistantUpgradeStatusRequest)initWithAccount:(id)a3
+- (AASetupAssistantUpgradeStatusRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AASetupAssistantUpgradeStatusRequest;
   v6 = [(AASetupAssistantUpgradeStatusRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -24,9 +24,9 @@
 - (id)urlString
 {
   v2 = +[AASetupAssistantService urlConfiguration];
-  v3 = [v2 upgradeStatusURL];
+  upgradeStatusURL = [v2 upgradeStatusURL];
 
-  return v3;
+  return upgradeStatusURL;
 }
 
 - (id)urlRequest
@@ -34,14 +34,14 @@
   v20 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = AASetupAssistantUpgradeStatusRequest;
-  v3 = [(AARequest *)&v17 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v17 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(ACAccount *)self->_account aa_personID];
-  v7 = [(ACAccount *)self->_account aa_authToken];
-  v8 = [v5 stringWithFormat:@"%@:%@", v6, v7];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
+  aa_authToken = [(ACAccount *)self->_account aa_authToken];
+  v8 = [v5 stringWithFormat:@"%@:%@", aa_personID, aa_authToken];
 
   v9 = [v8 dataUsingEncoding:4];
   v10 = [v9 base64EncodedStringWithOptions:0];

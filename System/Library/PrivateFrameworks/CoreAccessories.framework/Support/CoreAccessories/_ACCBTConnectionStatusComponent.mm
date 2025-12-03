@@ -1,26 +1,26 @@
 @interface _ACCBTConnectionStatusComponent
-- (_ACCBTConnectionStatusComponent)initWithUID:(id)a3 componentUID:(id)a4 name:(id)a5 macAddr:(id)a6;
+- (_ACCBTConnectionStatusComponent)initWithUID:(id)d componentUID:(id)iD name:(id)name macAddr:(id)addr;
 - (id)copyDictionary;
 @end
 
 @implementation _ACCBTConnectionStatusComponent
 
-- (_ACCBTConnectionStatusComponent)initWithUID:(id)a3 componentUID:(id)a4 name:(id)a5 macAddr:(id)a6
+- (_ACCBTConnectionStatusComponent)initWithUID:(id)d componentUID:(id)iD name:(id)name macAddr:(id)addr
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  addrCopy = addr;
   v18.receiver = self;
   v18.super_class = _ACCBTConnectionStatusComponent;
   v15 = [(_ACCBTConnectionStatusComponent *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accessoryUID, a3);
-    objc_storeStrong(&v16->_componentUID, a4);
-    objc_storeStrong(&v16->_name, a5);
-    objc_storeStrong(&v16->_macAddr, a6);
+    objc_storeStrong(&v15->_accessoryUID, d);
+    objc_storeStrong(&v16->_componentUID, iD);
+    objc_storeStrong(&v16->_name, name);
+    objc_storeStrong(&v16->_macAddr, addr);
     *&v16->_enabled = 0;
     v16->_needToUnplugBTDevice = 0;
   }

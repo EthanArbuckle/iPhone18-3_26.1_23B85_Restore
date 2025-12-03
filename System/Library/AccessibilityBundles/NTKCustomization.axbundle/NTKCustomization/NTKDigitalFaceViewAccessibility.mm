@@ -1,15 +1,15 @@
 @interface NTKDigitalFaceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation NTKDigitalFaceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKDigitalFaceView" isKindOfClass:@"NTKFaceView"];
-  [v3 validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKDigitalFaceView" isKindOfClass:@"NTKFaceView"];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

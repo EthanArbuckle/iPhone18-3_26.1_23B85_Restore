@@ -1,19 +1,19 @@
 @interface PGPortalView
 - (UIView)sourceView;
-- (void)setSourceView:(id)a3;
+- (void)setSourceView:(id)view;
 @end
 
 @implementation PGPortalView
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v4 = a3;
-  v5 = [(PGPortalView *)self portalLayer];
-  v6 = [v4 layer];
+  viewCopy = view;
+  portalLayer = [(PGPortalView *)self portalLayer];
+  layer = [viewCopy layer];
 
-  [v5 setSourceLayer:v6];
-  v7 = [(PGPortalView *)self portalLayer];
-  [v7 setMatchesTransform:1];
+  [portalLayer setSourceLayer:layer];
+  portalLayer2 = [(PGPortalView *)self portalLayer];
+  [portalLayer2 setMatchesTransform:1];
 }
 
 - (UIView)sourceView

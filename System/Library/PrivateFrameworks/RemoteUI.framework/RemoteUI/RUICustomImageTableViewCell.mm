@@ -11,8 +11,8 @@
 - (UIImageView)customImageView
 {
   [(RUICustomImageTableViewCell *)self _initializeViews];
-  v3 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
-  [v3 setHidden:0];
+  _customImageViewInternal = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
+  [_customImageViewInternal setHidden:0];
 
   return [(RUICustomImageTableViewCell *)self _customImageViewInternal];
 }
@@ -37,8 +37,8 @@
 - (UILabel)customTextLabel
 {
   [(RUICustomImageTableViewCell *)self _initializeViews];
-  v3 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-  [v3 setHidden:0];
+  _customTextLabelInternal = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+  [_customTextLabelInternal setHidden:0];
 
   return [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
 }
@@ -74,78 +74,78 @@
 
     [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)self->_stackView setAxis:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(UIStackView *)self->_stackView setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIStackView *)self->_stackView setBackgroundColor:clearColor];
 
     [(UIStackView *)self->_stackView setDistribution:2];
     v6 = self->_stackView;
-    v7 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
-    [(UIStackView *)v6 addArrangedSubview:v7];
+    _customImageViewInternal = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
+    [(UIStackView *)v6 addArrangedSubview:_customImageViewInternal];
 
     v8 = self->_stackView;
-    v9 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-    [(UIStackView *)v8 addArrangedSubview:v9];
+    _customTextLabelInternal = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    [(UIStackView *)v8 addArrangedSubview:_customTextLabelInternal];
 
-    v10 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
-    [v10 setHidden:1];
+    _customImageViewInternal2 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
+    [_customImageViewInternal2 setHidden:1];
 
-    v11 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-    [v11 setHidden:1];
+    _customTextLabelInternal2 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    [_customTextLabelInternal2 setHidden:1];
 
-    v12 = [(RUICustomImageTableViewCell *)self contentView];
-    [v12 addSubview:self->_stackView];
+    contentView = [(RUICustomImageTableViewCell *)self contentView];
+    [contentView addSubview:self->_stackView];
 
     v38 = MEMORY[0x277CCAAD0];
-    v49 = [(UIStackView *)self->_stackView topAnchor];
-    v50 = [(RUICustomImageTableViewCell *)self contentView];
-    v48 = [v50 topAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    topAnchor = [(UIStackView *)self->_stackView topAnchor];
+    contentView2 = [(RUICustomImageTableViewCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v51[0] = v47;
-    v45 = [(UIStackView *)self->_stackView leadingAnchor];
-    v46 = [(RUICustomImageTableViewCell *)self contentView];
-    v44 = [v46 leadingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+    contentView3 = [(RUICustomImageTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v51[1] = v43;
-    v41 = [(UIStackView *)self->_stackView trailingAnchor];
-    v42 = [(RUICustomImageTableViewCell *)self contentView];
-    v40 = [v42 trailingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+    contentView4 = [(RUICustomImageTableViewCell *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v51[2] = v39;
-    v36 = [(UIStackView *)self->_stackView bottomAnchor];
-    v37 = [(RUICustomImageTableViewCell *)self contentView];
-    v35 = [v37 bottomAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+    contentView5 = [(RUICustomImageTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v51[3] = v34;
-    v33 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
-    v32 = [v33 leadingAnchor];
-    v31 = [(UIStackView *)self->_stackView leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:20.0];
+    _customImageViewInternal3 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
+    leadingAnchor3 = [_customImageViewInternal3 leadingAnchor];
+    leadingAnchor4 = [(UIStackView *)self->_stackView leadingAnchor];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
     v51[4] = v30;
-    v29 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
-    v28 = [v29 trailingAnchor];
-    v27 = [(UIStackView *)self->_stackView leadingAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27 constant:38.0];
+    _customImageViewInternal4 = [(RUICustomImageTableViewCell *)self _customImageViewInternal];
+    trailingAnchor3 = [_customImageViewInternal4 trailingAnchor];
+    leadingAnchor5 = [(UIStackView *)self->_stackView leadingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:38.0];
     v51[5] = v26;
-    v25 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-    v13 = [v25 leadingAnchor];
-    v14 = [(UIStackView *)self->_stackView leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:48.0];
+    _customTextLabelInternal3 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    leadingAnchor6 = [_customTextLabelInternal3 leadingAnchor];
+    leadingAnchor7 = [(UIStackView *)self->_stackView leadingAnchor];
+    v15 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:48.0];
     v51[6] = v15;
-    v16 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-    v17 = [v16 trailingAnchor];
-    v18 = [(UIStackView *)self->_stackView trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:16.0];
+    _customTextLabelInternal4 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    trailingAnchor4 = [_customTextLabelInternal4 trailingAnchor];
+    trailingAnchor5 = [(UIStackView *)self->_stackView trailingAnchor];
+    v19 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:16.0];
     v51[7] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:8];
     [v38 activateConstraints:v20];
 
     v21 = self->_stackView;
-    v22 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
-    [(UIStackView *)v21 setCustomSpacing:v22 afterView:16.0];
+    _customTextLabelInternal5 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    [(UIStackView *)v21 setCustomSpacing:_customTextLabelInternal5 afterView:16.0];
 
-    v23 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
+    _customTextLabelInternal6 = [(RUICustomImageTableViewCell *)self _customTextLabelInternal];
     LODWORD(v24) = 1148846080;
-    [v23 setContentHuggingPriority:0 forAxis:v24];
+    [_customTextLabelInternal6 setContentHuggingPriority:0 forAxis:v24];
   }
 }
 

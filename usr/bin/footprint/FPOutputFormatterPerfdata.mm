@@ -1,32 +1,32 @@
 @interface FPOutputFormatterPerfdata
 - (void)close;
-- (void)endAtTime:(id)a3;
-- (void)printGlobalAuxData:(id)a3;
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4;
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5;
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4;
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5;
+- (void)endAtTime:(id)time;
+- (void)printGlobalAuxData:(id)data;
+- (void)printProcessAuxData:(id)data forProcess:(id)process;
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process;
+- (void)printProcessTotal:(id)total forProcess:(id)process;
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors;
 @end
 
 @implementation FPOutputFormatterPerfdata
 
-- (void)printProcessTotal:(id)a3 forProcess:(id)a4
+- (void)printProcessTotal:(id)total forProcess:(id)process
 {
   writer = self->_writer;
-  v7 = a4;
-  [a3 unsignedLongLongValue];
+  processCopy = process;
+  [total unsignedLongLongValue];
   pdwriter_new_value();
   v8 = self->_writer;
-  v9 = [v7 name];
-  [v9 UTF8String];
+  name = [processCopy name];
+  [name UTF8String];
   pdwriter_record_variable_str();
 
   v10 = self->_writer;
-  v11 = [v7 name];
-  [v11 UTF8String];
+  name2 = [processCopy name];
+  [name2 UTF8String];
   pdwriter_record_variable_str();
 
-  LODWORD(v10) = [v7 pid];
+  LODWORD(v10) = [processCopy pid];
   snprintf(__str, 0xBuLL, "%d", v10);
   v12 = self->_writer;
   pdwriter_record_label_str();
@@ -34,9 +34,9 @@
   pdwriter_record_tag();
 }
 
-- (void)printProcessCategories:(id)a3 total:(id *)a4 forProcess:(id)a5
+- (void)printProcessCategories:(id)categories total:(id *)total forProcess:(id)process
 {
-  v10 = a3;
+  categoriesCopy = categories;
   v6 = objc_alloc_init(NSMutableDictionary);
   currentProcessTotals = self->_currentProcessTotals;
   self->_currentProcessTotals = v6;
@@ -45,14 +45,14 @@
   currentProcessAuxDatas = self->_currentProcessAuxDatas;
   self->_currentProcessAuxDatas = v8;
 
-  sub_10001732C(self, v10);
+  sub_10001732C(self, categoriesCopy);
 }
 
-- (void)printProcessAuxData:(id)a3 forProcess:(id)a4
+- (void)printProcessAuxData:(id)data forProcess:(id)process
 {
-  v24 = a3;
-  v6 = [a4 name];
-  v7 = [v6 UTF8String];
+  dataCopy = data;
+  name = [process name];
+  uTF8String = [name UTF8String];
 
   v29 = 0u;
   v30 = 0u;
@@ -126,16 +126,16 @@
   currentProcessAuxDatas = self->_currentProcessAuxDatas;
   self->_currentProcessAuxDatas = 0;
 
-  sub_1000179A8(self, v24, "aux_data", v7, 0);
+  sub_1000179A8(self, dataCopy, "aux_data", uTF8String, 0);
 }
 
-- (void)printSummaryCategories:(id)a3 total:(id *)a4 hadErrors:(BOOL)a5
+- (void)printSummaryCategories:(id)categories total:(id *)total hadErrors:(BOOL)errors
 {
-  v8 = a3;
+  categoriesCopy = categories;
   writer = self->_writer;
   pdwriter_new_group();
   v10 = self->_writer;
-  v11 = a4->var1 + a4->var0;
+  v11 = total->var1 + total->var0;
   pdwriter_new_value();
   v12 = self->_writer;
   pdwriter_record_variable_str();
@@ -143,13 +143,13 @@
   pdwriter_record_variable_str();
   v14 = self->_writer;
   pdwriter_record_tag();
-  if (v8)
+  if (categoriesCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v8;
+    obj = categoriesCopy;
     v26 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (!v26)
     {
@@ -219,18 +219,18 @@ LABEL_18:
   }
 }
 
-- (void)printGlobalAuxData:(id)a3
+- (void)printGlobalAuxData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    sub_1000179A8(self, a3, "sys_aux_data", "ALL_PROCESSES", 1);
+    sub_1000179A8(self, data, "sys_aux_data", "ALL_PROCESSES", 1);
   }
 }
 
-- (void)endAtTime:(id)a3
+- (void)endAtTime:(id)time
 {
   writer = self->_writer;
-  sub_100016F9C(a3);
+  sub_100016F9C(time);
   sub_100016F9C(self->_startTime);
   pdwriter_new_value();
   v5 = self->_writer;

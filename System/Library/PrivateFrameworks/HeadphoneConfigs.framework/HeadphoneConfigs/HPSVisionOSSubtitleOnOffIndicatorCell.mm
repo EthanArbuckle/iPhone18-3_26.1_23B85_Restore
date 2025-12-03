@@ -1,10 +1,10 @@
 @interface HPSVisionOSSubtitleOnOffIndicatorCell
 + (NSString)cellDisabledKey;
 + (NSString)onOffKey;
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithCoder:(id)a3;
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithCoder:(id)coder;
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPSVisionOSSubtitleOnOffIndicatorCell
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_25121179C();
     v9 = v8;
@@ -37,13 +37,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_2511E7260(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_2511E7260(style, v7, v9, specifier);
 }
 
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_25121179C();
     v6 = sub_25121176C();
@@ -56,7 +56,7 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for HPSVisionOSSubtitleOnOffIndicatorCell();
-  v7 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:v6];
 
   v8 = v7;
   [(HPSVisionOSSubtitleOnOffIndicatorCell *)v8 setAccessoryType:0];
@@ -65,18 +65,18 @@
   return v8;
 }
 
-- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithCoder:(id)a3
+- (_TtC16HeadphoneConfigs37HPSVisionOSSubtitleOnOffIndicatorCell)initWithCoder:(id)coder
 {
   result = sub_251211C4C();
   __break(1u);
   return result;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_2511E75DC(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_2511E75DC(specifier);
 }
 
 @end

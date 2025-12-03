@@ -1,15 +1,15 @@
 @interface TTRCloudKitNetworkActivityMonitor
 - (_TtC15RemindersUICore33TTRCloudKitNetworkActivityMonitor)init;
-- (void)cloudKitNetworkActivityDidChange:(id)a3;
+- (void)cloudKitNetworkActivityDidChange:(id)change;
 @end
 
 @implementation TTRCloudKitNetworkActivityMonitor
 
-- (void)cloudKitNetworkActivityDidChange:(id)a3
+- (void)cloudKitNetworkActivityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  TTRCloudKitNetworkActivityMonitor.cloudKitNetworkActivityDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  TTRCloudKitNetworkActivityMonitor.cloudKitNetworkActivityDidChange(_:)(changeCopy);
 }
 
 - (_TtC15RemindersUICore33TTRCloudKitNetworkActivityMonitor)init

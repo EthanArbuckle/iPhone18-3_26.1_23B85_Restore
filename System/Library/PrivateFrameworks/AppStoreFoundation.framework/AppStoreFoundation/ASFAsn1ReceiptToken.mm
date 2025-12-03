@@ -1,12 +1,12 @@
 @interface ASFAsn1ReceiptToken
-+ (ASFAsn1ReceiptToken)readFromBuffer:(uint64_t)a1;
++ (ASFAsn1ReceiptToken)readFromBuffer:(uint64_t)buffer;
 - (id)description;
 - (uint64_t)contentIsAnInteger;
 @end
 
 @implementation ASFAsn1ReceiptToken
 
-+ (ASFAsn1ReceiptToken)readFromBuffer:(uint64_t)a1
++ (ASFAsn1ReceiptToken)readFromBuffer:(uint64_t)buffer
 {
   v2 = a2;
   objc_opt_self();
@@ -119,20 +119,20 @@ LABEL_25:
 
 - (uint64_t)contentIsAnInteger
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = *(v1 + 24);
+      v4 = *(selfCopy + 24);
       if (v4)
       {
         v5 = objc_getProperty(v4, v3, 32, 1);
         if (v5 && !*(v5 + 8))
         {
-          v1 = v5[2] == 2;
+          selfCopy = v5[2] == 2;
           goto LABEL_9;
         }
       }
@@ -142,16 +142,16 @@ LABEL_25:
         v5 = 0;
       }
 
-      v1 = 0;
+      selfCopy = 0;
 LABEL_9:
 
-      return v1;
+      return selfCopy;
     }
 
     return 0;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)description

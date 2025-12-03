@@ -2,12 +2,12 @@
 - (NSArray)fallbackDescriptor;
 - (NSArray)orderedKeysOfInterest;
 - (NSArray)orderedTemplate;
-- (_NSPersonNameComponentsStyleFormatter)initWithMasterFormatter:(id)a3;
-- (id)_delimiterBetweenString:(id)a3 andString:(id)a4 isPhonetic:(BOOL)a5;
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5;
-- (id)_orderedNonEmptyKeysFromComponents:(id)a3;
-- (id)annotatedStringFromPersonNameComponents:(id)a3;
-- (id)stringFromComponents:(id)a3 attributesByRange:(id)a4;
+- (_NSPersonNameComponentsStyleFormatter)initWithMasterFormatter:(id)formatter;
+- (id)_delimiterBetweenString:(id)string andString:(id)andString isPhonetic:(BOOL)phonetic;
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range;
+- (id)_orderedNonEmptyKeysFromComponents:(id)components;
+- (id)annotatedStringFromPersonNameComponents:(id)components;
+- (id)stringFromComponents:(id)components attributesByRange:(id)range;
 - (void)_releaseIvars;
 - (void)dealloc;
 @end
@@ -22,24 +22,24 @@
     return 0;
   }
 
-  v3 = [(_NSPersonNameComponentsStyleFormatter *)self orderedTemplate];
+  orderedTemplate = [(_NSPersonNameComponentsStyleFormatter *)self orderedTemplate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62___NSPersonNameComponentsStyleFormatter_orderedKeysOfInterest__block_invoke;
   v10[3] = &unk_1E69FA3E0;
   v10[4] = self;
-  v4 = [(NSArray *)v3 indexesOfObjectsPassingTest:v10];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] isPhonetic];
+  v4 = [(NSArray *)orderedTemplate indexesOfObjectsPassingTest:v10];
+  array = [MEMORY[0x1E695DF70] array];
+  isPhonetic = [(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] isPhonetic];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62___NSPersonNameComponentsStyleFormatter_orderedKeysOfInterest__block_invoke_2;
   v8[3] = &unk_1E69FA408;
-  v9 = v6;
+  v9 = isPhonetic;
   v8[4] = self;
-  v8[5] = v5;
+  v8[5] = array;
   [(NSIndexSet *)v4 enumerateIndexesUsingBlock:v8];
-  return v5;
+  return array;
 }
 
 - (NSArray)orderedTemplate
@@ -78,7 +78,7 @@
   masterFormatter = self->_masterFormatter;
 }
 
-- (_NSPersonNameComponentsStyleFormatter)initWithMasterFormatter:(id)a3
+- (_NSPersonNameComponentsStyleFormatter)initWithMasterFormatter:(id)formatter
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -86,29 +86,29 @@
   v5 = [(_NSPersonNameComponentsStyleFormatter *)&v7 init];
   if (v5)
   {
-    if (!a3)
+    if (!formatter)
     {
       [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:v5 lineNumber:@"NSPersonNameComponentsFormatter.m" description:746, @"We should never have a nil master formatter"];
     }
 
-    v5->_masterFormatter = [a3 copy];
+    v5->_masterFormatter = [formatter copy];
   }
 
   return v5;
 }
 
-- (id)stringFromComponents:(id)a3 attributesByRange:(id)a4
+- (id)stringFromComponents:(id)components attributesByRange:(id)range
 {
   v7 = [(_NSPersonNameComponentsStyleFormatter *)self _orderedNonEmptyKeysFromComponents:?];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [NSPersonNameComponentsFormatter __shortStyleRestrictionExistsForComponents:a3 shortStyle:[(_NSPersonNameComponentsStyleFormatter *)self shortNameFormat]]|| ![(_NSPersonNameComponentsStyleFormatter *)self fullComponentsAreValid:a3]|| ![(_NSPersonNameComponentsStyleFormatter *)self isEnabled]|| [(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __localizedRestrictionExistsForComponents:a3 ignoreUndeterminedComponents:[(_NSPersonNameComponentsStyleFormatter *)self shouldIgnoreComponentsContainingSpecialCharacters]])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [NSPersonNameComponentsFormatter __shortStyleRestrictionExistsForComponents:components shortStyle:[(_NSPersonNameComponentsStyleFormatter *)self shortNameFormat]]|| ![(_NSPersonNameComponentsStyleFormatter *)self fullComponentsAreValid:components]|| ![(_NSPersonNameComponentsStyleFormatter *)self isEnabled]|| [(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __localizedRestrictionExistsForComponents:components ignoreUndeterminedComponents:[(_NSPersonNameComponentsStyleFormatter *)self shouldIgnoreComponentsContainingSpecialCharacters]])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [(_NSPersonNameComponentsStyleFormatter *)self _formattedStringFromOrderedKeys:v7 components:a3 attributesByRange:a4];
+    v8 = [(_NSPersonNameComponentsStyleFormatter *)self _formattedStringFromOrderedKeys:v7 components:components attributesByRange:range];
   }
 
   if ([v8 length])
@@ -121,33 +121,33 @@
     return 0;
   }
 
-  v9 = [(_NSPersonNameComponentsStyleFormatter *)self fallbackStyleFormatter];
+  fallbackStyleFormatter = [(_NSPersonNameComponentsStyleFormatter *)self fallbackStyleFormatter];
 
-  return [(_NSPersonNameComponentsStyleFormatter *)v9 stringFromComponents:a3 attributesByRange:a4];
+  return [(_NSPersonNameComponentsStyleFormatter *)fallbackStyleFormatter stringFromComponents:components attributesByRange:range];
 }
 
-- (id)_orderedNonEmptyKeysFromComponents:(id)a3
+- (id)_orderedNonEmptyKeysFromComponents:(id)components
 {
   v7[5] = *MEMORY[0x1E69E9840];
-  [(_NSPersonNameComponentsStyleFormatter *)self setOrdering:[(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __computedNameOrderForComponents:a3]];
-  v5 = [(_NSPersonNameComponentsStyleFormatter *)self orderedKeysOfInterest];
+  [(_NSPersonNameComponentsStyleFormatter *)self setOrdering:[(NSPersonNameComponentsFormatter *)[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter] __computedNameOrderForComponents:components]];
+  orderedKeysOfInterest = [(_NSPersonNameComponentsStyleFormatter *)self orderedKeysOfInterest];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76___NSPersonNameComponentsStyleFormatter__orderedNonEmptyKeysFromComponents___block_invoke;
   v7[3] = &unk_1E69FA3E0;
-  v7[4] = a3;
-  return [(NSArray *)[(_NSPersonNameComponentsStyleFormatter *)self orderedKeysOfInterest] objectsAtIndexes:[(NSArray *)v5 indexesOfObjectsPassingTest:v7]];
+  v7[4] = components;
+  return [(NSArray *)[(_NSPersonNameComponentsStyleFormatter *)self orderedKeysOfInterest] objectsAtIndexes:[(NSArray *)orderedKeysOfInterest indexesOfObjectsPassingTest:v7]];
 }
 
-- (id)_delimiterBetweenString:(id)a3 andString:(id)a4 isPhonetic:(BOOL)a5
+- (id)_delimiterBetweenString:(id)string andString:(id)andString isPhonetic:(BOOL)phonetic
 {
-  if (a5)
+  if (phonetic)
   {
     goto LABEL_9;
   }
 
   v7 = [NSPersonNameComponentsFormatter __inferredScriptIndexFromString:?];
-  v8 = [NSPersonNameComponentsFormatter __inferredScriptIndexFromString:a4];
+  v8 = [NSPersonNameComponentsFormatter __inferredScriptIndexFromString:andString];
   if (v7 - 2 > 3)
   {
     goto LABEL_9;
@@ -168,7 +168,7 @@ LABEL_9:
 
   else
   {
-    if (![NSPersonNameComponentsFormatter isKatakana:a3]|| ![NSPersonNameComponentsFormatter isKatakana:a4])
+    if (![NSPersonNameComponentsFormatter isKatakana:string]|| ![NSPersonNameComponentsFormatter isKatakana:andString])
     {
       goto LABEL_4;
     }
@@ -182,7 +182,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range
 {
   v18 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -195,22 +195,22 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = __102___NSPersonNameComponentsStyleFormatter__formattedStringFromOrderedKeys_components_attributesByRange___block_invoke;
   v11[3] = &unk_1E69FA430;
-  v11[4] = a4;
+  v11[4] = components;
   v11[5] = self;
-  v11[7] = a5;
+  v11[7] = range;
   v11[8] = &v12;
-  v11[6] = a3;
-  [a3 enumerateObjectsUsingBlock:v11];
+  v11[6] = keys;
+  [keys enumerateObjectsUsingBlock:v11];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
   return v9;
 }
 
-- (id)annotatedStringFromPersonNameComponents:(id)a3
+- (id)annotatedStringFromPersonNameComponents:(id)components
 {
   v10[5] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(_NSPersonNameComponentsStyleFormatter *)self stringFromComponents:a3 attributesByRange:v5];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [(_NSPersonNameComponentsStyleFormatter *)self stringFromComponents:components attributesByRange:dictionary];
   if (!v6)
   {
     if (qword_1ED43F500 != -1)
@@ -236,7 +236,7 @@ LABEL_10:
   v10[2] = __81___NSPersonNameComponentsStyleFormatter_annotatedStringFromPersonNameComponents___block_invoke;
   v10[3] = &unk_1E69F3270;
   v10[4] = v8;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v10];
   return [(NSMutableAttributedString *)v8 copy];
 }
 
@@ -245,39 +245,39 @@ LABEL_10:
   result = self->_fallbackDescriptor;
   if (!result)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = [MEMORY[0x1E695DFD8] setWithArray:{-[_NSPersonNameComponentsStyleFormatter orderedKeysOfInterest](self, "orderedKeysOfInterest")}];
     if (v5)
     {
-      [v4 addObject:v5];
+      [array addObject:v5];
     }
 
-    v6 = [(_NSPersonNameComponentsStyleFormatter *)self fallbackStyleFormatter];
-    if (v6)
+    fallbackStyleFormatter = [(_NSPersonNameComponentsStyleFormatter *)self fallbackStyleFormatter];
+    if (fallbackStyleFormatter)
     {
-      v7 = v6;
+      fallbackStyleFormatter2 = fallbackStyleFormatter;
       do
       {
-        v8 = [MEMORY[0x1E695DFD8] setWithArray:{-[_NSPersonNameComponentsStyleFormatter orderedKeysOfInterest](v7, "orderedKeysOfInterest")}];
+        v8 = [MEMORY[0x1E695DFD8] setWithArray:{-[_NSPersonNameComponentsStyleFormatter orderedKeysOfInterest](fallbackStyleFormatter2, "orderedKeysOfInterest")}];
         if (v8)
         {
           v9 = v8;
           if ([v8 count])
           {
-            if (([v4 containsObject:v9] & 1) == 0)
+            if (([array containsObject:v9] & 1) == 0)
             {
-              [v4 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
 
-        v7 = [(_NSPersonNameComponentsStyleFormatter *)v7 fallbackStyleFormatter];
+        fallbackStyleFormatter2 = [(_NSPersonNameComponentsStyleFormatter *)fallbackStyleFormatter2 fallbackStyleFormatter];
       }
 
-      while (v7);
+      while (fallbackStyleFormatter2);
     }
 
-    result = v4;
+    result = array;
     self->_fallbackDescriptor = result;
   }
 

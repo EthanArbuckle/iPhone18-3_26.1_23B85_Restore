@@ -1,75 +1,75 @@
 @interface TSSStylesheet
-- (BOOL)cascadedContainsStyle:(id)a3;
-- (BOOL)containsStyle:(id)a3;
-- (BOOL)isAncestorOf:(id)a3;
-- (BOOL)isDescendentOf:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)cascadedContainsStyle:(id)style;
+- (BOOL)containsStyle:(id)style;
+- (BOOL)isAncestorOf:(id)of;
+- (BOOL)isDescendentOf:(id)of;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)styles;
-- (TSSStylesheet)initWithContext:(id)a3 canCullStyles:(BOOL)a4;
-- (id)_defaultCharacterStyleWasCreated:(BOOL *)a3;
-- (id)_defaultColumnStyleWasCreated:(BOOL *)a3;
-- (id)_defaultListStyleWasCreated:(BOOL *)a3;
-- (id)_defaultParagraphStyleWasCreated:(BOOL *)a3;
-- (id)_defaultStyleOfClass:(Class)a3 withIdentifier:(id)a4 wasCreated:(BOOL *)a5 usingBlock:(id)a6;
-- (id)_hyperlinkStyleWasCreated:(BOOL *)a3;
-- (id)cascadedFirstStyleWithName:(id)a3;
-- (id)cascadedStyleWithIdentifier:(id)a3;
-- (id)cascadedStyleWithIdentifier:(id)a3 componentMask:(int)a4;
-- (id)childrenOfStyle:(id)a3;
-- (id)firstRootlessStyleOfClass:(Class)a3 withOverridePropertyMap:(id)a4;
-- (id)firstStyleWithName:(id)a3;
+- (TSSStylesheet)initWithContext:(id)context canCullStyles:(BOOL)styles;
+- (id)_defaultCharacterStyleWasCreated:(BOOL *)created;
+- (id)_defaultColumnStyleWasCreated:(BOOL *)created;
+- (id)_defaultListStyleWasCreated:(BOOL *)created;
+- (id)_defaultParagraphStyleWasCreated:(BOOL *)created;
+- (id)_defaultStyleOfClass:(Class)class withIdentifier:(id)identifier wasCreated:(BOOL *)created usingBlock:(id)block;
+- (id)_hyperlinkStyleWasCreated:(BOOL *)created;
+- (id)cascadedFirstStyleWithName:(id)name;
+- (id)cascadedStyleWithIdentifier:(id)identifier;
+- (id)cascadedStyleWithIdentifier:(id)identifier componentMask:(int)mask;
+- (id)childrenOfStyle:(id)style;
+- (id)firstRootlessStyleOfClass:(Class)class withOverridePropertyMap:(id)map;
+- (id)firstStyleWithName:(id)name;
 - (id)headerAndFooterStyle;
 - (id)identifiedStyles;
-- (id)identifiedStylesOfClass:(Class)a3;
-- (id)namedStylesOfClass:(Class)a3;
-- (id)pVariationOfStyle:(id)a3 propertyMap:(id)a4 matchStyles:(id)a5 context:(id)a6;
-- (id)p_variationMapForVaryingCharacterStyle:(id)a3 overParagraphStyle:(id)a4 withPropertyMap:(id)a5;
+- (id)identifiedStylesOfClass:(Class)class;
+- (id)namedStylesOfClass:(Class)class;
+- (id)pVariationOfStyle:(id)style propertyMap:(id)map matchStyles:(id)styles context:(id)context;
+- (id)p_variationMapForVaryingCharacterStyle:(id)style overParagraphStyle:(id)paragraphStyle withPropertyMap:(id)map;
 - (id)rootAncestor;
-- (id)styleWithIdentifier:(id)a3;
-- (id)styleWithIdentifier:(id)a3 componentMask:(int)a4;
-- (id)stylesOfClass:(Class)a3;
-- (id)stylesPassingTest:(id)a3;
-- (id)stylesWithName:(id)a3;
-- (id)stylesWithName:(id)a3 ofClass:(Class)a4;
-- (id)unusedStyleIdentifierWithPackageString:(id)a3 styleDescriptor:(id)a4 contentTag:(id)a5;
-- (id)variationOfCharacterStyle:(id)a3 paragraphStyle:(id)a4 propertyMap:(id)a5;
-- (id)variationOfStyle:(id)a3 exactPropertyMap:(id)a4;
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4;
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4 context:(id)a5;
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4 matchStyles:(id)a5 context:(id)a6;
-- (id)variationOfStyleMatchingStyle:(id)a3 withNewParentStyle:(id)a4;
+- (id)styleWithIdentifier:(id)identifier;
+- (id)styleWithIdentifier:(id)identifier componentMask:(int)mask;
+- (id)stylesOfClass:(Class)class;
+- (id)stylesPassingTest:(id)test;
+- (id)stylesWithName:(id)name;
+- (id)stylesWithName:(id)name ofClass:(Class)class;
+- (id)unusedStyleIdentifierWithPackageString:(id)string styleDescriptor:(id)descriptor contentTag:(id)tag;
+- (id)variationOfCharacterStyle:(id)style paragraphStyle:(id)paragraphStyle propertyMap:(id)map;
+- (id)variationOfStyle:(id)style exactPropertyMap:(id)map;
+- (id)variationOfStyle:(id)style propertyMap:(id)map;
+- (id)variationOfStyle:(id)style propertyMap:(id)map context:(id)context;
+- (id)variationOfStyle:(id)style propertyMap:(id)map matchStyles:(id)styles context:(id)context;
+- (id)variationOfStyleMatchingStyle:(id)style withNewParentStyle:(id)parentStyle;
 - (unint64_t)descendantCount;
-- (void)addStyle:(id)a3 withParent:(id)a4 identifier:(id)a5;
+- (void)addStyle:(id)style withParent:(id)parent identifier:(id)identifier;
 - (void)dealloc;
-- (void)didLoadChildObjectFromDocumentSupport:(id)a3;
-- (void)enumerateCascadedStylesUsingBlock:(id)a3;
-- (void)enumerateStylesUsingBlock:(id)a3;
-- (void)p_addStyle:(id)a3 withParent:(id)a4 identifier:(id)a5;
-- (void)p_addStyleToParentChildren:(id)a3;
-- (void)p_removeStyle:(id)a3;
-- (void)p_removeStyleFromParentChildren:(id)a3;
-- (void)p_setIdentifier:(id)a3 ofStyle:(id)a4;
-- (void)p_setParent:(id)a3 ofStyle:(id)a4;
-- (void)removeStyle:(id)a3;
-- (void)setIdentifier:(id)a3 ofStyle:(id)a4;
-- (void)setParent:(id)a3 ofStyle:(id)a4;
-- (void)setParent:(id)a3 withParentStyleMap:(__CFDictionary *)a4;
-- (void)unlockStylesheetForDurationOfBlock:(id)a3;
+- (void)didLoadChildObjectFromDocumentSupport:(id)support;
+- (void)enumerateCascadedStylesUsingBlock:(id)block;
+- (void)enumerateStylesUsingBlock:(id)block;
+- (void)p_addStyle:(id)style withParent:(id)parent identifier:(id)identifier;
+- (void)p_addStyleToParentChildren:(id)children;
+- (void)p_removeStyle:(id)style;
+- (void)p_removeStyleFromParentChildren:(id)children;
+- (void)p_setIdentifier:(id)identifier ofStyle:(id)style;
+- (void)p_setParent:(id)parent ofStyle:(id)style;
+- (void)removeStyle:(id)style;
+- (void)setIdentifier:(id)identifier ofStyle:(id)style;
+- (void)setParent:(id)parent ofStyle:(id)style;
+- (void)setParent:(id)parent withParentStyleMap:(__CFDictionary *)map;
+- (void)unlockStylesheetForDurationOfBlock:(id)block;
 @end
 
 @implementation TSSStylesheet
 
-- (TSSStylesheet)initWithContext:(id)a3 canCullStyles:(BOOL)a4
+- (TSSStylesheet)initWithContext:(id)context canCullStyles:(BOOL)styles
 {
   v7.receiver = self;
   v7.super_class = TSSStylesheet;
-  v5 = [(TSPObject *)&v7 initWithContext:a3];
+  v5 = [(TSPObject *)&v7 initWithContext:context];
   if (v5)
   {
     v5->mStyles = objc_alloc_init(MEMORY[0x277D6C318]);
     v5->mIdentifierToStyleMap = objc_alloc_init(MEMORY[0x277CBEB38]);
     v5->mParentToChildrenStyleMap = objc_alloc_init(MEMORY[0x277D6C368]);
-    v5->mCanCullStyles = a4;
+    v5->mCanCullStyles = styles;
   }
 
   return v5;
@@ -82,24 +82,24 @@
   [(TSSStylesheet *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (a3)
+  if (equal)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
       objc_sync_enter(self);
-      objc_sync_enter(a3);
-      if ([*(a3 + 8) isEqual:self->mStyles])
+      objc_sync_enter(equal);
+      if ([*(equal + 8) isEqual:self->mStyles])
       {
-        v6 = [*(a3 + 9) isEqualToDictionary:self->mIdentifierToStyleMap];
-        objc_sync_exit(a3);
+        v6 = [*(equal + 9) isEqualToDictionary:self->mIdentifierToStyleMap];
+        objc_sync_exit(equal);
         objc_sync_exit(self);
         if (v6)
         {
@@ -109,7 +109,7 @@
 
       else
       {
-        objc_sync_exit(a3);
+        objc_sync_exit(equal);
         objc_sync_exit(self);
       }
     }
@@ -127,9 +127,9 @@
   return v3;
 }
 
-- (void)setParent:(id)a3 withParentStyleMap:(__CFDictionary *)a4
+- (void)setParent:(id)parent withParentStyleMap:(__CFDictionary *)map
 {
-  [(TSPObject *)self willModify:a3];
+  [(TSPObject *)self willModify:parent];
   mParent = self->mParent;
   if (mParent)
   {
@@ -138,66 +138,66 @@
     self->mParent = 0;
   }
 
-  v7 = a3;
-  self->mParent = v7;
-  if (v7)
+  parentCopy = parent;
+  self->mParent = parentCopy;
+  if (parentCopy)
   {
-    v7->mChild = self;
+    parentCopy->mChild = self;
   }
 }
 
-- (BOOL)isDescendentOf:(id)a3
+- (BOOL)isDescendentOf:(id)of
 {
   mParent = self->mParent;
   if (mParent)
   {
-    LOBYTE(mParent) = mParent == a3 || [(TSSStylesheet *)mParent isDescendentOf:?];
+    LOBYTE(mParent) = mParent == of || [(TSSStylesheet *)mParent isDescendentOf:?];
   }
 
   return mParent;
 }
 
-- (BOOL)isAncestorOf:(id)a3
+- (BOOL)isAncestorOf:(id)of
 {
-  v5 = [a3 parent];
-  if (v5)
+  parent = [of parent];
+  if (parent)
   {
-    if ([a3 parent] == self)
+    if ([of parent] == self)
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(parent) = 1;
     }
 
     else
     {
-      v6 = [a3 parent];
+      parent2 = [of parent];
 
-      LOBYTE(v5) = [(TSSStylesheet *)self isAncestorOf:v6];
+      LOBYTE(parent) = [(TSSStylesheet *)self isAncestorOf:parent2];
     }
   }
 
-  return v5;
+  return parent;
 }
 
 - (id)rootAncestor
 {
   while (1)
   {
-    v2 = self;
+    selfCopy = self;
     if (![(TSSStylesheet *)self parent])
     {
       break;
     }
 
-    self = [(TSSStylesheet *)v2 parent];
+    self = [(TSSStylesheet *)selfCopy parent];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)descendantCount
 {
-  v2 = self;
-  for (i = 0; [(TSSStylesheet *)v2 child]; v2 = [(TSSStylesheet *)v2 child])
+  selfCopy = self;
+  for (i = 0; [(TSSStylesheet *)selfCopy child]; selfCopy = [(TSSStylesheet *)selfCopy child])
   {
     ++i;
   }
@@ -205,33 +205,33 @@
   return i;
 }
 
-- (void)addStyle:(id)a3 withParent:(id)a4 identifier:(id)a5
+- (void)addStyle:(id)style withParent:(id)parent identifier:(id)identifier
 {
   [(TSPObject *)self willModify];
   objc_sync_enter(self);
-  [(TSSStylesheet *)self p_addStyle:a3 withParent:a4 identifier:a5];
+  [(TSSStylesheet *)self p_addStyle:style withParent:parent identifier:identifier];
 
   objc_sync_exit(self);
 }
 
-- (void)removeStyle:(id)a3
+- (void)removeStyle:(id)style
 {
   [(TSPObject *)self willModify];
   objc_sync_enter(self);
-  [(TSSStylesheet *)self p_removeStyle:a3];
+  [(TSSStylesheet *)self p_removeStyle:style];
 
   objc_sync_exit(self);
 }
 
-- (BOOL)containsStyle:(id)a3
+- (BOOL)containsStyle:(id)style
 {
   objc_sync_enter(self);
-  LOBYTE(a3) = [(TSUMutableRetainedPointerSet *)self->mStyles containsObject:a3];
+  LOBYTE(style) = [(TSUMutableRetainedPointerSet *)self->mStyles containsObject:style];
   objc_sync_exit(self);
-  return a3;
+  return style;
 }
 
-- (BOOL)cascadedContainsStyle:(id)a3
+- (BOOL)cascadedContainsStyle:(id)style
 {
   if ([(TSSStylesheet *)self containsStyle:?])
   {
@@ -244,39 +244,39 @@
     if (mParent)
     {
 
-      LOBYTE(mParent) = [(TSSStylesheet *)mParent cascadedContainsStyle:a3];
+      LOBYTE(mParent) = [(TSSStylesheet *)mParent cascadedContainsStyle:style];
     }
   }
 
   return mParent;
 }
 
-- (id)styleWithIdentifier:(id)a3
+- (id)styleWithIdentifier:(id)identifier
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->mIdentifierToStyleMap objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->mIdentifierToStyleMap objectForKeyedSubscript:identifier];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)cascadedStyleWithIdentifier:(id)a3
+- (id)cascadedStyleWithIdentifier:(id)identifier
 {
   result = [(TSSStylesheet *)self styleWithIdentifier:?];
   if (!result)
   {
     mParent = self->mParent;
 
-    return [(TSSStylesheet *)mParent cascadedStyleWithIdentifier:a3];
+    return [(TSSStylesheet *)mParent cascadedStyleWithIdentifier:identifier];
   }
 
   return result;
 }
 
-- (id)styleWithIdentifier:(id)a3 componentMask:(int)a4
+- (id)styleWithIdentifier:(id)identifier componentMask:(int)mask
 {
   v30 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v7 = String(a3, v6);
+  v7 = String(identifier, v6);
   v8 = [v7 count] > 2;
   v9 = [v7 count] > 2;
   v10 = [v7 count] > 2;
@@ -285,14 +285,14 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [(NSMutableDictionary *)self->mIdentifierToStyleMap keyEnumerator];
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->mIdentifierToStyleMap keyEnumerator];
+  v13 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
-    v14 = a4 & v8;
-    v15 = v9 & (a4 >> 1);
-    v16 = v10 & (a4 >> 2);
-    v24 = v11 & (a4 >> 3);
+    v14 = mask & v8;
+    v15 = v9 & (mask >> 1);
+    v16 = v10 & (mask >> 2);
+    v24 = v11 & (mask >> 3);
     v17 = *v26;
     while (2)
     {
@@ -300,7 +300,7 @@
       {
         if (*v26 != v17)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v19 = *(*(&v25 + 1) + 8 * i);
@@ -317,7 +317,7 @@
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v13)
       {
         continue;
@@ -333,47 +333,47 @@ LABEL_18:
   return v21;
 }
 
-- (id)cascadedStyleWithIdentifier:(id)a3 componentMask:(int)a4
+- (id)cascadedStyleWithIdentifier:(id)identifier componentMask:(int)mask
 {
-  v4 = *&a4;
+  v4 = *&mask;
   result = [TSSStylesheet styleWithIdentifier:"styleWithIdentifier:componentMask:" componentMask:?];
   if (!result)
   {
     mParent = self->mParent;
 
-    return [(TSSStylesheet *)mParent cascadedStyleWithIdentifier:a3 componentMask:v4];
+    return [(TSSStylesheet *)mParent cascadedStyleWithIdentifier:identifier componentMask:v4];
   }
 
   return result;
 }
 
-- (void)setIdentifier:(id)a3 ofStyle:(id)a4
+- (void)setIdentifier:(id)identifier ofStyle:(id)style
 {
   [(TSPObject *)self willModify];
   objc_sync_enter(self);
-  [(TSSStylesheet *)self p_setIdentifier:a3 ofStyle:a4];
+  [(TSSStylesheet *)self p_setIdentifier:identifier ofStyle:style];
 
   objc_sync_exit(self);
 }
 
-- (void)setParent:(id)a3 ofStyle:(id)a4
+- (void)setParent:(id)parent ofStyle:(id)style
 {
   [(TSPObject *)self willModify];
   objc_sync_enter(self);
-  [(TSSStylesheet *)self p_setParent:a3 ofStyle:a4];
+  [(TSSStylesheet *)self p_setParent:parent ofStyle:style];
 
   objc_sync_exit(self);
 }
 
-- (id)childrenOfStyle:(id)a3
+- (id)childrenOfStyle:(id)style
 {
   objc_sync_enter(self);
-  v5 = [MEMORY[0x277CBEB98] setWithArray:{-[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", a3)}];
+  v5 = [MEMORY[0x277CBEB98] setWithArray:{-[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", style)}];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)firstStyleWithName:(id)a3
+- (id)firstStyleWithName:(id)name
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -396,7 +396,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
-      if ([a3 isEqualToString:{objc_msgSend(v9, "name")}])
+      if ([name isEqualToString:{objc_msgSend(v9, "name")}])
       {
         break;
       }
@@ -424,20 +424,20 @@ LABEL_9:
   return v9;
 }
 
-- (id)cascadedFirstStyleWithName:(id)a3
+- (id)cascadedFirstStyleWithName:(id)name
 {
   result = [(TSSStylesheet *)self firstStyleWithName:?];
   if (!result)
   {
-    v6 = [(TSSStylesheet *)self parent];
+    parent = [(TSSStylesheet *)self parent];
 
-    return [(TSSStylesheet *)v6 cascadedFirstStyleWithName:a3];
+    return [(TSSStylesheet *)parent cascadedFirstStyleWithName:name];
   }
 
   return result;
 }
 
-- (id)stylesWithName:(id)a3
+- (id)stylesWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -461,7 +461,7 @@ LABEL_9:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(v10, "name")}])
+        if ([name isEqualToString:{objc_msgSend(v10, "name")}])
         {
           if (!v6)
           {
@@ -482,7 +482,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)stylesWithName:(id)a3 ofClass:(Class)a4
+- (id)stylesWithName:(id)name ofClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -506,7 +506,7 @@ LABEL_9:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([a3 isEqualToString:{objc_msgSend(v12, "name")}] && objc_msgSend(v12, "isMemberOfClass:", a4))
+        if ([name isEqualToString:{objc_msgSend(v12, "name")}] && objc_msgSend(v12, "isMemberOfClass:", class))
         {
           if (!v8)
           {
@@ -527,7 +527,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)stylesOfClass:(Class)a3
+- (id)stylesOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -551,7 +551,7 @@ LABEL_9:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([v10 isMemberOfClass:a3])
+        if ([v10 isMemberOfClass:class])
         {
           if (!v6)
           {
@@ -575,12 +575,12 @@ LABEL_9:
 - (id)identifiedStyles
 {
   objc_sync_enter(self);
-  v3 = [(NSMutableDictionary *)self->mIdentifierToStyleMap allValues];
+  allValues = [(NSMutableDictionary *)self->mIdentifierToStyleMap allValues];
   objc_sync_exit(self);
-  return v3;
+  return allValues;
 }
 
-- (id)identifiedStylesOfClass:(Class)a3
+- (id)identifiedStylesOfClass:(Class)class
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -604,7 +604,7 @@ LABEL_9:
         }
 
         v10 = [(NSMutableDictionary *)self->mIdentifierToStyleMap objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
-        if ([v10 isMemberOfClass:a3])
+        if ([v10 isMemberOfClass:class])
         {
           if (!v6)
           {
@@ -625,7 +625,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)enumerateStylesUsingBlock:(id)a3
+- (void)enumerateStylesUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -649,7 +649,7 @@ LABEL_3:
 
       v9 = *(*(&v11 + 1) + 8 * v8);
       v10 = 0;
-      (*(a3 + 2))(a3, v9, &v10);
+      (*(block + 2))(block, v9, &v10);
       if (v10)
       {
         break;
@@ -671,18 +671,18 @@ LABEL_3:
   objc_sync_exit(self);
 }
 
-- (void)enumerateCascadedStylesUsingBlock:(id)a3
+- (void)enumerateCascadedStylesUsingBlock:(id)block
 {
   [(TSSStylesheet *)self enumerateStylesUsingBlock:?];
   if ([(TSSStylesheet *)self parent])
   {
-    v5 = [(TSSStylesheet *)self parent];
+    parent = [(TSSStylesheet *)self parent];
 
-    [(TSSStylesheet *)v5 enumerateStylesUsingBlock:a3];
+    [(TSSStylesheet *)parent enumerateStylesUsingBlock:block];
   }
 }
 
-- (id)stylesPassingTest:(id)a3
+- (id)stylesPassingTest:(id)test
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -707,7 +707,7 @@ LABEL_3:
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 0;
-      if ((*(a3 + 2))(a3, v10, &v12))
+      if ((*(test + 2))(test, v10, &v12))
       {
         if (!v6)
         {
@@ -747,13 +747,13 @@ LABEL_3:
   }
 }
 
-- (id)namedStylesOfClass:(Class)a3
+- (id)namedStylesOfClass:(Class)class
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __36__TSSStylesheet_namedStylesOfClass___block_invoke;
   v4[3] = &unk_279D48058;
-  v4[4] = a3;
+  v4[4] = class;
   return [(TSSStylesheet *)self stylesPassingTest:v4];
 }
 
@@ -770,7 +770,7 @@ uint64_t __36__TSSStylesheet_namedStylesOfClass___block_invoke(uint64_t a1, void
   return result;
 }
 
-- (id)firstRootlessStyleOfClass:(Class)a3 withOverridePropertyMap:(id)a4
+- (id)firstRootlessStyleOfClass:(Class)class withOverridePropertyMap:(id)map
 {
   v18 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -793,9 +793,9 @@ LABEL_3:
       }
 
       v11 = *(*(&v13 + 1) + 8 * v10);
-      if ([v11 isMemberOfClass:a3])
+      if ([v11 isMemberOfClass:class])
       {
-        if (![v11 styleIdentifier] && (objc_msgSend(v11, "isVariation") & 1) == 0 && !objc_msgSend(v11, "parent") && (objc_msgSend(v11, "overridePropertyMapIsEqualTo:", a4) & 1) != 0)
+        if (![v11 styleIdentifier] && (objc_msgSend(v11, "isVariation") & 1) == 0 && !objc_msgSend(v11, "parent") && (objc_msgSend(v11, "overridePropertyMapIsEqualTo:", map) & 1) != 0)
         {
           break;
         }
@@ -824,39 +824,39 @@ LABEL_13:
   return v11;
 }
 
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4
+- (id)variationOfStyle:(id)style propertyMap:(id)map
 {
-  if (!a3)
+  if (!style)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:propertyMap:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 713, @"invalid nil value for '%s'", "style"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 713, @"invalid nil value for '%s'", "style"}];
   }
 
-  v9 = a3;
-  if ([a3 isVariation])
+  styleCopy = style;
+  if ([style isVariation])
   {
-    v9 = [a3 parent];
+    styleCopy = [style parent];
   }
 
-  if (!v9)
+  if (!styleCopy)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:propertyMap:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 717, @"Cannot create a variation of variation style <%p> with no parent", a3}];
+    [currentHandler2 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 717, @"Cannot create a variation of variation style <%p> with no parent", style}];
   }
 
-  if ([v9 isVariation])
+  if ([styleCopy isVariation])
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:propertyMap:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 718, @"Can't create variation with a variation base style <%p>.", v9}];
+    [currentHandler3 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 718, @"Can't create variation with a variation base style <%p>.", styleCopy}];
   }
 
-  v14 = [a3 newOverridePropertyMapWithPropertyMap:a4];
+  v14 = [style newOverridePropertyMapWithPropertyMap:map];
   if ([v14 count])
   {
-    if (!v9)
+    if (!styleCopy)
     {
       goto LABEL_15;
     }
@@ -866,7 +866,7 @@ LABEL_13:
   {
 
     v14 = 0;
-    if (!v9)
+    if (!styleCopy)
     {
       goto LABEL_15;
     }
@@ -874,20 +874,20 @@ LABEL_13:
 
   if (!v14)
   {
-    v15 = v9;
+    styleCopy2 = styleCopy;
     goto LABEL_24;
   }
 
 LABEL_15:
-  if (v9 != a3 && [a3 stylesheet] == self && (v19 = objc_msgSend(a3, "overridePropertyMapIsEqualTo:", v14), a3) && (v19 & 1) != 0)
+  if (styleCopy != style && [style stylesheet] == self && (v19 = objc_msgSend(style, "overridePropertyMapIsEqualTo:", v14), style) && (v19 & 1) != 0)
   {
-    v15 = a3;
+    styleCopy2 = style;
   }
 
   else
   {
     objc_sync_enter(self);
-    v16 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:v9];
+    v16 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:styleCopy];
     v17 = [v16 count] - 1;
     do
     {
@@ -897,71 +897,71 @@ LABEL_15:
         goto LABEL_23;
       }
 
-      v15 = [v16 objectAtIndexedSubscript:v17--];
+      styleCopy2 = [v16 objectAtIndexedSubscript:v17--];
     }
 
-    while (([v15 overridePropertyMapIsEqualTo:v14] & 1) == 0);
+    while (([styleCopy2 overridePropertyMapIsEqualTo:v14] & 1) == 0);
     objc_sync_exit(self);
-    if (v15)
+    if (styleCopy2)
     {
       goto LABEL_24;
     }
 
 LABEL_23:
-    v15 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self name:"context") overridePropertyMap:0 isVariation:{v14, 1}];
+    styleCopy2 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self name:"context") overridePropertyMap:0 isVariation:{v14, 1}];
     [(TSPObject *)self willModify];
     objc_sync_enter(self);
-    [(TSSStylesheet *)self p_addStyle:v15 withParent:v9 identifier:0];
+    [(TSSStylesheet *)self p_addStyle:styleCopy2 withParent:styleCopy identifier:0];
     objc_sync_exit(self);
   }
 
 LABEL_24:
 
-  return v15;
+  return styleCopy2;
 }
 
-- (id)variationOfStyleMatchingStyle:(id)a3 withNewParentStyle:(id)a4
+- (id)variationOfStyleMatchingStyle:(id)style withNewParentStyle:(id)parentStyle
 {
-  v6 = [a3 propertyMap];
+  propertyMap = [style propertyMap];
 
-  return [(TSSStylesheet *)self variationOfStyle:a4 propertyMap:v6];
+  return [(TSSStylesheet *)self variationOfStyle:parentStyle propertyMap:propertyMap];
 }
 
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4 context:(id)a5
+- (id)variationOfStyle:(id)style propertyMap:(id)map context:(id)context
 {
-  if ([(TSPObject *)self context]== a5)
+  if ([(TSPObject *)self context]== context)
   {
 
-    return [(TSSStylesheet *)self variationOfStyle:a3 propertyMap:a4];
+    return [(TSSStylesheet *)self variationOfStyle:style propertyMap:map];
   }
 
   else
   {
 
-    return [(TSSStylesheet *)self pVariationOfStyle:a3 propertyMap:a4 matchStyles:0 context:a5];
+    return [(TSSStylesheet *)self pVariationOfStyle:style propertyMap:map matchStyles:0 context:context];
   }
 }
 
-- (id)variationOfStyle:(id)a3 propertyMap:(id)a4 matchStyles:(id)a5 context:(id)a6
+- (id)variationOfStyle:(id)style propertyMap:(id)map matchStyles:(id)styles context:(id)context
 {
-  if ([(TSPObject *)self context]== a6)
+  if ([(TSPObject *)self context]== context)
   {
 
-    return [(TSSStylesheet *)self variationOfStyle:a3 propertyMap:a4];
+    return [(TSSStylesheet *)self variationOfStyle:style propertyMap:map];
   }
 
   else
   {
 
-    return [(TSSStylesheet *)self pVariationOfStyle:a3 propertyMap:a4 matchStyles:a5 context:a6];
+    return [(TSSStylesheet *)self pVariationOfStyle:style propertyMap:map matchStyles:styles context:context];
   }
 }
 
-- (id)variationOfStyle:(id)a3 exactPropertyMap:(id)a4
+- (id)variationOfStyle:(id)style exactPropertyMap:(id)map
 {
-  if (a3)
+  if (style)
   {
-    if (a4)
+    if (map)
     {
       goto LABEL_3;
     }
@@ -969,52 +969,52 @@ LABEL_24:
 
   else
   {
-    v19 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:exactPropertyMap:]"];
-    [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 837, @"invalid nil value for '%s'", "originalStyle"}];
-    if (a4)
+    [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 837, @"invalid nil value for '%s'", "originalStyle"}];
+    if (map)
     {
       goto LABEL_3;
     }
   }
 
-  v21 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:exactPropertyMap:]"];
-  [v21 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 838, @"invalid nil value for '%s'", "propertyMap"}];
+  [currentHandler2 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 838, @"invalid nil value for '%s'", "propertyMap"}];
 LABEL_3:
-  v7 = a3;
-  if ([a3 isVariation])
+  styleCopy = style;
+  if ([style isVariation])
   {
-    v7 = [a3 parent];
+    styleCopy = [style parent];
   }
 
-  if (!v7)
+  if (!styleCopy)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:exactPropertyMap:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 841, @"Cannot create a variation of variation style <%p> with no parent", a3}];
+    [currentHandler3 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 841, @"Cannot create a variation of variation style <%p> with no parent", style}];
   }
 
-  if ([v7 isVariation])
+  if ([styleCopy isVariation])
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet variationOfStyle:exactPropertyMap:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 842, @"Can't create variation with a variation base style <%p>.", v7}];
+    [currentHandler4 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 842, @"Can't create variation with a variation base style <%p>.", styleCopy}];
   }
 
-  v12 = a4;
+  mapCopy = map;
   objc_sync_enter(self);
-  v13 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:v7];
+  v13 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:styleCopy];
   v14 = [v13 count];
   if (!v14)
   {
 LABEL_14:
     objc_sync_exit(self);
 LABEL_15:
-    v17 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self name:"context") overridePropertyMap:0 isVariation:{v12, 1}];
+    v17 = [objc_alloc(objc_opt_class()) initWithContext:-[TSPObject context](self name:"context") overridePropertyMap:0 isVariation:{mapCopy, 1}];
     [(TSPObject *)self willModify];
     objc_sync_enter(self);
-    [(TSSStylesheet *)self p_addStyle:v17 withParent:v7 identifier:0];
+    [(TSSStylesheet *)self p_addStyle:v17 withParent:styleCopy identifier:0];
     objc_sync_exit(self);
 
     goto LABEL_16;
@@ -1025,7 +1025,7 @@ LABEL_15:
   {
     v16 = [v13 objectAtIndexedSubscript:v15];
     v17 = v16;
-    if (v16 != a3 && ([v16 overridePropertyMapIsEqualTo:v12] & 1) != 0)
+    if (v16 != style && ([v16 overridePropertyMapIsEqualTo:mapCopy] & 1) != 0)
     {
       break;
     }
@@ -1047,7 +1047,7 @@ LABEL_16:
   return v17;
 }
 
-- (void)didLoadChildObjectFromDocumentSupport:(id)a3
+- (void)didLoadChildObjectFromDocumentSupport:(id)support
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -1078,106 +1078,106 @@ LABEL_16:
   }
 }
 
-- (void)unlockStylesheetForDurationOfBlock:(id)a3
+- (void)unlockStylesheetForDurationOfBlock:(id)block
 {
   mIsLocked = self->mIsLocked;
   self->mIsLocked = 0;
-  (*(a3 + 2))(a3, a2);
+  (*(block + 2))(block, a2);
   self->mIsLocked = mIsLocked;
 }
 
-- (void)p_addStyle:(id)a3 withParent:(id)a4 identifier:(id)a5
+- (void)p_addStyle:(id)style withParent:(id)parent identifier:(id)identifier
 {
-  if (a3)
+  if (style)
   {
     objc_sync_enter(self);
-    if (-[TSSStylesheet containsStyle:](self, "containsStyle:", a3) || [a3 stylesheet])
+    if (-[TSSStylesheet containsStyle:](self, "containsStyle:", style) || [style stylesheet])
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet p_addStyle:withParent:identifier:]"];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"];
       v12 = TSUObjectReferenceDescription();
-      [v9 handleFailureInFunction:v10 file:v11 lineNumber:995 description:{@"Adding style %@ to stylesheet %@ when style is already in a stylesheet.", v12, TSUObjectReferenceDescription()}];
-      if ([a3 stylesheet] != self)
+      [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:995 description:{@"Adding style %@ to stylesheet %@ when style is already in a stylesheet.", v12, TSUObjectReferenceDescription()}];
+      if ([style stylesheet] != self)
       {
-        [objc_msgSend(a3 "stylesheet")];
+        [objc_msgSend(style "stylesheet")];
       }
     }
 
-    [(TSUMutableRetainedPointerSet *)self->mStyles addObject:a3];
-    [a3 setStylesheet:self];
-    if (a4)
+    [(TSUMutableRetainedPointerSet *)self->mStyles addObject:style];
+    [style setStylesheet:self];
+    if (parent)
     {
-      [(TSSStylesheet *)self p_setParent:a4 ofStyle:a3];
+      [(TSSStylesheet *)self p_setParent:parent ofStyle:style];
     }
 
-    if (a5)
+    if (identifier)
     {
-      [(TSSStylesheet *)self p_setIdentifier:a5 ofStyle:a3];
+      [(TSSStylesheet *)self p_setIdentifier:identifier ofStyle:style];
     }
 
     objc_sync_exit(self);
   }
 }
 
-- (void)p_removeStyle:(id)a3
+- (void)p_removeStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
     objc_sync_enter(self);
-    if (!-[TSSStylesheet containsStyle:](self, "containsStyle:", a3) || [a3 stylesheet] != self)
+    if (!-[TSSStylesheet containsStyle:](self, "containsStyle:", style) || [style stylesheet] != self)
     {
-      v5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet p_removeStyle:]"];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"];
       v8 = TSUObjectReferenceDescription();
-      [v5 handleFailureInFunction:v6 file:v7 lineNumber:1037 description:{@"Removing style %@ from stylesheet %@ when style not in stylesheet.", v8, TSUObjectReferenceDescription()}];
+      [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:1037 description:{@"Removing style %@ from stylesheet %@ when style not in stylesheet.", v8, TSUObjectReferenceDescription()}];
     }
 
-    if ([a3 parent])
+    if ([style parent])
     {
-      [(TSSStylesheet *)self p_setParent:0 ofStyle:a3];
+      [(TSSStylesheet *)self p_setParent:0 ofStyle:style];
     }
 
-    if ([a3 styleIdentifier])
+    if ([style styleIdentifier])
     {
-      [(TSSStylesheet *)self p_setIdentifier:0 ofStyle:a3];
+      [(TSSStylesheet *)self p_setIdentifier:0 ofStyle:style];
     }
 
-    [a3 setStylesheet:0];
-    [(TSUMutableRetainedPointerSet *)self->mStyles removeObject:a3];
+    [style setStylesheet:0];
+    [(TSUMutableRetainedPointerSet *)self->mStyles removeObject:style];
 
     objc_sync_exit(self);
   }
 }
 
-- (void)p_setIdentifier:(id)a3 ofStyle:(id)a4
+- (void)p_setIdentifier:(id)identifier ofStyle:(id)style
 {
-  v7 = [a3 isEqual:&stru_287D36338];
-  if (a4 && (v7 & 1) == 0)
+  v7 = [identifier isEqual:&stru_287D36338];
+  if (style && (v7 & 1) == 0)
   {
     objc_sync_enter(self);
-    if ([(TSSStylesheet *)self containsStyle:a4])
+    if ([(TSSStylesheet *)self containsStyle:style])
     {
-      if ([a4 stylesheet] == self)
+      if ([style stylesheet] == self)
       {
-        v8 = [(TSSStylesheet *)self styleWithIdentifier:a3];
-        if (v8 != a4)
+        v8 = [(TSSStylesheet *)self styleWithIdentifier:identifier];
+        if (v8 != style)
         {
           if (v8)
           {
             [(TSSStylesheet *)self p_setIdentifier:0 ofStyle:v8];
           }
 
-          if ([a4 styleIdentifier])
+          if ([style styleIdentifier])
           {
-            -[NSMutableDictionary removeObjectForKey:](self->mIdentifierToStyleMap, "removeObjectForKey:", [a4 styleIdentifier]);
+            -[NSMutableDictionary removeObjectForKey:](self->mIdentifierToStyleMap, "removeObjectForKey:", [style styleIdentifier]);
           }
 
-          [a4 setStyleIdentifier:a3];
-          if (a3)
+          [style setStyleIdentifier:identifier];
+          if (identifier)
           {
-            [(NSMutableDictionary *)self->mIdentifierToStyleMap setObject:a4 forKeyedSubscript:a3];
+            [(NSMutableDictionary *)self->mIdentifierToStyleMap setObject:style forKeyedSubscript:identifier];
           }
         }
       }
@@ -1187,22 +1187,22 @@ LABEL_16:
   }
 }
 
-- (void)p_setParent:(id)a3 ofStyle:(id)a4
+- (void)p_setParent:(id)parent ofStyle:(id)style
 {
-  if (a4)
+  if (style)
   {
     objc_sync_enter(self);
-    if (-[TSSStylesheet containsStyle:](self, "containsStyle:", a4) && [a4 stylesheet] == self)
+    if (-[TSSStylesheet containsStyle:](self, "containsStyle:", style) && [style stylesheet] == self)
     {
-      if ([a4 parent])
+      if ([style parent])
       {
-        [(TSSStylesheet *)self p_removeStyleFromParentChildren:a4];
+        [(TSSStylesheet *)self p_removeStyleFromParentChildren:style];
       }
 
-      [a4 setParent:a3];
-      if (a3)
+      [style setParent:parent];
+      if (parent)
       {
-        [(TSSStylesheet *)self p_addStyleToParentChildren:a4];
+        [(TSSStylesheet *)self p_addStyleToParentChildren:style];
       }
     }
 
@@ -1210,33 +1210,33 @@ LABEL_16:
   }
 }
 
-- (void)p_addStyleToParentChildren:(id)a3
+- (void)p_addStyleToParentChildren:(id)children
 {
   objc_sync_enter(self);
-  v5 = -[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", [a3 parent]);
+  v5 = -[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", [children parent]);
   v6 = v5;
   if (v5)
   {
-    if ([v5 indexOfObjectIdenticalTo:a3] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([v5 indexOfObjectIdenticalTo:children] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 addObject:a3];
+      [v6 addObject:children];
     }
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{a3, 0}];
-    -[TSURetainedPointerKeyDictionary setObject:forKeyedSubscript:](self->mParentToChildrenStyleMap, "setObject:forKeyedSubscript:", v7, [a3 parent]);
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{children, 0}];
+    -[TSURetainedPointerKeyDictionary setObject:forKeyedSubscript:](self->mParentToChildrenStyleMap, "setObject:forKeyedSubscript:", v7, [children parent]);
   }
 
   objc_sync_exit(self);
 }
 
-- (void)p_removeStyleFromParentChildren:(id)a3
+- (void)p_removeStyleFromParentChildren:(id)children
 {
   objc_sync_enter(self);
-  v5 = -[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", [a3 parent]);
-  v6 = [v5 indexOfObjectIdenticalTo:a3];
+  v5 = -[TSURetainedPointerKeyDictionary objectForKeyedSubscript:](self->mParentToChildrenStyleMap, "objectForKeyedSubscript:", [children parent]);
+  v6 = [v5 indexOfObjectIdenticalTo:children];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [v5 removeObjectAtIndex:v6];
@@ -1244,46 +1244,46 @@ LABEL_16:
 
   if (v5 && ![v5 count])
   {
-    -[TSURetainedPointerKeyDictionary removeObjectForKey:](self->mParentToChildrenStyleMap, "removeObjectForKey:", [a3 parent]);
+    -[TSURetainedPointerKeyDictionary removeObjectForKey:](self->mParentToChildrenStyleMap, "removeObjectForKey:", [children parent]);
   }
 
   objc_sync_exit(self);
 }
 
-- (id)pVariationOfStyle:(id)a3 propertyMap:(id)a4 matchStyles:(id)a5 context:(id)a6
+- (id)pVariationOfStyle:(id)style propertyMap:(id)map matchStyles:(id)styles context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!style)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet pVariationOfStyle:propertyMap:matchStyles:context:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1173, @"invalid nil value for '%s'", "style"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1173, @"invalid nil value for '%s'", "style"}];
   }
 
-  v13 = a3;
-  if ([a3 isVariation])
+  styleCopy = style;
+  if ([style isVariation])
   {
-    v13 = [a3 parent];
+    styleCopy = [style parent];
   }
 
-  if (!v13)
+  if (!styleCopy)
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet pVariationOfStyle:propertyMap:matchStyles:context:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1177, @"Cannot create a variation of variation style <%p> with no parent", a3}];
+    [currentHandler2 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1177, @"Cannot create a variation of variation style <%p> with no parent", style}];
   }
 
-  if ([v13 isVariation])
+  if ([styleCopy isVariation])
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet pVariationOfStyle:propertyMap:matchStyles:context:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1178, @"Can't create variation with a variation base style <%p>.", v13}];
+    [currentHandler3 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/styles/TSSStylesheet.m"), 1178, @"Can't create variation with a variation base style <%p>.", styleCopy}];
   }
 
-  v18 = [a3 newOverridePropertyMapWithPropertyMap:a4];
+  v18 = [style newOverridePropertyMapWithPropertyMap:map];
   if ([v18 count])
   {
-    if (!v13)
+    if (!styleCopy)
     {
       goto LABEL_15;
     }
@@ -1293,7 +1293,7 @@ LABEL_16:
   {
 
     v18 = 0;
-    if (!v13)
+    if (!styleCopy)
     {
       goto LABEL_15;
     }
@@ -1301,43 +1301,43 @@ LABEL_16:
 
   if (!v18)
   {
-    v19 = v13;
+    styleCopy2 = styleCopy;
     goto LABEL_40;
   }
 
 LABEL_15:
-  if (v13 != a3 && [a3 stylesheet] == self)
+  if (styleCopy != style && [style stylesheet] == self)
   {
-    v26 = [a3 overridePropertyMapIsEqualTo:v18];
-    if (a3)
+    v26 = [style overridePropertyMapIsEqualTo:v18];
+    if (style)
     {
       if (v26)
       {
-        v19 = a3;
+        styleCopy2 = style;
         goto LABEL_40;
       }
     }
   }
 
   objc_sync_enter(self);
-  v20 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:v13];
+  v20 = [(TSURetainedPointerKeyDictionary *)self->mParentToChildrenStyleMap objectForKeyedSubscript:styleCopy];
   v21 = [v20 count] - 1;
   while (v21 != -1)
   {
-    v19 = [v20 objectAtIndexedSubscript:v21--];
-    if ([v19 overridePropertyMapIsEqualTo:v18])
+    styleCopy2 = [v20 objectAtIndexedSubscript:v21--];
+    if ([styleCopy2 overridePropertyMapIsEqualTo:v18])
     {
       goto LABEL_22;
     }
   }
 
-  v19 = 0;
+  styleCopy2 = 0;
 LABEL_22:
   objc_sync_exit(self);
-  if (!a5 || v19)
+  if (!styles || styleCopy2)
   {
 LABEL_33:
-    if (v19)
+    if (styleCopy2)
     {
       goto LABEL_40;
     }
@@ -1349,7 +1349,7 @@ LABEL_33:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = [a5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v22 = [styles countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v22)
   {
     v23 = *v29;
@@ -1359,18 +1359,18 @@ LABEL_26:
     {
       if (*v29 != v23)
       {
-        objc_enumerationMutation(a5);
+        objc_enumerationMutation(styles);
       }
 
-      v19 = *(*(&v28 + 1) + 8 * v24);
-      if ([v19 overridePropertyMapIsEqualTo:v18])
+      styleCopy2 = *(*(&v28 + 1) + 8 * v24);
+      if ([styleCopy2 overridePropertyMapIsEqualTo:v18])
       {
         goto LABEL_33;
       }
 
       if (v22 == ++v24)
       {
-        v22 = [a5 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v22 = [styles countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v22)
         {
           goto LABEL_26;
@@ -1382,29 +1382,29 @@ LABEL_26:
   }
 
 LABEL_34:
-  v19 = [objc_alloc(objc_opt_class()) initWithContext:a6 name:0 overridePropertyMap:v18 isVariation:1];
-  [v19 setParent:v13];
-  if (a5)
+  styleCopy2 = [objc_alloc(objc_opt_class()) initWithContext:context name:0 overridePropertyMap:v18 isVariation:1];
+  [styleCopy2 setParent:styleCopy];
+  if (styles)
   {
-    [a5 addObject:v19];
+    [styles addObject:styleCopy2];
   }
 
-  v25 = v19;
+  v25 = styleCopy2;
 LABEL_40:
 
-  return v19;
+  return styleCopy2;
 }
 
-- (id)unusedStyleIdentifierWithPackageString:(id)a3 styleDescriptor:(id)a4 contentTag:(id)a5
+- (id)unusedStyleIdentifierWithPackageString:(id)string styleDescriptor:(id)descriptor contentTag:(id)tag
 {
   v9 = 0;
   do
   {
-    v10 = String(a3, v9, a4);
+    v10 = String(string, v9, descriptor);
     v11 = v10;
-    if (a5)
+    if (tag)
     {
-      v11 = String(v10, a5);
+      v11 = String(v10, tag);
     }
 
     ++v9;
@@ -1414,18 +1414,18 @@ LABEL_40:
   return v11;
 }
 
-- (id)p_variationMapForVaryingCharacterStyle:(id)a3 overParagraphStyle:(id)a4 withPropertyMap:(id)a5
+- (id)p_variationMapForVaryingCharacterStyle:(id)style overParagraphStyle:(id)paragraphStyle withPropertyMap:(id)map
 {
   v8 = +[TSSPropertyMap propertyMap];
-  if (a3)
+  if (style)
   {
-    v9 = [a3 baseStyleForVariation];
-    if ([a3 isVariation])
+    baseStyleForVariation = [style baseStyleForVariation];
+    if ([style isVariation])
     {
-      [v8 addValuesFromPropertyMap:{objc_msgSend(a3, "overridePropertyMap")}];
+      [v8 addValuesFromPropertyMap:{objc_msgSend(style, "overridePropertyMap")}];
     }
 
-    if (a5)
+    if (map)
     {
       goto LABEL_5;
     }
@@ -1433,11 +1433,11 @@ LABEL_40:
 
   else
   {
-    v9 = 0;
-    if (a5)
+    baseStyleForVariation = 0;
+    if (map)
     {
 LABEL_5:
-      [v8 addValuesFromPropertyMap:a5];
+      [v8 addValuesFromPropertyMap:map];
     }
   }
 
@@ -1447,16 +1447,16 @@ LABEL_5:
   v18 = __Block_byref_object_copy__19;
   v19 = __Block_byref_object_dispose__19;
   v20 = 0;
-  v10 = [v8 allProperties];
+  allProperties = [v8 allProperties];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __111__TSSStylesheet_TSWPStyleAdditions__p_variationMapForVaryingCharacterStyle_overParagraphStyle_withPropertyMap___block_invoke;
   v14[3] = &unk_279D48A68;
   v14[4] = v8;
-  v14[5] = v9;
-  v14[6] = a4;
+  v14[5] = baseStyleForVariation;
+  v14[6] = paragraphStyle;
   v14[7] = &v15;
-  [v10 enumeratePropertiesUsingBlock:v14];
+  [allProperties enumeratePropertiesUsingBlock:v14];
   if (v16[5])
   {
     [v8 removeValuesForProperties:?];
@@ -1464,9 +1464,9 @@ LABEL_5:
 
   if (!v8)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet(TSWPStyleAdditions) p_variationMapForVaryingCharacterStyle:overParagraphStyle:withPropertyMap:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 127, @"invalid nil value for '%s'", "newPropertyMap"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 127, @"invalid nil value for '%s'", "newPropertyMap"}];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -1512,11 +1512,11 @@ uint64_t __111__TSSStylesheet_TSWPStyleAdditions__p_variationMapForVaryingCharac
   return result;
 }
 
-- (id)variationOfCharacterStyle:(id)a3 paragraphStyle:(id)a4 propertyMap:(id)a5
+- (id)variationOfCharacterStyle:(id)style paragraphStyle:(id)paragraphStyle propertyMap:(id)map
 {
-  if (a4)
+  if (paragraphStyle)
   {
-    if (a5)
+    if (map)
     {
       goto LABEL_3;
     }
@@ -1524,36 +1524,36 @@ uint64_t __111__TSSStylesheet_TSWPStyleAdditions__p_variationMapForVaryingCharac
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet(TSWPStyleAdditions) variationOfCharacterStyle:paragraphStyle:propertyMap:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 160, @"invalid nil value for '%s'", "inParagraphStyle"}];
-    if (a5)
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 160, @"invalid nil value for '%s'", "inParagraphStyle"}];
+    if (map)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet(TSWPStyleAdditions) variationOfCharacterStyle:paragraphStyle:propertyMap:]"];
-  [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 161, @"invalid nil value for '%s'", "inPropertyMap"}];
+  [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 161, @"invalid nil value for '%s'", "inPropertyMap"}];
 LABEL_3:
-  v9 = [(TSSStylesheet *)self p_variationMapForVaryingCharacterStyle:a3 overParagraphStyle:a4 withPropertyMap:a5];
-  if (a3)
+  v9 = [(TSSStylesheet *)self p_variationMapForVaryingCharacterStyle:style overParagraphStyle:paragraphStyle withPropertyMap:map];
+  if (style)
   {
-    v10 = [a3 baseStyleForVariation];
+    baseStyleForVariation = [style baseStyleForVariation];
   }
 
   else
   {
-    v10 = [(TSSStylesheet *)self defaultCharacterStyle];
+    baseStyleForVariation = [(TSSStylesheet *)self defaultCharacterStyle];
   }
 
-  v15 = v10;
-  if (!v10)
+  v15 = baseStyleForVariation;
+  if (!baseStyleForVariation)
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSSStylesheet(TSWPStyleAdditions) variationOfCharacterStyle:paragraphStyle:propertyMap:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 170, @"invalid nil value for '%s'", "baseStyle"}];
+    [currentHandler3 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPStylesheetAdditions.mm"), 170, @"invalid nil value for '%s'", "baseStyle"}];
   }
 
   v18 = [(TSSStylesheet *)self variationOfStyle:v15 propertyMap:v9];
@@ -1582,11 +1582,11 @@ LABEL_3:
   return result;
 }
 
-- (id)_defaultCharacterStyleWasCreated:(BOOL *)a3
+- (id)_defaultCharacterStyleWasCreated:(BOOL *)created
 {
   v5 = objc_opt_class();
 
-  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"character-style-null" wasCreated:a3 usingBlock:&__block_literal_global_61];
+  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"character-style-null" wasCreated:created usingBlock:&__block_literal_global_61];
 }
 
 uint64_t __67__TSSStylesheet_TSText_Internal___defaultCharacterStyleWasCreated___block_invoke(uint64_t a1, uint64_t a2)
@@ -1597,11 +1597,11 @@ uint64_t __67__TSSStylesheet_TSText_Internal___defaultCharacterStyleWasCreated__
   return [(TSSStyle *)v3 initWithContext:a2 name:v4 overridePropertyMap:0 isVariation:0];
 }
 
-- (id)_hyperlinkStyleWasCreated:(BOOL *)a3
+- (id)_hyperlinkStyleWasCreated:(BOOL *)created
 {
   v5 = objc_opt_class();
 
-  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"character-style-hyperlink" wasCreated:a3 usingBlock:&__block_literal_global_71];
+  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"character-style-hyperlink" wasCreated:created usingBlock:&__block_literal_global_71];
 }
 
 uint64_t __60__TSSStylesheet_TSText_Internal___hyperlinkStyleWasCreated___block_invoke(uint64_t a1, uint64_t a2)
@@ -1613,21 +1613,21 @@ uint64_t __60__TSSStylesheet_TSText_Internal___hyperlinkStyleWasCreated___block_
   return [(TSSStyle *)v3 initWithContext:a2 name:v4 overridePropertyMap:v5 isVariation:0];
 }
 
-- (id)_defaultParagraphStyleWasCreated:(BOOL *)a3
+- (id)_defaultParagraphStyleWasCreated:(BOOL *)created
 {
   v7 = 0;
-  if (a3)
+  if (created)
   {
-    v4 = a3;
+    createdCopy = created;
   }
 
   else
   {
-    v4 = &v7;
+    createdCopy = &v7;
   }
 
-  v5 = [(TSSStylesheet *)self _defaultStyleOfClass:objc_opt_class() withIdentifier:@"paragraph-style-default" wasCreated:v4 usingBlock:&__block_literal_global_77_0];
-  if (*v4)
+  v5 = [(TSSStylesheet *)self _defaultStyleOfClass:objc_opt_class() withIdentifier:@"paragraph-style-default" wasCreated:createdCopy usingBlock:&__block_literal_global_77_0];
+  if (*createdCopy)
   {
     [v5 setInitialListStyle:{-[TSSStylesheet defaultListStyle](self, "defaultListStyle")}];
   }
@@ -1644,11 +1644,11 @@ uint64_t __67__TSSStylesheet_TSText_Internal___defaultParagraphStyleWasCreated__
   return [(TSSStyle *)v3 initWithContext:a2 name:v4 overridePropertyMap:v5 isVariation:0];
 }
 
-- (id)_defaultListStyleWasCreated:(BOOL *)a3
+- (id)_defaultListStyleWasCreated:(BOOL *)created
 {
   v5 = objc_opt_class();
 
-  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"text-0-liststyle-None" wasCreated:a3 usingBlock:&__block_literal_global_84];
+  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"text-0-liststyle-None" wasCreated:created usingBlock:&__block_literal_global_84];
 }
 
 uint64_t __62__TSSStylesheet_TSText_Internal___defaultListStyleWasCreated___block_invoke(uint64_t a1, uint64_t a2)
@@ -1660,11 +1660,11 @@ uint64_t __62__TSSStylesheet_TSText_Internal___defaultListStyleWasCreated___bloc
   return [(TSWPListStyle *)v3 initWithContext:a2 name:v4 overridePropertyMap:v5 isVariation:0];
 }
 
-- (id)_defaultColumnStyleWasCreated:(BOOL *)a3
+- (id)_defaultColumnStyleWasCreated:(BOOL *)created
 {
   v5 = objc_opt_class();
 
-  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"column-style-default" wasCreated:a3 usingBlock:&__block_literal_global_88];
+  return [(TSSStylesheet *)self _defaultStyleOfClass:v5 withIdentifier:@"column-style-default" wasCreated:created usingBlock:&__block_literal_global_88];
 }
 
 uint64_t __64__TSSStylesheet_TSText_Internal___defaultColumnStyleWasCreated___block_invoke(uint64_t a1, uint64_t a2)
@@ -1674,24 +1674,24 @@ uint64_t __64__TSSStylesheet_TSText_Internal___defaultColumnStyleWasCreated___bl
   return [(TSSStyle *)v3 initWithContext:a2 name:0 overridePropertyMap:0 isVariation:0];
 }
 
-- (id)_defaultStyleOfClass:(Class)a3 withIdentifier:(id)a4 wasCreated:(BOOL *)a5 usingBlock:(id)a6
+- (id)_defaultStyleOfClass:(Class)class withIdentifier:(id)identifier wasCreated:(BOOL *)created usingBlock:(id)block
 {
-  v10 = [(TSSStylesheet *)self cascadedStyleWithIdentifier:a4];
+  v10 = [(TSSStylesheet *)self cascadedStyleWithIdentifier:identifier];
   if (!v10)
   {
     objc_sync_enter(self);
-    v10 = [(TSSStylesheet *)self cascadedStyleWithIdentifier:a4];
+    v10 = [(TSSStylesheet *)self cascadedStyleWithIdentifier:identifier];
     if (!v10)
     {
-      v11 = [(TSSStylesheet *)self rootAncestor];
-      v12 = [v11 isLocked];
-      [v11 setIsLocked:0];
-      v10 = (*(a6 + 2))(a6, [v11 context]);
-      [v11 addStyle:v10 withIdentifier:a4];
-      [v11 setIsLocked:v12];
-      if (a5)
+      rootAncestor = [(TSSStylesheet *)self rootAncestor];
+      isLocked = [rootAncestor isLocked];
+      [rootAncestor setIsLocked:0];
+      v10 = (*(block + 2))(block, [rootAncestor context]);
+      [rootAncestor addStyle:v10 withIdentifier:identifier];
+      [rootAncestor setIsLocked:isLocked];
+      if (created)
       {
-        *a5 = 1;
+        *created = 1;
       }
     }
 

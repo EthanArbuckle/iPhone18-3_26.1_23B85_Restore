@@ -9,7 +9,7 @@
 {
   if (*(&self->super.isa + OBJC_IVAR___CalendarLinkObservation_observationTask))
   {
-    v3 = self;
+    selfCopy = self;
     sub_2428B2F38();
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ECC4E50, &qword_2428C53E8);
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27ECC4B10, &qword_2428C53F0);
@@ -18,7 +18,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;

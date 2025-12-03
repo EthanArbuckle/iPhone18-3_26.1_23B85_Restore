@@ -1,66 +1,66 @@
 @interface SiriCoreSQLiteQueryCriterion
-+ (id)andQueryCriterionWithSubcriteria:(id)a3;
-+ (id)andQueryCriterionWithSubcriteriaProvider:(id)a3;
-+ (id)betweenQueryCriterionWithColumnName:(id)a3 fromValue:(id)a4 toValue:(id)a5 negation:(BOOL)a6;
-+ (id)equalToQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)greaterThanOrEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)greaterThanQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)inQueryCriterionWithColumnName:(id)a3 values:(id)a4 negation:(BOOL)a5;
-+ (id)isNullQueryCriterionWithColumnName:(id)a3 negation:(BOOL)a4;
-+ (id)isQueryCriterionWithColumnName:(id)a3 value:(id)a4 negation:(BOOL)a5;
-+ (id)lessThanOrEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)lessThanQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)likeQueryCriterionWithColumnName:(id)a3 value:(id)a4 negation:(BOOL)a5;
-+ (id)notEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4;
-+ (id)orQueryCriterionWithSubcriteria:(id)a3;
-+ (id)orQueryCriterionWithSubcriteriaProvider:(id)a3;
-- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)a3 comparisonOperator:(int64_t)a4 logicalOperator:(int64_t)a5 value:(id)a6 values:(id)a7 subcriteria:(id)a8;
-- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)a3 comparisonOperator:(int64_t)a4 logicalOperator:(int64_t)a5 value:(id)a6 values:(id)a7 subcriteriaProvider:(id)a8;
++ (id)andQueryCriterionWithSubcriteria:(id)subcriteria;
++ (id)andQueryCriterionWithSubcriteriaProvider:(id)provider;
++ (id)betweenQueryCriterionWithColumnName:(id)name fromValue:(id)value toValue:(id)toValue negation:(BOOL)negation;
++ (id)equalToQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)greaterThanOrEqualToQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)greaterThanQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)inQueryCriterionWithColumnName:(id)name values:(id)values negation:(BOOL)negation;
++ (id)isNullQueryCriterionWithColumnName:(id)name negation:(BOOL)negation;
++ (id)isQueryCriterionWithColumnName:(id)name value:(id)value negation:(BOOL)negation;
++ (id)lessThanOrEqualToQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)lessThanQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)likeQueryCriterionWithColumnName:(id)name value:(id)value negation:(BOOL)negation;
++ (id)notEqualToQueryCriterionWithColumnName:(id)name value:(id)value;
++ (id)orQueryCriterionWithSubcriteria:(id)subcriteria;
++ (id)orQueryCriterionWithSubcriteriaProvider:(id)provider;
+- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)name comparisonOperator:(int64_t)operator logicalOperator:(int64_t)logicalOperator value:(id)value values:(id)values subcriteria:(id)subcriteria;
+- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)name comparisonOperator:(int64_t)operator logicalOperator:(int64_t)logicalOperator value:(id)value values:(id)values subcriteriaProvider:(id)provider;
 @end
 
 @implementation SiriCoreSQLiteQueryCriterion
 
-- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)a3 comparisonOperator:(int64_t)a4 logicalOperator:(int64_t)a5 value:(id)a6 values:(id)a7 subcriteriaProvider:(id)a8
+- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)name comparisonOperator:(int64_t)operator logicalOperator:(int64_t)logicalOperator value:(id)value values:(id)values subcriteriaProvider:(id)provider
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  if (a8)
+  nameCopy = name;
+  valueCopy = value;
+  valuesCopy = values;
+  if (provider)
   {
-    a8 = (*(a8 + 2))(a8);
+    provider = (*(provider + 2))(provider);
   }
 
-  v17 = [(SiriCoreSQLiteQueryCriterion *)self initWithColumnName:v14 comparisonOperator:a4 logicalOperator:a5 value:v15 values:v16 subcriteria:a8];
+  v17 = [(SiriCoreSQLiteQueryCriterion *)self initWithColumnName:nameCopy comparisonOperator:operator logicalOperator:logicalOperator value:valueCopy values:valuesCopy subcriteria:provider];
 
   return v17;
 }
 
-- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)a3 comparisonOperator:(int64_t)a4 logicalOperator:(int64_t)a5 value:(id)a6 values:(id)a7 subcriteria:(id)a8
+- (SiriCoreSQLiteQueryCriterion)initWithColumnName:(id)name comparisonOperator:(int64_t)operator logicalOperator:(int64_t)logicalOperator value:(id)value values:(id)values subcriteria:(id)subcriteria
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  valueCopy = value;
+  valuesCopy = values;
+  subcriteriaCopy = subcriteria;
   v28.receiver = self;
   v28.super_class = SiriCoreSQLiteQueryCriterion;
   v18 = [(SiriCoreSQLiteQueryCriterion *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [nameCopy copy];
     columnName = v18->_columnName;
     v18->_columnName = v19;
 
-    v18->_comparisonOperator = a4;
-    v18->_logicalOperator = a5;
-    v21 = [v15 copy];
+    v18->_comparisonOperator = operator;
+    v18->_logicalOperator = logicalOperator;
+    v21 = [valueCopy copy];
     value = v18->_value;
     v18->_value = v21;
 
-    v23 = [v16 copy];
+    v23 = [valuesCopy copy];
     values = v18->_values;
     v18->_values = v23;
 
-    v25 = [v17 copy];
+    v25 = [subcriteriaCopy copy];
     subcriteria = v18->_subcriteria;
     v18->_subcriteria = v25;
   }
@@ -68,9 +68,9 @@
   return v18;
 }
 
-+ (id)likeQueryCriterionWithColumnName:(id)a3 value:(id)a4 negation:(BOOL)a5
++ (id)likeQueryCriterionWithColumnName:(id)name value:(id)value negation:(BOOL)negation
 {
-  if (a5)
+  if (negation)
   {
     v6 = 10;
   }
@@ -80,16 +80,16 @@
     v6 = 7;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v8 comparisonOperator:0 logicalOperator:v6 value:v7 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:0 logicalOperator:v6 value:valueCopy values:0 subcriteria:0];
 
   return v9;
 }
 
-+ (id)isNullQueryCriterionWithColumnName:(id)a3 negation:(BOOL)a4
++ (id)isNullQueryCriterionWithColumnName:(id)name negation:(BOOL)negation
 {
-  if (a4)
+  if (negation)
   {
     v4 = 11;
   }
@@ -99,15 +99,15 @@
     v4 = 6;
   }
 
-  v5 = a3;
-  v6 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v5 comparisonOperator:0 logicalOperator:v4 value:0 values:0 subcriteria:0];
+  nameCopy = name;
+  v6 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:0 logicalOperator:v4 value:0 values:0 subcriteria:0];
 
   return v6;
 }
 
-+ (id)isQueryCriterionWithColumnName:(id)a3 value:(id)a4 negation:(BOOL)a5
++ (id)isQueryCriterionWithColumnName:(id)name value:(id)value negation:(BOOL)negation
 {
-  if (a5)
+  if (negation)
   {
     v6 = 5;
   }
@@ -117,16 +117,16 @@
     v6 = 4;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v8 comparisonOperator:0 logicalOperator:v6 value:v7 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:0 logicalOperator:v6 value:valueCopy values:0 subcriteria:0];
 
   return v9;
 }
 
-+ (id)inQueryCriterionWithColumnName:(id)a3 values:(id)a4 negation:(BOOL)a5
++ (id)inQueryCriterionWithColumnName:(id)name values:(id)values negation:(BOOL)negation
 {
-  if (a5)
+  if (negation)
   {
     v6 = 9;
   }
@@ -136,17 +136,17 @@
     v6 = 3;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v8 comparisonOperator:0 logicalOperator:v6 value:0 values:v7 subcriteria:0];
+  valuesCopy = values;
+  nameCopy = name;
+  v9 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:0 logicalOperator:v6 value:0 values:valuesCopy subcriteria:0];
 
   return v9;
 }
 
-+ (id)betweenQueryCriterionWithColumnName:(id)a3 fromValue:(id)a4 toValue:(id)a5 negation:(BOOL)a6
++ (id)betweenQueryCriterionWithColumnName:(id)name fromValue:(id)value toValue:(id)toValue negation:(BOOL)negation
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (negation)
   {
     v8 = 8;
   }
@@ -156,102 +156,102 @@
     v8 = 2;
   }
 
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  toValueCopy = toValue;
+  valueCopy = value;
+  nameCopy = name;
   v12 = [SiriCoreSQLiteQueryCriterion alloc];
-  v17[0] = v10;
-  v17[1] = v9;
+  v17[0] = valueCopy;
+  v17[1] = toValueCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
 
-  v14 = [(SiriCoreSQLiteQueryCriterion *)v12 initWithColumnName:v11 comparisonOperator:0 logicalOperator:v8 value:0 values:v13 subcriteria:0];
+  v14 = [(SiriCoreSQLiteQueryCriterion *)v12 initWithColumnName:nameCopy comparisonOperator:0 logicalOperator:v8 value:0 values:v13 subcriteria:0];
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-+ (id)orQueryCriterionWithSubcriteriaProvider:(id)a3
++ (id)orQueryCriterionWithSubcriteriaProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:12 value:0 values:0 subcriteriaProvider:v3];
+  providerCopy = provider;
+  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:12 value:0 values:0 subcriteriaProvider:providerCopy];
 
   return v4;
 }
 
-+ (id)orQueryCriterionWithSubcriteria:(id)a3
++ (id)orQueryCriterionWithSubcriteria:(id)subcriteria
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:12 value:0 values:0 subcriteria:v3];
+  subcriteriaCopy = subcriteria;
+  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:12 value:0 values:0 subcriteria:subcriteriaCopy];
 
   return v4;
 }
 
-+ (id)andQueryCriterionWithSubcriteriaProvider:(id)a3
++ (id)andQueryCriterionWithSubcriteriaProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:1 value:0 values:0 subcriteriaProvider:v3];
+  providerCopy = provider;
+  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:1 value:0 values:0 subcriteriaProvider:providerCopy];
 
   return v4;
 }
 
-+ (id)andQueryCriterionWithSubcriteria:(id)a3
++ (id)andQueryCriterionWithSubcriteria:(id)subcriteria
 {
-  v3 = a3;
-  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:1 value:0 values:0 subcriteria:v3];
+  subcriteriaCopy = subcriteria;
+  v4 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:0 comparisonOperator:0 logicalOperator:1 value:0 values:0 subcriteria:subcriteriaCopy];
 
   return v4;
 }
 
-+ (id)notEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)notEqualToQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:6 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:6 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }
 
-+ (id)lessThanOrEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)lessThanOrEqualToQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:5 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:5 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }
 
-+ (id)lessThanQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)lessThanQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:4 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:4 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }
 
-+ (id)greaterThanOrEqualToQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)greaterThanOrEqualToQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:3 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:3 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }
 
-+ (id)greaterThanQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)greaterThanQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:2 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:2 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }
 
-+ (id)equalToQueryCriterionWithColumnName:(id)a3 value:(id)a4
++ (id)equalToQueryCriterionWithColumnName:(id)name value:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:v6 comparisonOperator:1 logicalOperator:0 value:v5 values:0 subcriteria:0];
+  valueCopy = value;
+  nameCopy = name;
+  v7 = [[SiriCoreSQLiteQueryCriterion alloc] initWithColumnName:nameCopy comparisonOperator:1 logicalOperator:0 value:valueCopy values:0 subcriteria:0];
 
   return v7;
 }

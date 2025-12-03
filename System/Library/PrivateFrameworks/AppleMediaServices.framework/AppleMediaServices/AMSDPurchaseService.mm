@@ -1,5 +1,5 @@
 @interface AMSDPurchaseService
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 + (id)_fdsConsumedCache;
 + (id)_fdsConsumedCacheAccessQueue;
 + (id)_fdsEvaluatorCache;
@@ -8,29 +8,29 @@
 + (id)_fdsResultCacheAccessQueue;
 + (id)_odiSessionCache;
 + (id)_odiSessionCacheAccessQueue;
-- (id)_createScorerWithAction:(unint64_t)a3 account:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-- (id)_serverEndpointIdentifierForFDSAction:(unint64_t)a3;
-- (id)_serviceProviderTypeForServiceIdentifier:(id)a3;
-- (unint64_t)_dsidTypeForAccountType:(unint64_t)a3;
-- (unint64_t)_outcomeTypeForOutcome:(unint64_t)a3;
-- (void)_completeEvaluationForPurchaseIdentifier:(id)a3 logKey:(id)a4;
-- (void)_generateLegacyFDSWithRequest:(id)a3 completion:(id)a4;
-- (void)_generateODIFDSWithRequest:(id)a3 completion:(id)a4;
-- (void)cacheFDS:(id)a3 forPurchaseIdentifier:(id)a4 logKey:(id)a5 completion:(id)a6;
-- (void)cachedFDSForPurchaseIdentifier:(id)a3 logKey:(id)a4 completion:(id)a5;
-- (void)createODISessionWithSessionIdentifier:(id)a3 cacheIdentifier:(id)a4 accountType:(unint64_t)a5 bundleIdentifier:(id)a6 completion:(id)a7;
-- (void)didConsumeFDSForPurchaseIdentifier:(id)a3 logKey:(id)a4 completion:(id)a5;
-- (void)generateFDSWithRequest:(id)a3 completion:(id)a4;
-- (void)partialFDSAssessmentForRequest:(id)a3 completion:(id)a4;
-- (void)provideFeedbackOnPayloadOutcome:(unint64_t)a3 cacheIdentifier:(id)a4 clearCache:(BOOL)a5 completion:(id)a6;
-- (void)updateODIWithAttributes:(id)a3 forCacheIdentifier:(id)a4 completion:(id)a5;
+- (id)_createScorerWithAction:(unint64_t)action account:(id)account bundleIdentifier:(id)identifier error:(id *)error;
+- (id)_serverEndpointIdentifierForFDSAction:(unint64_t)action;
+- (id)_serviceProviderTypeForServiceIdentifier:(id)identifier;
+- (unint64_t)_dsidTypeForAccountType:(unint64_t)type;
+- (unint64_t)_outcomeTypeForOutcome:(unint64_t)outcome;
+- (void)_completeEvaluationForPurchaseIdentifier:(id)identifier logKey:(id)key;
+- (void)_generateLegacyFDSWithRequest:(id)request completion:(id)completion;
+- (void)_generateODIFDSWithRequest:(id)request completion:(id)completion;
+- (void)cacheFDS:(id)s forPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion;
+- (void)cachedFDSForPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion;
+- (void)createODISessionWithSessionIdentifier:(id)identifier cacheIdentifier:(id)cacheIdentifier accountType:(unint64_t)type bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)didConsumeFDSForPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion;
+- (void)generateFDSWithRequest:(id)request completion:(id)completion;
+- (void)partialFDSAssessmentForRequest:(id)request completion:(id)completion;
+- (void)provideFeedbackOnPayloadOutcome:(unint64_t)outcome cacheIdentifier:(id)identifier clearCache:(BOOL)cache completion:(id)completion;
+- (void)updateODIWithAttributes:(id)attributes forCacheIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation AMSDPurchaseService
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -42,16 +42,16 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)cachedFDSForPurchaseIdentifier:(id)a3 logKey:(id)a4 completion:(id)a5
+- (void)cachedFDSForPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  keyCopy = key;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     v11 = 0;
   }
@@ -64,14 +64,14 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       *&buf[4] = objc_opt_class();
       *&buf[12] = 2114;
-      *&buf[14] = v9;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch FDS. We don't have a purchase identifier.", buf, 0x16u);
+      *&buf[14] = keyCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch FDS. We don't have a purchase identifier.", buf, 0x16u);
     }
 
     v11 = AMSError();
@@ -85,34 +85,34 @@
   v23 = 0;
   if (!v11)
   {
-    v14 = [objc_opt_class() _fdsResultCacheAccessQueue];
+    _fdsResultCacheAccessQueue = [objc_opt_class() _fdsResultCacheAccessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007787C;
     block[3] = &unk_1002B1AA0;
     v19 = buf;
     block[4] = self;
-    v18 = v8;
-    dispatch_sync(v14, block);
+    v18 = identifierCopy;
+    dispatch_sync(_fdsResultCacheAccessQueue, block);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v15 = *(*&buf[8] + 40);
-    v16 = [v11 ams_sanitizedForSecureCoding];
-    v10[2](v10, v15, v16);
+    ams_sanitizedForSecureCoding = [v11 ams_sanitizedForSecureCoding];
+    completionCopy[2](completionCopy, v15, ams_sanitizedForSecureCoding);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)cacheFDS:(id)a3 forPurchaseIdentifier:(id)a4 logKey:(id)a5 completion:(id)a6
+- (void)cacheFDS:(id)s forPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  sCopy = s;
+  identifierCopy = identifier;
+  keyCopy = key;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     goto LABEL_2;
   }
@@ -123,67 +123,67 @@
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
     v23 = objc_opt_class();
     v24 = 2114;
-    v25 = v12;
-    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to cache FDS. We don't have a purchase identifier.", buf, 0x16u);
+    v25 = keyCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to cache FDS. We don't have a purchase identifier.", buf, 0x16u);
   }
 
   v15 = AMSError();
   if (!v15)
   {
 LABEL_2:
-    if (!v10)
+    if (!sCopy)
     {
-      [(AMSDPurchaseService *)self _completeEvaluationForPurchaseIdentifier:v11 logKey:v12];
+      [(AMSDPurchaseService *)self _completeEvaluationForPurchaseIdentifier:identifierCopy logKey:keyCopy];
     }
 
-    v14 = [objc_opt_class() _fdsResultCacheAccessQueue];
+    _fdsResultCacheAccessQueue = [objc_opt_class() _fdsResultCacheAccessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100077B2C;
     block[3] = &unk_1002B1AC8;
     block[4] = self;
-    v20 = v11;
-    v21 = v10;
-    dispatch_sync(v14, block);
+    v20 = identifierCopy;
+    v21 = sCopy;
+    dispatch_sync(_fdsResultCacheAccessQueue, block);
 
     v15 = 0;
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v18 = [v15 ams_sanitizedForSecureCoding];
-    v13[2](v13, v18);
+    ams_sanitizedForSecureCoding = [v15 ams_sanitizedForSecureCoding];
+    completionCopy[2](completionCopy, ams_sanitizedForSecureCoding);
   }
 }
 
-- (void)didConsumeFDSForPurchaseIdentifier:(id)a3 logKey:(id)a4 completion:(id)a5
+- (void)didConsumeFDSForPurchaseIdentifier:(id)identifier logKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = +[AMSLogConfig sharedConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v22 = objc_opt_class();
     v23 = 2114;
-    v24 = v9;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching FDS consumption metadata", buf, 0x16u);
+    v24 = keyCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Caching FDS consumption metadata", buf, 0x16u);
   }
 
-  if (v8)
+  if (identifierCopy)
   {
     goto LABEL_6;
   }
@@ -194,111 +194,111 @@ LABEL_2:
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v17 = objc_opt_class();
     *buf = 138543618;
     v22 = v17;
     v23 = 2114;
-    v24 = v9;
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to FDS consumption metadata. We don't have a purchase identifier.", buf, 0x16u);
+    v24 = keyCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to FDS consumption metadata. We don't have a purchase identifier.", buf, 0x16u);
   }
 
   v14 = AMSError();
   if (!v14)
   {
 LABEL_6:
-    v13 = [objc_opt_class() _fdsConsumedCacheAccessQueue];
+    _fdsConsumedCacheAccessQueue = [objc_opt_class() _fdsConsumedCacheAccessQueue];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100077E28;
     v19[3] = &unk_1002B00E8;
     v19[4] = self;
-    v20 = v8;
-    dispatch_sync(v13, v19);
+    v20 = identifierCopy;
+    dispatch_sync(_fdsConsumedCacheAccessQueue, v19);
 
     v14 = 0;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v18 = [v14 ams_sanitizedForSecureCoding];
-    v10[2](v10, v18);
+    ams_sanitizedForSecureCoding = [v14 ams_sanitizedForSecureCoding];
+    completionCopy[2](completionCopy, ams_sanitizedForSecureCoding);
   }
 }
 
-- (void)generateFDSWithRequest:(id)a3 completion:(id)a4
+- (void)generateFDSWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = +[AMSLogConfig sharedConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [v6 logKey];
-    v12 = [v6 options];
+    logKey = [requestCopy logKey];
+    options = [requestCopy options];
     *buf = 138543874;
     v30 = v10;
     v31 = 2114;
-    v32 = v11;
+    v32 = logKey;
     v33 = 2048;
-    v34 = [v12 action];
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Evaluating FDS. action = %ld", buf, 0x20u);
+    action = [options action];
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Evaluating FDS. action = %ld", buf, 0x20u);
   }
 
-  v13 = [v6 options];
-  if ([v13 action] == 4)
+  options2 = [requestCopy options];
+  if ([options2 action] == 4)
   {
   }
 
   else
   {
-    v14 = [v6 options];
-    v15 = [v14 action];
+    options3 = [requestCopy options];
+    action2 = [options3 action];
 
-    if (v15 != 5)
+    if (action2 != 5)
     {
       goto LABEL_9;
     }
   }
 
-  v16 = [objc_opt_class() _fdsConsumedCacheAccessQueue];
+  _fdsConsumedCacheAccessQueue = [objc_opt_class() _fdsConsumedCacheAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000781C4;
   block[3] = &unk_1002B00E8;
   block[4] = self;
-  v28 = v6;
-  dispatch_sync(v16, block);
+  v28 = requestCopy;
+  dispatch_sync(_fdsConsumedCacheAccessQueue, block);
 
 LABEL_9:
-  v17 = [v6 options];
-  if ([v17 action] == 4)
+  options4 = [requestCopy options];
+  if ([options4 action] == 4)
   {
   }
 
   else
   {
-    v18 = [v6 options];
-    v19 = [v18 action];
+    options5 = [requestCopy options];
+    action3 = [options5 action];
 
-    if (v19 != 5)
+    if (action3 != 5)
     {
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_1000782B8;
       v23[3] = &unk_1002B1AF0;
       v20 = &v24;
-      v24 = v7;
-      v22 = v7;
-      [(AMSDPurchaseService *)self _generateLegacyFDSWithRequest:v6 completion:v23];
+      v24 = completionCopy;
+      v22 = completionCopy;
+      [(AMSDPurchaseService *)self _generateLegacyFDSWithRequest:requestCopy completion:v23];
       goto LABEL_14;
     }
   }
@@ -308,16 +308,16 @@ LABEL_9:
   v25[2] = sub_10007823C;
   v25[3] = &unk_1002B1AF0;
   v20 = &v26;
-  v26 = v7;
-  v21 = v7;
-  [(AMSDPurchaseService *)self _generateODIFDSWithRequest:v6 completion:v25];
+  v26 = completionCopy;
+  v21 = completionCopy;
+  [(AMSDPurchaseService *)self _generateODIFDSWithRequest:requestCopy completion:v25];
 LABEL_14:
 }
 
-- (void)partialFDSAssessmentForRequest:(id)a3 completion:(id)a4
+- (void)partialFDSAssessmentForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -330,39 +330,39 @@ LABEL_14:
   v38 = sub_100077864;
   v39 = sub_100077874;
   v40 = 0;
-  v8 = [v6 options];
-  if ([v8 action] == 4)
+  options = [requestCopy options];
+  if ([options action] == 4)
   {
 
 LABEL_4:
-    v11 = [objc_opt_class() _odiSessionCacheAccessQueue];
+    _odiSessionCacheAccessQueue = [objc_opt_class() _odiSessionCacheAccessQueue];
     v27 = _NSConcreteStackBlock;
     v28 = 3221225472;
     v29 = sub_100078748;
     v30 = &unk_1002B1B18;
-    v31 = self;
-    v12 = v6;
+    selfCopy = self;
+    v12 = requestCopy;
     v32 = v12;
     v33 = &v41;
     v34 = &v35;
-    dispatch_sync(v11, &v27);
+    dispatch_sync(_odiSessionCacheAccessQueue, &v27);
 
     v13 = [AMSFDSResult alloc];
     v14 = v42[5];
-    v15 = [v12 options];
-    v16 = [v13 initWithValue:v14 action:{objc_msgSend(v15, "action")}];
+    options2 = [v12 options];
+    v16 = [v13 initWithValue:v14 action:{objc_msgSend(options2, "action")}];
 
-    if (v7)
+    if (completionCopy)
     {
-      v17 = [v36[5] ams_sanitizedForSecureCoding];
-      v7[2](v7, v16, v17);
+      ams_sanitizedForSecureCoding = [v36[5] ams_sanitizedForSecureCoding];
+      completionCopy[2](completionCopy, v16, ams_sanitizedForSecureCoding);
     }
 
     goto LABEL_7;
   }
 
-  v9 = [v6 options];
-  v10 = [v9 action] == 5;
+  options3 = [requestCopy options];
+  v10 = [options3 action] == 5;
 
   if (v10)
   {
@@ -375,30 +375,30 @@ LABEL_4:
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v20 = objc_opt_class();
-    v21 = [v6 logKey];
-    v22 = [v6 options];
-    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 action]);
+    logKey = [requestCopy logKey];
+    options4 = [requestCopy options];
+    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [options4 action]);
     *buf = 138543874;
     v48 = v20;
     v49 = 2114;
-    v50 = v21;
+    v50 = logKey;
     v51 = 2112;
     v52 = v23;
-    _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Partial assessments not supported for action: %@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Partial assessments not supported for action: %@", buf, 0x20u);
   }
 
   v24 = AMSError();
   v25 = v36[5];
   v36[5] = v24;
 
-  if (v7)
+  if (completionCopy)
   {
-    v26 = [v36[5] ams_sanitizedForSecureCoding];
-    v7[2](v7, 0, v26);
+    ams_sanitizedForSecureCoding2 = [v36[5] ams_sanitizedForSecureCoding];
+    completionCopy[2](completionCopy, 0, ams_sanitizedForSecureCoding2);
   }
 
 LABEL_7:
@@ -407,25 +407,25 @@ LABEL_7:
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)createODISessionWithSessionIdentifier:(id)a3 cacheIdentifier:(id)a4 accountType:(unint64_t)a5 bundleIdentifier:(id)a6 completion:(id)a7
+- (void)createODISessionWithSessionIdentifier:(id)identifier cacheIdentifier:(id)cacheIdentifier accountType:(unint64_t)type bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v30 = a3;
-  v32 = a4;
-  v29 = a6;
-  v31 = a7;
+  identifierCopy = identifier;
+  cacheIdentifierCopy = cacheIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v12 = +[AMSLogConfig sharedConfig];
   if (!v12)
   {
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = AMSLogKey();
     v16 = AMSHashIfNeeded();
-    v17 = [NSNumber numberWithUnsignedInteger:a5];
+    v17 = [NSNumber numberWithUnsignedInteger:type];
     v18 = AMSHashIfNeeded();
     v19 = AMSHashIfNeeded();
     *buf = 138544386;
@@ -438,11 +438,11 @@ LABEL_7:
     *&v42[2] = v18;
     v43 = 2112;
     v44 = v19;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'createODISession' with sessionIdentifier: %@, accountType: %@, bundleIdentifier: %@", buf, 0x34u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'createODISession' with sessionIdentifier: %@, accountType: %@, bundleIdentifier: %@", buf, 0x34u);
   }
 
-  v20 = [(AMSDPurchaseService *)self _serviceProviderTypeForServiceIdentifier:v30];
-  v21 = [(AMSDPurchaseService *)self _dsidTypeForAccountType:a5];
+  v20 = [(AMSDPurchaseService *)self _serviceProviderTypeForServiceIdentifier:identifierCopy];
+  v21 = [(AMSDPurchaseService *)self _dsidTypeForAccountType:type];
   if (v21 == -1)
   {
     v28 = AMSError();
@@ -468,26 +468,26 @@ LABEL_7:
 
     v23 = v22;
     _Block_object_dispose(&v36, 8);
-    v24 = [[v22 alloc] initWithServiceIdentifier:v20 forDSIDType:v21 andLocationBundleIdentifier:v29];
+    v24 = [[v22 alloc] initWithServiceIdentifier:v20 forDSIDType:v21 andLocationBundleIdentifier:bundleIdentifierCopy];
     v25 = v24;
     if (v24)
     {
-      if (!v32)
+      if (!cacheIdentifierCopy)
       {
         v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v24 hash]);
-        v32 = [NSString stringWithFormat:@"%@", v26];
+        cacheIdentifierCopy = [NSString stringWithFormat:@"%@", v26];
       }
 
-      v27 = [objc_opt_class() _odiSessionCacheAccessQueue];
+      _odiSessionCacheAccessQueue = [objc_opt_class() _odiSessionCacheAccessQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100078D58;
       block[3] = &unk_1002B1AC8;
       block[4] = self;
       v34 = v25;
-      v32 = v32;
-      v35 = v32;
-      dispatch_sync(v27, block);
+      cacheIdentifierCopy = cacheIdentifierCopy;
+      v35 = cacheIdentifierCopy;
+      dispatch_sync(_odiSessionCacheAccessQueue, block);
 
       v28 = 0;
     }
@@ -498,17 +498,17 @@ LABEL_7:
     }
   }
 
-  if (v31)
+  if (completionCopy)
   {
-    v31[2](v31, v32, v28);
+    completionCopy[2](completionCopy, cacheIdentifierCopy, v28);
   }
 }
 
-- (void)provideFeedbackOnPayloadOutcome:(unint64_t)a3 cacheIdentifier:(id)a4 clearCache:(BOOL)a5 completion:(id)a6
+- (void)provideFeedbackOnPayloadOutcome:(unint64_t)outcome cacheIdentifier:(id)identifier clearCache:(BOOL)cache completion:(id)completion
 {
-  v20 = a5;
-  v8 = a4;
-  v9 = a6;
+  cacheCopy = cache;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -521,13 +521,13 @@ LABEL_7:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
     v14 = AMSHashIfNeeded();
-    v15 = [NSNumber numberWithBool:v20];
+    v15 = [NSNumber numberWithBool:cacheCopy];
     v16 = AMSHashIfNeeded();
     *buf = 138544130;
     v33 = v12;
@@ -537,35 +537,35 @@ LABEL_7:
     v37 = v14;
     v38 = 2112;
     v39 = v16;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'provideFeedback' with cache identifier: %@, clearCache: %@", buf, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'provideFeedback' with cache identifier: %@, clearCache: %@", buf, 0x2Au);
   }
 
-  v17 = [objc_opt_class() _odiSessionCacheAccessQueue];
+  _odiSessionCacheAccessQueue = [objc_opt_class() _odiSessionCacheAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100079758;
   block[3] = &unk_1002B1B68;
   block[4] = self;
-  v18 = v8;
-  v25 = v20;
+  v18 = identifierCopy;
+  v25 = cacheCopy;
   v22 = v18;
   v23 = &v26;
-  v24 = a3;
-  dispatch_sync(v17, block);
+  outcomeCopy = outcome;
+  dispatch_sync(_odiSessionCacheAccessQueue, block);
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v27[5]);
+    completionCopy[2](completionCopy, v27[5]);
   }
 
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)updateODIWithAttributes:(id)a3 forCacheIdentifier:(id)a4 completion:(id)a5
+- (void)updateODIWithAttributes:(id)attributes forCacheIdentifier:(id)identifier completion:(id)completion
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -578,13 +578,13 @@ LABEL_7:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
     v14 = AMSHashIfNeeded();
-    v15 = [v20 attributes];
+    attributes = [attributesCopy attributes];
     v16 = AMSHashIfNeeded();
     *buf = 138544130;
     v32 = v12;
@@ -594,34 +594,34 @@ LABEL_7:
     v36 = v14;
     v37 = 2112;
     v38 = v16;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'updateODIWithAttributes' with cache identifier: %@, additional attributes: %@", buf, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking 'updateODIWithAttributes' with cache identifier: %@, additional attributes: %@", buf, 0x2Au);
   }
 
-  v17 = [objc_opt_class() _odiSessionCacheAccessQueue];
+  _odiSessionCacheAccessQueue = [objc_opt_class() _odiSessionCacheAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100079C14;
   block[3] = &unk_1002B1B90;
   block[4] = self;
-  v18 = v8;
+  v18 = identifierCopy;
   v22 = v18;
-  v19 = v20;
+  v19 = attributesCopy;
   v23 = v19;
   v24 = &v25;
-  dispatch_sync(v17, block);
+  dispatch_sync(_odiSessionCacheAccessQueue, block);
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v26[5]);
+    completionCopy[2](completionCopy, v26[5]);
   }
 
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)_completeEvaluationForPurchaseIdentifier:(id)a3 logKey:(id)a4
+- (void)_completeEvaluationForPurchaseIdentifier:(id)identifier logKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x2020000000;
@@ -630,23 +630,23 @@ LABEL_7:
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v8 = [objc_opt_class() _fdsConsumedCacheAccessQueue];
+  _fdsConsumedCacheAccessQueue = [objc_opt_class() _fdsConsumedCacheAccessQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007A258;
   block[3] = &unk_1002B1B18;
   block[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v36 = v9;
   v37 = v43;
   v38 = &v39;
-  dispatch_sync(v8, block);
+  dispatch_sync(_fdsConsumedCacheAccessQueue, block);
 
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v10 = [objc_opt_class() _odiSessionCacheAccessQueue];
+  _odiSessionCacheAccessQueue = [objc_opt_class() _odiSessionCacheAccessQueue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10007A2E8;
@@ -655,12 +655,12 @@ LABEL_7:
   v28[4] = self;
   v11 = v9;
   v29 = v11;
-  dispatch_sync(v10, v28);
+  dispatch_sync(_odiSessionCacheAccessQueue, v28);
 
   v12 = *(v40 + 24);
   if (*(v32 + 24) == 1)
   {
-    v13 = [v11 stringValue];
+    stringValue = [v11 stringValue];
     if (v12)
     {
       v14 = 0;
@@ -671,24 +671,24 @@ LABEL_7:
       v14 = 2;
     }
 
-    [(AMSDPurchaseService *)self provideFeedbackOnPayloadOutcome:v14 cacheIdentifier:v13 clearCache:1 completion:0];
+    [(AMSDPurchaseService *)self provideFeedbackOnPayloadOutcome:v14 cacheIdentifier:stringValue clearCache:1 completion:0];
   }
 
   else if (*(v40 + 24))
   {
-    v15 = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
+    _fdsEvaluatorCacheAccessQueue = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10007A374;
     v24[3] = &unk_1002B1B90;
     v24[4] = self;
     v25 = v11;
-    v26 = v7;
+    v26 = keyCopy;
     v27 = v43;
-    dispatch_sync(v15, v24);
+    dispatch_sync(_fdsEvaluatorCacheAccessQueue, v24);
   }
 
-  v16 = [objc_opt_class() _fdsConsumedCacheAccessQueue];
+  _fdsConsumedCacheAccessQueue2 = [objc_opt_class() _fdsConsumedCacheAccessQueue];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10007A504;
@@ -696,9 +696,9 @@ LABEL_7:
   v22[4] = self;
   v17 = v11;
   v23 = v17;
-  dispatch_sync(v16, v22);
+  dispatch_sync(_fdsConsumedCacheAccessQueue2, v22);
 
-  v18 = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
+  _fdsEvaluatorCacheAccessQueue2 = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10007A560;
@@ -706,45 +706,45 @@ LABEL_7:
   v20[4] = self;
   v21 = v17;
   v19 = v17;
-  dispatch_sync(v18, v20);
+  dispatch_sync(_fdsEvaluatorCacheAccessQueue2, v20);
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(&v39, 8);
   _Block_object_dispose(v43, 8);
 }
 
-- (id)_createScorerWithAction:(unint64_t)a3 account:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
+- (id)_createScorerWithAction:(unint64_t)action account:(id)account bundleIdentifier:(id)identifier error:(id *)error
 {
-  v48 = a4;
-  v49 = a5;
-  v47 = [(AMSDPurchaseService *)self _serverEndpointIdentifierForFDSAction:a3];
+  accountCopy = account;
+  identifierCopy = identifier;
+  v47 = [(AMSDPurchaseService *)self _serverEndpointIdentifierForFDSAction:action];
   v10 = [[wumZ2SSA5KbWdu7E alloc] initWithServerEndpointIdentifier:v47];
   if (v10)
   {
-    v11 = [v48 ams_firstName];
-    v12 = [v48 ams_lastName];
+    ams_firstName = [accountCopy ams_firstName];
+    ams_lastName = [accountCopy ams_lastName];
     v13 = +[AMSDevice phoneNumber];
-    v14 = [v48 username];
+    username = [accountCopy username];
     v15 = +[AMSLogConfig sharedConfig];
     if (!v15)
     {
       v15 = +[AMSLogConfig sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
       AMSHashIfNeeded();
       v43 = v10;
-      v20 = v19 = v14;
+      v20 = v19 = username;
       AMSHashIfNeeded();
-      v21 = v45 = v11;
+      v21 = v45 = ams_firstName;
       v22 = AMSHashIfNeeded();
       AMSHashIfNeeded();
       v44 = v13;
-      v24 = v23 = v12;
+      v24 = v23 = ams_lastName;
       *buf = 138544642;
       v51 = v17;
       v52 = 2114;
@@ -757,29 +757,29 @@ LABEL_7:
       v59 = v22;
       v60 = 2112;
       v61 = v24;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Creating FDS context, firstName = %@ | lastName = %@ | phoneNumber = %@ | username = %@", buf, 0x3Eu);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Creating FDS context, firstName = %@ | lastName = %@ | phoneNumber = %@ | username = %@", buf, 0x3Eu);
 
-      v12 = v23;
+      ams_lastName = v23;
       v13 = v44;
 
-      v11 = v45;
-      v14 = v19;
+      ams_firstName = v45;
+      username = v19;
       v10 = v43;
     }
 
     v25 = objc_alloc_init(NSMutableSet);
-    if (v11 && v12)
+    if (ams_firstName && ams_lastName)
     {
-      v26 = [[cBEET4QRedIfcDrp alloc] initWithFirstName:v11 lastName:v12 source:0];
+      v26 = [[cBEET4QRedIfcDrp alloc] initWithFirstName:ams_firstName lastName:ams_lastName source:0];
       if (v26)
       {
         [v25 addObject:v26];
       }
     }
 
-    if (v14)
+    if (username)
     {
-      v27 = [[cBEET4QRedIfcDrp alloc] initWithEmailAddress:v14 source:1];
+      v27 = [[cBEET4QRedIfcDrp alloc] initWithEmailAddress:username source:1];
       if (v27)
       {
         [v25 addObject:v27];
@@ -792,23 +792,23 @@ LABEL_7:
       [(wumZ2SSA5KbWdu7E *)v10 setPhoneNumber:v13];
     }
 
-    [(wumZ2SSA5KbWdu7E *)v10 setCallerID:v49];
+    [(wumZ2SSA5KbWdu7E *)v10 setCallerID:identifierCopy];
     v28 = +[AMSLogConfig sharedConfig];
     if (!v28)
     {
       v28 = +[AMSLogConfig sharedConfig];
     }
 
-    v29 = [v28 OSLogObject];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v28 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v30 = objc_opt_class();
       AMSLogKey();
-      v46 = v12;
-      v32 = v31 = v11;
+      v46 = ams_lastName;
+      v32 = v31 = ams_firstName;
       AMSHashIfNeeded();
       v33 = v10;
-      v34 = v14;
+      v34 = username;
       v36 = v35 = v13;
       *buf = 138543874;
       v51 = v30;
@@ -816,14 +816,14 @@ LABEL_7:
       v53 = v32;
       v54 = 2112;
       v55 = v36;
-      _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Registering FDS Bundle: %@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Registering FDS Bundle: %@", buf, 0x20u);
 
       v13 = v35;
-      v14 = v34;
+      username = v34;
       v10 = v33;
 
-      v11 = v31;
-      v12 = v46;
+      ams_firstName = v31;
+      ams_lastName = v46;
     }
 
     v37 = [CerKRQOmMu7LBUoc scorerWithContext:v10];
@@ -837,8 +837,8 @@ LABEL_7:
       v38 = +[AMSLogConfig sharedConfig];
     }
 
-    v39 = [v38 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v38 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v40 = objc_opt_class();
       v41 = AMSLogKey();
@@ -846,13 +846,13 @@ LABEL_7:
       v51 = v40;
       v52 = 2114;
       v53 = v41;
-      _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create an ASScorerContext.", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create an ASScorerContext.", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       AMSError();
-      *a6 = v37 = 0;
+      *error = v37 = 0;
     }
 
     else
@@ -864,38 +864,38 @@ LABEL_7:
   return v37;
 }
 
-- (void)_generateODIFDSWithRequest:(id)a3 completion:(id)a4
+- (void)_generateODIFDSWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 options];
-  if ([v8 action] == 4)
+  requestCopy = request;
+  completionCopy = completion;
+  options = [requestCopy options];
+  if ([options action] == 4)
   {
 
 LABEL_4:
-    v11 = [v6 purchaseIdentifier];
-    v12 = [NSString stringWithFormat:@"%@", v11];
+    purchaseIdentifier = [requestCopy purchaseIdentifier];
+    v12 = [NSString stringWithFormat:@"%@", purchaseIdentifier];
 
     v13 = AMSODIServiceIdentifierAmpPaidBuy;
-    v14 = [v6 accountType];
-    v15 = [v6 options];
-    v16 = [v15 bundleIdentifier];
+    accountType = [requestCopy accountType];
+    options2 = [requestCopy options];
+    bundleIdentifier = [options2 bundleIdentifier];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10007AE40;
     v26[3] = &unk_1002B1B40;
-    v27 = v6;
-    v28 = self;
-    v29 = v7;
-    [(AMSDPurchaseService *)self createODISessionWithSessionIdentifier:v13 cacheIdentifier:v12 accountType:v14 bundleIdentifier:v16 completion:v26];
+    v27 = requestCopy;
+    selfCopy = self;
+    v29 = completionCopy;
+    [(AMSDPurchaseService *)self createODISessionWithSessionIdentifier:v13 cacheIdentifier:v12 accountType:accountType bundleIdentifier:bundleIdentifier completion:v26];
 
     goto LABEL_5;
   }
 
-  v9 = [v6 options];
-  v10 = [v9 action];
+  options3 = [requestCopy options];
+  action = [options3 action];
 
-  if (v10 == 5)
+  if (action == 5)
   {
     goto LABEL_4;
   }
@@ -906,53 +906,53 @@ LABEL_4:
     v17 = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v17 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v19 = objc_opt_class();
-    v20 = [v6 logKey];
-    v21 = [v6 options];
-    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v21 action]);
+    logKey = [requestCopy logKey];
+    options4 = [requestCopy options];
+    v22 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [options4 action]);
     *buf = 138543874;
     v31 = v19;
     v32 = 2114;
-    v33 = v20;
+    v33 = logKey;
     v34 = 2114;
     v35 = v22;
-    _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] ODI evaluation not supported for action: %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] ODI evaluation not supported for action: %{public}@", buf, 0x20u);
   }
 
-  v23 = [v6 options];
-  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 action]);
+  options5 = [requestCopy options];
+  v24 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [options5 action]);
   v25 = [NSString stringWithFormat:@"Action not supported: %@", v24];
   v12 = AMSError();
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
 LABEL_5:
 }
 
-- (void)_generateLegacyFDSWithRequest:(id)a3 completion:(id)a4
+- (void)_generateLegacyFDSWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v30 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v32 = objc_alloc_init(AMSMutablePromise);
-  v7 = [v6 options];
-  v8 = [v7 action];
-  v9 = [v6 account];
-  v10 = [v6 options];
-  v11 = [v10 bundleIdentifier];
+  options = [requestCopy options];
+  action = [options action];
+  account = [requestCopy account];
+  options2 = [requestCopy options];
+  bundleIdentifier = [options2 bundleIdentifier];
   v43 = 0;
-  v12 = [(AMSDPurchaseService *)self _createScorerWithAction:v8 account:v9 bundleIdentifier:v11 error:&v43];
+  v12 = [(AMSDPurchaseService *)self _createScorerWithAction:action account:account bundleIdentifier:bundleIdentifier error:&v43];
   v13 = v43;
 
   v14 = &off_10022E000;
   if (v12)
   {
-    v15 = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
+    _fdsEvaluatorCacheAccessQueue = [objc_opt_class() _fdsEvaluatorCacheAccessQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007BA2C;
@@ -960,9 +960,9 @@ LABEL_5:
     block[4] = self;
     v16 = v12;
     v41 = v16;
-    v17 = v6;
+    v17 = requestCopy;
     v42 = v17;
-    dispatch_sync(v15, block);
+    dispatch_sync(_fdsEvaluatorCacheAccessQueue, block);
 
     [v16 prepareScoreMessage];
     v18 = objc_alloc_init(RvCyrXrrh7eJhtzx);
@@ -973,13 +973,13 @@ LABEL_5:
       v19 = +[AMSLogConfig sharedConfig];
     }
 
-    v20 = [v19 OSLogObject];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v19 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v17 logKey];
+      logKey = [v17 logKey];
       *buf = 138543362;
-      v45 = v21;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "AMSDSecurityService: [%{public}@] Generating FDS.", buf, 0xCu);
+      v45 = logKey;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "AMSDSecurityService: [%{public}@] Generating FDS.", buf, 0xCu);
     }
 
     v37[0] = _NSConcreteStackBlock;
@@ -1002,18 +1002,18 @@ LABEL_5:
       v23 = +[AMSLogConfig sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v23 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v25 = objc_opt_class();
-      v26 = [v6 logKey];
+      logKey2 = [requestCopy logKey];
       *buf = 138543874;
       v45 = v25;
       v46 = 2114;
-      v47 = v26;
+      v47 = logKey2;
       v48 = 2114;
       v49 = v13;
-      _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create FDS with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create FDS with error: %{public}@", buf, 0x20u);
     }
 
     v22 = v32;
@@ -1024,25 +1024,25 @@ LABEL_5:
   v33[2] = sub_10007BCBC;
   v33[3] = &unk_1002B1C30;
   v33[4] = self;
-  v34 = v6;
+  v34 = requestCopy;
   v35 = v13;
   v36 = v31;
   v27 = v13;
-  v28 = v6;
+  v28 = requestCopy;
   v29 = v31;
   [v22 resultWithTimeout:v33 completion:4.0];
 }
 
-- (id)_serverEndpointIdentifierForFDSAction:(unint64_t)a3
+- (id)_serverEndpointIdentifierForFDSAction:(unint64_t)action
 {
-  if (a3 > 3)
+  if (action > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1002B1D68[a3];
+    return off_1002B1D68[action];
   }
 }
 
@@ -1118,14 +1118,14 @@ LABEL_5:
   return v3;
 }
 
-- (unint64_t)_dsidTypeForAccountType:(unint64_t)a3
+- (unint64_t)_dsidTypeForAccountType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1;
   }
@@ -1136,41 +1136,41 @@ LABEL_5:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
-    v9 = [NSNumber numberWithUnsignedInteger:a3];
+    v9 = [NSNumber numberWithUnsignedInteger:type];
     v10 = 138543874;
     v11 = v7;
     v12 = 2114;
     v13 = v8;
     v14 = 2114;
     v15 = v9;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unrecognized account type: %{public}@", &v10, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unrecognized account type: %{public}@", &v10, 0x20u);
   }
 
   return -1;
 }
 
-- (unint64_t)_outcomeTypeForOutcome:(unint64_t)a3
+- (unint64_t)_outcomeTypeForOutcome:(unint64_t)outcome
 {
-  if (a3 == 2)
+  if (outcome == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return outcome == 1;
   }
 }
 
-- (id)_serviceProviderTypeForServiceIdentifier:(id)a3
+- (id)_serviceProviderTypeForServiceIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AMSODIServiceIdentifierAmpFreeBuy])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:AMSODIServiceIdentifierAmpFreeBuy])
   {
     v22 = 0;
     v23 = &v22;
@@ -1200,7 +1200,7 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:AMSODIServiceIdentifierAmpPaidBuy])
+  if ([identifierCopy isEqualToString:AMSODIServiceIdentifierAmpPaidBuy])
   {
     v22 = 0;
     v23 = &v22;
@@ -1234,7 +1234,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:AMSODISessionIdentifierApplicationCreate])
+  if ([identifierCopy isEqualToString:AMSODISessionIdentifierApplicationCreate])
   {
     v22 = 0;
     v23 = &v22;
@@ -1266,7 +1266,7 @@ LABEL_35:
     __break(1u);
   }
 
-  if ([v3 isEqualToString:AMSODISessionIdentifierApplicationSubmit])
+  if ([identifierCopy isEqualToString:AMSODISessionIdentifierApplicationSubmit])
   {
     v22 = 0;
     v23 = &v22;
@@ -1296,7 +1296,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:AMSODISessionIdentifierIdUpdate])
+  if ([identifierCopy isEqualToString:AMSODISessionIdentifierIdUpdate])
   {
     v22 = 0;
     v23 = &v22;
@@ -1326,15 +1326,15 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if ([v3 isEqualToString:AMSODISessionIdentifierTDMTrustedInference])
+  if ([identifierCopy isEqualToString:AMSODISessionIdentifierTDMTrustedInference])
   {
     v15 = sub_10007CCD0();
     goto LABEL_26;
   }
 
   v18 = +[AMSLogConfig sharedConfig];
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v20 = objc_opt_class();
     v21 = AMSLogKey();
@@ -1343,8 +1343,8 @@ LABEL_35:
     *&buf[12] = 2114;
     *&buf[14] = v21;
     *&buf[22] = 2114;
-    v27 = v3;
-    _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to parse ODI service identifier: %{public}@", buf, 0x20u);
+    v27 = identifierCopy;
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to parse ODI service identifier: %{public}@", buf, 0x20u);
   }
 
   v16 = 0;

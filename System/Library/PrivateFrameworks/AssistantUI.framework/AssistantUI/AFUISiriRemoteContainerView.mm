@@ -1,15 +1,15 @@
 @interface AFUISiriRemoteContainerView
 - (void)layoutSubviews;
-- (void)setRemoteContentView:(id)a3;
+- (void)setRemoteContentView:(id)view;
 @end
 
 @implementation AFUISiriRemoteContainerView
 
-- (void)setRemoteContentView:(id)a3
+- (void)setRemoteContentView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   [(UIView *)self->_remoteContentView removeFromSuperview];
-  objc_storeStrong(&self->_remoteContentView, a3);
+  objc_storeStrong(&self->_remoteContentView, view);
   remoteContentView = self->_remoteContentView;
   if (remoteContentView)
   {

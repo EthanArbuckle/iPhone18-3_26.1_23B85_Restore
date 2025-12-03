@@ -1,34 +1,34 @@
 @interface FCCKContentDatabase
 - (BOOL)shouldBypassCDNForCKAssetURLs;
 - (FCCKContentDatabase)init;
-- (FCCKContentDatabase)initWithContainerIdentifier:(id)a3 productionEnvironment:(BOOL)a4 networkBehaviorMonitor:(id)a5 networkReachability:(id)a6 configurationManager:(id)a7;
+- (FCCKContentDatabase)initWithContainerIdentifier:(id)identifier productionEnvironment:(BOOL)environment networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability configurationManager:(id)manager;
 - (NSURL)baseURLForEdgeCachedMultiFetch;
 - (NSURL)baseURLForEdgeCachedOrderFeed;
 - (NSURL)baseURLForMultiFetch;
 - (NSURL)baseURLForOrderFeed;
 - (NSURL)baseURLForRecordFetch;
-- (id)generateURLForResourceID:(id)a3;
-- (id)permanentURLForRecordID:(id)a3 field:(int64_t)a4;
-- (id)permanentURLForRecordID:(id)a3 field:(int64_t)a4 useSecureConnection:(BOOL)a5;
-- (void)addOperation:(id)a3;
+- (id)generateURLForResourceID:(id)d;
+- (id)permanentURLForRecordID:(id)d field:(int64_t)field;
+- (id)permanentURLForRecordID:(id)d field:(int64_t)field useSecureConnection:(BOOL)connection;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation FCCKContentDatabase
 
 - (NSURL)baseURLForRecordFetch
 {
-  v2 = [(FCCKContentDatabase *)self configurationManager];
-  v3 = [v2 configuration];
-  v4 = [FCBaseURLConfiguration ckRecordFetchBaseURLForConfiguration:v3];
+  configurationManager = [(FCCKContentDatabase *)self configurationManager];
+  configuration = [configurationManager configuration];
+  v4 = [FCBaseURLConfiguration ckRecordFetchBaseURLForConfiguration:configuration];
 
   return v4;
 }
 
 - (NSURL)baseURLForEdgeCachedMultiFetch
 {
-  v2 = [(FCCKContentDatabase *)self configurationManager];
-  v3 = [v2 configuration];
-  v4 = [FCBaseURLConfiguration ckEdgeCachedMultiFetchBaseURLForConfiguration:v3];
+  configurationManager = [(FCCKContentDatabase *)self configurationManager];
+  configuration = [configurationManager configuration];
+  v4 = [FCBaseURLConfiguration ckEdgeCachedMultiFetchBaseURLForConfiguration:configuration];
 
   return v4;
 }
@@ -59,25 +59,25 @@
   objc_exception_throw(v6);
 }
 
-- (FCCKContentDatabase)initWithContainerIdentifier:(id)a3 productionEnvironment:(BOOL)a4 networkBehaviorMonitor:(id)a5 networkReachability:(id)a6 configurationManager:(id)a7
+- (FCCKContentDatabase)initWithContainerIdentifier:(id)identifier productionEnvironment:(BOOL)environment networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability configurationManager:(id)manager
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = FCCKContentDatabase;
   v16 = [(FCCKContentDatabase *)&v20 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     containerIdentifier = v16->_containerIdentifier;
     v16->_containerIdentifier = v17;
 
-    v16->_isProductionEnvironment = a4;
-    objc_storeStrong(&v16->_networkBehaviorMonitor, a5);
-    objc_storeStrong(&v16->_networkReachability, a6);
-    objc_storeStrong(&v16->_configurationManager, a7);
+    v16->_isProductionEnvironment = environment;
+    objc_storeStrong(&v16->_networkBehaviorMonitor, monitor);
+    objc_storeStrong(&v16->_networkReachability, reachability);
+    objc_storeStrong(&v16->_configurationManager, manager);
   }
 
   return v16;
@@ -101,35 +101,35 @@ void __52__FCCKContentDatabase_shouldBypassCDNForCKAssetURLs__block_invoke()
 
 - (NSURL)baseURLForOrderFeed
 {
-  v2 = [(FCCKContentDatabase *)self configurationManager];
-  v3 = [v2 configuration];
-  v4 = [FCBaseURLConfiguration ckOrderFeedBaseURLForConfiguration:v3];
+  configurationManager = [(FCCKContentDatabase *)self configurationManager];
+  configuration = [configurationManager configuration];
+  v4 = [FCBaseURLConfiguration ckOrderFeedBaseURLForConfiguration:configuration];
 
   return v4;
 }
 
 - (NSURL)baseURLForMultiFetch
 {
-  v2 = [(FCCKContentDatabase *)self configurationManager];
-  v3 = [v2 configuration];
-  v4 = [FCBaseURLConfiguration ckMultiFetchBaseURLForConfiguration:v3];
+  configurationManager = [(FCCKContentDatabase *)self configurationManager];
+  configuration = [configurationManager configuration];
+  v4 = [FCBaseURLConfiguration ckMultiFetchBaseURLForConfiguration:configuration];
 
   return v4;
 }
 
 - (NSURL)baseURLForEdgeCachedOrderFeed
 {
-  v2 = [(FCCKContentDatabase *)self configurationManager];
-  v3 = [v2 configuration];
-  v4 = [FCBaseURLConfiguration ckEdgeCachedOrderFeedBaseURLForConfiguration:v3];
+  configurationManager = [(FCCKContentDatabase *)self configurationManager];
+  configuration = [configurationManager configuration];
+  v4 = [FCBaseURLConfiguration ckEdgeCachedOrderFeedBaseURLForConfiguration:configuration];
 
   return v4;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  operationCopy = operation;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -153,31 +153,31 @@ void __52__FCCKContentDatabase_shouldBypassCDNForCKAssetURLs__block_invoke()
   objc_exception_throw(v8);
 }
 
-- (id)permanentURLForRecordID:(id)a3 field:(int64_t)a4
+- (id)permanentURLForRecordID:(id)d field:(int64_t)field
 {
-  v6 = a3;
-  v7 = [(FCCKContentDatabase *)self shouldUseSecureConnectionForCKAssetURLs];
-  v8 = [(FCCKContentDatabase *)self containerIdentifier];
-  v9 = FCPermanentURLForRecordID(v6, a4, v8, v7);
+  dCopy = d;
+  shouldUseSecureConnectionForCKAssetURLs = [(FCCKContentDatabase *)self shouldUseSecureConnectionForCKAssetURLs];
+  containerIdentifier = [(FCCKContentDatabase *)self containerIdentifier];
+  v9 = FCPermanentURLForRecordID(dCopy, field, containerIdentifier, shouldUseSecureConnectionForCKAssetURLs);
 
   return v9;
 }
 
-- (id)permanentURLForRecordID:(id)a3 field:(int64_t)a4 useSecureConnection:(BOOL)a5
+- (id)permanentURLForRecordID:(id)d field:(int64_t)field useSecureConnection:(BOOL)connection
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(FCCKContentDatabase *)self containerIdentifier];
-  v10 = FCPermanentURLForRecordID(v8, a4, v9, v5);
+  connectionCopy = connection;
+  dCopy = d;
+  containerIdentifier = [(FCCKContentDatabase *)self containerIdentifier];
+  v10 = FCPermanentURLForRecordID(dCopy, field, containerIdentifier, connectionCopy);
 
   return v10;
 }
 
-- (id)generateURLForResourceID:(id)a3
+- (id)generateURLForResourceID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "resourceID != nil"];
     *buf = 136315906;
@@ -191,7 +191,7 @@ void __52__FCCKContentDatabase_shouldBypassCDNForCKAssetURLs__block_invoke()
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCCKContentDatabase *)self permanentURLForRecordID:v4 field:3];
+  v5 = [(FCCKContentDatabase *)self permanentURLForRecordID:dCopy field:3];
 
   v6 = *MEMORY[0x1E69E9840];
 

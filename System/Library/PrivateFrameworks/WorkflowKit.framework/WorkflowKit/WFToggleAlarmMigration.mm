@@ -1,16 +1,16 @@
 @interface WFToggleAlarmMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFToggleAlarmMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.alarm.toggle", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.alarm.toggle", migrationCopy);
   }
 
   else
@@ -49,17 +49,17 @@
         }
 
         v8 = *(*(&v48 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKeyedSubscript:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKeyedSubscript:actionIdentifierKey];
         v11 = [v10 isEqualToString:@"is.workflow.actions.alarm.toggle"];
 
         if (v11)
         {
-          v12 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v8 setObject:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTToggleAlarmIntent" forKeyedSubscript:v12];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v8 setObject:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTToggleAlarmIntent" forKeyedSubscript:actionIdentifierKey2];
 
-          v13 = [(WFWorkflowMigration *)self actionParametersKey];
-          v14 = [v8 objectForKeyedSubscript:v13];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v14 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
           v16 = [v14 objectForKeyedSubscript:@"WFEnabled"];
@@ -103,7 +103,7 @@
               v22 = v21;
             }
 
-            v26 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v27 = [v22 objectForKeyedSubscript:@"WFAlarmHour"];
             if (v27)
             {
@@ -145,7 +145,7 @@ LABEL_19:
 
               v53[1] = v34;
               v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:2];
-              [v26 setObject:v35 forKey:@"dateComponents"];
+              [dictionary setObject:v35 forKey:@"dateComponents"];
             }
 
             v36 = [v22 objectForKeyedSubscript:@"WFAlarmLabel"];
@@ -153,10 +153,10 @@ LABEL_19:
             if (v36)
             {
               v37 = [v22 objectForKeyedSubscript:@"WFAlarmLabel"];
-              [v26 setObject:v37 forKey:@"displayString"];
+              [dictionary setObject:v37 forKey:@"displayString"];
 
               v38 = [v22 objectForKeyedSubscript:@"WFAlarmLabel"];
-              [v26 setObject:v38 forKey:@"label"];
+              [dictionary setObject:v38 forKey:@"label"];
             }
 
             v39 = [v22 objectForKeyedSubscript:@"WFAlarmIdentifier"];
@@ -165,18 +165,18 @@ LABEL_19:
             {
               v40 = [v22 objectForKeyedSubscript:@"WFAlarmIdentifier"];
               v41 = [v40 substringFromIndex:{objc_msgSend(@"x-apple-clock:alarm?id=", "length")}];
-              [v26 setObject:v41 forKey:@"identifier"];
+              [dictionary setObject:v41 forKey:@"identifier"];
             }
 
-            [v15 setObject:v26 forKey:@"alarm"];
+            [v15 setObject:dictionary forKey:@"alarm"];
 
             v6 = v45;
           }
 
           if ([v15 count])
           {
-            v42 = [(WFWorkflowMigration *)self actionParametersKey];
-            [v8 setObject:v15 forKeyedSubscript:v42];
+            actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+            [v8 setObject:v15 forKeyedSubscript:actionParametersKey2];
           }
 
           v5 = v46;

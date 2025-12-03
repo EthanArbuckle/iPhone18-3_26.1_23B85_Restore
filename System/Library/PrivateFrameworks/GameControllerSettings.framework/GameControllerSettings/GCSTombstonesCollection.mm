@@ -1,27 +1,27 @@
 @interface GCSTombstonesCollection
 - (BOOL)storeVersionIsCompatible;
 - (GCSSettingsStoreService)settingsStore;
-- (GCSTombstonesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
-- (id)tombstoneForIdentifier:(id)a3;
+- (GCSTombstonesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
+- (id)tombstoneForIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateTombstones:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateTombstones:(id)tombstones;
 @end
 
 @implementation GCSTombstonesCollection
 
-- (GCSTombstonesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSTombstonesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v15.receiver = self;
   v15.super_class = GCSTombstonesCollection;
   v8 = [(GCSTombstonesCollection *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_settingsStore, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_settingsStore, storeCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     values = v9->_values;
     v9->_values = MEMORY[0x277CBEBF8];
 
@@ -48,10 +48,10 @@
   return v3;
 }
 
-- (id)tombstoneForIdentifier:(id)a3
+- (id)tombstoneForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -71,8 +71,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqual:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -98,14 +98,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateTombstones:(id)a3
+- (void)updateTombstones:(id)tombstones
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tombstonesCopy = tombstones;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSTombstonesCollection *)self storeVersionIsCompatible])
   {
-    v5 = v4;
+    v5 = tombstonesCopy;
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSObject count](v5, "count")}];
@@ -148,9 +148,9 @@ LABEL_11:
       v14 = getGCSLogger();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(GCSTombstonesCollection *)self values];
+        values = [(GCSTombstonesCollection *)self values];
         *buf = 138412290;
-        v24 = v15;
+        v24 = values;
         _os_log_impl(&dword_24E4FA000, v14, OS_LOG_TYPE_INFO, "GCSTombstones.values = %@", buf, 0xCu);
       }
     }
@@ -162,9 +162,9 @@ LABEL_11:
     v5 = getGCSLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v16 = [(GCSTombstonesCollection *)self values];
+      values2 = [(GCSTombstonesCollection *)self values];
       *buf = 138412290;
-      v24 = v16;
+      v24 = values2;
       _os_log_impl(&dword_24E4FA000, v5, OS_LOG_TYPE_INFO, "GCSTombstones.values = %@", buf, 0xCu);
     }
   }
@@ -172,23 +172,23 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"tombstones"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"tombstones"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"settingsVersion"])
+    if (![pathCopy isEqualToString:@"settingsVersion"])
     {
       v15.receiver = self;
       v15.super_class = GCSTombstonesCollection;
-      [(GCSTombstonesCollection *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSTombstonesCollection *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_7;
     }
 

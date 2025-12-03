@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest
@@ -17,46 +17,46 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   requestHeader = self->_requestHeader;
   if (requestHeader)
   {
-    v5 = [(NPKProtoStandaloneRequestHeader *)requestHeader dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"requestHeader"];
+    dictionaryRepresentation = [(NPKProtoStandaloneRequestHeader *)requestHeader dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"requestHeader"];
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
-    [v3 setObject:serialNumber forKey:@"serialNumber"];
+    [dictionary setObject:serialNumber forKey:@"serialNumber"];
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
   if (passTypeIdentifier)
   {
-    [v3 setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+    [dictionary setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_requestHeader)
   {
     [NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_serialNumber)
   {
@@ -69,46 +69,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setRequestHeader:self->_requestHeader];
+  toCopy = to;
+  [toCopy setRequestHeader:self->_requestHeader];
   if (self->_serialNumber)
   {
-    [v4 setSerialNumber:?];
+    [toCopy setSerialNumber:?];
   }
 
   if (self->_passTypeIdentifier)
   {
-    [v4 setPassTypeIdentifier:?];
+    [toCopy setPassTypeIdentifier:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandaloneRequestHeader *)self->_requestHeader copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandaloneRequestHeader *)self->_requestHeader copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestHeader = self->_requestHeader, !(requestHeader | v4[2])) || -[NPKProtoStandaloneRequestHeader isEqual:](requestHeader, "isEqual:")) && ((serialNumber = self->_serialNumber, !(serialNumber | v4[3])) || -[NSString isEqual:](serialNumber, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestHeader = self->_requestHeader, !(requestHeader | equalCopy[2])) || -[NPKProtoStandaloneRequestHeader isEqual:](requestHeader, "isEqual:")) && ((serialNumber = self->_serialNumber, !(serialNumber | equalCopy[3])) || -[NSString isEqual:](serialNumber, "isEqual:")))
   {
     passTypeIdentifier = self->_passTypeIdentifier;
-    if (passTypeIdentifier | v4[1])
+    if (passTypeIdentifier | equalCopy[1])
     {
       v8 = [(NSString *)passTypeIdentifier isEqual:?];
     }
@@ -134,12 +134,12 @@
   return v4 ^ [(NSString *)self->_passTypeIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   requestHeader = self->_requestHeader;
-  v6 = v4[2];
-  v7 = v4;
+  v6 = fromCopy[2];
+  v7 = fromCopy;
   if (requestHeader)
   {
     if (!v6)
@@ -160,18 +160,18 @@
     [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)self setRequestHeader:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)self setSerialNumber:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoStandalonePaymentProvisioningFlowStartIssuerVerificationFlowForPaymentPassRequest *)self setPassTypeIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

@@ -1,5 +1,5 @@
 @interface CRLCanvasDotGridLayer
-- (_TtC8Freeform21CRLCanvasDotGridLayer)initWithLayer:(id)a3;
+- (_TtC8Freeform21CRLCanvasDotGridLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_101073978();
 }
 
-- (_TtC8Freeform21CRLCanvasDotGridLayer)initWithLayer:(id)a3
+- (_TtC8Freeform21CRLCanvasDotGridLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

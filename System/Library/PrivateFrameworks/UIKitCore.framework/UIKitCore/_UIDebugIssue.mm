@@ -1,8 +1,8 @@
 @interface _UIDebugIssue
-+ (id)issueWithDescription:(id)a3;
-+ (id)issueWithFormat:(id)a3;
++ (id)issueWithDescription:(id)description;
++ (id)issueWithFormat:(id)format;
 - (_UIDebugIssue)init;
-- (void)addIssue:(id)a3;
+- (void)addIssue:(id)issue;
 @end
 
 @implementation _UIDebugIssue
@@ -26,49 +26,49 @@
   return v3;
 }
 
-+ (id)issueWithDescription:(id)a3
++ (id)issueWithDescription:(id)description
 {
-  v5 = a3;
-  if (!v5)
+  descriptionCopy = description;
+  if (!descriptionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"_UIDebugIssueReport.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"description"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"description"}];
   }
 
   v6 = objc_alloc_init(_UIDebugIssue);
-  [(_UIDebugIssue *)v6 setDescription:v5];
+  [(_UIDebugIssue *)v6 setDescription:descriptionCopy];
 
   return v6;
 }
 
-+ (id)issueWithFormat:(id)a3
++ (id)issueWithFormat:(id)format
 {
-  v5 = a3;
-  if (!v5)
+  formatCopy = format;
+  if (!formatCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"_UIDebugIssueReport.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"descriptionFormat"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"descriptionFormat"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v5 arguments:&v11];
-  v7 = [a1 issueWithDescription:v6];
+  v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:formatCopy arguments:&v11];
+  v7 = [self issueWithDescription:v6];
 
   return v7;
 }
 
-- (void)addIssue:(id)a3
+- (void)addIssue:(id)issue
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  issueCopy = issue;
+  v7 = issueCopy;
+  if (!issueCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"issue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugIssueReport.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"issue"}];
 
-    v5 = 0;
+    issueCopy = 0;
   }
 
-  [(_UIDebugIssueReport *)self->_subissueReport addIssue:v5];
+  [(_UIDebugIssueReport *)self->_subissueReport addIssue:issueCopy];
 }
 
 @end

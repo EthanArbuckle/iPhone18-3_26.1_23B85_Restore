@@ -1,25 +1,25 @@
 @interface WFNumberFieldUtilities
-+ (BOOL)shouldChangeText:(id)a3 allowMinus:(BOOL)a4;
++ (BOOL)shouldChangeText:(id)text allowMinus:(BOOL)minus;
 + (id)decimalSymbol;
-+ (id)negateText:(id)a3;
-+ (id)stringBySanitizingNumberString:(id)a3 allowDecimalNumbers:(BOOL)a4;
-+ (unint64_t)numberOfOccurrencesOfString:(id)a3 inString:(id)a4;
-+ (void)negateTextInput:(id)a3;
++ (id)negateText:(id)text;
++ (id)stringBySanitizingNumberString:(id)string allowDecimalNumbers:(BOOL)numbers;
++ (unint64_t)numberOfOccurrencesOfString:(id)string inString:(id)inString;
++ (void)negateTextInput:(id)input;
 @end
 
 @implementation WFNumberFieldUtilities
 
-+ (unint64_t)numberOfOccurrencesOfString:(id)a3 inString:(id)a4
++ (unint64_t)numberOfOccurrencesOfString:(id)string inString:(id)inString
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  inStringCopy = inString;
   v7 = 0;
-  if ([v6 length])
+  if ([inStringCopy length])
   {
     v8 = 0;
     do
     {
-      v9 = [v6 rangeOfString:v5 options:0 range:{v8, objc_msgSend(v6, "length") - v8}];
+      v9 = [inStringCopy rangeOfString:stringCopy options:0 range:{v8, objc_msgSend(inStringCopy, "length") - v8}];
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -29,27 +29,27 @@
       v8 = v9 + v10;
     }
 
-    while (v9 + v10 < [v6 length]);
+    while (v9 + v10 < [inStringCopy length]);
   }
 
   return v7;
 }
 
-+ (id)stringBySanitizingNumberString:(id)a3 allowDecimalNumbers:(BOOL)a4
++ (id)stringBySanitizingNumberString:(id)string allowDecimalNumbers:(BOOL)numbers
 {
-  v4 = a4;
+  numbersCopy = numbers;
   v6 = MEMORY[0x277CCAB50];
-  v7 = a3;
-  v8 = [v6 decimalDigitCharacterSet];
-  [v8 addCharactersInString:@"-"];
-  if (v4)
+  stringCopy = string;
+  decimalDigitCharacterSet = [v6 decimalDigitCharacterSet];
+  [decimalDigitCharacterSet addCharactersInString:@"-"];
+  if (numbersCopy)
   {
-    v9 = [a1 decimalSymbol];
-    [v8 addCharactersInString:v9];
+    decimalSymbol = [self decimalSymbol];
+    [decimalDigitCharacterSet addCharactersInString:decimalSymbol];
   }
 
-  v10 = [v8 invertedSet];
-  v11 = [v7 componentsSeparatedByCharactersInSet:v10];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
+  v11 = [stringCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v12 = [v11 componentsJoinedByString:&stru_288374A58];
 
@@ -60,8 +60,8 @@
     v12 = v13;
   }
 
-  v14 = [a1 decimalSymbol];
-  v15 = [v12 hasPrefix:v14];
+  decimalSymbol2 = [self decimalSymbol];
+  v15 = [v12 hasPrefix:decimalSymbol2];
 
   if (v15)
   {
@@ -73,63 +73,63 @@
   return v12;
 }
 
-+ (BOOL)shouldChangeText:(id)a3 allowMinus:(BOOL)a4
++ (BOOL)shouldChangeText:(id)text allowMinus:(BOOL)minus
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x277CCA980] minimumDecimalNumber];
-  v8 = [v7 stringValue];
-  v9 = [v8 length] + 1;
-  v12 = [v6 length] <= v9 && (objc_msgSend(a1, "decimalSymbol"), v10 = ;
+  minusCopy = minus;
+  textCopy = text;
+  minimumDecimalNumber = [MEMORY[0x277CCA980] minimumDecimalNumber];
+  stringValue = [minimumDecimalNumber stringValue];
+  v9 = [stringValue length] + 1;
+  v12 = [textCopy length] <= v9 && (objc_msgSend(self, "decimalSymbol"), v10 = ;
   return v12;
 }
 
-+ (void)negateTextInput:(id)a3
++ (void)negateTextInput:(id)input
 {
-  v15 = a3;
-  v3 = [v15 selectedTextRange];
-  v4 = [v15 beginningOfDocument];
-  v5 = [v15 positionFromPosition:v4 offset:1];
-  v6 = [v15 textRangeFromPosition:v4 toPosition:v5];
-  v7 = [v15 textInRange:v6];
+  inputCopy = input;
+  selectedTextRange = [inputCopy selectedTextRange];
+  beginningOfDocument = [inputCopy beginningOfDocument];
+  v5 = [inputCopy positionFromPosition:beginningOfDocument offset:1];
+  v6 = [inputCopy textRangeFromPosition:beginningOfDocument toPosition:v5];
+  v7 = [inputCopy textInRange:v6];
   if ([v7 isEqualToString:@"-"])
   {
-    [v15 replaceRange:v6 withText:&stru_288374A58];
+    [inputCopy replaceRange:v6 withText:&stru_288374A58];
     v8 = -1;
   }
 
   else
   {
     v9 = [@"-" stringByAppendingString:v7];
-    [v15 replaceRange:v6 withText:v9];
+    [inputCopy replaceRange:v6 withText:v9];
 
     v8 = 1;
   }
 
-  v10 = [v3 start];
-  v11 = [v15 positionFromPosition:v10 offset:v8];
+  start = [selectedTextRange start];
+  v11 = [inputCopy positionFromPosition:start offset:v8];
 
-  v12 = [v3 end];
-  v13 = [v15 positionFromPosition:v12 offset:v8];
+  v12 = [selectedTextRange end];
+  v13 = [inputCopy positionFromPosition:v12 offset:v8];
 
-  v14 = [v15 textRangeFromPosition:v11 toPosition:v13];
-  [v15 setSelectedTextRange:v14];
+  v14 = [inputCopy textRangeFromPosition:v11 toPosition:v13];
+  [inputCopy setSelectedTextRange:v14];
 }
 
-+ (id)negateText:(id)a3
++ (id)negateText:(id)text
 {
-  v3 = a3;
-  if (-[__CFString length](v3, "length") && (-[__CFString substringToIndex:](v3, "substringToIndex:", 1), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqualToString:@"-"], v4, v5))
+  textCopy = text;
+  if (-[__CFString length](textCopy, "length") && (-[__CFString substringToIndex:](textCopy, "substringToIndex:", 1), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqualToString:@"-"], v4, v5))
   {
-    v6 = [(__CFString *)v3 substringFromIndex:1];
+    v6 = [(__CFString *)textCopy substringFromIndex:1];
   }
 
   else
   {
     v7 = &stru_288374A58;
-    if (v3)
+    if (textCopy)
     {
-      v7 = v3;
+      v7 = textCopy;
     }
 
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"-", v7];
@@ -142,10 +142,10 @@
 
 + (id)decimalSymbol
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 decimalSeparator];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  decimalSeparator = [currentLocale decimalSeparator];
 
-  return v3;
+  return decimalSeparator;
 }
 
 @end

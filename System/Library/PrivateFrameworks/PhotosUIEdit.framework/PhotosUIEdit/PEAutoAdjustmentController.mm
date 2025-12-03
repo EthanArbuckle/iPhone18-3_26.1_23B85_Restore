@@ -1,24 +1,24 @@
 @interface PEAutoAdjustmentController
-+ (BOOL)isAutoEnhanceEnabledForAsset:(id)a3;
-+ (BOOL)isAutoEnhanceEnabledForCompositionController:(id)a3;
++ (BOOL)isAutoEnhanceEnabledForAsset:(id)asset;
++ (BOOL)isAutoEnhanceEnabledForCompositionController:(id)controller;
 - (PEAutoAdjustmentController)init;
-- (double)defaultAutoEnhanceIntensityForCompositionController:(id)a3;
-- (void)_applyAutoValuesOnCompositionController:(id)a3 whiteBalanceSettings:(id)a4 redEyeCorrections:(id)a5 smartToneLevel:(double)a6 smartColorLevel:(double)a7 valuesCalculator:(id)a8;
-- (void)_enableAutoEnhanceOnCompositionController:(id)a3 valuesCalculator:(id)a4 useCompositionIntensity:(BOOL)a5 completionHandler:(id)a6;
-- (void)_revertAutoValuesOnCompositionController:(id)a3;
-- (void)calculateStatisticsForCompositionController:(id)a3 valuesCalculator:(id)a4 completionHandler:(id)a5;
-- (void)disableAutoEnhanceOnCompositionController:(id)a3;
-- (void)enableAutoEnhanceOnCompositionController:(id)a3 useCompositionIntensity:(BOOL)a4 valuesCalculator:(id)a5 completionHandler:(id)a6;
-- (void)ensureCacheUpToDateForValuesCalculator:(id)a3 completionHandler:(id)a4;
+- (double)defaultAutoEnhanceIntensityForCompositionController:(id)controller;
+- (void)_applyAutoValuesOnCompositionController:(id)controller whiteBalanceSettings:(id)settings redEyeCorrections:(id)corrections smartToneLevel:(double)level smartColorLevel:(double)colorLevel valuesCalculator:(id)calculator;
+- (void)_enableAutoEnhanceOnCompositionController:(id)controller valuesCalculator:(id)calculator useCompositionIntensity:(BOOL)intensity completionHandler:(id)handler;
+- (void)_revertAutoValuesOnCompositionController:(id)controller;
+- (void)calculateStatisticsForCompositionController:(id)controller valuesCalculator:(id)calculator completionHandler:(id)handler;
+- (void)disableAutoEnhanceOnCompositionController:(id)controller;
+- (void)enableAutoEnhanceOnCompositionController:(id)controller useCompositionIntensity:(BOOL)intensity valuesCalculator:(id)calculator completionHandler:(id)handler;
+- (void)ensureCacheUpToDateForValuesCalculator:(id)calculator completionHandler:(id)handler;
 - (void)invalidateCachedAdjustments;
 @end
 
 @implementation PEAutoAdjustmentController
 
-- (void)_revertAutoValuesOnCompositionController:(id)a3
+- (void)_revertAutoValuesOnCompositionController:(id)controller
 {
   stashedPreviousManualComposition = self->_stashedPreviousManualComposition;
-  v5 = a3;
+  controllerCopy = controller;
   v6 = PLPhotoEditGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (stashedPreviousManualComposition)
@@ -29,7 +29,7 @@
       _os_log_impl(&dword_25E6E9000, v6, OS_LOG_TYPE_DEFAULT, "Removing auto enhance. Reverting to previously saved manual adjustments.", buf, 2u);
     }
 
-    v8 = self->_stashedPreviousManualComposition;
+    newIdentityCompositionController = self->_stashedPreviousManualComposition;
   }
 
   else
@@ -40,14 +40,14 @@
       _os_log_impl(&dword_25E6E9000, v6, OS_LOG_TYPE_DEFAULT, "Removing auto enhance. Reverting to identity adjustments.", buf, 2u);
     }
 
-    v8 = [MEMORY[0x277D3AC20] newIdentityCompositionController];
+    newIdentityCompositionController = [MEMORY[0x277D3AC20] newIdentityCompositionController];
   }
 
-  v9 = v8;
+  v9 = newIdentityCompositionController;
   v10 = self->_stashedPreviousManualComposition;
   self->_stashedPreviousManualComposition = 0;
 
-  v11 = [v5 copy];
+  v11 = [controllerCopy copy];
   v12 = *MEMORY[0x277D3ABC0];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -73,7 +73,7 @@
   v17 = v15;
   [v11 modifyAdjustmentWithKey:v16 modificationBlock:v18];
   [v11 removeAdjustmentWithKey:*MEMORY[0x277D3AAB8]];
-  [v5 applyChangesFromCompositionController:v11];
+  [controllerCopy applyChangesFromCompositionController:v11];
 }
 
 void __71__PEAutoAdjustmentController__revertAutoValuesOnCompositionController___block_invoke(uint64_t a1, void *a2)
@@ -139,76 +139,76 @@ void __71__PEAutoAdjustmentController__revertAutoValuesOnCompositionController__
   [v5 setIsAuto:0];
 }
 
-- (void)_applyAutoValuesOnCompositionController:(id)a3 whiteBalanceSettings:(id)a4 redEyeCorrections:(id)a5 smartToneLevel:(double)a6 smartColorLevel:(double)a7 valuesCalculator:(id)a8
+- (void)_applyAutoValuesOnCompositionController:(id)controller whiteBalanceSettings:(id)settings redEyeCorrections:(id)corrections smartToneLevel:(double)level smartColorLevel:(double)colorLevel valuesCalculator:(id)calculator
 {
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  controllerCopy = controller;
+  settingsCopy = settings;
+  correctionsCopy = corrections;
+  calculatorCopy = calculator;
   v18 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v43 = v15;
+    v43 = settingsCopy;
     v44 = 2112;
-    v45 = v16;
+    v45 = correctionsCopy;
     v46 = 2048;
-    v47 = a6;
+    levelCopy = level;
     v48 = 2048;
-    v49 = a7;
+    colorLevelCopy = colorLevel;
     _os_log_impl(&dword_25E6E9000, v18, OS_LOG_TYPE_DEFAULT, "Applying auto enhance. White Balance: %@\nRed Eye: %@\nSmartTone: %f\nSmartColor: %f", buf, 0x2Au);
   }
 
-  v19 = [v14 adjustmentConstants];
-  v20 = [v14 copy];
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  v20 = [controllerCopy copy];
   stashedPreviousManualComposition = self->_stashedPreviousManualComposition;
   self->_stashedPreviousManualComposition = v20;
 
-  v22 = [v14 copy];
-  v23 = [v19 PISmartToneAdjustmentKey];
+  v22 = [controllerCopy copy];
+  pISmartToneAdjustmentKey = [adjustmentConstants PISmartToneAdjustmentKey];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_whiteBalanceSettings_redEyeCorrections_smartToneLevel_smartColorLevel_valuesCalculator___block_invoke;
   v39[3] = &unk_279A2FF58;
-  v24 = v17;
+  v24 = calculatorCopy;
   v40 = v24;
-  v41 = a6;
-  [v22 modifyAdjustmentWithKey:v23 modificationBlock:v39];
+  levelCopy2 = level;
+  [v22 modifyAdjustmentWithKey:pISmartToneAdjustmentKey modificationBlock:v39];
 
-  v25 = [v19 PISmartColorAdjustmentKey];
+  pISmartColorAdjustmentKey = [adjustmentConstants PISmartColorAdjustmentKey];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_whiteBalanceSettings_redEyeCorrections_smartToneLevel_smartColorLevel_valuesCalculator___block_invoke_2;
   v36[3] = &unk_279A2FF80;
   v26 = v24;
   v37 = v26;
-  v38 = a7;
-  [v22 modifyAdjustmentWithKey:v25 modificationBlock:v36];
+  colorLevelCopy2 = colorLevel;
+  [v22 modifyAdjustmentWithKey:pISmartColorAdjustmentKey modificationBlock:v36];
 
-  if (v15)
+  if (settingsCopy)
   {
-    v27 = [v19 PIWhiteBalanceAdjustmentKey];
+    pIWhiteBalanceAdjustmentKey = [adjustmentConstants PIWhiteBalanceAdjustmentKey];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_whiteBalanceSettings_redEyeCorrections_smartToneLevel_smartColorLevel_valuesCalculator___block_invoke_3;
     v34[3] = &unk_279A30C00;
-    v35 = v15;
-    [v22 modifyAdjustmentWithKey:v27 modificationBlock:v34];
+    v35 = settingsCopy;
+    [v22 modifyAdjustmentWithKey:pIWhiteBalanceAdjustmentKey modificationBlock:v34];
   }
 
-  if (v16)
+  if (correctionsCopy)
   {
-    v28 = [v19 PIRedEyeAdjustmentKey];
+    pIRedEyeAdjustmentKey = [adjustmentConstants PIRedEyeAdjustmentKey];
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
     v31 = __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_whiteBalanceSettings_redEyeCorrections_smartToneLevel_smartColorLevel_valuesCalculator___block_invoke_4;
     v32 = &unk_279A2FFA8;
-    v33 = v16;
-    [v22 modifyAdjustmentWithKey:v28 modificationBlock:&v29];
+    v33 = correctionsCopy;
+    [v22 modifyAdjustmentWithKey:pIRedEyeAdjustmentKey modificationBlock:&v29];
   }
 
-  [v14 applyChangesFromCompositionController:{v22, v29, v30, v31, v32}];
+  [controllerCopy applyChangesFromCompositionController:{v22, v29, v30, v31, v32}];
 }
 
 void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_whiteBalanceSettings_redEyeCorrections_smartToneLevel_smartColorLevel_valuesCalculator___block_invoke(uint64_t a1, void *a2)
@@ -281,10 +281,10 @@ void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_w
   [v3 setEnabled:1];
 }
 
-- (double)defaultAutoEnhanceIntensityForCompositionController:(id)a3
+- (double)defaultAutoEnhanceIntensityForCompositionController:(id)controller
 {
-  v3 = [a3 smartToneAdjustmentController];
-  [v3 inputLightDefault];
+  smartToneAdjustmentController = [controller smartToneAdjustmentController];
+  [smartToneAdjustmentController inputLightDefault];
   v5 = v4;
 
   return v5;
@@ -305,9 +305,9 @@ void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_w
   self->_stashedPreviousManualComposition = 0;
 }
 
-- (void)disableAutoEnhanceOnCompositionController:(id)a3
+- (void)disableAutoEnhanceOnCompositionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = PLPhotoEditGetLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -326,9 +326,9 @@ void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_w
 
   else
   {
-    v9 = [v4 copy];
+    v9 = [controllerCopy copy];
     [(PEAutoAdjustmentController *)self _revertAutoValuesOnCompositionController:v9];
-    [v4 applyChangesFromCompositionController:v9];
+    [controllerCopy applyChangesFromCompositionController:v9];
     v10 = v8;
     v11 = v10;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -339,16 +339,16 @@ void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_w
   }
 }
 
-- (void)ensureCacheUpToDateForValuesCalculator:(id)a3 completionHandler:(id)a4
+- (void)ensureCacheUpToDateForValuesCalculator:(id)calculator completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   if (self->_cachedValuesAreValid)
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -360,8 +360,8 @@ void __157__PEAutoAdjustmentController__applyAutoValuesOnCompositionController_w
     block[2] = __87__PEAutoAdjustmentController_ensureCacheUpToDateForValuesCalculator_completionHandler___block_invoke;
     block[3] = &unk_279A313C0;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
+    v12 = handlerCopy;
+    v11 = calculatorCopy;
     dispatch_async(calculationQueue, block);
   }
 }
@@ -525,11 +525,11 @@ void __87__PEAutoAdjustmentController_ensureCacheUpToDateForValuesCalculator_com
   }
 }
 
-- (void)calculateStatisticsForCompositionController:(id)a3 valuesCalculator:(id)a4 completionHandler:(id)a5
+- (void)calculateStatisticsForCompositionController:(id)controller valuesCalculator:(id)calculator completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
   v11 = PLPhotoEditGetLog();
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -544,15 +544,15 @@ void __87__PEAutoAdjustmentController_ensureCacheUpToDateForValuesCalculator_com
   aBlock[1] = 3221225472;
   aBlock[2] = __109__PEAutoAdjustmentController_calculateStatisticsForCompositionController_valuesCalculator_completionHandler___block_invoke;
   aBlock[3] = &unk_279A2FEE0;
-  v21 = v8;
-  v22 = v9;
+  v21 = controllerCopy;
+  v22 = calculatorCopy;
   v23 = v14;
-  v24 = v10;
+  v24 = handlerCopy;
   v25 = v12;
   v15 = v14;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
+  v16 = handlerCopy;
+  v17 = calculatorCopy;
+  v18 = controllerCopy;
   v19 = _Block_copy(aBlock);
   [(PEAutoAdjustmentController *)self ensureCacheUpToDateForValuesCalculator:v17 completionHandler:v19];
 }
@@ -606,12 +606,12 @@ void __109__PEAutoAdjustmentController_calculateStatisticsForCompositionControll
   }
 }
 
-- (void)_enableAutoEnhanceOnCompositionController:(id)a3 valuesCalculator:(id)a4 useCompositionIntensity:(BOOL)a5 completionHandler:(id)a6
+- (void)_enableAutoEnhanceOnCompositionController:(id)controller valuesCalculator:(id)calculator useCompositionIntensity:(BOOL)intensity completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  intensityCopy = intensity;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
   v13 = PLPhotoEditGetLog();
   v14 = os_signpost_id_generate(v13);
   v15 = v13;
@@ -632,30 +632,30 @@ void __109__PEAutoAdjustmentController_calculateStatisticsForCompositionControll
   else
   {
     cachedSmartToneLevel = self->_cachedSmartToneLevel;
-    if (v7)
+    if (intensityCopy)
     {
-      v19 = [v10 smartToneAdjustmentController];
-      v20 = v19;
-      if (v19)
+      smartToneAdjustmentController = [controllerCopy smartToneAdjustmentController];
+      v20 = smartToneAdjustmentController;
+      if (smartToneAdjustmentController)
       {
-        [v19 inputLight];
+        [smartToneAdjustmentController inputLight];
         cachedSmartToneLevel = v21;
       }
     }
 
-    v22 = [v10 copy];
-    v23 = [(PEAutoAdjustmentController *)self imageProperties];
-    if (v23)
+    v22 = [controllerCopy copy];
+    imageProperties = [(PEAutoAdjustmentController *)self imageProperties];
+    if (imageProperties)
     {
-      v24 = v23;
+      v24 = imageProperties;
       v38 = v22;
       v25 = v16;
-      v26 = v12;
+      v26 = handlerCopy;
       v27 = v14 - 1;
       v28 = v14;
-      v29 = v11;
-      v30 = [(PEAutoAdjustmentController *)self imageProperties];
-      v31 = [PESupport photoWasTakenWithoutFlashWithImageProperties:v30];
+      v29 = calculatorCopy;
+      imageProperties2 = [(PEAutoAdjustmentController *)self imageProperties];
+      v31 = [PESupport photoWasTakenWithoutFlashWithImageProperties:imageProperties2];
 
       if (v31)
       {
@@ -667,10 +667,10 @@ void __109__PEAutoAdjustmentController_calculateStatisticsForCompositionControll
         cachedRedEyeCorrections = self->_cachedRedEyeCorrections;
       }
 
-      v11 = v29;
+      calculatorCopy = v29;
       v14 = v28;
       v17 = v27;
-      v12 = v26;
+      handlerCopy = v26;
       v16 = v25;
       v22 = v38;
     }
@@ -688,15 +688,15 @@ void __109__PEAutoAdjustmentController_calculateStatisticsForCompositionControll
       _os_log_impl(&dword_25E6E9000, v34, OS_LOG_TYPE_DEFAULT, "Computing auto enhance. Using previously cached values.", buf, 2u);
     }
 
-    [(PEAutoAdjustmentController *)self _applyAutoValuesOnCompositionController:v22 whiteBalanceSettings:self->_cachedWhiteBalanceSettings redEyeCorrections:v33 smartToneLevel:v11 smartColorLevel:cachedSmartToneLevel valuesCalculator:self->_cachedSmartColorLevel];
-    [v10 applyChangesFromCompositionController:v22];
-    if (v12)
+    [(PEAutoAdjustmentController *)self _applyAutoValuesOnCompositionController:v22 whiteBalanceSettings:self->_cachedWhiteBalanceSettings redEyeCorrections:v33 smartToneLevel:calculatorCopy smartColorLevel:cachedSmartToneLevel valuesCalculator:self->_cachedSmartColorLevel];
+    [controllerCopy applyChangesFromCompositionController:v22];
+    if (handlerCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __131__PEAutoAdjustmentController__enableAutoEnhanceOnCompositionController_valuesCalculator_useCompositionIntensity_completionHandler___block_invoke;
       block[3] = &unk_279A2FEB8;
-      v41 = v12;
+      v41 = handlerCopy;
       v40 = v16;
       v42 = v14;
       dispatch_async(MEMORY[0x277D85CD0], block);
@@ -730,15 +730,15 @@ void __131__PEAutoAdjustmentController__enableAutoEnhanceOnCompositionController
   }
 }
 
-- (void)enableAutoEnhanceOnCompositionController:(id)a3 useCompositionIntensity:(BOOL)a4 valuesCalculator:(id)a5 completionHandler:(id)a6
+- (void)enableAutoEnhanceOnCompositionController:(id)controller useCompositionIntensity:(BOOL)intensity valuesCalculator:(id)calculator completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  intensityCopy = intensity;
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
   if (self->_cachedValuesAreValid)
   {
-    [(PEAutoAdjustmentController *)self _enableAutoEnhanceOnCompositionController:v10 valuesCalculator:v11 useCompositionIntensity:v8 completionHandler:v12];
+    [(PEAutoAdjustmentController *)self _enableAutoEnhanceOnCompositionController:controllerCopy valuesCalculator:calculatorCopy useCompositionIntensity:intensityCopy completionHandler:handlerCopy];
   }
 
   else
@@ -749,10 +749,10 @@ void __131__PEAutoAdjustmentController__enableAutoEnhanceOnCompositionController
     v13[2] = __130__PEAutoAdjustmentController_enableAutoEnhanceOnCompositionController_useCompositionIntensity_valuesCalculator_completionHandler___block_invoke;
     v13[3] = &unk_279A2FE90;
     objc_copyWeak(&v17, &location);
-    v14 = v10;
-    v15 = v11;
-    v18 = v8;
-    v16 = v12;
+    v14 = controllerCopy;
+    v15 = calculatorCopy;
+    v18 = intensityCopy;
+    v16 = handlerCopy;
     [(PEAutoAdjustmentController *)self ensureCacheUpToDateForValuesCalculator:v15 completionHandler:v13];
 
     objc_destroyWeak(&v17);
@@ -778,34 +778,34 @@ void __130__PEAutoAdjustmentController_enableAutoEnhanceOnCompositionController_
   return v2;
 }
 
-+ (BOOL)isAutoEnhanceEnabledForCompositionController:(id)a3
++ (BOOL)isAutoEnhanceEnabledForCompositionController:(id)controller
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  controllerCopy = controller;
+  v4 = controllerCopy;
+  if (controllerCopy)
   {
-    v5 = [v3 smartToneAdjustmentController];
-    v6 = [v5 isAuto];
+    smartToneAdjustmentController = [controllerCopy smartToneAdjustmentController];
+    isAuto = [smartToneAdjustmentController isAuto];
 
-    if (v6)
+    if (isAuto)
     {
-      v7 = [v4 smartColorAdjustmentController];
-      v8 = [v7 isAuto];
+      smartColorAdjustmentController = [v4 smartColorAdjustmentController];
+      isAuto2 = [smartColorAdjustmentController isAuto];
     }
 
     else
     {
-      v8 = 0;
+      isAuto2 = 0;
     }
 
-    v10 = [v4 whiteBalanceAdjustmentController];
-    v11 = [v10 canHaveAuto] ^ 1;
-    LOBYTE(v9) = v11 & v8;
-    if ((v11 & 1) == 0 && v8)
+    whiteBalanceAdjustmentController = [v4 whiteBalanceAdjustmentController];
+    v11 = [whiteBalanceAdjustmentController canHaveAuto] ^ 1;
+    LOBYTE(v9) = v11 & isAuto2;
+    if ((v11 & 1) == 0 && isAuto2)
     {
-      if (v10 && ([v10 isAuto] & 1) == 0)
+      if (whiteBalanceAdjustmentController && ([whiteBalanceAdjustmentController isAuto] & 1) == 0)
       {
-        v9 = [v10 enabled] ^ 1;
+        v9 = [whiteBalanceAdjustmentController enabled] ^ 1;
       }
 
       else
@@ -823,10 +823,10 @@ void __130__PEAutoAdjustmentController_enableAutoEnhanceOnCompositionController_
   return v9;
 }
 
-+ (BOOL)isAutoEnhanceEnabledForAsset:(id)a3
++ (BOOL)isAutoEnhanceEnabledForAsset:(id)asset
 {
   v6 = 0;
-  v3 = [PEAdjustmentDataCache synchronousCompositionControllerForAsset:a3 networkAccessAllowed:0 disposition:&v6 originalComposition:0];
+  v3 = [PEAdjustmentDataCache synchronousCompositionControllerForAsset:asset networkAccessAllowed:0 disposition:&v6 originalComposition:0];
   v4 = [PEAutoAdjustmentController isAutoEnhanceEnabledForCompositionController:v3];
 
   return v4;

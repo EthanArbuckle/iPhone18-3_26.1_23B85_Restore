@@ -1,40 +1,40 @@
 @interface AVTAvatarLibraryModel
-- (AVTAvatarLibraryModel)initWithAvatarStore:(id)a3 avtViewSessionProvider:(id)a4 environment:(id)a5;
+- (AVTAvatarLibraryModel)initWithAvatarStore:(id)store avtViewSessionProvider:(id)provider environment:(id)environment;
 - (AVTAvatarLibraryModelDelegate)delegate;
 - (NSArray)libraryItems;
-- (id)libraryItemsFromAvatarRecords:(id)a3;
-- (int64_t)indexForRecord:(id)a3;
+- (id)libraryItemsFromAvatarRecords:(id)records;
+- (int64_t)indexForRecord:(id)record;
 - (unint64_t)numberOfRecords;
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4;
-- (void)avatarEditorViewControllerDidCancel:(id)a3;
-- (void)insertItemForRecord:(id)a3 atIndex:(unint64_t)a4;
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record;
+- (void)avatarEditorViewControllerDidCancel:(id)cancel;
+- (void)insertItemForRecord:(id)record atIndex:(unint64_t)index;
 - (void)load;
-- (void)performActionOnItemAtIndex:(unint64_t)a3;
-- (void)presentActionSheetForRecordItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)presentEditor:(id)a3 forCreating:(BOOL)a4;
-- (void)presetShareSheetWithRecords:(id)a3 fromItem:(id)a4;
-- (void)reloadDataForRecords:(id)a3;
-- (void)removeItemForRecordAtIndex:(unint64_t)a3;
-- (void)storeDidChangeNotification:(id)a3;
-- (void)updateForCreatedRecord:(id)a3;
-- (void)updateForEditedRecord:(id)a3;
+- (void)performActionOnItemAtIndex:(unint64_t)index;
+- (void)presentActionSheetForRecordItem:(id)item atIndex:(unint64_t)index;
+- (void)presentEditor:(id)editor forCreating:(BOOL)creating;
+- (void)presetShareSheetWithRecords:(id)records fromItem:(id)item;
+- (void)reloadDataForRecords:(id)records;
+- (void)removeItemForRecordAtIndex:(unint64_t)index;
+- (void)storeDidChangeNotification:(id)notification;
+- (void)updateForCreatedRecord:(id)record;
+- (void)updateForEditedRecord:(id)record;
 @end
 
 @implementation AVTAvatarLibraryModel
 
-- (AVTAvatarLibraryModel)initWithAvatarStore:(id)a3 avtViewSessionProvider:(id)a4 environment:(id)a5
+- (AVTAvatarLibraryModel)initWithAvatarStore:(id)store avtViewSessionProvider:(id)provider environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  providerCopy = provider;
+  environmentCopy = environment;
   v20.receiver = self;
   v20.super_class = AVTAvatarLibraryModel;
   v12 = [(AVTAvatarLibraryModel *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_avatarStore, a3);
-    objc_storeStrong(&v13->_environment, a5);
+    objc_storeStrong(&v12->_avatarStore, store);
+    objc_storeStrong(&v13->_environment, environment);
     v14 = objc_alloc_init(AVTAvatarLibraryCreateNewItem);
     createNewItem = v13->_createNewItem;
     v13->_createNewItem = v14;
@@ -43,9 +43,9 @@
     mutableLibraryItems = v13->_mutableLibraryItems;
     v13->_mutableLibraryItems = v16;
 
-    objc_storeStrong(&v13->_viewSessionProvider, a4);
-    v18 = [v11 notificationCenter];
-    [v18 addObserver:v13 selector:sel_storeDidChangeNotification_ name:*MEMORY[0x1E698E308] object:0];
+    objc_storeStrong(&v13->_viewSessionProvider, provider);
+    notificationCenter = [environmentCopy notificationCenter];
+    [notificationCenter addObserver:v13 selector:sel_storeDidChangeNotification_ name:*MEMORY[0x1E698E308] object:0];
   }
 
   return v13;
@@ -53,8 +53,8 @@
 
 - (NSArray)libraryItems
 {
-  v2 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  v3 = [v2 copy];
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  v3 = [mutableLibraryItems copy];
 
   return v3;
 }
@@ -99,12 +99,12 @@
   return v5;
 }
 
-- (void)storeDidChangeNotification:(id)a3
+- (void)storeDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(AVTAvatarLibraryModel *)self avatarStore];
+  object = [notification object];
+  avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
 
-  if (v4 != v5)
+  if (object != avatarStore)
   {
 
     [(AVTAvatarLibraryModel *)self load];
@@ -113,14 +113,14 @@
 
 - (void)load
 {
-  v3 = [MEMORY[0x1E698E310] requestForCustomAvatars];
-  v4 = [(AVTAvatarLibraryModel *)self avatarStore];
+  requestForCustomAvatars = [MEMORY[0x1E698E310] requestForCustomAvatars];
+  avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __29__AVTAvatarLibraryModel_load__block_invoke;
   v5[3] = &unk_1E7F3B7D0;
   v5[4] = self;
-  [v4 fetchAvatarsForFetchRequest:v3 completionHandler:v5];
+  [avatarStore fetchAvatarsForFetchRequest:requestForCustomAvatars completionHandler:v5];
 }
 
 void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -139,45 +139,45 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
   }
 }
 
-- (void)performActionOnItemAtIndex:(unint64_t)a3
+- (void)performActionOnItemAtIndex:(unint64_t)index
 {
-  v5 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  v9 = [v5 objectAtIndexedSubscript:a3];
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  v9 = [mutableLibraryItems objectAtIndexedSubscript:index];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AVTAvatarLibraryModel *)self presentActionSheetForRecordItem:v9 atIndex:a3];
+    [(AVTAvatarLibraryModel *)self presentActionSheetForRecordItem:v9 atIndex:index];
   }
 
   else
   {
-    v6 = [(AVTAvatarLibraryModel *)self avatarStore];
-    v7 = [(AVTAvatarLibraryModel *)self viewSessionProvider];
-    v8 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:v6 avtViewSessionProvider:v7];
+    avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
+    viewSessionProvider = [(AVTAvatarLibraryModel *)self viewSessionProvider];
+    v8 = [AVTAvatarEditorViewController viewControllerForCreatingAvatarInStore:avatarStore avtViewSessionProvider:viewSessionProvider];
 
     [(AVTAvatarLibraryModel *)self presentEditor:v8 forCreating:1];
   }
 }
 
-- (void)presentEditor:(id)a3 forCreating:(BOOL)a4
+- (void)presentEditor:(id)editor forCreating:(BOOL)creating
 {
-  v4 = a4;
-  v6 = a3;
-  [(AVTAvatarLibraryModel *)self setIsCreatingAvatar:v4];
-  [v6 setDelegate:self];
-  v7 = [(AVTAvatarLibraryModel *)self delegate];
-  [v7 presetEditorViewController:v6];
+  creatingCopy = creating;
+  editorCopy = editor;
+  [(AVTAvatarLibraryModel *)self setIsCreatingAvatar:creatingCopy];
+  [editorCopy setDelegate:self];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  [delegate presetEditorViewController:editorCopy];
 }
 
-- (void)presentActionSheetForRecordItem:(id)a3 atIndex:(unint64_t)a4
+- (void)presentActionSheetForRecordItem:(id)item atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    v35 = a4;
-    v8 = [v6 avatarRecord];
+    indexCopy = index;
+    avatarRecord = [itemCopy avatarRecord];
     v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
     v10 = AVTAvatarUIBundle();
     v11 = [v10 localizedStringForKey:@"EDIT" value:&stru_1F39618F0 table:@"Localized"];
@@ -185,9 +185,9 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
     v47[1] = 3221225472;
     v47[2] = __65__AVTAvatarLibraryModel_presentActionSheetForRecordItem_atIndex___block_invoke;
     v47[3] = &unk_1E7F3B7F8;
-    v12 = v8;
+    v12 = avatarRecord;
     v48 = v12;
-    v49 = self;
+    selfCopy = self;
     v13 = [AVTComponentFactory alertActionWithTitle:v11 style:0 handler:v47];
     [v9 addAction:v13];
 
@@ -217,8 +217,8 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
     v21 = [AVTComponentFactory alertActionWithTitle:v20 style:0 handler:v42];
     [v9 addAction:v21];
 
-    v22 = [(AVTAvatarLibraryModel *)self avatarStore];
-    LODWORD(v20) = [v22 canCreateAvatarWithError:0];
+    avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
+    LODWORD(v20) = [avatarStore canCreateAvatarWithError:0];
 
     if (v20)
     {
@@ -230,7 +230,7 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
       v39[3] = &unk_1E7F3B898;
       v39[4] = self;
       v40 = v16;
-      v41 = v35;
+      v41 = indexCopy;
       v25 = [AVTComponentFactory alertActionWithTitle:v24 style:0 handler:v39];
       [v9 addAction:v25];
     }
@@ -243,7 +243,7 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
     v36[3] = &unk_1E7F3B898;
     v36[4] = self;
     v37 = v16;
-    v38 = v35;
+    v38 = indexCopy;
     v28 = v16;
     v29 = [AVTComponentFactory alertActionWithTitle:v27 style:0 handler:v36];
     [v9 addAction:v29];
@@ -253,8 +253,8 @@ void __29__AVTAvatarLibraryModel_load__block_invoke(uint64_t a1, void *a2, uint6
     v32 = [AVTComponentFactory alertActionWithTitle:v31 style:1 handler:0];
     [v9 addAction:v32];
 
-    v33 = [(AVTAvatarLibraryModel *)self delegate];
-    [v33 presentUIViewController:v9 forItem:v34];
+    delegate = [(AVTAvatarLibraryModel *)self delegate];
+    [delegate presentUIViewController:v9 forItem:v34];
   }
 }
 
@@ -370,16 +370,16 @@ void __65__AVTAvatarLibraryModel_presentActionSheetForRecordItem_atIndex___block
   [v2 didDeleteRecord:*(a1 + 40)];
 }
 
-- (id)libraryItemsFromAvatarRecords:(id)a3
+- (id)libraryItemsFromAvatarRecords:(id)records
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  recordsCopy = records;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = recordsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -396,10 +396,10 @@ void __65__AVTAvatarLibraryModel_presentActionSheetForRecordItem_atIndex___block
 
         v11 = *(*(&v19 + 1) + 8 * i);
         v12 = [AVTAvatarLibraryRecordItem alloc];
-        v13 = [(AVTAvatarLibraryModel *)self environment];
-        v14 = [(AVTAvatarLibraryRecordItem *)v12 initWithAvatarRecord:v11 environment:v13];
+        environment = [(AVTAvatarLibraryModel *)self environment];
+        v14 = [(AVTAvatarLibraryRecordItem *)v12 initWithAvatarRecord:v11 environment:environment];
 
-        [v5 addObject:v14];
+        [array addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -408,44 +408,44 @@ void __65__AVTAvatarLibraryModel_presentActionSheetForRecordItem_atIndex___block
     while (v8);
   }
 
-  v15 = [(AVTAvatarLibraryModel *)self avatarStore];
-  v16 = [v15 canCreateAvatarWithError:0];
+  avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
+  v16 = [avatarStore canCreateAvatarWithError:0];
 
   if (v16)
   {
-    v17 = [(AVTAvatarLibraryModel *)self createNewItem];
-    [v5 addObject:v17];
+    createNewItem = [(AVTAvatarLibraryModel *)self createNewItem];
+    [array addObject:createNewItem];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)insertItemForRecord:(id)a3 atIndex:(unint64_t)a4
+- (void)insertItemForRecord:(id)record atIndex:(unint64_t)index
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = [AVTAvatarLibraryRecordItem alloc];
-  v8 = [(AVTAvatarLibraryModel *)self environment];
-  v22 = [(AVTAvatarLibraryRecordItem *)v7 initWithAvatarRecord:v6 environment:v8];
+  environment = [(AVTAvatarLibraryModel *)self environment];
+  v22 = [(AVTAvatarLibraryRecordItem *)v7 initWithAvatarRecord:recordCopy environment:environment];
 
-  v9 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  [v9 insertObject:v22 atIndex:a4];
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  [mutableLibraryItems insertObject:v22 atIndex:index];
 
-  v10 = [(AVTAvatarLibraryModel *)self avatarStore];
-  v11 = [v10 canCreateAvatarWithError:0];
+  avatarStore = [(AVTAvatarLibraryModel *)self avatarStore];
+  v11 = [avatarStore canCreateAvatarWithError:0];
   if (v11)
   {
     goto LABEL_4;
   }
 
-  v12 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  v13 = [(AVTAvatarLibraryModel *)self createNewItem];
-  v14 = [v12 containsObject:v13];
+  mutableLibraryItems2 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  createNewItem = [(AVTAvatarLibraryModel *)self createNewItem];
+  v14 = [mutableLibraryItems2 containsObject:createNewItem];
 
   if (v14)
   {
-    v10 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-    v15 = [(AVTAvatarLibraryModel *)self createNewItem];
-    [v10 removeObject:v15];
+    avatarStore = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+    createNewItem2 = [(AVTAvatarLibraryModel *)self createNewItem];
+    [avatarStore removeObject:createNewItem2];
 
 LABEL_4:
     v16 = v11 ^ 1;
@@ -455,45 +455,45 @@ LABEL_4:
 
   v16 = 0;
 LABEL_6:
-  v17 = [(AVTAvatarLibraryModel *)self delegate];
-  v18 = [MEMORY[0x1E696AC90] indexSetWithIndex:a4];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  v18 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
   if (v16)
   {
     v19 = MEMORY[0x1E696AC90];
-    v20 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-    v21 = [v19 indexSetWithIndex:{objc_msgSend(v20, "count") - 1}];
-    [v17 insertItemsAtIndexes:v18 deleteItemsAtIndexes:v21 reloadItemsAtIndexes:0];
+    mutableLibraryItems3 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+    v21 = [v19 indexSetWithIndex:{objc_msgSend(mutableLibraryItems3, "count") - 1}];
+    [delegate insertItemsAtIndexes:v18 deleteItemsAtIndexes:v21 reloadItemsAtIndexes:0];
   }
 
   else
   {
-    [v17 insertItemsAtIndexes:v18 deleteItemsAtIndexes:0 reloadItemsAtIndexes:0];
+    [delegate insertItemsAtIndexes:v18 deleteItemsAtIndexes:0 reloadItemsAtIndexes:0];
   }
 }
 
-- (void)removeItemForRecordAtIndex:(unint64_t)a3
+- (void)removeItemForRecordAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  [v5 removeObjectAtIndex:a3];
+  selfCopy = self;
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  [mutableLibraryItems removeObjectAtIndex:index];
 
-  v6 = [v4 avatarStore];
-  if ([v6 canCreateAvatarWithError:0])
+  avatarStore = [selfCopy avatarStore];
+  if ([avatarStore canCreateAvatarWithError:0])
   {
-    v7 = [v4 mutableLibraryItems];
-    v8 = [v4 createNewItem];
-    v9 = [v7 containsObject:v8];
+    mutableLibraryItems2 = [selfCopy mutableLibraryItems];
+    createNewItem = [selfCopy createNewItem];
+    v9 = [mutableLibraryItems2 containsObject:createNewItem];
 
     if (!v9)
     {
-      v10 = [v4 mutableLibraryItems];
-      v11 = [v4 createNewItem];
-      [v10 addObject:v11];
+      mutableLibraryItems3 = [selfCopy mutableLibraryItems];
+      createNewItem2 = [selfCopy createNewItem];
+      [mutableLibraryItems3 addObject:createNewItem2];
 
-      v16 = [v4 delegate];
+      delegate = [selfCopy delegate];
       v12 = MEMORY[0x1E696AC90];
-      v4 = [v4 mutableLibraryItems];
-      v13 = [v12 indexSetWithIndex:{objc_msgSend(v4, "count") - 1}];
+      selfCopy = [selfCopy mutableLibraryItems];
+      v13 = [v12 indexSetWithIndex:{objc_msgSend(selfCopy, "count") - 1}];
       v14 = 1;
       goto LABEL_6;
     }
@@ -503,70 +503,70 @@ LABEL_6:
   {
   }
 
-  v16 = [v4 delegate];
+  delegate = [selfCopy delegate];
   v14 = 0;
   v13 = 0;
 LABEL_6:
-  v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
-  [v16 insertItemsAtIndexes:v13 deleteItemsAtIndexes:v15 reloadItemsAtIndexes:0];
+  v15 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
+  [delegate insertItemsAtIndexes:v13 deleteItemsAtIndexes:v15 reloadItemsAtIndexes:0];
 
   if (v14)
   {
   }
 }
 
-- (void)reloadDataForRecords:(id)a3
+- (void)reloadDataForRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  v6 = [(AVTAvatarLibraryModel *)self libraryItemsFromAvatarRecords:v4];
+  recordsCopy = records;
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  v6 = [(AVTAvatarLibraryModel *)self libraryItemsFromAvatarRecords:recordsCopy];
 
-  [v5 setArray:v6];
-  v8 = [(AVTAvatarLibraryModel *)self delegate];
-  v7 = [(AVTAvatarLibraryModel *)self libraryItems];
-  [v8 didUpdateLibraryItems:v7];
+  [mutableLibraryItems setArray:v6];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  libraryItems = [(AVTAvatarLibraryModel *)self libraryItems];
+  [delegate didUpdateLibraryItems:libraryItems];
 }
 
-- (void)updateForCreatedRecord:(id)a3
+- (void)updateForCreatedRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTAvatarLibraryModel *)self libraryItems];
-  -[AVTAvatarLibraryModel insertItemForRecord:atIndex:](self, "insertItemForRecord:atIndex:", v4, [v5 count] - 1);
+  recordCopy = record;
+  libraryItems = [(AVTAvatarLibraryModel *)self libraryItems];
+  -[AVTAvatarLibraryModel insertItemForRecord:atIndex:](self, "insertItemForRecord:atIndex:", recordCopy, [libraryItems count] - 1);
 
-  v6 = [(AVTAvatarLibraryModel *)self delegate];
-  [v6 didAddRecord:v4];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  [delegate didAddRecord:recordCopy];
 }
 
-- (void)updateForEditedRecord:(id)a3
+- (void)updateForEditedRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTAvatarLibraryModel *)self indexForRecord:v4];
+  recordCopy = record;
+  v5 = [(AVTAvatarLibraryModel *)self indexForRecord:recordCopy];
   v6 = [AVTAvatarLibraryRecordItem alloc];
-  v7 = [(AVTAvatarLibraryModel *)self environment];
-  v12 = [(AVTAvatarLibraryRecordItem *)v6 initWithAvatarRecord:v4 environment:v7];
+  environment = [(AVTAvatarLibraryModel *)self environment];
+  v12 = [(AVTAvatarLibraryRecordItem *)v6 initWithAvatarRecord:recordCopy environment:environment];
 
-  v8 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
-  [v8 replaceObjectAtIndex:v5 withObject:v12];
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  [mutableLibraryItems replaceObjectAtIndex:v5 withObject:v12];
 
-  v9 = [(AVTAvatarLibraryModel *)self delegate];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
   v10 = [MEMORY[0x1E696AC90] indexSetWithIndex:v5];
-  [v9 insertItemsAtIndexes:0 deleteItemsAtIndexes:0 reloadItemsAtIndexes:v10];
+  [delegate insertItemsAtIndexes:0 deleteItemsAtIndexes:0 reloadItemsAtIndexes:v10];
 
-  v11 = [(AVTAvatarLibraryModel *)self delegate];
-  [v11 didEditRecord:v4];
+  delegate2 = [(AVTAvatarLibraryModel *)self delegate];
+  [delegate2 didEditRecord:recordCopy];
 }
 
-- (int64_t)indexForRecord:(id)a3
+- (int64_t)indexForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
+  recordCopy = record;
+  mutableLibraryItems = [(AVTAvatarLibraryModel *)self mutableLibraryItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__AVTAvatarLibraryModel_indexForRecord___block_invoke;
   v9[3] = &unk_1E7F3B8E8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v10 = recordCopy;
+  v6 = recordCopy;
+  v7 = [mutableLibraryItems indexOfObjectPassingTest:v9];
 
   return v7;
 }
@@ -591,17 +591,17 @@ uint64_t __40__AVTAvatarLibraryModel_indexForRecord___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)presetShareSheetWithRecords:(id)a3 fromItem:(id)a4
+- (void)presetShareSheetWithRecords:(id)records fromItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v17 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  recordsCopy = records;
+  itemCopy = item;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v5;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -631,7 +631,7 @@ uint64_t __40__AVTAvatarLibraryModel_indexForRecord___block_invoke(uint64_t a1, 
             [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v13}];
           }
 
-          [v6 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -641,24 +641,24 @@ uint64_t __40__AVTAvatarLibraryModel_indexForRecord___block_invoke(uint64_t a1, 
     while (v9);
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItems:v6 applicationActivities:0];
-  v15 = [(AVTAvatarLibraryModel *)self delegate];
-  [v15 presentUIViewController:v14 forItem:v17];
+  v14 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItems:array applicationActivities:0];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  [delegate presentUIViewController:v14 forItem:itemCopy];
 }
 
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarLibraryModel *)self delegate];
+  recordCopy = record;
+  controllerCopy = controller;
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78__AVTAvatarLibraryModel_avatarEditorViewController_didFinishWithAvatarRecord___block_invoke;
   v10[3] = &unk_1E7F3AD60;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 dismissController:v7 completion:v10];
+  v11 = recordCopy;
+  v9 = recordCopy;
+  [delegate dismissController:controllerCopy completion:v10];
 }
 
 uint64_t __78__AVTAvatarLibraryModel_avatarEditorViewController_didFinishWithAvatarRecord___block_invoke(uint64_t a1)
@@ -682,12 +682,12 @@ uint64_t __78__AVTAvatarLibraryModel_avatarEditorViewController_didFinishWithAva
   }
 }
 
-- (void)avatarEditorViewControllerDidCancel:(id)a3
+- (void)avatarEditorViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(AVTAvatarLibraryModel *)self setIsCreatingAvatar:0];
-  v5 = [(AVTAvatarLibraryModel *)self delegate];
-  [v5 dismissController:v4 completion:0];
+  delegate = [(AVTAvatarLibraryModel *)self delegate];
+  [delegate dismissController:cancelCopy completion:0];
 }
 
 - (AVTAvatarLibraryModelDelegate)delegate

@@ -1,12 +1,12 @@
 @interface PromptForAccountTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PromptForAccountTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
   [v5 setDebugReason:@"Prompt For Account"];
   v6 = ASDLocalizedString();
@@ -25,32 +25,32 @@
   v11 = [objc_getProperty(self v10];
   [v5 setLogKey:v11];
 
-  v12 = [*(&self->_logKey + 2) notificationClient];
+  notificationClient = [*(&self->_logKey + 2) notificationClient];
 
   v13 = ASDLogHandleForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (notificationClient)
   {
     if (v14)
     {
       Property = objc_getProperty(self, v15, 66, 1);
-      v17 = [*(&self->_logKey + 2) notificationClient];
+      notificationClient2 = [*(&self->_logKey + 2) notificationClient];
       *buf = 138412546;
       v23 = Property;
       v24 = 2114;
-      v25 = v17;
+      v25 = notificationClient2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%@] Sending authentication request to client %{public}@", buf, 0x16u);
     }
 
     v18 = [[AMSAuthenticateRequest alloc] initWithDSID:0 altDSID:0 username:*(&self->super._finished + 1) options:v5];
-    v19 = [*(&self->_logKey + 2) notificationClient];
+    notificationClient3 = [*(&self->_logKey + 2) notificationClient];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1002C0738;
     v20[3] = &unk_10051E040;
     v20[4] = self;
-    v21 = v4;
-    sub_100311954(CallerRequestPresenter, v18, v19, v20);
+    v21 = handlerCopy;
+    sub_100311954(CallerRequestPresenter, v18, notificationClient3, v20);
   }
 
   else
@@ -63,7 +63,7 @@
     }
 
     v18 = ASDErrorWithDescription();
-    (*(v4 + 2))(v4, v18);
+    (*(handlerCopy + 2))(handlerCopy, v18);
   }
 }
 

@@ -1,13 +1,13 @@
 @interface AXMVisionFeature_AXRuntime
 - (CGPoint)activationPoint;
-- (void)setActivationPoint:(CGPoint)a3;
+- (void)setActivationPoint:(CGPoint)point;
 @end
 
 @implementation AXMVisionFeature_AXRuntime
 
-- (void)setActivationPoint:(CGPoint)a3
+- (void)setActivationPoint:(CGPoint)point
 {
-  v4 = [MEMORY[0x1E696B098] valueWithPoint:{a3.x, a3.y}];
+  v4 = [MEMORY[0x1E696B098] valueWithPoint:{point.x, point.y}];
   objc_setAssociatedObject(self, &ActivationPointKey, v4, 1);
 }
 

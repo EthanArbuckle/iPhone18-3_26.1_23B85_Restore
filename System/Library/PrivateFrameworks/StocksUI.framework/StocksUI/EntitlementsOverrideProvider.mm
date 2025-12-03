@@ -1,10 +1,10 @@
 @interface EntitlementsOverrideProvider
-- (id)entitlementsOverrideWithDefaultEntitlements:(id)a3;
+- (id)entitlementsOverrideWithDefaultEntitlements:(id)entitlements;
 @end
 
 @implementation EntitlementsOverrideProvider
 
-- (id)entitlementsOverrideWithDefaultEntitlements:(id)a3
+- (id)entitlementsOverrideWithDefaultEntitlements:(id)entitlements
 {
 
   sub_22049ACD0();

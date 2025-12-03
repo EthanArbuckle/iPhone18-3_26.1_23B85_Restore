@@ -1,15 +1,15 @@
 @interface ESDObject
-- (ESDObject)initWithEshObject:(EshObject *)a3;
-- (ESDObject)initWithType:(unsigned __int16)a3;
-- (id)initForExcelBinaryWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5;
-- (id)initFromReader:(OcReader *)a3 type:(unsigned __int16)a4 version:(unsigned __int16)a5;
-- (id)initPBWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5;
+- (ESDObject)initWithEshObject:(EshObject *)object;
+- (ESDObject)initWithType:(unsigned __int16)type;
+- (id)initForExcelBinaryWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state;
+- (id)initFromReader:(OcReader *)reader type:(unsigned __int16)type version:(unsigned __int16)version;
+- (id)initPBWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state;
 - (id)parent;
 - (int)shapeID;
 - (void)dealloc;
 - (void)eshGroup;
 - (void)eshShape;
-- (void)writeToWriter:(OcWriter *)a3;
+- (void)writeToWriter:(OcWriter *)writer;
 @end
 
 @implementation ESDObject
@@ -45,60 +45,60 @@
   return WeakRetained;
 }
 
-- (ESDObject)initWithEshObject:(EshObject *)a3
+- (ESDObject)initWithEshObject:(EshObject *)object
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = object;
+  if (object)
   {
     v6.receiver = self;
     v6.super_class = ESDObject;
     v4 = [(ESDObject *)&v6 init];
     if (v4)
     {
-      v4->mEshObject = v3;
+      v4->mEshObject = selfCopy;
       v4->mIsChart = 0;
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (ESDObject)initWithType:(unsigned __int16)a3
+- (ESDObject)initWithType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v5 = +[ESDObjectFactory threadLocalFactory];
-  v6 = -[ESDObject initWithEshObject:](self, "initWithEshObject:", [v5 createObjectWithType:v3]);
+  v6 = -[ESDObject initWithEshObject:](self, "initWithEshObject:", [v5 createObjectWithType:typeCopy]);
 
   return v6;
 }
 
-- (id)initFromReader:(OcReader *)a3 type:(unsigned __int16)a4 version:(unsigned __int16)a5
+- (id)initFromReader:(OcReader *)reader type:(unsigned __int16)type version:(unsigned __int16)version
 {
-  v5 = a5;
-  v6 = a4;
+  versionCopy = version;
+  typeCopy = type;
   v9 = +[ESDObjectFactory threadLocalFactory];
-  v10 = [v9 createObjectWithType:v6 version:v5];
+  v10 = [v9 createObjectWithType:typeCopy version:versionCopy];
 
   if (!v10)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:@"Cannot create object"];
   }
 
-  (*(a3->var0 + 16))(a3, v10);
+  (*(reader->var0 + 16))(reader, v10);
   v11 = [(ESDObject *)self initWithEshObject:v10];
 
   return v11;
 }
 
-- (void)writeToWriter:(OcWriter *)a3
+- (void)writeToWriter:(OcWriter *)writer
 {
-  v4 = [(ESDObject *)self eshObject];
-  v5 = *(a3->var0 + 8);
+  eshObject = [(ESDObject *)self eshObject];
+  v5 = *(writer->var0 + 8);
 
-  v5(a3, v4);
+  v5(writer, eshObject);
 }
 
 - (void)eshGroup
@@ -113,30 +113,30 @@
 
 - (int)shapeID
 {
-  v3 = [(ESDObject *)self eshShape];
-  if (v3)
+  eshShape = [(ESDObject *)self eshShape];
+  if (eshShape)
   {
-    v4 = (*(*v3 + 168))(v3);
+    v4 = (*(*eshShape + 168))(eshShape);
   }
 
   else
   {
-    v5 = [(ESDObject *)self eshGroup];
-    v4 = (*(*v5 + 136))(v5);
+    eshGroup = [(ESDObject *)self eshGroup];
+    v4 = (*(*eshGroup + 136))(eshGroup);
   }
 
   return EshContentProperties::getShapeID(v4);
 }
 
-- (id)initForExcelBinaryWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5
+- (id)initForExcelBinaryWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [v8 xlReader];
-  if (v9)
+  versionCopy = version;
+  typeCopy = type;
+  stateCopy = state;
+  xlReader = [stateCopy xlReader];
+  if (xlReader)
   {
-    v10 = v9 + *(*v9 - 24);
+    v10 = xlReader + *(*xlReader - 24);
   }
 
   else
@@ -144,25 +144,25 @@
     v10 = 0;
   }
 
-  v11 = [(ESDObject *)self initFromReader:v10 type:v6 version:v5];
+  v11 = [(ESDObject *)self initFromReader:v10 type:typeCopy version:versionCopy];
 
   return v11;
 }
 
-- (id)initPBWithType:(unsigned __int16)a3 version:(unsigned __int16)a4 state:(id)a5
+- (id)initPBWithType:(unsigned __int16)type version:(unsigned __int16)version state:(id)state
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [v8 reader];
-  v10 = (*(*v9 + 216))(v9);
-  Object = PptObjectFactory::createObject(v10, v6, v5);
+  versionCopy = version;
+  typeCopy = type;
+  stateCopy = state;
+  reader = [stateCopy reader];
+  v10 = (*(*reader + 216))(reader);
+  Object = PptObjectFactory::createObject(v10, typeCopy, versionCopy);
   if (!Object)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:@"An object couldn't be created."];
   }
 
-  (*(*v9 + 80))(v9, Object);
+  (*(*reader + 80))(reader, Object);
   v12 = [(ESDObject *)self initWithEshObject:Object];
 
   return v12;

@@ -1,21 +1,21 @@
 @interface SUPageSectionGroup
-- (BOOL)isEqual:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3;
-- (SUPageSectionGroup)initWithSectionsDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_sectionStyleForString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)loadFromDictionary:(id)dictionary;
+- (SUPageSectionGroup)initWithSectionsDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_sectionStyleForString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation SUPageSectionGroup
 
-- (SUPageSectionGroup)initWithSectionsDictionary:(id)a3
+- (SUPageSectionGroup)initWithSectionsDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = SUPageSectionGroup;
   v4 = [(SUPageSectionGroup *)&v7 init];
   v5 = v4;
-  if (v4 && ![(SUPageSectionGroup *)v4 loadFromDictionary:a3])
+  if (v4 && ![(SUPageSectionGroup *)v4 loadFromDictionary:dictionary])
   {
 
     return 0;
@@ -34,33 +34,33 @@
   [(SUPageSectionGroup *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_defaultSectionIndex;
-  v5[2] = [(NSArray *)self->_sections copyWithZone:a3];
+  v5[2] = [(NSArray *)self->_sections copyWithZone:zone];
   v5[3] = self->_style;
-  v5[4] = [(UIColor *)self->_tintColor copyWithZone:a3];
+  v5[4] = [(UIColor *)self->_tintColor copyWithZone:zone];
   v5[5] = self->_tintStyle;
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[SUPageSectionGroup style](self, "style"), v5 == [a3 style]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[SUPageSectionGroup style](self, "style"), v5 == [equal style]))
   {
-    v6 = [(SUPageSectionGroup *)self sections];
-    v7 = [a3 sections];
-    v8 = [(NSArray *)v6 count];
-    LOBYTE(v9) = v8 == [v7 count];
+    sections = [(SUPageSectionGroup *)self sections];
+    sections2 = [equal sections];
+    v8 = [(NSArray *)sections count];
+    LOBYTE(v9) = v8 == [sections2 count];
     if (v9 && v8 >= 1)
     {
       v10 = 1;
       do
       {
-        v9 = [-[NSArray objectAtIndex:](v6 objectAtIndex:{v10 - 1), "isEqual:", objc_msgSend(v7, "objectAtIndex:", v10 - 1)}];
+        v9 = [-[NSArray objectAtIndex:](sections objectAtIndex:{v10 - 1), "isEqual:", objc_msgSend(sections2, "objectAtIndex:", v10 - 1)}];
         if (!v9)
         {
           break;
@@ -79,15 +79,15 @@
   return v9;
 }
 
-- (BOOL)loadFromDictionary:(id)a3
+- (BOOL)loadFromDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:a3];
-  v5 = [v4 dictionaryByEvaluatingConditions];
+  v4 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:dictionary];
+  dictionaryByEvaluatingConditions = [v4 dictionaryByEvaluatingConditions];
 
   [(SUPageSectionGroup *)self setDefaultSectionIndex:0];
-  -[SUPageSectionGroup setStyle:](self, "setStyle:", -[SUPageSectionGroup _sectionStyleForString:](self, "_sectionStyleForString:", [v5 objectForKey:@"type"]));
-  v6 = [v5 objectForKey:@"tint-color"];
+  -[SUPageSectionGroup setStyle:](self, "setStyle:", -[SUPageSectionGroup _sectionStyleForString:](self, "_sectionStyleForString:", [dictionaryByEvaluatingConditions objectForKey:@"type"]));
+  v6 = [dictionaryByEvaluatingConditions objectForKey:@"tint-color"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,7 +100,7 @@
     }
   }
 
-  v9 = [v5 objectForKey:@"tint-style"];
+  v9 = [dictionaryByEvaluatingConditions objectForKey:@"tint-style"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -113,7 +113,7 @@
   }
 
   [(SUPageSectionGroup *)self setTintStyle:v10];
-  v11 = [v5 objectForKey:@"tabs"];
+  v11 = [dictionaryByEvaluatingConditions objectForKey:@"tabs"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -163,12 +163,12 @@
   return [(NSArray *)[(SUPageSectionGroup *)self sections] count]!= 0;
 }
 
-- (int64_t)_sectionStyleForString:(id)a3
+- (int64_t)_sectionStyleForString:(id)string
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return [a3 isEqualToString:@"body"];
+    return [string isEqualToString:@"body"];
   }
 
   else

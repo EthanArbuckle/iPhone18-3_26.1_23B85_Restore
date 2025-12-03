@@ -9,7 +9,7 @@
 + (id)datumWithValue:()HDQuantitySampleEntity timeInterval:
 {
   v4 = objc_alloc_init(MEMORY[0x277CCD180]);
-  [v4 setValue:a1];
+  [v4 setValue:self];
   [v4 setTimeInterval:a2];
 
   return v4;
@@ -18,7 +18,7 @@
 + (id)datumWithTimestamp:()HDQuantitySampleEntity value:duration:
 {
   v6 = objc_alloc_init(MEMORY[0x277CCD180]);
-  [v6 setTimeInterval:a1];
+  [v6 setTimeInterval:self];
   [v6 setValue:a2];
   if (a3 != -1.0)
   {
@@ -34,12 +34,12 @@
   v5 = a5;
   if (a5 < a3)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"HDQuantitySampleSeriesEntity.mm" lineNumber:2030 description:{@"Invalid parameter not satisfying: %@", @"endTime >= startTime"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleSeriesEntity.mm" lineNumber:2030 description:{@"Invalid parameter not satisfying: %@", @"endTime >= startTime"}];
   }
 
   *&a5 = v5 - a3;
-  return [a1 datumWithTimestamp:a3 value:a4 duration:a5];
+  return [self datumWithTimestamp:a3 value:a4 duration:a5];
 }
 
 @end

@@ -19,8 +19,8 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 httpHeaders];
-  v6 = [v5 isEqualToDictionary:v4];
+  httpHeaders = [self httpHeaders];
+  v6 = [httpHeaders isEqualToDictionary:v4];
 
   if ((v6 & 1) == 0)
   {
@@ -28,8 +28,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [a1 httpHeaders];
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    httpHeaders2 = [self httpHeaders];
+    v8 = [httpHeaders2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
       v9 = v8;
@@ -40,19 +40,19 @@
         {
           if (*v25 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(httpHeaders2);
           }
 
-          [a1 removeKey:*(*(&v24 + 1) + 8 * i)];
+          [self removeKey:*(*(&v24 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v9 = [httpHeaders2 countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v9);
     }
 
-    objc_setAssociatedObject(a1, sel_httpHeaders, v4, 3);
+    objc_setAssociatedObject(self, sel_httpHeaders, v4, 3);
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
@@ -74,7 +74,7 @@
 
           v17 = *(*(&v20 + 1) + 8 * j);
           v18 = [v12 objectForKey:{v17, v20}];
-          [a1 setString:v18 forKey:v17];
+          [self setString:v18 forKey:v17];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -90,13 +90,13 @@
 - (__CFString)ik_text
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a1 httpHeaders];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  httpHeaders = [self httpHeaders];
+  v4 = [httpHeaders countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,25 +107,25 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(httpHeaders);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [a1 httpHeaders];
-        v10 = [v9 objectForKey:v8];
-        [v2 appendFormat:@"%@ = %@\n", v8, v10];
+        httpHeaders2 = [self httpHeaders];
+        v10 = [httpHeaders2 objectForKey:v8];
+        [string appendFormat:@"%@ = %@\n", v8, v10];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [httpHeaders countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [a1 httpHeaders];
-  if ([v11 count])
+  httpHeaders3 = [self httpHeaders];
+  if ([httpHeaders3 count])
   {
-    v12 = [v2 substringToIndex:{objc_msgSend(v2, "length") - 1}];
+    v12 = [string substringToIndex:{objc_msgSend(string, "length") - 1}];
   }
 
   else

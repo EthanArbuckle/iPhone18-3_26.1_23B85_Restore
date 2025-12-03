@@ -1,12 +1,12 @@
 @interface DRSTaskingMessageChannel
-- (BOOL)subscribe:(id *)a3;
-- (BOOL)unsubscribe:(id *)a3;
-- (DRSTaskingMessageChannel)initWithCloudChannelConfig:(id)a3 payloadProcessingBlock:(id)a4;
+- (BOOL)subscribe:(id *)subscribe;
+- (BOOL)unsubscribe:(id *)unsubscribe;
+- (DRSTaskingMessageChannel)initWithCloudChannelConfig:(id)config payloadProcessingBlock:(id)block;
 - (NSString)debugDescription;
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 @end
 
 @implementation DRSTaskingMessageChannel
@@ -14,20 +14,20 @@
 - (NSString)debugDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DRSTaskingMessageChannel *)self config];
-  v4 = [v3 debugDescription];
+  config = [(DRSTaskingMessageChannel *)self config];
+  v4 = [config debugDescription];
   v5 = [v2 stringWithFormat:@"Subscribed Channel with config: %@", v4];
 
   return v5;
 }
 
-- (DRSTaskingMessageChannel)initWithCloudChannelConfig:(id)a3 payloadProcessingBlock:(id)a4
+- (DRSTaskingMessageChannel)initWithCloudChannelConfig:(id)config payloadProcessingBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  configCopy = config;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (!configCopy)
   {
     v20 = DPLogHandle_TaskingMessageChannelError();
     if (!os_signpost_enabled(v20))
@@ -41,7 +41,7 @@
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!blockCopy)
   {
     v20 = DPLogHandle_TaskingMessageChannelError();
     if (!os_signpost_enabled(v20))
@@ -68,11 +68,11 @@ LABEL_13:
   {
 LABEL_22:
     self = self;
-    v25 = self;
+    selfCopy = self;
     goto LABEL_23;
   }
 
-  objc_storeStrong(&v10->_config, a3);
+  objc_storeStrong(&v10->_config, config);
   v11 = _Block_copy(v9);
   processingBlock = self->_processingBlock;
   self->_processingBlock = v11;
@@ -82,17 +82,17 @@ LABEL_22:
   workQueue = self->_workQueue;
   self->_workQueue = v14;
 
-  v16 = [(DRSTaskingMessageChannel *)self config];
-  v17 = [v16 isNoSubscriptionConfig];
+  config = [(DRSTaskingMessageChannel *)self config];
+  isNoSubscriptionConfig = [config isNoSubscriptionConfig];
 
-  if (v17)
+  if (isNoSubscriptionConfig)
   {
 LABEL_19:
     v35 = DPLogHandle_TaskingMessageChannel();
     if (os_signpost_enabled(v35))
     {
-      v36 = [(DRSTaskingMessageChannel *)self config];
-      v37 = [v36 debugDescription];
+      config2 = [(DRSTaskingMessageChannel *)self config];
+      v37 = [config2 debugDescription];
       *buf = 138543362;
       v46 = v37;
       _os_signpost_emit_with_name_impl(&dword_232906000, v35, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NewChannelInstance", "New channel instance: %{public}@", buf, 0xCu);
@@ -101,15 +101,15 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  v18 = [v7 environment];
-  if (v18 == 1)
+  environment = [configCopy environment];
+  if (environment == 1)
   {
     v19 = MEMORY[0x277CEE9E8];
   }
 
   else
   {
-    if (v18 != 2)
+    if (environment != 2)
     {
 LABEL_24:
       v20 = DPLogHandle_TaskingMessageChannelError();
@@ -118,9 +118,9 @@ LABEL_24:
         goto LABEL_14;
       }
 
-      v40 = [v7 environment];
+      environment2 = [configCopy environment];
       *buf = 67109120;
-      LODWORD(v46) = v40;
+      LODWORD(v46) = environment2;
       v21 = "InvalidEnvironmentEnum";
       v22 = "Invalid environment enum %hhu";
       v23 = v20;
@@ -138,14 +138,14 @@ LABEL_24:
   }
 
   v20 = v26;
-  v27 = [v7 channelName];
-  if (v27)
+  channelName = [configCopy channelName];
+  if (channelName)
   {
-    v28 = v27;
+    v28 = channelName;
     v29 = objc_alloc(MEMORY[0x277CD9D98]);
-    v30 = [(DRSTaskingMessageChannel *)self config];
-    v31 = [v30 channelID];
-    v32 = [v29 initWithChannelID:v31];
+    config3 = [(DRSTaskingMessageChannel *)self config];
+    channelID = [config3 channelID];
+    v32 = [v29 initWithChannelID:channelID];
     pubSubChannel = self->_pubSubChannel;
     self->_pubSubChannel = v32;
 
@@ -158,8 +158,8 @@ LABEL_24:
   v41 = DPLogHandle_TaskingMessageChannelError();
   if (os_signpost_enabled(v41))
   {
-    v42 = DRSSystemProfilePlatformStringForPlatform([v7 platform]);
-    v43 = +[DRSCloudChannelConfig stringForChannelType:](DRSCloudChannelConfig, "stringForChannelType:", [v7 type]);
+    v42 = DRSSystemProfilePlatformStringForPlatform([configCopy platform]);
+    v43 = +[DRSCloudChannelConfig stringForChannelType:](DRSCloudChannelConfig, "stringForChannelType:", [configCopy type]);
     *buf = 138543618;
     v46 = v42;
     v47 = 2114;
@@ -168,32 +168,32 @@ LABEL_24:
   }
 
 LABEL_14:
-  v25 = 0;
+  selfCopy = 0;
 LABEL_23:
 
   v38 = *MEMORY[0x277D85DE8];
-  return v25;
+  return selfCopy;
 }
 
-- (BOOL)subscribe:(id *)a3
+- (BOOL)subscribe:(id *)subscribe
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(DRSTaskingMessageChannel *)self workQueue];
+  workQueue = [(DRSTaskingMessageChannel *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__DRSTaskingMessageChannel_subscribe___block_invoke;
   block[3] = &unk_27899FA80;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = subscribe;
+  dispatch_sync(workQueue, block);
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(subscribe) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return subscribe;
 }
 
 void __38__DRSTaskingMessageChannel_subscribe___block_invoke(uint64_t a1)
@@ -390,25 +390,25 @@ LABEL_36:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)unsubscribe:(id *)a3
+- (BOOL)unsubscribe:(id *)unsubscribe
 {
-  v3 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(DRSTaskingMessageChannel *)self workQueue];
+  workQueue = [(DRSTaskingMessageChannel *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__DRSTaskingMessageChannel_unsubscribe___block_invoke;
   v6[3] = &unk_27899F8D8;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(workQueue, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
 void __40__DRSTaskingMessageChannel_unsubscribe___block_invoke(uint64_t a1)
@@ -484,68 +484,68 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tokenCopy = token;
   v6 = DPLogHandle_TaskingMessageChannel();
   if (os_signpost_enabled(v6))
   {
-    v7 = [(DRSTaskingMessageChannel *)self config];
-    v8 = [v7 channelName];
+    config = [(DRSTaskingMessageChannel *)self config];
+    channelName = [config channelName];
     v10 = 138543618;
-    v11 = v5;
+    v11 = tokenCopy;
     v12 = 2114;
-    v13 = v8;
+    v13 = channelName;
     _os_signpost_emit_with_name_impl(&dword_232906000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ReceivedPublicDeviceToken", "Received public token %{public}@ for channel name %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v12 = DPLogHandle_TaskingMessageChannel();
   if (os_signpost_enabled(v12))
   {
-    v13 = [(DRSTaskingMessageChannel *)self config];
-    v14 = [v13 channelName];
+    config = [(DRSTaskingMessageChannel *)self config];
+    channelName = [config channelName];
     v16 = 138544130;
-    v17 = v9;
+    v17 = tokenCopy;
     v18 = 2114;
-    v19 = v10;
+    v19 = topicCopy;
     v20 = 2114;
-    v21 = v11;
+    v21 = identifierCopy;
     v22 = 2114;
-    v23 = v14;
+    v23 = channelName;
     _os_signpost_emit_with_name_impl(&dword_232906000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ReceivedAPNSToken", "Received APNS token %{public}@ for topic: %{public}@ identifier: %{public}@ channel name: %{public}@", &v16, 0x2Au);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  messageCopy = message;
   v6 = DPLogHandle_TaskingMessageChannel();
   if (os_signpost_enabled(v6))
   {
     v7 = [(DRSTaskingMessageChannel *)self debugDescription];
-    v8 = [v5 userInfo];
+    userInfo = [messageCopy userInfo];
     v17 = 138543618;
     v18 = v7;
     v19 = 2114;
-    v20 = v8;
+    v20 = userInfo;
     _os_signpost_emit_with_name_impl(&dword_232906000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ReceivedMessage", "Received message on %{public}@\n%{public}@", &v17, 0x16u);
   }
 
-  v9 = [v5 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"tasking_payload"];
+  userInfo2 = [messageCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:@"tasking_payload"];
 
   if (!v10)
   {
@@ -553,28 +553,28 @@ LABEL_11:
     if (os_signpost_enabled(v11))
     {
       v12 = [(DRSTaskingMessageChannel *)self debugDescription];
-      v13 = [v5 userInfo];
+      userInfo3 = [messageCopy userInfo];
       v17 = 138543874;
       v18 = v12;
       v19 = 2114;
       v20 = @"tasking_payload";
       v21 = 2114;
-      v22 = v13;
+      v22 = userInfo3;
       _os_signpost_emit_with_name_impl(&dword_232906000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MessageMissingPayload", "Message on %{public}@ missing %{public}@ key\n%{public}@", &v17, 0x20u);
     }
   }
 
-  v14 = [(DRSTaskingMessageChannel *)self processingBlock];
-  v15 = [(DRSTaskingMessageChannel *)self config];
-  (v14)[2](v14, v10, v15);
+  processingBlock = [(DRSTaskingMessageChannel *)self processingBlock];
+  config = [(DRSTaskingMessageChannel *)self config];
+  (processingBlock)[2](processingBlock, v10, config);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  failuresCopy = failures;
   v5 = DPLogHandle_TaskingMessageChannelError();
   if (os_signpost_enabled(v5))
   {
@@ -586,7 +586,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = failuresCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
@@ -605,9 +605,9 @@ LABEL_11:
         v12 = DPLogHandle_TaskingMessageChannelError();
         if (os_signpost_enabled(v12))
         {
-          v13 = [v11 failureReason];
+          failureReason = [v11 failureReason];
           v14 = @"INVALID REASON. FILE A BUG AGAINST 'Apple Push Service|all'";
-          if (!v13)
+          if (!failureReason)
           {
             v14 = @"Bad channel ID";
           }

@@ -8,13 +8,13 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E019C();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002E03BC();
 }
 

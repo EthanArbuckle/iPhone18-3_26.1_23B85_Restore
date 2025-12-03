@@ -1,37 +1,37 @@
 @interface SUUISegmentedControlViewElement
 - (NSArray)segmentItemTitles;
-- (SUUISegmentedControlViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUISegmentedControlViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)initialSelectedItemIndex;
-- (void)_enumerateItemElementsUsingBlock:(id)a3;
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4;
+- (void)_enumerateItemElementsUsingBlock:(id)block;
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index;
 @end
 
 @implementation SUUISegmentedControlViewElement
 
-- (SUUISegmentedControlViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISegmentedControlViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUISegmentedControlViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"maxItems"];
-    v11 = [v10 integerValue];
+    v10 = [elementCopy getAttribute:@"maxItems"];
+    integerValue = [v10 integerValue];
 
-    if (v11 < 1)
+    if (integerValue < 1)
     {
       v12 = -1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = integerValue;
     }
 
     v9->_maximumNumberOfVisibleItems = v12;
-    v13 = [v8 getAttribute:@"moreLabel"];
+    v13 = [elementCopy getAttribute:@"moreLabel"];
     if ([v13 length])
     {
       objc_storeStrong(&v9->_moreListTitle, v13);
@@ -41,14 +41,14 @@
   return v9;
 }
 
-- (void)dispatchEventOfType:(unint64_t)a3 forItemAtIndex:(int64_t)a4
+- (void)dispatchEventOfType:(unint64_t)type forItemAtIndex:(int64_t)index
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __70__SUUISegmentedControlViewElement_dispatchEventOfType_forItemAtIndex___block_invoke;
   v4[3] = &__block_descriptor_48_e36_v32__0__SUUIItemViewElement_8Q16_B24l;
-  v4[4] = a4;
-  v4[5] = a3;
+  v4[4] = index;
+  v4[5] = type;
   [(SUUISegmentedControlViewElement *)self _enumerateItemElementsUsingBlock:v4];
 }
 
@@ -94,12 +94,12 @@ uint64_t __59__SUUISegmentedControlViewElement_initialSelectedItemIndex__block_i
 
 - (NSArray)segmentItemTitles
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SUUISegmentedControlViewElement_segmentItemTitles__block_invoke;
   v6[3] = &unk_2798FAC28;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUISegmentedControlViewElement *)self _enumerateItemElementsUsingBlock:v6];
 
@@ -114,27 +114,27 @@ void __52__SUUISegmentedControlViewElement_segmentItemTitles__block_invoke(uint6
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUISegmentedControlViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_maximumNumberOfVisibleItems = [(SUUISegmentedControlViewElement *)v4 maximumNumberOfVisibleItems];
-    v7 = [(SUUISegmentedControlViewElement *)v4 moreListTitle];
+    self->_maximumNumberOfVisibleItems = [(SUUISegmentedControlViewElement *)elementCopy maximumNumberOfVisibleItems];
+    moreListTitle = [(SUUISegmentedControlViewElement *)elementCopy moreListTitle];
     moreListTitle = self->_moreListTitle;
-    self->_moreListTitle = v7;
+    self->_moreListTitle = moreListTitle;
   }
 
   return v6;
 }
 
-- (void)_enumerateItemElementsUsingBlock:(id)a3
+- (void)_enumerateItemElementsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -143,7 +143,7 @@ void __52__SUUISegmentedControlViewElement_segmentItemTitles__block_invoke(uint6
   v6[1] = 3221225472;
   v6[2] = __68__SUUISegmentedControlViewElement__enumerateItemElementsUsingBlock___block_invoke;
   v6[3] = &unk_2798F91A8;
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   v8 = v9;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];

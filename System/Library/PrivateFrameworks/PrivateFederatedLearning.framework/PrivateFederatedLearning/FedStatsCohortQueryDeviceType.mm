@@ -1,20 +1,20 @@
 @interface FedStatsCohortQueryDeviceType
 + (id)cohortInstance;
-- (FedStatsCohortQueryDeviceType)initWithDeviceType:(id)a3;
+- (FedStatsCohortQueryDeviceType)initWithDeviceType:(id)type;
 @end
 
 @implementation FedStatsCohortQueryDeviceType
 
-- (FedStatsCohortQueryDeviceType)initWithDeviceType:(id)a3
+- (FedStatsCohortQueryDeviceType)initWithDeviceType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = FedStatsCohortQueryDeviceType;
   v6 = [(FedStatsCohortQueryDeviceType *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_deviceType, a3);
+    objc_storeStrong(&v6->_deviceType, type);
   }
 
   return v7;
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __47__FedStatsCohortQueryDeviceType_cohortInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cohortInstance_onceToken[0] != -1)
   {
     dispatch_once(cohortInstance_onceToken, block);

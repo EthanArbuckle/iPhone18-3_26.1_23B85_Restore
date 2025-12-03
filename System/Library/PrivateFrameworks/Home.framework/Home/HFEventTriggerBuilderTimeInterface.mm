@@ -2,29 +2,29 @@
 - (HFTimeEventBuilder)eventBuilder;
 - (NSArray)recurrences;
 - (NSString)name;
-- (void)copyCurrentStateFromTriggerBuilder:(id)a3;
-- (void)setEventBuilder:(id)a3;
-- (void)setRecurrences:(id)a3;
-- (void)triggerEnabledStateDidChange:(BOOL)a3;
+- (void)copyCurrentStateFromTriggerBuilder:(id)builder;
+- (void)setEventBuilder:(id)builder;
+- (void)setRecurrences:(id)recurrences;
+- (void)triggerEnabledStateDidChange:(BOOL)change;
 @end
 
 @implementation HFEventTriggerBuilderTimeInterface
 
 - (NSString)name
 {
-  v2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v3 = [v2 name];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  name = [triggerBuilder name];
 
-  return v3;
+  return name;
 }
 
 - (HFTimeEventBuilder)eventBuilder
 {
   if (!self->_eventBuilder || (-[HFEventTriggerBuilderInterface triggerBuilder](self, "triggerBuilder"), v3 = objc_claimAutoreleasedReturnValue(), [v3 eventBuilders], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "containsObject:", self->_eventBuilder), v4, v3, (v5 & 1) == 0))
   {
-    v6 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    v7 = [v6 eventBuilders];
-    v8 = [v7 na_firstObjectPassingTest:&__block_literal_global_146];
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    eventBuilders = [triggerBuilder eventBuilders];
+    v8 = [eventBuilders na_firstObjectPassingTest:&__block_literal_global_146];
     eventBuilder = self->_eventBuilder;
     self->_eventBuilder = v8;
   }
@@ -34,11 +34,11 @@
   return v10;
 }
 
-- (void)setEventBuilder:(id)a3
+- (void)setEventBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   eventBuilder = self->_eventBuilder;
-  v6 = v4;
+  v6 = builderCopy;
   v12 = v6;
   if (eventBuilder == v6)
   {
@@ -60,11 +60,11 @@ LABEL_8:
   if ((v7 & 1) == 0)
   {
 LABEL_7:
-    v9 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    [v9 removeEventBuilder:self->_eventBuilder];
+    triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    [triggerBuilder removeEventBuilder:self->_eventBuilder];
 
-    v10 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-    [v10 addEventBuilder:v12];
+    triggerBuilder2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+    [triggerBuilder2 addEventBuilder:v12];
 
     v11 = v12;
     eventBuilder = self->_eventBuilder;
@@ -77,45 +77,45 @@ LABEL_9:
 
 - (NSArray)recurrences
 {
-  v2 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  v3 = [v2 recurrences];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  recurrences = [triggerBuilder recurrences];
 
-  return v3;
+  return recurrences;
 }
 
-- (void)setRecurrences:(id)a3
+- (void)setRecurrences:(id)recurrences
 {
-  v4 = a3;
-  v5 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  [v5 setRecurrences:v4];
+  recurrencesCopy = recurrences;
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  [triggerBuilder setRecurrences:recurrencesCopy];
 }
 
-- (void)copyCurrentStateFromTriggerBuilder:(id)a3
+- (void)copyCurrentStateFromTriggerBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
-  [v6 setName:v5];
+  builderCopy = builder;
+  name = [builderCopy name];
+  triggerBuilder = [(HFEventTriggerBuilderInterface *)self triggerBuilder];
+  [triggerBuilder setName:name];
 
-  v7 = [v4 eventBuilder];
-  [(HFEventTriggerBuilderTimeInterface *)self setEventBuilder:v7];
+  eventBuilder = [builderCopy eventBuilder];
+  [(HFEventTriggerBuilderTimeInterface *)self setEventBuilder:eventBuilder];
 
-  v8 = [v4 recurrences];
-  [(HFEventTriggerBuilderTimeInterface *)self setRecurrences:v8];
+  recurrences = [builderCopy recurrences];
+  [(HFEventTriggerBuilderTimeInterface *)self setRecurrences:recurrences];
 
-  v9 = [v4 timeZone];
+  timeZone = [builderCopy timeZone];
 
-  [(HFEventTriggerBuilderTimeInterface *)self setTimeZone:v9];
+  [(HFEventTriggerBuilderTimeInterface *)self setTimeZone:timeZone];
 }
 
-- (void)triggerEnabledStateDidChange:(BOOL)a3
+- (void)triggerEnabledStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [(HFEventTriggerBuilderTimeInterface *)self eventBuilder];
+  eventBuilder = [(HFEventTriggerBuilderTimeInterface *)self eventBuilder];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = eventBuilder;
   }
 
   else
@@ -126,12 +126,12 @@ LABEL_9:
   v10 = v6;
 
   v7 = v10;
-  if (v3)
+  if (changeCopy)
   {
     if (v10)
     {
-      v8 = [(HFEventTriggerBuilderTimeInterface *)self recurrences];
-      v9 = [v8 count];
+      recurrences = [(HFEventTriggerBuilderTimeInterface *)self recurrences];
+      v9 = [recurrences count];
 
       v7 = v10;
       if (!v9)

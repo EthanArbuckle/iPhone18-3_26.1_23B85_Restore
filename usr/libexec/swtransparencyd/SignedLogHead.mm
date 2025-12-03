@@ -1,25 +1,25 @@
 @interface SignedLogHead
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5;
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store;
 - (LogHead)parsedLogHead;
-- (id)copyManagedObject:(id *)a3;
-- (id)createManagedObjectWithError:(id *)a3;
+- (id)copyManagedObject:(id *)object;
+- (id)createManagedObjectWithError:(id *)error;
 - (id)diagnosticsJsonDictionary;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)storeSignatureResult:(unint64_t)a3 signatureError:(id *)a4;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)storeSignatureResult:(unint64_t)result signatureError:(id *)error;
 @end
 
 @implementation SignedLogHead
 
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  storeCopy = store;
+  verifierCopy = verifier;
+  objectCopy = object;
   v10 = objc_alloc_init(SignedLogHead);
-  [(SignedObjectHolder *)v10 setSignedObject:v9];
+  [(SignedObjectHolder *)v10 setSignedObject:objectCopy];
 
-  [(SignedObjectHolder *)v10 setVerifier:v8];
-  [(SignedObjectHolder *)v10 setDataStore:v7];
+  [(SignedObjectHolder *)v10 setVerifier:verifierCopy];
+  [(SignedObjectHolder *)v10 setDataStore:storeCopy];
 
   return v10;
 }
@@ -28,24 +28,24 @@
 {
   v8.receiver = self;
   v8.super_class = SignedLogHead;
-  v3 = [(SignedObjectHolder *)&v8 diagnosticsJsonDictionary];
-  v4 = [v3 mutableCopy];
+  diagnosticsJsonDictionary = [(SignedObjectHolder *)&v8 diagnosticsJsonDictionary];
+  v4 = [diagnosticsJsonDictionary mutableCopy];
 
-  v5 = [(SignedLogHead *)self parsedLogHead];
-  v6 = [v5 diagnosticsJsonDictionary];
-  [v4 setObject:v6 forKeyedSubscript:@"logHead"];
+  parsedLogHead = [(SignedLogHead *)self parsedLogHead];
+  diagnosticsJsonDictionary2 = [parsedLogHead diagnosticsJsonDictionary];
+  [v4 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"logHead"];
 
   return v4;
 }
 
 - (LogHead)parsedLogHead
 {
-  v3 = [(SignedLogHead *)self logHead];
-  if (v3 && (v4 = v3, -[SignedLogHead logHead](self, "logHead"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  logHead = [(SignedLogHead *)self logHead];
+  if (logHead && (v4 = logHead, -[SignedLogHead logHead](self, "logHead"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
-    v7 = [(SignedLogHead *)self logHead];
+    logHead2 = [(SignedLogHead *)self logHead];
     v13 = 0;
-    v8 = [(TransparencyGPBMessage *)LogHead parseFromData:v7 error:&v13];
+    v8 = [(TransparencyGPBMessage *)LogHead parseFromData:logHead2 error:&v13];
     v9 = v13;
 
     if (v9)
@@ -85,61 +85,61 @@
   return v8;
 }
 
-- (id)copyManagedObject:(id *)a3
+- (id)copyManagedObject:(id *)object
 {
-  v5 = [(SignedLogHead *)self parsedLogHead];
-  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 application]);
+  parsedLogHead = [(SignedLogHead *)self parsedLogHead];
+  v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedLogHead application]);
   v7 = [TransparencyApplication applicationIdentifierForValue:v6];
 
-  v8 = [(SignedObjectHolder *)self dataStore];
-  v9 = [(SignedLogHead *)self parsedLogHead];
-  v10 = [v9 logHeadHash];
-  v11 = [(SignedLogHead *)self parsedLogHead];
-  v12 = [v11 logBeginningMs];
-  v13 = [(SignedLogHead *)self parsedLogHead];
-  v14 = [v13 logType];
-  v15 = [(SignedLogHead *)self parsedLogHead];
-  v16 = [v8 fetchTreeHead:v10 isMapHead:0 application:v7 logBeginTime:v12 logType:v14 revision:objc_msgSend(v15 error:{"revision"), a3}];
+  dataStore = [(SignedObjectHolder *)self dataStore];
+  parsedLogHead2 = [(SignedLogHead *)self parsedLogHead];
+  logHeadHash = [parsedLogHead2 logHeadHash];
+  parsedLogHead3 = [(SignedLogHead *)self parsedLogHead];
+  logBeginningMs = [parsedLogHead3 logBeginningMs];
+  parsedLogHead4 = [(SignedLogHead *)self parsedLogHead];
+  logType = [parsedLogHead4 logType];
+  parsedLogHead5 = [(SignedLogHead *)self parsedLogHead];
+  v16 = [dataStore fetchTreeHead:logHeadHash isMapHead:0 application:v7 logBeginTime:logBeginningMs logType:logType revision:objc_msgSend(parsedLogHead5 error:{"revision"), object}];
 
   return v16;
 }
 
-- (id)createManagedObjectWithError:(id *)a3
+- (id)createManagedObjectWithError:(id *)error
 {
-  v4 = [(SignedLogHead *)self parsedLogHead];
-  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 application]);
+  parsedLogHead = [(SignedLogHead *)self parsedLogHead];
+  v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedLogHead application]);
   v19 = [TransparencyApplication applicationIdentifierForValue:v5];
 
-  v6 = [(SignedObjectHolder *)self dataStore];
-  v7 = [(SignedObjectHolder *)self data];
-  v8 = [(SignedLogHead *)self parsedLogHead];
-  v18 = [v8 logBeginningMs];
-  v9 = [(SignedLogHead *)self parsedLogHead];
-  v10 = [v9 logHeadHash];
-  v11 = [(SignedLogHead *)self parsedLogHead];
-  v12 = [v11 logType];
-  v13 = [(SignedLogHead *)self parsedLogHead];
-  v14 = [v13 revision];
+  dataStore = [(SignedObjectHolder *)self dataStore];
+  data = [(SignedObjectHolder *)self data];
+  parsedLogHead2 = [(SignedLogHead *)self parsedLogHead];
+  logBeginningMs = [parsedLogHead2 logBeginningMs];
+  parsedLogHead3 = [(SignedLogHead *)self parsedLogHead];
+  logHeadHash = [parsedLogHead3 logHeadHash];
+  parsedLogHead4 = [(SignedLogHead *)self parsedLogHead];
+  logType = [parsedLogHead4 logType];
+  parsedLogHead5 = [(SignedLogHead *)self parsedLogHead];
+  revision = [parsedLogHead5 revision];
   LOBYTE(v17) = [(SignedLogHead *)self gossip];
-  v15 = [v6 createTreeHead:v7 isMapHead:0 application:v19 logBeginTime:v18 logHeadHash:v10 logType:v12 revision:v14 gossip:v17];
+  v15 = [dataStore createTreeHead:data isMapHead:0 application:v19 logBeginTime:logBeginningMs logHeadHash:logHeadHash logType:logType revision:revision gossip:v17];
 
   return v15;
 }
 
-- (void)storeSignatureResult:(unint64_t)a3 signatureError:(id *)a4
+- (void)storeSignatureResult:(unint64_t)result signatureError:(id *)error
 {
-  v7 = [(SignedObjectHolder *)self dataStore];
+  dataStore = [(SignedObjectHolder *)self dataStore];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001042C;
   v8[3] = &unk_100132A48;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  [v7 performBlockAndWait:v8];
+  v8[5] = result;
+  v8[6] = error;
+  [dataStore performBlockAndWait:v8];
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -147,12 +147,12 @@
   v12[3] = &unk_100132348;
   v12[4] = self;
   v5 = objc_retainBlock(v12);
-  v6 = [(SignedLogHead *)self parsedLogHead];
-  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 application]);
+  parsedLogHead = [(SignedLogHead *)self parsedLogHead];
+  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [parsedLogHead application]);
   v8 = [TransparencyApplication applicationIdentifierForValue:v7];
 
   v9 = [TransparencyAnalytics formatEventName:@"VerifySTHEvent" application:v8];
-  v10 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v9 validateType:3 error:a3 block:v5];
+  v10 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v9 validateType:3 error:error block:v5];
 
   return v10;
 }

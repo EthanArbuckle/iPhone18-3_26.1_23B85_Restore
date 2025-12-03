@@ -1,11 +1,11 @@
 @interface BalanceOnboardingNavigationController
-- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithCoder:(id)a3;
-- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithRootViewController:(id)a3;
+- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithCoder:(id)coder;
+- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithRootViewController:(id)controller;
 @end
 
 @implementation BalanceOnboardingNavigationController
 
-- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithCoder:(id)a3
+- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithCoder:(id)coder
 {
   sub_251385F74();
   sub_251385F64();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithRootViewController:(id)a3
+- (_TtC22HealthBalanceAppPlugin37BalanceOnboardingNavigationController)initWithRootViewController:(id)controller
 {
   sub_251385F74();
   sub_251385F64();

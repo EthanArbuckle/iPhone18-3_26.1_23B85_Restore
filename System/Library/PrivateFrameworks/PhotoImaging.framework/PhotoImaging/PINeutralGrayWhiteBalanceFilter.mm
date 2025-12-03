@@ -6,8 +6,8 @@
 + (id)customAttributes;
 + (id)gHDRtoPPKernel;
 + (id)whiteBalanceKernel;
-- (id)applyInputConversion:(id)a3;
-- (id)applyOutputConversion:(id)a3;
+- (id)applyInputConversion:(id)conversion;
+- (id)applyOutputConversion:(id)conversion;
 - (id)outputImage;
 @end
 
@@ -15,40 +15,40 @@
 
 + (id)whiteBalanceKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"whiteBalance"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"whiteBalance"];
 
   return v3;
 }
 
 + (id)PPtogHDRKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"PPtogHDR"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"PPtogHDR"];
 
   return v3;
 }
 
 + (id)gHDRtoPPKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"gHDRtoPP"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"gHDRtoPP"];
 
   return v3;
 }
 
 + (id)YIQToRGBKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"convertFromYIQToRGB"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"convertFromYIQToRGB"];
 
   return v3;
 }
 
 + (id)RGBToYIQKernel
 {
-  v2 = [a1 colorBalanceKernels];
-  v3 = [v2 objectForKeyedSubscript:@"convertFromRGBToYIQ"];
+  colorBalanceKernels = [self colorBalanceKernels];
+  v3 = [colorBalanceKernels objectForKeyedSubscript:@"convertFromRGBToYIQ"];
 
   return v3;
 }
@@ -145,8 +145,8 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
         v43 = dispatch_get_specific(*v37);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v44 callStackSymbols];
+        v47 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v43;
         v51 = 2114;
@@ -157,8 +157,8 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
 
     else if (v40)
     {
-      v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v42 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v42;
       _os_log_error_impl(&dword_1C7694000, v39, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -167,8 +167,8 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
     _NUAssertFailHandler();
   }
 
-  v4 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-  v5 = [(PINeutralGrayWhiteBalanceFilter *)self applyInputConversion:v4];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  v5 = [(PINeutralGrayWhiteBalanceFilter *)self applyInputConversion:imageByUnpremultiplyingAlpha];
   v6 = [MEMORY[0x1E695F680] samplerWithImage:v5];
   [(NSNumber *)self->_y floatValue];
   v8 = v7;
@@ -181,7 +181,7 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
   v15 = v13;
   if (v10 == 0.0 && v12 == 0.0 && [(PINeutralGrayWhiteBalanceFilter *)self isDefaultWarmth:v13])
   {
-    v16 = self->_inputImage;
+    imageByPremultiplyingAlpha = self->_inputImage;
   }
 
   else
@@ -216,53 +216,53 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
     v48[4] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:5];
 
-    v30 = [objc_opt_class() whiteBalanceKernel];
+    whiteBalanceKernel = [objc_opt_class() whiteBalanceKernel];
     [v6 extent];
-    v31 = [v30 applyWithExtent:&__block_literal_global_26570 roiCallback:v29 arguments:?];
+    v31 = [whiteBalanceKernel applyWithExtent:&__block_literal_global_26570 roiCallback:v29 arguments:?];
 
     v32 = [(PINeutralGrayWhiteBalanceFilter *)self applyOutputConversion:v31];
     [(CIImage *)self->_inputImage extent];
     v33 = [v32 imageByCroppingToRect:?];
-    v16 = [v33 imageByPremultiplyingAlpha];
+    imageByPremultiplyingAlpha = [v33 imageByPremultiplyingAlpha];
   }
 
-  return v16;
+  return imageByPremultiplyingAlpha;
 }
 
-- (id)applyOutputConversion:(id)a3
+- (id)applyOutputConversion:(id)conversion
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695F680] samplerWithImage:a3];
+  v3 = [MEMORY[0x1E695F680] samplerWithImage:conversion];
   v14[0] = v3;
   v4 = [MEMORY[0x1E695F688] vectorWithX:4.0];
   v14[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
 
-  v6 = [objc_opt_class() YIQToRGBKernel];
+  yIQToRGBKernel = [objc_opt_class() YIQToRGBKernel];
   [v3 extent];
-  v7 = [v6 applyWithExtent:&__block_literal_global_26570 roiCallback:v5 arguments:?];
+  v7 = [yIQToRGBKernel applyWithExtent:&__block_literal_global_26570 roiCallback:v5 arguments:?];
 
   v8 = [MEMORY[0x1E695F680] samplerWithImage:v7];
 
   v13 = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
 
-  v10 = [objc_opt_class() PPtogHDRKernel];
+  pPtogHDRKernel = [objc_opt_class() PPtogHDRKernel];
   [v8 extent];
-  v11 = [v10 applyWithExtent:&__block_literal_global_26570 roiCallback:v9 arguments:?];
+  v11 = [pPtogHDRKernel applyWithExtent:&__block_literal_global_26570 roiCallback:v9 arguments:?];
 
   return v11;
 }
 
-- (id)applyInputConversion:(id)a3
+- (id)applyInputConversion:(id)conversion
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695F680] samplerWithImage:a3];
+  v3 = [MEMORY[0x1E695F680] samplerWithImage:conversion];
   v14[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v5 = [objc_opt_class() gHDRtoPPKernel];
+  gHDRtoPPKernel = [objc_opt_class() gHDRtoPPKernel];
   [v3 extent];
-  v6 = [v5 applyWithExtent:&__block_literal_global_26570 roiCallback:v4 arguments:?];
+  v6 = [gHDRtoPPKernel applyWithExtent:&__block_literal_global_26570 roiCallback:v4 arguments:?];
 
   v7 = [MEMORY[0x1E695F680] samplerWithImage:v6];
 
@@ -270,9 +270,9 @@ uint64_t __54__PINeutralGrayWhiteBalanceFilter_colorBalanceKernels__block_invoke
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
 
-  v10 = [objc_opt_class() RGBToYIQKernel];
+  rGBToYIQKernel = [objc_opt_class() RGBToYIQKernel];
   [v7 extent];
-  v11 = [v10 applyWithExtent:&__block_literal_global_26570 roiCallback:v9 arguments:?];
+  v11 = [rGBToYIQKernel applyWithExtent:&__block_literal_global_26570 roiCallback:v9 arguments:?];
 
   return v11;
 }

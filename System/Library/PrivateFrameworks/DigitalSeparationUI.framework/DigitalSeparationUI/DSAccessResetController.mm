@@ -11,8 +11,8 @@
 - (DSAccessResetController)init
 {
   v3 = MEMORY[0x277D755D0];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v5 = [v3 configurationWithHierarchicalColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v5 = [v3 configurationWithHierarchicalColor:systemBlueColor];
 
   if (+[DSFeatureFlags isNaturalUIEnabled])
   {
@@ -50,49 +50,49 @@
   v5 = DSUILocStringForKey(@"GO_TO_SAFETY_CHECK");
   v6 = [DSUIUtilities setUpLinkButtonForController:self title:v5 target:self selector:sel_goToSafetyCheck];
 
-  v7 = [(DSAccessResetController *)self accessManager];
-  v8 = [v7 mirroringDevices];
-  v9 = [v8 count];
+  accessManager = [(DSAccessResetController *)self accessManager];
+  mirroringDevices = [accessManager mirroringDevices];
+  v9 = [mirroringDevices count];
 
   if (v9)
   {
     v10 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_MIRRORING");
     v11 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_MIRRORING_DETAIL");
-    v12 = [(DSAccessResetController *)self _checklistImage];
-    [(DSAccessResetController *)self addBulletedListItemWithTitle:v10 description:v11 image:v12];
+    _checklistImage = [(DSAccessResetController *)self _checklistImage];
+    [(DSAccessResetController *)self addBulletedListItemWithTitle:v10 description:v11 image:_checklistImage];
   }
 
-  v13 = [(DSAccessResetController *)self accessManager];
-  v14 = [v13 syncingDevices];
-  v15 = [v14 count];
+  accessManager2 = [(DSAccessResetController *)self accessManager];
+  syncingDevices = [accessManager2 syncingDevices];
+  v15 = [syncingDevices count];
 
   if (v15)
   {
     v16 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_PAIRING");
     v17 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_PAIRING_DETAIL");
-    v18 = [(DSAccessResetController *)self _checklistImage];
-    [(DSAccessResetController *)self addBulletedListItemWithTitle:v16 description:v17 image:v18];
+    _checklistImage2 = [(DSAccessResetController *)self _checklistImage];
+    [(DSAccessResetController *)self addBulletedListItemWithTitle:v16 description:v17 image:_checklistImage2];
   }
 
-  v19 = [(DSAccessResetController *)self accessManager];
-  v20 = [v19 hasAlternateFaceID];
+  accessManager3 = [(DSAccessResetController *)self accessManager];
+  hasAlternateFaceID = [accessManager3 hasAlternateFaceID];
 
-  if (v20)
+  if (hasAlternateFaceID)
   {
     v21 = @"ACCESS_RESET_BULLET_ALT_FACEID_DETAIL";
 LABEL_9:
     v24 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_ALT_BIO");
     v25 = DSUILocStringForKey(v21);
-    v26 = [(DSAccessResetController *)self _checklistImage];
-    [(DSAccessResetController *)self addBulletedListItemWithTitle:v24 description:v25 image:v26];
+    _checklistImage3 = [(DSAccessResetController *)self _checklistImage];
+    [(DSAccessResetController *)self addBulletedListItemWithTitle:v24 description:v25 image:_checklistImage3];
 
     goto LABEL_10;
   }
 
-  v22 = [(DSAccessResetController *)self accessManager];
-  v23 = [v22 hasAlternateTouchID];
+  accessManager4 = [(DSAccessResetController *)self accessManager];
+  hasAlternateTouchID = [accessManager4 hasAlternateTouchID];
 
-  if (v23)
+  if (hasAlternateTouchID)
   {
     v21 = @"ACCESS_RESET_BULLET_ALT_TOUCHID_DETAIL";
     goto LABEL_9;
@@ -101,26 +101,26 @@ LABEL_9:
 LABEL_10:
   v27 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_PASSCODE");
   v28 = DSUILocStringForKey(@"ACCESS_RESET_BULLET_PASSCODE_DETAIL");
-  v29 = [(DSAccessResetController *)self _checklistImage];
-  [(DSAccessResetController *)self addBulletedListItemWithTitle:v27 description:v28 image:v29];
+  _checklistImage4 = [(DSAccessResetController *)self _checklistImage];
+  [(DSAccessResetController *)self addBulletedListItemWithTitle:v27 description:v28 image:_checklistImage4];
 }
 
 - (void)goToSafetyCheck
 {
-  v3 = [(DSAccessResetController *)self accessManager];
-  [v3 sendSummaryAnalyticsWithReviewAction:1 resetAction:1 exit:1];
+  accessManager = [(DSAccessResetController *)self accessManager];
+  [accessManager sendSummaryAnalyticsWithReviewAction:1 resetAction:1 exit:1];
 
-  v4 = [(DSAccessResetController *)self delegate];
-  [v4 goToCustomizeSharing];
+  delegate = [(DSAccessResetController *)self delegate];
+  [delegate goToCustomizeSharing];
 }
 
 - (void)finishFlow
 {
-  v3 = [(DSAccessResetController *)self accessManager];
-  [v3 sendSummaryAnalyticsWithReviewAction:1 resetAction:1 exit:0];
+  accessManager = [(DSAccessResetController *)self accessManager];
+  [accessManager sendSummaryAnalyticsWithReviewAction:1 resetAction:1 exit:0];
 
-  v4 = [(DSAccessResetController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSAccessResetController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (DSNavigationDelegate)delegate

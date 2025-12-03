@@ -8,138 +8,138 @@
 - (TVRUIRemoteViewController)init;
 - (TVRUIRemoteViewControllerDelegate)delegate;
 - (double)backgroundCornerRadius;
-- (id)_stringForConnectionContext:(int64_t)a3;
-- (id)_stringForDeviceDeviceIdentifierType:(int64_t)a3;
-- (id)_stringForLaunchContextType:(int64_t)a3;
+- (id)_stringForConnectionContext:(int64_t)context;
+- (id)_stringForDeviceDeviceIdentifierType:(int64_t)type;
+- (id)_stringForLaunchContextType:(int64_t)type;
 - (id)animatorForDismissalAsAlert;
 - (id)animatorForPresentationAsAlert;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4 forTouchpadView:(id)a5;
+- (id)hitTest:(CGPoint)test withEvent:(id)event forTouchpadView:(id)view;
 - (id)playerCommandHandler;
-- (int64_t)_connectionContextFromLaunchContext:(int64_t)a3;
+- (int64_t)_connectionContextFromLaunchContext:(int64_t)context;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_activate;
 - (void)_cancelHideConnectingAndShowDevicePicker;
 - (void)_cancelPairing;
 - (void)_cancelShowConnectingSpinner;
-- (void)_connectToDevice:(id)a3 connectionContext:(int64_t)a4;
+- (void)_connectToDevice:(id)device connectionContext:(int64_t)context;
 - (void)_connectToMostRelevantDevice;
-- (void)_connectToPreferredDeviceFromDeviceList:(id)a3;
+- (void)_connectToPreferredDeviceFromDeviceList:(id)list;
 - (void)_createBlackGradientView;
 - (void)_createFindingSessionIfNeeded;
 - (void)_deactivate;
 - (void)_disableSearch;
 - (void)_disconnect;
 - (void)_disconnectSystemInitiated;
-- (void)_disconnectUserInitiatedAndModifyLockscreenAssertion:(BOOL)a3;
-- (void)_enableLiveTVButtons:(BOOL)a3 animated:(BOOL)a4;
-- (void)_enableMediaControls:(BOOL)a3 animated:(BOOL)a4;
+- (void)_disconnectUserInitiatedAndModifyLockscreenAssertion:(BOOL)assertion;
+- (void)_enableLiveTVButtons:(BOOL)buttons animated:(BOOL)animated;
+- (void)_enableMediaControls:(BOOL)controls animated:(BOOL)animated;
 - (void)_enableSearch;
-- (void)_enableTVRemoteOnLockscreen:(BOOL)a3;
+- (void)_enableTVRemoteOnLockscreen:(BOOL)lockscreen;
 - (void)_expandDeviceList;
 - (void)_forceShowMediaControls;
 - (void)_hideConnectingAndShowDevicePicker;
 - (void)_hideMessageContent;
 - (void)_initSessionStatistics;
 - (void)_installTapToRadarButton;
-- (void)_layoutTouchpadExpanded:(BOOL)a3;
+- (void)_layoutTouchpadExpanded:(BOOL)expanded;
 - (void)_logSessionStatistics;
-- (void)_performSiriEffectsWithButtonEvent:(id)a3;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4;
-- (void)_presentKeyboardWithAttributes:(id)a3 initialText:(id)a4;
+- (void)_performSiriEffectsWithButtonEvent:(id)event;
+- (void)_presentAlertWithTitle:(id)title message:(id)message;
+- (void)_presentKeyboardWithAttributes:(id)attributes initialText:(id)text;
 - (void)_presentPairingAlert;
 - (void)_presentTextPasswordAlert;
 - (void)_resetActiveDevice;
-- (void)_selectDevice:(id)a3 withConnectionContext:(int64_t)a4;
+- (void)_selectDevice:(id)device withConnectionContext:(int64_t)context;
 - (void)_setupChildViewControllers;
 - (void)_setupDevicePickerController;
 - (void)_setupNetworkObserverIfNeeded;
 - (void)_setupNowPlayingController;
-- (void)_showBluetoothDisabledAlertWithCompletion:(id)a3;
+- (void)_showBluetoothDisabledAlertWithCompletion:(id)completion;
 - (void)_showConnectingSpinner;
 - (void)_showFindingAlert;
 - (void)_showSearchingSpinnerIfNeeded;
 - (void)_startDeviceQueryThresholdTimer;
-- (void)_startFindingSessionForDevice:(id)a3;
+- (void)_startFindingSessionForDevice:(id)device;
 - (void)_stopDeviceQueryThresholdTimer;
-- (void)_stopFindingSessionForDevice:(id)a3;
+- (void)_stopFindingSessionForDevice:(id)device;
 - (void)_tapToRadar;
 - (void)_toggleControlAvailability;
 - (void)_toggleDock;
-- (void)_turnOnBluetoothIfNeededWithCompletionBlock:(id)a3;
+- (void)_turnOnBluetoothIfNeededWithCompletionBlock:(id)block;
 - (void)_updateControlsAppearance;
 - (void)_updateInfoButtonState;
 - (void)_updateSecureWindowState;
-- (void)alertController:(id)a3 enteredText:(id)a4;
-- (void)alertController:(id)a3 generatedTextInputPayload:(id)a4;
-- (void)alertControllerCancelled:(id)a3;
-- (void)alertControllerHitKeyboardReturnKey:(id)a3;
-- (void)alertControllerPressedDictationButton:(id)a3;
-- (void)alertControllerReleasedDictationButton:(id)a3;
+- (void)alertController:(id)controller enteredText:(id)text;
+- (void)alertController:(id)controller generatedTextInputPayload:(id)payload;
+- (void)alertControllerCancelled:(id)cancelled;
+- (void)alertControllerHitKeyboardReturnKey:(id)key;
+- (void)alertControllerPressedDictationButton:(id)button;
+- (void)alertControllerReleasedDictationButton:(id)button;
 - (void)backlightLuminanceDidChange;
-- (void)bluetoothAvailabilityDidUpdate:(BOOL)a3;
+- (void)bluetoothAvailabilityDidUpdate:(BOOL)update;
 - (void)clearMessageContent;
-- (void)configureWithContext:(id)a3;
-- (void)configureWithDeviceIdentifier:(id)a3 identifierType:(int64_t)a4 deviceType:(int64_t)a5 launchContext:(int64_t)a6;
-- (void)connectionServiceDidInvalidate:(id)a3;
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3;
+- (void)configureWithContext:(id)context;
+- (void)configureWithDeviceIdentifier:(id)identifier identifierType:(int64_t)type deviceType:(int64_t)deviceType launchContext:(int64_t)context;
+- (void)connectionServiceDidInvalidate:(id)invalidate;
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind;
 - (void)dealloc;
-- (void)device:(id)a3 beganTextEditingWithAttributes:(id)a4 initialText:(id)a5;
-- (void)device:(id)a3 didEncounterAuthenticationThrottle:(int64_t)a4;
-- (void)device:(id)a3 didUpdateAttributes:(id)a4;
-- (void)device:(id)a3 didUpdateNowPlayingInfo:(id)a4;
-- (void)device:(id)a3 didUpdateSiriRemoteFindingSessionState:(int64_t)a4;
-- (void)device:(id)a3 didUpdateText:(id)a4;
-- (void)device:(id)a3 endedTextEditingWithAttributes:(id)a4 endingText:(id)a5;
-- (void)device:(id)a3 hasCaptionsEnabled:(BOOL)a4;
-- (void)device:(id)a3 hidesMediaControls:(id)a4;
-- (void)device:(id)a3 needsMediaControls:(id)a4;
-- (void)device:(id)a3 supportsFindMyRemote:(BOOL)a4;
-- (void)device:(id)a3 supportsSiri:(BOOL)a4 volumeControl:(BOOL)a5;
-- (void)device:(id)a3 supportsVolumeControl:(BOOL)a4;
-- (void)deviceBeganConnecting:(id)a3;
-- (void)deviceDidConnect:(id)a3;
-- (void)deviceDidDisconnect:(id)a3 reason:(int64_t)a4 error:(id)a5;
-- (void)deviceDidEncounterAuthenticationChallenge:(id)a3 passwordType:(unint64_t)a4 passcode:(id)a5;
-- (void)deviceInfoUpdated:(id)a3;
-- (void)deviceListUpdated:(id)a3;
-- (void)devicePickerTitleWasLongPressedForDevice:(id)a3;
-- (void)devicePickerWillChangeState:(BOOL)a3 animated:(BOOL)a4;
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)device:(id)device beganTextEditingWithAttributes:(id)attributes initialText:(id)text;
+- (void)device:(id)device didEncounterAuthenticationThrottle:(int64_t)throttle;
+- (void)device:(id)device didUpdateAttributes:(id)attributes;
+- (void)device:(id)device didUpdateNowPlayingInfo:(id)info;
+- (void)device:(id)device didUpdateSiriRemoteFindingSessionState:(int64_t)state;
+- (void)device:(id)device didUpdateText:(id)text;
+- (void)device:(id)device endedTextEditingWithAttributes:(id)attributes endingText:(id)text;
+- (void)device:(id)device hasCaptionsEnabled:(BOOL)enabled;
+- (void)device:(id)device hidesMediaControls:(id)controls;
+- (void)device:(id)device needsMediaControls:(id)controls;
+- (void)device:(id)device supportsFindMyRemote:(BOOL)remote;
+- (void)device:(id)device supportsSiri:(BOOL)siri volumeControl:(BOOL)control;
+- (void)device:(id)device supportsVolumeControl:(BOOL)control;
+- (void)deviceBeganConnecting:(id)connecting;
+- (void)deviceDidConnect:(id)connect;
+- (void)deviceDidDisconnect:(id)disconnect reason:(int64_t)reason error:(id)error;
+- (void)deviceDidEncounterAuthenticationChallenge:(id)challenge passwordType:(unint64_t)type passcode:(id)passcode;
+- (void)deviceInfoUpdated:(id)updated;
+- (void)deviceListUpdated:(id)updated;
+- (void)devicePickerTitleWasLongPressedForDevice:(id)device;
+- (void)devicePickerWillChangeState:(BOOL)state animated:(BOOL)animated;
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion;
 - (void)fetchPreferredDevice;
-- (void)findButtonTappedForDevice:(id)a3;
+- (void)findButtonTappedForDevice:(id)device;
 - (void)findingSessionDidEnd;
 - (void)findingSessionDidStart;
-- (void)generatedButtonEvent:(id)a3;
-- (void)generatedTouchEvent:(id)a3;
+- (void)generatedButtonEvent:(id)event;
+- (void)generatedTouchEvent:(id)event;
 - (void)keyboardRequested;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillDeactivate:(id)a3;
-- (void)setBackgroundCornerRadius:(double)a3;
-- (void)setIsInSecureWindow:(BOOL)a3;
-- (void)setSupportsSiri:(BOOL)a3;
-- (void)setSupportsVolumeControl:(BOOL)a3;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillDeactivate:(id)deactivate;
+- (void)setBackgroundCornerRadius:(double)radius;
+- (void)setIsInSecureWindow:(BOOL)window;
+- (void)setSupportsSiri:(BOOL)siri;
+- (void)setSupportsVolumeControl:(BOOL)control;
 - (void)showGenericUnableToConnectMessage;
 - (void)showLoadingSpinner;
-- (void)showMessageWithError:(id)a3 andDevice:(id)a4;
-- (void)showMessageWithTitle:(id)a3 message:(id)a4;
-- (void)showMessageWithTitle:(id)a3 message:(id)a4 titleFont:(id)a5;
+- (void)showMessageWithError:(id)error andDevice:(id)device;
+- (void)showMessageWithTitle:(id)title message:(id)message;
+- (void)showMessageWithTitle:(id)title message:(id)message titleFont:(id)font;
 - (void)showNoAssociatedNetworkMessage;
 - (void)showNoWIFIConnectionMessage;
-- (void)showPairingMessageWithCode:(id)a3;
+- (void)showPairingMessageWithCode:(id)code;
 - (void)showSearchingSpinner;
 - (void)showThrottleConnectMessage;
 - (void)startConnections;
 - (void)stopConnections;
-- (void)suggestedDevices:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)suggestedDevices:(id)devices;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)volumeDownEventGenerated;
 - (void)volumeUpEventGenerated;
-- (void)wifiStateDidUpdate:(int64_t)a3;
+- (void)wifiStateDidUpdate:(int64_t)update;
 @end
 
 @implementation TVRUIRemoteViewController
@@ -240,40 +240,40 @@ void __33__TVRUIRemoteViewController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
-  v4 = a3;
-  v8 = [v4 deviceIdentifier];
-  v5 = [v4 deviceIdentifierType];
-  v6 = [v4 deviceType];
-  v7 = [v4 launchContext];
+  contextCopy = context;
+  deviceIdentifier = [contextCopy deviceIdentifier];
+  deviceIdentifierType = [contextCopy deviceIdentifierType];
+  deviceType = [contextCopy deviceType];
+  launchContext = [contextCopy launchContext];
 
-  [(TVRUIRemoteViewController *)self configureWithDeviceIdentifier:v8 identifierType:v5 deviceType:v6 launchContext:v7];
+  [(TVRUIRemoteViewController *)self configureWithDeviceIdentifier:deviceIdentifier identifierType:deviceIdentifierType deviceType:deviceType launchContext:launchContext];
 }
 
-- (void)configureWithDeviceIdentifier:(id)a3 identifierType:(int64_t)a4 deviceType:(int64_t)a5 launchContext:(int64_t)a6
+- (void)configureWithDeviceIdentifier:(id)identifier identifierType:(int64_t)type deviceType:(int64_t)deviceType launchContext:(int64_t)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [(TVRUIRemoteViewController *)self isConfigured];
+  identifierCopy = identifier;
+  isConfigured = [(TVRUIRemoteViewController *)self isConfigured];
   if ([(TVRUIRemoteViewController *)self isConfigured])
   {
     v12 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(TVRUIRemoteViewController *)self activeDevice];
-      v14 = [v13 name];
+      activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+      name = [activeDevice name];
       v39 = 138543362;
-      v40 = v14;
+      v40 = name;
       _os_log_impl(&dword_26CFEB000, v12, OS_LOG_TYPE_DEFAULT, "RemoteViewController is already configured with device: %{public}@", &v39, 0xCu);
     }
 
-    v15 = [(TVRUIRemoteViewController *)self activeDevice];
-    if (v15)
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    if (activeDevice2)
     {
-      v16 = v15;
-      v17 = [(TVRUIRemoteViewController *)self activeDevice];
-      v18 = [v17 hasIdentifier:v10];
+      v16 = activeDevice2;
+      activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+      v18 = [activeDevice3 hasIdentifier:identifierCopy];
 
       if ((v18 & 1) == 0)
       {
@@ -287,36 +287,36 @@ void __33__TVRUIRemoteViewController_init__block_invoke(uint64_t a1)
 
   else
   {
-    v19 = [MEMORY[0x277D6C560] sharedInstance];
-    [v19 reset];
+    mEMORY[0x277D6C560] = [MEMORY[0x277D6C560] sharedInstance];
+    [mEMORY[0x277D6C560] reset];
   }
 
-  if (v11)
+  if (isConfigured)
   {
     goto LABEL_23;
   }
 
 LABEL_9:
-  if ([(__CFString *)v10 length])
+  if ([(__CFString *)identifierCopy length])
   {
-    v20 = [TVRUIDeviceFactory deviceWithIdentifier:v10];
+    v20 = [TVRUIDeviceFactory deviceWithIdentifier:identifierCopy];
     [(TVRUIRemoteViewController *)self setActiveDevice:v20];
 
     v21 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(TVRUIRemoteViewController *)self activeDevice];
+      activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
       v39 = 138543362;
-      v40 = v22;
+      v40 = activeDevice4;
       _os_log_impl(&dword_26CFEB000, v21, OS_LOG_TYPE_DEFAULT, "Updated active device to: %{public}@", &v39, 0xCu);
     }
 
     v23 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(TVRUIRemoteViewController *)self _stringForDeviceDeviceIdentifierType:a4];
+      v24 = [(TVRUIRemoteViewController *)self _stringForDeviceDeviceIdentifierType:type];
       v39 = 138543618;
-      v40 = v10;
+      v40 = identifierCopy;
       v41 = 2114;
       v42 = v24;
       _os_log_impl(&dword_26CFEB000, v23, OS_LOG_TYPE_DEFAULT, "Configured RemoteViewController with device-id %{public}@ of type %{public}@", &v39, 0x16u);
@@ -327,7 +327,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a6 == 11)
+  if (context == 11)
   {
     v25 = [TVRUIDeviceFactory deviceWithIdentifier:@"Apple TV"];
     [(TVRUIRemoteViewController *)self setActiveDevice:v25];
@@ -335,15 +335,15 @@ LABEL_19:
     v26 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(TVRUIRemoteViewController *)self activeDevice];
+      activeDevice5 = [(TVRUIRemoteViewController *)self activeDevice];
       v39 = 138543362;
-      v40 = v27;
+      v40 = activeDevice5;
       _os_log_impl(&dword_26CFEB000, v26, OS_LOG_TYPE_DEFAULT, "Updated active device to: %{public}@", &v39, 0xCu);
     }
 
     [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:@"Apple TV"];
     v23 = _TVRUIViewControllerLog();
-    a4 = 4;
+    type = 4;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v28 = [(TVRUIRemoteViewController *)self _stringForDeviceDeviceIdentifierType:4];
@@ -361,42 +361,42 @@ LABEL_20:
   v29 = +[TVRUIDeviceQuery deviceQuery];
   [(TVRUIRemoteViewController *)self setDeviceQuery:v29];
 
-  v30 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v30 transitonToViewForDeviceType:{-[TVRUIRemoteViewController deviceType](self, "deviceType")}];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController transitonToViewForDeviceType:{-[TVRUIRemoteViewController deviceType](self, "deviceType")}];
 
-  v31 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  [v31 transitonToViewForDeviceType:{-[TVRUIRemoteViewController deviceType](self, "deviceType")}];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  [controlPanelViewController transitonToViewForDeviceType:{-[TVRUIRemoteViewController deviceType](self, "deviceType")}];
 
   v32 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(TVRUIRemoteViewController *)self _stringForDeviceDeviceIdentifierType:a4];
-    v34 = [(TVRUIRemoteViewController *)self launchContextDesc];
+    v33 = [(TVRUIRemoteViewController *)self _stringForDeviceDeviceIdentifierType:type];
+    launchContextDesc = [(TVRUIRemoteViewController *)self launchContextDesc];
     v39 = 138544130;
-    v40 = v10;
+    v40 = identifierCopy;
     v41 = 2114;
     v42 = v33;
     v43 = 2048;
-    v44 = a5;
+    deviceTypeCopy = deviceType;
     v45 = 2114;
-    v46 = v34;
+    v46 = launchContextDesc;
     _os_log_impl(&dword_26CFEB000, v32, OS_LOG_TYPE_DEFAULT, "Configured RemoteViewController with device-id %{public}@ identifier type %{public}@ device-type %ld launch-context %{public}@", &v39, 0x2Au);
   }
 
   [(TVRUIRemoteViewController *)self setConfigured:1];
 LABEL_23:
-  [(TVRUIRemoteViewController *)self setDeviceIdentifierType:a4];
-  [(TVRUIRemoteViewController *)self setDeviceType:a5];
-  [(TVRUIRemoteViewController *)self setLaunchContext:a6];
-  v35 = [(TVRUIRemoteViewController *)self _stringForLaunchContextType:a6];
+  [(TVRUIRemoteViewController *)self setDeviceIdentifierType:type];
+  [(TVRUIRemoteViewController *)self setDeviceType:deviceType];
+  [(TVRUIRemoteViewController *)self setLaunchContext:context];
+  v35 = [(TVRUIRemoteViewController *)self _stringForLaunchContextType:context];
   [(TVRUIRemoteViewController *)self setLaunchContextDesc:v35];
 
-  v36 = [MEMORY[0x277D6C4B8] sharedInstance];
-  v37 = [(TVRUIRemoteViewController *)self launchContextDesc];
-  [v36 logPresentationFrom:v37];
+  mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+  launchContextDesc2 = [(TVRUIRemoteViewController *)self launchContextDesc];
+  [mEMORY[0x277D6C4B8] logPresentationFrom:launchContextDesc2];
 
-  v38 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  [v38 setViewServiceLaunchContext:a6];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  [nowPlayingController setViewServiceLaunchContext:context];
 }
 
 - (void)viewDidLoad
@@ -406,59 +406,59 @@ LABEL_23:
   v27.super_class = TVRUIRemoteViewController;
   [(TVRUIRemoteViewController *)&v27 viewDidLoad];
   [(TVRUIRemoteViewController *)self setOverrideUserInterfaceStyle:2];
-  v3 = [(TVRUIRemoteViewController *)self styleProvider];
-  v4 = [v3 rootBackgroundColor];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  rootBackgroundColor = [styleProvider rootBackgroundColor];
 
-  v5 = [(TVRUIRemoteViewController *)self styleProvider];
-  v6 = [v5 rootBackgroundView];
-  [(TVRUIRemoteViewController *)self setBackgroundView:v6];
+  styleProvider2 = [(TVRUIRemoteViewController *)self styleProvider];
+  rootBackgroundView = [styleProvider2 rootBackgroundView];
+  [(TVRUIRemoteViewController *)self setBackgroundView:rootBackgroundView];
 
-  v7 = [(TVRUIRemoteViewController *)self backgroundView];
+  backgroundView = [(TVRUIRemoteViewController *)self backgroundView];
 
-  if (v7)
+  if (backgroundView)
   {
-    v8 = [(TVRUIRemoteViewController *)self backgroundView];
-    [v8 setBackgroundColor:v4];
+    backgroundView2 = [(TVRUIRemoteViewController *)self backgroundView];
+    [backgroundView2 setBackgroundColor:rootBackgroundColor];
 
-    v9 = [(TVRUIRemoteViewController *)self view];
-    v10 = [(TVRUIRemoteViewController *)self backgroundView];
-    [v9 addSubview:v10];
+    view = [(TVRUIRemoteViewController *)self view];
+    backgroundView3 = [(TVRUIRemoteViewController *)self backgroundView];
+    [view addSubview:backgroundView3];
 
-    v11 = [(TVRUIRemoteViewController *)self backgroundView];
-    [v11 setUserInteractionEnabled:0];
+    backgroundView4 = [(TVRUIRemoteViewController *)self backgroundView];
+    [backgroundView4 setUserInteractionEnabled:0];
   }
 
   else
   {
-    if (!v4)
+    if (!rootBackgroundColor)
     {
       goto LABEL_6;
     }
 
-    v11 = [(TVRUIRemoteViewController *)self view];
-    [v11 setBackgroundColor:v4];
+    backgroundView4 = [(TVRUIRemoteViewController *)self view];
+    [backgroundView4 setBackgroundColor:rootBackgroundColor];
   }
 
 LABEL_6:
   [(TVRUIRemoteViewController *)self _setupChildViewControllers];
   [(TVRUIRemoteViewController *)self _createBlackGradientView];
-  v12 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  v13 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v13 setMenuProvider:v12];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController setMenuProvider:nowPlayingController];
 
-  v14 = [(TVRUIRemoteViewController *)self traitCollection];
-  v15 = [v14 userInterfaceIdiom];
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v15 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:self selector:sel_sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:self selector:sel_sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:self selector:sel_sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:0];
 
     v19 = objc_opt_self();
     v28[0] = v19;
@@ -467,27 +467,27 @@ LABEL_6:
     [(TVRUIRemoteViewController *)self setTraitChangeRegistration:v21];
   }
 
-  v22 = [(TVRUIRemoteViewController *)self view];
-  v23 = [v22 maskView];
+  view2 = [(TVRUIRemoteViewController *)self view];
+  maskView = [view2 maskView];
 
-  if (!v23)
+  if (!maskView)
   {
-    v23 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v24 = [MEMORY[0x277D75348] blackColor];
-    [v23 setBackgroundColor:v24];
+    maskView = objc_alloc_init(MEMORY[0x277D75D18]);
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [maskView setBackgroundColor:blackColor];
 
-    v25 = [(TVRUIRemoteViewController *)self view];
-    [v25 setMaskView:v23];
+    view3 = [(TVRUIRemoteViewController *)self view];
+    [view3 setMaskView:maskView];
   }
 
-  v26 = [(TVRUIRemoteViewController *)self view];
-  [v26 bounds];
-  [v23 setFrame:?];
+  view4 = [(TVRUIRemoteViewController *)self view];
+  [view4 bounds];
+  [maskView setFrame:?];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12 = *MEMORY[0x277D85DE8];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -499,18 +499,18 @@ LABEL_6:
 
   v9.receiver = self;
   v9.super_class = TVRUIRemoteViewController;
-  [(TVRUIRemoteViewController *)&v9 viewDidAppear:v3];
-  v6 = [(TVRUIRemoteViewController *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  [(TVRUIRemoteViewController *)&v9 viewDidAppear:appearCopy];
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(TVRUIRemoteViewController *)self startConnections];
   }
 
   [(TVRUIRemoteViewController *)self _installTapToRadarButton];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_connectionServiceDidInvalidate_ name:*MEMORY[0x277D6C578] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_connectionServiceDidInvalidate_ name:*MEMORY[0x277D6C578] object:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -519,38 +519,38 @@ LABEL_6:
   v120.receiver = self;
   v120.super_class = TVRUIRemoteViewController;
   [(TVRUIRemoteViewController *)&v120 viewWillLayoutSubviews];
-  v3 = [(TVRUIRemoteViewController *)self view];
-  [v3 bounds];
+  view = [(TVRUIRemoteViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   rect = v8;
   v10 = v9;
 
-  v11 = [(TVRUIRemoteViewController *)self backgroundView];
+  backgroundView = [(TVRUIRemoteViewController *)self backgroundView];
 
-  if (v11)
+  if (backgroundView)
   {
-    v12 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v12 rootBackgroundInsets];
+    styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider rootBackgroundInsets];
     v14 = v5 + v13;
     v16 = v7 + v15;
     v18 = rect - (v13 + v17);
     v20 = v10 - (v15 + v19);
-    v21 = [(TVRUIRemoteViewController *)self backgroundView];
-    [v21 setFrame:{v14, v16, v18, v20}];
+    backgroundView2 = [(TVRUIRemoteViewController *)self backgroundView];
+    [backgroundView2 setFrame:{v14, v16, v18, v20}];
   }
 
-  v22 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v22 deviceSafeAreaInsetTop];
+  styleProvider2 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider2 deviceSafeAreaInsetTop];
   v24 = v23;
 
-  v25 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (v25)
+  if (devicePickerViewController)
   {
-    v26 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    v27 = [v26 view];
-    [v27 setFrame:{0.0, v24, rect, v10 - v24}];
+    devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    view2 = [devicePickerViewController2 view];
+    [view2 setFrame:{0.0, v24, rect, v10 - v24}];
 
     v28 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -566,28 +566,28 @@ LABEL_6:
     }
   }
 
-  v30 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  v31 = [v30 isDevicePickerShowing];
+  devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  isDevicePickerShowing = [devicePickerViewController3 isDevicePickerShowing];
 
-  v32 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [(TVRUIRemoteViewController *)self _layoutTouchpadExpanded:(v32 != 0) & v31];
+  devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [(TVRUIRemoteViewController *)self _layoutTouchpadExpanded:(devicePickerViewController4 != 0) & isDevicePickerShowing];
 
-  v33 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  v34 = [v33 view];
-  [v34 frame];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  view3 = [touchpadViewController view];
+  [view3 frame];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
 
-  v43 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v43 primaryButtonSize];
+  styleProvider3 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider3 primaryButtonSize];
   v45 = v44;
 
-  v46 = [(TVRUIRemoteViewController *)self styleProvider];
-  LODWORD(v34) = [v46 isPad];
+  styleProvider4 = [(TVRUIRemoteViewController *)self styleProvider];
+  LODWORD(view3) = [styleProvider4 isPad];
 
-  if (v34)
+  if (view3)
   {
     v125.origin.x = v36;
     v125.origin.y = v38;
@@ -605,8 +605,8 @@ LABEL_6:
 
   else
   {
-    v51 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v51 deviceListRowHeight];
+    styleProvider5 = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider5 deviceListRowHeight];
     v53 = v24 + v52;
 
     v127.origin.x = v36;
@@ -614,10 +614,10 @@ LABEL_6:
     v127.size.width = v40;
     v127.size.height = v42;
     MinY = CGRectGetMinY(v127);
-    if (v31)
+    if (isDevicePickerShowing)
     {
-      v55 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      [v55 _effectiveContentHeight];
+      devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      [devicePickerViewController5 _effectiveContentHeight];
       MinY = MinY - v56;
     }
 
@@ -629,12 +629,12 @@ LABEL_6:
     v48 = v45;
   }
 
-  v57 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  v58 = [v57 view];
-  [v58 setFrame:{0.0, v50, rect, v48}];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  view4 = [controlPanelViewController view];
+  [view4 setFrame:{0.0, v50, rect, v48}];
 
-  v59 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v59 mediaControlsViewHeight];
+  styleProvider6 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider6 mediaControlsViewHeight];
   v61 = v60;
 
   v129.origin.x = v36;
@@ -642,103 +642,103 @@ LABEL_6:
   v129.size.width = v40;
   v129.size.height = v42;
   v62 = CGRectGetMaxY(v129) - v61 + -6.0;
-  v63 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v63 touchpadInsets];
+  styleProvider7 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider7 touchpadInsets];
   v65 = v64;
 
-  v66 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  v67 = [v66 view];
-  [v67 setFrame:{v65, v62, v40, v61}];
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  view5 = [mediaControlsViewController view];
+  [view5 setFrame:{v65, v62, v40, v61}];
 
-  v68 = [(TVRUIRemoteViewController *)self dockController];
-  v69 = [v68 dockViewController];
+  dockController = [(TVRUIRemoteViewController *)self dockController];
+  dockViewController = [dockController dockViewController];
 
-  v70 = [(TVRUIRemoteViewController *)self dockController];
-  v71 = [v70 layoutManager];
+  dockController2 = [(TVRUIRemoteViewController *)self dockController];
+  layoutManager = [dockController2 layoutManager];
 
-  v72 = +[TVRUIFeatures isDockEnabled]& (v31 ^ 1);
-  [v71 updateWithTouchpadFrame:v72 controlPanelFrame:v36 placement:{v38, v40, v42, 0.0, v118, rect, v48}];
-  if (([v71 isReordering] & 1) == 0)
+  v72 = +[TVRUIFeatures isDockEnabled]& (isDevicePickerShowing ^ 1);
+  [layoutManager updateWithTouchpadFrame:v72 controlPanelFrame:v36 placement:{v38, v40, v42, 0.0, v118, rect, v48}];
+  if (([layoutManager isReordering] & 1) == 0)
   {
-    [v71 effectiveDockFrame];
+    [layoutManager effectiveDockFrame];
     v74 = v73;
     v76 = v75;
     v78 = v77;
     v80 = v79;
-    v81 = [v69 view];
-    [v81 setFrame:{v74, v76, v78, v80}];
+    view6 = [dockViewController view];
+    [view6 setFrame:{v74, v76, v78, v80}];
   }
 
   if (v72)
   {
-    [v71 effectiveTouchpadFrame];
+    [layoutManager effectiveTouchpadFrame];
     v83 = v82;
     v85 = v84;
     v87 = v86;
     v89 = v88;
-    v90 = [(TVRUIRemoteViewController *)self touchpadViewController];
-    v91 = [v90 view];
-    [v91 setFrame:{v83, v85, v87, v89}];
+    touchpadViewController2 = [(TVRUIRemoteViewController *)self touchpadViewController];
+    view7 = [touchpadViewController2 view];
+    [view7 setFrame:{v83, v85, v87, v89}];
 
-    [v71 effectiveControlPanelFrame];
+    [layoutManager effectiveControlPanelFrame];
     v93 = v92;
     v95 = v94;
     v97 = v96;
     v99 = v98;
-    v100 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-    v101 = [v100 view];
-    [v101 setFrame:{v93, v95, v97, v99}];
+    controlPanelViewController2 = [(TVRUIRemoteViewController *)self controlPanelViewController];
+    view8 = [controlPanelViewController2 view];
+    [view8 setFrame:{v93, v95, v97, v99}];
   }
 
-  v102 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  v103 = [v102 view];
-  [v103 frame];
+  touchpadViewController3 = [(TVRUIRemoteViewController *)self touchpadViewController];
+  view9 = [touchpadViewController3 view];
+  [view9 frame];
   v105 = v104;
   v107 = v106;
 
-  v108 = [(TVRUIRemoteViewController *)self view];
-  [v108 bounds];
+  view10 = [(TVRUIRemoteViewController *)self view];
+  [view10 bounds];
   v110 = v109;
-  v111 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v111 widthForMessagesView];
+  styleProvider8 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider8 widthForMessagesView];
   v113 = (v110 - v112) * 0.5;
 
-  v114 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v114 widthForMessagesView];
+  styleProvider9 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider9 widthForMessagesView];
   v116 = v115;
 
-  v117 = [(TVRUIRemoteViewController *)self messageView];
-  [v117 setFrame:{v113, v105, v116, v107}];
+  messageView = [(TVRUIRemoteViewController *)self messageView];
+  [messageView setFrame:{v113, v105, v116, v107}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v21.receiver = self;
   v21.super_class = TVRUIRemoteViewController;
-  [(TVRUIRemoteViewController *)&v21 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(TVRUIRemoteViewController *)self styleProvider];
-  v9 = [v8 isPad];
+  [(TVRUIRemoteViewController *)&v21 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  isPad = [styleProvider isPad];
 
-  if (v9)
+  if (isPad)
   {
-    v10 = [(TVRUIRemoteViewController *)self view];
-    v11 = [v10 superview];
-    [v11 bounds];
+    view = [(TVRUIRemoteViewController *)self view];
+    superview = [view superview];
+    [superview bounds];
     v13 = v12;
     v15 = v14;
 
     if (width > height != v13 > v15)
     {
-      v16 = [(TVRUIRemoteViewController *)self nowPlayingController];
-      v17 = [v16 currentModalContext];
+      nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+      currentModalContext = [nowPlayingController currentModalContext];
 
-      if (v17)
+      if (currentModalContext)
       {
-        v18 = [(TVRUIRemoteViewController *)self nowPlayingController];
-        [v18 dismissModalUI];
+        nowPlayingController2 = [(TVRUIRemoteViewController *)self nowPlayingController];
+        [nowPlayingController2 dismissModalUI];
 
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
@@ -746,8 +746,8 @@ LABEL_6:
         v19[3] = &unk_279D88D10;
         v20 = 1;
         v19[4] = self;
-        v19[5] = v17;
-        [v7 animateAlongsideTransition:&__block_literal_global_17 completion:v19];
+        v19[5] = currentModalContext;
+        [coordinatorCopy animateAlongsideTransition:&__block_literal_global_17 completion:v19];
       }
     }
   }
@@ -762,55 +762,55 @@ void __80__TVRUIRemoteViewController_viewWillTransitionToSize_withTransitionCoor
   }
 }
 
-- (void)_layoutTouchpadExpanded:(BOOL)a3
+- (void)_layoutTouchpadExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  v5 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v5 touchpadInsets];
+  expandedCopy = expanded;
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider touchpadInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v12 deviceListRowHeight];
+  styleProvider2 = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider2 deviceListRowHeight];
   v14 = v13;
 
-  v15 = [(TVRUIRemoteViewController *)self styleProvider];
-  v16 = [v15 isPad];
+  styleProvider3 = [(TVRUIRemoteViewController *)self styleProvider];
+  isPad = [styleProvider3 isPad];
 
-  v17 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  if (v16)
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  if (isPad)
   {
-    if (v17)
+    if (devicePickerViewController)
     {
-      v18 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v19 = [v18 view];
-      [v19 frame];
+      devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      view = [devicePickerViewController2 view];
+      [view frame];
       v21 = v14 + v20 + 22.0;
     }
 
     else
     {
-      v18 = [(TVRUIRemoteViewController *)self view];
-      [v18 safeAreaInsets];
+      devicePickerViewController2 = [(TVRUIRemoteViewController *)self view];
+      [devicePickerViewController2 safeAreaInsets];
       v21 = v7 + v25;
     }
   }
 
   else
   {
-    if (v17)
+    if (devicePickerViewController)
     {
-      v22 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v23 = [v22 view];
-      [v23 frame];
+      devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      view2 = [devicePickerViewController3 view];
+      [view2 frame];
       v24 = v14 + CGRectGetMinY(v74);
     }
 
     else
     {
-      v22 = [(TVRUIRemoteViewController *)self view];
-      [v22 safeAreaInsets];
+      devicePickerViewController3 = [(TVRUIRemoteViewController *)self view];
+      [devicePickerViewController3 safeAreaInsets];
       v24 = v7 + v26;
     }
 
@@ -854,59 +854,59 @@ LABEL_18:
   }
 
 LABEL_20:
-  if (v3)
+  if (expandedCopy)
   {
-    v29 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v29 _effectiveContentHeight];
+    devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController4 _effectiveContentHeight];
     v31 = v30;
 
-    v32 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v32 _calculatedContentHeight];
+    devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController5 _calculatedContentHeight];
     v34 = v33;
-    v35 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v35 _effectiveContentHeight];
+    devicePickerViewController6 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController6 _effectiveContentHeight];
     v37 = v36;
 
     if (v34 > v37)
     {
-      v38 = [(TVRUIRemoteViewController *)self blackGradientView];
-      [v38 setAlpha:1.0];
+      blackGradientView = [(TVRUIRemoteViewController *)self blackGradientView];
+      [blackGradientView setAlpha:1.0];
     }
 
     v21 = v21 + v31;
-    v39 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v39 touchpadHeight];
+    styleProvider4 = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider4 touchpadHeight];
     v41 = v40;
-    v42 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v42 _effectiveContentHeight];
+    devicePickerViewController7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController7 _effectiveContentHeight];
     v44 = v41 - v43;
   }
 
   else
   {
-    v45 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v45 touchpadCornerRadius];
+    styleProvider5 = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider5 touchpadCornerRadius];
     v47 = v46;
-    v48 = [(TVRUIRemoteViewController *)self touchpadViewController];
-    v49 = [v48 view];
-    [v49 _setContinuousCornerRadius:v47];
+    touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+    view3 = [touchpadViewController view];
+    [view3 _setContinuousCornerRadius:v47];
 
-    v50 = [(TVRUIRemoteViewController *)self blackGradientView];
-    [v50 setAlpha:0.0];
+    blackGradientView2 = [(TVRUIRemoteViewController *)self blackGradientView];
+    [blackGradientView2 setAlpha:0.0];
 
-    v39 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v39 touchpadHeight];
+    styleProvider4 = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider4 touchpadHeight];
     v44 = v51;
   }
 
-  v52 = [(TVRUIRemoteViewController *)self styleProvider];
-  if ([v52 isPad])
+  styleProvider6 = [(TVRUIRemoteViewController *)self styleProvider];
+  if ([styleProvider6 isPad])
   {
-    v53 = [(TVRUIRemoteViewController *)self view];
-    v54 = [v53 window];
-    v55 = [v54 windowScene];
-    v56 = [v55 effectiveGeometry];
-    v57 = [v56 interfaceOrientation] - 3;
+    view4 = [(TVRUIRemoteViewController *)self view];
+    window = [view4 window];
+    windowScene = [window windowScene];
+    effectiveGeometry = [windowScene effectiveGeometry];
+    v57 = [effectiveGeometry interfaceOrientation] - 3;
 
     if (v57 < 2)
     {
@@ -918,32 +918,32 @@ LABEL_20:
   {
   }
 
-  v58 = [(TVRUIRemoteViewController *)self view];
-  [v58 bounds];
+  view5 = [(TVRUIRemoteViewController *)self view];
+  [view5 bounds];
   v60 = v59;
 
-  v61 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  v62 = [v61 view];
-  [v62 setFrame:{v9, v21, v60 - v9 - v11, v44}];
+  touchpadViewController2 = [(TVRUIRemoteViewController *)self touchpadViewController];
+  view6 = [touchpadViewController2 view];
+  [view6 setFrame:{v9, v21, v60 - v9 - v11, v44}];
 
   if (!+[TVRUIFeatures isSolariumEnabled])
   {
-    v63 = [(TVRUIRemoteViewController *)self styleProvider];
-    [v63 deviceListRowHeight];
+    styleProvider7 = [(TVRUIRemoteViewController *)self styleProvider];
+    [styleProvider7 deviceListRowHeight];
     v65 = v64;
 
-    v66 = [(TVRUIRemoteViewController *)self blackGradientView];
-    [v66 setFrame:{0.0, v21 - v65, v60, v65}];
+    blackGradientView3 = [(TVRUIRemoteViewController *)self blackGradientView];
+    [blackGradientView3 setFrame:{0.0, v21 - v65, v60, v65}];
 
-    v67 = [(TVRUIRemoteViewController *)self blackGradientView];
-    v68 = [v67 layer];
-    v69 = [v68 sublayers];
-    v70 = [v69 objectAtIndexedSubscript:0];
+    blackGradientView4 = [(TVRUIRemoteViewController *)self blackGradientView];
+    layer = [blackGradientView4 layer];
+    sublayers = [layer sublayers];
+    v70 = [sublayers objectAtIndexedSubscript:0];
     [v70 setFrame:{0.0, 0.0, v60, v65}];
 
-    v72 = [(TVRUIRemoteViewController *)self view];
-    v71 = [(TVRUIRemoteViewController *)self blackGradientView];
-    [v72 bringSubviewToFront:v71];
+    view7 = [(TVRUIRemoteViewController *)self view];
+    blackGradientView5 = [(TVRUIRemoteViewController *)self blackGradientView];
+    [view7 bringSubviewToFront:blackGradientView5];
   }
 }
 
@@ -953,49 +953,49 @@ LABEL_20:
   if (!+[TVRUIFeatures isSolariumEnabled])
   {
     v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v3 setBackgroundColor:clearColor];
 
     [v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x277CD9EB0] layer];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    v7 = [MEMORY[0x277D75348] blackColor];
-    v11[0] = [v6 CGColor];
-    v11[1] = [v7 CGColor];
+    layer = [MEMORY[0x277CD9EB0] layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v11[0] = [clearColor2 CGColor];
+    v11[1] = [blackColor CGColor];
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
-    [v5 setColors:v8];
-    v9 = [v3 layer];
-    [v9 insertSublayer:v5 atIndex:0];
+    [layer setColors:v8];
+    layer2 = [v3 layer];
+    [layer2 insertSublayer:layer atIndex:0];
 
-    v10 = [(TVRUIRemoteViewController *)self view];
-    [v10 addSubview:v3];
+    view = [(TVRUIRemoteViewController *)self view];
+    [view addSubview:v3];
 
     [(TVRUIRemoteViewController *)self setBlackGradientView:v3];
   }
 }
 
-- (void)setIsInSecureWindow:(BOOL)a3
+- (void)setIsInSecureWindow:(BOOL)window
 {
-  if (self->_isInSecureWindow != a3)
+  if (self->_isInSecureWindow != window)
   {
-    self->_isInSecureWindow = a3;
+    self->_isInSecureWindow = window;
     [(TVRUIRemoteViewController *)self _updateSecureWindowState];
   }
 }
 
-- (void)_enableTVRemoteOnLockscreen:(BOOL)a3
+- (void)_enableTVRemoteOnLockscreen:(BOOL)lockscreen
 {
-  v3 = a3;
+  lockscreenCopy = lockscreen;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUIRemoteViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v7 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3)
+      if (lockscreenCopy)
       {
         v8 = @"enable";
       }
@@ -1005,18 +1005,18 @@ LABEL_20:
         v8 = @"disable";
       }
 
-      v9 = [(TVRUIRemoteViewController *)self activeDeviceIdentifier];
+      activeDeviceIdentifier = [(TVRUIRemoteViewController *)self activeDeviceIdentifier];
       v13 = 138412546;
       v14 = v8;
       v15 = 2114;
-      v16 = v9;
+      v16 = activeDeviceIdentifier;
       _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Requesting tvremoted to %@ lock screen assertion for device: %{public}@", &v13, 0x16u);
     }
 
-    v10 = [MEMORY[0x277D6C560] sharedInstance];
-    v11 = [(TVRUIRemoteViewController *)self activeDevice];
-    v12 = [v11 identifier];
-    [v10 enableTVRemoteOnLockscreen:v3 forDeviceIdentifier:v12];
+    mEMORY[0x277D6C560] = [MEMORY[0x277D6C560] sharedInstance];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    identifier = [activeDevice identifier];
+    [mEMORY[0x277D6C560] enableTVRemoteOnLockscreen:lockscreenCopy forDeviceIdentifier:identifier];
   }
 }
 
@@ -1051,17 +1051,17 @@ LABEL_20:
 
 - (BOOL)shouldDisconnectAndStopConnections
 {
-  v3 = [(TVRUIRemoteViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v5 = [(TVRUIRemoteViewController *)self systemMonitor];
-    if ([v5 screenLocked])
+    systemMonitor = [(TVRUIRemoteViewController *)self systemMonitor];
+    if ([systemMonitor screenLocked])
     {
-      v6 = [(TVRUIRemoteViewController *)self isInSecureWindow];
+      isInSecureWindow = [(TVRUIRemoteViewController *)self isInSecureWindow];
 
-      if (v6)
+      if (isInSecureWindow)
       {
         return 0;
       }
@@ -1075,9 +1075,9 @@ LABEL_20:
   return 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11 = *MEMORY[0x277D85DE8];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1093,11 +1093,11 @@ LABEL_20:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v10) = v3;
+      LODWORD(v10) = disappearCopy;
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "tvruiremoteviewcontroller will disappear animated=%d", buf, 8u);
     }
 
-    if (v3)
+    if (disappearCopy)
     {
       [(TVRUIRemoteViewController *)self _disconnectUserInitiated];
     }
@@ -1107,22 +1107,22 @@ LABEL_20:
       [(TVRUIRemoteViewController *)self _disconnectSystemInitiated];
     }
 
-    [(TVRUIRemoteViewController *)self dismissPresentedContentAnimated:v3 completion:0];
+    [(TVRUIRemoteViewController *)self dismissPresentedContentAnimated:disappearCopy completion:0];
     [(TVRUIRemoteViewController *)self stopConnections];
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x277D6C578] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D6C578] object:0];
 
   v8.receiver = self;
   v8.super_class = TVRUIRemoteViewController;
-  [(TVRUIRemoteViewController *)&v8 viewWillDisappear:v3];
+  [(TVRUIRemoteViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TVRUIRemoteViewController *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 1)
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v3 = 30;
   }
@@ -1137,8 +1137,8 @@ LABEL_20:
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(TVRUIRemoteViewController *)self styleProvider];
-  [v2 remoteSize];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  [styleProvider remoteSize];
   v4 = v3;
   v6 = v5;
 
@@ -1152,17 +1152,17 @@ LABEL_20:
 - (void)backlightLuminanceDidChange
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIRemoteViewController *)self traitCollection];
-  self->_isInReducedBacklightMode = [v3 _backlightLuminance] == 1;
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  self->_isInReducedBacklightMode = [traitCollection _backlightLuminance] == 1;
 
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(TVRUIRemoteViewController *)self traitCollection];
+    traitCollection2 = [(TVRUIRemoteViewController *)self traitCollection];
     v6 = 134218240;
-    v7 = [v5 _backlightLuminance];
+    _backlightLuminance = [traitCollection2 _backlightLuminance];
     v8 = 1024;
-    v9 = [(TVRUIRemoteViewController *)self isInReducedBacklightMode];
+    isInReducedBacklightMode = [(TVRUIRemoteViewController *)self isInReducedBacklightMode];
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Backlight Luminance: %ld in AOD: %d", &v6, 0x12u);
   }
 
@@ -1173,15 +1173,15 @@ LABEL_20:
 {
   [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(TVRUIRemoteViewController *)self traitChangeRegistration];
-  [(TVRUIRemoteViewController *)self unregisterForTraitChanges:v3];
+  traitChangeRegistration = [(TVRUIRemoteViewController *)self traitChangeRegistration];
+  [(TVRUIRemoteViewController *)self unregisterForTraitChanges:traitChangeRegistration];
 
-  v4 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
 
-  if (v4)
+  if (authenticatingDevice)
   {
-    v5 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-    [v5 disconnectUserInitiated];
+    authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    [authenticatingDevice2 disconnectUserInitiated];
   }
 
   [(TVRUIRemoteViewController *)self setFindingSession:0];
@@ -1197,8 +1197,8 @@ LABEL_20:
   self->_nowPlayingController = v3;
 
   objc_initWeak(&location, self);
-  v5 = [(TVRUIRemoteViewController *)self playerCommandHandler];
-  [(TVRUINowPlayingController *)self->_nowPlayingController setCommandHandler:v5];
+  playerCommandHandler = [(TVRUIRemoteViewController *)self playerCommandHandler];
+  [(TVRUINowPlayingController *)self->_nowPlayingController setCommandHandler:playerCommandHandler];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1246,19 +1246,19 @@ void __55__TVRUIRemoteViewController__setupNowPlayingController__block_invoke_2(
 
 - (void)_setupChildViewControllers
 {
-  v3 = [(TVRUIRemoteViewController *)self dockController];
-  v4 = [v3 dockViewController];
-  [(TVRUIRemoteViewController *)self bs_addChildViewController:v4];
+  dockController = [(TVRUIRemoteViewController *)self dockController];
+  dockViewController = [dockController dockViewController];
+  [(TVRUIRemoteViewController *)self bs_addChildViewController:dockViewController];
 
   [(TVRUIRemoteViewController *)self bs_addChildViewController:self->_touchpadViewController];
   [(TVRUIRemoteViewController *)self bs_addChildViewController:self->_controlPanelViewController];
   [(TVRUIRemoteViewController *)self bs_addChildViewController:self->_mediaControlsViewController];
-  v5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [(TVRUIRemoteViewController *)self bs_addChildViewController:v5];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [(TVRUIRemoteViewController *)self bs_addChildViewController:devicePickerViewController];
 
-  v6 = [(TVRUIRemoteViewController *)self view];
-  v7 = [(TVRUIRemoteViewController *)self messageView];
-  [v6 addSubview:v7];
+  view = [(TVRUIRemoteViewController *)self view];
+  messageView = [(TVRUIRemoteViewController *)self messageView];
+  [view addSubview:messageView];
 
   v8 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1267,50 +1267,50 @@ void __55__TVRUIRemoteViewController__setupNowPlayingController__block_invoke_2(
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Setup remote child controllers and message view", v11, 2u);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self view];
-  [v9 setNeedsLayout];
+  view2 = [(TVRUIRemoteViewController *)self view];
+  [view2 setNeedsLayout];
 
-  v10 = [(TVRUIRemoteViewController *)self view];
-  [v10 layoutIfNeeded];
+  view3 = [(TVRUIRemoteViewController *)self view];
+  [view3 layoutIfNeeded];
 }
 
 - (void)_setupDevicePickerController
 {
-  v3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (!v3)
+  if (!devicePickerViewController)
   {
     v4 = objc_alloc_init(TVRUIDevicePickerViewController);
     [(TVRUIRemoteViewController *)self setDevicePickerViewController:v4];
 
-    v5 = [(TVRUIRemoteViewController *)self styleProvider];
-    v6 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v6 setStyleProvider:v5];
+    styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+    devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController2 setStyleProvider:styleProvider];
 
-    v7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v7 setDelegate:self];
+    devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController3 setDelegate:self];
 
-    v8 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v8 setButtonEventDelegate:self];
+    devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController4 setButtonEventDelegate:self];
 
-    v9 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v9 setEnabled:1];
+    devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController5 setEnabled:1];
 
-    v10 = [(TVRUIRemoteViewController *)self playerCommandHandler];
-    v11 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v11 setPlayerCommandHandler:v10];
+    playerCommandHandler = [(TVRUIRemoteViewController *)self playerCommandHandler];
+    devicePickerViewController6 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController6 setPlayerCommandHandler:playerCommandHandler];
 
-    v12 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    devicePickerViewController7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
     tipSourceViewProvider = self->_tipSourceViewProvider;
-    self->_tipSourceViewProvider = v12;
+    self->_tipSourceViewProvider = devicePickerViewController7;
 
-    MEMORY[0x2821F96F8](v12, tipSourceViewProvider);
+    MEMORY[0x2821F96F8](devicePickerViewController7, tipSourceViewProvider);
   }
 }
 
-- (id)_stringForLaunchContextType:(int64_t)a3
+- (id)_stringForLaunchContextType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1:
       result = @"controlCenter";
@@ -1355,7 +1355,7 @@ void __55__TVRUIRemoteViewController__setupNowPlayingController__block_invoke_2(
       result = @"controlCenterLockscreen";
       break;
     default:
-      if (a3 == 100)
+      if (type == 100)
       {
         result = @"internalDevelopment";
       }
@@ -1526,8 +1526,8 @@ void __40__TVRUIRemoteViewController__toggleDock__block_invoke(uint64_t a1)
 
 - (id)animatorForPresentationAsAlert
 {
-  v2 = [(TVRUIRemoteViewController *)self traitCollection];
-  v3 = +[TVRemoteAlertVisualStyleProviding visualStyleForIdiom:](TVRemoteAlertVisualStyleProviding, "visualStyleForIdiom:", [v2 userInterfaceIdiom]);
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  v3 = +[TVRemoteAlertVisualStyleProviding visualStyleForIdiom:](TVRemoteAlertVisualStyleProviding, "visualStyleForIdiom:", [traitCollection userInterfaceIdiom]);
 
   v4 = [[TVRUIAlertAnimationController alloc] initWithAnimationType:0 visualStyle:v3];
 
@@ -1536,44 +1536,44 @@ void __40__TVRUIRemoteViewController__toggleDock__block_invoke(uint64_t a1)
 
 - (id)animatorForDismissalAsAlert
 {
-  v2 = [(TVRUIRemoteViewController *)self traitCollection];
-  v3 = +[TVRemoteAlertVisualStyleProviding visualStyleForIdiom:](TVRemoteAlertVisualStyleProviding, "visualStyleForIdiom:", [v2 userInterfaceIdiom]);
+  traitCollection = [(TVRUIRemoteViewController *)self traitCollection];
+  v3 = +[TVRemoteAlertVisualStyleProviding visualStyleForIdiom:](TVRemoteAlertVisualStyleProviding, "visualStyleForIdiom:", [traitCollection userInterfaceIdiom]);
 
   v4 = [[TVRUIAlertAnimationController alloc] initWithAnimationType:1 visualStyle:v3];
 
   return v4;
 }
 
-- (void)setBackgroundCornerRadius:(double)a3
+- (void)setBackgroundCornerRadius:(double)radius
 {
-  v5 = [(TVRUIRemoteViewController *)self backgroundView];
-  v7 = v5;
-  if (v5)
+  backgroundView = [(TVRUIRemoteViewController *)self backgroundView];
+  v7 = backgroundView;
+  if (backgroundView)
   {
-    [v5 _setContinuousCornerRadius:a3];
+    [backgroundView _setContinuousCornerRadius:radius];
   }
 
   else
   {
-    v6 = [(TVRUIRemoteViewController *)self view];
-    [v6 _setContinuousCornerRadius:a3];
+    view = [(TVRUIRemoteViewController *)self view];
+    [view _setContinuousCornerRadius:radius];
   }
 }
 
 - (double)backgroundCornerRadius
 {
-  v3 = [(TVRUIRemoteViewController *)self backgroundView];
-  v4 = v3;
-  if (v3)
+  backgroundView = [(TVRUIRemoteViewController *)self backgroundView];
+  v4 = backgroundView;
+  if (backgroundView)
   {
-    [v3 _continuousCornerRadius];
+    [backgroundView _continuousCornerRadius];
     v6 = v5;
   }
 
   else
   {
-    v7 = [(TVRUIRemoteViewController *)self view];
-    [v7 _continuousCornerRadius];
+    view = [(TVRUIRemoteViewController *)self view];
+    [view _continuousCornerRadius];
     v6 = v8;
   }
 
@@ -1591,13 +1591,13 @@ void __40__TVRUIRemoteViewController__toggleDock__block_invoke(uint64_t a1)
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self deviceQuery];
-  if (v4)
+  deviceQuery = [(TVRUIRemoteViewController *)self deviceQuery];
+  if (deviceQuery)
   {
-    v5 = [(TVRUIRemoteViewController *)self deviceQuery];
-    v6 = [v5 hasStarted];
+    deviceQuery2 = [(TVRUIRemoteViewController *)self deviceQuery];
+    hasStarted = [deviceQuery2 hasStarted];
 
-    if ((v6 & 1) == 0)
+    if ((hasStarted & 1) == 0)
     {
       v7 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1607,28 +1607,28 @@ void __40__TVRUIRemoteViewController__toggleDock__block_invoke(uint64_t a1)
       }
 
       [(TVRUIRemoteViewController *)self fetchPreferredDevice];
-      v8 = [(TVRUIRemoteViewController *)self deviceQuery];
+      deviceQuery3 = [(TVRUIRemoteViewController *)self deviceQuery];
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __45__TVRUIRemoteViewController_startConnections__block_invoke;
       v36[3] = &unk_279D88D88;
       v36[4] = self;
-      [v8 startQuery:self completionHandler:v36];
+      [deviceQuery3 startQuery:self completionHandler:v36];
 
       [(TVRUIRemoteViewController *)self performSelector:sel__showSearchingSpinnerIfNeeded withObject:0 afterDelay:2.0];
     }
   }
 
-  v9 = [(TVRUIRemoteViewController *)self sharingClient];
-  v10 = v9 == 0;
+  sharingClient = [(TVRUIRemoteViewController *)self sharingClient];
+  v10 = sharingClient == 0;
 
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277D54C30]);
     [(TVRUIRemoteViewController *)self setSharingClient:v11];
 
-    v12 = [(TVRUIRemoteViewController *)self sharingClient];
-    [v12 activateAssertionWithIdentifier:@"com.apple.sharing.PreventContinuityKeyboard"];
+    sharingClient2 = [(TVRUIRemoteViewController *)self sharingClient];
+    [sharingClient2 activateAssertionWithIdentifier:@"com.apple.sharing.PreventContinuityKeyboard"];
 
     v13 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1641,49 +1641,49 @@ void __40__TVRUIRemoteViewController__toggleDock__block_invoke(uint64_t a1)
   v14 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(TVRUIRemoteViewController *)self activeDevice];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
     *buf = 138543362;
-    v38 = v15;
+    v38 = activeDevice;
     _os_log_impl(&dword_26CFEB000, v14, OS_LOG_TYPE_DEFAULT, "Active device: %{public}@", buf, 0xCu);
   }
 
-  v16 = [(TVRUIRemoteViewController *)self activeDevice];
-  v17 = [v16 isConnected];
+  activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+  isConnected = [activeDevice2 isConnected];
 
-  if (v17)
+  if (isConnected)
   {
-    v18 = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
-    [v18 deviceDidConnect];
+    deviceConnectionStatusDelegate = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
+    [deviceConnectionStatusDelegate deviceDidConnect];
   }
 
-  v19 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v19)
+  activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice3)
   {
-    v20 = [(TVRUIRemoteViewController *)self activeDevice];
-    if ([v20 isConnecting])
+    activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
+    if ([activeDevice4 isConnecting])
     {
     }
 
     else
     {
-      v21 = [(TVRUIRemoteViewController *)self activeDevice];
-      v22 = [v21 isConnected];
+      activeDevice5 = [(TVRUIRemoteViewController *)self activeDevice];
+      isConnected2 = [activeDevice5 isConnected];
 
-      if (v22)
+      if (isConnected2)
       {
         goto LABEL_22;
       }
 
       v23 = [(TVRUIRemoteViewController *)self _connectionContextFromLaunchContext:[(TVRUIRemoteViewController *)self launchContext]];
-      v19 = [(TVRUIRemoteViewController *)self activeDevice];
-      [(TVRUIRemoteViewController *)self _connectToDevice:v19 connectionContext:v23];
+      activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+      [(TVRUIRemoteViewController *)self _connectToDevice:activeDevice3 connectionContext:v23];
     }
   }
 
 LABEL_22:
   [(TVRUIRemoteViewController *)self _setupNetworkObserverIfNeeded];
-  v24 = [(TVRUIRemoteViewController *)self systemMonitor];
-  v25 = v24 == 0;
+  systemMonitor = [(TVRUIRemoteViewController *)self systemMonitor];
+  v25 = systemMonitor == 0;
 
   if (v25)
   {
@@ -1691,13 +1691,13 @@ LABEL_22:
     [(TVRUIRemoteViewController *)self setSystemMonitor:v26];
 
     objc_initWeak(buf, self);
-    v27 = [(TVRUIRemoteViewController *)self systemMonitor];
+    systemMonitor2 = [(TVRUIRemoteViewController *)self systemMonitor];
     v31 = MEMORY[0x277D85DD0];
     v32 = 3221225472;
     v33 = __45__TVRUIRemoteViewController_startConnections__block_invoke_125;
     v34 = &unk_279D87F18;
     objc_copyWeak(&v35, buf);
-    [v27 setScreenLockedChangedHandler:&v31];
+    [systemMonitor2 setScreenLockedChangedHandler:&v31];
 
     v28 = [(TVRUIRemoteViewController *)self systemMonitor:v31];
     [v28 activateWithCompletion:&__block_literal_global_134];
@@ -1715,8 +1715,8 @@ LABEL_22:
       _os_log_impl(&dword_26CFEB000, v29, OS_LOG_TYPE_DEFAULT, "Registering for Siri Events", buf, 2u);
     }
 
-    v30 = [(TVRUIRemoteViewController *)self siriManager];
-    [v30 registerForSiriEvents];
+    siriManager = [(TVRUIRemoteViewController *)self siriManager];
+    [siriManager registerForSiriEvents];
   }
 
   [(TVRUIRemoteViewController *)self _initSessionStatistics];
@@ -1785,9 +1785,9 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v29, 0xCu);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
     v5 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1796,10 +1796,10 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
       _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "UI has active device. Calling disconnect on device", &v29, 2u);
     }
 
-    v6 = [(TVRUIRemoteViewController *)self systemMonitor];
-    v7 = [v6 screenLocked];
+    systemMonitor = [(TVRUIRemoteViewController *)self systemMonitor];
+    screenLocked = [systemMonitor screenLocked];
 
-    if (v7)
+    if (screenLocked)
     {
       [(TVRUIRemoteViewController *)self _disconnectSystemInitiated];
     }
@@ -1812,9 +1812,9 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
     [(TVRUIRemoteViewController *)self _updateSecureWindowState];
   }
 
-  v8 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
 
-  if (v8)
+  if (authenticatingDevice)
   {
     v9 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1823,21 +1823,21 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
       _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "Found an authenticating device. Requesting disconnect", &v29, 2u);
     }
 
-    v10 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-    [v10 disconnectUserInitiated];
+    authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    [authenticatingDevice2 disconnectUserInitiated];
   }
 
-  v11 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (v11)
+  if (devicePickerViewController)
   {
-    v12 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v12 resetSelectedDevice];
+    devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController2 resetSelectedDevice];
   }
 
-  v13 = [(TVRUIRemoteViewController *)self deviceQuery];
+  deviceQuery = [(TVRUIRemoteViewController *)self deviceQuery];
 
-  if (v13)
+  if (deviceQuery)
   {
     v14 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1846,19 +1846,19 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
       _os_log_impl(&dword_26CFEB000, v14, OS_LOG_TYPE_DEFAULT, "Stopping device query", &v29, 2u);
     }
 
-    v15 = [(TVRUIRemoteViewController *)self deviceQuery];
-    [v15 stop];
+    deviceQuery2 = [(TVRUIRemoteViewController *)self deviceQuery];
+    [deviceQuery2 stop];
 
     [(TVRUIRemoteViewController *)self setDeviceQuery:0];
     [(TVRUIRemoteViewController *)self _stopDeviceQueryThresholdTimer];
   }
 
-  v16 = [(TVRUIRemoteViewController *)self sharingClient];
+  sharingClient = [(TVRUIRemoteViewController *)self sharingClient];
 
-  if (v16)
+  if (sharingClient)
   {
-    v17 = [(TVRUIRemoteViewController *)self sharingClient];
-    [v17 invalidate];
+    sharingClient2 = [(TVRUIRemoteViewController *)self sharingClient];
+    [sharingClient2 invalidate];
 
     [(TVRUIRemoteViewController *)self setSharingClient:0];
     v18 = _TVRUIViewControllerLog();
@@ -1869,12 +1869,12 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
     }
   }
 
-  v19 = [(TVRUIRemoteViewController *)self systemMonitor];
+  systemMonitor2 = [(TVRUIRemoteViewController *)self systemMonitor];
 
-  if (v19)
+  if (systemMonitor2)
   {
-    v20 = [(TVRUIRemoteViewController *)self systemMonitor];
-    [v20 invalidate];
+    systemMonitor3 = [(TVRUIRemoteViewController *)self systemMonitor];
+    [systemMonitor3 invalidate];
 
     [(TVRUIRemoteViewController *)self setSystemMonitor:0];
     v21 = _TVRUIViewControllerLog();
@@ -1885,56 +1885,56 @@ void __45__TVRUIRemoteViewController_startConnections__block_invoke_132()
     }
   }
 
-  v22 = [(TVRUIRemoteViewController *)self networkObserver];
+  networkObserver = [(TVRUIRemoteViewController *)self networkObserver];
 
-  if (v22)
+  if (networkObserver)
   {
     [(TVRUIRemoteViewController *)self setNetworkObserver:0];
   }
 
   [(TVRUIRemoteViewController *)self setSupportsVolumeControl:0];
-  v23 = [(TVRUIRemoteViewController *)self siriManager];
-  [v23 unregisterForSiriEvents];
+  siriManager = [(TVRUIRemoteViewController *)self siriManager];
+  [siriManager unregisterForSiriEvents];
 
-  v24 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v24 setDevices:MEMORY[0x277CBEBF8]];
+  devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController3 setDevices:MEMORY[0x277CBEBF8]];
 
   if (+[TVRUIFeatures corianderEnabled])
   {
-    v25 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v25 setSuggestedDevices:MEMORY[0x277CBEBF8]];
+    devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController4 setSuggestedDevices:MEMORY[0x277CBEBF8]];
   }
 
-  v26 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v26 collapseDeviceList];
+  devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController5 collapseDeviceList];
 
   [(TVRUIRemoteViewController *)self setConfigured:0];
-  v27 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  [v27 setEnabled:0];
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  [mediaControlsViewController setEnabled:0];
 
-  v28 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  [v28 dismissModalUI];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  [nowPlayingController dismissModalUI];
 
   [(TVRUIRemoteViewController *)self _logSessionStatistics];
 }
 
-- (void)_disconnectUserInitiatedAndModifyLockscreenAssertion:(BOOL)a3
+- (void)_disconnectUserInitiatedAndModifyLockscreenAssertion:(BOOL)assertion
 {
-  v3 = a3;
-  v5 = [(TVRUIRemoteViewController *)self activeDevice];
+  assertionCopy = assertion;
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v5)
+  if (activeDevice)
   {
-    v6 = [(TVRUIRemoteViewController *)self activeDevice];
-    [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:v6];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:activeDevice2];
 
-    if (v3)
+    if (assertionCopy)
     {
       [(TVRUIRemoteViewController *)self _enableTVRemoteOnLockscreen:0];
     }
 
-    v7 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v7 disconnectUserInitiated];
+    activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice3 disconnectUserInitiated];
 
     [(TVRUIRemoteViewController *)self _resetActiveDevice];
     [(TVRUIRemoteViewController *)self _enableMediaControls:0 animated:0];
@@ -1965,16 +1965,16 @@ LABEL_8:
 
 - (void)_disconnectSystemInitiated
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v3)
+  if (activeDevice)
   {
-    v4 = [(TVRUIRemoteViewController *)self activeDevice];
-    [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:v4];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:activeDevice2];
 
     [(TVRUIRemoteViewController *)self _enableTVRemoteOnLockscreen:0];
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v5 disconnectSystemInitiated];
+    activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice3 disconnectSystemInitiated];
 
     [(TVRUIRemoteViewController *)self _resetActiveDevice];
     [(TVRUIRemoteViewController *)self _enableMediaControls:0 animated:0];
@@ -2005,9 +2005,9 @@ LABEL_6:
 
 - (void)_resetActiveDevice
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v3)
+  if (activeDevice)
   {
     v4 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2016,15 +2016,15 @@ LABEL_6:
       _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Resetting active device", v7, 2u);
     }
 
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v5 setDelegate:0];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice2 setDelegate:0];
 
     [(TVRUIRemoteViewController *)self setActiveDevice:0];
   }
 
   [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:0];
-  v6 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  [v6 setNowPlayingInfo:0];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  [nowPlayingController setNowPlayingInfo:0];
 }
 
 - (void)_initSessionStatistics
@@ -2032,9 +2032,9 @@ LABEL_6:
   v3 = objc_alloc_init(MEMORY[0x277D6C528]);
   [(TVRUIRemoteViewController *)self setSessionData:v3];
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(TVRUIRemoteViewController *)self sessionData];
-  [v5 setSessionStartTime:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  sessionData = [(TVRUIRemoteViewController *)self sessionData];
+  [sessionData setSessionStartTime:date];
 
   v6 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2046,17 +2046,17 @@ LABEL_6:
 
 - (void)_logSessionStatistics
 {
-  v3 = [(TVRUIRemoteViewController *)self sessionData];
+  sessionData = [(TVRUIRemoteViewController *)self sessionData];
 
-  if (v3)
+  if (sessionData)
   {
-    v4 = [(TVRUIRemoteViewController *)self launchContextDesc];
-    v5 = [(TVRUIRemoteViewController *)self sessionData];
-    [v5 setLaunchContextDesc:v4];
+    launchContextDesc = [(TVRUIRemoteViewController *)self launchContextDesc];
+    sessionData2 = [(TVRUIRemoteViewController *)self sessionData];
+    [sessionData2 setLaunchContextDesc:launchContextDesc];
 
-    v6 = [MEMORY[0x277D6C4B8] sharedInstance];
-    v7 = [(TVRUIRemoteViewController *)self sessionData];
-    [v6 logSessionStatistics:v7];
+    mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+    sessionData3 = [(TVRUIRemoteViewController *)self sessionData];
+    [mEMORY[0x277D6C4B8] logSessionStatistics:sessionData3];
 
     [(TVRUIRemoteViewController *)self setSessionData:0];
     v8 = _TVRUIViewControllerLog();
@@ -2068,53 +2068,53 @@ LABEL_6:
   }
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [activate object];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[TVRUIRemoteViewController sceneDidActivate:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = object;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s - %{public}@", &v6, 0x16u);
   }
 
   [(TVRUIRemoteViewController *)self _activate];
 }
 
-- (void)sceneWillDeactivate:(id)a3
+- (void)sceneWillDeactivate:(id)deactivate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [deactivate object];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[TVRUIRemoteViewController sceneWillDeactivate:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = object;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s - %{public}@", &v13, 0x16u);
   }
 
-  v6 = [(TVRUIRemoteViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  view = [(TVRUIRemoteViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v4 == v8)
+  if (object == windowScene)
   {
     v9 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(TVRUIRemoteViewController *)self view];
-      v11 = [v10 window];
-      v12 = [v11 windowScene];
+      view2 = [(TVRUIRemoteViewController *)self view];
+      window2 = [view2 window];
+      windowScene2 = [window2 windowScene];
       v13 = 138412546;
-      v14 = v4;
+      v14 = object;
       v15 = 2112;
-      v16 = v12;
+      v16 = windowScene2;
       _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "Deactivating connection - notification scene object: %@ current scene: %@", &v13, 0x16u);
     }
 
@@ -2127,14 +2127,14 @@ LABEL_6:
   [(TVRUIRemoteViewController *)self startConnections];
   if ([(TVRUIRemoteViewController *)self isInSecureWindow])
   {
-    v3 = [(TVRUIRemoteViewController *)self presentedViewController];
-    if (v3)
+    presentedViewController = [(TVRUIRemoteViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v4 = v3;
-      v5 = [(TVRUIRemoteViewController *)self presentedViewController];
-      v6 = [(TVRUIRemoteViewController *)self keyboardController];
+      v4 = presentedViewController;
+      presentedViewController2 = [(TVRUIRemoteViewController *)self presentedViewController];
+      keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-      if (v5 == v6)
+      if (presentedViewController2 == keyboardController)
       {
         v7[0] = MEMORY[0x277D85DD0];
         v7[1] = 3221225472;
@@ -2164,32 +2164,32 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 
 - (void)_deactivate
 {
-  v2 = [(TVRUIRemoteViewController *)self siriManager];
-  [v2 unregisterForSiriEvents];
+  siriManager = [(TVRUIRemoteViewController *)self siriManager];
+  [siriManager unregisterForSiriEvents];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [background object];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(TVRUIRemoteViewController *)self view];
-    v7 = [v6 window];
-    v8 = [v7 windowScene];
+    view = [(TVRUIRemoteViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
     v13 = 136315906;
     v14 = "[TVRUIRemoteViewController sceneDidEnterBackground:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = object;
     v17 = 2114;
-    v18 = v8;
+    v18 = windowScene;
     v19 = 1024;
-    v20 = [(TVRUIRemoteViewController *)self isInSecureWindow];
+    isInSecureWindow = [(TVRUIRemoteViewController *)self isInSecureWindow];
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s - scene: %{public}@ current window scene: %{public}@ secureWindow: %{BOOL}d", &v13, 0x26u);
   }
 
-  if (!-[TVRUIRemoteViewController isInSecureWindow](self, "isInSecureWindow") && (-[TVRUIRemoteViewController view](self, "view"), v9 = objc_claimAutoreleasedReturnValue(), [v9 window], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "windowScene"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, v4 == v11))
+  if (!-[TVRUIRemoteViewController isInSecureWindow](self, "isInSecureWindow") && (-[TVRUIRemoteViewController view](self, "view"), v9 = objc_claimAutoreleasedReturnValue(), [v9 window], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "windowScene"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, object == v11))
   {
     [(TVRUIRemoteViewController *)self _disconnect];
   }
@@ -2216,9 +2216,9 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v23, 0xCu);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
     v5 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2230,9 +2230,9 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
     [(TVRUIRemoteViewController *)self _disconnectUserInitiated];
   }
 
-  v6 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
 
-  if (v6)
+  if (authenticatingDevice)
   {
     v7 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2241,14 +2241,14 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
       _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Found an authenticating device. Requesting disconnect", &v23, 2u);
     }
 
-    v8 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-    [v8 disconnectUserInitiated];
+    authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    [authenticatingDevice2 disconnectUserInitiated];
   }
 
-  v9 = [(TVRUIRemoteViewController *)self deviceQuery];
-  v10 = [v9 hasStarted];
+  deviceQuery = [(TVRUIRemoteViewController *)self deviceQuery];
+  hasStarted = [deviceQuery hasStarted];
 
-  if (v10)
+  if (hasStarted)
   {
     v11 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -2257,19 +2257,19 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
       _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Stopping device query", &v23, 2u);
     }
 
-    v12 = [(TVRUIRemoteViewController *)self deviceQuery];
-    [v12 stop];
+    deviceQuery2 = [(TVRUIRemoteViewController *)self deviceQuery];
+    [deviceQuery2 stop];
 
     [(TVRUIRemoteViewController *)self _stopDeviceQueryThresholdTimer];
   }
 
   [(TVRUIRemoteViewController *)self dismissPresentedContentAnimated:0 completion:0];
-  v13 = [(TVRUIRemoteViewController *)self sharingClient];
+  sharingClient = [(TVRUIRemoteViewController *)self sharingClient];
 
-  if (v13)
+  if (sharingClient)
   {
-    v14 = [(TVRUIRemoteViewController *)self sharingClient];
-    [v14 invalidate];
+    sharingClient2 = [(TVRUIRemoteViewController *)self sharingClient];
+    [sharingClient2 invalidate];
 
     [(TVRUIRemoteViewController *)self setSharingClient:0];
     v15 = _TVRUIViewControllerLog();
@@ -2280,37 +2280,37 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
     }
   }
 
-  v16 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (v16)
+  if (devicePickerViewController)
   {
-    v17 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v17 resetSelectedDevice];
+    devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController2 resetSelectedDevice];
 
     if (+[TVRUIFeatures corianderEnabled])
     {
-      v18 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      [v18 setSuggestedDevices:MEMORY[0x277CBEBF8]];
+      devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      [devicePickerViewController3 setSuggestedDevices:MEMORY[0x277CBEBF8]];
     }
 
-    v19 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v19 setDevices:MEMORY[0x277CBEBF8]];
+    devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController4 setDevices:MEMORY[0x277CBEBF8]];
 
-    v20 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v20 collapseDeviceList];
+    devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController5 collapseDeviceList];
   }
 
-  v21 = [(TVRUIRemoteViewController *)self networkObserver];
+  networkObserver = [(TVRUIRemoteViewController *)self networkObserver];
 
-  if (v21)
+  if (networkObserver)
   {
     [(TVRUIRemoteViewController *)self setNetworkObserver:0];
   }
 
   [(TVRUIRemoteViewController *)self setSupportsVolumeControl:0];
   [(TVRUIRemoteViewController *)self _toggleControlAvailability];
-  v22 = [(TVRUIRemoteViewController *)self siriManager];
-  [v22 unregisterForSiriEvents];
+  siriManager = [(TVRUIRemoteViewController *)self siriManager];
+  [siriManager unregisterForSiriEvents];
 
   [(TVRUIRemoteViewController *)self setConfigured:0];
   [(TVRUIRemoteViewController *)self _logSessionStatistics];
@@ -2319,21 +2319,21 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 - (void)fetchPreferredDevice
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D6C520] sharedInstance];
-  v4 = [v3 preferredDevice];
-  [(TVRUIRemoteViewController *)self setPreferredDevice:v4];
+  mEMORY[0x277D6C520] = [MEMORY[0x277D6C520] sharedInstance];
+  preferredDevice = [mEMORY[0x277D6C520] preferredDevice];
+  [(TVRUIRemoteViewController *)self setPreferredDevice:preferredDevice];
 
-  v5 = [(TVRUIRemoteViewController *)self preferredDevice];
+  preferredDevice2 = [(TVRUIRemoteViewController *)self preferredDevice];
 
   v6 = _TVRUIViewControllerLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (preferredDevice2)
   {
     if (v7)
     {
-      v8 = [(TVRUIRemoteViewController *)self preferredDevice];
+      preferredDevice3 = [(TVRUIRemoteViewController *)self preferredDevice];
       v9 = 138412290;
-      v10 = v8;
+      v10 = preferredDevice3;
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Found preferredDevice %@", &v9, 0xCu);
     }
   }
@@ -2345,16 +2345,16 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_connectToDevice:(id)a3 connectionContext:(int64_t)a4
+- (void)_connectToDevice:(id)device connectionContext:(int64_t)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(TVRUIRemoteViewController *)self _stringForConnectionContext:a4];
+    v8 = [(TVRUIRemoteViewController *)self _stringForConnectionContext:context];
     v16 = 138543618;
-    v17 = v6;
+    v17 = deviceCopy;
     v18 = 2112;
     v19 = v8;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Requesting connect to device=%{public}@ with connectionContext:%@", &v16, 0x16u);
@@ -2363,26 +2363,26 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
   [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
   [(TVRUIRemoteViewController *)self _cancelShowConnectingSpinner];
   [(TVRUIRemoteViewController *)self performSelector:sel__showConnectingSpinner withObject:0 afterDelay:0.7];
-  [v6 setDelegate:self];
-  [v6 connectWithConnectionContext:a4];
-  v9 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  if (v9)
+  [deviceCopy setDelegate:self];
+  [deviceCopy connectWithConnectionContext:context];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  if (devicePickerViewController)
   {
-    v10 = v9;
-    v11 = [v6 name];
+    v10 = devicePickerViewController;
+    name = [deviceCopy name];
 
-    if (v11)
+    if (name)
     {
-      v12 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      [v12 setDevice:v6];
+      devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      [devicePickerViewController2 setDevice:deviceCopy];
 
-      v13 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v14 = [v13 isDevicePickerShowing];
+      devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      isDevicePickerShowing = [devicePickerViewController3 isDevicePickerShowing];
 
-      if (v14)
+      if (isDevicePickerShowing)
       {
-        v15 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-        [v15 collapseDeviceList];
+        devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+        [devicePickerViewController4 collapseDeviceList];
       }
     }
   }
@@ -2390,27 +2390,27 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 
 - (void)_updateControlsAppearance
 {
-  v3 = [(TVRUIRemoteViewController *)self isInReducedBacklightMode];
+  isInReducedBacklightMode = [(TVRUIRemoteViewController *)self isInReducedBacklightMode];
   if ([(TVRUIRemoteViewController *)self isInReducedBacklightMode])
   {
-    v4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v4 collapseDeviceList];
+    devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController collapseDeviceList];
   }
 
-  v5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  v6 = [v5 isDevicePickerShowing];
+  devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  isDevicePickerShowing = [devicePickerViewController2 isDevicePickerShowing];
 
-  if ((v6 & 1) == 0)
+  if ((isDevicePickerShowing & 1) == 0)
   {
-    v7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v7 setEnabled:!v3];
+    devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController3 setEnabled:!isInReducedBacklightMode];
   }
 
-  v8 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v8 setEnabled:!v3];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setEnabled:!isInReducedBacklightMode];
 
-  v9 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  [v9 setEnabled:!v3];
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  [mediaControlsViewController setEnabled:!isInReducedBacklightMode];
 
   [(TVRUIRemoteViewController *)self _toggleControlAvailability];
   if ([(TVRUIRemoteViewController *)self isInReducedBacklightMode])
@@ -2430,9 +2430,9 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 
   else if ([(TVRUIRemoteViewController *)self isEditingSessionActive])
   {
-    v11 = [(TVRUIRemoteViewController *)self keyboardController];
+    keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-    if (!v11)
+    if (!keyboardController)
     {
       v12 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2447,8 +2447,8 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 
   if ([(TVRUIRemoteViewController *)self isInReducedBacklightMode])
   {
-    v13 = [(TVRUIRemoteViewController *)self nowPlayingController];
-    [v13 dismissModalUI];
+    nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+    [nowPlayingController dismissModalUI];
   }
 }
 
@@ -2458,35 +2458,35 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
   v3 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUIRemoteViewController *)self activeDevice];
-    v5 = [v4 identifier];
-    v6 = [(TVRUIRemoteViewController *)self activeDevice];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    identifier = [activeDevice identifier];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
     v11 = 138543618;
-    v12 = v5;
+    v12 = identifier;
     v13 = 1024;
-    v14 = [v6 isConnected];
+    isConnected = [activeDevice2 isConnected];
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Toggling control panel controls. active device %{public}@. isConnected %d", &v11, 0x12u);
   }
 
-  v7 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v7)
+  activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice3)
   {
-    v8 = [(TVRUIRemoteViewController *)self activeDevice];
-    v9 = [v8 isConnected];
+    activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
+    isConnected2 = [activeDevice4 isConnected];
 
-    if (v9)
+    if (isConnected2)
     {
-      v7 = [(TVRUIRemoteViewController *)self isInReducedBacklightMode]^ 1;
+      activeDevice3 = [(TVRUIRemoteViewController *)self isInReducedBacklightMode]^ 1;
     }
 
     else
     {
-      v7 = 0;
+      activeDevice3 = 0;
     }
   }
 
-  v10 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  [v10 setEnabled:v7];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  [controlPanelViewController setEnabled:activeDevice3];
 }
 
 - (void)_startDeviceQueryThresholdTimer
@@ -2519,8 +2519,8 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
   deviceQueryThresholdBlock = self->_deviceQueryThresholdBlock;
   self->_deviceQueryThresholdBlock = v4;
 
-  v6 = [MEMORY[0x277D6C520] sharedInstance];
-  [v6 preferredDeviceSearchTimeout];
+  mEMORY[0x277D6C520] = [MEMORY[0x277D6C520] sharedInstance];
+  [mEMORY[0x277D6C520] preferredDeviceSearchTimeout];
   v8 = v7;
 
   v9 = _TVRUIViewControllerLog();
@@ -2532,9 +2532,9 @@ uint64_t __38__TVRUIRemoteViewController__activate__block_invoke(uint64_t a1)
 
   v10 = dispatch_time(0, (v8 * 1000000000.0));
   v11 = MEMORY[0x277D85CD0];
-  v12 = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
+  deviceQueryThresholdBlock = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
   v13 = MEMORY[0x277D85CD0];
-  dispatch_after(v10, MEMORY[0x277D85CD0], v12);
+  dispatch_after(v10, MEMORY[0x277D85CD0], deviceQueryThresholdBlock);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -2571,12 +2571,12 @@ void __60__TVRUIRemoteViewController__startDeviceQueryThresholdTimer__block_invo
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Stopping deviceQueryThresholdTimer", v7, 2u);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
+  deviceQueryThresholdBlock = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
 
-  if (v4)
+  if (deviceQueryThresholdBlock)
   {
-    v5 = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
-    dispatch_block_cancel(v5);
+    deviceQueryThresholdBlock2 = [(TVRUIRemoteViewController *)self deviceQueryThresholdBlock];
+    dispatch_block_cancel(deviceQueryThresholdBlock2);
 
     deviceQueryThresholdBlock = self->_deviceQueryThresholdBlock;
     self->_deviceQueryThresholdBlock = 0;
@@ -2597,26 +2597,26 @@ void __60__TVRUIRemoteViewController__startDeviceQueryThresholdTimer__block_invo
 
   if (![(TVRUIRemoteViewController *)self deviceQueryThresholdReached])
   {
-    v9 = _TVRUIViewControllerLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    devices = _TVRUIViewControllerLog();
+    if (!os_log_type_enabled(devices, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_28;
     }
 
     *buf = 0;
     v15 = "Query threshold not reached. Ignoring call";
-    v16 = v9;
+    v16 = devices;
     v17 = 2;
 LABEL_15:
     _os_log_impl(&dword_26CFEB000, v16, OS_LOG_TYPE_DEFAULT, v15, buf, v17);
     goto LABEL_28;
   }
 
-  v4 = [(TVRUIRemoteViewController *)self deviceQuery];
-  if (!v4 || (v5 = v4, -[TVRUIRemoteViewController deviceQuery](self, "deviceQuery"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasStarted], v6, v5, (v7 & 1) == 0))
+  deviceQuery = [(TVRUIRemoteViewController *)self deviceQuery];
+  if (!deviceQuery || (v5 = deviceQuery, -[TVRUIRemoteViewController deviceQuery](self, "deviceQuery"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasStarted], v6, v5, (v7 & 1) == 0))
   {
-    v9 = _TVRUIViewControllerLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    devices = _TVRUIViewControllerLog();
+    if (!os_log_type_enabled(devices, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_28;
     }
@@ -2624,88 +2624,88 @@ LABEL_15:
     *buf = 136315138;
     v46 = "[TVRUIRemoteViewController _connectToMostRelevantDevice]";
     v15 = "%s - deviceQuery was invalidated";
-    v16 = v9;
+    v16 = devices;
     v17 = 12;
     goto LABEL_15;
   }
 
-  v8 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  v9 = [v8 devices];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devices = [devicePickerViewController devices];
 
   v10 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 count];
+    v11 = [devices count];
     *buf = 134217984;
     v46 = v11;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "Query threshold reached. Queried devices count: %ld", buf, 0xCu);
   }
 
-  v12 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v12 || [v9 count]!= 1)
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice || [devices count]!= 1)
   {
-    v14 = 0;
+    isPaired = 0;
   }
 
   else
   {
-    v13 = [v9 objectAtIndexedSubscript:0];
-    v14 = [v13 isPaired];
+    v13 = [devices objectAtIndexedSubscript:0];
+    isPaired = [v13 isPaired];
   }
 
   v18 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v46) = v14;
+    LODWORD(v46) = isPaired;
     _os_log_impl(&dword_26CFEB000, v18, OS_LOG_TYPE_DEFAULT, "Query threshold reached. canAutoconnect to single device = %d", buf, 8u);
   }
 
-  if (v14)
+  if (isPaired)
   {
-    v19 = [v9 objectAtIndexedSubscript:0];
+    v19 = [devices objectAtIndexedSubscript:0];
     [(TVRUIRemoteViewController *)self setActiveDevice:v19];
 
     v20 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(TVRUIRemoteViewController *)self activeDevice];
+      activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
       *buf = 138543362;
-      v46 = v21;
+      v46 = activeDevice2;
       _os_log_impl(&dword_26CFEB000, v20, OS_LOG_TYPE_DEFAULT, "[Autoconnect] Updated active device to: %{public}@", buf, 0xCu);
     }
 
-    v22 = [(TVRUIRemoteViewController *)self activeDevice];
-    [(TVRUIRemoteViewController *)self _connectToDevice:v22 connectionContext:3];
+    activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+    [(TVRUIRemoteViewController *)self _connectToDevice:activeDevice3 connectionContext:3];
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v23 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v23 || ![v9 count])
+  activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice4 || ![devices count])
   {
 
     goto LABEL_25;
   }
 
-  v27 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  v28 = [v27 isDevicePickerShowing];
+  devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  isDevicePickerShowing = [devicePickerViewController2 isDevicePickerShowing];
 
-  if (v28)
+  if (isDevicePickerShowing)
   {
 LABEL_25:
-    v22 = _TVRUIViewControllerLog();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    activeDevice3 = _TVRUIViewControllerLog();
+    if (os_log_type_enabled(activeDevice3, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(TVRUIRemoteViewController *)self activeDevice];
-      v25 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v26 = [v25 isDevicePickerShowing];
+      activeDevice5 = [(TVRUIRemoteViewController *)self activeDevice];
+      devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      isDevicePickerShowing2 = [devicePickerViewController3 isDevicePickerShowing];
       *buf = 138412546;
-      v46 = v24;
+      v46 = activeDevice5;
       v47 = 1024;
-      v48 = v26;
-      _os_log_impl(&dword_26CFEB000, v22, OS_LOG_TYPE_DEFAULT, "Failed to find a relevant TV. Active device :%@ isShowingDevicePicker: %d", buf, 0x12u);
+      v48 = isDevicePickerShowing2;
+      _os_log_impl(&dword_26CFEB000, activeDevice3, OS_LOG_TYPE_DEFAULT, "Failed to find a relevant TV. Active device :%@ isShowingDevicePicker: %d", buf, 0x12u);
     }
 
     goto LABEL_27;
@@ -2733,8 +2733,8 @@ LABEL_43:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v9 = v9;
-  v29 = [v9 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  devices = devices;
+  v29 = [devices countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v29)
   {
     v30 = v29;
@@ -2745,7 +2745,7 @@ LABEL_34:
     {
       if (*v42 != v31)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(devices);
       }
 
       v33 = *(*(&v41 + 1) + 8 * v32);
@@ -2756,7 +2756,7 @@ LABEL_34:
 
       if (v30 == ++v32)
       {
-        v30 = [v9 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        v30 = [devices countByEnumeratingWithState:&v41 objects:v49 count:16];
         if (v30)
         {
           goto LABEL_34;
@@ -2766,26 +2766,26 @@ LABEL_34:
       }
     }
 
-    v22 = v33;
+    activeDevice3 = v33;
     v36 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v46 = v22;
+      v46 = activeDevice3;
       _os_log_impl(&dword_26CFEB000, v36, OS_LOG_TYPE_DEFAULT, "Found suggested device to auto select: %@", buf, 0xCu);
     }
 
-    if (v22)
+    if (activeDevice3)
     {
       v37 = _TVRUIIRLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v46 = v22;
+        v46 = activeDevice3;
         _os_log_impl(&dword_26CFEB000, v37, OS_LOG_TYPE_DEFAULT, "Query threshold reached. Attempting to connect to suggested device: %@", buf, 0xCu);
       }
 
-      [(TVRUIRemoteViewController *)self _selectDevice:v22 withConnectionContext:3];
+      [(TVRUIRemoteViewController *)self _selectDevice:activeDevice3 withConnectionContext:3];
       goto LABEL_27;
     }
   }
@@ -2795,9 +2795,9 @@ LABEL_34:
 LABEL_40:
   }
 
-  v38 = [(TVRUIRemoteViewController *)self preferredDevice];
+  preferredDevice = [(TVRUIRemoteViewController *)self preferredDevice];
 
-  if (!v38)
+  if (!preferredDevice)
   {
     v34 = _TVRUIViewControllerLog();
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -2813,106 +2813,106 @@ LABEL_40:
   v39 = _TVRUIIRLog();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [(TVRUIRemoteViewController *)self preferredDevice];
+    preferredDevice2 = [(TVRUIRemoteViewController *)self preferredDevice];
     *buf = 138412290;
-    v46 = v40;
+    v46 = preferredDevice2;
     _os_log_impl(&dword_26CFEB000, v39, OS_LOG_TYPE_DEFAULT, "Query threshold reached. Attempting to connect to last selected device: %@", buf, 0xCu);
   }
 
-  [(TVRUIRemoteViewController *)self _connectToPreferredDeviceFromDeviceList:v9];
+  [(TVRUIRemoteViewController *)self _connectToPreferredDeviceFromDeviceList:devices];
 LABEL_28:
 }
 
-- (void)deviceBeganConnecting:(id)a3
+- (void)deviceBeganConnecting:(id)connecting
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  connectingCopy = connecting;
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = connectingCopy;
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "UI device callback - began connecting %{public}@", &v5, 0xCu);
   }
 }
 
-- (void)deviceDidConnect:(id)a3
+- (void)deviceDidConnect:(id)connect
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectCopy = connect;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v36 = v4;
+    v36 = connectCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "UI Device callback - did connect %{public}@. Now messaging child view controllers", buf, 0xCu);
   }
 
-  v6 = [(TVRUIRemoteViewController *)self activeDevice];
-  v7 = [v6 isEqualToDevice:v4];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  v7 = [activeDevice isEqualToDevice:connectCopy];
 
   if (v7)
   {
-    v8 = [(TVRUIRemoteViewController *)self activeDevice];
-    v9 = [v8 name];
-    v10 = [v9 length];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    name = [activeDevice2 name];
+    v10 = [name length];
 
     if (!v10)
     {
       v11 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(TVRUIRemoteViewController *)self activeDevice];
+        activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
         *buf = 138543618;
-        v36 = v4;
+        v36 = connectCopy;
         v37 = 2114;
-        v38 = v12;
+        v38 = activeDevice3;
         _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Updating active device to: %{public}@ from: %{public}@", buf, 0x16u);
       }
 
-      [(TVRUIRemoteViewController *)self setActiveDevice:v4];
+      [(TVRUIRemoteViewController *)self setActiveDevice:connectCopy];
     }
 
-    v13 = [(TVRUIRemoteViewController *)self deviceObservers];
+    deviceObservers = [(TVRUIRemoteViewController *)self deviceObservers];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __46__TVRUIRemoteViewController_deviceDidConnect___block_invoke;
     v34[3] = &unk_279D88DB0;
     v34[4] = self;
-    [v13 enumerateObjectsUsingBlock:v34];
+    [deviceObservers enumerateObjectsUsingBlock:v34];
 
-    v14 = [v4 identifier];
-    [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:v14];
+    identifier = [connectCopy identifier];
+    [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:identifier];
 
     v15 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(TVRUIRemoteViewController *)self activeDevice];
-      v17 = [v16 name];
-      v18 = [(TVRUIRemoteViewController *)self activeDevice];
-      v19 = [v18 identifier];
+      activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
+      name2 = [activeDevice4 name];
+      activeDevice5 = [(TVRUIRemoteViewController *)self activeDevice];
+      identifier2 = [activeDevice5 identifier];
       *buf = 138543618;
-      v36 = v17;
+      v36 = name2;
       v37 = 2114;
-      v38 = v19;
+      v38 = identifier2;
       _os_log_impl(&dword_26CFEB000, v15, OS_LOG_TYPE_DEFAULT, "Active device did connect name: %{public}@ identifier: %{public}@", buf, 0x16u);
     }
   }
 
-  v20 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-  v21 = [v4 isEqualToDevice:v20];
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  v21 = [connectCopy isEqualToDevice:authenticatingDevice];
 
   if (v21)
   {
     [(TVRUIRemoteViewController *)self setAuthenticatingDevice:0];
   }
 
-  v22 = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
-  [v22 deviceDidConnect];
+  deviceConnectionStatusDelegate = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
+  [deviceConnectionStatusDelegate deviceDidConnect];
 
   if ([(TVRUIRemoteViewController *)self shouldStartFindingSession])
   {
-    [(TVRUIRemoteViewController *)self _startFindingSessionForDevice:v4];
+    [(TVRUIRemoteViewController *)self _startFindingSessionForDevice:connectCopy];
     [(TVRUIRemoteViewController *)self setShouldStartFindingSession:0];
   }
 
@@ -2921,31 +2921,31 @@ LABEL_28:
   [(TVRUIRemoteViewController *)self _cancelShowConnectingSpinner];
   [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
   [(TVRUIRemoteViewController *)self _stopDeviceQueryThresholdTimer];
-  v23 = [(TVRUIRemoteViewController *)self activeDevice];
-  -[TVRUIRemoteViewController setSupportsVolumeControl:](self, "setSupportsVolumeControl:", [v23 supportsVolumeControl]);
+  activeDevice6 = [(TVRUIRemoteViewController *)self activeDevice];
+  -[TVRUIRemoteViewController setSupportsVolumeControl:](self, "setSupportsVolumeControl:", [activeDevice6 supportsVolumeControl]);
 
-  v24 = [(TVRUIRemoteViewController *)self activeDevice];
-  v25 = [v24 supportsLaunchingApplications];
+  activeDevice7 = [(TVRUIRemoteViewController *)self activeDevice];
+  supportsLaunchingApplications = [activeDevice7 supportsLaunchingApplications];
 
-  if ((v25 & 1) == 0)
+  if ((supportsLaunchingApplications & 1) == 0)
   {
     [(TVRUIRemoteViewController *)self _disableSearch];
   }
 
-  v26 = [(TVRUIRemoteViewController *)self activeDevice];
-  v27 = [v26 supportsDonatingIntents];
+  activeDevice8 = [(TVRUIRemoteViewController *)self activeDevice];
+  supportsDonatingIntents = [activeDevice8 supportsDonatingIntents];
 
-  if (v27)
+  if (supportsDonatingIntents)
   {
-    v28 = [(TVRUIRemoteViewController *)self activeDevice];
-    v29 = [v28 identifier];
-    v30 = [(TVRUIRemoteViewController *)self activeDevice];
-    v31 = [v30 name];
-    [TVRUIIntentManager donateIntentsForDeviceWithID:v29 name:v31];
+    activeDevice9 = [(TVRUIRemoteViewController *)self activeDevice];
+    identifier3 = [activeDevice9 identifier];
+    activeDevice10 = [(TVRUIRemoteViewController *)self activeDevice];
+    name3 = [activeDevice10 name];
+    [TVRUIIntentManager donateIntentsForDeviceWithID:identifier3 name:name3];
   }
 
-  v32 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (![v32 supportsTouchEvents])
+  activeDevice11 = [(TVRUIRemoteViewController *)self activeDevice];
+  if (![activeDevice11 supportsTouchEvents])
   {
     goto LABEL_22;
   }
@@ -2954,8 +2954,8 @@ LABEL_28:
 
   if (v33)
   {
-    v32 = [(TVRUIRemoteViewController *)self sessionData];
-    [v32 setDirectionalControlsEnabled:1];
+    activeDevice11 = [(TVRUIRemoteViewController *)self sessionData];
+    [activeDevice11 setDirectionalControlsEnabled:1];
 LABEL_22:
   }
 
@@ -2963,35 +2963,35 @@ LABEL_22:
   [(TVRUIRemoteViewController *)self _layoutTouchpadExpanded:0];
 }
 
-- (void)deviceDidDisconnect:(id)a3 reason:(int64_t)a4 error:(id)a5
+- (void)deviceDidDisconnect:(id)disconnect reason:(int64_t)reason error:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TVRUIRemoteViewController *)self isNetworkReachable];
+  disconnectCopy = disconnect;
+  errorCopy = error;
+  isNetworkReachable = [(TVRUIRemoteViewController *)self isNetworkReachable];
   v11 = _TVRUIViewControllerLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (isNetworkReachable)
   {
     if (v12)
     {
-      v13 = [(TVRUIRemoteViewController *)self activeDevice];
-      v14 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+      activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+      authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
       *buf = 138413314;
-      v34 = v8;
+      v34 = disconnectCopy;
       v35 = 2048;
-      v36 = a4;
+      reasonCopy = reason;
       v37 = 2114;
-      v38 = v9;
+      v38 = errorCopy;
       v39 = 2112;
-      v40 = v13;
+      v40 = activeDevice;
       v41 = 2112;
-      v42 = v14;
+      v42 = authenticatingDevice;
       _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Device disconnected - %@. Reason %ld. Error %{public}@. ActiveDevice %@, Auth Device %@", buf, 0x34u);
     }
 
-    v15 = [(TVRUIRemoteViewController *)self activeDevice];
-    v16 = [v8 isEqualToDevice:v15];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    v16 = [disconnectCopy isEqualToDevice:activeDevice2];
 
     if (v16)
     {
@@ -3003,18 +3003,18 @@ LABEL_22:
       }
 
       [(TVRUIRemoteViewController *)self _resetActiveDevice];
-      v18 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      [v18 resetSelectedDevice];
+      devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      [devicePickerViewController resetSelectedDevice];
 
-      v19 = [(TVRUIRemoteViewController *)self siriManager];
-      [v19 unregisterForSiriEvents];
+      siriManager = [(TVRUIRemoteViewController *)self siriManager];
+      [siriManager unregisterForSiriEvents];
 
-      v20 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-      if ([v8 isEqualToDevice:v20])
+      authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+      if ([disconnectCopy isEqualToDevice:authenticatingDevice2])
       {
-        v21 = [(TVRUIRemoteViewController *)self isNetworkReachable];
+        isNetworkReachable2 = [(TVRUIRemoteViewController *)self isNetworkReachable];
 
-        if (v21)
+        if (isNetworkReachable2)
         {
           v22 = _TVRUIViewControllerLog();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -3023,8 +3023,8 @@ LABEL_22:
             _os_log_impl(&dword_26CFEB000, v22, OS_LOG_TYPE_DEFAULT, "Authenticating device disconnected", buf, 2u);
           }
 
-          v23 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-          [v23 cancelAuthenitcationChallenge];
+          authenticatingDevice3 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+          [authenticatingDevice3 cancelAuthenitcationChallenge];
 
           [(TVRUIRemoteViewController *)self setAuthenticatingDevice:0];
           [(TVRUIRemoteViewController *)self _resetActiveDevice];
@@ -3042,9 +3042,9 @@ LABEL_22:
       v31[3] = &unk_279D87F18;
       objc_copyWeak(&v32, buf);
       [(TVRUIRemoteViewController *)self dismissPresentedContentAnimated:1 completion:v31];
-      if (a4)
+      if (reason)
       {
-        v25 = v9 == 0;
+        v25 = errorCopy == 0;
       }
 
       else
@@ -3064,7 +3064,7 @@ LABEL_22:
           _os_log_impl(&dword_26CFEB000, v26, OS_LOG_TYPE_DEFAULT, "Hiding existing message content and canceling connecting spinner selector", v30, 2u);
         }
 
-        [(TVRUIRemoteViewController *)self showMessageWithError:v9 andDevice:v8];
+        [(TVRUIRemoteViewController *)self showMessageWithError:errorCopy andDevice:disconnectCopy];
       }
 
       [(TVRUIRemoteViewController *)self _toggleControlAvailability];
@@ -3078,15 +3078,15 @@ LABEL_22:
       v24 = 0;
     }
 
-    v27 = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
-    [v27 deviceDidDisconnect];
+    deviceConnectionStatusDelegate = [(TVRUIRemoteViewController *)self deviceConnectionStatusDelegate];
+    [deviceConnectionStatusDelegate deviceDidDisconnect];
 
     [(TVRUIRemoteViewController *)self _cancelShowConnectingSpinner];
     [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
     if (v16)
     {
-      v28 = [(TVRUIRemoteViewController *)self activeDevice];
-      if (v28)
+      activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+      if (activeDevice3)
       {
       }
 
@@ -3130,30 +3130,30 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
   }
 }
 
-- (void)device:(id)a3 beganTextEditingWithAttributes:(id)a4 initialText:(id)a5
+- (void)device:(id)device beganTextEditingWithAttributes:(id)attributes initialText:(id)text
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  attributesCopy = attributes;
+  textCopy = text;
+  deviceCopy = device;
   v11 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(TVRUIRemoteViewController *)self activeDevice];
-    v13 = [(TVRUIRemoteViewController *)self sharingClient];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    sharingClient = [(TVRUIRemoteViewController *)self sharingClient];
     v18 = 138413058;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v12;
+    v21 = activeDevice;
     v22 = 2112;
-    v23 = v13;
+    v23 = sharingClient;
     v24 = 2048;
-    v25 = [v9 length];
+    v25 = [textCopy length];
     _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "%@ RemoteViewCtrl received callback to present keyboard. Active Device %@. Sharing client %@ text length: %lu", &v18, 0x2Au);
   }
 
-  v14 = [(TVRUIRemoteViewController *)self activeDevice];
-  v15 = [v10 isEqualToDevice:v14];
+  activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+  v15 = [deviceCopy isEqualToDevice:activeDevice2];
 
   if (v15 && [(TVRUIRemoteViewController *)self _shouldAllowKeyboardToBePresented])
   {
@@ -3170,73 +3170,73 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
     }
 
     [(TVRUIRemoteViewController *)self setEditingSessionActive:1];
-    v17 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-    [v17 showKeyboardButton];
+    controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+    [controlPanelViewController showKeyboardButton];
 
-    [(TVRUIRemoteViewController *)self _presentKeyboardWithAttributes:v8 initialText:v9];
+    [(TVRUIRemoteViewController *)self _presentKeyboardWithAttributes:attributesCopy initialText:textCopy];
   }
 }
 
-- (void)device:(id)a3 endedTextEditingWithAttributes:(id)a4 endingText:(id)a5
+- (void)device:(id)device endedTextEditingWithAttributes:(id)attributes endingText:(id)text
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  deviceCopy = device;
+  textCopy = text;
   v9 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v7;
+    v14 = deviceCopy;
     v15 = 2048;
-    v16 = [v8 length];
+    v16 = [textCopy length];
     _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "RemoteViewCtrl received callback to end text editing for device %{public}@ text length: %lu", &v13, 0x16u);
   }
 
-  v10 = [(TVRUIRemoteViewController *)self activeDevice];
-  v11 = [v7 isEqualToDevice:v10];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  v11 = [deviceCopy isEqualToDevice:activeDevice];
 
   if (v11)
   {
     [(TVRUIRemoteViewController *)self setEditingSessionActive:0];
-    v12 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-    [v12 hideKeyboardButton];
+    controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+    [controlPanelViewController hideKeyboardButton];
 
     [(TVRUIRemoteViewController *)self dismissPresentedContentAnimated:1 completion:0];
   }
 }
 
-- (void)device:(id)a3 didUpdateText:(id)a4
+- (void)device:(id)device didUpdateText:(id)text
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  deviceCopy = device;
   v8 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 134217984;
-    v14 = [v6 length];
+    v14 = [textCopy length];
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "RemoteViewCtrl received callback to update text of local device text field to newText.length: %lu", &v13, 0xCu);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self activeDevice];
-  v10 = [v7 isEqualToDevice:v9];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  v10 = [deviceCopy isEqualToDevice:activeDevice];
 
   if (v10)
   {
-    v11 = [(TVRUIRemoteViewController *)self keyboardController];
+    keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-    if (v11)
+    if (keyboardController)
     {
-      v12 = [(TVRUIRemoteViewController *)self keyboardController];
-      [v12 setText:v6];
+      keyboardController2 = [(TVRUIRemoteViewController *)self keyboardController];
+      [keyboardController2 setText:textCopy];
     }
   }
 }
 
-- (void)device:(id)a3 didUpdateAttributes:(id)a4
+- (void)device:(id)device didUpdateAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
+  attributesCopy = attributes;
+  deviceCopy = device;
   v8 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3244,45 +3244,45 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "RemoteViewCtrl received callback to update keyboard attributes", v13, 2u);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self activeDevice];
-  v10 = [v7 isEqualToDevice:v9];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  v10 = [deviceCopy isEqualToDevice:activeDevice];
 
   if (v10)
   {
-    v11 = [(TVRUIRemoteViewController *)self keyboardController];
+    keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-    if (v11)
+    if (keyboardController)
     {
-      v12 = [(TVRUIRemoteViewController *)self keyboardController];
-      [v12 setKeyboardAttributes:v6];
+      keyboardController2 = [(TVRUIRemoteViewController *)self keyboardController];
+      [keyboardController2 setKeyboardAttributes:attributesCopy];
     }
   }
 }
 
-- (void)deviceDidEncounterAuthenticationChallenge:(id)a3 passwordType:(unint64_t)a4 passcode:(id)a5
+- (void)deviceDidEncounterAuthenticationChallenge:(id)challenge passwordType:(unint64_t)type passcode:(id)passcode
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  challengeCopy = challenge;
+  passcodeCopy = passcode;
   v10 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v8;
+    v17 = challengeCopy;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "RemoteViewCtrl received authentication challenge for device %@", &v16, 0xCu);
   }
 
-  [(TVRUIRemoteViewController *)self setAuthenticatingDevice:v8];
-  v11 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [(TVRUIRemoteViewController *)self setAuthenticatingDevice:challengeCopy];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (v11)
+  if (devicePickerViewController)
   {
-    v12 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v12 setDevice:v8];
+    devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController2 setDevice:challengeCopy];
   }
 
   [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
-  switch(a4)
+  switch(type)
   {
     case 2uLL:
       v15 = _TVRUIViewControllerLog();
@@ -3292,7 +3292,7 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
         _os_log_impl(&dword_26CFEB000, v15, OS_LOG_TYPE_DEFAULT, "Challenge is legacy password type", &v16, 2u);
       }
 
-      [(TVRUIRemoteViewController *)self _presentLegacyPairingAlertWithCode:v9];
+      [(TVRUIRemoteViewController *)self _presentLegacyPairingAlertWithCode:passcodeCopy];
       break;
     case 1uLL:
       v14 = _TVRUIViewControllerLog();
@@ -3317,15 +3317,15 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
   }
 }
 
-- (void)device:(id)a3 didEncounterAuthenticationThrottle:(int64_t)a4
+- (void)device:(id)device didEncounterAuthenticationThrottle:(int64_t)throttle
 {
-  [(TVRUIRemoteViewController *)self _cancelShowConnectingSpinner:a3];
+  [(TVRUIRemoteViewController *)self _cancelShowConnectingSpinner:device];
   [(TVRUIRemoteViewController *)self _cancelHideConnectingAndShowDevicePicker];
 
   [(TVRUIRemoteViewController *)self showThrottleConnectMessage];
 }
 
-- (void)device:(id)a3 needsMediaControls:(id)a4
+- (void)device:(id)device needsMediaControls:(id)controls
 {
   v5 = _TVRUIButtonLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3335,11 +3335,11 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
   }
 
   [(TVRUIRemoteViewController *)self _enableMediaControls:1 animated:1];
-  v6 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v6 setMediaControlsAreVisible:1];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setMediaControlsAreVisible:1];
 }
 
-- (void)device:(id)a3 hidesMediaControls:(id)a4
+- (void)device:(id)device hidesMediaControls:(id)controls
 {
   v5 = _TVRUIButtonLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -3349,58 +3349,58 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
   }
 
   [(TVRUIRemoteViewController *)self _enableMediaControls:0 animated:1];
-  v6 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v6 setMediaControlsAreVisible:0];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setMediaControlsAreVisible:0];
 }
 
-- (void)device:(id)a3 hasCaptionsEnabled:(BOOL)a4
+- (void)device:(id)device hasCaptionsEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  if (([a3 supportsDirectCaptionQueries] & 1) == 0)
+  enabledCopy = enabled;
+  if (([device supportsDirectCaptionQueries] & 1) == 0)
   {
-    v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-    [v6 updateCaptionState:v4 buttonDisabled:0];
+    mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+    [mediaControlsViewController updateCaptionState:enabledCopy buttonDisabled:0];
   }
 }
 
-- (void)_enableMediaControls:(BOOL)a3 animated:(BOOL)a4
+- (void)_enableMediaControls:(BOOL)controls animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController:a3];
-  [v6 setEnabled:v4];
+  controlsCopy = controls;
+  v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController:controls];
+  [v6 setEnabled:controlsCopy];
 
-  v7 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  v8 = [v7 availableButtons] & 4;
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  v8 = [mediaControlsViewController availableButtons] & 4;
 
   v9 = v8;
-  if (v4)
+  if (controlsCopy)
   {
-    v10 = [(TVRUIRemoteViewController *)self activeDevice];
-    v11 = [v10 supportsCaptionsToggle];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    supportsCaptionsToggle = [activeDevice supportsCaptionsToggle];
 
     v12 = 9;
-    if (v11)
+    if (supportsCaptionsToggle)
     {
       v12 = 11;
     }
 
     v9 = v12 | v8;
-    v13 = [(TVRUIRemoteViewController *)self activeDevice];
-    if ([v13 supportsDirectCaptionQueries])
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    if ([activeDevice2 supportsDirectCaptionQueries])
     {
-      v14 = [(TVRUIRemoteViewController *)self nowPlayingController];
-      v15 = [v14 nowPlayingInfo];
-      v16 = [v15 hasValidCaptionOptions];
-      if (v16)
+      nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+      nowPlayingInfo = [nowPlayingController nowPlayingInfo];
+      hasValidCaptionOptions = [nowPlayingInfo hasValidCaptionOptions];
+      if (hasValidCaptionOptions)
       {
-        v17 = [(TVRUIRemoteViewController *)self nowPlayingController];
-        v18 = [v17 nowPlayingInfo];
-        v19 = [v18 hasValidCaptionOptions];
-        v25 = v14;
-        v20 = [v19 BOOLValue] ^ 1;
+        nowPlayingController2 = [(TVRUIRemoteViewController *)self nowPlayingController];
+        nowPlayingInfo2 = [nowPlayingController2 nowPlayingInfo];
+        hasValidCaptionOptions2 = [nowPlayingInfo2 hasValidCaptionOptions];
+        v25 = nowPlayingController;
+        v20 = [hasValidCaptionOptions2 BOOLValue] ^ 1;
 
         v21 = v20;
-        v14 = v25;
+        nowPlayingController = v25;
       }
 
       else
@@ -3425,10 +3425,10 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
       v22 = v9;
     }
 
-    v23 = [(TVRUIRemoteViewController *)self nowPlayingController];
-    v24 = [v23 capellaInfoAvailable];
+    nowPlayingController3 = [(TVRUIRemoteViewController *)self nowPlayingController];
+    capellaInfoAvailable = [nowPlayingController3 capellaInfoAvailable];
 
-    if (v24)
+    if (capellaInfoAvailable)
     {
       v8 = v22;
     }
@@ -3439,36 +3439,36 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
     }
   }
 
-  v26 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  [v26 setAvailableButtons:v9 enabledButtons:v8];
+  mediaControlsViewController2 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  [mediaControlsViewController2 setAvailableButtons:v9 enabledButtons:v8];
 }
 
 - (void)_updateInfoButtonState
 {
-  v3 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  v4 = [v3 nowPlayingInfo];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  nowPlayingInfo = [nowPlayingController nowPlayingInfo];
 
-  if (v4)
+  if (nowPlayingInfo)
   {
-    v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-    v5 = [(TVRUIRemoteViewController *)self nowPlayingController];
-    [v6 updateButton:8 enabled:{objc_msgSend(v5, "capellaInfoAvailable")}];
+    mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+    nowPlayingController2 = [(TVRUIRemoteViewController *)self nowPlayingController];
+    [mediaControlsViewController updateButton:8 enabled:{objc_msgSend(nowPlayingController2, "capellaInfoAvailable")}];
   }
 }
 
-- (void)_enableLiveTVButtons:(BOOL)a3 animated:(BOOL)a4
+- (void)_enableLiveTVButtons:(BOOL)buttons animated:(BOOL)animated
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController:a3];
-  v7 = [v6 availableButtons];
+  v6 = [(TVRUIRemoteViewController *)self mediaControlsViewController:buttons];
+  availableButtons = [v6 availableButtons];
 
   v8 = _AXSAppleTVRemoteForceLiveTVButtons();
   v9 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v18[0] = 67109376;
-    v18[1] = v4;
+    v18[1] = buttonsCopy;
     v19 = 1024;
     v20 = v8 != 0;
     _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "Live tv buttons enable:%{BOOL}d, forceShowLiveTVButtons:%{BOOL}d", v18, 0xEu);
@@ -3481,14 +3481,14 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
 
   else
   {
-    v10 = v4;
+    v10 = buttonsCopy;
   }
 
-  v11 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  v12 = [v11 availableButtons] & 0xFFFFFFFFFFFFFFFBLL;
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  v12 = [mediaControlsViewController availableButtons] & 0xFFFFFFFFFFFFFFFBLL;
 
-  v13 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  v14 = [v13 enabledButtons] & 0xFFFFFFFFFFFFFFFBLL;
+  mediaControlsViewController2 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  v14 = [mediaControlsViewController2 enabledButtons] & 0xFFFFFFFFFFFFFFFBLL;
 
   if (v10)
   {
@@ -3500,14 +3500,14 @@ void __62__TVRUIRemoteViewController_deviceDidDisconnect_reason_error___block_in
     v15 = 0;
   }
 
-  v16 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  [v16 setAvailableButtons:v12 | v15 enabledButtons:v14 | v15];
+  mediaControlsViewController3 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  [mediaControlsViewController3 setAvailableButtons:v12 | v15 enabledButtons:v14 | v15];
 
-  v17 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v17 setMediaControlsAreVisible:(v10 | (v7 >> 3)) & 1];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setMediaControlsAreVisible:(v10 | (availableButtons >> 3)) & 1];
 }
 
-- (void)connectionServiceDidInvalidate:(id)a3
+- (void)connectionServiceDidInvalidate:(id)invalidate
 {
   v4 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3592,32 +3592,32 @@ uint64_t __60__TVRUIRemoteViewController_connectionServiceDidInvalidate___block_
   return result;
 }
 
-- (void)deviceInfoUpdated:(id)a3
+- (void)deviceInfoUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v5 setDevice:v4];
+  updatedCopy = updated;
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController setDevice:updatedCopy];
 }
 
-- (void)deviceListUpdated:(id)a3
+- (void)deviceListUpdated:(id)updated
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = updatedCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Device list updated: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v6 setDevices:v4];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController setDevices:updatedCopy];
 
-  v7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  v8 = [v7 isDevicePickerShowing];
+  devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  isDevicePickerShowing = [devicePickerViewController2 isDevicePickerShowing];
 
-  if (v8)
+  if (isDevicePickerShowing)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -3644,7 +3644,7 @@ uint64_t __60__TVRUIRemoteViewController_connectionServiceDidInvalidate___block_
 
   else
   {
-    [(TVRUIRemoteViewController *)self _connectToPreferredDeviceFromDeviceList:v4];
+    [(TVRUIRemoteViewController *)self _connectToPreferredDeviceFromDeviceList:updatedCopy];
   }
 }
 
@@ -3655,22 +3655,22 @@ void __47__TVRUIRemoteViewController_deviceListUpdated___block_invoke(uint64_t a
   [v2 _updateTableFrame:1];
 }
 
-- (void)_connectToPreferredDeviceFromDeviceList:(id)a3
+- (void)_connectToPreferredDeviceFromDeviceList:(id)list
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self preferredDevice];
-  if (v5)
+  listCopy = list;
+  preferredDevice = [(TVRUIRemoteViewController *)self preferredDevice];
+  if (preferredDevice)
   {
-    v6 = v5;
-    v7 = [(TVRUIRemoteViewController *)self activeDevice];
-    if (v7 || ([(TVRUIRemoteViewController *)self activeDeviceIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = preferredDevice;
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    if (activeDevice || ([(TVRUIRemoteViewController *)self activeDeviceIdentifier], (activeDevice = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v8 = [v4 count];
+      v8 = [listCopy count];
 
       if (v8)
       {
@@ -3678,7 +3678,7 @@ void __47__TVRUIRemoteViewController_deviceListUpdated___block_invoke(uint64_t a
         v31 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v9 = v4;
+        v9 = listCopy;
         v10 = [v9 countByEnumeratingWithState:&v28 objects:v34 count:16];
         if (v10)
         {
@@ -3694,9 +3694,9 @@ void __47__TVRUIRemoteViewController_deviceListUpdated___block_invoke(uint64_t a
               }
 
               v14 = *(*(&v28 + 1) + 8 * i);
-              v15 = [(TVRUIRemoteViewController *)self preferredDevice];
-              v16 = [v15 identifier];
-              v17 = [v14 hasIdentifier:v16];
+              preferredDevice2 = [(TVRUIRemoteViewController *)self preferredDevice];
+              identifier = [preferredDevice2 identifier];
+              v17 = [v14 hasIdentifier:identifier];
 
               if (v17)
               {
@@ -3712,15 +3712,15 @@ void __47__TVRUIRemoteViewController_deviceListUpdated___block_invoke(uint64_t a
                 v19 = _TVRUIViewControllerLog();
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                 {
-                  v20 = [(TVRUIRemoteViewController *)self activeDevice];
+                  activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
                   *buf = 138543362;
-                  v33 = v20;
+                  v33 = activeDevice2;
                   _os_log_impl(&dword_26CFEB000, v19, OS_LOG_TYPE_DEFAULT, "Updated active device to: %{public}@", buf, 0xCu);
                 }
 
-                v21 = [(TVRUIRemoteViewController *)self preferredDevice];
-                v22 = [v21 identifier];
-                [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:v22];
+                preferredDevice3 = [(TVRUIRemoteViewController *)self preferredDevice];
+                identifier2 = [preferredDevice3 identifier];
+                [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:identifier2];
 
                 [(TVRUIRemoteViewController *)self _connectToDevice:v14 connectionContext:3];
                 goto LABEL_21;
@@ -3739,17 +3739,17 @@ void __47__TVRUIRemoteViewController_deviceListUpdated___block_invoke(uint64_t a
 
 LABEL_21:
 
-        v23 = [(TVRUIRemoteViewController *)self activeDevice];
+        activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
 
         v24 = _TVRUIViewControllerLog();
         v25 = v24;
-        if (v23)
+        if (activeDevice3)
         {
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [(TVRUIRemoteViewController *)self preferredDevice];
+            preferredDevice4 = [(TVRUIRemoteViewController *)self preferredDevice];
             *buf = 138543362;
-            v33 = v26;
+            v33 = preferredDevice4;
             _os_log_impl(&dword_26CFEB000, v25, OS_LOG_TYPE_DEFAULT, "Found preferred device to connect %{public}@", buf, 0xCu);
           }
         }
@@ -3775,15 +3775,15 @@ LABEL_21:
   }
 }
 
-- (void)suggestedDevices:(id)a3
+- (void)suggestedDevices:(id)devices
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = _TVRUIIRLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v4;
+    v10 = devicesCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Suggested devices %{public}@", buf, 0xCu);
   }
 
@@ -3795,7 +3795,7 @@ LABEL_21:
     v6[2] = __46__TVRUIRemoteViewController_suggestedDevices___block_invoke;
     v6[3] = &unk_279D87AE0;
     objc_copyWeak(&v8, buf);
-    v7 = v4;
+    v7 = devicesCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
 
     objc_destroyWeak(&v8);
@@ -3931,85 +3931,85 @@ LABEL_27:
 LABEL_22:
 }
 
-- (void)_selectDevice:(id)a3 withConnectionContext:(int64_t)a4
+- (void)_selectDevice:(id)device withConnectionContext:(int64_t)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(TVRUIRemoteViewController *)self _stringForConnectionContext:a4];
+    v8 = [(TVRUIRemoteViewController *)self _stringForConnectionContext:context];
     v16 = 138543618;
-    v17 = v6;
+    v17 = deviceCopy;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Selecting device: %{public}@ with connectionContext: %{public}@", &v16, 0x16u);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v9)
+  if (activeDevice)
   {
-    [(TVRUIRemoteViewController *)self _disconnectUserInitiatedAndModifyLockscreenAssertion:a4 != 1];
+    [(TVRUIRemoteViewController *)self _disconnectUserInitiatedAndModifyLockscreenAssertion:context != 1];
   }
 
-  [(TVRUIRemoteViewController *)self setActiveDevice:v6];
+  [(TVRUIRemoteViewController *)self setActiveDevice:deviceCopy];
   v10 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(TVRUIRemoteViewController *)self activeDevice];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
     v16 = 138543362;
-    v17 = v11;
+    v17 = activeDevice2;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "Updated active device to: %{public}@", &v16, 0xCu);
   }
 
-  v12 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v12 transitonToViewForDeviceType:0];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController transitonToViewForDeviceType:0];
 
-  v13 = [v6 identifier];
-  [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:v13];
+  identifier = [deviceCopy identifier];
+  [(TVRUIRemoteViewController *)self setActiveDeviceIdentifier:identifier];
 
-  v14 = [(TVRUIRemoteViewController *)self activeDevice];
-  [v14 setDelegate:self];
+  activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+  [activeDevice3 setDelegate:self];
 
-  [(TVRUIRemoteViewController *)self _connectToDevice:v6 connectionContext:a4];
-  v15 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v15 collapseDeviceList];
+  [(TVRUIRemoteViewController *)self _connectToDevice:deviceCopy connectionContext:context];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController collapseDeviceList];
 }
 
-- (void)devicePickerWillChangeState:(BOOL)a3 animated:(BOOL)a4
+- (void)devicePickerWillChangeState:(BOOL)state animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
-    v4 = a3;
+    stateCopy = state;
     v6 = 1.0;
-    if (a3)
+    if (state)
     {
-      v7 = [(TVRUIRemoteViewController *)self delegate];
-      [v7 devicePickerWillExpand];
+      delegate = [(TVRUIRemoteViewController *)self delegate];
+      [delegate devicePickerWillExpand];
 
       v6 = 0.0;
     }
 
-    v8 = [(TVRUIRemoteViewController *)self messageView];
-    [v8 setAlpha:v6];
+    messageView = [(TVRUIRemoteViewController *)self messageView];
+    [messageView setAlpha:v6];
 
-    v9 = [(TVRUIRemoteViewController *)self touchpadViewController];
-    [v9 setShowControls:v4 ^ 1];
+    touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+    [touchpadViewController setShowControls:stateCopy ^ 1];
 
-    [(TVRUIRemoteViewController *)self _layoutTouchpadExpanded:v4];
+    [(TVRUIRemoteViewController *)self _layoutTouchpadExpanded:stateCopy];
   }
 }
 
-- (void)devicePickerTitleWasLongPressedForDevice:(id)a3
+- (void)devicePickerTitleWasLongPressedForDevice:(id)device
 {
-  v3 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  [v3 displayUpNext];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  [nowPlayingController displayUpNext];
 }
 
-- (void)_showBluetoothDisabledAlertWithCompletion:(id)a3
+- (void)_showBluetoothDisabledAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D75110];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"TVRemoteUIBluetoothAlertTitle" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -4036,7 +4036,7 @@ LABEL_22:
   v29[1] = 3221225472;
   v29[2] = __71__TVRUIRemoteViewController__showBluetoothDisabledAlertWithCompletion___block_invoke;
   v29[3] = &unk_279D88098;
-  v17 = v4;
+  v17 = completionCopy;
   v30 = v17;
   v18 = [v14 actionWithTitle:v16 style:0 handler:v29];
   [v13 addAction:v18];
@@ -4056,27 +4056,27 @@ LABEL_22:
   [(TVRUIRemoteViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_turnOnBluetoothIfNeededWithCompletionBlock:(id)a3
+- (void)_turnOnBluetoothIfNeededWithCompletionBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self networkObserver];
-  v6 = [v5 cbController];
+  blockCopy = block;
+  networkObserver = [(TVRUIRemoteViewController *)self networkObserver];
+  cbController = [networkObserver cbController];
 
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v6 bluetoothState];
+    bluetoothState = [cbController bluetoothState];
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Bluetooth State: %ld", buf, 0xCu);
   }
 
-  v8 = [(TVRUIRemoteViewController *)self networkObserver];
-  v9 = [v8 isBluetoothAvailable];
+  networkObserver2 = [(TVRUIRemoteViewController *)self networkObserver];
+  isBluetoothAvailable = [networkObserver2 isBluetoothAvailable];
 
-  if (v9)
+  if (isBluetoothAvailable)
   {
-    v4[2](v4, 1, 0);
+    blockCopy[2](blockCopy, 1, 0);
   }
 
   else
@@ -4085,8 +4085,8 @@ LABEL_22:
     v10[1] = 3221225472;
     v10[2] = __73__TVRUIRemoteViewController__turnOnBluetoothIfNeededWithCompletionBlock___block_invoke;
     v10[3] = &unk_279D88B68;
-    v11 = v6;
-    v12 = v4;
+    v11 = cbController;
+    v12 = blockCopy;
     [(TVRUIRemoteViewController *)self _showBluetoothDisabledAlertWithCompletion:v10];
   }
 }
@@ -4127,18 +4127,18 @@ void __73__TVRUIRemoteViewController__turnOnBluetoothIfNeededWithCompletionBlock
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_presentKeyboardWithAttributes:(id)a3 initialText:(id)a4
+- (void)_presentKeyboardWithAttributes:(id)attributes initialText:(id)text
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  textCopy = text;
   if ([(TVRUIRemoteViewController *)self _shouldAllowKeyboardToBePresented])
   {
-    v8 = [(TVRUIRemoteViewController *)self presentedViewController];
-    if (v8)
+    presentedViewController = [(TVRUIRemoteViewController *)self presentedViewController];
+    if (presentedViewController)
     {
-      v9 = v8;
-      v10 = [(TVRUIRemoteViewController *)self presentedViewController];
+      v9 = presentedViewController;
+      presentedViewController2 = [(TVRUIRemoteViewController *)self presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4150,16 +4150,16 @@ void __73__TVRUIRemoteViewController__turnOnBluetoothIfNeededWithCompletionBlock
           [TVRUIRemoteViewController _presentKeyboardWithAttributes:initialText:];
         }
 
-        v13 = [(TVRUIRemoteViewController *)self presentedViewController];
-        [v13 dismissViewControllerAnimated:0 completion:0];
+        presentedViewController3 = [(TVRUIRemoteViewController *)self presentedViewController];
+        [presentedViewController3 dismissViewControllerAnimated:0 completion:0];
       }
     }
 
     v14 = _TVRUIKeyboardLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(TVRUIRemoteViewController *)self activeDevice];
-      if (v15)
+      activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+      if (activeDevice)
       {
         v16 = @"true";
       }
@@ -4169,44 +4169,44 @@ void __73__TVRUIRemoteViewController__turnOnBluetoothIfNeededWithCompletionBlock
         v16 = @"false";
       }
 
-      v17 = [(TVRUIRemoteViewController *)self isSiriSessionActive];
-      v18 = [(TVRUIRemoteViewController *)self presentedViewController];
-      v19 = [(TVRUIRemoteViewController *)self keyboardController];
+      isSiriSessionActive = [(TVRUIRemoteViewController *)self isSiriSessionActive];
+      presentedViewController4 = [(TVRUIRemoteViewController *)self presentedViewController];
+      keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
       v27 = 138544386;
       v28 = v16;
       v29 = 1024;
-      *v30 = v17;
+      *v30 = isSiriSessionActive;
       *&v30[4] = 2114;
-      *&v30[6] = v7;
+      *&v30[6] = textCopy;
       v31 = 2112;
-      v32 = v18;
+      v32 = presentedViewController4;
       v33 = 2112;
-      v34 = v19;
+      v34 = keyboardController;
       _os_log_impl(&dword_26CFEB000, v14, OS_LOG_TYPE_DEFAULT, "Keyboard presentation allowed activeDevice: %{public}@, siriSessionActive: %{BOOL}d, text: %{public}@, presentedViewController: %@, keyboardController: %@", &v27, 0x30u);
     }
 
     v20 = [TVRAlertController alloc];
-    v21 = [(TVRUIRemoteViewController *)self styleProvider];
-    v22 = [(TVRAlertController *)v20 initWithKeyboardAttributes:v6 styleProvider:v21];
+    styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+    v22 = [(TVRAlertController *)v20 initWithKeyboardAttributes:attributesCopy styleProvider:styleProvider];
 
     [v22 setDelegate:self];
-    [v22 setText:v7];
+    [v22 setText:textCopy];
     [(TVRKeyboardHaptic *)self->_keyboardHaptic play];
     [(TVRUIRemoteViewController *)self setKeyboardController:v22];
     [(TVRUIRemoteViewController *)self setDefinesPresentationContext:1];
     [(TVRUIRemoteViewController *)self presentViewController:v22 animated:1 completion:0];
-    v23 = [(TVRUIRemoteViewController *)self sessionData];
-    [v23 setUsedRTI:1];
+    sessionData = [(TVRUIRemoteViewController *)self sessionData];
+    [sessionData setUsedRTI:1];
 
-    v24 = _TVRUIKeyboardLog();
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    activeDevice2 = _TVRUIKeyboardLog();
+    if (os_log_type_enabled(activeDevice2, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(TVRUIRemoteViewController *)self presentedViewController];
+      presentedViewController5 = [(TVRUIRemoteViewController *)self presentedViewController];
       v27 = 138412546;
       v28 = v22;
       v29 = 2112;
-      *v30 = v25;
-      _os_log_impl(&dword_26CFEB000, v24, OS_LOG_TYPE_DEFAULT, "presented keyboard controller %@ %@", &v27, 0x16u);
+      *v30 = presentedViewController5;
+      _os_log_impl(&dword_26CFEB000, activeDevice2, OS_LOG_TYPE_DEFAULT, "presented keyboard controller %@ %@", &v27, 0x16u);
     }
 
     goto LABEL_19;
@@ -4215,8 +4215,8 @@ void __73__TVRUIRemoteViewController__turnOnBluetoothIfNeededWithCompletionBlock
   v22 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(TVRUIRemoteViewController *)self activeDevice];
-    if (v24)
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    if (activeDevice2)
     {
       v26 = @"true";
     }
@@ -4238,9 +4238,9 @@ LABEL_19:
 - (void)_presentTextPasswordAlert
 {
   v3 = [TVRAlertController alloc];
-  v4 = [(TVRUIRemoteViewController *)self styleProvider];
-  v5 = [v4 textForPairingPasswordAlert];
-  v6 = [(TVRAlertController *)v3 initForTextPasswordType:v5];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  textForPairingPasswordAlert = [styleProvider textForPairingPasswordAlert];
+  v6 = [(TVRAlertController *)v3 initForTextPasswordType:textForPairingPasswordAlert];
 
   [v6 setDelegate:self];
   [v6 setText:&stru_287E6AEF8];
@@ -4259,16 +4259,16 @@ LABEL_19:
 - (void)_presentPairingAlert
 {
   v3 = [TVRAlertController alloc];
-  v4 = [(TVRUIRemoteViewController *)self styleProvider];
-  v5 = [v4 textForPairingAlert];
-  v6 = [(TVRAlertController *)v3 initWithTitle:v5 passcodeSize:4];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  textForPairingAlert = [styleProvider textForPairingAlert];
+  v6 = [(TVRAlertController *)v3 initWithTitle:textForPairingAlert passcodeSize:4];
 
   [(TVRAlertController *)v6 setDelegate:self];
   [(TVRUIRemoteViewController *)self setAuthenticationAlertController:v6];
   [(TVRUIRemoteViewController *)self setDefinesPresentationContext:1];
   [(TVRUIRemoteViewController *)self presentViewController:v6 animated:1 completion:0];
-  v7 = [(TVRUIRemoteViewController *)self sessionData];
-  [v7 setRequiredPairing:1];
+  sessionData = [(TVRUIRemoteViewController *)self sessionData];
+  [sessionData setRequiredPairing:1];
 
   v8 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4278,13 +4278,13 @@ LABEL_19:
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4
+- (void)_presentAlertWithTitle:(id)title message:(id)message
 {
-  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = MEMORY[0x277D750F8];
-  v6 = [(TVRUIRemoteViewController *)self styleProvider];
-  v7 = [v6 textForDeviceLockoutAlert];
-  v8 = [v5 actionWithTitle:v7 style:1 handler:0];
+  styleProvider = [(TVRUIRemoteViewController *)self styleProvider];
+  textForDeviceLockoutAlert = [styleProvider textForDeviceLockoutAlert];
+  v8 = [v5 actionWithTitle:textForDeviceLockoutAlert style:1 handler:0];
   [v9 addAction:v8];
 
   [(TVRUIRemoteViewController *)self presentViewController:v9 animated:1 completion:0];
@@ -4296,28 +4296,28 @@ LABEL_19:
   v3 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
     v11 = 138412290;
-    v12 = v4;
+    v12 = authenticatingDevice;
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "User requested to cancel pairing for authentication device %@", &v11, 0xCu);
   }
 
-  v5 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
 
-  if (v5)
+  if (authenticatingDevice2)
   {
-    v6 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-    [v6 cancelAuthenitcationChallenge];
+    authenticatingDevice3 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    [authenticatingDevice3 cancelAuthenitcationChallenge];
 
     [(TVRUIRemoteViewController *)self setAuthenticatingDevice:0];
-    v7 = [(TVRUIRemoteViewController *)self activeDevice];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-    if (v7)
+    if (activeDevice)
     {
-      v8 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v9 = [(TVRUIRemoteViewController *)self activeDevice];
-      v10 = [v9 name];
-      [v8 setTitle:v10];
+      devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+      name = [activeDevice2 name];
+      [devicePickerViewController setTitle:name];
     }
 
     else
@@ -4329,65 +4329,65 @@ LABEL_19:
 
 - (BOOL)hasPresentedContent
 {
-  v3 = [(TVRUIRemoteViewController *)self keyboardController];
-  if (v3)
+  keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
+  if (keyboardController)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TVRUIRemoteViewController *)self authenticationAlertController];
-    v4 = v5 != 0;
+    authenticationAlertController = [(TVRUIRemoteViewController *)self authenticationAlertController];
+    v4 = authenticationAlertController != 0;
   }
 
   return v4;
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(TVRUIRemoteViewController *)self presentedViewController];
+    presentedViewController = [(TVRUIRemoteViewController *)self presentedViewController];
     v16 = 138412290;
-    v17 = v8;
+    v17 = presentedViewController;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to dismiss presented content: %@", &v16, 0xCu);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self keyboardController];
+  keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-  if (v9)
+  if (keyboardController)
   {
     v10 = _TVRUIKeyboardLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(TVRUIRemoteViewController *)self keyboardController];
-      v12 = [(TVRUIRemoteViewController *)self presentedViewController];
+      keyboardController2 = [(TVRUIRemoteViewController *)self keyboardController];
+      presentedViewController2 = [(TVRUIRemoteViewController *)self presentedViewController];
       v16 = 138412546;
-      v17 = v11;
+      v17 = keyboardController2;
       v18 = 2112;
-      v19 = v12;
+      v19 = presentedViewController2;
       _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "Dismissed presented keyboard controller:%@, presented:%@", &v16, 0x16u);
     }
 
-    v13 = [(TVRUIRemoteViewController *)self keyboardController];
-    [v13 dismissViewControllerAnimated:v4 completion:v6];
+    keyboardController3 = [(TVRUIRemoteViewController *)self keyboardController];
+    [keyboardController3 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
     [(TVRUIRemoteViewController *)self setKeyboardController:0];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v14 = [(TVRUIRemoteViewController *)self authenticationAlertController];
+  authenticationAlertController = [(TVRUIRemoteViewController *)self authenticationAlertController];
 
-  if (v14)
+  if (authenticationAlertController)
   {
-    v13 = [(TVRUIRemoteViewController *)self authenticationAlertController];
-    [v13 dismissViewControllerAnimated:v4 completion:v6];
+    keyboardController3 = [(TVRUIRemoteViewController *)self authenticationAlertController];
+    [keyboardController3 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
     [(TVRUIRemoteViewController *)self setAuthenticationAlertController:0];
     [(TVRUIRemoteViewController *)self _cancelPairing];
     v15 = _TVRUIViewControllerLog();
@@ -4400,29 +4400,29 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_12:
 }
 
-- (void)alertController:(id)a3 enteredText:(id)a4
+- (void)alertController:(id)controller enteredText:(id)text
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-  if (v7 && ![v12 type])
+  controllerCopy = controller;
+  textCopy = text;
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  if (authenticatingDevice && ![controllerCopy type])
   {
-    v10 = [v6 length];
+    v10 = [textCopy length];
 
     if (v10 == 4)
     {
-      v11 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-      [v11 sendAuthenticationCode:v6];
+      authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+      [authenticatingDevice2 sendAuthenticationCode:textCopy];
 
-      [v12 dismissViewControllerAnimated:1 completion:0];
+      [controllerCopy dismissViewControllerAnimated:1 completion:0];
       goto LABEL_9;
     }
   }
@@ -4431,37 +4431,37 @@ LABEL_12:
   {
   }
 
-  v8 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v6 && v8)
+  if (textCopy && activeDevice)
   {
-    v9 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v9 sendText:v6];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice2 sendText:textCopy];
   }
 
 LABEL_9:
 }
 
-- (void)alertController:(id)a3 generatedTextInputPayload:(id)a4
+- (void)alertController:(id)controller generatedTextInputPayload:(id)payload
 {
-  v5 = a4;
-  v6 = [(TVRUIRemoteViewController *)self activeDevice];
-  v8 = [v6 keyboardAttributes];
+  payloadCopy = payload;
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  keyboardAttributes = [activeDevice keyboardAttributes];
 
-  [v8 setRtiDataPayload:v5];
-  v7 = [(TVRUIRemoteViewController *)self activeDevice];
-  [v7 sendTextInputPayload:v5];
+  [keyboardAttributes setRtiDataPayload:payloadCopy];
+  activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+  [activeDevice2 sendTextInputPayload:payloadCopy];
 }
 
-- (void)alertControllerPressedDictationButton:(id)a3
+- (void)alertControllerPressedDictationButton:(id)button
 {
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
     v7 = [TVRUIButtonEvent createButtonEvent:1 buttonType:4];
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v5 sendButtonEvent:v7];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice2 sendButtonEvent:v7];
 
     [(TVRUIRemoteViewController *)self _performSiriEffectsWithButtonEvent:v7];
   }
@@ -4476,30 +4476,30 @@ LABEL_9:
   }
 }
 
-- (void)alertControllerReleasedDictationButton:(id)a3
+- (void)alertControllerReleasedDictationButton:(id)button
 {
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
     v6 = [TVRUIButtonEvent createButtonEvent:2 buttonType:4];
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v5 sendButtonEvent:v6];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice2 sendButtonEvent:v6];
 
     [(TVRUIRemoteViewController *)self _performSiriEffectsWithButtonEvent:v6];
   }
 }
 
-- (void)alertControllerHitKeyboardReturnKey:(id)a3
+- (void)alertControllerHitKeyboardReturnKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-  if (v5)
+  keyCopy = key;
+  authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
+  if (authenticatingDevice)
   {
-    v6 = v5;
-    v7 = [v4 type];
+    v6 = authenticatingDevice;
+    type = [keyCopy type];
 
-    if (v7 == 2)
+    if (type == 2)
     {
       v8 = _TVRUIKeyboardLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -4508,24 +4508,24 @@ LABEL_9:
         _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "User entered text password", buf, 2u);
       }
 
-      v9 = [v4 text];
-      v10 = [v9 length];
+      text = [keyCopy text];
+      v10 = [text length];
 
       if (v10)
       {
-        v11 = [(TVRUIRemoteViewController *)self authenticatingDevice];
-        v12 = [v4 text];
-        [v11 sendAuthenticationCode:v12];
+        authenticatingDevice2 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+        text2 = [keyCopy text];
+        [authenticatingDevice2 sendAuthenticationCode:text2];
 
-        [v4 dismissViewControllerAnimated:1 completion:0];
+        [keyCopy dismissViewControllerAnimated:1 completion:0];
         goto LABEL_13;
       }
 
-      v16 = _TVRUIKeyboardLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      activeDevice2 = _TVRUIKeyboardLog();
+      if (os_log_type_enabled(activeDevice2, OS_LOG_TYPE_DEFAULT))
       {
         *v17 = 0;
-        _os_log_impl(&dword_26CFEB000, v16, OS_LOG_TYPE_DEFAULT, "User entered password of zero length", v17, 2u);
+        _os_log_impl(&dword_26CFEB000, activeDevice2, OS_LOG_TYPE_DEFAULT, "User entered password of zero length", v17, 2u);
       }
 
 LABEL_12:
@@ -4534,16 +4534,16 @@ LABEL_12:
     }
   }
 
-  v13 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v13)
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice)
   {
-    v14 = v13;
-    v15 = [v4 type];
+    v14 = activeDevice;
+    type2 = [keyCopy type];
 
-    if (v15 == 1)
+    if (type2 == 1)
     {
-      v16 = [(TVRUIRemoteViewController *)self activeDevice];
-      [v16 sendReturnKey];
+      activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+      [activeDevice2 sendReturnKey];
       goto LABEL_12;
     }
   }
@@ -4551,32 +4551,32 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)alertControllerCancelled:(id)a3
+- (void)alertControllerCancelled:(id)cancelled
 {
-  v8 = a3;
-  if (![v8 type] || objc_msgSend(v8, "type") == 2)
+  cancelledCopy = cancelled;
+  if (![cancelledCopy type] || objc_msgSend(cancelledCopy, "type") == 2)
   {
-    v4 = [(TVRUIRemoteViewController *)self authenticatingDevice];
+    authenticatingDevice = [(TVRUIRemoteViewController *)self authenticatingDevice];
 
-    if (v4)
+    if (authenticatingDevice)
     {
       [(TVRUIRemoteViewController *)self _cancelPairing];
     }
   }
 
-  v5 = [(TVRUIRemoteViewController *)self keyboardController];
+  keyboardController = [(TVRUIRemoteViewController *)self keyboardController];
 
-  if (v5 == v8)
+  if (keyboardController == cancelledCopy)
   {
     [(TVRUIRemoteViewController *)self setKeyboardController:0];
   }
 
   else
   {
-    v6 = [(TVRUIRemoteViewController *)self authenticationAlertController];
+    authenticationAlertController = [(TVRUIRemoteViewController *)self authenticationAlertController];
 
-    v7 = v8;
-    if (v6 != v8)
+    v7 = cancelledCopy;
+    if (authenticationAlertController != cancelledCopy)
     {
       goto LABEL_10;
     }
@@ -4584,18 +4584,18 @@ LABEL_13:
     [(TVRUIRemoteViewController *)self setAuthenticationAlertController:0];
   }
 
-  v7 = v8;
+  v7 = cancelledCopy;
 LABEL_10:
 }
 
-- (void)wifiStateDidUpdate:(int64_t)a3
+- (void)wifiStateDidUpdate:(int64_t)update
 {
-  v5 = [(TVRUIRemoteViewController *)self networkObserver];
-  v6 = [v5 isNetworkReachable];
+  networkObserver = [(TVRUIRemoteViewController *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
 
   v7 = _TVRUIViewControllerLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isNetworkReachable)
   {
     if (v8)
     {
@@ -4603,14 +4603,14 @@ LABEL_10:
       _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "Network observer reported network is reachable", buf, 2u);
     }
 
-    v9 = [(TVRUIRemoteViewController *)self deviceQuery];
-    if (v9)
+    deviceQuery = [(TVRUIRemoteViewController *)self deviceQuery];
+    if (deviceQuery)
     {
-      v10 = v9;
-      v11 = [(TVRUIRemoteViewController *)self deviceQuery];
-      v12 = [v11 hasStarted];
+      v10 = deviceQuery;
+      deviceQuery2 = [(TVRUIRemoteViewController *)self deviceQuery];
+      hasStarted = [deviceQuery2 hasStarted];
 
-      if ((v12 & 1) == 0)
+      if ((hasStarted & 1) == 0)
       {
         v13 = _TVRUIViewControllerLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -4619,37 +4619,37 @@ LABEL_10:
           _os_log_impl(&dword_26CFEB000, v13, OS_LOG_TYPE_DEFAULT, "Network is reachable. Requesting restarting query.", buf, 2u);
         }
 
-        v14 = [(TVRUIRemoteViewController *)self deviceQuery];
+        deviceQuery3 = [(TVRUIRemoteViewController *)self deviceQuery];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __48__TVRUIRemoteViewController_wifiStateDidUpdate___block_invoke;
         v39[3] = &unk_279D88D88;
         v39[4] = self;
-        [v14 startQuery:self completionHandler:v39];
+        [deviceQuery3 startQuery:self completionHandler:v39];
 
         [(TVRUIRemoteViewController *)self performSelector:sel__showSearchingSpinnerIfNeeded withObject:0 afterDelay:2.0];
       }
     }
 
     [(TVRUIRemoteViewController *)self clearMessageContent];
-    v15 = [(TVRUIRemoteViewController *)self activeDevice];
-    if (!v15)
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    if (!activeDevice)
     {
       goto LABEL_33;
     }
 
-    v16 = v15;
-    v17 = [(TVRUIRemoteViewController *)self activeDevice];
-    if ([v17 isConnected])
+    activeDevice4 = activeDevice;
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    if ([activeDevice2 isConnected])
     {
     }
 
     else
     {
-      v31 = [(TVRUIRemoteViewController *)self activeDevice];
-      v32 = [v31 isConnecting];
+      activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+      isConnecting = [activeDevice3 isConnecting];
 
-      if (v32)
+      if (isConnecting)
       {
         goto LABEL_33;
       }
@@ -4661,18 +4661,18 @@ LABEL_10:
         _os_log_impl(&dword_26CFEB000, v33, OS_LOG_TYPE_DEFAULT, "Network is reachable. We have an active disconnected device. Requesting connect", buf, 2u);
       }
 
-      v16 = [(TVRUIRemoteViewController *)self activeDevice];
-      [(TVRUIRemoteViewController *)self _connectToDevice:v16 connectionContext:0];
+      activeDevice4 = [(TVRUIRemoteViewController *)self activeDevice];
+      [(TVRUIRemoteViewController *)self _connectToDevice:activeDevice4 connectionContext:0];
     }
 
 LABEL_33:
-    v34 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-    if (v34)
+    if (devicePickerViewController)
     {
-      v35 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      v36 = [v35 view];
-      [v36 setHidden:0];
+      devicePickerViewController2 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      view = [devicePickerViewController2 view];
+      [view setHidden:0];
 
       v37 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -4692,9 +4692,9 @@ LABEL_33:
   }
 
   [(TVRUIRemoteViewController *)self _resetActiveDevice];
-  v18 = [(TVRUIRemoteViewController *)self deviceQuery];
+  deviceQuery4 = [(TVRUIRemoteViewController *)self deviceQuery];
 
-  if (v18)
+  if (deviceQuery4)
   {
     v19 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -4703,34 +4703,34 @@ LABEL_33:
       _os_log_impl(&dword_26CFEB000, v19, OS_LOG_TYPE_DEFAULT, "No network. Stopping device query.", buf, 2u);
     }
 
-    v20 = [(TVRUIRemoteViewController *)self deviceQuery];
-    [v20 stop];
+    deviceQuery5 = [(TVRUIRemoteViewController *)self deviceQuery];
+    [deviceQuery5 stop];
 
     [(TVRUIRemoteViewController *)self _stopDeviceQueryThresholdTimer];
   }
 
-  v21 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  devicePickerViewController3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
 
-  if (v21)
+  if (devicePickerViewController3)
   {
-    v22 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v22 collapseDeviceList];
+    devicePickerViewController4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController4 collapseDeviceList];
 
-    v23 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v23 resetSelectedDevice];
+    devicePickerViewController5 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController5 resetSelectedDevice];
 
-    v24 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v24 setDevices:MEMORY[0x277CBEBF8]];
+    devicePickerViewController6 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController6 setDevices:MEMORY[0x277CBEBF8]];
 
     if (+[TVRUIFeatures corianderEnabled])
     {
-      v25 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-      [v25 setSuggestedDevices:MEMORY[0x277CBEBF8]];
+      devicePickerViewController7 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+      [devicePickerViewController7 setSuggestedDevices:MEMORY[0x277CBEBF8]];
     }
 
-    v26 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    v27 = [v26 view];
-    [v27 setHidden:1];
+    devicePickerViewController8 = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    view2 = [devicePickerViewController8 view];
+    [view2 setHidden:1];
 
     v28 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -4740,15 +4740,15 @@ LABEL_33:
     }
   }
 
-  v29 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  [v29 setEnabled:0];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  [controlPanelViewController setEnabled:0];
 
-  v30 = [(TVRUIRemoteViewController *)self topButtonPanelViewController];
-  [v30 setEnabled:0];
+  topButtonPanelViewController = [(TVRUIRemoteViewController *)self topButtonPanelViewController];
+  [topButtonPanelViewController setEnabled:0];
 
-  if (a3)
+  if (update)
   {
-    if (a3 == 1)
+    if (update == 1)
     {
       [(TVRUIRemoteViewController *)self showNoAssociatedNetworkMessage];
     }
@@ -4760,11 +4760,11 @@ LABEL_33:
   }
 
 LABEL_37:
-  [(TVRUIRemoteViewController *)self setNetworkReachable:a3 == 2];
+  [(TVRUIRemoteViewController *)self setNetworkReachable:update == 2];
   if (+[TVRUIFeatures isAWDLEnabled])
   {
-    v38 = [(TVRUIRemoteViewController *)self networkObserver];
-    -[TVRUIRemoteViewController setNetworkReachable:](self, "setNetworkReachable:", [v38 isBluetoothAvailable] | -[TVRUIRemoteViewController isNetworkReachable](self, "isNetworkReachable"));
+    networkObserver2 = [(TVRUIRemoteViewController *)self networkObserver];
+    -[TVRUIRemoteViewController setNetworkReachable:](self, "setNetworkReachable:", [networkObserver2 isBluetoothAvailable] | -[TVRUIRemoteViewController isNetworkReachable](self, "isNetworkReachable"));
   }
 }
 
@@ -4778,12 +4778,12 @@ uint64_t __48__TVRUIRemoteViewController_wifiStateDidUpdate___block_invoke(uint6
   return result;
 }
 
-- (void)bluetoothAvailabilityDidUpdate:(BOOL)a3
+- (void)bluetoothAvailabilityDidUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   v5 = _TVRUIViewControllerLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (updateCopy)
   {
     if (v6)
     {
@@ -4800,10 +4800,10 @@ uint64_t __48__TVRUIRemoteViewController_wifiStateDidUpdate___block_invoke(uint6
       _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Bluetooth is disabled", buf, 2u);
     }
 
-    v7 = [(TVRUIRemoteViewController *)self findingSession];
-    v8 = [v7 isFindingSessionActive];
+    findingSession = [(TVRUIRemoteViewController *)self findingSession];
+    isFindingSessionActive = [findingSession isFindingSessionActive];
 
-    if (v8)
+    if (isFindingSessionActive)
     {
       v9 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -4812,8 +4812,8 @@ uint64_t __48__TVRUIRemoteViewController_wifiStateDidUpdate___block_invoke(uint6
         _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "Bluetooth was disabled in the middle of a finding session. Attemping to restart the finding session", buf, 2u);
       }
 
-      v10 = [(TVRUIRemoteViewController *)self activeDevice];
-      [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:v10];
+      activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+      [(TVRUIRemoteViewController *)self _stopFindingSessionForDevice:activeDevice];
 
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -4834,9 +4834,9 @@ void __60__TVRUIRemoteViewController_bluetoothAvailabilityDidUpdate___block_invo
 
 - (void)_setupNetworkObserverIfNeeded
 {
-  v3 = [(TVRUIRemoteViewController *)self networkObserver];
+  networkObserver = [(TVRUIRemoteViewController *)self networkObserver];
 
-  if (!v3)
+  if (!networkObserver)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(TVRUINetworkObserver);
@@ -4847,19 +4847,19 @@ void __60__TVRUIRemoteViewController_bluetoothAvailabilityDidUpdate___block_invo
     v10[2] = __58__TVRUIRemoteViewController__setupNetworkObserverIfNeeded__block_invoke;
     v10[3] = &unk_279D88980;
     objc_copyWeak(&v11, &location);
-    v5 = [(TVRUIRemoteViewController *)self networkObserver];
-    [v5 setWifiStateUpdatedHandler:v10];
+    networkObserver2 = [(TVRUIRemoteViewController *)self networkObserver];
+    [networkObserver2 setWifiStateUpdatedHandler:v10];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__TVRUIRemoteViewController__setupNetworkObserverIfNeeded__block_invoke_177;
     v8[3] = &unk_279D88D38;
     objc_copyWeak(&v9, &location);
-    v6 = [(TVRUIRemoteViewController *)self networkObserver];
-    [v6 setBluetoothAvailabilityDidUpdate:v8];
+    networkObserver3 = [(TVRUIRemoteViewController *)self networkObserver];
+    [networkObserver3 setBluetoothAvailabilityDidUpdate:v8];
 
-    v7 = [(TVRUIRemoteViewController *)self networkObserver];
-    [v7 startObserving];
+    networkObserver4 = [(TVRUIRemoteViewController *)self networkObserver];
+    [networkObserver4 startObserving];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v11);
@@ -4906,19 +4906,19 @@ void __58__TVRUIRemoteViewController__setupNetworkObserverIfNeeded__block_invoke
   }
 }
 
-- (void)showMessageWithError:(id)a3 andDevice:(id)a4
+- (void)showMessageWithError:(id)error andDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  deviceCopy = device;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__TVRUIRemoteViewController_showMessageWithError_andDevice___block_invoke;
   block[3] = &unk_279D883D8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = errorCopy;
+  v12 = deviceCopy;
+  v8 = deviceCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -4946,19 +4946,19 @@ void __60__TVRUIRemoteViewController_showMessageWithError_andDevice___block_invo
   [v2 expandDeviceList];
 }
 
-- (void)showMessageWithTitle:(id)a3 message:(id)a4
+- (void)showMessageWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__TVRUIRemoteViewController_showMessageWithTitle_message___block_invoke;
   block[3] = &unk_279D883D8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = titleCopy;
+  v12 = messageCopy;
+  v8 = messageCopy;
+  v9 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -4971,22 +4971,22 @@ void __58__TVRUIRemoteViewController_showMessageWithTitle_message___block_invoke
   [v3 showMessageWithTitle:*(a1 + 40) message:*(a1 + 48)];
 }
 
-- (void)showMessageWithTitle:(id)a3 message:(id)a4 titleFont:(id)a5
+- (void)showMessageWithTitle:(id)title message:(id)message titleFont:(id)font
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  fontCopy = font;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__TVRUIRemoteViewController_showMessageWithTitle_message_titleFont___block_invoke;
   v14[3] = &unk_279D88050;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = titleCopy;
+  v16 = messageCopy;
+  v17 = fontCopy;
+  v11 = fontCopy;
+  v12 = messageCopy;
+  v13 = titleCopy;
   dispatch_async(MEMORY[0x277D85CD0], v14);
 }
 
@@ -4999,16 +4999,16 @@ void __68__TVRUIRemoteViewController_showMessageWithTitle_message_titleFont___bl
   [v3 showMessageWithTitle:*(a1 + 40) message:*(a1 + 48) titleFont:*(a1 + 56)];
 }
 
-- (void)showPairingMessageWithCode:(id)a3
+- (void)showPairingMessageWithCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__TVRUIRemoteViewController_showPairingMessageWithCode___block_invoke;
   v6[3] = &unk_279D88230;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = codeCopy;
+  v5 = codeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -5079,8 +5079,8 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
 
 - (void)showLoadingSpinner
 {
-  v3 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v3 setShowControls:0];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setShowControls:0];
 
   messageView = self->_messageView;
 
@@ -5089,12 +5089,12 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
 
 - (void)showSearchingSpinner
 {
-  v3 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v3 setShowControls:0];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setShowControls:0];
 
   [(TVRMessageView *)self->_messageView showSearchingSpinner];
-  v4 = [MEMORY[0x277D6C4B8] sharedInstance];
-  [v4 logSearchingSpinnerShown];
+  mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+  [mEMORY[0x277D6C4B8] logSearchingSpinnerShown];
 }
 
 - (void)clearMessageContent
@@ -5109,35 +5109,35 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
   }
 
   [(TVRMessageView *)self->_messageView clearContent];
-  v4 = [(TVRUIRemoteViewController *)self touchpadViewController];
-  [v4 setShowControls:1];
+  touchpadViewController = [(TVRUIRemoteViewController *)self touchpadViewController];
+  [touchpadViewController setShowControls:1];
 }
 
 - (void)_showConnectingSpinner
 {
-  v3 = [(TVRUIRemoteViewController *)self isNetworkReachable];
-  v4 = _TVRUIViewControllerLog();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  isNetworkReachable = [(TVRUIRemoteViewController *)self isNetworkReachable];
+  mEMORY[0x277D6C4B8] = _TVRUIViewControllerLog();
+  v5 = os_log_type_enabled(mEMORY[0x277D6C4B8], OS_LOG_TYPE_DEFAULT);
+  if (isNetworkReachable)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Showing connecting spinner", buf, 2u);
+      _os_log_impl(&dword_26CFEB000, mEMORY[0x277D6C4B8], OS_LOG_TYPE_DEFAULT, "Showing connecting spinner", buf, 2u);
     }
 
     [(TVRUIRemoteViewController *)self showLoadingSpinner];
     [(TVRUIRemoteViewController *)self performSelector:sel__hideConnectingAndShowDevicePicker withObject:0 afterDelay:10.0];
-    v4 = [MEMORY[0x277D6C4B8] sharedInstance];
-    v6 = [(TVRUIRemoteViewController *)self activeDevice];
-    v7 = [v6 deviceContextInformation];
-    [v4 logConnectingSpinnerShown:v7];
+    mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+    activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+    deviceContextInformation = [activeDevice deviceContextInformation];
+    [mEMORY[0x277D6C4B8] logConnectingSpinnerShown:deviceContextInformation];
   }
 
   else if (v5)
   {
     *v8 = 0;
-    _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "Not showing connecting spinner - Network is unreachable", v8, 2u);
+    _os_log_impl(&dword_26CFEB000, mEMORY[0x277D6C4B8], OS_LOG_TYPE_DEFAULT, "Not showing connecting spinner - Network is unreachable", v8, 2u);
   }
 }
 
@@ -5155,9 +5155,9 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
 - (void)_hideConnectingAndShowDevicePicker
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 activeDevice];
+  activeDevice = [self activeDevice];
   v4 = 138412290;
-  v5 = v3;
+  v5 = activeDevice;
   _os_log_error_impl(&dword_26CFEB000, a2, OS_LOG_TYPE_ERROR, "Disconnecting device %@ due to connection timeout", &v4, 0xCu);
 }
 
@@ -5176,14 +5176,14 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
 {
   if ([(TVRUIRemoteViewController *)self isNetworkReachable])
   {
-    v3 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    v4 = [v3 devices];
-    v5 = [v4 count];
+    devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    devices = [devicePickerViewController devices];
+    v5 = [devices count];
 
     if (!v5)
     {
-      v6 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-      [v6 setEnabled:0];
+      controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+      [controlPanelViewController setEnabled:0];
 
       [(TVRUIRemoteViewController *)self showSearchingSpinner];
     }
@@ -5198,20 +5198,20 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
   [(TVRUIRemoteViewController *)self clearMessageContent];
 }
 
-- (void)generatedButtonEvent:(id)a3
+- (void)generatedButtonEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self activeDevice];
+  eventCopy = event;
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (!v5)
+  if (!activeDevice)
   {
     goto LABEL_25;
   }
 
-  if ([v4 buttonType] == 9999)
+  if ([eventCopy buttonType] == 9999)
   {
-    if ([v4 eventType] == 2)
+    if ([eventCopy eventType] == 2)
     {
       v6 = _TVRUIButtonLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -5226,24 +5226,24 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
     goto LABEL_25;
   }
 
-  v7 = [v4 buttonType];
-  v8 = [(TVRUIRemoteViewController *)self activeDevice];
-  v9 = v8;
-  if (v7 == 9992)
+  buttonType = [eventCopy buttonType];
+  activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+  v9 = activeDevice2;
+  if (buttonType == 9992)
   {
-    v10 = [v8 isModernAppleTV];
+    isModernAppleTV = [activeDevice2 isModernAppleTV];
 
-    if (!v10)
+    if (!isModernAppleTV)
     {
       goto LABEL_25;
     }
 
-    v11 = [(TVRUIRemoteViewController *)self nowPlayingController];
-    [v11 infoButtonWasTapped];
+    nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+    [nowPlayingController infoButtonWasTapped];
     goto LABEL_24;
   }
 
-  [v8 sendButtonEvent:v4];
+  [activeDevice2 sendButtonEvent:eventCopy];
 
   v12 = _TVRUIButtonLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -5251,67 +5251,67 @@ void __56__TVRUIRemoteViewController_showNoWIFIConnectionMessage__block_invoke(u
     v16 = 136315394;
     v17 = "[TVRUIRemoteViewController generatedButtonEvent:]";
     v18 = 2114;
-    v19 = v4;
+    v19 = eventCopy;
     _os_log_impl(&dword_26CFEB000, v12, OS_LOG_TYPE_DEFAULT, "%s, event=%{public}@", &v16, 0x16u);
   }
 
-  v13 = [v4 buttonType];
-  if (v13 > 9)
+  buttonType2 = [eventCopy buttonType];
+  if (buttonType2 > 9)
   {
-    if (v13 == 10)
+    if (buttonType2 == 10)
     {
-      if ([v4 eventType] != 1)
+      if ([eventCopy eventType] != 1)
       {
         goto LABEL_25;
       }
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = v14;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      nowPlayingController = defaultCenter;
       v15 = @"TVRUIVolumeUpEventGenerated";
     }
 
     else
     {
-      if (v13 != 11 || [v4 eventType] != 1)
+      if (buttonType2 != 11 || [eventCopy eventType] != 1)
       {
         goto LABEL_25;
       }
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = v14;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      nowPlayingController = defaultCenter;
       v15 = @"TVRUIVolumeDownEventGenerated";
     }
 
-    [v14 postNotificationName:v15 object:0];
+    [defaultCenter postNotificationName:v15 object:0];
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  if ((v13 - 2) < 2)
+  if ((buttonType2 - 2) < 2)
   {
-    v11 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-    [v11 collapseChannelButton];
+    nowPlayingController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+    [nowPlayingController collapseChannelButton];
     goto LABEL_24;
   }
 
-  if (v13 == 4)
+  if (buttonType2 == 4)
   {
-    [(TVRUIRemoteViewController *)self _performSiriEffectsWithButtonEvent:v4];
+    [(TVRUIRemoteViewController *)self _performSiriEffectsWithButtonEvent:eventCopy];
   }
 
 LABEL_25:
 }
 
-- (void)generatedTouchEvent:(id)a3
+- (void)generatedTouchEvent:(id)event
 {
-  v6 = a3;
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  eventCopy = event;
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    [v5 sendTouchEvent:v6];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    [activeDevice2 sendTouchEvent:eventCopy];
   }
 }
 
@@ -5324,24 +5324,24 @@ LABEL_25:
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Keyboard was requested", v9, 2u);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self activeDevice];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (v4)
+  if (activeDevice)
   {
-    v5 = [(TVRUIRemoteViewController *)self activeDevice];
-    v6 = [v5 keyboardAttributes];
-    v7 = [(TVRUIRemoteViewController *)self activeDevice];
-    v8 = [v7 currentText];
-    [(TVRUIRemoteViewController *)self _presentKeyboardWithAttributes:v6 initialText:v8];
+    activeDevice2 = [(TVRUIRemoteViewController *)self activeDevice];
+    keyboardAttributes = [activeDevice2 keyboardAttributes];
+    activeDevice3 = [(TVRUIRemoteViewController *)self activeDevice];
+    currentText = [activeDevice3 currentText];
+    [(TVRUIRemoteViewController *)self _presentKeyboardWithAttributes:keyboardAttributes initialText:currentText];
   }
 }
 
-- (void)_performSiriEffectsWithButtonEvent:(id)a3
+- (void)_performSiriEffectsWithButtonEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(TVRUIRemoteViewController *)self activeDevice];
+  eventCopy = event;
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
 
-  if (!v5)
+  if (!activeDevice)
   {
     v10 = _TVRUIButtonLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -5352,13 +5352,13 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  if ([v4 buttonType] != 4)
+  if ([eventCopy buttonType] != 4)
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 eventType];
-  switch(v6)
+  eventType = [eventCopy eventType];
+  switch(eventType)
   {
     case 3:
       v10 = _TVRUIButtonLog();
@@ -5379,10 +5379,10 @@ LABEL_11:
         _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "TVRUIButtonTypeSiri, TVRUIButtonEventTypeReleased", v13, 2u);
       }
 
-      v12 = [(TVRUIRemoteViewController *)self sessionData];
-      [v12 setUsedSiri:1];
+      sessionData = [(TVRUIRemoteViewController *)self sessionData];
+      [sessionData setUsedSiri:1];
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
       goto LABEL_15;
     case 1:
@@ -5393,10 +5393,10 @@ LABEL_11:
         _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "TVRUIButtonTypeSiri, TVRUIButtonEventTypePressed", buf, 2u);
       }
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = 1;
 LABEL_15:
-      [(TVRUIRemoteViewController *)v8 setSiriSessionActive:v9];
+      [(TVRUIRemoteViewController *)selfCopy2 setSiriSessionActive:v9];
       break;
   }
 
@@ -5405,17 +5405,17 @@ LABEL_16:
 
 - (void)_enableSearch
 {
-  v2 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  [v2 enableSearchButton];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  [controlPanelViewController enableSearchButton];
 }
 
 - (void)_disableSearch
 {
-  v2 = [(TVRUIRemoteViewController *)self controlPanelViewController];
-  [v2 disableSearchButton];
+  controlPanelViewController = [(TVRUIRemoteViewController *)self controlPanelViewController];
+  [controlPanelViewController disableSearchButton];
 }
 
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = _TVRUIButtonLog();
@@ -5424,44 +5424,44 @@ LABEL_16:
     v6 = 136315394;
     v7 = "[TVRUIRemoteViewController consumeSinglePressDownForButtonKind:]";
     v8 = 2048;
-    v9 = a3;
+    kindCopy = kind;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s, buttonKind=%ld", &v6, 0x16u);
   }
 
-  if (a3 == 4)
+  if (kind == 4)
   {
     [(TVRUIRemoteViewController *)self volumeDownEventGenerated];
   }
 
-  else if (a3 == 3)
+  else if (kind == 3)
   {
     [(TVRUIRemoteViewController *)self volumeUpEventGenerated];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4 forTouchpadView:(id)a5
+- (id)hitTest:(CGPoint)test withEvent:(id)event forTouchpadView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-  v10 = [v9 isChannelButtonExpanded];
+  y = test.y;
+  x = test.x;
+  viewCopy = view;
+  mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+  isChannelButtonExpanded = [mediaControlsViewController isChannelButtonExpanded];
 
-  if (v10)
+  if (isChannelButtonExpanded)
   {
-    v11 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-    v12 = [v11 _channelUpButtonView];
+    mediaControlsViewController2 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+    _channelUpButtonView = [mediaControlsViewController2 _channelUpButtonView];
 
-    v13 = [(TVRUIRemoteViewController *)self view];
-    [v12 frame];
-    [v13 convertRect:v12 fromView:?];
+    view = [(TVRUIRemoteViewController *)self view];
+    [_channelUpButtonView frame];
+    [view convertRect:_channelUpButtonView fromView:?];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(TVRUIRemoteViewController *)self view];
-    [v22 convertPoint:v8 fromView:{x, y}];
+    view2 = [(TVRUIRemoteViewController *)self view];
+    [view2 convertPoint:viewCopy fromView:{x, y}];
     v24 = v23;
     v26 = v25;
 
@@ -5473,7 +5473,7 @@ LABEL_16:
     v31.y = v26;
     if (CGRectContainsPoint(v32, v31))
     {
-      v27 = v12;
+      v27 = _channelUpButtonView;
     }
 
     else
@@ -5492,40 +5492,40 @@ LABEL_16:
   return v28;
 }
 
-- (void)device:(id)a3 supportsFindMyRemote:(BOOL)a4
+- (void)device:(id)device supportsFindMyRemote:(BOOL)remote
 {
-  v4 = a4;
+  remoteCopy = remote;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 name];
+    name = [deviceCopy name];
     v10 = 138543618;
-    v11 = v8;
+    v11 = name;
     v12 = 1024;
-    v13 = v4;
+    v13 = remoteCopy;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "device: '%{public}@' supportsFindMy: %d", &v10, 0x12u);
   }
 
-  v9 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-  [v9 _device:v6 updatedFindMySupported:v4];
+  devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+  [devicePickerViewController _device:deviceCopy updatedFindMySupported:remoteCopy];
 }
 
 - (void)_showFindingAlert
 {
-  v25 = [(TVRUIRemoteViewController *)self findingSession];
-  if ([v25 isFindingSessionActive])
+  findingSession = [(TVRUIRemoteViewController *)self findingSession];
+  if ([findingSession isFindingSessionActive])
   {
-    v3 = [(TVRUIRemoteViewController *)self view];
-    v4 = [v3 window];
+    view = [(TVRUIRemoteViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [(TVRUIRemoteViewController *)self view];
-      v6 = [v5 window];
-      v7 = [v6 rootViewController];
-      v26 = [v7 presentedViewController];
+      view2 = [(TVRUIRemoteViewController *)self view];
+      window2 = [view2 window];
+      rootViewController = [window2 rootViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
       v8 = MEMORY[0x277D75110];
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -5568,7 +5568,7 @@ LABEL_16:
       v24 = [v21 actionWithTitle:v23 style:0 handler:v27];
       [v16 addAction:v24];
 
-      [v26 presentViewController:v16 animated:1 completion:0];
+      [presentedViewController presentViewController:v16 animated:1 completion:0];
     }
   }
 
@@ -5604,187 +5604,187 @@ void __46__TVRUIRemoteViewController__showFindingAlert__block_invoke_204(uint64_
   [v3 stopFindingSession];
 }
 
-- (void)device:(id)a3 didUpdateSiriRemoteFindingSessionState:(int64_t)a4
+- (void)device:(id)device didUpdateSiriRemoteFindingSessionState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 name];
-    if (a4 < 7 && ((0x77u >> a4) & 1) != 0)
+    name = [deviceCopy name];
+    if (state < 7 && ((0x77u >> state) & 1) != 0)
     {
-      v9 = off_279D88EB8[a4];
+      v9 = off_279D88EB8[state];
     }
 
     else
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:state];
       v9 = [v10 stringWithFormat:@"Unknown %@", v11];
     }
 
     *buf = 138543618;
-    v13 = v8;
+    v13 = name;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "device: '%{public}@' did update finding state: %{public}@", buf, 0x16u);
   }
 
-  if (a4 == 6)
+  if (state == 6)
   {
     [(TVRUIRemoteViewController *)self _showFindingAlert];
   }
 }
 
-- (void)device:(id)a3 didUpdateNowPlayingInfo:(id)a4
+- (void)device:(id)device didUpdateNowPlayingInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 playbackRate];
+  deviceCopy = device;
+  infoCopy = info;
+  playbackRate = [infoCopy playbackRate];
 
-  if (v8)
+  if (playbackRate)
   {
-    v9 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-    v10 = [v7 playbackRate];
-    [v9 updatePlaybackRate:v10];
+    mediaControlsViewController = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+    playbackRate2 = [infoCopy playbackRate];
+    [mediaControlsViewController updatePlaybackRate:playbackRate2];
   }
 
-  v11 = [v7 captionsEnabled];
-  if (v11)
+  captionsEnabled = [infoCopy captionsEnabled];
+  if (captionsEnabled)
   {
-    v12 = v11;
-    v13 = [v7 hasValidCaptionOptions];
+    v12 = captionsEnabled;
+    hasValidCaptionOptions = [infoCopy hasValidCaptionOptions];
 
-    if (v13)
+    if (hasValidCaptionOptions)
     {
       v14 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v6 name];
-        v16 = [v7 captionsEnabled];
-        v17 = [v7 hasValidCaptionOptions];
+        name = [deviceCopy name];
+        captionsEnabled2 = [infoCopy captionsEnabled];
+        hasValidCaptionOptions2 = [infoCopy hasValidCaptionOptions];
         v23 = 138543874;
-        v24 = v15;
+        v24 = name;
         v25 = 2114;
-        v26 = v16;
+        v26 = captionsEnabled2;
         v27 = 2114;
-        v28 = v17;
+        v28 = hasValidCaptionOptions2;
         _os_log_impl(&dword_26CFEB000, v14, OS_LOG_TYPE_DEFAULT, "device: '%{public}@' updateCaptionState: %{public}@, hasValidCaptionOptions: %{public}@", &v23, 0x20u);
       }
 
-      v18 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
-      v19 = [v7 captionsEnabled];
-      v20 = [v19 BOOLValue];
-      v21 = [v7 hasValidCaptionOptions];
-      [v18 updateCaptionState:v20 buttonDisabled:{objc_msgSend(v21, "BOOLValue") ^ 1}];
+      mediaControlsViewController2 = [(TVRUIRemoteViewController *)self mediaControlsViewController];
+      captionsEnabled3 = [infoCopy captionsEnabled];
+      bOOLValue = [captionsEnabled3 BOOLValue];
+      hasValidCaptionOptions3 = [infoCopy hasValidCaptionOptions];
+      [mediaControlsViewController2 updateCaptionState:bOOLValue buttonDisabled:{objc_msgSend(hasValidCaptionOptions3, "BOOLValue") ^ 1}];
     }
   }
 
-  v22 = [(TVRUIRemoteViewController *)self nowPlayingController];
-  [v22 setNowPlayingInfo:v7];
+  nowPlayingController = [(TVRUIRemoteViewController *)self nowPlayingController];
+  [nowPlayingController setNowPlayingInfo:infoCopy];
 }
 
-- (void)device:(id)a3 supportsVolumeControl:(BOOL)a4
+- (void)device:(id)device supportsVolumeControl:(BOOL)control
 {
-  v4 = a4;
+  controlCopy = control;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 name];
+    name = [deviceCopy name];
     v10 = 138543618;
-    v11 = v8;
+    v11 = name;
     v12 = 1024;
-    v13 = v4;
+    v13 = controlCopy;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "device: '%{public}@' supportsVolumeControl %d", &v10, 0x12u);
   }
 
-  [(TVRUIRemoteViewController *)self setSupportsVolumeControl:v4];
-  v9 = [(TVRUIRemoteViewController *)self delegate];
-  [v9 device:v6 supportsVolume:v4];
+  [(TVRUIRemoteViewController *)self setSupportsVolumeControl:controlCopy];
+  delegate = [(TVRUIRemoteViewController *)self delegate];
+  [delegate device:deviceCopy supportsVolume:controlCopy];
 }
 
-- (void)device:(id)a3 supportsSiri:(BOOL)a4 volumeControl:(BOOL)a5
+- (void)device:(id)device supportsSiri:(BOOL)siri volumeControl:(BOOL)control
 {
-  v5 = a5;
-  v6 = a4;
+  controlCopy = control;
+  siriCopy = siri;
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  deviceCopy = device;
   v9 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315906;
     v12 = "[TVRUIRemoteViewController device:supportsSiri:volumeControl:]";
     v13 = 2112;
-    v14 = v8;
+    v14 = deviceCopy;
     v15 = 1024;
-    v16 = v6;
+    v16 = siriCopy;
     v17 = 1024;
-    v18 = v5;
+    v18 = controlCopy;
     _os_log_impl(&dword_26CFEB000, v9, OS_LOG_TYPE_DEFAULT, "%s device=%@, supportsSiri=%{BOOL}d, supportsVolumeControl=%{BOOL}d", &v11, 0x22u);
   }
 
-  [(TVRUIRemoteViewController *)self setSupportsVolumeControl:v5];
-  [(TVRUIRemoteViewController *)self setSupportsSiri:v6];
-  v10 = [(TVRUIRemoteViewController *)self delegate];
-  [v10 device:v8 supportsSiri:v6 volume:v5];
+  [(TVRUIRemoteViewController *)self setSupportsVolumeControl:controlCopy];
+  [(TVRUIRemoteViewController *)self setSupportsSiri:siriCopy];
+  delegate = [(TVRUIRemoteViewController *)self delegate];
+  [delegate device:deviceCopy supportsSiri:siriCopy volume:controlCopy];
 }
 
-- (void)setSupportsVolumeControl:(BOOL)a3
+- (void)setSupportsVolumeControl:(BOOL)control
 {
-  v3 = a3;
+  controlCopy = control;
   if (!self->_volumeController)
   {
     v5 = [TVRUIVolumeController alloc];
-    v6 = [(TVRUIRemoteViewController *)self view];
-    v7 = [v6 window];
+    view = [(TVRUIRemoteViewController *)self view];
+    window = [view window];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __54__TVRUIRemoteViewController_setSupportsVolumeControl___block_invoke;
     v17[3] = &unk_279D88028;
     v17[4] = self;
-    v8 = [(TVRUIVolumeController *)v5 initForWindow:v7 eventHandler:v17];
+    v8 = [(TVRUIVolumeController *)v5 initForWindow:window eventHandler:v17];
     volumeController = self->_volumeController;
     self->_volumeController = v8;
   }
 
-  v10 = [(TVRUIRemoteViewController *)self volumeController];
-  [v10 setSupportsVolumeControl:v3];
+  volumeController = [(TVRUIRemoteViewController *)self volumeController];
+  [volumeController setSupportsVolumeControl:controlCopy];
 
   if (self->_isFindingSessionActive)
   {
-    v11 = _TVRUIViewControllerLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    deviceObservers = _TVRUIViewControllerLog();
+    if (os_log_type_enabled(deviceObservers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_26CFEB000, v11, OS_LOG_TYPE_DEFAULT, "Finding session is active. Not enabling volume control", buf, 2u);
+      _os_log_impl(&dword_26CFEB000, deviceObservers, OS_LOG_TYPE_DEFAULT, "Finding session is active. Not enabling volume control", buf, 2u);
     }
   }
 
   else
   {
-    v12 = [(TVRUIRemoteViewController *)self volumeController];
-    v13 = v12;
-    if (v3)
+    volumeController2 = [(TVRUIRemoteViewController *)self volumeController];
+    v13 = volumeController2;
+    if (controlCopy)
     {
-      [v12 enableVolumeControl];
+      [volumeController2 enableVolumeControl];
     }
 
     else
     {
-      [v12 disableVolumeControl];
+      [volumeController2 disableVolumeControl];
     }
 
-    v11 = [(TVRUIRemoteViewController *)self deviceObservers];
+    deviceObservers = [(TVRUIRemoteViewController *)self deviceObservers];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__TVRUIRemoteViewController_setSupportsVolumeControl___block_invoke_206;
     v14[3] = &__block_descriptor_33_e45_v32__0___TVRUIRemoteDeviceObserving__8Q16_B24l;
-    v15 = v3;
-    [v11 enumerateObjectsUsingBlock:v14];
+    v15 = controlCopy;
+    [deviceObservers enumerateObjectsUsingBlock:v14];
   }
 }
 
@@ -5814,62 +5814,62 @@ void __54__TVRUIRemoteViewController_setSupportsVolumeControl___block_invoke_206
 
 - (BOOL)supportsVolumeControl
 {
-  v3 = [(TVRUIRemoteViewController *)self volumeController];
+  volumeController = [(TVRUIRemoteViewController *)self volumeController];
 
-  if (!v3)
+  if (!volumeController)
   {
     return 0;
   }
 
-  v4 = [(TVRUIRemoteViewController *)self volumeController];
-  v5 = [v4 supportsVolumeControl];
+  volumeController2 = [(TVRUIRemoteViewController *)self volumeController];
+  supportsVolumeControl = [volumeController2 supportsVolumeControl];
 
-  return v5;
+  return supportsVolumeControl;
 }
 
-- (void)setSupportsSiri:(BOOL)a3
+- (void)setSupportsSiri:(BOOL)siri
 {
-  if (self->_supportsSiri == a3)
+  if (self->_supportsSiri == siri)
   {
     return;
   }
 
-  self->_supportsSiri = a3;
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  if ([v6 userInterfaceIdiom] == 1)
+  self->_supportsSiri = siri;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
   }
 
   else
   {
-    v7 = [(TVRUIRemoteViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
-    v10 = [v9 activationState];
+    view = [(TVRUIRemoteViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    activationState = [windowScene activationState];
 
-    if (v10)
+    if (activationState)
     {
 LABEL_7:
-      v11 = [(TVRUIRemoteViewController *)self siriManager];
-      [v11 unregisterForSiriEvents];
+      siriManager = [(TVRUIRemoteViewController *)self siriManager];
+      [siriManager unregisterForSiriEvents];
       goto LABEL_8;
     }
   }
 
-  if (!a3)
+  if (!siri)
   {
     goto LABEL_7;
   }
 
-  v11 = [(TVRUIRemoteViewController *)self siriManager];
-  [v11 registerForSiriEvents];
+  siriManager = [(TVRUIRemoteViewController *)self siriManager];
+  [siriManager registerForSiriEvents];
 LABEL_8:
 }
 
 - (void)volumeUpEventGenerated
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v3 && (v4 = v3, -[TVRUIRemoteViewController activeDevice](self, "activeDevice"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsVolumeControl], v5, v4, v6))
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice && (v4 = activeDevice, -[TVRUIRemoteViewController activeDevice](self, "activeDevice"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsVolumeControl], v5, v4, v6))
   {
     v7 = [TVRUIButtonEvent createButtonEvent:1 buttonType:10];
     [(TVRUIRemoteViewController *)self generatedButtonEvent:v7];
@@ -5896,8 +5896,8 @@ LABEL_8:
 
 - (void)volumeDownEventGenerated
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v3 && (v4 = v3, -[TVRUIRemoteViewController activeDevice](self, "activeDevice"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsVolumeControl], v5, v4, v6))
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice && (v4 = activeDevice, -[TVRUIRemoteViewController activeDevice](self, "activeDevice"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 supportsVolumeControl], v5, v4, v6))
   {
     v7 = [TVRUIButtonEvent createButtonEvent:1 buttonType:11];
     [(TVRUIRemoteViewController *)self generatedButtonEvent:v7];
@@ -5927,18 +5927,18 @@ LABEL_8:
   if ([(TVRUIRemoteViewController *)self isNetworkReachable])
   {
     [(TVRUIRemoteViewController *)self _hideMessageContent];
-    v3 = [(TVRUIRemoteViewController *)self delegate];
-    [v3 devicePickerWillExpand];
+    delegate = [(TVRUIRemoteViewController *)self delegate];
+    [delegate devicePickerWillExpand];
 
-    v4 = [(TVRUIRemoteViewController *)self devicePickerViewController];
-    [v4 expandDeviceList];
+    devicePickerViewController = [(TVRUIRemoteViewController *)self devicePickerViewController];
+    [devicePickerViewController expandDeviceList];
   }
 }
 
 - (BOOL)_shouldAllowKeyboardToBePresented
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
-  if (v3)
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  if (activeDevice)
   {
     v4 = ![(TVRUIRemoteViewController *)self isSiriSessionActive];
   }
@@ -5955,9 +5955,9 @@ LABEL_8:
 {
   if (+[TVRUIFeatures isTapToRadarEnabled])
   {
-    v3 = [(TVRUIRemoteViewController *)self tapToRadarButton];
+    tapToRadarButton = [(TVRUIRemoteViewController *)self tapToRadarButton];
 
-    if (!v3)
+    if (!tapToRadarButton)
     {
       v4 = dispatch_time(0, 1000000000);
       block[0] = MEMORY[0x277D85DD0];
@@ -6009,53 +6009,53 @@ void __53__TVRUIRemoteViewController__installTapToRadarButton__block_invoke(uint
 
 - (void)_tapToRadar
 {
-  v3 = [(TVRUIRemoteViewController *)self view];
-  v2 = [v3 window];
-  [TVRTapToRadarManager fileRadarWithTitle:@"[TVRemote] " description:0 window:v2];
+  view = [(TVRUIRemoteViewController *)self view];
+  window = [view window];
+  [TVRTapToRadarManager fileRadarWithTitle:@"[TVRemote] " description:0 window:window];
 }
 
-- (id)_stringForDeviceDeviceIdentifierType:(int64_t)a3
+- (id)_stringForDeviceDeviceIdentifierType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279D88EF0[a3];
+    return off_279D88EF0[type];
   }
 }
 
 - (void)_forceShowMediaControls
 {
-  v3 = [(TVRUIRemoteViewController *)self activeDevice];
-  [(TVRUIRemoteViewController *)self device:v3 needsMediaControls:&unk_287E84C78];
+  activeDevice = [(TVRUIRemoteViewController *)self activeDevice];
+  [(TVRUIRemoteViewController *)self device:activeDevice needsMediaControls:&unk_287E84C78];
 }
 
-- (int64_t)_connectionContextFromLaunchContext:(int64_t)a3
+- (int64_t)_connectionContextFromLaunchContext:(int64_t)context
 {
-  if ((a3 - 5) > 8)
+  if ((context - 5) > 8)
   {
     return 1;
   }
 
   else
   {
-    return qword_26D0D2788[a3 - 5];
+    return qword_26D0D2788[context - 5];
   }
 }
 
-- (id)_stringForConnectionContext:(int64_t)a3
+- (id)_stringForConnectionContext:(int64_t)context
 {
-  if ((a3 - 1) > 2)
+  if ((context - 1) > 2)
   {
     return @"Unspecified";
   }
 
   else
   {
-    return off_279D88F18[a3 - 1];
+    return off_279D88F18[context - 1];
   }
 }
 
@@ -6071,40 +6071,40 @@ void __53__TVRUIRemoteViewController__installTapToRadarButton__block_invoke(uint
   }
 }
 
-- (void)findButtonTappedForDevice:(id)a3
+- (void)findButtonTappedForDevice:(id)device
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = deviceCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Find button tapped for device: %@", &v6, 0xCu);
   }
 
-  if ([v4 isConnected])
+  if ([deviceCopy isConnected])
   {
-    [(TVRUIRemoteViewController *)self _startFindingSessionForDevice:v4];
+    [(TVRUIRemoteViewController *)self _startFindingSessionForDevice:deviceCopy];
   }
 
   else
   {
-    [(TVRUIRemoteViewController *)self _selectDevice:v4 withConnectionContext:1];
+    [(TVRUIRemoteViewController *)self _selectDevice:deviceCopy withConnectionContext:1];
     [(TVRUIRemoteViewController *)self setShouldStartFindingSession:1];
   }
 }
 
-- (void)_startFindingSessionForDevice:(id)a3
+- (void)_startFindingSessionForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__TVRUIRemoteViewController__startFindingSessionForDevice___block_invoke;
   v6[3] = &unk_279D88E98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = deviceCopy;
+  selfCopy = self;
+  v5 = deviceCopy;
   [(TVRUIRemoteViewController *)self _turnOnBluetoothIfNeededWithCompletionBlock:v6];
 }
 
@@ -6196,26 +6196,26 @@ void __59__TVRUIRemoteViewController__startFindingSessionForDevice___block_invok
   [WeakRetained findingSessionDidEnd];
 }
 
-- (void)_stopFindingSessionForDevice:(id)a3
+- (void)_stopFindingSessionForDevice:(id)device
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v5 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 name];
+      name = [deviceCopy name];
       v9 = 138543362;
-      v10 = v6;
+      v10 = name;
       _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Stop finding session for: '%{public}@'", &v9, 0xCu);
     }
 
-    [v4 enableFindingSession:0];
+    [deviceCopy enableFindingSession:0];
     if (self->_findingSession)
     {
-      v7 = [(TVRUIRemoteViewController *)self findingSession];
-      [v7 stopFindingSession];
+      findingSession = [(TVRUIRemoteViewController *)self findingSession];
+      [findingSession stopFindingSession];
 
       findingSession = self->_findingSession;
       self->_findingSession = 0;
@@ -6232,8 +6232,8 @@ void __59__TVRUIRemoteViewController__startFindingSessionForDevice___block_invok
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Finding session started. Pausing volume support", v5, 2u);
   }
 
-  v4 = [(TVRUIRemoteViewController *)self volumeController];
-  [v4 disableVolumeControl];
+  volumeController = [(TVRUIRemoteViewController *)self volumeController];
+  [volumeController disableVolumeControl];
 
   self->_isFindingSessionActive = 1;
 }
@@ -6248,8 +6248,8 @@ void __59__TVRUIRemoteViewController__startFindingSessionForDevice___block_invok
   }
 
   self->_isFindingSessionActive = 0;
-  v4 = [(TVRUIRemoteViewController *)self volumeController];
-  [v4 enableVolumeControl];
+  volumeController = [(TVRUIRemoteViewController *)self volumeController];
+  [volumeController enableVolumeControl];
 }
 
 - (TVRUIRemoteViewControllerDelegate)delegate

@@ -1,24 +1,24 @@
 @interface VCPVideoAnalysisPipelineManager
-- (VCPVideoAnalysisPipelineManager)initWithVideoAnalysisBlocks:(id)a3 videoDecoder:(id)a4 maxBufferedFrames:(unint64_t)a5 cancelBlock:(id)a6;
+- (VCPVideoAnalysisPipelineManager)initWithVideoAnalysisBlocks:(id)blocks videoDecoder:(id)decoder maxBufferedFrames:(unint64_t)frames cancelBlock:(id)block;
 - (id)lastFrameResource;
 - (id)nextFrameResource;
-- (int)addFrameResource:(id)a3;
+- (int)addFrameResource:(id)resource;
 - (int)manageFrameResources;
 - (int)run;
 - (int)runWithGraph;
 - (void)executeDecode;
-- (void)executePipelineStageAt:(unint64_t)a3 currentFrameResource:(id)a4 nextFrameSample:(opaqueCMSampleBuffer *)a5;
+- (void)executePipelineStageAt:(unint64_t)at currentFrameResource:(id)resource nextFrameSample:(opaqueCMSampleBuffer *)sample;
 - (void)flushFrameResources;
 @end
 
 @implementation VCPVideoAnalysisPipelineManager
 
-- (VCPVideoAnalysisPipelineManager)initWithVideoAnalysisBlocks:(id)a3 videoDecoder:(id)a4 maxBufferedFrames:(unint64_t)a5 cancelBlock:(id)a6
+- (VCPVideoAnalysisPipelineManager)initWithVideoAnalysisBlocks:(id)blocks videoDecoder:(id)decoder maxBufferedFrames:(unint64_t)frames cancelBlock:(id)block
 {
   v54 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v45 = a4;
-  aBlock = a6;
+  blocksCopy = blocks;
+  decoderCopy = decoder;
+  aBlock = block;
   v47.receiver = self;
   v47.super_class = VCPVideoAnalysisPipelineManager;
   v11 = [(VCPVideoAnalysisPipelineManager *)&v47 init];
@@ -31,7 +31,7 @@
   logPrefix = v11->_logPrefix;
   v11->_logPrefix = v12;
 
-  if (!v45)
+  if (!decoderCopy)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -48,7 +48,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (![v46 count])
+  if (![blocksCopy count])
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -63,9 +63,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v14 = [v46 count];
+  v14 = [blocksCopy count];
   v15 = v14 + 1;
-  if (v14 + 1 > a5)
+  if (v14 + 1 > frames)
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -76,7 +76,7 @@ LABEL_14:
     *buf = 138412802;
     v49 = v16;
     v50 = 1024;
-    v51 = a5;
+    framesCopy = frames;
     v52 = 1024;
     v53 = v15;
     v17 = MEMORY[0x1E69E9C10];
@@ -91,14 +91,14 @@ LABEL_16:
 
   atomic_store(0, &v11->_err);
   v11->_flags = 0;
-  objc_storeStrong(&v11->_decoder, a4);
+  objc_storeStrong(&v11->_decoder, decoder);
   v11->_decodeDone = 0;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   frameResources = v11->_frameResources;
   v11->_frameResources = v24;
 
-  v11->_maxBufferedFrames = a5;
-  objc_storeStrong(&v11->_pipelineBlocks, a3);
+  v11->_maxBufferedFrames = frames;
+  objc_storeStrong(&v11->_pipelineBlocks, blocks);
   v26 = _Block_copy(aBlock);
   cancelBlock = v11->_cancelBlock;
   v11->_cancelBlock = v26;
@@ -177,10 +177,10 @@ LABEL_17:
 - (id)nextFrameResource
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
-  if (v3)
+  copyNextSampleBuffer = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
+  if (copyNextSampleBuffer)
   {
-    v4 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:v3];
+    v4 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:copyNextSampleBuffer];
   }
 
   else
@@ -202,19 +202,19 @@ LABEL_17:
 
 - (id)lastFrameResource
 {
-  v3 = [(NSMutableArray *)self->_frameResources count];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_frameResources count];
+  if (lastObject)
   {
-    v3 = [(NSMutableArray *)self->_frameResources lastObject];
+    lastObject = [(NSMutableArray *)self->_frameResources lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (int)addFrameResource:(id)a3
+- (int)addFrameResource:(id)resource
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourceCopy = resource;
   if ([(NSMutableArray *)self->_frameResources count]>= self->_maxBufferedFrames)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -233,7 +233,7 @@ LABEL_17:
 
   else
   {
-    [(NSMutableArray *)self->_frameResources addObject:v4];
+    [(NSMutableArray *)self->_frameResources addObject:resourceCopy];
     v5 = 0;
   }
 
@@ -263,24 +263,24 @@ LABEL_17:
 
     else if (!self->_decodeDone)
     {
-      v9 = [(VCPVideoAnalysisPipelineManager *)self manageFrameResources];
-      if (v9)
+      manageFrameResources = [(VCPVideoAnalysisPipelineManager *)self manageFrameResources];
+      if (manageFrameResources)
       {
-        atomic_store(v9, &self->_err);
+        atomic_store(manageFrameResources, &self->_err);
       }
 
       else
       {
-        v10 = [(VCPVideoAnalysisPipelineManager *)self lastFrameResource];
-        v11 = [(VCPVideoAnalysisPipelineManager *)self nextFrameResource];
-        if (v11 && (v12 = [(VCPVideoAnalysisPipelineManager *)self addFrameResource:v11]) != 0)
+        lastFrameResource = [(VCPVideoAnalysisPipelineManager *)self lastFrameResource];
+        nextFrameResource = [(VCPVideoAnalysisPipelineManager *)self nextFrameResource];
+        if (nextFrameResource && (v12 = [(VCPVideoAnalysisPipelineManager *)self addFrameResource:nextFrameResource]) != 0)
         {
           atomic_store(v12, &self->_err);
         }
 
         else
         {
-          if (v10)
+          if (lastFrameResource)
           {
             group = self->_group;
             v14 = [(NSMutableArray *)self->_pipelineQueues objectAtIndex:0];
@@ -289,8 +289,8 @@ LABEL_17:
             block[2] = __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke;
             block[3] = &unk_1E834D020;
             block[4] = self;
-            v18 = v10;
-            v19 = v11;
+            v18 = lastFrameResource;
+            v19 = nextFrameResource;
             dispatch_group_async(group, v14, block);
           }
 
@@ -325,10 +325,10 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
   return [v1 executePipelineStageAt:0 currentFrameResource:v2 nextFrameSample:v4];
 }
 
-- (void)executePipelineStageAt:(unint64_t)a3 currentFrameResource:(id)a4 nextFrameSample:(opaqueCMSampleBuffer *)a5
+- (void)executePipelineStageAt:(unint64_t)at currentFrameResource:(id)resource nextFrameSample:(opaqueCMSampleBuffer *)sample
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  resourceCopy = resource;
   v9 = VCPSignPostLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -337,7 +337,7 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 67109120;
-    v29 = a3;
+    atCopy2 = at;
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "VCPVideoAnalysisPipelineManager_ExecuteStage", "-%u", buf, 8u);
   }
 
@@ -351,8 +351,8 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
 
     else
     {
-      v15 = [(NSArray *)self->_pipelineBlocks objectAtIndex:a3];
-      v16 = (v15)[2](v15, v8, a5);
+      v15 = [(NSArray *)self->_pipelineBlocks objectAtIndex:at];
+      v16 = (v15)[2](v15, resourceCopy, sample);
 
       if (v16)
       {
@@ -361,7 +361,7 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
 
       else
       {
-        v17 = (a3 + 1) % [(NSArray *)self->_pipelineBlocks count];
+        v17 = (at + 1) % [(NSArray *)self->_pipelineBlocks count];
         group = self->_group;
         if (v17)
         {
@@ -372,8 +372,8 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
           block[3] = &unk_1E8350720;
           block[4] = self;
           v25 = v17;
-          v24 = v8;
-          v26 = a5;
+          v24 = resourceCopy;
+          sampleCopy = sample;
           dispatch_group_async(group, v19, block);
         }
 
@@ -393,7 +393,7 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
         if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
         {
           *buf = 67109120;
-          v29 = a3;
+          atCopy2 = at;
           _os_signpost_emit_with_name_impl(&dword_1C9B70000, v22, OS_SIGNPOST_INTERVAL_END, v10, "VCPVideoAnalysisPipelineManager_ExecuteStage", "-%u", buf, 8u);
         }
       }
@@ -405,31 +405,31 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MADProcessingGraph);
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i < [(NSArray *)self->_pipelineBlocks count]; ++i)
   {
     v6 = [MADVideoAnalysisPipelineNode alloc];
     v7 = [(NSMutableArray *)self->_pipelineQueues objectAtIndexedSubscript:i];
     v8 = [(NSArray *)self->_pipelineBlocks objectAtIndexedSubscript:i];
     v9 = [(MADVideoAnalysisPipelineNode *)v6 initWithQueue:v7 pipelineBlock:v8];
-    [v4 addObject:v9];
+    [array addObject:v9];
   }
 
   v35 = 0;
-  v10 = [v4 objectAtIndexedSubscript:0];
+  v10 = [array objectAtIndexedSubscript:0];
   [(MADProcessingGraph *)v3 addRoot:v10 error:&v35];
 
-  v11 = [v4 objectAtIndexedSubscript:1];
-  v12 = [v4 objectAtIndexedSubscript:0];
+  v11 = [array objectAtIndexedSubscript:1];
+  v12 = [array objectAtIndexedSubscript:0];
   [(MADProcessingGraph *)v3 addChild:v11 toParent:v12 error:&v35];
 
-  v13 = [v4 objectAtIndexedSubscript:2];
-  v14 = [v4 objectAtIndexedSubscript:1];
+  v13 = [array objectAtIndexedSubscript:2];
+  v14 = [array objectAtIndexedSubscript:1];
   [(MADProcessingGraph *)v3 addChild:v13 toParent:v14 error:&v35];
 
   for (j = 3; j < [(NSArray *)self->_pipelineBlocks count]; ++j)
   {
-    v16 = [v4 objectAtIndexedSubscript:j];
+    v16 = [array objectAtIndexedSubscript:j];
     [(MADProcessingGraph *)v3 addRoot:v16 error:&v35];
   }
 
@@ -445,16 +445,16 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ graph construction failed: %@", buf, 0x16u);
     }
 
-    v18 = -18;
+    code = -18;
   }
 
   else
   {
     [(MADProcessingGraph *)v3 setDispatchGroup:self->_group];
-    v19 = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
-    v20 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:v19];
+    copyNextSampleBuffer = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
+    v20 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:copyNextSampleBuffer];
     v34 = 0;
-    if (v19)
+    if (copyNextSampleBuffer)
     {
       while (1)
       {
@@ -477,12 +477,12 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ Processing graph had failure", buf, 0xCu);
           }
 
-          v18 = -18;
+          code = -18;
           goto LABEL_34;
         }
 
-        v22 = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
-        v23 = [[MADNodeData alloc] initWithCurrentFrameResource:v20 nextSampleBuffer:v22];
+        copyNextSampleBuffer2 = [(VCPVideoTrackDecoder *)self->_decoder copyNextSampleBuffer];
+        v23 = [[MADNodeData alloc] initWithCurrentFrameResource:v20 nextSampleBuffer:copyNextSampleBuffer2];
         if (![(MADProcessingGraph *)v3 addInput:v23 error:&v34])
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -500,12 +500,12 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
             [(MADProcessingGraph *)v3 cancelProcessing];
           }
 
-          v18 = [v34 code];
+          code = [v34 code];
 
           goto LABEL_34;
         }
 
-        if (!v22)
+        if (!copyNextSampleBuffer2)
         {
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
@@ -520,7 +520,7 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
           goto LABEL_33;
         }
 
-        v24 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:v22];
+        v24 = [[VCPVideoAnalysisPipelineFrameResource alloc] initWithSampleBuffer:copyNextSampleBuffer2];
 
         v20 = v24;
       }
@@ -534,7 +534,7 @@ uint64_t __48__VCPVideoAnalysisPipelineManager_executeDecode__block_invoke(void 
       }
 
       [(MADProcessingGraph *)v3 cancelProcessing];
-      v18 = -128;
+      code = -128;
     }
 
     else
@@ -543,16 +543,16 @@ LABEL_33:
       v28 = [(MADProcessingGraph *)v3 waitForResultsWithError:0, v34];
       v29 = +[MADVideoAnalysisPipelineNode flagsKey];
       v30 = [v28 objectForKeyedSubscript:v29];
-      v31 = [v30 unsignedLongLongValue];
+      unsignedLongLongValue = [v30 unsignedLongLongValue];
 
-      self->_flags |= v31;
-      v18 = 0;
+      self->_flags |= unsignedLongLongValue;
+      code = 0;
     }
 
 LABEL_34:
   }
 
-  return v18;
+  return code;
 }
 
 - (int)run
@@ -571,10 +571,10 @@ LABEL_34:
 
   if ([objc_opt_class() shouldUseGraphProcessing])
   {
-    v7 = [(VCPVideoAnalysisPipelineManager *)self runWithGraph];
-    if (v7)
+    runWithGraph = [(VCPVideoAnalysisPipelineManager *)self runWithGraph];
+    if (runWithGraph)
     {
-      atomic_store(v7, &self->_err);
+      atomic_store(runWithGraph, &self->_err);
     }
   }
 

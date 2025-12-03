@@ -1,16 +1,16 @@
 @interface BKPictureBookWebViewAccessibility
-- (BKPictureBookWebViewAccessibility)initWithFrame:(CGRect)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (id)_imaxPageStatus:(BOOL)a3 window:(id)a4;
+- (BKPictureBookWebViewAccessibility)initWithFrame:(CGRect)frame;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (id)_imaxPageStatus:(BOOL)status window:(id)window;
 @end
 
 @implementation BKPictureBookWebViewAccessibility
 
-- (BKPictureBookWebViewAccessibility)initWithFrame:(CGRect)a3
+- (BKPictureBookWebViewAccessibility)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = BKPictureBookWebViewAccessibility;
-  v3 = [(BKPictureBookWebViewAccessibility *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKPictureBookWebViewAccessibility *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [(BKPictureBookWebViewAccessibility *)v3 imaxValueForKey:@"_internal"];
   v5 = [v4 imaxValueForKey:@"browserView"];
 
@@ -30,36 +30,36 @@
   return v3;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   LOBYTE(v17) = 0;
   objc_opt_class();
   v5 = [(BKPictureBookWebViewAccessibility *)self imaxValueForKey:@"bkWebViewDelegate"];
   v6 = __IMAccessibilityCastAsClass();
 
-  v7 = [v6 parentViewController];
+  parentViewController = [v6 parentViewController];
 
-  if (!v7)
+  if (!parentViewController)
   {
     v11 = 0;
     goto LABEL_14;
   }
 
-  v8 = [v7 viewIfLoaded];
-  v9 = [v8 window];
+  viewIfLoaded = [parentViewController viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v10 = [v7 safeIntegerForKey:@"pageOffset"] + 1;
+  v10 = [parentViewController safeIntegerForKey:@"pageOffset"] + 1;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_100027394;
   v21 = sub_100027610;
   v22 = 0;
-  if (a3 <= 4)
+  if (scroll <= 4)
   {
-    if (a3 != 1)
+    if (scroll != 1)
     {
-      if (a3 != 2)
+      if (scroll != 2)
       {
         goto LABEL_11;
       }
@@ -72,8 +72,8 @@ LABEL_9:
       v16[3] = &unk_100A072F0;
       v16[7] = &v17;
       v16[4] = self;
-      v16[5] = v9;
-      v16[6] = v7;
+      v16[5] = window;
+      v16[6] = parentViewController;
       v16[8] = v10;
       if (!__IMAccessibilityPerformSafeBlock())
       {
@@ -94,8 +94,8 @@ LABEL_15:
     v15[3] = &unk_100A072F0;
     v15[7] = &v17;
     v15[4] = self;
-    v15[5] = v9;
-    v15[6] = v7;
+    v15[5] = window;
+    v15[6] = parentViewController;
     v15[8] = v10;
     if (!__IMAccessibilityPerformSafeBlock())
     {
@@ -105,12 +105,12 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 == 6)
+  if (scroll == 6)
   {
     goto LABEL_15;
   }
 
-  if (a3 == 5)
+  if (scroll == 5)
   {
     goto LABEL_9;
   }
@@ -129,14 +129,14 @@ LABEL_14:
   return v11;
 }
 
-- (id)_imaxPageStatus:(BOOL)a3 window:(id)a4
+- (id)_imaxPageStatus:(BOOL)status window:(id)window
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = sub_10007643C(v5);
+  statusCopy = status;
+  windowCopy = window;
+  v6 = sub_10007643C(windowCopy);
   v31 = [v6 imaxValueForKey:@"paginationController"];
   v7 = [v31 imaxValueForKey:@"_chapterInfo"];
-  v8 = sub_10007656C(v5);
+  v8 = sub_10007656C(windowCopy);
   if ([v7 count])
   {
     v9 = 0;
@@ -169,7 +169,7 @@ LABEL_14:
     v10 = 0;
     v11 = 0;
 LABEL_8:
-    if (!v4)
+    if (!statusCopy)
     {
       goto LABEL_13;
     }
@@ -179,11 +179,11 @@ LABEL_8:
   {
     v10 = 0;
     v11 = 0;
-    if (!v4)
+    if (!statusCopy)
     {
 LABEL_13:
-      v12 = v4;
-      v13 = (v11 == v8) & ~v4;
+      v12 = statusCopy;
+      v13 = (v11 == v8) & ~statusCopy;
       goto LABEL_14;
     }
   }
@@ -193,16 +193,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v12 = v4;
+  v12 = statusCopy;
   v13 = 1;
 LABEL_14:
   v14 = [v6 imaxValueForKey:@"pageCountIncludingUpsell"];
-  v15 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-  v16 = [v5 windowScene];
-  v17 = [v16 interfaceOrientation];
+  windowScene = [windowCopy windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if ((v17 - 3) <= 1 && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 userInterfaceIdiom], v18, v19 == 1))
+  if ((interfaceOrientation - 3) <= 1 && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 userInterfaceIdiom], v18, v19 == 1))
   {
     v20 = v12;
     v21 = v12 == 0;
@@ -222,7 +222,7 @@ LABEL_14:
   }
 
   v23 = &v8[v22];
-  if (v23 >= v15)
+  if (v23 >= unsignedIntegerValue)
   {
     v27 = @" ";
   }
@@ -263,7 +263,7 @@ LABEL_33:
     {
       v26 = sub_1000765EC(@"page.num.of %@ %@");
       v28 = [NSNumber numberWithUnsignedInteger:v23];
-      v29 = [NSNumber numberWithUnsignedInteger:v15];
+      v29 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
       v27 = [NSString stringWithFormat:v26, v28, v29];
     }
   }

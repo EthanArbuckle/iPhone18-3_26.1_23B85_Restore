@@ -1,10 +1,10 @@
 @interface HMDPersonModel
 + (NSUUID)sentinelParentUUID;
 + (id)hmbProperties;
-- (HMDPersonModel)initWithPerson:(id)a3;
+- (HMDPersonModel)initWithPerson:(id)person;
 - (NSSet)personLinks;
 - (id)createPerson;
-- (void)setPersonLinks:(id)a3;
+- (void)setPersonLinks:(id)links;
 @end
 
 @implementation HMDPersonModel
@@ -65,42 +65,42 @@ void __31__HMDPersonModel_hmbProperties__block_invoke()
 - (id)createPerson
 {
   v3 = objc_alloc(MEMORY[0x277CD1C70]);
-  v4 = [(HMBModel *)self hmbModelID];
-  v5 = [v3 initWithUUID:v4];
+  hmbModelID = [(HMBModel *)self hmbModelID];
+  v5 = [v3 initWithUUID:hmbModelID];
 
-  v6 = [(HMDPersonModel *)self name];
-  [v5 setName:v6];
+  name = [(HMDPersonModel *)self name];
+  [v5 setName:name];
 
-  v7 = [(HMDPersonModel *)self personLinks];
-  [v5 setPersonLinks:v7];
+  personLinks = [(HMDPersonModel *)self personLinks];
+  [v5 setPersonLinks:personLinks];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (HMDPersonModel)initWithPerson:(id)a3
+- (HMDPersonModel)initWithPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [objc_opt_class() sentinelParentUUID];
-  v7 = [(HMBModel *)self initWithModelID:v5 parentModelID:v6];
+  personCopy = person;
+  uUID = [personCopy UUID];
+  sentinelParentUUID = [objc_opt_class() sentinelParentUUID];
+  v7 = [(HMBModel *)self initWithModelID:uUID parentModelID:sentinelParentUUID];
 
-  v8 = [v4 name];
-  [(HMDPersonModel *)v7 setName:v8];
+  name = [personCopy name];
+  [(HMDPersonModel *)v7 setName:name];
 
-  v9 = [v4 personLinks];
+  personLinks = [personCopy personLinks];
 
-  [(HMDPersonModel *)v7 setPersonLinks:v9];
+  [(HMDPersonModel *)v7 setPersonLinks:personLinks];
   return v7;
 }
 
-- (void)setPersonLinks:(id)a3
+- (void)setPersonLinks:(id)links
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  linksCopy = links;
   v12 = 0;
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:linksCopy requiringSecureCoding:1 error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -110,7 +110,7 @@ void __31__HMDPersonModel_hmbProperties__block_invoke()
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -131,8 +131,8 @@ void __31__HMDPersonModel_hmbProperties__block_invoke()
 - (NSSet)personLinks
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonModel *)self personLinksData];
-  if (v3)
+  personLinksData = [(HMDPersonModel *)self personLinksData];
+  if (personLinksData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = MEMORY[0x277CBEB98];
@@ -141,7 +141,7 @@ void __31__HMDPersonModel_hmbProperties__block_invoke()
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v7 = [v5 setWithArray:v6];
     v18 = 0;
-    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:v3 error:&v18];
+    v8 = [v4 unarchivedObjectOfClasses:v7 fromData:personLinksData error:&v18];
     v9 = v18;
 
     if (v8)
@@ -152,7 +152,7 @@ void __31__HMDPersonModel_hmbProperties__block_invoke()
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {

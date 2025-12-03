@@ -1,32 +1,32 @@
 @interface _PLPillAccessoryWrapperView
 - (CGSize)intrinsicContentSize;
-- (_PLPillAccessoryWrapperView)initWithFrame:(CGRect)a3;
-- (_PLPillAccessoryWrapperView)initWithManagedSubview:(id)a3;
-- (void)addSubview:(id)a3;
+- (_PLPillAccessoryWrapperView)initWithFrame:(CGRect)frame;
+- (_PLPillAccessoryWrapperView)initWithManagedSubview:(id)subview;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation _PLPillAccessoryWrapperView
 
-- (_PLPillAccessoryWrapperView)initWithManagedSubview:(id)a3
+- (_PLPillAccessoryWrapperView)initWithManagedSubview:(id)subview
 {
-  v4 = a3;
-  [v4 bounds];
+  subviewCopy = subview;
+  [subviewCopy bounds];
   v5 = [(_PLPillAccessoryWrapperView *)self initWithFrame:?];
   v6 = v5;
   if (v5)
   {
-    [(_PLPillAccessoryWrapperView *)v5 addSubview:v4];
+    [(_PLPillAccessoryWrapperView *)v5 addSubview:subviewCopy];
   }
 
   return v6;
 }
 
-- (_PLPillAccessoryWrapperView)initWithFrame:(CGRect)a3
+- (_PLPillAccessoryWrapperView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _PLPillAccessoryWrapperView;
-  v3 = [(_PLPillAccessoryWrapperView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PLPillAccessoryWrapperView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_PLPillAccessoryWrapperView *)self subviews];
-  v6 = [v5 count];
+  subviewCopy = subview;
+  subviews = [(_PLPillAccessoryWrapperView *)self subviews];
+  v6 = [subviews count];
 
   if (v6)
   {
@@ -59,15 +59,15 @@
 
   v17.receiver = self;
   v17.super_class = _PLPillAccessoryWrapperView;
-  [(_PLPillAccessoryWrapperView *)&v17 addSubview:v4];
+  [(_PLPillAccessoryWrapperView *)&v17 addSubview:subviewCopy];
   [(_PLPillAccessoryWrapperView *)self intrinsicContentSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(_PLPillAccessoryWrapperView *)self widthAnchor];
-  v12 = [v11 constraintEqualToConstant:v8];
+  widthAnchor = [(_PLPillAccessoryWrapperView *)self widthAnchor];
+  v12 = [widthAnchor constraintEqualToConstant:v8];
 
-  v13 = [(_PLPillAccessoryWrapperView *)self heightAnchor];
-  v14 = [v13 constraintEqualToConstant:v10];
+  heightAnchor = [(_PLPillAccessoryWrapperView *)self heightAnchor];
+  v14 = [heightAnchor constraintEqualToConstant:v10];
 
   v15 = MEMORY[0x277CCAAD0];
   v18[0] = v12;
@@ -81,14 +81,14 @@
   v7.receiver = self;
   v7.super_class = _PLPillAccessoryWrapperView;
   [(_PLPillAccessoryWrapperView *)&v7 layoutSubviews];
-  v3 = [(_PLPillAccessoryWrapperView *)self subviews];
-  v4 = [v3 firstObject];
+  subviews = [(_PLPillAccessoryWrapperView *)self subviews];
+  firstObject = [subviews firstObject];
 
   [(_PLPillAccessoryWrapperView *)self bounds];
-  [v4 sizeThatFits:{v5, v6}];
+  [firstObject sizeThatFits:{v5, v6}];
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
-  [v4 setFrame:0];
+  [firstObject setFrame:0];
 }
 
 - (void)addSubview:.cold.1()

@@ -1,12 +1,12 @@
 @interface PerformanceManagementAlertController
-- (void)showPerfMitigationAlert:(id)a3;
+- (void)showPerfMitigationAlert:(id)alert;
 @end
 
 @implementation PerformanceManagementAlertController
 
-- (void)showPerfMitigationAlert:(id)a3
+- (void)showPerfMitigationAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[BatteryUIResourceClass containerPath], (v4 = _CFPreferencesCopyValueWithContainer()) == 0))
   {
     v4 = BatteryUILocalization(@"PPC_PERFMGMT_ALERT_MESSAGE");
@@ -23,7 +23,7 @@
   v17[1] = 3221225472;
   v17[2] = sub_50DC;
   v17[3] = &unk_163898;
-  v7 = v3;
+  v7 = alertCopy;
   v18 = v7;
   v8 = [UIAlertAction actionWithTitle:v6 style:0 handler:v17];
 

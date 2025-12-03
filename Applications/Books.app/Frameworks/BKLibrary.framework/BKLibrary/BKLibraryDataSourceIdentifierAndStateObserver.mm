@@ -1,22 +1,22 @@
 @interface BKLibraryDataSourceIdentifierAndStateObserver
-- (BKLibraryDataSourceIdentifierAndStateObserver)initWithAssetID:(id)a3 notify:(id)a4;
+- (BKLibraryDataSourceIdentifierAndStateObserver)initWithAssetID:(id)d notify:(id)notify;
 - (void)notify;
 @end
 
 @implementation BKLibraryDataSourceIdentifierAndStateObserver
 
-- (BKLibraryDataSourceIdentifierAndStateObserver)initWithAssetID:(id)a3 notify:(id)a4
+- (BKLibraryDataSourceIdentifierAndStateObserver)initWithAssetID:(id)d notify:(id)notify
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  notifyCopy = notify;
   v14.receiver = self;
   v14.super_class = BKLibraryDataSourceIdentifierAndStateObserver;
   v9 = [(BKLibraryDataSourceIdentifierAndStateObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetID, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_assetID, d);
+    v11 = objc_retainBlock(notifyCopy);
     notifyBlock = v10->_notifyBlock;
     v10->_notifyBlock = v11;
   }
@@ -26,12 +26,12 @@
 
 - (void)notify
 {
-  v3 = [(BKLibraryDataSourceIdentifierAndStateObserver *)self notifyBlock];
-  if (v3)
+  notifyBlock = [(BKLibraryDataSourceIdentifierAndStateObserver *)self notifyBlock];
+  if (notifyBlock)
   {
-    v4 = v3;
-    (v3)[2](v3, self);
-    v3 = v4;
+    v4 = notifyBlock;
+    (notifyBlock)[2](notifyBlock, self);
+    notifyBlock = v4;
   }
 }
 

@@ -1,17 +1,17 @@
 @interface VTKExclusionAreaDrawItem
 - (CGRect)frame;
-- (id)initWitFrame:(CGRect)a3;
-- (void)drawAtContext:(id)a3;
+- (id)initWitFrame:(CGRect)frame;
+- (void)drawAtContext:(id)context;
 @end
 
 @implementation VTKExclusionAreaDrawItem
 
-- (id)initWitFrame:(CGRect)a3
+- (id)initWitFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = VTKExclusionAreaDrawItem;
   result = [(VTKExclusionAreaDrawItem *)&v8 init];
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (void)drawAtContext:(id)a3
+- (void)drawAtContext:(id)context
 {
-  v4 = [a3 CGContext];
+  cGContext = [context CGContext];
   [(VTKExclusionAreaDrawItem *)self frame];
 
-  CGContextClearRect(v4, *&v5);
+  CGContextClearRect(cGContext, *&v5);
 }
 
 - (CGRect)frame

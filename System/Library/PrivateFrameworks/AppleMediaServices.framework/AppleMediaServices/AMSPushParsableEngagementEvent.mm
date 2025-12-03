@@ -1,22 +1,22 @@
 @interface AMSPushParsableEngagementEvent
-+ (id)_eventForMapiPayload:(id)a3 account:(id)a4 bag:(id)a5;
-+ (id)_eventForStaticAssetPayload:(id)a3 bag:(id)a4;
-+ (void)_waitForPromises:(id)a3 completion:(id)a4;
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5;
++ (id)_eventForMapiPayload:(id)payload account:(id)account bag:(id)bag;
++ (id)_eventForStaticAssetPayload:(id)payload bag:(id)bag;
++ (void)_waitForPromises:(id)promises completion:(id)completion;
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag;
 @end
 
 @implementation AMSPushParsableEngagementEvent
 
-+ (void)handleNotificationPayload:(id)a3 config:(id)a4 bag:(id)a5
++ (void)handleNotificationPayload:(id)payload config:(id)config bag:(id)bag
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 logKey];
-  v10 = AMSSetLogKey(v9);
+  payloadCopy = payload;
+  bagCopy = bag;
+  logKey = [payloadCopy logKey];
+  v10 = AMSSetLogKey(logKey);
 
-  v11 = [v7 account];
-  if (v11 && ([v7 isAccountTypeActive] & 1) == 0)
+  account = [payloadCopy account];
+  if (account && ([payloadCopy isAccountTypeActive] & 1) == 0)
   {
     v18 = +[AMSLogConfig sharedConfig];
     if (!v18)
@@ -24,17 +24,17 @@
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v18 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v33 = objc_opt_class();
       v34 = v33;
-      v35 = [v7 logKey];
+      logKey2 = [payloadCopy logKey];
       *buf = 138543618;
       v45 = v33;
       v46 = 2114;
-      v47 = v35;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting engagement event due to inactive account.", buf, 0x16u);
+      v47 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Rejecting engagement event due to inactive account.", buf, 0x16u);
     }
   }
 
@@ -46,19 +46,19 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
-      v15 = [v7 logKey];
+      logKey3 = [payloadCopy logKey];
       *buf = 138543618;
       v45 = v14;
       v46 = 2114;
-      v47 = v15;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing engagement event", buf, 0x16u);
+      v47 = logKey3;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing engagement event", buf, 0x16u);
     }
 
-    v16 = [v7 aps];
+    v16 = [payloadCopy aps];
     v17 = [v16 objectForKeyedSubscript:@"mi"];
 
     objc_opt_class();
@@ -72,24 +72,24 @@
       v18 = 0;
     }
 
-    v19 = [a1 _eventForMapiPayload:v18 account:v11 bag:v8];
-    v20 = [v7 aps];
+    v19 = [self _eventForMapiPayload:v18 account:account bag:bagCopy];
+    v20 = [payloadCopy aps];
     v21 = [v20 objectForKeyedSubscript:@"static"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      oSLogObject = v21;
     }
 
     else
     {
-      v22 = 0;
+      oSLogObject = 0;
     }
 
-    v36 = v8;
-    v23 = [a1 _eventForStaticAssetPayload:v22 bag:v8];
-    v24 = [v7 aps];
+    v36 = bagCopy;
+    v23 = [self _eventForStaticAssetPayload:oSLogObject bag:bagCopy];
+    v24 = [payloadCopy aps];
     v25 = [v24 objectForKeyedSubscript:@"event"];
 
     objc_opt_class();
@@ -122,17 +122,17 @@
     v37[1] = 3221225472;
     v37[2] = __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag___block_invoke;
     v37[3] = &unk_1E73BB9A0;
-    v38 = v7;
+    v38 = payloadCopy;
     v39 = v19;
     v40 = v28;
     v41 = v23;
-    v42 = a1;
+    selfCopy = self;
     v30 = v23;
     v31 = v28;
     v32 = v19;
-    [a1 _waitForPromises:v29 completion:v37];
+    [self _waitForPromises:v29 completion:v37];
 
-    v8 = v36;
+    bagCopy = v36;
   }
 }
 
@@ -271,15 +271,15 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
   }
 }
 
-+ (id)_eventForMapiPayload:(id)a3 account:(id)a4 bag:(id)a5
++ (id)_eventForMapiPayload:(id)payload account:(id)account bag:(id)bag
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  payloadCopy = payload;
+  accountCopy = account;
+  bagCopy = bag;
+  if (accountCopy)
   {
-    v10 = [v7 objectForKeyedSubscript:@"clientIdentifier"];
+    v10 = [payloadCopy objectForKeyedSubscript:@"clientIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,7 +291,7 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
       v11 = 0;
     }
 
-    v14 = [v7 objectForKeyedSubscript:@"clientVersion"];
+    v14 = [payloadCopy objectForKeyedSubscript:@"clientVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -303,7 +303,7 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
       v35 = 0;
     }
 
-    v15 = [v7 objectForKeyedSubscript:@"serviceType"];
+    v15 = [payloadCopy objectForKeyedSubscript:@"serviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -315,9 +315,9 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
       v34 = 0;
     }
 
-    v33 = v8;
+    v33 = accountCopy;
 
-    v16 = [v7 objectForKeyedSubscript:@"placement"];
+    v16 = [payloadCopy objectForKeyedSubscript:@"placement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -332,7 +332,7 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
     v18 = v34;
     v19 = v35;
 
-    v20 = [v7 objectForKeyedSubscript:@"params"];
+    v20 = [payloadCopy objectForKeyedSubscript:@"params"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -344,7 +344,7 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
       v21 = 0;
     }
 
-    v22 = v9;
+    v22 = bagCopy;
 
     if (v11 && v35 && v34 && v17)
     {
@@ -354,8 +354,8 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v25 = objc_opt_class();
         AMSLogKey();
@@ -364,12 +364,12 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
         v37 = v25;
         v38 = 2114;
         v39 = v26;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found MAPI request", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found MAPI request", buf, 0x16u);
 
         v11 = v32;
       }
 
-      v9 = v22;
+      bagCopy = v22;
       v18 = v34;
       v19 = v35;
       v27 = [[AMSMarketingItemTask alloc] initWithBag:v22 clientIdentifier:v11 clientVersion:v35 placement:v17 serviceType:v34];
@@ -387,10 +387,10 @@ void __71__AMSPushParsableEngagementEvent_handleNotificationPayload_config_bag__
       v30 = AMSError(7, @"MAPI keys Not Found", 0, 0);
       v13 = [AMSPromise promiseWithError:v30];
 
-      v9 = v22;
+      bagCopy = v22;
     }
 
-    v8 = v33;
+    accountCopy = v33;
   }
 
   else
@@ -421,11 +421,11 @@ id __67__AMSPushParsableEngagementEvent__eventForMapiPayload_account_bag___block
   return v5;
 }
 
-+ (id)_eventForStaticAssetPayload:(id)a3 bag:(id)a4
++ (id)_eventForStaticAssetPayload:(id)payload bag:(id)bag
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"url"];
+  bagCopy = bag;
+  v6 = [payload objectForKeyedSubscript:@"url"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -458,8 +458,8 @@ LABEL_10:
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
@@ -467,10 +467,10 @@ LABEL_10:
     v22 = v12;
     v23 = 2114;
     v24 = v13;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found static request", &v21, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found static request", &v21, 0x16u);
   }
 
-  v14 = [[AMSURLRequestEncoder alloc] initWithBag:v5];
+  v14 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
   v15 = [(AMSURLRequestEncoder *)v14 requestWithMethod:2 URL:v9 parameters:0];
   v16 = +[AMSURLSession defaultSession];
   v17 = [v16 dataTaskPromiseWithRequestPromise:v15];
@@ -501,24 +501,24 @@ id __66__AMSPushParsableEngagementEvent__eventForStaticAssetPayload_bag___block_
   return v5;
 }
 
-+ (void)_waitForPromises:(id)a3 completion:(id)a4
++ (void)_waitForPromises:(id)promises completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  promisesCopy = promises;
+  completionCopy = completion;
+  if ([promisesCopy count])
   {
-    v7 = [AMSPromise promiseWithAny:v5];
+    v7 = [AMSPromise promiseWithAny:promisesCopy];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__AMSPushParsableEngagementEvent__waitForPromises_completion___block_invoke;
     v8[3] = &unk_1E73B53E0;
-    v9 = v6;
+    v9 = completionCopy;
     [v7 addFinishBlock:v8];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 

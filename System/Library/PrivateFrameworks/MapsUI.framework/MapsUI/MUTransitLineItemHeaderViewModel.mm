@@ -1,5 +1,5 @@
 @interface MUTransitLineItemHeaderViewModel
-- (MUTransitLineItemHeaderViewModel)initWithTransitLineItem:(id)a3;
+- (MUTransitLineItemHeaderViewModel)initWithTransitLineItem:(id)item;
 - (NSString)placeName;
 @end
 
@@ -8,31 +8,31 @@
 - (NSString)placeName
 {
   v2 = self->_lineItem;
-  v3 = [(GEOTransitLineItem *)v2 name];
-  v4 = [v3 length];
+  name = [(GEOTransitLineItem *)v2 name];
+  v4 = [name length];
 
   if (!v4)
   {
-    v5 = [(GEOTransitLineItem *)v2 system];
+    system = [(GEOTransitLineItem *)v2 system];
 
-    v2 = v5;
+    v2 = system;
   }
 
-  v6 = [(GEOTransitLineItem *)v2 name];
+  name2 = [(GEOTransitLineItem *)v2 name];
 
-  return v6;
+  return name2;
 }
 
-- (MUTransitLineItemHeaderViewModel)initWithTransitLineItem:(id)a3
+- (MUTransitLineItemHeaderViewModel)initWithTransitLineItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MUTransitLineItemHeaderViewModel;
   v6 = [(MUTransitLineItemHeaderViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lineItem, a3);
+    objc_storeStrong(&v6->_lineItem, item);
   }
 
   return v7;

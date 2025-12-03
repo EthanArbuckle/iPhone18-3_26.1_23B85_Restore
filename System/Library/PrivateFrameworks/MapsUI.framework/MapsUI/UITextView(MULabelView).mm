@@ -9,30 +9,30 @@
 
 - (void)setLineBreakMode:()MULabelView
 {
-  v4 = [a1 textContainer];
-  [v4 setLineBreakMode:a3];
+  textContainer = [self textContainer];
+  [textContainer setLineBreakMode:a3];
 }
 
 - (uint64_t)lineBreakMode
 {
-  v1 = [a1 textContainer];
-  v2 = [v1 lineBreakMode];
+  textContainer = [self textContainer];
+  lineBreakMode = [textContainer lineBreakMode];
 
-  return v2;
+  return lineBreakMode;
 }
 
 - (void)setNumberOfLines:()MULabelView
 {
-  v4 = [a1 textContainer];
-  [v4 setMaximumNumberOfLines:a3];
+  textContainer = [self textContainer];
+  [textContainer setMaximumNumberOfLines:a3];
 }
 
 - (uint64_t)numberOfLines
 {
-  v1 = [a1 textContainer];
-  v2 = [v1 maximumNumberOfLines];
+  textContainer = [self textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v2;
+  return maximumNumberOfLines;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface _CNUILikenessImageCache
-- (_CNUILikenessImageCache)initWithCapacity:(unint64_t)a3 hasContactStore:(BOOL)a4;
-- (void)emptyCache:(id)a3;
-- (void)invalidateCacheEntriesContainingIdentifiers:(id)a3;
-- (void)touchCacheKey:(id)a3;
+- (_CNUILikenessImageCache)initWithCapacity:(unint64_t)capacity hasContactStore:(BOOL)store;
+- (void)emptyCache:(id)cache;
+- (void)invalidateCacheEntriesContainingIdentifiers:(id)identifiers;
+- (void)touchCacheKey:(id)key;
 @end
 
 @implementation _CNUILikenessImageCache
 
-- (_CNUILikenessImageCache)initWithCapacity:(unint64_t)a3 hasContactStore:(BOOL)a4
+- (_CNUILikenessImageCache)initWithCapacity:(unint64_t)capacity hasContactStore:(BOOL)store
 {
   v35.receiver = self;
   v35.super_class = _CNUILikenessImageCache;
@@ -29,11 +29,11 @@
     v32[2] = __60___CNUILikenessImageCache_initWithCapacity_hasContactStore___block_invoke;
     v32[3] = &unk_1E76EA360;
     objc_copyWeak(&v33, &location);
-    v12 = [v11 boundedQueueWithCapacity:a3 overflowHandler:v32];
+    v12 = [v11 boundedQueueWithCapacity:capacity overflowHandler:v32];
     v13 = *(v6 + 2);
     *(v6 + 2) = v12;
 
-    if (!a4)
+    if (!store)
     {
       v14 = +[CNUICoreLogProvider likenesses_os_log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -42,13 +42,13 @@
         _os_log_impl(&dword_1A31E6000, v14, OS_LOG_TYPE_INFO, "No contact store provided, will empty cache on CNContactStoreDidChangeNotification", buf, 2u);
       }
 
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 addObserver:v6 selector:sel_emptyCache_ name:*MEMORY[0x1E695C3D8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel_emptyCache_ name:*MEMORY[0x1E695C3D8] object:0];
     }
 
-    v16 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v17 = [v16 featureFlags];
-    v18 = [v17 isFeatureEnabled:6];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v18 = [featureFlags isFeatureEnabled:6];
 
     if (v18)
     {
@@ -92,38 +92,38 @@
   return v6;
 }
 
-- (void)emptyCache:(id)a3
+- (void)emptyCache:(id)cache
 {
-  v3 = [(_CNUILikenessImageCache *)self lock];
+  lock = [(_CNUILikenessImageCache *)self lock];
   CNRunWithLock();
 }
 
-- (void)touchCacheKey:(id)a3
+- (void)touchCacheKey:(id)key
 {
   v4 = MEMORY[0x1E69966E8];
-  v5 = a3;
-  v6 = [v4 currentEnvironment];
-  v7 = [v6 featureFlags];
-  v8 = [v7 isFeatureEnabled:6];
+  keyCopy = key;
+  currentEnvironment = [v4 currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v8 = [featureFlags isFeatureEnabled:6];
 
   if (v8)
   {
-    v9 = [(_CNUILikenessImageCache *)self lock];
-    [v9 assertCurrentThreadIsOwner];
+    lock = [(_CNUILikenessImageCache *)self lock];
+    [lock assertCurrentThreadIsOwner];
   }
 
-  v10 = [(_CNUILikenessImageCache *)self evictionQueue];
-  [v10 dequeueObject:v5];
+  evictionQueue = [(_CNUILikenessImageCache *)self evictionQueue];
+  [evictionQueue dequeueObject:keyCopy];
 
-  v11 = [(_CNUILikenessImageCache *)self evictionQueue];
-  [v11 enqueue:v5];
+  evictionQueue2 = [(_CNUILikenessImageCache *)self evictionQueue];
+  [evictionQueue2 enqueue:keyCopy];
 }
 
-- (void)invalidateCacheEntriesContainingIdentifiers:(id)a3
+- (void)invalidateCacheEntriesContainingIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(_CNUILikenessImageCache *)self lock];
-  v6 = v4;
+  identifiersCopy = identifiers;
+  lock = [(_CNUILikenessImageCache *)self lock];
+  v6 = identifiersCopy;
   CNRunWithLock();
 }
 

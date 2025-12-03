@@ -1,5 +1,5 @@
 @interface OfflineMapsManagementCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OfflineMapsManagementCellModel)init;
 - (id)identifier;
 - (unint64_t)hash;
@@ -7,24 +7,24 @@
 
 @implementation OfflineMapsManagementCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v10) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(OfflineMapsManagementCellModel *)v6 identifier];
-    v8 = [(OfflineMapsManagementCellModel *)self identifier];
-    if (v7 == v8 || [v7 isEqual:v8])
+    identifier = [(OfflineMapsManagementCellModel *)v6 identifier];
+    identifier2 = [(OfflineMapsManagementCellModel *)self identifier];
+    if (identifier == identifier2 || [identifier isEqual:identifier2])
     {
-      v9 = [(OfflineMapsManagementCellModel *)v6 isEnabled];
-      v10 = v9 ^ [(OfflineMapsManagementCellModel *)self isEnabled]^ 1;
+      isEnabled = [(OfflineMapsManagementCellModel *)v6 isEnabled];
+      v10 = isEnabled ^ [(OfflineMapsManagementCellModel *)self isEnabled]^ 1;
     }
 
     else
@@ -43,8 +43,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(OfflineMapsManagementCellModel *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(OfflineMapsManagementCellModel *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

@@ -29,17 +29,17 @@ void __36__PXStickersSettings_sharedInstance__block_invoke()
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v4 = MEMORY[0x1E69C6638];
   v5 = MEMORY[0x1E69C65E8];
   v6 = MEMORY[0x1E69C6658];
-  v7 = _ReviewActionHandlerForType(v3, 0);
+  v7 = _ReviewActionHandlerForType(px_deprecated_appPhotoLibrary, 0);
   v8 = [v6 actionWithHandler:v7];
   v9 = [v5 rowWithTitle:@"Review Sticker Confidence Score" action:v8];
   v19[0] = v9;
   v10 = MEMORY[0x1E69C65E8];
   v11 = MEMORY[0x1E69C6658];
-  v12 = _ReviewActionHandlerForType(v3, 1);
+  v12 = _ReviewActionHandlerForType(px_deprecated_appPhotoLibrary, 1);
   v13 = [v11 actionWithHandler:v12];
   v14 = [v10 rowWithTitle:@"Review Live Sticker Suggestion Score" action:v13];
   v19[1] = v14;

@@ -12,14 +12,14 @@
   v5 = [(MFMailMessage *)self cc];
   [v4 addObjectsFromArray:v5];
 
-  v6 = [(MFMailMessage *)self senders];
-  [v4 addObjectsFromArray:v6];
+  senders = [(MFMailMessage *)self senders];
+  [v4 addObjectsFromArray:senders];
 
-  v7 = [(MFMailMessage *)self account];
-  v8 = v7;
-  if (v7)
+  account = [(MFMailMessage *)self account];
+  v8 = account;
+  if (account)
   {
-    v9 = v7;
+    v9 = account;
   }
 
   else
@@ -33,8 +33,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v10 emailAddressesAndAliasesList];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  emailAddressesAndAliasesList = [v10 emailAddressesAndAliasesList];
+  v12 = [emailAddressesAndAliasesList countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = *v18;
@@ -44,13 +44,13 @@
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(emailAddressesAndAliasesList);
         }
 
         [v4 removeObject:*(*(&v17 + 1) + 8 * i)];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [emailAddressesAndAliasesList countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);

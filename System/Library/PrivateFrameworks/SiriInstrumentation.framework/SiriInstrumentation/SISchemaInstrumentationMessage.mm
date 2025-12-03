@@ -1,7 +1,7 @@
 @interface SISchemaInstrumentationMessage
-- (BOOL)shouldSuppressMessageUnderConditions:(id)a3;
-- (id)_pruneSuppressedMessagesFromArray:(id)a3 underConditions:(id)a4;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (BOOL)shouldSuppressMessageUnderConditions:(id)conditions;
+- (id)_pruneSuppressedMessagesFromArray:(id)array underConditions:(id)conditions;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)formattedJsonBody;
 @end
 
@@ -9,13 +9,13 @@
 
 - (id)formattedJsonBody
 {
-  v3 = [(SISchemaInstrumentationMessage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v3])
+  dictionaryRepresentation = [(SISchemaInstrumentationMessage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
     v4 = MEMORY[0x1E696ACB0];
-    v5 = [(SISchemaInstrumentationMessage *)self dictionaryRepresentation];
+    dictionaryRepresentation2 = [(SISchemaInstrumentationMessage *)self dictionaryRepresentation];
     v14 = 0;
-    v6 = [v4 dataWithJSONObject:v5 options:3 error:&v14];
+    v6 = [v4 dataWithJSONObject:dictionaryRepresentation2 options:3 error:&v14];
     v7 = v14;
 
     v8 = 0;
@@ -51,30 +51,30 @@ LABEL_10:
   return v8;
 }
 
-- (id)_pruneSuppressedMessagesFromArray:(id)a3 underConditions:(id)a4
+- (id)_pruneSuppressedMessagesFromArray:(id)array underConditions:(id)conditions
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  arrayCopy = array;
+  conditionsCopy = conditions;
+  array = [MEMORY[0x1E695DF70] array];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __105__SISchemaInstrumentationMessage_SensitiveConditions___pruneSuppressedMessagesFromArray_underConditions___block_invoke;
   v21[3] = &unk_1E78D1598;
-  v8 = v6;
+  v8 = conditionsCopy;
   v22 = v8;
-  v9 = v7;
+  v9 = array;
   v23 = v9;
-  [v5 enumerateObjectsUsingBlock:v21];
+  [arrayCopy enumerateObjectsUsingBlock:v21];
   if (v9)
   {
-    v10 = [v5 mutableCopy];
+    v10 = [arrayCopy mutableCopy];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v9 reverseObjectEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v24 count:16];
+    reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+    v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -85,13 +85,13 @@ LABEL_10:
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           [v10 removeObjectAtIndex:{objc_msgSend(*(*(&v17 + 1) + 8 * i), "unsignedIntegerValue")}];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v17 objects:v24 count:16];
+        v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v24 count:16];
       }
 
       while (v13);
@@ -100,7 +100,7 @@ LABEL_10:
 
   else
   {
-    v10 = v5;
+    v10 = arrayCopy;
   }
 
   return v10;
@@ -117,11 +117,11 @@ void __105__SISchemaInstrumentationMessage_SensitiveConditions___pruneSuppressed
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = objc_alloc_init(SISensitiveConditionsMessagePolicyResult);
-  LODWORD(self) = [(SISchemaInstrumentationMessage *)self shouldSuppressMessageUnderConditions:v4];
+  LODWORD(self) = [(SISchemaInstrumentationMessage *)self shouldSuppressMessageUnderConditions:policyCopy];
 
   if (self)
   {
@@ -131,11 +131,11 @@ void __105__SISchemaInstrumentationMessage_SensitiveConditions___pruneSuppressed
   return v5;
 }
 
-- (BOOL)shouldSuppressMessageUnderConditions:(id)a3
+- (BOOL)shouldSuppressMessageUnderConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)self suppressMessageUnderConditions];
-  v6 = ([v4 isEmpty] & 1) == 0 && (objc_msgSend(v4, "intersectsWith:", v5) & 1) != 0;
+  conditionsCopy = conditions;
+  suppressMessageUnderConditions = [(SISchemaInstrumentationMessage *)self suppressMessageUnderConditions];
+  v6 = ([conditionsCopy isEmpty] & 1) == 0 && (objc_msgSend(conditionsCopy, "intersectsWith:", suppressMessageUnderConditions) & 1) != 0;
 
   return v6;
 }

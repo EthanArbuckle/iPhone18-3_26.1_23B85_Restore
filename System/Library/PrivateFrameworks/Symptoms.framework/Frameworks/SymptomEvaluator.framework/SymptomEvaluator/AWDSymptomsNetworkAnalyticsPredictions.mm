@@ -1,36 +1,36 @@
 @interface AWDSymptomsNetworkAnalyticsPredictions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
-- (int)StringAsTrainingCompletionCode:(id)a3;
+- (int)StringAsNetworkType:(id)type;
+- (int)StringAsTrainingCompletionCode:(id)code;
 - (int)networkType;
 - (int)trainingCompletionCode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCalendarTypeMarker:(BOOL)a3;
-- (void)setHasDayAlikeGroups:(BOOL)a3;
-- (void)setHasModelGraphPullups:(BOOL)a3;
-- (void)setHasModelRecalls:(BOOL)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)setHasPredictionErrorOver24hr1000:(BOOL)a3;
-- (void)setHasPredictionQueries:(BOOL)a3;
-- (void)setHasTimeSinceLastTrainedSecs:(BOOL)a3;
-- (void)setHasTimeZoneMarker:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTrainingCompletionCode:(BOOL)a3;
-- (void)setHasTrainingProgress1000:(BOOL)a3;
-- (void)setHasUniquePredictionClients:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCalendarTypeMarker:(BOOL)marker;
+- (void)setHasDayAlikeGroups:(BOOL)groups;
+- (void)setHasModelGraphPullups:(BOOL)pullups;
+- (void)setHasModelRecalls:(BOOL)recalls;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)setHasPredictionErrorOver24hr1000:(BOOL)over24hr1000;
+- (void)setHasPredictionQueries:(BOOL)queries;
+- (void)setHasTimeSinceLastTrainedSecs:(BOOL)secs;
+- (void)setHasTimeZoneMarker:(BOOL)marker;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTrainingCompletionCode:(BOOL)code;
+- (void)setHasTrainingProgress1000:(BOOL)progress1000;
+- (void)setHasUniquePredictionClients:(BOOL)clients;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkAnalyticsPredictions
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 32;
   }
@@ -56,9 +56,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -71,20 +71,20 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -97,9 +97,9 @@
   return v4;
 }
 
-- (void)setHasTimeSinceLastTrainedSecs:(BOOL)a3
+- (void)setHasTimeSinceLastTrainedSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 16;
   }
@@ -125,9 +125,9 @@
   }
 }
 
-- (void)setHasTrainingCompletionCode:(BOOL)a3
+- (void)setHasTrainingCompletionCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4096;
   }
@@ -140,20 +140,20 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (int)StringAsTrainingCompletionCode:(id)a3
+- (int)StringAsTrainingCompletionCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SUCCESS"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"SUCCESS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INSUFFICIENT_DATA"])
+  else if ([codeCopy isEqualToString:@"INSUFFICIENT_DATA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ERRORS"])
+  else if ([codeCopy isEqualToString:@"ERRORS"])
   {
     v4 = 3;
   }
@@ -166,9 +166,9 @@
   return v4;
 }
 
-- (void)setHasTrainingProgress1000:(BOOL)a3
+- (void)setHasTrainingProgress1000:(BOOL)progress1000
 {
-  if (a3)
+  if (progress1000)
   {
     v3 = 0x2000;
   }
@@ -181,9 +181,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasPredictionErrorOver24hr1000:(BOOL)a3
+- (void)setHasPredictionErrorOver24hr1000:(BOOL)over24hr1000
 {
-  if (a3)
+  if (over24hr1000)
   {
     v3 = 1024;
   }
@@ -196,9 +196,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasUniquePredictionClients:(BOOL)a3
+- (void)setHasUniquePredictionClients:(BOOL)clients
 {
-  if (a3)
+  if (clients)
   {
     v3 = 64;
   }
@@ -211,9 +211,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPredictionQueries:(BOOL)a3
+- (void)setHasPredictionQueries:(BOOL)queries
 {
-  if (a3)
+  if (queries)
   {
     v3 = 8;
   }
@@ -226,9 +226,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasModelRecalls:(BOOL)a3
+- (void)setHasModelRecalls:(BOOL)recalls
 {
-  if (a3)
+  if (recalls)
   {
     v3 = 4;
   }
@@ -241,9 +241,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasModelGraphPullups:(BOOL)a3
+- (void)setHasModelGraphPullups:(BOOL)pullups
 {
-  if (a3)
+  if (pullups)
   {
     v3 = 2;
   }
@@ -256,9 +256,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTimeZoneMarker:(BOOL)a3
+- (void)setHasTimeZoneMarker:(BOOL)marker
 {
-  if (a3)
+  if (marker)
   {
     v3 = 2048;
   }
@@ -271,9 +271,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasCalendarTypeMarker:(BOOL)a3
+- (void)setHasCalendarTypeMarker:(BOOL)marker
 {
-  if (a3)
+  if (marker)
   {
     v3 = 128;
   }
@@ -286,9 +286,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDayAlikeGroups:(BOOL)a3
+- (void)setHasDayAlikeGroups:(BOOL)groups
 {
-  if (a3)
+  if (groups)
   {
     v3 = 256;
   }
@@ -307,20 +307,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkAnalyticsPredictions;
   v4 = [(AWDSymptomsNetworkAnalyticsPredictions *)&v8 description];
-  v5 = [(AWDSymptomsNetworkAnalyticsPredictions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkAnalyticsPredictions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -351,7 +351,7 @@ LABEL_3:
     v9 = *(&off_27898C2D8 + v8);
   }
 
-  [v3 setObject:v9 forKey:@"networkType"];
+  [dictionary setObject:v9 forKey:@"networkType"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -367,7 +367,7 @@ LABEL_4:
 
 LABEL_24:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timeSinceLastTrainedSecs];
-  [v3 setObject:v10 forKey:@"timeSinceLastTrainedSecs"];
+  [dictionary setObject:v10 forKey:@"timeSinceLastTrainedSecs"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -393,7 +393,7 @@ LABEL_25:
     v12 = *(&off_27898C2F0 + v11);
   }
 
-  [v3 setObject:v12 forKey:@"trainingCompletionCode"];
+  [dictionary setObject:v12 forKey:@"trainingCompletionCode"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -409,7 +409,7 @@ LABEL_6:
 
 LABEL_29:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_lifetimeOldestItemSecs];
-  [v3 setObject:v13 forKey:@"lifetimeOldestItemSecs"];
+  [dictionary setObject:v13 forKey:@"lifetimeOldestItemSecs"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -425,7 +425,7 @@ LABEL_7:
 
 LABEL_30:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_trainingProgress1000];
-  [v3 setObject:v14 forKey:@"trainingProgress1000"];
+  [dictionary setObject:v14 forKey:@"trainingProgress1000"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -441,7 +441,7 @@ LABEL_8:
 
 LABEL_31:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_predictionErrorOver24hr1000];
-  [v3 setObject:v15 forKey:@"predictionErrorOver24hr1000"];
+  [dictionary setObject:v15 forKey:@"predictionErrorOver24hr1000"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -457,7 +457,7 @@ LABEL_9:
 
 LABEL_32:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_uniquePredictionClients];
-  [v3 setObject:v16 forKey:@"uniquePredictionClients"];
+  [dictionary setObject:v16 forKey:@"uniquePredictionClients"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -473,7 +473,7 @@ LABEL_10:
 
 LABEL_33:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_predictionQueries];
-  [v3 setObject:v17 forKey:@"predictionQueries"];
+  [dictionary setObject:v17 forKey:@"predictionQueries"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -489,7 +489,7 @@ LABEL_11:
 
 LABEL_34:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_modelRecalls];
-  [v3 setObject:v18 forKey:@"modelRecalls"];
+  [dictionary setObject:v18 forKey:@"modelRecalls"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -505,7 +505,7 @@ LABEL_12:
 
 LABEL_35:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_modelGraphPullups];
-  [v3 setObject:v19 forKey:@"modelGraphPullups"];
+  [dictionary setObject:v19 forKey:@"modelGraphPullups"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -521,7 +521,7 @@ LABEL_13:
 
 LABEL_36:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_timeZoneMarker];
-  [v3 setObject:v20 forKey:@"timeZoneMarker"];
+  [dictionary setObject:v20 forKey:@"timeZoneMarker"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -537,23 +537,23 @@ LABEL_14:
 
 LABEL_37:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_calendarTypeMarker];
-  [v3 setObject:v21 forKey:@"calendarTypeMarker"];
+  [dictionary setObject:v21 forKey:@"calendarTypeMarker"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_15:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_dayAlikeGroups];
-    [v3 setObject:v5 forKey:@"dayAlikeGroups"];
+    [dictionary setObject:v5 forKey:@"dayAlikeGroups"];
   }
 
 LABEL_16:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -754,14 +754,14 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[6] = self->_timestamp;
-    *(v4 + 46) |= 0x20u;
+    toCopy[6] = self->_timestamp;
+    *(toCopy + 46) |= 0x20u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -780,8 +780,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 18) = self->_networkType;
-  *(v4 + 46) |= 0x200u;
+  *(toCopy + 18) = self->_networkType;
+  *(toCopy + 46) |= 0x200u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -795,8 +795,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  v4[5] = self->_timeSinceLastTrainedSecs;
-  *(v4 + 46) |= 0x10u;
+  toCopy[5] = self->_timeSinceLastTrainedSecs;
+  *(toCopy + 46) |= 0x10u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -810,8 +810,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(v4 + 21) = self->_trainingCompletionCode;
-  *(v4 + 46) |= 0x1000u;
+  *(toCopy + 21) = self->_trainingCompletionCode;
+  *(toCopy + 46) |= 0x1000u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -825,8 +825,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  v4[1] = self->_lifetimeOldestItemSecs;
-  *(v4 + 46) |= 1u;
+  toCopy[1] = self->_lifetimeOldestItemSecs;
+  *(toCopy + 46) |= 1u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -840,8 +840,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(v4 + 22) = self->_trainingProgress1000;
-  *(v4 + 46) |= 0x2000u;
+  *(toCopy + 22) = self->_trainingProgress1000;
+  *(toCopy + 46) |= 0x2000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -855,8 +855,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(v4 + 19) = self->_predictionErrorOver24hr1000;
-  *(v4 + 46) |= 0x400u;
+  *(toCopy + 19) = self->_predictionErrorOver24hr1000;
+  *(toCopy + 46) |= 0x400u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -870,8 +870,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  v4[7] = self->_uniquePredictionClients;
-  *(v4 + 46) |= 0x40u;
+  toCopy[7] = self->_uniquePredictionClients;
+  *(toCopy + 46) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -885,8 +885,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  v4[4] = self->_predictionQueries;
-  *(v4 + 46) |= 8u;
+  toCopy[4] = self->_predictionQueries;
+  *(toCopy + 46) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -900,8 +900,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  v4[3] = self->_modelRecalls;
-  *(v4 + 46) |= 4u;
+  toCopy[3] = self->_modelRecalls;
+  *(toCopy + 46) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -915,8 +915,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  v4[2] = self->_modelGraphPullups;
-  *(v4 + 46) |= 2u;
+  toCopy[2] = self->_modelGraphPullups;
+  *(toCopy + 46) |= 2u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -930,8 +930,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  *(v4 + 20) = self->_timeZoneMarker;
-  *(v4 + 46) |= 0x800u;
+  *(toCopy + 20) = self->_timeZoneMarker;
+  *(toCopy + 46) |= 0x800u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -945,21 +945,21 @@ LABEL_14:
   }
 
 LABEL_31:
-  *(v4 + 16) = self->_calendarTypeMarker;
-  *(v4 + 46) |= 0x80u;
+  *(toCopy + 16) = self->_calendarTypeMarker;
+  *(toCopy + 46) |= 0x80u;
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_15:
-    *(v4 + 17) = self->_dayAlikeGroups;
-    *(v4 + 46) |= 0x100u;
+    *(toCopy + 17) = self->_dayAlikeGroups;
+    *(toCopy + 46) |= 0x100u;
   }
 
 LABEL_16:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -1161,19 +1161,19 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_72;
   }
 
   has = self->_has;
-  v6 = *(v4 + 46);
+  v6 = *(equalCopy + 46);
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_timestamp != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_timestamp != *(equalCopy + 6))
     {
       goto LABEL_72;
     }
@@ -1188,20 +1188,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 46) & 0x200) == 0 || self->_networkType != *(v4 + 18))
+    if ((*(equalCopy + 46) & 0x200) == 0 || self->_networkType != *(equalCopy + 18))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 46) & 0x200) != 0)
+  else if ((*(equalCopy + 46) & 0x200) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_timeSinceLastTrainedSecs != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_timeSinceLastTrainedSecs != *(equalCopy + 5))
     {
       goto LABEL_72;
     }
@@ -1214,20 +1214,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 46) & 0x1000) == 0 || self->_trainingCompletionCode != *(v4 + 21))
+    if ((*(equalCopy + 46) & 0x1000) == 0 || self->_trainingCompletionCode != *(equalCopy + 21))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 46) & 0x1000) != 0)
+  else if ((*(equalCopy + 46) & 0x1000) != 0)
   {
     goto LABEL_72;
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_lifetimeOldestItemSecs != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_lifetimeOldestItemSecs != *(equalCopy + 1))
     {
       goto LABEL_72;
     }
@@ -1240,33 +1240,33 @@ LABEL_72:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 46) & 0x2000) == 0 || self->_trainingProgress1000 != *(v4 + 22))
+    if ((*(equalCopy + 46) & 0x2000) == 0 || self->_trainingProgress1000 != *(equalCopy + 22))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 46) & 0x2000) != 0)
+  else if ((*(equalCopy + 46) & 0x2000) != 0)
   {
     goto LABEL_72;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 46) & 0x400) == 0 || self->_predictionErrorOver24hr1000 != *(v4 + 19))
+    if ((*(equalCopy + 46) & 0x400) == 0 || self->_predictionErrorOver24hr1000 != *(equalCopy + 19))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 46) & 0x400) != 0)
+  else if ((*(equalCopy + 46) & 0x400) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_uniquePredictionClients != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_uniquePredictionClients != *(equalCopy + 7))
     {
       goto LABEL_72;
     }
@@ -1279,7 +1279,7 @@ LABEL_72:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_predictionQueries != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_predictionQueries != *(equalCopy + 4))
     {
       goto LABEL_72;
     }
@@ -1292,7 +1292,7 @@ LABEL_72:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_modelRecalls != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_modelRecalls != *(equalCopy + 3))
     {
       goto LABEL_72;
     }
@@ -1305,7 +1305,7 @@ LABEL_72:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_modelGraphPullups != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_modelGraphPullups != *(equalCopy + 2))
     {
       goto LABEL_72;
     }
@@ -1318,20 +1318,20 @@ LABEL_72:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 46) & 0x800) == 0 || self->_timeZoneMarker != *(v4 + 20))
+    if ((*(equalCopy + 46) & 0x800) == 0 || self->_timeZoneMarker != *(equalCopy + 20))
     {
       goto LABEL_72;
     }
   }
 
-  else if ((*(v4 + 46) & 0x800) != 0)
+  else if ((*(equalCopy + 46) & 0x800) != 0)
   {
     goto LABEL_72;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_calendarTypeMarker != *(v4 + 16))
+    if ((v6 & 0x80) == 0 || self->_calendarTypeMarker != *(equalCopy + 16))
     {
       goto LABEL_72;
     }
@@ -1344,7 +1344,7 @@ LABEL_72:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 46) & 0x100) == 0 || self->_dayAlikeGroups != *(v4 + 17))
+    if ((*(equalCopy + 46) & 0x100) == 0 || self->_dayAlikeGroups != *(equalCopy + 17))
     {
       goto LABEL_72;
     }
@@ -1557,15 +1557,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 46);
+  fromCopy = from;
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x20) != 0)
   {
-    self->_timestamp = *(v4 + 6);
+    self->_timestamp = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 46);
+    v5 = *(fromCopy + 46);
     if ((v5 & 0x200) == 0)
     {
 LABEL_3:
@@ -1578,14 +1578,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 46) & 0x200) == 0)
+  else if ((*(fromCopy + 46) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_networkType = *(v4 + 18);
+  self->_networkType = *(fromCopy + 18);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1598,9 +1598,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_timeSinceLastTrainedSecs = *(v4 + 5);
+  self->_timeSinceLastTrainedSecs = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_5:
@@ -1613,9 +1613,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_trainingCompletionCode = *(v4 + 21);
+  self->_trainingCompletionCode = *(fromCopy + 21);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -1628,9 +1628,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_lifetimeOldestItemSecs = *(v4 + 1);
+  self->_lifetimeOldestItemSecs = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_7:
@@ -1643,9 +1643,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_trainingProgress1000 = *(v4 + 22);
+  self->_trainingProgress1000 = *(fromCopy + 22);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x400) == 0)
   {
 LABEL_8:
@@ -1658,9 +1658,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_predictionErrorOver24hr1000 = *(v4 + 19);
+  self->_predictionErrorOver24hr1000 = *(fromCopy + 19);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -1673,9 +1673,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_uniquePredictionClients = *(v4 + 7);
+  self->_uniquePredictionClients = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -1688,9 +1688,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_predictionQueries = *(v4 + 4);
+  self->_predictionQueries = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -1703,9 +1703,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_modelRecalls = *(v4 + 3);
+  self->_modelRecalls = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -1718,9 +1718,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_modelGraphPullups = *(v4 + 2);
+  self->_modelGraphPullups = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x800) == 0)
   {
 LABEL_13:
@@ -1733,9 +1733,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_timeZoneMarker = *(v4 + 20);
+  self->_timeZoneMarker = *(fromCopy + 20);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 46);
+  v5 = *(fromCopy + 46);
   if ((v5 & 0x80) == 0)
   {
 LABEL_14:
@@ -1748,12 +1748,12 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_calendarTypeMarker = *(v4 + 16);
+  self->_calendarTypeMarker = *(fromCopy + 16);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 46) & 0x100) != 0)
+  if ((*(fromCopy + 46) & 0x100) != 0)
   {
 LABEL_15:
-    self->_dayAlikeGroups = *(v4 + 17);
+    self->_dayAlikeGroups = *(fromCopy + 17);
     *&self->_has |= 0x100u;
   }
 

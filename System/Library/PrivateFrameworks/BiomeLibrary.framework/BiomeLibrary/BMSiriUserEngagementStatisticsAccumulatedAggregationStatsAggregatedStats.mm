@@ -1,28 +1,28 @@
 @interface BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithTriggeredMechanism:(int)a3 requestCount:(id)a4 intendedRequestCount:(id)a5 unintendedRequestCount:(id)a6 intendedRequestRatio:(id)a7 triggeredMechanismRequestRatio:(id)a8 modelVersion:(id)a9;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithTriggeredMechanism:(int)mechanism requestCount:(id)count intendedRequestCount:(id)requestCount unintendedRequestCount:(id)unintendedRequestCount intendedRequestRatio:(id)ratio triggeredMechanismRequestRatio:(id)requestRatio modelVersion:(id)version;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self triggeredMechanism];
-    if (v6 != [v5 triggeredMechanism])
+    v5 = equalCopy;
+    triggeredMechanism = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self triggeredMechanism];
+    if (triggeredMechanism != [v5 triggeredMechanism])
     {
       goto LABEL_31;
     }
@@ -39,8 +39,8 @@
         goto LABEL_31;
       }
 
-      v7 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self requestCount];
-      if (v7 != [v5 requestCount])
+      requestCount = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self requestCount];
+      if (requestCount != [v5 requestCount])
       {
         goto LABEL_31;
       }
@@ -58,8 +58,8 @@
         goto LABEL_31;
       }
 
-      v8 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self intendedRequestCount];
-      if (v8 != [v5 intendedRequestCount])
+      intendedRequestCount = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self intendedRequestCount];
+      if (intendedRequestCount != [v5 intendedRequestCount])
       {
         goto LABEL_31;
       }
@@ -67,18 +67,18 @@
 
     if ((!-[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasUnintendedRequestCount](self, "hasUnintendedRequestCount") && ![v5 hasUnintendedRequestCount] || -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasUnintendedRequestCount](self, "hasUnintendedRequestCount") && objc_msgSend(v5, "hasUnintendedRequestCount") && (v9 = -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats unintendedRequestCount](self, "unintendedRequestCount"), v9 == objc_msgSend(v5, "unintendedRequestCount"))) && (!-[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasIntendedRequestRatio](self, "hasIntendedRequestRatio") && !objc_msgSend(v5, "hasIntendedRequestRatio") || -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasIntendedRequestRatio](self, "hasIntendedRequestRatio") && objc_msgSend(v5, "hasIntendedRequestRatio") && (-[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats intendedRequestRatio](self, "intendedRequestRatio"), v11 = v10, objc_msgSend(v5, "intendedRequestRatio"), v11 == v12)) && (!-[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasTriggeredMechanismRequestRatio](self, "hasTriggeredMechanismRequestRatio") && !objc_msgSend(v5, "hasTriggeredMechanismRequestRatio") || -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats hasTriggeredMechanismRequestRatio](self, "hasTriggeredMechanismRequestRatio") && objc_msgSend(v5, "hasTriggeredMechanismRequestRatio") && (-[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats triggeredMechanismRequestRatio](self, "triggeredMechanismRequestRatio"), v14 = v13, objc_msgSend(v5, "triggeredMechanismRequestRatio"), v14 == v15)))
     {
-      v16 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
-      v17 = [v5 modelVersion];
-      if (v16 == v17)
+      modelVersion = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
+      modelVersion2 = [v5 modelVersion];
+      if (modelVersion == modelVersion2)
       {
         v20 = 1;
       }
 
       else
       {
-        v18 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
-        v19 = [v5 modelVersion];
-        v20 = [v18 isEqual:v19];
+        modelVersion3 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
+        modelVersion4 = [v5 modelVersion];
+        v20 = [modelVersion3 isEqual:modelVersion4];
       }
     }
 
@@ -157,69 +157,69 @@ LABEL_31:
     v11 = [v10 numberWithDouble:?];
   }
 
-  v12 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
+  modelVersion = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
   v28[0] = @"triggeredMechanism";
-  v13 = v3;
+  null = v3;
   if (!v3)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v13;
-  v29[0] = v13;
+  v24 = null;
+  v29[0] = null;
   v28[1] = @"requestCount";
-  v14 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v26 = v3;
-  v23 = v14;
-  v29[1] = v14;
+  v23 = null2;
+  v29[1] = null2;
   v28[2] = @"intendedRequestCount";
-  v15 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v25 = v4;
-  v29[2] = v15;
+  v29[2] = null3;
   v28[3] = @"unintendedRequestCount";
-  v16 = v27;
+  null4 = v27;
   if (!v27)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v16;
+  v29[3] = null4;
   v28[4] = @"intendedRequestRatio";
-  v17 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v17;
+  v29[4] = null5;
   v28[5] = @"triggeredMechanismRequestRatio";
-  v18 = v11;
+  null6 = v11;
   if (!v11)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v18;
+  v29[5] = null6;
   v28[6] = @"modelVersion";
-  v19 = v12;
-  if (!v12)
+  null7 = modelVersion;
+  if (!modelVersion)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v19;
+  v29[6] = null7;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:7];
-  if (v12)
+  if (modelVersion)
   {
     if (v11)
     {
@@ -281,29 +281,29 @@ LABEL_41:
   return v20;
 }
 
-- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v86[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"triggeredMechanism"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"triggeredMechanism"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"requestCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestCount"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           v21 = 0;
           goto LABEL_34;
         }
 
-        v25 = a4;
+        errorCopy = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v83 = *MEMORY[0x1E696A578];
@@ -313,7 +313,7 @@ LABEL_9:
         v29 = [v26 initWithDomain:v27 code:2 userInfo:v28];
         v11 = 0;
         v21 = 0;
-        *v25 = v29;
+        *errorCopy = v29;
         v12 = v28;
         goto LABEL_33;
       }
@@ -326,21 +326,21 @@ LABEL_9:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"intendedRequestCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"intendedRequestCount"];
     v69 = v10;
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v72 = 0;
           v21 = 0;
           goto LABEL_33;
         }
 
-        v71 = a4;
+        errorCopy2 = error;
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
         v81 = *MEMORY[0x1E696A578];
@@ -355,7 +355,7 @@ LABEL_9:
         v35 = [v30 initWithDomain:v31 code:2 userInfo:v13];
         v72 = 0;
         v21 = 0;
-        *v71 = v35;
+        *errorCopy2 = v35;
 LABEL_32:
 
         v10 = v69;
@@ -372,7 +372,7 @@ LABEL_33:
       v72 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"unintendedRequestCount"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"unintendedRequestCount"];
     v65 = v12;
     v66 = v7;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -380,14 +380,14 @@ LABEL_33:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v22 = 0;
           v21 = 0;
           goto LABEL_32;
         }
 
-        v36 = a4;
+        errorCopy3 = error;
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v38 = *MEMORY[0x1E698F240];
         v79 = *MEMORY[0x1E696A578];
@@ -402,7 +402,7 @@ LABEL_33:
         v42 = [v37 initWithDomain:v38 code:2 userInfo:v14];
         v22 = 0;
         v21 = 0;
-        *v36 = v42;
+        *errorCopy3 = v42;
         v12 = v65;
         goto LABEL_31;
       }
@@ -415,22 +415,22 @@ LABEL_33:
       v68 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"intendedRequestRatio"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"intendedRequestRatio"];
     v67 = v8;
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v70 = 0;
           v21 = 0;
           goto LABEL_30;
         }
 
-        v17 = self;
-        v43 = a4;
+        selfCopy3 = self;
+        errorCopy4 = error;
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
         v45 = *MEMORY[0x1E698F240];
         v77 = *MEMORY[0x1E696A578];
@@ -445,42 +445,42 @@ LABEL_33:
         v49 = [v44 initWithDomain:v45 code:2 userInfo:v16];
         v70 = 0;
         v21 = 0;
-        *v43 = v49;
+        *errorCopy4 = v49;
         goto LABEL_69;
       }
 
-      v15 = a4;
+      errorCopy6 = error;
       v70 = v14;
     }
 
     else
     {
-      v15 = a4;
+      errorCopy6 = error;
       v70 = 0;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"triggeredMechanismRequestRatio"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"triggeredMechanismRequestRatio"];
     v64 = v11;
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 0;
       goto LABEL_24;
     }
 
     objc_opt_class();
-    v17 = self;
+    selfCopy3 = self;
     if (objc_opt_isKindOfClass())
     {
       v18 = v16;
 LABEL_24:
-      v19 = [v6 objectForKeyedSubscript:@"modelVersion"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v15)
+          if (errorCopy6)
           {
             v63 = objc_alloc(MEMORY[0x1E696ABC0]);
             v62 = *MEMORY[0x1E698F240];
@@ -488,7 +488,7 @@ LABEL_24:
             v57 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"modelVersion"];
             v74 = v57;
             v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
-            *v15 = [v63 initWithDomain:v62 code:2 userInfo:v58];
+            *errorCopy6 = [v63 initWithDomain:v62 code:2 userInfo:v58];
           }
 
           v20 = 0;
@@ -504,15 +504,15 @@ LABEL_24:
         v20 = 0;
       }
 
-      v21 = -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats initWithTriggeredMechanism:requestCount:intendedRequestCount:unintendedRequestCount:intendedRequestRatio:triggeredMechanismRequestRatio:modelVersion:](v17, "initWithTriggeredMechanism:requestCount:intendedRequestCount:unintendedRequestCount:intendedRequestRatio:triggeredMechanismRequestRatio:modelVersion:", [v67 intValue], v64, v72, v68, v70, v18, v20);
-      v17 = v21;
+      v21 = -[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats initWithTriggeredMechanism:requestCount:intendedRequestCount:unintendedRequestCount:intendedRequestRatio:triggeredMechanismRequestRatio:modelVersion:](selfCopy3, "initWithTriggeredMechanism:requestCount:intendedRequestCount:unintendedRequestCount:intendedRequestRatio:triggeredMechanismRequestRatio:modelVersion:", [v67 intValue], v64, v72, v68, v70, v18, v20);
+      selfCopy3 = v21;
 LABEL_28:
       v12 = v65;
 
       v11 = v64;
 LABEL_29:
 
-      self = v17;
+      self = selfCopy3;
       v8 = v67;
 LABEL_30:
       v22 = v68;
@@ -522,7 +522,7 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v15)
+    if (errorCopy6)
     {
       v54 = objc_alloc(MEMORY[0x1E696ABC0]);
       v55 = *MEMORY[0x1E698F240];
@@ -533,7 +533,7 @@ LABEL_31:
       v56 = [v54 initWithDomain:v55 code:2 userInfo:v19];
       v18 = 0;
       v21 = 0;
-      *v15 = v56;
+      *errorCopy6 = v56;
       goto LABEL_28;
     }
 
@@ -560,14 +560,14 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v21 = 0;
     goto LABEL_35;
   }
 
-  v50 = a4;
+  errorCopy7 = error;
   v51 = objc_alloc(MEMORY[0x1E696ABC0]);
   v52 = *MEMORY[0x1E698F240];
   v85 = *MEMORY[0x1E696A578];
@@ -577,7 +577,7 @@ LABEL_8:
   v53 = [v51 initWithDomain:v52 code:2 userInfo:v10];
   v8 = 0;
   v21 = 0;
-  *v50 = v53;
+  *errorCopy7 = v53;
 LABEL_34:
 
 LABEL_35:
@@ -589,16 +589,16 @@ LABEL_35:
 {
   v3 = objc_opt_new();
   [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   triggeredMechanism = self->_triggeredMechanism;
-  v12 = v4;
+  v12 = toCopy;
   PBDataWriterWriteUint32Field();
   if (self->_hasRequestCount)
   {
@@ -641,9 +641,9 @@ LABEL_35:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v56.receiver = self;
   v56.super_class = BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats;
   v5 = [(BMEventBase *)&v56 init];
@@ -652,12 +652,12 @@ LABEL_35:
     goto LABEL_97;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -668,18 +668,18 @@ LABEL_35:
       while (1)
       {
         LOBYTE(v57) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v57 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v57 & 0x7F) << v7;
@@ -697,9 +697,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -717,18 +717,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v57) = 0;
-              v35 = [v4 position] + 1;
-              if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+              v35 = [fromCopy position] + 1;
+              if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
               {
-                v37 = [v4 data];
-                [v37 getBytes:&v57 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v34 |= (v57 & 0x7F) << v32;
@@ -746,7 +746,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -767,18 +767,18 @@ LABEL_75:
             while (1)
             {
               LOBYTE(v57) = 0;
-              v45 = [v4 position] + 1;
-              if (v45 >= [v4 position] && (v46 = objc_msgSend(v4, "position") + 1, v46 <= objc_msgSend(v4, "length")))
+              v45 = [fromCopy position] + 1;
+              if (v45 >= [fromCopy position] && (v46 = objc_msgSend(fromCopy, "position") + 1, v46 <= objc_msgSend(fromCopy, "length")))
               {
-                v47 = [v4 data];
-                [v47 getBytes:&v57 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v44 |= (v57 & 0x7F) << v42;
@@ -796,7 +796,7 @@ LABEL_75:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -817,18 +817,18 @@ LABEL_87:
             while (1)
             {
               LOBYTE(v57) = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v57 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v57 & 0x7F) << v18;
@@ -846,7 +846,7 @@ LABEL_87:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -894,18 +894,18 @@ LABEL_57:
           while (1)
           {
             LOBYTE(v57) = 0;
-            v28 = [v4 position] + 1;
-            if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+            v28 = [fromCopy position] + 1;
+            if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
             {
-              v30 = [v4 data];
-              [v30 getBytes:&v57 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v27 |= (v57 & 0x7F) << v25;
@@ -921,7 +921,7 @@ LABEL_57:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v27 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v27 > 3)
           {
 LABEL_78:
             LODWORD(v27) = 0;
@@ -937,18 +937,18 @@ LABEL_78:
         {
           v5->_hasIntendedRequestRatio = 1;
           v57 = 0;
-          v38 = [v4 position] + 8;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 8, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 8;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 8, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v49 = [v4 data];
-            [v49 getBytes:&v57 range:{objc_msgSend(v4, "position"), 8}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v50 = v57;
@@ -964,18 +964,18 @@ LABEL_78:
 
           v5->_hasTriggeredMechanismRequestRatio = 1;
           v57 = 0;
-          v16 = [v4 position] + 8;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 8;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v52 = [v4 data];
-            [v52 getBytes:&v57 range:{objc_msgSend(v4, "position"), 8}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v57 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v50 = v57;
@@ -986,13 +986,13 @@ LABEL_78:
       }
 
 LABEL_94:
-      v53 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v53 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_96:
     v54 = 0;
@@ -1020,70 +1020,70 @@ LABEL_97:
   v10 = MEMORY[0x1E696AD98];
   [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self triggeredMechanismRequestRatio];
   v11 = [v10 numberWithDouble:?];
-  v12 = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
-  v13 = [v3 initWithFormat:@"BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats with triggeredMechanism: %@, requestCount: %@, intendedRequestCount: %@, unintendedRequestCount: %@, intendedRequestRatio: %@, triggeredMechanismRequestRatio: %@, modelVersion: %@", v4, v5, v6, v7, v9, v11, v12];
+  modelVersion = [(BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats *)self modelVersion];
+  v13 = [v3 initWithFormat:@"BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats with triggeredMechanism: %@, requestCount: %@, intendedRequestCount: %@, unintendedRequestCount: %@, intendedRequestRatio: %@, triggeredMechanismRequestRatio: %@, modelVersion: %@", v4, v5, v6, v7, v9, v11, modelVersion];
 
   return v13;
 }
 
-- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithTriggeredMechanism:(int)a3 requestCount:(id)a4 intendedRequestCount:(id)a5 unintendedRequestCount:(id)a6 intendedRequestRatio:(id)a7 triggeredMechanismRequestRatio:(id)a8 modelVersion:(id)a9
+- (BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats)initWithTriggeredMechanism:(int)mechanism requestCount:(id)count intendedRequestCount:(id)requestCount unintendedRequestCount:(id)unintendedRequestCount intendedRequestRatio:(id)ratio triggeredMechanismRequestRatio:(id)requestRatio modelVersion:(id)version
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  countCopy = count;
+  requestCountCopy = requestCount;
+  unintendedRequestCountCopy = unintendedRequestCount;
+  ratioCopy = ratio;
+  requestRatioCopy = requestRatio;
+  versionCopy = version;
   v28.receiver = self;
   v28.super_class = BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats;
   v21 = [(BMEventBase *)&v28 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    v21->_triggeredMechanism = a3;
-    if (v15)
+    v21->_triggeredMechanism = mechanism;
+    if (countCopy)
     {
       v21->_hasRequestCount = 1;
-      v22 = [v15 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v21->_hasRequestCount = 0;
-      v22 = -1;
+      intValue = -1;
     }
 
-    v21->_requestCount = v22;
-    if (v16)
+    v21->_requestCount = intValue;
+    if (requestCountCopy)
     {
       v21->_hasIntendedRequestCount = 1;
-      v23 = [v16 intValue];
+      intValue2 = [requestCountCopy intValue];
     }
 
     else
     {
       v21->_hasIntendedRequestCount = 0;
-      v23 = -1;
+      intValue2 = -1;
     }
 
-    v21->_intendedRequestCount = v23;
-    if (v17)
+    v21->_intendedRequestCount = intValue2;
+    if (unintendedRequestCountCopy)
     {
       v21->_hasUnintendedRequestCount = 1;
-      v24 = [v17 intValue];
+      intValue3 = [unintendedRequestCountCopy intValue];
     }
 
     else
     {
       v21->_hasUnintendedRequestCount = 0;
-      v24 = -1;
+      intValue3 = -1;
     }
 
-    v21->_unintendedRequestCount = v24;
-    if (v18)
+    v21->_unintendedRequestCount = intValue3;
+    if (ratioCopy)
     {
       v21->_hasIntendedRequestRatio = 1;
-      [v18 doubleValue];
+      [ratioCopy doubleValue];
     }
 
     else
@@ -1093,10 +1093,10 @@ LABEL_97:
     }
 
     v21->_intendedRequestRatio = v25;
-    if (v19)
+    if (requestRatioCopy)
     {
       v21->_hasTriggeredMechanismRequestRatio = 1;
-      [v19 doubleValue];
+      [requestRatioCopy doubleValue];
     }
 
     else
@@ -1106,7 +1106,7 @@ LABEL_97:
     }
 
     v21->_triggeredMechanismRequestRatio = v26;
-    objc_storeStrong(&v21->_modelVersion, a9);
+    objc_storeStrong(&v21->_modelVersion, version);
   }
 
   return v21;
@@ -1159,9 +1159,9 @@ LABEL_97:
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1169,8 +1169,8 @@ LABEL_97:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriUserEngagementStatisticsAccumulatedAggregationStatsAggregatedStats alloc] initByReadFrom:v7];
     v4 = v8;

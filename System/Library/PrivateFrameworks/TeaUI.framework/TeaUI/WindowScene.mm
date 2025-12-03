@@ -6,7 +6,7 @@
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E73ACC();
 
   return v3;

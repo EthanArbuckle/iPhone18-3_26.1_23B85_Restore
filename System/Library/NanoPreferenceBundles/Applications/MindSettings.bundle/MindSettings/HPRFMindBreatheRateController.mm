@@ -6,7 +6,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -48,8 +48,8 @@
   v9.receiver = self;
   v9.super_class = HPRFMindBreatheRateController;
   [(HPRFMindBreatheRateController *)&v9 viewDidLoad];
-  v3 = [(HPRFMindBreatheRateController *)self localizedPaneTitle];
-  [(HPRFMindBreatheRateController *)self setTitle:v3];
+  localizedPaneTitle = [(HPRFMindBreatheRateController *)self localizedPaneTitle];
+  [(HPRFMindBreatheRateController *)self setTitle:localizedPaneTitle];
 
   objc_initWeak(&location, self);
   v4 = kNLMindPreferencesChangedNotification;
@@ -130,11 +130,11 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFMindBreatheRateController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFMindBreatheRateController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = sub_5038();
   v22[0] = _NSConcreteStackBlock;
@@ -160,12 +160,12 @@
 
   [(HPRFMindBreatheRateController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v20 = [(HPRFMindBreatheRateController *)self specifier];
-  [WeakRetained reloadSpecifier:v20];
+  specifier = [(HPRFMindBreatheRateController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v21.receiver = self;
   v21.super_class = HPRFMindBreatheRateController;
-  [(HPRFMindBreatheRateController *)&v21 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFMindBreatheRateController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -177,10 +177,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFMindBreatheRateController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFMindBreatheRateController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

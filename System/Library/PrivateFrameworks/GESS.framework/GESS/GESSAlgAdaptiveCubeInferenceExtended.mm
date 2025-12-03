@@ -1,5 +1,5 @@
 @interface GESSAlgAdaptiveCubeInferenceExtended
-- (BOOL)run:(id)a3 deform:(id)a4 weight:(id)a5 outputMesh:(id)a6;
+- (BOOL)run:(id)run deform:(id)deform weight:(id)weight outputMesh:(id)mesh;
 - (id)returnReport;
 @end
 
@@ -16,13 +16,13 @@
   return v3;
 }
 
-- (BOOL)run:(id)a3 deform:(id)a4 weight:(id)a5 outputMesh:(id)a6
+- (BOOL)run:(id)run deform:(id)deform weight:(id)weight outputMesh:(id)mesh
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  runCopy = run;
+  deformCopy = deform;
+  weightCopy = weight;
+  meshCopy = mesh;
   if (GESSEnvMLXAvailable_0())
   {
     strcpy(v16, "*kNKZ^C\\Oi_HO");

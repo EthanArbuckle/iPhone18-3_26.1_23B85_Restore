@@ -1,42 +1,42 @@
 @interface TSWPAttachment
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSWPAttachment)initWithContext:(id)a3;
-- (id)copyWithContext:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
+- (TSWPAttachment)initWithContext:(id)context;
+- (id)copyWithContext:(id)context;
 - (id)topLevelAttachment;
 @end
 
 @implementation TSWPAttachment
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"It is illegal to instantiate TSWPAttachment; it is abstract" userInfo:0]);
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___TSWPAttachment;
-  return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
 }
 
-- (TSWPAttachment)initWithContext:(id)a3
+- (TSWPAttachment)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSWPAttachment;
-  return [(TSPObject *)&v4 initWithContext:a3];
+  return [(TSPObject *)&v4 initWithContext:context];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v4 = [objc_opt_class() allocWithZone:{-[TSWPAttachment zone](self, "zone")}];
 
-  return [v4 initWithContext:a3];
+  return [v4 initWithContext:context];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -47,31 +47,31 @@
 
 - (id)topLevelAttachment
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
-    while ([objc_msgSend(v2 "parentStorage")])
+    while ([objc_msgSend(selfCopy "parentStorage")])
     {
-      v3 = [objc_msgSend(v2 "parentStorage")];
+      v3 = [objc_msgSend(selfCopy "parentStorage")];
       objc_opt_class();
-      v4 = [v2 parentStorage];
+      parentStorage = [selfCopy parentStorage];
       if (v3 == 2)
       {
-        [v4 owningAttachment];
+        [parentStorage owningAttachment];
 
         return TSUDynamicCast();
       }
 
-      [objc_msgSend(v4 "parentInfo")];
-      v2 = TSUDynamicCast();
-      if (!v2)
+      [objc_msgSend(parentStorage "parentInfo")];
+      selfCopy = TSUDynamicCast();
+      if (!selfCopy)
       {
-        return v2;
+        return selfCopy;
       }
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

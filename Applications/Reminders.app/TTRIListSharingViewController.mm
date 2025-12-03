@@ -1,41 +1,41 @@
 @interface TTRIListSharingViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (_TtC9Reminders29TTRIListSharingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9Reminders29TTRIListSharingViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)didTapDone:(id)a3;
-- (void)setDoneButton:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (_TtC9Reminders29TTRIListSharingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9Reminders29TTRIListSharingViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)didTapDone:(id)done;
+- (void)setDoneButton:(id)button;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TTRIListSharingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010176C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(TTRIListSharingViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 tableView];
-  if (v5)
+  [(TTRIListSharingViewController *)&v7 viewWillAppear:appearCopy];
+  tableView = [v4 tableView];
+  if (tableView)
   {
-    v6 = v5;
-    [v5 reloadData];
+    v6 = tableView;
+    [tableView reloadData];
   }
 
   else
@@ -44,38 +44,38 @@
   }
 }
 
-- (void)setDoneButton:(id)a3
+- (void)setDoneButton:(id)button
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_doneButton);
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_doneButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_doneButton) = button;
+  buttonCopy = button;
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_100406138();
   sub_100004758(&v5);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_100101D98(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100101D98(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -84,7 +84,7 @@
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_allowsEditing) == 1)
   {
-    v9 = self;
+    selfCopy = self;
     v10 = sub_100101C44();
     if ((v11 & 0x100) != 0)
     {
@@ -106,45 +106,45 @@
   return v12 & 1;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  sub_100102434(v12, a4, v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100102434(viewCopy, style, v11);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   ObjectType = swift_getObjectType();
-  v8 = self;
-  v9 = [(TTRIListSharingViewController *)v8 navigationItem];
-  if (v5)
+  selfCopy = self;
+  navigationItem = [(TTRIListSharingViewController *)selfCopy navigationItem];
+  if (editingCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = *(&v8->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_doneButton);
+    v10 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_doneButton);
   }
 
-  [v9 setLeftBarButtonItem:v10];
+  [navigationItem setLeftBarButtonItem:v10];
 
-  v11.receiver = v8;
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
-  [(TTRIListSharingViewController *)&v11 setEditing:v5 animated:v4];
+  [(TTRIListSharingViewController *)&v11 setEditing:editingCopy animated:animatedCopy];
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -162,29 +162,29 @@
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 2.0;
-  if (a4 != 1)
+  if (section != 1)
   {
     v10 = v4;
     v11 = v5;
     v9.receiver = self;
     v9.super_class = swift_getObjectType();
-    [(TTRIListSharingViewController *)&v9 tableView:a3 heightForHeaderInSection:a4];
+    [(TTRIListSharingViewController *)&v9 tableView:view heightForHeaderInSection:section];
   }
 
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   v4 = *(sub_1004058A4() + 2);
 
   if (v4)
   {
-    v5 = *(&v3->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_style);
+    v5 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_style);
 
     if (v5)
     {
@@ -204,57 +204,57 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
-    return a4;
+    return section;
   }
 
-  if (a4)
+  if (section)
   {
     return 0;
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = *(sub_1004058A4() + 2);
 
-  v6 = *(&v4->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_allowsEditing);
+  v6 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9Reminders29TTRIListSharingViewController_allowsEditing);
 
-  a4 = v5 + v6;
+  section = v5 + v6;
   if (!__OFADD__(v5, v6))
   {
-    return a4;
+    return section;
   }
 
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100102EAC(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100102EAC(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (_TtC9Reminders29TTRIListSharingViewController)initWithStyle:(int64_t)a3
+- (_TtC9Reminders29TTRIListSharingViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9Reminders29TTRIListSharingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders29TTRIListSharingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

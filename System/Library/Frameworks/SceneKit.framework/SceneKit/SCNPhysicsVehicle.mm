@@ -1,22 +1,22 @@
 @interface SCNPhysicsVehicle
 + (SCNPhysicsVehicle)vehicleWithChassisBody:(SCNPhysicsBody *)chassisBody wheels:(NSArray *)wheels;
 - (NSArray)wheels;
-- (SCNPhysicsVehicle)initWithChassisBody:(id)a3 wheels:(id)a4;
-- (SCNPhysicsVehicle)initWithCoder:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (id)wheelAtIndex:(unint64_t)a3;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_createWheel:(id)a3;
-- (void)_handleCreateIfNeeded:(BOOL)a3;
+- (SCNPhysicsVehicle)initWithChassisBody:(id)body wheels:(id)wheels;
+- (SCNPhysicsVehicle)initWithCoder:(id)coder;
+- (id)valueForKeyPath:(id)path;
+- (id)wheelAtIndex:(unint64_t)index;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_createWheel:(id)wheel;
+- (void)_handleCreateIfNeeded:(BOOL)needed;
 - (void)_initializeWheelsArray;
 - (void)_update;
-- (void)_willRemoveFromPhysicsWorld:(id)a3;
+- (void)_willRemoveFromPhysicsWorld:(id)world;
 - (void)applyBrakingForce:(CGFloat)value forWheelAtIndex:(NSInteger)index;
 - (void)applyEngineForce:(CGFloat)value forWheelAtIndex:(NSInteger)index;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSteeringAngle:(CGFloat)value forWheelAtIndex:(NSInteger)index;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
+- (void)setValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation SCNPhysicsVehicle
@@ -39,15 +39,15 @@ uint64_t __43__SCNPhysicsVehicle__initializeWheelsArray__block_invoke(uint64_t a
   return [a2 _setWheelIndex:a3];
 }
 
-- (SCNPhysicsVehicle)initWithChassisBody:(id)a3 wheels:(id)a4
+- (SCNPhysicsVehicle)initWithChassisBody:(id)body wheels:(id)wheels
 {
   v8.receiver = self;
   v8.super_class = SCNPhysicsVehicle;
   v6 = [(SCNPhysicsVehicle *)&v8 init];
   if (v6)
   {
-    v6->_chassisBody = a3;
-    v6->_wheels = [a4 copy];
+    v6->_chassisBody = body;
+    v6->_wheels = [wheels copy];
     [(SCNPhysicsVehicle *)v6 _initializeWheelsArray];
   }
 
@@ -56,7 +56,7 @@ uint64_t __43__SCNPhysicsVehicle__initializeWheelsArray__block_invoke(uint64_t a
 
 + (SCNPhysicsVehicle)vehicleWithChassisBody:(SCNPhysicsBody *)chassisBody wheels:(NSArray *)wheels
 {
-  v4 = [[a1 alloc] initWithChassisBody:chassisBody wheels:wheels];
+  v4 = [[self alloc] initWithChassisBody:chassisBody wheels:wheels];
 
   return v4;
 }
@@ -104,12 +104,12 @@ uint64_t __43__SCNPhysicsVehicle__initializeWheelsArray__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v7 = world == a3;
+    v7 = world == world;
   }
 
   else
@@ -126,12 +126,12 @@ uint64_t __43__SCNPhysicsVehicle__initializeWheelsArray__block_invoke(uint64_t a
     }
   }
 
-  self->_world = a3;
+  self->_world = world;
   [(SCNPhysicsVehicle *)self _handleCreateIfNeeded:1];
-  v9 = [(SCNPhysicsWorld *)self->_world _handle];
+  _handle = [(SCNPhysicsWorld *)self->_world _handle];
   if (self->_vehicle)
   {
-    v10 = v9 == 0;
+    v10 = _handle == 0;
   }
 
   else
@@ -141,16 +141,16 @@ uint64_t __43__SCNPhysicsVehicle__initializeWheelsArray__block_invoke(uint64_t a
 
   if (!v10)
   {
-    (*(*v9 + 248))(v9);
+    (*(*_handle + 248))(_handle);
   }
 }
 
-- (void)_willRemoveFromPhysicsWorld:(id)a3
+- (void)_willRemoveFromPhysicsWorld:(id)world
 {
   if (self->_vehicle)
   {
-    v4 = [a3 _handle];
-    (*(*v4 + 256))(v4, self->_vehicle);
+    _handle = [world _handle];
+    (*(*_handle + 256))(_handle, self->_vehicle);
     vehicle = self->_vehicle;
     if (vehicle)
     {
@@ -233,55 +233,55 @@ uint64_t __55__SCNPhysicsVehicle_applyBrakingForce_forWheelAtIndex___block_invok
   return result;
 }
 
-- (void)_createWheel:(id)a3
+- (void)_createWheel:(id)wheel
 {
   vehicle = self->_vehicle;
-  [a3 suspensionStiffness];
+  [wheel suspensionStiffness];
   *&v5 = v5;
   LODWORD(v34) = LODWORD(v5);
-  [a3 suspensionCompression];
+  [wheel suspensionCompression];
   *&v6 = v6;
   DWORD1(v34) = LODWORD(v6);
-  [a3 suspensionDamping];
+  [wheel suspensionDamping];
   *&v7 = v7;
   DWORD2(v34) = LODWORD(v7);
-  [a3 frictionSlip];
+  [wheel frictionSlip];
   *&v8 = v8 * 10.5;
   v35 = LODWORD(v8);
-  [a3 maximumSuspensionForce];
+  [wheel maximumSuspensionForce];
   *&v9 = v9;
   v36 = LODWORD(v9);
-  [a3 maximumSuspensionTravel];
+  [wheel maximumSuspensionTravel];
   *&v10 = v10;
   HIDWORD(v34) = LODWORD(v10);
-  [a3 steeringAxis];
+  [wheel steeringAxis];
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [a3 axle];
+  [wheel axle];
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [a3 connectionPosition];
-  [a3 suspensionRestLength];
+  [wheel connectionPosition];
+  [wheel suspensionRestLength];
   v27 = v26;
-  [a3 radius];
+  [wheel radius];
   v29 = v28;
-  v30 = btRaycastVehicle::addWheel(vehicle, &v33, &v32, &v31, &v34, [a3 isFront], v27, v29);
-  *(v30 + 288) = [objc_msgSend(a3 "node")];
+  v30 = btRaycastVehicle::addWheel(vehicle, &v33, &v32, &v31, &v34, [wheel isFront], v27, v29);
+  *(v30 + 288) = [objc_msgSend(wheel "node")];
 }
 
-- (void)_handleCreateIfNeeded:(BOOL)a3
+- (void)_handleCreateIfNeeded:(BOOL)needed
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 && !self->_vehicle)
+  if (needed && !self->_vehicle)
   {
     if ([(SCNPhysicsBody *)self->_chassisBody sceneRef])
     {
-      v4 = [(SCNPhysicsBody *)self->_chassisBody _handle];
-      if (v4)
+      _handle = [(SCNPhysicsBody *)self->_chassisBody _handle];
+      if (_handle)
       {
-        btCollisionObject::setActivationState(v4, 4);
+        btCollisionObject::setActivationState(_handle, 4);
         [(SCNPhysicsWorld *)self->_world _defaultVehicleRayCaster];
         *buf = xmmword_21C2A3E90;
         v8 = 0x45BB800041280000;
@@ -353,29 +353,29 @@ uint64_t __55__SCNPhysicsVehicle_applyBrakingForce_forWheelAtIndex___block_invok
   }
 }
 
-- (id)wheelAtIndex:(unint64_t)a3
+- (id)wheelAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_wheels count]<= a3)
+  if ([(NSArray *)self->_wheels count]<= index)
   {
     return 0;
   }
 
   wheels = self->_wheels;
 
-  return [(NSArray *)wheels objectAtIndex:a3];
+  return [(NSArray *)wheels objectAtIndex:index];
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  if ([a4 hasPrefix:@"wheel"])
+  if ([path hasPrefix:@"wheel"])
   {
     v9 = 0;
     v10 = 0;
-    SCNKitSplitKVCPath(a4, &v10, &v9);
+    SCNKitSplitKVCPath(path, &v10, &v9);
     if (v9)
     {
       v7 = -[SCNPhysicsVehicle wheelAtIndex:](self, "wheelAtIndex:", [objc_msgSend(v10 substringFromIndex:{objc_msgSend(@"wheel", "length")), "intValue"}]);
-      [v7 setValue:a3 forKey:v9];
+      [v7 setValue:value forKey:v9];
     }
   }
 
@@ -383,17 +383,17 @@ uint64_t __55__SCNPhysicsVehicle_applyBrakingForce_forWheelAtIndex___block_invok
   {
     v8.receiver = self;
     v8.super_class = SCNPhysicsVehicle;
-    [(SCNPhysicsVehicle *)&v8 setValue:a3 forKeyPath:a4];
+    [(SCNPhysicsVehicle *)&v8 setValue:value forKeyPath:path];
   }
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
-  if ([a3 hasPrefix:@"wheel"])
+  if ([path hasPrefix:@"wheel"])
   {
     v8 = 0;
     v9 = 0;
-    SCNKitSplitKVCPath(a3, &v9, &v8);
+    SCNKitSplitKVCPath(path, &v9, &v8);
     if (v8)
     {
       v5 = -[SCNPhysicsVehicle wheelAtIndex:](self, "wheelAtIndex:", [objc_msgSend(v9 substringFromIndex:{objc_msgSend(@"wheel", "length")), "intValue"}]);
@@ -410,26 +410,26 @@ uint64_t __55__SCNPhysicsVehicle_applyBrakingForce_forWheelAtIndex___block_invok
   {
     v7.receiver = self;
     v7.super_class = SCNPhysicsVehicle;
-    return [(SCNPhysicsVehicle *)&v7 valueForKeyPath:a3];
+    return [(SCNPhysicsVehicle *)&v7 valueForKeyPath:path];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   chassisBody = self->_chassisBody;
   if (chassisBody)
   {
-    [a3 encodeObject:chassisBody forKey:@"chassisBody"];
+    [coder encodeObject:chassisBody forKey:@"chassisBody"];
   }
 
   if (self->_wheels)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SCNPhysicsVehicle)initWithCoder:(id)a3
+- (SCNPhysicsVehicle)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNPhysicsVehicle;
@@ -438,9 +438,9 @@ uint64_t __55__SCNPhysicsVehicle_applyBrakingForce_forWheelAtIndex___block_invok
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNPhysicsVehicle *)v4 _customDecodingOfSCNPhysicsVehicle:a3];
-    v4->_chassisBody = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"chassisBody"];
-    v4->_wheels = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"wheels"];
+    [(SCNPhysicsVehicle *)v4 _customDecodingOfSCNPhysicsVehicle:coder];
+    v4->_chassisBody = [coder decodeObjectOfClass:objc_opt_class() forKey:@"chassisBody"];
+    v4->_wheels = [coder scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"wheels"];
     [SCNTransaction setImmediateMode:v5];
   }
 

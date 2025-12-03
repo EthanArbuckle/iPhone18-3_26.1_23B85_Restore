@@ -1,7 +1,7 @@
 @interface IMDSpamFilteringHelper
 + (id)sharedHelper;
 - (IMDSpamFilteringHelper)init;
-- (id)eventPayloadFor:(int64_t)a3 service:(id)a4;
+- (id)eventPayloadFor:(int64_t)for service:(id)service;
 - (void)presentDebugUI;
 @end
 
@@ -21,13 +21,13 @@
 
 - (void)presentDebugUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B77205C();
 }
 
-- (id)eventPayloadFor:(int64_t)a3 service:(id)a4
+- (id)eventPayloadFor:(int64_t)for service:(id)service
 {
-  if (a4)
+  if (service)
   {
     v6 = sub_22B7DB6A8();
     v8 = v7;
@@ -39,8 +39,8 @@
     v8 = 0;
   }
 
-  v9 = self;
-  sub_22B772C7C(a3, v6, v8);
+  selfCopy = self;
+  sub_22B772C7C(for, v6, v8);
 
   v10 = sub_22B7DB568();
 

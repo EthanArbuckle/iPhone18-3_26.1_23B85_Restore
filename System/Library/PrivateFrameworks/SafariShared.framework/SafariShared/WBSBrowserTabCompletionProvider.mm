@@ -1,19 +1,19 @@
 @interface WBSBrowserTabCompletionProvider
-- (BOOL)_isOperationValidForQuery:(id)a3 tabInfos:(id)a4 selectedTabInfo:(id)a5;
+- (BOOL)_isOperationValidForQuery:(id)query tabInfos:(id)infos selectedTabInfo:(id)info;
 - (NSArray)tabInfos;
 - (WBSBrowserTabCompletionProvider)init;
 - (WBSBrowserTabCompletionProviderDelegate)delegate;
 - (WBSBrowserTabCompletionProviderSource)dataSource;
-- (id)_matchesForQuery:(id)a3 tabInfos:(id)a4 selectedTabInfo:(id)a5 forQueryID:(int64_t)a6;
-- (id)bestTabCompletionMatchFromMatches:(id)a3 withTopHitURL:(id)a4;
-- (id)bestTabCompletionMatchWithTopHitURL:(id)a3;
+- (id)_matchesForQuery:(id)query tabInfos:(id)infos selectedTabInfo:(id)info forQueryID:(int64_t)d;
+- (id)bestTabCompletionMatchFromMatches:(id)matches withTopHitURL:(id)l;
+- (id)bestTabCompletionMatchWithTopHitURL:(id)l;
 - (id)selectedTabInfo;
-- (int64_t)_compareTabMatch:(id)a3 otherTabMatch:(id)a4;
-- (unint64_t)_distanceFromSelectedTabForTabMatch:(id)a3;
+- (int64_t)_compareTabMatch:(id)match otherTabMatch:(id)tabMatch;
+- (unint64_t)_distanceFromSelectedTabForTabMatch:(id)match;
 - (void)_prepareQueue;
 - (void)invalidate;
-- (void)setCurrentQuery:(id)a3 forQueryID:(int64_t)a4;
-- (void)tabCompletionMatchesForQuery:(id)a3 completionHandler:(id)a4;
+- (void)setCurrentQuery:(id)query forQueryID:(int64_t)d;
+- (void)tabCompletionMatchesForQuery:(id)query completionHandler:(id)handler;
 @end
 
 @implementation WBSBrowserTabCompletionProvider
@@ -89,28 +89,28 @@
   return selectedTabInfo;
 }
 
-- (void)setCurrentQuery:(id)a3 forQueryID:(int64_t)a4
+- (void)setCurrentQuery:(id)query forQueryID:(int64_t)d
 {
-  v6 = a3;
+  queryCopy = query;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v6 length];
+  v8 = [queryCopy length];
   currentQuery = self->_currentQuery;
   if (v8)
   {
-    if (![v6 isEqualToString:currentQuery])
+    if (![queryCopy isEqualToString:currentQuery])
     {
       [(WBSBrowserTabCompletionProvider *)self _prepareQueue];
       currentTabCompletionMatches = self->_currentTabCompletionMatches;
       self->_currentTabCompletionMatches = 0;
 
-      v12 = [v6 copy];
+      v12 = [queryCopy copy];
       v13 = self->_currentQuery;
       self->_currentQuery = v12;
 
-      v14 = [(WBSBrowserTabCompletionProvider *)self tabInfos];
-      v15 = [v14 copy];
+      tabInfos = [(WBSBrowserTabCompletionProvider *)self tabInfos];
+      v15 = [tabInfos copy];
 
-      v16 = [(WBSBrowserTabCompletionProvider *)self selectedTabInfo];
+      selectedTabInfo = [(WBSBrowserTabCompletionProvider *)self selectedTabInfo];
       objc_initWeak(&location, self);
       queue = self->_queue;
       v20[0] = MEMORY[0x1E69E9820];
@@ -118,12 +118,12 @@
       v20[2] = __62__WBSBrowserTabCompletionProvider_setCurrentQuery_forQueryID___block_invoke;
       v20[3] = &unk_1E7FB6FD0;
       objc_copyWeak(v24, &location);
-      v21 = v6;
+      v21 = queryCopy;
       v18 = v15;
       v22 = v18;
-      v23 = v16;
-      v24[1] = a4;
-      v19 = v16;
+      v23 = selectedTabInfo;
+      v24[1] = d;
+      v19 = selectedTabInfo;
       [(NSOperationQueue *)queue addOperationWithBlock:v20];
 
       objc_destroyWeak(v24);
@@ -196,11 +196,11 @@ void __62__WBSBrowserTabCompletionProvider_setCurrentQuery_forQueryID___block_in
   }
 }
 
-- (void)tabCompletionMatchesForQuery:(id)a3 completionHandler:(id)a4
+- (void)tabCompletionMatchesForQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:self->_currentQuery])
+  queryCopy = query;
+  handlerCopy = handler;
+  if ([queryCopy isEqualToString:self->_currentQuery])
   {
     if (self->_currentTabCompletionMatches)
     {
@@ -212,7 +212,7 @@ void __62__WBSBrowserTabCompletionProvider_setCurrentQuery_forQueryID___block_in
       currentTabCompletionMatches = MEMORY[0x1E695E0F0];
     }
 
-    v7[2](v7, currentTabCompletionMatches);
+    handlerCopy[2](handlerCopy, currentTabCompletionMatches);
   }
 
   else
@@ -221,12 +221,12 @@ void __62__WBSBrowserTabCompletionProvider_setCurrentQuery_forQueryID___block_in
     v9 = self->_currentTabCompletionMatches;
     self->_currentTabCompletionMatches = 0;
 
-    v10 = [v6 copy];
+    v10 = [queryCopy copy];
     currentQuery = self->_currentQuery;
     self->_currentQuery = v10;
 
-    v12 = [(WBSBrowserTabCompletionProvider *)self tabInfos];
-    v13 = [v12 copy];
+    tabInfos = [(WBSBrowserTabCompletionProvider *)self tabInfos];
+    v13 = [tabInfos copy];
 
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -235,8 +235,8 @@ void __62__WBSBrowserTabCompletionProvider_setCurrentQuery_forQueryID___block_in
     v16[2] = __82__WBSBrowserTabCompletionProvider_tabCompletionMatchesForQuery_completionHandler___block_invoke;
     v16[3] = &unk_1E7FB7020;
     objc_copyWeak(&v20, &location);
-    v19 = v7;
-    v17 = v6;
+    v19 = handlerCopy;
+    v17 = queryCopy;
     v18 = v13;
     v15 = v13;
     [(NSOperationQueue *)queue addOperationWithBlock:v16];
@@ -308,32 +308,32 @@ void __82__WBSBrowserTabCompletionProvider_tabCompletionMatchesForQuery_completi
   self->_currentQuery = 0;
 }
 
-- (id)bestTabCompletionMatchWithTopHitURL:(id)a3
+- (id)bestTabCompletionMatchWithTopHitURL:(id)l
 {
-  v3 = [(WBSBrowserTabCompletionProvider *)self bestTabCompletionMatchFromMatches:self->_currentTabCompletionMatches withTopHitURL:a3];
+  v3 = [(WBSBrowserTabCompletionProvider *)self bestTabCompletionMatchFromMatches:self->_currentTabCompletionMatches withTopHitURL:l];
 
   return v3;
 }
 
-- (id)bestTabCompletionMatchFromMatches:(id)a3 withTopHitURL:(id)a4
+- (id)bestTabCompletionMatchFromMatches:(id)matches withTopHitURL:(id)l
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
-  v26 = v6;
-  v7 = [v6 firstObject];
-  v8 = v7;
-  if (v7)
+  matchesCopy = matches;
+  lCopy = l;
+  v26 = matchesCopy;
+  firstObject = [matchesCopy firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    [v7 setHighlyRelevant:0];
-    v9 = [v28 safari_userVisibleHostWithoutWWWSubdomain];
-    if (v9)
+    [firstObject setHighlyRelevant:0];
+    safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
+    if (safari_userVisibleHostWithoutWWWSubdomain)
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      obj = v6;
+      obj = matchesCopy;
       v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v10)
       {
@@ -348,17 +348,17 @@ LABEL_5:
           }
 
           v13 = *(*(&v29 + 1) + 8 * v12);
-          v14 = [v13 tabGroupUUID];
-          v15 = v14 == 0;
+          tabGroupUUID = [v13 tabGroupUUID];
+          v15 = tabGroupUUID == 0;
 
           if (!v15)
           {
             break;
           }
 
-          v16 = [v13 windowUUID];
-          v17 = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo windowUUID];
-          v18 = [v16 isEqual:v17];
+          windowUUID = [v13 windowUUID];
+          windowUUID2 = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo windowUUID];
+          v18 = [windowUUID isEqual:windowUUID2];
 
           if ((v18 & 1) == 0)
           {
@@ -366,13 +366,13 @@ LABEL_5:
           }
 
           v19 = [v13 url];
-          v20 = [v19 safari_isTopLevelURL];
+          safari_isTopLevelURL = [v19 safari_isTopLevelURL];
 
-          if (v20)
+          if (safari_isTopLevelURL)
           {
             v21 = [v13 url];
-            v22 = [v21 safari_userVisibleHostWithoutWWWSubdomain];
-            v23 = [v9 isEqualToString:v22];
+            safari_userVisibleHostWithoutWWWSubdomain2 = [v21 safari_userVisibleHostWithoutWWWSubdomain];
+            v23 = [safari_userVisibleHostWithoutWWWSubdomain isEqualToString:safari_userVisibleHostWithoutWWWSubdomain2];
 
             if (v23)
             {
@@ -403,18 +403,18 @@ LABEL_5:
   return v8;
 }
 
-- (id)_matchesForQuery:(id)a3 tabInfos:(id)a4 selectedTabInfo:(id)a5 forQueryID:(int64_t)a6
+- (id)_matchesForQuery:(id)query tabInfos:(id)infos selectedTabInfo:(id)info forQueryID:(int64_t)d
 {
   v58 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v8 = a4;
-  v9 = a5;
-  v31 = [MEMORY[0x1E695DF70] array];
+  queryCopy = query;
+  infosCopy = infos;
+  infoCopy = info;
+  array = [MEMORY[0x1E695DF70] array];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v8;
+  obj = infosCopy;
   v10 = [obj countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v10)
   {
@@ -429,19 +429,19 @@ LABEL_5:
         }
 
         v13 = *(*(&v53 + 1) + 8 * i);
-        v14 = [v13 uuid];
-        v15 = [v9 uuid];
-        v16 = [v14 isEqual:v15];
+        uuid = [v13 uuid];
+        uuid2 = [infoCopy uuid];
+        v16 = [uuid isEqual:uuid2];
 
         if ((v16 & 1) == 0)
         {
           v17 = [v13 url];
-          v18 = [v9 url];
+          v18 = [infoCopy url];
           if ([v17 isEqual:v18])
           {
-            v19 = [v13 title];
-            v20 = [v9 title];
-            v21 = [v19 isEqual:v20];
+            title = [v13 title];
+            title2 = [infoCopy title];
+            v21 = [title isEqual:title2];
 
             if (v21)
             {
@@ -463,15 +463,15 @@ LABEL_5:
             v51 = __Block_byref_object_dispose_;
             v52 = 0;
             v25 = [v13 url];
-            v26 = [v25 safari_isSafariExtensionURL];
+            safari_isSafariExtensionURL = [v25 safari_isSafariExtensionURL];
 
-            if (!v26 || (v43 = 0, v44 = &v43, v45 = 0x2020000000, v46 = 0, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTabInfo_forQueryID___block_invoke, block[3] = &unk_1E7FB7048, v38 = WeakRetained, v39 = self, v40 = v13, v41 = &v43, v42 = &v47, dispatch_sync(MEMORY[0x1E69E96A0], block), v27 = *(v44 + 24), v38, _Block_object_dispose(&v43, 8), (v27 & 1) == 0))
+            if (!safari_isSafariExtensionURL || (v43 = 0, v44 = &v43, v45 = 0x2020000000, v46 = 0, block[0] = MEMORY[0x1E69E9820], block[1] = 3221225472, block[2] = __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTabInfo_forQueryID___block_invoke, block[3] = &unk_1E7FB7048, v38 = WeakRetained, v39 = self, v40 = v13, v41 = &v43, v42 = &v47, dispatch_sync(MEMORY[0x1E69E96A0], block), v27 = *(v44 + 24), v38, _Block_object_dispose(&v43, 8), (v27 & 1) == 0))
             {
               v28 = [WBSBrowserTabCompletionMatch alloc];
-              v29 = [(WBSBrowserTabCompletionMatch *)v28 initWithTabInfo:v13 userTypedString:v33 alternativeDisplayTextForURL:v48[5] forQueryID:a6];
+              v29 = [(WBSBrowserTabCompletionMatch *)v28 initWithTabInfo:v13 userTypedString:queryCopy alternativeDisplayTextForURL:v48[5] forQueryID:d];
               if (v29)
               {
-                [v31 addObject:v29];
+                [array addObject:v29];
               }
             }
 
@@ -491,9 +491,9 @@ LABEL_5:
   v36[2] = __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTabInfo_forQueryID___block_invoke_2;
   v36[3] = &unk_1E7FB7070;
   v36[4] = self;
-  [v31 sortUsingComparator:v36];
+  [array sortUsingComparator:v36];
 
-  return v31;
+  return array;
 }
 
 void __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTabInfo_forQueryID___block_invoke(uint64_t a1)
@@ -515,38 +515,38 @@ void __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTab
   }
 }
 
-- (BOOL)_isOperationValidForQuery:(id)a3 tabInfos:(id)a4 selectedTabInfo:(id)a5
+- (BOOL)_isOperationValidForQuery:(id)query tabInfos:(id)infos selectedTabInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = ([v8 isEqualToString:self->_currentQuery] & 1) != 0 && (self->_tabInfos == v9 || -[NSArray isEqualToArray:](v9, "isEqualToArray:")) && self->_selectedTabInfo == v10;
+  queryCopy = query;
+  infosCopy = infos;
+  infoCopy = info;
+  v11 = ([queryCopy isEqualToString:self->_currentQuery] & 1) != 0 && (self->_tabInfos == infosCopy || -[NSArray isEqualToArray:](infosCopy, "isEqualToArray:")) && self->_selectedTabInfo == infoCopy;
 
   return v11;
 }
 
-- (int64_t)_compareTabMatch:(id)a3 otherTabMatch:(id)a4
+- (int64_t)_compareTabMatch:(id)match otherTabMatch:(id)tabMatch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 tabGroupUUID];
+  matchCopy = match;
+  tabMatchCopy = tabMatch;
+  tabGroupUUID = [matchCopy tabGroupUUID];
 
-  v9 = [v7 tabGroupUUID];
+  tabGroupUUID2 = [tabMatchCopy tabGroupUUID];
 
-  if (v8 || !v9)
+  if (tabGroupUUID || !tabGroupUUID2)
   {
-    if (v8 && !v9)
+    if (tabGroupUUID && !tabGroupUUID2)
     {
       v10 = 1;
       goto LABEL_14;
     }
 
-    v11 = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo windowUUID];
-    v12 = [v6 windowUUID];
-    v13 = [v12 isEqual:v11];
+    windowUUID = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo windowUUID];
+    windowUUID2 = [matchCopy windowUUID];
+    v13 = [windowUUID2 isEqual:windowUUID];
 
-    v14 = [v7 windowUUID];
-    v15 = [v14 isEqual:v11];
+    windowUUID3 = [tabMatchCopy windowUUID];
+    v15 = [windowUUID3 isEqual:windowUUID];
 
     if (!(v15 & 1 | ((v13 & 1) == 0)))
     {
@@ -555,40 +555,40 @@ void __88__WBSBrowserTabCompletionProvider__matchesForQuery_tabInfos_selectedTab
 
     if (v13 & 1 | ((v15 & 1) == 0))
     {
-      v16 = [v6 matchLocation];
-      if (v16 > [v7 matchLocation])
+      matchLocation = [matchCopy matchLocation];
+      if (matchLocation > [tabMatchCopy matchLocation])
       {
 LABEL_10:
         v10 = -1;
         goto LABEL_13;
       }
 
-      v17 = [v6 matchLocation];
-      if (v17 >= [v7 matchLocation])
+      matchLocation2 = [matchCopy matchLocation];
+      if (matchLocation2 >= [tabMatchCopy matchLocation])
       {
-        v19 = [v6 url];
-        v20 = [v19 safari_isTopLevelURL];
+        v19 = [matchCopy url];
+        safari_isTopLevelURL = [v19 safari_isTopLevelURL];
 
-        v21 = [v7 url];
-        v22 = [v21 safari_isTopLevelURL];
+        v21 = [tabMatchCopy url];
+        safari_isTopLevelURL2 = [v21 safari_isTopLevelURL];
 
-        if (!(v22 & 1 | ((v20 & 1) == 0)))
+        if (!(safari_isTopLevelURL2 & 1 | ((safari_isTopLevelURL & 1) == 0)))
         {
           goto LABEL_10;
         }
 
-        if (v20 & 1 | ((v22 & 1) == 0))
+        if (safari_isTopLevelURL & 1 | ((safari_isTopLevelURL2 & 1) == 0))
         {
-          v23 = [v6 tabGroupUUID];
-          if (v23)
+          tabGroupUUID3 = [matchCopy tabGroupUUID];
+          if (tabGroupUUID3)
           {
           }
 
           else
           {
-            v24 = [v7 tabGroupUUID];
+            tabGroupUUID4 = [tabMatchCopy tabGroupUUID];
 
-            if (v24)
+            if (tabGroupUUID4)
             {
               v25 = 0;
             }
@@ -600,8 +600,8 @@ LABEL_10:
 
             if (v25 & v15)
             {
-              v26 = [(WBSBrowserTabCompletionProvider *)self _distanceFromSelectedTabForTabMatch:v6];
-              v27 = [(WBSBrowserTabCompletionProvider *)self _distanceFromSelectedTabForTabMatch:v7];
+              v26 = [(WBSBrowserTabCompletionProvider *)self _distanceFromSelectedTabForTabMatch:matchCopy];
+              v27 = [(WBSBrowserTabCompletionProvider *)self _distanceFromSelectedTabForTabMatch:tabMatchCopy];
               v28 = -1;
               if (v26 >= v27)
               {
@@ -640,19 +640,19 @@ LABEL_14:
   return v10;
 }
 
-- (unint64_t)_distanceFromSelectedTabForTabMatch:(id)a3
+- (unint64_t)_distanceFromSelectedTabForTabMatch:(id)match
 {
-  v4 = a3;
-  v5 = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo tabIndex];
-  v6 = [v4 tabIndex];
-  if ((v5 - v6) >= 0)
+  matchCopy = match;
+  tabIndex = [(WBSBrowserTabCompletionInfo *)self->_selectedTabInfo tabIndex];
+  tabIndex2 = [matchCopy tabIndex];
+  if ((tabIndex - tabIndex2) >= 0)
   {
-    v7 = v5 - v6;
+    v7 = tabIndex - tabIndex2;
   }
 
   else
   {
-    v7 = v6 - v5;
+    v7 = tabIndex2 - tabIndex;
   }
 
   return v7;

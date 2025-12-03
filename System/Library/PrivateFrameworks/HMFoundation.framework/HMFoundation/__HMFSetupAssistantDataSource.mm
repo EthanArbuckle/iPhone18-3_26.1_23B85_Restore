@@ -29,15 +29,15 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (SetupAssistantLibraryCore())
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     BYSetupAssistantFinishedDarwinNotification = getBYSetupAssistantFinishedDarwinNotification();
-    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v2, BYSetupAssistantFinishedDarwinNotification, 0);
+    CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, BYSetupAssistantFinishedDarwinNotification, 0);
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = __HMFSetupAssistantDataSource;
   [(__HMFSetupAssistantDataSource *)&v5 dealloc];
 }

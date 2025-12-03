@@ -1,13 +1,13 @@
 @interface REUIScaledFullColorImageView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)initFullColorImageViewWithDevice:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (id)initFullColorImageViewWithDevice:(id)device;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation REUIScaledFullColorImageView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v14.receiver = self;
   v14.super_class = REUIScaledFullColorImageView;
@@ -15,7 +15,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(REUIScaledFullColorImageView *)&v14 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(REUIScaledFullColorImageView *)&v14 initWithFrame:device, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v3, v4, v5, v6}];
@@ -24,13 +24,13 @@
 
     [(UIImageView *)v7->_imageView setContentMode:2];
     [(UIImageView *)v7->_imageView setClipsToBounds:1];
-    v10 = [(UIImageView *)v7->_imageView layer];
-    [v10 setShouldRasterize:1];
+    layer = [(UIImageView *)v7->_imageView layer];
+    [layer setShouldRasterize:1];
 
-    v11 = [(UIImageView *)v7->_imageView layer];
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
-    [v11 setRasterizationScale:?];
+    layer2 = [(UIImageView *)v7->_imageView layer];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [layer2 setRasterizationScale:?];
 
     [(REUIScaledFullColorImageView *)v7 addSubview:v7->_imageView];
   }
@@ -38,15 +38,15 @@
   return v7;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v8 = [v5 objectForKeyedSubscript:REUIScaledFullColorImageViewImageMetadataKey];
+  metadata = [provider metadata];
+  v8 = [metadata objectForKeyedSubscript:REUIScaledFullColorImageViewImageMetadataKey];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
-  v6 = [(REUIScaledFullColorImageView *)self imageView];
-  if (v5)
+  LOBYTE(metadata) = objc_opt_isKindOfClass();
+  imageView = [(REUIScaledFullColorImageView *)self imageView];
+  if (metadata)
   {
     v7 = v8;
   }
@@ -56,7 +56,7 @@
     v7 = 0;
   }
 
-  [v6 setImage:v7];
+  [imageView setImage:v7];
 }
 
 - (void)layoutSubviews
@@ -68,7 +68,7 @@
   Width = CGRectGetWidth(v18);
   [(REUIScaledFullColorImageView *)self bounds];
   Height = CGRectGetHeight(v19);
-  v5 = [(REUIScaledFullColorImageView *)self imageView];
+  imageView = [(REUIScaledFullColorImageView *)self imageView];
   v20.origin.x = 0.0;
   v20.origin.y = 0.0;
   v20.size.width = Width;
@@ -78,7 +78,7 @@
   v21.origin.y = 0.0;
   v21.size.width = Width;
   v21.size.height = Height;
-  [v5 setCenter:{MidX, CGRectGetMidY(v21)}];
+  [imageView setCenter:{MidX, CGRectGetMidY(v21)}];
 
   v22.origin.x = 0.0;
   v22.origin.y = 0.0;
@@ -89,8 +89,8 @@
   y = v23.origin.y;
   v9 = v23.size.width;
   v10 = v23.size.height;
-  v11 = [(REUIScaledFullColorImageView *)self imageView];
-  [v11 setBounds:{x, y, v9, v10}];
+  imageView2 = [(REUIScaledFullColorImageView *)self imageView];
+  [imageView2 setBounds:{x, y, v9, v10}];
 
   v24.origin.x = x;
   v24.origin.y = y;
@@ -112,9 +112,9 @@
     v14 = v12;
   }
 
-  v15 = [(REUIScaledFullColorImageView *)self imageView];
-  v16 = [v15 layer];
-  [v16 setCornerRadius:v14 * 0.5];
+  imageView3 = [(REUIScaledFullColorImageView *)self imageView];
+  layer = [imageView3 layer];
+  [layer setCornerRadius:v14 * 0.5];
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

@@ -1,17 +1,17 @@
 @interface NSTextTable
 + (void)initialize;
-- (BOOL)_missingColumnsForRowRange:(_NSRange)a3 blockIndex:(unint64_t)a4 text:(id)a5;
-- (CGRect)_contentRectForCharRange:(_NSRange)a3 textContainer:(id)a4;
+- (BOOL)_missingColumnsForRowRange:(_NSRange)range blockIndex:(unint64_t)index text:(id)text;
+- (CGRect)_contentRectForCharRange:(_NSRange)range textContainer:(id)container;
 - (NSRect)boundsRectForBlock:(NSTextTableBlock *)block contentRect:(NSRect)contentRect inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)charRange;
 - (NSRect)rectForBlock:(NSTextTableBlock *)block layoutAtPoint:(NSPoint)startingPoint inRect:(NSRect)rect textContainer:(NSTextContainer *)textContainer characterRange:(NSRange)charRange;
 - (NSTextTable)init;
-- (NSTextTable)initWithCoder:(id)a3;
-- (id)_descriptionAtIndex:(unint64_t)a3 text:(id)a4;
-- (id)_rowArrayForBlock:(id)a3 atIndex:(unint64_t)a4 text:(id)a5 layoutManager:(id)a6 containerWidth:(double)a7 withRepetitions:(BOOL)a8 collapseBorders:(BOOL)a9 rowCharRange:(_NSRange *)a10 indexInRow:(unint64_t *)a11 startingRow:(int64_t *)a12 startingColumn:(int64_t *)a13 previousRowBlockHelper:(id *)a14;
-- (void)_takeValuesFromTextBlock:(id)a3;
+- (NSTextTable)initWithCoder:(id)coder;
+- (id)_descriptionAtIndex:(unint64_t)index text:(id)text;
+- (id)_rowArrayForBlock:(id)block atIndex:(unint64_t)index text:(id)text layoutManager:(id)manager containerWidth:(double)width withRepetitions:(BOOL)repetitions collapseBorders:(BOOL)borders rowCharRange:(_NSRange *)self0 indexInRow:(unint64_t *)self1 startingRow:(int64_t *)self2 startingColumn:(int64_t *)self3 previousRowBlockHelper:(id *)self4;
+- (void)_takeValuesFromTextBlock:(id)block;
 - (void)dealloc;
 - (void)drawBackgroundForBlock:(NSTextTableBlock *)block withFrame:(NSRect)frameRect inView:(NSView *)controlView characterRange:(NSRange)charRange layoutManager:(NSLayoutManager *)layoutManager;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setHidesEmptyCells:(BOOL)hidesEmptyCells;
 @end
 
@@ -19,10 +19,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [NSTextTable setVersion:1];
-    __NSTextTableClass = a1;
+    __NSTextTableClass = self;
   }
 }
 
@@ -40,15 +40,15 @@
   [(NSTextBlock *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NSTextTable;
   [(NSTextBlock *)&v8 encodeWithCoder:?];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:self->_numCols forKey:@"NSNumCols"];
-    [a3 encodeInteger:self->_tableFlags forKey:@"NSTableFlags"];
+    [coder encodeInteger:self->_numCols forKey:@"NSNumCols"];
+    [coder encodeInteger:self->_tableFlags forKey:@"NSTableFlags"];
   }
 
   else
@@ -56,30 +56,30 @@
     numCols = self->_numCols;
     tableFlags = self->_tableFlags;
     v7 = numCols;
-    [a3 encodeValuesOfObjCTypes:{"II", &v7, &tableFlags}];
+    [coder encodeValuesOfObjCTypes:{"II", &v7, &tableFlags}];
   }
 }
 
-- (NSTextTable)initWithCoder:(id)a3
+- (NSTextTable)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = NSTextTable;
   v4 = [(NSTextBlock *)&v10 initWithCoder:?];
   if (v4)
   {
-    if ([a3 allowsKeyedCoding])
+    if ([coder allowsKeyedCoding])
     {
-      v4->_numCols = [a3 decodeIntegerForKey:@"NSNumCols"];
-      v4->_tableFlags = [a3 decodeIntegerForKey:@"NSTableFlags"];
+      v4->_numCols = [coder decodeIntegerForKey:@"NSNumCols"];
+      v4->_tableFlags = [coder decodeIntegerForKey:@"NSTableFlags"];
     }
 
     else
     {
-      v5 = [a3 versionForClassName:@"NSTextTable"];
+      v5 = [coder versionForClassName:@"NSTextTable"];
       if (v5 == 1)
       {
         v9 = 0;
-        [a3 decodeValuesOfObjCTypes:{"II", &v9 + 4, &v9}];
+        [coder decodeValuesOfObjCTypes:{"II", &v9 + 4, &v9}];
         v4->_numCols = HIDWORD(v9);
         v4->_tableFlags = v9;
       }
@@ -98,7 +98,7 @@
   return v4;
 }
 
-- (void)_takeValuesFromTextBlock:(id)a3
+- (void)_takeValuesFromTextBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NSTextTable;
@@ -106,8 +106,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_numCols = *(a3 + 6);
-    self->_tableFlags = *(a3 + 7);
+    self->_numCols = *(block + 6);
+    self->_tableFlags = *(block + 7);
   }
 }
 
@@ -122,32 +122,32 @@
   self->_tableFlags = self->_tableFlags & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (id)_rowArrayForBlock:(id)a3 atIndex:(unint64_t)a4 text:(id)a5 layoutManager:(id)a6 containerWidth:(double)a7 withRepetitions:(BOOL)a8 collapseBorders:(BOOL)a9 rowCharRange:(_NSRange *)a10 indexInRow:(unint64_t *)a11 startingRow:(int64_t *)a12 startingColumn:(int64_t *)a13 previousRowBlockHelper:(id *)a14
+- (id)_rowArrayForBlock:(id)block atIndex:(unint64_t)index text:(id)text layoutManager:(id)manager containerWidth:(double)width withRepetitions:(BOOL)repetitions collapseBorders:(BOOL)borders rowCharRange:(_NSRange *)self0 indexInRow:(unint64_t *)self1 startingRow:(int64_t *)self2 startingColumn:(int64_t *)self3 previousRowBlockHelper:(id *)self4
 {
-  v111 = a9;
-  v14 = a8;
-  v20 = [a5 _rangeOfTextTableRow:? atIndex:?];
+  bordersCopy = borders;
+  repetitionsCopy = repetitions;
+  v20 = [text _rangeOfTextTableRow:? atIndex:?];
   v22 = v21;
-  v127 = a5;
-  v125 = a4;
-  v23 = [objc_msgSend(a5 "attribute:"textBlocks" atIndex:? effectiveRange:?")];
+  textCopy = text;
+  indexCopy = index;
+  v23 = [objc_msgSend(text "attribute:"textBlocks" atIndex:? effectiveRange:?")];
   v24 = [v23 count];
   v25 = v24;
-  v112 = v14;
-  if (a12)
+  v112 = repetitionsCopy;
+  if (startingRow)
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v14;
+    v26 = repetitionsCopy;
   }
 
-  v117 = a6;
-  if (a3)
+  managerCopy = manager;
+  if (block)
   {
-    v27 = a6 == 0;
+    v27 = manager == 0;
   }
 
   else
@@ -160,16 +160,16 @@
     v26 = 1;
   }
 
-  if (a13)
+  if (column)
   {
     v26 = 1;
   }
 
   v120 = v26;
-  if (a10)
+  if (range)
   {
-    a10->location = v20;
-    a10->length = v22;
+    range->location = v20;
+    range->length = v22;
   }
 
   v121 = v22;
@@ -178,16 +178,16 @@
   {
     v28 = *MEMORY[0x1E695D930];
     v29 = 1;
-    v30 = self;
+    selfCopy2 = self;
     do
     {
       v31 = v29 - 1;
       v32 = [v23 objectAtIndex:v29 - 1];
-      if (v32 == a3)
+      if (v32 == block)
       {
-        if (a3 && [a3 table] != self)
+        if (block && [block table] != self)
         {
-          [MEMORY[0x1E695DF30] raise:v28 format:{@"*** block %p has table %p rather than %p at index %lu", a3, objc_msgSend(a3, "table"), self, v125}];
+          [MEMORY[0x1E695DF30] raise:v28 format:{@"*** block %p has table %p rather than %p at index %lu", block, objc_msgSend(block, "table"), self, indexCopy}];
         }
       }
 
@@ -197,12 +197,12 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v33 table] == self)
         {
-          if (a3)
+          if (block)
           {
-            [MEMORY[0x1E695DF30] raise:v28 format:{@"*** table %p has block %p rather than %p at index %lu", self, v33, a3, v125}];
+            [MEMORY[0x1E695DF30] raise:v28 format:{@"*** table %p has block %p rather than %p at index %lu", self, v33, block, indexCopy}];
           }
 
-          a3 = v33;
+          block = v33;
         }
 
         else
@@ -229,37 +229,37 @@
   else
   {
     v31 = 0x7FFFFFFFFFFFFFFFLL;
-    v30 = self;
+    selfCopy2 = self;
   }
 
-  if (a3)
+  if (block)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"*** table %p has no block at index %lu", v30, v125}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"*** table %p has no block at index %lu", selfCopy2, indexCopy}];
     v34 = v20;
     v35 = v121;
-    v36 = a14;
+    helperCopy3 = helper;
 LABEL_35:
-    v123 = [a3 startingRow];
-    v116 = [a3 startingColumn];
+    startingRow = [block startingRow];
+    startingColumn = [block startingColumn];
     goto LABEL_36;
   }
 
 LABEL_34:
   v34 = v20;
   v35 = v121;
-  v36 = a14;
-  if (a3)
+  helperCopy3 = helper;
+  if (block)
   {
     goto LABEL_35;
   }
 
-  v123 = 0;
-  v116 = 0;
+  startingRow = 0;
+  startingColumn = 0;
 LABEL_36:
   v37 = 0x7FFFFFFFFFFFFFFFLL;
   v128 = 0;
   v129 = 0;
-  if (!v36)
+  if (!helperCopy3)
   {
     v118 = 0;
     v49 = v34;
@@ -273,7 +273,7 @@ LABEL_36:
   }
 
   v39 = v34 - 1;
-  v38 = [objc_msgSend(v127 attribute:@"NSParagraphStyle" atIndex:v34 - 1 effectiveRange:{0), "textBlocks"}];
+  v38 = [objc_msgSend(textCopy attribute:@"NSParagraphStyle" atIndex:v34 - 1 effectiveRange:{0), "textBlocks"}];
   if (!v38)
   {
     goto LABEL_71;
@@ -303,7 +303,7 @@ LABEL_73:
     while (!v44);
     v27 = v42 == v43;
     v34 = v124;
-    v36 = a14;
+    helperCopy3 = helper;
     if (!v27)
     {
       goto LABEL_72;
@@ -321,10 +321,10 @@ LABEL_72:
     goto LABEL_73;
   }
 
-  v46 = [v45 table];
+  table = [v45 table];
   v38 = 0;
   v37 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v46 != v30 || !v45)
+  if (table != selfCopy2 || !v45)
   {
 LABEL_68:
     v49 = v34;
@@ -332,18 +332,18 @@ LABEL_68:
     goto LABEL_74;
   }
 
-  v47 = [v45 startingRow];
+  startingRow2 = [v45 startingRow];
   v107 = v45;
-  if ([v45 rowSpan] + v47 == v123)
+  if ([v45 rowSpan] + startingRow2 == startingRow)
   {
     v118 = 0;
     v49 = v34;
 LABEL_167:
-    v38 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v107 charIndex:v39 text:v127 layoutManager:v117 containerWidth:v111 collapseBorders:a7];
+    v38 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v107 charIndex:v39 text:textCopy layoutManager:managerCopy containerWidth:bordersCopy collapseBorders:width];
     goto LABEL_74;
   }
 
-  v37 = [v127 rangeOfTextTable:v30 atIndex:v125];
+  v37 = [textCopy rangeOfTextTable:selfCopy2 atIndex:indexCopy];
   v118 = v48;
   v49 = v37;
   if (v37 >= v34)
@@ -353,7 +353,7 @@ LABEL_167:
 
   do
   {
-    v50 = [objc_msgSend(v127 attribute:@"NSParagraphStyle" atIndex:v49 longestEffectiveRange:&v128 inRange:{v37, v118), "textBlocks"}];
+    v50 = [objc_msgSend(textCopy attribute:@"NSParagraphStyle" atIndex:v49 longestEffectiveRange:&v128 inRange:{v37, v118), "textBlocks"}];
     if (v50)
     {
       v51 = v50;
@@ -370,17 +370,17 @@ LABEL_167:
         else
         {
           v54 = v52;
-          v55 = [v52 startingRow];
-          v56 = [v54 rowSpan] + v55;
+          startingRow3 = [v52 startingRow];
+          v56 = [v54 rowSpan] + startingRow3;
           v34 = v124;
-          if (v56 == v123)
+          if (v56 == startingRow)
           {
             v53 = v54;
           }
 
           v107 = v53;
           v39 = v113;
-          if (v56 == v123)
+          if (v56 == startingRow)
           {
             v39 = v49;
           }
@@ -399,16 +399,16 @@ LABEL_167:
 
   v38 = 0;
 LABEL_74:
-  *v36 = v38;
+  *helperCopy3 = v38;
 LABEL_75:
-  if ((v120 & 1) != 0 || (v57 = [v117 _rowArrayCache]) == 0 || (v34 == *(v57 + 8) ? (v58 = v35 == *(v57 + 16)) : (v58 = 0), !v58 || *(v57 + 40) != v111 || vabdd_f64(a7, *(v57 + 24)) >= 0.001))
+  if ((v120 & 1) != 0 || (v57 = [managerCopy _rowArrayCache]) == 0 || (v34 == *(v57 + 8) ? (v58 = v35 == *(v57 + 16)) : (v58 = 0), !v58 || *(v57 + 40) != bordersCopy || vabdd_f64(width, *(v57 + 24)) >= 0.001))
   {
-    v59 = 0;
+    array = 0;
     goto LABEL_95;
   }
 
-  v59 = *(v57 + 32);
-  if (!v59)
+  array = *(v57 + 32);
+  if (!array)
   {
 LABEL_95:
     v61 = 0x7FFFFFFFFFFFFFFFLL;
@@ -428,23 +428,23 @@ LABEL_95:
   do
   {
     v62 = v61;
-    v63 = [v59 objectAtIndex:v60];
+    v63 = [array objectAtIndex:v60];
     v64 = *(v63 + 8);
     if (v64)
     {
       v65 = v63;
-      [v117 layoutRectForTextBlock:v64 atIndex:*(v63 + 32) effectiveRange:0];
+      [managerCopy layoutRectForTextBlock:v64 atIndex:*(v63 + 32) effectiveRange:0];
       v65[6] = v66;
       v65[7] = v67;
       v65[8] = v68;
       v65[9] = v69;
       v35 = v121;
-      [v117 boundsRectForTextBlock:v64 atIndex:v65[4] effectiveRange:0];
+      [managerCopy boundsRectForTextBlock:v64 atIndex:v65[4] effectiveRange:0];
       v65[10] = v70;
       v65[11] = v71;
       v65[12] = v72;
       v65[13] = v73;
-      if (v64 == a3)
+      if (v64 == block)
       {
         v61 = v60;
       }
@@ -467,13 +467,13 @@ LABEL_95:
   v34 = v124;
   v37 = v108;
 LABEL_96:
-  if (v31 == 0x7FFFFFFFFFFFFFFFLL || v59)
+  if (v31 == 0x7FFFFFFFFFFFFFFFLL || array)
   {
 LABEL_159:
-    v101 = a12;
-    v100 = a13;
-    v103 = a11;
-    if (!a11)
+    startingRowCopy2 = startingRow;
+    columnCopy2 = column;
+    rowCopy2 = row;
+    if (!row)
     {
       goto LABEL_161;
     }
@@ -483,7 +483,7 @@ LABEL_159:
 
   v115 = v61;
   v109 = v37;
-  v59 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v74 = v34 + v35;
   if (v49 >= v34 + v35)
   {
@@ -495,44 +495,44 @@ LABEL_159:
     v75 = 0;
     do
     {
-      v76 = [objc_msgSend(v127 attribute:@"NSParagraphStyle" atIndex:v49 longestEffectiveRange:&v128 inRange:{v34, v35), "textBlocks"}];
+      v76 = [objc_msgSend(textCopy attribute:@"NSParagraphStyle" atIndex:v49 longestEffectiveRange:&v128 inRange:{v34, v35), "textBlocks"}];
       if (v76 && (v77 = v76, [v76 count] > v31))
       {
         v78 = [v77 objectAtIndex:v31];
-        v79 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v78 charIndex:v49 text:v127 layoutManager:v117 containerWidth:v111 collapseBorders:a7];
-        v80 = [v78 startingRow];
-        v81 = [v78 startingColumn];
-        v105 = [v78 columnSpan];
+        v79 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v78 charIndex:v49 text:textCopy layoutManager:managerCopy containerWidth:bordersCopy collapseBorders:width];
+        startingRow4 = [v78 startingRow];
+        startingColumn2 = [v78 startingColumn];
+        columnSpan = [v78 columnSpan];
         if (v75)
         {
-          v80 = v123;
+          startingRow4 = startingRow;
         }
 
         v82 = v115;
-        v83 = v116;
+        v83 = startingColumn;
         if (!v75)
         {
-          v83 = v81;
+          v83 = startingColumn2;
         }
 
-        v116 = v83;
-        if (v78 == a3)
+        startingColumn = v83;
+        if (v78 == block)
         {
-          v82 = [v59 count];
+          v82 = [array count];
         }
 
-        v123 = v80;
+        startingRow = startingRow4;
         v115 = v82;
         if (v112)
         {
           v34 = v124;
           v35 = v121;
-          if (v105 >= 1)
+          if (columnSpan >= 1)
           {
-            v84 = v105;
+            v84 = columnSpan;
             do
             {
-              [v59 addObject:v79];
+              [array addObject:v79];
               --v84;
             }
 
@@ -542,12 +542,12 @@ LABEL_159:
 
         else
         {
-          [v59 addObject:v79];
+          [array addObject:v79];
           v34 = v124;
           v35 = v121;
         }
 
-        v75 += v105;
+        v75 += columnSpan;
         v49 = v79[3] + v79[2];
       }
 
@@ -560,13 +560,13 @@ LABEL_159:
     while (v49 < v74);
   }
 
-  if (v75 < v30->_numCols)
+  if (v75 < selfCopy2->_numCols)
   {
     v85 = v109;
     v86 = v118;
     if (!v118)
     {
-      v85 = [v127 rangeOfTextTable:v30 atIndex:v125];
+      v85 = [textCopy rangeOfTextTable:selfCopy2 atIndex:indexCopy];
       v86 = v87;
     }
 
@@ -577,30 +577,30 @@ LABEL_159:
       v119 = v86;
       do
       {
-        if (v75 >= v30->_numCols)
+        if (v75 >= selfCopy2->_numCols)
         {
           break;
         }
 
-        v89 = [objc_msgSend(v127 attribute:@"NSParagraphStyle" atIndex:v88 longestEffectiveRange:&v128 inRange:{v85, v86), "textBlocks"}];
+        v89 = [objc_msgSend(textCopy attribute:@"NSParagraphStyle" atIndex:v88 longestEffectiveRange:&v128 inRange:{v85, v86), "textBlocks"}];
         if (v89 && (v90 = v89, [v89 count] > v31))
         {
           v91 = [v90 objectAtIndex:v31];
-          v92 = [v91 startingRow];
-          v93 = [v91 rowSpan];
-          v94 = [v91 startingColumn];
-          v95 = [v91 columnSpan];
-          if (v92 <= v123 && v93 + v92 > v123)
+          startingRow5 = [v91 startingRow];
+          rowSpan = [v91 rowSpan];
+          startingColumn3 = [v91 startingColumn];
+          columnSpan2 = [v91 columnSpan];
+          if (startingRow5 <= startingRow && rowSpan + startingRow5 > startingRow)
           {
-            v106 = v95;
-            v96 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v91 charIndex:v88 text:v127 layoutManager:v117 containerWidth:v111 collapseBorders:a7];
+            v106 = columnSpan2;
+            v96 = [[NSTextBlockLayoutHelper alloc] initWithTextBlock:v91 charIndex:v88 text:textCopy layoutManager:managerCopy containerWidth:bordersCopy collapseBorders:width];
             v97 = 0;
-            if ([v59 count])
+            if ([array count])
             {
               v86 = v119;
               do
               {
-                if (v94 < [*(objc_msgSend(v59 objectAtIndex:{v97) + 8), "startingColumn"}])
+                if (startingColumn3 < [*(objc_msgSend(array objectAtIndex:{v97) + 8), "startingColumn"}])
                 {
                   break;
                 }
@@ -608,7 +608,7 @@ LABEL_159:
                 ++v97;
               }
 
-              while (v97 < [v59 count]);
+              while (v97 < [array count]);
             }
 
             else
@@ -631,7 +631,7 @@ LABEL_159:
                 v99 = v115;
                 do
                 {
-                  [v59 insertObject:v126 atIndex:v97];
+                  [array insertObject:v126 atIndex:v97];
                   if (v97 <= v99)
                   {
                     ++v99;
@@ -646,7 +646,7 @@ LABEL_159:
 
             else
             {
-              [v59 insertObject:v96 atIndex:v97];
+              [array insertObject:v96 atIndex:v97];
               v99 = v115;
               if (v97 <= v115)
               {
@@ -684,50 +684,50 @@ LABEL_159:
 
   if (v112)
   {
-    while (v75 < v30->_numCols)
+    while (v75 < selfCopy2->_numCols)
     {
-      [v59 addObject:{objc_msgSend(v59, "lastObject")}];
+      [array addObject:{objc_msgSend(array, "lastObject")}];
       ++v75;
     }
   }
 
-  v101 = a12;
-  v100 = a13;
+  startingRowCopy2 = startingRow;
+  columnCopy2 = column;
   if ((v120 & 1) == 0)
   {
-    v102 = [[NSLayoutManagerTextBlockRowArrayCache alloc] initWithRowCharRange:v34 containerWidth:v121 rowArray:v59 collapseBorders:v111, a7];
-    [v117 _setRowArrayCache:v102];
+    width = [[NSLayoutManagerTextBlockRowArrayCache alloc] initWithRowCharRange:v34 containerWidth:v121 rowArray:array collapseBorders:bordersCopy, width];
+    [managerCopy _setRowArrayCache:width];
   }
 
-  v103 = a11;
+  rowCopy2 = row;
   v61 = v115;
-  if (a11)
+  if (row)
   {
 LABEL_160:
-    *v103 = v61;
+    *rowCopy2 = v61;
   }
 
 LABEL_161:
-  if (v101)
+  if (startingRowCopy2)
   {
-    *v101 = v123;
+    *startingRowCopy2 = startingRow;
   }
 
-  if (v100)
+  if (columnCopy2)
   {
-    *v100 = v116;
+    *columnCopy2 = startingColumn;
   }
 
-  return v59;
+  return array;
 }
 
-- (id)_descriptionAtIndex:(unint64_t)a3 text:(id)a4
+- (id)_descriptionAtIndex:(unint64_t)index text:(id)text
 {
-  v7 = [MEMORY[0x1E696AD60] string];
-  v8 = [a4 rangeOfTextTable:self atIndex:a3];
+  string = [MEMORY[0x1E696AD60] string];
+  v8 = [text rangeOfTextTable:self atIndex:index];
   v10 = v9;
-  v35 = a4;
-  v11 = [objc_msgSend(a4 "attribute:"textBlocks" atIndex:? effectiveRange:?")];
+  textCopy = text;
+  v11 = [objc_msgSend(text "attribute:"textBlocks" atIndex:? effectiveRange:?")];
   v12 = [v11 count];
   if (!v12)
   {
@@ -755,56 +755,56 @@ LABEL_161:
   {
     v38.location = v8;
     v38.length = range;
-    [v7 appendFormat:@"table %p range %@ cols %lu flags 0x%lx %@\n", self, NSStringFromRange(v38), self->_numCols, self->_tableFlags, -[NSTextBlock _attributeDescription](self, "_attributeDescription")];
+    [string appendFormat:@"table %p range %@ cols %lu flags 0x%lx %@\n", self, NSStringFromRange(v38), self->_numCols, self->_tableFlags, -[NSTextBlock _attributeDescription](self, "_attributeDescription")];
     v33 = v8 + range;
     if (v8 < v8 + range)
     {
       v17 = 0;
-      v32 = self;
+      selfCopy = self;
       do
       {
-        v39.location = [v35 _rangeOfTextTableRow:self atIndex:v8];
+        v39.location = [textCopy _rangeOfTextTableRow:self atIndex:v8];
         location = v39.location;
         length = v39.length;
         v34 = v17;
-        [v7 appendFormat:@"  row %lu range %@\n", v17, NSStringFromRange(v39)];
+        [string appendFormat:@"  row %lu range %@\n", v17, NSStringFromRange(v39)];
         rangea = location + length;
         if (v8 < location + length)
         {
           v20 = 0;
           do
           {
-            v21 = [objc_msgSend(objc_msgSend(v35 attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:{0), "textBlocks"), "objectAtIndex:", v15}];
-            v22 = [v35 rangeOfTextBlock:v21 atIndex:v8];
+            v21 = [objc_msgSend(objc_msgSend(textCopy attribute:@"NSParagraphStyle" atIndex:v8 effectiveRange:{0), "textBlocks"), "objectAtIndex:", v15}];
+            v22 = [textCopy rangeOfTextBlock:v21 atIndex:v8];
             v24 = v23;
-            v25 = [v21 startingRow];
-            v26 = [v21 rowSpan];
-            v27 = [v21 startingColumn];
-            v28 = [v21 columnSpan];
+            startingRow = [v21 startingRow];
+            rowSpan = [v21 rowSpan];
+            startingColumn = [v21 startingColumn];
+            columnSpan = [v21 columnSpan];
             v40.location = v22;
             v40.length = v24;
-            [v7 appendFormat:@"    cell %lu %p range %@ ", v20, v21, NSStringFromRange(v40)];
-            if (v26 < 2)
+            [string appendFormat:@"    cell %lu %p range %@ ", v20, v21, NSStringFromRange(v40)];
+            if (rowSpan < 2)
             {
-              [v7 appendFormat:@"row %ld ", v25, v30];
+              [string appendFormat:@"row %ld ", startingRow, v30];
             }
 
             else
             {
-              [v7 appendFormat:@"rows %ld-%ld ", v25, v25 + v26 - 1];
+              [string appendFormat:@"rows %ld-%ld ", startingRow, startingRow + rowSpan - 1];
             }
 
-            if (v28 < 2)
+            if (columnSpan < 2)
             {
-              [v7 appendFormat:@"col %ld ", v27, v31];
+              [string appendFormat:@"col %ld ", startingColumn, v31];
             }
 
             else
             {
-              [v7 appendFormat:@"cols %ld-%ld ", v27, v27 + v28 - 1];
+              [string appendFormat:@"cols %ld-%ld ", startingColumn, startingColumn + columnSpan - 1];
             }
 
-            [v7 appendFormat:@"%@\n", objc_msgSend(v21, "_attributeDescription")];
+            [string appendFormat:@"%@\n", objc_msgSend(v21, "_attributeDescription")];
             v8 = v22 + v24;
             ++v20;
           }
@@ -814,7 +814,7 @@ LABEL_161:
 
         v17 = v34 + 1;
         v8 = rangea;
-        self = v32;
+        self = selfCopy;
       }
 
       while (rangea < v33);
@@ -824,35 +824,35 @@ LABEL_161:
   else
   {
 LABEL_26:
-    [v7 appendFormat:@"table %p not at location %lu", self, a3];
+    [string appendFormat:@"table %p not at location %lu", self, index];
   }
 
-  return v7;
+  return string;
 }
 
-- (CGRect)_contentRectForCharRange:(_NSRange)a3 textContainer:(id)a4
+- (CGRect)_contentRectForCharRange:(_NSRange)range textContainer:(id)container
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   x = *MEMORY[0x1E696AA80];
   y = *(MEMORY[0x1E696AA80] + 8);
   width = *(MEMORY[0x1E696AA80] + 16);
   height = *(MEMORY[0x1E696AA80] + 24);
-  v12 = [a4 layoutManager];
-  v38 = [v12 textStorage];
-  v13 = [objc_msgSend(v38 attribute:@"NSParagraphStyle" atIndex:location effectiveRange:{0), "textBlocks"}];
+  layoutManager = [container layoutManager];
+  textStorage = [layoutManager textStorage];
+  v13 = [objc_msgSend(textStorage attribute:@"NSParagraphStyle" atIndex:location effectiveRange:{0), "textBlocks"}];
   v14 = [v13 count];
   if (v14)
   {
     v15 = v14;
-    v35 = v12;
-    v36 = a4;
+    v35 = layoutManager;
+    containerCopy = container;
     v37 = length;
     v16 = 1;
     do
     {
       v17 = v16 - 1;
-      v18 = [v13 objectAtIndex:{v16 - 1, v35, v36}];
+      v18 = [v13 objectAtIndex:{v16 - 1, v35, containerCopy}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -883,10 +883,10 @@ LABEL_26:
       v40 = 0;
       do
       {
-        v21 = [objc_msgSend(v38 attribute:@"NSParagraphStyle" atIndex:v20 longestEffectiveRange:&v41 inRange:{location, v37), "textBlocks"}];
+        v21 = [objc_msgSend(textStorage attribute:@"NSParagraphStyle" atIndex:v20 longestEffectiveRange:&v41 inRange:{location, v37), "textBlocks"}];
         if (v21 && (v22 = v21, [v21 count] > v17) && (v23 = objc_msgSend(v22, "objectAtIndex:", v17), v24 = objc_msgSend(v35, "glyphRangeForCharacterRange:actualCharacterRange:", v20, 1, 0), objc_msgSend(v35, "boundsRectForTextBlock:atIndex:effectiveRange:", v23, v24, &v39), v25 = v43.origin.x, v26 = v43.origin.y, v27 = v43.size.width, v28 = v43.size.height, !NSIsEmptyRect(v43)) && v40)
         {
-          if ([v35 textContainerForGlyphAtIndex:v24 effectiveRange:0 withoutAdditionalLayout:1] == v36)
+          if ([v35 textContainerForGlyphAtIndex:v24 effectiveRange:0 withoutAdditionalLayout:1] == containerCopy)
           {
             v44.origin.x = x;
             v44.origin.y = y;
@@ -943,27 +943,27 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)_missingColumnsForRowRange:(_NSRange)a3 blockIndex:(unint64_t)a4 text:(id)a5
+- (BOOL)_missingColumnsForRowRange:(_NSRange)range blockIndex:(unint64_t)index text:(id)text
 {
-  v6 = a3.location + a3.length;
-  if (a3.location >= a3.location + a3.length)
+  v6 = range.location + range.length;
+  if (range.location >= range.location + range.length)
   {
     v11 = 0;
   }
 
   else
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v11 = 0;
     v12 = 0;
     v17 = 0;
     v18 = 0;
-    v13 = a3.location;
+    v13 = range.location;
     do
     {
       v14 = v12;
-      v15 = [objc_msgSend(objc_msgSend(a5 attribute:@"NSParagraphStyle" atIndex:v13 longestEffectiveRange:&v17 inRange:{location, length), "textBlocks"), "objectAtIndex:", a4}];
+      v15 = [objc_msgSend(objc_msgSend(text attribute:@"NSParagraphStyle" atIndex:v13 longestEffectiveRange:&v17 inRange:{location, length), "textBlocks"), "objectAtIndex:", index}];
       v12 = v15;
       if (v15 != v14)
       {
@@ -994,13 +994,13 @@ LABEL_26:
   *(&v166 + 1) = *&frameRect.size.height;
   c = [-[objc_class graphicsContextForApplicationFrameworkContext:](+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider textGraphicsContextProviderClass];
   v152 = layoutManager;
-  v15 = [(NSLayoutManager *)layoutManager textStorage];
-  v16 = [(NSTextStorage *)v15 string];
+  textStorage = [(NSLayoutManager *)layoutManager textStorage];
+  string = [(NSTextStorage *)textStorage string];
   [(NSTextBlock *)self contentWidth];
   v18 = v17;
-  v19 = [(NSTextBlock *)self contentWidthValueType];
-  v151 = [(NSTextBlock *)self backgroundColor];
-  v146 = [(NSTextBlock *)block backgroundColor];
+  contentWidthValueType = [(NSTextBlock *)self contentWidthValueType];
+  backgroundColor = [(NSTextBlock *)self backgroundColor];
+  backgroundColor2 = [(NSTextBlock *)block backgroundColor];
   v147 = [(NSTextBlock *)block borderColorForEdge:0];
   v148 = [(NSTextBlock *)block borderColorForEdge:1];
   v149 = [(NSTextBlock *)block borderColorForEdge:2];
@@ -1015,12 +1015,12 @@ LABEL_26:
   v158 = v166;
   v155 = v165;
   v156 = v166;
-  v20 = [(NSTextTable *)self collapsesBorders];
-  v21 = [(NSTextTable *)self hidesEmptyCells];
-  v153 = v15;
-  v143 = [(NSTextStorage *)v15 length];
-  v142 = v21;
-  if (v21)
+  collapsesBorders = [(NSTextTable *)self collapsesBorders];
+  hidesEmptyCells = [(NSTextTable *)self hidesEmptyCells];
+  v153 = textStorage;
+  v143 = [(NSTextStorage *)textStorage length];
+  v142 = hidesEmptyCells;
+  if (hidesEmptyCells)
   {
     if (location <= location + length)
     {
@@ -1040,7 +1040,7 @@ LABEL_26:
     v23 = location;
     while (1)
     {
-      v24 = [v16 characterAtIndex:v23];
+      v24 = [string characterAtIndex:v23];
       if (v24 > 0x20 || ((1 << v24) & 0x100002400) == 0)
       {
         break;
@@ -1053,7 +1053,7 @@ LABEL_26:
     }
   }
 
-  if (v18 < 0.0 || v19 == NSTextBlockPercentageValueType)
+  if (v18 < 0.0 || contentWidthValueType == NSTextBlockPercentageValueType)
   {
     v18 = 0.0;
   }
@@ -1061,7 +1061,7 @@ LABEL_26:
   v26 = [NSTextBlockLayoutHelper alloc];
   v27 = v152;
   [(NSLayoutManager *)v152 textStorage];
-  v29 = [(NSTextBlockLayoutHelper *)v26 initWithTextBlock:location charRange:length text:v18 layoutManager:v28 containerWidth:v152 collapseBorders:v20];
+  v29 = [(NSTextBlockLayoutHelper *)v26 initWithTextBlock:location charRange:length text:v18 layoutManager:v28 containerWidth:v152 collapseBorders:collapsesBorders];
   v31 = v29[14];
   v30 = v29[15];
   v32 = v31 + v30;
@@ -1075,14 +1075,14 @@ LABEL_26:
   v38 = v29[27];
   *&v164 = *&v164 - (v31 + v30 + v36 + v35);
   *(&v164 + 1) = *(&v164 + 1) - (v33 + v34 + v38 + v37);
-  if (v20)
+  if (collapsesBorders)
   {
     v39 = [-[NSTextStorage attribute:atIndex:effectiveRange:](v153 "attribute:"textBlocks" atIndex:? effectiveRange:?")];
     v40 = [v39 count];
-    v141 = [(NSTextTableBlock *)block startingRow];
-    v140 = [(NSTextTableBlock *)block startingColumn];
-    v41 = [(NSTextTableBlock *)block rowSpan];
-    v42 = [(NSTextTableBlock *)block columnSpan];
+    startingRow = [(NSTextTableBlock *)block startingRow];
+    startingColumn = [(NSTextTableBlock *)block startingColumn];
+    rowSpan = [(NSTextTableBlock *)block rowSpan];
+    columnSpan = [(NSTextTableBlock *)block columnSpan];
     v43 = v29[10];
     v44 = v29[11];
     v45 = v29[15];
@@ -1106,8 +1106,8 @@ LABEL_26:
       goto LABEL_120;
     }
 
-    v131 = v42;
-    v133 = v41;
+    v131 = columnSpan;
+    v133 = rowSpan;
     v51 = x - v43;
     v52 = y - v44;
     v53 = 1;
@@ -1138,10 +1138,10 @@ LABEL_26:
 
     v58 = v56;
     range1 = v57;
-    v59 = [(NSTextTable *)self _missingColumnsForRowRange:v56 blockIndex:v57 text:v54, v153];
+    v153 = [(NSTextTable *)self _missingColumnsForRowRange:v56 blockIndex:v57 text:v54, v153];
     v60 = 0x7FFFFFFFFFFFFFFFLL;
     v130 = v29;
-    if (!v59 && v58 && (v60 = [(NSAttributedString *)v153 _rangeOfTextTableRow:self atIndex:v58 - 1], v61))
+    if (!v153 && v58 && (v60 = [(NSAttributedString *)v153 _rangeOfTextTableRow:self atIndex:v58 - 1], v61))
     {
       v135 = v60;
       v62 = v61;
@@ -1154,7 +1154,7 @@ LABEL_26:
     else
     {
       v135 = v60;
-      if (v59)
+      if (v153)
       {
         goto LABEL_36;
       }
@@ -1213,8 +1213,8 @@ LABEL_49:
       if (v58 < v58 + v65.length)
       {
         v136 = 0;
-        v134 = v133 + v141;
-        v132 = v131 + v140;
+        v134 = v133 + startingRow;
+        v132 = v131 + startingColumn;
         v69 = v46 + v47;
         v127 = v49 + v50;
         v125 = *(MEMORY[0x1E695F058] + 8);
@@ -1227,23 +1227,23 @@ LABEL_49:
           v71 = [objc_msgSend(-[NSTextStorage attribute:atIndex:effectiveRange:](v153 attribute:@"NSParagraphStyle" atIndex:v58 effectiveRange:{0, *&v117, *&v118, *&v119, *&v120), "textBlocks"), "objectAtIndex:", v54}];
           v72 = [(NSAttributedString *)v153 rangeOfTextBlock:v71 atIndex:v58];
           v144 = v73;
-          v74 = [v71 startingRow];
-          v75 = [v71 startingColumn];
-          v76 = [v71 rowSpan];
-          v77 = [v71 columnSpan] + v75;
-          v78 = v74 > v134;
-          v79 = v76 + v74;
-          if (v76 + v74 < v141)
+          startingRow2 = [v71 startingRow];
+          startingColumn2 = [v71 startingColumn];
+          rowSpan2 = [v71 rowSpan];
+          v77 = [v71 columnSpan] + startingColumn2;
+          v78 = startingRow2 > v134;
+          v79 = rowSpan2 + startingRow2;
+          if (rowSpan2 + startingRow2 < startingRow)
           {
             v78 = 1;
           }
 
-          v80 = v75 > v132;
-          v81 = v75 != v132 || v78;
-          v82 = v77 != v140 || v78;
-          v83 = v77 < v140 || v80;
-          v84 = v74 == v134 ? v83 : 1;
-          v85 = v79 == v141 ? v83 : 1;
+          v80 = startingColumn2 > v132;
+          v81 = startingColumn2 != v132 || v78;
+          v82 = v77 != startingColumn || v78;
+          v83 = v77 < startingColumn || v80;
+          v84 = startingRow2 == v134 ? v83 : 1;
+          v85 = v79 == startingRow ? v83 : 1;
           v86 = !v82 || v84 == 0;
           v87 = v86 || !v81;
           if (v87 || (v85 & 1) == 0)
@@ -1302,7 +1302,7 @@ LABEL_118:
           v97 = v72;
           while (1)
           {
-            v98 = [v16 characterAtIndex:v97];
+            v98 = [string characterAtIndex:v97];
             if (v98 > 0x20 || ((1 << v98) & 0x100002400) == 0)
             {
               break;
@@ -1432,7 +1432,7 @@ LABEL_121:
       v37 = v29[26] + v29[26];
       v29[26] = v37;
       v32 = v31 + v30;
-      v64 = v151;
+      v64 = backgroundColor;
       v27 = v152;
       v63 = v136;
       goto LABEL_122;
@@ -1448,7 +1448,7 @@ LABEL_36:
   v46 = *&v155;
   v50 = *(&v156 + 1);
   v47 = *&v156;
-  v64 = v151;
+  v64 = backgroundColor;
 LABEL_122:
   *&v161 = v31 + *&v161;
   *(&v161 + 1) = v33 + *(&v161 + 1);
@@ -1473,10 +1473,10 @@ LABEL_122:
     [(NSLayoutManager *)v27 fillBackgroundRectArray:&v165 count:1 forCharacterRange:location color:length, v64];
   }
 
-  if (v146)
+  if (backgroundColor2)
   {
-    [(NSColor *)v146 set];
-    [(NSLayoutManager *)v27 fillBackgroundRectArray:&v163 count:1 forCharacterRange:location color:length, v146];
+    [(NSColor *)backgroundColor2 set];
+    [(NSLayoutManager *)v27 fillBackgroundRectArray:&v163 count:1 forCharacterRange:location color:length, backgroundColor2];
   }
 
   if (v29[15] > 0.0 && v147)
@@ -1519,14 +1519,14 @@ LABEL_122:
   v12 = startingPoint.y;
   v77[0] = 0;
   v77[1] = 0;
-  v15 = [(NSTextContainer *)textContainer layoutManager];
+  layoutManager = [(NSTextContainer *)textContainer layoutManager];
   v76 = 0;
-  v16 = [(NSTextTableBlock *)block startingRow];
+  startingRow = [(NSTextTableBlock *)block startingRow];
   v75 = 0;
-  v17 = [(NSTextTable *)self collapsesBorders];
-  v18 = [(NSTextTableBlock *)block columnSpan];
+  collapsesBorders = [(NSTextTable *)self collapsesBorders];
+  columnSpan = [(NSTextTableBlock *)block columnSpan];
   v19 = 0.0;
-  if (v17)
+  if (collapsesBorders)
   {
     v20 = 0.5;
   }
@@ -1536,7 +1536,7 @@ LABEL_122:
     v20 = 0.0;
   }
 
-  v21 = [[NSTextBlockLayoutHelper alloc] initWithTextTable:location charIndex:[(NSLayoutManager *)v15 textStorage] text:v15 layoutManager:v17 containerWidth:width collapseBorders:?];
+  v21 = [[NSTextBlockLayoutHelper alloc] initWithTextTable:location charIndex:[(NSLayoutManager *)layoutManager textStorage] text:layoutManager layoutManager:collapsesBorders containerWidth:width collapseBorders:?];
   v22 = v21;
   v23 = v21[20];
   if (v23 > width || v23 <= 0.0)
@@ -1545,7 +1545,7 @@ LABEL_122:
   }
 
   v25 = v23 - (v21[14] + v21[15] + v21[16] + v21[17] + v21[18] + v21[19]);
-  v26 = [(NSTextTable *)self _rowArrayForBlock:block atIndex:location text:[(NSLayoutManager *)v15 textStorage] layoutManager:v15 containerWidth:0 withRepetitions:v17 collapseBorders:v25 rowCharRange:v77 indexInRow:&v76 startingRow:0 startingColumn:0 previousRowBlockHelper:&v75];
+  v26 = [(NSTextTable *)self _rowArrayForBlock:block atIndex:location text:[(NSLayoutManager *)layoutManager textStorage] layoutManager:layoutManager containerWidth:0 withRepetitions:collapsesBorders collapseBorders:v25 rowCharRange:v77 indexInRow:&v76 startingRow:0 startingColumn:0 previousRowBlockHelper:&v75];
   v27 = [v26 count];
   v28 = 0.0;
   if (v27)
@@ -1576,7 +1576,7 @@ LABEL_122:
   v69 = height;
   v72 = v25;
   v73 = y;
-  v32 = v18;
+  v32 = columnSpan;
   v33 = [v26 objectAtIndex:?];
   v34 = v33;
   v35 = v33[14] + v33[15] + v33[16];
@@ -1637,7 +1637,7 @@ LABEL_27:
   v71 = v50;
   if (v75)
   {
-    v51 = [(NSLayoutManager *)v15 textContainerForGlyphAtIndex:*(v75 + 32) effectiveRange:0 withoutAdditionalLayout:1];
+    v51 = [(NSLayoutManager *)layoutManager textContainerForGlyphAtIndex:*(v75 + 32) effectiveRange:0 withoutAdditionalLayout:1];
     v52 = v12 > 0.0 && v51 == textContainer;
     if (v52 && !NSIsEmptyRect(*(v75 + 80)))
     {
@@ -1660,7 +1660,7 @@ LABEL_27:
           v54 = *(v56 + 80) + v57;
         }
 
-        if ([*(v56 + 8) startingRow] == v16)
+        if ([*(v56 + 8) startingRow] == startingRow)
         {
           v50 = *(v56 + 88);
         }
@@ -1715,7 +1715,7 @@ LABEL_27:
 
   if (*(v34 + 2) == *(v22 + 2))
   {
-    [(NSLayoutManager *)v15 setLayoutRect:self forTextBlock:*(v22 + 4) glyphRange:*(v22 + 5), x + v49, v71, v72, v58 - v73];
+    [(NSLayoutManager *)layoutManager setLayoutRect:self forTextBlock:*(v22 + 4) glyphRange:*(v22 + 5), x + v49, v71, v72, v58 - v73];
   }
 
 LABEL_60:
@@ -1743,11 +1743,11 @@ LABEL_60:
   v71[0] = 0;
   v71[1] = 0;
   v70 = 0;
-  v16 = [(NSTextTableBlock *)block startingRow];
-  v17 = [(NSTextTableBlock *)block rowSpan];
-  v18 = [(NSTextBlock *)block verticalAlignment];
-  v19 = [(NSTextTable *)self collapsesBorders];
-  v20 = [[NSTextBlockLayoutHelper alloc] initWithTextTable:location charIndex:[(NSLayoutManager *)v15 textStorage] text:v15 layoutManager:v19 containerWidth:width collapseBorders:?];
+  startingRow = [(NSTextTableBlock *)block startingRow];
+  rowSpan = [(NSTextTableBlock *)block rowSpan];
+  verticalAlignment = [(NSTextBlock *)block verticalAlignment];
+  collapsesBorders = [(NSTextTable *)self collapsesBorders];
+  v20 = [[NSTextBlockLayoutHelper alloc] initWithTextTable:location charIndex:[(NSLayoutManager *)v15 textStorage] text:v15 layoutManager:collapsesBorders containerWidth:width collapseBorders:?];
   v21 = v20;
   v22 = *(v20 + 160);
   if (v22 <= width && v22 > 0.0)
@@ -1760,7 +1760,7 @@ LABEL_60:
     v24 = width;
   }
 
-  v25 = [(NSTextTable *)self _rowArrayForBlock:block atIndex:location text:[(NSLayoutManager *)v15 textStorage] layoutManager:v15 containerWidth:0 withRepetitions:v19 collapseBorders:v24 rowCharRange:v71 indexInRow:&v70 startingRow:0 startingColumn:0 previousRowBlockHelper:0];
+  v25 = [(NSTextTable *)self _rowArrayForBlock:block atIndex:location text:[(NSLayoutManager *)v15 textStorage] layoutManager:v15 containerWidth:0 withRepetitions:collapsesBorders collapseBorders:v24 rowCharRange:v71 indexInRow:&v70 startingRow:0 startingColumn:0 previousRowBlockHelper:0];
   v26 = [v25 count];
   if (v70 >= v26)
   {
@@ -1768,7 +1768,7 @@ LABEL_60:
   }
 
   v27 = v26;
-  v68 = self;
+  selfCopy = self;
   v69 = v21;
   v28 = [v25 objectAtIndex:?];
   v29 = v28;
@@ -1779,12 +1779,12 @@ LABEL_60:
   }
 
   height = height + v30;
-  if (v18 == NSTextBlockBottomAlignment)
+  if (verticalAlignment == NSTextBlockBottomAlignment)
   {
     goto LABEL_12;
   }
 
-  if (v18 == NSTextBlockMiddleAlignment)
+  if (verticalAlignment == NSTextBlockMiddleAlignment)
   {
     v30 = v30 * 0.5;
 LABEL_12:
@@ -1797,23 +1797,23 @@ LABEL_13:
   v33 = *(v29 + 136) + *(v29 + 144) + *(v29 + 152);
   y = y - v33;
   v34 = v32 + *(v29 + 192) + *(v29 + 184) + *(v29 + 176);
-  v35 = v17 + v16;
+  v35 = rowSpan + startingRow;
   height = height + v33 + *(v29 + 216) + *(v29 + 208) + *(v29 + 200);
   do
   {
     v36 = [v25 objectAtIndex:v31];
-    v37 = [*(v36 + 8) startingRow];
-    if ([*(v36 + 8) rowSpan] + v37 != v35)
+    startingRow2 = [*(v36 + 8) startingRow];
+    if ([*(v36 + 8) rowSpan] + startingRow2 != v35)
     {
       goto LABEL_34;
     }
 
-    if (v31 >= v70 && (v31 <= v70 || v37 >= v16))
+    if (v31 >= v70 && (v31 <= v70 || startingRow2 >= startingRow))
     {
       goto LABEL_34;
     }
 
-    v39 = [*(v36 + 8) verticalAlignment];
+    verticalAlignment2 = [*(v36 + 8) verticalAlignment];
     v40 = *(v36 + 88) + *(v36 + 104) - (y + height);
     if (v40 <= 0.0)
     {
@@ -1822,14 +1822,14 @@ LABEL_13:
         goto LABEL_34;
       }
 
-      if (v39 == 2)
+      if (verticalAlignment2 == 2)
       {
         v45 = -v40;
       }
 
       else
       {
-        if (v39 != 1)
+        if (verticalAlignment2 != 1)
         {
 LABEL_33:
           v46 = *(v36 + 96);
@@ -1846,7 +1846,7 @@ LABEL_33:
     }
 
     height = height + v40;
-    if (v18 == NSTextBlockBottomAlignment)
+    if (verticalAlignment == NSTextBlockBottomAlignment)
     {
       v42 = *(v29 + 32);
       v43 = *(v29 + 40);
@@ -1856,7 +1856,7 @@ LABEL_33:
 
     else
     {
-      if (v18 != NSTextBlockMiddleAlignment)
+      if (verticalAlignment != NSTextBlockMiddleAlignment)
       {
         goto LABEL_34;
       }
@@ -1878,7 +1878,7 @@ LABEL_34:
   v21 = v69;
   if (*(v29 + 24) + *(v29 + 16) == *(v69 + 3) + *(v69 + 2))
   {
-    [NSTextTable _contentRectForCharRange:v68 textContainer:"_contentRectForCharRange:textContainer:"];
+    [NSTextTable _contentRectForCharRange:selfCopy textContainer:"_contentRectForCharRange:textContainer:"];
     v47 = v72.origin.x;
     v48 = v72.origin.y;
     v49 = v72.size.width;
@@ -1911,7 +1911,7 @@ LABEL_34:
     {
       v60 = *(v69 + 14) + *(v69 + 15) + *(v69 + 16);
       v61 = *(v69 + 17) + *(v69 + 18) + *(v69 + 19);
-      [(NSLayoutManager *)v15 setBoundsRect:v68 forTextBlock:*(v69 + 4) glyphRange:*(v69 + 5), x - v60, v57 - v61, v10 + v60 + *(v69 + 24) + *(v69 + 23) + *(v69 + 22), v59 + v61 + *(v69 + 27) + *(v69 + 26) + *(v69 + 25)];
+      [(NSLayoutManager *)v15 setBoundsRect:selfCopy forTextBlock:*(v69 + 4) glyphRange:*(v69 + 5), x - v60, v57 - v61, v10 + v60 + *(v69 + 24) + *(v69 + 23) + *(v69 + 22), v59 + v61 + *(v69 + 27) + *(v69 + 26) + *(v69 + 25)];
     }
 
     x = v66;

@@ -1,7 +1,7 @@
 @interface NTKCompanionAppLibrary
 + (id)sharedAppLibrary;
-- (BOOL)isRemovedSystemApp:(id)a3;
-- (BOOL)isRestrictedSystemApp:(id)a3;
+- (BOOL)isRemovedSystemApp:(id)app;
+- (BOOL)isRestrictedSystemApp:(id)app;
 - (NSArray)allApps;
 - (NSArray)thirdPartyApps;
 - (NTKCompanionAppLibrary)init;
@@ -9,19 +9,19 @@
 - (void)_load;
 - (void)_loadApps;
 - (void)_loadWatchApps;
-- (void)_notifyAppAdded:(id)a3;
-- (void)_notifyAppIconUpdated:(id)a3;
-- (void)_notifyAppRemoved:(id)a3;
-- (void)_notifyAppUpdated:(id)a3;
+- (void)_notifyAppAdded:(id)added;
+- (void)_notifyAppIconUpdated:(id)updated;
+- (void)_notifyAppRemoved:(id)removed;
+- (void)_notifyAppUpdated:(id)updated;
 - (void)_queue_loadApps;
-- (void)addObserver:(id)a3;
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d;
 - (void)dealloc;
-- (void)prewarmCompanionDaemonWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)prewarmCompanionDaemonWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NTKCompanionAppLibrary
@@ -68,17 +68,17 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
     v8 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     [(NTKCompanionAppLibrary *)v2 setChangeObservers:v8];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
 
     [(NTKCompanionAppLibrary *)v2 _load];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _handleAppConduitApplicationsChangedNotification_0, *MEMORY[0x277CEAF60], v2, 0);
-    v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v11 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
-    v12 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-    [v12 addObserver:v2];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    [mEMORY[0x277CEAF80] addObserver:v2];
   }
 
   return v2;
@@ -86,16 +86,16 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB640] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB640] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CEAF60], self);
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v5 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
-  v6 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  [v6 removeObserver:self];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  [mEMORY[0x277CEAF80] removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = NTKCompanionAppLibrary;
@@ -113,12 +113,12 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
 
 - (id)disabledComplicationTypes
 {
-  v3 = [(NTKCompanionAppLibrary *)self device];
+  device = [(NTKCompanionAppLibrary *)self device];
   [(NSRecursiveLock *)self->_internalLock lock];
   v4 = self->_disabledComplicationTypesCache;
   if (!v4)
   {
-    v4 = _NTKDisabledComplicationTypesForDevice(v3);
+    v4 = _NTKDisabledComplicationTypesForDevice(device);
     v5 = [(NSIndexSet *)v4 copy];
     disabledComplicationTypesCache = self->_disabledComplicationTypesCache;
     self->_disabledComplicationTypesCache = v5;
@@ -129,25 +129,25 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
   return v4;
 }
 
-- (void)prewarmCompanionDaemonWithCompletion:(id)a3
+- (void)prewarmCompanionDaemonWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = v4;
-    v5 = [(NTKCompanionAppLibrary *)self device];
-    v6 = [v5 pdrDevice];
+    v13 = completionCopy;
+    device = [(NTKCompanionAppLibrary *)self device];
+    pdrDevice = [device pdrDevice];
 
-    if (v6)
+    if (pdrDevice)
     {
       [(NSRecursiveLock *)self->_internalLock lock];
       v7 = self->_allApps;
       prewarmCallbacks = self->_prewarmCallbacks;
       if (!prewarmCallbacks)
       {
-        v9 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v10 = self->_prewarmCallbacks;
-        self->_prewarmCallbacks = v9;
+        self->_prewarmCallbacks = array;
 
         prewarmCallbacks = self->_prewarmCallbacks;
       }
@@ -168,21 +168,21 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
       v13[2]();
     }
 
-    v4 = v13;
+    completionCopy = v13;
   }
 }
 
 - (void)_load
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  [(NTKCompanionAppLibrary *)self setDevice:v3];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [(NTKCompanionAppLibrary *)self setDevice:currentDevice];
 
   [(NTKCompanionAppLibrary *)self _loadApps];
 }
 
-- (BOOL)isRestrictedSystemApp:(id)a3
+- (BOOL)isRestrictedSystemApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   if (([(CLKDevice *)self->_device isRunningGraceOrLater]& 1) != 0)
   {
     v5 = 0;
@@ -191,15 +191,15 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
   else
   {
     v6 = +[NTKSystemAppStateCache sharedInstance];
-    v5 = [v6 isRestrictedSystemApp:v4];
+    v5 = [v6 isRestrictedSystemApp:appCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isRemovedSystemApp:(id)a3
+- (BOOL)isRemovedSystemApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   if ([(CLKDevice *)self->_device isRunningGraceOrLater])
   {
     device = self->_device;
@@ -215,7 +215,7 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
     [(NSRecursiveLock *)self->_internalLock unlock];
     if (appConduitLoaded)
     {
-      v9 = ![(NSSet *)v7 containsObject:v4];
+      v9 = ![(NSSet *)v7 containsObject:appCopy];
     }
 
     else
@@ -227,22 +227,22 @@ void __42__NTKCompanionAppLibrary_sharedAppLibrary__block_invoke()
   else
   {
     v7 = +[NTKSystemAppStateCache sharedInstance];
-    LOBYTE(v9) = [(NSSet *)v7 isRemovedSystemApp:v4];
+    LOBYTE(v9) = [(NSSet *)v7 isRemovedSystemApp:appCopy];
   }
 
 LABEL_9:
   return v9;
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  installedCopy = installed;
   device = self->_device;
-  v8 = a4;
-  v9 = [(CLKDevice *)device pdrDevice];
-  v10 = [v9 pairingID];
-  v11 = [v10 isEqual:v8];
+  dCopy = d;
+  pdrDevice = [(CLKDevice *)device pdrDevice];
+  pairingID = [pdrDevice pairingID];
+  v11 = [pairingID isEqual:dCopy];
 
   if (v11)
   {
@@ -252,22 +252,22 @@ LABEL_9:
   v12 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 description];
+    v13 = [installedCopy description];
     v14 = 138412290;
     v15 = v13;
     _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "NTKCompanionAppLibrary: ACXDeviceConnnectionDelegate: Received installed applications: %@", &v14, 0xCu);
   }
 }
 
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  updatedCopy = updated;
   device = self->_device;
-  v8 = a4;
-  v9 = [(CLKDevice *)device pdrDevice];
-  v10 = [v9 pairingID];
-  v11 = [v10 isEqual:v8];
+  dCopy = d;
+  pdrDevice = [(CLKDevice *)device pdrDevice];
+  pairingID = [pdrDevice pairingID];
+  v11 = [pairingID isEqual:dCopy];
 
   if (v11)
   {
@@ -277,22 +277,22 @@ LABEL_9:
   v12 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 description];
+    v13 = [updatedCopy description];
     v14 = 138412290;
     v15 = v13;
     _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "NTKCompanionAppLibrary: ACXDeviceConnnectionDelegate: Received updated applications: %@", &v14, 0xCu);
   }
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  uninstalledCopy = uninstalled;
   device = self->_device;
-  v8 = a4;
-  v9 = [(CLKDevice *)device pdrDevice];
-  v10 = [v9 pairingID];
-  v11 = [v10 isEqual:v8];
+  dCopy = d;
+  pdrDevice = [(CLKDevice *)device pdrDevice];
+  pairingID = [pdrDevice pairingID];
+  v11 = [pairingID isEqual:dCopy];
 
   if (v11)
   {
@@ -302,20 +302,20 @@ LABEL_9:
   v12 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 description];
+    v13 = [uninstalledCopy description];
     v14 = 138412290;
     v15 = v13;
     _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "NTKCompanionAppLibrary: ACXDeviceConnnectionDelegate: Received uninstalled applications: %@", &v14, 0xCu);
   }
 }
 
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d
 {
   device = self->_device;
-  v5 = a3;
-  v6 = [(CLKDevice *)device pdrDevice];
-  v7 = [v6 pairingID];
-  v8 = [v7 isEqual:v5];
+  dCopy = d;
+  pdrDevice = [(CLKDevice *)device pdrDevice];
+  pairingID = [pdrDevice pairingID];
+  v8 = [pairingID isEqual:dCopy];
 
   if (v8)
   {
@@ -330,34 +330,34 @@ LABEL_9:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   internalLock = self->_internalLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSRecursiveLock *)internalLock lock];
-  [(NSHashTable *)self->_changeObservers addObject:v5];
+  [(NSHashTable *)self->_changeObservers addObject:observerCopy];
 
   v6 = self->_internalLock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   internalLock = self->_internalLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSRecursiveLock *)internalLock lock];
-  [(NSHashTable *)self->_changeObservers removeObject:v5];
+  [(NSHashTable *)self->_changeObservers removeObject:observerCopy];
 
   v6 = self->_internalLock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)_notifyAppAdded:(id)a3
+- (void)_notifyAppAdded:(id)added
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   [(NSRecursiveLock *)self->_internalLock lock];
   v5 = [(NSHashTable *)self->_changeObservers copy];
   [(NSRecursiveLock *)self->_internalLock unlock];
@@ -391,7 +391,7 @@ LABEL_9:
           block[3] = &unk_27877E238;
           block[4] = v11;
           block[5] = self;
-          v14 = v4;
+          v14 = addedCopy;
           dispatch_async(observerCallbackQueue, block);
         }
 
@@ -406,10 +406,10 @@ LABEL_9:
   }
 }
 
-- (void)_notifyAppUpdated:(id)a3
+- (void)_notifyAppUpdated:(id)updated
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   [(NSRecursiveLock *)self->_internalLock lock];
   v5 = [(NSHashTable *)self->_changeObservers copy];
   [(NSRecursiveLock *)self->_internalLock unlock];
@@ -443,7 +443,7 @@ LABEL_9:
           block[3] = &unk_27877E238;
           block[4] = v11;
           block[5] = self;
-          v14 = v4;
+          v14 = updatedCopy;
           dispatch_async(observerCallbackQueue, block);
         }
 
@@ -458,10 +458,10 @@ LABEL_9:
   }
 }
 
-- (void)_notifyAppRemoved:(id)a3
+- (void)_notifyAppRemoved:(id)removed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removedCopy = removed;
   [(NSRecursiveLock *)self->_internalLock lock];
   v5 = [(NSHashTable *)self->_changeObservers copy];
   [(NSRecursiveLock *)self->_internalLock unlock];
@@ -495,7 +495,7 @@ LABEL_9:
           block[3] = &unk_27877E238;
           block[4] = v11;
           block[5] = self;
-          v14 = v4;
+          v14 = removedCopy;
           dispatch_async(observerCallbackQueue, block);
         }
 
@@ -510,10 +510,10 @@ LABEL_9:
   }
 }
 
-- (void)_notifyAppIconUpdated:(id)a3
+- (void)_notifyAppIconUpdated:(id)updated
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   [(NSRecursiveLock *)self->_internalLock lock];
   v5 = [(NSHashTable *)self->_changeObservers copy];
   [(NSRecursiveLock *)self->_internalLock unlock];
@@ -547,7 +547,7 @@ LABEL_9:
           block[3] = &unk_27877E238;
           block[4] = v11;
           block[5] = self;
-          v14 = v4;
+          v14 = updatedCopy;
           dispatch_async(observerCallbackQueue, block);
         }
 
@@ -575,31 +575,31 @@ LABEL_9:
 
 - (void)_loadWatchApps
 {
-  v3 = [(CLKDevice *)self->_device pdrDevice];
-  v4 = [v3 pairingID];
+  pdrDevice = [(CLKDevice *)self->_device pdrDevice];
+  pairingID = [pdrDevice pairingID];
 
-  if (v4)
+  if (pairingID)
   {
     v5 = [MEMORY[0x277CBEB58] set];
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [(CLKDevice *)self->_device isRunningGraceOrLater];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    isRunningGraceOrLater = [(CLKDevice *)self->_device isRunningGraceOrLater];
     v9 = dispatch_semaphore_create(0);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __40__NTKCompanionAppLibrary__loadWatchApps__block_invoke_2;
     aBlock[3] = &unk_278782270;
     aBlock[4] = self;
-    v24 = v6;
+    v24 = array;
     v31 = v24;
-    v36 = v8;
-    v10 = v7;
+    v36 = isRunningGraceOrLater;
+    v10 = array2;
     v32 = v10;
     v11 = v5;
     v33 = v11;
     v12 = v9;
     v34 = v12;
-    v13 = v4;
+    v13 = pairingID;
     v35 = v13;
     v14 = _Block_copy(aBlock);
     v28[0] = MEMORY[0x277D85DD0];
@@ -618,7 +618,7 @@ LABEL_9:
     [(NSRecursiveLock *)self->_internalLock unlock];
     v18 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (isRunningGraceOrLater)
     {
       if (v19)
       {
@@ -626,8 +626,8 @@ LABEL_9:
         _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_DEFAULT, "Loading apps on watch…", buf, 2u);
       }
 
-      v20 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-      [v20 enumerateInstalledApplicationsOnDeviceWithPairingID:v13 withBlock:v16];
+      mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+      [mEMORY[0x277CEAF80] enumerateInstalledApplicationsOnDeviceWithPairingID:v13 withBlock:v16];
 
       dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
       v21 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -648,8 +648,8 @@ LABEL_9:
         _os_log_impl(&dword_22D9C5000, v18, OS_LOG_TYPE_DEFAULT, "Loading possible 3rd party apps from phone…", buf, 2u);
       }
 
-      v23 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-      [v23 enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v13 options:3 withBlock:v16];
+      mEMORY[0x277CEAF80]2 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+      [mEMORY[0x277CEAF80]2 enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v13 options:3 withBlock:v16];
 
       dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
       v21 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -1006,8 +1006,8 @@ void __40__NTKCompanionAppLibrary__loadWatchApps__block_invoke_40(uint64_t a1)
   v53 = __Block_byref_object_dispose__28;
   v54 = 0;
   [(NSRecursiveLock *)self->_internalLock lock];
-  v4 = [(NTKCompanionAppLibrary *)self device];
-  v5 = [NTKCompanion1stPartyApp allAppsForDevice:v4];
+  device = [(NTKCompanionAppLibrary *)self device];
+  v5 = [NTKCompanion1stPartyApp allAppsForDevice:device];
 
   v6 = [v5 indexesOfObjectsPassingTest:&__block_literal_global_43_0];
   v7 = [v5 objectsAtIndexes:v6];
@@ -1028,15 +1028,15 @@ void __40__NTKCompanionAppLibrary__loadWatchApps__block_invoke_40(uint64_t a1)
   v48[3] = &unk_2787822E0;
   v48[4] = self;
   [v11 enumerateObjectsUsingBlock:v48];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __41__NTKCompanionAppLibrary__queue_loadApps__block_invoke_3;
   v45[3] = &unk_278782308;
   v47 = &v49;
-  v15 = v14;
+  v15 = array3;
   v46 = v15;
   [(NSArray *)v3 enumerateObjectsUsingBlock:v45];
   v16 = v50[5];
@@ -1046,9 +1046,9 @@ void __40__NTKCompanionAppLibrary__loadWatchApps__block_invoke_40(uint64_t a1)
   v41[3] = &unk_278782330;
   v31 = v3;
   v42 = v31;
-  v17 = v13;
+  v17 = array2;
   v43 = v17;
-  v18 = v12;
+  v18 = array;
   v44 = v18;
   [v16 enumerateObjectsUsingBlock:v41];
   [(NSRecursiveLock *)self->_internalLock lock];

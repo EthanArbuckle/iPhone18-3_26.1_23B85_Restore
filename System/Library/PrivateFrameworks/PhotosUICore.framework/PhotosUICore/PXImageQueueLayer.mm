@@ -1,26 +1,26 @@
 @interface PXImageQueueLayer
 - (PXImageQueueLayer)init;
-- (PXImageQueueLayer)initWithLayer:(id)a3;
+- (PXImageQueueLayer)initWithLayer:(id)layer;
 - (__CVBuffer)pixelBuffer;
 - (void)_commonInit;
 - (void)dealloc;
 - (void)display;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation PXImageQueueLayer
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_pixelBuffer != a3)
+  if (self->_pixelBuffer != buffer)
   {
     v5 = CAImageQueueCollect();
     v6 = PLUIGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134218240;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2048;
       v13 = v5;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "PXImageQueueLayer(%p) collect() returned %lu free slots", &v10, 0x16u);
@@ -33,9 +33,9 @@
       self->_pixelBuffer = 0;
     }
 
-    if (a3)
+    if (buffer)
     {
-      self->_pixelBuffer = CVPixelBufferRetain(a3);
+      self->_pixelBuffer = CVPixelBufferRetain(buffer);
       v8 = CAImageQueueRegisterCVImageBuffer();
       CVPixelBufferGetWidth(self->_pixelBuffer);
       CVPixelBufferGetHeight(self->_pixelBuffer);
@@ -47,7 +47,7 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 134217984;
-          v11 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "PXImageQueueLayer(%p) failed to enqueue image", &v10, 0xCu);
         }
       }
@@ -71,10 +71,10 @@
 
 - (void)display
 {
-  v3 = [(PXImageQueueLayer *)self contents];
+  contents = [(PXImageQueueLayer *)self contents];
   v4.receiver = self;
   v4.super_class = PXImageQueueLayer;
-  [(PXImageQueueLayer *)&v4 setContents:v3];
+  [(PXImageQueueLayer *)&v4 setContents:contents];
 }
 
 - (void)dealloc
@@ -95,15 +95,15 @@
   [(PXImageQueueLayer *)self setContentsGravity:*MEMORY[0x1E6979DF0]];
   [(PXImageQueueLayer *)self setContents:self->_imageQueue];
   v5 = @"hidden";
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v6[0] = v3;
+  null = [MEMORY[0x1E695DFB0] null];
+  v6[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   [(PXImageQueueLayer *)self setActions:v4];
 }
 
-- (PXImageQueueLayer)initWithLayer:(id)a3
+- (PXImageQueueLayer)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v8.receiver = self;
   v8.super_class = PXImageQueueLayer;
   v5 = [(PXImageQueueLayer *)&v8 init];
@@ -111,9 +111,9 @@
   if (v5)
   {
     [(PXImageQueueLayer *)v5 _commonInit];
-    if ([v4 pixelBuffer])
+    if ([layerCopy pixelBuffer])
     {
-      [v4 pixelBuffer];
+      [layerCopy pixelBuffer];
       if (!CVPixelBufferCreateFromCVImageBufferRef())
       {
         [(PXImageQueueLayer *)v6 setPixelBuffer:0];

@@ -1,18 +1,18 @@
 @interface ATXHeuristicActionMaker
-- (ATXHeuristicActionMaker)initWithCoder:(id)a3;
+- (ATXHeuristicActionMaker)initWithCoder:(id)coder;
 - (id)action;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicActionMaker
 
 - (id)action
 {
-  v3 = [(ATXHeuristicActionMaker *)self _makeAction];
-  v4 = v3;
+  _makeAction = [(ATXHeuristicActionMaker *)self _makeAction];
+  v4 = _makeAction;
   if (self->_criteria)
   {
-    [v3 setCriteria:?];
+    [_makeAction setCriteria:?];
   }
 
   if (self->_heuristic)
@@ -23,27 +23,27 @@
   return v4;
 }
 
-- (ATXHeuristicActionMaker)initWithCoder:(id)a3
+- (ATXHeuristicActionMaker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ATXHeuristicActionMaker;
   v5 = [(ATXHeuristicActionMaker *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
     criteria = v5->_criteria;
     v5->_criteria = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heuristic"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heuristic"];
     heuristic = v5->_heuristic;
     v5->_heuristic = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v12;
   }
@@ -51,14 +51,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   criteria = self->_criteria;
-  v5 = a3;
-  [v5 encodeObject:criteria forKey:@"criteria"];
-  [v5 encodeObject:self->_heuristic forKey:@"heuristic"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:criteria forKey:@"criteria"];
+  [coderCopy encodeObject:self->_heuristic forKey:@"heuristic"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
 }
 
 @end

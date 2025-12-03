@@ -1,23 +1,23 @@
 @interface IMDInvocationForwarder
-- (BOOL)respondsToSelector:(SEL)a3;
-- (IMDInvocationForwarder)initWithTargets:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)addTarget:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (IMDInvocationForwarder)initWithTargets:(id)targets;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)addTarget:(id)target;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)removeTarget:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)removeTarget:(id)target;
 @end
 
 @implementation IMDInvocationForwarder
 
-- (IMDInvocationForwarder)initWithTargets:(id)a3
+- (IMDInvocationForwarder)initWithTargets:(id)targets
 {
   v6.receiver = self;
   v6.super_class = IMDInvocationForwarder;
   v4 = [(IMDInvocationForwarder *)&v6 init];
   if (v4)
   {
-    v4->_targets = [a3 mutableCopy];
+    v4->_targets = [targets mutableCopy];
     v4->_lock = objc_alloc_init(MEMORY[0x277CCAAF8]);
   }
 
@@ -34,12 +34,12 @@
   [(IMDInvocationForwarder *)&v3 dealloc];
 }
 
-- (void)addTarget:(id)a3
+- (void)addTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
     [(NSLock *)self->_lock lock];
-    if ([(NSMutableArray *)self->_targets containsObjectIdenticalTo:a3])
+    if ([(NSMutableArray *)self->_targets containsObjectIdenticalTo:target])
     {
       targets = self->_targets;
       if (!targets)
@@ -48,7 +48,7 @@
         self->_targets = targets;
       }
 
-      [(NSMutableArray *)targets addObject:a3];
+      [(NSMutableArray *)targets addObject:target];
     }
 
     lock = self->_lock;
@@ -57,12 +57,12 @@
   }
 }
 
-- (void)removeTarget:(id)a3
+- (void)removeTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
     [(NSLock *)self->_lock lock];
-    [(NSMutableArray *)self->_targets removeObjectIdenticalTo:a3];
+    [(NSMutableArray *)self->_targets removeObjectIdenticalTo:target];
     if (![(NSMutableArray *)self->_targets count])
     {
 
@@ -75,7 +75,7 @@
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   v5 = [-[NSMutableArray __imFirstObject](self->_targets "__imFirstObject")];
@@ -84,12 +84,12 @@
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   v7.receiver = self;
   v7.super_class = IMDInvocationForwarder;
-  if ([(IMDInvocationForwarder *)&v7 respondsToSelector:a3])
+  if ([(IMDInvocationForwarder *)&v7 respondsToSelector:selector])
   {
     v5 = 1;
   }
@@ -104,7 +104,7 @@
   return v5 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v17 = *MEMORY[0x277D85DE8];
   [(NSLock *)self->_lock lock];
@@ -128,7 +128,7 @@
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        [a3 invokeWithTarget:v9];
+        [invocation invokeWithTarget:v9];
         objc_autoreleasePoolPop(v10);
       }
 

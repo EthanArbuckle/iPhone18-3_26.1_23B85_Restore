@@ -7,26 +7,26 @@
 
 - (MADImagePersonalizationGatingResult)gatingResult
 {
-  v2 = [(MADRequest *)self results];
-  v3 = [v2 firstObject];
+  results = [(MADRequest *)self results];
+  firstObject = [results firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

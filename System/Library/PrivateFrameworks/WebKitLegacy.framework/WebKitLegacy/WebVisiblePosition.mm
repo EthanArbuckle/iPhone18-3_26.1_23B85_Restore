@@ -1,41 +1,41 @@
 @interface WebVisiblePosition
-+ (id)_wrapVisiblePositionIfValid:(VisiblePosition *)a3;
-- (BOOL)atAlphaNumericBoundaryInDirection:(int)a3;
-- (BOOL)atBoundaryOfGranularity:(int)a3 inDirection:(int)a4;
-- (BOOL)directionIsDownstream:(int)a3;
++ (id)_wrapVisiblePositionIfValid:(VisiblePosition *)valid;
+- (BOOL)atAlphaNumericBoundaryInDirection:(int)direction;
+- (BOOL)atBoundaryOfGranularity:(int)granularity inDirection:(int)direction;
+- (BOOL)directionIsDownstream:(int)downstream;
 - (BOOL)isEditable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresContextForWordBoundary;
-- (BOOL)withinTextUnitOfGranularity:(int)a3 inDirectionIfAtBoundary:(int)a4;
+- (BOOL)withinTextUnitOfGranularity:(int)granularity inDirectionIfAtBoundary:(int)boundary;
 - (VisiblePosition)_visiblePosition;
 - (id)description;
 - (id)enclosingRangeWithCorrectionIndicator;
-- (id)enclosingRangeWithDictationPhraseAlternatives:(id *)a3;
-- (id)enclosingTextUnitOfGranularity:(int)a3 inDirectionIfAtBoundary:(int)a4;
+- (id)enclosingRangeWithDictationPhraseAlternatives:(id *)alternatives;
+- (id)enclosingTextUnitOfGranularity:(int)granularity inDirectionIfAtBoundary:(int)boundary;
 - (id)positionAtStartOrEndOfWord;
-- (id)positionByMovingInDirection:(int)a3 amount:(unsigned int)a4 withAffinityDownstream:(BOOL)a5;
-- (id)positionOfNextBoundaryOfGranularity:(int)a3 inDirection:(int)a4;
-- (int)distanceFromPosition:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)positionByMovingInDirection:(int)direction amount:(unsigned int)amount withAffinityDownstream:(BOOL)downstream;
+- (id)positionOfNextBoundaryOfGranularity:(int)granularity inDirection:(int)direction;
+- (int)distanceFromPosition:(id)position;
+- (int64_t)compare:(id)compare;
 - (unint64_t)affinity;
 - (void)dealloc;
 @end
 
 @implementation WebVisiblePosition
 
-+ (id)_wrapVisiblePositionIfValid:(VisiblePosition *)a3
++ (id)_wrapVisiblePositionIfValid:(VisiblePosition *)valid
 {
-  var0 = a3->var0.var0.var0;
-  if (!a3->var0.var0.var0)
+  var0 = valid->var0.var0.var0;
+  if (!valid->var0.var0.var0)
   {
     return 0;
   }
 
   *(var0 + 7) += 2;
   v7 = var0;
-  var1 = a3->var0.var1;
-  v9 = *(&a3->var0 + 12);
-  v10 = a3->var1;
+  var1 = valid->var0.var1;
+  v9 = *(&valid->var0 + 12);
+  v10 = valid->var1;
   result = [WebVisiblePosition _wrapVisiblePosition:&v7];
   v5 = v7;
   v7 = 0;
@@ -104,7 +104,7 @@
   [(WebVisiblePosition *)&v6 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -115,10 +115,10 @@
   if (self)
   {
     [(WebVisiblePosition *)self _visiblePosition];
-    if (a3)
+    if (equal)
     {
 LABEL_4:
-      [a3 _visiblePosition];
+      [equal _visiblePosition];
       goto LABEL_9;
     }
   }
@@ -126,7 +126,7 @@ LABEL_4:
   else
   {
     memset(v11, 0, sizeof(v11));
-    if (a3)
+    if (equal)
     {
       goto LABEL_4;
     }
@@ -182,15 +182,15 @@ LABEL_15:
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   if (self)
   {
     [(WebVisiblePosition *)self _visiblePosition];
-    if (a3)
+    if (compare)
     {
 LABEL_3:
-      [a3 _visiblePosition];
+      [compare _visiblePosition];
       goto LABEL_6;
     }
   }
@@ -198,7 +198,7 @@ LABEL_3:
   else
   {
     memset(v9, 0, sizeof(v9));
-    if (a3)
+    if (compare)
     {
       goto LABEL_3;
     }
@@ -261,15 +261,15 @@ LABEL_17:
   return v4;
 }
 
-- (int)distanceFromPosition:(id)a3
+- (int)distanceFromPosition:(id)position
 {
   if (self)
   {
     [(WebVisiblePosition *)self _visiblePosition];
-    if (a3)
+    if (position)
     {
 LABEL_3:
-      [a3 _visiblePosition];
+      [position _visiblePosition];
       goto LABEL_6;
     }
   }
@@ -277,7 +277,7 @@ LABEL_3:
   else
   {
     memset(v9, 0, sizeof(v9));
-    if (a3)
+    if (position)
     {
       goto LABEL_3;
     }
@@ -285,7 +285,7 @@ LABEL_3:
 
   memset(&v8, 0, sizeof(v8));
 LABEL_6:
-  v4 = WebCore::distanceBetweenPositions(v9, &v8, a3);
+  v4 = WebCore::distanceBetweenPositions(v9, &v8, position);
   var0 = v8.var0.var0.var0;
   v8.var0.var0.var0 = 0;
   if (!var0)
@@ -419,33 +419,33 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)directionIsDownstream:(int)a3
+- (BOOL)directionIsDownstream:(int)downstream
 {
-  if (a3 == 1)
+  if (downstream == 1)
   {
     return 0;
   }
 
-  if (!a3)
+  if (!downstream)
   {
     return 1;
   }
 
   if ([(WebVisiblePosition *)self textDirection])
   {
-    return a3 == 3;
+    return downstream == 3;
   }
 
-  return a3 == 2;
+  return downstream == 2;
 }
 
-- (id)positionByMovingInDirection:(int)a3 amount:(unsigned int)a4 withAffinityDownstream:(BOOL)a5
+- (id)positionByMovingInDirection:(int)direction amount:(unsigned int)amount withAffinityDownstream:(BOOL)downstream
 {
   if (self)
   {
     [(WebVisiblePosition *)self _visiblePosition];
-    LOBYTE(v36) = a5;
-    if (a3 <= 2)
+    LOBYTE(downstreamCopy) = downstream;
+    if (direction <= 2)
     {
       goto LABEL_3;
     }
@@ -455,15 +455,15 @@ LABEL_12:
 
   v34 = 0;
   v35 = 0;
-  v36 = a5;
-  if (a3 > 2)
+  downstreamCopy = downstream;
+  if (direction > 2)
   {
 LABEL_15:
-    if (a3 != 5)
+    if (direction != 5)
     {
-      if (a3 != 4)
+      if (direction != 4)
       {
-        if (a3 != 3 || !a4)
+        if (direction != 3 || !amount)
         {
           goto LABEL_58;
         }
@@ -482,7 +482,7 @@ LABEL_15:
               WebCore::Node::removedLastRef(v11);
               LODWORD(v35) = v31;
               BYTE4(v35) = v32;
-              LOBYTE(v36) = v33;
+              LOBYTE(downstreamCopy) = v33;
               v30 = 0;
               goto LABEL_20;
             }
@@ -492,9 +492,9 @@ LABEL_15:
 
           LODWORD(v35) = v31;
           BYTE4(v35) = v32;
-          LOBYTE(v36) = v33;
+          LOBYTE(downstreamCopy) = v33;
 LABEL_20:
-          if (!--a4)
+          if (!--amount)
           {
             goto LABEL_58;
           }
@@ -502,7 +502,7 @@ LABEL_20:
       }
 
       WebCore::VisiblePosition::lineDirectionPointForBlockDirectionNavigation(&v34);
-      if (!a4)
+      if (!amount)
       {
         goto LABEL_58;
       }
@@ -521,7 +521,7 @@ LABEL_20:
             WebCore::Node::removedLastRef(v19);
             LODWORD(v35) = v31;
             BYTE4(v35) = v32;
-            LOBYTE(v36) = v33;
+            LOBYTE(downstreamCopy) = v33;
             v30 = 0;
             goto LABEL_52;
           }
@@ -531,9 +531,9 @@ LABEL_20:
 
         LODWORD(v35) = v31;
         BYTE4(v35) = v32;
-        LOBYTE(v36) = v33;
+        LOBYTE(downstreamCopy) = v33;
 LABEL_52:
-        if (!--a4)
+        if (!--amount)
         {
           goto LABEL_58;
         }
@@ -541,7 +541,7 @@ LABEL_52:
     }
 
     WebCore::VisiblePosition::lineDirectionPointForBlockDirectionNavigation(&v34);
-    if (!a4)
+    if (!amount)
     {
       goto LABEL_58;
     }
@@ -560,7 +560,7 @@ LABEL_52:
           WebCore::Node::removedLastRef(v15);
           LODWORD(v35) = v31;
           BYTE4(v35) = v32;
-          LOBYTE(v36) = v33;
+          LOBYTE(downstreamCopy) = v33;
           v30 = 0;
           goto LABEL_36;
         }
@@ -570,9 +570,9 @@ LABEL_52:
 
       LODWORD(v35) = v31;
       BYTE4(v35) = v32;
-      LOBYTE(v36) = v33;
+      LOBYTE(downstreamCopy) = v33;
 LABEL_36:
-      if (!--a4)
+      if (!--amount)
       {
         goto LABEL_58;
       }
@@ -580,9 +580,9 @@ LABEL_36:
   }
 
 LABEL_3:
-  if (!a3)
+  if (!direction)
   {
-    if (!a4)
+    if (!amount)
     {
       goto LABEL_58;
     }
@@ -601,7 +601,7 @@ LABEL_3:
           WebCore::Node::removedLastRef(v13);
           LODWORD(v35) = v31;
           BYTE4(v35) = v32;
-          LOBYTE(v36) = v33;
+          LOBYTE(downstreamCopy) = v33;
           v30 = 0;
           goto LABEL_28;
         }
@@ -611,18 +611,18 @@ LABEL_3:
 
       LODWORD(v35) = v31;
       BYTE4(v35) = v32;
-      LOBYTE(v36) = v33;
+      LOBYTE(downstreamCopy) = v33;
 LABEL_28:
-      if (!--a4)
+      if (!--amount)
       {
         goto LABEL_58;
       }
     }
   }
 
-  if (a3 == 1)
+  if (direction == 1)
   {
-    if (!a4)
+    if (!amount)
     {
       goto LABEL_58;
     }
@@ -641,7 +641,7 @@ LABEL_28:
           WebCore::Node::removedLastRef(v17);
           LODWORD(v35) = v31;
           BYTE4(v35) = v32;
-          LOBYTE(v36) = v33;
+          LOBYTE(downstreamCopy) = v33;
           v30 = 0;
           goto LABEL_44;
         }
@@ -651,16 +651,16 @@ LABEL_28:
 
       LODWORD(v35) = v31;
       BYTE4(v35) = v32;
-      LOBYTE(v36) = v33;
+      LOBYTE(downstreamCopy) = v33;
 LABEL_44:
-      if (!--a4)
+      if (!--amount)
       {
         goto LABEL_58;
       }
     }
   }
 
-  if (a3 == 2 && a4)
+  if (direction == 2 && amount)
   {
     do
     {
@@ -676,7 +676,7 @@ LABEL_44:
           WebCore::Node::removedLastRef(v9);
           LODWORD(v35) = v31;
           BYTE4(v35) = v32;
-          LOBYTE(v36) = v33;
+          LOBYTE(downstreamCopy) = v33;
           v30 = 0;
           goto LABEL_8;
         }
@@ -686,12 +686,12 @@ LABEL_44:
 
       LODWORD(v35) = v31;
       BYTE4(v35) = v32;
-      LOBYTE(v36) = v33;
+      LOBYTE(downstreamCopy) = v33;
 LABEL_8:
-      --a4;
+      --amount;
     }
 
-    while (a4);
+    while (amount);
   }
 
 LABEL_58:
@@ -704,7 +704,7 @@ LABEL_58:
   v26 = v20;
   v27 = v35;
   v28 = BYTE4(v35);
-  v29 = v36;
+  v29 = downstreamCopy;
   result = [WebVisiblePosition _wrapVisiblePositionIfValid:&v26];
   v22 = v26;
   v26 = 0;
@@ -751,7 +751,7 @@ LABEL_66:
   return result;
 }
 
-- (BOOL)atBoundaryOfGranularity:(int)a3 inDirection:(int)a4
+- (BOOL)atBoundaryOfGranularity:(int)granularity inDirection:(int)direction
 {
   if (self)
   {
@@ -782,7 +782,7 @@ LABEL_66:
   return result;
 }
 
-- (id)positionOfNextBoundaryOfGranularity:(int)a3 inDirection:(int)a4
+- (id)positionOfNextBoundaryOfGranularity:(int)granularity inDirection:(int)direction
 {
   if (self)
   {
@@ -839,7 +839,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)withinTextUnitOfGranularity:(int)a3 inDirectionIfAtBoundary:(int)a4
+- (BOOL)withinTextUnitOfGranularity:(int)granularity inDirectionIfAtBoundary:(int)boundary
 {
   if (self)
   {
@@ -870,7 +870,7 @@ LABEL_10:
   return result;
 }
 
-- (id)enclosingTextUnitOfGranularity:(int)a3 inDirectionIfAtBoundary:(int)a4
+- (id)enclosingTextUnitOfGranularity:(int)granularity inDirectionIfAtBoundary:(int)boundary
 {
   if (self)
   {
@@ -1745,9 +1745,9 @@ LABEL_11:
   return v4 & 1;
 }
 
-- (BOOL)atAlphaNumericBoundaryInDirection:(int)a3
+- (BOOL)atAlphaNumericBoundaryInDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   if (_MergedGlobals_27)
   {
     if (self)
@@ -1843,14 +1843,14 @@ LABEL_6:
   return result;
 }
 
-- (id)enclosingRangeWithDictationPhraseAlternatives:(id *)a3
+- (id)enclosingRangeWithDictationPhraseAlternatives:(id *)alternatives
 {
-  if (!a3)
+  if (!alternatives)
   {
     return 0;
   }
 
-  *a3 = 0;
+  *alternatives = 0;
   if (!self)
   {
     return 0;
@@ -1989,7 +1989,7 @@ LABEL_60:
         {
           v19 = v18;
           v20 = v33;
-          *a3 = v18;
+          *alternatives = v18;
           v33 = 0;
           if (v20)
           {
@@ -1998,7 +1998,7 @@ LABEL_60:
 
         else
         {
-          *a3 = 0;
+          *alternatives = 0;
         }
 
         v21 = *(v13 + v15);

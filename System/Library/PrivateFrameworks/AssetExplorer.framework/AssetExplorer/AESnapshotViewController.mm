@@ -1,5 +1,5 @@
 @interface AESnapshotViewController
-- (AESnapshotViewController)initWithViewController:(id)a3;
+- (AESnapshotViewController)initWithViewController:(id)controller;
 - (void)loadView;
 @end
 
@@ -7,20 +7,20 @@
 
 - (void)loadView
 {
-  v3 = [(AESnapshotViewController *)self _snapshotView];
-  [(AESnapshotViewController *)self setView:v3];
+  _snapshotView = [(AESnapshotViewController *)self _snapshotView];
+  [(AESnapshotViewController *)self setView:_snapshotView];
 }
 
-- (AESnapshotViewController)initWithViewController:(id)a3
+- (AESnapshotViewController)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = AESnapshotViewController;
   v5 = [(AESnapshotViewController *)&v11 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 view];
-    v7 = [v6 snapshotViewAfterScreenUpdates:0];
+    view = [controllerCopy view];
+    v7 = [view snapshotViewAfterScreenUpdates:0];
     snapshotView = v5->__snapshotView;
     v5->__snapshotView = v7;
 

@@ -1,19 +1,19 @@
 @interface OctaneClientConnection
-+ (id)_connectionForUUID:(id)a3;
-+ (id)addConnectionWithBundleID:(id)a3 connection:(id)a4 type:(int64_t)a5;
-+ (id)connectionsForBundleID:(id)a3;
-+ (unint64_t)observerCountForEventIdentifier:(id)a3;
-+ (void)_enumerateAllConnectionsWithBlock:(id)a3;
++ (id)_connectionForUUID:(id)d;
++ (id)addConnectionWithBundleID:(id)d connection:(id)connection type:(int64_t)type;
++ (id)connectionsForBundleID:(id)d;
++ (unint64_t)observerCountForEventIdentifier:(id)identifier;
++ (void)_enumerateAllConnectionsWithBlock:(id)block;
 + (void)initialize;
-+ (void)receiveEventOfType:(int64_t)a3 withData:(id)a4 onAllObserversWithID:(id)a5;
-+ (void)removeConnectionWithUUID:(id)a3;
-- (OctaneClientConnection)initWithBundleID:(id)a3 connection:(id)a4 type:(int64_t)a5;
++ (void)receiveEventOfType:(int64_t)type withData:(id)data onAllObserversWithID:(id)d;
++ (void)removeConnectionWithUUID:(id)d;
+- (OctaneClientConnection)initWithBundleID:(id)d connection:(id)connection type:(int64_t)type;
 - (void)dealloc;
-- (void)receiveEventOfType:(int64_t)a3 eventData:(id)a4 identifier:(id)a5;
-- (void)registerObservationID:(id)a3;
-- (void)transactionDeleted:(unint64_t)a3 forBundleID:(id)a4;
-- (void)transactionUpdated:(id)a3 forBundleID:(id)a4;
-- (void)unregisterObservationID:(id)a3;
+- (void)receiveEventOfType:(int64_t)type eventData:(id)data identifier:(id)identifier;
+- (void)registerObservationID:(id)d;
+- (void)transactionDeleted:(unint64_t)deleted forBundleID:(id)d;
+- (void)transactionUpdated:(id)updated forBundleID:(id)d;
+- (void)unregisterObservationID:(id)d;
 @end
 
 @implementation OctaneClientConnection
@@ -29,21 +29,21 @@
   _objc_release_x1();
 }
 
-+ (id)addConnectionWithBundleID:(id)a3 connection:(id)a4 type:(int64_t)a5
++ (id)addConnectionWithBundleID:(id)d connection:(id)connection type:(int64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[OctaneClientConnection alloc] initWithBundleID:v7 connection:v8 type:a5];
+  dCopy = d;
+  connectionCopy = connection;
+  v9 = [[OctaneClientConnection alloc] initWithBundleID:dCopy connection:connectionCopy type:type];
 
   v10 = qword_1003D4508;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10005E240;
   v16[3] = &unk_10037F868;
-  v17 = v7;
+  v17 = dCopy;
   v11 = v9;
   v18 = v11;
-  v12 = v7;
+  v12 = dCopy;
   sub_10004D3C0(v10, v16);
   v13 = v18;
   v14 = v11;
@@ -51,9 +51,9 @@
   return v11;
 }
 
-+ (id)connectionsForBundleID:(id)a3
++ (id)connectionsForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -66,19 +66,19 @@
   v10 = sub_10005E400;
   v11 = &unk_10037F7D0;
   v13 = &v14;
-  v5 = v3;
+  v5 = dCopy;
   v12 = v5;
   sub_10004D3C0(v4, &v8);
-  v6 = [v15[5] allObjects];
+  allObjects = [v15[5] allObjects];
 
   _Block_object_dispose(&v14, 8);
 
-  return v6;
+  return allObjects;
 }
 
-+ (void)removeConnectionWithUUID:(id)a3
++ (void)removeConnectionWithUUID:(id)d
 {
-  v4 = [a1 _connectionForUUID:a3];
+  v4 = [self _connectionForUUID:d];
   v5 = v4;
   if (v4)
   {
@@ -99,7 +99,7 @@
       v21[3] = &unk_100382590;
       v9 = v8;
       v22 = v9;
-      [a1 _enumerateAllConnectionsWithBlock:v21];
+      [self _enumerateAllConnectionsWithBlock:v21];
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
@@ -137,7 +137,7 @@
   }
 }
 
-+ (unint64_t)observerCountForEventIdentifier:(id)a3
++ (unint64_t)observerCountForEventIdentifier:(id)identifier
 {
   v10 = 0;
   v11 = &v10;
@@ -147,20 +147,20 @@
   v7[1] = 3221225472;
   v7[2] = sub_10005E848;
   v7[3] = &unk_1003825B8;
-  v4 = a3;
-  v8 = v4;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   v9 = &v10;
-  [a1 _enumerateAllConnectionsWithBlock:v7];
+  [self _enumerateAllConnectionsWithBlock:v7];
   v5 = v11[3];
 
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-+ (void)receiveEventOfType:(int64_t)a3 withData:(id)a4 onAllObserversWithID:(id)a5
++ (void)receiveEventOfType:(int64_t)type withData:(id)data onAllObserversWithID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -171,10 +171,10 @@
   v19[1] = 3221225472;
   v19[2] = sub_10005EAA4;
   v19[3] = &unk_1003825B8;
-  v10 = v9;
+  v10 = dCopy;
   v20 = v10;
   v21 = &v22;
-  [a1 _enumerateAllConnectionsWithBlock:v19];
+  [self _enumerateAllConnectionsWithBlock:v19];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -194,7 +194,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) receiveEventOfType:a3 eventData:v8 identifier:{v10, v15}];
+        [*(*(&v15 + 1) + 8 * v14) receiveEventOfType:type eventData:dataCopy identifier:{v10, v15}];
         v14 = v14 + 1;
       }
 
@@ -208,9 +208,9 @@
   _Block_object_dispose(&v22, 8);
 }
 
-+ (void)_enumerateAllConnectionsWithBlock:(id)a3
++ (void)_enumerateAllConnectionsWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
   v5 = qword_1003D4508;
   v16[0] = _NSConcreteStackBlock;
@@ -241,7 +241,7 @@
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_sync_enter(v11);
-        v3[2](v3, v11);
+        blockCopy[2](blockCopy, v11);
         objc_sync_exit(v11);
 
         v10 = v10 + 1;
@@ -255,9 +255,9 @@
   }
 }
 
-+ (id)_connectionForUUID:(id)a3
++ (id)_connectionForUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -269,7 +269,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_10005EFA8;
   v8[3] = &unk_1003807A0;
-  v5 = v3;
+  v5 = dCopy;
   v9 = v5;
   v10 = &v11;
   sub_10004D3C0(v4, v8);
@@ -280,34 +280,34 @@
   return v6;
 }
 
-- (OctaneClientConnection)initWithBundleID:(id)a3 connection:(id)a4 type:(int64_t)a5
+- (OctaneClientConnection)initWithBundleID:(id)d connection:(id)connection type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v24.receiver = self;
   v24.super_class = OctaneClientConnection;
   v10 = [(OctaneClientConnection *)&v24 init];
   if (v10)
   {
-    v11 = [v9 userInfo];
+    userInfo = [connectionCopy userInfo];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v11 objectForKeyedSubscript:@"octaneClientUUID"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([userInfo objectForKeyedSubscript:@"octaneClientUUID"], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      v13 = [v8 copy];
+      v13 = [dCopy copy];
       bundleID = v10->_bundleID;
       v10->_bundleID = v13;
 
-      v15 = [v9 remoteObjectProxy];
+      remoteObjectProxy = [connectionCopy remoteObjectProxy];
       remoteObject = v10->_remoteObject;
-      v10->_remoteObject = v15;
+      v10->_remoteObject = remoteObjectProxy;
 
-      v17 = [v11 objectForKeyedSubscript:@"octaneClientUUID"];
+      v17 = [userInfo objectForKeyedSubscript:@"octaneClientUUID"];
       v18 = [v17 copy];
       uuid = v10->_uuid;
       v10->_uuid = v18;
 
-      v10->_type = a5;
-      if (a5 != 1)
+      v10->_type = type;
+      if (type != 1)
       {
 LABEL_12:
 
@@ -329,7 +329,7 @@ LABEL_12:
       v22 = qword_1003D4548;
       if (os_log_type_enabled(qword_1003D4548, OS_LOG_TYPE_ERROR))
       {
-        sub_1002D0138(v9, v22);
+        sub_1002D0138(connectionCopy, v22);
       }
 
       eventObservations = v10;
@@ -357,45 +357,45 @@ LABEL_13:
   [(OctaneClientConnection *)&v3 dealloc];
 }
 
-- (void)registerObservationID:(id)a3
+- (void)registerObservationID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_eventObservations addObject:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_eventObservations addObject:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterObservationID:(id)a3
+- (void)unregisterObservationID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_eventObservations removeObject:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_eventObservations removeObject:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)transactionDeleted:(unint64_t)a3 forBundleID:(id)a4
-{
-  if (!self->_type)
-  {
-    [(ASDOctaneClientProtocol *)self->_remoteObject transactionDeleted:a3 forBundleID:a4];
-  }
-}
-
-- (void)transactionUpdated:(id)a3 forBundleID:(id)a4
+- (void)transactionDeleted:(unint64_t)deleted forBundleID:(id)d
 {
   if (!self->_type)
   {
-    [(ASDOctaneClientProtocol *)self->_remoteObject transactionUpdated:a3 forBundleID:a4];
+    [(ASDOctaneClientProtocol *)self->_remoteObject transactionDeleted:deleted forBundleID:d];
   }
 }
 
-- (void)receiveEventOfType:(int64_t)a3 eventData:(id)a4 identifier:(id)a5
+- (void)transactionUpdated:(id)updated forBundleID:(id)d
+{
+  if (!self->_type)
+  {
+    [(ASDOctaneClientProtocol *)self->_remoteObject transactionUpdated:updated forBundleID:d];
+  }
+}
+
+- (void)receiveEventOfType:(int64_t)type eventData:(id)data identifier:(id)identifier
 {
   if (self->_type == 1)
   {
-    [(ASDOctaneClientProtocol *)self->_remoteObject receiveEventOfType:a3 eventData:a4 identifier:a5];
+    [(ASDOctaneClientProtocol *)self->_remoteObject receiveEventOfType:type eventData:data identifier:identifier];
   }
 }
 

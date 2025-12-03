@@ -3,29 +3,29 @@
 - (CTLazuliDestination)destination;
 - (CTLazuliMessageID)messageID;
 - (CTLazuliSuggestedActionSettings)settings;
-- (CTXPCSendDeviceSettingsRequest)initWithContext:(id)a3 destination:(id)a4 messageID:(id)a5 settings:(id)a6;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (CTXPCSendDeviceSettingsRequest)initWithContext:(id)context destination:(id)destination messageID:(id)d settings:(id)settings;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCSendDeviceSettingsRequest
 
-- (CTXPCSendDeviceSettingsRequest)initWithContext:(id)a3 destination:(id)a4 messageID:(id)a5 settings:(id)a6
+- (CTXPCSendDeviceSettingsRequest)initWithContext:(id)context destination:(id)destination messageID:(id)d settings:(id)settings
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  destinationCopy = destination;
+  dCopy = d;
+  settingsCopy = settings;
   v19[0] = @"destination";
   v19[1] = @"messageID";
-  v20[0] = v11;
-  v20[1] = v12;
+  v20[0] = destinationCopy;
+  v20[1] = dCopy;
   v19[2] = @"settings";
-  v20[2] = v13;
+  v20[2] = settingsCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
   v18.receiver = self;
   v18.super_class = CTXPCSendDeviceSettingsRequest;
-  v15 = [(CTXPCSubscriptionContextRequest *)&v18 initWithContext:v10 namedArguments:v14];
+  v15 = [(CTXPCSubscriptionContextRequest *)&v18 initWithContext:contextCopy namedArguments:v14];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -33,8 +33,8 @@
 
 - (CTLazuliDestination)destination
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"destination"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"destination"];
   v4 = CTThrowingCastIfClass<CTLazuliDestination>(v3);
 
   return v4;
@@ -42,8 +42,8 @@
 
 - (CTLazuliMessageID)messageID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"messageID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"messageID"];
   v4 = CTThrowingCastIfClass<CTLazuliMessageID>(v3);
 
   return v4;
@@ -51,34 +51,34 @@
 
 - (CTLazuliSuggestedActionSettings)settings
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"settings"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"settings"];
   v4 = CTThrowingCastIfClass<CTLazuliSuggestedActionSettings>(v3);
 
   return v4;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCSubscriptionContextRequest *)self context];
-  v9 = [(CTXPCSendDeviceSettingsRequest *)self destination];
-  v10 = [(CTXPCSendDeviceSettingsRequest *)self messageID];
-  v11 = [(CTXPCSendDeviceSettingsRequest *)self settings];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  context = [(CTXPCSubscriptionContextRequest *)self context];
+  destination = [(CTXPCSendDeviceSettingsRequest *)self destination];
+  messageID = [(CTXPCSendDeviceSettingsRequest *)self messageID];
+  settings = [(CTXPCSendDeviceSettingsRequest *)self settings];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__CTXPCSendDeviceSettingsRequest_performRequestWithHandler_completionHandler___block_invoke;
   v13[3] = &unk_1E6A43CC8;
-  v12 = v7;
+  v12 = completionHandlerCopy;
   v14 = v12;
-  [v6 sendDeviceSettings:v8 to:v9 withMessageID:v10 withSetting:v11 completion:v13];
+  [handlerCopy sendDeviceSettings:context to:destination withMessageID:messageID withSetting:settings completion:v13];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCSendDeviceSettingsRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();

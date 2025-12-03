@@ -1,6 +1,6 @@
 @interface RAPWebBundleDownloadManager
 + (id)sharedInstance;
-- (RAPWebBundleDownloadManager)initWithConfiguration:(id)a3;
+- (RAPWebBundleDownloadManager)initWithConfiguration:(id)configuration;
 @end
 
 @implementation RAPWebBundleDownloadManager
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (RAPWebBundleDownloadManager)initWithConfiguration:(id)a3
+- (RAPWebBundleDownloadManager)initWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = RAPWebBundleDownloadManager;
-  v3 = [(WebBundleDownloadManager *)&v6 initWithConfiguration:a3];
+  v3 = [(WebBundleDownloadManager *)&v6 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {

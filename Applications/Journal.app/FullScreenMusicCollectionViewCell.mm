@@ -1,10 +1,10 @@
 @interface FullScreenMusicCollectionViewCell
-- (_TtC7Journal33FullScreenMusicCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC7Journal33FullScreenMusicCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation FullScreenMusicCollectionViewCell
 
-- (_TtC7Journal33FullScreenMusicCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7Journal33FullScreenMusicCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal33FullScreenMusicCollectionViewCell_musicAsset) = 0;
   v4 = OBJC_IVAR____TtC7Journal33FullScreenMusicCollectionViewCell_musicView;

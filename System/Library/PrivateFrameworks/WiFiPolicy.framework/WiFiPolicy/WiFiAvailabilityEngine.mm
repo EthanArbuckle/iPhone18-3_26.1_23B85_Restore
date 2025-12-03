@@ -1,23 +1,23 @@
 @interface WiFiAvailabilityEngine
-- (WiFiAvailabilityEngine)initWithProviders:(id)a3 sources:(id)a4;
+- (WiFiAvailabilityEngine)initWithProviders:(id)providers sources:(id)sources;
 - (WiFiLocationProvider)locationProvider;
 - (WiFiScanProvider)scanProvider;
-- (id)_createAvailabilityMatchForCandidate:(id)a3 scannedNetwork:(id)a4;
-- (id)_findExistingAvailabilityMatchForScannedNetwork:(id)a3;
-- (id)_findRelevantNetworkMatchForScannedNetwork:(id)a3;
-- (id)findRecommendationForScannedNetwork:(id)a3;
-- (id)findRecommendationsForScannedNetwork:(id)a3;
-- (void)_findAvailabilityMatchesInSourcesForBSSIDS:(id)a3;
-- (void)_handle3BarsRelevancyAdded:(id)a3 removed:(id)a4;
-- (void)_handleCandidateMatches:(id)a3;
-- (void)_handleScanResultCallback:(id)a3 error:(id)a4;
-- (void)_handleWalletChange:(id)a3 removed:(id)a4;
-- (void)_handleWalletRelevancyAdded:(id)a3 removed:(id)a4;
-- (void)_handleWalletRemoval:(id)a3;
+- (id)_createAvailabilityMatchForCandidate:(id)candidate scannedNetwork:(id)network;
+- (id)_findExistingAvailabilityMatchForScannedNetwork:(id)network;
+- (id)_findRelevantNetworkMatchForScannedNetwork:(id)network;
+- (id)findRecommendationForScannedNetwork:(id)network;
+- (id)findRecommendationsForScannedNetwork:(id)network;
+- (void)_findAvailabilityMatchesInSourcesForBSSIDS:(id)s;
+- (void)_handle3BarsRelevancyAdded:(id)added removed:(id)removed;
+- (void)_handleCandidateMatches:(id)matches;
+- (void)_handleScanResultCallback:(id)callback error:(id)error;
+- (void)_handleWalletChange:(id)change removed:(id)removed;
+- (void)_handleWalletRelevancyAdded:(id)added removed:(id)removed;
+- (void)_handleWalletRemoval:(id)removal;
 - (void)_removeStaleMatches;
-- (void)_setupProviderCallbacks:(id)a3;
-- (void)_setupSourceCallbacks:(id)a3;
-- (void)setAvailabilityMatchMaximumAge:(double)a3;
+- (void)_setupProviderCallbacks:(id)callbacks;
+- (void)_setupSourceCallbacks:(id)callbacks;
+- (void)setAvailabilityMatchMaximumAge:(double)age;
 @end
 
 @implementation WiFiAvailabilityEngine
@@ -27,13 +27,13 @@
   v30 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(WiFiAvailabilityEngine *)self availableNetworks];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  availableNetworks = [(WiFiAvailabilityEngine *)self availableNetworks];
+  v6 = [availableNetworks countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -45,12 +45,12 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableNetworks);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 matchedAt];
-        [v4 timeIntervalSinceDate:v12];
+        matchedAt = [v11 matchedAt];
+        [date timeIntervalSinceDate:matchedAt];
         v14 = v13;
         [(WiFiAvailabilityEngine *)self availabilityMatchMaximumAge];
         v16 = v15;
@@ -69,7 +69,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v7 = [availableNetworks countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v7);
@@ -77,8 +77,8 @@
 
   if ([v3 count])
   {
-    v17 = [(WiFiAvailabilityEngine *)self availableNetworks];
-    v18 = [v17 mutableCopy];
+    availableNetworks2 = [(WiFiAvailabilityEngine *)self availableNetworks];
+    v18 = [availableNetworks2 mutableCopy];
 
     [v18 minusSet:v3];
     [(WiFiAvailabilityEngine *)self setAvailableNetworks:v18];
@@ -88,17 +88,17 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (WiFiAvailabilityEngine)initWithProviders:(id)a3 sources:(id)a4
+- (WiFiAvailabilityEngine)initWithProviders:(id)providers sources:(id)sources
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  providersCopy = providers;
+  sourcesCopy = sources;
+  v8 = sourcesCopy;
+  selfCopy2 = 0;
+  if (providersCopy && sourcesCopy)
   {
-    if ([v6 count] && objc_msgSend(v8, "count") && (v24.receiver = self, v24.super_class = WiFiAvailabilityEngine, (self = -[WiFiAvailabilityEngine init](&v24, sel_init)) != 0))
+    if ([providersCopy count] && objc_msgSend(v8, "count") && (v24.receiver = self, v24.super_class = WiFiAvailabilityEngine, (self = -[WiFiAvailabilityEngine init](&v24, sel_init)) != 0))
     {
-      v10 = [v6 copy];
+      v10 = [providersCopy copy];
       providers = self->_providers;
       self->_providers = v10;
 
@@ -115,30 +115,30 @@
       block[1] = 3221225472;
       block[2] = __52__WiFiAvailabilityEngine_initWithProviders_sources___block_invoke;
       block[3] = &unk_2789C6630;
-      v17 = self;
-      v23 = v17;
+      selfCopy = self;
+      v23 = selfCopy;
       dispatch_async(v16, block);
 
       v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v19 = dispatch_queue_create("com.apple.WiFiPolicy.availability-engine", v18);
-      queue = v17->_queue;
-      v17->_queue = v19;
+      queue = selfCopy->_queue;
+      selfCopy->_queue = v19;
 
-      v17->_availabilityMatchMaximumAge = 600.0;
-      [(WiFiAvailabilityEngine *)v17 _setupProviderCallbacks:self->_providers];
-      [(WiFiAvailabilityEngine *)v17 _setupSourceCallbacks:self->_sources];
-      self = v17;
+      selfCopy->_availabilityMatchMaximumAge = 600.0;
+      [(WiFiAvailabilityEngine *)selfCopy _setupProviderCallbacks:self->_providers];
+      [(WiFiAvailabilityEngine *)selfCopy _setupSourceCallbacks:self->_sources];
+      self = selfCopy;
 
-      v9 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 uint64_t __52__WiFiAvailabilityEngine_initWithProviders_sources___block_invoke(uint64_t a1)
@@ -151,16 +151,16 @@ uint64_t __52__WiFiAvailabilityEngine_initWithProviders_sources___block_invoke(u
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)_setupProviderCallbacks:(id)a3
+- (void)_setupProviderCallbacks:(id)callbacks
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbacksCopy = callbacks;
   objc_initWeak(&location, self);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = callbacksCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v26 count:16];
   if (v6)
   {
@@ -228,14 +228,14 @@ void __50__WiFiAvailabilityEngine__setupProviderCallbacks___block_invoke(uint64_
   [WeakRetained _handleScanResultCallback:v6 error:v5];
 }
 
-- (void)_setupSourceCallbacks:(id)a3
+- (void)_setupSourceCallbacks:(id)callbacks
 {
   v35 = *MEMORY[0x277D85DE8];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = callbacks;
   v3 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v3)
   {
@@ -269,14 +269,14 @@ void __50__WiFiAvailabilityEngine__setupProviderCallbacks___block_invoke(uint64_
           v24[3] = &unk_2789C8450;
           objc_copyWeak(&v25, buf);
           [v5 setRelevancyHandler:v24];
-          v6 = [v5 relevantNetworks];
-          v7 = [v6 count];
+          relevantNetworks = [v5 relevantNetworks];
+          v7 = [relevantNetworks count];
 
           if (v7)
           {
             WeakRetained = objc_loadWeakRetained(buf);
-            v9 = [v5 relevantNetworks];
-            [WeakRetained _handleWalletRelevancyAdded:v9 removed:0];
+            relevantNetworks2 = [v5 relevantNetworks];
+            [WeakRetained _handleWalletRelevancyAdded:relevantNetworks2 removed:0];
           }
 
           v22[0] = MEMORY[0x277D85DD0];
@@ -305,14 +305,14 @@ void __50__WiFiAvailabilityEngine__setupProviderCallbacks___block_invoke(uint64_
           v18[3] = &unk_2789C8450;
           objc_copyWeak(&v19, buf);
           [v5 setRelevancyHandler:v18];
-          v10 = [v5 relevantNetworks];
-          v11 = [v10 count];
+          relevantNetworks3 = [v5 relevantNetworks];
+          v11 = [relevantNetworks3 count];
 
           if (v11)
           {
             v12 = objc_loadWeakRetained(buf);
-            v13 = [v5 relevantNetworks];
-            [v12 _handle3BarsRelevancyAdded:v13 removed:0];
+            relevantNetworks4 = [v5 relevantNetworks];
+            [v12 _handle3BarsRelevancyAdded:relevantNetworks4 removed:0];
           }
 
           objc_destroyWeak(&v19);
@@ -361,10 +361,10 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
   [WeakRetained _handle3BarsRelevancyAdded:v6 removed:v5];
 }
 
-- (void)setAvailabilityMatchMaximumAge:(double)a3
+- (void)setAvailabilityMatchMaximumAge:(double)age
 {
   v10 = *MEMORY[0x277D85DE8];
-  self->_availabilityMatchMaximumAge = a3;
+  self->_availabilityMatchMaximumAge = age;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     availabilityMatchMaximumAge = self->_availabilityMatchMaximumAge;
@@ -378,10 +378,10 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCandidateMatches:(id)a3
+- (void)_handleCandidateMatches:(id)matches
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchesCopy = matches;
   context = objc_autoreleasePoolPush();
   v33 = 0;
   v34 = &v33;
@@ -389,17 +389,17 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
   v36 = __Block_byref_object_copy__10;
   v37 = __Block_byref_object_dispose__10;
   v38 = 0;
-  v27 = v4;
-  v5 = [MEMORY[0x277CBEB58] setWithSet:v4];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  if (v4)
+  v27 = matchesCopy;
+  v5 = [MEMORY[0x277CBEB58] setWithSet:matchesCopy];
+  date = [MEMORY[0x277CBEAA8] date];
+  if (matchesCopy)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = [(WiFiAvailabilityEngine *)self availableNetworks];
-    v8 = [v7 countByEnumeratingWithState:&v29 objects:v41 count:16];
+    availableNetworks = [(WiFiAvailabilityEngine *)self availableNetworks];
+    v8 = [availableNetworks countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (v8)
     {
       v9 = *v30;
@@ -409,12 +409,12 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
         {
           if (*v30 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(availableNetworks);
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
-          v12 = [v11 matchedAt];
-          [v6 timeIntervalSinceDate:v12];
+          matchedAt = [v11 matchedAt];
+          [date timeIntervalSinceDate:matchedAt];
           v14 = v13;
           [(WiFiAvailabilityEngine *)self availabilityMatchMaximumAge];
           v16 = v14 < v15;
@@ -425,7 +425,7 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v8 = [availableNetworks countByEnumeratingWithState:&v29 objects:v41 count:16];
       }
 
       while (v8);
@@ -436,14 +436,14 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
     v34[5] = v17;
 
     v19 = v34[5];
-    v20 = [(WiFiAvailabilityEngine *)self availableNetworks];
-    [v19 minusSet:v20];
+    availableNetworks2 = [(WiFiAvailabilityEngine *)self availableNetworks];
+    [v19 minusSet:availableNetworks2];
 
     v21 = [MEMORY[0x277CBEB98] setWithSet:v5];
     [(WiFiAvailabilityEngine *)self setAvailableNetworks:v21];
 
-    v22 = [(WiFiAvailabilityEngine *)self availabilityChangedCallback];
-    v23 = v22 == 0;
+    availabilityChangedCallback = [(WiFiAvailabilityEngine *)self availabilityChangedCallback];
+    v23 = availabilityChangedCallback == 0;
 
     if (v23)
     {
@@ -452,14 +452,14 @@ void __48__WiFiAvailabilityEngine__setupSourceCallbacks___block_invoke_4(uint64_
 
     else if ([v34[5] count])
     {
-      v24 = [(WiFiAvailabilityEngine *)self queue];
+      queue = [(WiFiAvailabilityEngine *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __50__WiFiAvailabilityEngine__handleCandidateMatches___block_invoke;
       block[3] = &unk_2789C73A8;
       block[4] = self;
       block[5] = &v33;
-      dispatch_async(v24, block);
+      dispatch_async(queue, block);
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -491,16 +491,16 @@ void __50__WiFiAvailabilityEngine__handleCandidateMatches___block_invoke(uint64_
   *(v3 + 40) = 0;
 }
 
-- (id)_findExistingAvailabilityMatchForScannedNetwork:(id)a3
+- (id)_findExistingAvailabilityMatchForScannedNetwork:(id)network
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networkCopy = network;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(WiFiAvailabilityEngine *)self availableNetworks];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  availableNetworks = [(WiFiAvailabilityEngine *)self availableNetworks];
+  v6 = [availableNetworks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -510,18 +510,18 @@ void __50__WiFiAvailabilityEngine__handleCandidateMatches___block_invoke(uint64_
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableNetworks);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 isEqualToScannedNetwork:v4])
+        if ([v9 isEqualToScannedNetwork:networkCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [availableNetworks countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -538,10 +538,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_findRelevantNetworkMatchForScannedNetwork:(id)a3
+- (id)_findRelevantNetworkMatchForScannedNetwork:(id)network
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  networkCopy = network;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -566,8 +566,8 @@ LABEL_11:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v7 = [v6 relevantNetworks];
-        v8 = [v7 countByEnumeratingWithState:&v34 objects:v48 count:16];
+        relevantNetworks = [v6 relevantNetworks];
+        v8 = [relevantNetworks countByEnumeratingWithState:&v34 objects:v48 count:16];
         if (v8)
         {
           v9 = v8;
@@ -578,26 +578,26 @@ LABEL_11:
             {
               if (*v35 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(relevantNetworks);
               }
 
               v12 = *(*(&v34 + 1) + 8 * j);
-              v13 = [v12 SSID];
-              v14 = [v4 SSID];
-              v15 = [v13 isEqualToString:v14];
+              sSID = [v12 SSID];
+              sSID2 = [networkCopy SSID];
+              v15 = [sSID isEqualToString:sSID2];
 
               if (v15)
               {
                 goto LABEL_19;
               }
 
-              v16 = [v4 BSSID];
+              bSSID = [networkCopy BSSID];
 
-              if (v16)
+              if (bSSID)
               {
                 v17 = MEMORY[0x277CBEB98];
-                v18 = [v4 BSSID];
-                v19 = [v17 setWithObjects:{v18, 0}];
+                bSSID2 = [networkCopy BSSID];
+                v19 = [v17 setWithObjects:{bSSID2, 0}];
                 v20 = [v12 containsAccessPointMatchingBSSIDs:v19];
 
                 if (v20)
@@ -606,13 +606,13 @@ LABEL_11:
                 }
               }
 
-              v21 = [v4 essMembers];
+              essMembers = [networkCopy essMembers];
 
-              if (v21)
+              if (essMembers)
               {
                 v22 = MEMORY[0x277CBEB98];
-                v23 = [v4 essMembers];
-                v24 = [v22 setWithArray:v23];
+                essMembers2 = [networkCopy essMembers];
+                v24 = [v22 setWithArray:essMembers2];
                 v25 = [v12 containsAccessPointMatchingBSSIDs:v24];
 
                 if (v25)
@@ -628,7 +628,7 @@ LABEL_19:
                     v44 = 2112;
                     v45 = v26;
                     v46 = 2112;
-                    v47 = v4;
+                    v47 = networkCopy;
                     _os_log_impl(&dword_2332D7000, v27, OS_LOG_TYPE_DEFAULT, "%s: relevant network %@ matched with scanned network %@", buf, 0x20u);
                   }
 
@@ -638,7 +638,7 @@ LABEL_19:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v34 objects:v48 count:16];
+            v9 = [relevantNetworks countByEnumeratingWithState:&v34 objects:v48 count:16];
             if (v9)
             {
               continue;
@@ -667,10 +667,10 @@ LABEL_22:
   return v33;
 }
 
-- (void)_findAvailabilityMatchesInSourcesForBSSIDS:(id)a3
+- (void)_findAvailabilityMatchesInSourcesForBSSIDS:(id)s
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sCopy = s;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -695,15 +695,15 @@ LABEL_22:
         {
           v10 = objc_autoreleasePoolPush();
           v11 = MEMORY[0x277CBEB98];
-          v12 = [v4 allKeys];
-          v13 = [v11 setWithArray:v12];
+          allKeys = [sCopy allKeys];
+          v13 = [v11 setWithArray:allKeys];
 
           v16[0] = MEMORY[0x277D85DD0];
           v16[1] = 3221225472;
           v16[2] = __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___block_invoke;
           v16[3] = &unk_2789C84A0;
-          v17 = v4;
-          v18 = self;
+          v17 = sCopy;
+          selfCopy = self;
           v19 = v9;
           [v9 fetchCandidateNetworksMatchingBSSIDs:v13 completionHandler:v16];
 
@@ -844,20 +844,20 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createAvailabilityMatchForCandidate:(id)a3 scannedNetwork:(id)a4
+- (id)_createAvailabilityMatchForCandidate:(id)candidate scannedNetwork:(id)network
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [WiFiAvailabilityMatch matchWithNetwork:v6 scannedNetwork:v7];
-  if (v8 && [v6 source] == 2)
+  candidateCopy = candidate;
+  networkCopy = network;
+  v8 = [WiFiAvailabilityMatch matchWithNetwork:candidateCopy scannedNetwork:networkCopy];
+  if (v8 && [candidateCopy source] == 2)
   {
-    v9 = [(WiFiAvailabilityEngine *)self wifiLexicon];
-    if (v9)
+    wifiLexicon = [(WiFiAvailabilityEngine *)self wifiLexicon];
+    if (wifiLexicon)
     {
-      v10 = [(WiFiAvailabilityEngine *)self wifiLexicon];
-      v11 = [v8 SSID];
-      [v8 setUnwantedNetworkName:{objc_msgSend(v10, "stringContainsUnwantedWords:", v11)}];
+      wifiLexicon2 = [(WiFiAvailabilityEngine *)self wifiLexicon];
+      sSID = [v8 SSID];
+      [v8 setUnwantedNetworkName:{objc_msgSend(wifiLexicon2, "stringContainsUnwantedWords:", sSID)}];
     }
 
     else
@@ -867,15 +867,15 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v8 SSID];
+      sSID2 = [v8 SSID];
       v15 = 136315906;
       v16 = "[WiFiAvailabilityEngine _createAvailabilityMatchForCandidate:scannedNetwork:]";
       v17 = 2112;
-      v18 = v12;
+      v18 = sSID2;
       v19 = 2112;
-      v20 = v7;
+      v20 = networkCopy;
       v21 = 2112;
-      v22 = v7;
+      v22 = networkCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: unwanted network name %@ for candidate %@ scanned %@", &v15, 0x2Au);
     }
   }
@@ -885,49 +885,49 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
   return v8;
 }
 
-- (void)_handleWalletRelevancyAdded:(id)a3 removed:(id)a4
+- (void)_handleWalletRelevancyAdded:(id)added removed:(id)removed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  addedCopy = added;
+  removedCopy = removed;
+  if (addedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[WiFiAvailabilityEngine _handleWalletRelevancyAdded:removed:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = addedCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: wallet networks became relevant: %@", &v8, 0x16u);
   }
 
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  if (removedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[WiFiAvailabilityEngine _handleWalletRelevancyAdded:removed:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = removedCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: wallet networks no longer relevant: %@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleWalletRemoval:(id)a3
+- (void)_handleWalletRemoval:(id)removal
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  removalCopy = removal;
+  if (removalCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[WiFiAvailabilityEngine _handleWalletRemoval:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = removalCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: wallet networks that have been removed: %@", &v5, 0x16u);
   }
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleWalletChange:(id)a3 removed:(id)a4
+- (void)_handleWalletChange:(id)change removed:(id)removed
 {
   v13 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -935,46 +935,46 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
     v7 = 136315650;
     v8 = "[WiFiAvailabilityEngine _handleWalletChange:removed:]";
     v9 = 2112;
-    v10 = a4;
+    removedCopy = removed;
     v11 = 2112;
-    v12 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: removed wallet networks: %@, added wallet networks: %@", &v7, 0x20u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handle3BarsRelevancyAdded:(id)a3 removed:(id)a4
+- (void)_handle3BarsRelevancyAdded:(id)added removed:(id)removed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  addedCopy = added;
+  removedCopy = removed;
+  if (addedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[WiFiAvailabilityEngine _handle3BarsRelevancyAdded:removed:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = addedCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: 3bars networks became relevant: %@", &v8, 0x16u);
   }
 
-  if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  if (removedCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[WiFiAvailabilityEngine _handle3BarsRelevancyAdded:removed:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = removedCopy;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: 3bars networks no longer relevant: %@", &v8, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findRecommendationForScannedNetwork:(id)a3
+- (id)findRecommendationForScannedNetwork:(id)network
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WiFiAvailabilityEngine *)self findRecommendationsForScannedNetwork:v4];
+  networkCopy = network;
+  v5 = [(WiFiAvailabilityEngine *)self findRecommendationsForScannedNetwork:networkCopy];
   if (v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -984,7 +984,7 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
       v15 = 2112;
       v16 = v5;
       v17 = 2112;
-      v18 = v4;
+      v18 = networkCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: matches %@, for network %@", buf, 0x20u);
     }
 
@@ -992,7 +992,7 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
     v12 = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     v8 = [v5 sortedArrayUsingDescriptors:v7];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -1001,19 +1001,19 @@ void __69__WiFiAvailabilityEngine__findAvailabilityMatchesInSourcesForBSSIDS___b
       v15 = 2112;
       v16 = v5;
       v17 = 2112;
-      v18 = v4;
+      v18 = networkCopy;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: top match %@ for network %@", buf, 0x20u);
     }
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return firstObject;
 }
 
 uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1081,24 +1081,24 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
   return WeakRetained;
 }
 
-- (void)_handleScanResultCallback:(id)a3 error:(id)a4
+- (void)_handleScanResultCallback:(id)callback error:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v27 = a4;
+  callbackCopy = callback;
+  errorCopy = error;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v6;
+  obj = callbackCopy;
   v32 = [obj countByEnumeratingWithState:&v37 objects:v48 count:16];
   if (v32)
   {
     v9 = *v38;
     v28 = v7;
-    v29 = self;
+    selfCopy = self;
     v30 = *v38;
     do
     {
@@ -1111,22 +1111,22 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
 
         v11 = *(*(&v37 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 SSID];
-        if (v13)
+        sSID = [v11 SSID];
+        if (sSID)
         {
-          v14 = v13;
-          v15 = [v11 SSID];
-          v16 = [v15 length];
+          v14 = sSID;
+          sSID2 = [v11 SSID];
+          v16 = [sSID2 length];
 
           if (v16)
           {
-            v17 = [(WiFiAvailabilityEngine *)self _findExistingAvailabilityMatchForScannedNetwork:v11];
-            if (v17)
+            bSSID = [(WiFiAvailabilityEngine *)self _findExistingAvailabilityMatchForScannedNetwork:v11];
+            if (bSSID)
             {
-              v18 = [MEMORY[0x277CBEAA8] date];
-              [v17 setMatchedAt:v18];
+              date = [MEMORY[0x277CBEAA8] date];
+              [bSSID setMatchedAt:date];
 
-              [v7 addObject:v17];
+              [v7 addObject:bSSID];
             }
 
             v19 = [(WiFiAvailabilityEngine *)self _findRelevantNetworkMatchForScannedNetwork:v11];
@@ -1146,28 +1146,28 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
               v20 = [(WiFiAvailabilityEngine *)self _createAvailabilityMatchForCandidate:v19 scannedNetwork:v11];
 
               [v7 addObject:v20];
-              v17 = v20;
+              bSSID = v20;
             }
 
-            else if (v17)
+            else if (bSSID)
             {
-              [v7 addObject:v17];
+              [v7 addObject:bSSID];
             }
 
             else
             {
-              v17 = [v11 BSSID];
-              if (v17)
+              bSSID = [v11 BSSID];
+              if (bSSID)
               {
-                [v8 setObject:v11 forKey:v17];
+                [dictionary setObject:v11 forKey:bSSID];
               }
 
               v35 = 0u;
               v36 = 0u;
               v33 = 0u;
               v34 = 0u;
-              v21 = [v11 essMembers];
-              v22 = [v21 countByEnumeratingWithState:&v33 objects:v41 count:16];
+              essMembers = [v11 essMembers];
+              v22 = [essMembers countByEnumeratingWithState:&v33 objects:v41 count:16];
               if (v22)
               {
                 v23 = v22;
@@ -1178,20 +1178,20 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
                   {
                     if (*v34 != v24)
                     {
-                      objc_enumerationMutation(v21);
+                      objc_enumerationMutation(essMembers);
                     }
 
-                    [v8 setObject:v11 forKey:*(*(&v33 + 1) + 8 * j)];
+                    [dictionary setObject:v11 forKey:*(*(&v33 + 1) + 8 * j)];
                   }
 
-                  v23 = [v21 countByEnumeratingWithState:&v33 objects:v41 count:16];
+                  v23 = [essMembers countByEnumeratingWithState:&v33 objects:v41 count:16];
                 }
 
                 while (v23);
               }
 
               v7 = v28;
-              self = v29;
+              self = selfCopy;
             }
 
             v9 = v30;
@@ -1207,9 +1207,9 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
     while (v32);
   }
 
-  if ([v8 count])
+  if ([dictionary count])
   {
-    [(WiFiAvailabilityEngine *)self _findAvailabilityMatchesInSourcesForBSSIDS:v8];
+    [(WiFiAvailabilityEngine *)self _findAvailabilityMatchesInSourcesForBSSIDS:dictionary];
   }
 
   if ([v7 count])
@@ -1222,21 +1222,21 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findRecommendationsForScannedNetwork:(id)a3
+- (id)findRecommendationsForScannedNetwork:(id)network
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WiFiAvailabilityEngine *)self availableNetworks];
+  networkCopy = network;
+  availableNetworks = [(WiFiAvailabilityEngine *)self availableNetworks];
 
-  if (v5)
+  if (availableNetworks)
   {
-    v5 = [MEMORY[0x277CBEB58] set];
+    availableNetworks = [MEMORY[0x277CBEB58] set];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(WiFiAvailabilityEngine *)self availableNetworks];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    availableNetworks2 = [(WiFiAvailabilityEngine *)self availableNetworks];
+    v7 = [availableNetworks2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1247,26 +1247,26 @@ uint64_t __62__WiFiAvailabilityEngine_findRecommendationForScannedNetwork___bloc
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(availableNetworks2);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          if ([v11 isEqualToScannedNetwork:v4])
+          if ([v11 isEqualToScannedNetwork:networkCopy])
           {
-            [v5 addObject:v11];
+            [availableNetworks addObject:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [availableNetworks2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
     }
   }
 
-  if ([v5 count])
+  if ([availableNetworks count])
   {
-    v12 = v5;
+    v12 = availableNetworks;
   }
 
   else

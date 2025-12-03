@@ -1,36 +1,36 @@
 @interface IFTSchemaASTFlatExprUpdateVariant
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaASTFlatExprUpdateVariant)initWithDictionary:(id)a3;
-- (IFTSchemaASTFlatExprUpdateVariant)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaASTFlatExprUpdateVariant)initWithDictionary:(id)dictionary;
+- (IFTSchemaASTFlatExprUpdateVariant)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPath:(id)a3;
-- (void)setHasKind:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPath:(id)path;
+- (void)setHasKind:(BOOL)kind;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaASTFlatExprUpdateVariant
 
-- (IFTSchemaASTFlatExprUpdateVariant)initWithDictionary:(id)a3
+- (IFTSchemaASTFlatExprUpdateVariant)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = IFTSchemaASTFlatExprUpdateVariant;
   v5 = [(IFTSchemaASTFlatExprUpdateVariant *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaASTFlatExprUpdateVariant setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"lhs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"lhs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(IFTSchemaASTFlatExprUpdateVariant *)v5 setLhs:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"path"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"path"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       v7 = v20;
     }
 
-    v17 = [v4 objectForKeyedSubscript:{@"kind", v20, v21, v22}];
+    v17 = [dictionaryCopy objectForKeyedSubscript:{@"kind", v20, v21, v22}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,30 +94,30 @@
   return v5;
 }
 
-- (IFTSchemaASTFlatExprUpdateVariant)initWithJSON:(id)a3
+- (IFTSchemaASTFlatExprUpdateVariant)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaASTFlatExprUpdateVariant *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaASTFlatExprUpdateVariant *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaASTFlatExprUpdateVariant *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -131,26 +131,26 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaASTFlatExprUpdateVariant exists](self, "exists")}];
-    [v3 setObject:v5 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v5 forKeyedSubscript:@"exists"];
 
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v6 = [(IFTSchemaASTFlatExprUpdateVariant *)self kind];
+    kind = [(IFTSchemaASTFlatExprUpdateVariant *)self kind];
     v7 = @"ASTUPDATEKIND_UNKNOWN";
-    if (v6 == 1)
+    if (kind == 1)
     {
       v7 = @"ASTUPDATEKIND_APPEND";
     }
 
-    if (v6 == 2)
+    if (kind == 2)
     {
       v8 = @"ASTUPDATEKIND_REPLACE";
     }
@@ -160,28 +160,28 @@
       v8 = v7;
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"kind"];
+    [dictionary setObject:v8 forKeyedSubscript:@"kind"];
   }
 
   if (self->_lhs)
   {
     v9 = [(IFTSchemaASTFlatExprUpdateVariant *)self lhs];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    dictionaryRepresentation = [v9 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"lhs"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"lhs"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"lhs"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"lhs"];
     }
   }
 
   if ([(NSArray *)self->_paths count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -201,16 +201,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -220,12 +220,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"path"];
+    [dictionary setObject:array forKeyedSubscript:@"path"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -255,15 +255,15 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[36] & 1))
+  if ((*&self->_has & 1) != (equalCopy[36] & 1))
   {
     goto LABEL_15;
   }
@@ -271,15 +271,15 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaASTFlatExprUpdateVariant *)self lhs];
-  v7 = [v4 lhs];
-  if ((v6 != 0) == (v7 == 0))
+  paths = [(IFTSchemaASTFlatExprUpdateVariant *)self lhs];
+  paths2 = [equalCopy lhs];
+  if ((paths != 0) == (paths2 == 0))
   {
     goto LABEL_14;
   }
@@ -289,7 +289,7 @@
   {
     v9 = v8;
     v10 = [(IFTSchemaASTFlatExprUpdateVariant *)self lhs];
-    v11 = [v4 lhs];
+    v11 = [equalCopy lhs];
     v12 = [v10 isEqual:v11];
 
     if (!v12)
@@ -302,22 +302,22 @@
   {
   }
 
-  v6 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
-  v7 = [v4 paths];
-  if ((v6 != 0) == (v7 == 0))
+  paths = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
+  paths2 = [equalCopy paths];
+  if ((paths != 0) == (paths2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v13 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
-  if (v13)
+  paths3 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
+  if (paths3)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
-    v16 = [v4 paths];
-    v17 = [v15 isEqual:v16];
+    v14 = paths3;
+    paths4 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
+    paths5 = [equalCopy paths];
+    v17 = [paths4 isEqual:paths5];
 
     if (!v17)
     {
@@ -330,9 +330,9 @@ LABEL_14:
   }
 
   v20 = (*&self->_has >> 1) & 1;
-  if (v20 == ((v4[36] >> 1) & 1))
+  if (v20 == ((equalCopy[36] >> 1) & 1))
   {
-    if (!v20 || (kind = self->_kind, kind == [v4 kind]))
+    if (!v20 || (kind = self->_kind, kind == [equalCopy kind]))
     {
       v18 = 1;
       goto LABEL_16;
@@ -346,10 +346,10 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -400,9 +400,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasKind:(BOOL)a3
+- (void)setHasKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 2;
   }
@@ -415,41 +415,41 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPath:(id)a3
+- (void)addPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   paths = self->_paths;
-  v8 = v4;
+  v8 = pathCopy;
   if (!paths)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_paths;
-    self->_paths = v6;
+    self->_paths = array;
 
-    v4 = v8;
+    pathCopy = v8;
     paths = self->_paths;
   }
 
-  [(NSArray *)paths addObject:v4];
+  [(NSArray *)paths addObject:pathCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = IFTSchemaASTFlatExprUpdateVariant;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaASTFlatExprUpdateVariant *)self lhs];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaASTFlatExprUpdateVariant *)self deleteLhs];
   }
 
-  v9 = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  paths = [(IFTSchemaASTFlatExprUpdateVariant *)self paths];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:paths underConditions:policyCopy];
   [(IFTSchemaASTFlatExprUpdateVariant *)self setPaths:v10];
 
   return v5;

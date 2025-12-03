@@ -1,20 +1,20 @@
 @interface ATXPBPredictionDeviceStateContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOnWifi:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOnWifi:(BOOL)wifi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictionDeviceStateContext
 
-- (void)setHasOnWifi:(BOOL)a3
+- (void)setHasOnWifi:(BOOL)wifi
 {
-  if (a3)
+  if (wifi)
   {
     v3 = 2;
   }
@@ -33,87 +33,87 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictionDeviceStateContext;
   v4 = [(ATXPBPredictionDeviceStateContext *)&v8 description];
-  v5 = [(ATXPBPredictionDeviceStateContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictionDeviceStateContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_onWifi];
-    [v3 setObject:v4 forKey:@"onWifi"];
+    [dictionary setObject:v4 forKey:@"onWifi"];
   }
 
   wifiSSID = self->_wifiSSID;
   if (wifiSSID)
   {
-    [v3 setObject:wifiSSID forKey:@"wifiSSID"];
+    [dictionary setObject:wifiSSID forKey:@"wifiSSID"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_inAirplaneMode];
-    [v3 setObject:v6 forKey:@"inAirplaneMode"];
+    [dictionary setObject:v6 forKey:@"inAirplaneMode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     onWifi = self->_onWifi;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_wifiSSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     inAirplaneMode = self->_inAirplaneMode;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[17] = self->_onWifi;
-    v4[20] |= 2u;
+    toCopy[17] = self->_onWifi;
+    toCopy[20] |= 2u;
   }
 
   if (self->_wifiSSID)
   {
-    v5 = v4;
-    [v4 setWifiSSID:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setWifiSSID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_inAirplaneMode;
-    v4[20] |= 1u;
+    toCopy[16] = self->_inAirplaneMode;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -121,7 +121,7 @@
     *(v5 + 20) |= 2u;
   }
 
-  v7 = [(NSString *)self->_wifiSSID copyWithZone:a3];
+  v7 = [(NSString *)self->_wifiSSID copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -134,45 +134,45 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = *(v4 + 20);
+  v6 = *(equalCopy + 20);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0)
+    if ((*(equalCopy + 20) & 2) == 0)
     {
       goto LABEL_13;
     }
 
-    v10 = *(v4 + 17);
+    v10 = *(equalCopy + 17);
     if (self->_onWifi)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_13;
   }
 
   wifiSSID = self->_wifiSSID;
-  if (!(wifiSSID | *(v4 + 1)))
+  if (!(wifiSSID | *(equalCopy + 1)))
   {
     goto LABEL_7;
   }
@@ -186,20 +186,20 @@ LABEL_13:
 
   has = self->_has;
 LABEL_7:
-  v8 = (*(v4 + 20) & 1) == 0;
+  v8 = (*(equalCopy + 20) & 1) == 0;
   if (has)
   {
-    if (*(v4 + 20))
+    if (*(equalCopy + 20))
     {
       if (self->_inAirplaneMode)
       {
-        if (*(v4 + 16))
+        if (*(equalCopy + 16))
         {
           goto LABEL_21;
         }
       }
 
-      else if (!*(v4 + 16))
+      else if (!*(equalCopy + 16))
       {
 LABEL_21:
         v8 = 1;
@@ -241,25 +241,25 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[20] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[20] & 2) != 0)
   {
-    self->_onWifi = v4[17];
+    self->_onWifi = fromCopy[17];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(ATXPBPredictionDeviceStateContext *)self setWifiSSID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[20])
+  if (fromCopy[20])
   {
-    self->_inAirplaneMode = v4[16];
+    self->_inAirplaneMode = fromCopy[16];
     *&self->_has |= 1u;
   }
 }

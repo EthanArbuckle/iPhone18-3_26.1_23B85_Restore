@@ -1,6 +1,6 @@
 @interface ADPersonalizedAdsStatusManager
 + (id)sharedInstance;
-- (void)sendPersonalizedAdsStatusToAdPlatforms:(id)a3 completionHandler:(id)a4;
+- (void)sendPersonalizedAdsStatusToAdPlatforms:(id)platforms completionHandler:(id)handler;
 @end
 
 @implementation ADPersonalizedAdsStatusManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __48__ADPersonalizedAdsStatusManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_1, block);
@@ -30,18 +30,18 @@ uint64_t __48__ADPersonalizedAdsStatusManager_sharedInstance__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)sendPersonalizedAdsStatusToAdPlatforms:(id)a3 completionHandler:(id)a4
+- (void)sendPersonalizedAdsStatusToAdPlatforms:(id)platforms completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CE9658] sharedInstance];
-  v9 = [v8 activeDSIDRecord];
+  platformsCopy = platforms;
+  handlerCopy = handler;
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
 
-  v10 = [MEMORY[0x277CE9638] sharedInstance];
-  v11 = [v10 isPersonalizedAdsEnabled];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  isPersonalizedAdsEnabled = [mEMORY[0x277CE9638] isPersonalizedAdsEnabled];
 
-  v12 = [v9 DSID];
-  v13 = [v6 isEqualToString:v12];
+  dSID = [activeDSIDRecord DSID];
+  v13 = [platformsCopy isEqualToString:dSID];
 
   if (v13)
   {
@@ -52,27 +52,27 @@ uint64_t __48__ADPersonalizedAdsStatusManager_sharedInstance__block_invoke(uint6
       v15 = @"[%@]: Not sending Personalized Ads status to AdPlatforms - request already in-flight.";
 LABEL_4:
       [v14 stringWithFormat:v15, v36, v37];
-      v16 = LABEL_5:;
+      dSID2 = LABEL_5:;
       _ADLog();
       goto LABEL_8;
     }
 
-    if ([v9 isPlaceholderAccount])
+    if ([activeDSIDRecord isPlaceholderAccount])
     {
-      v16 = [v9 idForClientType:0];
-      v20 = [v9 iAdIDBeforeReset];
-      v21 = [v20 isEqualToString:v16];
+      dSID2 = [activeDSIDRecord idForClientType:0];
+      iAdIDBeforeReset = [activeDSIDRecord iAdIDBeforeReset];
+      v21 = [iAdIDBeforeReset isEqualToString:dSID2];
 
       v22 = MEMORY[0x277CCACA8];
       v23 = objc_opt_class();
-      if (v21 && v11)
+      if (v21 && isPersonalizedAdsEnabled)
       {
-        [v22 stringWithFormat:@"[%@]: Not sending ADOptOutRequest to AdPlatforms for what is now the old iAdID: %@.", v23, v16, v38];
+        [v22 stringWithFormat:@"[%@]: Not sending ADOptOutRequest to AdPlatforms for what is now the old iAdID: %@.", v23, dSID2, v38];
         goto LABEL_7;
       }
 
       v25 = @"Out";
-      if (v11)
+      if (isPersonalizedAdsEnabled)
       {
         v25 = @"In";
       }
@@ -83,9 +83,9 @@ LABEL_4:
 
     else
     {
-      if (v11)
+      if (isPersonalizedAdsEnabled)
       {
-        v24 = [v9 idForClientType:5];
+        v24 = [activeDSIDRecord idForClientType:5];
 
         if (!v24)
         {
@@ -96,11 +96,11 @@ LABEL_4:
         }
       }
 
-      if (llround([v9 lastSentPersonalizedAdsTimestamp]))
+      if (llround([activeDSIDRecord lastSentPersonalizedAdsTimestamp]))
       {
-        if (v11 == [v9 lastSentPersonalizedAdsStatus] && objc_msgSend(v9, "lastSentPersonalizedAdsTimestamp") >= 1)
+        if (isPersonalizedAdsEnabled == [activeDSIDRecord lastSentPersonalizedAdsStatus] && objc_msgSend(activeDSIDRecord, "lastSentPersonalizedAdsTimestamp") >= 1)
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Not sending Personalized Ads status to AdPlatforms - Personalized Ads status has not changed (%d).", objc_opt_class(), v11];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Not sending Personalized Ads status to AdPlatforms - Personalized Ads status has not changed (%d).", objc_opt_class(), isPersonalizedAdsEnabled];
           goto LABEL_5;
         }
       }
@@ -109,45 +109,45 @@ LABEL_4:
       {
         v27 = MEMORY[0x277CCACA8];
         v28 = objc_opt_class();
-        v29 = [v9 idForClientType:0];
-        v30 = [v27 stringWithFormat:@"[%@]: Personalized Ads status for %@ (%d) has never been sent to AdPlatforms. Sending now.", v28, v29, v11];
+        v29 = [activeDSIDRecord idForClientType:0];
+        v30 = [v27 stringWithFormat:@"[%@]: Personalized Ads status for %@ (%d) has never been sent to AdPlatforms. Sending now.", v28, v29, isPersonalizedAdsEnabled];
         _ADLog();
       }
     }
 
     v31 = MEMORY[0x277CCACA8];
     v32 = objc_opt_class();
-    v33 = [v9 idForClientType:0];
-    v34 = [v31 stringWithFormat:@"[%@]: Sending current Personalized Ads status (%d) for %@ to AdPlatforms.", v32, v11, v33];
+    v33 = [activeDSIDRecord idForClientType:0];
+    v34 = [v31 stringWithFormat:@"[%@]: Sending current Personalized Ads status (%d) for %@ to AdPlatforms.", v32, isPersonalizedAdsEnabled, v33];
     _ADLog();
 
     self->_sendingPersonalizedAdsToAdPlatforms = 1;
-    v35 = [MEMORY[0x277CE96B8] workQueue];
+    workQueue = [MEMORY[0x277CE96B8] workQueue];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __91__ADPersonalizedAdsStatusManager_sendPersonalizedAdsStatusToAdPlatforms_completionHandler___block_invoke;
     v39[3] = &unk_278C586B0;
-    v40 = v9;
-    v44 = v11;
-    v41 = v6;
-    v42 = self;
-    v43 = v7;
-    [v35 addOperationWithBlock:v39];
+    v40 = activeDSIDRecord;
+    v44 = isPersonalizedAdsEnabled;
+    v41 = platformsCopy;
+    selfCopy = self;
+    v43 = handlerCopy;
+    [workQueue addOperationWithBlock:v39];
 
     goto LABEL_25;
   }
 
   v17 = MEMORY[0x277CCACA8];
   v18 = objc_opt_class();
-  v16 = [v9 DSID];
-  [v17 stringWithFormat:@"[%@]: Not sending Personalized Ads status to AdPlatforms - invalid argument. %@ is not the current DSID (%@).", v18, v6, v16];
+  dSID2 = [activeDSIDRecord DSID];
+  [v17 stringWithFormat:@"[%@]: Not sending Personalized Ads status to AdPlatforms - invalid argument. %@ is not the current DSID (%@).", v18, platformsCopy, dSID2];
   v19 = LABEL_7:;
   _ADLog();
 
 LABEL_8:
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
 LABEL_25:

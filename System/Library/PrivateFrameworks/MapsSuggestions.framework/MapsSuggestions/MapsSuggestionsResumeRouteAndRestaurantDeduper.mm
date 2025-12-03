@@ -1,16 +1,16 @@
 @interface MapsSuggestionsResumeRouteAndRestaurantDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsResumeRouteAndRestaurantDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,35 +53,35 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(11, 8, v5, v6))
+  if (!MapsSuggestionsEntriesShouldBeOfOneOfEachType(11, 8, entryCopy, withEntryCopy))
   {
     goto LABEL_18;
   }
 
-  v8 = [v5 geoMapItem];
-  if (!v8)
+  geoMapItem = [entryCopy geoMapItem];
+  if (!geoMapItem)
   {
     goto LABEL_19;
   }
 
-  v9 = [v7 geoMapItem];
+  geoMapItem2 = [v7 geoMapItem];
 
-  if (!v9 || ([v5 geoMapItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "geoMapItem"), v11 = objc_claimAutoreleasedReturnValue(), v12 = MapsSuggestionsMapItemsAreEqual(v10, v11, 0, 0, 0), v11, v10, !v12) || (objc_msgSend(v5, "hasMultipleWaypointsLeft") & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) != 0)
+  if (!geoMapItem2 || ([entryCopy geoMapItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "geoMapItem"), v11 = objc_claimAutoreleasedReturnValue(), v12 = MapsSuggestionsMapItemsAreEqual(v10, v11, 0, 0, 0), v11, v10, !v12) || (objc_msgSend(entryCopy, "hasMultipleWaypointsLeft") & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) != 0)
   {
 LABEL_18:
-    LOBYTE(v8) = 0;
+    LOBYTE(geoMapItem) = 0;
     goto LABEL_19;
   }
 
-  if ([v5 type] != 8)
+  if ([entryCopy type] != 8)
   {
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
-  LOBYTE(v8) = 1;
+  LOBYTE(geoMapItem) = 1;
 LABEL_19:
 
-  return v8;
+  return geoMapItem;
 }
 
 @end

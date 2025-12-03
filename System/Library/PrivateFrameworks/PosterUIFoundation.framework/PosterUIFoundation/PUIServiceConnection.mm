@@ -1,10 +1,10 @@
 @interface PUIServiceConnection
 + (PUIServiceConnection)defaultConnection;
-- (id)connectionActivateIfNeededWithError:(id *)a3;
-- (id)initToEndpoint:(id)a3;
-- (id)initToServiceName:(id)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)connectionActivateIfNeededWithError:(id *)error;
+- (id)initToEndpoint:(id)endpoint;
+- (id)initToServiceName:(id)name;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __41__PUIServiceConnection_defaultConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultConnection_onceToken != -1)
   {
     dispatch_once(&defaultConnection_onceToken, block);
@@ -34,15 +34,15 @@ uint64_t __41__PUIServiceConnection_defaultConnection__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initToServiceName:(id)a3
+- (id)initToServiceName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [PUIServiceConnection initToServiceName:a2];
   }
 
-  v6 = v5;
+  v6 = nameCopy;
   v11.receiver = self;
   v11.super_class = PUIServiceConnection;
   v7 = [(PUIServiceConnection *)&v11 init];
@@ -58,69 +58,69 @@ uint64_t __41__PUIServiceConnection_defaultConnection__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)initToEndpoint:(id)a3
+- (id)initToEndpoint:(id)endpoint
 {
-  v6 = a3;
-  if (!v6)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [PUIServiceConnection initToEndpoint:a2];
   }
 
-  v7 = v6;
+  v7 = endpointCopy;
   v11.receiver = self;
   v11.super_class = PUIServiceConnection;
   v8 = [(PUIServiceConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endpoint, a3);
+    objc_storeStrong(&v8->_endpoint, endpoint);
     v9->_connectionLock = 0;
   }
 
   return v9;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
   v9 = 0;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(PUIServiceConnection *)self connectionActivateIfNeededWithError:&v9];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
     v7 = 0;
   }
 
   return v7;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
   v9 = 0;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(PUIServiceConnection *)self connectionActivateIfNeededWithError:&v9];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v7 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
     v7 = 0;
   }
 
   return v7;
 }
 
-- (id)connectionActivateIfNeededWithError:(id *)a3
+- (id)connectionActivateIfNeededWithError:(id *)error
 {
   v28[2] = *MEMORY[0x1E69E9840];
   os_unfair_recursive_lock_lock_with_options();
@@ -180,7 +180,7 @@ LABEL_7:
   objc_copyWeak(&v25, &location);
   [(NSXPCConnection *)v15 setInvalidationHandler:&v21];
   [(NSXPCConnection *)self->_lock_connection activate];
-  if (a3 && !self->_lock_connection)
+  if (error && !self->_lock_connection)
   {
     v16 = MEMORY[0x1E696ABC0];
     v27[0] = *MEMORY[0x1E696A580];
@@ -189,7 +189,7 @@ LABEL_7:
     v28[0] = v17;
     v28[1] = @"Ensure this process has the correct sandbox for connection and that the service is not crashing or failing to load.";
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-    *a3 = [v16 errorWithDomain:*MEMORY[0x1E696A798] code:61 userInfo:v18];
+    *error = [v16 errorWithDomain:*MEMORY[0x1E696A798] code:61 userInfo:v18];
   }
 
   objc_destroyWeak(&v25);

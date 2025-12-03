@@ -1,22 +1,22 @@
 @interface LockupViewDelegate
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidFinishRequest:(id)request;
 @end
 
 @implementation LockupViewDelegate
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  viewCopy = view;
+  errorCopy = error;
+  selfCopy = self;
   sub_1BE528434();
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_1BE5284A8();
 }
 

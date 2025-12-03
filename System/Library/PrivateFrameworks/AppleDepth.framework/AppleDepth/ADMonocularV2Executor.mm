@@ -1,9 +1,9 @@
 @interface ADMonocularV2Executor
-- (ADMonocularV2Executor)initWithInputPrioritization:(int64_t)a3 parameters:(id)a4;
+- (ADMonocularV2Executor)initWithInputPrioritization:(int64_t)prioritization parameters:(id)parameters;
 - (id)getIntermediates;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)executeWithColor:(__CVBuffer *)a3 outDisparity:(__CVBuffer *)a4;
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4;
+- (int64_t)executeWithColor:(__CVBuffer *)color outDisparity:(__CVBuffer *)disparity;
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
 @end
@@ -82,16 +82,16 @@
   [(ADExecutor *)&v3 dealloc];
 }
 
-- (int64_t)executeWithColor:(__CVBuffer *)a3 outDisparity:(__CVBuffer *)a4
+- (int64_t)executeWithColor:(__CVBuffer *)color outDisparity:(__CVBuffer *)disparity
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (!v6->_isPrepared)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  Width = CVPixelBufferGetWidth(color);
+  Height = CVPixelBufferGetHeight(color);
+  if (!selfCopy->_isPrepared)
   {
-    v9 = [(ADMonocularV2Executor *)v6 prepareForEngineType:v6->super._engineType inputColorROI:0.0, 0.0, Width, Height];
-    if (v9)
+    height = [(ADMonocularV2Executor *)selfCopy prepareForEngineType:selfCopy->super._engineType inputColorROI:0.0, 0.0, Width, Height];
+    if (height)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -103,35 +103,35 @@
     }
   }
 
-  if (v6->super._espressoRunner)
+  if (selfCopy->super._espressoRunner)
   {
-    if (a4)
+    if (disparity)
     {
-      v10 = [(ADExecutor *)v6 executorParameters];
-      v11 = [v10 logger];
+      executorParameters = [(ADExecutor *)selfCopy executorParameters];
+      logger = [executorParameters logger];
 
-      v12 = [MEMORY[0x277CCAC38] processInfo];
-      [v12 systemUptime];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v14 = v13;
 
       *buf = 335683588;
       v29 = 0u;
       v30 = 0u;
       kdebug_trace();
-      [v11 logPixelBuffer:a3 name:"inputColor" timestamp:v14];
-      v15 = [(ADExecutor *)v6 executorParameters];
-      v16 = [v15 stepsToExecute];
+      [logger logPixelBuffer:color name:"inputColor" timestamp:v14];
+      executorParameters2 = [(ADExecutor *)selfCopy executorParameters];
+      stepsToExecute = [executorParameters2 stepsToExecute];
 
-      v17 = [(ADExecutor *)v6 executorParameters];
-      v18 = [v17 timeProfiler];
+      executorParameters3 = [(ADExecutor *)selfCopy executorParameters];
+      timeProfiler = [executorParameters3 timeProfiler];
 
-      if (v16 >= 1)
+      if (stepsToExecute >= 1)
       {
         kdebug_trace();
-        [v18 startWithUTFString:"preprocess color"];
-        [(ADExecutor *)v6 frameExecutionStart];
-        v9 = [ADUtils scaleConvertRotateImage:a3 rotateBy:LOBYTE(v6->super._rotationConstant) cropBy:v6->_itmPreProcessedColor scaleInto:&v6->_itmCroppedScaledColor intermediateScalingBuffer:&v6->_itmRotatedColor intermediateRotatingBuffer:1 useVT:v6->super._inputRoi.origin.x, v6->super._inputRoi.origin.y, v6->super._inputRoi.size.width, v6->super._inputRoi.size.height];
-        if (v9)
+        [timeProfiler startWithUTFString:"preprocess color"];
+        [(ADExecutor *)selfCopy frameExecutionStart];
+        height = [ADUtils scaleConvertRotateImage:color rotateBy:LOBYTE(selfCopy->super._rotationConstant) cropBy:selfCopy->_itmPreProcessedColor scaleInto:&selfCopy->_itmCroppedScaledColor intermediateScalingBuffer:&selfCopy->_itmRotatedColor intermediateRotatingBuffer:1 useVT:selfCopy->super._inputRoi.origin.x, selfCopy->super._inputRoi.origin.y, selfCopy->super._inputRoi.size.width, selfCopy->super._inputRoi.size.height];
+        if (height)
         {
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -149,16 +149,16 @@ LABEL_11:
           goto LABEL_20;
         }
 
-        [v11 logPixelBuffer:v6->_itmPreProcessedColor name:"preProcessedColor" timestamp:v14];
-        [v11 logPixelBuffer:v6->_itmPrevDisparity name:"prevDisparity" timestamp:v14];
-        [v18 stopWithUTFString:"preprocess color"];
+        [logger logPixelBuffer:selfCopy->_itmPreProcessedColor name:"preProcessedColor" timestamp:v14];
+        [logger logPixelBuffer:selfCopy->_itmPrevDisparity name:"prevDisparity" timestamp:v14];
+        [timeProfiler stopWithUTFString:"preprocess color"];
         kdebug_trace();
-        if (v16 != 1)
+        if (stepsToExecute != 1)
         {
           kdebug_trace();
-          [v18 startWithUTFString:"network execution"];
-          v9 = [(ADEspressoRunnerProtocol *)v6->super._espressoRunner execute];
-          if (v9)
+          [timeProfiler startWithUTFString:"network execution"];
+          height = [(ADEspressoRunnerProtocol *)selfCopy->super._espressoRunner execute];
+          if (height)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -171,20 +171,20 @@ LABEL_11:
             goto LABEL_11;
           }
 
-          [v11 logPixelBuffer:v6->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v14];
-          [v18 stopWithUTFString:"network execution"];
+          [logger logPixelBuffer:selfCopy->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v14];
+          [timeProfiler stopWithUTFString:"network execution"];
           kdebug_trace();
-          if (v16 >= 3)
+          if (stepsToExecute >= 3)
           {
             kdebug_trace();
-            [v18 startWithUTFString:"postprocess depth"];
-            if (!*a4)
+            [timeProfiler startWithUTFString:"postprocess depth"];
+            if (!*disparity)
             {
-              *a4 = PixelBufferUtils::createPixelBufferWithSameSize(v6->_itmUnprocessedOutputDisparity, 0x66646973, 1);
+              *disparity = PixelBufferUtils::createPixelBufferWithSameSize(selfCopy->_itmUnprocessedOutputDisparity, 0x66646973, 1);
             }
 
-            v9 = [(ADMonocularV2Pipeline *)v6->_pipeline postProcessDisparity:v6->_itmUnprocessedOutputDisparity output:?];
-            if (v9)
+            height = [(ADMonocularV2Pipeline *)selfCopy->_pipeline postProcessDisparity:selfCopy->_itmUnprocessedOutputDisparity output:?];
+            if (height)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -197,21 +197,21 @@ LABEL_11:
               goto LABEL_11;
             }
 
-            [v11 logPixelBuffer:*a4 name:"outputConvertedUnits" timestamp:v14];
-            [v18 stopWithUTFString:"postprocess depth"];
+            [logger logPixelBuffer:*disparity name:"outputConvertedUnits" timestamp:v14];
+            [timeProfiler stopWithUTFString:"postprocess depth"];
             kdebug_trace();
-            if (v16 != 3)
+            if (stepsToExecute != 3)
             {
               kdebug_trace();
-              [v18 startWithUTFString:"postprocess previous depth"];
-              espressoRunner = v6->super._espressoRunner;
-              v26 = [(ADMonocularV2Pipeline *)v6->_pipeline inferenceDescriptor];
-              v23 = [v26 prevDisparityInput];
-              v24 = [(ADMonocularV2Pipeline *)v6->_pipeline inferenceDescriptor];
-              v25 = [v24 disparityOutput];
-              v9 = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&v6->_itmPrevDisparity inputDescriptor:v23 outputBuffer:&v6->_itmUnprocessedOutputDisparity outputDescriptor:v25];
+              [timeProfiler startWithUTFString:"postprocess previous depth"];
+              espressoRunner = selfCopy->super._espressoRunner;
+              inferenceDescriptor = [(ADMonocularV2Pipeline *)selfCopy->_pipeline inferenceDescriptor];
+              prevDisparityInput = [inferenceDescriptor prevDisparityInput];
+              inferenceDescriptor2 = [(ADMonocularV2Pipeline *)selfCopy->_pipeline inferenceDescriptor];
+              disparityOutput = [inferenceDescriptor2 disparityOutput];
+              height = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&selfCopy->_itmPrevDisparity inputDescriptor:prevDisparityInput outputBuffer:&selfCopy->_itmUnprocessedOutputDisparity outputDescriptor:disparityOutput];
 
-              if (v9)
+              if (height)
               {
                 if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                 {
@@ -224,12 +224,12 @@ LABEL_11:
                 goto LABEL_11;
               }
 
-              [v18 stopWithUTFString:"postprocess previous depth"];
+              [timeProfiler stopWithUTFString:"postprocess previous depth"];
               kdebug_trace();
-              if (v16 >= 5)
+              if (stepsToExecute >= 5)
               {
-                [(ADExecutor *)v6 frameExecutionEnd];
-                v9 = 0;
+                [(ADExecutor *)selfCopy frameExecutionEnd];
+                height = 0;
                 goto LABEL_20;
               }
             }
@@ -237,7 +237,7 @@ LABEL_11:
         }
       }
 
-      v9 = -22977;
+      height = -22977;
       goto LABEL_20;
     }
 
@@ -247,7 +247,7 @@ LABEL_11:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "must provide an output pointer to CVPixelBufferRef", buf, 2u);
     }
 
-    v9 = -22953;
+    height = -22953;
   }
 
   else
@@ -258,29 +258,29 @@ LABEL_11:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "executor could not be initialized", buf, 2u);
     }
 
-    v9 = -22960;
+    height = -22960;
   }
 
 LABEL_21:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return height;
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  objc_sync_enter(v9);
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 335685116;
   v19 = 0u;
   v20 = 0u;
   kdebug_trace();
-  v10 = [(ADMonocularV2Pipeline *)v9->_pipeline adjustForEngine:a3];
-  if (v10)
+  height = [(ADMonocularV2Pipeline *)selfCopy->_pipeline adjustForEngine:type];
+  if (height)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -291,12 +291,12 @@ LABEL_21:
 
   else
   {
-    v11 = [(ADMonocularV2Pipeline *)v9->_pipeline inferenceDescriptor];
-    v12 = [v11 colorInput];
-    v13 = [v12 imageDescriptor];
-    v10 = [(ADExecutor *)v9 prepareForEngineType:a3 roi:v13 descriptorForROI:1 exifOrientation:2 rotationPreference:v11 inferenceDescriptor:x, y, width, height];
+    inferenceDescriptor = [(ADMonocularV2Pipeline *)selfCopy->_pipeline inferenceDescriptor];
+    colorInput = [inferenceDescriptor colorInput];
+    imageDescriptor = [colorInput imageDescriptor];
+    height = [(ADExecutor *)selfCopy prepareForEngineType:type roi:imageDescriptor descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:x, y, width, height];
 
-    if (v10)
+    if (height)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -307,39 +307,39 @@ LABEL_21:
 
     else
     {
-      v10 = [(ADMonocularV2Executor *)v9 allocateIntermediateBuffers];
-      CVPixelBufferLockBaseAddress(v9->_itmPrevDisparity, 0);
-      BaseAddress = CVPixelBufferGetBaseAddress(v9->_itmPrevDisparity);
-      DataSize = CVPixelBufferGetDataSize(v9->_itmPrevDisparity);
+      height = [(ADMonocularV2Executor *)selfCopy allocateIntermediateBuffers];
+      CVPixelBufferLockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+      BaseAddress = CVPixelBufferGetBaseAddress(selfCopy->_itmPrevDisparity);
+      DataSize = CVPixelBufferGetDataSize(selfCopy->_itmPrevDisparity);
       bzero(BaseAddress, DataSize);
-      CVPixelBufferUnlockBaseAddress(v9->_itmPrevDisparity, 0);
-      v9->_isPrepared = v10 == 0;
+      CVPixelBufferUnlockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+      selfCopy->_isPrepared = height == 0;
     }
   }
 
   kdebug_trace();
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return height;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADMonocularV2Executor *)self deallocateEspressoBuffers];
   espressoRunner = self->super._espressoRunner;
-  v4 = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
-  v5 = [v4 colorInput];
-  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:v5];
+  inferenceDescriptor = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:colorInput];
 
   v6 = self->super._espressoRunner;
-  v7 = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
-  v8 = [v7 disparityOutput];
-  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:v8];
+  inferenceDescriptor2 = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
+  disparityOutput = [inferenceDescriptor2 disparityOutput];
+  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:disparityOutput];
 
   v9 = self->super._espressoRunner;
-  v10 = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
-  v11 = [v10 prevDisparityInput];
-  self->_itmPrevDisparity = [(ADEspressoRunnerProtocol *)v9 createAndRegisterPixelBufferForDescriptor:v11];
+  inferenceDescriptor3 = [(ADMonocularV2Pipeline *)self->_pipeline inferenceDescriptor];
+  prevDisparityInput = [inferenceDescriptor3 prevDisparityInput];
+  self->_itmPrevDisparity = [(ADEspressoRunnerProtocol *)v9 createAndRegisterPixelBufferForDescriptor:prevDisparityInput];
 
   if (self->_itmPreProcessedColor && self->_itmUnprocessedOutputDisparity && self->_itmPrevDisparity)
   {
@@ -360,11 +360,11 @@ LABEL_21:
   self->_itmPrevDisparity = 0;
 }
 
-- (ADMonocularV2Executor)initWithInputPrioritization:(int64_t)a3 parameters:(id)a4
+- (ADMonocularV2Executor)initWithInputPrioritization:(int64_t)prioritization parameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   v15 = 335686448;
-  v16 = a3;
+  prioritizationCopy = prioritization;
   v17 = 0;
   v18 = 0;
   v19 = 0;
@@ -375,18 +375,18 @@ LABEL_21:
   if (v7)
   {
     v8 = [ADMonocularV2Pipeline alloc];
-    v9 = [v6 pipelineParameters];
-    v10 = [(ADMonocularV2Pipeline *)v8 initWithInputPrioritization:a3 andParameters:v9];
+    pipelineParameters = [parametersCopy pipelineParameters];
+    v10 = [(ADMonocularV2Pipeline *)v8 initWithInputPrioritization:prioritization andParameters:pipelineParameters];
     pipeline = v7->_pipeline;
     v7->_pipeline = v10;
 
-    if (!v7->_pipeline || !v6 && (v6 = [[ADMonocularV2ExecutorParameters alloc] initForPipeline:v7->_pipeline]) == 0)
+    if (!v7->_pipeline || !parametersCopy && (parametersCopy = [[ADMonocularV2ExecutorParameters alloc] initForPipeline:v7->_pipeline]) == 0)
     {
       v12 = 0;
       goto LABEL_8;
     }
 
-    [(ADExecutor *)v7 setExecutorParameters:v6];
+    [(ADExecutor *)v7 setExecutorParameters:parametersCopy];
     v7->_itmPreProcessedColor = 0;
     v7->_itmUnprocessedOutputDisparity = 0;
     v7->_itmCroppedScaledColor = 0;

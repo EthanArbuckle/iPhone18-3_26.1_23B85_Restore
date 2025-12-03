@@ -1,28 +1,28 @@
 @interface MPModelAlbumKind
 + (id)identityKind;
-+ (id)kindWithVariants:(unint64_t)a3 songKind:(id)a4 options:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (MPModelAlbumKind)initWithCoder:(id)a3;
++ (id)kindWithVariants:(unint64_t)variants songKind:(id)kind options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (MPModelAlbumKind)initWithCoder:(id)coder;
 - (id)humanDescription;
-- (id)msv_initWithJSONValue:(id)a3;
+- (id)msv_initWithJSONValue:(id)value;
 - (id)msv_jsonValue;
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3;
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property;
 - (shared_ptr<mlcore::Predicate>)representedSearchScopePredicate;
 - (unint64_t)hash;
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPModelAlbumKind
 
 - (id)humanDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = v3;
+  string = [MEMORY[0x1E696AD60] string];
+  v4 = string;
   variants = self->_variants;
   if (variants)
   {
-    [v3 appendString:@"albums"];
+    [string appendString:@"albums"];
     if ((self->_variants & 2) == 0)
     {
       goto LABEL_7;
@@ -44,29 +44,29 @@ LABEL_7:
     [v4 insertString:@"previously played " atIndex:0];
   }
 
-  v6 = [(MPModelSongKind *)self->_songKind humanDescription];
-  [v4 appendFormat:@" containing %@", v6];
+  humanDescription = [(MPModelSongKind *)self->_songKind humanDescription];
+  [v4 appendFormat:@" containing %@", humanDescription];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPModelAlbumKind;
-  v4 = a3;
-  [(MPModelKind *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_songKind forKey:@"songKind"];
-  [v4 encodeInteger:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [(MPModelKind *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_variants forKey:{@"variants", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_songKind forKey:@"songKind"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
 }
 
-- (MPModelAlbumKind)initWithCoder:(id)a3
+- (MPModelAlbumKind)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"variants"];
-  v6 = [v4 decodeIntegerForKey:@"options"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"songKind"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"variants"];
+  v6 = [coderCopy decodeIntegerForKey:@"options"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"songKind"];
 
   if (v7)
   {
@@ -85,8 +85,8 @@ LABEL_7:
 {
   v10.receiver = self;
   v10.super_class = MPModelAlbumKind;
-  v3 = [(MPModelKind *)&v10 msv_jsonValue];
-  v4 = [v3 mutableCopy];
+  msv_jsonValue = [(MPModelKind *)&v10 msv_jsonValue];
+  v4 = [msv_jsonValue mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_variants];
   [v4 setObject:v5 forKeyedSubscript:@"variants"];
@@ -94,47 +94,47 @@ LABEL_7:
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_options];
   [v4 setObject:v6 forKeyedSubscript:@"options"];
 
-  v7 = [(MPModelSongKind *)self->_songKind msv_jsonValue];
-  [v4 setObject:v7 forKeyedSubscript:@"songKind"];
+  msv_jsonValue2 = [(MPModelSongKind *)self->_songKind msv_jsonValue];
+  [v4 setObject:msv_jsonValue2 forKeyedSubscript:@"songKind"];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)msv_initWithJSONValue:(id)a3
+- (id)msv_initWithJSONValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"variants"];
-  v5 = [v4 integerValue];
+  valueCopy = value;
+  v4 = [valueCopy objectForKeyedSubscript:@"variants"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"options"];
-  v7 = [v6 integerValue];
+  v6 = [valueCopy objectForKeyedSubscript:@"options"];
+  integerValue2 = [v6 integerValue];
 
   v8 = [MPModelSongKind alloc];
-  v9 = [v3 objectForKeyedSubscript:@"songKind"];
+  v9 = [valueCopy objectForKeyedSubscript:@"songKind"];
 
   v10 = [(MPModelSongKind *)v8 msv_initWithJSONValue:v9];
 
-  v11 = [objc_opt_class() kindWithVariants:v5 songKind:v10 options:v7];
+  v11 = [objc_opt_class() kindWithVariants:integerValue songKind:v10 options:integerValue2];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = MPModelAlbumKind;
-  if ([(MPModelKind *)&v12 isEqual:v4])
+  if ([(MPModelKind *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(MPModelAlbumKind *)self variants];
-    if (v6 == [v5 variants] && (v7 = -[MPModelAlbumKind options](self, "options"), v7 == objc_msgSend(v5, "options")))
+    v5 = equalCopy;
+    variants = [(MPModelAlbumKind *)self variants];
+    if (variants == [v5 variants] && (v7 = -[MPModelAlbumKind options](self, "options"), v7 == objc_msgSend(v5, "options")))
     {
-      v8 = [(MPModelAlbumKind *)self songKind];
-      v9 = [v5 songKind];
-      v10 = [v8 isEqual:v9];
+      songKind = [(MPModelAlbumKind *)self songKind];
+      songKind2 = [v5 songKind];
+      v10 = [songKind isEqual:songKind2];
     }
 
     else
@@ -156,28 +156,28 @@ LABEL_7:
   v9.receiver = self;
   v9.super_class = MPModelAlbumKind;
   v3 = [(MPModelKind *)&v9 hash];
-  v4 = [(MPModelAlbumKind *)self variants];
-  v5 = v4 ^ [(MPModelAlbumKind *)self options];
-  v6 = [(MPModelAlbumKind *)self songKind];
-  v7 = v5 ^ [v6 hash];
+  variants = [(MPModelAlbumKind *)self variants];
+  v5 = variants ^ [(MPModelAlbumKind *)self options];
+  songKind = [(MPModelAlbumKind *)self songKind];
+  v7 = v5 ^ [songKind hash];
 
   return v7 ^ v3;
 }
 
-+ (id)kindWithVariants:(unint64_t)a3 songKind:(id)a4 options:(unint64_t)a5
++ (id)kindWithVariants:(unint64_t)variants songKind:(id)kind options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Album:v%lu:o%lu:s%p", a3, a5, v8];
+  kindCopy = kind;
+  kindCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Album:v%lu:o%lu:s%p", variants, options, kindCopy];
   v10 = objc_opt_class();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke;
   v14[3] = &unk_1E7679EE0;
-  v15 = v8;
-  v16 = a3;
-  v17 = a5;
-  v11 = v8;
-  v12 = [a1 kindWithModelClass:v10 cacheKey:v9 block:v14];
+  v15 = kindCopy;
+  variantsCopy = variants;
+  optionsCopy = options;
+  v11 = kindCopy;
+  v12 = [self kindWithModelClass:v10 cacheKey:kindCopy block:v14];
 
   return v12;
 }
@@ -197,16 +197,16 @@ void __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke(uin
   return [MPModelKind kindWithModelClass:v2];
 }
 
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property
 {
   v10 = *MEMORY[0x1E69E9840];
   v5 = 0;
   v6 = 0;
   v7 = 0;
   Property = mlcore::AlbumPropertyAllCompilations(self);
-  if (a3)
+  if (property)
   {
-    Property = MPMediaLibraryGetProperty(a3, Property);
+    Property = MPMediaLibraryGetProperty(property, Property);
   }
 
   v8 = Property;
@@ -217,10 +217,10 @@ void __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke(uin
 - (shared_ptr<mlcore::Predicate>)representedSearchScopePredicate
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelAlbumKind *)self songKind];
-  if (v3)
+  songKind = [(MPModelAlbumKind *)self songKind];
+  if (songKind)
   {
-    [v3 predicateWithBaseProperty:0];
+    [songKind predicateWithBaseProperty:0];
   }
 
   else
@@ -234,7 +234,7 @@ void __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke(uin
   std::vector<std::shared_ptr<mlcore::Predicate>>::__init_with_size[abi:ne200100]<std::shared_ptr<mlcore::Predicate> const*,std::shared_ptr<mlcore::Predicate> const*>(v4, v5, &v6, 2uLL);
 }
 
-- (void)applyToView:(shared_ptr<mlcore:(id)a4 :LibraryView>)a3 withContext:
+- (void)applyToView:(shared_ptr<mlcore:(id)view :LibraryView>)a3 withContext:
 {
   var0 = a3.var0;
   v6 = a3.var1;
@@ -254,8 +254,8 @@ void __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke(uin
     std::__shared_weak_count::__release_shared[abi:ne200100](v15);
   }
 
-  v8 = [(MPModelAlbumKind *)self songKind];
-  v9 = v8;
+  songKind = [(MPModelAlbumKind *)self songKind];
+  v9 = songKind;
   v10 = *(var0 + 1);
   v11 = *var0;
   v12 = v10;
@@ -264,7 +264,7 @@ void __54__MPModelAlbumKind_kindWithVariants_songKind_options___block_invoke(uin
     atomic_fetch_add_explicit(&v10->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  [v8 applyToView:&v11 withContext:v6];
+  [songKind applyToView:&v11 withContext:v6];
   if (v12)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v12);

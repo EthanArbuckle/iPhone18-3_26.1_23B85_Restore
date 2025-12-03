@@ -2,24 +2,24 @@
 - (BOOL)wantsDefaultPaddingAboveSection;
 - (RouteOverviewCellDelegate)routeCellDelegate;
 - (RoutePlanningDataCoordination)dataCoordinator;
-- (RoutePlanningRouteOverviewOutlineSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4;
+- (RoutePlanningRouteOverviewOutlineSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier;
 - (double)estimatedItemHeight;
 - (id)_existingCell;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (void)_configureCell:(id)a3;
-- (void)_configureMapsRoutePlanningCell:(id)a3;
-- (void)performWhileSuppressingCellReloads:(id)a3;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (void)_configureCell:(id)cell;
+- (void)_configureMapsRoutePlanningCell:(id)cell;
+- (void)performWhileSuppressingCellReloads:(id)reloads;
 - (void)reloadExistingCell;
-- (void)setAllowPersistentHighlight:(BOOL)a3;
-- (void)setAutomaticSharingContacts:(id)a3;
-- (void)setCurrentRoute:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHasSelectedStep:(BOOL)a3;
-- (void)setLastRoute:(BOOL)a3;
-- (void)setRoute:(id)a3;
-- (void)setShowDetailButton:(BOOL)a3;
+- (void)setAllowPersistentHighlight:(BOOL)highlight;
+- (void)setAutomaticSharingContacts:(id)contacts;
+- (void)setCurrentRoute:(BOOL)route;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setHasSelectedStep:(BOOL)step;
+- (void)setLastRoute:(BOOL)route;
+- (void)setRoute:(id)route;
+- (void)setShowDetailButton:(BOOL)button;
 @end
 
 @implementation RoutePlanningRouteOverviewOutlineSection
@@ -40,8 +40,8 @@
 
 - (id)_existingCell
 {
-  v3 = [(RoutePlanningOutlineSection *)self host];
-  v4 = [v3 sectionIndexForOutlineSection:self];
+  host = [(RoutePlanningOutlineSection *)self host];
+  v4 = [host sectionIndexForOutlineSection:self];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -57,40 +57,40 @@
   return v5;
 }
 
-- (void)_configureMapsRoutePlanningCell:(id)a3
+- (void)_configureMapsRoutePlanningCell:(id)cell
 {
-  v14 = a3;
-  v4 = [(RoutePlanningRouteOverviewOutlineSection *)self routeCellDelegate];
-  [v14 setDelegate:v4];
+  cellCopy = cell;
+  routeCellDelegate = [(RoutePlanningRouteOverviewOutlineSection *)self routeCellDelegate];
+  [cellCopy setDelegate:routeCellDelegate];
 
-  v5 = [(RoutePlanningRouteOverviewOutlineSection *)self route];
-  [v14 setRoute:v5];
+  route = [(RoutePlanningRouteOverviewOutlineSection *)self route];
+  [cellCopy setRoute:route];
 
   if ([(RoutePlanningRouteOverviewOutlineSection *)self allowsPersistentHighlight])
   {
-    v6 = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
+    isCurrentRoute = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
   }
 
   else
   {
-    v6 = 0;
+    isCurrentRoute = 0;
   }
 
-  [v14 setShouldHighlight:v6];
-  v7 = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
-  [v14 setAutoSharingContacts:v7];
+  [cellCopy setShouldHighlight:isCurrentRoute];
+  automaticSharingContacts = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
+  [cellCopy setAutoSharingContacts:automaticSharingContacts];
 
-  [v14 setShowPreviewRouteButton:{-[RoutePlanningRouteOverviewOutlineSection showsDetailButton](self, "showsDetailButton")}];
-  v8 = [(RoutePlanningRouteOverviewOutlineSection *)self route];
-  v9 = [v8 origin];
-  if ([v9 isCurrentLocation])
+  [cellCopy setShowPreviewRouteButton:{-[RoutePlanningRouteOverviewOutlineSection showsDetailButton](self, "showsDetailButton")}];
+  route2 = [(RoutePlanningRouteOverviewOutlineSection *)self route];
+  origin = [route2 origin];
+  if ([origin isCurrentLocation])
   {
     v10 = +[GEOCountryConfiguration sharedConfiguration];
     if ([v10 currentCountrySupportsNavigation])
     {
-      v11 = [(RoutePlanningRouteOverviewOutlineSection *)self dataCoordinator];
-      v12 = [v11 timing];
-      if ([v12 isDepartNow])
+      dataCoordinator = [(RoutePlanningRouteOverviewOutlineSection *)self dataCoordinator];
+      timing = [dataCoordinator timing];
+      if ([timing isDepartNow])
       {
         v13 = 1;
       }
@@ -112,37 +112,37 @@
     v13 = 3;
   }
 
-  [v14 setActionButtonType:v13];
-  [v14 draw];
+  [cellCopy setActionButtonType:v13];
+  [cellCopy draw];
 }
 
-- (void)_configureCell:(id)a3
+- (void)_configureCell:(id)cell
 {
-  v11 = a3;
-  v4 = [(RoutePlanningRouteOverviewOutlineSection *)self route];
+  cellCopy = cell;
+  route = [(RoutePlanningRouteOverviewOutlineSection *)self route];
   v5 = sub_10000FA08(self->super._collectionView) == 5;
-  v6 = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
-  v7 = [(RoutePlanningRouteOverviewOutlineSection *)self dataCoordinator];
-  [RouteOverviewCellComposer configureCell:v11 forRoute:v4 isMac:v5 automaticSharingContacts:v6 dataCoordinator:v7];
+  automaticSharingContacts = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
+  dataCoordinator = [(RoutePlanningRouteOverviewOutlineSection *)self dataCoordinator];
+  [RouteOverviewCellComposer configureCell:cellCopy forRoute:route isMac:v5 automaticSharingContacts:automaticSharingContacts dataCoordinator:dataCoordinator];
 
-  [v11 setDetailsButtonRotated:{-[RoutePlanningRouteOverviewOutlineSection isExpanded](self, "isExpanded")}];
+  [cellCopy setDetailsButtonRotated:{-[RoutePlanningRouteOverviewOutlineSection isExpanded](self, "isExpanded")}];
   if ([(RoutePlanningRouteOverviewOutlineSection *)self allowsPersistentHighlight])
   {
-    v8 = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
+    isCurrentRoute = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
   }
 
   else
   {
-    v8 = 0;
+    isCurrentRoute = 0;
   }
 
-  [v11 setSelectionBackgroundVisible:v8];
-  [v11 setDetailsButtonVisible:{-[RoutePlanningRouteOverviewOutlineSection showsDetailButton](self, "showsDetailButton")}];
-  [v11 setHasSelectedStep:{-[RoutePlanningRouteOverviewOutlineSection hasSelectedStep](self, "hasSelectedStep")}];
-  v9 = [(RoutePlanningRouteOverviewOutlineSection *)self routeCellDelegate];
-  [v11 setDelegate:v9];
+  [cellCopy setSelectionBackgroundVisible:isCurrentRoute];
+  [cellCopy setDetailsButtonVisible:{-[RoutePlanningRouteOverviewOutlineSection showsDetailButton](self, "showsDetailButton")}];
+  [cellCopy setHasSelectedStep:{-[RoutePlanningRouteOverviewOutlineSection hasSelectedStep](self, "hasSelectedStep")}];
+  routeCellDelegate = [(RoutePlanningRouteOverviewOutlineSection *)self routeCellDelegate];
+  [cellCopy setDelegate:routeCellDelegate];
 
-  if (sub_10000FA08(v11) != 5)
+  if (sub_10000FA08(cellCopy) != 5)
   {
     if ([(RoutePlanningRouteOverviewOutlineSection *)self isFirstRoute]&& [(RoutePlanningRouteOverviewOutlineSection *)self isLastRoute])
     {
@@ -164,21 +164,21 @@
       v10 = 3;
     }
 
-    [v11 setOverrideCellGrouping:v10];
+    [cellCopy setOverrideCellGrouping:v10];
   }
 
-  [v11 setDetailsButtonRotated:{-[RoutePlanningRouteOverviewOutlineSection isExpanded](self, "isExpanded")}];
+  [cellCopy setDetailsButtonRotated:{-[RoutePlanningRouteOverviewOutlineSection isExpanded](self, "isExpanded")}];
 }
 
 - (void)reloadExistingCell
 {
   if (!self->_suppressReloads)
   {
-    v7 = [(RoutePlanningRouteOverviewOutlineSection *)self _existingCell];
+    _existingCell = [(RoutePlanningRouteOverviewOutlineSection *)self _existingCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(RoutePlanningRouteOverviewOutlineSection *)self _configureCell:v7];
+      [(RoutePlanningRouteOverviewOutlineSection *)self _configureCell:_existingCell];
     }
 
     else
@@ -186,21 +186,21 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v7;
+        v4 = _existingCell;
         if ([(RoutePlanningRouteOverviewOutlineSection *)self allowsPersistentHighlight])
         {
-          v5 = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
+          isCurrentRoute = [(RoutePlanningRouteOverviewOutlineSection *)self isCurrentRoute];
         }
 
         else
         {
-          v5 = 0;
+          isCurrentRoute = 0;
         }
 
-        [v4 setShouldHighlight:v5];
+        [v4 setShouldHighlight:isCurrentRoute];
         [v4 setShowPreviewRouteButton:{-[RoutePlanningRouteOverviewOutlineSection showsDetailButton](self, "showsDetailButton")}];
-        v6 = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
-        [v4 setAutoSharingContacts:v6];
+        automaticSharingContacts = [(RoutePlanningRouteOverviewOutlineSection *)self automaticSharingContacts];
+        [v4 setAutoSharingContacts:automaticSharingContacts];
 
         [v4 draw];
       }
@@ -208,20 +208,20 @@
   }
 }
 
-- (void)setLastRoute:(BOOL)a3
+- (void)setLastRoute:(BOOL)route
 {
-  if (self->_lastRoute != a3)
+  if (self->_lastRoute != route)
   {
-    self->_lastRoute = a3;
+    self->_lastRoute = route;
     [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
   }
 }
 
-- (void)setAutomaticSharingContacts:(id)a3
+- (void)setAutomaticSharingContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   v6 = self->_automaticSharingContacts;
-  v7 = v5;
+  v7 = contactsCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -230,7 +230,7 @@
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_automaticSharingContacts, a3);
+      objc_storeStrong(&self->_automaticSharingContacts, contacts);
       [(RoutePlanningRouteOverviewOutlineSection *)self _resetCachedRowHeight];
       [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
       v7 = v9;
@@ -238,52 +238,52 @@
   }
 }
 
-- (void)setHasSelectedStep:(BOOL)a3
+- (void)setHasSelectedStep:(BOOL)step
 {
-  if (self->_hasSelectedStep != a3)
+  if (self->_hasSelectedStep != step)
   {
-    self->_hasSelectedStep = a3;
+    self->_hasSelectedStep = step;
     [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
   }
 }
 
-- (void)setShowDetailButton:(BOOL)a3
+- (void)setShowDetailButton:(BOOL)button
 {
-  if (self->_showDetailButton != a3)
+  if (self->_showDetailButton != button)
   {
-    self->_showDetailButton = a3;
+    self->_showDetailButton = button;
     [(RoutePlanningRouteOverviewOutlineSection *)self _resetCachedRowHeight];
 
     [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
   }
 }
 
-- (void)setAllowPersistentHighlight:(BOOL)a3
+- (void)setAllowPersistentHighlight:(BOOL)highlight
 {
-  if (self->_allowPersistentHighlight != a3)
+  if (self->_allowPersistentHighlight != highlight)
   {
-    self->_allowPersistentHighlight = a3;
+    self->_allowPersistentHighlight = highlight;
     [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
   }
 }
 
-- (void)setCurrentRoute:(BOOL)a3
+- (void)setCurrentRoute:(BOOL)route
 {
-  if (self->_currentRoute != a3)
+  if (self->_currentRoute != route)
   {
-    self->_currentRoute = a3;
+    self->_currentRoute = route;
     [(RoutePlanningRouteOverviewOutlineSection *)self reloadExistingCell];
   }
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (_UISolariumEnabled())
   {
     collectionView = self->super._collectionView;
     v6 = +[_TtC4Maps21MapsRoutePlanningCell reuseIdentifier];
-    v7 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:v4];
+    v7 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v6 forIndexPath:pathCopy];
 
     [(RoutePlanningRouteOverviewOutlineSection *)self _configureMapsRoutePlanningCell:v7];
   }
@@ -300,7 +300,7 @@
       v8 = @"RouteOverview";
     }
 
-    v7 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v4];
+    v7 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
     [(RoutePlanningRouteOverviewOutlineSection *)self _configureCell:v7];
   }
@@ -308,25 +308,25 @@
   return v7;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(RoutePlanningRouteOverviewOutlineSection *)self route];
+  route = [(RoutePlanningRouteOverviewOutlineSection *)self route];
 
-  return v3 != 0;
+  return route != 0;
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_expanded = a3;
-    v9 = [(RoutePlanningRouteOverviewOutlineSection *)self _existingCell];
+    animatedCopy = animated;
+    expandedCopy = expanded;
+    self->_expanded = expanded;
+    _existingCell = [(RoutePlanningRouteOverviewOutlineSection *)self _existingCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v9;
+      v7 = _existingCell;
     }
 
     else
@@ -335,28 +335,28 @@
     }
 
     v8 = v7;
-    [v8 setDetailsButtonRotated:v6 animated:v5];
+    [v8 setDetailsButtonRotated:expandedCopy animated:animatedCopy];
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   route = self->_route;
-  v11 = v5;
-  v7 = route;
+  v11 = routeCopy;
+  routeCopy2 = route;
   v8 = v11;
-  if (v11 | v7)
+  if (v11 | routeCopy2)
   {
-    v9 = [v11 isEqual:v7];
+    v9 = [v11 isEqual:routeCopy2];
 
     v8 = v11;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_route, a3);
+      objc_storeStrong(&self->_route, route);
       [(RoutePlanningRouteOverviewOutlineSection *)self _resetCachedRowHeight];
-      v10 = [(RoutePlanningOutlineSection *)self host];
-      [v10 outlineSectionRequiresReload:self];
+      host = [(RoutePlanningOutlineSection *)self host];
+      [host outlineSectionRequiresReload:self];
 
       v8 = v11;
     }
@@ -429,25 +429,25 @@
   return result;
 }
 
-- (void)performWhileSuppressingCellReloads:(id)a3
+- (void)performWhileSuppressingCellReloads:(id)reloads
 {
-  if (a3)
+  if (reloads)
   {
     ++self->_suppressReloads;
-    (*(a3 + 2))(a3, a2);
+    (*(reloads + 2))(reloads, a2);
     --self->_suppressReloads;
   }
 }
 
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = RoutePlanningRouteOverviewOutlineSection;
-  v7 = [(RoutePlanningOutlineSection *)&v15 listLayoutSectionConfigurationAtIndex:a3 layoutEnvironment:v6];
+  v7 = [(RoutePlanningOutlineSection *)&v15 listLayoutSectionConfigurationAtIndex:index layoutEnvironment:environmentCopy];
   [v7 setSeparatorStyle:_UISolariumEnabled() ^ 1];
-  v8 = [v6 traitCollection];
-  v9 = [v8 userInterfaceIdiom] == 5;
+  traitCollection = [environmentCopy traitCollection];
+  v9 = [traitCollection userInterfaceIdiom] == 5;
 
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
@@ -463,20 +463,20 @@
   return v7;
 }
 
-- (RoutePlanningRouteOverviewOutlineSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4
+- (RoutePlanningRouteOverviewOutlineSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = RoutePlanningRouteOverviewOutlineSection;
-  v7 = [(RoutePlanningOutlineSection *)&v11 initWithCollectionView:v6 sectionIdentifier:a4];
+  v7 = [(RoutePlanningOutlineSection *)&v11 initWithCollectionView:viewCopy sectionIdentifier:identifier];
   if (v7)
   {
     [DynamicTypeWizard makeObject:v7 performSelector:"_resetCachedRowHeight" whenSizeCategoryChangesWithOrder:1];
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteOverview"];
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteOverviewAX"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteOverview"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteOverviewAX"];
     v8 = objc_opt_class();
     v9 = +[_TtC4Maps21MapsRoutePlanningCell reuseIdentifier];
-    [v6 registerClass:v8 forCellWithReuseIdentifier:v9];
+    [viewCopy registerClass:v8 forCellWithReuseIdentifier:v9];
   }
 
   return v7;

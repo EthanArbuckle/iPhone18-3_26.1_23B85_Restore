@@ -1,6 +1,6 @@
 @interface PinEntryViewController
-- (_TtC22HomeCaptiveViewService22PinEntryViewController)initWithContentView:(id)a3;
-- (void)didCompleteTextEntry:(id)a3;
+- (_TtC22HomeCaptiveViewService22PinEntryViewController)initWithContentView:(id)view;
+- (void)didCompleteTextEntry:(id)entry;
 - (void)viewDidLoad;
 @end
 
@@ -8,23 +8,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008B44();
 }
 
-- (void)didCompleteTextEntry:(id)a3
+- (void)didCompleteTextEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
+  entryCopy = entry;
+  selfCopy = self;
   sub_10000949C();
 }
 
-- (_TtC22HomeCaptiveViewService22PinEntryViewController)initWithContentView:(id)a3
+- (_TtC22HomeCaptiveViewService22PinEntryViewController)initWithContentView:(id)view
 {
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for PinEntryViewController();
-  return [(PinEntryViewController *)&v6 initWithContentView:a3];
+  return [(PinEntryViewController *)&v6 initWithContentView:view];
 }
 
 @end

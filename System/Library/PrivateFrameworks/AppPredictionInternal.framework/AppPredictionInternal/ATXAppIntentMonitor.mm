@@ -1,43 +1,43 @@
 @interface ATXAppIntentMonitor
-- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)a3 appInfoManager:(id)a4 appActionLaunchSequenceManager:(id)a5 dataStore:(id)a6;
-- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)a3 appInfoManager:(id)a4 appActionLaunchSequenceManager:(id)a5 intentStream:(id)a6 activityStream:(id)a7 menuItemStream:(id)a8 toolKitActionStream:(id)a9 dataStore:(id)a10 predictionContextBuilder:(id)a11 userDefaults:(id)a12 safariIntentFilter:(id)a13;
-- (BOOL)_isAllowedDaemonDonationBundleId:(id)a3;
-- (BOOL)shouldAcceptMessageDonation:(id)a3;
-- (BOOL)shouldProcessIntentDonationsForSessionStartDate:(id)a3;
-- (BOOL)shouldProcessNSUADonationsForSessionStartDate:(id)a3;
+- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)manager appInfoManager:(id)infoManager appActionLaunchSequenceManager:(id)sequenceManager dataStore:(id)store;
+- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)manager appInfoManager:(id)infoManager appActionLaunchSequenceManager:(id)sequenceManager intentStream:(id)stream activityStream:(id)activityStream menuItemStream:(id)itemStream toolKitActionStream:(id)actionStream dataStore:(id)self0 predictionContextBuilder:(id)self1 userDefaults:(id)self2 safariIntentFilter:(id)self3;
+- (BOOL)_isAllowedDaemonDonationBundleId:(id)id;
+- (BOOL)shouldAcceptMessageDonation:(id)donation;
+- (BOOL)shouldProcessIntentDonationsForSessionStartDate:(id)date;
+- (BOOL)shouldProcessNSUADonationsForSessionStartDate:(id)date;
 - (id)_appActionLaunchSequenceManager;
-- (id)fetchIntentEventsForAppSessionWithBundleId:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (void)_displayDonationOnLockscreenWithAction:(id)a3;
-- (void)_handleCompletedIntentForForSourceItemID:(id)a3 atxIntentSource:(int64_t)a4;
-- (void)_handleDonationImmediatelyForBundleId:(id)a3 sourceItemID:(id)a4 completedSuccessfully:(BOOL)a5 isDonatedBySiri:(BOOL)a6 isAllowedDaemonDonationBundleId:(BOOL)a7;
+- (id)fetchIntentEventsForAppSessionWithBundleId:(id)id startDate:(id)date endDate:(id)endDate;
+- (void)_displayDonationOnLockscreenWithAction:(id)action;
+- (void)_handleCompletedIntentForForSourceItemID:(id)d atxIntentSource:(int64_t)source;
+- (void)_handleDonationImmediatelyForBundleId:(id)id sourceItemID:(id)d completedSuccessfully:(BOOL)successfully isDonatedBySiri:(BOOL)siri isAllowedDaemonDonationBundleId:(BOOL)bundleId;
 - (void)_listenToActivityStream;
 - (void)_listenToIntentStream;
 - (void)_listenToLinkActionStream;
-- (void)_logIntentPredictionsForIntentEvent:(id)a3 context:(id)a4;
-- (void)_respondToIntentStreamChangingWithIntent:(id)a3;
-- (void)_respondToLinkActionStreamChangingWithInvocation:(id)a3;
-- (void)_updateActionPredictionHistogramsForIntentEvent:(id)a3 weight:(float)a4 context:(id)a5;
+- (void)_logIntentPredictionsForIntentEvent:(id)event context:(id)context;
+- (void)_respondToIntentStreamChangingWithIntent:(id)intent;
+- (void)_respondToLinkActionStreamChangingWithInvocation:(id)invocation;
+- (void)_updateActionPredictionHistogramsForIntentEvent:(id)event weight:(float)weight context:(id)context;
 - (void)dealloc;
-- (void)handleAppRegistrationForBundleIds:(id)a3;
-- (void)processIntentDonationsDuringAppSessionForBundleId:(id)a3 startDate:(id)a4 endDate:(id)a5 globals:(id)a6;
-- (void)processWeightedIntentDonations:(id)a3 forBundleId:(id)a4 startDate:(id)a5 endDate:(id)a6 globals:(id)a7;
-- (void)removeDonationFromLockscreenForAction:(id)a3;
+- (void)handleAppRegistrationForBundleIds:(id)ids;
+- (void)processIntentDonationsDuringAppSessionForBundleId:(id)id startDate:(id)date endDate:(id)endDate globals:(id)globals;
+- (void)processWeightedIntentDonations:(id)donations forBundleId:(id)id startDate:(id)date endDate:(id)endDate globals:(id)globals;
+- (void)removeDonationFromLockscreenForAction:(id)action;
 - (void)start;
 - (void)stop;
-- (void)updateActionPredictionPipelineForAppSession:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (void)updateActionPredictionPipelineForIntentEvent:(id)a3 weight:(float)a4 appSessionStartDate:(id)a5 appSessionEndDate:(id)a6;
-- (void)updateActionPredictionPipelineForIntentEvent:(id)a3 weight:(float)a4 appSessionStartDate:(id)a5 appSessionEndDate:(id)a6 context:(id)a7;
-- (void)updateActionPredictionSlotResolutionForIntentEvent:(id)a3 weight:(float)a4 prevLocationUUID:(id)a5 locationUUID:(id)a6 currentMotionType:(int64_t)a7 appSessionStartDate:(id)a8 appSessionEndDate:(id)a9 geohash:(int64_t)a10 coarseGeohash:(int64_t)a11;
+- (void)updateActionPredictionPipelineForAppSession:(id)session startDate:(id)date endDate:(id)endDate;
+- (void)updateActionPredictionPipelineForIntentEvent:(id)event weight:(float)weight appSessionStartDate:(id)date appSessionEndDate:(id)endDate;
+- (void)updateActionPredictionPipelineForIntentEvent:(id)event weight:(float)weight appSessionStartDate:(id)date appSessionEndDate:(id)endDate context:(id)context;
+- (void)updateActionPredictionSlotResolutionForIntentEvent:(id)event weight:(float)weight prevLocationUUID:(id)d locationUUID:(id)iD currentMotionType:(int64_t)type appSessionStartDate:(id)date appSessionEndDate:(id)endDate geohash:(int64_t)self0 coarseGeohash:(int64_t)self1;
 @end
 
 @implementation ATXAppIntentMonitor
 
-- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)a3 appInfoManager:(id)a4 appActionLaunchSequenceManager:(id)a5 dataStore:(id)a6
+- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)manager appInfoManager:(id)infoManager appActionLaunchSequenceManager:(id)sequenceManager dataStore:(id)store
 {
-  v9 = a6;
-  v22 = a5;
-  v10 = a4;
-  v11 = a3;
+  storeCopy = store;
+  sequenceManagerCopy = sequenceManager;
+  infoManagerCopy = infoManager;
+  managerCopy = manager;
   v21 = objc_opt_new();
   v12 = objc_opt_new();
   v13 = objc_opt_new();
@@ -46,25 +46,25 @@
   v15 = objc_alloc(MEMORY[0x277CBEBD0]);
   v16 = [v15 initWithSuiteName:*MEMORY[0x277CEBD00]];
   v17 = objc_opt_new();
-  v18 = [(ATXAppIntentMonitor *)self initWithAppLaunchHistogramManager:v11 appInfoManager:v10 appActionLaunchSequenceManager:v22 intentStream:v21 activityStream:v12 menuItemStream:v13 toolKitActionStream:v20 dataStore:v9 predictionContextBuilder:v14 userDefaults:v16 safariIntentFilter:v17];
+  v18 = [(ATXAppIntentMonitor *)self initWithAppLaunchHistogramManager:managerCopy appInfoManager:infoManagerCopy appActionLaunchSequenceManager:sequenceManagerCopy intentStream:v21 activityStream:v12 menuItemStream:v13 toolKitActionStream:v20 dataStore:storeCopy predictionContextBuilder:v14 userDefaults:v16 safariIntentFilter:v17];
 
   return v18;
 }
 
-- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)a3 appInfoManager:(id)a4 appActionLaunchSequenceManager:(id)a5 intentStream:(id)a6 activityStream:(id)a7 menuItemStream:(id)a8 toolKitActionStream:(id)a9 dataStore:(id)a10 predictionContextBuilder:(id)a11 userDefaults:(id)a12 safariIntentFilter:(id)a13
+- (ATXAppIntentMonitor)initWithAppLaunchHistogramManager:(id)manager appInfoManager:(id)infoManager appActionLaunchSequenceManager:(id)sequenceManager intentStream:(id)stream activityStream:(id)activityStream menuItemStream:(id)itemStream toolKitActionStream:(id)actionStream dataStore:(id)self0 predictionContextBuilder:(id)self1 userDefaults:(id)self2 safariIntentFilter:(id)self3
 {
   v68[2] = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v51 = a4;
-  v52 = a5;
-  v59 = a6;
-  v60 = a7;
-  v61 = a8;
-  v62 = a9;
-  v53 = a10;
-  v54 = a11;
-  v55 = a12;
-  v56 = a13;
+  managerCopy = manager;
+  infoManagerCopy = infoManager;
+  sequenceManagerCopy = sequenceManager;
+  streamCopy = stream;
+  activityStreamCopy = activityStream;
+  itemStreamCopy = itemStream;
+  actionStreamCopy = actionStream;
+  storeCopy = store;
+  builderCopy = builder;
+  defaultsCopy = defaults;
+  filterCopy = filter;
   v66.receiver = self;
   v66.super_class = ATXAppIntentMonitor;
   v18 = [(ATXAppIntentMonitor *)&v66 init];
@@ -75,7 +75,7 @@
     appIntentHistoryQueue = v18->_appIntentHistoryQueue;
     v18->_appIntentHistoryQueue = v20;
 
-    if (!v58)
+    if (!managerCopy)
     {
       v22 = __atxlog_handle_default();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -84,16 +84,16 @@
       }
     }
 
-    objc_storeStrong(&v18->_appLaunchHistogramManager, a3);
-    objc_storeStrong(&v18->_dataStore, a10);
-    v23 = [objc_alloc(MEMORY[0x277CEB408]) initWithIntentStream:v59 activityStream:v60 menuItemStream:v61 toolKitActionStream:v62];
+    objc_storeStrong(&v18->_appLaunchHistogramManager, manager);
+    objc_storeStrong(&v18->_dataStore, store);
+    v23 = [objc_alloc(MEMORY[0x277CEB408]) initWithIntentStream:streamCopy activityStream:activityStreamCopy menuItemStream:itemStreamCopy toolKitActionStream:actionStreamCopy];
     combinedIntentStream = v18->_combinedIntentStream;
     v18->_combinedIntentStream = v23;
 
-    objc_storeStrong(&v18->_appInfoManager, a4);
-    objc_storeStrong(&v18->_appActionLaunchSequenceManager, a5);
-    objc_storeStrong(&v18->_predictionContextBuilder, a11);
-    objc_storeStrong(&v18->_userDefaults, a12);
+    objc_storeStrong(&v18->_appInfoManager, infoManager);
+    objc_storeStrong(&v18->_appActionLaunchSequenceManager, sequenceManager);
+    objc_storeStrong(&v18->_predictionContextBuilder, builder);
+    objc_storeStrong(&v18->_userDefaults, defaults);
     objc_initWeak(&location, v18);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -106,7 +106,7 @@
     v18->_appRegistrationListener = v26;
 
     [(ATXInternalAppRegistrationNotification *)v18->_appRegistrationListener registerForNotificationsWithRegisterBlock:v25];
-    objc_storeStrong(&v18->_safariIntentQualityFilter, a13);
+    objc_storeStrong(&v18->_safariIntentQualityFilter, filter);
     v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v29 = dispatch_queue_attr_make_with_qos_class(v28, QOS_CLASS_BACKGROUND, -1);
 
@@ -164,15 +164,15 @@ void __233__ATXAppIntentMonitor_initWithAppLaunchHistogramManager_appInfoManager
   [(ATXAppIntentMonitor *)&v3 dealloc];
 }
 
-- (void)handleAppRegistrationForBundleIds:(id)a3
+- (void)handleAppRegistrationForBundleIds:(id)ids
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [idsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -184,14 +184,14 @@ void __233__ATXAppIntentMonitor_initWithAppLaunchHistogramManager_appInfoManager
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsCopy);
         }
 
         [(_ATXDataStore *)self->_dataStore regenerateSlotSetKeyForBundleId:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [idsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -208,9 +208,9 @@ void __233__ATXAppIntentMonitor_initWithAppLaunchHistogramManager_appInfoManager
 
   v11 = BiomeLibrary();
   v5 = [v11 App];
-  v6 = [v5 Activity];
-  v7 = [v6 atx_DSLPublisher];
-  v8 = [v7 subscribeOn:self->_nsuaScheduler];
+  activity = [v5 Activity];
+  atx_DSLPublisher = [activity atx_DSLPublisher];
+  v8 = [atx_DSLPublisher subscribeOn:self->_nsuaScheduler];
   v9 = [v8 sinkWithCompletion:&__block_literal_global_102 receiveInput:&__block_literal_global_75];
   nsuaSink = self->_nsuaSink;
   self->_nsuaSink = v9;
@@ -250,9 +250,9 @@ void __46__ATXAppIntentMonitor__listenToActivityStream__block_invoke_72()
 
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 Intent];
-  v8 = [v7 atx_DSLPublisher];
-  v9 = [v8 subscribeOn:self->_intentScheduler];
+  intent = [v6 Intent];
+  atx_DSLPublisher = [intent atx_DSLPublisher];
+  v9 = [atx_DSLPublisher subscribeOn:self->_intentScheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__ATXAppIntentMonitor__listenToIntentStream__block_invoke_81;
@@ -345,10 +345,10 @@ id __44__ATXAppIntentMonitor__listenToIntentStream__block_invoke_84(uint64_t a1)
 
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 Intents];
-  v8 = [v7 Transcript];
-  v9 = [v8 atx_DSLPublisher];
-  v10 = [v9 subscribeOn:self->_linkActionScheduler];
+  intents = [v6 Intents];
+  transcript = [intents Transcript];
+  atx_DSLPublisher = [transcript atx_DSLPublisher];
+  v10 = [atx_DSLPublisher subscribeOn:self->_linkActionScheduler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_91;
@@ -485,13 +485,13 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   return objc_opt_self();
 }
 
-- (void)_handleDonationImmediatelyForBundleId:(id)a3 sourceItemID:(id)a4 completedSuccessfully:(BOOL)a5 isDonatedBySiri:(BOOL)a6 isAllowedDaemonDonationBundleId:(BOOL)a7
+- (void)_handleDonationImmediatelyForBundleId:(id)id sourceItemID:(id)d completedSuccessfully:(BOOL)successfully isDonatedBySiri:(BOOL)siri isAllowedDaemonDonationBundleId:(BOOL)bundleId
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v11 = a4;
-  if (v9 && v8 || v7)
+  bundleIdCopy = bundleId;
+  siriCopy = siri;
+  successfullyCopy = successfully;
+  dCopy = d;
+  if (successfullyCopy && siriCopy || bundleIdCopy)
   {
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -500,63 +500,63 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
       _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_INFO, "Donation Processing - Received either a completed Siri intent, or a donation from an allowed daemon donation.", v13, 2u);
     }
 
-    if (v11)
+    if (dCopy)
     {
-      [(ATXAppIntentMonitor *)self _handleCompletedIntentForForSourceItemID:v11 atxIntentSource:!v8];
+      [(ATXAppIntentMonitor *)self _handleCompletedIntentForForSourceItemID:dCopy atxIntentSource:!siriCopy];
     }
   }
 }
 
-- (void)_respondToIntentStreamChangingWithIntent:(id)a3
+- (void)_respondToIntentStreamChangingWithIntent:(id)intent
 {
-  v12 = a3;
-  v4 = [v12 bundleID];
-  v5 = v4;
+  intentCopy = intent;
+  bundleID = [intentCopy bundleID];
+  v5 = bundleID;
   v6 = &stru_2839A6058;
-  if (v4)
+  if (bundleID)
   {
-    v6 = v4;
+    v6 = bundleID;
   }
 
   v7 = v6;
 
-  v8 = [v12 donatedBySiri];
+  donatedBySiri = [intentCopy donatedBySiri];
   v9 = [(ATXAppIntentMonitor *)self _isAllowedDaemonDonationBundleId:v7];
   v10 = v9;
-  if ((v8 & 1) != 0 || v9)
+  if ((donatedBySiri & 1) != 0 || v9)
   {
-    v11 = [v12 itemID];
-    -[ATXAppIntentMonitor _handleDonationImmediatelyForBundleId:sourceItemID:completedSuccessfully:isDonatedBySiri:isAllowedDaemonDonationBundleId:](self, "_handleDonationImmediatelyForBundleId:sourceItemID:completedSuccessfully:isDonatedBySiri:isAllowedDaemonDonationBundleId:", v7, v11, [v12 handlingStatus] == 4, v8, v10);
+    itemID = [intentCopy itemID];
+    -[ATXAppIntentMonitor _handleDonationImmediatelyForBundleId:sourceItemID:completedSuccessfully:isDonatedBySiri:isAllowedDaemonDonationBundleId:](self, "_handleDonationImmediatelyForBundleId:sourceItemID:completedSuccessfully:isDonatedBySiri:isAllowedDaemonDonationBundleId:", v7, itemID, [intentCopy handlingStatus] == 4, donatedBySiri, v10);
   }
 }
 
-- (void)_respondToLinkActionStreamChangingWithInvocation:(id)a3
+- (void)_respondToLinkActionStreamChangingWithInvocation:(id)invocation
 {
-  v13 = a3;
-  v4 = [v13 bundleID];
-  v5 = v4;
+  invocationCopy = invocation;
+  bundleID = [invocationCopy bundleID];
+  v5 = bundleID;
   v6 = &stru_2839A6058;
-  if (v4)
+  if (bundleID)
   {
-    v6 = v4;
+    v6 = bundleID;
   }
 
   v7 = v6;
 
-  v8 = [v13 source];
+  source = [invocationCopy source];
   v9 = [(ATXAppIntentMonitor *)self _isAllowedDaemonDonationBundleId:v7];
   v10 = v9;
-  if (v8 == 3 || v9)
+  if (source == 3 || v9)
   {
-    v11 = [v13 executionUUID];
-    v12 = [v11 UUIDString];
-    [(ATXAppIntentMonitor *)self _handleDonationImmediatelyForBundleId:v7 sourceItemID:v12 completedSuccessfully:1 isDonatedBySiri:v8 == 3 isAllowedDaemonDonationBundleId:v10];
+    executionUUID = [invocationCopy executionUUID];
+    uUIDString = [executionUUID UUIDString];
+    [(ATXAppIntentMonitor *)self _handleDonationImmediatelyForBundleId:v7 sourceItemID:uUIDString completedSuccessfully:1 isDonatedBySiri:source == 3 isAllowedDaemonDonationBundleId:v10];
   }
 }
 
-- (void)_handleCompletedIntentForForSourceItemID:(id)a3 atxIntentSource:(int64_t)a4
+- (void)_handleCompletedIntentForForSourceItemID:(id)d atxIntentSource:(int64_t)source
 {
-  v5 = [(ATXCombinedIntentStream *)self->_combinedIntentStream getIntentEventForSourceItemID:a3 forSource:a4];
+  v5 = [(ATXCombinedIntentStream *)self->_combinedIntentStream getIntentEventForSourceItemID:d forSource:source];
   v7 = v5;
   if (v5)
   {
@@ -569,19 +569,19 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   MEMORY[0x2821F96F8](v5, v7);
 }
 
-- (BOOL)_isAllowedDaemonDonationBundleId:(id)a3
+- (BOOL)_isAllowedDaemonDonationBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[_ATXGlobals sharedInstance];
-  v5 = [v4 whitelistedDonationDaemonBundleIds];
-  v6 = [v5 containsObject:v3];
+  whitelistedDonationDaemonBundleIds = [v4 whitelistedDonationDaemonBundleIds];
+  v6 = [whitelistedDonationDaemonBundleIds containsObject:idCopy];
 
   return v6;
 }
 
-- (void)_displayDonationOnLockscreenWithAction:(id)a3
+- (void)_displayDonationOnLockscreenWithAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   keyExistsAndHasValidFormat = 0;
   v4 = *MEMORY[0x277CEBD00];
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"displayDonationsOnLockscreen", *MEMORY[0x277CEBD00], &keyExistsAndHasValidFormat);
@@ -601,7 +601,7 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   {
     v8 = +[ATXActionNotificationServer sharedInstance];
     [v8 removeAllActionPredictionNotificationsAndTrackEvent:1 recordFeedback:0];
-    [v8 postDemoOrDebugNotificationForATXAction:v3];
+    [v8 postDemoOrDebugNotificationForATXAction:actionCopy];
     v9 = __atxlog_handle_default();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -611,9 +611,9 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   }
 }
 
-- (void)removeDonationFromLockscreenForAction:(id)a3
+- (void)removeDonationFromLockscreenForAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   keyExistsAndHasValidFormat = 0;
   v4 = *MEMORY[0x277CEBD00];
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"displayDonationsOnLockscreen", *MEMORY[0x277CEBD00], &keyExistsAndHasValidFormat);
@@ -621,16 +621,16 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   if (!(AppBooleanValue | CFPreferencesGetAppBooleanValue(@"displayLastDonationOnCoverSheet", v4, &v8)))
   {
     v6 = +[ATXActionNotificationServer sharedInstance];
-    [v6 removeActionPredictionNotificationsMatchingAction:v3];
+    [v6 removeActionPredictionNotificationsMatchingAction:actionCopy];
   }
 }
 
-- (id)fetchIntentEventsForAppSessionWithBundleId:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)fetchIntentEventsForAppSessionWithBundleId:(id)id startDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:a4];
-  v11 = [(ATXAppIntentMonitor *)self adjustedEndDateForOneSecondFlooringWithAppSessionEndDate:v9];
+  idCopy = id;
+  endDateCopy = endDate;
+  v10 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:date];
+  v11 = [(ATXAppIntentMonitor *)self adjustedEndDateForOneSecondFlooringWithAppSessionEndDate:endDateCopy];
 
   v12 = __atxlog_handle_action_prediction();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -643,8 +643,8 @@ id __48__ATXAppIntentMonitor__listenToLinkActionStream__block_invoke_98(uint64_t
   v17[1] = 3221225472;
   v17[2] = __84__ATXAppIntentMonitor_fetchIntentEventsForAppSessionWithBundleId_startDate_endDate___block_invoke;
   v17[3] = &unk_27859C198;
-  v18 = v8;
-  v14 = v8;
+  v18 = idCopy;
+  v14 = idCopy;
   v15 = [v13 _pas_filteredArrayWithTest:v17];
 
   return v15;
@@ -693,24 +693,24 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)shouldProcessIntentDonationsForSessionStartDate:(id)a3
+- (BOOL)shouldProcessIntentDonationsForSessionStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 Intent];
-  v8 = [v7 atx_dateOfLastEvent];
+  intent = [v6 Intent];
+  atx_dateOfLastEvent = [intent atx_dateOfLastEvent];
 
   v9 = BiomeLibrary();
   v10 = [v9 App];
-  v11 = [v10 Intents];
-  v12 = [v11 Transcript];
-  v13 = [v12 atx_dateOfLastEvent];
+  intents = [v10 Intents];
+  transcript = [intents Transcript];
+  atx_dateOfLastEvent2 = [transcript atx_dateOfLastEvent];
 
-  v14 = ATXMaxDate(v8, v13);
+  v14 = ATXMaxDate(atx_dateOfLastEvent, atx_dateOfLastEvent2);
   if (v14)
   {
-    v15 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:v4];
+    v15 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:dateCopy];
     v16 = [(ATXAppIntentMonitor *)self sessionStartedBeforeDonationForStartDate:v15 latestDonationDate:v14];
   }
 
@@ -722,18 +722,18 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)shouldProcessNSUADonationsForSessionStartDate:(id)a3
+- (BOOL)shouldProcessNSUADonationsForSessionStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v7 = [v6 Activity];
-  v8 = [v7 atx_dateOfLastEvent];
+  activity = [v6 Activity];
+  atx_dateOfLastEvent = [activity atx_dateOfLastEvent];
 
-  if (v8)
+  if (atx_dateOfLastEvent)
   {
-    v9 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:v4];
-    v10 = [(ATXAppIntentMonitor *)self sessionStartedBeforeDonationForStartDate:v9 latestDonationDate:v8];
+    v9 = [(ATXAppIntentMonitor *)self adjustedStartDateForOneSecondFlooringWithAppSessionStartDate:dateCopy];
+    v10 = [(ATXAppIntentMonitor *)self sessionStartedBeforeDonationForStartDate:v9 latestDonationDate:atx_dateOfLastEvent];
   }
 
   else
@@ -744,15 +744,15 @@ LABEL_10:
   return v10;
 }
 
-- (void)processWeightedIntentDonations:(id)a3 forBundleId:(id)a4 startDate:(id)a5 endDate:(id)a6 globals:(id)a7
+- (void)processWeightedIntentDonations:(id)donations forBundleId:(id)id startDate:(id)date endDate:(id)endDate globals:(id)globals
 {
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v32 = a4;
-  v34 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v11 count];
+  donationsCopy = donations;
+  idCopy = id;
+  dateCopy = date;
+  endDateCopy = endDate;
+  globalsCopy = globals;
+  v14 = [donationsCopy count];
   v15 = __atxlog_handle_default();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -767,37 +767,37 @@ LABEL_10:
     do
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = [v11 objectAtIndexedSubscript:v17];
+      v19 = [donationsCopy objectAtIndexedSubscript:v17];
       if (v19)
       {
         v20 = __atxlog_handle_default();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v28 = [v19 intentType];
-          v31 = [v19 startDate];
+          intentType = [v19 intentType];
+          startDate = [v19 startDate];
           *buf = v30;
-          v36 = v28;
+          v36 = intentType;
           v37 = 2112;
-          v38 = v31;
+          v38 = startDate;
           _os_log_debug_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEBUG, "Donation Processing - Intent Event: %@ at Date:%@", buf, 0x16u);
         }
 
-        v21 = [v13 donationWeighingScheme];
-        [v13 donationWeighingStrength];
-        [_ATXActionUtils calculateWeightWith:v21 strength:v14 docLength:?];
+        donationWeighingScheme = [globalsCopy donationWeighingScheme];
+        [globalsCopy donationWeighingStrength];
+        [_ATXActionUtils calculateWeightWith:donationWeighingScheme strength:v14 docLength:?];
         v23 = v22;
-        v24 = [v19 intentType];
-        v25 = [_ATXActionUtils isNSUAType:v24];
+        intentType2 = [v19 intentType];
+        v25 = [_ATXActionUtils isNSUAType:intentType2];
 
         if (v25)
         {
-          [v13 nsuaDonationWeight];
+          [globalsCopy nsuaDonationWeight];
           v26 = v27 * v23;
           v23 = v26;
         }
 
         *&v26 = v23;
-        [(ATXAppIntentMonitor *)self updateActionPredictionPipelineForIntentEvent:v19 weight:v34 appSessionStartDate:v12 appSessionEndDate:v26, v30];
+        [(ATXAppIntentMonitor *)self updateActionPredictionPipelineForIntentEvent:v19 weight:dateCopy appSessionStartDate:endDateCopy appSessionEndDate:v26, v30];
       }
 
       objc_autoreleasePoolPop(v18);
@@ -810,16 +810,16 @@ LABEL_10:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processIntentDonationsDuringAppSessionForBundleId:(id)a3 startDate:(id)a4 endDate:(id)a5 globals:(id)a6
+- (void)processIntentDonationsDuringAppSessionForBundleId:(id)id startDate:(id)date endDate:(id)endDate globals:(id)globals
 {
   v66 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v10 = a4;
-  v43 = a5;
-  v42 = a6;
-  if ([(ATXAppIntentMonitor *)self shouldProcessIntentDonationsForSessionStartDate:v10]|| [(ATXAppIntentMonitor *)self shouldProcessNSUADonationsForSessionStartDate:v10])
+  idCopy = id;
+  dateCopy = date;
+  endDateCopy = endDate;
+  globalsCopy = globals;
+  if ([(ATXAppIntentMonitor *)self shouldProcessIntentDonationsForSessionStartDate:dateCopy]|| [(ATXAppIntentMonitor *)self shouldProcessNSUADonationsForSessionStartDate:dateCopy])
   {
-    v11 = [(ATXAppIntentMonitor *)self fetchIntentEventsForAppSessionWithBundleId:v44 startDate:v10 endDate:v43];
+    v11 = [(ATXAppIntentMonitor *)self fetchIntentEventsForAppSessionWithBundleId:idCopy startDate:dateCopy endDate:endDateCopy];
     v12 = [v11 count];
     v13 = __atxlog_handle_default();
     v14 = v13;
@@ -834,8 +834,8 @@ LABEL_10:
       goto LABEL_32;
     }
 
-    v40 = self;
-    v41 = v10;
+    selfCopy = self;
+    v41 = dateCopy;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       [ATXAppIntentMonitor processIntentDonationsDuringAppSessionForBundleId:v11 startDate:? endDate:? globals:?];
@@ -864,26 +864,26 @@ LABEL_10:
           }
 
           v21 = *(*(&v58 + 1) + 8 * i);
-          v22 = [v21 action];
+          action = [v21 action];
 
-          if (v22)
+          if (action)
           {
-            v23 = [v21 action];
-            v24 = [v23 actionType];
+            action2 = [v21 action];
+            actionType = [action2 actionType];
           }
 
           else
           {
-            v25 = [v21 intentType];
-            v26 = [_ATXActionUtils isNSUAType:v25];
+            intentType = [v21 intentType];
+            v26 = [_ATXActionUtils isNSUAType:intentType];
 
-            v24 = v26;
+            actionType = v26;
           }
 
-          v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
+          v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:actionType];
           [v14 addObject:v27];
 
-          v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
+          v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:actionType];
           [v15 addObject:v28];
         }
 
@@ -931,7 +931,7 @@ LABEL_10:
 
           else
           {
-            [(ATXAppIntentMonitor *)v40 processWeightedIntentDonations:v35 forBundleId:v44 startDate:v41 endDate:v43 globals:v42];
+            [(ATXAppIntentMonitor *)selfCopy processWeightedIntentDonations:v35 forBundleId:idCopy startDate:v41 endDate:endDateCopy globals:globalsCopy];
           }
         }
 
@@ -950,16 +950,16 @@ LABEL_10:
       v46[1] = 3221225472;
       v46[2] = __99__ATXAppIntentMonitor_processIntentDonationsDuringAppSessionForBundleId_startDate_endDate_globals___block_invoke_2;
       v46[3] = &unk_27859C1E8;
-      v46[4] = v40;
-      v47 = v44;
+      v46[4] = selfCopy;
+      v47 = idCopy;
       v48 = v41;
-      v49 = v43;
-      v50 = v42;
+      v49 = endDateCopy;
+      v50 = globalsCopy;
       [v37 sanitizeTitleForToolKitIntents:v29 withCompletion:v46];
     }
 
 LABEL_29:
-    v10 = v41;
+    dateCopy = v41;
     v11 = v39;
 LABEL_32:
 
@@ -970,7 +970,7 @@ LABEL_32:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v65 = v44;
+    v65 = idCopy;
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_INFO, "Donation Processing - == Don't need to process intent donations for %@ since no intents were received recently. ==", buf, 0xCu);
   }
 
@@ -987,15 +987,15 @@ uint64_t __99__ATXAppIntentMonitor_processIntentDonationsDuringAppSessionForBund
   return v3;
 }
 
-- (void)updateActionPredictionPipelineForAppSession:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (void)updateActionPredictionPipelineForAppSession:(id)session startDate:(id)date endDate:(id)endDate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = os_transaction_create();
   v12 = +[_ATXGlobals sharedInstance];
-  v13 = [(ATXAppIntentMonitor *)self _isAllowedDaemonDonationBundleId:v8];
+  v13 = [(ATXAppIntentMonitor *)self _isAllowedDaemonDonationBundleId:sessionCopy];
   v14 = __atxlog_handle_default();
   v15 = v14;
   if (v13)
@@ -1003,7 +1003,7 @@ uint64_t __99__ATXAppIntentMonitor_processIntentDonationsDuringAppSessionForBund
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = sessionCopy;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Donation Processing - Skipping back-query for %@ app session because it was an allowed app.", &v17, 0xCu);
     }
   }
@@ -1013,49 +1013,49 @@ uint64_t __99__ATXAppIntentMonitor_processIntentDonationsDuringAppSessionForBund
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = sessionCopy;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_INFO, "Donation Processing - %@ is not an allowed bundle. Continuing with processing steps...", &v17, 0xCu);
     }
 
-    [(ATXAppIntentMonitor *)self processIntentDonationsDuringAppSessionForBundleId:v8 startDate:v9 endDate:v10 globals:v12];
+    [(ATXAppIntentMonitor *)self processIntentDonationsDuringAppSessionForBundleId:sessionCopy startDate:dateCopy endDate:endDateCopy globals:v12];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldAcceptMessageDonation:(id)a3
+- (BOOL)shouldAcceptMessageDonation:(id)donation
 {
-  v4 = a3;
-  v5 = [v4 intentType];
-  v6 = [v5 isEqualToString:@"INSendMessageIntent"];
+  donationCopy = donation;
+  intentType = [donationCopy intentType];
+  v6 = [intentType isEqualToString:@"INSendMessageIntent"];
 
   if (v6)
   {
-    v7 = [v4 action];
+    action = [donationCopy action];
 
-    if (!v7)
+    if (!action)
     {
       goto LABEL_16;
     }
 
-    v8 = [v4 action];
-    v9 = [v8 intent];
+    action2 = [donationCopy action];
+    intent = [action2 intent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [_ATXActionUtils recipientFromMessageIntent:v9];
+      v10 = [_ATXActionUtils recipientFromMessageIntent:intent];
       if (v10)
       {
         v11 = v10;
         v12 = [(_ATXDataStore *)self->_dataStore lastMessageToRecipient:v10];
-        v13 = [v4 startDate];
-        v14 = [_ATXActionUtils shouldPredictRecipient:v11 withDate:v13 andRecipientDate:v12];
+        startDate = [donationCopy startDate];
+        v14 = [_ATXActionUtils shouldPredictRecipient:v11 withDate:startDate andRecipientDate:v12];
 
         if (v14)
         {
           dataStore = self->_dataStore;
-          v16 = [v4 startDate];
-          [(_ATXDataStore *)dataStore updateOrInsertMessageRecipient:v11 dateMessaged:v16];
+          startDate2 = [donationCopy startDate];
+          [(_ATXDataStore *)dataStore updateOrInsertMessageRecipient:v11 dateMessaged:startDate2];
         }
 
         else
@@ -1095,16 +1095,16 @@ LABEL_17:
   return v19;
 }
 
-- (void)updateActionPredictionPipelineForIntentEvent:(id)a3 weight:(float)a4 appSessionStartDate:(id)a5 appSessionEndDate:(id)a6
+- (void)updateActionPredictionPipelineForIntentEvent:(id)event weight:(float)weight appSessionStartDate:(id)date appSessionEndDate:(id)endDate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
-  if (v13)
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  predictionContextForCurrentContext = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder predictionContextForCurrentContext];
+  if (predictionContextForCurrentContext)
   {
-    *&v14 = a4;
-    [(ATXAppIntentMonitor *)self updateActionPredictionPipelineForIntentEvent:v10 weight:v11 appSessionStartDate:v12 appSessionEndDate:v13 context:v14];
+    *&v14 = weight;
+    [(ATXAppIntentMonitor *)self updateActionPredictionPipelineForIntentEvent:eventCopy weight:dateCopy appSessionStartDate:endDateCopy appSessionEndDate:predictionContextForCurrentContext context:v14];
   }
 
   else
@@ -1117,64 +1117,64 @@ LABEL_17:
   }
 }
 
-- (void)updateActionPredictionPipelineForIntentEvent:(id)a3 weight:(float)a4 appSessionStartDate:(id)a5 appSessionEndDate:(id)a6 context:(id)a7
+- (void)updateActionPredictionPipelineForIntentEvent:(id)event weight:(float)weight appSessionStartDate:(id)date appSessionEndDate:(id)endDate context:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 action];
-  if ([(ATXSafariIntentEventQualityFilter *)self->_safariIntentQualityFilter shouldAcceptSafariDonation:v12])
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  contextCopy = context;
+  action = [eventCopy action];
+  if ([(ATXSafariIntentEventQualityFilter *)self->_safariIntentQualityFilter shouldAcceptSafariDonation:eventCopy])
   {
-    if (v16)
+    if (action)
     {
-      [(ATXAppIntentMonitor *)self _displayDonationOnLockscreenWithAction:v16];
-      [(ATXAppIntentMonitor *)self removeDonationFromLockscreenForAction:v16];
-      if (![(ATXAppIntentMonitor *)self shouldAcceptMessageDonation:v12]|| ![_ATXActionUtils shouldAcceptAudioOrVideoCallIntent:v16])
+      [(ATXAppIntentMonitor *)self _displayDonationOnLockscreenWithAction:action];
+      [(ATXAppIntentMonitor *)self removeDonationFromLockscreenForAction:action];
+      if (![(ATXAppIntentMonitor *)self shouldAcceptMessageDonation:eventCopy]|| ![_ATXActionUtils shouldAcceptAudioOrVideoCallIntent:action])
       {
         goto LABEL_27;
       }
     }
 
-    else if (![(ATXAppIntentMonitor *)self shouldAcceptMessageDonation:v12])
+    else if (![(ATXAppIntentMonitor *)self shouldAcceptMessageDonation:eventCopy])
     {
       goto LABEL_27;
     }
 
-    v17 = [v16 actionUUID];
-    if (v17 && (v18 = v17, v19 = self->_dataStore, [v16 actionUUID], v20 = objc_claimAutoreleasedReturnValue(), LODWORD(v19) = -[_ATXDataStore alogContainsActionUUID:](v19, "alogContainsActionUUID:", v20), v20, v18, v19))
+    actionUUID = [action actionUUID];
+    if (actionUUID && (v18 = actionUUID, v19 = self->_dataStore, [action actionUUID], v20 = objc_claimAutoreleasedReturnValue(), LODWORD(v19) = -[_ATXDataStore alogContainsActionUUID:](v19, "alogContainsActionUUID:", v20), v20, v18, v19))
     {
-      v21 = [v16 intent];
-      if (v21)
+      intent = [action intent];
+      if (intent)
       {
-        v22 = [v16 intent];
-        v23 = [v22 intentDescription];
+        intent2 = [action intent];
+        intentDescription = [intent2 intentDescription];
       }
 
       else
       {
-        v49 = [v16 userActivityString];
-        v22 = v49;
+        userActivityString = [action userActivityString];
+        intent2 = userActivityString;
         v50 = &stru_2839A6058;
-        if (v49)
+        if (userActivityString)
         {
-          v50 = v49;
+          v50 = userActivityString;
         }
 
-        v23 = v50;
+        intentDescription = v50;
       }
 
-      v48 = v23;
+      v48 = intentDescription;
 
       v51 = __atxlog_handle_default();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [v16 bundleId];
-        v53 = [v16 actionUUID];
-        v54 = [v53 description];
+        bundleId = [action bundleId];
+        actionUUID2 = [action actionUUID];
+        v54 = [actionUUID2 description];
         *buf = 138412803;
-        v66 = v52;
+        v66 = bundleId;
         v67 = 2117;
         v68 = v48;
         v69 = 2112;
@@ -1186,61 +1186,61 @@ LABEL_17:
     else
     {
       dataStore = self->_dataStore;
-      v25 = [v12 intentType];
-      if ([(_ATXDataStore *)dataStore containsActionType:v25])
+      intentType = [eventCopy intentType];
+      if ([(_ATXDataStore *)dataStore containsActionType:intentType])
       {
       }
 
       else
       {
         v27 = self->_dataStore;
-        v28 = [v12 bundleId];
-        v29 = [(_ATXDataStore *)v27 totalNumberOfActionTypesForBundleId:v28];
-        v61 = [v29 intValue];
+        bundleId2 = [eventCopy bundleId];
+        v29 = [(_ATXDataStore *)v27 totalNumberOfActionTypesForBundleId:bundleId2];
+        intValue = [v29 intValue];
         v30 = +[_ATXGlobals sharedInstance];
-        v59 = [v30 maxNumberOfActionTypesPerApp];
+        maxNumberOfActionTypesPerApp = [v30 maxNumberOfActionTypesPerApp];
 
-        if (v61 >= v59)
+        if (intValue >= maxNumberOfActionTypesPerApp)
         {
           v48 = __atxlog_handle_default();
           if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
           {
-            [ATXAppIntentMonitor updateActionPredictionPipelineForIntentEvent:v12 weight:? appSessionStartDate:? appSessionEndDate:? context:?];
+            [ATXAppIntentMonitor updateActionPredictionPipelineForIntentEvent:eventCopy weight:? appSessionStartDate:? appSessionEndDate:? context:?];
           }
 
           goto LABEL_26;
         }
       }
 
-      *&v26 = a4;
-      [(ATXAppIntentMonitor *)self _updateActionPredictionHistogramsForIntentEvent:v12 weight:v15 context:v26];
-      v31 = [v15 locationMotionContext];
-      v32 = [v31 previousLOI];
+      *&v26 = weight;
+      [(ATXAppIntentMonitor *)self _updateActionPredictionHistogramsForIntentEvent:eventCopy weight:contextCopy context:v26];
+      locationMotionContext = [contextCopy locationMotionContext];
+      previousLOI = [locationMotionContext previousLOI];
 
-      v33 = [v15 locationMotionContext];
-      v34 = [v33 currentLOI];
+      locationMotionContext2 = [contextCopy locationMotionContext];
+      currentLOI = [locationMotionContext2 currentLOI];
 
-      v62 = v32;
-      v57 = [v32 uuid];
-      v60 = v34;
-      v35 = [v34 uuid];
-      v58 = [v15 locationMotionContext];
-      v56 = [v58 motionType];
-      v36 = [v15 locationMotionContext];
-      v37 = [v36 geohash];
-      v38 = [v15 locationMotionContext];
-      v39 = [v38 coarseGeohash];
-      *&v40 = a4;
-      [(ATXAppIntentMonitor *)self updateActionPredictionSlotResolutionForIntentEvent:v12 weight:v57 prevLocationUUID:v35 locationUUID:v56 currentMotionType:v13 appSessionStartDate:v14 appSessionEndDate:v40 geohash:v37 coarseGeohash:v39];
+      v62 = previousLOI;
+      uuid = [previousLOI uuid];
+      v60 = currentLOI;
+      uuid2 = [currentLOI uuid];
+      locationMotionContext3 = [contextCopy locationMotionContext];
+      motionType = [locationMotionContext3 motionType];
+      locationMotionContext4 = [contextCopy locationMotionContext];
+      geohash = [locationMotionContext4 geohash];
+      locationMotionContext5 = [contextCopy locationMotionContext];
+      coarseGeohash = [locationMotionContext5 coarseGeohash];
+      *&v40 = weight;
+      [(ATXAppIntentMonitor *)self updateActionPredictionSlotResolutionForIntentEvent:eventCopy weight:uuid prevLocationUUID:uuid2 locationUUID:motionType currentMotionType:dateCopy appSessionStartDate:endDateCopy appSessionEndDate:v40 geohash:geohash coarseGeohash:coarseGeohash];
 
-      [(ATXAppIntentMonitor *)self _logIntentPredictionsForIntentEvent:v12 context:v15];
+      [(ATXAppIntentMonitor *)self _logIntentPredictionsForIntentEvent:eventCopy context:contextCopy];
       v41 = +[_ATXAppPredictor sharedInstance];
-      v42 = [v41 abGroupIdentifiers];
-      v43 = [v42 objectAtIndexedSubscript:16];
+      abGroupIdentifiers = [v41 abGroupIdentifiers];
+      v43 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
-      v44 = [v16 actionType];
+      actionType = [action actionType];
       donatedActionsTracker = self->_donatedActionsTracker;
-      if (v44 == 1)
+      if (actionType == 1)
       {
         v64 = @"nsua";
         v46 = &v64;
@@ -1267,92 +1267,92 @@ LABEL_27:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateActionPredictionHistogramsForIntentEvent:(id)a3 weight:(float)a4 context:(id)a5
+- (void)_updateActionPredictionHistogramsForIntentEvent:(id)event weight:(float)weight context:(id)context
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 dateInterval];
-  v11 = [v10 startDate];
+  eventCopy = event;
+  contextCopy = context;
+  dateInterval = [eventCopy dateInterval];
+  startDate = [dateInterval startDate];
 
   v12 = MEMORY[0x277CEB2C8];
-  v13 = [v8 bundleId];
-  v14 = [v8 intentType];
-  v15 = [v12 getActionKeyForBundleId:v13 actionType:v14];
+  bundleId = [eventCopy bundleId];
+  intentType = [eventCopy intentType];
+  v15 = [v12 getActionKeyForBundleId:bundleId actionType:intentType];
 
   if ([v15 isEqualToString:*MEMORY[0x277CEB1D8]])
   {
-    v16 = [v8 action];
-    v17 = [v16 userActivityString];
+    action = [eventCopy action];
+    userActivityString = [action userActivityString];
 
-    if (v17)
+    if (userActivityString)
     {
-      v18 = [_ATXActionUtils markTodayInTitleAndUserActivityString:v8 withActionKey:v15];
+      v18 = [_ATXActionUtils markTodayInTitleAndUserActivityString:eventCopy withActionKey:v15];
 
-      v8 = v18;
+      eventCopy = v18;
     }
   }
 
-  v19 = [v9 userContext];
-  v20 = [v19 lastAppActionLaunch];
+  userContext = [contextCopy userContext];
+  lastAppActionLaunch = [userContext lastAppActionLaunch];
 
-  if (v20)
+  if (lastAppActionLaunch)
   {
     appActionLaunchSequenceManager = self->_appActionLaunchSequenceManager;
-    v22 = [v9 userContext];
-    v23 = [v22 lastAppActionLaunch];
-    v24 = [(_ATXAppLaunchSequenceManager *)appActionLaunchSequenceManager launchSequenceForAppAction:v23];
+    userContext2 = [contextCopy userContext];
+    lastAppActionLaunch2 = [userContext2 lastAppActionLaunch];
+    v24 = [(_ATXAppLaunchSequenceManager *)appActionLaunchSequenceManager launchSequenceForAppAction:lastAppActionLaunch2];
     [v24 addSubsequentLaunch:v15];
   }
 
-  v25 = [v9 userContext];
-  v26 = [v25 secondMostRecentAppLaunch];
+  userContext3 = [contextCopy userContext];
+  secondMostRecentAppLaunch = [userContext3 secondMostRecentAppLaunch];
 
-  if (v26)
+  if (secondMostRecentAppLaunch)
   {
     v27 = MEMORY[0x277CCACA8];
-    v28 = [v9 userContext];
-    v29 = [v28 secondMostRecentAppLaunch];
-    v30 = [v27 stringWithFormat:@"%@:#AppLaunched", v29];
+    userContext4 = [contextCopy userContext];
+    secondMostRecentAppLaunch2 = [userContext4 secondMostRecentAppLaunch];
+    v30 = [v27 stringWithFormat:@"%@:#AppLaunched", secondMostRecentAppLaunch2];
 
     v31 = [(_ATXAppLaunchSequenceManager *)self->_appActionLaunchSequenceManager launchSequenceForAppAction:v30];
     [v31 addSubsequentLaunch:v15];
   }
 
-  [(_ATXAppInfoManager *)self->_appInfoManager addLaunchForAppAction:v15 date:v11];
+  [(_ATXAppInfoManager *)self->_appInfoManager addLaunchForAppAction:v15 date:startDate];
   v32 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:14];
-  *&v33 = a4;
-  [v32 addLaunchWithBundleId:v15 date:v11 timeZone:0 weight:v33];
+  *&v33 = weight;
+  [v32 addLaunchWithBundleId:v15 date:startDate timeZone:0 weight:v33];
 
   v34 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:16];
-  v35 = [v8 bundleId];
-  *&v36 = a4;
-  [v34 addLaunchWithBundleId:v35 date:v11 timeZone:0 weight:v36];
+  bundleId2 = [eventCopy bundleId];
+  *&v36 = weight;
+  [v34 addLaunchWithBundleId:bundleId2 date:startDate timeZone:0 weight:v36];
 
   v37 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:17];
-  *&v38 = a4;
-  [v37 addLaunchWithBundleId:v15 date:v11 timeZone:0 weight:v38];
+  *&v38 = weight;
+  [v37 addLaunchWithBundleId:v15 date:startDate timeZone:0 weight:v38];
 
   v39 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:19];
-  v40 = [v8 bundleId];
-  *&v41 = a4;
-  [v39 addLaunchWithBundleId:v40 date:v11 timeZone:0 weight:v41];
+  bundleId3 = [eventCopy bundleId];
+  *&v41 = weight;
+  [v39 addLaunchWithBundleId:bundleId3 date:startDate timeZone:0 weight:v41];
 
   v42 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:20];
-  *&v43 = a4;
-  [v42 addLaunchWithBundleId:v15 date:v11 timeZone:0 weight:v43];
+  *&v43 = weight;
+  [v42 addLaunchWithBundleId:v15 date:startDate timeZone:0 weight:v43];
 
   v44 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:22];
-  v45 = [v8 bundleId];
-  *&v46 = a4;
-  [v44 addLaunchWithBundleId:v45 date:v11 timeZone:0 weight:v46];
+  bundleId4 = [eventCopy bundleId];
+  *&v46 = weight;
+  [v44 addLaunchWithBundleId:bundleId4 date:startDate timeZone:0 weight:v46];
 
-  v47 = [v9 userContext];
-  v48 = [v47 lastUnlockDate];
+  userContext5 = [contextCopy userContext];
+  lastUnlockDate = [userContext5 lastUnlockDate];
 
-  if (v48)
+  if (lastUnlockDate)
   {
-    [v11 timeIntervalSinceDate:v48];
+    [startDate timeIntervalSinceDate:lastUnlockDate];
     if (v49 >= 0.0)
     {
       if (v49 >= 3600.0)
@@ -1366,146 +1366,146 @@ LABEL_27:
       }
 
       v51 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:23];
-      *&v52 = a4;
+      *&v52 = weight;
       [v51 addLaunchWithBundleId:v15 elapsedTime:v50 weight:v52];
 
       v53 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:25];
-      v54 = [v8 bundleId];
-      *&v55 = a4;
-      [v53 addLaunchWithBundleId:v54 elapsedTime:v50 weight:v55];
+      bundleId5 = [eventCopy bundleId];
+      *&v55 = weight;
+      [v53 addLaunchWithBundleId:bundleId5 elapsedTime:v50 weight:v55];
     }
   }
 
-  v56 = [v9 deviceStateContext];
-  v57 = [v56 inAirplaneMode];
+  deviceStateContext = [contextCopy deviceStateContext];
+  inAirplaneMode = [deviceStateContext inAirplaneMode];
 
-  if (v57)
+  if (inAirplaneMode)
   {
     v58 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:26];
-    *&v59 = a4;
-    [v58 addLaunchWithBundleId:v15 date:v11 timeZone:0 weight:v59];
+    *&v59 = weight;
+    [v58 addLaunchWithBundleId:v15 date:startDate timeZone:0 weight:v59];
 
     v60 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:28];
-    v61 = [v8 bundleId];
-    *&v62 = a4;
-    [v60 addLaunchWithBundleId:v61 date:v11 timeZone:0 weight:v62];
+    bundleId6 = [eventCopy bundleId];
+    *&v62 = weight;
+    [v60 addLaunchWithBundleId:bundleId6 date:startDate timeZone:0 weight:v62];
   }
 
-  v90 = v48;
-  v63 = [v9 deviceStateContext];
-  v64 = [v63 wifiSSID];
+  v90 = lastUnlockDate;
+  deviceStateContext2 = [contextCopy deviceStateContext];
+  wifiSSID = [deviceStateContext2 wifiSSID];
 
-  if ([v64 length])
+  if ([wifiSSID length])
   {
     v65 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:29];
-    *&v66 = a4;
-    [v65 addLaunchWithBundleId:v15 date:v11 category:v64 weight:v66];
+    *&v66 = weight;
+    [v65 addLaunchWithBundleId:v15 date:startDate category:wifiSSID weight:v66];
 
     v67 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:31];
-    v68 = [v8 bundleId];
-    *&v69 = a4;
-    [v67 addLaunchWithBundleId:v68 date:v11 category:v64 weight:v69];
+    bundleId7 = [eventCopy bundleId];
+    *&v69 = weight;
+    [v67 addLaunchWithBundleId:bundleId7 date:startDate category:wifiSSID weight:v69];
   }
 
   v70 = MEMORY[0x277D41C30];
-  v71 = [v9 locationMotionContext];
-  v72 = [v70 getMotionStringFromMotionType:{objc_msgSend(v71, "motionType")}];
+  locationMotionContext = [contextCopy locationMotionContext];
+  v72 = [v70 getMotionStringFromMotionType:{objc_msgSend(locationMotionContext, "motionType")}];
 
   v73 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:38];
-  *&v74 = a4;
-  [v73 addLaunchWithBundleId:v15 date:v11 category:v72 weight:v74];
+  *&v74 = weight;
+  [v73 addLaunchWithBundleId:v15 date:startDate category:v72 weight:v74];
 
   v75 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:39];
-  v76 = [v8 bundleId];
-  *&v77 = a4;
-  [v75 addLaunchWithBundleId:v76 date:v11 category:v72 weight:v77];
+  bundleId8 = [eventCopy bundleId];
+  *&v77 = weight;
+  [v75 addLaunchWithBundleId:bundleId8 date:startDate category:v72 weight:v77];
 
-  v78 = [_ATXActionUtils partOfWeekStringForDate:v11];
+  v78 = [_ATXActionUtils partOfWeekStringForDate:startDate];
   v79 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:40];
-  *&v80 = a4;
-  [v79 addLaunchWithBundleId:v15 date:v11 category:v78 weight:v80];
+  *&v80 = weight;
+  [v79 addLaunchWithBundleId:v15 date:startDate category:v78 weight:v80];
 
-  v81 = [v9 ambientLightContext];
-  v82 = [v81 ambientLightType];
+  ambientLightContext = [contextCopy ambientLightContext];
+  ambientLightType = [ambientLightContext ambientLightType];
 
-  if (v82 != 7)
+  if (ambientLightType != 7)
   {
     v83 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager categoricalHistogramForLaunchType:41];
-    v84 = [MEMORY[0x277CCABB0] numberWithInt:v82];
-    v85 = [v84 stringValue];
-    *&v86 = a4;
-    [v83 addLaunchWithBundleId:v15 date:v11 category:v85 weight:v86];
+    v84 = [MEMORY[0x277CCABB0] numberWithInt:ambientLightType];
+    stringValue = [v84 stringValue];
+    *&v86 = weight;
+    [v83 addLaunchWithBundleId:v15 date:startDate category:stringValue weight:v86];
   }
 
   v87 = __atxlog_handle_default();
   if (os_log_type_enabled(v87, OS_LOG_TYPE_DEBUG))
   {
-    v89 = [v8 startDate];
+    startDate2 = [eventCopy startDate];
     *buf = 138412802;
     v92 = v15;
     v93 = 2112;
-    v94 = v89;
+    v94 = startDate2;
     v95 = 2048;
-    v96 = a4;
+    weightCopy = weight;
     _os_log_debug_impl(&dword_2263AA000, v87, OS_LOG_TYPE_DEBUG, "Donation Processing - Finished Updating Histograms for Action Event: %@ with Date: %@ with Weight: %f", buf, 0x20u);
   }
 
   v88 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateActionPredictionSlotResolutionForIntentEvent:(id)a3 weight:(float)a4 prevLocationUUID:(id)a5 locationUUID:(id)a6 currentMotionType:(int64_t)a7 appSessionStartDate:(id)a8 appSessionEndDate:(id)a9 geohash:(int64_t)a10 coarseGeohash:(int64_t)a11
+- (void)updateActionPredictionSlotResolutionForIntentEvent:(id)event weight:(float)weight prevLocationUUID:(id)d locationUUID:(id)iD currentMotionType:(int64_t)type appSessionStartDate:(id)date appSessionEndDate:(id)endDate geohash:(int64_t)self0 coarseGeohash:(int64_t)self1
 {
   v40 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a8;
-  v22 = a9;
-  v23 = [v18 action];
-  if (v23)
+  eventCopy = event;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  endDateCopy = endDate;
+  action = [eventCopy action];
+  if (action)
   {
-    v24 = [_ATXActionUtils slotSetsForAction:v23];
+    v24 = [_ATXActionUtils slotSetsForAction:action];
     dataStore = self->_dataStore;
     v36 = v24;
-    v25 = [v18 intentType];
-    v26 = [v18 bundleId];
-    v27 = [v18 startDate];
-    v28 = [v23 actionUUID];
-    v29 = v20;
-    v30 = v28;
-    v37 = v21;
-    v34 = v21;
+    intentType = [eventCopy intentType];
+    bundleId = [eventCopy bundleId];
+    startDate = [eventCopy startDate];
+    actionUUID = [action actionUUID];
+    v29 = iDCopy;
+    v30 = actionUUID;
+    v37 = dateCopy;
+    v34 = dateCopy;
     v31 = v29;
-    [(_ATXDataStore *)dataStore writeActionType:v25 bundleId:v26 date:v27 action:v23 slotSets:v36 timeZone:0 prevLocationUUID:a4 locationUUID:v19 weight:v29 actionUUID:v28 motionType:a7 appSessionStartDate:v34 appSessionEndDate:v22 geohash:a10 coarseGeohash:a11];
+    [(_ATXDataStore *)dataStore writeActionType:intentType bundleId:bundleId date:startDate action:action slotSets:v36 timeZone:0 prevLocationUUID:weight locationUUID:dCopy weight:v29 actionUUID:actionUUID motionType:type appSessionStartDate:v34 appSessionEndDate:endDateCopy geohash:geohash coarseGeohash:coarseGeohash];
 
     v32 = __atxlog_handle_default();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v39 = v23;
+      v39 = action;
       _os_log_impl(&dword_2263AA000, v32, OS_LOG_TYPE_DEFAULT, "Donation Processing - Finished Updating Slot Resolution Database for Action: %@", buf, 0xCu);
     }
 
-    v20 = v31;
-    v21 = v37;
+    iDCopy = v31;
+    dateCopy = v37;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logIntentPredictionsForIntentEvent:(id)a3 context:(id)a4
+- (void)_logIntentPredictionsForIntentEvent:(id)event context:(id)context
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_opt_new();
   v10 = [v9 actionPredictionsForConsumerSubType:17 limit:0x7FFFFFFFLL];
-  v11 = [v6 action];
-  v12 = v11;
+  action = [eventCopy action];
+  v12 = action;
   if (v10)
   {
-    v13 = v11 == 0;
+    v13 = action == 0;
   }
 
   else
@@ -1515,21 +1515,21 @@ LABEL_27:
 
   if (v13)
   {
-    v14 = __atxlog_handle_default();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    mEMORY[0x277CEB7E0] = __atxlog_handle_default();
+    if (os_log_type_enabled(mEMORY[0x277CEB7E0], OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_INFO, "Donation Processing - No response or performedAction Found", buf, 2u);
+      _os_log_impl(&dword_2263AA000, mEMORY[0x277CEB7E0], OS_LOG_TYPE_INFO, "Donation Processing - No response or performedAction Found", buf, 2u);
     }
   }
 
   else
   {
-    v52 = self;
+    selfCopy = self;
     v53 = v9;
     v54 = v8;
-    v14 = [MEMORY[0x277CEB7E0] sharedInstance];
-    [v14 recentActions];
+    mEMORY[0x277CEB7E0] = [MEMORY[0x277CEB7E0] sharedInstance];
+    [mEMORY[0x277CEB7E0] recentActions];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
@@ -1572,20 +1572,20 @@ LABEL_27:
       }
     }
 
-    v50 = v7;
-    v51 = v6;
+    v50 = contextCopy;
+    v51 = eventCopy;
 
     v20 = 0;
     while (1)
     {
       v21 = +[_ATXGlobals sharedInstance];
-      v22 = [v21 maximumSpotlightPredictions];
+      maximumSpotlightPredictions = [v21 maximumSpotlightPredictions];
 
-      v23 = [v10 actions];
-      v24 = [v23 count];
+      actions = [v10 actions];
+      v24 = [actions count];
 
-      v25 = v22;
-      if (v24 < v22)
+      v25 = maximumSpotlightPredictions;
+      if (v24 < maximumSpotlightPredictions)
       {
         v25 = v24;
       }
@@ -1595,8 +1595,8 @@ LABEL_27:
         break;
       }
 
-      v26 = [v10 actions];
-      v27 = [v26 objectAtIndexedSubscript:v20];
+      actions2 = [v10 actions];
+      v27 = [actions2 objectAtIndexedSubscript:v20];
       v28 = [_ATXActionUtils isContainmentBetweenAction:v12 other:v27];
 
       ++v20;
@@ -1609,12 +1609,12 @@ LABEL_27:
 
     v29 = 0.0;
 LABEL_26:
-    v31 = [v12 _bundleIdForDisplay];
-    v32 = [v12 actionKey];
-    if (v32)
+    _bundleIdForDisplay = [v12 _bundleIdForDisplay];
+    actionKey = [v12 actionKey];
+    if (actionKey)
     {
-      v33 = [v12 actionKey];
-      v34 = [_ATXActionUtils getActionTypeFromActionKey:v33];
+      actionKey2 = [v12 actionKey];
+      v34 = [_ATXActionUtils getActionTypeFromActionKey:actionKey2];
     }
 
     else
@@ -1623,13 +1623,13 @@ LABEL_26:
     }
 
     v35 = +[_ATXAppPredictor sharedInstance];
-    v36 = [v35 abGroupIdentifiers];
-    v37 = [v36 objectAtIndexedSubscript:16];
+    abGroupIdentifiers = [v35 abGroupIdentifiers];
+    v37 = [abGroupIdentifiers objectAtIndexedSubscript:16];
 
-    if (v31 && v34 && v37)
+    if (_bundleIdForDisplay && v34 && v37)
     {
-      donatedActionInCacheTracker = v52->_donatedActionInCacheTracker;
-      v60[0] = v31;
+      donatedActionInCacheTracker = selfCopy->_donatedActionInCacheTracker;
+      v60[0] = _bundleIdForDisplay;
       v60[1] = v34;
       v60[2] = v37;
       v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:3];
@@ -1647,8 +1647,8 @@ LABEL_26:
       v42 = v44;
     }
 
-    v7 = v50;
-    v6 = v51;
+    contextCopy = v50;
+    eventCopy = v51;
     v8 = v54;
     v45 = objc_opt_new();
     [v10 updateConsumerSubType:17 engagedAction:v12 shownActions:MEMORY[0x277CBEBF8] feedbackStage:7 explicitlyDismissedActions:0 searchedActionType:4 engagedAppString:0 uiFeedbackDate:v45];
@@ -1691,9 +1691,9 @@ LABEL_44:
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CFE318] userContext];
+  userContext = [MEMORY[0x277CFE318] userContext];
   context = self->_context;
-  self->_context = v3;
+  self->_context = userContext;
 
   [(ATXAppIntentMonitor *)self _listenToIntentStream];
   [(ATXAppIntentMonitor *)self _listenToLinkActionStream];

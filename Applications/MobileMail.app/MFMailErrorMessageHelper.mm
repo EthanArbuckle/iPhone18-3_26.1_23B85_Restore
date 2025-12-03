@@ -1,17 +1,17 @@
 @interface MFMailErrorMessageHelper
-+ (id)invalidRecipientErrorMessageWithRecipients:(id)a3;
++ (id)invalidRecipientErrorMessageWithRecipients:(id)recipients;
 @end
 
 @implementation MFMailErrorMessageHelper
 
-+ (id)invalidRecipientErrorMessageWithRecipients:(id)a3
++ (id)invalidRecipientErrorMessageWithRecipients:(id)recipients
 {
   swift_getObjCClassMetadata();
-  _objc_retain(a3);
-  if (a3)
+  _objc_retain(recipients);
+  if (recipients)
   {
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    _objc_release(a3);
+    _objc_release(recipients);
     v6 = v5;
   }
 

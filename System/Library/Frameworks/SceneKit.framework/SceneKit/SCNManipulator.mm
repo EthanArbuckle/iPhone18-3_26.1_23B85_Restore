@@ -1,61 +1,61 @@
 @interface SCNManipulator
-- (BOOL)_applyWithEvent:(id *)a3;
-- (BOOL)mouseDown:(id *)a3;
-- (BOOL)mouseDragged:(id *)a3;
-- (BOOL)mouseMoved:(id *)a3;
-- (BOOL)mouseUp:(id *)a3;
+- (BOOL)_applyWithEvent:(id *)event;
+- (BOOL)mouseDown:(id *)down;
+- (BOOL)mouseDragged:(id *)dragged;
+- (BOOL)mouseMoved:(id *)moved;
+- (BOOL)mouseUp:(id *)up;
 - (SCNManipulator)init;
 - (SCNMatrix4)transform;
 - (SCNNode)manipulatorNode;
 - (SCNNode)target;
-- (__n128)_snapPositionToAlign:(float)a3 original:(float)a4 unit:(float)a5 axisMove:(double)a6 rayStart:(__n128)a7 rayDir:(__n128)a8 didSnap:(uint64_t)a9 snapIndexes:(int)a10;
-- (const)snapInfoAtIndex:(unint64_t)a3 axis:(unint64_t)a4;
+- (__n128)_snapPositionToAlign:(float)align original:(float)original unit:(float)unit axisMove:(double)move rayStart:(__n128)start rayDir:(__n128)dir didSnap:(uint64_t)snap snapIndexes:(int)self0;
+- (const)snapInfoAtIndex:(unint64_t)index axis:(unint64_t)axis;
 - (id)copy;
-- (id)hitTest:(id *)a3;
+- (id)hitTest:(id *)test;
 - (id)scene;
 - (id)setupClones;
-- (id)snapGuideIndexesOnAxis:(unint64_t)a3;
+- (id)snapGuideIndexesOnAxis:(unint64_t)axis;
 - (int64_t)effectiveEditingSpace;
 - (unint64_t)_effectiveFeatures;
 - (void)_deleteOriginalData;
-- (void)_prepareSnapToAlignData:(SCNManipulator *)self minOffset:(SEL)a2 maxOffset:(unsigned __int16)a3;
+- (void)_prepareSnapToAlignData:(SCNManipulator *)self minOffset:(SEL)offset maxOffset:(unsigned __int16)maxOffset;
 - (void)_saveOriginalData;
-- (void)_updateActionWithEvent:(id *)a3;
+- (void)_updateActionWithEvent:(id *)event;
 - (void)addClonesToScene;
 - (void)clearSnapIndexes;
 - (void)dealloc;
 - (void)prepareSnapToAlignData;
 - (void)prepareSnapToAlignDataIfNeeded;
 - (void)removeClonesFromScene;
-- (void)setTarget:(id)a3;
-- (void)setTargets:(id)a3;
+- (void)setTarget:(id)target;
+- (void)setTargets:(id)targets;
 - (void)setupNode;
 - (void)updateItemsPosition;
 - (void)updateItemsRotation:(SCNManipulator *)self;
-- (void)updateItemsScale:(float)a3;
+- (void)updateItemsScale:(float)scale;
 - (void)updateManipulatorComponents;
 - (void)updateManipulatorNode;
-- (void)updateManipulatorPosition:(__C3DEngineContext *)a3;
+- (void)updateManipulatorPosition:(__C3DEngineContext *)position;
 - (void)validateClones;
 @end
 
 @implementation SCNManipulator
 
-- (void)setTargets:(id)a3
+- (void)setTargets:(id)targets
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(SCNManipulator *)self authoringEnvironment];
-  objc_sync_enter(v5);
+  authoringEnvironment = [(SCNManipulator *)self authoringEnvironment];
+  objc_sync_enter(authoringEnvironment);
   v6 = self->_targets;
   self->_targets = 0;
-  if (a3)
+  if (targets)
   {
-    v7 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(a3, "count")}];
+    v7 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(targets, "count")}];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [targets countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = *v16;
@@ -66,7 +66,7 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(targets);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
@@ -80,7 +80,7 @@
                 break;
               }
 
-              if ([a3 containsObject:i])
+              if ([targets containsObject:i])
               {
                 goto LABEL_9;
               }
@@ -93,7 +93,7 @@ LABEL_9:
         }
 
         while (v10 != v8);
-        v14 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v14 = [targets countByEnumeratingWithState:&v15 objects:v19 count:16];
         v8 = v14;
       }
 
@@ -103,36 +103,36 @@ LABEL_9:
     self->_targets = v7;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(authoringEnvironment);
   [(SCNManipulator *)self updateManipulatorNode];
 }
 
 - (SCNNode)target
 {
-  v3 = [(SCNManipulator *)self authoringEnvironment];
-  objc_sync_enter(v3);
+  authoringEnvironment = [(SCNManipulator *)self authoringEnvironment];
+  objc_sync_enter(authoringEnvironment);
   if ([(NSOrderedSet *)self->_targets count])
   {
-    v4 = [(NSOrderedSet *)self->_targets firstObject];
+    firstObject = [(NSOrderedSet *)self->_targets firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  objc_sync_exit(v3);
-  return v4;
+  objc_sync_exit(authoringEnvironment);
+  return firstObject;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  if (a3)
+  if (target)
   {
-    a3 = [MEMORY[0x277CBEB70] orderedSetWithObject:?];
+    target = [MEMORY[0x277CBEB70] orderedSetWithObject:?];
   }
 
-  [(SCNManipulator *)self setTargets:a3];
+  [(SCNManipulator *)self setTargets:target];
 }
 
 - (SCNMatrix4)transform
@@ -196,9 +196,9 @@ LABEL_9:
     return 2;
   }
 
-  v4 = [(SCNManipulator *)self authoringEnvironment];
+  authoringEnvironment = [(SCNManipulator *)self authoringEnvironment];
 
-  return [(SCNAuthoringEnvironment *)v4 editingSpace];
+  return [(SCNAuthoringEnvironment *)authoringEnvironment editingSpace];
 }
 
 - (SCNNode)manipulatorNode
@@ -344,7 +344,7 @@ LABEL_9:
   [SCNTransaction setImmediateMode:v39];
 }
 
-- (void)updateManipulatorPosition:(__C3DEngineContext *)a3
+- (void)updateManipulatorPosition:(__C3DEngineContext *)position
 {
   v5 = +[SCNTransaction immediateMode];
   [SCNTransaction setImmediateMode:1];
@@ -356,7 +356,7 @@ LABEL_9:
   *&self->_worldMatrix.components[9] = v60;
   *&self->_worldMatrix.components[13] = v7;
   [(SCNNode *)self->_node setSimdWorldTransform:*&self->_worldMatrix.components[1], *&self->_worldMatrix.components[5], *&self->_worldMatrix.components[9], *&self->_worldMatrix.components[13]];
-  C3DSizeForScreenSpaceSizeAndTransform(a3);
+  C3DSizeForScreenSpaceSizeAndTransform(position);
   v9 = v8;
   node = self->_node;
   if (v8 <= 0.000001)
@@ -372,10 +372,10 @@ LABEL_9:
     *&v13 = v9;
     *&v14 = v9;
     [(SCNNode *)self->_node setScale:v12, v13, v14];
-    v15 = [(SCNManipulator *)self effectiveEditingSpace];
-    if (!self->_layoutLocked || v15 == 3)
+    effectiveEditingSpace = [(SCNManipulator *)self effectiveEditingSpace];
+    if (!self->_layoutLocked || effectiveEditingSpace == 3)
     {
-      if (v15 == 3)
+      if (effectiveEditingSpace == 3)
       {
         __asm { FMOV            V0.4S, #1.0 }
 
@@ -388,7 +388,7 @@ LABEL_9:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        Matrix4x4 = C3DEngineContextGetMatrix4x4(a3, 1);
+        Matrix4x4 = C3DEngineContextGetMatrix4x4(position, 1);
         C3DMatrix4x4Mult(&self->_worldMatrix.components[1], Matrix4x4, &v58);
         v54 = v58;
         v55 = v59;
@@ -557,7 +557,7 @@ LABEL_9:
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      if (C3DConstraintBillboardMatrixForNode(a3, [(SCNConstraint *)self->_billboard __CFObject], [(SCNNode *)self->_screenSpaceRotation nodeRef], &v58, 1.0))
+      if (C3DConstraintBillboardMatrixForNode(position, [(SCNConstraint *)self->_billboard __CFObject], [(SCNNode *)self->_screenSpaceRotation nodeRef], &v58, 1.0))
       {
         v56 = 0u;
         v57 = 0u;
@@ -587,24 +587,24 @@ LABEL_9:
 
   if (![(SCNNode *)node parentNode])
   {
-    v4 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] authoringOverlayLayer];
-    v5 = [(SCNManipulator *)self manipulatorNode];
+    authoringOverlayLayer = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] authoringOverlayLayer];
+    manipulatorNode = [(SCNManipulator *)self manipulatorNode];
 
-    [(SCNNode *)v4 addChildNode:v5];
+    [(SCNNode *)authoringOverlayLayer addChildNode:manipulatorNode];
   }
 }
 
 - (void)updateManipulatorComponents
 {
-  v3 = [(SCNManipulator *)self _effectiveFeatures];
-  v4 = [(SCNManipulator *)self effectiveEditingSpace];
-  v5 = (v3 & 4) != 0 && !self->_readonly;
+  _effectiveFeatures = [(SCNManipulator *)self _effectiveFeatures];
+  effectiveEditingSpace = [(SCNManipulator *)self effectiveEditingSpace];
+  v5 = (_effectiveFeatures & 4) != 0 && !self->_readonly;
   v6 = !v5;
   [(SCNNode *)self->_scaleNode setHidden:!v5];
-  if ((v3 & 2) != 0)
+  if ((_effectiveFeatures & 2) != 0)
   {
     v7 = !self->_readonly;
-    if (v3)
+    if (_effectiveFeatures)
     {
       goto LABEL_6;
     }
@@ -613,7 +613,7 @@ LABEL_9:
   else
   {
     v7 = 0;
-    if (v3)
+    if (_effectiveFeatures)
     {
 LABEL_6:
       v8 = !self->_readonly;
@@ -623,7 +623,7 @@ LABEL_6:
 
   v8 = 0;
 LABEL_9:
-  v9 = v4 == 3;
+  v9 = effectiveEditingSpace == 3;
   [(SCNNode *)self->_rotationHandles setHidden:v9 | !v7 | (v8 && v6)];
   [(SCNNode *)self->_screenSpaceRotation setHidden:!v7 || v8 && v6];
   [(SCNNode *)self->_translateHandles setHidden:v6 && !v8];
@@ -668,7 +668,7 @@ uint64_t __41__SCNManipulator_unhighlightSelectedNode__block_invoke(uint64_t a1,
   return [v4 setContents:v3];
 }
 
-- (id)hitTest:(id *)a3
+- (id)hitTest:(id *)test
 {
   v26 = *MEMORY[0x277D85DE8];
   node = self->_node;
@@ -688,18 +688,18 @@ uint64_t __41__SCNManipulator_unhighlightSelectedNode__block_invoke(uint64_t a1,
     return 0;
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [v7 setObject:self->_node forKey:@"kHitTestRootNode"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_node forKey:@"kHitTestRootNode"];
   v8 = MEMORY[0x277CBEC28];
-  [v7 setObject:MEMORY[0x277CBEC28] forKey:@"kHitTestSkipHiddenNode"];
-  [v7 setObject:&unk_282E0F600 forKey:@"kHitTestSearchMode"];
-  [v7 setObject:v8 forKey:@"kHitTestClipToZRange"];
-  [v7 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", 4), @"kHitTestLayerMask"}];
+  [dictionary setObject:MEMORY[0x277CBEC28] forKey:@"kHitTestSkipHiddenNode"];
+  [dictionary setObject:&unk_282E0F600 forKey:@"kHitTestSearchMode"];
+  [dictionary setObject:v8 forKey:@"kHitTestClipToZRange"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", 4), @"kHitTestLayerMask"}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [a3->var1 hitTest:v7 options:{a3->var3.x, a3->var3.y, 0}];
+  v9 = [test->var1 hitTest:dictionary options:{test->var3.x, test->var3.y, 0}];
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v10)
   {
@@ -718,17 +718,17 @@ uint64_t __41__SCNManipulator_unhighlightSelectedNode__block_invoke(uint64_t a1,
         objc_enumerationMutation(v9);
       }
 
-      v15 = [*(*(&v21 + 1) + 8 * i) node];
-      if (v15 == self->_occluder)
+      node = [*(*(&v21 + 1) + 8 * i) node];
+      if (node == self->_occluder)
       {
         goto LABEL_20;
       }
 
-      v16 = v15;
-      while ([(SCNNode *)v15 categoryBitMask]== 0xFFFF)
+      v16 = node;
+      while ([(SCNNode *)node categoryBitMask]== 0xFFFF)
       {
-        v15 = [(SCNNode *)v16 parentNode];
-        v16 = v15;
+        node = [(SCNNode *)v16 parentNode];
+        v16 = node;
       }
 
       if ((v12 & 1) != 0 && [(SCNNode *)v16 parentNode]== self->_rotationHandles)
@@ -747,18 +747,18 @@ LABEL_20:
 
         do
         {
-          v18 = [v17 isHidden];
-          v19 = [v17 parentNode];
-          if (v18)
+          isHidden = [v17 isHidden];
+          parentNode = [v17 parentNode];
+          if (isHidden)
           {
             break;
           }
 
-          v17 = v19;
+          v17 = parentNode;
         }
 
-        while (v19);
-        if ((v18 & 1) == 0)
+        while (parentNode);
+        if ((isHidden & 1) == 0)
         {
           return v16;
         }
@@ -773,14 +773,14 @@ LABEL_20:
   return v16;
 }
 
-- (void)_updateActionWithEvent:(id *)a3
+- (void)_updateActionWithEvent:(id *)event
 {
-  v4 = *&a3->var4.x;
-  v8[2] = a3->var3;
+  v4 = *&event->var4.x;
+  v8[2] = event->var3;
   v8[3] = v4;
-  v8[4] = *&a3->var5.y;
-  var2 = a3->var2;
-  v8[0] = *&a3->var0;
+  v8[4] = *&event->var5.y;
+  var2 = event->var2;
+  v8[0] = *&event->var0;
   v8[1] = var2;
   v6 = [(SCNManipulator *)self hitTest:v8];
   highlightNode = self->_highlightNode;
@@ -815,7 +815,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
   return [v4 setContents:v3];
 }
 
-- (BOOL)mouseMoved:(id *)a3
+- (BOOL)mouseMoved:(id *)moved
 {
   action = self->_action;
   self->_action = 0;
@@ -826,12 +826,12 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
       return 0;
     }
 
-    v7 = *&a3->var4.x;
-    v9[2] = a3->var3;
+    v7 = *&moved->var4.x;
+    v9[2] = moved->var3;
     v9[3] = v7;
-    v9[4] = *&a3->var5.y;
-    var2 = a3->var2;
-    v9[0] = *&a3->var0;
+    v9[4] = *&moved->var5.y;
+    var2 = moved->var2;
+    v9[0] = *&moved->var0;
     v9[1] = var2;
     [(SCNManipulator *)self _updateActionWithEvent:v9];
   }
@@ -842,7 +842,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
 - (void)updateItemsPosition
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = *a2;
   v7 = 136315650;
   v8 = "setToApplyTo.count <= _originalDataCount";
@@ -864,7 +864,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
   }
 
   v5 = *(&self->super.isa + v4);
-  v6 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] editingSpace];
+  editingSpace = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] editingSpace];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -885,11 +885,11 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
         }
 
         v12 = *(*(&v46 + 1) + 8 * i);
-        v13 = [v12 parentItem];
-        if (v13)
+        parentItem = [v12 parentItem];
+        if (parentItem)
         {
           memset(&v45, 0, sizeof(v45));
-          [v13 worldTransform];
+          [parentItem worldTransform];
           memset(&v44, 0, sizeof(v44));
           m = v45;
           SCNMatrix4Invert(&v44, &m);
@@ -912,7 +912,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
           C3DMatrix4x4GetScale(v36, &v38);
           C3DMatrix4x4MakeAffine(v42, (*self->_anon_188 + 16 * v9), (*&self->_anon_188[8] + 16 * v9), &v38);
           memset(&v35, 0, sizeof(v35));
-          if (v6)
+          if (editingSpace)
           {
             v14 = &self->_worldInitialMatrix.components[13];
           }
@@ -993,7 +993,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
   }
 }
 
-- (void)updateItemsScale:(float)a3
+- (void)updateItemsScale:(float)scale
 {
   v46 = *MEMORY[0x277D85DE8];
   v4 = 16;
@@ -1007,7 +1007,7 @@ uint64_t __41__SCNManipulator__updateActionWithEvent___block_invoke(uint64_t a1,
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:{16, *&a3, v6}];
+  v7 = [v5 countByEnumeratingWithState:&v40 objects:v45 count:{16, *&scale, v6}];
   if (v7)
   {
     v8 = v7;
@@ -1173,18 +1173,18 @@ double __35__SCNManipulator__saveOriginalData__block_invoke(uint64_t a1, void *a
   *(anon_188 + 1) = 0u;
 }
 
-- (BOOL)_applyWithEvent:(id *)a3
+- (BOOL)_applyWithEvent:(id *)event
 {
   v96 = *MEMORY[0x277D85DE8];
   action = self->_action;
   if (action <= 2)
   {
-    v4.i64[0] = *&a3->var4.x;
+    v4.i64[0] = *&event->var4.x;
     v8 = v4;
-    v8.i32[2] = LODWORD(a3->var4.z);
+    v8.i32[2] = LODWORD(event->var4.z);
     v4.i32[2] = v8.i32[2];
-    v5.i64[0] = *&a3->var5.x;
-    v5.i32[2] = LODWORD(a3->var5.z);
+    v5.i64[0] = *&event->var5.x;
+    v5.i32[2] = LODWORD(event->var5.z);
     v9 = vsubq_f32(v5, v4);
     LODWORD(v10) = HIDWORD(*&self->_worldMatrix.components[13]);
     v87 = *&self->_worldMatrix.components[13];
@@ -1204,10 +1204,10 @@ double __35__SCNManipulator__saveOriginalData__block_invoke(uint64_t a1, void *a
         [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] gridUnit];
         v16 = v15;
         memset(&v95, 255, 24);
-        v17 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] shouldSnapToAlign];
+        shouldSnapToAlign = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] shouldSnapToAlign];
         v20 = 0;
         v21 = 0;
-        if (v17)
+        if (shouldSnapToAlign)
         {
           *&v18 = v10;
           *&v19 = v11;
@@ -1326,10 +1326,10 @@ LABEL_75:
     [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] gridUnit];
     v38 = v37;
     memset(&v95, 255, 24);
-    v39 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] shouldSnapToAlign];
+    shouldSnapToAlign2 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] shouldSnapToAlign];
     v42 = 0;
     v43 = 0;
-    if (v39)
+    if (shouldSnapToAlign2)
     {
       *&v40 = v10;
       *&v41 = v11;
@@ -1443,7 +1443,7 @@ LABEL_76:
 
   if (action == 3)
   {
-    v49 = a3->var2.y - self->_originalMouseLocation.y;
+    v49 = event->var2.y - self->_originalMouseLocation.y;
     v50 = (*self->_anon_130 * v49) * 0.01;
     v94 = 0uLL;
     selectedAxis = self->_selectedAxis;
@@ -1481,10 +1481,10 @@ LABEL_76:
       v93 = 0u;
       v90 = 0u;
       v91 = 0u;
-      v64 = [(SCNManipulator *)self authoringEnvironment];
-      if (v64)
+      authoringEnvironment = [(SCNManipulator *)self authoringEnvironment];
+      if (authoringEnvironment)
       {
-        [(SCNAuthoringEnvironment *)v64 viewMatrix];
+        [(SCNAuthoringEnvironment *)authoringEnvironment viewMatrix];
       }
 
       else
@@ -1518,7 +1518,7 @@ LABEL_76:
 
   if (action == 4)
   {
-    v27 = a3->var2.y - self->_originalMouseLocation.y;
+    v27 = event->var2.y - self->_originalMouseLocation.y;
     v28 = v27 <= 0.0;
     v29 = v27;
     v30 = 1.0 / ((100.0 - v29) / 100.0);
@@ -1563,32 +1563,32 @@ LABEL_17:
   [(NSMutableIndexSet *)snapZIndexes removeAllIndexes];
 }
 
-- (BOOL)mouseDragged:(id *)a3
+- (BOOL)mouseDragged:(id *)dragged
 {
   if (!self->_action)
   {
     return 0;
   }
 
-  v5 = *&a3->var4.x;
-  var3 = a3->var3;
+  v5 = *&dragged->var4.x;
+  var3 = dragged->var3;
   v13 = v5;
-  v14 = *&a3->var5.y;
-  var2 = a3->var2;
-  v10 = *&a3->var0;
+  v14 = *&dragged->var5.y;
+  var2 = dragged->var2;
+  v10 = *&dragged->var0;
   v11 = var2;
   [(SCNManipulator *)self _updateCloneStateWithEvent:&v10];
-  v7 = *&a3->var4.x;
-  var3 = a3->var3;
+  v7 = *&dragged->var4.x;
+  var3 = dragged->var3;
   v13 = v7;
-  v14 = *&a3->var5.y;
-  v8 = a3->var2;
-  v10 = *&a3->var0;
+  v14 = *&dragged->var5.y;
+  v8 = dragged->var2;
+  v10 = *&dragged->var0;
   v11 = v8;
   return [(SCNManipulator *)self _applyWithEvent:&v10];
 }
 
-- (BOOL)mouseDown:(id *)a3
+- (BOOL)mouseDown:(id *)down
 {
   v77 = *MEMORY[0x277D85DE8];
   if ([(SCNManipulator *)self readonly])
@@ -1596,12 +1596,12 @@ LABEL_17:
     return 0;
   }
 
-  v5 = *&a3->var4.x;
-  var3 = a3->var3;
+  v5 = *&down->var4.x;
+  var3 = down->var3;
   v75 = v5;
-  v76 = *&a3->var5.y;
-  var2 = a3->var2;
-  v72 = *&a3->var0;
+  v76 = *&down->var5.y;
+  var2 = down->var2;
+  v72 = *&down->var0;
   v73 = var2;
   [(SCNManipulator *)self _updateActionWithEvent:&v72];
   if (!self->_action)
@@ -1625,7 +1625,7 @@ LABEL_17:
   v12 = *&self->_worldMatrix.components[13];
   *&self->_worldInitialMatrix.components[9] = *&self->_worldMatrix.components[9];
   *&self->_worldInitialMatrix.components[13] = v12;
-  v13 = a3->var2;
+  v13 = down->var2;
   self->_originalMouseLocation = v13;
   action = self->_action;
   if (action > 2)
@@ -1671,10 +1671,10 @@ LABEL_11:
     *v58.f32 = vrsqrte_f32(v59);
     *v58.f32 = vmul_f32(*v58.f32, vrsqrts_f32(v59, vmul_f32(*v58.f32, *v58.f32)));
     v60 = vmulq_n_f32(v57, vmul_f32(*v58.f32, vrsqrts_f32(v59, vmul_f32(*v58.f32, *v58.f32))).f32[0]);
-    v58.i64[0] = *&a3->var5.x;
-    v58.i32[2] = LODWORD(a3->var5.z);
-    v61.i64[0] = *&a3->var4.x;
-    v61.i32[2] = LODWORD(a3->var4.z);
+    v58.i64[0] = *&down->var5.x;
+    v58.i32[2] = LODWORD(down->var5.z);
+    v61.i64[0] = *&down->var4.x;
+    v61.i32[2] = LODWORD(down->var4.z);
     v62 = vmulq_f32(v60, vsubq_f32(v58, v61));
     v58.f32[0] = vaddv_f32(*v62.f32);
     v63 = -1.0;
@@ -1729,10 +1729,10 @@ LABEL_11:
         *&self->_anon_130[16] = v30;
         *&self->_anon_130[32] = v64;
         *self->_anon_130 = v64;
-        v29.i64[0] = *&a3->var4.x;
-        v29.i32[2] = LODWORD(a3->var4.z);
-        v31.i64[0] = *&a3->var5.x;
-        v31.i32[2] = LODWORD(a3->var5.z);
+        v29.i64[0] = *&down->var4.x;
+        v29.i32[2] = LODWORD(down->var4.z);
+        v31.i64[0] = *&down->var5.x;
+        v31.i32[2] = LODWORD(down->var5.z);
         v32 = vsubq_f32(v31, v29);
         v33 = vmulq_f32(v30, v32);
         v34 = vmulq_f32(v30, vsubq_f32(v64, v29));
@@ -1783,10 +1783,10 @@ LABEL_11:
     v50 = vmulq_n_f32(v47, vmul_f32(*v48.f32, vrsqrts_f32(v49, vmul_f32(*v48.f32, *v48.f32))).f32[0]);
     *self->_anon_130 = v67;
     *&self->_anon_130[16] = v50;
-    v50.i64[0] = *&a3->var4.x;
-    v50.i32[2] = LODWORD(a3->var4.z);
-    v48.i64[0] = *&a3->var5.x;
-    v48.i32[2] = LODWORD(a3->var5.z);
+    v50.i64[0] = *&down->var4.x;
+    v50.i32[2] = LODWORD(down->var4.z);
+    v48.i64[0] = *&down->var5.x;
+    v48.i32[2] = LODWORD(down->var5.z);
     *v51.i64 = __resolveAxisMove(self, v50, vsubq_f32(v48, v50));
     *&self->_anon_130[32] = vsubq_f32(v67, v51);
   }
@@ -1794,7 +1794,7 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)mouseUp:(id *)a3
+- (BOOL)mouseUp:(id *)up
 {
   if ([(SCNManipulator *)self readonly])
   {
@@ -1805,20 +1805,20 @@ LABEL_11:
   v5 = self->_action != 0;
   if (self->_action)
   {
-    v6 = *&a3->var4.x;
-    var3 = a3->var3;
+    v6 = *&up->var4.x;
+    var3 = up->var3;
     v18 = v6;
-    v19 = *&a3->var5.y;
-    var2 = a3->var2;
-    v15 = *&a3->var0;
+    v19 = *&up->var5.y;
+    var2 = up->var2;
+    v15 = *&up->var0;
     v16 = var2;
     [(SCNManipulator *)self _updateCloneStateWithEvent:&v15];
-    v8 = *&a3->var4.x;
-    var3 = a3->var3;
+    v8 = *&up->var4.x;
+    var3 = up->var3;
     v18 = v8;
-    v19 = *&a3->var5.y;
-    v9 = a3->var2;
-    v15 = *&a3->var0;
+    v19 = *&up->var5.y;
+    v9 = up->var2;
+    v15 = *&up->var0;
     v16 = v9;
     [(SCNManipulator *)self _applyWithEvent:&v15];
     if (self->_cloning)
@@ -1828,10 +1828,10 @@ LABEL_11:
 
     else
     {
-      v10 = [(SCNAuthoringEnvironment *)self->_authoringEnvironment delegate];
-      if (v10)
+      delegate = [(SCNAuthoringEnvironment *)self->_authoringEnvironment delegate];
+      if (delegate)
       {
-        v11 = v10;
+        v11 = delegate;
         if (objc_opt_respondsToSelector())
         {
           [(SCNAuthoringEnvironmentDelegate *)v11 authoringEnvironment:self->_authoringEnvironment didMoveItems:[(NSOrderedSet *)self->_targets array] fromTransform:*&self->_anon_188[16]];
@@ -1848,12 +1848,12 @@ LABEL_11:
   *&self->_anon_130[32] = 0u;
   *&self->_anon_130[48] = 0u;
   self->_isMouseDown = 0;
-  v12 = *&a3->var4.x;
-  var3 = a3->var3;
+  v12 = *&up->var4.x;
+  var3 = up->var3;
   v18 = v12;
-  v19 = *&a3->var5.y;
-  v13 = a3->var2;
-  v15 = *&a3->var0;
+  v19 = *&up->var5.y;
+  v13 = up->var2;
+  v15 = *&up->var0;
   v16 = v13;
   [(SCNManipulator *)self mouseMoved:&v15];
   return v5;
@@ -1861,41 +1861,41 @@ LABEL_11:
 
 - (id)scene
 {
-  v2 = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] sceneRenderer];
+  sceneRenderer = [(SCNAuthoringEnvironment *)[(SCNManipulator *)self authoringEnvironment] sceneRenderer];
 
-  return [(SCNSceneRenderer *)v2 scene];
+  return [(SCNSceneRenderer *)sceneRenderer scene];
 }
 
 - (void)removeClonesFromScene
 {
   [(NSOrderedSet *)self->_cloneSet firstObject];
   v3 = objc_opt_class();
-  v4 = [(NSOrderedSet *)self->_cloneSet array];
+  array = [(NSOrderedSet *)self->_cloneSet array];
 
-  [v3 removeItemsFromScene:v4];
+  [v3 removeItemsFromScene:array];
 }
 
 - (void)addClonesToScene
 {
-  v3 = [(SCNManipulator *)self scene];
+  scene = [(SCNManipulator *)self scene];
   [(NSOrderedSet *)self->_cloneSet firstObject];
   v4 = objc_opt_class();
-  v5 = [(NSOrderedSet *)self->_cloneSet array];
+  array = [(NSOrderedSet *)self->_cloneSet array];
 
-  [v4 addItems:v5 toScene:v3];
+  [v4 addItems:array toScene:scene];
 }
 
 - (void)validateClones
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(SCNAuthoringEnvironment *)self->_authoringEnvironment delegate];
-  if (v3)
+  delegate = [(SCNAuthoringEnvironment *)self->_authoringEnvironment delegate];
+  if (delegate)
   {
-    v4 = v3;
+    v4 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(SCNManipulator *)self authoringEnvironment];
-      objc_sync_enter(v5);
+      authoringEnvironment = [(SCNManipulator *)self authoringEnvironment];
+      objc_sync_enter(authoringEnvironment);
       [(NSOrderedSet *)self->_cloneSet firstObject];
       [objc_opt_class() removeItemsFromScene:{-[NSOrderedSet array](self->_cloneSet, "array")}];
       v12 = 0u;
@@ -1925,7 +1925,7 @@ LABEL_11:
         while (v7);
       }
 
-      objc_sync_exit(v5);
+      objc_sync_exit(authoringEnvironment);
       [(SCNAuthoringEnvironmentDelegate *)v4 authoringEnvironment:self->_authoringEnvironment didCloneSelection:[(NSOrderedSet *)self->_cloneSet array]];
     }
   }
@@ -1934,8 +1934,8 @@ LABEL_11:
 - (id)setupClones
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
-  v4 = [(SCNManipulator *)self scene];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  scene = [(SCNManipulator *)self scene];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1956,14 +1956,14 @@ LABEL_11:
           objc_enumerationMutation(targets);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * v9) cloneForManipulators];
-        if (v10)
+        cloneForManipulators = [*(*(&v14 + 1) + 8 * v9) cloneForManipulators];
+        if (cloneForManipulators)
         {
-          v11 = v10;
+          v11 = cloneForManipulators;
           v12 = objc_opt_class();
           v18 = v11;
-          [v12 addItems:objc_msgSend(MEMORY[0x277CBEA60] toScene:{"arrayWithObjects:count:", &v18, 1), v4}];
-          [v3 addObject:v11];
+          [v12 addItems:objc_msgSend(MEMORY[0x277CBEA60] toScene:{"arrayWithObjects:count:", &v18, 1), scene}];
+          [orderedSet addObject:v11];
         }
 
         ++v9;
@@ -1976,18 +1976,18 @@ LABEL_11:
     while (v7);
   }
 
-  return v3;
+  return orderedSet;
 }
 
-- (id)snapGuideIndexesOnAxis:(unint64_t)a3
+- (id)snapGuideIndexesOnAxis:(unint64_t)axis
 {
   v3 = 608;
-  if (a3 == 2)
+  if (axis == 2)
   {
     v3 = 600;
   }
 
-  if (a3 == 1)
+  if (axis == 1)
   {
     v3 = 592;
   }
@@ -1995,35 +1995,35 @@ LABEL_11:
   return *(&self->super.isa + v3);
 }
 
-- (const)snapInfoAtIndex:(unint64_t)a3 axis:(unint64_t)a4
+- (const)snapInfoAtIndex:(unint64_t)index axis:(unint64_t)axis
 {
   v4 = 584;
-  if (a4 == 2)
+  if (axis == 2)
   {
     v4 = 576;
   }
 
-  if (a4 == 1)
+  if (axis == 1)
   {
     v4 = 568;
   }
 
-  return (*(&self->super.isa + v4) + 24 * a3);
+  return (*(&self->super.isa + v4) + 24 * index);
 }
 
-- (void)_prepareSnapToAlignData:(SCNManipulator *)self minOffset:(SEL)a2 maxOffset:(unsigned __int16)a3
+- (void)_prepareSnapToAlignData:(SCNManipulator *)self minOffset:(SEL)offset maxOffset:(unsigned __int16)maxOffset
 {
   v34 = v3;
   v35 = v4;
-  if ((a3 - 1) >= 3)
+  if ((maxOffset - 1) >= 3)
   {
-    NSLog(&cfstr_Preparesnaptoa.isa, a2);
+    NSLog(&cfstr_Preparesnaptoa.isa, offset);
   }
 
   else
   {
-    v5 = a3;
-    v7 = (&self->super.isa + ((a3 - 1) & 0x1FFF));
+    maxOffsetCopy = maxOffset;
+    v7 = (&self->super.isa + ((maxOffset - 1) & 0x1FFF));
     free(v7[71]);
     v7[71] = 0;
     if ([(NSOrderedSet *)self->_targets count])
@@ -2057,7 +2057,7 @@ LABEL_19:
           }
         }
 
-        v18 = [v17 nodeRef];
+        nodeRef = [v17 nodeRef];
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
@@ -2069,9 +2069,9 @@ LABEL_19:
 
         v36 = 0u;
         v37 = 0u;
-        if (C3DNodeGetLocalBoundingBox(v18, &v36))
+        if (C3DNodeGetLocalBoundingBox(nodeRef, &v36))
         {
-          WorldMatrix = C3DNodeGetWorldMatrix(v18);
+          WorldMatrix = C3DNodeGetWorldMatrix(nodeRef);
           v20 = WorldMatrix[1];
           v21 = WorldMatrix[2];
           v22 = vaddq_f32(WorldMatrix[3], vmlaq_laneq_f32(vmlaq_n_f32(vmulq_lane_f32(v20, *v36.f32, 1), *WorldMatrix, v36.f32[0]), v21, v36, 2));
@@ -2092,17 +2092,17 @@ LABEL_19:
         v36 = v22;
         v37 = v24;
         v25 = 3 * v12;
-        *(v7[71] + v25 + 1) = v18;
+        *(v7[71] + v25 + 1) = nodeRef;
         v26 = v12 + 1;
-        *(v7[71] + 3 * v12 + 4) = v18;
+        *(v7[71] + 3 * v12 + 4) = nodeRef;
         v27 = v12 + 2;
-        *(v7[71] + 3 * v12 + 7) = v18;
+        *(v7[71] + 3 * v12 + 7) = nodeRef;
         v28 = v12 + 3;
-        *(v7[71] + 3 * v12 + 10) = v18;
-        *(v7[71] + 3 * v12 + 13) = v18;
+        *(v7[71] + 3 * v12 + 10) = nodeRef;
+        *(v7[71] + 3 * v12 + 13) = nodeRef;
         v29 = v7[71];
         v29[2 * v25 + 4] = 0;
-        switch(v5)
+        switch(maxOffsetCopy)
         {
           case 3:
             v29[6 * v12] = v41.i32[2];
@@ -2157,8 +2157,8 @@ LABEL_18:
   v52 = 0u;
   v53 = 0u;
   v36 = 0;
-  v3 = [(SCNManipulator *)self targets];
-  v4 = [(NSOrderedSet *)v3 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  targets = [(SCNManipulator *)self targets];
+  v4 = [(NSOrderedSet *)targets countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2179,24 +2179,24 @@ LABEL_18:
         v41 = v11;
         if (*v51 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(targets);
         }
 
         v12 = *(*(&v50 + 1) + 8 * v10);
         if ([v12 node] && (v49 = 0.0, v48 = 0, v47 = 0, v46 = 0, objc_msgSend(objc_msgSend(v12, "node"), "getBoundingBoxMin:max:", &v48, &v46)))
         {
-          v13 = [v12 node];
+          node = [v12 node];
           LODWORD(v15) = HIDWORD(v48);
           LODWORD(v14) = v48;
           *&v16 = v49;
-          [v13 convertPosition:0 toNode:{v14, v15, v16}];
+          [node convertPosition:0 toNode:{v14, v15, v16}];
           v48 = __PAIR64__(v18, v17);
           v49 = v19;
-          v20 = [v12 node];
+          node2 = [v12 node];
           LODWORD(v22) = HIDWORD(v46);
           LODWORD(v21) = v46;
           LODWORD(v23) = v47;
-          [v20 convertPosition:0 toNode:{v21, v22, v23}];
+          [node2 convertPosition:0 toNode:{v21, v22, v23}];
           v27 = v41.f32[2];
           if (v49 >= v26)
           {
@@ -2246,7 +2246,7 @@ LABEL_18:
 
       while (v5 != v10);
       v40 = v11;
-      v5 = [(NSOrderedSet *)v3 countByEnumeratingWithState:&v50 objects:v54 count:16];
+      v5 = [(NSOrderedSet *)targets countByEnumeratingWithState:&v50 objects:v54 count:16];
     }
 
     while (v5);
@@ -2308,13 +2308,13 @@ LABEL_18:
   }
 }
 
-- (__n128)_snapPositionToAlign:(float)a3 original:(float)a4 unit:(float)a5 axisMove:(double)a6 rayStart:(__n128)a7 rayDir:(__n128)a8 didSnap:(uint64_t)a9 snapIndexes:(int)a10
+- (__n128)_snapPositionToAlign:(float)align original:(float)original unit:(float)unit axisMove:(double)move rayStart:(__n128)start rayDir:(__n128)dir didSnap:(uint64_t)snap snapIndexes:(int)self0
 {
-  v36 = a8;
-  v37 = a7;
-  [a1 prepareSnapToAlignDataIfNeeded];
+  dirCopy = dir;
+  startCopy = start;
+  [self prepareSnapToAlignDataIfNeeded];
   *a11 = 0;
-  if (!a1[70] || !a1[71])
+  if (!self[70] || !self[71])
   {
     return a2;
   }
@@ -2322,9 +2322,9 @@ LABEL_18:
   v34 = 0u;
   v35 = 0u;
   v33 = 0;
-  C3DRay3Make(&v34, &v37, &v36);
+  C3DRay3Make(&v34, &startCopy, &dirCopy);
   v20 = a2;
-  if (vabds_f32(a2.n128_f32[0], a3) <= 0.00001)
+  if (vabds_f32(a2.n128_f32[0], align) <= 0.00001)
   {
     v23 = 0;
 LABEL_8:
@@ -2332,7 +2332,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v21 = _snapPositionToAlign(a1[71], a1[70], &v33, a2.n128_f32[0], a6);
+  v21 = _snapPositionToAlign(self[71], self[70], &v33, a2.n128_f32[0], move);
   *a12 = v21;
   if (v21 == -1)
   {
@@ -2346,7 +2346,7 @@ LABEL_8:
   *(v22.i64 + 4) = *(a2.n128_i64 + 4);
   v23 = 1;
 LABEL_9:
-  if (vabds_f32(v20.n128_f32[1], a4) <= 0.00001)
+  if (vabds_f32(v20.n128_f32[1], original) <= 0.00001)
   {
     v25 = 0;
   }
@@ -2354,7 +2354,7 @@ LABEL_9:
   else
   {
     v30 = v22;
-    v24 = _snapPositionToAlign(a1[72], a1[70], &v33, v20.n128_f32[1], a6);
+    v24 = _snapPositionToAlign(self[72], self[70], &v33, v20.n128_f32[1], move);
     a12[1] = v24;
     if (v24 == -1)
     {
@@ -2372,7 +2372,7 @@ LABEL_9:
     }
   }
 
-  if (vabds_f32(v20.n128_f32[2], a5) <= 0.00001)
+  if (vabds_f32(v20.n128_f32[2], unit) <= 0.00001)
   {
     v27 = 0;
   }
@@ -2380,7 +2380,7 @@ LABEL_9:
   else
   {
     v31 = v22;
-    v26 = _snapPositionToAlign(a1[73], a1[70], &v33, v20.n128_f32[2], a6);
+    v26 = _snapPositionToAlign(self[73], self[70], &v33, v20.n128_f32[2], move);
     a12[2] = v26;
     if (v26 == -1)
     {
@@ -2399,7 +2399,7 @@ LABEL_9:
   }
 
   *a11 = v23 | v25 | v27;
-  if (v23 | v25 | v27 && a10)
+  if (v23 | v25 | v27 && indexes)
   {
     _adjustSnapForAxisMove(v23, v25, v27, a12, v22, v20, v34, v35);
     return v28;

@@ -6,11 +6,11 @@
 - (BOOL)_parseNewline;
 - (BOOL)_parseRecord;
 - (BOOL)_parseUnescapedField;
-- (CHCSVParser)initWithContentsOfCSVFile:(id)a3;
-- (CHCSVParser)initWithContentsOfCSVFile:(id)a3 delimiter:(unsigned __int16)a4;
-- (CHCSVParser)initWithContentsOfDelimitedURL:(id)a3 delimiter:(unsigned __int16)a4;
-- (CHCSVParser)initWithDelimitedString:(id)a3 delimiter:(unsigned __int16)a4;
-- (CHCSVParser)initWithInputStream:(id)a3 usedEncoding:(unint64_t *)a4 delimiter:(unsigned __int16)a5;
+- (CHCSVParser)initWithContentsOfCSVFile:(id)file;
+- (CHCSVParser)initWithContentsOfCSVFile:(id)file delimiter:(unsigned __int16)delimiter;
+- (CHCSVParser)initWithContentsOfDelimitedURL:(id)l delimiter:(unsigned __int16)delimiter;
+- (CHCSVParser)initWithDelimitedString:(id)string delimiter:(unsigned __int16)delimiter;
+- (CHCSVParser)initWithInputStream:(id)stream usedEncoding:(unint64_t *)encoding delimiter:(unsigned __int16)delimiter;
 - (unsigned)_peekCharacter;
 - (unsigned)_peekPeekCharacter;
 - (void)_beginComment;
@@ -27,40 +27,40 @@
 - (void)_sniffEncoding;
 - (void)dealloc;
 - (void)parse;
-- (void)setRecognizesBackslashesAsEscapes:(BOOL)a3;
-- (void)setRecognizesComments:(BOOL)a3;
-- (void)setRecognizesLeadingEqualSign:(BOOL)a3;
+- (void)setRecognizesBackslashesAsEscapes:(BOOL)escapes;
+- (void)setRecognizesComments:(BOOL)comments;
+- (void)setRecognizesLeadingEqualSign:(BOOL)sign;
 @end
 
 @implementation CHCSVParser
 
-- (CHCSVParser)initWithDelimitedString:(id)a3 delimiter:(unsigned __int16)a4
+- (CHCSVParser)initWithDelimitedString:(id)string delimiter:(unsigned __int16)delimiter
 {
-  v4 = a4;
+  delimiterCopy = delimiter;
   v6 = MEMORY[0x1E695DF48];
-  v7 = [a3 dataUsingEncoding:4];
+  v7 = [string dataUsingEncoding:4];
   v8 = [v6 inputStreamWithData:v7];
 
-  v9 = [(CHCSVParser *)self initWithInputStream:v8 usedEncoding:0 delimiter:v4];
+  v9 = [(CHCSVParser *)self initWithInputStream:v8 usedEncoding:0 delimiter:delimiterCopy];
   return v9;
 }
 
-- (CHCSVParser)initWithContentsOfDelimitedURL:(id)a3 delimiter:(unsigned __int16)a4
+- (CHCSVParser)initWithContentsOfDelimitedURL:(id)l delimiter:(unsigned __int16)delimiter
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DF48] inputStreamWithURL:a3];
-  v7 = [(CHCSVParser *)self initWithInputStream:v6 usedEncoding:0 delimiter:v4];
+  delimiterCopy = delimiter;
+  v6 = [MEMORY[0x1E695DF48] inputStreamWithURL:l];
+  v7 = [(CHCSVParser *)self initWithInputStream:v6 usedEncoding:0 delimiter:delimiterCopy];
 
   return v7;
 }
 
-- (CHCSVParser)initWithInputStream:(id)a3 usedEncoding:(unint64_t *)a4 delimiter:(unsigned __int16)a5
+- (CHCSVParser)initWithInputStream:(id)stream usedEncoding:(unint64_t *)encoding delimiter:(unsigned __int16)delimiter
 {
-  v5 = a5;
-  v9 = a3;
-  if (v9)
+  delimiterCopy = delimiter;
+  streamCopy = stream;
+  if (streamCopy)
   {
-    if (v5)
+    if (delimiterCopy)
     {
       goto LABEL_3;
     }
@@ -69,7 +69,7 @@
   else
   {
     [CHCSVParser initWithInputStream:usedEncoding:delimiter:];
-    if (v5)
+    if (delimiterCopy)
     {
       goto LABEL_3;
     }
@@ -77,15 +77,15 @@
 
   [CHCSVParser initWithInputStream:usedEncoding:delimiter:];
 LABEL_3:
-  v10 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v11 = [v10 characterIsMember:v5];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v11 = [newlineCharacterSet characterIsMember:delimiterCopy];
 
   if (v11)
   {
     [CHCSVParser initWithInputStream:usedEncoding:delimiter:];
   }
 
-  if (v5 == 34)
+  if (delimiterCopy == 34)
   {
     [CHCSVParser initWithInputStream:usedEncoding:delimiter:];
   }
@@ -96,7 +96,7 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_stream, a3);
+    objc_storeStrong(&v12->_stream, stream);
     [(NSInputStream *)v13->_stream open];
     v14 = objc_alloc_init(MEMORY[0x1E695DF88]);
     stringBuffer = v13->_stringBuffer;
@@ -106,7 +106,7 @@ LABEL_3:
     string = v13->_string;
     v13->_string = v16;
 
-    v13->_delimiter = v5;
+    v13->_delimiter = delimiterCopy;
     v13->_nextIndex = 0;
     *&v13->_recognizesBackslashesAsEscapes = 0;
     v13->_sanitizesFields = 0;
@@ -116,26 +116,26 @@ LABEL_3:
 
     v13->_trimsWhitespace = 0;
     v13->_recognizesLeadingEqualSign = 0;
-    v20 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v21 = [v20 mutableCopy];
+    newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v21 = [newlineCharacterSet2 mutableCopy];
 
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c%C", 34, v13->_delimiter];
     [v21 addCharactersInString:v22];
-    v23 = [v21 invertedSet];
+    invertedSet = [v21 invertedSet];
     validFieldCharacters = v13->_validFieldCharacters;
-    v13->_validFieldCharacters = v23;
+    v13->_validFieldCharacters = invertedSet;
 
-    if (a4)
+    if (encoding)
     {
-      if (*a4)
+      if (*encoding)
       {
-        v13->_streamEncoding = *a4;
+        v13->_streamEncoding = *encoding;
       }
 
       else
       {
         [(CHCSVParser *)v13 _sniffEncoding];
-        *a4 = v13->_streamEncoding;
+        *encoding = v13->_streamEncoding;
       }
     }
 
@@ -156,28 +156,28 @@ LABEL_3:
   [(CHCSVParser *)&v3 dealloc];
 }
 
-- (void)setRecognizesBackslashesAsEscapes:(BOOL)a3
+- (void)setRecognizesBackslashesAsEscapes:(BOOL)escapes
 {
-  self->_recognizesBackslashesAsEscapes = a3;
-  if (self->_delimiter == 92 && a3)
+  self->_recognizesBackslashesAsEscapes = escapes;
+  if (self->_delimiter == 92 && escapes)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot recognize backslashes as escapes when using '\\' as the delimiter"];
   }
 }
 
-- (void)setRecognizesComments:(BOOL)a3
+- (void)setRecognizesComments:(BOOL)comments
 {
-  self->_recognizesComments = a3;
-  if (self->_delimiter == 35 && a3)
+  self->_recognizesComments = comments;
+  if (self->_delimiter == 35 && comments)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot recognize comments when using '#' as the delimiter"];
   }
 }
 
-- (void)setRecognizesLeadingEqualSign:(BOOL)a3
+- (void)setRecognizesLeadingEqualSign:(BOOL)sign
 {
-  self->_recognizesLeadingEqualSign = a3;
-  if (self->_delimiter == 61 && a3)
+  self->_recognizesLeadingEqualSign = sign;
+  if (self->_delimiter == 61 && sign)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Cannot recognize leading equal sign when using '=' as the delimiter"];
   }
@@ -382,21 +382,21 @@ LABEL_13:
     objc_autoreleasePoolPop(v3);
   }
 
-  v4 = [(CHCSVParser *)i _parseNewline];
-  if (v4)
+  _parseNewline = [(CHCSVParser *)i _parseNewline];
+  if (_parseNewline)
   {
     if (i->_error)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(_parseNewline) = 0;
     }
 
     else
     {
-      LOBYTE(v4) = [(CHCSVParser *)i _peekCharacter]!= 0;
+      LOBYTE(_parseNewline) = [(CHCSVParser *)i _peekCharacter]!= 0;
     }
   }
 
-  return v4;
+  return _parseNewline;
 }
 
 - (BOOL)_parseNewline
@@ -406,9 +406,9 @@ LABEL_13:
     return 0;
   }
 
-  v4 = [(CHCSVParser *)self _peekCharacter];
-  v5 = [(CHCSVParser *)self _peekPeekCharacter];
-  if (v4 == 13 && v5 == 10)
+  _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+  _peekPeekCharacter = [(CHCSVParser *)self _peekPeekCharacter];
+  if (_peekCharacter == 13 && _peekPeekCharacter == 10)
   {
     [(CHCSVParser *)self _advance];
 LABEL_7:
@@ -416,8 +416,8 @@ LABEL_7:
     return 1;
   }
 
-  v6 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v7 = [v6 characterIsMember:v4];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v7 = [newlineCharacterSet characterIsMember:_peekCharacter];
 
   if (v7)
   {
@@ -430,12 +430,12 @@ LABEL_7:
 - (BOOL)_parseComment
 {
   [(CHCSVParser *)self _advance];
-  v3 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
   [(CHCSVParser *)self _beginComment];
   while (1)
   {
-    v4 = [(CHCSVParser *)self _peekCharacter];
-    if (v4 == 92 && self->_recognizesBackslashesAsEscapes)
+    _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+    if (_peekCharacter == 92 && self->_recognizesBackslashesAsEscapes)
     {
       while (1)
       {
@@ -443,8 +443,8 @@ LABEL_7:
       }
     }
 
-    v5 = [v3 characterIsMember:v4];
-    if (!v4 || (v5 & 1) != 0)
+    v5 = [newlineCharacterSet characterIsMember:_peekCharacter];
+    if (!_peekCharacter || (v5 & 1) != 0)
     {
       break;
     }
@@ -453,17 +453,17 @@ LABEL_7:
   }
 
   [(CHCSVParser *)self _endComment];
-  v6 = [(CHCSVParser *)self _parseNewline];
+  _parseNewline = [(CHCSVParser *)self _parseNewline];
 
-  return v6;
+  return _parseNewline;
 }
 
 - (void)_parseFieldWhitespace
 {
-  v3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   while ([(CHCSVParser *)self _peekCharacter])
   {
-    if (![v3 characterIsMember:{-[CHCSVParser _peekCharacter](self, "_peekCharacter")}] || -[CHCSVParser _peekCharacter](self, "_peekCharacter") == self->_delimiter)
+    if (![whitespaceCharacterSet characterIsMember:{-[CHCSVParser _peekCharacter](self, "_peekCharacter")}] || -[CHCSVParser _peekCharacter](self, "_peekCharacter") == self->_delimiter)
     {
       break;
     }
@@ -490,13 +490,13 @@ LABEL_7:
   {
     if (!self->_recognizesLeadingEqualSign || [(CHCSVParser *)self _peekCharacter]!= 61 || [(CHCSVParser *)self _peekPeekCharacter]!= 34)
     {
-      v4 = [(CHCSVParser *)self _parseUnescapedField];
-      v5 = v4;
+      _parseUnescapedField = [(CHCSVParser *)self _parseUnescapedField];
+      v5 = _parseUnescapedField;
       if (self->_trimsWhitespace)
       {
         sanitizedField = self->_sanitizedField;
-        v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v8 = [(NSMutableString *)sanitizedField stringByTrimmingCharactersInSet:v7];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v8 = [(NSMutableString *)sanitizedField stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         [(NSMutableString *)self->_sanitizedField setString:v8];
         if (v5)
@@ -505,7 +505,7 @@ LABEL_7:
         }
       }
 
-      else if (v4)
+      else if (_parseUnescapedField)
       {
         goto LABEL_5;
       }
@@ -530,20 +530,20 @@ LABEL_5:
 - (BOOL)_parseEscapedField
 {
   [(CHCSVParser *)self _advance];
-  v3 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v4 = [(CHCSVParser *)self _peekCharacter];
-  if (v4)
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+  if (_peekCharacter)
   {
     v5 = 0;
     while (1)
     {
-      v6 = v4;
+      v6 = _peekCharacter;
       if (v5)
       {
         goto LABEL_10;
       }
 
-      if (v4 != 92 || !self->_recognizesBackslashesAsEscapes)
+      if (_peekCharacter != 92 || !self->_recognizesBackslashesAsEscapes)
       {
         break;
       }
@@ -551,14 +551,14 @@ LABEL_5:
       [(CHCSVParser *)self _advance];
       v5 = 1;
 LABEL_12:
-      v4 = [(CHCSVParser *)self _peekCharacter];
-      if (!v4)
+      _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+      if (!_peekCharacter)
       {
         goto LABEL_17;
       }
     }
 
-    if (-[NSCharacterSet characterIsMember:](self->_validFieldCharacters, "characterIsMember:", v4) || ([v3 characterIsMember:v6] & 1) != 0 || v6 == self->_delimiter)
+    if (-[NSCharacterSet characterIsMember:](self->_validFieldCharacters, "characterIsMember:", _peekCharacter) || ([newlineCharacterSet characterIsMember:v6] & 1) != 0 || v6 == self->_delimiter)
     {
 LABEL_10:
       [(NSMutableString *)self->_sanitizedField appendFormat:@"%C", v6];
@@ -581,31 +581,31 @@ LABEL_10:
   }
 
 LABEL_17:
-  v7 = [(CHCSVParser *)self _peekCharacter];
-  if (v7 == 34)
+  _peekCharacter2 = [(CHCSVParser *)self _peekCharacter];
+  if (_peekCharacter2 == 34)
   {
     [(CHCSVParser *)self _advance];
   }
 
-  return v7 == 34;
+  return _peekCharacter2 == 34;
 }
 
 - (BOOL)_parseUnescapedField
 {
-  v3 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v4 = [(CHCSVParser *)self _peekCharacter];
-  if (v4)
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+  if (_peekCharacter)
   {
     v5 = 0;
     while (1)
     {
-      v6 = v4;
+      v6 = _peekCharacter;
       if (v5)
       {
         goto LABEL_9;
       }
 
-      if (v4 != 92 || !self->_recognizesBackslashesAsEscapes)
+      if (_peekCharacter != 92 || !self->_recognizesBackslashesAsEscapes)
       {
         break;
       }
@@ -613,14 +613,14 @@ LABEL_17:
       [(CHCSVParser *)self _advance];
       v5 = 1;
 LABEL_10:
-      v4 = [(CHCSVParser *)self _peekCharacter];
-      if (!v4)
+      _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+      if (!_peekCharacter)
       {
         goto LABEL_11;
       }
     }
 
-    if (([v3 characterIsMember:v4] & 1) != 0 || v6 == self->_delimiter)
+    if (([newlineCharacterSet characterIsMember:_peekCharacter] & 1) != 0 || v6 == self->_delimiter)
     {
       goto LABEL_11;
     }
@@ -640,18 +640,18 @@ LABEL_11:
 - (BOOL)_parseDelimiter
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CHCSVParser *)self _peekCharacter];
-  v4 = v3;
+  _peekCharacter = [(CHCSVParser *)self _peekCharacter];
+  v4 = _peekCharacter;
   delimiter = self->_delimiter;
-  if (v3 == delimiter)
+  if (_peekCharacter == delimiter)
   {
     [(CHCSVParser *)self _advance];
   }
 
-  else if (v3)
+  else if (_peekCharacter)
   {
-    v6 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v7 = [v6 characterIsMember:v4];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v7 = [newlineCharacterSet characterIsMember:v4];
 
     if ((v7 & 1) == 0)
     {
@@ -740,8 +740,8 @@ LABEL_11:
       v7 = [(NSMutableString *)self->_string substringWithRange:?];
       if (self->_trimsWhitespace)
       {
-        v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v5 = [v7 stringByTrimmingCharactersInSet:v4];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v5 = [v7 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v7 = v5;
       }
@@ -794,19 +794,19 @@ LABEL_11:
   }
 }
 
-- (CHCSVParser)initWithContentsOfCSVFile:(id)a3
+- (CHCSVParser)initWithContentsOfCSVFile:(id)file
 {
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
   v5 = [(CHCSVParser *)self initWithContentsOfCSVURL:v4];
 
   return v5;
 }
 
-- (CHCSVParser)initWithContentsOfCSVFile:(id)a3 delimiter:(unsigned __int16)a4
+- (CHCSVParser)initWithContentsOfCSVFile:(id)file delimiter:(unsigned __int16)delimiter
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
-  v7 = [(CHCSVParser *)self initWithContentsOfDelimitedURL:v6 delimiter:v4];
+  delimiterCopy = delimiter;
+  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
+  v7 = [(CHCSVParser *)self initWithContentsOfDelimitedURL:v6 delimiter:delimiterCopy];
 
   return v7;
 }

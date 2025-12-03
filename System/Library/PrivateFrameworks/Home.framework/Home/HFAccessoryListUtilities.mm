@@ -1,10 +1,10 @@
 @interface HFAccessoryListUtilities
 + (NSArray)sortedAccessoryTypeGroups;
-+ (id)accessoryRepresentableItemForAccessoryRepresentable:(id)a3 valueSource:(id)a4;
-+ (id)accessoryRepresentableObjectsFromAccessoryLikeObjects:(id)a3 objectLevel:(unint64_t)a4 accessoryTypeGroups:(id)a5;
-+ (id)createAccessoryCategorySectionsWithItems:(id)a3 inHome:(id)a4 sectionIdentifierBlock:(id)a5;
-+ (id)createRoomSectionsWithItems:(id)a3 inHome:(id)a4 sectionIdentifierBlock:(id)a5;
-+ (id)uniqueAccessoryRepresentablesIn:(id)a3;
++ (id)accessoryRepresentableItemForAccessoryRepresentable:(id)representable valueSource:(id)source;
++ (id)accessoryRepresentableObjectsFromAccessoryLikeObjects:(id)objects objectLevel:(unint64_t)level accessoryTypeGroups:(id)groups;
++ (id)createAccessoryCategorySectionsWithItems:(id)items inHome:(id)home sectionIdentifierBlock:(id)block;
++ (id)createRoomSectionsWithItems:(id)items inHome:(id)home sectionIdentifierBlock:(id)block;
++ (id)uniqueAccessoryRepresentablesIn:(id)in;
 - (HFAccessoryListUtilities)init;
 @end
 
@@ -17,19 +17,19 @@
   return [(HFAccessoryListUtilities *)&v3 init];
 }
 
-+ (id)accessoryRepresentableObjectsFromAccessoryLikeObjects:(id)a3 objectLevel:(unint64_t)a4 accessoryTypeGroups:(id)a5
++ (id)accessoryRepresentableObjectsFromAccessoryLikeObjects:(id)objects objectLevel:(unint64_t)level accessoryTypeGroups:(id)groups
 {
   sub_20D9D7510(0, &qword_280E01F60, off_277DEF2B8);
   sub_20DA1A7C0();
   v7 = sub_20DD651E4();
-  if (a5)
+  if (groups)
   {
     sub_20D9D7510(0, &unk_280E020A0, off_277DEF390);
-    a5 = sub_20DD64FD4();
+    groups = sub_20DD64FD4();
   }
 
   swift_getObjCClassMetadata();
-  static HFAccessoryListUtilities.accessoryRepresentableObjects(from:objectLevel:accessoryTypeGroups:)(v7, a4, a5);
+  static HFAccessoryListUtilities.accessoryRepresentableObjects(from:objectLevel:accessoryTypeGroups:)(v7, level, groups);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C843D48, &qword_20DD94240);
   v8 = sub_20DD64FB4();
@@ -37,7 +37,7 @@
   return v8;
 }
 
-+ (id)uniqueAccessoryRepresentablesIn:(id)a3
++ (id)uniqueAccessoryRepresentablesIn:(id)in
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C843D48, &qword_20DD94240);
   v3 = sub_20DD64FD4();
@@ -48,7 +48,7 @@
   return v4;
 }
 
-+ (id)accessoryRepresentableItemForAccessoryRepresentable:(id)a3 valueSource:(id)a4
++ (id)accessoryRepresentableItemForAccessoryRepresentable:(id)representable valueSource:(id)source
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
@@ -61,7 +61,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [swift_getObjCClassFromMetadata() itemWithAccessoryRepresentableObject:a3 valueSource:a4];
+  v6 = [swift_getObjCClassFromMetadata() itemWithAccessoryRepresentableObject:representable valueSource:source];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   if (v6)
@@ -83,15 +83,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)createRoomSectionsWithItems:(id)a3 inHome:(id)a4 sectionIdentifierBlock:(id)a5
++ (id)createRoomSectionsWithItems:(id)items inHome:(id)home sectionIdentifierBlock:(id)block
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(block);
   sub_20D9D7510(0, &qword_280E01F10, off_277DEFBE0);
   v7 = sub_20DD64FD4();
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v6);
-  v9 = a4;
-  sub_20DA18984(v7, v9, ObjCClassMetadata, v6);
+  homeCopy = home;
+  sub_20DA18984(v7, homeCopy, ObjCClassMetadata, v6);
   _Block_release(v6);
   _Block_release(v6);
 
@@ -101,14 +101,14 @@ LABEL_8:
   return v10;
 }
 
-+ (id)createAccessoryCategorySectionsWithItems:(id)a3 inHome:(id)a4 sectionIdentifierBlock:(id)a5
++ (id)createAccessoryCategorySectionsWithItems:(id)items inHome:(id)home sectionIdentifierBlock:(id)block
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(block);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C844188, &qword_20DD949C8);
   v7 = sub_20DD64FD4();
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v6);
-  v9 = a4;
+  homeCopy = home;
   sub_20DA19F94(v7, ObjCClassMetadata, v6);
   _Block_release(v6);
   _Block_release(v6);

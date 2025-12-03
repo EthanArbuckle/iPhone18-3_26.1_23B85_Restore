@@ -3,9 +3,9 @@
 - (BOOL)tipStatusIsInvalid;
 - (BOOL)tipStatusIsPending;
 - (PKImageWandTipControllerDelegate)delegate;
-- (void)hideTipAnimated:(BOOL)a3 completion:(id)a4;
-- (void)showTipWithPresentationViewController:(id)a3 sourceItem:(id)a4 passthroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 tintColor:(id)a7 animated:(BOOL)a8;
-- (void)showTipWithPresentationViewController:(id)a3 sourceItem:(id)a4 sourceRect:(CGRect)a5 passthroughViews:(id)a6 permittedArrowDirections:(unint64_t)a7 tintColor:(id)a8 animated:(BOOL)a9;
+- (void)hideTipAnimated:(BOOL)animated completion:(id)completion;
+- (void)showTipWithPresentationViewController:(id)controller sourceItem:(id)item passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions tintColor:(id)color animated:(BOOL)animated;
+- (void)showTipWithPresentationViewController:(id)controller sourceItem:(id)item sourceRect:(CGRect)rect passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions tintColor:(id)color animated:(BOOL)animated;
 - (void)userDidUseImageWand;
 @end
 
@@ -38,7 +38,7 @@
 
 - (BOOL)tipStatusIsPending
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageWandTipController.tipStatusIsPending.getter(MEMORY[0x1E6982B70]);
 
   return v3 & 1;
@@ -46,7 +46,7 @@
 
 - (BOOL)tipStatusIsAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ImageWandTipController.tipStatusIsPending.getter(MEMORY[0x1E6982B78]);
 
   return v3 & 1;
@@ -59,50 +59,50 @@
   return Strong;
 }
 
-- (void)showTipWithPresentationViewController:(id)a3 sourceItem:(id)a4 passthroughViews:(id)a5 permittedArrowDirections:(unint64_t)a6 tintColor:(id)a7 animated:(BOOL)a8
+- (void)showTipWithPresentationViewController:(id)controller sourceItem:(id)item passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions tintColor:(id)color animated:(BOOL)animated
 {
-  if (a5)
+  if (views)
   {
     type metadata accessor for UIView();
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v14 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v15 = a7;
-  v16 = self;
-  specialized ImageWandTipController.showTip(withPresentationViewController:sourceItem:passthroughViews:permittedArrowDirections:tintColor:animated:)(v14, a4, a6, a8);
+  colorCopy = color;
+  selfCopy = self;
+  specialized ImageWandTipController.showTip(withPresentationViewController:sourceItem:passthroughViews:permittedArrowDirections:tintColor:animated:)(controllerCopy, item, directions, animated);
 
   swift_unknownObjectRelease();
 }
 
-- (void)showTipWithPresentationViewController:(id)a3 sourceItem:(id)a4 sourceRect:(CGRect)a5 passthroughViews:(id)a6 permittedArrowDirections:(unint64_t)a7 tintColor:(id)a8 animated:(BOOL)a9
+- (void)showTipWithPresentationViewController:(id)controller sourceItem:(id)item sourceRect:(CGRect)rect passthroughViews:(id)views permittedArrowDirections:(unint64_t)directions tintColor:(id)color animated:(BOOL)animated
 {
-  v9 = a9;
-  v12 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  if (a6)
+  animatedCopy = animated;
+  viewsCopy = views;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (views)
   {
     type metadata accessor for UIView();
-    v12 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    viewsCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v20 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v21 = a8;
-  v22 = self;
-  ImageWandTipController.showTip(withPresentationViewController:sourceItem:sourceRect:passthroughViews:permittedArrowDirections:tintColor:animated:)(v20, a4, v12, a7, a8, v9, x, y, width, height);
+  colorCopy = color;
+  selfCopy = self;
+  ImageWandTipController.showTip(withPresentationViewController:sourceItem:sourceRect:passthroughViews:permittedArrowDirections:tintColor:animated:)(controllerCopy, item, viewsCopy, directions, color, animatedCopy, x, y, width, height);
 
   swift_unknownObjectRelease();
 }
 
-- (void)hideTipAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideTipAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  animatedCopy = animated;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -115,14 +115,14 @@
     v7 = 0;
   }
 
-  v8 = self;
-  ImageWandTipController.hideTip(animated:completion:)(v4, v6, v7);
+  selfCopy = self;
+  ImageWandTipController.hideTip(animated:completion:)(animatedCopy, v6, v7);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v6);
 }
 
 - (void)userDidUseImageWand
 {
-  v2 = self;
+  selfCopy = self;
   ImageWandTipController.userDidUseImageWand()();
 }
 

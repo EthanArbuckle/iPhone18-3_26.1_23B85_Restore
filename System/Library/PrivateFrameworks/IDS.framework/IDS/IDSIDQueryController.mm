@@ -1,40 +1,40 @@
 @interface IDSIDQueryController
 + (id)sharedInstance;
-- (BOOL)_flushQueryCacheForService:(id)a3;
-- (BOOL)_hasCacheForService:(id)a3;
-- (BOOL)_warmupQueryCacheForService:(id)a3;
-- (BOOL)currentIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7 queue:(id)a8 completionBlock:(id)a9;
-- (BOOL)currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7 queue:(id)a8 completionBlock:(id)a9;
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlockWithError:(id)a8;
-- (BOOL)forceRefreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)idInfoForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10;
-- (BOOL)participantsForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 errorCompletionBlock:(id)a8;
-- (BOOL)removeListenerID:(id)a3 forService:(id)a4;
-- (BOOL)requestIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)requestIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)requiredIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8;
+- (BOOL)_flushQueryCacheForService:(id)service;
+- (BOOL)_hasCacheForService:(id)service;
+- (BOOL)_warmupQueryCacheForService:(id)service;
+- (BOOL)currentIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlockWithError:(id)error;
+- (BOOL)forceRefreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)idInfoForDestinations:(id)destinations service:(id)service preferredFromID:(id)d infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0;
+- (BOOL)participantsForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue errorCompletionBlock:(id)block;
+- (BOOL)removeListenerID:(id)d forService:(id)service;
+- (BOOL)requestIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)requestIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)requiredIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block;
 - (IDSIDQueryController)init;
-- (id)_currentCachedRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6;
-- (id)_currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7;
-- (id)_refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6;
-- (int64_t)_currentCachedIDStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5;
-- (int64_t)_currentIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7;
-- (int64_t)_refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6;
-- (void)_setCurrentIDStatus:(int64_t)a3 forDestination:(id)a4 service:(id)a5;
-- (void)addDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5 queue:(id)a6;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addListenerID:(id)a3 forService:(id)a4;
+- (id)_currentCachedRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD;
+- (id)_currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD;
+- (id)_refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD;
+- (int64_t)_currentCachedIDStatusForDestination:(id)destination service:(id)service listenerID:(id)d;
+- (int64_t)_currentIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD;
+- (int64_t)_refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD;
+- (void)_setCurrentIDStatus:(int64_t)status forDestination:(id)destination service:(id)service;
+- (void)addDelegate:(id)delegate forService:(id)service listenerID:(id)d queue:(id)queue;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addListenerID:(id)d forService:(id)service;
 - (void)dealloc;
 - (void)flushQueryCache;
-- (void)ktPeerVerificationResultsUpdated:(id)a3 forService:(id)a4;
-- (void)removeDelegate:(id)a3;
-- (void)removeDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5;
-- (void)setFromID:(id)a3;
+- (void)ktPeerVerificationResultsUpdated:(id)updated forService:(id)service;
+- (void)removeDelegate:(id)delegate;
+- (void)removeDelegate:(id)delegate forService:(id)service listenerID:(id)d;
+- (void)setFromID:(id)d;
 @end
 
 @implementation IDSIDQueryController
@@ -61,7 +61,7 @@
       sub_195B268D8(self, v3);
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -86,28 +86,28 @@
       v12 = v7;
       [(IDSInternalQueueController *)queueController performBlock:v11 waitUntilDone:1];
       v8 = +[IDSDaemonController sharedInstance];
-      v9 = [v8 listener];
-      [v9 addHandler:v7];
+      listener = [v8 listener];
+      [listener addHandler:v7];
     }
 
     self = v5;
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setFromID:(id)a3
+- (void)setFromID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queueController = self->_queueController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195B0FE84;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [(IDSInternalQueueController *)queueController performBlock:v7 waitUntilDone:1];
 }
 
@@ -118,32 +118,32 @@
   self->_queueController = 0;
 
   v4 = +[IDSDaemonController sharedInstance];
-  v5 = [v4 listener];
-  [v5 removeHandler:self];
+  listener = [v4 listener];
+  [listener removeHandler:self];
 
   v6.receiver = self;
   v6.super_class = IDSIDQueryController;
   [(IDSIDQueryController *)&v6 dealloc];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   queueController = self->_queueController;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B0FFF8;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [(IDSInternalQueueController *)queueController performBlock:v11 waitUntilDone:1];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   queueController = self->_queueController;
   v5[0] = MEMORY[0x1E69E9820];
@@ -151,65 +151,65 @@
   v5[2] = sub_195B10098;
   v5[3] = &unk_1E743F468;
   v5[4] = self;
-  v5[5] = a3;
-  v4 = a3;
+  v5[5] = delegate;
+  delegateCopy = delegate;
   [(IDSInternalQueueController *)queueController performBlock:v5 waitUntilDone:1];
 }
 
-- (void)addDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5 queue:(id)a6
+- (void)addDelegate:(id)delegate forService:(id)service listenerID:(id)d queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  serviceCopy = service;
+  dCopy = d;
+  queueCopy = queue;
   queueController = self->_queueController;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_195B101B8;
   v19[3] = &unk_1E743EF38;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = delegateCopy;
+  v21 = serviceCopy;
+  v22 = dCopy;
+  v23 = queueCopy;
+  v15 = queueCopy;
+  v16 = dCopy;
+  v17 = serviceCopy;
+  v18 = delegateCopy;
   [(IDSInternalQueueController *)queueController performBlock:v19 waitUntilDone:1];
 }
 
-- (void)removeDelegate:(id)a3 forService:(id)a4 listenerID:(id)a5
+- (void)removeDelegate:(id)delegate forService:(id)service listenerID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  serviceCopy = service;
+  dCopy = d;
   queueController = self->_queueController;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_195B102A8;
   v14[3] = &unk_1E74431E8;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
-  v13 = a3;
+  v15 = serviceCopy;
+  v16 = dCopy;
+  delegateCopy = delegate;
+  v11 = dCopy;
+  v12 = serviceCopy;
+  delegateCopy2 = delegate;
   [(IDSInternalQueueController *)queueController performBlock:v14 waitUntilDone:1];
 }
 
-- (void)addListenerID:(id)a3 forService:(id)a4
+- (void)addListenerID:(id)d forService:(id)service
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  serviceCopy = service;
   v8 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = dCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = serviceCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Adding listener ID: %@   for service: %@", buf, 0x16u);
   }
 
@@ -219,20 +219,20 @@
   v13[2] = sub_195B10418;
   v13[3] = &unk_1E743E620;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = dCopy;
+  v15 = serviceCopy;
+  v10 = serviceCopy;
+  v11 = dCopy;
   [(IDSInternalQueueController *)queueController performBlock:v13 waitUntilDone:1];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeListenerID:(id)a3 forService:(id)a4
+- (BOOL)removeListenerID:(id)d forService:(id)service
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  serviceCopy = service;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -241,9 +241,9 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = serviceCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "Removing listener ID: %@   for service: %@", buf, 0x16u);
   }
 
@@ -254,9 +254,9 @@
   v15[3] = &unk_1E743F648;
   v18 = &v19;
   v15[4] = self;
-  v10 = v6;
+  v10 = dCopy;
   v16 = v10;
-  v11 = v7;
+  v11 = serviceCopy;
   v17 = v11;
   [(IDSInternalQueueController *)queueController performBlock:v15 waitUntilDone:1];
   v12 = *(v20 + 24);
@@ -266,15 +266,15 @@
   return v12 & 1;
 }
 
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,22 +282,22 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v37 = v17;
+    v37 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status to refresh ID status for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
-    if ([v14 count] >= 0x1E)
+    if ([destinationsCopy count] >= 0x1E)
     {
       v22 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 count];
+        v23 = [destinationsCopy count];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = iDCopy;
         *&buf[12] = 2048;
         *&buf[14] = v23;
         _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Client %@ is attempting to send more than a reasonable amount of URI's in a query {count: %lu}", buf, 0x16u);
@@ -315,12 +315,12 @@
     v28[3] = &unk_1E7443210;
     v35 = buf;
     v28[4] = self;
-    v29 = v14;
-    v30 = v15;
-    v31 = v16;
-    v32 = v17;
-    v33 = v18;
-    v34 = v19;
+    v29 = destinationsCopy;
+    v30 = serviceCopy;
+    v31 = dCopy;
+    v32 = iDCopy;
+    v33 = queueCopy;
+    v34 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v28 waitUntilDone:1];
     v25 = *(*&buf[8] + 24);
 
@@ -336,15 +336,15 @@
   return v25 & 1;
 }
 
-- (BOOL)forceRefreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)forceRefreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -352,22 +352,22 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v37 = v17;
+    v37 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status to force refresh ID status for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
-    if ([v14 count] >= 0x1E)
+    if ([destinationsCopy count] >= 0x1E)
     {
       v22 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 count];
+        v23 = [destinationsCopy count];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = iDCopy;
         *&buf[12] = 2048;
         *&buf[14] = v23;
         _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Client %@ is attempting to send more than a reasonable amount of URI's in a query {count: %lu}", buf, 0x16u);
@@ -385,12 +385,12 @@
     v28[3] = &unk_1E7443210;
     v35 = buf;
     v28[4] = self;
-    v29 = v14;
-    v30 = v15;
-    v31 = v16;
-    v32 = v17;
-    v33 = v18;
-    v34 = v19;
+    v29 = destinationsCopy;
+    v30 = serviceCopy;
+    v31 = dCopy;
+    v32 = iDCopy;
+    v33 = queueCopy;
+    v34 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v28 waitUntilDone:1];
     v25 = *(*&buf[8] + 24);
 
@@ -406,15 +406,15 @@
   return v25 & 1;
 }
 
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 errorCompletionBlock:(id)a8
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue errorCompletionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -422,22 +422,22 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v37 = v17;
+    v37 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status to refresh ID status for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
-    if ([v14 count] >= 0x1E)
+    if ([destinationsCopy count] >= 0x1E)
     {
       v22 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 count];
+        v23 = [destinationsCopy count];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = iDCopy;
         *&buf[12] = 2048;
         *&buf[14] = v23;
         _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Client %@ is attempting to send more than a reasonable amount of URI's in a query {count: %lu}", buf, 0x16u);
@@ -455,12 +455,12 @@
     v28[3] = &unk_1E7443210;
     v35 = buf;
     v28[4] = self;
-    v29 = v14;
-    v30 = v15;
-    v31 = v16;
-    v32 = v17;
-    v33 = v18;
-    v34 = v19;
+    v29 = destinationsCopy;
+    v30 = serviceCopy;
+    v31 = dCopy;
+    v32 = iDCopy;
+    v33 = queueCopy;
+    v34 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v28 waitUntilDone:1];
     v25 = *(*&buf[8] + 24);
 
@@ -476,15 +476,15 @@
   return v25 & 1;
 }
 
-- (BOOL)refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -492,13 +492,13 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v35 = v17;
+    v35 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status to refresh ID status for destination %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 length] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationCopy length] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -511,12 +511,12 @@
     v26[3] = &unk_1E7443210;
     v33 = buf;
     v26[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
+    v27 = destinationCopy;
+    v28 = serviceCopy;
+    v29 = dCopy;
+    v30 = iDCopy;
+    v31 = queueCopy;
+    v32 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v26 waitUntilDone:1];
     v23 = *(*&buf[8] + 24);
 
@@ -532,15 +532,15 @@
   return v23 & 1;
 }
 
-- (BOOL)requiredIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requiredIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -548,22 +548,22 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v37 = v17;
+    v37 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status for required ID status for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
-    if ([v14 count] >= 0x1E)
+    if ([destinationsCopy count] >= 0x1E)
     {
       v22 = +[IDSLogging IDQuery];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v14 count];
+        v23 = [destinationsCopy count];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = iDCopy;
         *&buf[12] = 2048;
         *&buf[14] = v23;
         _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Client %@ is attempting to send more than a reasonable amount of URI's in a query {count: %lu}", buf, 0x16u);
@@ -581,12 +581,12 @@
     v28[3] = &unk_1E7443210;
     v35 = buf;
     v28[4] = self;
-    v29 = v14;
-    v30 = v15;
-    v31 = v16;
-    v32 = v17;
-    v33 = v18;
-    v34 = v19;
+    v29 = destinationsCopy;
+    v30 = serviceCopy;
+    v31 = dCopy;
+    v32 = iDCopy;
+    v33 = queueCopy;
+    v34 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v28 waitUntilDone:1];
     v25 = *(*&buf[8] + 24);
 
@@ -602,15 +602,15 @@
   return v25 & 1;
 }
 
-- (BOOL)requiredIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requiredIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -618,13 +618,13 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v35 = v17;
+    v35 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status for required ID status for destination %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 length] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationCopy length] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -637,12 +637,12 @@
     v26[3] = &unk_1E7443210;
     v33 = buf;
     v26[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
+    v27 = destinationCopy;
+    v28 = serviceCopy;
+    v29 = dCopy;
+    v30 = iDCopy;
+    v31 = queueCopy;
+    v32 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v26 waitUntilDone:1];
     v23 = *(*&buf[8] + 24);
 
@@ -658,15 +658,15 @@
   return v23 & 1;
 }
 
-- (BOOL)currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7 queue:(id)a8 completionBlock:(id)a9
+- (BOOL)currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if ([v15 count] && objc_msgSend(v16, "length") && objc_msgSend(v18, "length"))
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     v33 = 0;
     v34 = &v33;
@@ -679,13 +679,13 @@
     v24[3] = &unk_1E7443238;
     v31 = &v33;
     v24[4] = self;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
-    v32 = a6;
-    v28 = v18;
-    v29 = v19;
-    v30 = v20;
+    v25 = destinationsCopy;
+    v26 = serviceCopy;
+    v27 = dCopy;
+    expiryCopy = expiry;
+    v28 = iDCopy;
+    v29 = queueCopy;
+    v30 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v24 waitUntilDone:1];
     v22 = *(v34 + 24);
 
@@ -700,15 +700,15 @@
   return v22 & 1;
 }
 
-- (BOOL)currentIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7 queue:(id)a8 completionBlock:(id)a9
+- (BOOL)currentIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if ([v15 length] && objc_msgSend(v16, "length") && objc_msgSend(v18, "length"))
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([destinationCopy length] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     v33 = 0;
     v34 = &v33;
@@ -721,13 +721,13 @@
     v24[3] = &unk_1E7443238;
     v31 = &v33;
     v24[4] = self;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
-    v32 = a6;
-    v28 = v18;
-    v29 = v19;
-    v30 = v20;
+    v25 = destinationCopy;
+    v26 = serviceCopy;
+    v27 = dCopy;
+    expiryCopy = expiry;
+    v28 = iDCopy;
+    v29 = queueCopy;
+    v30 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v24 waitUntilDone:1];
     v22 = *(v34 + 24);
 
@@ -742,16 +742,16 @@
   return v22 & 1;
 }
 
-- (BOOL)idInfoForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 infoTypes:(unint64_t)a6 options:(id)a7 listenerID:(id)a8 queue:(id)a9 completionBlock:(id)a10
+- (BOOL)idInfoForDestinations:(id)destinations service:(id)service preferredFromID:(id)d infoTypes:(unint64_t)types options:(id)options listenerID:(id)iD queue:(id)queue completionBlock:(id)self0
 {
   v43 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v28 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  optionsCopy = options;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v22 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
@@ -759,15 +759,15 @@
     *buf = 138413058;
     *&buf[4] = v23;
     *&buf[12] = 2112;
-    *&buf[14] = v17;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v40 = v19;
+    v40 = iDCopy;
     v41 = 2048;
-    v42 = a6;
+    typesCopy = types;
     _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Client ID Info Request for destinations %@ on service: %@ from listenerID: %@ with infoTypes: %llu", buf, 0x2Au);
   }
 
-  if ([v16 count] && objc_msgSend(v17, "length") && objc_msgSend(v19, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -780,14 +780,14 @@
     v29[3] = &unk_1E7443260;
     v37 = buf;
     v29[4] = self;
-    v30 = v16;
-    v31 = v17;
-    v32 = v28;
-    v38 = a6;
-    v33 = v18;
-    v34 = v19;
-    v35 = v20;
-    v36 = v21;
+    v30 = destinationsCopy;
+    v31 = serviceCopy;
+    v32 = dCopy;
+    typesCopy2 = types;
+    v33 = optionsCopy;
+    v34 = iDCopy;
+    v35 = queueCopy;
+    v36 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v29 waitUntilDone:1];
     v25 = *(*&buf[8] + 24);
 
@@ -803,10 +803,10 @@
   return v25 & 1;
 }
 
-- (BOOL)_hasCacheForService:(id)a3
+- (BOOL)_hasCacheForService:(id)service
 {
-  v4 = a3;
-  if ([v4 length])
+  serviceCopy = service;
+  if ([serviceCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -819,7 +819,7 @@
     v8[3] = &unk_1E743EA08;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = serviceCopy;
     [(IDSInternalQueueController *)queueController performBlock:v8 waitUntilDone:1];
     v6 = *(v12 + 24);
 
@@ -834,11 +834,11 @@
   return v6 & 1;
 }
 
-- (int64_t)_currentCachedIDStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5
+- (int64_t)_currentCachedIDStatusForDestination:(id)destination service:(id)service listenerID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -850,11 +850,11 @@
   v17[3] = &unk_1E7441B40;
   v21 = &v22;
   v17[4] = self;
-  v12 = v8;
+  v12 = destinationCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = serviceCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = dCopy;
   v20 = v14;
   [(IDSInternalQueueController *)queueController performBlock:v17 waitUntilDone:1];
   v15 = v23[3];
@@ -863,19 +863,19 @@
   return v15;
 }
 
-- (BOOL)_warmupQueryCacheForService:(id)a3
+- (BOOL)_warmupQueryCacheForService:(id)service
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = serviceCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Client requesting to warmup the query cache for service: %@", &buf, 0xCu);
   }
 
-  if ([v4 length])
+  if ([serviceCopy length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -888,7 +888,7 @@
     v10[3] = &unk_1E743EA08;
     p_buf = &buf;
     v10[4] = self;
-    v11 = v4;
+    v11 = serviceCopy;
     [(IDSInternalQueueController *)queueController performBlock:v10 waitUntilDone:1];
     v7 = *(*(&buf + 1) + 24);
 
@@ -904,19 +904,19 @@
   return v7 & 1;
 }
 
-- (BOOL)_flushQueryCacheForService:(id)a3
+- (BOOL)_flushQueryCacheForService:(id)service
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v5 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = serviceCopy;
     _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Client requesting to flush the query cache for service: %@", &buf, 0xCu);
   }
 
-  if ([v4 length])
+  if ([serviceCopy length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -929,7 +929,7 @@
     v10[3] = &unk_1E743EA08;
     p_buf = &buf;
     v10[4] = self;
-    v11 = v4;
+    v11 = serviceCopy;
     [(IDSInternalQueueController *)queueController performBlock:v10 waitUntilDone:1];
     v7 = *(*(&buf + 1) + 24);
 
@@ -945,21 +945,21 @@
   return v7 & 1;
 }
 
-- (void)_setCurrentIDStatus:(int64_t)a3 forDestination:(id)a4 service:(id)a5
+- (void)_setCurrentIDStatus:(int64_t)status forDestination:(id)destination service:(id)service
 {
-  v8 = a4;
-  v9 = a5;
+  destinationCopy = destination;
+  serviceCopy = service;
   queueController = self->_queueController;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195B12CF4;
   v13[3] = &unk_1E743E698;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = destinationCopy;
+  v15 = serviceCopy;
+  statusCopy = status;
+  v11 = serviceCopy;
+  v12 = destinationCopy;
   [(IDSInternalQueueController *)queueController performBlock:v13 waitUntilDone:1];
 }
 
@@ -974,13 +974,13 @@
   [(IDSInternalQueueController *)queueController performBlock:v3 waitUntilDone:1];
 }
 
-- (int64_t)_refreshIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6
+- (int64_t)_refreshIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v14 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -988,9 +988,9 @@
     *buf = 138412802;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v40 = v13;
+    v40 = iDCopy;
     _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "** BLOCKING Client ID status to refresh ID status for destination %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
@@ -1004,14 +1004,14 @@
   v28 = 3221225472;
   v29 = sub_195B13044;
   v30 = &unk_1E74432B0;
-  v31 = self;
-  v18 = v10;
+  selfCopy = self;
+  v18 = destinationCopy;
   v32 = v18;
-  v19 = v11;
+  v19 = serviceCopy;
   v33 = v19;
-  v20 = v12;
+  v20 = dCopy;
   v34 = v20;
-  v21 = v13;
+  v21 = iDCopy;
   v35 = v21;
   v36 = buf;
   [(IDSInternalQueueController *)queueController performBlock:&v27 waitUntilDone:1];
@@ -1031,13 +1031,13 @@
   return v24;
 }
 
-- (id)_refreshIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6
+- (id)_refreshIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v14 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -1045,9 +1045,9 @@
     *buf = 138412802;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v40 = v13;
+    v40 = iDCopy;
     _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "** BLOCKING Client ID status to refresh ID status for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
@@ -1063,14 +1063,14 @@
   v28 = 3221225472;
   v29 = sub_195B134B0;
   v30 = &unk_1E74432B0;
-  v31 = self;
-  v18 = v10;
+  selfCopy = self;
+  v18 = destinationsCopy;
   v32 = v18;
-  v19 = v11;
+  v19 = serviceCopy;
   v33 = v19;
-  v20 = v12;
+  v20 = dCopy;
   v34 = v20;
-  v21 = v13;
+  v21 = iDCopy;
   v35 = v21;
   v36 = buf;
   [(IDSInternalQueueController *)queueController performBlock:&v27 waitUntilDone:1];
@@ -1091,14 +1091,14 @@
   return v24;
 }
 
-- (int64_t)_currentIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7
+- (int64_t)_currentIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD
 {
-  v8 = a6;
+  expiryCopy = expiry;
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  destinationCopy = destination;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v16 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -1106,17 +1106,17 @@
     v18 = @"NO";
     *buf = 138413058;
     *&buf[4] = v17;
-    if (v8)
+    if (expiryCopy)
     {
       v18 = @"YES";
     }
 
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
     v40 = v18;
     v41 = 2112;
-    v42 = v15;
+    v42 = iDCopy;
     _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "** BLOCKING Client ID status cache request for destination %@  on service: %@ respectExpiry: %@   from listenerID: %@", buf, 0x2Au);
   }
 
@@ -1131,14 +1131,14 @@
   v30[2] = sub_195B138B8;
   v30[3] = &unk_1E7443328;
   v30[4] = self;
-  v21 = v12;
+  v21 = destinationCopy;
   v31 = v21;
-  v22 = v13;
+  v22 = serviceCopy;
   v32 = v22;
-  v23 = v14;
+  v23 = dCopy;
   v33 = v23;
-  v36 = v8;
-  v24 = v15;
+  v36 = expiryCopy;
+  v24 = iDCopy;
   v34 = v24;
   v35 = buf;
   [(IDSInternalQueueController *)queueController performBlock:v30 waitUntilDone:1];
@@ -1158,14 +1158,14 @@
   return v27;
 }
 
-- (id)_currentIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 respectExpiry:(BOOL)a6 listenerID:(id)a7
+- (id)_currentIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d respectExpiry:(BOOL)expiry listenerID:(id)iD
 {
-  v8 = a6;
+  expiryCopy = expiry;
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v16 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -1173,17 +1173,17 @@
     v18 = @"NO";
     *buf = 138413058;
     *&buf[4] = v17;
-    if (v8)
+    if (expiryCopy)
     {
       v18 = @"YES";
     }
 
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
     v40 = v18;
     LOWORD(v41) = 2112;
-    *(&v41 + 2) = v15;
+    *(&v41 + 2) = iDCopy;
     _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "** BLOCKING Client ID status cache request for destinations %@  on service: %@ respectExpiry: %@   from listenerID: %@", buf, 0x2Au);
   }
 
@@ -1200,14 +1200,14 @@
   v30[2] = sub_195B13D44;
   v30[3] = &unk_1E7443328;
   v30[4] = self;
-  v21 = v12;
+  v21 = destinationsCopy;
   v31 = v21;
-  v22 = v13;
+  v22 = serviceCopy;
   v32 = v22;
-  v23 = v14;
+  v23 = dCopy;
   v33 = v23;
-  v36 = v8;
-  v24 = v15;
+  v36 = expiryCopy;
+  v24 = iDCopy;
   v34 = v24;
   v35 = buf;
   [(IDSInternalQueueController *)queueController performBlock:v30 waitUntilDone:1];
@@ -1228,15 +1228,15 @@
   return v27;
 }
 
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1244,13 +1244,13 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v35 = v17;
+    v35 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client Remote Device Request for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1263,12 +1263,12 @@
     v26[3] = &unk_1E7443210;
     v33 = buf;
     v26[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
+    v27 = destinationsCopy;
+    v28 = serviceCopy;
+    v29 = dCopy;
+    v30 = iDCopy;
+    v31 = queueCopy;
+    v32 = blockCopy;
     [(IDSInternalQueueController *)queueController performBlock:v26 waitUntilDone:1];
     v23 = *(*&buf[8] + 24);
 
@@ -1284,15 +1284,15 @@
   return v23 & 1;
 }
 
-- (BOOL)currentRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlockWithError:(id)a8
+- (BOOL)currentRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlockWithError:(id)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  errorCopy = error;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1300,13 +1300,13 @@
     *buf = 138412802;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v35 = v17;
+    v35 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client Remote Device Request for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v14 count] && objc_msgSend(v15, "length") && objc_msgSend(v17, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1319,12 +1319,12 @@
     v26[3] = &unk_1E7443210;
     v33 = buf;
     v26[4] = self;
-    v27 = v14;
-    v28 = v15;
-    v29 = v16;
-    v30 = v17;
-    v31 = v18;
-    v32 = v19;
+    v27 = destinationsCopy;
+    v28 = serviceCopy;
+    v29 = dCopy;
+    v30 = iDCopy;
+    v31 = queueCopy;
+    v32 = errorCopy;
     [(IDSInternalQueueController *)queueController performBlock:v26 waitUntilDone:1];
     v23 = *(*&buf[8] + 24);
 
@@ -1340,13 +1340,13 @@
   return v23 & 1;
 }
 
-- (id)_currentCachedRemoteDevicesForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6
+- (id)_currentCachedRemoteDevicesForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  dCopy = d;
+  iDCopy = iD;
   v14 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -1354,13 +1354,13 @@
     *buf = 138412802;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = serviceCopy;
     *&buf[22] = 2112;
-    v27 = v13;
+    v27 = iDCopy;
     _os_log_impl(&dword_1959FF000, v14, OS_LOG_TYPE_DEFAULT, "** BLOCKING  Client Remote Device Request for destinations %@  on service: %@   from listenerID: %@", buf, 0x20u);
   }
 
-  if ([v10 count] && objc_msgSend(v11, "length") && objc_msgSend(v13, "length"))
+  if ([destinationsCopy count] && objc_msgSend(serviceCopy, "length") && objc_msgSend(iDCopy, "length"))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1374,10 +1374,10 @@
     v20[2] = sub_195B1463C;
     v20[3] = &unk_1E74432B0;
     v20[4] = self;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
+    v21 = destinationsCopy;
+    v22 = serviceCopy;
+    v23 = dCopy;
+    v24 = iDCopy;
     v25 = buf;
     [(IDSInternalQueueController *)queueController performBlock:v20 waitUntilDone:1];
     v17 = *(*&buf[8] + 40);
@@ -1395,29 +1395,29 @@
   return v17;
 }
 
-- (BOOL)participantsForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)participantsForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v14 = a8;
+  blockCopy = block;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_195B147BC;
   v17[3] = &unk_1E743EBF0;
-  v18 = v14;
-  v15 = v14;
-  LOBYTE(a7) = [(IDSIDQueryController *)self currentRemoteDevicesForDestinations:a3 service:a4 preferredFromID:a5 listenerID:a6 queue:a7 completionBlock:v17];
+  v18 = blockCopy;
+  v15 = blockCopy;
+  LOBYTE(queue) = [(IDSIDQueryController *)self currentRemoteDevicesForDestinations:destinations service:service preferredFromID:d listenerID:iD queue:queue completionBlock:v17];
 
-  return a7;
+  return queue;
 }
 
-- (BOOL)requestIDStatusForDestinations:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requestIDStatusForDestinations:(id)destinations service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
+  destinationsCopy = destinations;
+  serviceCopy = service;
+  iDCopy = iD;
+  blockCopy = block;
+  queueCopy = queue;
+  dCopy = d;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1425,26 +1425,26 @@
     v25 = 138412802;
     v26 = v21;
     v27 = 2112;
-    v28 = v15;
+    v28 = serviceCopy;
     v29 = 2112;
-    v30 = v16;
+    v30 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status request for destinations %@  on service: %@   from listenerID: %@", &v25, 0x20u);
   }
 
-  v22 = [(IDSIDQueryController *)self refreshIDStatusForDestinations:v14 service:v15 preferredFromID:v19 listenerID:v16 queue:v18 completionBlock:v17];
+  v22 = [(IDSIDQueryController *)self refreshIDStatusForDestinations:destinationsCopy service:serviceCopy preferredFromID:dCopy listenerID:iDCopy queue:queueCopy completionBlock:blockCopy];
   v23 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (BOOL)requestIDStatusForDestination:(id)a3 service:(id)a4 preferredFromID:(id)a5 listenerID:(id)a6 queue:(id)a7 completionBlock:(id)a8
+- (BOOL)requestIDStatusForDestination:(id)destination service:(id)service preferredFromID:(id)d listenerID:(id)iD queue:(id)queue completionBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = a7;
-  v19 = a5;
+  destinationCopy = destination;
+  serviceCopy = service;
+  iDCopy = iD;
+  blockCopy = block;
+  queueCopy = queue;
+  dCopy = d;
   v20 = +[IDSLogging IDQuery];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -1452,22 +1452,22 @@
     v25 = 138412802;
     v26 = v21;
     v27 = 2112;
-    v28 = v15;
+    v28 = serviceCopy;
     v29 = 2112;
-    v30 = v16;
+    v30 = iDCopy;
     _os_log_impl(&dword_1959FF000, v20, OS_LOG_TYPE_DEFAULT, "Client ID status request for destination %@  on service: %@   from listenerID: %@", &v25, 0x20u);
   }
 
-  v22 = [(IDSIDQueryController *)self refreshIDStatusForDestination:v14 service:v15 preferredFromID:v19 listenerID:v16 queue:v18 completionBlock:v17];
+  v22 = [(IDSIDQueryController *)self refreshIDStatusForDestination:destinationCopy service:serviceCopy preferredFromID:dCopy listenerID:iDCopy queue:queueCopy completionBlock:blockCopy];
   v23 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (void)ktPeerVerificationResultsUpdated:(id)a3 forService:(id)a4
+- (void)ktPeerVerificationResultsUpdated:(id)updated forService:(id)service
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updatedCopy = updated;
+  serviceCopy = service;
   v8 = MEMORY[0x1E696ACD0];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
@@ -1492,7 +1492,7 @@
   _Block_object_dispose(&v25, 8);
   v14 = [v9 setWithObjects:{v10, v11, v12, 0}];
   v24 = 0;
-  v15 = [v8 unarchivedObjectOfClasses:v14 fromData:v6 error:&v24];
+  v15 = [v8 unarchivedObjectOfClasses:v14 fromData:updatedCopy error:&v24];
   v16 = v24;
 
   v17 = +[IDSLogging IDQuery];
@@ -1522,7 +1522,7 @@
     v21[2] = sub_195B14E30;
     v21[3] = &unk_1E743E620;
     v21[4] = self;
-    v22 = v7;
+    v22 = serviceCopy;
     v23 = v15;
     [(IDSInternalQueueController *)queueController performBlock:v21 waitUntilDone:0];
   }

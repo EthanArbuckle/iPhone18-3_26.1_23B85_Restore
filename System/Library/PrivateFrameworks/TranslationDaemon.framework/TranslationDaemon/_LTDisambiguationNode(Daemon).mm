@@ -114,9 +114,9 @@ LABEL_24:
   v10 = a5;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 alternativeSelectionSpans];
-    v12 = [v8 tokens];
-    v13 = [v12 _ltCompactMap:&__block_literal_global_10];
+    alternativeSelectionSpans = [v8 alternativeSelectionSpans];
+    tokens = [v8 tokens];
+    v13 = [tokens _ltCompactMap:&__block_literal_global_10];
 
     v14 = [v13 componentsJoinedByString:@" "];
     v20 = MEMORY[0x277D85DD0];
@@ -126,8 +126,8 @@ LABEL_24:
     v24 = v9;
     v25 = v14;
     v15 = v14;
-    v16 = [v11 _ltCompactMap:&v20];
-    v17 = [a1 _nodeWithText:v15 links:v16 numberOfSelectionSpans:objc_msgSend(v11 romanization:{"count", v20, v21, v22, v23), v10}];
+    v16 = [alternativeSelectionSpans _ltCompactMap:&v20];
+    v17 = [self _nodeWithText:v15 links:v16 numberOfSelectionSpans:objc_msgSend(alternativeSelectionSpans romanization:{"count", v20, v21, v22, v23), v10}];
   }
 
   else
@@ -149,15 +149,15 @@ LABEL_24:
   v10 = a4;
   v11 = a5;
   v12 = a3;
-  v13 = [v12 meta_info_data];
-  v14 = [v13 selection_spans];
+  meta_info_data = [v12 meta_info_data];
+  selection_spans = [meta_info_data selection_spans];
 
-  v15 = [v12 translation_phrase];
-  v16 = [v12 meta_info_data];
+  translation_phrase = [v12 translation_phrase];
+  meta_info_data2 = [v12 meta_info_data];
 
-  v17 = [v16 romanization];
+  romanization = [meta_info_data2 romanization];
 
-  if (a6 && [MEMORY[0x277CE1BE8] stringContainsRedaction:v15])
+  if (a6 && [MEMORY[0x277CE1BE8] stringContainsRedaction:translation_phrase])
   {
     v18 = _LTOSLogDisambiguation();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -166,7 +166,7 @@ LABEL_24:
       _os_log_impl(&dword_232E53000, v18, OS_LOG_TYPE_DEFAULT, "Removing all potential links from node because the target string appears to have redactions, and we don't currently support redactions and disambiguation in the same sentence", buf, 2u);
     }
 
-    v19 = [a1 _nodeWithText:v15 links:MEMORY[0x277CBEBF8] numberOfSelectionSpans:0 romanization:0];
+    v19 = [self _nodeWithText:translation_phrase links:MEMORY[0x277CBEBF8] numberOfSelectionSpans:0 romanization:0];
   }
 
   else
@@ -177,10 +177,10 @@ LABEL_24:
     v23[3] = &unk_2789B60C0;
     v24 = v10;
     v25 = v11;
-    v20 = v15;
+    v20 = translation_phrase;
     v26 = v20;
-    v21 = [v14 _ltCompactMap:v23];
-    v19 = [a1 _nodeWithText:v20 links:v21 numberOfSelectionSpans:objc_msgSend(v14 romanization:{"count"), v17}];
+    v21 = [selection_spans _ltCompactMap:v23];
+    v19 = [self _nodeWithText:v20 links:v21 numberOfSelectionSpans:objc_msgSend(selection_spans romanization:{"count"), romanization}];
   }
 
   return v19;
@@ -191,26 +191,26 @@ LABEL_24:
   v8 = a4;
   v9 = a5;
   v10 = a3;
-  v11 = [v10 meta_info_data];
-  v12 = [v11 selection_spans];
+  meta_info_data = [v10 meta_info_data];
+  selection_spans = [meta_info_data selection_spans];
 
-  v13 = [v10 lt_formattedString];
+  lt_formattedString = [v10 lt_formattedString];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __85___LTDisambiguationNode_Daemon__nodeFromFTTranslationPhrase_descriptions_sourceText___block_invoke;
   v22[3] = &unk_2789B60C0;
   v23 = v8;
   v24 = v9;
-  v25 = v13;
-  v14 = v13;
+  v25 = lt_formattedString;
+  v14 = lt_formattedString;
   v15 = v9;
   v16 = v8;
-  v17 = [v12 _ltCompactMap:v22];
-  v18 = [v10 meta_info_data];
+  v17 = [selection_spans _ltCompactMap:v22];
+  meta_info_data2 = [v10 meta_info_data];
 
-  v19 = [v18 romanization];
+  romanization = [meta_info_data2 romanization];
 
-  v20 = [a1 _nodeWithText:v14 links:v17 numberOfSelectionSpans:objc_msgSend(v12 romanization:{"count"), v19}];
+  v20 = [self _nodeWithText:v14 links:v17 numberOfSelectionSpans:objc_msgSend(selection_spans romanization:{"count"), romanization}];
 
   return v20;
 }
@@ -220,26 +220,26 @@ LABEL_24:
   v8 = a4;
   v9 = a5;
   v10 = a3;
-  v11 = [v10 meta_info_data];
-  v12 = [v11 selection_spans];
+  meta_info_data = [v10 meta_info_data];
+  selection_spans = [meta_info_data selection_spans];
 
-  v13 = [v10 translation_phrase];
+  translation_phrase = [v10 translation_phrase];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __83___LTDisambiguationNode_Daemon__nodeFromOspreyBatchPhrase_descriptions_sourceText___block_invoke;
   v22[3] = &unk_2789B60C0;
   v23 = v8;
   v24 = v9;
-  v25 = v13;
-  v14 = v13;
+  v25 = translation_phrase;
+  v14 = translation_phrase;
   v15 = v9;
   v16 = v8;
-  v17 = [v12 _ltCompactMap:v22];
-  v18 = [v10 meta_info_data];
+  v17 = [selection_spans _ltCompactMap:v22];
+  meta_info_data2 = [v10 meta_info_data];
 
-  v19 = [v18 romanization];
+  romanization = [meta_info_data2 romanization];
 
-  v20 = [a1 _nodeWithText:v14 links:v17 numberOfSelectionSpans:objc_msgSend(v12 romanization:{"count"), v19}];
+  v20 = [self _nodeWithText:v14 links:v17 numberOfSelectionSpans:objc_msgSend(selection_spans romanization:{"count"), romanization}];
 
   return v20;
 }

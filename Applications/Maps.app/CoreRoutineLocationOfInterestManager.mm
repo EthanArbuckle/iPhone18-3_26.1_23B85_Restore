@@ -1,16 +1,16 @@
 @interface CoreRoutineLocationOfInterestManager
 + (id)sharedManager;
-- (BOOL)monitoringLOIsOfType:(int64_t)a3;
+- (BOOL)monitoringLOIsOfType:(int64_t)type;
 - (CoreRoutineLocationOfInterestManager)init;
-- (id)locationsOfInterestWithType:(int64_t)a3;
+- (id)locationsOfInterestWithType:(int64_t)type;
 - (id)monitoredLOITypes;
 - (void)addNotificationObserverIfNeeded;
 - (void)dealloc;
 - (void)invalidateLOIs;
-- (void)invalidateLOIsOfType:(int64_t)a3;
-- (void)locationsOfInterestWithType:(int64_t)a3 completion:(id)a4;
-- (void)monitorLOIsOfTypes:(id)a3 initialRetrievalComplete:(id)a4;
-- (void)retrieveLOIsOfType:(int64_t)a3;
+- (void)invalidateLOIsOfType:(int64_t)type;
+- (void)locationsOfInterestWithType:(int64_t)type completion:(id)completion;
+- (void)monitorLOIsOfTypes:(id)types initialRetrievalComplete:(id)complete;
+- (void)retrieveLOIsOfType:(int64_t)type;
 @end
 
 @implementation CoreRoutineLocationOfInterestManager
@@ -80,32 +80,32 @@
   }
 }
 
-- (void)retrieveLOIsOfType:(int64_t)a3
+- (void)retrieveLOIsOfType:(int64_t)type
 {
   v5 = [NSNumber numberWithInteger:?];
-  v6 = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
-  v7 = [v6 containsObject:v5];
+  retrievingLOIsOfTypes = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
+  v7 = [retrievingLOIsOfTypes containsObject:v5];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
-    [v8 addObject:v5];
+    retrievingLOIsOfTypes2 = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
+    [retrievingLOIsOfTypes2 addObject:v5];
 
-    v9 = [(CoreRoutineLocationOfInterestManager *)self invalidatedLOIsOfTypes];
-    [v9 removeObject:v5];
+    invalidatedLOIsOfTypes = [(CoreRoutineLocationOfInterestManager *)self invalidatedLOIsOfTypes];
+    [invalidatedLOIsOfTypes removeObject:v5];
 
-    v10 = [(CoreRoutineLocationOfInterestManager *)self loisByType];
-    v11 = [v10 objectForKey:v5];
+    loisByType = [(CoreRoutineLocationOfInterestManager *)self loisByType];
+    v11 = [loisByType objectForKey:v5];
     v12 = v11 == 0;
 
     if (!v11)
     {
-      v13 = [(CoreRoutineLocationOfInterestManager *)self initialRetrievalDispatchGroup];
-      dispatch_group_enter(v13);
+      initialRetrievalDispatchGroup = [(CoreRoutineLocationOfInterestManager *)self initialRetrievalDispatchGroup];
+      dispatch_group_enter(initialRetrievalDispatchGroup);
     }
 
     v14 = MapsSuggestionsResourceDepotForMapsProcess();
-    v15 = [v14 oneRoutine];
+    oneRoutine = [v14 oneRoutine];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -114,26 +114,26 @@
     v16[4] = self;
     v19 = v12;
     v17 = v5;
-    v18 = a3;
-    [v15 fetchLOIsOfType:a3 handler:v16];
+    typeCopy = type;
+    [oneRoutine fetchLOIsOfType:type handler:v16];
   }
 }
 
 - (id)monitoredLOITypes
 {
-  v3 = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
-  v4 = [(CoreRoutineLocationOfInterestManager *)self loisByType];
-  v5 = [v4 allKeys];
-  v6 = [v3 setByAddingObjectsFromArray:v5];
+  retrievingLOIsOfTypes = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
+  loisByType = [(CoreRoutineLocationOfInterestManager *)self loisByType];
+  allKeys = [loisByType allKeys];
+  v6 = [retrievingLOIsOfTypes setByAddingObjectsFromArray:allKeys];
 
   return v6;
 }
 
-- (BOOL)monitoringLOIsOfType:(int64_t)a3
+- (BOOL)monitoringLOIsOfType:(int64_t)type
 {
-  v5 = [(CoreRoutineLocationOfInterestManager *)self loisByType];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  loisByType = [(CoreRoutineLocationOfInterestManager *)self loisByType];
+  v6 = [NSNumber numberWithInteger:type];
+  v7 = [loisByType objectForKey:v6];
   if (v7)
   {
     v8 = 1;
@@ -141,58 +141,58 @@
 
   else
   {
-    v9 = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
-    v10 = [NSNumber numberWithInteger:a3];
-    v8 = [v9 containsObject:v10];
+    retrievingLOIsOfTypes = [(CoreRoutineLocationOfInterestManager *)self retrievingLOIsOfTypes];
+    v10 = [NSNumber numberWithInteger:type];
+    v8 = [retrievingLOIsOfTypes containsObject:v10];
   }
 
   return v8;
 }
 
-- (void)invalidateLOIsOfType:(int64_t)a3
+- (void)invalidateLOIsOfType:(int64_t)type
 {
-  v5 = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
+  dispatchQueue = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100A2AF50;
   v6[3] = &unk_101661650;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = type;
+  dispatch_sync(dispatchQueue, v6);
 }
 
 - (void)invalidateLOIs
 {
-  v3 = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
+  dispatchQueue = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100A2B070;
   block[3] = &unk_101661B18;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(dispatchQueue, block);
 }
 
-- (void)monitorLOIsOfTypes:(id)a3 initialRetrievalComplete:(id)a4
+- (void)monitorLOIsOfTypes:(id)types initialRetrievalComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  completeCopy = complete;
   [(CoreRoutineLocationOfInterestManager *)self addNotificationObserverIfNeeded];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v8 = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
+  dispatchQueue = [(CoreRoutineLocationOfInterestManager *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100A2B2FC;
   v11[3] = &unk_101638358;
-  v9 = v6;
+  v9 = typesCopy;
   v12 = v9;
-  v13 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = completeCopy;
   v14 = v10;
   v15 = &v16;
-  dispatch_sync(v8, v11);
+  dispatch_sync(dispatchQueue, v11);
 
   if (*(v17 + 24) == 1)
   {
@@ -202,10 +202,10 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)locationsOfInterestWithType:(int64_t)a3 completion:(id)a4
+- (void)locationsOfInterestWithType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
+  completionCopy = completion;
+  v7 = [NSNumber numberWithInteger:type];
   v14 = v7;
   v8 = [NSArray arrayWithObjects:&v14 count:1];
   v9 = [NSSet setWithArray:v8];
@@ -214,13 +214,13 @@
   v11[2] = sub_100A2B5D0;
   v11[3] = &unk_1016589F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = a3;
-  v10 = v6;
+  v12 = completionCopy;
+  typeCopy = type;
+  v10 = completionCopy;
   [(CoreRoutineLocationOfInterestManager *)self afterInitialRetrievalOfLOIsOfTypes:v9 perform:v11];
 }
 
-- (id)locationsOfInterestWithType:(int64_t)a3
+- (id)locationsOfInterestWithType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -235,7 +235,7 @@
   block[3] = &unk_10165E540;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

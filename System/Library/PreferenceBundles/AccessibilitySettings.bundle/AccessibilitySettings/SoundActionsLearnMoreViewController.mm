@@ -1,20 +1,20 @@
 @interface SoundActionsLearnMoreViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (double)_minCardHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)_didActivatePageControl:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)_didActivatePageControl:(id)control;
 - (void)_playCurrentSound;
 - (void)_setupCardsView;
 - (void)_setupPagingControl;
 - (void)_setupPlayButton;
 - (void)_setupVisualizer;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)scrollToCardIndex:(int)a3 animated:(BOOL)a4;
-- (void)setSounds:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)scrollToCardIndex:(int)index animated:(BOOL)animated;
+- (void)setSounds:(id)sounds;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SoundActionsLearnMoreViewController
@@ -24,8 +24,8 @@
   v4.receiver = self;
   v4.super_class = SoundActionsLearnMoreViewController;
   [(SoundActionsLearnMoreViewController *)&v4 viewDidLoad];
-  v3 = [(SoundActionsLearnMoreViewController *)self scrollView];
-  [v3 _addScrollViewScrollObserver:self];
+  scrollView = [(SoundActionsLearnMoreViewController *)self scrollView];
+  [scrollView _addScrollViewScrollObserver:self];
 
   [(SoundActionsLearnMoreViewController *)self _setupVisualizer];
   [(SoundActionsLearnMoreViewController *)self _setupPlayButton];
@@ -33,11 +33,11 @@
   [(SoundActionsLearnMoreViewController *)self _setupPagingControl];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = SoundActionsLearnMoreViewController;
-  [(SoundActionsLearnMoreViewController *)&v11 viewDidAppear:a3];
+  [(SoundActionsLearnMoreViewController *)&v11 viewDidAppear:appear];
   objc_initWeak(&location, self);
   v4 = +[SoundActionsPracticeAudioManager sharedInstance];
   v8[0] = _NSConcreteStackBlock;
@@ -89,11 +89,11 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SoundActionsLearnMoreViewController;
-  [(SoundActionsLearnMoreViewController *)&v6 viewWillDisappear:a3];
+  [(SoundActionsLearnMoreViewController *)&v6 viewWillDisappear:disappear];
   v4 = +[SoundActionsPracticeAudioManager sharedInstance];
   [v4 deregisterListener:self];
 
@@ -127,8 +127,8 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [(SoundActionsLearnMoreViewController *)self view];
-        [v10 bounds];
+        view = [(SoundActionsLearnMoreViewController *)self view];
+        [view bounds];
         [SoundActionsPracticeCardCollectionViewCell desiredHeightForData:v9 givenWidth:v11];
         v13 = v12;
 
@@ -157,26 +157,26 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
   }
 
   [(NSLayoutConstraint *)self->_cardHeightConstraint setConstant:v7, v17];
-  v16 = [(UICollectionView *)self->_cardsView collectionViewLayout];
-  [v16 invalidateLayout];
+  collectionViewLayout = [(UICollectionView *)self->_cardsView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)setSounds:(id)a3
+- (void)setSounds:(id)sounds
 {
-  objc_storeStrong(&self->_sounds, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_sounds, sounds);
+  soundsCopy = sounds;
   [(UIPageControl *)self->_pageControl setNumberOfPages:[(NSArray *)self->_sounds count]];
   [(UICollectionView *)self->_cardsView reloadData];
 }
 
-- (void)scrollToCardIndex:(int)a3 animated:(BOOL)a4
+- (void)scrollToCardIndex:(int)index animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(NSArray *)self->_sounds count]> a3)
+  animatedCopy = animated;
+  if ([(NSArray *)self->_sounds count]> index)
   {
     cardsView = self->_cardsView;
-    v8 = [NSIndexPath indexPathForItem:a3 inSection:0];
-    [(UICollectionView *)cardsView scrollToItemAtIndexPath:v8 atScrollPosition:0 animated:v4];
+    v8 = [NSIndexPath indexPathForItem:index inSection:0];
+    [(UICollectionView *)cardsView scrollToItemAtIndexPath:v8 atScrollPosition:0 animated:animatedCopy];
   }
 }
 
@@ -189,20 +189,20 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
     self->_visualizerView = v3;
 
     [(SoundActionsPracticeVisualizerView *)self->_visualizerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(SoundActionsLearnMoreViewController *)self contentView];
-    [v5 addSubview:self->_visualizerView];
+    contentView = [(SoundActionsLearnMoreViewController *)self contentView];
+    [contentView addSubview:self->_visualizerView];
 
     v6 = self->_visualizerView;
-    v18 = [(SoundActionsLearnMoreViewController *)self contentView];
-    v7 = [NSLayoutConstraint constraintWithItem:v6 attribute:3 relatedBy:0 toItem:v18 attribute:3 multiplier:1.0 constant:20.0];
+    contentView2 = [(SoundActionsLearnMoreViewController *)self contentView];
+    v7 = [NSLayoutConstraint constraintWithItem:v6 attribute:3 relatedBy:0 toItem:contentView2 attribute:3 multiplier:1.0 constant:20.0];
     v19[0] = v7;
     v8 = self->_visualizerView;
-    v9 = [(SoundActionsLearnMoreViewController *)self contentView];
-    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:5 relatedBy:0 toItem:v9 attribute:5 multiplier:1.0 constant:20.0];
+    contentView3 = [(SoundActionsLearnMoreViewController *)self contentView];
+    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:5 relatedBy:0 toItem:contentView3 attribute:5 multiplier:1.0 constant:20.0];
     v19[1] = v10;
     v11 = self->_visualizerView;
-    v12 = [(SoundActionsLearnMoreViewController *)self contentView];
-    v13 = [NSLayoutConstraint constraintWithItem:v11 attribute:6 relatedBy:0 toItem:v12 attribute:6 multiplier:1.0 constant:-20.0];
+    contentView4 = [(SoundActionsLearnMoreViewController *)self contentView];
+    v13 = [NSLayoutConstraint constraintWithItem:v11 attribute:6 relatedBy:0 toItem:contentView4 attribute:6 multiplier:1.0 constant:-20.0];
     v19[2] = v13;
     v14 = self->_visualizerView;
     +[SoundActionsPracticeVisualizerView desiredHeight];
@@ -215,16 +215,16 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
 
 - (void)_setupPlayButton
 {
-  v3 = [(SoundActionsLearnMoreViewController *)self buttonTray];
-  [v3 removeAllButtons];
+  buttonTray = [(SoundActionsLearnMoreViewController *)self buttonTray];
+  [buttonTray removeAllButtons];
 
   v6 = +[OBBoldTrayButton boldButton];
   v4 = settingsLocString(@"SOUND_ACTION_LEARN_PAGE_PLAY", @"Accessibility");
   [v6 setTitle:v4 forState:0];
 
   [v6 addTarget:self action:"_playCurrentSound" forControlEvents:64];
-  v5 = [(SoundActionsLearnMoreViewController *)self buttonTray];
-  [v5 addButton:v6];
+  buttonTray2 = [(SoundActionsLearnMoreViewController *)self buttonTray];
+  [buttonTray2 addButton:v6];
 }
 
 - (void)_setupCardsView
@@ -248,18 +248,18 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
     v6 = +[UIColor clearColor];
     [(UICollectionView *)v5 setBackgroundColor:v6];
 
-    v7 = [(SoundActionsLearnMoreViewController *)self contentView];
-    [v7 addSubview:self->_cardsView];
+    contentView = [(SoundActionsLearnMoreViewController *)self contentView];
+    [contentView addSubview:self->_cardsView];
 
     v8 = [NSLayoutConstraint constraintWithItem:self->_cardsView attribute:3 relatedBy:0 toItem:self->_visualizerView attribute:4 multiplier:1.0 constant:36.0];
     v19[0] = v8;
     v9 = self->_cardsView;
-    v10 = [(SoundActionsLearnMoreViewController *)self view];
-    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:0.0];
+    view = [(SoundActionsLearnMoreViewController *)self view];
+    v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:view attribute:5 multiplier:1.0 constant:0.0];
     v19[1] = v11;
     v12 = self->_cardsView;
-    v13 = [(SoundActionsLearnMoreViewController *)self view];
-    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:v13 attribute:6 multiplier:1.0 constant:0.0];
+    view2 = [(SoundActionsLearnMoreViewController *)self view];
+    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:view2 attribute:6 multiplier:1.0 constant:0.0];
     v19[2] = v14;
     v15 = [NSArray arrayWithObjects:v19 count:3];
     [NSLayoutConstraint activateConstraints:v15];
@@ -290,45 +290,45 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
 
     [(UIPageControl *)self->_pageControl setHidesForSinglePage:1];
     [(UIPageControl *)self->_pageControl addTarget:self action:"_didActivatePageControl:" forControlEvents:4096];
-    v7 = [(SoundActionsLearnMoreViewController *)self contentView];
-    [v7 addSubview:self->_pageControl];
+    contentView = [(SoundActionsLearnMoreViewController *)self contentView];
+    [contentView addSubview:self->_pageControl];
 
     v8 = self->_pageControl;
-    v9 = [(SoundActionsLearnMoreViewController *)self contentView];
-    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:9 relatedBy:0 toItem:v9 attribute:9 multiplier:1.0 constant:0.0];
+    contentView2 = [(SoundActionsLearnMoreViewController *)self contentView];
+    v10 = [NSLayoutConstraint constraintWithItem:v8 attribute:9 relatedBy:0 toItem:contentView2 attribute:9 multiplier:1.0 constant:0.0];
     v11 = [NSLayoutConstraint constraintWithItem:self->_pageControl attribute:3 relatedBy:0 toItem:self->_cardsView attribute:4 multiplier:1.0 constant:0.0, v10];
     v16[1] = v11;
     v12 = self->_pageControl;
-    v13 = [(SoundActionsLearnMoreViewController *)self contentView];
-    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:4 relatedBy:0 toItem:v13 attribute:4 multiplier:1.0 constant:0.0];
+    contentView3 = [(SoundActionsLearnMoreViewController *)self contentView];
+    v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:4 relatedBy:0 toItem:contentView3 attribute:4 multiplier:1.0 constant:0.0];
     v16[2] = v14;
     v15 = [NSArray arrayWithObjects:v16 count:3];
     [NSLayoutConstraint activateConstraints:v15];
   }
 }
 
-- (void)_didActivatePageControl:(id)a3
+- (void)_didActivatePageControl:(id)control
 {
-  v4 = [a3 currentPage];
+  currentPage = [control currentPage];
   cardsView = self->_cardsView;
-  v6 = [NSIndexPath indexPathForItem:v4 inSection:0];
+  v6 = [NSIndexPath indexPathForItem:currentPage inSection:0];
   [(UICollectionView *)cardsView scrollToItemAtIndexPath:v6 atScrollPosition:0 animated:1];
 }
 
 - (void)_playCurrentSound
 {
-  v3 = [(UIPageControl *)self->_pageControl currentPage];
-  v4 = [(SoundActionsLearnMoreViewController *)self sounds];
-  v5 = [v4 count];
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
+  sounds = [(SoundActionsLearnMoreViewController *)self sounds];
+  v5 = [sounds count];
 
-  if (v3 < v5)
+  if (currentPage < v5)
   {
-    v6 = [(SoundActionsLearnMoreViewController *)self sounds];
-    v9 = [v6 objectAtIndexedSubscript:{-[UIPageControl currentPage](self->_pageControl, "currentPage")}];
+    sounds2 = [(SoundActionsLearnMoreViewController *)self sounds];
+    v9 = [sounds2 objectAtIndexedSubscript:{-[UIPageControl currentPage](self->_pageControl, "currentPage")}];
 
     v7 = +[SoundActionsPracticeAudioManager sharedInstance];
-    v8 = [v9 soundURL];
-    [v7 playURL:v8];
+    soundURL = [v9 soundURL];
+    [v7 playURL:soundURL];
   }
 }
 
@@ -343,22 +343,22 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
   return floorf(v8);
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"SAP_CARD_CELL_REUSE_ID" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"SAP_CARD_CELL_REUSE_ID" forIndexPath:pathCopy];
   sounds = self->_sounds;
-  v9 = [v6 item];
+  item = [pathCopy item];
 
-  v10 = [(NSArray *)sounds objectAtIndexedSubscript:v9];
+  v10 = [(NSArray *)sounds objectAtIndexedSubscript:item];
   [v7 setSoundActionData:v10];
 
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [a3 bounds];
+  [view bounds];
   v7 = v6;
   [(NSLayoutConstraint *)self->_cardHeightConstraint constant];
   v9 = v8;
@@ -368,9 +368,9 @@ void __53__SoundActionsLearnMoreViewController_viewDidAppear___block_invoke_2(ui
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = [a5 row];
+  v6 = [path row];
   pageControl = self->_pageControl;
 
   [(UIPageControl *)pageControl setCurrentPage:v6];

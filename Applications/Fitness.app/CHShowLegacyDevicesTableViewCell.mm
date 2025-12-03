@@ -1,15 +1,15 @@
 @interface CHShowLegacyDevicesTableViewCell
-- (CHShowLegacyDevicesTableViewCell)initWithCoder:(id)a3;
-- (CHShowLegacyDevicesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHShowLegacyDevicesTableViewCell)initWithCoder:(id)coder;
+- (CHShowLegacyDevicesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation CHShowLegacyDevicesTableViewCell
 
-- (CHShowLegacyDevicesTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHShowLegacyDevicesTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_10037A7E4(a3, a4, v6);
+  return sub_10037A7E4(style, identifier, v6);
 }
 
-- (CHShowLegacyDevicesTableViewCell)initWithCoder:(id)a3
+- (CHShowLegacyDevicesTableViewCell)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface PKActivityTableCell
-- (PKActivityTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PKActivityTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)pk_childrenForAppearance;
 - (void)layoutSubviews;
 @end
 
 @implementation PKActivityTableCell
 
-- (PKActivityTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKActivityTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = PKActivityTableCell;
-  v4 = [(PKActivityTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKActivityTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -19,8 +19,8 @@
 
     [(UIActivityIndicatorView *)v4->_activityIndicator setHidesWhenStopped:1];
     [(UIActivityIndicatorView *)v4->_activityIndicator sizeToFit];
-    v7 = [(PKActivityTableCell *)v4 contentView];
-    [v7 addSubview:v4->_activityIndicator];
+    contentView = [(PKActivityTableCell *)v4 contentView];
+    [contentView addSubview:v4->_activityIndicator];
   }
 
   return v4;
@@ -31,10 +31,10 @@
   v13.receiver = self;
   v13.super_class = PKActivityTableCell;
   [(PKActivityTableCell *)&v13 layoutSubviews];
-  v3 = [(PKActivityTableCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKActivityTableCell *)self _shouldReverseLayoutDirection];
   [(UIActivityIndicatorView *)self->_activityIndicator frame];
-  v4 = [(PKActivityTableCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKActivityTableCell *)self contentView];
+  [contentView bounds];
   UIRectCenteredYInRect();
   v6 = v5;
   v8 = v7;
@@ -50,10 +50,10 @@
     v11 = 15.0;
   }
 
-  if ((v3 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
-    v12 = [(PKActivityTableCell *)self contentView];
-    [v12 bounds];
+    contentView2 = [(PKActivityTableCell *)self contentView];
+    [contentView2 bounds];
     v11 = CGRectGetMaxX(v14) - v8 - v11;
   }
 
@@ -64,9 +64,9 @@
 {
   v7.receiver = self;
   v7.super_class = PKActivityTableCell;
-  v3 = [(UITableViewCell *)&v7 pk_childrenForAppearance];
-  v4 = [(PKActivityTableCell *)self activityIndicator];
-  v5 = [v3 arrayByAddingObject:v4];
+  pk_childrenForAppearance = [(UITableViewCell *)&v7 pk_childrenForAppearance];
+  activityIndicator = [(PKActivityTableCell *)self activityIndicator];
+  v5 = [pk_childrenForAppearance arrayByAddingObject:activityIndicator];
 
   return v5;
 }

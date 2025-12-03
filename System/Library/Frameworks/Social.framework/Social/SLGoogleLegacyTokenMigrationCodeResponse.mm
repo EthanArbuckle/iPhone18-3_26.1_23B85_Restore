@@ -1,18 +1,18 @@
 @interface SLGoogleLegacyTokenMigrationCodeResponse
-- (SLGoogleLegacyTokenMigrationCodeResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5;
+- (SLGoogleLegacyTokenMigrationCodeResponse)initWithData:(id)data urlResponse:(id)response error:(id)error;
 @end
 
 @implementation SLGoogleLegacyTokenMigrationCodeResponse
 
-- (SLGoogleLegacyTokenMigrationCodeResponse)initWithData:(id)a3 urlResponse:(id)a4 error:(id)a5
+- (SLGoogleLegacyTokenMigrationCodeResponse)initWithData:(id)data urlResponse:(id)response error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  responseCopy = response;
   v32.receiver = self;
   v32.super_class = SLGoogleLegacyTokenMigrationCodeResponse;
-  v10 = [(SLGoogleLegacyTokenMigrationResponse *)&v32 initWithData:a3 urlResponse:v9 error:a5];
+  v10 = [(SLGoogleLegacyTokenMigrationResponse *)&v32 initWithData:data urlResponse:responseCopy error:error];
   v11 = v10;
-  if (!a5)
+  if (!error)
   {
     if (v10)
     {
@@ -21,9 +21,9 @@
       {
         v12 = objc_alloc_init(MEMORY[0x1E695DEC8]);
         v13 = MEMORY[0x1E696AC58];
-        v14 = [v9 allHeaderFields];
+        allHeaderFields = [responseCopy allHeaderFields];
         v15 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1F41EC300];
-        v16 = [v13 cookiesWithResponseHeaderFields:v14 forURL:v15];
+        v16 = [v13 cookiesWithResponseHeaderFields:allHeaderFields forURL:v15];
 
         v30 = 0u;
         v31 = 0u;
@@ -45,15 +45,15 @@
               }
 
               v22 = *(*(&v28 + 1) + 8 * i);
-              v23 = [v22 name];
-              v24 = [v23 isEqualToString:@"oauth_code"];
+              name = [v22 name];
+              v24 = [name isEqualToString:@"oauth_code"];
 
               if (v24)
               {
                 _SLLog(v5, 5, @"Successfully got an auth code");
-                v25 = [v22 value];
+                value = [v22 value];
                 code = v11->_code;
-                v11->_code = v25;
+                v11->_code = value;
 
                 goto LABEL_14;
               }

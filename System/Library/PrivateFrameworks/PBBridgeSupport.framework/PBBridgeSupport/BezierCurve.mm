@@ -1,24 +1,24 @@
 @interface BezierCurve
-- (BezierCurve)initWithDictionary:(id)a3;
-- (double)derivativeAt:(float32x4_t *)a1;
-- (double)pointAt:(float32x4_t *)a1;
+- (BezierCurve)initWithDictionary:(id)dictionary;
+- (double)derivativeAt:(float32x4_t *)at;
+- (double)pointAt:(float32x4_t *)at;
 - (void)scaleBy:(BezierCurve *)self;
 @end
 
 @implementation BezierCurve
 
-- (BezierCurve)initWithDictionary:(id)a3
+- (BezierCurve)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = BezierCurve;
   v5 = [(BezierCurve *)&v43 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"p0"];
-    v7 = [v4 objectForKeyedSubscript:@"p1"];
-    v8 = [v4 objectForKeyedSubscript:@"p2"];
-    v9 = [v4 objectForKeyedSubscript:@"p3"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"p0"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"p1"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"p2"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"p3"];
     v10 = [v6 objectAtIndexedSubscript:0];
     [v10 floatValue];
     *v5->_p0 = v11;
@@ -87,15 +87,15 @@
   return v5;
 }
 
-- (double)pointAt:(float32x4_t *)a1
+- (double)pointAt:(float32x4_t *)at
 {
   __asm { FMOV            V3.4S, #3.0 }
 
-  *&result = vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(a1[4], a2), a2), a2), vaddq_f32(vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(a1[1], 1.0 - a2), 1.0 - a2), 1.0 - a2), vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[2], _Q3), a2), 1.0 - a2), 1.0 - a2)), vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[3], _Q3), a2), a2), 1.0 - a2))).u64[0];
+  *&result = vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(at[4], a2), a2), a2), vaddq_f32(vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(at[1], 1.0 - a2), 1.0 - a2), 1.0 - a2), vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[2], _Q3), a2), 1.0 - a2), 1.0 - a2)), vmulq_n_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[3], _Q3), a2), a2), 1.0 - a2))).u64[0];
   return result;
 }
 
-- (double)derivativeAt:(float32x4_t *)a1
+- (double)derivativeAt:(float32x4_t *)at
 {
   __asm
   {
@@ -103,7 +103,7 @@
     FMOV            V6.4S, #6.0
   }
 
-  *&result = vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[4], _Q2), a2), a2), vsubq_f32(vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[3], _Q6), 1.0 - a2), a2), vsubq_f32(vsubq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[2], _Q2), 1.0 - a2), 1.0 - a2), vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[1], _Q2), 1.0 - a2), 1.0 - a2)), vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[2], _Q6), 1.0 - a2), a2))), vmulq_n_f32(vmulq_n_f32(vmulq_f32(a1[3], _Q2), a2), a2))).u64[0];
+  *&result = vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[4], _Q2), a2), a2), vsubq_f32(vaddq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[3], _Q6), 1.0 - a2), a2), vsubq_f32(vsubq_f32(vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[2], _Q2), 1.0 - a2), 1.0 - a2), vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[1], _Q2), 1.0 - a2), 1.0 - a2)), vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[2], _Q6), 1.0 - a2), a2))), vmulq_n_f32(vmulq_n_f32(vmulq_f32(at[3], _Q2), a2), a2))).u64[0];
   return result;
 }
 

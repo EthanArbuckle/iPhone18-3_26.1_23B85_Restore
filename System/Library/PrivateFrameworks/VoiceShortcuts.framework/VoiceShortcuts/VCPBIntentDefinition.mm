@@ -1,21 +1,21 @@
 @interface VCPBIntentDefinition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addFiles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFiles:(id)files;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPBIntentDefinition
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(VCPBIntentDefinition *)self setAssociatedBundleID:?];
   }
@@ -24,7 +24,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -51,13 +51,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((associatedBundleID = self->_associatedBundleID, !(associatedBundleID | v4[1])) || -[NSString isEqual:](associatedBundleID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((associatedBundleID = self->_associatedBundleID, !(associatedBundleID | equalCopy[1])) || -[NSString isEqual:](associatedBundleID, "isEqual:")))
   {
     files = self->_files;
-    if (files | v4[2])
+    if (files | equalCopy[2])
     {
       v7 = [(NSMutableArray *)files isEqual:?];
     }
@@ -76,11 +76,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_associatedBundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_associatedBundleID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -104,7 +104,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addFiles:v13];
 
         ++v12;
@@ -121,36 +121,36 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setAssociatedBundleID:self->_associatedBundleID];
+  toCopy = to;
+  [toCopy setAssociatedBundleID:self->_associatedBundleID];
   if ([(VCPBIntentDefinition *)self filesCount])
   {
-    [v8 clearFiles];
-    v4 = [(VCPBIntentDefinition *)self filesCount];
-    if (v4)
+    [toCopy clearFiles];
+    filesCount = [(VCPBIntentDefinition *)self filesCount];
+    if (filesCount)
     {
-      v5 = v4;
+      v5 = filesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPBIntentDefinition *)self filesAtIndex:i];
-        [v8 addFiles:v7];
+        [toCopy addFiles:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_associatedBundleID)
   {
     __assert_rtn("[VCPBIntentDefinition writeTo:]", "VCPBIntentDefinition.m", 126, "nil != self->_associatedBundleID");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -190,12 +190,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   associatedBundleID = self->_associatedBundleID;
   if (associatedBundleID)
   {
-    [v3 setObject:associatedBundleID forKey:@"associatedBundleID"];
+    [dictionary setObject:associatedBundleID forKey:@"associatedBundleID"];
   }
 
   if ([(NSMutableArray *)self->_files count])
@@ -220,8 +220,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -244,28 +244,28 @@
   v8.receiver = self;
   v8.super_class = VCPBIntentDefinition;
   v4 = [(VCPBIntentDefinition *)&v8 description];
-  v5 = [(VCPBIntentDefinition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPBIntentDefinition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addFiles:(id)a3
+- (void)addFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   files = self->_files;
-  v8 = v4;
+  v8 = filesCopy;
   if (!files)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_files;
     self->_files = v6;
 
-    v4 = v8;
+    filesCopy = v8;
     files = self->_files;
   }
 
-  [(NSMutableArray *)files addObject:v4];
+  [(NSMutableArray *)files addObject:filesCopy];
 }
 
 @end

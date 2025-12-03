@@ -1,7 +1,7 @@
 @interface AKAuthenticatableResourceFactory
-+ (id)authenticatableResourceForBundleID:(id)a3;
++ (id)authenticatableResourceForBundleID:(id)d;
 + (id)resourceDictionary;
-+ (int64_t)resourceTypeForBundleID:(id)a3;
++ (int64_t)resourceTypeForBundleID:(id)d;
 @end
 
 @implementation AKAuthenticatableResourceFactory
@@ -22,37 +22,37 @@
   return v2;
 }
 
-+ (int64_t)resourceTypeForBundleID:(id)a3
++ (int64_t)resourceTypeForBundleID:(id)d
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [v7 resourceDictionary];
-  v5 = [v4 objectForKey:location[0]];
-  _objc_release(v4);
+  objc_storeStrong(location, d);
+  resourceDictionary = [selfCopy resourceDictionary];
+  v5 = [resourceDictionary objectForKey:location[0]];
+  _objc_release(resourceDictionary);
   if (v5)
   {
-    v8 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
-  return v8;
+  return integerValue;
 }
 
-+ (id)authenticatableResourceForBundleID:(id)a3
++ (id)authenticatableResourceForBundleID:(id)d
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [v10 resourceTypeForBundleID:location[0]];
+  objc_storeStrong(location, d);
+  v8 = [selfCopy resourceTypeForBundleID:location[0]];
   if (v8)
   {
     oslog = _AKLogSystem();

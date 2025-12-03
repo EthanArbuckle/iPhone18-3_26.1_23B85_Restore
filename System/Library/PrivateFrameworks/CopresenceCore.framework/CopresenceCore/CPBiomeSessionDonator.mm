@@ -1,21 +1,21 @@
 @interface CPBiomeSessionDonator
 - (CPBiomeSessionDonator)init;
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4;
-- (void)conversationManager:(id)a3 removedConversationWithUUID:(id)a4;
+- (void)conversationManager:(id)manager conversationChanged:(id)changed;
+- (void)conversationManager:(id)manager removedConversationWithUUID:(id)d;
 @end
 
 @implementation CPBiomeSessionDonator
 
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4
+- (void)conversationManager:(id)manager conversationChanged:(id)changed
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  specialized BiomeSessionDonator.conversationManager(_:conversationChanged:)(v6);
+  changedCopy = changed;
+  selfCopy = self;
+  specialized BiomeSessionDonator.conversationManager(_:conversationChanged:)(changedCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)conversationManager:(id)a3 removedConversationWithUUID:(id)a4
+- (void)conversationManager:(id)manager removedConversationWithUUID:(id)d
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -27,7 +27,7 @@
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v6 + 16))(v10, v12, v5);
   swift_beginAccess();
-  v13 = self;
+  selfCopy = self;
   specialized Dictionary.subscript.setter(0, 0, v10);
   swift_endAccess();
 

@@ -1,12 +1,12 @@
 @interface DYCaptureFile
-- (BOOL)acceptCaptureVisitor:(id)a3;
+- (BOOL)acceptCaptureVisitor:(id)visitor;
 - (BOOL)executable;
 - (DYCaptureFile)init;
-- (id)_initWithArchive:(id)a3 hashPosition:(unsigned int)a4 name:(id)a5;
-- (id)copyData:(id *)a3;
+- (id)_initWithArchive:(id)archive hashPosition:(unsigned int)position name:(id)name;
+- (id)copyData:(id *)data;
 - (id)decodeArchivedObject;
-- (id)decodeSerializedPropertyListWithOptions:(unint64_t)a3 error:(id *)a4;
-- (id)openFunctionStream:(id *)a3;
+- (id)decodeSerializedPropertyListWithOptions:(unint64_t)options error:(id *)error;
+- (id)openFunctionStream:(id *)stream;
 - (int)kind;
 - (void)_determineKind;
 - (void)dealloc;
@@ -21,7 +21,7 @@
   return 0;
 }
 
-- (id)_initWithArchive:(id)a3 hashPosition:(unsigned int)a4 name:(id)a5
+- (id)_initWithArchive:(id)archive hashPosition:(unsigned int)position name:(id)name
 {
   v11.receiver = self;
   v11.super_class = DYCaptureFile;
@@ -29,11 +29,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_archive = a3;
-    [a3 _fileObjectDidInitialize];
-    v9->_file_pos = *([a3 _hashTable] + 12 * a4);
-    v9->_alias = *([a3 _hashTable] + 12 * a4 + 8) != -1;
-    v9->_name = [a5 copy];
+    v8->_archive = archive;
+    [archive _fileObjectDidInitialize];
+    v9->_file_pos = *([archive _hashTable] + 12 * position);
+    v9->_alias = *([archive _hashTable] + 12 * position + 8) != -1;
+    v9->_name = [name copy];
   }
 
   return v9;
@@ -92,7 +92,7 @@
   return kind_cache == 1;
 }
 
-- (BOOL)acceptCaptureVisitor:(id)a3
+- (BOOL)acceptCaptureVisitor:(id)visitor
 {
   v5 = objc_autoreleasePoolPush();
   kind_cache = self->_kind_cache;
@@ -104,29 +104,29 @@
 
   if (kind_cache == 2)
   {
-    [a3 visitInternalFile:self];
+    [visitor visitInternalFile:self];
   }
 
   else if (kind_cache == 1)
   {
-    [a3 visitFunctionStreamFile:self];
+    [visitor visitFunctionStreamFile:self];
   }
 
   else
   {
-    [a3 visitDataFile:self];
+    [visitor visitDataFile:self];
   }
 
   objc_autoreleasePoolPop(v5);
   return 1;
 }
 
-- (id)copyData:(id *)a3
+- (id)copyData:(id *)data
 {
   file_pos = self->_file_pos;
   v9 = 0;
   v10 = 0;
-  v5 = [(DYCaptureArchive *)self->_archive requestDataForFilePosition:file_pos buffer:&v10 size:&v9 error:a3];
+  v5 = [(DYCaptureArchive *)self->_archive requestDataForFilePosition:file_pos buffer:&v10 size:&v9 error:data];
   result = 0;
   if (v5)
   {
@@ -143,13 +143,13 @@
   return result;
 }
 
-- (id)openFunctionStream:(id *)a3
+- (id)openFunctionStream:(id *)stream
 {
   result = [(DYCaptureFile *)self copyMutableData:?];
   if (result)
   {
     v5 = result;
-    v6 = [[DYDataFunctionStream alloc] initWithData:result error:a3];
+    v6 = [[DYDataFunctionStream alloc] initWithData:result error:stream];
 
     return v6;
   }
@@ -172,10 +172,10 @@
   return v4;
 }
 
-- (id)decodeSerializedPropertyListWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)decodeSerializedPropertyListWithOptions:(unint64_t)options error:(id *)error
 {
   v6 = [(DYCaptureFile *)self copyMutableData:0];
-  v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:a3 format:0 error:a4];
+  v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:options format:0 error:error];
 
   return v7;
 }

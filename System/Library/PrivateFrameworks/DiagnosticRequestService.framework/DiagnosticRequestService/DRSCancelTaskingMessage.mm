@@ -1,54 +1,54 @@
 @interface DRSCancelTaskingMessage
-- (BOOL)_isEqualToMessage:(id)a3;
-- (DRSCancelTaskingMessage)initWithJSONDict:(id)a3;
-- (DRSCancelTaskingMessage)initWithVersion:(id)a3 messageUUID:(id)a4 dateBroadcast:(id)a5 dateReceived:(id)a6 perTeamCancelledConfigUUIDs:(id)a7;
+- (BOOL)_isEqualToMessage:(id)message;
+- (DRSCancelTaskingMessage)initWithJSONDict:(id)dict;
+- (DRSCancelTaskingMessage)initWithVersion:(id)version messageUUID:(id)d dateBroadcast:(id)broadcast dateReceived:(id)received perTeamCancelledConfigUUIDs:(id)ds;
 - (id)jsonDictRepresentation;
 @end
 
 @implementation DRSCancelTaskingMessage
 
-- (DRSCancelTaskingMessage)initWithVersion:(id)a3 messageUUID:(id)a4 dateBroadcast:(id)a5 dateReceived:(id)a6 perTeamCancelledConfigUUIDs:(id)a7
+- (DRSCancelTaskingMessage)initWithVersion:(id)version messageUUID:(id)d dateBroadcast:(id)broadcast dateReceived:(id)received perTeamCancelledConfigUUIDs:(id)ds
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (_checkCancelNonNil(v12, "version") && _checkCancelNonNil(v13, "cancelTaskingUUID") && _checkCancelNonNil(v16, "perTeamCancelledConfigUUIDs"))
+  versionCopy = version;
+  dCopy = d;
+  broadcastCopy = broadcast;
+  receivedCopy = received;
+  dsCopy = ds;
+  if (_checkCancelNonNil(versionCopy, "version") && _checkCancelNonNil(dCopy, "cancelTaskingUUID") && _checkCancelNonNil(dsCopy, "perTeamCancelledConfigUUIDs"))
   {
     v21.receiver = self;
     v21.super_class = DRSCancelTaskingMessage;
-    v17 = [(DRSTaskingSystemMessage *)&v21 initWithVersion:v12 messageUUID:v13 dateBroadcast:v14 dateReceived:v15];
+    v17 = [(DRSTaskingSystemMessage *)&v21 initWithVersion:versionCopy messageUUID:dCopy dateBroadcast:broadcastCopy dateReceived:receivedCopy];
     v18 = v17;
     if (v17)
     {
-      objc_storeStrong(&v17->_perTeamCancelledConfigUUIDs, a7);
+      objc_storeStrong(&v17->_perTeamCancelledConfigUUIDs, ds);
     }
 
     self = v18;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (BOOL)_isEqualToMessage:(id)a3
+- (BOOL)_isEqualToMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v10.receiver = self;
   v10.super_class = DRSCancelTaskingMessage;
-  if ([(DRSTaskingSystemMessage *)&v10 _isEqualToMessage:v4])
+  if ([(DRSTaskingSystemMessage *)&v10 _isEqualToMessage:messageCopy])
   {
-    v5 = v4;
-    v6 = [(DRSCancelTaskingMessage *)self perTeamCancelledConfigUUIDs];
-    v7 = [v5 perTeamCancelledConfigUUIDs];
+    v5 = messageCopy;
+    perTeamCancelledConfigUUIDs = [(DRSCancelTaskingMessage *)self perTeamCancelledConfigUUIDs];
+    perTeamCancelledConfigUUIDs2 = [v5 perTeamCancelledConfigUUIDs];
 
-    v8 = [v6 isEqualToDictionary:v7];
+    v8 = [perTeamCancelledConfigUUIDs isEqualToDictionary:perTeamCancelledConfigUUIDs2];
   }
 
   else
@@ -62,27 +62,27 @@
 - (id)jsonDictRepresentation
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(DRSCancelTaskingMessage *)self perTeamCancelledConfigUUIDs];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  perTeamCancelledConfigUUIDs = [(DRSCancelTaskingMessage *)self perTeamCancelledConfigUUIDs];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke;
   v11[3] = &unk_27899FC88;
-  v12 = v3;
-  v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = dictionary;
+  v5 = dictionary;
+  [perTeamCancelledConfigUUIDs enumerateKeysAndObjectsUsingBlock:v11];
 
   v13 = kDRSCancelTaskingMessage_perTeamCancelledConfigUUIDsKey;
   v14[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v10.receiver = self;
   v10.super_class = DRSCancelTaskingMessage;
-  v7 = [(DRSTaskingSystemMessage *)&v10 _mutableJSONDictRepresentation];
-  [v7 addEntriesFromDictionary:v6];
+  _mutableJSONDictRepresentation = [(DRSTaskingSystemMessage *)&v10 _mutableJSONDictRepresentation];
+  [_mutableJSONDictRepresentation addEntriesFromDictionary:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return _mutableJSONDictRepresentation;
 }
 
 void __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -128,12 +128,12 @@ void __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (DRSCancelTaskingMessage)initWithJSONDict:(id)a3
+- (DRSCancelTaskingMessage)initWithJSONDict:(id)dict
 {
-  v4 = a3;
-  if ([objc_opt_class() isJSONDictForClass:v4])
+  dictCopy = dict;
+  if ([objc_opt_class() isJSONDictForClass:dictCopy])
   {
-    v5 = [v4 objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
+    v5 = [dictCopy objectForKeyedSubscript:kDRSTaskingSystemMessage_messageUUIDKey];
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v7 = DPLogHandle_TaskingMessageError();
@@ -143,16 +143,16 @@ void __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke(uint64_t
         _os_signpost_emit_with_name_impl(&dword_232906000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CancelTaskingMessageJSONInitError", "Invalid cancelTaskingUUID", buf, 2u);
       }
 
-      v13 = 0;
+      selfCopy = 0;
       v6 = v5;
       goto LABEL_21;
     }
 
     v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
 
-    v7 = _dateFromJSONDict(v4, kDRSTaskingSystemMessage_DateReceivedKey);
-    v8 = _dateFromJSONDict(v4, kDRSTaskingSystemMessage_DateBroadcastKey);
-    v9 = [v4 objectForKeyedSubscript:kDRSCancelTaskingMessage_perTeamCancelledConfigUUIDsKey];
+    v7 = _dateFromJSONDict(dictCopy, kDRSTaskingSystemMessage_DateReceivedKey);
+    v8 = _dateFromJSONDict(dictCopy, kDRSTaskingSystemMessage_DateBroadcastKey);
+    v9 = [dictCopy objectForKeyedSubscript:kDRSCancelTaskingMessage_perTeamCancelledConfigUUIDsKey];
     if (v9)
     {
       objc_opt_class();
@@ -173,13 +173,13 @@ void __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke(uint64_t
       v20 = buf;
       v21 = 0x2020000000;
       v22 = 0;
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __44__DRSCancelTaskingMessage_initWithJSONDict___block_invoke;
       v16[3] = &unk_27899FCB0;
       v18 = buf;
-      v11 = v10;
+      v11 = dictionary;
       v17 = v11;
       [v9 enumerateKeysAndObjectsUsingBlock:v16];
       v12 = v20[24];
@@ -188,7 +188,7 @@ void __49__DRSCancelTaskingMessage_jsonDictRepresentation__block_invoke(uint64_t
       if (v12)
       {
 LABEL_19:
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
     }
@@ -198,9 +198,9 @@ LABEL_19:
       v11 = 0;
     }
 
-    v9 = [(DRSTaskingSystemMessage *)self _versionFromJSONDict:v4];
+    v9 = [(DRSTaskingSystemMessage *)self _versionFromJSONDict:dictCopy];
     self = [(DRSCancelTaskingMessage *)self initWithVersion:v9 messageUUID:v6 dateBroadcast:v8 dateReceived:v7 perTeamCancelledConfigUUIDs:v11];
-    v13 = self;
+    selfCopy = self;
 LABEL_20:
 
 LABEL_21:
@@ -214,10 +214,10 @@ LABEL_21:
     _os_signpost_emit_with_name_impl(&dword_232906000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CancelTaskingMessageJSONInitError", "JSON dictionary of wrong type", buf, 2u);
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_22:
 
-  return v13;
+  return selfCopy;
 }
 
 void __44__DRSCancelTaskingMessage_initWithJSONDict___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)

@@ -1,19 +1,19 @@
 @interface SUUISplitViewTemplateElement
 + (id)supportedFeatures;
 - (BOOL)usesInlineSplitContent;
-- (SUUISplitViewTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)_splitElementForIndex:(int64_t)a3;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUISplitViewTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)_splitElementForIndex:(int64_t)index;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUISplitViewTemplateElement
 
-- (SUUISplitViewTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISplitViewTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUISplitViewTemplateElement;
-  v9 = [(SUUIViewElement *)&v18 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   v10 = v9;
   if (v9)
   {
@@ -25,7 +25,7 @@
     rightNavigationDocument = v10->_rightNavigationDocument;
     v10->_rightNavigationDocument = v13;
 
-    v15 = [v8 getAttribute:@"displayMode"];
+    v15 = [elementCopy getAttribute:@"displayMode"];
     if ([v15 isEqualToString:@"all"])
     {
       v16 = 2;
@@ -56,18 +56,18 @@ LABEL_9:
 
 - (BOOL)usesInlineSplitContent
 {
-  v3 = [(SUUISplitViewTemplateElement *)self leftSplitElement];
-  v4 = [v3 children];
-  if ([v4 count])
+  leftSplitElement = [(SUUISplitViewTemplateElement *)self leftSplitElement];
+  children = [leftSplitElement children];
+  if ([children count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SUUISplitViewTemplateElement *)self rightSplitElement];
-    v7 = [v6 children];
-    v5 = [v7 count] != 0;
+    rightSplitElement = [(SUUISplitViewTemplateElement *)self rightSplitElement];
+    children2 = [rightSplitElement children];
+    v5 = [children2 count] != 0;
   }
 
   return v5;
@@ -83,22 +83,22 @@ LABEL_9:
   return v2;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUISplitViewTemplateElement;
-  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_preferredDisplayMode = [(SUUISplitViewTemplateElement *)v4 preferredDisplayMode];
+    self->_preferredDisplayMode = [(SUUISplitViewTemplateElement *)elementCopy preferredDisplayMode];
   }
 
   return v6;
 }
 
-- (id)_splitElementForIndex:(int64_t)a3
+- (id)_splitElementForIndex:(int64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -110,15 +110,15 @@ LABEL_9:
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v8[3] = 0;
-  v4 = [(SUUISplitViewTemplateElement *)self children];
+  children = [(SUUISplitViewTemplateElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__SUUISplitViewTemplateElement__splitElementForIndex___block_invoke;
   v7[3] = &unk_2798FCF78;
   v7[5] = &v9;
-  v7[6] = a3;
+  v7[6] = index;
   v7[4] = v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
   v5 = v10[5];
   _Block_object_dispose(v8, 8);

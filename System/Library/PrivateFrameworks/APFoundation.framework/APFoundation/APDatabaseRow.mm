@@ -1,20 +1,20 @@
 @interface APDatabaseRow
 - (APDatabaseManager)manager;
-- (APDatabaseRow)initWithTable:(id)a3;
+- (APDatabaseRow)initWithTable:(id)table;
 - (BOOL)deleteFromDB;
-- (BOOL)isDataObjectEqual:(id)a3;
+- (BOOL)isDataObjectEqual:(id)equal;
 - (BOOL)save;
 - (NSString)description;
 - (id)_allowedCodingClasses;
-- (id)dictionaryFromBlobForColumnName:(id)a3;
-- (id)initAsNewObjectWithTable:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForColumnName:(id)a3;
-- (int64_t)typeForColumnName:(id)a3;
+- (id)dictionaryFromBlobForColumnName:(id)name;
+- (id)initAsNewObjectWithTable:(id)table;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForColumnName:(id)name;
+- (int64_t)typeForColumnName:(id)name;
 - (void)_createColumns;
-- (void)forwardInvocation:(id)a3;
-- (void)setDictionary:(id)a3 forBlobColumnName:(id)a4;
-- (void)setValue:(id)a3 forColumnName:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)setDictionary:(id)dictionary forBlobColumnName:(id)name;
+- (void)setValue:(id)value forColumnName:(id)name;
 @end
 
 @implementation APDatabaseRow
@@ -26,9 +26,9 @@
   return WeakRetained;
 }
 
-- (APDatabaseRow)initWithTable:(id)a3
+- (APDatabaseRow)initWithTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v20.receiver = self;
   v20.super_class = APDatabaseRow;
   v5 = [(APDatabaseRow *)&v20 init];
@@ -36,11 +36,11 @@
   if (v5)
   {
     v5->_isNewObject = 0;
-    v10 = objc_msgSend_tableName(v4, v6, v7, v8);
+    v10 = objc_msgSend_tableName(tableCopy, v6, v7, v8);
     tableName = v9->_tableName;
     v9->_tableName = v10;
 
-    v15 = objc_msgSend_manager(v4, v12, v13, v14);
+    v15 = objc_msgSend_manager(tableCopy, v12, v13, v14);
     objc_storeWeak(&v9->_manager, v15);
 
     objc_msgSend__createColumns(v9, v16, v17, v18);
@@ -49,9 +49,9 @@
   return v9;
 }
 
-- (id)initAsNewObjectWithTable:(id)a3
+- (id)initAsNewObjectWithTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v20.receiver = self;
   v20.super_class = APDatabaseRow;
   v5 = [(APDatabaseRow *)&v20 init];
@@ -59,11 +59,11 @@
   if (v5)
   {
     v5->_isNewObject = 1;
-    v10 = objc_msgSend_tableName(v4, v6, v7, v8);
+    v10 = objc_msgSend_tableName(tableCopy, v6, v7, v8);
     tableName = v9->_tableName;
     v9->_tableName = v10;
 
-    v15 = objc_msgSend_manager(v4, v12, v13, v14);
+    v15 = objc_msgSend_manager(tableCopy, v12, v13, v14);
     objc_storeWeak(&v9->_manager, v15);
 
     objc_msgSend__createColumns(v9, v16, v17, v18);
@@ -336,10 +336,10 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)isDataObjectEqual:(id)a3
+- (BOOL)isDataObjectEqual:(id)equal
 {
   v139 = *MEMORY[0x1E69E9840];
-  v131 = a3;
+  equalCopy = equal;
   v130 = objc_msgSend_columns(self, v4, v5, v6);
   objc_msgSend_allKeys(v130, v7, v8, v9);
   v132 = 0u;
@@ -369,7 +369,7 @@ LABEL_14:
       if ((objc_msgSend_isEqualToString_(v19, v13, @"rowid", v14) & 1) == 0)
       {
         v20 = objc_msgSend_objectForKey_(v130, v13, v19, v14);
-        v24 = objc_msgSend_columns(v131, v21, v22, v23);
+        v24 = objc_msgSend_columns(equalCopy, v21, v22, v23);
         v27 = objc_msgSend_objectForKey_(v24, v25, v19, v26);
 
         v31 = objc_msgSend_value(v20, v28, v29, v30);
@@ -612,11 +612,11 @@ LABEL_47:
   return v124;
 }
 
-- (id)dictionaryFromBlobForColumnName:(id)a3
+- (id)dictionaryFromBlobForColumnName:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v10 = objc_msgSend_valueForColumnName_(self, v5, v4, v6);
+  nameCopy = name;
+  v10 = objc_msgSend_valueForColumnName_(self, v5, nameCopy, v6);
   if (v10)
   {
     v11 = MEMORY[0x1E696ACD0];
@@ -636,7 +636,7 @@ LABEL_47:
         *buf = 138478339;
         v28 = v17;
         v29 = 2113;
-        v30 = v4;
+        v30 = nameCopy;
         v31 = 2114;
         v32 = v22;
         _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_ERROR, "[%{private}@] Could not unarchive data for %{private}@ column, error: %{public}@", buf, 0x20u);
@@ -661,14 +661,14 @@ LABEL_47:
   return v23;
 }
 
-- (void)setDictionary:(id)a3 forBlobColumnName:(id)a4
+- (void)setDictionary:(id)dictionary forBlobColumnName:(id)name
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (a3)
+  nameCopy = name;
+  if (dictionary)
   {
     v19 = 0;
-    v8 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v6, a3, 1, &v19);
+    v8 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v6, dictionary, 1, &v19);
     v10 = v19;
     if (v10)
     {
@@ -681,7 +681,7 @@ LABEL_47:
         *buf = 138478339;
         v21 = v12;
         v22 = 2113;
-        v23 = v7;
+        v23 = nameCopy;
         v24 = 2114;
         v25 = v17;
         _os_log_impl(&dword_1BADC1000, v11, OS_LOG_TYPE_ERROR, "[%{private}@] Could not archive data for %{private}@ column, error: %{public}@", buf, 0x20u);
@@ -690,13 +690,13 @@ LABEL_47:
 
     else
     {
-      objc_msgSend_setValue_forColumnName_(self, v9, v8, v7);
+      objc_msgSend_setValue_forColumnName_(self, v9, v8, nameCopy);
     }
   }
 
   else
   {
-    objc_msgSend_setValue_forColumnName_(self, v6, 0, v7);
+    objc_msgSend_setValue_forColumnName_(self, v6, 0, nameCopy);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -831,7 +831,7 @@ LABEL_30:
   v10 = objc_msgSend_name(v6, v7, v8, v9);
   v106 = v3;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v103 = v6;
   objc_msgSend_setObject_forKey_(v11, v13, v6, v10);
 
@@ -842,7 +842,7 @@ LABEL_30:
   {
     v17 = 0;
     v18 = 0x1E696A000uLL;
-    v104 = v12;
+    v104 = selfCopy;
     v105 = v15;
     while (1)
     {
@@ -861,7 +861,7 @@ LABEL_30:
     }
 
     v23 = objc_msgSend_stringWithUTF8String_(*(v18 + 3776), v21, Name, v22);
-    v27 = objc_msgSend_readOnlyColumns(v12, v24, v25, v26);
+    v27 = objc_msgSend_readOnlyColumns(selfCopy, v24, v25, v26);
     v30 = objc_msgSend_containsObject_(v27, v28, v23, v29);
 
     if (v30)
@@ -891,7 +891,7 @@ LABEL_29:
       {
         v63 = 3;
 LABEL_25:
-        v12 = v104;
+        selfCopy = v104;
         goto LABEL_26;
       }
 
@@ -931,7 +931,7 @@ LABEL_25:
       {
 
 LABEL_36:
-        v12 = v104;
+        selfCopy = v104;
         goto LABEL_28;
       }
 
@@ -945,7 +945,7 @@ LABEL_36:
       }
 
       v94 = APLogForCategory(0xCuLL);
-      v12 = v104;
+      selfCopy = v104;
       if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
       {
         v95 = objc_opt_class();
@@ -954,7 +954,7 @@ LABEL_36:
         v96 = v95;
         _os_log_impl(&dword_1BADC1000, v94, OS_LOG_TYPE_ERROR, "[%{private}@]: Unable to match property type to DB Column type.", buf, 0xCu);
 
-        v12 = v104;
+        selfCopy = v104;
       }
 
 LABEL_20:
@@ -1006,7 +1006,7 @@ LABEL_28:
       v71 = v70;
       _os_log_impl(&dword_1BADC1000, v56, OS_LOG_TYPE_ERROR, "[%{private}@]: Unable to match property type to DB Column type.", buf, 0xCu);
 
-      v12 = v104;
+      selfCopy = v104;
     }
 
     goto LABEL_20;
@@ -1015,7 +1015,7 @@ LABEL_28:
 LABEL_40:
   free(v16);
   v99 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x1E695DF20], v97, v106, v98);
-  objc_msgSend_setColumns_(v12, v100, v99, v101);
+  objc_msgSend_setColumns_(selfCopy, v100, v99, v101);
 
   v102 = *MEMORY[0x1E69E9840];
 }
@@ -1031,17 +1031,17 @@ LABEL_40:
   return objc_msgSend_setWithObjects_(v2, v8, v3, v9, v4, v5, v6, v7, 0);
 }
 
-- (void)setValue:(id)a3 forColumnName:(id)a4
+- (void)setValue:(id)value forColumnName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  nameCopy = name;
   v11 = objc_msgSend_columns(self, v8, v9, v10);
-  v14 = objc_msgSend_objectForKey_(v11, v12, v7, v13);
+  v14 = objc_msgSend_objectForKey_(v11, v12, nameCopy, v13);
 
   if (v14)
   {
-    objc_msgSend_setValue_(v14, v15, v6, v16);
+    objc_msgSend_setValue_(v14, v15, valueCopy, v16);
   }
 
   else
@@ -1052,7 +1052,7 @@ LABEL_40:
       v20 = 138478083;
       v21 = objc_opt_class();
       v22 = 2113;
-      v23 = v7;
+      v23 = nameCopy;
       v18 = v21;
       _os_log_impl(&dword_1BADC1000, v17, OS_LOG_TYPE_ERROR, "[%{private}@]: Column not avaliable for column name %{private}@.", &v20, 0x16u);
     }
@@ -1061,12 +1061,12 @@ LABEL_40:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForColumnName:(id)a3
+- (id)valueForColumnName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_columns(self, v5, v6, v7);
-  v11 = objc_msgSend_objectForKey_(v8, v9, v4, v10);
+  v11 = objc_msgSend_objectForKey_(v8, v9, nameCopy, v10);
 
   if (v11)
   {
@@ -1081,7 +1081,7 @@ LABEL_40:
       v20 = 138478083;
       v21 = objc_opt_class();
       v22 = 2113;
-      v23 = v4;
+      v23 = nameCopy;
       v17 = v21;
       _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_ERROR, "[%{private}@]: Column not avaliable for column name %{private}@.", &v20, 0x16u);
     }
@@ -1094,12 +1094,12 @@ LABEL_40:
   return v15;
 }
 
-- (int64_t)typeForColumnName:(id)a3
+- (int64_t)typeForColumnName:(id)name
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v8 = objc_msgSend_columns(self, v5, v6, v7);
-  v11 = objc_msgSend_objectForKey_(v8, v9, v4, v10);
+  v11 = objc_msgSend_objectForKey_(v8, v9, nameCopy, v10);
 
   if (v11)
   {
@@ -1114,7 +1114,7 @@ LABEL_40:
       v20 = 138478083;
       v21 = objc_opt_class();
       v22 = 2113;
-      v23 = v4;
+      v23 = nameCopy;
       v17 = v21;
       _os_log_impl(&dword_1BADC1000, v16, OS_LOG_TYPE_ERROR, "[%{private}@]: Column not avaliable for column name %{private}@.", &v20, 0x16u);
     }
@@ -1126,10 +1126,10 @@ LABEL_40:
   return v15;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v8 = objc_msgSend_selector(v4, v5, v6, v7);
+  invocationCopy = invocation;
+  v8 = objc_msgSend_selector(invocationCopy, v5, v6, v7);
   v9 = NSStringFromSelector(v8);
   v15 = objc_msgSend_ap_propertyName(v9, v10, v11, v12);
   if (v15)
@@ -1137,27 +1137,27 @@ LABEL_40:
     if (objc_msgSend_hasPrefix_(v9, v13, @"set", v14))
     {
       v24 = 0;
-      objc_msgSend_getArgument_atIndex_(v4, v16, &v24, 2);
+      objc_msgSend_getArgument_atIndex_(invocationCopy, v16, &v24, 2);
       objc_msgSend_setValue_forColumnName_(self, v18, v24, v15);
     }
 
     else
     {
       v24 = objc_msgSend_valueForColumnName_(self, v16, v9, v17);
-      objc_msgSend_retainArguments(v4, v19, v20, v21);
-      objc_msgSend_setReturnValue_(v4, v22, &v24, v23);
+      objc_msgSend_retainArguments(invocationCopy, v19, v20, v21);
+      objc_msgSend_setReturnValue_(invocationCopy, v22, &v24, v23);
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v11.receiver = self;
   v11.super_class = APDatabaseRow;
   v4 = [(APDatabaseRow *)&v11 methodSignatureForSelector:?];
   if (!v4)
   {
-    v5 = NSStringFromSelector(a3);
+    v5 = NSStringFromSelector(selector);
     if (objc_msgSend_hasPrefix_(v5, v6, @"set", v7))
     {
       objc_msgSend_signatureWithObjCTypes_(MEMORY[0x1E695DF68], v8, "v@:@", v9);

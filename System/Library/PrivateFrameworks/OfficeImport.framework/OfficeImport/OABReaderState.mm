@@ -1,15 +1,15 @@
 @interface OABReaderState
-- (OABReaderState)initWithClient:(Class)a3;
-- (id)contentObjectForId:(int)a3;
-- (id)drawableForShapeId:(int)a3;
+- (OABReaderState)initWithClient:(Class)client;
+- (id)contentObjectForId:(int)id;
+- (id)drawableForShapeId:(int)id;
 - (id)popGroup;
-- (void)setContentObject:(id)a3 forId:(int)a4;
-- (void)setDrawable:(id)a3 forShapeId:(unsigned int)a4;
+- (void)setContentObject:(id)object forId:(int)id;
+- (void)setDrawable:(id)drawable forShapeId:(unsigned int)id;
 @end
 
 @implementation OABReaderState
 
-- (OABReaderState)initWithClient:(Class)a3
+- (OABReaderState)initWithClient:(Class)client
 {
   v13.receiver = self;
   v13.super_class = OABReaderState;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mClient = a3;
+    v4->mClient = client;
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mShapeIdMap = v5->mShapeIdMap;
     v5->mShapeIdMap = v6;
@@ -34,47 +34,47 @@
   return v5;
 }
 
-- (id)drawableForShapeId:(int)a3
+- (id)drawableForShapeId:(int)id
 {
   mShapeIdMap = self->mShapeIdMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&id];
   v5 = [(NSMutableDictionary *)mShapeIdMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDrawable:(id)a3 forShapeId:(unsigned int)a4
+- (void)setDrawable:(id)drawable forShapeId:(unsigned int)id
 {
-  v8 = a3;
+  drawableCopy = drawable;
   mShapeIdMap = self->mShapeIdMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
-  [(NSMutableDictionary *)mShapeIdMap setObject:v8 forKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:id];
+  [(NSMutableDictionary *)mShapeIdMap setObject:drawableCopy forKey:v7];
 }
 
-- (id)contentObjectForId:(int)a3
+- (id)contentObjectForId:(int)id
 {
   mEshContentIdMap = self->mEshContentIdMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&id];
   v5 = [(NSMutableDictionary *)mEshContentIdMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)setContentObject:(id)a3 forId:(int)a4
+- (void)setContentObject:(id)object forId:(int)id
 {
-  v4 = *&a4;
-  v8 = a3;
+  v4 = *&id;
+  objectCopy = object;
   mEshContentIdMap = self->mEshContentIdMap;
   v7 = [MEMORY[0x277CCABB0] numberWithInt:v4];
-  [(NSMutableDictionary *)mEshContentIdMap setObject:v8 forKey:v7];
+  [(NSMutableDictionary *)mEshContentIdMap setObject:objectCopy forKey:v7];
 }
 
 - (id)popGroup
 {
-  v3 = [(OABReaderState *)self peekGroup];
+  peekGroup = [(OABReaderState *)self peekGroup];
   [(NSMutableArray *)self->mGroupStack removeLastObject];
 
-  return v3;
+  return peekGroup;
 }
 
 @end

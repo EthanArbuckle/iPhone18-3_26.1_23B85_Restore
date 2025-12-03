@@ -1,71 +1,71 @@
 @interface AWDProactiveModelFittingModelInfo
-+ (id)modelInfoFromPlanId:(id)a3;
-+ (id)modelInfoFromSessionDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)modelInfoFromPlanId:(id)id;
++ (id)modelInfoFromSessionDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingModelInfo
 
-+ (id)modelInfoFromPlanId:(id)a3
++ (id)modelInfoFromPlanId:(id)id
 {
-  v3 = [PMLPlanDescriptor descriptorFromPlanId:a3];
+  v3 = [PMLPlanDescriptor descriptorFromPlanId:id];
   v4 = objc_opt_new();
-  v5 = [v3 name];
-  [v4 setName:v5];
+  name = [v3 name];
+  [v4 setName:name];
 
-  v6 = [v3 version];
-  [v4 setVersion:v6];
+  version = [v3 version];
+  [v4 setVersion:version];
 
-  v7 = [v3 locale];
-  [v4 setLocale:v7];
+  locale = [v3 locale];
+  [v4 setLocale:locale];
 
   return v4;
 }
 
-+ (id)modelInfoFromSessionDescriptor:(id)a3
++ (id)modelInfoFromSessionDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_opt_new();
-  v5 = [v3 name];
-  [v4 setName:v5];
+  name = [descriptorCopy name];
+  [v4 setName:name];
 
-  v6 = [v3 version];
-  [v4 setVersion:v6];
+  version = [descriptorCopy version];
+  [v4 setVersion:version];
 
-  v7 = [v3 locale];
+  locale = [descriptorCopy locale];
 
-  [v4 setLocale:v7];
+  [v4 setLocale:locale];
 
   return v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(AWDProactiveModelFittingModelInfo *)self setName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(AWDProactiveModelFittingModelInfo *)self setVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(AWDProactiveModelFittingModelInfo *)self setLocale:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -76,13 +76,13 @@
   return v4 ^ [(NSString *)self->_locale hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | v4[2])) || -[NSString isEqual:](name, "isEqual:")) && ((version = self->_version, !(version | v4[3])) || -[NSString isEqual:](version, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((name = self->_name, !(name | equalCopy[2])) || -[NSString isEqual:](name, "isEqual:")) && ((version = self->_version, !(version | equalCopy[3])) || -[NSString isEqual:](version, "isEqual:")))
   {
     locale = self->_locale;
-    if (locale | v4[1])
+    if (locale | equalCopy[1])
     {
       v8 = [(NSString *)locale isEqual:?];
     }
@@ -101,78 +101,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_version copyWithZone:a3];
+  v8 = [(NSString *)self->_version copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_locale copyWithZone:a3];
+  v10 = [(NSString *)self->_locale copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_version)
   {
     [v5 setVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locale)
   {
     [v5 setLocale:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_version)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locale)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   version = self->_version;
@@ -196,8 +196,8 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingModelInfo;
   v4 = [(AWDProactiveModelFittingModelInfo *)&v8 description];
-  v5 = [(AWDProactiveModelFittingModelInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

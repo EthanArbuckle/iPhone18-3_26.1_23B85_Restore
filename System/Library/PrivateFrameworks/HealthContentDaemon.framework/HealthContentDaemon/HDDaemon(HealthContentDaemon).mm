@@ -7,34 +7,34 @@
 
 - (id)ontologyUpdateCoordinator
 {
-  v1 = [a1 daemonExtensionWithIdentifier:*MEMORY[0x277D10378]];
+  v1 = [self daemonExtensionWithIdentifier:*MEMORY[0x277D10378]];
   if ([v1 conformsToProtocol:&unk_286387888])
   {
-    v2 = [v1 ontologyUpdateCoordinator];
+    ontologyUpdateCoordinator = [v1 ontologyUpdateCoordinator];
   }
 
   else
   {
-    v2 = 0;
+    ontologyUpdateCoordinator = 0;
   }
 
-  return v2;
+  return ontologyUpdateCoordinator;
 }
 
 - (id)ontologyBackingStore
 {
-  v1 = [a1 daemonExtensionWithIdentifier:*MEMORY[0x277D10378]];
+  v1 = [self daemonExtensionWithIdentifier:*MEMORY[0x277D10378]];
   if ([v1 conformsToProtocol:&unk_286387888])
   {
-    v2 = [v1 ontologyBackingStore];
+    ontologyBackingStore = [v1 ontologyBackingStore];
   }
 
   else
   {
-    v2 = 0;
+    ontologyBackingStore = 0;
   }
 
-  return v2;
+  return ontologyBackingStore;
 }
 
 @end

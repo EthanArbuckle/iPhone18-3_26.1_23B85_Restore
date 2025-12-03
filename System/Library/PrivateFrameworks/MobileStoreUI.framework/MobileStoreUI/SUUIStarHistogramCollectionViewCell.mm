@@ -1,20 +1,20 @@
 @interface SUUIStarHistogramCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabelViewElement:(id)a3;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SUUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabelViewElement:(id)element;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SUUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIStarHistogramCollectionViewCell
 
-- (SUUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIStarHistogramCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SUUIStarHistogramCollectionViewCell;
-  v3 = [(SUUIViewReuseCollectionViewCell *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseCollectionViewCell *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(SUUIViewReuseCollectionViewCell *)v3 registerClass:objc_opt_class() forViewWithReuseIdentifier:@"starBar"];
@@ -23,12 +23,12 @@
   return v3;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -39,18 +39,18 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__SUUIStarHistogramCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v10[3] = &unk_2798F75D8;
-  v12 = a4;
-  v11 = v8;
-  v13 = a1;
-  v9 = v8;
-  [a3 enumerateChildrenUsingBlock:v10];
+  widthCopy = width;
+  v11 = contextCopy;
+  selfCopy = self;
+  v9 = contextCopy;
+  [element enumerateChildrenUsingBlock:v10];
 }
 
 uint64_t __81__SUUIStarHistogramCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -81,28 +81,28 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
   v24 = "";
   v26 = *(MEMORY[0x277CBF3A8] + 8);
-  v25 = a3;
-  v9 = [v8 labelLayoutCache];
+  widthCopy = width;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__SUUIStarHistogramCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v16[3] = &unk_2798F9328;
   v19 = &v21;
-  v10 = v8;
+  v10 = contextCopy;
   v17 = v10;
-  v20 = a3;
-  v11 = v9;
+  widthCopy2 = width;
+  v11 = labelLayoutCache;
   v18 = v11;
-  [v7 enumerateChildrenUsingBlock:v16];
+  [elementCopy enumerateChildrenUsingBlock:v16];
   v12 = v22[4];
   v13 = v22[5];
 
@@ -145,19 +145,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__SUUIStarHistogramCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2798F8108;
-  v15 = a4;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v12];
 }
 
@@ -217,8 +217,8 @@ LABEL_9:
   v44.receiver = self;
   v44.super_class = SUUIStarHistogramCollectionViewCell;
   [(SUUICollectionViewCell *)&v44 layoutSubviews];
-  v3 = [(SUUIStarHistogramCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIStarHistogramCollectionViewCell *)self contentView];
+  [contentView bounds];
   v37 = v5;
   v38 = v4;
   rect = v6;
@@ -228,13 +228,13 @@ LABEL_9:
   MaxY = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
   ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = v15;
+  v17 = allExistingViews;
   v18 = [v17 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v18)
   {
@@ -292,12 +292,12 @@ LABEL_9:
   }
 }
 
-+ (id)_attributedStringForLabelViewElement:(id)a3
++ (id)_attributedStringForLabelViewElement:(id)element
 {
-  v3 = [a3 text];
+  text = [element text];
   v4 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  v6 = [v3 attributedStringWithDefaultFont:v4 foregroundColor:v5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v6 = [text attributedStringWithDefaultFont:v4 foregroundColor:blackColor];
 
   return v6;
 }

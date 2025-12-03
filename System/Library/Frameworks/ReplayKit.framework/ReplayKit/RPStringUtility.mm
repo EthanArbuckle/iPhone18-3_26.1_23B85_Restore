@@ -1,45 +1,45 @@
 @interface RPStringUtility
-+ (BOOL)isInvalidBundleId:(id)a3;
-+ (id)numberFromString:(id)a3;
++ (BOOL)isInvalidBundleId:(id)id;
++ (id)numberFromString:(id)string;
 + (unint64_t)rotatingDeviceUniqueID;
 + (void)rotatingDeviceUniqueID;
 @end
 
 @implementation RPStringUtility
 
-+ (id)numberFromString:(id)a3
++ (id)numberFromString:(id)string
 {
   v3 = MEMORY[0x277CCABB8];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
-  v6 = [v5 numberFromString:v4];
+  v6 = [v5 numberFromString:stringCopy];
 
   return v6;
 }
 
 + (unint64_t)rotatingDeviceUniqueID
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = v2;
-  if (v2)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = standardUserDefaults;
+  if (standardUserDefaults)
   {
-    v4 = [v2 objectForKey:@"kSCDeviceUniqueID"];
-    if (!v4)
+    uUIDString = [standardUserDefaults objectForKey:@"kSCDeviceUniqueID"];
+    if (!uUIDString)
     {
-      v5 = [MEMORY[0x277CCAD78] UUID];
-      v4 = [v5 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v3 setObject:v4 forKey:@"kSCDeviceUniqueID"];
+      [v3 setObject:uUIDString forKey:@"kSCDeviceUniqueID"];
       [v3 synchronize];
     }
 
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v6 components:8196 fromDate:v7];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [currentCalendar components:8196 fromDate:date];
 
-    v9 = [v8 weekOfYear];
-    v10 = [v8 yearForWeekOfYear];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu%lu", v4, v10, v9];
+    weekOfYear = [v8 weekOfYear];
+    yearForWeekOfYear = [v8 yearForWeekOfYear];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%lu%lu", uUIDString, yearForWeekOfYear, weekOfYear];
     v12 = [v11 hash];
   }
 
@@ -52,10 +52,10 @@
   return v12;
 }
 
-+ (BOOL)isInvalidBundleId:(id)a3
++ (BOOL)isInvalidBundleId:(id)id
 {
-  v3 = a3;
-  if ([v3 length] && objc_msgSend(v3, "caseInsensitiveCompare:", @"(null)") && objc_msgSend(v3, "caseInsensitiveCompare:", @"Unknown"))
+  idCopy = id;
+  if ([idCopy length] && objc_msgSend(idCopy, "caseInsensitiveCompare:", @"(null)") && objc_msgSend(idCopy, "caseInsensitiveCompare:", @"Unknown"))
   {
     v4 = 0;
   }
@@ -64,7 +64,7 @@
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [RPStringUtility isInvalidBundleId:v3];
+      [RPStringUtility isInvalidBundleId:idCopy];
     }
 
     v4 = 1;
@@ -85,7 +85,7 @@
     _os_log_error_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, " [ERROR] %{public}s:%d Could not get NSUserDefaults shared defaults object", &v3, 0x12u);
   }
 
-  *a1 = 0;
+  *self = 0;
   v2 = *MEMORY[0x277D85DE8];
 }
 

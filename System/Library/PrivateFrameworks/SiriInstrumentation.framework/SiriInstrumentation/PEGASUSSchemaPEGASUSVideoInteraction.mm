@@ -1,33 +1,33 @@
 @interface PEGASUSSchemaPEGASUSVideoInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSVideoInteraction)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSVideoInteraction)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSVideoInteraction)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSVideoInteraction)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasClientInteractionVideoVerb:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasClientInteractionVideoVerb:(BOOL)verb;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSVideoInteraction
 
-- (PEGASUSSchemaPEGASUSVideoInteraction)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSVideoInteraction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PEGASUSSchemaPEGASUSVideoInteraction;
   v5 = [(PEGASUSSchemaPEGASUSVideoInteraction *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"interactionType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"interactionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSVideoInteraction setInteractionType:](v5, "setInteractionType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"clientComponentName"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"clientComponentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(PEGASUSSchemaPEGASUSVideoInteraction *)v5 setClientComponentName:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"dialogId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"dialogId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(PEGASUSSchemaPEGASUSVideoInteraction *)v5 setDialogId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"clientInteractionVideoVerb"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"clientInteractionVideoVerb"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSVideoInteraction)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSVideoInteraction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSVideoInteraction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clientComponentName)
   {
-    v4 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"clientComponentName"];
+    clientComponentName = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
+    v5 = [clientComponentName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"clientComponentName"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -113,26 +113,26 @@
       v7 = off_1E78DFE08[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"clientInteractionVideoVerb"];
+    [dictionary setObject:v7 forKeyedSubscript:@"clientInteractionVideoVerb"];
   }
 
   if (self->_dialogId)
   {
-    v8 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"dialogId"];
+    dialogId = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
+    v9 = [dialogId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"dialogId"];
   }
 
   if (*&self->_has)
   {
-    v10 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self interactionType];
+    interactionType = [(PEGASUSSchemaPEGASUSVideoInteraction *)self interactionType];
     v11 = @"PEGASUSVIDEOINTERACTIONTYPE_UNKNOWN";
-    if (v10 == 1)
+    if (interactionType == 1)
     {
       v11 = @"PEGASUSVIDEOINTERACTIONTYPE_CLIENT";
     }
 
-    if (v10 == 2)
+    if (interactionType == 2)
     {
       v12 = @"PEGASUSVIDEOINTERACTIONTYPE_SERVER";
     }
@@ -142,12 +142,12 @@
       v12 = v11;
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"interactionType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"interactionType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -177,15 +177,15 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[36] & 1))
+  if ((*&self->_has & 1) != (equalCopy[36] & 1))
   {
     goto LABEL_15;
   }
@@ -193,26 +193,26 @@
   if (*&self->_has)
   {
     interactionType = self->_interactionType;
-    if (interactionType != [v4 interactionType])
+    if (interactionType != [equalCopy interactionType])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
-  v7 = [v4 clientComponentName];
-  if ((v6 != 0) == (v7 == 0))
+  clientComponentName = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
+  clientComponentName2 = [equalCopy clientComponentName];
+  if ((clientComponentName != 0) == (clientComponentName2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
-  if (v8)
+  clientComponentName3 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
+  if (clientComponentName3)
   {
-    v9 = v8;
-    v10 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
-    v11 = [v4 clientComponentName];
-    v12 = [v10 isEqual:v11];
+    v9 = clientComponentName3;
+    clientComponentName4 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
+    clientComponentName5 = [equalCopy clientComponentName];
+    v12 = [clientComponentName4 isEqual:clientComponentName5];
 
     if (!v12)
     {
@@ -224,22 +224,22 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
-  v7 = [v4 dialogId];
-  if ((v6 != 0) == (v7 == 0))
+  clientComponentName = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
+  clientComponentName2 = [equalCopy dialogId];
+  if ((clientComponentName != 0) == (clientComponentName2 == 0))
   {
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v13 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
-  if (v13)
+  dialogId = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
+  if (dialogId)
   {
-    v14 = v13;
-    v15 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
-    v16 = [v4 dialogId];
-    v17 = [v15 isEqual:v16];
+    v14 = dialogId;
+    dialogId2 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
+    dialogId3 = [equalCopy dialogId];
+    v17 = [dialogId2 isEqual:dialogId3];
 
     if (!v17)
     {
@@ -252,9 +252,9 @@ LABEL_14:
   }
 
   v20 = (*&self->_has >> 1) & 1;
-  if (v20 == ((v4[36] >> 1) & 1))
+  if (v20 == ((equalCopy[36] >> 1) & 1))
   {
-    if (!v20 || (clientInteractionVideoVerb = self->_clientInteractionVideoVerb, clientInteractionVideoVerb == [v4 clientInteractionVideoVerb]))
+    if (!v20 || (clientInteractionVideoVerb = self->_clientInteractionVideoVerb, clientInteractionVideoVerb == [equalCopy clientInteractionVideoVerb]))
     {
       v18 = 1;
       goto LABEL_16;
@@ -268,24 +268,24 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
+  clientComponentName = [(PEGASUSSchemaPEGASUSVideoInteraction *)self clientComponentName];
 
-  if (v4)
+  if (clientComponentName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
+  dialogId = [(PEGASUSSchemaPEGASUSVideoInteraction *)self dialogId];
 
-  if (v5)
+  if (dialogId)
   {
     PBDataWriterWriteStringField();
   }
@@ -296,9 +296,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasClientInteractionVideoVerb:(BOOL)a3
+- (void)setHasClientInteractionVideoVerb:(BOOL)verb
 {
-  if (a3)
+  if (verb)
   {
     v3 = 2;
   }

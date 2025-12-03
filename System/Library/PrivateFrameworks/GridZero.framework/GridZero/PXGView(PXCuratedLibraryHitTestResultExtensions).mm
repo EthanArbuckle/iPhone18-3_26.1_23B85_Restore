@@ -11,15 +11,15 @@
 
 - (id)curatedLibraryHitTestResultsInRect:()PXCuratedLibraryHitTestResultExtensions withControl:
 {
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __99__PXGView_PXCuratedLibraryHitTestResultExtensions__curatedLibraryHitTestResultsInRect_withControl___block_invoke;
   v16[3] = &unk_278297BC0;
   v18 = a7;
-  v14 = v13;
+  v14 = array;
   v17 = v14;
-  [a1 enumerateCuratedLibraryHitTestResultsInRect:v16 usingBlock:{a2, a3, a4, a5}];
+  [self enumerateCuratedLibraryHitTestResultsInRect:v16 usingBlock:{a2, a3, a4, a5}];
 
   return v14;
 }
@@ -27,7 +27,7 @@
 - (void)enumerateCuratedLibraryHitTestResultsInRect:()PXCuratedLibraryHitTestResultExtensions usingBlock:
 {
   v12 = a7;
-  v13 = [a1 hitTestResultsInRect:0 passingTest:{a2, a3, a4, a5}];
+  v13 = [self hitTestResultsInRect:0 passingTest:{a2, a3, a4, a5}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __107__PXGView_PXCuratedLibraryHitTestResultExtensions__enumerateCuratedLibraryHitTestResultsInRect_usingBlock___block_invoke;
@@ -42,7 +42,7 @@
   v8 = a5;
   if (v8)
   {
-    v9 = [a1 hitTestResultsInDirection:a3 fromSpriteReference:a4];
+    v9 = [self hitTestResultsInDirection:a3 fromSpriteReference:a4];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __132__PXGView_PXCuratedLibraryHitTestResultExtensions__enumerateCuratedLibraryHitTestResultsInDirection_fromSpriteReference_usingBlock___block_invoke;
@@ -66,7 +66,7 @@
   v5[3] = &unk_278297B98;
   v5[4] = &v6;
   v5[5] = a3;
-  [a1 enumerateCuratedLibraryHitTestResultsAtPoint:v5 usingBlock:?];
+  [self enumerateCuratedLibraryHitTestResultsAtPoint:v5 usingBlock:?];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -85,7 +85,7 @@
   v16 = v11;
   v12 = v11;
   v13 = v10;
-  [a1 enumerateCuratedLibraryHitTestResultsAtPoint:v14 usingBlock:{a2, a3}];
+  [self enumerateCuratedLibraryHitTestResultsAtPoint:v14 usingBlock:{a2, a3}];
 }
 
 - (void)enumerateCuratedLibraryHitTestResultsAtPoint:()PXCuratedLibraryHitTestResultExtensions usingBlock:
@@ -93,7 +93,7 @@
   v8 = a5;
   if (v8)
   {
-    v9 = [a1 hitTestResultsAtPoint:{a2, a3}];
+    v9 = [self hitTestResultsAtPoint:{a2, a3}];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __108__PXGView_PXCuratedLibraryHitTestResultExtensions__enumerateCuratedLibraryHitTestResultsAtPoint_usingBlock___block_invoke;

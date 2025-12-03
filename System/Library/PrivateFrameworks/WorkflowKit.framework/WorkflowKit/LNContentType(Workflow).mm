@@ -7,9 +7,9 @@
 
 - (id)wf_initWithFileType:()Workflow
 {
-  v4 = a1;
-  v5 = [a3 string];
-  v6 = [v4 initWithContentType:v5];
+  selfCopy = self;
+  string = [a3 string];
+  v6 = [selfCopy initWithContentType:string];
 
   return v6;
 }
@@ -17,8 +17,8 @@
 - (id)wf_fileType
 {
   v1 = MEMORY[0x1E69E0AF8];
-  v2 = [a1 contentType];
-  v3 = [v1 typeWithString:v2];
+  contentType = [self contentType];
+  v3 = [v1 typeWithString:contentType];
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface PHPhotoLibraryChangeObserverRegistrar
-+ (BOOL)_isInternalObserver:(id)a3;
++ (BOOL)_isInternalObserver:(id)observer;
 - (BOOL)_lock_hasChangeObservers;
 - (BOOL)clearsOIDCacheAfterFetchResultDealloc;
 - (BOOL)postsPersistentHistoryChangedNotifications;
-- (PHPhotoLibraryChangeObserverRegistrar)initWithLibraryBundle:(id)a3 changeHandlingDebugger:(id)a4 uniqueObjectIDCache:(id)a5;
+- (PHPhotoLibraryChangeObserverRegistrar)initWithLibraryBundle:(id)bundle changeHandlingDebugger:(id)debugger uniqueObjectIDCache:(id)cache;
 - (unint64_t)countOfRegisteredFetchResults;
 - (void)_lock_clearOIDCache;
 - (void)_lock_pauseChangeHandlingIfNeeded;
 - (void)_lock_resumeChangeHandlingIfNeeded;
-- (void)_throttlePendingChangesWithBlock:(id)a3;
-- (void)addObservers:(id)a3 authorizationStatus:(int64_t)a4;
+- (void)_throttlePendingChangesWithBlock:(id)block;
+- (void)addObservers:(id)observers authorizationStatus:(int64_t)status;
 - (void)dealloc;
-- (void)getObserversWithBlock:(id)a3;
-- (void)publishChangesToObserversOnQueue:(id)a3 withDebugEvent:(id)a4 block:(id)a5;
-- (void)registerFetchResult:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)throttlePendingChangesTimerFiredWithBlock:(id)a3;
-- (void)unregisterFetchResult:(id)a3;
+- (void)getObserversWithBlock:(id)block;
+- (void)publishChangesToObserversOnQueue:(id)queue withDebugEvent:(id)event block:(id)block;
+- (void)registerFetchResult:(id)result;
+- (void)removeObserver:(id)observer;
+- (void)throttlePendingChangesTimerFiredWithBlock:(id)block;
+- (void)unregisterFetchResult:(id)result;
 @end
 
 @implementation PHPhotoLibraryChangeObserverRegistrar
@@ -37,16 +37,16 @@ void __71__PHPhotoLibraryChangeObserverRegistrar_clearIsChangeProcessingPending_
   }
 }
 
-- (void)throttlePendingChangesTimerFiredWithBlock:(id)a3
+- (void)throttlePendingChangesTimerFiredWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PHPhotoLibraryChangeObserverRegistrar *)self clearIsChangeProcessingPending];
-  v4[2]();
+  blockCopy[2]();
 }
 
-- (void)_throttlePendingChangesWithBlock:(id)a3
+- (void)_throttlePendingChangesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -67,7 +67,7 @@ void __71__PHPhotoLibraryChangeObserverRegistrar_clearIsChangeProcessingPending_
     v5 = *(v11 + 24);
   }
 
-  v4[2](v4, v5 & 1, v7[3]);
+  blockCopy[2](blockCopy, v5 & 1, v7[3]);
   _Block_object_dispose(&v6, 8);
   _Block_object_dispose(&v10, 8);
 }
@@ -81,22 +81,22 @@ double __74__PHPhotoLibraryChangeObserverRegistrar__throttlePendingChangesWithBl
   return result;
 }
 
-- (void)publishChangesToObserversOnQueue:(id)a3 withDebugEvent:(id)a4 block:(id)a5
+- (void)publishChangesToObserversOnQueue:(id)queue withDebugEvent:(id)event block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  eventCopy = event;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__PHPhotoLibraryChangeObserverRegistrar_publishChangesToObserversOnQueue_withDebugEvent_block___block_invoke;
   v14[3] = &unk_1E75A9A68;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = eventCopy;
+  v16 = queueCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = queueCopy;
+  v13 = eventCopy;
   [(PHPhotoLibraryChangeObserverRegistrar *)self _throttlePendingChangesWithBlock:v14];
 }
 
@@ -250,9 +250,9 @@ void __95__PHPhotoLibraryChangeObserverRegistrar_publishChangesToObserversOnQueu
   }
 }
 
-- (void)getObserversWithBlock:(id)a3
+- (void)getObserversWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -272,7 +272,7 @@ void __95__PHPhotoLibraryChangeObserverRegistrar_publishChangesToObserversOnQueu
   v8 = __Block_byref_object_dispose__43618;
   v9 = MEMORY[0x1E695E0F0];
   PLRunWithUnfairLock();
-  v3[2](v3, v17[5], v11[5], v5[5]);
+  blockCopy[2](blockCopy, v17[5], v11[5], v5[5]);
   _Block_object_dispose(&v4, 8);
 
   _Block_object_dispose(&v10, 8);
@@ -303,9 +303,9 @@ uint64_t __63__PHPhotoLibraryChangeObserverRegistrar_getObserversWithBlock___blo
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(NSHashTable *)self->_lock_fetchResults allObjects];
+  allObjects = [(NSHashTable *)self->_lock_fetchResults allObjects];
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_43620];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [allObjects filteredArrayUsingPredicate:v4];
 
   v6 = [(NSHashTable *)self->_lock_fetchResults count];
   if (v6 == [v5 count])
@@ -330,8 +330,8 @@ uint64_t __63__PHPhotoLibraryChangeObserverRegistrar_getObserversWithBlock___blo
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * v11) fetchedObjectIDs];
-          v13 = [(PHUniqueObjectIDCache *)self->_uniqueObjectIDCache uniquedOIDs:v12];
+          fetchedObjectIDs = [*(*(&v14 + 1) + 8 * v11) fetchedObjectIDs];
+          v13 = [(PHUniqueObjectIDCache *)self->_uniqueObjectIDCache uniquedOIDs:fetchedObjectIDs];
 
           ++v11;
         }
@@ -364,9 +364,9 @@ uint64_t __70__PHPhotoLibraryChangeObserverRegistrar_countOfRegisteredFetchResul
   return result;
 }
 
-- (void)unregisterFetchResult:(id)a3
+- (void)unregisterFetchResult:(id)result
 {
-  if (a3)
+  if (result)
   {
     PLRunWithUnfairLock();
   }
@@ -397,13 +397,13 @@ uint64_t __63__PHPhotoLibraryChangeObserverRegistrar_unregisterFetchResult___blo
   return v2;
 }
 
-- (void)registerFetchResult:(id)a3
+- (void)registerFetchResult:(id)result
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  resultCopy = result;
+  v4 = resultCopy;
+  if (resultCopy)
   {
-    v5 = v3;
+    v5 = resultCopy;
     PLRunWithUnfairLock();
   }
 }
@@ -450,10 +450,10 @@ uint64_t __87__PHPhotoLibraryChangeObserverRegistrar_setPostsPersistentHistoryCh
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   PLRunWithUnfairLock();
 }
 
@@ -472,10 +472,10 @@ uint64_t __56__PHPhotoLibraryChangeObserverRegistrar_removeObserver___block_invo
   return [v4 _lock_pauseChangeHandlingIfNeeded];
 }
 
-- (void)addObservers:(id)a3 authorizationStatus:(int64_t)a4
+- (void)addObservers:(id)observers authorizationStatus:(int64_t)status
 {
-  v5 = a3;
-  v4 = v5;
+  observersCopy = observers;
+  v4 = observersCopy;
   PLRunWithUnfairLock();
 }
 
@@ -565,7 +565,7 @@ uint64_t __74__PHPhotoLibraryChangeObserverRegistrar_addObservers_authorizationS
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -574,34 +574,34 @@ uint64_t __74__PHPhotoLibraryChangeObserverRegistrar_addObservers_authorizationS
   [(PHPhotoLibraryChangeObserverRegistrar *)&v4 dealloc];
 }
 
-- (PHPhotoLibraryChangeObserverRegistrar)initWithLibraryBundle:(id)a3 changeHandlingDebugger:(id)a4 uniqueObjectIDCache:(id)a5
+- (PHPhotoLibraryChangeObserverRegistrar)initWithLibraryBundle:(id)bundle changeHandlingDebugger:(id)debugger uniqueObjectIDCache:(id)cache
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bundleCopy = bundle;
+  debuggerCopy = debugger;
+  cacheCopy = cache;
   v24.receiver = self;
   v24.super_class = PHPhotoLibraryChangeObserverRegistrar;
   v12 = [(PHPhotoLibraryChangeObserverRegistrar *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibraryBundle, a3);
-    objc_storeStrong(&v13->_changeHandlingDebugger, a4);
-    objc_storeStrong(&v13->_uniqueObjectIDCache, a5);
+    objc_storeStrong(&v12->_photoLibraryBundle, bundle);
+    objc_storeStrong(&v13->_changeHandlingDebugger, debugger);
+    objc_storeStrong(&v13->_uniqueObjectIDCache, cache);
     v13->_lock._os_unfair_lock_opaque = 0;
     *&v13->_lock_isChangeHandlingAuthorized = 0;
     v14 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:0];
     lock_fetchResults = v13->_lock_fetchResults;
     v13->_lock_fetchResults = v14;
 
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_internalChangeObservers = v13->_lock_internalChangeObservers;
-    v13->_lock_internalChangeObservers = v16;
+    v13->_lock_internalChangeObservers = weakObjectsHashTable;
 
-    v18 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_externalChangeObservers = v13->_lock_externalChangeObservers;
-    v13->_lock_externalChangeObservers = v18;
+    v13->_lock_externalChangeObservers = weakObjectsHashTable2;
 
     v13->_pendingLock._os_unfair_lock_opaque = 0;
     v13->_pendingLock_isChangeProcessingPending = 0;
@@ -615,11 +615,11 @@ uint64_t __74__PHPhotoLibraryChangeObserverRegistrar_addObservers_authorizationS
       v27 = 2048;
       v28 = v13;
       v29 = 2112;
-      v30 = v9;
+      v30 = bundleCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = debuggerCopy;
       v33 = 2112;
-      v34 = v11;
+      v34 = cacheCopy;
       _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryBundle:%@ changeHandlingDebugger:%@ uniqueObjectIDCache:%@", buf, 0x34u);
     }
 
@@ -629,9 +629,9 @@ uint64_t __74__PHPhotoLibraryChangeObserverRegistrar_addObservers_authorizationS
   return v13;
 }
 
-+ (BOOL)_isInternalObserver:(id)a3
++ (BOOL)_isInternalObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

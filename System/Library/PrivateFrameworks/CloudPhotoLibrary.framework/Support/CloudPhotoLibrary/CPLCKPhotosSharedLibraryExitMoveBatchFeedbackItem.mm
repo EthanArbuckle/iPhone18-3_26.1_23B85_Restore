@@ -1,7 +1,7 @@
 @interface CPLCKPhotosSharedLibraryExitMoveBatchFeedbackItem
 - (CPLCKPhotosSharedLibraryExitMoveBatchFeedbackItem)init;
 - (NSNumber)errorCode;
-- (void)setErrorCode:(id)a3;
+- (void)setErrorCode:(id)code;
 @end
 
 @implementation CPLCKPhotosSharedLibraryExitMoveBatchFeedbackItem
@@ -13,13 +13,13 @@
   return *(self + v3);
 }
 
-- (void)setErrorCode:(id)a3
+- (void)setErrorCode:(id)code
 {
   v5 = OBJC_IVAR___CPLCKPhotosSharedLibraryExitMoveBatchFeedbackItem_errorCode;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = code;
+  codeCopy = code;
 }
 
 - (CPLCKPhotosSharedLibraryExitMoveBatchFeedbackItem)init

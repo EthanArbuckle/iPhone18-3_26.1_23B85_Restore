@@ -1,15 +1,15 @@
 @interface VCBTNotificationMonitor
 + (id)sharedInstance;
 - (VCBTNotificationMonitor)init;
-- (unsigned)registerBTNotificationHandler:(id)a3;
+- (unsigned)registerBTNotificationHandler:(id)handler;
 - (void)dealloc;
-- (void)processBTNotification:(id *)a3;
-- (void)registerDarwinNotification:(id)a3;
+- (void)processBTNotification:(id *)notification;
+- (void)registerDarwinNotification:(id)notification;
 - (void)registerForBluetoothImmediateNotifications;
 - (void)setupBTEventHandler;
-- (void)unregisterBTNotificationHandler:(unsigned int *)a3;
+- (void)unregisterBTNotificationHandler:(unsigned int *)handler;
 - (void)unregisterBluetoothImmediateNotifications;
-- (void)unregisterDarwinNotification:(id)a3;
+- (void)unregisterDarwinNotification:(id)notification;
 @end
 
 @implementation VCBTNotificationMonitor
@@ -57,7 +57,7 @@ VCBTNotificationMonitor *__41__VCBTNotificationMonitor_sharedInstance__block_inv
   [(VCBTNotificationMonitor *)&v3 dealloc];
 }
 
-- (unsigned)registerBTNotificationHandler:(id)a3
+- (unsigned)registerBTNotificationHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_clientTokenCounter == -1)
@@ -68,7 +68,7 @@ LABEL_12:
     return v5;
   }
 
-  if (!a3)
+  if (!handler)
   {
     [VCBTNotificationMonitor registerBTNotificationHandler:?];
     goto LABEL_12;
@@ -82,7 +82,7 @@ LABEL_12:
 
   v5 = self->_clientTokenCounter + 1;
   self->_clientTokenCounter = v5;
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(handler);
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_handlers, "setObject:forKeyedSubscript:", v6, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5]);
   _Block_release(v6);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -98,7 +98,7 @@ LABEL_12:
       v14 = 1024;
       v15 = 79;
       v16 = 2048;
-      v17 = a3;
+      handlerCopy = handler;
       v18 = 1024;
       v19 = v5;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Registered handler[%p] with clientToken=%u", &v10, 0x2Cu);
@@ -109,23 +109,23 @@ LABEL_12:
   return v5;
 }
 
-- (void)unregisterBTNotificationHandler:(unsigned int *)a3
+- (void)unregisterBTNotificationHandler:(unsigned int *)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (handler)
   {
-    if (*a3)
+    if (*handler)
     {
       os_unfair_lock_lock(&self->_btNotificationHandlerLock);
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_handlers, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedInt:*a3]);
-      *a3 = 0;
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_handlers, "setObject:forKeyedSubscript:", 0, [MEMORY[0x1E696AD98] numberWithUnsignedInt:*handler]);
+      *handler = 0;
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v5 = VRTraceErrorLogLevelToCSTR();
         v6 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v7 = *a3;
+          v7 = *handler;
           v8 = 136315906;
           v9 = v5;
           v10 = 2080;
@@ -268,7 +268,7 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
   }
 }
 
-- (void)processBTNotification:(id *)a3
+- (void)processBTNotification:(id *)notification
 {
   v14 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_btNotificationHandlerLock);
@@ -276,8 +276,8 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_handlers allValues];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  allValues = [(NSMutableDictionary *)self->_handlers allValues];
+  v5 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -289,14 +289,14 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         (*(*(*(&v10 + 1) + 8 * v8++) + 16))();
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
@@ -305,10 +305,10 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
   os_unfair_lock_unlock(&self->_btNotificationHandlerLock);
 }
 
-- (void)registerDarwinNotification:(id)a3
+- (void)registerDarwinNotification:(id)notification
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [a3 cStringUsingEncoding:4];
+  v4 = [notification cStringUsingEncoding:4];
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, "Notification", v4);
   xpc_set_event();
@@ -325,7 +325,7 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
       v12 = 1024;
       v13 = 152;
       v14 = 2112;
-      v15 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Register for Darwin %@", &v8, 0x26u);
     }
   }
@@ -333,10 +333,10 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
   xpc_release(v5);
 }
 
-- (void)unregisterDarwinNotification:(id)a3
+- (void)unregisterDarwinNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  [a3 cStringUsingEncoding:4];
+  [notification cStringUsingEncoding:4];
   xpc_set_event();
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -351,7 +351,7 @@ void __46__VCBTNotificationMonitor_setupBTEventHandler__block_invoke(uint64_t a1
       v10 = 1024;
       v11 = 159;
       v12 = 2112;
-      v13 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unregister for Darwin %@", &v6, 0x26u);
     }
   }

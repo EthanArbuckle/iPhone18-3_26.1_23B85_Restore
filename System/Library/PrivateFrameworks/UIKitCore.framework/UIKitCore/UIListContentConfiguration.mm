@@ -13,43 +13,43 @@
 + (UIListContentConfiguration)sidebarSubtitleCellConfiguration;
 + (UIListContentConfiguration)subtitleCellConfiguration;
 + (UIListContentConfiguration)valueCellConfiguration;
-+ (id)_defaultCellConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultGroupedFooterConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultGroupedHeaderConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultHeaderFooterConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 isHeader:(uint64_t)a5 style:;
++ (id)_defaultCellConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultGroupedFooterConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultGroupedHeaderConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultHeaderFooterConfigurationForState:(void *)state traitCollection:(uint64_t)collection isHeader:(uint64_t)header style:;
 + (id)_defaultInsetGroupedCellConfiguration;
-+ (id)_defaultInsetGroupedCellConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultInsetGroupedHeaderConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 isExtraProminent:;
-+ (id)_defaultPlainFooterConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultPlainHeaderConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultSidebarCellConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 style:;
-+ (id)_defaultSidebarHeaderConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultSidebarSubtitleCellConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 style:;
-+ (id)_defaultSubtitleCellConfigurationForState:(void *)a3 traitCollection:;
-+ (id)_defaultValueCellConfigurationForState:(void *)a3 traitCollection:;
++ (id)_defaultInsetGroupedCellConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultInsetGroupedHeaderConfigurationForState:(void *)state traitCollection:(uint64_t)collection isExtraProminent:;
++ (id)_defaultPlainFooterConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultPlainHeaderConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultSidebarCellConfigurationForState:(void *)state traitCollection:(uint64_t)collection style:;
++ (id)_defaultSidebarHeaderConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultSidebarSubtitleCellConfigurationForState:(void *)state traitCollection:(uint64_t)collection style:;
++ (id)_defaultSubtitleCellConfigurationForState:(void *)state traitCollection:;
++ (id)_defaultValueCellConfigurationForState:(void *)state traitCollection:;
 + (id)_footerConfiguration;
 + (id)_headerConfiguration;
 + (id)_sidebarPlainCellConfiguration;
 + (id)footerConfiguration;
 + (id)headerConfiguration;
-+ (void)_applySidebarCellStylingToConfiguration:(void *)a3 forState:(void *)a4 traitCollection:(uint64_t)a5 cellStyle:(uint64_t)a6 sidebarStyle:;
-- (BOOL)isEqual:(id)a3;
++ (void)_applySidebarCellStylingToConfiguration:(void *)configuration forState:(void *)state traitCollection:(uint64_t)collection cellStyle:(uint64_t)style sidebarStyle:;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
 - (NSString)description;
-- (UIListContentConfiguration)initWithCoder:(id)a3;
-- (double)_minimumHeightForTraitCollection:(id)a3;
-- (id)_descriptionPropertiesForFullDescription:(uint64_t)a1;
-- (id)_initWithImageProperties:(void *)a3 textProperties:(void *)a4 secondaryTextProperties:(char)a5 directionalLayoutMargins:(double)a6 prefersSideBySideTextAndSecondaryText:(double)a7 imageToTextPadding:(double)a8 textToSecondaryTextVerticalPadding:(double)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIListContentConfiguration)initWithCoder:(id)coder;
+- (double)_minimumHeightForTraitCollection:(id)collection;
+- (id)_descriptionPropertiesForFullDescription:(uint64_t)description;
+- (id)_initWithImageProperties:(void *)properties textProperties:(void *)textProperties secondaryTextProperties:(char)secondaryTextProperties directionalLayoutMargins:(double)margins prefersSideBySideTextAndSecondaryText:(double)text imageToTextPadding:(double)padding textToSecondaryTextVerticalPadding:(double)verticalPadding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)makeContentView;
-- (id)updatedConfigurationForState:(id)a3;
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1;
+- (id)updatedConfigurationForState:(id)state;
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick;
 - (unint64_t)hash;
-- (void)_setDefaultStyle:(uint64_t)a1;
-- (void)_setSwiftBridgingImageProperties:(id)a3;
-- (void)_setSwiftBridgingSecondaryTextProperties:(id)a3;
-- (void)_setSwiftBridgingTextProperties:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDefaultStyle:(uint64_t)style;
+- (void)_setSwiftBridgingImageProperties:(id)properties;
+- (void)_setSwiftBridgingSecondaryTextProperties:(id)properties;
+- (void)_setSwiftBridgingTextProperties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIListContentConfiguration
@@ -58,7 +58,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultInsetGroupedHeaderConfigurationForState:v3 traitCollection:v4 isExtraProminent:1];
+  v5 = [(UIListContentConfiguration *)self _defaultInsetGroupedHeaderConfigurationForState:v3 traitCollection:v4 isExtraProminent:1];
 
   return v5;
 }
@@ -67,7 +67,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
 
   if (v5)
   {
@@ -101,7 +101,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultGroupedHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultGroupedHeaderConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -117,7 +117,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultInsetGroupedHeaderConfigurationForState:v3 traitCollection:v4 isExtraProminent:0];
+  v5 = [(UIListContentConfiguration *)self _defaultInsetGroupedHeaderConfigurationForState:v3 traitCollection:v4 isExtraProminent:0];
 
   return v5;
 }
@@ -126,7 +126,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -135,7 +135,7 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultValueCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultValueCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -144,44 +144,44 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
 
-+ (id)_defaultCellConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultCellConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v4);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = objc_alloc_init(UIListContentImageProperties);
-  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:v4];
+  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   if (v7)
   {
     objc_setProperty_nonatomic_copy(v7, v8, v9, 24);
   }
 
-  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:v4];
+  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:stateCopy];
   [(UIContentUnavailableImageProperties *)v7 _setTintColor:v10];
 
   v11 = objc_alloc_init(UIListContentTextProperties);
   v12 = [v6 defaultTextLabelFontForCellStyle:0];
   [(UIContentUnavailableImageProperties *)v11 _setTintColor:v12];
 
-  v13 = [v6 defaultTextColorForCellStyle:0 traitCollection:v4 tintColor:0 state:v5];
+  v13 = [v6 defaultTextColorForCellStyle:0 traitCollection:stateCopy tintColor:0 state:v5];
   [(UIBackgroundConfiguration *)v11 _setBackgroundColor:v13];
 
-  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
+  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
   v14 = objc_alloc_init(UIListContentTextProperties);
   v15 = [v6 defaultDetailTextFontForCellStyle:3];
   [(UIContentUnavailableImageProperties *)v14 _setTintColor:v15];
 
-  v16 = [v6 defaultDetailTextColorForCellStyle:3 traitCollection:v4 state:v5];
+  v16 = [v6 defaultDetailTextColorForCellStyle:3 traitCollection:stateCopy state:v5];
 
   [(UIBackgroundConfiguration *)v14 _setBackgroundColor:v16];
-  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
-  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, v4, 0, 0, 0);
+  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
+  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, stateCopy, 0, 0, 0);
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -210,44 +210,44 @@
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSubtitleCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultSubtitleCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
 
-+ (id)_defaultSubtitleCellConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultSubtitleCellConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v4);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = objc_alloc_init(UIListContentImageProperties);
-  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:v4];
+  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   if (v7)
   {
     objc_setProperty_nonatomic_copy(v7, v8, v9, 24);
   }
 
-  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:v4];
+  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:stateCopy];
   [(UIContentUnavailableImageProperties *)v7 _setTintColor:v10];
 
   v11 = objc_alloc_init(UIListContentTextProperties);
   v12 = [v6 defaultTextLabelFontForCellStyle:3];
   [(UIContentUnavailableImageProperties *)v11 _setTintColor:v12];
 
-  v13 = [v6 defaultTextColorForCellStyle:3 traitCollection:v4 tintColor:0 state:v5];
+  v13 = [v6 defaultTextColorForCellStyle:3 traitCollection:stateCopy tintColor:0 state:v5];
   [(UIBackgroundConfiguration *)v11 _setBackgroundColor:v13];
 
-  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
+  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
   v14 = objc_alloc_init(UIListContentTextProperties);
   v15 = [v6 defaultDetailTextFontForCellStyle:3];
   [(UIContentUnavailableImageProperties *)v14 _setTintColor:v15];
 
-  v16 = [v6 defaultDetailTextColorForCellStyle:3 traitCollection:v4 state:v5];
+  v16 = [v6 defaultDetailTextColorForCellStyle:3 traitCollection:stateCopy state:v5];
 
   [(UIBackgroundConfiguration *)v14 _setBackgroundColor:v16];
-  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
-  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, v4, 3, 0, 0);
+  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
+  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, stateCopy, 3, 0, 0);
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -272,39 +272,39 @@
   return v28;
 }
 
-+ (id)_defaultValueCellConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultValueCellConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   objc_opt_self();
-  v6 = _UITableConstantsForTraitCollection(v4);
+  v6 = _UITableConstantsForTraitCollection(stateCopy);
   v7 = objc_alloc_init(UIListContentImageProperties);
-  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:v4];
+  v9 = [v6 defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   if (v7)
   {
     objc_setProperty_nonatomic_copy(v7, v8, v9, 24);
   }
 
-  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:v4];
+  v10 = [v6 defaultImageTintColorForState:v5 traitCollection:stateCopy];
   [(UIContentUnavailableImageProperties *)v7 _setTintColor:v10];
 
   v11 = objc_alloc_init(UIListContentTextProperties);
   v12 = [v6 defaultTextLabelFontForCellStyle:1];
   [(UIContentUnavailableImageProperties *)v11 _setTintColor:v12];
 
-  v13 = [v6 defaultTextColorForCellStyle:1 traitCollection:v4 tintColor:0 state:v5];
+  v13 = [v6 defaultTextColorForCellStyle:1 traitCollection:stateCopy tintColor:0 state:v5];
   [(UIBackgroundConfiguration *)v11 _setBackgroundColor:v13];
 
-  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
+  [(UIListContentTextProperties *)v11 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
   v14 = objc_alloc_init(UIListContentTextProperties);
   v15 = [v6 defaultDetailTextFontForCellStyle:1];
   [(UIContentUnavailableImageProperties *)v14 _setTintColor:v15];
 
-  v16 = [v6 defaultDetailTextColorForCellStyle:1 traitCollection:v4 state:v5];
+  v16 = [v6 defaultDetailTextColorForCellStyle:1 traitCollection:stateCopy state:v5];
 
   [(UIBackgroundConfiguration *)v14 _setBackgroundColor:v16];
-  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:v4 forSidebar:0];
-  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, v4, 1, 0, 0);
+  [(UIListContentTextProperties *)v14 _configureWithConstants:v6 traitCollection:stateCopy forSidebar:0];
+  v17 = _UICellContentViewDefaultDirectionalLayoutMargins(v6, stateCopy, 1, 0, 0);
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -329,12 +329,12 @@
   return v28;
 }
 
-+ (id)_defaultPlainHeaderConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultPlainHeaderConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:v4 isHeader:1 style:0];
+  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:stateCopy isHeader:1 style:0];
 
   if (v7)
   {
@@ -351,24 +351,24 @@
   return v7;
 }
 
-- (void)_setDefaultStyle:(uint64_t)a1
+- (void)_setDefaultStyle:(uint64_t)style
 {
-  if (a1)
+  if (style)
   {
-    *(a1 + 64) = a2;
-    if ((*(a1 + 8) & 0x40) != 0)
+    *(style + 64) = a2;
+    if ((*(style + 8) & 0x40) != 0)
     {
 LABEL_18:
       if (a2 > 0x10 || ((1 << a2) & 0x18F80) == 0)
       {
-        v3 = *(a1 + 8) & 0xFEFF;
+        v3 = *(style + 8) & 0xFEFF;
         goto LABEL_21;
       }
 
 LABEL_20:
-      v3 = *(a1 + 8) | 0x100;
+      v3 = *(style + 8) | 0x100;
 LABEL_21:
-      *(a1 + 8) = v3;
+      *(style + 8) = v3;
       return;
     }
 
@@ -395,7 +395,7 @@ LABEL_21:
           {
             if (a2 == 9)
             {
-              *(a1 + 13) = 1;
+              *(style + 13) = 1;
               goto LABEL_20;
             }
 
@@ -406,7 +406,7 @@ LABEL_21:
         }
 
 LABEL_17:
-        *(a1 + 13) = 1;
+        *(style + 13) = 1;
         goto LABEL_18;
       }
 
@@ -418,7 +418,7 @@ LABEL_17:
       if ((a2 - 17) < 2)
       {
 LABEL_15:
-        *(a1 + 13) = 0;
+        *(style + 13) = 0;
         goto LABEL_18;
       }
 
@@ -429,11 +429,11 @@ LABEL_15:
     }
 
 LABEL_24:
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:sel__setDefaultStyle_ object:a1 file:@"UIListContentConfiguration.m" lineNumber:929 description:{@"Unknown style: %ld", *(a1 + 64)}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__setDefaultStyle_ object:style file:@"UIListContentConfiguration.m" lineNumber:929 description:{@"Unknown style: %ld", *(style + 64)}];
 
-    *(a1 + 13) = 1;
-    a2 = *(a1 + 64);
+    *(style + 13) = 1;
+    a2 = *(style + 64);
     goto LABEL_18;
   }
 }
@@ -442,7 +442,7 @@ LABEL_24:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
 
   if (v5)
   {
@@ -459,12 +459,12 @@ LABEL_24:
   return v5;
 }
 
-+ (id)_defaultPlainFooterConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultPlainFooterConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:v4 isHeader:0 style:0];
+  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:stateCopy isHeader:0 style:0];
 
   if (v7)
   {
@@ -485,20 +485,20 @@ LABEL_24:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSidebarCellConfigurationForState:v3 traitCollection:v4 style:2];
+  v5 = [(UIListContentConfiguration *)self _defaultSidebarCellConfigurationForState:v3 traitCollection:v4 style:2];
 
   return v5;
 }
 
-+ (id)_defaultSidebarCellConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 style:
++ (id)_defaultSidebarCellConfigurationForState:(void *)state traitCollection:(uint64_t)collection style:
 {
-  v6 = a3;
+  stateCopy = state;
   v7 = a2;
   v8 = objc_opt_self();
-  v9 = [(UIListContentConfiguration *)v8 _defaultCellConfigurationForState:v7 traitCollection:v6];
-  [(UIListContentConfiguration *)v8 _applySidebarCellStylingToConfiguration:v9 forState:v7 traitCollection:v6 cellStyle:0 sidebarStyle:a4];
+  v9 = [(UIListContentConfiguration *)v8 _defaultCellConfigurationForState:v7 traitCollection:stateCopy];
+  [(UIListContentConfiguration *)v8 _applySidebarCellStylingToConfiguration:v9 forState:v7 traitCollection:stateCopy cellStyle:0 sidebarStyle:collection];
 
-  if (a4 == 2)
+  if (collection == 2)
   {
     if (!v9)
     {
@@ -510,7 +510,7 @@ LABEL_24:
     v12 = 10;
   }
 
-  else if (a4 == 3)
+  else if (collection == 3)
   {
     if (!v9)
     {
@@ -550,20 +550,20 @@ LABEL_12:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSidebarSubtitleCellConfigurationForState:v3 traitCollection:v4 style:2];
+  v5 = [(UIListContentConfiguration *)self _defaultSidebarSubtitleCellConfigurationForState:v3 traitCollection:v4 style:2];
 
   return v5;
 }
 
-+ (id)_defaultSidebarSubtitleCellConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 style:
++ (id)_defaultSidebarSubtitleCellConfigurationForState:(void *)state traitCollection:(uint64_t)collection style:
 {
-  v6 = a3;
+  stateCopy = state;
   v7 = a2;
   v8 = objc_opt_self();
-  v9 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v7 traitCollection:v6];
-  [(UIListContentConfiguration *)v8 _applySidebarCellStylingToConfiguration:v9 forState:v7 traitCollection:v6 cellStyle:3 sidebarStyle:a4];
+  v9 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v7 traitCollection:stateCopy];
+  [(UIListContentConfiguration *)v8 _applySidebarCellStylingToConfiguration:v9 forState:v7 traitCollection:stateCopy cellStyle:3 sidebarStyle:collection];
 
-  if (a4 == 2)
+  if (collection == 2)
   {
     if (!v9)
     {
@@ -575,7 +575,7 @@ LABEL_12:
     v12 = 11;
   }
 
-  else if (a4 == 3)
+  else if (collection == 3)
   {
     if (!v9)
     {
@@ -611,21 +611,21 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_defaultInsetGroupedHeaderConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 isExtraProminent:
++ (id)_defaultInsetGroupedHeaderConfigurationForState:(void *)state traitCollection:(uint64_t)collection isExtraProminent:
 {
   v6 = a2;
-  v7 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v8 = _UITableConstantsForTraitCollection(v7);
+  v8 = _UITableConstantsForTraitCollection(stateCopy);
   v9 = objc_alloc_init(UIListContentImageProperties);
-  v11 = [v8 defaultImageSymbolConfigurationForTraitCollection:v7];
+  v11 = [v8 defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   if (v9)
   {
     objc_setProperty_nonatomic_copy(v9, v10, v11, 24);
   }
 
   v12 = objc_alloc_init(UIListContentTextProperties);
-  [(UIListContentTextProperties *)v12 _configureWithConstants:v8 traitCollection:v7 forSidebar:0];
+  [(UIListContentTextProperties *)v12 _configureWithConstants:v8 traitCollection:stateCopy forSidebar:0];
 
   if (v12)
   {
@@ -635,10 +635,10 @@ LABEL_12:
   v13 = [(UIListContentTextProperties *)v12 copy];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v8 defaultInsetGroupedHeaderFontForExtraProminentStyle:a4 secondaryText:0];
+    v14 = [v8 defaultInsetGroupedHeaderFontForExtraProminentStyle:collection secondaryText:0];
     [(UIContentUnavailableImageProperties *)v12 _setTintColor:v14];
 
-    v15 = [v8 defaultInsetGroupedHeaderFontForExtraProminentStyle:a4 secondaryText:1];
+    v15 = [v8 defaultInsetGroupedHeaderFontForExtraProminentStyle:collection secondaryText:1];
     [(UIContentUnavailableImageProperties *)v13 _setTintColor:v15];
   }
 
@@ -651,9 +651,9 @@ LABEL_12:
   v18 = v6;
   if ([v18 isDisabled])
   {
-    v19 = [v18 isSwiped];
+    isSwiped = [v18 isSwiped];
 
-    if ((v19 & 1) == 0)
+    if ((isSwiped & 1) == 0)
     {
       v20 = +[UIColor quaternaryLabelColor];
       [(UIContentUnavailableImageProperties *)v9 _setTintColor:v20];
@@ -687,7 +687,7 @@ LABEL_13:
   v26 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v8 defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:a4 outAxesPreservingSuperviewLayoutMargins:&v38];
+    [v8 defaultInsetGroupedHeaderLayoutMarginsForExtraProminentStyle:collection outAxesPreservingSuperviewLayoutMargins:&v38];
     v26 = v27;
     v25 = v28;
     v24 = v29;
@@ -704,7 +704,7 @@ LABEL_13:
     v34[2] = v38;
   }
 
-  if (a4)
+  if (collection)
   {
     v36 = 13;
   }
@@ -719,44 +719,44 @@ LABEL_13:
   return v35;
 }
 
-- (id)_initWithImageProperties:(void *)a3 textProperties:(void *)a4 secondaryTextProperties:(char)a5 directionalLayoutMargins:(double)a6 prefersSideBySideTextAndSecondaryText:(double)a7 imageToTextPadding:(double)a8 textToSecondaryTextVerticalPadding:(double)a9
+- (id)_initWithImageProperties:(void *)properties textProperties:(void *)textProperties secondaryTextProperties:(char)secondaryTextProperties directionalLayoutMargins:(double)margins prefersSideBySideTextAndSecondaryText:(double)text imageToTextPadding:(double)padding textToSecondaryTextVerticalPadding:(double)verticalPadding
 {
   v22 = a2;
-  v23 = a3;
-  v24 = a4;
-  if (a1)
+  propertiesCopy = properties;
+  textPropertiesCopy = textProperties;
+  if (self)
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = UIListContentConfiguration;
     v25 = objc_msgSendSuper2(&v27, sel_init);
-    a1 = v25;
+    self = v25;
     if (v25)
     {
       objc_storeStrong(v25 + 9, a2);
-      objc_storeStrong(a1 + 10, a3);
-      objc_storeStrong(a1 + 11, a4);
-      a1[2] = 1;
-      *(a1 + 12) = a6;
-      *(a1 + 13) = a7;
-      *(a1 + 14) = a8;
-      *(a1 + 15) = a9;
-      *(a1 + 12) = a5;
-      *(a1 + 3) = a10;
-      a1[4] = 0x4020000000000000;
-      *(a1 + 5) = a11;
-      a1[6] = 0x3FF0000000000000;
+      objc_storeStrong(self + 10, properties);
+      objc_storeStrong(self + 11, textProperties);
+      self[2] = 1;
+      *(self + 12) = margins;
+      *(self + 13) = text;
+      *(self + 14) = padding;
+      *(self + 15) = verticalPadding;
+      *(self + 12) = secondaryTextProperties;
+      *(self + 3) = a10;
+      self[4] = 0x4020000000000000;
+      *(self + 5) = a11;
+      self[6] = 0x3FF0000000000000;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_defaultInsetGroupedCellConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultInsetGroupedCellConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   objc_opt_self();
-  v6 = [UIListContentConfiguration _defaultCellConfigurationForState:v5 traitCollection:v4];
+  v6 = [UIListContentConfiguration _defaultCellConfigurationForState:v5 traitCollection:stateCopy];
 
   objc_opt_self();
   if (v6)
@@ -778,56 +778,56 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultInsetGroupedCellConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultInsetGroupedCellConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
 
-+ (id)_defaultHeaderFooterConfigurationForState:(void *)a3 traitCollection:(uint64_t)a4 isHeader:(uint64_t)a5 style:
++ (id)_defaultHeaderFooterConfigurationForState:(void *)state traitCollection:(uint64_t)collection isHeader:(uint64_t)header style:
 {
   v8 = a2;
-  v9 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v10 = _UITableConstantsForTraitCollection(v9);
+  v10 = _UITableConstantsForTraitCollection(stateCopy);
   v11 = objc_alloc_init(UIListContentImageProperties);
-  v13 = [v10 defaultImageSymbolConfigurationForTraitCollection:v9];
+  v13 = [v10 defaultImageSymbolConfigurationForTraitCollection:stateCopy];
   if (v11)
   {
     objc_setProperty_nonatomic_copy(v11, v12, v13, 24);
   }
 
-  v14 = [v10 defaultImageTintColorForState:v8 traitCollection:v9];
+  v14 = [v10 defaultImageTintColorForState:v8 traitCollection:stateCopy];
   [(UIContentUnavailableImageProperties *)v11 _setTintColor:v14];
 
   v15 = objc_alloc_init(UIListContentTextProperties);
-  if (a4)
+  if (collection)
   {
-    v16 = [v10 defaultHeaderFontForTableViewStyle:a5];
+    v16 = [v10 defaultHeaderFontForTableViewStyle:header];
     [(UIContentUnavailableImageProperties *)v15 _setTintColor:v16];
 
-    [v10 defaultHeaderTextColorForTableViewStyle:a5 focused:{objc_msgSend(v8, "isFocused")}];
+    [v10 defaultHeaderTextColorForTableViewStyle:header focused:{objc_msgSend(v8, "isFocused")}];
   }
 
   else
   {
-    v17 = [v10 defaultFooterFontForTableViewStyle:a5];
+    v17 = [v10 defaultFooterFontForTableViewStyle:header];
     [(UIContentUnavailableImageProperties *)v15 _setTintColor:v17];
 
-    [v10 defaultFooterTextColorForTableViewStyle:a5 focused:{objc_msgSend(v8, "isFocused")}];
+    [v10 defaultFooterTextColorForTableViewStyle:header focused:{objc_msgSend(v8, "isFocused")}];
   }
   v18 = ;
   [(UIBackgroundConfiguration *)v15 _setBackgroundColor:v18];
 
-  [(UIListContentTextProperties *)v15 _configureWithConstants:v10 traitCollection:v9 forSidebar:0];
+  [(UIListContentTextProperties *)v15 _configureWithConstants:v10 traitCollection:stateCopy forSidebar:0];
   if (v15)
   {
     v15->_showsExpansionTextWhenTruncated = 0;
-    v15->_transform = [v10 shouldUppercaseHeaderFooterTextForTableStyle:a5 isHeader:a4];
+    v15->_transform = [v10 shouldUppercaseHeaderFooterTextForTableStyle:header isHeader:collection];
   }
 
   else
   {
-    [v10 shouldUppercaseHeaderFooterTextForTableStyle:a5 isHeader:a4];
+    [v10 shouldUppercaseHeaderFooterTextForTableStyle:header isHeader:collection];
   }
 
   v19 = [(UIListContentTextProperties *)v15 copy];
@@ -837,13 +837,13 @@ LABEL_13:
     *(v19 + 96) = 0;
   }
 
-  [v10 defaultHeaderFooterLayoutMarginsForTableViewStyle:a5 isHeader:a4 isFirstSection:0];
+  [v10 defaultHeaderFooterLayoutMarginsForTableViewStyle:header isHeader:collection isFirstSection:0];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v9 layoutDirection];
-  if (v29 == 1)
+  layoutDirection = [stateCopy layoutDirection];
+  if (layoutDirection == 1)
   {
     v30 = v28;
   }
@@ -853,7 +853,7 @@ LABEL_13:
     v30 = v24;
   }
 
-  if (v29 != 1)
+  if (layoutDirection != 1)
   {
     v24 = v28;
   }
@@ -866,12 +866,12 @@ LABEL_13:
   return v34;
 }
 
-+ (id)_defaultGroupedHeaderConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultGroupedHeaderConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:v4 isHeader:1 style:1];
+  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:stateCopy isHeader:1 style:1];
 
   if (v7)
   {
@@ -888,12 +888,12 @@ LABEL_13:
   return v7;
 }
 
-+ (id)_defaultGroupedFooterConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultGroupedFooterConfigurationForState:(void *)state traitCollection:
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = a2;
   v6 = objc_opt_self();
-  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:v4 isHeader:0 style:1];
+  v7 = [(UIListContentConfiguration *)v6 _defaultHeaderFooterConfigurationForState:v5 traitCollection:stateCopy isHeader:0 style:1];
 
   if (v7)
   {
@@ -910,13 +910,13 @@ LABEL_13:
   return v7;
 }
 
-+ (void)_applySidebarCellStylingToConfiguration:(void *)a3 forState:(void *)a4 traitCollection:(uint64_t)a5 cellStyle:(uint64_t)a6 sidebarStyle:
++ (void)_applySidebarCellStylingToConfiguration:(void *)configuration forState:(void *)state traitCollection:(uint64_t)collection cellStyle:(uint64_t)style sidebarStyle:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
+  configurationCopy = configuration;
+  stateCopy = state;
   objc_opt_self();
-  v13 = _UITableConstantsForTraitCollection(v12);
+  v13 = _UITableConstantsForTraitCollection(stateCopy);
   v14 = v13;
   v42 = 0;
   v40 = 0u;
@@ -927,7 +927,7 @@ LABEL_13:
   v37 = 0u;
   if (v13)
   {
-    [v13 contentPropertiesForSidebarElementWithTraitCollection:v12 state:v11 isHeader:0 cellStyle:a5 sidebarStyle:a6];
+    [v13 contentPropertiesForSidebarElementWithTraitCollection:stateCopy state:configurationCopy isHeader:0 cellStyle:collection sidebarStyle:style];
   }
 
   [v14 defaultImageToTextPaddingForSidebar:{1, v36}];
@@ -936,7 +936,7 @@ LABEL_13:
     v10[3] = v15;
   }
 
-  v16 = _UICellContentViewDefaultDirectionalLayoutMargins(v14, v12, a5, 1, 0);
+  v16 = _UICellContentViewDefaultDirectionalLayoutMargins(v14, stateCopy, collection, 1, 0);
   if (v10)
   {
     *(v10 + 12) = v16;
@@ -945,59 +945,59 @@ LABEL_13:
     v10[15] = v19;
   }
 
-  v20 = [v10 textProperties];
-  [(UIListContentTextProperties *)v20 _configureWithConstants:v14 traitCollection:v12 forSidebar:1];
+  textProperties = [v10 textProperties];
+  [(UIListContentTextProperties *)textProperties _configureWithConstants:v14 traitCollection:stateCopy forSidebar:1];
 
-  v21 = [v10 secondaryTextProperties];
-  [(UIListContentTextProperties *)v21 _configureWithConstants:v14 traitCollection:v12 forSidebar:1];
+  secondaryTextProperties = [v10 secondaryTextProperties];
+  [(UIListContentTextProperties *)secondaryTextProperties _configureWithConstants:v14 traitCollection:stateCopy forSidebar:1];
 
-  v22 = [v10 textProperties];
-  [(UIContentUnavailableImageProperties *)v22 _setTintColor:v36];
+  textProperties2 = [v10 textProperties];
+  [(UIContentUnavailableImageProperties *)textProperties2 _setTintColor:v36];
 
-  v23 = [v10 textProperties];
-  [(UIBackgroundConfiguration *)v23 _setBackgroundColor:v37];
+  textProperties3 = [v10 textProperties];
+  [(UIBackgroundConfiguration *)textProperties3 _setBackgroundColor:v37];
 
-  v24 = [v10 textProperties];
-  [(UIListContentTextProperties *)v24 _setColorTransformerIdentifier:?];
+  textProperties4 = [v10 textProperties];
+  [(UIListContentTextProperties *)textProperties4 _setColorTransformerIdentifier:?];
 
-  v25 = [v10 textProperties];
-  if (v25)
+  textProperties5 = [v10 textProperties];
+  if (textProperties5)
   {
-    v25[13] = v41;
+    textProperties5[13] = v41;
   }
 
-  v26 = [v10 secondaryTextProperties];
-  [(UIContentUnavailableImageProperties *)v26 _setTintColor:?];
+  secondaryTextProperties2 = [v10 secondaryTextProperties];
+  [(UIContentUnavailableImageProperties *)secondaryTextProperties2 _setTintColor:?];
 
-  v27 = [v10 secondaryTextProperties];
-  [(UIBackgroundConfiguration *)v27 _setBackgroundColor:?];
+  secondaryTextProperties3 = [v10 secondaryTextProperties];
+  [(UIBackgroundConfiguration *)secondaryTextProperties3 _setBackgroundColor:?];
 
-  v28 = [v10 secondaryTextProperties];
-  [(UIListContentTextProperties *)v28 _setColorTransformerIdentifier:v40];
+  secondaryTextProperties4 = [v10 secondaryTextProperties];
+  [(UIListContentTextProperties *)secondaryTextProperties4 _setColorTransformerIdentifier:v40];
 
-  v29 = [v10 secondaryTextProperties];
-  if (v29)
+  secondaryTextProperties5 = [v10 secondaryTextProperties];
+  if (secondaryTextProperties5)
   {
-    v29[13] = *(&v41 + 1);
+    secondaryTextProperties5[13] = *(&v41 + 1);
   }
 
-  v30 = [v10 imageProperties];
-  [(UIContentUnavailableImageProperties *)v30 _setTintColor:v38];
+  imageProperties = [v10 imageProperties];
+  [(UIContentUnavailableImageProperties *)imageProperties _setTintColor:v38];
 
-  v31 = [v10 imageProperties];
-  v33 = v31;
-  if (v31)
+  imageProperties2 = [v10 imageProperties];
+  v33 = imageProperties2;
+  if (imageProperties2)
   {
-    objc_setProperty_nonatomic_copy(v31, v32, *(&v38 + 1), 24);
+    objc_setProperty_nonatomic_copy(imageProperties2, v32, *(&v38 + 1), 24);
   }
 
-  v34 = [v10 imageProperties];
-  [(UIListContentImageProperties *)v34 _setTintColorTransformerIdentifier:?];
+  imageProperties3 = [v10 imageProperties];
+  [(UIListContentImageProperties *)imageProperties3 _setTintColorTransformerIdentifier:?];
 
-  v35 = [v10 imageProperties];
-  if (v35)
+  imageProperties4 = [v10 imageProperties];
+  if (imageProperties4)
   {
-    v35[12] = v42;
+    imageProperties4[12] = v42;
   }
 
   if (v10)
@@ -1018,14 +1018,14 @@ LABEL_13:
   return v3;
 }
 
-+ (id)_defaultSidebarHeaderConfigurationForState:(void *)a3 traitCollection:
++ (id)_defaultSidebarHeaderConfigurationForState:(void *)state traitCollection:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   v6 = objc_opt_self();
-  v7 = _UITableConstantsForTraitCollection(v5);
-  v8 = [v5 _splitViewControllerContext];
-  v9 = _UICollectionViewListStyleFromListEnvironment([v5 listEnvironment]);
+  v7 = _UITableConstantsForTraitCollection(stateCopy);
+  _splitViewControllerContext = [stateCopy _splitViewControllerContext];
+  v9 = _UICollectionViewListStyleFromListEnvironment([stateCopy listEnvironment]);
   if (v9 == 4)
   {
     v10 = 3;
@@ -1033,7 +1033,7 @@ LABEL_13:
 
   else if (v9 == 3)
   {
-    if (v8 == 2)
+    if (_splitViewControllerContext == 2)
     {
       v10 = 2;
     }
@@ -1049,12 +1049,12 @@ LABEL_13:
     v10 = 0;
   }
 
-  v11 = [(UIListContentConfiguration *)v6 _defaultCellConfigurationForState:v4 traitCollection:v5];
+  v11 = [(UIListContentConfiguration *)v6 _defaultCellConfigurationForState:v4 traitCollection:stateCopy];
   [v7 defaultImageToTextPaddingForSidebar:1];
   if (v11)
   {
     *(v11 + 24) = v12;
-    *(v11 + 96) = _UICellContentViewDefaultDirectionalLayoutMargins(v7, v5, 0, 1, 0);
+    *(v11 + 96) = _UICellContentViewDefaultDirectionalLayoutMargins(v7, stateCopy, 0, 1, 0);
     *(v11 + 104) = v13;
     *(v11 + 112) = v14;
     *(v11 + 120) = v15;
@@ -1062,14 +1062,14 @@ LABEL_13:
 
   else
   {
-    _UICellContentViewDefaultDirectionalLayoutMargins(v7, v5, 0, 1, 0);
+    _UICellContentViewDefaultDirectionalLayoutMargins(v7, stateCopy, 0, 1, 0);
   }
 
-  v16 = [v11 textProperties];
-  [(UIListContentTextProperties *)v16 _configureWithConstants:v7 traitCollection:v5 forSidebar:1];
+  textProperties = [v11 textProperties];
+  [(UIListContentTextProperties *)textProperties _configureWithConstants:v7 traitCollection:stateCopy forSidebar:1];
 
-  v17 = [v11 secondaryTextProperties];
-  [(UIListContentTextProperties *)v17 _configureWithConstants:v7 traitCollection:v5 forSidebar:1];
+  secondaryTextProperties = [v11 secondaryTextProperties];
+  [(UIListContentTextProperties *)secondaryTextProperties _configureWithConstants:v7 traitCollection:stateCopy forSidebar:1];
 
   v41 = 0;
   v39 = 0u;
@@ -1080,7 +1080,7 @@ LABEL_13:
   v36 = 0u;
   if (v7)
   {
-    [v7 contentPropertiesForSidebarElementWithTraitCollection:v5 state:v4 isHeader:1 cellStyle:0 sidebarStyle:v10];
+    [v7 contentPropertiesForSidebarElementWithTraitCollection:stateCopy state:v4 isHeader:1 cellStyle:0 sidebarStyle:v10];
     v18 = v35;
   }
 
@@ -1089,53 +1089,53 @@ LABEL_13:
     v18 = 0;
   }
 
-  v19 = [v11 textProperties];
-  [(UIContentUnavailableImageProperties *)v19 _setTintColor:v18];
+  textProperties2 = [v11 textProperties];
+  [(UIContentUnavailableImageProperties *)textProperties2 _setTintColor:v18];
 
-  v20 = [v11 textProperties];
-  [(UIBackgroundConfiguration *)v20 _setBackgroundColor:v36];
+  textProperties3 = [v11 textProperties];
+  [(UIBackgroundConfiguration *)textProperties3 _setBackgroundColor:v36];
 
-  v21 = [v11 textProperties];
-  [(UIListContentTextProperties *)v21 _setColorTransformerIdentifier:?];
+  textProperties4 = [v11 textProperties];
+  [(UIListContentTextProperties *)textProperties4 _setColorTransformerIdentifier:?];
 
-  v22 = [v11 textProperties];
-  if (v22)
+  textProperties5 = [v11 textProperties];
+  if (textProperties5)
   {
-    v22[13] = v40;
+    textProperties5[13] = v40;
   }
 
-  v23 = [v11 secondaryTextProperties];
-  [(UIContentUnavailableImageProperties *)v23 _setTintColor:?];
+  secondaryTextProperties2 = [v11 secondaryTextProperties];
+  [(UIContentUnavailableImageProperties *)secondaryTextProperties2 _setTintColor:?];
 
-  v24 = [v11 secondaryTextProperties];
-  [(UIBackgroundConfiguration *)v24 _setBackgroundColor:?];
+  secondaryTextProperties3 = [v11 secondaryTextProperties];
+  [(UIBackgroundConfiguration *)secondaryTextProperties3 _setBackgroundColor:?];
 
-  v25 = [v11 secondaryTextProperties];
-  [(UIListContentTextProperties *)v25 _setColorTransformerIdentifier:v39];
+  secondaryTextProperties4 = [v11 secondaryTextProperties];
+  [(UIListContentTextProperties *)secondaryTextProperties4 _setColorTransformerIdentifier:v39];
 
-  v26 = [v11 secondaryTextProperties];
-  if (v26)
+  secondaryTextProperties5 = [v11 secondaryTextProperties];
+  if (secondaryTextProperties5)
   {
-    v26[13] = *(&v40 + 1);
+    secondaryTextProperties5[13] = *(&v40 + 1);
   }
 
-  v27 = [v11 imageProperties];
-  [(UIContentUnavailableImageProperties *)v27 _setTintColor:v37];
+  imageProperties = [v11 imageProperties];
+  [(UIContentUnavailableImageProperties *)imageProperties _setTintColor:v37];
 
-  v28 = [v11 imageProperties];
-  v30 = v28;
-  if (v28)
+  imageProperties2 = [v11 imageProperties];
+  v30 = imageProperties2;
+  if (imageProperties2)
   {
-    objc_setProperty_nonatomic_copy(v28, v29, *(&v37 + 1), 24);
+    objc_setProperty_nonatomic_copy(imageProperties2, v29, *(&v37 + 1), 24);
   }
 
-  v31 = [v11 imageProperties];
-  [(UIListContentImageProperties *)v31 _setTintColorTransformerIdentifier:?];
+  imageProperties3 = [v11 imageProperties];
+  [(UIListContentImageProperties *)imageProperties3 _setTintColorTransformerIdentifier:?];
 
-  v32 = [v11 imageProperties];
-  if (v32)
+  imageProperties4 = [v11 imageProperties];
+  if (imageProperties4)
   {
-    v32[12] = v41;
+    imageProperties4[12] = v41;
   }
 
   if (v11)
@@ -1160,7 +1160,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSidebarCellConfigurationForState:v3 traitCollection:v4 style:1];
+  v5 = [(UIListContentConfiguration *)self _defaultSidebarCellConfigurationForState:v3 traitCollection:v4 style:1];
 
   return v5;
 }
@@ -1169,7 +1169,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSidebarSubtitleCellConfigurationForState:v3 traitCollection:v4 style:1];
+  v5 = [(UIListContentConfiguration *)self _defaultSidebarSubtitleCellConfigurationForState:v3 traitCollection:v4 style:1];
 
   return v5;
 }
@@ -1178,7 +1178,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -1187,7 +1187,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultSidebarHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultSidebarHeaderConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -1196,7 +1196,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultGroupedFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultGroupedFooterConfigurationForState:v3 traitCollection:v4];
 
   return v5;
 }
@@ -1205,7 +1205,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainHeaderConfigurationForState:v3 traitCollection:v4];
 
   if (v5)
   {
@@ -1226,7 +1226,7 @@ LABEL_13:
 {
   v3 = [UICellConfigurationState _readonlyCellState:?];
   v4 = +[UITraitCollection _fallbackTraitCollection];
-  v5 = [(UIListContentConfiguration *)a1 _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
+  v5 = [(UIListContentConfiguration *)self _defaultPlainFooterConfigurationForState:v3 traitCollection:v4];
 
   if (v5)
   {
@@ -1243,9 +1243,9 @@ LABEL_13:
   return v5;
 }
 
-- (id)updatedConfigurationForState:(id)a3
+- (id)updatedConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(UIListContentConfiguration *)self copy];
   if (self)
   {
@@ -1257,13 +1257,13 @@ LABEL_13:
     defaultStyle = 0;
   }
 
-  v7 = v4;
+  v7 = stateCopy;
   v8 = objc_opt_self();
   v9 = [UICellConfigurationState _readonlyCellState:v7];
-  v10 = [v7 traitCollection];
+  traitCollection = [v7 traitCollection];
   if (dyld_program_sdk_at_least() && defaultStyle <= 0x12 && ((1 << defaultStyle) & 0x60007) != 0)
   {
-    v11 = _UICollectionViewListStyleFromListEnvironment([v10 listEnvironment]);
+    v11 = _UICollectionViewListStyleFromListEnvironment([traitCollection listEnvironment]);
     v12 = v11;
     if (defaultStyle > 1)
     {
@@ -1291,29 +1291,29 @@ LABEL_13:
               if (!v11)
               {
 LABEL_13:
-                v13 = [(UIListContentConfiguration *)v8 _defaultPlainFooterConfigurationForState:v9 traitCollection:v10];
+                v13 = [(UIListContentConfiguration *)v8 _defaultPlainFooterConfigurationForState:v9 traitCollection:traitCollection];
 LABEL_89:
                 v28 = v13;
                 goto LABEL_90;
               }
 
 LABEL_72:
-              v44 = [MEMORY[0x1E696AAA8] currentHandler];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
               v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[UIListContentConfiguration _defaultConfigurationForStyle:state:]"];
-              [v44 handleFailureInFunction:v45 file:@"UIListContentConfiguration.m" lineNumber:777 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, v10}];
+              [currentHandler handleFailureInFunction:v45 file:@"UIListContentConfiguration.m" lineNumber:777 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, traitCollection}];
 
               goto LABEL_13;
             }
 
-            v13 = [(UIListContentConfiguration *)v8 _defaultGroupedFooterConfigurationForState:v9 traitCollection:v10];
+            v13 = [(UIListContentConfiguration *)v8 _defaultGroupedFooterConfigurationForState:v9 traitCollection:traitCollection];
             goto LABEL_89;
           }
 
-          v32 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v32 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:783 description:{@"Attempting to unknown resolve generic content configuration style: %ld for state: %@", defaultStyle, v7}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:783 description:{@"Attempting to unknown resolve generic content configuration style: %ld for state: %@", defaultStyle, v7}];
 
 LABEL_45:
-          v13 = [(UIListContentConfiguration *)v8 _defaultCellConfigurationForState:v9 traitCollection:v10];
+          v13 = [(UIListContentConfiguration *)v8 _defaultCellConfigurationForState:v9 traitCollection:traitCollection];
           goto LABEL_89;
         }
 
@@ -1321,7 +1321,7 @@ LABEL_45:
         {
           if (v11 == 3)
           {
-            v13 = [(UIListContentConfiguration *)v8 _defaultSidebarHeaderConfigurationForState:v9 traitCollection:v10];
+            v13 = [(UIListContentConfiguration *)v8 _defaultSidebarHeaderConfigurationForState:v9 traitCollection:traitCollection];
             goto LABEL_89;
           }
 
@@ -1335,20 +1335,20 @@ LABEL_45:
         {
           if ((v11 - 1) < 2)
           {
-            v13 = [(UIListContentConfiguration *)v8 _defaultGroupedHeaderConfigurationForState:v9 traitCollection:v10];
+            v13 = [(UIListContentConfiguration *)v8 _defaultGroupedHeaderConfigurationForState:v9 traitCollection:traitCollection];
             goto LABEL_89;
           }
 
           if (!v11)
           {
 LABEL_82:
-            v13 = [(UIListContentConfiguration *)v8 _defaultPlainHeaderConfigurationForState:v9 traitCollection:v10];
+            v13 = [(UIListContentConfiguration *)v8 _defaultPlainHeaderConfigurationForState:v9 traitCollection:traitCollection];
             goto LABEL_89;
           }
         }
 
-        v43 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v43 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:756 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, v10}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:756 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, traitCollection}];
 
         goto LABEL_82;
       }
@@ -1357,9 +1357,9 @@ LABEL_82:
       {
         if ((v11 - 3) < 2)
         {
-          v22 = [v10 _splitViewControllerContext];
+          _splitViewControllerContext = [traitCollection _splitViewControllerContext];
           v23 = 1;
-          if (v22 == 2)
+          if (_splitViewControllerContext == 2)
           {
             v23 = 2;
           }
@@ -1374,7 +1374,7 @@ LABEL_82:
             v24 = 3;
           }
 
-          v25 = v10;
+          v25 = traitCollection;
           v26 = v9;
           v27 = objc_opt_self();
           v28 = [(UIListContentConfiguration *)v27 _defaultValueCellConfigurationForState:v26 traitCollection:v25];
@@ -1385,18 +1385,18 @@ LABEL_82:
 
         if (v11 == 2)
         {
-          v46 = [(UIListContentConfiguration *)v8 _defaultValueCellConfigurationForState:v9 traitCollection:v10];
+          v46 = [(UIListContentConfiguration *)v8 _defaultValueCellConfigurationForState:v9 traitCollection:traitCollection];
 LABEL_80:
           v28 = v46;
           objc_opt_self();
           goto LABEL_90;
         }
 
-        v47 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v47 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:736 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, v10}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:736 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, traitCollection}];
       }
 
-      v13 = [(UIListContentConfiguration *)v8 _defaultValueCellConfigurationForState:v9 traitCollection:v10];
+      v13 = [(UIListContentConfiguration *)v8 _defaultValueCellConfigurationForState:v9 traitCollection:traitCollection];
       goto LABEL_89;
     }
 
@@ -1406,9 +1406,9 @@ LABEL_80:
       {
         if ((v11 - 3) < 2)
         {
-          v29 = [v10 _splitViewControllerContext];
+          _splitViewControllerContext2 = [traitCollection _splitViewControllerContext];
           v30 = 1;
-          if (v29 == 2)
+          if (_splitViewControllerContext2 == 2)
           {
             v30 = 2;
           }
@@ -1423,18 +1423,18 @@ LABEL_80:
             v31 = 3;
           }
 
-          v13 = [(UIListContentConfiguration *)v8 _defaultSidebarCellConfigurationForState:v9 traitCollection:v10 style:v31];
+          v13 = [(UIListContentConfiguration *)v8 _defaultSidebarCellConfigurationForState:v9 traitCollection:traitCollection style:v31];
           goto LABEL_89;
         }
 
         if (v11 == 2)
         {
-          v13 = [(UIListContentConfiguration *)v8 _defaultInsetGroupedCellConfigurationForState:v9 traitCollection:v10];
+          v13 = [(UIListContentConfiguration *)v8 _defaultInsetGroupedCellConfigurationForState:v9 traitCollection:traitCollection];
           goto LABEL_89;
         }
 
-        v48 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v48 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:686 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, v10}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:686 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, traitCollection}];
       }
 
       goto LABEL_45;
@@ -1444,9 +1444,9 @@ LABEL_80:
     {
       if ((v11 - 3) < 2)
       {
-        v19 = [v10 _splitViewControllerContext];
+        _splitViewControllerContext3 = [traitCollection _splitViewControllerContext];
         v20 = 1;
-        if (v19 == 2)
+        if (_splitViewControllerContext3 == 2)
         {
           v20 = 2;
         }
@@ -1461,26 +1461,26 @@ LABEL_80:
           v21 = 3;
         }
 
-        v13 = [(UIListContentConfiguration *)v8 _defaultSidebarSubtitleCellConfigurationForState:v9 traitCollection:v10 style:v21];
+        v13 = [(UIListContentConfiguration *)v8 _defaultSidebarSubtitleCellConfigurationForState:v9 traitCollection:traitCollection style:v21];
         goto LABEL_89;
       }
 
       if (v11 == 2)
       {
-        v46 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v9 traitCollection:v10];
+        v46 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v9 traitCollection:traitCollection];
         goto LABEL_80;
       }
 
-      v49 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v49 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:711 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, v10}];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler6 handleFailureInMethod:sel__defaultConfigurationForStyle_state_ object:v8 file:@"UIListContentConfiguration.m" lineNumber:711 description:{@"Unknown list appearance style in trait collection. Style: %ld; trait collection: %@", v12, traitCollection}];
     }
 
-    v13 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v9 traitCollection:v10];
+    v13 = [(UIListContentConfiguration *)v8 _defaultSubtitleCellConfigurationForState:v9 traitCollection:traitCollection];
     goto LABEL_89;
   }
 
   v14 = v9;
-  v15 = v10;
+  v15 = traitCollection;
   v16 = objc_opt_self();
   v17 = v16;
   switch(defaultStyle)
@@ -1560,8 +1560,8 @@ LABEL_59:
       v18 = [(UIListContentConfiguration *)v16 _defaultSidebarSubtitleCellConfigurationForState:v33 traitCollection:v34 style:v35];
       break;
     default:
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v42 handleFailureInMethod:sel__defaultConfigurationForFixedStyle_state_traitCollection_ object:v17 file:@"UIListContentConfiguration.m" lineNumber:849 description:{@"Default configuration requested for unknown style: %ld; state: %@; trait collection: %@", defaultStyle, v14, v15}];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler7 handleFailureInMethod:sel__defaultConfigurationForFixedStyle_state_traitCollection_ object:v17 file:@"UIListContentConfiguration.m" lineNumber:849 description:{@"Default configuration requested for unknown style: %ld; state: %@; trait collection: %@", defaultStyle, v14, v15}];
 
 LABEL_65:
       v18 = [(UIListContentConfiguration *)v17 _defaultCellConfigurationForState:v14 traitCollection:v15];
@@ -1571,17 +1571,17 @@ LABEL_65:
   v28 = v18;
 
 LABEL_90:
-  v50 = [v5 imageProperties];
-  v51 = [v28 imageProperties];
-  [(UIListContentImageProperties *)v50 _applyPropertiesFromDefaultProperties:v51];
+  imageProperties = [v5 imageProperties];
+  imageProperties2 = [v28 imageProperties];
+  [(UIListContentImageProperties *)imageProperties _applyPropertiesFromDefaultProperties:imageProperties2];
 
-  v52 = [v5 textProperties];
-  v53 = [v28 textProperties];
-  [(UIListContentTextProperties *)v52 _applyPropertiesFromDefaultProperties:v53];
+  textProperties = [v5 textProperties];
+  textProperties2 = [v28 textProperties];
+  [(UIListContentTextProperties *)textProperties _applyPropertiesFromDefaultProperties:textProperties2];
 
-  v54 = [v5 secondaryTextProperties];
-  v55 = [v28 secondaryTextProperties];
-  [(UIListContentTextProperties *)v54 _applyPropertiesFromDefaultProperties:v55];
+  secondaryTextProperties = [v5 secondaryTextProperties];
+  secondaryTextProperties2 = [v28 secondaryTextProperties];
+  [(UIListContentTextProperties *)secondaryTextProperties _applyPropertiesFromDefaultProperties:secondaryTextProperties2];
 
   configurationFlags = self->_configurationFlags;
   if (configurationFlags)
@@ -1801,40 +1801,40 @@ LABEL_122:
   return v5;
 }
 
-- (UIListContentConfiguration)initWithCoder:(id)a3
+- (UIListContentConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = UIListContentConfiguration;
   v5 = [(UIListContentConfiguration *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageProperties"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageProperties"];
     imageProperties = v5->_imageProperties;
     v5->_imageProperties = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textProperties"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textProperties"];
     textProperties = v5->_textProperties;
     v5->_textProperties = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextProperties"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextProperties"];
     secondaryTextProperties = v5->_secondaryTextProperties;
     v5->_secondaryTextProperties = v10;
 
-    v5->_axesPreservingSuperviewLayoutMargins = [v4 decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
-    [v4 decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
+    v5->_axesPreservingSuperviewLayoutMargins = [coderCopy decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
+    [coderCopy decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
     v5->_directionalLayoutMargins.top = v12;
     v5->_directionalLayoutMargins.leading = v13;
     v5->_directionalLayoutMargins.bottom = v14;
     v5->_directionalLayoutMargins.trailing = v15;
-    v5->_prefersSideBySideTextAndSecondaryText = [v4 decodeBoolForKey:@"prefersSideBySideTextAndSecondaryText"];
-    [v4 decodeDoubleForKey:@"imageToTextPadding"];
+    v5->_prefersSideBySideTextAndSecondaryText = [coderCopy decodeBoolForKey:@"prefersSideBySideTextAndSecondaryText"];
+    [coderCopy decodeDoubleForKey:@"imageToTextPadding"];
     v5->_imageToTextPadding = v16;
-    [v4 decodeDoubleForKey:@"textToSecondaryTextHorizontalPadding"];
+    [coderCopy decodeDoubleForKey:@"textToSecondaryTextHorizontalPadding"];
     v5->_textToSecondaryTextHorizontalPadding = v17;
-    [v4 decodeDoubleForKey:@"textToSecondaryTextVerticalPadding"];
+    [coderCopy decodeDoubleForKey:@"textToSecondaryTextVerticalPadding"];
     v5->_textToSecondaryTextVerticalPadding = v18;
-    if ([v4 containsValueForKey:@"defaultStyle_v2"])
+    if ([coderCopy containsValueForKey:@"defaultStyle_v2"])
     {
       v19 = @"defaultStyle_v2";
     }
@@ -1844,7 +1844,7 @@ LABEL_122:
       v19 = @"defaultStyle";
     }
 
-    v20 = [v4 decodeIntegerForKey:v19];
+    v20 = [coderCopy decodeIntegerForKey:v19];
     if (v20 >= 0x13)
     {
       v21 = 0;
@@ -1856,16 +1856,16 @@ LABEL_122:
     }
 
     [(UIListContentConfiguration *)v5 _setDefaultStyle:v21];
-    if ([v4 containsValueForKey:@"enforcesMinimumHeight"])
+    if ([coderCopy containsValueForKey:@"enforcesMinimumHeight"])
     {
-      v5->_enforcesMinimumHeight = [v4 decodeBoolForKey:@"enforcesMinimumHeight"];
+      v5->_enforcesMinimumHeight = [coderCopy decodeBoolForKey:@"enforcesMinimumHeight"];
     }
 
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFFE | [v4 decodeBoolForKey:v22];
+    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFFE | [coderCopy decodeBoolForKey:v22];
 
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-    if ([v4 decodeBoolForKey:v23])
+    if ([coderCopy decodeBoolForKey:v23])
     {
       v24 = 2;
     }
@@ -1878,7 +1878,7 @@ LABEL_122:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFFD | v24;
 
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"prefersSideBySideTextAndSecondaryText"];
-    if ([v4 decodeBoolForKey:v25])
+    if ([coderCopy decodeBoolForKey:v25])
     {
       v26 = 4;
     }
@@ -1891,7 +1891,7 @@ LABEL_122:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFFB | v26;
 
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageToTextPadding"];
-    if ([v4 decodeBoolForKey:v27])
+    if ([coderCopy decodeBoolForKey:v27])
     {
       v28 = 8;
     }
@@ -1904,7 +1904,7 @@ LABEL_122:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFF7 | v28;
 
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextHorizontalPadding"];
-    if ([v4 decodeBoolForKey:v29])
+    if ([coderCopy decodeBoolForKey:v29])
     {
       v30 = 16;
     }
@@ -1917,7 +1917,7 @@ LABEL_122:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFEF | v30;
 
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextVerticalPadding"];
-    if ([v4 decodeBoolForKey:v31])
+    if ([coderCopy decodeBoolForKey:v31])
     {
       v32 = 32;
     }
@@ -1930,7 +1930,7 @@ LABEL_122:
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFDF | v32;
 
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"enforcesMinimumHeight"];
-    if ([v4 decodeBoolForKey:v33])
+    if ([coderCopy decodeBoolForKey:v33])
     {
       v34 = 64;
     }
@@ -1942,9 +1942,9 @@ LABEL_122:
 
     *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFFBF | v34;
 
-    if ([v4 containsValueForKey:@"isSidebarStyle"])
+    if ([coderCopy containsValueForKey:@"isSidebarStyle"])
     {
-      if ([v4 decodeBoolForKey:@"isSidebarStyle"])
+      if ([coderCopy decodeBoolForKey:@"isSidebarStyle"])
       {
         v35 = 256;
       }
@@ -1957,11 +1957,11 @@ LABEL_122:
       *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFEFF | v35;
     }
 
-    v36 = [v4 containsValueForKey:@"alpha"];
+    v36 = [coderCopy containsValueForKey:@"alpha"];
     v37 = 1.0;
     if (v36)
     {
-      [v4 decodeDoubleForKey:{@"alpha", 1.0}];
+      [coderCopy decodeDoubleForKey:{@"alpha", 1.0}];
     }
 
     v5->_alpha = v37;
@@ -1970,21 +1970,21 @@ LABEL_122:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v22 = a3;
-  [v22 encodeObject:self->_imageProperties forKey:@"imageProperties"];
-  [v22 encodeObject:self->_textProperties forKey:@"textProperties"];
-  [v22 encodeObject:self->_secondaryTextProperties forKey:@"secondaryTextProperties"];
-  [v22 encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
-  [v22 encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
-  [v22 encodeBool:self->_prefersSideBySideTextAndSecondaryText forKey:@"prefersSideBySideTextAndSecondaryText"];
-  [v22 encodeDouble:@"imageToTextPadding" forKey:self->_imageToTextPadding];
-  [v22 encodeDouble:@"textToSecondaryTextHorizontalPadding" forKey:self->_textToSecondaryTextHorizontalPadding];
-  [v22 encodeDouble:@"textToSecondaryTextVerticalPadding" forKey:self->_textToSecondaryTextVerticalPadding];
-  [v22 encodeBool:self->_enforcesMinimumHeight forKey:@"enforcesMinimumHeight"];
-  [v22 encodeDouble:@"alpha" forKey:self->_alpha];
-  [v22 encodeInteger:self->_defaultStyle forKey:@"defaultStyle_v2"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_imageProperties forKey:@"imageProperties"];
+  [coderCopy encodeObject:self->_textProperties forKey:@"textProperties"];
+  [coderCopy encodeObject:self->_secondaryTextProperties forKey:@"secondaryTextProperties"];
+  [coderCopy encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
+  [coderCopy encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
+  [coderCopy encodeBool:self->_prefersSideBySideTextAndSecondaryText forKey:@"prefersSideBySideTextAndSecondaryText"];
+  [coderCopy encodeDouble:@"imageToTextPadding" forKey:self->_imageToTextPadding];
+  [coderCopy encodeDouble:@"textToSecondaryTextHorizontalPadding" forKey:self->_textToSecondaryTextHorizontalPadding];
+  [coderCopy encodeDouble:@"textToSecondaryTextVerticalPadding" forKey:self->_textToSecondaryTextVerticalPadding];
+  [coderCopy encodeBool:self->_enforcesMinimumHeight forKey:@"enforcesMinimumHeight"];
+  [coderCopy encodeDouble:@"alpha" forKey:self->_alpha];
+  [coderCopy encodeInteger:self->_defaultStyle forKey:@"defaultStyle_v2"];
   defaultStyle = self->_defaultStyle;
   if ((defaultStyle & 0x8000000000000000) != 0)
   {
@@ -2020,40 +2020,40 @@ LABEL_122:
     }
   }
 
-  [v22 encodeInteger:v7 forKey:@"defaultStyle"];
-  [v22 encodeBool:HIBYTE(*&self->_configurationFlags) & 1 forKey:@"isSidebarStyle"];
+  [coderCopy encodeInteger:v7 forKey:@"defaultStyle"];
+  [coderCopy encodeBool:HIBYTE(*&self->_configurationFlags) & 1 forKey:@"isSidebarStyle"];
   configurationFlags = self->_configurationFlags;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-  [v22 encodeBool:configurationFlags & 1 forKey:v9];
+  [coderCopy encodeBool:configurationFlags & 1 forKey:v9];
 
   v10 = (*&self->_configurationFlags >> 1) & 1;
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-  [v22 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:v10 forKey:v11];
 
   v12 = (*&self->_configurationFlags >> 2) & 1;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"prefersSideBySideTextAndSecondaryText"];
-  [v22 encodeBool:v12 forKey:v13];
+  [coderCopy encodeBool:v12 forKey:v13];
 
   v14 = (*&self->_configurationFlags >> 3) & 1;
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"imageToTextPadding"];
-  [v22 encodeBool:v14 forKey:v15];
+  [coderCopy encodeBool:v14 forKey:v15];
 
   v16 = (*&self->_configurationFlags >> 4) & 1;
   v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextHorizontalPadding"];
-  [v22 encodeBool:v16 forKey:v17];
+  [coderCopy encodeBool:v16 forKey:v17];
 
   v18 = (*&self->_configurationFlags >> 5) & 1;
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"textToSecondaryTextVerticalPadding"];
-  [v22 encodeBool:v18 forKey:v19];
+  [coderCopy encodeBool:v18 forKey:v19];
 
   v20 = (*&self->_configurationFlags >> 6) & 1;
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"enforcesMinimumHeight"];
-  [v22 encodeBool:v20 forKey:v21];
+  [coderCopy encodeBool:v20 forKey:v21];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(UIListContentImageProperties *)self->_imageProperties copy];
@@ -2089,16 +2089,16 @@ LABEL_122:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = v6;
@@ -2124,29 +2124,29 @@ LABEL_122:
   return self;
 }
 
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (quick)
   {
-    if (v3 == a1)
+    if (v3 == quick)
     {
-      a1 = 1;
+      quick = 1;
     }
 
-    else if (*(a1 + 64) == v3[8] && ((*(v3 + 4) ^ *(a1 + 8)) & 0x100) == 0 && *(a1 + 48) == *(v3 + 6) && [(UIListContentImageProperties *)*(a1 + 72) _isEqualToPropertiesQuick:1 compareImage:?]&& [(UIListContentTextProperties *)*(a1 + 80) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIListContentTextProperties *)*(a1 + 88) _isEqualToPropertiesQuick:1 compareText:?]&& *(a1 + 16) == v4[2] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 96), *(v4 + 6)), vceqq_f64(*(a1 + 112), *(v4 + 7))))) & 1) != 0 && *(a1 + 12) == *(v4 + 12) && *(a1 + 24) == *(v4 + 3) && *(a1 + 32) == *(v4 + 4) && *(a1 + 40) == *(v4 + 5) && *(a1 + 13) == *(v4 + 13))
+    else if (*(quick + 64) == v3[8] && ((*(v3 + 4) ^ *(quick + 8)) & 0x100) == 0 && *(quick + 48) == *(v3 + 6) && [(UIListContentImageProperties *)*(quick + 72) _isEqualToPropertiesQuick:1 compareImage:?]&& [(UIListContentTextProperties *)*(quick + 80) _isEqualToPropertiesQuick:1 compareText:?]&& [(UIListContentTextProperties *)*(quick + 88) _isEqualToPropertiesQuick:1 compareText:?]&& *(quick + 16) == v4[2] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(quick + 96), *(v4 + 6)), vceqq_f64(*(quick + 112), *(v4 + 7))))) & 1) != 0 && *(quick + 12) == *(v4 + 12) && *(quick + 24) == *(v4 + 3) && *(quick + 32) == *(v4 + 4) && *(quick + 40) == *(v4 + 5) && *(quick + 13) == *(v4 + 13))
     {
-      a1 = _deferringTokenEqualToToken(*(a1 + 56), v4[7]);
+      quick = _deferringTokenEqualToToken(*(quick + 56), v4[7]);
     }
 
     else
     {
-      a1 = 0;
+      quick = 0;
     }
   }
 
-  return a1;
+  return quick;
 }
 
 - (unint64_t)hash
@@ -2156,57 +2156,57 @@ LABEL_122:
   return v4 ^ [(UIListContentTextProperties *)self->_secondaryTextProperties hash];
 }
 
-- (id)_descriptionPropertiesForFullDescription:(uint64_t)a1
+- (id)_descriptionPropertiesForFullDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = *(a1 + 72);
+    v5 = *(description + 72);
     if (v5 && v5->data)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(UIContentUnavailableImageProperties *)v5 _shortDescription];
-      v8 = [v6 stringWithFormat:@"image = %@", v7];
+      _shortDescription = [(UIContentUnavailableImageProperties *)v5 _shortDescription];
+      v8 = [v6 stringWithFormat:@"image = %@", _shortDescription];
       [v4 addObject:v8];
     }
 
-    if ([*(a1 + 80) _hasText])
+    if ([*(description + 80) _hasText])
     {
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [(UIListContentTextProperties *)*(a1 + 80) _shortDescription];
-      v11 = [v9 stringWithFormat:@"text = %@", v10];
+      _shortDescription2 = [(UIListContentTextProperties *)*(description + 80) _shortDescription];
+      v11 = [v9 stringWithFormat:@"text = %@", _shortDescription2];
       [v4 addObject:v11];
     }
 
-    if ([*(a1 + 88) _hasText])
+    if ([*(description + 88) _hasText])
     {
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [(UIListContentTextProperties *)*(a1 + 88) _shortDescription];
-      v14 = [v12 stringWithFormat:@"secondaryText = %@", v13];
+      _shortDescription3 = [(UIListContentTextProperties *)*(description + 88) _shortDescription];
+      v14 = [v12 stringWithFormat:@"secondaryText = %@", _shortDescription3];
       [v4 addObject:v14];
     }
 
-    if (*(a1 + 48) != 1.0)
+    if (*(description + 48) != 1.0)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"alpha = %g", *(a1 + 48)];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"alpha = %g", *(description + 48)];
       [v4 addObject:v15];
     }
 
-    if (*(a1 + 56))
+    if (*(description + 56))
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textEditingConfiguration = %@", *(a1 + 56)];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textEditingConfiguration = %@", *(description + 56)];
       [v4 addObject:v16];
     }
 
     if (a2)
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = *(a1 + 64);
+      v18 = *(description + 64);
       if (v18 >= 0x13)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_UIListContentConfigurationStyleToString(_UIListContentConfigurationStyle)"];
-        [v20 handleFailureInFunction:v21 file:@"UIListContentConfiguration.m" lineNumber:143 description:{@"Unknown style: %ld", v18}];
+        [currentHandler handleFailureInFunction:v21 file:@"UIListContentConfiguration.m" lineNumber:143 description:{@"Unknown style: %ld", v18}];
 
         v19 = 0;
       }
@@ -2219,19 +2219,19 @@ LABEL_122:
       v22 = [v17 stringWithFormat:@"Base Style = %@", v19];
       [v4 addObject:v22];
 
-      v23 = *(a1 + 96);
-      v24 = *(a1 + 112);
+      v23 = *(description + 96);
+      v24 = *(description + 112);
       if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v23), vceqzq_f64(v24))))))
       {
-        v25 = *(a1 + 104);
+        v25 = *(description + 104);
         v26 = MEMORY[0x1E696AEC0];
-        v27 = *(a1 + 120);
+        v27 = *(description + 120);
         v28 = NSStringFromDirectionalEdgeInsets(*v23.f64);
         v29 = [v26 stringWithFormat:@"directionalLayoutMargins = %@", v28];
         [v4 addObject:v29];
       }
 
-      v30 = *(a1 + 16);
+      v30 = *(description + 16);
       if (v30)
       {
         v31 = MEMORY[0x1E696AEC0];
@@ -2240,22 +2240,22 @@ LABEL_122:
         [v4 addObject:v33];
       }
 
-      if (*(a1 + 12) == 1)
+      if (*(description + 12) == 1)
       {
         v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"prefersSideBySideTextAndSecondaryText = YES"];
         [v4 addObject:v34];
       }
 
-      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageToTextPadding = %g", *(a1 + 24)];
+      v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageToTextPadding = %g", *(description + 24)];
       [v4 addObject:v35];
 
-      if (*(a1 + 12) == 1)
+      if (*(description + 12) == 1)
       {
-        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textToSecondaryTextHorizontalPadding = %g", *(a1 + 32)];
+        v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textToSecondaryTextHorizontalPadding = %g", *(description + 32)];
         [v4 addObject:v36];
       }
 
-      v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textToSecondaryTextVerticalPadding = %g", *(a1 + 40)];
+      v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"textToSecondaryTextVerticalPadding = %g", *(description + 40)];
       [v4 addObject:v37];
     }
 
@@ -2285,25 +2285,25 @@ LABEL_122:
   return v8;
 }
 
-- (double)_minimumHeightForTraitCollection:(id)a3
+- (double)_minimumHeightForTraitCollection:(id)collection
 {
   if (!self->_enforcesMinimumHeight)
   {
     return 0.0;
   }
 
-  v4 = a3;
-  v5 = _UITableConstantsForTraitCollection(v4);
+  collectionCopy = collection;
+  v5 = _UITableConstantsForTraitCollection(collectionCopy);
   v6 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleBody"];
-  [v5 minimumContentViewHeightForFont:v6 traitCollection:v4 isSidebarStyle:HIBYTE(*&self->_configurationFlags) & 1];
+  [v5 minimumContentViewHeightForFont:v6 traitCollection:collectionCopy isSidebarStyle:HIBYTE(*&self->_configurationFlags) & 1];
   v8 = v7;
 
   return v8;
 }
 
-- (void)_setSwiftBridgingImageProperties:(id)a3
+- (void)_setSwiftBridgingImageProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   imageProperties = self->_imageProperties;
   if (imageProperties)
   {
@@ -2311,15 +2311,15 @@ LABEL_122:
   }
 
   v6 = imageProperties;
-  [(UIBackgroundConfiguration *)v4 _setCustomView:v6];
+  [(UIBackgroundConfiguration *)propertiesCopy _setCustomView:v6];
 
   v7 = self->_imageProperties;
-  self->_imageProperties = v4;
+  self->_imageProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingTextProperties:(id)a3
+- (void)_setSwiftBridgingTextProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   textProperties = self->_textProperties;
   if (textProperties)
   {
@@ -2327,9 +2327,9 @@ LABEL_122:
   }
 
   v7 = textProperties;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v6, v7, 24);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v6, v7, 24);
   }
 
   v8 = self->_textProperties;
@@ -2339,18 +2339,18 @@ LABEL_122:
   }
 
   v10 = v8;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v9, v10, 72);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v9, v10, 72);
   }
 
   v11 = self->_textProperties;
-  self->_textProperties = v4;
+  self->_textProperties = propertiesCopy;
 }
 
-- (void)_setSwiftBridgingSecondaryTextProperties:(id)a3
+- (void)_setSwiftBridgingSecondaryTextProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   secondaryTextProperties = self->_secondaryTextProperties;
   if (secondaryTextProperties)
   {
@@ -2358,9 +2358,9 @@ LABEL_122:
   }
 
   v7 = secondaryTextProperties;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v6, v7, 24);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v6, v7, 24);
   }
 
   v8 = self->_secondaryTextProperties;
@@ -2370,13 +2370,13 @@ LABEL_122:
   }
 
   v10 = v8;
-  if (v4)
+  if (propertiesCopy)
   {
-    objc_setProperty_nonatomic_copy(v4, v9, v10, 72);
+    objc_setProperty_nonatomic_copy(propertiesCopy, v9, v10, 72);
   }
 
   v11 = self->_secondaryTextProperties;
-  self->_secondaryTextProperties = v4;
+  self->_secondaryTextProperties = propertiesCopy;
 }
 
 @end

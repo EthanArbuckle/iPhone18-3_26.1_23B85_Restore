@@ -1,54 +1,54 @@
 @interface VMVoicemailTranscriptionController
 - (BOOL)determinePersonlizedTranscriptionAvailability;
 - (BOOL)isDictationModelInstalled;
-- (BOOL)isInferredLanguage:(id)a3;
+- (BOOL)isInferredLanguage:(id)language;
 - (BOOL)isLanguageIDModelInstalled;
-- (BOOL)isSpeechAnalyzerTranscriptionModelInstalled:(id)a3;
-- (BOOL)isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:(id)a3 taskHint:(int64_t)a4;
+- (BOOL)isSpeechAnalyzerTranscriptionModelInstalled:(id)installed;
+- (BOOL)isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:(id)hint taskHint:(int64_t)taskHint;
 - (BOOL)isTranscribing;
-- (BOOL)setTranscribingChanged:(BOOL)a3;
+- (BOOL)setTranscribingChanged:(BOOL)changed;
 - (BOOL)transcriptionAssetModelProcessed;
-- (BOOL)unsubscribeAssetConfig:(id)a3;
-- (BOOL)updateControllerWithLocale:(id)a3 assetLocale:(id)a4;
+- (BOOL)unsubscribeAssetConfig:(id)config;
+- (BOOL)updateControllerWithLocale:(id)locale assetLocale:(id)assetLocale;
 - (NSLocale)locale;
 - (NSOperationQueue)speechAnalyzerOperationQueue;
 - (NSOperationQueue)transcriptionOperationQueue;
 - (NSProgress)transcriptionProgress;
 - (VMSpeechRecognizer)speechRecognizer;
 - (VMVoicemailTranscriptionController)init;
-- (VMVoicemailTranscriptionController)initWithLocale:(id)a3;
-- (VMVoicemailTranscriptionController)initWithSpeechRecognizer:(id)a3;
-- (id)getSpeechAnalyzerAssetIDForLocale:(id)a3;
-- (id)getSpeechAnalyzerAssetIDForLocaleWithTaskHint:(id)a3 taskHint:(int64_t)a4;
+- (VMVoicemailTranscriptionController)initWithLocale:(id)locale;
+- (VMVoicemailTranscriptionController)initWithSpeechRecognizer:(id)recognizer;
+- (id)getSpeechAnalyzerAssetIDForLocale:(id)locale;
+- (id)getSpeechAnalyzerAssetIDForLocaleWithTaskHint:(id)hint taskHint:(int64_t)taskHint;
 - (id)getSpeechAssetSubscriptions;
 - (id)getTranscriptionLocaleIdentifier;
 - (void)addAssetModelNetworkObserver;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addTranscriptionOperation:(id)a3 duration:(double)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addTranscriptionOperation:(id)operation duration:(double)duration;
 - (void)cancelQueuedTranscriptions;
 - (void)dealloc;
 - (void)manageSpeechAssetSubscriptions;
 - (void)manageSpeechAssetSubscriptions_sync;
-- (void)networkReachabilityChangedSync:(BOOL)a3;
-- (void)notifyTranscriptionProgressFractionCompletedChanged:(double)a3;
-- (void)notifyTranscriptionProgressTotalUnitCountChanged:(int64_t)a3;
-- (void)notifyTranscriptionStatusChanged:(BOOL)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performAtomicAccessorBlock:(id)a3;
-- (void)performSynchronousBlock:(id)a3;
+- (void)networkReachabilityChangedSync:(BOOL)sync;
+- (void)notifyTranscriptionProgressFractionCompletedChanged:(double)changed;
+- (void)notifyTranscriptionProgressTotalUnitCountChanged:(int64_t)changed;
+- (void)notifyTranscriptionStatusChanged:(BOOL)changed;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performAtomicAccessorBlock:(id)block;
+- (void)performSynchronousBlock:(id)block;
 - (void)removeAssetModelNetworkObserver;
-- (void)removeDelegate:(id)a3;
-- (void)reportDictationProblemForFileAtURL:(id)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)reportDictationProblemForFileAtURL:(id)l;
 - (void)requestDatabaseSanitization;
 - (void)requestLanguageIDModelInstallation;
-- (void)requestLanguageIDModelOperationWithCompletion:(id)a3;
-- (void)requestSpeechAssetModelInstallation:(id)a3;
+- (void)requestLanguageIDModelOperationWithCompletion:(id)completion;
+- (void)requestSpeechAssetModelInstallation:(id)installation;
 - (void)requestTranscriptionAssetModelInstallation;
-- (void)requestTranscriptionAssetModelOperationWithCompletion:(id)a3;
-- (void)retrieveDictationResultForFileAtURL:(id)a3 queuePriority:(int64_t)a4 duration:(double)a5 transcriptionBeginCallback:(id)a6 completion:(id)a7;
-- (void)retrieveDictationResultWithLocaleForFileAtURL:(id)a3 locale:(id)a4 profanityFilterOverride:(BOOL)a5 queuePriority:(int64_t)a6 duration:(double)a7 transcriptionBeginCallback:(id)a8 completion:(id)a9;
-- (void)retrieveLanguageIDResultForFileAtURL:(id)a3 queuePriority:(int64_t)a4 completion:(id)a5;
-- (void)setTranscriptionAssetModelProcessed:(BOOL)a3;
+- (void)requestTranscriptionAssetModelOperationWithCompletion:(id)completion;
+- (void)retrieveDictationResultForFileAtURL:(id)l queuePriority:(int64_t)priority duration:(double)duration transcriptionBeginCallback:(id)callback completion:(id)completion;
+- (void)retrieveDictationResultWithLocaleForFileAtURL:(id)l locale:(id)locale profanityFilterOverride:(BOOL)override queuePriority:(int64_t)priority duration:(double)duration transcriptionBeginCallback:(id)callback completion:(id)completion;
+- (void)retrieveLanguageIDResultForFileAtURL:(id)l queuePriority:(int64_t)priority completion:(id)completion;
+- (void)setTranscriptionAssetModelProcessed:(BOOL)processed;
 @end
 
 @implementation VMVoicemailTranscriptionController
@@ -60,29 +60,29 @@
   return 0;
 }
 
-- (VMVoicemailTranscriptionController)initWithLocale:(id)a3
+- (VMVoicemailTranscriptionController)initWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [[SFSpeechRecognizer alloc] initWithLocale:v4];
+  localeCopy = locale;
+  v5 = [[SFSpeechRecognizer alloc] initWithLocale:localeCopy];
   if (v5)
   {
     self = [(VMVoicemailTranscriptionController *)self initWithSpeechRecognizer:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (VMVoicemailTranscriptionController)initWithSpeechRecognizer:(id)a3
+- (VMVoicemailTranscriptionController)initWithSpeechRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v45.receiver = self;
   v45.super_class = VMVoicemailTranscriptionController;
   v5 = [(VMVoicemailTranscriptionController *)&v45 init];
@@ -97,15 +97,15 @@
       v48 = 2048;
       v49 = v5;
       v50 = 2112;
-      v51 = v4;
+      v51 = recognizerCopy;
       v8 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "<%@ %p> Creating with Speech Recognizer %@", buf, 0x20u);
     }
 
     *(v5 + 2) = 0;
-    v9 = [v4 locale];
+    locale = [recognizerCopy locale];
     v10 = *(v5 + 9);
-    *(v5 + 9) = v9;
+    *(v5 + 9) = locale;
 
     v5[14] = [v5 determineGasrAvailability];
     v5[15] = [v5 determinePersonlizedTranscriptionAvailability];
@@ -113,9 +113,9 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
-      v13 = [*(v5 + 9) localeIdentifier];
-      v14 = [*(v5 + 9) languageCode];
-      v15 = [*(v5 + 9) languageIdentifier];
+      localeIdentifier = [*(v5 + 9) localeIdentifier];
+      languageCode = [*(v5 + 9) languageCode];
+      languageIdentifier = [*(v5 + 9) languageIdentifier];
       v16 = v5[14];
       v17 = asNSStringBOOL();
       v18 = v5[15];
@@ -125,11 +125,11 @@
       v48 = 2048;
       v49 = v5;
       v50 = 2112;
-      v51 = v13;
+      v51 = localeIdentifier;
       v52 = 2112;
-      v53 = v14;
+      v53 = languageCode;
       v54 = 2112;
-      v55 = v15;
+      v55 = languageIdentifier;
       v56 = 2112;
       v57 = v17;
       v58 = 2112;
@@ -143,10 +143,10 @@
     *(v5 + 10) = v20;
 
     v22 = [NSBundle bundleForClass:objc_opt_class()];
-    v23 = [v22 bundleIdentifier];
+    bundleIdentifier = [v22 bundleIdentifier];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v26 = [NSString stringWithFormat:@"%@.%@", v23, v25];
+    v26 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v25];
     v27 = NSStringFromSelector("serialDispatchQueue");
     v28 = [NSString stringWithFormat:@"%@.%@", v26, v27];
 
@@ -183,7 +183,7 @@
     block[2] = sub_1000543A0;
     block[3] = &unk_1000EE260;
     v43 = v5;
-    v44 = v4;
+    v44 = recognizerCopy;
     dispatch_async(v40, block);
   }
 
@@ -198,7 +198,7 @@
     *buf = 138412546;
     v13 = objc_opt_class();
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v4 = v13;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "<%@ %p> Deleting", buf, 0x16u);
   }
@@ -223,39 +223,39 @@
   [(VMVoicemailTranscriptionController *)&v11 dealloc];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100054968;
   v9[3] = &unk_1000EE120;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  queueCopy = queue;
+  v11 = delegateCopy;
+  v7 = delegateCopy;
+  v8 = queueCopy;
   [(VMVoicemailTranscriptionController *)self performAtomicAccessorBlock:v9];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100054A7C;
   v4[3] = &unk_1000EE260;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VMVoicemailTranscriptionController *)v5 performAtomicAccessorBlock:v4];
+  selfCopy = self;
+  delegateCopy = delegate;
+  v3 = delegateCopy;
+  [(VMVoicemailTranscriptionController *)selfCopy performAtomicAccessorBlock:v4];
 }
 
 - (id)getTranscriptionLocaleIdentifier
 {
-  v2 = [(VMVoicemailTranscriptionController *)self locale];
-  v3 = [v2 localeIdentifier];
+  locale = [(VMVoicemailTranscriptionController *)self locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  return v3;
+  return localeIdentifier;
 }
 
 - (BOOL)determinePersonlizedTranscriptionAvailability
@@ -266,18 +266,18 @@
   }
 
   v3 = +[VMConfiguration VMPersonalizationSupportedLocales];
-  v4 = [(VMVoicemailTranscriptionController *)self matchedSystemLocale];
-  v5 = [v4 localeIdentifier];
-  v6 = [v3 containsObject:v5];
+  matchedSystemLocale = [(VMVoicemailTranscriptionController *)self matchedSystemLocale];
+  localeIdentifier = [matchedSystemLocale localeIdentifier];
+  v6 = [v3 containsObject:localeIdentifier];
 
   return v6;
 }
 
-- (BOOL)unsubscribeAssetConfig:(id)a3
+- (BOOL)unsubscribeAssetConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v10 = 0;
-  [SFSpeechAssetManager unsubscribeFromAssetWithConfig:v3 clientIdentifier:@"com.apple.visualvoicemail" error:&v10];
+  [SFSpeechAssetManager unsubscribeFromAssetWithConfig:configCopy clientIdentifier:@"com.apple.visualvoicemail" error:&v10];
   v4 = v10;
   v5 = sub_10005435C();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -285,9 +285,9 @@
   {
     if (v6)
     {
-      v7 = [v3 language];
+      language = [configCopy language];
       *buf = 138412546;
-      v12 = v7;
+      v12 = language;
       v13 = 2112;
       v14 = v4;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "unsubscribeAssetConfig: Failed unsubscribing to %@ error:%@.", buf, 0x16u);
@@ -296,9 +296,9 @@
 
   else if (v6)
   {
-    v8 = [v3 language];
+    language2 = [configCopy language];
     *buf = 138412290;
-    v12 = v8;
+    v12 = language2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "unsubscribeAssetConfig: Unsubscribed to %@.", buf, 0xCu);
   }
 
@@ -333,11 +333,11 @@
           v8 = sub_10005435C();
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
-            v9 = [v7 language];
+            language = [v7 language];
             [v7 assetType];
             v10 = SFEntitledAssetTypeToString();
             *buf = 138412546;
-            v18 = v9;
+            v18 = language;
             v19 = 2112;
             v20 = v10;
             _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "getSpeechAssetSubscriptions: language %@ assetType %@", buf, 0x16u);
@@ -356,7 +356,7 @@
   return v2;
 }
 
-- (BOOL)isInferredLanguage:(id)a3
+- (BOOL)isInferredLanguage:(id)language
 {
   v9 = 0;
   v10 = &v9;
@@ -366,10 +366,10 @@
   v6[1] = 3221225472;
   v6[2] = sub_100055150;
   v6[3] = &unk_1000EEBD0;
-  v7 = a3;
+  languageCopy = language;
   v8 = &v9;
   v6[4] = self;
-  v4 = v7;
+  v4 = languageCopy;
   [(VMVoicemailTranscriptionController *)self performSynchronousBlock:v6];
   LOBYTE(self) = *(v10 + 24);
 
@@ -377,9 +377,9 @@
   return self;
 }
 
-- (BOOL)updateControllerWithLocale:(id)a3 assetLocale:(id)a4
+- (BOOL)updateControllerWithLocale:(id)locale assetLocale:(id)assetLocale
 {
-  v6 = a3;
+  localeCopy = locale;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -389,11 +389,11 @@
   v10[2] = sub_1000552E8;
   v10[3] = &unk_1000EEBF8;
   v10[4] = self;
-  v11 = a4;
-  v12 = v6;
+  assetLocaleCopy = assetLocale;
+  v12 = localeCopy;
   v13 = &v14;
-  v7 = v6;
-  v8 = v11;
+  v7 = localeCopy;
+  v8 = assetLocaleCopy;
   [(VMVoicemailTranscriptionController *)self performSynchronousBlock:v10];
   LOBYTE(self) = *(v15 + 24);
 
@@ -403,30 +403,30 @@
 
 - (void)manageSpeechAssetSubscriptions
 {
-  v3 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005540C;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 - (void)manageSpeechAssetSubscriptions_sync
 {
-  v2 = [(VMVoicemailTranscriptionController *)self assetMgmtController];
-  v32 = [v2 getAssetFreqMap];
+  assetMgmtController = [(VMVoicemailTranscriptionController *)self assetMgmtController];
+  getAssetFreqMap = [assetMgmtController getAssetFreqMap];
 
-  v33 = [(VMVoicemailTranscriptionController *)self getSpeechAssetSubscriptions];
+  getSpeechAssetSubscriptions = [(VMVoicemailTranscriptionController *)self getSpeechAssetSubscriptions];
   v3 = sub_10005435C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v35 = [v33 count];
+    v35 = [getSpeechAssetSubscriptions count];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "manageSpeechAssetSubscriptions: # of subscriptions %lu.", buf, 0xCu);
   }
 
-  v28 = [v33 count];
+  v28 = [getSpeechAssetSubscriptions count];
   if (v28 >= 5)
   {
     if ([(VMVoicemailTranscriptionController *)self isPersTranscriptionAvailable])
@@ -435,48 +435,48 @@
       do
       {
         v30 = v4;
-        v29 = [v33 objectAtIndexedSubscript:?];
-        v5 = [v29 language];
-        v6 = [v32 objectForKeyedSubscript:v5];
+        v29 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:?];
+        language = [v29 language];
+        v6 = [getAssetFreqMap objectForKeyedSubscript:language];
         if (v6)
         {
-          v7 = [v29 language];
-          v8 = [v32 objectForKeyedSubscript:v7];
-          v31 = [v8 intValue];
+          language2 = [v29 language];
+          v8 = [getAssetFreqMap objectForKeyedSubscript:language2];
+          intValue = [v8 intValue];
         }
 
         else
         {
-          v31 = 0;
+          intValue = 0;
         }
 
         v9 = v30;
         while (1)
         {
           v10 = v9 - 1;
-          v11 = [v33 objectAtIndexedSubscript:(v9 - 1)];
-          v12 = [v11 language];
-          v13 = [v32 objectForKeyedSubscript:v12];
+          v11 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:(v9 - 1)];
+          language3 = [v11 language];
+          v13 = [getAssetFreqMap objectForKeyedSubscript:language3];
           if (v13)
           {
-            v14 = [v33 objectAtIndexedSubscript:(v9 - 1)];
-            v15 = [v14 language];
-            v16 = [v32 objectForKeyedSubscript:v15];
-            v17 = [v16 intValue];
+            v14 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:(v9 - 1)];
+            language4 = [v14 language];
+            v16 = [getAssetFreqMap objectForKeyedSubscript:language4];
+            intValue2 = [v16 intValue];
           }
 
           else
           {
-            v17 = 0;
+            intValue2 = 0;
           }
 
-          if (v17 <= v31)
+          if (intValue2 <= intValue)
           {
             break;
           }
 
-          v18 = [v33 objectAtIndexedSubscript:(v9 - 1)];
-          [v33 replaceObjectAtIndex:v9 withObject:v18];
+          v18 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:(v9 - 1)];
+          [getSpeechAssetSubscriptions replaceObjectAtIndex:v9 withObject:v18];
 
           --v9;
           if (v10 + 1 <= 1)
@@ -486,7 +486,7 @@
           }
         }
 
-        [v33 replaceObjectAtIndex:v9 withObject:v29];
+        [getSpeechAssetSubscriptions replaceObjectAtIndex:v9 withObject:v29];
 
         v4 = v30 + 1;
       }
@@ -498,14 +498,14 @@
     v20 = 0;
     do
     {
-      if ([v33 count] <= v20)
+      if ([getSpeechAssetSubscriptions count] <= v20)
       {
         break;
       }
 
-      v21 = [v33 objectAtIndexedSubscript:v20];
-      v22 = [v21 language];
-      v23 = [v22 isEqualToString:v19];
+      v21 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:v20];
+      language5 = [v21 language];
+      v23 = [language5 isEqualToString:v19];
 
       if (v23)
       {
@@ -514,7 +514,7 @@
 
       else
       {
-        v25 = [v33 objectAtIndexedSubscript:v20];
+        v25 = [getSpeechAssetSubscriptions objectAtIndexedSubscript:v20];
         v26 = [(VMVoicemailTranscriptionController *)self unsubscribeAssetConfig:v25];
 
         v24 = (v28 - v26);
@@ -528,120 +528,120 @@
   }
 }
 
-- (void)reportDictationProblemForFileAtURL:(id)a3
+- (void)reportDictationProblemForFileAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  lCopy = l;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005596C;
   v7[3] = &unk_1000EE260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = lCopy;
+  v6 = lCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
-- (void)retrieveDictationResultForFileAtURL:(id)a3 queuePriority:(int64_t)a4 duration:(double)a5 transcriptionBeginCallback:(id)a6 completion:(id)a7
+- (void)retrieveDictationResultForFileAtURL:(id)l queuePriority:(int64_t)priority duration:(double)duration transcriptionBeginCallback:(id)callback completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  lCopy = l;
+  callbackCopy = callback;
+  completionCopy = completion;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100055C14;
   v28[3] = &unk_1000EEC20;
   v28[4] = self;
-  v15 = v12;
+  v15 = lCopy;
   v29 = v15;
-  v32 = a4;
-  v33 = a5;
-  v16 = v14;
+  priorityCopy = priority;
+  durationCopy = duration;
+  v16 = completionCopy;
   v30 = v16;
-  v31 = v13;
-  v17 = v13;
+  v31 = callbackCopy;
+  v17 = callbackCopy;
   v18 = objc_retainBlock(v28);
-  v19 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100055D10;
   v23[3] = &unk_1000EEC70;
   v24 = v15;
-  v25 = self;
+  selfCopy = self;
   v26 = v18;
   v27 = v16;
   v20 = v16;
   v21 = v18;
   v22 = v15;
-  dispatch_async(v19, v23);
+  dispatch_async(serialDispatchQueue, v23);
 }
 
-- (void)retrieveLanguageIDResultForFileAtURL:(id)a3 queuePriority:(int64_t)a4 completion:(id)a5
+- (void)retrieveLanguageIDResultForFileAtURL:(id)l queuePriority:(int64_t)priority completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100056328;
   v22[3] = &unk_1000EEC98;
-  v10 = v8;
+  v10 = lCopy;
   v23 = v10;
-  v26 = a4;
-  v11 = v9;
-  v24 = self;
+  priorityCopy = priority;
+  v11 = completionCopy;
+  selfCopy = self;
   v25 = v11;
   v12 = objc_retainBlock(v22);
-  v13 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000563CC;
   v17[3] = &unk_1000EEC70;
   v18 = v10;
-  v19 = self;
+  selfCopy2 = self;
   v20 = v12;
   v21 = v11;
   v14 = v11;
   v15 = v12;
   v16 = v10;
-  dispatch_async(v13, v17);
+  dispatch_async(serialDispatchQueue, v17);
 }
 
-- (void)retrieveDictationResultWithLocaleForFileAtURL:(id)a3 locale:(id)a4 profanityFilterOverride:(BOOL)a5 queuePriority:(int64_t)a6 duration:(double)a7 transcriptionBeginCallback:(id)a8 completion:(id)a9
+- (void)retrieveDictationResultWithLocaleForFileAtURL:(id)l locale:(id)locale profanityFilterOverride:(BOOL)override queuePriority:(int64_t)priority duration:(double)duration transcriptionBeginCallback:(id)callback completion:(id)completion
 {
-  v16 = a3;
-  v17 = a4;
-  v29 = a8;
-  v18 = a9;
+  lCopy = l;
+  localeCopy = locale;
+  callbackCopy = callback;
+  completionCopy = completion;
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
-  v47[3] = [VMConfiguration getVMLocaleSpeechAssetTypeforLocale:v17 gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]];
+  v47[3] = [VMConfiguration getVMLocaleSpeechAssetTypeforLocale:localeCopy gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100056ACC;
   v37[3] = &unk_1000EECE8;
-  v19 = v17;
+  v19 = localeCopy;
   v38 = v19;
   v43 = v47;
-  v20 = v16;
+  v20 = lCopy;
   v39 = v20;
-  v40 = self;
-  v46 = a5;
-  v44 = a6;
-  v21 = v18;
+  selfCopy = self;
+  overrideCopy = override;
+  priorityCopy = priority;
+  v21 = completionCopy;
   v41 = v21;
-  v22 = v29;
+  v22 = callbackCopy;
   v42 = v22;
-  v45 = a7;
+  durationCopy = duration;
   v23 = objc_retainBlock(v37);
-  v24 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100056BDC;
   block[3] = &unk_1000EED38;
   v31 = v20;
   v32 = v19;
-  v33 = self;
+  selfCopy2 = self;
   v34 = v21;
   v35 = v23;
   v36 = v47;
@@ -649,88 +649,88 @@
   v26 = v21;
   v27 = v19;
   v28 = v20;
-  dispatch_async(v24, block);
+  dispatch_async(serialDispatchQueue, block);
 
   _Block_object_dispose(v47, 8);
 }
 
-- (void)addTranscriptionOperation:(id)a3 duration:(double)a4
+- (void)addTranscriptionOperation:(id)operation duration:(double)duration
 {
-  v6 = a3;
+  operationCopy = operation;
   v7 = sub_10005435C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138413058;
     v14 = objc_opt_class();
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v6;
+    v18 = operationCopy;
     v19 = 2048;
-    v20 = a4;
+    durationCopy = duration;
     v8 = v14;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<%@ %p> Adding transcription operation %@, duration %lu", &v13, 0x2Au);
   }
 
-  v9 = [(VMVoicemailTranscriptionController *)self transcriptionProgress];
-  [v9 setTotalUnitCount:{(objc_msgSend(v9, "totalUnitCount") + a4)}];
+  transcriptionProgress = [(VMVoicemailTranscriptionController *)self transcriptionProgress];
+  [transcriptionProgress setTotalUnitCount:{(objc_msgSend(transcriptionProgress, "totalUnitCount") + duration)}];
 
-  v10 = [(VMVoicemailTranscriptionController *)self transcriptionProgress];
-  v11 = [v6 progress];
-  [v10 addChild:v11 withPendingUnitCount:a4];
+  transcriptionProgress2 = [(VMVoicemailTranscriptionController *)self transcriptionProgress];
+  progress = [operationCopy progress];
+  [transcriptionProgress2 addChild:progress withPendingUnitCount:duration];
 
-  v12 = [(VMVoicemailTranscriptionController *)self transcriptionOperationQueue];
-  [v12 addOperation:v6];
+  transcriptionOperationQueue = [(VMVoicemailTranscriptionController *)self transcriptionOperationQueue];
+  [transcriptionOperationQueue addOperation:operationCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  objectCopy = object;
+  changeCopy = change;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10005761C;
   v14[3] = &unk_1000EED60;
-  v15 = v10;
-  v16 = self;
-  v17 = v9;
-  v18 = a6;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, v14);
+  v15 = changeCopy;
+  selfCopy = self;
+  v17 = objectCopy;
+  contextCopy = context;
+  v12 = objectCopy;
+  v13 = changeCopy;
+  dispatch_async(serialDispatchQueue, v14);
 }
 
-- (void)notifyTranscriptionStatusChanged:(BOOL)a3
+- (void)notifyTranscriptionStatusChanged:(BOOL)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100057BBC;
   v3[3] = &unk_1000ED8D8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VMVoicemailTranscriptionController *)self performAtomicAccessorBlock:v3];
 }
 
-- (void)notifyTranscriptionProgressFractionCompletedChanged:(double)a3
+- (void)notifyTranscriptionProgressFractionCompletedChanged:(double)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100057E60;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = changed;
   [(VMVoicemailTranscriptionController *)self performAtomicAccessorBlock:v3];
 }
 
-- (void)notifyTranscriptionProgressTotalUnitCountChanged:(int64_t)a3
+- (void)notifyTranscriptionProgressTotalUnitCountChanged:(int64_t)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100058100;
   v3[3] = &unk_1000EE4D8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = changed;
   [(VMVoicemailTranscriptionController *)self performAtomicAccessorBlock:v3];
 }
 
@@ -769,17 +769,17 @@
   return v2;
 }
 
-- (BOOL)setTranscribingChanged:(BOOL)a3
+- (BOOL)setTranscribingChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   os_unfair_lock_lock(&self->lock);
   transcribing = self->_transcribing;
-  if (transcribing != v3)
+  if (transcribing != changedCopy)
   {
-    self->_transcribing = v3;
+    self->_transcribing = changedCopy;
   }
 
-  v6 = transcribing != v3;
+  v6 = transcribing != changedCopy;
   os_unfair_lock_unlock(&self->lock);
   return v6;
 }
@@ -794,13 +794,13 @@
 
 - (void)cancelQueuedTranscriptions
 {
-  v3 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005886C;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 - (BOOL)transcriptionAssetModelProcessed
@@ -821,7 +821,7 @@
   return v2;
 }
 
-- (void)setTranscriptionAssetModelProcessed:(BOOL)a3
+- (void)setTranscriptionAssetModelProcessed:(BOOL)processed
 {
   v9 = 0;
   v10 = &v9;
@@ -831,7 +831,7 @@
   v7[1] = 3221225472;
   v7[2] = sub_100058B70;
   v7[3] = &unk_1000EEDB0;
-  v8 = a3;
+  processedCopy = processed;
   v7[4] = self;
   v7[5] = &v9;
   [(VMVoicemailTranscriptionController *)self performAtomicAccessorBlock:v7];
@@ -845,7 +845,7 @@
       *buf = 138412802;
       v14 = v5;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "<%@ %p> transcriptionAssetModelProcessed changed to %@", buf, 0x20u);
@@ -857,74 +857,74 @@
 
 - (void)requestTranscriptionAssetModelInstallation
 {
-  v3 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100058C24;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 - (void)requestLanguageIDModelInstallation
 {
-  v3 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100058F54;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
-- (void)requestSpeechAssetModelInstallation:(id)a3
+- (void)requestSpeechAssetModelInstallation:(id)installation
 {
-  v4 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  installationCopy = installation;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100059218;
   v7[3] = &unk_1000EE260;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = installationCopy;
+  selfCopy = self;
+  v6 = installationCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
 - (void)requestDatabaseSanitization
 {
-  v3 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100059654;
   block[3] = &unk_1000EDEC8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
-- (id)getSpeechAnalyzerAssetIDForLocale:(id)a3
+- (id)getSpeechAnalyzerAssetIDForLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self getSpeechAnalyzerAssetIDForLocaleWithTaskHint:v4 taskHint:[VMConfiguration getVMLocaleSpeechAssetTypeforLocale:v4 gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]]];
+  localeCopy = locale;
+  v5 = [(VMVoicemailTranscriptionController *)self getSpeechAnalyzerAssetIDForLocaleWithTaskHint:localeCopy taskHint:[VMConfiguration getVMLocaleSpeechAssetTypeforLocale:localeCopy gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]]];
 
   return v5;
 }
 
-- (id)getSpeechAnalyzerAssetIDForLocaleWithTaskHint:(id)a3 taskHint:(int64_t)a4
+- (id)getSpeechAnalyzerAssetIDForLocaleWithTaskHint:(id)hint taskHint:(int64_t)taskHint
 {
-  v5 = a3;
-  v6 = v5;
-  if (kVM_GASRTaskHint == a4)
+  hintCopy = hint;
+  v6 = hintCopy;
+  if (kVM_GASRTaskHint == taskHint)
   {
-    v7 = [SFSpeechAssetManager generalASRLanguageForLocale:v5];
+    localeIdentifier = [SFSpeechAssetManager generalASRLanguageForLocale:hintCopy];
 LABEL_5:
-    v8 = v7;
+    v8 = localeIdentifier;
     goto LABEL_7;
   }
 
-  if (kVM_NGASRTaskHint == a4)
+  if (kVM_NGASRTaskHint == taskHint)
   {
-    v7 = [v5 localeIdentifier];
+    localeIdentifier = [hintCopy localeIdentifier];
     goto LABEL_5;
   }
 
@@ -934,13 +934,13 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isSpeechAnalyzerTranscriptionModelInstalled:(id)a3
+- (BOOL)isSpeechAnalyzerTranscriptionModelInstalled:(id)installed
 {
-  v4 = a3;
-  v5 = [VMConfiguration getVMLocaleSpeechAssetTypeforLocale:v4 gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]];
+  installedCopy = installed;
+  v5 = [VMConfiguration getVMLocaleSpeechAssetTypeforLocale:installedCopy gasrEnabled:[(VMVoicemailTranscriptionController *)self isGasrModelAvailable]];
   if (v5 == kVM_GASRTaskHint || v5 == kVM_NGASRTaskHint)
   {
-    v7 = [(VMVoicemailTranscriptionController *)self isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:v4 taskHint:v5];
+    v7 = [(VMVoicemailTranscriptionController *)self isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:installedCopy taskHint:v5];
   }
 
   else
@@ -951,7 +951,7 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:(id)a3 taskHint:(int64_t)a4
+- (BOOL)isSpeechAnalyzerTranscriptionModelInstalledForTaskHint:(id)hint taskHint:(int64_t)taskHint
 {
   v13 = 0;
   v14 = &v13;
@@ -961,12 +961,12 @@ LABEL_7:
   v8[1] = 3221225472;
   v8[2] = sub_100059A2C;
   v8[3] = &unk_1000EEE28;
-  v9 = self;
-  v10 = a3;
+  selfCopy = self;
+  hintCopy = hint;
   v11 = &v13;
-  v12 = a4;
-  v5 = v10;
-  [(VMVoicemailTranscriptionController *)v9 performSynchronousBlock:v8];
+  taskHintCopy = taskHint;
+  v5 = hintCopy;
+  [(VMVoicemailTranscriptionController *)selfCopy performSynchronousBlock:v8];
   v6 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -1086,7 +1086,7 @@ LABEL_7:
     v5 = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v4 = v6;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "<%@ %p> Removing asset model network observer", &v5, 0x16u);
   }
@@ -1102,7 +1102,7 @@ LABEL_7:
     v5 = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v4 = v6;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "<%@ %p> Adding asset model network observer", &v5, 0x16u);
   }
@@ -1110,17 +1110,17 @@ LABEL_7:
   [(VMVoicemailTranscriptionController *)self setTranscriptionAssetModelObservingNetwork:1];
 }
 
-- (void)networkReachabilityChangedSync:(BOOL)a3
+- (void)networkReachabilityChangedSync:(BOOL)sync
 {
-  v3 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  syncCopy = sync;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = sub_10005435C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v3)
+    if (syncCopy)
     {
       v7 = @"YES";
     }
@@ -1130,7 +1130,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Network reachability changed to: %@", &v13, 0xCu);
   }
 
-  if (v3)
+  if (syncCopy)
   {
     v8 = sub_10005435C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1151,7 +1151,7 @@ LABEL_7:
         v13 = 138412546;
         v14 = v11;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         v12 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "<%@ %p> Request to install Transcription model is already completed, execution not required.", &v13, 0x16u);
       }
@@ -1164,11 +1164,11 @@ LABEL_7:
   }
 }
 
-- (void)requestTranscriptionAssetModelOperationWithCompletion:(id)a3
+- (void)requestTranscriptionAssetModelOperationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = sub_10005435C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1177,21 +1177,21 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Initiating request to install asset model.", buf, 2u);
   }
 
-  v7 = [(VMVoicemailTranscriptionController *)self networkObserver];
-  v8 = [v7 isNetworkReachable];
+  networkObserver = [(VMVoicemailTranscriptionController *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
 
-  if (v8)
+  if (isNetworkReachable)
   {
     [(VMVoicemailTranscriptionController *)self removeAssetModelNetworkObserver];
-    v9 = [(VMVoicemailTranscriptionController *)self assetModel];
-    v10 = [(VMVoicemailTranscriptionController *)self speechRecognizer];
-    v11 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+    assetModel = [(VMVoicemailTranscriptionController *)self assetModel];
+    speechRecognizer = [(VMVoicemailTranscriptionController *)self speechRecognizer];
+    serialDispatchQueue2 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10005A674;
     v13[3] = &unk_1000EEE50;
-    v14 = v4;
-    [v9 performInstallAssetModel:v10 isLID:0 queue:v11 completion:v13];
+    v14 = completionCopy;
+    [assetModel performInstallAssetModel:speechRecognizer isLID:0 queue:serialDispatchQueue2 completion:v13];
   }
 
   else
@@ -1204,15 +1204,15 @@ LABEL_7:
     }
 
     [(VMVoicemailTranscriptionController *)self addAssetModelNetworkObserver];
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)requestLanguageIDModelOperationWithCompletion:(id)a3
+- (void)requestLanguageIDModelOperationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = sub_10005435C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1221,16 +1221,16 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Initiating request to install Language ID model.", buf, 2u);
   }
 
-  v7 = [(VMVoicemailTranscriptionController *)self networkObserver];
-  v8 = [v7 isNetworkReachable];
+  networkObserver = [(VMVoicemailTranscriptionController *)self networkObserver];
+  isNetworkReachable = [networkObserver isNetworkReachable];
 
-  if (v8)
+  if (isNetworkReachable)
   {
     [(VMVoicemailTranscriptionController *)self removeAssetModelNetworkObserver];
-    v9 = [(VMVoicemailTranscriptionController *)self assetModel];
-    v10 = [(VMVoicemailTranscriptionController *)self speechRecognizer];
-    v11 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
-    [v9 performInstallAssetModel:v10 isLID:1 queue:v11 completion:v4];
+    assetModel = [(VMVoicemailTranscriptionController *)self assetModel];
+    speechRecognizer = [(VMVoicemailTranscriptionController *)self speechRecognizer];
+    serialDispatchQueue2 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+    [assetModel performInstallAssetModel:speechRecognizer isLID:1 queue:serialDispatchQueue2 completion:completionCopy];
   }
 
   else
@@ -1243,13 +1243,13 @@ LABEL_7:
     }
 
     [(VMVoicemailTranscriptionController *)self addAssetModelNetworkObserver];
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
-  block = a3;
+  block = block;
   if (dispatch_get_specific(off_10010D3C0) == self)
   {
     block[2]();
@@ -1257,18 +1257,18 @@ LABEL_7:
 
   else
   {
-    v4 = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
-    dispatch_sync(v4, block);
+    serialDispatchQueue = [(VMVoicemailTranscriptionController *)self serialDispatchQueue];
+    dispatch_sync(serialDispatchQueue, block);
   }
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v6 = a3;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     os_unfair_lock_lock_with_options();
-    v6[2]();
+    blockCopy[2]();
     os_unfair_lock_unlock(&self->lock);
   }
 

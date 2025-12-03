@@ -2,7 +2,7 @@
 - (BOOL)_shouldAllowKeyboardArbiter;
 - (STWebServiceApplication)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation STWebServiceApplication
@@ -30,11 +30,11 @@
 
 - (BOOL)_shouldAllowKeyboardArbiter
 {
-  v2 = [(STWebServiceApplication *)self keyboardMonitor];
-  v3 = [v2 needsKeyboard];
+  keyboardMonitor = [(STWebServiceApplication *)self keyboardMonitor];
+  needsKeyboard = [keyboardMonitor needsKeyboard];
 
   v4 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (needsKeyboard)
   {
     if (v4)
     {
@@ -54,17 +54,17 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  return v3;
+  return needsKeyboard;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextSTWebServiceApplication")
+  changeCopy = change;
+  if (context == "KVOContextSTWebServiceApplication")
   {
-    if ([a3 isEqualToString:@"needsKeyboard"])
+    if ([path isEqualToString:@"needsKeyboard"])
     {
-      v11 = [v10 objectForKeyedSubscript:NSKeyValueChangeOldKey];
+      v11 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
       v12 = +[NSNull null];
 
       if (v11 == v12)
@@ -73,7 +73,7 @@ LABEL_6:
         v11 = 0;
       }
 
-      v13 = [v10 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       v14 = +[NSNull null];
 
       if (v13 == v14)
@@ -82,8 +82,8 @@ LABEL_6:
         v13 = 0;
       }
 
-      v15 = [v11 BOOLValue];
-      if (v15 != [v13 BOOLValue])
+      bOOLValue = [v11 BOOLValue];
+      if (bOOLValue != [v13 BOOLValue])
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
@@ -100,7 +100,7 @@ LABEL_6:
   {
     v16.receiver = self;
     v16.super_class = STWebServiceApplication;
-    [(STWebServiceApplication *)&v16 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    [(STWebServiceApplication *)&v16 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 

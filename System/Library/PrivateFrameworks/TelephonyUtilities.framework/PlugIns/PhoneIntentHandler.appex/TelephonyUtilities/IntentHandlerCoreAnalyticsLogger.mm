@@ -1,19 +1,19 @@
 @interface IntentHandlerCoreAnalyticsLogger
-- (void)logSiriMatchEvent:(id)a3 matchesByIdCount:(id)a4 matchesByNameCount:(id)a5 siriLocale:(id)a6;
+- (void)logSiriMatchEvent:(id)event matchesByIdCount:(id)count matchesByNameCount:(id)nameCount siriLocale:(id)locale;
 @end
 
 @implementation IntentHandlerCoreAnalyticsLogger
 
-- (void)logSiriMatchEvent:(id)a3 matchesByIdCount:(id)a4 matchesByNameCount:(id)a5 siriLocale:(id)a6
+- (void)logSiriMatchEvent:(id)event matchesByIdCount:(id)count matchesByNameCount:(id)nameCount siriLocale:(id)locale
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v9 = v16;
-  v10 = v15;
-  v11 = v14;
-  v12 = v13;
+  eventCopy = event;
+  countCopy = count;
+  nameCountCopy = nameCount;
+  localeCopy = locale;
+  v9 = localeCopy;
+  v10 = nameCountCopy;
+  v11 = countCopy;
+  v12 = eventCopy;
   AnalyticsSendEventLazy();
 }
 

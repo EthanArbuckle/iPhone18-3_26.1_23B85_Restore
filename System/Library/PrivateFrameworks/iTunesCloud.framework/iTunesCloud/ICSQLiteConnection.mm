@@ -1,30 +1,30 @@
 @interface ICSQLiteConnection
 - (BOOL)_close;
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4;
+- (BOOL)_executeStatement:(id)statement error:(id *)error;
 - (BOOL)_open;
 - (BOOL)_performResetAfterCorruptionError;
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings;
 - (BOOL)resetAfterCorruptionError;
 - (BOOL)resetAfterIOError;
-- (BOOL)setUserVersion:(id)a3;
+- (BOOL)setUserVersion:(id)version;
 - (BOOL)truncate;
-- (ICSQLiteConnection)initWithOptions:(id)a3;
+- (ICSQLiteConnection)initWithOptions:(id)options;
 - (ICSQLiteConnectionDelegate)delegate;
 - (NSError)currentError;
 - (NSNumber)userVersion;
-- (id)_prepareStatement:(id)a3 error:(id *)a4;
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4;
-- (id)prepareStatement:(id)a3 error:(id *)a4;
+- (id)_prepareStatement:(id)statement error:(id *)error;
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error;
+- (id)prepareStatement:(id)statement error:(id *)error;
 - (int64_t)lastChangeCount;
 - (void)_finalizeAllStatements;
 - (void)_flushAfterTransactionBlocks;
-- (void)dispatchAfterTransaction:(id)a3;
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4;
-- (void)executeQuery:(id)a3 withResults:(id)a4;
-- (void)performTransaction:(id)a3;
+- (void)dispatchAfterTransaction:(id)transaction;
+- (void)executePreparedQuery:(id)query withResults:(id)results;
+- (void)executeQuery:(id)query withResults:(id)results;
+- (void)performTransaction:(id)transaction;
 @end
 
 @implementation ICSQLiteConnection
@@ -36,13 +36,13 @@
   return WeakRetained;
 }
 
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if ([(ICSQLiteConnection *)self _open])
   {
     v13 = 0;
-    v7 = [(ICSQLiteConnection *)self _prepareStatement:v6 error:&v13];
+    v7 = [(ICSQLiteConnection *)self _prepareStatement:lCopy error:&v13];
     v8 = v13;
     if (v7)
     {
@@ -66,7 +66,7 @@
       v9 = 0;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -76,7 +76,7 @@
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7700 userInfo:0];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -85,7 +85,7 @@
   if (!v9)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_13:
@@ -93,15 +93,15 @@ LABEL_13:
   return v9;
 }
 
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  if ([v6 connectionPointer] == self)
+  statementCopy = statement;
+  if ([statementCopy connectionPointer] == self)
   {
     if ([(ICSQLiteConnection *)self _open])
     {
       v13 = 0;
-      v9 = [(ICSQLiteConnection *)self _statementForPreparedStatement:v6 error:&v13];
+      v9 = [(ICSQLiteConnection *)self _statementForPreparedStatement:statementCopy error:&v13];
       v8 = v13;
       if (v9)
       {
@@ -124,7 +124,7 @@ LABEL_13:
         v7 = 0;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -134,7 +134,7 @@ LABEL_13:
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7700 userInfo:0];
       v7 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -146,7 +146,7 @@ LABEL_13:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Statement from a different connection"];
     v7 = 0;
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -155,7 +155,7 @@ LABEL_13:
   if (!v7)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_16:
@@ -163,10 +163,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:v6];
+  statementCopy = statement;
+  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:statementCopy];
   if (v7)
   {
     v8 = v7;
@@ -175,7 +175,7 @@ LABEL_16:
 
   else
   {
-    v10 = [v6 SQL];
+    v10 = [statementCopy SQL];
     v16 = 0;
     v8 = [(ICSQLiteConnection *)self _prepareStatement:v10 error:&v16];
     v9 = v16;
@@ -192,14 +192,14 @@ LABEL_16:
         preparedStatements = self->_preparedStatements;
       }
 
-      [(NSMapTable *)preparedStatements setObject:v8 forKey:v6];
+      [(NSMapTable *)preparedStatements setObject:v8 forKey:statementCopy];
     }
 
-    else if (a4)
+    else if (error)
     {
       v14 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -211,16 +211,16 @@ LABEL_16:
   return v8;
 }
 
-- (id)_prepareStatement:(id)a3 error:(id *)a4
+- (id)_prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  statementCopy = statement;
+  v7 = statementCopy;
   if (!self->_database)
   {
-    if (*a4)
+    if (*error)
     {
       [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICSQLiteError" code:-1 debugDescription:@"Cannot prepare statement without a database."];
-      *a4 = v18 = 0;
+      *error = v18 = 0;
     }
 
     else
@@ -231,7 +231,7 @@ LABEL_16:
     goto LABEL_39;
   }
 
-  v8 = [v6 UTF8String];
+  uTF8String = [statementCopy UTF8String];
   v9 = 0;
   v10 = 0;
   while (1)
@@ -239,7 +239,7 @@ LABEL_16:
     while (1)
     {
       ppStmt = 0;
-      v11 = sqlite3_prepare_v2(self->_database, v8, -1, &ppStmt, 0);
+      v11 = sqlite3_prepare_v2(self->_database, uTF8String, -1, &ppStmt, 0);
       if (v11 > 0xA)
       {
         if (v11 != 11 && v11 != 26)
@@ -253,13 +253,13 @@ LABEL_16:
           sqlite3_finalize(ppStmt);
         }
 
-        v14 = [(ICSQLiteConnection *)self resetAfterCorruptionError];
+        resetAfterCorruptionError = [(ICSQLiteConnection *)self resetAfterCorruptionError];
         if (v10 >= 3)
         {
           goto LABEL_35;
         }
 
-        v15 = v14;
+        v15 = resetAfterCorruptionError;
 
         if (!v15)
         {
@@ -280,13 +280,13 @@ LABEL_16:
         sqlite3_finalize(ppStmt);
       }
 
-      v16 = [(ICSQLiteConnection *)self resetAfterIOError];
+      resetAfterIOError = [(ICSQLiteConnection *)self resetAfterIOError];
       if (v10 >= 3)
       {
         goto LABEL_35;
       }
 
-      v17 = v16;
+      v17 = resetAfterIOError;
 
       if (!v17)
       {
@@ -325,7 +325,7 @@ LABEL_19:
     v19 = [(ICSQLiteStatement *)v20 initWithStatement:ppStmt connection:self];
 LABEL_31:
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -342,7 +342,7 @@ LABEL_33:
 
 LABEL_35:
   v19 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_38;
   }
@@ -351,7 +351,7 @@ LABEL_36:
   if (!v19)
   {
     v21 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_38:
@@ -377,8 +377,8 @@ LABEL_39:
 
   else
   {
-    v5 = [(ICSQLiteConnectionOptions *)self->_options databasePath];
-    v4 = ICSQLiteTruncateDatabase(v5);
+    databasePath = [(ICSQLiteConnectionOptions *)self->_options databasePath];
+    v4 = ICSQLiteTruncateDatabase(databasePath);
   }
 
   return v4;
@@ -394,7 +394,7 @@ LABEL_39:
     {
       v6 = self->_options;
       ppDb = 0;
-      v7 = [(ICSQLiteConnectionOptions *)v6 databasePath];
+      databasePath = [(ICSQLiteConnectionOptions *)v6 databasePath];
       if ([(ICSQLiteConnectionOptions *)v6 isReadOnly])
       {
         v8 = 2;
@@ -403,13 +403,13 @@ LABEL_39:
       else
       {
         v9 = objc_alloc_init(MEMORY[0x1E696AC08]);
-        v10 = [v7 stringByDeletingLastPathComponent];
-        [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:0];
+        stringByDeletingLastPathComponent = [databasePath stringByDeletingLastPathComponent];
+        [v9 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
         v8 = 6;
       }
 
-      v11 = sqlite3_open_v2([v7 fileSystemRepresentation], &ppDb, v8, 0);
+      v11 = sqlite3_open_v2([databasePath fileSystemRepresentation], &ppDb, v8, 0);
       if (!v11)
       {
         v11 = [(ICSQLiteConnectionOptions *)v6 applyToDatabase:ppDb];
@@ -434,9 +434,9 @@ LABEL_39:
         break;
       }
 
-      v14 = [(ICSQLiteConnection *)self _performResetAfterCorruptionError];
+      _performResetAfterCorruptionError = [(ICSQLiteConnection *)self _performResetAfterCorruptionError];
       result = 0;
-      v15 = v14 & i;
+      v15 = _performResetAfterCorruptionError & i;
       if ((v15 & 1) == 0)
       {
         return result;
@@ -557,18 +557,18 @@ void __50__ICSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64_
   }
 }
 
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4
+- (BOOL)_executeStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   for (i = 10; ; --i)
   {
-    v8 = [v6 step];
-    if ((v8 - 5) >= 2)
+    step = [statementCopy step];
+    if ((step - 5) >= 2)
     {
       break;
     }
 
-    [v6 reset];
+    [statementCopy reset];
     if (!i)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7003 userInfo:0];
@@ -578,13 +578,13 @@ void __50__ICSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64_
     usleep(0xF4240u);
   }
 
-  if (v8 <= 99)
+  if (step <= 99)
   {
-    if (v8 == 10)
+    if (step == 10)
     {
       v9 = ICSQLiteGetCurrentError(self->_database);
       [(ICSQLiteConnection *)self resetAfterIOError];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -592,15 +592,15 @@ void __50__ICSQLiteConnection__flushAfterTransactionBlocks__block_invoke(uint64_
 LABEL_18:
       v12 = v9;
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_19;
     }
 
-    if (v8 == 11 || v8 == 26)
+    if (step == 11 || step == 26)
     {
       v9 = ICSQLiteGetCurrentError(self->_database);
       [(ICSQLiteConnection *)self resetAfterCorruptionError];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -612,7 +612,7 @@ LABEL_16:
     v11 = ICSQLiteGetCurrentError(self->_database);
 LABEL_17:
     v9 = v11;
-    if (!a4)
+    if (!error)
     {
 LABEL_10:
       v10 = 0;
@@ -622,7 +622,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if ((v8 - 100) >= 2)
+  if ((step - 100) >= 2)
   {
     goto LABEL_16;
   }
@@ -664,7 +664,7 @@ LABEL_19:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_ERROR, "%{public}@ Resetting after IO error", &v9, 0xCu);
   }
 
@@ -675,7 +675,7 @@ LABEL_19:
   {
     if (!transactionDepth)
     {
-      v7 = 1;
+      _performResetAfterCorruptionError = 1;
       goto LABEL_8;
     }
 
@@ -683,17 +683,17 @@ LABEL_19:
     {
       objc_storeStrong(&self->_afterTransactionBlocks, afterTransactionBlocks);
       self->_transactionDepth = transactionDepth;
-      v7 = 1;
+      _performResetAfterCorruptionError = 1;
       self->_transactionWantsRollback = 1;
       goto LABEL_8;
     }
   }
 
   [(ICSQLiteConnection *)self _close];
-  v7 = [(ICSQLiteConnection *)self _performResetAfterCorruptionError];
+  _performResetAfterCorruptionError = [(ICSQLiteConnection *)self _performResetAfterCorruptionError];
 LABEL_8:
 
-  return v7;
+  return _performResetAfterCorruptionError;
 }
 
 - (BOOL)resetAfterCorruptionError
@@ -703,7 +703,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_ERROR, "%{public}@ Resetting after database corruption error", &v5, 0xCu);
   }
 
@@ -752,14 +752,14 @@ LABEL_8:
   return v4;
 }
 
-- (id)prepareStatement:(id)a3 error:(id *)a4
+- (id)prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   if (![(ICSQLiteConnection *)self _open])
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7700 userInfo:0];
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -768,7 +768,7 @@ LABEL_8:
   }
 
   v14 = 0;
-  v7 = [(ICSQLiteConnection *)self _prepareStatement:v6 error:&v14];
+  v7 = [(ICSQLiteConnection *)self _prepareStatement:statementCopy error:&v14];
   v8 = v14;
   if (v7)
   {
@@ -779,7 +779,7 @@ LABEL_8:
       self->_preparedStatements = v9;
     }
 
-    v11 = [[ICSQLitePreparedStatement alloc] initWithConnection:self SQL:v6];
+    v11 = [[ICSQLitePreparedStatement alloc] initWithConnection:self SQL:statementCopy];
     [(NSMapTable *)self->_preparedStatements setObject:v7 forKey:v11];
   }
 
@@ -788,13 +788,13 @@ LABEL_8:
     v11 = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_10:
     if (!v11)
     {
       v12 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -803,9 +803,9 @@ LABEL_12:
   return v11;
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v9 = a3;
+  transactionCopy = transaction;
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
   {
@@ -823,7 +823,7 @@ LABEL_12:
     self->_transactionDepth = transactionDepth + 1;
   }
 
-  v5 = v9[2]() ^ 1;
+  v5 = transactionCopy[2]() ^ 1;
   v6 = self->_transactionDepth;
   v7 = self->_transactionWantsRollback | v5;
   self->_transactionWantsRollback = v7 & 1;
@@ -847,12 +847,12 @@ LABEL_12:
 LABEL_10:
 }
 
-- (BOOL)setUserVersion:(id)a3
+- (BOOL)setUserVersion:(id)version
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version=%@", a3];
+  version = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA user_version=%@", version];
   v9 = 0;
-  v5 = [(ICSQLiteConnection *)self executeStatement:v4 error:&v9];
+  v5 = [(ICSQLiteConnection *)self executeStatement:version error:&v9];
   v6 = v9;
 
   if (!v5)
@@ -918,16 +918,16 @@ uint64_t __33__ICSQLiteConnection_userVersion__block_invoke(uint64_t result, voi
   }
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v16 = 0;
-  v9 = [(ICSQLiteConnection *)self _verifiedStatementForSQL:a3 error:&v16];
+  v9 = [(ICSQLiteConnection *)self _verifiedStatementForSQL:statement error:&v16];
   v10 = v16;
   if (!v9)
   {
     v11 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -935,9 +935,9 @@ uint64_t __33__ICSQLiteConnection_userVersion__block_invoke(uint64_t result, voi
     goto LABEL_7;
   }
 
-  if (v8)
+  if (bindingsCopy)
   {
-    v8[2](v8, v9);
+    bindingsCopy[2](bindingsCopy, v9);
   }
 
   v15 = v10;
@@ -946,13 +946,13 @@ uint64_t __33__ICSQLiteConnection_userVersion__block_invoke(uint64_t result, voi
 
   [v9 finalizeStatement];
   v10 = v12;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     if (!v11)
     {
       v13 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -961,12 +961,12 @@ LABEL_9:
   return v11;
 }
 
-- (void)executeQuery:(id)a3 withResults:(id)a4
+- (void)executeQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = [(ICSQLiteConnection *)self _verifiedStatementForSQL:v6 error:&v11];
+  v8 = [(ICSQLiteConnection *)self _verifiedStatementForSQL:queryCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -978,28 +978,28 @@ LABEL_9:
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 finalizeStatement];
 }
 
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v16 = 0;
-  v9 = [(ICSQLiteConnection *)self _verifiedStatementForPreparedStatement:a3 error:&v16];
+  v9 = [(ICSQLiteConnection *)self _verifiedStatementForPreparedStatement:statement error:&v16];
   v10 = v16;
   if (v9)
   {
-    if (v8)
+    if (bindingsCopy)
     {
-      v8[2](v8, v9);
+      bindingsCopy[2](bindingsCopy, v9);
     }
 
     v15 = v10;
     v11 = [(ICSQLiteConnection *)self _executeStatement:v9 error:&v15];
     v12 = v15;
 
-    if (v8)
+    if (bindingsCopy)
     {
       [v9 clearBindings];
     }
@@ -1013,21 +1013,21 @@ LABEL_9:
   }
 
   [v9 reset];
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4
+- (void)executePreparedQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = [(ICSQLiteConnection *)self _verifiedStatementForPreparedStatement:v6 error:&v11];
+  v8 = [(ICSQLiteConnection *)self _verifiedStatementForPreparedStatement:queryCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -1039,15 +1039,15 @@ LABEL_9:
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 clearBindings];
   [v8 reset];
 }
 
-- (void)dispatchAfterTransaction:(id)a3
+- (void)dispatchAfterTransaction:(id)transaction
 {
-  v4 = a3;
-  v10 = v4;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
   if (self->_transactionDepth)
   {
     if (!self->_afterTransactionBlocks)
@@ -1056,10 +1056,10 @@ LABEL_9:
       afterTransactionBlocks = self->_afterTransactionBlocks;
       self->_afterTransactionBlocks = v5;
 
-      v4 = v10;
+      transactionCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [transactionCopy copy];
     v8 = self->_afterTransactionBlocks;
     v9 = MEMORY[0x1B8C781E0]();
     [(NSMutableArray *)v8 addObject:v9];
@@ -1067,19 +1067,19 @@ LABEL_9:
 
   else
   {
-    v4[2]();
+    transactionCopy[2]();
   }
 }
 
-- (ICSQLiteConnection)initWithOptions:(id)a3
+- (ICSQLiteConnection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = ICSQLiteConnection;
   v5 = [(ICSQLiteConnection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
   }

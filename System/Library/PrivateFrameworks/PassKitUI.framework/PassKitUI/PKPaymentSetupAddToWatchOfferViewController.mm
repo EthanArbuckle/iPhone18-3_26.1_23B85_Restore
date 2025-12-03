@@ -1,34 +1,34 @@
 @interface PKPaymentSetupAddToWatchOfferViewController
-+ (void)shouldShowAddToWatchOfferForPass:(id)a3 inContext:(int64_t)a4 externalProvisioningDeviceSerialNumbers:(id)a5 completion:(id)a6;
-+ (void)shouldShowAddToWatchOfferForPass:(id)a3 inContext:(int64_t)a4 withCompletion:(id)a5;
-- (PKPaymentSetupAddToWatchOfferViewController)initWithPaymentPass:(id)a3 context:(int64_t)a4 dismissalHandler:(id)a5;
-- (void)_handleBridgeProvisioningError:(id)a3;
-- (void)_handleDismissal:(BOOL)a3;
++ (void)shouldShowAddToWatchOfferForPass:(id)pass inContext:(int64_t)context externalProvisioningDeviceSerialNumbers:(id)numbers completion:(id)completion;
++ (void)shouldShowAddToWatchOfferForPass:(id)pass inContext:(int64_t)context withCompletion:(id)completion;
+- (PKPaymentSetupAddToWatchOfferViewController)initWithPaymentPass:(id)pass context:(int64_t)context dismissalHandler:(id)handler;
+- (void)_handleBridgeProvisioningError:(id)error;
+- (void)_handleDismissal:(BOOL)dismissal;
 - (void)addToWatchOfferViewControllerDidNotRequestToAddToWatch;
 - (void)addToWatchOfferViewControllerDidRequestToAddToWatch;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentSetupAddToWatchOfferViewController
 
-+ (void)shouldShowAddToWatchOfferForPass:(id)a3 inContext:(int64_t)a4 withCompletion:(id)a5
++ (void)shouldShowAddToWatchOfferForPass:(id)pass inContext:(int64_t)context withCompletion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __105__PKPaymentSetupAddToWatchOfferViewController_shouldShowAddToWatchOfferForPass_inContext_withCompletion___block_invoke;
   v9[3] = &unk_1E8019160;
-  v10 = v7;
-  v8 = v7;
-  [PKPaymentSetupAddToWatchOfferViewController shouldShowAddToWatchOfferForPass:a3 inContext:a4 externalProvisioningDeviceSerialNumbers:0 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [PKPaymentSetupAddToWatchOfferViewController shouldShowAddToWatchOfferForPass:pass inContext:context externalProvisioningDeviceSerialNumbers:0 completion:v9];
 }
 
-+ (void)shouldShowAddToWatchOfferForPass:(id)a3 inContext:(int64_t)a4 externalProvisioningDeviceSerialNumbers:(id)a5 completion:(id)a6
++ (void)shouldShowAddToWatchOfferForPass:(id)pass inContext:(int64_t)context externalProvisioningDeviceSerialNumbers:(id)numbers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (v10)
+  passCopy = pass;
+  numbersCopy = numbers;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -39,54 +39,54 @@
 
     if (PKPaymentSetupContextIsBridge())
     {
-      v10[2](v10, 0, @"FlowType is bridge");
+      completionCopy[2](completionCopy, 0, @"FlowType is bridge");
       goto LABEL_19;
     }
 
     if (PKPaymentSetupContextIsSetupAssistant())
     {
-      v10[2](v10, 0, @"FlowType is setup assistant");
+      completionCopy[2](completionCopy, 0, @"FlowType is setup assistant");
       goto LABEL_19;
     }
 
     if (PKPaymentSetupContextIsIssuerApp())
     {
-      v10[2](v10, 0, @"FlowType is issuer app");
+      completionCopy[2](completionCopy, 0, @"FlowType is issuer app");
       goto LABEL_19;
     }
 
     if (PKPaymentSetupContextIsMerchantApp())
     {
-      v10[2](v10, 0, @"FlowType is merchant app");
+      completionCopy[2](completionCopy, 0, @"FlowType is merchant app");
       goto LABEL_19;
     }
 
     if ((PKIsPhone() & 1) == 0)
     {
-      v10[2](v10, 0, @"Companion is not supported on device");
+      completionCopy[2](completionCopy, 0, @"Companion is not supported on device");
       goto LABEL_19;
     }
 
-    if (!v8 || ([v8 supportsSerialNumberBasedProvisioning] & 1) == 0)
+    if (!passCopy || ([passCopy supportsSerialNumberBasedProvisioning] & 1) == 0)
     {
-      v10[2](v10, 0, @"pass doesn't support serial number based provisioning");
+      completionCopy[2](completionCopy, 0, @"pass doesn't support serial number based provisioning");
       goto LABEL_19;
     }
 
-    if ([v8 requiresTransferSerialNumberBasedProvisioning])
+    if ([passCopy requiresTransferSerialNumberBasedProvisioning])
     {
-      v10[2](v10, 0, @"pass requires transfer");
+      completionCopy[2](completionCopy, 0, @"pass requires transfer");
       goto LABEL_19;
     }
 
-    if (v9)
+    if (numbersCopy)
     {
       v12 = PKPairedOrPairingDevice();
       v13 = PKSerialNumberFromNRDevice();
 
-      if ([v9 containsObject:v13])
+      if ([numbersCopy containsObject:v13])
       {
-        v10[2](v10, 0, @"pass already provisioned onto watch earlier in flow");
+        completionCopy[2](completionCopy, 0, @"pass already provisioned onto watch earlier in flow");
 LABEL_26:
 
         goto LABEL_19;
@@ -96,14 +96,14 @@ LABEL_26:
     v13 = objc_alloc_init(getNPKCompanionAgentConnectionClass_3[0]());
     if (v13)
     {
-      v14 = [v8 paymentPass];
+      paymentPass = [passCopy paymentPass];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __141__PKPaymentSetupAddToWatchOfferViewController_shouldShowAddToWatchOfferForPass_inContext_externalProvisioningDeviceSerialNumbers_completion___block_invoke;
       v15[3] = &unk_1E80158C0;
       v16 = v13;
-      v17 = v10;
-      [v16 shouldShowWatchOfferForPaymentPass:v14 withCompletion:v15];
+      v17 = completionCopy;
+      [v16 shouldShowWatchOfferForPaymentPass:paymentPass withCompletion:v15];
     }
 
     goto LABEL_26;
@@ -123,13 +123,13 @@ void __141__PKPaymentSetupAddToWatchOfferViewController_shouldShowAddToWatchOffe
   dispatch_async(MEMORY[0x1E69E96A0], v2);
 }
 
-- (PKPaymentSetupAddToWatchOfferViewController)initWithPaymentPass:(id)a3 context:(int64_t)a4 dismissalHandler:(id)a5
+- (PKPaymentSetupAddToWatchOfferViewController)initWithPaymentPass:(id)pass context:(int64_t)context dismissalHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(PKAddToWatchOfferViewController *)self initWithPass:a3 context:a4];
+  handlerCopy = handler;
+  v9 = [(PKAddToWatchOfferViewController *)self initWithPass:pass context:context];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     dismissalHandler = v9->_dismissalHandler;
     v9->_dismissalHandler = v10;
   }
@@ -137,37 +137,37 @@ void __141__PKPaymentSetupAddToWatchOfferViewController_shouldShowAddToWatchOffe
   return v9;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupAddToWatchOfferViewController;
-  [(PKPaymentSetupAddToWatchOfferViewController *)&v7 viewDidAppear:a3];
+  [(PKPaymentSetupAddToWatchOfferViewController *)&v7 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   v4 = objc_alloc_init(getNPKCompanionAgentConnectionClass_3[0]());
-  v5 = [(PKAddToWatchOfferViewController *)self pass];
-  v6 = [v5 paymentPass];
-  [v4 noteWatchOfferShownForPaymentPass:v6];
+  pass = [(PKAddToWatchOfferViewController *)self pass];
+  paymentPass = [pass paymentPass];
+  [v4 noteWatchOfferShownForPaymentPass:paymentPass];
 }
 
-- (void)_handleBridgeProvisioningError:(id)a3
+- (void)_handleBridgeProvisioningError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportError:v4 context:0];
+    [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportError:errorCopy context:0];
     v5 = MEMORY[0x1E69DC650];
     v6 = PKTitleForDisplayableError();
-    v7 = MEMORY[0x1BFB42D10](v4);
+    v7 = MEMORY[0x1BFB42D10](errorCopy);
     v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
 
-    v9 = [v4 localizedRecoveryOptions];
-    v10 = [v9 firstObject];
+    localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+    firstObject = [localizedRecoveryOptions firstObject];
 
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69BB898]];
+    userInfo = [errorCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BB898]];
 
     v13 = @"OK_BUTTON_TITLE";
-    if (v10 && v12)
+    if (firstObject && v12)
     {
       v14 = MEMORY[0x1E69DC648];
       v18 = MEMORY[0x1E69E9820];
@@ -175,8 +175,8 @@ void __141__PKPaymentSetupAddToWatchOfferViewController_shouldShowAddToWatchOffe
       v20 = __78__PKPaymentSetupAddToWatchOfferViewController__handleBridgeProvisioningError___block_invoke;
       v21 = &unk_1E8011310;
       v22 = v12;
-      v23 = self;
-      v15 = [v14 actionWithTitle:v10 style:0 handler:&v18];
+      selfCopy = self;
+      v15 = [v14 actionWithTitle:firstObject style:0 handler:&v18];
       [v8 addAction:{v15, v18, v19, v20, v21}];
 
       v13 = @"CANCEL";
@@ -204,10 +204,10 @@ uint64_t __78__PKPaymentSetupAddToWatchOfferViewController__handleBridgeProvisio
   return [v3 _handleDismissal:0];
 }
 
-- (void)_handleDismissal:(BOOL)a3
+- (void)_handleDismissal:(BOOL)dismissal
 {
-  v3 = a3;
-  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportPageCompleted:a3 context:0];
+  dismissalCopy = dismissal;
+  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportPageCompleted:dismissal context:0];
   dismissalHandler = self->_dismissalHandler;
   if (dismissalHandler)
   {
@@ -218,8 +218,8 @@ uint64_t __78__PKPaymentSetupAddToWatchOfferViewController__handleBridgeProvisio
 
   else
   {
-    v7 = [(PKPaymentSetupAddToWatchOfferViewController *)self presentingViewController];
-    [v7 dismissViewControllerAnimated:!v3 completion:0];
+    presentingViewController = [(PKPaymentSetupAddToWatchOfferViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:!dismissalCopy completion:0];
   }
 }
 
@@ -239,13 +239,13 @@ uint64_t __78__PKPaymentSetupAddToWatchOfferViewController__handleBridgeProvisio
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__PKPaymentSetupAddToWatchOfferViewController_addToWatchOfferViewControllerDidRequestToAddToWatch__block_invoke;
   v15[3] = &unk_1E8011A18;
   v15[4] = &v16;
-  v5 = [v4 beginBackgroundTaskWithName:@"com.apple.passbook.watchOffer" expirationHandler:v15];
+  v5 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"com.apple.passbook.watchOffer" expirationHandler:v15];
   v17[3] = v5;
 
   v6 = PKLogFacilityTypeGetObject();
@@ -255,17 +255,17 @@ uint64_t __78__PKPaymentSetupAddToWatchOfferViewController__handleBridgeProvisio
     _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Asking bridge to open from watch offer", buf, 2u);
   }
 
-  v7 = [(PKAddToWatchOfferViewController *)self pass];
-  v8 = [v7 paymentPass];
+  pass = [(PKAddToWatchOfferViewController *)self pass];
+  paymentPass = [pass paymentPass];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__PKPaymentSetupAddToWatchOfferViewController_addToWatchOfferViewControllerDidRequestToAddToWatch__block_invoke_57;
   v10[3] = &unk_1E8019188;
   v9 = v3;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   v13 = &v16;
-  [v9 beginProvisioningFromWatchOfferForPaymentPass:v8 withCompletion:v10];
+  [v9 beginProvisioningFromWatchOfferForPaymentPass:paymentPass withCompletion:v10];
 
   _Block_object_dispose(&v16, 8);
 }

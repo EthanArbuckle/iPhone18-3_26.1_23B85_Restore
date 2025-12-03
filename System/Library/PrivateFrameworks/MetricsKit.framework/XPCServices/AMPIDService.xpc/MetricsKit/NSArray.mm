@@ -1,7 +1,7 @@
 @interface NSArray
 - (id)mt_condensedArray;
 - (id)mt_deepCopy;
-- (id)mt_map:(id)a3;
+- (id)mt_map:(id)mt_map;
 - (void)mt_verifyEventData;
 @end
 
@@ -39,16 +39,16 @@
   }
 }
 
-- (id)mt_map:(id)a3
+- (id)mt_map:(id)mt_map
 {
-  v4 = a3;
+  mt_mapCopy = mt_map;
   v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)self count]];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = self;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [(NSArray *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -59,10 +59,10 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
+        v11 = mt_mapCopy[2](mt_mapCopy, *(*(&v14 + 1) + 8 * i));
         if (v11)
         {
           [v5 addObject:v11];
@@ -75,7 +75,7 @@
         }
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(NSArray *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -97,9 +97,9 @@
       v7 = [(NSArray *)self objectAtIndexedSubscript:i];
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v7 mt_deepCopy];
+        mt_deepCopy = [v7 mt_deepCopy];
 
-        v7 = v8;
+        v7 = mt_deepCopy;
       }
 
       v9 = *&v5[8 * i];
@@ -129,8 +129,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = self;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v5 = [(NSArray *)selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,7 +143,7 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -187,7 +187,7 @@
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [(NSArray *)selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);

@@ -1,26 +1,26 @@
 @interface PDDPPayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsType:(id)type;
 - (int)action;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAction:(BOOL)a3;
-- (void)setHasPayloadSize:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAction:(BOOL)action;
+- (void)setHasPayloadSize:(BOOL)size;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPPayload
 
-- (void)setHasPayloadSize:(BOOL)a3
+- (void)setHasPayloadSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -61,165 +61,165 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"STATUS"])
+  else if ([typeCopy isEqualToString:@"STATUS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT"])
+  else if ([typeCopy isEqualToString:@"HANDOUT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"ATTACHMENT"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECIPIENT"])
+  else if ([typeCopy isEqualToString:@"RECIPIENT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CLASS"])
+  else if ([typeCopy isEqualToString:@"CLASS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PERSON"])
+  else if ([typeCopy isEqualToString:@"PERSON"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CLASS_MEMBER"])
+  else if ([typeCopy isEqualToString:@"CLASS_MEMBER"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CLASS_ZONE"])
+  else if ([typeCopy isEqualToString:@"CLASS_ZONE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"ASSET"])
+  else if ([typeCopy isEqualToString:@"ASSET"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"AUTHORIZATION_STATUS"])
+  else if ([typeCopy isEqualToString:@"AUTHORIZATION_STATUS"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETION_STATUS"])
+  else if ([typeCopy isEqualToString:@"COMPLETION_STATUS"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"STATE_CHANGE"])
+  else if ([typeCopy isEqualToString:@"STATE_CHANGE"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"COLLECTION"])
+  else if ([typeCopy isEqualToString:@"COLLECTION"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"COLLECTION_ITEM"])
+  else if ([typeCopy isEqualToString:@"COLLECTION_ITEM"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_HANDOUT"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_HANDOUT"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_HANDOUT_ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_HANDOUT_ATTACHMENT"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_ASSET_REFERENCE"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_ASSET_REFERENCE"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY"])
+  else if ([typeCopy isEqualToString:@"SURVEY"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_STEP"])
+  else if ([typeCopy isEqualToString:@"SURVEY_STEP"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"SURVEY_STEP_ANSWER"])
+  else if ([typeCopy isEqualToString:@"SURVEY_STEP_ANSWER"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_SURVEY"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_SURVEY"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_SURVEY_STEP"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_SURVEY_STEP"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULE"])
+  else if ([typeCopy isEqualToString:@"SCHEDULE"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"SCHEDULED_EVENT"])
+  else if ([typeCopy isEqualToString:@"SCHEDULED_EVENT"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ASSESSMENT"])
+  else if ([typeCopy isEqualToString:@"ASSESSMENT"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"TAKER_WORK"])
+  else if ([typeCopy isEqualToString:@"TAKER_WORK"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"ARCHIVED_ASSESSMENT"])
+  else if ([typeCopy isEqualToString:@"ARCHIVED_ASSESSMENT"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"RETURNED_HANDOUT"])
+  else if ([typeCopy isEqualToString:@"RETURNED_HANDOUT"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"RETURNED_ATTACHMENT"])
+  else if ([typeCopy isEqualToString:@"RETURNED_ATTACHMENT"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"RETURNED_ASSESSMENT"])
+  else if ([typeCopy isEqualToString:@"RETURNED_ASSESSMENT"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"RETURNED_TAKER_WORK"])
+  else if ([typeCopy isEqualToString:@"RETURNED_TAKER_WORK"])
   {
     v4 = 38;
   }
@@ -245,9 +245,9 @@
   }
 }
 
-- (void)setHasAction:(BOOL)a3
+- (void)setHasAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -260,35 +260,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ACTION"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"UNKNOWN_ACTION"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CREATE"])
+  else if ([actionCopy isEqualToString:@"CREATE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CHANGE"])
+  else if ([actionCopy isEqualToString:@"CHANGE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DELETE"])
+  else if ([actionCopy isEqualToString:@"DELETE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"REPLACE"])
+  else if ([actionCopy isEqualToString:@"REPLACE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"REPAIR"])
+  else if ([actionCopy isEqualToString:@"REPAIR"])
   {
     v4 = 5;
   }
@@ -306,8 +306,8 @@
   v7.receiver = self;
   v7.super_class = PDDPPayload;
   v3 = [(PDDPPayload *)&v7 description];
-  v4 = [(PDDPPayload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPPayload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -343,78 +343,78 @@
   status = self->_status;
   if (status)
   {
-    v9 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"status"];
+    dictionaryRepresentation = [(PDDPStatus *)status dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"status"];
   }
 
   handout = self->_handout;
   if (handout)
   {
-    v11 = [(PDDPHandout *)handout dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"handout"];
+    dictionaryRepresentation2 = [(PDDPHandout *)handout dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"handout"];
   }
 
   attachment = self->_attachment;
   if (attachment)
   {
-    v13 = [(PDDPHandoutAttachment *)attachment dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"attachment"];
+    dictionaryRepresentation3 = [(PDDPHandoutAttachment *)attachment dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"attachment"];
   }
 
   recipient = self->_recipient;
   if (recipient)
   {
-    v15 = [(PDDPHandoutRecipient *)recipient dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"recipient"];
+    dictionaryRepresentation4 = [(PDDPHandoutRecipient *)recipient dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"recipient"];
   }
 
   classInfo = self->_classInfo;
   if (classInfo)
   {
-    v17 = [(PDDPClass *)classInfo dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"class_info"];
+    dictionaryRepresentation5 = [(PDDPClass *)classInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"class_info"];
   }
 
   person = self->_person;
   if (person)
   {
-    v19 = [(PDDPPerson *)person dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"person"];
+    dictionaryRepresentation6 = [(PDDPPerson *)person dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"person"];
   }
 
   classMember = self->_classMember;
   if (classMember)
   {
-    v21 = [(PDDPClassMember *)classMember dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"class_member"];
+    dictionaryRepresentation7 = [(PDDPClassMember *)classMember dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"class_member"];
   }
 
   classZone = self->_classZone;
   if (classZone)
   {
-    v23 = [(PDDPClassZone *)classZone dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"class_zone"];
+    dictionaryRepresentation8 = [(PDDPClassZone *)classZone dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation8 forKey:@"class_zone"];
   }
 
   asset = self->_asset;
   if (asset)
   {
-    v25 = [(PDDPAssetReference *)asset dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"asset"];
+    dictionaryRepresentation9 = [(PDDPAssetReference *)asset dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation9 forKey:@"asset"];
   }
 
   authStatus = self->_authStatus;
   if (authStatus)
   {
-    v27 = [(PDDPAuthorizationStatus *)authStatus dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"auth_status"];
+    dictionaryRepresentation10 = [(PDDPAuthorizationStatus *)authStatus dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation10 forKey:@"auth_status"];
   }
 
   completionStatus = self->_completionStatus;
   if (completionStatus)
   {
-    v29 = [(PDDPCompletionStatus *)completionStatus dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"completion_status"];
+    dictionaryRepresentation11 = [(PDDPCompletionStatus *)completionStatus dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation11 forKey:@"completion_status"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -436,50 +436,50 @@
   stateChange = self->_stateChange;
   if (stateChange)
   {
-    v33 = [(PDDPStateChange *)stateChange dictionaryRepresentation];
-    [v3 setObject:v33 forKey:@"state_change"];
+    dictionaryRepresentation12 = [(PDDPStateChange *)stateChange dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation12 forKey:@"state_change"];
   }
 
   queryZone = self->_queryZone;
   if (queryZone)
   {
-    v35 = [(PDDPSchoolworkQueryZone *)queryZone dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"query_zone"];
+    dictionaryRepresentation13 = [(PDDPSchoolworkQueryZone *)queryZone dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation13 forKey:@"query_zone"];
   }
 
   collection = self->_collection;
   if (collection)
   {
-    v37 = [(PDDPCollection *)collection dictionaryRepresentation];
-    [v3 setObject:v37 forKey:@"collection"];
+    dictionaryRepresentation14 = [(PDDPCollection *)collection dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation14 forKey:@"collection"];
   }
 
   collectionItem = self->_collectionItem;
   if (collectionItem)
   {
-    v39 = [(PDDPCollectionItem *)collectionItem dictionaryRepresentation];
-    [v3 setObject:v39 forKey:@"collection_item"];
+    dictionaryRepresentation15 = [(PDDPCollectionItem *)collectionItem dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation15 forKey:@"collection_item"];
   }
 
   survey = self->_survey;
   if (survey)
   {
-    v41 = [(PDDPSurvey *)survey dictionaryRepresentation];
-    [v3 setObject:v41 forKey:@"survey"];
+    dictionaryRepresentation16 = [(PDDPSurvey *)survey dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation16 forKey:@"survey"];
   }
 
   surveyStep = self->_surveyStep;
   if (surveyStep)
   {
-    v43 = [(PDDPSurveyStep *)surveyStep dictionaryRepresentation];
-    [v3 setObject:v43 forKey:@"survey_step"];
+    dictionaryRepresentation17 = [(PDDPSurveyStep *)surveyStep dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation17 forKey:@"survey_step"];
   }
 
   surveyStepAnswer = self->_surveyStepAnswer;
   if (surveyStepAnswer)
   {
-    v45 = [(PDDPSurveyStepAnswer *)surveyStepAnswer dictionaryRepresentation];
-    [v3 setObject:v45 forKey:@"survey_step_answer"];
+    dictionaryRepresentation18 = [(PDDPSurveyStepAnswer *)surveyStepAnswer dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation18 forKey:@"survey_step_answer"];
   }
 
   if (*&self->_has)
@@ -491,29 +491,29 @@
   schedule = self->_schedule;
   if (schedule)
   {
-    v48 = [(PDDPSchedule *)schedule dictionaryRepresentation];
-    [v3 setObject:v48 forKey:@"schedule"];
+    dictionaryRepresentation19 = [(PDDPSchedule *)schedule dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation19 forKey:@"schedule"];
   }
 
   scheduledEvent = self->_scheduledEvent;
   if (scheduledEvent)
   {
-    v50 = [(PDDPScheduledEvent *)scheduledEvent dictionaryRepresentation];
-    [v3 setObject:v50 forKey:@"scheduled_event"];
+    dictionaryRepresentation20 = [(PDDPScheduledEvent *)scheduledEvent dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation20 forKey:@"scheduled_event"];
   }
 
   assessment = self->_assessment;
   if (assessment)
   {
-    v52 = [(PDDPAssessment *)assessment dictionaryRepresentation];
-    [v3 setObject:v52 forKey:@"assessment"];
+    dictionaryRepresentation21 = [(PDDPAssessment *)assessment dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation21 forKey:@"assessment"];
   }
 
   takerWork = self->_takerWork;
   if (takerWork)
   {
-    v54 = [(PDDPTakerWork *)takerWork dictionaryRepresentation];
-    [v3 setObject:v54 forKey:@"taker_work"];
+    dictionaryRepresentation22 = [(PDDPTakerWork *)takerWork dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation22 forKey:@"taker_work"];
   }
 
   v55 = v3;
@@ -521,16 +521,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v10 = v4;
+  v10 = toCopy;
   if ((has & 4) != 0)
   {
     payloadSize = self->_payloadSize;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -538,322 +538,322 @@
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_status)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_handout)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_attachment)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_recipient)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_classInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_person)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_classMember)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_classZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_asset)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_authStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_completionStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     action = self->_action;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_stateChange)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_queryZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_collection)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_collectionItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_survey)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_surveyStep)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_surveyStepAnswer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
     actionFlags = self->_actionFlags;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_schedule)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_scheduledEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_assessment)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_takerWork)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[28] = self->_payloadSize;
-    *(v4 + 212) |= 4u;
+    toCopy[28] = self->_payloadSize;
+    *(toCopy + 212) |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[52] = self->_type;
-    *(v4 + 212) |= 8u;
+    toCopy[52] = self->_type;
+    *(toCopy + 212) |= 8u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_status)
   {
-    [v4 setStatus:?];
-    v4 = v6;
+    [toCopy setStatus:?];
+    toCopy = v6;
   }
 
   if (self->_handout)
   {
     [v6 setHandout:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attachment)
   {
     [v6 setAttachment:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recipient)
   {
     [v6 setRecipient:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classInfo)
   {
     [v6 setClassInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_person)
   {
     [v6 setPerson:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classMember)
   {
     [v6 setClassMember:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classZone)
   {
     [v6 setClassZone:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_asset)
   {
     [v6 setAsset:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_authStatus)
   {
     [v6 setAuthStatus:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_completionStatus)
   {
     [v6 setCompletionStatus:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[4] = self->_action;
-    *(v4 + 212) |= 2u;
+    toCopy[4] = self->_action;
+    *(toCopy + 212) |= 2u;
   }
 
   if (self->_stateChange)
   {
     [v6 setStateChange:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_queryZone)
   {
     [v6 setQueryZone:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_collection)
   {
     [v6 setCollection:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_collectionItem)
   {
     [v6 setCollectionItem:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_survey)
   {
     [v6 setSurvey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_surveyStep)
   {
     [v6 setSurveyStep:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_surveyStepAnswer)
   {
     [v6 setSurveyStepAnswer:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_actionFlags;
-    *(v4 + 212) |= 1u;
+    *(toCopy + 1) = self->_actionFlags;
+    *(toCopy + 212) |= 1u;
   }
 
   if (self->_schedule)
   {
     [v6 setSchedule:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scheduledEvent)
   {
     [v6 setScheduledEvent:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_assessment)
   {
     [v6 setAssessment:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_takerWork)
   {
     [v6 setTakerWork:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -869,47 +869,47 @@
     *(v5 + 212) |= 8u;
   }
 
-  v8 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v8 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v9 = v6[21];
   v6[21] = v8;
 
-  v10 = [(PDDPHandout *)self->_handout copyWithZone:a3];
+  v10 = [(PDDPHandout *)self->_handout copyWithZone:zone];
   v11 = v6[13];
   v6[13] = v10;
 
-  v12 = [(PDDPHandoutAttachment *)self->_attachment copyWithZone:a3];
+  v12 = [(PDDPHandoutAttachment *)self->_attachment copyWithZone:zone];
   v13 = v6[5];
   v6[5] = v12;
 
-  v14 = [(PDDPHandoutRecipient *)self->_recipient copyWithZone:a3];
+  v14 = [(PDDPHandoutRecipient *)self->_recipient copyWithZone:zone];
   v15 = v6[17];
   v6[17] = v14;
 
-  v16 = [(PDDPClass *)self->_classInfo copyWithZone:a3];
+  v16 = [(PDDPClass *)self->_classInfo copyWithZone:zone];
   v17 = v6[7];
   v6[7] = v16;
 
-  v18 = [(PDDPPerson *)self->_person copyWithZone:a3];
+  v18 = [(PDDPPerson *)self->_person copyWithZone:zone];
   v19 = v6[15];
   v6[15] = v18;
 
-  v20 = [(PDDPClassMember *)self->_classMember copyWithZone:a3];
+  v20 = [(PDDPClassMember *)self->_classMember copyWithZone:zone];
   v21 = v6[8];
   v6[8] = v20;
 
-  v22 = [(PDDPClassZone *)self->_classZone copyWithZone:a3];
+  v22 = [(PDDPClassZone *)self->_classZone copyWithZone:zone];
   v23 = v6[9];
   v6[9] = v22;
 
-  v24 = [(PDDPAssetReference *)self->_asset copyWithZone:a3];
+  v24 = [(PDDPAssetReference *)self->_asset copyWithZone:zone];
   v25 = v6[4];
   v6[4] = v24;
 
-  v26 = [(PDDPAuthorizationStatus *)self->_authStatus copyWithZone:a3];
+  v26 = [(PDDPAuthorizationStatus *)self->_authStatus copyWithZone:zone];
   v27 = v6[6];
   v6[6] = v26;
 
-  v28 = [(PDDPCompletionStatus *)self->_completionStatus copyWithZone:a3];
+  v28 = [(PDDPCompletionStatus *)self->_completionStatus copyWithZone:zone];
   v29 = v6[12];
   v6[12] = v28;
 
@@ -919,31 +919,31 @@
     *(v6 + 212) |= 2u;
   }
 
-  v30 = [(PDDPStateChange *)self->_stateChange copyWithZone:a3];
+  v30 = [(PDDPStateChange *)self->_stateChange copyWithZone:zone];
   v31 = v6[20];
   v6[20] = v30;
 
-  v32 = [(PDDPSchoolworkQueryZone *)self->_queryZone copyWithZone:a3];
+  v32 = [(PDDPSchoolworkQueryZone *)self->_queryZone copyWithZone:zone];
   v33 = v6[16];
   v6[16] = v32;
 
-  v34 = [(PDDPCollection *)self->_collection copyWithZone:a3];
+  v34 = [(PDDPCollection *)self->_collection copyWithZone:zone];
   v35 = v6[10];
   v6[10] = v34;
 
-  v36 = [(PDDPCollectionItem *)self->_collectionItem copyWithZone:a3];
+  v36 = [(PDDPCollectionItem *)self->_collectionItem copyWithZone:zone];
   v37 = v6[11];
   v6[11] = v36;
 
-  v38 = [(PDDPSurvey *)self->_survey copyWithZone:a3];
+  v38 = [(PDDPSurvey *)self->_survey copyWithZone:zone];
   v39 = v6[22];
   v6[22] = v38;
 
-  v40 = [(PDDPSurveyStep *)self->_surveyStep copyWithZone:a3];
+  v40 = [(PDDPSurveyStep *)self->_surveyStep copyWithZone:zone];
   v41 = v6[23];
   v6[23] = v40;
 
-  v42 = [(PDDPSurveyStepAnswer *)self->_surveyStepAnswer copyWithZone:a3];
+  v42 = [(PDDPSurveyStepAnswer *)self->_surveyStepAnswer copyWithZone:zone];
   v43 = v6[24];
   v6[24] = v42;
 
@@ -953,43 +953,43 @@
     *(v6 + 212) |= 1u;
   }
 
-  v44 = [(PDDPSchedule *)self->_schedule copyWithZone:a3];
+  v44 = [(PDDPSchedule *)self->_schedule copyWithZone:zone];
   v45 = v6[18];
   v6[18] = v44;
 
-  v46 = [(PDDPScheduledEvent *)self->_scheduledEvent copyWithZone:a3];
+  v46 = [(PDDPScheduledEvent *)self->_scheduledEvent copyWithZone:zone];
   v47 = v6[19];
   v6[19] = v46;
 
-  v48 = [(PDDPAssessment *)self->_assessment copyWithZone:a3];
+  v48 = [(PDDPAssessment *)self->_assessment copyWithZone:zone];
   v49 = v6[3];
   v6[3] = v48;
 
-  v50 = [(PDDPTakerWork *)self->_takerWork copyWithZone:a3];
+  v50 = [(PDDPTakerWork *)self->_takerWork copyWithZone:zone];
   v51 = v6[25];
   v6[25] = v50;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
-  v5 = *(v4 + 212);
+  v5 = *(equalCopy + 212);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 212) & 4) == 0 || self->_payloadSize != *(v4 + 28))
+    if ((*(equalCopy + 212) & 4) == 0 || self->_payloadSize != *(equalCopy + 28))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 212) & 4) != 0)
+  else if ((*(equalCopy + 212) & 4) != 0)
   {
 LABEL_66:
     v30 = 0;
@@ -998,25 +998,25 @@ LABEL_66:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 212) & 8) == 0 || self->_type != *(v4 + 52))
+    if ((*(equalCopy + 212) & 8) == 0 || self->_type != *(equalCopy + 52))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 212) & 8) != 0)
+  else if ((*(equalCopy + 212) & 8) != 0)
   {
     goto LABEL_66;
   }
 
   status = self->_status;
-  if (status | *(v4 + 21) && ![(PDDPStatus *)status isEqual:?])
+  if (status | *(equalCopy + 21) && ![(PDDPStatus *)status isEqual:?])
   {
     goto LABEL_66;
   }
 
   handout = self->_handout;
-  if (handout | *(v4 + 13))
+  if (handout | *(equalCopy + 13))
   {
     if (![(PDDPHandout *)handout isEqual:?])
     {
@@ -1025,7 +1025,7 @@ LABEL_66:
   }
 
   attachment = self->_attachment;
-  if (attachment | *(v4 + 5))
+  if (attachment | *(equalCopy + 5))
   {
     if (![(PDDPHandoutAttachment *)attachment isEqual:?])
     {
@@ -1034,7 +1034,7 @@ LABEL_66:
   }
 
   recipient = self->_recipient;
-  if (recipient | *(v4 + 17))
+  if (recipient | *(equalCopy + 17))
   {
     if (![(PDDPHandoutRecipient *)recipient isEqual:?])
     {
@@ -1043,7 +1043,7 @@ LABEL_66:
   }
 
   classInfo = self->_classInfo;
-  if (classInfo | *(v4 + 7))
+  if (classInfo | *(equalCopy + 7))
   {
     if (![(PDDPClass *)classInfo isEqual:?])
     {
@@ -1052,7 +1052,7 @@ LABEL_66:
   }
 
   person = self->_person;
-  if (person | *(v4 + 15))
+  if (person | *(equalCopy + 15))
   {
     if (![(PDDPPerson *)person isEqual:?])
     {
@@ -1061,7 +1061,7 @@ LABEL_66:
   }
 
   classMember = self->_classMember;
-  if (classMember | *(v4 + 8))
+  if (classMember | *(equalCopy + 8))
   {
     if (![(PDDPClassMember *)classMember isEqual:?])
     {
@@ -1070,7 +1070,7 @@ LABEL_66:
   }
 
   classZone = self->_classZone;
-  if (classZone | *(v4 + 9))
+  if (classZone | *(equalCopy + 9))
   {
     if (![(PDDPClassZone *)classZone isEqual:?])
     {
@@ -1079,7 +1079,7 @@ LABEL_66:
   }
 
   asset = self->_asset;
-  if (asset | *(v4 + 4))
+  if (asset | *(equalCopy + 4))
   {
     if (![(PDDPAssetReference *)asset isEqual:?])
     {
@@ -1088,7 +1088,7 @@ LABEL_66:
   }
 
   authStatus = self->_authStatus;
-  if (authStatus | *(v4 + 6))
+  if (authStatus | *(equalCopy + 6))
   {
     if (![(PDDPAuthorizationStatus *)authStatus isEqual:?])
     {
@@ -1097,7 +1097,7 @@ LABEL_66:
   }
 
   completionStatus = self->_completionStatus;
-  if (completionStatus | *(v4 + 12))
+  if (completionStatus | *(equalCopy + 12))
   {
     if (![(PDDPCompletionStatus *)completionStatus isEqual:?])
     {
@@ -1105,28 +1105,28 @@ LABEL_66:
     }
   }
 
-  v17 = *(v4 + 212);
+  v17 = *(equalCopy + 212);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 212) & 2) == 0 || self->_action != *(v4 + 4))
+    if ((*(equalCopy + 212) & 2) == 0 || self->_action != *(equalCopy + 4))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 212) & 2) != 0)
+  else if ((*(equalCopy + 212) & 2) != 0)
   {
     goto LABEL_66;
   }
 
   stateChange = self->_stateChange;
-  if (stateChange | *(v4 + 20) && ![(PDDPStateChange *)stateChange isEqual:?])
+  if (stateChange | *(equalCopy + 20) && ![(PDDPStateChange *)stateChange isEqual:?])
   {
     goto LABEL_66;
   }
 
   queryZone = self->_queryZone;
-  if (queryZone | *(v4 + 16))
+  if (queryZone | *(equalCopy + 16))
   {
     if (![(PDDPSchoolworkQueryZone *)queryZone isEqual:?])
     {
@@ -1135,7 +1135,7 @@ LABEL_66:
   }
 
   collection = self->_collection;
-  if (collection | *(v4 + 10))
+  if (collection | *(equalCopy + 10))
   {
     if (![(PDDPCollection *)collection isEqual:?])
     {
@@ -1144,7 +1144,7 @@ LABEL_66:
   }
 
   collectionItem = self->_collectionItem;
-  if (collectionItem | *(v4 + 11))
+  if (collectionItem | *(equalCopy + 11))
   {
     if (![(PDDPCollectionItem *)collectionItem isEqual:?])
     {
@@ -1153,7 +1153,7 @@ LABEL_66:
   }
 
   survey = self->_survey;
-  if (survey | *(v4 + 22))
+  if (survey | *(equalCopy + 22))
   {
     if (![(PDDPSurvey *)survey isEqual:?])
     {
@@ -1162,7 +1162,7 @@ LABEL_66:
   }
 
   surveyStep = self->_surveyStep;
-  if (surveyStep | *(v4 + 23))
+  if (surveyStep | *(equalCopy + 23))
   {
     if (![(PDDPSurveyStep *)surveyStep isEqual:?])
     {
@@ -1171,7 +1171,7 @@ LABEL_66:
   }
 
   surveyStepAnswer = self->_surveyStepAnswer;
-  if (surveyStepAnswer | *(v4 + 24))
+  if (surveyStepAnswer | *(equalCopy + 24))
   {
     if (![(PDDPSurveyStepAnswer *)surveyStepAnswer isEqual:?])
     {
@@ -1179,28 +1179,28 @@ LABEL_66:
     }
   }
 
-  v25 = *(v4 + 212);
+  v25 = *(equalCopy + 212);
   if (*&self->_has)
   {
-    if ((*(v4 + 212) & 1) == 0 || self->_actionFlags != *(v4 + 1))
+    if ((*(equalCopy + 212) & 1) == 0 || self->_actionFlags != *(equalCopy + 1))
     {
       goto LABEL_66;
     }
   }
 
-  else if (*(v4 + 212))
+  else if (*(equalCopy + 212))
   {
     goto LABEL_66;
   }
 
   schedule = self->_schedule;
-  if (schedule | *(v4 + 18) && ![(PDDPSchedule *)schedule isEqual:?])
+  if (schedule | *(equalCopy + 18) && ![(PDDPSchedule *)schedule isEqual:?])
   {
     goto LABEL_66;
   }
 
   scheduledEvent = self->_scheduledEvent;
-  if (scheduledEvent | *(v4 + 19))
+  if (scheduledEvent | *(equalCopy + 19))
   {
     if (![(PDDPScheduledEvent *)scheduledEvent isEqual:?])
     {
@@ -1209,7 +1209,7 @@ LABEL_66:
   }
 
   assessment = self->_assessment;
-  if (assessment | *(v4 + 3))
+  if (assessment | *(equalCopy + 3))
   {
     if (![(PDDPAssessment *)assessment isEqual:?])
     {
@@ -1218,7 +1218,7 @@ LABEL_66:
   }
 
   takerWork = self->_takerWork;
-  if (takerWork | *(v4 + 25))
+  if (takerWork | *(equalCopy + 25))
   {
     v30 = [(PDDPTakerWork *)takerWork isEqual:?];
   }
@@ -1301,21 +1301,21 @@ LABEL_6:
   return v12 ^ v14 ^ [(PDDPTakerWork *)self->_takerWork hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 212);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 212);
   if ((v6 & 4) != 0)
   {
-    self->_payloadSize = v4[28];
+    self->_payloadSize = fromCopy[28];
     *&self->_has |= 4u;
-    v6 = *(v4 + 212);
+    v6 = *(fromCopy + 212);
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_type = v4[52];
+    self->_type = fromCopy[52];
     *&self->_has |= 8u;
   }
 

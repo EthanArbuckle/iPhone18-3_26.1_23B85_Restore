@@ -1,24 +1,24 @@
 @interface MacContainerViewController
-- (MacContainerViewController)initWithPlatformController:(id)a3;
+- (MacContainerViewController)initWithPlatformController:(id)controller;
 - (id)_mapViewIfCurrent;
 - (id)preferredFocusEnvironments;
 - (id)topSidebarController_forTests;
-- (void)macWillDismissPopoverContaineeController:(id)a3;
-- (void)setChromeViewController:(id)a3;
-- (void)setSidebarContentInjector:(id)a3;
+- (void)macWillDismissPopoverContaineeController:(id)controller;
+- (void)setChromeViewController:(id)controller;
+- (void)setSidebarContentInjector:(id)injector;
 @end
 
 @implementation MacContainerViewController
 
-- (void)setSidebarContentInjector:(id)a3
+- (void)setSidebarContentInjector:(id)injector
 {
-  v5 = a3;
+  injectorCopy = injector;
   sidebarContentInjector = self->_sidebarContentInjector;
-  if (sidebarContentInjector != v5)
+  if (sidebarContentInjector != injectorCopy)
   {
     [(ContaineeContentInjection *)sidebarContentInjector removeContentFromMapView];
     [(ContaineeContentInjection *)self->_sidebarContentInjector setUpdateContentInjection:0];
-    objc_storeStrong(&self->_sidebarContentInjector, a3);
+    objc_storeStrong(&self->_sidebarContentInjector, injector);
     objc_initWeak(&location, self);
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
@@ -32,91 +32,91 @@
   }
 }
 
-- (void)macWillDismissPopoverContaineeController:(id)a3
+- (void)macWillDismissPopoverContaineeController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MacContainerViewController *)self macBaseActionCoordinator];
-  v6 = [v5 shouldClearMapSelectionOnDismissOfViewController:v4];
+  controllerCopy = controller;
+  macBaseActionCoordinator = [(MacContainerViewController *)self macBaseActionCoordinator];
+  v6 = [macBaseActionCoordinator shouldClearMapSelectionOnDismissOfViewController:controllerCopy];
 
   if (v6)
   {
-    v7 = [(ControlContainerViewController *)self actionCoordinator];
-    v8 = [v7 mapSelectionManager];
-    [v8 clearSelectionAnimated:1];
+    actionCoordinator = [(ControlContainerViewController *)self actionCoordinator];
+    mapSelectionManager = [actionCoordinator mapSelectionManager];
+    [mapSelectionManager clearSelectionAnimated:1];
   }
 
   v9.receiver = self;
   v9.super_class = MacContainerViewController;
-  [(MacContainerViewController *)&v9 macWillDismissPopoverContaineeController:v4];
+  [(MacContainerViewController *)&v9 macWillDismissPopoverContaineeController:controllerCopy];
 }
 
 - (id)topSidebarController_forTests
 {
-  v3 = [(ContainerViewController *)self chromeViewController];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ContainerViewController *)self chromeViewController];
-    v6 = [v5 topSidebarController_forTests];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    topSidebarController_forTests = [chromeViewController2 topSidebarController_forTests];
   }
 
   else
   {
-    v6 = 0;
+    topSidebarController_forTests = 0;
   }
 
-  return v6;
+  return topSidebarController_forTests;
 }
 
 - (id)_mapViewIfCurrent
 {
-  v3 = [(ControlContainerViewController *)self chromeContext];
-  v4 = [(ContainerViewController *)self chromeViewController];
-  v5 = [v4 topContext];
+  chromeContext = [(ControlContainerViewController *)self chromeContext];
+  chromeViewController = [(ContainerViewController *)self chromeViewController];
+  topContext = [chromeViewController topContext];
 
-  if (v3 == v5)
+  if (chromeContext == topContext)
   {
-    v7 = [(ContainerViewController *)self chromeViewController];
-    v6 = [v7 mapView];
+    chromeViewController2 = [(ContainerViewController *)self chromeViewController];
+    mapView = [chromeViewController2 mapView];
   }
 
   else
   {
-    v6 = 0;
+    mapView = 0;
   }
 
-  return v6;
+  return mapView;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = MacContainerViewController;
-  v4 = a3;
-  [(ControlContainerViewController *)&v7 setChromeViewController:v4];
+  controllerCopy = controller;
+  [(ControlContainerViewController *)&v7 setChromeViewController:controllerCopy];
   v5 = _UISolariumEnabled();
   v6 = [(MacContainerViewController *)self _mapViewIfCurrent:v7.receiver];
   [v6 setCompassEnabled:v5 ^ 1u];
 
-  [v4 registerAdditionalMapViewDelegate:self];
+  [controllerCopy registerAdditionalMapViewDelegate:self];
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(ContainerViewController *)self currentViewController];
+  currentViewController = [(ContainerViewController *)self currentViewController];
 
-  if (v3)
+  if (currentViewController)
   {
-    v4 = [(ContainerViewController *)self currentViewController];
-    v9 = v4;
+    currentViewController2 = [(ContainerViewController *)self currentViewController];
+    v9 = currentViewController2;
     v5 = &v9;
   }
 
   else
   {
-    v4 = [(MacContainerViewController *)self view];
-    v8 = v4;
+    currentViewController2 = [(MacContainerViewController *)self view];
+    v8 = currentViewController2;
     v5 = &v8;
   }
 
@@ -125,11 +125,11 @@
   return v6;
 }
 
-- (MacContainerViewController)initWithPlatformController:(id)a3
+- (MacContainerViewController)initWithPlatformController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = MacContainerViewController;
-  v3 = [(ControlContainerViewController *)&v5 initWithPlatformController:a3];
+  v3 = [(ControlContainerViewController *)&v5 initWithPlatformController:controller];
   if (v3)
   {
     [(ContainerViewController *)v3 setStackOnOppositeSide:_UISolariumEnabled() ^ 1];

@@ -1,7 +1,7 @@
 @interface SBDashBoardTraitsAwareAppHostingViewController
-- (CGRect)_referenceBoundsForBounds:(CGRect)a3;
+- (CGRect)_referenceBoundsForBounds:(CGRect)bounds;
 - (SBApplicationHosting)appHosting;
-- (SBDashBoardTraitsAwareAppHostingViewController)initWithAppHosting:(id)a3 targetWindow:(id)a4;
+- (SBDashBoardTraitsAwareAppHostingViewController)initWithAppHosting:(id)hosting targetWindow:(id)window;
 - (id)_effectiveWindow;
 - (id)_hostedAppViewController;
 - (id)_hostedSceneHandle;
@@ -12,52 +12,52 @@
 - (void)dealloc;
 - (void)sceneDidAttach;
 - (void)sceneWasDestroyed;
-- (void)setAppHosting:(id)a3;
-- (void)setContentViewBounds:(CGRect)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setAppHosting:(id)hosting;
+- (void)setContentViewBounds:(CGRect)bounds;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBDashBoardTraitsAwareAppHostingViewController
 
-- (SBDashBoardTraitsAwareAppHostingViewController)initWithAppHosting:(id)a3 targetWindow:(id)a4
+- (SBDashBoardTraitsAwareAppHostingViewController)initWithAppHosting:(id)hosting targetWindow:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  hostingCopy = hosting;
+  windowCopy = window;
   v11.receiver = self;
   v11.super_class = SBDashBoardTraitsAwareAppHostingViewController;
   v8 = [(SBDashBoardTraitsAwareAppHostingViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_appHosting, v6);
-    objc_storeStrong(&v9->_targetWindow, a4);
+    objc_storeWeak(&v8->_appHosting, hostingCopy);
+    objc_storeStrong(&v9->_targetWindow, window);
     [(SBDashBoardTraitsAwareAppHostingViewController *)v9 _acquireTraitsParticipantIfNeeded];
   }
 
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardTraitsAwareAppHostingViewController;
-  [(SBDashBoardTraitsAwareAppHostingViewController *)&v4 viewWillAppear:a3];
+  [(SBDashBoardTraitsAwareAppHostingViewController *)&v4 viewWillAppear:appear];
   [(SBDashBoardTraitsAwareAppHostingViewController *)self _acquireTraitsParticipantIfNeeded];
   [(SBDashBoardTraitsAwareAppHostingViewController *)self _updateWindowLevel];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardTraitsAwareAppHostingViewController;
-  [(SBDashBoardTraitsAwareAppHostingViewController *)&v4 viewWillDisappear:a3];
+  [(SBDashBoardTraitsAwareAppHostingViewController *)&v4 viewWillDisappear:disappear];
   [(SBDashBoardTraitsAwareAppHostingViewController *)self _invalidateTraitsParticipant];
 }
 
-- (void)setAppHosting:(id)a3
+- (void)setAppHosting:(id)hosting
 {
-  obj = a3;
+  obj = hosting;
   WeakRetained = objc_loadWeakRetained(&self->_appHosting);
 
   v5 = obj;
@@ -69,18 +69,18 @@
   }
 }
 
-- (void)setContentViewBounds:(CGRect)a3
+- (void)setContentViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-  [v8 setFrame:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  view = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+  [view setFrame:{x, y, width, height}];
 
-  v9 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+  view2 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
   [(SBDashBoardTraitsAwareAppHostingViewController *)self _referenceBoundsForBounds:x, y, width, height];
-  [v9 setContentViewBoundsInReferenceSpace:?];
+  [view2 setContentViewBoundsInReferenceSpace:?];
 }
 
 - (void)sceneDidAttach
@@ -99,30 +99,30 @@
 
 - (id)_traitsArbiter
 {
-  v4 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
-  v5 = v4;
-  if (v4)
+  _effectiveWindow = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
+  v5 = _effectiveWindow;
+  if (_effectiveWindow)
   {
-    v6 = [v4 _sbWindowScene];
-    v7 = [v6 traitsArbiter];
+    _sbWindowScene = [_effectiveWindow _sbWindowScene];
+    traitsArbiter = [_sbWindowScene traitsArbiter];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBDashBoardTraitsAwareAppHostingViewController.m" lineNumber:93 description:@"Unexpected nil window"];
-    v7 = 0;
+    _sbWindowScene = [MEMORY[0x277CCA890] currentHandler];
+    [_sbWindowScene handleFailureInMethod:a2 object:self file:@"SBDashBoardTraitsAwareAppHostingViewController.m" lineNumber:93 description:@"Unexpected nil window"];
+    traitsArbiter = 0;
   }
 
-  return v7;
+  return traitsArbiter;
 }
 
 - (id)_hostedSceneHandle
 {
-  v2 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
-  v3 = [v2 applicationSceneHandle];
+  _hostedAppViewController = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
+  applicationSceneHandle = [_hostedAppViewController applicationSceneHandle];
 
-  return v3;
+  return applicationSceneHandle;
 }
 
 - (id)_hostedAppViewController
@@ -150,10 +150,10 @@
 
 - (id)_effectiveWindow
 {
-  v3 = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
-  v4 = [v3 window];
-  targetWindow = v4;
-  if (!v4)
+  view = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
+  window = [view window];
+  targetWindow = window;
+  if (!window)
   {
     targetWindow = self->_targetWindow;
   }
@@ -165,17 +165,17 @@
 
 - (void)_updateWindowLevel
 {
-  v3 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
-  if (v3)
+  _effectiveWindow = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
+  if (_effectiveWindow)
   {
     traitsParticipantDelegate = self->_traitsParticipantDelegate;
     v5 = MEMORY[0x277CCABB0];
-    v7 = v3;
-    [v3 windowLevel];
+    v7 = _effectiveWindow;
+    [_effectiveWindow windowLevel];
     v6 = [v5 numberWithDouble:?];
     [(SBTraitsSceneParticipantDelegate *)traitsParticipantDelegate setPreferredSceneLevel:v6];
 
-    v3 = v7;
+    _effectiveWindow = v7;
   }
 }
 
@@ -183,43 +183,43 @@
 {
   if (self->_traitsParticipant || (WeakRetained = objc_loadWeakRetained(&self->_appHosting), WeakRetained, !WeakRetained))
   {
-    v48 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-    v3 = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
-    [v3 bounds];
+    view = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+    view2 = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
+    [view2 bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    [v48 setFrame:{v5, v7, v9, v11}];
+    [view setFrame:{v5, v7, v9, v11}];
     [(SBDashBoardTraitsAwareAppHostingViewController *)self _referenceBoundsForBounds:v5, v7, v9, v11];
-    [v48 setContentViewBoundsInReferenceSpace:?];
+    [view setContentViewBoundsInReferenceSpace:?];
   }
 
   else
   {
-    v13 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
-    if (v13)
+    _effectiveWindow = [(SBDashBoardTraitsAwareAppHostingViewController *)self _effectiveWindow];
+    if (_effectiveWindow)
     {
-      v14 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
-      [v14 setMode:2];
+      _hostedAppViewController = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
+      [_hostedAppViewController setMode:2];
 
-      v15 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _traitsArbiter];
+      _traitsArbiter = [(SBDashBoardTraitsAwareAppHostingViewController *)self _traitsArbiter];
       v16 = [SBTraitsSceneParticipantDelegate alloc];
-      v17 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedSceneHandle];
-      v18 = [(SBTraitsSceneParticipantDelegate *)v16 initWithSceneHandle:v17];
+      _hostedSceneHandle = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedSceneHandle];
+      v18 = [(SBTraitsSceneParticipantDelegate *)v16 initWithSceneHandle:_hostedSceneHandle];
       traitsParticipantDelegate = self->_traitsParticipantDelegate;
       self->_traitsParticipantDelegate = v18;
 
-      v20 = [v15 acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetPosterSwitcher" delegate:self->_traitsParticipantDelegate];
+      v20 = [_traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetPosterSwitcher" delegate:self->_traitsParticipantDelegate];
       traitsParticipant = self->_traitsParticipant;
       self->_traitsParticipant = v20;
 
-      [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:v15];
+      [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:_traitsArbiter];
       [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setParticipant:self->_traitsParticipant];
       v22 = self->_traitsParticipantDelegate;
       v23 = MEMORY[0x277CCABB0];
-      [v13 windowLevel];
+      [_effectiveWindow windowLevel];
       v24 = [v23 numberWithDouble:?];
       [(SBTraitsSceneParticipantDelegate *)v22 setPreferredSceneLevel:v24];
 
@@ -229,37 +229,37 @@
 
       [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController setContentParticipant:self->_traitsParticipant];
       v27 = objc_opt_class();
-      v28 = SBSafeCast(v27, v13);
+      v28 = SBSafeCast(v27, _effectiveWindow);
       v29 = v28;
       if (v28)
       {
         v30 = self->_orientedContentViewController;
-        v31 = [v28 traitsParticipant];
-        [(SBTraitsOrientedContentViewController *)v30 setContainerParticipant:v31];
+        traitsParticipant = [v28 traitsParticipant];
+        [(SBTraitsOrientedContentViewController *)v30 setContainerParticipant:traitsParticipant];
       }
 
-      v32 = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
-      [v32 bounds];
+      view3 = [(SBDashBoardTraitsAwareAppHostingViewController *)self view];
+      [view3 bounds];
       v34 = v33;
       v36 = v35;
       v38 = v37;
       v40 = v39;
 
-      v41 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-      [v41 setFrame:{v34, v36, v38, v40}];
+      view4 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+      [view4 setFrame:{v34, v36, v38, v40}];
       [(SBDashBoardTraitsAwareAppHostingViewController *)self _referenceBoundsForBounds:v34, v36, v38, v40];
-      [v41 setContentViewBoundsInReferenceSpace:?];
-      [v41 setAutoresizingMask:18];
+      [view4 setContentViewBoundsInReferenceSpace:?];
+      [view4 setAutoresizingMask:18];
       v42 = self->_orientedContentViewController;
-      v43 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
+      _hostedAppViewController2 = [(SBDashBoardTraitsAwareAppHostingViewController *)self _hostedAppViewController];
       v55[0] = MEMORY[0x277D85DD0];
       v55[1] = 3221225472;
       v55[2] = __83__SBDashBoardTraitsAwareAppHostingViewController__acquireTraitsParticipantIfNeeded__block_invoke;
       v55[3] = &unk_2783A9460;
-      v44 = v41;
+      v44 = view4;
       v56 = v44;
-      v57 = self;
-      [(SBTraitsOrientedContentViewController *)v42 bs_addChildViewController:v43 animated:0 transitionBlock:v55];
+      selfCopy = self;
+      [(SBTraitsOrientedContentViewController *)v42 bs_addChildViewController:_hostedAppViewController2 animated:0 transitionBlock:v55];
 
       objc_initWeak(&location, self);
       v45 = self->_traitsParticipantDelegate;
@@ -341,13 +341,13 @@ void __83__SBDashBoardTraitsAwareAppHostingViewController__acquireTraitsParticip
   self->_traitsParticipant = 0;
 }
 
-- (CGRect)_referenceBoundsForBounds:(CGRect)a3
+- (CGRect)_referenceBoundsForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetHeight(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = CGRectGetHeight(bounds);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;

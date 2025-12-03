@@ -1,16 +1,16 @@
 @interface WFCreateAlarmMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFCreateAlarmMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.alarm.create", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.alarm.create", migrationCopy);
   }
 
   else
@@ -50,17 +50,17 @@
 
         v52 = v6;
         v7 = *(*(&v57 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKeyedSubscript:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKeyedSubscript:actionIdentifierKey];
         v10 = [v9 isEqualToString:@"is.workflow.actions.alarm.create"];
 
         if (v10)
         {
-          v11 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v7 setObject:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTCreateAlarmIntent" forKeyedSubscript:v11];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v7 setObject:@"com.apple.mobiletimer-framework.MobileTimerIntents.MTCreateAlarmIntent" forKeyedSubscript:actionIdentifierKey2];
 
-          v12 = [(WFWorkflowMigration *)self actionParametersKey];
-          v13 = [v7 objectForKeyedSubscript:v12];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v13 = [v7 objectForKeyedSubscript:actionParametersKey];
 
           v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
           v15 = [v13 objectForKeyedSubscript:@"WFTime"];
@@ -118,7 +118,7 @@
 
             v27 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v23, "count")}];
             v46 = objc_alloc_init(MEMORY[0x1E696AB78]);
-            v28 = [v46 weekdaySymbols];
+            weekdaySymbols = [v46 weekdaySymbols];
             v53 = 0u;
             v54 = 0u;
             v55 = 0u;
@@ -207,7 +207,7 @@
                     v35 = 6;
                     v36 = 32;
 LABEL_39:
-                    v37 = [v28 objectAtIndexedSubscript:v35];
+                    v37 = [weekdaySymbols objectAtIndexedSubscript:v35];
                     v35 = v36;
                   }
 
@@ -241,8 +241,8 @@ LABEL_41:
 
           if ([v50 count])
           {
-            v41 = [(WFWorkflowMigration *)self actionParametersKey];
-            [v7 setObject:v50 forKeyedSubscript:v41];
+            actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+            [v7 setObject:v50 forKeyedSubscript:actionParametersKey2];
           }
         }
 

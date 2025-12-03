@@ -1,25 +1,25 @@
 @interface PTRaytracingV14RenderState
-- (PTRaytracingV14RenderState)initWithMetalContext:(id)a3 util:(id)a4 quality:(int)a5 colorSize:(CGSize)a6 disparitySize:(CGSize)a7 debugRendering:(int64_t)a8 pyramidPixelFormat:(unint64_t)a9 options:(id)a10 debugTextures:(id)a11;
+- (PTRaytracingV14RenderState)initWithMetalContext:(id)context util:(id)util quality:(int)quality colorSize:(CGSize)size disparitySize:(CGSize)disparitySize debugRendering:(int64_t)rendering pyramidPixelFormat:(unint64_t)format options:(id)self0 debugTextures:(id)self1;
 @end
 
 @implementation PTRaytracingV14RenderState
 
-- (PTRaytracingV14RenderState)initWithMetalContext:(id)a3 util:(id)a4 quality:(int)a5 colorSize:(CGSize)a6 disparitySize:(CGSize)a7 debugRendering:(int64_t)a8 pyramidPixelFormat:(unint64_t)a9 options:(id)a10 debugTextures:(id)a11
+- (PTRaytracingV14RenderState)initWithMetalContext:(id)context util:(id)util quality:(int)quality colorSize:(CGSize)size disparitySize:(CGSize)disparitySize debugRendering:(int64_t)rendering pyramidPixelFormat:(unint64_t)format options:(id)self0 debugTextures:(id)self1
 {
-  height = a7.height;
-  width = a7.width;
-  v215 = a6.width;
-  v216 = a6.height;
-  v14 = *&a5;
-  v17 = a3;
-  v18 = a4;
-  v19 = a10;
-  v20 = a11;
+  height = disparitySize.height;
+  width = disparitySize.width;
+  v215 = size.width;
+  v216 = size.height;
+  v14 = *&quality;
+  contextCopy = context;
+  utilCopy = util;
+  optionsCopy = options;
+  texturesCopy = textures;
   v219.receiver = self;
   v219.super_class = PTRaytracingV14RenderState;
   v21 = [(PTRaytracingV14RenderState *)&v219 init];
   v21->_quality = v14;
-  v22 = [PTQualitySettings createWithQuality:v14 options:v19];
+  v22 = [PTQualitySettings createWithQuality:v14 options:optionsCopy];
   qualitySettings = v21->_qualitySettings;
   v21->_qualitySettings = v22;
 
@@ -27,12 +27,12 @@
   if (v24)
   {
     [(PTQualitySettings *)v24 setDoFirstLevelGaussianDownsample:1];
-    v25 = [PTPrecomputeRandom computeUnitDiskPoints:v17 numberOfPatternCircles:[(PTQualitySettings *)v21->_qualitySettings numberOfPatternCircles]];
+    v25 = [PTPrecomputeRandom computeUnitDiskPoints:contextCopy numberOfPatternCircles:[(PTQualitySettings *)v21->_qualitySettings numberOfPatternCircles]];
     v27 = v26;
     objc_storeStrong(&v21->_aperturePointsXY, v25);
     if (v21->_aperturePointsXY)
     {
-      v28 = [PTPrecomputeRandom computeRandomUChars:v17 rayCount:v27];
+      v28 = [PTPrecomputeRandom computeRandomUChars:contextCopy rayCount:v27];
       randomUChars = v21->_randomUChars;
       v21->_randomUChars = v28;
 
@@ -49,13 +49,13 @@
         *v21->_colorSize = vcvt_f32_f64(v36);
         v21->_anamorphicFactor = 1.2;
         *&v21->_kPyramidSamplingFraction = 0x3CCCCCCD3F99999ALL;
-        v218 = [(PTQualitySettings *)v21->_qualitySettings rayMarch];
+        rayMarch = [(PTQualitySettings *)v21->_qualitySettings rayMarch];
         raytracingRadiusLocal = v21->_raytracingRadiusLocal;
         [(PTQualitySettings *)v21->_qualitySettings renderDownscale];
         v39 = v38;
         v40 = objc_opt_new();
         [v40 setConstantValue:&v21->_rayCount type:29 withName:@"kRaytracingRaycount"];
-        [v40 setConstantValue:&v218 type:53 withName:@"kRayMarch"];
+        [v40 setConstantValue:&rayMarch type:53 withName:@"kRayMarch"];
         *&v41 = raytracingRadiusLocal * 0.25;
         [v40 setConstantFloat:@"kRadiusLocal_float" withName:v41];
         *&v42 = v21->_kPyramidSamplingFraction;
@@ -65,7 +65,7 @@
         [v40 setConstantFloat:@"kDiameterCoverageLimit_float" withName:v43];
         LODWORD(v44) = 4.0;
         [v40 setConstantFloat:@"kRayMarchDisparityRadiusTolerance_float" withName:v44];
-        v45 = [v17 computePipelineStateFor:@"raytracingV14" withConstants:v40];
+        v45 = [contextCopy computePipelineStateFor:@"raytracingV14" withConstants:v40];
         raytracingSDOF = v21->_raytracingSDOF;
         v21->_raytracingSDOF = v45;
 
@@ -82,9 +82,9 @@
 
         if ([(PTQualitySettings *)v21->_qualitySettings rayMarch])
         {
-          v47 = [[PTGlobalReduction alloc] initWithMetalContext:v17 textureSize:width, height];
+          height = [[PTGlobalReduction alloc] initWithMetalContext:contextCopy textureSize:width, height];
           globalReduction = v21->_globalReduction;
-          v21->_globalReduction = v47;
+          v21->_globalReduction = height;
 
           if (!v21->_globalReduction)
           {
@@ -97,8 +97,8 @@
             goto LABEL_72;
           }
 
-          v49 = [v17 device];
-          v50 = [v49 newBufferWithLength:8 options:0];
+          device = [contextCopy device];
+          v50 = [device newBufferWithLength:8 options:0];
           disparityDiffGlobalMinMax = v21->_disparityDiffGlobalMinMax;
           v21->_disparityDiffGlobalMinMax = v50;
 
@@ -113,10 +113,10 @@
             goto LABEL_72;
           }
 
-          v52 = [v17 textureUtil];
-          v53 = [v52 createWithSize:10 pixelFormat:width, height];
+          textureUtil = [contextCopy textureUtil];
+          height2 = [textureUtil createWithSize:10 pixelFormat:width, height];
           disparityEdges = v21->_disparityEdges;
-          v21->_disparityEdges = v53;
+          v21->_disparityEdges = height2;
 
           if (!v21->_disparityEdges)
           {
@@ -129,10 +129,10 @@
             goto LABEL_72;
           }
 
-          v55 = [v17 textureUtil];
-          v56 = [v55 createWithSize:10 pixelFormat:width, height];
+          textureUtil2 = [contextCopy textureUtil];
+          height3 = [textureUtil2 createWithSize:10 pixelFormat:width, height];
           disparityEdgesTemp = v21->_disparityEdgesTemp;
-          v21->_disparityEdgesTemp = v56;
+          v21->_disparityEdgesTemp = height3;
 
           if (!v21->_disparityEdgesTemp)
           {
@@ -149,9 +149,9 @@
         [(PTQualitySettings *)v21->_qualitySettings disparityUpsampleFactor];
         if (v58 > 1.0)
         {
-          v59 = [[PTDisparityUpscale alloc] initWithMetalContext:v17 colorSize:v215 disparitySize:v216, width, height];
+          height4 = [[PTDisparityUpscale alloc] initWithMetalContext:contextCopy colorSize:v215 disparitySize:v216, width, height];
           disparityUpscale = v21->_disparityUpscale;
-          v21->_disparityUpscale = v59;
+          v21->_disparityUpscale = height4;
 
           if (!v21->_disparityUpscale)
           {
@@ -167,10 +167,10 @@
 
         if ([(PTQualitySettings *)v21->_qualitySettings doCenterDisparity])
         {
-          v61 = [v17 textureUtil];
-          v62 = [v61 createWithSize:25 pixelFormat:width, height];
+          textureUtil3 = [contextCopy textureUtil];
+          height5 = [textureUtil3 createWithSize:25 pixelFormat:width, height];
           disparityDiff = v21->_disparityDiff;
-          v21->_disparityDiff = v62;
+          v21->_disparityDiff = height5;
 
           if (!v21->_disparityDiff)
           {
@@ -186,7 +186,7 @@
 
         if ([(PTQualitySettings *)v21->_qualitySettings doFocusEdgeMask])
         {
-          v64 = [v17 textureUtil];
+          textureUtil4 = [contextCopy textureUtil];
           v65 = v21->_disparityUpscale;
           if (v65)
           {
@@ -198,7 +198,7 @@
             }
           }
 
-          v67 = [v64 createWithWidth:width height:height pixelFormat:25];
+          v67 = [textureUtil4 createWithWidth:width height:height pixelFormat:25];
           focusEdgeMask = v21->_focusEdgeMask;
           v21->_focusEdgeMask = v67;
 
@@ -216,8 +216,8 @@
 
         if ([(PTQualitySettings *)v21->_qualitySettings quality]<= 25)
         {
-          v69 = [v17 textureUtil];
-          v70 = [v69 createWithWidth:256 height:256 pixelFormat:12];
+          textureUtil5 = [contextCopy textureUtil];
+          v70 = [textureUtil5 createWithWidth:256 height:256 pixelFormat:12];
           randomGaussNoise = v21->_randomGaussNoise;
           v21->_randomGaussNoise = v70;
 
@@ -232,9 +232,9 @@
             goto LABEL_72;
           }
 
-          v72 = [v17 commandQueue];
-          v73 = v72;
-          if (!v72)
+          commandQueue = [contextCopy commandQueue];
+          v73 = commandQueue;
+          if (!commandQueue)
           {
             v73 = _PTLogSystem();
             if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -245,8 +245,8 @@
             goto LABEL_72;
           }
 
-          v74 = [v72 commandBuffer];
-          if (!v74)
+          commandBuffer = [commandQueue commandBuffer];
+          if (!commandBuffer)
           {
             v189 = _PTLogSystem();
             if (os_log_type_enabled(v189, OS_LOG_TYPE_ERROR))
@@ -257,10 +257,10 @@
             goto LABEL_72;
           }
 
-          v214 = v74;
-          [v74 setLabel:@"PTRaytracingV14RenderState init noise"];
-          v75 = [v17 device];
-          v213 = [PTRaytracingUtilsV1 precomputeNoise:v75 sideLength:256];
+          v214 = commandBuffer;
+          [commandBuffer setLabel:@"PTRaytracingV14RenderState init noise"];
+          device2 = [contextCopy device];
+          v213 = [PTRaytracingUtilsV1 precomputeNoise:device2 sideLength:256];
 
           if (!v213)
           {
@@ -273,33 +273,33 @@
             goto LABEL_72;
           }
 
-          [v18 gaussianNoise:v214 inNoise:v213 outTex:v21->_randomGaussNoise];
+          [utilCopy gaussianNoise:v214 inNoise:v213 outTex:v21->_randomGaussNoise];
           [v214 commit];
           [v214 waitUntilScheduled];
         }
 
-        v76 = [v17 textureUtil];
+        textureUtil6 = [contextCopy textureUtil];
         [(PTQualitySettings *)v21->_qualitySettings renderDownscale];
         v78 = v77;
         [(PTQualitySettings *)v21->_qualitySettings renderDownscale];
-        v80 = [v76 createWithWidth:(v215 / v78) height:(v216 / v79) pixelFormat:-[PTQualitySettings intermediatePixelFormat](v21->_qualitySettings, "intermediatePixelFormat")];
+        v80 = [textureUtil6 createWithWidth:(v215 / v78) height:(v216 / v79) pixelFormat:-[PTQualitySettings intermediatePixelFormat](v21->_qualitySettings, "intermediatePixelFormat")];
         raytracedRGBRadius = v21->_raytracedRGBRadius;
         v21->_raytracedRGBRadius = v80;
 
         if (v21->_raytracedRGBRadius)
         {
-          if (!-[PTQualitySettings doIntermediate2XUpscale](v21->_qualitySettings, "doIntermediate2XUpscale") || ([v17 textureUtil], v217 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v217, "createWithWidth:height:pixelFormat:", 2 * -[MTLTexture width](v21->_raytracedRGBRadius, "width"), 2 * -[MTLTexture height](v21->_raytracedRGBRadius, "height"), -[PTQualitySettings intermediatePixelFormat](v21->_qualitySettings, "intermediatePixelFormat")), v82 = objc_claimAutoreleasedReturnValue(), raytracedRGBRadiusUpscaled = v21->_raytracedRGBRadiusUpscaled, v21->_raytracedRGBRadiusUpscaled = v82, raytracedRGBRadiusUpscaled, v217, v21->_raytracedRGBRadiusUpscaled))
+          if (!-[PTQualitySettings doIntermediate2XUpscale](v21->_qualitySettings, "doIntermediate2XUpscale") || ([contextCopy textureUtil], v217 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v217, "createWithWidth:height:pixelFormat:", 2 * -[MTLTexture width](v21->_raytracedRGBRadius, "width"), 2 * -[MTLTexture height](v21->_raytracedRGBRadius, "height"), -[PTQualitySettings intermediatePixelFormat](v21->_qualitySettings, "intermediatePixelFormat")), v82 = objc_claimAutoreleasedReturnValue(), raytracedRGBRadiusUpscaled = v21->_raytracedRGBRadiusUpscaled, v21->_raytracedRGBRadiusUpscaled = v82, raytracedRGBRadiusUpscaled, v217, v21->_raytracedRGBRadiusUpscaled))
           {
             v73 = [MEMORY[0x277CBEB18] arrayWithObjects:{v21->_raytracedRGBRadius, v21->_disparityEdges, v21->_disparityEdgesTemp, 0}];
             v84 = v21->_disparityUpscale;
             if (v84)
             {
-              v85 = [(PTDisparityUpscale *)v84 upscaledTexture];
+              upscaledTexture = [(PTDisparityUpscale *)v84 upscaledTexture];
 
-              if (v85)
+              if (upscaledTexture)
               {
-                v86 = [(PTDisparityUpscale *)v21->_disparityUpscale upscaledTexture];
-                [v73 addObject:v86];
+                upscaledTexture2 = [(PTDisparityUpscale *)v21->_disparityUpscale upscaledTexture];
+                [v73 addObject:upscaledTexture2];
               }
             }
 

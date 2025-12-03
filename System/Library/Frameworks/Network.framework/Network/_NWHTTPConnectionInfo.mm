@@ -1,8 +1,8 @@
 @interface _NWHTTPConnectionInfo
-+ (BOOL)isSubclassOfClass:(Class)a3;
-- (BOOL)isKindOfClass:(Class)a3;
++ (BOOL)isSubclassOfClass:(Class)class;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)isValid;
-- (void)sendPingWithReceiveHandler:(id)a3;
+- (void)sendPingWithReceiveHandler:(id)handler;
 @end
 
 @implementation _NWHTTPConnectionInfo
@@ -17,10 +17,10 @@
   return nw_http_connection_metadata_get_is_closed(self) ^ 1;
 }
 
-- (void)sendPingWithReceiveHandler:(id)a3
+- (void)sendPingWithReceiveHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (self)
   {
     connectionMetadata = self->_connectionMetadata;
@@ -36,8 +36,8 @@
   v21[2] = __52___NWHTTPConnectionInfo_sendPingWithReceiveHandler___block_invoke;
   v21[3] = &unk_1E6A33FB0;
   v21[4] = self;
-  v22 = v4;
-  v6 = v4;
+  v22 = handlerCopy;
+  v6 = handlerCopy;
   v7 = connectionMetadata;
   v8 = v21;
   if (!v7)
@@ -224,7 +224,7 @@ LABEL_39:
 LABEL_10:
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = _NWHTTPConnectionInfo;
@@ -235,13 +235,13 @@ LABEL_10:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 
-+ (BOOL)isSubclassOfClass:(Class)a3
++ (BOOL)isSubclassOfClass:(Class)class
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS____NWHTTPConnectionInfo;
   if (objc_msgSendSuper2(&v5, sel_isSubclassOfClass_))
   {
@@ -250,7 +250,7 @@ LABEL_10:
 
   else
   {
-    return [(objc_class *)a3 isEqual:objc_opt_class()];
+    return [(objc_class *)class isEqual:objc_opt_class()];
   }
 }
 

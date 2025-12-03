@@ -1,5 +1,5 @@
 @interface MRRateLimiter
-- (MRRateLimiter)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6;
+- (MRRateLimiter)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block;
 - (void)_notify;
 - (void)update;
 @end
@@ -70,24 +70,24 @@ void __23__MRRateLimiter_update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (MRRateLimiter)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6
+- (MRRateLimiter)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = MRRateLimiter;
   v14 = [(MRRateLimiter *)&v18 init];
   if (v14)
   {
-    if (a3 <= 0.0)
+    if (interval <= 0.0)
     {
       [MRRateLimiter initWithInterval:name:queue:block:];
     }
 
-    if ([v11 length])
+    if ([nameCopy length])
     {
-      if (v12)
+      if (queueCopy)
       {
         goto LABEL_6;
       }
@@ -96,17 +96,17 @@ void __23__MRRateLimiter_update__block_invoke_2(uint64_t a1)
     else
     {
       [MRRateLimiter initWithInterval:name:queue:block:];
-      if (v12)
+      if (queueCopy)
       {
 LABEL_6:
-        if (v13)
+        if (blockCopy)
         {
 LABEL_7:
-          v14->_interval = a3;
-          objc_storeStrong(&v14->_name, a4);
-          objc_storeStrong(&v14->_queue, a5);
+          v14->_interval = interval;
+          objc_storeStrong(&v14->_name, name);
+          objc_storeStrong(&v14->_queue, queue);
           v14->_lock._os_unfair_lock_opaque = 0;
-          v15 = MEMORY[0x1A58E3570](v13);
+          v15 = MEMORY[0x1A58E3570](blockCopy);
           block = v14->_block;
           v14->_block = v15;
 
@@ -120,7 +120,7 @@ LABEL_11:
     }
 
     [MRRateLimiter initWithInterval:name:queue:block:];
-    if (v13)
+    if (blockCopy)
     {
       goto LABEL_7;
     }

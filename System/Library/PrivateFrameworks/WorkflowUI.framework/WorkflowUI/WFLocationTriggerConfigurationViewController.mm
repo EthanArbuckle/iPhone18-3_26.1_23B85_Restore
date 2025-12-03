@@ -1,60 +1,60 @@
 @interface WFLocationTriggerConfigurationViewController
 - (NSDateFormatter)dateFormatter;
-- (WFLocationTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFLocationTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tableViewCellClasses;
 - (id)textForSummaryFooterView;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)checkLocationAuthorization;
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4;
-- (void)locationPickerDidCancel:(id)a3;
-- (void)presentNavigationControllerWithRootViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)timeRangePickerViewController:(id)a3 didPickStartTime:(id)a4 endTime:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value;
+- (void)locationPickerDidCancel:(id)cancel;
+- (void)presentNavigationControllerWithRootViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)timeRangePickerViewController:(id)controller didPickStartTime:(id)time endTime:(id)endTime;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFLocationTriggerConfigurationViewController
 
-- (void)timeRangePickerViewController:(id)a3 didPickStartTime:(id)a4 endTime:(id)a5
+- (void)timeRangePickerViewController:(id)controller didPickStartTime:(id)time endTime:(id)endTime
 {
-  v7 = a5;
-  v8 = a4;
+  endTimeCopy = endTime;
+  timeCopy = time;
   [(WFLocationTriggerConfigurationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v9 setStartTime:v8];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setStartTime:timeCopy];
 
-  v10 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v10 setEndTime:v7];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setEndTime:endTimeCopy];
 
-  v11 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)locationPickerDidCancel:(id)a3
+- (void)locationPickerDidCancel:(id)cancel
 {
   [(WFLocationTriggerConfigurationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  valueCopy = value;
   [(WFLocationTriggerConfigurationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v6 = [v5 placemark];
+  placemark = [valueCopy placemark];
 
-  v7 = [v6 region];
+  region = [placemark region];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = region;
   if (v9 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = getWFGeneralLogObject();
@@ -80,15 +80,15 @@
     v10 = v9;
   }
 
-  v13 = [(WFLocationTriggerConfigurationViewController *)self isArrive];
-  v14 = v13;
-  [v10 setNotifyOnEntry:v13];
+  isArrive = [(WFLocationTriggerConfigurationViewController *)self isArrive];
+  v14 = isArrive;
+  [v10 setNotifyOnEntry:isArrive];
   [v10 setNotifyOnExit:!v14];
-  v15 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v15 setRegion:v10];
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setRegion:v10];
 
-  v16 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v16 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -99,8 +99,8 @@
   if (!dateFormatter)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCA968]);
-    v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [(NSDateFormatter *)v4 setTimeZone:v5];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [(NSDateFormatter *)v4 setTimeZone:systemTimeZone];
 
     [(NSDateFormatter *)v4 setDateStyle:0];
     [(NSDateFormatter *)v4 setTimeStyle:1];
@@ -113,11 +113,11 @@
   return dateFormatter;
 }
 
-- (void)presentNavigationControllerWithRootViewController:(id)a3
+- (void)presentNavigationControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
   objc_opt_class();
   LOBYTE(v4) = objc_opt_isKindOfClass();
 
@@ -129,12 +129,12 @@
   [(WFLocationTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFLocationTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFLocationTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -150,51 +150,51 @@
 
   if (v10)
   {
-    v11 = [(WFTriggerConfigurationViewController *)self trigger];
-    v12 = [v11 region];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    region = [trigger region];
 
-    if (v12)
+    if (region)
     {
       v13 = objc_alloc(MEMORY[0x277CE41F8]);
-      v14 = [(WFTriggerConfigurationViewController *)self trigger];
-      v15 = [v14 region];
-      [v15 center];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      region2 = [trigger2 region];
+      [region2 center];
       v17 = v16;
-      v18 = [(WFTriggerConfigurationViewController *)self trigger];
-      v19 = [v18 region];
-      [v19 center];
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      region3 = [trigger3 region];
+      [region3 center];
       v20 = [v13 initWithLatitude:v17 longitude:?];
 
       v21 = MEMORY[0x277CBFC40];
-      v22 = [(WFTriggerConfigurationViewController *)self trigger];
-      v23 = [v22 region];
-      v24 = [v23 identifier];
-      v51 = [v21 placemarkWithLocation:v20 name:v24 postalAddress:0];
+      trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+      region4 = [trigger4 region];
+      identifier = [region4 identifier];
+      v51 = [v21 placemarkWithLocation:v20 name:identifier postalAddress:0];
 
       v25 = objc_alloc(MEMORY[0x277CBFC40]);
-      v26 = [v51 addressDictionary];
-      v27 = [(WFTriggerConfigurationViewController *)self trigger];
-      v28 = [v27 region];
-      v29 = [v25 initWithLocation:v20 addressDictionary:v26 region:v28 areasOfInterest:0];
+      addressDictionary = [v51 addressDictionary];
+      trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+      region5 = [trigger5 region];
+      v29 = [v25 initWithLocation:v20 addressDictionary:addressDictionary region:region5 areasOfInterest:0];
 
       v30 = objc_alloc(MEMORY[0x277D7C620]);
-      v31 = [(WFTriggerConfigurationViewController *)self trigger];
-      v32 = [v31 region];
-      v33 = [v32 identifier];
-      v34 = [v30 initWithLocationName:v33 placemark:v29];
+      trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+      region6 = [trigger6 region];
+      identifier2 = [region6 identifier];
+      v34 = [v30 initWithLocationName:identifier2 placemark:v29];
 
-      v35 = [objc_alloc(MEMORY[0x277D7BDB8]) initWithPickerType:1 value:v34];
+      trigger8 = [objc_alloc(MEMORY[0x277D7BDB8]) initWithPickerType:1 value:v34];
     }
 
     else
     {
-      v35 = [objc_alloc(MEMORY[0x277D7BDB8]) initWithPickerType:1 value:0];
+      trigger8 = [objc_alloc(MEMORY[0x277D7BDB8]) initWithPickerType:1 value:0];
     }
 
-    [(WFTimeRangePickerViewController *)v35 setAllowsPickingCurrentLocation:1];
-    [(WFTimeRangePickerViewController *)v35 setResolvesCurrentLocationToPlacemark:1];
-    [(WFTimeRangePickerViewController *)v35 setDelegate:self];
-    [(WFTimeRangePickerViewController *)v35 setRegionCondition:[(WFLocationTriggerConfigurationViewController *)self isArrive]^ 1];
+    [(WFTimeRangePickerViewController *)trigger8 setAllowsPickingCurrentLocation:1];
+    [(WFTimeRangePickerViewController *)trigger8 setResolvesCurrentLocationToPlacemark:1];
+    [(WFTimeRangePickerViewController *)trigger8 setDelegate:self];
+    [(WFTimeRangePickerViewController *)trigger8 setRegionCondition:[(WFLocationTriggerConfigurationViewController *)self isArrive]^ 1];
     goto LABEL_17;
   }
 
@@ -203,40 +203,40 @@
 
   if (v37)
   {
-    v38 = [v6 row];
-    v39 = [(WFTriggerConfigurationViewController *)self trigger];
-    v40 = v39;
+    v38 = [pathCopy row];
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    v40 = trigger7;
     if (!v38)
     {
-      [v39 setStartTime:0];
+      [trigger7 setStartTime:0];
 
-      v35 = [(WFTriggerConfigurationViewController *)self trigger];
-      [(WFTimeRangePickerViewController *)v35 setEndTime:0];
+      trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+      [(WFTimeRangePickerViewController *)trigger8 setEndTime:0];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v41 = [v39 startTime];
-    if (v41)
+    startTime = [trigger7 startTime];
+    if (startTime)
     {
-      v42 = v41;
-      v43 = [(WFTriggerConfigurationViewController *)self trigger];
-      v44 = [v43 endTime];
+      v42 = startTime;
+      trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+      endTime = [trigger9 endTime];
 
-      if (v44)
+      if (endTime)
       {
         v45 = [WFTimeRangePickerViewController alloc];
-        v46 = [(WFTriggerConfigurationViewController *)self trigger];
-        v47 = [v46 startTime];
-        v48 = [(WFTriggerConfigurationViewController *)self trigger];
-        v49 = [v48 endTime];
-        v35 = [(WFTimeRangePickerViewController *)v45 initWithStartTime:v47 endTime:v49];
+        trigger10 = [(WFTriggerConfigurationViewController *)self trigger];
+        startTime2 = [trigger10 startTime];
+        trigger11 = [(WFTriggerConfigurationViewController *)self trigger];
+        endTime2 = [trigger11 endTime];
+        trigger8 = [(WFTimeRangePickerViewController *)v45 initWithStartTime:startTime2 endTime:endTime2];
 
 LABEL_16:
-        [(WFTimeRangePickerViewController *)v35 setDelegate:self];
+        [(WFTimeRangePickerViewController *)trigger8 setDelegate:self];
 LABEL_17:
-        [(WFLocationTriggerConfigurationViewController *)self presentNavigationControllerWithRootViewController:v35];
+        [(WFLocationTriggerConfigurationViewController *)self presentNavigationControllerWithRootViewController:trigger8];
         goto LABEL_18;
       }
     }
@@ -245,25 +245,25 @@ LABEL_17:
     {
     }
 
-    v35 = objc_alloc_init(WFTimeRangePickerViewController);
+    trigger8 = objc_alloc_init(WFTimeRangePickerViewController);
     goto LABEL_16;
   }
 
 LABEL_19:
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v50 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v50 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFLocationTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFLocationTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -273,28 +273,28 @@ LABEL_19:
   {
     v10 = v10;
     v13 = WFLocalizedString(@"Location");
-    v14 = [v10 textLabel];
-    [v14 setText:v13];
+    textLabel = [v10 textLabel];
+    [textLabel setText:v13];
 
-    v15 = [(WFTriggerConfigurationViewController *)self trigger];
-    v16 = [v15 region];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    region = [trigger region];
 
-    if (v16)
+    if (region)
     {
       v17 = MEMORY[0x277CCACA8];
-      v18 = [(WFTriggerConfigurationViewController *)self trigger];
-      v19 = [v18 region];
-      v20 = [v19 identifier];
-      v21 = [v17 stringWithFormat:@"%@", v20];
-      v22 = [v10 detailTextLabel];
-      [v22 setText:v21];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      region2 = [trigger2 region];
+      identifier = [region2 identifier];
+      v21 = [v17 stringWithFormat:@"%@", identifier];
+      detailTextLabel = [v10 detailTextLabel];
+      [detailTextLabel setText:v21];
     }
 
     else
     {
-      v18 = WFLocalizedString(@"Choose");
-      v19 = [v10 detailTextLabel];
-      [v19 setText:v18];
+      trigger2 = WFLocalizedString(@"Choose");
+      region2 = [v10 detailTextLabel];
+      [region2 setText:trigger2];
     }
 
     goto LABEL_16;
@@ -305,45 +305,45 @@ LABEL_19:
 
   if (v24)
   {
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      v25 = [(WFTriggerConfigurationViewController *)self trigger];
-      v26 = [v25 startTime];
-      if (v26)
+      trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+      startTime = [trigger3 startTime];
+      if (startTime)
       {
-        v27 = v26;
-        v28 = [(WFTriggerConfigurationViewController *)self trigger];
-        v29 = [v28 endTime];
+        v27 = startTime;
+        trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+        endTime = [trigger4 endTime];
 
-        if (!v29)
+        if (!endTime)
         {
 LABEL_10:
-          v37 = WFLocalizedString(@"Time Range");
-          v38 = [v10 textLabel];
-          [v38 setText:v37];
+          trigger7 = WFLocalizedString(@"Time Range");
+          textLabel2 = [v10 textLabel];
+          [textLabel2 setText:trigger7];
 
 LABEL_15:
           goto LABEL_16;
         }
 
-        v25 = [(WFLocationTriggerConfigurationViewController *)self dateFormatter];
+        trigger3 = [(WFLocationTriggerConfigurationViewController *)self dateFormatter];
         v51 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"subtitleCell"];
 
         v30 = WFLocalizedString(@"Time Range");
-        v31 = [v51 textLabel];
-        [v31 setText:v30];
+        textLabel3 = [v51 textLabel];
+        [textLabel3 setText:v30];
 
         v47 = MEMORY[0x277CCACA8];
         v48 = WFLocalizedString(@"%@ to %@");
-        v50 = [(WFTriggerConfigurationViewController *)self trigger];
-        v49 = [v50 startTime];
-        v46 = [v25 stringFromDate:v49];
-        v32 = [(WFTriggerConfigurationViewController *)self trigger];
-        v33 = [v32 endTime];
-        v34 = [v25 stringFromDate:v33];
+        trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+        startTime2 = [trigger5 startTime];
+        v46 = [trigger3 stringFromDate:startTime2];
+        trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+        endTime2 = [trigger6 endTime];
+        v34 = [trigger3 stringFromDate:endTime2];
         v35 = [v47 localizedStringWithFormat:v48, v46, v34];
-        v36 = [v51 detailTextLabel];
-        [v36 setText:v35];
+        detailTextLabel2 = [v51 detailTextLabel];
+        [detailTextLabel2 setText:v35];
 
         v10 = v51;
         [v51 setAccessoryType:3];
@@ -353,28 +353,28 @@ LABEL_15:
     }
 
     v39 = WFLocalizedString(@"Any Time");
-    v40 = [v10 textLabel];
-    [v40 setText:v39];
+    textLabel4 = [v10 textLabel];
+    [textLabel4 setText:v39];
 
-    v37 = [(WFTriggerConfigurationViewController *)self trigger];
-    v41 = [v37 startTime];
-    if (v41)
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    startTime3 = [trigger7 startTime];
+    if (startTime3)
     {
 
       goto LABEL_15;
     }
 
-    v44 = [(WFTriggerConfigurationViewController *)self trigger];
-    v45 = [v44 endTime];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    endTime3 = [trigger8 endTime];
 
-    if (!v45)
+    if (!endTime3)
     {
       [v10 setAccessoryType:3];
     }
   }
 
 LABEL_16:
-  v42 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v42 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v42;
 }
@@ -396,9 +396,9 @@ LABEL_16:
   return v3;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"chooseLocation"];
 
@@ -406,8 +406,8 @@ LABEL_16:
   {
     v8 = objc_opt_new();
     [v8 setHorizontalPadding:0.0];
-    v9 = [(WFLocationTriggerConfigurationViewController *)self textForSummaryFooterView];
-    [v8 setText:v9];
+    textForSummaryFooterView = [(WFLocationTriggerConfigurationViewController *)self textForSummaryFooterView];
+    [v8 setText:textForSummaryFooterView];
   }
 
   else
@@ -418,17 +418,17 @@ LABEL_16:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFLocationTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [v5 objectForKeyedSubscript:@"identifier"];
   v7 = [v6 isEqual:@"chooseTime"];
 
@@ -445,18 +445,18 @@ LABEL_16:
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
@@ -467,14 +467,14 @@ LABEL_16:
   -[WFLocationTriggerConfigurationViewController setIsLocationBasedAlertsEnabled:](self, "setIsLocationBasedAlertsEnabled:", [MEMORY[0x277CBFC10] authorizationStatusForBundle:v3] == 3);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFLocationTriggerConfigurationViewController;
-  [(WFLocationTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
+  [(WFLocationTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
   [(WFLocationTriggerConfigurationViewController *)self checkLocationAuthorization];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -514,12 +514,12 @@ LABEL_16:
   return v4;
 }
 
-- (WFLocationTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFLocationTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v6 = a3;
+  triggerCopy = trigger;
   v10.receiver = self;
   v10.super_class = WFLocationTriggerConfigurationViewController;
-  v7 = [(WFTriggerConfigurationViewController *)&v10 initWithTrigger:v6 mode:a4];
+  v7 = [(WFTriggerConfigurationViewController *)&v10 initWithTrigger:triggerCopy mode:mode];
   if (v7)
   {
     objc_opt_class();

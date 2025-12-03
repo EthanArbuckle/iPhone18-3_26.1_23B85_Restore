@@ -9,60 +9,60 @@
 - (id)msv_removeWhere:()MSVAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
-  if ([a1 count])
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  if ([self count])
   {
     v6 = 0;
     do
     {
-      v7 = [a1 objectAtIndexedSubscript:v6];
+      v7 = [self objectAtIndexedSubscript:v6];
       if (v4[2](v4, v7))
       {
-        [v5 addIndex:v6];
+        [indexSet addIndex:v6];
       }
 
       ++v6;
     }
 
-    while (v6 < [a1 count]);
+    while (v6 < [self count]);
   }
 
-  v8 = [a1 objectsAtIndexes:v5];
-  [a1 removeObjectsAtIndexes:v5];
+  v8 = [self objectsAtIndexes:indexSet];
+  [self removeObjectsAtIndexes:indexSet];
 
   return v8;
 }
 
 - (id)msv_removeLastObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 lastObject];
-    [a1 removeLastObject];
+    lastObject = [self lastObject];
+    [self removeLastObject];
   }
 
   else
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
-  return v2;
+  return lastObject;
 }
 
 - (id)msv_removeFirstObject
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [a1 firstObject];
-    [a1 removeObjectAtIndex:0];
+    firstObject = [self firstObject];
+    [self removeObjectAtIndex:0];
   }
 
   else
   {
-    v2 = 0;
+    firstObject = 0;
   }
 
-  return v2;
+  return firstObject;
 }
 
 @end

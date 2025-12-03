@@ -1,22 +1,22 @@
 @interface DDRSchedulerPreObliterate
-- (DDRSchedulerPreObliterate)initWithRequest:(id)a3;
+- (DDRSchedulerPreObliterate)initWithRequest:(id)request;
 - (id)scheduledTasks;
 - (void)configureTasks;
 @end
 
 @implementation DDRSchedulerPreObliterate
 
-- (DDRSchedulerPreObliterate)initWithRequest:(id)a3
+- (DDRSchedulerPreObliterate)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = DDRSchedulerPreObliterate;
   v5 = [(DDRScheduler *)&v8 init];
   if (v5)
   {
-    -[DDRScheduler setMode:](v5, "setMode:", [v4 mode]);
-    v6 = [v4 options];
-    -[DDRSchedulerPreObliterate setEraseDataPlan:](v5, "setEraseDataPlan:", [v6 eraseDataPlan]);
+    -[DDRScheduler setMode:](v5, "setMode:", [requestCopy mode]);
+    options = [requestCopy options];
+    -[DDRSchedulerPreObliterate setEraseDataPlan:](v5, "setEraseDataPlan:", [options eraseDataPlan]);
   }
 
   return v5;
@@ -26,8 +26,8 @@
 {
   v13 = objc_alloc_init(DDRScheduler);
   [(DDRScheduler *)v13 configureTasks];
-  v3 = [(DDRScheduler *)v13 scheduledTasks];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  scheduledTasks = [(DDRScheduler *)v13 scheduledTasks];
+  v4 = [NSMutableArray arrayWithArray:scheduledTasks];
 
   v5 = objc_opt_new();
   [v4 addObject:v5];
@@ -56,8 +56,8 @@
 
 - (id)scheduledTasks
 {
-  v2 = [(DDRSchedulerPreObliterate *)self allResetTasks];
-  v3 = [v2 copy];
+  allResetTasks = [(DDRSchedulerPreObliterate *)self allResetTasks];
+  v3 = [allResetTasks copy];
 
   return v3;
 }

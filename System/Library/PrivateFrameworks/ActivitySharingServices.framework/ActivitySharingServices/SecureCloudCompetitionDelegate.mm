@@ -1,8 +1,8 @@
 @interface SecureCloudCompetitionDelegate
 - (_TtC23ActivitySharingServices30SecureCloudCompetitionDelegate)init;
-- (void)competitionManager:(ASCompetitionManager *)a3 deleteCompetitionLists:(NSSet *)a4 group:(CKOperationGroup *)a5 completion:(id)a6;
-- (void)competitionManager:(ASCompetitionManager *)a3 saveCompetitionLists:(NSSet *)a4 group:(CKOperationGroup *)a5 completion:(id)a6;
-- (void)competitionManager:(ASCompetitionManager *)a3 saveCurrentCompetitionList:(ASCompetitionList *)a4 archivedCompetitionList:(ASCompetitionList *)a5 contact:(ASContact *)a6 group:(CKOperationGroup *)a7 completion:(id)a8;
+- (void)competitionManager:(ASCompetitionManager *)manager deleteCompetitionLists:(NSSet *)lists group:(CKOperationGroup *)group completion:(id)completion;
+- (void)competitionManager:(ASCompetitionManager *)manager saveCompetitionLists:(NSSet *)lists group:(CKOperationGroup *)group completion:(id)completion;
+- (void)competitionManager:(ASCompetitionManager *)manager saveCurrentCompetitionList:(ASCompetitionList *)list archivedCompetitionList:(ASCompetitionList *)competitionList contact:(ASContact *)contact group:(CKOperationGroup *)group completion:(id)completion;
 @end
 
 @implementation SecureCloudCompetitionDelegate
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (void)competitionManager:(ASCompetitionManager *)a3 saveCurrentCompetitionList:(ASCompetitionList *)a4 archivedCompetitionList:(ASCompetitionList *)a5 contact:(ASContact *)a6 group:(CKOperationGroup *)a7 completion:(id)a8
+- (void)competitionManager:(ASCompetitionManager *)manager saveCurrentCompetitionList:(ASCompetitionList *)list archivedCompetitionList:(ASCompetitionList *)competitionList contact:(ASContact *)contact group:(CKOperationGroup *)group completion:(id)completion
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v30 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(completion);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
+  v20[2] = manager;
+  v20[3] = list;
+  v20[4] = competitionList;
+  v20[5] = contact;
+  v20[6] = group;
   v20[7] = v19;
   v20[8] = self;
   v21 = sub_221FB64C8();
@@ -41,26 +41,26 @@
   v23[3] = 0;
   v23[4] = &unk_221FB9BA8;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a7;
-  v29 = self;
+  managerCopy = manager;
+  listCopy = list;
+  competitionListCopy = competitionList;
+  contactCopy = contact;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v18, &unk_221FB9BB0, v23);
 }
 
-- (void)competitionManager:(ASCompetitionManager *)a3 saveCompetitionLists:(NSSet *)a4 group:(CKOperationGroup *)a5 completion:(id)a6
+- (void)competitionManager:(ASCompetitionManager *)manager saveCompetitionLists:(NSSet *)lists group:(CKOperationGroup *)group completion:(id)completion
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = manager;
+  v16[3] = lists;
+  v16[4] = group;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_221FB64C8();
@@ -75,24 +75,24 @@
   v19[3] = 0;
   v19[4] = &unk_221FB9B88;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  managerCopy = manager;
+  listsCopy = lists;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v14, &unk_221FB9B90, v19);
 }
 
-- (void)competitionManager:(ASCompetitionManager *)a3 deleteCompetitionLists:(NSSet *)a4 group:(CKOperationGroup *)a5 completion:(id)a6
+- (void)competitionManager:(ASCompetitionManager *)manager deleteCompetitionLists:(NSSet *)lists group:(CKOperationGroup *)group completion:(id)completion
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = manager;
+  v16[3] = lists;
+  v16[4] = group;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_221FB64C8();
@@ -107,10 +107,10 @@
   v19[3] = 0;
   v19[4] = &unk_221FC0690;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  managerCopy = manager;
+  listsCopy = lists;
+  groupCopy = group;
+  selfCopy = self;
   sub_221FB26AC(0, 0, v14, &unk_221FB9B70, v19);
 }
 

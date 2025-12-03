@@ -1,20 +1,20 @@
 @interface HPSSiriAvailableLanguages
 + (id)valueClasses;
-- (HPSSiriAvailableLanguages)initWithCoder:(id)a3;
+- (HPSSiriAvailableLanguages)initWithCoder:(id)coder;
 @end
 
 @implementation HPSSiriAvailableLanguages
 
-- (HPSSiriAvailableLanguages)initWithCoder:(id)a3
+- (HPSSiriAvailableLanguages)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = HPSSiriAvailableLanguages;
-  v3 = [(HPSSetting *)&v19 initWithCoder:a3];
+  v3 = [(HPSSetting *)&v19 initWithCoder:coder];
   if (v3)
   {
     objc_opt_class();
-    v4 = [(HPSSetting *)v3 value];
+    value = [(HPSSetting *)v3 value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -29,8 +29,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(HPSSiriAvailableLanguages *)v3 languages];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    languages = [(HPSSiriAvailableLanguages *)v3 languages];
+    v7 = [languages countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -42,7 +42,7 @@ LABEL_14:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(languages);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
@@ -56,7 +56,7 @@ LABEL_14:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v8 = [languages countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v8)
         {
           continue;

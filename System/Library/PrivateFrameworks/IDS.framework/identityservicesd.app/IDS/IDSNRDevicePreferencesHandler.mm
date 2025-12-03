@@ -1,35 +1,35 @@
 @interface IDSNRDevicePreferencesHandler
-- (IDSNRDevicePreferencesHandler)initWithDeviceIdentifier:(id)a3;
+- (IDSNRDevicePreferencesHandler)initWithDeviceIdentifier:(id)identifier;
 - (void)_annouceAvailabilityForCloudMessaging;
-- (void)_reportPreferInfraWiFiToPowerLogs:(BOOL)a3;
+- (void)_reportPreferInfraWiFiToPowerLogs:(BOOL)logs;
 - (void)annouceAvailabilityForCloudMessaging;
 - (void)cancel;
-- (void)idsDeviceOnlineMonitor:(id)a3 statusChanged:(unsigned int)a4;
+- (void)idsDeviceOnlineMonitor:(id)monitor statusChanged:(unsigned int)changed;
 - (void)localSetUpCompleted;
 - (void)localSetUpStarted;
 - (void)releaseQuickRelay;
 - (void)requestQuickRelay;
 - (void)revokeAvailabilityForCloudMessaging;
-- (void)setAllowedTrafficClasses:(id)a3;
-- (void)setBluetoothLinkPreferences:(id)a3 inputbps:(id)a4 outputbps:(id)a5;
-- (void)setCompanionLinkPreferences:(BOOL)a3;
-- (void)setPreferInfraWiFiRequest:(BOOL)a3 services:(id)a4;
-- (void)setQuickRelayRequest:(BOOL)a3;
+- (void)setAllowedTrafficClasses:(id)classes;
+- (void)setBluetoothLinkPreferences:(id)preferences inputbps:(id)inputbps outputbps:(id)outputbps;
+- (void)setCompanionLinkPreferences:(BOOL)preferences;
+- (void)setPreferInfraWiFiRequest:(BOOL)request services:(id)services;
+- (void)setQuickRelayRequest:(BOOL)request;
 @end
 
 @implementation IDSNRDevicePreferencesHandler
 
-- (IDSNRDevicePreferencesHandler)initWithDeviceIdentifier:(id)a3
+- (IDSNRDevicePreferencesHandler)initWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v36.receiver = self;
   v36.super_class = IDSNRDevicePreferencesHandler;
   v5 = [(IDSNRDevicePreferencesHandler *)&v36 init];
   if (v5)
   {
-    if (v4)
+    if (identifierCopy)
     {
-      v6 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:v4];
+      v6 = [NRDeviceIdentifier newDeviceIdentifierWithBluetoothUUID:identifierCopy];
       if (v6)
       {
         v7 = [[NRDevicePreferences alloc] initWithDeviceIdentifier:v6];
@@ -51,7 +51,7 @@
 
         else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          sub_10092BB6C(v4, v6, v11);
+          sub_10092BB6C(identifierCopy, v6, v11);
         }
 
         v13 = objc_alloc_init(NSMutableSet);
@@ -60,7 +60,7 @@
 
         *&v5->_quickRelayRequestsCount = 0;
         v15 = +[IDSPairingManager sharedInstance];
-        v12 = [v15 pairedDeviceUniqueID];
+        pairedDeviceUniqueID = [v15 pairedDeviceUniqueID];
 
         v16 = sub_1005C03DC();
         v17 = +[IDSServerBag sharedInstance];
@@ -72,15 +72,15 @@
           v19 = 2;
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v18 unsignedIntValue];
-            if (v20 >= 2)
+            unsignedIntValue = [v18 unsignedIntValue];
+            if (unsignedIntValue >= 2)
             {
               v19 = 2;
             }
 
             else
             {
-              v19 = v20;
+              v19 = unsignedIntValue;
             }
           }
         }
@@ -107,7 +107,7 @@
           v23 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_USER_INITIATED, 0);
           v24 = dispatch_queue_create("SKPresenceQueue", v23);
 
-          v25 = [[IDSDeviceOnlineMonitor alloc] initWithDelegate:v5 uniqueIdentifier:v12 queue:v24];
+          v25 = [[IDSDeviceOnlineMonitor alloc] initWithDelegate:v5 uniqueIdentifier:pairedDeviceUniqueID queue:v24];
           deviceOnlineMonitor = v5->_deviceOnlineMonitor;
           v5->_deviceOnlineMonitor = v25;
         }
@@ -123,15 +123,15 @@
 
         if (v29 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v30 = [v29 unsignedIntValue];
+          unsignedIntValue2 = [v29 unsignedIntValue];
         }
 
         else
         {
-          v30 = 665;
+          unsignedIntValue2 = 665;
         }
 
-        v5->_announcePresenceDelayInSeconds = v30;
+        v5->_announcePresenceDelayInSeconds = unsignedIntValue2;
         v31 = +[IDSFoundationLog IPsecLink];
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
@@ -164,10 +164,10 @@
 
       else
       {
-        v12 = +[IDSFoundationLog IPsecLink];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        pairedDeviceUniqueID = +[IDSFoundationLog IPsecLink];
+        if (os_log_type_enabled(pairedDeviceUniqueID, OS_LOG_TYPE_ERROR))
         {
-          sub_10092BBF4(v4, v12);
+          sub_10092BBF4(identifierCopy, pairedDeviceUniqueID);
         }
       }
     }
@@ -185,29 +185,29 @@
   return v5;
 }
 
-- (void)setBluetoothLinkPreferences:(id)a3 inputbps:(id)a4 outputbps:(id)a5
+- (void)setBluetoothLinkPreferences:(id)preferences inputbps:(id)inputbps outputbps:(id)outputbps
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  outputbpsCopy = outputbps;
+  inputbpsCopy = inputbps;
+  preferencesCopy = preferences;
   v12 = objc_alloc_init(NRBluetoothLinkPreferences);
-  [v12 setPacketsPerSecond:v10];
+  [v12 setPacketsPerSecond:preferencesCopy];
 
-  [v12 setInputBytesPerSecond:v9];
-  [v12 setOutputBytesPerSecond:v8];
+  [v12 setInputBytesPerSecond:inputbpsCopy];
+  [v12 setOutputBytesPerSecond:outputbpsCopy];
 
-  v11 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v11 setBluetoothLinkPreferences:v12];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences setBluetoothLinkPreferences:v12];
 }
 
-- (void)setCompanionLinkPreferences:(BOOL)a3
+- (void)setCompanionLinkPreferences:(BOOL)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v5 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (preferencesCopy)
     {
       v6 = @"YES";
     }
@@ -217,7 +217,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDSNRDevicePreferencesHandler:setCompanionLinkPreferences: %@", &v9, 0xCu);
   }
 
-  if (v3)
+  if (preferencesCopy)
   {
     v7 = [[NRCompanionLinkPreferences alloc] initWithServiceClass:3];
   }
@@ -227,22 +227,22 @@
     v7 = 0;
   }
 
-  v8 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v8 setCompanionLinkPreferences:v7];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences setCompanionLinkPreferences:v7];
 }
 
-- (void)setPreferInfraWiFiRequest:(BOOL)a3 services:(id)a4
+- (void)setPreferInfraWiFiRequest:(BOOL)request services:(id)services
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  requestCopy = request;
+  servicesCopy = services;
+  v7 = servicesCopy;
+  if (requestCopy)
   {
     v32 = 0uLL;
     v33 = 0uLL;
     v30 = 0uLL;
     v31 = 0uLL;
-    v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v8 = [servicesCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v8)
     {
       v9 = v8;
@@ -257,16 +257,16 @@
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
-          v13 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-          v14 = [v13 containsObject:v12];
+          servicesPreferringInfraWiFi = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+          v14 = [servicesPreferringInfraWiFi containsObject:v12];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-            [v15 addObject:v12];
+            servicesPreferringInfraWiFi2 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+            [servicesPreferringInfraWiFi2 addObject:v12];
 
-            v16 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-            [v16 addPreferWiFiRequest];
+            nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+            [nrDevicePreferences addPreferWiFiRequest];
           }
         }
 
@@ -283,7 +283,7 @@
     v29 = 0uLL;
     v26 = 0uLL;
     v27 = 0uLL;
-    v17 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    v17 = [servicesCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v17)
     {
       v18 = v17;
@@ -298,16 +298,16 @@
           }
 
           v21 = *(*(&v26 + 1) + 8 * j);
-          v22 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-          v23 = [v22 containsObject:v21];
+          servicesPreferringInfraWiFi3 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+          v23 = [servicesPreferringInfraWiFi3 containsObject:v21];
 
           if (v23)
           {
-            v24 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-            [v24 removeObject:v21];
+            servicesPreferringInfraWiFi4 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+            [servicesPreferringInfraWiFi4 removeObject:v21];
 
-            v25 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-            [v25 removePreferWiFiRequest];
+            nrDevicePreferences2 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+            [nrDevicePreferences2 removePreferWiFiRequest];
           }
         }
 
@@ -318,7 +318,7 @@
     }
   }
 
-  [(IDSNRDevicePreferencesHandler *)self _reportPreferInfraWiFiToPowerLogs:v4];
+  [(IDSNRDevicePreferencesHandler *)self _reportPreferInfraWiFiToPowerLogs:requestCopy];
 }
 
 - (void)localSetUpStarted
@@ -330,8 +330,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Calling [NRDevicePreferences deviceSetupStarted:]", v5, 2u);
   }
 
-  v4 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v4 deviceSetupStarted];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences deviceSetupStarted];
 }
 
 - (void)localSetUpCompleted
@@ -343,21 +343,21 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Calling [NRDevicePreferences deviceSetupCompleted:]", v5, 2u);
   }
 
-  v4 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v4 deviceSetupCompleted];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences deviceSetupCompleted];
 }
 
-- (void)_reportPreferInfraWiFiToPowerLogs:(BOOL)a3
+- (void)_reportPreferInfraWiFiToPowerLogs:(BOOL)logs
 {
-  v3 = a3;
+  logsCopy = logs;
   theDict = objc_alloc_init(NSMutableDictionary);
-  v5 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-  if (v5)
+  servicesPreferringInfraWiFi = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+  if (servicesPreferringInfraWiFi)
   {
-    CFDictionarySetValue(theDict, @"IDSServicePrefersInfraWifi", v5);
+    CFDictionarySetValue(theDict, @"IDSServicePrefersInfraWifi", servicesPreferringInfraWiFi);
   }
 
-  v6 = [NSNumber numberWithBool:v3];
+  v6 = [NSNumber numberWithBool:logsCopy];
   if (v6)
   {
     CFDictionarySetValue(theDict, @"InfraWiFiState", v6);
@@ -366,17 +366,17 @@
   IDSPowerLogDictionary();
 }
 
-- (void)setAllowedTrafficClasses:(id)a3
+- (void)setAllowedTrafficClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v5 setPolicyTrafficClassifiers:v4];
+  classesCopy = classes;
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences setPolicyTrafficClassifiers:classesCopy];
 }
 
-- (void)setQuickRelayRequest:(BOOL)a3
+- (void)setQuickRelayRequest:(BOOL)request
 {
-  v3 = a3;
-  if (a3)
+  requestCopy = request;
+  if (request)
   {
     [(IDSNRDevicePreferencesHandler *)self setQuickRelayRequestsCount:[(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount]+ 1];
     [(IDSNRDevicePreferencesHandler *)self requestQuickRelay];
@@ -388,23 +388,23 @@
     [(IDSNRDevicePreferencesHandler *)self releaseQuickRelay];
   }
 
-  v5 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v5)
+  if (deviceOnlineMonitor)
   {
-    v6 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    v7 = [v6 status];
+    deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    status = [deviceOnlineMonitor2 status];
   }
 
   else
   {
-    v7 = 0;
+    status = 0;
   }
 
   v8 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (requestCopy)
     {
       v9 = @"YES";
     }
@@ -414,12 +414,12 @@
       v9 = @"NO";
     }
 
-    v10 = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
-    v11 = sub_10050A848(v7);
+    quickRelayRequestsCount = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
+    v11 = sub_10050A848(status);
     v12 = 138412802;
     v13 = v9;
     v14 = 2048;
-    v15 = v10;
+    v15 = quickRelayRequestsCount;
     v16 = 2112;
     v17 = v11;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Called [NRDevicePreferences setQuickRelayRequest:] {wantsQuickRelay: %@}, {quickRelayRequestsCount: %lu}, {remoteStatus:%@}", &v12, 0x20u);
@@ -428,22 +428,22 @@
 
 - (void)cancel
 {
-  v3 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v3 cancel];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences cancel];
 
-  v4 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v4 removePreferWiFiRequest];
+  nrDevicePreferences2 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences2 removePreferWiFiRequest];
 
-  v5 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+  servicesPreferringInfraWiFi = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
 
-  if (v5)
+  if (servicesPreferringInfraWiFi)
   {
-    v6 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-    [v6 removeAllObjects];
+    servicesPreferringInfraWiFi2 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+    [servicesPreferringInfraWiFi2 removeAllObjects];
 
     [(IDSNRDevicePreferencesHandler *)self _reportPreferInfraWiFiToPowerLogs:0];
-    v7 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
-    v8 = [v7 count];
+    servicesPreferringInfraWiFi3 = [(IDSNRDevicePreferencesHandler *)self servicesPreferringInfraWiFi];
+    v8 = [servicesPreferringInfraWiFi3 count];
 
     if (!v8)
     {
@@ -451,15 +451,15 @@
     }
   }
 
-  v9 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v9)
+  if (deviceOnlineMonitor)
   {
-    v10 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v10 releasePresence];
+    deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor2 releasePresence];
 
-    v11 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v11 stopMonitoring];
+    deviceOnlineMonitor3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor3 stopMonitoring];
 
     [(IDSNRDevicePreferencesHandler *)self setDeviceOnlineMonitor:0];
   }
@@ -467,75 +467,75 @@
 
 - (void)requestQuickRelay
 {
-  v3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v3)
+  if (deviceOnlineMonitor)
   {
-    v4 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    if ([v4 status] == 3)
+    deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    if ([deviceOnlineMonitor2 status] == 3)
     {
     }
 
     else
     {
-      v7 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-      v8 = [v7 status];
+      deviceOnlineMonitor3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+      status = [deviceOnlineMonitor3 status];
 
-      if (v8 != 1)
+      if (status != 1)
       {
         goto LABEL_9;
       }
     }
 
-    v9 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-    [v9 addQuickRelayRequest];
+    nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+    [nrDevicePreferences addQuickRelayRequest];
 
     [(IDSNRDevicePreferencesHandler *)self setCopyOfQuickRelayRequestsCountOnTheLastRequest:[(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount]];
 LABEL_9:
     if (self->_presenceOperationMode == 1)
     {
-      v10 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-      [v10 startMonitoring];
+      deviceOnlineMonitor4 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+      [deviceOnlineMonitor4 startMonitoring];
     }
 
     return;
   }
 
-  v5 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v5 addQuickRelayRequest];
+  nrDevicePreferences2 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences2 addQuickRelayRequest];
 
-  v6 = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
+  quickRelayRequestsCount = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
 
-  [(IDSNRDevicePreferencesHandler *)self setCopyOfQuickRelayRequestsCountOnTheLastRequest:v6];
+  [(IDSNRDevicePreferencesHandler *)self setCopyOfQuickRelayRequestsCountOnTheLastRequest:quickRelayRequestsCount];
 }
 
 - (void)releaseQuickRelay
 {
-  v3 = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
-  [v3 removeAllQuickRelayRequests];
+  nrDevicePreferences = [(IDSNRDevicePreferencesHandler *)self nrDevicePreferences];
+  [nrDevicePreferences removeAllQuickRelayRequests];
 
   [(IDSNRDevicePreferencesHandler *)self setCopyOfQuickRelayRequestsCountOnTheLastRequest:0];
-  v4 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v4 && self->_presenceOperationMode == 1)
+  if (deviceOnlineMonitor && self->_presenceOperationMode == 1)
   {
-    v5 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v5 stopMonitoring];
+    deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor2 stopMonitoring];
   }
 }
 
 - (void)annouceAvailabilityForCloudMessaging
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+  announcePresenceBlock = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
 
-  if (v3)
+  if (announcePresenceBlock)
   {
     v4 = +[IDSFoundationLog IPsecLink];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
-      v6 = objc_retainBlock(v5);
+      announcePresenceBlock2 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+      v6 = objc_retainBlock(announcePresenceBlock2);
       *buf = 134217984;
       v22 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Already have scheduled {block:%p}", buf, 0xCu);
@@ -555,19 +555,19 @@ LABEL_9:
 
     v8 = dispatch_time(0, 1000000000 * [(IDSNRDevicePreferencesHandler *)self announcePresenceDelayInSeconds]);
     v9 = im_primary_base_queue();
-    v10 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
-    dispatch_after(v8, v9, v10);
+    announcePresenceBlock3 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+    dispatch_after(v8, v9, announcePresenceBlock3);
 
     v11 = +[IDSFoundationLog IPsecLink];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
-      v13 = objc_retainBlock(v12);
-      v14 = [(IDSNRDevicePreferencesHandler *)self announcePresenceDelayInSeconds];
+      announcePresenceBlock4 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+      v13 = objc_retainBlock(announcePresenceBlock4);
+      announcePresenceDelayInSeconds = [(IDSNRDevicePreferencesHandler *)self announcePresenceDelayInSeconds];
       *buf = 134218240;
       v22 = v13;
       v23 = 1024;
-      v24 = v14;
+      v24 = announcePresenceDelayInSeconds;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Scheduled to announce presence {block:%p} in %d seconds", buf, 0x12u);
     }
 
@@ -578,18 +578,18 @@ LABEL_9:
 
 - (void)_annouceAvailabilityForCloudMessaging
 {
-  v3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (!v3 && self->_presenceOperationMode && sub_1005C03DC())
+  if (!deviceOnlineMonitor && self->_presenceOperationMode && sub_1005C03DC())
   {
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_USER_INITIATED, 0);
     v9 = dispatch_queue_create("SKPresenceQueue", v8);
 
     v10 = +[IDSPairingManager sharedInstance];
-    v11 = [v10 pairedDeviceUniqueID];
+    pairedDeviceUniqueID = [v10 pairedDeviceUniqueID];
 
-    v12 = [[IDSDeviceOnlineMonitor alloc] initWithDelegate:self uniqueIdentifier:v11 queue:v9];
+    v12 = [[IDSDeviceOnlineMonitor alloc] initWithDelegate:self uniqueIdentifier:pairedDeviceUniqueID queue:v9];
     deviceOnlineMonitor = self->_deviceOnlineMonitor;
     self->_deviceOnlineMonitor = v12;
 
@@ -603,17 +603,17 @@ LABEL_9:
     }
   }
 
-  v4 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v4)
+  if (deviceOnlineMonitor2)
   {
-    v5 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v5 assertPresence];
+    deviceOnlineMonitor3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor3 assertPresence];
 
     if (self->_presenceOperationMode == 2)
     {
-      v6 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-      [v6 startMonitoring];
+      deviceOnlineMonitor4 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+      [deviceOnlineMonitor4 startMonitoring];
     }
   }
 }
@@ -621,52 +621,52 @@ LABEL_9:
 - (void)revokeAvailabilityForCloudMessaging
 {
   im_assert_primary_base_queue();
-  v3 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+  announcePresenceBlock = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
 
-  if (v3)
+  if (announcePresenceBlock)
   {
     v4 = +[IDSFoundationLog IPsecLink];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
-      v6 = objc_retainBlock(v5);
+      announcePresenceBlock2 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+      v6 = objc_retainBlock(announcePresenceBlock2);
       v11 = 134217984;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Cancelling scheduled {block:%p}", &v11, 0xCu);
     }
 
-    v7 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
-    dispatch_block_cancel(v7);
+    announcePresenceBlock3 = [(IDSNRDevicePreferencesHandler *)self announcePresenceBlock];
+    dispatch_block_cancel(announcePresenceBlock3);
 
     [(IDSNRDevicePreferencesHandler *)self setAnnouncePresenceBlock:0];
   }
 
-  v8 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+  deviceOnlineMonitor = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
 
-  if (v8)
+  if (deviceOnlineMonitor)
   {
-    v9 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v9 releasePresence];
+    deviceOnlineMonitor2 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor2 releasePresence];
 
-    v10 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
-    [v10 stopMonitoring];
+    deviceOnlineMonitor3 = [(IDSNRDevicePreferencesHandler *)self deviceOnlineMonitor];
+    [deviceOnlineMonitor3 stopMonitoring];
   }
 }
 
-- (void)idsDeviceOnlineMonitor:(id)a3 statusChanged:(unsigned int)a4
+- (void)idsDeviceOnlineMonitor:(id)monitor statusChanged:(unsigned int)changed
 {
   v6 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = sub_10050A848(a4);
+    v7 = sub_10050A848(changed);
     v8 = 138412546;
     v9 = v7;
     v10 = 2048;
-    v11 = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
+    quickRelayRequestsCount = [(IDSNRDevicePreferencesHandler *)self quickRelayRequestsCount];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "idsDeviceOnlineMonitor status changed: {newStatus:%@}, {quickRelayRequestsCount: %lu}", &v8, 0x16u);
   }
 
-  if (a4 == 3)
+  if (changed == 3)
   {
     if ([(IDSNRDevicePreferencesHandler *)self areThereFreshQuickRelayRequests])
     {

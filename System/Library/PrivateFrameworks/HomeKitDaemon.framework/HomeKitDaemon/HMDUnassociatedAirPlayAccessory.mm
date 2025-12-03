@@ -1,23 +1,23 @@
 @interface HMDUnassociatedAirPlayAccessory
 + (id)logCategory;
-- (HMDUnassociatedAirPlayAccessory)initWithCoder:(id)a3;
+- (HMDUnassociatedAirPlayAccessory)initWithCoder:(id)coder;
 - (HMFPairingIdentity)pairingIdentity;
-- (id)addTransactionForHome:(id)a3;
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5;
-- (void)associateToHome:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPairingIdentity:(id)a3;
+- (id)addTransactionForHome:(id)home;
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d;
+- (void)associateToHome:(id)home completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPairingIdentity:(id)identity;
 @end
 
 @implementation HMDUnassociatedAirPlayAccessory
 
-- (void)associateToHome:(id)a3 completionHandler:(id)a4
+- (void)associateToHome:(id)home completionHandler:(id)handler
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,11 +28,11 @@
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDUnassociatedMediaAccessory *)v9 advertisement];
+  advertisement = [(HMDUnassociatedMediaAccessory *)selfCopy advertisement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = advertisement;
   }
 
   else
@@ -44,16 +44,16 @@
 
   if (v14)
   {
-    v15 = [v14 outputDevice];
-    v16 = [v15 av_OutputDevice];
+    outputDevice = [v14 outputDevice];
+    av_OutputDevice = [outputDevice av_OutputDevice];
 
-    if (v16)
+    if (av_OutputDevice)
     {
-      v17 = [v6 owner];
-      if (([v17 isCurrentUser] & 1) == 0)
+      owner = [homeCopy owner];
+      if (([owner isCurrentUser] & 1) == 0)
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = v9;
+        v33 = selfCopy;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
@@ -64,29 +64,29 @@
         }
 
         objc_autoreleasePoolPop(v32);
-        if (!v7)
+        if (!handlerCopy)
         {
           goto LABEL_32;
         }
 
-        v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-        v7[2](v7, v18);
+        av_authorizedPeer = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
+        handlerCopy[2](handlerCopy, av_authorizedPeer);
         goto LABEL_31;
       }
 
-      v18 = [v17 av_authorizedPeer];
-      if (v18)
+      av_authorizedPeer = [owner av_authorizedPeer];
+      if (av_authorizedPeer)
       {
-        context = [MEMORY[0x277CB86A0] shouldRestrictConnectionWithUserPrivilege:{objc_msgSend(v6, "minimumMediaUserPrivilege")}];
-        v19 = [v6 mediaPassword];
+        context = [MEMORY[0x277CB86A0] shouldRestrictConnectionWithUserPrivilege:{objc_msgSend(homeCopy, "minimumMediaUserPrivilege")}];
+        mediaPassword = [homeCopy mediaPassword];
 
-        if (v19)
+        if (mediaPassword)
         {
-          v19 = [v6 mediaPassword];
+          mediaPassword = [homeCopy mediaPassword];
         }
 
-        objc_initWeak(buf, v9);
-        objc_initWeak(&location, v6);
+        objc_initWeak(buf, selfCopy);
+        objc_initWeak(&location, homeCopy);
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __69__HMDUnassociatedAirPlayAccessory_associateToHome_completionHandler___block_invoke;
@@ -94,9 +94,9 @@
         objc_copyWeak(&v53, buf);
         objc_copyWeak(&v54, &location);
         v55 = context;
-        v20 = v18;
+        v20 = av_authorizedPeer;
         v51 = v20;
-        v21 = v19;
+        v21 = mediaPassword;
         v52 = v21;
         v22 = _Block_copy(aBlock);
         objc_initWeak(&from, v14);
@@ -110,8 +110,8 @@
         v23 = v21;
         v44 = v23;
         objc_copyWeak(&v47, &from);
-        v45 = v7;
-        [v16 configureUsingBlock:v22 options:0 completionHandler:v42];
+        v45 = handlerCopy;
+        [av_OutputDevice configureUsingBlock:v22 options:0 completionHandler:v42];
 
         objc_destroyWeak(&v47);
         objc_destroyWeak(&v46);
@@ -126,7 +126,7 @@
       else
       {
         contexta = objc_autoreleasePoolPush();
-        v36 = v9;
+        v36 = selfCopy;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
@@ -134,19 +134,19 @@
           *buf = 138543618;
           v58 = v38;
           v59 = 2112;
-          v60 = v17;
+          v60 = owner;
           _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@Missing authorized peer for user: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(contexta);
-        if (!v7)
+        if (!handlerCopy)
         {
-          v18 = 0;
+          av_authorizedPeer = 0;
           goto LABEL_31;
         }
 
         v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        v7[2](v7, v23);
+        handlerCopy[2](handlerCopy, v23);
       }
 
 LABEL_31:
@@ -154,7 +154,7 @@ LABEL_31:
     }
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v9;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -165,23 +165,23 @@ LABEL_31:
     }
 
     objc_autoreleasePoolPop(v28);
-    if (v7)
+    if (handlerCopy)
     {
-      v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      v7[2](v7, v17);
+      owner = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+      handlerCopy[2](handlerCopy, owner);
 LABEL_32:
 
       goto LABEL_33;
     }
 
-    v16 = 0;
+    av_OutputDevice = 0;
 LABEL_33:
 
     goto LABEL_34;
   }
 
   v24 = objc_autoreleasePoolPush();
-  v25 = v9;
+  v25 = selfCopy;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,10 +192,10 @@ LABEL_33:
   }
 
   objc_autoreleasePoolPop(v24);
-  if (v7)
+  if (handlerCopy)
   {
-    v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-    v7[2](v7, v16);
+    av_OutputDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
+    handlerCopy[2](handlerCopy, av_OutputDevice);
     goto LABEL_33;
   }
 
@@ -475,9 +475,9 @@ LABEL_17:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPairingIdentity:(id)a3
+- (void)setPairingIdentity:(id)identity
 {
-  v4 = [a3 copy];
+  v4 = [identity copy];
   os_unfair_recursive_lock_lock_with_options();
   pairingIdentity = self->_pairingIdentity;
   self->_pairingIdentity = v4;
@@ -494,35 +494,35 @@ LABEL_17:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 hmd_isForXPCTransport];
-  v6 = [v4 hmd_isForLocalStore];
+  coderCopy = coder;
+  hmd_isForXPCTransport = [coderCopy hmd_isForXPCTransport];
+  hmd_isForLocalStore = [coderCopy hmd_isForLocalStore];
   v19.receiver = self;
   v19.super_class = HMDUnassociatedAirPlayAccessory;
-  [(HMDUnassociatedAccessory *)&v19 encodeWithCoder:v4];
-  v7 = [(HMDUnassociatedAirPlayAccessory *)self pairingIdentity];
-  v8 = v7;
-  if ((v5 & 1) == 0)
+  [(HMDUnassociatedAccessory *)&v19 encodeWithCoder:coderCopy];
+  pairingIdentity = [(HMDUnassociatedAirPlayAccessory *)self pairingIdentity];
+  v8 = pairingIdentity;
+  if ((hmd_isForXPCTransport & 1) == 0)
   {
-    if (v6)
+    if (hmd_isForLocalStore)
     {
-      [v4 encodeObject:v7 forKey:*MEMORY[0x277CCEC20]];
+      [coderCopy encodeObject:pairingIdentity forKey:*MEMORY[0x277CCEC20]];
     }
 
-    else if (v7)
+    else if (pairingIdentity)
     {
-      v9 = [v7 publicPairingIdentity];
-      [v4 encodeObject:v9 forKey:*MEMORY[0x277CCEC20]];
+      publicPairingIdentity = [pairingIdentity publicPairingIdentity];
+      [coderCopy encodeObject:publicPairingIdentity forKey:*MEMORY[0x277CCEC20]];
     }
   }
 
-  v10 = [(HMDUnassociatedMediaAccessory *)self advertisement];
+  advertisement = [(HMDUnassociatedMediaAccessory *)self advertisement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = advertisement;
   }
 
   else
@@ -532,47 +532,47 @@ LABEL_17:
 
   v12 = v11;
 
-  v13 = [v12 outputDevice];
+  outputDevice = [v12 outputDevice];
 
-  v14 = [v13 av_OutputDevice];
+  av_OutputDevice = [outputDevice av_OutputDevice];
 
-  if (v14)
+  if (av_OutputDevice)
   {
-    v15 = [v14 modelID];
+    modelID = [av_OutputDevice modelID];
 
-    if (v15)
+    if (modelID)
     {
-      v16 = [v14 modelID];
-      [v4 encodeObject:v16 forKey:@"HM.model"];
+      modelID2 = [av_OutputDevice modelID];
+      [coderCopy encodeObject:modelID2 forKey:@"HM.model"];
     }
 
-    v17 = [v14 manufacturer];
+    manufacturer = [av_OutputDevice manufacturer];
 
-    if (v17)
+    if (manufacturer)
     {
-      v18 = [v14 manufacturer];
-      [v4 encodeObject:v18 forKey:@"HM.manufacturer"];
+      manufacturer2 = [av_OutputDevice manufacturer];
+      [coderCopy encodeObject:manufacturer2 forKey:@"HM.manufacturer"];
     }
   }
 }
 
-- (HMDUnassociatedAirPlayAccessory)initWithCoder:(id)a3
+- (HMDUnassociatedAirPlayAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMDUnassociatedAirPlayAccessory;
-  v5 = [(HMDUnassociatedAccessory *)&v13 initWithCoder:v4];
+  v5 = [(HMDUnassociatedAccessory *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCEC20]];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCEC20]];
     pairingIdentity = v5->_pairingIdentity;
     v5->_pairingIdentity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.model"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.model"];
     model = v5->_model;
     v5->_model = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.manufacturer"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.manufacturer"];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v10;
   }
@@ -580,11 +580,11 @@ LABEL_17:
   return v5;
 }
 
-- (id)addTransactionForHome:(id)a3
+- (id)addTransactionForHome:(id)home
 {
   v33.receiver = self;
   v33.super_class = HMDUnassociatedAirPlayAccessory;
-  v4 = [(HMDUnassociatedMediaAccessory *)&v33 addTransactionForHome:a3];
+  v4 = [(HMDUnassociatedMediaAccessory *)&v33 addTransactionForHome:home];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -602,11 +602,11 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  v7 = [(HMDUnassociatedMediaAccessory *)self advertisement];
+  advertisement = [(HMDUnassociatedMediaAccessory *)self advertisement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = advertisement;
   }
 
   else
@@ -616,91 +616,91 @@ LABEL_17:
 
   v9 = v8;
 
-  v10 = [v9 outputDevice];
+  outputDevice = [v9 outputDevice];
 
-  v11 = [v10 av_OutputDevice];
+  av_OutputDevice = [outputDevice av_OutputDevice];
 
-  if (v11)
+  if (av_OutputDevice)
   {
-    v12 = [(HMDUnassociatedAirPlayAccessory *)v11 modelID];
+    modelID = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice modelID];
 
-    if (v12)
+    if (modelID)
     {
-      v13 = [(HMDUnassociatedAirPlayAccessory *)v11 modelID];
-      [v6 setModel:v13];
+      modelID2 = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice modelID];
+      [v6 setModel:modelID2];
 
-      v14 = [(HMDUnassociatedAirPlayAccessory *)v11 modelID];
-      [v6 setInitialModel:v14];
+      modelID3 = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice modelID];
+      [v6 setInitialModel:modelID3];
     }
 
-    v15 = [(HMDUnassociatedAccessory *)v11 serialNumber];
+    serialNumber = [(HMDUnassociatedAccessory *)av_OutputDevice serialNumber];
 
-    if (v15)
+    if (serialNumber)
     {
-      v16 = [(HMDUnassociatedAccessory *)v11 serialNumber];
-      [v6 setSerialNumber:v16];
+      serialNumber2 = [(HMDUnassociatedAccessory *)av_OutputDevice serialNumber];
+      [v6 setSerialNumber:serialNumber2];
     }
 
-    v17 = [(HMDUnassociatedAirPlayAccessory *)v11 firmwareVersion];
+    firmwareVersion = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice firmwareVersion];
 
-    if (v17)
+    if (firmwareVersion)
     {
-      v18 = [(HMDUnassociatedAirPlayAccessory *)v11 firmwareVersion];
-      [v6 setFirmwareVersion:v18];
+      firmwareVersion2 = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice firmwareVersion];
+      [v6 setFirmwareVersion:firmwareVersion2];
     }
 
-    v19 = [(HMDUnassociatedAirPlayAccessory *)v11 manufacturer];
+    manufacturer = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice manufacturer];
 
-    if (!v19)
+    if (!manufacturer)
     {
       goto LABEL_22;
     }
 
-    v20 = [(HMDUnassociatedAirPlayAccessory *)v11 manufacturer];
-    [v6 setManufacturer:v20];
+    manufacturer2 = [(HMDUnassociatedAirPlayAccessory *)av_OutputDevice manufacturer];
+    [v6 setManufacturer:manufacturer2];
 
-    v21 = v11;
+    selfCopy = av_OutputDevice;
   }
 
   else
   {
-    v22 = [(HMDUnassociatedAirPlayAccessory *)self model];
+    model = [(HMDUnassociatedAirPlayAccessory *)self model];
 
-    if (v22)
+    if (model)
     {
-      v23 = [(HMDUnassociatedAirPlayAccessory *)self model];
-      [v6 setModel:v23];
+      model2 = [(HMDUnassociatedAirPlayAccessory *)self model];
+      [v6 setModel:model2];
 
-      v24 = [(HMDUnassociatedAirPlayAccessory *)self model];
-      [v6 setInitialModel:v24];
+      model3 = [(HMDUnassociatedAirPlayAccessory *)self model];
+      [v6 setInitialModel:model3];
     }
 
-    v25 = [(HMDUnassociatedAirPlayAccessory *)self manufacturer];
+    manufacturer3 = [(HMDUnassociatedAirPlayAccessory *)self manufacturer];
 
-    if (!v25)
+    if (!manufacturer3)
     {
       goto LABEL_22;
     }
 
-    v26 = [(HMDUnassociatedAirPlayAccessory *)self manufacturer];
-    [v6 setManufacturer:v26];
+    manufacturer4 = [(HMDUnassociatedAirPlayAccessory *)self manufacturer];
+    [v6 setManufacturer:manufacturer4];
 
-    v21 = self;
+    selfCopy = self;
   }
 
-  v27 = [(HMDUnassociatedAirPlayAccessory *)v21 manufacturer];
-  [v6 setInitialManufacturer:v27];
+  manufacturer5 = [(HMDUnassociatedAirPlayAccessory *)selfCopy manufacturer];
+  [v6 setInitialManufacturer:manufacturer5];
 
 LABEL_22:
   v28 = MEMORY[0x277CD1680];
-  v29 = [(HMDUnassociatedAccessory *)self category];
-  v30 = [v28 categoryIdentifierForCategory:v29];
+  category = [(HMDUnassociatedAccessory *)self category];
+  v30 = [v28 categoryIdentifierForCategory:category];
   [v6 setInitialCategoryIdentifier:v30];
 
-  v31 = [(HMDUnassociatedAirPlayAccessory *)self pairingIdentity];
-  if (v31)
+  pairingIdentity = [(HMDUnassociatedAirPlayAccessory *)self pairingIdentity];
+  if (pairingIdentity)
   {
-    [v6 setPairingIdentity:v31];
+    [v6 setPairingIdentity:pairingIdentity];
   }
 
 LABEL_25:
@@ -708,11 +708,11 @@ LABEL_25:
   return v4;
 }
 
-- (id)modelForChangeType:(unint64_t)a3 uuid:(id)a4 parentUUID:(id)a5
+- (id)modelForChangeType:(unint64_t)type uuid:(id)uuid parentUUID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HMDBackingStoreModelObject *)[HMDAirPlayAccessoryModel alloc] initWithObjectChangeType:a3 uuid:v8 parentUUID:v7];
+  dCopy = d;
+  uuidCopy = uuid;
+  v9 = [(HMDBackingStoreModelObject *)[HMDAirPlayAccessoryModel alloc] initWithObjectChangeType:type uuid:uuidCopy parentUUID:dCopy];
 
   return v9;
 }

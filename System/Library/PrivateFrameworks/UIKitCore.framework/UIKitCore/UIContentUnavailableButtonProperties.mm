@@ -1,17 +1,17 @@
 @interface UIContentUnavailableButtonProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)minimumSize;
 - (UIContentUnavailableButtonProperties)init;
-- (UIContentUnavailableButtonProperties)initWithCoder:(id)a3;
+- (UIContentUnavailableButtonProperties)initWithCoder:(id)coder;
 - (__CFString)_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (uint64_t)_hasButton;
-- (uint64_t)_isEqualToProperties:(uint64_t)a1;
-- (uint64_t)_isEqualToPropertiesQuick:(uint64_t)a1;
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1;
-- (void)_applyToButton:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)_isEqualToProperties:(uint64_t)properties;
+- (uint64_t)_isEqualToPropertiesQuick:(uint64_t)quick;
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties;
+- (void)_applyToButton:(uint64_t)button;
+- (void)encodeWithCoder:(id)coder;
 - (void)setMenu:(UIMenu *)menu;
 - (void)setPrimaryAction:(UIAction *)primaryAction;
 @end
@@ -48,59 +48,59 @@
 
 - (uint64_t)_hasButton
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if ([v1 _hasTitle] & 1) != 0 || (objc_msgSend(v1, "_hasSubtitle") & 1) != 0 || (objc_msgSend(v1, "_hasImage"))
   {
-    v2 = 1;
+    showsActivityIndicator = 1;
   }
 
   else
   {
-    v2 = [v1 showsActivityIndicator];
+    showsActivityIndicator = [v1 showsActivityIndicator];
   }
 
-  return v2;
+  return showsActivityIndicator;
 }
 
-- (UIContentUnavailableButtonProperties)initWithCoder:(id)a3
+- (UIContentUnavailableButtonProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = UIContentUnavailableButtonProperties;
   v5 = [(UIContentUnavailableButtonProperties *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAction"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAction"];
     primaryAction = v5->_primaryAction;
     v5->_primaryAction = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"menu"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"menu"];
     menu = v5->_menu;
     v5->_menu = v10;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
-    v5->_role = [v4 decodeIntegerForKey:@"role"];
-    [v4 decodeCGSizeForKey:@"minimumSize"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
+    v5->_role = [coderCopy decodeIntegerForKey:@"role"];
+    [coderCopy decodeCGSizeForKey:@"minimumSize"];
     v5->_minimumSize.width = v12;
     v5->_minimumSize.height = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_defaultConfiguration"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_defaultConfiguration"];
     defaultConfiguration = v5->_defaultConfiguration;
     v5->_defaultConfiguration = v14;
 
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"enabled"];
-    *&v5->_buttonFlags = *&v5->_buttonFlags & 0xFE | [v4 decodeBoolForKey:v16];
+    *&v5->_buttonFlags = *&v5->_buttonFlags & 0xFE | [coderCopy decodeBoolForKey:v16];
 
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"role"];
-    if ([v4 decodeBoolForKey:v17])
+    if ([coderCopy decodeBoolForKey:v17])
     {
       v18 = 2;
     }
@@ -113,7 +113,7 @@
     *&v5->_buttonFlags = *&v5->_buttonFlags & 0xFD | v18;
 
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"minimumSize"];
-    if ([v4 decodeBoolForKey:v19])
+    if ([coderCopy decodeBoolForKey:v19])
     {
       v20 = 4;
     }
@@ -129,33 +129,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configuration = self->_configuration;
-  v5 = a3;
-  [v5 encodeObject:configuration forKey:@"configuration"];
-  [v5 encodeObject:self->_primaryAction forKey:@"primaryAction"];
-  [v5 encodeObject:self->_menu forKey:@"menu"];
-  [v5 encodeBool:self->_enabled forKey:@"enabled"];
-  [v5 encodeInteger:self->_role forKey:@"role"];
-  [v5 encodeCGSize:@"minimumSize" forKey:{self->_minimumSize.width, self->_minimumSize.height}];
-  [v5 encodeObject:self->_defaultConfiguration forKey:@"_defaultConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
+  [coderCopy encodeObject:self->_primaryAction forKey:@"primaryAction"];
+  [coderCopy encodeObject:self->_menu forKey:@"menu"];
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeInteger:self->_role forKey:@"role"];
+  [coderCopy encodeCGSize:@"minimumSize" forKey:{self->_minimumSize.width, self->_minimumSize.height}];
+  [coderCopy encodeObject:self->_defaultConfiguration forKey:@"_defaultConfiguration"];
   buttonFlags = self->_buttonFlags;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"enabled"];
-  [v5 encodeBool:buttonFlags & 1 forKey:v7];
+  [coderCopy encodeBool:buttonFlags & 1 forKey:v7];
 
   v8 = (*&self->_buttonFlags >> 1) & 1;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"role"];
-  [v5 encodeBool:v8 forKey:v9];
+  [coderCopy encodeBool:v8 forKey:v9];
 
   v10 = (*&self->_buttonFlags >> 2) & 1;
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"minimumSize"];
-  [v5 encodeBool:v10 forKey:v11];
+  [coderCopy encodeBool:v10 forKey:v11];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(UIButtonConfiguration *)self->_configuration copy];
@@ -183,16 +183,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(UIContentUnavailableButtonProperties *)self _isEqualToProperties:v5];
   }
@@ -205,22 +205,22 @@
   return v6;
 }
 
-- (uint64_t)_isEqualToProperties:(uint64_t)a1
+- (uint64_t)_isEqualToProperties:(uint64_t)properties
 {
   v3 = a2;
-  if (!a1)
+  if (!properties)
   {
     goto LABEL_23;
   }
 
-  if (([(UIContentUnavailableButtonProperties *)a1 _isEqualToPropertiesQuick:v3]& 1) != 0)
+  if (([(UIContentUnavailableButtonProperties *)properties _isEqualToPropertiesQuick:v3]& 1) != 0)
   {
-    a1 = 1;
+    properties = 1;
     goto LABEL_23;
   }
 
   v4 = *(v3 + 2);
-  v5 = *(a1 + 16);
+  v5 = *(properties + 16);
   v6 = v4;
   v7 = v6;
   if (v5 == v6)
@@ -243,7 +243,7 @@
   }
 
   v9 = *(v3 + 3);
-  v5 = *(a1 + 24);
+  v5 = *(properties + 24);
   v10 = v9;
   v7 = v10;
   if (v5 == v10)
@@ -268,7 +268,7 @@ LABEL_21:
 
 LABEL_16:
   v12 = *(v3 + 4);
-  v5 = *(a1 + 32);
+  v5 = *(properties + 32);
   v13 = v12;
   v7 = v13;
   if (v5 == v13)
@@ -287,39 +287,39 @@ LABEL_16:
   if (!v14)
   {
 LABEL_22:
-    a1 = 0;
+    properties = 0;
     goto LABEL_23;
   }
 
 LABEL_25:
-  if (*(a1 + 12) != v3[12] || *(a1 + 40) != *(v3 + 5))
+  if (*(properties + 12) != v3[12] || *(properties + 40) != *(v3 + 5))
   {
     goto LABEL_22;
   }
 
-  a1 = *(a1 + 64) == *(v3 + 8) && *(a1 + 56) == *(v3 + 7);
+  properties = *(properties + 64) == *(v3 + 8) && *(properties + 56) == *(v3 + 7);
 LABEL_23:
 
-  return a1;
+  return properties;
 }
 
-- (uint64_t)_isEqualToPropertiesQuick:(uint64_t)a1
+- (uint64_t)_isEqualToPropertiesQuick:(uint64_t)quick
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!quick)
   {
     goto LABEL_23;
   }
 
-  if (v3 == a1)
+  if (v3 == quick)
   {
-    a1 = 1;
+    quick = 1;
     goto LABEL_23;
   }
 
   v5 = v3[2];
-  v6 = *(a1 + 16);
+  v6 = *(quick + 16);
   v7 = v5;
   v8 = v7;
   if (v6 == v7)
@@ -342,7 +342,7 @@ LABEL_23:
   }
 
   v10 = *(v4 + 3);
-  v6 = *(a1 + 24);
+  v6 = *(quick + 24);
   v11 = v10;
   v8 = v11;
   if (v6 == v11)
@@ -367,7 +367,7 @@ LABEL_21:
 
 LABEL_16:
   v13 = *(v4 + 4);
-  v6 = *(a1 + 32);
+  v6 = *(quick + 32);
   v14 = v13;
   v8 = v14;
   if (v6 == v14)
@@ -386,20 +386,20 @@ LABEL_16:
   if (!v15)
   {
 LABEL_22:
-    a1 = 0;
+    quick = 0;
     goto LABEL_23;
   }
 
 LABEL_25:
-  if (*(a1 + 12) != *(v4 + 12) || *(a1 + 40) != *(v4 + 5))
+  if (*(quick + 12) != *(v4 + 12) || *(quick + 40) != *(v4 + 5))
   {
     goto LABEL_22;
   }
 
-  a1 = *(a1 + 64) == v4[8] && *(a1 + 56) == v4[7];
+  quick = *(quick + 64) == v4[8] && *(quick + 56) == v4[7];
 LABEL_23:
 
-  return a1;
+  return quick;
 }
 
 - (id)description
@@ -469,43 +469,43 @@ LABEL_23:
 
 - (__CFString)_shortDescription
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([(UIContentUnavailableButtonProperties *)a1 _hasButton])
+    selfCopy = self;
+    if ([(UIContentUnavailableButtonProperties *)self _hasButton])
     {
-      a1 = [v2->data description];
+      self = [selfCopy->data description];
     }
 
     else
     {
-      a1 = @"none";
+      self = @"none";
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_applyToButton:(uint64_t)a1
+- (void)_applyToButton:(uint64_t)button
 {
   v3 = a2;
-  if (a1)
+  if (button)
   {
     v6 = v3;
-    [v3 setConfiguration:*(a1 + 16)];
+    [v3 setConfiguration:*(button + 16)];
     [v6 removeTarget:0 action:0 forControlEvents:0x2000];
-    v4 = *(a1 + 24);
+    v4 = *(button + 24);
     if (v4)
     {
       [v6 addAction:v4 forControlEvents:0x2000];
     }
 
-    [v6 setMenu:*(a1 + 32)];
-    if (*(a1 + 32))
+    [v6 setMenu:*(button + 32)];
+    if (*(button + 32))
     {
-      v5 = *(a1 + 24) == 0;
+      v5 = *(button + 24) == 0;
     }
 
     else
@@ -514,19 +514,19 @@ LABEL_23:
     }
 
     [v6 setShowsMenuAsPrimaryAction:v5];
-    [v6 setEnabled:*(a1 + 12)];
-    [v6 setRole:*(a1 + 40)];
+    [v6 setEnabled:*(button + 12)];
+    [v6 setRole:*(button + 40)];
     v3 = v6;
   }
 }
 
-- (void)_applyPropertiesFromDefaultProperties:(uint64_t)a1
+- (void)_applyPropertiesFromDefaultProperties:(uint64_t)properties
 {
   v3 = a2;
-  if (a1)
+  if (properties)
   {
     v9 = v3;
-    if ([*(a1 + 16) isEqual:*(a1 + 48)])
+    if ([*(properties + 16) isEqual:*(properties + 48)])
     {
       if (v9)
       {
@@ -538,14 +538,14 @@ LABEL_23:
         v4 = 0;
       }
 
-      objc_storeStrong((a1 + 16), v4);
+      objc_storeStrong((properties + 16), v4);
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(properties + 8);
     v3 = v9;
     if (v5)
     {
-      if ((*(a1 + 8) & 2) != 0)
+      if ((*(properties + 8) & 2) != 0)
       {
         goto LABEL_8;
       }
@@ -563,7 +563,7 @@ LABEL_23:
         v6 = 0;
       }
 
-      *(a1 + 12) = v6 & 1;
+      *(properties + 12) = v6 & 1;
       if ((v5 & 2) != 0)
       {
 LABEL_8:
@@ -583,7 +583,7 @@ LABEL_16:
           v8 = 0uLL;
         }
 
-        *(a1 + 56) = v8;
+        *(properties + 56) = v8;
         goto LABEL_19;
       }
     }
@@ -598,7 +598,7 @@ LABEL_16:
       v7 = 0;
     }
 
-    *(a1 + 40) = v7;
+    *(properties + 40) = v7;
     if ((v5 & 4) != 0)
     {
       goto LABEL_19;

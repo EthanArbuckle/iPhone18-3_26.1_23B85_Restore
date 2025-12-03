@@ -23,7 +23,7 @@
   if (self->_mirrorableBBDomain)
   {
     v3 = +[NPSSettings bbAppsSettings];
-    v4 = [v3 synchronize];
+    synchronize = [v3 synchronize];
     v5 = [v3 objectForKey:self->_mirrorableBBDomain];
     v6 = [v5 objectForKeyedSubscript:@"BPSNanoBulletinShowsCustomSettings"];
     v7 = [v6 BOOLValue] ^ 1;
@@ -38,7 +38,7 @@
     }
 
     v3 = [[NPSDomainAccessor alloc] initWithDomain:self->_mirrorableDomain];
-    v8 = [v3 synchronize];
+    synchronize2 = [v3 synchronize];
     v11 = 0;
     v9 = [v3 BOOLForKey:self->_mirrorableKey keyExistsAndHasValidFormat:&v11];
     v7 = v11 ^ 1 | v9;

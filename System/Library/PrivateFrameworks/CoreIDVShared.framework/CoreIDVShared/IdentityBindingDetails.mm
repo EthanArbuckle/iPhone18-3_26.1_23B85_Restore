@@ -1,15 +1,15 @@
 @interface IdentityBindingDetails
 - (_TtC13CoreIDVShared22IdentityBindingDetails)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityBindingDetails
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityBindingDetails.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityBindingDetails.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared22IdentityBindingDetails)init

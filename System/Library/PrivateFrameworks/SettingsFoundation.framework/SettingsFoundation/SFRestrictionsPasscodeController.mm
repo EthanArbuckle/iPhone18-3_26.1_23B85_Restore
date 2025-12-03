@@ -2,20 +2,20 @@
 + (BOOL)hasHashAndSaltLegacyPassword;
 + (BOOL)legacyRestrictionsInEffect;
 + (BOOL)settingEnabled;
-+ (BOOL)validatePIN:(id)a3;
++ (BOOL)validatePIN:(id)n;
 + (id)_generateSalt;
 + (id)_keychainPasswordForRestrictions;
 + (id)hashForHashAndSaltLegacyRestrictions;
-+ (id)newHashDataForPassword:(id)a3 andSalt:(id)a4;
++ (id)newHashDataForPassword:(id)password andSalt:(id)salt;
 + (id)pinFromHashAndSaltLegacyPassword;
 + (id)saltForHashAndSaltLegacyRestrictions;
 + (void)_migrateRestrictionsPasscodeIfNeeded;
 + (void)_removeKeychainPasswordForRestrictions;
-+ (void)_setKeychainPasswordForRestrictions:(id)a3;
++ (void)_setKeychainPasswordForRestrictions:(id)restrictions;
 + (void)migrateRestrictionsPasscode;
 + (void)pinFromHashAndSaltLegacyPassword;
 + (void)removePasswordForHashAndSaltLegacyRestrictions;
-+ (void)setPIN:(id)a3;
++ (void)setPIN:(id)n;
 + (void)validateKeychainWithScreenTime;
 @end
 
@@ -45,8 +45,8 @@ uint64_t __72__SFRestrictionsPasscodeController__migrateRestrictionsPasscodeIfNe
 
   v3 = SpringBoardPreferenceDomain_springBoardDomain;
   v4 = CFPreferencesCopyAppValue(@"SBParentalControlsPIN", SpringBoardPreferenceDomain_springBoardDomain);
-  v5 = [a1 _keychainPasswordForRestrictions];
-  if (v5)
+  _keychainPasswordForRestrictions = [self _keychainPasswordForRestrictions];
+  if (_keychainPasswordForRestrictions)
   {
 LABEL_10:
     if (!v4)
@@ -90,14 +90,14 @@ LABEL_11:
 LABEL_12:
   if (+[SFRestrictionsPasscodeController hasHashAndSaltLegacyPassword])
   {
-    [a1 removePasswordForHashAndSaltLegacyRestrictions];
+    [self removePasswordForHashAndSaltLegacyRestrictions];
   }
 }
 
 + (void)validateKeychainWithScreenTime
 {
-  v2 = [a1 _keychainPasswordForRestrictions];
-  if (v2)
+  _keychainPasswordForRestrictions = [self _keychainPasswordForRestrictions];
+  if (_keychainPasswordForRestrictions)
   {
     v3 = getSTManagementState();
     if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -109,7 +109,7 @@ LABEL_12:
       v6[3] = &unk_279BB0810;
       v7 = v4;
       v5 = v4;
-      [v3 authenticateRestrictionsPasscode:v2 completionHandler:v6];
+      [v3 authenticateRestrictionsPasscode:_keychainPasswordForRestrictions completionHandler:v6];
       dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     }
   }
@@ -162,9 +162,9 @@ id __66__SFRestrictionsPasscodeController_validateKeychainWithScreenTime__block_
   return v0;
 }
 
-+ (void)setPIN:(id)a3
++ (void)setPIN:(id)n
 {
-  v3 = a3;
+  nCopy = n;
   if (SpringBoardPreferenceDomain_once != -1)
   {
     +[SFRestrictionsPasscodeController migrateRestrictionsPasscode];
@@ -177,16 +177,16 @@ id __66__SFRestrictionsPasscodeController_validateKeychainWithScreenTime__block_
   v7 = getSTManagementState();
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 setRestrictionsPasscode:v3 completionHandler:&__block_literal_global_41];
-    if (v3)
+    [v7 setRestrictionsPasscode:nCopy completionHandler:&__block_literal_global_41];
+    if (nCopy)
     {
       goto LABEL_10;
     }
   }
 
-  else if (v3)
+  else if (nCopy)
   {
-    [SFRestrictionsPasscodeController _setKeychainPasswordForRestrictions:v3];
+    [SFRestrictionsPasscodeController _setKeychainPasswordForRestrictions:nCopy];
     goto LABEL_10;
   }
 
@@ -203,9 +203,9 @@ LABEL_10:
   }
 
   v9 = v8;
-  if ((((v3 != 0) ^ v9) & 1) == 0)
+  if ((((nCopy != 0) ^ v9) & 1) == 0)
   {
-    if (v3)
+    if (nCopy)
     {
       v10 = MEMORY[0x277CBED28];
     }
@@ -260,9 +260,9 @@ void __43__SFRestrictionsPasscodeController_setPIN___block_invoke(uint64_t a1, u
   return v3;
 }
 
-+ (BOOL)validatePIN:(id)a3
++ (BOOL)validatePIN:(id)n
 {
-  v3 = a3;
+  nCopy = n;
   +[SFRestrictionsPasscodeController _migrateRestrictionsPasscodeIfNeeded];
   v4 = getSTManagementState();
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -277,7 +277,7 @@ void __43__SFRestrictionsPasscodeController_setPIN___block_invoke(uint64_t a1, u
     v10[2] = __48__SFRestrictionsPasscodeController_validatePIN___block_invoke;
     v10[3] = &unk_279BB0858;
     v13 = &v14;
-    v11 = v3;
+    v11 = nCopy;
     v6 = v5;
     v12 = v6;
     [v4 authenticateRestrictionsPasscode:v11 completionHandler:v10];
@@ -290,7 +290,7 @@ void __43__SFRestrictionsPasscodeController_setPIN___block_invoke(uint64_t a1, u
   else
   {
     v8 = +[SFRestrictionsPasscodeController _keychainPasswordForRestrictions];
-    v7 = [v3 isEqualToString:v8];
+    v7 = [nCopy isEqualToString:v8];
   }
 
   return v7 & 1;
@@ -359,9 +359,9 @@ intptr_t __48__SFRestrictionsPasscodeController_validatePIN___block_invoke(void 
   return v4;
 }
 
-+ (void)_setKeychainPasswordForRestrictions:(id)a3
++ (void)_setKeychainPasswordForRestrictions:(id)restrictions
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [restrictions dataUsingEncoding:4];
   result = 0;
   v4 = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, 0, 0);
@@ -474,12 +474,12 @@ intptr_t __48__SFRestrictionsPasscodeController_validatePIN___block_invoke(void 
   return v2;
 }
 
-+ (id)newHashDataForPassword:(id)a3 andSalt:(id)a4
++ (id)newHashDataForPassword:(id)password andSalt:(id)salt
 {
-  v5 = a4;
-  v6 = [a3 dataUsingEncoding:4];
+  saltCopy = salt;
+  v6 = [password dataUsingEncoding:4];
   v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:20];
-  if (v5 && v6)
+  if (saltCopy && v6)
   {
     SecKeyFromPassphraseDataHMACSHA1();
   }

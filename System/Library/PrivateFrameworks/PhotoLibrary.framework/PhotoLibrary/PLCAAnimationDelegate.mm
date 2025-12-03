@@ -1,12 +1,12 @@
 @interface PLCAAnimationDelegate
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 @end
 
 @implementation PLCAAnimationDelegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   if ([(PLCAAnimationDelegate *)self completion])
   {
@@ -16,7 +16,7 @@
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   if ([(PLCAAnimationDelegate *)self start])
   {

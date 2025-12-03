@@ -2,15 +2,15 @@
 + (id)osStateData;
 + (void)initialize;
 - (BOOL)started;
-- (FigCaptureFrameCounter)initWithTitle:(id)a3;
-- (double)_frameRateWithFramesCount:(int64_t)a3 firstFramePTS:(id *)a4 lastFramePTS:(id *)a5;
+- (FigCaptureFrameCounter)initWithTitle:(id)title;
+- (double)_frameRateWithFramesCount:(int64_t)count firstFramePTS:(id *)s lastFramePTS:(id *)tS;
 - (double)loggingInterval;
 - (id)_summaryIsolated;
 - (id)summary;
 - (void)_logIntervalFrameRate;
 - (void)dealloc;
-- (void)incrementWithPTS:(id *)a3;
-- (void)setLoggingInterval:(double)a3;
+- (void)incrementWithPTS:(id *)s;
+- (void)setLoggingInterval:(double)interval;
 - (void)start;
 - (void)stop;
 @end
@@ -62,7 +62,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -74,15 +74,15 @@
 
 + (id)osStateData
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   os_unfair_lock_lock(&sWeakFrameCountersLock);
-  v3 = [sWeakFrameCounters allObjects];
+  allObjects = [sWeakFrameCounters allObjects];
   os_unfair_lock_unlock(&sWeakFrameCountersLock);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v4 = [allObjects countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -94,31 +94,31 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
-        [v2 setObject:objc_msgSend(*(*(&v10 + 1) + 8 * v7) forKeyedSubscript:{"summary"), objc_msgSend(*(*(&v10 + 1) + 8 * v7), "title")}];
+        [dictionary setObject:objc_msgSend(*(*(&v10 + 1) + 8 * v7) forKeyedSubscript:{"summary"), objc_msgSend(*(*(&v10 + 1) + 8 * v7), "title")}];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return dictionary;
 }
 
-- (FigCaptureFrameCounter)initWithTitle:(id)a3
+- (FigCaptureFrameCounter)initWithTitle:(id)title
 {
   v6.receiver = self;
   v6.super_class = FigCaptureFrameCounter;
   v4 = [(FigCaptureFrameCounter *)&v6 init];
   if (v4)
   {
-    v4->_title = [a3 copy];
+    v4->_title = [title copy];
     v4->_loggingInterval = 10.0;
     v4->_lock._os_unfair_lock_opaque = 0;
     os_unfair_lock_lock(&sWeakFrameCountersLock);
@@ -149,7 +149,7 @@
   return 0.0;
 }
 
-- (void)setLoggingInterval:(double)a3
+- (void)setLoggingInterval:(double)interval
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_started)
@@ -162,7 +162,7 @@
 
   else
   {
-    self->_loggingInterval = a3;
+    self->_loggingInterval = interval;
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -234,12 +234,12 @@ uint64_t __31__FigCaptureFrameCounter_start__block_invoke(uint64_t a1)
   }
 }
 
-- (void)incrementWithPTS:(id *)a3
+- (void)incrementWithPTS:(id *)s
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_started)
   {
-    if ((self->_totalLastFramePTS.flags & 1) == 0 || (time1 = self->_totalLastFramePTS, time2 = *a3, CMTimeCompare(&time1, &time2) < 0))
+    if ((self->_totalLastFramePTS.flags & 1) == 0 || (time1 = self->_totalLastFramePTS, time2 = *s, CMTimeCompare(&time1, &time2) < 0))
     {
       totalFramesCount = self->_totalFramesCount;
       v8 = totalFramesCount == 0;
@@ -247,21 +247,21 @@ uint64_t __31__FigCaptureFrameCounter_start__block_invoke(uint64_t a1)
       ++self->_intervalFramesCount;
       if (!totalFramesCount)
       {
-        v12 = *&a3->var0;
-        self->_totalFirstFramePTS.epoch = a3->var3;
+        v12 = *&s->var0;
+        self->_totalFirstFramePTS.epoch = s->var3;
         *&self->_totalFirstFramePTS.value = v12;
-        v13 = *&a3->var0;
-        self->_intervalFirstFramePTS.epoch = a3->var3;
+        v13 = *&s->var0;
+        self->_intervalFirstFramePTS.epoch = s->var3;
         *&self->_intervalFirstFramePTS.value = v13;
       }
 
       v7 = 0;
       v10 = 0;
-      v14 = *&a3->var0;
-      self->_totalLastFramePTS.epoch = a3->var3;
+      v14 = *&s->var0;
+      self->_totalLastFramePTS.epoch = s->var3;
       *&self->_totalLastFramePTS.value = v14;
-      v15 = *&a3->var0;
-      self->_intervalLastFramePTS.epoch = a3->var3;
+      v15 = *&s->var0;
+      self->_intervalLastFramePTS.epoch = s->var3;
       *&self->_intervalLastFramePTS.value = v15;
       v9 = 1;
     }
@@ -269,7 +269,7 @@ uint64_t __31__FigCaptureFrameCounter_start__block_invoke(uint64_t a1)
     else
     {
       v5 = MEMORY[0x1E696AEC0];
-      time1 = *a3;
+      time1 = *s;
       Seconds = CMTimeGetSeconds(&time1);
       time1 = self->_totalLastFramePTS;
       v7 = [v5 stringWithFormat:@"PTS (%f) must be later than last PTS (%f)", *&Seconds, CMTimeGetSeconds(&time1)];
@@ -412,9 +412,9 @@ uint64_t __31__FigCaptureFrameCounter_start__block_invoke(uint64_t a1)
 - (id)summary
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(FigCaptureFrameCounter *)self _summaryIsolated];
+  _summaryIsolated = [(FigCaptureFrameCounter *)self _summaryIsolated];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _summaryIsolated;
 }
 
 - (id)_summaryIsolated
@@ -427,18 +427,18 @@ uint64_t __31__FigCaptureFrameCounter_start__block_invoke(uint64_t a1)
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Total frames %ld, fps %f", self->_totalFramesCount, v4];
 }
 
-- (double)_frameRateWithFramesCount:(int64_t)a3 firstFramePTS:(id *)a4 lastFramePTS:(id *)a5
+- (double)_frameRateWithFramesCount:(int64_t)count firstFramePTS:(id *)s lastFramePTS:(id *)tS
 {
   memset(&v10, 0, sizeof(v10));
-  lhs = *a5;
-  v8 = *a4;
+  lhs = *tS;
+  v8 = *s;
   CMTimeSubtract(&v10, &lhs, &v8);
   lhs = v10;
   Seconds = CMTimeGetSeconds(&lhs);
   result = 0.0;
-  if (a3 >= 1 && Seconds > 0.0)
+  if (count >= 1 && Seconds > 0.0)
   {
-    return a3 / Seconds;
+    return count / Seconds;
   }
 
   return result;

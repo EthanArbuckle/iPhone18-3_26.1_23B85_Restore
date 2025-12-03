@@ -1,22 +1,22 @@
 @interface SCATSwitchControlServerInstance
 + (id)serverInstance;
-- (BOOL)_handleRemoteSCATAction:(int64_t)a3;
+- (BOOL)_handleRemoteSCATAction:(int64_t)action;
 - (id)_automationSwitches;
 - (id)_initServer;
-- (id)clearSpokenPhrases:(id)a3;
-- (id)currentFocusedElement:(id)a3;
-- (id)getPointerFocusContext:(id)a3;
-- (id)getPointerPoint:(id)a3;
-- (id)headTrackingPoint:(id)a3;
-- (id)isAutoScanEnabled:(id)a3;
-- (id)isDwellEnabled:(id)a3;
-- (id)isManualScanEnabled:(id)a3;
-- (id)isScannerActive:(id)a3;
-- (id)isScannerPaused:(id)a3;
-- (id)lastSpokenPhrases:(id)a3;
-- (id)setPointerPoint:(id)a3;
-- (id)switchControlActionTriggered:(id)a3;
-- (id)switchControlAutomationCommandTriggered:(id)a3;
+- (id)clearSpokenPhrases:(id)phrases;
+- (id)currentFocusedElement:(id)element;
+- (id)getPointerFocusContext:(id)context;
+- (id)getPointerPoint:(id)point;
+- (id)headTrackingPoint:(id)point;
+- (id)isAutoScanEnabled:(id)enabled;
+- (id)isDwellEnabled:(id)enabled;
+- (id)isManualScanEnabled:(id)enabled;
+- (id)isScannerActive:(id)active;
+- (id)isScannerPaused:(id)paused;
+- (id)lastSpokenPhrases:(id)phrases;
+- (id)setPointerPoint:(id)point;
+- (id)switchControlActionTriggered:(id)triggered;
+- (id)switchControlAutomationCommandTriggered:(id)triggered;
 - (void)_removeAutomationSwitches;
 - (void)_setupAutomationSwitches;
 - (void)dealloc;
@@ -164,12 +164,12 @@
 {
   if (!self->_switchesLoadedForAutomation)
   {
-    v3 = [(SCATSwitchControlServerInstance *)self _automationSwitches];
+    _automationSwitches = [(SCATSwitchControlServerInstance *)self _automationSwitches];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v4 = [_automationSwitches countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -180,7 +180,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_automationSwitches);
           }
 
           v8 = *(*(&v9 + 1) + 8 * i);
@@ -189,7 +189,7 @@
           SCATAddOrUpdateSwitchToSettings();
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [_automationSwitches countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -203,12 +203,12 @@
 {
   if (self->_switchesLoadedForAutomation)
   {
-    v3 = [(SCATSwitchControlServerInstance *)self _automationSwitches];
+    _automationSwitches = [(SCATSwitchControlServerInstance *)self _automationSwitches];
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    v4 = [_automationSwitches countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -220,7 +220,7 @@
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_automationSwitches);
           }
 
           SCATRemoveSwitchFromSettings();
@@ -228,7 +228,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [_automationSwitches countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -238,18 +238,18 @@
   }
 }
 
-- (BOOL)_handleRemoteSCATAction:(int64_t)a3
+- (BOOL)_handleRemoteSCATAction:(int64_t)action
 {
   if (!self->_switchesLoadedForAutomation)
   {
     v4 = 6;
-    if (!a3)
+    if (!action)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v13 = [AXEventRepresentation accessibilityEventRepresentationWithSender:2 usagePage:v4 usage:a3];
+    v13 = [AXEventRepresentation accessibilityEventRepresentationWithSender:2 usagePage:v4 usage:action];
     v14 = +[AXEventTapManager sharedManager];
     [v14 sendHIDSystemEvent:v13 senderID:0x8000000817319375];
 
@@ -268,7 +268,7 @@ LABEL_7:
   }
 
   v4 = 5;
-  if (a3)
+  if (action)
   {
     goto LABEL_7;
   }
@@ -285,15 +285,15 @@ LABEL_10:
   return 0;
 }
 
-- (id)switchControlActionTriggered:(id)a3
+- (id)switchControlActionTriggered:(id)triggered
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"action"];
-  v6 = [v5 intValue];
+  payload = [triggered payload];
+  v5 = [payload objectForKey:@"action"];
+  intValue = [v5 intValue];
 
-  if (v6)
+  if (intValue)
   {
-    v7 = [(SCATSwitchControlServerInstance *)self _handleRemoteSCATAction:v6];
+    v7 = [(SCATSwitchControlServerInstance *)self _handleRemoteSCATAction:intValue];
   }
 
   else
@@ -311,13 +311,13 @@ LABEL_10:
   return v11;
 }
 
-- (id)switchControlAutomationCommandTriggered:(id)a3
+- (id)switchControlAutomationCommandTriggered:(id)triggered
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKeyedSubscript:@"command"];
-  v6 = [v5 integerValue];
+  payload = [triggered payload];
+  v5 = [payload objectForKeyedSubscript:@"command"];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     [(SCATSwitchControlServerInstance *)self _removeAutomationSwitches];
     v9 = +[SCATSwitchControlWorkspace sharedWorkspace];
@@ -326,7 +326,7 @@ LABEL_10:
     v8 = 1;
   }
 
-  else if (v6)
+  else if (integerValue)
   {
     v10 = ASTLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -355,12 +355,12 @@ LABEL_10:
   return v21;
 }
 
-- (id)currentFocusedElement:(id)a3
+- (id)currentFocusedElement:(id)element
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
-  v4 = [v3 currentElement];
+  currentElement = [v3 currentElement];
 
-  if (v4 && ([v4 scatIsAXElement] & 1) != 0 && (objc_msgSend(v4, "uiElement"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "axElement"), v5, v6))
+  if (currentElement && ([currentElement scatIsAXElement] & 1) != 0 && (objc_msgSend(currentElement, "uiElement"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "axElement"), v5, v6))
   {
     Data = _AXUIElementCreateData();
     v8 = [AXIPCMessage alloc];
@@ -378,14 +378,14 @@ LABEL_10:
   return v10;
 }
 
-- (id)isScannerActive:(id)a3
+- (id)isScannerActive:(id)active
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
-  v4 = [v3 isScannerActive];
+  isScannerActive = [v3 isScannerActive];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:isScannerActive];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:6507 payload:v7];
@@ -393,14 +393,14 @@ LABEL_10:
   return v8;
 }
 
-- (id)isScannerPaused:(id)a3
+- (id)isScannerPaused:(id)paused
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
-  v4 = [v3 isScannerPaused];
+  isScannerPaused = [v3 isScannerPaused];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:isScannerPaused];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:6508 payload:v7];
@@ -408,7 +408,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)isAutoScanEnabled:(id)a3
+- (id)isAutoScanEnabled:(id)enabled
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
   v4 = [v3 scannerType] == 0;
@@ -423,7 +423,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)isManualScanEnabled:(id)a3
+- (id)isManualScanEnabled:(id)enabled
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
   v4 = [v3 scannerType] == 1;
@@ -438,7 +438,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)isDwellEnabled:(id)a3
+- (id)isDwellEnabled:(id)enabled
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
   v4 = [v3 scannerType] == 2;
@@ -453,7 +453,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)headTrackingPoint:(id)a3
+- (id)headTrackingPoint:(id)point
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
   [v3 headTrackingPoint];
@@ -468,18 +468,18 @@ LABEL_10:
   return v7;
 }
 
-- (id)lastSpokenPhrases:(id)a3
+- (id)lastSpokenPhrases:(id)phrases
 {
   v3 = +[SCATScannerManager sharedManager];
-  v4 = [v3 recentSpeechOutputStrings];
+  recentSpeechOutputStrings = [v3 recentSpeechOutputStrings];
 
   v5 = [AXIPCMessage alloc];
   v6 = v5;
-  if (v4)
+  if (recentSpeechOutputStrings)
   {
     v12 = @"result";
-    v7 = [v3 recentSpeechOutputStrings];
-    v8 = [v7 copy];
+    recentSpeechOutputStrings2 = [v3 recentSpeechOutputStrings];
+    v8 = [recentSpeechOutputStrings2 copy];
     v13 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10 = [v6 initWithKey:6503 payload:v9];
@@ -493,7 +493,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)clearSpokenPhrases:(id)a3
+- (id)clearSpokenPhrases:(id)phrases
 {
   v3 = +[SCATScannerManager sharedManager];
   [v3 clearRecentSpeech];
@@ -502,10 +502,10 @@ LABEL_10:
   return v4;
 }
 
-- (id)setPointerPoint:(id)a3
+- (id)setPointerPoint:(id)point
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:@"point"];
+  payload = [point payload];
+  v4 = [payload objectForKeyedSubscript:@"point"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -534,7 +534,7 @@ LABEL_10:
   return v13;
 }
 
-- (id)getPointerPoint:(id)a3
+- (id)getPointerPoint:(id)point
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
   [v3 pointerPoint];
@@ -549,14 +549,14 @@ LABEL_10:
   return v7;
 }
 
-- (id)getPointerFocusContext:(id)a3
+- (id)getPointerFocusContext:(id)context
 {
   v3 = +[SCATSwitchControlWorkspace sharedWorkspace];
-  v4 = [v3 curFocusContext];
+  curFocusContext = [v3 curFocusContext];
 
   v5 = [AXIPCMessage alloc];
   v9 = @"result";
-  v10 = v4;
+  v10 = curFocusContext;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v7 = [v5 initWithKey:6514 payload:v6];
 

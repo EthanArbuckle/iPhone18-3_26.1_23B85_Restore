@@ -1,44 +1,44 @@
 @interface PBFPosterSelectionViewController
-- (PBFPosterSelectionViewController)initWithAllowedConfigurationUUIDs:(id)a3 selectedConfigurationUUID:(id)a4 galleryDataProvider:(id)a5 dataStore:(id)a6;
+- (PBFPosterSelectionViewController)initWithAllowedConfigurationUUIDs:(id)ds selectedConfigurationUUID:(id)d galleryDataProvider:(id)provider dataStore:(id)store;
 - (PBFPosterSelectionViewControllerDelegate)delegate;
 - (id)_cancelBarButtonItem;
-- (id)_cellForItemAtIndexPath:(id)a3 identifier:(id)a4;
+- (id)_cellForItemAtIndexPath:(id)path identifier:(id)identifier;
 - (id)_doneBarButtonItem;
 - (id)compositionalLayout;
-- (id)sectionWithEnvironment:(id)a3;
-- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)a3;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
+- (id)sectionWithEnvironment:(id)environment;
+- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)animation;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
 - (void)_orientationDidChange;
-- (void)_reloadDataWithAnimation:(BOOL)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3;
+- (void)_reloadDataWithAnimation:(BOOL)animation;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PBFPosterSelectionViewController
 
-- (id)sectionWithEnvironment:(id)a3
+- (id)sectionWithEnvironment:(id)environment
 {
-  v4 = [a3 container];
-  [v4 effectiveContentSize];
+  container = [environment container];
+  [container effectiveContentSize];
   v6 = (v5 + -64.0 + -40.0) / 3.0;
 
-  v7 = [(PBFPosterSelectionViewController *)self view];
-  v8 = [v7 window];
-  v9 = [v8 screen];
-  if (v9)
+  view = [(PBFPosterSelectionViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  if (screen)
   {
-    [PBFFocusPosterCell estimatedCellSizeForItemWidth:v9 screen:1 hasAccessory:v6];
+    [PBFFocusPosterCell estimatedCellSizeForItemWidth:screen screen:1 hasAccessory:v6];
     v11 = v10;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [PBFFocusPosterCell estimatedCellSizeForItemWidth:v12 screen:1 hasAccessory:v6];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [PBFFocusPosterCell estimatedCellSizeForItemWidth:mainScreen screen:1 hasAccessory:v6];
     v11 = v13;
   }
 
@@ -97,13 +97,13 @@ id __55__PBFPosterSelectionViewController_compositionalLayout__block_invoke(uint
   return v7;
 }
 
-- (PBFPosterSelectionViewController)initWithAllowedConfigurationUUIDs:(id)a3 selectedConfigurationUUID:(id)a4 galleryDataProvider:(id)a5 dataStore:(id)a6
+- (PBFPosterSelectionViewController)initWithAllowedConfigurationUUIDs:(id)ds selectedConfigurationUUID:(id)d galleryDataProvider:(id)provider dataStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v13;
+  dsCopy = ds;
+  dCopy = d;
+  providerCopy = provider;
+  storeCopy = store;
+  v15 = providerCopy;
   NSClassFromString(&cfstr_Pbfpostergalle.isa);
   if (!v15)
   {
@@ -115,7 +115,7 @@ id __55__PBFPosterSelectionViewController_compositionalLayout__block_invoke(uint
     [PBFPosterSelectionViewController initWithAllowedConfigurationUUIDs:a2 selectedConfigurationUUID:? galleryDataProvider:? dataStore:?];
   }
 
-  v16 = v14;
+  v16 = storeCopy;
   NSClassFromString(&cfstr_Pbfposterexten.isa);
   if (!v16)
   {
@@ -127,24 +127,24 @@ id __55__PBFPosterSelectionViewController_compositionalLayout__block_invoke(uint
     [PBFPosterSelectionViewController initWithAllowedConfigurationUUIDs:a2 selectedConfigurationUUID:? galleryDataProvider:? dataStore:?];
   }
 
-  v17 = [(PBFPosterSelectionViewController *)self compositionalLayout];
+  compositionalLayout = [(PBFPosterSelectionViewController *)self compositionalLayout];
   v24.receiver = self;
   v24.super_class = PBFPosterSelectionViewController;
-  v18 = [(PBFPosterSelectionViewController *)&v24 initWithCollectionViewLayout:v17];
+  v18 = [(PBFPosterSelectionViewController *)&v24 initWithCollectionViewLayout:compositionalLayout];
 
   if (v18)
   {
-    v19 = [v11 copy];
+    v19 = [dsCopy copy];
     allowedConfigurationUUIDs = v18->_allowedConfigurationUUIDs;
     v18->_allowedConfigurationUUIDs = v19;
 
-    objc_storeStrong(&v18->_selectedConfigurationUUID, a4);
-    v21 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v18->_selectedConfigurationUUID, d);
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     configurationsToMetadata = v18->_configurationsToMetadata;
-    v18->_configurationsToMetadata = v21;
+    v18->_configurationsToMetadata = strongToStrongObjectsMapTable;
 
-    objc_storeStrong(&v18->_galleryDataProvider, a5);
-    objc_storeStrong(&v18->_dataStore, a6);
+    objc_storeStrong(&v18->_galleryDataProvider, provider);
+    objc_storeStrong(&v18->_dataStore, store);
     [(PBFPosterExtensionDataStore *)v18->_dataStore addObserver:v18];
   }
 
@@ -156,31 +156,31 @@ id __55__PBFPosterSelectionViewController_compositionalLayout__block_invoke(uint
   v17.receiver = self;
   v17.super_class = PBFPosterSelectionViewController;
   [(PBFPosterSelectionViewController *)&v17 viewDidLoad];
-  v3 = [(PBFPosterSelectionViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PBFPosterSelectionViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PBFPosterSelectionViewController *)self navigationItem];
-  v6 = [(PBFPosterSelectionViewController *)self _cancelBarButtonItem];
-  [v5 setLeftBarButtonItem:v6];
+  navigationItem = [(PBFPosterSelectionViewController *)self navigationItem];
+  _cancelBarButtonItem = [(PBFPosterSelectionViewController *)self _cancelBarButtonItem];
+  [navigationItem setLeftBarButtonItem:_cancelBarButtonItem];
 
-  v7 = [(PBFPosterSelectionViewController *)self navigationItem];
-  v8 = [(PBFPosterSelectionViewController *)self _doneBarButtonItem];
-  [v7 setRightBarButtonItem:v8];
+  navigationItem2 = [(PBFPosterSelectionViewController *)self navigationItem];
+  _doneBarButtonItem = [(PBFPosterSelectionViewController *)self _doneBarButtonItem];
+  [navigationItem2 setRightBarButtonItem:_doneBarButtonItem];
 
-  v9 = [(PBFPosterSelectionViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Poster"];
+  collectionView = [(PBFPosterSelectionViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Poster"];
 
   [(PBFPosterSelectionViewController *)self _validateDoneButton];
   objc_initWeak(&location, self);
   v10 = objc_alloc(MEMORY[0x277D752D0]);
-  v11 = [(PBFPosterSelectionViewController *)self collectionView];
+  collectionView2 = [(PBFPosterSelectionViewController *)self collectionView];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke;
   v14[3] = &unk_2782C5710;
   objc_copyWeak(&v15, &location);
-  v12 = [v10 initWithCollectionView:v11 cellProvider:v14];
+  v12 = [v10 initWithCollectionView:collectionView2 cellProvider:v14];
   dataSource = self->_dataSource;
   self->_dataSource = v12;
 
@@ -198,46 +198,46 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
   return v9;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = PBFPosterSelectionViewController;
-  [(PBFPosterSelectionViewController *)&v4 viewIsAppearing:a3];
+  [(PBFPosterSelectionViewController *)&v4 viewIsAppearing:appearing];
   self->_layoutOrientation = [(UIViewController *)self pbf_layoutOrientation];
   [(PBFPosterSelectionViewController *)self _reloadDataWithAnimation:0];
 }
 
 - (void)_orientationDidChange
 {
-  v8 = [(PBFPosterSelectionViewController *)self view];
-  v3 = [v8 window];
-  if (v3)
+  view = [(PBFPosterSelectionViewController *)self view];
+  window = [view window];
+  if (window)
   {
-    v4 = v3;
+    v4 = window;
     layoutOrientation = self->_layoutOrientation;
-    v6 = [(UIViewController *)self pbf_layoutOrientation];
+    pbf_layoutOrientation = [(UIViewController *)self pbf_layoutOrientation];
 
-    if (layoutOrientation == v6)
+    if (layoutOrientation == pbf_layoutOrientation)
     {
       return;
     }
 
     self->_layoutOrientation = [(UIViewController *)self pbf_layoutOrientation];
     [(PBFPosterSelectionViewController *)self _reloadDataWithAnimation:0];
-    v8 = [(PBFPosterSelectionViewController *)self collectionView];
-    v7 = [v8 collectionViewLayout];
-    [v7 invalidateLayout];
+    view = [(PBFPosterSelectionViewController *)self collectionView];
+    collectionViewLayout = [view collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __87__PBFPosterSelectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_2782C7DB8;
   v4[4] = self;
-  [a4 animateAlongsideTransition:v4 completion:0];
+  [coordinator animateAlongsideTransition:v4 completion:0];
 }
 
 - (id)_cancelBarButtonItem
@@ -265,26 +265,26 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_configurations, "objectAtIndexedSubscript:", [v7 item]);
-  v9 = [v8 _path];
-  v10 = [v9 serverIdentity];
-  v11 = [v10 posterUUID];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_configurations, "objectAtIndexedSubscript:", [pathCopy item]);
+  _path = [v8 _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
   allowedConfigurationUUIDs = self->_allowedConfigurationUUIDs;
-  if (!allowedConfigurationUUIDs || [(NSSet *)allowedConfigurationUUIDs containsObject:v11])
+  if (!allowedConfigurationUUIDs || [(NSSet *)allowedConfigurationUUIDs containsObject:posterUUID])
   {
-    v25 = v6;
+    v25 = viewCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [v6 visibleCells];
-    v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v14 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
     {
       v15 = v14;
@@ -295,7 +295,7 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(visibleCells);
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
@@ -324,15 +324,15 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
           [v22 setCheckboxOn:0];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v15 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v15);
     }
 
-    v6 = v25;
-    v23 = [v25 cellForItemAtIndexPath:v7];
-    objc_storeStrong(&self->_selectedConfigurationUUID, v11);
+    viewCopy = v25;
+    v23 = [v25 cellForItemAtIndexPath:pathCopy];
+    objc_storeStrong(&self->_selectedConfigurationUUID, posterUUID);
     [v23 setCheckboxOn:1];
     [(PBFPosterSelectionViewController *)self _validateDoneButton];
 
@@ -340,20 +340,20 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
   }
 }
 
-- (void)_reloadDataWithAnimation:(BOOL)a3
+- (void)_reloadDataWithAnimation:(BOOL)animation
 {
-  v28 = a3;
+  animationCopy = animation;
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+  switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
   switcherConfiguration = self->_switcherConfiguration;
-  self->_switcherConfiguration = v4;
+  self->_switcherConfiguration = switcherConfiguration;
 
-  v6 = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
+  configurations = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
   configurations = self->_configurations;
-  self->_configurations = v6;
+  self->_configurations = configurations;
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v30 = [(UIViewController *)self pbf_displayContext];
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
   [(NSMapTable *)self->_configurationsToMetadata removeAllObjects];
   v39 = 0u;
   v40 = 0u;
@@ -375,8 +375,8 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        v12 = [v11 _path];
-        v13 = [v12 serverIdentity];
+        _path = [v11 _path];
+        serverIdentity = [_path serverIdentity];
 
         v14 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v11];
         if (!v14)
@@ -385,21 +385,21 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
           [(NSMapTable *)self->_configurationsToMetadata setObject:v14 forKey:v11];
         }
 
-        v15 = [v13 posterUUID];
-        v16 = [v15 UUIDString];
+        posterUUID = [serverIdentity posterUUID];
+        uUIDString = [posterUUID UUIDString];
 
-        if (!v16)
+        if (!uUIDString)
         {
           [PBFPosterSelectionViewController _reloadDataWithAnimation:a2];
         }
 
-        [v8 setObject:v11 forKey:v16];
-        v17 = [(PBFPosterSelectionConfigurationMetadata *)v14 cachedSnapshot];
+        [v8 setObject:v11 forKey:uUIDString];
+        cachedSnapshot = [(PBFPosterSelectionConfigurationMetadata *)v14 cachedSnapshot];
 
-        if (!v17)
+        if (!cachedSnapshot)
         {
           dataStore = self->_dataStore;
-          [v13 provider];
+          [serverIdentity provider];
           v20 = v19 = v8;
           v21 = [(PBFPosterExtensionDataStore *)dataStore providerForExtensionIdentifier:v20];
 
@@ -411,11 +411,11 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
           v33[2] = __61__PBFPosterSelectionViewController__reloadDataWithAnimation___block_invoke;
           v33[3] = &unk_2782C6510;
           v34 = v14;
-          v35 = self;
-          v36 = v16;
+          selfCopy = self;
+          v36 = uUIDString;
           v24 = v23;
           v9 = v29;
-          [(PBFPosterExtensionDataStore *)v24 fetchGallerySnapshotForConfiguration:v11 context:v30 completion:v33];
+          [(PBFPosterExtensionDataStore *)v24 fetchGallerySnapshotForConfiguration:v11 context:pbf_displayContext completion:v33];
 
           v8 = v19;
         }
@@ -431,7 +431,7 @@ id __47__PBFPosterSelectionViewController_viewDidLoad__block_invoke(uint64_t a1,
   uuidsToConfigurations = self->_uuidsToConfigurations;
   self->_uuidsToConfigurations = v25;
 
-  [(PBFPosterSelectionViewController *)self _applySnapshotForCurrentStateWithAnimation:v28];
+  [(PBFPosterSelectionViewController *)self _applySnapshotForCurrentStateWithAnimation:animationCopy];
 }
 
 void __61__PBFPosterSelectionViewController__reloadDataWithAnimation___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -484,9 +484,9 @@ void __61__PBFPosterSelectionViewController__reloadDataWithAnimation___block_inv
   }
 }
 
-- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)a3
+- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v8[1] = *MEMORY[0x277D85DE8];
   v5 = [(NSArray *)self->_configurations bs_compactMap:&__block_literal_global_11];
   if (v5)
@@ -497,7 +497,7 @@ void __61__PBFPosterSelectionViewController__reloadDataWithAnimation___block_inv
     [v6 appendSectionsWithIdentifiers:v7];
 
     [v6 appendItemsWithIdentifiers:v5];
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v6 animatingDifferences:v3];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v6 animatingDifferences:animationCopy];
   }
 }
 
@@ -511,7 +511,7 @@ id __79__PBFPosterSelectionViewController__applySnapshotForCurrentStateWithAnima
   return v5;
 }
 
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -534,23 +534,23 @@ void __84__PBFPosterSelectionViewController_posterExtensionDataStoreDidUpdateCon
   }
 }
 
-- (id)_cellForItemAtIndexPath:(id)a3 identifier:(id)a4
+- (id)_cellForItemAtIndexPath:(id)path identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v23 = [(PBFPosterSelectionViewController *)self collectionView];
-  v8 = [v23 dequeueReusableCellWithReuseIdentifier:@"Poster" forIndexPath:v7];
+  identifierCopy = identifier;
+  pathCopy = path;
+  collectionView = [(PBFPosterSelectionViewController *)self collectionView];
+  v8 = [collectionView dequeueReusableCellWithReuseIdentifier:@"Poster" forIndexPath:pathCopy];
 
-  v9 = [(NSDictionary *)self->_uuidsToConfigurations objectForKey:v6];
+  v9 = [(NSDictionary *)self->_uuidsToConfigurations objectForKey:identifierCopy];
   v10 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v9];
-  v11 = [v9 _path];
-  v12 = [v11 serverIdentity];
-  v13 = [v12 posterUUID];
+  _path = [v9 _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
   allowedConfigurationUUIDs = self->_allowedConfigurationUUIDs;
   if (allowedConfigurationUUIDs)
   {
-    v15 = [(NSSet *)allowedConfigurationUUIDs containsObject:v13];
+    v15 = [(NSSet *)allowedConfigurationUUIDs containsObject:posterUUID];
   }
 
   else
@@ -558,19 +558,19 @@ void __84__PBFPosterSelectionViewController_posterExtensionDataStoreDidUpdateCon
     v15 = 1;
   }
 
-  v16 = [v10 cachedSnapshot];
-  [v8 setPosterImage:v16];
+  cachedSnapshot = [v10 cachedSnapshot];
+  [v8 setPosterImage:cachedSnapshot];
 
   [v8 setPosterPreviewGenerator:self->_galleryDataProvider];
-  v17 = [v10 posterPreview];
-  [v8 setPosterPreview:v17];
+  posterPreview = [v10 posterPreview];
+  [v8 setPosterPreview:posterPreview];
 
-  [v8 setCheckboxAssociatedPosterIdentifier:v6];
+  [v8 setCheckboxAssociatedPosterIdentifier:identifierCopy];
   selectedConfigurationUUID = self->_selectedConfigurationUUID;
-  v19 = [v9 _path];
-  v20 = [v19 serverIdentity];
-  v21 = [v20 posterUUID];
-  [v8 setCheckboxOn:{-[NSUUID isEqual:](selectedConfigurationUUID, "isEqual:", v21)}];
+  _path2 = [v9 _path];
+  serverIdentity2 = [_path2 serverIdentity];
+  posterUUID2 = [serverIdentity2 posterUUID];
+  [v8 setCheckboxOn:{-[NSUUID isEqual:](selectedConfigurationUUID, "isEqual:", posterUUID2)}];
 
   [v8 setActionType:1];
   [v8 setEnabled:v15];
@@ -578,11 +578,11 @@ void __84__PBFPosterSelectionViewController_posterExtensionDataStoreDidUpdateCon
   return v8;
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
   v4 = [objc_alloc(MEMORY[0x277D3EAE8]) initWithResult:0 configurationUUID:0];
-  v5 = [(PBFPosterSelectionViewController *)self delegate];
-  [v5 posterSelectionViewController:self willDismissWithResponse:v4];
+  delegate = [(PBFPosterSelectionViewController *)self delegate];
+  [delegate posterSelectionViewController:self willDismissWithResponse:v4];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -600,11 +600,11 @@ void __44__PBFPosterSelectionViewController__cancel___block_invoke(uint64_t a1)
   [v2 posterSelectionViewController:*(a1 + 32) didDismissWithResponse:*(a1 + 40)];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   v4 = [objc_alloc(MEMORY[0x277D3EAE8]) initWithResult:1 configurationUUID:self->_selectedConfigurationUUID];
-  v5 = [(PBFPosterSelectionViewController *)self delegate];
-  [v5 posterSelectionViewController:self willDismissWithResponse:v4];
+  delegate = [(PBFPosterSelectionViewController *)self delegate];
+  [delegate posterSelectionViewController:self willDismissWithResponse:v4];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

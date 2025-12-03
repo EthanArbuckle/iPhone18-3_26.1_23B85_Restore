@@ -2,11 +2,11 @@
 + (id)sharedW5BufferPool;
 - (id)getBufferFromPool;
 - (id)getPairOfBuffersFromPool;
-- (id)initBuffersWithSize:(unint64_t)a3 bufferCount:(unint64_t)a4;
+- (id)initBuffersWithSize:(unint64_t)size bufferCount:(unint64_t)count;
 - (unint64_t)getCountOfAllocatedBuffers;
 - (unint64_t)getCountOfInUseBuffers;
-- (void)freeIdleBufferOfTimer:(id)a3;
-- (void)returnBufferToPool:(id)a3;
+- (void)freeIdleBufferOfTimer:(id)timer;
+- (void)returnBufferToPool:(id)pool;
 @end
 
 @implementation W5BufferPool
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (id)initBuffersWithSize:(unint64_t)a3 bufferCount:(unint64_t)a4
+- (id)initBuffersWithSize:(unint64_t)size bufferCount:(unint64_t)count
 {
   v25.receiver = self;
   v25.super_class = W5BufferPool;
@@ -31,12 +31,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_bufferSize = a3;
+    v6->_bufferSize = size;
     v8 = +[NSMutableArray array];
     bufferPool = v7->_bufferPool;
     v7->_bufferPool = v8;
 
-    v10 = dispatch_semaphore_create(a4);
+    v10 = dispatch_semaphore_create(count);
     semaphore = v7->_semaphore;
     v7->_semaphore = v10;
 
@@ -53,7 +53,7 @@
     queue = v7->_queue;
     v7->_queue = v17;
 
-    for (; a4; --a4)
+    for (; count; --count)
     {
       v19 = +[NSMutableDictionary dictionary];
       [v19 setObject:v7->_dateOfInvalidPoolBuffer forKeyedSubscript:@"allocDate"];
@@ -90,10 +90,10 @@
   return v7;
 }
 
-- (void)freeIdleBufferOfTimer:(id)a3
+- (void)freeIdleBufferOfTimer:(id)timer
 {
-  v4 = a3;
-  v29 = self;
+  timerCopy = timer;
+  selfCopy = self;
   obj = [(W5BufferPool *)self lockBufferPool];
   objc_sync_enter(obj);
   v31 = 0u;
@@ -117,14 +117,14 @@
 
         v8 = *(*(&v31 + 1) + 8 * i);
         v9 = [v8 objectForKeyedSubscript:{@"timer", v25, v26}];
-        v10 = v9 == v4;
+        v10 = v9 == timerCopy;
 
         if (v10)
         {
           v11 = [v8 objectForKeyedSubscript:@"inUse"];
-          v12 = [v11 BOOLValue];
+          bOOLValue = [v11 BOOLValue];
 
-          v6 = [(NSMutableArray *)v29->_bufferPool indexOfObject:v8];
+          v6 = [(NSMutableArray *)selfCopy->_bufferPool indexOfObject:v8];
           v13 = [v8 objectForKeyedSubscript:@"lastDateReturned"];
           [v13 timeIntervalSinceNow];
           v15 = v14;
@@ -136,7 +136,7 @@
             v18 = [v8 objectForKeyedSubscript:@"lastDateBorrowed"];
             v19 = [v8 objectForKeyedSubscript:@"lastDateReturned"];
             *buf = 67110146;
-            *v36 = v12;
+            *v36 = bOOLValue;
             *&v36[4] = 2048;
             *&v36[6] = v6;
             v37 = 2112;
@@ -157,7 +157,7 @@
 
           else
           {
-            v20 = v12;
+            v20 = bOOLValue;
           }
 
           if ((v20 & 1) == 0)
@@ -172,12 +172,12 @@
               _os_log_send_and_compose_impl();
             }
 
-            [v8 setObject:v29->_dateOfInvalidPoolBuffer forKeyedSubscript:@"allocDate"];
+            [v8 setObject:selfCopy->_dateOfInvalidPoolBuffer forKeyedSubscript:@"allocDate"];
             v22 = +[NSNull null];
             [v8 setObject:v22 forKeyedSubscript:@"allocdBuffer"];
 
-            [v8 setObject:v29->_dateOfInvalidPoolBuffer forKeyedSubscript:@"lastDateBorrowed"];
-            [v8 setObject:v29->_dateOfInvalidPoolBuffer forKeyedSubscript:@"lastDateReturned"];
+            [v8 setObject:selfCopy->_dateOfInvalidPoolBuffer forKeyedSubscript:@"lastDateBorrowed"];
+            [v8 setObject:selfCopy->_dateOfInvalidPoolBuffer forKeyedSubscript:@"lastDateReturned"];
             v23 = [NSNumber numberWithBool:0];
             [v8 setObject:v23 forKeyedSubscript:@"inUse"];
           }
@@ -391,21 +391,21 @@ LABEL_30:
 
 - (id)getPairOfBuffersFromPool
 {
-  v3 = [(W5BufferPool *)self semaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  semaphore = [(W5BufferPool *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-  v4 = [(W5BufferPool *)self getBufferFromPool];
-  v5 = [(W5BufferPool *)self getBufferFromPool];
-  v8[0] = v4;
-  v8[1] = v5;
+  getBufferFromPool = [(W5BufferPool *)self getBufferFromPool];
+  getBufferFromPool2 = [(W5BufferPool *)self getBufferFromPool];
+  v8[0] = getBufferFromPool;
+  v8[1] = getBufferFromPool2;
   v6 = [NSArray arrayWithObjects:v8 count:2];
 
   return v6;
 }
 
-- (void)returnBufferToPool:(id)a3
+- (void)returnBufferToPool:(id)pool
 {
-  v4 = a3;
+  poolCopy = pool;
   obj = [(W5BufferPool *)self lockBufferPool];
   objc_sync_enter(obj);
   v25 = 0u;
@@ -430,7 +430,7 @@ LABEL_30:
 
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"allocdBuffer"];
-        v12 = v11 == v4;
+        v12 = v11 == poolCopy;
 
         if (v12)
         {
@@ -452,13 +452,13 @@ LABEL_30:
           v16 = +[NSDate date];
           [v10 setObject:v16 forKeyedSubscript:@"lastDateReturned"];
 
-          [v4 setLength:self->_bufferSize];
+          [poolCopy setLength:self->_bufferSize];
         }
 
         v17 = [v10 objectForKeyedSubscript:@"inUse"];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
-        v5 += v18 ^ 1;
+        v5 += bOOLValue ^ 1;
       }
 
       v6 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -492,8 +492,8 @@ LABEL_30:
 
   if (v5 == 2)
   {
-    v21 = [(W5BufferPool *)self semaphore];
-    dispatch_semaphore_signal(v21);
+    semaphore = [(W5BufferPool *)self semaphore];
+    dispatch_semaphore_signal(semaphore);
   }
 
   objc_sync_exit(obj);
@@ -544,8 +544,8 @@ LABEL_30:
 
 - (unint64_t)getCountOfInUseBuffers
 {
-  v3 = [(W5BufferPool *)self lockBufferPool];
-  objc_sync_enter(v3);
+  lockBufferPool = [(W5BufferPool *)self lockBufferPool];
+  objc_sync_enter(lockBufferPool);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -567,9 +567,9 @@ LABEL_30:
         }
 
         v9 = [*(*(&v12 + 1) + 8 * v8) objectForKeyedSubscript:{@"inUse", v12}];
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
 
-        v5 += v10;
+        v5 += bOOLValue;
         v8 = v8 + 1;
       }
 
@@ -580,7 +580,7 @@ LABEL_30:
     while (v6);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(lockBufferPool);
   return v5;
 }
 

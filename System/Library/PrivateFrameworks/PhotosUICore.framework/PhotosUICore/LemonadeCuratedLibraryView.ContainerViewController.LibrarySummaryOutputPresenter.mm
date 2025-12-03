@@ -1,7 +1,7 @@
 @interface LemonadeCuratedLibraryView.ContainerViewController.LibrarySummaryOutputPresenter
 - (NSString)title;
 - (_TtCCV12PhotosUICore26LemonadeCuratedLibraryView23ContainerViewControllerP33_3214E6D65D1AA0606897629850A43E8429LibrarySummaryOutputPresenter)init;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation LemonadeCuratedLibraryView.ContainerViewController.LibrarySummaryOutputPresenter
@@ -16,9 +16,9 @@
   return 0;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1A524C674();
     v6 = v5;
@@ -30,7 +30,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1A3EF6150(v4, v6);
 }
 

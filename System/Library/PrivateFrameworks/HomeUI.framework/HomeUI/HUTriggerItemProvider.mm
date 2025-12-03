@@ -1,7 +1,7 @@
 @interface HUTriggerItemProvider
 - (HUTriggerItemProvider)init;
-- (HUTriggerItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUTriggerItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
@@ -10,23 +10,23 @@
 
 - (HUTriggerItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUTriggerItemProvider.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerItemProvider.m" lineNumber:28 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HUTriggerItemProvider)initWithHome:(id)a3
+- (HUTriggerItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUTriggerItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v7->_usesRichIconDescriptors = 0;
     v8 = [MEMORY[0x277CBEB58] set];
     triggerItems = v7->_triggerItems;
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUTriggerItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUTriggerItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -54,10 +54,10 @@
   aBlock[3] = &unk_277DB7F08;
   objc_copyWeak(&v13, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HUTriggerItemProvider *)self home];
-  v5 = [v4 triggers];
-  v6 = [(HUTriggerItemProvider *)self filter];
-  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v5 filter:v6 itemMap:v3];
+  home = [(HUTriggerItemProvider *)self home];
+  triggers = [home triggers];
+  filter = [(HUTriggerItemProvider *)self filter];
+  v7 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:triggers filter:filter itemMap:v3];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __36__HUTriggerItemProvider_reloadItems__block_invoke_2;
@@ -120,12 +120,12 @@ void __36__HUTriggerItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUTriggerItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B30];
   v8[0] = *MEMORY[0x277D13B80];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

@@ -1,9 +1,9 @@
 @interface ProgressController
 + (id)sharedProgressController;
 - (void)_hideSpinner;
-- (void)_setHideSpinnerTimer:(id)a3;
+- (void)_setHideSpinnerTimer:(id)timer;
 - (void)_showSpinner;
-- (void)setLoadingData:(BOOL)a3;
+- (void)setLoadingData:(BOOL)data;
 - (void)suspend;
 @end
 
@@ -24,21 +24,21 @@
   return v2;
 }
 
-- (void)_setHideSpinnerTimer:(id)a3
+- (void)_setHideSpinnerTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   hideSpinnerTimer = self->_hideSpinnerTimer;
   p_hideSpinnerTimer = &self->_hideSpinnerTimer;
   v6 = hideSpinnerTimer;
-  if (hideSpinnerTimer != v5)
+  if (hideSpinnerTimer != timerCopy)
   {
-    v9 = v5;
+    v9 = timerCopy;
     [(NSTimer *)v6 invalidate];
-    objc_storeStrong(p_hideSpinnerTimer, a3);
-    v5 = v9;
+    objc_storeStrong(p_hideSpinnerTimer, timer);
+    timerCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](v6, v5);
+  MEMORY[0x2821F96F8](v6, timerCopy);
 }
 
 - (void)_hideSpinner
@@ -57,12 +57,12 @@
   [v2 setStatusBarShowsProgress:1];
 }
 
-- (void)setLoadingData:(BOOL)a3
+- (void)setLoadingData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   p_loadingCount = &self->_loadingCount;
   loadingCount = self->_loadingCount;
-  if (a3)
+  if (data)
   {
     v7 = loadingCount + 1;
   }
@@ -76,11 +76,11 @@
   v8 = WALogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ProgressController *)v3 setLoadingData:v8];
+    [(ProgressController *)dataCopy setLoadingData:v8];
   }
 
   v9 = *p_loadingCount;
-  if (v3)
+  if (dataCopy)
   {
     if (v9 >= 1)
     {

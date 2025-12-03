@@ -1,6 +1,6 @@
 @interface HUGridCellBackgroundDisplayOptions
 + (id)defaultOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridCellBackgroundDisplayOptions
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HUGridCellBackgroundDisplayOptions);
   [(HUGridCellBackgroundDisplayOptions *)v4 setContentColorStyle:[(HUGridCellBackgroundDisplayOptions *)self contentColorStyle]];
-  v5 = [(HUGridCellBackgroundDisplayOptions *)self contentSizeCategory];
-  [(HUGridCellBackgroundDisplayOptions *)v4 setContentSizeCategory:v5];
+  contentSizeCategory = [(HUGridCellBackgroundDisplayOptions *)self contentSizeCategory];
+  [(HUGridCellBackgroundDisplayOptions *)v4 setContentSizeCategory:contentSizeCategory];
 
   [(HUGridCellBackgroundDisplayOptions *)v4 setDisplayStyle:[(HUGridCellBackgroundDisplayOptions *)self displayStyle]];
   return v4;

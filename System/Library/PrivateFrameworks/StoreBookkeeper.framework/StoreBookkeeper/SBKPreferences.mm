@@ -1,41 +1,41 @@
 @interface SBKPreferences
 + (id)storeBookkeeperPreferences;
 - (SBKPreferences)init;
-- (id)objectForKey:(id)a3 withDefaultValue:(id)a4;
+- (id)objectForKey:(id)key withDefaultValue:(id)value;
 - (void)_preferencesDidChange;
 - (void)dealloc;
-- (void)registerDefaultsIfKeyNotSet:(id)a3 registrationBlock:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)registerDefaultsIfKeyNotSet:(id)set registrationBlock:(id)block;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SBKPreferences
 
-- (id)objectForKey:(id)a3 withDefaultValue:(id)a4
+- (id)objectForKey:(id)key withDefaultValue:(id)value
 {
-  v5 = a4;
-  v6 = CFPreferencesCopyAppValue(a3, @"com.apple.storebookkeeper");
+  valueCopy = value;
+  v6 = CFPreferencesCopyAppValue(key, @"com.apple.storebookkeeper");
   if (!v6)
   {
-    v6 = v5;
+    v6 = valueCopy;
   }
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.storebookkeeper");
+  CFPreferencesSetAppValue(key, object, @"com.apple.storebookkeeper");
 
   CFPreferencesAppSynchronize(@"com.apple.storebookkeeper");
 }
 
-- (void)registerDefaultsIfKeyNotSet:(id)a3 registrationBlock:(id)a4
+- (void)registerDefaultsIfKeyNotSet:(id)set registrationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [@"_didRegister-" stringByAppendingString:a3];
+  blockCopy = block;
+  v7 = [@"_didRegister-" stringByAppendingString:set];
   if (![(SBKPreferences *)self BOOLForKey:?])
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
     [(SBKPreferences *)self setBool:1 forKey:v7];
     CFPreferencesAppSynchronize(@"com.apple.storebookkeeper");
   }
@@ -43,8 +43,8 @@
 
 - (void)_preferencesDidChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBKPreferencesDidChangeNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBKPreferencesDidChangeNotification" object:self userInfo:0];
 }
 
 - (void)dealloc

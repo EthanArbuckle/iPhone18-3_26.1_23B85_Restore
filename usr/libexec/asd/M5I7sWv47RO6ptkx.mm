@@ -1,6 +1,6 @@
 @interface M5I7sWv47RO6ptkx
 - (M5I7sWv47RO6ptkx)init;
-- (id)WnJ3gJFPRgsreXQi:(id)a3;
+- (id)WnJ3gJFPRgsreXQi:(id)qi;
 @end
 
 @implementation M5I7sWv47RO6ptkx
@@ -17,16 +17,16 @@
   return v2;
 }
 
-- (id)WnJ3gJFPRgsreXQi:(id)a3
+- (id)WnJ3gJFPRgsreXQi:(id)qi
 {
-  v4 = a3;
-  v5 = [v4 value];
-  if (![v5 length])
+  qiCopy = qi;
+  value = [qiCopy value];
+  if (![value length])
   {
     v6 = +[j7CSI6j8vNYi4bMa sharedInstance];
-    v7 = [v6 email];
+    email = [v6 email];
 
-    v5 = v7;
+    value = email;
   }
 
   v51 = 0;
@@ -45,7 +45,7 @@
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  if ([v5 length])
+  if ([value length])
   {
     v8 = +[C7RiKwi0qHUD3RW9 sharedInstance];
     v9 = dispatch_group_create();
@@ -58,7 +58,7 @@
     v38 = &v51;
     v10 = v9;
     v37 = v10;
-    [v8 E5J0OeRApCYQUXDZ:v5 completion:v36];
+    [v8 E5J0OeRApCYQUXDZ:value completion:v36];
     dispatch_group_enter(v10);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -68,7 +68,7 @@
     v35 = &v47;
     v11 = v10;
     v34 = v11;
-    [v8 U4k02bIWNYQCLSGK:v5 completion:v33];
+    [v8 U4k02bIWNYQCLSGK:value completion:v33];
     dispatch_group_enter(v11);
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
@@ -77,7 +77,7 @@
     v32 = &v39;
     v12 = v11;
     v31 = v12;
-    [v8 YMeSiVAJwqHb7P3U:v5 completion:v30];
+    [v8 YMeSiVAJwqHb7P3U:value completion:v30];
     dispatch_group_enter(v12);
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
@@ -86,7 +86,7 @@
     v29 = &v43;
     v13 = v12;
     v28 = v13;
-    [v8 KqWH25SjlYcX4wo6:v5 completion:v27];
+    [v8 KqWH25SjlYcX4wo6:value completion:v27];
     v14 = dispatch_time(0, 1800000000);
     if (dispatch_group_wait(v13, v14))
     {
@@ -95,7 +95,7 @@
   }
 
   v55[0] = &off_1006BA610;
-  v15 = [v5 length];
+  v15 = [value length];
   v17 = &off_1006BA9C8;
   if (!v15)
   {

@@ -1,31 +1,31 @@
 @interface HMMXPCActivityInterface
-- (id)criteriaForXPCActivity:(id)a3;
-- (void)registerXPCActivityWithActivityIdentifier:(id)a3 criteria:(id)a4 activityBlock:(id)a5;
-- (void)unregisterXPCActivityWithActivityIdentifier:(id)a3;
+- (id)criteriaForXPCActivity:(id)activity;
+- (void)registerXPCActivityWithActivityIdentifier:(id)identifier criteria:(id)criteria activityBlock:(id)block;
+- (void)unregisterXPCActivityWithActivityIdentifier:(id)identifier;
 @end
 
 @implementation HMMXPCActivityInterface
 
-- (void)unregisterXPCActivityWithActivityIdentifier:(id)a3
+- (void)unregisterXPCActivityWithActivityIdentifier:(id)identifier
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [identifier UTF8String];
 
-  xpc_activity_unregister(v3);
+  xpc_activity_unregister(uTF8String);
 }
 
-- (id)criteriaForXPCActivity:(id)a3
+- (id)criteriaForXPCActivity:(id)activity
 {
-  v3 = xpc_activity_copy_criteria(a3);
+  v3 = xpc_activity_copy_criteria(activity);
 
   return v3;
 }
 
-- (void)registerXPCActivityWithActivityIdentifier:(id)a3 criteria:(id)a4 activityBlock:(id)a5
+- (void)registerXPCActivityWithActivityIdentifier:(id)identifier criteria:(id)criteria activityBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  criteria = a4;
-  xpc_activity_register([a3 UTF8String], criteria, v9);
+  identifierCopy = identifier;
+  blockCopy = block;
+  criteria = criteria;
+  xpc_activity_register([identifier UTF8String], criteria, blockCopy);
 }
 
 @end

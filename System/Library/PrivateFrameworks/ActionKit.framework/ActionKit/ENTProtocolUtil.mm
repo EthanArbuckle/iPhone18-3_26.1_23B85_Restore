@@ -1,31 +1,31 @@
 @interface ENTProtocolUtil
-+ (id)_readValueForField:(id)a3 fromProtocol:(id)a4;
-+ (id)readMessage:(id)a3 fromProtocol:(id)a4 withResponseTypes:(id)a5;
-+ (void)_writeValue:(id)a3 forField:(id)a4 toProtocol:(id)a5;
-+ (void)readFromProtocol:(id)a3 ontoObject:(id)a4;
-+ (void)sendMessage:(id)a3 toProtocol:(id)a4 withArguments:(id)a5;
-+ (void)skipType:(int)a3 onProtocol:(id)a4;
-+ (void)writeObject:(id)a3 ontoProtocol:(id)a4;
++ (id)_readValueForField:(id)field fromProtocol:(id)protocol;
++ (id)readMessage:(id)message fromProtocol:(id)protocol withResponseTypes:(id)types;
++ (void)_writeValue:(id)value forField:(id)field toProtocol:(id)protocol;
++ (void)readFromProtocol:(id)protocol ontoObject:(id)object;
++ (void)sendMessage:(id)message toProtocol:(id)protocol withArguments:(id)arguments;
++ (void)skipType:(int)type onProtocol:(id)protocol;
++ (void)writeObject:(id)object ontoProtocol:(id)protocol;
 @end
 
 @implementation ENTProtocolUtil
 
-+ (void)sendMessage:(id)a3 toProtocol:(id)a4 withArguments:(id)a5
++ (void)sendMessage:(id)message toProtocol:(id)protocol withArguments:(id)arguments
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 writeMessageBeginWithName:v8 type:1 sequenceID:0];
-  v23 = v8;
-  v11 = [v8 stringByAppendingString:@"_args"];
-  [v9 writeStructBeginWithName:v11];
+  messageCopy = message;
+  protocolCopy = protocol;
+  argumentsCopy = arguments;
+  [protocolCopy writeMessageBeginWithName:messageCopy type:1 sequenceID:0];
+  v23 = messageCopy;
+  v11 = [messageCopy stringByAppendingString:@"_args"];
+  [protocolCopy writeStructBeginWithName:v11];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v10;
+  v12 = argumentsCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -41,13 +41,13 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 field];
-        v19 = [v17 value];
-        v20 = [v18 name];
-        [v9 writeFieldBeginWithName:v20 type:objc_msgSend(v18 fieldID:{"type"), objc_msgSend(v18, "index")}];
+        field = [v17 field];
+        value = [v17 value];
+        name = [field name];
+        [protocolCopy writeFieldBeginWithName:name type:objc_msgSend(field fieldID:{"type"), objc_msgSend(field, "index")}];
 
-        [a1 _writeValue:v19 forField:v18 toProtocol:v9];
-        [v9 writeFieldEnd];
+        [self _writeValue:value forField:field toProtocol:protocolCopy];
+        [protocolCopy writeFieldEnd];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -56,29 +56,29 @@
     while (v14);
   }
 
-  [v9 writeFieldStop];
-  [v9 writeStructEnd];
-  [v9 writeMessageEnd];
-  v21 = [v9 transport];
-  [v21 flush];
+  [protocolCopy writeFieldStop];
+  [protocolCopy writeStructEnd];
+  [protocolCopy writeMessageEnd];
+  transport = [protocolCopy transport];
+  [transport flush];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)writeObject:(id)a3 ontoProtocol:(id)a4
++ (void)writeObject:(id)object ontoProtocol:(id)protocol
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() structName];
-  [v6 writeStructBeginWithName:v7];
+  objectCopy = object;
+  protocolCopy = protocol;
+  structName = [objc_opt_class() structName];
+  [protocolCopy writeStructBeginWithName:structName];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [objc_opt_class() structFields];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  structFields = [objc_opt_class() structFields];
+  v9 = [structFields countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
@@ -89,74 +89,74 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(structFields);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 name];
-        v15 = [v5 valueForKey:v14];
+        name = [v13 name];
+        v15 = [objectCopy valueForKey:name];
         if (v15)
         {
-          v16 = [v13 type];
-          if (v16 == 16)
+          type = [v13 type];
+          if (type == 16)
           {
             v17 = 11;
           }
 
           else
           {
-            v17 = v16;
+            v17 = type;
           }
 
-          [v6 writeFieldBeginWithName:v14 type:v17 fieldID:{objc_msgSend(v13, "index")}];
-          [a1 _writeValue:v15 forField:v13 toProtocol:v6];
-          [v6 writeFieldEnd];
+          [protocolCopy writeFieldBeginWithName:name type:v17 fieldID:{objc_msgSend(v13, "index")}];
+          [self _writeValue:v15 forField:v13 toProtocol:protocolCopy];
+          [protocolCopy writeFieldEnd];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [structFields countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
   }
 
-  [v6 writeFieldStop];
-  [v6 writeStructEnd];
+  [protocolCopy writeFieldStop];
+  [protocolCopy writeStructEnd];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)readMessage:(id)a3 fromProtocol:(id)a4 withResponseTypes:(id)a5
++ (id)readMessage:(id)message fromProtocol:(id)protocol withResponseTypes:(id)types
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v47 = a5;
+  messageCopy = message;
+  protocolCopy = protocol;
+  typesCopy = types;
   v68 = 0;
-  [v9 readMessageBeginReturningName:0 type:&v68 sequenceID:0];
+  [protocolCopy readMessageBeginReturningName:0 type:&v68 sequenceID:0];
   if (v68 == 3)
   {
-    v45 = [ENTApplicationException read:v9];
-    [v9 readMessageEnd];
+    v45 = [ENTApplicationException read:protocolCopy];
+    [protocolCopy readMessageEnd];
     v41 = v45;
 LABEL_55:
     objc_exception_throw(v41);
   }
 
-  v46 = v8;
-  v10 = [MEMORY[0x277CBEB18] array];
-  [v9 readStructBeginReturningName:0];
+  v46 = messageCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  [protocolCopy readStructBeginReturningName:0];
   v67 = 0;
   v66 = 0;
   v65 = 0;
-  [v9 readFieldBeginReturningName:&v65 type:&v67 fieldID:&v66];
+  [protocolCopy readFieldBeginReturningName:&v65 type:&v67 fieldID:&v66];
   for (i = v65; v67; i = v65)
   {
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v12 = v47;
+    v12 = typesCopy;
     v13 = [v12 countByEnumeratingWithState:&v61 objects:v72 count:16];
     if (v13)
     {
@@ -174,16 +174,16 @@ LABEL_55:
           }
 
           v18 = *(*(&v61 + 1) + 8 * j);
-          v19 = [v18 index];
-          if (v19 == v66)
+          index = [v18 index];
+          if (index == v66)
           {
-            v20 = [v18 type];
-            if (v20 == v67 || ([v18 type] != 16 ? (v21 = v67 == 11) : (v21 = 1), v21))
+            type = [v18 type];
+            if (type == v67 || ([v18 type] != 16 ? (v21 = v67 == 11) : (v21 = 1), v21))
             {
-              v22 = [a1 _readValueForField:v18 fromProtocol:v9];
+              v22 = [self _readValueForField:v18 fromProtocol:protocolCopy];
               if (v22)
               {
-                [v10 addObject:v22];
+                [array addObject:v22];
               }
 
               v15 = 1;
@@ -212,22 +212,22 @@ LABEL_55:
     {
     }
 
-    [ENTProtocolUtil skipType:v67 onProtocol:v9];
+    [ENTProtocolUtil skipType:v67 onProtocol:protocolCopy];
 LABEL_24:
 
     v67 = 0;
     v66 = 0;
     v65 = 0;
-    [v9 readFieldBeginReturningName:&v65 type:&v67 fieldID:&v66];
+    [protocolCopy readFieldBeginReturningName:&v65 type:&v67 fieldID:&v66];
   }
 
-  [v9 readStructEnd];
-  [v9 readMessageEnd];
+  [protocolCopy readStructEnd];
+  [protocolCopy readMessageEnd];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v23 = v10;
+  v23 = array;
   v24 = [v23 countByEnumeratingWithState:&v57 objects:v71 count:16];
   if (v24)
   {
@@ -300,7 +300,7 @@ LABEL_24:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v35 = v47;
+  v35 = typesCopy;
   v36 = [v35 countByEnumeratingWithState:&v49 objects:v69 count:16];
   if (v36)
   {
@@ -338,44 +338,44 @@ LABEL_51:
   return v36;
 }
 
-+ (void)_writeValue:(id)a3 forField:(id)a4 toProtocol:(id)a5
++ (void)_writeValue:(id)value forField:(id)field toProtocol:(id)protocol
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 type];
-  if (v11 <= 10)
+  valueCopy = value;
+  fieldCopy = field;
+  protocolCopy = protocol;
+  type = [fieldCopy type];
+  if (type <= 10)
   {
-    if (v11 > 5)
+    if (type > 5)
     {
-      switch(v11)
+      switch(type)
       {
         case 6:
-          [v10 writeI16:{objc_msgSend(v8, "shortValue")}];
+          [protocolCopy writeI16:{objc_msgSend(valueCopy, "shortValue")}];
           break;
         case 8:
-          [v10 writeI32:{objc_msgSend(v8, "intValue")}];
+          [protocolCopy writeI32:{objc_msgSend(valueCopy, "intValue")}];
           break;
         case 10:
-          [v10 writeI64:{objc_msgSend(v8, "longLongValue")}];
+          [protocolCopy writeI64:{objc_msgSend(valueCopy, "longLongValue")}];
           break;
       }
     }
 
     else
     {
-      switch(v11)
+      switch(type)
       {
         case 2:
-          [v10 writeBool:{objc_msgSend(v8, "BOOLValue")}];
+          [protocolCopy writeBool:{objc_msgSend(valueCopy, "BOOLValue")}];
           break;
         case 3:
-          [v10 writeByte:{objc_msgSend(v8, "charValue")}];
+          [protocolCopy writeByte:{objc_msgSend(valueCopy, "charValue")}];
           break;
         case 4:
-          [v8 doubleValue];
-          [v10 writeDouble:?];
+          [valueCopy doubleValue];
+          [protocolCopy writeDouble:?];
           break;
       }
     }
@@ -383,29 +383,29 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  if (v11 <= 13)
+  if (type <= 13)
   {
-    if (v11 == 11)
+    if (type == 11)
     {
-      [v10 writeString:v8];
+      [protocolCopy writeString:valueCopy];
     }
 
-    else if (v11 == 12)
+    else if (type == 12)
     {
-      [v8 write:v10];
+      [valueCopy write:protocolCopy];
     }
 
     else
     {
-      v12 = [v9 keyField];
-      v13 = [v9 valueField];
-      [v10 writeMapBeginWithKeyType:objc_msgSend(v12 valueType:"type") size:{objc_msgSend(v13, "type"), objc_msgSend(v8, "count")}];
+      keyField = [fieldCopy keyField];
+      valueField = [fieldCopy valueField];
+      [protocolCopy writeMapBeginWithKeyType:objc_msgSend(keyField valueType:"type") size:{objc_msgSend(valueField, "type"), objc_msgSend(valueCopy, "count")}];
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v33 = v8;
-      v14 = v8;
+      v33 = valueCopy;
+      v14 = valueCopy;
       v15 = [v14 countByEnumeratingWithState:&v42 objects:v48 count:16];
       if (v15)
       {
@@ -421,9 +421,9 @@ LABEL_51:
             }
 
             v19 = *(*(&v42 + 1) + 8 * i);
-            [a1 _writeValue:v19 forField:v12 toProtocol:v10];
+            [self _writeValue:v19 forField:keyField toProtocol:protocolCopy];
             v20 = [v14 objectForKey:v19];
-            [a1 _writeValue:v20 forField:v13 toProtocol:v10];
+            [self _writeValue:v20 forField:valueField toProtocol:protocolCopy];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -432,24 +432,24 @@ LABEL_51:
         while (v16);
       }
 
-      [v10 writeMapEnd];
-      v8 = v33;
+      [protocolCopy writeMapEnd];
+      valueCopy = v33;
     }
 
     goto LABEL_49;
   }
 
-  switch(v11)
+  switch(type)
   {
     case 14:
-      v21 = [v9 valueField];
-      [v10 writeSetBeginWithElementType:objc_msgSend(v21 size:{"type"), objc_msgSend(v8, "count")}];
-      [v10 writeSetEnd];
+      valueField2 = [fieldCopy valueField];
+      [protocolCopy writeSetBeginWithElementType:objc_msgSend(valueField2 size:{"type"), objc_msgSend(valueCopy, "count")}];
+      [protocolCopy writeSetEnd];
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v22 = v8;
+      v22 = valueCopy;
       v23 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (v23)
       {
@@ -464,7 +464,7 @@ LABEL_51:
               objc_enumerationMutation(v22);
             }
 
-            [a1 _writeValue:*(*(&v38 + 1) + 8 * j) forField:v21 toProtocol:v10];
+            [self _writeValue:*(*(&v38 + 1) + 8 * j) forField:valueField2 toProtocol:protocolCopy];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -475,13 +475,13 @@ LABEL_51:
 
       goto LABEL_48;
     case 15:
-      v21 = [v9 valueField];
-      [v10 writeListBeginWithElementType:objc_msgSend(v21 size:{"type"), objc_msgSend(v8, "count")}];
+      valueField2 = [fieldCopy valueField];
+      [protocolCopy writeListBeginWithElementType:objc_msgSend(valueField2 size:{"type"), objc_msgSend(valueCopy, "count")}];
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v27 = v8;
+      v27 = valueCopy;
       v28 = [v27 countByEnumeratingWithState:&v34 objects:v46 count:16];
       if (v28)
       {
@@ -496,7 +496,7 @@ LABEL_51:
               objc_enumerationMutation(v27);
             }
 
-            [a1 _writeValue:*(*(&v34 + 1) + 8 * k) forField:v21 toProtocol:v10];
+            [self _writeValue:*(*(&v34 + 1) + 8 * k) forField:valueField2 toProtocol:protocolCopy];
           }
 
           v29 = [v27 countByEnumeratingWithState:&v34 objects:v46 count:16];
@@ -505,12 +505,12 @@ LABEL_51:
         while (v29);
       }
 
-      [v10 writeListEnd];
+      [protocolCopy writeListEnd];
 LABEL_48:
 
       break;
     case 16:
-      [v10 writeBinary:v8];
+      [protocolCopy writeBinary:valueCopy];
       break;
   }
 
@@ -519,22 +519,22 @@ LABEL_49:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)readFromProtocol:(id)a3 ontoObject:(id)a4
++ (void)readFromProtocol:(id)protocol ontoObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 readStructBeginReturningName:0];
-  v8 = [objc_opt_class() structFields];
+  protocolCopy = protocol;
+  objectCopy = object;
+  [protocolCopy readStructBeginReturningName:0];
+  structFields = [objc_opt_class() structFields];
   v26 = 0;
-  [v6 readFieldBeginReturningName:0 type:&v26 + 4 fieldID:&v26];
+  [protocolCopy readFieldBeginReturningName:0 type:&v26 + 4 fieldID:&v26];
   while (HIDWORD(v26))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v8;
+    v9 = structFields;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
@@ -550,8 +550,8 @@ LABEL_4:
         }
 
         v14 = *(*(&v22 + 1) + 8 * v13);
-        v15 = [v14 index];
-        if (v15 == v26)
+        index = [v14 index];
+        if (index == v26)
         {
           break;
         }
@@ -575,18 +575,18 @@ LABEL_4:
         goto LABEL_19;
       }
 
-      v17 = [v16 type];
-      if (v17 != HIDWORD(v26) && [v16 type] != 16 && HIDWORD(v26) != 11)
+      type = [v16 type];
+      if (type != HIDWORD(v26) && [v16 type] != 16 && HIDWORD(v26) != 11)
       {
         NSLog(&cfstr_SkippingFieldD.isa, v16, HIDWORD(v26));
         goto LABEL_19;
       }
 
-      v19 = [a1 _readValueForField:v16 fromProtocol:v6];
-      v20 = [v16 name];
-      [v7 setValue:v19 forKey:v20];
+      v19 = [self _readValueForField:v16 fromProtocol:protocolCopy];
+      name = [v16 name];
+      [objectCopy setValue:v19 forKey:name];
 
-      [v6 readFieldEnd];
+      [protocolCopy readFieldEnd];
     }
 
     else
@@ -595,89 +595,89 @@ LABEL_10:
 
       v16 = 0;
 LABEL_19:
-      [a1 skipType:HIDWORD(v26) onProtocol:v6];
+      [self skipType:HIDWORD(v26) onProtocol:protocolCopy];
     }
 
     v26 = 0;
-    [v6 readFieldBeginReturningName:0 type:&v26 + 4 fieldID:&v26];
+    [protocolCopy readFieldBeginReturningName:0 type:&v26 + 4 fieldID:&v26];
   }
 
-  [v6 readStructEnd];
+  [protocolCopy readStructEnd];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_readValueForField:(id)a3 fromProtocol:(id)a4
++ (id)_readValueForField:(id)field fromProtocol:(id)protocol
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 type];
+  fieldCopy = field;
+  protocolCopy = protocol;
+  type = [fieldCopy type];
   v9 = 0;
-  if (v8 <= 10)
+  if (type <= 10)
   {
-    if (v8 > 5)
+    if (type > 5)
     {
-      if (v8 != 6)
+      if (type != 6)
       {
-        if (v8 != 8)
+        if (type != 8)
         {
-          if (v8 != 10)
+          if (type != 10)
           {
             goto LABEL_43;
           }
 
-          v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v7, "readI64")}];
+          readBinary = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(protocolCopy, "readI64")}];
           goto LABEL_35;
         }
 
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v7 readI32];
+        readI32 = [protocolCopy readI32];
 LABEL_34:
-        v11 = [v21 numberWithInt:v22];
+        readBinary = [v21 numberWithInt:readI32];
         goto LABEL_35;
       }
 
-      v11 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(v7, "readI16")}];
+      readBinary = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(protocolCopy, "readI16")}];
     }
 
     else
     {
-      if (v8 != 2)
+      if (type != 2)
       {
-        if (v8 != 3)
+        if (type != 3)
         {
-          if (v8 != 4)
+          if (type != 4)
           {
             goto LABEL_43;
           }
 
           v10 = MEMORY[0x277CCABB0];
-          [v7 readDouble];
-          v11 = [v10 numberWithDouble:?];
+          [protocolCopy readDouble];
+          readBinary = [v10 numberWithDouble:?];
           goto LABEL_35;
         }
 
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v7 readByte];
+        readI32 = [protocolCopy readByte];
         goto LABEL_34;
       }
 
-      v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "readBool")}];
+      readBinary = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(protocolCopy, "readBool")}];
     }
 
 LABEL_35:
-    v9 = v11;
+    v9 = readBinary;
     goto LABEL_43;
   }
 
-  if (v8 > 13)
+  if (type > 13)
   {
-    switch(v8)
+    switch(type)
     {
       case 14:
         v28 = 0;
-        [v7 readSetBeginReturningElementType:&v28 size:&v28 + 4];
-        v12 = [v6 valueField];
+        [protocolCopy readSetBeginReturningElementType:&v28 size:&v28 + 4];
+        valueField = [fieldCopy valueField];
         v18 = objc_alloc(MEMORY[0x277CBEB58]);
         v9 = [v18 initWithCapacity:SHIDWORD(v28)];
         if (SHIDWORD(v28) >= 1)
@@ -685,7 +685,7 @@ LABEL_35:
           v19 = 0;
           do
           {
-            v20 = [a1 _readValueForField:v12 fromProtocol:v7];
+            v20 = [self _readValueForField:valueField fromProtocol:protocolCopy];
             if (v20)
             {
               [v9 addObject:v20];
@@ -700,8 +700,8 @@ LABEL_35:
         break;
       case 15:
         v28 = 0;
-        [v7 readListBeginReturningElementType:&v28 size:&v28 + 4];
-        v12 = [v6 valueField];
+        [protocolCopy readListBeginReturningElementType:&v28 size:&v28 + 4];
+        valueField = [fieldCopy valueField];
         v23 = objc_alloc(MEMORY[0x277CBEB18]);
         v9 = [v23 initWithCapacity:SHIDWORD(v28)];
         if (SHIDWORD(v28) >= 1)
@@ -709,7 +709,7 @@ LABEL_35:
           v24 = 0;
           do
           {
-            v25 = [a1 _readValueForField:v12 fromProtocol:v7];
+            v25 = [self _readValueForField:valueField fromProtocol:protocolCopy];
             if (v25)
             {
               [v9 addObject:v25];
@@ -723,35 +723,35 @@ LABEL_35:
 
         break;
       case 16:
-        v11 = [v7 readBinary];
+        readBinary = [protocolCopy readBinary];
         goto LABEL_35;
       default:
         goto LABEL_43;
     }
 
-    [v7 readListEnd];
+    [protocolCopy readListEnd];
   }
 
   else
   {
-    if (v8 == 11)
+    if (type == 11)
     {
-      v11 = [v7 readString];
+      readBinary = [protocolCopy readString];
       goto LABEL_35;
     }
 
-    if (v8 == 12)
+    if (type == 12)
     {
-      v9 = objc_alloc_init([v6 structClass]);
-      [v9 read:v7];
+      v9 = objc_alloc_init([fieldCopy structClass]);
+      [v9 read:protocolCopy];
       goto LABEL_43;
     }
 
     v28 = 0;
     v27 = 0;
-    [v7 readMapBeginReturningKeyType:&v28 valueType:&v27 size:&v28 + 4];
-    v12 = [v6 keyField];
-    v13 = [v6 valueField];
+    [protocolCopy readMapBeginReturningKeyType:&v28 valueType:&v27 size:&v28 + 4];
+    valueField = [fieldCopy keyField];
+    valueField2 = [fieldCopy valueField];
     v14 = objc_alloc(MEMORY[0x277CBEB38]);
     v9 = [v14 initWithCapacity:SHIDWORD(v28)];
     if (SHIDWORD(v28) >= 1)
@@ -759,8 +759,8 @@ LABEL_35:
       v15 = 0;
       do
       {
-        v16 = [a1 _readValueForField:v12 fromProtocol:v7];
-        v17 = [a1 _readValueForField:v13 fromProtocol:v7];
+        v16 = [self _readValueForField:valueField fromProtocol:protocolCopy];
+        v17 = [self _readValueForField:valueField2 fromProtocol:protocolCopy];
         [v9 setObject:v17 forKey:v16];
 
         ++v15;
@@ -769,7 +769,7 @@ LABEL_35:
       while (v15 < SHIDWORD(v28));
     }
 
-    [v7 readMapEnd];
+    [protocolCopy readMapEnd];
   }
 
 LABEL_43:
@@ -777,56 +777,56 @@ LABEL_43:
   return v9;
 }
 
-+ (void)skipType:(int)a3 onProtocol:(id)a4
++ (void)skipType:(int)type onProtocol:(id)protocol
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 <= 9)
+  protocolCopy = protocol;
+  v7 = protocolCopy;
+  if (type <= 9)
   {
-    if (a3 <= 3)
+    if (type <= 3)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
-        [v6 readBool];
+        [protocolCopy readBool];
       }
 
-      else if (a3 == 3)
+      else if (type == 3)
       {
-        [v6 readByte];
+        [protocolCopy readByte];
       }
     }
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 4:
-          [v6 readDouble];
+          [protocolCopy readDouble];
           break;
         case 6:
-          [v6 readI16];
+          [protocolCopy readI16];
           break;
         case 8:
-          [v6 readI32];
+          [protocolCopy readI32];
           break;
       }
     }
   }
 
-  else if (a3 > 12)
+  else if (type > 12)
   {
-    switch(a3)
+    switch(type)
     {
       case 13:
         v13 = 0;
         v12 = 0;
-        [v6 readMapBeginReturningKeyType:&v13 + 4 valueType:&v13 size:&v12];
+        [protocolCopy readMapBeginReturningKeyType:&v13 + 4 valueType:&v13 size:&v12];
         if (v12 >= 1)
         {
           for (i = 0; i < v12; ++i)
           {
-            [a1 skipType:HIDWORD(v13) onProtocol:v7];
-            [a1 skipType:v13 onProtocol:v7];
+            [self skipType:HIDWORD(v13) onProtocol:v7];
+            [self skipType:v13 onProtocol:v7];
           }
         }
 
@@ -834,13 +834,13 @@ LABEL_43:
         break;
       case 14:
         v13 = 0;
-        [v6 readSetBeginReturningElementType:&v13 + 4 size:&v13];
+        [protocolCopy readSetBeginReturningElementType:&v13 + 4 size:&v13];
         if (v13 >= 1)
         {
           v10 = 0;
           do
           {
-            [a1 skipType:HIDWORD(v13) onProtocol:v7];
+            [self skipType:HIDWORD(v13) onProtocol:v7];
             ++v10;
           }
 
@@ -851,13 +851,13 @@ LABEL_43:
         break;
       case 15:
         v13 = 0;
-        [v6 readListBeginReturningElementType:&v13 + 4 size:&v13];
+        [protocolCopy readListBeginReturningElementType:&v13 + 4 size:&v13];
         if (v13 >= 1)
         {
           v8 = 0;
           do
           {
-            [a1 skipType:HIDWORD(v13) onProtocol:v7];
+            [self skipType:HIDWORD(v13) onProtocol:v7];
             ++v8;
           }
 
@@ -869,19 +869,19 @@ LABEL_43:
     }
   }
 
-  else if (a3 == 10)
+  else if (type == 10)
   {
-    [v6 readI64];
+    [protocolCopy readI64];
   }
 
-  else if (a3 == 11)
+  else if (type == 11)
   {
-    v9 = [v6 readString];
+    readString = [protocolCopy readString];
   }
 
   else
   {
-    [v6 readStructBeginReturningName:0];
+    [protocolCopy readStructBeginReturningName:0];
     while (1)
     {
       HIDWORD(v13) = 0;
@@ -891,7 +891,7 @@ LABEL_43:
         break;
       }
 
-      [a1 skipType:? onProtocol:?];
+      [self skipType:? onProtocol:?];
       [v7 readFieldEnd];
     }
 

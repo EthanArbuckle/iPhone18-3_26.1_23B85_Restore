@@ -1,24 +1,24 @@
 @interface PXCuratedLibraryAssetCollectionActionPerformer
-- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4;
-- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4 assetCollectionReference:(id)a5;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
-- (void)performActionWithCompletionHandler:(id)a3;
+- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)type viewModel:(id)model;
+- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)type viewModel:(id)model assetCollectionReference:(id)reference;
+- (id)localizedTitleForUseCase:(unint64_t)case;
+- (void)performActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation PXCuratedLibraryAssetCollectionActionPerformer
 
-- (void)performActionWithCompletionHandler:(id)a3
+- (void)performActionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibraryAssetCollectionActionPerformer *)self assetCollectionReference];
-  if (!v5)
+  handlerCopy = handler;
+  assetCollectionReference = [(PXCuratedLibraryAssetCollectionActionPerformer *)self assetCollectionReference];
+  if (!assetCollectionReference)
   {
     goto LABEL_6;
   }
 
-  v6 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v7 = [(PXActionPerformer *)self actionType];
-  v8 = [v7 isEqualToString:@"PXCuratedLibraryActionSelectAllToggle"];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  actionType = [(PXActionPerformer *)self actionType];
+  v8 = [actionType isEqualToString:@"PXCuratedLibraryActionSelectAllToggle"];
 
   if (!v8)
   {
@@ -26,7 +26,7 @@
 LABEL_6:
     v9.receiver = self;
     v9.super_class = PXCuratedLibraryAssetCollectionActionPerformer;
-    [(PXCuratedLibraryActionPerformer *)&v9 performActionWithCompletionHandler:v4];
+    [(PXCuratedLibraryActionPerformer *)&v9 performActionWithCompletionHandler:handlerCopy];
     goto LABEL_7;
   }
 
@@ -34,48 +34,48 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __85__PXCuratedLibraryAssetCollectionActionPerformer_performActionWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7748B68;
-  v11 = v5;
-  [v6 performChanges:v10];
+  v11 = assetCollectionReference;
+  [viewModel performChanges:v10];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
 LABEL_7:
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v4 = [(PXActionPerformer *)self actionType];
-  v5 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v6 = [(PXCuratedLibraryAssetCollectionActionPerformer *)self assetCollectionReference];
-  v8 = _PXCuratedLibraryActionTitle(v4, v7, v5, v6);
+  actionType = [(PXActionPerformer *)self actionType];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  assetCollectionReference = [(PXCuratedLibraryAssetCollectionActionPerformer *)self assetCollectionReference];
+  v8 = _PXCuratedLibraryActionTitle(actionType, v7, viewModel, assetCollectionReference);
 
   return v8;
 }
 
-- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4 assetCollectionReference:(id)a5
+- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)type viewModel:(id)model assetCollectionReference:(id)reference
 {
-  v9 = a5;
+  referenceCopy = reference;
   v13.receiver = self;
   v13.super_class = PXCuratedLibraryAssetCollectionActionPerformer;
-  v10 = [(PXCuratedLibraryActionPerformer *)&v13 initWithActionType:a3 viewModel:a4];
+  v10 = [(PXCuratedLibraryActionPerformer *)&v13 initWithActionType:type viewModel:model];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_assetCollectionReference, a5);
+    objc_storeStrong(&v10->_assetCollectionReference, reference);
   }
 
   return v11;
 }
 
-- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)a3 viewModel:(id)a4
+- (PXCuratedLibraryAssetCollectionActionPerformer)initWithActionType:(id)type viewModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetCollectionActionPerformer.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXCuratedLibraryAssetCollectionActionPerformer initWithActionType:viewModel:]"}];
+  typeCopy = type;
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetCollectionActionPerformer.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXCuratedLibraryAssetCollectionActionPerformer initWithActionType:viewModel:]"}];
 
   abort();
 }

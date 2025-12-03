@@ -1,5 +1,5 @@
 @interface MapVisibilityCellContentView
-- (_TtC7Journal28MapVisibilityCellContentView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal28MapVisibilityCellContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,7 +15,7 @@
   [v2 setAccessibilityActivationPoint:?];
 }
 
-- (_TtC7Journal28MapVisibilityCellContentView)initWithFrame:(CGRect)a3
+- (_TtC7Journal28MapVisibilityCellContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

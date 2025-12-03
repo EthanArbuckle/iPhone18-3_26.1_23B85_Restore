@@ -1,25 +1,25 @@
 @interface SBCaptureButtonLaunchBehavior
-- (unint64_t)cameraLaunchIntentInContext:(id)a3;
-- (unint64_t)prewarmIntentInContext:(id)a3;
+- (unint64_t)cameraLaunchIntentInContext:(id)context;
+- (unint64_t)prewarmIntentInContext:(id)context;
 @end
 
 @implementation SBCaptureButtonLaunchBehavior
 
-- (unint64_t)cameraLaunchIntentInContext:(id)a3
+- (unint64_t)cameraLaunchIntentInContext:(id)context
 {
-  v3 = a3;
-  if ([v3 event] == 2)
+  contextCopy = context;
+  if ([contextCopy event] == 2)
   {
-    v4 = [v3 gesture];
-    if ((v4 - 1) < 2)
+    gesture = [contextCopy gesture];
+    if ((gesture - 1) < 2)
     {
       goto LABEL_5;
     }
 
-    if (v4 == 3)
+    if (gesture == 3)
     {
-      v5 = [v3 policy];
-      if ([v5 isVisionIntelligenceEnabled])
+      policy = [contextCopy policy];
+      if ([policy isVisionIntelligenceEnabled])
       {
         v6 = 5;
       }
@@ -32,11 +32,11 @@
       goto LABEL_12;
     }
 
-    if (v4 == 4)
+    if (gesture == 4)
     {
 LABEL_5:
-      v5 = [v3 captureAppBundleID];
-      if (v5)
+      policy = [contextCopy captureAppBundleID];
+      if (policy)
       {
         v6 = 2;
       }
@@ -58,22 +58,22 @@ LABEL_13:
   return v6;
 }
 
-- (unint64_t)prewarmIntentInContext:(id)a3
+- (unint64_t)prewarmIntentInContext:(id)context
 {
-  v3 = a3;
-  if ([v3 event] != 1)
+  contextCopy = context;
+  if ([contextCopy event] != 1)
   {
     v5 = 0;
     goto LABEL_23;
   }
 
-  v4 = [v3 gesture];
+  gesture = [contextCopy gesture];
   v5 = 0;
-  if (v4 > 2)
+  if (gesture > 2)
   {
-    if (v4 != 3)
+    if (gesture != 3)
     {
-      if (v4 != 4)
+      if (gesture != 4)
       {
         goto LABEL_23;
       }
@@ -84,23 +84,23 @@ LABEL_13:
 
   else
   {
-    if (v4 != 1)
+    if (gesture != 1)
     {
-      if (v4 != 2)
+      if (gesture != 2)
       {
         goto LABEL_23;
       }
 
 LABEL_9:
-      if ([v3 isPrewarmLockoutActive])
+      if ([contextCopy isPrewarmLockoutActive])
       {
         v5 = 1;
       }
 
       else
       {
-        v6 = [v3 captureAppBundleID];
-        if (v6)
+        captureAppBundleID = [contextCopy captureAppBundleID];
+        if (captureAppBundleID)
         {
           v5 = 2;
         }
@@ -114,11 +114,11 @@ LABEL_9:
       goto LABEL_23;
     }
 
-    v7 = [v3 captureAppBundleID];
+    captureAppBundleID2 = [contextCopy captureAppBundleID];
 
-    if (v7)
+    if (captureAppBundleID2)
     {
-      if ([v3 isPrewarmLockoutActive])
+      if ([contextCopy isPrewarmLockoutActive])
       {
         v5 = 1;
       }
@@ -132,8 +132,8 @@ LABEL_9:
     }
   }
 
-  v8 = [v3 policy];
-  if ([v8 isVisionIntelligenceEnabled])
+  policy = [contextCopy policy];
+  if ([policy isVisionIntelligenceEnabled])
   {
     v5 = 3;
   }

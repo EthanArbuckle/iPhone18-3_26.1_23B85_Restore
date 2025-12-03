@@ -1,30 +1,30 @@
 @interface NGMTimeBasedEvaluations
-+ (BOOL)prekeyCanBeDeleted:(id)a3;
-+ (BOOL)prekeyShouldBeRolled:(id)a3;
-+ (BOOL)shouldRekeyIfLastRekeyFrom:(id)a3;
-+ (BOOL)validateFetchedPrekeyTimestamp:(double)a3 forEvaluationType:(unint64_t)a4;
-+ (double)timeIntervalAllowedForAction:(unint64_t)a3;
-+ (id)debugDescriptionForAction:(unint64_t)a3;
++ (BOOL)prekeyCanBeDeleted:(id)deleted;
++ (BOOL)prekeyShouldBeRolled:(id)rolled;
++ (BOOL)shouldRekeyIfLastRekeyFrom:(id)from;
++ (BOOL)validateFetchedPrekeyTimestamp:(double)timestamp forEvaluationType:(unint64_t)type;
++ (double)timeIntervalAllowedForAction:(unint64_t)action;
++ (id)debugDescriptionForAction:(unint64_t)action;
 + (id)nowDate;
 + (id)oldestDateAllowedToSendTo;
 + (id)sharedManager;
-+ (void)setNowDate:(id)a3;
++ (void)setNowDate:(id)date;
 @end
 
 @implementation NGMTimeBasedEvaluations
 
 + (id)sharedManager
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sharedManager_sharedMyManager)
   {
-    v3 = objc_alloc_init(v2);
+    v3 = objc_alloc_init(selfCopy);
     v4 = sharedManager_sharedMyManager;
     sharedManager_sharedMyManager = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = sharedManager_sharedMyManager;
 
@@ -33,12 +33,12 @@
 
 + (id)nowDate
 {
-  v2 = [a1 sharedManager];
-  v3 = [v2 date];
+  sharedManager = [self sharedManager];
+  date = [sharedManager date];
 
-  if (v3)
+  if (date)
   {
-    v4 = v3;
+    v4 = date;
   }
 
   else
@@ -51,27 +51,27 @@
   return v5;
 }
 
-+ (void)setNowDate:(id)a3
++ (void)setNowDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 sharedManager];
-  [v5 setDate:v4];
+  dateCopy = date;
+  sharedManager = [self sharedManager];
+  [sharedManager setDate:dateCopy];
 }
 
 + (id)oldestDateAllowedToSendTo
 {
   v2 = MEMORY[0x277CBEAA8];
-  v3 = [a1 nowDate];
-  [v3 timeIntervalSince1970];
+  nowDate = [self nowDate];
+  [nowDate timeIntervalSince1970];
   v5 = [v2 dateWithTimeIntervalSince1970:v4 + -2678400.0];
 
   return v5;
 }
 
-+ (double)timeIntervalAllowedForAction:(unint64_t)a3
++ (double)timeIntervalAllowedForAction:(unint64_t)action
 {
-  result = dbl_22B48D650[a3 == 1];
-  if (a3 == 2)
+  result = dbl_22B48D650[action == 1];
+  if (action == 2)
   {
     return 12355200.0;
   }
@@ -79,15 +79,15 @@
   return result;
 }
 
-+ (id)debugDescriptionForAction:(unint64_t)a3
++ (id)debugDescriptionForAction:(unint64_t)action
 {
   v3 = @"registering";
-  if (a3 == 1)
+  if (action == 1)
   {
     v3 = @"encrypting to";
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
     return @"validating signature of message";
   }
@@ -98,14 +98,14 @@
   }
 }
 
-+ (BOOL)validateFetchedPrekeyTimestamp:(double)a3 forEvaluationType:(unint64_t)a4
++ (BOOL)validateFetchedPrekeyTimestamp:(double)timestamp forEvaluationType:(unint64_t)type
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = [a1 nowDate];
-  [v7 timeIntervalSince1970];
-  v9 = v8 - a3;
+  nowDate = [self nowDate];
+  [nowDate timeIntervalSince1970];
+  v9 = v8 - timestamp;
 
-  [a1 timeIntervalAllowedForAction:a4];
+  [self timeIntervalAllowedForAction:type];
   v11 = v9 < 0.0;
   if (v9 >= 0.0)
   {
@@ -119,16 +119,16 @@
     v12 = MessageProtectionLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:a3];
+      v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:timestamp];
       v23 = [v32 description];
       v24 = MEMORY[0x277CBEAA8];
-      v25 = [a1 nowDate];
-      [v25 timeIntervalSince1970];
+      nowDate2 = [self nowDate];
+      [nowDate2 timeIntervalSince1970];
       v27 = [v24 dateWithTimeIntervalSince1970:v26 - v20];
       v28 = [v27 description];
-      v29 = [a1 nowDate];
-      v30 = [v29 description];
-      v31 = [a1 debugDescriptionForAction:a4];
+      nowDate3 = [self nowDate];
+      v30 = [nowDate3 description];
+      v31 = [self debugDescriptionForAction:type];
       *buf = 138413058;
       v34 = v23;
       v35 = 2112;
@@ -155,15 +155,15 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)shouldRekeyIfLastRekeyFrom:(id)a3
++ (BOOL)shouldRekeyIfLastRekeyFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v5 = [a1 nowDate];
-    [v5 timeIntervalSince1970];
+    nowDate = [self nowDate];
+    [nowDate timeIntervalSince1970];
     v7 = v6;
-    [v4 timeIntervalSince1970];
+    [fromCopy timeIntervalSince1970];
     v9 = v7 - v8;
 
     if (v9 < 0.0)
@@ -228,15 +228,15 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)prekeyCanBeDeleted:(id)a3
++ (BOOL)prekeyCanBeDeleted:(id)deleted
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 nowDate];
-  [v5 timeIntervalSince1970];
+  deletedCopy = deleted;
+  nowDate = [self nowDate];
+  [nowDate timeIntervalSince1970];
   v7 = v6;
-  v8 = [v4 publicPrekey];
-  [v8 timestamp];
+  publicPrekey = [deletedCopy publicPrekey];
+  [publicPrekey timestamp];
   v10 = v7 - v9;
 
   v11 = v10 >= 0.0;
@@ -265,7 +265,7 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = deletedCopy;
       v13 = "Removing prekey %@ since it's safe to delete it now (expired).";
       v14 = v12;
       v15 = 12;
@@ -279,15 +279,15 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)prekeyShouldBeRolled:(id)a3
++ (BOOL)prekeyShouldBeRolled:(id)rolled
 {
-  v4 = a3;
-  v5 = [a1 nowDate];
-  [v5 timeIntervalSince1970];
+  rolledCopy = rolled;
+  nowDate = [self nowDate];
+  [nowDate timeIntervalSince1970];
   v7 = v6;
-  v8 = [v4 publicPrekey];
+  publicPrekey = [rolledCopy publicPrekey];
 
-  [v8 timestamp];
+  [publicPrekey timestamp];
   v10 = v7 - v9;
 
   if (v10 < 0.0)

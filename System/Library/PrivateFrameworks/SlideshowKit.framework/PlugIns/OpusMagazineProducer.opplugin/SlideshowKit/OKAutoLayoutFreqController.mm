@@ -1,10 +1,10 @@
 @interface OKAutoLayoutFreqController
-- (BOOL)_isLayout:(id)a3 usedInLast:(int64_t)a4;
+- (BOOL)_isLayout:(id)layout usedInLast:(int64_t)last;
 - (OKAutoLayoutFreqController)init;
-- (float)_freqOfUp:(id)a3;
+- (float)_freqOfUp:(id)up;
 - (id)_freqOrderFromHightToLow;
-- (id)bestLayoutByFreqOfAnyUpsFromLayouts:(id)a3;
-- (void)addOnePageLayout:(id)a3;
+- (id)bestLayoutByFreqOfAnyUpsFromLayouts:(id)layouts;
+- (void)addOnePageLayout:(id)layout;
 - (void)dealloc;
 @end
 
@@ -53,13 +53,13 @@
   [(OKAutoLayoutFreqController *)&v6 dealloc];
 }
 
-- (float)_freqOfUp:(id)a3
+- (float)_freqOfUp:(id)up
 {
-  v4 = [a3 integerValue];
+  integerValue = [up integerValue];
   LODWORD(v5) = 1.0;
-  if ((v4 - 1) <= 5)
+  if ((integerValue - 1) <= 5)
   {
-    v6 = self->_counts[(v4 - 1)];
+    v6 = self->_counts[(integerValue - 1)];
     if (v6)
     {
       *&v5 = v6 / [(NSMutableArray *)self->_pageFrequency count];
@@ -159,7 +159,7 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)_isLayout:(id)a3 usedInLast:(int64_t)a4
+- (BOOL)_isLayout:(id)layout usedInLast:(int64_t)last
 {
   v25 = 0u;
   v26 = 0u;
@@ -182,7 +182,7 @@ LABEL_17:
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
-        if ([a3 containsString:v12])
+        if ([layout containsString:v12])
         {
           v8 = [(NSMutableDictionary *)self->_layoutsByResolution objectForKeyedSubscript:v12];
           if (v8)
@@ -191,8 +191,8 @@ LABEL_17:
             v24 = 0u;
             v21 = 0u;
             v22 = 0u;
-            v13 = [v8 reverseObjectEnumerator];
-            v8 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+            v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v8)
             {
               v14 = v8;
@@ -200,26 +200,26 @@ LABEL_17:
               v16 = *v22;
 LABEL_13:
               v17 = 0;
-              if (v15 <= a4)
+              if (v15 <= last)
               {
-                v18 = a4;
+                lastCopy = last;
               }
 
               else
               {
-                v18 = v15;
+                lastCopy = v15;
               }
 
-              v19 = v18 - v15;
+              v19 = lastCopy - v15;
               v15 += v14;
               while (1)
               {
                 if (*v22 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(reverseObjectEnumerator);
                 }
 
-                LOBYTE(v8) = [*(*(&v21 + 1) + 8 * v17) isEqualToString:a3];
+                LOBYTE(v8) = [*(*(&v21 + 1) + 8 * v17) isEqualToString:layout];
                 if ((v8 & 1) != 0 || v19 == v17)
                 {
                   break;
@@ -227,7 +227,7 @@ LABEL_13:
 
                 if (v14 == ++v17)
                 {
-                  v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+                  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v29 count:16];
                   LOBYTE(v8) = 0;
                   if (v14)
                   {
@@ -261,21 +261,21 @@ LABEL_13:
   return v8;
 }
 
-- (void)addOnePageLayout:(id)a3
+- (void)addOnePageLayout:(id)layout
 {
-  v5 = [objc_msgSend(objc_msgSend(a3 "allValues")];
-  v6 = [v5 integerValue];
-  if ((v6 - 1) <= 5)
+  v5 = [objc_msgSend(objc_msgSend(layout "allValues")];
+  integerValue = [v5 integerValue];
+  if ((integerValue - 1) <= 5)
   {
-    ++self->_counts[(v6 - 1)];
-    [(NSMutableArray *)self->_pages addObject:a3];
+    ++self->_counts[(integerValue - 1)];
+    [(NSMutableArray *)self->_pages addObject:layout];
     [(NSMutableArray *)self->_pageFrequency addObject:v5];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [a3 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [layout allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -286,7 +286,7 @@ LABEL_13:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
@@ -297,10 +297,10 @@ LABEL_13:
             [(NSMutableDictionary *)self->_layoutsByResolution setObject:v13 forKey:v12];
           }
 
-          [v13 addObject:{objc_msgSend(a3, "objectForKeyedSubscript:", v12)}];
+          [v13 addObject:{objc_msgSend(layout, "objectForKeyedSubscript:", v12)}];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -308,21 +308,21 @@ LABEL_13:
   }
 }
 
-- (id)bestLayoutByFreqOfAnyUpsFromLayouts:(id)a3
+- (id)bestLayoutByFreqOfAnyUpsFromLayouts:(id)layouts
 {
-  if (!a3 || ![a3 count])
+  if (!layouts || ![layouts count])
   {
     return 0;
   }
 
-  v5 = [(OKAutoLayoutFreqController *)self _freqOrderFromHightToLow];
-  v6 = [a3 sortedArrayUsingComparator:&stru_10318];
+  _freqOrderFromHightToLow = [(OKAutoLayoutFreqController *)self _freqOrderFromHightToLow];
+  v6 = [layouts sortedArrayUsingComparator:&stru_10318];
   v7 = [v6 objectAtIndexedSubscript:0];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [v5 reverseObjectEnumerator];
+  obj = [_freqOrderFromHightToLow reverseObjectEnumerator];
   v21 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v21)
   {

@@ -1,5 +1,5 @@
 @interface CUINamedVectorPDFImage
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4;
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size;
 - (CGPDFDocument)pdfDocument;
 @end
 
@@ -7,16 +7,16 @@
 
 - (CGPDFDocument)pdfDocument
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 pdfDocument];
+  return [(CUIThemeRendition *)_rendition pdfDocument];
 }
 
-- (CGImage)rasterizeImageUsingScaleFactor:(double)a3 forTargetSize:(CGSize)a4
+- (CGImage)rasterizeImageUsingScaleFactor:(double)factor forTargetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (a3 == 0.0)
+  height = size.height;
+  width = size.width;
+  if (factor == 0.0)
   {
     [CUINamedVectorPDFImage rasterizeImageUsingScaleFactor:forTargetSize:];
   }
@@ -30,8 +30,8 @@
   BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
   v9 = BoxRect.size.width;
   v10 = BoxRect.size.height;
-  v11 = width * a3;
-  v12 = height * a3;
+  v11 = width * factor;
+  v12 = height * factor;
   if ([(CUIRenditionKey *)[(CUINamedLookup *)self renditionKey:BoxRect.origin.x] themeDisplayGamut]&& CGPDFPageContainsWideGamutContent())
   {
     v13 = 4097;

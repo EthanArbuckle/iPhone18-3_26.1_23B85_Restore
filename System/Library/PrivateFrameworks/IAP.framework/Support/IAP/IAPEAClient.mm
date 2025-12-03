@@ -1,20 +1,20 @@
 @interface IAPEAClient
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (BOOL)cameraSupportedByClient;
-- (BOOL)canSendConnectionEventForAccessory:(id)a3;
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory;
 - (BOOL)clientRequiresAccReset;
 - (BOOL)locationSupportedByClient;
 - (BOOL)supportsAccessibility;
 - (int)_getProcessId;
-- (void)_setJetsamPrioritySpecialCasing:(BOOL)a3;
+- (void)_setJetsamPrioritySpecialCasing:(BOOL)casing;
 - (void)dealloc;
 - (void)decreaseSessionRefCount;
 - (void)increaseSessionRefCount;
-- (void)setApplicationState:(unsigned int)a3;
-- (void)setCameraSupportedByClient:(BOOL)a3;
-- (void)setClientID:(unsigned int)a3;
-- (void)setLocationSupportedByClient:(BOOL)a3;
-- (void)takeProcessAssertion:(id)a3;
+- (void)setApplicationState:(unsigned int)state;
+- (void)setCameraSupportedByClient:(BOOL)client;
+- (void)setClientID:(unsigned int)d;
+- (void)setLocationSupportedByClient:(BOOL)client;
+- (void)takeProcessAssertion:(id)assertion;
 @end
 
 @implementation IAPEAClient
@@ -129,7 +129,7 @@ LABEL_23:
   __break(0x5510u);
 }
 
-- (void)takeProcessAssertion:(id)a3
+- (void)takeProcessAssertion:(id)assertion
 {
   if ((&self->_capabilities & 3) != 0)
   {
@@ -191,18 +191,18 @@ LABEL_13:
   v11[2] = sub_1000ADFA4;
   v11[3] = &unk_100114558;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = assertion;
   dispatch_sync(v10, v11);
 }
 
-- (BOOL)canSendConnectionEventForAccessory:(id)a3
+- (BOOL)canSendConnectionEventForAccessory:(id)accessory
 {
-  v5 = [(IAPEAClient *)self capabilities];
-  v6 = [(IAPEAClient *)self capabilities];
-  v7 = [(IAPEAClient *)self capabilities];
-  v8 = [(IAPEAClient *)self applicationState];
-  v9 = [(IAPEAClient *)self applicationState];
-  v10 = [a3 objectForKey:IAPAppAccessoryProtocolsKey];
+  capabilities = [(IAPEAClient *)self capabilities];
+  capabilities2 = [(IAPEAClient *)self capabilities];
+  capabilities3 = [(IAPEAClient *)self capabilities];
+  applicationState = [(IAPEAClient *)self applicationState];
+  applicationState2 = [(IAPEAClient *)self applicationState];
+  v10 = [accessory objectForKey:IAPAppAccessoryProtocolsKey];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -268,19 +268,19 @@ LABEL_26:
   }
 
 LABEL_11:
-  v15 = v6 & 0x20;
-  v16 = v7 & 0x8000;
+  v15 = capabilities2 & 0x20;
+  v16 = capabilities3 & 0x8000;
   v17 = 1;
-  v18 = v5 & 0x10;
+  v18 = capabilities & 0x10;
   if (!v18 && v16)
   {
-    v19 = v9 > 4;
-    if (v8 == 4 || v15 == 0)
+    v19 = applicationState2 > 4;
+    if (applicationState == 4 || v15 == 0)
     {
       v19 = v15 != 0;
     }
 
-    v17 = v9 > 4 || v19;
+    v17 = applicationState2 > 4 || v19;
   }
 
   if (((self + 56) & 7) != 0)
@@ -288,14 +288,14 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v21 = v9 > 4;
+  v21 = applicationState2 > 4;
   v22 = self->_entitlementForAllAccessories;
   if (v22 > 1)
   {
     goto LABEL_26;
   }
 
-  sub_1000DDE90(3u, @"bundleID %@ supportsEAWhenSuspended = %d, supportsEAInBackground = %d, clientAppStateInBackground = %d, clientAppStateInForeground = %d, clientLinksUIApplication = %d, _entitlementForAllAccessories = %d, anyProtocolFound = %d, self.applicationState = 0x%X, canSendConnectionEvent = %d", self->_bundleId, v18 >> 4, v15 >> 5, v8 == 4, v21, v16 >> 15, v22, v13, [(IAPEAClient *)self applicationState], v17);
+  sub_1000DDE90(3u, @"bundleID %@ supportsEAWhenSuspended = %d, supportsEAInBackground = %d, clientAppStateInBackground = %d, clientAppStateInForeground = %d, clientLinksUIApplication = %d, _entitlementForAllAccessories = %d, anyProtocolFound = %d, self.applicationState = 0x%X, canSendConnectionEvent = %d", self->_bundleId, v18 >> 4, v15 >> 5, applicationState == 4, v21, v16 >> 15, v22, v13, [(IAPEAClient *)self applicationState], v17);
 LABEL_25:
   _Block_object_dispose(&v25, 8);
   LOBYTE(v10) = v17;
@@ -370,9 +370,9 @@ LABEL_7:
   }
 }
 
-- (void)setLocationSupportedByClient:(BOOL)a3
+- (void)setLocationSupportedByClient:(BOOL)client
 {
-  if (!a3)
+  if (!client)
   {
     clientID = 0;
     goto LABEL_7;
@@ -420,9 +420,9 @@ LABEL_7:
   return self;
 }
 
-- (void)setCameraSupportedByClient:(BOOL)a3
+- (void)setCameraSupportedByClient:(BOOL)client
 {
-  if (!a3)
+  if (!client)
   {
     clientID = 0;
     goto LABEL_7;
@@ -478,15 +478,15 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v3 = self;
+  selfCopy = self;
   LODWORD(self) = *p_processId;
   if (*p_processId != -1)
   {
     return self;
   }
 
-  v3->_processId = 0;
-  self = [(IAPEAClient *)v3 xpcConnection];
+  selfCopy->_processId = 0;
+  self = [(IAPEAClient *)selfCopy xpcConnection];
   if (!self)
   {
     goto LABEL_13;
@@ -503,18 +503,18 @@ LABEL_7:
   }
 
   NSLog(@"invalid pid, falling back to bundleID");
-  if ((&v3->_bundleId & 7) != 0)
+  if ((&selfCopy->_bundleId & 7) != 0)
   {
     goto LABEL_12;
   }
 
-  if (!v3->_bundleId)
+  if (!selfCopy->_bundleId)
   {
     LODWORD(self) = *p_processId;
     return self;
   }
 
-  if ((&v3->_appStateMonitor & 7) != 0)
+  if ((&selfCopy->_appStateMonitor & 7) != 0)
   {
 LABEL_12:
     __break(0x5516u);
@@ -523,17 +523,17 @@ LABEL_13:
     return self;
   }
 
-  v5 = [(IAPApplicationStateMonitor *)v3->_appStateMonitor applicationInfoForBundleIDSync:?];
+  v5 = [(IAPApplicationStateMonitor *)selfCopy->_appStateMonitor applicationInfoForBundleIDSync:?];
   LODWORD(self) = [objc_msgSend(v5 valueForKey:{BKSApplicationStateProcessIDKey), "unsignedIntegerValue"}];
   *p_processId = self;
   return self;
 }
 
-- (void)_setJetsamPrioritySpecialCasing:(BOOL)a3
+- (void)_setJetsamPrioritySpecialCasing:(BOOL)casing
 {
   p_bksProcessAssertion = &self->_bksProcessAssertion;
   v5 = &self->_bksProcessAssertion & 7;
-  if (a3)
+  if (casing)
   {
     if (!v5)
     {
@@ -572,7 +572,7 @@ LABEL_8:
   NSLog(&v7->isa, [(IAPEAClient *)self _getProcessId]);
 }
 
-- (void)setClientID:(unsigned int)a3
+- (void)setClientID:(unsigned int)d
 {
   if ((&self->_clientID & 3) != 0)
   {
@@ -581,7 +581,7 @@ LABEL_8:
 
   else
   {
-    self->_clientID = a3;
+    self->_clientID = d;
   }
 }
 
@@ -623,7 +623,7 @@ LABEL_8:
   return self;
 }
 
-- (void)setApplicationState:(unsigned int)a3
+- (void)setApplicationState:(unsigned int)state
 {
   if ((&self->_applicationState & 3) != 0)
   {
@@ -632,7 +632,7 @@ LABEL_8:
 
   else
   {
-    self->_applicationState = a3;
+    self->_applicationState = state;
   }
 }
 

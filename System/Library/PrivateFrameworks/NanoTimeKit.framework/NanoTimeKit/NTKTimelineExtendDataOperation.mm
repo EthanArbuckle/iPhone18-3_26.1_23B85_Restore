@@ -1,7 +1,7 @@
 @interface NTKTimelineExtendDataOperation
 - (void)_cancel;
 - (void)_extendRight;
-- (void)_invokeHandlerWithEntries:(id)a3;
+- (void)_invokeHandlerWithEntries:(id)entries;
 @end
 
 @implementation NTKTimelineExtendDataOperation
@@ -12,16 +12,16 @@
   self->_handler = 0;
 }
 
-- (void)_invokeHandlerWithEntries:(id)a3
+- (void)_invokeHandlerWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__NTKTimelineExtendDataOperation__invokeHandlerWithEntries___block_invoke;
   v6[3] = &unk_27877E438;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = entriesCopy;
+  v5 = entriesCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

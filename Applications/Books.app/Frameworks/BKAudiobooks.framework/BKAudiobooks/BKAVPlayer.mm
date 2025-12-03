@@ -1,6 +1,6 @@
 @interface BKAVPlayer
 - (AVPlayerItem)currentItem;
-- (BKAVPlayer)initWithResourceLoader:(id)a3;
+- (BKAVPlayer)initWithResourceLoader:(id)loader;
 - (BKAVPlayerDelegate)delegate;
 - (BOOL)_isStreamingAssetURL;
 - (BOOL)isCurrentTimeValid;
@@ -8,53 +8,53 @@
 - (double)currentTime;
 - (float)_actualRate;
 - (id)assetNetworkError;
-- (void)_activateSessionWithCompletion:(id)a3;
+- (void)_activateSessionWithCompletion:(id)completion;
 - (void)_addPeriodicTimeObserver;
-- (void)_handleScrubPlayPreviewAtTime:(double)a3 completion:(id)a4;
+- (void)_handleScrubPlayPreviewAtTime:(double)time completion:(id)completion;
 - (void)_pause;
-- (void)_playWithSeekTime:(double)a3 fadeIn:(float)a4 completion:(id)a5;
-- (void)_playbackFailedWithError:(id)a3;
-- (void)_playbackStalledWithError:(id)a3;
-- (void)_processOutputContextVolumeNotification:(id)a3;
-- (void)_recreateCurrentAssetWithRestoreTime:(id)a3 completion:(id)a4;
-- (void)_reevaluateInternalVolumeWithContextCanSetVolume:(BOOL)a3 volume:(float)a4;
+- (void)_playWithSeekTime:(double)time fadeIn:(float)in completion:(id)completion;
+- (void)_playbackFailedWithError:(id)error;
+- (void)_playbackStalledWithError:(id)error;
+- (void)_processOutputContextVolumeNotification:(id)notification;
+- (void)_recreateCurrentAssetWithRestoreTime:(id)time completion:(id)completion;
+- (void)_reevaluateInternalVolumeWithContextCanSetVolume:(BOOL)volume volume:(float)a4;
 - (void)_reevaluateVolumeFromPlayer;
-- (void)_registerAssetForDRMGroupIDDelegation:(id)a3 completion:(id)a4;
-- (void)_removeAllTimeObserversWithClearObservedTimes:(BOOL)a3;
+- (void)_registerAssetForDRMGroupIDDelegation:(id)delegation completion:(id)completion;
+- (void)_removeAllTimeObserversWithClearObservedTimes:(BOOL)times;
 - (void)_removePeriodicTimeObserver;
 - (void)_revalidatePlayerItem;
-- (void)_seekToTime:(double)a3 completionHandler:(id)a4;
-- (void)_setInternalVolumeAndNotify:(float)a3;
-- (void)_unregisterAssetForDRMGroupIDDelegation:(id)a3;
+- (void)_seekToTime:(double)time completionHandler:(id)handler;
+- (void)_setInternalVolumeAndNotify:(float)notify;
+- (void)_unregisterAssetForDRMGroupIDDelegation:(id)delegation;
 - (void)_updateAudioParameters;
 - (void)_updatePlayer;
-- (void)addTimeObserver:(double)a3;
-- (void)audioSessionInterrupted:(id)a3;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
+- (void)addTimeObserver:(double)observer;
+- (void)audioSessionInterrupted:(id)interrupted;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
 - (void)dealloc;
-- (void)fadeIn:(double)a3;
-- (void)fadeOut:(double)a3;
-- (void)handleNewAccessLogEntry:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)fadeIn:(double)in;
+- (void)fadeOut:(double)out;
+- (void)handleNewAccessLogEntry:(id)entry;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playerItemDidReachEnd:(id)a3;
-- (void)playerItemDidStallPlayback:(id)a3;
-- (void)playerItemFailedToReachEnd:(id)a3;
-- (void)playerPlaybackWasInterrupted:(id)a3;
-- (void)removeTimeObserver:(double)a3;
+- (void)playerItemDidReachEnd:(id)end;
+- (void)playerItemDidStallPlayback:(id)playback;
+- (void)playerItemFailedToReachEnd:(id)end;
+- (void)playerPlaybackWasInterrupted:(id)interrupted;
+- (void)removeTimeObserver:(double)observer;
 - (void)reset;
-- (void)routeChanged:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setAssetURL:(id)a3 audibleDRMGroupID:(int)a4 completion:(id)a5;
-- (void)setCurrentTime:(double)a3 completion:(id)a4;
-- (void)setIsLoadingResources:(BOOL)a3;
-- (void)setIsStalling:(BOOL)a3;
-- (void)setPlaybackRate:(float)a3;
-- (void)setPlayer:(id)a3;
-- (void)setScrubbing:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)setVolume:(float)a3;
+- (void)routeChanged:(id)changed;
+- (void)setAsset:(id)asset;
+- (void)setAssetURL:(id)l audibleDRMGroupID:(int)d completion:(id)completion;
+- (void)setCurrentTime:(double)time completion:(id)completion;
+- (void)setIsLoadingResources:(BOOL)resources;
+- (void)setIsStalling:(BOOL)stalling;
+- (void)setPlaybackRate:(float)rate;
+- (void)setPlayer:(id)player;
+- (void)setScrubbing:(BOOL)scrubbing;
+- (void)setState:(int64_t)state;
+- (void)setVolume:(float)volume;
 - (void)stop;
 - (void)togglePlayPause;
 - (void)updateTimeObservers;
@@ -62,16 +62,16 @@
 
 @implementation BKAVPlayer
 
-- (BKAVPlayer)initWithResourceLoader:(id)a3
+- (BKAVPlayer)initWithResourceLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   v38.receiver = self;
   v38.super_class = BKAVPlayer;
   v6 = [(BKAVPlayer *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceLoader, a3);
+    objc_storeStrong(&v6->_resourceLoader, loader);
     v8 = +[NSUserDefaults standardUserDefaults];
     v9 = [v8 objectForKey:@"BKAVPlayerRateUserDefaultsKey"];
     v10 = v9;
@@ -167,59 +167,59 @@
   [(BKAVPlayer *)&v4 dealloc];
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = BKAudiobooksBKAVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = assetCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "setAsset: asset=%@", buf, 0xCu);
   }
 
-  if (([(AVAsset *)self->_asset isEqual:v5]& 1) == 0)
+  if (([(AVAsset *)self->_asset isEqual:assetCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_asset, a3);
+    objc_storeStrong(&self->_asset, asset);
     [(BKAVPlayer *)self setLastPosition:9.22337204e18];
     [(BKAVPlayer *)self setLastSeekPosition:9.22337204e18];
     [(BKAVPlayer *)self _updatePlayer];
-    v7 = [(BKAVPlayer *)self _isStreamingAssetURL];
-    if (v5)
+    _isStreamingAssetURL = [(BKAVPlayer *)self _isStreamingAssetURL];
+    if (assetCopy)
     {
-      if ((v7 & 1) == 0)
+      if ((_isStreamingAssetURL & 1) == 0)
       {
         v8[0] = _NSConcreteStackBlock;
         v8[1] = 3221225472;
         v8[2] = sub_1EF0;
         v8[3] = &unk_3C700;
-        v9 = v5;
+        v9 = assetCopy;
         [v9 loadValuesAsynchronouslyForKeys:&off_3E090 completionHandler:v8];
       }
     }
   }
 }
 
-- (void)setAssetURL:(id)a3 audibleDRMGroupID:(int)a4 completion:(id)a5
+- (void)setAssetURL:(id)l audibleDRMGroupID:(int)d completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v11 = BKAudiobooksBKAVLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v9;
+    v19 = lCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "setAssetURL:audibleDRMGroupID: assetURL=%@", buf, 0xCu);
   }
 
-  v12 = [(BKAVPlayer *)self assetURL];
-  if ([v9 isEqual:v12])
+  assetURL = [(BKAVPlayer *)self assetURL];
+  if ([lCopy isEqual:assetURL])
   {
     audibleDRMGroupID = self->_audibleDRMGroupID;
 
-    if (audibleDRMGroupID == a4)
+    if (audibleDRMGroupID == d)
     {
-      v14 = objc_retainBlock(v10);
+      v14 = objc_retainBlock(completionCopy);
       v15 = v14;
       if (v14)
       {
@@ -236,21 +236,21 @@ LABEL_12:
   {
   }
 
-  if (v9)
+  if (lCopy)
   {
-    objc_storeStrong(&self->_assetURL, a3);
+    objc_storeStrong(&self->_assetURL, l);
     self->_lastSeekPosition = 9.22337204e18;
-    if (self->_audibleDRMGroupID != a4)
+    if (self->_audibleDRMGroupID != d)
     {
       self->_isAudibleDRMGroupAuthorized = 0;
-      self->_audibleDRMGroupID = a4;
+      self->_audibleDRMGroupID = d;
     }
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_210C;
     v16[3] = &unk_3C728;
-    v17 = v10;
+    v17 = completionCopy;
     [(BKAVPlayer *)self _recreateCurrentAssetWithCompletion:v16];
     v15 = v17;
     goto LABEL_12;
@@ -259,22 +259,22 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_recreateCurrentAssetWithRestoreTime:(id)a3 completion:(id)a4
+- (void)_recreateCurrentAssetWithRestoreTime:(id)time completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_2524;
   v27[3] = &unk_3C778;
   objc_copyWeak(&v30, &location);
-  v8 = v6;
+  v8 = timeCopy;
   v28 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v29 = v9;
   v10 = objc_retainBlock(v27);
-  v11 = [(BKAVPlayer *)self isStreaming];
+  isStreaming = [(BKAVPlayer *)self isStreaming];
   v12 = BKAudiobooksBKAVLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -288,7 +288,7 @@ LABEL_13:
   }
 
   v13 = [AVURLAsset URLAssetWithURL:self->_assetURL options:0];
-  if (v11)
+  if (isStreaming)
   {
     v14 = BKAudiobooksStreamingLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -309,12 +309,12 @@ LABEL_13:
       self->_hlsQueue = v17;
     }
 
-    v19 = [v13 resourceLoader];
-    [v19 setPreloadsEligibleContentKeys:1];
+    resourceLoader = [v13 resourceLoader];
+    [resourceLoader setPreloadsEligibleContentKeys:1];
 
-    v20 = [v13 resourceLoader];
-    v21 = [(BKAVPlayer *)self resourceLoader];
-    [v20 setDelegate:v21 queue:self->_hlsQueue];
+    resourceLoader2 = [v13 resourceLoader];
+    resourceLoader3 = [(BKAVPlayer *)self resourceLoader];
+    [resourceLoader2 setDelegate:resourceLoader3 queue:self->_hlsQueue];
 
     [(BKAVPlayer *)self setLastBitrate:0.0];
     [(BKAVPlayer *)self setIsLoadingResources:1];
@@ -350,18 +350,18 @@ LABEL_13:
 
 - (AVPlayerItem)currentItem
 {
-  v2 = [(BKAVPlayer *)self player];
-  v3 = [v2 currentItem];
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
 
-  return v3;
+  return currentItem;
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(BKAVPlayer *)self currentItem];
-  v3 = [v2 currentDate];
+  currentItem = [(BKAVPlayer *)self currentItem];
+  currentDate = [currentItem currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (void)play
@@ -387,21 +387,21 @@ LABEL_13:
 
 - (void)_pause
 {
-  v2 = [(BKAVPlayer *)self player];
-  [v2 setRate:0.0];
+  player = [(BKAVPlayer *)self player];
+  [player setRate:0.0];
 }
 
 - (void)stop
 {
-  v3 = [(BKAVPlayer *)self player];
-  [v3 setRate:0.0];
+  player = [(BKAVPlayer *)self player];
+  [player setRate:0.0];
 
   [(BKAVPlayer *)self setPendingCurrentTime:0.0];
-  v4 = [(BKAVPlayer *)self isStopping];
+  isStopping = [(BKAVPlayer *)self isStopping];
   [(BKAVPlayer *)self setIsStopping:1];
   [(BKAVPlayer *)self setState:4];
 
-  [(BKAVPlayer *)self setIsStopping:v4];
+  [(BKAVPlayer *)self setIsStopping:isStopping];
 }
 
 - (void)togglePlayPause
@@ -419,21 +419,21 @@ LABEL_13:
   }
 }
 
-- (void)fadeIn:(double)a3
+- (void)fadeIn:(double)in
 {
   if (![(BKAVPlayer *)self isPlaying])
   {
 
-    *&v5 = a3;
+    *&v5 = in;
     [(BKAVPlayer *)self _playWithSeekTime:1.79769313e308 fadeIn:v5];
   }
 }
 
-- (void)fadeOut:(double)a3
+- (void)fadeOut:(double)out
 {
-  v4 = [(BKAVPlayer *)self player];
-  CMTimeMakeWithSeconds(&v5, a3, 1000000000);
-  [v4 setRate:&v5 withVolumeRampDuration:0.0];
+  player = [(BKAVPlayer *)self player];
+  CMTimeMakeWithSeconds(&v5, out, 1000000000);
+  [player setRate:&v5 withVolumeRampDuration:0.0];
 }
 
 - (void)reset
@@ -505,14 +505,14 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)setScrubbing:(BOOL)a3
+- (void)setScrubbing:(BOOL)scrubbing
 {
-  if (self->_scrubbing != a3)
+  if (self->_scrubbing != scrubbing)
   {
     v10[5] = v3;
     v10[6] = v4;
-    self->_scrubbing = a3;
-    if (a3)
+    self->_scrubbing = scrubbing;
+    if (scrubbing)
     {
       self->_wasPlayingBeforeScrubbing = [(BKAVPlayer *)self isPlaying];
       [(AVPlayer *)self->_player setActionAtItemEnd:2];
@@ -547,13 +547,13 @@ LABEL_17:
   }
 }
 
-- (void)setIsStalling:(BOOL)a3
+- (void)setIsStalling:(BOOL)stalling
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_309C;
   v6[3] = &unk_3C7F0;
-  v7 = a3;
+  stallingCopy = stalling;
   v6[4] = self;
   v3 = objc_retainBlock(v6);
   if (v3)
@@ -575,13 +575,13 @@ LABEL_17:
   }
 }
 
-- (void)setIsLoadingResources:(BOOL)a3
+- (void)setIsLoadingResources:(BOOL)resources
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_32B4;
   v6[3] = &unk_3C7F0;
-  v7 = a3;
+  resourcesCopy = resources;
   v6[4] = self;
   v3 = objc_retainBlock(v6);
   if (v3)
@@ -603,11 +603,11 @@ LABEL_17:
   }
 }
 
-- (void)setPlaybackRate:(float)a3
+- (void)setPlaybackRate:(float)rate
 {
-  self->_playbackRate = a3;
+  self->_playbackRate = rate;
   v5 = +[NSUserDefaults standardUserDefaults];
-  *&v6 = a3;
+  *&v6 = rate;
   v7 = [NSNumber numberWithFloat:v6];
   [v5 setObject:v7 forKey:@"BKAVPlayerRateUserDefaultsKey"];
 
@@ -620,60 +620,60 @@ LABEL_17:
   else if ([(BKAVPlayer *)self isPlaying])
   {
     playbackRate = self->_playbackRate;
-    v10 = [(BKAVPlayer *)self player];
+    player = [(BKAVPlayer *)self player];
     *&v9 = playbackRate;
-    [v10 setRate:v9];
+    [player setRate:v9];
   }
 }
 
 - (float)_actualRate
 {
-  v3 = [(BKAVPlayer *)self player];
+  player = [(BKAVPlayer *)self player];
   v4 = 0.0;
-  if ([v3 timeControlStatus] == &dword_0 + 2)
+  if ([player timeControlStatus] == &dword_0 + 2)
   {
-    v5 = [(BKAVPlayer *)self player];
-    [v5 rate];
+    player2 = [(BKAVPlayer *)self player];
+    [player2 rate];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    v13 = [(BKAVPlayer *)self player];
-    v5 = [v13 outputContext];
-    v6 = [v5 canSetVolume] == 0;
-    v8 = v13;
+    player = [(BKAVPlayer *)self player];
+    outputContext = [player outputContext];
+    v6 = [outputContext canSetVolume] == 0;
+    v8 = player;
     if (!v6)
     {
-      v8 = v5;
+      v8 = outputContext;
     }
 
-    *&v7 = a3;
+    *&v7 = volume;
     [v8 setVolume:v7];
-    *&v9 = a3;
+    *&v9 = volume;
     [(BKAVPlayer *)self _setInternalVolumeAndNotify:v9];
     v10 = +[NSUserDefaults standardUserDefaults];
-    *&v11 = a3;
+    *&v11 = volume;
     v12 = [NSNumber numberWithFloat:v11];
     [v10 setObject:v12 forKey:@"BKAVPlayerVolumeUserDefaultsKey"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_47238 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_47238 == context)
   {
-    if ([v10 isEqualToString:@"currentItem"])
+    if ([pathCopy isEqualToString:@"currentItem"])
     {
-      v13 = [v12 objectForKey:NSKeyValueChangeOldKey];
+      v13 = [changeCopy objectForKey:NSKeyValueChangeOldKey];
       if (v13)
       {
         objc_opt_class();
@@ -684,47 +684,47 @@ LABEL_17:
         }
       }
 
-      v14 = [(BKAVPlayer *)self currentItem];
+      currentItem = [(BKAVPlayer *)self currentItem];
 
-      if (v14)
+      if (currentItem)
       {
-        v15 = [(BKAVPlayer *)self currentItem];
-        [v15 addObserver:self forKeyPath:@"status" options:4 context:off_47238];
+        currentItem2 = [(BKAVPlayer *)self currentItem];
+        [currentItem2 addObserver:self forKeyPath:@"status" options:4 context:off_47238];
 
-        v16 = [(BKAVPlayer *)self currentItem];
-        [v16 addObserver:self forKeyPath:@"loadedTimeRanges" options:4 context:off_47238];
+        currentItem3 = [(BKAVPlayer *)self currentItem];
+        [currentItem3 addObserver:self forKeyPath:@"loadedTimeRanges" options:4 context:off_47238];
 
         objc_initWeak(location, self);
-        v17 = [(BKAVPlayer *)self currentItem];
-        v18 = [v17 asset];
+        currentItem4 = [(BKAVPlayer *)self currentItem];
+        asset = [currentItem4 asset];
         v19 = [NSArray arrayWithObjects:@"tracks", @"duration", 0];
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
         v52[2] = sub_3E44;
         v52[3] = &unk_3C818;
         objc_copyWeak(&v53, location);
-        [v18 loadValuesAsynchronouslyForKeys:v19 completionHandler:v52];
+        [asset loadValuesAsynchronouslyForKeys:v19 completionHandler:v52];
 
         objc_destroyWeak(&v53);
         objc_destroyWeak(location);
       }
     }
 
-    else if ([v10 isEqualToString:@"status"])
+    else if ([pathCopy isEqualToString:@"status"])
     {
-      v20 = [(BKAVPlayer *)self currentItem];
+      currentItem5 = [(BKAVPlayer *)self currentItem];
 
-      if (v20)
+      if (currentItem5)
       {
-        v21 = [(BKAVPlayer *)self currentItem];
-        v22 = [v21 status];
+        currentItem6 = [(BKAVPlayer *)self currentItem];
+        status = [currentItem6 status];
 
-        if (v22 == &dword_0 + 2)
+        if (status == &dword_0 + 2)
         {
-          v39 = [(BKAVPlayer *)self currentItem];
-          v40 = [v39 error];
+          currentItem7 = [(BKAVPlayer *)self currentItem];
+          error = [currentItem7 error];
           lastError = self->_lastError;
-          self->_lastError = v40;
+          self->_lastError = error;
 
           v42 = BKAudiobooksBKAVLog();
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -737,7 +737,7 @@ LABEL_17:
           [(BKAVPlayer *)self setIsLoadingResources:0];
         }
 
-        else if (v22 == &dword_0 + 1)
+        else if (status == &dword_0 + 1)
         {
           if ([(BKAVPlayer *)self isPlaybackPending])
           {
@@ -769,29 +769,29 @@ LABEL_17:
       }
     }
 
-    else if ([v10 isEqualToString:@"loadedTimeRanges"])
+    else if ([pathCopy isEqualToString:@"loadedTimeRanges"])
     {
-      v28 = [(BKAVPlayer *)self currentItem];
+      currentItem8 = [(BKAVPlayer *)self currentItem];
 
-      if (v28 == v11)
+      if (currentItem8 == objectCopy)
       {
-        v29 = [(BKAVPlayer *)self currentItem];
-        v30 = [v29 loadedTimeRanges];
-        [(BKAVPlayer *)self setCurrentLoadedTimeRanges:v30];
+        currentItem9 = [(BKAVPlayer *)self currentItem];
+        loadedTimeRanges = [currentItem9 loadedTimeRanges];
+        [(BKAVPlayer *)self setCurrentLoadedTimeRanges:loadedTimeRanges];
 
-        v31 = [(BKAVPlayer *)self coalescedLoadedTimeRanges];
-        [v31 signalWithCompletion:&stru_3C858];
+        coalescedLoadedTimeRanges = [(BKAVPlayer *)self coalescedLoadedTimeRanges];
+        [coalescedLoadedTimeRanges signalWithCompletion:&stru_3C858];
       }
     }
 
-    else if (([v10 isEqualToString:@"rate"] & 1) == 0 && objc_msgSend(v10, "isEqualToString:", @"timeControlStatus"))
+    else if (([pathCopy isEqualToString:@"rate"] & 1) == 0 && objc_msgSend(pathCopy, "isEqualToString:", @"timeControlStatus"))
     {
-      v32 = [(BKAVPlayer *)self player];
-      v33 = [v32 timeControlStatus];
+      player = [(BKAVPlayer *)self player];
+      timeControlStatus = [player timeControlStatus];
 
-      if (v33)
+      if (timeControlStatus)
       {
-        if (v33 == &dword_0 + 1)
+        if (timeControlStatus == &dword_0 + 1)
         {
           v43 = BKAudiobooksBKAVLog();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -803,7 +803,7 @@ LABEL_17:
           [(BKAVPlayer *)self setIsStalling:1];
         }
 
-        else if (v33 == &dword_0 + 2)
+        else if (timeControlStatus == &dword_0 + 2)
         {
           v34 = BKAudiobooksBKAVLog();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -831,13 +831,13 @@ LABEL_17:
           }
 
           objc_initWeak(location, self);
-          v38 = [(BKAVPlayer *)self outputContextQueue];
+          outputContextQueue = [(BKAVPlayer *)self outputContextQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_3F78;
           block[3] = &unk_3C818;
           objc_copyWeak(&v49, location);
-          dispatch_async(v38, block);
+          dispatch_async(outputContextQueue, block);
 
           objc_destroyWeak(&v49);
           objc_destroyWeak(location);
@@ -849,9 +849,9 @@ LABEL_17:
         v44 = BKAudiobooksBKAVLog();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [(BKAVPlayer *)self isStopping];
+          isStopping = [(BKAVPlayer *)self isStopping];
           v46 = &stru_3D458;
-          if (v45)
+          if (isStopping)
           {
             v46 = @" (Ignoring because BKAVPlayer is in the process of stopping)";
           }
@@ -874,50 +874,50 @@ LABEL_17:
   {
     v47.receiver = self;
     v47.super_class = BKAVPlayer;
-    [(BKAVPlayer *)&v47 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BKAVPlayer *)&v47 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_playbackFailedWithError:(id)a3
+- (void)_playbackFailedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BKAVPlayer *)self delegate];
-  [v5 player:self failedWithError:v4];
+  errorCopy = error;
+  delegate = [(BKAVPlayer *)self delegate];
+  [delegate player:self failedWithError:errorCopy];
 }
 
-- (void)_playbackStalledWithError:(id)a3
+- (void)_playbackStalledWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BKAVPlayer *)self delegate];
-  [v5 player:self playbackStalledWithError:v4];
+  errorCopy = error;
+  delegate = [(BKAVPlayer *)self delegate];
+  [delegate player:self playbackStalledWithError:errorCopy];
 }
 
-- (void)playerItemDidReachEnd:(id)a3
+- (void)playerItemDidReachEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(BKAVPlayer *)self player];
-  v6 = [v5 currentItem];
-  v7 = [v4 object];
+  endCopy = end;
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
+  object = [endCopy object];
 
-  if (v6 == v7)
+  if (currentItem == object)
   {
     [(BKAVPlayer *)self pause];
     if (![(BKAVPlayer *)self isScrubbing])
     {
-      v8 = [(BKAVPlayer *)self delegate];
-      [v8 playerCurrentItemEnded:self];
+      delegate = [(BKAVPlayer *)self delegate];
+      [delegate playerCurrentItemEnded:self];
     }
   }
 }
 
-- (void)playerItemDidStallPlayback:(id)a3
+- (void)playerItemDidStallPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(BKAVPlayer *)self player];
-  v6 = [v5 currentItem];
-  v7 = [v4 object];
+  playbackCopy = playback;
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
+  object = [playbackCopy object];
 
-  if (v6 == v7)
+  if (currentItem == object)
   {
     v8 = BKAudiobooksBKAVLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -925,27 +925,27 @@ LABEL_17:
       sub_20E78();
     }
 
-    v9 = [(BKAVPlayer *)self currentItem];
-    v10 = [v9 error];
+    currentItem2 = [(BKAVPlayer *)self currentItem];
+    error = [currentItem2 error];
     lastError = self->_lastError;
-    self->_lastError = v10;
+    self->_lastError = error;
 
     [(BKAVPlayer *)self pause];
     [(BKAVPlayer *)self _playbackStalledWithError:self->_lastError];
   }
 }
 
-- (void)playerItemFailedToReachEnd:(id)a3
+- (void)playerItemFailedToReachEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(BKAVPlayer *)self player];
-  v6 = [v5 currentItem];
-  v7 = [v4 object];
+  endCopy = end;
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
+  object = [endCopy object];
 
-  if (v6 == v7)
+  if (currentItem == object)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:AVPlayerItemFailedToPlayToEndTimeErrorKey];
+    userInfo = [endCopy userInfo];
+    v9 = [userInfo objectForKey:AVPlayerItemFailedToPlayToEndTimeErrorKey];
     lastError = self->_lastError;
     self->_lastError = v9;
 
@@ -959,7 +959,7 @@ LABEL_17:
   }
 }
 
-- (void)playerPlaybackWasInterrupted:(id)a3
+- (void)playerPlaybackWasInterrupted:(id)interrupted
 {
   [(BKAVPlayer *)self setWasInterruptedEarly:[(BKAVPlayer *)self isPlaying]];
   v4 = BKAudiobooksBKAVLog();
@@ -971,10 +971,10 @@ LABEL_17:
   }
 }
 
-- (void)routeChanged:(id)a3
+- (void)routeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVAudioSessionRouteChangeReasonKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:AVAudioSessionRouteChangeReasonKey];
 
   if ([v5 integerValue] == &dword_0 + 2)
   {
@@ -1017,26 +1017,26 @@ LABEL_17:
   }
 }
 
-- (void)audioSessionInterrupted:(id)a3
+- (void)audioSessionInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:AVAudioSessionInterruptionTypeKey];
-  v6 = [v5 unsignedIntegerValue];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo objectForKey:AVAudioSessionInterruptionTypeKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 objectForKey:AVAudioSessionInterruptionOptionKey];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [userInfo objectForKey:AVAudioSessionInterruptionOptionKey];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-  v9 = [v4 objectForKey:AVAudioSessionInterruptionReasonKey];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [userInfo objectForKey:AVAudioSessionInterruptionReasonKey];
+  unsignedIntegerValue3 = [v9 unsignedIntegerValue];
 
-  v11 = [(BKAVPlayer *)self isPlaying];
-  if (v10 == &dword_0 + 1)
+  isPlaying = [(BKAVPlayer *)self isPlaying];
+  if (unsignedIntegerValue3 == &dword_0 + 1)
   {
     v12 = BKAudiobooksBKAVLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 67109632;
-      *v18 = v11;
+      *v18 = isPlaying;
       *&v18[4] = 1024;
       *&v18[6] = [(BKAVPlayer *)self wasInterrupted];
       *v19 = 1024;
@@ -1045,27 +1045,27 @@ LABEL_17:
     }
   }
 
-  else if (v6)
+  else if (unsignedIntegerValue)
   {
-    if (v6 == &dword_0 + 1)
+    if (unsignedIntegerValue == &dword_0 + 1)
     {
       v13 = BKAudiobooksBKAVLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 67109376;
-        *v18 = v11;
+        *v18 = isPlaying;
         *&v18[4] = 1024;
         *&v18[6] = [(BKAVPlayer *)self wasInterruptedEarly];
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "handleInterruption began, wasPlaying %d, wasInterruptedEarly %d", &v17, 0xEu);
       }
 
       [(BKAVPlayer *)self _pause];
-      v14 = (v11 & 1) != 0 || [(BKAVPlayer *)self wasInterruptedEarly];
+      v14 = (isPlaying & 1) != 0 || [(BKAVPlayer *)self wasInterruptedEarly];
       [(BKAVPlayer *)self setWasInterrupted:v14];
       if ([(BKAVPlayer *)self wasInterrupted])
       {
-        v16 = [(BKAVPlayer *)self delegate];
-        [v16 playerWasInterrupted:self];
+        delegate = [(BKAVPlayer *)self delegate];
+        [delegate playerWasInterrupted:self];
       }
 
       [(BKAVPlayer *)self setWasInterruptedEarly:0];
@@ -1078,15 +1078,15 @@ LABEL_17:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134218496;
-      *v18 = v8;
+      *v18 = unsignedIntegerValue2;
       *&v18[8] = 1024;
       *v19 = [(BKAVPlayer *)self wasInterrupted];
       *&v19[4] = 1024;
-      v20 = v8 & 1;
+      v20 = unsignedIntegerValue2 & 1;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "handleInterruption ended: %lu wasInterrupted: %d resumable: %d", &v17, 0x18u);
     }
 
-    if ((v8 & 1) != 0 && [(BKAVPlayer *)self wasInterrupted])
+    if ((unsignedIntegerValue2 & 1) != 0 && [(BKAVPlayer *)self wasInterrupted])
     {
       [(BKAVPlayer *)self play];
     }
@@ -1095,11 +1095,11 @@ LABEL_17:
   }
 }
 
-- (void)handleNewAccessLogEntry:(id)a3
+- (void)handleNewAccessLogEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [entryCopy object];
 
   v6 = BUDynamicCast();
 
@@ -1118,47 +1118,47 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)_seekToTime:(double)a3 completionHandler:(id)a4
+- (void)_seekToTime:(double)time completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(BKAVPlayer *)self player];
-  v8 = [v7 currentItem];
-  [v8 cancelPendingSeeks];
+  handlerCopy = handler;
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
+  [currentItem cancelPendingSeeks];
 
   [(BKAVPlayer *)self setLastPosition:9.22337204e18];
-  [(BKAVPlayer *)self setPendingCurrentTime:a3];
-  [(BKAVPlayer *)self setLastSeekPosition:a3];
-  v9 = [(BKAVPlayer *)self player];
-  CMTimeMakeWithSeconds(&v16, a3, 1000000000);
+  [(BKAVPlayer *)self setPendingCurrentTime:time];
+  [(BKAVPlayer *)self setLastSeekPosition:time];
+  player2 = [(BKAVPlayer *)self player];
+  CMTimeMakeWithSeconds(&v16, time, 1000000000);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_4DDC;
   v13[3] = &unk_3C8F8;
-  v15 = a3;
+  timeCopy = time;
   v13[4] = self;
-  v14 = v6;
+  v14 = handlerCopy;
   seekTolerance = self->_seekTolerance;
   v11 = self->_seekTolerance;
-  v10 = v6;
-  [v9 seekToTime:&v16 toleranceBefore:&seekTolerance toleranceAfter:&v11 completionHandler:v13];
+  v10 = handlerCopy;
+  [player2 seekToTime:&v16 toleranceBefore:&seekTolerance toleranceAfter:&v11 completionHandler:v13];
 }
 
 - (double)currentTime
 {
-  v3 = [(BKAVPlayer *)self player];
-  v4 = [v3 currentItem];
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
 
   [(BKAVPlayer *)self pendingCurrentTime];
   if (v5 == 1.79769313e308)
   {
     Seconds = 0.0;
-    if (v4)
+    if (currentItem)
     {
-      v8 = [(BKAVPlayer *)self player];
-      v9 = v8;
-      if (v8)
+      player2 = [(BKAVPlayer *)self player];
+      v9 = player2;
+      if (player2)
       {
-        [v8 currentTime];
+        [player2 currentTime];
       }
 
       else
@@ -1179,15 +1179,15 @@ LABEL_17:
   return Seconds;
 }
 
-- (void)setCurrentTime:(double)a3 completion:(id)a4
+- (void)setCurrentTime:(double)time completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 >= 0.0)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (time >= 0.0)
   {
     if (self->_scrubbing && self->_wasPlayingBeforeScrubbing)
     {
-      [(BKAVPlayer *)self _handleScrubPlayPreviewAtTime:v6 completion:a3];
+      [(BKAVPlayer *)self _handleScrubPlayPreviewAtTime:completionCopy completion:time];
     }
 
     else
@@ -1196,7 +1196,7 @@ LABEL_17:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v16 = a3;
+        timeCopy = time;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "_seekToTime: %lf (setCurrentTime)", buf, 0xCu);
       }
 
@@ -1204,15 +1204,15 @@ LABEL_17:
       v12[1] = 3221225472;
       v12[2] = sub_5168;
       v12[3] = &unk_3C920;
-      v14 = a3;
+      timeCopy2 = time;
       v13 = v7;
-      [(BKAVPlayer *)self _seekToTime:v12 completionHandler:a3];
+      [(BKAVPlayer *)self _seekToTime:v12 completionHandler:time];
     }
   }
 
   else
   {
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(completionCopy);
     v9 = v8;
     if (v8)
     {
@@ -1235,12 +1235,12 @@ LABEL_17:
     return 1;
   }
 
-  v5 = [(BKAVPlayer *)self player];
-  v6 = [v5 currentItem];
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
 
-  if (v6)
+  if (currentItem)
   {
-    v4 = [v6 status] == &dword_0 + 1;
+    v4 = [currentItem status] == &dword_0 + 1;
   }
 
   else
@@ -1251,9 +1251,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)_handleScrubPlayPreviewAtTime:(double)a3 completion:(id)a4
+- (void)_handleScrubPlayPreviewAtTime:(double)time completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_state == 2 && self->_scrubPausable)
   {
     [(BKAVPlayer *)self _pause];
@@ -1269,7 +1269,7 @@ LABEL_17:
     objc_copyWeak(v16, location);
     v16[1] = v7;
     dispatch_after(v8, &_dispatch_main_q, block);
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -1286,7 +1286,7 @@ LABEL_17:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = *&a3;
+      *(location + 4) = *&time;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "_seekToTime: %lf (_handleScrubPlayPreviewAtTime:completion:)", location, 0xCu);
     }
 
@@ -1294,17 +1294,17 @@ LABEL_17:
     v12[1] = 3221225472;
     v12[2] = sub_5660;
     v12[3] = &unk_3C920;
-    v14 = a3;
-    v13 = v6;
-    [(BKAVPlayer *)self _seekToTime:v12 completionHandler:a3];
+    timeCopy = time;
+    v13 = completionCopy;
+    [(BKAVPlayer *)self _seekToTime:v12 completionHandler:time];
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
   p_player = &self->_player;
-  v8 = a3;
-  if (*p_player != v8)
+  playerCopy = player;
+  if (*p_player != playerCopy)
   {
     [(BKAVPlayer *)self _removePeriodicTimeObserver];
     [(BKAVPlayer *)self _removeAllTimeObserversWithClearObservedTimes:0];
@@ -1312,16 +1312,16 @@ LABEL_17:
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"currentItem" context:off_47238];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"rate" context:off_47238];
     [(AVPlayer *)self->_player removeObserver:self forKeyPath:@"timeControlStatus" context:off_47238];
-    if (!v8)
+    if (!playerCopy)
     {
-      v6 = [(AVPlayer *)self->_player currentItem];
-      [v6 removeObserver:self forKeyPath:@"status" context:off_47238];
+      currentItem = [(AVPlayer *)self->_player currentItem];
+      [currentItem removeObserver:self forKeyPath:@"status" context:off_47238];
 
-      v7 = [(AVPlayer *)self->_player currentItem];
-      [v7 removeObserver:self forKeyPath:@"loadedTimeRanges" context:off_47238];
+      currentItem2 = [(AVPlayer *)self->_player currentItem];
+      [currentItem2 removeObserver:self forKeyPath:@"loadedTimeRanges" context:off_47238];
     }
 
-    objc_storeStrong(&self->_player, a3);
+    objc_storeStrong(&self->_player, player);
     if (*p_player)
     {
       [(AVPlayer *)*p_player addObserver:self forKeyPath:@"currentItem" options:6 context:off_47238];
@@ -1336,11 +1336,11 @@ LABEL_17:
   [(BKAVPlayer *)self _removePeriodicTimeObserver];
   [(BKAVPlayer *)self _removeAllTimeObserversWithClearObservedTimes:0];
   [(BKAVPlayer *)self setCurrentLoadedTimeRanges:0];
-  v3 = [(BKAVPlayer *)self asset];
+  asset = [(BKAVPlayer *)self asset];
 
   v4 = BKAudiobooksBKAVLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (asset)
   {
     if (v5)
     {
@@ -1360,28 +1360,28 @@ LABEL_17:
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "_updatePlayer, no asset, about to call replaceCurrentItemWithPlayerItem nil", v7, 2u);
     }
 
-    v6 = [(BKAVPlayer *)self player];
-    [v6 replaceCurrentItemWithPlayerItem:0];
+    player = [(BKAVPlayer *)self player];
+    [player replaceCurrentItemWithPlayerItem:0];
   }
 }
 
 - (void)_revalidatePlayerItem
 {
-  v3 = [(BKAVPlayer *)self asset];
-  v4 = [AVPlayerItem playerItemWithAsset:v3];
+  asset = [(BKAVPlayer *)self asset];
+  v4 = [AVPlayerItem playerItemWithAsset:asset];
 
-  v5 = [(BKAVPlayer *)self _isStreamingAssetURL];
-  if (v5)
+  _isStreamingAssetURL = [(BKAVPlayer *)self _isStreamingAssetURL];
+  if (_isStreamingAssetURL)
   {
     [v4 setPreferredForwardBufferDuration:3600.0];
     [v4 setCanUseNetworkResourcesForLiveStreamingWhilePaused:1];
   }
 
-  v6 = [(BKAVPlayer *)self player];
+  player = [(BKAVPlayer *)self player];
 
   v7 = BKAudiobooksBKAVLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (player)
   {
     if (v8)
     {
@@ -1389,8 +1389,8 @@ LABEL_17:
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "_updatePlayer, we have asset and player, about to call replaceCurrentItemWithPlayerItem", v13, 2u);
     }
 
-    v9 = [(BKAVPlayer *)self player];
-    [v9 replaceCurrentItemWithPlayerItem:v4];
+    player2 = [(BKAVPlayer *)self player];
+    [player2 replaceCurrentItemWithPlayerItem:v4];
   }
 
   else
@@ -1404,30 +1404,30 @@ LABEL_17:
     v10 = [AVPlayer playerWithPlayerItem:v4];
     [(BKAVPlayer *)self setPlayer:v10];
 
-    v11 = [(BKAVPlayer *)self player];
-    [v11 setActionAtItemEnd:1];
+    player3 = [(BKAVPlayer *)self player];
+    [player3 setActionAtItemEnd:1];
 
-    v9 = [(BKAVPlayer *)self player];
-    [v9 setAllowsExternalPlayback:0];
+    player2 = [(BKAVPlayer *)self player];
+    [player2 setAllowsExternalPlayback:0];
   }
 
-  if (v5)
+  if (_isStreamingAssetURL)
   {
-    v12 = [(BKAVPlayer *)self player];
-    [v12 setAutomaticallyWaitsToMinimizeStalling:1];
+    player4 = [(BKAVPlayer *)self player];
+    [player4 setAutomaticallyWaitsToMinimizeStalling:1];
   }
 }
 
 - (void)_updateAudioParameters
 {
-  v3 = [(BKAVPlayer *)self player];
-  v2 = [v3 currentItem];
-  [v2 setAudioTimePitchAlgorithm:AVAudioTimePitchAlgorithmTimeDomain];
+  player = [(BKAVPlayer *)self player];
+  currentItem = [player currentItem];
+  [currentItem setAudioTimePitchAlgorithm:AVAudioTimePitchAlgorithmTimeDomain];
 }
 
-- (void)_playWithSeekTime:(double)a3 fadeIn:(float)a4 completion:(id)a5
+- (void)_playWithSeekTime:(double)time fadeIn:(float)in completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   playbackRate = self->_playbackRate;
   if (playbackRate < 0.0 || fabsf(playbackRate) < 0.01)
   {
@@ -1442,7 +1442,7 @@ LABEL_17:
 
   v11 = BKAudiobooksBKAVLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 1.79769313e308)
+  if (time == 1.79769313e308)
   {
     if (!v12)
     {
@@ -1451,10 +1451,10 @@ LABEL_17:
 
     [(BKAVPlayer *)self playbackRate];
     v14 = v13;
-    v15 = [(BKAVPlayer *)self player];
-    [v15 rate];
+    player = [(BKAVPlayer *)self player];
+    [player rate];
     LODWORD(buf.value) = 134218496;
-    *(&buf.value + 4) = a4;
+    *(&buf.value + 4) = in;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = v14;
     HIWORD(buf.epoch) = 2048;
@@ -1473,12 +1473,12 @@ LABEL_17:
 
     [(BKAVPlayer *)self playbackRate];
     v21 = v20;
-    v15 = [(BKAVPlayer *)self player];
-    [v15 rate];
+    player = [(BKAVPlayer *)self player];
+    [player rate];
     LODWORD(buf.value) = 134218752;
-    *(&buf.value + 4) = a3;
+    *(&buf.value + 4) = time;
     LOWORD(buf.flags) = 2048;
-    *(&buf.flags + 2) = a4;
+    *(&buf.flags + 2) = in;
     HIWORD(buf.epoch) = 2048;
     v51 = v21;
     v52 = 2048;
@@ -1506,12 +1506,12 @@ LABEL_12:
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  v26 = [(BKAVPlayer *)self currentItem];
-  v27 = [v26 status];
+  currentItem = [(BKAVPlayer *)self currentItem];
+  status = [currentItem status];
 
-  if (v27)
+  if (status)
   {
-    if (v27 == &dword_0 + 2)
+    if (status == &dword_0 + 2)
     {
       v29 = BKAudiobooksBKAVLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1525,13 +1525,13 @@ LABEL_25:
 
     else
     {
-      if (v27 != &dword_0 + 1)
+      if (status != &dword_0 + 1)
       {
         goto LABEL_36;
       }
 
-      v28 = [(BKAVPlayer *)self currentItem];
-      if ([v28 isPlaybackLikelyToKeepUp])
+      currentItem2 = [(BKAVPlayer *)self currentItem];
+      if ([currentItem2 isPlaybackLikelyToKeepUp])
       {
 
 LABEL_27:
@@ -1543,11 +1543,11 @@ LABEL_27:
 
         [(BKAVPlayer *)self pendingCurrentTime];
         v37 = v36;
-        v38 = [(BKAVPlayer *)self player];
-        v39 = v38;
-        if (v38)
+        player2 = [(BKAVPlayer *)self player];
+        v39 = player2;
+        if (player2)
         {
-          [v38 currentTime];
+          [player2 currentTime];
         }
 
         else
@@ -1561,7 +1561,7 @@ LABEL_27:
         {
 LABEL_35:
           [(BKAVPlayer *)self setPendingCurrentTime:1.79769313e308];
-          (v24[2])(v24, v8);
+          (v24[2])(v24, completionCopy);
         }
 
         else
@@ -1583,16 +1583,16 @@ LABEL_35:
           v45[3] = &unk_3C9E8;
           v45[4] = self;
           v46 = v24;
-          v47 = v8;
+          v47 = completionCopy;
           [(BKAVPlayer *)self _seekToTime:v45 completionHandler:v44];
         }
 
         goto LABEL_36;
       }
 
-      v34 = [(BKAVPlayer *)self assetNetworkError];
+      assetNetworkError = [(BKAVPlayer *)self assetNetworkError];
 
-      if (!v34)
+      if (!assetNetworkError)
       {
         goto LABEL_27;
       }
@@ -1606,15 +1606,15 @@ LABEL_35:
       }
     }
 
-    (v23[2])(v23, v8);
+    (v23[2])(v23, completionCopy);
     goto LABEL_36;
   }
 
-  [(BKAVPlayer *)self setPendingCurrentTime:a3];
-  *&v31 = a4;
+  [(BKAVPlayer *)self setPendingCurrentTime:time];
+  *&v31 = in;
   [(BKAVPlayer *)self setPlayFadeInTime:v31];
   [(BKAVPlayer *)self setState:1];
-  v32 = objc_retainBlock(v8);
+  v32 = objc_retainBlock(completionCopy);
   v33 = v32;
   if (v32)
   {
@@ -1624,25 +1624,25 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)_activateSessionWithCompletion:(id)a3
+- (void)_activateSessionWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[AVAudioSession sharedInstance];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_68C4;
   v6[3] = &unk_3CA38;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 activateWithOptions:0 completionHandler:v6];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v6 = BKAudiobooksBKAVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -1652,29 +1652,29 @@ LABEL_36:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "state = %{public}@", &v9, 0xCu);
     }
 
-    v8 = [(BKAVPlayer *)self delegate];
-    [v8 player:self stateChangedFrom:state to:self->_state];
+    delegate = [(BKAVPlayer *)self delegate];
+    [delegate player:self stateChangedFrom:state to:self->_state];
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     [(BKAVPlayer *)self setWasInterrupted:0];
   }
 }
 
-- (void)_registerAssetForDRMGroupIDDelegation:(id)a3 completion:(id)a4
+- (void)_registerAssetForDRMGroupIDDelegation:(id)delegation completion:(id)completion
 {
-  v18 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  delegationCopy = delegation;
   objc_opt_class();
   v7 = BUDynamicCast();
 
-  v8 = [(AVContentKeySession *)self->_contentKeySession contentKeyRecipients];
-  v9 = [v8 containsObject:v7];
+  contentKeyRecipients = [(AVContentKeySession *)self->_contentKeySession contentKeyRecipients];
+  v9 = [contentKeyRecipients containsObject:v7];
 
-  v10 = [(BKAVPlayer *)self pendingAssetAuth];
-  v11 = [v10 asset];
-  v12 = [v11 isEqual:v7];
+  pendingAssetAuth = [(BKAVPlayer *)self pendingAssetAuth];
+  asset = [pendingAssetAuth asset];
+  v12 = [asset isEqual:v7];
 
   if (v7 && !((self->_audibleDRMGroupID == -1) | v9 & 1 | v12 & 1))
   {
@@ -1692,7 +1692,7 @@ LABEL_36:
     if (!self->_isAudibleDRMGroupAuthorized)
     {
       [(AVContentKeySession *)v15 processContentKeyRequestWithIdentifier:@"AudibleGroupID" initializationData:0 options:0];
-      v17 = [[BKPendingAssetAuthorization alloc] initWithAsset:v7 completion:v18];
+      v17 = [[BKPendingAssetAuthorization alloc] initWithAsset:v7 completion:completionCopy];
       [(BKAVPlayer *)self setPendingAssetAuth:v17];
       goto LABEL_10;
     }
@@ -1700,7 +1700,7 @@ LABEL_36:
     [(AVContentKeySession *)v15 addContentKeyRecipient:v7];
   }
 
-  v16 = objc_retainBlock(v18);
+  v16 = objc_retainBlock(completionCopy);
   v17 = v16;
   if (v16)
   {
@@ -1710,9 +1710,9 @@ LABEL_36:
 LABEL_10:
 }
 
-- (void)_unregisterAssetForDRMGroupIDDelegation:(id)a3
+- (void)_unregisterAssetForDRMGroupIDDelegation:(id)delegation
 {
-  v4 = a3;
+  delegationCopy = delegation;
   objc_opt_class();
   v6 = BUDynamicCast();
 
@@ -1727,23 +1727,23 @@ LABEL_10:
 
 - (BOOL)_isStreamingAssetURL
 {
-  v2 = [(BKAVPlayer *)self assetURL];
-  v3 = [v2 bk_isStreamingAssetURL];
+  assetURL = [(BKAVPlayer *)self assetURL];
+  bk_isStreamingAssetURL = [assetURL bk_isStreamingAssetURL];
 
-  return v3;
+  return bk_isStreamingAssetURL;
 }
 
 - (id)assetNetworkError
 {
-  v2 = [(BKAVPlayer *)self currentItem];
-  v3 = [v2 errorLog];
-  v4 = [v3 events];
+  currentItem = [(BKAVPlayer *)self currentItem];
+  errorLog = [currentItem errorLog];
+  events = [errorLog events];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = events;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v6)
   {
@@ -1759,18 +1759,18 @@ LABEL_10:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 errorDomain];
-        v12 = [v11 isEqualToString:@"CoreMediaErrorDomain"];
+        errorDomain = [v10 errorDomain];
+        v12 = [errorDomain isEqualToString:@"CoreMediaErrorDomain"];
 
-        v13 = [v10 errorDomain];
-        v14 = [v13 isEqualToString:NSURLErrorDomain];
+        errorDomain2 = [v10 errorDomain];
+        v14 = [errorDomain2 isEqualToString:NSURLErrorDomain];
 
         if (!v14 || ((v15 = [v10 errorStatusCode], v15 + 1009 <= 6) ? (v16 = ((1 << (v15 - 15)) & 0x71) == 0) : (v16 = 1), v16))
         {
           if ((v12 & 1) == 0)
           {
-            v17 = [v10 errorDomain];
-            v18 = [v17 isEqualToString:kCFErrorDomainCFNetwork];
+            errorDomain3 = [v10 errorDomain];
+            v18 = [errorDomain3 isEqualToString:kCFErrorDomainCFNetwork];
 
             if (!v18)
             {
@@ -1779,14 +1779,14 @@ LABEL_10:
           }
         }
 
-        v20 = [v10 errorComment];
-        v21 = [v20 length];
+        errorComment = [v10 errorComment];
+        v21 = [errorComment length];
 
         if (v21)
         {
           v31 = NSDebugDescriptionErrorKey;
-          v22 = [v10 errorComment];
-          v32 = v22;
+          errorComment2 = [v10 errorComment];
+          v32 = errorComment2;
           v23 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
         }
 
@@ -1795,8 +1795,8 @@ LABEL_10:
           v23 = 0;
         }
 
-        v24 = [v10 errorDomain];
-        v19 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v24, [v10 errorStatusCode], v23);
+        errorDomain4 = [v10 errorDomain];
+        v19 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", errorDomain4, [v10 errorStatusCode], v23);
 
         v25 = BKAudiobooksBKAVLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1828,33 +1828,33 @@ LABEL_24:
   return v19;
 }
 
-- (void)_setInternalVolumeAndNotify:(float)a3
+- (void)_setInternalVolumeAndNotify:(float)notify
 {
-  if (vabdd_f64(self->_volume, a3) >= 0.00999999978)
+  if (vabdd_f64(self->_volume, notify) >= 0.00999999978)
   {
-    self->_volume = a3;
-    v6 = [(BKAVPlayer *)self delegate];
-    *&v5 = a3;
-    [v6 player:self volumeDidChange:v5];
+    self->_volume = notify;
+    delegate = [(BKAVPlayer *)self delegate];
+    *&v5 = notify;
+    [delegate player:self volumeDidChange:v5];
   }
 }
 
 - (void)_reevaluateVolumeFromPlayer
 {
-  v6 = [(BKAVPlayer *)self player];
-  v3 = [v6 outputContext];
-  v4 = v3;
-  if (v3)
+  player = [(BKAVPlayer *)self player];
+  outputContext = [player outputContext];
+  v4 = outputContext;
+  if (outputContext)
   {
-    v5 = [v3 canSetVolume];
+    canSetVolume = [outputContext canSetVolume];
     [v4 volume];
-    [(BKAVPlayer *)self _reevaluateInternalVolumeWithContextCanSetVolume:v5 volume:?];
+    [(BKAVPlayer *)self _reevaluateInternalVolumeWithContextCanSetVolume:canSetVolume volume:?];
   }
 }
 
-- (void)_reevaluateInternalVolumeWithContextCanSetVolume:(BOOL)a3 volume:(float)a4
+- (void)_reevaluateInternalVolumeWithContextCanSetVolume:(BOOL)volume volume:(float)a4
 {
-  if (a3)
+  if (volume)
   {
 
     [(BKAVPlayer *)self _setInternalVolumeAndNotify:?];
@@ -1862,26 +1862,26 @@ LABEL_24:
 
   else
   {
-    v5 = [(BKAVPlayer *)self player];
-    [v5 volume];
+    player = [(BKAVPlayer *)self player];
+    [player volume];
     [(BKAVPlayer *)self _setInternalVolumeAndNotify:?];
   }
 }
 
-- (void)_processOutputContextVolumeNotification:(id)a3
+- (void)_processOutputContextVolumeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [notificationCopy object];
   v6 = BUDynamicCast();
 
   if (v6)
   {
-    v7 = [v6 contextID];
-    v8 = [v7 copy];
+    contextID = [v6 contextID];
+    v8 = [contextID copy];
 
     objc_initWeak(&location, self);
-    LOBYTE(v7) = [v6 canSetVolume];
+    LOBYTE(contextID) = [v6 canSetVolume];
     [v6 volume];
     v10 = v9;
     v15[0] = _NSConcreteStackBlock;
@@ -1891,8 +1891,8 @@ LABEL_24:
     objc_copyWeak(&v18, &location);
     v11 = v8;
     v16 = v11;
-    v17 = self;
-    v20 = v7;
+    selfCopy = self;
+    v20 = contextID;
     v19 = v10;
     v12 = objc_retainBlock(v15);
     if (v12)
@@ -1918,35 +1918,35 @@ LABEL_24:
   }
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v14 = [NSData dataWithBytes:&self->_audibleDRMGroupID length:4];
   v6 = [AVContentKeyResponse contentKeyResponseWithAuthorizationTokenData:?];
-  [v5 processContentKeyResponse:v6];
+  [requestCopy processContentKeyResponse:v6];
 
   self->_isAudibleDRMGroupAuthorized = 1;
-  v7 = [(BKAVPlayer *)self pendingAssetAuth];
+  pendingAssetAuth = [(BKAVPlayer *)self pendingAssetAuth];
 
-  if (v7)
+  if (pendingAssetAuth)
   {
-    v8 = [(BKAVPlayer *)self pendingAssetAuth];
-    v9 = [v8 asset];
+    pendingAssetAuth2 = [(BKAVPlayer *)self pendingAssetAuth];
+    asset = [pendingAssetAuth2 asset];
 
-    v10 = [(AVContentKeySession *)self->_contentKeySession contentKeyRecipients];
-    v11 = [v10 containsObject:v9];
+    contentKeyRecipients = [(AVContentKeySession *)self->_contentKeySession contentKeyRecipients];
+    v11 = [contentKeyRecipients containsObject:asset];
 
     if ((v11 & 1) == 0)
     {
-      [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:v9];
+      [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:asset];
     }
 
-    v12 = [(BKAVPlayer *)self pendingAssetAuth];
-    v13 = [v12 completion];
+    pendingAssetAuth3 = [(BKAVPlayer *)self pendingAssetAuth];
+    completion = [pendingAssetAuth3 completion];
 
-    if (v13)
+    if (completion)
     {
-      (v13)[2](v13, v9);
+      (completion)[2](completion, asset);
     }
 
     [(BKAVPlayer *)self setPendingAssetAuth:0];
@@ -1999,7 +1999,7 @@ LABEL_24:
           }
 
           objc_initWeak(&time, self);
-          v10 = [(BKAVPlayer *)self player];
+          player = [(BKAVPlayer *)self player];
           v11 = [NSArray arrayWithObject:v7];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
@@ -2007,10 +2007,10 @@ LABEL_24:
           v20[3] = &unk_3C7C8;
           v21[1] = *&Seconds;
           objc_copyWeak(v21, &time);
-          v12 = [v10 addBoundaryTimeObserverForTimes:v11 queue:0 usingBlock:v20];
+          v12 = [player addBoundaryTimeObserverForTimes:v11 queue:0 usingBlock:v20];
 
-          v13 = [(BKAVPlayer *)self timeObservers];
-          [v13 setObject:v12 forKeyedSubscript:v7];
+          timeObservers = [(BKAVPlayer *)self timeObservers];
+          [timeObservers setObject:v12 forKeyedSubscript:v7];
 
           if ((v4 & 1) != 0 || ![(BKAVPlayer *)self isCurrentTimeValid])
           {
@@ -2056,8 +2056,8 @@ LABEL_24:
           _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "recently passed time: %.1f", &time, 0xCu);
         }
 
-        v17 = [(BKAVPlayer *)self delegate];
-        [v17 player:self didReachPosition:v5];
+        delegate = [(BKAVPlayer *)self delegate];
+        [delegate player:self didReachPosition:v5];
       }
     }
 
@@ -2069,14 +2069,14 @@ LABEL_24:
   }
 }
 
-- (void)addTimeObserver:(double)a3
+- (void)addTimeObserver:(double)observer
 {
-  if (a3 >= 0.0)
+  if (observer >= 0.0)
   {
-    CMTimeMakeWithSeconds(&v6, a3, 1000000000);
+    CMTimeMakeWithSeconds(&v6, observer, 1000000000);
     v3 = [NSValue valueWithCMTime:&v6];
-    v5 = [(BKAVPlayer *)self observedTimes];
-    [v5 addObject:v3];
+    observedTimes = [(BKAVPlayer *)self observedTimes];
+    [observedTimes addObject:v3];
 
     [(BKAVPlayer *)self setNeedsToUpdateTimeObservers:1];
   }
@@ -2091,19 +2091,19 @@ LABEL_24:
   }
 }
 
-- (void)removeTimeObserver:(double)a3
+- (void)removeTimeObserver:(double)observer
 {
-  CMTimeMakeWithSeconds(&v6, a3, 1000000000);
+  CMTimeMakeWithSeconds(&v6, observer, 1000000000);
   v4 = [NSValue valueWithCMTime:&v6];
-  v5 = [(BKAVPlayer *)self observedTimes];
-  [v5 removeObject:v4];
+  observedTimes = [(BKAVPlayer *)self observedTimes];
+  [observedTimes removeObject:v4];
 
   [(BKAVPlayer *)self setNeedsToUpdateTimeObservers:1];
 }
 
-- (void)_removeAllTimeObserversWithClearObservedTimes:(BOOL)a3
+- (void)_removeAllTimeObserversWithClearObservedTimes:(BOOL)times
 {
-  v3 = a3;
+  timesCopy = times;
   v5 = BKAudiobooksBKAVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2115,8 +2115,8 @@ LABEL_24:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(BKAVPlayer *)self timeObservers];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  timeObservers = [(BKAVPlayer *)self timeObservers];
+  v7 = [timeObservers countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2128,33 +2128,33 @@ LABEL_24:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(timeObservers);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
-        v12 = [(BKAVPlayer *)self timeObservers];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        timeObservers2 = [(BKAVPlayer *)self timeObservers];
+        v13 = [timeObservers2 objectForKeyedSubscript:v11];
 
         if (v13)
         {
-          v14 = [(BKAVPlayer *)self player];
-          [v14 removeTimeObserver:v13];
+          player = [(BKAVPlayer *)self player];
+          [player removeTimeObserver:v13];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v8 = [timeObservers countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [(BKAVPlayer *)self timeObservers];
-  [v15 removeAllObjects];
+  timeObservers3 = [(BKAVPlayer *)self timeObservers];
+  [timeObservers3 removeAllObjects];
 
-  if (v3)
+  if (timesCopy)
   {
     v16 = BKAudiobooksBKAVLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -2163,26 +2163,26 @@ LABEL_24:
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "clear observed times", buf, 2u);
     }
 
-    v17 = [(BKAVPlayer *)self observedTimes];
-    [v17 removeAllObjects];
+    observedTimes = [(BKAVPlayer *)self observedTimes];
+    [observedTimes removeAllObjects];
   }
 }
 
 - (void)_addPeriodicTimeObserver
 {
-  v3 = [(BKAVPlayer *)self periodicTimeObserver];
+  periodicTimeObserver = [(BKAVPlayer *)self periodicTimeObserver];
 
-  if (!v3)
+  if (!periodicTimeObserver)
   {
     objc_initWeak(&location, self);
-    v4 = [(BKAVPlayer *)self player];
+    player = [(BKAVPlayer *)self player];
     CMTimeMakeWithSeconds(&v8, 1.0, 1000000000);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_7F68;
     v6[3] = &unk_3CA88;
     objc_copyWeak(&v7, &location);
-    v5 = [v4 addPeriodicTimeObserverForInterval:&v8 queue:0 usingBlock:v6];
+    v5 = [player addPeriodicTimeObserverForInterval:&v8 queue:0 usingBlock:v6];
 
     [(BKAVPlayer *)self setPeriodicTimeObserver:v5];
     objc_destroyWeak(&v7);
@@ -2192,13 +2192,13 @@ LABEL_24:
 
 - (void)_removePeriodicTimeObserver
 {
-  v3 = [(BKAVPlayer *)self periodicTimeObserver];
+  periodicTimeObserver = [(BKAVPlayer *)self periodicTimeObserver];
 
-  if (v3)
+  if (periodicTimeObserver)
   {
-    v4 = [(BKAVPlayer *)self player];
-    v5 = [(BKAVPlayer *)self periodicTimeObserver];
-    [v4 removeTimeObserver:v5];
+    player = [(BKAVPlayer *)self player];
+    periodicTimeObserver2 = [(BKAVPlayer *)self periodicTimeObserver];
+    [player removeTimeObserver:periodicTimeObserver2];
 
     [(BKAVPlayer *)self setPeriodicTimeObserver:0];
   }

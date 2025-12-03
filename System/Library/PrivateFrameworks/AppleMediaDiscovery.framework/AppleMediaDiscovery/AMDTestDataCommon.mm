@@ -1,6 +1,6 @@
 @interface AMDTestDataCommon
 + (id)getAggregationDescriptorDict;
-+ (id)getEventPayload:(id)a3;
++ (id)getEventPayload:(id)payload;
 + (id)getInferencePayload;
 + (id)getNonAggregationDescriptor;
 + (id)getRefreshOnDeviceTasteProfilePayload;
@@ -21,8 +21,8 @@
   v9[15] = *MEMORY[0x277D85DE8];
   v8[0] = 0x2852AC9C8;
   v4 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = [v4 numberWithUnsignedLongLong:v2];
   v9[0] = v5;
   v8[1] = 0x2852ACD68;
@@ -55,7 +55,7 @@
   v9[14] = @"installs";
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:15];
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](date);
   *MEMORY[0x277D85DE8];
 
   return v6;
@@ -66,8 +66,8 @@
   v9[16] = *MEMORY[0x277D85DE8];
   v8[0] = 0x2852AC9C8;
   v4 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = [v4 numberWithUnsignedLongLong:v2];
   v9[0] = v5;
   v8[1] = 0x2852ACD68;
@@ -102,7 +102,7 @@
   v9[15] = &unk_2852BAEC0;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:16];
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](date);
   *MEMORY[0x277D85DE8];
 
   return v6;
@@ -119,15 +119,15 @@
   v9[2] = @"iPhone";
   v8[3] = 0x2852AC9C8;
   v4 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = [v4 numberWithUnsignedLongLong:v2];
   v9[3] = v5;
   v8[4] = 0x2852ACEA8;
   v9[4] = @"uninstalls";
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:5];
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](date);
   *MEMORY[0x277D85DE8];
 
   return v6;
@@ -144,15 +144,15 @@
   v9[2] = @"iPhone";
   v8[3] = 0x2852AC9C8;
   v4 = MEMORY[0x277CCABB0];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = [v4 numberWithUnsignedLongLong:v2];
   v9[3] = v5;
   v8[4] = 0x2852ACEA8;
   v9[4] = @"crashes";
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:5];
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](date);
   *MEMORY[0x277D85DE8];
 
   return v6;
@@ -178,13 +178,13 @@
   return v3;
 }
 
-+ (id)getEventPayload:(id)a3
++ (id)getEventPayload:(id)payload
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v14 = 0;
   if ([location[0] isEqualToString:0x2852B1D68])
   {
@@ -275,7 +275,7 @@
 + (id)getAggregationDescriptorDict
 {
   v20[4] = *MEMORY[0x277D85DE8];
-  v9[2] = a1;
+  v9[2] = self;
   v9[1] = a2;
   v19[0] = 0x2852B3A08;
   v20[0] = @"aggregatedProp";

@@ -1,6 +1,6 @@
 @interface GQHTrbl
 - (GQHTrbl)init;
-- (void)setTop:(int)a3 right:(int)a4 bottom:(int)a5 left:(int)a6;
+- (void)setTop:(int)top right:(int)right bottom:(int)bottom left:(int)left;
 @end
 
 @implementation GQHTrbl
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (void)setTop:(int)a3 right:(int)a4 bottom:(int)a5 left:(int)a6
+- (void)setTop:(int)top right:(int)right bottom:(int)bottom left:(int)left
 {
-  self->mTop = a3;
-  self->mRight = a4;
-  self->mBottom = a5;
-  self->mLeft = a6;
+  self->mTop = top;
+  self->mRight = right;
+  self->mBottom = bottom;
+  self->mLeft = left;
 }
 
 @end

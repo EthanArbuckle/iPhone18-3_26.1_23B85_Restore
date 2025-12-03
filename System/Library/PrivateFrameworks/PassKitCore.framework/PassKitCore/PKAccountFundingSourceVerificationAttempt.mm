@@ -1,77 +1,77 @@
 @interface PKAccountFundingSourceVerificationAttempt
-- (BOOL)isEqual:(id)a3;
-- (PKAccountFundingSourceVerificationAttempt)initWithCoder:(id)a3;
-- (PKAccountFundingSourceVerificationAttempt)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountFundingSourceVerificationAttempt)initWithCoder:(id)coder;
+- (PKAccountFundingSourceVerificationAttempt)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountFundingSourceVerificationAttempt
 
-- (PKAccountFundingSourceVerificationAttempt)initWithDictionary:(id)a3
+- (PKAccountFundingSourceVerificationAttempt)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKAccountFundingSourceVerificationAttempt;
   v5 = [(PKAccountFundingSourceVerificationAttempt *)&v13 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v5->_type = PKApplyVerificationTypeFromString(v6);
 
-    v7 = [v4 PKDateForKey:@"sentDate"];
+    v7 = [dictionaryCopy PKDateForKey:@"sentDate"];
     sentDate = v5->_sentDate;
     v5->_sentDate = v7;
 
-    v9 = [v4 PKDateForKey:@"expiryDate"];
+    v9 = [dictionaryCopy PKDateForKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v9;
 
-    v11 = [v4 PKStringForKey:@"failureReason"];
+    v11 = [dictionaryCopy PKStringForKey:@"failureReason"];
     v5->_failureReason = PKAccountFundingSourceVerificationFailureReasonFromString(v11);
   }
 
   return v5;
 }
 
-- (PKAccountFundingSourceVerificationAttempt)initWithCoder:(id)a3
+- (PKAccountFundingSourceVerificationAttempt)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountFundingSourceVerificationAttempt;
   v5 = [(PKAccountFundingSourceVerificationAttempt *)&v11 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sentDate"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sentDate"];
     sentDate = v5->_sentDate;
     v5->_sentDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiryDate"];
     expiryDate = v5->_expiryDate;
     v5->_expiryDate = v8;
 
-    v5->_failureReason = [v4 decodeIntegerForKey:@"failureReason"];
+    v5->_failureReason = [coderCopy decodeIntegerForKey:@"failureReason"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_sentDate forKey:@"sentDate"];
-  [v5 encodeObject:self->_expiryDate forKey:@"expiryDate"];
-  [v5 encodeInteger:self->_failureReason forKey:@"failureReason"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_sentDate forKey:@"sentDate"];
+  [coderCopy encodeObject:self->_expiryDate forKey:@"expiryDate"];
+  [coderCopy encodeInteger:self->_failureReason forKey:@"failureReason"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -79,7 +79,7 @@
   }
 
   sentDate = self->_sentDate;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (sentDate && v6)
   {
     if (([(NSDate *)sentDate isEqual:?]& 1) == 0)
@@ -94,7 +94,7 @@
   }
 
   expiryDate = self->_expiryDate;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (!expiryDate || !v8)
   {
     if (expiryDate == v8)
@@ -113,12 +113,12 @@ LABEL_14:
   }
 
 LABEL_12:
-  if (self->_failureReason != v4[4])
+  if (self->_failureReason != equalCopy[4])
   {
     goto LABEL_14;
   }
 
-  v9 = self->_type == v4[1];
+  v9 = self->_type == equalCopy[1];
 LABEL_15:
 
   return v9;
@@ -126,10 +126,10 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_sentDate];
-  [v3 safelyAddObject:self->_expiryDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_sentDate];
+  [array safelyAddObject:self->_expiryDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_failureReason - v4 + 32 * v4;
   v6 = self->_type - v5 + 32 * v5;
 
@@ -161,15 +161,15 @@ LABEL_15:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAccountFundingSourceVerificationAttempt allocWithZone:](PKAccountFundingSourceVerificationAttempt init];
   v5->_type = self->_type;
-  v6 = [(NSDate *)self->_sentDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_sentDate copyWithZone:zone];
   sentDate = v5->_sentDate;
   v5->_sentDate = v6;
 
-  v8 = [(NSDate *)self->_expiryDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_expiryDate copyWithZone:zone];
   expiryDate = v5->_expiryDate;
   v5->_expiryDate = v8;
 

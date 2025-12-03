@@ -1,23 +1,23 @@
 @interface _INPBMediaSearch
-- (BOOL)isEqual:(id)a3;
-- (_INPBMediaSearch)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMediaSearch)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsMediaType:(id)a3;
-- (int)StringAsReference:(id)a3;
-- (int)StringAsSortOrder:(id)a3;
+- (int)StringAsMediaType:(id)type;
+- (int)StringAsReference:(id)reference;
+- (int)StringAsSortOrder:(id)order;
 - (unint64_t)hash;
-- (void)addGenreNames:(id)a3;
-- (void)addMoodNames:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setGenreNames:(id)a3;
-- (void)setHasReference:(BOOL)a3;
-- (void)setHasSortOrder:(BOOL)a3;
-- (void)setMediaType:(int)a3;
-- (void)setMoodNames:(id)a3;
-- (void)setReference:(int)a3;
-- (void)setSortOrder:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addGenreNames:(id)names;
+- (void)addMoodNames:(id)names;
+- (void)encodeWithCoder:(id)coder;
+- (void)setGenreNames:(id)names;
+- (void)setHasReference:(BOOL)reference;
+- (void)setHasSortOrder:(BOOL)order;
+- (void)setMediaType:(int)type;
+- (void)setMoodNames:(id)names;
+- (void)setReference:(int)reference;
+- (void)setSortOrder:(int)order;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMediaSearch
@@ -25,18 +25,18 @@
 - (id)dictionaryRepresentation
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBMediaSearch *)self albumName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"albumName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  albumName = [(_INPBMediaSearch *)self albumName];
+  dictionaryRepresentation = [albumName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"albumName"];
 
-  v6 = [(_INPBMediaSearch *)self artistName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"artistName"];
+  artistName = [(_INPBMediaSearch *)self artistName];
+  dictionaryRepresentation2 = [artistName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"artistName"];
 
   if ([(NSArray *)self->_genreNames count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -56,8 +56,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation3 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -66,36 +66,36 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"genreNames"];
+    [dictionary setObject:array forKeyedSubscript:@"genreNames"];
   }
 
-  v15 = [(_INPBMediaSearch *)self mediaIdentifier];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"mediaIdentifier"];
+  mediaIdentifier = [(_INPBMediaSearch *)self mediaIdentifier];
+  dictionaryRepresentation4 = [mediaIdentifier dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"mediaIdentifier"];
 
-  v17 = [(_INPBMediaSearch *)self mediaName];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"mediaName"];
+  mediaName = [(_INPBMediaSearch *)self mediaName];
+  dictionaryRepresentation5 = [mediaName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"mediaName"];
 
   if ([(_INPBMediaSearch *)self hasMediaType])
   {
-    v19 = [(_INPBMediaSearch *)self mediaType];
-    if (v19 >= 0x15)
+    mediaType = [(_INPBMediaSearch *)self mediaType];
+    if (mediaType >= 0x15)
     {
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v19];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", mediaType];
     }
 
     else
     {
-      v20 = off_1E7286670[v19];
+      v20 = off_1E7286670[mediaType];
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"mediaType"];
+    [dictionary setObject:v20 forKeyedSubscript:@"mediaType"];
   }
 
   if ([(NSArray *)self->_moodNames count])
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -115,8 +115,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation6 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation6];
         }
 
         v24 = [(NSArray *)v22 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -125,48 +125,48 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"moodNames"];
+    [dictionary setObject:array2 forKeyedSubscript:@"moodNames"];
   }
 
   if ([(_INPBMediaSearch *)self hasReference])
   {
-    v28 = [(_INPBMediaSearch *)self reference];
-    if (v28 >= 3)
+    reference = [(_INPBMediaSearch *)self reference];
+    if (reference >= 3)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v28];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", reference];
     }
 
     else
     {
-      v29 = off_1E7286718[v28];
+      v29 = off_1E7286718[reference];
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"reference"];
+    [dictionary setObject:v29 forKeyedSubscript:@"reference"];
   }
 
-  v30 = [(_INPBMediaSearch *)self releaseDate];
-  v31 = [v30 dictionaryRepresentation];
-  [v3 setObject:v31 forKeyedSubscript:@"releaseDate"];
+  releaseDate = [(_INPBMediaSearch *)self releaseDate];
+  dictionaryRepresentation7 = [releaseDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"releaseDate"];
 
   if ([(_INPBMediaSearch *)self hasSortOrder])
   {
-    v32 = [(_INPBMediaSearch *)self sortOrder];
-    if (v32 >= 9)
+    sortOrder = [(_INPBMediaSearch *)self sortOrder];
+    if (sortOrder >= 9)
     {
-      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v32];
+      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sortOrder];
     }
 
     else
     {
-      v33 = off_1E7286730[v32];
+      v33 = off_1E7286730[sortOrder];
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"sortOrder"];
+    [dictionary setObject:v33 forKeyedSubscript:@"sortOrder"];
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -211,28 +211,28 @@
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
-  v5 = [(_INPBMediaSearch *)self albumName];
-  v6 = [v4 albumName];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self albumName];
+  albumName2 = [equalCopy albumName];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v7 = [(_INPBMediaSearch *)self albumName];
-  if (v7)
+  albumName3 = [(_INPBMediaSearch *)self albumName];
+  if (albumName3)
   {
-    v8 = v7;
-    v9 = [(_INPBMediaSearch *)self albumName];
-    v10 = [v4 albumName];
-    v11 = [v9 isEqual:v10];
+    v8 = albumName3;
+    albumName4 = [(_INPBMediaSearch *)self albumName];
+    albumName5 = [equalCopy albumName];
+    v11 = [albumName4 isEqual:albumName5];
 
     if (!v11)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(_INPBMediaSearch *)self artistName];
-  v6 = [v4 artistName];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self artistName];
+  albumName2 = [equalCopy artistName];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v12 = [(_INPBMediaSearch *)self artistName];
-  if (v12)
+  artistName = [(_INPBMediaSearch *)self artistName];
+  if (artistName)
   {
-    v13 = v12;
-    v14 = [(_INPBMediaSearch *)self artistName];
-    v15 = [v4 artistName];
-    v16 = [v14 isEqual:v15];
+    v13 = artistName;
+    artistName2 = [(_INPBMediaSearch *)self artistName];
+    artistName3 = [equalCopy artistName];
+    v16 = [artistName2 isEqual:artistName3];
 
     if (!v16)
     {
@@ -269,20 +269,20 @@
   {
   }
 
-  v5 = [(_INPBMediaSearch *)self genreNames];
-  v6 = [v4 genreNames];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self genreNames];
+  albumName2 = [equalCopy genreNames];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v17 = [(_INPBMediaSearch *)self genreNames];
-  if (v17)
+  genreNames = [(_INPBMediaSearch *)self genreNames];
+  if (genreNames)
   {
-    v18 = v17;
-    v19 = [(_INPBMediaSearch *)self genreNames];
-    v20 = [v4 genreNames];
-    v21 = [v19 isEqual:v20];
+    v18 = genreNames;
+    genreNames2 = [(_INPBMediaSearch *)self genreNames];
+    genreNames3 = [equalCopy genreNames];
+    v21 = [genreNames2 isEqual:genreNames3];
 
     if (!v21)
     {
@@ -294,20 +294,20 @@
   {
   }
 
-  v5 = [(_INPBMediaSearch *)self mediaIdentifier];
-  v6 = [v4 mediaIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self mediaIdentifier];
+  albumName2 = [equalCopy mediaIdentifier];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v22 = [(_INPBMediaSearch *)self mediaIdentifier];
-  if (v22)
+  mediaIdentifier = [(_INPBMediaSearch *)self mediaIdentifier];
+  if (mediaIdentifier)
   {
-    v23 = v22;
-    v24 = [(_INPBMediaSearch *)self mediaIdentifier];
-    v25 = [v4 mediaIdentifier];
-    v26 = [v24 isEqual:v25];
+    v23 = mediaIdentifier;
+    mediaIdentifier2 = [(_INPBMediaSearch *)self mediaIdentifier];
+    mediaIdentifier3 = [equalCopy mediaIdentifier];
+    v26 = [mediaIdentifier2 isEqual:mediaIdentifier3];
 
     if (!v26)
     {
@@ -319,20 +319,20 @@
   {
   }
 
-  v5 = [(_INPBMediaSearch *)self mediaName];
-  v6 = [v4 mediaName];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self mediaName];
+  albumName2 = [equalCopy mediaName];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v27 = [(_INPBMediaSearch *)self mediaName];
-  if (v27)
+  mediaName = [(_INPBMediaSearch *)self mediaName];
+  if (mediaName)
   {
-    v28 = v27;
-    v29 = [(_INPBMediaSearch *)self mediaName];
-    v30 = [v4 mediaName];
-    v31 = [v29 isEqual:v30];
+    v28 = mediaName;
+    mediaName2 = [(_INPBMediaSearch *)self mediaName];
+    mediaName3 = [equalCopy mediaName];
+    v31 = [mediaName2 isEqual:mediaName3];
 
     if (!v31)
     {
@@ -344,38 +344,38 @@
   {
   }
 
-  v32 = [(_INPBMediaSearch *)self hasMediaType];
-  if (v32 != [v4 hasMediaType])
+  hasMediaType = [(_INPBMediaSearch *)self hasMediaType];
+  if (hasMediaType != [equalCopy hasMediaType])
   {
     goto LABEL_45;
   }
 
   if ([(_INPBMediaSearch *)self hasMediaType])
   {
-    if ([v4 hasMediaType])
+    if ([equalCopy hasMediaType])
     {
       mediaType = self->_mediaType;
-      if (mediaType != [v4 mediaType])
+      if (mediaType != [equalCopy mediaType])
       {
         goto LABEL_45;
       }
     }
   }
 
-  v5 = [(_INPBMediaSearch *)self moodNames];
-  v6 = [v4 moodNames];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self moodNames];
+  albumName2 = [equalCopy moodNames];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_44;
   }
 
-  v34 = [(_INPBMediaSearch *)self moodNames];
-  if (v34)
+  moodNames = [(_INPBMediaSearch *)self moodNames];
+  if (moodNames)
   {
-    v35 = v34;
-    v36 = [(_INPBMediaSearch *)self moodNames];
-    v37 = [v4 moodNames];
-    v38 = [v36 isEqual:v37];
+    v35 = moodNames;
+    moodNames2 = [(_INPBMediaSearch *)self moodNames];
+    moodNames3 = [equalCopy moodNames];
+    v38 = [moodNames2 isEqual:moodNames3];
 
     if (!v38)
     {
@@ -387,40 +387,40 @@
   {
   }
 
-  v39 = [(_INPBMediaSearch *)self hasReference];
-  if (v39 != [v4 hasReference])
+  hasReference = [(_INPBMediaSearch *)self hasReference];
+  if (hasReference != [equalCopy hasReference])
   {
     goto LABEL_45;
   }
 
   if ([(_INPBMediaSearch *)self hasReference])
   {
-    if ([v4 hasReference])
+    if ([equalCopy hasReference])
     {
       reference = self->_reference;
-      if (reference != [v4 reference])
+      if (reference != [equalCopy reference])
       {
         goto LABEL_45;
       }
     }
   }
 
-  v5 = [(_INPBMediaSearch *)self releaseDate];
-  v6 = [v4 releaseDate];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBMediaSearch *)self releaseDate];
+  albumName2 = [equalCopy releaseDate];
+  if ((albumName != 0) == (albumName2 == 0))
   {
 LABEL_44:
 
     goto LABEL_45;
   }
 
-  v41 = [(_INPBMediaSearch *)self releaseDate];
-  if (v41)
+  releaseDate = [(_INPBMediaSearch *)self releaseDate];
+  if (releaseDate)
   {
-    v42 = v41;
-    v43 = [(_INPBMediaSearch *)self releaseDate];
-    v44 = [v4 releaseDate];
-    v45 = [v43 isEqual:v44];
+    v42 = releaseDate;
+    releaseDate2 = [(_INPBMediaSearch *)self releaseDate];
+    releaseDate3 = [equalCopy releaseDate];
+    v45 = [releaseDate2 isEqual:releaseDate3];
 
     if (!v45)
     {
@@ -432,10 +432,10 @@ LABEL_44:
   {
   }
 
-  v48 = [(_INPBMediaSearch *)self hasSortOrder];
-  if (v48 == [v4 hasSortOrder])
+  hasSortOrder = [(_INPBMediaSearch *)self hasSortOrder];
+  if (hasSortOrder == [equalCopy hasSortOrder])
   {
-    if (!-[_INPBMediaSearch hasSortOrder](self, "hasSortOrder") || ![v4 hasSortOrder] || (sortOrder = self->_sortOrder, sortOrder == objc_msgSend(v4, "sortOrder")))
+    if (!-[_INPBMediaSearch hasSortOrder](self, "hasSortOrder") || ![equalCopy hasSortOrder] || (sortOrder = self->_sortOrder, sortOrder == objc_msgSend(equalCopy, "sortOrder")))
     {
       v46 = 1;
       goto LABEL_46;
@@ -449,22 +449,22 @@ LABEL_46:
   return v46;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMediaSearch allocWithZone:](_INPBMediaSearch init];
-  v6 = [(_INPBString *)self->_albumName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_albumName copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setAlbumName:v6];
 
-  v7 = [(_INPBString *)self->_artistName copyWithZone:a3];
+  v7 = [(_INPBString *)self->_artistName copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setArtistName:v7];
 
-  v8 = [(NSArray *)self->_genreNames copyWithZone:a3];
+  v8 = [(NSArray *)self->_genreNames copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setGenreNames:v8];
 
-  v9 = [(_INPBString *)self->_mediaIdentifier copyWithZone:a3];
+  v9 = [(_INPBString *)self->_mediaIdentifier copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setMediaIdentifier:v9];
 
-  v10 = [(_INPBString *)self->_mediaName copyWithZone:a3];
+  v10 = [(_INPBString *)self->_mediaName copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setMediaName:v10];
 
   if ([(_INPBMediaSearch *)self hasMediaType])
@@ -472,7 +472,7 @@ LABEL_46:
     [(_INPBMediaSearch *)v5 setMediaType:[(_INPBMediaSearch *)self mediaType]];
   }
 
-  v11 = [(NSArray *)self->_moodNames copyWithZone:a3];
+  v11 = [(NSArray *)self->_moodNames copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setMoodNames:v11];
 
   if ([(_INPBMediaSearch *)self hasReference])
@@ -480,7 +480,7 @@ LABEL_46:
     [(_INPBMediaSearch *)v5 setReference:[(_INPBMediaSearch *)self reference]];
   }
 
-  v12 = [(_INPBDateTimeRange *)self->_releaseDate copyWithZone:a3];
+  v12 = [(_INPBDateTimeRange *)self->_releaseDate copyWithZone:zone];
   [(_INPBMediaSearch *)v5 setReleaseDate:v12];
 
   if ([(_INPBMediaSearch *)self hasSortOrder])
@@ -491,47 +491,47 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMediaSearch *)self data];
+  coderCopy = coder;
+  data = [(_INPBMediaSearch *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMediaSearch)initWithCoder:(id)a3
+- (_INPBMediaSearch)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMediaSearch *)self initWithData:v6];
+    self = [(_INPBMediaSearch *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBMediaSearch *)self albumName];
+  toCopy = to;
+  albumName = [(_INPBMediaSearch *)self albumName];
 
-  if (v5)
+  if (albumName)
   {
-    v6 = [(_INPBMediaSearch *)self albumName];
+    albumName2 = [(_INPBMediaSearch *)self albumName];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBMediaSearch *)self artistName];
+  artistName = [(_INPBMediaSearch *)self artistName];
 
-  if (v7)
+  if (artistName)
   {
-    v8 = [(_INPBMediaSearch *)self artistName];
+    artistName2 = [(_INPBMediaSearch *)self artistName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -567,19 +567,19 @@ LABEL_46:
     while (v11);
   }
 
-  v15 = [(_INPBMediaSearch *)self mediaIdentifier];
+  mediaIdentifier = [(_INPBMediaSearch *)self mediaIdentifier];
 
-  if (v15)
+  if (mediaIdentifier)
   {
-    v16 = [(_INPBMediaSearch *)self mediaIdentifier];
+    mediaIdentifier2 = [(_INPBMediaSearch *)self mediaIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBMediaSearch *)self mediaName];
+  mediaName = [(_INPBMediaSearch *)self mediaName];
 
-  if (v17)
+  if (mediaName)
   {
-    v18 = [(_INPBMediaSearch *)self mediaName];
+    mediaName2 = [(_INPBMediaSearch *)self mediaName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -627,11 +627,11 @@ LABEL_46:
     PBDataWriterWriteInt32Field();
   }
 
-  v27 = [(_INPBMediaSearch *)self releaseDate];
+  releaseDate = [(_INPBMediaSearch *)self releaseDate];
 
-  if (v27)
+  if (releaseDate)
   {
-    v28 = [(_INPBMediaSearch *)self releaseDate];
+    releaseDate2 = [(_INPBMediaSearch *)self releaseDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -644,50 +644,50 @@ LABEL_46:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsSortOrder:(id)a3
+- (int)StringAsSortOrder:(id)order
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_SORT_ORDER"])
+  orderCopy = order;
+  if ([orderCopy isEqualToString:@"UNKNOWN_SORT_ORDER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NEWEST"])
+  else if ([orderCopy isEqualToString:@"NEWEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OLDEST"])
+  else if ([orderCopy isEqualToString:@"OLDEST"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BEST"])
+  else if ([orderCopy isEqualToString:@"BEST"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WORST"])
+  else if ([orderCopy isEqualToString:@"WORST"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"POPULAR"])
+  else if ([orderCopy isEqualToString:@"POPULAR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UNPOPULAR"])
+  else if ([orderCopy isEqualToString:@"UNPOPULAR"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TRENDING"])
+  else if ([orderCopy isEqualToString:@"TRENDING"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RECOMMENDED"])
+  else if ([orderCopy isEqualToString:@"RECOMMENDED"])
   {
     v4 = 8;
   }
@@ -700,9 +700,9 @@ LABEL_46:
   return v4;
 }
 
-- (void)setHasSortOrder:(BOOL)a3
+- (void)setHasSortOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v3 = 4;
   }
@@ -715,10 +715,10 @@ LABEL_46:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setSortOrder:(int)a3
+- (void)setSortOrder:(int)order
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (order == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -726,24 +726,24 @@ LABEL_46:
   else
   {
     *&self->_has = has | 4;
-    self->_sortOrder = a3;
+    self->_sortOrder = order;
   }
 }
 
-- (int)StringAsReference:(id)a3
+- (int)StringAsReference:(id)reference
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_REFERENCE"])
+  referenceCopy = reference;
+  if ([referenceCopy isEqualToString:@"UNKNOWN_REFERENCE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CURRENTLY_PLAYING"])
+  else if ([referenceCopy isEqualToString:@"CURRENTLY_PLAYING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MY"])
+  else if ([referenceCopy isEqualToString:@"MY"])
   {
     v4 = 2;
   }
@@ -756,9 +756,9 @@ LABEL_46:
   return v4;
 }
 
-- (void)setHasReference:(BOOL)a3
+- (void)setHasReference:(BOOL)reference
 {
-  if (a3)
+  if (reference)
   {
     v3 = 2;
   }
@@ -771,10 +771,10 @@ LABEL_46:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setReference:(int)a3
+- (void)setReference:(int)reference
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reference == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -782,141 +782,141 @@ LABEL_46:
   else
   {
     *&self->_has = has | 2;
-    self->_reference = a3;
+    self->_reference = reference;
   }
 }
 
-- (void)addMoodNames:(id)a3
+- (void)addMoodNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   moodNames = self->_moodNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!moodNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_moodNames;
-    self->_moodNames = v6;
+    self->_moodNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     moodNames = self->_moodNames;
   }
 
-  [(NSArray *)moodNames addObject:v4];
+  [(NSArray *)moodNames addObject:namesCopy];
 }
 
-- (void)setMoodNames:(id)a3
+- (void)setMoodNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   moodNames = self->_moodNames;
   self->_moodNames = v4;
 
   MEMORY[0x1EEE66BB8](v4, moodNames);
 }
 
-- (int)StringAsMediaType:(id)a3
+- (int)StringAsMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_MEDIA_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_MEDIA_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SONG"])
+  else if ([typeCopy isEqualToString:@"SONG"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ALBUM"])
+  else if ([typeCopy isEqualToString:@"ALBUM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ARTIST"])
+  else if ([typeCopy isEqualToString:@"ARTIST"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GENRE"])
+  else if ([typeCopy isEqualToString:@"GENRE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PLAYLIST"])
+  else if ([typeCopy isEqualToString:@"PLAYLIST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST_SHOW"])
+  else if ([typeCopy isEqualToString:@"PODCAST_SHOW"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST_EPISODE"])
+  else if ([typeCopy isEqualToString:@"PODCAST_EPISODE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST_PLAYLIST"])
+  else if ([typeCopy isEqualToString:@"PODCAST_PLAYLIST"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC_STATION"])
+  else if ([typeCopy isEqualToString:@"MUSIC_STATION"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AUDIO_BOOK"])
+  else if ([typeCopy isEqualToString:@"AUDIO_BOOK"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"MOVIE"])
+  else if ([typeCopy isEqualToString:@"MOVIE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"TV_SHOW"])
+  else if ([typeCopy isEqualToString:@"TV_SHOW"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TV_SHOW_EPISODE"])
+  else if ([typeCopy isEqualToString:@"TV_SHOW_EPISODE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC_VIDEO"])
+  else if ([typeCopy isEqualToString:@"MUSIC_VIDEO"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"PODCAST_STATION"])
+  else if ([typeCopy isEqualToString:@"PODCAST_STATION"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"RADIO_STATION"])
+  else if ([typeCopy isEqualToString:@"RADIO_STATION"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"STATION"])
+  else if ([typeCopy isEqualToString:@"STATION"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"MUSIC"])
+  else if ([typeCopy isEqualToString:@"MUSIC"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ALGORITHMIC_RADIO_STATION"])
+  else if ([typeCopy isEqualToString:@"ALGORITHMIC_RADIO_STATION"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"NEWS"])
+  else if ([typeCopy isEqualToString:@"NEWS"])
   {
     v4 = 20;
   }
@@ -929,10 +929,10 @@ LABEL_46:
   return v4;
 }
 
-- (void)setMediaType:(int)a3
+- (void)setMediaType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -940,31 +940,31 @@ LABEL_46:
   else
   {
     *&self->_has = has | 1;
-    self->_mediaType = a3;
+    self->_mediaType = type;
   }
 }
 
-- (void)addGenreNames:(id)a3
+- (void)addGenreNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   genreNames = self->_genreNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!genreNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_genreNames;
-    self->_genreNames = v6;
+    self->_genreNames = array;
 
-    v4 = v8;
+    namesCopy = v8;
     genreNames = self->_genreNames;
   }
 
-  [(NSArray *)genreNames addObject:v4];
+  [(NSArray *)genreNames addObject:namesCopy];
 }
 
-- (void)setGenreNames:(id)a3
+- (void)setGenreNames:(id)names
 {
-  v4 = [a3 mutableCopy];
+  v4 = [names mutableCopy];
   genreNames = self->_genreNames;
   self->_genreNames = v4;
 

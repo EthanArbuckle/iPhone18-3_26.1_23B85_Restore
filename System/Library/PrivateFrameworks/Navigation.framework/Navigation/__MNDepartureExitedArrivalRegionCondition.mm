@@ -1,14 +1,14 @@
 @interface __MNDepartureExitedArrivalRegionCondition
-- (__MNDepartureExitedArrivalRegionCondition)initWithUpdater:(id)a3 arrivalRegions:(id)a4;
-- (double)scoreForLocation:(id)a3;
+- (__MNDepartureExitedArrivalRegionCondition)initWithUpdater:(id)updater arrivalRegions:(id)regions;
+- (double)scoreForLocation:(id)location;
 @end
 
 @implementation __MNDepartureExitedArrivalRegionCondition
 
-- (double)scoreForLocation:(id)a3
+- (double)scoreForLocation:(id)location
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   WeakRetained = objc_loadWeakRetained(&self->_updater);
 
   if (!WeakRetained)
@@ -37,7 +37,7 @@ LABEL_21:
   }
 
   v8 = v7;
-  v38 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = *v40;
   do
@@ -52,28 +52,28 @@ LABEL_21:
       v12 = *(*(&v39 + 1) + 8 * i);
       if ([v12 arrivalRegionAction] == 5 || objc_msgSend(v12, "arrivalRegionAction") == 2)
       {
-        v13 = [v4 roadMatch];
+        roadMatch = [locationCopy roadMatch];
 
-        v14 = [v12 arrivalRegion];
-        if (v13)
+        arrivalRegion = [v12 arrivalRegion];
+        if (roadMatch)
         {
-          v15 = [v4 roadMatch];
-          [v15 coordinateOnRoad];
+          roadMatch2 = [locationCopy roadMatch];
+          [roadMatch2 coordinateOnRoad];
           v17 = v16;
           v19 = v18;
-          v20 = [v4 roadMatch];
-          [v20 roadWidth];
-          v22 = [v14 containsCoordinate:v17 radius:{v19, v21}];
+          roadMatch3 = [locationCopy roadMatch];
+          [roadMatch3 roadWidth];
+          v22 = [arrivalRegion containsCoordinate:v17 radius:{v19, v21}];
         }
 
         else
         {
-          v15 = [v4 rawLocation];
-          [v15 coordinate];
+          roadMatch2 = [locationCopy rawLocation];
+          [roadMatch2 coordinate];
           v24 = v23;
           v26 = v25;
-          [v4 horizontalAccuracy];
-          v22 = [v14 containsCoordinate:v24 radius:{v26, v27}];
+          [locationCopy horizontalAccuracy];
+          v22 = [arrivalRegion containsCoordinate:v24 radius:{v26, v27}];
         }
 
         v9 |= v22 ^ 1;
@@ -85,7 +85,7 @@ LABEL_21:
 
   while (v8);
 
-  self = v38;
+  self = selfCopy;
   if ((v9 & 1) == 0)
   {
     goto LABEL_21;
@@ -103,9 +103,9 @@ LABEL_22:
     do
     {
       v34 = [(NSMutableArray *)self->_regionDepartureHistory objectAtIndex:--v32];
-      v35 = [v34 BOOLValue];
+      bOOLValue = [v34 BOOLValue];
 
-      if (v35)
+      if (bOOLValue)
       {
         v33 = v33 + (1 << v32);
       }
@@ -126,18 +126,18 @@ LABEL_30:
   return v29;
 }
 
-- (__MNDepartureExitedArrivalRegionCondition)initWithUpdater:(id)a3 arrivalRegions:(id)a4
+- (__MNDepartureExitedArrivalRegionCondition)initWithUpdater:(id)updater arrivalRegions:(id)regions
 {
-  v6 = a3;
-  v7 = a4;
+  updaterCopy = updater;
+  regionsCopy = regions;
   v14.receiver = self;
   v14.super_class = __MNDepartureExitedArrivalRegionCondition;
   v8 = [(__MNDepartureExitedArrivalRegionCondition *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_updater, v6);
-    objc_storeStrong(&v9->_arrivalRegions, a4);
+    objc_storeWeak(&v8->_updater, updaterCopy);
+    objc_storeStrong(&v9->_arrivalRegions, regions);
     v9->_numHistoricalLocations = GEOConfigGetUInteger();
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v9->_numHistoricalLocations];
     regionDepartureHistory = v9->_regionDepartureHistory;

@@ -1,5 +1,5 @@
 @interface _CUIThemeMultisizeImageSetRendition
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4;
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(CUIThemeRendition *)&v3 dealloc];
 }
 
-- (id)_initWithCSIHeader:(const _csiheader *)a3 version:(unsigned int)a4
+- (id)_initWithCSIHeader:(const _csiheader *)header version:(unsigned int)version
 {
   v23.receiver = self;
   v23.super_class = _CUIThemeMultisizeImageSetRendition;
-  v6 = [(CUIThemeRendition *)&v23 _initWithCSIHeader:a3 version:*&a4];
-  var10 = a3->var10;
-  var0 = a3->var11.var0;
-  v9 = &a3->var0 + 4 * var0 + var10;
+  v6 = [(CUIThemeRendition *)&v23 _initWithCSIHeader:header version:*&version];
+  var10 = header->var10;
+  var0 = header->var11.var0;
+  v9 = &header->var0 + 4 * var0 + var10;
   v11 = *(v9 + 45);
   v10 = v9 + 180;
   if (v11 != 1297303891)
@@ -35,7 +35,7 @@
     if (*(v10 + 2))
     {
       v17 = 0;
-      v18 = (&a3->var11.var1[var0 + 6] + var10);
+      v18 = (&header->var11.var1[var0 + 6] + var10);
       do
       {
         LODWORD(v15) = *(v18 - 2);
@@ -53,7 +53,7 @@
   else if (*(v10 + 2))
   {
     v20 = 0;
-    v21 = (&a3->var11.var1[var0 + 5] + var10);
+    v21 = (&header->var11.var1[var0 + 5] + var10);
     do
     {
       LODWORD(v15) = *(v21 - 1);

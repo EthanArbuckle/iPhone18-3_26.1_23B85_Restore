@@ -2,7 +2,7 @@
 - (NSArray)metadataItems;
 - (id)accessibilityDescriptionItem;
 - (id)captionItem;
-- (id)commonItemForKey:(id)a3 string:(id)a4;
+- (id)commonItemForKey:(id)key string:(id)string;
 - (id)creationDateItem;
 - (id)keywordsItem;
 - (id)locationItem;
@@ -14,57 +14,57 @@
 
 - (NSArray)metadataItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PFVideoMetadataBuilder *)self titleItem];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  titleItem = [(PFVideoMetadataBuilder *)self titleItem];
+  if (titleItem)
   {
-    [v3 addObject:v4];
+    [array addObject:titleItem];
   }
 
-  v5 = [(PFVideoMetadataBuilder *)self captionItem];
-  if (v5)
+  captionItem = [(PFVideoMetadataBuilder *)self captionItem];
+  if (captionItem)
   {
-    [v3 addObject:v5];
+    [array addObject:captionItem];
   }
 
-  v6 = [(PFVideoMetadataBuilder *)self locationItem];
-  if (v6)
+  locationItem = [(PFVideoMetadataBuilder *)self locationItem];
+  if (locationItem)
   {
-    [v3 addObject:v6];
+    [array addObject:locationItem];
   }
 
-  v7 = [(PFVideoMetadataBuilder *)self creationDateItem];
-  if (v7)
+  creationDateItem = [(PFVideoMetadataBuilder *)self creationDateItem];
+  if (creationDateItem)
   {
-    [v3 addObject:v7];
+    [array addObject:creationDateItem];
   }
 
-  v8 = [(PFVideoMetadataBuilder *)self keywordsItem];
-  if (v8)
+  keywordsItem = [(PFVideoMetadataBuilder *)self keywordsItem];
+  if (keywordsItem)
   {
-    [v3 addObject:v8];
+    [array addObject:keywordsItem];
   }
 
-  v9 = [(PFVideoMetadataBuilder *)self accessibilityDescriptionItem];
-  if (v9)
+  accessibilityDescriptionItem = [(PFVideoMetadataBuilder *)self accessibilityDescriptionItem];
+  if (accessibilityDescriptionItem)
   {
-    [v3 addObject:v9];
+    [array addObject:accessibilityDescriptionItem];
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
 
 - (id)keywordsItem
 {
-  v2 = [(PFMetadataBuilder *)self combinedKeywordsAndPeople];
-  if ([v2 count])
+  combinedKeywordsAndPeople = [(PFMetadataBuilder *)self combinedKeywordsAndPeople];
+  if ([combinedKeywordsAndPeople count])
   {
     v3 = objc_alloc_init(MEMORY[0x1E6988050]);
     [v3 setKeySpace:*MEMORY[0x1E6987850]];
     [v3 setKey:*MEMORY[0x1E69878C8]];
-    v4 = [v2 copy];
+    v4 = [combinedKeywordsAndPeople copy];
     [v3 setValue:v4];
   }
 
@@ -101,14 +101,14 @@ uint64_t __44__PFVideoMetadataBuilder_videoDateFormatter__block_invoke()
 
 - (id)creationDateItem
 {
-  v3 = [(PFMetadataBuilder *)self creationDate];
-  if (v3)
+  creationDate = [(PFMetadataBuilder *)self creationDate];
+  if (creationDate)
   {
-    v4 = [(PFVideoMetadataBuilder *)self videoDateFormatter];
-    v5 = [(PFMetadataBuilder *)self creationTimeZone];
-    [v4 setTimeZone:v5];
+    videoDateFormatter = [(PFVideoMetadataBuilder *)self videoDateFormatter];
+    creationTimeZone = [(PFMetadataBuilder *)self creationTimeZone];
+    [videoDateFormatter setTimeZone:creationTimeZone];
 
-    v6 = [v4 stringFromDate:v3];
+    v6 = [videoDateFormatter stringFromDate:creationDate];
     v7 = [(PFVideoMetadataBuilder *)self commonItemForKey:*MEMORY[0x1E6987688] string:v6];
   }
 
@@ -123,9 +123,9 @@ uint64_t __44__PFVideoMetadataBuilder_videoDateFormatter__block_invoke()
 - (id)locationItem
 {
   v3 = *MEMORY[0x1E6987698];
-  v4 = [(PFMetadataBuilder *)self location];
-  v5 = [v4 iso6709Notation];
-  v6 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:v5];
+  location = [(PFMetadataBuilder *)self location];
+  iso6709Notation = [location iso6709Notation];
+  v6 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:iso6709Notation];
 
   return v6;
 }
@@ -133,8 +133,8 @@ uint64_t __44__PFVideoMetadataBuilder_videoDateFormatter__block_invoke()
 - (id)accessibilityDescriptionItem
 {
   v3 = *MEMORY[0x1E6987670];
-  v4 = [(PFMetadataBuilder *)self accessibilityDescription];
-  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:v4];
+  accessibilityDescription = [(PFMetadataBuilder *)self accessibilityDescription];
+  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:accessibilityDescription];
 
   return v5;
 }
@@ -142,8 +142,8 @@ uint64_t __44__PFVideoMetadataBuilder_videoDateFormatter__block_invoke()
 - (id)captionItem
 {
   v3 = *MEMORY[0x1E6987690];
-  v4 = [(PFMetadataBuilder *)self caption];
-  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:v4];
+  caption = [(PFMetadataBuilder *)self caption];
+  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:caption];
 
   return v5;
 }
@@ -151,22 +151,22 @@ uint64_t __44__PFVideoMetadataBuilder_videoDateFormatter__block_invoke()
 - (id)titleItem
 {
   v3 = *MEMORY[0x1E69876B8];
-  v4 = [(PFMetadataBuilder *)self title];
-  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:v4];
+  title = [(PFMetadataBuilder *)self title];
+  v5 = [(PFVideoMetadataBuilder *)self commonItemForKey:v3 string:title];
 
   return v5;
 }
 
-- (id)commonItemForKey:(id)a3 string:(id)a4
+- (id)commonItemForKey:(id)key string:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  keyCopy = key;
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v7 = objc_alloc_init(MEMORY[0x1E6988050]);
     [v7 setKeySpace:*MEMORY[0x1E6987838]];
-    [v7 setKey:v5];
-    [v7 setValue:v6];
+    [v7 setKey:keyCopy];
+    [v7 setValue:stringCopy];
   }
 
   else

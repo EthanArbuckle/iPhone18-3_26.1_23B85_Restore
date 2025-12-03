@@ -3,24 +3,24 @@
 - (BOOL)shouldUseRegularLayout;
 - (CGSize)latestLayoutSize;
 - (MTAStopwatchViewController)init;
-- (double)runningTotalForLap:(int64_t)a3;
+- (double)runningTotalForLap:(int64_t)lap;
 - (id)defaultShortcutItem;
-- (id)shortcutItemForMode:(unint64_t)a3;
-- (id)startStopwatchShortcutItemForMode:(unint64_t)a3;
+- (id)shortcutItemForMode:(unint64_t)mode;
+- (id)startStopwatchShortcutItemForMode:(unint64_t)mode;
 - (id)stopStopwatchShortcutItem;
-- (void)_pageControlValueChanged:(id)a3;
+- (void)_pageControlValueChanged:(id)changed;
 - (void)_restoreIdleTimer;
 - (void)dealloc;
-- (void)didAddLap:(double)a3;
+- (void)didAddLap:(double)lap;
 - (void)didLapLapTimer;
 - (void)didPauseLapTimer;
 - (void)didPauseStopwatch;
 - (void)didResetLapTimer;
 - (void)didResumeLapTimer;
 - (void)didStartLapTimer;
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8;
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped;
 - (void)endDisplayUpdates;
-- (void)handleContentSizeCategoryChange:(id)a3;
+- (void)handleContentSizeCategoryChange:(id)change;
 - (void)handleLapStopwatchShortcutAction;
 - (void)handleLocaleChange;
 - (void)handleResetStopwatchShortcutAction;
@@ -31,29 +31,29 @@
 - (void)loadView;
 - (void)pauseLapTimer;
 - (void)pauseLapTimerUI;
-- (void)reloadStopwatchesWithCompletion:(id)a3;
+- (void)reloadStopwatchesWithCompletion:(id)completion;
 - (void)renderViewModel;
 - (void)resetLapTimer;
 - (void)resetLapTimerUI;
 - (void)resumeLapTimer;
 - (void)resumeLapTimerUI;
 - (void)saveState;
-- (void)setMode:(unint64_t)a3;
-- (void)setupViewModelWithStopwatch:(id)a3;
+- (void)setMode:(unint64_t)mode;
+- (void)setupViewModelWithStopwatch:(id)stopwatch;
 - (void)startDisplayUpdates;
 - (void)startLapTimer;
-- (void)stopwatchPagingViewController:(id)a3 didPage:(unint64_t)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)stopwatchPagingViewController:(id)controller didPage:(unint64_t)page;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateShortcutItemForCurrentState;
 - (void)updateTimeViewFont;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAStopwatchViewController
@@ -78,8 +78,8 @@
     v2->_laps = v4;
 
     v6 = [UIImage systemImageNamed:@"stopwatch.fill"];
-    v7 = [(MTAStopwatchViewController *)v2 tabBarItem];
-    [v7 setImage:v6];
+    tabBarItem = [(MTAStopwatchViewController *)v2 tabBarItem];
+    [tabBarItem setImage:v6];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"STOP_WATCH" value:&stru_1000AEF10 table:0];
@@ -89,11 +89,11 @@
     v10 = [[MTAStopwatchLapTableViewController alloc] initWithStyle:1];
     [(MTAStopwatchViewController *)v2 setLapTableController:v10];
 
-    v11 = [(MTAStopwatchViewController *)v2 lapTableController];
-    [(MTAStopwatchViewController *)v2 addChildViewController:v11];
+    lapTableController = [(MTAStopwatchViewController *)v2 lapTableController];
+    [(MTAStopwatchViewController *)v2 addChildViewController:lapTableController];
 
-    v12 = [(MTAStopwatchViewController *)v2 title];
-    v13 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.stopwatch" title:v12];
+    title = [(MTAStopwatchViewController *)v2 title];
+    v13 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.stopwatch" title:title];
     userActivity = v2->_userActivity;
     v2->_userActivity = v13;
 
@@ -102,8 +102,8 @@
 
     v16 = [MTLegacyStopwatchMigrator alloc];
     v17 = +[NSUserDefaults standardUserDefaults];
-    v18 = [(MTAStopwatchViewController *)v2 stopwatchManager];
-    v19 = [v16 initWithDefaults:v17 manager:v18];
+    stopwatchManager = [(MTAStopwatchViewController *)v2 stopwatchManager];
+    v19 = [v16 initWithDefaults:v17 manager:stopwatchManager];
     [(MTAStopwatchViewController *)v2 setMigrator:v19];
 
     v20 = objc_opt_new();
@@ -128,25 +128,25 @@
 
 - (void)handleLocaleChange
 {
-  v3 = [(MTAStopwatchViewController *)self timeView];
-  [v3 handleLocaleChange];
+  timeView = [(MTAStopwatchViewController *)self timeView];
+  [timeView handleLocaleChange];
 
-  v4 = [(MTAStopwatchViewController *)self analogStopwatch];
-  [v4 handleLocaleChange];
+  analogStopwatch = [(MTAStopwatchViewController *)self analogStopwatch];
+  [analogStopwatch handleLocaleChange];
 
   [(objc_class *)[(MTAStopwatchViewController *)self tableCellClass] handleLocaleChange];
-  v6 = [(MTAStopwatchViewController *)self lapTableController];
-  v5 = [v6 tableView];
-  [v5 reloadData];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  tableView = [lapTableController tableView];
+  [tableView reloadData];
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    v6 = [(MTAStopwatchViewController *)self stopwatchController];
-    [v6 setMode:a3];
+    self->_mode = mode;
+    stopwatchController = [(MTAStopwatchViewController *)self stopwatchController];
+    [stopwatchController setMode:mode];
 
     [(MTAStopwatchViewController *)self updateShortcutItemForCurrentState];
   }
@@ -154,8 +154,8 @@
 
 - (void)updateTimeViewFont
 {
-  v3 = [(MTAStopwatchViewController *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(MTAStopwatchViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   if (MTUIShouldUseLargePadLayout())
   {
@@ -165,56 +165,56 @@
   else
   {
     v5 = &unk_10008BDB8;
-    if (v4 != 2)
+    if (horizontalSizeClass != 2)
     {
       v5 = &qword_10008BDB0;
     }
   }
 
   v8 = [UIFont systemFontOfSize:*v5 weight:UIFontWeightThin];
-  v6 = [v8 mtui_fontByAddingTimeFontAttributes];
-  v7 = [(MTAStopwatchViewController *)self timeView];
-  [v7 setFont:v6];
+  mtui_fontByAddingTimeFontAttributes = [v8 mtui_fontByAddingTimeFontAttributes];
+  timeView = [(MTAStopwatchViewController *)self timeView];
+  [timeView setFont:mtui_fontByAddingTimeFontAttributes];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(MTAStopwatchViewController *)self lapTableController];
-  v3 = [v4 tableView];
-  [v3 reloadData];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  tableView = [lapTableController tableView];
+  [tableView reloadData];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a3.width / a3.height;
-  v8 = a4;
-  v9 = [(MTAStopwatchViewController *)self pagingViewController];
-  v10 = v9;
+  height = size.height;
+  width = size.width;
+  v7 = size.width / size.height;
+  coordinatorCopy = coordinator;
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  pagingViewController2 = pagingViewController;
   if (v7 > 0.9)
   {
-    [v9 setCurrentPage:0];
+    [pagingViewController setCurrentPage:0];
 
-    v11 = [(MTAStopwatchViewController *)self pageControl];
-    [v11 setCurrentPage:0];
+    pageControl = [(MTAStopwatchViewController *)self pageControl];
+    [pageControl setCurrentPage:0];
 
-    v10 = [(MTAStopwatchViewController *)self pagingViewController];
+    pagingViewController2 = [(MTAStopwatchViewController *)self pagingViewController];
   }
 
-  v12 = [v10 scrollView];
-  [v12 setScrollEnabled:v7 <= 0.9];
+  scrollView = [pagingViewController2 scrollView];
+  [scrollView setScrollEnabled:v7 <= 0.9];
 
   v15.receiver = self;
   v15.super_class = MTAStopwatchViewController;
-  [(MTAStopwatchViewController *)&v15 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(MTAStopwatchViewController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000333F0;
   v13[3] = &unk_1000AE3D0;
   v13[4] = self;
   v14 = v7 > 0.9;
-  [v8 animateAlongsideTransition:v13 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:0];
 }
 
 - (void)loadView
@@ -235,173 +235,173 @@
   [(MTAStopwatchViewController *)self setLapButtonOccludingView:v8];
 
   v9 = +[UIColor clearColor];
-  v10 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-  [v10 setBackgroundColor:v9];
+  lapButtonOccludingView = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+  [lapButtonOccludingView setBackgroundColor:v9];
 
-  v11 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lapButtonOccludingView2 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+  [lapButtonOccludingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(MTAStopwatchViewController *)self view];
-  v13 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-  [v12 addSubview:v13];
+  view = [(MTAStopwatchViewController *)self view];
+  lapButtonOccludingView3 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+  [view addSubview:lapButtonOccludingView3];
 
   v14 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MTAStopwatchViewController *)self setStartButtonOccludingView:v14];
 
   v15 = +[UIColor clearColor];
-  v16 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-  [v16 setBackgroundColor:v15];
+  startButtonOccludingView = [(MTAStopwatchViewController *)self startButtonOccludingView];
+  [startButtonOccludingView setBackgroundColor:v15];
 
-  v17 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  startButtonOccludingView2 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+  [startButtonOccludingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(MTAStopwatchViewController *)self view];
-  v19 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-  [v18 addSubview:v19];
+  view2 = [(MTAStopwatchViewController *)self view];
+  startButtonOccludingView3 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+  [view2 addSubview:startButtonOccludingView3];
 
-  v20 = [(MTAStopwatchViewController *)self view];
-  v21 = [(MTAStopwatchViewController *)self stopwatchController];
-  v22 = [v21 startStopButton];
-  [v20 addSubview:v22];
+  view3 = [(MTAStopwatchViewController *)self view];
+  stopwatchController = [(MTAStopwatchViewController *)self stopwatchController];
+  startStopButton = [stopwatchController startStopButton];
+  [view3 addSubview:startStopButton];
 
-  v23 = [(MTAStopwatchViewController *)self view];
-  v24 = [(MTAStopwatchViewController *)self stopwatchController];
-  v25 = [v24 lapControlButton];
-  [v23 addSubview:v25];
+  view4 = [(MTAStopwatchViewController *)self view];
+  stopwatchController2 = [(MTAStopwatchViewController *)self stopwatchController];
+  lapControlButton = [stopwatchController2 lapControlButton];
+  [view4 addSubview:lapControlButton];
 
-  v26 = [(MTAStopwatchViewController *)self stopwatchController];
-  v27 = [v26 startStopButton];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stopwatchController3 = [(MTAStopwatchViewController *)self stopwatchController];
+  startStopButton2 = [stopwatchController3 startStopButton];
+  [startStopButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(MTAStopwatchViewController *)self stopwatchController];
-  v29 = [v28 lapControlButton];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stopwatchController4 = [(MTAStopwatchViewController *)self stopwatchController];
+  lapControlButton2 = [stopwatchController4 lapControlButton];
+  [lapControlButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  LODWORD(v28) = [(MTAStopwatchViewController *)self shouldUseRegularLayout];
-  v30 = [(MTAStopwatchViewController *)self stopwatchController];
-  [v30 setButtonSize:v28];
+  LODWORD(stopwatchController4) = [(MTAStopwatchViewController *)self shouldUseRegularLayout];
+  stopwatchController5 = [(MTAStopwatchViewController *)self stopwatchController];
+  [stopwatchController5 setButtonSize:stopwatchController4];
 
-  v31 = [(MTAStopwatchViewController *)self view];
-  v32 = [(MTAStopwatchViewController *)self lapTableController];
-  v33 = [v32 view];
-  [v31 addSubview:v33];
+  view5 = [(MTAStopwatchViewController *)self view];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  view6 = [lapTableController view];
+  [view5 addSubview:view6];
 
-  v34 = [(MTAStopwatchViewController *)self lapTableController];
-  [v34 didMoveToParentViewController:self];
+  lapTableController2 = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController2 didMoveToParentViewController:self];
 
-  v35 = [(MTAStopwatchViewController *)self lapTableController];
-  v36 = [v35 view];
-  [v36 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lapTableController3 = [(MTAStopwatchViewController *)self lapTableController];
+  view7 = [lapTableController3 view];
+  [view7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v37 = [[MTAStopwatchLapTableHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(MTAStopwatchViewController *)self setTableHeaderView:v37];
+  height = [[MTAStopwatchLapTableHeaderView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(MTAStopwatchViewController *)self setTableHeaderView:height];
 
-  v38 = [(MTAStopwatchViewController *)self tableHeaderView];
-  [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableHeaderView = [(MTAStopwatchViewController *)self tableHeaderView];
+  [tableHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v39 = [(MTAStopwatchViewController *)self tableHeaderView];
-  [v39 setHidden:1];
+  tableHeaderView2 = [(MTAStopwatchViewController *)self tableHeaderView];
+  [tableHeaderView2 setHidden:1];
 
-  v40 = [(MTAStopwatchViewController *)self view];
-  v41 = [(MTAStopwatchViewController *)self tableHeaderView];
-  [v40 addSubview:v41];
+  view8 = [(MTAStopwatchViewController *)self view];
+  tableHeaderView3 = [(MTAStopwatchViewController *)self tableHeaderView];
+  [view8 addSubview:tableHeaderView3];
 
   v42 = objc_alloc_init(MTAStopwatchPagingViewController);
   [(MTAStopwatchViewController *)self setPagingViewController:v42];
 
-  v43 = [(MTAStopwatchViewController *)self pagingViewController];
-  [(MTAStopwatchViewController *)self addChildViewController:v43];
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  [(MTAStopwatchViewController *)self addChildViewController:pagingViewController];
 
-  v44 = [(MTAStopwatchViewController *)self pagingViewController];
-  v45 = [v44 view];
-  [v45 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pagingViewController2 = [(MTAStopwatchViewController *)self pagingViewController];
+  view9 = [pagingViewController2 view];
+  [view9 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v46 = [(MTAStopwatchViewController *)self pagingViewController];
-  [v46 setDelegate:self];
+  pagingViewController3 = [(MTAStopwatchViewController *)self pagingViewController];
+  [pagingViewController3 setDelegate:self];
 
-  v47 = [(MTAStopwatchViewController *)self view];
-  v48 = [(MTAStopwatchViewController *)self pagingViewController];
-  v49 = [v48 view];
-  [v47 insertSubview:v49 atIndex:0];
+  view10 = [(MTAStopwatchViewController *)self view];
+  pagingViewController4 = [(MTAStopwatchViewController *)self pagingViewController];
+  view11 = [pagingViewController4 view];
+  [view10 insertSubview:view11 atIndex:0];
 
-  v50 = [(MTAStopwatchViewController *)self pagingViewController];
-  [v50 didMoveToParentViewController:self];
+  pagingViewController5 = [(MTAStopwatchViewController *)self pagingViewController];
+  [pagingViewController5 didMoveToParentViewController:self];
 
   v51 = [[UIPageControl alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MTAStopwatchViewController *)self setPageControl:v51];
 
-  v52 = [(MTAStopwatchViewController *)self pageControl];
-  [v52 addTarget:self action:"_pageControlValueChanged:" forControlEvents:4096];
+  pageControl = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl addTarget:self action:"_pageControlValueChanged:" forControlEvents:4096];
 
-  v53 = [(MTAStopwatchViewController *)self pageControl];
-  [v53 setNumberOfPages:2];
+  pageControl2 = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl2 setNumberOfPages:2];
 
-  v54 = [(MTAStopwatchViewController *)self pageControl];
-  [v54 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pageControl3 = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v55 = [(MTAStopwatchViewController *)self view];
-  v56 = [(MTAStopwatchViewController *)self pageControl];
-  [v55 addSubview:v56];
+  view12 = [(MTAStopwatchViewController *)self view];
+  pageControl4 = [(MTAStopwatchViewController *)self pageControl];
+  [view12 addSubview:pageControl4];
 
   v57 = objc_alloc_init(MTUITimeView);
   [(MTAStopwatchViewController *)self setTimeView:v57];
 
   v58 = [UIFont systemFontOfSize:88.0 weight:UIFontWeightThin];
-  v59 = [v58 mtui_fontByAddingTimeFontAttributes];
-  v60 = [(MTAStopwatchViewController *)self timeView];
-  [v60 setFont:v59];
+  mtui_fontByAddingTimeFontAttributes = [v58 mtui_fontByAddingTimeFontAttributes];
+  timeView = [(MTAStopwatchViewController *)self timeView];
+  [timeView setFont:mtui_fontByAddingTimeFontAttributes];
 
   v61 = +[UIColor mtui_primaryTextColor];
-  v62 = [(MTAStopwatchViewController *)self timeView];
-  [v62 setTextColor:v61];
+  timeView2 = [(MTAStopwatchViewController *)self timeView];
+  [timeView2 setTextColor:v61];
 
-  v63 = [(MTAStopwatchViewController *)self timeView];
-  [v63 setTextAlignment:1];
+  timeView3 = [(MTAStopwatchViewController *)self timeView];
+  [timeView3 setTextAlignment:1];
 
-  v64 = [(MTAStopwatchViewController *)self timeView];
-  [v64 setAdjustsFontSizeToFitWidth:1];
+  timeView4 = [(MTAStopwatchViewController *)self timeView];
+  [timeView4 setAdjustsFontSizeToFitWidth:1];
 
   v65 = +[UIColor clearColor];
-  v66 = [(MTAStopwatchViewController *)self timeView];
-  [v66 setBackgroundColor:v65];
+  timeView5 = [(MTAStopwatchViewController *)self timeView];
+  [timeView5 setBackgroundColor:v65];
 
-  v67 = [(MTAStopwatchViewController *)self timeView];
-  [v67 setTranslatesAutoresizingMaskIntoConstraints:0];
+  timeView6 = [(MTAStopwatchViewController *)self timeView];
+  [timeView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v68 = [(MTAStopwatchViewController *)self timeView];
-  [v68 setAccessibilityIdentifier:@"stopwatch-time"];
+  timeView7 = [(MTAStopwatchViewController *)self timeView];
+  [timeView7 setAccessibilityIdentifier:@"stopwatch-time"];
 
   v69 = objc_opt_new();
   [(MTAStopwatchViewController *)self setDigitalStopwatchContainer:v69];
 
-  v70 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
-  v71 = [(MTAStopwatchViewController *)self timeView];
-  [v70 addSubview:v71];
+  digitalStopwatchContainer = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
+  timeView8 = [(MTAStopwatchViewController *)self timeView];
+  [digitalStopwatchContainer addSubview:timeView8];
 
   v72 = objc_alloc_init(MTAAnalogStopwatchView);
   [(MTAStopwatchViewController *)self setAnalogStopwatch:v72];
 
   v73 = +[UIColor clearColor];
-  v74 = [(MTAStopwatchViewController *)self analogStopwatch];
-  [v74 setBackgroundColor:v73];
+  analogStopwatch = [(MTAStopwatchViewController *)self analogStopwatch];
+  [analogStopwatch setBackgroundColor:v73];
 
-  v75 = [(MTAStopwatchViewController *)self analogStopwatch];
-  [v75 setTranslatesAutoresizingMaskIntoConstraints:0];
+  analogStopwatch2 = [(MTAStopwatchViewController *)self analogStopwatch];
+  [analogStopwatch2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v76 = objc_opt_new();
   [(MTAStopwatchViewController *)self setAnalogStopwatchContainer:v76];
 
-  v77 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
-  v78 = [(MTAStopwatchViewController *)self analogStopwatch];
-  [v77 addSubview:v78];
+  analogStopwatchContainer = [(MTAStopwatchViewController *)self analogStopwatchContainer];
+  analogStopwatch3 = [(MTAStopwatchViewController *)self analogStopwatch];
+  [analogStopwatchContainer addSubview:analogStopwatch3];
 
-  v79 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
-  v97[0] = v79;
-  v80 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
-  v97[1] = v80;
+  digitalStopwatchContainer2 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
+  v97[0] = digitalStopwatchContainer2;
+  analogStopwatchContainer2 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
+  v97[1] = analogStopwatchContainer2;
   v81 = [NSArray arrayWithObjects:v97 count:2];
-  v82 = [(MTAStopwatchViewController *)self pagingViewController];
-  [v82 setPages:v81];
+  pagingViewController6 = [(MTAStopwatchViewController *)self pagingViewController];
+  [pagingViewController6 setPages:v81];
 
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
   {
@@ -409,24 +409,24 @@
     [v83 addObserver:self selector:"handleLocaleChange" name:NSCurrentLocaleDidChangeNotification object:0];
 
     [(MTAStopwatchViewController *)self updateShortcutItemForCurrentState];
-    v84 = [(MTAStopwatchViewController *)self migrator];
-    v85 = [v84 needsMigration];
+    migrator = [(MTAStopwatchViewController *)self migrator];
+    needsMigration = [migrator needsMigration];
 
     v86 = MTLogForCategory();
     v87 = os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT);
-    if (v85)
+    if (needsMigration)
     {
       if (v87)
       {
         *buf = 138543362;
-        v96 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%{public}@ stopwatch need migration", buf, 0xCu);
       }
 
-      v88 = [(MTAStopwatchViewController *)self migrator];
-      v89 = [v88 migrateLegacyStopwatch];
+      migrator2 = [(MTAStopwatchViewController *)self migrator];
+      migrateLegacyStopwatch = [migrator2 migrateLegacyStopwatch];
       v90 = +[NAScheduler mainThreadScheduler];
-      v91 = [v89 reschedule:v90];
+      v91 = [migrateLegacyStopwatch reschedule:v90];
       v93[0] = _NSConcreteStackBlock;
       v93[1] = 3221225472;
       v93[2] = sub_100033FA8;
@@ -440,7 +440,7 @@
       if (v87)
       {
         *buf = 138543362;
-        v96 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "%{public}@ migration not needed, proceeding to load stopwatch", buf, 0xCu);
       }
 
@@ -449,87 +449,87 @@
   }
 }
 
-- (void)reloadStopwatchesWithCompletion:(id)a3
+- (void)reloadStopwatchesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MTAStopwatchViewController *)self stopwatchManager];
-  v6 = [v5 getStopwatches];
+  completionCopy = completion;
+  stopwatchManager = [(MTAStopwatchViewController *)self stopwatchManager];
+  getStopwatches = [stopwatchManager getStopwatches];
   v7 = +[NAScheduler mainThreadScheduler];
-  v8 = [v6 reschedule:v7];
+  v8 = [getStopwatches reschedule:v7];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000341B8;
   v11[3] = &unk_1000AE420;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = completionCopy;
+  v9 = completionCopy;
   v10 = [v8 addCompletionBlock:v11];
 }
 
-- (void)setupViewModelWithStopwatch:(id)a3
+- (void)setupViewModelWithStopwatch:(id)stopwatch
 {
-  v6 = a3;
+  stopwatchCopy = stopwatch;
   v7 = MTLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 identifier];
+    identifier = [stopwatchCopy identifier];
     v31 = 138543618;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2114;
-    v34 = v8;
+    v34 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%{public}@ setting up view model with stopwatch: %{public}@", &v31, 0x16u);
   }
 
-  v9 = [(MTAStopwatchViewController *)self viewModel];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
 
   v10 = MTLogForCategory();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (viewModel)
   {
     if (v11)
     {
-      v12 = [v6 identifier];
+      identifier2 = [stopwatchCopy identifier];
       v31 = 138543618;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2114;
-      v34 = v12;
+      v34 = identifier2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%{public}@ view model already exists, updating with stopwatch: %{public}@", &v31, 0x16u);
     }
 
-    v13 = [(MTAStopwatchViewController *)self viewModel];
-    v14 = [v6 mutableCopy];
-    [v13 updateStopwatch:v14];
+    viewModel2 = [(MTAStopwatchViewController *)self viewModel];
+    stopwatchManager = [stopwatchCopy mutableCopy];
+    [viewModel2 updateStopwatch:stopwatchManager];
   }
 
   else
   {
     if (v11)
     {
-      v15 = [v6 identifier];
+      identifier3 = [stopwatchCopy identifier];
       v31 = 138543618;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2114;
-      v34 = v15;
+      v34 = identifier3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%{public}@ view model does not exist, creating new one with stopwatch: %{public}@", &v31, 0x16u);
     }
 
     v16 = [MTStopwatchViewModel alloc];
-    v13 = [v6 mutableCopy];
-    v14 = [(MTAStopwatchViewController *)self stopwatchManager];
-    v3 = objc_opt_new();
-    v17 = [v16 initWithStopwatch:v13 manager:v14 delegate:self dateProvider:v3 registerForNotifications:1 broadcastUpdates:0];
+    viewModel2 = [stopwatchCopy mutableCopy];
+    stopwatchManager = [(MTAStopwatchViewController *)self stopwatchManager];
+    viewModel6 = objc_opt_new();
+    v17 = [v16 initWithStopwatch:viewModel2 manager:stopwatchManager delegate:self dateProvider:viewModel6 registerForNotifications:1 broadcastUpdates:0];
     [(MTAStopwatchViewController *)self setViewModel:v17];
   }
 
-  if ([v6 state] == 2)
+  if ([stopwatchCopy state] == 2)
   {
-    v18 = [(MTAStopwatchViewController *)self viewModel];
-    [v18 updateWithDisplayLink];
+    viewModel3 = [(MTAStopwatchViewController *)self viewModel];
+    [viewModel3 updateWithDisplayLink];
 
     v19 = 2;
   }
 
-  else if ([v6 state] == 1)
+  else if ([stopwatchCopy state] == 1)
   {
     v19 = 3;
   }
@@ -540,37 +540,37 @@
   }
 
   [(MTAStopwatchViewController *)self setMode:v19];
-  v20 = [(MTAStopwatchViewController *)self viewModel];
-  [v20 updateTime];
+  viewModel4 = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel4 updateTime];
 
-  v21 = [(MTAStopwatchViewController *)self viewModel];
-  v22 = [v21 getStopwatch];
-  v23 = [v22 state];
-  if (v23 == 2)
+  viewModel5 = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch = [viewModel5 getStopwatch];
+  state = [getStopwatch state];
+  if (state == 2)
   {
     v24 = 1;
   }
 
   else
   {
-    v3 = [(MTAStopwatchViewController *)self viewModel];
-    v4 = [v3 getStopwatch];
-    [v4 currentInterval];
+    viewModel6 = [(MTAStopwatchViewController *)self viewModel];
+    getStopwatch2 = [viewModel6 getStopwatch];
+    [getStopwatch2 currentInterval];
     v24 = v25 > 0.0;
   }
 
-  v26 = [(MTAStopwatchViewController *)self lapTableController];
-  [v26 setShowsCurrentLap:v24];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController setShowsCurrentLap:v24];
 
-  if (v23 != 2)
+  if (state != 2)
   {
   }
 
-  v27 = [(MTAStopwatchViewController *)self lapTableController];
-  v28 = [(MTAStopwatchViewController *)self viewModel];
-  v29 = [v28 getStopwatch];
-  v30 = [v29 laps];
-  [v27 setLaps:v30];
+  lapTableController2 = [(MTAStopwatchViewController *)self lapTableController];
+  viewModel7 = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch3 = [viewModel7 getStopwatch];
+  laps = [getStopwatch3 laps];
+  [lapTableController2 setLaps:laps];
 }
 
 - (void)viewDidLoad
@@ -579,10 +579,10 @@
   v14.super_class = MTAStopwatchViewController;
   [(MTAStopwatchViewController *)&v14 viewDidLoad];
   [(MTAStopwatchViewController *)self updateTimeViewFont];
-  v3 = [(MTAStopwatchViewController *)self lapTableController];
-  v4 = [v3 tableView];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  tableView = [lapTableController tableView];
 
-  [(MTAStopwatchViewController *)self _setObservableScrollView:v4 forEdges:4];
+  [(MTAStopwatchViewController *)self _setObservableScrollView:tableView forEdges:4];
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = [v5 objectForKey:@"STOPWATCH_INDEX"];
 
@@ -596,12 +596,12 @@
     v7 = &off_1000B18C0;
   }
 
-  v8 = [v7 integerValue];
-  v9 = [(MTAStopwatchViewController *)self pagingViewController];
-  [v9 setCurrentPage:v8];
+  integerValue = [v7 integerValue];
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  [pagingViewController setCurrentPage:integerValue];
 
-  v10 = [(MTAStopwatchViewController *)self pageControl];
-  [v10 setCurrentPage:v8];
+  pageControl = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl setCurrentPage:integerValue];
 
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 addObserver:self selector:"handleContentSizeCategoryChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -613,25 +613,25 @@
   [v13 addObserver:self selector:"handleEnterForeground" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)handleContentSizeCategoryChange:(id)a3
+- (void)handleContentSizeCategoryChange:(id)change
 {
-  v4 = [(MTAStopwatchViewController *)self view];
-  [v4 bounds];
+  view = [(MTAStopwatchViewController *)self view];
+  [view bounds];
   v6 = v5;
 
-  v7 = [(MTAStopwatchViewController *)self stopwatchController];
-  v24 = [v7 startStopButton];
+  stopwatchController = [(MTAStopwatchViewController *)self stopwatchController];
+  startStopButton = [stopwatchController startStopButton];
 
   MTUIShouldUseLargePadLayout();
-  v8 = [(MTAStopwatchViewController *)self shouldUseRegularLayout];
-  v9 = [(MTAStopwatchViewController *)self view];
-  [v9 bounds];
+  shouldUseRegularLayout = [(MTAStopwatchViewController *)self shouldUseRegularLayout];
+  view2 = [(MTAStopwatchViewController *)self view];
+  [view2 bounds];
 
   v10 = +[UIScreen mainScreen];
   [v10 bounds];
   Height = CGRectGetHeight(v26);
 
-  if (v8)
+  if (shouldUseRegularLayout)
   {
     [MTACircleButton buttonWidthForSize:1];
     if (v12 >= 120.0)
@@ -647,46 +647,46 @@
 
   else
   {
-    v14 = [(MTAStopwatchViewController *)self view];
-    [v14 bounds];
+    view3 = [(MTAStopwatchViewController *)self view];
+    [view3 bounds];
     fmin(Height * 0.542, CGRectGetWidth(v27));
 
-    v15 = [(MTAStopwatchViewController *)self view];
-    [v15 safeAreaInsets];
+    view4 = [(MTAStopwatchViewController *)self view];
+    [view4 safeAreaInsets];
 
     [MTACircleButton buttonWidthForSize:0];
     v13 = (v6 + 16.0 * -2.0) * 0.25;
-    +[MTACircleButton buttonWidthForSize:](MTACircleButton, "buttonWidthForSize:", [v24 buttonCircleSize]);
+    +[MTACircleButton buttonWidthForSize:](MTACircleButton, "buttonWidthForSize:", [startStopButton buttonCircleSize]);
     if (v16 < v13)
     {
       v13 = v16;
     }
   }
 
-  v17 = [(MTAStopwatchViewController *)self view];
+  view5 = [(MTAStopwatchViewController *)self view];
   UIRoundToViewScale();
   v19 = v18;
 
-  v20 = [(MTAStopwatchViewController *)self startButtonTopConstraint];
-  [v20 setConstant:v19];
+  startButtonTopConstraint = [(MTAStopwatchViewController *)self startButtonTopConstraint];
+  [startButtonTopConstraint setConstant:v19];
 
-  v21 = [(MTAStopwatchViewController *)self lapButtonTopConstraint];
-  [v21 setConstant:v19];
+  lapButtonTopConstraint = [(MTAStopwatchViewController *)self lapButtonTopConstraint];
+  [lapButtonTopConstraint setConstant:v19];
 
-  v22 = [(MTAStopwatchViewController *)self startButtonWidthConstraint];
-  [v22 setConstant:v13];
+  startButtonWidthConstraint = [(MTAStopwatchViewController *)self startButtonWidthConstraint];
+  [startButtonWidthConstraint setConstant:v13];
 
-  v23 = [(MTAStopwatchViewController *)self lapButtonWidthConstraint];
-  [v23 setConstant:v13];
+  lapButtonWidthConstraint = [(MTAStopwatchViewController *)self lapButtonWidthConstraint];
+  [lapButtonWidthConstraint setConstant:v13];
 }
 
 - (BOOL)shouldUseRegularLayout
 {
   v3 = MTUIShouldUseLargePadLayout();
-  v4 = [(MTAStopwatchViewController *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [(MTAStopwatchViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
     return 1;
   }
@@ -699,8 +699,8 @@
 
 - (void)updateViewConstraints
 {
-  v3 = [(MTAStopwatchViewController *)self view];
-  [v3 bounds];
+  view = [(MTAStopwatchViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -714,206 +714,206 @@
 
   else
   {
-    v11 = [(MTAStopwatchViewController *)self lapTableController];
-    v12 = [v11 tableView];
+    lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+    tableView = [lapTableController tableView];
 
-    v13 = [(MTAStopwatchViewController *)self tableHeaderView];
-    v14 = [(MTAStopwatchViewController *)self pagingViewController];
-    v175 = [v14 view];
+    tableHeaderView = [(MTAStopwatchViewController *)self tableHeaderView];
+    pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+    view2 = [pagingViewController view];
 
     v15 = +[NSMutableArray array];
-    v16 = [(MTAStopwatchViewController *)self stopwatchController];
-    v17 = [v16 startStopButton];
+    stopwatchController = [(MTAStopwatchViewController *)self stopwatchController];
+    startStopButton = [stopwatchController startStopButton];
 
-    v18 = [(MTAStopwatchViewController *)self stopwatchController];
-    v19 = [v18 lapControlButton];
+    stopwatchController2 = [(MTAStopwatchViewController *)self stopwatchController];
+    lapControlButton = [stopwatchController2 lapControlButton];
 
     v180 = 0u;
     v181 = 0u;
-    v20 = [(MTAStopwatchViewController *)self view];
-    +[MTAUtilities controlButtonAttributesForView:buttonCircleSize:](MTAUtilities, "controlButtonAttributesForView:buttonCircleSize:", v20, [v17 buttonCircleSize]);
+    view3 = [(MTAStopwatchViewController *)self view];
+    +[MTAUtilities controlButtonAttributesForView:buttonCircleSize:](MTAUtilities, "controlButtonAttributesForView:buttonCircleSize:", view3, [startStopButton buttonCircleSize]);
 
-    v176 = v13;
-    v178 = v17;
-    v21 = [v17 topAnchor];
-    v22 = [(MTAStopwatchViewController *)self view];
-    v23 = [v22 safeAreaLayoutGuide];
-    v24 = [v23 topAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24 constant:0.0];
+    v176 = tableHeaderView;
+    v178 = startStopButton;
+    topAnchor = [startStopButton topAnchor];
+    view4 = [(MTAStopwatchViewController *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [(MTAStopwatchViewController *)self setStartButtonTopConstraint:v25];
 
-    v26 = [v19 topAnchor];
-    v27 = [(MTAStopwatchViewController *)self view];
-    v28 = [v27 safeAreaLayoutGuide];
-    v29 = [v28 topAnchor];
-    v30 = [v26 constraintEqualToAnchor:v29 constant:0.0];
+    topAnchor3 = [lapControlButton topAnchor];
+    view5 = [(MTAStopwatchViewController *)self view];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    topAnchor4 = [safeAreaLayoutGuide2 topAnchor];
+    v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:0.0];
     [(MTAStopwatchViewController *)self setLapButtonTopConstraint:v30];
 
-    v31 = [(MTAStopwatchViewController *)self lapButtonTopConstraint];
-    [v15 addObject:v31];
+    lapButtonTopConstraint = [(MTAStopwatchViewController *)self lapButtonTopConstraint];
+    [v15 addObject:lapButtonTopConstraint];
 
-    v32 = [(MTAStopwatchViewController *)self startButtonTopConstraint];
-    [v15 addObject:v32];
+    startButtonTopConstraint = [(MTAStopwatchViewController *)self startButtonTopConstraint];
+    [v15 addObject:startButtonTopConstraint];
 
-    v33 = [v19 leadingAnchor];
-    v34 = [(MTAStopwatchViewController *)self view];
-    v35 = [v34 leadingAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35 constant:16.0];
+    leadingAnchor = [lapControlButton leadingAnchor];
+    view6 = [(MTAStopwatchViewController *)self view];
+    leadingAnchor2 = [view6 leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     [v15 addObject:v36];
 
-    v37 = [v19 widthAnchor];
-    v38 = [v37 constraintEqualToConstant:0.0];
+    widthAnchor = [lapControlButton widthAnchor];
+    v38 = [widthAnchor constraintEqualToConstant:0.0];
     [(MTAStopwatchViewController *)self setLapButtonWidthConstraint:v38];
 
-    v39 = [(MTAStopwatchViewController *)self lapButtonWidthConstraint];
-    [v15 addObject:v39];
+    lapButtonWidthConstraint = [(MTAStopwatchViewController *)self lapButtonWidthConstraint];
+    [v15 addObject:lapButtonWidthConstraint];
 
-    v40 = [v19 heightAnchor];
-    v41 = [v19 widthAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    heightAnchor = [lapControlButton heightAnchor];
+    widthAnchor2 = [lapControlButton widthAnchor];
+    v42 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v15 addObject:v42];
 
-    v43 = [v178 trailingAnchor];
-    v44 = [(MTAStopwatchViewController *)self view];
-    v45 = [v44 trailingAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45 constant:-16.0];
+    trailingAnchor = [v178 trailingAnchor];
+    view7 = [(MTAStopwatchViewController *)self view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     [v15 addObject:v46];
 
-    v47 = [v178 widthAnchor];
-    v48 = [v47 constraintEqualToConstant:0.0];
+    widthAnchor3 = [v178 widthAnchor];
+    v48 = [widthAnchor3 constraintEqualToConstant:0.0];
     [(MTAStopwatchViewController *)self setStartButtonWidthConstraint:v48];
 
-    v49 = [(MTAStopwatchViewController *)self startButtonWidthConstraint];
-    [v15 addObject:v49];
+    startButtonWidthConstraint = [(MTAStopwatchViewController *)self startButtonWidthConstraint];
+    [v15 addObject:startButtonWidthConstraint];
 
-    v50 = [v178 heightAnchor];
-    v51 = [v178 widthAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    heightAnchor2 = [v178 heightAnchor];
+    widthAnchor4 = [v178 widthAnchor];
+    v52 = [heightAnchor2 constraintEqualToAnchor:widthAnchor4];
     [v15 addObject:v52];
 
-    v53 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-    v54 = [v53 centerXAnchor];
-    v55 = [v19 centerXAnchor];
-    v56 = [v54 constraintEqualToAnchor:v55];
+    lapButtonOccludingView = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+    centerXAnchor = [lapButtonOccludingView centerXAnchor];
+    centerXAnchor2 = [lapControlButton centerXAnchor];
+    v56 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v15 addObject:v56];
 
-    v57 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-    v58 = [v57 centerYAnchor];
-    v59 = [v19 centerYAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    lapButtonOccludingView2 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+    centerYAnchor = [lapButtonOccludingView2 centerYAnchor];
+    centerYAnchor2 = [lapControlButton centerYAnchor];
+    v60 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v15 addObject:v60];
 
-    v61 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-    v62 = [v61 widthAnchor];
-    v63 = [v19 widthAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63 multiplier:1.0 constant:2.0];
+    lapButtonOccludingView3 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+    widthAnchor5 = [lapButtonOccludingView3 widthAnchor];
+    widthAnchor6 = [lapControlButton widthAnchor];
+    v64 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0 constant:2.0];
     [v15 addObject:v64];
 
-    v65 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-    v66 = [v65 heightAnchor];
-    v177 = v19;
-    v67 = [v19 heightAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67 multiplier:1.0 constant:2.0];
+    lapButtonOccludingView4 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+    heightAnchor3 = [lapButtonOccludingView4 heightAnchor];
+    v177 = lapControlButton;
+    heightAnchor4 = [lapControlButton heightAnchor];
+    v68 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:1.0 constant:2.0];
     [v15 addObject:v68];
 
-    v69 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-    v70 = [v69 centerXAnchor];
-    v71 = [v178 centerXAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    startButtonOccludingView = [(MTAStopwatchViewController *)self startButtonOccludingView];
+    centerXAnchor3 = [startButtonOccludingView centerXAnchor];
+    centerXAnchor4 = [v178 centerXAnchor];
+    v72 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v15 addObject:v72];
 
-    v73 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-    v74 = [v73 centerYAnchor];
-    v75 = [v178 centerYAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    startButtonOccludingView2 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+    centerYAnchor3 = [startButtonOccludingView2 centerYAnchor];
+    centerYAnchor4 = [v178 centerYAnchor];
+    v76 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v15 addObject:v76];
 
-    v77 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-    v78 = [v77 widthAnchor];
-    v79 = [v178 widthAnchor];
-    v80 = [v78 constraintEqualToAnchor:v79 multiplier:1.0 constant:2.0];
+    startButtonOccludingView3 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+    widthAnchor7 = [startButtonOccludingView3 widthAnchor];
+    widthAnchor8 = [v178 widthAnchor];
+    v80 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:1.0 constant:2.0];
     [v15 addObject:v80];
 
-    v81 = [(MTAStopwatchViewController *)self startButtonOccludingView];
-    v82 = [v81 heightAnchor];
-    v83 = [v178 heightAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 multiplier:1.0 constant:2.0];
+    startButtonOccludingView4 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+    heightAnchor5 = [startButtonOccludingView4 heightAnchor];
+    heightAnchor6 = [v178 heightAnchor];
+    v84 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6 multiplier:1.0 constant:2.0];
     [v15 addObject:v84];
 
     v85 = sub_100032F18(0.0 + 2.0);
-    v86 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
-    [v86 setImage:v85];
+    lapButtonOccludingView5 = [(MTAStopwatchViewController *)self lapButtonOccludingView];
+    [lapButtonOccludingView5 setImage:v85];
 
-    v87 = [(MTAStopwatchViewController *)self startButtonOccludingView];
+    startButtonOccludingView5 = [(MTAStopwatchViewController *)self startButtonOccludingView];
     v174 = v85;
-    [v87 setImage:v85];
+    [startButtonOccludingView5 setImage:v85];
 
-    v88 = [v12 topAnchor];
-    v89 = v19;
-    v90 = [v19 bottomAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90 constant:16.0];
+    topAnchor5 = [tableView topAnchor];
+    v89 = lapControlButton;
+    bottomAnchor = [lapControlButton bottomAnchor];
+    v91 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:16.0];
     [v15 addObject:v91];
 
-    v92 = [v12 leadingAnchor];
-    v93 = [(MTAStopwatchViewController *)self view];
-    v94 = [v93 leadingAnchor];
-    v95 = [v92 constraintEqualToAnchor:v94];
+    leadingAnchor3 = [tableView leadingAnchor];
+    view8 = [(MTAStopwatchViewController *)self view];
+    leadingAnchor4 = [view8 leadingAnchor];
+    v95 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v15 addObject:v95];
 
-    v96 = [v12 trailingAnchor];
-    v97 = [(MTAStopwatchViewController *)self view];
-    v98 = [v97 trailingAnchor];
-    v99 = [v96 constraintEqualToAnchor:v98];
+    trailingAnchor3 = [tableView trailingAnchor];
+    view9 = [(MTAStopwatchViewController *)self view];
+    trailingAnchor4 = [view9 trailingAnchor];
+    v99 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v15 addObject:v99];
 
-    v100 = [(MTAStopwatchViewController *)self pageControl];
-    v101 = [v100 centerXAnchor];
-    v102 = [(MTAStopwatchViewController *)self view];
-    v103 = [v102 centerXAnchor];
-    v104 = [v101 constraintEqualToAnchor:v103];
+    pageControl = [(MTAStopwatchViewController *)self pageControl];
+    centerXAnchor5 = [pageControl centerXAnchor];
+    view10 = [(MTAStopwatchViewController *)self view];
+    centerXAnchor6 = [view10 centerXAnchor];
+    v104 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v15 addObject:v104];
 
-    v105 = [(MTAStopwatchViewController *)self pageControl];
-    v106 = [v105 centerYAnchor];
-    v107 = [v89 centerYAnchor];
-    v108 = [v106 constraintEqualToAnchor:v107];
+    pageControl2 = [(MTAStopwatchViewController *)self pageControl];
+    centerYAnchor5 = [pageControl2 centerYAnchor];
+    centerYAnchor6 = [v89 centerYAnchor];
+    v108 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     [v15 addObject:v108];
 
-    v109 = [v12 bottomAnchor];
-    v110 = [(MTAStopwatchViewController *)self view];
-    v111 = [v110 bottomAnchor];
-    v112 = [v109 constraintEqualToAnchor:v111];
+    bottomAnchor2 = [tableView bottomAnchor];
+    view11 = [(MTAStopwatchViewController *)self view];
+    bottomAnchor3 = [view11 bottomAnchor];
+    v112 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v15 addObject:v112];
 
-    v113 = [(MTAStopwatchViewController *)self lapTableController];
-    [v113 setCellStyle:1];
+    lapTableController2 = [(MTAStopwatchViewController *)self lapTableController];
+    [lapTableController2 setCellStyle:1];
 
-    v114 = [(MTAStopwatchViewController *)self tableHeaderView];
-    [v114 setHidden:(BYTE9(v181) ^ 1) & 1];
+    tableHeaderView2 = [(MTAStopwatchViewController *)self tableHeaderView];
+    [tableHeaderView2 setHidden:(BYTE9(v181) ^ 1) & 1];
 
-    v115 = [v175 leadingAnchor];
-    v116 = [(MTAStopwatchViewController *)self view];
-    v117 = [v116 leadingAnchor];
-    v118 = [v115 constraintEqualToAnchor:v117];
+    leadingAnchor5 = [view2 leadingAnchor];
+    view12 = [(MTAStopwatchViewController *)self view];
+    leadingAnchor6 = [view12 leadingAnchor];
+    v118 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v15 addObject:v118];
 
-    v119 = [v175 trailingAnchor];
-    v120 = [(MTAStopwatchViewController *)self view];
-    v121 = [v120 trailingAnchor];
-    v122 = [v119 constraintEqualToAnchor:v121];
+    trailingAnchor5 = [view2 trailingAnchor];
+    view13 = [(MTAStopwatchViewController *)self view];
+    trailingAnchor6 = [view13 trailingAnchor];
+    v122 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v15 addObject:v122];
 
-    v123 = [v175 topAnchor];
-    v124 = [(MTAStopwatchViewController *)self view];
-    v125 = [v124 safeAreaLayoutGuide];
-    v126 = [v125 topAnchor];
-    v127 = [v123 constraintEqualToAnchor:v126];
+    topAnchor6 = [view2 topAnchor];
+    view14 = [(MTAStopwatchViewController *)self view];
+    safeAreaLayoutGuide3 = [view14 safeAreaLayoutGuide];
+    topAnchor7 = [safeAreaLayoutGuide3 topAnchor];
+    v127 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     [v15 addObject:v127];
 
-    v128 = [v175 bottomAnchor];
-    v129 = [(MTAStopwatchViewController *)self pageControl];
-    v130 = [v129 topAnchor];
-    v131 = [v128 constraintEqualToAnchor:v130 constant:15.0];
+    bottomAnchor4 = [view2 bottomAnchor];
+    pageControl3 = [(MTAStopwatchViewController *)self pageControl];
+    topAnchor8 = [pageControl3 topAnchor];
+    v131 = [bottomAnchor4 constraintEqualToAnchor:topAnchor8 constant:15.0];
     [v15 addObject:v131];
 
     v132 = &unk_10008BD60;
@@ -935,59 +935,59 @@
       v136 = v135 * 0.5;
     }
 
-    v137 = [(MTAStopwatchViewController *)self analogStopwatch];
-    v138 = [v137 centerXAnchor];
-    v139 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
-    v140 = [v139 centerXAnchor];
-    v141 = [v138 constraintEqualToAnchor:v140];
+    analogStopwatch = [(MTAStopwatchViewController *)self analogStopwatch];
+    centerXAnchor7 = [analogStopwatch centerXAnchor];
+    analogStopwatchContainer = [(MTAStopwatchViewController *)self analogStopwatchContainer];
+    centerXAnchor8 = [analogStopwatchContainer centerXAnchor];
+    v141 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
     [v15 addObject:v141];
 
-    v142 = [(MTAStopwatchViewController *)self analogStopwatch];
-    v143 = [v142 topAnchor];
-    v144 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
-    v145 = [v144 topAnchor];
-    v146 = [v143 constraintEqualToAnchor:v145 constant:v136];
+    analogStopwatch2 = [(MTAStopwatchViewController *)self analogStopwatch];
+    topAnchor9 = [analogStopwatch2 topAnchor];
+    analogStopwatchContainer2 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
+    topAnchor10 = [analogStopwatchContainer2 topAnchor];
+    v146 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:v136];
     [v15 addObject:v146];
 
-    v147 = [(MTAStopwatchViewController *)self analogStopwatch];
-    v148 = [v147 bottomAnchor];
-    v149 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
-    v150 = [v149 bottomAnchor];
-    v151 = [v148 constraintEqualToAnchor:v150 constant:-v136];
+    analogStopwatch3 = [(MTAStopwatchViewController *)self analogStopwatch];
+    bottomAnchor5 = [analogStopwatch3 bottomAnchor];
+    analogStopwatchContainer3 = [(MTAStopwatchViewController *)self analogStopwatchContainer];
+    bottomAnchor6 = [analogStopwatchContainer3 bottomAnchor];
+    v151 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v136];
 
     LODWORD(v152) = 1148829696;
     [v151 setPriority:v152];
     [v15 addObject:v151];
-    v153 = [(MTAStopwatchViewController *)self analogStopwatch];
-    v154 = [v153 widthAnchor];
-    v155 = [(MTAStopwatchViewController *)self analogStopwatch];
-    v156 = [v155 heightAnchor];
-    v157 = [v154 constraintEqualToAnchor:v156];
+    analogStopwatch4 = [(MTAStopwatchViewController *)self analogStopwatch];
+    widthAnchor9 = [analogStopwatch4 widthAnchor];
+    analogStopwatch5 = [(MTAStopwatchViewController *)self analogStopwatch];
+    heightAnchor7 = [analogStopwatch5 heightAnchor];
+    v157 = [widthAnchor9 constraintEqualToAnchor:heightAnchor7];
     [v15 addObject:v157];
 
-    v158 = [(MTAStopwatchViewController *)self timeView];
-    v159 = [v158 leadingAnchor];
-    v160 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
-    v161 = [v160 leadingAnchor];
-    v162 = [v159 constraintEqualToAnchor:v161];
+    timeView = [(MTAStopwatchViewController *)self timeView];
+    leadingAnchor7 = [timeView leadingAnchor];
+    digitalStopwatchContainer = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
+    leadingAnchor8 = [digitalStopwatchContainer leadingAnchor];
+    v162 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v15 addObject:v162];
 
-    v163 = [(MTAStopwatchViewController *)self timeView];
-    v164 = [v163 trailingAnchor];
-    v165 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
-    v166 = [v165 trailingAnchor];
-    v167 = [v164 constraintEqualToAnchor:v166];
+    timeView2 = [(MTAStopwatchViewController *)self timeView];
+    trailingAnchor7 = [timeView2 trailingAnchor];
+    digitalStopwatchContainer2 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
+    trailingAnchor8 = [digitalStopwatchContainer2 trailingAnchor];
+    v167 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v15 addObject:v167];
 
-    v168 = [(MTAStopwatchViewController *)self timeView];
-    v169 = [v168 centerYAnchor];
-    v170 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
-    v171 = [v170 centerYAnchor];
-    v172 = [v169 constraintEqualToAnchor:v171];
+    timeView3 = [(MTAStopwatchViewController *)self timeView];
+    centerYAnchor7 = [timeView3 centerYAnchor];
+    digitalStopwatchContainer3 = [(MTAStopwatchViewController *)self digitalStopwatchContainer];
+    centerYAnchor8 = [digitalStopwatchContainer3 centerYAnchor];
+    v172 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
     [v15 addObject:v172];
 
-    v173 = [(MTAStopwatchViewController *)self constraints];
-    [NSLayoutConstraint deactivateConstraints:v173];
+    constraints = [(MTAStopwatchViewController *)self constraints];
+    [NSLayoutConstraint deactivateConstraints:constraints];
 
     [NSLayoutConstraint activateConstraints:v15];
     [(MTAStopwatchViewController *)self setConstraints:v15];
@@ -998,34 +998,34 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MTAStopwatchViewController;
-  [(MTAStopwatchViewController *)&v6 viewWillAppear:a3];
-  v4 = [(MTAStopwatchViewController *)self view];
-  [v4 setNeedsUpdateConstraints];
+  [(MTAStopwatchViewController *)&v6 viewWillAppear:appear];
+  view = [(MTAStopwatchViewController *)self view];
+  [view setNeedsUpdateConstraints];
 
   [(MTAStopwatchViewController *)self renderViewModel];
-  v5 = [(MTAStopwatchViewController *)self deferredPublisher];
-  [v5 publish];
+  deferredPublisher = [(MTAStopwatchViewController *)self deferredPublisher];
+  [deferredPublisher publish];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTAStopwatchViewController;
-  [(MTAStopwatchViewController *)&v4 viewDidAppear:a3];
+  [(MTAStopwatchViewController *)&v4 viewDidAppear:appear];
   [(NSUserActivity *)self->_userActivity becomeCurrent];
 }
 
 - (void)renderViewModel
 {
-  v3 = [(MTAStopwatchViewController *)self viewModel];
-  v4 = [v3 getStopwatch];
-  v5 = [v4 state];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch = [viewModel getStopwatch];
+  state = [getStopwatch state];
 
-  if (v5 == 2)
+  if (state == 2)
   {
     [(MTAStopwatchViewController *)self startDisplayUpdates];
     v6 = 2;
@@ -1033,9 +1033,9 @@
 
   else
   {
-    v7 = [(MTAStopwatchViewController *)self viewModel];
-    v8 = [v7 getStopwatch];
-    [v8 currentInterval];
+    viewModel2 = [(MTAStopwatchViewController *)self viewModel];
+    getStopwatch2 = [viewModel2 getStopwatch];
+    [getStopwatch2 currentInterval];
     v10 = v9;
 
     if (v10 <= 0.0)
@@ -1048,32 +1048,32 @@
 
   [(MTAStopwatchViewController *)self setMode:v6];
 LABEL_6:
-  v11 = [(MTAStopwatchViewController *)self viewModel];
-  v12 = [v11 getStopwatch];
-  [v12 currentInterval];
+  viewModel3 = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch3 = [viewModel3 getStopwatch];
+  [getStopwatch3 currentInterval];
   v14 = v13;
 
   if (v14 > 0.0)
   {
-    v15 = [(MTAStopwatchViewController *)self viewModel];
-    [v15 updateTime];
+    viewModel4 = [(MTAStopwatchViewController *)self viewModel];
+    [viewModel4 updateTime];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(NSUserActivity *)self->_userActivity resignCurrent];
   v5.receiver = self;
   v5.super_class = MTAStopwatchViewController;
-  [(MTAStopwatchViewController *)&v5 viewWillDisappear:v3];
+  [(MTAStopwatchViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MTAStopwatchViewController;
-  [(MTAStopwatchViewController *)&v4 viewDidDisappear:a3];
+  [(MTAStopwatchViewController *)&v4 viewDidDisappear:disappear];
   [(MTAStopwatchViewController *)self endDisplayUpdates];
 }
 
@@ -1082,84 +1082,84 @@ LABEL_6:
   v12.receiver = self;
   v12.super_class = MTAStopwatchViewController;
   [(MTAStopwatchViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(MTAStopwatchViewController *)self view];
-  [v3 bounds];
+  view = [(MTAStopwatchViewController *)self view];
+  [view bounds];
   v6 = v4 / v5;
 
-  v7 = [(MTAStopwatchViewController *)self pagingViewController];
-  v8 = v7;
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  pagingViewController2 = pagingViewController;
   v9 = 1.0;
   if (v6 > 0.9)
   {
-    [v7 setCurrentPage:0];
+    [pagingViewController setCurrentPage:0];
 
-    v8 = [(MTAStopwatchViewController *)self pagingViewController];
+    pagingViewController2 = [(MTAStopwatchViewController *)self pagingViewController];
     v9 = 0.0;
   }
 
-  v10 = [v8 scrollView];
-  [v10 setScrollEnabled:v6 <= 0.9];
+  scrollView = [pagingViewController2 scrollView];
+  [scrollView setScrollEnabled:v6 <= 0.9];
 
-  v11 = [(MTAStopwatchViewController *)self pageControl];
-  [v11 setAlpha:v9];
+  pageControl = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl setAlpha:v9];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 0;
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  v4 = [v6 interfaceOrientation] - 3 < 2;
+  v4 = [delegate interfaceOrientation] - 3 < 2;
   return v4;
 }
 
-- (void)stopwatchPagingViewController:(id)a3 didPage:(unint64_t)a4
+- (void)stopwatchPagingViewController:(id)controller didPage:(unint64_t)page
 {
-  v5 = [(MTAStopwatchViewController *)self pageControl];
-  [v5 setCurrentPage:a4];
+  pageControl = [(MTAStopwatchViewController *)self pageControl];
+  [pageControl setCurrentPage:page];
 }
 
 - (void)saveState
 {
   v5 = +[NSUserDefaults standardUserDefaults];
-  v3 = [(MTAStopwatchViewController *)self pagingViewController];
-  v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 currentPage]);
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [pagingViewController currentPage]);
   [v5 setObject:v4 forKey:@"STOPWATCH_INDEX"];
 }
 
 - (void)updateShortcutItemForCurrentState
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 shortcutItems];
-  v8 = [v4 mutableCopy];
+  shortcutItems = [v3 shortcutItems];
+  v8 = [shortcutItems mutableCopy];
 
   v5 = [v8 indexOfObjectPassingTest:&stru_1000AE460];
-  v6 = [(MTAStopwatchViewController *)self shortcutItemForCurrentState];
+  shortcutItemForCurrentState = [(MTAStopwatchViewController *)self shortcutItemForCurrentState];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v8 insertObject:v6 atIndex:0];
+    [v8 insertObject:shortcutItemForCurrentState atIndex:0];
   }
 
   else
   {
-    [v8 replaceObjectAtIndex:v5 withObject:v6];
+    [v8 replaceObjectAtIndex:v5 withObject:shortcutItemForCurrentState];
   }
 
   v7 = +[UIApplication sharedApplication];
   [v7 setShortcutItems:v8];
 }
 
-- (id)shortcutItemForMode:(unint64_t)a3
+- (id)shortcutItemForMode:(unint64_t)mode
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((mode & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     [(MTAStopwatchViewController *)self startStopwatchShortcutItemForMode:?];
   }
@@ -1173,12 +1173,12 @@ LABEL_6:
   return v3;
 }
 
-- (id)startStopwatchShortcutItemForMode:(unint64_t)a3
+- (id)startStopwatchShortcutItemForMode:(unint64_t)mode
 {
   v4 = [UIApplicationShortcutIcon iconWithSystemImageName:@"stopwatch"];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (a3 == 1)
+  if (mode == 1)
   {
     v7 = @"START_STOPWATCH_QUICK_ACTION_TITLE";
   }
@@ -1223,55 +1223,55 @@ LABEL_6:
 
 - (void)handleStartStopwatchShortcutAction
 {
-  v3 = [(MTAStopwatchViewController *)self deferredPublisher];
+  deferredPublisher = [(MTAStopwatchViewController *)self deferredPublisher];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100036D80;
   v4[3] = &unk_1000AD9F0;
   v4[4] = self;
-  [v3 deferActionWithTimeOut:v4 completion:0.1];
+  [deferredPublisher deferActionWithTimeOut:v4 completion:0.1];
 }
 
 - (void)handleStopStopwatchShortcutAction
 {
-  v3 = [(MTAStopwatchViewController *)self deferredPublisher];
+  deferredPublisher = [(MTAStopwatchViewController *)self deferredPublisher];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100036EE4;
   v4[3] = &unk_1000AD9F0;
   v4[4] = self;
-  [v3 deferActionWithTimeOut:v4 completion:0.1];
+  [deferredPublisher deferActionWithTimeOut:v4 completion:0.1];
 }
 
 - (void)handleLapStopwatchShortcutAction
 {
-  v3 = [(MTAStopwatchViewController *)self deferredPublisher];
+  deferredPublisher = [(MTAStopwatchViewController *)self deferredPublisher];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100037004;
   v4[3] = &unk_1000AD9F0;
   v4[4] = self;
-  [v3 deferActionWithTimeOut:v4 completion:0.1];
+  [deferredPublisher deferActionWithTimeOut:v4 completion:0.1];
 }
 
 - (void)handleResetStopwatchShortcutAction
 {
-  v3 = [(MTAStopwatchViewController *)self deferredPublisher];
+  deferredPublisher = [(MTAStopwatchViewController *)self deferredPublisher];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100037124;
   v4[3] = &unk_1000AD9F0;
   v4[4] = self;
-  [v3 deferActionWithTimeOut:v4 completion:0.1];
+  [deferredPublisher deferActionWithTimeOut:v4 completion:0.1];
 }
 
-- (void)_pageControlValueChanged:(id)a3
+- (void)_pageControlValueChanged:(id)changed
 {
-  v4 = a3;
-  v6 = [(MTAStopwatchViewController *)self pagingViewController];
-  v5 = [v4 currentPage];
+  changedCopy = changed;
+  pagingViewController = [(MTAStopwatchViewController *)self pagingViewController];
+  currentPage = [changedCopy currentPage];
 
-  [v6 setCurrentPage:v5 animated:1];
+  [pagingViewController setCurrentPage:currentPage animated:1];
 }
 
 - (void)startDisplayUpdates
@@ -1280,15 +1280,15 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ startDisplayUpdates", &v9, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 invalidateDisplayLink];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel invalidateDisplayLink];
 
-  v5 = [(MTAStopwatchViewController *)self viewModel];
-  [v5 updateWithDisplayLink];
+  viewModel2 = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel2 updateWithDisplayLink];
 
   [(NSTimer *)self->_restoreIdleTimerTimer invalidate];
   v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"_restoreIdleTimer" selector:0 userInfo:0 repeats:300.0];
@@ -1305,12 +1305,12 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ endDisplayUpdates", &v5, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 invalidateDisplayLink];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel invalidateDisplayLink];
 
   [(MTAStopwatchViewController *)self _restoreIdleTimer];
 }
@@ -1325,10 +1325,10 @@ LABEL_6:
   [v4 setIdleTimerDisabled:0];
 }
 
-- (double)runningTotalForLap:(int64_t)a3
+- (double)runningTotalForLap:(int64_t)lap
 {
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 runningTotalForLap:a3];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel runningTotalForLap:lap];
   v6 = v5;
 
   return v6;
@@ -1340,28 +1340,28 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting lap timer", &v11, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  v5 = [v4 getStopwatch];
-  v6 = [v5 laps];
-  v7 = [v6 count];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch = [viewModel getStopwatch];
+  laps = [getStopwatch laps];
+  v7 = [laps count];
 
   if (v7)
   {
-    v8 = [(MTAStopwatchViewController *)self viewModel];
-    [v8 clearAllLaps];
+    viewModel2 = [(MTAStopwatchViewController *)self viewModel];
+    [viewModel2 clearAllLaps];
   }
 
-  v9 = [(MTAStopwatchViewController *)self viewModel];
-  [v9 startLapTimer];
+  viewModel3 = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel3 startLapTimer];
 
   [(MTAStopwatchViewController *)self startDisplayUpdates];
   [(MTAStopwatchViewController *)self setMode:2];
-  v10 = [(MTAStopwatchViewController *)self lapTableController];
-  [v10 setShowsCurrentLap:1];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController setShowsCurrentLap:1];
 
   [MTAnalytics incrementEventCount:kMTCAStopwatchStarts];
 }
@@ -1372,12 +1372,12 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ pausing lap timer", &v5, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 pauseLapTimer];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel pauseLapTimer];
 
   [(MTAStopwatchViewController *)self pauseLapTimerUI];
 }
@@ -1385,8 +1385,8 @@ LABEL_6:
 - (void)pauseLapTimerUI
 {
   [(MTAStopwatchViewController *)self endDisplayUpdates];
-  v3 = [(MTAStopwatchViewController *)self viewModel];
-  [v3 updateTime];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel updateTime];
 
   [(MTAStopwatchViewController *)self setMode:3];
   v4 = kMTCAStopwatchPauses;
@@ -1400,27 +1400,27 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ lapping lap timer", &v5, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 lapLapTimer];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel lapLapTimer];
 
   [(MTAStopwatchViewController *)self lapLapTimerUI];
 }
 
 - (void)lapLapTimerUI
 {
-  v3 = [(MTAStopwatchViewController *)self viewModel];
-  v4 = [v3 getStopwatch];
-  v5 = [v4 laps];
-  v6 = [v5 lastObject];
-  [v6 doubleValue];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  getStopwatch = [viewModel getStopwatch];
+  laps = [getStopwatch laps];
+  lastObject = [laps lastObject];
+  [lastObject doubleValue];
   v8 = v7;
 
-  v9 = [(MTAStopwatchViewController *)self lapTableController];
-  [v9 addLap:v8];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController addLap:v8];
 
   v10 = kMTCAStopwatchLaps;
 
@@ -1433,27 +1433,27 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resetting lap timer", &v6, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 resetLapTimer];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel resetLapTimer];
 
   [(MTAStopwatchViewController *)self resetLapTimerUI];
-  v5 = [(MTAStopwatchViewController *)self viewModel];
-  [v5 updateTime];
+  viewModel2 = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel2 updateTime];
 }
 
 - (void)resetLapTimerUI
 {
   [(MTAStopwatchViewController *)self endDisplayUpdates];
   [(MTAStopwatchViewController *)self setMode:1];
-  v3 = [(MTAStopwatchViewController *)self lapTableController];
-  [v3 setShowsCurrentLap:0];
+  lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController setShowsCurrentLap:0];
 
-  v4 = [(MTAStopwatchViewController *)self lapTableController];
-  [v4 clearAllLaps];
+  lapTableController2 = [(MTAStopwatchViewController *)self lapTableController];
+  [lapTableController2 clearAllLaps];
 
   v5 = kMTCAStopwatchResets;
 
@@ -1466,12 +1466,12 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resuming lap timer", &v5, 0xCu);
   }
 
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 resumeLapTimer];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel resumeLapTimer];
 
   [(MTAStopwatchViewController *)self resumeLapTimerUI];
 }
@@ -1483,13 +1483,13 @@ LABEL_6:
   [(MTAStopwatchViewController *)self setMode:2];
 }
 
-- (void)didAddLap:(double)a3
+- (void)didAddLap:(double)lap
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%{public}@ didAddLap", &v5, 0xCu);
   }
 
@@ -1502,7 +1502,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didLapLapTimer", &v4, 0xCu);
   }
 
@@ -1515,7 +1515,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didPauseLapTimer", &v4, 0xCu);
   }
 
@@ -1528,7 +1528,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didPauseStopwatch", &v4, 0xCu);
   }
 
@@ -1542,13 +1542,13 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didResetLapTimer", &v5, 0xCu);
   }
 
   [(MTAStopwatchViewController *)self resetLapTimerUI];
-  v4 = [(MTAStopwatchViewController *)self viewModel];
-  [v4 updateTime];
+  viewModel = [(MTAStopwatchViewController *)self viewModel];
+  [viewModel updateTime];
 }
 
 - (void)didResumeLapTimer
@@ -1557,7 +1557,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didResumeLapTimer", &v4, 0xCu);
   }
 
@@ -1570,39 +1570,39 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ didStartLapTimer", &v4, 0xCu);
   }
 
   [(MTAStopwatchViewController *)self startLapTimer];
 }
 
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped
 {
-  v8 = a7;
-  if ([(MTAStopwatchViewController *)self shouldProcessUpdate:a7])
+  runningCopy = running;
+  if ([(MTAStopwatchViewController *)self shouldProcessUpdate:running])
   {
-    v14 = [(MTAStopwatchViewController *)self timeView];
-    v15 = v14;
-    if (!v8)
+    timeView = [(MTAStopwatchViewController *)self timeView];
+    v15 = timeView;
+    if (!runningCopy)
     {
-      a6 = a5;
-      a4 = a3;
+      adjustedTotalInterval = totalInterval;
+      currentInterval = interval;
     }
 
-    [v14 setTime:a6];
+    [timeView setTime:adjustedTotalInterval];
 
-    v16 = [(MTAStopwatchViewController *)self analogStopwatch];
-    [v16 setDisplayAdjustedElapsedTime:a6];
+    analogStopwatch = [(MTAStopwatchViewController *)self analogStopwatch];
+    [analogStopwatch setDisplayAdjustedElapsedTime:adjustedTotalInterval];
 
-    v17 = [(MTAStopwatchViewController *)self lapTableController];
-    [v17 setCurrentInterval:a4];
+    lapTableController = [(MTAStopwatchViewController *)self lapTableController];
+    [lapTableController setCurrentInterval:currentInterval];
 
-    v18 = [(MTAStopwatchViewController *)self analogStopwatch];
-    [v18 setElapsedTime:a5];
+    analogStopwatch2 = [(MTAStopwatchViewController *)self analogStopwatch];
+    [analogStopwatch2 setElapsedTime:totalInterval];
 
-    v19 = [(MTAStopwatchViewController *)self analogStopwatch];
-    [v19 setCurrentLapTime:a3];
+    analogStopwatch3 = [(MTAStopwatchViewController *)self analogStopwatch];
+    [analogStopwatch3 setCurrentLapTime:interval];
   }
 }
 

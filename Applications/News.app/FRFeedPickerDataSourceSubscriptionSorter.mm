@@ -2,17 +2,17 @@
 + (void)initialize;
 - (FRFeedPickerDataSourceSubscriptionSorter)init;
 - (id)comparatorForSubscriptions;
-- (id)sortSubscriptionsAlphabetically:(id)a3;
-- (id)sortSubscriptionsByRecency:(id)a3 sortedPopularTagIDs:(id)a4;
-- (id)trimTheArticle:(id)a3;
-- (void)recordSubscriptionAsRecentlyOpened:(id)a3;
+- (id)sortSubscriptionsAlphabetically:(id)alphabetically;
+- (id)sortSubscriptionsByRecency:(id)recency sortedPopularTagIDs:(id)ds;
+- (id)trimTheArticle:(id)article;
+- (void)recordSubscriptionAsRecentlyOpened:(id)opened;
 @end
 
 @implementation FRFeedPickerDataSourceSubscriptionSorter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     v4 = @"FRFeedPickerDataSourceOpenedLookup";
@@ -108,27 +108,27 @@
   return v2;
 }
 
-- (id)sortSubscriptionsAlphabetically:(id)a3
+- (id)sortSubscriptionsAlphabetically:(id)alphabetically
 {
-  v4 = a3;
+  alphabeticallyCopy = alphabetically;
   +[NSThread isMainThread];
-  v5 = [(FRFeedPickerDataSourceSubscriptionSorter *)self comparatorForSubscriptions];
-  v6 = [v4 sortedArrayWithOptions:1 usingComparator:v5];
+  comparatorForSubscriptions = [(FRFeedPickerDataSourceSubscriptionSorter *)self comparatorForSubscriptions];
+  v6 = [alphabeticallyCopy sortedArrayWithOptions:1 usingComparator:comparatorForSubscriptions];
 
   return v6;
 }
 
-- (id)trimTheArticle:(id)a3
+- (id)trimTheArticle:(id)article
 {
-  v3 = a3;
-  if ([v3 rangeOfString:@"the " options:9] == 0x7FFFFFFFFFFFFFFFLL)
+  articleCopy = article;
+  if ([articleCopy rangeOfString:@"the " options:9] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    v5 = articleCopy;
   }
 
   else
   {
-    v5 = [v3 substringFromIndex:v4];
+    v5 = [articleCopy substringFromIndex:v4];
   }
 
   v6 = v5;
@@ -136,32 +136,32 @@
   return v6;
 }
 
-- (id)sortSubscriptionsByRecency:(id)a3 sortedPopularTagIDs:(id)a4
+- (id)sortSubscriptionsByRecency:(id)recency sortedPopularTagIDs:(id)ds
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000F5D8;
   v8[3] = &unk_1000C1B38;
   v8[4] = self;
-  v9 = a4;
-  v5 = v9;
-  v6 = [a3 sortedArrayUsingComparator:v8];
+  dsCopy = ds;
+  v5 = dsCopy;
+  v6 = [recency sortedArrayUsingComparator:v8];
 
   return v6;
 }
 
-- (void)recordSubscriptionAsRecentlyOpened:(id)a3
+- (void)recordSubscriptionAsRecentlyOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   +[NSThread isMainThread];
   v5 = +[NSDate date];
-  v6 = [(FRFeedPickerDataSourceSubscriptionSorter *)self tagOpenedDate];
-  v7 = [v4 identifier];
+  tagOpenedDate = [(FRFeedPickerDataSourceSubscriptionSorter *)self tagOpenedDate];
+  identifier = [openedCopy identifier];
 
-  [v6 setObject:v5 forKeyedSubscript:v7];
+  [tagOpenedDate setObject:v5 forKeyedSubscript:identifier];
   v10 = +[NSUserDefaults standardUserDefaults];
-  v8 = [(FRFeedPickerDataSourceSubscriptionSorter *)self tagOpenedDate];
-  v9 = [v8 copy];
+  tagOpenedDate2 = [(FRFeedPickerDataSourceSubscriptionSorter *)self tagOpenedDate];
+  v9 = [tagOpenedDate2 copy];
   [v10 setObject:v9 forKey:@"FRFeedPickerDataSourceOpenedLookup"];
 }
 

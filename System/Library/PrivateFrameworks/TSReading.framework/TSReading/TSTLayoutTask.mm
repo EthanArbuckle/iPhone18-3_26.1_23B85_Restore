@@ -1,12 +1,12 @@
 @interface TSTLayoutTask
-- (TSTLayoutTask)initWithMasterLayout:(id)a3;
+- (TSTLayoutTask)initWithMasterLayout:(id)layout;
 - (void)dealloc;
 - (void)flushToGlobalCaches;
 @end
 
 @implementation TSTLayoutTask
 
-- (TSTLayoutTask)initWithMasterLayout:(id)a3
+- (TSTLayoutTask)initWithMasterLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = TSTLayoutTask;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mMasterLayout = a3;
+    v4->mMasterLayout = layout;
     v4->mCellStatesToLayout = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 

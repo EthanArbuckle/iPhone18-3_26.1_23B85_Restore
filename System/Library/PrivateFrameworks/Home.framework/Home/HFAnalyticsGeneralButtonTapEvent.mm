@@ -1,20 +1,20 @@
 @interface HFAnalyticsGeneralButtonTapEvent
-- (HFAnalyticsGeneralButtonTapEvent)initWithData:(id)a3;
+- (HFAnalyticsGeneralButtonTapEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsGeneralButtonTapEvent
 
-- (HFAnalyticsGeneralButtonTapEvent)initWithData:(id)a3
+- (HFAnalyticsGeneralButtonTapEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = HFAnalyticsGeneralButtonTapEvent;
   v5 = [(HFAnalyticsEvent *)&v17 initWithEventType:43];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKeyedSubscript:@"item"];
+    v6 = [dataCopy objectForKeyedSubscript:@"item"];
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -27,13 +27,13 @@
 
     objc_storeStrong(&v5->_buttonTitle, v7);
 
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v5->_processName;
-    v5->_processName = v9;
+    v5->_processName = processName;
 
     objc_opt_class();
-    v11 = [v4 objectForKeyedSubscript:@"sourceViewController"];
+    v11 = [dataCopy objectForKeyedSubscript:@"sourceViewController"];
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -70,17 +70,17 @@
 {
   v9.receiver = self;
   v9.super_class = HFAnalyticsGeneralButtonTapEvent;
-  v3 = [(HFAnalyticsEvent *)&v9 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v9 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsGeneralButtonTapEvent *)self buttonTitle];
-  [v4 na_safeSetObject:v5 forKey:@"item"];
+  buttonTitle = [(HFAnalyticsGeneralButtonTapEvent *)self buttonTitle];
+  [v4 na_safeSetObject:buttonTitle forKey:@"item"];
 
-  v6 = [(HFAnalyticsGeneralButtonTapEvent *)self processName];
-  [v4 na_safeSetObject:v6 forKey:@"processName"];
+  processName = [(HFAnalyticsGeneralButtonTapEvent *)self processName];
+  [v4 na_safeSetObject:processName forKey:@"processName"];
 
-  v7 = [(HFAnalyticsGeneralButtonTapEvent *)self sourceViewControllerClassName];
-  [v4 na_safeSetObject:v7 forKey:@"sourceViewController"];
+  sourceViewControllerClassName = [(HFAnalyticsGeneralButtonTapEvent *)self sourceViewControllerClassName];
+  [v4 na_safeSetObject:sourceViewControllerClassName forKey:@"sourceViewController"];
 
   [v4 na_safeSetObject:&unk_2825249A8 forKey:@"homeAppEventCount"];
 

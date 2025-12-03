@@ -1,6 +1,6 @@
 @interface DetailsViewController
 - (DetailsViewController)init;
-- (id)_generateBarcode:(id)a3 showAsQRCode:(BOOL)a4;
+- (id)_generateBarcode:(id)barcode showAsQRCode:(BOOL)code;
 - (void)loadView;
 @end
 
@@ -28,34 +28,34 @@
   [(UILabel *)self->_serialNumberLabel setAccessibilityAttributedLabel:v6];
 
   v7 = [(DetailsViewController *)self _generateBarcode:v3 showAsQRCode:1];
-  v8 = [(DetailsViewController *)self qrCodeView];
-  [v8 setImage:v7];
+  qrCodeView = [(DetailsViewController *)self qrCodeView];
+  [qrCodeView setImage:v7];
 
-  v9 = [(DetailsViewController *)self qrCodeView];
-  [v9 setIsAccessibilityElement:1];
+  qrCodeView2 = [(DetailsViewController *)self qrCodeView];
+  [qrCodeView2 setIsAccessibilityElement:1];
 
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"AX_QRCODE" value:&stru_100028E90 table:0];
-  v12 = [(DetailsViewController *)self qrCodeView];
-  [v12 setAccessibilityLabel:v11];
+  qrCodeView3 = [(DetailsViewController *)self qrCodeView];
+  [qrCodeView3 setAccessibilityLabel:v11];
 
   v13 = [[CoreTelephonyClient alloc] initWithQueue:&_dispatch_main_q];
   [(DetailsViewController *)self setTelephony:v13];
 
-  v14 = [(DetailsViewController *)self imeiLabel];
-  v15 = [(DetailsViewController *)self telephony];
+  imeiLabel = [(DetailsViewController *)self imeiLabel];
+  telephony = [(DetailsViewController *)self telephony];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100004A0C;
   v17[3] = &unk_1000287B0;
-  v18 = v14;
-  v16 = v14;
-  [v15 copyMobileEquipmentInfo:v17];
+  v18 = imeiLabel;
+  v16 = imeiLabel;
+  [telephony copyMobileEquipmentInfo:v17];
 }
 
-- (id)_generateBarcode:(id)a3 showAsQRCode:(BOOL)a4
+- (id)_generateBarcode:(id)barcode showAsQRCode:(BOOL)code
 {
-  if (a4)
+  if (code)
   {
     v5 = 3.5;
   }
@@ -66,21 +66,21 @@
   }
 
   v6 = @"CICode128BarcodeGenerator";
-  if (a4)
+  if (code)
   {
     v6 = @"CIQRCodeGenerator";
   }
 
   v7 = v6;
-  v8 = [a3 dataUsingEncoding:1];
+  v8 = [barcode dataUsingEncoding:1];
   v9 = [CIFilter filterWithName:v7];
 
   [v9 setValue:v8 forKey:@"inputMessage"];
   memset(&v15, 0, sizeof(v15));
   CGAffineTransformMakeScale(&v15, v5, v5);
-  v10 = [v9 outputImage];
+  outputImage = [v9 outputImage];
   v14 = v15;
-  v11 = [v10 imageByApplyingTransform:&v14];
+  v11 = [outputImage imageByApplyingTransform:&v14];
 
   v12 = [[UIImage alloc] initWithCIImage:v11];
 

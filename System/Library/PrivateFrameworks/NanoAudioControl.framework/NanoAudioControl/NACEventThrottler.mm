@@ -1,16 +1,16 @@
 @interface NACEventThrottler
-- (NACEventThrottler)initWithQueue:(id)a3;
+- (NACEventThrottler)initWithQueue:(id)queue;
 - (void)_fire;
 - (void)cancel;
-- (void)setEventBlock:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setEventBlock:(id)block;
+- (void)setValue:(id)value;
 @end
 
 @implementation NACEventThrottler
 
-- (NACEventThrottler)initWithQueue:(id)a3
+- (NACEventThrottler)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = NACEventThrottler;
   v5 = [(NACEventThrottler *)&v12 init];
@@ -18,9 +18,9 @@
   if (v5)
   {
     v5->_minimumDelay = 1.0;
-    if (v4)
+    if (queueCopy)
     {
-      v7 = v4;
+      v7 = queueCopy;
       queue = v6->_queue;
       v6->_queue = v7;
     }
@@ -37,19 +37,19 @@
   return v6;
 }
 
-- (void)setEventBlock:(id)a3
+- (void)setEventBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   eventBlock = self->_eventBlock;
   self->_eventBlock = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  objc_storeStrong(&self->_value, a3);
+  valueCopy = value;
+  objc_storeStrong(&self->_value, value);
   if (!self->_timer)
   {
     v6 = self->_minimumDelay - (CACurrentMediaTime() - self->_lastUpdateTime);

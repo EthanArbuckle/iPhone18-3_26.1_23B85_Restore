@@ -1,25 +1,25 @@
 @interface NLModel
 + (NLModel)modelWithContentsOfURL:(NSURL *)url error:(NSError *)error;
-+ (NLModel)modelWithData:(id)a3 error:(id *)a4;
++ (NLModel)modelWithData:(id)data error:(id *)error;
 + (NLModel)modelWithMLModel:(MLModel *)mlModel error:(NSError *)error;
-- (BOOL)writeMLModelToURL:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 atomically:(BOOL)a4 error:(id *)a5;
-- (NLModel)initWithClassifierMLModel:(id)a3;
-- (NLModel)initWithConfiguration:(id)a3 modelImpl:(id)a4;
-- (NLModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (NLModel)initWithData:(id)a3 mlModel:(id)a4 error:(id *)a5;
-- (NLModel)initWithMLModel:(id)a3 error:(id *)a4;
+- (BOOL)writeMLModelToURL:(id)l options:(id)options error:(id *)error;
+- (BOOL)writeToURL:(id)l atomically:(BOOL)atomically error:(id *)error;
+- (NLModel)initWithClassifierMLModel:(id)model;
+- (NLModel)initWithConfiguration:(id)configuration modelImpl:(id)impl;
+- (NLModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (NLModel)initWithData:(id)data mlModel:(id)model error:(id *)error;
+- (NLModel)initWithMLModel:(id)model error:(id *)error;
 - (NSArray)predictedLabelHypothesesForTokens:(NSArray *)tokens maximumCount:(NSUInteger)maximumCount;
 - (NSArray)predictedLabelsForTokens:(NSArray *)tokens;
 - (NSDictionary)predictedLabelHypothesesForString:(NSString *)string maximumCount:(NSUInteger)maximumCount;
 - (NSString)predictedLabelForString:(NSString *)string;
-- (id)classifierTestResultsWithDataProvider:(id)a3;
+- (id)classifierTestResultsWithDataProvider:(id)provider;
 - (id)data;
 - (id)labelArray;
-- (id)predictedLabelArraysForTokenArrays:(id)a3;
-- (id)sequenceTestResultsWithDataProvider:(id)a3;
-- (id)testResultsWithDataProvider:(id)a3;
-- (id)testResultsWithDataSet:(id)a3;
+- (id)predictedLabelArraysForTokenArrays:(id)arrays;
+- (id)sequenceTestResultsWithDataProvider:(id)provider;
+- (id)testResultsWithDataProvider:(id)provider;
+- (id)testResultsWithDataSet:(id)set;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
 + (NLModel)modelWithContentsOfURL:(NSURL *)url error:(NSError *)error
 {
   v6 = url;
-  v7 = [[a1 alloc] initWithContentsOfURL:v6 error:error];
+  v7 = [[self alloc] initWithContentsOfURL:v6 error:error];
 
   return v7;
 }
@@ -36,33 +36,33 @@
 + (NLModel)modelWithMLModel:(MLModel *)mlModel error:(NSError *)error
 {
   v6 = mlModel;
-  v7 = [[a1 alloc] initWithMLModel:v6 error:error];
+  v7 = [[self alloc] initWithMLModel:v6 error:error];
 
   return v7;
 }
 
-+ (NLModel)modelWithData:(id)a3 error:(id *)a4
++ (NLModel)modelWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithData:v6 error:a4];
+  dataCopy = data;
+  v7 = [[self alloc] initWithData:dataCopy error:error];
 
   return v7;
 }
 
-- (NLModel)initWithConfiguration:(id)a3 modelImpl:(id)a4
+- (NLModel)initWithConfiguration:(id)configuration modelImpl:(id)impl
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  implCopy = impl;
   v14.receiver = self;
   v14.super_class = NLModel;
   v8 = [(NLModel *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    objc_storeStrong(&v8->_modelImpl, a4);
+    objc_storeStrong(&v8->_modelImpl, impl);
     v11 = dispatch_queue_create("com.apple.NaturalLanguage.NLModel", 0);
     clientQueue = v8->_clientQueue;
     v8->_clientQueue = v11;
@@ -71,37 +71,37 @@
   return v8;
 }
 
-- (NLModel)initWithData:(id)a3 mlModel:(id)a4 error:(id *)a5
+- (NLModel)initWithData:(id)data mlModel:(id)model error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v74 = a4;
-  if (!v8)
+  dataCopy = data;
+  modelCopy = model;
+  if (!dataCopy)
   {
-    if (a5)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v79 = *MEMORY[0x1E696A578];
       v80 = @"Failed to load model file, data is nil";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
-      *a5 = [v14 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v15];
+      *error = [v14 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v15];
     }
 
     goto LABEL_90;
   }
 
-  v67 = a4;
-  obj = a3;
+  modelCopy2 = model;
+  obj = data;
   v9 = NLModelContainerCreateWithContainerData();
   if (!v9)
   {
-    if (a5)
+    if (error)
     {
       v33 = MEMORY[0x1E696ABC0];
       v77 = *MEMORY[0x1E696A578];
       v78 = @"Failed to load model file, cannot read container";
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-      *a5 = [v33 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v34];
+      *error = [v33 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v34];
     }
 
     goto LABEL_90;
@@ -109,7 +109,7 @@
 
   if (NLModelContainerGetSubtype() != 7 && NLModelContainerGetSubtype() != 8)
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_89:
       CFRelease(v9);
@@ -122,7 +122,7 @@ LABEL_90:
     v81 = *MEMORY[0x1E696A578];
     v82 = @"Failed to load model file, invalid container type";
     v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v82 forKeys:&v81 count:1];
-    *a5 = [v30 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v76];
+    *error = [v30 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v76];
 LABEL_35:
 
     goto LABEL_89;
@@ -184,17 +184,17 @@ LABEL_35:
     [v20 setObject:v26 forKey:@"UseBidirectionalNeuralNetwork"];
   }
 
-  v73 = [NLModelConfiguration defaultModelConfigurationForType:v21 options:v20 error:a5];
+  v73 = [NLModelConfiguration defaultModelConfigurationForType:v21 options:v20 error:error];
 
   if (!v72 || !v73 || !ModelDataCount)
   {
-    if (a5)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v83 = *MEMORY[0x1E696A578];
       v84[0] = @"Failed to load model file, invalid configuration or data";
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
-      *a5 = [v28 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v29];
+      *error = [v28 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v29];
     }
 
     goto LABEL_35;
@@ -248,8 +248,8 @@ LABEL_43:
   v66 = stringArrayRepresentationFromData(v62);
   v71 = v31;
   v35 = v71;
-  v36 = [v71 bytes];
-  if ([v71 length] >= 9 && !strncmp(v36, "bplist00", 8uLL))
+  bytes = [v71 bytes];
+  if ([v71 length] >= 9 && !strncmp(bytes, "bplist00", 8uLL))
   {
     v63 = [MEMORY[0x1E696AE40] propertyListWithData:v71 options:0 format:0 error:0];
   }
@@ -262,7 +262,7 @@ LABEL_43:
   if (v64 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v37 = v64;
-    v70 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v38 = [v37 count];
     if (v38)
     {
@@ -273,7 +273,7 @@ LABEL_43:
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v39 length])
         {
           v40 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-          [v70 setObject:v39 forKey:v40];
+          [dictionary setObject:v39 forKey:v40];
         }
       }
     }
@@ -281,13 +281,13 @@ LABEL_43:
 
   else
   {
-    v70 = 0;
+    dictionary = 0;
   }
 
   if (v66 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v41 = v66;
-    v69 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v42 = [v41 count];
     if (v42)
     {
@@ -298,7 +298,7 @@ LABEL_43:
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v43 length])
         {
           v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-          [v69 setObject:v44 forKey:v43];
+          [dictionary2 setObject:v44 forKey:v43];
         }
       }
     }
@@ -306,14 +306,14 @@ LABEL_43:
 
   else
   {
-    v69 = 0;
+    dictionary2 = 0;
   }
 
   if (v63 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v45 = [v66 count];
     v46 = v63;
-    v47 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v48 = [v46 count];
     if (v45)
     {
@@ -343,14 +343,14 @@ LABEL_43:
         v50 = v51;
 LABEL_76:
         v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
-        [v47 setObject:v50 forKey:v52];
+        [dictionary3 setObject:v50 forKey:v52];
       }
     }
   }
 
   else
   {
-    v47 = 0;
+    dictionary3 = 0;
   }
 
   if ([(objc_class *)v72 isEqual:objc_opt_class()])
@@ -365,7 +365,7 @@ LABEL_76:
     }
   }
 
-  v54 = [[v72 alloc] initWithModelData:v65 configuration:v73 labelMap:v70 vocabularyMap:v69 documentFrequencyMap:v47 customEmbeddingData:v61 trainingInfo:v76 error:a5];
+  v54 = [[v72 alloc] initWithModelData:v65 configuration:v73 labelMap:dictionary vocabularyMap:dictionary2 documentFrequencyMap:dictionary3 customEmbeddingData:v61 trainingInfo:v76 error:error];
   if (v54)
   {
     v55 = [(NLModel *)self initWithConfiguration:v73 modelImpl:v54];
@@ -373,7 +373,7 @@ LABEL_76:
     if (v55)
     {
       objc_storeStrong(&v55->_data, obj);
-      objc_storeStrong(&v56->_mlModel, v67);
+      objc_storeStrong(&v56->_mlModel, modelCopy2);
       v56->_container = v9;
       i = v56;
       v57 = 0;
@@ -398,82 +398,82 @@ LABEL_91:
   return i;
 }
 
-- (NLModel)initWithClassifierMLModel:(id)a3
+- (NLModel)initWithClassifierMLModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = [NLModelConfiguration defaultModelConfigurationForType:0];
-  v7 = [[NLModelImplML alloc] initWithMLModel:v5 configuration:v6];
+  v7 = [[NLModelImplML alloc] initWithMLModel:modelCopy configuration:v6];
   if (v7)
   {
     v8 = [(NLModel *)self initWithConfiguration:v6 modelImpl:v7];
     self = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_mlModel, a3);
+      objc_storeStrong(&v8->_mlModel, model);
     }
   }
 
   return self;
 }
 
-- (NLModel)initWithMLModel:(id)a3 error:(id *)a4
+- (NLModel)initWithMLModel:(id)model error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [v6 parameters];
-    v8 = [v7 modelParameterData];
+    parameters = [modelCopy parameters];
+    modelParameterData = [parameters modelParameterData];
 
-    if (v8)
+    if (modelParameterData)
     {
-      v9 = [(NLModel *)self initWithData:v8 mlModel:v6 error:a4];
+      v9 = [(NLModel *)self initWithData:modelParameterData mlModel:modelCopy error:error];
 LABEL_7:
       self = v9;
-      v10 = self;
+      selfCopy = self;
 LABEL_23:
 
       goto LABEL_24;
     }
   }
 
-  if (v6)
+  if (modelCopy)
   {
-    v8 = [v6 modelDescription];
-    v11 = [v8 inputDescriptionsByName];
-    if ([v11 count] == 1)
+    modelParameterData = [modelCopy modelDescription];
+    inputDescriptionsByName = [modelParameterData inputDescriptionsByName];
+    if ([inputDescriptionsByName count] == 1)
     {
-      v12 = [v8 inputDescriptionsByName];
-      v13 = [v12 allValues];
-      v14 = [v13 objectAtIndexedSubscript:0];
+      inputDescriptionsByName2 = [modelParameterData inputDescriptionsByName];
+      allValues = [inputDescriptionsByName2 allValues];
+      v14 = [allValues objectAtIndexedSubscript:0];
       if ([v14 type] == 3)
       {
-        v15 = [v8 outputDescriptionsByName];
-        if ([v15 count] == 1)
+        outputDescriptionsByName = [modelParameterData outputDescriptionsByName];
+        if ([outputDescriptionsByName count] == 1)
         {
-          v23 = [v8 outputDescriptionsByName];
-          v22 = [v23 allValues];
-          v16 = [v22 objectAtIndexedSubscript:0];
-          v24 = [v16 type];
+          outputDescriptionsByName2 = [modelParameterData outputDescriptionsByName];
+          allValues2 = [outputDescriptionsByName2 allValues];
+          v16 = [allValues2 objectAtIndexedSubscript:0];
+          type = [v16 type];
 
-          if (v24 == 3)
+          if (type == 3)
           {
-            v9 = [(NLModel *)self initWithClassifierMLModel:v6];
+            v9 = [(NLModel *)self initWithClassifierMLModel:modelCopy];
             goto LABEL_7;
           }
 
 LABEL_20:
-          if (a4)
+          if (error)
           {
             v18 = MEMORY[0x1E696ABC0];
             v27 = *MEMORY[0x1E696A578];
             v28[0] = @"MLModel does not have supported input and output descriptions for use with NLModel";
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-            *a4 = [v18 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:2 userInfo:v19];
+            *error = [v18 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:2 userInfo:v19];
           }
 
-          v10 = 0;
+          selfCopy = 0;
           goto LABEL_23;
         }
       }
@@ -482,34 +482,34 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A578];
     v26 = @"MLModel is nil, cannot create NLModel";
-    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:2 userInfo:v8];
-    *a4 = v10 = 0;
+    modelParameterData = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+    [v17 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:2 userInfo:modelParameterData];
+    *error = selfCopy = 0;
     goto LABEL_23;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_24:
 
   v20 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
-- (NLModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (NLModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (![v6 isFileURL])
+  lCopy = l;
+  if (![lCopy isFileURL])
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 path];
-  v8 = open([v7 fileSystemRepresentation], 0);
+  path = [lCopy path];
+  v8 = open([path fileSystemRepresentation], 0);
 
   if (v8 < 0)
   {
@@ -522,11 +522,11 @@ LABEL_24:
   close(v8);
   if (v9 == 4 && v10 == 156685278)
   {
-    v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6 options:1 error:a4];
+    v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:error];
     v12 = v11;
     if (v11)
     {
-      v11 = [(NLModel *)self initWithData:v11 error:a4];
+      v11 = [(NLModel *)self initWithData:v11 error:error];
 LABEL_9:
       self = v11;
     }
@@ -535,11 +535,11 @@ LABEL_9:
   else
   {
 LABEL_7:
-    v11 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:v6 error:a4];
+    v11 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy error:error];
     v12 = v11;
     if (v11)
     {
-      v11 = [(NLModel *)self initWithMLModel:v11 error:a4];
+      v11 = [(NLModel *)self initWithMLModel:v11 error:error];
       goto LABEL_9;
     }
   }
@@ -565,17 +565,17 @@ LABEL_7:
 - (id)data
 {
   v64[16] = *MEMORY[0x1E69E9840];
-  v3 = [(NLModel *)self labelMap];
-  v57 = stringArrayRepresentationFromInverseMap(v3);
+  labelMap = [(NLModel *)self labelMap];
+  v57 = stringArrayRepresentationFromInverseMap(labelMap);
 
-  v59 = self;
-  v4 = [(NLModel *)self vocabularyMap];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  selfCopy = self;
+  vocabularyMap = [(NLModel *)self vocabularyMap];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v6 = v4;
+  v6 = vocabularyMap;
   v7 = [v6 countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v7)
   {
@@ -592,7 +592,7 @@ LABEL_7:
 
         v11 = *(*(&v60 + 1) + 8 * i);
         v12 = [v6 objectForKey:v11];
-        [v5 setObject:v11 forKey:v12];
+        [dictionary setObject:v11 forKey:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v60 objects:v64 count:16];
@@ -601,16 +601,16 @@ LABEL_7:
     while (v8);
   }
 
-  v58 = stringArrayRepresentationFromInverseMap(v5);
+  v58 = stringArrayRepresentationFromInverseMap(dictionary);
 
-  v13 = [(NLModel *)v59 documentFrequencyMap];
-  v14 = [MEMORY[0x1E695DF70] array];
+  documentFrequencyMap = [(NLModel *)selfCopy documentFrequencyMap];
+  array = [MEMORY[0x1E695DF70] array];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v15 = [v13 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v60 objects:v64 count:16];
+  allKeys = [documentFrequencyMap allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v16)
   {
     v17 = v16;
@@ -622,24 +622,24 @@ LABEL_7:
       {
         if (*v61 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v60 + 1) + 8 * j);
-        v22 = [v13 objectForKey:v21];
-        v23 = [v22 unsignedIntegerValue];
+        v22 = [documentFrequencyMap objectForKey:v21];
+        unsignedIntegerValue = [v22 unsignedIntegerValue];
 
-        if (v23 >= 2)
+        if (unsignedIntegerValue >= 2)
         {
-          v24 = [v21 unsignedIntegerValue];
-          if (v24 > v18)
+          unsignedIntegerValue2 = [v21 unsignedIntegerValue];
+          if (unsignedIntegerValue2 > v18)
           {
-            v18 = v24;
+            v18 = unsignedIntegerValue2;
           }
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v60 objects:v64 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v60 objects:v64 count:16];
     }
 
     while (v17);
@@ -654,17 +654,17 @@ LABEL_7:
   do
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
-    v27 = [v13 objectForKey:v26];
+    v27 = [documentFrequencyMap objectForKey:v26];
 
     if (v27)
     {
-      [v14 addObject:v27];
+      [array addObject:v27];
     }
 
     else
     {
       v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
-      [v14 addObject:v28];
+      [array addObject:v28];
     }
 
     ++v25;
@@ -672,24 +672,24 @@ LABEL_7:
 
   while (v25 <= v18);
 
-  v29 = [(NLModel *)v59 configuration];
-  [v29 revision];
+  configuration = [(NLModel *)selfCopy configuration];
+  [configuration revision];
 
-  v30 = [(NLModelImpl *)v59->_modelImpl trainingInfo];
-  v31 = [(NLModel *)v59 configuration];
-  v32 = v30;
+  trainingInfo = [(NLModelImpl *)selfCopy->_modelImpl trainingInfo];
+  configuration2 = [(NLModel *)selfCopy configuration];
+  v32 = trainingInfo;
   v33 = MEMORY[0x1E695DF90];
-  v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v31, "type")}];
+  v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(configuration2, "type")}];
   v35 = [v33 dictionaryWithObject:v34 forKey:@"ModelType"];
 
-  v36 = [v31 type];
-  v37 = [v31 language];
-  v38 = [v31 options];
-  v39 = stringForKeyWithDefault(v38, @"EmbeddingType", @"Static");
-  v40 = BOOLForKeyWithDefault(v38, @"UseBidirectionalNeuralNetwork");
-  if (v37)
+  type = [configuration2 type];
+  language = [configuration2 language];
+  options = [configuration2 options];
+  v39 = stringForKeyWithDefault(options, @"EmbeddingType", @"Static");
+  v40 = BOOLForKeyWithDefault(options, @"UseBidirectionalNeuralNetwork");
+  if (language)
   {
-    [v35 setObject:v37 forKey:@"Language"];
+    [v35 setObject:language forKey:@"Language"];
   }
 
   if (v39)
@@ -697,7 +697,7 @@ LABEL_7:
     [v35 setObject:v39 forKey:@"EmbeddingType"];
   }
 
-  if (v36)
+  if (type)
   {
     v41 = 0;
   }
@@ -715,20 +715,20 @@ LABEL_7:
 
   [v35 addEntriesFromDictionary:v32];
 
-  v43 = [(NLModelImpl *)v59->_modelImpl modelData];
+  modelData = [(NLModelImpl *)selfCopy->_modelImpl modelData];
   v44 = v57;
   v45 = dataFromStringArrayRepresentation(v57);
   v46 = dataFromStringArrayRepresentation(v58);
-  v47 = [MEMORY[0x1E696AE40] dataWithPropertyList:v14 format:200 options:0 error:0];
-  v48 = [(NLModelImpl *)v59->_modelImpl customEmbeddingData];
+  v47 = [MEMORY[0x1E696AE40] dataWithPropertyList:array format:200 options:0 error:0];
+  customEmbeddingData = [(NLModelImpl *)selfCopy->_modelImpl customEmbeddingData];
   v49 = 0;
-  if (v35 && v43 && v45)
+  if (v35 && modelData && v45)
   {
-    modelImpl = v59->_modelImpl;
+    modelImpl = selfCopy->_modelImpl;
     v51 = objc_opt_class();
     v52 = modelMethodTypeForImplClass(v51);
     v64[0] = 0;
-    if (v52 && ([MEMORY[0x1E695DEC8] arrayWithObjects:{v43, v45, v46, v47, v48, 0}], (v53 = NLModelContainerCreate()) != 0))
+    if (v52 && ([MEMORY[0x1E695DEC8] arrayWithObjects:{modelData, v45, v46, v47, customEmbeddingData, 0}], (v53 = NLModelContainerCreate()) != 0))
     {
       v54 = v53;
       v49 = NLModelContainerCopyContainerData();
@@ -748,15 +748,15 @@ LABEL_7:
   return v49;
 }
 
-- (BOOL)writeToURL:(id)a3 atomically:(BOOL)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l atomically:(BOOL)atomically error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(NLModel *)self data];
-  v10 = v9;
-  if (v9)
+  atomicallyCopy = atomically;
+  lCopy = l;
+  data = [(NLModel *)self data];
+  v10 = data;
+  if (data)
   {
-    v11 = [v9 writeToURL:v8 options:v6 error:a5];
+    v11 = [data writeToURL:lCopy options:atomicallyCopy error:error];
   }
 
   else
@@ -767,24 +767,24 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)writeMLModelToURL:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)writeMLModelToURL:(id)l options:(id)options error:(id *)error
 {
   v69[5] = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v7 = a4;
-  v8 = [(NLModel *)self configuration];
-  v9 = [v8 type];
+  lCopy = l;
+  optionsCopy = options;
+  configuration = [(NLModel *)self configuration];
+  type = [configuration type];
 
   modelImpl = self->_modelImpl;
   v11 = objc_opt_class();
   v50 = modelMethodTypeForImplClass(v11);
-  v51 = [(NLModel *)self systemVersion];
-  v12 = [(NLModel *)self configuration];
-  v55 = [v12 language];
+  systemVersion = [(NLModel *)self systemVersion];
+  configuration2 = [(NLModel *)self configuration];
+  language = [configuration2 language];
 
-  v54 = [(NLModel *)self labelArray];
-  v13 = v7;
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  labelArray = [(NLModel *)self labelArray];
+  v13 = optionsCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = *MEMORY[0x1E695FDD0];
   v69[0] = *MEMORY[0x1E695FDB8];
   v69[1] = v15;
@@ -815,7 +815,7 @@ LABEL_7:
         v23 = [v13 objectForKey:v22];
         if (v23)
         {
-          [v14 setObject:v23 forKey:v22];
+          [dictionary setObject:v23 forKey:v22];
         }
       }
 
@@ -825,15 +825,15 @@ LABEL_7:
     while (v19);
   }
 
-  if (v9)
+  if (type)
   {
-    if (v9 != 1)
+    if (type != 1)
     {
       v31 = 0;
       v39 = 0;
-      v37 = a5;
-      v32 = v53;
-      if (!a5)
+      errorCopy5 = error;
+      v32 = lCopy;
+      if (!error)
       {
         goto LABEL_38;
       }
@@ -844,27 +844,27 @@ LABEL_7:
     v24 = stringForKey(v13, @"InputFeatureName", @"text");
     v25 = stringForKey(v13, @"OutputFeatureName", @"labels");
     v26 = objc_alloc(MEMORY[0x1E695FE20]);
-    v27 = [(NLModel *)self data];
-    v28 = [v54 count];
+    data = [(NLModel *)self data];
+    v28 = [labelArray count];
     v29 = &unk_1F10D13A0;
     if (v28)
     {
-      v29 = v54;
+      v29 = labelArray;
     }
 
     v63 = 0;
-    v30 = [v26 initWithData:v51 language:v55 inputFeatureName:v24 tokensFeatureName:@"tokens" tokenTagsFeatureName:v25 tokenLocationsFeatureName:@"locations" tokenLengthsFeatureName:@"lengths" modelData:v27 tagNames:v29 metadata:v14 error:&v63];
+    v30 = [v26 initWithData:systemVersion language:language inputFeatureName:v24 tokensFeatureName:@"tokens" tokenTagsFeatureName:v25 tokenLocationsFeatureName:@"locations" tokenLengthsFeatureName:@"lengths" modelData:data tagNames:v29 metadata:dictionary error:&v63];
     v31 = v63;
 
-    v32 = v53;
+    v32 = lCopy;
     if (v30)
     {
       v62 = v31;
       v33 = &v62;
-      v34 = [MEMORY[0x1E695FE18] saveAppleWordTaggingModelToURL:v53 wordTaggerParameters:v30 error:&v62];
+      v34 = [MEMORY[0x1E695FE18] saveAppleWordTaggingModelToURL:lCopy wordTaggerParameters:v30 error:&v62];
 LABEL_27:
       v39 = v34;
-      v37 = a5;
+      errorCopy5 = error;
 LABEL_35:
       v46 = *v33;
 
@@ -880,10 +880,10 @@ LABEL_35:
   {
     v25 = stringForKey(v13, @"OutputFeatureName", @"label");
     v40 = objc_alloc(MEMORY[0x1E695FDE0]);
-    v41 = [(NLModel *)self data];
-    if ([v54 count])
+    data2 = [(NLModel *)self data];
+    if ([labelArray count])
     {
-      v42 = v54;
+      v42 = labelArray;
     }
 
     else
@@ -892,40 +892,40 @@ LABEL_35:
     }
 
     v59 = 0;
-    v30 = [v40 initWithData:v51 language:v55 inputFeatureName:v24 outputFeatureName:v25 modelData:v41 labelNames:v42 metadata:v14 error:&v59];
+    v30 = [v40 initWithData:systemVersion language:language inputFeatureName:v24 outputFeatureName:v25 modelData:data2 labelNames:v42 metadata:dictionary error:&v59];
     v31 = v59;
 
-    v32 = v53;
+    v32 = lCopy;
     if (v30)
     {
       v58 = v31;
       v33 = &v58;
-      v34 = [MEMORY[0x1E695FDD8] saveAppleGazetteerModelToURL:v53 gazetteerParameters:v30 error:&v58];
+      v34 = [MEMORY[0x1E695FDD8] saveAppleGazetteerModelToURL:lCopy gazetteerParameters:v30 error:&v58];
       goto LABEL_27;
     }
 
 LABEL_28:
     v39 = 0;
-    v37 = a5;
+    errorCopy5 = error;
     goto LABEL_36;
   }
 
-  v32 = v53;
+  v32 = lCopy;
   if (v50 == 8)
   {
     v25 = stringForKey(v13, @"OutputFeatureName", @"vector");
     v35 = objc_alloc(MEMORY[0x1E695FE10]);
-    v36 = [(NLModel *)self data];
+    data3 = [(NLModel *)self data];
     v61 = 0;
-    v30 = [v35 initWithData:v51 language:v55 inputFeatureName:v24 outputFeatureName:v25 modelData:v36 metadata:v14 error:&v61];
+    v30 = [v35 initWithData:systemVersion language:language inputFeatureName:v24 outputFeatureName:v25 modelData:data3 metadata:dictionary error:&v61];
     v31 = v61;
 
-    v37 = a5;
+    errorCopy5 = error;
     if (v30)
     {
       v60 = v31;
       v33 = &v60;
-      v38 = [MEMORY[0x1E695FE08] saveAppleWordEmbeddingModelToURL:v53 wordEmbeddingParameters:v30 error:&v60];
+      v38 = [MEMORY[0x1E695FE08] saveAppleWordEmbeddingModelToURL:lCopy wordEmbeddingParameters:v30 error:&v60];
 LABEL_34:
       v39 = v38;
       goto LABEL_35;
@@ -936,10 +936,10 @@ LABEL_34:
   {
     v25 = stringForKey(v13, @"OutputFeatureName", @"label");
     v43 = objc_alloc(MEMORY[0x1E695FE00]);
-    v44 = [(NLModel *)self data];
-    if ([v54 count])
+    data4 = [(NLModel *)self data];
+    if ([labelArray count])
     {
-      v45 = v54;
+      v45 = labelArray;
     }
 
     else
@@ -948,15 +948,15 @@ LABEL_34:
     }
 
     v57 = 0;
-    v30 = [v43 initWithData:v51 language:v55 inputFeatureName:v24 outputFeatureName:v25 modelData:v44 labelNames:v45 metadata:v14 error:&v57];
+    v30 = [v43 initWithData:systemVersion language:language inputFeatureName:v24 outputFeatureName:v25 modelData:data4 labelNames:v45 metadata:dictionary error:&v57];
     v31 = v57;
 
-    v37 = a5;
+    errorCopy5 = error;
     if (v30)
     {
       v56 = v31;
       v33 = &v56;
-      v38 = [MEMORY[0x1E695FDF8] saveAppleTextClassifierModelToURL:v53 textClassifierParameters:v30 error:&v56];
+      v38 = [MEMORY[0x1E695FDF8] saveAppleTextClassifierModelToURL:lCopy textClassifierParameters:v30 error:&v56];
       goto LABEL_34;
     }
   }
@@ -964,11 +964,11 @@ LABEL_34:
   v39 = 0;
 LABEL_36:
 
-  if (v37)
+  if (errorCopy5)
   {
 LABEL_37:
     v47 = v31;
-    *v37 = v31;
+    *errorCopy5 = v31;
   }
 
 LABEL_38:
@@ -980,13 +980,13 @@ LABEL_38:
 - (id)labelArray
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NLModel *)self labelMap];
-  v5 = stringArrayRepresentationFromInverseMap(v4);
+  labelMap = [(NLModel *)self labelMap];
+  v5 = stringArrayRepresentationFromInverseMap(labelMap);
 
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
@@ -1003,9 +1003,9 @@ LABEL_38:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 length] && (objc_msgSend(v3, "containsObject:", v10) & 1) == 0)
+        if ([v10 length] && (objc_msgSend(array, "containsObject:", v10) & 1) == 0)
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -1017,7 +1017,7 @@ LABEL_38:
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (NSString)predictedLabelForString:(NSString *)string
@@ -1100,17 +1100,17 @@ uint64_t __36__NLModel_predictedLabelsForTokens___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)predictedLabelArraysForTokenArrays:(id)a3
+- (id)predictedLabelArraysForTokenArrays:(id)arrays
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arraysCopy = arrays;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = MEMORY[0x1E695E0F0];
-  v5 = v4;
+  v5 = arraysCopy;
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v5 count])
   {
     v25 = 0u;
@@ -1339,23 +1339,23 @@ void __58__NLModel_predictedLabelHypothesesForTokens_maximumCount___block_invoke
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)classifierTestResultsWithDataProvider:(id)a3
+- (id)classifierTestResultsWithDataProvider:(id)provider
 {
-  v4 = a3;
-  v24 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v4 numberOfInstances];
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  numberOfInstances = [providerCopy numberOfInstances];
   Current = CFAbsoluteTimeGetCurrent();
-  if (v5)
+  if (numberOfInstances)
   {
     v7 = 0;
     v8 = 0;
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numberOfInstances; ++i)
     {
-      v10 = [v4 instanceAtIndex:i];
-      v11 = [v10 string];
-      v12 = [v10 label];
-      v13 = [(NLModel *)self predictedLabelForString:v11];
-      v14 = [v12 isEqualToString:v13];
+      v10 = [providerCopy instanceAtIndex:i];
+      string = [v10 string];
+      label = [v10 label];
+      v13 = [(NLModel *)self predictedLabelForString:string];
+      v14 = [label isEqualToString:v13];
       v8 += v14 ^ 1;
       v7 += v14;
     }
@@ -1368,39 +1368,39 @@ void __58__NLModel_predictedLabelHypothesesForTokens_maximumCount___block_invoke
   }
 
   v15 = CFAbsoluteTimeGetCurrent();
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
-  [v24 setObject:v16 forKey:@"NumberOfInstances"];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:numberOfInstances];
+  [dictionary setObject:v16 forKey:@"NumberOfInstances"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-  [v24 setObject:v17 forKey:@"NumberOfInstancesCorrect"];
+  [dictionary setObject:v17 forKey:@"NumberOfInstancesCorrect"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  [v24 setObject:v18 forKey:@"NumberOfInstancesIncorrect"];
+  [dictionary setObject:v18 forKey:@"NumberOfInstancesIncorrect"];
 
   v19 = v15 - Current;
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
-  [v24 setObject:v20 forKey:@"OverallTestingTime"];
+  [dictionary setObject:v20 forKey:@"OverallTestingTime"];
 
-  if (v5)
+  if (numberOfInstances)
   {
-    v21 = [MEMORY[0x1E696AD98] numberWithDouble:v7 / v5];
-    [v24 setObject:v21 forKey:@"InstanceAccuracy"];
+    v21 = [MEMORY[0x1E696AD98] numberWithDouble:v7 / numberOfInstances];
+    [dictionary setObject:v21 forKey:@"InstanceAccuracy"];
 
-    v22 = [MEMORY[0x1E696AD98] numberWithDouble:v19 / v5];
-    [v24 setObject:v22 forKey:@"PerInstanceTestingTime"];
+    v22 = [MEMORY[0x1E696AD98] numberWithDouble:v19 / numberOfInstances];
+    [dictionary setObject:v22 forKey:@"PerInstanceTestingTime"];
   }
 
-  return v24;
+  return dictionary;
 }
 
-- (id)sequenceTestResultsWithDataProvider:(id)a3
+- (id)sequenceTestResultsWithDataProvider:(id)provider
 {
-  v3 = a3;
-  v34 = [MEMORY[0x1E695DF90] dictionary];
-  v37 = v3;
-  v4 = [v3 numberOfInstances];
+  providerCopy = provider;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v37 = providerCopy;
+  numberOfInstances = [providerCopy numberOfInstances];
   Current = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (numberOfInstances)
   {
     v6 = 0;
     v42 = 0;
@@ -1408,24 +1408,24 @@ void __58__NLModel_predictedLabelHypothesesForTokens_maximumCount___block_invoke
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    for (i = v4; i != v9; v4 = i)
+    for (i = numberOfInstances; i != v9; numberOfInstances = i)
     {
       v40 = v6;
       v41 = v7;
       v10 = [v37 instanceAtIndex:v9];
-      v11 = [v10 tokens];
+      tokens = [v10 tokens];
       v39 = v10;
-      v12 = [v10 labels];
-      v13 = [(NLModel *)self predictedLabelsForTokens:v11];
-      v38 = v11;
-      v14 = [v11 count];
+      labels = [v10 labels];
+      v13 = [(NLModel *)self predictedLabelsForTokens:tokens];
+      v38 = tokens;
+      v14 = [tokens count];
       if (v14)
       {
         v15 = 0;
         v16 = 1;
         do
         {
-          if (v15 < [v12 count] && v15 < objc_msgSend(v13, "count") && (objc_msgSend(v12, "objectAtIndex:", v15), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectAtIndex:", v15), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqualToString:", v18), v18, v17, v19))
+          if (v15 < [labels count] && v15 < objc_msgSend(v13, "count") && (objc_msgSend(labels, "objectAtIndex:", v15), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "objectAtIndex:", v15), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqualToString:", v18), v18, v17, v19))
           {
             ++v43;
           }
@@ -1465,64 +1465,64 @@ void __58__NLModel_predictedLabelHypothesesForTokens_maximumCount___block_invoke
   }
 
   v20 = CFAbsoluteTimeGetCurrent();
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-  [v34 setObject:v21 forKey:@"NumberOfInstances"];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:numberOfInstances];
+  [dictionary setObject:v21 forKey:@"NumberOfInstances"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
-  [v34 setObject:v22 forKey:@"NumberOfInstancesCorrect"];
+  [dictionary setObject:v22 forKey:@"NumberOfInstancesCorrect"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v42];
-  [v34 setObject:v23 forKey:@"NumberOfInstancesIncorrect"];
+  [dictionary setObject:v23 forKey:@"NumberOfInstancesIncorrect"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-  [v34 setObject:v24 forKey:@"NumberOfTokens"];
+  [dictionary setObject:v24 forKey:@"NumberOfTokens"];
 
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43];
-  [v34 setObject:v25 forKey:@"NumberOfTokensCorrect"];
+  [dictionary setObject:v25 forKey:@"NumberOfTokensCorrect"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  [v34 setObject:v26 forKey:@"NumberOfTokensIncorrect"];
+  [dictionary setObject:v26 forKey:@"NumberOfTokensIncorrect"];
 
   v27 = v20 - Current;
   v28 = [MEMORY[0x1E696AD98] numberWithDouble:v27];
-  [v34 setObject:v28 forKey:@"OverallTestingTime"];
+  [dictionary setObject:v28 forKey:@"OverallTestingTime"];
 
-  if (v4)
+  if (numberOfInstances)
   {
-    v29 = [MEMORY[0x1E696AD98] numberWithDouble:v6 / v4];
-    [v34 setObject:v29 forKey:@"InstanceAccuracy"];
+    v29 = [MEMORY[0x1E696AD98] numberWithDouble:v6 / numberOfInstances];
+    [dictionary setObject:v29 forKey:@"InstanceAccuracy"];
 
-    v30 = [MEMORY[0x1E696AD98] numberWithDouble:v27 / v4];
-    [v34 setObject:v30 forKey:@"PerInstanceTestingTime"];
+    v30 = [MEMORY[0x1E696AD98] numberWithDouble:v27 / numberOfInstances];
+    [dictionary setObject:v30 forKey:@"PerInstanceTestingTime"];
   }
 
   if (v7)
   {
     v31 = [MEMORY[0x1E696AD98] numberWithDouble:v43 / v7];
-    [v34 setObject:v31 forKey:@"TokenAccuracy"];
+    [dictionary setObject:v31 forKey:@"TokenAccuracy"];
 
     v32 = [MEMORY[0x1E696AD98] numberWithDouble:v27 / v7];
-    [v34 setObject:v32 forKey:@"PerTokenTestingTime"];
+    [dictionary setObject:v32 forKey:@"PerTokenTestingTime"];
   }
 
-  return v34;
+  return dictionary;
 }
 
-- (id)testResultsWithDataProvider:(id)a3
+- (id)testResultsWithDataProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(NLModel *)self configuration];
-  v6 = [v5 type];
+  providerCopy = provider;
+  configuration = [(NLModel *)self configuration];
+  type = [configuration type];
 
-  if (!v6)
+  if (!type)
   {
-    v7 = [(NLModel *)self classifierTestResultsWithDataProvider:v4];
+    v7 = [(NLModel *)self classifierTestResultsWithDataProvider:providerCopy];
     goto LABEL_5;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v7 = [(NLModel *)self sequenceTestResultsWithDataProvider:v4];
+    v7 = [(NLModel *)self sequenceTestResultsWithDataProvider:providerCopy];
 LABEL_5:
     v8 = v7;
     goto LABEL_7;
@@ -1534,9 +1534,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)testResultsWithDataSet:(id)a3
+- (id)testResultsWithDataSet:(id)set
 {
-  v4 = [a3 dataProviderOfType:2];
+  v4 = [set dataProviderOfType:2];
   v5 = [(NLModel *)self testResultsWithDataProvider:v4];
 
   return v5;

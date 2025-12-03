@@ -6,11 +6,11 @@
 
 - (id)removeSpecialCharactersAndWhiteSpaces
 {
-  v2 = [MEMORY[0x1E696AD48] whitespaceCharacterSet];
-  v3 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  [v2 formUnionWithCharacterSet:v3];
+  whitespaceCharacterSet = [MEMORY[0x1E696AD48] whitespaceCharacterSet];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  [whitespaceCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-  v4 = [a1 hk_stringByRemovingCharactersInSet:v2];
+  v4 = [self hk_stringByRemovingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }

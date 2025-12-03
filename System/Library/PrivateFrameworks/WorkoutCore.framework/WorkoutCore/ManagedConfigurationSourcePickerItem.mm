@@ -1,7 +1,7 @@
 @interface ManagedConfigurationSourcePickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC11WorkoutCore36ManagedConfigurationSourcePickerItem)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore36ManagedConfigurationSourcePickerItem_provider);
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore36ManagedConfigurationSourcePickerItem_viewModel);
@@ -36,22 +36,22 @@
   swift_beginAccess();
   v4 = *(v3 + 32);
   v5 = *(v3 + 40);
-  v6 = self;
+  selfCopy = self;
 
   String.hash(into:)();
 
-  v7 = *(&v6->super.isa + OBJC_IVAR____TtC11WorkoutCore36ManagedConfigurationSourcePickerItem_viewModel);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11WorkoutCore36ManagedConfigurationSourcePickerItem_viewModel);
   ManagedConfigurationsViewModel.hash(into:)(v10);
   v8 = Hasher.finalize()();
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -60,7 +60,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ManagedConfigurationSourcePickerItem.isEqual(_:)(v8);

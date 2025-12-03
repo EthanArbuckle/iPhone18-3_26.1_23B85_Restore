@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitTemperature == a1)
+  if (NSUnitTemperature == self)
   {
     objc_opt_class();
   }

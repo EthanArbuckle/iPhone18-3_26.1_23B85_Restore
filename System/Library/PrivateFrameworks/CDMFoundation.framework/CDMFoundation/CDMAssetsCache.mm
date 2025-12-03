@@ -1,23 +1,23 @@
 @interface CDMAssetsCache
-+ (id)getAssetsFromUAFAssetSet:(id)a3;
-+ (id)getHashKeyForAssetSetName:(id)a3 withUsages:(id)a4;
-+ (id)initUAFAssetSetWithAssetSetName:(id)a3 andUsages:(id)a4;
-+ (void)subscribeToAssetSet:(int64_t)a3 withUsages:(id)a4 forSubscriber:(id)a5 withSubscriptionName:(id)a6 withExpiration:(id)a7;
-- (CDMAssetsCache)initWithValidateAssetSetHandler:(id)a3;
-- (id)getCurrentAssetSetForAssetSetName:(int64_t)a3 withUsages:(id)a4;
-- (void)markAssetSetValidated:(id)a3;
++ (id)getAssetsFromUAFAssetSet:(id)set;
++ (id)getHashKeyForAssetSetName:(id)name withUsages:(id)usages;
++ (id)initUAFAssetSetWithAssetSetName:(id)name andUsages:(id)usages;
++ (void)subscribeToAssetSet:(int64_t)set withUsages:(id)usages forSubscriber:(id)subscriber withSubscriptionName:(id)name withExpiration:(id)expiration;
+- (CDMAssetsCache)initWithValidateAssetSetHandler:(id)handler;
+- (id)getCurrentAssetSetForAssetSetName:(int64_t)name withUsages:(id)usages;
+- (void)markAssetSetValidated:(id)validated;
 @end
 
 @implementation CDMAssetsCache
 
-- (void)markAssetSetValidated:(id)a3
+- (void)markAssetSetValidated:(id)validated
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validatedCopy = validated;
   v5 = self->_validatedAssetSets;
   objc_sync_enter(v5);
-  v6 = [CDMAssetsCache getNameFromUAFAssetSet:v4];
-  v7 = [CDMAssetsCache getUsagesFromUAFAssetSet:v4];
+  v6 = [CDMAssetsCache getNameFromUAFAssetSet:validatedCopy];
+  v7 = [CDMAssetsCache getUsagesFromUAFAssetSet:validatedCopy];
   v8 = v7;
   if (v6)
   {
@@ -52,7 +52,7 @@
       v15 = 136315906;
       v16 = "[CDMAssetsCache markAssetSetValidated:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = validatedCopy;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
@@ -61,14 +61,14 @@
     }
 
     v10 = [CDMAssetsCache getHashKeyForAssetSetName:v6 withUsages:v8];
-    [(NSMutableDictionary *)self->_validatedAssetSets setObject:v4 forKey:v10];
+    [(NSMutableDictionary *)self->_validatedAssetSets setObject:validatedCopy forKey:v10];
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v15 = 136315906;
       v16 = "[CDMAssetsCache markAssetSetValidated:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = validatedCopy;
       v19 = 2112;
       v20 = v6;
       v21 = 2112;
@@ -81,18 +81,18 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getCurrentAssetSetForAssetSetName:(int64_t)a3 withUsages:(id)a4
+- (id)getCurrentAssetSetForAssetSetName:(int64_t)name withUsages:(id)usages
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  usagesCopy = usages;
   v7 = self->_validatedAssetSets;
   objc_sync_enter(v7);
-  v8 = [CDMAssetsUtils cdmAssetSetToStr:a3];
-  v9 = [v6 getUsages];
-  v10 = v9;
+  v8 = [CDMAssetsUtils cdmAssetSetToStr:name];
+  getUsages = [usagesCopy getUsages];
+  v10 = getUsages;
   if (v8)
   {
-    v11 = v9 == 0;
+    v11 = getUsages == 0;
   }
 
   else
@@ -117,7 +117,7 @@
 
   else
   {
-    v12 = [CDMAssetsCache getHashKeyForAssetSetName:v8 withUsages:v9];
+    v12 = [CDMAssetsCache getHashKeyForAssetSetName:v8 withUsages:getUsages];
     v13 = self->_assetSetObservers;
     objc_sync_enter(v13);
     v14 = [(NSMutableDictionary *)self->_assetSetObservers objectForKey:v12];
@@ -134,8 +134,8 @@
       v25 = v10;
       v29 = v25;
       v15 = _Block_copy(aBlock);
-      v16 = [MEMORY[0x1E69DEEF0] sharedManager];
-      v17 = [v16 observeAssetSet:v26 queue:0 handler:v15];
+      mEMORY[0x1E69DEEF0] = [MEMORY[0x1E69DEEF0] sharedManager];
+      v17 = [mEMORY[0x1E69DEEF0] observeAssetSet:v26 queue:0 handler:v15];
 
       if (v17)
       {
@@ -219,15 +219,15 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (CDMAssetsCache)initWithValidateAssetSetHandler:(id)a3
+- (CDMAssetsCache)initWithValidateAssetSetHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = CDMAssetsCache;
   v5 = [(CDMAssetsCache *)&v13 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     validateAssetSetHandler = v5->_validateAssetSetHandler;
     v5->_validateAssetSetHandler = v6;
 
@@ -243,25 +243,25 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
   return v5;
 }
 
-+ (id)initUAFAssetSetWithAssetSetName:(id)a3 andUsages:(id)a4
++ (id)initUAFAssetSetWithAssetSetName:(id)name andUsages:(id)usages
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  usagesCopy = usages;
   v7 = os_signpost_id_generate(CDMLogContext);
   v8 = CDMLogContext;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v16 = 138412546;
-    v17 = v5;
+    v17 = nameCopy;
     v18 = 2112;
-    v19 = v6;
+    v19 = usagesCopy;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "CDMAssetsCache", "init UAFAssetSet with assetSetName: %@ and usage: %@", &v16, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E69DEEF0] sharedManager];
-  v11 = [v10 retrieveAssetSet:v5 usages:v6];
+  mEMORY[0x1E69DEEF0] = [MEMORY[0x1E69DEEF0] sharedManager];
+  v11 = [mEMORY[0x1E69DEEF0] retrieveAssetSet:nameCopy usages:usagesCopy];
 
   v12 = CDMLogContext;
   v13 = v12;
@@ -276,12 +276,12 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
   return v11;
 }
 
-+ (id)getAssetsFromUAFAssetSet:(id)a3
++ (id)getAssetsFromUAFAssetSet:(id)set
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [CDMAssetsCache getNameFromUAFAssetSet:v3];
-  v5 = [CDMAssetsCache getUsagesFromUAFAssetSet:v3];
+  setCopy = set;
+  v4 = [CDMAssetsCache getNameFromUAFAssetSet:setCopy];
+  v5 = [CDMAssetsCache getUsagesFromUAFAssetSet:setCopy];
   v6 = os_signpost_id_generate(CDMLogContext);
   v7 = CDMLogContext;
   v8 = v7;
@@ -294,7 +294,7 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "CDMAssetsCache", "assets from UAFAssetSet with assetSetName: %@ and usage: %@", &v14, 0x16u);
   }
 
-  v9 = [v3 assets];
+  assets = [setCopy assets];
   v10 = CDMLogContext;
   v11 = v10;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -305,27 +305,27 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return assets;
 }
 
-+ (void)subscribeToAssetSet:(int64_t)a3 withUsages:(id)a4 forSubscriber:(id)a5 withSubscriptionName:(id)a6 withExpiration:(id)a7
++ (void)subscribeToAssetSet:(int64_t)set withUsages:(id)usages forSubscriber:(id)subscriber withSubscriptionName:(id)name withExpiration:(id)expiration
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [CDMAssetsUtils cdmAssetSetToStr:a3];
+  subscriberCopy = subscriber;
+  expirationCopy = expiration;
+  nameCopy = name;
+  usagesCopy = usages;
+  v15 = [CDMAssetsUtils cdmAssetSetToStr:set];
   v30 = v15;
-  v16 = [v14 getUsages];
+  getUsages = [usagesCopy getUsages];
 
-  v31[0] = v16;
+  v31[0] = getUsages;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
 
-  v18 = [objc_alloc(MEMORY[0x1E69DEEF8]) initWithName:v13 assetSets:v17 usageAliases:0 expires:v12];
+  v18 = [objc_alloc(MEMORY[0x1E69DEEF8]) initWithName:nameCopy assetSets:v17 usageAliases:0 expires:expirationCopy];
   if (v18)
   {
-    v19 = [MEMORY[0x1E69DEEF0] sharedManager];
+    mEMORY[0x1E69DEEF0] = [MEMORY[0x1E69DEEF0] sharedManager];
     v25 = v18;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     v23[0] = MEMORY[0x1E69E9820];
@@ -333,7 +333,7 @@ void __63__CDMAssetsCache_getCurrentAssetSetForAssetSetName_withUsages___block_i
     v23[2] = __99__CDMAssetsCache_subscribeToAssetSet_withUsages_forSubscriber_withSubscriptionName_withExpiration___block_invoke;
     v23[3] = &unk_1E862F7B0;
     v24 = v17;
-    [v19 subscribe:v11 subscriptions:v20 queue:0 completion:v23];
+    [mEMORY[0x1E69DEEF0] subscribe:subscriberCopy subscriptions:v20 queue:0 completion:v23];
 
     v21 = v24;
   }
@@ -374,15 +374,15 @@ void __99__CDMAssetsCache_subscribeToAssetSet_withUsages_forSubscriber_withSubsc
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)getHashKeyForAssetSetName:(id)a3 withUsages:(id)a4
++ (id)getHashKeyForAssetSetName:(id)name withUsages:(id)usages
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v22 = v5;
-  v7 = [MEMORY[0x1E696AD60] stringWithString:v5];
-  v8 = [v6 allKeys];
-  v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+  nameCopy = name;
+  usagesCopy = usages;
+  v22 = nameCopy;
+  v7 = [MEMORY[0x1E696AD60] stringWithString:nameCopy];
+  allKeys = [usagesCopy allKeys];
+  v9 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v25 = 0u;
   v26 = 0u;
@@ -406,7 +406,7 @@ void __99__CDMAssetsCache_subscribeToAssetSet_withUsages_forSubscriber_withSubsc
         }
 
         v16 = *(*(&v23 + 1) + 8 * v14);
-        v17 = [v6 objectForKey:v16];
+        v17 = [usagesCopy objectForKey:v16];
         v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@.%@.%@", v15, v16, v17];
 
         ++v14;
@@ -429,7 +429,7 @@ void __99__CDMAssetsCache_subscribeToAssetSet_withUsages_forSubscriber_withSubsc
     v29 = 2112;
     v30 = v22;
     v31 = 2112;
-    v32 = v6;
+    v32 = usagesCopy;
     v33 = 2112;
     v34 = v7;
     _os_log_debug_impl(&dword_1DC287000, v19, OS_LOG_TYPE_DEBUG, "%s Hash key for assetSetName: %@ and usages: %@ is %@", buf, 0x2Au);

@@ -1,21 +1,21 @@
 @interface CalCalendarConstraints
 + (id)_bundle;
-+ (id)_strippedConstraintsNameForStoredConstraintsName:(id)a3;
-+ (id)backwardsCompatibleConstraintsPathForName:(id)a3;
-+ (id)constraintsURLForName:(id)a3;
++ (id)_strippedConstraintsNameForStoredConstraintsName:(id)name;
++ (id)backwardsCompatibleConstraintsPathForName:(id)name;
++ (id)constraintsURLForName:(id)name;
 @end
 
 @implementation CalCalendarConstraints
 
-+ (id)constraintsURLForName:(id)a3
++ (id)constraintsURLForName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 _strippedConstraintsNameForStoredConstraintsName:v4];
-  if (!v5 || ([a1 _bundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "URLForResource:withExtension:", v5, @"plist"), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  nameCopy = name;
+  v5 = [self _strippedConstraintsNameForStoredConstraintsName:nameCopy];
+  if (!v5 || ([self _bundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "URLForResource:withExtension:", v5, @"plist"), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    if ([v4 isAbsolutePath] && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:", v4), v8, v9))
+    if ([nameCopy isAbsolutePath] && (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "fileExistsAtPath:", nameCopy), v8, v9))
     {
-      v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+      v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:nameCopy];
     }
 
     else
@@ -27,16 +27,16 @@
   return v7;
 }
 
-+ (id)backwardsCompatibleConstraintsPathForName:(id)a3
++ (id)backwardsCompatibleConstraintsPathForName:(id)name
 {
   v4 = backwardsCompatibleConstraintsPathForName__onceToken;
-  v5 = a3;
+  nameCopy = name;
   if (v4 != -1)
   {
     +[CalCalendarConstraints backwardsCompatibleConstraintsPathForName:];
   }
 
-  v6 = [a1 _strippedConstraintsNameForStoredConstraintsName:v5];
+  v6 = [self _strippedConstraintsNameForStoredConstraintsName:nameCopy];
 
   v7 = [backwardsCompatibleConstraintsPathForName__map objectForKeyedSubscript:v6];
 
@@ -81,23 +81,23 @@ void __68__CalCalendarConstraints_backwardsCompatibleConstraintsPathForName___bl
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_strippedConstraintsNameForStoredConstraintsName:(id)a3
++ (id)_strippedConstraintsNameForStoredConstraintsName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isAbsolutePath])
+  nameCopy = name;
+  lastPathComponent = nameCopy;
+  if ([nameCopy isAbsolutePath])
   {
-    v4 = [v3 lastPathComponent];
+    lastPathComponent = [nameCopy lastPathComponent];
   }
 
-  if ([v4 hasSuffix:@".plist"])
+  if ([lastPathComponent hasSuffix:@".plist"])
   {
-    v5 = [v4 stringByDeletingPathExtension];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v4 = v5;
+    lastPathComponent = stringByDeletingPathExtension;
   }
 
-  return v4;
+  return lastPathComponent;
 }
 
 + (id)_bundle
@@ -106,7 +106,7 @@ void __68__CalCalendarConstraints_backwardsCompatibleConstraintsPathForName___bl
   block[1] = 3221225472;
   block[2] = __33__CalCalendarConstraints__bundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundle_onceToken != -1)
   {
     dispatch_once(&_bundle_onceToken, block);

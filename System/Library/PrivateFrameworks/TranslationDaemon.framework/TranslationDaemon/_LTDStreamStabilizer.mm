@@ -4,7 +4,7 @@
 - (_LTDStreamStabilizer)init;
 - (void)init;
 - (void)reset;
-- (void)setStableSegments:(id)a3;
+- (void)setStableSegments:(id)segments;
 @end
 
 @implementation _LTDStreamStabilizer
@@ -21,9 +21,9 @@
     stableSegments = v2->_stableSegments;
     v2->_stableSegments = MEMORY[0x277CBEBF8];
 
-    v5 = [MEMORY[0x277D07200] stablePrefixState];
+    stablePrefixState = [MEMORY[0x277D07200] stablePrefixState];
     stabilizationState = v3->_stabilizationState;
-    v3->_stabilizationState = v5;
+    v3->_stabilizationState = stablePrefixState;
 
     v7 = _LTOSLogStabilization();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -49,7 +49,7 @@
   v6[1] = 3221225472;
   v7 = __42___LTDStreamStabilizer_stabilizationState__block_invoke;
   v8 = &unk_2789B66E0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -75,7 +75,7 @@
   v6[1] = 3221225472;
   v7 = __38___LTDStreamStabilizer_stableSegments__block_invoke;
   v8 = &unk_2789B66E0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -89,11 +89,11 @@
   return v4;
 }
 
-- (void)setStableSegments:(id)a3
+- (void)setStableSegments:(id)segments
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  segmentsCopy = segments;
+  v5 = [segmentsCopy copy];
   v6 = v5;
   v7 = MEMORY[0x277CBEBF8];
   if (v5)
@@ -121,7 +121,7 @@
   v19 = &unk_2789B6708;
   v22 = &v24;
   v23 = &v30;
-  v20 = self;
+  selfCopy = self;
   v9 = v8;
   v21 = v9;
   v10 = &v16;
@@ -176,7 +176,7 @@
   v9[1] = 3221225472;
   v10 = __29___LTDStreamStabilizer_reset__block_invoke;
   v11 = &unk_2789B6730;
-  v12 = self;
+  selfCopy = self;
   v13 = &v28;
   v14 = &v22;
   v15 = &v16;
@@ -211,7 +211,7 @@
 - (void)init
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = *a1;
+  v3 = *self;
   v4 = MEMORY[0x277CBEA60];
   v5 = *a2;
   v6 = a3;

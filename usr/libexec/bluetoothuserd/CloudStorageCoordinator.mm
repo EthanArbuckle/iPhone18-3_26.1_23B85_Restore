@@ -1,10 +1,10 @@
 @interface CloudStorageCoordinator
-- (void)accountDidChange:(id)a3;
+- (void)accountDidChange:(id)change;
 @end
 
 @implementation CloudStorageCoordinator
 
-- (void)accountDidChange:(id)a3
+- (void)accountDidChange:(id)change
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

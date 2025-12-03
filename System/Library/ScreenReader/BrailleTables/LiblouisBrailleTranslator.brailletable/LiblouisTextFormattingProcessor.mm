@@ -1,31 +1,31 @@
 @interface LiblouisTextFormattingProcessor
-- (id)processText:(id)a3 withFormattingRanges:(id)a4;
+- (id)processText:(id)text withFormattingRanges:(id)ranges;
 @end
 
 @implementation LiblouisTextFormattingProcessor
 
-- (id)processText:(id)a3 withFormattingRanges:(id)a4
+- (id)processText:(id)text withFormattingRanges:(id)ranges
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  textCopy = text;
+  rangesCopy = ranges;
+  v7 = rangesCopy;
+  if (!textCopy)
   {
     goto LABEL_51;
   }
 
-  v8 = [v6 boldRanges];
-  if (![v8 count])
+  boldRanges = [rangesCopy boldRanges];
+  if (![boldRanges count])
   {
-    v9 = [v7 italicRanges];
-    if ([v9 count])
+    italicRanges = [v7 italicRanges];
+    if ([italicRanges count])
     {
 
       goto LABEL_5;
     }
 
-    v47 = [v7 underlineRanges];
-    v48 = [v47 count];
+    underlineRanges = [v7 underlineRanges];
+    v48 = [underlineRanges count];
 
     if (v48)
     {
@@ -41,7 +41,7 @@ LABEL_5:
 
 LABEL_6:
   v10 = +[NSMutableData data];
-  if ([v5 length])
+  if ([textCopy length])
   {
     v11 = 0;
     do
@@ -51,7 +51,7 @@ LABEL_6:
       ++v11;
     }
 
-    while (v11 < [v5 length]);
+    while (v11 < [textCopy length]);
   }
 
   v61 = 0u;
@@ -59,8 +59,8 @@ LABEL_6:
   v59 = 0u;
   v60 = 0u;
   v50 = v7;
-  v12 = [v7 boldRanges];
-  v13 = [v12 countByEnumeratingWithState:&v59 objects:v66 count:16];
+  boldRanges2 = [v7 boldRanges];
+  v13 = [boldRanges2 countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v13)
   {
     v14 = v13;
@@ -71,16 +71,16 @@ LABEL_6:
       {
         if (*v60 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(boldRanges2);
         }
 
-        v17 = [*(*(&v59 + 1) + 8 * i) rangeValue];
-        if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+        rangeValue = [*(*(&v59 + 1) + 8 * i) rangeValue];
+        if (rangeValue != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v19 = v17;
+          v19 = rangeValue;
           v20 = v18;
-          v21 = &v17[v18];
-          if (&v17[v18] <= [v5 length])
+          v21 = &rangeValue[v18];
+          if (&rangeValue[v18] <= [textCopy length])
           {
             v63 = 4;
             if (v19 < v21)
@@ -99,7 +99,7 @@ LABEL_6:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v59 objects:v66 count:16];
+      v14 = [boldRanges2 countByEnumeratingWithState:&v59 objects:v66 count:16];
     }
 
     while (v14);
@@ -109,8 +109,8 @@ LABEL_6:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v23 = [v50 italicRanges];
-  v24 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
+  italicRanges2 = [v50 italicRanges];
+  v24 = [italicRanges2 countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v24)
   {
     v25 = v24;
@@ -121,16 +121,16 @@ LABEL_6:
       {
         if (*v56 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(italicRanges2);
         }
 
-        v28 = [*(*(&v55 + 1) + 8 * j) rangeValue];
-        if (v28 != 0x7FFFFFFFFFFFFFFFLL)
+        rangeValue2 = [*(*(&v55 + 1) + 8 * j) rangeValue];
+        if (rangeValue2 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v30 = v28;
+          v30 = rangeValue2;
           v31 = v29;
-          v32 = &v28[v29];
-          if (&v28[v29] <= [v5 length] && v30 < v32)
+          v32 = &rangeValue2[v29];
+          if (&rangeValue2[v29] <= [textCopy length] && v30 < v32)
           {
             v34 = 2 * v30;
             do
@@ -148,7 +148,7 @@ LABEL_6:
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v55 objects:v65 count:16];
+      v25 = [italicRanges2 countByEnumeratingWithState:&v55 objects:v65 count:16];
     }
 
     while (v25);
@@ -158,8 +158,8 @@ LABEL_6:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v35 = [v50 underlineRanges];
-  v36 = [v35 countByEnumeratingWithState:&v51 objects:v64 count:16];
+  underlineRanges2 = [v50 underlineRanges];
+  v36 = [underlineRanges2 countByEnumeratingWithState:&v51 objects:v64 count:16];
   if (v36)
   {
     v37 = v36;
@@ -170,16 +170,16 @@ LABEL_6:
       {
         if (*v52 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(underlineRanges2);
         }
 
-        v40 = [*(*(&v51 + 1) + 8 * k) rangeValue];
-        if (v40 != 0x7FFFFFFFFFFFFFFFLL)
+        rangeValue3 = [*(*(&v51 + 1) + 8 * k) rangeValue];
+        if (rangeValue3 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v42 = v40;
+          v42 = rangeValue3;
           v43 = v41;
-          v44 = &v40[v41];
-          if (&v40[v41] <= [v5 length] && v42 < v44)
+          v44 = &rangeValue3[v41];
+          if (&rangeValue3[v41] <= [textCopy length] && v42 < v44)
           {
             v46 = 2 * v42;
             do
@@ -197,7 +197,7 @@ LABEL_6:
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v51 objects:v64 count:16];
+      v37 = [underlineRanges2 countByEnumeratingWithState:&v51 objects:v64 count:16];
     }
 
     while (v37);

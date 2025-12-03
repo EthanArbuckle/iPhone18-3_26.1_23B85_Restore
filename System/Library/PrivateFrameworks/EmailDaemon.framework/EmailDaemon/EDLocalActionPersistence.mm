@@ -4,37 +4,37 @@
 + (id)actionLabelsTableSchema;
 + (id)actionMessagesTableSchema;
 + (id)localMessageActionsTableSchema;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (BOOL)_addActionMessageForMessage:(id)a3 destinationMessage:(id)a4 actionID:(int64_t)a5 actionPhase:(int64_t)a6 connection:(id)a7;
-- (BOOL)_addActionMessageForSourceRemoteID:(id)a3 actionID:(int64_t)a4 connection:(id)a5;
-- (BOOL)_addFlagChange:(id)a3 actionID:(int64_t)a4 connection:(id)a5;
-- (BOOL)_setLabelsOnAction:(int64_t)a3 labels:(id)a4 add:(BOOL)a5 connection:(id)a6;
-- (BOOL)mailboxURLIsInRemoteAccount:(id)a3;
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4;
-- (BOOL)persistFlagChangeAction:(id)a3;
-- (BOOL)persistFlagChangeUndownloadedAction:(id)a3;
-- (BOOL)persistLabelChangeAction:(id)a3;
-- (BOOL)persistTransferAction:(id)a3;
-- (BOOL)persistTransferUndownloadedAction:(id)a3;
-- (BOOL)updateTransferAction:(id)a3 withResults:(id)a4;
-- (BOOL)updateTransferUndownloadedMessageAction:(id)a3 withResults:(id)a4;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (BOOL)_addActionMessageForMessage:(id)message destinationMessage:(id)destinationMessage actionID:(int64_t)d actionPhase:(int64_t)phase connection:(id)connection;
+- (BOOL)_addActionMessageForSourceRemoteID:(id)d actionID:(int64_t)iD connection:(id)connection;
+- (BOOL)_addFlagChange:(id)change actionID:(int64_t)d connection:(id)connection;
+- (BOOL)_setLabelsOnAction:(int64_t)action labels:(id)labels add:(BOOL)add connection:(id)connection;
+- (BOOL)mailboxURLIsInRemoteAccount:(id)account;
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL;
+- (BOOL)persistFlagChangeAction:(id)action;
+- (BOOL)persistFlagChangeUndownloadedAction:(id)action;
+- (BOOL)persistLabelChangeAction:(id)action;
+- (BOOL)persistTransferAction:(id)action;
+- (BOOL)persistTransferUndownloadedAction:(id)action;
+- (BOOL)updateTransferAction:(id)action withResults:(id)results;
+- (BOOL)updateTransferUndownloadedMessageAction:(id)action withResults:(id)results;
 - (ECLocalMessageActionID)latestActionID;
-- (EDLocalActionPersistence)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4;
-- (id)_flagChangeActionForRow:(id)a3 connection:(id)a4;
-- (id)_flagChangeAllActionForRow:(id)a3 connection:(id)a4;
-- (id)_flagChangeForAction:(int64_t)a3 connection:(id)a4;
-- (id)_labelChangeActionForRow:(id)a3 connection:(id)a4;
-- (id)_sourceRemoteIDListForCopyItems:(id)a3;
-- (id)_transferActionForRow:(id)a3 connection:(id)a4 failedMessages:(id)a5;
-- (id)_transferUndownloadedActionForRow:(id)a3 connection:(id)a4;
-- (id)_whereClauseToFindCopyItems:(id)a3;
-- (id)messageActionsForAccountURL:(id)a3 previousActionID:(int64_t)a4;
-- (void)_deleteCopyItems:(id)a3 actionID:(int64_t)a4 connection:(id)a5;
-- (void)_findMessagesForAction:(int64_t)a3 remoteIDs:(id)a4 messages:(id)a5 connection:(id)a6;
-- (void)_updateCopyItems:(id)a3 toPhase:(int64_t)a4 actionID:(int64_t)a5 connection:(id)a6;
-- (void)removeMessageAction:(int64_t)a3;
-- (void)removeMessageActions:(id)a3;
-- (void)updateFlagChangeAction:(id)a3 withRemainingUIDs:(id)a4;
+- (EDLocalActionPersistence)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence;
+- (id)_flagChangeActionForRow:(id)row connection:(id)connection;
+- (id)_flagChangeAllActionForRow:(id)row connection:(id)connection;
+- (id)_flagChangeForAction:(int64_t)action connection:(id)connection;
+- (id)_labelChangeActionForRow:(id)row connection:(id)connection;
+- (id)_sourceRemoteIDListForCopyItems:(id)items;
+- (id)_transferActionForRow:(id)row connection:(id)connection failedMessages:(id)messages;
+- (id)_transferUndownloadedActionForRow:(id)row connection:(id)connection;
+- (id)_whereClauseToFindCopyItems:(id)items;
+- (id)messageActionsForAccountURL:(id)l previousActionID:(int64_t)d;
+- (void)_deleteCopyItems:(id)items actionID:(int64_t)d connection:(id)connection;
+- (void)_findMessagesForAction:(int64_t)action remoteIDs:(id)ds messages:(id)messages connection:(id)connection;
+- (void)_updateCopyItems:(id)items toPhase:(int64_t)phase actionID:(int64_t)d connection:(id)connection;
+- (void)removeMessageAction:(int64_t)action;
+- (void)removeMessageActions:(id)actions;
+- (void)updateFlagChangeAction:(id)action withRemainingUIDs:(id)ds;
 @end
 
 @implementation EDLocalActionPersistence
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __31__EDLocalActionPersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_49 != -1)
   {
     dispatch_once(&log_onceToken_49, block);
@@ -64,55 +64,55 @@ void __31__EDLocalActionPersistence_log__block_invoke(uint64_t a1)
   log_log_49 = v1;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v38[6] = *MEMORY[0x1E69E9840];
-  v5 = [a1 localMessageActionsTableSchema];
-  v34 = [a1 actionMessagesTableSchema];
-  v36 = [a1 actionLabelsTableSchema];
-  v33 = [a1 actionFlagsTableSchema];
-  v6 = [v34 columnForName:@"action"];
-  [v6 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
+  localMessageActionsTableSchema = [self localMessageActionsTableSchema];
+  actionMessagesTableSchema = [self actionMessagesTableSchema];
+  actionLabelsTableSchema = [self actionLabelsTableSchema];
+  actionFlagsTableSchema = [self actionFlagsTableSchema];
+  v6 = [actionMessagesTableSchema columnForName:@"action"];
+  [v6 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
-  v7 = [v36 columnForName:@"action"];
-  [v7 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
+  v7 = [actionLabelsTableSchema columnForName:@"action"];
+  [v7 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
-  v8 = [v33 columnForName:@"action"];
-  [v8 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
+  v8 = [actionFlagsTableSchema columnForName:@"action"];
+  [v8 setAsForeignKeyForTable:localMessageActionsTableSchema onDelete:2 onUpdate:0];
 
   v35 = +[EDMessagePersistence messagesTableName];
   v9 = +[EDPersistenceDatabaseSchema mailboxesTableName];
   v10 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v29 = [v5 columnForName:@"mailbox"];
+  v29 = [localMessageActionsTableSchema columnForName:@"mailbox"];
   v30 = [EDPersistenceForeignKeyPlaceholder initWithColumn:v10 tableName:"initWithColumn:tableName:onDelete:onUpdate:" onDelete:? onUpdate:?];
   v38[0] = v30;
   v11 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v27 = [v5 columnForName:@"source_mailbox"];
+  v27 = [localMessageActionsTableSchema columnForName:@"source_mailbox"];
   v28 = [EDPersistenceForeignKeyPlaceholder initWithColumn:v11 tableName:"initWithColumn:tableName:onDelete:onUpdate:" onDelete:? onUpdate:?];
   v38[1] = v28;
   v12 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v26 = [v5 columnForName:@"destination_mailbox"];
+  v26 = [localMessageActionsTableSchema columnForName:@"destination_mailbox"];
   v13 = [EDPersistenceForeignKeyPlaceholder initWithColumn:v12 tableName:"initWithColumn:tableName:onDelete:onUpdate:" onDelete:? onUpdate:?];
   v38[2] = v13;
   v14 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v15 = [v34 columnForName:@"message"];
+  v15 = [actionMessagesTableSchema columnForName:@"message"];
   v16 = [(EDPersistenceForeignKeyPlaceholder *)v14 initWithColumn:v15 tableName:v35 onDelete:3 onUpdate:0];
   v38[3] = v16;
   v17 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v18 = [v34 columnForName:@"destination_message"];
+  v18 = [actionMessagesTableSchema columnForName:@"destination_message"];
   v19 = [(EDPersistenceForeignKeyPlaceholder *)v17 initWithColumn:v18 tableName:v35 onDelete:2 onUpdate:0];
   v38[4] = v19;
   v20 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v21 = [v36 columnForName:@"label"];
+  v21 = [actionLabelsTableSchema columnForName:@"label"];
   v22 = [(EDPersistenceForeignKeyPlaceholder *)v20 initWithColumn:v21 tableName:v9 onDelete:2 onUpdate:0];
   v38[5] = v22;
-  *a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:6];
+  *resolve = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:6];
 
-  *a4 = MEMORY[0x1E695E0F0];
-  v37[0] = v5;
-  v37[1] = v34;
-  v37[2] = v36;
-  v37[3] = v33;
+  *toResolve = MEMORY[0x1E695E0F0];
+  v37[0] = localMessageActionsTableSchema;
+  v37[1] = actionMessagesTableSchema;
+  v37[2] = actionLabelsTableSchema;
+  v37[3] = actionFlagsTableSchema;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
 
   v24 = *MEMORY[0x1E69E9840];
@@ -230,47 +230,47 @@ void __31__EDLocalActionPersistence_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (EDLocalActionPersistence)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4
+- (EDLocalActionPersistence)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  persistenceCopy = persistence;
   v12.receiver = self;
   v12.super_class = EDLocalActionPersistence;
   v9 = [(EDLocalActionPersistence *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    objc_storeStrong(&v10->_gmailLabelPersistence, a4);
+    objc_storeStrong(&v9->_database, database);
+    objc_storeStrong(&v10->_gmailLabelPersistence, persistence);
   }
 
   return v10;
 }
 
-- (id)messageActionsForAccountURL:(id)a3 previousActionID:(int64_t)a4
+- (id)messageActionsForAccountURL:(id)l previousActionID:(int64_t)d
 {
   v43 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  lCopy = l;
   v24 = objc_opt_new();
   v23 = objc_opt_new();
   v22 = objc_opt_new();
-  v6 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence messageActionsForAccountURL:previousActionID:]"];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActionID___block_invoke;
   v28[3] = &unk_1E8252EC8;
-  v8 = v25;
-  v34 = a4;
+  v8 = lCopy;
+  dCopy = d;
   v29 = v8;
-  v30 = self;
+  selfCopy = self;
   v9 = v22;
   v31 = v9;
   v10 = v24;
   v32 = v10;
   v11 = v23;
   v33 = v11;
-  [v6 __performReadWithCaller:v7 usingBlock:v28];
+  [database __performReadWithCaller:v7 usingBlock:v28];
 
   v12 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -279,7 +279,7 @@ void __31__EDLocalActionPersistence_log__block_invoke(uint64_t a1)
     v14 = [v9 count];
     v15 = [v11 count];
     *buf = 134218752;
-    v36 = a4;
+    dCopy2 = d;
     v37 = 2048;
     v38 = v13;
     v39 = 2048;
@@ -291,14 +291,14 @@ void __31__EDLocalActionPersistence_log__block_invoke(uint64_t a1)
 
   if ([v11 count])
   {
-    v16 = [(EDLocalActionPersistence *)self database];
+    database2 = [(EDLocalActionPersistence *)self database];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence messageActionsForAccountURL:previousActionID:]"];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActionID___block_invoke_73;
     v26[3] = &unk_1E8251CB8;
     v27 = v11;
-    [v16 __performWriteWithCaller:v17 usingBlock:v26];
+    [database2 __performWriteWithCaller:v17 usingBlock:v26];
   }
 
   if ([v9 count])
@@ -428,44 +428,44 @@ uint64_t __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActi
   return 1;
 }
 
-- (id)_transferActionForRow:(id)a3 connection:(id)a4 failedMessages:(id)a5
+- (id)_transferActionForRow:(id)row connection:(id)connection failedMessages:(id)messages
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v42 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"ROWID"];
-  v44 = [v7 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  v7 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v7 databaseIDValue];
 
-  v8 = [v6 objectForKeyedSubscript:@"action_type"];
-  v39 = [v8 integerValue];
+  v8 = [rowCopy objectForKeyedSubscript:@"action_type"];
+  integerValue = [v8 integerValue];
 
   v9 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v63 = v44;
+    v63 = databaseIDValue;
     v64 = 2048;
-    v65 = v39;
+    v65 = integerValue;
     _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "_transferActionForRow: Processing action %lld type %ld", buf, 0x16u);
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"mailbox"];
-  v36 = [v10 databaseIDValue];
+  v10 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  databaseIDValue2 = [v10 databaseIDValue];
 
-  v11 = [v6 objectForKeyedSubscript:@"source_mailbox"];
-  v35 = [v11 databaseIDValue];
+  v11 = [rowCopy objectForKeyedSubscript:@"source_mailbox"];
+  databaseIDValue3 = [v11 databaseIDValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"destination_mailbox"];
-  v40 = [v12 databaseIDValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"destination_mailbox"];
+  databaseIDValue4 = [v12 databaseIDValue];
 
-  v13 = [v6 objectForKeyedSubscript:@"user_initiated"];
-  v34 = [v13 BOOLValue];
+  v13 = [rowCopy objectForKeyedSubscript:@"user_initiated"];
+  bOOLValue = [v13 BOOLValue];
 
   v33 = objc_opt_new();
   v32 = objc_opt_new();
   v38 = objc_opt_new();
-  v41 = [v42 preparedStatementForQueryString:{@"SELECT action_phase, remote_id, message, destination_message FROM action_messages WHERE action = ?"}];
-  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:v44];
+  v41 = [connectionCopy preparedStatementForQueryString:{@"SELECT action_phase, remote_id, message, destination_message FROM action_messages WHERE action = ?"}];
+  v14 = [MEMORY[0x1E696AD98] numberWithLongLong:databaseIDValue];
   v72[0] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:1];
   v57[0] = MEMORY[0x1E69E9820];
@@ -473,7 +473,7 @@ uint64_t __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActi
   v57[2] = __76__EDLocalActionPersistence__transferActionForRow_connection_failedMessages___block_invoke;
   v57[3] = &unk_1E8252F18;
   v57[4] = self;
-  v61 = v40;
+  v61 = databaseIDValue4;
   v16 = v33;
   v58 = v16;
   v17 = v32;
@@ -492,7 +492,7 @@ uint64_t __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActi
     v24 = [v17 count];
     v25 = [v18 count];
     *buf = 134219008;
-    v63 = v44;
+    v63 = databaseIDValue;
     v64 = 2048;
     v65 = v20 + v19 + v21;
     v66 = 2048;
@@ -506,20 +506,20 @@ uint64_t __73__EDLocalActionPersistence_messageActionsForAccountURL_previousActi
 
   if ([v16 count] || objc_msgSend(v17, "count") || objc_msgSend(v18, "count"))
   {
-    v26 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:v36];
+    v26 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:databaseIDValue2];
     v27 = objc_alloc(MEMORY[0x1E699B350]);
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __76__EDLocalActionPersistence__transferActionForRow_connection_failedMessages___block_invoke_90;
     v45[3] = &unk_1E8252F40;
-    v51 = v44;
+    v51 = databaseIDValue;
     v28 = v26;
-    v56 = v34;
+    v56 = bOOLValue;
     v46 = v28;
-    v47 = self;
-    v52 = v35;
-    v53 = v40;
-    v54 = v39;
+    selfCopy = self;
+    v52 = databaseIDValue3;
+    v53 = databaseIDValue4;
+    v54 = integerValue;
     v55 = a2;
     v48 = v16;
     v49 = v17;
@@ -675,37 +675,37 @@ void __76__EDLocalActionPersistence__transferActionForRow_connection_failedMessa
   [v8 setItemsToDelete:*(a1 + 64)];
 }
 
-- (id)_transferUndownloadedActionForRow:(id)a3 connection:(id)a4
+- (id)_transferUndownloadedActionForRow:(id)row connection:(id)connection
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"ROWID"];
-  v10 = [v9 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  v9 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v9 databaseIDValue];
 
-  v11 = [v7 objectForKeyedSubscript:@"action_type"];
-  v28 = [v11 integerValue];
+  v11 = [rowCopy objectForKeyedSubscript:@"action_type"];
+  integerValue = [v11 integerValue];
 
-  v12 = [v7 objectForKeyedSubscript:@"mailbox"];
-  v13 = [v12 databaseIDValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  databaseIDValue2 = [v12 databaseIDValue];
 
-  v14 = [v7 objectForKeyedSubscript:@"source_mailbox"];
-  v27 = [v14 databaseIDValue];
+  v14 = [rowCopy objectForKeyedSubscript:@"source_mailbox"];
+  databaseIDValue3 = [v14 databaseIDValue];
 
-  v15 = [v7 objectForKeyedSubscript:@"destination_mailbox"];
-  v16 = [v15 databaseIDValue];
+  v15 = [rowCopy objectForKeyedSubscript:@"destination_mailbox"];
+  databaseIDValue4 = [v15 databaseIDValue];
 
-  v17 = [v7 objectForKeyedSubscript:@"user_initiated"];
-  v18 = [v17 BOOLValue];
+  v17 = [rowCopy objectForKeyedSubscript:@"user_initiated"];
+  bOOLValue = [v17 BOOLValue];
 
   v19 = objc_opt_new();
-  [(EDLocalActionPersistence *)self _findMessagesForAction:v10 remoteIDs:v19 messages:0 connection:v8];
+  [(EDLocalActionPersistence *)self _findMessagesForAction:databaseIDValue remoteIDs:v19 messages:0 connection:connectionCopy];
   if ([v19 count] == 1)
   {
-    v26 = v8;
-    v20 = [v19 anyObject];
-    v21 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:v13];
-    if (([v20 isEqualToString:@"1"]& 1) != 0)
+    v26 = connectionCopy;
+    anyObject = [v19 anyObject];
+    v21 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:databaseIDValue2];
+    if (([anyObject isEqualToString:@"1"]& 1) != 0)
     {
       v22 = 0;
     }
@@ -717,27 +717,27 @@ void __76__EDLocalActionPersistence__transferActionForRow_connection_failedMessa
       v29[1] = 3221225472;
       v29[2] = __73__EDLocalActionPersistence__transferUndownloadedActionForRow_connection___block_invoke;
       v29[3] = &unk_1E8252F68;
-      v33 = v10;
-      v38 = v18;
+      v33 = databaseIDValue;
+      v38 = bOOLValue;
       v30 = v21;
-      v31 = self;
-      v34 = v27;
-      v35 = v16;
-      v36 = v28;
+      selfCopy = self;
+      v34 = databaseIDValue3;
+      v35 = databaseIDValue4;
+      v36 = integerValue;
       v37 = a2;
-      v32 = v20;
+      v32 = anyObject;
       v22 = [v23 initWithBuilder:v29];
 
-      v8 = v26;
+      connectionCopy = v26;
     }
   }
 
   else
   {
-    v20 = +[EDLocalActionPersistence log];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    anyObject = +[EDLocalActionPersistence log];
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_FAULT))
     {
-      -[EDLocalActionPersistence _transferUndownloadedActionForRow:connection:].cold.1(buf, [v19 count], v20);
+      -[EDLocalActionPersistence _transferUndownloadedActionForRow:connection:].cold.1(buf, [v19 count], anyObject);
     }
 
     v22 = 0;
@@ -775,35 +775,35 @@ void __73__EDLocalActionPersistence__transferUndownloadedActionForRow_connection
   [v8 setOldestPersistedRemoteID:*(a1 + 48)];
 }
 
-- (id)_flagChangeActionForRow:(id)a3 connection:(id)a4
+- (id)_flagChangeActionForRow:(id)row connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ROWID"];
-  v9 = [v8 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  v8 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v8 databaseIDValue];
 
-  v10 = [v6 objectForKeyedSubscript:@"mailbox"];
-  v11 = [v10 databaseIDValue];
+  v10 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  databaseIDValue2 = [v10 databaseIDValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"user_initiated"];
-  v13 = [v12 BOOLValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"user_initiated"];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = objc_opt_new();
   v15 = objc_opt_new();
-  [(EDLocalActionPersistence *)self _findMessagesForAction:v9 remoteIDs:v14 messages:v15 connection:v7];
-  v16 = [(EDLocalActionPersistence *)self _flagChangeForAction:v9 connection:v7];
+  [(EDLocalActionPersistence *)self _findMessagesForAction:databaseIDValue remoteIDs:v14 messages:v15 connection:connectionCopy];
+  v16 = [(EDLocalActionPersistence *)self _flagChangeForAction:databaseIDValue connection:connectionCopy];
   if ([v14 count] || objc_msgSend(v15, "count"))
   {
-    v17 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:v11];
+    v17 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:databaseIDValue2];
     v18 = objc_alloc(MEMORY[0x1E699B270]);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __63__EDLocalActionPersistence__flagChangeActionForRow_connection___block_invoke;
     v22[3] = &unk_1E8252F90;
-    v27 = v9;
+    v27 = databaseIDValue;
     v19 = v17;
     v23 = v19;
-    v28 = v13;
+    v28 = bOOLValue;
     v24 = v14;
     v25 = v15;
     v26 = v16;
@@ -831,29 +831,29 @@ void __63__EDLocalActionPersistence__flagChangeActionForRow_connection___block_i
   [v4 setFlagChange:*(a1 + 56)];
 }
 
-- (id)_flagChangeAllActionForRow:(id)a3 connection:(id)a4
+- (id)_flagChangeAllActionForRow:(id)row connection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"ROWID"];
-  v9 = [v8 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  v8 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v8 databaseIDValue];
 
-  v10 = [v6 objectForKeyedSubscript:@"mailbox"];
-  v11 = [v10 databaseIDValue];
+  v10 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  databaseIDValue2 = [v10 databaseIDValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"user_initiated"];
-  v13 = [v12 BOOLValue];
+  v12 = [rowCopy objectForKeyedSubscript:@"user_initiated"];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = objc_opt_new();
   v15 = objc_opt_new();
-  [(EDLocalActionPersistence *)self _findMessagesForAction:v9 remoteIDs:v14 messages:v15 connection:v7];
+  [(EDLocalActionPersistence *)self _findMessagesForAction:databaseIDValue remoteIDs:v14 messages:v15 connection:connectionCopy];
   if ([v14 count] == 1)
   {
-    v16 = [v14 anyObject];
-    v17 = [(EDLocalActionPersistence *)self _flagChangeForAction:v9 connection:v7];
-    v18 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:v11];
-    if (([v16 isEqualToString:@"1"]& 1) != 0)
+    anyObject = [v14 anyObject];
+    v17 = [(EDLocalActionPersistence *)self _flagChangeForAction:databaseIDValue connection:connectionCopy];
+    v18 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:databaseIDValue2];
+    if (([anyObject isEqualToString:@"1"]& 1) != 0)
     {
       v19 = 0;
     }
@@ -865,10 +865,10 @@ void __63__EDLocalActionPersistence__flagChangeActionForRow_connection___block_i
       v23[1] = 3221225472;
       v23[2] = __66__EDLocalActionPersistence__flagChangeAllActionForRow_connection___block_invoke;
       v23[3] = &unk_1E8252FB8;
-      v27 = v9;
+      v27 = databaseIDValue;
       v24 = v18;
-      v28 = v13;
-      v25 = v16;
+      v28 = bOOLValue;
+      v25 = anyObject;
       v26 = v17;
       v19 = [v20 initWithBuilder:v23];
     }
@@ -876,10 +876,10 @@ void __63__EDLocalActionPersistence__flagChangeActionForRow_connection___block_i
 
   else
   {
-    v16 = +[EDLocalActionPersistence log];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    anyObject = +[EDLocalActionPersistence log];
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_FAULT))
     {
-      -[EDLocalActionPersistence _flagChangeAllActionForRow:connection:].cold.1(buf, [v14 count], v16);
+      -[EDLocalActionPersistence _flagChangeAllActionForRow:connection:].cold.1(buf, [v14 count], anyObject);
     }
 
     v19 = 0;
@@ -902,36 +902,36 @@ void __66__EDLocalActionPersistence__flagChangeAllActionForRow_connection___bloc
   [v4 setFlagChange:*(a1 + 48)];
 }
 
-- (id)_labelChangeActionForRow:(id)a3 connection:(id)a4
+- (id)_labelChangeActionForRow:(id)row connection:(id)connection
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
-  v31 = v6;
-  v7 = [v6 objectForKeyedSubscript:@"ROWID"];
-  v8 = [v7 databaseIDValue];
+  rowCopy = row;
+  connectionCopy = connection;
+  v31 = rowCopy;
+  v7 = [rowCopy objectForKeyedSubscript:@"ROWID"];
+  databaseIDValue = [v7 databaseIDValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"mailbox"];
-  v10 = [v9 databaseIDValue];
+  v9 = [rowCopy objectForKeyedSubscript:@"mailbox"];
+  databaseIDValue2 = [v9 databaseIDValue];
 
-  v11 = [v6 objectForKeyedSubscript:@"user_initiated"];
-  v12 = [v11 BOOLValue];
+  v11 = [rowCopy objectForKeyedSubscript:@"user_initiated"];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = objc_opt_new();
   v29 = objc_opt_new();
-  [EDLocalActionPersistence _findMessagesForAction:"_findMessagesForAction:remoteIDs:messages:connection:" remoteIDs:v8 messages:v13 connection:?];
+  [EDLocalActionPersistence _findMessagesForAction:"_findMessagesForAction:remoteIDs:messages:connection:" remoteIDs:databaseIDValue messages:v13 connection:?];
   v14 = objc_opt_new();
   v27 = objc_opt_new();
-  v28 = [v30 preparedStatementForQueryString:{@"SELECT label, do_add FROM action_labels WHERE action = ?"}];
-  v15 = [(EDLocalActionPersistence *)self gmailLabelPersistence];
-  v16 = [MEMORY[0x1E696AD98] numberWithLongLong:{v8, v15, v14}];
+  v28 = [connectionCopy preparedStatementForQueryString:{@"SELECT label, do_add FROM action_labels WHERE action = ?"}];
+  gmailLabelPersistence = [(EDLocalActionPersistence *)self gmailLabelPersistence];
+  v16 = [MEMORY[0x1E696AD98] numberWithLongLong:{databaseIDValue, gmailLabelPersistence, v14}];
   v44[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:1];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __64__EDLocalActionPersistence__labelChangeActionForRow_connection___block_invoke;
   v40[3] = &unk_1E8252FE0;
-  v18 = v15;
+  v18 = gmailLabelPersistence;
   v41 = v18;
   v19 = v14;
   v42 = v19;
@@ -941,16 +941,16 @@ void __66__EDLocalActionPersistence__flagChangeAllActionForRow_connection___bloc
 
   if (([v13 count] || objc_msgSend(v29, "count")) && (objc_msgSend(v19, "count") || objc_msgSend(v20, "count")))
   {
-    v21 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:v10];
+    v21 = [(EDLocalActionPersistence *)self mailboxURLForDatabaseID:databaseIDValue2];
     v22 = objc_alloc(MEMORY[0x1E699B2C0]);
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __64__EDLocalActionPersistence__labelChangeActionForRow_connection___block_invoke_2;
     v32[3] = &unk_1E8253008;
-    v38 = v8;
+    v38 = databaseIDValue;
     v23 = v21;
     v33 = v23;
-    v39 = v12;
+    v39 = bOOLValue;
     v34 = v13;
     v35 = v29;
     v36 = v19;
@@ -1005,13 +1005,13 @@ void __64__EDLocalActionPersistence__labelChangeActionForRow_connection___block_
   [v4 setLabelsToRemove:*(a1 + 64)];
 }
 
-- (void)_findMessagesForAction:(int64_t)a3 remoteIDs:(id)a4 messages:(id)a5 connection:(id)a6
+- (void)_findMessagesForAction:(int64_t)action remoteIDs:(id)ds messages:(id)messages connection:(id)connection
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [a6 preparedStatementForQueryString:{@"SELECT remote_id, message FROM action_messages WHERE action = ?"}];
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  dsCopy = ds;
+  messagesCopy = messages;
+  v12 = [connection preparedStatementForQueryString:{@"SELECT remote_id, message FROM action_messages WHERE action = ?"}];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:action];
   v21[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v18[0] = MEMORY[0x1E69E9820];
@@ -1019,9 +1019,9 @@ void __64__EDLocalActionPersistence__labelChangeActionForRow_connection___block_
   v18[2] = __81__EDLocalActionPersistence__findMessagesForAction_remoteIDs_messages_connection___block_invoke;
   v18[3] = &unk_1E8252FE0;
   v18[4] = self;
-  v15 = v11;
+  v15 = messagesCopy;
   v19 = v15;
-  v16 = v10;
+  v16 = dsCopy;
   v20 = v16;
   [v12 executeWithIndexedBindings:v14 usingBlock:v18 error:0];
 
@@ -1059,17 +1059,17 @@ void __81__EDLocalActionPersistence__findMessagesForAction_remoteIDs_messages_co
 LABEL_6:
 }
 
-- (id)_flagChangeForAction:(int64_t)a3 connection:(id)a4
+- (id)_flagChangeForAction:(int64_t)action connection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc(MEMORY[0x1E699B300]);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__EDLocalActionPersistence__flagChangeForAction_connection___block_invoke;
   v10[3] = &unk_1E8253030;
-  v7 = v5;
+  v7 = connectionCopy;
   v11 = v7;
-  v12 = a3;
+  actionCopy = action;
   v8 = [v6 initWithBuilder:v10];
 
   return v8;
@@ -1200,19 +1200,19 @@ void __60__EDLocalActionPersistence__flagChangeForAction_connection___block_invo
 LABEL_23:
 }
 
-- (BOOL)persistFlagChangeAction:(id)a3
+- (BOOL)persistFlagChangeAction:(id)action
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mailboxURL];
-  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:v5];
+  actionCopy = action;
+  mailboxURL = [actionCopy mailboxURL];
+  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:mailboxURL];
 
   v7 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 messages];
+    messages = [actionCopy messages];
     *buf = 134218240;
-    *&buf[4] = [v8 count];
+    *&buf[4] = [messages count];
     *&buf[12] = 2050;
     *&buf[14] = v6;
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Creating flag change action for %lu messages in mailbox %{public}llu", buf, 0x16u);
@@ -1222,7 +1222,7 @@ LABEL_23:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v20 = 1;
-  v9 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence persistFlagChangeAction:]"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1231,9 +1231,9 @@ LABEL_23:
   v17 = buf;
   v18 = v6;
   v15[4] = self;
-  v11 = v4;
+  v11 = actionCopy;
   v16 = v11;
-  [v9 __performWriteWithCaller:v10 usingBlock:v15];
+  [database __performWriteWithCaller:v10 usingBlock:v15];
 
   v12 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -1327,12 +1327,12 @@ LABEL_17:
   return v20 & 1;
 }
 
-- (BOOL)persistFlagChangeUndownloadedAction:(id)a3
+- (BOOL)persistFlagChangeUndownloadedAction:(id)action
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mailboxURL];
-  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:v5];
+  actionCopy = action;
+  mailboxURL = [actionCopy mailboxURL];
+  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:mailboxURL];
 
   v7 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1346,7 +1346,7 @@ LABEL_17:
   *(&buf + 1) = &buf;
   v19 = 0x2020000000;
   v20 = 1;
-  v8 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence persistFlagChangeUndownloadedAction:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -1355,9 +1355,9 @@ LABEL_17:
   p_buf = &buf;
   v17 = v6;
   v14[4] = self;
-  v10 = v4;
+  v10 = actionCopy;
   v15 = v10;
-  [v8 __performWriteWithCaller:v9 usingBlock:v14];
+  [database __performWriteWithCaller:v9 usingBlock:v14];
 
   v11 = *(*(&buf + 1) + 24);
   _Block_object_dispose(&buf, 8);
@@ -1421,11 +1421,11 @@ LABEL_11:
   return v6 & 1;
 }
 
-- (BOOL)_addFlagChange:(id)a3 actionID:(int64_t)a4 connection:(id)a5
+- (BOOL)_addFlagChange:(id)change actionID:(int64_t)d connection:(id)connection
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 preparedStatementForQueryString:{@"INSERT INTO action_flags (action, flag_type, flag_value) VALUES (?, ?, ?)"}];
+  changeCopy = change;
+  connectionCopy = connection;
+  v9 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO action_flags (action, flag_type, flag_value) VALUES (?, ?, ?)"}];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1443,19 +1443,19 @@ LABEL_11:
   v19 = &v28;
   v10 = v9;
   v20 = &v22;
-  v21 = a4;
+  dCopy = d;
   v18 = v10;
   v11 = _Block_copy(&v14);
-  v11[2](v11, [v7 readChanged], 1, objc_msgSend(v7, "read"));
-  v11[2](v11, [v7 deletedChanged], 2, objc_msgSend(v7, "deleted"));
-  v11[2](v11, [v7 repliedChanged], 3, objc_msgSend(v7, "replied"));
-  v11[2](v11, [v7 flaggedChanged], 4, objc_msgSend(v7, "flagged"));
-  v11[2](v11, [v7 draftChanged], 5, objc_msgSend(v7, "draft"));
-  v11[2](v11, [v7 forwardedChanged], 6, objc_msgSend(v7, "forwarded"));
-  v11[2](v11, [v7 redirectedChanged], 7, objc_msgSend(v7, "redirected"));
-  v11[2](v11, [v7 junkLevelSetByUserChanged], 8, objc_msgSend(v7, "junkLevelSetByUser"));
-  v11[2](v11, [v7 junkLevelChanged], 9, objc_msgSend(v7, "junkLevel"));
-  v11[2](v11, [v7 flagColorChanged], 10, objc_msgSend(v7, "flagColor"));
+  v11[2](v11, [changeCopy readChanged], 1, objc_msgSend(changeCopy, "read"));
+  v11[2](v11, [changeCopy deletedChanged], 2, objc_msgSend(changeCopy, "deleted"));
+  v11[2](v11, [changeCopy repliedChanged], 3, objc_msgSend(changeCopy, "replied"));
+  v11[2](v11, [changeCopy flaggedChanged], 4, objc_msgSend(changeCopy, "flagged"));
+  v11[2](v11, [changeCopy draftChanged], 5, objc_msgSend(changeCopy, "draft"));
+  v11[2](v11, [changeCopy forwardedChanged], 6, objc_msgSend(changeCopy, "forwarded"));
+  v11[2](v11, [changeCopy redirectedChanged], 7, objc_msgSend(changeCopy, "redirected"));
+  v11[2](v11, [changeCopy junkLevelSetByUserChanged], 8, objc_msgSend(changeCopy, "junkLevelSetByUser"));
+  v11[2](v11, [changeCopy junkLevelChanged], 9, objc_msgSend(changeCopy, "junkLevel"));
+  v11[2](v11, [changeCopy flagColorChanged], 10, objc_msgSend(changeCopy, "flagColor"));
   if (v29[3])
   {
     v12 = 1;
@@ -1463,7 +1463,7 @@ LABEL_11:
 
   else
   {
-    [v8 handleError:v23[5] message:@"Adding flag change records"];
+    [connectionCopy handleError:v23[5] message:@"Adding flag change records"];
     v12 = *(v29 + 24);
   }
 
@@ -1496,15 +1496,15 @@ void __63__EDLocalActionPersistence__addFlagChange_actionID_connection___block_i
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)persistTransferAction:(id)a3
+- (BOOL)persistTransferAction:(id)action
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v54 = v4;
+    v54 = actionCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Persisting the transferAction: %@", buf, 0xCu);
   }
 
@@ -1516,77 +1516,77 @@ void __63__EDLocalActionPersistence__addFlagChange_actionID_connection___block_i
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = *MEMORY[0x1E699A728];
-  v6 = [(__CFString *)v4 sourceMailboxURL];
-  if (v6)
+  sourceMailboxURL = [(__CFString *)actionCopy sourceMailboxURL];
+  if (sourceMailboxURL)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(__CFString *)v4 sourceMailboxURL];
-    v9 = [v7 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", v8)}];
+    sourceMailboxURL2 = [(__CFString *)actionCopy sourceMailboxURL];
+    null = [v7 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", sourceMailboxURL2)}];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v10 = [(__CFString *)v4 destinationMailboxURL];
-  if (v10)
+  destinationMailboxURL = [(__CFString *)actionCopy destinationMailboxURL];
+  if (destinationMailboxURL)
   {
     v11 = MEMORY[0x1E696AD98];
-    v12 = [(__CFString *)v4 destinationMailboxURL];
-    v37 = [v11 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", v12)}];
+    destinationMailboxURL2 = [(__CFString *)actionCopy destinationMailboxURL];
+    null2 = [v11 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", destinationMailboxURL2)}];
   }
 
   else
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence persistTransferAction:]"];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __50__EDLocalActionPersistence_persistTransferAction___block_invoke;
   v38[3] = &unk_1E82530A8;
-  v15 = v4;
+  v15 = actionCopy;
   v39 = v15;
-  v40 = self;
+  selfCopy = self;
   v43 = &v49;
-  v16 = v9;
+  v16 = null;
   v41 = v16;
-  v17 = v37;
+  v17 = null2;
   v42 = v17;
   v44 = &v45;
-  [v13 __performWriteWithCaller:v14 usingBlock:v38];
+  [database __performWriteWithCaller:v14 usingBlock:v38];
 
-  v18 = [(__CFString *)v15 transferType];
-  if (v18 >= 4)
+  transferType = [(__CFString *)v15 transferType];
+  if (transferType >= 4)
   {
     v36 = 0;
   }
 
   else
   {
-    v36 = off_1E8253138[v18];
+    v36 = off_1E8253138[transferType];
   }
 
-  v19 = [(__CFString *)v15 itemsToDownload];
-  v35 = [v19 count];
-  v20 = [(__CFString *)v15 itemsToCopy];
-  v34 = [v20 count];
-  v21 = [(__CFString *)v15 itemsToDelete];
-  v22 = [v21 count];
+  itemsToDownload = [(__CFString *)v15 itemsToDownload];
+  v35 = [itemsToDownload count];
+  itemsToCopy = [(__CFString *)v15 itemsToCopy];
+  v34 = [itemsToCopy count];
+  itemsToDelete = [(__CFString *)v15 itemsToDelete];
+  v22 = [itemsToDelete count];
 
   v23 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v24 = v46[3];
-    v33 = [(__CFString *)v15 itemsToDownload];
-    v25 = [v33 count];
-    v26 = [(__CFString *)v15 itemsToCopy];
-    v27 = [v26 count];
-    v28 = [(__CFString *)v15 itemsToDelete];
-    v29 = [v28 count];
+    itemsToDownload2 = [(__CFString *)v15 itemsToDownload];
+    v25 = [itemsToDownload2 count];
+    itemsToCopy2 = [(__CFString *)v15 itemsToCopy];
+    v27 = [itemsToCopy2 count];
+    itemsToDelete2 = [(__CFString *)v15 itemsToDelete];
+    v29 = [itemsToDelete2 count];
     *buf = 138545154;
     v54 = v36;
     v55 = 2048;
@@ -1776,10 +1776,10 @@ LABEL_31:
   return v42 & 1;
 }
 
-- (BOOL)persistTransferUndownloadedAction:(id)a3
+- (BOOL)persistTransferUndownloadedAction:(id)action
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -1788,12 +1788,12 @@ LABEL_31:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = *MEMORY[0x1E699A728];
-  v5 = [v4 sourceMailboxURL];
-  if (v5)
+  sourceMailboxURL = [actionCopy sourceMailboxURL];
+  if (sourceMailboxURL)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [v4 sourceMailboxURL];
-    v8 = [v6 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", v7)}];
+    sourceMailboxURL2 = [actionCopy sourceMailboxURL];
+    v8 = [v6 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", sourceMailboxURL2)}];
   }
 
   else
@@ -1801,12 +1801,12 @@ LABEL_31:
     v8 = 0;
   }
 
-  v9 = [v4 destinationMailboxURL];
-  if (v9)
+  destinationMailboxURL = [actionCopy destinationMailboxURL];
+  if (destinationMailboxURL)
   {
     v10 = MEMORY[0x1E696AD98];
-    v11 = [v4 destinationMailboxURL];
-    v12 = [v10 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", v11)}];
+    destinationMailboxURL2 = [actionCopy destinationMailboxURL];
+    v12 = [v10 numberWithLongLong:{-[EDLocalActionPersistence mailboxDatabaseIDForURL:](self, "mailboxDatabaseIDForURL:", destinationMailboxURL2)}];
   }
 
   else
@@ -1814,32 +1814,32 @@ LABEL_31:
     v12 = 0;
   }
 
-  v13 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence persistTransferUndownloadedAction:]"];
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __62__EDLocalActionPersistence_persistTransferUndownloadedAction___block_invoke;
   v29 = &unk_1E82530D0;
-  v15 = v4;
+  v15 = actionCopy;
   v30 = v15;
-  v31 = self;
+  selfCopy = self;
   v16 = v8;
   v32 = v16;
   v17 = v12;
   v33 = v17;
   v34 = &v40;
   v35 = &v36;
-  [v13 __performWriteWithCaller:v14 usingBlock:&v26];
+  [database __performWriteWithCaller:v14 usingBlock:&v26];
 
-  v18 = [v15 transferType];
-  if (v18 >= 4)
+  transferType = [v15 transferType];
+  if (transferType >= 4)
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = off_1E8253138[v18];
+    v19 = off_1E8253138[transferType];
   }
 
   v20 = +[EDLocalActionPersistence log];
@@ -1939,19 +1939,19 @@ uint64_t __62__EDLocalActionPersistence_persistTransferUndownloadedAction___bloc
   return v14 & 1;
 }
 
-- (BOOL)persistLabelChangeAction:(id)a3
+- (BOOL)persistLabelChangeAction:(id)action
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mailboxURL];
-  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:v5];
+  actionCopy = action;
+  mailboxURL = [actionCopy mailboxURL];
+  v6 = [(EDLocalActionPersistence *)self mailboxDatabaseIDForURL:mailboxURL];
 
   v7 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 messages];
+    messages = [actionCopy messages];
     *buf = 134218240;
-    *&buf[4] = [v8 count];
+    *&buf[4] = [messages count];
     *&buf[12] = 2050;
     *&buf[14] = v6;
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "Creating label change action for %lu messages in mailbox %{public}llu", buf, 0x16u);
@@ -1961,7 +1961,7 @@ uint64_t __62__EDLocalActionPersistence_persistTransferUndownloadedAction___bloc
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v21 = 1;
-  v9 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence persistLabelChangeAction:]"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1969,10 +1969,10 @@ uint64_t __62__EDLocalActionPersistence_persistTransferUndownloadedAction___bloc
   v15[3] = &unk_1E8253058;
   v18 = buf;
   v19 = v6;
-  v11 = v4;
+  v11 = actionCopy;
   v16 = v11;
-  v17 = self;
-  [v9 __performWriteWithCaller:v10 usingBlock:v15];
+  selfCopy = self;
+  [database __performWriteWithCaller:v10 usingBlock:v15];
 
   v12 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -2048,17 +2048,17 @@ LABEL_3:
   return v16 & 1;
 }
 
-- (BOOL)_setLabelsOnAction:(int64_t)a3 labels:(id)a4 add:(BOOL)a5 connection:(id)a6
+- (BOOL)_setLabelsOnAction:(int64_t)action labels:(id)labels add:(BOOL)add connection:(id)connection
 {
-  v25 = a5;
+  addCopy = add;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v27 = a6;
+  labelsCopy = labels;
+  connectionCopy = connection;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v7;
+  obj = labelsCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
@@ -2074,13 +2074,13 @@ LABEL_3:
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v27 preparedStatementForQueryString:{@"INSERT INTO action_labels (action, label, do_add) VALUES (?, ?, ?)"}];
-        v13 = [*(v9 + 3480) numberWithLongLong:a3];
+        v12 = [connectionCopy preparedStatementForQueryString:{@"INSERT INTO action_labels (action, label, do_add) VALUES (?, ?, ?)"}];
+        v13 = [*(v9 + 3480) numberWithLongLong:action];
         v33[0] = v13;
-        v14 = [v11 persistentID];
-        v33[1] = v14;
+        persistentID = [v11 persistentID];
+        v33[1] = persistentID;
         v15 = v9;
-        v16 = [*(v9 + 3480) numberWithBool:v25];
+        v16 = [*(v9 + 3480) numberWithBool:addCopy];
         v33[2] = v16;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
         v28 = 0;
@@ -2090,7 +2090,7 @@ LABEL_3:
         v9 = v15;
         if ((v18 & 1) == 0)
         {
-          [v27 handleError:v19 message:@"Adding flag change messages"];
+          [connectionCopy handleError:v19 message:@"Adding flag change messages"];
 
           v20 = 0;
           goto LABEL_11;
@@ -2114,24 +2114,24 @@ LABEL_11:
   return v20;
 }
 
-- (BOOL)_addActionMessageForMessage:(id)a3 destinationMessage:(id)a4 actionID:(int64_t)a5 actionPhase:(int64_t)a6 connection:(id)a7
+- (BOOL)_addActionMessageForMessage:(id)message destinationMessage:(id)destinationMessage actionID:(int64_t)d actionPhase:(int64_t)phase connection:(id)connection
 {
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v35 = v13;
-  v14 = [v12 persistentID];
-  v15 = [v14 longLongValue];
+  messageCopy = message;
+  destinationMessageCopy = destinationMessage;
+  connectionCopy = connection;
+  v35 = connectionCopy;
+  persistentID = [destinationMessageCopy persistentID];
+  longLongValue = [persistentID longLongValue];
 
-  if ((a6 & 0xFFFFFFFFFFFFFFFDLL) != 1 || v15)
+  if ((phase & 0xFFFFFFFFFFFFFFFDLL) != 1 || longLongValue)
   {
-    v18 = [v11 persistentID];
-    v19 = [v18 longLongValue];
+    persistentID2 = [messageCopy persistentID];
+    longLongValue2 = [persistentID2 longLongValue];
 
-    if (v19)
+    if (longLongValue2)
     {
-      [MEMORY[0x1E696AD98] numberWithLongLong:v19];
+      [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue2];
     }
 
     else
@@ -2139,21 +2139,21 @@ LABEL_11:
       [MEMORY[0x1E695DFB0] null];
     }
     v16 = ;
-    v20 = [v11 remoteID];
-    v21 = v20;
-    if (v20)
+    remoteID = [messageCopy remoteID];
+    v21 = remoteID;
+    if (remoteID)
     {
-      v34 = v20;
+      null = remoteID;
     }
 
     else
     {
-      v34 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    if (v15)
+    if (longLongValue)
     {
-      [MEMORY[0x1E696AD98] numberWithLongLong:v15];
+      [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
     }
 
     else
@@ -2161,9 +2161,9 @@ LABEL_11:
       [MEMORY[0x1E695DFB0] null];
     }
     v22 = ;
-    if (a6)
+    if (phase)
     {
-      [MEMORY[0x1E696AD98] numberWithInteger:a6];
+      [MEMORY[0x1E696AD98] numberWithInteger:phase];
     }
 
     else
@@ -2172,15 +2172,15 @@ LABEL_11:
     }
     v23 = ;
     v24 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"action_messages"];
-    v25 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+    v25 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
     [v24 setObject:v25 forKeyedSubscript:@"action"];
 
     [v24 setObject:v16 forKeyedSubscript:@"message"];
-    [v24 setObject:v34 forKeyedSubscript:@"remote_id"];
+    [v24 setObject:null forKeyedSubscript:@"remote_id"];
     [v24 setObject:v22 forKeyedSubscript:@"destination_message"];
     [v24 setObject:v23 forKeyedSubscript:@"action_phase"];
     v36 = 0;
-    v26 = [v13 executeInsertStatement:v24 error:&v36];
+    v26 = [connectionCopy executeInsertStatement:v24 error:&v36];
     v27 = v36;
     v28 = v27;
     if (v26)
@@ -2188,8 +2188,8 @@ LABEL_11:
       goto LABEL_19;
     }
 
-    v29 = [v27 domain];
-    if ([v29 isEqualToString:*MEMORY[0x1E699B770]])
+    domain = [v27 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E699B770]])
     {
       v30 = [v28 code] == 19;
 
@@ -2215,15 +2215,15 @@ LABEL_25:
   v16 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v33 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
     *buf = 134218754;
-    v38 = a5;
+    dCopy = d;
     v39 = 2114;
-    v40 = v12;
+    v40 = destinationMessageCopy;
     v41 = 2114;
-    v42 = v11;
+    v42 = messageCopy;
     v43 = 2114;
-    v44 = v33;
+    v44 = callStackSymbols;
     _os_log_error_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_ERROR, "Adding action message for transfer without destination message ID - action ID: %lld, destination message: %{public}@, source message: %{public}@\n%{public}@", buf, 0x2Au);
   }
 
@@ -2234,34 +2234,34 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)_addActionMessageForSourceRemoteID:(id)a3 actionID:(int64_t)a4 connection:(id)a5
+- (BOOL)_addActionMessageForSourceRemoteID:(id)d actionID:(int64_t)iD connection:(id)connection
 {
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  connectionCopy = connection;
   v9 = objc_autoreleasePoolPush();
   v10 = [objc_alloc(MEMORY[0x1E699B910]) initWithTable:@"action_messages"];
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:iD];
   [v10 setObject:v11 forKeyedSubscript:@"action"];
 
-  [v10 setObject:v7 forKeyedSubscript:@"remote_id"];
+  [v10 setObject:dCopy forKeyedSubscript:@"remote_id"];
   [v10 setObject:&unk_1F45E6718 forKeyedSubscript:@"action_phase"];
   v15 = 0;
-  v12 = [v8 executeInsertStatement:v10 error:&v15];
+  v12 = [connectionCopy executeInsertStatement:v10 error:&v15];
   v13 = v15;
   if ((v12 & 1) == 0)
   {
-    [v8 handleError:v13 message:@"Adding flag change messages"];
+    [connectionCopy handleError:v13 message:@"Adding flag change messages"];
   }
 
   objc_autoreleasePoolPop(v9);
   return v12;
 }
 
-- (BOOL)updateTransferAction:(id)a3 withResults:(id)a4
+- (BOOL)updateTransferAction:(id)action withResults:(id)results
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  resultsCopy = results;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2269,35 +2269,35 @@ LABEL_26:
   v8 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 completedItems];
-    v10 = [v9 count];
-    v11 = [v7 failedItems];
-    v12 = [v11 count];
-    v13 = [v7 phaseForResults];
+    completedItems = [resultsCopy completedItems];
+    v10 = [completedItems count];
+    failedItems = [resultsCopy failedItems];
+    v12 = [failedItems count];
+    phaseForResults = [resultsCopy phaseForResults];
     *buf = 138544130;
-    v31 = v6;
+    v31 = actionCopy;
     v32 = 2048;
     v33 = v10;
     v34 = 2048;
     v35 = v12;
     v36 = 2048;
-    v37 = v13;
+    v37 = phaseForResults;
     _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Persisting results for action %{public}@, completed %lu, failed %lu for phase %lu", buf, 0x2Au);
   }
 
-  v14 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence updateTransferAction:withResults:]"];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __61__EDLocalActionPersistence_updateTransferAction_withResults___block_invoke;
   v21[3] = &unk_1E82530F8;
-  v16 = v6;
+  v16 = actionCopy;
   v22 = v16;
-  v17 = v7;
+  v17 = resultsCopy;
   v23 = v17;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
-  [v14 __performWriteWithCaller:v15 usingBlock:v21];
+  [database __performWriteWithCaller:v15 usingBlock:v21];
 
   v18 = *(v27 + 24);
   _Block_object_dispose(&v26, 8);
@@ -2595,21 +2595,21 @@ LABEL_49:
   return 1;
 }
 
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   [(EDLocalActionPersistence *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDLocalActionPersistence moveSupportedFromMailboxURL:toURL:]", "EDLocalActionPersistence.m", 974, "0");
 }
 
-- (BOOL)mailboxURLIsInRemoteAccount:(id)a3
+- (BOOL)mailboxURLIsInRemoteAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy)
   {
-    if ([v3 ef_hasScheme:*MEMORY[0x1E699A698]] & 1) != 0 || (objc_msgSend(v4, "ef_hasScheme:", *MEMORY[0x1E699A690]))
+    if ([accountCopy ef_hasScheme:*MEMORY[0x1E699A698]] & 1) != 0 || (objc_msgSend(v4, "ef_hasScheme:", *MEMORY[0x1E699A690]))
     {
       v5 = 1;
     }
@@ -2628,33 +2628,33 @@ LABEL_49:
   return v5;
 }
 
-- (void)_updateCopyItems:(id)a3 toPhase:(int64_t)a4 actionID:(int64_t)a5 connection:(id)a6
+- (void)_updateCopyItems:(id)items toPhase:(int64_t)phase actionID:(int64_t)d connection:(id)connection
 {
-  v12 = a6;
-  v10 = [(EDLocalActionPersistence *)self _whereClauseToFindCopyItems:a3];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE action_messages SET action_phase = %ld WHERE action = %llu AND %@", a4, a5, v10];
-  [v12 executeStatementString:v11 errorMessage:@"Updating copy item phase"];
+  connectionCopy = connection;
+  v10 = [(EDLocalActionPersistence *)self _whereClauseToFindCopyItems:items];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE action_messages SET action_phase = %ld WHERE action = %llu AND %@", phase, d, v10];
+  [connectionCopy executeStatementString:v11 errorMessage:@"Updating copy item phase"];
 }
 
-- (void)_deleteCopyItems:(id)a3 actionID:(int64_t)a4 connection:(id)a5
+- (void)_deleteCopyItems:(id)items actionID:(int64_t)d connection:(id)connection
 {
-  v10 = a5;
-  v8 = [(EDLocalActionPersistence *)self _whereClauseToFindCopyItems:a3];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM action_messages WHERE action = %llu AND %@", a4, v8];
-  [v10 executeStatementString:v9 errorMessage:@"Deleting copy items"];
+  connectionCopy = connection;
+  v8 = [(EDLocalActionPersistence *)self _whereClauseToFindCopyItems:items];
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE FROM action_messages WHERE action = %llu AND %@", d, v8];
+  [connectionCopy executeStatementString:v9 errorMessage:@"Deleting copy items"];
 }
 
-- (id)_whereClauseToFindCopyItems:(id)a3
+- (id)_whereClauseToFindCopyItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v25;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -2670,30 +2670,30 @@ LABEL_49:
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
-        v12 = [v11 destinationMessage];
+        destinationMessage = [v11 destinationMessage];
 
-        if (v12)
+        if (destinationMessage)
         {
-          v13 = [v11 destinationMessage];
-          v14 = [v13 persistentID];
-          [v6 addObject:v14];
+          destinationMessage2 = [v11 destinationMessage];
+          persistentID = [destinationMessage2 persistentID];
+          [v6 addObject:persistentID];
 LABEL_10:
 
           goto LABEL_11;
         }
 
-        v15 = [v11 sourceRemoteID];
+        sourceRemoteID = [v11 sourceRemoteID];
 
-        if (v15)
+        if (sourceRemoteID)
         {
-          v13 = [v11 sourceRemoteID];
-          v14 = [v13 ef_quotedSQLEscapedString];
-          [v5 addObject:v14];
+          destinationMessage2 = [v11 sourceRemoteID];
+          persistentID = [destinationMessage2 ef_quotedSQLEscapedString];
+          [v5 addObject:persistentID];
           goto LABEL_10;
         }
 
-        v13 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"EDLocalActionPersistence.m" lineNumber:1005 description:@"Copy item had neither a source remoteID or a destination message"];
+        destinationMessage2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [destinationMessage2 handleFailureInMethod:a2 object:self file:@"EDLocalActionPersistence.m" lineNumber:1005 description:@"Copy item had neither a source remoteID or a destination message"];
 LABEL_11:
 
         ++v10;
@@ -2738,16 +2738,16 @@ LABEL_11:
   return v20;
 }
 
-- (id)_sourceRemoteIDListForCopyItems:(id)a3
+- (id)_sourceRemoteIDListForCopyItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2761,9 +2761,9 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) sourceRemoteID];
-        v10 = [v9 ef_quotedSQLEscapedString];
-        [v4 addObject:v10];
+        sourceRemoteID = [*(*(&v13 + 1) + 8 * i) sourceRemoteID];
+        ef_quotedSQLEscapedString = [sourceRemoteID ef_quotedSQLEscapedString];
+        [v4 addObject:ef_quotedSQLEscapedString];
       }
 
       v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2777,51 +2777,51 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)updateTransferUndownloadedMessageAction:(id)a3 withResults:(id)a4
+- (BOOL)updateTransferUndownloadedMessageAction:(id)action withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 completedItems];
-  if ([v7 phaseForResults] != 3 || objc_msgSend(v6, "transferType") != 1)
+  actionCopy = action;
+  resultsCopy = results;
+  completedItems = [resultsCopy completedItems];
+  if ([resultsCopy phaseForResults] != 3 || objc_msgSend(actionCopy, "transferType") != 1)
   {
     goto LABEL_7;
   }
 
-  v9 = [v6 sourceMailboxURL];
-  v10 = [v6 destinationMailboxURL];
-  if ([(EDLocalActionPersistence *)self moveSupportedFromMailboxURL:v9 toURL:v10])
+  sourceMailboxURL = [actionCopy sourceMailboxURL];
+  destinationMailboxURL = [actionCopy destinationMailboxURL];
+  if ([(EDLocalActionPersistence *)self moveSupportedFromMailboxURL:sourceMailboxURL toURL:destinationMailboxURL])
   {
 
 LABEL_7:
-    v17 = [v6 persistentID];
-    -[EDLocalActionPersistence removeMessageAction:](self, "removeMessageAction:", [v17 databaseID]);
+    persistentID = [actionCopy persistentID];
+    -[EDLocalActionPersistence removeMessageAction:](self, "removeMessageAction:", [persistentID databaseID]);
 
     v16 = 0;
     goto LABEL_8;
   }
 
-  v11 = [v8 count];
+  v11 = [completedItems count];
 
   if (!v11)
   {
     goto LABEL_7;
   }
 
-  [v6 updateWithCompletedCopyItems:v8];
-  v12 = [v6 persistentID];
-  v13 = [v12 databaseID];
+  [actionCopy updateWithCompletedCopyItems:completedItems];
+  persistentID2 = [actionCopy persistentID];
+  databaseID = [persistentID2 databaseID];
 
-  v14 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence updateTransferUndownloadedMessageAction:withResults:]"];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __80__EDLocalActionPersistence_updateTransferUndownloadedMessageAction_withResults___block_invoke;
   v19[3] = &unk_1E8251998;
-  v20 = v8;
-  v21 = self;
-  v23 = v13;
-  v22 = v6;
-  [v14 __performWriteWithCaller:v15 usingBlock:v19];
+  v20 = completedItems;
+  selfCopy = self;
+  v23 = databaseID;
+  v22 = actionCopy;
+  [database __performWriteWithCaller:v15 usingBlock:v19];
 
   v16 = 1;
 LABEL_8:
@@ -2885,21 +2885,21 @@ uint64_t __80__EDLocalActionPersistence_updateTransferUndownloadedMessageAction_
   return 1;
 }
 
-- (void)updateFlagChangeAction:(id)a3 withRemainingUIDs:(id)a4
+- (void)updateFlagChangeAction:(id)action withRemainingUIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDLocalActionPersistence *)self database];
+  actionCopy = action;
+  dsCopy = ds;
+  database = [(EDLocalActionPersistence *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence updateFlagChangeAction:withRemainingUIDs:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__EDLocalActionPersistence_updateFlagChangeAction_withRemainingUIDs___block_invoke;
   v12[3] = &unk_1E8250328;
-  v10 = v6;
+  v10 = actionCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = dsCopy;
   v14 = v11;
-  [v8 __performWriteWithCaller:v9 usingBlock:v12];
+  [database __performWriteWithCaller:v9 usingBlock:v12];
 }
 
 uint64_t __69__EDLocalActionPersistence_updateFlagChangeAction_withRemainingUIDs___block_invoke(uint64_t a1, void *a2)
@@ -2916,25 +2916,25 @@ uint64_t __69__EDLocalActionPersistence_updateFlagChangeAction_withRemainingUIDs
   return 1;
 }
 
-- (void)removeMessageAction:(int64_t)a3
+- (void)removeMessageAction:(int64_t)action
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = +[EDLocalActionPersistence log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    actionCopy = action;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Action %llu finished", buf, 0xCu);
   }
 
-  v6 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence removeMessageAction:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__EDLocalActionPersistence_removeMessageAction___block_invoke;
   v9[3] = &__block_descriptor_40_e41_B16__0__EDPersistenceDatabaseConnection_8l;
-  v9[4] = a3;
-  [v6 __performWriteWithCaller:v7 usingBlock:v9];
+  v9[4] = action;
+  [database __performWriteWithCaller:v7 usingBlock:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -2960,34 +2960,34 @@ uint64_t __48__EDLocalActionPersistence_removeMessageAction___block_invoke(uint6
   return v7;
 }
 
-- (void)removeMessageActions:(id)a3
+- (void)removeMessageActions:(id)actions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  actionsCopy = actions;
+  if ([actionsCopy count])
   {
-    if ([v4 count] == 1)
+    if ([actionsCopy count] == 1)
     {
-      v5 = [v4 firstObject];
-      -[EDLocalActionPersistence removeMessageAction:](self, "removeMessageAction:", [v5 databaseID]);
+      firstObject = [actionsCopy firstObject];
+      -[EDLocalActionPersistence removeMessageAction:](self, "removeMessageAction:", [firstObject databaseID]);
     }
 
     else
     {
-      v6 = [v4 ef_map:&__block_literal_global_37];
+      v6 = [actionsCopy ef_map:&__block_literal_global_37];
       v7 = [v6 componentsJoinedByString:{@", "}];
 
       v8 = +[EDLocalActionPersistence log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v16 = [v4 count];
+        v16 = [actionsCopy count];
         v17 = 2114;
         v18 = v7;
         _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%llu Actions finished %{public}@", buf, 0x16u);
       }
 
-      v9 = [(EDLocalActionPersistence *)self database];
+      database = [(EDLocalActionPersistence *)self database];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence removeMessageActions:]"];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -2995,7 +2995,7 @@ uint64_t __48__EDLocalActionPersistence_removeMessageAction___block_invoke(uint6
       v13[3] = &unk_1E8251CB8;
       v11 = v7;
       v14 = v11;
-      [v9 __performWriteWithCaller:v10 usingBlock:v13];
+      [database __performWriteWithCaller:v10 usingBlock:v13];
     }
   }
 
@@ -3033,14 +3033,14 @@ uint64_t __49__EDLocalActionPersistence_removeMessageActions___block_invoke_232(
   v10 = __Block_byref_object_copy__16;
   v11 = __Block_byref_object_dispose__16;
   v12 = 0;
-  v2 = [(EDLocalActionPersistence *)self database];
+  database = [(EDLocalActionPersistence *)self database];
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDLocalActionPersistence latestActionID]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__EDLocalActionPersistence_latestActionID__block_invoke;
   v6[3] = &unk_1E8251DA0;
   v6[4] = &v7;
-  [v2 __performReadWithCaller:v3 usingBlock:v6];
+  [database __performReadWithCaller:v3 usingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

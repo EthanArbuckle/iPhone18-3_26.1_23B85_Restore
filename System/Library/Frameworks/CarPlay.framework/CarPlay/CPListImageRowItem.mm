@@ -1,29 +1,29 @@
 @interface CPListImageRowItem
 + (CGSize)maximumImageSize;
-+ (void)_setMaximumImageSize:(CGSize)a3;
-- (CPListImageRowItem)initWithCoder:(id)a3;
-- (CPListImageRowItem)initWithText:(id)a3 elements:(id)a4 style:(unint64_t)a5;
-- (CPListImageRowItem)initWithText:(id)a3 images:(id)a4 imageTitles:(id)a5;
++ (void)_setMaximumImageSize:(CGSize)size;
+- (CPListImageRowItem)initWithCoder:(id)coder;
+- (CPListImageRowItem)initWithText:(id)text elements:(id)elements style:(unint64_t)style;
+- (CPListImageRowItem)initWithText:(id)text images:(id)images imageTitles:(id)titles;
 - (CPListTemplate)listTemplate;
 - (NSArray)gridImages;
 - (NSArray)imageTitles;
-- (id)_initWithText:(id)a3 elements:(id)a4 allowsMultipleLines:(BOOL)a5;
-- (id)_populateElementsFromImages:(id)a3 andImageTitles:(id)a4;
+- (id)_initWithText:(id)text elements:(id)elements allowsMultipleLines:(BOOL)lines;
+- (id)_populateElementsFromImages:(id)images andImageTitles:(id)titles;
 - (void)_setNeedsUpdate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setElements:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setElements:(id)elements;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setImageTitles:(id)a3;
+- (void)setImageTitles:(id)titles;
 - (void)setText:(NSString *)text;
 - (void)updateImages:(NSArray *)gridImages;
 @end
 
 @implementation CPListImageRowItem
 
-+ (void)_setMaximumImageSize:(CGSize)a3
++ (void)_setMaximumImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11 = *MEMORY[0x277D85DE8];
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -54,37 +54,37 @@
   return result;
 }
 
-- (CPListImageRowItem)initWithText:(id)a3 images:(id)a4 imageTitles:(id)a5
+- (CPListImageRowItem)initWithText:(id)text images:(id)images imageTitles:(id)titles
 {
-  v8 = a3;
-  v9 = [(CPListImageRowItem *)self _populateElementsFromImages:a4 andImageTitles:a5];
+  textCopy = text;
+  v9 = [(CPListImageRowItem *)self _populateElementsFromImages:images andImageTitles:titles];
   v10 = [v9 copy];
-  v11 = [(CPListImageRowItem *)self _initWithText:v8 elements:v10];
+  v11 = [(CPListImageRowItem *)self _initWithText:textCopy elements:v10];
 
   return v11;
 }
 
-- (id)_initWithText:(id)a3 elements:(id)a4 allowsMultipleLines:(BOOL)a5
+- (id)_initWithText:(id)text elements:(id)elements allowsMultipleLines:(BOOL)lines
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  textCopy = text;
+  elementsCopy = elements;
   v33.receiver = self;
   v33.super_class = CPListImageRowItem;
   v11 = [(CPListImageRowItem *)&v33 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v11->_identifier;
-    v11->_identifier = v12;
+    v11->_identifier = uUID;
 
-    objc_storeStrong(&v11->_text, a3);
+    objc_storeStrong(&v11->_text, text);
     v11->_enabled = 1;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = v10;
+    v14 = elementsCopy;
     v15 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v15)
     {
@@ -132,42 +132,42 @@
     elementType = v11->_elementType;
     v11->_elementType = v25;
 
-    v11->_allowsMultipleLines = a5;
+    v11->_allowsMultipleLines = lines;
   }
 
   v27 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (CPListImageRowItem)initWithText:(id)a3 elements:(id)a4 style:(unint64_t)a5
+- (CPListImageRowItem)initWithText:(id)text elements:(id)elements style:(unint64_t)style
 {
-  result = [(CPListImageRowItem *)self _initWithText:a3 elements:a4];
+  result = [(CPListImageRowItem *)self _initWithText:text elements:elements];
   if (result)
   {
-    result->_style = a5;
+    result->_style = style;
   }
 
   return result;
 }
 
-- (CPListImageRowItem)initWithCoder:(id)a3
+- (CPListImageRowItem)initWithCoder:(id)coder
 {
   v33[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = CPListImageRowItem;
   v5 = [(CPListImageRowItem *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemTextKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemTextKey"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"kCPListImageRowItemEnabledKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"kCPListImageRowItemEnabledKey"];
     v10 = MEMORY[0x277CBEB98];
     v33[0] = objc_opt_class();
     v33[1] = objc_opt_class();
@@ -177,12 +177,12 @@
     v33[5] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:6];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kCPListImageRowItemImageElementsKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"kCPListImageRowItemImageElementsKey"];
     elements = v5->_elements;
     v5->_elements = v13;
 
-    v5->_style = [v4 decodeIntegerForKey:@"kCPListImageRowItemStyleKey"];
-    v5->_allowsMultipleLines = [v4 decodeBoolForKey:@"kCPListImageRowItemAllowMultipleLinesKey"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"kCPListImageRowItemStyleKey"];
+    v5->_allowsMultipleLines = [coderCopy decodeBoolForKey:@"kCPListImageRowItemAllowMultipleLinesKey"];
     if (![(NSArray *)v5->_elements count])
     {
       v15 = CarPlayFrameworkGeneralLogging();
@@ -196,7 +196,7 @@
       v32[1] = objc_opt_class();
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
       v18 = [v16 setWithArray:v17];
-      v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kCPListImageRowItemGridImagesKey"];
+      v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kCPListImageRowItemGridImagesKey"];
 
       v20 = [v19 na_map:&__block_literal_global_17];
       v21 = MEMORY[0x277CBEB98];
@@ -204,7 +204,7 @@
       v31[1] = objc_opt_class();
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
       v23 = [v21 setWithArray:v22];
-      v24 = [v4 decodeObjectOfClasses:v23 forKey:@"kCPListImageRowItemImageTitlesKey"];
+      v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"kCPListImageRowItemImageTitlesKey"];
 
       v25 = [(CPListImageRowItem *)v5 _populateElementsFromImages:v20 andImageTitles:v24];
       v26 = CarPlayFrameworkGeneralLogging();
@@ -222,21 +222,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CPListImageRowItem *)self text];
-  [v7 encodeObject:v4 forKey:@"kCPListImageRowItemTextKey"];
+  coderCopy = coder;
+  text = [(CPListImageRowItem *)self text];
+  [coderCopy encodeObject:text forKey:@"kCPListImageRowItemTextKey"];
 
-  v5 = [(CPListImageRowItem *)self identifier];
-  [v7 encodeObject:v5 forKey:@"kCPListImageRowIdentifierKey"];
+  identifier = [(CPListImageRowItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPListImageRowIdentifierKey"];
 
-  [v7 encodeBool:-[CPListImageRowItem isEnabled](self forKey:{"isEnabled"), @"kCPListImageRowItemEnabledKey"}];
-  v6 = [(CPListImageRowItem *)self elements];
-  [v7 encodeObject:v6 forKey:@"kCPListImageRowItemImageElementsKey"];
+  [coderCopy encodeBool:-[CPListImageRowItem isEnabled](self forKey:{"isEnabled"), @"kCPListImageRowItemEnabledKey"}];
+  elements = [(CPListImageRowItem *)self elements];
+  [coderCopy encodeObject:elements forKey:@"kCPListImageRowItemImageElementsKey"];
 
-  [v7 encodeInteger:-[CPListImageRowItem style](self forKey:{"style"), @"kCPListImageRowItemStyleKey"}];
-  [v7 encodeBool:-[CPListImageRowItem allowsMultipleLines](self forKey:{"allowsMultipleLines"), @"kCPListImageRowItemAllowMultipleLinesKey"}];
+  [coderCopy encodeInteger:-[CPListImageRowItem style](self forKey:{"style"), @"kCPListImageRowItemStyleKey"}];
+  [coderCopy encodeBool:-[CPListImageRowItem allowsMultipleLines](self forKey:{"allowsMultipleLines"), @"kCPListImageRowItemAllowMultipleLinesKey"}];
 }
 
 - (NSArray)gridImages
@@ -247,8 +247,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CPListImageRowItem *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  elements = [(CPListImageRowItem *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -259,14 +259,14 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) image];
-        [v3 addObject:v9];
+        image = [*(*(&v13 + 1) + 8 * i) image];
+        [v3 addObject:image];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [elements countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -286,8 +286,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(CPListImageRowItem *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  elements = [(CPListImageRowItem *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -298,7 +298,7 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -315,7 +315,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [elements countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -338,33 +338,33 @@
 
 - (void)_setNeedsUpdate
 {
-  v3 = [(CPListImageRowItem *)self listTemplate];
-  [v3 _setItemNeedsUpdate:self];
+  listTemplate = [(CPListImageRowItem *)self listTemplate];
+  [listTemplate _setItemNeedsUpdate:self];
 }
 
-- (void)setElements:(id)a3
+- (void)setElements:(id)elements
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  elementsCopy = elements;
+  if ([elementsCopy count])
   {
-    if ([v4 count] >= 0x19)
+    if ([elementsCopy count] >= 0x19)
     {
-      v5 = [v4 subarrayWithRange:{0, 24}];
+      v5 = [elementsCopy subarrayWithRange:{0, 24}];
 
-      v4 = v5;
+      elementsCopy = v5;
     }
 
-    v6 = [v4 firstObject];
+    firstObject = [elementsCopy firstObject];
     v7 = objc_opt_class();
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v4 = v4;
-    v9 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    elementsCopy = elementsCopy;
+    v9 = [elementsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -375,27 +375,27 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(elementsCopy);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
           if ([v13 isMemberOfClass:{v7, v21}])
           {
-            [v8 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [elementsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
     }
 
-    v14 = [v8 copy];
+    v14 = [array copy];
     elements = self->_elements;
     self->_elements = v14;
 
-    v16 = [v8 firstObject];
+    firstObject2 = [array firstObject];
     v17 = objc_opt_class();
     elementType = self->_elementType;
     self->_elementType = v17;
@@ -437,14 +437,14 @@
     }
 
     v6 = MEMORY[0x277CBEB18];
-    v7 = [(CPListImageRowItem *)self elements];
-    v8 = [v6 arrayWithArray:v7];
+    elements = [(CPListImageRowItem *)self elements];
+    v8 = [v6 arrayWithArray:elements];
 
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __35__CPListImageRowItem_updateImages___block_invoke;
     v16 = &unk_278A11800;
-    v17 = self;
+    selfCopy = self;
     v18 = v8;
     v9 = v8;
     [(NSArray *)v4 enumerateObjectsUsingBlock:&v13];
@@ -491,18 +491,18 @@ void __35__CPListImageRowItem_updateImages___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)setImageTitles:(id)a3
+- (void)setImageTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   v5 = objc_opt_new();
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __37__CPListImageRowItem_setImageTitles___block_invoke;
   v11 = &unk_278A11828;
-  v12 = self;
+  selfCopy = self;
   v13 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [titlesCopy enumerateObjectsUsingBlock:&v8];
 
   v7 = [v6 copy];
   [(CPListImageRowItem *)self setElements:v7];
@@ -550,44 +550,44 @@ void __37__CPListImageRowItem_setImageTitles___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (id)_populateElementsFromImages:(id)a3 andImageTitles:(id)a4
+- (id)_populateElementsFromImages:(id)images andImageTitles:(id)titles
 {
-  v5 = a3;
-  v6 = a4;
+  imagesCopy = images;
+  titlesCopy = titles;
   v7 = objc_opt_new();
-  v8 = [v6 count];
-  if (v8 | [v5 count])
+  v8 = [titlesCopy count];
+  if (v8 | [imagesCopy count])
   {
     v9 = 0;
     do
     {
       v10 = [CPListImageRowItemRowElement alloc];
-      if ([v5 count] <= v9)
+      if ([imagesCopy count] <= v9)
       {
         v11 = objc_opt_new();
       }
 
       else
       {
-        v11 = [v5 objectAtIndex:v9];
+        v11 = [imagesCopy objectAtIndex:v9];
       }
 
       v12 = v11;
-      if ([v6 count] <= v9)
+      if ([titlesCopy count] <= v9)
       {
         v14 = [(CPListImageRowItemRowElement *)v10 initWithImage:v12 title:0 subtitle:0];
       }
 
       else
       {
-        v13 = [v6 objectAtIndex:v9];
+        v13 = [titlesCopy objectAtIndex:v9];
         v14 = [(CPListImageRowItemRowElement *)v10 initWithImage:v12 title:v13 subtitle:0];
       }
 
       [v7 addObject:v14];
       ++v9;
-      v15 = [v6 count];
-      v16 = [v5 count];
+      v15 = [titlesCopy count];
+      v16 = [imagesCopy count];
       if (v15 <= v16)
       {
         v17 = v16;

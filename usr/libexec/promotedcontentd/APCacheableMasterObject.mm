@@ -1,39 +1,39 @@
 @interface APCacheableMasterObject
-- (APCacheableMasterObject)initWithCoder:(id)a3;
-- (APCacheableMasterObject)initWithIdentifier:(id)a3 inPersistentStore:(id)a4;
-- (BOOL)addAssociatedObject:(id)a3;
-- (id)findAssociatedObjectOfKind:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (APCacheableMasterObject)initWithCoder:(id)coder;
+- (APCacheableMasterObject)initWithIdentifier:(id)identifier inPersistentStore:(id)store;
+- (BOOL)addAssociatedObject:(id)object;
+- (id)findAssociatedObjectOfKind:(id)kind;
+- (void)encodeWithCoder:(id)coder;
 - (void)remove;
-- (void)removeAssociatedObject:(id)a3;
+- (void)removeAssociatedObject:(id)object;
 - (void)save;
 - (void)touch;
 @end
 
 @implementation APCacheableMasterObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = APCacheableMasterObject;
-  v4 = a3;
-  [(APCacheableBaseObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(APCacheableBaseObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(APCacheableMasterObject *)self associatedObjects:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"_associated_objects"];
+  [coderCopy encodeObject:v5 forKey:@"_associated_objects"];
 }
 
-- (APCacheableMasterObject)initWithCoder:(id)a3
+- (APCacheableMasterObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = APCacheableMasterObject;
-  v5 = [(APCacheableSynchronizedObject *)&v12 initWithCoder:v4];
+  v5 = [(APCacheableSynchronizedObject *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v6, v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_associated_objects"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_associated_objects"];
     associatedObjects = v5->_associatedObjects;
     v5->_associatedObjects = v9;
   }
@@ -41,11 +41,11 @@
   return v5;
 }
 
-- (APCacheableMasterObject)initWithIdentifier:(id)a3 inPersistentStore:(id)a4
+- (APCacheableMasterObject)initWithIdentifier:(id)identifier inPersistentStore:(id)store
 {
   v8.receiver = self;
   v8.super_class = APCacheableMasterObject;
-  v4 = [(APCacheableObject *)&v8 initWithIdentifier:a3 inPersistentStore:a4];
+  v4 = [(APCacheableObject *)&v8 initWithIdentifier:identifier inPersistentStore:store];
   if (v4)
   {
     v5 = +[NSMutableDictionary dictionary];
@@ -56,24 +56,24 @@
   return v4;
 }
 
-- (id)findAssociatedObjectOfKind:(id)a3
+- (id)findAssociatedObjectOfKind:(id)kind
 {
-  v4 = a3;
-  if (!v4)
+  kindCopy = kind;
+  if (!kindCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ kind cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
   [(APCacheableSynchronizedObject *)self lockObject];
-  v6 = [(APCacheableMasterObject *)self associatedObjects];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  associatedObjects = [(APCacheableMasterObject *)self associatedObjects];
+  v7 = [associatedObjects objectForKeyedSubscript:kindCopy];
 
   [(APCacheableSynchronizedObject *)self unlockObject];
   if ([v7 length])
   {
-    v8 = [(APCacheableObject *)self persistentStore];
-    v9 = [(APCacheableObject *)APCacheableAssociatedObject findCacheableObjectForId:v7 inPersistentStore:v8];
+    persistentStore = [(APCacheableObject *)self persistentStore];
+    v9 = [(APCacheableObject *)APCacheableAssociatedObject findCacheableObjectForId:v7 inPersistentStore:persistentStore];
   }
 
   else
@@ -84,26 +84,26 @@
   return v9;
 }
 
-- (BOOL)addAssociatedObject:(id)a3
+- (BOOL)addAssociatedObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ childObject cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v6 = [objc_opt_class() kind];
-  if ([v6 length])
+  kind = [objc_opt_class() kind];
+  if ([kind length])
   {
     [(APCacheableSynchronizedObject *)self lockObject];
-    v7 = [(APCacheableMasterObject *)self associatedObjects];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    associatedObjects = [(APCacheableMasterObject *)self associatedObjects];
+    v8 = [associatedObjects objectForKeyedSubscript:kind];
 
     if (!v8)
     {
-      v13 = [v4 identifier];
-      [(NSMutableDictionary *)self->_associatedObjects setObject:v13 forKeyedSubscript:v6];
+      identifier = [objectCopy identifier];
+      [(NSMutableDictionary *)self->_associatedObjects setObject:identifier forKeyedSubscript:kind];
 
       [(APCacheableSynchronizedObject *)self unlockObject];
       v12 = 1;
@@ -114,7 +114,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v16 = v6;
+      v16 = kind;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Master object already contains object of kind '%{private}@'", buf, 0xCu);
     }
 
@@ -139,20 +139,20 @@ LABEL_13:
   return v12;
 }
 
-- (void)removeAssociatedObject:(id)a3
+- (void)removeAssociatedObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     v5 = [NSString stringWithFormat:@"%@ associatedObject cannot be nil", objc_opt_class()];
     APSimulateCrash();
   }
 
-  v6 = [objc_opt_class() kind];
-  if ([v6 length])
+  kind = [objc_opt_class() kind];
+  if ([kind length])
   {
     [(APCacheableSynchronizedObject *)self lockObject];
-    [(NSMutableDictionary *)self->_associatedObjects removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_associatedObjects removeObjectForKey:kind];
     [(APCacheableSynchronizedObject *)self unlockObject];
   }
 
@@ -171,23 +171,23 @@ LABEL_13:
 
 - (void)touch
 {
-  v4 = [(APCacheableObject *)self persistentStore];
-  v3 = [(APCacheableObject *)self fileName];
-  [v4 touchObjectForKey:v3];
+  persistentStore = [(APCacheableObject *)self persistentStore];
+  fileName = [(APCacheableObject *)self fileName];
+  [persistentStore touchObjectForKey:fileName];
 }
 
 - (void)save
 {
-  v4 = [(APCacheableObject *)self persistentStore];
-  v3 = [(APCacheableObject *)self fileName];
-  [v4 setObject:self forKey:v3];
+  persistentStore = [(APCacheableObject *)self persistentStore];
+  fileName = [(APCacheableObject *)self fileName];
+  [persistentStore setObject:self forKey:fileName];
 }
 
 - (void)remove
 {
   [(APCacheableSynchronizedObject *)self lockObject];
-  v3 = [(APCacheableMasterObject *)self associatedObjects];
-  v4 = [v3 allValues];
+  associatedObjects = [(APCacheableMasterObject *)self associatedObjects];
+  allValues = [associatedObjects allValues];
 
   [(NSMutableDictionary *)self->_associatedObjects removeAllObjects];
   [(APCacheableSynchronizedObject *)self unlockObject];
@@ -195,7 +195,7 @@ LABEL_13:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -212,8 +212,8 @@ LABEL_13:
         }
 
         v10 = [APCacheableObject associatedObjectFileNameForIdentifier:*(*(&v14 + 1) + 8 * v9), v14];
-        v11 = [(APCacheableObject *)self persistentStore];
-        [v11 removeObjectForKey:v10];
+        persistentStore = [(APCacheableObject *)self persistentStore];
+        [persistentStore removeObjectForKey:v10];
 
         v9 = v9 + 1;
       }
@@ -225,9 +225,9 @@ LABEL_13:
     while (v7);
   }
 
-  v12 = [(APCacheableObject *)self persistentStore];
-  v13 = [(APCacheableObject *)self fileName];
-  [v12 removeObjectForKey:v13];
+  persistentStore2 = [(APCacheableObject *)self persistentStore];
+  fileName = [(APCacheableObject *)self fileName];
+  [persistentStore2 removeObjectForKey:fileName];
 }
 
 @end

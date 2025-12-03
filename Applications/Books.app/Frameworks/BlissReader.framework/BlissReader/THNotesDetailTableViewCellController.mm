@@ -1,20 +1,20 @@
 @interface THNotesDetailTableViewCellController
 - (CGRect)highlightTextFrame;
-- (THNotesDetailTableViewCellController)initWithSizingDelegate:(id)a3;
+- (THNotesDetailTableViewCellController)initWithSizingDelegate:(id)delegate;
 - (void)dealloc;
-- (void)populateWithAnnotation:(id)a3 cellWidth:(double)a4 highlightLayer:(id)a5 highlightTextFrame:(CGRect)a6 editingHighlightLayer:(id)a7 pageNumberString:(id)a8 topAdjustment:(double)a9 showDivider:(BOOL)a10;
+- (void)populateWithAnnotation:(id)annotation cellWidth:(double)width highlightLayer:(id)layer highlightTextFrame:(CGRect)frame editingHighlightLayer:(id)highlightLayer pageNumberString:(id)string topAdjustment:(double)adjustment showDivider:(BOOL)self0;
 @end
 
 @implementation THNotesDetailTableViewCellController
 
-- (THNotesDetailTableViewCellController)initWithSizingDelegate:(id)a3
+- (THNotesDetailTableViewCellController)initWithSizingDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = THNotesDetailTableViewCellController;
   result = [(THNotesDetailTableViewCellController *)&v5 init];
   if (result)
   {
-    result->mSizingDelegate = a3;
+    result->mSizingDelegate = delegate;
   }
 
   return result;
@@ -35,13 +35,13 @@
   [(THNotesDetailTableViewCellController *)&v3 dealloc];
 }
 
-- (void)populateWithAnnotation:(id)a3 cellWidth:(double)a4 highlightLayer:(id)a5 highlightTextFrame:(CGRect)a6 editingHighlightLayer:(id)a7 pageNumberString:(id)a8 topAdjustment:(double)a9 showDivider:(BOOL)a10
+- (void)populateWithAnnotation:(id)annotation cellWidth:(double)width highlightLayer:(id)layer highlightTextFrame:(CGRect)frame editingHighlightLayer:(id)highlightLayer pageNumberString:(id)string topAdjustment:(double)adjustment showDivider:(BOOL)self0
 {
-  v10 = a10;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  dividerCopy = divider;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (!qword_567880)
   {
     qword_567880 = objc_alloc_init(NSDateFormatter);
@@ -50,8 +50,8 @@
     [qword_567880 setDoesRelativeDateFormatting:1];
   }
 
-  [(THNotesDetailTableViewCellController *)self setAnnotation:a3, a4, a6.origin.x, a6.origin.y, a6.size.width, a6.size.height, a9];
-  [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] populateWithHighlgihtLayer:a5 editingHighlightLayer:a7];
+  [(THNotesDetailTableViewCellController *)self setAnnotation:annotation, width, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, adjustment];
+  [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] populateWithHighlgihtLayer:layer editingHighlightLayer:highlightLayer];
   [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] setTag:4];
   [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] setBackgroundColor:+[UIColor bc_booksBackground]];
   [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] frame];
@@ -62,10 +62,10 @@
   v27 = v26;
   [(THNotesDetailTableViewCellHighlightView *)[(THNotesDetailTableViewCellController *)self highlightView] setFrame:v21, v23, v25, v26];
   [(THNotesDetailTableViewCellController *)self setHighlightTextFrame:x, y, width, height];
-  v28 = [objc_msgSend(a3 "annotationNote")];
+  v28 = [objc_msgSend(annotation "annotationNote")];
   if (v28)
   {
-    -[UILabel setText:](-[THNotesDetailTableViewCellController noteLabel](self, "noteLabel"), "setText:", [a3 annotationNote]);
+    -[UILabel setText:](-[THNotesDetailTableViewCellController noteLabel](self, "noteLabel"), "setText:", [annotation annotationNote]);
     [(UILabel *)[(THNotesDetailTableViewCellController *)self noteLabel] setNumberOfLines:[(THNotesDetailSizingDelegate *)self->mSizingDelegate maxNoteLabelLines]];
     [(THNotesDetailSizingDelegate *)self->mSizingDelegate noteLabelHorizontalInset];
     v30 = v29;
@@ -77,7 +77,7 @@
     [(THNotesDetailSizingDelegate *)self->mSizingDelegate marginAboveNote];
     v33 = MaxY + v32;
     [(THNotesDetailSizingDelegate *)self->mSizingDelegate rightMargin];
-    v35 = a4 - v30 - v34;
+    v35 = width - v30 - v34;
     [(UILabel *)[(THNotesDetailTableViewCellController *)self noteLabel] sizeThatFits:v35, 100000.0];
     v37 = v36;
   }
@@ -94,7 +94,7 @@
   [(UILabel *)[(THNotesDetailTableViewCellController *)self noteLabel] setFrame:v30, v33, v35, v37];
   [(UILabel *)[(THNotesDetailTableViewCellController *)self noteLabel] setTag:6];
   [(UILabel *)[(THNotesDetailTableViewCellController *)self noteLabel] setTextColor:+[UIColor bc_booksLabelColor]];
-  -[UIView setBackgroundColor:](-[THNotesDetailTableViewCellController highlightColorBar](self, "highlightColorBar"), "setBackgroundColor:", [+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:objc_msgSend(a3 pageTheme:"annotationStyle") isUnderline:{4, objc_msgSend(a3, "annotationIsUnderline")), "notesSidebarBarColor"}]);
+  -[UIView setBackgroundColor:](-[THNotesDetailTableViewCellController highlightColorBar](self, "highlightColorBar"), "setBackgroundColor:", [+[AEAnnotationTheme themeForAnnotationStyle:pageTheme:isUnderline:](AEAnnotationTheme themeForAnnotationStyle:objc_msgSend(annotation pageTheme:"annotationStyle") isUnderline:{4, objc_msgSend(annotation, "annotationIsUnderline")), "notesSidebarBarColor"}]);
   [(UIView *)[(THNotesDetailTableViewCellController *)self highlightColorBar] frame];
   v42 = v41;
   v44 = v43;
@@ -107,8 +107,8 @@
   v47 = CGRectGetMaxY(v83);
   [(THNotesDetailSizingDelegate *)self->mSizingDelegate highlightColorBarDescent];
   [(UIView *)[(THNotesDetailTableViewCellController *)self highlightColorBar] setFrame:v46, v42, v44, v47 + v48 - v42];
-  v49 = [a3 annotationCreationDate];
-  -[UILabel setText:](-[THNotesDetailTableViewCellController dateLabel](self, "dateLabel"), "setText:", [qword_567880 stringFromDate:v49]);
+  annotationCreationDate = [annotation annotationCreationDate];
+  -[UILabel setText:](-[THNotesDetailTableViewCellController dateLabel](self, "dateLabel"), "setText:", [qword_567880 stringFromDate:annotationCreationDate]);
   [(UILabel *)[(THNotesDetailTableViewCellController *)self dateLabel] sizeToFit];
   [(UILabel *)[(THNotesDetailTableViewCellController *)self dateLabel] setTag:7];
   [(UILabel *)[(THNotesDetailTableViewCellController *)self dateLabel] frame];
@@ -117,30 +117,30 @@
   v55 = v54;
   [(THNotesDetailSizingDelegate *)self->mSizingDelegate dateLabelHorizontalInset];
   [(UILabel *)[(THNotesDetailTableViewCellController *)self dateLabel] setFrame:v56, v51, v53, v55];
-  if (!a8)
+  if (!string)
   {
-    a8 = &stru_471858;
+    string = &stru_471858;
   }
 
-  [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] setTitle:a8 forState:0];
-  v57 = [(THAnnotation *)[(THNotesDetailTableViewCellController *)self annotation] annotationIsOrphan];
-  v58 = [(THNotesDetailTableViewCellController *)self returnToBook];
-  if (v57)
+  [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] setTitle:string forState:0];
+  annotationIsOrphan = [(THAnnotation *)[(THNotesDetailTableViewCellController *)self annotation] annotationIsOrphan];
+  returnToBook = [(THNotesDetailTableViewCellController *)self returnToBook];
+  if (annotationIsOrphan)
   {
-    [(TSWButton *)v58 setEnabled:0];
+    [(TSWButton *)returnToBook setEnabled:0];
     [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] setAlpha:0.0];
   }
 
   else
   {
-    [(TSWButton *)v58 setTag:5];
+    [(TSWButton *)returnToBook setTag:5];
     [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] frame];
     v60 = fmin(v59 + -32.0, 0.0) * 0.5;
     [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] frame];
     [(TSWButton *)[(THNotesDetailTableViewCellController *)self returnToBook] setHitRegionEdgeInsets:v60, fmin(v61 + -32.0, 0.0), v60, 0.0];
   }
 
-  v62 = !v10;
+  v62 = !dividerCopy;
   [(UIImageView *)[(THNotesDetailTableViewCellController *)self divider] setHidden:v62];
   if (!v62)
   {
@@ -160,21 +160,21 @@
   v75 = v74;
   if (v28)
   {
-    v76 = [(THNotesDetailTableViewCellController *)self noteLabel];
+    noteLabel = [(THNotesDetailTableViewCellController *)self noteLabel];
   }
 
   else
   {
-    v76 = [(THNotesDetailTableViewCellController *)self highlightView];
+    noteLabel = [(THNotesDetailTableViewCellController *)self highlightView];
   }
 
-  [(UILabel *)v76 frame];
+  [(UILabel *)noteLabel frame];
   v77 = CGRectGetMaxY(v84);
   [(THNotesDetailSizingDelegate *)self->mSizingDelegate marginAboveSeparator];
   [-[THNotesDetailTableViewCellController view](self "view")];
-  v79 = [(THNotesDetailTableViewCellController *)self view];
+  view = [(THNotesDetailTableViewCellController *)self view];
 
-  [v79 setTag:9];
+  [view setTag:9];
 }
 
 - (CGRect)highlightTextFrame

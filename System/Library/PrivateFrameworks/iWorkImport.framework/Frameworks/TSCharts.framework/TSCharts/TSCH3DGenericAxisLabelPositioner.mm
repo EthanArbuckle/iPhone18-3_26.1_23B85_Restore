@@ -1,12 +1,12 @@
 @interface TSCH3DGenericAxisLabelPositioner
 + (id)horizontal;
-+ (id)horizontalWithRange:(void *)a3 offset:(float)a4;
++ (id)horizontalWithRange:(void *)range offset:(float)offset;
 + (id)vertical;
-+ (id)verticalWithRange:(void *)a3 offset:(float)a4;
++ (id)verticalWithRange:(void *)range offset:(float)offset;
 - (TSCH3DGenericAxisLabelPositioner)init;
-- (TSCH3DGenericAxisLabelPositioner)initWithAxis:(int64_t)a3 alignment:(unsigned int)a4 offset:(float)a5 range:(void *)a6;
-- (float)labelGapForCount:(unint64_t)a3;
-- (tvec3<float>)positionForValue:(double)a3 count:(unint64_t)a4 chartDirection:(void *)a5;
+- (TSCH3DGenericAxisLabelPositioner)initWithAxis:(int64_t)axis alignment:(unsigned int)alignment offset:(float)offset range:(void *)range;
+- (float)labelGapForCount:(unint64_t)count;
+- (tvec3<float>)positionForValue:(double)value count:(unint64_t)count chartDirection:(void *)direction;
 @end
 
 @implementation TSCH3DGenericAxisLabelPositioner
@@ -14,7 +14,7 @@
 + (id)horizontal
 {
   v6 = 0x3F80000000000000;
-  v4 = objc_msgSend_horizontalWithRange_(a1, a2, 0.0078125, v2, v3, &v6);
+  v4 = objc_msgSend_horizontalWithRange_(self, a2, 0.0078125, v2, v3, &v6);
 
   return v4;
 }
@@ -22,25 +22,25 @@
 + (id)vertical
 {
   v6 = 0x3F80000000000000;
-  v4 = objc_msgSend_verticalWithRange_(a1, a2, 0.0078125, v2, v3, &v6);
+  v4 = objc_msgSend_verticalWithRange_(self, a2, 0.0078125, v2, v3, &v6);
 
   return v4;
 }
 
-+ (id)horizontalWithRange:(void *)a3 offset:(float)a4
++ (id)horizontalWithRange:(void *)range offset:(float)offset
 {
-  v6 = [a1 alloc];
-  *&v7 = a4;
-  v11 = objc_msgSend_initWithAxis_alignment_offset_range_(v6, v8, v7, v9, v10, 0, 4, a3);
+  v6 = [self alloc];
+  *&v7 = offset;
+  v11 = objc_msgSend_initWithAxis_alignment_offset_range_(v6, v8, v7, v9, v10, 0, 4, range);
 
   return v11;
 }
 
-+ (id)verticalWithRange:(void *)a3 offset:(float)a4
++ (id)verticalWithRange:(void *)range offset:(float)offset
 {
-  v6 = [a1 alloc];
-  *&v7 = a4;
-  v11 = objc_msgSend_initWithAxis_alignment_offset_range_(v6, v8, v7, v9, v10, 1, 32, a3);
+  v6 = [self alloc];
+  *&v7 = offset;
+  v11 = objc_msgSend_initWithAxis_alignment_offset_range_(v6, v8, v7, v9, v10, 1, 32, range);
 
   return v11;
 }
@@ -60,30 +60,30 @@
   return result;
 }
 
-- (TSCH3DGenericAxisLabelPositioner)initWithAxis:(int64_t)a3 alignment:(unsigned int)a4 offset:(float)a5 range:(void *)a6
+- (TSCH3DGenericAxisLabelPositioner)initWithAxis:(int64_t)axis alignment:(unsigned int)alignment offset:(float)offset range:(void *)range
 {
   v11.receiver = self;
   v11.super_class = TSCH3DGenericAxisLabelPositioner;
   result = [(TSCH3DGenericAxisLabelPositioner *)&v11 init];
   if (result)
   {
-    result->_range.var0.var0 = *a6;
-    result->_range.var1.var0 = *(a6 + 1);
-    result->_alignment = a4;
-    result->_offset = a5;
-    result->_axis = a3;
+    result->_range.var0.var0 = *range;
+    result->_range.var1.var0 = *(range + 1);
+    result->_alignment = alignment;
+    result->_offset = offset;
+    result->_axis = axis;
   }
 
   return result;
 }
 
-- (tvec3<float>)positionForValue:(double)a3 count:(unint64_t)a4 chartDirection:(void *)a5
+- (tvec3<float>)positionForValue:(double)value count:(unint64_t)count chartDirection:(void *)direction
 {
   *v5 = 0;
   *(v5 + 8) = 0;
-  if (a4)
+  if (count)
   {
-    v6 = self->_range.var0.var0 + (self->_range.var1.var0 - self->_range.var0.var0) * a3 + (self->_offset / a4);
+    v6 = self->_range.var0.var0 + (self->_range.var1.var0 - self->_range.var0.var0) * value + (self->_offset / count);
   }
 
   else
@@ -98,11 +98,11 @@
   return result;
 }
 
-- (float)labelGapForCount:(unint64_t)a3
+- (float)labelGapForCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
-    return vabds_f32(self->_range.var1.var0, self->_range.var0.var0) / a3;
+    return vabds_f32(self->_range.var1.var0, self->_range.var0.var0) / count;
   }
 
   else

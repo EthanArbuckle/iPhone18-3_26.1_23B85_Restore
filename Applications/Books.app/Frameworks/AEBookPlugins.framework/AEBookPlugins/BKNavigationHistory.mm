@@ -7,7 +7,7 @@
 - (id)previousEntity;
 - (id)recursiveDescription;
 - (void)_trim;
-- (void)add:(id)a3;
+- (void)add:(id)add;
 - (void)rewind;
 - (void)skip;
 - (void)truncateHistory;
@@ -32,67 +32,67 @@
 
 - (BOOL)isAtTopOfStack
 {
-  v3 = [(BKNavigationHistory *)self cursor];
-  v4 = [(BKNavigationHistory *)self stack];
-  LOBYTE(v3) = v3 == [v4 count];
+  cursor = [(BKNavigationHistory *)self cursor];
+  stack = [(BKNavigationHistory *)self stack];
+  LOBYTE(cursor) = cursor == [stack count];
 
-  return v3;
+  return cursor;
 }
 
 - (void)_trim
 {
   for (i = self; ; self = i)
   {
-    v3 = [(BKNavigationHistory *)self cursor];
-    v4 = [(BKNavigationHistory *)i stack];
-    v5 = [v4 count];
+    cursor = [(BKNavigationHistory *)self cursor];
+    stack = [(BKNavigationHistory *)i stack];
+    v5 = [stack count];
 
-    if (v3 >= v5)
+    if (cursor >= v5)
     {
       break;
     }
 
-    v6 = [(BKNavigationHistory *)i stack];
-    [v6 removeLastObject];
+    stack2 = [(BKNavigationHistory *)i stack];
+    [stack2 removeLastObject];
   }
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v7 = a3;
+  addCopy = add;
   if (![(BKNavigationHistory *)self isAtTopOfStack])
   {
     [(BKNavigationHistory *)self truncateHistory];
   }
 
-  v4 = v7;
-  if (v7)
+  v4 = addCopy;
+  if (addCopy)
   {
-    v5 = [(BKNavigationHistory *)self stack];
-    [v5 addObject:v7];
+    stack = [(BKNavigationHistory *)self stack];
+    [stack addObject:addCopy];
 
-    v6 = [(BKNavigationHistory *)self stack];
-    -[BKNavigationHistory setCursor:](self, "setCursor:", [v6 count]);
+    stack2 = [(BKNavigationHistory *)self stack];
+    -[BKNavigationHistory setCursor:](self, "setCursor:", [stack2 count]);
 
-    v4 = v7;
+    v4 = addCopy;
   }
 }
 
 - (id)nextEntity
 {
-  v3 = [(BKNavigationHistory *)self cursor];
-  v4 = [(BKNavigationHistory *)self stack];
-  v5 = [v4 count];
+  cursor = [(BKNavigationHistory *)self cursor];
+  stack = [(BKNavigationHistory *)self stack];
+  v5 = [stack count];
 
-  if (v3 >= v5)
+  if (cursor >= v5)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(BKNavigationHistory *)self stack];
-    v7 = [v6 objectAtIndex:v3];
+    stack2 = [(BKNavigationHistory *)self stack];
+    v7 = [stack2 objectAtIndex:cursor];
   }
 
   return v7;
@@ -100,10 +100,10 @@
 
 - (id)currentEntity
 {
-  v3 = [(BKNavigationHistory *)self isAtTopOfStack];
-  v4 = [(BKNavigationHistory *)self cursor]- (v3 ^ 1);
-  v5 = [(BKNavigationHistory *)self stack];
-  v6 = [v5 count];
+  isAtTopOfStack = [(BKNavigationHistory *)self isAtTopOfStack];
+  v4 = [(BKNavigationHistory *)self cursor]- (isAtTopOfStack ^ 1);
+  stack = [(BKNavigationHistory *)self stack];
+  v6 = [stack count];
 
   if (v4 >= v6)
   {
@@ -112,8 +112,8 @@
 
   else
   {
-    v7 = [(BKNavigationHistory *)self stack];
-    v8 = [v7 objectAtIndex:v4];
+    stack2 = [(BKNavigationHistory *)self stack];
+    v8 = [stack2 objectAtIndex:v4];
   }
 
   return v8;
@@ -121,17 +121,17 @@
 
 - (id)previousEntity
 {
-  v3 = [(BKNavigationHistory *)self isAtTopOfStack];
-  v4 = [(BKNavigationHistory *)self cursor];
+  isAtTopOfStack = [(BKNavigationHistory *)self isAtTopOfStack];
+  cursor = [(BKNavigationHistory *)self cursor];
   v5 = -2;
-  if (v3)
+  if (isAtTopOfStack)
   {
     v5 = -1;
   }
 
-  v6 = v4 + v5;
-  v7 = [(BKNavigationHistory *)self stack];
-  v8 = [v7 count];
+  v6 = cursor + v5;
+  stack = [(BKNavigationHistory *)self stack];
+  v8 = [stack count];
 
   if (v6 >= v8)
   {
@@ -140,8 +140,8 @@
 
   else
   {
-    v9 = [(BKNavigationHistory *)self stack];
-    v10 = [v9 objectAtIndex:v6];
+    stack2 = [(BKNavigationHistory *)self stack];
+    v10 = [stack2 objectAtIndex:v6];
   }
 
   return v10;
@@ -171,8 +171,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BKNavigationHistory *)self stack];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p>(Element Count: %d Cursor: %d)", v3, self, [v4 count], -[BKNavigationHistory cursor](self, "cursor"));;
+  stack = [(BKNavigationHistory *)self stack];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p>(Element Count: %d Cursor: %d)", v3, self, [stack count], -[BKNavigationHistory cursor](self, "cursor"));;
 
   return v5;
 }
@@ -180,11 +180,11 @@
 - (id)recursiveDescription
 {
   v3 = objc_opt_class();
-  v4 = [(BKNavigationHistory *)self stack];
-  v5 = [v4 count];
-  v6 = [(BKNavigationHistory *)self cursor];
-  v7 = [(BKNavigationHistory *)self stack];
-  v8 = [NSString stringWithFormat:@"<%@: %p>(Element Count: %d Cursor: %d) ; %@", v3, self, v5, v6, v7];;
+  stack = [(BKNavigationHistory *)self stack];
+  v5 = [stack count];
+  cursor = [(BKNavigationHistory *)self cursor];
+  stack2 = [(BKNavigationHistory *)self stack];
+  v8 = [NSString stringWithFormat:@"<%@: %p>(Element Count: %d Cursor: %d) ; %@", v3, self, v5, cursor, stack2];;
 
   return v8;
 }

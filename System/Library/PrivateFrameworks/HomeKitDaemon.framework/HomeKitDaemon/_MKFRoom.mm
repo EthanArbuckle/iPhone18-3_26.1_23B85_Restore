@@ -1,6 +1,6 @@
 @interface _MKFRoom
 + (NSPredicate)homeRelation;
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3;
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context;
 - (MKFRoomDatabaseID)databaseID;
 - (NSArray)accessories;
 - (NSArray)localPresenceAccessories;
@@ -24,25 +24,25 @@
 - (NSArray)localPresenceAccessories
 {
   v2 = [(_MKFRoom *)self valueForKey:@"localPresenceAccessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)zones
 {
   v2 = [(_MKFRoom *)self valueForKey:@"zones_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)accessories
 {
   v2 = [(_MKFRoom *)self valueForKey:@"accessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFRoomDatabaseID)databaseID
@@ -52,26 +52,26 @@
   return v2;
 }
 
-- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)a3
+- (BOOL)shouldIncludeForRestrictedGuestWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_MKFRoom *)self home];
-  v6 = [v5 defaultRoom];
+  contextCopy = context;
+  home = [(_MKFRoom *)self home];
+  defaultRoom = [home defaultRoom];
 
-  if (v6 == self)
+  if (defaultRoom == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [(_MKFRoom *)self accessories];
+    accessories = [(_MKFRoom *)self accessories];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __75___MKFRoom_ResidentSyncCoding__shouldIncludeForRestrictedGuestWithContext___block_invoke;
     v10[3] = &unk_27867CD18;
-    v11 = v4;
-    v8 = [v7 na_any:v10];
+    v11 = contextCopy;
+    v8 = [accessories na_any:v10];
   }
 
   return v8;

@@ -1,11 +1,11 @@
 @interface HMDCHIPThreadNetworkEventListener
 + (id)logCategory;
-- (HMDCHIPThreadNetworkEventListener)initWithThreadResidentCommissioner:(id)a3;
+- (HMDCHIPThreadNetworkEventListener)initWithThreadResidentCommissioner:(id)commissioner;
 - (HMDCHIPThreadNetworkEventListenerDelegate)eventListenerDelegate;
 - (void)dealloc;
 - (void)stopListeningForEvents;
-- (void)threadBTCallStateChange:(id)a3;
-- (void)threadNetworkStateChange:(id)a3;
+- (void)threadBTCallStateChange:(id)change;
+- (void)threadNetworkStateChange:(id)change;
 @end
 
 @implementation HMDCHIPThreadNetworkEventListener
@@ -17,22 +17,22 @@
   return WeakRetained;
 }
 
-- (void)threadBTCallStateChange:(id)a3
+- (void)threadBTCallStateChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 callState];
-  if (!v5)
+  changeCopy = change;
+  callState = [changeCopy callState];
+  if (!callState)
   {
 LABEL_7:
     v6 = 0;
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (callState != 1)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -40,7 +40,7 @@ LABEL_7:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = changeCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Unexpected event %@", &v13, 0x16u);
     }
 
@@ -50,21 +50,21 @@ LABEL_7:
 
   v6 = 1;
 LABEL_8:
-  v11 = [(HMDCHIPThreadNetworkEventListener *)self eventListenerDelegate];
-  if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+  eventListenerDelegate = [(HMDCHIPThreadNetworkEventListener *)self eventListenerDelegate];
+  if (eventListenerDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v11 handleThreadBTCallStateChange:v6];
+    [eventListenerDelegate handleThreadBTCallStateChange:v6];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)threadNetworkStateChange:(id)a3
+- (void)threadNetworkStateChange:(id)change
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -72,26 +72,26 @@ LABEL_8:
     *buf = 138544130;
     v22 = v8;
     v23 = 2112;
-    v24 = v4;
+    v24 = changeCopy;
     v25 = 2048;
-    v26 = [v4 eventType];
+    eventType = [changeCopy eventType];
     v27 = 2048;
-    v28 = [v4 eventValue];
+    eventValue = [changeCopy eventValue];
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@threadNetworkStateChange - received event %@, type %ld, value %ld", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCHIPThreadNetworkEventListener *)v6 eventListenerDelegate];
-  v10 = [v4 eventType];
-  if (v10 == 1)
+  eventListenerDelegate = [(HMDCHIPThreadNetworkEventListener *)selfCopy eventListenerDelegate];
+  eventType2 = [changeCopy eventType];
+  if (eventType2 == 1)
   {
-    -[HMDCHIPThreadNetworkEventListener setThreadNetworkNodeType:](v6, "setThreadNetworkNodeType:", [v4 eventValue]);
+    -[HMDCHIPThreadNetworkEventListener setThreadNetworkNodeType:](selfCopy, "setThreadNetworkNodeType:", [changeCopy eventValue]);
   }
 
-  else if (v10)
+  else if (eventType2)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = v6;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -99,7 +99,7 @@ LABEL_8:
       *buf = 138543618;
       v22 = v14;
       v23 = 2112;
-      v24 = v4;
+      v24 = changeCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Unexpected event %@", buf, 0x16u);
     }
 
@@ -108,13 +108,13 @@ LABEL_8:
 
   else
   {
-    -[HMDCHIPThreadNetworkEventListener setThreadNetworkConnectionState:](v6, "setThreadNetworkConnectionState:", [v4 eventValue]);
+    -[HMDCHIPThreadNetworkEventListener setThreadNetworkConnectionState:](selfCopy, "setThreadNetworkConnectionState:", [changeCopy eventValue]);
   }
 
-  if (![(HMDCHIPThreadNetworkEventListener *)v6 pendingRadioStateChangeNotification])
+  if (![(HMDCHIPThreadNetworkEventListener *)selfCopy pendingRadioStateChangeNotification])
   {
-    [(HMDCHIPThreadNetworkEventListener *)v6 setPendingRadioStateChangeNotification:1];
-    objc_initWeak(buf, v6);
+    [(HMDCHIPThreadNetworkEventListener *)selfCopy setPendingRadioStateChangeNotification:1];
+    objc_initWeak(buf, selfCopy);
     v15 = dispatch_time(0, 50000000);
     v16 = dispatch_get_global_queue(21, 0);
     v18[0] = MEMORY[0x277D85DD0];
@@ -122,7 +122,7 @@ LABEL_8:
     v18[2] = __62__HMDCHIPThreadNetworkEventListener_threadNetworkStateChange___block_invoke;
     v18[3] = &unk_278686B48;
     objc_copyWeak(&v20, buf);
-    v19 = v9;
+    v19 = eventListenerDelegate;
     dispatch_after(v15, v16, v18);
 
     objc_destroyWeak(&v20);
@@ -145,14 +145,14 @@ void __62__HMDCHIPThreadNetworkEventListener_threadNetworkStateChange___block_in
 - (void)stopListeningForEvents
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPThreadNetworkEventListener *)self threadResidentCommissioner];
-  [v3 unregisterForThreadNetworkEvents:self];
+  threadResidentCommissioner = [(HMDCHIPThreadNetworkEventListener *)self threadResidentCommissioner];
+  [threadResidentCommissioner unregisterForThreadNetworkEvents:self];
 
   [(HMDCHIPThreadNetworkEventListener *)self setThreadResidentCommissioner:0];
   [(HMDCHIPThreadNetworkEventListener *)self setThreadNetworkConnectionState:1];
   [(HMDCHIPThreadNetworkEventListener *)self setThreadNetworkNodeType:0];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -179,17 +179,17 @@ void __62__HMDCHIPThreadNetworkEventListener_threadNetworkStateChange___block_in
   [(HMDCHIPThreadNetworkEventListener *)&v4 dealloc];
 }
 
-- (HMDCHIPThreadNetworkEventListener)initWithThreadResidentCommissioner:(id)a3
+- (HMDCHIPThreadNetworkEventListener)initWithThreadResidentCommissioner:(id)commissioner
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  commissionerCopy = commissioner;
   v14.receiver = self;
   v14.super_class = HMDCHIPThreadNetworkEventListener;
   v6 = [(HMDCHIPThreadNetworkEventListener *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_threadResidentCommissioner, a3);
+    objc_storeStrong(&v6->_threadResidentCommissioner, commissioner);
     [(HMDThreadResidentCommissioner *)v7->_threadResidentCommissioner registerForThreadNetworkEvents:v7];
     v8 = objc_autoreleasePoolPush();
     v9 = v7;

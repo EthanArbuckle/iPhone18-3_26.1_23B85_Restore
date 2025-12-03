@@ -1,20 +1,20 @@
 @interface _PUIFontWeightSliderTrackView
-- (_PUIFontWeightSliderTrackView)initWithTrackBackgroundColor:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (_PUIFontWeightSliderTrackView)initWithTrackBackgroundColor:(id)color;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation _PUIFontWeightSliderTrackView
 
-- (_PUIFontWeightSliderTrackView)initWithTrackBackgroundColor:(id)a3
+- (_PUIFontWeightSliderTrackView)initWithTrackBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = _PUIFontWeightSliderTrackView;
   v6 = [(_PUIFontWeightSliderTrackView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trackBackgroundColor, a3);
+    objc_storeStrong(&v6->_trackBackgroundColor, color);
     [(_PUIFontWeightSliderTrackView *)v7 setOpaque:0];
     [(_PUIFontWeightSliderTrackView *)v7 setContentMode:3];
   }
@@ -22,22 +22,22 @@
   return v7;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v29.receiver = self;
   v29.super_class = _PUIFontWeightSliderTrackView;
   [(_PUIFontWeightSliderTrackView *)&v29 drawRect:?];
   v8 = MEMORY[0x1E69DDA98];
-  v9 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v10 = x;
   v11 = y;
   v12 = width;
   v13 = height;
-  if (v9 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v27 = CGRectGetMaxX(*&v10) + -2.0;
     v30.origin.x = x;
@@ -142,8 +142,8 @@
   [v21 addArcWithCenter:v22 radius:v19 startAngle:v20 endAngle:7.0 clockwise:{4.71238898, 1.57079633}];
   [v21 addLineToPoint:{v24, v14 + 2.0}];
   [v21 addArcWithCenter:v22 radius:v28 startAngle:v26 endAngle:2.0 clockwise:{1.57079633, 4.71238898}];
-  v23 = [(_PUIFontWeightSliderTrackView *)self trackBackgroundColor];
-  [v23 setFill];
+  trackBackgroundColor = [(_PUIFontWeightSliderTrackView *)self trackBackgroundColor];
+  [trackBackgroundColor setFill];
 
   [v21 fill];
 }

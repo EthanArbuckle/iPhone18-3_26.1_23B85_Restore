@@ -1,13 +1,13 @@
 @interface CAMAnalyticsSmudgeDisplayEvent
-- (CAMAnalyticsSmudgeDisplayEvent)initWithSmudgeAnalyticsDictionary:(id)a3;
+- (CAMAnalyticsSmudgeDisplayEvent)initWithSmudgeAnalyticsDictionary:(id)dictionary;
 @end
 
 @implementation CAMAnalyticsSmudgeDisplayEvent
 
-- (CAMAnalyticsSmudgeDisplayEvent)initWithSmudgeAnalyticsDictionary:(id)a3
+- (CAMAnalyticsSmudgeDisplayEvent)initWithSmudgeAnalyticsDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = CAMAnalyticsSmudgeDisplayEvent;
   v5 = [(CAMAnalyticsEvent *)&v20 init];
@@ -17,7 +17,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = dictionaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v7)
     {
@@ -34,8 +34,8 @@
 
           v11 = *(*(&v16 + 1) + 8 * i);
           v12 = [v6 objectForKeyedSubscript:{v11, v16}];
-          v13 = [(CAMAnalyticsEvent *)v5 _eventMap];
-          [v13 setObject:v12 forKeyedSubscript:v11];
+          _eventMap = [(CAMAnalyticsEvent *)v5 _eventMap];
+          [_eventMap setObject:v12 forKeyedSubscript:v11];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];

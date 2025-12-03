@@ -1,10 +1,10 @@
 @interface CPSDevice
 + (CPSDevice)currentDevice;
-- (CPSDevice)initWithCoder:(id)a3;
+- (CPSDevice)initWithCoder:(id)coder;
 - (id)_initCurrentDevice;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSDevice
@@ -42,10 +42,10 @@
       v10 = Boolean != 0;
     }
 
-    v11 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v12 = [v11 homeButtonType];
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    homeButtonType = [mEMORY[0x277CF0CA8] homeButtonType];
 
-    if (v12 >= 2)
+    if (homeButtonType >= 2)
     {
       v13 = v10;
     }
@@ -81,39 +81,39 @@
   [v3 appendString:self->_model withName:@"model" skipIfEmpty:1];
   [v3 appendString:self->_name withName:@"name" skipIfEmpty:1];
   [v3 appendString:self->_buildVersion withName:@"buildVersion" skipIfEmpty:1];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 + (CPSDevice)currentDevice
 {
-  v2 = [[CPSDevice alloc] _initCurrentDevice];
+  _initCurrentDevice = [[CPSDevice alloc] _initCurrentDevice];
 
-  return v2;
+  return _initCurrentDevice;
 }
 
-- (CPSDevice)initWithCoder:(id)a3
+- (CPSDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CPSDevice;
   v5 = [(CPSDevice *)&v16 init];
   if (v5)
   {
-    v5->_flags = [v4 decodeIntegerForKey:@"flags"];
+    v5->_flags = [coderCopy decodeIntegerForKey:@"flags"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"model"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"model"];
     model = v5->_model;
     v5->_model = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
     v12 = objc_opt_self();
-    v13 = [v4 decodeObjectOfClass:v12 forKey:@"buildVersion"];
+    v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"buildVersion"];
     buildVersion = v5->_buildVersion;
     v5->_buildVersion = v13;
   }
@@ -121,17 +121,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   flags = self->_flags;
-  v5 = a3;
-  [v5 encodeInteger:flags forKey:@"flags"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_buildVersion forKey:@"buildVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:flags forKey:@"flags"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_buildVersion forKey:@"buildVersion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CPSDevice);
   v4->_flags = self->_flags;

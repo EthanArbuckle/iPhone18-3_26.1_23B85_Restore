@@ -20,12 +20,12 @@
 
 - (uint64_t)tsu_isCurrentQueue
 {
-  if ([MEMORY[0x277CCABD8] currentQueue] == a1)
+  if ([MEMORY[0x277CCABD8] currentQueue] == self)
   {
     return 1;
   }
 
-  result = [a1 underlyingQueue];
+  result = [self underlyingQueue];
   if (result)
   {
     return dispatch_get_specific(TSUOperationQueueUtilityQueueSpecific) == result;

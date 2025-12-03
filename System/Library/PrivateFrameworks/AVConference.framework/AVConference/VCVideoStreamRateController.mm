@@ -1,25 +1,25 @@
 @interface VCVideoStreamRateController
-- (VCVideoStreamRateController)initWithDumpID:(unsigned int)a3;
+- (VCVideoStreamRateController)initWithDumpID:(unsigned int)d;
 - (id)className;
-- (unsigned)maxTierIndex:(unsigned int)a3;
-- (unsigned)minTierIndex:(unsigned int)a3;
-- (void)createLogDumpFile:(unsigned int)a3;
+- (unsigned)maxTierIndex:(unsigned int)index;
+- (unsigned)minTierIndex:(unsigned int)index;
+- (void)createLogDumpFile:(unsigned int)file;
 - (void)dealloc;
-- (void)doRateControlWithTime:(double)a3 roundTripTime:(double)a4 packetLossRate:(double)a5 operatingBitrate:(unsigned int)a6 averageReceivedBitrate:(unsigned int)a7;
+- (void)doRateControlWithTime:(double)time roundTripTime:(double)tripTime packetLossRate:(double)rate operatingBitrate:(unsigned int)bitrate averageReceivedBitrate:(unsigned int)receivedBitrate;
 - (void)releaseLogDumpFile;
-- (void)setMaxTargetBitrate:(unsigned int)a3 minTargetBitrate:(unsigned int)a4;
-- (void)setOperatingTierIndexWithBitrate:(unsigned int)a3;
-- (void)setRateControlInterval:(double)a3;
-- (void)updateAverageTargetBitrate:(unsigned int)a3 interval:(double)a4;
-- (void)updateRTPReceiveWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5;
-- (void)updateVideoStall:(BOOL)a3 withStallDuration:(unsigned int)a4;
+- (void)setMaxTargetBitrate:(unsigned int)bitrate minTargetBitrate:(unsigned int)targetBitrate;
+- (void)setOperatingTierIndexWithBitrate:(unsigned int)bitrate;
+- (void)setRateControlInterval:(double)interval;
+- (void)updateAverageTargetBitrate:(unsigned int)bitrate interval:(double)interval;
+- (void)updateRTPReceiveWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time;
+- (void)updateVideoStall:(BOOL)stall withStallDuration:(unsigned int)duration;
 @end
 
 @implementation VCVideoStreamRateController
 
-- (VCVideoStreamRateController)initWithDumpID:(unsigned int)a3
+- (VCVideoStreamRateController)initWithDumpID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VCVideoStreamRateController;
@@ -97,7 +97,7 @@ LABEL_12:
   [(VCVideoStreamRateController *)&v3 dealloc];
 }
 
-- (void)setMaxTargetBitrate:(unsigned int)a3 minTargetBitrate:(unsigned int)a4
+- (void)setMaxTargetBitrate:(unsigned int)bitrate minTargetBitrate:(unsigned int)targetBitrate
 {
   v8 = *MEMORY[0x1E69E9840];
   videoStreamRateControllerQueue = self->_videoStreamRateControllerQueue;
@@ -106,8 +106,8 @@ LABEL_12:
   block[2] = __68__VCVideoStreamRateController_setMaxTargetBitrate_minTargetBitrate___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  v6 = a4;
-  v7 = a3;
+  targetBitrateCopy = targetBitrate;
+  bitrateCopy = bitrate;
   dispatch_sync(videoStreamRateControllerQueue, block);
 }
 
@@ -125,7 +125,7 @@ uint64_t __68__VCVideoStreamRateController_setMaxTargetBitrate_minTargetBitrate_
   return [v3 setMaxTierIndex:v4 minTierIndex:v5];
 }
 
-- (void)setRateControlInterval:(double)a3
+- (void)setRateControlInterval:(double)interval
 {
   block[6] = *MEMORY[0x1E69E9840];
   videoStreamRateControllerQueue = self->_videoStreamRateControllerQueue;
@@ -134,11 +134,11 @@ uint64_t __68__VCVideoStreamRateController_setMaxTargetBitrate_minTargetBitrate_
   block[2] = __54__VCVideoStreamRateController_setRateControlInterval___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  *&block[5] = a3;
+  *&block[5] = interval;
   dispatch_sync(videoStreamRateControllerQueue, block);
 }
 
-- (void)doRateControlWithTime:(double)a3 roundTripTime:(double)a4 packetLossRate:(double)a5 operatingBitrate:(unsigned int)a6 averageReceivedBitrate:(unsigned int)a7
+- (void)doRateControlWithTime:(double)time roundTripTime:(double)tripTime packetLossRate:(double)rate operatingBitrate:(unsigned int)bitrate averageReceivedBitrate:(unsigned int)receivedBitrate
 {
   v11 = *MEMORY[0x1E69E9840];
   videoStreamRateControllerQueue = self->_videoStreamRateControllerQueue;
@@ -147,11 +147,11 @@ uint64_t __68__VCVideoStreamRateController_setMaxTargetBitrate_minTargetBitrate_
   v8[2] = __122__VCVideoStreamRateController_doRateControlWithTime_roundTripTime_packetLossRate_operatingBitrate_averageReceivedBitrate___block_invoke;
   v8[3] = &unk_1E85F7FD0;
   v8[4] = self;
-  *&v8[5] = a3;
-  *&v8[6] = a4;
-  *&v8[7] = a5;
-  v9 = a6;
-  v10 = a7;
+  *&v8[5] = time;
+  *&v8[6] = tripTime;
+  *&v8[7] = rate;
+  bitrateCopy = bitrate;
+  receivedBitrateCopy = receivedBitrate;
   dispatch_sync(videoStreamRateControllerQueue, v8);
 }
 
@@ -213,7 +213,7 @@ void __122__VCVideoStreamRateController_doRateControlWithTime_roundTripTime_pack
   }
 }
 
-- (void)updateRTPReceiveWithTimestamp:(unsigned int)a3 sampleRate:(unsigned int)a4 time:(double)a5
+- (void)updateRTPReceiveWithTimestamp:(unsigned int)timestamp sampleRate:(unsigned int)rate time:(double)time
 {
   v9 = *MEMORY[0x1E69E9840];
   videoStreamRateControllerQueue = self->_videoStreamRateControllerQueue;
@@ -222,9 +222,9 @@ void __122__VCVideoStreamRateController_doRateControlWithTime_roundTripTime_pack
   v6[2] = __77__VCVideoStreamRateController_updateRTPReceiveWithTimestamp_sampleRate_time___block_invoke;
   v6[3] = &unk_1E85F4090;
   v6[4] = self;
-  v7 = a3;
-  v8 = a4;
-  *&v6[5] = a5;
+  timestampCopy = timestamp;
+  rateCopy = rate;
+  *&v6[5] = time;
   dispatch_async(videoStreamRateControllerQueue, v6);
 }
 
@@ -241,7 +241,7 @@ uint64_t __77__VCVideoStreamRateController_updateRTPReceiveWithTimestamp_sampleR
   return result;
 }
 
-- (void)updateVideoStall:(BOOL)a3 withStallDuration:(unsigned int)a4
+- (void)updateVideoStall:(BOOL)stall withStallDuration:(unsigned int)duration
 {
   v8 = *MEMORY[0x1E69E9840];
   videoStreamRateControllerQueue = self->_videoStreamRateControllerQueue;
@@ -250,8 +250,8 @@ uint64_t __77__VCVideoStreamRateController_updateRTPReceiveWithTimestamp_sampleR
   block[2] = __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___block_invoke;
   block[3] = &unk_1E85F7418;
   block[4] = self;
-  v7 = a3;
-  v6 = a4;
+  stallCopy = stall;
+  durationCopy = duration;
   dispatch_async(videoStreamRateControllerQueue, block);
 }
 
@@ -265,12 +265,12 @@ double __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___bl
   return result;
 }
 
-- (unsigned)minTierIndex:(unsigned int)a3
+- (unsigned)minTierIndex:(unsigned int)index
 {
-  if (a3 <= 0x1DBD48)
+  if (index <= 0x1DBD48)
   {
     v5 = 0;
-    while (g_adwTxRateTiers[v5] < a3)
+    while (g_adwTxRateTiers[v5] < index)
     {
       if (++v5 == 27)
       {
@@ -297,12 +297,12 @@ double __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___bl
   return v5;
 }
 
-- (unsigned)maxTierIndex:(unsigned int)a3
+- (unsigned)maxTierIndex:(unsigned int)index
 {
-  if (a3 >= 0x2710)
+  if (index >= 0x2710)
   {
     v5 = 26;
-    while (g_adwTxRateTiers[v5] > a3)
+    while (g_adwTxRateTiers[v5] > index)
     {
       if (--v5 == -1)
       {
@@ -329,12 +329,12 @@ double __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___bl
   return v5;
 }
 
-- (void)setOperatingTierIndexWithBitrate:(unsigned int)a3
+- (void)setOperatingTierIndexWithBitrate:(unsigned int)bitrate
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_maxBitrate >= a3)
+  if (self->_maxBitrate >= bitrate)
   {
-    if (self->_minBitrate <= a3)
+    if (self->_minBitrate <= bitrate)
     {
       minTierIndex = [(VCVideoStreamRateController *)self minTierIndex:?];
     }
@@ -397,14 +397,14 @@ double __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___bl
   self->_operatingTierIndex = minTierIndex;
 }
 
-- (void)updateAverageTargetBitrate:(unsigned int)a3 interval:(double)a4
+- (void)updateAverageTargetBitrate:(unsigned int)bitrate interval:(double)interval
 {
   totalTime = self->_totalTime;
-  if (a4 > 0.0)
+  if (interval > 0.0)
   {
-    totalTime = totalTime + a4;
+    totalTime = totalTime + interval;
     self->_totalTime = totalTime;
-    self->_accumulatedTargetDataSize = (self->_accumulatedTargetDataSize + (a3 / 0x3E8) * a4);
+    self->_accumulatedTargetDataSize = (self->_accumulatedTargetDataSize + (bitrate / 0x3E8) * interval);
   }
 
   if (totalTime > 0.0)
@@ -413,11 +413,11 @@ double __66__VCVideoStreamRateController_updateVideoStall_withStallDuration___bl
   }
 }
 
-- (void)createLogDumpFile:(unsigned int)a3
+- (void)createLogDumpFile:(unsigned int)file
 {
   v13 = *MEMORY[0x1E69E9840];
   memset(v12, 170, 12);
-  __sprintf_chk(v12, 0, 0xCuLL, "%010u", a3);
+  __sprintf_chk(v12, 0, 0xCuLL, "%010u", file);
   v4 = VRLogfileAlloc(0, v12, "VCVideoRC", ".afrcdump", "com.apple.VideoConference.AFRClog.VideoStream", 9);
   self->_logDump = v4;
   VRLogfilePrintSync(v4, "STime\t\tdTime/ETxTS\tOWRD\tNOWRD\tNOWRDS\tNOWRDA\tUp\tRTT\tPLR/FEC\tRRx\tMBL\tBR/TR\tMQIn: A/V\tMQOut: A/V\tABRL\tQD\tBDL\tTxAT\tMODE\tTxSTATE\n", v5, v6, v7, v8, v9, v10, v11);

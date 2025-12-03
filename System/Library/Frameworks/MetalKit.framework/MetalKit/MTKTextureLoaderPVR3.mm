@@ -1,34 +1,34 @@
 @interface MTKTextureLoaderPVR3
-+ (BOOL)isPVR3File:(id)a3;
-- (BOOL)parseMetadataWithError:(id *)a3;
-- (MTKTextureLoaderPVR3)initWithData:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8;
-- (unint64_t)determineFormat:(unint64_t)a3 colorSpace:(unsigned int)a4 channelType:(unsigned int)a5 options:(id)a6;
++ (BOOL)isPVR3File:(id)file;
+- (BOOL)parseMetadataWithError:(id *)error;
+- (MTKTextureLoaderPVR3)initWithData:(id)data options:(id)options error:(id *)error;
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image;
+- (unint64_t)determineFormat:(unint64_t)format colorSpace:(unsigned int)space channelType:(unsigned int)type options:(id)options;
 - (void)dealloc;
-- (void)determineBlockSize:(unint64_t *)a3 blocksWide:(unint64_t *)a4 blocksHigh:(unint64_t *)a5 bytesPerBlock:(unint64_t *)a6 fromFormat:(unsigned int)a7 width:(unint64_t)a8 andHeight:(unint64_t)a9;
+- (void)determineBlockSize:(unint64_t *)size blocksWide:(unint64_t *)wide blocksHigh:(unint64_t *)high bytesPerBlock:(unint64_t *)block fromFormat:(unsigned int)format width:(unint64_t)width andHeight:(unint64_t)height;
 @end
 
 @implementation MTKTextureLoaderPVR3
 
-+ (BOOL)isPVR3File:(id)a3
++ (BOOL)isPVR3File:(id)file
 {
-  if (!a3)
+  if (!file)
   {
     return 0;
   }
 
-  if ([a3 length] < 0x34)
+  if ([file length] < 0x34)
   {
     return 0;
   }
 
   v6 = 0;
   memset(v5, 0, sizeof(v5));
-  [a3 getBytes:v5 length:52];
+  [file getBytes:v5 length:52];
   return LODWORD(v5[0]) == 55727696;
 }
 
-- (MTKTextureLoaderPVR3)initWithData:(id)a3 options:(id)a4 error:(id *)a5
+- (MTKTextureLoaderPVR3)initWithData:(id)data options:(id)options error:(id *)error
 {
   v25.receiver = self;
   v25.super_class = MTKTextureLoaderPVR3;
@@ -38,34 +38,34 @@
     return v8;
   }
 
-  if (![MTKTextureLoaderPVR3 isPVR3File:a3])
+  if (![MTKTextureLoaderPVR3 isPVR3File:data])
   {
     [MTKTextureLoaderPVR3 initWithData:options:error:];
   }
 
-  v9 = a3;
-  *(v8 + 19) = v9;
-  v10 = [v9 bytes];
-  [v8 setWidth:*(v10 + 28)];
-  [v8 setHeight:*(v10 + 24)];
-  [v8 setDepth:*(v10 + 32)];
-  v11 = *(v10 + 36);
-  [v8 setNumFaces:*(v10 + 40)];
-  [v8 setNumMipmapLevels:*(v10 + 44)];
-  *(v8 + 36) = *(v10 + 48);
+  dataCopy = data;
+  *(v8 + 19) = dataCopy;
+  bytes = [dataCopy bytes];
+  [v8 setWidth:*(bytes + 28)];
+  [v8 setHeight:*(bytes + 24)];
+  [v8 setDepth:*(bytes + 32)];
+  v11 = *(bytes + 36);
+  [v8 setNumFaces:*(bytes + 40)];
+  [v8 setNumMipmapLevels:*(bytes + 44)];
+  *(v8 + 36) = *(bytes + 48);
   [v8 setImageOrigin:@"MTKTextureLoaderOriginTopLeft"];
-  if (![v8 parseMetadataWithError:a5])
+  if (![v8 parseMetadataWithError:error])
   {
     goto LABEL_32;
   }
 
-  *(v8 + 20) = *(v10 + 8);
-  v12 = *(v10 + 16);
-  v13 = *(v10 + 20);
+  *(v8 + 20) = *(bytes + 8);
+  v12 = *(bytes + 16);
+  v13 = *(bytes + 20);
   [v8 setPixelFormat:objc_msgSend(v8, "determineFormat:colorSpace:channelType:options:")];
   if (![v8 pixelFormat])
   {
-    if (a5)
+    if (error)
     {
       v17 = @"Could not determine format from PVR header";
       goto LABEL_31;
@@ -83,15 +83,15 @@ LABEL_32:
   *(v8 + 120) = v23;
   *(v8 + 88) = v21;
   v14 = *(v8 + 24);
-  v15 = [a4 objectForKey:@"MTKTextureLoaderOptionOrigin"];
+  v15 = [options objectForKey:@"MTKTextureLoaderOptionOrigin"];
   v16 = v15;
   if ((v14 & 0x400) != 0 && v15)
   {
-    if (a5)
+    if (error)
     {
       v17 = @"Vertical flip is not supported for compressed PVR textures";
 LABEL_31:
-      *a5 = _newMTKTextureErrorWithCodeAndErrorString(0, v17);
+      *error = _newMTKTextureErrorWithCodeAndErrorString(0, v17);
       goto LABEL_32;
     }
 
@@ -102,7 +102,7 @@ LABEL_31:
   {
     if ([v8 numFaces] >= 2)
     {
-      if (a5)
+      if (error)
       {
         v17 = @"Metal does not support texture cube arrays";
         goto LABEL_31;
@@ -153,7 +153,7 @@ LABEL_21:
 LABEL_22:
     if ([v8 textureType] != 2 && objc_msgSend(v8, "textureType") != 3 && objc_msgSend(v8, "textureType") != 5)
     {
-      if (a5)
+      if (error)
       {
         v17 = @"Vertical flip is only supported for 2D, 2D array, and cube map textures";
         goto LABEL_31;
@@ -164,9 +164,9 @@ LABEL_22:
   }
 
 LABEL_28:
-  if ([a4 objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
+  if ([options objectForKey:@"MTKTextureLoaderOptionCubeLayout"])
   {
-    if (a5)
+    if (error)
     {
       v17 = @"Creating cube maps from 2D textures is not supported for PVR files";
       goto LABEL_31;
@@ -186,23 +186,23 @@ LABEL_28:
   [(MTKTextureLoaderData *)&v3 dealloc];
 }
 
-- (BOOL)parseMetadataWithError:(id *)a3
+- (BOOL)parseMetadataWithError:(id *)error
 {
   if ([(NSData *)self->_imageData length]- 52 >= self->_metaDataSize)
   {
-    v8 = [(NSData *)self->_imageData bytes];
+    bytes = [(NSData *)self->_imageData bytes];
     metaDataSize = self->_metaDataSize;
     if (metaDataSize >= 0xD)
     {
-      v10 = &v8[metaDataSize];
-      v11 = &v8[metaDataSize + 40];
-      v12 = v8 + 52;
+      v10 = &bytes[metaDataSize];
+      v11 = &bytes[metaDataSize + 40];
+      v12 = bytes + 52;
       v13 = v10 + 52;
       while (1)
       {
         if (*v12 != 55727696)
         {
-          if (!a3)
+          if (!error)
           {
             return 0;
           }
@@ -240,7 +240,7 @@ LABEL_28:
         }
       }
 
-      if (!a3)
+      if (!error)
       {
         return 0;
       }
@@ -254,13 +254,13 @@ LABEL_28:
 
   else
   {
-    if (a3)
+    if (error)
     {
       v5 = @"PVR header metadata size too large";
 LABEL_4:
       v6 = _newMTKTextureErrorWithCodeAndErrorString(0, v5);
       result = 0;
-      *a3 = v6;
+      *error = v6;
       return result;
     }
 
@@ -268,20 +268,20 @@ LABEL_4:
   }
 }
 
-- (id)getDataForArrayElement:(unint64_t)a3 face:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 bytesPerRow:(unint64_t *)a7 bytesPerImage:(unint64_t *)a8
+- (id)getDataForArrayElement:(unint64_t)element face:(unint64_t)face level:(unint64_t)level depthPlane:(unint64_t)plane bytesPerRow:(unint64_t *)row bytesPerImage:(unint64_t *)image
 {
-  v10 = [(NSData *)self->_imageData bytes];
+  bytes = [(NSData *)self->_imageData bytes];
   metaDataSize = self->_metaDataSize;
   v12 = [(NSData *)self->_imageData length];
   v13 = self->_metaDataSize;
-  v14 = [(MTKTextureLoaderData *)self width];
-  v15 = [(MTKTextureLoaderData *)self height];
+  width = [(MTKTextureLoaderData *)self width];
+  height = [(MTKTextureLoaderData *)self height];
   result = [(MTKTextureLoaderData *)self numMipmapLevels];
   if (result)
   {
     v17 = 0;
     v18 = v12 - v13 - 52;
-    v19 = v10 + metaDataSize + 52;
+    v19 = bytes + metaDataSize + 52;
     p_pixelFormatInfo = &self->_pixelFormatInfo;
     while (1)
     {
@@ -291,18 +291,18 @@ LABEL_4:
       v42 = 0;
       if ((p_pixelFormatInfo->flags & 0x400) != 0)
       {
-        [(MTKTextureLoaderPVR3 *)self determineBlockSize:&v44 blocksWide:&v43 blocksHigh:&v42 bytesPerBlock:&v41 fromFormat:self->_pvrCompressedFormat width:v14 andHeight:v15];
+        [(MTKTextureLoaderPVR3 *)self determineBlockSize:&v44 blocksWide:&v43 blocksHigh:&v42 bytesPerBlock:&v41 fromFormat:self->_pvrCompressedFormat width:width andHeight:height];
         v35 = v43 * v41;
         v21 = v43 * v41 * v42;
       }
 
       else
       {
-        v35 = p_pixelFormatInfo->type.normal.pixelBytes * v14;
-        v21 = v35 * v15;
+        v35 = p_pixelFormatInfo->type.normal.pixelBytes * width;
+        v21 = v35 * height;
       }
 
-      v36 = v14;
+      v36 = width;
       if ([(MTKTextureLoaderData *)self numArrayElements])
       {
         break;
@@ -311,28 +311,28 @@ LABEL_4:
 LABEL_29:
       if (v36 <= 1)
       {
-        v14 = 1;
+        width = 1;
       }
 
       else
       {
-        v14 = v36 >> 1;
+        width = v36 >> 1;
       }
 
-      if (v15 <= 1)
+      if (height <= 1)
       {
-        v15 = 1;
+        height = 1;
       }
 
       else
       {
-        v15 >>= 1;
+        height >>= 1;
       }
 
       ++v17;
-      v31 = [(MTKTextureLoaderData *)self numMipmapLevels];
+      numMipmapLevels = [(MTKTextureLoaderData *)self numMipmapLevels];
       p_pixelFormatInfo = &self->_pixelFormatInfo;
-      if (v31 <= v17)
+      if (numMipmapLevels <= v17)
       {
         return 0;
       }
@@ -352,11 +352,11 @@ LABEL_28:
     }
 
     v23 = 0;
-    v25 = v17 == a5 && v22 == a3;
+    v25 = v17 == level && v22 == element;
     v37 = v25;
     while (1)
     {
-      v26 = v15;
+      v26 = height;
       if ([(MTKTextureLoaderData *)self depth])
       {
         break;
@@ -364,7 +364,7 @@ LABEL_28:
 
 LABEL_27:
       ++v23;
-      v15 = v26;
+      height = v26;
       if ([(MTKTextureLoaderData *)self numFaces]<= v23)
       {
         goto LABEL_28;
@@ -372,7 +372,7 @@ LABEL_27:
     }
 
     v27 = 0;
-    v28 = v23 == a4 && v37;
+    v28 = v23 == face && v37;
     while (1)
     {
       v29 = v18 >= v21;
@@ -382,10 +382,10 @@ LABEL_27:
         return 0;
       }
 
-      if (a6 == v27 && v28)
+      if (plane == v27 && v28)
       {
-        *a7 = v35;
-        *a8 = v21;
+        *row = v35;
+        *image = v21;
         return [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v19 length:v21 freeWhenDone:0];
       }
 
@@ -400,73 +400,73 @@ LABEL_27:
   return result;
 }
 
-- (unint64_t)determineFormat:(unint64_t)a3 colorSpace:(unsigned int)a4 channelType:(unsigned int)a5 options:(id)a6
+- (unint64_t)determineFormat:(unint64_t)format colorSpace:(unsigned int)space channelType:(unsigned int)type options:(id)options
 {
-  v9 = a4 == 1;
-  if ([a6 objectForKey:@"MTKTextureLoaderOptionSRGB"])
+  v9 = space == 1;
+  if ([options objectForKey:@"MTKTextureLoaderOptionSRGB"])
   {
-    v9 = [objc_msgSend(a6 objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
+    v9 = [objc_msgSend(options objectForKey:{@"MTKTextureLoaderOptionSRGB", "BOOLValue"}];
   }
 
-  if (HIDWORD(a3))
+  if (HIDWORD(format))
   {
-    if (a3 > 0x105050561726761)
+    if (format > 0x105050561726761)
     {
-      if (a3 <= 0x800000000000060)
+      if (format <= 0x800000000000060)
       {
-        if (a3 > 0x404040472676260)
+        if (format > 0x404040472676260)
         {
-          if (a3 == 0x404040472676261)
+          if (format == 0x404040472676261)
           {
-            if (a5 <= 8 && ((1 << a5) & 0x111) != 0)
+            if (type <= 8 && ((1 << type) & 0x111) != 0)
             {
               return 42;
             }
           }
 
-          else if (a3 == 0x505050172676261 && a5 <= 8 && ((1 << a5) & 0x111) != 0)
+          else if (format == 0x505050172676261 && type <= 8 && ((1 << type) & 0x111) != 0)
           {
             return 41;
           }
         }
 
-        else if (a3 == 0x105050561726762)
+        else if (format == 0x105050561726762)
         {
-          if (a5 <= 8 && ((1 << a5) & 0x111) != 0)
+          if (type <= 8 && ((1 << type) & 0x111) != 0)
           {
             return 43;
           }
         }
 
-        else if (a3 == 0x20A0A0A61626772 && a5 < 0xB)
+        else if (format == 0x20A0A0A61626772 && type < 0xB)
         {
           v15 = &unk_1D96A9268;
-          return v15[a5];
+          return v15[type];
         }
 
         return 0;
       }
 
-      if (a3 <= 0x808080861726761)
+      if (format <= 0x808080861726761)
       {
-        if (a3 == 0x800000000000061)
+        if (format == 0x800000000000061)
         {
           return 1;
         }
 
-        if (a3 != 0x808080861626772)
+        if (format != 0x808080861626772)
         {
           return 0;
         }
 
-        if (a5 > 1)
+        if (type > 1)
         {
-          if (a5 == 2)
+          if (type == 2)
           {
             return 73;
           }
 
-          if (a5 == 3)
+          if (type == 3)
           {
             return 74;
           }
@@ -474,9 +474,9 @@ LABEL_27:
           return 0;
         }
 
-        if (a5)
+        if (type)
         {
-          if (a5 == 1)
+          if (type == 1)
           {
             return 72;
           }
@@ -490,20 +490,20 @@ LABEL_27:
 
       else
       {
-        if (a3 != 0x808080861726762)
+        if (format != 0x808080861726762)
         {
-          if (a3 != 0x1010101061626772)
+          if (format != 0x1010101061626772)
           {
-            if (a3 == 0x2020202061626772 && a5 - 10 < 3)
+            if (format == 0x2020202061626772 && type - 10 < 3)
             {
-              return a5 + 113;
+              return type + 113;
             }
 
             return 0;
           }
 
-          v13 = a5 - 4;
-          if (a5 - 4 < 9)
+          v13 = type - 4;
+          if (type - 4 < 9)
           {
             v14 = &unk_1D96A9220;
             return v14[v13];
@@ -519,21 +519,21 @@ LABEL_27:
       goto LABEL_129;
     }
 
-    if (a3 > 0x101000006771)
+    if (format > 0x101000006771)
     {
-      if (a3 > 0x5060500726761)
+      if (format > 0x5060500726761)
       {
-        if (a3 == 0x5060500726762)
+        if (format == 0x5060500726762)
         {
-          if (a5 <= 8 && ((1 << a5) & 0x111) != 0)
+          if (type <= 8 && ((1 << type) & 0x111) != 0)
           {
             return 40;
           }
         }
 
-        else if (a3 == 0xA0A0A00626772)
+        else if (format == 0xA0A0A00626772)
         {
-          if (a5 == 12)
+          if (type == 12)
           {
             return 92;
           }
@@ -547,10 +547,10 @@ LABEL_27:
         return 0;
       }
 
-      if (a3 == 0x101000006772)
+      if (format == 0x101000006772)
       {
-        v13 = a5 - 4;
-        if (a5 - 4 < 9)
+        v13 = type - 4;
+        if (type - 4 < 9)
         {
           v14 = &unk_1D96A91D8;
           return v14[v13];
@@ -559,25 +559,25 @@ LABEL_27:
         return 0;
       }
 
-      if (a3 != 0x202000006772)
+      if (format != 0x202000006772)
       {
         return 0;
       }
 
-      v16 = a5 - 10 >= 3;
-      v17 = a5 + 93;
+      v16 = type - 10 >= 3;
+      v17 = type + 93;
     }
 
     else
     {
-      if (a3 <= 0x2000000071)
+      if (format <= 0x2000000071)
       {
-        if (a3 != 0x800000072)
+        if (format != 0x800000072)
         {
-          if (a3 == 0x1000000072)
+          if (format == 0x1000000072)
           {
-            v13 = a5 - 4;
-            if (a5 - 4 < 9)
+            v13 = type - 4;
+            if (type - 4 < 9)
             {
               v14 = &unk_1D96A9190;
               return v14[v13];
@@ -587,14 +587,14 @@ LABEL_27:
           return 0;
         }
 
-        if (a5 > 1)
+        if (type > 1)
         {
-          if (a5 == 2)
+          if (type == 2)
           {
             return 13;
           }
 
-          if (a5 == 3)
+          if (type == 3)
           {
             return 14;
           }
@@ -602,9 +602,9 @@ LABEL_27:
           return 0;
         }
 
-        if (a5)
+        if (type)
         {
-          if (a5 == 1)
+          if (type == 1)
           {
             return 12;
           }
@@ -626,21 +626,21 @@ LABEL_129:
         }
       }
 
-      if (a3 != 0x2000000072)
+      if (format != 0x2000000072)
       {
-        if (a3 != 0x80800006772)
+        if (format != 0x80800006772)
         {
           return 0;
         }
 
-        if (a5 > 1)
+        if (type > 1)
         {
-          if (a5 == 2)
+          if (type == 2)
           {
             return 33;
           }
 
-          if (a5 == 3)
+          if (type == 3)
           {
             return 34;
           }
@@ -648,9 +648,9 @@ LABEL_129:
           return 0;
         }
 
-        if (a5)
+        if (type)
         {
-          if (a5 == 1)
+          if (type == 1)
           {
             return 32;
           }
@@ -663,8 +663,8 @@ LABEL_129:
         goto LABEL_129;
       }
 
-      v16 = a5 - 10 >= 3;
-      v17 = a5 + 43;
+      v16 = type - 10 >= 3;
+      v17 = type + 43;
     }
 
     if (v16)
@@ -679,7 +679,7 @@ LABEL_129:
   }
 
   result = 150;
-  switch(a3)
+  switch(format)
   {
     case 0:
       v11 = v9 == 0;
@@ -712,21 +712,21 @@ LABEL_129:
       v12 = 134;
       goto LABEL_129;
     case 12:
-      if (a5 >= 0xC)
+      if (type >= 0xC)
       {
         return 0;
       }
 
       v15 = &unk_1D96A92C0;
-      return v15[a5];
+      return v15[type];
     case 13:
-      if (a5 >= 0xC)
+      if (type >= 0xC)
       {
         return 0;
       }
 
       v15 = &unk_1D96A9320;
-      return v15[a5];
+      return v15[type];
     case 14:
       return result;
     case 15:
@@ -752,21 +752,21 @@ LABEL_129:
       v12 = 182;
       goto LABEL_129;
     case 25:
-      if (a5 >= 0xC)
+      if (type >= 0xC)
       {
         return 0;
       }
 
       v15 = &unk_1D96A9380;
-      return v15[a5];
+      return v15[type];
     case 26:
-      if (a5 >= 0xC)
+      if (type >= 0xC)
       {
         return 0;
       }
 
       v15 = &unk_1D96A93E0;
-      return v15[a5];
+      return v15[type];
     case 27:
       v18 = v9 == 0;
       v19 = 204;
@@ -855,26 +855,26 @@ LABEL_106:
   return result;
 }
 
-- (void)determineBlockSize:(unint64_t *)a3 blocksWide:(unint64_t *)a4 blocksHigh:(unint64_t *)a5 bytesPerBlock:(unint64_t *)a6 fromFormat:(unsigned int)a7 width:(unint64_t)a8 andHeight:(unint64_t)a9
+- (void)determineBlockSize:(unint64_t *)size blocksWide:(unint64_t *)wide blocksHigh:(unint64_t *)high bytesPerBlock:(unint64_t *)block fromFormat:(unsigned int)format width:(unint64_t)width andHeight:(unint64_t)height
 {
-  if (a7 > 1)
+  if (format > 1)
   {
-    if ((a7 & 0xFFFFFFFE) == 2)
+    if ((format & 0xFFFFFFFE) == 2)
     {
-      v13 = (a8 + 3) >> 2;
+      v13 = (width + 3) >> 2;
       if (v13 <= 2)
       {
         v13 = 2;
       }
 
-      *a4 = v13;
-      v14 = (a9 + 3) >> 2;
+      *wide = v13;
+      v14 = (height + 3) >> 2;
       if (v14 <= 2)
       {
         v14 = 2;
       }
 
-      *a5 = v14;
+      *high = v14;
       pixelBytes = 8;
       v12 = 16;
     }
@@ -884,46 +884,46 @@ LABEL_106:
       blockWidth = self->_pixelFormatInfo.type.compressed.blockWidth;
       pixelBytesRender = self->_pixelFormatInfo.type.normal.pixelBytesRender;
       pixelBytes = self->_pixelFormatInfo.type.normal.pixelBytes;
-      v17 = (a8 - 1 + blockWidth) / blockWidth;
-      if (__CFADD__(a8 - 1, blockWidth))
+      v17 = (width - 1 + blockWidth) / blockWidth;
+      if (__CFADD__(width - 1, blockWidth))
       {
         v17 = 1;
       }
 
-      *a4 = v17;
-      v18 = (a9 - 1 + pixelBytesRender) / pixelBytesRender;
-      if (__CFADD__(a9 - 1, pixelBytesRender))
+      *wide = v17;
+      v18 = (height - 1 + pixelBytesRender) / pixelBytesRender;
+      if (__CFADD__(height - 1, pixelBytesRender))
       {
         v18 = 1;
       }
 
-      *a5 = v18;
+      *high = v18;
       v12 = pixelBytesRender * blockWidth;
     }
   }
 
   else
   {
-    v9 = (a8 + 7) >> 3;
+    v9 = (width + 7) >> 3;
     if (v9 <= 2)
     {
       v9 = 2;
     }
 
-    *a4 = v9;
-    v10 = (a9 + 3) >> 2;
+    *wide = v9;
+    v10 = (height + 3) >> 2;
     if (v10 <= 2)
     {
       v10 = 2;
     }
 
-    *a5 = v10;
+    *high = v10;
     pixelBytes = 8;
     v12 = 32;
   }
 
-  *a3 = v12;
-  *a6 = pixelBytes;
+  *size = v12;
+  *block = pixelBytes;
 }
 
 @end

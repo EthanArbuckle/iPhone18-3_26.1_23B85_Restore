@@ -1,9 +1,9 @@
 @interface NSFileProviderMovingResponse
-+ (id)providingNotRequiredResponseWithSyncRootID:(unint64_t)a3;
++ (id)providingNotRequiredResponseWithSyncRootID:(unint64_t)d;
 + (id)providingRequiredResponse;
-- (NSFileProviderMovingResponse)initWithCoder:(id)a3;
+- (NSFileProviderMovingResponse)initWithCoder:(id)coder;
 - (NSNumber)syncRootID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFileProviderMovingResponse
@@ -16,11 +16,11 @@
   return v2;
 }
 
-+ (id)providingNotRequiredResponseWithSyncRootID:(unint64_t)a3
++ (id)providingNotRequiredResponseWithSyncRootID:(unint64_t)d
 {
   v4 = objc_opt_new();
   *(v4 + 8) = 0;
-  *(v4 + 16) = a3;
+  *(v4 + 16) = d;
 
   return v4;
 }
@@ -38,21 +38,21 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileProviderMovingResponse instances should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeBool:self->_requiresProviding forKey:@"requiresProviding"];
-  [a3 encodeBool:self->_requiresAccessorBlockMaterializationPolicy forKey:@"requiresMaterialization"];
-  v5 = [(NSFileProviderMovingResponse *)self syncRootID];
+  [coder encodeBool:self->_requiresProviding forKey:@"requiresProviding"];
+  [coder encodeBool:self->_requiresAccessorBlockMaterializationPolicy forKey:@"requiresMaterialization"];
+  syncRootID = [(NSFileProviderMovingResponse *)self syncRootID];
 
-  [a3 encodeObject:v5 forKey:@"syncRootID"];
+  [coder encodeObject:syncRootID forKey:@"syncRootID"];
 }
 
-- (NSFileProviderMovingResponse)initWithCoder:(id)a3
+- (NSFileProviderMovingResponse)initWithCoder:(id)coder
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -60,9 +60,9 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileProviderMovingResponse should only ever be decoded by XPC" userInfo:0]);
   }
 
-  self->_requiresProviding = [a3 decodeBoolForKey:@"requiresProviding"];
-  self->_requiresAccessorBlockMaterializationPolicy = [a3 decodeBoolForKey:@"requiresMaterialization"];
-  self->_syncRootID = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"syncRootID", "unsignedLongLongValue"}];
+  self->_requiresProviding = [coder decodeBoolForKey:@"requiresProviding"];
+  self->_requiresAccessorBlockMaterializationPolicy = [coder decodeBoolForKey:@"requiresMaterialization"];
+  self->_syncRootID = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"syncRootID", "unsignedLongLongValue"}];
   return self;
 }
 

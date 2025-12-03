@@ -1,14 +1,14 @@
 @interface NTKAltitudeColorCurve
-- (double)rgbfColorForAltitude:(float)a3;
-- (id)colorForAltitude:(id)a3;
+- (double)rgbfColorForAltitude:(float)altitude;
+- (id)colorForAltitude:(id)altitude;
 @end
 
 @implementation NTKAltitudeColorCurve
 
-- (id)colorForAltitude:(id)a3
+- (id)colorForAltitude:(id)altitude
 {
-  var1 = a3.var1;
-  [(NTKCubicColorCurve *)self colorForFraction:*&a3.var0];
+  var1 = altitude.var1;
+  [(NTKCubicColorCurve *)self colorForFraction:*&altitude.var0];
   objc_claimAutoreleasedReturnValue();
   *&v5 = var1;
   [(NTKCubicColorCurve *)self colorForFraction:v5];
@@ -16,11 +16,11 @@
   CLKUIInterpolateBetweenColors();
 }
 
-- (double)rgbfColorForAltitude:(float)a3
+- (double)rgbfColorForAltitude:(float)altitude
 {
-  [a1 rgbfColorForFraction:a2];
+  [self rgbfColorForFraction:a2];
   v9 = v6;
-  [a1 rgbfColorForFraction:a3];
+  [self rgbfColorForFraction:altitude];
   *&result = vmlaq_n_f32(v9, vsubq_f32(v7, v9), a4).u64[0];
   return result;
 }

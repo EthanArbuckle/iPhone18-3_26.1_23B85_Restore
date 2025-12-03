@@ -7,11 +7,11 @@
 - (id)axAuditLogStringForDifferenceFromDate:()AXAudit
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a1;
+  selfCopy = self;
   v6 = a3;
   v7 = [v4 alloc];
   v8 = [v7 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v9 = [v8 components:0x8000 fromDate:v6 toDate:v5 options:0];
+  v9 = [v8 components:0x8000 fromDate:v6 toDate:selfCopy options:0];
 
   v10 = [v9 nanosecond] / 1000000000.0;
   v11 = &off_23D725000;

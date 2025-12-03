@@ -6,43 +6,43 @@
 - (NSString)description;
 - (NSString)identifier;
 - (void)dealloc;
-- (void)setArtwork:(CGImage *)a3;
-- (void)setTimeRangeInAudiobook:(id *)a3;
-- (void)setTimeRangeInTrack:(id *)a3;
+- (void)setArtwork:(CGImage *)artwork;
+- (void)setTimeRangeInAudiobook:(id *)audiobook;
+- (void)setTimeRangeInTrack:(id *)track;
 @end
 
 @implementation BKAVAudiobookChapter
 
 - (BKAudiobook)audiobook
 {
-  v2 = [(BKAVAudiobookChapter *)self track];
-  v3 = [v2 audiobook];
+  track = [(BKAVAudiobookChapter *)self track];
+  audiobook = [track audiobook];
 
-  return v3;
+  return audiobook;
 }
 
 - (NSString)identifier
 {
-  v3 = [(BKAVAudiobookChapter *)self assetURL];
-  v4 = [v3 absoluteString];
+  assetURL = [(BKAVAudiobookChapter *)self assetURL];
+  absoluteString = [assetURL absoluteString];
 
-  if ([v4 length])
+  if ([absoluteString length])
   {
-    v5 = [(BKAVAudiobookChapter *)self track];
-    v6 = [v5 audiobook];
-    v7 = [v6 chapters];
-    v8 = [v7 indexOfObject:self];
+    track = [(BKAVAudiobookChapter *)self track];
+    audiobook = [track audiobook];
+    chapters = [audiobook chapters];
+    v8 = [chapters indexOfObject:self];
 
-    v9 = [NSString stringWithFormat:@"%@.%ld", v4, v8];
+    uUIDString = [NSString stringWithFormat:@"%@.%ld", absoluteString, v8];
   }
 
   else
   {
     v10 = +[NSUUID UUID];
-    v9 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
   }
 
-  return v9;
+  return uUIDString;
 }
 
 - (void)dealloc
@@ -57,23 +57,23 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKAVAudiobookChapter *)self title];
-  v6 = [(BKAVAudiobookChapter *)self author];
-  v7 = [(BKAVAudiobookChapter *)self customTitle];
+  title = [(BKAVAudiobookChapter *)self title];
+  author = [(BKAVAudiobookChapter *)self author];
+  customTitle = [(BKAVAudiobookChapter *)self customTitle];
   [(BKAVAudiobookChapter *)self timeRangeInAudiobook];
   time = v12;
   Seconds = CMTimeGetSeconds(&time);
   [(BKAVAudiobookChapter *)self duration];
-  v10 = [NSString stringWithFormat:@"<%@:%p title=%@ author=%@ customTitle=%@ range=(%.1lf, %.1lf)>", v4, self, v5, v6, v7, *&Seconds, v9];
+  v10 = [NSString stringWithFormat:@"<%@:%p title=%@ author=%@ customTitle=%@ range=(%.1lf, %.1lf)>", v4, self, title, author, customTitle, *&Seconds, v9];
 
   return v10;
 }
 
-- (void)setArtwork:(CGImage *)a3
+- (void)setArtwork:(CGImage *)artwork
 {
-  CGImageRetain(a3);
+  CGImageRetain(artwork);
   CGImageRelease(self->_artwork);
-  self->_artwork = a3;
+  self->_artwork = artwork;
 }
 
 - ($C9B3965AAA5284750DDDB08D9AABF973)timeRangeInTrack
@@ -85,11 +85,11 @@
   return self;
 }
 
-- (void)setTimeRangeInTrack:(id *)a3
+- (void)setTimeRangeInTrack:(id *)track
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->timeRangeInTrack.start.epoch = *&a3->var0.var3;
+  v3 = *&track->var0.var0;
+  v4 = *&track->var1.var1;
+  *&self->timeRangeInTrack.start.epoch = *&track->var0.var3;
   *&self->timeRangeInTrack.duration.timescale = v4;
   *&self->timeRangeInTrack.start.value = v3;
 }
@@ -103,11 +103,11 @@
   return self;
 }
 
-- (void)setTimeRangeInAudiobook:(id *)a3
+- (void)setTimeRangeInAudiobook:(id *)audiobook
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->timeRangeInAudiobook.start.epoch = *&a3->var0.var3;
+  v3 = *&audiobook->var0.var0;
+  v4 = *&audiobook->var1.var1;
+  *&self->timeRangeInAudiobook.start.epoch = *&audiobook->var0.var3;
   *&self->timeRangeInAudiobook.duration.timescale = v4;
   *&self->timeRangeInAudiobook.start.value = v3;
 }

@@ -1,25 +1,25 @@
 @interface GroupAnimation
 + (id)animation;
-+ (id)animationForAnimatedFlag:(BOOL)a3;
++ (id)animationForAnimatedFlag:(BOOL)flag;
 + (id)animationForImplicitAnimationState;
 - (BOOL)isEmpty;
 - (GroupAnimation)init;
-- (id)addCompletionWaitBlockWithReason:(id)a3;
+- (id)addCompletionWaitBlockWithReason:(id)reason;
 - (void)_childAnimationsDidComplete;
-- (void)_enterCompletionWaitDispatchGroupWithReason:(id)a3;
-- (void)_leaveCompletionWaitDispatchGroupWithReason:(id)a3;
-- (void)addChildAnimation:(id)a3;
-- (void)addPreparation:(id)a3 animations:(id)a4 completion:(id)a5;
+- (void)_enterCompletionWaitDispatchGroupWithReason:(id)reason;
+- (void)_leaveCompletionWaitDispatchGroupWithReason:(id)reason;
+- (void)addChildAnimation:(id)animation;
+- (void)addPreparation:(id)preparation animations:(id)animations completion:(id)completion;
 - (void)animate;
-- (void)complete:(BOOL)a3;
+- (void)complete:(BOOL)complete;
 - (void)dealloc;
 - (void)prepare;
 - (void)runInCurrentContext;
 - (void)runWithCurrentOptions;
 - (void)runWithDefaultOptions;
-- (void)runWithDelay:(double)a3 initialVelocity:(double)a4 options:(unint64_t)a5;
-- (void)runWithDuration:(double)a3 delay:(double)a4 options:(unint64_t)a5;
-- (void)runWithDuration:(double)a3 delay:(double)a4 springDamping:(double)a5 initialVelocity:(double)a6 options:(unint64_t)a7;
+- (void)runWithDelay:(double)delay initialVelocity:(double)velocity options:(unint64_t)options;
+- (void)runWithDuration:(double)duration delay:(double)delay options:(unint64_t)options;
+- (void)runWithDuration:(double)duration delay:(double)delay springDamping:(double)damping initialVelocity:(double)velocity options:(unint64_t)options;
 - (void)runWithoutAnimation;
 @end
 
@@ -27,7 +27,7 @@
 
 + (id)animation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -61,7 +61,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -96,22 +96,22 @@
   return [(NSMutableArray *)self->_completions count]== 0;
 }
 
-- (void)addPreparation:(id)a3 animations:(id)a4 completion:(id)a5
+- (void)addPreparation:(id)preparation animations:(id)animations completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preparationCopy = preparation;
+  animationsCopy = animations;
+  completionCopy = completion;
   v11 = sub_2DD54();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v24 = 134349314;
-    v25 = self;
+    selfCopy = self;
     v26 = 2080;
     v27 = "[GroupAnimation addPreparation:animations:completion:]";
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v24, 0x16u);
   }
 
-  if (v8)
+  if (preparationCopy)
   {
     if (self->_didPrepare)
     {
@@ -130,12 +130,12 @@
         preparations = self->_preparations;
       }
 
-      v15 = [v8 copy];
+      v15 = [preparationCopy copy];
       [(NSMutableArray *)preparations addObject:v15];
     }
   }
 
-  if (v9)
+  if (animationsCopy)
   {
     if (self->_didAnimate)
     {
@@ -152,11 +152,11 @@
       animations = self->_animations;
     }
 
-    v19 = [v9 copy];
+    v19 = [animationsCopy copy];
     [(NSMutableArray *)animations addObject:v19];
   }
 
-  if (v10)
+  if (completionCopy)
   {
     if (self->_didComplete)
     {
@@ -173,29 +173,29 @@
       completions = self->_completions;
     }
 
-    v23 = [v10 copy];
+    v23 = [completionCopy copy];
     [(NSMutableArray *)completions addObject:v23];
   }
 }
 
-- (void)addChildAnimation:(id)a3
+- (void)addChildAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v5 = sub_2DD54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349570;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[GroupAnimation addChildAnimation:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = animationCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s:%@", buf, 0x20u);
   }
 
-  if (v4)
+  if (animationCopy)
   {
-    v6 = v4;
+    v6 = animationCopy;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
@@ -219,18 +219,18 @@ LABEL_9:
   }
 }
 
-- (id)addCompletionWaitBlockWithReason:(id)a3
+- (id)addCompletionWaitBlockWithReason:(id)reason
 {
-  v4 = a3;
-  [(GroupAnimation *)self _enterCompletionWaitDispatchGroupWithReason:v4];
+  reasonCopy = reason;
+  [(GroupAnimation *)self _enterCompletionWaitDispatchGroupWithReason:reasonCopy];
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2E418;
   v9[3] = &unk_80160;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v5 = v4;
+  v10 = reasonCopy;
+  v5 = reasonCopy;
   v6 = objc_retainBlock(v9);
   v7 = objc_retainBlock(v6);
 
@@ -240,16 +240,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)_enterCompletionWaitDispatchGroupWithReason:(id)a3
+- (void)_enterCompletionWaitDispatchGroupWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = sub_2DD54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v4;
+    v25 = reasonCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%{public}p] entering completion wait group for reason: %@", buf, 0x16u);
   }
 
@@ -264,7 +264,7 @@ LABEL_9:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v23 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[%{public}p] creating child completion animation group", buf, 0xCu);
   }
 
@@ -283,46 +283,46 @@ LABEL_9:
   if (!self->_initiatingWaitBlock)
   {
     self->_initiatingWaitBlock = 1;
-    v11 = self;
+    selfCopy3 = self;
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(GroupAnimation *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(GroupAnimation *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy3, v15];
 
         goto LABEL_13;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy3];
 LABEL_13:
 
-    v17 = [NSString stringWithFormat:@"%@: blocking on our own complete method call", v16];
-    v18 = [(GroupAnimation *)v11 addCompletionWaitBlockWithReason:v17];
+    v17 = [NSString stringWithFormat:@"%@: blocking on our own complete method call", selfCopy3];
+    v18 = [(GroupAnimation *)selfCopy3 addCompletionWaitBlockWithReason:v17];
     v19 = [v18 copy];
-    waitBlock = v11->_waitBlock;
-    v11->_waitBlock = v19;
+    waitBlock = selfCopy3->_waitBlock;
+    selfCopy3->_waitBlock = v19;
   }
 
 LABEL_14:
 }
 
-- (void)_leaveCompletionWaitDispatchGroupWithReason:(id)a3
+- (void)_leaveCompletionWaitDispatchGroupWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_childAnimationCompletionGroup || !sub_3BA2C(self, &self->_childAnimationCompletionGroup))
   {
     v5 = sub_2DD54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349314;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = reasonCopy;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%{public}p] leaving completion wait group for reason: %@", &v6, 0x16u);
     }
 
@@ -348,26 +348,26 @@ LABEL_14:
   if (!self->_waitBlock && !self->_initiatingWaitBlock)
   {
     self->_initiatingWaitBlock = 1;
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(GroupAnimation *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(GroupAnimation *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_13;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_13:
 
-    v10 = [NSString stringWithFormat:@"%@: blocking on our own complete method call", v9];
-    v11 = [(GroupAnimation *)v4 addCompletionWaitBlockWithReason:v10];
+    v10 = [NSString stringWithFormat:@"%@: blocking on our own complete method call", selfCopy];
+    v11 = [(GroupAnimation *)selfCopy addCompletionWaitBlockWithReason:v10];
     v12 = [v11 copy];
     waitBlock = self->_waitBlock;
     self->_waitBlock = v12;
@@ -429,7 +429,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[%{public}p] animating", buf, 0xCu);
   }
 
@@ -489,7 +489,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349314;
-    v6 = self;
+    selfCopy2 = self;
     v7 = 2080;
     v8 = "[GroupAnimation _childAnimationsDidComplete]";
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v5, 0x16u);
@@ -506,17 +506,17 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Not ready to complete yet", &v5, 0xCu);
     }
   }
 }
 
-- (void)complete:(BOOL)a3
+- (void)complete:(BOOL)complete
 {
-  v3 = a3;
-  v4 = self;
-  if (![(GroupAnimation *)self _hasPrepared]|| !v4->_didAnimate || v4->_didComplete)
+  completeCopy = complete;
+  selfCopy = self;
+  if (![(GroupAnimation *)self _hasPrepared]|| !selfCopy->_didAnimate || selfCopy->_didComplete)
   {
     sub_3BE28();
   }
@@ -525,37 +525,37 @@ LABEL_13:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349570;
-    v32 = v4;
+    v32 = selfCopy;
     v33 = 2080;
     v34 = "[GroupAnimation complete:]";
     v35 = 1024;
-    v36 = v3;
+    v36 = completeCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[%{public}p] %s:%d", buf, 0x1Cu);
   }
 
-  v4->_readyToComplete = 1;
-  if (v4->_waitBlock)
+  selfCopy->_readyToComplete = 1;
+  if (selfCopy->_waitBlock)
   {
     v6 = sub_2DD54();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v32 = v4;
+      v32 = selfCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "[%{public}p] waiting for _waitBlock", buf, 0xCu);
     }
 
-    v7 = objc_retainBlock(v4->_waitBlock);
-    waitBlock = v4->_waitBlock;
-    v4->_waitBlock = 0;
+    v7 = objc_retainBlock(selfCopy->_waitBlock);
+    waitBlock = selfCopy->_waitBlock;
+    selfCopy->_waitBlock = 0;
 
-    v4->_initiatingWaitBlock = 0;
-    (*(v7 + 16))(v7, v3);
+    selfCopy->_initiatingWaitBlock = 0;
+    (*(v7 + 16))(v7, completeCopy);
 LABEL_10:
 
     return;
   }
 
-  childAnimationCompletionGroup = v4->_childAnimationCompletionGroup;
+  childAnimationCompletionGroup = selfCopy->_childAnimationCompletionGroup;
   v7 = sub_2DD54();
   v10 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
   if (childAnimationCompletionGroup)
@@ -563,7 +563,7 @@ LABEL_10:
     if (v10)
     {
       *buf = 134349056;
-      v32 = v4;
+      v32 = selfCopy;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[%{public}p] ready to complete, but waiting on child animations", buf, 0xCu);
     }
 
@@ -573,31 +573,31 @@ LABEL_10:
   if (v10)
   {
     *buf = 134349312;
-    v32 = v4;
+    v32 = selfCopy;
     v33 = 1024;
-    LODWORD(v34) = v3;
+    LODWORD(v34) = completeCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[%{public}p] complete:%d", buf, 0x12u);
   }
 
-  if ([(NSMutableArray *)v4->_completions count])
+  if ([(NSMutableArray *)selfCopy->_completions count])
   {
     do
     {
       v11 = sub_2DD54();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(NSMutableArray *)v4->_completions count];
+        v12 = [(NSMutableArray *)selfCopy->_completions count];
         *buf = 134349312;
-        v32 = v4;
+        v32 = selfCopy;
         v33 = 2048;
         v34 = v12;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "[%{public}p] will execute %lu completions", buf, 0x16u);
       }
 
-      v13 = [(NSMutableArray *)v4->_completions copy];
-      completions = v4->_completions;
-      v15 = v4;
-      v4->_completions = 0;
+      v13 = [(NSMutableArray *)selfCopy->_completions copy];
+      completions = selfCopy->_completions;
+      v15 = selfCopy;
+      selfCopy->_completions = 0;
 
       v28 = 0u;
       v29 = 0u;
@@ -630,7 +630,7 @@ LABEL_10:
               _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEBUG, "[%{public}p] executing completion block: %@", buf, 0x16u);
             }
 
-            v21[2](v21, v3);
+            v21[2](v21, completeCopy);
           }
 
           v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -639,7 +639,7 @@ LABEL_10:
         while (v18);
       }
 
-      v4 = v15;
+      selfCopy = v15;
     }
 
     while ([(NSMutableArray *)v15->_completions count]);
@@ -649,14 +649,14 @@ LABEL_10:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v32 = v4;
+    v32 = selfCopy;
     _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "[%{public}p] executed all completion blocks", buf, 0xCu);
   }
 
-  v25 = v4->_completions;
-  v4->_completions = 0;
+  v25 = selfCopy->_completions;
+  selfCopy->_completions = 0;
 
-  v4->_didComplete = 1;
+  selfCopy->_didComplete = 1;
 }
 
 - (void)runWithDefaultOptions
@@ -678,9 +678,9 @@ LABEL_10:
       v16 = v15;
       [(GroupAnimation *)self delay];
       v18 = v17;
-      v19 = [(GroupAnimation *)self options];
+      options = [(GroupAnimation *)self options];
 
-      [(GroupAnimation *)self runWithDuration:v19 delay:v16 options:v18];
+      [(GroupAnimation *)self runWithDuration:options delay:v16 options:v18];
     }
 
     else
@@ -689,9 +689,9 @@ LABEL_10:
       v11 = v10;
       [(GroupAnimation *)self initialVelocity];
       v13 = v12;
-      v14 = [(GroupAnimation *)self options];
+      options2 = [(GroupAnimation *)self options];
 
-      [(GroupAnimation *)self runWithDelay:v14 initialVelocity:v11 options:v13];
+      [(GroupAnimation *)self runWithDelay:options2 initialVelocity:v11 options:v13];
     }
   }
 
@@ -703,13 +703,13 @@ LABEL_10:
     v7 = v6;
     [(GroupAnimation *)self springDamping];
     [(GroupAnimation *)self initialVelocity];
-    v8 = [(GroupAnimation *)self options];
+    options3 = [(GroupAnimation *)self options];
 
-    [GroupAnimation runWithDuration:"runWithDuration:delay:springDamping:initialVelocity:options:" delay:v8 springDamping:v5 initialVelocity:v7 options:?];
+    [GroupAnimation runWithDuration:"runWithDuration:delay:springDamping:initialVelocity:options:" delay:options3 springDamping:v5 initialVelocity:v7 options:?];
   }
 }
 
-- (void)runWithDuration:(double)a3 delay:(double)a4 options:(unint64_t)a5
+- (void)runWithDuration:(double)duration delay:(double)delay options:(unint64_t)options
 {
   if ([(GroupAnimation *)self isAnimated])
   {
@@ -717,13 +717,13 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134349824;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = a3;
+      durationCopy = duration;
       v16 = 2048;
-      v17 = a4;
+      delayCopy = delay;
       v18 = 2048;
-      v19 = a5;
+      optionsCopy = options;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "[%{public}p] runWithDuration:%#.1lf delay:%#.1lfs options:%lu", buf, 0x2Au);
     }
 
@@ -738,7 +738,7 @@ LABEL_10:
     v10[2] = sub_2F814;
     v10[3] = &unk_7FC30;
     v10[4] = self;
-    [UIView animateWithDuration:a5 delay:v11 options:v10 animations:a3 completion:a4];
+    [UIView animateWithDuration:options delay:v11 options:v10 animations:duration completion:delay];
   }
 
   else
@@ -748,7 +748,7 @@ LABEL_10:
   }
 }
 
-- (void)runWithDelay:(double)a3 initialVelocity:(double)a4 options:(unint64_t)a5
+- (void)runWithDelay:(double)delay initialVelocity:(double)velocity options:(unint64_t)options
 {
   if ([(GroupAnimation *)self isAnimated])
   {
@@ -756,13 +756,13 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134349824;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = a3;
+      delayCopy = delay;
       v16 = 2048;
-      v17 = a4;
+      velocityCopy = velocity;
       v18 = 2048;
-      v19 = a5;
+      optionsCopy = options;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "[%{public}p] runWithDelay:%#.1lf initialVelocity:%lf options:%lu", buf, 0x2Au);
     }
 
@@ -777,7 +777,7 @@ LABEL_10:
     v10[2] = sub_2FA00;
     v10[3] = &unk_7FC30;
     v10[4] = self;
-    [UIView _animateUsingDefaultDampedSpringWithDelay:a5 initialSpringVelocity:v11 options:v10 animations:a3 completion:a4];
+    [UIView _animateUsingDefaultDampedSpringWithDelay:options initialSpringVelocity:v11 options:v10 animations:delay completion:velocity];
   }
 
   else
@@ -787,7 +787,7 @@ LABEL_10:
   }
 }
 
-- (void)runWithDuration:(double)a3 delay:(double)a4 springDamping:(double)a5 initialVelocity:(double)a6 options:(unint64_t)a7
+- (void)runWithDuration:(double)duration delay:(double)delay springDamping:(double)damping initialVelocity:(double)velocity options:(unint64_t)options
 {
   if ([(GroupAnimation *)self isAnimated])
   {
@@ -795,17 +795,17 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134350336;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = a3;
+      durationCopy = duration;
       v20 = 2048;
-      v21 = a4;
+      delayCopy = delay;
       v22 = 2048;
-      v23 = a5;
+      dampingCopy = damping;
       v24 = 2048;
-      v25 = a6;
+      velocityCopy = velocity;
       v26 = 2048;
-      v27 = a7;
+      optionsCopy = options;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "[%{public}p] runWithDuration:%#.1lfs delay:%#.1lfs springDamping:%lf initialVelocity:%lf options:%lu", buf, 0x3Eu);
     }
 
@@ -820,7 +820,7 @@ LABEL_10:
     v14[2] = sub_2FC18;
     v14[3] = &unk_7FC30;
     v14[4] = self;
-    [UIView animateWithDuration:a7 delay:v15 usingSpringWithDamping:v14 initialSpringVelocity:a3 options:a4 animations:a5 completion:a6];
+    [UIView animateWithDuration:options delay:v15 usingSpringWithDamping:v14 initialSpringVelocity:duration options:delay animations:damping completion:velocity];
   }
 
   else
@@ -836,7 +836,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v6 = self;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[GroupAnimation runWithoutAnimation]";
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[%{public}p] %s", buf, 0x16u);
@@ -856,7 +856,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134349314;
-    v5 = self;
+    selfCopy = self;
     v6 = 2080;
     v7 = "[GroupAnimation runInCurrentContext]";
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "[%{public}p] %s", &v4, 0x16u);
@@ -867,18 +867,18 @@ LABEL_10:
   [(GroupAnimation *)self complete:1];
 }
 
-+ (id)animationForAnimatedFlag:(BOOL)a3
++ (id)animationForAnimatedFlag:(BOOL)flag
 {
-  v3 = a3;
-  v4 = objc_alloc_init(a1);
-  [v4 setAnimated:v3];
+  flagCopy = flag;
+  v4 = objc_alloc_init(self);
+  [v4 setAnimated:flagCopy];
 
   return v4;
 }
 
 + (id)animationForImplicitAnimationState
 {
-  v2 = [a1 animationForAnimatedFlag:{+[UIView _maps_shouldAdoptImplicitAnimationParameters](UIView, "_maps_shouldAdoptImplicitAnimationParameters")}];
+  v2 = [self animationForAnimatedFlag:{+[UIView _maps_shouldAdoptImplicitAnimationParameters](UIView, "_maps_shouldAdoptImplicitAnimationParameters")}];
   [v2 setPreventsAnimationDuringPreparation:1];
 
   return v2;

@@ -3,11 +3,11 @@
 + (id)sharedService;
 - (CAContext)context;
 - (UIKeyboardUIService)init;
-- (int)createSlot:(CGSize)a3;
+- (int)createSlot:(CGSize)slot;
 - (void)clearSlots;
 - (void)createContext;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation UIKeyboardUIService
@@ -50,8 +50,8 @@ void __27__UIKeyboardUIService_init__block_invoke(uint64_t a1, void *a2)
     v10[1] = v11;
 
     [v10[1] activate];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v10 selector:sel_clearSlots name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_clearSlots name:@"UIApplicationDidEnterBackgroundNotification" object:0];
   }
 
   return v2;
@@ -59,7 +59,7 @@ void __27__UIKeyboardUIService_init__block_invoke(uint64_t a1, void *a2)
 
 + (id)sharedService
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -96,8 +96,8 @@ void __27__UIKeyboardUIService_init__block_invoke(uint64_t a1, void *a2)
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(UIKeyboardUIService *)self context];
-        [v9 deleteSlot:{objc_msgSend(v8, "unsignedIntValue")}];
+        context = [(UIKeyboardUIService *)self context];
+        [context deleteSlot:{objc_msgSend(v8, "unsignedIntValue")}];
 
         ++v7;
       }
@@ -137,22 +137,22 @@ void __39__UIKeyboardUIService_serviceInterface__block_invoke()
   qword_1ED4A1020 = v2;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v7 = self->_dispatchQueue;
-  v8 = [objc_opt_class() serviceInterface];
+  serviceInterface = [objc_opt_class() serviceInterface];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __65__UIKeyboardUIService_listener_didReceiveConnection_withContext___block_invoke;
   v15 = &unk_1E7123298;
-  v16 = self;
-  v17 = v6;
+  selfCopy = self;
+  v17 = connectionCopy;
   v18 = v7;
-  v19 = v8;
-  v9 = v8;
+  v19 = serviceInterface;
+  v9 = serviceInterface;
   v10 = v7;
-  v11 = v6;
+  v11 = connectionCopy;
   [v11 configureConnection:&v12];
   [v11 activate];
 }
@@ -233,24 +233,24 @@ void __65__UIKeyboardUIService_listener_didReceiveConnection_withContext___block
   return context;
 }
 
-- (int)createSlot:(CGSize)a3
+- (int)createSlot:(CGSize)slot
 {
-  height = a3.height;
-  width = a3.width;
+  height = slot.height;
+  width = slot.width;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if ([(NSMutableArray *)self->_slots count]>= 3)
   {
-    v6 = [(NSMutableArray *)self->_slots firstObject];
-    v7 = [v6 unsignedIntValue];
+    firstObject = [(NSMutableArray *)self->_slots firstObject];
+    unsignedIntValue = [firstObject unsignedIntValue];
 
-    v8 = [(UIKeyboardUIService *)self context];
-    [v8 deleteSlot:v7];
+    context = [(UIKeyboardUIService *)self context];
+    [context deleteSlot:unsignedIntValue];
 
     [(NSMutableArray *)self->_slots removeObjectAtIndex:0];
   }
 
-  v9 = [(UIKeyboardUIService *)self context];
-  v10 = [v9 createImageSlot:1 hasAlpha:{width, height}];
+  context2 = [(UIKeyboardUIService *)self context];
+  v10 = [context2 createImageSlot:1 hasAlpha:{width, height}];
 
   slots = self->_slots;
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10];

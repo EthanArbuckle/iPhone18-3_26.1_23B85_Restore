@@ -1,7 +1,7 @@
 @interface WLKSortedKeyDictionary
-- (WLKSortedKeyDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
+- (WLKSortedKeyDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 @end
 
@@ -9,8 +9,8 @@
 
 - (unint64_t)count
 {
-  v2 = [(WLKSortedKeyDictionary *)self underlyingDictionary];
-  v3 = [v2 count];
+  underlyingDictionary = [(WLKSortedKeyDictionary *)self underlyingDictionary];
+  v3 = [underlyingDictionary count];
 
   return v3;
 }
@@ -18,38 +18,38 @@
 - (id)keyEnumerator
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[WLKSortedKeyDictionary count](self, "count")}];
-  v4 = [(WLKSortedKeyDictionary *)self underlyingDictionary];
-  v5 = [v4 keyEnumerator];
+  underlyingDictionary = [(WLKSortedKeyDictionary *)self underlyingDictionary];
+  keyEnumerator = [underlyingDictionary keyEnumerator];
 
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [keyEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
       [v3 addObject:v7];
-      v8 = [v5 nextObject];
+      nextObject2 = [keyEnumerator nextObject];
 
-      v7 = v8;
+      v7 = nextObject2;
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   [v3 sortUsingSelector:sel_compare_];
-  v9 = [v3 objectEnumerator];
+  objectEnumerator = [v3 objectEnumerator];
 
-  return v9;
+  return objectEnumerator;
 }
 
-- (WLKSortedKeyDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (WLKSortedKeyDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = WLKSortedKeyDictionary;
   v8 = [(WLKSortedKeyDictionary *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjects:a3 forKeys:a4 count:a5];
+    v9 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjects:objects forKeys:keys count:count];
     underlyingDictionary = v8->_underlyingDictionary;
     v8->_underlyingDictionary = v9;
   }
@@ -57,11 +57,11 @@
   return v8;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WLKSortedKeyDictionary *)self underlyingDictionary];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  underlyingDictionary = [(WLKSortedKeyDictionary *)self underlyingDictionary];
+  v6 = [underlyingDictionary objectForKey:keyCopy];
 
   return v6;
 }

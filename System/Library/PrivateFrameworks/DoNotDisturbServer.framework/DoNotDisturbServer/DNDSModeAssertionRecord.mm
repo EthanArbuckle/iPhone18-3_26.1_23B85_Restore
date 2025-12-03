@@ -1,31 +1,31 @@
 @interface DNDSModeAssertionRecord
-+ (id)recordForAssertion:(id)a3;
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4;
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4;
++ (id)recordForAssertion:(id)assertion;
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys;
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options;
 - (id)object;
 @end
 
 @implementation DNDSModeAssertionRecord
 
-+ (id)recordForDictionary:(id)a3 keys:(id *)a4
++ (id)recordForDictionary:(id)dictionary keys:(id *)keys
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = a3;
+    dictionaryCopy = dictionary;
     v6 = objc_alloc_init(DNDSModeAssertionRecord);
-    v7 = [v5 bs_safeStringForKey:a4->var1.var0];
+    v7 = [dictionaryCopy bs_safeStringForKey:keys->var1.var0];
     [(DNDSModeAssertionRecord *)v6 setUUID:v7];
 
-    v8 = [v5 bs_safeNumberForKey:a4->var1.var1];
+    v8 = [dictionaryCopy bs_safeNumberForKey:keys->var1.var1];
     [(DNDSModeAssertionRecord *)v6 setStartDate:v8];
 
-    v9 = [v5 bs_safeDictionaryForKey:a4->var1.var2];
-    v10 = [DNDSModeAssertionDetailsRecord recordForDictionary:v9 keys:a4];
+    v9 = [dictionaryCopy bs_safeDictionaryForKey:keys->var1.var2];
+    v10 = [DNDSModeAssertionDetailsRecord recordForDictionary:v9 keys:keys];
     [(DNDSModeAssertionRecord *)v6 setDetails:v10];
 
-    v11 = [v5 bs_safeDictionaryForKey:a4->var1.var3];
+    v11 = [dictionaryCopy bs_safeDictionaryForKey:keys->var1.var3];
 
-    v12 = [DNDSModeAssertionSourceRecord recordForDictionary:v11 keys:a4];
+    v12 = [DNDSModeAssertionSourceRecord recordForDictionary:v11 keys:keys];
     [(DNDSModeAssertionRecord *)v6 setSource:v12];
   }
 
@@ -37,55 +37,55 @@
   return v6;
 }
 
-- (id)dictionaryWithKeys:(id *)a3 options:(unint64_t)a4
+- (id)dictionaryWithKeys:(id *)keys options:(unint64_t)options
 {
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [(DNDSModeAssertionRecord *)self UUID];
-  [v7 bs_setSafeObject:v8 forKey:a3->var1.var0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uUID = [(DNDSModeAssertionRecord *)self UUID];
+  [dictionary bs_setSafeObject:uUID forKey:keys->var1.var0];
 
-  v9 = [(DNDSModeAssertionRecord *)self startDate];
-  [v7 bs_setSafeObject:v9 forKey:a3->var1.var1];
+  startDate = [(DNDSModeAssertionRecord *)self startDate];
+  [dictionary bs_setSafeObject:startDate forKey:keys->var1.var1];
 
-  v10 = [(DNDSModeAssertionRecord *)self details];
-  v11 = [v10 dictionaryWithKeys:a3 options:a4];
-  [v7 bs_setSafeObject:v11 forKey:a3->var1.var2];
+  details = [(DNDSModeAssertionRecord *)self details];
+  v11 = [details dictionaryWithKeys:keys options:options];
+  [dictionary bs_setSafeObject:v11 forKey:keys->var1.var2];
 
-  v12 = [(DNDSModeAssertionRecord *)self source];
-  v13 = [v12 dictionaryWithKeys:a3 options:a4];
-  [v7 bs_setSafeObject:v13 forKey:a3->var1.var3];
+  source = [(DNDSModeAssertionRecord *)self source];
+  v13 = [source dictionaryWithKeys:keys options:options];
+  [dictionary bs_setSafeObject:v13 forKey:keys->var1.var3];
 
-  if (a4)
+  if (options)
   {
-    v14 = [(DNDSModeAssertionRecord *)self startDate];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@Local", a3->var1.var1];
-    [v7 dnds_setSafeLocalDateForTimestamp:v14 key:v15];
+    startDate2 = [(DNDSModeAssertionRecord *)self startDate];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@Local", keys->var1.var1];
+    [dictionary dnds_setSafeLocalDateForTimestamp:startDate2 key:v15];
   }
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)recordForAssertion:(id)a3
++ (id)recordForAssertion:(id)assertion
 {
-  if (a3)
+  if (assertion)
   {
-    v3 = a3;
+    assertionCopy = assertion;
     v4 = objc_alloc_init(DNDSModeAssertionRecord);
-    v5 = [v3 UUID];
-    v6 = [v5 UUIDString];
-    [(DNDSModeAssertionRecord *)v4 setUUID:v6];
+    uUID = [assertionCopy UUID];
+    uUIDString = [uUID UUIDString];
+    [(DNDSModeAssertionRecord *)v4 setUUID:uUIDString];
 
     v7 = MEMORY[0x277CCABB0];
-    v8 = [v3 startDate];
-    v9 = [v7 dnds_numberWithDate:v8];
+    startDate = [assertionCopy startDate];
+    v9 = [v7 dnds_numberWithDate:startDate];
     [(DNDSModeAssertionRecord *)v4 setStartDate:v9];
 
-    v10 = [v3 details];
-    v11 = [DNDSModeAssertionDetailsRecord recordForAssertionDetails:v10];
+    details = [assertionCopy details];
+    v11 = [DNDSModeAssertionDetailsRecord recordForAssertionDetails:details];
     [(DNDSModeAssertionRecord *)v4 setDetails:v11];
 
-    v12 = [v3 source];
+    source = [assertionCopy source];
 
-    v13 = [DNDSModeAssertionSourceRecord recordForAssertionSource:v12];
+    v13 = [DNDSModeAssertionSourceRecord recordForAssertionSource:source];
     [(DNDSModeAssertionRecord *)v4 setSource:v13];
   }
 
@@ -99,12 +99,12 @@
 
 - (id)object
 {
-  v3 = [(DNDSModeAssertionRecord *)self UUID];
-  if (v3)
+  uUID = [(DNDSModeAssertionRecord *)self UUID];
+  if (uUID)
   {
     v4 = objc_alloc(MEMORY[0x277CCAD78]);
-    v5 = [(DNDSModeAssertionRecord *)self UUID];
-    v6 = [v4 initWithUUIDString:v5];
+    uUID2 = [(DNDSModeAssertionRecord *)self UUID];
+    v6 = [v4 initWithUUIDString:uUID2];
   }
 
   else
@@ -112,19 +112,19 @@
     v6 = 0;
   }
 
-  v7 = [(DNDSModeAssertionRecord *)self startDate];
-  v8 = [v7 dnds_dateValue];
+  startDate = [(DNDSModeAssertionRecord *)self startDate];
+  dnds_dateValue = [startDate dnds_dateValue];
 
-  v9 = [(DNDSModeAssertionRecord *)self details];
-  v10 = [v9 object];
+  details = [(DNDSModeAssertionRecord *)self details];
+  object = [details object];
 
-  v11 = [(DNDSModeAssertionRecord *)self source];
-  v12 = [v11 object];
+  source = [(DNDSModeAssertionRecord *)self source];
+  object2 = [source object];
 
   v13 = 0;
-  if (v6 && v8 && v10 && v12)
+  if (v6 && dnds_dateValue && object && object2)
   {
-    v13 = [objc_alloc(MEMORY[0x277D05938]) initWithUUID:v6 startDate:v8 details:v10 source:v12];
+    v13 = [objc_alloc(MEMORY[0x277D05938]) initWithUUID:v6 startDate:dnds_dateValue details:object source:object2];
   }
 
   return v13;

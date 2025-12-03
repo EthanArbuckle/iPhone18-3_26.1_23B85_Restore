@@ -1,26 +1,26 @@
 @interface HKWorkoutActivity
-- (BOOL)_filterAndSetWorkoutEvents:(id)a3;
-- (BOOL)acceptsAssociationWithObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)unitTest_isEqualToActivity:(id)a3 includingStatistics:(BOOL)a4;
+- (BOOL)_filterAndSetWorkoutEvents:(id)events;
+- (BOOL)acceptsAssociationWithObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)unitTest_isEqualToActivity:(id)activity includingStatistics:(BOOL)statistics;
 - (HKStatistics)statisticsForType:(HKQuantityType *)quantityType;
-- (HKWorkoutActivity)initWithCoder:(id)a3;
+- (HKWorkoutActivity)initWithCoder:(id)coder;
 - (HKWorkoutActivity)initWithWorkoutConfiguration:(HKWorkoutConfiguration *)workoutConfiguration startDate:(NSDate *)startDate endDate:(NSDate *)endDate metadata:(NSDictionary *)metadata;
 - (NSDictionary)allStatistics;
 - (NSString)description;
 - (id)_deepCopy;
-- (id)_initWithUUID:(id)a3 workoutConfiguration:(id)a4 startDate:(id)a5 endDate:(id)a6 workoutEvents:(id)a7 startsPaused:(BOOL)a8 duration:(double)a9 metadata:(id)a10 statisticsPerType:(id)a11;
+- (id)_initWithUUID:(id)d workoutConfiguration:(id)configuration startDate:(id)date endDate:(id)endDate workoutEvents:(id)events startsPaused:(BOOL)paused duration:(double)duration metadata:(id)self0 statisticsPerType:(id)self1;
 - (id)_statisticsPerType;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setAllStatistics:(id)a3;
-- (void)_setDuration:(double)a3;
-- (void)_setEndDate:(id)a3;
-- (void)_setMetadata:(id)a3;
-- (void)_setStatistics:(id)a3 forType:(id)a4;
-- (void)_setUUID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAllStatistics:(id)statistics;
+- (void)_setDuration:(double)duration;
+- (void)_setEndDate:(id)date;
+- (void)_setMetadata:(id)metadata;
+- (void)_setStatistics:(id)statistics forType:(id)type;
+- (void)_setUUID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutActivity
@@ -31,19 +31,19 @@
   v11 = endDate;
   v12 = startDate;
   v13 = workoutConfiguration;
-  v14 = [(HKWorkoutConfiguration *)v13 suggestedActivityUUID];
-  v15 = v14;
-  if (v14)
+  suggestedActivityUUID = [(HKWorkoutConfiguration *)v13 suggestedActivityUUID];
+  v15 = suggestedActivityUUID;
+  if (suggestedActivityUUID)
   {
-    v16 = v14;
+    uUID = suggestedActivityUUID;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v17 = v16;
+  v17 = uUID;
 
   [(NSDate *)v11 timeIntervalSinceDate:v12];
   v18 = [(HKWorkoutActivity *)self _initWithUUID:v17 workoutConfiguration:v13 startDate:v12 endDate:v11 workoutEvents:MEMORY[0x1E695E0F0] startsPaused:0 duration:v10 metadata:0 statisticsPerType:?];
@@ -56,22 +56,22 @@
   {
     v24 = MEMORY[0x1E695DF30];
     v25 = *MEMORY[0x1E695D940];
-    v26 = [v22 localizedDescription];
-    [v24 raise:v25 format:{@"%@", v26}];
+    localizedDescription = [v22 localizedDescription];
+    [v24 raise:v25 format:{@"%@", localizedDescription}];
   }
 
   return v19;
 }
 
-- (id)_initWithUUID:(id)a3 workoutConfiguration:(id)a4 startDate:(id)a5 endDate:(id)a6 workoutEvents:(id)a7 startsPaused:(BOOL)a8 duration:(double)a9 metadata:(id)a10 statisticsPerType:(id)a11
+- (id)_initWithUUID:(id)d workoutConfiguration:(id)configuration startDate:(id)date endDate:(id)endDate workoutEvents:(id)events startsPaused:(BOOL)paused duration:(double)duration metadata:(id)self0 statisticsPerType:(id)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a10;
-  v24 = a11;
+  dCopy = d;
+  configurationCopy = configuration;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  metadataCopy = metadata;
+  typeCopy = type;
   v42.receiver = self;
   v42.super_class = HKWorkoutActivity;
   v25 = [(HKWorkoutActivity *)&v42 init];
@@ -79,33 +79,33 @@
   if (v25)
   {
     v25->_lock._os_unfair_lock_opaque = 0;
-    v27 = [v18 copy];
+    v27 = [dCopy copy];
     UUID = v26->_UUID;
     v26->_UUID = v27;
 
-    v29 = [v19 copy];
+    v29 = [configurationCopy copy];
     workoutConfiguration = v26->_workoutConfiguration;
     v26->_workoutConfiguration = v29;
 
-    v31 = [v20 copy];
+    v31 = [dateCopy copy];
     startDate = v26->_startDate;
     v26->_startDate = v31;
 
-    v33 = [v21 copy];
+    v33 = [endDateCopy copy];
     endDate = v26->_endDate;
     v26->_endDate = v33;
 
-    v35 = [v22 copy];
+    v35 = [eventsCopy copy];
     workoutEvents = v26->_workoutEvents;
     v26->_workoutEvents = v35;
 
-    v26->_startsPaused = a8;
-    v26->_duration = a9;
-    v37 = [v23 copy];
+    v26->_startsPaused = paused;
+    v26->_duration = duration;
+    v37 = [metadataCopy copy];
     metadata = v26->_metadata;
     v26->_metadata = v37;
 
-    v39 = [v24 mutableCopy];
+    v39 = [typeCopy mutableCopy];
     statisticsPerType = v26->_statisticsPerType;
     v26->_statisticsPerType = v39;
   }
@@ -122,17 +122,17 @@
   return v5;
 }
 
-- (void)_setEndDate:(id)a3
+- (void)_setEndDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [v7 copy];
+  v4 = [dateCopy copy];
   endDate = self->_endDate;
   self->_endDate = v4;
 
   if (self->_duration == 0.0)
   {
-    [v7 timeIntervalSinceDate:self->_startDate];
+    [dateCopy timeIntervalSinceDate:self->_startDate];
     self->_duration = v6;
   }
 
@@ -168,19 +168,19 @@
   return v5;
 }
 
-- (void)_setDuration:(double)a3
+- (void)_setDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_duration = a3;
+  self->_duration = duration;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [metadataCopy copy];
 
   metadata = self->_metadata;
   self->_metadata = v5;
@@ -188,9 +188,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_filterAndSetWorkoutEvents:(id)a3
+- (BOOL)_filterAndSetWorkoutEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -206,7 +206,7 @@
   v10[4] = self;
   v10[5] = &v15;
   v10[6] = &v11;
-  v5 = [v4 hk_filter:v10];
+  v5 = [eventsCopy hk_filter:v10];
   if ((v16[3] & 1) == 0)
   {
     self->_startsPaused = *(v12 + 24);
@@ -344,49 +344,49 @@ LABEL_21:
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 3);
+  v5 = *(equalCopy + 3);
   UUID = self->_UUID;
   if (v5 != UUID && (!UUID || ![(NSUUID *)v5 isEqual:?]))
   {
     goto LABEL_18;
   }
 
-  v7 = *(v4 + 4);
+  v7 = *(equalCopy + 4);
   workoutConfiguration = self->_workoutConfiguration;
   if (v7 != workoutConfiguration && (!workoutConfiguration || ![(HKWorkoutConfiguration *)v7 isEqual:?]))
   {
     goto LABEL_18;
   }
 
-  v9 = *(v4 + 5);
+  v9 = *(equalCopy + 5);
   startDate = self->_startDate;
   if (v9 != startDate && (!startDate || ![(NSDate *)v9 isEqualToDate:?]))
   {
     goto LABEL_18;
   }
 
-  v11 = *(v4 + 6);
+  v11 = *(equalCopy + 6);
   endDate = self->_endDate;
   if (v11 != endDate && (!endDate || ![(NSDate *)v11 isEqualToDate:?]))
   {
     goto LABEL_18;
   }
 
-  if (vabdd_f64(*(v4 + 8), self->_duration) >= 2.22044605e-16)
+  if (vabdd_f64(*(equalCopy + 8), self->_duration) >= 2.22044605e-16)
   {
     goto LABEL_18;
   }
 
-  v13 = *(v4 + 7);
+  v13 = *(equalCopy + 7);
   metadata = self->_metadata;
   if (v13 == metadata)
   {
@@ -410,7 +410,7 @@ LABEL_19:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [(NSUUID *)self->_UUID copy];
   UUID = self->_UUID;
@@ -443,41 +443,41 @@ LABEL_19:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"uuid"];
-  [v5 encodeObject:self->_workoutConfiguration forKey:@"configuration"];
-  [v5 encodeObject:self->_startDate forKey:@"start_date"];
-  [v5 encodeObject:self->_endDate forKey:@"end_date"];
-  [v5 encodeObject:self->_workoutEvents forKey:@"events"];
-  [v5 encodeDouble:@"duration" forKey:self->_duration];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
-  [v5 encodeObject:self->_statisticsPerType forKey:@"statistics"];
-  [v5 encodeBool:self->_startsPaused forKey:@"startsPaused"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"uuid"];
+  [coderCopy encodeObject:self->_workoutConfiguration forKey:@"configuration"];
+  [coderCopy encodeObject:self->_startDate forKey:@"start_date"];
+  [coderCopy encodeObject:self->_endDate forKey:@"end_date"];
+  [coderCopy encodeObject:self->_workoutEvents forKey:@"events"];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_statisticsPerType forKey:@"statistics"];
+  [coderCopy encodeBool:self->_startsPaused forKey:@"startsPaused"];
 }
 
-- (HKWorkoutActivity)initWithCoder:(id)a3
+- (HKWorkoutActivity)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"start_date"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"end_date"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"start_date"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"end_date"];
   v5 = MEMORY[0x1E695DFD8];
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v21 = [v5 setWithArray:v6];
 
-  v7 = [v3 decodeObjectOfClasses:v21 forKey:@"events"];
-  [v3 decodeDoubleForKey:@"duration"];
+  v7 = [coderCopy decodeObjectOfClasses:v21 forKey:@"events"];
+  [coderCopy decodeDoubleForKey:@"duration"];
   v9 = v8;
-  v10 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  v11 = [v3 decodeObjectOfClasses:v10 forKey:@"metadata"];
-  v12 = [v11 hk_replaceKeysFromSharedStringCache];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  v11 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"metadata"];
+  hk_replaceKeysFromSharedStringCache = [v11 hk_replaceKeysFromSharedStringCache];
 
   v13 = MEMORY[0x1E695DFD8];
   v26[0] = objc_opt_class();
@@ -486,25 +486,25 @@ LABEL_19:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
   v15 = [v13 setWithArray:v14];
 
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"statistics"];
-  v17 = [v3 decodeBoolForKey:@"startsPaused"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"statistics"];
+  v17 = [coderCopy decodeBoolForKey:@"startsPaused"];
 
-  v18 = [(HKWorkoutActivity *)self _initWithUUID:v4 workoutConfiguration:v24 startDate:v23 endDate:v22 workoutEvents:v7 startsPaused:v17 duration:v9 metadata:v12 statisticsPerType:v16];
+  v18 = [(HKWorkoutActivity *)self _initWithUUID:v4 workoutConfiguration:v24 startDate:v23 endDate:v22 workoutEvents:v7 startsPaused:v17 duration:v9 metadata:hk_replaceKeysFromSharedStringCache statisticsPerType:v16];
   v19 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (BOOL)unitTest_isEqualToActivity:(id)a3 includingStatistics:(BOOL)a4
+- (BOOL)unitTest_isEqualToActivity:(id)activity includingStatistics:(BOOL)statistics
 {
-  v6 = a4;
+  statisticsCopy = statistics;
   v93 = *MEMORY[0x1E69E9840];
-  v87 = a3;
+  activityCopy = activity;
   v7 = [(HKWorkoutActivity *)self isEqual:?];
-  if (v7 && v6)
+  if (v7 && statisticsCopy)
   {
     v8 = [(NSMutableDictionary *)self->_statisticsPerType count];
-    v9 = [v87 _statisticsPerType];
-    v10 = [v9 count];
+    _statisticsPerType = [activityCopy _statisticsPerType];
+    v10 = [_statisticsPerType count];
 
     if (v8 == v10)
     {
@@ -528,62 +528,62 @@ LABEL_6:
 
           v12 = *(*(&v88 + 1) + 8 * v11);
           v13 = [(NSMutableDictionary *)self->_statisticsPerType objectForKeyedSubscript:v12];
-          v14 = [v87[1] objectForKeyedSubscript:v12];
-          v15 = [v13 startDate];
-          v16 = [v14 startDate];
-          if (v15 != v16)
+          v14 = [activityCopy[1] objectForKeyedSubscript:v12];
+          startDate = [v13 startDate];
+          startDate2 = [v14 startDate];
+          if (startDate != startDate2)
           {
-            v4 = [v14 startDate];
-            if (!v4)
+            startDate3 = [v14 startDate];
+            if (!startDate3)
             {
               v35 = 1;
               goto LABEL_80;
             }
 
-            v17 = [v13 startDate];
-            v5 = [v14 startDate];
-            v78 = v17;
-            if (![v17 isEqualToDate:v5])
+            startDate4 = [v13 startDate];
+            startDate5 = [v14 startDate];
+            v78 = startDate4;
+            if (![startDate4 isEqualToDate:startDate5])
             {
               v35 = 1;
               goto LABEL_79;
             }
           }
 
-          v83 = v4;
-          v18 = [v13 endDate];
+          v83 = startDate3;
+          endDate = [v13 endDate];
           [v14 endDate];
-          v85 = v82 = v18;
-          v38 = v18 == v85;
-          v19 = v81;
-          v20 = v84;
+          v85 = v82 = endDate;
+          v38 = endDate == v85;
+          endDate3 = v81;
+          minimumQuantity4 = v84;
           if (!v38)
           {
-            v75 = [v14 endDate];
-            if (!v75)
+            endDate2 = [v14 endDate];
+            if (!endDate2)
             {
 
-              v75 = 0;
+              endDate2 = 0;
               goto LABEL_77;
             }
 
-            v76 = v5;
-            v21 = v16;
-            v22 = v15;
-            v19 = [v13 endDate];
-            v23 = [v14 endDate];
-            v70 = v23;
-            if (([v19 isEqualToDate:v23] & 1) == 0)
+            v76 = startDate5;
+            v21 = startDate2;
+            v22 = startDate;
+            endDate3 = [v13 endDate];
+            endDate4 = [v14 endDate];
+            v70 = endDate4;
+            if (([endDate3 isEqualToDate:endDate4] & 1) == 0)
             {
 
-              v81 = v19;
+              v81 = endDate3;
               v35 = 1;
-              v15 = v22;
-              v16 = v21;
-              v39 = v15 == v21;
+              startDate = v22;
+              startDate2 = v21;
+              v39 = startDate == v21;
 LABEL_51:
-              v4 = v83;
-              v5 = v76;
+              startDate3 = v83;
+              startDate5 = v76;
               if (v39)
               {
                 goto LABEL_80;
@@ -594,37 +594,37 @@ LABEL_79:
               goto LABEL_80;
             }
 
-            v15 = v22;
-            v16 = v21;
-            v20 = v84;
+            startDate = v22;
+            startDate2 = v21;
+            minimumQuantity4 = v84;
           }
 
-          v24 = [v13 sumQuantity];
-          v74 = [v14 sumQuantity];
-          v81 = v19;
-          if (v24 != v74)
+          sumQuantity = [v13 sumQuantity];
+          sumQuantity2 = [v14 sumQuantity];
+          v81 = endDate3;
+          if (sumQuantity != sumQuantity2)
           {
-            v71 = [v14 sumQuantity];
-            if (!v71)
+            sumQuantity3 = [v14 sumQuantity];
+            if (!sumQuantity3)
             {
 
               if (v82 != v85)
               {
               }
 
-              v71 = 0;
+              sumQuantity3 = 0;
               goto LABEL_77;
             }
 
-            v25 = v5;
-            v26 = v15;
-            v84 = v20;
+            v25 = startDate5;
+            v26 = startDate;
+            v84 = minimumQuantity4;
             v76 = v25;
-            v27 = [v13 sumQuantity];
-            v28 = [v14 sumQuantity];
-            v67 = v28;
-            v68 = v27;
-            if (([v27 isEqual:v28] & 1) == 0)
+            sumQuantity4 = [v13 sumQuantity];
+            sumQuantity5 = [v14 sumQuantity];
+            v67 = sumQuantity5;
+            v68 = sumQuantity4;
+            if (([sumQuantity4 isEqual:sumQuantity5] & 1) == 0)
             {
 
               if (v82 != v85)
@@ -632,70 +632,70 @@ LABEL_79:
               }
 
               v35 = 1;
-              v15 = v26;
-              v39 = v26 == v16;
+              startDate = v26;
+              v39 = v26 == startDate2;
               goto LABEL_51;
             }
 
-            v15 = v26;
-            v5 = v76;
+            startDate = v26;
+            startDate5 = v76;
           }
 
-          v29 = [v13 minimumQuantity];
-          v30 = [v14 minimumQuantity];
-          v72 = v29;
-          v38 = v29 == v30;
-          v31 = v30;
+          minimumQuantity = [v13 minimumQuantity];
+          minimumQuantity2 = [v14 minimumQuantity];
+          v72 = minimumQuantity;
+          v38 = minimumQuantity == minimumQuantity2;
+          v31 = minimumQuantity2;
           if (v38)
           {
             goto LABEL_23;
           }
 
-          v69 = [v14 minimumQuantity];
-          if (!v69)
+          minimumQuantity3 = [v14 minimumQuantity];
+          if (!minimumQuantity3)
           {
-            v69 = 0;
+            minimumQuantity3 = 0;
             v35 = 1;
             goto LABEL_45;
           }
 
-          v20 = [v13 minimumQuantity];
-          v61 = [v14 minimumQuantity];
-          if ([v20 isEqual:?])
+          minimumQuantity4 = [v13 minimumQuantity];
+          minimumQuantity5 = [v14 minimumQuantity];
+          if ([minimumQuantity4 isEqual:?])
           {
 LABEL_23:
-            v62 = v24;
-            v32 = [v13 maximumQuantity];
-            v64 = [v14 maximumQuantity];
-            v66 = v32;
-            v84 = v20;
-            if (v32 == v64)
+            v62 = sumQuantity;
+            maximumQuantity = [v13 maximumQuantity];
+            maximumQuantity2 = [v14 maximumQuantity];
+            v66 = maximumQuantity;
+            v84 = minimumQuantity4;
+            if (maximumQuantity == maximumQuantity2)
             {
               v59 = v31;
-              v60 = v15;
-              v77 = v5;
-              v24 = v62;
+              v60 = startDate;
+              v77 = startDate5;
+              sumQuantity = v62;
               goto LABEL_38;
             }
 
-            v58 = [v14 maximumQuantity];
-            if (!v58)
+            maximumQuantity3 = [v14 maximumQuantity];
+            if (!maximumQuantity3)
             {
-              v58 = 0;
+              maximumQuantity3 = 0;
               v35 = 1;
-              v24 = v62;
+              sumQuantity = v62;
               goto LABEL_64;
             }
 
             v59 = v31;
-            v60 = v15;
-            v77 = v5;
-            v33 = [v13 maximumQuantity];
-            v34 = [v14 maximumQuantity];
-            v56 = v33;
-            v24 = v62;
-            v57 = v34;
-            if (([v33 isEqual:v34] & 1) == 0)
+            v60 = startDate;
+            v77 = startDate5;
+            maximumQuantity4 = [v13 maximumQuantity];
+            maximumQuantity5 = [v14 maximumQuantity];
+            v56 = maximumQuantity4;
+            sumQuantity = v62;
+            v57 = maximumQuantity5;
+            if (([maximumQuantity4 isEqual:maximumQuantity5] & 1) == 0)
             {
 
               v35 = 1;
@@ -706,27 +706,27 @@ LABEL_23:
             }
 
 LABEL_38:
-            v40 = v64;
-            v41 = [v13 averageQuantity];
-            v42 = [v14 averageQuantity];
-            v43 = v42;
-            v35 = v41 != v42;
-            if (v41 == v42)
+            v40 = maximumQuantity2;
+            averageQuantity = [v13 averageQuantity];
+            averageQuantity2 = [v14 averageQuantity];
+            v43 = averageQuantity2;
+            v35 = averageQuantity != averageQuantity2;
+            if (averageQuantity == averageQuantity2)
             {
             }
 
             else
             {
-              v63 = v41;
-              v44 = [v14 averageQuantity];
-              if (v44)
+              v63 = averageQuantity;
+              averageQuantity3 = [v14 averageQuantity];
+              if (averageQuantity3)
               {
-                v65 = v44;
-                v45 = [v13 averageQuantity];
-                v46 = [v14 averageQuantity];
+                v65 = averageQuantity3;
+                averageQuantity4 = [v13 averageQuantity];
+                averageQuantity5 = [v14 averageQuantity];
                 v47 = v40;
-                v48 = v45;
-                v35 = [v45 isEqual:v46] ^ 1;
+                v48 = averageQuantity4;
+                v35 = [averageQuantity4 isEqual:averageQuantity5] ^ 1;
 
                 if (v66 != v47)
                 {
@@ -735,15 +735,15 @@ LABEL_38:
                 v37 = v59;
                 v36 = v72;
                 v38 = v72 == v59;
-                v20 = v84;
+                minimumQuantity4 = v84;
 LABEL_43:
-                v15 = v60;
+                startDate = v60;
                 if (v38)
                 {
 
-                  v49 = v74;
-                  v5 = v77;
-                  if (v24 != v74)
+                  v49 = sumQuantity2;
+                  startDate5 = v77;
+                  if (sumQuantity != sumQuantity2)
                   {
                     goto LABEL_46;
                   }
@@ -753,21 +753,21 @@ LABEL_43:
                 {
                   v31 = v37;
 
-                  v5 = v77;
+                  startDate5 = v77;
 LABEL_45:
 
-                  v49 = v74;
-                  if (v24 != v74)
+                  v49 = sumQuantity2;
+                  if (sumQuantity != sumQuantity2)
                   {
 LABEL_46:
-                    v84 = v20;
+                    v84 = minimumQuantity4;
                     v50 = v49;
 
                     goto LABEL_57;
                   }
                 }
 
-                v84 = v20;
+                v84 = minimumQuantity4;
 
 LABEL_57:
                 v51 = v82;
@@ -780,13 +780,13 @@ LABEL_71:
               }
             }
 
-            if (v66 == v64)
+            if (v66 == maximumQuantity2)
             {
 
               v31 = v59;
-              v15 = v60;
-              v20 = v84;
-              v5 = v77;
+              startDate = v60;
+              minimumQuantity4 = v84;
+              startDate5 = v77;
               if (v72 != v59)
               {
                 goto LABEL_65;
@@ -796,10 +796,10 @@ LABEL_71:
             else
             {
 
-              v20 = v84;
+              minimumQuantity4 = v84;
               v31 = v59;
-              v15 = v60;
-              v5 = v77;
+              startDate = v60;
+              startDate5 = v77;
 LABEL_64:
 
               if (v72 != v31)
@@ -808,11 +808,11 @@ LABEL_65:
               }
             }
 
-            v52 = v74;
-            if (v24 != v74)
+            v52 = sumQuantity2;
+            if (sumQuantity != sumQuantity2)
             {
 
-              v52 = v74;
+              v52 = sumQuantity2;
             }
 
             v51 = v82;
@@ -826,8 +826,8 @@ LABEL_65:
             goto LABEL_71;
           }
 
-          v84 = v20;
-          if (v24 != v74)
+          v84 = minimumQuantity4;
+          if (sumQuantity != sumQuantity2)
           {
           }
 
@@ -838,8 +838,8 @@ LABEL_65:
 LABEL_77:
           v35 = 1;
 LABEL_78:
-          v4 = v83;
-          if (v15 != v16)
+          startDate3 = v83;
+          if (startDate != startDate2)
           {
             goto LABEL_79;
           }
@@ -879,30 +879,30 @@ LABEL_86:
   return v7;
 }
 
-- (BOOL)acceptsAssociationWithObject:(id)a3
+- (BOOL)acceptsAssociationWithObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierWorkoutEffortScore"];
   v5 = [(HKObjectType *)HKQuantityType quantityTypeForIdentifier:@"HKQuantityTypeIdentifierEstimatedWorkoutEffortScore"];
-  v6 = [v3 sampleType];
-  if ([v6 isEqual:v4])
+  sampleType = [objectCopy sampleType];
+  if ([sampleType isEqual:v4])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v3 sampleType];
-    v7 = [v8 isEqual:v5];
+    sampleType2 = [objectCopy sampleType];
+    v7 = [sampleType2 isEqual:v5];
   }
 
   return v7;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
-  var0 = a3.var0;
-  if ([(NSDate *)self->_endDate hk_isBeforeDate:self->_startDate, a3.var1])
+  var0 = configuration.var0;
+  if ([(NSDate *)self->_endDate hk_isBeforeDate:self->_startDate, configuration.var1])
   {
     v5 = [MEMORY[0x1E696ABC0] hk_error:3 format:{@"startDate (%@) cannot occur after endDate (%@)", self->_startDate, self->_endDate}];
   }
@@ -923,11 +923,11 @@ LABEL_86:
         {
           v10 = HKApplicationSDKVersionToken();
           v11 = [_HKEntitlements entitlementsForCurrentTaskWithError:0];
-          v12 = [v11 hasPrivateMetadataAccess];
+          hasPrivateMetadataAccess = [v11 hasPrivateMetadataAccess];
 
           metadata = self->_metadata;
           v17 = 0;
-          v14 = [(NSDictionary *)metadata hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:v12 applicationSDKVersionToken:v10 error:&v17];
+          v14 = [(NSDictionary *)metadata hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:hasPrivateMetadataAccess applicationSDKVersionToken:v10 error:&v17];
           v15 = v17;
           v5 = v15;
           if (v14)
@@ -957,11 +957,11 @@ LABEL_86:
   return v3;
 }
 
-- (void)_setAllStatistics:(id)a3
+- (void)_setAllStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 mutableCopy];
+  v5 = [statisticsCopy mutableCopy];
 
   statisticsPerType = self->_statisticsPerType;
   self->_statisticsPerType = v5;
@@ -969,10 +969,10 @@ LABEL_86:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setStatistics:(id)a3 forType:(id)a4
+- (void)_setStatistics:(id)statistics forType:(id)type
 {
-  v10 = a3;
-  v6 = a4;
+  statisticsCopy = statistics;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_lock);
   statisticsPerType = self->_statisticsPerType;
   if (!statisticsPerType)
@@ -984,15 +984,15 @@ LABEL_86:
     statisticsPerType = self->_statisticsPerType;
   }
 
-  [(NSMutableDictionary *)statisticsPerType setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)statisticsPerType setObject:statisticsCopy forKeyedSubscript:typeCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setUUID:(id)a3
+- (void)_setUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   UUID = self->_UUID;
   self->_UUID = v5;

@@ -1,29 +1,29 @@
 @interface SGMIMetricsRegexSignatureStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addStats:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)setHasNumberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)setHasNumberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)setHasTotalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)setHasTotalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)setHasTotalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addStats:(id)stats;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)setHasNumberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)setHasNumberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)setHasTotalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)setHasTotalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)setHasTotalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20:(BOOL)of20;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsRegexSignatureStats
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   trialMetadata = self->_trialMetadata;
-  v6 = *(v4 + 7);
+  v6 = *(fromCopy + 7);
   if (trialMetadata)
   {
     if (v6)
@@ -37,7 +37,7 @@
     [(SGMIMetricsRegexSignatureStats *)self setTrialMetadata:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SGMIMetricsRegexSignatureStats *)self setLocale:?];
   }
@@ -46,7 +46,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -70,12 +70,12 @@
     while (v9);
   }
 
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if ((v12 & 0x10) != 0)
   {
-    self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20 = *(v4 + 10);
+    self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20 = *(fromCopy + 10);
     *&self->_has |= 0x10u;
-    v12 = *(v4 + 64);
+    v12 = *(fromCopy + 64);
     if ((v12 & 0x40) == 0)
     {
 LABEL_17:
@@ -88,14 +88,14 @@ LABEL_17:
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) == 0)
+  else if ((*(fromCopy + 64) & 0x40) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20 = *(v4 + 12);
+  self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20 = *(fromCopy + 12);
   *&self->_has |= 0x40u;
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if ((v12 & 0x20) == 0)
   {
 LABEL_18:
@@ -108,9 +108,9 @@ LABEL_18:
   }
 
 LABEL_26:
-  self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20 = *(v4 + 11);
+  self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20 = *(fromCopy + 11);
   *&self->_has |= 0x20u;
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if ((v12 & 4) == 0)
   {
 LABEL_19:
@@ -123,9 +123,9 @@ LABEL_19:
   }
 
 LABEL_27:
-  self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(v4 + 6);
+  self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if ((v12 & 1) == 0)
   {
 LABEL_20:
@@ -135,9 +135,9 @@ LABEL_20:
     }
 
 LABEL_29:
-    self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(v4 + 7);
+    self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(fromCopy + 7);
     *&self->_has |= 8u;
-    if ((*(v4 + 64) & 2) == 0)
+    if ((*(fromCopy + 64) & 2) == 0)
     {
       goto LABEL_23;
     }
@@ -146,9 +146,9 @@ LABEL_29:
   }
 
 LABEL_28:
-  self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(v4 + 4);
+  self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(fromCopy + 4);
   *&self->_has |= 1u;
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if ((v12 & 8) != 0)
   {
     goto LABEL_29;
@@ -158,7 +158,7 @@ LABEL_21:
   if ((v12 & 2) != 0)
   {
 LABEL_22:
-    self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(v4 + 5);
+    self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
@@ -266,16 +266,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   trialMetadata = self->_trialMetadata;
-  if (trialMetadata | *(v4 + 7))
+  if (trialMetadata | *(equalCopy + 7))
   {
     if (![(SGMIMetricsTrialMetadata *)trialMetadata isEqual:?])
     {
@@ -284,7 +284,7 @@ LABEL_8:
   }
 
   locale = self->_locale;
-  if (locale | *(v4 + 1))
+  if (locale | *(equalCopy + 1))
   {
     if (![(NSString *)locale isEqual:?])
     {
@@ -293,7 +293,7 @@ LABEL_8:
   }
 
   stats = self->_stats;
-  if (stats | *(v4 + 4))
+  if (stats | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)stats isEqual:?])
     {
@@ -303,13 +303,13 @@ LABEL_8:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20 != *(v4 + 10))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20 != *(equalCopy + 10))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
 LABEL_42:
     v8 = 0;
@@ -318,73 +318,73 @@ LABEL_42:
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 64) & 0x40) == 0 || self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20 != *(v4 + 12))
+    if ((*(equalCopy + 64) & 0x40) == 0 || self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20 != *(equalCopy + 12))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x40) != 0)
+  else if ((*(equalCopy + 64) & 0x40) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 64) & 0x20) == 0 || self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20 != *(v4 + 11))
+    if ((*(equalCopy + 64) & 0x20) == 0 || self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20 != *(equalCopy + 11))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 0x20) != 0)
+  else if ((*(equalCopy + 64) & 0x20) != 0)
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(v4 + 6))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(equalCopy + 6))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_42;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(v4 + 4))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(equalCopy + 4))
     {
       goto LABEL_42;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_42;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(v4 + 7))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(equalCopy + 7))
     {
       goto LABEL_42;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_42;
   }
 
-  v8 = (*(v4 + 64) & 2) == 0;
+  v8 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(v4 + 5))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20 != *(equalCopy + 5))
     {
       goto LABEL_42;
     }
@@ -397,15 +397,15 @@ LABEL_43:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SGMIMetricsTrialMetadata *)self->_trialMetadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SGMIMetricsTrialMetadata *)self->_trialMetadata copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_locale copyWithZone:a3];
+  v8 = [(NSString *)self->_locale copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -428,7 +428,7 @@ LABEL_43:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v15 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addStats:v15];
       }
 
@@ -535,30 +535,30 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_trialMetadata)
   {
-    [v9 setTrialMetadata:?];
+    [toCopy setTrialMetadata:?];
   }
 
   if (self->_locale)
   {
-    [v9 setLocale:?];
+    [toCopy setLocale:?];
   }
 
   if ([(SGMIMetricsRegexSignatureStats *)self statsCount])
   {
-    [v9 clearStats];
-    v4 = [(SGMIMetricsRegexSignatureStats *)self statsCount];
-    if (v4)
+    [toCopy clearStats];
+    statsCount = [(SGMIMetricsRegexSignatureStats *)self statsCount];
+    if (statsCount)
     {
-      v5 = v4;
+      v5 = statsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SGMIMetricsRegexSignatureStats *)self statsAtIndex:i];
-        [v9 addStats:v7];
+        [toCopy addStats:v7];
       }
     }
   }
@@ -566,8 +566,8 @@ LABEL_16:
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v9 + 10) = self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20;
-    *(v9 + 64) |= 0x10u;
+    *(toCopy + 10) = self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20;
+    *(toCopy + 64) |= 0x10u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -586,8 +586,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v9 + 12) = self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20;
-  *(v9 + 64) |= 0x40u;
+  *(toCopy + 12) = self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20;
+  *(toCopy + 64) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -601,8 +601,8 @@ LABEL_12:
   }
 
 LABEL_22:
-  *(v9 + 11) = self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20;
-  *(v9 + 64) |= 0x20u;
+  *(toCopy + 11) = self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20;
+  *(toCopy + 64) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -616,8 +616,8 @@ LABEL_13:
   }
 
 LABEL_23:
-  *(v9 + 6) = self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20;
-  *(v9 + 64) |= 4u;
+  *(toCopy + 6) = self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20;
+  *(toCopy + 64) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -631,8 +631,8 @@ LABEL_14:
   }
 
 LABEL_24:
-  *(v9 + 4) = self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20;
-  *(v9 + 64) |= 1u;
+  *(toCopy + 4) = self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20;
+  *(toCopy + 64) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -646,22 +646,22 @@ LABEL_15:
   }
 
 LABEL_25:
-  *(v9 + 7) = self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20;
-  *(v9 + 64) |= 8u;
+  *(toCopy + 7) = self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20;
+  *(toCopy + 64) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_16:
-    *(v9 + 5) = self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20;
-    *(v9 + 64) |= 2u;
+    *(toCopy + 5) = self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20;
+    *(toCopy + 64) |= 2u;
   }
 
 LABEL_17:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_trialMetadata)
   {
     PBDataWriterWriteSubmessage();
@@ -801,18 +801,18 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   trialMetadata = self->_trialMetadata;
   if (trialMetadata)
   {
-    v5 = [(SGMIMetricsTrialMetadata *)trialMetadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"trialMetadata"];
+    dictionaryRepresentation = [(SGMIMetricsTrialMetadata *)trialMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"trialMetadata"];
   }
 
   locale = self->_locale;
   if (locale)
   {
-    [v3 setObject:locale forKey:@"locale"];
+    [dictionary setObject:locale forKey:@"locale"];
   }
 
   if ([(NSMutableArray *)self->_stats count])
@@ -837,8 +837,8 @@ LABEL_20:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -847,14 +847,14 @@ LABEL_20:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"stats"];
+    [dictionary setObject:v7 forKey:@"stats"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20];
-    [v3 setObject:v18 forKey:@"totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20"];
+    [dictionary setObject:v18 forKey:@"totalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -875,7 +875,7 @@ LABEL_16:
   }
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20, v24}];
-  [v3 setObject:v19 forKey:@"totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20"];
+  [dictionary setObject:v19 forKey:@"totalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -891,7 +891,7 @@ LABEL_17:
 
 LABEL_27:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20, v24}];
-  [v3 setObject:v20 forKey:@"totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20"];
+  [dictionary setObject:v20 forKey:@"totalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -907,7 +907,7 @@ LABEL_18:
 
 LABEL_28:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20, v24}];
-  [v3 setObject:v21 forKey:@"numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20"];
+  [dictionary setObject:v21 forKey:@"numberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -923,7 +923,7 @@ LABEL_19:
 
 LABEL_29:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20, v24}];
-  [v3 setObject:v22 forKey:@"numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20"];
+  [dictionary setObject:v22 forKey:@"numberOfLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -939,19 +939,19 @@ LABEL_20:
 
 LABEL_30:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20, v24}];
-  [v3 setObject:v23 forKey:@"numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20"];
+  [dictionary setObject:v23 forKey:@"numberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_21:
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{self->_numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20, v24}];
-    [v3 setObject:v15 forKey:@"numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20"];
+    [dictionary setObject:v15 forKey:@"numberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20"];
   }
 
 LABEL_22:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -960,15 +960,15 @@ LABEL_22:
   v8.receiver = self;
   v8.super_class = SGMIMetricsRegexSignatureStats;
   v4 = [(SGMIMetricsRegexSignatureStats *)&v8 description];
-  v5 = [(SGMIMetricsRegexSignatureStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsRegexSignatureStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNumberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasNumberOfLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 2;
   }
@@ -981,9 +981,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNumberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasNumberOfPredictedAttachmentOnLargeOutgoingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 8;
   }
@@ -996,9 +996,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasNumberOfPredictedAttachmentOnLargeIncomingMailsWithAttachmentRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 4;
   }
@@ -1011,9 +1011,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTotalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasTotalNumberOfEmailsProcessedForFollowUpDetectionRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 32;
   }
@@ -1026,9 +1026,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasTotalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasTotalNumberOfEmailsProcessedForRecipientDetectionRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 64;
   }
@@ -1041,9 +1041,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTotalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20:(BOOL)a3
+- (void)setHasTotalNumberOfEmailsProcessedForAttachmentDetectionRoundedToClosestMultipleOf20:(BOOL)of20
 {
-  if (a3)
+  if (of20)
   {
     v3 = 16;
   }
@@ -1056,22 +1056,22 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addStats:(id)a3
+- (void)addStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   stats = self->_stats;
-  v8 = v4;
+  v8 = statsCopy;
   if (!stats)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_stats;
     self->_stats = v6;
 
-    v4 = v8;
+    statsCopy = v8;
     stats = self->_stats;
   }
 
-  [(NSMutableArray *)stats addObject:v4];
+  [(NSMutableArray *)stats addObject:statsCopy];
 }
 
 @end

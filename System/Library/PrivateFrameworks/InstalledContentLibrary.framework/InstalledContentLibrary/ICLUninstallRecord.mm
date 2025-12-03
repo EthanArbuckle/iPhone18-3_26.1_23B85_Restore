@@ -1,12 +1,12 @@
 @interface ICLUninstallRecord
-+ (id)uninstallRecordArrayToDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)uninstallRecordArrayToDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (ICLUninstallRecord)init;
-- (ICLUninstallRecord)initWithCoder:(id)a3;
+- (ICLUninstallRecord)initWithCoder:(id)coder;
 - (NSDictionary)legacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLUninstallRecord
@@ -18,40 +18,40 @@
   return [(ICLUninstallRecord *)&v3 init];
 }
 
-- (ICLUninstallRecord)initWithCoder:(id)a3
+- (ICLUninstallRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICLUninstallRecord;
   v5 = [(ICLUninstallRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v5->_isPlaceholder = [v4 decodeBoolForKey:@"isPlaceholder"];
-    v5->_hasParallelPlaceholder = [v4 decodeBoolForKey:@"hasParallelPlaceholder"];
+    v5->_isPlaceholder = [coderCopy decodeBoolForKey:@"isPlaceholder"];
+    v5->_hasParallelPlaceholder = [coderCopy decodeBoolForKey:@"hasParallelPlaceholder"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ICLUninstallRecord *)self bundleIdentifier];
-  [v5 encodeObject:v4 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(ICLUninstallRecord *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  [v5 encodeBool:-[ICLUninstallRecord isPlaceholder](self forKey:{"isPlaceholder"), @"isPlaceholder"}];
-  [v5 encodeBool:-[ICLUninstallRecord hasParallelPlaceholder](self forKey:{"hasParallelPlaceholder"), @"hasParallelPlaceholder"}];
+  [coderCopy encodeBool:-[ICLUninstallRecord isPlaceholder](self forKey:{"isPlaceholder"), @"isPlaceholder"}];
+  [coderCopy encodeBool:-[ICLUninstallRecord hasParallelPlaceholder](self forKey:{"hasParallelPlaceholder"), @"hasParallelPlaceholder"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ICLUninstallRecord *)self bundleIdentifier];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  bundleIdentifier = [(ICLUninstallRecord *)self bundleIdentifier];
+  v7 = [bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v7];
 
   [v5 setIsPlaceholder:{-[ICLUninstallRecord isPlaceholder](self, "isPlaceholder")}];
@@ -62,16 +62,16 @@
 - (NSDictionary)legacyDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(ICLUninstallRecord *)self bundleIdentifier];
-  if (v4)
+  bundleIdentifier = [(ICLUninstallRecord *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E695E4F0]];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:*MEMORY[0x1E695E4F0]];
   }
 
-  v5 = [(ICLUninstallRecord *)self isPlaceholder];
+  isPlaceholder = [(ICLUninstallRecord *)self isPlaceholder];
   v6 = MEMORY[0x1E695E110];
   v7 = MEMORY[0x1E695E118];
-  if (v5)
+  if (isPlaceholder)
   {
     v8 = MEMORY[0x1E695E118];
   }
@@ -98,10 +98,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -111,18 +111,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ICLUninstallRecord *)self bundleIdentifier];
-      v7 = [(ICLUninstallRecord *)v5 bundleIdentifier];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      bundleIdentifier = [(ICLUninstallRecord *)self bundleIdentifier];
+      bundleIdentifier2 = [(ICLUninstallRecord *)v5 bundleIdentifier];
+      v8 = MICompareObjects(bundleIdentifier, bundleIdentifier2);
 
       if (v8)
       {
-        v9 = [(ICLUninstallRecord *)self isPlaceholder];
-        if (v9 == [(ICLUninstallRecord *)v5 isPlaceholder])
+        isPlaceholder = [(ICLUninstallRecord *)self isPlaceholder];
+        if (isPlaceholder == [(ICLUninstallRecord *)v5 isPlaceholder])
         {
-          v12 = [(ICLUninstallRecord *)self hasParallelPlaceholder];
-          if (v12 == [(ICLUninstallRecord *)v5 hasParallelPlaceholder])
+          hasParallelPlaceholder = [(ICLUninstallRecord *)self hasParallelPlaceholder];
+          if (hasParallelPlaceholder == [(ICLUninstallRecord *)v5 hasParallelPlaceholder])
           {
             v10 = 1;
             goto LABEL_14;
@@ -163,33 +163,33 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLUninstallRecord *)self isPlaceholder];
-  v4 = [(ICLUninstallRecord *)self hasParallelPlaceholder];
+  isPlaceholder = [(ICLUninstallRecord *)self isPlaceholder];
+  hasParallelPlaceholder = [(ICLUninstallRecord *)self hasParallelPlaceholder];
   v5 = 2;
-  if (!v4)
+  if (!hasParallelPlaceholder)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
-  v7 = [(ICLUninstallRecord *)self bundleIdentifier];
-  v8 = [v7 hash];
+  v6 = v5 | isPlaceholder;
+  bundleIdentifier = [(ICLUninstallRecord *)self bundleIdentifier];
+  v8 = [bundleIdentifier hash];
 
   return v8 ^ v6;
 }
 
-+ (id)uninstallRecordArrayToDictionary:(id)a3
++ (id)uninstallRecordArrayToDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -204,8 +204,8 @@ LABEL_15:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) legacyDictionary];
-          [v4 addObject:v10];
+          legacyDictionary = [*(*(&v14 + 1) + 8 * i) legacyDictionary];
+          [v4 addObject:legacyDictionary];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];

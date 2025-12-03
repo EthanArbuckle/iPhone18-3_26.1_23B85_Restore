@@ -2,7 +2,7 @@
 - (BOOL)isEmpty;
 - (BOOL)persistedStewieEnabledFlag;
 - (IDSStewieStore)init;
-- (IDSStewieStore)initWithPersister:(id)a3;
+- (IDSStewieStore)initWithPersister:(id)persister;
 - (id)persistedCompanionDeviceIDToUDID;
 - (id)persistedCompanionPhoneNumbers;
 - (id)persistedDeviceInfo;
@@ -14,15 +14,15 @@
 - (id)persistedSPSEnvironment;
 - (id)persistedStewieLoggingGUID;
 - (void)clearPersistentMap;
-- (void)persistCompanionDeviceIDToUDID:(id)a3;
-- (void)persistCompanionPhoneNumbers:(id)a3;
-- (void)persistDeviceInfo:(id)a3;
-- (void)persistNextHeartbeat:(id)a3;
-- (void)persistNextRollKeys:(id)a3;
-- (void)persistNextRollSMSConfig:(id)a3;
-- (void)persistPhoneNumberInfos:(id)a3;
-- (void)persistSMSConfig:(id)a3;
-- (void)persistSPSEnvironment:(id)a3;
+- (void)persistCompanionDeviceIDToUDID:(id)d;
+- (void)persistCompanionPhoneNumbers:(id)numbers;
+- (void)persistDeviceInfo:(id)info;
+- (void)persistNextHeartbeat:(id)heartbeat;
+- (void)persistNextRollKeys:(id)keys;
+- (void)persistNextRollSMSConfig:(id)config;
+- (void)persistPhoneNumberInfos:(id)infos;
+- (void)persistSMSConfig:(id)config;
+- (void)persistSPSEnvironment:(id)environment;
 - (void)persistStewieEnabled;
 @end
 
@@ -30,8 +30,8 @@
 
 - (BOOL)persistedStewieEnabledFlag
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"StewieEnabled"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"StewieEnabled"];
 
   return v3 != 0;
 }
@@ -50,12 +50,12 @@
   return v9;
 }
 
-- (IDSStewieStore)initWithPersister:(id)a3
+- (IDSStewieStore)initWithPersister:(id)persister
 {
-  v4 = a3;
+  persisterCopy = persister;
   v5 = [IDSPersistentMap alloc];
   v6 = sub_100698878();
-  v7 = [(IDSPersistentMap *)v5 initWithIdentifier:@"com.apple.identityservicesd.stewie.store.v2" versionNumber:1 decodableClasses:v6 persister:v4 migrationBlock:0 allowBackup:0];
+  v7 = [(IDSPersistentMap *)v5 initWithIdentifier:@"com.apple.identityservicesd.stewie.store.v2" versionNumber:1 decodableClasses:v6 persister:persisterCopy migrationBlock:0 allowBackup:0];
 
   v8 = sub_10092E1D0(&self->super.isa, v7);
   return v8;
@@ -63,21 +63,21 @@
 
 - (BOOL)isEmpty
 {
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = [v4 objectForKey:@"StewieEnabled"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  persistentMap4 = [persistentMap objectForKey:@"StewieEnabled"];
 
-  v6 = [(IDSStewieStore *)self persistentMap];
-  v7 = [v6 objectForKey:@"SPSEnvironment"];
+  persistentMap2 = [(IDSStewieStore *)self persistentMap];
+  allKeys3 = [persistentMap2 objectForKey:@"SPSEnvironment"];
 
   if (!CUTIsInternalInstall())
   {
-    if (!v5 || (-[IDSStewieStore persistentMap](self, "persistentMap"), v6 = objc_claimAutoreleasedReturnValue(), [v6 allKeys], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "count") != 1))
+    if (!persistentMap4 || (-[IDSStewieStore persistentMap](self, "persistentMap"), persistentMap2 = objc_claimAutoreleasedReturnValue(), [persistentMap2 allKeys], allKeys2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(allKeys2, "count") != 1))
     {
-      v13 = [(IDSStewieStore *)self persistentMap];
-      v14 = [v13 allKeys];
-      v12 = [v14 count] == 0;
+      persistentMap3 = [(IDSStewieStore *)self persistentMap];
+      allKeys = [persistentMap3 allKeys];
+      v12 = [allKeys count] == 0;
 
-      if (!v5)
+      if (!persistentMap4)
       {
         return v12;
       }
@@ -92,26 +92,26 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v8 = (v5 | v7) == 0;
-  if (!(v5 | v7))
+  v8 = (persistentMap4 | allKeys3) == 0;
+  if (!(persistentMap4 | allKeys3))
   {
     v9 = 0;
     goto LABEL_4;
   }
 
-  v6 = [(IDSStewieStore *)self persistentMap];
-  v2 = [v6 allKeys];
-  if ([v2 count] == 1)
+  persistentMap2 = [(IDSStewieStore *)self persistentMap];
+  allKeys2 = [persistentMap2 allKeys];
+  if ([allKeys2 count] == 1)
   {
     goto LABEL_12;
   }
 
   v9 = 0;
-  if (v5 && v7)
+  if (persistentMap4 && allKeys3)
   {
-    v5 = [(IDSStewieStore *)self persistentMap];
-    v7 = [v5 allKeys];
-    if ([v7 count] == 2)
+    persistentMap4 = [(IDSStewieStore *)self persistentMap];
+    allKeys3 = [persistentMap4 allKeys];
+    if ([allKeys3 count] == 2)
     {
 
       goto LABEL_12;
@@ -121,9 +121,9 @@ LABEL_12:
   }
 
 LABEL_4:
-  v10 = [(IDSStewieStore *)self persistentMap];
-  v11 = [v10 allKeys];
-  v12 = [v11 count] == 0;
+  persistentMap5 = [(IDSStewieStore *)self persistentMap];
+  allKeys4 = [persistentMap5 allKeys];
+  v12 = [allKeys4 count] == 0;
 
   if (v9)
   {
@@ -139,24 +139,24 @@ LABEL_4:
 
 - (id)persistedDeviceInfo
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"DeviceInfo"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"DeviceInfo"];
 
   return v3;
 }
 
 - (id)persistedPhoneNumberInfos
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"PhoneNumbers"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"PhoneNumbers"];
 
   return v3;
 }
 
 - (id)persistedNextHeartbeat
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"NextHeartbeat"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"NextHeartbeat"];
 
   if (v3)
   {
@@ -174,8 +174,8 @@ LABEL_4:
 
 - (id)persistedNextRollKeys
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"NextRollKeys"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"NextRollKeys"];
 
   if (v3)
   {
@@ -193,8 +193,8 @@ LABEL_4:
 
 - (id)persistedNextRollSMSConfig
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"NextRollSMSConfig"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"NextRollSMSConfig"];
 
   if (v3)
   {
@@ -212,197 +212,197 @@ LABEL_4:
 
 - (id)persistedSPSEnvironment
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"SPSEnvironment"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"SPSEnvironment"];
 
   return v3;
 }
 
-- (void)persistDeviceInfo:(id)a3
+- (void)persistDeviceInfo:(id)info
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = v4;
-  if (v6)
+  infoCopy = info;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v5 = persistentMap;
+  if (infoCopy)
   {
-    [v4 setObject:v6 forKey:@"DeviceInfo"];
+    [persistentMap setObject:infoCopy forKey:@"DeviceInfo"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"DeviceInfo"];
+    [persistentMap removeObjectForKey:@"DeviceInfo"];
   }
 }
 
-- (void)persistPhoneNumberInfos:(id)a3
+- (void)persistPhoneNumberInfos:(id)infos
 {
-  v7 = a3;
-  v4 = [v7 count];
-  v5 = [(IDSStewieStore *)self persistentMap];
-  v6 = v5;
+  infosCopy = infos;
+  v4 = [infosCopy count];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v6 = persistentMap;
   if (v4)
   {
-    [v5 setObject:v7 forKey:@"PhoneNumbers"];
+    [persistentMap setObject:infosCopy forKey:@"PhoneNumbers"];
   }
 
   else
   {
-    [v5 removeObjectForKey:@"PhoneNumbers"];
+    [persistentMap removeObjectForKey:@"PhoneNumbers"];
   }
 }
 
-- (void)persistNextHeartbeat:(id)a3
+- (void)persistNextHeartbeat:(id)heartbeat
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  if (v6)
+  heartbeatCopy = heartbeat;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  if (heartbeatCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [heartbeatCopy timeIntervalSinceReferenceDate];
     v5 = [NSNumber numberWithDouble:?];
-    [v4 setObject:v5 forKey:@"NextHeartbeat"];
+    [persistentMap setObject:v5 forKey:@"NextHeartbeat"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"NextHeartbeat"];
+    [persistentMap removeObjectForKey:@"NextHeartbeat"];
   }
 }
 
-- (void)persistNextRollKeys:(id)a3
+- (void)persistNextRollKeys:(id)keys
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  if (v6)
+  keysCopy = keys;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  if (keysCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [keysCopy timeIntervalSinceReferenceDate];
     v5 = [NSNumber numberWithDouble:?];
-    [v4 setObject:v5 forKey:@"NextRollKeys"];
+    [persistentMap setObject:v5 forKey:@"NextRollKeys"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"NextRollKeys"];
+    [persistentMap removeObjectForKey:@"NextRollKeys"];
   }
 }
 
-- (void)persistNextRollSMSConfig:(id)a3
+- (void)persistNextRollSMSConfig:(id)config
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  if (v6)
+  configCopy = config;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  if (configCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [configCopy timeIntervalSinceReferenceDate];
     v5 = [NSNumber numberWithDouble:?];
-    [v4 setObject:v5 forKey:@"NextRollSMSConfig"];
+    [persistentMap setObject:v5 forKey:@"NextRollSMSConfig"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"NextRollSMSConfig"];
+    [persistentMap removeObjectForKey:@"NextRollSMSConfig"];
   }
 }
 
 - (id)persistedSMSConfig
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"SMSConfig"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"SMSConfig"];
 
   return v3;
 }
 
-- (void)persistSMSConfig:(id)a3
+- (void)persistSMSConfig:(id)config
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = v4;
-  if (v6)
+  configCopy = config;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v5 = persistentMap;
+  if (configCopy)
   {
-    [v4 setObject:v6 forKey:@"SMSConfig"];
+    [persistentMap setObject:configCopy forKey:@"SMSConfig"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"SMSConfig"];
+    [persistentMap removeObjectForKey:@"SMSConfig"];
   }
 }
 
-- (void)persistCompanionPhoneNumbers:(id)a3
+- (void)persistCompanionPhoneNumbers:(id)numbers
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = v4;
-  if (v6)
+  numbersCopy = numbers;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v5 = persistentMap;
+  if (numbersCopy)
   {
-    [v4 setObject:v6 forKey:@"CompanionPhoneNumbers"];
+    [persistentMap setObject:numbersCopy forKey:@"CompanionPhoneNumbers"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"CompanionPhoneNumbers"];
+    [persistentMap removeObjectForKey:@"CompanionPhoneNumbers"];
   }
 }
 
 - (id)persistedCompanionPhoneNumbers
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"CompanionPhoneNumbers"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"CompanionPhoneNumbers"];
 
   return v3;
 }
 
-- (void)persistCompanionDeviceIDToUDID:(id)a3
+- (void)persistCompanionDeviceIDToUDID:(id)d
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = v4;
-  if (v6)
+  dCopy = d;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v5 = persistentMap;
+  if (dCopy)
   {
-    [v4 setObject:v6 forKey:@"CompanionDeviceIDToUDID"];
+    [persistentMap setObject:dCopy forKey:@"CompanionDeviceIDToUDID"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"CompanionDeviceIDToUDID"];
+    [persistentMap removeObjectForKey:@"CompanionDeviceIDToUDID"];
   }
 }
 
 - (id)persistedCompanionDeviceIDToUDID
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  v3 = [v2 objectForKey:@"CompanionDeviceIDToUDID"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v3 = [persistentMap objectForKey:@"CompanionDeviceIDToUDID"];
 
   return v3;
 }
 
 - (void)persistStewieEnabled
 {
-  v2 = [(IDSStewieStore *)self persistentMap];
-  [v2 setObject:&__kCFBooleanTrue forKey:@"StewieEnabled"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  [persistentMap setObject:&__kCFBooleanTrue forKey:@"StewieEnabled"];
 }
 
-- (void)persistSPSEnvironment:(id)a3
+- (void)persistSPSEnvironment:(id)environment
 {
-  v6 = a3;
-  v4 = [(IDSStewieStore *)self persistentMap];
-  v5 = v4;
-  if (v6)
+  environmentCopy = environment;
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v5 = persistentMap;
+  if (environmentCopy)
   {
-    [v4 setObject:v6 forKey:@"SPSEnvironment"];
+    [persistentMap setObject:environmentCopy forKey:@"SPSEnvironment"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"SPSEnvironment"];
+    [persistentMap removeObjectForKey:@"SPSEnvironment"];
   }
 }
 
 - (id)persistedStewieLoggingGUID
 {
-  v3 = [(IDSStewieStore *)self persistentMap];
-  v4 = [v3 objectForKey:@"LoggingGUIDExpiry"];
+  persistentMap = [(IDSStewieStore *)self persistentMap];
+  v4 = [persistentMap objectForKey:@"LoggingGUIDExpiry"];
 
-  v5 = [(IDSStewieStore *)self persistentMap];
-  v6 = [v5 objectForKey:@"LoggingGUID"];
+  persistentMap2 = [(IDSStewieStore *)self persistentMap];
+  v6 = [persistentMap2 objectForKey:@"LoggingGUID"];
 
   if (v4 && (+[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v4 unsignedLongLongValue]), v7 = objc_claimAutoreleasedReturnValue(), +[NSDate date](NSDate, "date"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "compare:", v7), v8, v7, v6) && v9 != 1)
   {
@@ -417,12 +417,12 @@ LABEL_4:
     v14 = v13;
 
     v10 = +[NSString stringGUID];
-    v15 = [(IDSStewieStore *)self persistentMap];
-    [v15 setObject:v10 forKey:@"LoggingGUID"];
+    persistentMap3 = [(IDSStewieStore *)self persistentMap];
+    [persistentMap3 setObject:v10 forKey:@"LoggingGUID"];
 
-    v16 = [(IDSStewieStore *)self persistentMap];
+    persistentMap4 = [(IDSStewieStore *)self persistentMap];
     v17 = [NSNumber numberWithUnsignedLongLong:v14];
-    [v16 setObject:v17 forKey:@"LoggingGUIDExpiry"];
+    [persistentMap4 setObject:v17 forKey:@"LoggingGUIDExpiry"];
   }
 
   return v10;
@@ -432,11 +432,11 @@ LABEL_4:
 {
   if (![(IDSStewieStore *)self isEmpty])
   {
-    v3 = [(IDSStewieStore *)self persistentMap];
-    [v3 removeAllObjects];
+    persistentMap = [(IDSStewieStore *)self persistentMap];
+    [persistentMap removeAllObjects];
 
-    v4 = [(IDSStewieStore *)self persistentMap];
-    [v4 persistImmediately];
+    persistentMap2 = [(IDSStewieStore *)self persistentMap];
+    [persistentMap2 persistImmediately];
   }
 }
 

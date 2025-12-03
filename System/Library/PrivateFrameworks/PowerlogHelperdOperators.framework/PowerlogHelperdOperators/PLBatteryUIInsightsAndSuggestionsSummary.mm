@@ -1,5 +1,5 @@
 @interface PLBatteryUIInsightsAndSuggestionsSummary
-- (id)getResultFromCacheForSuggestionResponseType:(int64_t)a3;
+- (id)getResultFromCacheForSuggestionResponseType:(int64_t)type;
 - (id)result;
 - (void)run;
 @end
@@ -12,15 +12,15 @@
   v3 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self getResultFromCacheForSuggestionResponseType:9];
   if ([v3 count])
   {
-    v4 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self autolockSuggestion];
-    [v18 addObject:v4];
+    autolockSuggestion = [(PLBatteryUIInsightsAndSuggestionsSummary *)self autolockSuggestion];
+    [v18 addObject:autolockSuggestion];
   }
 
   v5 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self getResultFromCacheForSuggestionResponseType:10];
   if ([v5 count])
   {
-    v6 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self autoBrightnessSuggestion];
-    [v18 addObject:v6];
+    autoBrightnessSuggestion = [(PLBatteryUIInsightsAndSuggestionsSummary *)self autoBrightnessSuggestion];
+    [v18 addObject:autoBrightnessSuggestion];
   }
 
   v7 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self getResultFromCacheForSuggestionResponseType:11];
@@ -28,8 +28,8 @@
   v9 = v18;
   if (v8)
   {
-    v10 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self reduceBrightnessSuggestion];
-    [v18 addObject:v10];
+    reduceBrightnessSuggestion = [(PLBatteryUIInsightsAndSuggestionsSummary *)self reduceBrightnessSuggestion];
+    [v18 addObject:reduceBrightnessSuggestion];
 
     v9 = v18;
   }
@@ -42,8 +42,8 @@
   v14 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self getResultFromCacheForSuggestionResponseType:8];
   if ([v14 count])
   {
-    v15 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self recentUsageInsight];
-    [v13 addObject:v15];
+    recentUsageInsight = [(PLBatteryUIInsightsAndSuggestionsSummary *)self recentUsageInsight];
+    [v13 addObject:recentUsageInsight];
   }
 
   v16 = [MEMORY[0x277CBEA60] arrayWithArray:v13];
@@ -90,13 +90,13 @@
   return v8;
 }
 
-- (id)getResultFromCacheForSuggestionResponseType:(int64_t)a3
+- (id)getResultFromCacheForSuggestionResponseType:(int64_t)type
 {
   v5 = PLBatteryUsageUIKeyFromConfiguration();
-  v6 = [(PLBatteryUIInsightsAndSuggestionsSummary *)self responderService];
-  v7 = [v6 responseCache];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  responderService = [(PLBatteryUIInsightsAndSuggestionsSummary *)self responderService];
+  responseCache = [responderService responseCache];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v9 = [responseCache objectForKeyedSubscript:v8];
   v10 = [v9 objectForKeyedSubscript:v5];
   v11 = [v10 objectForKeyedSubscript:@"result"];
 

@@ -1,7 +1,7 @@
 @interface _TVStackingPosterViewAccessibility
-- (BOOL)_accessibilityShouldReverseComponents:(id)a3;
+- (BOOL)_accessibilityShouldReverseComponents:(id)components;
 - (id)_accessibilityFrameDelegate;
-- (id)_accessibilityLabelIncludingFallbackPlaceholder:(BOOL)a3 usesSubviewsForComponents:(BOOL)a4;
+- (id)_accessibilityLabelIncludingFallbackPlaceholder:(BOOL)placeholder usesSubviewsForComponents:(BOOL)components;
 - (id)_accessibilitySupplementaryFooterViews;
 - (unint64_t)_accessibilityScanningBehaviorTraits;
 @end
@@ -10,23 +10,23 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(_TVStackingPosterViewAccessibility *)self _accessibleSubviews];
-  v3 = [v2 axFilterObjectsUsingBlock:&__block_literal_global_7];
+  _accessibleSubviews = [(_TVStackingPosterViewAccessibility *)self _accessibleSubviews];
+  v3 = [_accessibleSubviews axFilterObjectsUsingBlock:&__block_literal_global_7];
 
   return v3;
 }
 
-- (BOOL)_accessibilityShouldReverseComponents:(id)a3
+- (BOOL)_accessibilityShouldReverseComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   if (_accessibilityShouldReverseComponents__onceToken != -1)
   {
     [_TVStackingPosterViewAccessibility _accessibilityShouldReverseComponents:];
   }
 
-  if ([v3 count] >= 2 && objc_msgSend(v3, "ax_containsObjectUsingBlock:", &__block_literal_global_302))
+  if ([componentsCopy count] >= 2 && objc_msgSend(componentsCopy, "ax_containsObjectUsingBlock:", &__block_literal_global_302))
   {
-    v4 = [v3 lastObject];
+    lastObject = [componentsCopy lastObject];
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
@@ -38,18 +38,18 @@
   return isKindOfClass & 1;
 }
 
-- (id)_accessibilityLabelIncludingFallbackPlaceholder:(BOOL)a3 usesSubviewsForComponents:(BOOL)a4
+- (id)_accessibilityLabelIncludingFallbackPlaceholder:(BOOL)placeholder usesSubviewsForComponents:(BOOL)components
 {
-  v4 = a4;
-  v5 = a3;
+  componentsCopy = components;
+  placeholderCopy = placeholder;
   v38 = *MEMORY[0x29EDCA608];
   v36.receiver = self;
   v36.super_class = _TVStackingPosterViewAccessibility;
-  v7 = [(_TVStackingPosterViewAccessibility *)&v36 accessibilityLabel];
-  if (![v7 length])
+  accessibilityLabel = [(_TVStackingPosterViewAccessibility *)&v36 accessibilityLabel];
+  if (![accessibilityLabel length])
   {
-    v8 = [MEMORY[0x29EDB8E10] orderedSet];
-    if (v4)
+    orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
+    if (componentsCopy)
     {
       v9 = @"subviews";
     }
@@ -60,14 +60,14 @@
     }
 
     v10 = [(_TVStackingPosterViewAccessibility *)self safeArrayForKey:v9];
-    v31 = v5;
-    v30 = v7;
+    v31 = placeholderCopy;
+    v30 = accessibilityLabel;
     if ([(_TVStackingPosterViewAccessibility *)self _accessibilityShouldReverseComponents:v10])
     {
-      v11 = [v10 reverseObjectEnumerator];
-      v12 = [v11 allObjects];
+      reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v10 = v12;
+      v10 = allObjects;
     }
 
     v34 = 0u;
@@ -90,22 +90,22 @@
           }
 
           v18 = *(*(&v32 + 1) + 8 * i);
-          v19 = [v18 accessibilityLabel];
-          if (v19)
+          accessibilityLabel2 = [v18 accessibilityLabel];
+          if (accessibilityLabel2)
           {
-            v20 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-            v21 = [v19 stringByTrimmingCharactersInSet:v20];
-            [v8 addObject:v21];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+            v21 = [accessibilityLabel2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+            [orderedSet addObject:v21];
           }
 
           else
           {
             v22 = [v18 _accessibilityTextForSubhierarchyIncludingHeaders:0 focusableItems:1 exclusions:0];
-            v20 = [v22 componentsSeparatedByString:{@", "}];
+            whitespaceAndNewlineCharacterSet = [v22 componentsSeparatedByString:{@", "}];
 
-            if (v20)
+            if (whitespaceAndNewlineCharacterSet)
             {
-              [v8 addObjectsFromArray:v20];
+              [orderedSet addObjectsFromArray:whitespaceAndNewlineCharacterSet];
             }
           }
         }
@@ -116,29 +116,29 @@
       while (v15);
     }
 
-    v23 = [v8 array];
-    v7 = MEMORY[0x29ED3B640]();
+    array = [orderedSet array];
+    accessibilityLabel = MEMORY[0x29ED3B640]();
 
-    if (![v7 length])
+    if (![accessibilityLabel length])
     {
       v24 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, NSClassFromString(&cfstr_Tvprogressview_0.isa)}];
       v25 = [(_TVStackingPosterViewAccessibility *)self safeValueForKey:@"overlayView"];
       v26 = [v25 _accessibilityTextForSubhierarchyIncludingHeaders:1 focusableItems:0 exclusions:0 classExclusions:v24];
 
-      v7 = v26;
+      accessibilityLabel = v26;
     }
 
-    if (v31 && ![v7 length])
+    if (v31 && ![accessibilityLabel length])
     {
       v27 = accessibilityLocalizedString(@"tvml.generic.poster");
 
-      v7 = v27;
+      accessibilityLabel = v27;
     }
   }
 
   v28 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilityFrameDelegate
@@ -245,17 +245,17 @@ LABEL_21:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _accessibilityScanningBehaviorTraits];
+    _accessibilityScanningBehaviorTraits = [v3 _accessibilityScanningBehaviorTraits];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _TVStackingPosterViewAccessibility;
-    v5 = [(_TVStackingPosterViewAccessibility *)&v8 _accessibilityScanningBehaviorTraits];
+    _accessibilityScanningBehaviorTraits = [(_TVStackingPosterViewAccessibility *)&v8 _accessibilityScanningBehaviorTraits];
   }
 
-  v6 = v5;
+  v6 = _accessibilityScanningBehaviorTraits;
 
   return v6;
 }

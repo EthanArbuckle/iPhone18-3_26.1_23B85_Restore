@@ -12,7 +12,7 @@
 
 - (uint64_t)_getCacheControlMaxAge:()ISAdditions
 {
-  v4 = [a1 _iTunesStore_valueForHTTPHeader:@"Cache-Control"];
+  v4 = [self _iTunesStore_valueForHTTPHeader:@"Cache-Control"];
   v5 = 0;
   if (!v4 || (v6 = v4, v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v8 = objc_msgSend(v6, "componentsSeparatedByString:", @","), (v9 = objc_msgSend(v8, "count")) == 0))
   {
@@ -49,7 +49,7 @@ LABEL_9:
 
 - (uint64_t)_dateFromExpires
 {
-  result = [a1 _iTunesStore_valueForHTTPHeader:@"Expires"];
+  result = [self _iTunesStore_valueForHTTPHeader:@"Expires"];
   if (result)
   {
     v2 = result;
@@ -63,7 +63,7 @@ LABEL_9:
 
 - (uint64_t)itunes_expirationDate
 {
-  [a1 itunes_expirationInterval];
+  [self itunes_expirationInterval];
   if (v1 <= 0.00000011920929)
   {
     return 0;
@@ -83,48 +83,48 @@ LABEL_9:
   }
 
   v5 = -1.0;
-  if ([a1 _getCacheControlMaxAge:&v5])
+  if ([self _getCacheControlMaxAge:&v5])
   {
     return v5;
   }
 
-  v4 = [a1 _dateFromExpires];
-  if (!v4)
+  _dateFromExpires = [self _dateFromExpires];
+  if (!_dateFromExpires)
   {
     return -1.0;
   }
 
-  [v4 timeIntervalSinceNow];
+  [_dateFromExpires timeIntervalSinceNow];
   return result;
 }
 
 - (double)itunes_expirationInterval
 {
   v4 = -1.0;
-  if ([a1 _getCacheControlMaxAge:&v4])
+  if ([self _getCacheControlMaxAge:&v4])
   {
     return v4;
   }
 
-  v3 = [a1 _dateFromExpires];
-  if (!v3)
+  _dateFromExpires = [self _dateFromExpires];
+  if (!_dateFromExpires)
   {
     return -1.0;
   }
 
-  [v3 timeIntervalSinceNow];
+  [_dateFromExpires timeIntervalSinceNow];
   return result;
 }
 
 - (uint64_t)_iTunesStore_valueForHTTPHeader:()ISAdditions
 {
-  v4 = [a1 allHeaderFields];
-  result = [v4 objectForKey:a3];
+  allHeaderFields = [self allHeaderFields];
+  result = [allHeaderFields objectForKey:a3];
   if (!result)
   {
-    v6 = [a3 lowercaseString];
+    lowercaseString = [a3 lowercaseString];
 
-    return [v4 objectForKey:v6];
+    return [allHeaderFields objectForKey:lowercaseString];
   }
 
   return result;
@@ -132,16 +132,16 @@ LABEL_9:
 
 - (unint64_t)itunes_maxExpectedContentLength
 {
-  v2 = [a1 expectedContentLength];
-  if ([a1 statusCode] != 206)
+  expectedContentLength = [self expectedContentLength];
+  if ([self statusCode] != 206)
   {
-    return v2;
+    return expectedContentLength;
   }
 
-  v3 = [a1 _iTunesStore_valueForHTTPHeader:@"Content-Range"];
+  v3 = [self _iTunesStore_valueForHTTPHeader:@"Content-Range"];
   if (!v3)
   {
-    return v2;
+    return expectedContentLength;
   }
 
   v4 = [objc_msgSend(v3 "lastPathComponent")];

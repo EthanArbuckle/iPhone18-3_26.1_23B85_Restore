@@ -1,20 +1,20 @@
 @interface _ICLLMediaInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLMediaInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((mediaType = self->_mediaType, !(mediaType | v4[1])) || -[NSString isEqual:](mediaType, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((mediaType = self->_mediaType, !(mediaType | equalCopy[1])) || -[NSString isEqual:](mediaType, "isEqual:")))
   {
     playParams = self->_playParams;
-    if (playParams | v4[2])
+    if (playParams | equalCopy[2])
     {
       v7 = [(NSString *)playParams isEqual:?];
     }
@@ -33,45 +33,45 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_mediaType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_mediaType copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_playParams copyWithZone:a3];
+  v8 = [(NSString *)self->_playParams copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mediaType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playParams)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   mediaType = self->_mediaType;
   if (mediaType)
   {
-    [v3 setObject:mediaType forKey:@"mediaType"];
+    [dictionary setObject:mediaType forKey:@"mediaType"];
   }
 
   playParams = self->_playParams;
@@ -89,8 +89,8 @@
   v8.receiver = self;
   v8.super_class = _ICLLMediaInfo;
   v4 = [(_ICLLMediaInfo *)&v8 description];
-  v5 = [(_ICLLMediaInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLMediaInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

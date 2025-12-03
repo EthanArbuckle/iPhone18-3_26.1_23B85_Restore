@@ -1,19 +1,19 @@
 @interface MKTableViewCell
 - (CGRect)_separatorFrame;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setSeparatorStyle:(int64_t)mapkit_separatorStyleOverride;
-- (void)set_mapkit_forceSeparatorFrameToCGRectZero:(BOOL)a3;
+- (void)set_mapkit_forceSeparatorFrameToCGRectZero:(BOOL)zero;
 @end
 
 @implementation MKTableViewCell
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v6.receiver = self;
   v6.super_class = MKTableViewCell;
   [(MKTableViewCell *)&v6 setSemanticContentAttribute:?];
-  v5 = [(MKTableViewCell *)self contentView];
-  [v5 setSemanticContentAttribute:a3];
+  contentView = [(MKTableViewCell *)self contentView];
+  [contentView setSemanticContentAttribute:attribute];
 }
 
 - (CGRect)_separatorFrame
@@ -56,15 +56,15 @@
   [(MKTableViewCell *)&v5 setSeparatorStyle:mapkit_separatorStyleOverride];
 }
 
-- (void)set_mapkit_forceSeparatorFrameToCGRectZero:(BOOL)a3
+- (void)set_mapkit_forceSeparatorFrameToCGRectZero:(BOOL)zero
 {
-  if (self->__mapkit_forceSeparatorFrameToCGRectZero != a3)
+  if (self->__mapkit_forceSeparatorFrameToCGRectZero != zero)
   {
-    self->__mapkit_forceSeparatorFrameToCGRectZero = a3;
-    v5 = [(MKTableViewCell *)self separatorStyle];
-    [(MKTableViewCell *)self setSeparatorStyle:(v5 + 1) % 3];
+    self->__mapkit_forceSeparatorFrameToCGRectZero = zero;
+    separatorStyle = [(MKTableViewCell *)self separatorStyle];
+    [(MKTableViewCell *)self setSeparatorStyle:(separatorStyle + 1) % 3];
 
-    [(MKTableViewCell *)self setSeparatorStyle:v5];
+    [(MKTableViewCell *)self setSeparatorStyle:separatorStyle];
   }
 }
 

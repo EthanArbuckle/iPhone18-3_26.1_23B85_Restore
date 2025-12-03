@@ -1,8 +1,8 @@
 @interface TPSContentStatusEventsProvider
-- (BOOL)_isStatusType:(int64_t)a3 observedInStatus:(id)a4;
-- (BOOL)_isStatusType:(int64_t)a3 observedInStatuses:(id)a4;
+- (BOOL)_isStatusType:(int64_t)type observedInStatus:(id)status;
+- (BOOL)_isStatusType:(int64_t)type observedInStatuses:(id)statuses;
 - (TPSContentStatusEventsProvider)init;
-- (void)queryEvents:(id)a3;
+- (void)queryEvents:(id)events;
 @end
 
 @implementation TPSContentStatusEventsProvider
@@ -15,22 +15,22 @@
   if (v2)
   {
     v3 = +[TPSCommonDefines sharedInstance];
-    v4 = [v3 tipStatusController];
+    tipStatusController = [v3 tipStatusController];
     tipStatusController = v2->_tipStatusController;
-    v2->_tipStatusController = v4;
+    v2->_tipStatusController = tipStatusController;
   }
 
   return v2;
 }
 
-- (void)queryEvents:(id)a3
+- (void)queryEvents:(id)events
 {
   v42 = *MEMORY[0x1E69E9840];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = a3;
+  obj = events;
   v4 = [obj countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v4)
   {
@@ -52,10 +52,10 @@
 
         v11 = *(*(&v32 + 1) + 8 * v10);
         context = objc_autoreleasePoolPush();
-        v12 = [v11 minObservationCount];
-        if (v12 <= [v11 currentObservationCount])
+        minObservationCount = [v11 minObservationCount];
+        if (minObservationCount <= [v11 currentObservationCount])
         {
-          LOBYTE(v19) = 0;
+          LOBYTE(statusType) = 0;
         }
 
         else
@@ -64,24 +64,24 @@
           v14 = v7;
           v15 = v8;
           v16 = v11;
-          v19 = [v16 statusType];
-          v17 = [v16 contentID];
-          v18 = [(TPSTipStatusController *)self->_tipStatusController statusesForCorrelationIdentifier:v17];
+          statusType = [v16 statusType];
+          contentID = [v16 contentID];
+          v18 = [(TPSTipStatusController *)self->_tipStatusController statusesForCorrelationIdentifier:contentID];
 
-          LODWORD(v19) = [(TPSContentStatusEventsProvider *)self _isStatusType:v19 observedInStatuses:v18];
-          if (v19)
+          LODWORD(statusType) = [(TPSContentStatusEventsProvider *)self _isStatusType:statusType observedInStatuses:v18];
+          if (statusType)
           {
-            v19 = +[TPSLogger default];
+            statusType = +[TPSLogger default];
             v8 = v15;
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(statusType, OS_LOG_TYPE_DEFAULT))
             {
               v20 = [v16 description];
               *buf = v29;
               v40 = v20;
-              _os_log_impl(&dword_1C00A7000, v19, OS_LOG_TYPE_DEFAULT, "Status observed for event: %@", buf, 0xCu);
+              _os_log_impl(&dword_1C00A7000, statusType, OS_LOG_TYPE_DEFAULT, "Status observed for event: %@", buf, 0xCu);
             }
 
-            LOBYTE(v19) = 1;
+            LOBYTE(statusType) = 1;
           }
 
           else
@@ -95,16 +95,16 @@
         }
 
         v21 = objc_alloc_init(*(v8 + 2456));
-        v22 = [v11 identifier];
-        [v21 setIdentifier:v22];
-        v23 = [*(v9 + 3840) date];
-        [v21 setResultDate:v23];
+        identifier = [v11 identifier];
+        [v21 setIdentifier:identifier];
+        date = [*(v9 + 3840) date];
+        [v21 setResultDate:date];
 
-        if (v19)
+        if (statusType)
         {
-          v37 = v22;
-          v24 = [v21 resultDate];
-          v38 = v24;
+          v37 = identifier;
+          resultDate = [v21 resultDate];
+          v38 = resultDate;
           v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
           [v21 setObservationMap:v25];
         }
@@ -114,10 +114,10 @@
           [v21 setObservationMap:0];
         }
 
-        v26 = [(TPSEventsProvider *)self delegate];
+        delegate = [(TPSEventsProvider *)self delegate];
         v36 = v21;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-        [v26 dataProvider:self didFinishQueryWithResults:v27];
+        [delegate dataProvider:self didFinishQueryWithResults:v27];
 
         objc_autoreleasePoolPop(context);
         ++v10;
@@ -133,9 +133,9 @@
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isStatusType:(int64_t)a3 observedInStatuses:(id)a4
+- (BOOL)_isStatusType:(int64_t)type observedInStatuses:(id)statuses
 {
-  v6 = a4;
+  statusesCopy = statuses;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -145,13 +145,13 @@
   v8[2] = __67__TPSContentStatusEventsProvider__isStatusType_observedInStatuses___block_invoke;
   v8[3] = &unk_1E8101220;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = type;
   v8[4] = self;
-  [v6 enumerateObjectsUsingBlock:v8];
-  LOBYTE(a3) = *(v10 + 24);
+  [statusesCopy enumerateObjectsUsingBlock:v8];
+  LOBYTE(type) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return a3;
+  return type;
 }
 
 uint64_t __67__TPSContentStatusEventsProvider__isStatusType_observedInStatuses___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -166,37 +166,37 @@ uint64_t __67__TPSContentStatusEventsProvider__isStatusType_observedInStatuses__
   return result;
 }
 
-- (BOOL)_isStatusType:(int64_t)a3 observedInStatus:(id)a4
+- (BOOL)_isStatusType:(int64_t)type observedInStatus:(id)status
 {
-  v5 = a4;
-  v6 = v5;
+  statusCopy = status;
+  v6 = statusCopy;
   LOBYTE(v7) = 0;
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
-        v8 = [v5 isContentViewed];
+        isContentViewed = [statusCopy isContentViewed];
         goto LABEL_23;
       }
 
-      if (a3 == 8)
+      if (type == 8)
       {
-        v8 = [v5 isDesiredOutcomePerformed];
+        isContentViewed = [statusCopy isDesiredOutcomePerformed];
         goto LABEL_23;
       }
     }
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
-        v8 = [v5 isHintDismissed];
+        isContentViewed = [statusCopy isHintDismissed];
         goto LABEL_23;
       }
 
-      if ([v5 isHintDisplayedOnAnyDevice])
+      if ([statusCopy isHintDisplayedOnAnyDevice])
       {
         v7 = [v6 isHintDisplayed] ^ 1;
       }
@@ -210,20 +210,20 @@ uint64_t __67__TPSContentStatusEventsProvider__isStatusType_observedInStatuses__
     goto LABEL_24;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v8 = [v5 isHintDisplayedOnAnyDevice];
+      isContentViewed = [statusCopy isHintDisplayedOnAnyDevice];
       goto LABEL_23;
     }
 
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    if ([v5 isDesiredOutcomePerformed])
+    if ([statusCopy isDesiredOutcomePerformed])
     {
 LABEL_17:
       LOBYTE(v7) = 1;
@@ -231,17 +231,17 @@ LABEL_17:
     }
 
 LABEL_18:
-    v8 = [v6 isHintDisplayed];
+    isContentViewed = [v6 isHintDisplayed];
     goto LABEL_23;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    if (([v5 isDesiredOutcomePerformed] & 1) == 0 && (objc_msgSend(v6, "isHintDisplayedOnAnyDevice") & 1) == 0)
+    if (([statusCopy isDesiredOutcomePerformed] & 1) == 0 && (objc_msgSend(v6, "isHintDisplayedOnAnyDevice") & 1) == 0)
     {
-      v8 = [v6 isHintIneligible];
+      isContentViewed = [v6 isHintIneligible];
 LABEL_23:
-      LOBYTE(v7) = v8;
+      LOBYTE(v7) = isContentViewed;
       goto LABEL_24;
     }
 

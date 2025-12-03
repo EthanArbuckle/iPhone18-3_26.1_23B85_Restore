@@ -1,63 +1,63 @@
 @interface IDSDMessageStore
-+ (BOOL)databaseSizeBiggerThanThreshold:(int64_t)a3;
-+ (id)allExpiredOutgoingMessages:(int64_t)a3;
-+ (id)allOutgoingMessagesByGUID:(id)a3;
-+ (id)allOutgoingMessagesOnAccountGUID:(id)a3 localDestinationDeviceID:(id)a4;
-+ (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)a3;
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 hardLimit:(int64_t)a5;
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6;
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6 wantsPayload:(BOOL)a7 messageType:(int64_t)a8 success:(BOOL *)a9;
-+ (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)a3;
-+ (id)incomingExpiredRestrictedMessages:(double)a3 success:(BOOL *)a4;
-+ (id)incomingMessagesUpToLimit:(unint64_t)a3 controlCategory:(unsigned int)a4 messageTransportType:(unsigned __int8)a5 success:(BOOL *)a6;
-+ (id)largestEnquedMessagesAccountUUIDOverThreshold:(int64_t)a3;
++ (BOOL)databaseSizeBiggerThanThreshold:(int64_t)threshold;
++ (id)allExpiredOutgoingMessages:(int64_t)messages;
++ (id)allOutgoingMessagesByGUID:(id)d;
++ (id)allOutgoingMessagesOnAccountGUID:(id)d localDestinationDeviceID:(id)iD;
++ (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)limit;
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d hardLimit:(int64_t)limit;
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit;
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit wantsPayload:(BOOL)payload messageType:(int64_t)type success:(BOOL *)success;
++ (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)than;
++ (id)incomingExpiredRestrictedMessages:(double)messages success:(BOOL *)success;
++ (id)incomingMessagesUpToLimit:(unint64_t)limit controlCategory:(unsigned int)category messageTransportType:(unsigned __int8)type success:(BOOL *)success;
++ (id)largestEnquedMessagesAccountUUIDOverThreshold:(int64_t)threshold;
 + (id)largestPayloadSizeAccountUUID;
-+ (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)a3 notToDestinationDeviceID:(id)a4 andLimit:(int64_t)a5;
++ (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)than notToDestinationDeviceID:(id)d andLimit:(int64_t)limit;
 + (id)sharedInstance;
-+ (id)sharedInstanceForDataProtectionClass:(unsigned int)a3;
-+ (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)a3;
-+ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5;
-+ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5 withMessageTypes:(id)a6;
-+ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)a3 priority:(int64_t)a4 localDestinationDeviceID:(id)a5;
-+ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)a3 priority:(int64_t)a4 wantsPayload:(BOOL)a5 localDestinationDeviceID:(id)a6;
-+ (id)unsentUrgentAccountUUIDsWithDataProtectionClass:(unsigned int)a3 withMessageTypes:(id)a4;
-+ (void)checkpointAndVacuumDBWithDataProtectionClass:(unsigned int)a3;
++ (id)sharedInstanceForDataProtectionClass:(unsigned int)class;
++ (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)messages;
++ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority dataProtectionClass:(unsigned int)class;
++ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority dataProtectionClass:(unsigned int)class withMessageTypes:(id)types;
++ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)limit priority:(int64_t)priority localDestinationDeviceID:(id)d;
++ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)limit priority:(int64_t)priority wantsPayload:(BOOL)payload localDestinationDeviceID:(id)d;
++ (id)unsentUrgentAccountUUIDsWithDataProtectionClass:(unsigned int)class withMessageTypes:(id)types;
++ (void)checkpointAndVacuumDBWithDataProtectionClass:(unsigned int)class;
 + (void)clearStatementCache;
-+ (void)deleteAllMessagesWithAccountGUID:(id)a3;
-+ (void)deleteExpiredIncomingMessagesOlderThan:(double)a3 withLimit:(int64_t)a4;
-+ (void)deleteIncomingMessageWithGUID:(id)a3;
-+ (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4;
-+ (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4 dataProtectionClass:(unsigned int)a5;
++ (void)deleteAllMessagesWithAccountGUID:(id)d;
++ (void)deleteExpiredIncomingMessagesOlderThan:(double)than withLimit:(int64_t)limit;
++ (void)deleteIncomingMessageWithGUID:(id)d;
++ (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD;
++ (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD dataProtectionClass:(unsigned int)class;
 + (void)deletePostponedMessages;
-+ (void)markAllMessageAsPendingDeleteForAccounts:(id)a3 withDestinationDevice:(id)a4;
-+ (void)markLocalDestinationDeviceUUIDForAccounts:(id)a3 deviceUUID:(id)a4;
-+ (void)markOutgoingMessagesAsUnsentForDestination:(id)a3;
-+ (void)markOutgoingMessagesAsUnsentIncludingClassD:(BOOL)a3;
-+ (void)updateExpirationForIncomingMessageWithGUID:(id)a3 expirationDate:(int64_t)a4;
-- (IDSDMessageStore)initWithDataProtectionClass:(unsigned int)a3;
-- (IDSDMessageStore)initWithDatabase:(id)a3;
-- (id)_createOutgoingMessageRecordsFromSQLRecords:(__CFArray *)a3 includeMessagePayloads:(BOOL)a4;
-- (id)_incomingMessageIdentifierForMessageUUID:(id)a3 messagePayload:(id)a4;
-- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)a3 byteLimit:(unint64_t)a4 priority:(int64_t)a5 accountUUID:(id)a6 wantsPayload:(BOOL)a7 requireDuet:(BOOL)a8 localDestinationDeviceID:(id)a9;
-- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)a3 byteLimit:(unint64_t)a4 priority:(int64_t)a5 accountUUID:(id)a6 wantsPayload:(BOOL)a7 requireDuet:(BOOL)a8 localDestinationDeviceID:(id)a9 messageTypes:(id)a10;
-- (id)allExpiredOutgoingMessages:(int64_t)a3;
-- (id)allOutgoingMessagesByGUID:(id)a3;
-- (id)allOutgoingMessagesOnAccountGUID:(id)a3 localDestinationDeviceID:(id)a4;
-- (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)a3;
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 hardLimit:(int64_t)a5;
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6 wantsPayload:(BOOL)a7 messageType:(int64_t)a8 success:(BOOL *)a9;
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 priority:(int64_t)a4 localDestinationDeviceID:(id)a5 hardLimit:(int64_t)a6;
-- (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)a3;
-- (id)duetIdentifiersOverrideForAccountWithGUID:(id)a3 priority:(int64_t)a4;
-- (id)incomingExpiredRestrictedMessages:(double)a3 success:(BOOL *)a4;
-- (id)incomingMessagesUpToLimit:(unint64_t)a3 controlCategory:(unsigned int)a4 messageTransportType:(unsigned __int8)a5 success:(BOOL *)a6;
++ (void)markAllMessageAsPendingDeleteForAccounts:(id)accounts withDestinationDevice:(id)device;
++ (void)markLocalDestinationDeviceUUIDForAccounts:(id)accounts deviceUUID:(id)d;
++ (void)markOutgoingMessagesAsUnsentForDestination:(id)destination;
++ (void)markOutgoingMessagesAsUnsentIncludingClassD:(BOOL)d;
++ (void)updateExpirationForIncomingMessageWithGUID:(id)d expirationDate:(int64_t)date;
+- (IDSDMessageStore)initWithDataProtectionClass:(unsigned int)class;
+- (IDSDMessageStore)initWithDatabase:(id)database;
+- (id)_createOutgoingMessageRecordsFromSQLRecords:(__CFArray *)records includeMessagePayloads:(BOOL)payloads;
+- (id)_incomingMessageIdentifierForMessageUUID:(id)d messagePayload:(id)payload;
+- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)limit byteLimit:(unint64_t)byteLimit priority:(int64_t)priority accountUUID:(id)d wantsPayload:(BOOL)payload requireDuet:(BOOL)duet localDestinationDeviceID:(id)iD;
+- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)limit byteLimit:(unint64_t)byteLimit priority:(int64_t)priority accountUUID:(id)d wantsPayload:(BOOL)payload requireDuet:(BOOL)duet localDestinationDeviceID:(id)iD messageTypes:(id)self0;
+- (id)allExpiredOutgoingMessages:(int64_t)messages;
+- (id)allOutgoingMessagesByGUID:(id)d;
+- (id)allOutgoingMessagesOnAccountGUID:(id)d localDestinationDeviceID:(id)iD;
+- (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)limit;
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d hardLimit:(int64_t)limit;
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit wantsPayload:(BOOL)payload messageType:(int64_t)type success:(BOOL *)success;
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts priority:(int64_t)priority localDestinationDeviceID:(id)d hardLimit:(int64_t)limit;
+- (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)than;
+- (id)duetIdentifiersOverrideForAccountWithGUID:(id)d priority:(int64_t)priority;
+- (id)incomingExpiredRestrictedMessages:(double)messages success:(BOOL *)success;
+- (id)incomingMessagesUpToLimit:(unint64_t)limit controlCategory:(unsigned int)category messageTransportType:(unsigned __int8)type success:(BOOL *)success;
 - (id)largestEnquedMessagesAmountAccountUUID;
 - (id)largestPayloadSizeAccountUUID;
-- (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)a3 notToDestinationDeviceID:(id)a4 andLimit:(int64_t)a5;
-- (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)a3;
-- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4;
-- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 messageTypes:(id)a5;
-- (id)unsentUrgentAccountUUIDsForMessageTypes:(id)a3;
+- (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)than notToDestinationDeviceID:(id)d andLimit:(int64_t)limit;
+- (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)messages;
+- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority;
+- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority messageTypes:(id)types;
+- (id)unsentUrgentAccountUUIDsForMessageTypes:(id)types;
 - (int)internalMigrationVersionOnDatabase;
 - (int64_t)databaseSizeInMB;
 - (void)__closeDatabase;
@@ -67,24 +67,24 @@
 - (void)checkpointAndVacuumDB;
 - (void)clearStatementCache;
 - (void)closeDatabase;
-- (void)deleteAllMessagesWithAccountGUID:(id)a3;
+- (void)deleteAllMessagesWithAccountGUID:(id)d;
 - (void)deleteDatabase;
-- (void)deleteExpiredIncomingMessagesOlderThan:(double)a3 withLimit:(int64_t)a4;
-- (void)deleteIncomingMessageWithGUID:(id)a3;
-- (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4 classDDatabase:(id)a5;
-- (void)deletePostponedMessages:(id)a3 classDDatabase:(id)a4;
-- (void)markAllMessageAsPendingDeleteForAccounts:(id)a3 withDestinationDevice:(id)a4;
+- (void)deleteExpiredIncomingMessagesOlderThan:(double)than withLimit:(int64_t)limit;
+- (void)deleteIncomingMessageWithGUID:(id)d;
+- (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD classDDatabase:(id)database;
+- (void)deletePostponedMessages:(id)messages classDDatabase:(id)database;
+- (void)markAllMessageAsPendingDeleteForAccounts:(id)accounts withDestinationDevice:(id)device;
 - (void)markAllOutgoingMessagesAsUnsent;
-- (void)markAllOutgoingMessagesAsUnsentForLocalDestination:(id)a3;
-- (void)markLocalDestinationDeviceUUIDForAccounts:(id)a3 deviceUUID:(id)a4;
-- (void)markOutgoingMessageWithGUID:(id)a3 asSent:(BOOL)a4;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 afterDelay:(double)a4;
-- (void)performBlock:(id)a3 waitUntilDone:(BOOL)a4;
-- (void)storeIncomingMessage:(id)a3 forTopic:(id)a4 fromID:(id)a5 messageUUID:(id)a6 messagePayload:(id)a7 isLocal:(BOOL)a8 controlCategory:(unsigned int)a9 dedupBehavior:(unsigned __int8)a10 completionBlock:(id)a11;
-- (void)storeOutgoingMessageWithSendParameters:(id)a3 guid:(id)a4 canSend:(BOOL)a5 canBypassSimilarMessages:(BOOL)a6 fromQueue:(id)a7 completionBlock:(id)a8;
-- (void)updateExpirationForIncomingMessageWithGUID:(id)a3 expirationDate:(int64_t)a4;
-- (void)updateInternalMigrationVersionOnDatabaseWithValue:(int)a3;
+- (void)markAllOutgoingMessagesAsUnsentForLocalDestination:(id)destination;
+- (void)markLocalDestinationDeviceUUIDForAccounts:(id)accounts deviceUUID:(id)d;
+- (void)markOutgoingMessageWithGUID:(id)d asSent:(BOOL)sent;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block afterDelay:(double)delay;
+- (void)performBlock:(id)block waitUntilDone:(BOOL)done;
+- (void)storeIncomingMessage:(id)message forTopic:(id)topic fromID:(id)d messageUUID:(id)iD messagePayload:(id)payload isLocal:(BOOL)local controlCategory:(unsigned int)category dedupBehavior:(unsigned __int8)self0 completionBlock:(id)self1;
+- (void)storeOutgoingMessageWithSendParameters:(id)parameters guid:(id)guid canSend:(BOOL)send canBypassSimilarMessages:(BOOL)messages fromQueue:(id)queue completionBlock:(id)block;
+- (void)updateExpirationForIncomingMessageWithGUID:(id)d expirationDate:(int64_t)date;
+- (void)updateInternalMigrationVersionOnDatabaseWithValue:(int)value;
 @end
 
 @implementation IDSDMessageStore
@@ -128,9 +128,9 @@
   v10 = 0u;
   v11 = 0u;
   v2 = +[IDSDMessageStoreMap sharedInstance];
-  v3 = [v2 messageStores];
+  messageStores = [v2 messageStores];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [messageStores countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -142,7 +142,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messageStores);
         }
 
         [*(*(&v8 + 1) + 8 * v7) clearStatementCache];
@@ -150,7 +150,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [messageStores countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -219,64 +219,64 @@
   return v3;
 }
 
-+ (id)sharedInstanceForDataProtectionClass:(unsigned int)a3
++ (id)sharedInstanceForDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v4 = +[IDSDMessageStoreMap sharedInstance];
   v5 = [v4 getOrCreateMessageStoreForDataProtectionClass:v3];
 
   return v5;
 }
 
-+ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5
++ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority dataProtectionClass:(unsigned int)class
 {
-  v5 = *&a5;
-  v7 = a3;
+  v5 = *&class;
+  overridesCopy = overrides;
   v8 = +[IDSDMessageStoreMap sharedInstance];
   v9 = [v8 getOrCreateMessageStoreForDataProtectionClass:v5];
 
-  v10 = [v9 unsentNonUrgentAccountUUIDsRequiringDuetOverrides:v7 priority:a4];
+  v10 = [v9 unsentNonUrgentAccountUUIDsRequiringDuetOverrides:overridesCopy priority:priority];
 
   return v10;
 }
 
-+ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 dataProtectionClass:(unsigned int)a5 withMessageTypes:(id)a6
++ (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority dataProtectionClass:(unsigned int)class withMessageTypes:(id)types
 {
-  v6 = *&a5;
-  v8 = a3;
-  v9 = a6;
+  v6 = *&class;
+  overridesCopy = overrides;
+  typesCopy = types;
   v10 = +[IDSDMessageStoreMap sharedInstance];
   v11 = [v10 getOrCreateMessageStoreForDataProtectionClass:v6];
 
-  v12 = [v11 unsentNonUrgentAccountUUIDsRequiringDuetOverrides:v8 priority:a4 messageTypes:v9];
+  v12 = [v11 unsentNonUrgentAccountUUIDsRequiringDuetOverrides:overridesCopy priority:priority messageTypes:typesCopy];
 
   return v12;
 }
 
-+ (id)unsentUrgentAccountUUIDsWithDataProtectionClass:(unsigned int)a3 withMessageTypes:(id)a4
++ (id)unsentUrgentAccountUUIDsWithDataProtectionClass:(unsigned int)class withMessageTypes:(id)types
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&class;
+  typesCopy = types;
   v6 = +[IDSDMessageStoreMap sharedInstance];
   v7 = [v6 getOrCreateMessageStoreForDataProtectionClass:v4];
 
-  v8 = [v7 unsentUrgentAccountUUIDsForMessageTypes:v5];
+  v8 = [v7 unsentUrgentAccountUUIDsForMessageTypes:typesCopy];
 
   return v8;
 }
 
-+ (void)markLocalDestinationDeviceUUIDForAccounts:(id)a3 deviceUUID:(id)a4
++ (void)markLocalDestinationDeviceUUIDForAccounts:(id)accounts deviceUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  accountsCopy = accounts;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v7 = +[IDSDMessageStoreMap sharedInstance];
-  v8 = [v7 messageStores];
+  messageStores = [v7 messageStores];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -288,33 +288,33 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) markLocalDestinationDeviceUUIDForAccounts:v5 deviceUUID:v6];
+        [*(*(&v13 + 1) + 8 * v12) markLocalDestinationDeviceUUIDForAccounts:accountsCopy deviceUUID:dCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-+ (void)markAllMessageAsPendingDeleteForAccounts:(id)a3 withDestinationDevice:(id)a4
++ (void)markAllMessageAsPendingDeleteForAccounts:(id)accounts withDestinationDevice:(id)device
 {
-  v5 = a3;
-  v6 = a4;
+  accountsCopy = accounts;
+  deviceCopy = device;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v7 = +[IDSDMessageStoreMap sharedInstance];
-  v8 = [v7 messageStores];
+  messageStores = [v7 messageStores];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -326,22 +326,22 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) markAllMessageAsPendingDeleteForAccounts:v5 withDestinationDevice:v6];
+        [*(*(&v13 + 1) + 8 * v12) markAllMessageAsPendingDeleteForAccounts:accountsCopy withDestinationDevice:deviceCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-+ (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)a3
++ (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)limit
 {
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
@@ -349,9 +349,9 @@
   v16 = 0u;
   v17 = 0u;
   v5 = +[IDSDMessageStoreMap sharedInstance];
-  v6 = [v5 messageStores];
+  messageStores = [v5 messageStores];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -362,11 +362,11 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(messageStores);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if (a3 - [v4 count] < 1)
+      if (limit - [v4 count] < 1)
       {
         break;
       }
@@ -376,7 +376,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -390,18 +390,18 @@ LABEL_3:
   return v4;
 }
 
-+ (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)a3 notToDestinationDeviceID:(id)a4 andLimit:(int64_t)a5
++ (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)than notToDestinationDeviceID:(id)d andLimit:(int64_t)limit
 {
-  v7 = a4;
+  dCopy = d;
   v8 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v9 = +[IDSDMessageStoreMap sharedInstance];
-  v10 = [v9 messageStores];
+  messageStores = [v9 messageStores];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -412,21 +412,21 @@ LABEL_3:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(messageStores);
       }
 
       v15 = *(*(&v18 + 1) + 8 * v14);
-      if (a5 - [v8 count] < 1)
+      if (limit - [v8 count] < 1)
       {
         break;
       }
 
-      v16 = [v15 outgoingMessagesWithEnqueueDateOlderThan:a3 notToDestinationDeviceID:v7 andLimit:?];
+      v16 = [v15 outgoingMessagesWithEnqueueDateOlderThan:than notToDestinationDeviceID:dCopy andLimit:?];
       [v8 addObjectsFromArray:v16];
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -458,7 +458,7 @@ LABEL_3:
   v37[3] = -1;
   v2 = +[IDSDMessageStoreMap sharedInstance];
   v3 = [v2 getOrCreateMessageStoreForDataProtectionClass:2];
-  v4 = [v3 database];
+  database = [v3 database];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
@@ -468,7 +468,7 @@ LABEL_3:
   v34 = v37;
   v35 = &v38;
   v36 = @"SELECT ROWID, data_protection_class, guid, alternate_guid FROM outgoing_messages_to_delete;";
-  v5 = v4;
+  v5 = database;
   v32 = v5;
   sub_10000B240(v31, 1, v5);
   if (!v45[3])
@@ -481,9 +481,9 @@ LABEL_3:
   v27 = 0u;
   v28 = 0u;
   v6 = +[IDSDMessageStoreMap sharedInstance];
-  v7 = [v6 messageStores];
+  messageStores = [v6 messageStores];
 
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v48 count:16];
+  v8 = [messageStores countByEnumeratingWithState:&v27 objects:v48 count:16];
   if (!v8)
   {
 
@@ -502,7 +502,7 @@ LABEL_3:
     {
       if (*v28 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(messageStores);
       }
 
       v13 = *(*(&v27 + 1) + 8 * i);
@@ -539,7 +539,7 @@ LABEL_3:
       }
     }
 
-    v8 = [v7 countByEnumeratingWithState:&v27 objects:v48 count:16];
+    v8 = [messageStores countByEnumeratingWithState:&v27 objects:v48 count:16];
   }
 
   while (v8);
@@ -575,17 +575,17 @@ LABEL_22:
   _Block_object_dispose(&v44, 8);
 }
 
-+ (void)deleteIncomingMessageWithGUID:(id)a3
++ (void)deleteIncomingMessageWithGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -597,31 +597,31 @@ LABEL_22:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) deleteIncomingMessageWithGUID:v3];
+        [*(*(&v10 + 1) + 8 * v9) deleteIncomingMessageWithGUID:dCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (void)deleteExpiredIncomingMessagesOlderThan:(double)a3 withLimit:(int64_t)a4
++ (void)deleteExpiredIncomingMessagesOlderThan:(double)than withLimit:(int64_t)limit
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v6 = +[IDSDMessageStoreMap sharedInstance];
-  v7 = [v6 messageStores];
+  messageStores = [v6 messageStores];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -633,22 +633,22 @@ LABEL_22:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) deleteExpiredIncomingMessagesOlderThan:a4 withLimit:a3];
+        [*(*(&v12 + 1) + 8 * v11) deleteExpiredIncomingMessagesOlderThan:limit withLimit:than];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)a3
++ (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)than
 {
   v4 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
@@ -656,9 +656,9 @@ LABEL_22:
   v15 = 0u;
   v16 = 0u;
   v5 = +[IDSDMessageStoreMap sharedInstance];
-  v6 = [v5 messageStores];
+  messageStores = [v5 messageStores];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -669,14 +669,14 @@ LABEL_22:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messageStores);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) deleteExpiredIncomingRestrictedMessagesOlderThan:a3];
+        v11 = [*(*(&v13 + 1) + 8 * i) deleteExpiredIncomingRestrictedMessagesOlderThan:than];
         [v4 addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -685,37 +685,37 @@ LABEL_22:
   return v4;
 }
 
-+ (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4 dataProtectionClass:(unsigned int)a5
++ (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD dataProtectionClass:(unsigned int)class
 {
-  v5 = *&a5;
-  v7 = a4;
-  v8 = a3;
+  v5 = *&class;
+  iDCopy = iD;
+  dCopy = d;
   v9 = +[IDSDMessageStoreMap sharedInstance];
   v10 = [v9 getOrCreateMessageStoreForDataProtectionClass:2];
-  v13 = [v10 database];
+  database = [v10 database];
 
   v11 = +[IDSDMessageStoreMap sharedInstance];
   v12 = [v11 getOrCreateMessageStoreForDataProtectionClass:v5];
 
-  [v12 deleteOutgoingMessageWithGUID:v8 alternateGUID:v7 classDDatabase:v13];
+  [v12 deleteOutgoingMessageWithGUID:dCopy alternateGUID:iDCopy classDDatabase:database];
 }
 
-+ (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4
++ (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = +[IDSDMessageStoreMap sharedInstance];
   v8 = [v7 getOrCreateMessageStoreForDataProtectionClass:2];
-  v9 = [v8 database];
+  database = [v8 database];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
   v10 = +[IDSDMessageStoreMap sharedInstance];
-  v11 = [v10 messageStores];
+  messageStores = [v10 messageStores];
 
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v12 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -727,33 +727,33 @@ LABEL_22:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v16 + 1) + 8 * v15) deleteOutgoingMessageWithGUID:v5 alternateGUID:v6 classDDatabase:v9];
+        [*(*(&v16 + 1) + 8 * v15) deleteOutgoingMessageWithGUID:dCopy alternateGUID:iDCopy classDDatabase:database];
         v15 = v15 + 1;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-+ (id)incomingMessagesUpToLimit:(unint64_t)a3 controlCategory:(unsigned int)a4 messageTransportType:(unsigned __int8)a5 success:(BOOL *)a6
++ (id)incomingMessagesUpToLimit:(unint64_t)limit controlCategory:(unsigned int)category messageTransportType:(unsigned __int8)type success:(BOOL *)success
 {
-  v18 = a6;
+  successCopy = success;
   v7 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v8 = +[IDSDMessageStoreMap sharedInstance];
-  v9 = [v8 messageStores];
+  messageStores = [v8 messageStores];
 
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [messageStores countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -765,11 +765,11 @@ LABEL_3:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(messageStores);
       }
 
       v15 = *(*(&v19 + 1) + 8 * v14);
-      if ((a3 - [v7 count]) < 1)
+      if ((limit - [v7 count]) < 1)
       {
         break;
       }
@@ -780,7 +780,7 @@ LABEL_3:
       v13 = 0;
       if (v11 == ++v14)
       {
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [messageStores countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -796,15 +796,15 @@ LABEL_3:
     v13 = 1;
   }
 
-  if (v18)
+  if (successCopy)
   {
-    *v18 = v13 & 1;
+    *successCopy = v13 & 1;
   }
 
   return v7;
 }
 
-+ (id)incomingExpiredRestrictedMessages:(double)a3 success:(BOOL *)a4
++ (id)incomingExpiredRestrictedMessages:(double)messages success:(BOOL *)success
 {
   v6 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
@@ -812,9 +812,9 @@ LABEL_3:
   v20 = 0u;
   v21 = 0u;
   v7 = +[IDSDMessageStoreMap sharedInstance];
-  v8 = [v7 messageStores];
+  messageStores = [v7 messageStores];
 
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -826,18 +826,18 @@ LABEL_3:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(messageStores);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
         v17 = 0;
-        v15 = [v14 incomingExpiredRestrictedMessages:&v17 success:a3];
+        v15 = [v14 incomingExpiredRestrictedMessages:&v17 success:messages];
         [v6 addObjectsFromArray:v15];
 
         v12 &= v17;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -848,26 +848,26 @@ LABEL_3:
     v12 = 1;
   }
 
-  if (a4)
+  if (success)
   {
-    *a4 = v12 & 1;
+    *success = v12 & 1;
   }
 
   return v6;
 }
 
-+ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)a3 priority:(int64_t)a4 wantsPayload:(BOOL)a5 localDestinationDeviceID:(id)a6
++ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)limit priority:(int64_t)priority wantsPayload:(BOOL)payload localDestinationDeviceID:(id)d
 {
-  v7 = a6;
+  dCopy = d;
   v8 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v9 = +[IDSDMessageStoreMap sharedInstance];
-  v10 = [v9 messageStores];
+  messageStores = [v9 messageStores];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -878,11 +878,11 @@ LABEL_3:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(messageStores);
       }
 
       v15 = *(*(&v18 + 1) + 8 * v14);
-      if ((a3 - [v8 count]) < 1)
+      if ((limit - [v8 count]) < 1)
       {
         break;
       }
@@ -892,7 +892,7 @@ LABEL_3:
 
       if (v12 == ++v14)
       {
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [messageStores countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -906,18 +906,18 @@ LABEL_3:
   return v8;
 }
 
-+ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)a3 priority:(int64_t)a4 localDestinationDeviceID:(id)a5
++ (id)unsentOutgoingMessagesUpToLimit:(unint64_t)limit priority:(int64_t)priority localDestinationDeviceID:(id)d
 {
-  v6 = a5;
+  dCopy = d;
   v7 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v8 = +[IDSDMessageStoreMap sharedInstance];
-  v9 = [v8 messageStores];
+  messageStores = [v8 messageStores];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [messageStores countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -928,11 +928,11 @@ LABEL_3:
     {
       if (*v18 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(messageStores);
       }
 
       v14 = *(*(&v17 + 1) + 8 * v13);
-      if ((a3 - [v7 count]) < 1)
+      if ((limit - [v7 count]) < 1)
       {
         break;
       }
@@ -942,7 +942,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [messageStores countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -956,17 +956,17 @@ LABEL_3:
   return v7;
 }
 
-+ (void)markOutgoingMessagesAsUnsentIncludingClassD:(BOOL)a3
++ (void)markOutgoingMessagesAsUnsentIncludingClassD:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -977,34 +977,34 @@ LABEL_3:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if ([v10 dataProtectionClass] != 2 || v3)
+        if ([v10 dataProtectionClass] != 2 || dCopy)
         {
           [v10 markAllOutgoingMessagesAsUnsent];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (void)markOutgoingMessagesAsUnsentForDestination:(id)a3
++ (void)markOutgoingMessagesAsUnsentForDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1016,31 +1016,31 @@ LABEL_3:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) markAllOutgoingMessagesAsUnsentForLocalDestination:v3];
+        [*(*(&v10 + 1) + 8 * v9) markAllOutgoingMessagesAsUnsentForLocalDestination:destinationCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (BOOL)databaseSizeBiggerThanThreshold:(int64_t)a3
++ (BOOL)databaseSizeBiggerThanThreshold:(int64_t)threshold
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1052,13 +1052,13 @@ LABEL_3:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
         v8 += [*(*(&v12 + 1) + 8 * i) databaseSizeInMB];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1069,7 +1069,7 @@ LABEL_3:
     v8 = 0;
   }
 
-  return v8 >= a3;
+  return v8 >= threshold;
 }
 
 + (id)largestPayloadSizeAccountUUID
@@ -1079,9 +1079,9 @@ LABEL_3:
   v18 = 0u;
   v19 = 0u;
   v2 = +[IDSDMessageStoreMap sharedInstance];
-  v3 = [v2 messageStores];
+  messageStores = [v2 messageStores];
 
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1094,27 +1094,27 @@ LABEL_3:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messageStores);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) largestPayloadSizeAccountUUID];
-        if ([v10 count] == 2)
+        largestPayloadSizeAccountUUID = [*(*(&v16 + 1) + 8 * i) largestPayloadSizeAccountUUID];
+        if ([largestPayloadSizeAccountUUID count] == 2)
         {
-          v11 = [v10 objectAtIndex:0];
-          v12 = [v10 objectAtIndex:1];
-          v13 = [v12 intValue];
+          v11 = [largestPayloadSizeAccountUUID objectAtIndex:0];
+          v12 = [largestPayloadSizeAccountUUID objectAtIndex:1];
+          intValue = [v12 intValue];
 
-          if (v6 < v13)
+          if (v6 < intValue)
           {
             v14 = v11;
 
-            v6 = v13;
+            v6 = intValue;
             v7 = v14;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -1128,16 +1128,16 @@ LABEL_3:
   return v7;
 }
 
-+ (id)largestEnquedMessagesAccountUUIDOverThreshold:(int64_t)a3
++ (id)largestEnquedMessagesAccountUUIDOverThreshold:(int64_t)threshold
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -1147,15 +1147,15 @@ LABEL_3:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) largestEnquedMessagesAmountAccountUUID];
-        if ([v9 count] == 2)
+        largestEnquedMessagesAmountAccountUUID = [*(*(&v17 + 1) + 8 * i) largestEnquedMessagesAmountAccountUUID];
+        if ([largestEnquedMessagesAmountAccountUUID count] == 2)
         {
-          v10 = [v9 objectAtIndex:0];
-          v11 = [v9 objectAtIndex:1];
-          v12 = [v11 intValue];
+          v10 = [largestEnquedMessagesAmountAccountUUID objectAtIndex:0];
+          v11 = [largestEnquedMessagesAmountAccountUUID objectAtIndex:1];
+          intValue = [v11 intValue];
 
           v13 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1163,18 +1163,18 @@ LABEL_3:
             *buf = 138412546;
             v22 = v10;
             v23 = 1024;
-            v24 = v12;
+            v24 = intValue;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "RunawayCheck: Account Guid %@ has %d messages", buf, 0x12u);
           }
 
           if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
           {
             v15 = v10;
-            v16 = v12;
+            v16 = intValue;
             _IDSLogV();
           }
 
-          if (v12 > a3)
+          if (intValue > threshold)
           {
 
             goto LABEL_18;
@@ -1182,7 +1182,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [messageStores countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (v6)
       {
         continue;
@@ -1198,17 +1198,17 @@ LABEL_18:
   return v10;
 }
 
-+ (void)deleteAllMessagesWithAccountGUID:(id)a3
++ (void)deleteAllMessagesWithAccountGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v4 = +[IDSDMessageStoreMap sharedInstance];
-  v5 = [v4 messageStores];
+  messageStores = [v4 messageStores];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1220,33 +1220,33 @@ LABEL_18:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) deleteAllMessagesWithAccountGUID:v3];
+        [*(*(&v10 + 1) + 8 * v9) deleteAllMessagesWithAccountGUID:dCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [messageStores countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (id)allOutgoingMessagesByGUID:(id)a3
++ (id)allOutgoingMessagesByGUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(NSMutableArray);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = +[IDSDMessageStoreMap sharedInstance];
-  v6 = [v5 messageStores];
+  messageStores = [v5 messageStores];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1257,14 +1257,14 @@ LABEL_18:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messageStores);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) allOutgoingMessagesByGUID:v3];
+        v11 = [*(*(&v13 + 1) + 8 * i) allOutgoingMessagesByGUID:dCopy];
         [v4 addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [messageStores countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1273,19 +1273,19 @@ LABEL_18:
   return v4;
 }
 
-+ (id)allOutgoingMessagesOnAccountGUID:(id)a3 localDestinationDeviceID:(id)a4
++ (id)allOutgoingMessagesOnAccountGUID:(id)d localDestinationDeviceID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v7 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v8 = +[IDSDMessageStoreMap sharedInstance];
-  v9 = [v8 messageStores];
+  messageStores = [v8 messageStores];
 
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1296,14 +1296,14 @@ LABEL_18:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(messageStores);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) allOutgoingMessagesOnAccountGUID:v5 localDestinationDeviceID:v6];
+        v14 = [*(*(&v16 + 1) + 8 * i) allOutgoingMessagesOnAccountGUID:dCopy localDestinationDeviceID:iDCopy];
         [v7 addObjectsFromArray:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [messageStores countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -1312,7 +1312,7 @@ LABEL_18:
   return v7;
 }
 
-+ (id)allExpiredOutgoingMessages:(int64_t)a3
++ (id)allExpiredOutgoingMessages:(int64_t)messages
 {
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
@@ -1320,9 +1320,9 @@ LABEL_18:
   v16 = 0u;
   v17 = 0u;
   v5 = +[IDSDMessageStoreMap sharedInstance];
-  v6 = [v5 messageStores];
+  messageStores = [v5 messageStores];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1333,11 +1333,11 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(messageStores);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if (a3 - [v4 count] < 1)
+      if (messages - [v4 count] < 1)
       {
         break;
       }
@@ -1347,7 +1347,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1361,7 +1361,7 @@ LABEL_3:
   return v4;
 }
 
-+ (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)a3
++ (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)messages
 {
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
@@ -1369,9 +1369,9 @@ LABEL_3:
   v16 = 0u;
   v17 = 0u;
   v5 = +[IDSDMessageStoreMap sharedInstance];
-  v6 = [v5 messageStores];
+  messageStores = [v5 messageStores];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1382,11 +1382,11 @@ LABEL_3:
     {
       if (*v15 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(messageStores);
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if (a3 - [v4 count] < 1)
+      if (messages - [v4 count] < 1)
       {
         break;
       }
@@ -1396,7 +1396,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [messageStores countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1410,19 +1410,19 @@ LABEL_3:
   return v4;
 }
 
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 hardLimit:(int64_t)a5
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d hardLimit:(int64_t)limit
 {
-  v7 = a3;
-  v8 = a4;
+  accountsCopy = accounts;
+  dCopy = d;
   v9 = objc_alloc_init(NSMutableArray);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v10 = +[IDSDMessageStoreMap sharedInstance];
-  v11 = [v10 messageStores];
+  messageStores = [v10 messageStores];
 
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v12 = [messageStores countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1433,21 +1433,21 @@ LABEL_3:
     {
       if (*v20 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(messageStores);
       }
 
       v16 = *(*(&v19 + 1) + 8 * v15);
-      if (a5 - [v9 count] < 1)
+      if (limit - [v9 count] < 1)
       {
         break;
       }
 
-      v17 = [v16 allUnsentOutgoingMessagesForAccounts:v7 localDestinationDeviceID:v8 hardLimit:?];
+      v17 = [v16 allUnsentOutgoingMessagesForAccounts:accountsCopy localDestinationDeviceID:dCopy hardLimit:?];
       [v9 addObjectsFromArray:v17];
 
       if (v13 == ++v15)
       {
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [messageStores countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v13)
         {
           goto LABEL_3;
@@ -1461,19 +1461,19 @@ LABEL_3:
   return v9;
 }
 
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
+  accountsCopy = accounts;
+  dCopy = d;
   v11 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v12 = +[IDSDMessageStoreMap sharedInstance];
-  v13 = [v12 messageStores];
+  messageStores = [v12 messageStores];
 
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v14 = [messageStores countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1484,21 +1484,21 @@ LABEL_3:
     {
       if (*v22 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(messageStores);
       }
 
       v18 = *(*(&v21 + 1) + 8 * v17);
-      if (a6 - [v11 count] < 1)
+      if (limit - [v11 count] < 1)
       {
         break;
       }
 
-      v19 = [v18 allUnsentOutgoingMessagesForAccounts:v9 priority:a5 localDestinationDeviceID:v10 hardLimit:?];
+      v19 = [v18 allUnsentOutgoingMessagesForAccounts:accountsCopy priority:priority localDestinationDeviceID:dCopy hardLimit:?];
       [v11 addObjectsFromArray:v19];
 
       if (v15 == ++v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v15 = [messageStores countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v15)
         {
           goto LABEL_3;
@@ -1512,20 +1512,20 @@ LABEL_3:
   return v11;
 }
 
-+ (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6 wantsPayload:(BOOL)a7 messageType:(int64_t)a8 success:(BOOL *)a9
++ (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit wantsPayload:(BOOL)payload messageType:(int64_t)type success:(BOOL *)success
 {
-  v25 = a3;
-  v12 = a4;
+  accountsCopy = accounts;
+  dCopy = d;
   v13 = objc_alloc_init(NSMutableArray);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v14 = +[IDSDMessageStoreMap sharedInstance];
-  v15 = [v14 messageStores];
+  messageStores = [v14 messageStores];
 
-  obj = v15;
-  v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = messageStores;
+  v16 = [messageStores countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1541,13 +1541,13 @@ LABEL_3:
       }
 
       v21 = *(*(&v27 + 1) + 8 * v20);
-      if (a6 - [v13 count] < 1)
+      if (limit - [v13 count] < 1)
       {
         break;
       }
 
       v26 = 0;
-      v22 = [v21 allUnsentOutgoingMessagesForAccounts:v25 localDestinationDeviceID:v12 priority:a5 hardLimit:&v26 wantsPayload:? messageType:? success:?];
+      v22 = [v21 allUnsentOutgoingMessagesForAccounts:accountsCopy localDestinationDeviceID:dCopy priority:priority hardLimit:&v26 wantsPayload:? messageType:? success:?];
       [v13 addObjectsFromArray:v22];
 
       v19 &= v26;
@@ -1569,25 +1569,25 @@ LABEL_3:
     v19 = 1;
   }
 
-  if (a9)
+  if (success)
   {
-    *a9 = v19 & 1;
+    *success = v19 & 1;
   }
 
   return v13;
 }
 
-+ (void)updateExpirationForIncomingMessageWithGUID:(id)a3 expirationDate:(int64_t)a4
++ (void)updateExpirationForIncomingMessageWithGUID:(id)d expirationDate:(int64_t)date
 {
-  v5 = a3;
+  dCopy = d;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v6 = +[IDSDMessageStoreMap sharedInstance];
-  v7 = [v6 messageStores];
+  messageStores = [v6 messageStores];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1599,48 +1599,48 @@ LABEL_3:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(messageStores);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) updateExpirationForIncomingMessageWithGUID:v5 expirationDate:a4];
+        [*(*(&v12 + 1) + 8 * v11) updateExpirationForIncomingMessageWithGUID:dCopy expirationDate:date];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [messageStores countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-+ (void)checkpointAndVacuumDBWithDataProtectionClass:(unsigned int)a3
++ (void)checkpointAndVacuumDBWithDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v4 = +[IDSDMessageStoreMap sharedInstance];
   v5 = [v4 getOrCreateMessageStoreForDataProtectionClass:v3];
 
   [v5 checkpointAndVacuumDB];
 }
 
-- (IDSDMessageStore)initWithDataProtectionClass:(unsigned int)a3
+- (IDSDMessageStore)initWithDataProtectionClass:(unsigned int)class
 {
-  v4 = [[IDSDatabase alloc] initWithDataProtectionClass:*&a3];
+  v4 = [[IDSDatabase alloc] initWithDataProtectionClass:*&class];
   v5 = [(IDSDMessageStore *)self initWithDatabase:v4];
 
   return v5;
 }
 
-- (IDSDMessageStore)initWithDatabase:(id)a3
+- (IDSDMessageStore)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v21.receiver = self;
   v21.super_class = IDSDMessageStore;
   v6 = [(IDSDMessageStore *)&v21 init];
   if (v6)
   {
-    v6->_dataProtectionClass = [v5 dataProtectionClass];
-    objc_storeStrong(&v6->_database, a3);
+    v6->_dataProtectionClass = [databaseCopy dataProtectionClass];
+    objc_storeStrong(&v6->_database, database);
     v7 = objc_alloc_init(NSRecursiveLock);
     recursiveLock = v6->_recursiveLock;
     v6->_recursiveLock = v7;
@@ -1692,18 +1692,18 @@ LABEL_3:
   [(IDSDMessageStore *)self performBlock:v2];
 }
 
-- (id)incomingMessagesUpToLimit:(unint64_t)a3 controlCategory:(unsigned int)a4 messageTransportType:(unsigned __int8)a5 success:(BOOL *)a6
+- (id)incomingMessagesUpToLimit:(unint64_t)limit controlCategory:(unsigned int)category messageTransportType:(unsigned __int8)type success:(BOOL *)success
 {
   +[NSMutableArray array];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1005F8750;
   v15[3] = &unk_100BE1DF0;
-  v19 = a4;
+  categoryCopy = category;
   v15[4] = self;
-  v17 = a3;
-  v18 = a6;
-  v11 = v20 = a5;
+  limitCopy = limit;
+  successCopy = success;
+  v11 = v20 = type;
   v16 = v11;
   [(IDSDMessageStore *)self performBlock:v15 waitUntilDone:1];
   v12 = v16;
@@ -1712,7 +1712,7 @@ LABEL_3:
   return v11;
 }
 
-- (id)incomingExpiredRestrictedMessages:(double)a3 success:(BOOL *)a4
+- (id)incomingExpiredRestrictedMessages:(double)messages success:(BOOL *)success
 {
   +[NSMutableArray array];
   v11[0] = _NSConcreteStackBlock;
@@ -1720,8 +1720,8 @@ LABEL_3:
   v11[2] = sub_1005F8BD4;
   v11[3] = &unk_100BD7E20;
   v11[4] = self;
-  v13 = a3;
-  v7 = v14 = a4;
+  messagesCopy = messages;
+  v7 = v14 = success;
   v12 = v7;
   [(IDSDMessageStore *)self performBlock:v11 waitUntilDone:1];
   v8 = v12;
@@ -1730,18 +1730,18 @@ LABEL_3:
   return v7;
 }
 
-- (id)_incomingMessageIdentifierForMessageUUID:(id)a3 messagePayload:(id)a4
+- (id)_incomingMessageIdentifierForMessageUUID:(id)d messagePayload:(id)payload
 {
-  v5 = a3;
+  dCopy = d;
   v6 = 0;
-  if (v5 && a4)
+  if (dCopy && payload)
   {
-    v7 = [a4 SHA256Data];
-    v8 = [v7 __imHexString];
+    sHA256Data = [payload SHA256Data];
+    __imHexString = [sHA256Data __imHexString];
 
-    if (v8)
+    if (__imHexString)
     {
-      v6 = [v5 stringByAppendingString:v8];
+      v6 = [dCopy stringByAppendingString:__imHexString];
     }
 
     else
@@ -1753,36 +1753,36 @@ LABEL_3:
   return v6;
 }
 
-- (void)storeIncomingMessage:(id)a3 forTopic:(id)a4 fromID:(id)a5 messageUUID:(id)a6 messagePayload:(id)a7 isLocal:(BOOL)a8 controlCategory:(unsigned int)a9 dedupBehavior:(unsigned __int8)a10 completionBlock:(id)a11
+- (void)storeIncomingMessage:(id)message forTopic:(id)topic fromID:(id)d messageUUID:(id)iD messagePayload:(id)payload isLocal:(BOOL)local controlCategory:(unsigned int)category dedupBehavior:(unsigned __int8)self0 completionBlock:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v28 = a5;
-  v19 = a6;
-  v20 = a7;
-  v27 = a11;
+  messageCopy = message;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
+  payloadCopy = payload;
+  blockCopy = block;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v39 = _os_activity_create(&_mh_execute_header, "Storing incoming message", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v39, &state);
-  if ([v18 length])
+  if ([topicCopy length])
   {
     v21 = JWEncodeDictionary();
     if (v21)
     {
-      v22 = v17;
-      if (a10)
+      v22 = messageCopy;
+      if (behavior)
       {
-        v23 = v19;
-        v24 = [(IDSDMessageStore *)self _incomingMessageIdentifierForMessageUUID:v19 messagePayload:v20, v27];
-        v25 = v20;
+        v23 = iDCopy;
+        blockCopy = [(IDSDMessageStore *)self _incomingMessageIdentifierForMessageUUID:iDCopy messagePayload:payloadCopy, blockCopy];
+        v25 = payloadCopy;
       }
 
       else
       {
-        v25 = v20;
-        v23 = v19;
-        v24 = 0;
+        v25 = payloadCopy;
+        v23 = iDCopy;
+        blockCopy = 0;
       }
 
       v29[0] = _NSConcreteStackBlock;
@@ -1790,20 +1790,20 @@ LABEL_3:
       v29[2] = sub_1005F931C;
       v29[3] = &unk_100BE1E40;
       v29[4] = self;
-      v30 = v18;
-      v31 = v28;
+      v30 = topicCopy;
+      v31 = dCopy;
       v32 = v21;
-      v36 = a8;
-      v26 = v24;
+      localCopy = local;
+      v26 = blockCopy;
       v33 = v26;
-      v35 = a9;
-      v37 = a10;
-      v34 = v27;
+      categoryCopy = category;
+      behaviorCopy = behavior;
+      v34 = blockCopy;
       [(IDSDMessageStore *)self performBlock:v29];
-      v20 = v25;
+      payloadCopy = v25;
 
-      v19 = v23;
-      v17 = v22;
+      iDCopy = v23;
+      messageCopy = v22;
     }
 
     else
@@ -1822,11 +1822,11 @@ LABEL_3:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v41 = v17;
+      v41 = messageCopy;
       v42 = 2112;
-      v43 = v18;
+      v43 = topicCopy;
       v44 = 2112;
-      v45 = v28;
+      v45 = dCopy;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Ignoring storeMessage: %@ forTopic: %@ fromID: %@", buf, 0x20u);
     }
   }
@@ -1835,9 +1835,9 @@ LABEL_3:
   cut_arc_os_release();
 }
 
-- (id)_createOutgoingMessageRecordsFromSQLRecords:(__CFArray *)a3 includeMessagePayloads:(BOOL)a4
+- (id)_createOutgoingMessageRecordsFromSQLRecords:(__CFArray *)records includeMessagePayloads:(BOOL)payloads
 {
-  if (a3 && (v4 = a4, Count = CFArrayGetCount(a3), Count >= 1))
+  if (records && (v4 = payloads, Count = CFArrayGetCount(records), Count >= 1))
   {
     v53 = 0;
     idx = 0;
@@ -1848,7 +1848,7 @@ LABEL_3:
     }
 
     v49 = v6;
-    theArray = a3;
+    theArray = records;
     if (v4)
     {
       v7 = &v150;
@@ -1923,8 +1923,8 @@ LABEL_3:
       v113 = -86;
       memset(v112, 170, sizeof(v112));
       v111 = 0xAAAAAAAAAAAAAAAALL;
-      v11 = [(IDSDMessageStore *)self database];
-      sub_10033F95C(ValueAtIndex, 0, &v155, &v154, &v153, &v152, v49, v48, v47, &v148, v46, &v146, &v145, &v144, &v143, &v142[9], &v142[1], v142, &v141, &v140, &v139, v125, &v124, &v138, &v134, &v137, &v135, &v133, &v132, &v131, &v130, &v129[9], &v129[1], v129, &cf, &v128, &v127, &v126, &v125[2], &v125[1], &v123[9], v123, &v122, &v123[1], &v121, &v120, &v119, &v118, &v117, &v116, &v115, &v114, &v113, &v112[2], &v112[1], v112, &v111, v11);
+      database = [(IDSDMessageStore *)self database];
+      sub_10033F95C(ValueAtIndex, 0, &v155, &v154, &v153, &v152, v49, v48, v47, &v148, v46, &v146, &v145, &v144, &v143, &v142[9], &v142[1], v142, &v141, &v140, &v139, v125, &v124, &v138, &v134, &v137, &v135, &v133, &v132, &v131, &v130, &v129[9], &v129[1], v129, &cf, &v128, &v127, &v126, &v125[2], &v125[1], &v123[9], v123, &v122, &v123[1], &v121, &v120, &v119, &v118, &v117, &v116, &v115, &v114, &v113, &v112[2], &v112[1], v112, &v111, database);
 
       if (v151)
       {
@@ -2342,7 +2342,7 @@ LABEL_3:
   return v2;
 }
 
-- (id)allOutgoingMessagesByGUID:(id)a3
+- (id)allOutgoingMessagesByGUID:(id)d
 {
   v10 = 0;
   v11 = &v10;
@@ -2354,11 +2354,11 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = sub_1005FA6F0;
   v6[3] = &unk_100BE0810;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  dCopy = d;
+  v8 = dCopy;
   v9 = &v10;
-  [(IDSDMessageStore *)v7 performBlock:v6 waitUntilDone:1];
+  [(IDSDMessageStore *)selfCopy performBlock:v6 waitUntilDone:1];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -2366,10 +2366,10 @@ LABEL_3:
   return v4;
 }
 
-- (id)allOutgoingMessagesOnAccountGUID:(id)a3 localDestinationDeviceID:(id)a4
+- (id)allOutgoingMessagesOnAccountGUID:(id)d localDestinationDeviceID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2381,9 +2381,9 @@ LABEL_3:
   v12[2] = sub_1005FA908;
   v12[3] = &unk_100BE1E68;
   v12[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = iDCopy;
   v14 = v9;
   v15 = &v16;
   [(IDSDMessageStore *)self performBlock:v12 waitUntilDone:1];
@@ -2394,7 +2394,7 @@ LABEL_3:
   return v10;
 }
 
-- (id)allExpiredOutgoingMessages:(int64_t)a3
+- (id)allExpiredOutgoingMessages:(int64_t)messages
 {
   v6 = 0;
   v7 = &v6;
@@ -2407,7 +2407,7 @@ LABEL_3:
   v5[2] = sub_1005FAAD0;
   v5[3] = &unk_100BD7E68;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = messages;
   v5[4] = self;
   [(IDSDMessageStore *)self performBlock:v5 waitUntilDone:1];
   v3 = v7[5];
@@ -2416,7 +2416,7 @@ LABEL_3:
   return v3;
 }
 
-- (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)a3
+- (id)uniqueAccountGUIDsForUnsentOutgoingMessages:(int64_t)messages
 {
   v6 = 0;
   v7 = &v6;
@@ -2430,7 +2430,7 @@ LABEL_3:
   v5[3] = &unk_100BD7E68;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = messages;
   [(IDSDMessageStore *)self performBlock:v5 waitUntilDone:1];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2438,11 +2438,11 @@ LABEL_3:
   return v3;
 }
 
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 hardLimit:(int64_t)a5
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d hardLimit:(int64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  accountsCopy = accounts;
+  dCopy = d;
+  if ([accountsCopy count])
   {
     v17 = 0;
     v18 = &v17;
@@ -2455,10 +2455,10 @@ LABEL_3:
     v12[2] = sub_1005FAEA0;
     v12[3] = &unk_100BE1E90;
     v12[4] = self;
-    v13 = v8;
+    v13 = accountsCopy;
     v15 = &v17;
-    v16 = a5;
-    v14 = v9;
+    limitCopy = limit;
+    v14 = dCopy;
     [(IDSDMessageStore *)self performBlock:v12 waitUntilDone:1];
     v10 = v18[5];
 
@@ -2473,10 +2473,10 @@ LABEL_3:
   return v10;
 }
 
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 priority:(int64_t)a4 localDestinationDeviceID:(id)a5 hardLimit:(int64_t)a6
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts priority:(int64_t)priority localDestinationDeviceID:(id)d hardLimit:(int64_t)limit
 {
-  v10 = a3;
-  v11 = a5;
+  accountsCopy = accounts;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -2488,11 +2488,11 @@ LABEL_3:
   v16[2] = sub_1005FB0EC;
   v16[3] = &unk_100BE1EB8;
   v16[4] = self;
-  v12 = v10;
+  v12 = accountsCopy;
   v17 = v12;
-  v20 = a4;
-  v13 = v11;
-  v21 = a6;
+  priorityCopy = priority;
+  v13 = dCopy;
+  limitCopy = limit;
   v18 = v13;
   v19 = &v22;
   [(IDSDMessageStore *)self performBlock:v16 waitUntilDone:1];
@@ -2503,10 +2503,10 @@ LABEL_3:
   return v14;
 }
 
-- (id)allUnsentOutgoingMessagesForAccounts:(id)a3 localDestinationDeviceID:(id)a4 priority:(int64_t)a5 hardLimit:(int64_t)a6 wantsPayload:(BOOL)a7 messageType:(int64_t)a8 success:(BOOL *)a9
+- (id)allUnsentOutgoingMessagesForAccounts:(id)accounts localDestinationDeviceID:(id)d priority:(int64_t)priority hardLimit:(int64_t)limit wantsPayload:(BOOL)payload messageType:(int64_t)type success:(BOOL *)success
 {
-  v15 = a3;
-  v16 = a4;
+  accountsCopy = accounts;
+  dCopy = d;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2518,14 +2518,14 @@ LABEL_3:
   v21[2] = sub_1005FB358;
   v21[3] = &unk_100BE1EE0;
   v21[4] = self;
-  v17 = v15;
+  v17 = accountsCopy;
   v22 = v17;
-  v25 = a5;
-  v18 = v16;
-  v29 = a7;
-  v26 = a6;
-  v27 = a8;
-  v28 = a9;
+  priorityCopy = priority;
+  v18 = dCopy;
+  payloadCopy = payload;
+  limitCopy = limit;
+  typeCopy = type;
+  successCopy = success;
   v23 = v18;
   v24 = &v30;
   [(IDSDMessageStore *)self performBlock:v21 waitUntilDone:1];
@@ -2536,7 +2536,7 @@ LABEL_3:
   return v19;
 }
 
-- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4
+- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority
 {
   v8 = 0;
   v9 = &v8;
@@ -2550,8 +2550,8 @@ LABEL_3:
   v6[3] = &unk_100BE1F08;
   v6[4] = self;
   v6[5] = &v8;
-  v6[6] = a4;
-  v7 = a3;
+  v6[6] = priority;
+  overridesCopy = overrides;
   [(IDSDMessageStore *)self performBlock:v6 waitUntilDone:1];
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -2559,7 +2559,7 @@ LABEL_3:
   return v4;
 }
 
-- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)a3 priority:(int64_t)a4 messageTypes:(id)a5
+- (id)unsentNonUrgentAccountUUIDsRequiringDuetOverrides:(BOOL)overrides priority:(int64_t)priority messageTypes:(id)types
 {
   v14 = 0;
   v15 = &v14;
@@ -2571,13 +2571,13 @@ LABEL_3:
   v8[1] = 3221225472;
   v8[2] = sub_1005FB720;
   v8[3] = &unk_100BE1F30;
-  v9 = self;
+  selfCopy = self;
   v11 = &v14;
-  v12 = a4;
-  v13 = a3;
-  v5 = a5;
-  v10 = v5;
-  [(IDSDMessageStore *)v9 performBlock:v8 waitUntilDone:1];
+  priorityCopy = priority;
+  overridesCopy = overrides;
+  typesCopy = types;
+  v10 = typesCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v8 waitUntilDone:1];
   v6 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -2585,7 +2585,7 @@ LABEL_3:
   return v6;
 }
 
-- (id)unsentUrgentAccountUUIDsForMessageTypes:(id)a3
+- (id)unsentUrgentAccountUUIDsForMessageTypes:(id)types
 {
   v10 = 0;
   v11 = &v10;
@@ -2597,11 +2597,11 @@ LABEL_3:
   v6[1] = 3221225472;
   v6[2] = sub_1005FB8EC;
   v6[3] = &unk_100BE1F58;
-  v7 = self;
+  selfCopy = self;
   v9 = &v10;
-  v3 = a3;
-  v8 = v3;
-  [(IDSDMessageStore *)v7 performBlock:v6 waitUntilDone:1];
+  typesCopy = types;
+  v8 = typesCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v6 waitUntilDone:1];
   v4 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -2609,10 +2609,10 @@ LABEL_3:
   return v4;
 }
 
-- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)a3 byteLimit:(unint64_t)a4 priority:(int64_t)a5 accountUUID:(id)a6 wantsPayload:(BOOL)a7 requireDuet:(BOOL)a8 localDestinationDeviceID:(id)a9
+- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)limit byteLimit:(unint64_t)byteLimit priority:(int64_t)priority accountUUID:(id)d wantsPayload:(BOOL)payload requireDuet:(BOOL)duet localDestinationDeviceID:(id)iD
 {
-  v15 = a6;
-  v16 = a9;
+  dCopy = d;
+  iDCopy = iD;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -2623,15 +2623,15 @@ LABEL_3:
   v21[1] = 3221225472;
   v21[2] = sub_1005FBB84;
   v21[3] = &unk_100BE1F80;
-  v28 = a7;
+  payloadCopy = payload;
   v21[4] = self;
-  v25 = a4;
-  v26 = a3;
-  v27 = a5;
-  v17 = v15;
+  byteLimitCopy = byteLimit;
+  limitCopy = limit;
+  priorityCopy = priority;
+  v17 = dCopy;
   v22 = v17;
-  v29 = a8;
-  v18 = v16;
+  duetCopy = duet;
+  v18 = iDCopy;
   v23 = v18;
   v24 = &v30;
   [(IDSDMessageStore *)self performBlock:v21 waitUntilDone:1];
@@ -2642,11 +2642,11 @@ LABEL_3:
   return v19;
 }
 
-- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)a3 byteLimit:(unint64_t)a4 priority:(int64_t)a5 accountUUID:(id)a6 wantsPayload:(BOOL)a7 requireDuet:(BOOL)a8 localDestinationDeviceID:(id)a9 messageTypes:(id)a10
+- (id)_unsentOutgoingMessagesUpToLimit:(unint64_t)limit byteLimit:(unint64_t)byteLimit priority:(int64_t)priority accountUUID:(id)d wantsPayload:(BOOL)payload requireDuet:(BOOL)duet localDestinationDeviceID:(id)iD messageTypes:(id)self0
 {
-  v15 = a6;
-  v16 = a9;
-  v17 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  typesCopy = types;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -2658,15 +2658,15 @@ LABEL_3:
   v23[2] = sub_1005FBE58;
   v23[3] = &unk_100BE1FA8;
   v23[4] = self;
-  v28 = a4;
-  v29 = a3;
-  v30 = a5;
-  v18 = v15;
+  byteLimitCopy = byteLimit;
+  limitCopy = limit;
+  priorityCopy = priority;
+  v18 = dCopy;
   v24 = v18;
-  v31 = a8;
-  v19 = v16;
+  duetCopy = duet;
+  v19 = iDCopy;
   v25 = v19;
-  v20 = v17;
+  v20 = typesCopy;
   v26 = v20;
   v27 = &v32;
   [(IDSDMessageStore *)self performBlock:v23 waitUntilDone:1];
@@ -2677,54 +2677,54 @@ LABEL_3:
   return v21;
 }
 
-- (id)duetIdentifiersOverrideForAccountWithGUID:(id)a3 priority:(int64_t)a4
+- (id)duetIdentifiersOverrideForAccountWithGUID:(id)d priority:(int64_t)priority
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1005FC0EC;
   v10[3] = &unk_100BE0E40;
-  v11 = self;
-  v12 = a3;
-  v14 = a4;
+  selfCopy = self;
+  dCopy = d;
+  priorityCopy = priority;
   v5 = objc_alloc_init(NSMutableSet);
   v13 = v5;
-  v6 = v12;
-  [(IDSDMessageStore *)v11 performBlock:v10 waitUntilDone:1];
+  v6 = dCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v10 waitUntilDone:1];
   v7 = v13;
   v8 = v5;
 
   return v5;
 }
 
-- (void)markLocalDestinationDeviceUUIDForAccounts:(id)a3 deviceUUID:(id)a4
+- (void)markLocalDestinationDeviceUUIDForAccounts:(id)accounts deviceUUID:(id)d
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005FC3F4;
   v7[3] = &unk_100BD6E18;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(IDSDMessageStore *)v8 performBlock:v7];
+  selfCopy = self;
+  accountsCopy = accounts;
+  dCopy = d;
+  v5 = dCopy;
+  v6 = accountsCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v7];
 }
 
-- (void)markAllMessageAsPendingDeleteForAccounts:(id)a3 withDestinationDevice:(id)a4
+- (void)markAllMessageAsPendingDeleteForAccounts:(id)accounts withDestinationDevice:(id)device
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005FC5B8;
   v7[3] = &unk_100BD6E18;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(IDSDMessageStore *)v8 performBlock:v7];
+  selfCopy = self;
+  accountsCopy = accounts;
+  deviceCopy = device;
+  v5 = deviceCopy;
+  v6 = accountsCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v7];
 }
 
-- (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)a3
+- (id)allOutgoingMessagesPendingDeleteWithLimit:(int64_t)limit
 {
   v6 = 0;
   v7 = &v6;
@@ -2737,7 +2737,7 @@ LABEL_3:
   v5[2] = sub_1005FC7B8;
   v5[3] = &unk_100BD7E68;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = limit;
   v5[4] = self;
   [(IDSDMessageStore *)self performBlock:v5 waitUntilDone:1];
   v3 = v7[5];
@@ -2746,7 +2746,7 @@ LABEL_3:
   return v3;
 }
 
-- (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)a3 notToDestinationDeviceID:(id)a4 andLimit:(int64_t)a5
+- (id)outgoingMessagesWithEnqueueDateOlderThan:(int64_t)than notToDestinationDeviceID:(id)d andLimit:(int64_t)limit
 {
   v15 = 0;
   v16 = &v15;
@@ -2758,13 +2758,13 @@ LABEL_3:
   v9[1] = 3221225472;
   v9[2] = sub_1005FC9B4;
   v9[3] = &unk_100BE1FD0;
-  v10 = self;
-  v13 = a3;
-  v6 = a4;
-  v14 = a5;
-  v11 = v6;
+  selfCopy = self;
+  thanCopy = than;
+  dCopy = d;
+  limitCopy = limit;
+  v11 = dCopy;
   v12 = &v15;
-  [(IDSDMessageStore *)v10 performBlock:v9 waitUntilDone:1];
+  [(IDSDMessageStore *)selfCopy performBlock:v9 waitUntilDone:1];
   v7 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -2772,29 +2772,29 @@ LABEL_3:
   return v7;
 }
 
-- (void)deleteAllMessagesWithAccountGUID:(id)a3
+- (void)deleteAllMessagesWithAccountGUID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1005FCB24;
     v5[3] = &unk_100BD6E40;
     v5[4] = self;
-    v6 = v4;
+    v6 = dCopy;
     [(IDSDMessageStore *)self performBlock:v5];
   }
 }
 
-- (void)updateInternalMigrationVersionOnDatabaseWithValue:(int)a3
+- (void)updateInternalMigrationVersionOnDatabaseWithValue:(int)value
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1005FCC04;
   v3[3] = &unk_100BD89B0;
   v3[4] = self;
-  v4 = a3;
+  valueCopy = value;
   [(IDSDMessageStore *)self performBlock:v3];
 }
 
@@ -2826,41 +2826,41 @@ LABEL_3:
   [(IDSDMessageStore *)self performBlock:v2 waitUntilDone:1];
 }
 
-- (void)storeOutgoingMessageWithSendParameters:(id)a3 guid:(id)a4 canSend:(BOOL)a5 canBypassSimilarMessages:(BOOL)a6 fromQueue:(id)a7 completionBlock:(id)a8
+- (void)storeOutgoingMessageWithSendParameters:(id)parameters guid:(id)guid canSend:(BOOL)send canBypassSimilarMessages:(BOOL)messages fromQueue:(id)queue completionBlock:(id)block
 {
-  v11 = a3;
-  v62 = a4;
-  v60 = a7;
-  v61 = a8;
-  dispatch_assert_queue_V2(v60);
-  v12 = [v11 destinations];
-  v13 = [v12 destinationURIs];
-  if ([v13 count])
+  parametersCopy = parameters;
+  guidCopy = guid;
+  queueCopy = queue;
+  blockCopy = block;
+  dispatch_assert_queue_V2(queueCopy);
+  destinations = [parametersCopy destinations];
+  destinationURIs = [destinations destinationURIs];
+  if ([destinationURIs count])
   {
-    v14 = [v11 accountUUID];
-    v15 = [v14 length];
+    accountUUID = [parametersCopy accountUUID];
+    v15 = [accountUUID length];
 
     if (v15)
     {
-      if ([v11 bypassStorage])
+      if ([parametersCopy bypassStorage])
       {
         v16 = +[IDSFoundationLog IDSMessageStore];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v84 = v62;
+          v84 = guidCopy;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Asked to bypass storage for message with GUID %@", buf, 0xCu);
         }
 
-        v61[2](v61, v62, 1, 1);
+        blockCopy[2](blockCopy, guidCopy, 1, 1);
       }
 
       else
       {
-        v20 = [v11 message];
-        if (v20)
+        message = [parametersCopy message];
+        if (message)
         {
-          v21 = [v11 message];
+          message2 = [parametersCopy message];
           v22 = JWEncodeDictionary();
 
           v54 = v22;
@@ -2871,11 +2871,11 @@ LABEL_3:
           v54 = 0;
         }
 
-        v55 = [v11 data];
-        v23 = [v11 protobuf];
-        if (v23)
+        data = [parametersCopy data];
+        protobuf = [parametersCopy protobuf];
+        if (protobuf)
         {
-          v24 = [v11 protobuf];
+          protobuf2 = [parametersCopy protobuf];
           v25 = JWEncodeDictionary();
 
           v53 = v25;
@@ -2886,17 +2886,17 @@ LABEL_3:
           v53 = 0;
         }
 
-        v26 = [v11 keyTransparencyURIVerificationMap];
+        keyTransparencyURIVerificationMap = [parametersCopy keyTransparencyURIVerificationMap];
 
-        if (v26)
+        if (keyTransparencyURIVerificationMap)
         {
           v27 = objc_alloc_init(NSMutableDictionary);
           v80 = 0u;
           v81 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v28 = [v11 keyTransparencyURIVerificationMap];
-          v29 = [v28 countByEnumeratingWithState:&v78 objects:v82 count:16];
+          keyTransparencyURIVerificationMap2 = [parametersCopy keyTransparencyURIVerificationMap];
+          v29 = [keyTransparencyURIVerificationMap2 countByEnumeratingWithState:&v78 objects:v82 count:16];
           if (v29)
           {
             v30 = *v79;
@@ -2906,17 +2906,17 @@ LABEL_3:
               {
                 if (*v79 != v30)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(keyTransparencyURIVerificationMap2);
                 }
 
                 v32 = *(*(&v78 + 1) + 8 * i);
-                v33 = [v11 keyTransparencyURIVerificationMap];
-                v34 = [v33 objectForKey:v32];
-                v35 = [v34 UUIDString];
-                [v27 setObject:v35 forKey:v32];
+                keyTransparencyURIVerificationMap3 = [parametersCopy keyTransparencyURIVerificationMap];
+                v34 = [keyTransparencyURIVerificationMap3 objectForKey:v32];
+                uUIDString = [v34 UUIDString];
+                [v27 setObject:uUIDString forKey:v32];
               }
 
-              v29 = [v28 countByEnumeratingWithState:&v78 objects:v82 count:16];
+              v29 = [keyTransparencyURIVerificationMap2 countByEnumeratingWithState:&v78 objects:v82 count:16];
             }
 
             while (v29);
@@ -2930,9 +2930,9 @@ LABEL_3:
           v36 = 0;
         }
 
-        v37 = [v11 destinations];
+        destinations2 = [parametersCopy destinations];
         v77 = 0;
-        v38 = [NSKeyedArchiver archivedDataWithRootObject:v37 requiringSecureCoding:0 error:&v77];
+        v38 = [NSKeyedArchiver archivedDataWithRootObject:destinations2 requiringSecureCoding:0 error:&v77];
         v39 = v77;
 
         v40 = v38;
@@ -2941,15 +2941,15 @@ LABEL_3:
           v41 = +[IDSFoundationLog IDSMessageStore];
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
           {
-            v42 = [v11 destinations];
-            sub_10092CB7C(v42, v39, buf, v41);
+            destinations3 = [parametersCopy destinations];
+            sub_10092CB7C(destinations3, v39, buf, v41);
           }
         }
 
-        v43 = [v11 deliveryStatusContext];
+        deliveryStatusContext = [parametersCopy deliveryStatusContext];
         v44 = JWEncodeDictionary();
 
-        v45 = [v11 duetIdentifiersOverride];
+        duetIdentifiersOverride = [parametersCopy duetIdentifiersOverride];
         v46 = JWEncodeArray();
 
         v63[0] = _NSConcreteStackBlock;
@@ -2957,25 +2957,25 @@ LABEL_3:
         v63[2] = sub_1005FD5AC;
         v63[3] = &unk_100BE2020;
         v63[4] = self;
-        v75 = a5;
-        v76 = a6;
-        v64 = v11;
-        v65 = v62;
+        sendCopy = send;
+        messagesCopy = messages;
+        v64 = parametersCopy;
+        v65 = guidCopy;
         v66 = v54;
-        v67 = v55;
+        v67 = data;
         v68 = v53;
         v69 = v40;
         v70 = v44;
         v71 = v46;
         v72 = v36;
-        v74 = v61;
-        v73 = v60;
+        v74 = blockCopy;
+        v73 = queueCopy;
         v47 = v36;
         v58 = v46;
         v48 = v44;
         v49 = v40;
         v50 = v53;
-        v51 = v55;
+        v51 = data;
         v52 = v54;
         [(IDSDMessageStore *)self performBlock:v63];
       }
@@ -2991,32 +2991,32 @@ LABEL_3:
   v17 = +[IDSFoundationLog IDSMessageStore];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v11 destinations];
-    v19 = [v11 accountUUID];
+    destinations4 = [parametersCopy destinations];
+    accountUUID2 = [parametersCopy accountUUID];
     *buf = 138412802;
-    v84 = v11;
+    v84 = parametersCopy;
     v85 = 2112;
-    v86 = v18;
+    v86 = destinations4;
     v87 = 2112;
-    v88 = v19;
+    v88 = accountUUID2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Ignoring storeOutgoingMessageWithSendParameters: %@ destinations: %@ accountID: %@", buf, 0x20u);
   }
 
 LABEL_32:
 }
 
-- (void)markOutgoingMessageWithGUID:(id)a3 asSent:(BOOL)a4
+- (void)markOutgoingMessageWithGUID:(id)d asSent:(BOOL)sent
 {
-  v6 = a3;
-  if ([v6 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1005FDE74;
     v7[3] = &unk_100BD8FC0;
     v7[4] = self;
-    v8 = v6;
-    v9 = a4;
+    v8 = dCopy;
+    sentCopy = sent;
     [(IDSDMessageStore *)self performBlock:v7];
   }
 }
@@ -3031,46 +3031,46 @@ LABEL_32:
   [(IDSDMessageStore *)self performBlock:v2];
 }
 
-- (void)markAllOutgoingMessagesAsUnsentForLocalDestination:(id)a3
+- (void)markAllOutgoingMessagesAsUnsentForLocalDestination:(id)destination
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1005FE05C;
   v4[3] = &unk_100BD6E40;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(IDSDMessageStore *)v5 performBlock:v4];
+  selfCopy = self;
+  destinationCopy = destination;
+  v3 = destinationCopy;
+  [(IDSDMessageStore *)selfCopy performBlock:v4];
 }
 
-- (void)deletePostponedMessages:(id)a3 classDDatabase:(id)a4
+- (void)deletePostponedMessages:(id)messages classDDatabase:(id)database
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1005FE188;
   v8[3] = &unk_100BD6E18;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  messagesCopy = messages;
+  selfCopy = self;
+  databaseCopy = database;
+  v6 = databaseCopy;
+  v7 = messagesCopy;
   [(IDSDMessageStore *)self performBlock:v8];
 }
 
-- (void)deleteOutgoingMessageWithGUID:(id)a3 alternateGUID:(id)a4 classDDatabase:(id)a5
+- (void)deleteOutgoingMessageWithGUID:(id)d alternateGUID:(id)iD classDDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length])
+  dCopy = d;
+  iDCopy = iD;
+  databaseCopy = database;
+  if ([dCopy length])
   {
     v11 = +[IDSFoundationLog IDSMessageStore];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v8;
+      v17 = dCopy;
       v18 = 2112;
-      v19 = v9;
+      v19 = iDCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "deleteOutgoingMessageWithGUID:alternateGUID: {guid: %@, alternateGUID: %@}", buf, 0x16u);
     }
 
@@ -3079,31 +3079,31 @@ LABEL_32:
     v12[2] = sub_1005FE368;
     v12[3] = &unk_100BD7020;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = dCopy;
+    v14 = iDCopy;
+    v15 = databaseCopy;
     [(IDSDMessageStore *)self performBlock:v12];
   }
 }
 
-- (void)deleteIncomingMessageWithGUID:(id)a3
+- (void)deleteIncomingMessageWithGUID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_1005FE55C;
     v5[3] = &unk_100BD6E40;
     v5[4] = self;
-    v6 = v4;
+    v6 = dCopy;
     [(IDSDMessageStore *)self performBlock:v5];
   }
 }
 
-- (void)deleteExpiredIncomingMessagesOlderThan:(double)a3 withLimit:(int64_t)a4
+- (void)deleteExpiredIncomingMessagesOlderThan:(double)than withLimit:(int64_t)limit
 {
-  if (a3 != 0.0)
+  if (than != 0.0)
   {
     v6[7] = v4;
     v6[8] = v5;
@@ -3112,15 +3112,15 @@ LABEL_32:
     v6[2] = sub_1005FE650;
     v6[3] = &unk_100BE2048;
     v6[4] = self;
-    *&v6[5] = a3;
-    v6[6] = a4;
+    *&v6[5] = than;
+    v6[6] = limit;
     [(IDSDMessageStore *)self performBlock:v6];
   }
 }
 
-- (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)a3
+- (id)deleteExpiredIncomingRestrictedMessagesOlderThan:(double)than
 {
-  if (a3 == 0.0)
+  if (than == 0.0)
   {
     v3 = &__NSArray0__struct;
   }
@@ -3134,7 +3134,7 @@ LABEL_32:
     v9[3] = &unk_100BE04B0;
     v6 = v9[4] = self;
     v10 = v6;
-    v11 = a3;
+    thanCopy = than;
     [(IDSDMessageStore *)self performBlock:v9];
     v7 = v10;
     v3 = v6;
@@ -3143,18 +3143,18 @@ LABEL_32:
   return v3;
 }
 
-- (void)updateExpirationForIncomingMessageWithGUID:(id)a3 expirationDate:(int64_t)a4
+- (void)updateExpirationForIncomingMessageWithGUID:(id)d expirationDate:(int64_t)date
 {
-  v6 = a3;
-  if ([v6 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1005FE918;
     v7[3] = &unk_100BE04B0;
     v7[4] = self;
-    v8 = v6;
-    v9 = a4;
+    v8 = dCopy;
+    dateCopy = date;
     [(IDSDMessageStore *)self performBlock:v7];
   }
 }
@@ -3167,8 +3167,8 @@ LABEL_32:
   v4[2] = sub_1005FEA30;
   v4[3] = &unk_100BD6ED0;
   v4[4] = self;
-  v3 = [(IDSDMessageStore *)self database];
-  sub_10000B240(v4, 1, v3);
+  database = [(IDSDMessageStore *)self database];
+  sub_10000B240(v4, 1, database);
 }
 
 - (void)_clearDatabaseCloseTimer
@@ -3201,17 +3201,17 @@ LABEL_32:
 - (void)deleteDatabase
 {
   [(IDSDMessageStore *)self closeDatabase];
-  v3 = [(IDSDMessageStore *)self database];
-  [v3 deleteDatabase];
+  database = [(IDSDMessageStore *)self database];
+  [database deleteDatabase];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
-    v6 = [v4 copy];
+    v5 = blockCopy;
+    v6 = [blockCopy copy];
 
     v10 = v6;
     v7 = v6;
@@ -3220,13 +3220,13 @@ LABEL_32:
   }
 }
 
-- (void)performBlock:(id)a3 afterDelay:(double)a4
+- (void)performBlock:(id)block afterDelay:(double)delay
 {
-  v5 = a3;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v6 = v5;
-    v7 = [v5 copy];
+    v6 = blockCopy;
+    v7 = [blockCopy copy];
 
     v11 = v7;
     v8 = v7;
@@ -3235,19 +3235,19 @@ LABEL_32:
   }
 }
 
-- (void)performBlock:(id)a3 waitUntilDone:(BOOL)a4
+- (void)performBlock:(id)block waitUntilDone:(BOOL)done
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  doneCopy = done;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = v6;
-    v8 = [v6 copy];
+    v7 = blockCopy;
+    v8 = [blockCopy copy];
 
     v12 = v8;
     v9 = v8;
     v10 = [(IDSDMessageStore *)self database:_NSConcreteStackBlock];
-    sub_10000B240(&v11, v4, v10);
+    sub_10000B240(&v11, doneCopy, v10);
   }
 }
 

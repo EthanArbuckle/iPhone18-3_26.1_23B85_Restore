@@ -3,8 +3,8 @@
 - (SUBCloudDescriptorManager)init;
 - (id)getCloudDescriptorPath;
 - (id)getCloudDescriptors;
-- (void)removeCloudDescriptor:(id)a3;
-- (void)saveCloudDescriptor:(id)a3;
+- (void)removeCloudDescriptor:(id)descriptor;
+- (void)saveCloudDescriptor:(id)descriptor;
 @end
 
 @implementation SUBCloudDescriptorManager
@@ -47,34 +47,34 @@
   return v4;
 }
 
-- (void)saveCloudDescriptor:(id)a3
+- (void)saveCloudDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
+  descriptorCopy = descriptor;
+  getCloudDescriptorPath = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F1EC;
   v9[3] = &unk_10002D210;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = getCloudDescriptorPath;
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = getCloudDescriptorPath;
   dispatch_sync(queue, v9);
 }
 
 - (id)getCloudDescriptors
 {
-  v2 = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
+  getCloudDescriptorPath = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v2];
+  v5 = [v4 fileExistsAtPath:getCloudDescriptorPath];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
-    v23 = v2;
-    v7 = [NSURL URLWithString:v2];
+    v23 = getCloudDescriptorPath;
+    v7 = [NSURL URLWithString:getCloudDescriptorPath];
     v8 = +[NSArray array];
     v28 = 0;
     v9 = [v6 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v8 options:0 error:&v28];
@@ -107,9 +107,9 @@
         if (v16)
         {
           v17 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v16 error:0];
-          v18 = [v17 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
+          absoluteString = [v17 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
           [v17 finishDecoding];
-          [v3 addObject:v18];
+          [v3 addObject:absoluteString];
         }
 
         else
@@ -121,9 +121,9 @@
           }
 
           v17 = v19;
-          v18 = [v15 absoluteString];
+          absoluteString = [v15 absoluteString];
           *buf = 138412290;
-          v30 = v18;
+          v30 = absoluteString;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Docs found, but failed to deserialize at %@", buf, 0xCu);
         }
 
@@ -136,7 +136,7 @@ LABEL_12:
 LABEL_14:
 
         v20 = v3;
-        v2 = v23;
+        getCloudDescriptorPath = v23;
         goto LABEL_16;
       }
     }
@@ -148,13 +148,13 @@ LABEL_16:
   return v20;
 }
 
-- (void)removeCloudDescriptor:(id)a3
+- (void)removeCloudDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
-  v6 = [v4 productVersion];
+  descriptorCopy = descriptor;
+  getCloudDescriptorPath = [(SUBCloudDescriptorManager *)self getCloudDescriptorPath];
+  productVersion = [descriptorCopy productVersion];
 
-  v7 = [NSString stringWithFormat:@"%@/%@", v5, v6];
+  v7 = [NSString stringWithFormat:@"%@/%@", getCloudDescriptorPath, productVersion];
 
   v8 = softwareupdatebridge_log;
   if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))

@@ -1,7 +1,7 @@
 @interface MUCGPDFAnnotationAdaptor
-+ (id)newAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4;
-+ (id)newPlaceholderAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4;
-+ (id)pdfDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4;
++ (id)newAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page;
++ (id)newPlaceholderAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page;
++ (id)pdfDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page;
 + (id)supportedAnnotationTypes;
 @end
 
@@ -28,7 +28,7 @@ uint64_t __52__MUCGPDFAnnotationAdaptor_supportedAnnotationTypes__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)newAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4
++ (id)newAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page
 {
   CGPDFDictionary = CGPDFAnnotationGetCGPDFDictionary();
   Type = CGPDFAnnotationGetType();
@@ -74,7 +74,7 @@ uint64_t __52__MUCGPDFAnnotationAdaptor_supportedAnnotationTypes__block_invoke()
     return 0;
   }
 
-  v10 = [v9 _concreteAKAnnotationWithCGPDFAnnotation:a3 ofPage:a4];
+  v10 = [v9 _concreteAKAnnotationWithCGPDFAnnotation:annotation ofPage:page];
   v8 = v10;
   if (v10)
   {
@@ -86,7 +86,7 @@ uint64_t __52__MUCGPDFAnnotationAdaptor_supportedAnnotationTypes__block_invoke()
 
     if (![v8 originalExifOrientation])
     {
-      [v8 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", a4)}];
+      [v8 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", page)}];
     }
 
     v12 = objc_opt_self();
@@ -94,14 +94,14 @@ uint64_t __52__MUCGPDFAnnotationAdaptor_supportedAnnotationTypes__block_invoke()
 
     if ((isKindOfClass & 1) == 0)
     {
-      [MUPDFAnnotationAdaptorHelper migrateAppearanceStreamFromCGPDFAnnotationDict:CGPDFDictionary toAKAnnotation:v8 compensatingForPageRotation:[MUPDFUtilities normalizedRotationAngleOfPage:a4]];
+      [MUPDFAnnotationAdaptorHelper migrateAppearanceStreamFromCGPDFAnnotationDict:CGPDFDictionary toAKAnnotation:v8 compensatingForPageRotation:[MUPDFUtilities normalizedRotationAngleOfPage:page]];
     }
   }
 
   return v8;
 }
 
-+ (id)newPlaceholderAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4
++ (id)newPlaceholderAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page
 {
   v5 = [MUCGPDFStampAnnotationAdaptor _concreteAKAnnotationWithCGPDFAnnotation:"_concreteAKAnnotationWithCGPDFAnnotation:ofPage:" ofPage:?];
   v6 = v5;
@@ -115,18 +115,18 @@ uint64_t __52__MUCGPDFAnnotationAdaptor_supportedAnnotationTypes__block_invoke()
 
     if (![v6 originalExifOrientation])
     {
-      [v6 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", a4)}];
+      [v6 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", page)}];
     }
 
-    [MUPDFAnnotationAdaptorHelper migrateAppearanceStreamFromCGPDFAnnotationDict:CGPDFAnnotationGetCGPDFDictionary() toAKAnnotation:v6 compensatingForPageRotation:[MUPDFUtilities normalizedRotationAngleOfPage:a4]];
+    [MUPDFAnnotationAdaptorHelper migrateAppearanceStreamFromCGPDFAnnotationDict:CGPDFAnnotationGetCGPDFDictionary() toAKAnnotation:v6 compensatingForPageRotation:[MUPDFUtilities normalizedRotationAngleOfPage:page]];
   }
 
   return v6;
 }
 
-+ (id)pdfDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4
++ (id)pdfDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page
 {
-  v5 = a3;
+  annotationCopy = annotation;
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -256,7 +256,7 @@ LABEL_15:
 
                     if ((v33 & 1) == 0)
                     {
-                      NSLog(&cfstr_SUnsupportedAn.isa, "+[MUCGPDFAnnotationAdaptor pdfDictionaryRepresentationOfAKAnnotation:forPage:]", v5);
+                      NSLog(&cfstr_SUnsupportedAn.isa, "+[MUCGPDFAnnotationAdaptor pdfDictionaryRepresentationOfAKAnnotation:forPage:]", annotationCopy);
                     }
 
                     goto LABEL_33;
@@ -274,7 +274,7 @@ LABEL_21:
   v23 = objc_opt_self();
   if (v23)
   {
-    v24 = [v23 _concreteDictionaryRepresentationOfAKAnnotation:v5 forPage:a4];
+    v24 = [v23 _concreteDictionaryRepresentationOfAKAnnotation:annotationCopy forPage:page];
     goto LABEL_34;
   }
 

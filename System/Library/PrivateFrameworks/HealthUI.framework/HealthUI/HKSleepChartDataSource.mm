@@ -1,60 +1,60 @@
 @interface HKSleepChartDataSource
-- (HKSleepChartDataSource)initWithHealthStore:(id)a3 representativeDisplayType:(id)a4 queryOptions:(unint64_t)a5 cacheIdentifier:(id)a6 queryIdentifier:(id)a7 calendar:(id)a8;
-- (id)_mappingFunctionForComparisonChartWithContext:(id)a3;
-- (id)_mappingFunctionForConsistencyChartWithContext:(id)a3;
-- (id)_mappingFunctionForDurationChartWithContext:(id)a3;
-- (id)_mappingFunctionForStagesChartWithContext:(id)a3;
-- (id)_mappingFunctionForStagesDurationChartWithContext:(id)a3;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)mappingFunctionForContext:(id)a3;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
-- (id)queriesForRequest:(id)a3 useCollectionQueryForSixMonth:(BOOL)a4 completionHandler:(id)a5;
+- (HKSleepChartDataSource)initWithHealthStore:(id)store representativeDisplayType:(id)type queryOptions:(unint64_t)options cacheIdentifier:(id)identifier queryIdentifier:(id)queryIdentifier calendar:(id)calendar;
+- (id)_mappingFunctionForComparisonChartWithContext:(id)context;
+- (id)_mappingFunctionForConsistencyChartWithContext:(id)context;
+- (id)_mappingFunctionForDurationChartWithContext:(id)context;
+- (id)_mappingFunctionForStagesChartWithContext:(id)context;
+- (id)_mappingFunctionForStagesDurationChartWithContext:(id)context;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)mappingFunctionForContext:(id)context;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request useCollectionQueryForSixMonth:(BOOL)month completionHandler:(id)handler;
 @end
 
 @implementation HKSleepChartDataSource
 
-- (HKSleepChartDataSource)initWithHealthStore:(id)a3 representativeDisplayType:(id)a4 queryOptions:(unint64_t)a5 cacheIdentifier:(id)a6 queryIdentifier:(id)a7 calendar:(id)a8
+- (HKSleepChartDataSource)initWithHealthStore:(id)store representativeDisplayType:(id)type queryOptions:(unint64_t)options cacheIdentifier:(id)identifier queryIdentifier:(id)queryIdentifier calendar:(id)calendar
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  queryIdentifierCopy = queryIdentifier;
+  calendarCopy = calendar;
   v21.receiver = self;
   v21.super_class = HKSleepChartDataSource;
-  v18 = [(HKHealthQueryChartCacheDataSource *)&v21 initWithDisplayType:a4 healthStore:a3];
+  v18 = [(HKHealthQueryChartCacheDataSource *)&v21 initWithDisplayType:type healthStore:store];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_calendar, a8);
-    v19->_queryOptions = a5;
-    objc_storeStrong(&v19->_cacheIdentifier, a6);
-    objc_storeStrong(&v19->_queryIdentifier, a7);
+    objc_storeStrong(&v18->_calendar, calendar);
+    v19->_queryOptions = options;
+    objc_storeStrong(&v19->_cacheIdentifier, identifier);
+    objc_storeStrong(&v19->_queryIdentifier, queryIdentifier);
   }
 
   return v19;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696C608];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedBehavior];
-  v10 = [v9 features];
-  v11 = -[HKSleepChartDataSource queriesForRequest:useCollectionQueryForSixMonth:completionHandler:](self, "queriesForRequest:useCollectionQueryForSixMonth:completionHandler:", v8, [v10 newSleep6MonthView], v7);
+  handlerCopy = handler;
+  requestCopy = request;
+  sharedBehavior = [v6 sharedBehavior];
+  features = [sharedBehavior features];
+  v11 = -[HKSleepChartDataSource queriesForRequest:useCollectionQueryForSixMonth:completionHandler:](self, "queriesForRequest:useCollectionQueryForSixMonth:completionHandler:", requestCopy, [features newSleep6MonthView], handlerCopy);
 
   return v11;
 }
 
-- (id)queriesForRequest:(id)a3 useCollectionQueryForSixMonth:(BOOL)a4 completionHandler:(id)a5
+- (id)queriesForRequest:(id)request useCollectionQueryForSixMonth:(BOOL)month completionHandler:(id)handler
 {
-  v6 = a4;
+  monthCopy = month;
   v77 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [v8 startDate];
-  v12 = [v11 hk_isAfterDate:v10];
+  requestCopy = request;
+  handlerCopy = handler;
+  date = [MEMORY[0x1E695DF00] date];
+  startDate = [requestCopy startDate];
+  v12 = [startDate hk_isAfterDate:date];
 
   if (v12)
   {
@@ -64,19 +64,19 @@
     {
       v14 = v13;
       v15 = objc_opt_class();
-      v16 = v10;
+      v16 = date;
       v17 = v15;
-      v18 = [(HKSleepChartDataSource *)self queryIdentifier];
-      v19 = [v8 startDate];
+      queryIdentifier = [(HKSleepChartDataSource *)self queryIdentifier];
+      startDate2 = [requestCopy startDate];
       *buf = 138543874;
       v66 = v15;
       v67 = 2114;
-      v68 = v18;
+      v68 = queryIdentifier;
       v69 = 2114;
-      v70 = v19;
+      v70 = startDate2;
       _os_log_impl(&dword_1C3942000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@.%{public}@] start date in the future %{public}@", buf, 0x20u);
 
-      v10 = v16;
+      date = v16;
     }
 
     v20 = MEMORY[0x1E695E0F0];
@@ -84,18 +84,18 @@
 
   else
   {
-    v56 = v6;
-    v21 = [v8 startDate];
-    v22 = [(HKSleepChartDataSource *)self calendar];
-    v23 = [v21 hk_morningIndexWithCalendar:v22];
+    v56 = monthCopy;
+    startDate3 = [requestCopy startDate];
+    calendar = [(HKSleepChartDataSource *)self calendar];
+    v23 = [startDate3 hk_morningIndexWithCalendar:calendar];
 
-    v24 = [v8 endDate];
-    v25 = [(HKSleepChartDataSource *)self calendar];
-    v26 = [v24 hk_morningIndexWithCalendar:v25];
+    endDate = [requestCopy endDate];
+    calendar2 = [(HKSleepChartDataSource *)self calendar];
+    v26 = [endDate hk_morningIndexWithCalendar:calendar2];
 
     v57 = v26 - v23;
-    v27 = [v8 statisticsInterval];
-    v28 = [v27 weekOfYear];
+    statisticsInterval = [requestCopy statisticsInterval];
+    weekOfYear = [statisticsInterval weekOfYear];
 
     _HKInitializeLogging();
     v29 = *MEMORY[0x1E696B998];
@@ -105,15 +105,15 @@
       v30 = v29;
       v31 = objc_opt_class();
       v54 = v31;
-      v32 = [(HKSleepChartDataSource *)self queryIdentifier];
-      [v8 startDate];
-      v55 = v10;
-      v34 = v33 = v9;
-      v35 = [v8 endDate];
+      queryIdentifier2 = [(HKSleepChartDataSource *)self queryIdentifier];
+      [requestCopy startDate];
+      v55 = date;
+      v34 = v33 = handlerCopy;
+      endDate2 = [requestCopy endDate];
       *buf = 138544642;
       v66 = v31;
       v67 = 2114;
-      v68 = v32;
+      v68 = queryIdentifier2;
       v69 = 2048;
       v70 = v23;
       v71 = 2048;
@@ -121,33 +121,33 @@
       v73 = 2114;
       v74 = v34;
       v75 = 2114;
-      v76 = v35;
+      v76 = endDate2;
       _os_log_impl(&dword_1C3942000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@.%{public}@] creating query for day indices: %ld-%ld dates: %{public}@-%{public}@", buf, 0x3Eu);
 
-      v9 = v33;
-      v10 = v55;
+      handlerCopy = v33;
+      date = v55;
     }
 
-    if (!v56 || v28 == 0x7FFFFFFFFFFFFFFFLL)
+    if (!v56 || weekOfYear == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v40 = [(HKSleepChartDataSource *)self queryOptions];
-      v41 = [v8 statisticsInterval];
-      v42 = [v41 month];
+      queryOptions = [(HKSleepChartDataSource *)self queryOptions];
+      statisticsInterval2 = [requestCopy statisticsInterval];
+      month = [statisticsInterval2 month];
 
-      v43 = v40 | 8;
-      if (v28 == 0x7FFFFFFFFFFFFFFFLL)
+      v43 = queryOptions | 8;
+      if (weekOfYear == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v43 = v40;
+        v43 = queryOptions;
       }
 
-      if (v42 == 0x7FFFFFFFFFFFFFFFLL)
+      if (month == 0x7FFFFFFFFFFFFFFFLL)
       {
         v44 = v43;
       }
 
       else
       {
-        v44 = v40 | 0x10;
+        v44 = queryOptions | 0x10;
       }
 
       v45 = objc_alloc(MEMORY[0x1E696C470]);
@@ -156,19 +156,19 @@
       v58[2] = __92__HKSleepChartDataSource_queriesForRequest_useCollectionQueryForSixMonth_completionHandler___block_invoke_300;
       v58[3] = &unk_1E81B7880;
       v58[4] = self;
-      v59 = v10;
-      v60 = v9;
+      v59 = date;
+      v60 = handlerCopy;
       v46 = [v45 initWithMorningIndexRange:v23 ascending:v57 limit:1 options:0 resultsHandler:{v44, v58}];
       v47 = objc_alloc(MEMORY[0x1E696C460]);
-      v48 = [(HKSleepChartDataSource *)self queryIdentifier];
-      v49 = [v47 initWithIdentifier:v48 mode:1];
+      queryIdentifier3 = [(HKSleepChartDataSource *)self queryIdentifier];
+      v49 = [v47 initWithIdentifier:queryIdentifier3 mode:1];
       [v46 setCacheSettings:v49];
 
-      v50 = [(HKSleepChartDataSource *)self queryIdentifier];
-      [v46 setDebugIdentifier:v50];
+      queryIdentifier4 = [(HKSleepChartDataSource *)self queryIdentifier];
+      [v46 setDebugIdentifier:queryIdentifier4];
 
-      v51 = [(HKSleepChartDataSource *)self calendar];
-      [v46 setCalendarOverrides:v51];
+      calendar3 = [(HKSleepChartDataSource *)self calendar];
+      [v46 setCalendarOverrides:calendar3];
 
       v63 = v46;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
@@ -184,10 +184,10 @@
       v61[2] = __92__HKSleepChartDataSource_queriesForRequest_useCollectionQueryForSixMonth_completionHandler___block_invoke;
       v61[3] = &unk_1E81B7838;
       v61[4] = self;
-      v62 = v9;
+      v62 = handlerCopy;
       v37 = [v36 initWithMorningIndexRange:v23 resultsHandler:{v57, v61}];
-      v38 = [v37 query];
-      v64 = v38;
+      query = [v37 query];
+      v64 = query;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
 
       v39 = v62;
@@ -356,9 +356,9 @@ LABEL_13:
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)mappingFunctionForContext:(id)a3
+- (id)mappingFunctionForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -366,53 +366,53 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v5 = [v4 chartType];
+  chartType = [contextCopy chartType];
   v6 = 0;
-  if (v5 <= 2)
+  if (chartType <= 2)
   {
-    if (v5)
+    if (chartType)
     {
-      if (v5 == 1)
+      if (chartType == 1)
       {
         goto LABEL_14;
       }
 
-      if (v5 != 2)
+      if (chartType != 2)
       {
         goto LABEL_17;
       }
     }
 
-    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForDurationChartWithContext:v4];
+    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForDurationChartWithContext:contextCopy];
     goto LABEL_16;
   }
 
-  if (v5 <= 4)
+  if (chartType <= 4)
   {
-    if (v5 != 3)
+    if (chartType != 3)
     {
-      v7 = [(HKSleepChartDataSource *)self _mappingFunctionForStagesChartWithContext:v4];
+      v7 = [(HKSleepChartDataSource *)self _mappingFunctionForStagesChartWithContext:contextCopy];
       goto LABEL_16;
     }
 
 LABEL_14:
-    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForConsistencyChartWithContext:v4];
+    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForConsistencyChartWithContext:contextCopy];
     goto LABEL_16;
   }
 
-  if (v5 == 5)
+  if (chartType == 5)
   {
-    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForStagesDurationChartWithContext:v4];
+    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForStagesDurationChartWithContext:contextCopy];
   }
 
   else
   {
-    if (v5 != 6)
+    if (chartType != 6)
     {
       goto LABEL_17;
     }
 
-    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForComparisonChartWithContext:v4];
+    v7 = [(HKSleepChartDataSource *)self _mappingFunctionForComparisonChartWithContext:contextCopy];
   }
 
 LABEL_16:
@@ -422,15 +422,15 @@ LABEL_17:
   return v6;
 }
 
-- (id)_mappingFunctionForDurationChartWithContext:(id)a3
+- (id)_mappingFunctionForDurationChartWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__HKSleepChartDataSource__mappingFunctionForDurationChartWithContext___block_invoke;
   aBlock[3] = &unk_1E81B78A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = contextCopy;
+  v4 = contextCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -454,15 +454,15 @@ HKGraphSeriesDataBlock *__70__HKSleepChartDataSource__mappingFunctionForDuration
   return v4;
 }
 
-- (id)_mappingFunctionForComparisonChartWithContext:(id)a3
+- (id)_mappingFunctionForComparisonChartWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__HKSleepChartDataSource__mappingFunctionForComparisonChartWithContext___block_invoke;
   aBlock[3] = &unk_1E81B78A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = contextCopy;
+  v4 = contextCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -493,15 +493,15 @@ HKGraphSeriesDataBlock *__72__HKSleepChartDataSource__mappingFunctionForComparis
   return v4;
 }
 
-- (id)_mappingFunctionForConsistencyChartWithContext:(id)a3
+- (id)_mappingFunctionForConsistencyChartWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__HKSleepChartDataSource__mappingFunctionForConsistencyChartWithContext___block_invoke;
   aBlock[3] = &unk_1E81B78A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = contextCopy;
+  v4 = contextCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -525,15 +525,15 @@ HKGraphSeriesDataBlock *__73__HKSleepChartDataSource__mappingFunctionForConsiste
   return v4;
 }
 
-- (id)_mappingFunctionForStagesChartWithContext:(id)a3
+- (id)_mappingFunctionForStagesChartWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__HKSleepChartDataSource__mappingFunctionForStagesChartWithContext___block_invoke;
   aBlock[3] = &unk_1E81B78A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = contextCopy;
+  v4 = contextCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -564,15 +564,15 @@ HKGraphSeriesDataBlock *__68__HKSleepChartDataSource__mappingFunctionForStagesCh
   return v4;
 }
 
-- (id)_mappingFunctionForStagesDurationChartWithContext:(id)a3
+- (id)_mappingFunctionForStagesDurationChartWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__HKSleepChartDataSource__mappingFunctionForStagesDurationChartWithContext___block_invoke;
   aBlock[3] = &unk_1E81B78A8;
-  v8 = v3;
-  v4 = v3;
+  v8 = contextCopy;
+  v4 = contextCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -596,20 +596,20 @@ HKGraphSeriesDataBlock *__76__HKSleepChartDataSource__mappingFunctionForStagesDu
   return v4;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __92__HKSleepChartDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v30[3] = &unk_1E81B78D0;
-  v11 = v8;
+  v11 = requestCopy;
   v31 = v11;
-  v12 = v10;
-  v32 = self;
+  v12 = handlerCopy;
+  selfCopy = self;
   v33 = v12;
   v13 = [(HKSleepChartDataSource *)self queriesForRequest:v11 useCollectionQueryForSixMonth:0 completionHandler:v30];
   v26 = 0u;
@@ -630,7 +630,7 @@ HKGraphSeriesDataBlock *__76__HKSleepChartDataSource__mappingFunctionForStagesDu
           objc_enumerationMutation(v13);
         }
 
-        [v9 executeQuery:*(*(&v26 + 1) + 8 * i)];
+        [storeCopy executeQuery:*(*(&v26 + 1) + 8 * i)];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -644,8 +644,8 @@ HKGraphSeriesDataBlock *__76__HKSleepChartDataSource__mappingFunctionForStagesDu
   v23[2] = __92__HKSleepChartDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_315;
   v23[3] = &unk_1E81B5AD0;
   v24 = v13;
-  v25 = v9;
-  v18 = v9;
+  v25 = storeCopy;
+  v18 = storeCopy;
   v19 = v13;
   v20 = _Block_copy(v23);
   v21 = _Block_copy(v20);
@@ -744,14 +744,14 @@ void __92__HKSleepChartDataSource_generateSharableQueryDataForRequest_healthStor
   }
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v4 = a3;
-  if ([v4 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v5 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v6 = [v4 timeZoneName];
-    v7 = [v5 initWithName:v6];
+    timeZoneName = [dataCopy timeZoneName];
+    v7 = [v5 initWithName:timeZoneName];
   }
 
   else
@@ -760,8 +760,8 @@ void __92__HKSleepChartDataSource_generateSharableQueryDataForRequest_healthStor
   }
 
   v8 = [HKCodableSleepSummaryCollection alloc];
-  v9 = [v4 queryDataObject];
-  v10 = [(HKCodableSleepSummaryCollection *)v8 initWithData:v9];
+  queryDataObject = [dataCopy queryDataObject];
+  v10 = [(HKCodableSleepSummaryCollection *)v8 initWithData:queryDataObject];
 
   v11 = objc_alloc_init(HKGraphSeriesDataBlock);
   v12 = [(HKCodableSleepSummaryCollection *)v10 daySummariesWithSourceTimeZone:v7];

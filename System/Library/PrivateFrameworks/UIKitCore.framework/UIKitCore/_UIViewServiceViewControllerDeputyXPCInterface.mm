@@ -1,20 +1,20 @@
 @interface _UIViewServiceViewControllerDeputyXPCInterface
-+ (id)interfaceWithExportedInterface:(id)a3 remoteViewControllerInterface:(id)a4;
++ (id)interfaceWithExportedInterface:(id)interface remoteViewControllerInterface:(id)controllerInterface;
 @end
 
 @implementation _UIViewServiceViewControllerDeputyXPCInterface
 
-+ (id)interfaceWithExportedInterface:(id)a3 remoteViewControllerInterface:(id)a4
++ (id)interfaceWithExportedInterface:(id)interface remoteViewControllerInterface:(id)controllerInterface
 {
-  v5 = a3;
-  v6 = a4;
+  interfaceCopy = interface;
+  controllerInterfaceCopy = controllerInterface;
   v7 = objc_alloc_init(_UIViewServiceViewControllerDeputyXPCInterface);
   exportedInterface = v7->_exportedInterface;
-  v7->_exportedInterface = v5;
-  v9 = v5;
+  v7->_exportedInterface = interfaceCopy;
+  v9 = interfaceCopy;
 
   remoteViewControllerInterface = v7->_remoteViewControllerInterface;
-  v7->_remoteViewControllerInterface = v6;
+  v7->_remoteViewControllerInterface = controllerInterfaceCopy;
 
   return v7;
 }

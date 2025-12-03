@@ -1,7 +1,7 @@
 @interface OADReflectionEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADReflectionEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = *(&self->super.mType + 1);
   *(result + 4) = LODWORD(self->mBlurRadius);
   *(result + 5) = LODWORD(self->mStartOpacity);
@@ -63,15 +63,15 @@
   return v2 ^ v3 ^ [(OADEffect *)&v5 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [v4 blurRadius], v5 == v6) && (mBlurRadius = self->mBlurRadius, objc_msgSend(v4, "startOpacity"), mBlurRadius == v8) && (mStartOpacity = self->mStartOpacity, objc_msgSend(v4, "startPosition"), mStartOpacity == v10) && (mStartPosition = self->mStartPosition, objc_msgSend(v4, "endOpacity"), mStartPosition == v12) && (mEndOpacity = self->mEndOpacity, objc_msgSend(v4, "endPosition"), mEndOpacity == v14) && (mEndPosition = self->mEndPosition, objc_msgSend(v4, "distance"), mEndPosition == v16) && (mDistance = self->mDistance, objc_msgSend(v4, "direction"), mDistance == v18) && (mDirection = self->mDirection, objc_msgSend(v4, "fadeDirection"), mDirection == v20) && (mFadeDirection = self->mFadeDirection, objc_msgSend(v4, "xScale"), mFadeDirection == v22) && (mXScale = self->mXScale, objc_msgSend(v4, "yScale"), mXScale == v24) && (mYScale = self->mYScale, objc_msgSend(v4, "xSkew"), mYScale == v26) && (mXSkew = self->mXSkew, objc_msgSend(v4, "ySkew"), mXSkew == v28) && (mYSkew = self->mYSkew, LODWORD(mYSkew) == objc_msgSend(v4, "alignment")) && (mAlignment_low = LOBYTE(self->mAlignment), mAlignment_low == objc_msgSend(v4, "rotateWithShape")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [equalCopy blurRadius], v5 == v6) && (mBlurRadius = self->mBlurRadius, objc_msgSend(equalCopy, "startOpacity"), mBlurRadius == v8) && (mStartOpacity = self->mStartOpacity, objc_msgSend(equalCopy, "startPosition"), mStartOpacity == v10) && (mStartPosition = self->mStartPosition, objc_msgSend(equalCopy, "endOpacity"), mStartPosition == v12) && (mEndOpacity = self->mEndOpacity, objc_msgSend(equalCopy, "endPosition"), mEndOpacity == v14) && (mEndPosition = self->mEndPosition, objc_msgSend(equalCopy, "distance"), mEndPosition == v16) && (mDistance = self->mDistance, objc_msgSend(equalCopy, "direction"), mDistance == v18) && (mDirection = self->mDirection, objc_msgSend(equalCopy, "fadeDirection"), mDirection == v20) && (mFadeDirection = self->mFadeDirection, objc_msgSend(equalCopy, "xScale"), mFadeDirection == v22) && (mXScale = self->mXScale, objc_msgSend(equalCopy, "yScale"), mXScale == v24) && (mYScale = self->mYScale, objc_msgSend(equalCopy, "xSkew"), mYScale == v26) && (mXSkew = self->mXSkew, objc_msgSend(equalCopy, "ySkew"), mXSkew == v28) && (mYSkew = self->mYSkew, LODWORD(mYSkew) == objc_msgSend(equalCopy, "alignment")) && (mAlignment_low = LOBYTE(self->mAlignment), mAlignment_low == objc_msgSend(equalCopy, "rotateWithShape")))
   {
     v33.receiver = self;
     v33.super_class = OADReflectionEffect;
-    v31 = [(OADEffect *)&v33 isEqual:v4];
+    v31 = [(OADEffect *)&v33 isEqual:equalCopy];
   }
 
   else

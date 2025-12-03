@@ -200,15 +200,15 @@
   [v60 addEntriesFromDictionary:v63];
 
   v64 = *MEMORY[0x1E69B1E18];
-  v65 = [a1 objectForKey:*MEMORY[0x1E69B1E18]];
+  v65 = [self objectForKey:*MEMORY[0x1E69B1E18]];
 
   if (v65)
   {
-    v66 = [a1 objectForKey:v42];
+    v66 = [self objectForKey:v42];
 
     if (!v66)
     {
-      if ([a1 BOOLForKey:v64])
+      if ([self BOOLForKey:v64])
       {
         v67 = 0;
       }
@@ -218,13 +218,13 @@
         v67 = 2;
       }
 
-      [a1 setInteger:v67 forKey:v42];
+      [self setInteger:v67 forKey:v42];
     }
 
-    [a1 removeObjectForKey:v64];
+    [self removeObjectForKey:v64];
   }
 
-  [a1 registerDefaults:v60];
+  [self registerDefaults:v60];
 }
 
 - (uint64_t)safari_isJavaScriptEnabled
@@ -235,7 +235,7 @@
     return 0;
   }
 
-  return [a1 BOOLForKey:v2];
+  return [self BOOLForKey:v2];
 }
 
 - (uint64_t)safari_javaScriptCanOpenWindowsAutomatically
@@ -246,7 +246,7 @@
     return 0;
   }
 
-  return [a1 BOOLForKey:v2];
+  return [self BOOLForKey:v2];
 }
 
 - (uint64_t)safari_warnAboutFraudulentWebsites
@@ -261,7 +261,7 @@
   if (result != 1)
   {
 
-    return [a1 BOOLForKey:v2];
+    return [self BOOLForKey:v2];
   }
 
   return result;
@@ -288,19 +288,19 @@
 
   v3 = *MEMORY[0x1E69B1DC0];
 
-  return [a1 BOOLForKey:v3];
+  return [self BOOLForKey:v3];
 }
 
 - (uint64_t)safari_shouldAutomaticallyDownloadReadingListItems
 {
-  if ([a1 BOOLForKey:*MEMORY[0x1E69B1E88]])
+  if ([self BOOLForKey:*MEMORY[0x1E69B1E88]])
   {
     return 1;
   }
 
   v3 = *MEMORY[0x1E69B1F50];
 
-  return [a1 BOOLForKey:v3];
+  return [self BOOLForKey:v3];
 }
 
 @end

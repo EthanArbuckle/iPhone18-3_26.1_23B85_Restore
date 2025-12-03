@@ -1,7 +1,7 @@
 @interface SBApplicationService
 + (id)sharedInstance;
-- (id)_initWithApplicationController:(id)a3;
-- (void)applicationServer:(id)a3 client:(id)a4 deleteSnapshotsForApplicationIdentifier:(id)a5;
+- (id)_initWithApplicationController:(id)controller;
+- (void)applicationServer:(id)server client:(id)client deleteSnapshotsForApplicationIdentifier:(id)identifier;
 @end
 
 @implementation SBApplicationService
@@ -27,16 +27,16 @@ void __38__SBApplicationService_sharedInstance__block_invoke()
   sharedInstance___sharedInstance_4 = v1;
 }
 
-- (id)_initWithApplicationController:(id)a3
+- (id)_initWithApplicationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = SBApplicationService;
   v6 = [(SBApplicationService *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_applicationController, a3);
+    objc_storeStrong(&v6->_applicationController, controller);
     v8 = +[SBApplicationServer sharedInstance];
     [v8 setMiscDelegate:v7];
   }
@@ -44,14 +44,14 @@ void __38__SBApplicationService_sharedInstance__block_invoke()
   return v7;
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 deleteSnapshotsForApplicationIdentifier:(id)a5
+- (void)applicationServer:(id)server client:(id)client deleteSnapshotsForApplicationIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 processHandle];
-  if (([v9 hasEntitlement:@"com.apple.frontboard.delete-application-snapshots"] & 1) != 0 || objc_msgSend(v9, "hasEntitlement:", @"com.apple.springboard.delete-application-snapshots"))
+  clientCopy = client;
+  identifierCopy = identifier;
+  processHandle = [clientCopy processHandle];
+  if (([processHandle hasEntitlement:@"com.apple.frontboard.delete-application-snapshots"] & 1) != 0 || objc_msgSend(processHandle, "hasEntitlement:", @"com.apple.springboard.delete-application-snapshots"))
   {
-    v10 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:v8];
+    v10 = [(SBApplicationController *)self->_applicationController applicationWithBundleIdentifier:identifierCopy];
     v11 = v10;
     if (v10)
     {
@@ -65,7 +65,7 @@ void __38__SBApplicationService_sharedInstance__block_invoke()
     v11 = SBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SBApplicationService applicationServer:v8 client:v7 deleteSnapshotsForApplicationIdentifier:v11];
+      [SBApplicationService applicationServer:identifierCopy client:clientCopy deleteSnapshotsForApplicationIdentifier:v11];
     }
   }
 }

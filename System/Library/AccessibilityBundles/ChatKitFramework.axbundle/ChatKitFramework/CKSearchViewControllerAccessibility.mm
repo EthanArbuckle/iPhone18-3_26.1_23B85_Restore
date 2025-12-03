@@ -1,19 +1,19 @@
 @interface CKSearchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
-- (void)setCollectionViewAXLabelForSearch:(id)a3;
-- (void)setSearchText:(id)a3;
+- (void)setCollectionViewAXLabelForSearch:(id)search;
+- (void)setSearchText:(id)text;
 @end
 
 @implementation CKSearchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKSearchViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKSearchViewController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"CKSearchViewController" hasInstanceMethod:@"setSearchText:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKSearchViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKSearchViewController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"CKSearchViewController" hasInstanceMethod:@"setSearchText:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,16 +24,16 @@
   [(CKSearchViewControllerAccessibility *)self setCollectionViewAXLabelForSearch:0];
 }
 
-- (void)setCollectionViewAXLabelForSearch:(id)a3
+- (void)setCollectionViewAXLabelForSearch:(id)search
 {
-  v8 = a3;
+  searchCopy = search;
   v4 = [(CKSearchViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
-  if ([v8 length])
+  if ([searchCopy length])
   {
     v5 = MEMORY[0x29EDBA0F8];
     v6 = accessibilityLocalizedString(@"group.search.collection");
-    v7 = [v5 stringWithFormat:v6, v8];
-    [v4 setAccessibilityLabel:v7];
+    searchCopy = [v5 stringWithFormat:v6, searchCopy];
+    [v4 setAccessibilityLabel:searchCopy];
   }
 
   else
@@ -51,13 +51,13 @@
   [(CKSearchViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
   v5.receiver = self;
   v5.super_class = CKSearchViewControllerAccessibility;
-  v4 = a3;
-  [(CKSearchViewControllerAccessibility *)&v5 setSearchText:v4];
-  [(CKSearchViewControllerAccessibility *)self setCollectionViewAXLabelForSearch:v4, v5.receiver, v5.super_class];
+  textCopy = text;
+  [(CKSearchViewControllerAccessibility *)&v5 setSearchText:textCopy];
+  [(CKSearchViewControllerAccessibility *)self setCollectionViewAXLabelForSearch:textCopy, v5.receiver, v5.super_class];
 }
 
 @end

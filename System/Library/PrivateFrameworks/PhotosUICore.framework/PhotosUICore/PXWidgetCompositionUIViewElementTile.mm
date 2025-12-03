@@ -1,51 +1,51 @@
 @interface PXWidgetCompositionUIViewElementTile
 - (PXBasicTileAnimationOptions)animationOptions;
-- (PXWidgetCompositionUIViewElementTile)initWithWidget:(id)a3;
-- (id)_willAnimateTileToGeometry:(PXTileGeometry *)a3 withOptions:(id)a4;
-- (id)containerViewControllerForWidget:(id)a3;
-- (void)_didCompleteTileAnimationWithContext:(id)a3;
+- (PXWidgetCompositionUIViewElementTile)initWithWidget:(id)widget;
+- (id)_willAnimateTileToGeometry:(PXTileGeometry *)geometry withOptions:(id)options;
+- (id)containerViewControllerForWidget:(id)widget;
+- (void)_didCompleteTileAnimationWithContext:(id)context;
 - (void)_embedContentView;
-- (void)animateAlongsideTransition:(id)a3 completion:(id)a4;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
+- (void)animateAlongsideTransition:(id)transition completion:(id)completion;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
 @end
 
 @implementation PXWidgetCompositionUIViewElementTile
 
-- (void)animateAlongsideTransition:(id)a3 completion:(id)a4
+- (void)animateAlongsideTransition:(id)transition completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
-  if (!v9)
+  transitionCopy = transition;
+  completionCopy = completion;
+  _currentTransitionContext = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
+  if (!_currentTransitionContext)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionUIViewElementTile.m" lineNumber:169 description:@"missing transition context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionUIViewElementTile.m" lineNumber:169 description:@"missing transition context"];
   }
 
-  if (v7)
+  if (transitionCopy)
   {
-    v10 = [v9 alongsideAnimation];
+    alongsideAnimation = [_currentTransitionContext alongsideAnimation];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __78__PXWidgetCompositionUIViewElementTile_animateAlongsideTransition_completion___block_invoke;
     v18[3] = &unk_1E77425C8;
-    v19 = v10;
-    v20 = v7;
-    v11 = v10;
-    [v9 setAlongsideAnimation:v18];
+    v19 = alongsideAnimation;
+    v20 = transitionCopy;
+    v11 = alongsideAnimation;
+    [_currentTransitionContext setAlongsideAnimation:v18];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v12 = [v9 alongsideAnimationCompletion];
+    alongsideAnimationCompletion = [_currentTransitionContext alongsideAnimationCompletion];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__PXWidgetCompositionUIViewElementTile_animateAlongsideTransition_completion___block_invoke_2;
     v15[3] = &unk_1E77425C8;
-    v16 = v12;
-    v17 = v8;
-    v13 = v12;
-    [v9 setAlongsideAnimationCompletion:v15];
+    v16 = alongsideAnimationCompletion;
+    v17 = completionCopy;
+    v13 = alongsideAnimationCompletion;
+    [_currentTransitionContext setAlongsideAnimationCompletion:v15];
   }
 }
 
@@ -77,72 +77,72 @@ uint64_t __78__PXWidgetCompositionUIViewElementTile_animateAlongsideTransition_c
 
 - (PXBasicTileAnimationOptions)animationOptions
 {
-  v4 = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
-  if (!v4)
+  _currentTransitionContext = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
+  if (!_currentTransitionContext)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionUIViewElementTile.m" lineNumber:161 description:@"missing transition context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetCompositionUIViewElementTile.m" lineNumber:161 description:@"missing transition context"];
   }
 
-  v5 = [v4 animationOptions];
+  animationOptions = [_currentTransitionContext animationOptions];
 
-  return v5;
+  return animationOptions;
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  [(PXWidgetCompositionUIViewElementTile *)self _embedContentView:a3];
-  v7 = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
-  v5 = [v7 alongsideAnimation];
+  [(PXWidgetCompositionUIViewElementTile *)self _embedContentView:geometry];
+  _currentTransitionContext = [(PXWidgetCompositionUIViewElementTile *)self _currentTransitionContext];
+  alongsideAnimation = [_currentTransitionContext alongsideAnimation];
 
-  if (v5)
+  if (alongsideAnimation)
   {
-    v6 = [v7 alongsideAnimation];
-    v6[2]();
-  }
-}
-
-- (void)_didCompleteTileAnimationWithContext:(id)a3
-{
-  v5 = a3;
-  v3 = [v5 alongsideAnimationCompletion];
-
-  if (v3)
-  {
-    v4 = [v5 alongsideAnimationCompletion];
-    v4[2]();
+    alongsideAnimation2 = [_currentTransitionContext alongsideAnimation];
+    alongsideAnimation2[2]();
   }
 }
 
-- (id)_willAnimateTileToGeometry:(PXTileGeometry *)a3 withOptions:(id)a4
+- (void)_didCompleteTileAnimationWithContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
+  alongsideAnimationCompletion = [contextCopy alongsideAnimationCompletion];
+
+  if (alongsideAnimationCompletion)
+  {
+    alongsideAnimationCompletion2 = [contextCopy alongsideAnimationCompletion];
+    alongsideAnimationCompletion2[2]();
+  }
+}
+
+- (id)_willAnimateTileToGeometry:(PXTileGeometry *)geometry withOptions:(id)options
+{
+  optionsCopy = options;
   v7 = objc_alloc_init(_PXWidgetCompositionUIViewElementTileTransitionContext);
-  [(_PXWidgetCompositionUIViewElementTileTransitionContext *)v7 setAnimationOptions:v6];
+  [(_PXWidgetCompositionUIViewElementTileTransitionContext *)v7 setAnimationOptions:optionsCopy];
 
   [(PXWidgetCompositionUIViewElementTile *)self _setCurrentTransitionContext:v7];
-  v8 = [(PXWidgetCompositionUIViewElementTile *)self widget];
-  v9 = objc_getAssociatedObject(v8, PXWidgetDidLoadContentViewAssociationKey);
-  v10 = [v9 BOOLValue];
+  widget = [(PXWidgetCompositionUIViewElementTile *)self widget];
+  v9 = objc_getAssociatedObject(widget, PXWidgetDidLoadContentViewAssociationKey);
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (bOOLValue && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v11 = [v8 contentView];
-    [v11 bounds];
-    if (a3->size.width != v13 || a3->size.height != v12)
+    contentView = [widget contentView];
+    [contentView bounds];
+    if (geometry->size.width != v13 || geometry->size.height != v12)
     {
-      [v8 contentViewWillTransitionToSize:self withTransitionCoordinator:?];
+      [widget contentViewWillTransitionToSize:self withTransitionCoordinator:?];
     }
   }
 
   return v7;
 }
 
-- (id)containerViewControllerForWidget:(id)a3
+- (id)containerViewControllerForWidget:(id)widget
 {
-  v3 = a3;
-  v4 = [v3 widgetDelegate];
-  v5 = [v4 widgetViewControllerHostingWidget:v3];
+  widgetCopy = widget;
+  widgetDelegate = [widgetCopy widgetDelegate];
+  v5 = [widgetDelegate widgetViewControllerHostingWidget:widgetCopy];
 
   v6 = v5;
   return v5;
@@ -153,29 +153,29 @@ uint64_t __78__PXWidgetCompositionUIViewElementTile_animateAlongsideTransition_c
   if (![(PXWidgetCompositionUIViewElementTile *)self _didEmbedContentView])
   {
     object = [(PXWidgetCompositionUIViewElementTile *)self widget];
-    v3 = [object contentView];
+    contentView = [object contentView];
     objc_setAssociatedObject(object, PXWidgetDidLoadContentViewAssociationKey, MEMORY[0x1E695E118], 1);
-    v4 = [(PXWidgetCompositionUIViewElementTile *)self _containerView];
-    [v4 bounds];
-    [v3 setFrame:?];
-    [v3 setAutoresizingMask:18];
+    _containerView = [(PXWidgetCompositionUIViewElementTile *)self _containerView];
+    [_containerView bounds];
+    [contentView setFrame:?];
+    [contentView setAutoresizingMask:18];
     [(PXWidgetCompositionUIViewElementTile *)self addWidgetAsChild:object];
-    [v4 addSubview:v3];
+    [_containerView addSubview:contentView];
     [(PXWidgetCompositionUIViewElementTile *)self _setDidEmbedContentView:1];
     [(PXWidgetCompositionUIViewElementTile *)self didMoveWidgetToParent:object];
   }
 }
 
-- (PXWidgetCompositionUIViewElementTile)initWithWidget:(id)a3
+- (PXWidgetCompositionUIViewElementTile)initWithWidget:(id)widget
 {
-  v5 = a3;
+  widgetCopy = widget;
   v11.receiver = self;
   v11.super_class = PXWidgetCompositionUIViewElementTile;
   v6 = [(PXWidgetCompositionUIViewElementTile *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_widget, a3);
+    objc_storeStrong(&v6->_widget, widget);
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
     containerView = v7->__containerView;
     v7->__containerView = v8;

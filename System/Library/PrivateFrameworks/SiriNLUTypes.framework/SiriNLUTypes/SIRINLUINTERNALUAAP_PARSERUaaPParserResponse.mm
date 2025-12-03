@@ -1,22 +1,22 @@
 @interface SIRINLUINTERNALUAAP_PARSERUaaPParserResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addHypotheses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHypotheses:(id)hypotheses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALUAAP_PARSERUaaPParserResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (requestId)
   {
     if (v6)
@@ -34,7 +34,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -61,13 +61,13 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[2])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[2])) || -[SIRINLUEXTERNALUUID isEqual:](requestId, "isEqual:")))
   {
     hypotheses = self->_hypotheses;
-    if (hypotheses | v4[1])
+    if (hypotheses | equalCopy[1])
     {
       v7 = [(NSMutableArray *)hypotheses isEqual:?];
     }
@@ -86,11 +86,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_requestId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -114,7 +114,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addHypotheses:v13];
 
         ++v12;
@@ -131,34 +131,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v8 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if ([(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self hypothesesCount])
   {
-    [v8 clearHypotheses];
-    v4 = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self hypothesesCount];
-    if (v4)
+    [toCopy clearHypotheses];
+    hypothesesCount = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self hypothesesCount];
+    if (hypothesesCount)
     {
-      v5 = v4;
+      v5 = hypothesesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self hypothesesAtIndex:i];
-        [v8 addHypotheses:v7];
+        [toCopy addHypotheses:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -202,12 +202,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   if ([(NSMutableArray *)self->_hypotheses count])
@@ -232,8 +232,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -242,12 +242,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"hypotheses"];
+    [dictionary setObject:v6 forKey:@"hypotheses"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -256,28 +256,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALUAAP_PARSERUaaPParserResponse;
   v4 = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)&v8 description];
-  v5 = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALUAAP_PARSERUaaPParserResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addHypotheses:(id)a3
+- (void)addHypotheses:(id)hypotheses
 {
-  v4 = a3;
+  hypothesesCopy = hypotheses;
   hypotheses = self->_hypotheses;
-  v8 = v4;
+  v8 = hypothesesCopy;
   if (!hypotheses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_hypotheses;
     self->_hypotheses = v6;
 
-    v4 = v8;
+    hypothesesCopy = v8;
     hypotheses = self->_hypotheses;
   }
 
-  [(NSMutableArray *)hypotheses addObject:v4];
+  [(NSMutableArray *)hypotheses addObject:hypothesesCopy];
 }
 
 @end

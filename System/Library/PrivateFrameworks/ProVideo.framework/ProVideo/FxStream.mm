@@ -1,9 +1,9 @@
 @interface FxStream
 - (FxStream)init;
-- (id)createSampleAtTime:(double)a3;
+- (id)createSampleAtTime:(double)time;
 - (id)provider;
 - (void)dealloc;
-- (void)setPin:(id)a3;
+- (void)setPin:(id)pin;
 @end
 
 @implementation FxStream
@@ -41,16 +41,16 @@
   [(FxStream *)&v10 dealloc];
 }
 
-- (void)setPin:(id)a3
+- (void)setPin:(id)pin
 {
   var0 = self->_priv->var0;
-  if (var0 != a3)
+  if (var0 != pin)
   {
     if (var0)
     {
     }
 
-    self->_priv->var0 = a3;
+    self->_priv->var0 = pin;
   }
 }
 
@@ -63,28 +63,28 @@
   }
 
   v3 = v2;
-  v4 = [v2 direction];
-  if (v4 != 1)
+  direction = [v2 direction];
+  if (direction != 1)
   {
-    if (!v4)
+    if (!direction)
     {
-      v12 = [v3 parentPlug];
+      parentPlug = [v3 parentPlug];
 
-      return [v12 host];
+      return [parentPlug host];
     }
 
-    FxDebugLog(&cfstr_IllegalPinDire.isa, v5, v6, v7, v8, v9, v10, v11, v4);
+    FxDebugLog(&cfstr_IllegalPinDire.isa, v5, v6, v7, v8, v9, v10, v11, direction);
     return 0;
   }
 
   return [v3 parentPlug];
 }
 
-- (id)createSampleAtTime:(double)a3
+- (id)createSampleAtTime:(double)time
 {
   v5 = objc_alloc_init(FxSample);
   [(FxSample *)v5 setStream:self];
-  [(FxSample *)v5 setTime:a3];
+  [(FxSample *)v5 setTime:time];
   return v5;
 }
 

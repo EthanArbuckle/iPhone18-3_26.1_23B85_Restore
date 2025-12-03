@@ -1,17 +1,17 @@
 @interface MappedDisplayReasonRadarRequestFilter
-- (BOOL)shouldRequestRadarForDisplayReason:(id)a3;
+- (BOOL)shouldRequestRadarForDisplayReason:(id)reason;
 - (_TtC14HomeKitMetrics37MappedDisplayReasonRadarRequestFilter)init;
-- (void)radarRequestedForDisplayReason:(id)a3;
+- (void)radarRequestedForDisplayReason:(id)reason;
 @end
 
 @implementation MappedDisplayReasonRadarRequestFilter
 
-- (BOOL)shouldRequestRadarForDisplayReason:(id)a3
+- (BOOL)shouldRequestRadarForDisplayReason:(id)reason
 {
   v5 = sub_22B0DF330();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
+  reasonCopy = reason;
+  selfCopy = self;
   v10 = sub_22B0BD6B4(v5, v7);
 
   LOBYTE(v7) = [v10 shouldRequestRadarForDisplayReason_];
@@ -20,12 +20,12 @@
   return v7;
 }
 
-- (void)radarRequestedForDisplayReason:(id)a3
+- (void)radarRequestedForDisplayReason:(id)reason
 {
   v5 = sub_22B0DF330();
   v7 = v6;
-  v8 = a3;
-  v10 = self;
+  reasonCopy = reason;
+  selfCopy = self;
   v9 = sub_22B0BD6B4(v5, v7);
 
   [v9 radarRequestedForDisplayReason_];

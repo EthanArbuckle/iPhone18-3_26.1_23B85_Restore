@@ -1,24 +1,24 @@
 @interface SKUICounterCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SKUICounterCollectionViewCell)initWithFrame:(CGRect)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SKUICounterCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)_reloadHighlightImageView;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SKUICounterCollectionViewCell
 
-- (SKUICounterCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUICounterCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICounterCollectionViewCell initWithFrame:];
@@ -26,40 +26,40 @@
 
   v14.receiver = self;
   v14.super_class = SKUICounterCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v14 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v14 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [SKUICounterView alloc];
-    [(SKUICounterCollectionViewCell *)v8 bounds];
+    [(SKUICounterCollectionViewCell *)height bounds];
     v10 = [(SKUIViewReuseView *)v9 initWithFrame:?];
-    counterView = v8->_counterView;
-    v8->_counterView = v10;
+    counterView = height->_counterView;
+    height->_counterView = v10;
 
-    v12 = [(SKUICounterCollectionViewCell *)v8 contentView];
-    [v12 addSubview:v8->_counterView];
+    contentView = [(SKUICounterCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_counterView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   counterView = self->_counterView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)counterView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)counterView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUICounterCollectionViewCell;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -70,9 +70,9 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SKUICounterView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SKUICounterView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -84,34 +84,34 @@
   v5.super_class = SKUICounterCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   counterView = self->_counterView;
-  v4 = [(SKUICounterCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUICounterCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUICounterView *)counterView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   counterView = self->_counterView;
-  v5 = a3;
-  [(SKUIViewReuseView *)counterView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)counterView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUICounterCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = SKUICounterCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setHighlighted:a3];
+  [(SKUICollectionViewCell *)&v4 setHighlighted:highlighted];
   [(SKUICounterCollectionViewCell *)self _reloadHighlightImageView];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = SKUICounterCollectionViewCell;
-  [(SKUICollectionViewCell *)&v4 setSelected:a3];
+  [(SKUICollectionViewCell *)&v4 setSelected:selected];
   [(SKUICounterCollectionViewCell *)self _reloadHighlightImageView];
 }
 
@@ -144,8 +144,8 @@
 
         [(SKUIImageView *)self->_highlightImageView setAlpha:0.300000012];
         v9 = self->_highlightImageView;
-        v10 = [MEMORY[0x277D75348] clearColor];
-        [(SKUIImageView *)v9 setBackgroundColor:v10];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(SKUIImageView *)v9 setBackgroundColor:clearColor];
 
         highlightImageView = self->_highlightImageView;
         v4 = v29[5];
@@ -157,9 +157,9 @@
       [v29[5] center];
       [(SKUIImageView *)v11 setCenter:?];
       v12 = self->_highlightImageView;
-      v13 = [v29[5] image];
-      v14 = [MEMORY[0x277D75348] blackColor];
-      v15 = [v13 _flatImageWithColor:v14];
+      image = [v29[5] image];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v15 = [image _flatImageWithColor:blackColor];
       [(SKUIImageView *)v12 setImage:v15];
 
       v16 = self->_highlightImageView;

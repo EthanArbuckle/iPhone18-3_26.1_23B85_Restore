@@ -15,15 +15,15 @@
 
 - (BOOL)wl_blobIsComplete
 {
-  if ([a1 length] < 5)
+  if ([self length] < 5)
   {
     return 0;
   }
 
-  v2 = [a1 subdataWithRange:{0, 4}];
+  v2 = [self subdataWithRange:{0, 4}];
   v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v2 encoding:4];
-  v4 = [v3 integerValue];
-  v5 = [a1 length] == v4 + 4;
+  integerValue = [v3 integerValue];
+  v5 = [self length] == integerValue + 4;
 
   return v5;
 }
@@ -52,8 +52,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) wl_lengthPrefixedBlob];
-        [v4 appendData:v10];
+        wl_lengthPrefixedBlob = [*(*(&v15 + 1) + 8 * i) wl_lengthPrefixedBlob];
+        [v4 appendData:wl_lengthPrefixedBlob];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -64,15 +64,15 @@
 
   if ([v5 count] < 2)
   {
-    v11 = v4;
+    wl_lengthPrefixedBlob2 = v4;
   }
 
   else
   {
-    v11 = [v4 wl_lengthPrefixedBlob];
+    wl_lengthPrefixedBlob2 = [v4 wl_lengthPrefixedBlob];
   }
 
-  v12 = v11;
+  v12 = wl_lengthPrefixedBlob2;
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -81,12 +81,12 @@
 
 - (id)wl_lengthPrefixedBlob
 {
-  v2 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(a1, "length") + 4}];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.4lu", objc_msgSend(a1, "length")];
+  v2 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(self, "length") + 4}];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.4lu", objc_msgSend(self, "length")];
   v4 = [v3 dataUsingEncoding:4];
   [v2 appendData:v4];
 
-  [v2 appendData:a1];
+  [v2 appendData:self];
 
   return v2;
 }
@@ -94,13 +94,13 @@
 - (id)wl_arrayOfDataFromLengthPrefixedBlobSequenceWithExpectedCount:()Hex
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-  v6 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   if (a3 >= 2)
   {
-    v8 = [v6 wl_dataFromLengthPrefixedBlob];
+    wl_dataFromLengthPrefixedBlob = [selfCopy wl_dataFromLengthPrefixedBlob];
 
-    v7 = v8;
+    v7 = wl_dataFromLengthPrefixedBlob;
   }
 
   if ([v5 count] < a3)
@@ -109,19 +109,19 @@
     {
       v9 = [v7 subdataWithRange:{0, 4}];
       v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
       v12 = [v7 subdataWithRange:{4, objc_msgSend(v7, "length") - 4}];
 
-      if ([v12 length] < v11)
+      if ([v12 length] < integerValue)
       {
 
         v7 = v12;
         break;
       }
 
-      v13 = [v12 subdataWithRange:{0, v11}];
+      v13 = [v12 subdataWithRange:{0, integerValue}];
       [v5 addObject:v13];
-      v7 = [v12 subdataWithRange:{v11, objc_msgSend(v12, "length") - v11}];
+      v7 = [v12 subdataWithRange:{integerValue, objc_msgSend(v12, "length") - integerValue}];
 
       if ([v5 count] >= a3)
       {
@@ -147,38 +147,38 @@
 
 - (id)wl_dataFromLengthPrefixedBlob
 {
-  v1 = [a1 wl_arrayOfDataFromLengthPrefixedBlobSequenceWithExpectedCount:1];
-  v2 = [v1 firstObject];
+  v1 = [self wl_arrayOfDataFromLengthPrefixedBlobSequenceWithExpectedCount:1];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)wl_hexEncodedData
 {
-  v1 = [a1 wl_hexEncodedString];
-  v2 = [v1 dataUsingEncoding:4];
+  wl_hexEncodedString = [self wl_hexEncodedString];
+  v2 = [wl_hexEncodedString dataUsingEncoding:4];
 
   return v2;
 }
 
 + (id)wl_dataFromHexEncodedData:()Hex
 {
-  v4 = [a3 wl_utf8String];
-  v5 = [a1 wl_dataFromHexEncodedString:v4];
+  wl_utf8String = [a3 wl_utf8String];
+  v5 = [self wl_dataFromHexEncodedString:wl_utf8String];
 
   return v5;
 }
 
 - (id)wl_hexEncodedString
 {
-  v2 = 2 * [a1 length];
+  v2 = 2 * [self length];
   v3 = malloc_type_malloc(v2, 0xEE4DBB81uLL);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__NSData_Hex__wl_hexEncodedString__block_invoke;
   v6[3] = &__block_descriptor_40_e29_v40__0r_v8__NSRange_QQ_16_B32l;
   v6[4] = v3;
-  [a1 enumerateByteRangesUsingBlock:v6];
+  [self enumerateByteRangesUsingBlock:v6];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v3 length:v2 encoding:4];
   free(v3);
 
@@ -261,7 +261,7 @@ LABEL_17:
 
 - (id)wl_utf8String
 {
-  v1 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:a1 encoding:4];
+  v1 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self encoding:4];
 
   return v1;
 }

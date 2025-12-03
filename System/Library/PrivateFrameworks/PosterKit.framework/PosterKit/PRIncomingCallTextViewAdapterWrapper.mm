@@ -1,12 +1,12 @@
 @interface PRIncomingCallTextViewAdapterWrapper
 - (CGRect)frame;
 - (CGRect)tightFrame;
-- (CGSize)sizeThatFitsIn:(CGSize)a3;
-- (CGSize)sizeThatFitsInSize:(CGSize)a3;
-- (PRIncomingCallTextViewAdapterWrapper)initWithContact:(id)a3 status:(id)a4 callIsActive:(BOOL)a5;
-- (PRIncomingCallTextViewAdapterWrapper)initWithGivenName:(id)a3 familyName:(id)a4 status:(id)a5 callIsActive:(BOOL)a6;
-- (PRIncomingCallTextViewAdapterWrapper)initWithName:(id)a3 status:(id)a4 callIsActive:(BOOL)a5;
-- (void)setCaptionFont:(id)a3;
+- (CGSize)sizeThatFitsIn:(CGSize)in;
+- (CGSize)sizeThatFitsInSize:(CGSize)size;
+- (PRIncomingCallTextViewAdapterWrapper)initWithContact:(id)contact status:(id)status callIsActive:(BOOL)active;
+- (PRIncomingCallTextViewAdapterWrapper)initWithGivenName:(id)name familyName:(id)familyName status:(id)status callIsActive:(BOOL)active;
+- (PRIncomingCallTextViewAdapterWrapper)initWithName:(id)name status:(id)status callIsActive:(BOOL)active;
+- (void)setCaptionFont:(id)font;
 @end
 
 @implementation PRIncomingCallTextViewAdapterWrapper
@@ -31,17 +31,17 @@
   return result;
 }
 
-- (PRIncomingCallTextViewAdapterWrapper)initWithName:(id)a3 status:(id)a4 callIsActive:(BOOL)a5
+- (PRIncomingCallTextViewAdapterWrapper)initWithName:(id)name status:(id)status callIsActive:(BOOL)active
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  activeCopy = active;
+  nameCopy = name;
+  statusCopy = status;
   v14.receiver = self;
   v14.super_class = PRIncomingCallTextViewAdapterWrapper;
   v10 = [(PRIncomingCallTextViewAdapterWrapper *)&v14 init];
   if (v10)
   {
-    v11 = [[PRIncomingCallTextViewAdapter alloc] initWithName:v8 status:v9 callIsActive:v5];
+    v11 = [[PRIncomingCallTextViewAdapter alloc] initWithName:nameCopy status:statusCopy callIsActive:activeCopy];
     adapter = v10->adapter;
     v10->adapter = v11;
   }
@@ -49,17 +49,17 @@
   return v10;
 }
 
-- (PRIncomingCallTextViewAdapterWrapper)initWithContact:(id)a3 status:(id)a4 callIsActive:(BOOL)a5
+- (PRIncomingCallTextViewAdapterWrapper)initWithContact:(id)contact status:(id)status callIsActive:(BOOL)active
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  activeCopy = active;
+  contactCopy = contact;
+  statusCopy = status;
   v14.receiver = self;
   v14.super_class = PRIncomingCallTextViewAdapterWrapper;
   v10 = [(PRIncomingCallTextViewAdapterWrapper *)&v14 init];
   if (v10)
   {
-    v11 = [[PRIncomingCallTextViewAdapter alloc] initWithContact:v8 status:v9 callIsActive:v5];
+    v11 = [[PRIncomingCallTextViewAdapter alloc] initWithContact:contactCopy status:statusCopy callIsActive:activeCopy];
     adapter = v10->adapter;
     v10->adapter = v11;
   }
@@ -67,37 +67,37 @@
   return v10;
 }
 
-- (CGSize)sizeThatFitsIn:(CGSize)a3
+- (CGSize)sizeThatFitsIn:(CGSize)in
 {
-  [(PRIncomingCallTextViewAdapter *)self->adapter sizeThatFitsIn:a3.width, a3.height];
+  [(PRIncomingCallTextViewAdapter *)self->adapter sizeThatFitsIn:in.width, in.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFitsInSize:(CGSize)a3
+- (CGSize)sizeThatFitsInSize:(CGSize)size
 {
-  [(PRIncomingCallTextViewAdapter *)self->adapter sizeThatFitsIn:a3.width, a3.height];
+  [(PRIncomingCallTextViewAdapter *)self->adapter sizeThatFitsIn:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PRIncomingCallTextViewAdapterWrapper)initWithGivenName:(id)a3 familyName:(id)a4 status:(id)a5 callIsActive:(BOOL)a6
+- (PRIncomingCallTextViewAdapterWrapper)initWithGivenName:(id)name familyName:(id)familyName status:(id)status callIsActive:(BOOL)active
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  activeCopy = active;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  statusCopy = status;
   v18.receiver = self;
   v18.super_class = PRIncomingCallTextViewAdapterWrapper;
   v13 = [(PRIncomingCallTextViewAdapterWrapper *)&v18 init];
   if (v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    [v14 setGivenName:v10];
-    [v14 setFamilyName:v11];
-    v15 = [[PRIncomingCallTextViewAdapter alloc] initWithContact:v14 status:v12 callIsActive:v6];
+    [v14 setGivenName:nameCopy];
+    [v14 setFamilyName:familyNameCopy];
+    v15 = [[PRIncomingCallTextViewAdapter alloc] initWithContact:v14 status:statusCopy callIsActive:activeCopy];
     adapter = v13->adapter;
     v13->adapter = v15;
   }
@@ -105,20 +105,20 @@
   return v13;
 }
 
-- (void)setCaptionFont:(id)a3
+- (void)setCaptionFont:(id)font
 {
-  v7 = a3;
-  [v7 pointSize];
+  fontCopy = font;
+  [fontCopy pointSize];
   v5 = v4;
   +[PRIncomingCallFontsProvider defaultStatusFontSize];
   if (v5 == v6)
   {
-    [(PRIncomingCallTextViewAdapterWrapper *)self setStatusFont:v7];
+    [(PRIncomingCallTextViewAdapterWrapper *)self setStatusFont:fontCopy];
   }
 
   else
   {
-    [(PRIncomingCallTextViewAdapterWrapper *)self setSecondaryNameFont:v7];
+    [(PRIncomingCallTextViewAdapterWrapper *)self setSecondaryNameFont:fontCopy];
   }
 }
 

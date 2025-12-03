@@ -1,11 +1,11 @@
 @interface AAIdentityAvatar
 - (AAIdentityAvatar)init;
-- (AAIdentityAvatar)initWithCoder:(id)a3;
-- (AAIdentityAvatar)initWithIdentifier:(id)a3 imageData:(id)a4 cropRect:(id)a5;
+- (AAIdentityAvatar)initWithCoder:(id)coder;
+- (AAIdentityAvatar)initWithIdentifier:(id)identifier imageData:(id)data cropRect:(id)rect;
 - (NSData)imageData;
 - (NSUUID)identifier;
 - (NSValue)cropRectValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAIdentityAvatar
@@ -52,19 +52,19 @@
   return result;
 }
 
-- (AAIdentityAvatar)initWithCoder:(id)a3
+- (AAIdentityAvatar)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1B700EA4C();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B700DB88(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B700DB88(coderCopy);
 }
 
 - (NSValue)cropRectValue
@@ -87,17 +87,17 @@
   return v4;
 }
 
-- (AAIdentityAvatar)initWithIdentifier:(id)a3 imageData:(id)a4 cropRect:(id)a5
+- (AAIdentityAvatar)initWithIdentifier:(id)identifier imageData:(id)data cropRect:(id)rect
 {
   v7 = *(*(sub_1B70557C0() - 8) + 64);
   MEMORY[0x1EEE9AC00]();
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B70557B0();
-  v10 = a5;
-  if (a4)
+  rectCopy = rect;
+  if (data)
   {
-    v11 = a4;
-    a4 = sub_1B7055790();
+    dataCopy = data;
+    data = sub_1B7055790();
     v13 = v12;
   }
 
@@ -106,7 +106,7 @@
     v13 = 0xF000000000000000;
   }
 
-  return Identity.Avatar.init(identifier:imageData:cropRect:)(v9, a4, v13, a5);
+  return Identity.Avatar.init(identifier:imageData:cropRect:)(v9, data, v13, rect);
 }
 
 @end

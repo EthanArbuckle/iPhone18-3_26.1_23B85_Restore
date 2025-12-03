@@ -1,13 +1,13 @@
 @interface PAREvent
-- (PAREvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PAREvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PAREvent
 
-- (PAREvent)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PAREvent)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PAREvent.init(entity:insertInto:)();
 }
 

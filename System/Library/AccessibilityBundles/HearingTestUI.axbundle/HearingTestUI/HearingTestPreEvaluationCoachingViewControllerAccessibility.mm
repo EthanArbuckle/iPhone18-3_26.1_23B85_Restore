@@ -1,10 +1,10 @@
 @interface HearingTestPreEvaluationCoachingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axPlayToneButton;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnouncementFinished;
 - (void)_axBeforePlayingTones;
-- (void)_axHandleElementFocusedNotification:(id)a3;
+- (void)_axHandleElementFocusedNotification:(id)notification;
 - (void)_axSetupSubviews;
 - (void)_axStartAnnouncement;
 - (void)_axStopPlayingTones;
@@ -14,15 +14,15 @@
 
 @implementation HearingTestPreEvaluationCoachingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" isKindOfClass:@"OBWelcomeController"];
-  [v3 validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasInstanceMethod:@"didTapPlaySample" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasInstanceMethod:@"cleanUp" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceMethod:@"secondaryContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasSwiftField:@"supportsSampleTone" withSwiftType:"Bool"];
-  [v3 validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasSwiftFieldOfAnyClass:@"playToneImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" isKindOfClass:@"OBWelcomeController"];
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasInstanceMethod:@"didTapPlaySample" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasInstanceMethod:@"cleanUp" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceMethod:@"secondaryContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasSwiftField:@"supportsSampleTone" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestPreEvaluationCoachingViewController" hasSwiftFieldOfAnyClass:@"playToneImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -86,15 +86,15 @@
       [HearingTestPreEvaluationCoachingViewControllerAccessibility _axStartAnnouncement];
     }
 
-    v4 = [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self _axPlayToneButton];
-    v5 = [v4 titleLabel];
-    v6 = [v5 text];
+    _axPlayToneButton = [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self _axPlayToneButton];
+    titleLabel = [_axPlayToneButton titleLabel];
+    text = [titleLabel text];
 
     v7 = objc_alloc(MEMORY[0x29EDB9F30]);
     v11 = *MEMORY[0x29EDC7F20];
     v12[0] = *MEMORY[0x29EDC7F00];
     v8 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    v9 = [v7 initWithString:v6 attributes:v8];
+    v9 = [v7 initWithString:text attributes:v8];
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v9);
     [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self _axSetAnnouncementState:1];
@@ -111,24 +111,24 @@
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_axHandleElementFocusedNotification:(id)a3
+- (void)_axHandleElementFocusedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v5 navigationController];
-  v9 = [v8 viewControllers];
-  v10 = [v7 axSafeObjectAtIndex:{objc_msgSend(v9, "count") - 1}];
+  navigationController = [v5 navigationController];
+  viewControllers = [navigationController viewControllers];
+  navigationController2 = [v5 navigationController];
+  viewControllers2 = [navigationController2 viewControllers];
+  v10 = [viewControllers axSafeObjectAtIndex:{objc_msgSend(viewControllers2, "count") - 1}];
 
   if (v10 == v5)
   {
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
+    userInfo = [notificationCopy userInfo];
+    v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x29EDC7EC0]];
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
+    userInfo2 = [notificationCopy userInfo];
+    v14 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x29EDC7FF8]];
 
     v15 = AXLogHearingTest();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -136,13 +136,13 @@
       [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)v12 _axHandleElementFocusedNotification:v14, v15];
     }
 
-    v16 = [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self _axPlayToneButton];
-    v17 = v16;
+    _axPlayToneButton = [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self _axPlayToneButton];
+    v17 = _axPlayToneButton;
     if (v12)
     {
-      v18 = [v5 presentedViewController];
+      presentedViewController = [v5 presentedViewController];
 
-      if (!v18)
+      if (!presentedViewController)
       {
         v20 = AXLogHearingTest();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -173,7 +173,7 @@
 
     else
     {
-      if (v14 != v16)
+      if (v14 != _axPlayToneButton)
       {
 LABEL_17:
 
@@ -219,10 +219,10 @@ LABEL_18:
 - (void)_axSetupSubviews
 {
   v8 = *MEMORY[0x29EDCA608];
-  v3 = [a1 titleLabel];
-  v4 = [v3 text];
+  titleLabel = [self titleLabel];
+  text = [titleLabel text];
   v6 = 138412290;
-  v7 = v4;
+  v7 = text;
   _os_log_debug_impl(&dword_29BE6E000, a2, OS_LOG_TYPE_DEBUG, "Coaching setup playToneButton: %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x29EDCA608];
@@ -236,8 +236,8 @@ LABEL_18:
   v4 = [(HearingTestPreEvaluationCoachingViewControllerAccessibility *)self safeValueForKey:@"secondaryContentView"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 subviews];
-  v7 = [v6 count];
+  subviews = [v5 subviews];
+  v7 = [subviews count];
 
   if (v7)
   {
@@ -274,18 +274,18 @@ LABEL_4:
         v15 = v14;
         if (v8)
         {
-          v16 = [v14 imageView];
-          v2 = v16;
-          if (v16 == v8)
+          imageView = [v14 imageView];
+          v2 = imageView;
+          if (imageView == v8)
           {
             break;
           }
         }
 
-        v17 = [0 titleLabel];
-        v18 = [v17 text];
+        titleLabel = [0 titleLabel];
+        text = [titleLabel text];
         v19 = accessibilityLocalizedString(@"HEARING_TEST_COACHING_PLAY_SAMPLE");
-        v20 = [v18 isEqualToString:v19];
+        v20 = [text isEqualToString:v19];
 
         if (v8)
         {

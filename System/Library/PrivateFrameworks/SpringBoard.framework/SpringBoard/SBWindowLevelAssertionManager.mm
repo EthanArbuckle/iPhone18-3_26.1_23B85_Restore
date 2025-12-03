@@ -1,12 +1,12 @@
 @interface SBWindowLevelAssertionManager
 - (SBWindowLevelAssertionManager)init;
 - (SBWindowLevelAssertionManagerDelegate)delegate;
-- (id)acquireWindowLevelAssertionWithPriority:(int64_t)a3 windowLevel:(double)a4 windowScene:(id)a5 reason:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)highestPriorityWindowLevelAssertionForWindowScene:(id)a3;
+- (id)acquireWindowLevelAssertionWithPriority:(int64_t)priority windowLevel:(double)level windowScene:(id)scene reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)highestPriorityWindowLevelAssertionForWindowScene:(id)scene;
 - (id)succinctDescription;
-- (void)_notifyDelegateAssertionsDidUpdateForWindowScene:(id)a3;
+- (void)_notifyDelegateAssertionsDidUpdateForWindowScene:(id)scene;
 @end
 
 @implementation SBWindowLevelAssertionManager
@@ -18,20 +18,20 @@
   v2 = [(SBWindowLevelAssertionManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     windowLevelAssertionsPerScene = v2->_windowLevelAssertionsPerScene;
-    v2->_windowLevelAssertionsPerScene = v3;
+    v2->_windowLevelAssertionsPerScene = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (id)acquireWindowLevelAssertionWithPriority:(int64_t)a3 windowLevel:(double)a4 windowScene:(id)a5 reason:(id)a6
+- (id)acquireWindowLevelAssertionWithPriority:(int64_t)priority windowLevel:(double)level windowScene:(id)scene reason:(id)reason
 {
-  v10 = a5;
-  v11 = a6;
+  sceneCopy = scene;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v10);
+  objc_initWeak(&from, sceneCopy);
   v12 = [SBWindowLevelAssertion alloc];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -39,30 +39,30 @@
   v23[3] = &unk_2783BC128;
   objc_copyWeak(&v24, &location);
   objc_copyWeak(&v25, &from);
-  v13 = [(SBWindowLevelAssertion *)v12 initWithPriority:a3 windowLevel:v11 reason:v23 invalidationHandler:a4];
-  v14 = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
-  v15 = [v14 objectForKey:v10];
+  v13 = [(SBWindowLevelAssertion *)v12 initWithPriority:priority windowLevel:reasonCopy reason:v23 invalidationHandler:level];
+  windowLevelAssertionsPerScene = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
+  array = [windowLevelAssertionsPerScene objectForKey:sceneCopy];
 
-  if (!v15)
+  if (!array)
   {
-    v15 = [MEMORY[0x277CBEB18] array];
-    v16 = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
-    [v16 setObject:v15 forKey:v10];
+    array = [MEMORY[0x277CBEB18] array];
+    windowLevelAssertionsPerScene2 = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
+    [windowLevelAssertionsPerScene2 setObject:array forKey:sceneCopy];
   }
 
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = [v15 count];
+  v22 = [array count];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __104__SBWindowLevelAssertionManager_acquireWindowLevelAssertionWithPriority_windowLevel_windowScene_reason___block_invoke_2;
   v18[3] = &unk_2783BC150;
   v18[4] = &v19;
-  v18[5] = a3;
-  [v15 enumerateObjectsUsingBlock:v18];
-  [v15 insertObject:v13 atIndex:v20[3]];
-  [(SBWindowLevelAssertionManager *)self _notifyDelegateAssertionsDidUpdateForWindowScene:v10];
+  v18[5] = priority;
+  [array enumerateObjectsUsingBlock:v18];
+  [array insertObject:v13 atIndex:v20[3]];
+  [(SBWindowLevelAssertionManager *)self _notifyDelegateAssertionsDidUpdateForWindowScene:sceneCopy];
   _Block_object_dispose(&v19, 8);
 
   objc_destroyWeak(&v25);
@@ -111,36 +111,36 @@ uint64_t __104__SBWindowLevelAssertionManager_acquireWindowLevelAssertionWithPri
   return result;
 }
 
-- (id)highestPriorityWindowLevelAssertionForWindowScene:(id)a3
+- (id)highestPriorityWindowLevelAssertionForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
-  v6 = [v5 objectForKey:v4];
+  sceneCopy = scene;
+  windowLevelAssertionsPerScene = [(SBWindowLevelAssertionManager *)self windowLevelAssertionsPerScene];
+  v6 = [windowLevelAssertionsPerScene objectForKey:sceneCopy];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)_notifyDelegateAssertionsDidUpdateForWindowScene:(id)a3
+- (void)_notifyDelegateAssertionsDidUpdateForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SBWindowLevelAssertionManager *)self delegate];
-  [v5 windowLevelAssertionManager:self didUpdateAssertionsForWindowScene:v4];
+  sceneCopy = scene;
+  delegate = [(SBWindowLevelAssertionManager *)self delegate];
+  [delegate windowLevelAssertionManager:self didUpdateAssertionsForWindowScene:sceneCopy];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWindowLevelAssertionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWindowLevelAssertionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -148,8 +148,8 @@ uint64_t __104__SBWindowLevelAssertionManager_acquireWindowLevelAssertionWithPri
   v10[3] = &unk_2783A92D8;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -164,10 +164,10 @@ void __71__SBWindowLevelAssertionManager_descriptionBuilderWithMultilinePrefix__
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowLevelAssertionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowLevelAssertionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (SBWindowLevelAssertionManagerDelegate)delegate

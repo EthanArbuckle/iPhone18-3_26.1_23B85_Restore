@@ -1,19 +1,19 @@
 @interface VNFaceObservation
-+ (BOOL)_exifOrientationFromFaceRollAngle:(float)a3 exifOrientation:(int *)a4 error:(id *)a5;
++ (BOOL)_exifOrientationFromFaceRollAngle:(float)angle exifOrientation:(int *)orientation error:(id *)error;
 + (VNFaceObservation)faceObservationWithRequestRevision:(NSUInteger)requestRevision boundingBox:(CGRect)boundingBox roll:(NSNumber *)roll yaw:(NSNumber *)yaw;
 + (VNFaceObservation)faceObservationWithRequestRevision:(NSUInteger)requestRevision boundingBox:(CGRect)boundingBox roll:(NSNumber *)roll yaw:(NSNumber *)yaw pitch:(NSNumber *)pitch;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5 roll:(id)a6 yaw:(id)a7;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5 roll:(id)a6 yaw:(id)a7 pitch:(id)a8;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 andAlignedBoundingBox:(CGRect)a5;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 faceprint:(id)a5;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 roll:(id)a5 yaw:(id)a6 pitch:(id)a7 isBoundingBoxAligned:(BOOL)a8 alignedBoundingBox:(CGRect)a9 landmarks:(id)a10 landmarks65:(id)a11 landmarkScore:(float)a12 isBlinking:(BOOL)a13 blinkScore:(float)a14;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 roll:(id)a5 yaw:(id)a6 pitch:(id)a7 isBoundingBoxAligned:(BOOL)a8 alignedBoundingBox:(CGRect)a9 landmarks:(id)a10 landmarks65:(id)a11 landmarkScore:(float)a12 isBlinking:(BOOL)a13 blinkScore:(float)a14 faceOrientationIndex:(float)a15 faceJunkinessIndex:(float)a16;
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 unalignedBoundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5;
-+ (VNFaceObservation)observationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4;
-+ (uint64_t)computeYawPitchRollFromPoseMatrix:(__n128)a3 outputYaw:(__n128)a4 outputPitch:(uint64_t)a5 outputRoll:(uint64_t)a6;
-- (BOOL)getComputedRectifyingTransform:(CGAffineTransform *)a3;
-- (BOOL)getFaceEXIFOrientation:(int *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox roll:(id)roll yaw:(id)yaw;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox roll:(id)roll yaw:(id)yaw pitch:(id)pitch;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box andAlignedBoundingBox:(CGRect)boundingBox;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box faceprint:(id)faceprint;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw pitch:(id)pitch isBoundingBoxAligned:(BOOL)aligned alignedBoundingBox:(CGRect)boundingBox landmarks:(id)self0 landmarks65:(id)self1 landmarkScore:(float)self2 isBlinking:(BOOL)self3 blinkScore:(float)self4;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw pitch:(id)pitch isBoundingBoxAligned:(BOOL)aligned alignedBoundingBox:(CGRect)boundingBox landmarks:(id)self0 landmarks65:(id)self1 landmarkScore:(float)self2 isBlinking:(BOOL)self3 blinkScore:(float)self4 faceOrientationIndex:(float)self5 faceJunkinessIndex:(float)self6;
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision unalignedBoundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox;
++ (VNFaceObservation)observationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box;
++ (uint64_t)computeYawPitchRollFromPoseMatrix:(__n128)matrix outputYaw:(__n128)yaw outputPitch:(uint64_t)pitch outputRoll:(uint64_t)roll;
+- (BOOL)getComputedRectifyingTransform:(CGAffineTransform *)transform;
+- (BOOL)getFaceEXIFOrientation:(int *)orientation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRevision1DetectedRectanglesCompatible;
 - (CGRect)alignedBoundingBoxAsCGRect;
 - (CGRect)unalignedBoundingBox;
@@ -21,50 +21,50 @@
 - (VNFaceLandmarks2D)landmarks;
 - (VNFaceLandmarks2D)landmarks65;
 - (VNFaceLandmarks3D)landmarks3d;
-- (VNFaceObservation)initWithCoder:(id)a3;
-- (VNFaceObservation)initWithRequestRevision:(unint64_t)a3;
+- (VNFaceObservation)initWithCoder:(id)coder;
+- (VNFaceObservation)initWithRequestRevision:(unint64_t)revision;
 - (_Geometry2D_rect2D_)alignedBoundingBox;
 - (double)pose;
 - (double)poseQuaternion;
 - (float)landmarkScore;
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4;
-- (id)VNPersonsModelFaceprintWithRequestRevision:(unint64_t)a3 error:(id *)a4;
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error;
+- (id)VNPersonsModelFaceprintWithRequestRevision:(unint64_t)revision error:(id *)error;
 - (id)debugQuickLookObject;
 - (id)description;
 - (id)expressionsAndDetections;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
-- (void)_addPointsOfNamedRegion:(id)a3 inLandmarks:(id)a4 toPath:(CGPath *)a5 applyingAffineTransform:(CGAffineTransform *)a6;
+- (void)_addPointsOfNamedRegion:(id)region inLandmarks:(id)landmarks toPath:(CGPath *)path applyingAffineTransform:(CGAffineTransform *)transform;
 - (void)_initLocks;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFaceCaptureQuality:(float)a3 originatingRequestSpecifier:(id)a4;
-- (void)setFaceScreenGaze:(id)a3;
-- (void)setGaze:(id)a3;
-- (void)setLandmark3DPointsData:(id)a3 originatingRequestSpecifier:(id)a4;
-- (void)setLandmarkPoints65Data:(id)a3 originatingRequestSpecifier:(id)a4;
-- (void)setLandmarkPointsData:(id)a3 originatingRequestSpecifier:(id)a4;
-- (void)setLegacyFaceCore:(id)a3;
-- (void)setPoseData:(id)a3 originatingRequestSpecifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFaceCaptureQuality:(float)quality originatingRequestSpecifier:(id)specifier;
+- (void)setFaceScreenGaze:(id)gaze;
+- (void)setGaze:(id)gaze;
+- (void)setLandmark3DPointsData:(id)data originatingRequestSpecifier:(id)specifier;
+- (void)setLandmarkPoints65Data:(id)data originatingRequestSpecifier:(id)specifier;
+- (void)setLandmarkPointsData:(id)data originatingRequestSpecifier:(id)specifier;
+- (void)setLegacyFaceCore:(id)core;
+- (void)setPoseData:(id)data originatingRequestSpecifier:(id)specifier;
 @end
 
 @implementation VNFaceObservation
 
-- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)a3 error:(id *)a4
+- (id)VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 requestClassAndReturnError:a4];
+  specifierCopy = specifier;
+  v7 = [specifierCopy requestClassAndReturnError:error];
   if (v7)
   {
     if (v7 == objc_opt_class())
     {
-      v9 = [(VNFaceObservation *)self faceprint];
-      if (!v9)
+      faceprint = [(VNFaceObservation *)self faceprint];
+      if (!faceprint)
       {
-        v10 = [(VNFaceObservation *)self faceTorsoprint];
-        v9 = [v10 faceprint];
+        faceTorsoprint = [(VNFaceObservation *)self faceTorsoprint];
+        faceprint = [faceTorsoprint faceprint];
       }
 
-      v11 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"faceprint", v9, v6, a4);
+      v11 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"faceprint", faceprint, specifierCopy, error);
     }
 
     else
@@ -73,12 +73,12 @@
       {
         v13.receiver = self;
         v13.super_class = VNFaceObservation;
-        v8 = [(VNObservation *)&v13 VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:v6 error:a4];
+        v8 = [(VNObservation *)&v13 VNEntityIdentificationModelPrintWithOriginatingRequestSpecifier:specifierCopy error:error];
         goto LABEL_11;
       }
 
-      v9 = [(VNFaceObservation *)self torsoprint];
-      v11 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"torsoprint", v9, v6, a4);
+      faceprint = [(VNFaceObservation *)self torsoprint];
+      v11 = _validatedEntityPrintOriginatingRequestSpecifierCompatibility(self, @"torsoprint", faceprint, specifierCopy, error);
     }
 
     v8 = v11;
@@ -94,38 +94,38 @@ LABEL_11:
   return v8;
 }
 
-- (id)VNPersonsModelFaceprintWithRequestRevision:(unint64_t)a3 error:(id *)a4
+- (id)VNPersonsModelFaceprintWithRequestRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNFaceObservation *)self faceprint];
-  if (v7 || (-[VNFaceObservation faceTorsoprint](self, "faceTorsoprint"), v8 = objc_claimAutoreleasedReturnValue(), [v8 faceprint], v7 = objc_claimAutoreleasedReturnValue(), v8, v7))
+  faceprint = [(VNFaceObservation *)self faceprint];
+  if (faceprint || (-[VNFaceObservation faceTorsoprint](self, "faceTorsoprint"), v8 = objc_claimAutoreleasedReturnValue(), [v8 faceprint], faceprint = objc_claimAutoreleasedReturnValue(), v8, faceprint))
   {
-    if (!a3 || [v7 requestRevision] == a3)
+    if (!revision || [faceprint requestRevision] == revision)
     {
-      v7 = v7;
-      v9 = v7;
+      faceprint = faceprint;
+      v9 = faceprint;
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
       v10 = [VNError errorWithCode:14 message:@"incompatible faceprint revision"];
 LABEL_10:
       v9 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_13;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v10 = [VNError errorForInvalidOperationWithLocalizedDescription:@"faceprint is not available from the observation"];
-      v7 = 0;
+      faceprint = 0;
       goto LABEL_10;
     }
 
-    v7 = 0;
+    faceprint = 0;
   }
 
   v9 = 0;
@@ -162,8 +162,8 @@ LABEL_13:
 
 - (BOOL)isRevision1DetectedRectanglesCompatible
 {
-  v3 = [(VNFaceObservation *)self roll];
-  [v3 doubleValue];
+  roll = [(VNFaceObservation *)self roll];
+  [roll doubleValue];
   v5 = v4;
 
   if (fabs(v5) > 0.541052068)
@@ -171,43 +171,43 @@ LABEL_13:
     return 0;
   }
 
-  v7 = [(VNFaceObservation *)self pitch];
-  [v7 doubleValue];
+  pitch = [(VNFaceObservation *)self pitch];
+  [pitch doubleValue];
   v9 = v8;
 
   return fabs(v9) <= 0.436332313;
 }
 
-- (BOOL)getFaceEXIFOrientation:(int *)a3 error:(id *)a4
+- (BOOL)getFaceEXIFOrientation:(int *)orientation error:(id *)error
 {
-  v6 = [(VNFaceObservation *)self roll];
-  [v6 floatValue];
+  roll = [(VNFaceObservation *)self roll];
+  [roll floatValue];
   *&v8 = (v7 * 180.0) / 3.1416;
-  LOBYTE(a4) = [VNFaceObservation _exifOrientationFromFaceRollAngle:a3 exifOrientation:a4 error:v8];
+  LOBYTE(error) = [VNFaceObservation _exifOrientationFromFaceRollAngle:orientation exifOrientation:error error:v8];
 
-  return a4;
+  return error;
 }
 
-- (void)setGaze:(id)a3
+- (void)setGaze:(id)gaze
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  gazeCopy = gaze;
+  v4 = [gazeCopy copy];
   gaze = self->_gaze;
   self->_gaze = v4;
 }
 
-- (void)setFaceScreenGaze:(id)a3
+- (void)setFaceScreenGaze:(id)gaze
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  gazeCopy = gaze;
+  v4 = [gazeCopy copy];
   faceScreenGaze = self->_faceScreenGaze;
   self->_faceScreenGaze = v4;
 }
 
-- (void)setLegacyFaceCore:(id)a3
+- (void)setLegacyFaceCore:(id)core
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  coreCopy = core;
+  v4 = [coreCopy copy];
   legacyFaceCore = self->_legacyFaceCore;
   self->_legacyFaceCore = v4;
 }
@@ -249,9 +249,9 @@ LABEL_13:
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
-        v18 = [(VNFaceObservation *)self landmarks];
+        landmarks = [(VNFaceObservation *)self landmarks];
         v26 = v31;
-        [(VNFaceObservation *)self _addPointsOfNamedRegion:v17 inLandmarks:v18 toPath:Mutable applyingAffineTransform:&v26];
+        [(VNFaceObservation *)self _addPointsOfNamedRegion:v17 inLandmarks:landmarks toPath:Mutable applyingAffineTransform:&v26];
       }
 
       v14 = [v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
@@ -262,8 +262,8 @@ LABEL_13:
 
   v25.receiver = self;
   v25.super_class = VNFaceObservation;
-  v19 = [(VNDetectedObjectObservation *)&v25 debugQuickLookObject];
-  if (v19)
+  debugQuickLookObject = [(VNDetectedObjectObservation *)&v25 debugQuickLookObject];
+  if (debugQuickLookObject)
   {
     memset(&v26, 0, sizeof(v26));
     CGAffineTransformMakeTranslation(&v26, v4, v6);
@@ -274,7 +274,7 @@ LABEL_13:
     *&v32.a = xmmword_1A6052460;
     *&v32.c = unk_1A6052470;
     v21 = VNDebugColorFromValues(&v32.a);
-    v22 = VNDebugImageRenderNormalizedCGPathOnImage(v20, v19, v21);
+    v22 = VNDebugImageRenderNormalizedCGPathOnImage(v20, debugQuickLookObject, v21);
     CGPathRelease(v20);
   }
 
@@ -294,42 +294,42 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
   [VNFaceObservation debugQuickLookObject]::regionNames = &unk_1F19C2068;
 }
 
-- (void)_addPointsOfNamedRegion:(id)a3 inLandmarks:(id)a4 toPath:(CGPath *)a5 applyingAffineTransform:(CGAffineTransform *)a6
+- (void)_addPointsOfNamedRegion:(id)region inLandmarks:(id)landmarks toPath:(CGPath *)path applyingAffineTransform:(CGAffineTransform *)transform
 {
-  v13 = [a4 valueForKey:a3];
+  v13 = [landmarks valueForKey:region];
   if (v13)
   {
-    v8 = [v13 pointCount];
-    if (v8)
+    pointCount = [v13 pointCount];
+    if (pointCount)
     {
-      v9 = [v13 normalizedPoints];
-      v10 = [v13 pointsClassification];
-      v11 = v10;
-      if ((v10 - 1) >= 2)
+      normalizedPoints = [v13 normalizedPoints];
+      pointsClassification = [v13 pointsClassification];
+      v11 = pointsClassification;
+      if ((pointsClassification - 1) >= 2)
       {
-        if (!v10)
+        if (!pointsClassification)
         {
-          p_y = &v9->y;
+          p_y = &normalizedPoints->y;
           do
           {
-            CGPathMoveToPoint(a5, a6, *(p_y - 1), *p_y);
-            CGPathAddLineToPoint(a5, a6, *(p_y - 1), *p_y);
+            CGPathMoveToPoint(path, transform, *(p_y - 1), *p_y);
+            CGPathAddLineToPoint(path, transform, *(p_y - 1), *p_y);
             p_y += 2;
-            --v8;
+            --pointCount;
           }
 
-          while (v8);
+          while (pointCount);
         }
       }
 
       else
       {
-        CGPathMoveToPoint(a5, a6, v9->x, v9->y);
-        CGPathAddLines(a5, a6, v9, v8);
+        CGPathMoveToPoint(path, transform, normalizedPoints->x, normalizedPoints->y);
+        CGPathAddLines(path, transform, normalizedPoints, pointCount);
         if (v11 == 2)
         {
-          CGPathAddLineToPoint(a5, a6, v9->x, v9->y);
-          CGPathCloseSubpath(a5);
+          CGPathAddLineToPoint(path, transform, normalizedPoints->x, normalizedPoints->y);
+          CGPathCloseSubpath(path);
         }
       }
     }
@@ -344,24 +344,24 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
   v4 = [(VNDetectedObjectObservation *)&v13 description];
   [v3 appendString:v4];
 
-  v5 = [(VNFaceObservation *)self faceId];
-  if (v5)
+  faceId = [(VNFaceObservation *)self faceId];
+  if (faceId)
   {
-    [v3 appendFormat:@" ID=%lu", v5];
+    [v3 appendFormat:@" ID=%lu", faceId];
   }
 
-  v6 = [(VNFaceObservation *)self landmarks];
-  v7 = v6;
-  if (v6)
+  landmarks = [(VNFaceObservation *)self landmarks];
+  v7 = landmarks;
+  if (landmarks)
   {
-    v8 = [v6 constellation];
+    constellation = [landmarks constellation];
     v9 = @"VNRequestFaceLandmarksConstellationNotDefined";
-    if (v8 == 1)
+    if (constellation == 1)
     {
       v9 = @"VNRequestFaceLandmarksConstellation65Points";
     }
 
-    if (v8 == 2)
+    if (constellation == 2)
     {
       v9 = @"VNRequestFaceLandmarksConstellation76Points";
     }
@@ -376,9 +376,9 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
 
 - (float)landmarkScore
 {
-  v3 = [(VNFaceObservation *)self landmarkPoints];
+  landmarkPoints = [(VNFaceObservation *)self landmarkPoints];
 
-  if (v3)
+  if (landmarkPoints)
   {
     return self->_landmarkScore;
   }
@@ -389,53 +389,53 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
   }
 }
 
-- (void)setLandmark3DPointsData:(id)a3 originatingRequestSpecifier:(id)a4
+- (void)setLandmark3DPointsData:(id)data originatingRequestSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 copy];
+  dataCopy = data;
+  specifierCopy = specifier;
+  v7 = [dataCopy copy];
   landmarkPoints3d = self->_landmarkPoints3d;
   self->_landmarkPoints3d = v7;
 
   landmarks3DOriginatingRequestSpecifier = self->_landmarks3DOriginatingRequestSpecifier;
-  self->_landmarks3DOriginatingRequestSpecifier = v6;
+  self->_landmarks3DOriginatingRequestSpecifier = specifierCopy;
 }
 
-- (void)setLandmarkPoints65Data:(id)a3 originatingRequestSpecifier:(id)a4
+- (void)setLandmarkPoints65Data:(id)data originatingRequestSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 copy];
+  dataCopy = data;
+  specifierCopy = specifier;
+  v7 = [dataCopy copy];
   landmarkPoints65 = self->_landmarkPoints65;
   self->_landmarkPoints65 = v7;
 
   objc_storeStrong(&self->_landmarkPoints, self->_landmarkPoints65);
   landmarksOriginatingRequestSpecifier = self->_landmarksOriginatingRequestSpecifier;
-  self->_landmarksOriginatingRequestSpecifier = v6;
+  self->_landmarksOriginatingRequestSpecifier = specifierCopy;
 }
 
-- (void)setLandmarkPointsData:(id)a3 originatingRequestSpecifier:(id)a4
+- (void)setLandmarkPointsData:(id)data originatingRequestSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 copy];
+  dataCopy = data;
+  specifierCopy = specifier;
+  v7 = [dataCopy copy];
   landmarkPoints = self->_landmarkPoints;
   self->_landmarkPoints = v7;
 
   landmarksOriginatingRequestSpecifier = self->_landmarksOriginatingRequestSpecifier;
-  self->_landmarksOriginatingRequestSpecifier = v6;
+  self->_landmarksOriginatingRequestSpecifier = specifierCopy;
 }
 
-- (void)setFaceCaptureQuality:(float)a3 originatingRequestSpecifier:(id)a4
+- (void)setFaceCaptureQuality:(float)quality originatingRequestSpecifier:(id)specifier
 {
-  v6 = a4;
-  *&v7 = a3;
+  specifierCopy = specifier;
+  *&v7 = quality;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   faceCaptureQuality = self->_faceCaptureQuality;
   self->_faceCaptureQuality = v8;
 
   faceCaptureQualityOriginatingRequestSpecifier = self->_faceCaptureQualityOriginatingRequestSpecifier;
-  self->_faceCaptureQualityOriginatingRequestSpecifier = v6;
+  self->_faceCaptureQualityOriginatingRequestSpecifier = specifierCopy;
 }
 
 - (id)expressionsAndDetections
@@ -466,7 +466,7 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
   return result;
 }
 
-- (BOOL)getComputedRectifyingTransform:(CGAffineTransform *)a3
+- (BOOL)getComputedRectifyingTransform:(CGAffineTransform *)transform
 {
   v83 = *MEMORY[0x1E69E9840];
   landmarkPoints65 = self->_landmarkPoints65;
@@ -474,14 +474,14 @@ void __41__VNFaceObservation_debugQuickLookObject__block_invoke()
   {
     v5 = landmarkPoints65;
     v6 = v5;
-    if (!a3)
+    if (!transform)
     {
 LABEL_42:
 
-      return a3;
+      return transform;
     }
 
-    v7 = [(NSData *)v5 bytes];
+    bytes = [(NSData *)v5 bytes];
     v36 = 0;
     v37 = 0;
     v38 = 0;
@@ -492,7 +492,7 @@ LABEL_42:
     if (v36 && v37 && v38 >= 1)
     {
       v11 = 0;
-      v12 = (v7 + 4);
+      v12 = (bytes + 4);
       do
       {
         *&v8[v11] = *(v12 - 1);
@@ -560,10 +560,10 @@ LABEL_39:
         v29 = *&v53.c;
         v28 = *&v53.tx;
         v66 = v53;
-        *&a3->a = *&v53.a;
-        *&a3->c = v29;
-        *&a3->tx = v28;
-        LOBYTE(a3) = 1;
+        *&transform->a = *&v53.a;
+        *&transform->c = v29;
+        *&transform->tx = v28;
+        LOBYTE(transform) = 1;
         goto LABEL_42;
       }
 
@@ -571,7 +571,7 @@ LABEL_41:
       free(v8);
       v36 = 0;
       free(v37);
-      LOBYTE(a3) = 0;
+      LOBYTE(transform) = 0;
       goto LABEL_42;
     }
 
@@ -707,15 +707,15 @@ LABEL_38:
     goto LABEL_31;
   }
 
-  LOBYTE(a3) = 0;
-  return a3;
+  LOBYTE(transform) = 0;
+  return transform;
 }
 
 - (double)poseQuaternion
 {
-  if (a1[47])
+  if (self[47])
   {
-    [a1 pose];
+    [self pose];
     v5 = v4 + (*v1.i32 + *&v2.i32[1]);
     if (v5 >= 0.0)
     {
@@ -774,22 +774,22 @@ LABEL_38:
   return *&v24;
 }
 
-- (void)setPoseData:(id)a3 originatingRequestSpecifier:(id)a4
+- (void)setPoseData:(id)data originatingRequestSpecifier:(id)specifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 copy];
+  dataCopy = data;
+  specifierCopy = specifier;
+  v7 = [dataCopy copy];
   poseData = self->_poseData;
   self->_poseData = v7;
 
   poseOriginatingRequestSpecifier = self->_poseOriginatingRequestSpecifier;
-  self->_poseOriginatingRequestSpecifier = v6;
+  self->_poseOriginatingRequestSpecifier = specifierCopy;
 }
 
 - (double)pose
 {
   v1 = *MEMORY[0x1E69E9B18];
-  v2 = *(a1 + 376);
+  v2 = *(self + 376);
   if (v2)
   {
     *&v1 = *[v2 bytes];
@@ -803,11 +803,11 @@ LABEL_38:
   os_unfair_lock_lock(&self->_cachedLandmarks3dLock);
   if (!self->_cachedLandmarks3d)
   {
-    v3 = [(VNFaceObservation *)self landmarkPoints3d];
-    if (v3)
+    landmarkPoints3d = [(VNFaceObservation *)self landmarkPoints3d];
+    if (landmarkPoints3d)
     {
       v4 = [VNFaceLandmarks3D alloc];
-      v5 = [(VNFaceObservation *)self landmarks3DOriginatingRequestSpecifier];
+      landmarks3DOriginatingRequestSpecifier = [(VNFaceObservation *)self landmarks3DOriginatingRequestSpecifier];
       [(VNDetectedObjectObservation *)self boundingBox];
       v7 = v6;
       v9 = v8;
@@ -824,7 +824,7 @@ LABEL_38:
       LODWORD(v24) = v17;
       LODWORD(v25) = v19;
       LODWORD(v26) = v21;
-      v27 = [(VNFaceLandmarks3D *)v4 initWithOriginatingRequestSpecifier:v5 pointsData:v3 pointCount:63 userFacingBBox:v7 alignedBBox:v9 landmarkScore:v11, v13, v23, v24, v25, v26, v31];
+      v27 = [(VNFaceLandmarks3D *)v4 initWithOriginatingRequestSpecifier:landmarks3DOriginatingRequestSpecifier pointsData:landmarkPoints3d pointCount:63 userFacingBBox:v7 alignedBBox:v9 landmarkScore:v11, v13, v23, v24, v25, v26, v31];
       cachedLandmarks3d = self->_cachedLandmarks3d;
       self->_cachedLandmarks3d = v27;
     }
@@ -841,12 +841,12 @@ LABEL_38:
   os_unfair_lock_lock(&self->_cachedLandmarks65Lock);
   if (!self->_cachedLandmarks65)
   {
-    v3 = [(VNFaceObservation *)self landmarkPoints65];
-    if (v3)
+    landmarkPoints65 = [(VNFaceObservation *)self landmarkPoints65];
+    if (landmarkPoints65)
     {
       v4 = [VNFaceLandmarks2D alloc];
-      v5 = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
-      v6 = [v3 length];
+      landmarksOriginatingRequestSpecifier = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
+      v6 = [landmarkPoints65 length];
       [(VNDetectedObjectObservation *)self boundingBox];
       v8 = v7;
       v10 = v9;
@@ -863,7 +863,7 @@ LABEL_38:
       LODWORD(v25) = v18;
       LODWORD(v26) = v20;
       LODWORD(v27) = v22;
-      v28 = [(VNFaceLandmarks2D *)v4 initWithOriginatingRequestSpecifier:v5 pointsData:v3 pointCount:v6 >> 3 constellation:1 precisionEstimatesPerPoint:0 userFacingBBox:v8 alignedBBox:v10 landmarkScore:v12, v14, v24, v25, v26, v27, v32];
+      v28 = [(VNFaceLandmarks2D *)v4 initWithOriginatingRequestSpecifier:landmarksOriginatingRequestSpecifier pointsData:landmarkPoints65 pointCount:v6 >> 3 constellation:1 precisionEstimatesPerPoint:0 userFacingBBox:v8 alignedBBox:v10 landmarkScore:v12, v14, v24, v25, v26, v27, v32];
       cachedLandmarks65 = self->_cachedLandmarks65;
       self->_cachedLandmarks65 = v28;
     }
@@ -880,14 +880,14 @@ LABEL_38:
   os_unfair_lock_lock(&self->_cachedLandmarksLock);
   if (!self->_cachedLandmarks)
   {
-    v3 = [(VNFaceObservation *)self landmarkPoints];
-    if (v3)
+    landmarkPoints = [(VNFaceObservation *)self landmarkPoints];
+    if (landmarkPoints)
     {
       v4 = [VNFaceLandmarks2D alloc];
-      v5 = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
-      v6 = [v3 length];
-      v7 = [(VNFaceObservation *)self landmarksConstellation];
-      v8 = [(VNFaceObservation *)self landmarkPrecisionEstimatesPerPoint];
+      landmarksOriginatingRequestSpecifier = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
+      v6 = [landmarkPoints length];
+      landmarksConstellation = [(VNFaceObservation *)self landmarksConstellation];
+      landmarkPrecisionEstimatesPerPoint = [(VNFaceObservation *)self landmarkPrecisionEstimatesPerPoint];
       [(VNDetectedObjectObservation *)self boundingBox];
       v10 = v9;
       v12 = v11;
@@ -904,7 +904,7 @@ LABEL_38:
       LODWORD(v27) = v20;
       LODWORD(v28) = v22;
       LODWORD(v29) = v24;
-      v30 = [(VNFaceLandmarks2D *)v4 initWithOriginatingRequestSpecifier:v5 pointsData:v3 pointCount:v6 >> 3 constellation:v7 precisionEstimatesPerPoint:v8 userFacingBBox:v10 alignedBBox:v12 landmarkScore:v14, v16, v26, v27, v28, v29, v34];
+      v30 = [(VNFaceLandmarks2D *)v4 initWithOriginatingRequestSpecifier:landmarksOriginatingRequestSpecifier pointsData:landmarkPoints pointCount:v6 >> 3 constellation:landmarksConstellation precisionEstimatesPerPoint:landmarkPrecisionEstimatesPerPoint userFacingBBox:v10 alignedBBox:v12 landmarkScore:v14, v16, v26, v27, v28, v29, v34];
       cachedLandmarks = self->_cachedLandmarks;
       self->_cachedLandmarks = v30;
     }
@@ -935,127 +935,127 @@ LABEL_38:
 {
   v54.receiver = self;
   v54.super_class = VNFaceObservation;
-  v3 = [(VNDetectedObjectObservation *)&v54 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNDetectedObjectObservation *)&v54 vn_cloneObject];
+  if (vn_cloneObject)
   {
     v4 = [(NSData *)self->_alignedMeanShape copy];
-    v5 = *(v3 + 440);
-    *(v3 + 440) = v4;
+    v5 = *(vn_cloneObject + 440);
+    *(vn_cloneObject + 440) = v4;
 
     v6 = [(NSData *)self->_landmarkPoints copy];
-    v7 = *(v3 + 336);
-    *(v3 + 336) = v6;
+    v7 = *(vn_cloneObject + 336);
+    *(vn_cloneObject + 336) = v6;
 
     v8 = [(NSData *)self->_landmarkPoints65 copy];
-    v9 = *(v3 + 344);
-    *(v3 + 344) = v8;
+    v9 = *(vn_cloneObject + 344);
+    *(vn_cloneObject + 344) = v8;
 
-    *(v3 + 352) = self->_landmarksConstellation;
+    *(vn_cloneObject + 352) = self->_landmarksConstellation;
     v10 = [(NSArray *)self->_landmarkPrecisionEstimatesPerPoint copy];
-    v11 = *(v3 + 360);
-    *(v3 + 360) = v10;
+    v11 = *(vn_cloneObject + 360);
+    *(vn_cloneObject + 360) = v10;
 
     v12 = [(NSData *)self->_landmarkPoints3d copy];
-    v13 = *(v3 + 368);
-    *(v3 + 368) = v12;
+    v13 = *(vn_cloneObject + 368);
+    *(vn_cloneObject + 368) = v12;
 
     v14 = [(NSData *)self->_poseData copy];
-    v15 = *(v3 + 376);
-    *(v3 + 376) = v14;
+    v15 = *(vn_cloneObject + 376);
+    *(vn_cloneObject + 376) = v14;
 
     v16 = [(VNRequestSpecifier *)self->_poseOriginatingRequestSpecifier copy];
-    v17 = *(v3 + 384);
-    *(v3 + 384) = v16;
+    v17 = *(vn_cloneObject + 384);
+    *(vn_cloneObject + 384) = v16;
 
     v18 = [(NSDictionary *)self->_expressionsAndScores copy];
-    v19 = *(v3 + 272);
-    *(v3 + 272) = v18;
+    v19 = *(vn_cloneObject + 272);
+    *(vn_cloneObject + 272) = v18;
 
     v20 = [(VNFaceprint *)self->_faceprint copy];
-    v21 = *(v3 + 224);
-    *(v3 + 224) = v20;
+    v21 = *(vn_cloneObject + 224);
+    *(vn_cloneObject + 224) = v20;
 
     v22 = [(VNTorsoprint *)self->_torsoprint copy];
-    v23 = *(v3 + 232);
-    *(v3 + 232) = v22;
+    v23 = *(vn_cloneObject + 232);
+    *(vn_cloneObject + 232) = v22;
 
     v24 = [(VNFaceTorsoprint *)self->_faceTorsoprint copy];
-    v25 = *(v3 + 240);
-    *(v3 + 240) = v24;
+    v25 = *(vn_cloneObject + 240);
+    *(vn_cloneObject + 240) = v24;
 
     v26 = [(VNFaceRegionMap *)self->_faceRegionMap copy];
-    v27 = *(v3 + 208);
-    *(v3 + 208) = v26;
+    v27 = *(vn_cloneObject + 208);
+    *(vn_cloneObject + 208) = v26;
 
     v28 = [(VNFaceSegments *)self->_faceSegments copy];
-    v29 = *(v3 + 248);
-    *(v3 + 248) = v28;
+    v29 = *(vn_cloneObject + 248);
+    *(vn_cloneObject + 248) = v28;
 
     size = self->_unalignedBoundingBox.size;
-    *(v3 + 304) = self->_unalignedBoundingBox.origin;
-    *(v3 + 320) = size;
-    *(v3 + 408) = self->_boundingBoxAligned;
-    *(v3 + 288) = self->_alignedBoundingBox;
-    *(v3 + 412) = self->_alignedRotationAngle;
+    *(vn_cloneObject + 304) = self->_unalignedBoundingBox.origin;
+    *(vn_cloneObject + 320) = size;
+    *(vn_cloneObject + 408) = self->_boundingBoxAligned;
+    *(vn_cloneObject + 288) = self->_alignedBoundingBox;
+    *(vn_cloneObject + 412) = self->_alignedRotationAngle;
     v31 = [(NSNumber *)self->_roll copy];
-    v32 = *(v3 + 416);
-    *(v3 + 416) = v31;
+    v32 = *(vn_cloneObject + 416);
+    *(vn_cloneObject + 416) = v31;
 
     v33 = [(NSNumber *)self->_yaw copy];
-    v34 = *(v3 + 424);
-    *(v3 + 424) = v33;
+    v34 = *(vn_cloneObject + 424);
+    *(vn_cloneObject + 424) = v33;
 
     v35 = [(NSNumber *)self->_pitch copy];
-    v36 = *(v3 + 432);
-    *(v3 + 432) = v35;
+    v36 = *(vn_cloneObject + 432);
+    *(vn_cloneObject + 432) = v35;
 
-    *(v3 + 256) = self->_landmarkScore;
-    *(v3 + 260) = self->_isBlinking;
-    *(v3 + 264) = self->_blinkScore;
-    *(v3 + 400) = self->_faceId;
-    *(v3 + 392) = self->_faceIdConfidence;
+    *(vn_cloneObject + 256) = self->_landmarkScore;
+    *(vn_cloneObject + 260) = self->_isBlinking;
+    *(vn_cloneObject + 264) = self->_blinkScore;
+    *(vn_cloneObject + 400) = self->_faceId;
+    *(vn_cloneObject + 392) = self->_faceIdConfidence;
     v37 = [(NSNumber *)self->_faceCaptureQuality copy];
-    v38 = *(v3 + 448);
-    *(v3 + 448) = v37;
+    v38 = *(vn_cloneObject + 448);
+    *(vn_cloneObject + 448) = v37;
 
     v39 = [(VNRequestSpecifier *)self->_faceCaptureQualityOriginatingRequestSpecifier copy];
-    v40 = *(v3 + 456);
-    *(v3 + 456) = v39;
+    v40 = *(vn_cloneObject + 456);
+    *(vn_cloneObject + 456) = v39;
 
-    *(v3 + 280) = self->_faceJunkinessIndex;
-    *(v3 + 284) = self->_faceOrientationIndex;
+    *(vn_cloneObject + 280) = self->_faceJunkinessIndex;
+    *(vn_cloneObject + 284) = self->_faceOrientationIndex;
     v41 = [(VNRequestSpecifier *)self->_landmarksOriginatingRequestSpecifier copy];
-    v42 = *(v3 + 464);
-    *(v3 + 464) = v41;
+    v42 = *(vn_cloneObject + 464);
+    *(vn_cloneObject + 464) = v41;
 
     v43 = [(VNRequestSpecifier *)self->_landmarks3DOriginatingRequestSpecifier copy];
-    v44 = *(v3 + 472);
-    *(v3 + 472) = v43;
+    v44 = *(vn_cloneObject + 472);
+    *(vn_cloneObject + 472) = v43;
 
     v45 = [(VNFaceLegacyFaceCore *)self->_legacyFaceCore copy];
-    v46 = *(v3 + 480);
-    *(v3 + 480) = v45;
+    v46 = *(vn_cloneObject + 480);
+    *(vn_cloneObject + 480) = v45;
 
     v47 = [(VNFaceGaze *)self->_gaze copy];
-    v48 = *(v3 + 488);
-    *(v3 + 488) = v47;
+    v48 = *(vn_cloneObject + 488);
+    *(vn_cloneObject + 488) = v47;
 
     v49 = [(VNFaceScreenGaze *)self->_faceScreenGaze copy];
-    v50 = *(v3 + 496);
-    *(v3 + 496) = v49;
+    v50 = *(vn_cloneObject + 496);
+    *(vn_cloneObject + 496) = v49;
 
     v51 = [(VNFaceAttributes *)self->_faceAttributes copy];
-    v52 = *(v3 + 216);
-    *(v3 + 216) = v51;
+    v52 = *(vn_cloneObject + 216);
+    *(vn_cloneObject + 216) = v51;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -1064,9 +1064,9 @@ LABEL_38:
   {
     v98.receiver = self;
     v98.super_class = VNFaceObservation;
-    if ([(VNDetectedObjectObservation *)&v98 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(VNDetectedObjectObservation *)&v98 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNFaceObservation *)self alignedBoundingBox];
       v7 = v6;
       v9 = v8;
@@ -1109,8 +1109,8 @@ LABEL_38:
             && ([(VNFaceObservation *)self landmarks3DOriginatingRequestSpecifier], v89 = objc_claimAutoreleasedReturnValue(), [(VNFaceObservation *)v5 landmarks3DOriginatingRequestSpecifier], v90 = objc_claimAutoreleasedReturnValue(), v91 = VisionCoreEqualOrNilObjects(), v90, v89, (v91 & 1) != 0)
             && ([(VNFaceObservation *)self gaze], v92 = objc_claimAutoreleasedReturnValue(), [(VNFaceObservation *)v5 gaze], v93 = objc_claimAutoreleasedReturnValue(), v94 = VisionCoreEqualOrNilObjects(), v93, v92, (v94 & 1) != 0))
           {
-            v95 = [(VNFaceObservation *)self faceScreenGaze];
-            v96 = [(VNFaceObservation *)v5 faceScreenGaze];
+            faceScreenGaze = [(VNFaceObservation *)self faceScreenGaze];
+            faceScreenGaze2 = [(VNFaceObservation *)v5 faceScreenGaze];
             v17 = VisionCoreEqualOrNilObjects();
           }
 
@@ -1141,56 +1141,56 @@ LABEL_38:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(VNFaceObservation *)self landmarkPoints];
-  v13 = [v12 hash];
+  landmarkPoints = [(VNFaceObservation *)self landmarkPoints];
+  v13 = [landmarkPoints hash];
 
-  v14 = [(VNFaceObservation *)self landmarkPoints65];
-  v15 = [v14 hash];
+  landmarkPoints65 = [(VNFaceObservation *)self landmarkPoints65];
+  v15 = [landmarkPoints65 hash];
 
-  v16 = [(VNFaceObservation *)self landmarksConstellation];
-  v17 = [(VNFaceObservation *)self landmarkPrecisionEstimatesPerPoint];
-  v18 = [v17 hash];
+  landmarksConstellation = [(VNFaceObservation *)self landmarksConstellation];
+  landmarkPrecisionEstimatesPerPoint = [(VNFaceObservation *)self landmarkPrecisionEstimatesPerPoint];
+  v18 = [landmarkPrecisionEstimatesPerPoint hash];
 
-  v19 = [(VNFaceObservation *)self landmarkPoints3d];
-  v20 = [v19 hash];
+  landmarkPoints3d = [(VNFaceObservation *)self landmarkPoints3d];
+  v20 = [landmarkPoints3d hash];
 
-  v21 = [(VNFaceObservation *)self poseData];
-  v22 = [v21 hash];
+  poseData = [(VNFaceObservation *)self poseData];
+  v22 = [poseData hash];
 
-  v23 = [(VNFaceObservation *)self poseOriginatingRequestSpecifier];
-  v24 = [v23 hash];
+  poseOriginatingRequestSpecifier = [(VNFaceObservation *)self poseOriginatingRequestSpecifier];
+  v24 = [poseOriginatingRequestSpecifier hash];
 
-  v25 = [(VNFaceObservation *)self expressionsAndScores];
-  v81 = [v25 hash];
+  expressionsAndScores = [(VNFaceObservation *)self expressionsAndScores];
+  v81 = [expressionsAndScores hash];
 
-  v80 = [(VNFaceObservation *)self faceId];
+  faceId = [(VNFaceObservation *)self faceId];
   [(VNFaceObservation *)self faceIdConfidence];
   v27 = v26;
-  v28 = [(VNFaceObservation *)self faceprint];
-  v79 = [v28 hash];
+  faceprint = [(VNFaceObservation *)self faceprint];
+  v79 = [faceprint hash];
 
-  v29 = [(VNFaceObservation *)self torsoprint];
-  v78 = [v29 hash];
+  torsoprint = [(VNFaceObservation *)self torsoprint];
+  v78 = [torsoprint hash];
 
-  v30 = [(VNFaceObservation *)self faceTorsoprint];
-  v77 = [v30 hash];
+  faceTorsoprint = [(VNFaceObservation *)self faceTorsoprint];
+  v77 = [faceTorsoprint hash];
 
-  v76 = [(VNFaceObservation *)self isBoundingBoxAligned];
+  isBoundingBoxAligned = [(VNFaceObservation *)self isBoundingBoxAligned];
   [(VNFaceObservation *)self alignedRotationAngle];
   v32 = v31;
-  v33 = [(VNFaceObservation *)self faceRegionMap];
-  v75 = [v33 hash];
+  faceRegionMap = [(VNFaceObservation *)self faceRegionMap];
+  v75 = [faceRegionMap hash];
 
-  v34 = [(VNFaceObservation *)self faceAttributes];
-  v74 = [v34 hash];
+  faceAttributes = [(VNFaceObservation *)self faceAttributes];
+  v74 = [faceAttributes hash];
 
-  v35 = [(VNFaceObservation *)self faceSegments];
-  v73 = [v35 hash];
+  faceSegments = [(VNFaceObservation *)self faceSegments];
+  v73 = [faceSegments hash];
   v72 = v9;
 
-  v71 = [(VNFaceObservation *)self isBlinking];
-  v36 = [(VNFaceObservation *)self alignedMeanShape];
-  v70 = [v36 hash];
+  isBlinking = [(VNFaceObservation *)self isBlinking];
+  alignedMeanShape = [(VNFaceObservation *)self alignedMeanShape];
+  v70 = [alignedMeanShape hash];
   v67 = v24;
   v68 = v22;
   v69 = v20;
@@ -1203,18 +1203,18 @@ LABEL_38:
   v42 = v41;
   [(VNFaceObservation *)self faceOrientationIndex];
   v44 = v43;
-  v45 = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
-  v46 = [v45 hash];
+  landmarksOriginatingRequestSpecifier = [(VNFaceObservation *)self landmarksOriginatingRequestSpecifier];
+  v46 = [landmarksOriginatingRequestSpecifier hash];
   v47 = v13;
 
-  v48 = [(VNFaceObservation *)self landmarks3DOriginatingRequestSpecifier];
-  v49 = [v48 hash];
+  landmarks3DOriginatingRequestSpecifier = [(VNFaceObservation *)self landmarks3DOriginatingRequestSpecifier];
+  v49 = [landmarks3DOriginatingRequestSpecifier hash];
 
-  v50 = [(VNFaceObservation *)self gaze];
-  v51 = [v50 hash];
+  gaze = [(VNFaceObservation *)self gaze];
+  v51 = [gaze hash];
 
-  v52 = [(VNFaceObservation *)self faceScreenGaze];
-  v53 = [v52 hash];
+  faceScreenGaze = [(VNFaceObservation *)self faceScreenGaze];
+  v53 = [faceScreenGaze hash];
   v54 = LODWORD(v44);
   if (v44 == 0.0)
   {
@@ -1271,84 +1271,84 @@ LABEL_38:
     v64 = 0;
   }
 
-  v65 = v53 ^ __ROR8__(v51 ^ __ROR8__(v49 ^ __ROR8__(v46 ^ __ROR8__(v54 ^ __ROR8__(v55 ^ __ROR8__(v56 ^ __ROR8__(v70 ^ __ROR8__(v71 ^ __ROR8__(v73 ^ __ROR8__(v74 ^ __ROR8__(v75 ^ __ROR8__(v57 ^ __ROR8__(v76 ^ __ROR8__(v77 ^ __ROR8__(v78 ^ __ROR8__(v79 ^ __ROR8__(v58 ^ __ROR8__(v80 ^ __ROR8__(v81 ^ __ROR8__(v67 ^ __ROR8__(v68 ^ __ROR8__(v69 ^ __ROR8__(v37 ^ __ROR8__(v16 ^ __ROR8__(v38 ^ __ROR8__(v47 ^ __ROR8__(v64 ^ __ROR8__(v63, 51) ^ __ROR8__(v3, 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51);
+  v65 = v53 ^ __ROR8__(v51 ^ __ROR8__(v49 ^ __ROR8__(v46 ^ __ROR8__(v54 ^ __ROR8__(v55 ^ __ROR8__(v56 ^ __ROR8__(v70 ^ __ROR8__(isBlinking ^ __ROR8__(v73 ^ __ROR8__(v74 ^ __ROR8__(v75 ^ __ROR8__(v57 ^ __ROR8__(isBoundingBoxAligned ^ __ROR8__(v77 ^ __ROR8__(v78 ^ __ROR8__(v79 ^ __ROR8__(v58 ^ __ROR8__(faceId ^ __ROR8__(v81 ^ __ROR8__(v67 ^ __ROR8__(v68 ^ __ROR8__(v69 ^ __ROR8__(v37 ^ __ROR8__(landmarksConstellation ^ __ROR8__(v38 ^ __ROR8__(v47 ^ __ROR8__(v64 ^ __ROR8__(v63, 51) ^ __ROR8__(v3, 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51), 51);
 
   return v65;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = VNFaceObservation;
-  [(VNDetectedObjectObservation *)&v17 encodeWithCoder:v4];
-  [v4 vn_encodeCodingVersion:0 forKey:@"VNFaceObservation"];
+  [(VNDetectedObjectObservation *)&v17 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodeCodingVersion:0 forKey:@"VNFaceObservation"];
   *&v5 = self->_alignedBoundingBox.origin.x;
-  [v4 encodeFloat:@"alignedBBX" forKey:v5];
+  [coderCopy encodeFloat:@"alignedBBX" forKey:v5];
   *&v6 = self->_alignedBoundingBox.origin.y;
-  [v4 encodeFloat:@"alignedBBY" forKey:v6];
+  [coderCopy encodeFloat:@"alignedBBY" forKey:v6];
   *&v7 = self->_alignedBoundingBox.size.width;
-  [v4 encodeFloat:@"alignedBBW" forKey:v7];
+  [coderCopy encodeFloat:@"alignedBBW" forKey:v7];
   *&v8 = self->_alignedBoundingBox.size.height;
-  [v4 encodeFloat:@"alignedBBH" forKey:v8];
-  [v4 encodeDouble:@"unalignedBBXAsDouble" forKey:self->_unalignedBoundingBox.origin.x];
-  [v4 encodeDouble:@"unalignedBBYAsDouble" forKey:self->_unalignedBoundingBox.origin.y];
-  [v4 encodeDouble:@"unalignedBBWAsDouble" forKey:self->_unalignedBoundingBox.size.width];
-  [v4 encodeDouble:@"unalignedBBHAsDouble" forKey:self->_unalignedBoundingBox.size.height];
-  [v4 encodeObject:self->_landmarkPoints forKey:@"landmarks"];
+  [coderCopy encodeFloat:@"alignedBBH" forKey:v8];
+  [coderCopy encodeDouble:@"unalignedBBXAsDouble" forKey:self->_unalignedBoundingBox.origin.x];
+  [coderCopy encodeDouble:@"unalignedBBYAsDouble" forKey:self->_unalignedBoundingBox.origin.y];
+  [coderCopy encodeDouble:@"unalignedBBWAsDouble" forKey:self->_unalignedBoundingBox.size.width];
+  [coderCopy encodeDouble:@"unalignedBBHAsDouble" forKey:self->_unalignedBoundingBox.size.height];
+  [coderCopy encodeObject:self->_landmarkPoints forKey:@"landmarks"];
   v9 = self->_landmarkPoints;
   v10 = VisionCoreEqualOrNilObjects();
 
   if ((v10 & 1) == 0)
   {
-    [v4 encodeObject:self->_landmarkPoints65 forKey:@"landmarks65"];
+    [coderCopy encodeObject:self->_landmarkPoints65 forKey:@"landmarks65"];
   }
 
-  [v4 encodeObject:self->_landmarkPrecisionEstimatesPerPoint forKey:@"precisionEstimates"];
-  [v4 encodeInteger:self->_landmarksConstellation forKey:@"landmarksConstellation"];
-  [v4 encodeObject:self->_landmarkPoints3d forKey:@"landmarks3D"];
-  [v4 encodeObject:self->_poseData forKey:@"pose"];
-  [v4 encodeObject:self->_poseOriginatingRequestSpecifier forKey:@"poseOrigReq"];
-  [v4 encodeObject:self->_expressionsAndScores forKey:@"expressions"];
+  [coderCopy encodeObject:self->_landmarkPrecisionEstimatesPerPoint forKey:@"precisionEstimates"];
+  [coderCopy encodeInteger:self->_landmarksConstellation forKey:@"landmarksConstellation"];
+  [coderCopy encodeObject:self->_landmarkPoints3d forKey:@"landmarks3D"];
+  [coderCopy encodeObject:self->_poseData forKey:@"pose"];
+  [coderCopy encodeObject:self->_poseOriginatingRequestSpecifier forKey:@"poseOrigReq"];
+  [coderCopy encodeObject:self->_expressionsAndScores forKey:@"expressions"];
   *&v11 = self->_faceIdConfidence;
-  [v4 encodeFloat:@"faceIDConfidence" forKey:v11];
-  [v4 encodeInteger:self->_faceId forKey:@"faceID"];
-  [v4 encodeObject:self->_faceprint forKey:@"faceprint"];
-  [v4 encodeObject:self->_torsoprint forKey:@"torsoprint"];
-  [v4 encodeObject:self->_faceTorsoprint forKey:@"faceTorsoprint"];
-  [v4 encodeBool:self->_boundingBoxAligned forKey:@"hasAlignedBBox"];
+  [coderCopy encodeFloat:@"faceIDConfidence" forKey:v11];
+  [coderCopy encodeInteger:self->_faceId forKey:@"faceID"];
+  [coderCopy encodeObject:self->_faceprint forKey:@"faceprint"];
+  [coderCopy encodeObject:self->_torsoprint forKey:@"torsoprint"];
+  [coderCopy encodeObject:self->_faceTorsoprint forKey:@"faceTorsoprint"];
+  [coderCopy encodeBool:self->_boundingBoxAligned forKey:@"hasAlignedBBox"];
   *&v12 = self->_alignedRotationAngle;
-  [v4 encodeFloat:@"alignedRotAngle" forKey:v12];
-  [v4 encodeObject:self->_roll forKey:@"roll"];
-  [v4 encodeObject:self->_yaw forKey:@"yaw"];
-  [v4 encodeObject:self->_pitch forKey:@"pitch"];
-  [v4 encodeObject:self->_faceRegionMap forKey:@"faceRegionMap"];
-  [v4 encodeObject:self->_faceAttributes forKey:@"faceAttributes"];
-  [v4 encodeObject:self->_faceSegments forKey:@"faceSmntcSegments"];
-  [v4 encodeBool:self->_isBlinking forKey:@"blinking"];
-  [v4 encodeObject:self->_alignedMeanShape forKey:@"alignedMeanShape"];
+  [coderCopy encodeFloat:@"alignedRotAngle" forKey:v12];
+  [coderCopy encodeObject:self->_roll forKey:@"roll"];
+  [coderCopy encodeObject:self->_yaw forKey:@"yaw"];
+  [coderCopy encodeObject:self->_pitch forKey:@"pitch"];
+  [coderCopy encodeObject:self->_faceRegionMap forKey:@"faceRegionMap"];
+  [coderCopy encodeObject:self->_faceAttributes forKey:@"faceAttributes"];
+  [coderCopy encodeObject:self->_faceSegments forKey:@"faceSmntcSegments"];
+  [coderCopy encodeBool:self->_isBlinking forKey:@"blinking"];
+  [coderCopy encodeObject:self->_alignedMeanShape forKey:@"alignedMeanShape"];
   *&v13 = self->_blinkScore;
-  [v4 encodeFloat:@"blinkScore" forKey:v13];
+  [coderCopy encodeFloat:@"blinkScore" forKey:v13];
   *&v14 = self->_landmarkScore;
-  [v4 encodeFloat:@"landmarksScore" forKey:v14];
-  [v4 encodeObject:self->_faceCaptureQuality forKey:@"faceCaptureQuality"];
-  [v4 encodeObject:self->_faceCaptureQualityOriginatingRequestSpecifier forKey:@"faceCQOReq"];
+  [coderCopy encodeFloat:@"landmarksScore" forKey:v14];
+  [coderCopy encodeObject:self->_faceCaptureQuality forKey:@"faceCaptureQuality"];
+  [coderCopy encodeObject:self->_faceCaptureQualityOriginatingRequestSpecifier forKey:@"faceCQOReq"];
   *&v15 = self->_faceJunkinessIndex;
-  [v4 encodeFloat:@"faceJunkinessIndex" forKey:v15];
+  [coderCopy encodeFloat:@"faceJunkinessIndex" forKey:v15];
   *&v16 = self->_faceOrientationIndex;
-  [v4 encodeFloat:@"faceOrientationIndex" forKey:v16];
-  [v4 encodeObject:self->_landmarksOriginatingRequestSpecifier forKey:@"faceLMOReq"];
-  [v4 encodeObject:self->_landmarks3DOriginatingRequestSpecifier forKey:@"faceLM3DOReq"];
-  [v4 encodeObject:self->_gaze forKey:@"gaze"];
-  [v4 encodeObject:self->_faceScreenGaze forKey:@"screengaze"];
+  [coderCopy encodeFloat:@"faceOrientationIndex" forKey:v16];
+  [coderCopy encodeObject:self->_landmarksOriginatingRequestSpecifier forKey:@"faceLMOReq"];
+  [coderCopy encodeObject:self->_landmarks3DOriginatingRequestSpecifier forKey:@"faceLM3DOReq"];
+  [coderCopy encodeObject:self->_gaze forKey:@"gaze"];
+  [coderCopy encodeObject:self->_faceScreenGaze forKey:@"screengaze"];
 }
 
-- (VNFaceObservation)initWithCoder:(id)a3
+- (VNFaceObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v104.receiver = self;
   v104.super_class = VNFaceObservation;
-  v5 = [(VNDetectedObjectObservation *)&v104 initWithCoder:v4];
+  v5 = [(VNDetectedObjectObservation *)&v104 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_22;
@@ -1357,22 +1357,22 @@ LABEL_38:
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
-  if ([v4 vn_decodeCodingVersionForKey:@"VNFaceObservation"])
+  if ([coderCopy vn_decodeCodingVersionForKey:@"VNFaceObservation"])
   {
     goto LABEL_22;
   }
 
-  [v4 decodeFloatForKey:@"alignedBBX"];
+  [coderCopy decodeFloatForKey:@"alignedBBX"];
   v5->_alignedBoundingBox.origin.x = v9;
-  [v4 decodeFloatForKey:@"alignedBBY"];
+  [coderCopy decodeFloatForKey:@"alignedBBY"];
   v5->_alignedBoundingBox.origin.y = v10;
-  [v4 decodeFloatForKey:@"alignedBBW"];
+  [coderCopy decodeFloatForKey:@"alignedBBW"];
   v5->_alignedBoundingBox.size.width = v11;
-  [v4 decodeFloatForKey:@"alignedBBH"];
+  [coderCopy decodeFloatForKey:@"alignedBBH"];
   v5->_alignedBoundingBox.size.height = v12;
-  if ([v4 containsValueForKey:@"unalignedBBX"] && objc_msgSend(v4, "containsValueForKey:", @"unalignedBBY") && objc_msgSend(v4, "containsValueForKey:", @"unalignedBBW"))
+  if ([coderCopy containsValueForKey:@"unalignedBBX"] && objc_msgSend(coderCopy, "containsValueForKey:", @"unalignedBBY") && objc_msgSend(coderCopy, "containsValueForKey:", @"unalignedBBW"))
   {
-    v13 = [v4 containsValueForKey:@"unalignedBBH"];
+    v13 = [coderCopy containsValueForKey:@"unalignedBBH"];
   }
 
   else
@@ -1380,43 +1380,43 @@ LABEL_38:
     v13 = 0;
   }
 
-  v14 = [v4 containsValueForKey:@"unalignedBBXAsDouble"];
+  v14 = [coderCopy containsValueForKey:@"unalignedBBXAsDouble"];
   if (v14)
   {
-    v14 = [v4 containsValueForKey:@"unalignedBBYAsDouble"];
+    v14 = [coderCopy containsValueForKey:@"unalignedBBYAsDouble"];
     if (v14)
     {
-      v14 = [v4 containsValueForKey:@"unalignedBBWAsDouble"];
+      v14 = [coderCopy containsValueForKey:@"unalignedBBWAsDouble"];
       if (v14)
       {
-        v14 = [v4 containsValueForKey:@"unalignedBBHAsDouble"];
+        v14 = [coderCopy containsValueForKey:@"unalignedBBHAsDouble"];
       }
     }
   }
 
   if (v13)
   {
-    [v4 decodeFloatForKey:@"unalignedBBX"];
+    [coderCopy decodeFloatForKey:@"unalignedBBX"];
     p_unalignedBoundingBox = &v5->_unalignedBoundingBox;
     v5->_unalignedBoundingBox.origin.x = v21;
-    [v4 decodeFloatForKey:@"unalignedBBY"];
+    [coderCopy decodeFloatForKey:@"unalignedBBY"];
     v5->_unalignedBoundingBox.origin.y = v23;
-    [v4 decodeFloatForKey:@"unalignedBBW"];
+    [coderCopy decodeFloatForKey:@"unalignedBBW"];
     v5->_unalignedBoundingBox.size.width = v24;
-    [v4 decodeFloatForKey:@"unalignedBBH"];
+    [coderCopy decodeFloatForKey:@"unalignedBBH"];
     v26 = v25;
   }
 
   else if (v14)
   {
-    [v4 decodeDoubleForKey:@"unalignedBBXAsDouble"];
+    [coderCopy decodeDoubleForKey:@"unalignedBBXAsDouble"];
     p_unalignedBoundingBox = &v5->_unalignedBoundingBox;
     v5->_unalignedBoundingBox.origin.x = v27;
-    [v4 decodeDoubleForKey:@"unalignedBBYAsDouble"];
+    [coderCopy decodeDoubleForKey:@"unalignedBBYAsDouble"];
     v5->_unalignedBoundingBox.origin.y = v28;
-    [v4 decodeDoubleForKey:@"unalignedBBWAsDouble"];
+    [coderCopy decodeDoubleForKey:@"unalignedBBWAsDouble"];
     v5->_unalignedBoundingBox.size.width = v29;
-    [v4 decodeDoubleForKey:@"unalignedBBHAsDouble"];
+    [coderCopy decodeDoubleForKey:@"unalignedBBHAsDouble"];
     v26 = v30;
   }
 
@@ -1431,11 +1431,11 @@ LABEL_38:
   }
 
   p_unalignedBoundingBox->size.height = v26;
-  v34 = [v4 decodeObjectOfClass:v6 forKey:@"landmarks"];
+  v34 = [coderCopy decodeObjectOfClass:v6 forKey:@"landmarks"];
   landmarkPoints = v5->_landmarkPoints;
   v5->_landmarkPoints = v34;
 
-  v36 = [v4 decodeObjectOfClass:v6 forKey:@"landmarks65"];
+  v36 = [coderCopy decodeObjectOfClass:v6 forKey:@"landmarks65"];
   landmarkPoints65 = v5->_landmarkPoints65;
   v5->_landmarkPoints65 = v36;
 
@@ -1444,19 +1444,19 @@ LABEL_38:
     objc_storeStrong(&v5->_landmarkPoints65, v5->_landmarkPoints);
   }
 
-  v38 = [v4 decodeArrayOfObjectsOfClass:v7 forKey:@"precisionEstimates"];
+  v38 = [coderCopy decodeArrayOfObjectsOfClass:v7 forKey:@"precisionEstimates"];
   landmarkPrecisionEstimatesPerPoint = v5->_landmarkPrecisionEstimatesPerPoint;
   v5->_landmarkPrecisionEstimatesPerPoint = v38;
 
-  v40 = [v4 decodeIntegerForKey:@"landmarksConstellation"];
+  v40 = [coderCopy decodeIntegerForKey:@"landmarksConstellation"];
   v5->_landmarksConstellation = v40;
   if (v40 < 3)
   {
-    v45 = [v4 decodeObjectOfClass:v6 forKey:@"landmarks3D"];
+    v45 = [coderCopy decodeObjectOfClass:v6 forKey:@"landmarks3D"];
     landmarkPoints3d = v5->_landmarkPoints3d;
     v5->_landmarkPoints3d = v45;
 
-    v47 = [v4 decodeObjectOfClass:v6 forKey:@"pose"];
+    v47 = [coderCopy decodeObjectOfClass:v6 forKey:@"pose"];
     poseData = v5->_poseData;
     v5->_poseData = v47;
 
@@ -1468,9 +1468,9 @@ LABEL_38:
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"invalid pose data"];
       }
 
-      if ([v4 containsValueForKey:@"poseOrigReq"])
+      if ([coderCopy containsValueForKey:@"poseOrigReq"])
       {
-        v50 = [v4 decodeObjectOfClass:v8 forKey:@"poseOrigReq"];
+        v50 = [coderCopy decodeObjectOfClass:v8 forKey:@"poseOrigReq"];
         poseOriginatingRequestSpecifier = v5->_poseOriginatingRequestSpecifier;
         v5->_poseOriginatingRequestSpecifier = v50;
 
@@ -1490,7 +1490,7 @@ LABEL_38:
 
         if (!v5->_poseOriginatingRequestSpecifier)
         {
-          [v4 failWithError:v53];
+          [coderCopy failWithError:v53];
 
           goto LABEL_22;
         }
@@ -1500,118 +1500,118 @@ LABEL_38:
     v55 = MEMORY[0x1E695DFD8];
     v56 = objc_opt_class();
     v57 = [v55 setWithObjects:{v56, objc_opt_class(), v7, 0}];
-    v58 = [v4 decodeObjectOfClasses:v57 forKey:@"expressions"];
+    v58 = [coderCopy decodeObjectOfClasses:v57 forKey:@"expressions"];
     expressionsAndScores = v5->_expressionsAndScores;
     v5->_expressionsAndScores = v58;
 
-    [v4 decodeFloatForKey:@"faceIDConfidence"];
+    [coderCopy decodeFloatForKey:@"faceIDConfidence"];
     v5->_faceIdConfidence = v60;
-    v5->_faceId = [v4 decodeIntegerForKey:@"faceID"];
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceprint"];
+    v5->_faceId = [coderCopy decodeIntegerForKey:@"faceID"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceprint"];
     faceprint = v5->_faceprint;
     v5->_faceprint = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"torsoprint"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"torsoprint"];
     torsoprint = v5->_torsoprint;
     v5->_torsoprint = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceTorsoprint"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceTorsoprint"];
     faceTorsoprint = v5->_faceTorsoprint;
     v5->_faceTorsoprint = v65;
 
-    v5->_boundingBoxAligned = [v4 decodeBoolForKey:@"hasAlignedBBox"];
-    [v4 decodeFloatForKey:@"alignedRotAngle"];
+    v5->_boundingBoxAligned = [coderCopy decodeBoolForKey:@"hasAlignedBBox"];
+    [coderCopy decodeFloatForKey:@"alignedRotAngle"];
     v5->_alignedRotationAngle = v67;
-    v68 = [v4 decodeObjectOfClass:v7 forKey:@"roll"];
+    v68 = [coderCopy decodeObjectOfClass:v7 forKey:@"roll"];
     roll = v5->_roll;
     v5->_roll = v68;
 
-    v70 = [v4 decodeObjectOfClass:v7 forKey:@"yaw"];
+    v70 = [coderCopy decodeObjectOfClass:v7 forKey:@"yaw"];
     yaw = v5->_yaw;
     v5->_yaw = v70;
 
-    v72 = [v4 decodeObjectOfClass:v7 forKey:@"pitch"];
+    v72 = [coderCopy decodeObjectOfClass:v7 forKey:@"pitch"];
     pitch = v5->_pitch;
     v5->_pitch = v72;
 
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceRegionMap"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceRegionMap"];
     faceRegionMap = v5->_faceRegionMap;
     v5->_faceRegionMap = v74;
 
-    v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceAttributes"];
+    v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceAttributes"];
     faceAttributes = v5->_faceAttributes;
     v5->_faceAttributes = v76;
 
-    v78 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceSmntcSegments"];
+    v78 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceSmntcSegments"];
     faceSegments = v5->_faceSegments;
     v5->_faceSegments = v78;
 
-    v5->_isBlinking = [v4 decodeBoolForKey:@"blinking"];
-    [v4 decodeFloatForKey:@"blinkScore"];
+    v5->_isBlinking = [coderCopy decodeBoolForKey:@"blinking"];
+    [coderCopy decodeFloatForKey:@"blinkScore"];
     v5->_blinkScore = v80;
-    v81 = [v4 decodeObjectOfClass:v6 forKey:@"alignedMeanShape"];
+    v81 = [coderCopy decodeObjectOfClass:v6 forKey:@"alignedMeanShape"];
     alignedMeanShape = v5->_alignedMeanShape;
     v5->_alignedMeanShape = v81;
 
-    [v4 decodeFloatForKey:@"landmarksScore"];
+    [coderCopy decodeFloatForKey:@"landmarksScore"];
     v5->_landmarkScore = v83;
-    [v4 decodeFloatForKey:@"faceJunkinessIndex"];
+    [coderCopy decodeFloatForKey:@"faceJunkinessIndex"];
     v5->_faceJunkinessIndex = v84;
-    v85 = [v4 decodeObjectOfClass:v7 forKey:@"faceCaptureQuality"];
+    v85 = [coderCopy decodeObjectOfClass:v7 forKey:@"faceCaptureQuality"];
     faceCaptureQuality = v5->_faceCaptureQuality;
     v5->_faceCaptureQuality = v85;
 
-    v87 = [v4 decodeObjectOfClass:v8 forKey:@"faceCQOReq"];
+    v87 = [coderCopy decodeObjectOfClass:v8 forKey:@"faceCQOReq"];
     faceCaptureQualityOriginatingRequestSpecifier = v5->_faceCaptureQualityOriginatingRequestSpecifier;
     v5->_faceCaptureQualityOriginatingRequestSpecifier = v87;
 
-    [v4 decodeFloatForKey:@"faceOrientationIndex"];
+    [coderCopy decodeFloatForKey:@"faceOrientationIndex"];
     v5->_faceOrientationIndex = v89;
-    if ([v4 containsValueForKey:@"faceLMOReq"])
+    if ([coderCopy containsValueForKey:@"faceLMOReq"])
     {
-      v90 = [v4 decodeObjectOfClass:v8 forKey:@"faceLMOReq"];
+      v90 = [coderCopy decodeObjectOfClass:v8 forKey:@"faceLMOReq"];
       landmarksOriginatingRequestSpecifier = v5->_landmarksOriginatingRequestSpecifier;
       v5->_landmarksOriginatingRequestSpecifier = v90;
     }
 
     else
     {
-      if (![v4 containsValueForKey:@"faceLMRequestRev"])
+      if (![coderCopy containsValueForKey:@"faceLMRequestRev"])
       {
         goto LABEL_37;
       }
 
       v102 = 0;
-      v91 = +[VNRequestSpecifier specifierForRequestClass:revision:error:](VNRequestSpecifier, "specifierForRequestClass:revision:error:", objc_opt_class(), [v4 decodeIntegerForKey:@"faceLMRequestRev"], &v102);
+      v91 = +[VNRequestSpecifier specifierForRequestClass:revision:error:](VNRequestSpecifier, "specifierForRequestClass:revision:error:", objc_opt_class(), [coderCopy decodeIntegerForKey:@"faceLMRequestRev"], &v102);
       landmarksOriginatingRequestSpecifier = v102;
       v92 = v5->_landmarksOriginatingRequestSpecifier;
       v5->_landmarksOriginatingRequestSpecifier = v91;
 
       if (!v5->_landmarksOriginatingRequestSpecifier)
       {
-        [v4 failWithError:landmarksOriginatingRequestSpecifier];
+        [coderCopy failWithError:landmarksOriginatingRequestSpecifier];
         goto LABEL_21;
       }
     }
 
 LABEL_37:
-    if ([v4 containsValueForKey:@"faceLM3DOReq"])
+    if ([coderCopy containsValueForKey:@"faceLM3DOReq"])
     {
-      v93 = [v4 decodeObjectOfClass:v8 forKey:@"faceLM3DOReq"];
+      v93 = [coderCopy decodeObjectOfClass:v8 forKey:@"faceLM3DOReq"];
       landmarksOriginatingRequestSpecifier = v5->_landmarks3DOriginatingRequestSpecifier;
       v5->_landmarks3DOriginatingRequestSpecifier = v93;
     }
 
     else
     {
-      if (![v4 containsValueForKey:@"faceLM3DRequestRev"])
+      if (![coderCopy containsValueForKey:@"faceLM3DRequestRev"])
       {
 LABEL_42:
-        v96 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gaze"];
+        v96 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gaze"];
         gaze = v5->_gaze;
         v5->_gaze = v96;
 
-        v98 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screengaze"];
+        v98 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screengaze"];
         faceScreenGaze = v5->_faceScreenGaze;
         v5->_faceScreenGaze = v98;
 
@@ -1621,14 +1621,14 @@ LABEL_42:
       }
 
       v101 = 0;
-      v94 = +[VNRequestSpecifier specifierForRequestClass:revision:error:](VNRequestSpecifier, "specifierForRequestClass:revision:error:", objc_opt_class(), [v4 decodeIntegerForKey:@"faceLM3DRequestRev"], &v101);
+      v94 = +[VNRequestSpecifier specifierForRequestClass:revision:error:](VNRequestSpecifier, "specifierForRequestClass:revision:error:", objc_opt_class(), [coderCopy decodeIntegerForKey:@"faceLM3DRequestRev"], &v101);
       landmarksOriginatingRequestSpecifier = v101;
       landmarks3DOriginatingRequestSpecifier = v5->_landmarks3DOriginatingRequestSpecifier;
       v5->_landmarks3DOriginatingRequestSpecifier = v94;
 
       if (!v5->_landmarks3DOriginatingRequestSpecifier)
       {
-        [v4 failWithError:landmarksOriginatingRequestSpecifier];
+        [coderCopy failWithError:landmarksOriginatingRequestSpecifier];
         goto LABEL_21;
       }
     }
@@ -1638,7 +1638,7 @@ LABEL_42:
 
   landmarksOriginatingRequestSpecifier = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Data integrity check failed when un-archiving landmarks constellation. Un-archived constellation is out of range: %lu", v5->_landmarksConstellation];
   v42 = [VNError errorForInternalErrorWithLocalizedDescription:landmarksOriginatingRequestSpecifier];
-  [v4 failWithError:v42];
+  [coderCopy failWithError:v42];
 
 LABEL_21:
 LABEL_22:
@@ -1655,11 +1655,11 @@ LABEL_23:
   self->_cachedLandmarks3dLock._os_unfair_lock_opaque = 0;
 }
 
-- (VNFaceObservation)initWithRequestRevision:(unint64_t)a3
+- (VNFaceObservation)initWithRequestRevision:(unint64_t)revision
 {
   v7.receiver = self;
   v7.super_class = VNFaceObservation;
-  v3 = [(VNObservation *)&v7 initWithRequestRevision:a3];
+  v3 = [(VNObservation *)&v7 initWithRequestRevision:revision];
   v4 = v3;
   if (v3)
   {
@@ -1670,7 +1670,7 @@ LABEL_23:
   return v4;
 }
 
-+ (uint64_t)computeYawPitchRollFromPoseMatrix:(__n128)a3 outputYaw:(__n128)a4 outputPitch:(uint64_t)a5 outputRoll:(uint64_t)a6
++ (uint64_t)computeYawPitchRollFromPoseMatrix:(__n128)matrix outputYaw:(__n128)yaw outputPitch:(uint64_t)pitch outputRoll:(uint64_t)roll
 {
   v12 = 0;
   v13 = *MEMORY[0x1E69E9B18];
@@ -1680,10 +1680,10 @@ LABEL_23:
   v14 = *(MEMORY[0x1E69E9B18] + 48);
   v15.i32[1] = -1.0;
   v16.i32[2] = -1.0;
-  v26[0] = a1;
+  v26[0] = self;
   v26[1] = a2;
-  v26[2] = a3;
-  v26[3] = a4;
+  v26[2] = matrix;
+  v26[3] = yaw;
   do
   {
     *&v27[v12 / 4] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v13, COERCE_FLOAT(v26[v12 / 0x10])), v15, *&v26[v12 / 0x10], 1), v16, v26[v12 / 0x10], 2), v14, v26[v12 / 0x10], 3);
@@ -1726,60 +1726,60 @@ LABEL_23:
   return 1;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5 roll:(id)a6 yaw:(id)a7
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox roll:(id)roll yaw:(id)yaw
 {
-  v7 = [a1 faceObservationWithRequestRevision:a3 boundingBox:a6 alignedBoundingBox:a7 roll:0 yaw:a4.origin.x pitch:{a4.origin.y, a4.size.width, a4.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v7 = [self faceObservationWithRequestRevision:revision boundingBox:roll alignedBoundingBox:yaw roll:0 yaw:box.origin.x pitch:{box.origin.y, box.size.width, box.size.height, boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
 
   return v7;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5 roll:(id)a6 yaw:(id)a7 pitch:(id)a8
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox roll:(id)roll yaw:(id)yaw pitch:(id)pitch
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4.size.height;
-  v15 = a4.size.width;
-  v16 = a4.origin.y;
-  v17 = a4.origin.x;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = [objc_opt_class() faceObservationWithRequestRevision:a3 boundingBox:v17 andAlignedBoundingBox:{v16, v15, v14, x, y, width, height}];
-  [v22 setRoll:v19];
-  [v22 setYaw:v20];
-  [v22 setPitch:v21];
+  height = boundingBox.size.height;
+  width = boundingBox.size.width;
+  y = boundingBox.origin.y;
+  x = boundingBox.origin.x;
+  v14 = box.size.height;
+  v15 = box.size.width;
+  v16 = box.origin.y;
+  v17 = box.origin.x;
+  rollCopy = roll;
+  yawCopy = yaw;
+  pitchCopy = pitch;
+  v22 = [objc_opt_class() faceObservationWithRequestRevision:revision boundingBox:v17 andAlignedBoundingBox:{v16, v15, v14, x, y, width, height}];
+  [v22 setRoll:rollCopy];
+  [v22 setYaw:yawCopy];
+  [v22 setPitch:pitchCopy];
 
   return v22;
 }
 
 + (VNFaceObservation)faceObservationWithRequestRevision:(NSUInteger)requestRevision boundingBox:(CGRect)boundingBox roll:(NSNumber *)roll yaw:(NSNumber *)yaw
 {
-  v6 = [a1 faceObservationWithRequestRevision:requestRevision boundingBox:roll roll:yaw yaw:0 pitch:{boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
+  v6 = [self faceObservationWithRequestRevision:requestRevision boundingBox:roll roll:yaw yaw:0 pitch:{boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
 
   return v6;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 roll:(id)a5 yaw:(id)a6 pitch:(id)a7 isBoundingBoxAligned:(BOOL)a8 alignedBoundingBox:(CGRect)a9 landmarks:(id)a10 landmarks65:(id)a11 landmarkScore:(float)a12 isBlinking:(BOOL)a13 blinkScore:(float)a14 faceOrientationIndex:(float)a15 faceJunkinessIndex:(float)a16
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw pitch:(id)pitch isBoundingBoxAligned:(BOOL)aligned alignedBoundingBox:(CGRect)boundingBox landmarks:(id)self0 landmarks65:(id)self1 landmarkScore:(float)self2 isBlinking:(BOOL)self3 blinkScore:(float)self4 faceOrientationIndex:(float)self5 faceJunkinessIndex:(float)self6
 {
-  v17 = a8;
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v24 = a4.size.height;
-  v25 = a4.size.width;
-  v26 = a4.origin.y;
-  v27 = a4.origin.x;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
-  v33 = a10;
-  v34 = a11;
-  if (v30)
+  alignedCopy = aligned;
+  height = boundingBox.size.height;
+  width = boundingBox.size.width;
+  y = boundingBox.origin.y;
+  x = boundingBox.origin.x;
+  v24 = box.size.height;
+  v25 = box.size.width;
+  v26 = box.origin.y;
+  v27 = box.origin.x;
+  rollCopy = roll;
+  yawCopy = yaw;
+  pitchCopy = pitch;
+  landmarksCopy = landmarks;
+  landmarks65Copy = landmarks65;
+  if (rollCopy)
   {
-    [v30 floatValue];
+    [rollCopy floatValue];
     if (v35 >= -3.1416)
     {
       if (v35 < 3.1416)
@@ -1795,16 +1795,16 @@ LABEL_23:
       v36 = &unk_1F19C2458;
     }
 
-    v30 = v36;
+    rollCopy = v36;
   }
 
 LABEL_7:
-  if (!v31)
+  if (!yawCopy)
   {
     goto LABEL_13;
   }
 
-  [v31 floatValue];
+  [yawCopy floatValue];
   if (v37 <= -1.5708)
   {
     v38 = &unk_1F19C2478;
@@ -1820,14 +1820,14 @@ LABEL_7:
     v38 = &unk_1F19C2488;
   }
 
-  v31 = v38;
+  yawCopy = v38;
 LABEL_13:
-  if (!v32)
+  if (!pitchCopy)
   {
     goto LABEL_19;
   }
 
-  [v32 floatValue];
+  [pitchCopy floatValue];
   if (v39 <= -1.5708)
   {
     v40 = &unk_1F19C2478;
@@ -1843,14 +1843,14 @@ LABEL_13:
     v40 = &unk_1F19C2488;
   }
 
-  v32 = v40;
+  pitchCopy = v40;
 LABEL_19:
-  v41 = [[a1 alloc] initWithRequestRevision:a3 boundingBox:{v27, v26, v25, v24}];
+  v41 = [[self alloc] initWithRequestRevision:revision boundingBox:{v27, v26, v25, v24}];
   [v41 setUnalignedBoundingBox:{v27, v26, v25, v24}];
-  [v41 setRoll:v30];
-  [v41 setYaw:v31];
-  [v41 setPitch:v32];
-  if (v17)
+  [v41 setRoll:rollCopy];
+  [v41 setYaw:yawCopy];
+  [v41 setPitch:pitchCopy];
+  if (alignedCopy)
   {
     [v41 setBoundingBoxAligned:1];
     *&v43 = x;
@@ -1860,43 +1860,43 @@ LABEL_19:
     [v41 setAlignedBoundingBox:{v43, v44, v45, v46}];
   }
 
-  if (v34)
+  if (landmarks65Copy)
   {
-    v47 = [v34 pointsData];
-    v48 = [v34 originatingRequestSpecifier];
-    [v41 setLandmarkPoints65Data:v47 originatingRequestSpecifier:v48];
+    pointsData = [landmarks65Copy pointsData];
+    originatingRequestSpecifier = [landmarks65Copy originatingRequestSpecifier];
+    [v41 setLandmarkPoints65Data:pointsData originatingRequestSpecifier:originatingRequestSpecifier];
   }
 
-  if (v33)
+  if (landmarksCopy)
   {
-    v49 = [v33 pointsData];
-    v50 = [v33 originatingRequestSpecifier];
-    [v41 setLandmarkPointsData:v49 originatingRequestSpecifier:v50];
+    pointsData2 = [landmarksCopy pointsData];
+    originatingRequestSpecifier2 = [landmarksCopy originatingRequestSpecifier];
+    [v41 setLandmarkPointsData:pointsData2 originatingRequestSpecifier:originatingRequestSpecifier2];
 
-    [v41 setLandmarksConstellation:{objc_msgSend(v33, "constellation")}];
-    v51 = [v33 precisionEstimatesPerPoint];
-    [v41 setLandmarkPrecisionEstimatesPerPoint:v51];
+    [v41 setLandmarksConstellation:{objc_msgSend(landmarksCopy, "constellation")}];
+    precisionEstimatesPerPoint = [landmarksCopy precisionEstimatesPerPoint];
+    [v41 setLandmarkPrecisionEstimatesPerPoint:precisionEstimatesPerPoint];
   }
 
-  *&v42 = a12;
+  *&v42 = score;
   [v41 setLandmarkScore:v42];
-  [v41 setIsBlinking:a13];
-  *&v52 = a14;
+  [v41 setIsBlinking:blinking];
+  *&v52 = blinkScore;
   [v41 setBlinkScore:v52];
-  *&v53 = a15;
+  *&v53 = index;
   [v41 setFaceOrientationIndex:v53];
-  *&v54 = a16;
+  *&v54 = junkinessIndex;
   [v41 setFaceJunkinessIndex:v54];
 
   return v41;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 roll:(id)a5 yaw:(id)a6 pitch:(id)a7 isBoundingBoxAligned:(BOOL)a8 alignedBoundingBox:(CGRect)a9 landmarks:(id)a10 landmarks65:(id)a11 landmarkScore:(float)a12 isBlinking:(BOOL)a13 blinkScore:(float)a14
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box roll:(id)roll yaw:(id)yaw pitch:(id)pitch isBoundingBoxAligned:(BOOL)aligned alignedBoundingBox:(CGRect)boundingBox landmarks:(id)self0 landmarks65:(id)self1 landmarkScore:(float)self2 isBlinking:(BOOL)self3 blinkScore:(float)self4
 {
   LODWORD(v17) = 0;
-  BYTE4(v16) = a13;
-  *&v16 = a12;
-  v14 = [a1 faceObservationWithRequestRevision:a3 boundingBox:a5 roll:a6 yaw:a7 pitch:a8 isBoundingBoxAligned:a10 alignedBoundingBox:a4.origin.x landmarks:a4.origin.y landmarks65:a4.size.width landmarkScore:a4.size.height isBlinking:a9.origin.x blinkScore:a9.origin.y faceOrientationIndex:a9.size.width faceJunkinessIndex:{a9.size.height, a11, v16, LODWORD(a14), v17}];
+  BYTE4(v16) = blinking;
+  *&v16 = score;
+  v14 = [self faceObservationWithRequestRevision:revision boundingBox:roll roll:yaw yaw:pitch pitch:aligned isBoundingBoxAligned:landmarks alignedBoundingBox:box.origin.x landmarks:box.origin.y landmarks65:box.size.width landmarkScore:box.size.height isBlinking:boundingBox.origin.x blinkScore:boundingBox.origin.y faceOrientationIndex:boundingBox.size.width faceJunkinessIndex:{boundingBox.size.height, landmarks65, v16, LODWORD(blinkScore), v17}];
 
   return v14;
 }
@@ -1906,36 +1906,36 @@ LABEL_19:
   LODWORD(v10) = 0;
   BYTE4(v9) = 0;
   LODWORD(v9) = 0;
-  v7 = [a1 faceObservationWithRequestRevision:requestRevision boundingBox:roll roll:yaw yaw:pitch pitch:0 isBoundingBoxAligned:0 alignedBoundingBox:boundingBox.origin.x landmarks:boundingBox.origin.y landmarks65:boundingBox.size.width landmarkScore:boundingBox.size.height isBlinking:*MEMORY[0x1E695F050] blinkScore:*(MEMORY[0x1E695F050] + 8) faceOrientationIndex:*(MEMORY[0x1E695F050] + 16) faceJunkinessIndex:{*(MEMORY[0x1E695F050] + 24), 0, v9, 0, v10}];
+  v7 = [self faceObservationWithRequestRevision:requestRevision boundingBox:roll roll:yaw yaw:pitch pitch:0 isBoundingBoxAligned:0 alignedBoundingBox:boundingBox.origin.x landmarks:boundingBox.origin.y landmarks65:boundingBox.size.width landmarkScore:boundingBox.size.height isBlinking:*MEMORY[0x1E695F050] blinkScore:*(MEMORY[0x1E695F050] + 8) faceOrientationIndex:*(MEMORY[0x1E695F050] + 16) faceJunkinessIndex:{*(MEMORY[0x1E695F050] + 24), 0, v9, 0, v10}];
 
   return v7;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 faceprint:(id)a5
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box faceprint:(id)faceprint
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = [[a1 alloc] initWithRequestRevision:a3 boundingBox:{x, y, width, height}];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  faceprintCopy = faceprint;
+  v12 = [[self alloc] initWithRequestRevision:revision boundingBox:{x, y, width, height}];
   [v12 setUnalignedBoundingBox:{x, y, width, height}];
-  [v12 setFaceprint:v11];
+  [v12 setFaceprint:faceprintCopy];
 
   return v12;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 unalignedBoundingBox:(CGRect)a4 alignedBoundingBox:(CGRect)a5
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision unalignedBoundingBox:(CGRect)box alignedBoundingBox:(CGRect)boundingBox
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = [[a1 alloc] initWithRequestRevision:a3 boundingBox:{a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  height = boundingBox.size.height;
+  width = boundingBox.size.width;
+  y = boundingBox.origin.y;
+  x = boundingBox.origin.x;
+  v9 = box.size.height;
+  v10 = box.size.width;
+  v11 = box.origin.y;
+  v12 = box.origin.x;
+  v13 = [[self alloc] initWithRequestRevision:revision boundingBox:{boundingBox.origin.x, boundingBox.origin.y, boundingBox.size.width, boundingBox.size.height}];
   [v13 setUnalignedBoundingBox:{v12, v11, v10, v9}];
   *&v14 = x;
   *&v15 = y;
@@ -1947,17 +1947,17 @@ LABEL_19:
   return v13;
 }
 
-+ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4 andAlignedBoundingBox:(CGRect)a5
++ (VNFaceObservation)faceObservationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box andAlignedBoundingBox:(CGRect)boundingBox
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = [[a1 alloc] initWithRequestRevision:a3 boundingBox:{a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  height = boundingBox.size.height;
+  width = boundingBox.size.width;
+  y = boundingBox.origin.y;
+  x = boundingBox.origin.x;
+  v9 = box.size.height;
+  v10 = box.size.width;
+  v11 = box.origin.y;
+  v12 = box.origin.x;
+  v13 = [[self alloc] initWithRequestRevision:revision boundingBox:{box.origin.x, box.origin.y, box.size.width, box.size.height}];
   [v13 setUnalignedBoundingBox:{v12, v11, v10, v9}];
   *&v14 = x;
   *&v15 = y;
@@ -1969,61 +1969,61 @@ LABEL_19:
   return v13;
 }
 
-+ (VNFaceObservation)observationWithRequestRevision:(unint64_t)a3 boundingBox:(CGRect)a4
++ (VNFaceObservation)observationWithRequestRevision:(unint64_t)revision boundingBox:(CGRect)box
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___VNFaceObservation;
-  v4 = objc_msgSendSuper2(&v6, sel_observationWithRequestRevision_boundingBox_, a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v4 = objc_msgSendSuper2(&v6, sel_observationWithRequestRevision_boundingBox_, revision, box.origin.x, box.origin.y, box.size.width, box.size.height);
   [v4 boundingBox];
   [v4 setUnalignedBoundingBox:?];
 
   return v4;
 }
 
-+ (BOOL)_exifOrientationFromFaceRollAngle:(float)a3 exifOrientation:(int *)a4 error:(id *)a5
++ (BOOL)_exifOrientationFromFaceRollAngle:(float)angle exifOrientation:(int *)orientation error:(id *)error
 {
-  if (a4)
+  if (orientation)
   {
-    if (a3 >= -45.0 && a3 < 45.0)
+    if (angle >= -45.0 && angle < 45.0)
     {
       result = 1;
-      *a4 = 1;
+      *orientation = 1;
       return result;
     }
 
-    if (a3 >= -135.0 && a3 < -45.0)
+    if (angle >= -135.0 && angle < -45.0)
     {
       v8 = 8;
       goto LABEL_19;
     }
 
-    if (a3 < -135.0 && a3 >= -180.0 || a3 >= 135.0 && a3 < 180.0)
+    if (angle < -135.0 && angle >= -180.0 || angle >= 135.0 && angle < 180.0)
     {
       v8 = 3;
 LABEL_19:
-      *a4 = v8;
+      *orientation = v8;
       return 1;
     }
 
-    if (a3 >= 45.0 && a3 < 135.0)
+    if (angle >= 45.0 && angle < 135.0)
     {
       v8 = 6;
       goto LABEL_19;
     }
 
-    if (a5)
+    if (error)
     {
       v12 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-      *a5 = [VNError errorForInvalidArgument:v12 named:@"face orientation"];
+      *error = [VNError errorForInvalidArgument:v12 named:@"face orientation"];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v9 = [VNError errorWithCode:14 message:@"exifOrientation cannot be null"];
     v10 = v9;
     result = 0;
-    *a5 = v9;
+    *error = v9;
     return result;
   }
 

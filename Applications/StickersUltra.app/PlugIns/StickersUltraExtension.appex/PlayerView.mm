@@ -1,7 +1,7 @@
 @interface PlayerView
 + (Class)layerClass;
-- (_TtC22StickersUltraExtension10PlayerView)initWithCoder:(id)a3;
-- (_TtC22StickersUltraExtension10PlayerView)initWithFrame:(CGRect)a3;
+- (_TtC22StickersUltraExtension10PlayerView)initWithCoder:(id)coder;
+- (_TtC22StickersUltraExtension10PlayerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PlayerView
@@ -13,12 +13,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC22StickersUltraExtension10PlayerView)initWithFrame:(CGRect)a3
+- (_TtC22StickersUltraExtension10PlayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22StickersUltraExtension10PlayerView_player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22StickersUltraExtension10PlayerView_playerItem) = 0;
   v8.receiver = self;
@@ -26,14 +26,14 @@
   return [(PlayerView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC22StickersUltraExtension10PlayerView)initWithCoder:(id)a3
+- (_TtC22StickersUltraExtension10PlayerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22StickersUltraExtension10PlayerView_player) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22StickersUltraExtension10PlayerView_playerItem) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlayerView();
-  v4 = a3;
-  v5 = [(PlayerView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PlayerView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

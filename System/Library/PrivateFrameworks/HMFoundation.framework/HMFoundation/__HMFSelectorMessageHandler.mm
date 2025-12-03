@@ -1,15 +1,15 @@
 @interface __HMFSelectorMessageHandler
-- (BOOL)invokeWithMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)invokeWithMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
 - (SEL)selector;
 @end
 
 @implementation __HMFSelectorMessageHandler
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -18,9 +18,9 @@
   {
     v12.receiver = self;
     v12.super_class = __HMFSelectorMessageHandler;
-    if ([(__HMFMessageHandler *)&v12 isEqual:v4])
+    if ([(__HMFMessageHandler *)&v12 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -74,17 +74,17 @@
   return isEqual;
 }
 
-- (BOOL)invokeWithMessage:(id)a3
+- (BOOL)invokeWithMessage:(id)message
 {
-  v4 = a3;
-  if (!v4)
+  messageCopy = message;
+  if (!messageCopy)
   {
     _HMFPreconditionFailure(@"message");
   }
 
-  v5 = v4;
-  v6 = [(__HMFMessageHandler *)self receiver];
-  if (v6)
+  v5 = messageCopy;
+  receiver = [(__HMFMessageHandler *)self receiver];
+  if (receiver)
   {
     if (self->_selector)
     {
@@ -97,8 +97,8 @@
     }
 
     v8 = [[HMFActivity alloc] initWithName:@"SelectorMessage Invocation"];
-    v9 = [v5 qualityOfService];
-    if (v9 == -1)
+    qualityOfService = [v5 qualityOfService];
+    if (qualityOfService == -1)
     {
       v10 = 21;
     }
@@ -108,7 +108,7 @@
       v10 = 0;
     }
 
-    if (v9 <= 8)
+    if (qualityOfService <= 8)
     {
       v11 = v10;
     }
@@ -118,7 +118,7 @@
       v11 = 9;
     }
 
-    if (v9 <= 16)
+    if (qualityOfService <= 16)
     {
       v12 = v11;
     }
@@ -128,7 +128,7 @@
       v12 = 17;
     }
 
-    if (v9 <= 24)
+    if (qualityOfService <= 24)
     {
       v13 = v12;
     }
@@ -138,7 +138,7 @@
       v13 = 25;
     }
 
-    if (v9 <= 32)
+    if (qualityOfService <= 32)
     {
       v14 = v13;
     }
@@ -152,7 +152,7 @@
     v21 = 3221225472;
     v22 = __49____HMFSelectorMessageHandler_invokeWithMessage___block_invoke;
     v23 = &unk_2786E7E50;
-    v24 = v6;
+    v24 = receiver;
     v27 = selector;
     v25 = v5;
     v15 = v8;
@@ -176,7 +176,7 @@
     }
   }
 
-  return v6 != 0;
+  return receiver != 0;
 }
 
 - (SEL)selector

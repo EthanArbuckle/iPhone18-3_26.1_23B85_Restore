@@ -1,24 +1,24 @@
 @interface PushService.PushConnectionDelegateWrapper
 - (_TtCC18AAAFoundationSwift11PushService29PushConnectionDelegateWrapper)init;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushService.PushConnectionDelegateWrapper
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v22 = self;
+  selfCopy = self;
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBBDC4F0, &qword_1B99F5B20);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x1EEE9AC00](v6 - 8, v8);
   v10 = &v21 - v9;
-  v11 = a3;
-  v12 = v22;
-  if (a4)
+  connectionCopy = connection;
+  v12 = selfCopy;
+  if (token)
   {
-    v13 = a4;
-    a4 = sub_1B99F3814();
+    tokenCopy = token;
+    token = sub_1B99F3814();
     v15 = v14;
   }
 
@@ -43,24 +43,24 @@
       v20[2] = 0;
       v20[3] = 0;
       v20[4] = v17;
-      v20[5] = a4;
+      v20[5] = token;
       v20[6] = v15;
-      sub_1B99A940C(a4, v15);
+      sub_1B99A940C(token, v15);
       sub_1B99C973C(0, 0, v10, &unk_1B99F5B40, v20);
 
-      sub_1B99A92DC(a4, v15);
+      sub_1B99A92DC(token, v15);
     }
   }
 
   else
   {
-    sub_1B99A92DC(a4, v15);
+    sub_1B99A92DC(token, v15);
 
-    v18 = v22;
+    v18 = selfCopy;
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBBDC4F0, &qword_1B99F5B20);
   v8 = *(*(v7 - 8) + 64);
@@ -69,7 +69,7 @@
   Strong = swift_weakLoadStrong();
   if (Strong)
   {
-    if (a4)
+    if (message)
     {
       v13 = Strong;
       v14 = sub_1B99F3EC4();
@@ -78,10 +78,10 @@
       v15[2] = 0;
       v15[3] = 0;
       v15[4] = v13;
-      v15[5] = a4;
-      v16 = a4;
-      v17 = a3;
-      v18 = self;
+      v15[5] = message;
+      messageCopy = message;
+      connectionCopy = connection;
+      selfCopy = self;
       sub_1B99C973C(0, 0, v11, &unk_1B99F5B30, v15);
     }
 

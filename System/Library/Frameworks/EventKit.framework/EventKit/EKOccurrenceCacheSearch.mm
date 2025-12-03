@@ -1,6 +1,6 @@
 @interface EKOccurrenceCacheSearch
-+ (id)searchWithCalendars:(id)a3 searchTerm:(id)a4 store:(id)a5 callback:(id)a6;
-- (EKOccurrenceCacheSearch)initWithCalendars:(id)a3 searchTerm:(id)a4 store:(id)a5 callback:(id)a6;
++ (id)searchWithCalendars:(id)calendars searchTerm:(id)term store:(id)store callback:(id)callback;
+- (EKOccurrenceCacheSearch)initWithCalendars:(id)calendars searchTerm:(id)term store:(id)store callback:(id)callback;
 - (id)searchTerm;
 - (void)cancel;
 - (void)run;
@@ -8,31 +8,31 @@
 
 @implementation EKOccurrenceCacheSearch
 
-+ (id)searchWithCalendars:(id)a3 searchTerm:(id)a4 store:(id)a5 callback:(id)a6
++ (id)searchWithCalendars:(id)calendars searchTerm:(id)term store:(id)store callback:(id)callback
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithCalendars:v13 searchTerm:v12 store:v11 callback:v10];
+  callbackCopy = callback;
+  storeCopy = store;
+  termCopy = term;
+  calendarsCopy = calendars;
+  v14 = [[self alloc] initWithCalendars:calendarsCopy searchTerm:termCopy store:storeCopy callback:callbackCopy];
 
   return v14;
 }
 
-- (EKOccurrenceCacheSearch)initWithCalendars:(id)a3 searchTerm:(id)a4 store:(id)a5 callback:(id)a6
+- (EKOccurrenceCacheSearch)initWithCalendars:(id)calendars searchTerm:(id)term store:(id)store callback:(id)callback
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  calendarsCopy = calendars;
+  termCopy = term;
+  storeCopy = store;
+  callbackCopy = callback;
   v27.receiver = self;
   v27.super_class = EKOccurrenceCacheSearch;
   v15 = [(EKOccurrenceCacheSearch *)&v27 init];
   if (v15)
   {
-    if (v11)
+    if (calendarsCopy)
     {
-      if (v12)
+      if (termCopy)
       {
         goto LABEL_4;
       }
@@ -40,13 +40,13 @@
 
     else
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"calendars != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"calendars != nil"}];
 
-      if (v12)
+      if (termCopy)
       {
 LABEL_4:
-        if (v13)
+        if (storeCopy)
         {
           goto LABEL_5;
         }
@@ -55,25 +55,25 @@ LABEL_4:
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"searchTerm != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"searchTerm != nil"}];
 
-    if (v13)
+    if (storeCopy)
     {
 LABEL_5:
-      if (v14)
+      if (callbackCopy)
       {
 LABEL_6:
-        v16 = [v11 copy];
+        v16 = [calendarsCopy copy];
         calendars = v15->_calendars;
         v15->_calendars = v16;
 
-        v18 = [v12 copy];
+        v18 = [termCopy copy];
         searchTerm = v15->_searchTerm;
         v15->_searchTerm = v18;
 
-        objc_storeStrong(&v15->_store, a5);
-        v20 = [v14 copy];
+        objc_storeStrong(&v15->_store, store);
+        v20 = [callbackCopy copy];
         callback = v15->_callback;
         v15->_callback = v20;
 
@@ -81,17 +81,17 @@ LABEL_6:
       }
 
 LABEL_11:
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"callback != nil"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"callback != nil"}];
 
       goto LABEL_6;
     }
 
 LABEL_10:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"store != nil"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:v15 file:@"EKOccurrenceCacheSearch.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"store != nil"}];
 
-    if (v14)
+    if (callbackCopy)
     {
       goto LABEL_6;
     }
@@ -108,11 +108,11 @@ LABEL_7:
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a1;
+  selfCopy = self;
   v5 = [v3 errorWithCADResult:a2];
   v7 = 138412290;
   v8 = v5;
-  _os_log_error_impl(&dword_1A805E000, v4, OS_LOG_TYPE_ERROR, "Call to calendar daemon failed: %@", &v7, 0xCu);
+  _os_log_error_impl(&dword_1A805E000, selfCopy, OS_LOG_TYPE_ERROR, "Call to calendar daemon failed: %@", &v7, 0xCu);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -122,9 +122,9 @@ LABEL_7:
   self->_canceled = 1;
   if (self->_replyID)
   {
-    v4 = [(EKEventStore *)self->_store connection];
-    v3 = [v4 CADOperationProxy];
-    [v3 CADOccurrenceCacheCancelSearchWithReplyID:{-[NSNumber unsignedIntValue](self->_replyID, "unsignedIntValue")}];
+    connection = [(EKEventStore *)self->_store connection];
+    cADOperationProxy = [connection CADOperationProxy];
+    [cADOperationProxy CADOccurrenceCacheCancelSearchWithReplyID:{-[NSNumber unsignedIntValue](self->_replyID, "unsignedIntValue")}];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface StandardSectionHeaderViewListCell
 + (NSString)reuseIdentifier;
-- (_TtC4Maps33StandardSectionHeaderViewListCell)initWithFrame:(CGRect)a3;
-- (void)setActionHandler:(id)a3;
+- (_TtC4Maps33StandardSectionHeaderViewListCell)initWithFrame:(CGRect)frame;
+- (void)setActionHandler:(id)handler;
 @end
 
 @implementation StandardSectionHeaderViewListCell
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -28,7 +28,7 @@
   v10 = *(self + OBJC_IVAR____TtC4Maps33StandardSectionHeaderViewListCell_actionHandler + 8);
   *v8 = v7;
   v8[1] = v6;
-  v11 = self;
+  selfCopy = self;
   sub_1000CD9D4(v7);
   sub_1000D3B90(v9, v10);
   sub_100505488();
@@ -43,12 +43,12 @@
   return v2;
 }
 
-- (_TtC4Maps33StandardSectionHeaderViewListCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps33StandardSectionHeaderViewListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (self + OBJC_IVAR____TtC4Maps33StandardSectionHeaderViewListCell_title);
   *v9 = 0;

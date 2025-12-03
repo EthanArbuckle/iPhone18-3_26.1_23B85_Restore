@@ -4,11 +4,11 @@
 - (id)dequeueAllObjects;
 - (id)dequeueObject;
 - (id)description;
-- (id)objectAtIndex:(unint64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)objectAtIndex:(unint64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
-- (void)enqueueObject:(id)a3;
-- (void)enqueueObjects:(id)a3;
+- (void)enqueueObject:(id)object;
+- (void)enqueueObjects:(id)objects;
 @end
 
 @implementation AFQueue
@@ -18,16 +18,16 @@
   v3 = self->_head;
   if (v3)
   {
-    v4 = v3;
+    nextItem = v3;
     do
     {
-      v5 = v4;
-      v4 = [v5 nextItem];
+      v5 = nextItem;
+      nextItem = [v5 nextItem];
 
       [v5 removeFromList];
     }
 
-    while (v4);
+    while (nextItem);
   }
 
   v6.receiver = self;
@@ -43,19 +43,19 @@
     v4 = self->_head;
     if (v4)
     {
-      v5 = v4;
+      nextItem = v4;
       do
       {
-        v6 = [v5 object];
-        [v3 addObject:v6];
+        object = [nextItem object];
+        [v3 addObject:object];
 
-        v7 = v5;
-        v5 = [v7 nextItem];
+        v7 = nextItem;
+        nextItem = [v7 nextItem];
 
         [v7 removeFromList];
       }
 
-      while (v5);
+      while (nextItem);
     }
 
     head = self->_head;
@@ -86,7 +86,7 @@
 {
   if (self->_count && (v3 = self->_head) != 0)
   {
-    v4 = [(AFLinkedListItem *)v3 object];
+    object = [(AFLinkedListItem *)v3 object];
     v5 = self->_head;
     tail = self->_tail;
     if (tail == v5)
@@ -94,9 +94,9 @@
       self->_tail = 0;
     }
 
-    v7 = [(AFLinkedListItem *)self->_head nextItem];
+    nextItem = [(AFLinkedListItem *)self->_head nextItem];
     head = self->_head;
-    self->_head = v7;
+    self->_head = nextItem;
 
     [(AFLinkedListItem *)v5 removeFromList];
     --self->_count;
@@ -104,10 +104,10 @@
 
   else
   {
-    v4 = 0;
+    object = 0;
   }
 
-  return v4;
+  return object;
 }
 
 - (id)description
@@ -115,17 +115,17 @@
   v7.receiver = self;
   v7.super_class = AFQueue;
   v3 = [(AFQueue *)&v7 description];
-  v4 = [(AFQueue *)self _objects];
-  v5 = [v3 stringByAppendingFormat:@" %@", v4];
+  _objects = [(AFQueue *)self _objects];
+  v5 = [v3 stringByAppendingFormat:@" %@", _objects];
 
   return v5;
 }
 
-- (void)enqueueObjects:(id)a3
+- (void)enqueueObjects:(id)objects
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  objectsCopy = objects;
+  v5 = [objectsCopy count];
   if (!v5)
   {
     goto LABEL_18;
@@ -138,7 +138,7 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v4;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v9)
   {
@@ -195,83 +195,83 @@ LABEL_15:
   objc_storeStrong(&self->_head, v6);
   objc_storeStrong(&self->_tail, v7);
   self->_count += v20;
-  v16 = [(AFQueue *)self delegate];
+  delegate = [(AFQueue *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(AFQueue *)self delegate];
-    [v18 queue:self didEnqueueObjects:v8];
+    delegate2 = [(AFQueue *)self delegate];
+    [delegate2 queue:self didEnqueueObjects:v8];
   }
 
 LABEL_18:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enqueueObject:(id)a3
+- (void)enqueueObject:(id)object
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  objectCopy2 = object;
+  v6 = [v4 arrayWithObjects:&objectCopy count:1];
 
-  [(AFQueue *)self enqueueObjects:v6, v8, v9];
+  [(AFQueue *)self enqueueObjects:v6, objectCopy, v9];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = 0;
+    object = 0;
     goto LABEL_11;
   }
 
-  v4 = a3;
-  if (!a3)
+  indexCopy = index;
+  if (!index)
   {
     head = self->_head;
     goto LABEL_7;
   }
 
-  if (count - 1 == a3)
+  if (count - 1 == index)
   {
     head = self->_tail;
 LABEL_7:
-    v6 = [(AFLinkedListItem *)head object];
+    object = [(AFLinkedListItem *)head object];
     goto LABEL_11;
   }
 
-  v7 = self->_head;
+  nextItem = self->_head;
   do
   {
-    v8 = v7;
-    v7 = [(AFLinkedListItem *)v7 nextItem];
+    v8 = nextItem;
+    nextItem = [(AFLinkedListItem *)nextItem nextItem];
 
-    --v4;
+    --indexCopy;
   }
 
-  while (v4);
-  v6 = [(AFLinkedListItem *)v7 object];
+  while (indexCopy);
+  object = [(AFLinkedListItem *)nextItem object];
 
 LABEL_11:
 
-  return v6;
+  return object;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
-  if (!self->_count || a3->var3[0] == 1)
+  state->var1 = objects;
+  state->var2 = &state->var2;
+  if (!self->_count || state->var3[0] == 1)
   {
     return 0;
   }
 
-  var0 = a3->var0;
-  v12 = a3->var0;
+  var0 = state->var0;
+  v12 = state->var0;
   if (!var0)
   {
     v12 = self->_head;
@@ -279,21 +279,21 @@ LABEL_11:
 
   v13 = v12;
   v6 = 0;
-  while (a5 != v6)
+  while (count != v6)
   {
-    a4[v6++] = [v13 object];
-    v14 = [v13 nextItem];
+    objects[v6++] = [v13 object];
+    nextItem = [v13 nextItem];
 
-    a3->var0 = v14;
-    v13 = v14;
-    if (!v14)
+    state->var0 = nextItem;
+    v13 = nextItem;
+    if (!nextItem)
     {
-      a3->var3[0] = 1;
+      state->var3[0] = 1;
       return v6;
     }
   }
 
-  return a5;
+  return count;
 }
 
 - (id)_objects
@@ -307,15 +307,15 @@ LABEL_11:
       v5 = v4;
       do
       {
-        v6 = [v5 object];
-        [v3 addObject:v6];
+        object = [v5 object];
+        [v3 addObject:object];
 
-        v7 = [v5 nextItem];
+        nextItem = [v5 nextItem];
 
-        v5 = v7;
+        v5 = nextItem;
       }
 
-      while (v7);
+      while (nextItem);
     }
   }
 

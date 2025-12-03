@@ -1,13 +1,13 @@
 @interface LACAuditToken
 + (id)nullInstance;
 - ($115C4C562B26FF47E01F9F4EA65B5887)rawValue;
-- (BOOL)isEqual:(id)a3;
-- (LACAuditToken)initWithData:(id)a3;
-- (LACAuditToken)initWithRawValue:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACAuditToken)initWithData:(id)data;
+- (LACAuditToken)initWithRawValue:(id *)value;
 - (NSData)data;
-- (id)belongsToPlatformBinary:(id *)a3;
+- (id)belongsToPlatformBinary:(id *)binary;
 - (id)description;
-- (id)signingID:(id *)a3;
+- (id)signingID:(id *)d;
 - (unint64_t)hash;
 @end
 
@@ -26,26 +26,26 @@
   return v4;
 }
 
-- (LACAuditToken)initWithRawValue:(id *)a3
+- (LACAuditToken)initWithRawValue:(id *)value
 {
   v6.receiver = self;
   v6.super_class = LACAuditToken;
   result = [(LACAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *a3->var0;
-    *&result->_rawValue.val[4] = *&a3->var0[4];
+    v5 = *value->var0;
+    *&result->_rawValue.val[4] = *&value->var0[4];
     *result->_rawValue.val = v5;
   }
 
   return result;
 }
 
-- (LACAuditToken)initWithData:(id)a3
+- (LACAuditToken)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length] == 32)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy length] == 32)
   {
     v6 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(v5 objCType:{"bytes"), "{?=[8I]}"}];
     v7 = v6;
@@ -57,21 +57,21 @@
       v10[0] = v11;
       v10[1] = v12;
       self = [(LACAuditToken *)self initWithRawValue:v10];
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (id)nullInstance
@@ -86,7 +86,7 @@
   return v4;
 }
 
-- (id)signingID:(id *)a3
+- (id)signingID:(id *)d
 {
   if (!self->_signingID)
   {
@@ -106,9 +106,9 @@
 
     else
     {
-      if (a3)
+      if (d)
       {
-        *a3 = [LACError errorWithCode:-1000 debugDescription:@"Could not obtain signingID from audit token"];
+        *d = [LACError errorWithCode:-1000 debugDescription:@"Could not obtain signingID from audit token"];
       }
 
       v10 = LACLogDefault();
@@ -124,7 +124,7 @@
   return v11;
 }
 
-- (id)belongsToPlatformBinary:(id *)a3
+- (id)belongsToPlatformBinary:(id *)binary
 {
   if (!self->_belongsToPlatformBinary)
   {
@@ -137,16 +137,16 @@
       v7 = v6;
       CodeSignStatus = SecTaskGetCodeSignStatus(v6);
       CFRelease(v7);
-      v9 = [MEMORY[0x1E696AD98] numberWithBool:(CodeSignStatus & 0xC000001) == 67108865];
+      67108865 = [MEMORY[0x1E696AD98] numberWithBool:(CodeSignStatus & 0xC000001) == 67108865];
       p_super = &self->_belongsToPlatformBinary->super.super;
-      self->_belongsToPlatformBinary = v9;
+      self->_belongsToPlatformBinary = 67108865;
     }
 
     else
     {
-      if (a3)
+      if (binary)
       {
-        *a3 = [LACError errorWithCode:-1000 debugDescription:@"Could not determine if audit token belongs to platform binary"];
+        *binary = [LACError errorWithCode:-1000 debugDescription:@"Could not determine if audit token belongs to platform binary"];
       }
 
       p_super = LACLogDefault();
@@ -170,13 +170,13 @@
   return v3 + audit_token_to_pidversion(&v5) + 961;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *&self->_rawValue.val[4];
     *v12.val = *self->_rawValue.val;
     *&v12.val[4] = v6;

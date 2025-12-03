@@ -1,11 +1,11 @@
 @interface ProductDescriptionCollectionViewCell
-- (_TtC20ProductPageExtension36ProductDescriptionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension36ProductDescriptionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductDescriptionCollectionViewCell
 
-- (_TtC20ProductPageExtension36ProductDescriptionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension36ProductDescriptionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension36ProductDescriptionCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -21,7 +21,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002C6DF4();
 }
 

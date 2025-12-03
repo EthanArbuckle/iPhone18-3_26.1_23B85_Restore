@@ -1,5 +1,5 @@
 @interface _PushToPhoneHandlingTask
-- (_PushToPhoneHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4;
+- (_PushToPhoneHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier;
 - (void)performTask;
 @end
 
@@ -9,11 +9,11 @@
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
   [(NotificationHandlingTask *)self _clearBulletin];
-  v3 = [(SyncedBookmarkRepr *)self->_bookmark richMapsActivity];
-  v4 = v3;
-  if (v3)
+  richMapsActivity = [(SyncedBookmarkRepr *)self->_bookmark richMapsActivity];
+  v4 = richMapsActivity;
+  if (richMapsActivity)
   {
-    [(RichMapsActivityCreatingTaskImpl *)self taskFinished:v3];
+    [(RichMapsActivityCreatingTaskImpl *)self taskFinished:richMapsActivity];
   }
 
   else
@@ -22,16 +22,16 @@
   }
 }
 
-- (_PushToPhoneHandlingTask)initWithData:(id)a3 recordIdentifier:(id)a4
+- (_PushToPhoneHandlingTask)initWithData:(id)data recordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[SyncedBookmarkRepr alloc] initWithData:v6];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v8 = [[SyncedBookmarkRepr alloc] initWithData:dataCopy];
   if (v8)
   {
     v14.receiver = self;
     v14.super_class = _PushToPhoneHandlingTask;
-    v9 = [(NotificationHandlingTask *)&v14 initWithData:v6 recordIdentifier:v7];
+    v9 = [(NotificationHandlingTask *)&v14 initWithData:dataCopy recordIdentifier:identifierCopy];
     v10 = v9;
     if (v9)
     {
@@ -39,7 +39,7 @@
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,10 +51,10 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "_PushToPhoneHandlingTask SyncedBookmarkRepr nil with data", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

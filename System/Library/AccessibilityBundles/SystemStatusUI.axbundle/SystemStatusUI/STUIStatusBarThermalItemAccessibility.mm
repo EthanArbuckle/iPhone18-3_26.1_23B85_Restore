@@ -1,21 +1,21 @@
 @interface STUIStatusBarThermalItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)imageForUpdate:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)imageForUpdate:(id)update;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarThermalItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarItemUpdate"];
-  [v3 validateClass:@"STUIStatusBarThermalItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorItem" hasProperty:@"imageView" withType:"@"];
-  [v3 validateClass:@"STStatusBarData" hasProperty:@"thermalEntry" withType:"@"];
-  [v3 validateClass:@"STUIStatusBarItemUpdate" hasProperty:@"data" withType:"@"];
-  [v3 validateClass:@"STStatusBarDataThermalEntry" hasProperty:@"color" withType:"q"];
-  [v3 validateClass:@"STUIStatusBarThermalItem" hasInstanceMethod:@"imageForUpdate:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate"];
+  [validationsCopy validateClass:@"STUIStatusBarThermalItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorItem" hasProperty:@"imageView" withType:"@"];
+  [validationsCopy validateClass:@"STStatusBarData" hasProperty:@"thermalEntry" withType:"@"];
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate" hasProperty:@"data" withType:"@"];
+  [validationsCopy validateClass:@"STStatusBarDataThermalEntry" hasProperty:@"color" withType:"q"];
+  [validationsCopy validateClass:@"STUIStatusBarThermalItem" hasInstanceMethod:@"imageForUpdate:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -46,13 +46,13 @@
   }
 }
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarThermalItemAccessibility;
-  v4 = a3;
-  v5 = [(STUIStatusBarThermalItemAccessibility *)&v7 imageForUpdate:v4];
-  [(STUIStatusBarThermalItemAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:@"AccessibilityStatusBarUpdateData", v7.receiver, v7.super_class];
+  updateCopy = update;
+  v5 = [(STUIStatusBarThermalItemAccessibility *)&v7 imageForUpdate:updateCopy];
+  [(STUIStatusBarThermalItemAccessibility *)self _accessibilitySetRetainedValue:updateCopy forKey:@"AccessibilityStatusBarUpdateData", v7.receiver, v7.super_class];
 
   [(STUIStatusBarThermalItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 

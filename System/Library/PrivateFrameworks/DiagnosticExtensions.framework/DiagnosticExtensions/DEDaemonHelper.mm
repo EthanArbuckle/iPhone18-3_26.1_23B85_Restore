@@ -1,13 +1,13 @@
 @interface DEDaemonHelper
-+ (id)generateSandboxExtensionWithDestinationDir:(id)a3 pingTarget:(id)a4;
++ (id)generateSandboxExtensionWithDestinationDir:(id)dir pingTarget:(id)target;
 @end
 
 @implementation DEDaemonHelper
 
-+ (id)generateSandboxExtensionWithDestinationDir:(id)a3 pingTarget:(id)a4
++ (id)generateSandboxExtensionWithDestinationDir:(id)dir pingTarget:(id)target
 {
-  v5 = a3;
-  v6 = a4;
+  dirCopy = dir;
+  targetCopy = target;
   v7 = dispatch_semaphore_create(0);
   v42 = 0;
   v43 = &v42;
@@ -20,7 +20,7 @@
   v41 = &v42;
   v8 = v7;
   v40 = v8;
-  [v6 ping:&v36];
+  [targetCopy ping:&v36];
   v9 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v8, v9))
   {
@@ -46,7 +46,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v20 = [v5 generateSandboxExtensionForProcess:{v36, v37, v38, v39}];
+  v20 = [dirCopy generateSandboxExtensionForProcess:{v36, v37, v38, v39}];
   v10 = v20;
   if (!v20 || ![v20 length])
   {

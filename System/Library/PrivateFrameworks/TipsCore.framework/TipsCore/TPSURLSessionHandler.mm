@@ -2,19 +2,19 @@
 + (id)sharedInstance;
 - (TPSURLSessionHandler)init;
 - (TPSURLSessionHandlerDelegate)delegate;
-- (id)URLSessionManagerSessionConfiguration:(id)a3;
-- (id)URLSessionManagerSessionOperationQueue:(id)a3;
-- (id)cacheControllerForDataType:(int64_t)a3;
-- (id)processJSONFormattedDataForCDSError:(id)a3;
-- (void)URLSessionManagerDidReceiveChallenge:(id)a3 completionHandler:(id)a4;
-- (void)sessionTask:(id)a3 didCompleteWithError:(id)a4;
-- (void)sessionTask:(id)a3 didFinishDownloadingToURL:(id)a4;
-- (void)sessionTask:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)sessionTask:(id)a3 didReceiveResponse:(id)a4 completionHandler:(id)a5;
-- (void)sessionTask:(id)a3 willCacheResponse:(id)a4 completionHandler:(id)a5;
-- (void)setCertificateFilePath:(id)a3;
-- (void)setPassphrase:(id)a3;
-- (void)storeCachedResponseData:(id)a3 forSessionTask:(id)a4;
+- (id)URLSessionManagerSessionConfiguration:(id)configuration;
+- (id)URLSessionManagerSessionOperationQueue:(id)queue;
+- (id)cacheControllerForDataType:(int64_t)type;
+- (id)processJSONFormattedDataForCDSError:(id)error;
+- (void)URLSessionManagerDidReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)sessionTask:(id)task didCompleteWithError:(id)error;
+- (void)sessionTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)sessionTask:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)sessionTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)sessionTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)setCertificateFilePath:(id)path;
+- (void)setPassphrase:(id)passphrase;
+- (void)storeCachedResponseData:(id)data forSessionTask:(id)task;
 @end
 
 @implementation TPSURLSessionHandler
@@ -47,50 +47,50 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
   return [(TPSURLSessionHandler *)&v3 init];
 }
 
-- (void)setPassphrase:(id)a3
+- (void)setPassphrase:(id)passphrase
 {
-  v7 = a3;
+  passphraseCopy = passphrase;
   if (+[TPSCommonDefines isInternalDevice])
   {
     passphrase = self->_passphrase;
     p_passphrase = &self->_passphrase;
-    if (![(NSString *)passphrase isEqualToString:v7])
+    if (![(NSString *)passphrase isEqualToString:passphraseCopy])
     {
-      objc_storeStrong(p_passphrase, a3);
+      objc_storeStrong(p_passphrase, passphrase);
     }
   }
 }
 
-- (void)setCertificateFilePath:(id)a3
+- (void)setCertificateFilePath:(id)path
 {
-  v7 = a3;
+  pathCopy = path;
   if (+[TPSCommonDefines isInternalDevice])
   {
     certificateFilePath = self->_certificateFilePath;
     p_certificateFilePath = &self->_certificateFilePath;
-    if (![(NSString *)certificateFilePath isEqualToString:v7])
+    if (![(NSString *)certificateFilePath isEqualToString:pathCopy])
     {
-      objc_storeStrong(p_certificateFilePath, a3);
+      objc_storeStrong(p_certificateFilePath, path);
     }
   }
 }
 
-- (id)cacheControllerForDataType:(int64_t)a3
+- (id)cacheControllerForDataType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
-    v5 = 0;
+    sharedInstance = 0;
   }
 
   else
   {
-    v5 = [(__objc2_class *)*off_1E8101830[a3 - 1] sharedInstance];
+    sharedInstance = [(__objc2_class *)*off_1E8101830[type - 1] sharedInstance];
   }
 
-  return v5;
+  return sharedInstance;
 }
 
-- (id)URLSessionManagerSessionOperationQueue:(id)a3
+- (id)URLSessionManagerSessionOperationQueue:(id)queue
 {
   v3 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v3 setMaxConcurrentOperationCount:4];
@@ -98,23 +98,23 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)URLSessionManagerSessionConfiguration:(id)a3
+- (id)URLSessionManagerSessionConfiguration:(id)configuration
 {
-  v3 = [MEMORY[0x1E696AF18] tps_urlCacheWithIdentifier:0 memoryCapacity:+[TPSURLSessionManager defaultURLCacheMemoryCapcity](TPSURLSessionManager diskCapacity:{"defaultURLCacheMemoryCapcity", a3), +[TPSURLSessionManager defaultURLCacheDiskCapcity](TPSURLSessionManager, "defaultURLCacheDiskCapcity")}];
+  v3 = [MEMORY[0x1E696AF18] tps_urlCacheWithIdentifier:0 memoryCapacity:+[TPSURLSessionManager defaultURLCacheMemoryCapcity](TPSURLSessionManager diskCapacity:{"defaultURLCacheMemoryCapcity", configuration), +[TPSURLSessionManager defaultURLCacheDiskCapcity](TPSURLSessionManager, "defaultURLCacheDiskCapcity")}];
   [MEMORY[0x1E696AF18] setSharedURLCache:v3];
-  v4 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-  [v4 setURLCache:v3];
+  defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+  [defaultSessionConfiguration setURLCache:v3];
 
-  return v4;
+  return defaultSessionConfiguration;
 }
 
-- (void)sessionTask:(id)a3 willCacheResponse:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  if (-[NSIndexSet containsIndex:](self->_excludeCachingDataTypes, "containsIndex:", [a3 dataType]))
+  responseCopy = response;
+  handlerCopy = handler;
+  if (-[NSIndexSet containsIndex:](self->_excludeCachingDataTypes, "containsIndex:", [task dataType]))
   {
-    v9 = v10;
+    v9 = responseCopy;
   }
 
   else
@@ -122,28 +122,28 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
     v9 = 0;
   }
 
-  (v8)[2](v8, v9);
+  (handlerCopy)[2](handlerCopy, v9);
 }
 
-- (id)processJSONFormattedDataForCDSError:(id)a3
+- (id)processJSONFormattedDataForCDSError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 objectForKeyedSubscript:@"errorDetail"];
+    v4 = [errorCopy objectForKeyedSubscript:@"errorDetail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = [v4 objectForKey:@"errorCode"];
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
 
       v7 = [v4 objectForKey:@"errorMessage"];
       v8 = v7;
       v9 = 0;
-      if (v6 >= 1 && v7)
+      if (integerValue >= 1 && v7)
       {
-        v9 = [MEMORY[0x1E696ABC0] errorWithDomain:v7 code:v6 userInfo:0];
+        v9 = [MEMORY[0x1E696ABC0] errorWithDomain:v7 code:integerValue userInfo:0];
       }
     }
 
@@ -161,62 +161,62 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
   return v9;
 }
 
-- (void)storeCachedResponseData:(id)a3 forSessionTask:(id)a4
+- (void)storeCachedResponseData:(id)data forSessionTask:(id)task
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [v5 response];
-  if (v6)
+  dataCopy = data;
+  taskCopy = task;
+  response = [taskCopy response];
+  if (response)
   {
-    v7 = [v5 underlyingSession];
-    v8 = [v7 configuration];
-    v9 = [v8 URLCache];
+    underlyingSession = [taskCopy underlyingSession];
+    configuration = [underlyingSession configuration];
+    uRLCache = [configuration URLCache];
 
     v10 = objc_alloc(MEMORY[0x1E696AAF8]);
     v11 = v10;
-    if (v16)
+    if (dataCopy)
     {
-      v12 = [v10 initWithResponse:v6 data:v16 userInfo:0 storagePolicy:0];
+      v12 = [v10 initWithResponse:response data:dataCopy userInfo:0 storagePolicy:0];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DEF0] data];
-      v12 = [v11 initWithResponse:v6 data:v13 userInfo:0 storagePolicy:0];
+      data = [MEMORY[0x1E695DEF0] data];
+      v12 = [v11 initWithResponse:response data:data userInfo:0 storagePolicy:0];
     }
 
-    v14 = [v5 task];
-    v15 = [v14 currentRequest];
-    [v9 storeCachedResponse:v12 forRequest:v15];
+    task = [taskCopy task];
+    currentRequest = [task currentRequest];
+    [uRLCache storeCachedResponse:v12 forRequest:currentRequest];
   }
 }
 
-- (void)sessionTask:(id)a3 didFinishDownloadingToURL:(id)a4
+- (void)sessionTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v36 = a3;
-  v6 = a4;
-  v7 = [v36 dataType];
-  v8 = [(TPSURLSessionHandler *)self cacheControllerForDataType:v7];
-  v9 = [v36 identifier];
-  v10 = [v8 dataCacheForIdentifier:v9];
-  v11 = [v36 downloadTaskTotalBytes];
+  taskCopy = task;
+  lCopy = l;
+  dataType = [taskCopy dataType];
+  v8 = [(TPSURLSessionHandler *)self cacheControllerForDataType:dataType];
+  identifier = [taskCopy identifier];
+  v10 = [v8 dataCacheForIdentifier:identifier];
+  downloadTaskTotalBytes = [taskCopy downloadTaskTotalBytes];
   if (v8)
   {
-    v12 = [v36 response];
-    v13 = [v12 statusCode];
+    response = [taskCopy response];
+    statusCode = [response statusCode];
 
-    v14 = v6;
-    if (v13 == 200)
+    v14 = lCopy;
+    if (statusCode == 200)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TPSURLSessionError" code:v13 userInfo:0];
+      v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TPSURLSessionError" code:statusCode userInfo:0];
     }
 
-    v21 = v7 == 1 && v15 == 0;
+    v21 = dataType == 1 && v15 == 0;
     v22 = !v21;
     if (v21)
     {
@@ -231,15 +231,15 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
 
     if (v15)
     {
-      [v36 setDataError:v15];
+      [taskCopy setDataError:v15];
     }
 
     else
     {
-      if ([(TPSURLSessionHandler *)self shouldCacheToDiskForSessionTask:v36])
+      if ([(TPSURLSessionHandler *)self shouldCacheToDiskForSessionTask:taskCopy])
       {
-        v23 = [v36 lastModified];
-        v24 = [v8 saveFileURL:v14 identifier:v9 fileSize:v11 lastModified:v23 dataCache:v10];
+        lastModified = [taskCopy lastModified];
+        v24 = [v8 saveFileURL:v14 identifier:identifier fileSize:downloadTaskTotalBytes lastModified:lastModified dataCache:v10];
 
         v14 = v24;
       }
@@ -258,67 +258,67 @@ uint64_t __38__TPSURLSessionHandler_sharedInstance__block_invoke()
   else
   {
     v16 = MEMORY[0x1E695DEF0];
-    v17 = [v6 path];
-    v18 = [v16 dataWithContentsOfFile:v17];
+    path = [lCopy path];
+    v18 = [v16 dataWithContentsOfFile:path];
 
     v19 = v18;
     v20 = v19;
   }
 
-  v26 = [v36 response];
-  if (v26)
+  response2 = [taskCopy response];
+  if (response2)
   {
     v35 = v10;
-    v27 = [v36 underlyingSession];
-    v28 = [v27 configuration];
-    v29 = [v28 URLCache];
+    underlyingSession = [taskCopy underlyingSession];
+    configuration = [underlyingSession configuration];
+    uRLCache = [configuration URLCache];
 
     if (v20)
     {
-      v30 = v20;
+      data = v20;
       v31 = objc_alloc(MEMORY[0x1E696AAF8]);
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6 options:1 error:0];
+      data = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:0];
       v31 = objc_alloc(MEMORY[0x1E696AAF8]);
-      if (!v30)
+      if (!data)
       {
-        v30 = [MEMORY[0x1E695DEF0] data];
+        data = [MEMORY[0x1E695DEF0] data];
       }
     }
 
-    v32 = [v31 initWithResponse:v26 data:v30 userInfo:0 storagePolicy:0];
+    v32 = [v31 initWithResponse:response2 data:data userInfo:0 storagePolicy:0];
 
-    v33 = [v36 task];
-    v34 = [v33 currentRequest];
-    [v29 storeCachedResponse:v32 forRequest:v34];
+    task = [taskCopy task];
+    currentRequest = [task currentRequest];
+    [uRLCache storeCachedResponse:v32 forRequest:currentRequest];
 
     v10 = v35;
   }
 
-  [v36 setFormattedData:v19];
+  [taskCopy setFormattedData:v19];
 }
 
-- (void)sessionTask:(id)a3 didReceiveResponse:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 dataType];
-  v12 = [(TPSURLSessionHandler *)self shouldCacheToDiskForSessionTask:v8];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  dataType = [taskCopy dataType];
+  v12 = [(TPSURLSessionHandler *)self shouldCacheToDiskForSessionTask:taskCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v13 = v9;
-  [v8 setResponse:v13];
-  v14 = [v8 task];
-  v15 = [v14 currentRequest];
-  v16 = [(TPSURLSessionHandler *)self respectCachingForRequest:v15];
+  v13 = responseCopy;
+  [taskCopy setResponse:v13];
+  task = [taskCopy task];
+  currentRequest = [task currentRequest];
+  v16 = [(TPSURLSessionHandler *)self respectCachingForRequest:currentRequest];
 
   if (!v12 || !v16)
   {
@@ -337,20 +337,20 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v17 = [v13 allHeaderFields];
-  v18 = [v17 objectForKeyedSubscript:@"Last-Modified"];
+  allHeaderFields = [v13 allHeaderFields];
+  v18 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
 
-  [v8 setLastModified:v18];
-  if (v18 && ![(NSIndexSet *)self->_excludeCachingDataTypes containsIndex:v11])
+  [taskCopy setLastModified:v18];
+  if (v18 && ![(NSIndexSet *)self->_excludeCachingDataTypes containsIndex:dataType])
   {
-    v19 = [(TPSURLSessionHandler *)self cacheControllerForDataType:v11];
-    v20 = [v8 identifier];
-    v21 = [v19 dataCacheForIdentifier:v20];
+    v19 = [(TPSURLSessionHandler *)self cacheControllerForDataType:dataType];
+    identifier = [taskCopy identifier];
+    v21 = [v19 dataCacheForIdentifier:identifier];
 
     if (v21)
     {
-      v22 = [v21 lastModified];
-      if ([v22 isEqualToString:v18])
+      lastModified = [v21 lastModified];
+      if ([lastModified isEqualToString:v18])
       {
         v23 = [v19 isDataCacheValid:v21];
 
@@ -364,10 +364,10 @@ LABEL_12:
 
           v25 = [v19 cacheFileURLForDataCache:v21];
           v26 = [v19 formattedDataWithFileURL:v25];
-          [v8 setFormattedData:v26];
+          [taskCopy setFormattedData:v26];
 
           v27 = 1;
-          [v8 setIsCacheData:1];
+          [taskCopy setIsCacheData:1];
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
           v33[2] = __73__TPSURLSessionHandler_sessionTask_didReceiveResponse_completionHandler___block_invoke;
@@ -388,13 +388,13 @@ LABEL_12:
     }
   }
 
-  if (v11 == 2)
+  if (dataType == 2)
   {
-    v31 = [v13 allHeaderFields];
-    v32 = [v31 objectForKeyedSubscript:@"Content-Type"];
+    allHeaderFields2 = [v13 allHeaderFields];
+    v32 = [allHeaderFields2 objectForKeyedSubscript:@"Content-Type"];
 
-    LOBYTE(v31) = [v32 containsString:@"text/html"];
-    if (v31)
+    LOBYTE(allHeaderFields2) = [v32 containsString:@"text/html"];
+    if (allHeaderFields2)
     {
       v27 = 0;
 LABEL_22:
@@ -411,7 +411,7 @@ LABEL_22:
 LABEL_15:
   v27 = 0;
 LABEL_16:
-  v10[2](v10, v30, v27);
+  handlerCopy[2](handlerCopy, v30, v27);
 }
 
 uint64_t __73__TPSURLSessionHandler_sessionTask_didReceiveResponse_completionHandler___block_invoke(uint64_t a1)
@@ -424,78 +424,78 @@ uint64_t __73__TPSURLSessionHandler_sessionTask_didReceiveResponse_completionHan
   return [v3 updateCache];
 }
 
-- (void)sessionTask:(id)a3 didCompleteWithError:(id)a4
+- (void)sessionTask:(id)task didCompleteWithError:(id)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 task];
-  if (!v7)
+  taskCopy = task;
+  errorCopy = error;
+  task = [taskCopy task];
+  if (!errorCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 response];
-      v10 = [v9 statusCode];
+      response = [taskCopy response];
+      statusCode = [response statusCode];
 
-      v11 = [v8 response];
+      response2 = [task response];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v13 = [v8 response];
-        v14 = [v13 allHeaderFields];
-        v15 = [v14 objectForKeyedSubscript:@"Last-Modified"];
-        [v6 setLastModified:v15];
+        response3 = [task response];
+        allHeaderFields = [response3 allHeaderFields];
+        v15 = [allHeaderFields objectForKeyedSubscript:@"Last-Modified"];
+        [taskCopy setLastModified:v15];
       }
 
       else
       {
-        v13 = 0;
+        response3 = 0;
       }
 
-      v16 = [v6 dataTaskData];
-      v17 = [v6 task];
-      v18 = [v17 originalRequest];
+      dataTaskData = [taskCopy dataTaskData];
+      task2 = [taskCopy task];
+      originalRequest = [task2 originalRequest];
 
-      v19 = [(TPSURLSessionHandler *)self respectCachingForRequest:v18];
-      if (v6 && v19 && [v13 statusCode] != 404 && objc_msgSend(v13, "statusCode") != 200 && v18)
+      v19 = [(TPSURLSessionHandler *)self respectCachingForRequest:originalRequest];
+      if (taskCopy && v19 && [response3 statusCode] != 404 && objc_msgSend(response3, "statusCode") != 200 && originalRequest)
       {
-        v40 = v16;
-        v20 = [MEMORY[0x1E696AF18] sharedURLCache];
-        v21 = [v20 cachedResponseForRequest:v18];
+        v40 = dataTaskData;
+        mEMORY[0x1E696AF18] = [MEMORY[0x1E696AF18] sharedURLCache];
+        v21 = [mEMORY[0x1E696AF18] cachedResponseForRequest:originalRequest];
 
-        v22 = [v21 response];
+        response4 = [v21 response];
         objc_opt_class();
         v23 = objc_opt_isKindOfClass();
 
         if (v23)
         {
-          v24 = [v21 response];
+          response5 = [v21 response];
 
-          if ([v24 statusCode] == 200)
+          if ([response5 statusCode] == 200)
           {
-            v25 = [v21 data];
+            data = [v21 data];
 
-            if (v25)
+            if (data)
             {
-              v10 = [v24 statusCode];
+              statusCode = [response5 statusCode];
               v26 = +[TPSLogger data];
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
               {
-                v27 = [v18 URL];
+                v27 = [originalRequest URL];
                 *buf = 138412290;
                 v46 = v27;
                 _os_log_impl(&dword_1C00A7000, v26, OS_LOG_TYPE_DEFAULT, "Using cache data for request: %@", buf, 0xCu);
               }
 
               v28 = MEMORY[0x1E695DF88];
-              v29 = [v21 data];
-              v30 = [v28 dataWithData:v29];
+              data2 = [v21 data];
+              v30 = [v28 dataWithData:data2];
 
-              [v6 setDataTaskData:v30];
-              [v6 setIsCacheData:v30 != 0];
+              [taskCopy setDataTaskData:v30];
+              [taskCopy setIsCacheData:v30 != 0];
               v40 = v30;
             }
           }
@@ -503,17 +503,17 @@ uint64_t __73__TPSURLSessionHandler_sessionTask_didReceiveResponse_completionHan
 
         else
         {
-          v24 = v13;
+          response5 = response3;
         }
 
-        v13 = v24;
-        v16 = v40;
+        response3 = response5;
+        dataTaskData = v40;
       }
 
-      if (v10 == 200)
+      if (statusCode == 200)
       {
         v31 = 0;
-        if (!v6)
+        if (!taskCopy)
         {
           goto LABEL_31;
         }
@@ -521,27 +521,27 @@ uint64_t __73__TPSURLSessionHandler_sessionTask_didReceiveResponse_completionHan
 
       else
       {
-        v31 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TPSURLSessionError" code:v10 userInfo:0];
-        if (!v6)
+        v31 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TPSURLSessionError" code:statusCode userInfo:0];
+        if (!taskCopy)
         {
 LABEL_31:
-          [v6 setDataError:v31];
+          [taskCopy setDataError:v31];
 
           goto LABEL_32;
         }
       }
 
-      if ([v16 length])
+      if ([dataTaskData length])
       {
-        v32 = [v6 dataType];
-        v33 = [v6 dataError];
+        dataType = [taskCopy dataType];
+        dataError = [taskCopy dataError];
 
-        if (!v33 || v32 == 1)
+        if (!dataError || dataType == 1)
         {
-          v34 = -[TPSURLSessionHandler cacheControllerForDataType:](self, "cacheControllerForDataType:", [v6 dataType]);
-          v41 = v16;
-          v35 = [v34 formattedDataWithData:v16];
-          if (v32 == 1)
+          v34 = -[TPSURLSessionHandler cacheControllerForDataType:](self, "cacheControllerForDataType:", [taskCopy dataType]);
+          v41 = dataTaskData;
+          v35 = [v34 formattedDataWithData:dataTaskData];
+          if (dataType == 1)
           {
             v36 = [(TPSURLSessionHandler *)self processJSONFormattedDataForCDSError:v35];
 
@@ -550,10 +550,10 @@ LABEL_31:
 
           if (v35)
           {
-            [v6 setFormattedData:v35];
+            [taskCopy setFormattedData:v35];
           }
 
-          v16 = v41;
+          dataTaskData = v41;
         }
       }
 
@@ -566,10 +566,10 @@ LABEL_32:
   block[1] = 3221225472;
   block[2] = __57__TPSURLSessionHandler_sessionTask_didCompleteWithError___block_invoke;
   block[3] = &unk_1E8101390;
-  v43 = v7;
-  v44 = v8;
-  v37 = v8;
-  v38 = v7;
+  v43 = errorCopy;
+  v44 = task;
+  v37 = task;
+  v38 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v39 = *MEMORY[0x1E69E9840];
@@ -611,20 +611,20 @@ void __57__TPSURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
   }
 }
 
-- (void)URLSessionManagerDidReceiveChallenge:(id)a3 completionHandler:(id)a4
+- (void)URLSessionManagerDidReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (+[TPSCommonDefines isInternalDevice](TPSCommonDefines, "isInternalDevice") && [v6 previousFailureCount] < 4)
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if (+[TPSCommonDefines isInternalDevice](TPSCommonDefines, "isInternalDevice") && [challengeCopy previousFailureCount] < 4)
   {
-    v8 = [v6 proposedCredential];
-    v9 = [v6 protectionSpace];
-    v10 = [v9 authenticationMethod];
-    if ([v10 isEqualToString:*MEMORY[0x1E696A940]])
+    proposedCredential = [challengeCopy proposedCredential];
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    if ([authenticationMethod isEqualToString:*MEMORY[0x1E696A940]])
     {
-      v11 = [v9 host];
-      v12 = [v11 hasSuffix:@".apple.com"];
+      host = [protectionSpace host];
+      v12 = [host hasSuffix:@".apple.com"];
 
       if (v12)
       {
@@ -653,7 +653,7 @@ void __57__TPSURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
                 CFRelease(v18);
               }
 
-              v8 = v19;
+              proposedCredential = v19;
             }
 
             if (v15)
@@ -665,10 +665,10 @@ void __57__TPSURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
       }
     }
 
-    if (v8)
+    if (proposedCredential)
     {
       v20 = 0;
-      v21 = v8;
+      v21 = proposedCredential;
     }
 
     else
@@ -677,34 +677,34 @@ void __57__TPSURLSessionHandler_sessionTask_didCompleteWithError___block_invoke(
       v21 = 0;
     }
 
-    (v7)[2](v7, v20, v21);
+    (handlerCopy)[2](handlerCopy, v20, v21);
   }
 
   else
   {
-    v7[2](v7, 3, 0);
+    handlerCopy[2](handlerCopy, 3, 0);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sessionTask:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)sessionTask:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__TPSURLSessionHandler_sessionTask_didReceiveChallenge_completionHandler___block_invoke;
   block[3] = &unk_1E8101810;
   objc_copyWeak(&v18, &location);
-  v16 = v8;
-  v17 = v10;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v16 = taskCopy;
+  v17 = handlerCopy;
+  v15 = challengeCopy;
+  v11 = taskCopy;
+  v12 = challengeCopy;
+  v13 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v18);

@@ -1,22 +1,22 @@
 @interface PXStoryConcreteSubtimelineScanner
 - ($70EB31679AD570D2612C6654B67EF72A)scanState;
-- (BOOL)_scanFastestSubtimelineWithNextDisplayAssetResultHandler:(id)a3;
-- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)a3 axis:(int64_t)a4 nextDisplayAssetsInfo:(id)a5 resultHandler:(id)a6;
-- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)a3 nextDisplayAssetsInfo:(id)a4 resultHandler:(id)a5;
-- (BOOL)_scanSubtimelineWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 playbackStyles:(const int64_t *)a6 separatorEffectParameters:(id *)a7 kenBurnsEffectParameters:(id *)a8 transitionInfo:(id *)a9 startTime:(id *)a10 durationInfo:(id *)a11 resultHandler:(id)a12;
-- (BOOL)scanBestSubtimelineFollowingTimeline:(id)a3 loggingOptions:(unint64_t)a4 resultHandler:(id)a5;
-- (BOOL)scanFastestSubtimelineWithDisplayAssetResourceCount:(int64_t)a3 resultHandler:(id)a4;
-- (BOOL)scanFastestSubtimelineWithRemainingClipsResultHandler:(id)a3;
-- (BOOL)scanSubtimelineWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 playbackStyles:(const int64_t *)a6 separatorEffectParameters:(id *)a7 kenBurnsEffectParameters:(id *)a8 transitionInfo:(id *)a9 startTime:(id *)a10 durationInfo:(id *)a11 resultHandler:(id)a12;
+- (BOOL)_scanFastestSubtimelineWithNextDisplayAssetResultHandler:(id)handler;
+- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)time axis:(int64_t)axis nextDisplayAssetsInfo:(id)info resultHandler:(id)handler;
+- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)time nextDisplayAssetsInfo:(id)info resultHandler:(id)handler;
+- (BOOL)_scanSubtimelineWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)parameters kenBurnsEffectParameters:(id *)effectParameters transitionInfo:(id *)info startTime:(id *)self0 durationInfo:(id *)self1 resultHandler:(id)self2;
+- (BOOL)scanBestSubtimelineFollowingTimeline:(id)timeline loggingOptions:(unint64_t)options resultHandler:(id)handler;
+- (BOOL)scanFastestSubtimelineWithDisplayAssetResourceCount:(int64_t)count resultHandler:(id)handler;
+- (BOOL)scanFastestSubtimelineWithRemainingClipsResultHandler:(id)handler;
+- (BOOL)scanSubtimelineWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)parameters kenBurnsEffectParameters:(id *)effectParameters transitionInfo:(id *)info startTime:(id *)self0 durationInfo:(id *)self1 resultHandler:(id)self2;
 - (PXStoryConcreteSubtimelineScanner)init;
-- (PXStoryConcreteSubtimelineScanner)initWithConfiguration:(id)a3;
+- (PXStoryConcreteSubtimelineScanner)initWithConfiguration:(id)configuration;
 - (id)_newDisplayAssetsInfo;
-- (id)_nextDisplayAssetsInfoWithMaximumCount:(int64_t)a3;
-- (void)_addTitles:(unint64_t)a3 toTimeline:(id)a4;
+- (id)_nextDisplayAssetsInfoWithMaximumCount:(int64_t)count;
+- (void)_addTitles:(unint64_t)titles toTimeline:(id)timeline;
 - (void)_initializeDefaultMultipartPanoramaParameters;
 - (void)dealloc;
-- (void)enumeratePossibleNextSubtimelinesAfterTime:(id *)a3 loggingOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)setScanState:(id *)a3;
+- (void)enumeratePossibleNextSubtimelinesAfterTime:(id *)time loggingOptions:(unint64_t)options usingBlock:(id)block;
+- (void)setScanState:(id *)state;
 @end
 
 @implementation PXStoryConcreteSubtimelineScanner
@@ -33,28 +33,28 @@
   return result;
 }
 
-- (id)_nextDisplayAssetsInfoWithMaximumCount:(int64_t)a3
+- (id)_nextDisplayAssetsInfoWithMaximumCount:(int64_t)count
 {
-  v5 = [(PXStoryConcreteSubtimelineScanner *)self _newDisplayAssetsInfo];
+  _newDisplayAssetsInfo = [(PXStoryConcreteSubtimelineScanner *)self _newDisplayAssetsInfo];
   nextResourceIndex = self->_nextResourceIndex;
-  v7 = [(PXStoryConcreteSubtimelineScanner *)self numberOfRemainingResources];
-  if (v7 < a3)
+  numberOfRemainingResources = [(PXStoryConcreteSubtimelineScanner *)self numberOfRemainingResources];
+  if (numberOfRemainingResources < count)
   {
-    a3 = v7;
+    count = numberOfRemainingResources;
   }
 
-  v8 = [(PXStoryConcreteSubtimelineScanner *)self resourcesDataSource];
-  v9 = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
-  [v5 configureWithRange:nextResourceIndex resourcesDataSource:a3 timelineStyle:v8 nUpPlaybackStyleMapping:{v9, self->_nUpPlaybackStyleMapping}];
+  resourcesDataSource = [(PXStoryConcreteSubtimelineScanner *)self resourcesDataSource];
+  timelineStyle = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
+  [_newDisplayAssetsInfo configureWithRange:nextResourceIndex resourcesDataSource:count timelineStyle:resourcesDataSource nUpPlaybackStyleMapping:{timelineStyle, self->_nUpPlaybackStyleMapping}];
 
-  return v5;
+  return _newDisplayAssetsInfo;
 }
 
-- (BOOL)scanFastestSubtimelineWithRemainingClipsResultHandler:(id)a3
+- (BOOL)scanFastestSubtimelineWithRemainingClipsResultHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXStoryResourcesDataSource *)self->_resourcesDataSource keyAssetResource];
-  v6 = v5;
+  handlerCopy = handler;
+  keyAssetResource = [(PXStoryResourcesDataSource *)self->_resourcesDataSource keyAssetResource];
+  v6 = keyAssetResource;
   if (self->_nextResourceIndex)
   {
     v7 = 1;
@@ -62,7 +62,7 @@
 
   else
   {
-    v7 = v5 == 0;
+    v7 = keyAssetResource == 0;
   }
 
   if (!v7)
@@ -71,19 +71,19 @@
     self->_nextResourceIndex = [v6 isEqual:v8];
   }
 
-  v9 = [(PXStoryConcreteSubtimelineScanner *)self scanFastestSubtimelineWithDisplayAssetResourceCount:0x7FFFFFFFFFFFFFFFLL resultHandler:v4];
+  v9 = [(PXStoryConcreteSubtimelineScanner *)self scanFastestSubtimelineWithDisplayAssetResourceCount:0x7FFFFFFFFFFFFFFFLL resultHandler:handlerCopy];
 
   return v9;
 }
 
-- (BOOL)scanFastestSubtimelineWithDisplayAssetResourceCount:(int64_t)a3 resultHandler:(id)a4
+- (BOOL)scanFastestSubtimelineWithDisplayAssetResourceCount:(int64_t)count resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PXStoryConcreteSubtimelineScanner *)self isAtEnd];
-  if (!v7)
+  handlerCopy = handler;
+  isAtEnd = [(PXStoryConcreteSubtimelineScanner *)self isAtEnd];
+  if (!isAtEnd)
   {
     [(PXStoryMutableConcreteTimeline *)self->_subtimelineWithRemainingClips removeAllClipsAndSegments];
-    if (![(PXStoryConcreteSubtimelineScanner *)self isAtEnd]&& a3 >= 1)
+    if (![(PXStoryConcreteSubtimelineScanner *)self isAtEnd]&& count >= 1)
     {
       v8 = MEMORY[0x1E69E9820];
       v9 = 1;
@@ -101,30 +101,30 @@
         }
       }
 
-      while (v9++ < a3);
+      while (v9++ < count);
     }
 
-    v6[2](v6, self->_subtimelineWithRemainingClips);
+    handlerCopy[2](handlerCopy, self->_subtimelineWithRemainingClips);
   }
 
-  return !v7;
+  return !isAtEnd;
 }
 
-- (void)enumeratePossibleNextSubtimelinesAfterTime:(id *)a3 loggingOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumeratePossibleNextSubtimelinesAfterTime:(id *)time loggingOptions:(unint64_t)options usingBlock:(id)block
 {
-  v86 = a3;
+  timeCopy = time;
   v81 = a2;
   v164[1] = *MEMORY[0x1E69E9840];
-  v88 = a5;
+  blockCopy = block;
   v82 = objc_autoreleasePoolPush();
-  v91 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     v65 = PLStoryGetLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      *v155 = *&v86->var0;
-      *&v155[16] = v86->var3;
+      *v155 = *&timeCopy->var0;
+      *&v155[16] = timeCopy->var3;
       v66 = PXStoryTimeDescription(v155);
       *v155 = 138412290;
       *&v155[4] = v66;
@@ -153,7 +153,7 @@
   v147 = 0u;
   v145 = 0u;
   [(PXStoryConcreteSubtimelineScanner *)self scanState];
-  v83 = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
+  timelineStyle = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
   v7 = [(PXStoryConcreteSubtimelineScanner *)self _nextDisplayAssetsInfoWithMaximumCount:3];
   v8 = v7;
   if (self->_nextResourceIndex == -1)
@@ -164,9 +164,9 @@
       v9 = [v11 storyDisplayAssetAtIndex:0];
 
       v12 = v8;
-      v13 = [v8 assetContentInfos];
+      assetContentInfos = [v8 assetContentInfos];
       v14 = v8;
-      v15 = [v83 clipCompositionForKeyAsset:v9 contentInfo:v13 finalPlaybackStyle:{*objc_msgSend(v8, "oneUpPlaybackStyles")}];
+      v15 = [timelineStyle clipCompositionForKeyAsset:v9 contentInfo:assetContentInfos finalPlaybackStyle:{*objc_msgSend(v8, "oneUpPlaybackStyles")}];
       v163 = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v163 count:1];
 
@@ -181,9 +181,9 @@
   else
   {
     v9 = [v7 displayAssetsWithCount:{objc_msgSend(v7, "count")}];
-    *v155 = *&v86->var0;
-    *&v155[16] = v86->var3;
-    v10 = [v83 allowedClipCompositionsWithStartTime:v155 nextDisplayAssets:v9];
+    *v155 = *&timeCopy->var0;
+    *&v155[16] = timeCopy->var3;
+    v10 = [timelineStyle allowedClipCompositionsWithStartTime:v155 nextDisplayAssets:v9];
   }
 
   v16 = v10;
@@ -218,10 +218,10 @@ LABEL_9:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v141 + 1) + 8 * i) numberOfClips];
-        if (v19 <= v22)
+        numberOfClips = [*(*(&v141 + 1) + 8 * i) numberOfClips];
+        if (v19 <= numberOfClips)
         {
-          v19 = v22;
+          v19 = numberOfClips;
         }
       }
 
@@ -246,7 +246,7 @@ LABEL_9:
   }
 
 LABEL_25:
-  if (v91)
+  if (optionsCopy)
   {
     v68 = PLStoryGetLog();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
@@ -263,10 +263,10 @@ LABEL_25:
     v139[1] = 3221225472;
     v139[2] = __106__PXStoryConcreteSubtimelineScanner_enumeratePossibleNextSubtimelinesAfterTime_loggingOptions_usingBlock___block_invoke;
     v139[3] = &unk_1E773C680;
-    v140 = v88;
+    v140 = blockCopy;
     v139[4] = self;
-    *v155 = *&v86->var0;
-    *&v155[16] = v86->var3;
+    *v155 = *&timeCopy->var0;
+    *&v155[16] = timeCopy->var3;
     v25 = [(PXStoryConcreteSubtimelineScanner *)self _scanMultipartPanoramaSubtimelineAfterTime:v155 nextDisplayAssetsInfo:v8 resultHandler:v139];
     *v155 = v145;
     *&v155[16] = v146;
@@ -274,7 +274,7 @@ LABEL_25:
     [(PXStoryConcreteSubtimelineScanner *)self setScanState:v155];
     if (v25)
     {
-      if (v91)
+      if (optionsCopy)
       {
         v70 = PLStoryGetLog();
         if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
@@ -288,7 +288,7 @@ LABEL_25:
     }
   }
 
-  if (v91)
+  if (optionsCopy)
   {
     v69 = PLStoryGetLog();
     if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
@@ -309,7 +309,7 @@ LABEL_25:
   {
     v74 = v96;
     v89 = *v136;
-    v84 = v88 + 16;
+    v84 = blockCopy + 16;
     v85 = v128;
     *&v26 = 67109120;
     v72 = v26;
@@ -331,28 +331,28 @@ LABEL_34:
       v132 = &v131;
       v133 = 0x2020000000;
       v134 = 0;
-      v29 = [v28 numberOfClips];
-      v30 = v29;
-      if (firstDisplayAssetIsSameAsKey && v29 == 1)
+      numberOfClips2 = [v28 numberOfClips];
+      v30 = numberOfClips2;
+      if (firstDisplayAssetIsSameAsKey && numberOfClips2 == 1)
       {
         ++self->_nextResourceIndex;
-        v31 = [(PXStoryConcreteSubtimelineScanner *)self isAtEnd];
-        if (v91)
+        isAtEnd = [(PXStoryConcreteSubtimelineScanner *)self isAtEnd];
+        if (optionsCopy)
         {
           v62 = PLStoryGetLog();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
           {
             *v155 = v72;
-            *&v155[4] = v31;
+            *&v155[4] = isAtEnd;
             _os_log_impl(&dword_1A3C1C000, v62, OS_LOG_TYPE_DEFAULT, "did skip one up, is at end %i", v155, 8u);
           }
         }
 
-        if (v31)
+        if (isAtEnd)
         {
           emptySubtimeline = self->_emptySubtimeline;
           [(PXStoryConcreteSubtimelineScanner *)self scanState];
-          (*(v88 + 2))(v88, emptySubtimeline, v155, v132 + 3);
+          (*(blockCopy + 2))(blockCopy, emptySubtimeline, v155, v132 + 3);
         }
 
         else
@@ -361,18 +361,18 @@ LABEL_34:
           v127[1] = 3221225472;
           v128[0] = __106__PXStoryConcreteSubtimelineScanner_enumeratePossibleNextSubtimelinesAfterTime_loggingOptions_usingBlock___block_invoke_53;
           v128[1] = &unk_1E773C6A8;
-          v129 = v88;
+          v129 = blockCopy;
           v130 = &v131;
-          *v155 = *&v86->var0;
-          *&v155[16] = v86->var3;
-          [(PXStoryConcreteSubtimelineScanner *)self enumeratePossibleNextSubtimelinesAfterTime:v155 loggingOptions:v91 usingBlock:v127];
+          *v155 = *&timeCopy->var0;
+          *&v155[16] = timeCopy->var3;
+          [(PXStoryConcreteSubtimelineScanner *)self enumeratePossibleNextSubtimelinesAfterTime:v155 loggingOptions:optionsCopy usingBlock:v127];
         }
       }
 
-      else if (v29 >= 1)
+      else if (numberOfClips2 >= 1)
       {
-        v33 = [v28 numberOfAssets];
-        if (v33 <= [v8 count])
+        numberOfAssets = [v28 numberOfAssets];
+        if (numberOfAssets <= [v8 count])
         {
           v34 = v30 - 1;
           if (v30 == 1)
@@ -383,21 +383,21 @@ LABEL_34:
           else
           {
             v36 = v28;
-            v37 = [v28 clipAssetIndexes];
+            clipAssetIndexes = [v28 clipAssetIndexes];
             do
             {
               originalPlaybackStylesAllowedInNUp = self->_originalPlaybackStylesAllowedInNUp;
               v39 = v8;
-              v40 = -[NSIndexSet containsIndex:](originalPlaybackStylesAllowedInNUp, "containsIndex:", *([v8 originalPlaybackStyles] + 8 * *v37));
+              v40 = -[NSIndexSet containsIndex:](originalPlaybackStylesAllowedInNUp, "containsIndex:", *([v8 originalPlaybackStyles] + 8 * *clipAssetIndexes));
               v35 = v40;
               v42 = v34-- != 0;
-              ++v37;
+              ++clipAssetIndexes;
             }
 
             while ((v40 & v42 & 1) != 0);
           }
 
-          if (v91)
+          if (optionsCopy)
           {
             v63 = PLStoryGetLog();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
@@ -414,30 +414,30 @@ LABEL_34:
           {
             v43 = [v8 displayAssetsWithCount:{objc_msgSend(v28, "numberOfAssets")}];
             v44 = v8;
-            v80 = [v8 assetContentInfos];
+            assetContentInfos2 = [v8 assetContentInfos];
             v45 = v8;
             if (v30 == 1)
             {
-              v46 = [v8 oneUpPlaybackStyles];
+              oneUpPlaybackStyles = [v8 oneUpPlaybackStyles];
             }
 
             else
             {
-              v46 = [v8 nUpPlaybackStyles];
+              oneUpPlaybackStyles = [v8 nUpPlaybackStyles];
             }
 
-            v47 = v83;
-            v48 = v46;
+            v47 = timelineStyle;
+            v48 = oneUpPlaybackStyles;
             v126 = 0;
             v124 = 0u;
             v125 = 0u;
-            if (v83)
+            if (timelineStyle)
             {
-              v46 = [v83 transitionInfoForSegmentWithClipComposition:v28 displayAssets:v43];
+              oneUpPlaybackStyles = [timelineStyle transitionInfoForSegmentWithClipComposition:v28 displayAssets:v43];
             }
 
             v75 = &v71;
-            MEMORY[0x1EEE9AC00](v46);
+            MEMORY[0x1EEE9AC00](oneUpPlaybackStyles);
             v51 = &v71 - ((v50 + 15) & 0xFFFFFFFFFFFFFFF0);
             if (v30 != 1)
             {
@@ -491,8 +491,8 @@ LABEL_34:
             memset(v155, 0, sizeof(v155));
             if (v47)
             {
-              v148 = *&v86->var0;
-              *&v149 = v86->var3;
+              v148 = *&timeCopy->var0;
+              *&v149 = timeCopy->var3;
               [v47 durationInfoForSegmentWithDisplayAssets:v43 startTime:&v148];
             }
 
@@ -504,26 +504,26 @@ LABEL_34:
             v97 = v76;
             v98 = v28;
             v58 = v43;
-            v59 = v86;
-            v118 = *&v86->var0;
+            v59 = timeCopy;
+            v118 = *&timeCopy->var0;
             v109 = v157;
             v110 = v158;
             v111 = v159;
             v112 = v160;
             v106 = *v155;
             v60 = v79;
-            v104 = v80;
+            v104 = assetContentInfos2;
             v105 = v79;
-            var3 = v86->var3;
+            var3 = timeCopy->var3;
             v107 = *&v155[16];
             v108 = v156;
             v113 = v77;
             v99 = v58;
-            v100 = self;
+            selfCopy = self;
             v116 = v126;
             v114 = v124;
             v115 = v125;
-            v101 = v88;
+            v101 = blockCopy;
             v102 = &v131;
             v117 = v81;
             v103 = &v120;
@@ -741,14 +741,14 @@ void __106__PXStoryConcreteSubtimelineScanner_enumeratePossibleNextSubtimelinesA
   (*(v5 + 16))(v5, v3, v6, *(a1[6] + 8) + 24);
 }
 
-- (void)_addTitles:(unint64_t)a3 toTimeline:(id)a4
+- (void)_addTitles:(unint64_t)titles toTimeline:(id)timeline
 {
-  v6 = a4;
-  v7 = [(PXStoryConcreteSubtimelineScanner *)self resourcesDataSource];
-  v8 = v7;
-  if (a3 && [v7 numberOfTextResources] && objc_msgSend(v6, "numberOfSegments"))
+  timelineCopy = timeline;
+  resourcesDataSource = [(PXStoryConcreteSubtimelineScanner *)self resourcesDataSource];
+  v8 = resourcesDataSource;
+  if (titles && [resourcesDataSource numberOfTextResources] && objc_msgSend(timelineCopy, "numberOfSegments"))
   {
-    [v6 size];
+    [timelineCopy size];
     PXRectWithOriginAndSize();
   }
 }
@@ -902,38 +902,38 @@ uint64_t __59__PXStoryConcreteSubtimelineScanner__addTitles_toTimeline___block_i
   return result;
 }
 
-- (BOOL)scanBestSubtimelineFollowingTimeline:(id)a3 loggingOptions:(unint64_t)a4 resultHandler:(id)a5
+- (BOOL)scanBestSubtimelineFollowingTimeline:(id)timeline loggingOptions:(unint64_t)options resultHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  timelineCopy = timeline;
+  handlerCopy = handler;
   [(PXStoryMutableConcreteTimeline *)self->_precedingSubtimeline removeAllClipsAndSegments];
-  v10 = [v8 numberOfSegments];
-  if (a4)
+  numberOfSegments = [timelineCopy numberOfSegments];
+  if (options)
   {
     v25 = PLStoryGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *range = 134217984;
-      *&range[4] = v10;
+      *&range[4] = numberOfSegments;
       _os_log_impl(&dword_1A3C1C000, v25, OS_LOG_TYPE_DEFAULT, "scan best subtimeline following timeline with %ti segments", range, 0xCu);
     }
   }
 
-  if (v10 >= 1)
+  if (numberOfSegments >= 1)
   {
     v11 = 2;
-    if (v10 > 2)
+    if (numberOfSegments > 2)
     {
-      v11 = v10;
+      v11 = numberOfSegments;
     }
 
-    v12 = [v8 identifierForSegmentAtIndex:v11 - 2];
+    v12 = [timelineCopy identifierForSegmentAtIndex:v11 - 2];
     memset(&v42, 0, sizeof(v42));
-    if (v8)
+    if (timelineCopy)
     {
-      [v8 timeRangeForSegmentWithIdentifier:v12];
-      [v8 timeRange];
+      [timelineCopy timeRangeForSegmentWithIdentifier:v12];
+      [timelineCopy timeRange];
     }
 
     else
@@ -954,23 +954,23 @@ uint64_t __59__PXStoryConcreteSubtimelineScanner__addTitles_toTimeline___block_i
     [(PXStoryMutableConcreteTimeline *)precedingSubtimeline setStartTime:range];
     v14 = self->_precedingSubtimeline;
     *range = v42;
-    [(PXStoryMutableConcreteTimeline *)v14 appendTimeRange:range fromTimeline:v8];
+    [(PXStoryMutableConcreteTimeline *)v14 appendTimeRange:range fromTimeline:timelineCopy];
   }
 
-  if (a4)
+  if (options)
   {
     v26 = PLStoryGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(PXStoryBaseTimeline *)self->_precedingSubtimeline diagnosticDescription];
+      diagnosticDescription = [(PXStoryBaseTimeline *)self->_precedingSubtimeline diagnosticDescription];
       *range = 138412290;
-      *&range[4] = v27;
+      *&range[4] = diagnosticDescription;
       _os_log_impl(&dword_1A3C1C000, v26, OS_LOG_TYPE_DEFAULT, "preceding subtimeline: %@", range, 0xCu);
     }
   }
 
   [(PXStoryMutableConcreteTimeline *)self->_bestSubtimeline removeAllClipsAndSegments];
-  v15 = [(PXStoryConcreteSubtimelineScanner *)self timelineScorer];
+  timelineScorer = [(PXStoryConcreteSubtimelineScanner *)self timelineScorer];
   v35.value = 0;
   *&v35.timescale = &v35;
   v35.epoch = 0x2020000000;
@@ -1001,14 +1001,14 @@ uint64_t __59__PXStoryConcreteSubtimelineScanner__addTitles_toTimeline___block_i
   v30[1] = 3221225472;
   v30[2] = __103__PXStoryConcreteSubtimelineScanner_scanBestSubtimelineFollowingTimeline_loggingOptions_resultHandler___block_invoke;
   v30[3] = &unk_1E773C5C0;
-  v34 = a4;
+  optionsCopy = options;
   v30[4] = self;
-  v17 = v15;
+  v17 = timelineScorer;
   v31 = v17;
   v32 = &v35;
   v33 = range;
   v42.start = v38;
-  [(PXStoryConcreteSubtimelineScanner *)self enumeratePossibleNextSubtimelinesAfterTime:&v42 loggingOptions:a4 usingBlock:v30];
+  [(PXStoryConcreteSubtimelineScanner *)self enumeratePossibleNextSubtimelinesAfterTime:&v42 loggingOptions:options usingBlock:v30];
   if (*(*&range[8] + 32) != 0x7FFFFFFFFFFFFFFFLL)
   {
     v29 = *(*&range[8] + 48);
@@ -1020,10 +1020,10 @@ uint64_t __59__PXStoryConcreteSubtimelineScanner__addTitles_toTimeline___block_i
     goto LABEL_19;
   }
 
-  v18 = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
-  v19 = [v18 allowsIncompleteTimelines];
+  timelineStyle = [(PXStoryConcreteSubtimelineScanner *)self timelineStyle];
+  allowsIncompleteTimelines = [timelineStyle allowsIncompleteTimelines];
 
-  if (v19)
+  if (allowsIncompleteTimelines)
   {
     v20 = PLStoryGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1034,12 +1034,12 @@ uint64_t __59__PXStoryConcreteSubtimelineScanner__addTitles_toTimeline___block_i
 
     self->_nextResourceIndex = self->_numberOfResources;
 LABEL_19:
-    v22 = [(PXStoryConcreteSubtimelineScanner *)self spec];
-    -[PXStoryConcreteSubtimelineScanner _addTitles:toTimeline:](self, "_addTitles:toTimeline:", [v22 allowedInlineTitles], self->_bestSubtimeline);
+    spec = [(PXStoryConcreteSubtimelineScanner *)self spec];
+    -[PXStoryConcreteSubtimelineScanner _addTitles:toTimeline:](self, "_addTitles:toTimeline:", [spec allowedInlineTitles], self->_bestSubtimeline);
 
-    v9[2](v9, self->_bestSubtimeline);
+    handlerCopy[2](handlerCopy, self->_bestSubtimeline);
     v23 = 1;
-    if ((a4 & 1) == 0)
+    if ((options & 1) == 0)
     {
       goto LABEL_22;
     }
@@ -1048,7 +1048,7 @@ LABEL_19:
   }
 
   v23 = 0;
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
     goto LABEL_22;
   }
@@ -1215,12 +1215,12 @@ void __103__PXStoryConcreteSubtimelineScanner_scanBestSubtimelineFollowingTimeli
   }
 }
 
-- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)a3 axis:(int64_t)a4 nextDisplayAssetsInfo:(id)a5 resultHandler:(id)a6
+- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)time axis:(int64_t)axis nextDisplayAssetsInfo:(id)info resultHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a6;
-  [v7 assetContentInfos];
+  infoCopy = info;
+  handlerCopy = handler;
+  [infoCopy assetContentInfos];
   PXSizeGetAspectRatioWithDefault();
 }
 
@@ -1231,11 +1231,11 @@ void __121__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimelineA
   PXRectWithOriginAndSize();
 }
 
-- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)a3 nextDisplayAssetsInfo:(id)a4 resultHandler:(id)a5
+- (BOOL)_scanMultipartPanoramaSubtimelineAfterTime:(id *)time nextDisplayAssetsInfo:(id)info resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (-[PXStoryConcreteSubtimelineScanner numberOfRemainingResources](self, "numberOfRemainingResources") >= 1 && [v8 count] >= 1 && *objc_msgSend(v8, "oneUpPlaybackStyles") == 1)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (-[PXStoryConcreteSubtimelineScanner numberOfRemainingResources](self, "numberOfRemainingResources") >= 1 && [infoCopy count] >= 1 && *objc_msgSend(infoCopy, "oneUpPlaybackStyles") == 1)
   {
     v19 = 0;
     v20 = &v19;
@@ -1247,10 +1247,10 @@ void __121__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimelineA
     aBlock[3] = &unk_1E773C550;
     v16 = &v19;
     aBlock[4] = self;
-    v17 = *&a3->var0;
-    var3 = a3->var3;
-    v14 = v8;
-    v15 = v9;
+    v17 = *&time->var0;
+    var3 = time->var3;
+    v14 = infoCopy;
+    v15 = handlerCopy;
     v10 = _Block_copy(aBlock);
     v10[2](v10, 2);
     v10[2](v10, 1);
@@ -1290,26 +1290,26 @@ uint64_t __116__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimel
   return result;
 }
 
-- (BOOL)_scanSubtimelineWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 playbackStyles:(const int64_t *)a6 separatorEffectParameters:(id *)a7 kenBurnsEffectParameters:(id *)a8 transitionInfo:(id *)a9 startTime:(id *)a10 durationInfo:(id *)a11 resultHandler:(id)a12
+- (BOOL)_scanSubtimelineWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)parameters kenBurnsEffectParameters:(id *)effectParameters transitionInfo:(id *)info startTime:(id *)self0 durationInfo:(id *)self1 resultHandler:(id)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a12;
-  v20 = [v17 numberOfAssets];
-  v21 = [(PXStoryConcreteSubtimelineScanner *)self numberOfRemainingResources];
-  if (v20 <= v21)
+  compositionCopy = composition;
+  assetsCopy = assets;
+  handlerCopy = handler;
+  numberOfAssets = [compositionCopy numberOfAssets];
+  numberOfRemainingResources = [(PXStoryConcreteSubtimelineScanner *)self numberOfRemainingResources];
+  if (numberOfAssets <= numberOfRemainingResources)
   {
-    v48 = a8;
-    v45 = v21;
-    v22 = [v17 numberOfClips];
-    time1 = a11->var1;
+    effectParametersCopy = effectParameters;
+    v45 = numberOfRemainingResources;
+    numberOfClips = [compositionCopy numberOfClips];
+    time1 = durationInfo->var1;
     *time2 = PXStoryTimeZero;
     *&time2[16] = 0;
     v23 = CMTimeCompare(&time1, time2);
     v97 = 0;
     v95 = 0u;
     v96 = 0u;
-    PXStorySegmentClipCompositionInfoFromComposition(v17, &v95);
+    PXStorySegmentClipCompositionInfoFromComposition(compositionCopy, &v95);
     time1.value = 0;
     *&time1.timescale = &time1;
     time1.epoch = 0x9810000000;
@@ -1330,19 +1330,19 @@ uint64_t __116__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimel
     v24 = +[PXStorySettings sharedInstance];
     v25 = v24;
     v49 = v24;
-    v46 = v20;
-    v47 = v19;
-    if (v23 >= 1 && [v24 smartGradientEnabled] && (!objc_msgSend(v17, "clipFramesExtendToBounds") || objc_msgSend(v25, "allowAspectModeToggle")))
+    v46 = numberOfAssets;
+    v47 = handlerCopy;
+    if (v23 >= 1 && [v24 smartGradientEnabled] && (!objc_msgSend(compositionCopy, "clipFramesExtendToBounds") || objc_msgSend(v25, "allowAspectModeToggle")))
     {
-      v26 = v22;
-      v27 = a7;
-      v28 = [v17 numberOfAssets] == 1;
+      v26 = numberOfClips;
+      parametersCopy2 = parameters;
+      v28 = [compositionCopy numberOfAssets] == 1;
     }
 
     else
     {
-      v26 = v22;
-      v27 = a7;
+      v26 = numberOfClips;
+      parametersCopy2 = parameters;
       v28 = 0;
     }
 
@@ -1353,61 +1353,61 @@ uint64_t __116__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimel
     v62[3] = &unk_1E773C528;
     v62[4] = self;
     v67 = v26;
-    v63 = v18;
-    v30 = v17;
-    v31 = *&a11->var1.var1;
-    v72 = *&a11->var2.var0;
-    v32 = *&a11->var2.var0;
-    v73 = *&a11->var2.var3;
-    v33 = *&a11->var2.var3;
-    v74 = *&a11->var3.var0.var1;
-    v34 = *&a11->var3.var0.var1;
-    v75 = *&a11->var3.var1;
-    v35 = *&a11->var0.var3;
-    v69 = *&a11->var0.var0;
-    v36 = *&a11->var0.var0;
-    v37 = *&a11->var0.var3;
+    v63 = assetsCopy;
+    v30 = compositionCopy;
+    v31 = *&durationInfo->var1.var1;
+    v72 = *&durationInfo->var2.var0;
+    v32 = *&durationInfo->var2.var0;
+    v73 = *&durationInfo->var2.var3;
+    v33 = *&durationInfo->var2.var3;
+    v74 = *&durationInfo->var3.var0.var1;
+    v34 = *&durationInfo->var3.var0.var1;
+    v75 = *&durationInfo->var3.var1;
+    v35 = *&durationInfo->var0.var3;
+    v69 = *&durationInfo->var0.var0;
+    v36 = *&durationInfo->var0.var0;
+    v37 = *&durationInfo->var0.var3;
     v70 = v35;
-    v71 = *&a11->var1.var1;
-    v38 = *&a9->var0;
-    v81 = *&a9->var2.var1;
+    v71 = *&durationInfo->var1.var1;
+    v38 = *&info->var0;
+    v81 = *&info->var2.var1;
     v80 = v38;
     v56 = v33;
     v57 = v34;
-    v58 = *&a11->var3.var1;
+    v58 = *&durationInfo->var3.var1;
     *time2 = v36;
     *&time2[16] = v37;
-    v76 = v48;
+    v76 = effectParametersCopy;
     v77 = a2;
-    v78 = a5;
-    v79 = a6;
+    infosCopy = infos;
+    stylesCopy = styles;
     v52 = v28;
     v83 = v28;
     v39 = v30;
     v64 = v30;
     p_time1 = &time1;
-    v68 = v27;
+    v68 = parametersCopy2;
     v66 = v84;
-    v82 = *&a9->var3;
+    v82 = *&info->var3;
     v54 = v31;
     v55 = v32;
     v59 = v95;
     v60 = v96;
     *&v61 = v97;
     v40 = [(PXStoryMutableConcreteTimeline *)subtimelineWithClipComposition appendSegmentWithDurationInfo:time2 clipCount:v26 compositionInfo:&v59 configuration:v62];
-    v20 = v46;
-    v19 = v47;
+    numberOfAssets = v46;
+    handlerCopy = v47;
     if ([v39 numberOfClips] < 2)
     {
-      v41 = 0;
+      allowsNUpBackground = 0;
     }
 
     else
     {
-      v41 = [v49 allowsNUpBackground];
+      allowsNUpBackground = [v49 allowsNUpBackground];
     }
 
-    if ((v41 | v52))
+    if ((allowsNUpBackground | v52))
     {
       v60 = 0u;
       v61 = 0u;
@@ -1428,10 +1428,10 @@ uint64_t __116__PXStoryConcreteSubtimelineScanner__scanMultipartPanoramaSubtimel
 
     _Block_object_dispose(v84, 8);
     _Block_object_dispose(&time1, 8);
-    v21 = v45;
+    numberOfRemainingResources = v45;
   }
 
-  v43 = v20 <= v21;
+  v43 = numberOfAssets <= numberOfRemainingResources;
 
   return v43;
 }
@@ -1457,10 +1457,10 @@ void __223__PXStoryConcreteSubtimelineScanner__scanSubtimelineWithClipCompositio
   PXRectWithOriginAndSize();
 }
 
-- (BOOL)_scanFastestSubtimelineWithNextDisplayAssetResultHandler:(id)a3
+- (BOOL)_scanFastestSubtimelineWithNextDisplayAssetResultHandler:(id)handler
 {
   v4 = _scanFastestSubtimelineWithNextDisplayAssetResultHandler__onceToken;
-  v5 = a3;
+  handlerCopy = handler;
   if (v4 != -1)
   {
     dispatch_once(&_scanFastestSubtimelineWithNextDisplayAssetResultHandler__onceToken, &__block_literal_global_135725);
@@ -1480,7 +1480,7 @@ void __223__PXStoryConcreteSubtimelineScanner__scanSubtimelineWithClipCompositio
   v9 = *&self->_defaultDurationInfo.maximumDuration.value;
   v12[2] = *&self->_defaultDurationInfo.preferredDuration.timescale;
   v12[3] = v9;
-  v10 = [(PXStoryConcreteSubtimelineScanner *)self _scanSubtimelineWithClipComposition:v6 displayAssets:0 assetContentInfos:0 playbackStyles:&v15 separatorEffectParameters:0 kenBurnsEffectParameters:0 transitionInfo:v14 startTime:v13 durationInfo:v12 resultHandler:v5];
+  v10 = [(PXStoryConcreteSubtimelineScanner *)self _scanSubtimelineWithClipComposition:v6 displayAssets:0 assetContentInfos:0 playbackStyles:&v15 separatorEffectParameters:0 kenBurnsEffectParameters:0 transitionInfo:v14 startTime:v13 durationInfo:v12 resultHandler:handlerCopy];
 
   return v10;
 }
@@ -1492,39 +1492,39 @@ void __94__PXStoryConcreteSubtimelineScanner__scanFastestSubtimelineWithNextDisp
   _scanFastestSubtimelineWithNextDisplayAssetResultHandler__oneUpComposition = v0;
 }
 
-- (BOOL)scanSubtimelineWithClipComposition:(id)a3 displayAssets:(id)a4 assetContentInfos:(id *)a5 playbackStyles:(const int64_t *)a6 separatorEffectParameters:(id *)a7 kenBurnsEffectParameters:(id *)a8 transitionInfo:(id *)a9 startTime:(id *)a10 durationInfo:(id *)a11 resultHandler:(id)a12
+- (BOOL)scanSubtimelineWithClipComposition:(id)composition displayAssets:(id)assets assetContentInfos:(id *)infos playbackStyles:(const int64_t *)styles separatorEffectParameters:(id *)parameters kenBurnsEffectParameters:(id *)effectParameters transitionInfo:(id *)info startTime:(id *)self0 durationInfo:(id *)self1 resultHandler:(id)self2
 {
-  v12 = *&a9->var2.var1;
-  v19[0] = *&a9->var0;
+  v12 = *&info->var2.var1;
+  v19[0] = *&info->var0;
   v19[1] = v12;
-  v20 = *&a9->var3;
-  v18 = *a10;
-  v13 = *&a11->var3.var0.var1;
-  v17[4] = *&a11->var2.var3;
+  v20 = *&info->var3;
+  v18 = *time;
+  v13 = *&durationInfo->var3.var0.var1;
+  v17[4] = *&durationInfo->var2.var3;
   v17[5] = v13;
-  v17[6] = *&a11->var3.var1;
-  v14 = *&a11->var0.var3;
-  v17[0] = *&a11->var0.var0;
+  v17[6] = *&durationInfo->var3.var1;
+  v14 = *&durationInfo->var0.var3;
+  v17[0] = *&durationInfo->var0.var0;
   v17[1] = v14;
-  v15 = *&a11->var2.var0;
-  v17[2] = *&a11->var1.var1;
+  v15 = *&durationInfo->var2.var0;
+  v17[2] = *&durationInfo->var1.var1;
   v17[3] = v15;
-  return [(PXStoryConcreteSubtimelineScanner *)self _scanSubtimelineWithClipComposition:a3 displayAssets:a4 assetContentInfos:a5 playbackStyles:a6 separatorEffectParameters:a7 kenBurnsEffectParameters:a8 transitionInfo:v19 startTime:&v18 durationInfo:v17 resultHandler:a12];
+  return [(PXStoryConcreteSubtimelineScanner *)self _scanSubtimelineWithClipComposition:composition displayAssets:assets assetContentInfos:infos playbackStyles:styles separatorEffectParameters:parameters kenBurnsEffectParameters:effectParameters transitionInfo:v19 startTime:&v18 durationInfo:v17 resultHandler:handler];
 }
 
-- (void)setScanState:(id *)a3
+- (void)setScanState:(id *)state
 {
-  self->_nextResourceIndex = a3->var0;
-  v4 = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
+  self->_nextResourceIndex = state->var0;
+  randomNumberGenerators = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PXStoryConcreteSubtimelineScanner_setScanState___block_invoke;
   v6[3] = &__block_descriptor_80_e48_v32__0___PFSeededRandomNumberGenerator__8Q16_B24l;
-  v5 = *&a3->var1[1];
-  v7 = *&a3->var0;
+  v5 = *&state->var1[1];
+  v7 = *&state->var0;
   v8 = v5;
-  v9 = *&a3->var1[3];
-  [v4 enumerateObjectsUsingBlock:v6];
+  v9 = *&state->var1[3];
+  [randomNumberGenerators enumerateObjectsUsingBlock:v6];
 }
 
 - ($70EB31679AD570D2612C6654B67EF72A)scanState
@@ -1538,20 +1538,20 @@ void __94__PXStoryConcreteSubtimelineScanner__scanFastestSubtimelineWithNextDisp
   nextResourceIndex = self->_nextResourceIndex;
   v17 = &unk_1A561E057;
   v18 = nextResourceIndex;
-  v7 = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
-  if ([v7 count] >= 6)
+  randomNumberGenerators = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
+  if ([randomNumberGenerators count] >= 6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a3 object:self file:@"PXStoryConcreteSubtimelineScanner.m" lineNumber:227 description:@"too many random number generators"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a3 object:self file:@"PXStoryConcreteSubtimelineScanner.m" lineNumber:227 description:@"too many random number generators"];
   }
 
-  v8 = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
+  randomNumberGenerators2 = [(PXStoryConcreteSubtimelineScanner *)self randomNumberGenerators];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke;
   v13[3] = &unk_1E773C4E0;
   v13[4] = &v14;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [randomNumberGenerators2 enumerateObjectsUsingBlock:v13];
 
   v9 = v15;
   v10 = *(v15 + 3);
@@ -1581,9 +1581,9 @@ uint64_t __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke(uint64_
 
 - (void)_initializeDefaultMultipartPanoramaParameters
 {
-  v3 = [(PXStoryTimelineStyle *)self->_timelineStyle defaultHorizontalMultipartPanoramaParameters];
+  defaultHorizontalMultipartPanoramaParameters = [(PXStoryTimelineStyle *)self->_timelineStyle defaultHorizontalMultipartPanoramaParameters];
   defaultHorizontalMultipartPanoramaParameters = self->_defaultHorizontalMultipartPanoramaParameters;
-  self->_defaultHorizontalMultipartPanoramaParameters = v3;
+  self->_defaultHorizontalMultipartPanoramaParameters = defaultHorizontalMultipartPanoramaParameters;
 
   v5 = self->_defaultHorizontalMultipartPanoramaParameters;
   if (v5)
@@ -1592,9 +1592,9 @@ uint64_t __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke(uint64_
     PXStoryRectIsNull();
   }
 
-  v6 = [(PXStoryTimelineStyle *)self->_timelineStyle defaultVerticalMultipartPanoramaParameters];
+  defaultVerticalMultipartPanoramaParameters = [(PXStoryTimelineStyle *)self->_timelineStyle defaultVerticalMultipartPanoramaParameters];
   defaultVerticalMultipartPanoramaParameters = self->_defaultVerticalMultipartPanoramaParameters;
-  self->_defaultVerticalMultipartPanoramaParameters = v6;
+  self->_defaultVerticalMultipartPanoramaParameters = defaultVerticalMultipartPanoramaParameters;
 
   v8 = self->_defaultVerticalMultipartPanoramaParameters;
   if (v8)
@@ -1607,37 +1607,37 @@ uint64_t __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke(uint64_
   self->_maximumAspectRatioForVerticalMultipartPanorama = -1.79769313e308;
 }
 
-- (PXStoryConcreteSubtimelineScanner)initWithConfiguration:(id)a3
+- (PXStoryConcreteSubtimelineScanner)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v55.receiver = self;
   v55.super_class = PXStoryConcreteSubtimelineScanner;
   v5 = [(PXStoryConcreteSubtimelineScanner *)&v55 init];
   if (v5)
   {
-    v6 = [v4 resourcesDataSource];
+    resourcesDataSource = [configurationCopy resourcesDataSource];
     resourcesDataSource = v5->_resourcesDataSource;
-    v5->_resourcesDataSource = v6;
+    v5->_resourcesDataSource = resourcesDataSource;
 
-    v8 = [v4 spec];
-    v9 = [v4 style];
-    v10 = [v9 createRandomNumberGenerators];
+    spec = [configurationCopy spec];
+    style = [configurationCopy style];
+    createRandomNumberGenerators = [style createRandomNumberGenerators];
     randomNumberGenerators = v5->_randomNumberGenerators;
-    v5->_randomNumberGenerators = v10;
+    v5->_randomNumberGenerators = createRandomNumberGenerators;
 
-    objc_storeStrong(&v5->_spec, v8);
+    objc_storeStrong(&v5->_spec, spec);
     v12 = v5->_resourcesDataSource;
     v13 = v5->_randomNumberGenerators;
-    v14 = [v4 errorReporter];
-    v15 = [v9 timelineStyleWithSpec:v8 resourcesDataSource:v12 randomNumberGenerators:v13 errorReporter:v14];
+    errorReporter = [configurationCopy errorReporter];
+    v15 = [style timelineStyleWithSpec:spec resourcesDataSource:v12 randomNumberGenerators:v13 errorReporter:errorReporter];
     timelineStyle = v5->_timelineStyle;
     v5->_timelineStyle = v15;
 
-    v17 = [v4 scorerFactory];
-    if (v17)
+    scorerFactory = [configurationCopy scorerFactory];
+    if (scorerFactory)
     {
-      v18 = [v4 scorerFactory];
-      v19 = (v18)[2](v18, v5->_timelineStyle);
+      scorerFactory2 = [configurationCopy scorerFactory];
+      v19 = (scorerFactory2)[2](scorerFactory2, v5->_timelineStyle);
       timelineScorer = v5->_timelineScorer;
       v5->_timelineScorer = v19;
     }
@@ -1645,21 +1645,21 @@ uint64_t __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke(uint64_
     else
     {
       v21 = [[PXStoryConcreteTimelineScorer alloc] initWithTimelineStyle:v5->_timelineStyle];
-      v18 = v5->_timelineScorer;
+      scorerFactory2 = v5->_timelineScorer;
       v5->_timelineScorer = v21;
     }
 
-    v5->_productionOptions = [v4 options];
-    [v8 viewportSize];
+    v5->_productionOptions = [configurationCopy options];
+    [spec viewportSize];
     v23 = v22;
     v25 = v24;
-    [v8 nUpDividerWidth];
+    [spec nUpDividerWidth];
     v5->_clipCompositionContext.viewportSize.width = v23;
     v5->_clipCompositionContext.viewportSize.height = v25;
     v5->_clipCompositionContext.dividerWidth = v26;
     v5->_clipCompositionContext.singleAssetAspectRatio = 0.0;
-    v27 = [(PXStoryResourcesDataSource *)v5->_resourcesDataSource keyAssetResource];
-    if (v27)
+    keyAssetResource = [(PXStoryResourcesDataSource *)v5->_resourcesDataSource keyAssetResource];
+    if (keyAssetResource)
     {
       v28 = -1;
     }
@@ -1671,19 +1671,19 @@ uint64_t __46__PXStoryConcreteSubtimelineScanner_scanState__block_invoke(uint64_
 
     v5->_initialResourceIndex = v28;
     v5->_nextResourceIndex = v28;
-    v29 = [(PXStoryResourcesDataSource *)v5->_resourcesDataSource numberOfDisplayAssetResources];
-    v5->_numberOfResources = v29;
-    if (v29 >= 1)
+    numberOfDisplayAssetResources = [(PXStoryResourcesDataSource *)v5->_resourcesDataSource numberOfDisplayAssetResources];
+    v5->_numberOfResources = numberOfDisplayAssetResources;
+    if (numberOfDisplayAssetResources >= 1)
     {
       v30 = [(PXStoryResourcesDataSource *)v5->_resourcesDataSource displayAssetResourceAtIndex:0];
-      v5->_firstDisplayAssetIsSameAsKey = [v27 isEqual:v30];
+      v5->_firstDisplayAssetIsSameAsKey = [keyAssetResource isEqual:v30];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __59__PXStoryConcreteSubtimelineScanner_initWithConfiguration___block_invoke;
     aBlock[3] = &unk_1E773C4B8;
-    aBlock[4] = v8;
+    aBlock[4] = spec;
     v31 = v5;
     aBlock[5] = v31;
     v32 = _Block_copy(aBlock);
@@ -1753,8 +1753,8 @@ PXStoryMutableConcreteTimeline *__59__PXStoryConcreteSubtimelineScanner_initWith
 
 - (PXStoryConcreteSubtimelineScanner)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteSubtimelineScanner.m" lineNumber:103 description:{@"%s is not available as initializer", "-[PXStoryConcreteSubtimelineScanner init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteSubtimelineScanner.m" lineNumber:103 description:{@"%s is not available as initializer", "-[PXStoryConcreteSubtimelineScanner init]"}];
 
   abort();
 }

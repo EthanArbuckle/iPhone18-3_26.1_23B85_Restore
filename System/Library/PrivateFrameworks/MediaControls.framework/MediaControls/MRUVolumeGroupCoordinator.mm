@@ -1,36 +1,36 @@
 @interface MRUVolumeGroupCoordinator
 - (BOOL)shouldAllowEqualization;
-- (MRUVolumeGroupCoordinator)initWithMainVolumeController:(id)a3;
+- (MRUVolumeGroupCoordinator)initWithMainVolumeController:(id)controller;
 - (float)updateVolumeScales;
 - (void)beginEqualization;
 - (void)equalizeVolumes;
 - (void)finishEqualization;
-- (void)setVolumeControllers:(id)a3;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)setVolumeControllers:(id)controllers;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MRUVolumeGroupCoordinator
 
-- (MRUVolumeGroupCoordinator)initWithMainVolumeController:(id)a3
+- (MRUVolumeGroupCoordinator)initWithMainVolumeController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MRUVolumeGroupCoordinator;
   v6 = [(MRUVolumeGroupCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mainVolumeController, a3);
+    objc_storeStrong(&v6->_mainVolumeController, controller);
     [(MRUVolumeController *)v7->_mainVolumeController setCoordinationDelegate:v7];
   }
 
   return v7;
 }
 
-- (void)setVolumeControllers:(id)a3
+- (void)setVolumeControllers:(id)controllers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllersCopy = controllers;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -61,13 +61,13 @@
     while (v8);
   }
 
-  objc_storeStrong(&self->_volumeControllers, a3);
+  objc_storeStrong(&self->_volumeControllers, controllers);
   [(MRUVolumeGroupCoordinator *)self updateVolumeScales];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v5;
+  v11 = controllersCopy;
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v12)
   {
@@ -252,12 +252,12 @@ LABEL_13:
   }
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v16 = a3;
+  controllerCopy = controller;
   [(MRUVolumeGroupCoordinator *)self updateVolumeScales];
   mainVolumeController = self->_mainVolumeController;
-  if (mainVolumeController == v16)
+  if (mainVolumeController == controllerCopy)
   {
     [(MRUVolumeController *)mainVolumeController volumeValue];
     v8 = v7;
@@ -267,7 +267,7 @@ LABEL_13:
       do
       {
         v10 = [(NSArray *)self->_volumeControllers objectAtIndexedSubscript:v9];
-        if (v10 != v16)
+        if (v10 != controllerCopy)
         {
           v11 = [(NSArray *)self->_volumeScales objectAtIndexedSubscript:v9];
           [v11 floatValue];

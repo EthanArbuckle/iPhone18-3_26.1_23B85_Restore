@@ -1,18 +1,18 @@
 @interface _UITextItemHighlightView
 - (UIEdgeInsets)_padding;
-- (_UITextItemHighlightView)initWithFrame:(CGRect)a3;
+- (_UITextItemHighlightView)initWithFrame:(CGRect)frame;
 - (void)_updateShape;
-- (void)setFillColor:(id)a3;
-- (void)setTextLineRects:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setTextLineRects:(id)rects;
 @end
 
 @implementation _UITextItemHighlightView
 
-- (_UITextItemHighlightView)initWithFrame:(CGRect)a3
+- (_UITextItemHighlightView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UITextItemHighlightView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor systemFillColor];
@@ -22,21 +22,21 @@
   return v3;
 }
 
-- (void)setTextLineRects:(id)a3
+- (void)setTextLineRects:(id)rects
 {
-  objc_storeStrong(&self->_textLineRects, a3);
+  objc_storeStrong(&self->_textLineRects, rects);
 
   [(_UITextItemHighlightView *)self _updateShape];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
-  v5 = a3;
-  v6 = [v5 CGColor];
+  objc_storeStrong(&self->_fillColor, color);
+  colorCopy = color;
+  cGColor = [colorCopy CGColor];
 
-  v7 = [(_UIShapeView *)self shapeLayer];
-  [v7 setFillColor:v6];
+  shapeLayer = [(_UIShapeView *)self shapeLayer];
+  [shapeLayer setFillColor:cGColor];
 }
 
 - (UIEdgeInsets)_padding
@@ -54,19 +54,19 @@
 
 - (void)_updateShape
 {
-  v3 = [(_UITextItemHighlightView *)self textLineRects];
+  textLineRects = [(_UITextItemHighlightView *)self textLineRects];
   [(_UITextItemHighlightView *)self _padding];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(_UITextItemHighlightView *)self cornerRadius];
-  v16 = _UIPreviewParametersGenerateTextPlatter(v3, v5, v7, v9, v11, v12);
+  v16 = _UIPreviewParametersGenerateTextPlatter(textLineRects, v5, v7, v9, v11, v12);
 
   v13 = v16;
-  v14 = [v16 CGPath];
-  v15 = [(_UIShapeView *)self shapeLayer];
-  [v15 setPath:v14];
+  cGPath = [v16 CGPath];
+  shapeLayer = [(_UIShapeView *)self shapeLayer];
+  [shapeLayer setPath:cGPath];
 }
 
 @end

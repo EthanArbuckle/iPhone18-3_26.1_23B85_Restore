@@ -1,8 +1,8 @@
 @interface SFTabOverviewLargeTitleView
 - (void)cancelEditingButtonReceivedTap;
 - (void)shareButtonReceivedTap;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SFTabOverviewLargeTitleView
@@ -11,18 +11,18 @@
 {
   v2 = *(&self->super.super._viewFlags + OBJC_IVAR___SFTabOverviewLargeTitleView_configuration + 16);
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___SFTabOverviewLargeTitleView_shareButton);
-  v4 = self;
+  selfCopy = self;
   sub_18BC1E1A8();
   v2(v3);
 }
 
 - (void)cancelEditingButtonReceivedTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_18B99FB28();
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v3 = self + OBJC_IVAR___SFTabOverviewLargeTitleView_configuration;
   v4 = *(&self->super.super._viewDelegate + OBJC_IVAR___SFTabOverviewLargeTitleView_configuration);
@@ -52,7 +52,7 @@
   v16[0] = v19[0];
   v16[1] = v6;
   v18 = 1;
-  v12 = self;
+  selfCopy = self;
   sub_18B9A2574(v19, &v15);
   sub_18B9A2438(v16);
   sub_18B9A25AC(v16);
@@ -61,11 +61,11 @@
   v13(v14);
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_18B9A1C2C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_18B9A1C2C(editingCopy);
 }
 
 @end

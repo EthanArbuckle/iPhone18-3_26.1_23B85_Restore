@@ -1,8 +1,8 @@
 @interface IMPerfProfiler
 + (id)instance;
 - (IMPerfProfiler)init;
-- (void)addSink:(id)a3 withBehavior:(id)a4;
-- (void)logMeasurement:(IMPerfMeasurement_t *)a3;
+- (void)addSink:(id)sink withBehavior:(id)behavior;
+- (void)logMeasurement:(IMPerfMeasurement_t *)measurement;
 @end
 
 @implementation IMPerfProfiler
@@ -38,27 +38,27 @@
   return v2;
 }
 
-- (void)addSink:(id)a3 withBehavior:(id)a4
+- (void)addSink:(id)sink withBehavior:(id)behavior
 {
   sinks = self->_sinks;
-  v6 = a4;
-  v7 = a3;
+  behaviorCopy = behavior;
+  sinkCopy = sink;
   v8 = [IMPerfSinkPair alloc];
-  v11 = objc_msgSend_initWithBehavior_sink_(v8, v9, v6, v7);
+  v11 = objc_msgSend_initWithBehavior_sink_(v8, v9, behaviorCopy, sinkCopy);
 
   objc_msgSend_addObject_(sinks, v10, v11);
 }
 
-- (void)logMeasurement:(IMPerfMeasurement_t *)a3
+- (void)logMeasurement:(IMPerfMeasurement_t *)measurement
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4->_sinks;
+  v5 = selfCopy->_sinks;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v19, v23, 16);
   if (v9)
   {
@@ -75,7 +75,7 @@
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = objc_msgSend_behavior(v12, v7, v8, v19);
         v16 = objc_msgSend_sink(v12, v14, v15);
-        objc_msgSend_perfProfiler_measurementDidFinish_withSink_(v13, v17, v4, a3, v16);
+        objc_msgSend_perfProfiler_measurementDidFinish_withSink_(v13, v17, selfCopy, measurement, v16);
       }
 
       v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v7, &v19, v23, 16);
@@ -84,7 +84,7 @@
     while (v9);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v18 = *MEMORY[0x1E69E9840];
 }
 

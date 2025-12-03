@@ -3,40 +3,40 @@
 - (BOOL)clientIsBuddy;
 - (BOOL)doesAllowUnrestrictedCellularDownload;
 - (id)description;
-- (id)initFromEnvironmentOptions:(unint64_t)a3;
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3;
-- (void)setBypassTermsAndConditions:(BOOL)a3;
-- (void)setClientIsBuddy:(BOOL)a3;
+- (id)initFromEnvironmentOptions:(unint64_t)options;
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download;
+- (void)setBypassTermsAndConditions:(BOOL)conditions;
+- (void)setClientIsBuddy:(BOOL)buddy;
 @end
 
 @implementation SUUIMobileUpdateOperationOptions
 
 - (BOOL)doesAllowUnrestrictedCellularDownload
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  allowUnrestrictedCellularDownload = v4->_allowUnrestrictedCellularDownload;
+  allowUnrestrictedCellularDownload = selfCopy->_allowUnrestrictedCellularDownload;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return allowUnrestrictedCellularDownload;
 }
 
-- (void)setAllowUnrestrictedCellularDownload:(BOOL)a3
+- (void)setAllowUnrestrictedCellularDownload:(BOOL)download
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  downloadCopy = download;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_allowUnrestrictedCellularDownload = v5;
+  selfCopy->_allowUnrestrictedCellularDownload = downloadCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -55,30 +55,30 @@
 
 - (BOOL)clientIsBuddy
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  clientIsBuddy = v4->_clientIsBuddy;
+  clientIsBuddy = selfCopy->_clientIsBuddy;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return clientIsBuddy;
 }
 
-- (void)setClientIsBuddy:(BOOL)a3
+- (void)setClientIsBuddy:(BOOL)buddy
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  buddyCopy = buddy;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_clientIsBuddy = v5;
+  selfCopy->_clientIsBuddy = buddyCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -97,30 +97,30 @@
 
 - (BOOL)bypassTermsAndConditions
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   v6 = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  bypassTermsAndConditions = v4->_bypassTermsAndConditions;
+  bypassTermsAndConditions = selfCopy->_bypassTermsAndConditions;
   v8 = v3;
   os_unfair_lock_unlock(p_lock);
   return bypassTermsAndConditions;
 }
 
-- (void)setBypassTermsAndConditions:(BOOL)a3
+- (void)setBypassTermsAndConditions:(BOOL)conditions
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  conditionsCopy = conditions;
   v4[0] = 2;
   p_lock = &self->_lock;
   v8 = 0;
   os_unfair_lock_lock_with_options();
   v4[1] = p_lock;
-  v7->_bypassTermsAndConditions = v5;
+  selfCopy->_bypassTermsAndConditions = conditionsCopy;
   v10 = v4;
   switch(v4[0])
   {
@@ -137,10 +137,10 @@
   }
 }
 
-- (id)initFromEnvironmentOptions:(unint64_t)a3
+- (id)initFromEnvironmentOptions:(unint64_t)options
 {
   v8 = a2;
-  v7 = a3;
+  optionsCopy = options;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = SUUIMobileUpdateOperationOptions;
@@ -149,8 +149,8 @@
   objc_storeStrong(&v9, v5);
   if (v5)
   {
-    v9->_allowUnrestrictedCellularDownload = (v7 & 1) != 0;
-    v9->_bypassTermsAndConditions = (v7 & 2) != 0;
+    v9->_allowUnrestrictedCellularDownload = (optionsCopy & 1) != 0;
+    v9->_bypassTermsAndConditions = (optionsCopy & 2) != 0;
   }
 
   v4 = MEMORY[0x277D82BE0](v9);

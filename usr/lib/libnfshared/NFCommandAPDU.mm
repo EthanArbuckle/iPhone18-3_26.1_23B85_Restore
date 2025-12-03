@@ -1,8 +1,8 @@
 @interface NFCommandAPDU
-+ (id)appendExpectedLength:(unsigned __int16)a3 usingExtendedLength:(BOOL)a4 toAPDU:(id)a5;
++ (id)appendExpectedLength:(unsigned __int16)length usingExtendedLength:(BOOL)extendedLength toAPDU:(id)u;
 - (BOOL)isSecureMessaging;
-- (NFCommandAPDU)initWithBytes:(const char *)a3 length:(unint64_t)a4;
-- (NFCommandAPDU)initWithData:(id)a3 uniformLengthCheck:(BOOL)a4;
+- (NFCommandAPDU)initWithBytes:(const char *)bytes length:(unint64_t)length;
+- (NFCommandAPDU)initWithData:(id)data uniformLengthCheck:(BOOL)check;
 - (id)description;
 @end
 
@@ -20,19 +20,19 @@
   return v9;
 }
 
-- (NFCommandAPDU)initWithBytes:(const char *)a3 length:(unint64_t)a4
+- (NFCommandAPDU)initWithBytes:(const char *)bytes length:(unint64_t)length
 {
   v7 = objc_alloc(MEMORY[0x277CBEA90]);
-  v9 = objc_msgSend_initWithBytes_length_(v7, v8, a3, a4);
+  v9 = objc_msgSend_initWithBytes_length_(v7, v8, bytes, length);
   v11 = objc_msgSend_initWithData_(self, v10, v9);
 
   return v11;
 }
 
-- (NFCommandAPDU)initWithData:(id)a3 uniformLengthCheck:(BOOL)a4
+- (NFCommandAPDU)initWithData:(id)data uniformLengthCheck:(BOOL)check
 {
-  v4 = a4;
-  v7 = a3;
+  checkCopy = check;
+  dataCopy = data;
   v38.receiver = self;
   v38.super_class = NFCommandAPDU;
   v8 = [(NFCommandAPDU *)&v38 init];
@@ -41,12 +41,12 @@
     goto LABEL_36;
   }
 
-  v9 = v7;
+  v9 = dataCopy;
   v12 = objc_msgSend_bytes(v9, v10, v11);
-  v13 = v7;
+  v13 = dataCopy;
   v16 = objc_msgSend_bytes(v13, v14, v15);
-  v19 = objc_msgSend_length(v7, v17, v18);
-  if (objc_msgSend_length(v7, v20, v21) >= 4)
+  v19 = objc_msgSend_length(dataCopy, v17, v18);
+  if (objc_msgSend_length(dataCopy, v20, v21) >= 4)
   {
     v23 = (v16 + v19);
     v8->_class = *v12;
@@ -92,10 +92,10 @@ LABEL_7:
         v29 = v25 != 0;
         if (v23 - v27 >= v28)
         {
-          v31 = v7;
+          v31 = dataCopy;
           v8->_payloadRange.location = &v27[-objc_msgSend_bytes(v31, v32, v33)];
           v8->_payloadRange.length = v28;
-          objc_storeStrong(&v8->_data, a3);
+          objc_storeStrong(&v8->_data, data);
           v27 += v28;
         }
 
@@ -139,7 +139,7 @@ LABEL_13:
     {
       if (v23 - v27 == 2)
       {
-        if (v29 && v4)
+        if (v29 && checkCopy)
         {
           goto LABEL_3;
         }
@@ -159,7 +159,7 @@ LABEL_13:
 
       else
       {
-        if (v23 - v27 != 1 || v26 && v4)
+        if (v23 - v27 != 1 || v26 && checkCopy)
         {
           goto LABEL_3;
         }
@@ -207,21 +207,21 @@ LABEL_37:
   return (v8 & v7) != 0;
 }
 
-+ (id)appendExpectedLength:(unsigned __int16)a3 usingExtendedLength:(BOOL)a4 toAPDU:(id)a5
++ (id)appendExpectedLength:(unsigned __int16)length usingExtendedLength:(BOOL)extendedLength toAPDU:(id)u
 {
-  v6 = a3;
+  lengthCopy = length;
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v11 = v9;
-  if (v6 < 0x100 || a4)
+  uCopy = u;
+  v11 = uCopy;
+  if (lengthCopy < 0x100 || extendedLength)
   {
-    if (a4)
+    if (extendedLength)
     {
-      buf[0] = BYTE1(v6);
-      objc_msgSend_appendBytes_length_(v9, v10, buf, 1);
+      buf[0] = BYTE1(lengthCopy);
+      objc_msgSend_appendBytes_length_(uCopy, v10, buf, 1);
     }
 
-    buf[0] = v6;
+    buf[0] = lengthCopy;
     objc_msgSend_appendBytes_length_(v11, v10, buf, 1);
     v39 = 0;
   }
@@ -238,9 +238,9 @@ LABEL_37:
     v14 = *(&off_27DA9DE50 + specific);
     if (v14)
     {
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v18 = 45;
       if (isMetaClass)
@@ -256,7 +256,7 @@ LABEL_37:
     v20 = NFSharedLogGetLogger(v19);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = object_getClass(a1);
+      v21 = object_getClass(self);
       if (class_isMetaClass(v21))
       {
         v22 = 43;
@@ -270,7 +270,7 @@ LABEL_37:
       *buf = 67109890;
       v46 = v22;
       v47 = 2082;
-      v48 = object_getClassName(a1);
+      v48 = object_getClassName(self);
       v49 = 2082;
       v50 = sel_getName(a2);
       v51 = 1024;

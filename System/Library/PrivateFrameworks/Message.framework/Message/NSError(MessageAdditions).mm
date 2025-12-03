@@ -11,28 +11,28 @@
 
 - (uint64_t)mf_isUserCancelledError
 {
-  if ([a1 ef_isCancelledError])
+  if ([self ef_isCancelledError])
   {
     return 1;
   }
 
-  if ([a1 code] != 1028)
+  if ([self code] != 1028)
   {
     return 0;
   }
 
-  v3 = [a1 domain];
-  v2 = [v3 isEqualToString:@"MFMessageErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"MFMessageErrorDomain"];
 
   return v2;
 }
 
 - (uint64_t)mf_isSMIMEError
 {
-  v2 = [a1 domain];
-  v3 = [a1 code];
-  v4 = [@"MFMessageErrorDomain" isEqualToString:v2];
-  if ((v3 - 1035) < 2)
+  domain = [self domain];
+  code = [self code];
+  v4 = [@"MFMessageErrorDomain" isEqualToString:domain];
+  if ((code - 1035) < 2)
   {
     v5 = v4;
   }
@@ -47,44 +47,44 @@
 
 - (uint64_t)mf_shouldBeReportedToUser
 {
-  if ([a1 mf_isUserCancelledError])
+  if ([self mf_isUserCancelledError])
   {
     return 0;
   }
 
-  if ([a1 code] != 1029)
+  if ([self code] != 1029)
   {
     return 1;
   }
 
-  v3 = [a1 domain];
-  v4 = [@"MFMessageErrorDomain" isEqualToString:v3];
+  domain = [self domain];
+  v4 = [@"MFMessageErrorDomain" isEqualToString:domain];
 
   return v4 ^ 1u;
 }
 
 - (id)mf_moreInfo
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"_MFMoreInfo"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"_MFMoreInfo"];
 
   return v2;
 }
 
 - (id)mf_shortDescription
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"_MFShortDescription"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"_MFShortDescription"];
 
   return v2;
 }
 
 - (BOOL)mf_shouldFailDownload
 {
-  v2 = [a1 domain];
-  if ([@"MFMessageErrorDomain" isEqualToString:v2])
+  domain = [self domain];
+  if ([@"MFMessageErrorDomain" isEqualToString:domain])
   {
-    v3 = [a1 code] != 1036 && objc_msgSend(a1, "code") != 1035;
+    v3 = [self code] != 1036 && objc_msgSend(self, "code") != 1035;
   }
 
   else

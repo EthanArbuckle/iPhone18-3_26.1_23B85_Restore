@@ -1,61 +1,61 @@
 @interface REMAlarmLocationTrigger
-- (BOOL)isContentEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmLocationTrigger)initWithCoder:(id)a3;
-- (REMAlarmLocationTrigger)initWithObjectID:(id)a3 structuredLocation:(id)a4 proximity:(int64_t)a5;
-- (REMAlarmLocationTrigger)initWithStructuredLocation:(id)a3 proximity:(int64_t)a4;
+- (BOOL)isContentEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmLocationTrigger)initWithCoder:(id)coder;
+- (REMAlarmLocationTrigger)initWithObjectID:(id)d structuredLocation:(id)location proximity:(int64_t)proximity;
+- (REMAlarmLocationTrigger)initWithStructuredLocation:(id)location proximity:(int64_t)proximity;
 - (id)_deepCopy;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmLocationTrigger
 
-- (REMAlarmLocationTrigger)initWithObjectID:(id)a3 structuredLocation:(id)a4 proximity:(int64_t)a5
+- (REMAlarmLocationTrigger)initWithObjectID:(id)d structuredLocation:(id)location proximity:(int64_t)proximity
 {
-  v8 = a4;
+  locationCopy = location;
   v12.receiver = self;
   v12.super_class = REMAlarmLocationTrigger;
-  v9 = [(REMAlarmTrigger *)&v12 initWithObjectID:a3];
+  v9 = [(REMAlarmTrigger *)&v12 initWithObjectID:d];
   v10 = v9;
   if (v9)
   {
-    [(REMAlarmLocationTrigger *)v9 setStructuredLocation:v8];
-    [(REMAlarmLocationTrigger *)v10 setProximity:a5];
+    [(REMAlarmLocationTrigger *)v9 setStructuredLocation:locationCopy];
+    [(REMAlarmLocationTrigger *)v10 setProximity:proximity];
   }
 
   return v10;
 }
 
-- (REMAlarmLocationTrigger)initWithStructuredLocation:(id)a3 proximity:(int64_t)a4
+- (REMAlarmLocationTrigger)initWithStructuredLocation:(id)location proximity:(int64_t)proximity
 {
-  v6 = a3;
+  locationCopy = location;
   v10.receiver = self;
   v10.super_class = REMAlarmLocationTrigger;
   v7 = [(REMAlarmTrigger *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(REMAlarmLocationTrigger *)v7 setStructuredLocation:v6];
-    [(REMAlarmLocationTrigger *)v8 setProximity:a4];
+    [(REMAlarmLocationTrigger *)v7 setStructuredLocation:locationCopy];
+    [(REMAlarmLocationTrigger *)v8 setProximity:proximity];
   }
 
   return v8;
 }
 
-- (REMAlarmLocationTrigger)initWithCoder:(id)a3
+- (REMAlarmLocationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = REMAlarmLocationTrigger;
-  v5 = [(REMAlarmTrigger *)&v10 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"structuredLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"structuredLocation"];
     [(REMAlarmLocationTrigger *)v5 setStructuredLocation:v6];
 
-    v7 = [v4 decodeIntegerForKey:@"proximity"];
+    v7 = [coderCopy decodeIntegerForKey:@"proximity"];
     if (v7 >= 3)
     {
       v8 = os_log_create("com.apple.reminderkit", "default");
@@ -76,26 +76,26 @@
 - (id)_deepCopy
 {
   v3 = [REMAlarmLocationTrigger alloc];
-  v4 = [(REMAlarmLocationTrigger *)self structuredLocation];
-  v5 = [v4 copy];
+  structuredLocation = [(REMAlarmLocationTrigger *)self structuredLocation];
+  v5 = [structuredLocation copy];
   v6 = [(REMAlarmLocationTrigger *)v3 initWithStructuredLocation:v5 proximity:[(REMAlarmLocationTrigger *)self proximity]];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(REMAlarmLocationTrigger *)self structuredLocation];
-    v7 = [v5 structuredLocation];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    structuredLocation = [(REMAlarmLocationTrigger *)self structuredLocation];
+    structuredLocation2 = [v5 structuredLocation];
+    if ([structuredLocation isEqual:structuredLocation2])
     {
-      v8 = [(REMAlarmLocationTrigger *)self proximity];
-      v9 = v8 == [v5 proximity];
+      proximity = [(REMAlarmLocationTrigger *)self proximity];
+      v9 = proximity == [v5 proximity];
     }
 
     else
@@ -112,19 +112,19 @@
   return v9;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(REMAlarmLocationTrigger *)self structuredLocation];
-    v7 = [v5 structuredLocation];
-    if ([v6 isContentEqual:v7])
+    v5 = equalCopy;
+    structuredLocation = [(REMAlarmLocationTrigger *)self structuredLocation];
+    structuredLocation2 = [v5 structuredLocation];
+    if ([structuredLocation isContentEqual:structuredLocation2])
     {
-      v8 = [(REMAlarmLocationTrigger *)self proximity];
-      v9 = v8 == [v5 proximity];
+      proximity = [(REMAlarmLocationTrigger *)self proximity];
+      v9 = proximity == [v5 proximity];
     }
 
     else
@@ -143,8 +143,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMAlarmLocationTrigger *)self structuredLocation];
-  v3 = [v2 hash];
+  structuredLocation = [(REMAlarmLocationTrigger *)self structuredLocation];
+  v3 = [structuredLocation hash];
 
   return v3;
 }
@@ -155,22 +155,22 @@
   v8.receiver = self;
   v8.super_class = REMAlarmLocationTrigger;
   v4 = [(REMAlarmLocationTrigger *)&v8 description];
-  v5 = [(REMAlarmLocationTrigger *)self structuredLocation];
-  v6 = [v3 stringWithFormat:@"%@ {structuredLocation = %@ proximity = %ld;}", v4, v5, -[REMAlarmLocationTrigger proximity](self, "proximity")];;
+  structuredLocation = [(REMAlarmLocationTrigger *)self structuredLocation];
+  v6 = [v3 stringWithFormat:@"%@ {structuredLocation = %@ proximity = %ld;}", v4, structuredLocation, -[REMAlarmLocationTrigger proximity](self, "proximity")];;
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = REMAlarmLocationTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(REMAlarmLocationTrigger *)self structuredLocation:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"structuredLocation"];
+  [coderCopy encodeObject:v5 forKey:@"structuredLocation"];
 
-  [v4 encodeInteger:-[REMAlarmLocationTrigger proximity](self forKey:{"proximity"), @"proximity"}];
+  [coderCopy encodeInteger:-[REMAlarmLocationTrigger proximity](self forKey:{"proximity"), @"proximity"}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

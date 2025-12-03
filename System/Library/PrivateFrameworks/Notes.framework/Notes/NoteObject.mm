@@ -1,5 +1,5 @@
 @interface NoteObject
-- (BOOL)belongsToCollection:(id)a3;
+- (BOOL)belongsToCollection:(id)collection;
 - (BOOL)containsAttachments;
 - (BOOL)hasValidServerIntId;
 - (BOOL)isBeingMarkedForDeletion;
@@ -24,44 +24,44 @@
 - (NSString)trimmedTitle;
 - (NSString)widgetInfoText;
 - (NSURL)noteId;
-- (id)dataForTypeIdentifier:(id)a3;
+- (id)dataForTypeIdentifier:(id)identifier;
 - (int64_t)serverIntId;
 - (unint64_t)flags;
 - (unint64_t)sequenceNumber;
 - (void)markForDeletion;
-- (void)setContent:(id)a3;
-- (void)setExternalContentRef:(id)a3;
-- (void)setExternalRepresentation:(id)a3;
-- (void)setFlags:(unint64_t)a3;
-- (void)setSequenceNumber:(unint64_t)a3;
-- (void)setServerIntId:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setContent:(id)content;
+- (void)setExternalContentRef:(id)ref;
+- (void)setExternalRepresentation:(id)representation;
+- (void)setFlags:(unint64_t)flags;
+- (void)setSequenceNumber:(unint64_t)number;
+- (void)setServerIntId:(int64_t)id;
+- (void)setTitle:(id)title;
 @end
 
 @implementation NoteObject
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  v4 = [(NoteObject *)self body];
+  contentCopy = content;
+  body = [(NoteObject *)self body];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setContent:v5];
+    [body setContent:contentCopy];
   }
 
   else
   {
-    NSLog(&cfstr_TheBodyObjectI.isa, self, v4);
+    NSLog(&cfstr_TheBodyObjectI.isa, self, body);
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NoteObject *)self title];
-  v6 = [v5 isEqualToString:v4];
+  titleCopy = title;
+  title = [(NoteObject *)self title];
+  v6 = [title isEqualToString:titleCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -78,15 +78,15 @@
     }
   }
 
-  if (!v4 || ([MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "stringByTrimmingCharactersInSet:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v12, !v14))
+  if (!titleCopy || ([MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(titleCopy, "stringByTrimmingCharactersInSet:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v12, !v14))
   {
-    v15 = [(NoteObject *)self defaultTitleForEmptyNote];
+    defaultTitleForEmptyNote = [(NoteObject *)self defaultTitleForEmptyNote];
 
-    v4 = v15;
+    titleCopy = defaultTitleForEmptyNote;
   }
 
   [(NoteObject *)self willChangeValueForKey:@"title"];
-  [(NoteObject *)self setPrimitiveValue:v4 forKey:@"title"];
+  [(NoteObject *)self setPrimitiveValue:titleCopy forKey:@"title"];
   [(NoteObject *)self didChangeValueForKey:@"title"];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -94,33 +94,33 @@
 
 - (NSString)content
 {
-  v2 = [(NoteObject *)self body];
-  v3 = [v2 content];
+  body = [(NoteObject *)self body];
+  content = [body content];
 
-  return v3;
+  return content;
 }
 
 - (NSString)contentAsPlainText
 {
-  v2 = [(NoteObject *)self body];
-  v3 = [v2 contentAsPlainText];
+  body = [(NoteObject *)self body];
+  contentAsPlainText = [body contentAsPlainText];
 
-  return v3;
+  return contentAsPlainText;
 }
 
 - (NSString)contentAsPlainTextPreservingNewlines
 {
-  v3 = [(NoteObject *)self isPlainText];
-  v4 = [(NoteObject *)self body];
-  v5 = v4;
-  if (v3)
+  isPlainText = [(NoteObject *)self isPlainText];
+  body = [(NoteObject *)self body];
+  v5 = body;
+  if (isPlainText)
   {
-    [v4 content];
+    [body content];
   }
 
   else
   {
-    [v4 contentAsPlainTextPreservingNewlines];
+    [body contentAsPlainTextPreservingNewlines];
   }
   v6 = ;
 
@@ -129,8 +129,8 @@
 
 - (BOOL)isPlainText
 {
-  v2 = [(NoteObject *)self contentType];
-  v3 = [v2 intValue] == 1;
+  contentType = [(NoteObject *)self contentType];
+  v3 = [contentType intValue] == 1;
 
   return v3;
 }
@@ -143,10 +143,10 @@
 
 - (BOOL)isMarkedForDeletion
 {
-  v2 = [(NoteObject *)self deletedFlag];
-  v3 = [v2 BOOLValue];
+  deletedFlag = [(NoteObject *)self deletedFlag];
+  bOOLValue = [deletedFlag BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isBeingMarkedForDeletion
@@ -168,105 +168,105 @@
 
 - (NSURL)noteId
 {
-  v2 = [(NoteObject *)self objectID];
-  v3 = [v2 URIRepresentation];
+  objectID = [(NoteObject *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
 
-  return v3;
+  return uRIRepresentation;
 }
 
-- (void)setFlags:(unint64_t)a3
+- (void)setFlags:(unint64_t)flags
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:flags];
   [(NoteObject *)self setExternalFlags:v4];
 }
 
 - (unint64_t)flags
 {
-  v2 = [(NoteObject *)self externalFlags];
-  v3 = [v2 unsignedLongLongValue];
+  externalFlags = [(NoteObject *)self externalFlags];
+  unsignedLongLongValue = [externalFlags unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)setServerIntId:(int64_t)a3
+- (void)setServerIntId:(int64_t)id
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:id];
   [(NoteObject *)self setExternalServerIntId:v4];
 }
 
 - (int64_t)serverIntId
 {
-  v2 = [(NoteObject *)self externalServerIntId];
-  v3 = [v2 longLongValue];
+  externalServerIntId = [(NoteObject *)self externalServerIntId];
+  longLongValue = [externalServerIntId longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
 - (BOOL)hasValidServerIntId
 {
-  v2 = [(NoteObject *)self externalServerIntId];
-  v3 = [v2 longLongValue];
+  externalServerIntId = [(NoteObject *)self externalServerIntId];
+  longLongValue = [externalServerIntId longLongValue];
 
-  return (v3 + 0xFFFFFFFFLL) < 0x1FFFFFFFFLL;
+  return (longLongValue + 0xFFFFFFFFLL) < 0x1FFFFFFFFLL;
 }
 
 - (NSData)externalRepresentation
 {
-  v2 = [(NoteObject *)self body];
-  v3 = [v2 externalRepresentation];
+  body = [(NoteObject *)self body];
+  externalRepresentation = [body externalRepresentation];
 
-  return v3;
+  return externalRepresentation;
 }
 
-- (void)setExternalRepresentation:(id)a3
+- (void)setExternalRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(NoteObject *)self body];
-  [v5 setExternalRepresentation:v4];
+  representationCopy = representation;
+  body = [(NoteObject *)self body];
+  [body setExternalRepresentation:representationCopy];
 }
 
 - (NSString)externalContentRef
 {
-  v2 = [(NoteObject *)self body];
-  v3 = [v2 externalContentRef];
+  body = [(NoteObject *)self body];
+  externalContentRef = [body externalContentRef];
 
-  return v3;
+  return externalContentRef;
 }
 
-- (void)setExternalContentRef:(id)a3
+- (void)setExternalContentRef:(id)ref
 {
-  v4 = a3;
-  v5 = [(NoteObject *)self body];
-  [v5 setExternalContentRef:v4];
+  refCopy = ref;
+  body = [(NoteObject *)self body];
+  [body setExternalContentRef:refCopy];
 }
 
 - (BOOL)containsAttachments
 {
-  v2 = [(NoteObject *)self attachments];
-  v3 = [v2 count] != 0;
+  attachments = [(NoteObject *)self attachments];
+  v3 = [attachments count] != 0;
 
   return v3;
 }
 
-- (void)setSequenceNumber:(unint64_t)a3
+- (void)setSequenceNumber:(unint64_t)number
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:number];
   [(NoteObject *)self setExternalSequenceNumber:v4];
 }
 
 - (unint64_t)sequenceNumber
 {
-  v2 = [(NoteObject *)self externalSequenceNumber];
-  v3 = [v2 unsignedLongLongValue];
+  externalSequenceNumber = [(NoteObject *)self externalSequenceNumber];
+  unsignedLongLongValue = [externalSequenceNumber unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)belongsToCollection:(id)a3
+- (BOOL)belongsToCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (-[NoteObject store](self, "store"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqual:v4], v5, (v6))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (-[NoteObject store](self, "store"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqual:collectionCopy], v5, (v6))
   {
     v7 = 1;
   }
@@ -276,9 +276,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(NoteObject *)self store];
-      v9 = [v8 account];
-      v7 = [v9 isEqual:v4];
+      store = [(NoteObject *)self store];
+      account = [store account];
+      v7 = [account isEqual:collectionCopy];
     }
 
     else
@@ -292,71 +292,71 @@
 
 - (NSString)trimmedTitle
 {
-  v2 = [(NoteObject *)self title];
-  v3 = v2;
+  title = [(NoteObject *)self title];
+  v3 = title;
   v4 = &stru_286E2F780;
-  if (v2)
+  if (title)
   {
-    v4 = v2;
+    v4 = title;
   }
 
-  v5 = v4;
+  ic_whitespaceAndNewlineCoalescedString = v4;
 
-  if ([(__CFString *)v5 length])
+  if ([(__CFString *)ic_whitespaceAndNewlineCoalescedString length])
   {
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v7 = [(__CFString *)v5 stringByTrimmingCharactersInSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v7 = [(__CFString *)ic_whitespaceAndNewlineCoalescedString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v5 = [v7 ic_whitespaceAndNewlineCoalescedString];
+    ic_whitespaceAndNewlineCoalescedString = [v7 ic_whitespaceAndNewlineCoalescedString];
   }
 
-  return v5;
+  return ic_whitespaceAndNewlineCoalescedString;
 }
 
 - (NSString)folderName
 {
-  v3 = [(NoteObject *)self store];
-  v4 = [(NoteObject *)self store];
-  v5 = [v4 account];
-  v6 = [v5 defaultStore];
+  store = [(NoteObject *)self store];
+  store2 = [(NoteObject *)self store];
+  account = [store2 account];
+  defaultStore = [account defaultStore];
 
-  if (v3 == v6)
+  if (store == defaultStore)
   {
-    v8 = __ICLocalizedFrameworkString_impl(@"Notes", @"Notes", 0);
+    name = __ICLocalizedFrameworkString_impl(@"Notes", @"Notes", 0);
   }
 
   else
   {
-    v7 = [(NoteObject *)self store];
-    v8 = [v7 name];
+    store3 = [(NoteObject *)self store];
+    name = [store3 name];
   }
 
-  return v8;
+  return name;
 }
 
 - (NSString)folderManagedIdentifier
 {
-  v2 = [(NoteObject *)self store];
-  v3 = [v2 externalIdentifier];
+  store = [(NoteObject *)self store];
+  externalIdentifier = [store externalIdentifier];
 
-  return v3;
+  return externalIdentifier;
 }
 
 - (NSString)accountName
 {
-  v2 = [(NoteObject *)self store];
-  v3 = [v2 account];
-  v4 = [v3 name];
+  store = [(NoteObject *)self store];
+  account = [store account];
+  name = [account name];
 
-  return v4;
+  return name;
 }
 
 - (BOOL)isHiddenFromIndexing
 {
-  v3 = [(NoteObject *)self store];
-  v4 = [v3 account];
+  store = [(NoteObject *)self store];
+  account = [store account];
 
-  if (!v4)
+  if (!account)
   {
     return 1;
   }
@@ -371,20 +371,20 @@
     return 1;
   }
 
-  v5 = [(NoteObject *)self store];
-  v6 = [v5 account];
-  v7 = [v6 didChooseToMigrate];
+  store2 = [(NoteObject *)self store];
+  account2 = [store2 account];
+  didChooseToMigrate = [account2 didChooseToMigrate];
 
-  if (v7)
+  if (didChooseToMigrate)
   {
     return 1;
   }
 
   v9 = MEMORY[0x277D361A0];
-  v10 = [(NoteObject *)self store];
-  v11 = [v10 account];
-  v12 = [v11 accountIdentifier];
-  LOBYTE(v9) = [v9 isAccountReindexedForMigration:v12];
+  store3 = [(NoteObject *)self store];
+  account3 = [store3 account];
+  accountIdentifier = [account3 accountIdentifier];
+  LOBYTE(v9) = [v9 isAccountReindexedForMigration:accountIdentifier];
 
   return v9;
 }
@@ -392,9 +392,9 @@
 - (NSString)noteAsPlainTextWithoutTitle
 {
   v3 = MEMORY[0x277D36228];
-  v4 = [(NoteObject *)self title];
-  v5 = [(NoteObject *)self contentAsPlainTextPreservingNewlines];
-  v6 = [v3 stringByRemovingTitle:v4 fromString:v5];
+  title = [(NoteObject *)self title];
+  contentAsPlainTextPreservingNewlines = [(NoteObject *)self contentAsPlainTextPreservingNewlines];
+  v6 = [v3 stringByRemovingTitle:title fromString:contentAsPlainTextPreservingNewlines];
 
   return v6;
 }
@@ -402,15 +402,15 @@
 - (NSString)contentInfoText
 {
   v3 = MEMORY[0x277D36228];
-  v4 = [(NoteObject *)self noteAsPlainTextWithoutTitle];
-  v5 = [v3 snippetForContent:v4];
+  noteAsPlainTextWithoutTitle = [(NoteObject *)self noteAsPlainTextWithoutTitle];
+  v5 = [v3 snippetForContent:noteAsPlainTextWithoutTitle];
 
   if (![v5 length])
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = __ICLocalizedFrameworkString_impl(@"NOTE_LIST_ATTACHMENTS_%lu", @"NOTE_LIST_ATTACHMENTS_%lu", 0);
-    v8 = [(NoteObject *)self attachments];
-    v9 = [v6 localizedStringWithFormat:v7, objc_msgSend(v8, "count")];
+    attachments = [(NoteObject *)self attachments];
+    v9 = [v6 localizedStringWithFormat:v7, objc_msgSend(attachments, "count")];
 
     v5 = v9;
   }
@@ -421,8 +421,8 @@
 - (NSAttributedString)attributedContentInfoText
 {
   v3 = objc_alloc(MEMORY[0x277CCA898]);
-  v4 = [(NoteObject *)self contentInfoText];
-  v5 = [v3 initWithString:v4];
+  contentInfoText = [(NoteObject *)self contentInfoText];
+  v5 = [v3 initWithString:contentInfoText];
 
   return v5;
 }
@@ -430,15 +430,15 @@
 - (NSString)widgetInfoText
 {
   v3 = MEMORY[0x277D36228];
-  v4 = [(NoteObject *)self noteAsPlainTextWithoutTitle];
-  v5 = [v3 widgetSnippetForContent:v4];
+  noteAsPlainTextWithoutTitle = [(NoteObject *)self noteAsPlainTextWithoutTitle];
+  v5 = [v3 widgetSnippetForContent:noteAsPlainTextWithoutTitle];
 
   if (![v5 length])
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = __ICLocalizedFrameworkString_impl(@"NOTE_LIST_ATTACHMENTS_%lu", @"NOTE_LIST_ATTACHMENTS_%lu", 0);
-    v8 = [(NoteObject *)self attachments];
-    v9 = [v6 localizedStringWithFormat:v7, objc_msgSend(v8, "count")];
+    attachments = [(NoteObject *)self attachments];
+    v9 = [v6 localizedStringWithFormat:v7, objc_msgSend(attachments, "count")];
 
     v5 = v9;
   }
@@ -448,46 +448,46 @@
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(NoteObject *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(NoteObject *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)searchDomainIdentifier
 {
   v3 = +[AccountUtilities sharedAccountUtilities];
-  v4 = [v3 accountStore];
+  accountStore = [v3 accountStore];
 
-  v5 = [(NoteObject *)self store];
-  v6 = [v5 account];
-  v7 = [v6 accountIdentifier];
-  v8 = [v4 accountWithIdentifier:v7];
+  store = [(NoteObject *)self store];
+  account = [store account];
+  accountIdentifier = [account accountIdentifier];
+  v8 = [accountStore accountWithIdentifier:accountIdentifier];
 
-  v9 = [v8 parentAccount];
-  v10 = v9;
-  if (!v9)
+  parentAccount = [v8 parentAccount];
+  v10 = parentAccount;
+  if (!parentAccount)
   {
-    v9 = v8;
+    parentAccount = v8;
   }
 
-  v11 = [v9 identifier];
+  identifier = [parentAccount identifier];
 
-  return v11;
+  return identifier;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
 {
   v3 = [objc_alloc(MEMORY[0x277CC34B8]) initWithItemContentType:@"com.apple.notes.spotlightrecord"];
-  v4 = [(NoteObject *)self creationDate];
-  [v3 setContentCreationDate:v4];
+  creationDate = [(NoteObject *)self creationDate];
+  [v3 setContentCreationDate:creationDate];
 
-  v5 = [(NoteObject *)self modificationDate];
-  [v3 setContentModificationDate:v5];
+  modificationDate = [(NoteObject *)self modificationDate];
+  [v3 setContentModificationDate:modificationDate];
 
-  v6 = [(NoteObject *)self title];
-  [v3 setDisplayName:v6];
+  title = [(NoteObject *)self title];
+  [v3 setDisplayName:title];
 
   return v3;
 }
@@ -495,19 +495,19 @@
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v3 = [(NoteObject *)self userActivityContentAttributeSet];
+  userActivityContentAttributeSet = [(NoteObject *)self userActivityContentAttributeSet];
   v4 = MEMORY[0x277D36228];
-  v5 = [(NoteObject *)self noteAsPlainTextWithoutTitle];
-  v6 = [v4 snippetForContent:v5];
-  [v3 setContentDescription:v6];
+  noteAsPlainTextWithoutTitle = [(NoteObject *)self noteAsPlainTextWithoutTitle];
+  v6 = [v4 snippetForContent:noteAsPlainTextWithoutTitle];
+  [userActivityContentAttributeSet setContentDescription:v6];
 
-  v7 = [(NoteObject *)self noteAsPlainTextWithoutTitle];
-  [v3 setTextContent:v7];
+  noteAsPlainTextWithoutTitle2 = [(NoteObject *)self noteAsPlainTextWithoutTitle];
+  [userActivityContentAttributeSet setTextContent:noteAsPlainTextWithoutTitle2];
 
-  [v3 setIc_searchResultType:0];
-  v8 = [(NoteObject *)self store];
-  v9 = [v8 account];
-  if ([v9 preventMovingNotesToOtherAccounts])
+  [userActivityContentAttributeSet setIc_searchResultType:0];
+  store = [(NoteObject *)self store];
+  account = [store account];
+  if ([account preventMovingNotesToOtherAccounts])
   {
     v10 = &unk_286E32B58;
   }
@@ -517,51 +517,51 @@
     v10 = &unk_286E32B70;
   }
 
-  [v3 setDataOwnerType:v10];
+  [userActivityContentAttributeSet setDataOwnerType:v10];
 
-  [v3 ic_populateValuesForSpecializedFields];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(NoteObject *)self searchableItemViewAttributeSet];
-    [v3 addAttributesFromAttributeSet:v11];
+    searchableItemViewAttributeSet = [(NoteObject *)self searchableItemViewAttributeSet];
+    [userActivityContentAttributeSet addAttributesFromAttributeSet:searchableItemViewAttributeSet];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(NoteObject *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(NoteObject *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  v12 = [*MEMORY[0x277CE1EB0] identifier];
-  v13 = [*MEMORY[0x277CE1DA0] identifier];
-  v17[1] = v13;
+  identifier = [*MEMORY[0x277CE1EB0] identifier];
+  identifier2 = [*MEMORY[0x277CE1DA0] identifier];
+  v17[1] = identifier2;
   v17[2] = @"com.apple.notes.htmlnoteitemprovider";
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-  [v3 setProviderDataTypes:v14];
+  [userActivityContentAttributeSet setProviderDataTypes:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
-- (id)dataForTypeIdentifier:(id)a3
+- (id)dataForTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__1;
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
-  v5 = [(NoteObject *)self managedObjectContext];
+  managedObjectContext = [(NoteObject *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__NoteObject_SearchIndexableNote__dataForTypeIdentifier___block_invoke;
   v9[3] = &unk_2799AC9F0;
-  v6 = v4;
-  v11 = self;
+  v6 = identifierCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v6;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);

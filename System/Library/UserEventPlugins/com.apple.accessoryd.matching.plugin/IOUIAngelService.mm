@@ -2,12 +2,12 @@
 + (id)interface;
 - (BOOL)isServerRunning;
 - (IOUIAngelService)init;
-- (IOUIAngelService)initWithIdentifier:(id)a3;
+- (IOUIAngelService)initWithIdentifier:(id)identifier;
 - (IOUIAngelServiceDelegate)delegate;
 - (void)invalidate;
-- (void)pingServerWithCompletion:(id)a3;
-- (void)setIntrusiveUI:(BOOL)a3 completion:(id)a4;
-- (void)setIsIntrusiveUIDisplayed:(BOOL)a3;
+- (void)pingServerWithCompletion:(id)completion;
+- (void)setIntrusiveUI:(BOOL)i completion:(id)completion;
+- (void)setIsIntrusiveUIDisplayed:(BOOL)displayed;
 @end
 
 @implementation IOUIAngelService
@@ -36,9 +36,9 @@ void __29__IOUIAngelService_interface__block_invoke(id a1)
   interface___interface = v2;
 }
 
-- (IOUIAngelService)initWithIdentifier:(id)a3
+- (IOUIAngelService)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -201,17 +201,17 @@ void __39__IOUIAngelService_initWithIdentifier___block_invoke_57(uint64_t a1)
   return v3;
 }
 
-- (void)setIsIntrusiveUIDisplayed:(BOOL)a3
+- (void)setIsIntrusiveUIDisplayed:(BOOL)displayed
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_isIntrusiveUIDisplayed = a3;
+  self->_isIntrusiveUIDisplayed = displayed;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)pingServerWithCompletion:(id)a3
+- (void)pingServerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   server = self->_server;
   v6 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v16 = v6;
@@ -231,8 +231,8 @@ void __39__IOUIAngelService_initWithIdentifier___block_invoke_57(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __45__IOUIAngelService_pingServerWithCompletion___block_invoke;
   v10[3] = &unk_596C0;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 pingWithCompletion:v10];
 }
 
@@ -269,10 +269,10 @@ void __45__IOUIAngelService_pingServerWithCompletion___block_invoke(uint64_t a1,
   }
 }
 
-- (void)setIntrusiveUI:(BOOL)a3 completion:(id)a4
+- (void)setIntrusiveUI:(BOOL)i completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  iCopy = i;
+  completionCopy = completion;
   server = self->_server;
   v8 = [RBSDomainAttribute attributeWithDomain:@"com.apple.common" name:@"BasicAngelIPC"];
   v38 = v8;
@@ -284,7 +284,7 @@ void __45__IOUIAngelService_pingServerWithCompletion___block_invoke(uint64_t a1,
     v11 = @"remove";
     v33 = "[IOUIAngelService setIntrusiveUI:completion:]";
     *buf = 136315650;
-    if (v4)
+    if (iCopy)
     {
       v11 = @"display";
     }
@@ -300,12 +300,12 @@ void __45__IOUIAngelService_pingServerWithCompletion___block_invoke(uint64_t a1,
   v25 = 3221225472;
   v26 = __46__IOUIAngelService_setIntrusiveUI_completion___block_invoke;
   v27 = &unk_596E8;
-  v30 = v4;
-  v12 = v6;
-  v28 = self;
+  v30 = iCopy;
+  v12 = completionCopy;
+  selfCopy = self;
   v29 = v12;
   v13 = objc_retainBlock(&v24);
-  if (v4)
+  if (iCopy)
   {
     [v10 setIntrusiveUIWithCompletion:{v13, v24, v25, v26, v27}];
     v14 = [RBSDomainAttribute attributeWithDomain:@"com.apple.IOUIAngel" name:@"criticalUI"];

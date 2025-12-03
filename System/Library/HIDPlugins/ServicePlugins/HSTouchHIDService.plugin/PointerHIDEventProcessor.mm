@@ -1,30 +1,30 @@
 @interface PointerHIDEventProcessor
-- (BOOL)checkForMomentumCancellation:(id)a3;
-- (BOOL)handleMomentumInitiationForSubtype:(int)a3 event:(id)a4;
-- (BOOL)shouldDispatchEvent:(id)a3;
-- (PointerHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4;
+- (BOOL)checkForMomentumCancellation:(id)cancellation;
+- (BOOL)handleMomentumInitiationForSubtype:(int)subtype event:(id)event;
+- (BOOL)shouldDispatchEvent:(id)event;
+- (PointerHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type;
 - (id)debugDictionary;
 - (id)deviceInfoEvent;
-- (id)generateMomentumStartEventFrom:(id)a3 forSubtype:(int)a4;
-- (id)handleChildHIDEvent:(id)a3 previouslyGeneratedEvent:(id)a4 timestamp:(unint64_t)a5 momentumInitiationType:(int)a6 canceledMomentumScroll:(BOOL)a7;
-- (id)handleHIDEvent:(id)a3;
-- (id)momentumRequestEventFrom:(id)a3;
-- (id)structureHIDEventFrom:(id)a3 vendorEvents:(id)a4 timestamp:(unint64_t)a5;
+- (id)generateMomentumStartEventFrom:(id)from forSubtype:(int)subtype;
+- (id)handleChildHIDEvent:(id)event previouslyGeneratedEvent:(id)generatedEvent timestamp:(unint64_t)timestamp momentumInitiationType:(int)type canceledMomentumScroll:(BOOL)scroll;
+- (id)handleHIDEvent:(id)event;
+- (id)momentumRequestEventFrom:(id)from;
+- (id)structureHIDEventFrom:(id)from vendorEvents:(id)events timestamp:(unint64_t)timestamp;
 - (id)validChildTypes;
-- (int)momentumChangeFrom:(id)a3 startMomentum:(BOOL)a4;
+- (int)momentumChangeFrom:(id)from startMomentum:(BOOL)momentum;
 - (void)cancelMomentum;
-- (void)copyPhaseFrom:(id)a3 to:(id)a4;
-- (void)handleConsume:(id)a3;
-- (void)handleMomentumStateEvent:(id)a3;
+- (void)copyPhaseFrom:(id)from to:(id)to;
+- (void)handleConsume:(id)consume;
+- (void)handleMomentumStateEvent:(id)event;
 @end
 
 @implementation PointerHIDEventProcessor
 
-- (PointerHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4
+- (PointerHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type
 {
   v8.receiver = self;
   v8.super_class = PointerHIDEventProcessor;
-  v4 = [(TrackpadHIDEventProcessor *)&v8 initWithDeviceID:a3 deviceType:a4];
+  v4 = [(TrackpadHIDEventProcessor *)&v8 initWithDeviceID:d deviceType:type];
   v5 = v4;
   if (v4)
   {
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -53,21 +53,21 @@
 
   if (v5)
   {
-    [(PointerHIDEventProcessor *)self handleMomentumStateEvent:v4];
+    [(PointerHIDEventProcessor *)self handleMomentumStateEvent:consumeCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PointerHIDEventProcessor;
-    [(TrackpadHIDEventProcessor *)&v6 handleConsume:v4];
+    [(TrackpadHIDEventProcessor *)&v6 handleConsume:consumeCopy];
   }
 }
 
-- (id)handleHIDEvent:(id)a3
+- (id)handleHIDEvent:(id)event
 {
-  v35 = a3;
-  if ([v35 type] != 11)
+  eventCopy = event;
+  if ([eventCopy type] != 11)
   {
     v7 = MTLoggingPlugin();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@
     *&buf[22] = 2080;
     *&buf[24] = "[PointerHIDEventProcessor handleHIDEvent:]";
     *&buf[32] = 1024;
-    *&buf[34] = [v35 type];
+    *&buf[34] = [eventCopy type];
     v6 = "[HID] [MT] %s%s%s Unexpected event type: %u Eating it.";
     v5 = v7;
     v8 = v7;
@@ -92,7 +92,7 @@
     goto LABEL_11;
   }
 
-  if ([v35 integerValueForField:720918] != &dword_0 + 1)
+  if ([eventCopy integerValueForField:720918] != &dword_0 + 1)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -112,9 +112,9 @@ LABEL_12:
     goto LABEL_54;
   }
 
-  v4 = [v35 parent];
+  parent = [eventCopy parent];
 
-  if (v4)
+  if (parent)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -137,15 +137,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v39 = v35;
-  v42 = [v39 timestamp];
+  v39 = eventCopy;
+  timestamp = [v39 timestamp];
   v41 = [(PointerHIDEventProcessor *)self momentumChangeFrom:v39 startMomentum:1];
   v40 = [(PointerHIDEventProcessor *)self checkForMomentumCancellation:v39];
   v11 = objc_opt_new();
   v37 = objc_opt_new();
   v36 = objc_opt_new();
-  v12 = [v39 children];
-  v13 = [v12 copy];
+  children = [v39 children];
+  v13 = [children copy];
 
   v45 = 0u;
   v46 = 0u;
@@ -175,8 +175,8 @@ LABEL_11:
         [v39 removeEvent:v17];
       }
 
-      v18 = [v17 children];
-      if (-[NSObject count](v18, "count") && [v17 type] != 11)
+      children2 = [v17 children];
+      if (-[NSObject count](children2, "count") && [v17 type] != 11)
       {
         v26 = [v17 type] == 23;
 
@@ -185,11 +185,11 @@ LABEL_11:
           goto LABEL_25;
         }
 
-        v18 = MTLoggingPlugin();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        children2 = MTLoggingPlugin();
+        if (os_log_type_enabled(children2, OS_LOG_TYPE_ERROR))
         {
-          v27 = [v17 type];
-          v28 = [v17 children];
+          type = [v17 type];
+          children3 = [v17 children];
           *buf = 136316162;
           *&buf[4] = "[Error] ";
           *&buf[12] = 2080;
@@ -197,10 +197,10 @@ LABEL_11:
           *&buf[22] = 2080;
           *&buf[24] = "[PointerHIDEventProcessor handleHIDEvent:]";
           *&buf[32] = 1024;
-          *&buf[34] = v27;
+          *&buf[34] = type;
           *&buf[38] = 2112;
-          *&buf[40] = v28;
-          _os_log_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected grandchild events inside event type: %u %@", buf, 0x30u);
+          *&buf[40] = children3;
+          _os_log_impl(&dword_0, children2, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected grandchild events inside event type: %u %@", buf, 0x30u);
         }
       }
 
@@ -208,7 +208,7 @@ LABEL_25:
       v19 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v17 type]);
       v20 = [v11 objectForKey:v19];
 
-      v21 = [(PointerHIDEventProcessor *)self handleChildHIDEvent:v17 previouslyGeneratedEvent:v20 timestamp:v42 momentumInitiationType:v41 canceledMomentumScroll:v40];
+      v21 = [(PointerHIDEventProcessor *)self handleChildHIDEvent:v17 previouslyGeneratedEvent:v20 timestamp:timestamp momentumInitiationType:v41 canceledMomentumScroll:v40];
       v22 = [v11 objectForKey:&off_112038];
       if (v22)
       {
@@ -239,7 +239,7 @@ LABEL_30:
           v24 = MTLoggingPlugin();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v17 type];
+            type2 = [v17 type];
             *buf = 136315906;
             *&buf[4] = "[Error] ";
             *&buf[12] = 2080;
@@ -247,7 +247,7 @@ LABEL_30:
             *&buf[22] = 2080;
             *&buf[24] = "[PointerHIDEventProcessor handleHIDEvent:]";
             *&buf[32] = 1024;
-            *&buf[34] = v25;
+            *&buf[34] = type2;
             _os_log_impl(&dword_0, v24, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Generated an additional child of event type %u. Eating it", buf, 0x26u);
           }
         }
@@ -283,7 +283,7 @@ LABEL_43:
   }
 
   [v11 setObject:v39 forKeyedSubscript:&off_112068];
-  v32 = [(PointerHIDEventProcessor *)self structureHIDEventFrom:v11 vendorEvents:v37 timestamp:v42];
+  v32 = [(PointerHIDEventProcessor *)self structureHIDEventFrom:v11 vendorEvents:v37 timestamp:timestamp];
   if (!v32)
   {
     memset(buf, 170, sizeof(buf));
@@ -303,10 +303,10 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v33 = [(PointerHIDEventProcessor *)self deviceInfoEvent];
-  if (v33)
+  deviceInfoEvent = [(PointerHIDEventProcessor *)self deviceInfoEvent];
+  if (deviceInfoEvent)
   {
-    [v32 appendEvent:v33];
+    [v32 appendEvent:deviceInfoEvent];
   }
 
   v10 = objc_opt_new();
@@ -320,37 +320,37 @@ LABEL_54:
   return v10;
 }
 
-- (void)handleMomentumStateEvent:(id)a3
+- (void)handleMomentumStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 isMomentumActive];
+  eventCopy = event;
+  isMomentumActive = [eventCopy isMomentumActive];
   if (self)
   {
-    self->_momentumActive = v5;
+    self->_momentumActive = isMomentumActive;
   }
 
   v6.receiver = self;
   v6.super_class = PointerHIDEventProcessor;
-  [(TrackpadHIDEventProcessor *)&v6 handleConsume:v4];
+  [(TrackpadHIDEventProcessor *)&v6 handleConsume:eventCopy];
 }
 
-- (id)handleChildHIDEvent:(id)a3 previouslyGeneratedEvent:(id)a4 timestamp:(unint64_t)a5 momentumInitiationType:(int)a6 canceledMomentumScroll:(BOOL)a7
+- (id)handleChildHIDEvent:(id)event previouslyGeneratedEvent:(id)generatedEvent timestamp:(unint64_t)timestamp momentumInitiationType:(int)type canceledMomentumScroll:(BOOL)scroll
 {
-  v8 = *&a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = [v12 children];
-  if ([v14 count] && objc_msgSend(v12, "type") != 11)
+  v8 = *&type;
+  eventCopy = event;
+  generatedEventCopy = generatedEvent;
+  children = [eventCopy children];
+  if ([children count] && objc_msgSend(eventCopy, "type") != 11)
   {
-    v25 = [v12 type];
+    type = [eventCopy type];
 
-    if (v25 != 23)
+    if (type != 23)
     {
       v26 = MTLoggingPlugin();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v12 type];
-        v28 = [v12 children];
+        type2 = [eventCopy type];
+        children2 = [eventCopy children];
         LODWORD(v49[0]) = 136316162;
         *(v49 + 4) = "[Error] ";
         WORD2(v49[1]) = 2080;
@@ -358,9 +358,9 @@ LABEL_54:
         HIWORD(v49[2]) = 2080;
         v49[3] = "[PointerHIDEventProcessor handleChildHIDEvent:previouslyGeneratedEvent:timestamp:momentumInitiationType:canceledMomentumScroll:]";
         LOWORD(v49[4]) = 1024;
-        *(&v49[4] + 2) = v27;
+        *(&v49[4] + 2) = type2;
         HIWORD(v49[4]) = 2112;
-        v49[5] = v28;
+        v49[5] = children2;
         _os_log_impl(&dword_0, v26, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected grandchild events inside event type: %u %@", v49, 0x30u);
       }
     }
@@ -370,30 +370,30 @@ LABEL_54:
   {
   }
 
-  if ([v12 type] == 11)
+  if ([eventCopy type] == 11)
   {
     goto LABEL_5;
   }
 
-  if ([v12 type] == 17)
+  if ([eventCopy type] == 17)
   {
-    if (![(PointerHIDEventProcessor *)self handleMomentumInitiationForSubtype:v8 event:v12])
+    if (![(PointerHIDEventProcessor *)self handleMomentumInitiationForSubtype:v8 event:eventCopy])
     {
-      v17 = [(TrackpadHIDEventProcessor *)self noPointing];
-      v18 = v13 ? 1 : v17;
+      noPointing = [(TrackpadHIDEventProcessor *)self noPointing];
+      v18 = generatedEventCopy ? 1 : noPointing;
       if ((v18 & 1) == 0)
       {
-        [v12 doubleValueForField:1114112];
+        [eventCopy doubleValueForField:1114112];
         v20 = v19;
-        [v12 doubleValueForField:1114113];
+        [eventCopy doubleValueForField:1114113];
         v22 = v21;
-        v23 = [(TrackpadHIDEventProcessor *)self previousButtonState];
+        previousButtonState = [(TrackpadHIDEventProcessor *)self previousButtonState];
         if ([(TrackpadHIDEventProcessor *)self hostClickControl])
         {
-          v23 = [v12 integerValueForField:1114115];
+          previousButtonState = [eventCopy integerValueForField:1114115];
         }
 
-        v24 = -[TrackpadHIDEventProcessor createPointingEventWithDeltaX:deltaY:buttonMask:timestamp:source:options:](self, "createPointingEventWithDeltaX:deltaY:buttonMask:timestamp:source:options:", v23, a5, @"HostAlgs-Pointer", [v12 options], v20, v22);
+        v24 = -[TrackpadHIDEventProcessor createPointingEventWithDeltaX:deltaY:buttonMask:timestamp:source:options:](self, "createPointingEventWithDeltaX:deltaY:buttonMask:timestamp:source:options:", previousButtonState, timestamp, @"HostAlgs-Pointer", [eventCopy options], v20, v22);
         goto LABEL_18;
       }
     }
@@ -403,21 +403,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v12 type] != 2)
+  if ([eventCopy type] != 2)
   {
-    if ([v12 type] == 6)
+    if ([eventCopy type] == 6)
     {
       if (![(TrackpadHIDEventProcessor *)self gestureScrollsEnabled])
       {
         goto LABEL_5;
       }
 
-      [v12 doubleValueForField:393216];
+      [eventCopy doubleValueForField:393216];
       v32 = v31;
-      [v12 doubleValueForField:393217];
+      [eventCopy doubleValueForField:393217];
       v34 = v33;
-      [v12 doubleValueForField:393218];
-      if (v13)
+      [eventCopy doubleValueForField:393218];
+      if (generatedEventCopy)
       {
         v36 = MTLoggingPlugin();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -431,7 +431,7 @@ LABEL_5:
           _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEBUG, "[HID] [MT] %s%s%s Multiple scroll events. Merging.", v49, 0x20u);
         }
 
-        [(TrackpadHIDEventProcessor *)self mergeScrollEvent:v13 with:v12];
+        [(TrackpadHIDEventProcessor *)self mergeScrollEvent:generatedEventCopy with:eventCopy];
         goto LABEL_5;
       }
 
@@ -441,9 +441,9 @@ LABEL_18:
       goto LABEL_6;
     }
 
-    if ([v12 type] == 7)
+    if ([eventCopy type] == 7)
     {
-      if (v13)
+      if (generatedEventCopy)
       {
         ScaleEvent = MTLoggingPlugin();
         if (!os_log_type_enabled(ScaleEvent, OS_LOG_TYPE_ERROR))
@@ -461,10 +461,10 @@ LABEL_18:
         goto LABEL_53;
       }
 
-      [v12 doubleValueForField:458752];
-      [v12 doubleValueForField:458753];
-      [v12 doubleValueForField:458754];
-      [v12 options];
+      [eventCopy doubleValueForField:458752];
+      [eventCopy doubleValueForField:458753];
+      [eventCopy doubleValueForField:458754];
+      [eventCopy options];
       ScaleEvent = IOHIDEventCreateScaleEvent();
       if (!ScaleEvent)
       {
@@ -479,18 +479,18 @@ LABEL_18:
       }
 
 LABEL_79:
-      [(PointerHIDEventProcessor *)self copyPhaseFrom:v12 to:ScaleEvent];
+      [(PointerHIDEventProcessor *)self copyPhaseFrom:eventCopy to:ScaleEvent];
       goto LABEL_80;
     }
 
-    if ([v12 type] == 5)
+    if ([eventCopy type] == 5)
     {
-      if (!v13)
+      if (!generatedEventCopy)
       {
-        [v12 doubleValueForField:327680];
-        [v12 doubleValueForField:327681];
-        [v12 doubleValueForField:327682];
-        [v12 options];
+        [eventCopy doubleValueForField:327680];
+        [eventCopy doubleValueForField:327681];
+        [eventCopy doubleValueForField:327682];
+        [eventCopy options];
         ScaleEvent = IOHIDEventCreateRotationEvent();
         if (!ScaleEvent)
         {
@@ -524,11 +524,11 @@ LABEL_79:
 
     else
     {
-      if ([v12 type] != 4)
+      if ([eventCopy type] != 4)
       {
-        if ([v12 type] == 41 && _os_feature_enabled_impl())
+        if ([eventCopy type] == 41 && _os_feature_enabled_impl())
         {
-          if (v13)
+          if (generatedEventCopy)
           {
             ScaleEvent = MTLoggingPlugin();
             if (!os_log_type_enabled(ScaleEvent, OS_LOG_TYPE_ERROR))
@@ -549,7 +549,7 @@ LABEL_79:
 
         else
         {
-          if ([v12 type] != 1)
+          if ([eventCopy type] != 1)
           {
             ScaleEvent = MTLoggingPlugin();
             if (!os_log_type_enabled(ScaleEvent, OS_LOG_TYPE_ERROR))
@@ -557,7 +557,7 @@ LABEL_79:
               goto LABEL_55;
             }
 
-            v48 = [v12 type];
+            type3 = [eventCopy type];
             LODWORD(v49[0]) = 136315906;
             *(v49 + 4) = "[Error] ";
             WORD2(v49[1]) = 2080;
@@ -565,15 +565,15 @@ LABEL_79:
             HIWORD(v49[2]) = 2080;
             v49[3] = "[PointerHIDEventProcessor handleChildHIDEvent:previouslyGeneratedEvent:timestamp:momentumInitiationType:canceledMomentumScroll:]";
             LOWORD(v49[4]) = 1024;
-            *(&v49[4] + 2) = v48;
+            *(&v49[4] + 2) = type3;
             v37 = "[HID] [MT] %s%s%s Unexpected child event type %u. Eating it";
             v42 = ScaleEvent;
             v43 = 38;
             goto LABEL_54;
           }
 
-          v44 = [v12 integerValueForField:0x10000];
-          v45 = [v12 integerValueForField:65537];
+          v44 = [eventCopy integerValueForField:0x10000];
+          v45 = [eventCopy integerValueForField:65537];
           v46 = v45;
           if (v44 != &loc_FF00 || v45 != &dword_10 + 1 || (_os_feature_enabled_impl() & 1) != 0)
           {
@@ -600,16 +600,16 @@ LABEL_79:
           }
         }
 
-        v24 = [v12 copy];
+        v24 = [eventCopy copy];
         goto LABEL_18;
       }
 
-      if (!v13)
+      if (!generatedEventCopy)
       {
-        [v12 doubleValueForField:0x40000];
-        [v12 doubleValueForField:262145];
-        [v12 doubleValueForField:262146];
-        [v12 options];
+        [eventCopy doubleValueForField:0x40000];
+        [eventCopy doubleValueForField:262145];
+        [eventCopy doubleValueForField:262146];
+        [eventCopy options];
         ScaleEvent = IOHIDEventCreateTranslationEvent();
         if (!ScaleEvent)
         {
@@ -649,13 +649,13 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if (a7)
+  if (scroll)
   {
     goto LABEL_5;
   }
 
-  v29 = [v12 integerValueForField:0x20000];
-  if (v13)
+  v29 = [eventCopy integerValueForField:0x20000];
+  if (generatedEventCopy)
   {
     ScaleEvent = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:v29 deltaY:mach_absolute_time() buttonMask:@"HostAlgs-Button" timestamp:0.0 source:0.0];
     if (!ScaleEvent)
@@ -678,7 +678,7 @@ LABEL_81:
   }
 
   v38 = [(TrackpadHIDEventProcessor *)self updateButtonMask:v29 source:@"HostAlgs-Button"];
-  v39 = +[HIDEvent buttonEvent:buttonMask:options:](HIDEvent, "buttonEvent:buttonMask:options:", a5, v38, [v12 options]);
+  v39 = +[HIDEvent buttonEvent:buttonMask:options:](HIDEvent, "buttonEvent:buttonMask:options:", timestamp, v38, [eventCopy options]);
   ScaleEvent = v39;
   if (v39)
   {
@@ -728,14 +728,14 @@ LABEL_6:
   return v15;
 }
 
-- (id)structureHIDEventFrom:(id)a3 vendorEvents:(id)a4 timestamp:(unint64_t)a5
+- (id)structureHIDEventFrom:(id)from vendorEvents:(id)events timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 objectForKeyedSubscript:&off_112038];
-  if (v10 || ([HIDEvent pointerEvent:a5 x:[(TrackpadHIDEventProcessor *)self previousButtonState] y:0 z:0.0 buttonMask:0.0 options:0.0], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  fromCopy = from;
+  eventsCopy = events;
+  v10 = [fromCopy objectForKeyedSubscript:&off_112038];
+  if (v10 || ([HIDEvent pointerEvent:timestamp x:[(TrackpadHIDEventProcessor *)self previousButtonState] y:0 z:0.0 buttonMask:0.0 options:0.0], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = [v8 objectForKeyedSubscript:&off_112080];
+    v11 = [fromCopy objectForKeyedSubscript:&off_112080];
     v12 = v11;
     if (v11)
     {
@@ -746,8 +746,8 @@ LABEL_6:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [v8 allValues];
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    allValues = [fromCopy allValues];
+    v14 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v14)
     {
       v15 = *v29;
@@ -757,18 +757,18 @@ LABEL_6:
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allValues);
           }
 
           v17 = *(*(&v28 + 1) + 8 * i);
           if ([v17 type] != 17)
           {
-            [v17 setTimestamp:a5];
+            [v17 setTimestamp:timestamp];
             [v10 appendEvent:v17];
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v14 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v14);
@@ -778,7 +778,7 @@ LABEL_6:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = v9;
+    v18 = eventsCopy;
     v19 = [v18 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v19)
     {
@@ -819,11 +819,11 @@ LABEL_6:
   return v22;
 }
 
-- (BOOL)shouldDispatchEvent:(id)a3
+- (BOOL)shouldDispatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 type] == 17 && (objc_msgSend(v5, "parent"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && [eventCopy type] == 17 && (objc_msgSend(v5, "parent"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     [v5 doubleValueForField:1114112];
     v10 = v9;
@@ -839,8 +839,8 @@ LABEL_6:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v14 = [v5 children];
-        v7 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        children = [v5 children];
+        v7 = [children countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v7)
         {
           v15 = *v23;
@@ -850,7 +850,7 @@ LABEL_6:
             {
               if (*v23 != v15)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(children);
               }
 
               v17 = *(*(&v22 + 1) + 8 * i);
@@ -875,9 +875,9 @@ LABEL_24:
 
               else
               {
-                v19 = [(PointerHIDEventProcessor *)self validChildTypes];
+                validChildTypes = [(PointerHIDEventProcessor *)self validChildTypes];
                 v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v17 type]);
-                v21 = [v19 containsObject:v20];
+                v21 = [validChildTypes containsObject:v20];
 
                 if (v21)
                 {
@@ -886,7 +886,7 @@ LABEL_24:
               }
             }
 
-            v7 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v7 = [children countByEnumeratingWithState:&v22 objects:v26 count:16];
             if (v7)
             {
               continue;
@@ -913,24 +913,24 @@ LABEL_25:
 {
   v6 = 0u;
   v7 = 0u;
-  v5 = [(TrackpadHIDEventProcessor *)self deviceID];
+  deviceID = [(TrackpadHIDEventProcessor *)self deviceID];
   LODWORD(v4) = 0;
-  v2 = [HIDEvent vendorDefinedEvent:mach_absolute_time() usagePage:65280 usage:6007 version:1 data:&v5 length:40 options:v4];
+  v2 = [HIDEvent vendorDefinedEvent:mach_absolute_time() usagePage:65280 usage:6007 version:1 data:&deviceID length:40 options:v4];
 
   return v2;
 }
 
-- (id)momentumRequestEventFrom:(id)a3
+- (id)momentumRequestEventFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 conformsToEventType:1])
+  fromCopy = from;
+  if ([fromCopy conformsToEventType:1])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 children];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    children = [fromCopy children];
+    v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = *v15;
@@ -940,7 +940,7 @@ LABEL_25:
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(children);
           }
 
           v8 = *(*(&v14 + 1) + 8 * i);
@@ -953,7 +953,7 @@ LABEL_25:
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v5)
         {
           continue;
@@ -974,12 +974,12 @@ LABEL_19:
   return v5;
 }
 
-- (int)momentumChangeFrom:(id)a3 startMomentum:(BOOL)a4
+- (int)momentumChangeFrom:(id)from startMomentum:(BOOL)momentum
 {
-  v4 = a4;
-  v5 = [(PointerHIDEventProcessor *)self momentumRequestEventFrom:a3];
+  momentumCopy = momentum;
+  v5 = [(PointerHIDEventProcessor *)self momentumRequestEventFrom:from];
   v6 = v5;
-  if (v5 && (v7 = [v5 dataValueForField:65540], objc_msgSend(v6, "integerValueForField:", 65539) >= 3) && *v7 == 1 && v7[2] == v4 && (v7[1] - 1) < 4u)
+  if (v5 && (v7 = [v5 dataValueForField:65540], objc_msgSend(v6, "integerValueForField:", 65539) >= 3) && *v7 == 1 && v7[2] == momentumCopy && (v7[1] - 1) < 4u)
   {
     v8 = dword_D51F0[(v7[1] - 1)];
   }
@@ -992,15 +992,15 @@ LABEL_19:
   return v8;
 }
 
-- (BOOL)handleMomentumInitiationForSubtype:(int)a3 event:(id)a4
+- (BOOL)handleMomentumInitiationForSubtype:(int)subtype event:(id)event
 {
-  v6 = a4;
-  if (a3)
+  eventCopy = event;
+  if (subtype)
   {
     [(PointerHIDEventProcessor *)self cancelMomentum];
-    if ([v6 type] == 6)
+    if ([eventCopy type] == 6)
     {
-      v7 = v6;
+      v7 = eventCopy;
     }
 
     else
@@ -1009,9 +1009,9 @@ LABEL_19:
     }
 
     v8 = v7;
-    if ([v6 type] == 17)
+    if ([eventCopy type] == 17)
     {
-      v9 = v6;
+      v9 = eventCopy;
     }
 
     else
@@ -1024,17 +1024,17 @@ LABEL_19:
     {
       if (!v8 || [(TrackpadHIDEventProcessor *)self scrollMomentumEnabled]&& [(TrackpadHIDEventProcessor *)self gestureScrollsEnabled])
       {
-        v11 = a3 != 1 || v8 == 0;
+        v11 = subtype != 1 || v8 == 0;
         v12 = !v11;
         if (v11 && v10)
         {
-          if (a3 == 2 || a3 == 4)
+          if (subtype == 2 || subtype == 4)
           {
 LABEL_23:
             v13 = objc_opt_new();
             v14 = v13;
             v13[2] = 0.0;
-            *(v13 + 3) = a3;
+            *(v13 + 3) = subtype;
             if (v8)
             {
               v13[6] = 0.0;
@@ -1056,7 +1056,7 @@ LABEL_23:
             if (self)
             {
               self->_momentumDragButton = v14[6];
-              self->_momentumSubtype = a3;
+              self->_momentumSubtype = subtype;
             }
 
             v21 = objc_opt_new();
@@ -1123,30 +1123,30 @@ LABEL_31:
   return v18;
 }
 
-- (BOOL)checkForMomentumCancellation:(id)a3
+- (BOOL)checkForMomentumCancellation:(id)cancellation
 {
-  v4 = a3;
+  cancellationCopy = cancellation;
   if (self && self->_momentumActive)
   {
-    v5 = [(PointerHIDEventProcessor *)self momentumChangeFrom:v4 startMomentum:0];
+    v5 = [(PointerHIDEventProcessor *)self momentumChangeFrom:cancellationCopy startMomentum:0];
     v6 = v5 != 0;
     if (v5)
     {
       [(PointerHIDEventProcessor *)self cancelMomentum];
     }
 
-    v7 = [v4 conformsToEventType:17];
-    v8 = [v4 conformsToEventType:2];
-    v9 = [v4 conformsToEventType:3];
+    v7 = [cancellationCopy conformsToEventType:17];
+    v8 = [cancellationCopy conformsToEventType:2];
+    v9 = [cancellationCopy conformsToEventType:3];
     if (!v5 && ((v7 | v8 | v9) & 1) != 0)
     {
       if (v7)
       {
-        if (self->_momentumSubtype != 1 && [v4 integerValueForField:1114115] == self->_momentumDragButton)
+        if (self->_momentumSubtype != 1 && [cancellationCopy integerValueForField:1114115] == self->_momentumDragButton)
         {
-          [v4 doubleValueForField:1114112];
+          [cancellationCopy doubleValueForField:1114112];
           v11 = v10;
-          [v4 doubleValueForField:1114113];
+          [cancellationCopy doubleValueForField:1114113];
           v13 = v12;
           v14 = objc_opt_new();
           v15 = v11;
@@ -1212,12 +1212,12 @@ LABEL_31:
   }
 }
 
-- (id)generateMomentumStartEventFrom:(id)a3 forSubtype:(int)a4
+- (id)generateMomentumStartEventFrom:(id)from forSubtype:(int)subtype
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 type] == 6 && -[PointerHIDEventProcessor handleMomentumInitiationForSubtype:event:](self, "handleMomentumInitiationForSubtype:event:", v4, v7))
+  v4 = *&subtype;
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy && [fromCopy type] == 6 && -[PointerHIDEventProcessor handleMomentumInitiationForSubtype:event:](self, "handleMomentumInitiationForSubtype:event:", v4, v7))
   {
     v8 = [(TrackpadHIDEventProcessor *)self createScrollEventWithDeltaX:0 deltaY:0.0 deltaZ:0.0 options:0.0];
     if (v8)
@@ -1239,10 +1239,10 @@ LABEL_31:
   return v8;
 }
 
-- (void)copyPhaseFrom:(id)a3 to:(id)a4
+- (void)copyPhaseFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v5 = a4;
+  fromCopy = from;
+  toCopy = to;
   IOHIDEventGetPhase();
   IOHIDEventSetPhase();
 }
@@ -1269,8 +1269,8 @@ void __43__PointerHIDEventProcessor_validChildTypes__block_invoke(id a1)
 {
   v12.receiver = self;
   v12.super_class = PointerHIDEventProcessor;
-  v3 = [(TrackpadHIDEventProcessor *)&v12 debugDictionary];
-  v4 = [v3 mutableCopy];
+  debugDictionary = [(TrackpadHIDEventProcessor *)&v12 debugDictionary];
+  v4 = [debugDictionary mutableCopy];
 
   if (self)
   {

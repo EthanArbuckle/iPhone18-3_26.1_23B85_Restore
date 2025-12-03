@@ -13,8 +13,8 @@
   v9 = [(EKVirtualConferenceURLDescriptor *)&v13 init];
   if (v9)
   {
-    v10 = [(NSURL *)v8 absoluteString];
-    v11 = [v10 length];
+    absoluteString = [(NSURL *)v8 absoluteString];
+    v11 = [absoluteString length];
 
     if (!v11)
     {

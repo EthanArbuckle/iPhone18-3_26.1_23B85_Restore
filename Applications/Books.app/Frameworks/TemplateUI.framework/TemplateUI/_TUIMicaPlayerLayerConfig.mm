@@ -1,43 +1,43 @@
 @interface _TUIMicaPlayerLayerConfig
-- (BOOL)isEqualToConfig:(id)a3;
+- (BOOL)isEqualToConfig:(id)config;
 - (NSString)description;
 - (TUIFileResourceProviding)fileProvider;
-- (_TUIMicaPlayerLayerConfig)initWithURL:(id)a3 gravity:(id)a4 textKey:(id)a5 textValue:(id)a6 shouldStartAtEnd:(BOOL)a7 triggerName:(id)a8 targetTriggerState:(unint64_t)a9 triggerDelay:(double)a10 contentScale:(double)a11 opacity:(double)a12 fontSpec:(id)a13 fileProvider:(id)a14;
-- (void)configureLayer:(id)a3;
+- (_TUIMicaPlayerLayerConfig)initWithURL:(id)l gravity:(id)gravity textKey:(id)key textValue:(id)value shouldStartAtEnd:(BOOL)end triggerName:(id)name targetTriggerState:(unint64_t)state triggerDelay:(double)self0 contentScale:(double)self1 opacity:(double)self2 fontSpec:(id)self3 fileProvider:(id)self4;
+- (void)configureLayer:(id)layer;
 @end
 
 @implementation _TUIMicaPlayerLayerConfig
 
-- (_TUIMicaPlayerLayerConfig)initWithURL:(id)a3 gravity:(id)a4 textKey:(id)a5 textValue:(id)a6 shouldStartAtEnd:(BOOL)a7 triggerName:(id)a8 targetTriggerState:(unint64_t)a9 triggerDelay:(double)a10 contentScale:(double)a11 opacity:(double)a12 fontSpec:(id)a13 fileProvider:(id)a14
+- (_TUIMicaPlayerLayerConfig)initWithURL:(id)l gravity:(id)gravity textKey:(id)key textValue:(id)value shouldStartAtEnd:(BOOL)end triggerName:(id)name targetTriggerState:(unint64_t)state triggerDelay:(double)self0 contentScale:(double)self1 opacity:(double)self2 fontSpec:(id)self3 fileProvider:(id)self4
 {
-  v23 = a3;
-  v24 = a4;
-  obj = a5;
-  v25 = a5;
-  v33 = a6;
-  v35 = a8;
-  v36 = a6;
-  v26 = a8;
-  v27 = a13;
-  v28 = a14;
+  lCopy = l;
+  gravityCopy = gravity;
+  obj = key;
+  keyCopy = key;
+  valueCopy = value;
+  nameCopy = name;
+  valueCopy2 = value;
+  nameCopy2 = name;
+  specCopy = spec;
+  providerCopy = provider;
   v37.receiver = self;
   v37.super_class = _TUIMicaPlayerLayerConfig;
   v29 = [(_TUIMicaPlayerLayerConfig *)&v37 init];
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_url, a3);
-    objc_storeStrong(&v30->_gravity, a4);
+    objc_storeStrong(&v29->_url, l);
+    objc_storeStrong(&v30->_gravity, gravity);
     objc_storeStrong(&v30->_textKey, obj);
-    objc_storeStrong(&v30->_textValue, v33);
-    v30->_shouldStartAtEnd = a7;
-    objc_storeStrong(&v30->_triggerName, v35);
-    v30->_targetTriggerState = a9;
-    v30->_triggerDelay = a10;
-    v30->_contentScale = a11;
-    v30->_opacity = a12;
-    objc_storeStrong(&v30->_fontSpec, a13);
-    objc_storeWeak(&v30->_fileProvider, v28);
+    objc_storeStrong(&v30->_textValue, valueCopy);
+    v30->_shouldStartAtEnd = end;
+    objc_storeStrong(&v30->_triggerName, nameCopy);
+    v30->_targetTriggerState = state;
+    v30->_triggerDelay = delay;
+    v30->_contentScale = scale;
+    v30->_opacity = opacity;
+    objc_storeStrong(&v30->_fontSpec, spec);
+    objc_storeWeak(&v30->_fileProvider, providerCopy);
   }
 
   return v30;
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
   contentScale = self->_contentScale;
-  v5 = a3;
-  [v5 setContentsScale:contentScale];
-  [v5 setRasterizationScale:self->_contentScale];
+  layerCopy = layer;
+  [layerCopy setContentsScale:contentScale];
+  [layerCopy setRasterizationScale:self->_contentScale];
   opacity = self->_opacity;
   *&opacity = opacity;
-  [v5 setOpacity:opacity];
+  [layerCopy setOpacity:opacity];
   url = self->_url;
   gravity = self->_gravity;
   textKey = self->_textKey;
@@ -71,14 +71,14 @@
   triggerDelay = self->_triggerDelay;
   fontSpec = self->_fontSpec;
   WeakRetained = objc_loadWeakRetained(&self->_fileProvider);
-  [v5 configWithURL:url gravity:gravity textKey:textKey textValue:textValue shouldStartAtEnd:shouldStartAtEnd triggerName:triggerName targetTriggerState:triggerDelay triggerDelay:targetTriggerState fontSpec:fontSpec fileProvider:WeakRetained];
+  [layerCopy configWithURL:url gravity:gravity textKey:textKey textValue:textValue shouldStartAtEnd:shouldStartAtEnd triggerName:triggerName targetTriggerState:triggerDelay triggerDelay:targetTriggerState fontSpec:fontSpec fileProvider:WeakRetained];
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v6 = a3;
+  configCopy = config;
   v7 = objc_opt_class();
-  v8 = TUIDynamicCast(v7, v6);
+  v8 = TUIDynamicCast(v7, configCopy);
 
   if (v8)
   {
@@ -96,12 +96,12 @@
     }
 
     gravity = self->_gravity;
-    v14 = [v8 gravity];
-    if (gravity != v14)
+    gravity = [v8 gravity];
+    if (gravity != gravity)
     {
       v15 = self->_gravity;
-      v4 = [v8 gravity];
-      if (![(NSString *)v15 isEqualToString:v4])
+      gravity2 = [v8 gravity];
+      if (![(NSString *)v15 isEqualToString:gravity2])
       {
         v12 = 0;
 LABEL_34:
@@ -121,21 +121,21 @@ LABEL_36:
     }
 
     textKey = self->_textKey;
-    v17 = [v8 textKey];
+    textKey = [v8 textKey];
     v43 = textKey;
-    if (textKey != v17)
+    if (textKey != textKey)
     {
       v18 = self->_textKey;
-      v19 = [v8 textKey];
+      textKey2 = [v8 textKey];
       v20 = v18;
-      v21 = v19;
-      if (![(NSString *)v20 isEqualToString:v19])
+      v21 = textKey2;
+      if (![(NSString *)v20 isEqualToString:textKey2])
       {
         v12 = 0;
 LABEL_32:
 
 LABEL_33:
-        if (gravity == v14)
+        if (gravity == gravity)
         {
           goto LABEL_35;
         }
@@ -146,23 +146,23 @@ LABEL_33:
       v40 = v21;
     }
 
-    v42 = v4;
+    v42 = gravity2;
     textValue = self->_textValue;
-    v23 = [v8 textValue];
+    textValue = [v8 textValue];
     v41 = textValue;
-    if (textValue != v23)
+    if (textValue != textValue)
     {
       v24 = self->_textValue;
-      v39 = [v8 textValue];
+      textValue2 = [v8 textValue];
       if (![(NSString *)v24 isEqualToString:?])
       {
         v12 = 0;
-        v4 = v42;
+        gravity2 = v42;
 LABEL_30:
 
 LABEL_31:
         v21 = v40;
-        if (v43 == v17)
+        if (v43 == textKey)
         {
           goto LABEL_33;
         }
@@ -214,8 +214,8 @@ LABEL_31:
 
 LABEL_28:
 LABEL_29:
-    v4 = v42;
-    if (v41 == v23)
+    gravity2 = v42;
+    if (v41 == textValue)
     {
       goto LABEL_31;
     }

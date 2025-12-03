@@ -2,23 +2,23 @@
 - (NSArray)lyricLines;
 - (NSArray)songwriters;
 - (NSArray)staticLyrics;
-- (SHLyricsResponseItem)initWithLyricsItemDictionary:(id)a3;
-- (id)snippetFromOffset:(double)a3;
-- (void)parseTTMLFromLyricsItemDictionary:(id)a3;
+- (SHLyricsResponseItem)initWithLyricsItemDictionary:(id)dictionary;
+- (id)snippetFromOffset:(double)offset;
+- (void)parseTTMLFromLyricsItemDictionary:(id)dictionary;
 @end
 
 @implementation SHLyricsResponseItem
 
-- (SHLyricsResponseItem)initWithLyricsItemDictionary:(id)a3
+- (SHLyricsResponseItem)initWithLyricsItemDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = SHLyricsResponseItem;
   v5 = [(SHLyricsResponseItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SHLyricsResponseItem *)v5 parseTTMLFromLyricsItemDictionary:v4];
+    [(SHLyricsResponseItem *)v5 parseTTMLFromLyricsItemDictionary:dictionaryCopy];
   }
 
   return v6;
@@ -26,18 +26,18 @@
 
 - (NSArray)lyricLines
 {
-  v3 = [(SHLyricsResponseItem *)self songInfo];
-  v4 = [v3 lyricsLines];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  songInfo = [(SHLyricsResponseItem *)self songInfo];
+  lyricsLines = [songInfo lyricsLines];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lyricsLines count]);
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SHLyricsResponseItem *)self songInfo];
-  v7 = [v6 lyricsLines];
+  songInfo2 = [(SHLyricsResponseItem *)self songInfo];
+  lyricsLines2 = [songInfo2 lyricsLines];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [lyricsLines2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -48,18 +48,18 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(lyricsLines2);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 lyricsText];
-        v14 = [v13 string];
+        lyricsText = [v12 lyricsText];
+        string = [lyricsText string];
         [v12 startTime];
-        v15 = [SHLyricLine lyricLineWithText:v14 offset:?];
+        v15 = [SHLyricLine lyricLineWithText:string offset:?];
         [v5 addObject:v15];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [lyricsLines2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -72,18 +72,18 @@
 
 - (NSArray)staticLyrics
 {
-  v3 = [(SHLyricsResponseItem *)self songInfo];
-  v4 = [v3 lyricsLines];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  songInfo = [(SHLyricsResponseItem *)self songInfo];
+  lyricsLines = [songInfo lyricsLines];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [lyricsLines count]);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SHLyricsResponseItem *)self songInfo];
-  v7 = [v6 lyricsLines];
+  songInfo2 = [(SHLyricsResponseItem *)self songInfo];
+  lyricsLines2 = [songInfo2 lyricsLines];
 
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [lyricsLines2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -94,15 +94,15 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(lyricsLines2);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) lyricsText];
-        v13 = [v12 string];
-        [v5 addObject:v13];
+        lyricsText = [*(*(&v16 + 1) + 8 * i) lyricsText];
+        string = [lyricsText string];
+        [v5 addObject:string];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [lyricsLines2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -115,18 +115,18 @@
 
 - (NSArray)songwriters
 {
-  v3 = [(SHLyricsResponseItem *)self songInfo];
-  v4 = [v3 songwriters];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  songInfo = [(SHLyricsResponseItem *)self songInfo];
+  songwriters = [songInfo songwriters];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [songwriters count]);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(SHLyricsResponseItem *)self songInfo];
-  v7 = [v6 songwriters];
+  songInfo2 = [(SHLyricsResponseItem *)self songInfo];
+  songwriters2 = [songInfo2 songwriters];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [songwriters2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -137,14 +137,14 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(songwriters2);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) name];
-        [v5 addObject:v12];
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        [v5 addObject:name];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [songwriters2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -155,9 +155,9 @@
   return v13;
 }
 
-- (void)parseTTMLFromLyricsItemDictionary:(id)a3
+- (void)parseTTMLFromLyricsItemDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"attributes"];
+  v4 = [dictionary objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"ttml"];
 
   if (v5)
@@ -185,24 +185,24 @@
   }
 }
 
-- (id)snippetFromOffset:(double)a3
+- (id)snippetFromOffset:(double)offset
 {
-  v5 = [(SHLyricsResponseItem *)self songInfo];
-  v6 = [v5 lyricsLineStartingBeforeTimeOffset:a3];
+  songInfo = [(SHLyricsResponseItem *)self songInfo];
+  firstObject = [songInfo lyricsLineStartingBeforeTimeOffset:offset];
 
-  if (v6)
+  if (firstObject)
   {
     v7 = objc_alloc_init(NSMutableString);
   }
 
   else
   {
-    v8 = [(SHLyricsResponseItem *)self songInfo];
-    v9 = [v8 lyricsLines];
-    v6 = [v9 firstObject];
+    songInfo2 = [(SHLyricsResponseItem *)self songInfo];
+    lyricsLines = [songInfo2 lyricsLines];
+    firstObject = [lyricsLines firstObject];
 
     v7 = objc_alloc_init(NSMutableString);
-    if (!v6)
+    if (!firstObject)
     {
       goto LABEL_7;
     }
@@ -211,25 +211,25 @@
   do
   {
     v10 = [v7 length];
-    v11 = [v6 lyricsText];
-    v12 = &v10[[v11 length]];
+    lyricsText = [firstObject lyricsText];
+    v12 = &v10[[lyricsText length]];
 
     if (v12 > 0x95)
     {
       break;
     }
 
-    v13 = [v6 lyricsText];
-    v14 = [v13 string];
-    v15 = [NSString stringWithFormat:@"%@\n", v14];
+    lyricsText2 = [firstObject lyricsText];
+    string = [lyricsText2 string];
+    v15 = [NSString stringWithFormat:@"%@\n", string];
     [v7 appendString:v15];
 
-    v16 = [v6 nextLine];
+    nextLine = [firstObject nextLine];
 
-    v6 = v16;
+    firstObject = nextLine;
   }
 
-  while (v16);
+  while (nextLine);
 
 LABEL_7:
   v17 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];

@@ -1,28 +1,28 @@
 @interface BookmarksNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (id)_segmentedControlItemForCollection:(id)a3;
-- (id)_setAccessibilityLabelForItem:(id)a3 fromCollection:(id)a4;
+- (id)_segmentedControlItemForCollection:(id)collection;
+- (id)_setAccessibilityLabelForItem:(id)item fromCollection:(id)collection;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)transitionConductor:(id)a3 didEndTransitionFromView:(id)a4 toView:(id)a5;
+- (void)transitionConductor:(id)conductor didEndTransitionFromView:(id)view toView:(id)toView;
 @end
 
 @implementation BookmarksNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BookmarksNavigationController" hasInstanceMethod:@"_segmentedControlItemForCollection:" withFullSignature:{"@", "@", 0}];
-  [v3 validateProtocol:@"BookmarksNavigationControllerDelegate" hasOptionalInstanceMethod:@"bookmarksNavigationControllerDidPressDoneButton:"];
-  [v3 validateClass:@"BookmarksNavigationController" hasInstanceVariable:@"_topLevelCollections" withType:"NSArray"];
-  [v3 validateClass:@"BookmarksNavigationController" hasInstanceVariable:@"_collectionSegmentedControl" withType:"UISegmentedControl"];
-  [v3 validateClass:@"BrowserRootViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BookmarksNavigationController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BookmarksNavigationController" isKindOfClass:@"UINavigationController"];
-  [v3 validateClass:@"UINavigationController" hasInstanceMethod:@"transitionConductor:didEndTransitionFromView:toView:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Application" hasInstanceVariable:@"_browserWindowController" withType:"BrowserWindowController"];
-  [v3 validateClass:@"BrowserWindowController" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BookmarksNavigationController" hasInstanceMethod:@"_segmentedControlItemForCollection:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateProtocol:@"BookmarksNavigationControllerDelegate" hasOptionalInstanceMethod:@"bookmarksNavigationControllerDidPressDoneButton:"];
+  [validationsCopy validateClass:@"BookmarksNavigationController" hasInstanceVariable:@"_topLevelCollections" withType:"NSArray"];
+  [validationsCopy validateClass:@"BookmarksNavigationController" hasInstanceVariable:@"_collectionSegmentedControl" withType:"UISegmentedControl"];
+  [validationsCopy validateClass:@"BrowserRootViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BookmarksNavigationController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BookmarksNavigationController" isKindOfClass:@"UINavigationController"];
+  [validationsCopy validateClass:@"UINavigationController" hasInstanceMethod:@"transitionConductor:didEndTransitionFromView:toView:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceMethod:@"rootViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Application" hasInstanceVariable:@"_browserWindowController" withType:"BrowserWindowController"];
+  [validationsCopy validateClass:@"BrowserWindowController" hasInstanceMethod:@"browserControllers" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -59,44 +59,44 @@
   }
 }
 
-- (id)_segmentedControlItemForCollection:(id)a3
+- (id)_segmentedControlItemForCollection:(id)collection
 {
   v8.receiver = self;
   v8.super_class = BookmarksNavigationControllerAccessibility;
-  v4 = a3;
-  v5 = [(BookmarksNavigationControllerAccessibility *)&v8 _segmentedControlItemForCollection:v4];
-  v6 = [(BookmarksNavigationControllerAccessibility *)self _setAccessibilityLabelForItem:v5 fromCollection:v4, v8.receiver, v8.super_class];
+  collectionCopy = collection;
+  v5 = [(BookmarksNavigationControllerAccessibility *)&v8 _segmentedControlItemForCollection:collectionCopy];
+  v6 = [(BookmarksNavigationControllerAccessibility *)self _setAccessibilityLabelForItem:v5 fromCollection:collectionCopy, v8.receiver, v8.super_class];
 
   return v6;
 }
 
-- (id)_setAccessibilityLabelForItem:(id)a3 fromCollection:(id)a4
+- (id)_setAccessibilityLabelForItem:(id)item fromCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"BookmarksCollection"])
+  itemCopy = item;
+  collectionCopy = collection;
+  if ([collectionCopy isEqualToString:@"BookmarksCollection"])
   {
     v7 = @"buttonbar.bookmarks.text";
   }
 
-  else if ([v6 isEqualToString:@"CloudTabsCollection"])
+  else if ([collectionCopy isEqualToString:@"CloudTabsCollection"])
   {
     v7 = @"bookmarks.nav.icloud";
   }
 
-  else if ([v6 isEqualToString:@"HistoryCollection"])
+  else if ([collectionCopy isEqualToString:@"HistoryCollection"])
   {
     v7 = @"bookmarks.nav.history";
   }
 
-  else if ([v6 isEqualToString:@"ReadingListCollection"])
+  else if ([collectionCopy isEqualToString:@"ReadingListCollection"])
   {
     v7 = @"reading.list.button";
   }
 
   else
   {
-    if (![v6 isEqualToString:@"SocialLinksCollection"])
+    if (![collectionCopy isEqualToString:@"SocialLinksCollection"])
     {
       goto LABEL_12;
     }
@@ -105,23 +105,23 @@
   }
 
   v8 = accessibilityLocalizedString(v7);
-  [v5 setAccessibilityLabel:v8];
+  [itemCopy setAccessibilityLabel:v8];
 
 LABEL_12:
 
-  return v5;
+  return itemCopy;
 }
 
-- (void)transitionConductor:(id)a3 didEndTransitionFromView:(id)a4 toView:(id)a5
+- (void)transitionConductor:(id)conductor didEndTransitionFromView:(id)view toView:(id)toView
 {
   v8 = *MEMORY[0x29EDC7F10];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  toViewCopy = toView;
+  viewCopy = view;
+  conductorCopy = conductor;
   _UIAccessibilityBlockPostingOfNotification();
   v12.receiver = self;
   v12.super_class = BookmarksNavigationControllerAccessibility;
-  [(BookmarksNavigationControllerAccessibility *)&v12 transitionConductor:v11 didEndTransitionFromView:v10 toView:v9];
+  [(BookmarksNavigationControllerAccessibility *)&v12 transitionConductor:conductorCopy didEndTransitionFromView:viewCopy toView:toViewCopy];
 
   _UIAccessibilityUnblockPostingOfNotification();
 }
@@ -168,14 +168,14 @@ LABEL_12:
             abort();
           }
 
-          v14 = [v13 view];
-          v15 = [v14 window];
-          v16 = [(BookmarksNavigationControllerAccessibility *)self view];
-          v17 = [v16 window];
+          view = [v13 view];
+          window = [view window];
+          view2 = [(BookmarksNavigationControllerAccessibility *)self view];
+          window2 = [view2 window];
 
-          if (v15 == v17)
+          if (window == window2)
           {
-            v4 = [v11 accessibilityPerformEscape];
+            accessibilityPerformEscape = [v11 accessibilityPerformEscape];
             goto LABEL_16;
           }
         }
@@ -189,7 +189,7 @@ LABEL_12:
         break;
       }
 
-      v4 = 0;
+      accessibilityPerformEscape = 0;
 LABEL_16:
       v5 = v20;
       v3 = v21;
@@ -197,7 +197,7 @@ LABEL_16:
 
     else
     {
-      v4 = 0;
+      accessibilityPerformEscape = 0;
     }
   }
 
@@ -208,14 +208,14 @@ LABEL_16:
     v30 = __72__BookmarksNavigationControllerAccessibility_accessibilityPerformEscape__block_invoke;
     v31 = &unk_29F2D7B48;
     v32 = v3;
-    v33 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
-    v4 = 1;
+    accessibilityPerformEscape = 1;
     v5 = v32;
   }
 
   v18 = *MEMORY[0x29EDCA608];
-  return v4;
+  return accessibilityPerformEscape;
 }
 
 @end

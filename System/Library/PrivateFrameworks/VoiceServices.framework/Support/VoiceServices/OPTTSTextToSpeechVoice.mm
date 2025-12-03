@@ -5,8 +5,8 @@
 - (NSString)quality;
 - (NSString)type;
 - (NSString)version;
-- (OPTTSTextToSpeechVoice)initWithFlatbuffData:(id)a3 root:(const TextToSpeechVoice *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TextToSpeechVoice>)addObjectToBuffer:(void *)a3;
+- (OPTTSTextToSpeechVoice)initWithFlatbuffData:(id)data root:(const TextToSpeechVoice *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TextToSpeechVoice>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (id)vs_voice;
 @end
@@ -42,86 +42,86 @@ flatbuffers::DetachedBuffer *__38__OPTTSTextToSpeechVoice_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechVoice>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechVoice>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(OPTTSTextToSpeechVoice *)self language];
-  v6 = v5;
-  if (!v5)
+  language = [(OPTTSTextToSpeechVoice *)self language];
+  v6 = language;
+  if (!language)
   {
-    v5 = &stru_2881CBD18;
+    language = &stru_2881CBD18;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)language UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(OPTTSTextToSpeechVoice *)self gender];
-  v11 = v10;
-  if (!v10)
+  gender = [(OPTTSTextToSpeechVoice *)self gender];
+  v11 = gender;
+  if (!gender)
   {
-    v10 = &stru_2881CBD18;
+    gender = &stru_2881CBD18;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)gender UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(OPTTSTextToSpeechVoice *)self name];
-  v16 = v15;
-  if (!v15)
+  name = [(OPTTSTextToSpeechVoice *)self name];
+  v16 = name;
+  if (!name)
   {
-    v15 = &stru_2881CBD18;
+    name = &stru_2881CBD18;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  v19 = flatbuffers::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)name UTF8String];
+  v18 = strlen(uTF8String3);
+  v19 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v20 = [(OPTTSTextToSpeechVoice *)self version];
-  v21 = v20;
-  if (!v20)
+  version = [(OPTTSTextToSpeechVoice *)self version];
+  v21 = version;
+  if (!version)
   {
-    v20 = &stru_2881CBD18;
+    version = &stru_2881CBD18;
   }
 
-  v22 = [(__CFString *)v20 UTF8String];
-  v23 = strlen(v22);
-  v24 = flatbuffers::FlatBufferBuilder::CreateString(a3, v22, v23);
+  uTF8String4 = [(__CFString *)version UTF8String];
+  v23 = strlen(uTF8String4);
+  v24 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String4, v23);
 
-  v25 = [(OPTTSTextToSpeechVoice *)self quality];
-  v26 = v25;
-  if (!v25)
+  quality = [(OPTTSTextToSpeechVoice *)self quality];
+  v26 = quality;
+  if (!quality)
   {
-    v25 = &stru_2881CBD18;
+    quality = &stru_2881CBD18;
   }
 
-  v27 = [(__CFString *)v25 UTF8String];
-  v28 = strlen(v27);
-  v29 = flatbuffers::FlatBufferBuilder::CreateString(a3, v27, v28);
+  uTF8String5 = [(__CFString *)quality UTF8String];
+  v28 = strlen(uTF8String5);
+  v29 = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String5, v28);
 
-  v30 = [(OPTTSTextToSpeechVoice *)self type];
-  v31 = v30;
-  if (!v30)
+  type = [(OPTTSTextToSpeechVoice *)self type];
+  v31 = type;
+  if (!type)
   {
-    v30 = &stru_2881CBD18;
+    type = &stru_2881CBD18;
   }
 
-  v32 = [(__CFString *)v30 UTF8String];
-  v33 = strlen(v32);
-  LODWORD(v32) = flatbuffers::FlatBufferBuilder::CreateString(a3, v32, v33);
+  uTF8String6 = [(__CFString *)type UTF8String];
+  v33 = strlen(uTF8String6);
+  LODWORD(uTF8String6) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String6, v33);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v34 = *(a3 + 10);
-  v35 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 6, v14);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 8, v19);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 10, v24);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 12, v29);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(a3, 14, v32);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v34 = *(buffer + 10);
+  v35 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 6, v14);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 8, v19);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 10, v24);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 12, v29);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::String>(buffer, 14, uTF8String6);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v35 + v34);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v35 + v34);
 }
 
 - (NSString)type
@@ -262,42 +262,42 @@ flatbuffers::DetachedBuffer *__38__OPTTSTextToSpeechVoice_flatbuffData__block_in
   return v6;
 }
 
-- (OPTTSTextToSpeechVoice)initWithFlatbuffData:(id)a3 root:(const TextToSpeechVoice *)a4 verify:(BOOL)a5
+- (OPTTSTextToSpeechVoice)initWithFlatbuffData:(id)data root:(const TextToSpeechVoice *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = OPTTSTextToSpeechVoice;
   v10 = [(OPTTSTextToSpeechVoice *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_2728326B0;
       v27 = 0;
@@ -319,9 +319,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -334,31 +334,31 @@ LABEL_17:
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D799C8]);
-  v4 = [(OPTTSTextToSpeechVoice *)self language];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  language = [(OPTTSTextToSpeechVoice *)self language];
+  v5 = [language stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   v19[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   [v3 setLanguages:v6];
 
   v7 = MEMORY[0x277D799C8];
-  v8 = [(OPTTSTextToSpeechVoice *)self gender];
-  [v3 setGender:{objc_msgSend(v7, "genderFromString:", v8)}];
+  gender = [(OPTTSTextToSpeechVoice *)self gender];
+  [v3 setGender:{objc_msgSend(v7, "genderFromString:", gender)}];
 
-  v9 = [(OPTTSTextToSpeechVoice *)self name];
-  [v3 setName:v9];
+  name = [(OPTTSTextToSpeechVoice *)self name];
+  [v3 setName:name];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(OPTTSTextToSpeechVoice *)self version];
-  v12 = [v10 numberWithInteger:{objc_msgSend(v11, "integerValue")}];
+  version = [(OPTTSTextToSpeechVoice *)self version];
+  v12 = [v10 numberWithInteger:{objc_msgSend(version, "integerValue")}];
   [v3 setContentVersion:v12];
 
   v13 = MEMORY[0x277D799C8];
-  v14 = [(OPTTSTextToSpeechVoice *)self quality];
-  [v3 setFootprint:{objc_msgSend(v13, "footprintFromString:", v14)}];
+  quality = [(OPTTSTextToSpeechVoice *)self quality];
+  [v3 setFootprint:{objc_msgSend(v13, "footprintFromString:", quality)}];
 
   v15 = MEMORY[0x277D799C8];
-  v16 = [(OPTTSTextToSpeechVoice *)self type];
-  [v3 setType:{objc_msgSend(v15, "typeFromString:", v16)}];
+  type = [(OPTTSTextToSpeechVoice *)self type];
+  [v3 setType:{objc_msgSend(v15, "typeFromString:", type)}];
 
   v17 = *MEMORY[0x277D85DE8];
 

@@ -1,8 +1,8 @@
 @interface PXConcreteAudioAssetEntryPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PXConcreteAudioAssetEntryPoint)initWithTime:(double)a3 fadeInKeyTimeOffsets:(id)a4 fadeInKeyGainValues:(id)a5;
-- (float)fadeInGainAtOffset:(double)a3;
+- (PXConcreteAudioAssetEntryPoint)initWithTime:(double)time fadeInKeyTimeOffsets:(id)offsets fadeInKeyGainValues:(id)values;
+- (float)fadeInGainAtOffset:(double)offset;
 - (unint64_t)hash;
 @end
 
@@ -12,18 +12,18 @@
 {
   [(PXConcreteAudioAssetEntryPoint *)self time];
   v4 = (v3 * 100.0);
-  v5 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
-  v6 = [v5 hash];
-  v7 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
-  v8 = v6 ^ [v7 hash];
+  fadeInKeyGainValues = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
+  v6 = [fadeInKeyGainValues hash];
+  fadeInKeyTimeOffsets = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
+  v8 = v6 ^ [fadeInKeyTimeOffsets hash];
 
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -33,19 +33,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PXConcreteAudioAssetEntryPoint *)self time];
       v7 = v6;
       [(PXConcreteAudioAssetEntryPoint *)v5 time];
       if (v7 == v8)
       {
-        v9 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
-        v10 = [(PXConcreteAudioAssetEntryPoint *)v5 fadeInKeyTimeOffsets];
-        if ([v9 isEqual:v10])
+        fadeInKeyTimeOffsets = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
+        fadeInKeyTimeOffsets2 = [(PXConcreteAudioAssetEntryPoint *)v5 fadeInKeyTimeOffsets];
+        if ([fadeInKeyTimeOffsets isEqual:fadeInKeyTimeOffsets2])
         {
-          v11 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
-          v12 = [(PXConcreteAudioAssetEntryPoint *)v5 fadeInKeyGainValues];
-          v13 = [v11 isEqual:v12];
+          fadeInKeyGainValues = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
+          fadeInKeyGainValues2 = [(PXConcreteAudioAssetEntryPoint *)v5 fadeInKeyGainValues];
+          v13 = [fadeInKeyGainValues isEqual:fadeInKeyGainValues2];
         }
 
         else
@@ -69,18 +69,18 @@
   return v13;
 }
 
-- (float)fadeInGainAtOffset:(double)a3
+- (float)fadeInGainAtOffset:(double)offset
 {
-  v4 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
-  if ([v4 count])
+  fadeInKeyGainValues = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
+  if ([fadeInKeyGainValues count])
   {
-    v5 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
-    v6 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
-    v7 = [v6 firstObject];
-    [v7 doubleValue];
+    fadeInKeyTimeOffsets = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
+    fadeInKeyGainValues2 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
+    firstObject = [fadeInKeyGainValues2 firstObject];
+    [firstObject doubleValue];
 
-    [v5 count];
-    v5;
+    [fadeInKeyTimeOffsets count];
+    fadeInKeyTimeOffsets;
     PXLastIndexInSortedRangePassingTest();
   }
 
@@ -103,29 +103,29 @@ BOOL __53__PXConcreteAudioAssetEntryPoint_fadeInGainAtOffset___block_invoke(uint
   v5 = NSStringFromClass(v4);
   [(PXConcreteAudioAssetEntryPoint *)self time];
   v7 = v6;
-  v8 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
-  v9 = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
-  v10 = [v3 initWithFormat:@"<%@ %p; Time: %.2f; Gain Curve Offsets: %@; Gain Curve Values: %@>", v5, self, v7, v8, v9];
+  fadeInKeyTimeOffsets = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyTimeOffsets];
+  fadeInKeyGainValues = [(PXConcreteAudioAssetEntryPoint *)self fadeInKeyGainValues];
+  v10 = [v3 initWithFormat:@"<%@ %p; Time: %.2f; Gain Curve Offsets: %@; Gain Curve Values: %@>", v5, self, v7, fadeInKeyTimeOffsets, fadeInKeyGainValues];
 
   return v10;
 }
 
-- (PXConcreteAudioAssetEntryPoint)initWithTime:(double)a3 fadeInKeyTimeOffsets:(id)a4 fadeInKeyGainValues:(id)a5
+- (PXConcreteAudioAssetEntryPoint)initWithTime:(double)time fadeInKeyTimeOffsets:(id)offsets fadeInKeyGainValues:(id)values
 {
-  v8 = a4;
-  v9 = a5;
+  offsetsCopy = offsets;
+  valuesCopy = values;
   v17.receiver = self;
   v17.super_class = PXConcreteAudioAssetEntryPoint;
   v10 = [(PXConcreteAudioAssetEntryPoint *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_time = a3;
-    v12 = [v8 copy];
+    v10->_time = time;
+    v12 = [offsetsCopy copy];
     fadeInKeyTimeOffsets = v11->_fadeInKeyTimeOffsets;
     v11->_fadeInKeyTimeOffsets = v12;
 
-    v14 = [v9 copy];
+    v14 = [valuesCopy copy];
     fadeInKeyGainValues = v11->_fadeInKeyGainValues;
     v11->_fadeInKeyGainValues = v14;
   }

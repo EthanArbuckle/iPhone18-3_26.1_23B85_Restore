@@ -1,15 +1,15 @@
 @interface ICQDelayedOfferFailsafeActivityController
-+ (void)_runWithDaemon:(id)a3 errorCallback:(id)a4;
-+ (void)startActivityWithDelaySecs:(int64_t)a3 completion:(id)a4;
-+ (void)stopActivityWithCompletion:(id)a3;
++ (void)_runWithDaemon:(id)daemon errorCallback:(id)callback;
++ (void)startActivityWithDelaySecs:(int64_t)secs completion:(id)completion;
++ (void)stopActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICQDelayedOfferFailsafeActivityController
 
-+ (void)_runWithDaemon:(id)a3 errorCallback:(id)a4
++ (void)_runWithDaemon:(id)daemon errorCallback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
+  daemonCopy = daemon;
+  callbackCopy = callback;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -33,8 +33,8 @@
   v13[1] = 3221225472;
   v13[2] = __74__ICQDelayedOfferFailsafeActivityController__runWithDaemon_errorCallback___block_invoke;
   v13[3] = &unk_27A652590;
-  v14 = v6;
-  v10 = v6;
+  v14 = callbackCopy;
+  v10 = callbackCopy;
   v11 = [v9 daemonWithErrorHandler:v13];
   v12 = _ICQGetLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -43,7 +43,7 @@
     _os_log_impl(&dword_275572000, v12, OS_LOG_TYPE_DEFAULT, "[SUBD] Successfully fetched the IND XPC Daemon.", buf, 2u);
   }
 
-  v5[2](v5, v11);
+  daemonCopy[2](daemonCopy, v11);
 }
 
 void __74__ICQDelayedOfferFailsafeActivityController__runWithDaemon_errorCallback___block_invoke(uint64_t a1, void *a2)
@@ -58,15 +58,15 @@ void __74__ICQDelayedOfferFailsafeActivityController__runWithDaemon_errorCallbac
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)startActivityWithDelaySecs:(int64_t)a3 completion:(id)a4
++ (void)startActivityWithDelaySecs:(int64_t)secs completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = a3;
+    secsCopy = secs;
     _os_log_impl(&dword_275572000, v7, OS_LOG_TYPE_DEFAULT, "[SUBD] Delayed offer failsafe will trigger in [%lld secs].", buf, 0xCu);
   }
 
@@ -74,10 +74,10 @@ void __74__ICQDelayedOfferFailsafeActivityController__runWithDaemon_errorCallbac
   v10[1] = 3221225472;
   v10[2] = __83__ICQDelayedOfferFailsafeActivityController_startActivityWithDelaySecs_completion___block_invoke;
   v10[3] = &unk_27A652EB8;
-  v11 = v6;
-  v12 = a3;
-  v8 = v6;
-  [a1 _runWithDaemon:v10 errorCallback:v8];
+  v11 = completionCopy;
+  secsCopy2 = secs;
+  v8 = completionCopy;
+  [self _runWithDaemon:v10 errorCallback:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -120,9 +120,9 @@ void __83__ICQDelayedOfferFailsafeActivityController_startActivityWithDelaySecs_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)stopActivityWithCompletion:(id)a3
++ (void)stopActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -134,9 +134,9 @@ void __83__ICQDelayedOfferFailsafeActivityController_startActivityWithDelaySecs_
   v7[1] = 3221225472;
   v7[2] = __72__ICQDelayedOfferFailsafeActivityController_stopActivityWithCompletion___block_invoke;
   v7[3] = &unk_27A652EE0;
-  v8 = v4;
-  v6 = v4;
-  [a1 _runWithDaemon:v7 errorCallback:v6];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [self _runWithDaemon:v7 errorCallback:v6];
 }
 
 void __72__ICQDelayedOfferFailsafeActivityController_stopActivityWithCompletion___block_invoke(uint64_t a1, void *a2)

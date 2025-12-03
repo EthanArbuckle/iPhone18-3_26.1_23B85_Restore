@@ -1,17 +1,17 @@
 @interface TSTChartReferenceFormula
-- (TSTChartReferenceFormula)initWithCalculationEngine:(id)a3 expressionTree:(id)a4 baseHostCell:(TSUModelCellCoord)a5 hostTable:(id)a6;
+- (TSTChartReferenceFormula)initWithCalculationEngine:(id)engine expressionTree:(id)tree baseHostCell:(TSUModelCellCoord)cell hostTable:(id)table;
 @end
 
 @implementation TSTChartReferenceFormula
 
-- (TSTChartReferenceFormula)initWithCalculationEngine:(id)a3 expressionTree:(id)a4 baseHostCell:(TSUModelCellCoord)a5 hostTable:(id)a6
+- (TSTChartReferenceFormula)initWithCalculationEngine:(id)engine expressionTree:(id)tree baseHostCell:(TSUModelCellCoord)cell hostTable:(id)table
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  engineCopy = engine;
+  treeCopy = tree;
+  tableCopy = table;
   v19.receiver = self;
   v19.super_class = TSTChartReferenceFormula;
-  v13 = [(TSTFormula *)&v19 initWithCalculationEngine:v10 expressionTree:v11 baseHostCell:a5 hostTable:v12];
+  v13 = [(TSTFormula *)&v19 initWithCalculationEngine:engineCopy expressionTree:treeCopy baseHostCell:cell hostTable:tableCopy];
   v17 = v13;
   if (v13)
   {

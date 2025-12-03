@@ -1,21 +1,21 @@
 @interface SBFMouseButtonDownGestureRecognizer
-- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SBFMouseButtonDownGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBFMouseButtonDownGestureRecognizer;
-  v6 = a4;
-  [(SBFMouseButtonDownGestureRecognizer *)&v8 touchesBegan:a3 withEvent:v6];
-  v7 = [v6 _hidEvent];
+  eventCopy = event;
+  [(SBFMouseButtonDownGestureRecognizer *)&v8 touchesBegan:began withEvent:eventCopy];
+  _hidEvent = [eventCopy _hidEvent];
 
-  if ([(SBFMouseButtonDownGestureRecognizer *)self _isMouseButtonClickEvent:v7])
+  if ([(SBFMouseButtonDownGestureRecognizer *)self _isMouseButtonClickEvent:_hidEvent])
   {
-    [(SBFMouseButtonDownGestureRecognizer *)self _succesfullyRecognizeFromEvent:v7];
+    [(SBFMouseButtonDownGestureRecognizer *)self _succesfullyRecognizeFromEvent:_hidEvent];
   }
 
   else
@@ -24,7 +24,7 @@
   }
 }
 
-- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)a3
+- (void)_succesfullyRecognizeFromEvent:(__IOHIDEvent *)event
 {
   v4 = +[SBWakeLogger sharedInstance];
   [v4 wakeMayBegin:6 withTimestamp:IOHIDEventGetTimeStamp()];

@@ -1,25 +1,25 @@
 @interface UARPPersonalizationEventManager
-- (BOOL)personalizationNeeded:(id)a3 endpointUUID:(id)a4 tssServerURL:(id)a5;
-- (UARPPersonalizationEventManager)initWithUARPHostManager:(id)a3 queue:(id)a4;
+- (BOOL)personalizationNeeded:(id)needed endpointUUID:(id)d tssServerURL:(id)l;
+- (UARPPersonalizationEventManager)initWithUARPHostManager:(id)manager queue:(id)queue;
 - (void)activateDaemonMode;
 - (void)activateToolMode;
-- (void)publishPersonalizationNeededEvent:(id)a3;
+- (void)publishPersonalizationNeededEvent:(id)event;
 @end
 
 @implementation UARPPersonalizationEventManager
 
-- (UARPPersonalizationEventManager)initWithUARPHostManager:(id)a3 queue:(id)a4
+- (UARPPersonalizationEventManager)initWithUARPHostManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = UARPPersonalizationEventManager;
   v9 = [(UARPPersonalizationEventManager *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_hostManager, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_hostManager, manager);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = os_log_create("com.apple.uarp", "eventmanager");
     log = v10->_log;
     v10->_log = v11;
@@ -87,9 +87,9 @@
 
 - (void)activateToolMode
 {
-  v3 = [(UARPHostManager *)self->_hostManager personalizationCompleteListener];
+  personalizationCompleteListener = [(UARPHostManager *)self->_hostManager personalizationCompleteListener];
   xpcListener = self->_xpcListener;
-  self->_xpcListener = v3;
+  self->_xpcListener = personalizationCompleteListener;
 
   v5 = [[UARPHostPersonalizationManager alloc] initWithListener:self->_xpcListener];
   tssManager = self->_tssManager;
@@ -98,19 +98,19 @@
   _objc_release_x1();
 }
 
-- (BOOL)personalizationNeeded:(id)a3 endpointUUID:(id)a4 tssServerURL:(id)a5
+- (BOOL)personalizationNeeded:(id)needed endpointUUID:(id)d tssServerURL:(id)l
 {
-  v7 = a3;
-  v40 = a4;
-  v42 = a5;
+  neededCopy = needed;
+  dCopy = d;
+  lCopy = l;
   v43 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v41 = v7;
-  v8 = [v7 tatsuTickets];
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  v41 = neededCopy;
+  tatsuTickets = [neededCopy tatsuTickets];
+  v9 = [tatsuTickets countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v9)
   {
     v10 = v9;
@@ -121,28 +121,28 @@
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(tatsuTickets);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
-        v14 = [v13 tatsuRequest];
+        tatsuRequest = [v13 tatsuRequest];
 
-        if (v14)
+        if (tatsuRequest)
         {
-          v15 = [v13 manifestLocation];
-          v16 = v15;
-          if (v15)
+          manifestLocation = [v13 manifestLocation];
+          v16 = manifestLocation;
+          if (manifestLocation)
           {
-            v17 = [v15 componentTag];
-            if (!v17)
+            componentTag = [manifestLocation componentTag];
+            if (!componentTag)
             {
-              v17 = [[UARPComponentTag alloc] initWithString:@"ROOT"];
+              componentTag = [[UARPComponentTag alloc] initWithString:@"ROOT"];
             }
 
             v18 = [UARPDeviceTatsuTicket alloc];
-            v19 = [(UARPComponentTag *)v17 tagString];
-            v20 = [v13 tatsuRequest];
-            v21 = [v18 initWithComponentTag:v19 tssRequest:v20];
+            tagString = [(UARPComponentTag *)componentTag tagString];
+            tatsuRequest2 = [v13 tatsuRequest];
+            v21 = [v18 initWithComponentTag:tagString tssRequest:tatsuRequest2];
 
             if (v21)
             {
@@ -152,7 +152,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v10 = [tatsuTickets countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v10);
@@ -165,26 +165,26 @@
     v23 = [NSKeyedArchiver archivedDataWithRootObject:v43 requiringSecureCoding:1 error:&v44];
     v24 = v44;
     v25 = v23 != 0;
-    v27 = v40;
+    v27 = dCopy;
     v26 = v41;
     if (v23)
     {
       v28 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_data(v28, [@"tatsuRequests" UTF8String], objc_msgSend(v23, "bytes"), objc_msgSend(v23, "length"));
-      v29 = [@"endpointUUID" UTF8String];
-      v30 = [v40 UUIDString];
-      xpc_dictionary_set_string(v28, v29, [v30 UTF8String]);
+      uTF8String = [@"endpointUUID" UTF8String];
+      uUIDString = [dCopy UUIDString];
+      xpc_dictionary_set_string(v28, uTF8String, [uUIDString UTF8String]);
 
-      v31 = [@"assetUUID" UTF8String];
-      v32 = [v41 uuid];
-      v33 = [v32 UUIDString];
-      xpc_dictionary_set_string(v28, v31, [v33 UTF8String]);
+      uTF8String2 = [@"assetUUID" UTF8String];
+      uuid = [v41 uuid];
+      uUIDString2 = [uuid UUIDString];
+      xpc_dictionary_set_string(v28, uTF8String2, [uUIDString2 UTF8String]);
 
-      if (v42)
+      if (lCopy)
       {
-        v34 = [@"tatsuServerURL" UTF8String];
-        v35 = [v42 absoluteString];
-        xpc_dictionary_set_string(v28, v34, [v35 UTF8String]);
+        uTF8String3 = [@"tatsuServerURL" UTF8String];
+        absoluteString = [lCopy absoluteString];
+        xpc_dictionary_set_string(v28, uTF8String3, [absoluteString UTF8String]);
       }
 
       if (self->_publisher)
@@ -207,32 +207,32 @@
       }
     }
 
-    v36 = v42;
+    v36 = lCopy;
     v22 = v43;
   }
 
   else
   {
     v25 = 0;
-    v27 = v40;
+    v27 = dCopy;
     v26 = v41;
-    v36 = v42;
+    v36 = lCopy;
   }
 
   return v25;
 }
 
-- (void)publishPersonalizationNeededEvent:(id)a3
+- (void)publishPersonalizationNeededEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000055FC;
   v7[3] = &unk_1000B8A88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 

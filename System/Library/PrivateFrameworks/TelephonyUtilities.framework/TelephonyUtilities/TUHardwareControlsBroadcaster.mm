@@ -1,7 +1,7 @@
 @interface TUHardwareControlsBroadcaster
 - (TUHardwareControlsBroadcaster)init;
 - (void)dealloc;
-- (void)longPressTimerFired:(id)a3;
+- (void)longPressTimerFired:(id)fired;
 @end
 
 @implementation TUHardwareControlsBroadcaster
@@ -27,9 +27,9 @@
     IOHIDEventSystemClientScheduleWithRunLoop();
     hidEventSystemClientRef = v2->_hidEventSystemClientRef;
     IOHIDEventSystemClientRegisterEventCallback();
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObject:&unk_1F09C6328 forKey:@"DeviceUsage"];
-    [v7 addObject:v8];
+    [array addObject:v8];
     v9 = v2->_hidEventSystemClientRef;
     IOHIDEventSystemClientSetMatchingMultiple();
   }
@@ -56,16 +56,16 @@
   [(TUHardwareControlsBroadcaster *)&v6 dealloc];
 }
 
-- (void)longPressTimerFired:(id)a3
+- (void)longPressTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__TUHardwareControlsBroadcaster_longPressTimerFired___block_invoke;
   v6[3] = &unk_1E7424898;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = firedCopy;
+  selfCopy = self;
+  v5 = firedCopy;
   TUGuaranteeExecutionOnMainThreadAsync(v6);
 }
 

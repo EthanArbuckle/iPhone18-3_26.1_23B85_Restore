@@ -2,24 +2,24 @@
 - (BOOL)fetchedSyncZone;
 - (CKDatabase)ckDatabase;
 - (CKDatabase)ckDatabaseWithZoneWidePCS;
-- (MBCKContainer)initWithAccount:(id)a3 error:(id *)a4;
+- (MBCKContainer)initWithAccount:(id)account error:(id *)error;
 @end
 
 @implementation MBCKContainer
 
-- (MBCKContainer)initWithAccount:(id)a3 error:(id *)a4
+- (MBCKContainer)initWithAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  accountCopy = account;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKContainer initWithAccount:error:]", "MBCKDatabaseManager.m", 42, "account");
   }
 
-  v7 = v6;
-  v8 = [v6 persona];
-  v9 = [v8 personaIdentifier];
+  v7 = accountCopy;
+  persona = [accountCopy persona];
+  personaIdentifier = [persona personaIdentifier];
 
-  if (!v9)
+  if (!personaIdentifier)
   {
     __assert_rtn("[MBCKContainer initWithAccount:error:]", "MBCKDatabaseManager.m", 44, "personaIdentifier");
   }
@@ -34,26 +34,26 @@
   }
 
   [(MBCKContainer *)v10 setAccount:v7];
-  [(MBCKContainer *)v11 setPersonaIdentifier:v9];
-  v12 = [v7 persona];
-  v13 = [v12 isDataSeparatedPersona];
+  [(MBCKContainer *)v11 setPersonaIdentifier:personaIdentifier];
+  persona2 = [v7 persona];
+  isDataSeparatedPersona = [persona2 isDataSeparatedPersona];
 
-  if (v13)
+  if (isDataSeparatedPersona)
   {
-    v14 = [v7 accountIdentifier];
-    if (!v14)
+    accountIdentifier = [v7 accountIdentifier];
+    if (!accountIdentifier)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MBError errorWithCode:1 format:@"nil container"];
+        *error = [MBError errorWithCode:1 format:@"nil container"];
       }
 
       v11 = 0;
       goto LABEL_27;
     }
 
-    v15 = v14;
-    v16 = [[CKAccountOverrideInfo alloc] initWithAccountID:v14];
+    v15 = accountIdentifier;
+    v16 = [[CKAccountOverrideInfo alloc] initWithAccountID:accountIdentifier];
   }
 
   else
@@ -64,9 +64,9 @@
   if (MBIsInternalInstall())
   {
     v17 = +[MBBehaviorOptions sharedOptions];
-    v18 = [v17 useSandboxCKContainer];
+    useSandboxCKContainer = [v17 useSandboxCKContainer];
 
-    if (v18)
+    if (useSandboxCKContainer)
     {
       v19 = 2;
     }
@@ -83,9 +83,9 @@
   }
 
   v20 = +[MBBehaviorOptions sharedOptions];
-  v21 = [v20 cloudKitContainerName];
+  cloudKitContainerName = [v20 cloudKitContainerName];
 
-  v22 = [[CKContainerID alloc] initWithContainerIdentifier:v21 environment:v19];
+  v22 = [[CKContainerID alloc] initWithContainerIdentifier:cloudKitContainerName environment:v19];
   v23 = objc_opt_new();
   [v23 setMmcsEncryptionSupport:3];
   [v23 setAccountOverrideInfo:v16];
@@ -96,8 +96,8 @@
   }
 
   v25 = v24;
-  v37 = a4;
-  v38 = v21;
+  errorCopy = error;
+  v38 = cloudKitContainerName;
   [(MBCKContainer *)v11 setCkContainer:v24];
   v26 = objc_opt_new();
 
@@ -105,11 +105,11 @@
   [v26 setAccountOverrideInfo:v16];
   [v26 setUseZoneWidePCS:1];
   [v26 setMmcsEncryptionSupport:3];
-  v27 = [v7 persona];
-  v28 = [v27 personaIdentifier];
+  persona3 = [v7 persona];
+  personaIdentifier2 = [persona3 personaIdentifier];
 
   v40 = 0;
-  v29 = [UMUserPersonaAttributes personaAttributesForPersonaUniqueString:v28 withError:&v40];
+  v29 = [UMUserPersonaAttributes personaAttributesForPersonaUniqueString:personaIdentifier2 withError:&v40];
   v30 = v40;
   v31 = v30;
   if (v29)
@@ -128,17 +128,17 @@
 
   else
   {
-    if (v37)
+    if (errorCopy)
     {
       v33 = v30;
-      *v37 = v31;
+      *errorCopy = v31;
     }
 
     v34 = MBGetDefaultLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v43 = v28;
+      v43 = personaIdentifier2;
       v44 = 2112;
       v45 = v31;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Failed to fetch persona attributes for %@: %@", buf, 0x16u);
@@ -163,24 +163,24 @@ LABEL_28:
 
 - (CKDatabase)ckDatabase
 {
-  v2 = [(MBCKContainer *)self ckContainer];
-  v3 = [v2 privateCloudDatabase];
+  ckContainer = [(MBCKContainer *)self ckContainer];
+  privateCloudDatabase = [ckContainer privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (CKDatabase)ckDatabaseWithZoneWidePCS
 {
-  v2 = [(MBCKContainer *)self ckContainerWithZoneWidePCS];
-  v3 = [v2 privateCloudDatabase];
+  ckContainerWithZoneWidePCS = [(MBCKContainer *)self ckContainerWithZoneWidePCS];
+  privateCloudDatabase = [ckContainerWithZoneWidePCS privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 - (BOOL)fetchedSyncZone
 {
-  v2 = [(MBCKContainer *)self account];
-  v3 = [MBCKDatabaseManager fetchedSyncZoneWithAccount:v2];
+  account = [(MBCKContainer *)self account];
+  v3 = [MBCKDatabaseManager fetchedSyncZoneWithAccount:account];
 
   return v3;
 }

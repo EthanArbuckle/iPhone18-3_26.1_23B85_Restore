@@ -1,7 +1,7 @@
 @interface CloseButton
 - (BOOL)accessibilityActivate;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation CloseButton
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 28.0;
   v4 = 28.0;
@@ -26,7 +26,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   CloseButton.accessibilityActivate()();
 
   return 1;

@@ -1,18 +1,18 @@
 @interface RAPDisplayedDirectionsPlan
-- (BOOL)getRoutesIndex:(unint64_t *)a3 directionsResponseIndex:(unint64_t *)a4 forRouteSuggestion:(id)a5;
-- (RAPDisplayedDirectionsPlan)initWithRouteCollection:(id)a3 recording:(id)a4;
+- (BOOL)getRoutesIndex:(unint64_t *)index directionsResponseIndex:(unint64_t *)responseIndex forRouteSuggestion:(id)suggestion;
+- (RAPDisplayedDirectionsPlan)initWithRouteCollection:(id)collection recording:(id)recording;
 - (int)requestedTransportType;
 @end
 
 @implementation RAPDisplayedDirectionsPlan
 
-- (BOOL)getRoutesIndex:(unint64_t *)a3 directionsResponseIndex:(unint64_t *)a4 forRouteSuggestion:(id)a5
+- (BOOL)getRoutesIndex:(unint64_t *)index directionsResponseIndex:(unint64_t *)responseIndex forRouteSuggestion:(id)suggestion
 {
-  v8 = a5;
+  suggestionCopy = suggestion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = suggestionCopy;
   }
 
   else
@@ -21,20 +21,20 @@
   }
 
   v10 = v9;
-  v11 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
-  v12 = [v11 count];
+  directionsResponses = [(RAPDirectionsRecording *)self->_recording directionsResponses];
+  v12 = [directionsResponses count];
 
   if (v12)
   {
     v13 = 0;
     while (1)
     {
-      v14 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
-      v15 = [v14 objectAtIndexedSubscript:v13];
+      directionsResponses2 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
+      v15 = [directionsResponses2 objectAtIndexedSubscript:v13];
 
-      v16 = [v15 directionsResponseID];
-      v17 = [v10 directionsResponseID];
-      v18 = [v16 isEqualToData:v17];
+      directionsResponseID = [v15 directionsResponseID];
+      directionsResponseID2 = [v10 directionsResponseID];
+      v18 = [directionsResponseID isEqualToData:directionsResponseID2];
 
       if (v18)
       {
@@ -42,8 +42,8 @@
       }
 
       ++v13;
-      v19 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
-      v20 = [v19 count];
+      directionsResponses3 = [(RAPDirectionsRecording *)self->_recording directionsResponses];
+      v20 = [directionsResponses3 count];
 
       if (v13 >= v20)
       {
@@ -51,14 +51,14 @@
       }
     }
 
-    if (a3)
+    if (index)
     {
-      *a3 = [v10 indexInResponse];
+      *index = [v10 indexInResponse];
     }
 
-    if (a4)
+    if (responseIndex)
     {
-      *a4 = v13;
+      *responseIndex = v13;
     }
 
     v21 = 1;
@@ -85,8 +85,8 @@ LABEL_8:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(RAPDirectionsRecording *)recording directionsRequests];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  directionsRequests = [(RAPDirectionsRecording *)recording directionsRequests];
+  v4 = [directionsRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -97,23 +97,23 @@ LABEL_8:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(directionsRequests);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 routeAttributes];
-        v10 = [v9 hasMainTransportType];
+        routeAttributes = [v8 routeAttributes];
+        hasMainTransportType = [routeAttributes hasMainTransportType];
 
-        if (v10)
+        if (hasMainTransportType)
         {
-          v12 = [v8 routeAttributes];
-          v11 = [v12 mainTransportType];
+          routeAttributes2 = [v8 routeAttributes];
+          mainTransportType = [routeAttributes2 mainTransportType];
 
           goto LABEL_12;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [directionsRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -123,24 +123,24 @@ LABEL_8:
     }
   }
 
-  v11 = 4;
+  mainTransportType = 4;
 LABEL_12:
 
-  return v11;
+  return mainTransportType;
 }
 
-- (RAPDisplayedDirectionsPlan)initWithRouteCollection:(id)a3 recording:(id)a4
+- (RAPDisplayedDirectionsPlan)initWithRouteCollection:(id)collection recording:(id)recording
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  recordingCopy = recording;
   v12.receiver = self;
   v12.super_class = RAPDisplayedDirectionsPlan;
   v9 = [(RAPDisplayedDirectionsPlan *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_routeCollection, a3);
-    objc_storeStrong(&v10->_recording, a4);
+    objc_storeStrong(&v9->_routeCollection, collection);
+    objc_storeStrong(&v10->_recording, recording);
   }
 
   return v10;

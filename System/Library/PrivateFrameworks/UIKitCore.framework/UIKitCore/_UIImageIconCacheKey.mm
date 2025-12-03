@@ -1,14 +1,14 @@
 @interface _UIImageIconCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation _UIImageIconCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -20,7 +20,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       appearance = v7->_appearance;
       v9 = self->_appearance;
       v10 = appearance;
@@ -66,9 +66,9 @@ LABEL_15:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_appearance withName:@"appearance" skipIfNil:0];
   v5 = [v3 appendInt:LODWORD(self->_userInterfaceStyle) withName:@"userInterfaceStyle"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

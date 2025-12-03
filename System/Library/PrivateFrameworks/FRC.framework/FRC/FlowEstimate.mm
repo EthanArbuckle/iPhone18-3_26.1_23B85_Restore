@@ -1,6 +1,6 @@
 @interface FlowEstimate
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6;
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7;
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output;
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback;
 - (void)setupNetworkModel;
 @end
 
@@ -40,7 +40,7 @@
   self->_concatenatedInputBlob = *self->_inputBlobs;
 }
 
-- (BOOL)bindCVPixelBuffers:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6
+- (BOOL)bindCVPixelBuffers:(__CVBuffer *)buffers correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)flow output:(__CVBuffer *)output
 {
   p_net = &self->super._net;
   if (self->_level < 2)
@@ -104,9 +104,9 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)estimateFlow:(__CVBuffer *)a3 correlation:(__CVBuffer *)a4 flow:(__CVBuffer *)a5 output:(__CVBuffer *)a6 callback:(id)a7
+- (BOOL)estimateFlow:(__CVBuffer *)flow correlation:(__CVBuffer *)correlation flow:(__CVBuffer *)a5 output:(__CVBuffer *)output callback:(id)callback
 {
-  v12 = a7;
+  callbackCopy = callback;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -116,14 +116,14 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __62__FlowEstimate_estimateFlow_correlation_flow_output_callback___block_invoke;
   block[3] = &unk_278FEA560;
-  v20 = a4;
+  correlationCopy = correlation;
   v21 = a5;
-  v22 = a6;
+  outputCopy = output;
   v18 = &v23;
-  v19 = a3;
+  flowCopy = flow;
   block[4] = self;
-  v17 = v12;
-  v14 = v12;
+  v17 = callbackCopy;
+  v14 = callbackCopy;
   dispatch_sync(submissionQueue, block);
   LOBYTE(a5) = *(v24 + 24);
 

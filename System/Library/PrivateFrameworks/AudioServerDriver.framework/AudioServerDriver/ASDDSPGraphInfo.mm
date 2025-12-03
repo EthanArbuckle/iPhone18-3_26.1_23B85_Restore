@@ -1,31 +1,31 @@
 @interface ASDDSPGraphInfo
-- (ASDDSPGraphInfo)initWithDictionary:(id)a3 resourcePath:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASDDSPGraphInfo)initWithDictionary:(id)dictionary resourcePath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation ASDDSPGraphInfo
 
-- (ASDDSPGraphInfo)initWithDictionary:(id)a3 resourcePath:(id)a4
+- (ASDDSPGraphInfo)initWithDictionary:(id)dictionary resourcePath:(id)path
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v57.receiver = self;
   v57.super_class = ASDDSPGraphInfo;
   v8 = [(ASDDSPGraphInfo *)&v57 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Path"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Path"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 stringByAppendingPathComponent:v9];
+      v10 = [pathCopy stringByAppendingPathComponent:v9];
       path = v8->_path;
       v8->_path = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"Text"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
     }
 
     v48 = v12;
-    v13 = [v6 objectForKeyedSubscript:@"IncludePaths"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"IncludePaths"];
     objc_opt_class();
     obj = v13;
     if (objc_opt_isKindOfClass())
@@ -92,7 +92,7 @@
     }
 
 LABEL_18:
-    v28 = [v6 objectForKeyedSubscript:@"Substitutions"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"Substitutions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@ LABEL_18:
         v32 = *v50;
         while (2)
         {
-          v33 = v7;
+          v33 = pathCopy;
           v34 = 0;
           do
           {
@@ -124,7 +124,7 @@ LABEL_18:
             {
 
               v36 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-              v7 = v33;
+              pathCopy = v33;
               v9 = v46;
               v13 = obj;
               if (v36)
@@ -140,7 +140,7 @@ LABEL_18:
 
           while (v31 != v34);
           v31 = [v29 countByEnumeratingWithState:&v49 objects:v58 count:16];
-          v7 = v33;
+          pathCopy = v33;
           if (v31)
           {
             continue;
@@ -162,10 +162,10 @@ LABEL_30:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
     goto LABEL_48;
@@ -178,13 +178,13 @@ LABEL_30:
     goto LABEL_48;
   }
 
-  v9 = v8;
-  v10 = [(ASDDSPGraphInfo *)self path];
-  if (v10 || ([(ASDDSPGraphInfo *)v9 path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v9 = equalCopy;
+  path = [(ASDDSPGraphInfo *)self path];
+  if (path || ([(ASDDSPGraphInfo *)v9 path], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(ASDDSPGraphInfo *)self path];
-    v5 = [(ASDDSPGraphInfo *)v9 path];
-    if (([v4 isEqual:v5] & 1) == 0)
+    path2 = [(ASDDSPGraphInfo *)self path];
+    path3 = [(ASDDSPGraphInfo *)v9 path];
+    if (([path2 isEqual:path3] & 1) == 0)
     {
 
       v11 = 0;
@@ -199,51 +199,51 @@ LABEL_30:
     v40 = 0;
   }
 
-  v12 = [(ASDDSPGraphInfo *)self text];
-  if (!v12)
+  text = [(ASDDSPGraphInfo *)self text];
+  if (!text)
   {
-    v39 = [(ASDDSPGraphInfo *)v9 text];
-    if (!v39)
+    text2 = [(ASDDSPGraphInfo *)v9 text];
+    if (!text2)
     {
-      v39 = 0;
+      text2 = 0;
       v38 = 0;
       goto LABEL_21;
     }
   }
 
   v13 = v3;
-  v14 = [(ASDDSPGraphInfo *)self text];
-  v15 = [(ASDDSPGraphInfo *)v9 text];
-  if ([v14 isEqual:v15])
+  text3 = [(ASDDSPGraphInfo *)self text];
+  text4 = [(ASDDSPGraphInfo *)v9 text];
+  if ([text3 isEqual:text4])
   {
-    v33 = v14;
+    v33 = text3;
     v38 = 1;
     v3 = v13;
-    v6 = v15;
+    v6 = text4;
 LABEL_21:
-    v16 = [(ASDDSPGraphInfo *)self includePaths];
-    if (v16 || ([(ASDDSPGraphInfo *)v9 includePaths], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+    includePaths = [(ASDDSPGraphInfo *)self includePaths];
+    if (includePaths || ([(ASDDSPGraphInfo *)v9 includePaths], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v36 = v10;
-      v17 = v12;
-      v18 = v5;
-      v19 = v4;
+      v36 = path;
+      v17 = text;
+      v18 = path3;
+      v19 = path2;
       v20 = v6;
-      v21 = [(ASDDSPGraphInfo *)self includePaths];
-      v34 = [(ASDDSPGraphInfo *)v9 includePaths];
-      v35 = v21;
-      if (![v21 isEqual:?])
+      includePaths2 = [(ASDDSPGraphInfo *)self includePaths];
+      includePaths3 = [(ASDDSPGraphInfo *)v9 includePaths];
+      v35 = includePaths2;
+      if (![includePaths2 isEqual:?])
       {
         v11 = 0;
         v6 = v20;
-        v4 = v19;
-        v5 = v18;
-        v12 = v17;
-        v10 = v36;
+        path2 = v19;
+        path3 = v18;
+        text = v17;
+        path = v36;
 LABEL_36:
 
 LABEL_37:
-        if (!v16)
+        if (!includePaths)
         {
         }
 
@@ -251,7 +251,7 @@ LABEL_37:
         {
         }
 
-        if (!v12)
+        if (!text)
         {
         }
 
@@ -263,13 +263,13 @@ LABEL_37:
         goto LABEL_44;
       }
 
-      v32 = v16;
+      v32 = includePaths;
       v31 = 1;
       v6 = v20;
-      v4 = v19;
-      v5 = v18;
-      v12 = v17;
-      v10 = v36;
+      path2 = v19;
+      path3 = v18;
+      text = v17;
+      path = v36;
     }
 
     else
@@ -279,28 +279,28 @@ LABEL_37:
       v31 = 0;
     }
 
-    v22 = [(ASDDSPGraphInfo *)self substitutions];
-    if (v22 || ([(ASDDSPGraphInfo *)v9 substitutions], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
+    substitutions = [(ASDDSPGraphInfo *)self substitutions];
+    if (substitutions || ([(ASDDSPGraphInfo *)v9 substitutions], (v27 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v30 = v6;
       v37 = v3;
       v23 = [(ASDDSPGraphInfo *)self substitutions:v27];
-      v24 = [(ASDDSPGraphInfo *)v9 substitutions];
-      v11 = [v23 isEqual:v24];
+      substitutions2 = [(ASDDSPGraphInfo *)v9 substitutions];
+      v11 = [v23 isEqual:substitutions2];
 
-      if (v22)
+      if (substitutions)
       {
 
         v6 = v30;
         if (!v31)
         {
           v3 = v37;
-          v16 = v32;
+          includePaths = v32;
           goto LABEL_37;
         }
 
         v3 = v37;
-        v16 = v32;
+        includePaths = v32;
         goto LABEL_36;
       }
 
@@ -315,7 +315,7 @@ LABEL_37:
       v11 = 1;
     }
 
-    v16 = v32;
+    includePaths = v32;
     if ((v31 & 1) == 0)
     {
       goto LABEL_37;
@@ -324,7 +324,7 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  if (v12)
+  if (text)
   {
   }
 
@@ -340,7 +340,7 @@ LABEL_44:
   }
 
 LABEL_45:
-  if (!v10)
+  if (!path)
   {
   }
 
@@ -350,14 +350,14 @@ LABEL_48:
 
 - (unint64_t)hash
 {
-  v3 = [(ASDDSPGraphInfo *)self path];
-  v4 = [v3 hash];
-  v5 = [(ASDDSPGraphInfo *)self text];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(ASDDSPGraphInfo *)self includePaths];
-  v8 = [v7 hash];
-  v9 = [(ASDDSPGraphInfo *)self substitutions];
-  v10 = v8 ^ [v9 hash];
+  path = [(ASDDSPGraphInfo *)self path];
+  v4 = [path hash];
+  text = [(ASDDSPGraphInfo *)self text];
+  v6 = [text hash] ^ v4;
+  includePaths = [(ASDDSPGraphInfo *)self includePaths];
+  v8 = [includePaths hash];
+  substitutions = [(ASDDSPGraphInfo *)self substitutions];
+  v10 = v8 ^ [substitutions hash];
 
   return v6 ^ v10;
 }

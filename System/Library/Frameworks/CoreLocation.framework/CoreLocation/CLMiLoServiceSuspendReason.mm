@@ -1,35 +1,35 @@
 @interface CLMiLoServiceSuspendReason
-- (CLMiLoServiceSuspendReason)initWithCoder:(id)a3;
-- (CLMiLoServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoServiceSuspendReason)initWithCoder:(id)coder;
+- (CLMiLoServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)enum;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLMiLoServiceSuspendReason
 
-- (CLMiLoServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)a3
+- (CLMiLoServiceSuspendReason)initWithSuspendReasonEnum:(unint64_t)enum
 {
   v5.receiver = self;
   v5.super_class = CLMiLoServiceSuspendReason;
   result = [(CLMiLoServiceSuspendReason *)&v5 init];
   if (result)
   {
-    result->_suspendReasonEnum = a3;
+    result->_suspendReasonEnum = enum;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   suspendReasonEnum = self->_suspendReasonEnum;
 
   return MEMORY[0x1EEE66B58](v4, sel_initWithSuspendReasonEnum_);
 }
 
-- (CLMiLoServiceSuspendReason)initWithCoder:(id)a3
+- (CLMiLoServiceSuspendReason)initWithCoder:(id)coder
 {
-  [a3 decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyServiceSuspendReason"];
+  [coder decodeIntegerForKey:@"kCLMiLoConnectionCodingKeyServiceSuspendReason"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithSuspendReasonEnum_);
 }

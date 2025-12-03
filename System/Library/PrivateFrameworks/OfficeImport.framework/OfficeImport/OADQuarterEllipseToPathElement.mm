@@ -1,17 +1,17 @@
 @interface OADQuarterEllipseToPathElement
-- (OADQuarterEllipseToPathElement)initWithToPoint:(OADAdjustPoint)a3 startsVertical:(BOOL)a4;
+- (OADQuarterEllipseToPathElement)initWithToPoint:(OADAdjustPoint)point startsVertical:(BOOL)vertical;
 @end
 
 @implementation OADQuarterEllipseToPathElement
 
-- (OADQuarterEllipseToPathElement)initWithToPoint:(OADAdjustPoint)a3 startsVertical:(BOOL)a4
+- (OADQuarterEllipseToPathElement)initWithToPoint:(OADAdjustPoint)point startsVertical:(BOOL)vertical
 {
   v6.receiver = self;
   v6.super_class = OADQuarterEllipseToPathElement;
-  result = [(OADToPointPathElement *)&v6 initWithToPoint:*&a3.x, *&a3.y];
+  result = [(OADToPointPathElement *)&v6 initWithToPoint:*&point.x, *&point.y];
   if (result)
   {
-    *(&result->super.mRelative + 1) = a4;
+    *(&result->super.mRelative + 1) = vertical;
   }
 
   return result;

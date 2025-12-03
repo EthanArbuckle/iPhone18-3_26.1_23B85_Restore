@@ -3,27 +3,27 @@
 + (void)_clearExistingSharedManager;
 - (AXElementFetcher)elementFetcher;
 - (BOOL)_elementFetchingRequired;
-- (BOOL)_hasCurrentApplicationMatchingBlock:(id)a3;
-- (BOOL)_isElementInIgnoredTouchRegions:(id)a3;
+- (BOOL)_hasCurrentApplicationMatchingBlock:(id)block;
+- (BOOL)_isElementInIgnoredTouchRegions:(id)regions;
 - (BOOL)_isGroupingEnabled;
 - (BOOL)_isSpeechEnabled;
 - (BOOL)applicationIsRTL;
 - (BOOL)frontmostAppMayBeLoading;
 - (BOOL)hasZeroElements;
 - (BOOL)isFetchingElements;
-- (BOOL)isSystemSleeping:(id)a3;
+- (BOOL)isSystemSleeping:(id)sleeping;
 - (BOOL)willFetchElements;
-- (id)_applicationMatchingBlock:(id)a3 inApplications:(id)a4;
+- (id)_applicationMatchingBlock:(id)block inApplications:(id)applications;
 - (id)_currentAppPids;
-- (id)_currentApplicationMatchingBlock:(id)a3;
-- (id)_itemForScanningFromItem:(id)a3 inDirection:(BOOL)a4 didWrap:(BOOL *)a5;
-- (id)_itemForScanningWithElementCommunity:(id)a3 useFirst:(BOOL)a4;
+- (id)_currentApplicationMatchingBlock:(id)block;
+- (id)_itemForScanningFromItem:(id)item inDirection:(BOOL)direction didWrap:(BOOL *)wrap;
+- (id)_itemForScanningWithElementCommunity:(id)community useFirst:(BOOL)first;
 - (id)_setupElementFetcher;
-- (id)elementAtPoint:(CGPoint)a3 displayID:(unsigned int)a4;
+- (id)elementAtPoint:(CGPoint)point displayID:(unsigned int)d;
 - (id)elements;
-- (id)elementsForMatchingBlock:(id)a3;
-- (id)findGroupableMatchingGroupable:(id)a3;
-- (id)firstElementInScene:(id)a3;
+- (id)elementsForMatchingBlock:(id)block;
+- (id)findGroupableMatchingGroupable:(id)groupable;
+- (id)firstElementInScene:(id)scene;
 - (id)firstKeyboardItem;
 - (id)firstResponder;
 - (id)firstScannerElement;
@@ -34,49 +34,49 @@
 - (id)nativeFocusElement;
 - (id)orbPreviewWindow;
 - (id)rootKeyboardGroup;
-- (id)scannerElementMatchingElement:(id)a3;
-- (id)scrollViewsForAction:(int)a3 elementsToScroll:(id *)a4;
-- (int64_t)_hndAccessibilityEventForFetchEvent:(unint64_t)a3;
-- (void)_addPostEventFilterToFetcher:(id)a3;
-- (void)_enableApplicationAccessibility:(BOOL)a3;
-- (void)_handleAnnouncementNotification:(id)a3;
+- (id)scannerElementMatchingElement:(id)element;
+- (id)scrollViewsForAction:(int)action elementsToScroll:(id *)scroll;
+- (int64_t)_hndAccessibilityEventForFetchEvent:(unint64_t)event;
+- (void)_addPostEventFilterToFetcher:(id)fetcher;
+- (void)_enableApplicationAccessibility:(BOOL)accessibility;
+- (void)_handleAnnouncementNotification:(id)notification;
 - (void)_handleAppTransition;
-- (void)_handleLayoutChanged:(id)a3;
-- (void)_handlePauseForPid:(int)a3;
-- (void)_handleResumeForPid:(int)a3;
-- (void)_handleScreenChanged:(id)a3;
+- (void)_handleLayoutChanged:(id)changed;
+- (void)_handlePauseForPid:(int)pid;
+- (void)_handleResumeForPid:(int)pid;
+- (void)_handleScreenChanged:(id)changed;
 - (void)_handleSystemServerDied;
 - (void)_initialize;
 - (void)_initializeAccessibility;
-- (void)_notifyObserversApplicationWasActivated:(id)a3;
-- (void)_notifyObserversDidFetchElementsForEvent:(int64_t)a3 foundNewElements:(BOOL)a4;
-- (void)_notifyObserversDidReceiveEvent:(int64_t)a3 data:(id)a4;
-- (void)_notifyObserversDidScheduleFetchEvent:(int64_t)a3;
-- (void)_notifyObserversMediaDidBegin:(__CFData *)a3;
-- (void)_notifyObserversNativeFocusElementDidChange:(id)a3;
-- (void)_notifyObserversScreenWillChange:(__CFData *)a3;
-- (void)_notifyObserversUpdateElementVisuals:(id)a3;
-- (void)_notifyObserversWillFetchElementsForEvent:(int64_t)a3;
-- (void)_observeNotifications:(BOOL)a3;
+- (void)_notifyObserversApplicationWasActivated:(id)activated;
+- (void)_notifyObserversDidFetchElementsForEvent:(int64_t)event foundNewElements:(BOOL)elements;
+- (void)_notifyObserversDidReceiveEvent:(int64_t)event data:(id)data;
+- (void)_notifyObserversDidScheduleFetchEvent:(int64_t)event;
+- (void)_notifyObserversMediaDidBegin:(__CFData *)begin;
+- (void)_notifyObserversNativeFocusElementDidChange:(id)change;
+- (void)_notifyObserversScreenWillChange:(__CFData *)change;
+- (void)_notifyObserversUpdateElementVisuals:(id)visuals;
+- (void)_notifyObserversWillFetchElementsForEvent:(int64_t)event;
+- (void)_observeNotifications:(BOOL)notifications;
 - (void)_requestPauseScanning;
 - (void)_requestResumeScanning;
-- (void)_resetPostEventFilterOnFetcher:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_resetPostEventFilterOnFetcher:(id)fetcher;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)displaysDidChange:(id)a3;
-- (void)fetcher:(id)a3 didFetchElementsForEvent:(unint64_t)a4 foundNewElements:(BOOL)a5;
-- (void)fetcher:(id)a3 didScheduleFetchEvent:(unint64_t)a4;
-- (void)fetcher:(id)a3 willFetchElementsForEvent:(unint64_t)a4 fromApplications:(id)a5;
+- (void)displaysDidChange:(id)change;
+- (void)fetcher:(id)fetcher didFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements;
+- (void)fetcher:(id)fetcher didScheduleFetchEvent:(unint64_t)event;
+- (void)fetcher:(id)fetcher willFetchElementsForEvent:(unint64_t)event fromApplications:(id)applications;
 - (void)groupingEnabledDidChange;
-- (void)observeAXNotifications:(id)a3;
+- (void)observeAXNotifications:(id)notifications;
 - (void)refreshElements;
 - (void)removeNotificationObserverAndDealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resetElementFetcher;
-- (void)setElementFetcher:(id)a3;
+- (void)setElementFetcher:(id)fetcher;
 - (void)speechEnabledDidChange;
-- (void)stopObservingAXNotifications:(id)a3;
-- (void)updateCachedOrbPreviewWindow:(id)a3;
+- (void)stopObservingAXNotifications:(id)notifications;
+- (void)updateCachedOrbPreviewWindow:(id)window;
 - (void)userDidPerformSwitchAction;
 @end
 
@@ -86,9 +86,9 @@
 {
   if ([(HNDAccessibilityManager *)self _elementFetchingRequired]&& !self->_elementFetcher)
   {
-    v3 = [(HNDAccessibilityManager *)self _setupElementFetcher];
+    _setupElementFetcher = [(HNDAccessibilityManager *)self _setupElementFetcher];
     elementFetcher = self->_elementFetcher;
-    self->_elementFetcher = v3;
+    self->_elementFetcher = _setupElementFetcher;
 
     v5 = SWCHLogElementNav();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -105,22 +105,22 @@
   return v7;
 }
 
-- (void)setElementFetcher:(id)a3
+- (void)setElementFetcher:(id)fetcher
 {
-  v5 = a3;
+  fetcherCopy = fetcher;
   elementFetcher = self->_elementFetcher;
   p_elementFetcher = &self->_elementFetcher;
-  if (elementFetcher != v5)
+  if (elementFetcher != fetcherCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_elementFetcher, a3);
-    v5 = v8;
+    v8 = fetcherCopy;
+    objc_storeStrong(p_elementFetcher, fetcher);
+    fetcherCopy = v8;
   }
 }
 
-- (void)updateCachedOrbPreviewWindow:(id)a3
+- (void)updateCachedOrbPreviewWindow:(id)window
 {
-  if ([a3 isEqualToNumber:&__kCFBooleanTrue])
+  if ([window isEqualToNumber:&__kCFBooleanTrue])
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -128,9 +128,9 @@
 
 - (id)orbPreviewWindow
 {
-  v3 = [(HNDAccessibilityManager *)self axOrbPreviewWindow];
+  axOrbPreviewWindow = [(HNDAccessibilityManager *)self axOrbPreviewWindow];
 
-  if (!v3)
+  if (!axOrbPreviewWindow)
   {
     v4 = +[AXElement primaryApp];
     v5 = [v4 elementForAttribute:5044];
@@ -143,17 +143,17 @@
 - (BOOL)_isGroupingEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchGroupElementsEnabled];
+  assistiveTouchGroupElementsEnabled = [v2 assistiveTouchGroupElementsEnabled];
 
-  return v3;
+  return assistiveTouchGroupElementsEnabled;
 }
 
 - (BOOL)_isSpeechEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchScannerSpeechEnabled];
+  assistiveTouchScannerSpeechEnabled = [v2 assistiveTouchScannerSpeechEnabled];
 
-  return v3;
+  return assistiveTouchScannerSpeechEnabled;
 }
 
 - (BOOL)_elementFetchingRequired
@@ -164,20 +164,20 @@
   }
 
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 assistiveTouchInternalOnlyHiddenNubbitModeEnabled];
+  assistiveTouchInternalOnlyHiddenNubbitModeEnabled = [v3 assistiveTouchInternalOnlyHiddenNubbitModeEnabled];
 
-  return v4;
+  return assistiveTouchInternalOnlyHiddenNubbitModeEnabled;
 }
 
-- (id)_applicationMatchingBlock:(id)a3 inApplications:(id)a4
+- (id)_applicationMatchingBlock:(id)block inApplications:(id)applications
 {
-  v5 = a3;
+  blockCopy = block;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  applicationsCopy = applications;
+  v7 = [applicationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -187,18 +187,18 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(applicationsCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v5[2](v5, v10))
+        if (blockCopy[2](blockCopy, v10))
         {
           v7 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [applicationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -213,18 +213,18 @@ LABEL_11:
   return v7;
 }
 
-- (id)_currentApplicationMatchingBlock:(id)a3
+- (id)_currentApplicationMatchingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HNDAccessibilityManager *)self currentApplications];
-  v6 = [(HNDAccessibilityManager *)self _applicationMatchingBlock:v4 inApplications:v5];
+  blockCopy = block;
+  currentApplications = [(HNDAccessibilityManager *)self currentApplications];
+  v6 = [(HNDAccessibilityManager *)self _applicationMatchingBlock:blockCopy inApplications:currentApplications];
 
   return v6;
 }
 
-- (BOOL)_hasCurrentApplicationMatchingBlock:(id)a3
+- (BOOL)_hasCurrentApplicationMatchingBlock:(id)block
 {
-  v3 = [(HNDAccessibilityManager *)self _currentApplicationMatchingBlock:a3];
+  v3 = [(HNDAccessibilityManager *)self _currentApplicationMatchingBlock:block];
   v4 = v3 != 0;
 
   return v4;
@@ -232,15 +232,15 @@ LABEL_11:
 
 - (void)resetElementFetcher
 {
-  v3 = [(HNDAccessibilityManager *)self _setupElementFetcher];
-  [(HNDAccessibilityManager *)self setElementFetcher:v3];
+  _setupElementFetcher = [(HNDAccessibilityManager *)self _setupElementFetcher];
+  [(HNDAccessibilityManager *)self setElementFetcher:_setupElementFetcher];
 
   v4 = SWCHLogElementNav();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HNDAccessibilityManager *)self elementFetcher];
+    elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
     v6 = 138412290;
-    v7 = v5;
+    v7 = elementFetcher;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Resetting element fetcher. New element fetcher: %@", &v6, 0xCu);
   }
 }
@@ -249,11 +249,11 @@ LABEL_11:
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, kAXSAssistiveTouchScannerEnabledNotification, 0);
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v4 disableEventManagement];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher disableEventManagement];
 
-  v5 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v5 unregisterFetchObserver:self];
+  elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher2 unregisterFetchObserver:self];
 
   [(HNDAccessibilityManager *)self _observeNotifications:0];
   v6.receiver = self;
@@ -313,17 +313,17 @@ LABEL_11:
   {
     if ([(HNDAccessibilityManager *)self _isGroupingEnabled])
     {
-      v3 = [(HNDAccessibilityManager *)self _isScannerEnabled];
+      _isScannerEnabled = [(HNDAccessibilityManager *)self _isScannerEnabled];
     }
 
     else
     {
-      v3 = 0;
+      _isScannerEnabled = 0;
     }
 
-    v5 = [(HNDAccessibilityManager *)self _isSpeechEnabled];
+    _isSpeechEnabled = [(HNDAccessibilityManager *)self _isSpeechEnabled];
     v6 = [AXElementFetcher alloc];
-    v4 = [v6 initWithDelegate:self fetchEvents:AXFetchEventAllEvents enableEventManagement:0 enableGrouping:v3 shouldIncludeNonScannerElements:v5 beginEnabled:{-[HNDAccessibilityManager _elementFetchingRequired](self, "_elementFetchingRequired")}];
+    v4 = [v6 initWithDelegate:self fetchEvents:AXFetchEventAllEvents enableEventManagement:0 enableGrouping:_isScannerEnabled shouldIncludeNonScannerElements:_isSpeechEnabled beginEnabled:{-[HNDAccessibilityManager _elementFetchingRequired](self, "_elementFetchingRequired")}];
     [v4 registerFetchObserver:self targetQueue:&_dispatch_main_q];
     LODWORD(v7) = 1050253722;
     [v4 setFetchEventDefaultDelay:v7];
@@ -358,16 +358,16 @@ LABEL_11:
   return v4;
 }
 
-- (void)_resetPostEventFilterOnFetcher:(id)a3
+- (void)_resetPostEventFilterOnFetcher:(id)fetcher
 {
-  v4 = a3;
-  [(HNDAccessibilityManager *)self _removePostEventFilterFromFetcher:v4];
-  [(HNDAccessibilityManager *)self _addPostEventFilterToFetcher:v4];
+  fetcherCopy = fetcher;
+  [(HNDAccessibilityManager *)self _removePostEventFilterFromFetcher:fetcherCopy];
+  [(HNDAccessibilityManager *)self _addPostEventFilterToFetcher:fetcherCopy];
 }
 
-- (void)_addPostEventFilterToFetcher:(id)a3
+- (void)_addPostEventFilterToFetcher:(id)fetcher
 {
-  v4 = a3;
+  fetcherCopy = fetcher;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -375,7 +375,7 @@ LABEL_11:
   v5[3] = &unk_1001D5818;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v4 addPostFetchFilter:v5 withIdentifier:@"Scanner-Elements"];
+  [fetcherCopy addPostFetchFilter:v5 withIdentifier:@"Scanner-Elements"];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -393,32 +393,32 @@ LABEL_11:
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  if (([v4 containsObject:v5] & 1) == 0)
+  observerCopy = observer;
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  if (([accessibilityObservers containsObject:observerCopy] & 1) == 0)
   {
-    [v4 addObject:v5];
+    [accessibilityObservers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  [accessibilityObservers removeObject:observerCopy];
 }
 
-- (void)_notifyObserversDidReceiveEvent:(int64_t)a3 data:(id)a4
+- (void)_notifyObserversDidReceiveEvent:(int64_t)event data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v8 = [accessibilityObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -430,34 +430,34 @@ LABEL_11:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 accessibilityManager:self didReceiveEvent:a3 data:v6];
+          [v12 accessibilityManager:self didReceiveEvent:event data:dataCopy];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [accessibilityObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_notifyObserversDidScheduleFetchEvent:(int64_t)a3
+- (void)_notifyObserversDidScheduleFetchEvent:(int64_t)event
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -469,34 +469,34 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self didScheduleFetchEvent:a3];
+          [v10 accessibilityManager:self didScheduleFetchEvent:event];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversWillFetchElementsForEvent:(int64_t)a3
+- (void)_notifyObserversWillFetchElementsForEvent:(int64_t)event
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -508,34 +508,34 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self willFetchElementsForEvent:a3];
+          [v10 accessibilityManager:self willFetchElementsForEvent:event];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversDidFetchElementsForEvent:(int64_t)a3 foundNewElements:(BOOL)a4
+- (void)_notifyObserversDidFetchElementsForEvent:(int64_t)event foundNewElements:(BOOL)elements
 {
-  v4 = a4;
+  elementsCopy = elements;
   v7 = AXLogManager();
   if (os_signpost_enabled(v7))
   {
     *buf = 67109120;
-    v20 = a3;
+    eventCopy = event;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Did Fetch Elements for HNDAccessibilityEvent", "event=%d", buf, 8u);
   }
 
@@ -543,8 +543,8 @@ LABEL_11:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v9 = [accessibilityObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -556,35 +556,35 @@ LABEL_11:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 accessibilityManager:self didFetchElementsForEvent:a3 foundNewElements:v4];
+          [v13 accessibilityManager:self didFetchElementsForEvent:event foundNewElements:elementsCopy];
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [accessibilityObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_notifyObserversNativeFocusElementDidChange:(id)a3
+- (void)_notifyObserversNativeFocusElementDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -596,35 +596,35 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self nativeFocusElementDidChange:v4];
+          [v10 accessibilityManager:self nativeFocusElementDidChange:changeCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversUpdateElementVisuals:(id)a3
+- (void)_notifyObserversUpdateElementVisuals:(id)visuals
 {
-  v4 = a3;
+  visualsCopy = visuals;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -636,35 +636,35 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self updateElementVisuals:v4];
+          [v10 accessibilityManager:self updateElementVisuals:visualsCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversApplicationWasActivated:(id)a3
+- (void)_notifyObserversApplicationWasActivated:(id)activated
 {
-  v4 = a3;
+  activatedCopy = activated;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -676,34 +676,34 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self applicationWasActivated:v4];
+          [v10 accessibilityManager:self applicationWasActivated:activatedCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversScreenWillChange:(__CFData *)a3
+- (void)_notifyObserversScreenWillChange:(__CFData *)change
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -715,34 +715,34 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self screenWillChange:a3];
+          [v10 accessibilityManager:self screenWillChange:change];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversMediaDidBegin:(__CFData *)a3
+- (void)_notifyObserversMediaDidBegin:(__CFData *)begin
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v6 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -754,31 +754,31 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 accessibilityManager:self mediaDidBegin:a3];
+          [v10 accessibilityManager:self mediaDidBegin:begin];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [accessibilityObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_enableApplicationAccessibility:(BOOL)a3
+- (void)_enableApplicationAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = _AXSApplicationAccessibilityEnabled();
-  if (v3 && !v4 || !v3 && v4 && _AXSCanDisableApplicationAccessibility())
+  if (accessibilityCopy && !v4 || !accessibilityCopy && v4 && _AXSCanDisableApplicationAccessibility())
   {
 
     _AXSApplicationAccessibilitySetEnabled();
@@ -790,28 +790,28 @@ LABEL_11:
   [(HNDAccessibilityManager *)self _enableApplicationAccessibility:1];
   AXUIElementRegisterSystemWideServerDeathCallback();
   v3 = +[AXElement systemApplication];
-  v4 = [v3 uiElement];
-  v5 = [v4 axElement];
+  uiElement = [v3 uiElement];
+  axElement = [uiElement axElement];
 
-  if (v5)
+  if (axElement)
   {
     v22 = _NSConcreteStackBlock;
     v23 = 3221225472;
     v24 = sub_10006CA20;
     v25 = &unk_1001D3488;
-    v26 = self;
+    selfCopy = self;
     AXUIElementRegisterForApplicationDeath();
   }
 
-  v6 = [(HNDAccessibilityManager *)self _setupElementFetcher];
-  [(HNDAccessibilityManager *)self setElementFetcher:v6];
+  _setupElementFetcher = [(HNDAccessibilityManager *)self _setupElementFetcher];
+  [(HNDAccessibilityManager *)self setElementFetcher:_setupElementFetcher];
 
   v7 = +[AXElement systemWideElement];
-  v8 = [v7 uiElement];
-  v9 = [v8 axElement];
+  uiElement2 = [v7 uiElement];
+  axElement2 = [uiElement2 axElement];
 
   pid = 0;
-  AXUIElementGetPid(v9, &pid);
+  AXUIElementGetPid(axElement2, &pid);
   v19 = pid;
   LOBYTE(v16) = 1;
   _AXLogWithFacility();
@@ -830,11 +830,11 @@ LABEL_11:
 
   if ([(HNDAccessibilityManager *)self _elementFetchingRequired])
   {
-    v10 = [(HNDAccessibilityManager *)self elementFetcher];
-    [v10 enableEventManagement];
+    elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+    [elementFetcher enableEventManagement];
 
-    v11 = [(HNDAccessibilityManager *)self elementFetcher];
-    [v11 refresh];
+    elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+    [elementFetcher2 refresh];
   }
 
   RunLoopSource = AXObserverGetRunLoopSource(observer);
@@ -855,9 +855,9 @@ LABEL_11:
   objc_autoreleasePoolPop(v15);
 }
 
-- (BOOL)_isElementInIgnoredTouchRegions:(id)a3
+- (BOOL)_isElementInIgnoredTouchRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -876,21 +876,21 @@ LABEL_11:
   dispatch_sync(ignoredTouchRegionsQueue, block);
   if (*(v22 + 24) == 1)
   {
-    [v4 visiblePoint];
+    [regionsCopy visiblePoint];
     v8 = v7;
     v9 = v6;
     if (v7 == -1.0 && v6 == -1.0)
     {
-      [v4 centerPoint];
+      [regionsCopy centerPoint];
       v8 = v10;
       v9 = v11;
     }
 
-    v12 = [v4 windowContextId];
-    if (v12)
+    windowContextId = [regionsCopy windowContextId];
+    if (windowContextId)
     {
       v13 = +[AXElement systemWideElement];
-      [v13 convertPoint:v12 fromContextId:{v8, v9}];
+      [v13 convertPoint:windowContextId fromContextId:{v8, v9}];
       v8 = v14;
       v9 = v15;
     }
@@ -914,43 +914,43 @@ LABEL_11:
   return v17;
 }
 
-- (void)observeAXNotifications:(id)a3
+- (void)observeAXNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(HNDAccessibilityManager *)self notificationObserverQueue];
+  notificationsCopy = notifications;
+  notificationObserverQueue = [(HNDAccessibilityManager *)self notificationObserverQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006CF24;
   v7[3] = &unk_1001D36E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationsCopy;
+  v6 = notificationsCopy;
+  dispatch_async(notificationObserverQueue, v7);
 }
 
-- (void)stopObservingAXNotifications:(id)a3
+- (void)stopObservingAXNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
-  v15 = [(HNDAccessibilityManager *)self observer];
+  observer = [(HNDAccessibilityManager *)self observer];
   v5 = v13[3];
   if (v5)
   {
     CFRetain(v5);
   }
 
-  v6 = [(HNDAccessibilityManager *)self notificationObserverQueue];
+  notificationObserverQueue = [(HNDAccessibilityManager *)self notificationObserverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006D24C;
   block[3] = &unk_1001D5860;
-  v9 = v4;
-  v10 = self;
+  v9 = notificationsCopy;
+  selfCopy = self;
   v11 = &v12;
-  v7 = v4;
-  dispatch_async(v6, block);
+  v7 = notificationsCopy;
+  dispatch_async(notificationObserverQueue, block);
 
   _Block_object_dispose(&v12, 8);
 }
@@ -960,13 +960,13 @@ LABEL_11:
   v3 = +[AXElement systemWideElement];
   [v3 setPassivelyListeningForEvents:0];
 
-  v4 = [(HNDAccessibilityManager *)self observer];
-  v5 = [(HNDAccessibilityManager *)self currentlyObservingNotifications];
-  [(HNDAccessibilityManager *)self stopObservingAXNotifications:v5];
+  observer = [(HNDAccessibilityManager *)self observer];
+  currentlyObservingNotifications = [(HNDAccessibilityManager *)self currentlyObservingNotifications];
+  [(HNDAccessibilityManager *)self stopObservingAXNotifications:currentlyObservingNotifications];
 
-  if (v4)
+  if (observer)
   {
-    CFRelease(v4);
+    CFRelease(observer);
   }
 
   [(HNDAccessibilityManager *)self setObserver:0];
@@ -974,13 +974,13 @@ LABEL_11:
   [(HNDAccessibilityManager *)self setCurrentlyObservingNotifications:v6];
 }
 
-- (void)_observeNotifications:(BOOL)a3
+- (void)_observeNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   objc_initWeak(&location, self);
   v5 = objc_loadWeakRetained(&location);
   v6 = v5;
-  if (v3)
+  if (notificationsCopy)
   {
     [v5 observeAXNotifications:&off_1001E4F20];
 
@@ -1009,8 +1009,8 @@ LABEL_6:
     if (+[AXSpringBoardServer isAvailable])
     {
       v7 = +[AXSpringBoardServer server];
-      v8 = [(HNDAccessibilityManager *)self springboardActionIdentifier];
-      [v7 removeActionHandler:v8];
+      springboardActionIdentifier = [(HNDAccessibilityManager *)self springboardActionIdentifier];
+      [v7 removeActionHandler:springboardActionIdentifier];
 
       goto LABEL_6;
     }
@@ -1026,20 +1026,20 @@ LABEL_6:
     [(HNDAccessibilityManager *)self _observeNotifications:0];
   }
 
-  v3 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v3 disableEventManagement];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher disableEventManagement];
 
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
 - (BOOL)frontmostAppMayBeLoading
 {
-  v3 = [(HNDAccessibilityManager *)self lastAppTransitionTime];
+  lastAppTransitionTime = [(HNDAccessibilityManager *)self lastAppTransitionTime];
 
-  if (v3)
+  if (lastAppTransitionTime)
   {
-    v4 = [(HNDAccessibilityManager *)self lastAppTransitionTime];
-    [v4 timeIntervalSinceNow];
+    lastAppTransitionTime2 = [(HNDAccessibilityManager *)self lastAppTransitionTime];
+    [lastAppTransitionTime2 timeIntervalSinceNow];
     v6 = fabs(v5);
 
     if (v6 < 4.0)
@@ -1053,12 +1053,12 @@ LABEL_6:
     return 1;
   }
 
-  v8 = [(HNDAccessibilityManager *)self lastScreenChangeTime];
-  [v8 timeIntervalSinceNow];
+  lastScreenChangeTime = [(HNDAccessibilityManager *)self lastScreenChangeTime];
+  [lastScreenChangeTime timeIntervalSinceNow];
   v10 = fabs(v9);
 
-  v11 = [(HNDAccessibilityManager *)self lastLayoutChangeTime];
-  [v11 timeIntervalSinceNow];
+  lastLayoutChangeTime = [(HNDAccessibilityManager *)self lastLayoutChangeTime];
+  [lastLayoutChangeTime timeIntervalSinceNow];
   v13 = fabs(v12);
 
   return fmin(v13, v10) < 1.0;
@@ -1066,11 +1066,11 @@ LABEL_6:
 
 - (BOOL)applicationIsRTL
 {
-  v2 = [(HNDAccessibilityManager *)self currentApplications];
-  v3 = [v2 firstObject];
+  currentApplications = [(HNDAccessibilityManager *)self currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  v4 = [v3 uiElement];
-  v5 = [v4 BOOLWithAXAttribute:3026];
+  uiElement = [firstObject uiElement];
+  v5 = [uiElement BOOLWithAXAttribute:3026];
 
   return v5;
 }
@@ -1079,15 +1079,15 @@ LABEL_6:
 {
   if ([(HNDAccessibilityManager *)self _isGroupingEnabled])
   {
-    v3 = [(HNDAccessibilityManager *)self rootScannerGroup];
-    v4 = [v3 firstDescendantPassingTest:&stru_1001D5880];
+    rootScannerGroup = [(HNDAccessibilityManager *)self rootScannerGroup];
+    v4 = [rootScannerGroup firstDescendantPassingTest:&stru_1001D5880];
     v5 = v4 == 0;
   }
 
   else
   {
-    v3 = [(HNDAccessibilityManager *)self elements];
-    v5 = [v3 count] == 0;
+    rootScannerGroup = [(HNDAccessibilityManager *)self elements];
+    v5 = [rootScannerGroup count] == 0;
   }
 
   return v5;
@@ -1095,24 +1095,24 @@ LABEL_6:
 
 - (void)refreshElements
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v2 refresh];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher refresh];
 }
 
 - (BOOL)isFetchingElements
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 isFetchingElements];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  isFetchingElements = [elementFetcher isFetchingElements];
 
-  return v3;
+  return isFetchingElements;
 }
 
 - (BOOL)willFetchElements
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 willFetchElements];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  willFetchElements = [elementFetcher willFetchElements];
 
-  return v3;
+  return willFetchElements;
 }
 
 - (void)_handleAppTransition
@@ -1124,8 +1124,8 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Handle", "App Transition", v8, 2u);
   }
 
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v4 fetchEventOccurred:2];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher fetchEventOccurred:2];
 
   v5 = +[NSDate date];
   [(HNDAccessibilityManager *)self setLastAppTransitionTime:v5];
@@ -1139,22 +1139,22 @@ LABEL_6:
   [(HNDAccessibilityManager *)self _handleRefreshEvent:4 data:0];
 }
 
-- (void)_handleLayoutChanged:(id)a3
+- (void)_handleLayoutChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   v4 = +[NSDate date];
   [(HNDAccessibilityManager *)self setLastLayoutChangeTime:v4];
 
-  [(HNDAccessibilityManager *)self _handleRefreshEvent:3 data:v5];
+  [(HNDAccessibilityManager *)self _handleRefreshEvent:3 data:changedCopy];
 }
 
-- (void)_handleAnnouncementNotification:(id)a3
+- (void)_handleAnnouncementNotification:(id)notification
 {
-  v11 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v11 objectForKeyedSubscript:kAXPidKey], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, objc_msgSend(v11, "objectForKeyedSubscript:", kAXNotificationDataKey), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([notificationCopy objectForKeyedSubscript:kAXPidKey], (v4 = objc_claimAutoreleasedReturnValue()) != 0) && (v5 = v4, objc_msgSend(notificationCopy, "objectForKeyedSubscript:", kAXNotificationDataKey), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [v11 objectForKeyedSubscript:kAXNotificationDataKey];
+    v7 = [notificationCopy objectForKeyedSubscript:kAXNotificationDataKey];
     v8 = +[NSNull null];
     v9 = [v7 isEqual:v8];
 
@@ -1180,9 +1180,9 @@ LABEL_6:
   }
 }
 
-- (void)_handleScreenChanged:(id)a3
+- (void)_handleScreenChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = AXLogManager();
   if (os_signpost_enabled(v5))
   {
@@ -1193,7 +1193,7 @@ LABEL_6:
   v6 = +[NSDate date];
   [(HNDAccessibilityManager *)self setLastScreenChangeTime:v6];
 
-  [(HNDAccessibilityManager *)self _handleRefreshEvent:1 data:v4];
+  [(HNDAccessibilityManager *)self _handleRefreshEvent:1 data:changedCopy];
 }
 
 - (void)_requestPauseScanning
@@ -1203,8 +1203,8 @@ LABEL_6:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v4 = [accessibilityObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1216,7 +1216,7 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1229,7 +1229,7 @@ LABEL_6:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [accessibilityObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1242,8 +1242,8 @@ LABEL_6:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(HNDAccessibilityManager *)self accessibilityObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  accessibilityObservers = [(HNDAccessibilityManager *)self accessibilityObservers];
+  v4 = [accessibilityObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1255,7 +1255,7 @@ LABEL_6:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessibilityObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1268,7 +1268,7 @@ LABEL_6:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [accessibilityObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1279,15 +1279,15 @@ LABEL_6:
 
 - (id)_currentAppPids
 {
-  v3 = [(HNDAccessibilityManager *)self currentApplications];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  currentApplications = [(HNDAccessibilityManager *)self currentApplications];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [currentApplications count]);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HNDAccessibilityManager *)self currentApplications];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentApplications2 = [(HNDAccessibilityManager *)self currentApplications];
+  v6 = [currentApplications2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1298,15 +1298,15 @@ LABEL_6:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentApplications2);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) uiElement];
-        v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 pid]);
+        uiElement = [*(*(&v13 + 1) + 8 * i) uiElement];
+        v11 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [uiElement pid]);
         [v4 addObject:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [currentApplications2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1315,9 +1315,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)_handlePauseForPid:(int)a3
+- (void)_handlePauseForPid:(int)pid
 {
-  v3 = *&a3;
+  v3 = *&pid;
   pauseCountsByPid = self->_pauseCountsByPid;
   if (!pauseCountsByPid)
   {
@@ -1330,11 +1330,11 @@ LABEL_6:
 
   v8 = [NSNumber numberWithInt:v3];
   v9 = [(NSMutableDictionary *)pauseCountsByPid objectForKeyedSubscript:v8];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v11 = SWCHLogPauseResume();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v10)
+  if (unsignedIntegerValue)
   {
     if (v12)
     {
@@ -1355,9 +1355,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Pause count was 0 for pid %i before handling notification.", &v22, 8u);
   }
 
-  v14 = [(HNDAccessibilityManager *)self _currentAppPids];
+  _currentAppPids = [(HNDAccessibilityManager *)self _currentAppPids];
   v15 = [NSNumber numberWithInt:v3];
-  v16 = [v14 containsObject:v15];
+  v16 = [_currentAppPids containsObject:v15];
   v17 = kAXUIServerFakePid;
 
   v11 = SWCHLogPauseResume();
@@ -1384,23 +1384,23 @@ LABEL_13:
 
   [(HNDAccessibilityManager *)self _requestPauseScanning];
 LABEL_14:
-  v19 = [NSNumber numberWithUnsignedInteger:v10 + 1, v22];
+  v19 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1, v22];
   v20 = self->_pauseCountsByPid;
   v21 = [NSNumber numberWithInt:v3];
   [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:v21];
 }
 
-- (void)_handleResumeForPid:(int)a3
+- (void)_handleResumeForPid:(int)pid
 {
-  v3 = *&a3;
+  v3 = *&pid;
   pauseCountsByPid = self->_pauseCountsByPid;
   v6 = [NSNumber numberWithInt:?];
   v7 = [(NSMutableDictionary *)pauseCountsByPid objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8)
+  if (unsignedIntegerValue)
   {
-    v9 = v8 - 1;
+    v9 = unsignedIntegerValue - 1;
     v10 = [NSNumber numberWithUnsignedInteger:v9];
     v11 = self->_pauseCountsByPid;
     v12 = [NSNumber numberWithInt:v3];
@@ -1418,9 +1418,9 @@ LABEL_14:
 
     if (!v9)
     {
-      v14 = [(HNDAccessibilityManager *)self _currentAppPids];
+      _currentAppPids = [(HNDAccessibilityManager *)self _currentAppPids];
       v15 = [NSNumber numberWithInt:v3];
-      v16 = [v14 containsObject:v15];
+      v16 = [_currentAppPids containsObject:v15];
       v17 = kAXUIServerFakePid;
 
       if ((v16 & 1) != 0 || v17 == v3)
@@ -1445,42 +1445,42 @@ LABEL_14:
 
 - (id)elements
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 availableElements];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  availableElements = [elementFetcher availableElements];
 
-  return v3;
+  return availableElements;
 }
 
 - (id)nativeFocusElement
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 nativeFocusElement];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  nativeFocusElement = [elementFetcher nativeFocusElement];
 
-  return v3;
+  return nativeFocusElement;
 }
 
 - (id)firstScannerElement
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 availableElements];
-  v4 = [v3 firstObject];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  availableElements = [elementFetcher availableElements];
+  firstObject = [availableElements firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)lastScannerElement
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 availableElements];
-  v4 = [v3 lastObject];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  availableElements = [elementFetcher availableElements];
+  lastObject = [availableElements lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (id)firstScannerGroupable
 {
-  v2 = [(HNDAccessibilityManager *)self rootScannerGroup];
-  v3 = [v2 firstChild];
+  rootScannerGroup = [(HNDAccessibilityManager *)self rootScannerGroup];
+  firstChild = [rootScannerGroup firstChild];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1488,20 +1488,20 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v3)
+      if (firstChild)
       {
         _AXAssert();
       }
     }
   }
 
-  return v3;
+  return firstChild;
 }
 
 - (id)lastScannerGroupable
 {
-  v2 = [(HNDAccessibilityManager *)self rootScannerGroup];
-  v3 = [v2 lastChild];
+  rootScannerGroup = [(HNDAccessibilityManager *)self rootScannerGroup];
+  lastChild = [rootScannerGroup lastChild];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1509,49 +1509,49 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (v3)
+      if (lastChild)
       {
         _AXAssert();
       }
     }
   }
 
-  return v3;
+  return lastChild;
 }
 
 - (id)rootKeyboardGroup
 {
-  v2 = [(HNDAccessibilityManager *)self elementFetcher];
-  v3 = [v2 keyboardGroup];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  keyboardGroup = [elementFetcher keyboardGroup];
 
-  return v3;
+  return keyboardGroup;
 }
 
-- (id)elementAtPoint:(CGPoint)a3 displayID:(unsigned int)a4
+- (id)elementAtPoint:(CGPoint)point displayID:(unsigned int)d
 {
-  v5 = [AXElement elementAtCoordinate:0 withVisualPadding:*&a4 displayID:a3.x, a3.y];
-  v6 = [(HNDAccessibilityManager *)self _isGroupingEnabled];
-  v7 = [(HNDAccessibilityManager *)self elementFetcher];
-  v8 = v7;
-  if (v6)
+  v5 = [AXElement elementAtCoordinate:0 withVisualPadding:*&d displayID:point.x, point.y];
+  _isGroupingEnabled = [(HNDAccessibilityManager *)self _isGroupingEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  v8 = elementFetcher;
+  if (_isGroupingEnabled)
   {
-    [v7 findGroupableMatchingGroupable:v5];
+    [elementFetcher findGroupableMatchingGroupable:v5];
   }
 
   else
   {
-    [v7 findElementMatchingElement:v5];
+    [elementFetcher findElementMatchingElement:v5];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)findGroupableMatchingGroupable:(id)a3
+- (id)findGroupableMatchingGroupable:(id)groupable
 {
-  v4 = a3;
-  v5 = [(HNDAccessibilityManager *)self elementFetcher];
-  v6 = [v5 findGroupableMatchingGroupable:v4];
+  groupableCopy = groupable;
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  v6 = [elementFetcher findGroupableMatchingGroupable:groupableCopy];
 
   return v6;
 }
@@ -1562,8 +1562,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(HNDAccessibilityManager *)self currentApplications];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  currentApplications = [(HNDAccessibilityManager *)self currentApplications];
+  v3 = [currentApplications countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1574,18 +1574,18 @@ LABEL_14:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(currentApplications);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) firstResponder];
-        if (v7)
+        firstResponder = [*(*(&v10 + 1) + 8 * i) firstResponder];
+        if (firstResponder)
         {
-          v8 = v7;
+          v8 = firstResponder;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [currentApplications countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -1601,24 +1601,24 @@ LABEL_11:
   return v8;
 }
 
-- (id)elementsForMatchingBlock:(id)a3
+- (id)elementsForMatchingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSMutableArray array];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10006EEE4;
   v22[3] = &unk_1001D58A8;
-  v6 = v4;
+  v6 = blockCopy;
   v24 = v6;
   v7 = v5;
   v23 = v7;
   v8 = objc_retainBlock(v22);
   if ([(HNDAccessibilityManager *)self _isGroupingEnabled])
   {
-    v9 = [(HNDAccessibilityManager *)self elementFetcher];
-    v10 = [v9 rootGroup];
-    [v10 enumerateLeafDescendantsUsingBlock:v8];
+    elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+    rootGroup = [elementFetcher rootGroup];
+    [rootGroup enumerateLeafDescendantsUsingBlock:v8];
   }
 
   else
@@ -1627,10 +1627,10 @@ LABEL_11:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [(HNDAccessibilityManager *)self elementFetcher];
-    v9 = [v11 availableElements];
+    elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+    elementFetcher = [elementFetcher2 availableElements];
 
-    v12 = [v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+    v12 = [elementFetcher countByEnumeratingWithState:&v18 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1642,7 +1642,7 @@ LABEL_11:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(elementFetcher);
           }
 
           (v8[2])(v8, *(*(&v18 + 1) + 8 * v15));
@@ -1650,7 +1650,7 @@ LABEL_11:
         }
 
         while (v13 != v15);
-        v13 = [v9 countByEnumeratingWithState:&v18 objects:v25 count:16];
+        v13 = [elementFetcher countByEnumeratingWithState:&v18 objects:v25 count:16];
       }
 
       while (v13);
@@ -1661,7 +1661,7 @@ LABEL_11:
   return v7;
 }
 
-- (id)scrollViewsForAction:(int)a3 elementsToScroll:(id *)a4
+- (id)scrollViewsForAction:(int)action elementsToScroll:(id *)scroll
 {
   v7 = +[NSMutableOrderedSet orderedSet];
   v8 = +[NSMutableArray array];
@@ -1669,7 +1669,7 @@ LABEL_11:
   v36[1] = 3221225472;
   v36[2] = sub_10006F24C;
   v36[3] = &unk_1001D4070;
-  v39 = a3;
+  actionCopy = action;
   v9 = v7;
   v37 = v9;
   v10 = v8;
@@ -1677,9 +1677,9 @@ LABEL_11:
   v11 = objc_retainBlock(v36);
   if ([(HNDAccessibilityManager *)self _isGroupingEnabled])
   {
-    v12 = [(HNDAccessibilityManager *)self elementFetcher];
-    v13 = [v12 rootGroup];
-    [v13 enumerateLeafDescendantsUsingBlock:v11];
+    elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+    rootGroup = [elementFetcher rootGroup];
+    [rootGroup enumerateLeafDescendantsUsingBlock:v11];
   }
 
   else
@@ -1688,10 +1688,10 @@ LABEL_11:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [(HNDAccessibilityManager *)self elementFetcher];
-    v12 = [v14 availableElements];
+    elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+    elementFetcher = [elementFetcher2 availableElements];
 
-    v15 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
+    v15 = [elementFetcher countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1702,13 +1702,13 @@ LABEL_11:
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(elementFetcher);
           }
 
           (v11[2])(v11, *(*(&v32 + 1) + 8 * i));
         }
 
-        v16 = [v12 countByEnumeratingWithState:&v32 objects:v41 count:16];
+        v16 = [elementFetcher countByEnumeratingWithState:&v32 objects:v41 count:16];
       }
 
       while (v16);
@@ -1745,28 +1745,28 @@ LABEL_11:
     while (v22);
   }
 
-  if (a4)
+  if (scroll)
   {
     v26 = v10;
-    *a4 = v10;
+    *scroll = v10;
   }
 
   return v19;
 }
 
-- (id)_itemForScanningWithElementCommunity:(id)a3 useFirst:(BOOL)a4
+- (id)_itemForScanningWithElementCommunity:(id)community useFirst:(BOOL)first
 {
-  v6 = a3;
+  communityCopy = community;
   if ([(HNDAccessibilityManager *)self _isGroupingEnabled])
   {
-    if (v6)
+    if (communityCopy)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [(HNDAccessibilityManager *)self rootScannerGroup];
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      rootScannerGroup = [(HNDAccessibilityManager *)self rootScannerGroup];
+      v8 = [rootScannerGroup countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = v8;
@@ -1777,19 +1777,19 @@ LABEL_11:
           {
             if (*v20 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(rootScannerGroup);
             }
 
             v12 = *(*(&v19 + 1) + 8 * i);
             if ([v12 isGroup])
             {
               v13 = v12;
-              v14 = [v13 elementCommunity];
-              v15 = [v14 isEqual:v6];
+              elementCommunity = [v13 elementCommunity];
+              v15 = [elementCommunity isEqual:communityCopy];
 
               if (v15)
               {
-                if (a4)
+                if (first)
                 {
                   [v13 firstChild];
                 }
@@ -1805,7 +1805,7 @@ LABEL_11:
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v9 = [rootScannerGroup countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v9)
           {
             continue;
@@ -1816,7 +1816,7 @@ LABEL_11:
       }
     }
 
-    if (a4)
+    if (first)
     {
       [(HNDAccessibilityManager *)self firstScannerGroupable];
     }
@@ -1830,7 +1830,7 @@ LABEL_11:
 
   else
   {
-    if (a4)
+    if (first)
     {
       [(HNDAccessibilityManager *)self firstScannerElement];
     }
@@ -1848,23 +1848,23 @@ LABEL_25:
   return v17;
 }
 
-- (id)_itemForScanningFromItem:(id)a3 inDirection:(BOOL)a4 didWrap:(BOOL *)a5
+- (id)_itemForScanningFromItem:(id)item inDirection:(BOOL)direction didWrap:(BOOL *)wrap
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(HNDAccessibilityManager *)self _isGroupingEnabled];
-  v10 = [(HNDAccessibilityManager *)self elementFetcher];
-  v11 = v10;
-  if (v9)
+  directionCopy = direction;
+  itemCopy = item;
+  _isGroupingEnabled = [(HNDAccessibilityManager *)self _isGroupingEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  v11 = elementFetcher;
+  if (_isGroupingEnabled)
   {
-    if (v6)
+    if (directionCopy)
     {
-      [v10 nextSiblingOfGroupable:v8 didWrap:a5];
+      [elementFetcher nextSiblingOfGroupable:itemCopy didWrap:wrap];
     }
 
     else
     {
-      [v10 previousSiblingOfGroupable:v8 didWrap:a5];
+      [elementFetcher previousSiblingOfGroupable:itemCopy didWrap:wrap];
     }
     v12 = ;
 
@@ -1873,19 +1873,19 @@ LABEL_25:
       goto LABEL_21;
     }
 
-    if ([v8 scatIsKeyboardKey])
+    if ([itemCopy scatIsKeyboardKey])
     {
-      v13 = [(HNDAccessibilityManager *)self elementFetcher];
+      elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_10006F6AC;
       v18[3] = &unk_1001D3FE0;
-      v19 = v8;
-      v14 = [v13 findGroupableMatchingBlock:v18];
+      v19 = itemCopy;
+      v14 = [elementFetcher2 findGroupableMatchingBlock:v18];
 
       if ([v14 isKeyboardKey])
       {
-        v12 = [(HNDAccessibilityManager *)self _itemForScanningFromItem:v14 inDirection:v6 didWrap:a5];
+        v12 = [(HNDAccessibilityManager *)self _itemForScanningFromItem:v14 inDirection:directionCopy didWrap:wrap];
       }
 
       else
@@ -1899,14 +1899,14 @@ LABEL_25:
 
   else
   {
-    if (v6)
+    if (directionCopy)
     {
-      [v10 nextSiblingOfElement:v8 didWrap:a5];
+      [elementFetcher nextSiblingOfElement:itemCopy didWrap:wrap];
     }
 
     else
     {
-      [v10 previousSiblingOfElement:v8 didWrap:a5];
+      [elementFetcher previousSiblingOfElement:itemCopy didWrap:wrap];
     }
     v12 = ;
 
@@ -1915,14 +1915,14 @@ LABEL_25:
       goto LABEL_21;
     }
 
-    if ([v8 scatIsKeyboardKey])
+    if ([itemCopy scatIsKeyboardKey])
     {
-      v15 = [(HNDAccessibilityManager *)self elementFetcher];
-      v16 = [v15 closestElementToElement:v8];
+      elementFetcher3 = [(HNDAccessibilityManager *)self elementFetcher];
+      v16 = [elementFetcher3 closestElementToElement:itemCopy];
 
       if ([v16 isKeyboardKey])
       {
-        v12 = [(HNDAccessibilityManager *)self _itemForScanningFromItem:v16 inDirection:v6 didWrap:a5];
+        v12 = [(HNDAccessibilityManager *)self _itemForScanningFromItem:v16 inDirection:directionCopy didWrap:wrap];
       }
 
       else
@@ -1942,100 +1942,100 @@ LABEL_21:
 
 - (id)firstKeyboardItem
 {
-  v3 = [(HNDAccessibilityManager *)self _isGroupingEnabled];
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  v5 = v4;
-  if (v3)
+  _isGroupingEnabled = [(HNDAccessibilityManager *)self _isGroupingEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  v5 = elementFetcher;
+  if (_isGroupingEnabled)
   {
-    v6 = [v4 keyboardGroup];
-    v7 = [v6 firstChild];
+    keyboardGroup = [elementFetcher keyboardGroup];
+    firstChild = [keyboardGroup firstChild];
   }
 
   else
   {
-    v7 = [v4 findElementMatchingBlock:&stru_1001D58C8];
+    firstChild = [elementFetcher findElementMatchingBlock:&stru_1001D58C8];
   }
 
-  return v7;
+  return firstChild;
 }
 
 - (id)lastKeyboardElement
 {
-  v3 = [(HNDAccessibilityManager *)self _isGroupingEnabled];
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  v5 = v4;
-  if (v3)
+  _isGroupingEnabled = [(HNDAccessibilityManager *)self _isGroupingEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  lastChild = elementFetcher;
+  if (_isGroupingEnabled)
   {
-    v6 = [v4 keyboardGroup];
+    keyboardGroup = [elementFetcher keyboardGroup];
 
-    if (!v6)
+    if (!keyboardGroup)
     {
-      v7 = [(HNDAccessibilityManager *)self elementFetcher];
-      v8 = [v7 rootGroup];
-      v6 = [v8 lastChild];
+      elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+      rootGroup = [elementFetcher2 rootGroup];
+      keyboardGroup = [rootGroup lastChild];
     }
 
-    if ([v6 isGroup])
+    if ([keyboardGroup isGroup])
     {
       do
       {
-        v5 = [v6 lastChild];
+        lastChild = [keyboardGroup lastChild];
 
-        v6 = v5;
+        keyboardGroup = lastChild;
       }
 
-      while (([v5 isGroup] & 1) != 0);
+      while (([lastChild isGroup] & 1) != 0);
     }
 
     else
     {
-      v5 = v6;
+      lastChild = keyboardGroup;
     }
 
-    if ([v5 conformsToProtocol:&OBJC_PROTOCOL___SCATElement])
+    if ([lastChild conformsToProtocol:&OBJC_PROTOCOL___SCATElement])
     {
-      v5 = v5;
-      v11 = v5;
+      lastChild = lastChild;
+      lastElement2 = lastChild;
     }
 
     else
     {
-      v11 = 0;
+      lastElement2 = 0;
     }
   }
 
   else
   {
-    v9 = [v4 lastElement];
-    if ([v9 isKeyboardKey])
+    lastElement = [elementFetcher lastElement];
+    if ([lastElement isKeyboardKey])
     {
-      v10 = [(HNDAccessibilityManager *)self elementFetcher];
-      v11 = [v10 lastElement];
+      elementFetcher3 = [(HNDAccessibilityManager *)self elementFetcher];
+      lastElement2 = [elementFetcher3 lastElement];
     }
 
     else
     {
-      v11 = 0;
+      lastElement2 = 0;
     }
   }
 
-  return v11;
+  return lastElement2;
 }
 
-- (id)firstElementInScene:(id)a3
+- (id)firstElementInScene:(id)scene
 {
-  v4 = a3;
-  if ([v4 length])
+  sceneCopy = scene;
+  if ([sceneCopy length])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(HNDAccessibilityManager *)self elementCommunityGroup];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    elementCommunityGroup = [(HNDAccessibilityManager *)self elementCommunityGroup];
+    v6 = [elementCommunityGroup countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
-      v19 = self;
+      selfCopy = self;
       v7 = *v21;
       while (2)
       {
@@ -2043,42 +2043,42 @@ LABEL_21:
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(elementCommunityGroup);
           }
 
           if ([*(*(&v20 + 1) + 8 * i) isGroup])
           {
             objc_opt_class();
             v9 = __UIAccessibilityCastAsClass();
-            v10 = [v9 firstLeafDescendant];
-            v11 = [v10 uiElement];
-            v12 = [v11 stringWithAXAttribute:3056];
-            v13 = [v12 isEqualToString:v4];
+            firstLeafDescendant = [v9 firstLeafDescendant];
+            uiElement = [firstLeafDescendant uiElement];
+            v12 = [uiElement stringWithAXAttribute:3056];
+            v13 = [v12 isEqualToString:sceneCopy];
 
             if (v13)
             {
-              self = v19;
-              v15 = [(HNDAccessibilityManager *)v19 elementFetcher];
-              v16 = [v15 isGroupingEnabled];
+              self = selfCopy;
+              elementFetcher = [(HNDAccessibilityManager *)selfCopy elementFetcher];
+              isGroupingEnabled = [elementFetcher isGroupingEnabled];
 
-              if (v16)
+              if (isGroupingEnabled)
               {
-                v17 = [v9 firstChild];
+                firstChild = [v9 firstChild];
               }
 
               else
               {
-                v17 = v10;
+                firstChild = firstLeafDescendant;
               }
 
-              v6 = v17;
+              v6 = firstChild;
 
               goto LABEL_18;
             }
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v6 = [elementCommunityGroup countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v6)
         {
           continue;
@@ -2087,7 +2087,7 @@ LABEL_21:
         break;
       }
 
-      self = v19;
+      self = selfCopy;
     }
 
 LABEL_18:
@@ -2103,52 +2103,52 @@ LABEL_18:
   return v14;
 }
 
-- (id)scannerElementMatchingElement:(id)a3
+- (id)scannerElementMatchingElement:(id)element
 {
-  v4 = a3;
-  v5 = [(HNDAccessibilityManager *)self elementFetcher];
-  v6 = [v5 isGroupingEnabled];
+  elementCopy = element;
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  isGroupingEnabled = [elementFetcher isGroupingEnabled];
 
-  v7 = [(HNDAccessibilityManager *)self elementFetcher];
-  v8 = v7;
-  if (v6)
+  elementFetcher2 = [(HNDAccessibilityManager *)self elementFetcher];
+  v8 = elementFetcher2;
+  if (isGroupingEnabled)
   {
-    v9 = [v7 rootGroup];
-    v10 = [v9 firstDescendantMatchingItem:v4];
+    rootGroup = [elementFetcher2 rootGroup];
+    v10 = [rootGroup firstDescendantMatchingItem:elementCopy];
 
-    v4 = v9;
+    elementCopy = rootGroup;
   }
 
   else
   {
-    v10 = [v7 findElementMatchingElement:v4];
+    v10 = [elementFetcher2 findElementMatchingElement:elementCopy];
   }
 
   return v10;
 }
 
-- (int64_t)_hndAccessibilityEventForFetchEvent:(unint64_t)a3
+- (int64_t)_hndAccessibilityEventForFetchEvent:(unint64_t)event
 {
-  if (a3 <= 15)
+  if (event <= 15)
   {
-    if (a3 == 2)
+    if (event == 2)
     {
       return 4;
     }
 
-    if (a3 != 4)
+    if (event != 4)
     {
-      return a3 == 8;
+      return event == 8;
     }
 
     return 3;
   }
 
-  else if (a3 > 63)
+  else if (event > 63)
   {
-    if (a3 != 64)
+    if (event != 64)
     {
-      if (a3 == 128)
+      if (event == 128)
       {
         return 8;
       }
@@ -2161,9 +2161,9 @@ LABEL_18:
 
   else
   {
-    if (a3 != 16)
+    if (event != 16)
     {
-      if (a3 == 32)
+      if (event == 32)
       {
         return 7;
       }
@@ -2177,31 +2177,31 @@ LABEL_18:
 
 - (void)groupingEnabledDidChange
 {
-  v3 = [(HNDAccessibilityManager *)self _isGroupingEnabled];
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v4 setGroupingEnabled:v3];
+  _isGroupingEnabled = [(HNDAccessibilityManager *)self _isGroupingEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher setGroupingEnabled:_isGroupingEnabled];
 
   [(HNDAccessibilityManager *)self refreshElements];
 }
 
 - (void)speechEnabledDidChange
 {
-  v3 = [(HNDAccessibilityManager *)self _isSpeechEnabled];
-  v4 = [(HNDAccessibilityManager *)self elementFetcher];
-  [v4 setShouldIncludeNonScannerElements:v3];
+  _isSpeechEnabled = [(HNDAccessibilityManager *)self _isSpeechEnabled];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [elementFetcher setShouldIncludeNonScannerElements:_isSpeechEnabled];
 
   [(HNDAccessibilityManager *)self refreshElements];
 }
 
-- (void)displaysDidChange:(id)a3
+- (void)displaysDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(NSMutableDictionary *)self->_currentDisplays removeAllObjects];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = changeCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2228,8 +2228,8 @@ LABEL_18:
     while (v7);
   }
 
-  v13 = [(HNDAccessibilityManager *)self elementFetcher];
-  [(HNDAccessibilityManager *)self _resetPostEventFilterOnFetcher:v13];
+  elementFetcher = [(HNDAccessibilityManager *)self elementFetcher];
+  [(HNDAccessibilityManager *)self _resetPostEventFilterOnFetcher:elementFetcher];
 }
 
 - (void)userDidPerformSwitchAction
@@ -2250,7 +2250,7 @@ LABEL_18:
   [(HNDAccessibilityManager *)self _requestResumeScanning];
 }
 
-- (BOOL)isSystemSleeping:(id)a3
+- (BOOL)isSystemSleeping:(id)sleeping
 {
   v4 = +[AXSystemAppServer server];
   self->_isSystemSleeping = [v4 isSystemSleeping];
@@ -2258,39 +2258,39 @@ LABEL_18:
   return self->_isSystemSleeping;
 }
 
-- (void)fetcher:(id)a3 didScheduleFetchEvent:(unint64_t)a4
+- (void)fetcher:(id)fetcher didScheduleFetchEvent:(unint64_t)event
 {
-  v5 = [(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:a4];
+  v5 = [(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:event];
 
   [(HNDAccessibilityManager *)self _notifyObserversDidScheduleFetchEvent:v5];
 }
 
-- (void)fetcher:(id)a3 willFetchElementsForEvent:(unint64_t)a4 fromApplications:(id)a5
+- (void)fetcher:(id)fetcher willFetchElementsForEvent:(unint64_t)event fromApplications:(id)applications
 {
-  [(HNDAccessibilityManager *)self setCurrentApplications:a5];
+  [(HNDAccessibilityManager *)self setCurrentApplications:applications];
   v7 = +[AXBackBoardServer server];
-  v8 = [v7 guidedAccessIgnoredRegions];
+  guidedAccessIgnoredRegions = [v7 guidedAccessIgnoredRegions];
 
   ignoredTouchRegionsQueue = self->_ignoredTouchRegionsQueue;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000700D0;
   v14 = &unk_1001D36E8;
-  v15 = self;
-  v16 = v8;
-  v10 = v8;
+  selfCopy = self;
+  v16 = guidedAccessIgnoredRegions;
+  v10 = guidedAccessIgnoredRegions;
   dispatch_sync(ignoredTouchRegionsQueue, &v11);
-  [(HNDAccessibilityManager *)self _notifyObserversWillFetchElementsForEvent:[(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:a4, v11, v12, v13, v14, v15]];
+  [(HNDAccessibilityManager *)self _notifyObserversWillFetchElementsForEvent:[(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:event, v11, v12, v13, v14, selfCopy]];
 }
 
-- (void)fetcher:(id)a3 didFetchElementsForEvent:(unint64_t)a4 foundNewElements:(BOOL)a5
+- (void)fetcher:(id)fetcher didFetchElementsForEvent:(unint64_t)event foundNewElements:(BOOL)elements
 {
-  v5 = a5;
-  v8 = a3;
+  elementsCopy = elements;
+  fetcherCopy = fetcher;
   if ([(HNDAccessibilityManager *)self isPausingScanning])
   {
-    v32 = a4;
-    v33 = v8;
+    eventCopy = event;
+    v33 = fetcherCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -2312,12 +2312,12 @@ LABEL_18:
 
           v13 = *(*(&v35 + 1) + 8 * i);
           pauseCountsByPid = self->_pauseCountsByPid;
-          v15 = [v13 uiElement];
-          v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v15 pid]);
+          uiElement = [v13 uiElement];
+          v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [uiElement pid]);
           v17 = [(NSMutableDictionary *)pauseCountsByPid objectForKeyedSubscript:v16];
-          v18 = [v17 unsignedIntegerValue];
+          unsignedIntegerValue = [v17 unsignedIntegerValue];
 
-          if (v18)
+          if (unsignedIntegerValue)
           {
             v25 = SWCHLogPauseResume();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -2327,8 +2327,8 @@ LABEL_18:
               _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Should remain paused because of app: %{public}@", buf, 0xCu);
             }
 
-            v8 = v33;
-            v5 = v5;
+            fetcherCopy = v33;
+            elementsCopy = elementsCopy;
             goto LABEL_17;
           }
         }
@@ -2346,14 +2346,14 @@ LABEL_18:
     v19 = self->_pauseCountsByPid;
     v20 = [NSNumber numberWithInt:kAXUIServerFakePid];
     v21 = [(NSMutableDictionary *)v19 objectForKeyedSubscript:v20];
-    v22 = [v21 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
     v23 = SWCHLogPauseResume();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
-    if (v22)
+    if (unsignedIntegerValue2)
     {
-      v8 = v33;
-      v5 = v5;
+      fetcherCopy = v33;
+      elementsCopy = elementsCopy;
       if (v24)
       {
         *buf = 0;
@@ -2363,13 +2363,13 @@ LABEL_18:
 
     else
     {
-      v8 = v33;
-      v5 = v5;
+      fetcherCopy = v33;
+      elementsCopy = elementsCopy;
       if (v24)
       {
-        v31 = [(HNDAccessibilityManager *)self currentApplications];
+        currentApplications = [(HNDAccessibilityManager *)self currentApplications];
         *buf = 138543362;
-        v40 = v31;
+        v40 = currentApplications;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "App changed (new apps are %{public}@), and we no longer need to be paused.", buf, 0xCu);
       }
 
@@ -2377,14 +2377,14 @@ LABEL_18:
     }
 
 LABEL_17:
-    a4 = v32;
+    event = eventCopy;
   }
 
-  v26 = [(HNDAccessibilityManager *)self rootScannerGroup];
-  if ([v8 isGroupingEnabled])
+  rootScannerGroup = [(HNDAccessibilityManager *)self rootScannerGroup];
+  if ([fetcherCopy isGroupingEnabled])
   {
-    v27 = [v8 rootGroup];
-    [(HNDAccessibilityManager *)self setRootScannerGroup:v27];
+    rootGroup = [fetcherCopy rootGroup];
+    [(HNDAccessibilityManager *)self setRootScannerGroup:rootGroup];
   }
 
   else
@@ -2392,10 +2392,10 @@ LABEL_17:
     [(HNDAccessibilityManager *)self setRootScannerGroup:0];
   }
 
-  v28 = [v8 elementCommunityGroup];
-  [(HNDAccessibilityManager *)self setElementCommunityGroup:v28];
+  elementCommunityGroup = [fetcherCopy elementCommunityGroup];
+  [(HNDAccessibilityManager *)self setElementCommunityGroup:elementCommunityGroup];
 
-  [(HNDAccessibilityManager *)self _notifyObserversDidFetchElementsForEvent:[(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:a4] foundNewElements:v5];
+  [(HNDAccessibilityManager *)self _notifyObserversDidFetchElementsForEvent:[(HNDAccessibilityManager *)self _hndAccessibilityEventForFetchEvent:event] foundNewElements:elementsCopy];
   v29 = AXLogManager();
   if (os_signpost_enabled(v29))
   {

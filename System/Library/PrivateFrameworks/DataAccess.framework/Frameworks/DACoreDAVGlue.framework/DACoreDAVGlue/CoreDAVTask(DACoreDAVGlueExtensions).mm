@@ -13,7 +13,7 @@
   if (os_log_type_enabled(v7, v8))
   {
     *buf = 134218240;
-    v15 = a1;
+    selfCopy = self;
     v16 = 1024;
     v17 = a3;
     _os_log_impl(&dword_248521000, v7, v8, "Task %p canceled due to reason %d", buf, 0x12u);
@@ -32,7 +32,7 @@
   }
 
   v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFDB18] code:1 userInfo:v9];
-  [a1 finishCoreDAVTaskWithError:v10];
+  [self finishCoreDAVTaskWithError:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }

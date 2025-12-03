@@ -2,11 +2,11 @@
 - (BOOL)isListening;
 - (NSSet)currentDetectionTypes;
 - (void)dealloc;
-- (void)listenEngineDidStartWithInputFormat:(id)a3;
-- (void)listenEngineFailedToStartWithError:(id)a3;
-- (void)receivedCompletion:(id)a3;
-- (void)receivedError:(id)a3 fromDetector:(id)a4;
-- (void)receivedObservation:(id)a3 forDetector:(id)a4;
+- (void)listenEngineDidStartWithInputFormat:(id)format;
+- (void)listenEngineFailedToStartWithError:(id)error;
+- (void)receivedCompletion:(id)completion;
+- (void)receivedError:(id)error fromDetector:(id)detector;
+- (void)receivedObservation:(id)observation forDetector:(id)detector;
 - (void)removeAllListenTypes;
 - (void)startListening;
 - (void)stopListening;
@@ -19,26 +19,26 @@
   v3 = OBJC_IVAR____TtC18AXSoundDetectionUI34AXSDNSBaseControllerImplementation_listener;
   swift_beginAccess();
   v4 = *(&self->super.super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if ([v4 containsListenDelegate_])
   {
     v6 = *(&self->super.super.isa + v3);
-    v7 = [v6 isListening];
+    isListening = [v6 isListening];
   }
 
   else
   {
-    v7 = 0;
+    isListening = 0;
   }
 
-  return v7;
+  return isListening;
 }
 
 - (NSSet)currentDetectionTypes
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC18AXSoundDetectionUI35AXSDKShotNSControllerImplementation_modelManager);
-  v3 = self;
-  v4 = [v2 currentDetectors];
+  selfCopy = self;
+  currentDetectors = [v2 currentDetectors];
   v5 = sub_23D685980();
 
   sub_23D65425C(v5);
@@ -52,66 +52,66 @@
 {
   type metadata accessor for AXSDKShotMonitor();
   swift_initStaticObject();
-  v3 = self;
+  selfCopy = self;
   sub_23D66B610();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for AXSDKShotNSControllerImplementation();
   [(AXSDKShotNSControllerImplementation *)&v4 dealloc];
 }
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D650180();
 }
 
 - (void)stopListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D650524();
 }
 
 - (void)removeAllListenTypes
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D650BEC();
 }
 
-- (void)listenEngineDidStartWithInputFormat:(id)a3
+- (void)listenEngineDidStartWithInputFormat:(id)format
 {
-  v5 = a3;
-  v6 = self;
-  AXSDKShotNSControllerImplementation.listenEngineDidStart(withInputFormat:)(a3);
+  formatCopy = format;
+  selfCopy = self;
+  AXSDKShotNSControllerImplementation.listenEngineDidStart(withInputFormat:)(format);
 }
 
-- (void)listenEngineFailedToStartWithError:(id)a3
+- (void)listenEngineFailedToStartWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  AXSDKShotNSControllerImplementation.listenEngineFailedToStartWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  AXSDKShotNSControllerImplementation.listenEngineFailedToStartWithError(_:)(error);
 }
 
-- (void)receivedObservation:(id)a3 forDetector:(id)a4
+- (void)receivedObservation:(id)observation forDetector:(id)detector
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AXSDKShotNSControllerImplementation.receivedObservation(_:forDetector:)(v6, v7);
+  observationCopy = observation;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDKShotNSControllerImplementation.receivedObservation(_:forDetector:)(observationCopy, detectorCopy);
 }
 
-- (void)receivedCompletion:(id)a3
+- (void)receivedCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  AXSDKShotNSControllerImplementation.receivedCompletion(_:)(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  AXSDKShotNSControllerImplementation.receivedCompletion(_:)(completionCopy);
 }
 
-- (void)receivedError:(id)a3 fromDetector:(id)a4
+- (void)receivedError:(id)error fromDetector:(id)detector
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  AXSDKShotNSControllerImplementation.receivedError(_:fromDetector:)(v8, v6);
+  errorCopy = error;
+  detectorCopy = detector;
+  selfCopy = self;
+  AXSDKShotNSControllerImplementation.receivedError(_:fromDetector:)(errorCopy, detectorCopy);
 }
 
 @end

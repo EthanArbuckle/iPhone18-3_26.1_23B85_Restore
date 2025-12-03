@@ -1,27 +1,27 @@
 @interface AXMVisionFeatureFaceLandmarks
-+ (id)unitTestingFaceLandmarksIs3D:(BOOL)a3;
-- (AXMVisionFeatureFaceLandmarks)initWithCoder:(id)a3;
-- (AXMVisionFeatureFaceLandmarks)initWithVisionFaceLandmarks:(id)a3;
-- (id)localizedStringForLandmarkType:(unint64_t)a3;
-- (id)pointValuesForFaceLandmarkType:(unint64_t)a3;
-- (id)pointsArrayForRegion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)unitTestingFaceLandmarksIs3D:(BOOL)d;
+- (AXMVisionFeatureFaceLandmarks)initWithCoder:(id)coder;
+- (AXMVisionFeatureFaceLandmarks)initWithVisionFaceLandmarks:(id)landmarks;
+- (id)localizedStringForLandmarkType:(unint64_t)type;
+- (id)pointValuesForFaceLandmarkType:(unint64_t)type;
+- (id)pointsArrayForRegion:(id)region;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureFaceLandmarks
 
-- (AXMVisionFeatureFaceLandmarks)initWithCoder:(id)a3
+- (AXMVisionFeatureFaceLandmarks)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AXMVisionFeatureFaceLandmarks;
   v5 = [(AXMVisionFeatureFaceLandmarks *)&v16 init];
   if (v5)
   {
-    -[AXMVisionFeatureFaceLandmarks setIs3DLandmarks:](v5, "setIs3DLandmarks:", [v4 decodeBoolForKey:@"AXMVisionFeatureFaceLandmarksIs3DLandmarks"]);
+    -[AXMVisionFeatureFaceLandmarks setIs3DLandmarks:](v5, "setIs3DLandmarks:", [coderCopy decodeBoolForKey:@"AXMVisionFeatureFaceLandmarksIs3DLandmarks"]);
     v6 = AXMSecureCodingClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"AXMVisionFeatureFaceLandmarksResults"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"AXMVisionFeatureFaceLandmarksResults"];
 
     v8 = MEMORY[0x1E696ACD0];
     v9 = objc_opt_class();
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[AXMVisionFeatureFaceLandmarks is3DLandmarks](self forKey:{"is3DLandmarks"), @"AXMVisionFeatureFaceLandmarksIs3DLandmarks"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[AXMVisionFeatureFaceLandmarks is3DLandmarks](self forKey:{"is3DLandmarks"), @"AXMVisionFeatureFaceLandmarksIs3DLandmarks"}];
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [(AXMVisionFeatureFaceLandmarks *)self results];
+  results = [(AXMVisionFeatureFaceLandmarks *)self results];
   v10 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v10];
+  v7 = [v5 archivedDataWithRootObject:results requiringSecureCoding:1 error:&v10];
   v8 = v10;
 
   if (v8)
@@ -69,12 +69,12 @@
     }
   }
 
-  [v4 encodeObject:v7 forKey:@"AXMVisionFeatureFaceLandmarksResults"];
+  [coderCopy encodeObject:v7 forKey:@"AXMVisionFeatureFaceLandmarksResults"];
 }
 
-- (AXMVisionFeatureFaceLandmarks)initWithVisionFaceLandmarks:(id)a3
+- (AXMVisionFeatureFaceLandmarks)initWithVisionFaceLandmarks:(id)landmarks
 {
-  v4 = a3;
+  landmarksCopy = landmarks;
   v33.receiver = self;
   v33.super_class = AXMVisionFeatureFaceLandmarks;
   v5 = [(AXMVisionFeatureFaceLandmarks *)&v33 init];
@@ -102,50 +102,50 @@
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if (![(AXMVisionFeatureFaceLandmarks *)v5 is3DLandmarks])
     {
-      v9 = v4;
-      v10 = [v9 leftEye];
-      v11 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v10];
+      v9 = landmarksCopy;
+      leftEye = [v9 leftEye];
+      v11 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:leftEye];
       [v8 setObject:v11 forKey:&unk_1F240AFD8];
 
-      v12 = [v9 rightEye];
-      v13 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v12];
+      rightEye = [v9 rightEye];
+      v13 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:rightEye];
       [v8 setObject:v13 forKey:&unk_1F240AFF0];
 
-      v14 = [v9 leftEyebrow];
-      v15 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v14];
+      leftEyebrow = [v9 leftEyebrow];
+      v15 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:leftEyebrow];
       [v8 setObject:v15 forKey:&unk_1F240B008];
 
-      v16 = [v9 rightEyebrow];
-      v17 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v16];
+      rightEyebrow = [v9 rightEyebrow];
+      v17 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:rightEyebrow];
       [v8 setObject:v17 forKey:&unk_1F240B020];
 
-      v18 = [v9 nose];
-      v19 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v18];
+      nose = [v9 nose];
+      v19 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:nose];
       [v8 setObject:v19 forKey:&unk_1F240B038];
 
-      v20 = [v9 noseCrest];
-      v21 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v20];
+      noseCrest = [v9 noseCrest];
+      v21 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:noseCrest];
       [v8 setObject:v21 forKey:&unk_1F240B050];
 
-      v22 = [v9 medianLine];
-      v23 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v22];
+      medianLine = [v9 medianLine];
+      v23 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:medianLine];
       [v8 setObject:v23 forKey:&unk_1F240B068];
 
-      v24 = [v9 outerLips];
-      v25 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v24];
+      outerLips = [v9 outerLips];
+      v25 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:outerLips];
       [v8 setObject:v25 forKey:&unk_1F240B080];
 
-      v26 = [v9 innerLips];
-      v27 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v26];
+      innerLips = [v9 innerLips];
+      v27 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:innerLips];
       [v8 setObject:v27 forKey:&unk_1F240B098];
 
-      v28 = [v9 leftPupil];
-      v29 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v28];
+      leftPupil = [v9 leftPupil];
+      v29 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:leftPupil];
       [v8 setObject:v29 forKey:&unk_1F240B0B0];
 
-      v30 = [v9 rightPupil];
+      rightPupil = [v9 rightPupil];
 
-      v31 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:v30];
+      v31 = [(AXMVisionFeatureFaceLandmarks *)v5 pointsArrayForRegion:rightPupil];
       [v8 setObject:v31 forKey:&unk_1F240B0C8];
     }
 
@@ -155,31 +155,31 @@
   return v5;
 }
 
-- (id)pointsArrayForRegion:(id)a3
+- (id)pointsArrayForRegion:(id)region
 {
-  v3 = a3;
+  regionCopy = region;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v3 pointCount])
+  if ([regionCopy pointCount])
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 normalizedPoints];
-      v8 = [MEMORY[0x1E696B098] axmValueWithCGPoint:{*(v7 + v5), *(v7 + v5 + 8)}];
+      normalizedPoints = [regionCopy normalizedPoints];
+      v8 = [MEMORY[0x1E696B098] axmValueWithCGPoint:{*(normalizedPoints + v5), *(normalizedPoints + v5 + 8)}];
       [v4 addObject:v8];
 
       ++v6;
       v5 += 16;
     }
 
-    while (v6 < [v3 pointCount]);
+    while (v6 < [regionCopy pointCount]);
   }
 
   return v4;
 }
 
-- (id)pointValuesForFaceLandmarkType:(unint64_t)a3
+- (id)pointValuesForFaceLandmarkType:(unint64_t)type
 {
   if ([(AXMVisionFeatureFaceLandmarks *)self is3DLandmarks])
   {
@@ -188,24 +188,24 @@
 
   else
   {
-    v6 = [(AXMVisionFeatureFaceLandmarks *)self results];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v5 = [v6 objectForKey:v7];
+    results = [(AXMVisionFeatureFaceLandmarks *)self results];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+    v5 = [results objectForKey:v7];
   }
 
   return v5;
 }
 
-- (id)localizedStringForLandmarkType:(unint64_t)a3
+- (id)localizedStringForLandmarkType:(unint64_t)type
 {
-  if (a3 > 0xB)
+  if (type > 0xB)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E7A1E4C0[a3];
+    v3 = off_1E7A1E4C0[type];
     v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v5 = [v4 localizedStringForKey:v3 value:&stru_1F23EA908 table:@"Accessibility"];
   }
@@ -213,14 +213,14 @@
   return v5;
 }
 
-+ (id)unitTestingFaceLandmarksIs3D:(BOOL)a3
++ (id)unitTestingFaceLandmarksIs3D:(BOOL)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(AXMVisionFeatureFaceLandmarks);
   v5 = objc_alloc_init(MEMORY[0x1E695DF20]);
   [(AXMVisionFeatureFaceLandmarks *)v4 setResults:v5];
 
-  [(AXMVisionFeatureFaceLandmarks *)v4 setIs3DLandmarks:v3];
+  [(AXMVisionFeatureFaceLandmarks *)v4 setIs3DLandmarks:dCopy];
 
   return v4;
 }

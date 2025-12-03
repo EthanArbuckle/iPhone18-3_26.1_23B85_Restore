@@ -1,35 +1,35 @@
 @interface PKAddPaymentPassRequestConfiguration
-- (PKAddPaymentPassRequestConfiguration)initWithCoder:(id)a3;
+- (PKAddPaymentPassRequestConfiguration)initWithCoder:(id)coder;
 - (PKAddPaymentPassRequestConfiguration)initWithEncryptionScheme:(PKEncryptionScheme)encryptionScheme;
 - (id)_effectiveDetails;
-- (id)_filterWebServices:(id)a3 primaryAccountIdentifierRequired:(BOOL)a4;
+- (id)_filterWebServices:(id)services primaryAccountIdentifierRequired:(BOOL)required;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAllowManagedAppleIDWithEntitlements:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAllowManagedAppleIDWithEntitlements:(id)entitlements;
 @end
 
 @implementation PKAddPaymentPassRequestConfiguration
 
-- (id)_filterWebServices:(id)a3 primaryAccountIdentifierRequired:(BOOL)a4
+- (id)_filterWebServices:(id)services primaryAccountIdentifierRequired:(BOOL)required
 {
-  v4 = a4;
+  requiredCopy = required;
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 count];
+  servicesCopy = services;
+  v7 = [servicesCopy count];
   if (!v7)
   {
     goto LABEL_50;
   }
 
-  v8 = [(PKAddPaymentPassRequestConfiguration *)self primaryAccountIdentifier];
-  v9 = [(PKAddPaymentPassRequestConfiguration *)self paymentNetwork];
-  v10 = [(PKAddPaymentPassRequestConfiguration *)self requiresFelicaSecureElement];
-  v11 = [v9 isEqualToString:@"HID"];
-  if (([v9 isEqualToString:@"BMAC"] & 1) == 0)
+  primaryAccountIdentifier = [(PKAddPaymentPassRequestConfiguration *)self primaryAccountIdentifier];
+  paymentNetwork = [(PKAddPaymentPassRequestConfiguration *)self paymentNetwork];
+  requiresFelicaSecureElement = [(PKAddPaymentPassRequestConfiguration *)self requiresFelicaSecureElement];
+  v11 = [paymentNetwork isEqualToString:@"HID"];
+  if (([paymentNetwork isEqualToString:@"BMAC"] & 1) == 0)
   {
-    v12 = [v9 isEqualToString:@"SPTCC"];
-    if (v8)
+    v12 = [paymentNetwork isEqualToString:@"SPTCC"];
+    if (primaryAccountIdentifier)
     {
       goto LABEL_4;
     }
@@ -40,38 +40,38 @@ LABEL_6:
   }
 
   v12 = 1;
-  if (!v8)
+  if (!primaryAccountIdentifier)
   {
     goto LABEL_6;
   }
 
 LABEL_4:
-  v13 = [v8 length] != 0;
+  v13 = [primaryAccountIdentifier length] != 0;
 LABEL_7:
-  if ((((v13 || v10) | v12 | v11) & 1) == 0)
+  if ((((v13 || requiresFelicaSecureElement) | v12 | v11) & 1) == 0)
   {
-    v6 = v6;
+    servicesCopy = servicesCopy;
     goto LABEL_49;
   }
 
   v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
   v15 = v14;
   v41 = v12;
-  v39 = v9;
-  v37 = v4;
-  if (((v10 | v12 | v11) & 1) == 0)
+  v39 = paymentNetwork;
+  v37 = requiredCopy;
+  if (((requiresFelicaSecureElement | v12 | v11) & 1) == 0)
   {
     goto LABEL_34;
   }
 
   v35 = v13;
   v38 = v14;
-  v36 = v8;
+  v36 = primaryAccountIdentifier;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v6;
+  obj = servicesCopy;
   v16 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (!v16)
   {
@@ -91,35 +91,35 @@ LABEL_7:
 
       v20 = *(*(&v46 + 1) + 8 * i);
       v21 = objc_autoreleasePoolPush();
-      v22 = [v20 targetDevice];
-      if (v10)
+      targetDevice = [v20 targetDevice];
+      if (requiresFelicaSecureElement)
       {
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_27;
         }
 
-        v23 = [v22 felicaSecureElementIsAvailable];
+        felicaSecureElementIsAvailable = [targetDevice felicaSecureElementIsAvailable];
       }
 
       else
       {
-        v23 = 1;
+        felicaSecureElementIsAvailable = 1;
       }
 
-      if ((v23 & v11) == 1)
+      if ((felicaSecureElementIsAvailable & v11) == 1)
       {
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_27;
         }
 
-        v23 = [v22 supportsExpressForAutomaticSelectionTechnologyType:2];
+        felicaSecureElementIsAvailable = [targetDevice supportsExpressForAutomaticSelectionTechnologyType:2];
       }
 
-      if ((v23 & v41) != 1)
+      if ((felicaSecureElementIsAvailable & v41) != 1)
       {
-        if (!v23)
+        if (!felicaSecureElementIsAvailable)
         {
           goto LABEL_27;
         }
@@ -130,7 +130,7 @@ LABEL_26:
       }
 
       v24 = PKPaymentCredentialTypeForPaymentNetworkName(v39);
-      if (objc_opt_respondsToSelector() & 1) != 0 && ([v22 supportsCredentialType:v24])
+      if (objc_opt_respondsToSelector() & 1) != 0 && ([targetDevice supportsCredentialType:v24])
       {
         goto LABEL_26;
       }
@@ -149,19 +149,19 @@ LABEL_29:
   v15 = v38;
   if ([v38 count])
   {
-    v6 = [v38 copy];
+    servicesCopy = [v38 copy];
   }
 
   else
   {
-    v6 = 0;
+    servicesCopy = 0;
   }
 
   v13 = v35;
 
   [v38 removeAllObjects];
-  v8 = v36;
-  v9 = v39;
+  primaryAccountIdentifier = v36;
+  paymentNetwork = v39;
 LABEL_34:
   if (v13)
   {
@@ -169,8 +169,8 @@ LABEL_34:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v6 = v6;
-    v25 = [v6 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    servicesCopy = servicesCopy;
+    v25 = [servicesCopy countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v25)
     {
       v26 = v25;
@@ -181,13 +181,13 @@ LABEL_34:
         {
           if (*v43 != v27)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(servicesCopy);
           }
 
           v29 = *(*(&v42 + 1) + 8 * j);
           v30 = objc_autoreleasePoolPush();
-          v31 = [v29 targetDevice];
-          v32 = [v31 paymentWebService:v29 canProvisionPaymentPassWithPrimaryAccountIdentifier:v8];
+          targetDevice2 = [v29 targetDevice];
+          v32 = [targetDevice2 paymentWebService:v29 canProvisionPaymentPassWithPrimaryAccountIdentifier:primaryAccountIdentifier];
 
           if (v32)
           {
@@ -197,7 +197,7 @@ LABEL_34:
           objc_autoreleasePoolPop(v30);
         }
 
-        v26 = [v6 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v26 = [servicesCopy countByEnumeratingWithState:&v42 objects:v50 count:16];
       }
 
       while (v26);
@@ -208,25 +208,25 @@ LABEL_34:
       v33 = [v15 copy];
 
       [v15 removeAllObjects];
-      v6 = v33;
-      v9 = v39;
+      servicesCopy = v33;
+      paymentNetwork = v39;
     }
 
     else
     {
-      v9 = v39;
+      paymentNetwork = v39;
       if (v37)
       {
 
-        v6 = 0;
+        servicesCopy = 0;
       }
     }
   }
 
-  v6 = v6;
+  servicesCopy = servicesCopy;
 
 LABEL_49:
-  v7 = v6;
+  v7 = servicesCopy;
 LABEL_50:
 
   return v7;
@@ -261,20 +261,20 @@ LABEL_50:
   return v5;
 }
 
-- (void)updateAllowManagedAppleIDWithEntitlements:(id)a3
+- (void)updateAllowManagedAppleIDWithEntitlements:(id)entitlements
 {
-  v7 = a3;
-  if ([v7 secureElementPassProvisioningForMAIDs])
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy secureElementPassProvisioningForMAIDs])
   {
     v4 = 1;
-    v5 = v7;
+    v5 = entitlementsCopy;
   }
 
   else
   {
-    v6 = [v7 passesAllAccess];
-    v5 = v7;
-    if (v6)
+    passesAllAccess = [entitlementsCopy passesAllAccess];
+    v5 = entitlementsCopy;
+    if (passesAllAccess)
     {
       goto LABEL_6;
     }
@@ -293,26 +293,26 @@ LABEL_6:
   [(PKAddPaymentPassRequestConfiguration *)&v2 dealloc];
 }
 
-- (PKAddPaymentPassRequestConfiguration)initWithCoder:(id)a3
+- (PKAddPaymentPassRequestConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = PKAddPaymentPassRequestConfiguration;
   v5 = [(PKAddPaymentPassRequestConfiguration *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionScheme"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionScheme"];
     v7 = [v6 copy];
     encryptionScheme = v5->_encryptionScheme;
     v5->_encryptionScheme = v7;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
     v10 = [v9 copy];
     cardholderName = v5->_cardholderName;
     v5->_cardholderName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountSuffix"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountSuffix"];
     v13 = [v12 copy];
     primaryAccountSuffix = v5->_primaryAccountSuffix;
     v5->_primaryAccountSuffix = v13;
@@ -320,28 +320,28 @@ LABEL_6:
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"cardDetails"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"cardDetails"];
     v19 = [v18 copy];
     cardDetails = v5->_cardDetails;
     v5->_cardDetails = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     v22 = [v21 copy];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
     v25 = [v24 copy];
     primaryAccountIdentifier = v5->_primaryAccountIdentifier;
     v5->_primaryAccountIdentifier = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentNetwork"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentNetwork"];
     v28 = [v27 copy];
     paymentNetwork = v5->_paymentNetwork;
     v5->_paymentNetwork = v28;
 
-    v5->_requiresFelicaSecureElement = [v4 decodeBoolForKey:@"requiresFelicaSecureElement"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowManagedAppleID"];
+    v5->_requiresFelicaSecureElement = [coderCopy decodeBoolForKey:@"requiresFelicaSecureElement"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowManagedAppleID"];
     if ([v30 isEqualToString:@"true"])
     {
       v31 = 1;
@@ -363,19 +363,19 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   encryptionScheme = self->_encryptionScheme;
-  v8 = a3;
-  [v8 encodeObject:encryptionScheme forKey:@"encryptionScheme"];
-  [v8 encodeInteger:self->_style forKey:@"style"];
-  [v8 encodeObject:self->_cardholderName forKey:@"cardholderName"];
-  [v8 encodeObject:self->_primaryAccountSuffix forKey:@"primaryAccountSuffix"];
-  [v8 encodeObject:self->_cardDetails forKey:@"cardDetails"];
-  [v8 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [v8 encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
-  [v8 encodeObject:self->_paymentNetwork forKey:@"paymentNetwork"];
-  [v8 encodeBool:self->_requiresFelicaSecureElement forKey:@"requiresFelicaSecureElement"];
+  coderCopy = coder;
+  [coderCopy encodeObject:encryptionScheme forKey:@"encryptionScheme"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy encodeObject:self->_cardholderName forKey:@"cardholderName"];
+  [coderCopy encodeObject:self->_primaryAccountSuffix forKey:@"primaryAccountSuffix"];
+  [coderCopy encodeObject:self->_cardDetails forKey:@"cardDetails"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
+  [coderCopy encodeObject:self->_paymentNetwork forKey:@"paymentNetwork"];
+  [coderCopy encodeBool:self->_requiresFelicaSecureElement forKey:@"requiresFelicaSecureElement"];
   allowManagedAppleID = self->_allowManagedAppleID;
   v6 = @"true";
   if (allowManagedAppleID != 1)
@@ -393,15 +393,15 @@ LABEL_6:
     v7 = v6;
   }
 
-  [v8 encodeObject:v7 forKey:@"allowManagedAppleID"];
+  [coderCopy encodeObject:v7 forKey:@"allowManagedAppleID"];
 }
 
 - (id)_effectiveDetails
 {
   v3 = self->_cardDetails;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v6 = [(NSString *)self->_cardholderName stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v6 = [(NSString *)self->_cardholderName stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   if ([v6 length])
   {
     v7 = [PKLabeledValue alloc];
@@ -411,7 +411,7 @@ LABEL_6:
     [v4 addObject:v9];
   }
 
-  v10 = [(NSString *)self->_primaryAccountSuffix stringByTrimmingCharactersInSet:v5];
+  v10 = [(NSString *)self->_primaryAccountSuffix stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v10 length])
   {
@@ -430,11 +430,11 @@ LABEL_6:
     for (i = 0; i != v16; ++i)
     {
       v18 = [(NSArray *)v3 objectAtIndexedSubscript:i];
-      v19 = [v18 label];
-      v20 = [v19 stringByTrimmingCharactersInSet:v5];
+      label = [v18 label];
+      v20 = [label stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-      v21 = [v18 value];
-      v22 = [v21 stringByTrimmingCharactersInSet:v5];
+      value = [v18 value];
+      v22 = [value stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       if ([v20 length] && objc_msgSend(v22, "length"))
       {

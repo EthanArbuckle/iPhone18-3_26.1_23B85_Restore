@@ -1,25 +1,25 @@
 @interface _TUIImageResourceCollector
 - (CGRect)visibleBounds;
-- (_TUIImageResourceCollector)initWithBounds:(CGRect)a3 viewState:(id)a4;
-- (void)performWithViewState:(id)a3 block:(id)a4;
+- (_TUIImageResourceCollector)initWithBounds:(CGRect)bounds viewState:(id)state;
+- (void)performWithViewState:(id)state block:(id)block;
 @end
 
 @implementation _TUIImageResourceCollector
 
-- (_TUIImageResourceCollector)initWithBounds:(CGRect)a3 viewState:(id)a4
+- (_TUIImageResourceCollector)initWithBounds:(CGRect)bounds viewState:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  stateCopy = state;
   v16.receiver = self;
   v16.super_class = _TUIImageResourceCollector;
   v11 = [(_TUIImageResourceCollector *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_viewState, a4);
+    objc_storeStrong(&v11->_viewState, state);
     v12->_visibleBounds.origin.x = x;
     v12->_visibleBounds.origin.y = y;
     v12->_visibleBounds.size.width = width;
@@ -32,23 +32,23 @@
   return v12;
 }
 
-- (void)performWithViewState:(id)a3 block:(id)a4
+- (void)performWithViewState:(id)state block:(id)block
 {
-  v7 = a3;
-  if (a4)
+  stateCopy = state;
+  if (block)
   {
     viewState = self->_viewState;
     p_viewState = &self->_viewState;
-    v13 = v7;
+    v13 = stateCopy;
     v10 = viewState;
-    objc_storeStrong(p_viewState, a3);
-    v11 = a4;
-    v11[2]();
+    objc_storeStrong(p_viewState, state);
+    blockCopy = block;
+    blockCopy[2]();
 
     v12 = *p_viewState;
     *p_viewState = v10;
 
-    v7 = v13;
+    stateCopy = v13;
   }
 }
 

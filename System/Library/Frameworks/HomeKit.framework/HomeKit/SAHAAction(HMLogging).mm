@@ -6,26 +6,26 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C76B8];
-  v4 = [a1 aceId];
-  appendToShortDescription(v2, v3, v4);
+  aceId = [self aceId];
+  appendToShortDescription(string, v3, aceId);
 
   v5 = *MEMORY[0x1E69C7CD8];
-  v6 = [a1 actionType];
-  appendToShortDescription(v2, v5, v6);
+  actionType = [self actionType];
+  appendToShortDescription(string, v5, actionType);
 
   v7 = *MEMORY[0x1E69C7CE0];
-  v8 = [a1 attribute];
-  appendToShortDescription(v2, v7, v8);
+  attribute = [self attribute];
+  appendToShortDescription(string, v7, attribute);
 
-  [v2 appendString:@"  "];
+  [string appendString:@"  "];
   v9 = *MEMORY[0x1E69C7D28];
-  v10 = [a1 value];
-  v11 = [v10 hm_shortDescription];
-  appendToShortDescription(v2, v9, v11);
+  value = [self value];
+  hm_shortDescription = [value hm_shortDescription];
+  appendToShortDescription(string, v9, hm_shortDescription);
 
-  return v2;
+  return string;
 }
 
 @end

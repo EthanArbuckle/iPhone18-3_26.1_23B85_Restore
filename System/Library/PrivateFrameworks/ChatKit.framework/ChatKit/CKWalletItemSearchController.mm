@@ -3,14 +3,14 @@
 + (id)sectionTitle;
 + (id)supportedCellClasses;
 - (CKWalletItemSearchController)init;
-- (id)_activityItemProviderForResult:(id)a3;
-- (id)_activityItemProviderForResult:(id)a3 thumbnail:(id)a4;
-- (id)_addOrderViewControllerForURL:(id)a3;
-- (id)_addPassViewControllerForURL:(id)a3;
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)previewViewControllerForResult:(id)a3;
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4;
+- (id)_activityItemProviderForResult:(id)result;
+- (id)_activityItemProviderForResult:(id)result thumbnail:(id)thumbnail;
+- (id)_addOrderViewControllerForURL:(id)l;
+- (id)_addPassViewControllerForURL:(id)l;
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)previewViewControllerForResult:(id)result;
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path;
 @end
 
 @implementation CKWalletItemSearchController
@@ -42,42 +42,42 @@
 + (id)supportedCellClasses
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v4[0] = [a1 cellClass];
+  v4[0] = [self cellClass];
   v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
 
   return v2;
 }
 
-- (id)previewViewControllerForResult:(id)a3
+- (id)previewViewControllerForResult:(id)result
 {
-  v4 = [a3 item];
-  v5 = [v4 attributeSet];
-  v6 = [v5 contentURL];
+  item = [result item];
+  attributeSet = [item attributeSet];
+  contentURL = [attributeSet contentURL];
 
-  v7 = [v6 pathExtension];
-  LODWORD(v5) = [v7 isEqualToString:@"pkpass"];
+  pathExtension = [contentURL pathExtension];
+  LODWORD(attributeSet) = [pathExtension isEqualToString:@"pkpass"];
 
-  if (v5)
+  if (attributeSet)
   {
-    v8 = [(CKWalletItemSearchController *)self _addPassViewControllerForURL:v6];
+    v8 = [(CKWalletItemSearchController *)self _addPassViewControllerForURL:contentURL];
 LABEL_5:
     v11 = v8;
     goto LABEL_9;
   }
 
-  v9 = [v6 pathExtension];
-  v10 = [v9 isEqualToString:@"order"];
+  pathExtension2 = [contentURL pathExtension];
+  v10 = [pathExtension2 isEqualToString:@"order"];
 
   if (v10)
   {
-    v8 = [(CKWalletItemSearchController *)self _addOrderViewControllerForURL:v6];
+    v8 = [(CKWalletItemSearchController *)self _addOrderViewControllerForURL:contentURL];
     goto LABEL_5;
   }
 
   v12 = IMLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [CKWalletItemSearchController previewViewControllerForResult:v6];
+    [CKWalletItemSearchController previewViewControllerForResult:contentURL];
   }
 
   v11 = 0;
@@ -86,9 +86,9 @@ LABEL_9:
   return v11;
 }
 
-- (id)_addPassViewControllerForURL:(id)a3
+- (id)_addPassViewControllerForURL:(id)l
 {
-  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:8 error:0];
+  v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:8 error:0];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x193AF5EC0](@"PKPass" @"PassKit"))];
@@ -103,9 +103,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_addOrderViewControllerForURL:(id)a3
+- (id)_addOrderViewControllerForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -130,14 +130,14 @@ LABEL_9:
   v11[2] = __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_invoke;
   v11[3] = &unk_1E72F3178;
   v12 = 0;
-  v6 = [v4 makeViewControllerWithOrderURL:v3 completion:v11 error:&v10];
+  v6 = [v4 makeViewControllerWithOrderURL:lCopy completion:v11 error:&v10];
   v7 = v10;
   if (v7)
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CKWalletItemSearchController _addOrderViewControllerForURL:v3];
+      [CKWalletItemSearchController _addOrderViewControllerForURL:lCopy];
     }
   }
 
@@ -165,59 +165,59 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
   }
 }
 
-- (id)_activityItemProviderForResult:(id)a3
+- (id)_activityItemProviderForResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CKSearchController *)self delegate];
+  resultCopy = result;
+  delegate = [(CKSearchController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKSearchController *)self delegate];
-    v8 = [v7 searchController:self cellForResult:v4];
+    delegate2 = [(CKSearchController *)self delegate];
+    v8 = [delegate2 searchController:self cellForResult:resultCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 previewSnapshot];
+      previewSnapshot = [v8 previewSnapshot];
     }
 
     else
     {
-      v9 = 0;
+      previewSnapshot = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    previewSnapshot = 0;
   }
 
-  v10 = [(CKWalletItemSearchController *)self _activityItemProviderForResult:v4 thumbnail:v9];
+  v10 = [(CKWalletItemSearchController *)self _activityItemProviderForResult:resultCopy thumbnail:previewSnapshot];
 
   return v10;
 }
 
-- (id)_activityItemProviderForResult:(id)a3 thumbnail:(id)a4
+- (id)_activityItemProviderForResult:(id)result thumbnail:(id)thumbnail
 {
-  if (a4)
+  if (thumbnail)
   {
-    v5 = a4;
-    v6 = [a3 item];
-    v7 = [v6 attributeSet];
+    thumbnailCopy = thumbnail;
+    item = [result item];
+    attributeSet = [item attributeSet];
 
-    v8 = [v7 contentURL];
-    v9 = [v7 __ck_spotlightItemSnippet];
+    contentURL = [attributeSet contentURL];
+    __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
     v10 = objc_alloc_init(MEMORY[0x1E696EC58]);
-    [v10 setName:v9];
+    [v10 setName:__ck_spotlightItemSnippet];
     v11 = IMUTITypeForFilename();
     [v10 setType:v11];
 
-    v12 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v5];
+    v12 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:thumbnailCopy];
     [v10 setThumbnail:v12];
     v13 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     [v13 setSpecialization:v10];
-    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:v8 metadata:v13];
+    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:contentURL metadata:v13];
   }
 
   else
@@ -228,7 +228,7 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
   return v14;
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v36 = 0;
@@ -236,13 +236,13 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
   [(CKMessageTypeSearchController *)self fractionalWidth:&v37 count:&v36 forLayoutWidth:[(CKSearchController *)self layoutWidth]];
   v4 = [MEMORY[0x1E6995558] fractionalWidthDimension:v37];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
   v7 = MEMORY[0x1E6995558];
   v8 = v37;
   v9 = +[CKUIBehavior sharedBehaviors];
   v10 = v9;
-  if (v6)
+  if (isAccessibilityPreferredContentSizeCategory)
   {
     [v9 searchLinksFractionalWidthScale];
   }
@@ -268,8 +268,8 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
     v17 = [v15 absoluteDimension:?];
 
     v18 = [MEMORY[0x1E6995588] sizeWithWidthDimension:v17 heightDimension:v17];
-    v19 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    if (v19 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
       v20 = 3;
     }
@@ -280,7 +280,7 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
     }
 
     v21 = -8.0;
-    if (v19 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v21 = 8.0;
     }
@@ -310,29 +310,29 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
   return v31;
 }
 
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v11 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
-  v12 = [v9 isEqualToString:v11];
+  v12 = [kindCopy isEqualToString:v11];
 
   if (v12)
   {
     v13 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
     v14 = +[CKDetailsSearchResultsFooterCell reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v13 withReuseIdentifier:v14 forIndexPath:pathCopy];
 
     v16 = MEMORY[0x1E696AEC0];
     v17 = CKFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"SEE_ALL_LINKS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v19 = [v16 stringWithFormat:v18];
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v22 = @"\u200F";
     }
@@ -345,31 +345,31 @@ void __62__CKWalletItemSearchController__addOrderViewControllerForURL___block_in
     v23 = [(__CFString *)v22 stringByAppendingString:v19];
 
     [v15 setTitle:v23];
-    v24 = [objc_opt_class() sectionIdentifier];
-    [v15 setSectionIdentifier:v24];
+    sectionIdentifier = [objc_opt_class() sectionIdentifier];
+    [v15 setSectionIdentifier:sectionIdentifier];
   }
 
   else
   {
     v25 = +[CKSearchAvatarSupplementryView supplementaryViewType];
     v26 = +[CKSearchAvatarSupplementryView reuseIdentifier];
-    v15 = [v10 dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:v8];
+    v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:v25 withReuseIdentifier:v26 forIndexPath:pathCopy];
 
-    v27 = [v8 row];
-    v28 = [(CKSearchController *)self results];
-    v29 = [v28 count];
+    v27 = [pathCopy row];
+    results = [(CKSearchController *)self results];
+    v29 = [results count];
 
     if (v27 >= v29)
     {
       goto LABEL_9;
     }
 
-    v30 = [(CKSearchController *)self results];
-    v24 = [v30 objectAtIndex:{objc_msgSend(v8, "row")}];
+    results2 = [(CKSearchController *)self results];
+    sectionIdentifier = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v31 = [CKSpotlightQueryResultUtilities contactForResult:v24];
+    v31 = [CKSpotlightQueryResultUtilities contactForResult:sectionIdentifier];
     [v15 setContact:v31];
-    [v15 setAssociatedResult:v24];
+    [v15 setAssociatedResult:sectionIdentifier];
     [v15 setParentContentType:2];
   }
 
@@ -378,14 +378,14 @@ LABEL_9:
   return v15;
 }
 
-- (void)updateSupplementryViewIfNeeded:(id)a3 atIndexPath:(id)a4
+- (void)updateSupplementryViewIfNeeded:(id)needed atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v16 = v6;
-  v8 = [v7 row];
-  v9 = [(CKSearchController *)self results];
-  v10 = [v9 count];
+  neededCopy = needed;
+  pathCopy = path;
+  v16 = neededCopy;
+  v8 = [pathCopy row];
+  results = [(CKSearchController *)self results];
+  v10 = [results count];
 
   if (v8 >= v10)
   {
@@ -394,11 +394,11 @@ LABEL_9:
 
   else
   {
-    v11 = [(CKSearchController *)self results];
-    v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    results2 = [(CKSearchController *)self results];
+    v12 = [results2 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v13 = [v16 associatedResult];
-    v14 = [v12 isEqual:v13];
+    associatedResult = [v16 associatedResult];
+    v14 = [v12 isEqual:associatedResult];
 
     if ((v14 & 1) == 0)
     {

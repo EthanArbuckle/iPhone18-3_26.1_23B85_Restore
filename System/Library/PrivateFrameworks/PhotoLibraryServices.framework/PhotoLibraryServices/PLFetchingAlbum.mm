@@ -1,36 +1,36 @@
 @interface PLFetchingAlbum
-+ (id)_predicateForAssetSubtype:(signed __int16)a3;
-+ (id)predicateForAlbumKind:(int)a3 includeGuest:(BOOL)a4;
-+ (id)sortDescriptorsForAlbumKind:(int)a3;
++ (id)_predicateForAssetSubtype:(signed __int16)subtype;
++ (id)predicateForAlbumKind:(int)kind includeGuest:(BOOL)guest;
++ (id)sortDescriptorsForAlbumKind:(int)kind;
 + (id)validKindsForPersistence;
-- (BOOL)canPerformEditOperation:(unint64_t)a3;
+- (BOOL)canPerformEditOperation:(unint64_t)operation;
 - (BOOL)hasAssetsCache;
 - (BOOL)isEmpty;
 - (BOOL)isValidForPersistence;
-- (BOOL)mayHaveAssetsInCommon:(id)a3;
+- (BOOL)mayHaveAssetsInCommon:(id)common;
 - (NSFetchRequest)fetchRequest;
 - (id)_cachedKeyAssets;
-- (id)_performFetchWithRequest:(id)a3;
+- (id)_performFetchWithRequest:(id)request;
 - (id)assets;
-- (id)fastPointerAccessSetForAssets:(id)a3;
-- (id)filteredIndexesForPredicate:(id)a3;
-- (id)payloadForChangedKeys:(id)a3;
-- (unint64_t)_fetchedCountForAssetsOfKind:(signed __int16)a3;
+- (id)fastPointerAccessSetForAssets:(id)assets;
+- (id)filteredIndexesForPredicate:(id)predicate;
+- (id)payloadForChangedKeys:(id)keys;
+- (unint64_t)_fetchedCountForAssetsOfKind:(signed __int16)kind;
 - (unint64_t)approximateCount;
 - (unint64_t)count;
-- (unint64_t)countForAssetsOfKind:(signed __int16)a3;
+- (unint64_t)countForAssetsOfKind:(signed __int16)kind;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
-- (void)batchFetchAssets:(id)a3;
+- (void)batchFetchAssets:(id)assets;
 - (void)didSave;
 - (void)didTurnIntoFault;
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3;
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager;
 - (void)prepareForDeletion;
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3;
-- (void)setALAssetsGroupFilterPredicate:(id)a3;
-- (void)setFetchRequest:(id)a3;
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager;
+- (void)setALAssetsGroupFilterPredicate:(id)predicate;
+- (void)setFetchRequest:(id)request;
 - (void)setupFetchRequest;
-- (void)updateSnapshotAndClearCaches:(id)a3;
+- (void)updateSnapshotAndClearCaches:(id)caches;
 - (void)willSave;
 @end
 
@@ -41,30 +41,30 @@
   v9.receiver = self;
   v9.super_class = PLFetchingAlbum;
   [(PLFetchingAlbum *)&v9 prepareForDeletion];
-  v3 = [(PLFetchingAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [PLDelayedSearchIndexUpdates recordAlbumIfNeeded:self];
-    if (([v3 mergingChanges] & 1) == 0)
+    if (([managedObjectContext mergingChanges] & 1) == 0)
     {
       if ([(PLGenericAlbum *)self kindValue]== 1507)
       {
         [(PLFetchingAlbum *)self setPrimitiveValue:0 forKey:@"customKeyAsset"];
-        [v3 recordCloudDeletionForObject:self];
+        [managedObjectContext recordCloudDeletionForObject:self];
       }
 
-      v4 = [(PLFetchingAlbum *)self uuid];
-      if (v4)
+      uuid = [(PLFetchingAlbum *)self uuid];
+      if (uuid)
       {
-        v5 = v4;
-        v6 = [(PLFetchingAlbum *)self isValidForPersistence];
+        v5 = uuid;
+        isValidForPersistence = [(PLFetchingAlbum *)self isValidForPersistence];
 
-        if (v6)
+        if (isValidForPersistence)
         {
-          v7 = [(PLGenericAlbum *)self photoLibrary];
-          v8 = [v7 pathManager];
-          [(PLFetchingAlbum *)self removePersistedFileSystemDataWithPathManager:v8];
+          photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+          pathManager = [photoLibrary pathManager];
+          [(PLFetchingAlbum *)self removePersistedFileSystemDataWithPathManager:pathManager];
         }
       }
     }
@@ -73,45 +73,45 @@
 
 - (BOOL)isValidForPersistence
 {
-  v3 = [objc_opt_class() validKindsForPersistence];
-  v4 = [(PLFetchingAlbum *)self kind];
-  v5 = [v3 containsObject:v4];
+  validKindsForPersistence = [objc_opt_class() validKindsForPersistence];
+  kind = [(PLFetchingAlbum *)self kind];
+  v5 = [validKindsForPersistence containsObject:kind];
 
   return v5;
 }
 
-- (void)removePersistedFileSystemDataWithPathManager:(id)a3
+- (void)removePersistedFileSystemDataWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLFetchingAlbum.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchingAlbum.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedAlbumMetadata alloc] initWithPLGenericAlbum:self pathManager:v8];
     [(PLPersistedAlbumMetadata *)v6 removePersistedAlbumData];
   }
 }
 
-- (void)persistMetadataToFileSystemWithPathManager:(id)a3
+- (void)persistMetadataToFileSystemWithPathManager:(id)manager
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (!managerCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLFetchingAlbum.m" lineNumber:1009 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchingAlbum.m" lineNumber:1009 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
 
-    v5 = 0;
+    managerCopy = 0;
   }
 
-  if ([v5 isDCIM])
+  if ([managerCopy isDCIM])
   {
     v6 = [[PLPersistedAlbumMetadata alloc] initWithPLGenericAlbum:self pathManager:v8];
     [(PLPersistedAlbumMetadata *)v6 persistAlbumData];
@@ -125,19 +125,19 @@
   [(PLGenericAlbum *)&v6 didSave];
   if ([(PLFetchingAlbum *)self needsPersistenceUpdate])
   {
-    v3 = [(PLFetchingAlbum *)self uuid];
-    if (!v3 || ([(PLFetchingAlbum *)self isDeleted]& 1) != 0)
+    uuid = [(PLFetchingAlbum *)self uuid];
+    if (!uuid || ([(PLFetchingAlbum *)self isDeleted]& 1) != 0)
     {
       goto LABEL_6;
     }
 
-    v4 = [(PLFetchingAlbum *)self isValidForPersistence];
+    isValidForPersistence = [(PLFetchingAlbum *)self isValidForPersistence];
 
-    if (v4)
+    if (isValidForPersistence)
     {
-      v3 = [(PLGenericAlbum *)self photoLibrary];
-      v5 = [v3 pathManager];
-      [(PLFetchingAlbum *)self persistMetadataToFileSystemWithPathManager:v5];
+      uuid = [(PLGenericAlbum *)self photoLibrary];
+      pathManager = [uuid pathManager];
+      [(PLFetchingAlbum *)self persistMetadataToFileSystemWithPathManager:pathManager];
 
 LABEL_6:
     }
@@ -152,24 +152,24 @@ LABEL_6:
   v7.super_class = PLFetchingAlbum;
   [(PLGenericAlbum *)&v7 willSave];
   [(PLFetchingAlbum *)self setNeedsPersistenceUpdate:0];
-  v3 = [(PLFetchingAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v4 = [(PLFetchingAlbum *)self changedValues];
+  changedValues = [(PLFetchingAlbum *)self changedValues];
   if (([(PLFetchingAlbum *)self isInserted]& 1) == 0)
   {
-    v5 = [v4 objectForKeyedSubscript:@"title"];
-    if (v5 || ([v4 objectForKeyedSubscript:@"trashedState"], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    v5 = [changedValues objectForKeyedSubscript:@"title"];
+    if (v5 || ([changedValues objectForKeyedSubscript:@"trashedState"], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v6 = [v4 objectForKeyedSubscript:@"userQueryData"];
+      v6 = [changedValues objectForKeyedSubscript:@"userQueryData"];
 
       if (!v6)
       {
@@ -188,15 +188,15 @@ LABEL_7:
 LABEL_10:
 }
 
-- (BOOL)mayHaveAssetsInCommon:(id)a3
+- (BOOL)mayHaveAssetsInCommon:(id)common
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLFetchingAlbum *)self fetchedAssets];
-  v6 = v5;
-  if (v5)
+  commonCopy = common;
+  fetchedAssets = [(PLFetchingAlbum *)self fetchedAssets];
+  v6 = fetchedAssets;
+  if (fetchedAssets)
   {
-    v7 = [v5 count];
+    v7 = [fetchedAssets count];
     if (v7)
     {
       v8 = v7;
@@ -231,8 +231,8 @@ LABEL_10:
                 objc_enumerationMutation(v13);
               }
 
-              v18 = [*(*(&v29 + 1) + 8 * j) objectID];
-              [v9 addObject:v18];
+              objectID = [*(*(&v29 + 1) + 8 * j) objectID];
+              [v9 addObject:objectID];
             }
 
             v15 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -246,7 +246,7 @@ LABEL_10:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v19 = v4;
+      v19 = commonCopy;
       v12 = [v19 countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v12)
       {
@@ -260,8 +260,8 @@ LABEL_10:
               objc_enumerationMutation(v19);
             }
 
-            v22 = [*(*(&v25 + 1) + 8 * k) objectID];
-            v23 = [v9 containsObject:v22];
+            objectID2 = [*(*(&v25 + 1) + 8 * k) objectID];
+            v23 = [v9 containsObject:objectID2];
 
             if (v23)
             {
@@ -297,46 +297,46 @@ LABEL_27:
   return v12;
 }
 
-- (id)fastPointerAccessSetForAssets:(id)a3
+- (id)fastPointerAccessSetForAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PLFetchingAlbum *)self fetchRequest];
-    v6 = [v5 fetchBatchSize];
+    fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+    fetchBatchSize = [fetchRequest fetchBatchSize];
 
-    if (v6)
+    if (fetchBatchSize)
     {
-      if ([v4 count] > (2 * v6))
+      if ([assetsCopy count] > (2 * fetchBatchSize))
       {
-        v7 = [v4 count];
+        v7 = [assetsCopy count];
         v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
         if (v7)
         {
           for (i = 0; i != v7; ++i)
           {
-            v10 = [v4 managedObjectIDAtIndex:i];
+            v10 = [assetsCopy managedObjectIDAtIndex:i];
             [v8 addObject:v10];
           }
         }
 
         v11 = MEMORY[0x1E695D5E0];
-        v12 = [(PLFetchingAlbum *)self fetchRequest];
-        v13 = [v12 entityName];
-        v14 = [v11 fetchRequestWithEntityName:v13];
+        fetchRequest2 = [(PLFetchingAlbum *)self fetchRequest];
+        entityName = [fetchRequest2 entityName];
+        v14 = [v11 fetchRequestWithEntityName:entityName];
 
         v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
         [v14 setPredicate:v15];
 
         [v14 setIncludesPropertyValues:0];
         [v14 setIncludesPendingChanges:0];
-        v16 = [(PLFetchingAlbum *)self managedObjectContext];
-        v17 = [v16 executeFetchRequest:v14 error:0];
+        managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
+        v17 = [managedObjectContext executeFetchRequest:v14 error:0];
 
         if ([v17 count])
         {
-          v18 = [(PLFetchingAlbum *)self managedObjectContext];
-          v19 = [v18 _orderedSetWithResultsFromFetchRequest:v17];
+          managedObjectContext2 = [(PLFetchingAlbum *)self managedObjectContext];
+          v19 = [managedObjectContext2 _orderedSetWithResultsFromFetchRequest:v17];
 
           goto LABEL_11;
         }
@@ -344,7 +344,7 @@ LABEL_27:
     }
   }
 
-  v19 = v4;
+  v19 = assetsCopy;
 LABEL_11:
 
   return v19;
@@ -352,17 +352,17 @@ LABEL_11:
 
 - (BOOL)hasAssetsCache
 {
-  v3 = [(PLFetchingAlbum *)self fetchedAssets];
-  v4 = v3 || self->_countForDisplay != 0x7FFFFFFFFFFFFFFFLL || self->_emptyState || self->_cachedKeyAssets != 0;
+  fetchedAssets = [(PLFetchingAlbum *)self fetchedAssets];
+  v4 = fetchedAssets || self->_countForDisplay != 0x7FFFFFFFFFFFFFFFLL || self->_emptyState || self->_cachedKeyAssets != 0;
 
   return v4;
 }
 
-- (void)updateSnapshotAndClearCaches:(id)a3
+- (void)updateSnapshotAndClearCaches:(id)caches
 {
-  v4 = a3;
-  v5 = [(PLFetchingAlbum *)self fetchedAssets];
-  [v4 setAssetsSnapshot:v5];
+  cachesCopy = caches;
+  fetchedAssets = [(PLFetchingAlbum *)self fetchedAssets];
+  [cachesCopy setAssetsSnapshot:fetchedAssets];
 
   [(PLFetchingAlbum *)self setFetchedAssets:0];
   self->_countForDisplay = 0x7FFFFFFFFFFFFFFFLL;
@@ -379,22 +379,22 @@ LABEL_11:
   cachedKeyAssets = self->_cachedKeyAssets;
   if (!cachedKeyAssets)
   {
-    v4 = [(PLFetchingAlbum *)self fetchRequest];
-    v5 = [v4 sortDescriptors];
+    fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+    sortDescriptors = [fetchRequest sortDescriptors];
     v6 = MEMORY[0x1E695D5E0];
-    v7 = [v4 entityName];
-    v8 = [v6 fetchRequestWithEntityName:v7];
+    entityName = [fetchRequest entityName];
+    v8 = [v6 fetchRequestWithEntityName:entityName];
 
-    v9 = [v4 predicate];
-    [v8 setPredicate:v9];
+    predicate = [fetchRequest predicate];
+    [v8 setPredicate:predicate];
 
     [v8 setFetchLimit:3];
-    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sortDescriptors, "count")}];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = v5;
+    v11 = sortDescriptors;
     v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
@@ -409,8 +409,8 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          v15 = [*(*(&v24 + 1) + 8 * v14) reversedSortDescriptor];
-          [v10 addObject:v15];
+          reversedSortDescriptor = [*(*(&v24 + 1) + 8 * v14) reversedSortDescriptor];
+          [v10 addObject:reversedSortDescriptor];
 
           ++v14;
         }
@@ -423,9 +423,9 @@ LABEL_11:
     }
 
     [v8 setSortDescriptors:v10];
-    v16 = [(PLFetchingAlbum *)self managedObjectContext];
+    managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
     v23 = 0;
-    v17 = [v16 executeFetchRequest:v8 error:&v23];
+    v17 = [managedObjectContext executeFetchRequest:v8 error:&v23];
     v18 = v23;
     v19 = v18;
     if (v17)
@@ -446,22 +446,22 @@ LABEL_11:
   return cachedKeyAssets;
 }
 
-- (id)filteredIndexesForPredicate:(id)a3
+- (id)filteredIndexesForPredicate:(id)predicate
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLFetchingAlbum *)self fetchRequest];
-  v6 = [v5 copy];
+  predicateCopy = predicate;
+  fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+  v6 = [fetchRequest copy];
 
-  v7 = [v6 predicate];
-  v8 = v7;
-  if (v4)
+  predicate = [v6 predicate];
+  v8 = predicate;
+  if (predicateCopy)
   {
-    if (v7)
+    if (predicate)
     {
       v9 = MEMORY[0x1E696AB28];
-      v16[0] = v7;
-      v16[1] = v4;
+      v16[0] = predicate;
+      v16[1] = predicateCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
       v11 = [v9 andPredicateWithSubpredicates:v10];
 
@@ -470,7 +470,7 @@ LABEL_11:
 
     else
     {
-      v8 = v4;
+      v8 = predicateCopy;
     }
   }
 
@@ -478,50 +478,50 @@ LABEL_11:
   [v6 setResultType:1];
   [v6 setIncludesPropertyValues:0];
   v12 = [(PLFetchingAlbum *)self _performFetchWithRequest:v6];
-  v13 = [(PLFetchingAlbum *)self assets];
+  assets = [(PLFetchingAlbum *)self assets];
   v14 = indexSetForManagedObjectsMatchingIDs();
 
   return v14;
 }
 
-- (void)batchFetchAssets:(id)a3
+- (void)batchFetchAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PLFetchingAlbum *)self fetchRequest];
-  if (![v5 fetchBatchSize])
+  assetsCopy = assets;
+  fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+  if (![fetchRequest fetchBatchSize])
   {
     v6.receiver = self;
     v6.super_class = PLFetchingAlbum;
-    [(PLGenericAlbum *)&v6 batchFetchAssets:v4];
+    [(PLGenericAlbum *)&v6 batchFetchAssets:assetsCopy];
   }
 }
 
-- (BOOL)canPerformEditOperation:(unint64_t)a3
+- (BOOL)canPerformEditOperation:(unint64_t)operation
 {
-  v4 = [(PLGenericAlbum *)self kindValue];
-  if ((v4 - 1600) <= 0x2A && ((1 << (v4 - 64)) & 0x7B5DFFFEFE1) != 0)
+  kindValue = [(PLGenericAlbum *)self kindValue];
+  if ((kindValue - 1600) <= 0x2A && ((1 << (kindValue - 64)) & 0x7B5DFFFEFE1) != 0)
   {
-    return a3 < 2;
+    return operation < 2;
   }
 
-  v6 = (a3 & 0xFFFFFFFFFFFFFFBFLL) == 0;
-  if ((a3 & 0xFFFFFFFFFFFFFFDFLL) == 0)
+  v6 = (operation & 0xFFFFFFFFFFFFFFBFLL) == 0;
+  if ((operation & 0xFFFFFFFFFFFFFFDFLL) == 0)
   {
     v6 = 1;
   }
 
-  return v4 == 1507 && v6;
+  return kindValue == 1507 && v6;
 }
 
-- (unint64_t)countForAssetsOfKind:(signed __int16)a3
+- (unint64_t)countForAssetsOfKind:(signed __int16)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   if ([(PLFetchingAlbum *)self isFault])
   {
-    v5 = [(PLFetchingAlbum *)self fetchRequest];
+    fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
   }
 
-  if (v3 == 1)
+  if (kindCopy == 1)
   {
     v6 = 136;
     result = self->_videosCount;
@@ -530,12 +530,12 @@ LABEL_11:
       return result;
     }
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
     goto LABEL_9;
   }
 
-  if (!v3)
+  if (!kindCopy)
   {
     v6 = 128;
     result = self->_photosCount;
@@ -544,40 +544,40 @@ LABEL_11:
       return result;
     }
 
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_9:
-    result = [(PLFetchingAlbum *)v8 _fetchedCountForAssetsOfKind:v9];
+    result = [(PLFetchingAlbum *)selfCopy2 _fetchedCountForAssetsOfKind:v9];
     *(&self->super.super.super.super.isa + v6) = result;
     return result;
   }
 
-  return [(PLFetchingAlbum *)self _fetchedCountForAssetsOfKind:v3];
+  return [(PLFetchingAlbum *)self _fetchedCountForAssetsOfKind:kindCopy];
 }
 
-- (unint64_t)_fetchedCountForAssetsOfKind:(signed __int16)a3
+- (unint64_t)_fetchedCountForAssetsOfKind:(signed __int16)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v27 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLFetchingAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = [(PLFetchingAlbum *)self fetchRequest];
-  v9 = [v8 entityName];
-  v10 = [v7 fetchRequestWithEntityName:v9];
+  fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+  entityName = [fetchRequest entityName];
+  v10 = [v7 fetchRequestWithEntityName:entityName];
 
-  v11 = [(PLFetchingAlbum *)self fetchRequest];
-  v12 = [v11 predicate];
+  fetchRequest2 = [(PLFetchingAlbum *)self fetchRequest];
+  predicate = [fetchRequest2 predicate];
 
   v13 = MEMORY[0x1E696AB28];
   v14 = MEMORY[0x1E695DEC8];
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", v3];
-  v16 = [v14 arrayWithObjects:{v12, v15, 0}];
+  kindCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", kindCopy];
+  v16 = [v14 arrayWithObjects:{predicate, kindCopy, 0}];
   v17 = [v13 andPredicateWithSubpredicates:v16];
 
   [v10 setPredicate:v17];
   v22 = 0;
-  v18 = [v6 countForFetchRequest:v10 error:&v22];
+  v18 = [managedObjectContext countForFetchRequest:v10 error:&v22];
   v19 = v22;
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -585,7 +585,7 @@ LABEL_9:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109378;
-      v24 = v3;
+      v24 = kindCopy;
       v25 = 2112;
       v26 = v19;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "countForAssetsOfKind:%d fetch request failed: %@", buf, 0x12u);
@@ -606,36 +606,36 @@ LABEL_9:
   {
     if ([(PLFetchingAlbum *)self isFault])
     {
-      v4 = [(PLFetchingAlbum *)self fetchRequest];
+      fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
     }
 
-    v5 = [(PLFetchingAlbum *)self fetchedAssets];
+    fetchedAssets = [(PLFetchingAlbum *)self fetchedAssets];
 
-    if (!v5)
+    if (!fetchedAssets)
     {
       v6 = objc_autoreleasePoolPush();
       v7 = MEMORY[0x1E695D5E0];
-      v8 = [(PLFetchingAlbum *)self fetchRequest];
-      v9 = [v8 entityName];
-      v10 = [v7 fetchRequestWithEntityName:v9];
+      fetchRequest2 = [(PLFetchingAlbum *)self fetchRequest];
+      entityName = [fetchRequest2 entityName];
+      v10 = [v7 fetchRequestWithEntityName:entityName];
 
-      v11 = [(PLFetchingAlbum *)self fetchRequest];
-      v12 = [v11 predicate];
-      [v10 setPredicate:v12];
+      fetchRequest3 = [(PLFetchingAlbum *)self fetchRequest];
+      predicate = [fetchRequest3 predicate];
+      [v10 setPredicate:predicate];
 
       [v10 setFetchLimit:1];
-      v13 = [(PLFetchingAlbum *)self managedObjectContext];
+      managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
       v21 = 0;
-      v14 = [v13 countForFetchRequest:v10 error:&v21];
+      v14 = [managedObjectContext countForFetchRequest:v10 error:&v21];
       v15 = v21;
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = PLBackendGetLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v17 = [(NSManagedObject *)self pl_shortDescription];
+          pl_shortDescription = [(NSManagedObject *)self pl_shortDescription];
           *buf = 138412546;
-          v23 = v17;
+          v23 = pl_shortDescription;
           v24 = 2112;
           v25 = v15;
           _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Failed to get count for %@: %@", buf, 0x16u);
@@ -690,17 +690,17 @@ LABEL_9:
   {
     v4 = objc_autoreleasePoolPush();
     v5 = MEMORY[0x1E695D5E0];
-    v6 = [(PLFetchingAlbum *)self fetchRequest];
-    v7 = [v6 entityName];
-    v8 = [v5 fetchRequestWithEntityName:v7];
+    fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+    entityName = [fetchRequest entityName];
+    v8 = [v5 fetchRequestWithEntityName:entityName];
 
-    v9 = [(PLFetchingAlbum *)self fetchRequest];
-    v10 = [v9 predicate];
-    [v8 setPredicate:v10];
+    fetchRequest2 = [(PLFetchingAlbum *)self fetchRequest];
+    predicate = [fetchRequest2 predicate];
+    [v8 setPredicate:predicate];
 
-    v11 = [(PLFetchingAlbum *)self managedObjectContext];
+    managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
     v16 = 0;
-    v12 = [v11 countForFetchRequest:v8 error:&v16];
+    v12 = [managedObjectContext countForFetchRequest:v8 error:&v16];
     v13 = v16;
     self->_countForDisplay = v12;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -708,9 +708,9 @@ LABEL_9:
       v14 = PLBackendGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(NSManagedObject *)self pl_shortDescription];
+        pl_shortDescription = [(NSManagedObject *)self pl_shortDescription];
         *buf = 138412546;
-        v18 = v15;
+        v18 = pl_shortDescription;
         v19 = 2112;
         v20 = v13;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to get count for %@: %@", buf, 0x16u);
@@ -728,25 +728,25 @@ LABEL_9:
 
 - (unint64_t)count
 {
-  v2 = [(PLFetchingAlbum *)self assets];
-  v3 = [v2 count];
+  assets = [(PLFetchingAlbum *)self assets];
+  v3 = [assets count];
 
   return v3;
 }
 
 - (id)assets
 {
-  v3 = [(PLFetchingAlbum *)self fetchedAssets];
+  fetchedAssets = [(PLFetchingAlbum *)self fetchedAssets];
 
-  if (!v3)
+  if (!fetchedAssets)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PLFetchingAlbum *)self fetchRequest];
-    v6 = [(PLFetchingAlbum *)self _performFetchWithRequest:v5];
+    fetchRequest = [(PLFetchingAlbum *)self fetchRequest];
+    v6 = [(PLFetchingAlbum *)self _performFetchWithRequest:fetchRequest];
     if (v6)
     {
-      v7 = [(PLFetchingAlbum *)self managedObjectContext];
-      v8 = [v7 _orderedSetWithResultsFromFetchRequest:v6];
+      managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
+      v8 = [managedObjectContext _orderedSetWithResultsFromFetchRequest:v6];
 
       if (v8)
       {
@@ -760,26 +760,26 @@ LABEL_9:
   return [(PLFetchingAlbum *)self fetchedAssets];
 }
 
-- (id)_performFetchWithRequest:(id)a3
+- (id)_performFetchWithRequest:(id)request
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (request)
   {
-    v4 = a3;
-    v5 = [(PLFetchingAlbum *)self managedObjectContext];
-    if ([v5 hasChanges])
+    requestCopy = request;
+    managedObjectContext = [(PLFetchingAlbum *)self managedObjectContext];
+    if ([managedObjectContext hasChanges])
     {
-      v6 = 0;
+      batchSize = 0;
     }
 
     else
     {
-      v6 = [(PLFetchingAlbum *)self batchSize];
+      batchSize = [(PLFetchingAlbum *)self batchSize];
     }
 
-    [v4 setFetchBatchSize:v6];
+    [requestCopy setFetchBatchSize:batchSize];
     v11 = 0;
-    v7 = [v5 executeFetchRequest:v4 error:&v11];
+    v7 = [managedObjectContext executeFetchRequest:requestCopy error:&v11];
 
     v8 = v11;
     if (!v7)
@@ -802,24 +802,24 @@ LABEL_9:
   return v7;
 }
 
-- (void)setALAssetsGroupFilterPredicate:(id)a3
+- (void)setALAssetsGroupFilterPredicate:(id)predicate
 {
-  v5 = a3;
-  if (self->_ALAssetsGroupFilterPredicate != v5)
+  predicateCopy = predicate;
+  if (self->_ALAssetsGroupFilterPredicate != predicateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_ALAssetsGroupFilterPredicate, a3);
+    v6 = predicateCopy;
+    objc_storeStrong(&self->_ALAssetsGroupFilterPredicate, predicate);
     [(PLFetchingAlbum *)self setFetchRequest:0];
-    v5 = v6;
+    predicateCopy = v6;
   }
 }
 
-- (void)setFetchRequest:(id)a3
+- (void)setFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(PLFetchingAlbum *)self willChangeValueForKey:@"fetchRequest"];
   [(PLFetchingAlbum *)self willChangeValueForKey:@"assets"];
-  [(PLFetchingAlbum *)self setPrimitiveFetchRequest:v4];
+  [(PLFetchingAlbum *)self setPrimitiveFetchRequest:requestCopy];
 
   [(PLFetchingAlbum *)self setFetchedAssets:0];
   self->_countForDisplay = 0x7FFFFFFFFFFFFFFFLL;
@@ -837,23 +837,23 @@ LABEL_9:
 - (NSFetchRequest)fetchRequest
 {
   [(PLFetchingAlbum *)self willAccessValueForKey:@"fetchRequest"];
-  v3 = [(PLFetchingAlbum *)self primitiveFetchRequest];
-  if (!v3)
+  primitiveFetchRequest = [(PLFetchingAlbum *)self primitiveFetchRequest];
+  if (!primitiveFetchRequest)
   {
     [(PLFetchingAlbum *)self setupFetchRequest];
-    v3 = [(PLFetchingAlbum *)self primitiveFetchRequest];
+    primitiveFetchRequest = [(PLFetchingAlbum *)self primitiveFetchRequest];
   }
 
   [(PLFetchingAlbum *)self didAccessValueForKey:@"fetchRequest"];
 
-  return v3;
+  return primitiveFetchRequest;
 }
 
 - (void)setupFetchRequest
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PLGenericAlbum *)self kindValue];
-  if ((v3 - 1600) <= 0x2A && ((1 << (v3 - 64)) & 0x7B5DFFFFFE5) != 0 || v3 == 1552 || v3 == 1507)
+  kindValue = [(PLGenericAlbum *)self kindValue];
+  if ((kindValue - 1600) <= 0x2A && ((1 << (kindValue - 64)) & 0x7B5DFFFFFE5) != 0 || kindValue == 1552 || kindValue == 1507)
   {
     v4 = MEMORY[0x1E695D5E0];
     v5 = +[PLManagedAsset entityName];
@@ -862,14 +862,14 @@ LABEL_9:
     if (v6)
     {
       v7 = objc_alloc_init(PLQueryChangeDetectionCriteria);
-      v8 = [(PLFetchingAlbum *)self userQueryData];
-      if (v8)
+      userQueryData = [(PLFetchingAlbum *)self userQueryData];
+      if (userQueryData)
       {
         v9 = objc_alloc(MEMORY[0x1E69BF2B8]);
-        v10 = [(PLFetchingAlbum *)self userQueryData];
-        v11 = [v9 initWithData:v10];
-        v12 = [(PLGenericAlbum *)self photoLibrary];
-        v13 = [PLQueryHandler predicateForQuery:v11 inLibrary:v12 changeDetectionCriteria:v7];
+        userQueryData2 = [(PLFetchingAlbum *)self userQueryData];
+        v11 = [v9 initWithData:userQueryData2];
+        photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+        v13 = [PLQueryHandler predicateForQuery:v11 inLibrary:photoLibrary changeDetectionCriteria:v7];
       }
 
       else
@@ -877,15 +877,15 @@ LABEL_9:
         v13 = [objc_opt_class() predicateForAlbumKind:{-[PLGenericAlbum kindValue](self, "kindValue")}];
       }
 
-      v14 = [(PLFetchingAlbum *)self extraFilterPredicate];
-      v15 = v14;
-      if (v14)
+      extraFilterPredicate = [(PLFetchingAlbum *)self extraFilterPredicate];
+      v15 = extraFilterPredicate;
+      if (extraFilterPredicate)
       {
         if (v13)
         {
           v16 = MEMORY[0x1E696AB28];
           v26[0] = v13;
-          v26[1] = v14;
+          v26[1] = extraFilterPredicate;
           v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
           v18 = [v16 andPredicateWithSubpredicates:v17];
 
@@ -894,7 +894,7 @@ LABEL_9:
 
         else
         {
-          v13 = v14;
+          v13 = extraFilterPredicate;
         }
       }
 
@@ -911,7 +911,7 @@ LABEL_9:
       {
         v21 = MEMORY[0x1E696AEB0];
         v22 = @"additionalAttributes.title";
-        v23 = 1;
+        customSortAscending = 1;
       }
 
       else
@@ -922,12 +922,12 @@ LABEL_9:
         }
 
         v25 = MEMORY[0x1E696AEB0];
-        v23 = [(PLFetchingAlbum *)self customSortAscending];
+        customSortAscending = [(PLFetchingAlbum *)self customSortAscending];
         v22 = @"dateCreated";
         v21 = v25;
       }
 
-      v24 = [v21 sortDescriptorWithKey:v22 ascending:v23];
+      v24 = [v21 sortDescriptorWithKey:v22 ascending:customSortAscending];
       [v20 insertObject:v24 atIndex:0];
 
 LABEL_16:
@@ -988,10 +988,10 @@ void __43__PLFetchingAlbum_validKindsForPersistence__block_invoke()
   validKindsForPersistence_pl_once_object_20 = v0;
 }
 
-+ (id)sortDescriptorsForAlbumKind:(int)a3
++ (id)sortDescriptorsForAlbumKind:(int)kind
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(kind)
   {
     case 1605:
     case 1606:
@@ -1067,7 +1067,7 @@ LABEL_15:
       v11 = &v13;
       goto LABEL_13;
     default:
-      if (a3 == 1507)
+      if (kind == 1507)
       {
 LABEL_2:
         v3 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
@@ -1096,17 +1096,17 @@ LABEL_13:
   }
 }
 
-+ (id)predicateForAlbumKind:(int)a3 includeGuest:(BOOL)a4
++ (id)predicateForAlbumKind:(int)kind includeGuest:(BOOL)guest
 {
   v4 = 0;
   v84[2] = *MEMORY[0x1E69E9840];
   v6 = 0;
   v7 = 0;
-  switch(a3)
+  switch(kind)
   {
     case 1552:
       v40 = MEMORY[0x1E69BF328];
-      v41 = [MEMORY[0x1E69BF328] maskForFinderSyncedAsset];
+      maskForFinderSyncedAsset = [MEMORY[0x1E69BF328] maskForFinderSyncedAsset];
       goto LABEL_24;
     case 1553:
     case 1554:
@@ -1167,48 +1167,48 @@ LABEL_13:
       goto LABEL_54;
     case 1602:
       v40 = MEMORY[0x1E69BF328];
-      v41 = [MEMORY[0x1E69BF328] maskForPhotoStreamAsset];
+      maskForFinderSyncedAsset = [MEMORY[0x1E69BF328] maskForPhotoStreamAsset];
 LABEL_24:
-      v26 = [v40 predicateForIncludeMask:v41 useIndex:1];
+      guest = [v40 predicateForIncludeMask:maskForFinderSyncedAsset useIndex:1];
       goto LABEL_52;
     case 1605:
       v19 = 1;
       goto LABEL_51;
     case 1606:
       v20 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %d) AND (noindex:(%K) != %d)", a4, @"playbackStyle", 4, @"kind", 2];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %d) AND (noindex:(%K) != %d)", guest, @"playbackStyle", 4, @"kind", 2];
       v82[0] = v21;
       v22 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForVideosAlbumExclusions"), 0}];
       v82[1] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v82[2] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v82[2] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v82;
       goto LABEL_41;
     case 1607:
-      v15 = [a1 _predicateForAssetSubtype:{1, a4}];
+      _predicateForVisibleAsset5 = [self _predicateForAssetSubtype:{1, guest}];
       v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"height > width"];
       v14 = MEMORY[0x1E696AB28];
-      v84[0] = v15;
+      v84[0] = _predicateForVisibleAsset5;
       v84[1] = v16;
       v17 = MEMORY[0x1E695DEC8];
       v18 = v84;
       goto LABEL_34;
     case 1608:
-      v15 = [a1 _predicateForAssetSubtype:{1, a4}];
+      _predicateForVisibleAsset5 = [self _predicateForAssetSubtype:{1, guest}];
       v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"width > height"];
       v14 = MEMORY[0x1E696AB28];
-      v83[0] = v15;
+      v83[0] = _predicateForVisibleAsset5;
       v83[1] = v16;
       v17 = MEMORY[0x1E695DEC8];
       v18 = v83;
       goto LABEL_34;
     case 1609:
       v30 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == 1", a4, @"favorite"];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == 1", guest, @"favorite"];
       v81[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v81[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v81[1] = _predicateForVisibleAsset2;
       v32 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForFavoritesAlbumExclusions"), 0}];
       v81[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
@@ -1219,12 +1219,12 @@ LABEL_24:
       goto LABEL_51;
     case 1611:
       v20 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == 1", a4, @"hidden"];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == 1", guest, @"hidden"];
       v79[0] = v21;
       v22 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v79[1] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v79[2] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v79[2] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v79;
       goto LABEL_41;
@@ -1234,25 +1234,25 @@ LABEL_24:
       v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-2592000.0];
       v22 = [v35 predicateWithFormat:@"%K == %d AND %K > %@", @"trashedState", 1, @"trashedDate", v21];
       v78[0] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v78[1] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v78[1] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v78;
       v36 = 2;
       goto LABEL_42;
     case 1613:
     case 1625:
-      v8 = a4;
-      v9 = [MEMORY[0x1E69BF328] maskForUserLibrary];
-      if (v8)
+      guestCopy = guest;
+      maskForUserLibrary = [MEMORY[0x1E69BF328] maskForUserLibrary];
+      if (guestCopy)
       {
-        v9 = [MEMORY[0x1E69BF328] maskForGuestAsset] | v9;
+        maskForUserLibrary = [MEMORY[0x1E69BF328] maskForGuestAsset] | maskForUserLibrary;
       }
 
       v10 = MEMORY[0x1E696AB28];
-      v11 = [a1 _predicateForVisibleAsset];
-      v74[0] = v11;
-      v12 = [MEMORY[0x1E69BF328] predicateForIncludeMask:v9 useIndex:0];
+      _predicateForVisibleAsset3 = [self _predicateForVisibleAsset];
+      v74[0] = _predicateForVisibleAsset3;
+      v12 = [MEMORY[0x1E69BF328] predicateForIncludeMask:maskForUserLibrary useIndex:0];
       v74[1] = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:2];
       v4 = [v10 andPredicateWithSubpredicates:v13];
@@ -1262,8 +1262,8 @@ LABEL_24:
       v30 = MEMORY[0x1E696AB28];
       v21 = +[PLManagedAsset predicateForBurstStackAssets];
       v73[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v73[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v73[1] = _predicateForVisibleAsset2;
       v32 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForBurstsAlbumExclusions"), 0}];
       v73[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
@@ -1280,20 +1280,20 @@ LABEL_24:
       v77[0] = v22;
       v45 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForRecentlyAddedAlbumExclusions"), 0}];
       v77[1] = v45;
-      v55 = [a1 _predicateForVisibleAsset];
-      v77[2] = v55;
+      _predicateForVisibleAsset4 = [self _predicateForVisibleAsset];
+      v77[2] = _predicateForVisibleAsset4;
       v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:3];
       v4 = [v53 andPredicateWithSubpredicates:v56];
 
       goto LABEL_47;
     case 1617:
       v20 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", a4, @"derivedCameraCaptureDevice", 1];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", guest, @"derivedCameraCaptureDevice", 1];
       v80[0] = v21;
       v22 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForSelfiesAlbumExclusions"), 0}];
       v80[1] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v80[2] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v80[2] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v80;
       goto LABEL_41;
@@ -1302,8 +1302,8 @@ LABEL_24:
       goto LABEL_51;
     case 1619:
       v37 = MEMORY[0x1E696AB28];
-      v15 = [a1 _predicateForVisibleAsset];
-      v71[0] = v15;
+      _predicateForVisibleAsset5 = [self _predicateForVisibleAsset];
+      v71[0] = _predicateForVisibleAsset5;
       v16 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPlacesAlbum"), 0}];
       v71[1] = v16;
       v38 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != -180 AND %K != -180", @"latitude", @"longitude"];
@@ -1316,8 +1316,8 @@ LABEL_24:
       v30 = MEMORY[0x1E696AB28];
       v21 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v72[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v72[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v72[1] = _predicateForVisibleAsset2;
       v32 = +[PLManagedAsset predicateForDepthEffectPhotos];
       v72[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
@@ -1330,8 +1330,8 @@ LABEL_24:
       v30 = MEMORY[0x1E696AB28];
       v21 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v70[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v70[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v70[1] = _predicateForVisibleAsset2;
       v32 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"playbackStyle", &unk_1F0FBF658];
       v70[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
@@ -1339,17 +1339,17 @@ LABEL_24:
       goto LABEL_37;
     case 1623:
       v20 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", a4, @"playbackVariation", 3];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", guest, @"playbackVariation", 3];
       v69[0] = v21;
       v22 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v69[1] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v69[2] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v69[2] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v69;
       goto LABEL_41;
     case 1624:
-      v26 = [PLManagedAsset predicateForUploadableAssetsWithCloudLocalStates:&unk_1F0FBF670, a4];
+      guest = [PLManagedAsset predicateForUploadableAssetsWithCloudLocalStates:&unk_1F0FBF670, guest];
       goto LABEL_52;
     case 1626:
       v43 = MEMORY[0x1E696AB28];
@@ -1361,8 +1361,8 @@ LABEL_24:
       v67[1] = v45;
       v46 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForRecentlyEditedAlbumExclusions"), 0}];
       v67[2] = v46;
-      v47 = [a1 _predicateForVisibleAsset];
-      v67[3] = v47;
+      _predicateForVisibleAsset6 = [self _predicateForVisibleAsset];
+      v67[3] = _predicateForVisibleAsset6;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:4];
       v4 = [v43 andPredicateWithSubpredicates:v48];
 
@@ -1373,8 +1373,8 @@ LABEL_47:
       goto LABEL_51;
     case 1628:
       v27 = MEMORY[0x1E696AB28];
-      v11 = [a1 _predicateForVisibleAsset];
-      v75[0] = v11;
+      _predicateForVisibleAsset3 = [self _predicateForVisibleAsset];
+      v75[0] = _predicateForVisibleAsset3;
       v28 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForAllPhotosAlbum"), 0}];
       v75[1] = v28;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:2];
@@ -1384,47 +1384,47 @@ LABEL_10:
       v6 = 1;
       goto LABEL_54;
     case 1630:
-      v26 = +[PLManagedAsset predicateForRAWAndRPlusJAssets];
+      guest = +[PLManagedAsset predicateForRAWAndRPlusJAssets];
       goto LABEL_52;
     case 1631:
       v30 = MEMORY[0x1E696AB28];
       v21 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v66[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v66[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v66[1] = _predicateForVisibleAsset2;
       v32 = +[PLManagedAsset predicateForCinematicVideos];
       v66[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
       v34 = v66;
       goto LABEL_37;
     case 1632:
-      v26 = +[PLManagedAsset predicateForProResAssets];
+      guest = +[PLManagedAsset predicateForProResAssets];
       goto LABEL_52;
     case 1634:
       v49 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", a4, @"duplicateAssetVisibilityState", 0];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", guest, @"duplicateAssetVisibilityState", 0];
       v68[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v68[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v68[1] = _predicateForVisibleAsset2;
       v50 = MEMORY[0x1E695DEC8];
       v51 = v68;
       goto LABEL_44;
     case 1636:
-      v26 = +[PLManagedAsset predicateToIncludeSharedLibrarySharingSuggestionsAssets];
+      guest = +[PLManagedAsset predicateToIncludeSharedLibrarySharingSuggestionsAssets];
       goto LABEL_52;
     case 1637:
       v19 = 104;
 LABEL_51:
-      v26 = [a1 _predicateForAssetSubtype:{v19, a4}];
+      guest = [self _predicateForAssetSubtype:{v19, guest}];
 LABEL_52:
-      v4 = v26;
+      v4 = guest;
       goto LABEL_53;
     case 1639:
       v30 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", a4, @"spatialType", 0];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", guest, @"spatialType", 0];
       v65[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v65[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v65[1] = _predicateForVisibleAsset2;
       v32 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
       v65[2] = v32;
       v33 = MEMORY[0x1E695DEC8];
@@ -1436,10 +1436,10 @@ LABEL_37:
       goto LABEL_45;
     case 1640:
       v49 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES", a4, @"isRecentlySaved"];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES", guest, @"isRecentlySaved"];
       v76[0] = v21;
-      v31 = [a1 _predicateForVisibleAsset];
-      v76[1] = v31;
+      _predicateForVisibleAsset2 = [self _predicateForVisibleAsset];
+      v76[1] = _predicateForVisibleAsset2;
       v50 = MEMORY[0x1E695DEC8];
       v51 = v76;
 LABEL_44:
@@ -1450,8 +1450,8 @@ LABEL_45:
       goto LABEL_49;
     case 1641:
       v14 = MEMORY[0x1E696AB28];
-      v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", a4, @"trashedState", 0];
-      v64[0] = v15;
+      _predicateForVisibleAsset5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(%K) == %d", guest, @"trashedState", 0];
+      v64[0] = _predicateForVisibleAsset5;
       v16 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForRecoveredAlbum"), 1}];
       v64[1] = v16;
       v17 = MEMORY[0x1E695DEC8];
@@ -1464,12 +1464,12 @@ LABEL_35:
       goto LABEL_53;
     case 1642:
       v20 = MEMORY[0x1E696AB28];
-      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", a4, @"derivedCameraCaptureDevice", 2];
+      v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", guest, @"derivedCameraCaptureDevice", 2];
       v63[0] = v21;
       v22 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForSelfiesAlbumExclusions"), 0}];
       v63[1] = v22;
-      v23 = [a1 _predicateForVisibleAsset];
-      v63[2] = v23;
+      _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+      v63[2] = _predicateForVisibleAsset;
       v24 = MEMORY[0x1E695DEC8];
       v25 = v63;
 LABEL_41:
@@ -1484,14 +1484,14 @@ LABEL_49:
 LABEL_53:
       v6 = 0;
 LABEL_54:
-      v57 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(complete) != 0", a4];
-      v58 = v57;
+      guest2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(complete) != 0", guest];
+      v58 = guest2;
       if (v4)
       {
         if (!v6)
         {
           v60 = MEMORY[0x1E696AB28];
-          v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v4, v57, 0}];
+          v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v4, guest2, 0}];
           v7 = [v60 andPredicateWithSubpredicates:v61];
 
           goto LABEL_62;
@@ -1507,7 +1507,7 @@ LABEL_54:
 
       else
       {
-        v59 = v57;
+        v59 = guest2;
       }
 
       v7 = v59;
@@ -1522,35 +1522,35 @@ LABEL_63:
   }
 }
 
-+ (id)_predicateForAssetSubtype:(signed __int16)a3
++ (id)_predicateForAssetSubtype:(signed __int16)subtype
 {
-  v3 = a3;
+  subtypeCopy = subtype;
   v14[3] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!subtype)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLFetchingAlbum.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"subtype != PLAssetSubtypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLFetchingAlbum.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"subtype != PLAssetSubtypeNone"}];
   }
 
   v5 = MEMORY[0x1E696AB28];
-  v6 = [PLManagedAsset predicateForAssetSubtype:v3];
+  v6 = [PLManagedAsset predicateForAssetSubtype:subtypeCopy];
   v14[0] = v6;
   v7 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForPLFetchingAlbumExclusions"), 0}];
   v14[1] = v7;
-  v8 = [a1 _predicateForVisibleAsset];
-  v14[2] = v8;
+  _predicateForVisibleAsset = [self _predicateForVisibleAsset];
+  v14[2] = _predicateForVisibleAsset;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
   v10 = [v5 andPredicateWithSubpredicates:v9];
 
   return v10;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLFetchingAlbum *)self isValidForPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLFetchingAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLFetchingAlbumJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else

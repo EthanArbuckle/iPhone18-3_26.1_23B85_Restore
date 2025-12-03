@@ -1,28 +1,28 @@
 @interface HRTFEnrollmentAssetDownloadSession
-- (HRTFEnrollmentAssetDownloadSession)initWithOptions:(AssetDownloadOptions)a3 progressCallback:(id)a4 completion:(id)a5;
-- (void)assetDownloadSessionProgressUpdate:(id)a3;
+- (HRTFEnrollmentAssetDownloadSession)initWithOptions:(AssetDownloadOptions)options progressCallback:(id)callback completion:(id)completion;
+- (void)assetDownloadSessionProgressUpdate:(id)update;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation HRTFEnrollmentAssetDownloadSession
 
-- (HRTFEnrollmentAssetDownloadSession)initWithOptions:(AssetDownloadOptions)a3 progressCallback:(id)a4 completion:(id)a5
+- (HRTFEnrollmentAssetDownloadSession)initWithOptions:(AssetDownloadOptions)options progressCallback:(id)callback completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  callbackCopy = callback;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = HRTFEnrollmentAssetDownloadSession;
   v10 = [(HRTFEnrollmentAssetDownloadSession *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_options = a3;
-    v12 = MEMORY[0x253065810](v8);
+    v10->_options = options;
+    v12 = MEMORY[0x253065810](callbackCopy);
     progressCallback = v11->_progressCallback;
     v11->_progressCallback = v12;
 
-    v14 = MEMORY[0x253065810](v9);
+    v14 = MEMORY[0x253065810](completionCopy);
     completion = v11->_completion;
     v11->_completion = v14;
   }
@@ -48,19 +48,19 @@
   connection = obj->_connection;
   if (connection)
   {
-    v3 = [(NSXPCConnection *)connection remoteObjectProxy];
-    [v3 cancelAssetDownloadSession];
+    remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+    [remoteObjectProxy cancelAssetDownloadSession];
   }
 
   objc_sync_exit(obj);
 }
 
-- (void)assetDownloadSessionProgressUpdate:(id)a3
+- (void)assetDownloadSessionProgressUpdate:(id)update
 {
   progressCallback = self->_progressCallback;
   if (progressCallback)
   {
-    progressCallback[2](progressCallback, a3);
+    progressCallback[2](progressCallback, update);
   }
 }
 

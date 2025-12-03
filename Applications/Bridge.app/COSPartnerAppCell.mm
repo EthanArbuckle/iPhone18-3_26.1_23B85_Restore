@@ -1,57 +1,57 @@
 @interface COSPartnerAppCell
 + (unint64_t)didInstallPostSetupEvent;
-- (COSPartnerAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (COSPartnerAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)appIcon;
 - (id)localizedAppTitle;
 - (id)localizedPartnerTitle;
 - (id)partnerAppBundleIdentifier;
 - (id)partnerAppStoreIdentifier;
 - (id)productParameters;
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3;
-- (void)appIsAvailableStateDidChange:(unint64_t)a3;
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent;
+- (void)appIsAvailableStateDidChange:(unint64_t)change;
 - (void)dealloc;
-- (void)didBeginInstallationWithSuccess:(BOOL)a3;
-- (void)didCompleteInstallationWithSuccess:(BOOL)a3;
+- (void)didBeginInstallationWithSuccess:(BOOL)success;
+- (void)didCompleteInstallationWithSuccess:(BOOL)success;
 - (void)layoutSubviews;
-- (void)pressedGet:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)pressedGet:(id)get;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)setInitialInstallState;
-- (void)setMode:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setMode:(unint64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation COSPartnerAppCell
 
-- (COSPartnerAppCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSPartnerAppCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v38.receiver = self;
   v38.super_class = COSPartnerAppCell;
-  v5 = [(COSPartnerAppCell *)&v38 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(COSPartnerAppCell *)&v38 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [COSAppInstallationController alloc];
-    v7 = [(COSPartnerAppCell *)v5 partnerAppBundleIdentifier];
-    v8 = [(COSPartnerAppCell *)v5 partnerAppStoreIdentifier];
-    v9 = [(COSAppInstallationController *)v6 initWithBundleID:v7 andStoreIdentifier:v8];
+    partnerAppBundleIdentifier = [(COSPartnerAppCell *)v5 partnerAppBundleIdentifier];
+    partnerAppStoreIdentifier = [(COSPartnerAppCell *)v5 partnerAppStoreIdentifier];
+    v9 = [(COSAppInstallationController *)v6 initWithBundleID:partnerAppBundleIdentifier andStoreIdentifier:partnerAppStoreIdentifier];
     installController = v5->_installController;
     v5->_installController = v9;
 
     [(COSAppInstallationController *)v5->_installController addObserver:v5];
     v11 = [UIImageView alloc];
-    v12 = [(COSPartnerAppCell *)v5 appIcon];
-    v13 = [v11 initWithImage:v12];
+    appIcon = [(COSPartnerAppCell *)v5 appIcon];
+    v13 = [v11 initWithImage:appIcon];
     iconView = v5->_iconView;
     v5->_iconView = v13;
 
-    v15 = [(COSPartnerAppCell *)v5 contentView];
-    [v15 addSubview:v5->_iconView];
+    contentView = [(COSPartnerAppCell *)v5 contentView];
+    [contentView addSubview:v5->_iconView];
 
     v16 = objc_alloc_init(UILabel);
     appTitleLabel = v5->_appTitleLabel;
     v5->_appTitleLabel = v16;
 
     v18 = v5->_appTitleLabel;
-    v19 = [(COSPartnerAppCell *)v5 localizedAppTitle];
-    [(UILabel *)v18 setText:v19];
+    localizedAppTitle = [(COSPartnerAppCell *)v5 localizedAppTitle];
+    [(UILabel *)v18 setText:localizedAppTitle];
 
     [(UILabel *)v5->_appTitleLabel setNumberOfLines:1];
     v20 = v5->_appTitleLabel;
@@ -62,16 +62,16 @@
     v23 = BPSTextColor();
     [(UILabel *)v22 setTextColor:v23];
 
-    v24 = [(COSPartnerAppCell *)v5 contentView];
-    [v24 addSubview:v5->_appTitleLabel];
+    contentView2 = [(COSPartnerAppCell *)v5 contentView];
+    [contentView2 addSubview:v5->_appTitleLabel];
 
     v25 = objc_alloc_init(UILabel);
     companyLabel = v5->_companyLabel;
     v5->_companyLabel = v25;
 
     v27 = v5->_companyLabel;
-    v28 = [(COSPartnerAppCell *)v5 localizedPartnerTitle];
-    [(UILabel *)v27 setText:v28];
+    localizedPartnerTitle = [(COSPartnerAppCell *)v5 localizedPartnerTitle];
+    [(UILabel *)v27 setText:localizedPartnerTitle];
 
     v29 = v5->_companyLabel;
     v30 = [UIFont systemFontOfSize:13.0];
@@ -81,8 +81,8 @@
     v32 = +[UIColor systemMidGrayColor];
     [(UILabel *)v31 setTextColor:v32];
 
-    v33 = [(COSPartnerAppCell *)v5 contentView];
-    [v33 addSubview:v5->_companyLabel];
+    contentView3 = [(COSPartnerAppCell *)v5 contentView];
+    [contentView3 addSubview:v5->_companyLabel];
 
     v34 = [COSAppInstallButton buttonWithType:1];
     getButton = v5->_getButton;
@@ -90,8 +90,8 @@
 
     [(COSAppInstallButton *)v5->_getButton addTarget:v5 action:"pressedGet:" forControlEvents:64];
     [(COSPartnerAppCell *)v5 setInitialInstallState];
-    v36 = [(COSPartnerAppCell *)v5 contentView];
-    [v36 addSubview:v5->_getButton];
+    contentView4 = [(COSPartnerAppCell *)v5 contentView];
+    [contentView4 addSubview:v5->_getButton];
   }
 
   return v5;
@@ -105,24 +105,24 @@
   [(COSPartnerAppCell *)&v3 dealloc];
 }
 
-- (void)setMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = +[MCProfileConnection sharedConnection];
   v8 = [v7 effectiveBoolValueForSetting:MCFeatureAppInstallationAllowed];
 
   getButton = self->_getButton;
   if (v8 == 2)
   {
-    v10 = 3;
+    modeCopy = 3;
   }
 
   else
   {
-    v10 = a3;
+    modeCopy = mode;
   }
 
-  [(COSAppInstallButton *)getButton setMode:v10 animated:v4];
+  [(COSAppInstallButton *)getButton setMode:modeCopy animated:animatedCopy];
 }
 
 - (void)layoutSubviews
@@ -130,8 +130,8 @@
   v29.receiver = self;
   v29.super_class = COSPartnerAppCell;
   [(COSPartnerAppCell *)&v29 layoutSubviews];
-  v3 = [(COSPartnerAppCell *)self textLabel];
-  [v3 setHidden:1];
+  textLabel = [(COSPartnerAppCell *)self textLabel];
+  [textLabel setHidden:1];
 
   [(COSPartnerAppCell *)self bounds];
   v27 = v5;
@@ -185,18 +185,18 @@
   [(COSAppInstallButton *)self->_getButton setFrame:v22, 0.0, v21, CGRectGetHeight(v35)];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = [(COSPartnerAppCell *)self titleLabel];
-  [v4 setHidden:1];
+  titleLabel = [(COSPartnerAppCell *)self titleLabel];
+  [titleLabel setHidden:1];
 
   if (![(COSAppInstallationController *)self->_installController isInstalled])
   {
-    v5 = [(COSAppInstallationController *)self->_installController isAvailableInStore];
+    isAvailableInStore = [(COSAppInstallationController *)self->_installController isAvailableInStore];
     v6 = pbb_bridge_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [NSNumber numberWithBool:v5 != 0];
+      v7 = [NSNumber numberWithBool:isAvailableInStore != 0];
       v8 = 138412290;
       v9 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "App Available In Current Store: %@", &v8, 0xCu);
@@ -206,15 +206,15 @@
 
 - (void)setInitialInstallState
 {
-  v3 = [(COSAppInstallationController *)self->_installController installInProgress];
-  v4 = [(COSAppInstallationController *)self->_installController isInstalled];
+  installInProgress = [(COSAppInstallationController *)self->_installController installInProgress];
+  isInstalled = [(COSAppInstallationController *)self->_installController isInstalled];
   v5 = 4;
-  if (!v3)
+  if (!installInProgress)
   {
     v5 = 1;
   }
 
-  if (v4)
+  if (isInstalled)
   {
     v6 = 2;
   }
@@ -230,8 +230,8 @@
 - (id)productParameters
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(COSPartnerAppCell *)self partnerAppStoreIdentifier];
-  [v3 setObject:v4 forKey:SKStoreProductParameterITunesItemIdentifier];
+  partnerAppStoreIdentifier = [(COSPartnerAppCell *)self partnerAppStoreIdentifier];
+  [v3 setObject:partnerAppStoreIdentifier forKey:SKStoreProductParameterITunesItemIdentifier];
 
   return v3;
 }
@@ -249,7 +249,7 @@
   return 0;
 }
 
-- (void)pressedGet:(id)a3
+- (void)pressedGet:(id)get
 {
   +[PBBridgeCAReporter incrementSuccessType:](PBBridgeCAReporter, "incrementSuccessType:", [objc_opt_class() didInstallPostSetupEvent]);
   [(COSAppInstallationController *)self->_installController startInstalling];
@@ -261,9 +261,9 @@
   }
 }
 
-- (void)didBeginInstallationWithSuccess:(BOOL)a3
+- (void)didBeginInstallationWithSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 4;
   }
@@ -276,9 +276,9 @@
   [(COSPartnerAppCell *)self setMode:v3 animated:1];
 }
 
-- (void)didCompleteInstallationWithSuccess:(BOOL)a3
+- (void)didCompleteInstallationWithSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -297,20 +297,20 @@
   }
 }
 
-- (void)appIsAvailableStateDidChange:(unint64_t)a3
+- (void)appIsAvailableStateDidChange:(unint64_t)change
 {
-  if (a3 == 2)
+  if (change == 2)
   {
     [(COSPartnerAppCell *)self setMode:3 animated:1];
   }
 }
 
-- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)a3
+- (void)_accessibilitySetInterfaceStyleIntent:(unint64_t)intent
 {
   v5.receiver = self;
   v5.super_class = COSPartnerAppCell;
   [(COSPartnerAppCell *)&v5 _accessibilitySetInterfaceStyleIntent:?];
-  [(COSAppInstallButton *)self->_getButton _accessibilitySetInterfaceStyleIntent:a3];
+  [(COSAppInstallButton *)self->_getButton _accessibilitySetInterfaceStyleIntent:intent];
 }
 
 - (id)appIcon

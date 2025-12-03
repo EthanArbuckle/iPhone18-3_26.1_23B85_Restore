@@ -2,11 +2,11 @@
 - (STUIStatusBarDisplayableContainerView)iconsView;
 - (STUIStatusBarImageView)iconView;
 - (STUIStatusBarImageView)secondaryIconView;
-- (id)additionRemovalAnimationForSubItem:(id)a3 image:(id)a4 update:(id)a5 displayItem:(id)a6;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
+- (id)additionRemovalAnimationForSubItem:(id)item image:(id)image update:(id)update displayItem:(id)displayItem;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
 - (id)dependentEntryKeys;
-- (id)imageForUpdate:(id)a3 secondary:(BOOL)a4;
+- (id)imageForUpdate:(id)update secondary:(BOOL)secondary;
 - (void)_create_iconView;
 - (void)_create_iconsView;
 - (void)_create_secondaryIconView;
@@ -17,65 +17,65 @@
 - (id)dependentEntryKeys
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(STUIStatusBarDualIndicatorItem *)self indicatorEntryKey];
-  v5 = [(STUIStatusBarDualIndicatorItem *)self secondaryIndicatorEntryKey];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  indicatorEntryKey = [(STUIStatusBarDualIndicatorItem *)self indicatorEntryKey];
+  secondaryIndicatorEntryKey = [(STUIStatusBarDualIndicatorItem *)self secondaryIndicatorEntryKey];
+  v6 = [v3 setWithObjects:{indicatorEntryKey, secondaryIndicatorEntryKey, 0}];
 
   return v6;
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v37[7] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = STUIStatusBarDualIndicatorItem;
-  v4 = [(STUIStatusBarItem *)&v36 createDisplayItemForIdentifier:a3];
-  v5 = [v4 identifier];
-  v6 = [objc_opt_class() defaultDisplayIdentifier];
+  v4 = [(STUIStatusBarItem *)&v36 createDisplayItemForIdentifier:identifier];
+  identifier = [v4 identifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v5 == v6)
+  if (identifier == defaultDisplayIdentifier)
   {
-    v7 = [(STUIStatusBarDualIndicatorItem *)self iconsView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(STUIStatusBarDualIndicatorItem *)self iconView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v8];
-    v9 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v9];
-    v10 = [v9 leadingAnchor];
-    v11 = [v8 trailingAnchor];
+    iconsView = [(STUIStatusBarDualIndicatorItem *)self iconsView];
+    [iconsView setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(STUIStatusBarDualIndicatorItem *)self iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [iconsView addSubview:iconView];
+    secondaryIconView = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
+    [secondaryIconView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [iconsView addSubview:secondaryIconView];
+    leadingAnchor = [secondaryIconView leadingAnchor];
+    trailingAnchor = [iconView trailingAnchor];
     [(STUIStatusBarDualIndicatorItem *)self itemSpacing];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:?];
+    v12 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:?];
     [(STUIStatusBarDualIndicatorItem *)self setItemSpacingConstraint:v12];
 
-    v35 = [v8 leadingAnchor];
-    v33 = [v7 leadingAnchor];
-    v32 = [v35 constraintEqualToAnchor:v33];
+    leadingAnchor2 = [iconView leadingAnchor];
+    leadingAnchor3 = [iconsView leadingAnchor];
+    v32 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v37[0] = v32;
-    v34 = v8;
-    v31 = [v8 topAnchor];
-    v30 = [v7 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    v34 = iconView;
+    topAnchor = [iconView topAnchor];
+    topAnchor2 = [iconsView topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[1] = v29;
-    v28 = [v8 bottomAnchor];
-    v27 = [v7 bottomAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    bottomAnchor = [iconView bottomAnchor];
+    bottomAnchor2 = [iconsView bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[2] = v26;
-    v25 = [(STUIStatusBarDualIndicatorItem *)self itemSpacingConstraint];
-    v37[3] = v25;
-    v24 = [v9 topAnchor];
-    v23 = [v7 topAnchor];
-    v13 = [v24 constraintEqualToAnchor:v23];
+    itemSpacingConstraint = [(STUIStatusBarDualIndicatorItem *)self itemSpacingConstraint];
+    v37[3] = itemSpacingConstraint;
+    topAnchor3 = [secondaryIconView topAnchor];
+    topAnchor4 = [iconsView topAnchor];
+    v13 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v37[4] = v13;
-    v14 = [v9 bottomAnchor];
-    v15 = [v7 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor3 = [secondaryIconView bottomAnchor];
+    bottomAnchor4 = [iconsView bottomAnchor];
+    v16 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v37[5] = v16;
-    v17 = [v9 trailingAnchor];
-    [v7 trailingAnchor];
+    trailingAnchor2 = [secondaryIconView trailingAnchor];
+    [iconsView trailingAnchor];
     v19 = v18 = v4;
-    v20 = [v17 constraintEqualToAnchor:v19];
+    v20 = [trailingAnchor2 constraintEqualToAnchor:v19];
     v37[6] = v20;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:7];
 
@@ -152,17 +152,17 @@
   MEMORY[0x2821F96F8](v4, secondaryIconView);
 }
 
-- (id)imageForUpdate:(id)a3 secondary:(BOOL)a4
+- (id)imageForUpdate:(id)update secondary:(BOOL)secondary
 {
-  v6 = a3;
-  if (a4)
+  updateCopy = update;
+  if (secondary)
   {
-    [(STUIStatusBarDualIndicatorItem *)self secondarySystemImageNameForUpdate:v6];
+    [(STUIStatusBarDualIndicatorItem *)self secondarySystemImageNameForUpdate:updateCopy];
   }
 
   else
   {
-    [(STUIStatusBarDualIndicatorItem *)self systemImageNameForUpdate:v6];
+    [(STUIStatusBarDualIndicatorItem *)self systemImageNameForUpdate:updateCopy];
   }
   v7 = ;
   if (v7)
@@ -178,19 +178,19 @@
   return v8;
 }
 
-- (id)additionRemovalAnimationForSubItem:(id)a3 image:(id)a4 update:(id)a5 displayItem:(id)a6
+- (id)additionRemovalAnimationForSubItem:(id)item image:(id)image update:(id)update displayItem:(id)displayItem
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  imageCopy = image;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__STUIStatusBarDualIndicatorItem_additionRemovalAnimationForSubItem_image_update_displayItem___block_invoke;
   v14[3] = &unk_279D38D50;
-  v15 = v9;
-  v16 = v8;
-  v17 = self;
-  v10 = v8;
-  v11 = v9;
+  v15 = imageCopy;
+  v16 = itemCopy;
+  selfCopy = self;
+  v10 = itemCopy;
+  v11 = imageCopy;
   v12 = [STUIStatusBarAnimation animationWithBlock:v14];
 
   return v12;
@@ -296,14 +296,14 @@ uint64_t __94__STUIStatusBarDualIndicatorItem_additionRemovalAnimationForSubItem
   return (*(*(a1 + 56) + 16))();
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [objc_opt_class() defaultDisplayIdentifier];
-  v10 = v9;
-  if (v8 != v9)
+  updateCopy = update;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
+  v10 = defaultDisplayIdentifier;
+  if (identifier != defaultDisplayIdentifier)
   {
 
 LABEL_25:
@@ -311,30 +311,30 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v11 = [v7 isEnabled];
+  isEnabled = [itemCopy isEnabled];
 
-  if (!v11 || ![v6 dataChanged])
+  if (!isEnabled || ![updateCopy dataChanged])
   {
     goto LABEL_25;
   }
 
-  v12 = [(STUIStatusBarDualIndicatorItem *)self iconView];
-  v13 = [v12 image];
+  iconView = [(STUIStatusBarDualIndicatorItem *)self iconView];
+  image = [iconView image];
 
-  v14 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
-  v15 = [v14 image];
+  secondaryIconView = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
+  image2 = [secondaryIconView image];
 
-  v16 = [v6 data];
-  v17 = [(STUIStatusBarDualIndicatorItem *)self indicatorEntryKey];
-  v18 = [v16 valueForKey:v17];
+  data = [updateCopy data];
+  indicatorEntryKey = [(STUIStatusBarDualIndicatorItem *)self indicatorEntryKey];
+  v18 = [data valueForKey:indicatorEntryKey];
 
-  v19 = [v6 data];
-  v20 = [(STUIStatusBarDualIndicatorItem *)self secondaryIndicatorEntryKey];
-  v21 = [v19 valueForKey:v20];
+  data2 = [updateCopy data];
+  secondaryIndicatorEntryKey = [(STUIStatusBarDualIndicatorItem *)self secondaryIndicatorEntryKey];
+  v21 = [data2 valueForKey:secondaryIndicatorEntryKey];
   v22 = v21;
   if (v18)
   {
-    v23 = v13 == 0;
+    v23 = image == 0;
   }
 
   else
@@ -342,7 +342,7 @@ LABEL_25:
     v23 = 1;
   }
 
-  if (v15)
+  if (image2)
   {
     v23 = 1;
   }
@@ -360,7 +360,7 @@ LABEL_25:
 
   if (v21)
   {
-    v25 = v15 == 0;
+    v25 = image2 == 0;
   }
 
   else
@@ -368,8 +368,8 @@ LABEL_25:
     v25 = 1;
   }
 
-  v26 = v13 | v15;
-  if (v13)
+  v26 = image | image2;
+  if (image)
   {
     v27 = 1;
   }
@@ -383,14 +383,14 @@ LABEL_25:
   {
     v40.receiver = self;
     v40.super_class = STUIStatusBarDualIndicatorItem;
-    v30 = [(STUIStatusBarItem *)&v40 applyUpdate:v6 toDisplayItem:v7];
-    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:v6 secondary:0];
-    v32 = [(STUIStatusBarDualIndicatorItem *)self iconView];
-    [v32 setImage:v28];
+    v30 = [(STUIStatusBarItem *)&v40 applyUpdate:updateCopy toDisplayItem:itemCopy];
+    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:updateCopy secondary:0];
+    iconView2 = [(STUIStatusBarDualIndicatorItem *)self iconView];
+    [iconView2 setImage:v28];
 
-    v33 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:v6 secondary:1];
-    v34 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
-    [v34 setImage:v33];
+    v33 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:updateCopy secondary:1];
+    secondaryIconView2 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
+    [secondaryIconView2 setImage:v33];
 
     v35 = 0.0;
     if (v28 && v33)
@@ -399,19 +399,19 @@ LABEL_25:
       v35 = v36;
     }
 
-    v37 = [(STUIStatusBarDualIndicatorItem *)self itemSpacingConstraint];
-    [v37 setConstant:v35];
+    itemSpacingConstraint = [(STUIStatusBarDualIndicatorItem *)self itemSpacingConstraint];
+    [itemSpacingConstraint setConstant:v35];
 
     goto LABEL_36;
   }
 
   if (v18)
   {
-    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:v6 secondary:0];
-    v29 = [(STUIStatusBarDualIndicatorItem *)self iconView];
+    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:updateCopy secondary:0];
+    iconView3 = [(STUIStatusBarDualIndicatorItem *)self iconView];
 LABEL_35:
-    v33 = v29;
-    v30 = [(STUIStatusBarDualIndicatorItem *)self additionRemovalAnimationForSubItem:v29 image:v28 update:v6 displayItem:v7];
+    v33 = iconView3;
+    v30 = [(STUIStatusBarDualIndicatorItem *)self additionRemovalAnimationForSubItem:iconView3 image:v28 update:updateCopy displayItem:itemCopy];
 LABEL_36:
 
     goto LABEL_26;
@@ -419,14 +419,14 @@ LABEL_36:
 
   if (v22)
   {
-    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:v6 secondary:1];
-    v29 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
+    v28 = [(STUIStatusBarDualIndicatorItem *)self imageForUpdate:updateCopy secondary:1];
+    iconView3 = [(STUIStatusBarDualIndicatorItem *)self secondaryIconView];
     goto LABEL_35;
   }
 
   v39.receiver = self;
   v39.super_class = STUIStatusBarDualIndicatorItem;
-  v30 = [(STUIStatusBarItem *)&v39 applyUpdate:v6 toDisplayItem:v7];
+  v30 = [(STUIStatusBarItem *)&v39 applyUpdate:updateCopy toDisplayItem:itemCopy];
 LABEL_26:
 
   return v30;

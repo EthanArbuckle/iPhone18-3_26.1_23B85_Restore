@@ -8,15 +8,15 @@
 {
   v5.receiver = self;
   v5.super_class = UIButtonAccessibility__PosterKit__UIKit;
-  v2 = [(UIButtonAccessibility__PosterKit__UIKit *)&v5 accessibilityLabel];
-  if (([v2 isEqualToString:@"square.2.stack.3d"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"square.2.layers.3d") & 1) != 0 || objc_msgSend(v2, "isEqualToString:", @"square.2.layers.3d.fill"))
+  accessibilityLabel = [(UIButtonAccessibility__PosterKit__UIKit *)&v5 accessibilityLabel];
+  if (([accessibilityLabel isEqualToString:@"square.2.stack.3d"] & 1) != 0 || (objc_msgSend(accessibilityLabel, "isEqualToString:", @"square.2.layers.3d") & 1) != 0 || objc_msgSend(accessibilityLabel, "isEqualToString:", @"square.2.layers.3d.fill"))
   {
     v3 = accessibilityLocalizedString(@"primary.action.button.depth.effect.label");
 
-    v2 = v3;
+    accessibilityLabel = v3;
   }
 
-  return v2;
+  return accessibilityLabel;
 }
 
 @end

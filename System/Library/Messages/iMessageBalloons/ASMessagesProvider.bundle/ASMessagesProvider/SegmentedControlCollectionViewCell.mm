@@ -1,11 +1,11 @@
 @interface SegmentedControlCollectionViewCell
-- (_TtC18ASMessagesProvider34SegmentedControlCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider34SegmentedControlCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SegmentedControlCollectionViewCell
 
-- (_TtC18ASMessagesProvider34SegmentedControlCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider34SegmentedControlCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider34SegmentedControlCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();

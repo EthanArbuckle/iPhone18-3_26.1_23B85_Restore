@@ -1,15 +1,15 @@
 @interface ATXBlendingBiomeStreamLoggerContext
 - (ATXBlendingBiomeStreamLoggerContext)init;
-- (ATXBlendingBiomeStreamLoggerContext)initWithCoder:(id)a3;
-- (ATXBlendingBiomeStreamLoggerContext)initWithSessionTrackingContext:(id)a3 cacheUpdateContext:(id)a4 stackSuggestTrackingContext:(id)a5 screenLogUnlockSessionContext:(id)a6;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXBlendingBiomeStreamLoggerContext:(id)a3;
+- (ATXBlendingBiomeStreamLoggerContext)initWithCoder:(id)coder;
+- (ATXBlendingBiomeStreamLoggerContext)initWithSessionTrackingContext:(id)context cacheUpdateContext:(id)updateContext stackSuggestTrackingContext:(id)trackingContext screenLogUnlockSessionContext:(id)sessionContext;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXBlendingBiomeStreamLoggerContext:(id)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithBlendingUICacheUpdate:(id)a3;
-- (void)updateWithClientModelCacheUpdate:(id)a3;
-- (void)updateWithUIEvent:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithBlendingUICacheUpdate:(id)update;
+- (void)updateWithClientModelCacheUpdate:(id)update;
+- (void)updateWithUIEvent:(id)event;
 @end
 
 @implementation ATXBlendingBiomeStreamLoggerContext
@@ -25,84 +25,84 @@
   return v7;
 }
 
-- (ATXBlendingBiomeStreamLoggerContext)initWithSessionTrackingContext:(id)a3 cacheUpdateContext:(id)a4 stackSuggestTrackingContext:(id)a5 screenLogUnlockSessionContext:(id)a6
+- (ATXBlendingBiomeStreamLoggerContext)initWithSessionTrackingContext:(id)context cacheUpdateContext:(id)updateContext stackSuggestTrackingContext:(id)trackingContext screenLogUnlockSessionContext:(id)sessionContext
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  updateContextCopy = updateContext;
+  trackingContextCopy = trackingContext;
+  sessionContextCopy = sessionContext;
   v18.receiver = self;
   v18.super_class = ATXBlendingBiomeStreamLoggerContext;
   v15 = [(ATXBlendingBiomeStreamLoggerContext *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionTrackingContext, a3);
-    objc_storeStrong(&v16->_cacheUpdateContext, a4);
-    objc_storeStrong(&v16->_stackSuggestTrackingContext, a5);
-    objc_storeStrong(&v16->_screenLogUnlockSessionContext, a6);
+    objc_storeStrong(&v15->_sessionTrackingContext, context);
+    objc_storeStrong(&v16->_cacheUpdateContext, updateContext);
+    objc_storeStrong(&v16->_stackSuggestTrackingContext, trackingContext);
+    objc_storeStrong(&v16->_screenLogUnlockSessionContext, sessionContext);
   }
 
   return v16;
 }
 
-- (void)updateWithClientModelCacheUpdate:(id)a3
+- (void)updateWithClientModelCacheUpdate:(id)update
 {
   sessionTrackingContext = self->_sessionTrackingContext;
-  v5 = a3;
-  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithClientModelCacheUpdate:v5];
-  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithClientModelCacheUpdate:v5];
-  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithClientModelCacheUpdate:v5];
-  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithClientModelCacheUpdate:v5];
+  updateCopy = update;
+  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithClientModelCacheUpdate:updateCopy];
+  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithClientModelCacheUpdate:updateCopy];
+  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithClientModelCacheUpdate:updateCopy];
+  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithClientModelCacheUpdate:updateCopy];
 }
 
-- (void)updateWithBlendingUICacheUpdate:(id)a3
+- (void)updateWithBlendingUICacheUpdate:(id)update
 {
   sessionTrackingContext = self->_sessionTrackingContext;
-  v5 = a3;
-  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithBlendingUICacheUpdate:v5];
-  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithBlendingUICacheUpdate:v5];
-  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithBlendingUICacheUpdate:v5];
-  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithBlendingUICacheUpdate:v5];
+  updateCopy = update;
+  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithBlendingUICacheUpdate:updateCopy];
+  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithBlendingUICacheUpdate:updateCopy];
+  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithBlendingUICacheUpdate:updateCopy];
+  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithBlendingUICacheUpdate:updateCopy];
 }
 
-- (void)updateWithUIEvent:(id)a3
+- (void)updateWithUIEvent:(id)event
 {
   sessionTrackingContext = self->_sessionTrackingContext;
-  v5 = a3;
-  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithUIEvent:v5];
-  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithUIEvent:v5];
-  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithUIEvent:v5];
-  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithUIEvent:v5];
+  eventCopy = event;
+  [(ATXSingleSuggestionSessionTrackingContext *)sessionTrackingContext updateWithUIEvent:eventCopy];
+  [(ATXBiomeStreamCacheUpdateContext *)self->_cacheUpdateContext updateWithUIEvent:eventCopy];
+  [(ATXStackSystemSuggestTrackingContext *)self->_stackSuggestTrackingContext updateWithUIEvent:eventCopy];
+  [(ATXScreenLogUnlockSessionContext *)self->_screenLogUnlockSessionContext updateWithUIEvent:eventCopy];
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -114,84 +114,84 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionTrackingContext = self->_sessionTrackingContext;
-  v5 = a3;
-  [v5 encodeObject:sessionTrackingContext forKey:@"sessionTrackingContext"];
-  [v5 encodeObject:self->_cacheUpdateContext forKey:@"cacheUpdateContext"];
-  [v5 encodeObject:self->_stackSuggestTrackingContext forKey:@"systemSuggestContext"];
-  [v5 encodeObject:self->_screenLogUnlockSessionContext forKey:@"screenLogUnlockContext"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionTrackingContext forKey:@"sessionTrackingContext"];
+  [coderCopy encodeObject:self->_cacheUpdateContext forKey:@"cacheUpdateContext"];
+  [coderCopy encodeObject:self->_stackSuggestTrackingContext forKey:@"systemSuggestContext"];
+  [coderCopy encodeObject:self->_screenLogUnlockSessionContext forKey:@"screenLogUnlockContext"];
 }
 
-- (ATXBlendingBiomeStreamLoggerContext)initWithCoder:(id)a3
+- (ATXBlendingBiomeStreamLoggerContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionTrackingContext"];
-  if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"sessionTrackingContext" coder:v4 errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionTrackingContext"];
+  if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"sessionTrackingContext" coder:coderCopy errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheUpdateContext"];
-    if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"cacheUpdateContext" coder:v4 errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheUpdateContext"];
+    if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v7 key:@"cacheUpdateContext" coder:coderCopy errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemSuggestContext"];
-      if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v8 key:@"systemSuggestContext" coder:v4 errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemSuggestContext"];
+      if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v8 key:@"systemSuggestContext" coder:coderCopy errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
       {
-        v6 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"screenLogUnlockContext"];
-        if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v9 key:@"screenLogUnlockContext" coder:v4 errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"screenLogUnlockContext"];
+        if ([(ATXBlendingBiomeStreamLoggerContext *)self checkAndReportDecodingFailureIfNeededForid:v9 key:@"screenLogUnlockContext" coder:coderCopy errorDomain:@"com.apple.duetexpertd.ATXBlendingBiomeStreamLoggerContext" errorCode:-1])
         {
-          v6 = 0;
+          selfCopy = 0;
         }
 
         else
         {
           self = [(ATXBlendingBiomeStreamLoggerContext *)self initWithSessionTrackingContext:v5 cacheUpdateContext:v7 stackSuggestTrackingContext:v8 screenLogUnlockSessionContext:v9];
-          v6 = self;
+          selfCopy = self;
         }
       }
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBlendingBiomeStreamLoggerContext *)self isEqualToATXBlendingBiomeStreamLoggerContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXBlendingBiomeStreamLoggerContext *)self isEqualToATXBlendingBiomeStreamLoggerContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXBlendingBiomeStreamLoggerContext:(id)a3
+- (BOOL)isEqualToATXBlendingBiomeStreamLoggerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = self->_sessionTrackingContext;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == contextCopy[1])
   {
   }
 
@@ -207,7 +207,7 @@ LABEL_7:
 
   v8 = self->_cacheUpdateContext;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == contextCopy[2])
   {
   }
 
@@ -223,7 +223,7 @@ LABEL_7:
 
   v11 = self->_stackSuggestTrackingContext;
   v12 = v11;
-  if (v11 == v4[3])
+  if (v11 == contextCopy[3])
   {
   }
 
@@ -241,7 +241,7 @@ LABEL_11:
 
   v15 = self->_screenLogUnlockSessionContext;
   v16 = v15;
-  if (v15 == v4[4])
+  if (v15 == contextCopy[4])
   {
     v14 = 1;
   }

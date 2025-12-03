@@ -2,9 +2,9 @@
 + (BOOL)isAvailable;
 - (CMSwimTracker)init;
 - (void)dealloc;
-- (void)querySWOLFSummaryWithSessionID:(id)a3 handler:(id)a4;
-- (void)querySwimUpdatesFromRecord:(id)a3 handler:(id)a4;
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4;
+- (void)querySWOLFSummaryWithSessionID:(id)d handler:(id)handler;
+- (void)querySwimUpdatesFromRecord:(id)record handler:(id)handler;
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler;
 - (void)stopUpdates;
 @end
 
@@ -49,11 +49,11 @@
   return 0;
 }
 
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSwimTracker.mm", 401, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -62,8 +62,8 @@
   v10[2] = sub_19B779990;
   v10[3] = &unk_1E7532C08;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = record;
+  v10[6] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v10);
 }
 
@@ -77,11 +77,11 @@
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)querySwimUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)querySwimUpdatesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSwimTracker.mm", 418, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -92,17 +92,17 @@
 
   if (qword_1ED71D780 == 3)
   {
-    v6 = objc_msgSend__internal(self, a2, a3);
+    v6 = objc_msgSend__internal(self, a2, record);
 
-    MEMORY[0x1EEE66B58](v6, sel__querySwimUpdatesFromRecord_handler_, a3);
+    MEMORY[0x1EEE66B58](v6, sel__querySwimUpdatesFromRecord_handler_, record);
   }
 }
 
-- (void)querySWOLFSummaryWithSessionID:(id)a3 handler:(id)a4
+- (void)querySWOLFSummaryWithSessionID:(id)d handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, d);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSwimTracker.mm", 432, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -113,9 +113,9 @@
 
   if (qword_1ED71D790 == 3)
   {
-    v6 = objc_msgSend__internal(self, a2, a3);
+    v6 = objc_msgSend__internal(self, a2, d);
 
-    MEMORY[0x1EEE66B58](v6, sel__querySWOLFSummaryWithSessionID_handler_, a3);
+    MEMORY[0x1EEE66B58](v6, sel__querySWOLFSummaryWithSessionID_handler_, d);
   }
 }
 

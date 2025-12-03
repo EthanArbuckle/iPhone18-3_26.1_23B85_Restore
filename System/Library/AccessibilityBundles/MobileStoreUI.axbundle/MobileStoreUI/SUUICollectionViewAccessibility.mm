@@ -1,21 +1,21 @@
 @interface SUUICollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view;
 - (BOOL)accessibilityScrollDownPageSupported;
 - (BOOL)accessibilityScrollUpPageSupported;
 @end
 
 @implementation SUUICollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIStorePageCollectionViewLayout"];
-  [v3 validateClass:@"SUUIStorePageCollectionViewLayout" hasInstanceMethod:@"_itemPinningConfigurationForItemAtIndexPath:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningStyle" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningStyle" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningContentInset" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningContentInset" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIStorePageCollectionViewLayout"];
+  [validationsCopy validateClass:@"SUUIStorePageCollectionViewLayout" hasInstanceMethod:@"_itemPinningConfigurationForItemAtIndexPath:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningStyle" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningStyle" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"hasValidPinningContentInset" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUUIStorePageItemPinningConfiguration" hasInstanceMethod:@"pinningContentInset" withFullSignature:{"{UIEdgeInsets=dddd}", 0}];
 }
 
 - (BOOL)accessibilityScrollDownPageSupported
@@ -46,21 +46,21 @@
   return [(SUUICollectionViewAccessibility *)&v5 accessibilityScrollUpPageSupported];
 }
 
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view
 {
-  height = a3.size.height;
-  x = a3.origin.x;
-  width = a3.size.width;
-  y = a3.origin.y;
+  height = frame.size.height;
+  x = frame.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
   v67 = *MEMORY[0x29EDCA608];
-  v36 = a4;
-  v37 = self;
-  v41 = [(SUUICollectionViewAccessibility *)self collectionViewLayout];
+  viewCopy = view;
+  selfCopy = self;
+  collectionViewLayout = [(SUUICollectionViewAccessibility *)self collectionViewLayout];
   NSClassFromString(&cfstr_Suuistorepagec.isa);
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v41 safeValueForKey:@"indexPathsForPinningItems"];
-    v33 = [v36 _accessibilityAncestorIsKindOf:objc_opt_class()];
+    v32 = [collectionViewLayout safeValueForKey:@"indexPathsForPinningItems"];
+    v33 = [viewCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
     if (v33)
     {
       v38 = [(SUUICollectionViewAccessibility *)self indexPathForCell:?];
@@ -99,7 +99,7 @@
               v57 = __71__SUUICollectionViewAccessibility__accessibilityScrollToFrame_forView___block_invoke;
               v58 = &unk_29F2D8DB8;
               v61 = &v49;
-              v59 = v41;
+              v59 = collectionViewLayout;
               v60 = v11;
               AXPerformSafeBlock();
               v12 = *(v50 + 5);
@@ -129,13 +129,13 @@
                   v16 = v50[6];
 
                   _Block_object_dispose(&v49, 8);
-                  v17 = [(SUUICollectionViewAccessibility *)v37 layoutAttributesForItemAtIndexPath:v11];
+                  v17 = [(SUUICollectionViewAccessibility *)selfCopy layoutAttributesForItemAtIndexPath:v11];
                   [v17 size];
                   v19 = v18;
 
-                  v20 = [v11 section];
+                  section = [v11 section];
                   v21 = v15 + v16 + v19;
-                  if (v20 < [v38 section] || (v24 = objc_msgSend(v11, "section"), v24 == objc_msgSend(v38, "section")) && (v25 = objc_msgSend(v11, "row"), v25 < objc_msgSend(v38, "row")))
+                  if (section < [v38 section] || (v24 = objc_msgSend(v11, "section"), v24 == objc_msgSend(v38, "section")) && (v25 = objc_msgSend(v11, "row"), v25 < objc_msgSend(v38, "row")))
                   {
                     v22 = v10 == 1 || v8 == 1;
                     v13 = 0.0;
@@ -205,12 +205,12 @@
     }
   }
 
-  v42.receiver = v37;
+  v42.receiver = selfCopy;
   v42.super_class = SUUICollectionViewAccessibility;
-  v29 = [(SUUICollectionViewAccessibility *)&v42 _accessibilityScrollToFrame:v36 forView:x, y, width, height];
+  height = [(SUUICollectionViewAccessibility *)&v42 _accessibilityScrollToFrame:viewCopy forView:x, y, width, height];
 
   v30 = *MEMORY[0x29EDCA608];
-  return v29;
+  return height;
 }
 
 uint64_t __71__SUUICollectionViewAccessibility__accessibilityScrollToFrame_forView___block_invoke(uint64_t a1)

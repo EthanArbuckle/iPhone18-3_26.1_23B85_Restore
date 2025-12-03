@@ -2,16 +2,16 @@
 + (OpaqueCMClock)sourceClock;
 + (id)_audioSession;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
-- (PXAVPlayerAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7;
-- (void)_handleAVAsset:(id)a3 audioMix:(id)a4 info:(id)a5;
-- (void)_handlePlayerItemFinishedSeekingForPlayback:(id)a3;
-- (void)_handlePlayerTime:(id *)a3;
+- (PXAVPlayerAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate;
+- (void)_handleAVAsset:(id)asset audioMix:(id)mix info:(id)info;
+- (void)_handlePlayerItemFinishedSeekingForPlayback:(id)playback;
+- (void)_handlePlayerTime:(id *)time;
 - (void)_invalidatePlayerRate;
 - (void)_invalidatePlayerVolume;
 - (void)_invalidateStatus;
-- (void)_loadDurationFromAsset:(id)a3;
-- (void)_performPlayerTransaction:(id)a3;
-- (void)_playerQueue_performPlayerTransaction:(id)a3;
+- (void)_loadDurationFromAsset:(id)asset;
+- (void)_performPlayerTransaction:(id)transaction;
+- (void)_playerQueue_performPlayerTransaction:(id)transaction;
 - (void)_prepareToPlayIfNeeded;
 - (void)_updatePlayerRate;
 - (void)_updatePlayerVolume;
@@ -21,38 +21,38 @@
 - (void)desiredPlayerVolumeDidChange;
 - (void)didPerformChanges;
 - (void)errorDidChange;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)performFinalCleanup;
-- (void)performInternalChanges:(id)a3;
+- (void)performInternalChanges:(id)changes;
 - (void)play;
-- (void)playFromTime:(id *)a3;
+- (void)playFromTime:(id *)time;
 - (void)prepareToPlay;
-- (void)requestMediaWithResultHandler:(id)a3;
-- (void)setIsPlaybackDesired:(BOOL)a3;
-- (void)setIsPreparingToPlay:(BOOL)a3;
-- (void)setPlayerRate:(float)a3;
-- (void)setPlayerTime:(id *)a3;
+- (void)requestMediaWithResultHandler:(id)handler;
+- (void)setIsPlaybackDesired:(BOOL)desired;
+- (void)setIsPreparingToPlay:(BOOL)play;
+- (void)setPlayerRate:(float)rate;
+- (void)setPlayerTime:(id *)time;
 @end
 
 @implementation PXAVPlayerAudioSession
 
-- (void)setPlayerTime:(id *)a3
+- (void)setPlayerTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_playerTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_playerTime.value = *&time->var0;
   self->_playerTime.epoch = var3;
 }
 
-- (void)_handlePlayerItemFinishedSeekingForPlayback:(id)a3
+- (void)_handlePlayerItemFinishedSeekingForPlayback:(id)playback
 {
-  v4 = a3;
+  playbackCopy = playback;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PXAVPlayerAudioSession__handlePlayerItemFinishedSeekingForPlayback___block_invoke;
   v6[3] = &unk_1E77490F0;
-  v7 = v4;
-  v5 = v4;
+  v7 = playbackCopy;
+  v5 = playbackCopy;
   [(PXAVPlayerAudioSession *)self _performPlayerTransaction:v6];
   [(PXAVPlayerAudioSession *)self performInternalChanges:&__block_literal_global_56];
 }
@@ -64,13 +64,13 @@ void __70__PXAVPlayerAudioSession__handlePlayerItemFinishedSeekingForPlayback___
   [v2 setIsPreparingToPlay:0];
 }
 
-- (void)_loadDurationFromAsset:(id)a3
+- (void)_loadDurationFromAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v5 = NSStringFromSelector(sel_duration);
   v16 = 0;
-  v6 = [v4 statusOfValueForKey:v5 error:&v16];
+  v6 = [assetCopy statusOfValueForKey:v5 error:&v16];
   v7 = v16;
 
   if (v6 == 3)
@@ -79,7 +79,7 @@ void __70__PXAVPlayerAudioSession__handlePlayerItemFinishedSeekingForPlayback___
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = assetCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Failed to load duration from %@. Error: %@", buf, 0x16u);
@@ -92,7 +92,7 @@ void __70__PXAVPlayerAudioSession__handlePlayerItemFinishedSeekingForPlayback___
     v14[1] = 3221225472;
     v14[2] = __49__PXAVPlayerAudioSession__loadDurationFromAsset___block_invoke;
     v14[3] = &unk_1E77490C8;
-    v15 = v4;
+    v15 = assetCopy;
     [(PXAVPlayerAudioSession *)self performInternalChanges:v14];
   }
 
@@ -107,7 +107,7 @@ void __70__PXAVPlayerAudioSession__handlePlayerItemFinishedSeekingForPlayback___
     v11[2] = __49__PXAVPlayerAudioSession__loadDurationFromAsset___block_invoke_54;
     v11[3] = &unk_1E774B248;
     objc_copyWeak(&v13, buf);
-    v12 = v4;
+    v12 = assetCopy;
     [v12 loadValuesAsynchronouslyForKeys:v10 completionHandler:v11];
 
     objc_destroyWeak(&v13);
@@ -141,25 +141,25 @@ void __49__PXAVPlayerAudioSession__loadDurationFromAsset___block_invoke_54(uint6
   [WeakRetained _loadDurationFromAsset:*(a1 + 32)];
 }
 
-- (void)_handleAVAsset:(id)a3 audioMix:(id)a4 info:(id)a5
+- (void)_handleAVAsset:(id)asset audioMix:(id)mix info:(id)info
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  assetCopy = asset;
+  mixCopy = mix;
+  infoCopy = info;
+  v11 = infoCopy;
+  if (assetCopy)
   {
-    v12 = [objc_alloc(MEMORY[0x1E69880B0]) initWithAsset:v8];
-    [v12 setAudioMix:v9];
+    v12 = [objc_alloc(MEMORY[0x1E69880B0]) initWithAsset:assetCopy];
+    [v12 setAudioMix:mixCopy];
     v13 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(PXAudioSession *)self asset];
+      asset = [(PXAudioSession *)self asset];
       v15 = [v11 objectForKeyedSubscript:@"ProgramLoudnessLKFS"];
       v16 = [v11 objectForKeyedSubscript:@"PeakdBFS"];
       *buf = 138543874;
-      v27 = v14;
+      v27 = asset;
       v28 = 2114;
       v29 = v15;
       v30 = 2114;
@@ -173,7 +173,7 @@ void __49__PXAVPlayerAudioSession__loadDurationFromAsset___block_invoke_54(uint6
     v22[3] = &unk_1E77490C8;
     v23 = v11;
     [(PXAVPlayerAudioSession *)self performInternalChanges:v22];
-    [(PXAVPlayerAudioSession *)self _loadDurationFromAsset:v8];
+    [(PXAVPlayerAudioSession *)self _loadDurationFromAsset:assetCopy];
     objc_initWeak(&location, self);
     [(PXAudioSession *)self startTime];
     v18[0] = MEMORY[0x1E69E9820];
@@ -196,7 +196,7 @@ void __49__PXAVPlayerAudioSession__loadDurationFromAsset___block_invoke_54(uint6
     v24[2] = __55__PXAVPlayerAudioSession__handleAVAsset_audioMix_info___block_invoke;
     v24[3] = &unk_1E7749090;
     v24[4] = self;
-    v25 = v10;
+    v25 = infoCopy;
     [(PXAVPlayerAudioSession *)self performInternalChanges:v24];
   }
 }
@@ -242,29 +242,29 @@ void __55__PXAVPlayerAudioSession__handleAVAsset_audioMix_info___block_invoke_2(
   [WeakRetained _handlePlayerItemFinishedSeekingForPlayback:*(a1 + 32)];
 }
 
-- (void)setIsPlaybackDesired:(BOOL)a3
+- (void)setIsPlaybackDesired:(BOOL)desired
 {
-  v3 = a3;
-  v5 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  desiredCopy = desired;
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_isPlaybackDesired != v3)
+  if (self->_isPlaybackDesired != desiredCopy)
   {
-    self->_isPlaybackDesired = v3;
+    self->_isPlaybackDesired = desiredCopy;
 
     [(PXAVPlayerAudioSession *)self _invalidatePlayerRate];
   }
 }
 
-- (void)setIsPreparingToPlay:(BOOL)a3
+- (void)setIsPreparingToPlay:(BOOL)play
 {
-  v3 = a3;
-  v5 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  playCopy = play;
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_isPreparingToPlay != v3)
+  if (self->_isPreparingToPlay != playCopy)
   {
-    self->_isPreparingToPlay = v3;
+    self->_isPreparingToPlay = playCopy;
     [(PXAVPlayerAudioSession *)self _invalidateStatus];
 
     [(PXAVPlayerAudioSession *)self _invalidatePlayerRate];
@@ -302,33 +302,33 @@ void __48__PXAVPlayerAudioSession__prepareToPlayIfNeeded__block_invoke_2(uint64_
   [WeakRetained _handleAVAsset:v9 audioMix:v8 info:v7];
 }
 
-- (void)_handlePlayerTime:(id *)a3
+- (void)_handlePlayerTime:(id *)time
 {
-  v4 = *a3;
+  v4 = *time;
   [(PXAVPlayerAudioSession *)self setPlayerTime:&v4];
   [(PXAVPlayerAudioSession *)self setPlayerTimeHasChangedSinceSeeking:1];
 }
 
-- (void)_playerQueue_performPlayerTransaction:(id)a3
+- (void)_playerQueue_performPlayerTransaction:(id)transaction
 {
-  v5 = a3;
-  v6 = [(PXAVPlayerAudioSession *)self playerQueue_player];
-  (*(a3 + 2))(v5, v6);
+  transactionCopy = transaction;
+  playerQueue_player = [(PXAVPlayerAudioSession *)self playerQueue_player];
+  (*(transaction + 2))(transactionCopy, playerQueue_player);
 }
 
-- (void)_performPlayerTransaction:(id)a3
+- (void)_performPlayerTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   objc_initWeak(&location, self);
-  v5 = [(PXAVPlayerAudioSession *)self playerQueue];
+  playerQueue = [(PXAVPlayerAudioSession *)self playerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PXAVPlayerAudioSession__performPlayerTransaction___block_invoke;
   block[3] = &unk_1E774AA30;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = transactionCopy;
+  v6 = transactionCopy;
+  dispatch_async(playerQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -340,19 +340,19 @@ void __52__PXAVPlayerAudioSession__performPlayerTransaction___block_invoke(uint6
   [WeakRetained _playerQueue_performPlayerTransaction:*(a1 + 32)];
 }
 
-- (void)setPlayerRate:(float)a3
+- (void)setPlayerRate:(float)rate
 {
-  v5 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (self->_playerRate != a3)
+  if (self->_playerRate != rate)
   {
-    self->_playerRate = a3;
+    self->_playerRate = rate;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__PXAVPlayerAudioSession_setPlayerRate___block_invoke;
     v6[3] = &__block_descriptor_36_e18_v16__0__AVPlayer_8l;
-    v7 = a3;
+    rateCopy = rate;
     [(PXAVPlayerAudioSession *)self _performPlayerTransaction:v6];
     [(PXAVPlayerAudioSession *)self _invalidateStatus];
   }
@@ -360,20 +360,20 @@ void __52__PXAVPlayerAudioSession__performPlayerTransaction___block_invoke(uint6
 
 - (void)_updatePlayerRate
 {
-  v3 = [(PXAVPlayerAudioSession *)self isPlaybackDesired];
+  isPlaybackDesired = [(PXAVPlayerAudioSession *)self isPlaybackDesired];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43__PXAVPlayerAudioSession__updatePlayerRate__block_invoke;
   v4[3] = &unk_1E7749018;
   v4[4] = self;
-  v5 = v3;
+  v5 = isPlaybackDesired;
   [(PXAudioSession *)self performChanges:v4];
 }
 
 - (void)_invalidatePlayerRate
 {
-  v2 = [(PXAVPlayerAudioSession *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlayerRate];
+  updater = [(PXAVPlayerAudioSession *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlayerRate];
 }
 
 - (void)_updatePlayerVolume
@@ -396,15 +396,15 @@ void __45__PXAVPlayerAudioSession__updatePlayerVolume__block_invoke(uint64_t a1,
 
 - (void)_invalidatePlayerVolume
 {
-  v2 = [(PXAVPlayerAudioSession *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlayerVolume];
+  updater = [(PXAVPlayerAudioSession *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlayerVolume];
 }
 
 - (void)_updateStatus
 {
-  v3 = [(PXAudioSession *)self error];
+  error = [(PXAudioSession *)self error];
 
-  if (v3)
+  if (error)
   {
     v4 = 4;
   }
@@ -434,14 +434,14 @@ void __45__PXAVPlayerAudioSession__updatePlayerVolume__block_invoke(uint64_t a1,
 
 - (void)_invalidateStatus
 {
-  v2 = [(PXAVPlayerAudioSession *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateStatus];
+  updater = [(PXAVPlayerAudioSession *)self updater];
+  [updater setNeedsUpdateOf:sel__updateStatus];
 }
 
 - (void)didPerformChanges
 {
-  v3 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4.receiver = self;
   v4.super_class = PXAVPlayerAudioSession;
@@ -451,37 +451,37 @@ void __45__PXAVPlayerAudioSession__updatePlayerVolume__block_invoke(uint64_t a1,
 
 - (void)cancelMediaRequest
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAVPlayerAudioSession.m" lineNumber:211 description:{@"Method %s is a responsibility of subclass %@", "-[PXAVPlayerAudioSession cancelMediaRequest]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAVPlayerAudioSession.m" lineNumber:211 description:{@"Method %s is a responsibility of subclass %@", "-[PXAVPlayerAudioSession cancelMediaRequest]", v6}];
 
   abort();
 }
 
-- (void)requestMediaWithResultHandler:(id)a3
+- (void)requestMediaWithResultHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAVPlayerAudioSession.m" lineNumber:207 description:{@"Method %s is a responsibility of subclass %@", "-[PXAVPlayerAudioSession requestMediaWithResultHandler:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAVPlayerAudioSession.m" lineNumber:207 description:{@"Method %s is a responsibility of subclass %@", "-[PXAVPlayerAudioSession requestMediaWithResultHandler:]", v8}];
 
   abort();
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500], a4}];
+  v7 = [change objectForKeyedSubscript:{*MEMORY[0x1E696A500], object}];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v7 != v8)
+    if (v7 != null)
     {
       memset(&v15, 0, sizeof(v15));
-      v9 = [(PXAudioSession *)self asset];
-      v10 = PXAudioAssetDefaultEntryPoint(v9);
+      asset = [(PXAudioSession *)self asset];
+      v10 = PXAudioAssetDefaultEntryPoint(asset);
       [v10 time];
       CMTimeMakeWithSeconds(&v15, v11, 600);
 
@@ -512,17 +512,17 @@ void __73__PXAVPlayerAudioSession_observeValueForKeyPath_ofObject_change_context
   [v10 seekToTime:&v6 completionHandler:v8];
 }
 
-- (void)performInternalChanges:(id)a3
+- (void)performInternalChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PXAVPlayerAudioSession_performInternalChanges___block_invoke;
   v7[3] = &unk_1E7748FA8;
-  v8 = v4;
+  v8 = changesCopy;
   v6.receiver = self;
   v6.super_class = PXAVPlayerAudioSession;
-  v5 = v4;
+  v5 = changesCopy;
   [(PXAudioSession *)&v6 performInternalChanges:v7];
 }
 
@@ -557,13 +557,13 @@ void __73__PXAVPlayerAudioSession_observeValueForKeyPath_ofObject_change_context
   }
 }
 
-- (void)playFromTime:(id *)a3
+- (void)playFromTime:(id *)time
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__PXAVPlayerAudioSession_playFromTime___block_invoke;
   v3[3] = &__block_descriptor_56_e18_v16__0__AVPlayer_8l;
-  v4 = *a3;
+  v4 = *time;
   [(PXAVPlayerAudioSession *)self _performPlayerTransaction:v3];
 }
 
@@ -578,8 +578,8 @@ void __39__PXAVPlayerAudioSession_playFromTime___block_invoke(uint64_t a1, void 
 
 - (void)play
 {
-  v3 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -592,8 +592,8 @@ void __39__PXAVPlayerAudioSession_playFromTime___block_invoke(uint64_t a1, void 
 
 - (void)pause
 {
-  v3 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -606,8 +606,8 @@ void __39__PXAVPlayerAudioSession_playFromTime___block_invoke(uint64_t a1, void 
 
 - (void)prepareToPlay
 {
-  v3 = [(PXAudioSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PXAudioSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(PXAVPlayerAudioSession *)self _prepareToPlayIfNeeded];
 }
@@ -636,15 +636,15 @@ void __39__PXAVPlayerAudioSession_playFromTime___block_invoke(uint64_t a1, void 
   [(PXAVPlayerAudioSession *)&v5 dealloc];
 }
 
-- (PXAVPlayerAudioSession)initWithAsset:(id)a3 volume:(float)a4 startTime:(id *)a5 queue:(id)a6 audioSessionDelegate:(id)a7
+- (PXAVPlayerAudioSession)initWithAsset:(id)asset volume:(float)volume startTime:(id *)time queue:(id)queue audioSessionDelegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  assetCopy = asset;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PXAVPlayerAudioSession;
-  v16 = *a5;
-  if ([(PXAudioSession *)&v17 initWithAsset:v12 volume:&v16 startTime:v13 queue:v14 audioSessionDelegate:COERCE_DOUBLE(__PAIR64__(HIDWORD(v16.value), LODWORD(a4)))])
+  v16 = *time;
+  if ([(PXAudioSession *)&v17 initWithAsset:assetCopy volume:&v16 startTime:queueCopy queue:delegateCopy audioSessionDelegate:COERCE_DOUBLE(__PAIR64__(HIDWORD(v16.value), LODWORD(volume)))])
   {
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_claimAutoreleasedReturnValue();
@@ -668,7 +668,7 @@ void __84__PXAVPlayerAudioSession_initWithAsset_volume_startTime_queue_audioSess
   block[1] = 3221225472;
   block[2] = __39__PXAVPlayerAudioSession__audioSession__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_audioSession_onceToken != -1)
   {
     dispatch_once(&_audioSession_onceToken, block);

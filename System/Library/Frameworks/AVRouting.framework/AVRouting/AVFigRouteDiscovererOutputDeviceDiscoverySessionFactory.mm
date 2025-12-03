@@ -1,7 +1,7 @@
 @interface AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory
 - (AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory)init;
-- (AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory)initWithRouteDiscovererFactory:(id)a3;
-- (id)outputDeviceDiscoverySessionOfClass:(Class)a3 withDeviceFeatures:(unint64_t)a4;
+- (AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory)initWithRouteDiscovererFactory:(id)factory;
+- (id)outputDeviceDiscoverySessionOfClass:(Class)class withDeviceFeatures:(unint64_t)features;
 - (void)dealloc;
 @end
 
@@ -21,12 +21,12 @@
   [(AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory *)&v3 dealloc];
 }
 
-- (id)outputDeviceDiscoverySessionOfClass:(Class)a3 withDeviceFeatures:(unint64_t)a4
+- (id)outputDeviceDiscoverySessionOfClass:(Class)class withDeviceFeatures:(unint64_t)features
 {
   v6 = 0;
-  if (a4 > 4)
+  if (features > 4)
   {
-    switch(a4)
+    switch(features)
     {
       case 5uLL:
         v7 = 3;
@@ -42,7 +42,7 @@
 
   else
   {
-    switch(a4)
+    switch(features)
     {
       case 1uLL:
         v7 = 2;
@@ -65,7 +65,7 @@ LABEL_14:
     }
   }
 
-  v9 = [[a3 alloc] initWithOutputDeviceDiscoverySessionImpl:v6];
+  v9 = [[class alloc] initWithOutputDeviceDiscoverySessionImpl:v6];
 
   return v9;
 }
@@ -78,12 +78,12 @@ uint64_t __114__AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory_outputDe
   return AVFigRouteDiscovererFactoryCreateRouteDiscovererWithType(v2, v3);
 }
 
-- (AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory)initWithRouteDiscovererFactory:(id)a3
+- (AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory)initWithRouteDiscovererFactory:(id)factory
 {
   v8.receiver = self;
   v8.super_class = AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory;
   v4 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionFactory *)&v8 init];
-  if (v4 && (v5 = a3, (v4->_routeDiscovererFactory = v5) != 0))
+  if (v4 && (v5 = factory, (v4->_routeDiscovererFactory = v5) != 0))
   {
     v6 = v4;
   }

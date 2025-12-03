@@ -9,12 +9,12 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8coreidvd13DIPWebService_httpSession);
   v3 = *(v2 + 16);
-  v4 = self;
+  selfCopy = self;
 
   [v3 invalidateAndCancel];
   [*(v2 + 24) invalidateAndCancel];
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for DIPWebService();
   [(DIPWebService *)&v5 dealloc];
 }

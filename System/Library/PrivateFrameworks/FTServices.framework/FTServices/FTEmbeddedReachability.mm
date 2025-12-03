@@ -1,11 +1,11 @@
 @interface FTEmbeddedReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 - (BOOL)connectionRequired;
 - (int64_t)currentReachabilityStatus;
-- (int64_t)networkStatusForFlags:(unsigned int)a3;
+- (int64_t)networkStatusForFlags:(unsigned int)flags;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   v5[2] = *MEMORY[0x1E69E9840];
   v5[1] = 0;
   v5[0] = 528;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   v3 = *MEMORY[0x1E69E9840];
 
   return v2;
@@ -62,19 +62,19 @@
   [(FTEmbeddedReachability *)&v4 dealloc];
 }
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (qword_1EAED7810 != -1)
   {
     sub_1959633A0();
   }
 
-  v5 = (off_1EAED7808)(0, [v4 UTF8String]);
+  v5 = (off_1EAED7808)(0, [nameCopy UTF8String]);
   if (v5)
   {
     v6 = v5;
-    v7 = objc_alloc_init(a1);
+    v7 = objc_alloc_init(self);
     v8 = v7;
     if (v7)
     {
@@ -91,18 +91,18 @@
   return v8;
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
   if (qword_1ED7687E8 != -1)
   {
     sub_1959633B4();
   }
 
-  v5 = off_1ED7687E0(*MEMORY[0x1E695E480], a3);
+  v5 = off_1ED7687E0(*MEMORY[0x1E695E480], address);
   if (v5)
   {
     v6 = v5;
-    v5 = objc_alloc_init(a1);
+    v5 = objc_alloc_init(self);
     if (v5)
     {
       v5[2] = v6;
@@ -118,7 +118,7 @@
   v5[2] = *MEMORY[0x1E69E9840];
   v5[1] = 0;
   v5[0] = 0xFEA900000210;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   if (v2)
   {
     v2[8] = 1;
@@ -129,21 +129,21 @@
   return v2;
 }
 
-- (int64_t)networkStatusForFlags:(unsigned int)a3
+- (int64_t)networkStatusForFlags:(unsigned int)flags
 {
-  sub_19592DAD0(a3, "networkStatusForFlags");
-  if ((a3 & 2) == 0)
+  sub_19592DAD0(flags, "networkStatusForFlags");
+  if ((flags & 2) == 0)
   {
     return 0;
   }
 
-  LODWORD(v5) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v5) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v5) = 0;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v5 = v5;
   }
@@ -153,7 +153,7 @@
     v5 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     return 2;
   }

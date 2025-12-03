@@ -1,36 +1,36 @@
 @interface CSMyriadPHash
-+ (BOOL)writeHashResultIntoFile:(id)a3;
-+ (BOOL)writeHashlessResult:(unint64_t)a3;
-+ (double)signalEstimateWithBuilder:(id)a3;
-+ (id)createHashResult:(unsigned __int16)a3 goodness:(unsigned __int8)a4 confidence:(unsigned __int8)a5 absTime:(unint64_t)a6 frac:(unsigned __int8)a7;
-+ (id)createRemoraHashResult:(unsigned __int16)a3 goodness:(unsigned __int8)a4 confidence:(unsigned __int8)a5 firstPassTriggerEndTime:(double)a6 frac:(unsigned __int8)a7;
-+ (id)createRemoraHashResultFromPHash:(id)a3 firstPassTriggerEndTime:(double)a4;
-+ (id)decodeWithMyriadPHash:(id)a3;
-+ (id)generateEmptyPHash:(unint64_t)a3 writeFile:(BOOL)a4;
-+ (id)overridePHash:(id)a3 withMachTime:(unint64_t)a4;
++ (BOOL)writeHashResultIntoFile:(id)file;
++ (BOOL)writeHashlessResult:(unint64_t)result;
++ (double)signalEstimateWithBuilder:(id)builder;
++ (id)createHashResult:(unsigned __int16)result goodness:(unsigned __int8)goodness confidence:(unsigned __int8)confidence absTime:(unint64_t)time frac:(unsigned __int8)frac;
++ (id)createRemoraHashResult:(unsigned __int16)result goodness:(unsigned __int8)goodness confidence:(unsigned __int8)confidence firstPassTriggerEndTime:(double)time frac:(unsigned __int8)frac;
++ (id)createRemoraHashResultFromPHash:(id)hash firstPassTriggerEndTime:(double)time;
++ (id)decodeWithMyriadPHash:(id)hash;
++ (id)generateEmptyPHash:(unint64_t)hash writeFile:(BOOL)file;
++ (id)overridePHash:(id)hash withMachTime:(unint64_t)time;
 + (void)notifyAudioHashNotification;
 + (void)notifyAudioHashlessNotification;
-+ (void)notifyHashlessTrigger:(unint64_t)a3;
-+ (void)setLastHash:(id)a3;
++ (void)notifyHashlessTrigger:(unint64_t)trigger;
++ (void)setLastHash:(id)hash;
 - (CSMyriadPHash)init;
-- (double)_signalEstimate:(float *)a3 length:(unint64_t)a4;
+- (double)_signalEstimate:(float *)estimate length:(unint64_t)length;
 - (id)_audioLogDirectory;
-- (id)_generateMyriadInfo:(unint64_t)a3 hsStart:(unint64_t)a4 triggerEnd:(unint64_t)a5 writeFile:(BOOL)a6 score:(float)a7 triggerSource:(id)a8 channel:(unint64_t)a9 audioProviderUUID:(id)a10 absoluteTime:(unint64_t)a11;
+- (id)_generateMyriadInfo:(unint64_t)info hsStart:(unint64_t)start triggerEnd:(unint64_t)end writeFile:(BOOL)file score:(float)score triggerSource:(id)source channel:(unint64_t)channel audioProviderUUID:(id)self0 absoluteTime:(unint64_t)self1;
 - (id)cachedHash;
-- (id)generatePHashFromExclaveVoiceTriggerInfo:(id)a3 writeFile:(BOOL)a4;
-- (id)generatePHashFromVoiceTriggerInfo:(id)a3 writeFile:(BOOL)a4;
-- (unsigned)pHash:(float *)a3 length:(int)a4;
-- (void)_copyAudioDataInBuffer:(float *)a3 bufferSize:(unint64_t)a4 copyLength:(unint64_t)a5 fromAudioData:(void *)a6;
-- (void)_copyPsdDataInBuffer:(float *)a3 copyLength:(unint64_t)a4 fromAudioData:(void *)a5;
-- (void)_surfacePsdWithAudioChunk:(id)a3;
+- (id)generatePHashFromExclaveVoiceTriggerInfo:(id)info writeFile:(BOOL)file;
+- (id)generatePHashFromVoiceTriggerInfo:(id)info writeFile:(BOOL)file;
+- (unsigned)pHash:(float *)hash length:(int)length;
+- (void)_copyAudioDataInBuffer:(float *)buffer bufferSize:(unint64_t)size copyLength:(unint64_t)length fromAudioData:(void *)data;
+- (void)_copyPsdDataInBuffer:(float *)buffer copyLength:(unint64_t)length fromAudioData:(void *)data;
+- (void)_surfacePsdWithAudioChunk:(id)chunk;
 - (void)dealloc;
 @end
 
 @implementation CSMyriadPHash
 
-- (id)generatePHashFromVoiceTriggerInfo:(id)a3 writeFile:(BOOL)a4
+- (id)generatePHashFromVoiceTriggerInfo:(id)info writeFile:(BOOL)file
 {
-  v6 = a3;
+  infoCopy = info;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -42,11 +42,11 @@
   v11[1] = 3221225472;
   v11[2] = sub_100055634;
   v11[3] = &unk_10024F488;
-  v12 = v6;
-  v13 = self;
+  v12 = infoCopy;
+  selfCopy = self;
   v14 = &v16;
-  v15 = a4;
-  v8 = v6;
+  fileCopy = file;
+  v8 = infoCopy;
   dispatch_sync(queue, v11);
   v9 = v17[5];
 
@@ -55,19 +55,19 @@
   return v9;
 }
 
-- (id)generatePHashFromExclaveVoiceTriggerInfo:(id)a3 writeFile:(BOOL)a4
+- (id)generatePHashFromExclaveVoiceTriggerInfo:(id)info writeFile:(BOOL)file
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  fileCopy = file;
+  infoCopy = info;
+  v7 = infoCopy;
   v8 = 0.0;
-  if (!v6)
+  if (!infoCopy)
   {
     goto LABEL_5;
   }
 
   v9 = kVTEIExclaveSignalIntensity;
-  v10 = [v6 objectForKeyedSubscript:kVTEIExclaveSignalIntensity];
+  v10 = [infoCopy objectForKeyedSubscript:kVTEIExclaveSignalIntensity];
   if (!v10)
   {
     goto LABEL_5;
@@ -109,7 +109,7 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s sigsum = %{public}f sigNorm= %{public}d sigFrac= %{public}d", &v28, 0x22u);
   }
 
-  v19 = mach_absolute_time();
+  unsignedLongLongValue = mach_absolute_time();
   if (v7)
   {
     v20 = kVTEItriggerEndMachTime;
@@ -124,13 +124,13 @@ LABEL_5:
       if (v24)
       {
         v25 = [v7 objectForKeyedSubscript:v20];
-        v19 = [v25 unsignedLongLongValue];
+        unsignedLongLongValue = [v25 unsignedLongLongValue];
       }
     }
   }
 
-  v26 = [CSMyriadPHash createHashResult:42545 goodness:v16 confidence:0 absTime:v19 frac:v17];
-  if (v4)
+  v26 = [CSMyriadPHash createHashResult:42545 goodness:v16 confidence:0 absTime:unsignedLongLongValue frac:v17];
+  if (fileCopy)
   {
     [CSMyriadPHash writeHashResultIntoFile:v26];
   }
@@ -142,9 +142,9 @@ LABEL_5:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 voiceTriggerAudioLogDirectory];
+  voiceTriggerAudioLogDirectory = [v3 voiceTriggerAudioLogDirectory];
 
-  if ([v2 fileExistsAtPath:v4])
+  if ([v2 fileExistsAtPath:voiceTriggerAudioLogDirectory])
   {
     v5 = 0;
   }
@@ -152,7 +152,7 @@ LABEL_5:
   else
   {
     v11 = 0;
-    v6 = [v2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+    v6 = [v2 createDirectoryAtPath:voiceTriggerAudioLogDirectory withIntermediateDirectories:1 attributes:0 error:&v11];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
@@ -160,29 +160,29 @@ LABEL_5:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v9 = v7;
-        v10 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315650;
         v13 = "[CSMyriadPHash _audioLogDirectory]";
         v14 = 2114;
-        v15 = v4;
+        v15 = voiceTriggerAudioLogDirectory;
         v16 = 2114;
-        v17 = v10;
+        v17 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Couldn't create voice trigger audio logging directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v4 = @"/tmp";
+      voiceTriggerAudioLogDirectory = @"/tmp";
     }
   }
 
-  return v4;
+  return voiceTriggerAudioLogDirectory;
 }
 
-- (id)_generateMyriadInfo:(unint64_t)a3 hsStart:(unint64_t)a4 triggerEnd:(unint64_t)a5 writeFile:(BOOL)a6 score:(float)a7 triggerSource:(id)a8 channel:(unint64_t)a9 audioProviderUUID:(id)a10 absoluteTime:(unint64_t)a11
+- (id)_generateMyriadInfo:(unint64_t)info hsStart:(unint64_t)start triggerEnd:(unint64_t)end writeFile:(BOOL)file score:(float)score triggerSource:(id)source channel:(unint64_t)channel audioProviderUUID:(id)self0 absoluteTime:(unint64_t)self1
 {
-  v13 = a6;
-  v17 = a8;
-  v18 = a10;
-  if (v17 && ((v19 = [v17 isEqualToString:kVTEIFirstPassTriggeredFromJarvis], (objc_msgSend(v17, "isEqualToString:", kVTEIFirstPassTriggeredFromHearstAP) & 1) != 0) || ((objc_msgSend(v17, "isEqualToString:", kVTEIFirstPassTriggeredFromHearst) | v19) & 1) != 0))
+  fileCopy = file;
+  sourceCopy = source;
+  dCopy = d;
+  if (sourceCopy && ((v19 = [sourceCopy isEqualToString:kVTEIFirstPassTriggeredFromJarvis], (objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromHearstAP) & 1) != 0) || ((objc_msgSend(sourceCopy, "isEqualToString:", kVTEIFirstPassTriggeredFromHearst) | v19) & 1) != 0))
   {
     v20 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
@@ -190,7 +190,7 @@ LABEL_5:
       *buf = 136315394;
       v47 = "[CSMyriadPHash _generateMyriadInfo:hsStart:triggerEnd:writeFile:score:triggerSource:channel:audioProviderUUID:absoluteTime:]";
       v48 = 2114;
-      v49 = v17;
+      infoCopy = sourceCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s No posting as trigger source is %{public}@", buf, 0x16u);
     }
 
@@ -199,9 +199,9 @@ LABEL_5:
 
   else
   {
-    v43 = v13;
+    v43 = fileCopy;
     v22 = +[CSSpeechManager sharedManager];
-    v23 = [v22 audioProviderWithUUID:v18];
+    v23 = [v22 audioProviderWithUUID:dCopy];
 
     v24 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -209,44 +209,44 @@ LABEL_5:
       *buf = 136315650;
       v47 = "[CSMyriadPHash _generateMyriadInfo:hsStart:triggerEnd:writeFile:score:triggerSource:channel:audioProviderUUID:absoluteTime:]";
       v48 = 2050;
-      v49 = a3;
+      infoCopy = info;
       v50 = 2050;
-      v51 = a9;
+      channelCopy = channel;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s BTLE AudioPayload ringBuffer startpoint: %{public}lld toEnd, activeChannel: %{public}tu", buf, 0x20u);
     }
 
-    v42 = a5;
+    endCopy = end;
     v45 = v23;
-    v25 = [v23 audioChunkToEndFrom:a3 channelIdx:a9];
-    v26 = [v25 data];
-    v27 = [v25 numSamples];
+    v25 = [v23 audioChunkToEndFrom:info channelIdx:channel];
+    data = [v25 data];
+    numSamples = [v25 numSamples];
     v28 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v47 = "[CSMyriadPHash _generateMyriadInfo:hsStart:triggerEnd:writeFile:score:triggerSource:channel:audioProviderUUID:absoluteTime:]";
       v48 = 2050;
-      v49 = v27;
+      infoCopy = numSamples;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s BTLE raw audio size = %{public}ld", buf, 0x16u);
     }
 
     v29 = malloc_type_malloc(0x4000uLL, 0x13FF9A7DuLL);
     bzero(v29, 0x4000uLL);
-    if (v27 >= 0x1000)
+    if (numSamples >= 0x1000)
     {
-      v27 = 4096;
+      numSamples = 4096;
     }
 
-    -[CSMyriadPHash _copyAudioDataInBuffer:bufferSize:copyLength:fromAudioData:](self, "_copyAudioDataInBuffer:bufferSize:copyLength:fromAudioData:", v29, 0x4000, v27, [v26 bytes]);
+    -[CSMyriadPHash _copyAudioDataInBuffer:bufferSize:copyLength:fromAudioData:](self, "_copyAudioDataInBuffer:bufferSize:copyLength:fromAudioData:", v29, 0x4000, numSamples, [data bytes]);
     v30 = [(CSMyriadPHash *)self pHash:v29 length:4096];
-    v31 = [(CSMyriadPHash *)self signalEstimate];
-    v32 = [(CSMyriadPHash *)self signalFractional];
+    signalEstimate = [(CSMyriadPHash *)self signalEstimate];
+    signalFractional = [(CSMyriadPHash *)self signalFractional];
     free(v29);
     if (CSIsInternalBuild())
     {
-      v41 = v18;
+      v41 = dCopy;
       v33 = +[NSDate date];
-      v34 = [v45 audioChunkFrom:a4 to:v42 channelIdx:a9];
+      v34 = [v45 audioChunkFrom:start to:endCopy channelIdx:channel];
       [(CSMyriadPHash *)self _surfacePsdWithAudioChunk:v34];
       v35 = +[NSDate date];
       v36 = CSLogContextFacilityCoreSpeech;
@@ -257,11 +257,11 @@ LABEL_5:
         *buf = 136315394;
         v47 = "[CSMyriadPHash _generateMyriadInfo:hsStart:triggerEnd:writeFile:score:triggerSource:channel:audioProviderUUID:absoluteTime:]";
         v48 = 2050;
-        v49 = v38;
+        infoCopy = v38;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%s Surface PSD elapsed time = %{public}lf", buf, 0x16u);
       }
 
-      v18 = v41;
+      dCopy = v41;
     }
 
     if (CSIsHorseman())
@@ -271,10 +271,10 @@ LABEL_5:
 
     else
     {
-      v39 = (a7 * 10.0);
+      v39 = (score * 10.0);
     }
 
-    v21 = [CSMyriadPHash createHashResult:v30 goodness:v31 confidence:v39 absTime:a11 frac:v32];
+    v21 = [CSMyriadPHash createHashResult:v30 goodness:signalEstimate confidence:v39 absTime:time frac:signalFractional];
     if (v43)
     {
       [CSMyriadPHash writeHashResultIntoFile:v21];
@@ -286,29 +286,29 @@ LABEL_5:
   return v21;
 }
 
-- (void)_copyPsdDataInBuffer:(float *)a3 copyLength:(unint64_t)a4 fromAudioData:(void *)a5
+- (void)_copyPsdDataInBuffer:(float *)buffer copyLength:(unint64_t)length fromAudioData:(void *)data
 {
-  if (a4 && a3 && a5)
+  if (length && buffer && data)
   {
     if (+[CSConfig inputRecordingIsFloat])
     {
       __B = 32767.0;
-      vDSP_vsmul(a5, 1, &__B, a3, 1, a4);
+      vDSP_vsmul(data, 1, &__B, buffer, 1, length);
     }
 
     else
     {
 
-      vDSP_vflt16(a5, 1, a3, 1, a4);
+      vDSP_vflt16(data, 1, buffer, 1, length);
     }
   }
 }
 
-- (void)_copyAudioDataInBuffer:(float *)a3 bufferSize:(unint64_t)a4 copyLength:(unint64_t)a5 fromAudioData:(void *)a6
+- (void)_copyAudioDataInBuffer:(float *)buffer bufferSize:(unint64_t)size copyLength:(unint64_t)length fromAudioData:(void *)data
 {
-  if (a3 && a6)
+  if (buffer && data)
   {
-    if (!a5)
+    if (!length)
     {
       goto LABEL_8;
     }
@@ -318,16 +318,16 @@ LABEL_5:
       *buf = 1191181824;
       __C = 1.0;
       __B = -1.0;
-      vDSP_vclip(a6, 1, &__B, &__C, a3, 1, a5);
-      vDSP_vsmul(a3, 1, buf, a3, 1, a5);
+      vDSP_vclip(data, 1, &__B, &__C, buffer, 1, length);
+      vDSP_vsmul(buffer, 1, buf, buffer, 1, length);
     }
 
     else
     {
-      vDSP_vflt16(a6, 1, a3, 1, a5);
+      vDSP_vflt16(data, 1, buffer, 1, length);
     }
 
-    if (a5 <= 0xFFF)
+    if (length <= 0xFFF)
     {
 LABEL_8:
       v9 = CSLogContextFacilityCoreSpeech;
@@ -336,7 +336,7 @@ LABEL_8:
         *buf = 136315394;
         v13 = "[CSMyriadPHash _copyAudioDataInBuffer:bufferSize:copyLength:fromAudioData:]";
         v14 = 2050;
-        v15 = 4096 - a5;
+        v15 = 4096 - length;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s BTLE padded %{public}ld samples to fill out buffer", buf, 0x16u);
       }
     }
@@ -364,9 +364,9 @@ LABEL_8:
   return v3;
 }
 
-- (unsigned)pHash:(float *)a3 length:(int)a4
+- (unsigned)pHash:(float *)hash length:(int)length
 {
-  [(CSMyriadPHash *)self _signalEstimate:a3 length:a4];
+  [(CSMyriadPHash *)self _signalEstimate:hash length:length];
   v6 = v5;
   self->_signalEstimate = [(CSMyriadPHash *)self sigNorm:?];
   v7 = [(CSMyriadPHash *)self sigFrac:v6];
@@ -389,23 +389,23 @@ LABEL_8:
   return -22991;
 }
 
-- (void)_surfacePsdWithAudioChunk:(id)a3
+- (void)_surfacePsdWithAudioChunk:(id)chunk
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v4 numSamples];
+  chunkCopy = chunk;
+  data = [chunkCopy data];
+  numSamples = [chunkCopy numSamples];
 
-  if (v6)
+  if (numSamples)
   {
-    v7 = malloc_type_malloc(4 * v6, 0x660674F7uLL);
-    bzero(v7, 4 * v6);
-    -[CSMyriadPHash _copyPsdDataInBuffer:copyLength:fromAudioData:](self, "_copyPsdDataInBuffer:copyLength:fromAudioData:", v7, v6, [v5 bytes]);
+    v7 = malloc_type_malloc(4 * numSamples, 0x660674F7uLL);
+    bzero(v7, 4 * numSamples);
+    -[CSMyriadPHash _copyPsdDataInBuffer:copyLength:fromAudioData:](self, "_copyPsdDataInBuffer:copyLength:fromAudioData:", v7, numSamples, [data bytes]);
     v20 = 0xBF7851EC3F800000;
-    vDSP_conv(v7, 1, &v20 + 1, -1, v7, 1, v6 - 1, 2uLL);
-    *(v7 + v6 - 1) = *(&v20 + 1) * *(v7 + v6 - 1);
-    vDSP_vsq(v7, 1, v7, 1, v6);
+    vDSP_conv(v7, 1, &v20 + 1, -1, v7, 1, numSamples - 1, 2uLL);
+    *(v7 + numSamples - 1) = *(&v20 + 1) * *(v7 + numSamples - 1);
+    vDSP_vsq(v7, 1, v7, 1, numSamples);
     __C = 0.0;
-    vDSP_sve(v7, 1, &__C, v6);
+    vDSP_sve(v7, 1, &__C, numSamples);
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -418,7 +418,7 @@ LABEL_8:
       v16 = 2048;
       v17 = v9;
       v18 = 2048;
-      v19 = v6;
+      v19 = numSamples;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Surface PSD: PSD Score = %d, PSDSum = %f, PSDLength = %lu", buf, 0x26u);
     }
 
@@ -426,7 +426,7 @@ LABEL_8:
   }
 }
 
-- (double)_signalEstimate:(float *)a3 length:(unint64_t)a4
+- (double)_signalEstimate:(float *)estimate length:(unint64_t)length
 {
   v15 = 0.0;
   v6 = sub_100056D90(256, @"windowed array for signal estimation");
@@ -434,7 +434,7 @@ LABEL_8:
   v8 = 31;
   do
   {
-    vDSP_vmul(a3, 1, self->_snrWindow, 1, v6, 1, 0x100uLL);
+    vDSP_vmul(estimate, 1, self->_snrWindow, 1, v6, 1, 0x100uLL);
     snrSetup = self->_snrSetup;
     v10 = sub_100056D90(256, @"complex part zero vec");
     __C.realp = v6;
@@ -455,7 +455,7 @@ LABEL_8:
     vDSP_sve(&v13[(300.0 / ((*&dword_10029E108 * 0.00024414) * 16.0))], 1, &v15, (2700.0 / ((*&dword_10029E108 * 0.00024414) * 16.0)));
     v7 = v7 + v15;
     free(v13);
-    a3 += 128;
+    estimate += 128;
     --v8;
   }
 
@@ -516,9 +516,9 @@ LABEL_8:
   return v2;
 }
 
-+ (void)setLastHash:(id)a3
++ (void)setLastHash:(id)hash
 {
-  v3 = [a3 copy];
+  v3 = [hash copy];
   v4 = qword_10029E110;
   qword_10029E110 = v3;
 }
@@ -552,13 +552,13 @@ LABEL_8:
   }
 }
 
-+ (BOOL)writeHashResultIntoFile:(id)a3
++ (BOOL)writeHashResultIntoFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[CSFPreferences sharedPreferences];
-  v5 = [v4 myriadHashFilePath];
+  myriadHashFilePath = [v4 myriadHashFilePath];
 
-  v6 = [v3 writeToFile:v5 atomically:0];
+  v6 = [fileCopy writeToFile:myriadHashFilePath atomically:0];
   if ((v6 & 1) == 0)
   {
     v7 = CSLogContextFacilityCoreSpeech;
@@ -573,31 +573,31 @@ LABEL_8:
   return v6;
 }
 
-+ (BOOL)writeHashlessResult:(unint64_t)a3
++ (BOOL)writeHashlessResult:(unint64_t)result
 {
-  v3 = [CSMyriadPHash createHashResult:0 goodness:0 confidence:0 absTime:a3 frac:0];
+  v3 = [CSMyriadPHash createHashResult:0 goodness:0 confidence:0 absTime:result frac:0];
   v4 = [CSMyriadPHash writeHashResultIntoFile:v3];
 
   return v4;
 }
 
-+ (id)overridePHash:(id)a3 withMachTime:(unint64_t)a4
++ (id)overridePHash:(id)hash withMachTime:(unint64_t)time
 {
-  v5 = [CSMyriadPHash decodeWithMyriadPHash:a3];
-  v6 = +[CSMyriadPHash createHashResult:goodness:confidence:absTime:frac:](CSMyriadPHash, "createHashResult:goodness:confidence:absTime:frac:", [v5 hash], objc_msgSend(v5, "goodness"), objc_msgSend(v5, "confidence"), a4, objc_msgSend(v5, "frac"));
+  v5 = [CSMyriadPHash decodeWithMyriadPHash:hash];
+  v6 = +[CSMyriadPHash createHashResult:goodness:confidence:absTime:frac:](CSMyriadPHash, "createHashResult:goodness:confidence:absTime:frac:", [v5 hash], objc_msgSend(v5, "goodness"), objc_msgSend(v5, "confidence"), time, objc_msgSend(v5, "frac"));
 
   return v6;
 }
 
-+ (id)decodeWithMyriadPHash:(id)a3
++ (id)decodeWithMyriadPHash:(id)hash
 {
-  v3 = a3;
-  v4 = v3;
+  hashCopy = hash;
+  v4 = hashCopy;
   v13 = 0;
   v12 = 0;
   v11 = 0;
   v10 = 0;
-  if (v3 && [v3 length] == 13)
+  if (hashCopy && [hashCopy length] == 13)
   {
     [v4 getBytes:&v13 range:{0, 2}];
     [v4 getBytes:&v12 + 1 range:{2, 1}];
@@ -642,11 +642,11 @@ LABEL_8:
   return v8;
 }
 
-+ (id)generateEmptyPHash:(unint64_t)a3 writeFile:(BOOL)a4
++ (id)generateEmptyPHash:(unint64_t)hash writeFile:(BOOL)file
 {
-  v4 = a4;
-  v5 = [CSMyriadPHash createHashResult:0 goodness:0 confidence:0 absTime:a3 frac:0];
-  if (v4)
+  fileCopy = file;
+  v5 = [CSMyriadPHash createHashResult:0 goodness:0 confidence:0 absTime:hash frac:0];
+  if (fileCopy)
   {
     [CSMyriadPHash writeHashResultIntoFile:v5];
   }
@@ -654,38 +654,38 @@ LABEL_8:
   return v5;
 }
 
-+ (id)createHashResult:(unsigned __int16)a3 goodness:(unsigned __int8)a4 confidence:(unsigned __int8)a5 absTime:(unint64_t)a6 frac:(unsigned __int8)a7
++ (id)createHashResult:(unsigned __int16)result goodness:(unsigned __int8)goodness confidence:(unsigned __int8)confidence absTime:(unint64_t)time frac:(unsigned __int8)frac
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  v19 = a3;
-  v18 = a4;
-  v17 = a5;
-  v16 = a6;
-  v15 = a7;
+  fracCopy = frac;
+  confidenceCopy = confidence;
+  goodnessCopy = goodness;
+  resultCopy = result;
+  goodnessCopy2 = goodness;
+  confidenceCopy2 = confidence;
+  timeCopy = time;
+  fracCopy2 = frac;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316162;
     v21 = "+[CSMyriadPHash createHashResult:goodness:confidence:absTime:frac:]";
     v22 = 1024;
-    *v23 = v10;
+    *v23 = goodnessCopy;
     *&v23[4] = 1024;
-    *&v23[6] = v9;
+    *&v23[6] = confidenceCopy;
     v24 = 2048;
-    v25 = a6;
+    timeCopy2 = time;
     v26 = 1024;
-    v27 = v7;
+    v27 = fracCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s goodness = %d, confidence = %d absTime = %llu, frac = %d", buf, 0x28u);
   }
 
   v12 = [NSMutableData dataWithCapacity:13];
-  [v12 appendBytes:&v19 length:2];
-  [v12 appendBytes:&v18 length:1];
-  [v12 appendBytes:&v17 length:1];
-  [v12 appendBytes:&v16 length:8];
-  [v12 appendBytes:&v15 length:1];
+  [v12 appendBytes:&resultCopy length:2];
+  [v12 appendBytes:&goodnessCopy2 length:1];
+  [v12 appendBytes:&confidenceCopy2 length:1];
+  [v12 appendBytes:&timeCopy length:8];
+  [v12 appendBytes:&fracCopy2 length:1];
   v13 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -699,19 +699,19 @@ LABEL_8:
   return v12;
 }
 
-+ (id)createRemoraHashResult:(unsigned __int16)a3 goodness:(unsigned __int8)a4 confidence:(unsigned __int8)a5 firstPassTriggerEndTime:(double)a6 frac:(unsigned __int8)a7
++ (id)createRemoraHashResult:(unsigned __int16)result goodness:(unsigned __int8)goodness confidence:(unsigned __int8)confidence firstPassTriggerEndTime:(double)time frac:(unsigned __int8)frac
 {
-  v14 = a3;
-  v13 = a4;
-  v12 = a5;
-  v11 = a6;
-  v10 = a7;
+  resultCopy = result;
+  goodnessCopy = goodness;
+  confidenceCopy = confidence;
+  timeCopy = time;
+  fracCopy = frac;
   v7 = [NSMutableData dataWithCapacity:13];
-  [v7 appendBytes:&v14 length:2];
-  [v7 appendBytes:&v13 length:1];
-  [v7 appendBytes:&v12 length:1];
-  [v7 appendBytes:&v11 length:8];
-  [v7 appendBytes:&v10 length:1];
+  [v7 appendBytes:&resultCopy length:2];
+  [v7 appendBytes:&goodnessCopy length:1];
+  [v7 appendBytes:&confidenceCopy length:1];
+  [v7 appendBytes:&timeCopy length:8];
+  [v7 appendBytes:&fracCopy length:1];
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -725,34 +725,34 @@ LABEL_8:
   return v7;
 }
 
-+ (id)createRemoraHashResultFromPHash:(id)a3 firstPassTriggerEndTime:(double)a4
++ (id)createRemoraHashResultFromPHash:(id)hash firstPassTriggerEndTime:(double)time
 {
-  v5 = a3;
-  v6 = *[v5 bytes];
-  v7 = *([v5 bytes] + 2);
-  v8 = *([v5 bytes] + 3);
-  v9 = [v5 bytes];
+  hashCopy = hash;
+  v6 = *[hashCopy bytes];
+  v7 = *([hashCopy bytes] + 2);
+  v8 = *([hashCopy bytes] + 3);
+  bytes = [hashCopy bytes];
 
-  v10 = v9[12];
+  v10 = bytes[12];
 
-  return [CSMyriadPHash createRemoraHashResult:v6 goodness:v7 confidence:v8 firstPassTriggerEndTime:v10 frac:a4];
+  return [CSMyriadPHash createRemoraHashResult:v6 goodness:v7 confidence:v8 firstPassTriggerEndTime:v10 frac:time];
 }
 
-+ (void)notifyHashlessTrigger:(unint64_t)a3
++ (void)notifyHashlessTrigger:(unint64_t)trigger
 {
-  v3 = [CSMyriadPHash generateEmptyPHash:a3 writeFile:1];
+  v3 = [CSMyriadPHash generateEmptyPHash:trigger writeFile:1];
 
   +[CSMyriadPHash notifyAudioHashlessNotification];
 }
 
-+ (double)signalEstimateWithBuilder:(id)a3
++ (double)signalEstimateWithBuilder:(id)builder
 {
-  v3 = (*(a3 + 2))(a3, 4096);
+  v3 = (*(builder + 2))(builder, 4096);
   v4 = objc_alloc_init(CSMyriadPHash);
   if (v3)
   {
-    v5 = [v3 data];
-    v6 = [v5 length];
+    data = [v3 data];
+    v6 = [data length];
     v7 = -1.0;
     if (v6)
     {
@@ -775,11 +775,11 @@ LABEL_8:
         {
           v10 = malloc_type_malloc(0x4000uLL, 0xE93A9F24uLL);
           bzero(v10, 0x4000uLL);
-          v11 = [v5 bytes];
+          bytes = [data bytes];
           *buf = 1191181824;
           __C = 1.0;
           __B = -1.0;
-          vDSP_vclip(v11, 1, &__B, &__C, v10, 1, 0x1000uLL);
+          vDSP_vclip(bytes, 1, &__B, &__C, v10, 1, 0x1000uLL);
           vDSP_vsmul(v10, 1, buf, v10, 1, 0x1000uLL);
           [(CSMyriadPHash *)v4 _signalEstimate:v10 length:v8];
           v7 = log10(v12) * 10.0;

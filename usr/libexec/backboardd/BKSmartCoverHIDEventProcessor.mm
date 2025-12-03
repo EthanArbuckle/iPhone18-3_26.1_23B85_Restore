@@ -1,50 +1,50 @@
 @interface BKSmartCoverHIDEventProcessor
 + (BOOL)isSmartCoverSupported;
-- (BKSmartCoverHIDEventProcessor)initWithContext:(id)a3;
-- (BKSmartCoverHIDEventProcessor)initWithSupportedHES:(unint64_t)a3 disengagedHES:(unint64_t)a4 attached:(BOOL)a5 unknownState:(BOOL)a6;
-- (id)addSmartCoverObserver:(id)a3;
-- (int)_smartCoverSensorsDidDisengage:(unint64_t)a3;
-- (int)_smartCoverSensorsDidEngage:(unint64_t)a3;
+- (BKSmartCoverHIDEventProcessor)initWithContext:(id)context;
+- (BKSmartCoverHIDEventProcessor)initWithSupportedHES:(unint64_t)s disengagedHES:(unint64_t)eS attached:(BOOL)attached unknownState:(BOOL)state;
+- (id)addSmartCoverObserver:(id)observer;
+- (int)_smartCoverSensorsDidDisengage:(unint64_t)disengage;
+- (int)_smartCoverSensorsDidEngage:(unint64_t)engage;
 - (int)_wakeAnimationStyle;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (unint64_t)_currentMaskForUsage:(unsigned int)a3 HIDSystem:(id)a4 mask:(unint64_t *)a5 maskIfEngaged:(unint64_t *)a6;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)serviceDidDisappear:(id)a3;
-- (void)setAttachedCoverRequiresWorkaroundForOpenState:(BOOL)a3;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (unint64_t)_currentMaskForUsage:(unsigned int)usage HIDSystem:(id)system mask:(unint64_t *)mask maskIfEngaged:(unint64_t *)engaged;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)setAttachedCoverRequiresWorkaroundForOpenState:(BOOL)state;
 @end
 
 @implementation BKSmartCoverHIDEventProcessor
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007917C;
   v12[3] = &unk_1000FCF28;
   v12[4] = self;
-  v4 = a3;
-  [v4 appendCustomFormatWithName:@"disengagedSensors" block:v12];
+  formatterCopy = formatter;
+  [formatterCopy appendCustomFormatWithName:@"disengagedSensors" block:v12];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100079190;
   v11[3] = &unk_1000FCF28;
   v11[4] = self;
-  [v4 appendCustomFormatWithName:@"supportedSensors" block:v11];
+  [formatterCopy appendCustomFormatWithName:@"supportedSensors" block:v11];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000791A4;
   v10[3] = &unk_1000FCF28;
   v10[4] = self;
-  [v4 appendCustomFormatWithName:@"sensorsRequiredForOpenState" block:v10];
+  [formatterCopy appendCustomFormatWithName:@"sensorsRequiredForOpenState" block:v10];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000791B8;
   v9[3] = &unk_1000FCF28;
   v9[4] = self;
-  [v4 appendCustomFormatWithName:@"sensorsRequiredForAmbiguousState" block:v9];
-  v5 = [v4 appendBool:self->_attached withName:@"a"];
-  v6 = [v4 appendBool:self->_unknownState withName:@"u"];
+  [formatterCopy appendCustomFormatWithName:@"sensorsRequiredForAmbiguousState" block:v9];
+  v5 = [formatterCopy appendBool:self->_attached withName:@"a"];
+  v6 = [formatterCopy appendBool:self->_unknownState withName:@"u"];
   state = self->_state;
   if (state >= 4)
   {
@@ -56,12 +56,12 @@
     v8 = *(&off_1000FC608 + state);
   }
 
-  [v4 appendString:v8 withName:@"state"];
+  [formatterCopy appendString:v8 withName:@"state"];
 }
 
-- (id)addSmartCoverObserver:(id)a3
+- (id)addSmartCoverObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observerAssertion = self->_observerAssertion;
   if (!observerAssertion)
   {
@@ -73,16 +73,16 @@
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:observerCopy];
 
   return v9;
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   if (IOHIDEventGetIntegerValue() == 65289)
   {
     if ([(BKSmartCoverHIDEventProcessor *)self sensorsRequiredForOpenState])
@@ -211,14 +211,14 @@ LABEL_42:
       {
         if (v13 != -16187360)
         {
-          v22 = sub_100008528();
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+          context = sub_100008528();
+          if (os_log_type_enabled(context, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109376;
             v49 = IntegerValue;
             v50 = 1024;
             v51 = v12 != 0;
-            _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "SmertCover unknown usage: %X down:%{BOOL}u", buf, 0xEu);
+            _os_log_error_impl(&_mh_execute_header, context, OS_LOG_TYPE_ERROR, "SmertCover unknown usage: %X down:%{BOOL}u", buf, 0xEu);
           }
 
           goto LABEL_59;
@@ -281,7 +281,7 @@ LABEL_50:
         IOHIDEventGetIntegerValue();
 LABEL_51:
         kdebug_trace();
-        [v9 postEvent:v10 fromSender:v8];
+        [dispatcherCopy postEvent:v10 fromSender:senderCopy];
         if (!v28)
         {
 LABEL_60:
@@ -293,8 +293,8 @@ LABEL_60:
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v22 = [(BSCompoundAssertion *)self->_observerAssertion context];
-        v33 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        context = [(BSCompoundAssertion *)self->_observerAssertion context];
+        v33 = [context countByEnumeratingWithState:&v43 objects:v47 count:16];
         if (v33)
         {
           v34 = v33;
@@ -305,13 +305,13 @@ LABEL_60:
             {
               if (*v44 != v35)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(context);
               }
 
               [*(*(&v43 + 1) + 8 * i) smartCoverStateDidChange:v28];
             }
 
-            v34 = [v22 countByEnumeratingWithState:&v43 objects:v47 count:16];
+            v34 = [context countByEnumeratingWithState:&v43 objects:v47 count:16];
           }
 
           while (v34);
@@ -322,8 +322,8 @@ LABEL_59:
         goto LABEL_60;
       }
 
-      v22 = sub_100008528();
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      context = sub_100008528();
+      if (!os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_59;
       }
@@ -331,21 +331,21 @@ LABEL_59:
       *buf = 67109120;
       v49 = v12 != 0;
       v23 = "SmartCover attach:%{BOOL}u";
-      v24 = v22;
+      v24 = context;
       v25 = 8;
     }
 
     else
     {
-      v22 = sub_100008528();
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      context = sub_100008528();
+      if (!os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_59;
       }
 
       *buf = 0;
       v23 = "dropping smart cover event because we don't have any HES sensors";
-      v24 = v22;
+      v24 = context;
       v25 = 2;
     }
 
@@ -359,14 +359,14 @@ LABEL_61:
   return v21;
 }
 
-- (int)_smartCoverSensorsDidDisengage:(unint64_t)a3
+- (int)_smartCoverSensorsDidDisengage:(unint64_t)disengage
 {
   state = self->_state;
   disengagedSensors = self->_disengagedSensors;
   sensorsRequiredForOpenState = self->_sensorsRequiredForOpenState;
-  v6 = disengagedSensors | a3;
-  self->_disengagedSensors = disengagedSensors | a3;
-  if ((sensorsRequiredForOpenState & ~(disengagedSensors | a3)) != 0)
+  v6 = disengagedSensors | disengage;
+  self->_disengagedSensors = disengagedSensors | disengage;
+  if ((sensorsRequiredForOpenState & ~(disengagedSensors | disengage)) != 0)
   {
     sensorsRequiredForAmbiguousState = self->_sensorsRequiredForAmbiguousState;
     if (v6 != disengagedSensors && sensorsRequiredForAmbiguousState != 0 && (sensorsRequiredForAmbiguousState & v6) == sensorsRequiredForAmbiguousState)
@@ -393,11 +393,11 @@ LABEL_20:
   return 0;
 }
 
-- (int)_smartCoverSensorsDidEngage:(unint64_t)a3
+- (int)_smartCoverSensorsDidEngage:(unint64_t)engage
 {
   supportedSensors = self->_supportedSensors;
   disengagedSensors = self->_disengagedSensors;
-  v5 = disengagedSensors & ~a3;
+  v5 = disengagedSensors & ~engage;
   self->_disengagedSensors = v5;
   if ((supportedSensors & v5) != 0)
   {
@@ -413,15 +413,15 @@ LABEL_20:
   return 3;
 }
 
-- (void)setAttachedCoverRequiresWorkaroundForOpenState:(BOOL)a3
+- (void)setAttachedCoverRequiresWorkaroundForOpenState:(BOOL)state
 {
-  if (self->_attachedCoverRequiresWorkaroundForOpenState != a3)
+  if (self->_attachedCoverRequiresWorkaroundForOpenState != state)
   {
-    self->_attachedCoverRequiresWorkaroundForOpenState = a3;
+    self->_attachedCoverRequiresWorkaroundForOpenState = state;
     if (LODWORD(self->_supportedSensors))
     {
       v4 = 4;
-      if (a3)
+      if (state)
       {
         v5 = 1;
       }
@@ -431,7 +431,7 @@ LABEL_20:
         v5 = 4;
       }
 
-      if (!a3)
+      if (!state)
       {
         v4 = 1;
       }
@@ -461,19 +461,19 @@ LABEL_20:
   return magicKeyboardExtendedServices;
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
   magicKeyboardExtendedServices = self->_magicKeyboardExtendedServices;
   if (magicKeyboardExtendedServices)
   {
-    [(NSMutableSet *)magicKeyboardExtendedServices removeObject:a3];
+    [(NSMutableSet *)magicKeyboardExtendedServices removeObject:disappear];
   }
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v20 = a3;
-  v6 = a4;
+  matcherCopy = matcher;
+  matchCopy = match;
   if (!self->_magicKeyboardExtendedServices)
   {
     v7 = objc_opt_new();
@@ -485,7 +485,7 @@ LABEL_20:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = matchCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -538,55 +538,55 @@ LABEL_20:
   }
 }
 
-- (BKSmartCoverHIDEventProcessor)initWithContext:(id)a3
+- (BKSmartCoverHIDEventProcessor)initWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 systemInterface];
+  contextCopy = context;
+  systemInterface = [contextCopy systemInterface];
   if (+[BKSmartCoverHIDEventProcessor isSmartCoverSupported])
   {
     v17 = 0;
     v18 = 0;
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:1 HIDSystem:v5 mask:&v18 maskIfEngaged:&v17];
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:2 HIDSystem:v5 mask:&v18 maskIfEngaged:&v17];
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:3 HIDSystem:v5 mask:&v18 maskIfEngaged:&v17];
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:4 HIDSystem:v5 mask:&v18 maskIfEngaged:&v17];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:1 HIDSystem:systemInterface mask:&v18 maskIfEngaged:&v17];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:2 HIDSystem:systemInterface mask:&v18 maskIfEngaged:&v17];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:3 HIDSystem:systemInterface mask:&v18 maskIfEngaged:&v17];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:4 HIDSystem:systemInterface mask:&v18 maskIfEngaged:&v17];
     v16 = 0;
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:16 HIDSystem:v5 mask:0 maskIfEngaged:&v16];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:16 HIDSystem:systemInterface mask:0 maskIfEngaged:&v16];
     v6 = v16 != 0;
     v15 = 0;
-    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:32 HIDSystem:v5 mask:0 maskIfEngaged:&v15];
+    [(BKSmartCoverHIDEventProcessor *)self _currentMaskForUsage:32 HIDSystem:systemInterface mask:0 maskIfEngaged:&v15];
     v7 = v15 != 0;
     v8 = dispatch_queue_create("BKHIDEventSmartCoverMatcherQueue", 0);
     matcherQueue = self->_matcherQueue;
     self->_matcherQueue = v8;
 
-    v10 = [v4 serviceMatcherDataProvider];
-    v11 = [[BKIOHIDServiceMatcher alloc] initWithUsagePage:65280 usage:11 builtIn:0 dataProvider:v10];
+    serviceMatcherDataProvider = [contextCopy serviceMatcherDataProvider];
+    v11 = [[BKIOHIDServiceMatcher alloc] initWithUsagePage:65280 usage:11 builtIn:0 dataProvider:serviceMatcherDataProvider];
     magicKeyboardExtendedMatcher = self->_magicKeyboardExtendedMatcher;
     self->_magicKeyboardExtendedMatcher = v11;
 
     [(BKIOHIDServiceMatcher *)self->_magicKeyboardExtendedMatcher startObserving:self queue:self->_matcherQueue];
     self = [(BKSmartCoverHIDEventProcessor *)self initWithSupportedHES:v18 disengagedHES:v18 & ~v17 attached:v6 unknownState:v7];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (unint64_t)_currentMaskForUsage:(unsigned int)a3 HIDSystem:(id)a4 mask:(unint64_t *)a5 maskIfEngaged:(unint64_t *)a6
+- (unint64_t)_currentMaskForUsage:(unsigned int)usage HIDSystem:(id)system mask:(unint64_t *)mask maskIfEngaged:(unint64_t *)engaged
 {
-  v9 = a4;
+  systemCopy = system;
   KeyboardEvent = IOHIDEventCreateKeyboardEvent();
   if (KeyboardEvent)
   {
     v11 = KeyboardEvent;
-    v12 = [v9 systemEventOfType:3 matchingEvent:KeyboardEvent options:0];
+    v12 = [systemCopy systemEventOfType:3 matchingEvent:KeyboardEvent options:0];
     if (!v12)
     {
       v14 = 0;
@@ -597,12 +597,12 @@ LABEL_24:
 
     v13 = v12;
     v14 = 0;
-    if (a3 <= 2)
+    if (usage <= 2)
     {
-      if (a3 == 1)
+      if (usage == 1)
       {
         v14 = 1;
-        if (a5)
+        if (mask)
         {
           goto LABEL_19;
         }
@@ -610,13 +610,13 @@ LABEL_24:
 
       else
       {
-        if (a3 != 2)
+        if (usage != 2)
         {
           goto LABEL_18;
         }
 
         v14 = 4;
-        if (a5)
+        if (mask)
         {
           goto LABEL_19;
         }
@@ -625,28 +625,28 @@ LABEL_24:
 
     else
     {
-      if (a3 != 3)
+      if (usage != 3)
       {
-        if (a3 == 4)
+        if (usage == 4)
         {
           v14 = 16;
         }
 
-        else if (a3 == 32)
+        else if (usage == 32)
         {
           v14 = 32;
-          if (!a5)
+          if (!mask)
           {
             goto LABEL_20;
           }
 
 LABEL_19:
-          *a5 |= v14;
+          *mask |= v14;
           goto LABEL_20;
         }
 
 LABEL_18:
-        if (!a5)
+        if (!mask)
         {
           goto LABEL_20;
         }
@@ -655,16 +655,16 @@ LABEL_18:
       }
 
       v14 = 8;
-      if (a5)
+      if (mask)
       {
         goto LABEL_19;
       }
     }
 
 LABEL_20:
-    if (a6 && IOHIDEventGetIntegerValue())
+    if (engaged && IOHIDEventGetIntegerValue())
     {
-      *a6 |= v14;
+      *engaged |= v14;
     }
 
     CFRelease(v13);
@@ -677,24 +677,24 @@ LABEL_25:
   return v14;
 }
 
-- (BKSmartCoverHIDEventProcessor)initWithSupportedHES:(unint64_t)a3 disengagedHES:(unint64_t)a4 attached:(BOOL)a5 unknownState:(BOOL)a6
+- (BKSmartCoverHIDEventProcessor)initWithSupportedHES:(unint64_t)s disengagedHES:(unint64_t)eS attached:(BOOL)attached unknownState:(BOOL)state
 {
-  v6 = a6;
+  stateCopy = state;
   v29.receiver = self;
   v29.super_class = BKSmartCoverHIDEventProcessor;
   v10 = [(BKSmartCoverHIDEventProcessor *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    v10->_supportedSensors = a3;
-    v10->_disengagedSensors = a4;
-    v10->_attached = a5;
-    if ((a3 ^ (a3 - 1)) <= a3 - 1)
+    v10->_supportedSensors = s;
+    v10->_disengagedSensors = eS;
+    v10->_attached = attached;
+    if ((s ^ (s - 1)) <= s - 1)
     {
-      if (!a3)
+      if (!s)
       {
         v24 = 3;
-        if (!v6)
+        if (!stateCopy)
         {
           v24 = 1;
         }
@@ -704,18 +704,18 @@ LABEL_25:
       }
 
       v12 = 1;
-      v13 = 4;
+      sCopy = 4;
     }
 
     else
     {
       v12 = 0;
-      v13 = a3;
+      sCopy = s;
     }
 
-    v10->_sensorsRequiredForOpenState = v13;
+    v10->_sensorsRequiredForOpenState = sCopy;
     v10->_sensorsRequiredForAmbiguousState = v12;
-    if (v6)
+    if (stateCopy)
     {
       v14 = 3;
     }
@@ -723,7 +723,7 @@ LABEL_25:
     else
     {
       v14 = 1;
-      if (a3 && (a3 & a4) == 0)
+      if (s && (s & eS) == 0)
       {
         v10->_state = 2;
         goto LABEL_13;
@@ -731,7 +731,7 @@ LABEL_25:
     }
 
     v10->_state = v14;
-    if (!a3)
+    if (!s)
     {
 LABEL_21:
       v15 = sub_100008528();

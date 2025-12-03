@@ -1,31 +1,31 @@
 @interface OBBulletedList
 - (BOOL)_shouldHandleLandscapeiPhoneLayout;
-- (OBBulletedList)initWithFrame:(CGRect)a3;
+- (OBBulletedList)initWithFrame:(CGRect)frame;
 - (double)bulletedListItemSpacing;
 - (void)_updateConstraints;
 - (void)_updatePaddingForOrientation;
-- (void)addBulletedListItem:(id)a3;
-- (void)addItemWithDescription:(id)a3 image:(id)a4;
-- (void)addItemWithDescription:(id)a3 symbolName:(id)a4;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 linkButton:(id)a6;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6 linkButton:(id)a7;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 linkButton:(id)a6;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6;
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6 linkButton:(id)a7;
+- (void)addBulletedListItem:(id)item;
+- (void)addItemWithDescription:(id)description image:(id)image;
+- (void)addItemWithDescription:(id)description symbolName:(id)name;
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image;
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image linkButton:(id)button;
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color;
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color linkButton:(id)button;
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name;
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name linkButton:(id)button;
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color;
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color linkButton:(id)button;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
 
 @implementation OBBulletedList
 
-- (OBBulletedList)initWithFrame:(CGRect)a3
+- (OBBulletedList)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = OBBulletedList;
-  v3 = [(OBBulletedList *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OBBulletedList *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -40,139 +40,139 @@
   return v3;
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[OBBulletedListItem alloc] initWithTitle:v13 description:v12 image:v11 tintColor:v10];
+  colorCopy = color;
+  imageCopy = image;
+  descriptionCopy = description;
+  titleCopy = title;
+  v14 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy image:imageCopy tintColor:colorCopy];
 
   [(OBBulletedListItem *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v14];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 tintColor:(id)a6 linkButton:(id)a7
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image tintColor:(id)color linkButton:(id)button
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[OBBulletedListItem alloc] initWithTitle:v16 description:v15 image:v14 tintColor:v13 linkButton:v12];
+  buttonCopy = button;
+  colorCopy = color;
+  imageCopy = image;
+  descriptionCopy = description;
+  titleCopy = title;
+  v17 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy image:imageCopy tintColor:colorCopy linkButton:buttonCopy];
 
   [(OBBulletedListItem *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v17];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[OBBulletedListItem alloc] initWithTitle:v10 description:v9 image:v8 tintColor:0];
+  imageCopy = image;
+  descriptionCopy = description;
+  titleCopy = title;
+  v11 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy image:imageCopy tintColor:0];
 
   [(OBBulletedListItem *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v11];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 image:(id)a5 linkButton:(id)a6
+- (void)addItemWithTitle:(id)title description:(id)description image:(id)image linkButton:(id)button
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[OBBulletedListItem alloc] initWithTitle:v13 description:v12 image:v11 tintColor:0 linkButton:v10];
+  buttonCopy = button;
+  imageCopy = image;
+  descriptionCopy = description;
+  titleCopy = title;
+  v14 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy image:imageCopy tintColor:0 linkButton:buttonCopy];
 
   [(OBBulletedListItem *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v14];
 }
 
-- (void)addItemWithDescription:(id)a3 image:(id)a4
+- (void)addItemWithDescription:(id)description image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[OBBulletedListItem alloc] initWithTitle:0 description:v7 image:v6 tintColor:0];
+  imageCopy = image;
+  descriptionCopy = description;
+  v8 = [[OBBulletedListItem alloc] initWithTitle:0 description:descriptionCopy image:imageCopy tintColor:0];
 
   [(OBBulletedListItem *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v8];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[OBBulletedListItem alloc] initWithTitle:v13 description:v12 symbolName:v11 tintColor:v10];
+  colorCopy = color;
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
+  v14 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy tintColor:colorCopy];
 
   [(OBBulletedListItem *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v14];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 tintColor:(id)a6 linkButton:(id)a7
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name tintColor:(id)color linkButton:(id)button
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[OBBulletedListItem alloc] initWithTitle:v16 description:v15 symbolName:v14 tintColor:v13 linkButton:v12];
+  buttonCopy = button;
+  colorCopy = color;
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
+  v17 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy tintColor:colorCopy linkButton:buttonCopy];
 
   [(OBBulletedListItem *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v17];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[OBBulletedListItem alloc] initWithTitle:v10 description:v9 symbolName:v8 tintColor:0];
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
+  v11 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy tintColor:0];
 
   [(OBBulletedListItem *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v11];
 }
 
-- (void)addItemWithTitle:(id)a3 description:(id)a4 symbolName:(id)a5 linkButton:(id)a6
+- (void)addItemWithTitle:(id)title description:(id)description symbolName:(id)name linkButton:(id)button
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[OBBulletedListItem alloc] initWithTitle:v13 description:v12 symbolName:v11 tintColor:0 linkButton:v10];
+  buttonCopy = button;
+  nameCopy = name;
+  descriptionCopy = description;
+  titleCopy = title;
+  v14 = [[OBBulletedListItem alloc] initWithTitle:titleCopy description:descriptionCopy symbolName:nameCopy tintColor:0 linkButton:buttonCopy];
 
   [(OBBulletedListItem *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v14];
 }
 
-- (void)addItemWithDescription:(id)a3 symbolName:(id)a4
+- (void)addItemWithDescription:(id)description symbolName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[OBBulletedListItem alloc] initWithTitle:0 description:v7 symbolName:v6 tintColor:0];
+  nameCopy = name;
+  descriptionCopy = description;
+  v8 = [[OBBulletedListItem alloc] initWithTitle:0 description:descriptionCopy symbolName:nameCopy tintColor:0];
 
   [(OBBulletedListItem *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OBBulletedList *)self addBulletedListItem:v8];
 }
 
-- (void)addBulletedListItem:(id)a3
+- (void)addBulletedListItem:(id)item
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(OBBulletedList *)self items];
-  [v5 addObject:v4];
+  itemCopy = item;
+  items = [(OBBulletedList *)self items];
+  [items addObject:itemCopy];
 
-  [(OBBulletedList *)self addSubview:v4];
+  [(OBBulletedList *)self addSubview:itemCopy];
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(OBBulletedList *)self leadingAnchor];
-  v8 = [v4 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  leadingAnchor = [(OBBulletedList *)self leadingAnchor];
+  leadingAnchor2 = [itemCopy leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v15[0] = v9;
-  v10 = [(OBBulletedList *)self trailingAnchor];
-  v11 = [v4 trailingAnchor];
+  trailingAnchor = [(OBBulletedList *)self trailingAnchor];
+  trailingAnchor2 = [itemCopy trailingAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v15[1] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   [v6 activateConstraints:v13];
@@ -203,13 +203,13 @@
   }
 
   v6 = +[OBDevice currentDevice];
-  v7 = [v6 templateType];
+  templateType = [v6 templateType];
 
-  if (v7 > 0xA)
+  if (templateType > 0xA)
   {
 LABEL_20:
     v5 = 22.0;
-    if (!v7)
+    if (!templateType)
     {
       return 0.0;
     }
@@ -217,7 +217,7 @@ LABEL_20:
     return v5;
   }
 
-  if (((1 << v7) & 0x11C) != 0)
+  if (((1 << templateType) & 0x11C) != 0)
   {
     v9 = !+[OBFeatureFlags isNaturalUIEnabled];
     v10 = 26.0;
@@ -225,9 +225,9 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (((1 << v7) & 0x242) == 0)
+  if (((1 << templateType) & 0x242) == 0)
   {
-    if (v7 == 10)
+    if (templateType == 10)
     {
       v9 = !+[OBFeatureFlags isNaturalUIEnabled];
       v10 = 20.0;
@@ -271,38 +271,38 @@ LABEL_16:
 - (void)_updateConstraints
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v3 = [(OBBulletedList *)self verticalConstraints];
-  [(OBBulletedList *)self removeConstraints:v3];
+  verticalConstraints = [(OBBulletedList *)self verticalConstraints];
+  [(OBBulletedList *)self removeConstraints:verticalConstraints];
 
-  v4 = [(OBBulletedList *)self verticalConstraints];
-  [v4 removeAllObjects];
+  verticalConstraints2 = [(OBBulletedList *)self verticalConstraints];
+  [verticalConstraints2 removeAllObjects];
 
-  v5 = [(OBBulletedList *)self items];
-  v6 = [v5 count];
+  items = [(OBBulletedList *)self items];
+  v6 = [items count];
 
-  v7 = [(OBBulletedList *)self items];
-  v8 = v7;
+  items2 = [(OBBulletedList *)self items];
+  v8 = items2;
   if (v6 == 1)
   {
-    v9 = [v7 firstObject];
+    firstObject = [items2 firstObject];
 
-    v10 = [(OBBulletedList *)self verticalConstraints];
-    v11 = [(OBBulletedList *)self topAnchor];
-    v12 = [v9 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+    verticalConstraints3 = [(OBBulletedList *)self verticalConstraints];
+    topAnchor = [(OBBulletedList *)self topAnchor];
+    topAnchor2 = [firstObject topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v44[0] = v13;
-    v14 = [(OBBulletedList *)self bottomAnchor];
-    v15 = [v9 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+    bottomAnchor = [(OBBulletedList *)self bottomAnchor];
+    bottomAnchor2 = [firstObject bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v44[1] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-    [v10 addObjectsFromArray:v17];
+    [verticalConstraints3 addObjectsFromArray:v17];
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  v18 = [v7 count];
+  v18 = [items2 count];
 
   if (v18 >= 2)
   {
@@ -317,13 +317,13 @@ LABEL_17:
     if (v21)
     {
       v22 = v21;
-      v9 = 0;
+      firstObject = 0;
       v23 = *v40;
       v24 = -v20;
       do
       {
         v25 = 0;
-        v26 = v9;
+        v26 = firstObject;
         do
         {
           if (*v40 != v23)
@@ -332,31 +332,31 @@ LABEL_17:
           }
 
           v27 = *(*(&v39 + 1) + 8 * v25);
-          v28 = [(OBBulletedList *)self verticalConstraints];
+          verticalConstraints4 = [(OBBulletedList *)self verticalConstraints];
           if (v26)
           {
-            v29 = [v26 bottomAnchor];
-            v30 = [v27 topAnchor];
-            v31 = v29;
-            v32 = v30;
+            bottomAnchor3 = [v26 bottomAnchor];
+            topAnchor3 = [v27 topAnchor];
+            v31 = bottomAnchor3;
+            v32 = topAnchor3;
             v33 = v24;
           }
 
           else
           {
-            v29 = [(OBBulletedList *)self topAnchor];
-            v30 = [v27 topAnchor];
+            bottomAnchor3 = [(OBBulletedList *)self topAnchor];
+            topAnchor3 = [v27 topAnchor];
             v33 = 0.0;
-            v31 = v29;
-            v32 = v30;
+            v31 = bottomAnchor3;
+            v32 = topAnchor3;
           }
 
           v34 = [v31 constraintEqualToAnchor:v32 constant:v33];
-          [v28 addObject:v34];
+          [verticalConstraints4 addObject:v34];
 
-          v9 = v27;
+          firstObject = v27;
           ++v25;
-          v26 = v9;
+          v26 = firstObject;
         }
 
         while (v22 != v25);
@@ -368,21 +368,21 @@ LABEL_17:
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
 
-    v10 = [(OBBulletedList *)self verticalConstraints];
-    v11 = [(OBBulletedList *)self bottomAnchor];
-    v12 = [v9 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
-    [v10 addObject:v13];
+    verticalConstraints3 = [(OBBulletedList *)self verticalConstraints];
+    topAnchor = [(OBBulletedList *)self bottomAnchor];
+    topAnchor2 = [firstObject bottomAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
+    [verticalConstraints3 addObject:v13];
     goto LABEL_17;
   }
 
 LABEL_18:
   v35 = MEMORY[0x1E696ACD8];
-  v36 = [(OBBulletedList *)self verticalConstraints];
-  [v35 activateConstraints:v36];
+  verticalConstraints5 = [(OBBulletedList *)self verticalConstraints];
+  [v35 activateConstraints:verticalConstraints5];
 
   v37 = *MEMORY[0x1E69E9840];
 }
@@ -421,18 +421,18 @@ LABEL_18:
     }
   }
 
-  v6 = [(OBBulletedList *)self leadingConstraint];
-  [v6 setConstant:-v3];
+  leadingConstraint = [(OBBulletedList *)self leadingConstraint];
+  [leadingConstraint setConstant:-v3];
 
-  v7 = [(OBBulletedList *)self trailingConstraint];
-  [v7 setConstant:v3];
+  trailingConstraint = [(OBBulletedList *)self trailingConstraint];
+  [trailingConstraint setConstant:v3];
 }
 
 - (BOOL)_shouldHandleLandscapeiPhoneLayout
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [(OBBulletedList *)self window];
-  v5 = [v3 supportedInterfaceOrientationsForWindow:v4];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  window = [(OBBulletedList *)self window];
+  v5 = [mEMORY[0x1E69DC668] supportedInterfaceOrientationsForWindow:window];
 
   return v5 == 8 || (v5 & 0xFFFFFFFFFFFFFFF7) == 16;
 }

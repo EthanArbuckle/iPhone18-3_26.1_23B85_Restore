@@ -1,46 +1,46 @@
 @interface CPLPrequeliteTransientRepository
-- (BOOL)_markChangesWithScopedIdentifiersAsMingled:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)a3;
-- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)a3;
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
-- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)a3;
-- (BOOL)hasStashedRecordWithScopedIdentifier:(id)a3;
+- (BOOL)_markChangesWithScopedIdentifiersAsMingled:(id)mingled error:(id *)error;
+- (BOOL)deleteAllRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)identifier;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
+- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasStashedRecordWithScopedIdentifier:(id)identifier;
 - (BOOL)hasUnmingledChanges;
-- (BOOL)hasUnmingledChangesForScope:(id)a3;
-- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)a3;
-- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)a3;
+- (BOOL)hasUnmingledChangesForScope:(id)scope;
+- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)identifier;
+- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)filter;
 - (BOOL)initializeStorage;
-- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)a3 error:(id *)a4;
-- (BOOL)popChangeBatchOfRemappedRecords:(id *)a3 scope:(id)a4 maximumCount:(unint64_t)a5 error:(id *)a6;
-- (BOOL)resetMingledRecordsWithScopeFilter:(id)a3 error:(id *)a4;
-- (BOOL)stashChangeWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)unstashRecordsForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 unstashedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteTransientRepository)initWithAbstractObject:(id)a3;
-- (id)_allUnmingledChangesWithClass:(Class)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5;
-- (id)_enumeratorForRecordsWithScopeIndex:(unint64_t)a3 maximumCount:(unint64_t)a4;
-- (id)allUnmingledChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4;
-- (id)allUnmingledChangesWithScopeIdentifier:(id)a3;
-- (id)allUnmingledDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4;
-- (id)allUnmingledNonDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4;
-- (id)nextBatchOfRemappedRecordsInScope:(id)a3 maximumCount:(unint64_t)a4;
-- (id)recordWithScopedIdentifier:(id)a3;
+- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)mingled error:(id *)error;
+- (BOOL)popChangeBatchOfRemappedRecords:(id *)records scope:(id)scope maximumCount:(unint64_t)count error:(id *)error;
+- (BOOL)resetMingledRecordsWithScopeFilter:(id)filter error:(id *)error;
+- (BOOL)stashChangeWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)unstashRecordsForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more unstashedCount:(unint64_t *)unstashedCount error:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteTransientRepository)initWithAbstractObject:(id)object;
+- (id)_allUnmingledChangesWithClass:(Class)class scopeIdentifier:(id)identifier maximumCount:(unint64_t)count;
+- (id)_enumeratorForRecordsWithScopeIndex:(unint64_t)index maximumCount:(unint64_t)count;
+- (id)allUnmingledChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier;
+- (id)allUnmingledChangesWithScopeIdentifier:(id)identifier;
+- (id)allUnmingledDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier;
+- (id)allUnmingledNonDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier;
+- (id)nextBatchOfRemappedRecordsInScope:(id)scope maximumCount:(unint64_t)count;
+- (id)recordWithScopedIdentifier:(id)identifier;
 - (id)status;
-- (id)unmingledChangeWithScopedIdentifier:(id)a3;
+- (id)unmingledChangeWithScopedIdentifier:(id)identifier;
 - (unint64_t)countOfStashedRecords;
 - (unint64_t)countOfUnmingledRecords;
 @end
 
 @implementation CPLPrequeliteTransientRepository
 
-- (CPLPrequeliteTransientRepository)initWithAbstractObject:(id)a3
+- (CPLPrequeliteTransientRepository)initWithAbstractObject:(id)object
 {
   v10.receiver = self;
   v10.super_class = CPLPrequeliteTransientRepository;
-  v3 = [(CPLPrequeliteStorage *)&v10 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v10 initWithAbstractObject:object];
   if (v3)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
@@ -82,25 +82,25 @@ LABEL_7:
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteTransientRepository;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"transientType INTEGER NOT NULL error:class TEXT NOT NULL, scopeIndex INTEGER NOT NULL, identifier TEXT NOT NULL, relatedIdentifier TEXT, mingled INTEGER NOT NULL, dequeueOrder INTEGER DEFAULT 0, serializedRecord DATA NOT NULL", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"transientType INTEGER NOT NULL error:class TEXT NOT NULL, scopeIndex INTEGER NOT NULL, identifier TEXT NOT NULL, relatedIdentifier TEXT, mingled INTEGER NOT NULL, dequeueOrder INTEGER DEFAULT 0, serializedRecord DATA NOT NULL", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedIdentifier" withDefinition:@"scopeIndex unique:identifier" error:1, 0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"scopedIdentifier" withDefinition:@"scopeIndex unique:identifier" error:1, 0];
+      if (initializeStorage)
       {
-        v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"relatedScopedIdentifier" withDefinition:@"scopeIndex unique:relatedIdentifier" error:0, 0];
-        if (v3)
+        initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"relatedScopedIdentifier" withDefinition:@"scopeIndex unique:relatedIdentifier" error:0, 0];
+        if (initializeStorage)
         {
-          v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"pop" withDefinition:@"scopeIndex unique:mingled error:class, transientType", 0, 0];
-          if (v3)
+          initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"pop" withDefinition:@"scopeIndex unique:mingled error:class, transientType", 0, 0];
+          if (initializeStorage)
           {
-            v3 = [(CPLPrequeliteStorage *)self createIndexWithName:@"class" withDefinition:@"class unique:scopeIndex" error:0, 0];
-            if (v3)
+            initializeStorage = [(CPLPrequeliteStorage *)self createIndexWithName:@"class" withDefinition:@"class unique:scopeIndex" error:0, 0];
+            if (initializeStorage)
             {
-              LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexWithName:@"mingled" withDefinition:@"mingled unique:scopeIndex error:transientType", 0, 0];
+              LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexWithName:@"mingled" withDefinition:@"mingled unique:scopeIndex error:transientType", 0, 0];
             }
           }
         }
@@ -108,23 +108,23 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v9.receiver = self;
   v9.super_class = CPLPrequeliteTransientRepository;
   v5 = [(CPLPrequeliteStorage *)&v9 upgradeStorageToVersion:?];
-  if (a3 == 19 || !v5)
+  if (version == 19 || !v5)
   {
     return v5;
   }
 
   LOBYTE(v5) = 1;
-  if (a3 > 58)
+  if (version > 58)
   {
-    switch(a3)
+    switch(version)
     {
       case ';':
         [(CPLPrequeliteStorage *)self shouldUpgradeSchema];
@@ -174,7 +174,7 @@ LABEL_26:
     return v5;
   }
 
-  if (a3 == 39)
+  if (version == 39)
   {
     if ([(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
@@ -185,7 +185,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a3 == 53)
+  if (version == 53)
   {
     if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
     {
@@ -203,7 +203,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 != 55)
+  if (version != 55)
   {
     return v5;
   }
@@ -226,44 +226,44 @@ LABEL_27:
 
 - (BOOL)hasUnmingledChanges
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v5 = [PQLFormatInjection formatInjection:@"mingled = %i", 0];
-  v6 = [v3 table:v4 hasRecordsMatchingQuery:v5];
+  v6 = [pqStore table:mainTable hasRecordsMatchingQuery:v5];
 
   return v6;
 }
 
-- (BOOL)hasUnmingledChangesForScope:(id)a3
+- (BOOL)hasUnmingledChangesForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [(CPLPrequeliteStorage *)self mainTable];
-  v7 = [v4 localIndex];
+  scopeCopy = scope;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  localIndex = [scopeCopy localIndex];
 
-  v8 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled = %i", v7, 0];
-  v9 = [v5 table:v6 hasRecordsMatchingQuery:v8];
+  v8 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled = %i", localIndex, 0];
+  v9 = [pqStore table:mainTable hasRecordsMatchingQuery:v8];
 
   return v9;
 }
 
-- (BOOL)_markChangesWithScopedIdentifiersAsMingled:(id)a3 error:(id *)a4
+- (BOOL)_markChangesWithScopedIdentifiersAsMingled:(id)mingled error:(id *)error
 {
-  v6 = a3;
-  if (![v6 count])
+  mingledCopy = mingled;
+  if (![mingledCopy count])
   {
     goto LABEL_12;
   }
 
-  v27 = a4;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [v7 pqlConnection];
+  errorCopy = error;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = mingledCopy;
   v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v10)
   {
@@ -272,7 +272,7 @@ LABEL_27:
 
   v11 = v10;
   v12 = *v29;
-  v26 = v6;
+  v26 = mingledCopy;
   while (2)
   {
     for (i = 0; i != v11; i = i + 1)
@@ -284,33 +284,33 @@ LABEL_27:
 
       v14 = *(*(&v28 + 1) + 8 * i);
       v15 = objc_autoreleasePoolPush();
-      v16 = [v14 scopeIdentifier];
-      v17 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v16];
+      scopeIdentifier = [v14 scopeIdentifier];
+      v17 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = [v14 scopeIdentifier];
-        v21 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v23];
+        scopeIdentifier2 = [v14 scopeIdentifier];
+        lastError = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
 
         goto LABEL_15;
       }
 
-      v18 = [(CPLPrequeliteStorage *)self mainTable];
-      v19 = [v14 identifier];
-      v20 = [v8 cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", v18, 1, v17, v19}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      identifier = [v14 identifier];
+      v20 = [pqlConnection cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", mainTable, 1, v17, identifier}];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [v8 lastError];
+        lastError = [pqlConnection lastError];
 LABEL_15:
         objc_autoreleasePoolPop(v15);
 
-        v6 = v26;
-        if (v27)
+        mingledCopy = v26;
+        if (errorCopy)
         {
-          v24 = v21;
+          v24 = lastError;
           v22 = 0;
-          *v27 = v21;
+          *errorCopy = lastError;
         }
 
         else
@@ -325,7 +325,7 @@ LABEL_15:
     }
 
     v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
-    v6 = v26;
+    mingledCopy = v26;
     if (v11)
     {
       continue;
@@ -337,28 +337,28 @@ LABEL_15:
 LABEL_11:
 
 LABEL_12:
-  v21 = 0;
+  lastError = 0;
   v22 = 1;
 LABEL_18:
 
   return v22;
 }
 
-- (id)_enumeratorForRecordsWithScopeIndex:(unint64_t)a3 maximumCount:(unint64_t)a4
+- (id)_enumeratorForRecordsWithScopeIndex:(unint64_t)index maximumCount:(unint64_t)count
 {
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [v7 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v9 = [(CPLPrequeliteStorage *)self mainTable];
-  v10 = v9;
-  if (a4 == -1)
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v10 = mainTable;
+  if (count == -1)
   {
-    v11 = [v8 cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND scopeIndex = %lu", v9, 0, a3, v16}];
+    v11 = [pqlConnection cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND scopeIndex = %lu", mainTable, 0, index, v16}];
   }
 
   else
   {
-    v11 = [v8 cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND scopeIndex = %lu LIMIT %lu", v9, 0, a3, a4}];
+    v11 = [pqlConnection cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND scopeIndex = %lu LIMIT %lu", mainTable, 0, index, count}];
   }
 
   v12 = v11;
@@ -374,11 +374,11 @@ LABEL_18:
   return v14;
 }
 
-- (id)recordWithScopedIdentifier:(id)a3
+- (id)recordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -387,22 +387,22 @@ LABEL_18:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [v8 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v10 = [(CPLPrequeliteStorage *)self mainTable];
-    v11 = [v4 identifier];
-    v7 = [v9 cplFetchObject:&stru_10027BAA8 sql:{@"SELECT serializedRecord FROM %@ WHERE scopeIndex = %ld AND identifier = %@", v10, v6, v11}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v7 = [pqlConnection cplFetchObject:&stru_10027BAA8 sql:{@"SELECT serializedRecord FROM %@ WHERE scopeIndex = %ld AND identifier = %@", mainTable, v6, identifier}];
   }
 
   return v7;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -411,21 +411,21 @@ LABEL_18:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v4 identifier];
-    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@", v6, v10];
-    v7 = [v8 table:v9 hasRecordsMatchingQuery:v11];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@", v6, identifier];
+    v7 = [pqStore table:mainTable hasRecordsMatchingQuery:v11];
   }
 
   return v7;
 }
 
-- (BOOL)hasStashedRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasStashedRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -434,32 +434,32 @@ LABEL_18:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v4 identifier];
-    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@ AND +mingled = %i", v6, v10, 2];
-    v7 = [v8 table:v9 hasRecordsMatchingQuery:v11];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v11 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND identifier = %@ AND +mingled = %i", v6, identifier, 2];
+    v7 = [pqStore table:mainTable hasRecordsMatchingQuery:v11];
   }
 
   return v7;
 }
 
-- (id)nextBatchOfRemappedRecordsInScope:(id)a3 maximumCount:(unint64_t)a4
+- (id)nextBatchOfRemappedRecordsInScope:(id)scope maximumCount:(unint64_t)count
 {
-  v6 = a3;
-  if (a4)
+  scopeCopy = scope;
+  if (count)
   {
-    v7 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v7 = -1;
+    countCopy = -1;
   }
 
   v8 = objc_alloc_init(CPLChangeBatch);
-  v20 = self;
-  -[CPLPrequeliteTransientRepository _enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:](self, "_enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:", 1, [v6 localIndex], v7);
+  selfCopy = self;
+  -[CPLPrequeliteTransientRepository _enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:](self, "_enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:", 1, [scopeCopy localIndex], countCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -470,7 +470,7 @@ LABEL_18:
     v11 = v10;
     v12 = 0;
     v13 = *v23;
-    v21 = v7 - 1;
+    v21 = countCopy - 1;
 LABEL_6:
     v14 = 0;
     v15 = v21 - v12;
@@ -484,11 +484,11 @@ LABEL_6:
 
       v16 = *(*(&v22 + 1) + 8 * v14);
       [v8 addRecord:v16];
-      v17 = [v16 scopedIdentifier];
+      scopedIdentifier = [v16 scopedIdentifier];
 
-      if (!v17)
+      if (!scopedIdentifier)
       {
-        sub_1001C0774(a2, v20, v16);
+        sub_1001C0774(a2, selfCopy, v16);
       }
 
       if (v15 == v14)
@@ -512,35 +512,35 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)popChangeBatchOfRemappedRecords:(id *)a3 scope:(id)a4 maximumCount:(unint64_t)a5 error:(id *)a6
+- (BOOL)popChangeBatchOfRemappedRecords:(id *)records scope:(id)scope maximumCount:(unint64_t)count error:(id *)error
 {
-  v8 = a4;
-  if (a5)
+  scopeCopy = scope;
+  if (count)
   {
-    v9 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v9 = -1;
+    countCopy = -1;
   }
 
   v10 = objc_alloc_init(CPLChangeBatch);
   v11 = [NSMutableSet alloc];
-  if (v9 >= 0x14)
+  if (countCopy >= 0x14)
   {
     v12 = 20;
   }
 
   else
   {
-    v12 = v9;
+    v12 = countCopy;
   }
 
   v13 = [v11 initWithCapacity:{v12, a2}];
-  v33 = v8;
-  v34 = self;
-  -[CPLPrequeliteTransientRepository _enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:](self, "_enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:", 1, [v8 localIndex], v9);
+  v33 = scopeCopy;
+  selfCopy = self;
+  -[CPLPrequeliteTransientRepository _enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:](self, "_enumeratorForRecordsWithTransientType:scopeIndex:maximumCount:", 1, [scopeCopy localIndex], countCopy);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -551,7 +551,7 @@ LABEL_6:
     v16 = v15;
     v17 = 0;
     v18 = *v36;
-    v31 = v9 - 1;
+    v31 = countCopy - 1;
 LABEL_9:
     v19 = 0;
     v20 = v31 - v17;
@@ -565,15 +565,15 @@ LABEL_9:
 
       v21 = *(*(&v35 + 1) + 8 * v19);
       [v10 addRecord:v21];
-      v22 = [v21 scopedIdentifier];
+      scopedIdentifier = [v21 scopedIdentifier];
 
-      if (!v22)
+      if (!scopedIdentifier)
       {
-        sub_1001C0850(v29, v34, v21);
+        sub_1001C0850(v29, selfCopy, v21);
       }
 
-      v23 = [v21 scopedIdentifier];
-      [v13 addObject:v23];
+      scopedIdentifier2 = [v21 scopedIdentifier];
+      [v13 addObject:scopedIdentifier2];
 
       if (v20 == v19)
       {
@@ -593,7 +593,7 @@ LABEL_9:
     }
   }
 
-  v24 = [(CPLPrequeliteTransientRepository *)v34 _markChangesWithScopedIdentifiersAsMingled:v13 error:a6];
+  v24 = [(CPLPrequeliteTransientRepository *)selfCopy _markChangesWithScopedIdentifiersAsMingled:v13 error:error];
   if (v24)
   {
     if ([v10 count])
@@ -607,17 +607,17 @@ LABEL_9:
       v26 = 0;
     }
 
-    *a3 = v26;
+    *records = v26;
   }
 
   return v24;
 }
 
-- (id)unmingledChangeWithScopedIdentifier:(id)a3
+- (id)unmingledChangeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 scopeIdentifier];
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v5];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -626,17 +626,17 @@ LABEL_9:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [v8 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100168574;
     v14[3] = &unk_10027BA88;
     v14[4] = self;
-    v10 = [(CPLPrequeliteStorage *)self mainTable];
-    v11 = [v4 identifier];
-    v7 = [v9 cplFetchObject:v14 sql:{@"SELECT scopeIndex, serializedRecord, mingled FROM %@ WHERE identifier = %@ AND scopeIndex = %lu", v10, v11, v6}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v7 = [pqlConnection cplFetchObject:v14 sql:{@"SELECT scopeIndex, serializedRecord, mingled FROM %@ WHERE identifier = %@ AND scopeIndex = %lu", mainTable, identifier, v6}];
 
     v12 = +[NSNull null];
 
@@ -650,9 +650,9 @@ LABEL_9:
   return v7;
 }
 
-- (id)_allUnmingledChangesWithClass:(Class)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5
+- (id)_allUnmingledChangesWithClass:(Class)class scopeIdentifier:(id)identifier maximumCount:(unint64_t)count
 {
-  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a4];
+  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = &__NSArray0__struct;
@@ -661,20 +661,20 @@ LABEL_9:
   else
   {
     v10 = v8;
-    v11 = [(CPLPrequeliteStorage *)self pqStore];
-    v12 = [v11 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v13 = [(CPLPrequeliteStorage *)self mainTable];
-    v14 = NSStringFromClass(a3);
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v14 = NSStringFromClass(class);
     v15 = v14;
-    if (a5 == -1)
+    if (count == -1)
     {
-      v16 = [v12 cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND class = %@ AND scopeIndex = %lu", v13, 0, v14, v10, v20}];
+      v16 = [pqlConnection cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND class = %@ AND scopeIndex = %lu", mainTable, 0, v14, v10, v20}];
     }
 
     else
     {
-      v16 = [v12 cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND class = %@ AND scopeIndex = %lu LIMIT %lu", v13, 0, v14, v10, a5}];
+      v16 = [pqlConnection cplFetch:{@"SELECT scopeIndex, serializedRecord FROM %@ WHERE mingled = %i AND class = %@ AND scopeIndex = %lu LIMIT %lu", mainTable, 0, v14, v10, count}];
     }
 
     v17 = v16;
@@ -691,9 +691,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)allUnmingledNonDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4
+- (id)allUnmingledNonDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier
 {
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a4];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = &__NSArray0__struct;
@@ -701,15 +701,15 @@ LABEL_9:
 
   else
   {
-    v7 = [(CPLPrequeliteTransientRepository *)self _enumeratorForRecordsWithTransientType:3 scopeIndex:v6 class:a3 maximumCount:-1];
+    v7 = [(CPLPrequeliteTransientRepository *)self _enumeratorForRecordsWithTransientType:3 scopeIndex:v6 class:class maximumCount:-1];
   }
 
   return v7;
 }
 
-- (id)allUnmingledDeletedChangesWithClass:(Class)a3 scopeIdentifier:(id)a4
+- (id)allUnmingledDeletedChangesWithClass:(Class)class scopeIdentifier:(id)identifier
 {
-  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a4];
+  v6 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = &__NSArray0__struct;
@@ -717,17 +717,17 @@ LABEL_9:
 
   else
   {
-    v7 = [(CPLPrequeliteTransientRepository *)self _enumeratorForRecordsWithTransientType:2 scopeIndex:v6 class:a3 maximumCount:-1];
+    v7 = [(CPLPrequeliteTransientRepository *)self _enumeratorForRecordsWithTransientType:2 scopeIndex:v6 class:class maximumCount:-1];
   }
 
   return v7;
 }
 
-- (id)allUnmingledChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4
+- (id)allUnmingledChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v7];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -736,19 +736,19 @@ LABEL_9:
 
   else
   {
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v13 = [v6 identifier];
-    v14 = [v11 cplFetch:{@"SELECT scopeIndex, serializedRecord, mingled FROM %@ WHERE relatedIdentifier = %@ AND scopeIndex = %lu AND +mingled = %i", v12, v13, v8, 0}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v14 = [pqlConnection cplFetch:{@"SELECT scopeIndex, serializedRecord, mingled FROM %@ WHERE relatedIdentifier = %@ AND scopeIndex = %lu AND +mingled = %i", mainTable, identifier, v8, 0}];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100168A84;
     v17[3] = &unk_10027BAF0;
     v17[4] = self;
-    v17[5] = a3;
+    v17[5] = class;
     v15 = [v14 enumerateObjects:v17];
     v9 = [[CPLPrequeliteSkipNullEnumerator alloc] initWithEnumerator:v15];
   }
@@ -756,9 +756,9 @@ LABEL_9:
   return v9;
 }
 
-- (id)allUnmingledChangesWithScopeIdentifier:(id)a3
+- (id)allUnmingledChangesWithScopeIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = &__NSArray0__struct;
@@ -772,42 +772,42 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)a3 error:(id *)a4
+- (BOOL)markUnmingledChangeWithScopedIdentifierAsMingled:(id)mingled error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [v7 pqlConnection];
+  mingledCopy = mingled;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v9 = [v6 scopeIdentifier];
-  v10 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v9];
+  scopeIdentifier = [mingledCopy scopeIdentifier];
+  v10 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      v11 = [v6 scopeIdentifier];
-      *a4 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v11];
+      scopeIdentifier2 = [mingledCopy scopeIdentifier];
+      *error = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     }
 
     goto LABEL_7;
   }
 
-  v12 = [(CPLPrequeliteStorage *)self mainTable];
-  v13 = [v6 identifier];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  identifier = [mingledCopy identifier];
   v14 = 1;
-  v15 = [v8 cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", v12, 1, v10, v13}];
+  v15 = [pqlConnection cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", mainTable, 1, v10, identifier}];
 
   if ((v15 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
 LABEL_7:
       v14 = 0;
       goto LABEL_8;
     }
 
-    [v8 lastCPLError];
-    *a4 = v14 = 0;
+    [pqlConnection lastCPLError];
+    *error = v14 = 0;
   }
 
 LABEL_8:
@@ -815,43 +815,43 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)a3
+- (BOOL)hasMingledRecordsForScopeWithIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v4;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v9 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled = %i", v6, 1];
-  v10 = [v7 table:v8 hasRecordsMatchingQuery:v9];
+  v10 = [pqStore table:mainTable hasRecordsMatchingQuery:v9];
 
   return v10;
 }
 
-- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)a3
+- (BOOL)hasUnmingledNonStashedRecordsForScopeWithIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v4;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v9 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled = %i", v6, 0];
-  v10 = [v7 table:v8 hasRecordsMatchingQuery:v9];
+  v10 = [pqStore table:mainTable hasRecordsMatchingQuery:v9];
 
   return v10;
 }
 
-- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)a3
+- (BOOL)hasOnlyMingledRecordsWithScopeIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     LOBYTE(v5) = 0;
@@ -860,44 +860,44 @@ LABEL_8:
   else
   {
     v6 = v4;
-    v7 = [(CPLPrequeliteStorage *)self pqStore];
-    v8 = [(CPLPrequeliteStorage *)self mainTable];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
     v9 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled != %i", v6, 1];
-    v5 = [v7 table:v8 hasRecordsMatchingQuery:v9] ^ 1;
+    v5 = [pqStore table:mainTable hasRecordsMatchingQuery:v9] ^ 1;
   }
 
   return v5;
 }
 
-- (BOOL)resetMingledRecordsWithScopeFilter:(id)a3 error:(id *)a4
+- (BOOL)resetMingledRecordsWithScopeFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [v7 pqlConnection];
+  filterCopy = filter;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v9 = v6;
-  v10 = [(CPLPrequeliteStorage *)self mainTable];
-  v11 = [v9 localIndexesInjection];
-  v12 = [v8 cplExecute:{@"UPDATE OR FAIL %@ SET mingled = %i WHERE %@ AND mingled = %i", v10, 0, v11, 1}];
+  v9 = filterCopy;
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  localIndexesInjection = [v9 localIndexesInjection];
+  v12 = [pqlConnection cplExecute:{@"UPDATE OR FAIL %@ SET mingled = %i WHERE %@ AND mingled = %i", mainTable, 0, localIndexesInjection, 1}];
 
-  if (a4 && (v12 & 1) == 0)
+  if (error && (v12 & 1) == 0)
   {
-    *a4 = [v8 lastCPLError];
+    *error = [pqlConnection lastCPLError];
   }
 
   return v12;
 }
 
-- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteMingledRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifierCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-      *a4 = v8 = 0;
+      [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -909,54 +909,54 @@ LABEL_8:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v8 = [v11 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND mingled = %i", v12, v9, 1}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v8 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND mingled = %i", mainTable, v9, 1}];
 
     if (v8)
     {
-      if ([v11 changes] >= 1)
+      if ([pqlConnection changes] >= 1)
       {
         sub_1001C092C();
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [v11 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
   return v8;
 }
 
-- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)a3
+- (BOOL)hasUnmingledOrStashedRecordsWithScopeFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [(CPLPrequeliteStorage *)self mainTable];
-  v7 = [v4 localIndexesInjection];
+  filterCopy = filter;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  localIndexesInjection = [filterCopy localIndexesInjection];
 
-  v8 = [PQLFormatInjection formatInjection:@"%@ AND mingled != %i", v7, 1];
-  v9 = [v5 table:v6 hasRecordsMatchingQuery:v8];
+  v8 = [PQLFormatInjection formatInjection:@"%@ AND mingled != %i", localIndexesInjection, 1];
+  v9 = [pqStore table:mainTable hasRecordsMatchingQuery:v8];
 
   return v9;
 }
 
-- (BOOL)stashChangeWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)stashChangeWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 scopeIdentifier];
-  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v7];
+  identifierCopy = identifier;
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v8 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:scopeIdentifier];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      v9 = [v6 scopeIdentifier];
-      *a4 = [CPLErrors invalidScopeErrorWithScopeIdentifier:v9];
+      scopeIdentifier2 = [identifierCopy scopeIdentifier];
+      *error = [CPLErrors invalidScopeErrorWithScopeIdentifier:scopeIdentifier2];
     }
 
     v10 = 0;
@@ -964,52 +964,52 @@ LABEL_8:
 
   else
   {
-    v11 = [(CPLPrequeliteStorage *)self pqStore];
-    v12 = [v11 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v13 = [(CPLPrequeliteStorage *)self mainTable];
-    v14 = [v6 identifier];
-    v10 = [v12 cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", v13, 2, v8, v14}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v10 = [pqlConnection cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND identifier = %@", mainTable, 2, v8, identifier}];
 
     if (v10)
     {
-      if ([v12 changes] >= 1)
+      if ([pqlConnection changes] >= 1)
       {
         sub_1001C09E0();
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [v12 lastError];
+      *error = [pqlConnection lastError];
     }
   }
 
   return v10;
 }
 
-- (BOOL)unstashRecordsForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 unstashedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)unstashRecordsForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more unstashedCount:(unint64_t *)unstashedCount error:(id *)error
 {
-  v12 = a3;
-  v13 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v12];
-  *a6 = 0;
+  identifierCopy = identifier;
+  v13 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifierCopy];
+  *unstashedCount = 0;
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = v13;
-    v16 = [(CPLPrequeliteStorage *)self pqStore];
-    v17 = [v16 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v18 = [(CPLPrequeliteStorage *)self mainTable];
-    v19 = v18;
-    if (a4)
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v19 = mainTable;
+    if (count)
     {
-      v20 = [v17 cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND mingled = %i LIMIT %lu", v18, 0, v15, 2, a4}];
+      v20 = [pqlConnection cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND mingled = %i LIMIT %lu", mainTable, 0, v15, 2, count}];
 
       if (v20)
       {
-        v21 = [v17 changes];
-        *a6 = v21;
-        *a5 = v21 >= a4;
+        changes = [pqlConnection changes];
+        *unstashedCount = changes;
+        *more = changes >= count;
 LABEL_10:
         v14 = 1;
 LABEL_14:
@@ -1020,19 +1020,19 @@ LABEL_14:
 
     else
     {
-      v22 = [v17 cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND mingled = %i", v18, 0, v15, 2}];
+      v22 = [pqlConnection cplExecute:{@"UPDATE %@ SET mingled = %i WHERE scopeIndex = %ld AND mingled = %i", mainTable, 0, v15, 2}];
 
       if (v22)
       {
-        *a5 = 0;
+        *more = 0;
         goto LABEL_10;
       }
     }
 
-    if (a7)
+    if (error)
     {
-      [v17 lastError];
-      *a7 = v14 = 0;
+      [pqlConnection lastError];
+      *error = v14 = 0;
     }
 
     else
@@ -1043,10 +1043,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a7)
+  if (error)
   {
-    [CPLErrors invalidScopeErrorWithScopeIdentifier:v12];
-    *a7 = v14 = 0;
+    [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+    *error = v14 = 0;
   }
 
   else
@@ -1059,33 +1059,33 @@ LABEL_15:
   return v14;
 }
 
-- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)a3
+- (BOOL)hasStashedChangesForScopeWithIdentifier:(id)identifier
 {
-  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:a3];
+  v4 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   v6 = v4;
-  v7 = [(CPLPrequeliteStorage *)self pqStore];
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v9 = [PQLFormatInjection formatInjection:@"scopeIndex = %ld AND mingled = %i", v6, 2];
-  v10 = [v7 table:v8 hasRecordsMatchingQuery:v9];
+  v10 = [pqStore table:mainTable hasRecordsMatchingQuery:v9];
 
   return v10;
 }
 
-- (BOOL)deleteAllRecordsForScopeWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deleteAllRecordsForScopeWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(CPLPrequeliteStorage *)self localScopeIndexForScopeIdentifier:identifierCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopeIdentifier:v6];
-      *a4 = v8 = 0;
+      [CPLErrors invalidScopeErrorWithScopeIdentifier:identifierCopy];
+      *error = v8 = 0;
     }
 
     else
@@ -1097,23 +1097,23 @@ LABEL_15:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [v10 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v12 = [(CPLPrequeliteStorage *)self mainTable];
-    v8 = [v11 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld", v12, v9}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    v8 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld", mainTable, v9}];
 
     if (v8)
     {
-      if ([v11 changes] >= 1)
+      if ([pqlConnection changes] >= 1)
       {
         sub_1001C0A8C();
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [v11 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
@@ -1122,20 +1122,20 @@ LABEL_15:
 
 - (unint64_t)countOfUnmingledRecords
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v5 = [PQLFormatInjection formatInjection:@"mingled = %i", 0];
-  v6 = [v3 table:v4 countOfRecordsMatchingQuery:v5];
+  v6 = [pqStore table:mainTable countOfRecordsMatchingQuery:v5];
 
   return v6;
 }
 
 - (unint64_t)countOfStashedRecords
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
   v5 = [PQLFormatInjection formatInjection:@"mingled = %i", 2];
-  v6 = [v3 table:v4 countOfRecordsMatchingQuery:v5];
+  v6 = [pqStore table:mainTable countOfRecordsMatchingQuery:v5];
 
   return v6;
 }
@@ -1144,40 +1144,40 @@ LABEL_15:
 {
   v8.receiver = self;
   v8.super_class = CPLPrequeliteTransientRepository;
-  v3 = [(CPLPrequeliteStorage *)&v8 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLPrequeliteStorage *)&v8 status];
+  v4 = [status mutableCopy];
 
-  v5 = [(CPLPrequeliteTransientRepository *)self countOfUnmingledRecords];
-  if (v5)
+  countOfUnmingledRecords = [(CPLPrequeliteTransientRepository *)self countOfUnmingledRecords];
+  if (countOfUnmingledRecords)
   {
-    [v4 appendFormat:@"\n\t%lu unmingled changes", v5];
+    [v4 appendFormat:@"\n\t%lu unmingled changes", countOfUnmingledRecords];
   }
 
-  v6 = [(CPLPrequeliteTransientRepository *)self countOfStashedRecords];
-  if (v6)
+  countOfStashedRecords = [(CPLPrequeliteTransientRepository *)self countOfStashedRecords];
+  if (countOfStashedRecords)
   {
-    [v4 appendFormat:@"\n\t%lu stashed changes", v6];
+    [v4 appendFormat:@"\n\t%lu stashed changes", countOfStashedRecords];
   }
 
   return v4;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   return v14;

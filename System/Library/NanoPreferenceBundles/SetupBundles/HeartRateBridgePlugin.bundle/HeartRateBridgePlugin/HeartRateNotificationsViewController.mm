@@ -1,11 +1,11 @@
 @interface HeartRateNotificationsViewController
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3;
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate;
 - (HeartRateNotificationsViewController)init;
 - (id)imageResourceBundleIdentifier;
 - (id)okayButtonTitle;
 - (id)titleString;
 - (void)_resetHeartRateNotificationSettings;
-- (void)okayButtonPressed:(id)a3;
+- (void)okayButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -65,25 +65,25 @@
   [(HeartRateNotificationsViewController *)self _setBradycardiaEnabled:1];
 }
 
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v5 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v6 = [v4 getDevicesMatching:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = [[NSUUID alloc] initWithUUIDString:@"2A57E5FF-A774-4903-B58D-41F01654BC76"];
-  v9 = [v7 supportsCapability:v8];
+  v9 = [firstObject supportsCapability:v8];
 
   v10 = [NSUserDefaults alloc];
   v11 = [v10 initWithSuiteName:kHKHeartRateNotificationsPreferencesDomain];
   v12 = [v11 objectForKey:kHKHeartRateKeyEnableStationaryDiscordanceDetection];
   v13 = [v11 objectForKey:kHKHeartRateKeyEnableBradycardiaDetection];
   v14 = ((v12 | v13) == 0) & v9;
-  v15 = [v3 setupFlowUserInfo];
+  setupFlowUserInfo = [delegateCopy setupFlowUserInfo];
 
-  v16 = [v15 objectForKeyedSubscript:BPSPairingFlowFamilyMember];
+  v16 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingFlowFamilyMember];
 
   if (v16)
   {
@@ -103,9 +103,9 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)titleString
@@ -124,10 +124,10 @@
   return v3;
 }
 
-- (void)okayButtonPressed:(id)a3
+- (void)okayButtonPressed:(id)pressed
 {
-  v4 = [(HeartRateNotificationsViewController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(HeartRateNotificationsViewController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (void)_resetHeartRateNotificationSettings

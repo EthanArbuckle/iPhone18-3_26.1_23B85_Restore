@@ -1,7 +1,7 @@
 @interface CarManeuverBannerView
 - (BNBannerSource)target;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (CarManeuverBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5;
+- (CarManeuverBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation;
 - (id)accessibilityLabel;
 - (void)updateFromBannerItem;
 @end
@@ -18,22 +18,22 @@
 - (id)accessibilityLabel
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(UILabel *)self->_primaryLabel accessibilityLabel];
-  v5 = [v4 length];
+  accessibilityLabel = [(UILabel *)self->_primaryLabel accessibilityLabel];
+  v5 = [accessibilityLabel length];
 
   if (v5)
   {
-    v6 = [(UILabel *)self->_primaryLabel accessibilityLabel];
-    [v3 addObject:v6];
+    accessibilityLabel2 = [(UILabel *)self->_primaryLabel accessibilityLabel];
+    [v3 addObject:accessibilityLabel2];
   }
 
-  v7 = [(UILabel *)self->_secondaryLabel accessibilityLabel];
-  v8 = [v7 length];
+  accessibilityLabel3 = [(UILabel *)self->_secondaryLabel accessibilityLabel];
+  v8 = [accessibilityLabel3 length];
 
   if (v8)
   {
-    v9 = [(UILabel *)self->_secondaryLabel accessibilityLabel];
-    [v3 addObject:v9];
+    accessibilityLabel4 = [(UILabel *)self->_secondaryLabel accessibilityLabel];
+    [v3 addObject:accessibilityLabel4];
   }
 
   v10 = [v3 componentsJoinedByString:{@", "}];
@@ -51,9 +51,9 @@
 - (void)updateFromBannerItem
 {
   lastManeuverItem = self->_lastManeuverItem;
-  v4 = [(CarManeuverBannerView *)self maneuverItem];
+  maneuverItem = [(CarManeuverBannerView *)self maneuverItem];
   v5 = lastManeuverItem;
-  v6 = v4;
+  v6 = maneuverItem;
   if (v5 | v6)
   {
     v7 = v6;
@@ -61,18 +61,18 @@
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(CarManeuverBannerView *)self maneuverItem];
-      v10 = [v9 copy];
+      maneuverItem2 = [(CarManeuverBannerView *)self maneuverItem];
+      v10 = [maneuverItem2 copy];
       v11 = self->_lastManeuverItem;
       self->_lastManeuverItem = v10;
 
-      v12 = [(CarManeuverBannerView *)self maneuverItem];
-      v13 = [v12 maneuverGuidanceInfo];
+      maneuverItem3 = [(CarManeuverBannerView *)self maneuverItem];
+      maneuverGuidanceInfo = [maneuverItem3 maneuverGuidanceInfo];
 
-      v14 = [(CarManeuverBannerView *)self item];
-      v15 = [v14 guidanceState];
-      v16 = [v15 junction];
-      if ([v16 type] == 1)
+      item = [(CarManeuverBannerView *)self item];
+      guidanceState = [item guidanceState];
+      junction = [guidanceState junction];
+      if ([junction type] == 1)
       {
         v17 = +[UIColor labelColor];
         v18 = [v17 colorWithAlphaComponent:0.600000024];
@@ -87,8 +87,8 @@
         [(GuidanceManeuverView *)self->_maneuverView setAccentColor:v17];
       }
 
-      v20 = [v13 maneuverArtwork];
-      [(GuidanceManeuverView *)*p_maneuverView setManeuverArtwork:v20];
+      maneuverArtwork = [maneuverGuidanceInfo maneuverArtwork];
+      [(GuidanceManeuverView *)*p_maneuverView setManeuverArtwork:maneuverArtwork];
 
       if (qword_10195F1D0 != -1)
       {
@@ -97,10 +97,10 @@
 
       [(UIStackView *)self->_labelStackView frame];
       v22 = v21;
-      v74 = v13;
-      v23 = [v13 majorTextAlternatives];
+      v74 = maneuverGuidanceInfo;
+      majorTextAlternatives = [maneuverGuidanceInfo majorTextAlternatives];
       v24 = qword_10195F1C0;
-      v25 = v23;
+      v25 = majorTextAlternatives;
       v26 = v24;
       v75 = 0u;
       v76 = 0u;
@@ -111,11 +111,11 @@
       if (v28)
       {
         v29 = v28;
-        v30 = 0;
+        attributedString = 0;
         v31 = *v76;
 LABEL_10:
         v32 = 0;
-        v33 = v30;
+        v33 = attributedString;
         while (1)
         {
           if (*v76 != v31)
@@ -124,16 +124,16 @@ LABEL_10:
           }
 
           v34 = [*(*(&v75 + 1) + 8 * v32) multiPartAttributedStringWithAttributes:v26];
-          v30 = [v34 attributedString];
+          attributedString = [v34 attributedString];
 
-          [v30 boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
+          [attributedString boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
           if (v35 < v22)
           {
             break;
           }
 
           v32 = v32 + 1;
-          v33 = v30;
+          v33 = attributedString;
           if (v29 == v32)
           {
             v29 = [v27 countByEnumeratingWithState:&v75 objects:v79 count:16];
@@ -149,12 +149,12 @@ LABEL_10:
 
       else
       {
-        v30 = 0;
+        attributedString = 0;
       }
 
-      v36 = [(UILabel *)self->_primaryLabel attributedText];
-      v37 = v30;
-      v38 = v36;
+      attributedText = [(UILabel *)self->_primaryLabel attributedText];
+      v37 = attributedString;
+      v38 = attributedText;
       if (v37 | v38)
       {
         v39 = v38;
@@ -166,9 +166,9 @@ LABEL_10:
         }
       }
 
-      v41 = [v74 minorTextAlternatives];
+      minorTextAlternatives = [v74 minorTextAlternatives];
       v42 = qword_10195F1C8;
-      v43 = v41;
+      v43 = minorTextAlternatives;
       v44 = v42;
       v75 = 0u;
       v76 = 0u;
@@ -179,11 +179,11 @@ LABEL_10:
       if (v46)
       {
         v47 = v46;
-        v48 = 0;
+        attributedString2 = 0;
         v49 = *v76;
 LABEL_23:
         v50 = 0;
-        v51 = v48;
+        v51 = attributedString2;
         while (1)
         {
           if (*v76 != v49)
@@ -192,16 +192,16 @@ LABEL_23:
           }
 
           v52 = [*(*(&v75 + 1) + 8 * v50) multiPartAttributedStringWithAttributes:v44];
-          v48 = [v52 attributedString];
+          attributedString2 = [v52 attributedString];
 
-          [v48 boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
+          [attributedString2 boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
           if (v53 < v22)
           {
             break;
           }
 
           v50 = v50 + 1;
-          v51 = v48;
+          v51 = attributedString2;
           if (v47 == v50)
           {
             v47 = [v45 countByEnumeratingWithState:&v75 objects:v79 count:16];
@@ -217,12 +217,12 @@ LABEL_23:
 
       else
       {
-        v48 = 0;
+        attributedString2 = 0;
       }
 
-      v54 = [(UILabel *)self->_secondaryLabel attributedText];
-      v55 = v48;
-      v56 = v54;
+      attributedText2 = [(UILabel *)self->_secondaryLabel attributedText];
+      v55 = attributedString2;
+      v56 = attributedText2;
       if (v55 | v56)
       {
         v57 = v56;
@@ -234,11 +234,11 @@ LABEL_23:
         }
       }
 
-      v59 = [v74 shieldInfo];
-      v60 = v59;
-      if (v59)
+      shieldInfo = [v74 shieldInfo];
+      v60 = shieldInfo;
+      if (shieldInfo)
       {
-        if (![v59 isEqual:self->_cachedShieldInfo])
+        if (![shieldInfo isEqual:self->_cachedShieldInfo])
         {
           v62 = +[UIScreen _carScreen];
           [v62 scale];
@@ -274,9 +274,9 @@ LABEL_23:
         [(NSLayoutConstraint *)self->_shieldWidthConstraint setConstant:0.0];
       }
 
-      v71 = [(UIImageView *)self->_shieldImageView image];
+      image = [(UIImageView *)self->_shieldImageView image];
 
-      if (v71)
+      if (image)
       {
         v72 = &OBJC_IVAR___CarManeuverBannerView__labelsToButtonConstraint;
       }
@@ -286,7 +286,7 @@ LABEL_23:
         v72 = &OBJC_IVAR___CarManeuverBannerView__labelsToShieldConstraint;
       }
 
-      if (v71)
+      if (image)
       {
         v73 = &OBJC_IVAR___CarManeuverBannerView__labelsToShieldConstraint;
       }
@@ -302,167 +302,167 @@ LABEL_23:
   }
 }
 
-- (CarManeuverBannerView)initWithTarget:(id)a3 item:(id)a4 aperturePresentation:(BOOL)a5
+- (CarManeuverBannerView)initWithTarget:(id)target item:(id)item aperturePresentation:(BOOL)presentation
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  itemCopy = item;
   v89.receiver = self;
   v89.super_class = CarManeuverBannerView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v12 = [(CarManeuverBannerView *)&v89 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v12)
+  height = [(CarManeuverBannerView *)&v89 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [(CarManeuverBannerView *)v12 setAccessibilityIdentifier:v14];
+    [(CarManeuverBannerView *)height setAccessibilityIdentifier:v14];
 
-    objc_storeWeak(&v12->_target, v7);
-    objc_storeStrong(&v12->_item, a4);
-    v15 = [[GuidanceManeuverView alloc] initWithFrame:0 textureProvider:CGRectZero.origin.x, y, width, height];
-    maneuverView = v12->_maneuverView;
-    v12->_maneuverView = v15;
+    objc_storeWeak(&height->_target, targetCopy);
+    objc_storeStrong(&height->_item, item);
+    height2 = [[GuidanceManeuverView alloc] initWithFrame:0 textureProvider:CGRectZero.origin.x, y, width, height];
+    maneuverView = height->_maneuverView;
+    height->_maneuverView = height2;
 
-    [(GuidanceManeuverView *)v12->_maneuverView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(GuidanceManeuverView *)v12->_maneuverView setShieldIdiom:1];
+    [(GuidanceManeuverView *)height->_maneuverView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(GuidanceManeuverView *)height->_maneuverView setShieldIdiom:1];
     v17 = objc_opt_new();
-    primaryLabel = v12->_primaryLabel;
-    v12->_primaryLabel = v17;
+    primaryLabel = height->_primaryLabel;
+    height->_primaryLabel = v17;
 
-    [(UILabel *)v12->_primaryLabel setAccessibilityIdentifier:@"PrimaryLabel"];
-    [(UILabel *)v12->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_primaryLabel setAccessibilityIdentifier:@"PrimaryLabel"];
+    [(UILabel *)height->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = objc_opt_new();
-    v88 = v7;
-    secondaryLabel = v12->_secondaryLabel;
-    v12->_secondaryLabel = v19;
+    v88 = targetCopy;
+    secondaryLabel = height->_secondaryLabel;
+    height->_secondaryLabel = v19;
 
-    [(UILabel *)v12->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
-    [(UILabel *)v12->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
+    [(UILabel *)height->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v21 = [UIStackView alloc];
-    v91[0] = v12->_primaryLabel;
-    v91[1] = v12->_secondaryLabel;
+    v91[0] = height->_primaryLabel;
+    v91[1] = height->_secondaryLabel;
     v22 = [NSArray arrayWithObjects:v91 count:2];
     v23 = [v21 initWithArrangedSubviews:v22];
-    labelStackView = v12->_labelStackView;
-    v12->_labelStackView = v23;
+    labelStackView = height->_labelStackView;
+    height->_labelStackView = v23;
 
-    [(UIStackView *)v12->_labelStackView setAccessibilityIdentifier:@"LabelStackView"];
-    [(UIStackView *)v12->_labelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIStackView *)v12->_labelStackView setAxis:1];
-    [(UIStackView *)v12->_labelStackView setDistribution:2];
-    [(UIStackView *)v12->_labelStackView setAlignment:0];
+    [(UIStackView *)height->_labelStackView setAccessibilityIdentifier:@"LabelStackView"];
+    [(UIStackView *)height->_labelStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIStackView *)height->_labelStackView setAxis:1];
+    [(UIStackView *)height->_labelStackView setDistribution:2];
+    [(UIStackView *)height->_labelStackView setAlignment:0];
     v25 = objc_opt_new();
-    shieldImageView = v12->_shieldImageView;
-    v12->_shieldImageView = v25;
+    shieldImageView = height->_shieldImageView;
+    height->_shieldImageView = v25;
 
-    [(UIImageView *)v12->_shieldImageView setAccessibilityIdentifier:@"ShieldImageView"];
-    [(UIImageView *)v12->_shieldImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIImageView *)v12->_shieldImageView setContentMode:1];
+    [(UIImageView *)height->_shieldImageView setAccessibilityIdentifier:@"ShieldImageView"];
+    [(UIImageView *)height->_shieldImageView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIImageView *)height->_shieldImageView setContentMode:1];
     v27 = +[CPUIBannerViewButton buttonWithChevronImage];
-    actionButton = v12->_actionButton;
-    v12->_actionButton = v27;
+    actionButton = height->_actionButton;
+    height->_actionButton = v27;
 
-    [(CPUIBannerViewButton *)v12->_actionButton setAccessibilityIdentifier:@"ActionButton"];
-    [(CPUIBannerViewButton *)v12->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CPUIBannerViewButton *)height->_actionButton setAccessibilityIdentifier:@"ActionButton"];
+    [(CPUIBannerViewButton *)height->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v29 = +[CarDisplayController sharedInstance];
-    v30 = [v29 window];
-    v31 = [v30 windowScene];
-    [v31 focusSystem];
-    v32 = v87 = v8;
-    [(CPUIBannerViewButton *)v12->_actionButton setSelected:v32 != 0];
+    window = [v29 window];
+    windowScene = [window windowScene];
+    [windowScene focusSystem];
+    v32 = v87 = itemCopy;
+    [(CPUIBannerViewButton *)height->_actionButton setSelected:v32 != 0];
 
     LODWORD(v33) = 1148846080;
-    [(CPUIBannerViewButton *)v12->_actionButton setContentHuggingPriority:0 forAxis:v33];
+    [(CPUIBannerViewButton *)height->_actionButton setContentHuggingPriority:0 forAxis:v33];
     LODWORD(v34) = 1148846080;
-    [(CPUIBannerViewButton *)v12->_actionButton setContentHuggingPriority:1 forAxis:v34];
+    [(CPUIBannerViewButton *)height->_actionButton setContentHuggingPriority:1 forAxis:v34];
     LODWORD(v35) = 1148846080;
-    [(CPUIBannerViewButton *)v12->_actionButton setContentCompressionResistancePriority:0 forAxis:v35];
+    [(CPUIBannerViewButton *)height->_actionButton setContentCompressionResistancePriority:0 forAxis:v35];
     LODWORD(v36) = 1148846080;
-    [(CPUIBannerViewButton *)v12->_actionButton setContentCompressionResistancePriority:1 forAxis:v36];
-    [(CarManeuverBannerView *)v12 addSubview:v12->_maneuverView];
-    [(CarManeuverBannerView *)v12 addSubview:v12->_labelStackView];
-    [(CarManeuverBannerView *)v12 addSubview:v12->_shieldImageView];
-    [(CarManeuverBannerView *)v12 addSubview:v12->_actionButton];
-    v37 = [(UIStackView *)v12->_labelStackView trailingAnchor];
-    v38 = [(UIImageView *)v12->_shieldImageView leadingAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38 constant:-12.0];
-    labelsToShieldConstraint = v12->_labelsToShieldConstraint;
-    v12->_labelsToShieldConstraint = v39;
+    [(CPUIBannerViewButton *)height->_actionButton setContentCompressionResistancePriority:1 forAxis:v36];
+    [(CarManeuverBannerView *)height addSubview:height->_maneuverView];
+    [(CarManeuverBannerView *)height addSubview:height->_labelStackView];
+    [(CarManeuverBannerView *)height addSubview:height->_shieldImageView];
+    [(CarManeuverBannerView *)height addSubview:height->_actionButton];
+    trailingAnchor = [(UIStackView *)height->_labelStackView trailingAnchor];
+    leadingAnchor = [(UIImageView *)height->_shieldImageView leadingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-12.0];
+    labelsToShieldConstraint = height->_labelsToShieldConstraint;
+    height->_labelsToShieldConstraint = v39;
 
-    v41 = [(UIStackView *)v12->_labelStackView trailingAnchor];
-    v42 = [(CPUIBannerViewButton *)v12->_actionButton leadingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:-12.0];
-    labelsToButtonConstraint = v12->_labelsToButtonConstraint;
-    v12->_labelsToButtonConstraint = v43;
+    trailingAnchor2 = [(UIStackView *)height->_labelStackView trailingAnchor];
+    leadingAnchor2 = [(CPUIBannerViewButton *)height->_actionButton leadingAnchor];
+    v43 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor2 constant:-12.0];
+    labelsToButtonConstraint = height->_labelsToButtonConstraint;
+    height->_labelsToButtonConstraint = v43;
 
-    v45 = [(UIImageView *)v12->_shieldImageView widthAnchor];
-    v46 = [v45 constraintEqualToConstant:0.0];
-    shieldWidthConstraint = v12->_shieldWidthConstraint;
-    v12->_shieldWidthConstraint = v46;
+    widthAnchor = [(UIImageView *)height->_shieldImageView widthAnchor];
+    v46 = [widthAnchor constraintEqualToConstant:0.0];
+    shieldWidthConstraint = height->_shieldWidthConstraint;
+    height->_shieldWidthConstraint = v46;
 
-    v86 = [(GuidanceManeuverView *)v12->_maneuverView leadingAnchor];
-    v85 = [(CarManeuverBannerView *)v12 leadingAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85 constant:12.0];
+    leadingAnchor3 = [(GuidanceManeuverView *)height->_maneuverView leadingAnchor];
+    leadingAnchor4 = [(CarManeuverBannerView *)height leadingAnchor];
+    v84 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:12.0];
     v90[0] = v84;
-    v83 = [(GuidanceManeuverView *)v12->_maneuverView widthAnchor];
-    v82 = [v83 constraintEqualToConstant:33.0];
+    widthAnchor2 = [(GuidanceManeuverView *)height->_maneuverView widthAnchor];
+    v82 = [widthAnchor2 constraintEqualToConstant:33.0];
     v90[1] = v82;
-    v81 = [(GuidanceManeuverView *)v12->_maneuverView centerYAnchor];
-    v80 = [(CarManeuverBannerView *)v12 centerYAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    centerYAnchor = [(GuidanceManeuverView *)height->_maneuverView centerYAnchor];
+    centerYAnchor2 = [(CarManeuverBannerView *)height centerYAnchor];
+    v79 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v90[2] = v79;
-    v78 = [(GuidanceManeuverView *)v12->_maneuverView heightAnchor];
-    v77 = [v78 constraintEqualToConstant:33.0];
+    heightAnchor = [(GuidanceManeuverView *)height->_maneuverView heightAnchor];
+    v77 = [heightAnchor constraintEqualToConstant:33.0];
     v90[3] = v77;
-    v76 = [(CPUIBannerViewButton *)v12->_actionButton trailingAnchor];
-    v75 = [(CarManeuverBannerView *)v12 trailingAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75 constant:-12.0];
+    trailingAnchor3 = [(CPUIBannerViewButton *)height->_actionButton trailingAnchor];
+    trailingAnchor4 = [(CarManeuverBannerView *)height trailingAnchor];
+    v74 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-12.0];
     v90[4] = v74;
-    v73 = [(CPUIBannerViewButton *)v12->_actionButton widthAnchor];
-    v72 = [v73 constraintEqualToConstant:29.0];
+    widthAnchor3 = [(CPUIBannerViewButton *)height->_actionButton widthAnchor];
+    v72 = [widthAnchor3 constraintEqualToConstant:29.0];
     v90[5] = v72;
-    v71 = [(CPUIBannerViewButton *)v12->_actionButton centerYAnchor];
-    v70 = [(CarManeuverBannerView *)v12 centerYAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    centerYAnchor3 = [(CPUIBannerViewButton *)height->_actionButton centerYAnchor];
+    centerYAnchor4 = [(CarManeuverBannerView *)height centerYAnchor];
+    v69 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v90[6] = v69;
-    v68 = [(CPUIBannerViewButton *)v12->_actionButton heightAnchor];
-    v67 = [v68 constraintEqualToConstant:29.0];
+    heightAnchor2 = [(CPUIBannerViewButton *)height->_actionButton heightAnchor];
+    v67 = [heightAnchor2 constraintEqualToConstant:29.0];
     v90[7] = v67;
-    v66 = [(UIImageView *)v12->_shieldImageView trailingAnchor];
-    v65 = [(CPUIBannerViewButton *)v12->_actionButton leadingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65 constant:-12.0];
+    trailingAnchor5 = [(UIImageView *)height->_shieldImageView trailingAnchor];
+    leadingAnchor5 = [(CPUIBannerViewButton *)height->_actionButton leadingAnchor];
+    v64 = [trailingAnchor5 constraintEqualToAnchor:leadingAnchor5 constant:-12.0];
     v90[8] = v64;
-    v90[9] = v12->_shieldWidthConstraint;
-    v63 = [(UIImageView *)v12->_shieldImageView heightAnchor];
-    v62 = [v63 constraintEqualToConstant:16.0];
+    v90[9] = height->_shieldWidthConstraint;
+    heightAnchor3 = [(UIImageView *)height->_shieldImageView heightAnchor];
+    v62 = [heightAnchor3 constraintEqualToConstant:16.0];
     v90[10] = v62;
-    v61 = [(UIImageView *)v12->_shieldImageView centerYAnchor];
-    v60 = [(CarManeuverBannerView *)v12 centerYAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    centerYAnchor5 = [(UIImageView *)height->_shieldImageView centerYAnchor];
+    centerYAnchor6 = [(CarManeuverBannerView *)height centerYAnchor];
+    v59 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v90[11] = v59;
-    v58 = [(UIStackView *)v12->_labelStackView leadingAnchor];
-    v57 = [(GuidanceManeuverView *)v12->_maneuverView trailingAnchor];
-    v48 = [v58 constraintEqualToAnchor:v57 constant:12.0];
+    leadingAnchor6 = [(UIStackView *)height->_labelStackView leadingAnchor];
+    trailingAnchor6 = [(GuidanceManeuverView *)height->_maneuverView trailingAnchor];
+    v48 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor6 constant:12.0];
     v90[12] = v48;
-    v49 = [(UIStackView *)v12->_labelStackView topAnchor];
-    v50 = [(CarManeuverBannerView *)v12 topAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:3.0];
+    topAnchor = [(UIStackView *)height->_labelStackView topAnchor];
+    topAnchor2 = [(CarManeuverBannerView *)height topAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:3.0];
     v90[13] = v51;
-    v52 = [(UIStackView *)v12->_labelStackView bottomAnchor];
-    v53 = [(CarManeuverBannerView *)v12 bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:-3.0];
+    bottomAnchor = [(UIStackView *)height->_labelStackView bottomAnchor];
+    bottomAnchor2 = [(CarManeuverBannerView *)height bottomAnchor];
+    v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-3.0];
     v90[14] = v54;
     v55 = [NSArray arrayWithObjects:v90 count:15];
     [NSLayoutConstraint activateConstraints:v55];
 
-    v8 = v87;
-    v7 = v88;
+    itemCopy = v87;
+    targetCopy = v88;
 
-    [(CarManeuverBannerView *)v12 updateFromBannerItem];
+    [(CarManeuverBannerView *)height updateFromBannerItem];
   }
 
-  return v12;
+  return height;
 }
 
 @end

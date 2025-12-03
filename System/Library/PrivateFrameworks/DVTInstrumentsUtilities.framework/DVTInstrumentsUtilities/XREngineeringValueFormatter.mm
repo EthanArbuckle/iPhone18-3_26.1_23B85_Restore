@@ -1,48 +1,48 @@
 @interface XREngineeringValueFormatter
-+ (id)networkAddressStringFromSockaddr:(const void *)a3 length:(unint64_t)a4 resolveHostName:(id)a5;
-- (BOOL)getTitleAndSubtitleForCoreEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForProcessEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForSwiftActorEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForSwiftTaskEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForSwiftTaskPriorityEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForThreadEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)getTitleAndSubtitleForURLSessionEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)networkAddressStringFromSockaddr:(const void *)sockaddr length:(unint64_t)length resolveHostName:(id)name;
+- (BOOL)getTitleAndSubtitleForCoreEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForProcessEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForSwiftActorEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForSwiftTaskEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForSwiftTaskPriorityEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForThreadEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)getTitleAndSubtitleForURLSessionEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle;
+- (BOOL)isEqual:(id)equal;
 - (XREngineeringValueFormatter)init;
-- (id)stringForCallSiteEngineeringValue:(id)a3 shouldIncludeLibrary:(BOOL)a4;
-- (id)stringForLibraryAddressEngineeringValue:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForSocketAddrEngineeringValue:(id)a3;
-- (id)stringForTextSymbolEngineeringValue:(id)a3 shouldIncludeLibrary:(BOOL)a4;
-- (id)stringForUserIDEngineeringValue:(id)a3;
-- (id)typeStringForEngineeringValue:(id)a3;
+- (id)stringForCallSiteEngineeringValue:(id)value shouldIncludeLibrary:(BOOL)library;
+- (id)stringForLibraryAddressEngineeringValue:(id)value;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForSocketAddrEngineeringValue:(id)value;
+- (id)stringForTextSymbolEngineeringValue:(id)value shouldIncludeLibrary:(BOOL)library;
+- (id)stringForUserIDEngineeringValue:(id)value;
+- (id)typeStringForEngineeringValue:(id)value;
 - (unint64_t)hash;
 @end
 
 @implementation XREngineeringValueFormatter
 
-- (BOOL)getTitleAndSubtitleForEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  v8 = a3;
-  v13 = v8;
-  if (a4)
+  valueCopy = value;
+  v13 = valueCopy;
+  if (title)
   {
-    if (a5)
+    if (subtitle)
     {
-      v14 = objc_msgSend_engineeringType(v8, v9, v10, v11, v12);
+      v14 = objc_msgSend_engineeringType(valueCopy, v9, v10, v11, v12);
       if (v14 <= 208)
       {
         switch(v14)
         {
           case 8:
-            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForThreadEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForThreadEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
             goto LABEL_22;
           case 23:
-            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForProcessEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForProcessEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
             goto LABEL_22;
           case 31:
-            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForCoreEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+            TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForCoreEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
             goto LABEL_22;
         }
       }
@@ -51,20 +51,20 @@
       {
         if (v14 == 233)
         {
-          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForSwiftActorEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForSwiftActorEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
           goto LABEL_22;
         }
 
         if (v14 == 242)
         {
-          v18 = *a4;
-          *a4 = @"Commutator";
+          v18 = *title;
+          *title = @"Commutator";
 
           v21 = sub_248095378(self, v13, 0, v19, v20);
-          v22 = *a5;
-          *a5 = v21;
+          v22 = *subtitle;
+          *subtitle = v21;
 
-          v23 = *a5;
+          v23 = *subtitle;
 LABEL_17:
           v17 = v23 != 0;
           goto LABEL_23;
@@ -75,13 +75,13 @@ LABEL_17:
       {
         if (v14 == 209)
         {
-          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForURLSessionEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForURLSessionEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
           goto LABEL_22;
         }
 
         if (v14 == 225)
         {
-          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForSwiftTaskEngineeringValue_title_subtitle_(self, v15, v13, a4, a5);
+          TitleAndSubtitleForThreadEngineeringValue_title_subtitle = objc_msgSend_getTitleAndSubtitleForSwiftTaskEngineeringValue_title_subtitle_(self, v15, v13, title, subtitle);
 LABEL_22:
           v17 = TitleAndSubtitleForThreadEngineeringValue_title_subtitle;
           goto LABEL_23;
@@ -90,10 +90,10 @@ LABEL_22:
     }
 
     v24 = sub_248095378(self, v13, 0, v11, v12);
-    v25 = *a4;
-    *a4 = v24;
+    v25 = *title;
+    *title = v24;
 
-    v23 = *a4;
+    v23 = *title;
     goto LABEL_17;
   }
 
@@ -103,15 +103,15 @@ LABEL_23:
   return v17;
 }
 
-- (id)typeStringForEngineeringValue:(id)a3
+- (id)typeStringForEngineeringValue:(id)value
 {
-  v3 = a3;
-  v8 = objc_msgSend_engineeringType(v3, v4, v5, v6, v7);
+  valueCopy = value;
+  v8 = objc_msgSend_engineeringType(valueCopy, v4, v5, v6, v7);
   if (v8 == 209)
   {
     v9 = @"URLSession";
     v16 = 0;
-    objc_msgSend_getURLSessionName_internalSessionID_backgroundIdentifier_isShared_isEphemeral_(v3, v10, 0, 0, 0, 0, &v16);
+    objc_msgSend_getURLSessionName_internalSessionID_backgroundIdentifier_isShared_isEphemeral_(valueCopy, v10, 0, 0, 0, 0, &v16);
     if (v16 == 1)
     {
       v14 = objc_msgSend_stringByAppendingString_(@"Ephemeral ", v11, v9, v12, v13);
@@ -177,16 +177,16 @@ LABEL_23:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = XREngineeringValueFormatter;
   v5 = 1;
-  if (![(XREngineeringValueFormatter *)&v7 isEqual:v4])
+  if (![(XREngineeringValueFormatter *)&v7 isEqual:equalCopy])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_multiline != v4[64] || self->_highestResolutionTimeEnabled != v4[65]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (self->_multiline != equalCopy[64] || self->_highestResolutionTimeEnabled != equalCopy[65]))
     {
       v5 = 0;
     }
@@ -212,12 +212,12 @@ LABEL_23:
   return v3 ^ v2;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (objc_msgSend_conformsToProtocol_(v4, v5, &unk_285A4AE00, v6, v7))
+  valueCopy = value;
+  if (objc_msgSend_conformsToProtocol_(valueCopy, v5, &unk_285A4AE00, v6, v7))
   {
-    v11 = objc_msgSend_stringForEngineeringValue_(self, v8, v4, v9, v10);
+    v11 = objc_msgSend_stringForEngineeringValue_(self, v8, valueCopy, v9, v10);
   }
 
   else
@@ -228,14 +228,14 @@ LABEL_23:
   return v11;
 }
 
-+ (id)networkAddressStringFromSockaddr:(const void *)a3 length:(unint64_t)a4 resolveHostName:(id)a5
++ (id)networkAddressStringFromSockaddr:(const void *)sockaddr length:(unint64_t)length resolveHostName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v11 = v7;
-  if (v7)
+  nameCopy = name;
+  v11 = nameCopy;
+  if (nameCopy)
   {
-    v12 = v7;
+    v12 = nameCopy;
     v17 = objc_msgSend_UTF8String(v12, v13, v14, v15, v16);
   }
 
@@ -244,18 +244,18 @@ LABEL_23:
     v17 = "???";
   }
 
-  if (a4 < 2)
+  if (length < 2)
   {
     goto LABEL_6;
   }
 
-  v18 = *a3;
-  if (v18 > a4)
+  v18 = *sockaddr;
+  if (v18 > length)
   {
     goto LABEL_6;
   }
 
-  v23 = *(a3 + 1);
+  v23 = *(sockaddr + 1);
   HIDWORD(v25) = v23 - 2;
   LODWORD(v25) = v23 - 2;
   v24 = v25 >> 2;
@@ -276,16 +276,16 @@ LABEL_23:
     {
       if (!v11)
       {
-        v17 = inet_ntop(v23, a3 + 8, v27, 0xFFu);
+        v17 = inet_ntop(v23, sockaddr + 8, v27, 0xFFu);
       }
 
-      if (!*(a3 + 1))
+      if (!*(sockaddr + 1))
       {
         v20 = @".*";
         goto LABEL_33;
       }
 
-      objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @".%hu", v9, v10, __rev16(*(a3 + 1)));
+      objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @".%hu", v9, v10, __rev16(*(sockaddr + 1)));
       goto LABEL_30;
     }
   }
@@ -309,8 +309,8 @@ LABEL_21:
 
     if (v18 >= 0x10)
     {
-      v8 = a3 + 4;
-      v26 = *(a3 + 1);
+      v8 = sockaddr + 4;
+      v26 = *(sockaddr + 1);
       if (!v26)
       {
         v17 = "*";
@@ -321,13 +321,13 @@ LABEL_21:
         v17 = inet_ntop(v23, v8, v27, 0xFFu);
       }
 
-      if (!*(a3 + 1))
+      if (!*(sockaddr + 1))
       {
         v20 = @":*";
         goto LABEL_33;
       }
 
-      objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @":%hu", v9, v10, __rev16(*(a3 + 1)));
+      objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v8, @":%hu", v9, v10, __rev16(*(sockaddr + 1)));
       v20 = LABEL_30:;
 LABEL_33:
       if (v17)
@@ -354,13 +354,13 @@ LABEL_7:
   return v19;
 }
 
-- (BOOL)getTitleAndSubtitleForCoreEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForCoreEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  v6 = a3;
-  v11 = v6;
-  if (a4)
+  valueCopy = value;
+  v11 = valueCopy;
+  if (title)
   {
-    if (objc_msgSend_uint32(v6, v7, v8, v9, v10) == 100000)
+    if (objc_msgSend_uint32(valueCopy, v7, v8, v9, v10) == 100000)
     {
       v16 = @"-";
     }
@@ -372,19 +372,19 @@ LABEL_7:
       v16 = objc_msgSend_stringWithFormat_(v17, v19, @"CPU %u", v20, v21, v18);
     }
 
-    v22 = *a4;
-    *a4 = v16;
+    v22 = *title;
+    *title = v16;
   }
 
-  return a4 != 0;
+  return title != 0;
 }
 
-- (BOOL)getTitleAndSubtitleForProcessEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForProcessEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  if (a4)
+  if (title)
   {
     v17 = 0;
-    if (objc_msgSend_getValue_fieldIndex_(a3, a2, &v17, 0, a5))
+    if (objc_msgSend_getValue_fieldIndex_(value, a2, &v17, 0, subtitle))
     {
       v10 = objc_msgSend_uint32(v17, v6, v7, v8, v9);
       if (v10 < 1)
@@ -411,19 +411,19 @@ LABEL_7:
       v14 = @"<error>";
     }
 
-    v15 = *a4;
-    *a4 = v14;
+    v15 = *title;
+    *title = v14;
   }
 
-  return a4 != 0;
+  return title != 0;
 }
 
-- (BOOL)getTitleAndSubtitleForThreadEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForThreadEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  if (a4)
+  if (title)
   {
     v12 = 0;
-    if (objc_msgSend_getValue_fieldIndex_(a3, a2, &v12, 0, a5))
+    if (objc_msgSend_getValue_fieldIndex_(value, a2, &v12, 0, subtitle))
     {
       v9 = sub_248095378(self, v12, 0, v7, v8);
     }
@@ -433,23 +433,23 @@ LABEL_7:
       v9 = @"unknown";
     }
 
-    v10 = *a4;
-    *a4 = v9;
+    v10 = *title;
+    *title = v9;
   }
 
-  return a4 != 0;
+  return title != 0;
 }
 
-- (BOOL)getTitleAndSubtitleForURLSessionEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForURLSessionEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  if (a4)
+  if (title)
   {
     v19 = 0;
     v20 = 0;
-    objc_msgSend_getURLSessionName_internalSessionID_backgroundIdentifier_isShared_isEphemeral_(a3, a2, &v20, 0, &v19, 0, 0);
+    objc_msgSend_getURLSessionName_internalSessionID_backgroundIdentifier_isShared_isEphemeral_(value, a2, &v20, 0, &v19, 0, 0);
     v7 = v20;
     v8 = v19;
-    if (a5)
+    if (subtitle)
     {
       if (v7)
       {
@@ -461,10 +461,10 @@ LABEL_7:
         v9 = &stru_285A3F068;
       }
 
-      objc_storeStrong(a4, v9);
+      objc_storeStrong(title, v9);
       v10 = v8;
-      v11 = *a5;
-      *a5 = v10;
+      v11 = *subtitle;
+      *subtitle = v10;
     }
 
     else
@@ -478,25 +478,25 @@ LABEL_7:
         v16 = v17;
       }
 
-      v11 = *a4;
-      *a4 = v16;
+      v11 = *title;
+      *title = v16;
     }
   }
 
-  return a4 != 0;
+  return title != 0;
 }
 
-- (BOOL)getTitleAndSubtitleForSwiftTaskEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForSwiftTaskEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  v8 = a3;
-  v11 = v8;
-  if (a4)
+  valueCopy = value;
+  v11 = valueCopy;
+  if (title)
   {
     v48 = 0;
     v49 = 0;
     v46 = 0;
     v47 = 0;
-    Value_fieldIndex = objc_msgSend_getValue_fieldIndex_(v8, v9, &v47, 2, v10);
+    Value_fieldIndex = objc_msgSend_getValue_fieldIndex_(valueCopy, v9, &v47, 2, v10);
     v15 = objc_msgSend_getValue_fieldIndex_(v11, v13, &v46, 3, v14);
     if (objc_msgSend_getValue_fieldIndex_(v11, v16, &v49, 1, v17) && objc_msgSend_getValue_fieldIndex_(v11, v18, &v48, 0, v19))
     {
@@ -521,83 +521,83 @@ LABEL_7:
 
       v37 = v34;
       v41 = sub_248095378(self, v48, 0, v35, v36);
-      if (a5)
+      if (subtitle)
       {
-        objc_storeStrong(a4, v37);
+        objc_storeStrong(title, v37);
         v42 = v41;
-        v43 = *a5;
-        *a5 = v42;
+        v43 = *subtitle;
+        *subtitle = v42;
       }
 
       else
       {
         v44 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v38, @"%@ (%@)", v39, v40, v37, v41);
-        v43 = *a4;
-        *a4 = v44;
+        v43 = *title;
+        *title = v44;
       }
 
-      LOBYTE(a4) = 1;
+      LOBYTE(title) = 1;
     }
 
     else
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(title) = 0;
     }
   }
 
-  return a4;
+  return title;
 }
 
-- (BOOL)getTitleAndSubtitleForSwiftActorEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForSwiftActorEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  v8 = a3;
-  v11 = v8;
-  if (a4)
+  valueCopy = value;
+  v11 = valueCopy;
+  if (title)
   {
     v27 = 0;
     v28 = 0;
-    if (objc_msgSend_getValue_fieldIndex_(v8, v9, &v28, 1, v10) && objc_msgSend_getValue_fieldIndex_(v11, v12, &v27, 0, v13))
+    if (objc_msgSend_getValue_fieldIndex_(valueCopy, v9, &v28, 1, v10) && objc_msgSend_getValue_fieldIndex_(v11, v12, &v27, 0, v13))
     {
       v16 = sub_248095378(self, v28, 0, v14, v15);
       v22 = sub_248095378(self, v27, 0, v17, v18);
-      if (a5)
+      if (subtitle)
       {
-        objc_storeStrong(a4, v16);
+        objc_storeStrong(title, v16);
         v23 = v22;
-        v24 = *a5;
-        *a5 = v23;
+        v24 = *subtitle;
+        *subtitle = v23;
       }
 
       else
       {
         v25 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v19, @"%@ (%@)", v20, v21, v16, v22);
-        v24 = *a4;
-        *a4 = v25;
+        v24 = *title;
+        *title = v25;
       }
 
-      LOBYTE(a4) = 1;
+      LOBYTE(title) = 1;
     }
 
     else
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(title) = 0;
     }
   }
 
-  return a4;
+  return title;
 }
 
-- (BOOL)getTitleAndSubtitleForSwiftTaskPriorityEngineeringValue:(id)a3 title:(id *)a4 subtitle:(id *)a5
+- (BOOL)getTitleAndSubtitleForSwiftTaskPriorityEngineeringValue:(id)value title:(id *)title subtitle:(id *)subtitle
 {
-  v8 = a3;
-  v11 = v8;
-  if (a4)
+  valueCopy = value;
+  v11 = valueCopy;
+  if (title)
   {
     v28 = 0;
     v29 = 0;
-    if (!objc_msgSend_getValue_fieldIndex_(v8, v9, &v28, 1, v10) || !objc_msgSend_getValue_fieldIndex_(v11, v12, &v29, 0, v13))
+    if (!objc_msgSend_getValue_fieldIndex_(valueCopy, v9, &v28, 1, v10) || !objc_msgSend_getValue_fieldIndex_(v11, v12, &v29, 0, v13))
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(title) = 0;
 LABEL_15:
 
       goto LABEL_16;
@@ -606,17 +606,17 @@ LABEL_15:
     v16 = sub_248095378(self, v29, 0, v14, v15);
     v19 = sub_248095378(self, v28, 0, v17, v18);
     v23 = v19;
-    if (a5)
+    if (subtitle)
     {
       if (v16)
       {
-        objc_storeStrong(a4, v16);
+        objc_storeStrong(title, v16);
         v24 = v23;
-        v25 = *a5;
-        *a5 = v24;
+        v25 = *subtitle;
+        *subtitle = v24;
 LABEL_14:
 
-        LOBYTE(a4) = 1;
+        LOBYTE(title) = 1;
         goto LABEL_15;
       }
 
@@ -637,20 +637,20 @@ LABEL_14:
       v26 = ;
     }
 
-    v25 = *a4;
-    *a4 = v26;
+    v25 = *title;
+    *title = v26;
     goto LABEL_14;
   }
 
 LABEL_16:
 
-  return a4;
+  return title;
 }
 
-- (id)stringForLibraryAddressEngineeringValue:(id)a3
+- (id)stringForLibraryAddressEngineeringValue:(id)value
 {
   v9 = 0;
-  if (objc_msgSend_getValue_fieldIndex_(a3, a2, &v9, 1, v3))
+  if (objc_msgSend_getValue_fieldIndex_(value, a2, &v9, 1, v3))
   {
     v7 = sub_248095378(self, v9, 0, v5, v6);
   }
@@ -663,10 +663,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)stringForTextSymbolEngineeringValue:(id)a3 shouldIncludeLibrary:(BOOL)a4
+- (id)stringForTextSymbolEngineeringValue:(id)value shouldIncludeLibrary:(BOOL)library
 {
   v10 = 0;
-  if (objc_msgSend_getValue_fieldIndex_(a3, a2, &v10, 1, v4))
+  if (objc_msgSend_getValue_fieldIndex_(value, a2, &v10, 1, v4))
   {
     v8 = sub_248095378(self, v10, 0, v6, v7);
   }
@@ -679,12 +679,12 @@ LABEL_16:
   return v8;
 }
 
-- (id)stringForCallSiteEngineeringValue:(id)a3 shouldIncludeLibrary:(BOOL)a4
+- (id)stringForCallSiteEngineeringValue:(id)value shouldIncludeLibrary:(BOOL)library
 {
-  v5 = a3;
+  valueCopy = value;
   v23 = 0;
   v24 = 0;
-  if (objc_msgSend_getValue_fieldIndex_(v5, v6, &v24, 0, v7) && objc_msgSend_getValue_fieldIndex_(v5, v8, &v23, 1, v9))
+  if (objc_msgSend_getValue_fieldIndex_(valueCopy, v6, &v24, 0, v7) && objc_msgSend_getValue_fieldIndex_(valueCopy, v8, &v23, 1, v9))
   {
     withinNarrative = self->_withinNarrative;
     v13 = MEMORY[0x277CCACA8];
@@ -701,26 +701,26 @@ LABEL_16:
   return v21;
 }
 
-- (id)stringForUserIDEngineeringValue:(id)a3
+- (id)stringForUserIDEngineeringValue:(id)value
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = objc_msgSend_uint32(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_uint32(value, a2, value, v3, v4);
   return objc_msgSend_stringWithFormat_(v5, v7, @"%u", v8, v9, v6);
 }
 
-- (id)stringForSocketAddrEngineeringValue:(id)a3
+- (id)stringForSocketAddrEngineeringValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v15 = 0;
-  if (objc_msgSend_getLengthOfUint64Representation_(v3, v4, &v15, v5, v6))
+  if (objc_msgSend_getLengthOfUint64Representation_(valueCopy, v4, &v15, v5, v6))
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_2480986CC;
     v14[3] = &unk_278EFBF80;
     v14[4] = v16;
-    objc_msgSend_enumerateUint64Values_(v3, v7, v14, v8, v9);
+    objc_msgSend_enumerateUint64Values_(valueCopy, v7, v14, v8, v9);
     v11 = objc_msgSend_networkAddressStringFromSockaddr_length_resolveHostName_(XREngineeringValueFormatter, v10, v16, 8 * v15, 0);
   }
 

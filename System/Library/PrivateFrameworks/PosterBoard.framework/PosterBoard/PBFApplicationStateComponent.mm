@@ -1,36 +1,36 @@
 @interface PBFApplicationStateComponent
 - (NSDictionary)userInfo;
-- (PBFApplicationStateComponent)initWithIdentifier:(id)a3 userInfo:(id)a4;
-- (PBFApplicationStateComponent)initWithPRPosterConfiguration:(id)a3;
-- (PBFApplicationStateComponent)initWithPRPosterDescriptor:(id)a3;
-- (PBFApplicationStateComponent)initWithPRSPosterConfiguration:(id)a3;
-- (PBFApplicationStateComponent)initWithPath:(id)a3;
-- (PBFApplicationStateComponent)initWithServerIdentity:(id)a3;
+- (PBFApplicationStateComponent)initWithIdentifier:(id)identifier userInfo:(id)info;
+- (PBFApplicationStateComponent)initWithPRPosterConfiguration:(id)configuration;
+- (PBFApplicationStateComponent)initWithPRPosterDescriptor:(id)descriptor;
+- (PBFApplicationStateComponent)initWithPRSPosterConfiguration:(id)configuration;
+- (PBFApplicationStateComponent)initWithPath:(id)path;
+- (PBFApplicationStateComponent)initWithServerIdentity:(id)identity;
 - (PBFStateComponentDelegate)delegate;
 - (id)description;
 - (unint64_t)hash;
-- (void)setUserInfo:(id)a3;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation PBFApplicationStateComponent
 
-- (PBFApplicationStateComponent)initWithIdentifier:(id)a3 userInfo:(id)a4
+- (PBFApplicationStateComponent)initWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  infoCopy = info;
+  if (!identifierCopy)
   {
     [PBFApplicationStateComponent initWithIdentifier:a2 userInfo:?];
   }
 
-  v9 = v8;
+  v9 = infoCopy;
   v15.receiver = self;
   v15.super_class = PBFApplicationStateComponent;
   v10 = [(PBFApplicationStateComponent *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    [(PBFApplicationStateComponent *)v10 setIdentifier:v7];
+    [(PBFApplicationStateComponent *)v10 setIdentifier:identifierCopy];
     v12 = [v9 copy];
     userInfo = v11->_userInfo;
     v11->_userInfo = v12;
@@ -41,136 +41,136 @@
   return v11;
 }
 
-- (PBFApplicationStateComponent)initWithServerIdentity:(id)a3
+- (PBFApplicationStateComponent)initWithServerIdentity:(id)identity
 {
-  v5 = a3;
-  if (v5)
+  identityCopy = identity;
+  if (identityCopy)
   {
-    objc_storeStrong(&self->_identity, a3);
+    objc_storeStrong(&self->_identity, identity);
     self = [(PBFApplicationStateComponent *)self initWithIdentifier:@"PosterComponent" userInfo:0];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PBFApplicationStateComponent)initWithPRPosterConfiguration:(id)a3
+- (PBFApplicationStateComponent)initWithPRPosterConfiguration:(id)configuration
 {
-  v4 = [a3 _path];
-  v5 = [v4 serverIdentity];
-  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:v5];
-
-  return v6;
-}
-
-- (PBFApplicationStateComponent)initWithPRSPosterConfiguration:(id)a3
-{
-  v4 = [a3 _path];
-  v5 = [v4 serverIdentity];
-  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:v5];
+  _path = [configuration _path];
+  serverIdentity = [_path serverIdentity];
+  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:serverIdentity];
 
   return v6;
 }
 
-- (PBFApplicationStateComponent)initWithPRPosterDescriptor:(id)a3
+- (PBFApplicationStateComponent)initWithPRSPosterConfiguration:(id)configuration
 {
-  v4 = [a3 _path];
-  v5 = [v4 serverIdentity];
-  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:v5];
+  _path = [configuration _path];
+  serverIdentity = [_path serverIdentity];
+  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:serverIdentity];
 
   return v6;
 }
 
-- (PBFApplicationStateComponent)initWithPath:(id)a3
+- (PBFApplicationStateComponent)initWithPRPosterDescriptor:(id)descriptor
 {
-  v4 = [a3 identity];
-  v5 = [(PBFApplicationStateComponent *)self initWithServerIdentity:v4];
+  _path = [descriptor _path];
+  serverIdentity = [_path serverIdentity];
+  v6 = [(PBFApplicationStateComponent *)self initWithServerIdentity:serverIdentity];
+
+  return v6;
+}
+
+- (PBFApplicationStateComponent)initWithPath:(id)path
+{
+  identity = [path identity];
+  v5 = [(PBFApplicationStateComponent *)self initWithServerIdentity:identity];
 
   return v5;
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cachedDescription;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cachedDescription;
   if (!v3)
   {
-    v4 = [MEMORY[0x277CF0C00] builderWithObject:v2];
-    [v4 appendString:v2->_identifier withName:@"identifier"];
-    v5 = [v4 appendObject:v2->_identity withName:@"identity" skipIfNil:1];
-    [v4 appendDictionarySection:v2->_userInfo withName:@"userInfo" skipIfEmpty:1];
-    v6 = [v4 build];
-    cachedDescription = v2->_cachedDescription;
-    v2->_cachedDescription = v6;
+    v4 = [MEMORY[0x277CF0C00] builderWithObject:selfCopy];
+    [v4 appendString:selfCopy->_identifier withName:@"identifier"];
+    v5 = [v4 appendObject:selfCopy->_identity withName:@"identity" skipIfNil:1];
+    [v4 appendDictionarySection:selfCopy->_userInfo withName:@"userInfo" skipIfEmpty:1];
+    build = [v4 build];
+    cachedDescription = selfCopy->_cachedDescription;
+    selfCopy->_cachedDescription = build;
 
-    v3 = v6;
+    v3 = build;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedHash = v2->_cachedHash;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedHash = selfCopy->_cachedHash;
   if (cachedHash == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x277CF0C40] builder];
-    v5 = [v4 appendString:v2->_identifier];
-    v6 = [v4 appendObject:v2->_userInfo];
-    v7 = [v4 appendObject:v2->_identifier];
-    cachedHash = [v4 hash];
-    v2->_cachedHash = cachedHash;
+    builder = [MEMORY[0x277CF0C40] builder];
+    v5 = [builder appendString:selfCopy->_identifier];
+    v6 = [builder appendObject:selfCopy->_userInfo];
+    v7 = [builder appendObject:selfCopy->_identifier];
+    cachedHash = [builder hash];
+    selfCopy->_cachedHash = cachedHash;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return cachedHash;
 }
 
 - (NSDictionary)userInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_userInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_userInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSDictionary *)v4->_userInfo isEqualToDictionary:v9])
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSDictionary *)selfCopy->_userInfo isEqualToDictionary:infoCopy])
   {
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    cachedDescription = v4->_cachedDescription;
-    v4->_cachedDescription = 0;
+    cachedDescription = selfCopy->_cachedDescription;
+    selfCopy->_cachedDescription = 0;
 
-    v4->_cachedHash = 0x7FFFFFFFFFFFFFFFLL;
-    v6 = [v9 copy];
-    userInfo = v4->_userInfo;
-    v4->_userInfo = v6;
+    selfCopy->_cachedHash = 0x7FFFFFFFFFFFFFFFLL;
+    v6 = [infoCopy copy];
+    userInfo = selfCopy->_userInfo;
+    selfCopy->_userInfo = v6;
 
-    objc_sync_exit(v4);
-    v8 = [(PBFApplicationStateComponent *)v4 delegate];
-    [(PBFApplicationStateComponent *)v8 componentWasUpdated:v4];
-    v4 = v8;
+    objc_sync_exit(selfCopy);
+    delegate = [(PBFApplicationStateComponent *)selfCopy delegate];
+    [(PBFApplicationStateComponent *)delegate componentWasUpdated:selfCopy];
+    selfCopy = delegate;
   }
 }
 

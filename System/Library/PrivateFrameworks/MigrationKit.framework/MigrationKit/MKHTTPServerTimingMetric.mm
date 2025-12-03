@@ -1,12 +1,12 @@
 @interface MKHTTPServerTimingMetric
-- (MKHTTPServerTimingMetric)initWithDuration:(double)a3;
-- (MKHTTPServerTimingMetric)initWithDuration:(double)a3 desc:(id)a4;
+- (MKHTTPServerTimingMetric)initWithDuration:(double)duration;
+- (MKHTTPServerTimingMetric)initWithDuration:(double)duration desc:(id)desc;
 - (id)value;
 @end
 
 @implementation MKHTTPServerTimingMetric
 
-- (MKHTTPServerTimingMetric)initWithDuration:(double)a3
+- (MKHTTPServerTimingMetric)initWithDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = MKHTTPServerTimingMetric;
@@ -14,23 +14,23 @@
   v5 = v4;
   if (v4)
   {
-    [(MKHTTPServerTimingMetric *)v4 setDuration:a3];
+    [(MKHTTPServerTimingMetric *)v4 setDuration:duration];
   }
 
   return v5;
 }
 
-- (MKHTTPServerTimingMetric)initWithDuration:(double)a3 desc:(id)a4
+- (MKHTTPServerTimingMetric)initWithDuration:(double)duration desc:(id)desc
 {
-  v6 = a4;
+  descCopy = desc;
   v10.receiver = self;
   v10.super_class = MKHTTPServerTimingMetric;
   v7 = [(MKHTTPServerTimingMetric *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MKHTTPServerTimingMetric *)v7 setDuration:a3];
-    [(MKHTTPServerTimingMetric *)v8 setDesc:v6];
+    [(MKHTTPServerTimingMetric *)v7 setDuration:duration];
+    [(MKHTTPServerTimingMetric *)v8 setDesc:descCopy];
   }
 
   return v8;

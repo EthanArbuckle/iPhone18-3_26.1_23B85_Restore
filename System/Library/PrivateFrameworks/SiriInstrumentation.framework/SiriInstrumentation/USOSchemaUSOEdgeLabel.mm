@@ -1,41 +1,41 @@
 @interface USOSchemaUSOEdgeLabel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOEdgeLabel)initWithDictionary:(id)a3;
-- (USOSchemaUSOEdgeLabel)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOEdgeLabel)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOEdgeLabel)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEnumeration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEnumeration:(BOOL)enumeration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOEdgeLabel
 
-- (USOSchemaUSOEdgeLabel)initWithDictionary:(id)a3
+- (USOSchemaUSOEdgeLabel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = USOSchemaUSOEdgeLabel;
   v5 = [(USOSchemaUSOEdgeLabel *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"usoElementId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"usoElementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEdgeLabel setUsoElementId:](v5, "setUsoElementId:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"enumeration"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"enumeration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEdgeLabel setEnumeration:](v5, "setEnumeration:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"baseEdgeLabel"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"baseEdgeLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (USOSchemaUSOEdgeLabel)initWithJSON:(id)a3
+- (USOSchemaUSOEdgeLabel)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOEdgeLabel *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOEdgeLabel *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOEdgeLabel *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_baseEdgeLabel)
   {
-    v4 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    baseEdgeLabel = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+    dictionaryRepresentation = [baseEdgeLabel dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"baseEdgeLabel"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"baseEdgeLabel"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"baseEdgeLabel"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"baseEdgeLabel"];
     }
   }
 
@@ -106,7 +106,7 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEdgeLabel enumeration](self, "enumeration")}];
-    [v3 setObject:v8 forKeyedSubscript:@"enumeration"];
+    [dictionary setObject:v8 forKeyedSubscript:@"enumeration"];
 
     has = self->_has;
   }
@@ -114,12 +114,12 @@
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEdgeLabel usoElementId](self, "usoElementId")}];
-    [v3 setObject:v9 forKeyedSubscript:@"usoElementId"];
+    [dictionary setObject:v9 forKeyedSubscript:@"usoElementId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -148,16 +148,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(USOSchemaUSOLabel *)self->_baseEdgeLabel hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -166,27 +166,27 @@ LABEL_3:
   if (*&has)
   {
     usoElementId = self->_usoElementId;
-    if (usoElementId != [v4 usoElementId])
+    if (usoElementId != [equalCopy usoElementId])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (enumeration = self->_enumeration, enumeration == [v4 enumeration]))
+    if (!v8 || (enumeration = self->_enumeration, enumeration == [equalCopy enumeration]))
     {
-      v10 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
-      v11 = [v4 baseEdgeLabel];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      baseEdgeLabel = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+      baseEdgeLabel2 = [equalCopy baseEdgeLabel];
+      v12 = baseEdgeLabel2;
+      if ((baseEdgeLabel != 0) != (baseEdgeLabel2 == 0))
       {
-        v13 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
-        if (!v13)
+        baseEdgeLabel3 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+        if (!baseEdgeLabel3)
         {
 
 LABEL_17:
@@ -194,10 +194,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
-        v16 = [v4 baseEdgeLabel];
-        v17 = [v15 isEqual:v16];
+        v14 = baseEdgeLabel3;
+        baseEdgeLabel4 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+        baseEdgeLabel5 = [equalCopy baseEdgeLabel];
+        v17 = [baseEdgeLabel4 isEqual:baseEdgeLabel5];
 
         if (v17)
         {
@@ -218,9 +218,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -233,21 +233,21 @@ LABEL_15:
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+  baseEdgeLabel = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (baseEdgeLabel)
   {
-    v7 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
+    baseEdgeLabel2 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasEnumeration:(BOOL)a3
+- (void)setHasEnumeration:(BOOL)enumeration
 {
-  if (a3)
+  if (enumeration)
   {
     v3 = 2;
   }
@@ -260,17 +260,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = USOSchemaUSOEdgeLabel;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(USOSchemaUSOEdgeLabel *)self baseEdgeLabel:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(USOSchemaUSOEdgeLabel *)self deleteBaseEdgeLabel];
   }

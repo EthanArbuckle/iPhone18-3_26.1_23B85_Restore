@@ -1,14 +1,14 @@
 @interface PTCinematographyNetworkParameters
-- (PTCinematographyNetworkParameters)initWithURL:(id)a3;
-- (void)_processInputSchemaDicts:(id)a3;
+- (PTCinematographyNetworkParameters)initWithURL:(id)l;
+- (void)_processInputSchemaDicts:(id)dicts;
 @end
 
 @implementation PTCinematographyNetworkParameters
 
-- (PTCinematographyNetworkParameters)initWithURL:(id)a3
+- (PTCinematographyNetworkParameters)initWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v4];
+  lCopy = l;
+  v5 = [MEMORY[0x277CBEAE0] inputStreamWithURL:lCopy];
   [v5 open];
   v23 = 0;
   v6 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:v5 options:0 error:&v23];
@@ -23,7 +23,7 @@
 
 LABEL_10:
 
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -32,7 +32,7 @@ LABEL_10:
     v8 = _PTLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(PTCinematographyNetworkParameters *)v6 initWithURL:v4, v8];
+      [(PTCinematographyNetworkParameters *)v6 initWithURL:lCopy, v8];
     }
 
     goto LABEL_10;
@@ -74,23 +74,23 @@ LABEL_10:
   }
 
   self = v9;
-  v18 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)_processInputSchemaDicts:(id)a3
+- (void)_processInputSchemaDicts:(id)dicts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  dictsCopy = dicts;
+  array = [MEMORY[0x277CBEB18] array];
   self->_totalInputFloatCount = 0;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = dictsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -109,7 +109,7 @@ LABEL_11:
         v11 = *(*(&v16 + 1) + 8 * v10);
         v12 = [PTCinematographyNetworkInputSchema alloc];
         v13 = [(PTCinematographyNetworkInputSchema *)v12 initWithModelDictionary:v11, v16];
-        [v5 addObject:v13];
+        [array addObject:v13];
         self->_totalInputFloatCount += [(PTCinematographyNetworkInputSchema *)v13 count];
 
         ++v10;
@@ -122,7 +122,7 @@ LABEL_11:
     while (v8);
   }
 
-  v14 = [v5 copy];
+  v14 = [array copy];
   inputSchemas = self->_inputSchemas;
   self->_inputSchemas = v14;
 }

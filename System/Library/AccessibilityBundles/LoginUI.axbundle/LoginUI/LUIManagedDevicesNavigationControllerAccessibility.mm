@@ -1,15 +1,15 @@
 @interface LUIManagedDevicesNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 @end
 
 @implementation LUIManagedDevicesNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LUIManagedDevicesNavigationController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"LUIManagedDevicesNavigationController" hasInstanceMethod:@"doneButtonPressed:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LUIManagedDevicesNavigationController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"LUIManagedDevicesNavigationController" hasInstanceMethod:@"doneButtonPressed:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape

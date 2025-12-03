@@ -1,20 +1,20 @@
 @interface NSSymbolEffect
-+ (id)_effectWithType:(int64_t)a3;
-+ (void)_addLayerBehavior:(int64_t)a3 ToOptions:(id)a4;
-+ (void)_mergeEffectOptions:(id)a3 intoRBOptions:(id)a4 forEffect:(int64_t)a5;
-- (NSSymbolEffect)initWithCoder:(id)a3;
++ (id)_effectWithType:(int64_t)type;
++ (void)_addLayerBehavior:(int64_t)behavior ToOptions:(id)options;
++ (void)_mergeEffectOptions:(id)options intoRBOptions:(id)bOptions forEffect:(int64_t)effect;
+- (NSSymbolEffect)initWithCoder:(id)coder;
 - (id)_rbAnimation;
-- (id)_rbOptionsWithEffectOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_rbOptionsWithEffectOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSymbolEffect
 
-+ (id)_effectWithType:(int64_t)a3
++ (id)_effectWithType:(int64_t)type
 {
   v4 = objc_opt_new();
-  v4[1] = a3;
+  v4[1] = type;
 
   return v4;
 }
@@ -35,45 +35,45 @@
   return v3;
 }
 
-+ (void)_mergeEffectOptions:(id)a3 intoRBOptions:(id)a4 forEffect:(int64_t)a5
++ (void)_mergeEffectOptions:(id)options intoRBOptions:(id)bOptions forEffect:(int64_t)effect
 {
-  v24 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  bOptionsCopy = bOptions;
   v8 = MEMORY[0x1E696AD98];
-  [v24 _speed];
+  [optionsCopy _speed];
   v9 = [v8 numberWithDouble:?];
-  [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69C7260]];
+  [bOptionsCopy setObject:v9 forKeyedSubscript:*MEMORY[0x1E69C7260]];
 
-  v10 = [v24 _repeatBehavior];
-  if (v10 == 2)
+  _repeatBehavior = [optionsCopy _repeatBehavior];
+  if (_repeatBehavior == 2)
   {
     v11 = MEMORY[0x1E696AD98];
-    *&v12 = [v24 _repeatCount];
+    *&v12 = [optionsCopy _repeatCount];
     v13 = [v11 numberWithFloat:v12];
-    [v7 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69C7240]];
+    [bOptionsCopy setObject:v13 forKeyedSubscript:*MEMORY[0x1E69C7240]];
   }
 
-  else if (v10 == 1)
+  else if (_repeatBehavior == 1)
   {
-    [v7 setObject:&unk_1F4291CE0 forKeyedSubscript:*MEMORY[0x1E69C7240]];
+    [bOptionsCopy setObject:&unk_1F4291CE0 forKeyedSubscript:*MEMORY[0x1E69C7240]];
   }
 
-  v14 = [v24 _repeatDelay];
+  _repeatDelay = [optionsCopy _repeatDelay];
 
-  if (v14)
+  if (_repeatDelay)
   {
-    v15 = [v24 _repeatDelay];
-    [v15 doubleValue];
+    _repeatDelay2 = [optionsCopy _repeatDelay];
+    [_repeatDelay2 doubleValue];
     v17 = v16;
 
     *&v18 = v17;
     v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
-    [v7 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69C7248]];
+    [bOptionsCopy setObject:v19 forKeyedSubscript:*MEMORY[0x1E69C7248]];
   }
 
-  if ([v24 _prefersContinuous])
+  if ([optionsCopy _prefersContinuous])
   {
-    switch(a5)
+    switch(effect)
     {
       case 3:
         v20 = MEMORY[0x1E69C7208];
@@ -83,7 +83,7 @@
         break;
       case 9:
         v20 = MEMORY[0x1E69C7280];
-        v21 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69C7280]];
+        v21 = [bOptionsCopy objectForKeyedSubscript:*MEMORY[0x1E69C7280]];
         v22 = 256;
         if (!v21)
         {
@@ -95,13 +95,13 @@
         goto LABEL_18;
     }
 
-    v21 = [v7 objectForKeyedSubscript:*v20];
+    v21 = [bOptionsCopy objectForKeyedSubscript:*v20];
     v22 = 16;
     if (!v21)
     {
 LABEL_17:
       v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v22];
-      [v7 setObject:v23 forKeyedSubscript:*v20];
+      [bOptionsCopy setObject:v23 forKeyedSubscript:*v20];
 
       goto LABEL_18;
     }
@@ -114,26 +114,26 @@ LABEL_16:
 LABEL_18:
 }
 
-- (id)_rbOptionsWithEffectOptions:(id)a3
+- (id)_rbOptionsWithEffectOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NSSymbolEffect *)self _rbOptionsMutable];
-  [objc_opt_class() _mergeEffectOptions:v4 intoRBOptions:v5 forEffect:{-[NSSymbolEffect _effectType](self, "_effectType")}];
+  optionsCopy = options;
+  _rbOptionsMutable = [(NSSymbolEffect *)self _rbOptionsMutable];
+  [objc_opt_class() _mergeEffectOptions:optionsCopy intoRBOptions:_rbOptionsMutable forEffect:{-[NSSymbolEffect _effectType](self, "_effectType")}];
 
-  return v5;
+  return _rbOptionsMutable;
 }
 
-+ (void)_addLayerBehavior:(int64_t)a3 ToOptions:(id)a4
++ (void)_addLayerBehavior:(int64_t)behavior ToOptions:(id)options
 {
-  v5 = a4;
-  if (a3 == 1)
+  optionsCopy = options;
+  if (behavior == 1)
   {
     v6 = MEMORY[0x1E695E118];
   }
 
   else
   {
-    if (a3 != 2)
+    if (behavior != 2)
     {
       goto LABEL_6;
     }
@@ -141,13 +141,13 @@ LABEL_18:
     v6 = MEMORY[0x1E695E110];
   }
 
-  v7 = v5;
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69C7218]];
-  v5 = v7;
+  v7 = optionsCopy;
+  [optionsCopy setObject:v6 forKeyedSubscript:*MEMORY[0x1E69C7218]];
+  optionsCopy = v7;
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -155,21 +155,21 @@ LABEL_6:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[NSSymbolEffect _effectType](self forKey:{"_effectType"), @"_effectType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[NSSymbolEffect _effectType](self forKey:{"_effectType"), @"_effectType"}];
 }
 
-- (NSSymbolEffect)initWithCoder:(id)a3
+- (NSSymbolEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   v5 = objc_opt_new();
 
   if (v5)
   {
-    v5->_effectType = [v4 decodeIntegerForKey:@"_effectType"];
+    v5->_effectType = [coderCopy decodeIntegerForKey:@"_effectType"];
   }
 
   return v5;

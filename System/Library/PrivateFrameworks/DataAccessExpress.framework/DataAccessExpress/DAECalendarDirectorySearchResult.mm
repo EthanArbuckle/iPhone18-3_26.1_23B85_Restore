@@ -1,7 +1,7 @@
 @interface DAECalendarDirectorySearchResult
-- (DAECalendarDirectorySearchResult)initWithCoder:(id)a3;
+- (DAECalendarDirectorySearchResult)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAECalendarDirectorySearchResult
@@ -12,56 +12,56 @@
   v10.receiver = self;
   v10.super_class = DAECalendarDirectorySearchResult;
   v4 = [(DAECalendarDirectorySearchResult *)&v10 description];
-  v5 = [(DAECalendarDirectorySearchResult *)self displayName];
-  v6 = [(DAECalendarDirectorySearchResult *)self preferredAddress];
-  v7 = [(DAECalendarDirectorySearchResult *)self principalPath];
-  v8 = [v3 initWithFormat:@"[%@] displayName: [%@] preferredAddress: [%@] principalPath: [%@]", v4, v5, v6, v7];
+  displayName = [(DAECalendarDirectorySearchResult *)self displayName];
+  preferredAddress = [(DAECalendarDirectorySearchResult *)self preferredAddress];
+  principalPath = [(DAECalendarDirectorySearchResult *)self principalPath];
+  v8 = [v3 initWithFormat:@"[%@] displayName: [%@] preferredAddress: [%@] principalPath: [%@]", v4, displayName, preferredAddress, principalPath];
 
   return v8;
 }
 
-- (DAECalendarDirectorySearchResult)initWithCoder:(id)a3
+- (DAECalendarDirectorySearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DAECalendarDirectorySearchResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(DAECalendarDirectorySearchResult *)v5 setDisplayName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     [(DAECalendarDirectorySearchResult *)v5 setFirstName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     [(DAECalendarDirectorySearchResult *)v5 setLastName:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredAddress"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredAddress"];
     [(DAECalendarDirectorySearchResult *)v5 setPreferredAddress:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"principalPath"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"principalPath"];
     [(DAECalendarDirectorySearchResult *)v5 setPrincipalPath:v10];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAECalendarDirectorySearchResult *)self displayName];
-  [v4 encodeObject:v5 forKey:@"displayName"];
+  coderCopy = coder;
+  displayName = [(DAECalendarDirectorySearchResult *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v6 = [(DAECalendarDirectorySearchResult *)self firstName];
-  [v4 encodeObject:v6 forKey:@"firstName"];
+  firstName = [(DAECalendarDirectorySearchResult *)self firstName];
+  [coderCopy encodeObject:firstName forKey:@"firstName"];
 
-  v7 = [(DAECalendarDirectorySearchResult *)self lastName];
-  [v4 encodeObject:v7 forKey:@"lastName"];
+  lastName = [(DAECalendarDirectorySearchResult *)self lastName];
+  [coderCopy encodeObject:lastName forKey:@"lastName"];
 
-  v8 = [(DAECalendarDirectorySearchResult *)self preferredAddress];
-  [v4 encodeObject:v8 forKey:@"preferredAddress"];
+  preferredAddress = [(DAECalendarDirectorySearchResult *)self preferredAddress];
+  [coderCopy encodeObject:preferredAddress forKey:@"preferredAddress"];
 
-  v9 = [(DAECalendarDirectorySearchResult *)self principalPath];
-  [v4 encodeObject:v9 forKey:@"principalPath"];
+  principalPath = [(DAECalendarDirectorySearchResult *)self principalPath];
+  [coderCopy encodeObject:principalPath forKey:@"principalPath"];
 }
 
 @end

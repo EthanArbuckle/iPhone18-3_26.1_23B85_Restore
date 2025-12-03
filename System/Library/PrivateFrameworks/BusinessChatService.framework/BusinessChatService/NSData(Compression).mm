@@ -10,7 +10,7 @@
 {
   if (a3 == 1)
   {
-    v4 = [a1 inflateGzipWithError:a4];
+    v4 = [self inflateGzipWithError:a4];
   }
 
   else
@@ -20,7 +20,7 @@
       goto LABEL_6;
     }
 
-    v4 = [a1 inflateLZRawWithError:a4];
+    v4 = [self inflateLZRawWithError:a4];
   }
 
   a2 = v4;
@@ -33,7 +33,7 @@ LABEL_6:
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB28] dataWithLength:0x4000];
-  v6 = compression_decode_buffer([v5 mutableBytes], objc_msgSend(v5, "length"), objc_msgSend(a1, "bytes"), objc_msgSend(a1, "length"), 0, COMPRESSION_LZ4_RAW);
+  v6 = compression_decode_buffer([v5 mutableBytes], objc_msgSend(v5, "length"), objc_msgSend(self, "bytes"), objc_msgSend(self, "length"), 0, COMPRESSION_LZ4_RAW);
   if (v6)
   {
     a3 = [v5 subdataWithRange:{0, v6}];
@@ -68,16 +68,16 @@ LABEL_6:
 - (void)inflateGzipWithError:()Compression
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  if (![a1 length])
+  if (![self length])
   {
-    a3 = a1;
+    a3 = self;
     goto LABEL_30;
   }
 
-  v5 = [a1 length];
-  v6 = [a1 length];
+  v5 = [self length];
+  v6 = [self length];
   v7 = [MEMORY[0x277CBEB28] dataWithLength:v5 + (v6 >> 1)];
-  v25.avail_in = [a1 length];
+  v25.avail_in = [self length];
   v25.zalloc = 0;
   v25.zfree = 0;
   v25.total_out = 0;
@@ -113,8 +113,8 @@ LABEL_6:
       [v7 increaseLengthBy:v12];
     }
 
-    v14 = [v7 mutableBytes];
-    v25.next_out = (v14 + v25.total_out);
+    mutableBytes = [v7 mutableBytes];
+    v25.next_out = (mutableBytes + v25.total_out);
     v15 = [v7 length];
     v25.avail_out = v15 - LODWORD(v25.total_out);
     v16 = inflate(&v25, 2);

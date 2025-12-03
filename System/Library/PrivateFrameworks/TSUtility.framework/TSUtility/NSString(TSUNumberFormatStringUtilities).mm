@@ -38,14 +38,14 @@
 
 - (id)newStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand
 {
-  v8 = a1;
+  selfCopy = self;
   if (newStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand_once != -1)
   {
     [NSString(TSUNumberFormatStringUtilities) newStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand];
-    a1 = v8;
+    self = selfCopy;
   }
 
-  v1 = [a1 rangeOfCharacterFromSet:{newStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand_replacedCharacterSet, v8}];
+  v1 = [self rangeOfCharacterFromSet:{newStringBySubstitutingCharactersCFNumberFormatterDoesntUnderstand_replacedCharacterSet, selfCopy}];
   if (v1 == 0x7FFFFFFFFFFFFFFFLL)
   {
 
@@ -71,12 +71,12 @@
 
 - (void)newRangesOfEscapedCharactersInNumberFormatPattern
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = 0;
   v4 = 0;
   do
   {
-    v5 = [a1 rangeOfString:@"'" options:0 range:{v3, v2 - v3}];
+    v5 = [self rangeOfString:@"'" options:0 range:{v3, v2 - v3}];
     v6 = v5;
     if (v5 == 0x7FFFFFFFFFFFFFFFLL || v5 == v2 - 1)
     {
@@ -89,7 +89,7 @@
 
     else
     {
-      v8 = [a1 rangeOfString:@"'" options:0 range:{v5 + 1, v2 - (v5 + 1)}];
+      v8 = [self rangeOfString:@"'" options:0 range:{v5 + 1, v2 - (v5 + 1)}];
     }
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -122,15 +122,15 @@
 
 - (void)stringByRemovingEscapedCharactersFromNumberFormatPattern
 {
-  v2 = [a1 newRangesOfEscapedCharactersInNumberFormatPattern];
-  if (!v2)
+  newRangesOfEscapedCharactersInNumberFormatPattern = [self newRangesOfEscapedCharactersInNumberFormatPattern];
+  if (!newRangesOfEscapedCharactersInNumberFormatPattern)
   {
-    return a1;
+    return self;
   }
 
-  v3 = v2;
-  v4 = [MEMORY[0x277CCAB68] stringWithString:a1];
-  v5 = [a1 length];
+  v3 = newRangesOfEscapedCharactersInNumberFormatPattern;
+  v4 = [MEMORY[0x277CCAB68] stringWithString:self];
+  v5 = [self length];
   if ([v3 count])
   {
     v6 = 0;
@@ -149,15 +149,15 @@
 
 - (unint64_t)indexOfNumberFormatSubpatternSeparator
 {
-  v2 = [a1 newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [a1 rangeOfString:@";" options:0 range:{0, objc_msgSend(a1, "length")}];
+  newRangesOfEscapedCharactersInNumberFormatPattern = [self newRangesOfEscapedCharactersInNumberFormatPattern];
+  v3 = [self rangeOfString:@";" options:0 range:{0, objc_msgSend(self, "length")}];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = v3;
-    while (TSULocationInRanges(v4, v2))
+    while (TSULocationInRanges(v4, newRangesOfEscapedCharactersInNumberFormatPattern))
     {
-      v4 = [a1 rangeOfString:@";" options:0 range:{v4 + 1, objc_msgSend(a1, "length") - (v4 + 1)}];
+      v4 = [self rangeOfString:@";" options:0 range:{v4 + 1, objc_msgSend(self, "length") - (v4 + 1)}];
       if (v4 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -171,49 +171,49 @@
 
 - (uint64_t)positiveSubpatternOfNumberFormatPattern
 {
-  v2 = [a1 indexOfNumberFormatSubpatternSeparator];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  indexOfNumberFormatSubpatternSeparator = [self indexOfNumberFormatSubpatternSeparator];
+  if (indexOfNumberFormatSubpatternSeparator == 0x7FFFFFFFFFFFFFFFLL)
   {
-    return a1;
+    return self;
   }
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:indexOfNumberFormatSubpatternSeparator];
 }
 
 - (__CFString)negativeSubpatternOfNumberFormatPattern
 {
-  v2 = [a1 indexOfNumberFormatSubpatternSeparator];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL)
+  indexOfNumberFormatSubpatternSeparator = [self indexOfNumberFormatSubpatternSeparator];
+  if (indexOfNumberFormatSubpatternSeparator == 0x7FFFFFFFFFFFFFFFLL)
   {
     return &stru_287DDF830;
   }
 
-  return [a1 substringFromIndex:v2 + 1];
+  return [self substringFromIndex:indexOfNumberFormatSubpatternSeparator + 1];
 }
 
 - (uint64_t)numberPortionOfNumberFormatSubpattern
 {
-  v2 = [a1 indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
-  v3 = [a1 indexOfLastNonSuffixCharacterInNumberFormatSubpattern] - v2 + 1;
+  indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [self indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  v3 = [self indexOfLastNonSuffixCharacterInNumberFormatSubpattern] - indexOfFirstNonPrefixCharacterInNumberFormatSubpattern + 1;
 
-  return [a1 substringWithRange:{v2, v3}];
+  return [self substringWithRange:{indexOfFirstNonPrefixCharacterInNumberFormatSubpattern, v3}];
 }
 
 - (uint64_t)indexOfLastNonSuffixCharacterInNumberFormatSubpattern
 {
-  v2 = [a1 newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [objc_opt_class() numberSymbols];
-  v4 = [a1 length];
+  newRangesOfEscapedCharactersInNumberFormatPattern = [self newRangesOfEscapedCharactersInNumberFormatPattern];
+  numberSymbols = [objc_opt_class() numberSymbols];
+  v4 = [self length];
   while (1)
   {
-    v5 = [a1 rangeOfCharacterFromSet:v3 options:4 range:{0, v4}];
+    v5 = [self rangeOfCharacterFromSet:numberSymbols options:4 range:{0, v4}];
     v4 = v5;
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    if ((TSULocationInRanges(v5, v2) & 1) == 0)
+    if ((TSULocationInRanges(v5, newRangesOfEscapedCharactersInNumberFormatPattern) & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -229,16 +229,16 @@ LABEL_6:
 
 - (uint64_t)suffixOfNumberFormatSubpattern
 {
-  v2 = [a1 indexOfLastNonSuffixCharacterInNumberFormatSubpattern] + 1;
+  v2 = [self indexOfLastNonSuffixCharacterInNumberFormatSubpattern] + 1;
 
-  return [a1 substringFromIndex:v2];
+  return [self substringFromIndex:v2];
 }
 
 - (unint64_t)indexOfFirstNonPrefixCharacterInNumberFormatSubpattern
 {
-  v2 = [a1 newRangesOfEscapedCharactersInNumberFormatPattern];
-  v3 = [objc_opt_class() numberSymbols];
-  v4 = [a1 rangeOfCharacterFromSet:v3 options:0 range:{0, objc_msgSend(a1, "length")}];
+  newRangesOfEscapedCharactersInNumberFormatPattern = [self newRangesOfEscapedCharactersInNumberFormatPattern];
+  numberSymbols = [objc_opt_class() numberSymbols];
+  v4 = [self rangeOfCharacterFromSet:numberSymbols options:0 range:{0, objc_msgSend(self, "length")}];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_5:
@@ -251,9 +251,9 @@ LABEL_5:
   else
   {
     v5 = v4;
-    while ((TSULocationInRanges(v5, v2) & 1) != 0)
+    while ((TSULocationInRanges(v5, newRangesOfEscapedCharactersInNumberFormatPattern) & 1) != 0)
     {
-      v5 = [a1 rangeOfCharacterFromSet:v3 options:0 range:{v5 + 1, objc_msgSend(a1, "length") - (v5 + 1)}];
+      v5 = [self rangeOfCharacterFromSet:numberSymbols options:0 range:{v5 + 1, objc_msgSend(self, "length") - (v5 + 1)}];
       if (v5 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_5;
@@ -266,9 +266,9 @@ LABEL_5:
 
 - (uint64_t)prefixOfNumberFormatSubpattern
 {
-  v2 = [a1 indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
+  indexOfFirstNonPrefixCharacterInNumberFormatSubpattern = [self indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 
-  return [a1 substringToIndex:v2];
+  return [self substringToIndex:indexOfFirstNonPrefixCharacterInNumberFormatSubpattern];
 }
 
 @end

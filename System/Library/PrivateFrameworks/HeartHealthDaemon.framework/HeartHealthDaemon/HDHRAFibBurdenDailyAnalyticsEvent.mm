@@ -1,66 +1,66 @@
 @interface HDHRAFibBurdenDailyAnalyticsEvent
-- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)a3;
-- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)a3 notificationsAuthorizedProvider:(id)a4;
-- (id)_determineIfSamplesOverlappingSample:(id)a3 dataSource:(id)a4;
-- (id)_numberOfSamplesOfType:(id)a3 dateInterval:(id)a4 additionalPredicate:(id)a5 bucketer:(id)a6;
+- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)profile;
+- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)profile notificationsAuthorizedProvider:(id)provider;
+- (id)_determineIfSamplesOverlappingSample:(id)sample dataSource:(id)source;
+- (id)_numberOfSamplesOfType:(id)type dateInterval:(id)interval additionalPredicate:(id)predicate bucketer:(id)bucketer;
 - (id)_sedentaryAndBackgroundHeartRateContextPredicate;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (int64_t)_bucketedBurdenValueForSample:(id)a3;
-- (int64_t)_bucketedWeeksSinceDate:(id)a3 dataSource:(id)a4;
-- (int64_t)_daysSinceDate:(id)a3 dataSource:(id)a4;
-- (int64_t)_daysSinceDate:(id)a3 maximum:(id)a4 dataSource:(id)a5;
-- (void)_extractAFibBurdenFeatureStatusPropertiesFromDataSource:(id)a3 payload:(id)a4;
-- (void)_extractBucketedDaysSinceLastSampleOfType:(id)a3 intoProperty:(id)a4 inPayload:(id)a5 dataSource:(id)a6;
-- (void)_extractBurdenSamplePropertiesIntoPayload:(id)a3 dataSource:(id)a4;
-- (void)_extractDaysSinceDateInKeyValueDomain:(id)a3 withKey:(id)a4 intoProperty:(id)a5 inPayload:(id)a6 dataSource:(id)a7;
-- (void)_extractFeatureStatusPropertiesForFeatureIdentifier:(id)a3 payload:(id)a4 dataSource:(id)a5 ifOnboardedBlock:(id)a6 ifUsageRequirementsEvaluationPresentBlock:(id)a7 ifErrorRetrievingFeatureStatusBlock:(id)a8;
-- (void)_extractIRNFeatureStatusPropertiesFromDataSource:(id)a3 payload:(id)a4;
-- (void)_extractWatchWearPropertiesIntoPayload:(id)a3 dataSource:(id)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (int64_t)_bucketedBurdenValueForSample:(id)sample;
+- (int64_t)_bucketedWeeksSinceDate:(id)date dataSource:(id)source;
+- (int64_t)_daysSinceDate:(id)date dataSource:(id)source;
+- (int64_t)_daysSinceDate:(id)date maximum:(id)maximum dataSource:(id)source;
+- (void)_extractAFibBurdenFeatureStatusPropertiesFromDataSource:(id)source payload:(id)payload;
+- (void)_extractBucketedDaysSinceLastSampleOfType:(id)type intoProperty:(id)property inPayload:(id)payload dataSource:(id)source;
+- (void)_extractBurdenSamplePropertiesIntoPayload:(id)payload dataSource:(id)source;
+- (void)_extractDaysSinceDateInKeyValueDomain:(id)domain withKey:(id)key intoProperty:(id)property inPayload:(id)payload dataSource:(id)source;
+- (void)_extractFeatureStatusPropertiesForFeatureIdentifier:(id)identifier payload:(id)payload dataSource:(id)source ifOnboardedBlock:(id)block ifUsageRequirementsEvaluationPresentBlock:(id)presentBlock ifErrorRetrievingFeatureStatusBlock:(id)statusBlock;
+- (void)_extractIRNFeatureStatusPropertiesFromDataSource:(id)source payload:(id)payload;
+- (void)_extractWatchWearPropertiesIntoPayload:(id)payload dataSource:(id)source;
 @end
 
 @implementation HDHRAFibBurdenDailyAnalyticsEvent
 
-- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)a3
+- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 notificationManager];
-  v6 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self initWithProfile:v4 notificationsAuthorizedProvider:v5];
+  profileCopy = profile;
+  notificationManager = [profileCopy notificationManager];
+  v6 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self initWithProfile:profileCopy notificationsAuthorizedProvider:notificationManager];
 
   return v6;
 }
 
-- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)a3 notificationsAuthorizedProvider:(id)a4
+- (HDHRAFibBurdenDailyAnalyticsEvent)initWithProfile:(id)profile notificationsAuthorizedProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = HDHRAFibBurdenDailyAnalyticsEvent;
   v8 = [(HDHRAFibBurdenDailyAnalyticsEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_notificationsAuthorizedProvider, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_notificationsAuthorizedProvider, provider);
   }
 
   return v9;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 environmentDataSource];
-  v8 = [v7 activePairedDeviceProductType];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  activePairedDeviceProductType = [environmentDataSource activePairedDeviceProductType];
 
-  if (v8)
+  if (activePairedDeviceProductType)
   {
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCB7B8]];
+    [v6 setObject:activePairedDeviceProductType forKeyedSubscript:*MEMORY[0x277CCB7B8]];
   }
 
-  v9 = [v5 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
   v35 = 0;
-  v10 = [v9 biologicalSexWithError:&v35];
+  v10 = [healthDataSource biologicalSexWithError:&v35];
   v11 = v35;
 
   if (v11)
@@ -98,11 +98,11 @@ LABEL_9:
 
 LABEL_10:
 
-  v16 = [v5 healthDataSource];
-  v17 = [v5 environmentDataSource];
-  v18 = [v17 currentDate];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource2 currentDate];
   v34 = 0;
-  v19 = [v16 ageWithCurrentDate:v18 error:&v34];
+  v19 = [healthDataSource2 ageWithCurrentDate:currentDate error:&v34];
   v20 = v34;
 
   if (v20)
@@ -133,28 +133,28 @@ LABEL_10:
   v22 = v20;
 LABEL_16:
 
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractAFibBurdenFeatureStatusPropertiesFromDataSource:v5 payload:v6];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractIRNFeatureStatusPropertiesFromDataSource:v5 payload:v6];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractAFibBurdenFeatureStatusPropertiesFromDataSource:sourceCopy payload:v6];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractIRNFeatureStatusPropertiesFromDataSource:sourceCopy payload:v6];
   v24 = MEMORY[0x277D10718];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v26 = [v24 hdhr_aFibBurdenProtectedSyncedDomainForProfile:WeakRetained];
 
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractDaysSinceDateInKeyValueDomain:v26 withKey:*MEMORY[0x277D12EB0] intoProperty:@"numberOfDaysSinceLastAnalysis" inPayload:v6 dataSource:v5];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractDaysSinceDateInKeyValueDomain:v26 withKey:*MEMORY[0x277D12EB8] intoProperty:@"numberOfDaysSinceLastNotification" inPayload:v6 dataSource:v5];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBurdenSamplePropertiesIntoPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractDaysSinceDateInKeyValueDomain:v26 withKey:*MEMORY[0x277D12EB0] intoProperty:@"numberOfDaysSinceLastAnalysis" inPayload:v6 dataSource:sourceCopy];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractDaysSinceDateInKeyValueDomain:v26 withKey:*MEMORY[0x277D12EB8] intoProperty:@"numberOfDaysSinceLastNotification" inPayload:v6 dataSource:sourceCopy];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBurdenSamplePropertiesIntoPayload:v6 dataSource:sourceCopy];
   v27 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v27 intoProperty:@"numberOfDaysSinceLastSleepEntry" inPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v27 intoProperty:@"numberOfDaysSinceLastSleepEntry" inPayload:v6 dataSource:sourceCopy];
 
   v28 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCBD8]];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v28 intoProperty:@"numberOfDaysSinceLastAlcoholicDrinksEntry" inPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v28 intoProperty:@"numberOfDaysSinceLastAlcoholicDrinksEntry" inPayload:v6 dataSource:sourceCopy];
 
   v29 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBA30]];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v29 intoProperty:@"numberOfDaysSinceLastMindfulMinutesEntry" inPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v29 intoProperty:@"numberOfDaysSinceLastMindfulMinutesEntry" inPayload:v6 dataSource:sourceCopy];
 
   v30 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC990]];
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v30 intoProperty:@"numberOfDaysSinceLastBodyMassEntry" inPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractBucketedDaysSinceLastSampleOfType:v30 intoProperty:@"numberOfDaysSinceLastBodyMassEntry" inPayload:v6 dataSource:sourceCopy];
 
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractWatchWearPropertiesIntoPayload:v6 dataSource:v5];
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractWatchWearPropertiesIntoPayload:v6 dataSource:sourceCopy];
   v31 = [MEMORY[0x277CCABB0] numberWithBool:{-[HDHRAFibBurdenAnalyticsEventHealthAppNotificationsAuthorizedProvider areHealthNotificationsAuthorized](self->_notificationsAuthorizedProvider, "areHealthNotificationsAuthorized")}];
   [v6 setObject:v31 forKeyedSubscript:*MEMORY[0x277CCB7C8]];
 
@@ -163,18 +163,18 @@ LABEL_16:
   return v32;
 }
 
-- (void)_extractAFibBurdenFeatureStatusPropertiesFromDataSource:(id)a3 payload:(id)a4
+- (void)_extractAFibBurdenFeatureStatusPropertiesFromDataSource:(id)source payload:(id)payload
 {
-  v6 = a3;
+  sourceCopy = source;
   v7 = *MEMORY[0x277CCBFF0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __101__HDHRAFibBurdenDailyAnalyticsEvent__extractAFibBurdenFeatureStatusPropertiesFromDataSource_payload___block_invoke;
   v9[3] = &unk_278660498;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractFeatureStatusPropertiesForFeatureIdentifier:v7 payload:a4 dataSource:v8 ifOnboardedBlock:v9 ifUsageRequirementsEvaluationPresentBlock:&__block_literal_global_6 ifErrorRetrievingFeatureStatusBlock:&__block_literal_global_363];
+  v10 = sourceCopy;
+  v8 = sourceCopy;
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractFeatureStatusPropertiesForFeatureIdentifier:v7 payload:payload dataSource:v8 ifOnboardedBlock:v9 ifUsageRequirementsEvaluationPresentBlock:&__block_literal_global_6 ifErrorRetrievingFeatureStatusBlock:&__block_literal_global_363];
 }
 
 void __101__HDHRAFibBurdenDailyAnalyticsEvent__extractAFibBurdenFeatureStatusPropertiesFromDataSource_payload___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -229,18 +229,18 @@ void __101__HDHRAFibBurdenDailyAnalyticsEvent__extractAFibBurdenFeatureStatusPro
   [v4 setObject:*MEMORY[0x277CCB800] forKeyedSubscript:@"versionBurden"];
 }
 
-- (void)_extractIRNFeatureStatusPropertiesFromDataSource:(id)a3 payload:(id)a4
+- (void)_extractIRNFeatureStatusPropertiesFromDataSource:(id)source payload:(id)payload
 {
-  v6 = a3;
+  sourceCopy = source;
   v7 = *MEMORY[0x277CCC070];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __94__HDHRAFibBurdenDailyAnalyticsEvent__extractIRNFeatureStatusPropertiesFromDataSource_payload___block_invoke;
   v9[3] = &unk_278660498;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractFeatureStatusPropertiesForFeatureIdentifier:v7 payload:a4 dataSource:v8 ifOnboardedBlock:v9 ifUsageRequirementsEvaluationPresentBlock:&__block_literal_global_365 ifErrorRetrievingFeatureStatusBlock:&__block_literal_global_367_0];
+  v10 = sourceCopy;
+  v8 = sourceCopy;
+  [(HDHRAFibBurdenDailyAnalyticsEvent *)self _extractFeatureStatusPropertiesForFeatureIdentifier:v7 payload:payload dataSource:v8 ifOnboardedBlock:v9 ifUsageRequirementsEvaluationPresentBlock:&__block_literal_global_365 ifErrorRetrievingFeatureStatusBlock:&__block_literal_global_367_0];
 }
 
 void __94__HDHRAFibBurdenDailyAnalyticsEvent__extractIRNFeatureStatusPropertiesFromDataSource_payload___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -270,16 +270,16 @@ void __94__HDHRAFibBurdenDailyAnalyticsEvent__extractIRNFeatureStatusPropertiesF
   [v3 setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:@"weeksSinceOnboardedIRN"];
 }
 
-- (void)_extractFeatureStatusPropertiesForFeatureIdentifier:(id)a3 payload:(id)a4 dataSource:(id)a5 ifOnboardedBlock:(id)a6 ifUsageRequirementsEvaluationPresentBlock:(id)a7 ifErrorRetrievingFeatureStatusBlock:(id)a8
+- (void)_extractFeatureStatusPropertiesForFeatureIdentifier:(id)identifier payload:(id)payload dataSource:(id)source ifOnboardedBlock:(id)block ifUsageRequirementsEvaluationPresentBlock:(id)presentBlock ifErrorRetrievingFeatureStatusBlock:(id)statusBlock
 {
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [a5 healthDataSource];
-  v20 = [v19 featureStatusProviderForIdentifier:v14];
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  blockCopy = block;
+  presentBlockCopy = presentBlock;
+  statusBlockCopy = statusBlock;
+  healthDataSource = [source healthDataSource];
+  v20 = [healthDataSource featureStatusProviderForIdentifier:identifierCopy];
 
   if (v20)
   {
@@ -294,40 +294,40 @@ void __94__HDHRAFibBurdenDailyAnalyticsEvent__extractIRNFeatureStatusPropertiesF
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v45 = self;
+        selfCopy = self;
         v46 = 2114;
-        v47 = v14;
+        v47 = identifierCopy;
         v48 = 2114;
         v49 = v23;
         _os_log_error_impl(&dword_229486000, v38, OS_LOG_TYPE_ERROR, "[%{public}@] Error when retrieving feature status for %{public}@: %{public}@", buf, 0x20u);
       }
 
-      v18[2](v18, v15);
+      statusBlockCopy[2](statusBlockCopy, payloadCopy);
       goto LABEL_18;
     }
 
     v42 = v22;
-    v24 = [v21 onboardingRecord];
-    v25 = [v24 onboardingCompletion];
-    if (v25)
+    onboardingRecord = [v21 onboardingRecord];
+    onboardingCompletion = [onboardingRecord onboardingCompletion];
+    if (onboardingCompletion)
     {
-      v26 = v25;
+      v26 = onboardingCompletion;
       [v21 onboardingRecord];
-      v27 = v18;
-      v28 = v14;
-      v29 = v15;
-      v30 = v16;
-      v32 = v31 = v17;
+      v27 = statusBlockCopy;
+      v28 = identifierCopy;
+      v29 = payloadCopy;
+      v30 = blockCopy;
+      v32 = v31 = presentBlockCopy;
       v41 = v21;
-      v33 = [v32 onboardingState];
+      onboardingState = [v32 onboardingState];
 
-      v17 = v31;
-      v16 = v30;
-      v15 = v29;
-      v14 = v28;
-      v18 = v27;
+      presentBlockCopy = v31;
+      blockCopy = v30;
+      payloadCopy = v29;
+      identifierCopy = v28;
+      statusBlockCopy = v27;
 
-      v34 = v33 == 3;
+      v34 = onboardingState == 3;
       v21 = v41;
       v23 = v42;
       if (v34)
@@ -337,15 +337,15 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v35 = [v41 onboardingRecord];
-      v16[2](v16, v35, v15);
+      onboardingRecord2 = [v41 onboardingRecord];
+      blockCopy[2](blockCopy, onboardingRecord2, payloadCopy);
 
-      v36 = [v41 requirementsEvaluationByContext];
-      v24 = [v36 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+      requirementsEvaluationByContext = [v41 requirementsEvaluationByContext];
+      onboardingRecord = [requirementsEvaluationByContext objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
 
-      if (v24)
+      if (onboardingRecord)
       {
-        v17[2](v17, v24, v15);
+        presentBlockCopy[2](presentBlockCopy, onboardingRecord, payloadCopy);
       }
 
       else
@@ -372,36 +372,36 @@ LABEL_18:
     [HDHRAFibBurdenDailyAnalyticsEvent _extractFeatureStatusPropertiesForFeatureIdentifier:payload:dataSource:ifOnboardedBlock:ifUsageRequirementsEvaluationPresentBlock:ifErrorRetrievingFeatureStatusBlock:];
   }
 
-  v18[2](v18, v15);
+  statusBlockCopy[2](statusBlockCopy, payloadCopy);
 LABEL_19:
 
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_extractDaysSinceDateInKeyValueDomain:(id)a3 withKey:(id)a4 intoProperty:(id)a5 inPayload:(id)a6 dataSource:(id)a7
+- (void)_extractDaysSinceDateInKeyValueDomain:(id)domain withKey:(id)key intoProperty:(id)property inPayload:(id)payload dataSource:(id)source
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  propertyCopy = property;
+  payloadCopy = payload;
+  sourceCopy = source;
   v17 = 0;
-  v15 = [a3 dateForKey:a4 error:&v17];
+  v15 = [domain dateForKey:key error:&v17];
   if (v15)
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDHRAFibBurdenDailyAnalyticsEvent _daysSinceDate:maximum:dataSource:](self, "_daysSinceDate:maximum:dataSource:", v15, &unk_283CD2848, v14)}];
-    [v13 setObject:v16 forKeyedSubscript:v12];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDHRAFibBurdenDailyAnalyticsEvent _daysSinceDate:maximum:dataSource:](self, "_daysSinceDate:maximum:dataSource:", v15, &unk_283CD2848, sourceCopy)}];
+    [payloadCopy setObject:v16 forKeyedSubscript:propertyCopy];
   }
 
   else if (v17)
   {
-    [v13 setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:v12];
+    [payloadCopy setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:propertyCopy];
   }
 }
 
-- (void)_extractBurdenSamplePropertiesIntoPayload:(id)a3 dataSource:(id)a4
+- (void)_extractBurdenSamplePropertiesIntoPayload:(id)payload dataSource:(id)source
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  sourceCopy = source;
   v8 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC950]];
   v9 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -414,30 +414,30 @@ LABEL_19:
     v33 = v12;
     v34 = v8;
     v13 = MEMORY[0x277CCABB0];
-    v14 = [v11 _creationDate];
-    v15 = [v13 numberWithInteger:{-[HDHRAFibBurdenDailyAnalyticsEvent _daysSinceDate:maximum:dataSource:](self, "_daysSinceDate:maximum:dataSource:", v14, &unk_283CD2848, v7)}];
-    v35 = v6;
-    [v6 setObject:v15 forKeyedSubscript:@"numberOfDaysSinceLastSample"];
+    _creationDate = [v11 _creationDate];
+    v15 = [v13 numberWithInteger:{-[HDHRAFibBurdenDailyAnalyticsEvent _daysSinceDate:maximum:dataSource:](self, "_daysSinceDate:maximum:dataSource:", _creationDate, &unk_283CD2848, sourceCopy)}];
+    v35 = payloadCopy;
+    [payloadCopy setObject:v15 forKeyedSubscript:@"numberOfDaysSinceLastSample"];
 
-    v16 = [v7 environmentDataSource];
-    v17 = [v16 calendarCache];
-    v18 = [v11 _timeZone];
-    v19 = [v17 calendarForTimeZone:v18];
+    environmentDataSource = [sourceCopy environmentDataSource];
+    calendarCache = [environmentDataSource calendarCache];
+    _timeZone = [v11 _timeZone];
+    v19 = [calendarCache calendarForTimeZone:_timeZone];
 
     v20 = [v11 hk_dayIndexRangeWithCalendar:v19];
     v22 = v21;
-    v23 = [v7 environmentDataSource];
-    v24 = [v23 currentDate];
+    environmentDataSource2 = [sourceCopy environmentDataSource];
+    currentDate = [environmentDataSource2 currentDate];
     v25 = HKHRAFibBurdenPreviousWeekDayIndexRange();
     v27 = v26;
 
     if (v20 == v25 && v22 - 1 == v27)
     {
       v28 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDHRAFibBurdenDailyAnalyticsEvent _bucketedBurdenValueForSample:](self, "_bucketedBurdenValueForSample:", v11)}];
-      v6 = v35;
+      payloadCopy = v35;
       [v35 setObject:v28 forKeyedSubscript:@"previousWeekBurdenValue"];
 
-      v29 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _determineIfSamplesOverlappingSample:v11 dataSource:v7];
+      v29 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _determineIfSamplesOverlappingSample:v11 dataSource:sourceCopy];
       [v35 setObject:v29 forKeyedSubscript:@"previousWeekHasOverlappingSamples"];
     }
 
@@ -448,11 +448,11 @@ LABEL_19:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v38 = self;
+        selfCopy = self;
         _os_log_impl(&dword_229486000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] Most recent sample not for previous calendar week", buf, 0xCu);
       }
 
-      v6 = v35;
+      payloadCopy = v35;
     }
 
     v12 = v33;
@@ -470,39 +470,39 @@ LABEL_19:
     }
 
     v31 = *MEMORY[0x277CCB7A0];
-    [v6 setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:@"numberOfDaysSinceLastSample"];
-    [v6 setObject:v31 forKeyedSubscript:@"previousWeekBurdenValue"];
-    [v6 setObject:*MEMORY[0x277CCB798] forKeyedSubscript:@"previousWeekHasOverlappingSamples"];
+    [payloadCopy setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:@"numberOfDaysSinceLastSample"];
+    [payloadCopy setObject:v31 forKeyedSubscript:@"previousWeekBurdenValue"];
+    [payloadCopy setObject:*MEMORY[0x277CCB798] forKeyedSubscript:@"previousWeekHasOverlappingSamples"];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_determineIfSamplesOverlappingSample:(id)a3 dataSource:(id)a4
+- (id)_determineIfSamplesOverlappingSample:(id)sample dataSource:(id)source
 {
-  v6 = a3;
-  v7 = [a4 environmentDataSource];
-  v8 = [v7 calendarCache];
-  v9 = [v6 _timeZone];
-  v10 = [v8 calendarForTimeZone:v9];
+  sampleCopy = sample;
+  environmentDataSource = [source environmentDataSource];
+  calendarCache = [environmentDataSource calendarCache];
+  _timeZone = [sampleCopy _timeZone];
+  v10 = [calendarCache calendarForTimeZone:_timeZone];
 
-  v11 = [v6 startDate];
-  v12 = [v11 hk_dayIndexWithCalendar:v10];
+  startDate = [sampleCopy startDate];
+  v12 = [startDate hk_dayIndexWithCalendar:v10];
 
-  v13 = [v6 endDate];
-  v14 = [v13 hk_dayIndexWithCalendar:v10];
+  endDate = [sampleCopy endDate];
+  v14 = [endDate hk_dayIndexWithCalendar:v10];
 
   v15 = [MEMORY[0x277CBEAA8] hk_earliestPossibleDateWithDayIndex:v12];
   v16 = [MEMORY[0x277CBEAA8] hk_latestPossibleDateWithDayIndex:v14];
   v17 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v15 endDate:v16];
   v18 = MEMORY[0x277D10848];
-  v19 = [v6 quantityType];
+  quantityType = [sampleCopy quantityType];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v21 = [v6 quantityType];
+  quantityType2 = [sampleCopy quantityType];
 
   v22 = HDSampleEntityPredicateForDateInterval();
   v30 = 0;
-  v23 = [v18 samplesWithType:v19 profile:WeakRetained encodingOptions:0 predicate:v22 limit:2 anchor:0 error:&v30];
+  v23 = [v18 samplesWithType:quantityType profile:WeakRetained encodingOptions:0 predicate:v22 limit:2 anchor:0 error:&v30];
   v24 = v30;
 
   if (v23)
@@ -536,23 +536,23 @@ LABEL_19:
   return v28;
 }
 
-- (void)_extractBucketedDaysSinceLastSampleOfType:(id)a3 intoProperty:(id)a4 inPayload:(id)a5 dataSource:(id)a6
+- (void)_extractBucketedDaysSinceLastSampleOfType:(id)type intoProperty:(id)property inPayload:(id)payload dataSource:(id)source
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  propertyCopy = property;
+  payloadCopy = payload;
+  sourceCopy = source;
   v14 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v26 = 0;
-  v16 = [v14 mostRecentSampleWithType:v10 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v26];
+  v16 = [v14 mostRecentSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:&v26];
   v17 = v26;
 
   if (v16)
   {
-    v18 = [v16 startDate];
-    v19 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _daysSinceDate:v18 dataSource:v13];
+    startDate = [v16 startDate];
+    v19 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _daysSinceDate:startDate dataSource:sourceCopy];
 
     v20 = *MEMORY[0x277CCB7A0];
     v21 = v20;
@@ -586,7 +586,7 @@ LABEL_19:
                 if (v19 < 91)
                 {
 LABEL_27:
-                  [v12 setObject:v21 forKeyedSubscript:v11];
+                  [payloadCopy setObject:v21 forKeyedSubscript:propertyCopy];
 
                   goto LABEL_28;
                 }
@@ -639,17 +639,17 @@ LABEL_27:
     v23 = HKHRAFibBurdenLogForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v10 identifier];
+      identifier = [typeCopy identifier];
       *buf = 138543874;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
-      v30 = v24;
+      v30 = identifier;
       v31 = 2114;
       v32 = v17;
       _os_log_error_impl(&dword_229486000, v23, OS_LOG_TYPE_ERROR, "[%{public}@] Error when retrieving sample of type %{public}@: %{public}@", buf, 0x20u);
     }
 
-    [v12 setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:v11];
+    [payloadCopy setObject:*MEMORY[0x277CCB7A0] forKeyedSubscript:propertyCopy];
   }
 
 LABEL_28:
@@ -657,26 +657,26 @@ LABEL_28:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_extractWatchWearPropertiesIntoPayload:(id)a3 dataSource:(id)a4
+- (void)_extractWatchWearPropertiesIntoPayload:(id)payload dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 environmentDataSource];
-  v9 = [v8 calendarCache];
-  v10 = [v9 currentCalendar];
+  payloadCopy = payload;
+  sourceCopy = source;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v11 = [v7 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v12 = [v11 currentDate];
+  currentDate = [environmentDataSource2 currentDate];
 
-  v13 = [v10 dateByAddingUnit:16 value:-1 toDate:v12 options:0];
+  v13 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:currentDate options:0];
   v14 = objc_alloc(MEMORY[0x277CCA970]);
-  v15 = [v10 startOfDayForDate:v13];
-  v16 = [v10 startOfDayForDate:v12];
+  v15 = [currentCalendar startOfDayForDate:v13];
+  v16 = [currentCalendar startOfDayForDate:currentDate];
   v17 = [v14 initWithStartDate:v15 endDate:v16];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "component:fromDate:", 512, v13)}];
-  [v6 setObject:v18 forKeyedSubscript:@"previousCalendarDayOfWeek"];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(currentCalendar, "component:fromDate:", 512, v13)}];
+  [payloadCopy setObject:v18 forKeyedSubscript:@"previousCalendarDayOfWeek"];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v31[5] = 0;
@@ -695,10 +695,10 @@ LABEL_28:
     v20 = *MEMORY[0x277CCB7A0];
   }
 
-  [v6 setObject:v20 forKeyedSubscript:@"numberOfStandHoursInPreviousCalendarDay"];
+  [payloadCopy setObject:v20 forKeyedSubscript:@"numberOfStandHoursInPreviousCalendarDay"];
   [MEMORY[0x277CCD920] heartbeatSeriesType];
   v29 = v21;
-  v24 = v23 = v6;
+  v24 = v23 = payloadCopy;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayload_dataSource___block_invoke;
@@ -707,14 +707,14 @@ LABEL_28:
   v25 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _numberOfSamplesOfType:v24 dateInterval:v17 additionalPredicate:0 bucketer:v31];
 
   [v23 setObject:v25 forKeyedSubscript:@"numberOfTachogramsInPreviousCalendarDay"];
-  v26 = [MEMORY[0x277CCD830] heartRateType];
-  v27 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _sedentaryAndBackgroundHeartRateContextPredicate];
+  heartRateType = [MEMORY[0x277CCD830] heartRateType];
+  _sedentaryAndBackgroundHeartRateContextPredicate = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _sedentaryAndBackgroundHeartRateContextPredicate];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayload_dataSource___block_invoke_403;
   v30[3] = &unk_278660500;
   v30[4] = self;
-  v28 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _numberOfSamplesOfType:v26 dateInterval:v17 additionalPredicate:v27 bucketer:v30];
+  v28 = [(HDHRAFibBurdenDailyAnalyticsEvent *)self _numberOfSamplesOfType:heartRateType dateInterval:v17 additionalPredicate:_sedentaryAndBackgroundHeartRateContextPredicate bucketer:v30];
 
   [v23 setObject:v28 forKeyedSubscript:@"numberOfBackgroundHRSamplesInPreviousCalendarDay"];
 }
@@ -883,19 +883,19 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
   return v3;
 }
 
-- (id)_numberOfSamplesOfType:(id)a3 dateInterval:(id)a4 additionalPredicate:(id)a5 bucketer:(id)a6
+- (id)_numberOfSamplesOfType:(id)type dateInterval:(id)interval additionalPredicate:(id)predicate bucketer:(id)bucketer
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  typeCopy = type;
+  predicateCopy = predicate;
+  bucketerCopy = bucketer;
   v12 = HDSampleEntityPredicateForDateInterval();
   v13 = v12;
-  if (v10)
+  if (predicateCopy)
   {
     v14 = MEMORY[0x277D10B20];
     v34[0] = v12;
-    v34[1] = v10;
+    v34[1] = predicateCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
     v16 = [v14 predicateMatchingAllPredicates:v15];
 
@@ -905,7 +905,7 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
   v17 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v27 = 0;
-  v19 = [v17 countOfSamplesWithType:v9 profile:WeakRetained matchingPredicate:v13 withError:&v27];
+  v19 = [v17 countOfSamplesWithType:typeCopy profile:WeakRetained matchingPredicate:v13 withError:&v27];
   v20 = v27;
 
   if (v20)
@@ -914,11 +914,11 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
     v21 = HKHRAFibBurdenLogForCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v9 identifier];
+      identifier = [typeCopy identifier];
       *buf = 138543874;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
-      v31 = v26;
+      v31 = identifier;
       v32 = 2114;
       v33 = v20;
       _os_log_error_impl(&dword_229486000, v21, OS_LOG_TYPE_ERROR, "[%{public}@] Error when retrieving sample count of type %{public}@: %{public}@", buf, 0x20u);
@@ -929,7 +929,7 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
 
   else
   {
-    v22 = v11[2](v11, v19);
+    v22 = bucketerCopy[2](bucketerCopy, v19);
   }
 
   v23 = v22;
@@ -939,11 +939,11 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
   return v23;
 }
 
-- (int64_t)_bucketedWeeksSinceDate:(id)a3 dataSource:(id)a4
+- (int64_t)_bucketedWeeksSinceDate:(id)date dataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 environmentDataSource];
-  v7 = [v6 bucketedNumberOfWeeksSinceDate:v5];
+  dateCopy = date;
+  environmentDataSource = [source environmentDataSource];
+  v7 = [environmentDataSource bucketedNumberOfWeeksSinceDate:dateCopy];
 
   v8 = *MEMORY[0x277CCB7A0];
   if (v7)
@@ -953,58 +953,58 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
 
   v9 = v8;
 
-  v10 = [v9 integerValue];
-  return v10;
+  integerValue = [v9 integerValue];
+  return integerValue;
 }
 
-- (int64_t)_daysSinceDate:(id)a3 dataSource:(id)a4
+- (int64_t)_daysSinceDate:(id)date dataSource:(id)source
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 environmentDataSource];
-  v8 = [v7 calendarCache];
-  v9 = [v8 currentCalendar];
+  sourceCopy = source;
+  dateCopy = date;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v10 = [v5 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v11 = [v10 currentDate];
-  v12 = [v9 components:16 fromDate:v6 toDate:v11 options:0];
+  currentDate = [environmentDataSource2 currentDate];
+  v12 = [currentCalendar components:16 fromDate:dateCopy toDate:currentDate options:0];
 
   v13 = [v12 day];
   return v13;
 }
 
-- (int64_t)_daysSinceDate:(id)a3 maximum:(id)a4 dataSource:(id)a5
+- (int64_t)_daysSinceDate:(id)date maximum:(id)maximum dataSource:(id)source
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 environmentDataSource];
-  v11 = [v10 calendarCache];
-  v12 = [v11 currentCalendar];
+  maximumCopy = maximum;
+  sourceCopy = source;
+  dateCopy = date;
+  environmentDataSource = [sourceCopy environmentDataSource];
+  calendarCache = [environmentDataSource calendarCache];
+  currentCalendar = [calendarCache currentCalendar];
 
-  v13 = [v8 environmentDataSource];
+  environmentDataSource2 = [sourceCopy environmentDataSource];
 
-  v14 = [v13 currentDate];
-  v15 = [v12 components:16 fromDate:v9 toDate:v14 options:0];
+  currentDate = [environmentDataSource2 currentDate];
+  v15 = [currentCalendar components:16 fromDate:dateCopy toDate:currentDate options:0];
 
   v16 = [v15 day];
-  if (v7)
+  if (maximumCopy)
   {
-    v17 = [v7 integerValue];
-    if (v16 >= v17)
+    integerValue = [maximumCopy integerValue];
+    if (v16 >= integerValue)
     {
-      v16 = v17;
+      v16 = integerValue;
     }
   }
 
   return v16;
 }
 
-- (int64_t)_bucketedBurdenValueForSample:(id)a3
+- (int64_t)_bucketedBurdenValueForSample:(id)sample
 {
-  v3 = [a3 quantity];
-  [v3 _value];
+  quantity = [sample quantity];
+  [quantity _value];
   v5 = (v4 * 100.0);
 
   if (v5 < 3)
@@ -1024,8 +1024,8 @@ id __87__HDHRAFibBurdenDailyAnalyticsEvent__extractWatchWearPropertiesIntoPayloa
 {
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_283CD2A28, &unk_283CD2A40, &unk_283CD2A58, 0}];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained metadataManager];
-  v6 = [v5 predicateWithMetadataKey:*MEMORY[0x277CCE030] allowedValues:v3];
+  metadataManager = [WeakRetained metadataManager];
+  v6 = [metadataManager predicateWithMetadataKey:*MEMORY[0x277CCE030] allowedValues:v3];
 
   return v6;
 }

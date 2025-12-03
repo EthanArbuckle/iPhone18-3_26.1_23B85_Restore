@@ -11,7 +11,7 @@
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
     objc_opt_class();
@@ -56,7 +56,7 @@ LABEL_7:
 {
   v46[1] = *MEMORY[0x277D85DE8];
   v10 = a3;
-  v11 = [a1 objectForKey:v10];
+  v11 = [self objectForKey:v10];
   if (!v11)
   {
     if (a6)
@@ -148,7 +148,7 @@ LABEL_18:
 - (id)setValueForKey:()KMMapper_AppGlobalVocabulary expectedObjectsType:keyRequired:error:
 {
   v10 = a3;
-  v11 = [a1 _collectionValueForKey:v10 collectonType:objc_opt_class() expectedObjectsType:a4 keyRequired:a5 error:a6];
+  v11 = [self _collectionValueForKey:v10 collectonType:objc_opt_class() expectedObjectsType:a4 keyRequired:a5 error:a6];
 
   return v11;
 }
@@ -156,7 +156,7 @@ LABEL_18:
 - (id)arrayValueForKey:()KMMapper_AppGlobalVocabulary expectedObjectsType:keyRequired:error:
 {
   v10 = a3;
-  v11 = [a1 _collectionValueForKey:v10 collectonType:objc_opt_class() expectedObjectsType:a4 keyRequired:a5 error:a6];
+  v11 = [self _collectionValueForKey:v10 collectonType:objc_opt_class() expectedObjectsType:a4 keyRequired:a5 error:a6];
 
   return v11;
 }

@@ -1,25 +1,25 @@
 @interface RouteAnnotationsResponder
-+ (id)routeAtPoint:(CGPoint)a3 inMapView:(id)a4 withRoutes:(id)a5 selectedRoute:(id)a6 overlappingRouteSelectorBlock:(id)a7;
++ (id)routeAtPoint:(CGPoint)point inMapView:(id)view withRoutes:(id)routes selectedRoute:(id)route overlappingRouteSelectorBlock:(id)block;
 @end
 
 @implementation RouteAnnotationsResponder
 
-+ (id)routeAtPoint:(CGPoint)a3 inMapView:(id)a4 withRoutes:(id)a5 selectedRoute:(id)a6 overlappingRouteSelectorBlock:(id)a7
++ (id)routeAtPoint:(CGPoint)point inMapView:(id)view withRoutes:(id)routes selectedRoute:(id)route overlappingRouteSelectorBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a4;
-  v13 = a5;
-  v53 = a6;
-  v52 = a7;
-  [v12 convertPoint:v12 toCoordinateFromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  routesCopy = routes;
+  routeCopy = route;
+  blockCopy = block;
+  [viewCopy convertPoint:viewCopy toCoordinateFromView:{x, y}];
   v14 = MKMapPointForCoordinate(v74);
   v56 = +[NSMapTable strongToStrongObjectsMapTable];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v13;
+  obj = routesCopy;
   v15 = [obj countByEnumeratingWithState:&v61 objects:v72 count:16];
   if (v15)
   {
@@ -38,7 +38,7 @@
         v20 = *(*(&v61 + 1) + 8 * i);
         [v20 _maps_closestMapPointToMapPoint:{v14.x, v14.y}];
         v21 = MKCoordinateForMapPoint(v75);
-        [v12 convertCoordinate:v12 toPointToView:{v21.latitude, v21.longitude}];
+        [viewCopy convertCoordinate:viewCopy toPointToView:{v21.latitude, v21.longitude}];
         UIDistanceBetweenPoints();
         v23 = v22;
         v24 = [NSNumber numberWithDouble:?];
@@ -47,14 +47,14 @@
         v25 = sub_1007D7FB4();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v20 uniqueRouteID];
-          v27 = [v26 UUIDString];
+          uniqueRouteID = [v20 uniqueRouteID];
+          uUIDString = [uniqueRouteID UUIDString];
           *buf = 134349570;
-          v67 = a1;
+          selfCopy8 = self;
           v68 = 2048;
           v69 = *&v23;
           v70 = 2112;
-          v71 = v27;
+          v71 = uUIDString;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "[%{public}p] Adding minimum distance (%f) for route: %@", buf, 0x20u);
         }
 
@@ -76,7 +76,7 @@
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v67 = a1;
+    selfCopy8 = self;
     v68 = 2048;
     v69 = *&v18;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%{public}p] Calculated closest route distance: %f", buf, 0x16u);
@@ -86,26 +86,26 @@
   v30 = os_log_type_enabled(v29, OS_LOG_TYPE_INFO);
   if (v18 > 30.0)
   {
-    v32 = v52;
-    v31 = v53;
+    v32 = blockCopy;
+    v31 = routeCopy;
     if (v30)
     {
       *buf = 134349312;
-      v67 = a1;
+      selfCopy8 = self;
       v68 = 2048;
       v69 = 0x403E000000000000;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}p] Closest route distance was larger than the maximum (%f)", buf, 0x16u);
     }
 
 LABEL_39:
-    v46 = 0;
+    firstObject = 0;
     goto LABEL_44;
   }
 
   if (v30)
   {
     *buf = 134349312;
-    v67 = a1;
+    selfCopy8 = self;
     v68 = 2048;
     v69 = 0x403E000000000000;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}p] Closest route distance was smaller than the maximum (%f)", buf, 0x16u);
@@ -153,12 +153,12 @@ LABEL_39:
   v44 = v43;
   if (!v42)
   {
-    v32 = v52;
-    v31 = v53;
+    v32 = blockCopy;
+    v31 = routeCopy;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349312;
-      v67 = a1;
+      selfCopy8 = self;
       v68 = 2048;
       v69 = 0x3F847AE140000000;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "[%{public}p] Did not find any routes within %f of the closestRouteDistance", buf, 0x16u);
@@ -167,13 +167,13 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v32 = v52;
-  v31 = v53;
+  v32 = blockCopy;
+  v31 = routeCopy;
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
     v45 = sub_100021DB0(v29, &stru_10162A6F8);
     *buf = 134349314;
-    v67 = a1;
+    selfCopy8 = self;
     v68 = 2112;
     v69 = v45;
     _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "[%{public}p] Found closest routes: %@", buf, 0x16u);
@@ -184,37 +184,37 @@ LABEL_39:
     goto LABEL_43;
   }
 
-  if (!v52)
+  if (!blockCopy)
   {
     v50 = sub_1007D7FB4();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v67 = a1;
+      selfCopy8 = self;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "[%{public}p] overlappingRouteSelectorBlock is nil; cannot differentiate between multiple overlapping routes", buf, 0xCu);
     }
 
 LABEL_43:
-    v46 = [v29 firstObject];
+    firstObject = [v29 firstObject];
     goto LABEL_44;
   }
 
-  v46 = (*(v52 + 2))(v52, v29, v53);
+  firstObject = (*(blockCopy + 2))(blockCopy, v29, routeCopy);
   v47 = sub_1007D7FB4();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
   {
-    v48 = [v46 uniqueRouteID];
-    v49 = [v48 UUIDString];
+    uniqueRouteID2 = [firstObject uniqueRouteID];
+    uUIDString2 = [uniqueRouteID2 UUIDString];
     *buf = 134349314;
-    v67 = a1;
+    selfCopy8 = self;
     v68 = 2112;
-    v69 = v49;
+    v69 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "[%{public}p] Differentiated between multiple overlapping routes: %@", buf, 0x16u);
   }
 
 LABEL_44:
 
-  return v46;
+  return firstObject;
 }
 
 @end

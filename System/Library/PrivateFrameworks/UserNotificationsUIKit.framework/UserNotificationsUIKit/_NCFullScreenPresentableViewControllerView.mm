@@ -1,20 +1,20 @@
 @interface _NCFullScreenPresentableViewControllerView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _NCFullScreenPresentableViewControllerView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _NCFullScreenPresentableViewControllerView;
-  v5 = [(_NCFullScreenPresentableViewControllerView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_NCFullScreenPresentableViewControllerView *)&v9 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
-    v6 = [(_NCFullScreenPresentableViewControllerView *)self layer];
-    v7 = [v6 allowsHitTesting];
+    layer = [(_NCFullScreenPresentableViewControllerView *)self layer];
+    allowsHitTesting = [layer allowsHitTesting];
 
-    if ((v7 & 1) == 0)
+    if ((allowsHitTesting & 1) == 0)
     {
 
       v5 = 0;

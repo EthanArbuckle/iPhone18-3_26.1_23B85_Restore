@@ -1,6 +1,6 @@
 @interface HKMedicationsImageFeatureExtractor
 - (HKMedicationsImageFeatureExtractor)init;
-- (void)extractFeaturesFrom:(id)a3 completionHandler:(id)a4;
+- (void)extractFeaturesFrom:(id)from completionHandler:(id)handler;
 @end
 
 @implementation HKMedicationsImageFeatureExtractor
@@ -19,14 +19,14 @@
   return v2;
 }
 
-- (void)extractFeaturesFrom:(id)a3 completionHandler:(id)a4
+- (void)extractFeaturesFrom:(id)from completionHandler:(id)handler
 {
   v45[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v36 = a4;
+  fromCopy = from;
+  handlerCopy = handler;
   v7 = objc_alloc(MEMORY[0x277CE2D50]);
-  v37 = v6;
-  v8 = [v7 initWithCIImage:v6 options:MEMORY[0x277CBEC10]];
+  v37 = fromCopy;
+  v8 = [v7 initWithCIImage:fromCopy options:MEMORY[0x277CBEC10]];
   v9 = objc_alloc_init(MEMORY[0x277CE2DB0]);
   [v9 setMaximumCandidateCount:1];
   [v9 setUsesLanguageCorrection:1];
@@ -49,19 +49,19 @@
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v32 = [v9 results];
-  v17 = HKTextBlockFromDocumentsClosestToPoint(2, v32, 0.5, 0.5);
-  v18 = [v17 getTranscript];
-  v19 = [v18 length];
+  results = [v9 results];
+  v17 = HKTextBlockFromDocumentsClosestToPoint(2, results, 0.5, 0.5);
+  getTranscript = [v17 getTranscript];
+  v19 = [getTranscript length];
 
   if (v19)
   {
-    v20 = [v17 getTranscript];
-    [v14 addObject:v20];
+    getTranscript2 = [v17 getTranscript];
+    [v14 addObject:getTranscript2];
 
-    v21 = [(HKMedicationsImageFeatureExtractor *)self ndcParser];
-    v22 = [v17 getTranscript];
-    v23 = [v21 parsedNDCCodeFromString:v22];
+    ndcParser = [(HKMedicationsImageFeatureExtractor *)self ndcParser];
+    getTranscript3 = [v17 getTranscript];
+    v23 = [ndcParser parsedNDCCodeFromString:getTranscript3];
 
     if ([v23 length])
     {
@@ -71,12 +71,12 @@
 
   v33 = v15;
   v24 = v14;
-  v25 = [v10 results];
+  results2 = [v10 results];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v26 = [v25 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v26 = [results2 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v26)
   {
     v27 = v26;
@@ -87,7 +87,7 @@
       {
         if (*v39 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(results2);
         }
 
         v30 = [HKMedicationsBarcodeNDCParser parsedNDCCodeFromBarcodeObservation:*(*(&v38 + 1) + 8 * i)];
@@ -97,13 +97,13 @@
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v27 = [results2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v27);
   }
 
-  v36[2](v36, v24, v33, v16, v34);
+  handlerCopy[2](handlerCopy, v24, v33, v16, v34);
 
   v31 = *MEMORY[0x277D85DE8];
 }

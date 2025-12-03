@@ -6,10 +6,10 @@
 
 - (BOOL)pbf_isGeneralCancelledError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:PBFGeneralErrorDomain])
+  domain = [self domain];
+  if ([domain isEqualToString:PBFGeneralErrorDomain])
   {
-    v3 = [a1 code] == 4;
+    v3 = [self code] == 4;
   }
 
   else

@@ -1,41 +1,41 @@
 @interface MTLTelemetryDevice
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)a3;
-- (BOOL)supportsFeatureSet:(unint64_t)a3;
-- (BOOL)supportsTextureSampleCount:(unint64_t)a3;
-- (MTLTelemetryDevice)initWithBaseObject:(id)a3 parent:(id)a4;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)length options:(unint64_t)options;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)descriptor;
+- (BOOL)supportsFeatureSet:(unint64_t)set;
+- (BOOL)supportsTextureSampleCount:(unint64_t)count;
+- (MTLTelemetryDevice)initWithBaseObject:(id)object parent:(id)parent;
 - (id).cxx_construct;
-- (id)_newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)_newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)_newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6;
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5;
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6;
-- (id)newBufferWithDescriptor:(id)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
+- (id)_newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)_newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)_newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error;
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator;
+- (id)newBufferWithDescriptor:(id)descriptor;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
 - (id)newCommandQueue;
-- (id)newCommandQueueWithDescriptor:(id)a3;
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3;
-- (id)newDepthStencilStateWithDescriptor:(id)a3;
-- (id)newHeapWithDescriptor:(id)a3;
-- (id)newSamplerStateWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5;
-- (void)_newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)_newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
+- (id)newCommandQueueWithDescriptor:(id)descriptor;
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count;
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor;
+- (id)newHeapWithDescriptor:(id)descriptor;
+- (id)newSamplerStateWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane;
+- (void)_newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)_newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler;
+- (void)_newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
 - (void)dealloc;
 - (void)emitFeatureQueryUsage;
 - (void)emitTelemetry;
 - (void)initDistributions;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4;
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setGLMode:(BOOL)a3;
-- (void)setTimerInterval:(double)a3;
-- (void)startTimerWithInterval:(double)a3;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler;
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler;
+- (void)setGLMode:(BOOL)mode;
+- (void)setTimerInterval:(double)interval;
+- (void)startTimerWithInterval:(double)interval;
 @end
 
 @implementation MTLTelemetryDevice
@@ -107,20 +107,20 @@
   self->_isGLMTL = 0;
 }
 
-- (void)setTimerInterval:(double)a3
+- (void)setTimerInterval:(double)interval
 {
   timer = self->_timer;
   v5 = dispatch_time(0, 5000000000);
 
-  dispatch_source_set_timer(timer, v5, (a3 * 1000000000.0), 0x5F5E100uLL);
+  dispatch_source_set_timer(timer, v5, (interval * 1000000000.0), 0x5F5E100uLL);
 }
 
-- (MTLTelemetryDevice)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLTelemetryDevice)initWithBaseObject:(id)object parent:(id)parent
 {
   v17 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = MTLTelemetryDevice;
-  v4 = [(MTLToolsDevice *)&v15 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsDevice *)&v15 initWithBaseObject:object parent:parent];
   if (v4)
   {
     NSLog(&cfstr_STelemetryDevi.isa, "[MTLTelemetryDevice initWithBaseObject:parent:]");
@@ -161,7 +161,7 @@
   return v4;
 }
 
-- (void)setGLMode:(BOOL)a3
+- (void)setGLMode:(BOOL)mode
 {
   queue = self->queue;
   if (queue)
@@ -170,7 +170,7 @@
     v5[1] = 3221225472;
     v5[2] = __32__MTLTelemetryDevice_setGLMode___block_invoke;
     v5[3] = &unk_2787B4A98;
-    v6 = a3;
+    modeCopy = mode;
     v5[4] = self;
     dispatch_sync(queue, v5);
   }
@@ -238,9 +238,9 @@ uint64_t __32__MTLTelemetryDevice_setGLMode___block_invoke(uint64_t result)
     telemetryLog = self->_telemetryLog;
     if (os_log_type_enabled(telemetryLog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 UTF8String];
+      uTF8String = [v5 UTF8String];
       LODWORD(v19.__r_.__value_.__l.__data_) = 136315138;
-      *(v19.__r_.__value_.__r.__words + 4) = v10;
+      *(v19.__r_.__value_.__r.__words + 4) = uTF8String;
       _os_log_impl(&dword_22E0FF000, telemetryLog, OS_LOG_TYPE_DEFAULT, "%s", &v19, 0xCu);
     }
   }
@@ -309,11 +309,11 @@ LABEL_26:
     printf("\n\nBeginMetalTelemetry");
   }
 
-  v5 = [(MTLTelemetryDevice *)self telemetryLog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  telemetryLog = [(MTLTelemetryDevice *)self telemetryLog];
+  if (os_log_type_enabled(telemetryLog, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf.min) = 0;
-    _os_log_impl(&dword_22E0FF000, v5, OS_LOG_TYPE_DEFAULT, "BeginMetalTelemetry", &buf, 2u);
+    _os_log_impl(&dword_22E0FF000, telemetryLog, OS_LOG_TYPE_DEFAULT, "BeginMetalTelemetry", &buf, 2u);
   }
 
   v4 = *v3;
@@ -338,8 +338,8 @@ LABEL_7:
     printf("\n\nAPI, %s", v6);
   }
 
-  v7 = [(MTLTelemetryDevice *)self telemetryLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  telemetryLog2 = [(MTLTelemetryDevice *)self telemetryLog];
+  if (os_log_type_enabled(telemetryLog2, OS_LOG_TYPE_DEFAULT))
   {
     if (self->_isGLMTL)
     {
@@ -353,7 +353,7 @@ LABEL_7:
 
     buf.min = 136315138;
     *&buf.max = v8;
-    _os_log_impl(&dword_22E0FF000, v7, OS_LOG_TYPE_DEFAULT, "API, %s", &buf, 0xCu);
+    _os_log_impl(&dword_22E0FF000, telemetryLog2, OS_LOG_TYPE_DEFAULT, "API, %s", &buf, 0xCu);
   }
 
 LABEL_18:
@@ -407,18 +407,18 @@ LABEL_18:
     printf("\n\nEndMetalTelemetry");
   }
 
-  v11 = [(MTLTelemetryDevice *)self telemetryLog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  telemetryLog3 = [(MTLTelemetryDevice *)self telemetryLog];
+  if (os_log_type_enabled(telemetryLog3, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf.min) = 0;
-    _os_log_impl(&dword_22E0FF000, v11, OS_LOG_TYPE_DEFAULT, "EndMetalTelemetry", &buf, 2u);
+    _os_log_impl(&dword_22E0FF000, telemetryLog3, OS_LOG_TYPE_DEFAULT, "EndMetalTelemetry", &buf, 2u);
   }
 
 LABEL_25:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTimerWithInterval:(double)a3
+- (void)startTimerWithInterval:(double)interval
 {
   queue = self->queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -426,7 +426,7 @@ LABEL_25:
   v5[2] = __45__MTLTelemetryDevice_startTimerWithInterval___block_invoke;
   v5[3] = &unk_2787B4A48;
   v5[4] = self;
-  self->_timer = createTimerWithInterval(queue, v5, a3);
+  self->_timer = createTimerWithInterval(queue, v5, interval);
 }
 
 - (id)newCommandQueue
@@ -443,7 +443,7 @@ LABEL_25:
   return result;
 }
 
-- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)a3
+- (id)newCommandQueueWithMaxCommandBufferCount:(unint64_t)count
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -457,7 +457,7 @@ LABEL_25:
   return result;
 }
 
-- (id)newCommandQueueWithDescriptor:(id)a3
+- (id)newCommandQueueWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -471,33 +471,33 @@ LABEL_25:
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapTextureSizeAndAlignWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  v5 = [v4 heapTextureSizeAndAlignWithDescriptor:a3];
+  v5 = [baseObject heapTextureSizeAndAlignWithDescriptor:descriptor];
   result.var1 = v6;
   result.var0 = v5;
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)a3 options:(unint64_t)a4
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)heapBufferSizeAndAlignWithLength:(unint64_t)length options:(unint64_t)options
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  v7 = [v6 heapBufferSizeAndAlignWithLength:a3 options:a4];
+  v7 = [baseObject heapBufferSizeAndAlignWithLength:length options:options];
   result.var1 = v8;
   result.var0 = v7;
   return result;
 }
 
-- (id)newHeapWithDescriptor:(id)a3
+- (id)newHeapWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLTelemetryHeap alloc] initWithHeap:result descriptor:a3 device:self];
+    v7 = [[MTLTelemetryHeap alloc] initWithHeap:result descriptor:descriptor device:self];
 
     return v7;
   }
@@ -505,13 +505,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v7 = result;
-    v8 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self options:a4];
+    v8 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self options:options];
 
     return v8;
   }
@@ -519,13 +519,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newBufferWithBytes:(const void *)a3 length:(unint64_t)a4 options:(unint64_t)a5
+- (id)newBufferWithBytes:(const void *)bytes length:(unint64_t)length options:(unint64_t)options
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v8 = result;
-    v9 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self options:a5];
+    v9 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self options:options];
 
     return v9;
   }
@@ -533,13 +533,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newBufferWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 options:(unint64_t)a5 deallocator:(id)a6
+- (id)newBufferWithBytesNoCopy:(void *)copy length:(unint64_t)length options:(unint64_t)options deallocator:(id)deallocator
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v10 = result;
-    v11 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self bytes:a3 options:a5];
+    v11 = [[MTLTelemetryBuffer alloc] initWithBuffer:result device:self bytes:copy options:options];
 
     return v11;
   }
@@ -547,7 +547,7 @@ LABEL_25:
   return result;
 }
 
-- (id)newBufferWithDescriptor:(id)a3
+- (id)newBufferWithDescriptor:(id)descriptor
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v5)
@@ -556,16 +556,16 @@ LABEL_25:
   }
 
   v6 = v5;
-  v7 = [a3 contents];
+  contents = [descriptor contents];
   v8 = [MTLTelemetryBuffer alloc];
-  if (v7)
+  if (contents)
   {
-    v9 = -[MTLTelemetryBuffer initWithBuffer:device:bytes:options:](v8, "initWithBuffer:device:bytes:options:", v6, self, [a3 contents], objc_msgSend(a3, "resourceOptions"));
+    v9 = -[MTLTelemetryBuffer initWithBuffer:device:bytes:options:](v8, "initWithBuffer:device:bytes:options:", v6, self, [descriptor contents], objc_msgSend(descriptor, "resourceOptions"));
   }
 
   else
   {
-    v9 = -[MTLTelemetryBuffer initWithBuffer:device:options:](v8, "initWithBuffer:device:options:", v6, self, [a3 resourceOptions]);
+    v9 = -[MTLTelemetryBuffer initWithBuffer:device:options:](v8, "initWithBuffer:device:options:", v6, self, [descriptor resourceOptions]);
   }
 
   v10 = v9;
@@ -573,13 +573,13 @@ LABEL_25:
   return v10;
 }
 
-- (id)newDepthStencilStateWithDescriptor:(id)a3
+- (id)newDepthStencilStateWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLTelemetryDepthStencilState alloc] initWithBaseDepthStencilState:result device:self descriptor:a3];
+    v7 = [[MTLTelemetryDepthStencilState alloc] initWithBaseDepthStencilState:result device:self descriptor:descriptor];
 
     return v7;
   }
@@ -587,13 +587,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self descriptor:a3];
+    v7 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self descriptor:descriptor];
 
     return v7;
   }
@@ -601,13 +601,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 iosurface:(__IOSurface *)a4 plane:(unint64_t)a5
+- (id)newTextureWithDescriptor:(id)descriptor iosurface:(__IOSurface *)iosurface plane:(unint64_t)plane
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v9 = result;
-    v10 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self descriptor:a3 plane:a5];
+    v10 = [[MTLTelemetryTexture alloc] initWithBaseTexture:result device:self descriptor:descriptor plane:plane];
 
     return v10;
   }
@@ -615,13 +615,13 @@ LABEL_25:
   return result;
 }
 
-- (id)newSamplerStateWithDescriptor:(id)a3
+- (id)newSamplerStateWithDescriptor:(id)descriptor
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
   {
     v6 = result;
-    v7 = [[MTLTelemetrySamplerState alloc] initWithBaseSamplerState:result device:self descriptor:a3];
+    v7 = [[MTLTelemetrySamplerState alloc] initWithBaseSamplerState:result device:self descriptor:descriptor];
 
     return v7;
   }
@@ -629,14 +629,14 @@ LABEL_25:
   return result;
 }
 
-- (id)_newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)_newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v14 = 0;
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   v10 = v9;
-  if (a5)
+  if (reflection)
   {
-    *a5 = v14;
+    *reflection = v14;
   }
 
   if (!v9)
@@ -645,43 +645,43 @@ LABEL_25:
   }
 
   v11 = [MTLTelemetryRenderPipelineState alloc];
-  v12 = [(MTLTelemetryRenderPipelineState *)v11 initWithPipelineState:v10 reflection:v14 parent:self descriptor:a3];
+  v12 = [(MTLTelemetryRenderPipelineState *)v11 initWithPipelineState:v10 reflection:v14 parent:self descriptor:descriptor];
 
   return v12;
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __77__MTLTelemetryDevice_newRenderPipelineStateWithDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3AE0;
-  v4[4] = a4;
-  [(MTLTelemetryDevice *)self _newRenderPipelineStateWithDescriptor:a3 options:0x20000 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLTelemetryDevice *)self _newRenderPipelineStateWithDescriptor:descriptor options:0x20000 completionHandler:v4];
 }
 
-- (void)newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __85__MTLTelemetryDevice_newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v5[3] = &unk_2787B3AE0;
-  v5[4] = a5;
-  [(MTLTelemetryDevice *)self _newRenderPipelineStateWithDescriptor:a3 options:a4 & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
+  v5[4] = handler;
+  [(MTLTelemetryDevice *)self _newRenderPipelineStateWithDescriptor:descriptor options:options & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
 }
 
-- (void)_newRenderPipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)_newRenderPipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v9 = [(MTLToolsDevice *)self unwrapMTLRenderPipelineDescriptor:?];
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__MTLTelemetryDevice__newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v11[3] = &unk_2787B4AC0;
   v11[4] = self;
-  v11[5] = a3;
-  v11[6] = a5;
-  [v10 newRenderPipelineStateWithDescriptor:v9 options:a4 | 0x40000 completionHandler:v11];
+  v11[5] = descriptor;
+  v11[6] = handler;
+  [baseObject newRenderPipelineStateWithDescriptor:v9 options:options | 0x40000 completionHandler:v11];
 }
 
 void __86__MTLTelemetryDevice__newRenderPipelineStateWithDescriptor_options_completionHandler___block_invoke(void *a1, MTLTelemetryRenderPipelineState *a2, uint64_t a3)
@@ -695,14 +695,14 @@ void __86__MTLTelemetryDevice__newRenderPipelineStateWithDescriptor_options_comp
   (*(a1[6] + 16))();
 }
 
-- (id)_newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)_newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v14 = 0;
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   v10 = v9;
-  if (a5)
+  if (reflection)
   {
-    *a5 = v14;
+    *reflection = v14;
   }
 
   if (!v9)
@@ -711,44 +711,44 @@ void __86__MTLTelemetryDevice__newRenderPipelineStateWithDescriptor_options_comp
   }
 
   v11 = [MTLTelemetryComputePipelineState alloc];
-  v12 = [(MTLTelemetryComputePipelineState *)v11 initWithComputePipelineState:v10 reflection:v14 parent:self descriptor:a3];
+  v12 = [(MTLTelemetryComputePipelineState *)v11 initWithComputePipelineState:v10 reflection:v14 parent:self descriptor:descriptor];
 
   return v12;
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __78__MTLTelemetryDevice_newComputePipelineStateWithDescriptor_completionHandler___block_invoke;
   v4[3] = &unk_2787B3B58;
-  v4[4] = a4;
-  [(MTLTelemetryDevice *)self _newComputePipelineStateWithDescriptor:a3 options:0x20000 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLTelemetryDevice *)self _newComputePipelineStateWithDescriptor:descriptor options:0x20000 completionHandler:v4];
 }
 
-- (void)newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __86__MTLTelemetryDevice_newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v5[3] = &unk_2787B3B58;
-  v5[4] = a5;
-  [(MTLTelemetryDevice *)self _newComputePipelineStateWithDescriptor:a3 options:a4 & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
+  v5[4] = handler;
+  [(MTLTelemetryDevice *)self _newComputePipelineStateWithDescriptor:descriptor options:options & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
 }
 
-- (void)_newComputePipelineStateWithDescriptor:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)_newComputePipelineStateWithDescriptor:(id)descriptor options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = [a3 copy];
+  v8 = [descriptor copy];
   v9 = [(MTLToolsDevice *)self unwrapMTLComputePipelineDescriptor:v8];
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__MTLTelemetryDevice__newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke;
   v11[3] = &unk_2787B4AE8;
   v11[4] = self;
   v11[5] = v8;
-  v11[6] = a5;
-  [v10 newComputePipelineStateWithDescriptor:v9 options:a4 | 0x40000 completionHandler:v11];
+  v11[6] = handler;
+  [baseObject newComputePipelineStateWithDescriptor:v9 options:options | 0x40000 completionHandler:v11];
 }
 
 void __87__MTLTelemetryDevice__newComputePipelineStateWithDescriptor_options_completionHandler___block_invoke(void *a1, MTLTelemetryComputePipelineState *a2, uint64_t a3)
@@ -762,14 +762,14 @@ void __87__MTLTelemetryDevice__newComputePipelineStateWithDescriptor_options_com
   (*(a1[6] + 16))();
 }
 
-- (id)_newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 reflection:(id *)a5 error:(id *)a6
+- (id)_newComputePipelineStateWithFunction:(id)function options:(unint64_t)options reflection:(id *)reflection error:(id *)error
 {
   v15 = 0;
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   v10 = v9;
-  if (a5)
+  if (reflection)
   {
-    *a5 = v15;
+    *reflection = v15;
   }
 
   if (!v9)
@@ -778,45 +778,45 @@ void __87__MTLTelemetryDevice__newComputePipelineStateWithDescriptor_options_com
   }
 
   v11 = objc_opt_new();
-  [v11 setComputeFunction:a3];
+  [v11 setComputeFunction:function];
   v12 = [MTLTelemetryComputePipelineState alloc];
   v13 = [(MTLTelemetryComputePipelineState *)v12 initWithComputePipelineState:v10 reflection:v15 parent:self descriptor:v11];
 
   return v13;
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 completionHandler:(id)a4
+- (void)newComputePipelineStateWithFunction:(id)function completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __76__MTLTelemetryDevice_newComputePipelineStateWithFunction_completionHandler___block_invoke;
   v4[3] = &unk_2787B3B58;
-  v4[4] = a4;
-  [(MTLTelemetryDevice *)self _newComputePipelineStateWithFunction:a3 options:0x20000 completionHandler:v4];
+  v4[4] = handler;
+  [(MTLTelemetryDevice *)self _newComputePipelineStateWithFunction:function options:0x20000 completionHandler:v4];
 }
 
-- (void)newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __84__MTLTelemetryDevice_newComputePipelineStateWithFunction_options_completionHandler___block_invoke;
   v5[3] = &unk_2787B3B58;
-  v5[4] = a5;
-  [(MTLTelemetryDevice *)self _newComputePipelineStateWithFunction:a3 options:a4 & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
+  v5[4] = handler;
+  [(MTLTelemetryDevice *)self _newComputePipelineStateWithFunction:function options:options & 0xFFFFFFFFFFFDFFFFLL completionHandler:v5];
 }
 
-- (void)_newComputePipelineStateWithFunction:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)_newComputePipelineStateWithFunction:(id)function options:(unint64_t)options completionHandler:(id)handler
 {
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [function baseObject];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__MTLTelemetryDevice__newComputePipelineStateWithFunction_options_completionHandler___block_invoke;
   v11[3] = &unk_2787B4AE8;
-  v11[4] = a3;
+  v11[4] = function;
   v11[5] = self;
-  v11[6] = a5;
-  [v9 newComputePipelineStateWithFunction:v10 options:a4 | 0x40000 completionHandler:v11];
+  v11[6] = handler;
+  [baseObject newComputePipelineStateWithFunction:baseObject2 options:options | 0x40000 completionHandler:v11];
 }
 
 void __85__MTLTelemetryDevice__newComputePipelineStateWithFunction_options_completionHandler___block_invoke(void *a1, uint64_t a2, uint64_t a3)
@@ -836,16 +836,16 @@ void __85__MTLTelemetryDevice__newComputePipelineStateWithFunction_options_compl
   (*(a1[6] + 16))();
 }
 
-- (BOOL)supportsFeatureSet:(unint64_t)a3
+- (BOOL)supportsFeatureSet:(unint64_t)set
 {
-  if (a3 > 0x12)
+  if (set > 0x12)
   {
     v5 = "Unknown";
   }
 
   else
   {
-    v5 = off_2787B4B08[a3];
+    v5 = off_2787B4B08[set];
   }
 
   std::string::basic_string[abi:ne200100]<0>(__p, v5);
@@ -860,19 +860,19 @@ void __85__MTLTelemetryDevice__newComputePipelineStateWithFunction_options_compl
   return [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (BOOL)supportsTextureSampleCount:(unint64_t)a3
+- (BOOL)supportsTextureSampleCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     count = self->supportQuery.texSampleCount.count;
     if (count)
     {
-      if (self->supportQuery.texSampleCount.max < a3)
+      if (self->supportQuery.texSampleCount.max < count)
       {
-        self->supportQuery.texSampleCount.max = a3;
+        self->supportQuery.texSampleCount.max = count;
       }
 
-      if (self->supportQuery.texSampleCount.min <= a3)
+      if (self->supportQuery.texSampleCount.min <= count)
       {
         goto LABEL_9;
       }
@@ -880,18 +880,18 @@ void __85__MTLTelemetryDevice__newComputePipelineStateWithFunction_options_compl
 
     else
     {
-      self->supportQuery.texSampleCount.max = a3;
+      self->supportQuery.texSampleCount.max = count;
     }
 
-    self->supportQuery.texSampleCount.min = a3;
+    self->supportQuery.texSampleCount.min = count;
 LABEL_9:
-    self->supportQuery.texSampleCount.total += a3;
+    self->supportQuery.texSampleCount.total += count;
     self->supportQuery.texSampleCount.count = count + 1;
   }
 
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v5 supportsTextureSampleCount:a3];
+  return [baseObject supportsTextureSampleCount:count];
 }
 
 - (id).cxx_construct

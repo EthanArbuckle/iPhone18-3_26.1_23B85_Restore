@@ -1,13 +1,13 @@
 @interface NowPlayingHistoryHeaderView
-- (_TtC5Music27NowPlayingHistoryHeaderView)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC5Music27NowPlayingHistoryHeaderView)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NowPlayingHistoryHeaderView
 
-- (_TtC5Music27NowPlayingHistoryHeaderView)initWithCoder:(id)a3
+- (_TtC5Music27NowPlayingHistoryHeaderView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music27NowPlayingHistoryHeaderView_clearButton) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music27NowPlayingHistoryHeaderView_sizeCategoryObserver) = 0;
@@ -22,29 +22,29 @@
   return result;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for NowPlayingHistoryHeaderView();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v6.receiver;
-  [(NowPlayingHistoryHeaderView *)&v6 applyLayoutAttributes:v4];
+  [(NowPlayingHistoryHeaderView *)&v6 applyLayoutAttributes:attributesCopy];
   [v5 setClipsToBounds:{sub_10056B5F4() & 1, v6.receiver, v6.super_class}];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100569D38();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for NowPlayingHistoryHeaderView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(NowPlayingHistoryHeaderView *)&v6 traitCollectionDidChange:v4];
+  [(NowPlayingHistoryHeaderView *)&v6 traitCollectionDidChange:changeCopy];
   sub_100569EC4();
 }
 

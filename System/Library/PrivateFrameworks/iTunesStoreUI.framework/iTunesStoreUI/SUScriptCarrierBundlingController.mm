@@ -1,14 +1,14 @@
 @interface SUScriptCarrierBundlingController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (id)scriptAttributeKeys;
-- (void)updateLastKnownStatus:(id)a3;
+- (void)updateLastKnownStatus:(id)status;
 @end
 
 @implementation SUScriptCarrierBundlingController
 
-- (void)updateLastKnownStatus:(id)a3
+- (void)updateLastKnownStatus:(id)status
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -19,27 +19,27 @@
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_23 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCarrierBundlingController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_18, 1);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_18, 1);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCarrierBundlingController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -49,14 +49,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptCarrierBundlingController;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_23 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_23 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_18 = sel_updateLastKnownStatus_;
     unk_1EBF3AC40 = @"updateLastKnownStatus";

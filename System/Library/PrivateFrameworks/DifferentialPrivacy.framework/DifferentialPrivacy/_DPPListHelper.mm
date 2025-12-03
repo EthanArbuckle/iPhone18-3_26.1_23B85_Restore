@@ -1,19 +1,19 @@
 @interface _DPPListHelper
-+ (id)loadPropertyListFromPath:(id)a3 overridePath:(id)a4 usingBlock:(id)a5;
++ (id)loadPropertyListFromPath:(id)path overridePath:(id)overridePath usingBlock:(id)block;
 @end
 
 @implementation _DPPListHelper
 
-+ (id)loadPropertyListFromPath:(id)a3 overridePath:(id)a4 usingBlock:(id)a5
++ (id)loadPropertyListFromPath:(id)path overridePath:(id)overridePath usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  overridePathCopy = overridePath;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:v7];
+  v11 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:pathCopy];
   if (+[_DPDeviceInfo isInternalBuild])
   {
-    v12 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v8];
+    v12 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:overridePathCopy];
     [v11 addEntriesFromDictionary:v12];
   }
 
@@ -23,7 +23,7 @@
   v20 = __67___DPPListHelper_loadPropertyListFromPath_overridePath_usingBlock___block_invoke;
   v21 = &unk_27858B1E8;
   v22 = v13;
-  v14 = v9;
+  v14 = blockCopy;
   v23 = v14;
   v15 = v13;
   [v11 enumerateKeysAndObjectsUsingBlock:&v18];

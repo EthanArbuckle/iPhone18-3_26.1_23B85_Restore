@@ -1,27 +1,27 @@
 @interface CHDocumentLayoutAnalysisModel
-+ (int64_t)maxNumStrokesForDecoderName:(id)a3;
-- (BOOL)analyzeDrawing:(id)a3 outStrokeClassProbabilities:(void *)a4 outStrokeAdjacencyMatrix:(void *)a5 cancellationBlock:(id)a6;
-- (CHDocumentLayoutAnalysisModel)initWithEncoderName:(id)a3 decoderName:(id)a4;
++ (int64_t)maxNumStrokesForDecoderName:(id)name;
+- (BOOL)analyzeDrawing:(id)drawing outStrokeClassProbabilities:(void *)probabilities outStrokeAdjacencyMatrix:(void *)matrix cancellationBlock:(id)block;
+- (CHDocumentLayoutAnalysisModel)initWithEncoderName:(id)name decoderName:(id)decoderName;
 @end
 
 @implementation CHDocumentLayoutAnalysisModel
 
-- (CHDocumentLayoutAnalysisModel)initWithEncoderName:(id)a3 decoderName:(id)a4
+- (CHDocumentLayoutAnalysisModel)initWithEncoderName:(id)name decoderName:(id)decoderName
 {
   v42[16] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  decoderNameCopy = decoderName;
   objc_opt_self();
   if (qword_1EA84DBE0 != -1)
   {
     dispatch_once(&qword_1EA84DBE0, &unk_1EF1BF980);
   }
 
-  v8 = sub_183981308(self, v6);
+  v8 = sub_183981308(self, nameCopy);
   encoderModel = self->_encoderModel;
   self->_encoderModel = v8;
 
-  v10 = sub_183981308(self, v7);
+  v10 = sub_183981308(self, decoderNameCopy);
   decoderModel = self->_decoderModel;
   self->_decoderModel = v10;
 
@@ -29,7 +29,7 @@
   *&self->_maxNumPointsPerStroke = xmmword_1839DA8F0;
   *&self->_encoderDimension = xmmword_1839DA900;
   *&self->_interpolationDistance = 0x448000003F800000;
-  self->_maxNumStrokes = objc_msgSend_maxNumStrokesForDecoderName_(CHDocumentLayoutAnalysisModel, v12, v7, v13, v14, v15);
+  self->_maxNumStrokes = objc_msgSend_maxNumStrokesForDecoderName_(CHDocumentLayoutAnalysisModel, v12, decoderNameCopy, v13, v14, v15);
   v21 = objc_msgSend_scriptCodeMap(CHDocumentLayoutAnalysisModel, v16, v17, v18, v19, v20);
   scriptCodeMap = self->_scriptCodeMap;
   self->_scriptCodeMap = v21;
@@ -121,11 +121,11 @@ LABEL_13:
   return self;
 }
 
-+ (int64_t)maxNumStrokesForDecoderName:(id)a3
++ (int64_t)maxNumStrokesForDecoderName:(id)name
 {
   v146 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   v10 = objc_msgSend_UTF8String(v4, v5, v6, v7, v8, v9);
   if (!sub_1837A3290(v10, 0, __s))
   {
@@ -138,7 +138,7 @@ LABEL_13:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v3;
+      *&buf[4] = nameCopy;
       _os_log_impl(&dword_18366B000, v11, OS_LOG_TYPE_ERROR, "Document layout analysis model decoder %@ not found", buf, 0xCu);
     }
 
@@ -151,7 +151,7 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v3;
+      *&buf[4] = nameCopy;
       _os_log_impl(&dword_18366B000, v12, OS_LOG_TYPE_FAULT, "Document layout analysis model decoder %@ not found", buf, 0xCu);
     }
   }
@@ -234,7 +234,7 @@ LABEL_13:
     {
       v50 = objc_msgSend_debugDescription(v33, v45, v46, v47, v48, v49);
       *v139 = 138412546;
-      v140 = v3;
+      v140 = nameCopy;
       v141 = 2112;
       v142 = v50;
       _os_log_impl(&dword_18366B000, v44, OS_LOG_TYPE_ERROR, "Error occurred when loading %@ metadata: %@", v139, 0x16u);
@@ -250,7 +250,7 @@ LABEL_13:
     {
       v57 = objc_msgSend_debugDescription(v33, v52, v53, v54, v55, v56);
       *v139 = 138412546;
-      v140 = v3;
+      v140 = nameCopy;
       v141 = 2112;
       v142 = v57;
       _os_log_impl(&dword_18366B000, v51, OS_LOG_TYPE_FAULT, "Error occurred when loading %@ metadata: %@", v139, 0x16u);
@@ -348,11 +348,11 @@ LABEL_13:
   return v133;
 }
 
-- (BOOL)analyzeDrawing:(id)a3 outStrokeClassProbabilities:(void *)a4 outStrokeAdjacencyMatrix:(void *)a5 cancellationBlock:(id)a6
+- (BOOL)analyzeDrawing:(id)drawing outStrokeClassProbabilities:(void *)probabilities outStrokeAdjacencyMatrix:(void *)matrix cancellationBlock:(id)block
 {
   v646 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v593 = a6;
+  drawingCopy = drawing;
+  blockCopy = block;
   v14 = 0;
   v623 = 0;
   v624 = 0;
@@ -360,8 +360,8 @@ LABEL_13:
   __p = 0;
   v621 = 0;
   v622 = 0;
-  v605 = v8;
-  while (v14 < objc_msgSend_strokeCount(v8, v9, v10, v11, v12, v13))
+  v605 = drawingCopy;
+  while (v14 < objc_msgSend_strokeCount(drawingCopy, v9, v10, v11, v12, v13))
   {
     buf = 0u;
     v642 = 0u;
@@ -410,7 +410,7 @@ LABEL_13:
       operator delete(v25);
     }
 
-    v26 = objc_msgSend_strokeCount(v8, v15, v16, v17, v18, v19);
+    v26 = objc_msgSend_strokeCount(drawingCopy, v15, v16, v17, v18, v19);
     v27 = v26;
     if ((v26 & 0x3F) != 0)
     {
@@ -496,7 +496,7 @@ LABEL_20:
         __p = (v37 - 32 * v36);
         v621 = (v37 + 32);
         v622 = 0;
-        v8 = v605;
+        drawingCopy = v605;
         if (v31)
         {
           goto LABEL_40;
@@ -549,7 +549,7 @@ LABEL_20:
         __p = v39;
         v621 = v38;
         v622 = 0;
-        v8 = v605;
+        drawingCopy = v605;
         if (v31)
         {
 LABEL_40:
@@ -587,7 +587,7 @@ LABEL_2:
       memset(v619, 0, 24);
       *(v30 + 3) = v619[3];
       v621 = v30 + 32;
-      v8 = v605;
+      drawingCopy = v605;
       ++v14;
     }
   }
@@ -1384,14 +1384,14 @@ LABEL_153:
     _os_log_impl(&dword_18366B000, v572, OS_LOG_TYPE_DEFAULT, "END CHDocumentLayoutAnalysisModelPostProcessing", &buf, 2u);
   }
 
-  if (&v623 != a5)
+  if (&v623 != matrix)
   {
-    sub_18372D3D4(a5, v623, v624, 0xCCCCCCCCCCCCCCCDLL * ((v624 - v623) >> 3));
+    sub_18372D3D4(matrix, v623, v624, 0xCCCCCCCCCCCCCCCDLL * ((v624 - v623) >> 3));
   }
 
-  if (&v616 != a4)
+  if (&v616 != probabilities)
   {
-    sub_18372D05C(a4, v616, v617, 0xAAAAAAAAAAAAAAABLL * ((v617 - v616) >> 3));
+    sub_18372D05C(probabilities, v616, v617, 0xAAAAAAAAAAAAAAABLL * ((v617 - v616) >> 3));
   }
 
   v573 = v616;

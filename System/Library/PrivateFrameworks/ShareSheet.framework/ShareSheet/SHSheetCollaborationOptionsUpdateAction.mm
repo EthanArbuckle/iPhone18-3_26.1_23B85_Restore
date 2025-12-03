@@ -1,16 +1,16 @@
 @interface SHSheetCollaborationOptionsUpdateAction
-- (SHSheetCollaborationOptionsUpdateAction)initWithCollaborationOptions:(id)a3;
+- (SHSheetCollaborationOptionsUpdateAction)initWithCollaborationOptions:(id)options;
 - (_SWCollaborationShareOptions)collaborationOptions;
 @end
 
 @implementation SHSheetCollaborationOptionsUpdateAction
 
-- (SHSheetCollaborationOptionsUpdateAction)initWithCollaborationOptions:(id)a3
+- (SHSheetCollaborationOptionsUpdateAction)initWithCollaborationOptions:(id)options
 {
   v4 = MEMORY[0x1E698E700];
-  v5 = a3;
+  optionsCopy = options;
   v6 = objc_alloc_init(v4);
-  v7 = [[_WrapperForNonBSXPCCodingConformingClass alloc] initWithObject:v5];
+  v7 = [[_WrapperForNonBSXPCCodingConformingClass alloc] initWithObject:optionsCopy];
 
   [v6 setObject:v7 forSetting:5];
   v8 = [(SHSheetCollaborationOptionsUpdateAction *)self initWithInfo:v6 responder:0];
@@ -20,12 +20,12 @@
 
 - (_SWCollaborationShareOptions)collaborationOptions
 {
-  v2 = [(SHSheetCollaborationOptionsUpdateAction *)self info];
-  v3 = [v2 objectForSetting:5];
+  info = [(SHSheetCollaborationOptionsUpdateAction *)self info];
+  v3 = [info objectForSetting:5];
 
-  v4 = [v3 object];
+  object = [v3 object];
 
-  return v4;
+  return object;
 }
 
 @end

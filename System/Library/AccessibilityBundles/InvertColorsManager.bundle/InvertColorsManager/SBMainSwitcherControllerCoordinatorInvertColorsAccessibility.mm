@@ -27,8 +27,8 @@
   v18 = 0u;
   v19 = 0u;
   v15 = v5;
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  objectEnumerator = [v5 objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -39,7 +39,7 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -56,7 +56,7 @@
         [v3 axSafelyAddObject:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v8);

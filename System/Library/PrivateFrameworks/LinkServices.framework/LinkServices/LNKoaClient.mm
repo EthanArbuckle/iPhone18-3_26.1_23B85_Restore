@@ -1,38 +1,38 @@
 @interface LNKoaClient
-- (id)buildKVItemFrom:(id)a3;
-- (id)buildKVItemListWithIncrementalIDs:(id)a3;
-- (id)getKVItemBuilderFor:(id)a3 itemId:(id)a4;
-- (id)initForBundleIdentifier:(id)a3;
-- (void)completeSuccessfully:(id)a3;
-- (void)completeWithError:(id)a3 completion:(id)a4;
-- (void)donateFullVocabularySet:(id)a3 completionHandler:(id)a4;
+- (id)buildKVItemFrom:(id)from;
+- (id)buildKVItemListWithIncrementalIDs:(id)ds;
+- (id)getKVItemBuilderFor:(id)for itemId:(id)id;
+- (id)initForBundleIdentifier:(id)identifier;
+- (void)completeSuccessfully:(id)successfully;
+- (void)completeWithError:(id)error completion:(id)completion;
+- (void)donateFullVocabularySet:(id)set completionHandler:(id)handler;
 @end
 
 @implementation LNKoaClient
 
-- (void)completeSuccessfully:(id)a3
+- (void)completeSuccessfully:(id)successfully
 {
-  if (a3)
+  if (successfully)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(successfully + 2))(successfully, 0);
   }
 }
 
-- (void)completeWithError:(id)a3 completion:(id)a4
+- (void)completeWithError:(id)error completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, a3);
+    (*(completion + 2))(completion, error);
   }
 }
 
-- (id)buildKVItemFrom:(id)a3
+- (id)buildKVItemFrom:(id)from
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (from)
   {
     v8 = 0;
-    v3 = [a3 buildItemWithError:&v8];
+    v3 = [from buildItemWithError:&v8];
     v4 = v8;
     if (!v3)
     {
@@ -56,11 +56,11 @@
   return v3;
 }
 
-- (id)getKVItemBuilderFor:(id)a3 itemId:(id)a4
+- (id)getKVItemBuilderFor:(id)for itemId:(id)id
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  idCopy = id;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2050000000;
@@ -80,15 +80,15 @@
   v8 = v7;
   _Block_object_dispose(&v32, 8);
   v9 = objc_alloc_init(v7);
-  v10 = [v5 term];
-  v11 = [v5 entityIdentifier];
-  v12 = [v11 typeIdentifier];
+  term = [forCopy term];
+  entityIdentifier = [forCopy entityIdentifier];
+  typeIdentifier = [entityIdentifier typeIdentifier];
 
-  v13 = [v5 entityIdentifier];
-  v14 = [v13 instanceIdentifier];
+  entityIdentifier2 = [forCopy entityIdentifier];
+  instanceIdentifier = [entityIdentifier2 instanceIdentifier];
 
   v31 = 0;
-  v15 = [v9 setItemType:7 itemId:v6 error:&v31];
+  v15 = [v9 setItemType:7 itemId:idCopy error:&v31];
   v16 = v31;
 
   if (!v15)
@@ -105,7 +105,7 @@
   }
 
   v30 = v16;
-  v17 = [v9 addFieldWithType:275 value:v10 error:&v30];
+  v17 = [v9 addFieldWithType:275 value:term error:&v30];
   v18 = v30;
 
   if (!v17)
@@ -122,7 +122,7 @@
   }
 
   v29 = v18;
-  v19 = [v9 addFieldWithType:276 value:v12 error:&v29];
+  v19 = [v9 addFieldWithType:276 value:typeIdentifier error:&v29];
   v16 = v29;
 
   if (!v19)
@@ -141,7 +141,7 @@ LABEL_17:
   }
 
   v28 = v16;
-  v20 = [v9 addFieldWithType:277 value:v14 error:&v28];
+  v20 = [v9 addFieldWithType:277 value:instanceIdentifier error:&v28];
   v18 = v28;
 
   if (!v20)
@@ -169,10 +169,10 @@ LABEL_23:
   return v21;
 }
 
-- (id)buildKVItemListWithIncrementalIDs:(id)a3
+- (id)buildKVItemListWithIncrementalIDs:(id)ds
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%%0%du", 3];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -180,7 +180,7 @@ LABEL_23:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v6 = [obj countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v6)
   {
@@ -197,14 +197,14 @@ LABEL_23:
         }
 
         v11 = *(*(&v42 + 1) + 8 * i);
-        v12 = [v11 entityIdentifier];
-        v13 = [v5 objectForKey:v12];
+        entityIdentifier = [v11 entityIdentifier];
+        v13 = [v5 objectForKey:entityIdentifier];
 
         if (v13)
         {
-          v14 = [v11 term];
+          term = [v11 term];
           v41 = 0;
-          v15 = [v13 addFieldWithType:275 value:v14 error:&v41];
+          v15 = [v13 addFieldWithType:275 value:term error:&v41];
           v16 = v41;
 
           if (!v15)
@@ -226,8 +226,8 @@ LABEL_23:
           if (v18)
           {
             v13 = v18;
-            v19 = [v11 entityIdentifier];
-            [v5 setObject:v13 forKey:v19];
+            entityIdentifier2 = [v11 entityIdentifier];
+            [v5 setObject:v13 forKey:entityIdentifier2];
 
             v8 = (v8 + 1);
           }
@@ -272,15 +272,15 @@ LABEL_23:
           objc_enumerationMutation(v21);
         }
 
-        v27 = [*(*(&v37 + 1) + 8 * j) entityIdentifier];
-        v28 = [v5 objectForKey:v27];
+        entityIdentifier3 = [*(*(&v37 + 1) + 8 * j) entityIdentifier];
+        v28 = [v5 objectForKey:entityIdentifier3];
         if (v28)
         {
           v29 = [(LNKoaClient *)self buildKVItemFrom:v28];
           if (v29)
           {
             [v23 addObject:v29];
-            [v5 removeObjectForKey:v27];
+            [v5 removeObjectForKey:entityIdentifier3];
           }
 
           else
@@ -289,7 +289,7 @@ LABEL_23:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v48 = v27;
+              v48 = entityIdentifier3;
               _os_log_impl(&dword_19763D000, v30, OS_LOG_TYPE_ERROR, "Failed to build a KVItem for %@, skipping", buf, 0xCu);
             }
 
@@ -309,20 +309,20 @@ LABEL_23:
   return v23;
 }
 
-- (void)donateFullVocabularySet:(id)a3 completionHandler:(id)a4
+- (void)donateFullVocabularySet:(id)set completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__LNKoaClient_donateFullVocabularySet_completionHandler___block_invoke;
   block[3] = &unk_1E74B2580;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = setCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = setCopy;
   dispatch_async(queue, block);
 }
 
@@ -619,13 +619,13 @@ void __57__LNKoaClient_donateFullVocabularySet_completionHandler___block_invoke_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initForBundleIdentifier:(id)a3
+- (id)initForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNKoaClient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNKoaClient.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
   v17.receiver = self;
@@ -633,7 +633,7 @@ void __57__LNKoaClient_donateFullVocabularySet_completionHandler___block_invoke_
   v6 = [(LNKoaClient *)&v17 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v7;
 

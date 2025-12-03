@@ -1,29 +1,29 @@
 @interface _EXHostSessionDriver
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (_EXHostSessionDriver)initWithHostViewController:(id)a3;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (_EXHostSessionDriver)initWithHostViewController:(id)controller;
 - (_EXHostViewControllerProtocol)hostViewController;
 - (_EXHostViewControllerSession)session;
 - (id)extensionProcess;
-- (id)hostSessionHostView:(id)a3;
-- (id)makeXPCConnectionWithError:(id *)a3;
+- (id)hostSessionHostView:(id)view;
+- (id)makeXPCConnectionWithError:(id *)error;
 - (void)dealloc;
-- (void)hostSessionDidInvalidate:(id)a3;
-- (void)hostSessionDidPrepareForHosting:(id)a3;
-- (void)hostSessionViewControllerReady:(id)a3;
+- (void)hostSessionDidInvalidate:(id)invalidate;
+- (void)hostSessionDidPrepareForHosting:(id)hosting;
+- (void)hostSessionViewControllerReady:(id)ready;
 - (void)invalidateDeactivatingSessions;
-- (void)notifyHostViewControllerDidEndHosting:(id)a3;
-- (void)notifyHostViewControllerWillDeactivate:(id)a3;
+- (void)notifyHostViewControllerDidEndHosting:(id)hosting;
+- (void)notifyHostViewControllerWillDeactivate:(id)deactivate;
 - (void)resume;
 - (void)scheduleInvalidations;
-- (void)setSession:(id)a3;
-- (void)startSessionWithProcessConfiguration:(id)a3 configuration:(id)a4;
+- (void)setSession:(id)session;
+- (void)startSessionWithProcessConfiguration:(id)configuration configuration:(id)a4;
 @end
 
 @implementation _EXHostSessionDriver
 
-- (_EXHostSessionDriver)initWithHostViewController:(id)a3
+- (_EXHostSessionDriver)initWithHostViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = _EXHostSessionDriver;
   v5 = [(_EXHostSessionDriver *)&v15 init];
@@ -47,7 +47,7 @@
     objc_copyWeak(&v13, &location);
     dispatch_source_set_event_handler(v10, v12);
     dispatch_resume(*(v5 + 6));
-    objc_storeWeak(v5 + 8, v4);
+    objc_storeWeak(v5 + 8, controllerCopy);
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
@@ -58,13 +58,13 @@
 - (void)dealloc
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = *a1;
+  v4 = *self;
   WeakRetained = objc_loadWeakRetained((a2 + 64));
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v8 = 138543618;
   v9 = v4;
   v10 = 2048;
-  v11 = v6;
+  v11 = delegate;
   _os_log_debug_impl(&dword_1D29CC000, a3, OS_LOG_TYPE_DEBUG, "end hosting session %{public}@ without calling delegate %p", &v8, 0x16u);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -79,10 +79,10 @@
     v6 = v3;
     if (![(_EXHostViewControllerSession *)v3 detached])
     {
-      v4 = [(_EXHostViewControllerSession *)v6 configuration];
-      v5 = [v4 beginHostingImmediately];
+      configuration = [(_EXHostViewControllerSession *)v6 configuration];
+      beginHostingImmediately = [configuration beginHostingImmediately];
 
-      if ((v5 & 1) == 0)
+      if ((beginHostingImmediately & 1) == 0)
       {
         [(_EXHostViewControllerSession *)v6 resume];
       }
@@ -94,13 +94,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)startSessionWithProcessConfiguration:(id)a3 configuration:(id)a4
+- (void)startSessionWithProcessConfiguration:(id)configuration configuration:(id)a4
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v7 = a4;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v6)
+  if (configurationCopy)
   {
     v8 = v7 == 0;
   }
@@ -111,7 +111,7 @@
   }
 
   v9 = !v8;
-  if (v8 && v6 | v7)
+  if (v8 && configurationCopy | v7)
   {
     v10 = _EXDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -141,25 +141,25 @@
   {
     v37 = v9;
     v19 = v7;
-    v20 = v6;
-    v21 = [(_EXHostViewControllerSession *)v16 extensionProcess];
-    v22 = [v21 extensionIdentity];
-    if ([v22 requiresUIKitSceneHosting] && (-[_EXHostViewControllerSession sceneViewController](v17, "sceneViewController"), (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+    v20 = configurationCopy;
+    extensionProcess = [(_EXHostViewControllerSession *)v16 extensionProcess];
+    extensionIdentity = [extensionProcess extensionIdentity];
+    if ([extensionIdentity requiresUIKitSceneHosting] && (-[_EXHostViewControllerSession sceneViewController](v17, "sceneViewController"), (v23 = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
-      v6 = v20;
+      configurationCopy = v20;
       v7 = v19;
       v9 = v37;
     }
 
     else
     {
-      v24 = [(_EXHostViewControllerSession *)v17 remoteViewController];
+      remoteViewController = [(_EXHostViewControllerSession *)v17 remoteViewController];
 
-      v6 = v20;
+      configurationCopy = v20;
       v7 = v19;
       v9 = v37;
-      if (!v24)
+      if (!remoteViewController)
       {
         goto LABEL_21;
       }
@@ -191,18 +191,18 @@ LABEL_21:
 
   if (v9)
   {
-    v26 = [[_EXHostViewControllerSession alloc] initWithProcessConfiguration:v6 configuration:v7];
-    [(_EXHostViewControllerSession *)v26 setDelegate:self];
-    objc_storeStrong(&self->_session, v26);
-    [(_EXHostViewControllerSession *)v26 setDetached:1];
-    v27 = [(_EXHostSessionDriver *)self hostViewController];
-    [v27 setSession:self->_session];
+    hostViewController2 = [[_EXHostViewControllerSession alloc] initWithProcessConfiguration:configurationCopy configuration:v7];
+    [(_EXHostViewControllerSession *)hostViewController2 setDelegate:self];
+    objc_storeStrong(&self->_session, hostViewController2);
+    [(_EXHostViewControllerSession *)hostViewController2 setDetached:1];
+    hostViewController = [(_EXHostSessionDriver *)self hostViewController];
+    [hostViewController setSession:self->_session];
 
     [(_EXHostViewControllerSession *)self->_session setDetached:0];
-    v28 = [(_EXHostViewControllerSession *)self->_session configuration];
-    v29 = [v28 beginHostingImmediately];
+    configuration = [(_EXHostViewControllerSession *)self->_session configuration];
+    beginHostingImmediately = [configuration beginHostingImmediately];
 
-    if (v29)
+    if (beginHostingImmediately)
     {
       v30 = _EXDefaultLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -260,8 +260,8 @@ LABEL_42:
     v35 = self->_session;
     self->_session = 0;
 
-    v26 = [(_EXHostSessionDriver *)self hostViewController];
-    [(_EXHostViewControllerSession *)v26 embedViewController:0];
+    hostViewController2 = [(_EXHostSessionDriver *)self hostViewController];
+    [(_EXHostViewControllerSession *)hostViewController2 embedViewController:0];
   }
 
   v36 = *MEMORY[0x1E69E9840];
@@ -275,9 +275,9 @@ LABEL_42:
   return session;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v6 = _EXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -287,10 +287,10 @@ LABEL_42:
 
   p_session = &self->_session;
   session = self->_session;
-  if (session == v5)
+  if (session == sessionCopy)
   {
-    v9 = _EXDefaultLog();
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_DEBUG))
+    sessionCopy2 = _EXDefaultLog();
+    if (os_log_type_enabled(&sessionCopy2->super, OS_LOG_TYPE_DEBUG))
     {
       [_EXHostSessionDriver setSession:];
     }
@@ -298,22 +298,22 @@ LABEL_42:
 
   else
   {
-    v9 = session;
+    sessionCopy2 = session;
     retryProcessConfiguration = self->_retryProcessConfiguration;
     self->_retryProcessConfiguration = 0;
 
     retrySessionConfiguration = self->_retrySessionConfiguration;
     self->_retrySessionConfiguration = 0;
 
-    if (v9)
+    if (sessionCopy2)
     {
-      if ([(_EXHostViewControllerSession *)v9 state]>= 2)
+      if ([(_EXHostViewControllerSession *)sessionCopy2 state]>= 2)
       {
-        [(_EXHostSessionDriver *)self notifyHostViewControllerWillDeactivate:v5];
+        [(_EXHostSessionDriver *)self notifyHostViewControllerWillDeactivate:sessionCopy];
       }
 
-      [(_EXHostViewControllerSession *)v9 setDelegate:0];
-      if (v9 != self->_activeSession && ![(_EXHostViewControllerSession *)v9 detached])
+      [(_EXHostViewControllerSession *)sessionCopy2 setDelegate:0];
+      if (sessionCopy2 != self->_activeSession && ![(_EXHostViewControllerSession *)sessionCopy2 detached])
       {
         v12 = _EXDefaultLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -321,41 +321,41 @@ LABEL_42:
           [_EXHostSessionDriver setSession:];
         }
 
-        [(_EXHostViewControllerSession *)v9 invalidate];
+        [(_EXHostViewControllerSession *)sessionCopy2 invalidate];
       }
     }
 
     v13 = *p_session;
     *p_session = 0;
 
-    if (v5)
+    if (sessionCopy)
     {
-      v14 = [(_EXHostViewControllerSession *)v5 extensionProcess];
-      v15 = [v14 extensionIdentity];
-      if ([v15 requiresUIKitSceneHosting])
+      extensionProcess = [(_EXHostViewControllerSession *)sessionCopy extensionProcess];
+      extensionIdentity = [extensionProcess extensionIdentity];
+      if ([extensionIdentity requiresUIKitSceneHosting])
       {
-        v16 = [(_EXHostViewControllerSession *)v5 sceneViewController];
-        if (v16)
+        sceneViewController = [(_EXHostViewControllerSession *)sessionCopy sceneViewController];
+        if (sceneViewController)
         {
 
 LABEL_19:
-          objc_storeStrong(&self->_session, a3);
-          [(_EXHostSessionDriver *)self hostSessionViewControllerReady:v5];
+          objc_storeStrong(&self->_session, session);
+          [(_EXHostSessionDriver *)self hostSessionViewControllerReady:sessionCopy];
           goto LABEL_35;
         }
       }
 
-      v17 = [(_EXHostViewControllerSession *)v5 remoteViewController];
+      remoteViewController = [(_EXHostViewControllerSession *)sessionCopy remoteViewController];
 
-      if (v17)
+      if (remoteViewController)
       {
         goto LABEL_19;
       }
 
-      [(_EXHostSessionDriver *)self notifyHostViewControllerDidEndHosting:v5];
+      [(_EXHostSessionDriver *)self notifyHostViewControllerDidEndHosting:sessionCopy];
     }
 
-    if (![(_EXHostViewControllerSession *)v9 detached])
+    if (![(_EXHostViewControllerSession *)sessionCopy2 detached])
     {
       v18 = _EXDefaultLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -363,12 +363,12 @@ LABEL_19:
         [_EXHostSessionDriver setSession:];
       }
 
-      [(_EXHostViewControllerSession *)v9 invalidate];
+      [(_EXHostViewControllerSession *)sessionCopy2 invalidate];
     }
 
     p_activeSession = &self->_activeSession;
     activeSession = self->_activeSession;
-    if (activeSession != v9)
+    if (activeSession != sessionCopy2)
     {
       if (![(_EXHostViewControllerSession *)self->_activeSession detached])
       {
@@ -397,8 +397,8 @@ LABEL_19:
 
     self->_activeSession = 0;
 
-    v23 = [(_EXHostSessionDriver *)self hostViewController];
-    [v23 embedViewController:0];
+    hostViewController = [(_EXHostSessionDriver *)self hostViewController];
+    [hostViewController embedViewController:0];
   }
 
 LABEL_35:
@@ -427,7 +427,7 @@ LABEL_35:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v11 = self;
+  selfCopy = self;
   v3 = self->_deactivatingSessions;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v4)
@@ -465,20 +465,20 @@ LABEL_35:
     while (v5);
   }
 
-  [(NSMutableArray *)v11->_deactivatingSessions removeAllObjects];
+  [(NSMutableArray *)selfCopy->_deactivatingSessions removeAllObjects];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   session = self->_session;
   if (session)
   {
-    v6 = [(_EXHostViewControllerSession *)session _makeXPCConnectionWithError:a3];
+    v6 = [(_EXHostViewControllerSession *)session _makeXPCConnectionWithError:error];
   }
 
-  else if (a3)
+  else if (error)
   {
     v7 = _EXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -489,7 +489,7 @@ LABEL_35:
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E6966C98] code:6 userInfo:MEMORY[0x1E695E0F8]];
     v9 = v8;
     v6 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -503,24 +503,24 @@ LABEL_35:
 - (id)extensionProcess
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(_EXHostSessionDriver *)self session];
-  v4 = [v3 extensionProcess];
+  session = [(_EXHostSessionDriver *)self session];
+  extensionProcess = [session extensionProcess];
 
-  return v4;
+  return extensionProcess;
 }
 
-- (void)hostSessionDidPrepareForHosting:(id)a3
+- (void)hostSessionDidPrepareForHosting:(id)hosting
 {
-  v4 = a3;
+  hostingCopy = hosting;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(_EXHostSessionDriver *)self session];
+  session = [(_EXHostSessionDriver *)self session];
 
-  if (v5 == v4)
+  if (session == hostingCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-    v7 = [WeakRetained delegate];
+    delegate = [WeakRetained delegate];
     v8 = objc_loadWeakRetained(&self->_hostViewController);
-    v9 = [v8 placeholderView];
+    placeholderView = [v8 placeholderView];
 
     v10 = _EXDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -530,12 +530,12 @@ LABEL_35:
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 hostViewControllerDidActivate:WeakRetained];
+      [delegate hostViewControllerDidActivate:WeakRetained];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 hostViewControllerDidActivate:WeakRetained];
+      [placeholderView hostViewControllerDidActivate:WeakRetained];
     }
 
     v11 = _EXDefaultLog();
@@ -544,7 +544,7 @@ LABEL_35:
       [_EXHostSessionDriver hostSessionDidPrepareForHosting:];
     }
 
-    v12 = [v4 configuration];
+    configuration = [hostingCopy configuration];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -557,8 +557,8 @@ LABEL_14:
         return;
       }
 
-      v12 = [v4 configuration];
-      [v7 hostViewController:WeakRetained didPrepareToHost:v12];
+      configuration = [hostingCopy configuration];
+      [delegate hostViewController:WeakRetained didPrepareToHost:configuration];
     }
 
     goto LABEL_14;
@@ -573,13 +573,13 @@ LABEL_14:
   __break(1u);
 }
 
-- (void)hostSessionViewControllerReady:(id)a3
+- (void)hostSessionViewControllerReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(_EXHostSessionDriver *)self session];
+  session = [(_EXHostSessionDriver *)self session];
 
-  if (v5 != v4)
+  if (session != readyCopy)
   {
     v11 = _EXDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -590,16 +590,16 @@ LABEL_14:
     goto LABEL_32;
   }
 
-  v6 = [(_EXHostSessionDriver *)self session];
-  v7 = [v6 extensionProcess];
-  v8 = [v7 extensionIdentity];
-  v9 = [v8 requiresUIKitSceneHosting];
+  session2 = [(_EXHostSessionDriver *)self session];
+  extensionProcess = [session2 extensionProcess];
+  extensionIdentity = [extensionProcess extensionIdentity];
+  requiresUIKitSceneHosting = [extensionIdentity requiresUIKitSceneHosting];
 
-  if (v9)
+  if (requiresUIKitSceneHosting)
   {
-    v10 = [v4 sceneViewController];
+    sceneViewController = [readyCopy sceneViewController];
 
-    if (!v10)
+    if (!sceneViewController)
     {
       v11 = _EXDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -616,9 +616,9 @@ LABEL_32:
 
   else
   {
-    v12 = [v4 remoteViewController];
+    remoteViewController = [readyCopy remoteViewController];
 
-    if (!v12)
+    if (!remoteViewController)
     {
       v11 = _EXDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -637,19 +637,19 @@ LABEL_32:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  v15 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   p_activeSession = &self->_activeSession;
   if (self->_activeSession)
   {
-    if ([v4 maxState] == 4)
+    if ([readyCopy maxState] == 4)
     {
       v17 = _EXDefaultLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        [(_EXHostSessionDriver *)v15 hostSessionViewControllerReady:?];
+        [(_EXHostSessionDriver *)delegate hostSessionViewControllerReady:?];
       }
 
-      v18 = [(_EXHostViewControllerSession *)*p_activeSession configuration];
+      configuration = [(_EXHostViewControllerSession *)*p_activeSession configuration];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -660,9 +660,9 @@ LABEL_32:
 
       if (v19)
       {
-        v18 = [(_EXHostViewControllerSession *)*p_activeSession configuration];
-        v20 = [(_EXHostViewControllerSession *)*p_activeSession error];
-        [v15 hostViewController:WeakRetained didEndHosting:v18 error:v20];
+        configuration = [(_EXHostViewControllerSession *)*p_activeSession configuration];
+        error = [(_EXHostViewControllerSession *)*p_activeSession error];
+        [delegate hostViewController:WeakRetained didEndHosting:configuration error:error];
 
 LABEL_16:
       }
@@ -680,7 +680,7 @@ LABEL_16:
     [_EXHostSessionDriver hostSessionViewControllerReady:];
   }
 
-  v23 = [v4 configuration];
+  configuration2 = [readyCopy configuration];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -691,38 +691,38 @@ LABEL_16:
 
   if (v24)
   {
-    v23 = [v4 configuration];
-    [v15 hostViewController:WeakRetained didBeginHosting:v23];
+    configuration2 = [readyCopy configuration];
+    [delegate hostViewController:WeakRetained didBeginHosting:configuration2];
 LABEL_23:
   }
 
-  v25 = [(_EXHostSessionDriver *)self session];
-  v26 = [v25 extensionProcess];
-  v27 = [v26 extensionIdentity];
-  v28 = [v27 requiresUIKitSceneHosting];
+  session3 = [(_EXHostSessionDriver *)self session];
+  extensionProcess2 = [session3 extensionProcess];
+  extensionIdentity2 = [extensionProcess2 extensionIdentity];
+  requiresUIKitSceneHosting2 = [extensionIdentity2 requiresUIKitSceneHosting];
 
-  v29 = [(_EXHostSessionDriver *)self hostViewController];
-  if (v28)
+  hostViewController = [(_EXHostSessionDriver *)self hostViewController];
+  if (requiresUIKitSceneHosting2)
   {
-    [v4 sceneViewController];
+    [readyCopy sceneViewController];
   }
 
   else
   {
-    [v4 remoteViewController];
+    [readyCopy remoteViewController];
   }
   v30 = ;
-  [v29 embedViewController:v30];
+  [hostViewController embedViewController:v30];
 }
 
-- (void)notifyHostViewControllerWillDeactivate:(id)a3
+- (void)notifyHostViewControllerWillDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v7 = objc_loadWeakRetained(&self->_hostViewController);
-  v8 = [v7 placeholderView];
+  placeholderView = [v7 placeholderView];
 
   v9 = _EXDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -732,24 +732,24 @@ LABEL_23:
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v4 error];
-    [v6 hostViewControllerWillDeactivate:WeakRetained error:v10];
+    error = [deactivateCopy error];
+    [delegate hostViewControllerWillDeactivate:WeakRetained error:error];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v4 error];
-    [v8 hostViewControllerWillDeactivate:WeakRetained error:v11];
+    error2 = [deactivateCopy error];
+    [placeholderView hostViewControllerWillDeactivate:WeakRetained error:error2];
   }
 }
 
-- (void)notifyHostViewControllerDidEndHosting:(id)a3
+- (void)notifyHostViewControllerDidEndHosting:(id)hosting
 {
-  v4 = a3;
+  hostingCopy = hosting;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  v6 = [WeakRetained delegate];
-  if ([v4 maxState] == 4)
+  delegate = [WeakRetained delegate];
+  if ([hostingCopy maxState] == 4)
   {
     v7 = _EXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -757,7 +757,7 @@ LABEL_23:
       [_EXHostSessionDriver notifyHostViewControllerDidEndHosting:];
     }
 
-    v8 = [v4 configuration];
+    configuration = [hostingCopy configuration];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -768,9 +768,9 @@ LABEL_23:
 
     if (v9)
     {
-      v8 = [v4 configuration];
-      v10 = [v4 error];
-      [v6 hostViewController:WeakRetained didEndHosting:v8 error:v10];
+      configuration = [hostingCopy configuration];
+      error = [hostingCopy error];
+      [delegate hostViewController:WeakRetained didEndHosting:configuration error:error];
 LABEL_13:
 
 LABEL_14:
@@ -779,9 +779,9 @@ LABEL_14:
 
   else
   {
-    v11 = [v4 error];
+    error2 = [hostingCopy error];
 
-    if (v11)
+    if (error2)
     {
       v12 = _EXDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -789,7 +789,7 @@ LABEL_14:
         [_EXHostSessionDriver notifyHostViewControllerDidEndHosting:];
       }
 
-      v8 = [v4 configuration];
+      configuration = [hostingCopy configuration];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -800,39 +800,39 @@ LABEL_14:
 
       if (v13)
       {
-        v8 = [v4 configuration];
-        v10 = [v4 error];
-        [v6 hostViewController:WeakRetained didFailToHost:v8 error:v10];
+        configuration = [hostingCopy configuration];
+        error = [hostingCopy error];
+        [delegate hostViewController:WeakRetained didFailToHost:configuration error:error];
         goto LABEL_13;
       }
     }
   }
 }
 
-- (void)hostSessionDidInvalidate:(id)a3
+- (void)hostSessionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(_EXHostSessionDriver *)self session];
+  session = [(_EXHostSessionDriver *)self session];
 
-  if (v5 == v4)
+  if (session == invalidateCopy)
   {
     [(_EXHostSessionDriver *)self setSession:0];
-    [(_EXHostSessionDriver *)self notifyHostViewControllerWillDeactivate:v4];
-    [(_EXHostSessionDriver *)self notifyHostViewControllerDidEndHosting:v4];
-    v6 = [(_EXHostSessionDriver *)self hostViewController];
-    [v6 embedViewController:0];
+    [(_EXHostSessionDriver *)self notifyHostViewControllerWillDeactivate:invalidateCopy];
+    [(_EXHostSessionDriver *)self notifyHostViewControllerDidEndHosting:invalidateCopy];
+    hostViewController = [(_EXHostSessionDriver *)self hostViewController];
+    [hostViewController embedViewController:0];
 
-    v7 = [v4 configuration];
-    v8 = [v7 retryOnHostingFailure];
+    configuration = [invalidateCopy configuration];
+    retryOnHostingFailure = [configuration retryOnHostingFailure];
 
-    if (v8)
+    if (retryOnHostingFailure)
     {
-      v9 = [v4 processConfiguration];
+      processConfiguration = [invalidateCopy processConfiguration];
       retryProcessConfiguration = self->_retryProcessConfiguration;
-      self->_retryProcessConfiguration = v9;
+      self->_retryProcessConfiguration = processConfiguration;
 
-      v11 = [v4 configuration];
+      configuration2 = [invalidateCopy configuration];
     }
 
     else
@@ -840,19 +840,19 @@ LABEL_14:
       v12 = self->_retryProcessConfiguration;
       self->_retryProcessConfiguration = 0;
 
-      v11 = 0;
+      configuration2 = 0;
     }
 
     retrySessionConfiguration = self->_retrySessionConfiguration;
-    self->_retrySessionConfiguration = v11;
+    self->_retrySessionConfiguration = configuration2;
 
     if (self->_retryProcessConfiguration)
     {
       if (self->_retrySessionConfiguration)
       {
         objc_initWeak(&location, self);
-        v14 = [MEMORY[0x1E6966CA0] sharedInstance];
-        [v14 defaultRetryFailedSessionDelay];
+        mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+        [mEMORY[0x1E6966CA0] defaultRetryFailedSessionDelay];
         v16 = dispatch_time(0, (v15 * 1000000000.0));
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -881,18 +881,18 @@ LABEL_14:
   }
 }
 
-- (id)hostSessionHostView:(id)a3
+- (id)hostSessionHostView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(_EXHostSessionDriver *)self session];
+  session = [(_EXHostSessionDriver *)self session];
 
-  if (v5 == v4)
+  if (session == viewCopy)
   {
-    v6 = [(_EXHostSessionDriver *)self hostViewController];
-    v7 = [v6 view];
+    hostViewController = [(_EXHostSessionDriver *)self hostViewController];
+    view = [hostViewController view];
 
-    return v7;
+    return view;
   }
 
   else
@@ -909,14 +909,14 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  v6 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 shouldAcceptXPCConnection:v4];
+    v7 = [delegate shouldAcceptXPCConnection:connectionCopy];
   }
 
   else

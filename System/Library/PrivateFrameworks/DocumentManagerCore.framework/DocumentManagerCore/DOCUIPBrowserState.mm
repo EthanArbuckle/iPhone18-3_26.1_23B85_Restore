@@ -1,7 +1,7 @@
 @interface DOCUIPBrowserState
 - (DOCUIPBrowserState)init;
 - (NSString)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DOCUIPBrowserState
@@ -16,18 +16,18 @@
   return [(DOCUIPBrowserState *)&v4 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___DOCUIPBrowserState__impl);
   v5 = *&self->_impl[OBJC_IVAR___DOCUIPBrowserState__impl];
-  v6 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_24936FE74();
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   DOCUIPBrowserState.debugDescription.getter();
 
   v3 = sub_24938A42C();

@@ -9,16 +9,16 @@
 {
   v10.receiver = self;
   v10.super_class = CKFetchDatabaseChangesOperation;
-  v3 = [(CKFetchDatabaseChangesOperation *)&v10 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(CKFetchDatabaseChangesOperation *)&v10 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(CKFetchDatabaseChangesOperation *)self previousServerChangeToken];
+  previousServerChangeToken = [(CKFetchDatabaseChangesOperation *)self previousServerChangeToken];
 
-  if (v5)
+  if (previousServerChangeToken)
   {
-    v6 = [(CKFetchDatabaseChangesOperation *)self previousServerChangeToken];
-    v7 = [v6 data];
-    v8 = [v7 base64EncodedStringWithOptions:0];
+    previousServerChangeToken2 = [(CKFetchDatabaseChangesOperation *)self previousServerChangeToken];
+    data = [previousServerChangeToken2 data];
+    v8 = [data base64EncodedStringWithOptions:0];
   }
 
   else

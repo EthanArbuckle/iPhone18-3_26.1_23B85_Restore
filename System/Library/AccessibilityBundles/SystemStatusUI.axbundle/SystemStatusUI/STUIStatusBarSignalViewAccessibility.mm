@@ -1,17 +1,17 @@
 @interface STUIStatusBarSignalViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation STUIStatusBarSignalViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"signalMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"numberOfBars" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"numberOfActiveBars" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"signalMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"numberOfBars" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"STUIStatusBarSignalView" hasInstanceMethod:@"numberOfActiveBars" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityValue
@@ -49,16 +49,16 @@
     {
       v14.receiver = self;
       v14.super_class = STUIStatusBarSignalViewAccessibility;
-      v5 = [(STUIStatusBarSignalViewAccessibility *)&v14 accessibilityLabel];
+      accessibilityLabel = [(STUIStatusBarSignalViewAccessibility *)&v14 accessibilityLabel];
       goto LABEL_10;
     }
 
     v4 = @"status.signal.no.signal";
   }
 
-  v5 = accessibilityLocalizedString(v4);
+  accessibilityLabel = accessibilityLocalizedString(v4);
 LABEL_10:
-  v12 = v5;
+  v12 = accessibilityLabel;
 LABEL_13:
 
   return v12;

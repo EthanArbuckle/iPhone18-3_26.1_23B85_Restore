@@ -5,8 +5,8 @@
 - (BOOL)isEnabled;
 - (BOOL)isUsableForOuterMessaging;
 - (BOOL)isUserDisabled;
-- (IDSAccount)initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5;
-- (IDSAccount)initWithLoginID:(id)a3 uniqueID:(id)a4 serviceName:(id)a5;
+- (IDSAccount)initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name;
+- (IDSAccount)initWithLoginID:(id)d uniqueID:(id)iD serviceName:(id)name;
 - (NSArray)accountRegisteredURIs;
 - (NSArray)aliasStrings;
 - (NSArray)aliases;
@@ -37,7 +37,7 @@
 - (NSString)uniqueID;
 - (NSString)userUniqueIdentifier;
 - (_IDSAccount)_internal;
-- (id)_initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5;
+- (id)_initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name;
 - (id)description;
 - (id)matchingSim;
 - (int)accountType;
@@ -47,30 +47,30 @@
 - (int64_t)profileValidationStatus;
 - (void)_callNearbyDevicesChanged;
 - (void)_reloadCachedDevices;
-- (void)_reregisterAndReidentify:(BOOL)a3;
-- (void)addAliases:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)addRegistrationDelegate:(id)a3 queue:(id)a4;
+- (void)_reregisterAndReidentify:(BOOL)reidentify;
+- (void)addAliases:(id)aliases;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)addRegistrationDelegate:(id)delegate queue:(id)queue;
 - (void)authenticateAccount;
 - (void)deactivateAndPurgeIdentify;
 - (void)dealloc;
 - (void)forceRemoveAccount;
 - (void)passwordUpdated;
 - (void)registerAccount;
-- (void)removeAliases:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)removeRegistrationDelegate:(id)a3;
-- (void)setAccountInfo:(id)a3;
-- (void)setAuthToken:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setRegionBasePhoneNumber:(id)a3;
-- (void)setRegionID:(id)a3;
+- (void)removeAliases:(id)aliases;
+- (void)removeDelegate:(id)delegate;
+- (void)removeRegistrationDelegate:(id)delegate;
+- (void)setAccountInfo:(id)info;
+- (void)setAuthToken:(id)token;
+- (void)setDisplayName:(id)name;
+- (void)setPassword:(id)password;
+- (void)setRegionBasePhoneNumber:(id)number;
+- (void)setRegionID:(id)d;
 - (void)unregisterAccount;
-- (void)unvalidateAliases:(id)a3;
-- (void)updateAccountWithAccountInfo:(id)a3;
-- (void)updateAuthorizationCredentials:(id)a3 token:(id)a4;
-- (void)validateAliases:(id)a3;
+- (void)unvalidateAliases:(id)aliases;
+- (void)updateAccountWithAccountInfo:(id)info;
+- (void)updateAuthorizationCredentials:(id)credentials token:(id)token;
+- (void)validateAliases:(id)aliases;
 - (void)validateProfile;
 @end
 
@@ -79,12 +79,12 @@
 - (_IDSAccount)_internal
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B339A4();
     }
@@ -231,9 +231,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSAccount *)self serviceName];
-  v6 = [(IDSAccount *)self loginID];
-  v7 = [(IDSAccount *)self uniqueID];
+  serviceName = [(IDSAccount *)self serviceName];
+  loginID = [(IDSAccount *)self loginID];
+  uniqueID = [(IDSAccount *)self uniqueID];
   [(IDSAccount *)self accountType];
   v8 = _StringForIDSAccountType();
   if ([(IDSAccount *)self isActive])
@@ -248,7 +248,7 @@
 
   [(IDSAccount *)self registrationStatus];
   v10 = _IDSStringFromIDSRegistrationStatus();
-  v11 = [v3 stringWithFormat:@"%@: %p [Service: %@  User: %@  ID: %@  Type: %@  Active: %@  Registration Status: %@]", v4, self, v5, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"%@: %p [Service: %@  User: %@  ID: %@  Type: %@  Active: %@  Registration Status: %@]", v4, self, serviceName, loginID, uniqueID, v8, v9, v10];
 
   return v11;
 }
@@ -341,19 +341,19 @@
 
 - (id)matchingSim
 {
-  v3 = [MEMORY[0x1E69A51E8] sharedInstance];
-  v4 = [(IDSAccount *)self userUniqueIdentifier];
-  v5 = [v3 SIMForIdentifier:v4];
+  mEMORY[0x1E69A51E8] = [MEMORY[0x1E69A51E8] sharedInstance];
+  userUniqueIdentifier = [(IDSAccount *)self userUniqueIdentifier];
+  v5 = [mEMORY[0x1E69A51E8] SIMForIdentifier:userUniqueIdentifier];
 
   return v5;
 }
 
-- (id)_initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5
+- (id)_initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  nameCopy = name;
   if (_IDSRunningInDaemon())
   {
     v11 = +[IDSLogging Accounts];
@@ -362,18 +362,18 @@
       sub_195B26A7C();
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v13 = +[IDSInternalQueueController sharedInstance];
-    v14 = [v13 assertQueueIsCurrent];
+    assertQueueIsCurrent = [v13 assertQueueIsCurrent];
 
-    if (v14)
+    if (assertQueueIsCurrent)
     {
-      v15 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B337C4();
       }
@@ -384,7 +384,7 @@
     v16 = [(IDSAccount *)&v22 init];
     if (v16)
     {
-      v17 = [[_IDSAccount alloc] initWithDictionary:v8 uniqueID:v9 serviceName:v10 delegateContext:v16];
+      v17 = [[_IDSAccount alloc] initWithDictionary:dictionaryCopy uniqueID:dCopy serviceName:nameCopy delegateContext:v16];
       internal = v16->_internal;
       v16->_internal = v17;
     }
@@ -395,28 +395,28 @@
       *buf = 134218754;
       v24 = v16;
       v25 = 2112;
-      v26 = v8;
+      v26 = dictionaryCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = nameCopy;
       _os_log_impl(&dword_1959FF000, v19, OS_LOG_TYPE_INFO, "Creating new IDSAccount %p with config %@ uniqueID %@ serviceName %@", buf, 0x2Au);
     }
 
     self = v16;
-    v12 = self;
+    selfCopy = self;
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (IDSAccount)initWithDictionary:(id)a3 uniqueID:(id)a4 serviceName:(id)a5
+- (IDSAccount)initWithDictionary:(id)dictionary uniqueID:(id)d serviceName:(id)name
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  nameCopy = name;
   if (_IDSRunningInDaemon())
   {
     v11 = +[IDSLogging Accounts];
@@ -425,18 +425,18 @@
       sub_195B26A7C();
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v13 = +[IDSInternalQueueController sharedInstance];
-    v14 = [v13 assertQueueIsNotCurrent];
+    assertQueueIsNotCurrent = [v13 assertQueueIsNotCurrent];
 
-    if (v14)
+    if (assertQueueIsNotCurrent)
     {
-      v15 = [MEMORY[0x1E69A5270] utilities];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      utilities = [MEMORY[0x1E69A5270] utilities];
+      if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
       {
         sub_195B33864();
       }
@@ -453,9 +453,9 @@
       v23 = sub_195A952A0;
       v24 = &unk_1E743EEE8;
       v25 = v16;
-      v26 = v8;
-      v27 = v9;
-      v28 = v10;
+      v26 = dictionaryCopy;
+      v27 = dCopy;
+      v28 = nameCopy;
       [v17 performBlock:&v21];
     }
 
@@ -465,35 +465,35 @@
       *buf = 134218754;
       v31 = v16;
       v32 = 2112;
-      v33 = v8;
+      v33 = dictionaryCopy;
       v34 = 2112;
-      v35 = v9;
+      v35 = dCopy;
       v36 = 2112;
-      v37 = v10;
+      v37 = nameCopy;
       _os_log_impl(&dword_1959FF000, v18, OS_LOG_TYPE_INFO, "Creating new IDSAccount %p with config %@ uniqueID %@ serviceName %@", buf, 0x2Au);
     }
 
     self = v16;
-    v12 = self;
+    selfCopy = self;
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (IDSAccount)initWithLoginID:(id)a3 uniqueID:(id)a4 serviceName:(id)a5
+- (IDSAccount)initWithLoginID:(id)d uniqueID:(id)iD serviceName:(id)name
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
   v11 = +[IDSInternalQueueController sharedInstance];
-  v12 = [v11 assertQueueIsNotCurrent];
+  assertQueueIsNotCurrent = [v11 assertQueueIsNotCurrent];
 
-  if (v12)
+  if (assertQueueIsNotCurrent)
   {
-    v13 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B33904();
     }
@@ -510,24 +510,24 @@
     v21 = sub_195A95524;
     v22 = &unk_1E743EEE8;
     v23 = v14;
-    v24 = v8;
-    v25 = v9;
-    v26 = v10;
+    v24 = dCopy;
+    v25 = iDCopy;
+    v26 = nameCopy;
     [v15 performBlock:&v19];
   }
 
-  v16 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
     v29 = v14;
     v30 = 2112;
-    v31 = v8;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = iDCopy;
     v34 = 2112;
-    v35 = v10;
-    _os_log_debug_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEBUG, "Created new IDSAccount %p with loginID %@ uniqueID %@ serviceName %@", buf, 0x2Au);
+    v35 = nameCopy;
+    _os_log_debug_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEBUG, "Created new IDSAccount %p with loginID %@ uniqueID %@ serviceName %@", buf, 0x2Au);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -829,31 +829,31 @@
   return v4;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A969FC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passwordCopy;
+  v6 = passwordCopy;
   [v5 performBlock:v7];
 }
 
-- (void)setAuthToken:(id)a3
+- (void)setAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A96B08;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   [v5 performBlock:v7];
 }
 
@@ -880,12 +880,12 @@
 - (BOOL)_isEnabled
 {
   v3 = +[IDSInternalQueueController sharedInstance];
-  v4 = [v3 assertQueueIsCurrent];
+  assertQueueIsCurrent = [v3 assertQueueIsCurrent];
 
-  if (v4)
+  if (assertQueueIsCurrent)
   {
-    v5 = [MEMORY[0x1E69A5270] utilities];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    utilities = [MEMORY[0x1E69A5270] utilities];
+    if (os_log_type_enabled(utilities, OS_LOG_TYPE_ERROR))
     {
       sub_195B33A44();
     }
@@ -914,31 +914,31 @@
   return self;
 }
 
-- (void)setAccountInfo:(id)a3
+- (void)setAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A96FAC;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [v5 performBlock:v7];
 }
 
-- (void)updateAccountWithAccountInfo:(id)a3
+- (void)updateAccountWithAccountInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A970B8;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   [v5 performBlock:v7];
 }
 
@@ -1186,63 +1186,63 @@
   return v4;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A98238;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11 waitUntilDone:0];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A98338;
   v6[3] = &unk_1E743F468;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = delegateCopy;
   [v5 performBlock:v6 waitUntilDone:1];
 }
 
-- (void)addRegistrationDelegate:(id)a3 queue:(id)a4
+- (void)addRegistrationDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A9846C;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
   [v8 performBlock:v11 waitUntilDone:0];
 }
 
-- (void)removeRegistrationDelegate:(id)a3
+- (void)removeRegistrationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[IDSInternalQueueController sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A9856C;
   v6[3] = &unk_1E743F468;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = delegateCopy;
   [v5 performBlock:v6 waitUntilDone:1];
 }
 
@@ -1269,17 +1269,17 @@
   return v4;
 }
 
-- (void)setRegionID:(id)a3
+- (void)setRegionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A98808;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   [v5 performBlock:v7];
 }
 
@@ -1306,17 +1306,17 @@
   return v4;
 }
 
-- (void)setRegionBasePhoneNumber:(id)a3
+- (void)setRegionBasePhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A98AA4;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = numberCopy;
+  v6 = numberCopy;
   [v5 performBlock:v7];
 }
 
@@ -1343,17 +1343,17 @@
   return v4;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A98D40;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   [v5 performBlock:v7];
 }
 
@@ -1402,20 +1402,20 @@
   [v3 performBlock:v4];
 }
 
-- (void)updateAuthorizationCredentials:(id)a3 token:(id)a4
+- (void)updateAuthorizationCredentials:(id)credentials token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  tokenCopy = token;
   v8 = +[IDSInternalQueueController sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195A991A8;
   v11[3] = &unk_1E743E620;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = credentialsCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = credentialsCopy;
   [v8 performBlock:v11];
 }
 
@@ -1430,59 +1430,59 @@
   [v3 performBlock:v4];
 }
 
-- (void)addAliases:(id)a3
+- (void)addAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A99388;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliasesCopy;
+  v6 = aliasesCopy;
   [v5 performBlock:v7];
 }
 
-- (void)removeAliases:(id)a3
+- (void)removeAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A99494;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliasesCopy;
+  v6 = aliasesCopy;
   [v5 performBlock:v7];
 }
 
-- (void)validateAliases:(id)a3
+- (void)validateAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A995A0;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliasesCopy;
+  v6 = aliasesCopy;
   [v5 performBlock:v7];
 }
 
-- (void)unvalidateAliases:(id)a3
+- (void)unvalidateAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   v5 = +[IDSInternalQueueController sharedInstance];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A99664;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = aliasesCopy;
+  v6 = aliasesCopy;
   [v5 performBlock:v7];
 }
 
@@ -1493,12 +1493,12 @@
   v8 = _os_activity_create(&dword_1959FF000, "Framework register account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v8, &state);
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
-    _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Client requesting to register account: %@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Client requesting to register account: %@", buf, 0xCu);
   }
 
   v4 = +[IDSInternalQueueController sharedInstance];
@@ -1522,12 +1522,12 @@
   v8 = _os_activity_create(&dword_1959FF000, "Framework unregister account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v8, &state);
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
-    _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Client requesting to unregister account: %@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Client requesting to unregister account: %@", buf, 0xCu);
   }
 
   v4 = +[IDSInternalQueueController sharedInstance];
@@ -1551,12 +1551,12 @@
   v8 = _os_activity_create(&dword_1959FF000, "Framework force remove account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v8, &state);
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
-    _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Client requesting to force remove account: %@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Client requesting to force remove account: %@", buf, 0xCu);
   }
 
   v4 = +[IDSInternalQueueController sharedInstance];
@@ -1573,19 +1573,19 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reregisterAndReidentify:(BOOL)a3
+- (void)_reregisterAndReidentify:(BOOL)reidentify
 {
-  v3 = a3;
+  reidentifyCopy = reidentify;
   v17 = *MEMORY[0x1E69E9840];
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   v12 = _os_activity_create(&dword_1959FF000, "Framework reregister account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v12, &state);
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (reidentifyCopy)
     {
       v6 = @"YES";
     }
@@ -1593,8 +1593,8 @@
     *buf = 138412546;
     v14 = v6;
     v15 = 2112;
-    v16 = self;
-    _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Client requesting to reregister (with reidentify %@) account: %@", buf, 0x16u);
+    selfCopy = self;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Client requesting to reregister (with reidentify %@) account: %@", buf, 0x16u);
   }
 
   v7 = +[IDSInternalQueueController sharedInstance];
@@ -1603,7 +1603,7 @@
   v9[2] = sub_195A99DB0;
   v9[3] = &unk_1E743E8C8;
   v9[4] = self;
-  v10 = v3;
+  v10 = reidentifyCopy;
   [v7 performBlock:v9];
 
   os_activity_scope_leave(&state);
@@ -1619,12 +1619,12 @@
   v8 = _os_activity_create(&dword_1959FF000, "Framework deactivate account", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(v8, &state);
-  v3 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
-    _os_log_impl(&dword_1959FF000, v3, OS_LOG_TYPE_DEFAULT, "Client requesting to deactivate and purge identify account: %@", buf, 0xCu);
+    selfCopy = self;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Client requesting to deactivate and purge identify account: %@", buf, 0xCu);
   }
 
   v4 = +[IDSInternalQueueController sharedInstance];

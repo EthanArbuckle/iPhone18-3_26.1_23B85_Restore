@@ -1,17 +1,17 @@
 @interface ANAccessorySettingsCache
-- (ANAccessorySettingsCache)initWithAccessorySettingsDataSource:(id)a3;
-- (id)_fetchSettingsForAccessory:(id)a3 useCache:(BOOL)a4;
-- (id)settingsForAccessory:(id)a3;
-- (void)_removeSettingsForAccessoryWithIdentifier:(id)a3;
-- (void)_updateSettings:(id)a3 forAccessoryWithIdentifier:(id)a4;
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5;
+- (ANAccessorySettingsCache)initWithAccessorySettingsDataSource:(id)source;
+- (id)_fetchSettingsForAccessory:(id)accessory useCache:(BOOL)cache;
+- (id)settingsForAccessory:(id)accessory;
+- (void)_removeSettingsForAccessoryWithIdentifier:(id)identifier;
+- (void)_updateSettings:(id)settings forAccessoryWithIdentifier:(id)identifier;
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
 @end
 
 @implementation ANAccessorySettingsCache
 
-- (ANAccessorySettingsCache)initWithAccessorySettingsDataSource:(id)a3
+- (ANAccessorySettingsCache)initWithAccessorySettingsDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = ANAccessorySettingsCache;
   v6 = [(ANAccessorySettingsCache *)&v16 init];
@@ -33,32 +33,32 @@
     lastAccessorySettingsFetch = v6->_lastAccessorySettingsFetch;
     v6->_lastAccessorySettingsFetch = v13;
 
-    objc_storeStrong(&v6->_accessorySettingsDataSource, a3);
-    [v5 setDelegate:v6];
+    objc_storeStrong(&v6->_accessorySettingsDataSource, source);
+    [sourceCopy setDelegate:v6];
   }
 
   return v6;
 }
 
-- (id)settingsForAccessory:(id)a3
+- (id)settingsForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   objc_initWeak(&location, self);
-  v5 = [(ANAccessorySettingsCache *)self settingsQueue];
+  settingsQueue = [(ANAccessorySettingsCache *)self settingsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__ANAccessorySettingsCache_settingsForAccessory___block_invoke;
   block[3] = &unk_278C86750;
   objc_copyWeak(&v13, &location);
-  v6 = v4;
-  v11 = self;
+  v6 = accessoryCopy;
+  selfCopy = self;
   v12 = &v15;
   v10 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(settingsQueue, block);
 
   v7 = [(ANAccessorySettingsCache *)self _fetchSettingsForAccessory:v6 useCache:*(v16 + 24)];
 
@@ -119,24 +119,24 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessorySettingsDataSource:(id)a3 didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a4 settings:(id)a5
+- (void)accessorySettingsDataSource:(id)source didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
-  v11 = [(ANAccessorySettingsCache *)self settingsQueue];
+  settingsQueue = [(ANAccessorySettingsCache *)self settingsQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSettingsUpdatesForAccessoryWithIdentifier_settings___block_invoke;
   block[3] = &unk_278C86778;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = identifierCopy;
+  v16 = settingsCopy;
+  v12 = settingsCopy;
+  v13 = identifierCopy;
   objc_copyWeak(&v17, &location);
-  dispatch_async(v11, block);
+  dispatch_async(settingsQueue, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -163,16 +163,16 @@ void __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSetti
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchSettingsForAccessory:(id)a3 useCache:(BOOL)a4
+- (id)_fetchSettingsForAccessory:(id)accessory useCache:(BOOL)cache
 {
-  v4 = a4;
+  cacheCopy = cache;
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ANAccessorySettingsCache *)self settingsQueue];
-  dispatch_assert_queue_not_V2(v7);
+  accessoryCopy = accessory;
+  settingsQueue = [(ANAccessorySettingsCache *)self settingsQueue];
+  dispatch_assert_queue_not_V2(settingsQueue);
 
   v8 = @"Settings";
-  if (v4)
+  if (cacheCopy)
   {
     v8 = @"Cached Settings";
   }
@@ -181,14 +181,14 @@ void __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSetti
   v10 = [(ANAccessorySettingsCache *)self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 name];
-    v12 = [v6 uniqueIdentifier];
+    name = [accessoryCopy name];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
     *buf = 138543874;
     *&buf[4] = v9;
     *&buf[12] = 2112;
-    *&buf[14] = v11;
+    *&buf[14] = name;
     *&buf[22] = 2112;
-    v55 = v12;
+    v55 = uniqueIdentifier;
     _os_log_impl(&dword_23F525000, v10, OS_LOG_TYPE_DEFAULT, "Fetching %{public}@ for Accessory %@, %@", buf, 0x20u);
   }
 
@@ -209,35 +209,35 @@ void __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSetti
   aBlock[4] = self;
   v14 = v9;
   v40 = v14;
-  v15 = v6;
+  v15 = accessoryCopy;
   v41 = v15;
   v43 = buf;
   v16 = v13;
   v42 = v16;
   v17 = _Block_copy(aBlock);
   [(ANAccessorySettingsCache *)self accessorySettingsDataSource];
-  if (v4)
+  if (cacheCopy)
     v18 = {;
-    v19 = [v15 home];
-    v20 = [v19 uniqueIdentifier];
-    v21 = [v15 uniqueIdentifier];
+    home = [v15 home];
+    uniqueIdentifier2 = [home uniqueIdentifier];
+    uniqueIdentifier3 = [v15 uniqueIdentifier];
     v53 = @"root.announce.enabled";
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
-    [v18 fetchCachedAccessorySettingsWithHomeIdentifier:v20 accessoryIdentifier:v21 keyPaths:v22 completionHandler:v17];
+    [v18 fetchCachedAccessorySettingsWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:uniqueIdentifier3 keyPaths:v22 completionHandler:v17];
   }
 
   else
     v18 = {;
-    v19 = [v15 home];
-    v20 = [v19 uniqueIdentifier];
-    v21 = [v15 uniqueIdentifier];
+    home = [v15 home];
+    uniqueIdentifier2 = [home uniqueIdentifier];
+    uniqueIdentifier3 = [v15 uniqueIdentifier];
     v52 = @"root.announce.enabled";
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-    [v18 fetchAccessorySettingsWithHomeIdentifier:v20 accessoryIdentifier:v21 keyPaths:v22 completionHandler:v17];
+    [v18 fetchAccessorySettingsWithHomeIdentifier:uniqueIdentifier2 accessoryIdentifier:uniqueIdentifier3 keyPaths:v22 completionHandler:v17];
   }
 
-  v23 = [MEMORY[0x277CEAB80] sharedInstance];
-  v24 = [v23 numberForDefault:*MEMORY[0x277CEA800]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v24 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA800]];
   [v24 doubleValue];
   v26 = v25;
 
@@ -247,18 +247,18 @@ void __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSetti
     v28 = [(ANAccessorySettingsCache *)self log];
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v33 = [v15 name];
-      v34 = [v15 uniqueIdentifier];
+      name2 = [v15 name];
+      uniqueIdentifier4 = [v15 uniqueIdentifier];
       *v46 = 138543874;
       v47 = v14;
       v48 = 2112;
-      v49 = v33;
+      v49 = name2;
       v50 = 2112;
-      v51 = v34;
+      v51 = uniqueIdentifier4;
       _os_log_error_impl(&dword_23F525000, v28, OS_LOG_TYPE_ERROR, "Timed-out waiting for Accessory %{public}@ for %@, %@", v46, 0x20u);
     }
 
-    v29 = [(ANAccessorySettingsCache *)self settingsQueue];
+    settingsQueue2 = [(ANAccessorySettingsCache *)self settingsQueue];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __64__ANAccessorySettingsCache__fetchSettingsForAccessory_useCache___block_invoke_13;
@@ -266,7 +266,7 @@ void __117__ANAccessorySettingsCache_accessorySettingsDataSource_didReceiveSetti
     objc_copyWeak(&v38, &location);
     v37 = buf;
     v36 = v15;
-    dispatch_sync(v29, v35);
+    dispatch_sync(settingsQueue2, v35);
 
     objc_destroyWeak(&v38);
   }
@@ -417,30 +417,30 @@ void __64__ANAccessorySettingsCache__fetchSettingsForAccessory_useCache___block_
   *(v8 + 40) = v7;
 }
 
-- (void)_updateSettings:(id)a3 forAccessoryWithIdentifier:(id)a4
+- (void)_updateSettings:(id)settings forAccessoryWithIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ANAccessorySettingsCache *)self settingsQueue];
-  dispatch_assert_queue_V2(v8);
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  settingsQueue = [(ANAccessorySettingsCache *)self settingsQueue];
+  dispatch_assert_queue_V2(settingsQueue);
 
-  v9 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  cachedAccessorySettings = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
+  v10 = [cachedAccessorySettings objectForKeyedSubscript:identifierCopy];
 
   v23 = v10;
   if (!v10)
   {
     v11 = objc_opt_new();
-    v12 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
-    [v12 setObject:v11 forKeyedSubscript:v7];
+    cachedAccessorySettings2 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
+    [cachedAccessorySettings2 setObject:v11 forKeyedSubscript:identifierCopy];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v6;
+  v13 = settingsCopy;
   v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
@@ -456,10 +456,10 @@ void __64__ANAccessorySettingsCache__fetchSettingsForAccessory_useCache___block_
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
-        v20 = [v19 objectForKeyedSubscript:v7];
-        v21 = [v18 keyPath];
-        [v20 setObject:v18 forKeyedSubscript:v21];
+        cachedAccessorySettings3 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
+        v20 = [cachedAccessorySettings3 objectForKeyedSubscript:identifierCopy];
+        keyPath = [v18 keyPath];
+        [v20 setObject:v18 forKeyedSubscript:keyPath];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -471,14 +471,14 @@ void __64__ANAccessorySettingsCache__fetchSettingsForAccessory_useCache___block_
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeSettingsForAccessoryWithIdentifier:(id)a3
+- (void)_removeSettingsForAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANAccessorySettingsCache *)self settingsQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  settingsQueue = [(ANAccessorySettingsCache *)self settingsQueue];
+  dispatch_assert_queue_V2(settingsQueue);
 
-  v6 = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
-  [v6 setObject:0 forKeyedSubscript:v4];
+  cachedAccessorySettings = [(ANAccessorySettingsCache *)self cachedAccessorySettings];
+  [cachedAccessorySettings setObject:0 forKeyedSubscript:identifierCopy];
 }
 
 void __64__ANAccessorySettingsCache__fetchSettingsForAccessory_useCache___block_invoke_cold_1(uint64_t a1, uint64_t a2, NSObject *a3)

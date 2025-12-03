@@ -1,11 +1,11 @@
 @interface RoutePlanningRouteCreationOutlineSection
 - (MapsCustomRouteCellDelegate)customRouteDelegate;
 - (RoutePlanningOverviewRouteCreationCellDelegate)routeCreationDelegate;
-- (RoutePlanningRouteCreationOutlineSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
-- (void)_configureCell:(id)a3;
-- (void)_configureCustomRouteCell:(id)a3;
+- (RoutePlanningRouteCreationOutlineSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier;
+- (id)cellForItemAtIndexPath:(id)path;
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment;
+- (void)_configureCell:(id)cell;
+- (void)_configureCustomRouteCell:(id)cell;
 @end
 
 @implementation RoutePlanningRouteCreationOutlineSection
@@ -24,25 +24,25 @@
   return WeakRetained;
 }
 
-- (void)_configureCustomRouteCell:(id)a3
+- (void)_configureCustomRouteCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(RoutePlanningRouteCreationOutlineSection *)self customRouteDelegate];
-  [v4 setDelegate:v5];
+  cellCopy = cell;
+  customRouteDelegate = [(RoutePlanningRouteCreationOutlineSection *)self customRouteDelegate];
+  [cellCopy setDelegate:customRouteDelegate];
 }
 
-- (void)_configureCell:(id)a3
+- (void)_configureCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(RoutePlanningRouteCreationOutlineSection *)self routeCreationDelegate];
-  [v4 setDelegate:v5];
+  cellCopy = cell;
+  routeCreationDelegate = [(RoutePlanningRouteCreationOutlineSection *)self routeCreationDelegate];
+  [cellCopy setDelegate:routeCreationDelegate];
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = _UISolariumEnabled();
-  v6 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:@"RouteCreation" forIndexPath:v4];
+  v6 = [(UICollectionView *)self->super._collectionView dequeueReusableCellWithReuseIdentifier:@"RouteCreation" forIndexPath:pathCopy];
 
   if (v5)
   {
@@ -57,35 +57,35 @@
   return v6;
 }
 
-- (id)listLayoutSectionConfigurationAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)listLayoutSectionConfigurationAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
   v9.receiver = self;
   v9.super_class = RoutePlanningRouteCreationOutlineSection;
-  v5 = [(RoutePlanningOutlineSection *)&v9 listLayoutSectionConfigurationAtIndex:a3 layoutEnvironment:a4];
+  v5 = [(RoutePlanningOutlineSection *)&v9 listLayoutSectionConfigurationAtIndex:index layoutEnvironment:environment];
   [v5 setSeparatorStyle:0];
   [v5 setEstimatedRowHeight:0.0];
   if ((_UISolariumEnabled() & 1) == 0)
   {
     [(UICollectionView *)self->super._collectionView frame];
     Width = CGRectGetWidth(v11);
-    v7 = [(UICollectionView *)self->super._collectionView traitCollection];
-    [RoutePlanningOverviewRouteCreationCell heightForWidth:v7 traitCollection:Width];
+    traitCollection = [(UICollectionView *)self->super._collectionView traitCollection];
+    [RoutePlanningOverviewRouteCreationCell heightForWidth:traitCollection traitCollection:Width];
     [v5 setRowHeight:?];
   }
 
   return v5;
 }
 
-- (RoutePlanningRouteCreationOutlineSection)initWithCollectionView:(id)a3 sectionIdentifier:(id)a4
+- (RoutePlanningRouteCreationOutlineSection)initWithCollectionView:(id)view sectionIdentifier:(id)identifier
 {
-  v6 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = RoutePlanningRouteCreationOutlineSection;
-  v7 = [(RoutePlanningOutlineSection *)&v9 initWithCollectionView:v6 sectionIdentifier:a4];
+  v7 = [(RoutePlanningOutlineSection *)&v9 initWithCollectionView:viewCopy sectionIdentifier:identifier];
   if (v7)
   {
     _UISolariumEnabled();
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteCreation"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"RouteCreation"];
   }
 
   return v7;

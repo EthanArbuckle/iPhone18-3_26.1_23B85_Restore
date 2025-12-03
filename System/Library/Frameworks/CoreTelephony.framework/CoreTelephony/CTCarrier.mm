@@ -1,5 +1,5 @@
 @interface CTCarrier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrier)init;
 - (id)description;
 @end
@@ -89,31 +89,31 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if ([(CTCarrier *)v4 isMemberOfClass:objc_opt_class()]&& (allowsVOIP = self->_allowsVOIP, allowsVOIP == [(CTCarrier *)v4 allowsVOIP]))
+  else if ([(CTCarrier *)equalCopy isMemberOfClass:objc_opt_class()]&& (allowsVOIP = self->_allowsVOIP, allowsVOIP == [(CTCarrier *)equalCopy allowsVOIP]))
   {
     carrierName = self->_carrierName;
-    v7 = [(CTCarrier *)v4 carrierName];
-    if ([(NSString *)carrierName isEqualToString:v7])
+    carrierName = [(CTCarrier *)equalCopy carrierName];
+    if ([(NSString *)carrierName isEqualToString:carrierName])
     {
       mobileNetworkCode = self->_mobileNetworkCode;
-      v9 = [(CTCarrier *)v4 mobileNetworkCode];
-      if ([(NSString *)mobileNetworkCode isEqualToString:v9])
+      mobileNetworkCode = [(CTCarrier *)equalCopy mobileNetworkCode];
+      if ([(NSString *)mobileNetworkCode isEqualToString:mobileNetworkCode])
       {
         mobileCountryCode = self->_mobileCountryCode;
-        v11 = [(CTCarrier *)v4 mobileCountryCode];
-        if ([(NSString *)mobileCountryCode isEqualToString:v11])
+        mobileCountryCode = [(CTCarrier *)equalCopy mobileCountryCode];
+        if ([(NSString *)mobileCountryCode isEqualToString:mobileCountryCode])
         {
           isoCountryCode = self->_isoCountryCode;
-          v13 = [(CTCarrier *)v4 isoCountryCode];
-          v14 = [(NSString *)isoCountryCode isEqualToString:v13];
+          isoCountryCode = [(CTCarrier *)equalCopy isoCountryCode];
+          v14 = [(NSString *)isoCountryCode isEqualToString:isoCountryCode];
         }
 
         else

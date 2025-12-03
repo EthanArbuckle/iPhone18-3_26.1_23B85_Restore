@@ -1,16 +1,16 @@
 @interface CAMSpatialBadge
-- (CAMSpatialBadge)initWithFrame:(CGRect)a3;
+- (CAMSpatialBadge)initWithFrame:(CGRect)frame;
 - (void)_updateText;
-- (void)setSpatialModeHasVideoSelected:(BOOL)a3;
+- (void)setSpatialModeHasVideoSelected:(BOOL)selected;
 @end
 
 @implementation CAMSpatialBadge
 
-- (CAMSpatialBadge)initWithFrame:(CGRect)a3
+- (CAMSpatialBadge)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMSpatialBadge;
-  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (void)setSpatialModeHasVideoSelected:(BOOL)a3
+- (void)setSpatialModeHasVideoSelected:(BOOL)selected
 {
-  if (self->_spatialModeHasVideoSelected != a3)
+  if (self->_spatialModeHasVideoSelected != selected)
   {
-    self->_spatialModeHasVideoSelected = a3;
+    self->_spatialModeHasVideoSelected = selected;
     [(CAMSpatialBadge *)self _updateText];
   }
 }
@@ -46,8 +46,8 @@
 
   v6 = CAMLocalizedFrameworkString(v3, v4);
   [(CEKBadgeTextView *)self _setText:v6];
-  v5 = [MEMORY[0x1E69DC888] systemYellowColor];
-  [(CEKBadgeView *)self _setFillColor:v5];
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  [(CEKBadgeView *)self _setFillColor:systemYellowColor];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MADPowerLogManager
-+ (PPSTelemetryIdentifier)_retrieveSpecificIdentifier:(id)a3 andCategory:(id)a4;
++ (PPSTelemetryIdentifier)_retrieveSpecificIdentifier:(id)identifier andCategory:(id)category;
 + (id)sharedManager;
-+ (void)sendTelemetry:(id)a3 forCategory:(id)a4 withPayload:(id)a5;
++ (void)sendTelemetry:(id)telemetry forCategory:(id)category withPayload:(id)payload;
 @end
 
 @implementation MADPowerLogManager
@@ -34,47 +34,47 @@ void __35__MADPowerLogManager_sharedManager__block_invoke(id a1)
   }
 }
 
-+ (void)sendTelemetry:(id)a3 forCategory:(id)a4 withPayload:(id)a5
++ (void)sendTelemetry:(id)telemetry forCategory:(id)category withPayload:(id)payload
 {
-  v8 = a5;
+  payloadCopy = payload;
   if (&_PPSSendTelemetry)
   {
-    v9 = a4;
-    v10 = a3;
+    categoryCopy = category;
+    telemetryCopy = telemetry;
     v11 = _MADLog(@"PowerLog");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v8;
+      v14 = payloadCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[MADPowerLogManager] sending power log telemetry: %{public}@", &v13, 0xCu);
     }
 
-    [a1 _retrieveSpecificIdentifier:v10 andCategory:v9];
-    v12 = [v8 convertPayloadToDict];
+    [self _retrieveSpecificIdentifier:telemetryCopy andCategory:categoryCopy];
+    convertPayloadToDict = [payloadCopy convertPayloadToDict];
     PPSSendTelemetry();
   }
 }
 
-+ (PPSTelemetryIdentifier)_retrieveSpecificIdentifier:(id)a3 andCategory:(id)a4
++ (PPSTelemetryIdentifier)_retrieveSpecificIdentifier:(id)identifier andCategory:(id)category
 {
-  v5 = a4;
-  v6 = a3;
+  categoryCopy = category;
+  identifierCopy = identifier;
   v7 = +[MADPowerLogManager sharedManager];
-  v8 = [SUCore stringIsEqual:v6 to:@"DownloadMetrics"];
+  v8 = [SUCore stringIsEqual:identifierCopy to:@"DownloadMetrics"];
 
   if (v8)
   {
-    if ([SUCore stringIsEqual:v5 to:@"AutoAssetDownloads"])
+    if ([SUCore stringIsEqual:categoryCopy to:@"AutoAssetDownloads"])
     {
-      v9 = [v7 autoDownloads];
+      autoDownloads = [v7 autoDownloads];
 LABEL_10:
-      v13 = v9;
+      v13 = autoDownloads;
       goto LABEL_11;
     }
 
-    if ([SUCore stringIsEqual:v5 to:@"v2AssetDownloads"])
+    if ([SUCore stringIsEqual:categoryCopy to:@"v2AssetDownloads"])
     {
-      v9 = [v7 v2Downloads];
+      autoDownloads = [v7 v2Downloads];
       goto LABEL_10;
     }
 

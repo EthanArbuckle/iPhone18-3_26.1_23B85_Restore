@@ -1,55 +1,55 @@
 @interface PKPaymentPreferenceCard
-- (PKPaymentPreferenceCard)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6;
-- (id)errorsForPreference:(id)a3;
-- (void)setErrors:(id)a3 forPreference:(id)a4;
+- (PKPaymentPreferenceCard)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only;
+- (id)errorsForPreference:(id)preference;
+- (void)setErrors:(id)errors forPreference:(id)preference;
 @end
 
 @implementation PKPaymentPreferenceCard
 
-- (PKPaymentPreferenceCard)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6
+- (PKPaymentPreferenceCard)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only
 {
   v7.receiver = self;
   v7.super_class = PKPaymentPreferenceCard;
-  return [(PKPaymentPreference *)&v7 initWithTitle:a3 preferences:a4 selectedIndex:a5 readOnly:a6];
+  return [(PKPaymentPreference *)&v7 initWithTitle:title preferences:preferences selectedIndex:index readOnly:only];
 }
 
-- (void)setErrors:(id)a3 forPreference:(id)a4
+- (void)setErrors:(id)errors forPreference:(id)preference
 {
-  v6 = a3;
-  v7 = a4;
+  errorsCopy = errors;
+  preferenceCopy = preference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    pass = preferenceCopy;
   }
 
   else
   {
-    v8 = [v7 pass];
+    pass = [preferenceCopy pass];
   }
 
-  v9 = v8;
-  v10 = [(PKPaymentPreference *)self errors];
+  v9 = pass;
+  errors = [(PKPaymentPreference *)self errors];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __51__PKPaymentPreferenceCard_setErrors_forPreference___block_invoke;
   v17[3] = &unk_1E79C9A40;
   v11 = v9;
   v18 = v11;
-  v12 = [v10 keysOfEntriesPassingTest:v17];
-  v13 = [v12 anyObject];
+  v12 = [errors keysOfEntriesPassingTest:v17];
+  anyObject = [v12 anyObject];
 
-  v14 = [(PKPaymentPreference *)self errors];
-  v15 = v14;
-  if (v13)
+  errors2 = [(PKPaymentPreference *)self errors];
+  v15 = errors2;
+  if (anyObject)
   {
-    [v14 setObject:v6 forKey:v13];
+    [errors2 setObject:errorsCopy forKey:anyObject];
   }
 
   else
   {
-    v16 = [v11 serialNumber];
-    [v15 setObject:v6 forKey:v16];
+    serialNumber = [v11 serialNumber];
+    [v15 setObject:errorsCopy forKey:serialNumber];
   }
 }
 
@@ -63,23 +63,23 @@ uint64_t __51__PKPaymentPreferenceCard_setErrors_forPreference___block_invoke(ui
   return v5;
 }
 
-- (id)errorsForPreference:(id)a3
+- (id)errorsForPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(PKPaymentPreference *)self errors];
+  preferenceCopy = preference;
+  errors = [(PKPaymentPreference *)self errors];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__PKPaymentPreferenceCard_errorsForPreference___block_invoke;
   v12[3] = &unk_1E79C9A40;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 keysOfEntriesPassingTest:v12];
-  v8 = [v7 anyObject];
+  v13 = preferenceCopy;
+  v6 = preferenceCopy;
+  v7 = [errors keysOfEntriesPassingTest:v12];
+  anyObject = [v7 anyObject];
 
-  if (v8)
+  if (anyObject)
   {
-    v9 = [(PKPaymentPreference *)self errors];
-    v10 = [v9 objectForKey:v8];
+    errors2 = [(PKPaymentPreference *)self errors];
+    v10 = [errors2 objectForKey:anyObject];
   }
 
   else

@@ -9,7 +9,7 @@
 
 - (uint64_t)_navigation_distanceUsesMetricSystem
 {
-  v1 = [a1 objectForKey:*MEMORY[0x1E695D9B8]];
+  v1 = [self objectForKey:*MEMORY[0x1E695D9B8]];
   v2 = [v1 isEqualToString:*MEMORY[0x1E695D9C0]];
 
   return v2;
@@ -17,7 +17,7 @@
 
 - (uint64_t)_navigation_useYardsForShortDistances
 {
-  v1 = [a1 objectForKey:*MEMORY[0x1E695D9B8]];
+  v1 = [self objectForKey:*MEMORY[0x1E695D9B8]];
   v2 = [v1 isEqualToString:*MEMORY[0x1E695D9C8]];
 
   return v2;
@@ -27,8 +27,8 @@
 {
   v4 = a3;
   v5 = MEMORY[0x1E695DF58];
-  v6 = [a1 countryCode];
-  v7 = [v5 _localeOverridesForLocaleWithCountryCode:v6];
+  countryCode = [self countryCode];
+  v7 = [v5 _localeOverridesForLocaleWithCountryCode:countryCode];
   v8 = [v7 objectForKey:v4];
 
   if (v8)
@@ -38,7 +38,7 @@
 
   else
   {
-    v9 = [a1 objectForKey:v4];
+    v9 = [self objectForKey:v4];
   }
 
   v10 = v9;

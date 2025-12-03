@@ -1,13 +1,13 @@
 @interface ButtonContainingCollectionReusableView
-- (_TtC16MusicApplication38ButtonContainingCollectionReusableView)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (_TtC16MusicApplication38ButtonContainingCollectionReusableView)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation ButtonContainingCollectionReusableView
 
-- (_TtC16MusicApplication38ButtonContainingCollectionReusableView)initWithCoder:(id)a3
+- (_TtC16MusicApplication38ButtonContainingCollectionReusableView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication38ButtonContainingCollectionReusableView_textDrawingCache;
   type metadata accessor for TextDrawing.Cache();
@@ -24,18 +24,18 @@
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_3A92A0(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_3A92A0(attributesCopy);
 
   return v6;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A8A24();
 }
 
@@ -45,12 +45,12 @@
   v7.super_class = type metadata accessor for ButtonContainingCollectionReusableView();
   v2 = v7.receiver;
   [(ButtonContainingCollectionReusableView *)&v7 tintColorDidChange];
-  v3 = [v2 tintColor];
-  if (v3)
+  tintColor = [v2 tintColor];
+  if (tintColor)
   {
-    v4 = v3;
+    v4 = tintColor;
     v5 = *&v2[OBJC_IVAR____TtC16MusicApplication38ButtonContainingCollectionReusableView_button];
-    [v5 setTitleColor:v3 forState:0];
+    [v5 setTitleColor:tintColor forState:0];
     v6 = [v4 colorWithAlphaComponent:0.2];
     [v5 setTitleColor:v6 forState:1];
   }

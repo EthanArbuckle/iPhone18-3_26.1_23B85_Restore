@@ -1,19 +1,19 @@
 @interface DESGaussianAlgorithmParameters
-- (BOOL)calculateAndVerifyPerChunkClippingBoundsIn:(id)a3 withOverallClippingBound:(double)a4;
-- (DESGaussianAlgorithmParameters)initWith:(id)a3 epsilon:(double)a4 delta:(double)a5 clippingBound:(double)a6 momentsAccountantParameters:(id)a7;
-- (DESGaussianAlgorithmParameters)initWith:(id)a3 recipe:(id)a4;
+- (BOOL)calculateAndVerifyPerChunkClippingBoundsIn:(id)in withOverallClippingBound:(double)bound;
+- (DESGaussianAlgorithmParameters)initWith:(id)with epsilon:(double)epsilon delta:(double)delta clippingBound:(double)bound momentsAccountantParameters:(id)parameters;
+- (DESGaussianAlgorithmParameters)initWith:(id)with recipe:(id)recipe;
 - (NSDictionary)parameters;
-- (void)addPerChunkParametersWith:(double)a3 numChunks:(unint64_t)a4;
+- (void)addPerChunkParametersWith:(double)with numChunks:(unint64_t)chunks;
 @end
 
 @implementation DESGaussianAlgorithmParameters
 
-- (DESGaussianAlgorithmParameters)initWith:(id)a3 recipe:(id)a4
+- (DESGaussianAlgorithmParameters)initWith:(id)with recipe:(id)recipe
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 recipeUserInfo];
-  v9 = [v8 objectForKeyedSubscript:@"maxNorm"];
+  withCopy = with;
+  recipeCopy = recipe;
+  recipeUserInfo = [recipeCopy recipeUserInfo];
+  v9 = [recipeUserInfo objectForKeyedSubscript:@"maxNorm"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,24 +22,24 @@
     v21 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [DESGaussianAlgorithmParameters initWith:v7 recipe:?];
+      [DESGaussianAlgorithmParameters initWith:recipeCopy recipe:?];
     }
 
     goto LABEL_22;
   }
 
-  v11 = [v7 recipeUserInfo];
-  v12 = [v11 objectForKeyedSubscript:@"maxNorm"];
+  recipeUserInfo2 = [recipeCopy recipeUserInfo];
+  v12 = [recipeUserInfo2 objectForKeyedSubscript:@"maxNorm"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [v7 recipeUserInfo];
-  v16 = [v15 objectForKeyedSubscript:@"DifferentialPrivacyParameters"];
+  recipeUserInfo3 = [recipeCopy recipeUserInfo];
+  v16 = [recipeUserInfo3 objectForKeyedSubscript:@"DifferentialPrivacyParameters"];
   objc_opt_class();
   v17 = objc_opt_isKindOfClass();
 
-  v18 = [v7 recipeUserInfo];
-  v19 = v18;
+  recipeUserInfo4 = [recipeCopy recipeUserInfo];
+  v19 = recipeUserInfo4;
   if (v17)
   {
     v20 = @"DifferentialPrivacyParameters";
@@ -47,7 +47,7 @@
 
   else
   {
-    v22 = [v18 objectForKeyedSubscript:@"LocalDifferentialPrivacyParameters"];
+    v22 = [recipeUserInfo4 objectForKeyedSubscript:@"LocalDifferentialPrivacyParameters"];
     objc_opt_class();
     v23 = objc_opt_isKindOfClass();
 
@@ -56,18 +56,18 @@
       v21 = +[DESLogging coreChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [DESGaussianAlgorithmParameters initWith:v7 recipe:?];
+        [DESGaussianAlgorithmParameters initWith:recipeCopy recipe:?];
       }
 
       goto LABEL_22;
     }
 
-    v18 = [v7 recipeUserInfo];
-    v19 = v18;
+    recipeUserInfo4 = [recipeCopy recipeUserInfo];
+    v19 = recipeUserInfo4;
     v20 = @"LocalDifferentialPrivacyParameters";
   }
 
-  v21 = [v18 objectForKeyedSubscript:v20];
+  v21 = [recipeUserInfo4 objectForKeyedSubscript:v20];
 
   v24 = [v21 objectForKeyedSubscript:@"mechanism"];
   objc_opt_class();
@@ -101,10 +101,10 @@
               v30 = +[DESLogging coreChannel];
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
-                [DESGaussianAlgorithmParameters initWith:v7 recipe:?];
+                [DESGaussianAlgorithmParameters initWith:recipeCopy recipe:?];
               }
 
-              v39 = 0;
+              selfCopy = 0;
               goto LABEL_30;
             }
 
@@ -119,8 +119,8 @@
           [v36 doubleValue];
           v38 = v37;
 
-          self = [(DESGaussianAlgorithmParameters *)self initWith:v6 epsilon:v30 delta:v35 clippingBound:v38 momentsAccountantParameters:v14];
-          v39 = self;
+          self = [(DESGaussianAlgorithmParameters *)self initWith:withCopy epsilon:v30 delta:v35 clippingBound:v38 momentsAccountantParameters:v14];
+          selfCopy = self;
 LABEL_30:
 
           goto LABEL_23;
@@ -134,7 +134,7 @@ LABEL_30:
       v40 = +[DESLogging coreChannel];
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
-        [DESGaussianAlgorithmParameters initWith:v7 recipe:?];
+        [DESGaussianAlgorithmParameters initWith:recipeCopy recipe:?];
       }
 
       goto LABEL_19;
@@ -148,24 +148,24 @@ LABEL_30:
   v40 = +[DESLogging coreChannel];
   if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
   {
-    [DESGaussianAlgorithmParameters initWith:v7 recipe:?];
+    [DESGaussianAlgorithmParameters initWith:recipeCopy recipe:?];
   }
 
 LABEL_19:
 
 LABEL_22:
-  v39 = 0;
+  selfCopy = 0;
 LABEL_23:
 
-  return v39;
+  return selfCopy;
 }
 
-- (DESGaussianAlgorithmParameters)initWith:(id)a3 epsilon:(double)a4 delta:(double)a5 clippingBound:(double)a6 momentsAccountantParameters:(id)a7
+- (DESGaussianAlgorithmParameters)initWith:(id)with epsilon:(double)epsilon delta:(double)delta clippingBound:(double)bound momentsAccountantParameters:(id)parameters
 {
-  v11 = a3;
+  withCopy = with;
   v66[6] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a7;
+  withCopy2 = with;
+  parametersCopy = parameters;
   v62.receiver = self;
   v62.super_class = DESGaussianAlgorithmParameters;
   v15 = [(DESGaussianAlgorithmParameters *)&v62 init];
@@ -175,15 +175,15 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v15->_epsilon = a4;
-  v15->_delta = a5;
-  v15->_clippingBound = a6;
+  v15->_epsilon = epsilon;
+  v15->_delta = delta;
+  v15->_clippingBound = bound;
   momentsAccountantParameters = v15->_momentsAccountantParameters;
   v15->_momentsAccountantParameters = 0;
 
-  if (!v14)
+  if (!parametersCopy)
   {
-    calculateSigmaFromEpsilonAndDeltaForUnitL2Norm(a4, a5);
+    calculateSigmaFromEpsilonAndDeltaForUnitL2Norm(epsilon, delta);
     v16->_sigma = sigma;
 LABEL_20:
     if ((*&sigma & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
@@ -191,17 +191,17 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    objc_storeStrong(&v16->_key, v11);
+    objc_storeStrong(&v16->_key, withCopy);
     v64[0] = @"GaussianFromSigma";
     v63[0] = @"Mechanism";
     v63[1] = @"OverallEpsilon";
-    v37 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v37 = [MEMORY[0x277CCABB0] numberWithDouble:epsilon];
     v64[1] = v37;
     v63[2] = @"OverallDelta";
-    v38 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v38 = [MEMORY[0x277CCABB0] numberWithDouble:delta];
     v64[2] = v38;
     v63[3] = @"OverallClippingBound";
-    v39 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    v39 = [MEMORY[0x277CCABB0] numberWithDouble:bound];
     v64[3] = v39;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:4];
 
@@ -219,7 +219,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v55 = v11;
+  v55 = withCopy;
   v66[0] = @"RenyiOrder";
   v66[1] = @"CohortSigma";
   v66[2] = @"NumIterations";
@@ -237,7 +237,7 @@ LABEL_25:
     v20 = v19;
     v21 = *v59;
     v56 = v16;
-    v57 = v13;
+    v57 = withCopy2;
     while (2)
     {
       v22 = v18;
@@ -249,11 +249,11 @@ LABEL_25:
         }
 
         v24 = *(*(&v58 + 1) + 8 * i);
-        v25 = [v14 objectForKeyedSubscript:v24];
+        v25 = [parametersCopy objectForKeyedSubscript:v24];
         if (v25)
         {
           v26 = v25;
-          v27 = [v14 objectForKeyedSubscript:v24];
+          v27 = [parametersCopy objectForKeyedSubscript:v24];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -272,14 +272,14 @@ LABEL_25:
         v18 = v22;
         v33 = v22;
         v16 = v56;
-        v13 = v57;
+        withCopy2 = v57;
         goto LABEL_18;
       }
 
       v18 = v22;
       v20 = [v22 countByEnumeratingWithState:&v58 objects:v65 count:16];
       v16 = v56;
-      v13 = v57;
+      withCopy2 = v57;
       if (v20)
       {
         continue;
@@ -289,19 +289,19 @@ LABEL_25:
     }
   }
 
-  v29 = [v14 dictionaryWithValuesForKeys:v18];
+  v29 = [parametersCopy dictionaryWithValuesForKeys:v18];
   v30 = v16->_momentsAccountantParameters;
   v16->_momentsAccountantParameters = v29;
 
   v31 = [(NSDictionary *)v16->_momentsAccountantParameters objectForKeyedSubscript:@"RenyiOrder"];
-  v32 = [v31 intValue];
+  intValue = [v31 intValue];
 
-  if ((v32 - 33) > 0xFFFFFFE0)
+  if ((intValue - 33) > 0xFFFFFFE0)
   {
     v45 = [(NSDictionary *)v16->_momentsAccountantParameters objectForKeyedSubscript:@"NumIterations"];
-    v46 = [v45 longLongValue];
+    longLongValue = [v45 longLongValue];
 
-    if (v46 <= 0)
+    if (longLongValue <= 0)
     {
       v33 = +[DESLogging coreChannel];
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -313,15 +313,15 @@ LABEL_25:
     }
 
     v47 = [(NSDictionary *)v16->_momentsAccountantParameters objectForKeyedSubscript:@"MaxCohortSize"];
-    v48 = [v47 longLongValue];
+    longLongValue2 = [v47 longLongValue];
 
     v49 = [(NSDictionary *)v16->_momentsAccountantParameters objectForKeyedSubscript:@"CurrentCohortSize"];
-    v50 = [v49 longLongValue];
+    longLongValue3 = [v49 longLongValue];
 
     v51 = [(NSDictionary *)v16->_momentsAccountantParameters objectForKeyedSubscript:@"PopulationSize"];
-    v52 = [v51 longLongValue];
+    longLongValue4 = [v51 longLongValue];
 
-    if (v48 < 1 || v50 < 1 || v52 < 1 || v50 > v48 || v48 > v52)
+    if (longLongValue2 < 1 || longLongValue3 < 1 || longLongValue4 < 1 || longLongValue3 > longLongValue2 || longLongValue2 > longLongValue4)
     {
       v33 = +[DESLogging coreChannel];
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -337,7 +337,7 @@ LABEL_25:
     v16->_sigma = v54;
 
     sigma = v16->_sigma;
-    v11 = v55;
+    withCopy = v55;
     goto LABEL_20;
   }
 
@@ -357,40 +357,40 @@ LABEL_26:
   return v36;
 }
 
-- (void)addPerChunkParametersWith:(double)a3 numChunks:(unint64_t)a4
+- (void)addPerChunkParametersWith:(double)with numChunks:(unint64_t)chunks
 {
   [(DESGaussianAlgorithmParameters *)self sigma];
-  if (a4 != 1)
+  if (chunks != 1)
   {
-    v7 = v7 * self->_clippingBound / a3;
+    v7 = v7 * self->_clippingBound / with;
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
   [(NSMutableDictionary *)self->_parameters setObject:v8 forKeyedSubscript:@"SigmaAfterNormalizing"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:with];
   [(NSMutableDictionary *)self->_parameters setObject:v9 forKeyedSubscript:@"ClippingBound"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:chunks];
   [(NSMutableDictionary *)self->_parameters setObject:v10 forKeyedSubscript:@"NumChunks"];
 }
 
-- (BOOL)calculateAndVerifyPerChunkClippingBoundsIn:(id)a3 withOverallClippingBound:(double)a4
+- (BOOL)calculateAndVerifyPerChunkClippingBoundsIn:(id)in withOverallClippingBound:(double)bound
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 count];
+  inCopy = in;
+  v7 = [inCopy count];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = inCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v29;
-    v12 = a4 / sqrt(v7);
+    v12 = bound / sqrt(v7);
     v13 = 0.0;
     v14 = 1;
     do
@@ -403,9 +403,9 @@ LABEL_26:
         }
 
         v16 = *(*(&v28 + 1) + 8 * i);
-        v17 = [v16 clippingBound];
-        v18 = v17;
-        if (v17 && ([v17 doubleValue], v19 != 0.0))
+        clippingBound = [v16 clippingBound];
+        v18 = clippingBound;
+        if (clippingBound && ([clippingBound doubleValue], v19 != 0.0))
         {
           [v18 doubleValue];
           [v18 doubleValue];
@@ -441,7 +441,7 @@ LABEL_26:
     v22 = 0.0;
   }
 
-  if (almostEqualDBLWithAccuracy(v22, a4, 0.0001))
+  if (almostEqualDBLWithAccuracy(v22, bound, 0.0001))
   {
 LABEL_16:
     v23 = 1;
@@ -455,7 +455,7 @@ LABEL_16:
     *buf = 134218498;
     v33 = v22;
     v34 = 2048;
-    v35 = a4;
+    boundCopy = bound;
     v36 = 2112;
     v37 = v27;
     _os_log_error_impl(&dword_248FF7000, v24, OS_LOG_TYPE_ERROR, "Per chunk clipping bound root sum squared does not match overall clipping bound: %f vs. %f, for %@", buf, 0x20u);

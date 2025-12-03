@@ -1,34 +1,34 @@
 @interface IDSGetDependentRegistrationsCenter
-- (BOOL)getDependentRegistrations:(id)a3 completionBlock:(id)a4;
-- (IDSGetDependentRegistrationsCenter)initWithPushHandler:(id)a3 lockdownManager:(id)a4 heartbeatCenter:(id)a5 ftNetworkSupport:(id)a6 sendMessageHandlerBlock:(id)a7 messageResponseHandlerBlock:(id)a8;
-- (void)_submitGDRReponseToAWDWithResultCode:(int64_t)a3 error:(id)a4;
+- (BOOL)getDependentRegistrations:(id)registrations completionBlock:(id)block;
+- (IDSGetDependentRegistrationsCenter)initWithPushHandler:(id)handler lockdownManager:(id)manager heartbeatCenter:(id)center ftNetworkSupport:(id)support sendMessageHandlerBlock:(id)block messageResponseHandlerBlock:(id)handlerBlock;
+- (void)_submitGDRReponseToAWDWithResultCode:(int64_t)code error:(id)error;
 @end
 
 @implementation IDSGetDependentRegistrationsCenter
 
-- (IDSGetDependentRegistrationsCenter)initWithPushHandler:(id)a3 lockdownManager:(id)a4 heartbeatCenter:(id)a5 ftNetworkSupport:(id)a6 sendMessageHandlerBlock:(id)a7 messageResponseHandlerBlock:(id)a8
+- (IDSGetDependentRegistrationsCenter)initWithPushHandler:(id)handler lockdownManager:(id)manager heartbeatCenter:(id)center ftNetworkSupport:(id)support sendMessageHandlerBlock:(id)block messageResponseHandlerBlock:(id)handlerBlock
 {
-  v27 = a3;
-  v26 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  handlerCopy = handler;
+  managerCopy = manager;
+  centerCopy = center;
+  supportCopy = support;
+  blockCopy = block;
+  handlerBlockCopy = handlerBlock;
   v28.receiver = self;
   v28.super_class = IDSGetDependentRegistrationsCenter;
   v19 = [(IDSGetDependentRegistrationsCenter *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_pushHandler, a3);
-    objc_storeStrong(&v20->_lockdownManager, a4);
-    objc_storeStrong(&v20->_heartbeatCenter, a5);
-    objc_storeStrong(&v20->_ftNetworkSupport, a6);
-    v21 = objc_retainBlock(v17);
+    objc_storeStrong(&v19->_pushHandler, handler);
+    objc_storeStrong(&v20->_lockdownManager, manager);
+    objc_storeStrong(&v20->_heartbeatCenter, center);
+    objc_storeStrong(&v20->_ftNetworkSupport, support);
+    v21 = objc_retainBlock(blockCopy);
     sendMessageHandler = v20->_sendMessageHandler;
     v20->_sendMessageHandler = v21;
 
-    v23 = objc_retainBlock(v18);
+    v23 = objc_retainBlock(handlerBlockCopy);
     messageResponseHandler = v20->_messageResponseHandler;
     v20->_messageResponseHandler = v23;
   }
@@ -36,22 +36,22 @@
   return v20;
 }
 
-- (BOOL)getDependentRegistrations:(id)a3 completionBlock:(id)a4
+- (BOOL)getDependentRegistrations:(id)registrations completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  registrationsCopy = registrations;
+  blockCopy = block;
   v8 = objc_autoreleasePoolPush();
-  if (v6)
+  if (registrationsCopy)
   {
-    v9 = [v6 authenticationCert];
+    authenticationCert = [registrationsCopy authenticationCert];
 
-    if (v9)
+    if (authenticationCert)
     {
       if (![(IMLockdownManager *)self->_lockdownManager isExpired])
       {
-        v16 = [v7 copy];
+        v16 = [blockCopy copy];
 
-        v17 = [v6 idsUserID];
+        idsUserID = [registrationsCopy idsUserID];
         currentGetDependentRegistrations = self->_currentGetDependentRegistrations;
         if (!currentGetDependentRegistrations)
         {
@@ -82,8 +82,8 @@
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [*(*(&v59 + 1) + 8 * i) idsUserID];
-              v27 = [v17 isEqualToIgnoringCase:v26];
+              idsUserID2 = [*(*(&v59 + 1) + 8 * i) idsUserID];
+              v27 = [idsUserID isEqualToIgnoringCase:idsUserID2];
 
               if (v27)
               {
@@ -105,12 +105,12 @@
         v28 = 0;
 LABEL_29:
 
-        [(NSMutableSet *)self->_currentGetDependentRegistrations addObject:v6];
+        [(NSMutableSet *)self->_currentGetDependentRegistrations addObject:registrationsCopy];
         v29 = +[IMRGLog registration];
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v64 = v6;
+          v64 = registrationsCopy;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Adding registration %p to getDependent queue", buf, 0xCu);
         }
 
@@ -126,16 +126,16 @@ LABEL_29:
             currentGetDependentRegistrationBlocks = self->_currentGetDependentRegistrationBlocks;
           }
 
-          v33 = [v6 guid];
-          v34 = [(NSMutableDictionary *)currentGetDependentRegistrationBlocks objectForKey:v33];
+          guid = [registrationsCopy guid];
+          v34 = [(NSMutableDictionary *)currentGetDependentRegistrationBlocks objectForKey:guid];
 
           if (![v34 count])
           {
             v35 = objc_alloc_init(NSMutableArray);
 
             v36 = self->_currentGetDependentRegistrationBlocks;
-            v37 = [v6 guid];
-            [(NSMutableDictionary *)v36 setObject:v35 forKey:v37];
+            guid2 = [registrationsCopy guid];
+            [(NSMutableDictionary *)v36 setObject:v35 forKey:guid2];
 
             v34 = v35;
           }
@@ -160,7 +160,7 @@ LABEL_29:
           if (v42)
           {
             *buf = 138412290;
-            v64 = v17;
+            v64 = idsUserID;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "We have an outstanding getDependentRegistrations request for userID: %@", buf, 0xCu);
           }
         }
@@ -170,26 +170,26 @@ LABEL_29:
           if (v42)
           {
             *buf = 138412290;
-            v64 = v6;
+            v64 = registrationsCopy;
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Requesting dependent device info for registration: %@", buf, 0xCu);
           }
 
           v41 = objc_alloc_init(IDSGetDependentRegistrationMessage);
-          v43 = sub_10001F5A0(v6);
+          v43 = sub_10001F5A0(registrationsCopy);
           [v41 setDSAuthID:v43];
 
-          v44 = [(IDSPushHandler *)self->_pushHandler pushToken];
-          [v41 setPushToken:v44];
+          pushToken = [(IDSPushHandler *)self->_pushHandler pushToken];
+          [v41 setPushToken:pushToken];
 
-          v45 = [v6 idsUserID];
-          v46 = [v6 authenticationCert];
+          idsUserID3 = [registrationsCopy idsUserID];
+          authenticationCert2 = [registrationsCopy authenticationCert];
           v47 = +[IDSRegistrationKeyManager sharedInstance];
-          v48 = [v47 identityPrivateKey];
+          identityPrivateKey = [v47 identityPrivateKey];
           v49 = +[IDSRegistrationKeyManager sharedInstance];
-          -[NSObject addAuthUserID:certificate:privateKey:publicKey:](v41, "addAuthUserID:certificate:privateKey:publicKey:", v45, v46, v48, [v49 identityPublicKey]);
+          -[NSObject addAuthUserID:certificate:privateKey:publicKey:](v41, "addAuthUserID:certificate:privateKey:publicKey:", idsUserID3, authenticationCert2, identityPrivateKey, [v49 identityPublicKey]);
 
           IDSAssignPushIdentityToMessage();
-          v50 = [NSDictionary dictionaryWithObject:v6 forKey:@"info"];
+          v50 = [NSDictionary dictionaryWithObject:registrationsCopy forKey:@"info"];
           [v41 setUserInfo:v50];
 
           v58[0] = _NSConcreteStackBlock;
@@ -202,11 +202,11 @@ LABEL_29:
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
             v52 = +[FTDeviceSupport sharedInstance];
-            v53 = [v52 deviceInformationString];
+            deviceInformationString = [v52 deviceInformationString];
             *buf = 138412546;
-            v64 = v6;
+            v64 = registrationsCopy;
             v65 = 2112;
-            v66 = v53;
+            v66 = deviceInformationString;
             _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "Sending get dependent registration request: %@  (Environment: %@)", buf, 0x16u);
           }
 
@@ -228,9 +228,9 @@ LABEL_29:
       {
 LABEL_13:
 
-        if (v7)
+        if (blockCopy)
         {
-          (*(v7 + 2))(v7, v6, 1, 0, 0);
+          (*(blockCopy + 2))(blockCopy, registrationsCopy, 1, 0, 0);
           goto LABEL_15;
         }
 
@@ -252,7 +252,7 @@ LABEL_13:
       }
 
       *buf = 138412290;
-      v64 = v6;
+      v64 = registrationsCopy;
       v11 = "Not getting dependent registrations, we're not authenticated for: %@";
       v12 = v10;
       v13 = 12;
@@ -269,12 +269,12 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not getting dependent registrations, we don't have a registration", buf, 2u);
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0, 1, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 1, 0, 0);
 LABEL_15:
     v15 = 0;
-    v16 = v7;
+    v16 = blockCopy;
 LABEL_49:
 
     goto LABEL_50;
@@ -288,18 +288,18 @@ LABEL_50:
   return v15;
 }
 
-- (void)_submitGDRReponseToAWDWithResultCode:(int64_t)a3 error:(id)a4
+- (void)_submitGDRReponseToAWDWithResultCode:(int64_t)code error:(id)error
 {
-  v28 = a4;
-  v6 = [v28 domain];
-  LODWORD(v7) = [v6 isEqualToString:NSPOSIXErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  LODWORD(v7) = [domain isEqualToString:NSPOSIXErrorDomain];
 
-  v8 = [v28 domain];
+  domain2 = [errorCopy domain];
   v9 = 1;
-  if (([v8 isEqualToString:NSURLErrorDomain] & 1) == 0)
+  if (([domain2 isEqualToString:NSURLErrorDomain] & 1) == 0)
   {
-    v10 = [v28 domain];
-    v9 = [v10 isEqualToString:kCFErrorDomainCFNetwork];
+    domain3 = [errorCopy domain];
+    v9 = [domain3 isEqualToString:kCFErrorDomainCFNetwork];
   }
 
   if ([(FTNetworkSupport *)self->_ftNetworkSupport wiFiActiveAndReachable])
@@ -312,7 +312,7 @@ LABEL_50:
     v11 = 1;
   }
 
-  sub_100022FD8(a3);
+  sub_100022FD8(code);
   sub_1000236A8(-1);
   v12 = v9 | v7;
   v13 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
@@ -329,14 +329,14 @@ LABEL_8:
 
   else
   {
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v28 code]);
+    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     if (!v9)
     {
       goto LABEL_8;
     }
   }
 
-  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v28 code]);
+  v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
 LABEL_11:
   if ((v7 & 1) == 0)
   {
@@ -350,16 +350,16 @@ LABEL_11:
   }
 
   v27 = v9 | v7;
-  v16 = a3;
+  codeCopy = code;
   v17 = v7;
   v7 = v11;
-  v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v28 code]);
+  v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
   v13 = &kIDSListenerCapConsumesLaunchOnDemandInvitationUpdates_ptr;
   FTAWDLogRegistrationGetDependentRegistrations();
 
   v11 = v7;
   LOBYTE(v7) = v17;
-  a3 = v16;
+  code = codeCopy;
   v12 = v27;
   if (v9)
   {
@@ -372,7 +372,7 @@ LABEL_16:
   }
 
   v19 = [IDSRegistrationOperationGetDependentRegistrationsMetric alloc];
-  v20 = sub_100022FD8(a3);
+  v20 = sub_100022FD8(code);
   v21 = sub_1000236A8(-1);
   if (v12)
   {
@@ -387,18 +387,18 @@ LABEL_20:
 
   else
   {
-    v22 = [v13[476] numberWithInteger:{objc_msgSend(v28, "code")}];
+    v22 = [v13[476] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     if (!v9)
     {
       goto LABEL_20;
     }
   }
 
-  v23 = [v13[476] numberWithInteger:{objc_msgSend(v28, "code")}];
+  v23 = [v13[476] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
 LABEL_23:
   if ((v7 & 1) == 0)
   {
-    v25 = [v19 initWithGuid:0 success:a3 == 0 connectionType:v11 resultCode:v20 registrationType:v21 genericError:v22 URLError:v23 POSIXError:0];
+    v25 = [v19 initWithGuid:0 success:code == 0 connectionType:v11 resultCode:v20 registrationType:v21 genericError:v22 URLError:v23 POSIXError:0];
     if (!v9)
     {
       goto LABEL_28;
@@ -407,8 +407,8 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v28 code]);
-  v25 = [v19 initWithGuid:0 success:a3 == 0 connectionType:v11 resultCode:v20 registrationType:v21 genericError:v22 URLError:v23 POSIXError:v24];
+  v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+  v25 = [v19 initWithGuid:0 success:code == 0 connectionType:v11 resultCode:v20 registrationType:v21 genericError:v22 URLError:v23 POSIXError:v24];
 
   if (v9)
   {

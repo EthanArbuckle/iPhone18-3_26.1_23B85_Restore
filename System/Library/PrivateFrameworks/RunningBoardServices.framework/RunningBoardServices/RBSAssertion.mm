@@ -1,47 +1,47 @@
 @interface RBSAssertion
-- (BOOL)_clientInvalidateWithError:(uint64_t)a1;
-- (BOOL)acquireWithError:(id *)a3;
-- (BOOL)invalidateSyncWithError:(id *)a3;
+- (BOOL)_clientInvalidateWithError:(uint64_t)error;
+- (BOOL)acquireWithError:(id *)error;
+- (BOOL)invalidateSyncWithError:(id *)error;
 - (NSArray)attributes;
 - (NSString)explanation;
 - (RBSAssertion)init;
-- (RBSAssertion)initWithExplanation:(id)a3 target:(id)a4 attributes:(id)a5;
+- (RBSAssertion)initWithExplanation:(id)explanation target:(id)target attributes:(id)attributes;
 - (RBSAssertionDescriptor)descriptor;
 - (RBSAssertionIdentifier)identifier;
 - (RBSTarget)target;
-- (id)_initWithDescriptor:(id)a3 service:(id)a4;
-- (id)_initWithServerValidatedDescriptor:(id)a3;
-- (id)_initWithServerValidatedDescriptor:(id)a3 service:(id)a4;
+- (id)_initWithDescriptor:(id)descriptor service:(id)service;
+- (id)_initWithServerValidatedDescriptor:(id)descriptor;
+- (id)_initWithServerValidatedDescriptor:(id)descriptor service:(id)service;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)state;
-- (void)_serverDidChangeIdentifier:(uint64_t)a1;
-- (void)_serverInvalidateWithError:(id)a3;
+- (void)_serverDidChangeIdentifier:(uint64_t)identifier;
+- (void)_serverInvalidateWithError:(id)error;
 - (void)_serverWillInvalidate;
-- (void)acquireWithInvalidationHandler:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)acquireWithInvalidationHandler:(id)handler;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
-- (void)setExpirationWarningHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setExpirationWarningHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation RBSAssertion
 
 - (RBSAssertionIdentifier)identifier
 {
-  v2 = [(RBSAssertion *)self descriptor];
-  v3 = [v2 identifier];
+  descriptor = [(RBSAssertion *)self descriptor];
+  identifier = [descriptor identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1();
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v2 = [v1 debugDescription];
-  [v3 handleFailureInMethod:v0 object:v1 file:@"RBSAssertion.m" lineNumber:218 description:{@"BUG IN CLIENT OF RUNNINGBOARD: Dealloc called before invalidate for assertion %@", v2}];
+  [currentHandler handleFailureInMethod:v0 object:v1 file:@"RBSAssertion.m" lineNumber:218 description:{@"BUG IN CLIENT OF RUNNINGBOARD: Dealloc called before invalidate for assertion %@", v2}];
 }
 
 - (RBSAssertionDescriptor)descriptor
@@ -63,10 +63,10 @@
 
 - (NSString)explanation
 {
-  v2 = [(RBSAssertion *)self descriptor];
-  v3 = [v2 explanation];
+  descriptor = [(RBSAssertion *)self descriptor];
+  explanation = [descriptor explanation];
 
-  return v3;
+  return explanation;
 }
 
 - (id)description
@@ -80,13 +80,13 @@
 
 - (void)_serverWillInvalidate
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __37__RBSAssertion__serverWillInvalidate__block_invoke;
     v1[3] = &unk_1E7276440;
-    v1[4] = a1;
+    v1[4] = self;
     [RBSWorkloop performCallout:v1];
   }
 }
@@ -161,29 +161,29 @@ void __37__RBSAssertion__serverWillInvalidate__block_invoke(uint64_t a1)
 
 - (NSArray)attributes
 {
-  v2 = [(RBSAssertion *)self descriptor];
-  v3 = [v2 attributes];
+  descriptor = [(RBSAssertion *)self descriptor];
+  attributes = [descriptor attributes];
 
-  return v3;
+  return attributes;
 }
 
 - (RBSAssertion)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:56 description:@"-init is not allowed on RBSAssertion"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:56 description:@"-init is not allowed on RBSAssertion"];
 
   return 0;
 }
 
-- (RBSAssertion)initWithExplanation:(id)a3 target:(id)a4 attributes:(id)a5
+- (RBSAssertion)initWithExplanation:(id)explanation target:(id)target attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  explanationCopy = explanation;
+  targetCopy = target;
+  attributesCopy = attributes;
+  if (!targetCopy)
   {
     [RBSAssertion initWithExplanation:target:attributes:];
-    if (v8)
+    if (explanationCopy)
     {
       goto LABEL_3;
     }
@@ -193,20 +193,20 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!explanationCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v11 = [RBSAssertionDescriptor descriptorWithIdentifier:0 target:v9 explanation:v8 attributes:v10];
+  v11 = [RBSAssertionDescriptor descriptorWithIdentifier:0 target:targetCopy explanation:explanationCopy attributes:attributesCopy];
   v12 = +[RBSConnection sharedInstance];
   v13 = [(RBSAssertion *)self _initWithDescriptor:v11 service:v12];
 
   return v13;
 }
 
-- (BOOL)acquireWithError:(id *)a3
+- (BOOL)acquireWithError:(id *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -246,9 +246,9 @@ LABEL_14:
   }
 
   observers = [(RBSAssertion *)self descriptor];
-  v8 = [observers target];
+  target = [observers target];
 
-  if (!v8)
+  if (!target)
   {
     self->_state = 2;
     v16 = MEMORY[0x1E696ABC0];
@@ -264,9 +264,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [observers explanation];
+  explanation = [observers explanation];
 
-  if (!v9)
+  if (!explanation)
   {
     self->_state = 2;
     v16 = MEMORY[0x1E696ABC0];
@@ -306,26 +306,26 @@ LABEL_15:
 
 LABEL_16:
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (error)
   {
     v23 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v24 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (void)acquireWithInvalidationHandler:(id)a3
+- (void)acquireWithInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke;
   v6[3] = &unk_1E72763F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [RBSWorkloop performBackgroundWork:v6];
 }
 
@@ -362,15 +362,15 @@ void __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)invalidateSyncWithError:(id *)a3
+- (BOOL)invalidateSyncWithError:(id *)error
 {
   v6 = 0;
   [(RBSAssertion *)self _clientInvalidateWithError:?];
   v4 = v6;
-  if (a3)
+  if (error)
   {
     v4 = v6;
-    *a3 = v4;
+    *error = v4;
   }
 
   return v4 == 0;
@@ -378,16 +378,16 @@ void __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke(uint64_t a
 
 - (RBSTarget)target
 {
-  v2 = [(RBSAssertion *)self descriptor];
-  v3 = [v2 target];
+  descriptor = [(RBSAssertion *)self descriptor];
+  target = [descriptor target];
 
-  return v3;
+  return target;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [RBSAssertion addObserver:];
   }
@@ -401,61 +401,61 @@ void __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke(uint64_t a
       v5[1] = 3221225472;
       v5[2] = __28__RBSAssertion_addObserver___block_invoke;
       v5[3] = &unk_1E7276418;
-      v6 = v4;
-      v7 = self;
+      v6 = observerCopy;
+      selfCopy = self;
       [RBSWorkloop performCallout:v5];
     }
   }
 
   else
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [RBSAssertion removeObserver:];
   }
 
   os_unfair_lock_lock_with_options();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   if (self->_state)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:208 description:@"can only call before acquisition"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:208 description:@"can only call before acquisition"];
   }
 
-  v5 = [v8 copy];
+  v5 = [handlerCopy copy];
   invalidationHandler = self->_invalidationHandler;
   self->_invalidationHandler = v5;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setExpirationWarningHandler:(id)a3
+- (void)setExpirationWarningHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(RBSAssertion *)self attributes];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  attributes = [(RBSAssertion *)self attributes];
+  v7 = [attributes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -465,7 +465,7 @@ void __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke(uint64_t a
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -481,7 +481,7 @@ void __47__RBSAssertion_acquireWithInvalidationHandler___block_invoke(uint64_t a
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [attributes countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -495,17 +495,17 @@ LABEL_12:
 
   if (self->_state)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:254 description:@"can only call before acquisition"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:254 description:@"can only call before acquisition"];
   }
 
   if ((v7 & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:255 description:@"this assertion does not contain an applicable RBSDurationAttribute"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"RBSAssertion.m" lineNumber:255 description:@"this assertion does not contain an applicable RBSDurationAttribute"];
   }
 
-  v12 = [v5 copy];
+  v12 = [handlerCopy copy];
   warningHandler = self->_warningHandler;
   self->_warningHandler = v12;
 
@@ -528,24 +528,24 @@ LABEL_12:
     v6 = off_1E7276460[state];
   }
 
-  v7 = [(RBSAssertion *)self descriptor];
-  v8 = [v3 initWithFormat:@"<%@:%p| state:%@ descriptor:<%@>", v4, self, v6, v7];
+  descriptor = [(RBSAssertion *)self descriptor];
+  v8 = [v3 initWithFormat:@"<%@:%p| state:%@ descriptor:<%@>", v4, self, v6, descriptor];
 
   return v8;
 }
 
-- (id)_initWithServerValidatedDescriptor:(id)a3 service:(id)a4
+- (id)_initWithServerValidatedDescriptor:(id)descriptor service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  descriptorCopy = descriptor;
+  serviceCopy = service;
+  identifier = [descriptorCopy identifier];
 
-  if (!v8)
+  if (!identifier)
   {
     [RBSAssertion _initWithServerValidatedDescriptor:service:];
   }
 
-  v9 = [(RBSAssertion *)self _initWithDescriptor:v6 service:v7];
+  v9 = [(RBSAssertion *)self _initWithDescriptor:descriptorCopy service:serviceCopy];
   v10 = v9;
   if (v9)
   {
@@ -555,43 +555,43 @@ LABEL_12:
   return v10;
 }
 
-- (id)_initWithServerValidatedDescriptor:(id)a3
+- (id)_initWithServerValidatedDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = +[RBSConnection sharedInstance];
-  v6 = [(RBSAssertion *)self _initWithServerValidatedDescriptor:v4 service:v5];
+  v6 = [(RBSAssertion *)self _initWithServerValidatedDescriptor:descriptorCopy service:v5];
 
   return v6;
 }
 
-- (id)_initWithDescriptor:(id)a3 service:(id)a4
+- (id)_initWithDescriptor:(id)descriptor service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = RBSAssertion;
   v8 = [(RBSAssertion *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v8->_observers;
-    v8->_observers = v9;
+    v8->_observers = weakObjectsHashTable;
 
-    v11 = [v6 copy];
+    v11 = [descriptorCopy copy];
     descriptor = v8->_descriptor;
     v8->_descriptor = v11;
 
     v8->_state = 0;
-    objc_storeStrong(&v8->_service, a4);
+    objc_storeStrong(&v8->_service, service);
     *&v8->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v8;
 }
 
-- (void)_serverInvalidateWithError:(id)a3
+- (void)_serverInvalidateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   state = self->_state;
   self->_state = 2;
@@ -603,7 +603,7 @@ LABEL_12:
     v6[2] = __43__RBSAssertion__serverInvalidateWithError___block_invoke;
     v6[3] = &unk_1E7276418;
     v6[4] = self;
-    v7 = v4;
+    v7 = errorCopy;
     [RBSWorkloop performCallout:v6];
   }
 }
@@ -672,61 +672,61 @@ void __43__RBSAssertion__serverInvalidateWithError___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_clientInvalidateWithError:(uint64_t)a1
+- (BOOL)_clientInvalidateWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     os_unfair_lock_lock_with_options();
-    v4 = *(a1 + 48);
-    *(a1 + 48) = 2;
-    v5 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    v4 = *(error + 48);
+    *(error + 48) = 2;
+    v5 = *(error + 16);
+    *(error + 16) = 0;
 
-    v6 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v6 = *(error + 24);
+    *(error + 24) = 0;
 
-    v7 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v7 = *(error + 8);
+    *(error + 8) = 0;
 
-    os_unfair_lock_unlock((a1 + 56));
+    os_unfair_lock_unlock((error + 56));
     if (v4 == 1)
     {
-      [*(a1 + 40) invalidateAssertion:a1 error:a2];
+      [*(error + 40) invalidateAssertion:error error:a2];
     }
   }
 
-  return a1 != 0;
+  return error != 0;
 }
 
-- (void)_serverDidChangeIdentifier:(uint64_t)a1
+- (void)_serverDidChangeIdentifier:(uint64_t)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     v8 = v3;
     if (!v3)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_0();
       [v7 handleFailureInMethod:@"identifier != nil" object:? file:? lineNumber:? description:?];
     }
 
     os_unfair_lock_lock_with_options();
-    if (*(a1 + 48) == 1)
+    if (*(identifier + 48) == 1)
     {
-      os_unfair_lock_lock((a1 + 60));
-      v4 = [*(a1 + 32) copyWithIdentifier:v8];
-      v5 = *(a1 + 32);
-      *(a1 + 32) = v4;
+      os_unfair_lock_lock((identifier + 60));
+      v4 = [*(identifier + 32) copyWithIdentifier:v8];
+      v5 = *(identifier + 32);
+      *(identifier + 32) = v4;
 
-      os_unfair_lock_unlock((a1 + 60));
-      os_unfair_lock_unlock((a1 + 56));
+      os_unfair_lock_unlock((identifier + 60));
+      os_unfair_lock_unlock((identifier + 56));
     }
 
     else
     {
-      os_unfair_lock_unlock((a1 + 56));
-      [*(a1 + 40) invalidateAssertionWithIdentifier:v8 error:0];
+      os_unfair_lock_unlock((identifier + 56));
+      [*(identifier + 40) invalidateAssertionWithIdentifier:v8 error:0];
     }
 
     v3 = v8;

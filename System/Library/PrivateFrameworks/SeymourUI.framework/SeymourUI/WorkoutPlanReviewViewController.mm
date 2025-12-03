@@ -1,17 +1,17 @@
 @interface WorkoutPlanReviewViewController
-- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WorkoutPlanReviewViewController
 
-- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31WorkoutPlanReviewViewController_visibility) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31WorkoutPlanReviewViewController_resignActiveObserver) = 0;
@@ -22,17 +22,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanReviewViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanReviewViewController *)&v7 viewDidAppear:v3];
+  [(WorkoutPlanReviewViewController *)&v7 viewDidAppear:appearCopy];
   type metadata accessor for WorkoutPlanReviewPageDataProvider(0);
   sub_20B79AE9C(&qword_27C7651A8, 255, type metadata accessor for WorkoutPlanReviewPageDataProvider);
   sub_20C138C54();
@@ -41,19 +41,19 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  WorkoutPlanReviewViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  WorkoutPlanReviewViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(WorkoutPlanReviewViewController *)&v7 viewDidDisappear:v3];
+  [(WorkoutPlanReviewViewController *)&v7 viewDidDisappear:disappearCopy];
   sub_20B79AE9C(&qword_27C7651B0, v5, type metadata accessor for WorkoutPlanReviewViewController);
   sub_20B79AE9C(&qword_27C7651B8, v6, type metadata accessor for WorkoutPlanReviewViewController);
   sub_20C139374();
@@ -84,7 +84,7 @@
   sub_20B7983E8();
 }
 
-- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI31WorkoutPlanReviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,15 +1,15 @@
 @interface DEDAnalytics
 + (id)log;
-+ (void)didCheckInDeferredExtensionsWithCount:(unint64_t)a3;
-+ (void)didCompleteBugSessionWithState:(int64_t)a3;
-+ (void)didCreateBugSessionForApp:(id)a3;
++ (void)didCheckInDeferredExtensionsWithCount:(unint64_t)count;
++ (void)didCompleteBugSessionWithState:(int64_t)state;
++ (void)didCreateBugSessionForApp:(id)app;
 + (void)didStartDaemon;
-+ (void)didStartExtensionWithIdentifier:(id)a3;
-+ (void)extensionDidScheduleExtensionWithIdentifier:(id)a3 delay:(unint64_t)a4;
-+ (void)extensionWithIdentifier:(id)a3 didCompleteWithFileCount:(unint64_t)a4 bytesCollected:(unint64_t)a5 duration:(unint64_t)a6 errorCode:(int64_t)a7;
-+ (void)finisherDidCompleteWithDuration:(unint64_t)a3 uploadedByteCount:(unint64_t)a4 usingFinishingMove:(int64_t)a5 withState:(int64_t)a6;
-+ (void)finisherDidStartWithFileCount:(unint64_t)a3 expectedByteUploadCount:(unint64_t)a4 finishingMove:(int64_t)a5;
-+ (void)logBugSessionStartWithDeviceType:(id)a3 isRemote:(BOOL)a4 success:(BOOL)a5 errorCode:(int64_t)a6;
++ (void)didStartExtensionWithIdentifier:(id)identifier;
++ (void)extensionDidScheduleExtensionWithIdentifier:(id)identifier delay:(unint64_t)delay;
++ (void)extensionWithIdentifier:(id)identifier didCompleteWithFileCount:(unint64_t)count bytesCollected:(unint64_t)collected duration:(unint64_t)duration errorCode:(int64_t)code;
++ (void)finisherDidCompleteWithDuration:(unint64_t)duration uploadedByteCount:(unint64_t)count usingFinishingMove:(int64_t)move withState:(int64_t)state;
++ (void)finisherDidStartWithFileCount:(unint64_t)count expectedByteUploadCount:(unint64_t)uploadCount finishingMove:(int64_t)move;
++ (void)logBugSessionStartWithDeviceType:(id)type isRemote:(BOOL)remote success:(BOOL)success errorCode:(int64_t)code;
 @end
 
 @implementation DEDAnalytics
@@ -37,7 +37,7 @@ void __19__DEDAnalytics_log__block_invoke()
 + (void)didStartDaemon
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [a1 log];
+  v2 = [self log];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
   {
     v5 = 136446210;
@@ -51,10 +51,10 @@ void __19__DEDAnalytics_log__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)didCheckInDeferredExtensionsWithCount:(unint64_t)a3
++ (void)didCheckInDeferredExtensionsWithCount:(unint64_t)count
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [a1 log];
+  v4 = [self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 136446210;
@@ -63,17 +63,17 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v5 = objc_opt_new();
-  [v5 setNumtasks:a3];
+  [v5 setNumtasks:count];
   AWDPostMetric();
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)didCreateBugSessionForApp:(id)a3
++ (void)didCreateBugSessionForApp:(id)app
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 log];
+  appCopy = app;
+  v5 = [self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 136446210;
@@ -82,17 +82,17 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v6 = objc_opt_new();
-  [v6 setHostapp:v4];
+  [v6 setHostapp:appCopy];
 
   AWDPostMetric();
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)didStartExtensionWithIdentifier:(id)a3
++ (void)didStartExtensionWithIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 log];
+  identifierCopy = identifier;
+  v5 = [self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 136446210;
@@ -101,17 +101,17 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v6 = objc_opt_new();
-  [v6 setExtension:v4];
+  [v6 setExtension:identifierCopy];
 
   AWDPostMetric();
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)extensionDidScheduleExtensionWithIdentifier:(id)a3 delay:(unint64_t)a4
++ (void)extensionDidScheduleExtensionWithIdentifier:(id)identifier delay:(unint64_t)delay
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 log];
+  identifierCopy = identifier;
+  v7 = [self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 136446210;
@@ -120,19 +120,19 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v8 = objc_opt_new();
-  [v8 setExtension:v6];
+  [v8 setExtension:identifierCopy];
 
-  [v8 setDelay:a4];
+  [v8 setDelay:delay];
   AWDPostMetric();
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)extensionWithIdentifier:(id)a3 didCompleteWithFileCount:(unint64_t)a4 bytesCollected:(unint64_t)a5 duration:(unint64_t)a6 errorCode:(int64_t)a7
++ (void)extensionWithIdentifier:(id)identifier didCompleteWithFileCount:(unint64_t)count bytesCollected:(unint64_t)collected duration:(unint64_t)duration errorCode:(int64_t)code
 {
   v18 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = [a1 log];
+  identifierCopy = identifier;
+  v13 = [self log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v16 = 136446210;
@@ -141,21 +141,21 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v14 = objc_opt_new();
-  [v14 setExtension:v12];
+  [v14 setExtension:identifierCopy];
 
-  [v14 setNumfiles:a4];
-  [v14 setNumbytes:a5];
-  [v14 setDuration:a6];
-  [v14 setError:a7];
+  [v14 setNumfiles:count];
+  [v14 setNumbytes:collected];
+  [v14 setDuration:duration];
+  [v14 setError:code];
   AWDPostMetric();
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)finisherDidStartWithFileCount:(unint64_t)a3 expectedByteUploadCount:(unint64_t)a4 finishingMove:(int64_t)a5
++ (void)finisherDidStartWithFileCount:(unint64_t)count expectedByteUploadCount:(unint64_t)uploadCount finishingMove:(int64_t)move
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = [a1 log];
+  v8 = [self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 136446210;
@@ -164,28 +164,28 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v9 = objc_opt_new();
-  [v9 setNumfiles:a3];
-  [v9 setNumbytes:a4];
-  if ((a5 - 1) < 3)
+  [v9 setNumfiles:count];
+  [v9 setNumbytes:uploadCount];
+  if ((move - 1) < 3)
   {
-    v10 = a5;
+    moveCopy = move;
   }
 
   else
   {
-    v10 = 0;
+    moveCopy = 0;
   }
 
-  [v9 setType:v10];
+  [v9 setType:moveCopy];
   AWDPostMetric();
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)finisherDidCompleteWithDuration:(unint64_t)a3 uploadedByteCount:(unint64_t)a4 usingFinishingMove:(int64_t)a5 withState:(int64_t)a6
++ (void)finisherDidCompleteWithDuration:(unint64_t)duration uploadedByteCount:(unint64_t)count usingFinishingMove:(int64_t)move withState:(int64_t)state
 {
   v16 = *MEMORY[0x277D85DE8];
-  v10 = [a1 log];
+  v10 = [self log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v14 = 136446210;
@@ -194,29 +194,29 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v11 = objc_opt_new();
-  [v11 setDuration:a3];
-  [v11 setNumbytes:a4];
-  if ((a5 - 1) < 3)
+  [v11 setDuration:duration];
+  [v11 setNumbytes:count];
+  if ((move - 1) < 3)
   {
-    v12 = a5;
+    moveCopy = move;
   }
 
   else
   {
-    v12 = 0;
+    moveCopy = 0;
   }
 
-  [v11 setType:v12];
-  [v11 setState:a6];
+  [v11 setType:moveCopy];
+  [v11 setState:state];
   AWDPostMetric();
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)didCompleteBugSessionWithState:(int64_t)a3
++ (void)didCompleteBugSessionWithState:(int64_t)state
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [a1 log];
+  v4 = [self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7 = 136446210;
@@ -225,15 +225,15 @@ void __19__DEDAnalytics_log__block_invoke()
   }
 
   v5 = objc_opt_new();
-  [v5 setSessionState:a3];
+  [v5 setSessionState:state];
   AWDPostMetric();
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logBugSessionStartWithDeviceType:(id)a3 isRemote:(BOOL)a4 success:(BOOL)a5 errorCode:(int64_t)a6
++ (void)logBugSessionStartWithDeviceType:(id)type isRemote:(BOOL)remote success:(BOOL)success errorCode:(int64_t)code
 {
-  v9 = a3;
+  typeCopy = type;
   if (logBugSessionStartWithDeviceType_isRemote_success_errorCode__onceToken != -1)
   {
     +[DEDAnalytics logBugSessionStartWithDeviceType:isRemote:success:errorCode:];
@@ -243,11 +243,11 @@ void __19__DEDAnalytics_log__block_invoke()
   v15 = 3221225472;
   v16 = __76__DEDAnalytics_logBugSessionStartWithDeviceType_isRemote_success_errorCode___block_invoke_2;
   v17 = &unk_278F66158;
-  v20 = a4;
-  v21 = a5;
-  v18 = v9;
-  v19 = a6;
-  v10 = v9;
+  remoteCopy = remote;
+  successCopy = success;
+  v18 = typeCopy;
+  codeCopy = code;
+  v10 = typeCopy;
   v11 = AnalyticsSendEventLazy();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;

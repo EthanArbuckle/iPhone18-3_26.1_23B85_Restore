@@ -1,9 +1,9 @@
 @interface CRKASMRosterProviderFactory
-- (id)makeClassicAdHocSwitchReadingRosterProviderWithConfiguration:(id)a3;
+- (id)makeClassicAdHocSwitchReadingRosterProviderWithConfiguration:(id)configuration;
 - (id)makeEasyMAIDSignInRosterProvider;
 - (id)makeInstructorRosterProvider;
 - (id)makeInstructorRosterWithoutKeychainAndWithPersonaAdoption;
-- (id)makeRosterProviderWithConfiguration:(id)a3;
+- (id)makeRosterProviderWithConfiguration:(id)configuration;
 - (id)makeStudentRosterProvider;
 @end
 
@@ -46,32 +46,32 @@
   return v4;
 }
 
-- (id)makeClassicAdHocSwitchReadingRosterProviderWithConfiguration:(id)a3
+- (id)makeClassicAdHocSwitchReadingRosterProviderWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [CRKASMClassicAdHocSwitchReadingRosterProvider alloc];
-  v6 = [v4 classKitFacade];
+  classKitFacade = [configurationCopy classKitFacade];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__CRKASMRosterProviderFactory_makeClassicAdHocSwitchReadingRosterProviderWithConfiguration___block_invoke;
   v10[3] = &unk_278DC1E68;
   v10[4] = self;
-  v11 = v4;
-  v7 = v4;
-  v8 = [(CRKASMClassicAdHocSwitchReadingRosterProvider *)v5 initWithClassKitFacade:v6 rosterProviderGenerator:v10];
+  v11 = configurationCopy;
+  v7 = configurationCopy;
+  v8 = [(CRKASMClassicAdHocSwitchReadingRosterProvider *)v5 initWithClassKitFacade:classKitFacade rosterProviderGenerator:v10];
 
   return v8;
 }
 
-- (id)makeRosterProviderWithConfiguration:(id)a3
+- (id)makeRosterProviderWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[CRKASMConcreteRosterProvider alloc] initWithConfiguration:v3];
-  v5 = -[CRKASMCourseSizeLimitingRosterProvider initWithRosterProvider:maxUserCount:maxTrustedUserCount:]([CRKASMCourseSizeLimitingRosterProvider alloc], "initWithRosterProvider:maxUserCount:maxTrustedUserCount:", v4, [v3 maxCourseUsersCount], objc_msgSend(v3, "maxCourseTrustedUsersCount"));
+  configurationCopy = configuration;
+  v4 = [[CRKASMConcreteRosterProvider alloc] initWithConfiguration:configurationCopy];
+  v5 = -[CRKASMCourseSizeLimitingRosterProvider initWithRosterProvider:maxUserCount:maxTrustedUserCount:]([CRKASMCourseSizeLimitingRosterProvider alloc], "initWithRosterProvider:maxUserCount:maxTrustedUserCount:", v4, [configurationCopy maxCourseUsersCount], objc_msgSend(configurationCopy, "maxCourseTrustedUsersCount"));
 
   v6 = [[CRKASMAtomicRosterProvider alloc] initWithRosterProvider:v5];
   v7 = [CRKASMTimeoutRosterProvider alloc];
-  [v3 rosterMutationTimeout];
+  [configurationCopy rosterMutationTimeout];
   v9 = v8;
 
   v10 = [(CRKASMTimeoutRosterProvider *)v7 initWithRosterProvider:v6 timeout:v9];

@@ -1,26 +1,26 @@
 @interface CCToolKitToolDisplayRepresentationImageStaticSymbol
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithName:(id)a3 tintColorData:(id)a4 configurationData:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithName:(id)name tintColorData:(id)data configurationData:(id)configurationData error:(id *)error;
 - (NSData)configurationData;
 - (NSData)tintColorData;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolDisplayRepresentationImageStaticSymbol
 
-- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"tintColorData"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"tintColorData"];
     if (v10)
     {
       objc_opt_class();
@@ -43,7 +43,7 @@ LABEL_14:
       v10 = v13;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"configurationData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"configurationData"];
     if (v14)
     {
       objc_opt_class();
@@ -67,7 +67,7 @@ LABEL_14:
       v12 = v8;
     }
 
-    v17 = [[CCToolKitToolDisplayRepresentationImageStaticSymbol alloc] initWithName:v9 tintColorData:v10 configurationData:v14 error:a4];
+    v17 = [[CCToolKitToolDisplayRepresentationImageStaticSymbol alloc] initWithName:v9 tintColorData:v10 configurationData:v14 error:error];
 LABEL_13:
 
     goto LABEL_14;
@@ -85,21 +85,21 @@ LABEL_15:
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_tintColorData)
   {
-    v5 = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self tintColorData];
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    tintColorData = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self tintColorData];
+    v6 = [tintColorData base64EncodedStringWithOptions:0];
     [v3 setObject:v6 forKeyedSubscript:@"tintColorData"];
   }
 
   if (self->_configurationData)
   {
-    v7 = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self configurationData];
-    v8 = [v7 base64EncodedStringWithOptions:0];
+    configurationData = [(CCToolKitToolDisplayRepresentationImageStaticSymbol *)self configurationData];
+    v8 = [configurationData base64EncodedStringWithOptions:0];
     [v3 setObject:v8 forKeyedSubscript:@"configurationData"];
   }
 
@@ -108,11 +108,11 @@ LABEL_15:
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_name)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_name];
@@ -156,10 +156,10 @@ LABEL_15:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -317,13 +317,13 @@ LABEL_40:
   return v32;
 }
 
-- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithName:(id)a3 tintColorData:(id)a4 configurationData:(id)a5 error:(id *)a6
+- (CCToolKitToolDisplayRepresentationImageStaticSymbol)initWithName:(id)name tintColorData:(id)data configurationData:(id)configurationData error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  dataCopy = data;
+  configurationDataCopy = configurationData;
   v13 = objc_opt_new();
-  if (v10)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -341,7 +341,7 @@ LABEL_40:
     v15 = 0;
   }
 
-  if (v11)
+  if (dataCopy)
   {
     objc_opt_class();
     v16 = CCValidateIsInstanceOfExpectedClass();
@@ -350,13 +350,13 @@ LABEL_40:
     if (!v16)
     {
       CCSetError();
-      v20 = 0;
+      selfCopy = 0;
       v15 = v17;
       goto LABEL_15;
     }
 
     CCPBDataWriterWriteDataField();
-    if (!v12)
+    if (!configurationDataCopy)
     {
       goto LABEL_8;
     }
@@ -365,7 +365,7 @@ LABEL_40:
   }
 
   v17 = v15;
-  if (v12)
+  if (configurationDataCopy)
   {
 LABEL_10:
     objc_opt_class();
@@ -380,20 +380,20 @@ LABEL_10:
 
 LABEL_13:
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_8:
   v15 = v17;
 LABEL_12:
-  v19 = [v13 immutableData];
-  self = [(CCItemMessage *)self initWithData:v19 error:a6];
+  immutableData = [v13 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v20 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

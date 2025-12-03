@@ -1,22 +1,22 @@
 @interface TVRUITouchpadView
 - (TVRUITouchpadDelegate)touchDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation TVRUITouchpadView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(TVRUITouchpadView *)self touchDelegate];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  touchDelegate = [(TVRUITouchpadView *)self touchDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(TVRUITouchpadView *)self touchDelegate];
-    v11 = [v10 hitTest:v7 withEvent:self forTouchpadView:{x, y}];
+    touchDelegate2 = [(TVRUITouchpadView *)self touchDelegate];
+    v11 = [touchDelegate2 hitTest:eventCopy withEvent:self forTouchpadView:{x, y}];
 
     if (v11)
     {
@@ -27,7 +27,7 @@
     {
       v16.receiver = self;
       v16.super_class = TVRUITouchpadView;
-      v12 = [(TVRUITouchpadView *)&v16 hitTest:v7 withEvent:x, y];
+      v12 = [(TVRUITouchpadView *)&v16 hitTest:eventCopy withEvent:x, y];
     }
 
     v13 = v12;
@@ -37,7 +37,7 @@
   {
     v15.receiver = self;
     v15.super_class = TVRUITouchpadView;
-    v13 = [(TVRUITouchpadView *)&v15 hitTest:v7 withEvent:x, y];
+    v13 = [(TVRUITouchpadView *)&v15 hitTest:eventCopy withEvent:x, y];
   }
 
   return v13;

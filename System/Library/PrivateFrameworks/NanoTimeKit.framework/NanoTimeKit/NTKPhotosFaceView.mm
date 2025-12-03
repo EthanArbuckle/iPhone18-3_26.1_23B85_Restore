@@ -1,50 +1,50 @@
 @interface NTKPhotosFaceView
-- (BOOL)_canOperationProceed:(unint64_t)a3;
-- (BOOL)_enqueuePreloadedPhoto:(id)a3 ifMatchingGeneration:(unint64_t)a4;
+- (BOOL)_canOperationProceed:(unint64_t)proceed;
+- (BOOL)_enqueuePreloadedPhoto:(id)photo ifMatchingGeneration:(unint64_t)generation;
 - (BOOL)_preloadNextPhoto;
-- (BOOL)_shouldAnimationContinue:(BOOL)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (NTKPhotosFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3;
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3;
-- (id)_analysisCacheKeyFor:(id)a3;
-- (id)_analysisForAlignment:(unint64_t)a3;
-- (id)_cachedAnalysisForKey:(id)a3;
-- (id)_createAndCachePhotoAnalysisForKey:(id)a3 dateAlignment:(unint64_t)a4 image:(id)a5;
-- (id)_dequeueToLoadIfMatchingGeneration:(unint64_t)a3;
-- (void)_animationFinished:(BOOL)a3;
+- (BOOL)_shouldAnimationContinue:(BOOL)continue;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (NTKPhotosFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode;
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode;
+- (id)_analysisCacheKeyFor:(id)for;
+- (id)_analysisForAlignment:(unint64_t)alignment;
+- (id)_cachedAnalysisForKey:(id)key;
+- (id)_createAndCachePhotoAnalysisForKey:(id)key dateAlignment:(unint64_t)alignment image:(id)image;
+- (id)_dequeueToLoadIfMatchingGeneration:(unint64_t)generation;
+- (void)_animationFinished:(BOOL)finished;
 - (void)_animationStart;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_clearPreloaded;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_displayCachedPhoto:(id)a3 animated:(BOOL)a4 preroll:(BOOL)a5 completion:(id)a6;
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_finalizeForSnapshotting:(id)a3;
-- (void)_handleSingleTap:(id)a3;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_displayCachedPhoto:(id)photo animated:(BOOL)animated preroll:(BOOL)preroll completion:(id)completion;
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
+- (void)_handleSingleTap:(id)tap;
 - (void)_loadSnapshotContentViews;
-- (void)_nextPhotoAnimated:(BOOL)a3 preroll:(BOOL)a4 method:(unint64_t)a5 completion:(id)a6;
-- (void)_nextPhotoReadyAnimated:(BOOL)a3 preroll:(BOOL)a4 completion:(id)a5;
+- (void)_nextPhotoAnimated:(BOOL)animated preroll:(BOOL)preroll method:(unint64_t)method completion:(id)completion;
+- (void)_nextPhotoReadyAnimated:(BOOL)animated preroll:(BOOL)preroll completion:(id)completion;
 - (void)_operationIsDone;
 - (void)_resetTapAnimationState;
 - (void)_startBackgroundRefill;
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateContents:(BOOL)a3;
-- (void)_updateDateAttributesAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_updateForResourceDirectoryChange:(id)a3;
-- (void)_updateReader:(BOOL)a3;
+- (void)_updateContents:(BOOL)contents;
+- (void)_updateDateAttributesAnimated:(BOOL)animated completion:(id)completion;
+- (void)_updateForResourceDirectoryChange:(id)change;
+- (void)_updateReader:(BOOL)reader;
 - (void)layoutSubviews;
-- (void)readerDidChange:(id)a3;
+- (void)readerDidChange:(id)change;
 @end
 
 @implementation NTKPhotosFaceView
 
-- (NTKPhotosFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKPhotosFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKPhotosFaceView;
-  result = [(NTKBasePhotosFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  result = [(NTKBasePhotosFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (result)
   {
     result->_currentContent = 2989;
@@ -58,17 +58,17 @@
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = NTKPhotosFaceView;
-  v3 = [(NTKBasePhotosFaceView *)&v17 layoutSubviews];
-  if (NTKInternalBuild(v3, v4) && _os_feature_enabled_impl())
+  layoutSubviews = [(NTKBasePhotosFaceView *)&v17 layoutSubviews];
+  if (NTKInternalBuild(layoutSubviews, v4) && _os_feature_enabled_impl())
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NTKBasePhotosFaceView *)self posterImageView];
-    v6 = [v5 subviews];
+    posterImageView = [(NTKBasePhotosFaceView *)self posterImageView];
+    subviews = [posterImageView subviews];
 
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -80,7 +80,7 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -94,14 +94,14 @@
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    v12 = [(NTKBasePhotosFaceView *)self posterImageView];
-    MEMORY[0x2318D8E70]([v12 bounds]);
+    posterImageView2 = [(NTKBasePhotosFaceView *)self posterImageView];
+    MEMORY[0x2318D8E70]([posterImageView2 bounds]);
     [(UILabel *)self->_aplLabel setCenter:?];
   }
 }
@@ -122,8 +122,8 @@
   if ((*(self + 1240) & 1) == 0)
   {
     *(self + 1240) |= 1u;
-    v3 = [(NTKFaceView *)self device];
-    self->_deviceSizeClass = [v3 sizeClass];
+    device = [(NTKFaceView *)self device];
+    self->_deviceSizeClass = [device sizeClass];
 
     v4 = [NTKRoundedCornerOverlayView alloc];
     [(NTKPhotosFaceView *)self bounds];
@@ -131,16 +131,16 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(NTKFaceView *)self device];
-    v14 = [(NTKRoundedCornerOverlayView *)v4 initWithFrame:v13 forDeviceCornerRadius:v6, v8, v10, v12];
+    device2 = [(NTKFaceView *)self device];
+    v14 = [(NTKRoundedCornerOverlayView *)v4 initWithFrame:device2 forDeviceCornerRadius:v6, v8, v10, v12];
     photoTransitionCornerView = self->_photoTransitionCornerView;
     self->_photoTransitionCornerView = v14;
 
     [(UIView *)self->_photoTransitionCornerView setAlpha:0.0];
-    v16 = [(NTKFaceView *)self contentView];
+    contentView = [(NTKFaceView *)self contentView];
     v17 = self->_photoTransitionCornerView;
-    v18 = [(NTKBasePhotosFaceView *)self cornerView];
-    [v16 insertSubview:v17 aboveSubview:v18];
+    cornerView = [(NTKBasePhotosFaceView *)self cornerView];
+    [contentView insertSubview:v17 aboveSubview:cornerView];
 
     v19 = objc_opt_new();
     preloaded = self->_preloaded;
@@ -161,11 +161,11 @@
     {
       if (_os_feature_enabled_impl())
       {
-        v27 = [(NTKFaceView *)self timeView];
-        [v27 setHidden:1];
+        timeView = [(NTKFaceView *)self timeView];
+        [timeView setHidden:1];
 
-        v28 = [(NTKFaceView *)self complicationContainerView];
-        [v28 setHidden:1];
+        complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+        [complicationContainerView setHidden:1];
       }
     }
   }
@@ -204,30 +204,30 @@
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  optionCopy = option;
   v13.receiver = self;
   v13.super_class = NTKPhotosFaceView;
-  [(NTKBasePhotosFaceView *)&v13 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 14)
+  [(NTKBasePhotosFaceView *)&v13 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 14)
   {
     [(NTKPhotosFaceView *)self _updateDateAttributesAnimated:0];
   }
 
-  else if (a4 == 12)
+  else if (mode == 12)
   {
-    v9 = v8;
+    v9 = optionCopy;
     currentContent = self->_currentContent;
     if (currentContent != [v9 photosContent])
     {
       v11 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v9 photosContent];
+        photosContent = [v9 photosContent];
         *buf = 67109120;
-        v15 = v12;
+        v15 = photosContent;
         _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "NTKPhotosFaceView: photosContent now set to %d", buf, 8u);
       }
 
@@ -237,29 +237,29 @@
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKPhotosFaceView;
   [(NTKBasePhotosFaceView *)&v5 _configureForEditMode:?];
-  if (a3 == 12)
+  if (mode == 12)
   {
     [(NTKPhotosFaceView *)self _updateDateAttributesAnimated:1];
   }
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NTKPhotosFaceView;
-  [(NTKFaceView *)&v4 _updateForResourceDirectoryChange:a3];
+  [(NTKFaceView *)&v4 _updateForResourceDirectoryChange:change];
   [(NTKPhotosFaceView *)self _updateContents:0];
 }
 
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode
 {
   result = 0.5;
-  if (a3 != 12)
+  if (mode != 12)
   {
     v7 = v3;
     v8 = v4;
@@ -271,10 +271,10 @@
   return result;
 }
 
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3 != 12)
+  if (mode != 12)
   {
     v7 = v3;
     v8 = v4;
@@ -286,25 +286,25 @@
   return result;
 }
 
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
   v5.receiver = self;
   v5.super_class = NTKPhotosFaceView;
-  [(NTKBackgroundImageFaceView *)&v5 _startScrubbingAnimated:a3 withCompletion:a4];
+  [(NTKBackgroundImageFaceView *)&v5 _startScrubbingAnimated:animated withCompletion:completion];
   *(self + 1240) |= 2u;
 }
 
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
   v5.receiver = self;
   v5.super_class = NTKPhotosFaceView;
-  [(NTKBackgroundImageFaceView *)&v5 _endScrubbingAnimated:a3 withCompletion:a4];
+  [(NTKBackgroundImageFaceView *)&v5 _endScrubbingAnimated:animated withCompletion:completion];
   *(self + 1240) &= ~2u;
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
-  v4 = a3;
+  snapshottingCopy = snapshotting;
   v5 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -316,7 +316,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __46__NTKPhotosFaceView__finalizeForSnapshotting___block_invoke;
   aBlock[3] = &unk_27877E960;
-  v6 = v4;
+  v6 = snapshottingCopy;
   v14 = v6;
   v7 = _Block_copy(aBlock);
   if ((self->_currentContent | 2) == 2)
@@ -372,26 +372,26 @@ void __46__NTKPhotosFaceView__finalizeForSnapshotting___block_invoke(uint64_t a1
   return numberOfPhotos != 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v7.receiver = self;
   v7.super_class = NTKPhotosFaceView;
-  v5 = ![(NTKBackgroundImageFaceView *)&v7 gestureRecognizerShouldBegin:v4]|| (*(self + 1240) & 8) == 0 || self->_singleTapGesture == v4;
+  v5 = ![(NTKBackgroundImageFaceView *)&v7 gestureRecognizerShouldBegin:beginCopy]|| (*(self + 1240) & 8) == 0 || self->_singleTapGesture == beginCopy;
 
   return v5;
 }
 
-- (void)readerDidChange:(id)a3
+- (void)readerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__NTKPhotosFaceView_readerDidChange___block_invoke;
   v6[3] = &unk_27877E438;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -438,9 +438,9 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_shouldAnimationContinue:(BOOL)a3
+- (BOOL)_shouldAnimationContinue:(BOOL)continue
 {
-  if (a3 && [(NTKFaceView *)self dataMode]== 1 && [(NTKBasePhotosFaceView *)self isInteractive]&& self->_numberOfPhotos)
+  if (continue && [(NTKFaceView *)self dataMode]== 1 && [(NTKBasePhotosFaceView *)self isInteractive]&& self->_numberOfPhotos)
   {
     return 1;
   }
@@ -449,34 +449,34 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)_displayCachedPhoto:(id)a3 animated:(BOOL)a4 preroll:(BOOL)a5 completion:(id)a6
+- (void)_displayCachedPhoto:(id)photo animated:(BOOL)animated preroll:(BOOL)preroll completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  prerollCopy = preroll;
+  animatedCopy = animated;
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (v10 && ([v10 photo], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  photoCopy = photo;
+  completionCopy = completion;
+  if (photoCopy && ([photoCopy photo], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [v10 image];
-    [v13 scale];
+    image = [photoCopy image];
+    [image scale];
     v15 = v14;
-    [v13 size];
-    if (!v13 || ((v18 = v15 * v17, v15 * v16 >= 1.0) ? (v19 = v18 < 1.0) : (v19 = 1), v19))
+    [image size];
+    if (!image || ((v18 = v15 * v17, v15 * v16 >= 1.0) ? (v19 = v18 < 1.0) : (v19 = 1), v19))
     {
-      if (v11)
+      if (completionCopy)
       {
-        v11[2](v11, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
     else
     {
-      v20 = NTKGenerateMonochromeColorMatrixFromImage(v13);
+      v20 = NTKGenerateMonochromeColorMatrixFromImage(image);
       [(NTKBasePhotosFaceView *)self setMonochromeColorMatrix:v20];
 
-      v21 = [v10 photo];
-      [v21 crop];
+      photo = [photoCopy photo];
+      [photo crop];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -491,10 +491,10 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
         v30 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v53 = [v10 photo];
-          v54 = [v53 localIdentifier];
+          photo2 = [photoCopy photo];
+          localIdentifier = [photo2 localIdentifier];
           *location = 138413314;
-          *&location[4] = v54;
+          *&location[4] = localIdentifier;
           v59 = 2048;
           v60 = v23;
           v61 = 2048;
@@ -506,30 +506,30 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
           _os_log_error_impl(&dword_22D9C5000, v30, OS_LOG_TYPE_ERROR, "Bad crop on photo %@: { %.1f, %.1f, %.1f, %.1f }", location, 0x34u);
         }
 
-        v31 = [(NTKFaceView *)self device];
-        NTKPhotosDefaultCropForImage(v13, v31);
+        device = [(NTKFaceView *)self device];
+        NTKPhotosDefaultCropForImage(image, device);
         v33 = v32;
         v35 = v34;
         v37 = v36;
         v39 = v38;
 
-        v40 = [v10 photo];
-        [v40 setCrop:{v33, v35, v37, v39}];
+        photo3 = [photoCopy photo];
+        [photo3 setCrop:{v33, v35, v37, v39}];
       }
 
-      v41 = [(NTKBasePhotosFaceView *)self posterImageView];
-      [v41 setPhoto:v10 allowIris:1];
+      posterImageView = [(NTKBasePhotosFaceView *)self posterImageView];
+      [posterImageView setPhoto:photoCopy allowIris:1];
 
-      [(NTKPhotosFaceView *)self setPresentedPhoto:v10];
-      if (v7)
+      [(NTKPhotosFaceView *)self setPresentedPhoto:photoCopy];
+      if (prerollCopy)
       {
-        v42 = [(NTKBasePhotosFaceView *)self posterImageView];
-        v43 = [v42 isPhotoIris];
+        posterImageView2 = [(NTKBasePhotosFaceView *)self posterImageView];
+        isPhotoIris = [posterImageView2 isPhotoIris];
 
-        if (v43)
+        if (isPhotoIris)
         {
-          v44 = [(NTKBasePhotosFaceView *)self posterImageView];
-          [v44 prepareToPlayWithMode:2];
+          posterImageView3 = [(NTKBasePhotosFaceView *)self posterImageView];
+          [posterImageView3 prepareToPlayWithMode:2];
         }
       }
 
@@ -539,8 +539,8 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
       v55[2] = __69__NTKPhotosFaceView__displayCachedPhoto_animated_preroll_completion___block_invoke;
       v55[3] = &unk_278781070;
       objc_copyWeak(&v57, location);
-      v56 = v11;
-      v45 = [(NTKPhotosFaceView *)self _updateDateAttributesAnimated:v8 completion:v55];
+      v56 = completionCopy;
+      v45 = [(NTKPhotosFaceView *)self _updateDateAttributesAnimated:animatedCopy completion:v55];
       if (NTKInternalBuild(v45, v46) && _os_feature_enabled_impl())
       {
         if (!self->_aplLabel)
@@ -552,14 +552,14 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
           v49 = [MEMORY[0x277D74300] systemFontOfSize:20.0];
           [(UILabel *)self->_aplLabel setFont:v49];
 
-          v50 = [MEMORY[0x277D75348] whiteColor];
-          [(UILabel *)self->_aplLabel setTextColor:v50];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [(UILabel *)self->_aplLabel setTextColor:whiteColor];
 
-          v51 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)self->_aplLabel setBackgroundColor:v51];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)self->_aplLabel setBackgroundColor:blackColor];
 
-          v52 = [(NTKBasePhotosFaceView *)self posterImageView];
-          [v52 addSubview:self->_aplLabel];
+          posterImageView4 = [(NTKBasePhotosFaceView *)self posterImageView];
+          [posterImageView4 addSubview:self->_aplLabel];
         }
 
         CLKUIComputeImageAPL();
@@ -570,9 +570,9 @@ void *__37__NTKPhotosFaceView_readerDidChange___block_invoke(uint64_t a1)
     }
   }
 
-  else if (v11)
+  else if (completionCopy)
   {
-    v11[2](v11, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -587,13 +587,13 @@ void __69__NTKPhotosFaceView__displayCachedPhoto_animated_preroll_completion___b
   }
 }
 
-- (BOOL)_enqueuePreloadedPhoto:(id)a3 ifMatchingGeneration:(unint64_t)a4
+- (BOOL)_enqueuePreloadedPhoto:(id)photo ifMatchingGeneration:(unint64_t)generation
 {
-  v6 = a3;
+  photoCopy = photo;
   preloadGeneration = self->_preloadGeneration;
-  if (preloadGeneration == a4)
+  if (preloadGeneration == generation)
   {
-    [(NSMutableArray *)self->_preloaded enqueueCachedPhoto:v6];
+    [(NSMutableArray *)self->_preloaded enqueueCachedPhoto:photoCopy];
   }
 
   enqueuePreloadedPhotoCompletion = self->_enqueuePreloadedPhotoCompletion;
@@ -603,25 +603,25 @@ void __69__NTKPhotosFaceView__displayCachedPhoto_animated_preroll_completion___b
     v10 = self->_enqueuePreloadedPhotoCompletion;
     self->_enqueuePreloadedPhotoCompletion = 0;
 
-    v9[2](v9, preloadGeneration == a4);
+    v9[2](v9, preloadGeneration == generation);
   }
 
-  return preloadGeneration == a4;
+  return preloadGeneration == generation;
 }
 
-- (id)_dequeueToLoadIfMatchingGeneration:(unint64_t)a3
+- (id)_dequeueToLoadIfMatchingGeneration:(unint64_t)generation
 {
-  if (self->_preloadGeneration == a3)
+  if (self->_preloadGeneration == generation)
   {
-    v5 = [(NSMutableArray *)self->_toload dequeueCachedPhoto];
+    dequeueCachedPhoto = [(NSMutableArray *)self->_toload dequeueCachedPhoto];
   }
 
   else
   {
-    v5 = 0;
+    dequeueCachedPhoto = 0;
   }
 
-  return v5;
+  return dequeueCachedPhoto;
 }
 
 - (void)_startBackgroundRefill
@@ -635,9 +635,9 @@ void __69__NTKPhotosFaceView__displayCachedPhoto_animated_preroll_completion___b
     preloadGeneration = self->_preloadGeneration;
     do
     {
-      v8 = [(_NTKPhotoIndexGenerator *)self->_generator nextSequential];
-      v9 = [(NTKPhotosReader *)self->_reader objectAtIndexedSubscript:v8];
-      v10 = [[NTKCachedPhoto alloc] initWithPhoto:v9 index:v8];
+      nextSequential = [(_NTKPhotoIndexGenerator *)self->_generator nextSequential];
+      v9 = [(NTKPhotosReader *)self->_reader objectAtIndexedSubscript:nextSequential];
+      v10 = [[NTKCachedPhoto alloc] initWithPhoto:v9 index:nextSequential];
       [(NSMutableArray *)self->_toload enqueueCachedPhoto:v10];
 
       --v6;
@@ -763,56 +763,56 @@ uint64_t __43__NTKPhotosFaceView__startBackgroundRefill__block_invoke_2(uint64_t
   self->_enqueuePreloadedPhotoCompletion = 0;
 }
 
-- (void)_nextPhotoReadyAnimated:(BOOL)a3 preroll:(BOOL)a4 completion:(id)a5
+- (void)_nextPhotoReadyAnimated:(BOOL)animated preroll:(BOOL)preroll completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  prerollCopy = preroll;
+  animatedCopy = animated;
   preloaded = self->_preloaded;
-  v9 = a5;
-  v10 = [(NSMutableArray *)preloaded dequeueCachedPhoto];
-  [(NTKPhotosFaceView *)self _displayCachedPhoto:v10 animated:v6 preroll:v5 completion:v9];
+  completionCopy = completion;
+  dequeueCachedPhoto = [(NSMutableArray *)preloaded dequeueCachedPhoto];
+  [(NTKPhotosFaceView *)self _displayCachedPhoto:dequeueCachedPhoto animated:animatedCopy preroll:prerollCopy completion:completionCopy];
 
   [(NTKPhotosFaceView *)self _startBackgroundRefill];
 }
 
-- (void)_nextPhotoAnimated:(BOOL)a3 preroll:(BOOL)a4 method:(unint64_t)a5 completion:(id)a6
+- (void)_nextPhotoAnimated:(BOOL)animated preroll:(BOOL)preroll method:(unint64_t)method completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  v11 = v10;
+  prerollCopy = preroll;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (self->_numberOfPhotos)
   {
-    if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((method & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v12 = [(NTKPhotosFaceView *)self presentedPhoto];
+      presentedPhoto = [(NTKPhotosFaceView *)self presentedPhoto];
       [(NTKPhotosFaceView *)self _clearPreloaded];
-      if (a5 == 3)
+      if (method == 3)
       {
         [(_NTKPhotoIndexGenerator *)self->_generator reset];
       }
 
-      else if (self->_numberOfPhotos >= 2 && v12 != 0)
+      else if (self->_numberOfPhotos >= 2 && presentedPhoto != 0)
       {
-        -[_NTKPhotoIndexGenerator setIndex:](self->_generator, "setIndex:", [v12 index]);
+        -[_NTKPhotoIndexGenerator setIndex:](self->_generator, "setIndex:", [presentedPhoto index]);
       }
     }
 
     if ([(NSMutableArray *)self->_preloaded count])
     {
-      [(NTKPhotosFaceView *)self _nextPhotoReadyAnimated:v8 preroll:v7 completion:v11];
+      [(NTKPhotosFaceView *)self _nextPhotoReadyAnimated:animatedCopy preroll:prerollCopy completion:v11];
     }
 
     else
     {
-      if (a5 == 2)
+      if (method == 2)
       {
-        v16 = [(_NTKPhotoIndexGenerator *)self->_generator nextRandom];
+        nextRandom = [(_NTKPhotoIndexGenerator *)self->_generator nextRandom];
       }
 
       else
       {
-        if (!a5)
+        if (!method)
         {
           objc_initWeak(&location, self);
           v20 = MEMORY[0x277D85DD0];
@@ -820,8 +820,8 @@ uint64_t __43__NTKPhotosFaceView__startBackgroundRefill__block_invoke_2(uint64_t
           v22 = __66__NTKPhotosFaceView__nextPhotoAnimated_preroll_method_completion___block_invoke;
           v23 = &unk_2787811B8;
           objc_copyWeak(&v25, &location);
-          v26 = v8;
-          v27 = v7;
+          v26 = animatedCopy;
+          v27 = prerollCopy;
           v24 = v11;
           v14 = _Block_copy(&v20);
           enqueuePreloadedPhotoCompletion = self->_enqueuePreloadedPhotoCompletion;
@@ -833,15 +833,15 @@ uint64_t __43__NTKPhotosFaceView__startBackgroundRefill__block_invoke_2(uint64_t
           goto LABEL_25;
         }
 
-        v16 = [(_NTKPhotoIndexGenerator *)self->_generator nextSequential];
+        nextRandom = [(_NTKPhotoIndexGenerator *)self->_generator nextSequential];
       }
 
-      v17 = v16;
-      v18 = [(NTKPhotosReader *)self->_reader objectAtIndexedSubscript:v16];
+      v17 = nextRandom;
+      v18 = [(NTKPhotosReader *)self->_reader objectAtIndexedSubscript:nextRandom];
       v19 = [[NTKCachedPhoto alloc] initWithPhoto:v18 index:v17];
       if ([(NTKCachedPhoto *)v19 load])
       {
-        [(NTKPhotosFaceView *)self _displayCachedPhoto:v19 animated:v8 preroll:v7 completion:v11];
+        [(NTKPhotosFaceView *)self _displayCachedPhoto:v19 animated:animatedCopy preroll:prerollCopy completion:v11];
         [(NTKPhotosFaceView *)self _startBackgroundRefill];
       }
 
@@ -852,9 +852,9 @@ uint64_t __43__NTKPhotosFaceView__startBackgroundRefill__block_invoke_2(uint64_t
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_25:
@@ -880,9 +880,9 @@ void __66__NTKPhotosFaceView__nextPhotoAnimated_preroll_method_completion___bloc
   }
 }
 
-- (void)_animationFinished:(BOOL)a3
+- (void)_animationFinished:(BOOL)finished
 {
-  v3 = a3;
+  finishedCopy = finished;
   [(UIView *)self->_photoTransitionSnapshotView removeFromSuperview];
   photoTransitionSnapshotView = self->_photoTransitionSnapshotView;
   self->_photoTransitionSnapshotView = 0;
@@ -890,7 +890,7 @@ void __66__NTKPhotosFaceView__nextPhotoAnimated_preroll_method_completion___bloc
   *(self + 1240) &= ~8u;
   if (self->_queuedTransitionCount)
   {
-    v6 = !v3;
+    v6 = !finishedCopy;
   }
 
   else
@@ -911,17 +911,17 @@ void __66__NTKPhotosFaceView__nextPhotoAnimated_preroll_method_completion___bloc
   memset(&v13, 0, sizeof(v13));
   CGAffineTransformMakeScale(&v13, 0.95, 0.95);
   v12 = v13;
-  v3 = [(NTKBasePhotosFaceView *)self cornerView];
+  cornerView = [(NTKBasePhotosFaceView *)self cornerView];
   v11 = v12;
-  [v3 setTransform:&v11];
+  [cornerView setTransform:&v11];
 
   v10 = v13;
-  v4 = [(NTKBasePhotosFaceView *)self posterImageView];
+  posterImageView = [(NTKBasePhotosFaceView *)self posterImageView];
   v11 = v10;
-  [v4 setTransform:&v11];
+  [posterImageView setTransform:&v11];
 
-  v5 = [(NTKBasePhotosFaceView *)self posterImageView];
-  [v5 setAlpha:0.0];
+  posterImageView2 = [(NTKBasePhotosFaceView *)self posterImageView];
+  [posterImageView2 setAlpha:0.0];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -980,9 +980,9 @@ void __36__NTKPhotosFaceView__animationStart__block_invoke_3(uint64_t a1)
   [v1 setAlpha:1.0];
 }
 
-- (void)_handleSingleTap:(id)a3
+- (void)_handleSingleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if ([(NTKBasePhotosFaceView *)self isInteractive]&& self->_numberOfPhotos >= 2 && (*(self + 1240) & 2) == 0)
   {
     if ((*(self + 1240) & 8) != 0)
@@ -997,14 +997,14 @@ void __36__NTKPhotosFaceView__animationStart__block_invoke_3(uint64_t a1)
     else
     {
       *(self + 1240) |= 8u;
-      v5 = [(NTKBasePhotosFaceView *)self posterImageView];
-      v6 = [v5 snapshotViewAfterScreenUpdates:0];
+      posterImageView = [(NTKBasePhotosFaceView *)self posterImageView];
+      v6 = [posterImageView snapshotViewAfterScreenUpdates:0];
       photoTransitionSnapshotView = self->_photoTransitionSnapshotView;
       self->_photoTransitionSnapshotView = v6;
 
       [(UIView *)self->_photoTransitionCornerView setAlpha:1.0];
-      v8 = [(NTKFaceView *)self contentView];
-      [v8 insertSubview:self->_photoTransitionSnapshotView belowSubview:self->_photoTransitionCornerView];
+      contentView = [(NTKFaceView *)self contentView];
+      [contentView insertSubview:self->_photoTransitionSnapshotView belowSubview:self->_photoTransitionCornerView];
 
       objc_initWeak(&location, self);
       v10[0] = MEMORY[0x277D85DD0];
@@ -1059,17 +1059,17 @@ void __38__NTKPhotosFaceView__handleSingleTap___block_invoke(uint64_t a1, uint64
   self->_queuedTransitionCount = 0;
 }
 
-- (void)_updateDateAttributesAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateDateAttributesAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   currentContent = self->_currentContent;
   switch(currentContent)
   {
     case 2uLL:
 LABEL_4:
-      v8 = [(NTKPhotosFaceView *)self presentedPhoto];
-      v9 = [(NTKPhotosFaceView *)self _analysisCacheKeyFor:v8];
+      presentedPhoto = [(NTKPhotosFaceView *)self presentedPhoto];
+      v9 = [(NTKPhotosFaceView *)self _analysisCacheKeyFor:presentedPhoto];
 
       v33 = 0;
       v34 = &v33;
@@ -1080,22 +1080,22 @@ LABEL_4:
       v10 = v34[5];
       if (v10)
       {
-        [(NTKBasePhotosFaceView *)self _setDateAttributes:v10 animated:v4];
+        [(NTKBasePhotosFaceView *)self _setDateAttributes:v10 animated:animatedCopy];
       }
 
       else
       {
-        v13 = [(NTKPhotosFaceView *)self presentedPhoto];
-        v14 = [v13 image];
+        presentedPhoto2 = [(NTKPhotosFaceView *)self presentedPhoto];
+        image = [presentedPhoto2 image];
 
-        if (v14)
+        if (image)
         {
           objc_initWeak(&location, self);
           currentAnalysisOperationID = self->_currentAnalysisOperationID;
-          v16 = [(NTKPhotosFaceView *)self presentedPhoto];
-          v17 = [v16 image];
+          presentedPhoto3 = [(NTKPhotosFaceView *)self presentedPhoto];
+          image2 = [presentedPhoto3 image];
 
-          v18 = [(NTKBasePhotosFaceView *)self dateAlignment];
+          dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
           v19 = _NTKPhotosAnalysisQueue();
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
@@ -1105,12 +1105,12 @@ LABEL_4:
           v30[1] = currentAnalysisOperationID;
           v29 = &v33;
           v20 = v9;
-          v30[2] = v18;
+          v30[2] = dateAlignment;
           v26 = v20;
-          v27 = v17;
-          v31 = v4;
-          v28 = v6;
-          v21 = v17;
+          v27 = image2;
+          v31 = animatedCopy;
+          v28 = completionCopy;
+          v21 = image2;
           dispatch_async(v19, block);
 
           objc_destroyWeak(v30);
@@ -1122,9 +1122,9 @@ LABEL_12:
         }
       }
 
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
 
       goto LABEL_12;
@@ -1148,7 +1148,7 @@ LABEL_12:
         {
 LABEL_9:
           v12 = v11;
-          [(NTKBasePhotosFaceView *)self _setDateAttributes:v11 animated:v4];
+          [(NTKBasePhotosFaceView *)self _setDateAttributes:v11 animated:animatedCopy];
         }
       }
 
@@ -1157,9 +1157,9 @@ LABEL_9:
       goto LABEL_4;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_19:
@@ -1231,7 +1231,7 @@ uint64_t __62__NTKPhotosFaceView__updateDateAttributesAnimated_completion___bloc
   return result;
 }
 
-- (BOOL)_canOperationProceed:(unint64_t)a3
+- (BOOL)_canOperationProceed:(unint64_t)proceed
 {
   v5 = _NTKPhotosAnalysisQueue();
   dispatch_assert_queue_V2(v5);
@@ -1245,12 +1245,12 @@ uint64_t __62__NTKPhotosFaceView__updateDateAttributesAnimated_completion___bloc
   block[2] = __42__NTKPhotosFaceView__canOperationProceed___block_invoke;
   block[3] = &unk_278781258;
   block[5] = &v8;
-  block[6] = a3;
+  block[6] = proceed;
   block[4] = self;
   dispatch_sync(MEMORY[0x277D85CD0], block);
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(proceed) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return proceed;
 }
 
 void *__42__NTKPhotosFaceView__canOperationProceed___block_invoke(void *result)
@@ -1272,9 +1272,9 @@ void *__42__NTKPhotosFaceView__canOperationProceed___block_invoke(void *result)
   *(self + 1240) &= ~4u;
 }
 
-- (void)_updateContents:(BOOL)a3
+- (void)_updateContents:(BOOL)contents
 {
-  v3 = a3;
+  contentsCopy = contents;
   v5 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1284,25 +1284,25 @@ void *__42__NTKPhotosFaceView__canOperationProceed___block_invoke(void *result)
 
   if (*(self + 1240))
   {
-    [(NTKPhotosFaceView *)self _updateReader:v3];
+    [(NTKPhotosFaceView *)self _updateReader:contentsCopy];
     [(NTKBasePhotosFaceView *)self setNoPhotosViewVisible:self->_numberOfPhotos == 0];
     [(NTKPhotosFaceView *)self _nextPhotoAnimated:[(NTKBasePhotosFaceView *)self isInteractive] preroll:0 method:3 completion:0];
   }
 }
 
-- (void)_updateReader:(BOOL)a3
+- (void)_updateReader:(BOOL)reader
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_currentContent != 2989)
   {
     generator = [(NTKFaceView *)self resourceDirectory];
-    if (!a3)
+    if (!reader)
     {
       reader = self->_reader;
       if (reader)
       {
-        v9 = [(NTKPhotosReader *)reader resourceDirectory];
-        v10 = NTKEqualStrings(v9, generator);
+        resourceDirectory = [(NTKPhotosReader *)reader resourceDirectory];
+        v10 = NTKEqualStrings(resourceDirectory, generator);
 
         if (v10)
         {
@@ -1401,21 +1401,21 @@ LABEL_17:
 LABEL_25:
 }
 
-- (id)_analysisForAlignment:(unint64_t)a3
+- (id)_analysisForAlignment:(unint64_t)alignment
 {
-  v5 = [(NTKPhotosFaceView *)self presentedPhoto];
-  v6 = [v5 photo];
-  v7 = [v6 analysisForAlignment:a3 deviceSizeClass:self->_deviceSizeClass];
+  presentedPhoto = [(NTKPhotosFaceView *)self presentedPhoto];
+  photo = [presentedPhoto photo];
+  v7 = [photo analysisForAlignment:alignment deviceSizeClass:self->_deviceSizeClass];
 
   return v7;
 }
 
-- (id)_analysisCacheKeyFor:(id)a3
+- (id)_analysisCacheKeyFor:(id)for
 {
-  v4 = [a3 photo];
-  v5 = [(NTKBasePhotosFaceView *)self dateAlignment];
+  photo = [for photo];
+  dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
   v6 = CLKDeviceCategoryForSizeClass();
-  if (v5)
+  if (dateAlignment)
   {
     v7 = 79;
   }
@@ -1425,7 +1425,7 @@ LABEL_25:
     v7 = 73;
   }
 
-  if (v5)
+  if (dateAlignment)
   {
     v8 = 68;
   }
@@ -1435,7 +1435,7 @@ LABEL_25:
     v8 = 85;
   }
 
-  if (v5)
+  if (dateAlignment)
   {
     v9 = 115;
   }
@@ -1460,7 +1460,7 @@ LABEL_25:
     v7 = v8;
   }
 
-  if (v5)
+  if (dateAlignment)
   {
     v10 = 66;
   }
@@ -1470,7 +1470,7 @@ LABEL_25:
     v10 = 84;
   }
 
-  if (v5)
+  if (dateAlignment)
   {
     v11 = 82;
   }
@@ -1480,7 +1480,7 @@ LABEL_25:
     v11 = 76;
   }
 
-  if (v5)
+  if (dateAlignment)
   {
     v12 = 83;
   }
@@ -1521,29 +1521,29 @@ LABEL_25:
   }
 
   v15 = MEMORY[0x277CCACA8];
-  v16 = [v4 localIdentifier];
-  v17 = [v4 modificationDate];
-  v18 = [v15 stringWithFormat:@"%@~%@~%u~%c", v16, v17, 1, v14];
+  localIdentifier = [photo localIdentifier];
+  modificationDate = [photo modificationDate];
+  v18 = [v15 stringWithFormat:@"%@~%@~%u~%c", localIdentifier, modificationDate, 1, v14];
 
   return v18;
 }
 
-- (id)_cachedAnalysisForKey:(id)a3
+- (id)_cachedAnalysisForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NTKPhotoAnalysisFileCache sharedInstance];
-  v5 = [v4 photoAnalysisForIdentifier:v3];
+  v5 = [v4 photoAnalysisForIdentifier:keyCopy];
 
   return v5;
 }
 
-- (id)_createAndCachePhotoAnalysisForKey:(id)a3 dateAlignment:(unint64_t)a4 image:(id)a5
+- (id)_createAndCachePhotoAnalysisForKey:(id)key dateAlignment:(unint64_t)alignment image:(id)image
 {
   deviceSizeClass = self->_deviceSizeClass;
-  v8 = a3;
-  v9 = [NTKPhotoAnalysis analysisWithImage:a5 alignment:a4 deviceSizeClass:deviceSizeClass];
+  keyCopy = key;
+  v9 = [NTKPhotoAnalysis analysisWithImage:image alignment:alignment deviceSizeClass:deviceSizeClass];
   v10 = +[NTKPhotoAnalysisFileCache sharedInstance];
-  [v10 setPhotoAnalysis:v9 forIdentifier:v8];
+  [v10 setPhotoAnalysis:v9 forIdentifier:keyCopy];
 
   return v9;
 }

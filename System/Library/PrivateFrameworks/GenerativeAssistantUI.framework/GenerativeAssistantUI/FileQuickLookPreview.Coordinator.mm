@@ -1,11 +1,11 @@
 @interface FileQuickLookPreview.Coordinator
 - (_TtCV16MarkdownDocument20FileQuickLookPreview11Coordinator)init;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
 @end
 
 @implementation FileQuickLookPreview.Coordinator
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v5 = type metadata accessor for FileQuickLookPreview(0);
   v6 = *(*(v5 - 8) + 64);

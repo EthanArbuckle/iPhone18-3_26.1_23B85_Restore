@@ -1,11 +1,11 @@
 @interface TUIElementTBox
 + (id)builderProtocols;
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
-+ (void)preconfigureBox:(id)a3 context:(id)a4;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
++ (void)preconfigureBox:(id)box context:(id)context;
 @end
 
 @implementation TUIElementTBox
@@ -34,26 +34,26 @@
   return v2;
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  var0 = a3.var0;
-  v12 = a4;
-  v34 = [v9 colorForAttribute:51 node:a3.var0];
-  v33 = [v9 fontSpecForNode:a3.var0];
-  v13 = [v9 BOOLForAttribute:122 node:a3.var0];
-  v14 = [v9 stringForAttribute:203 node:a3.var0];
+  attributesCopy = attributes;
+  contextCopy = context;
+  var0 = node.var0;
+  objectCopy = object;
+  v34 = [attributesCopy colorForAttribute:51 node:node.var0];
+  v33 = [attributesCopy fontSpecForNode:node.var0];
+  v13 = [attributesCopy BOOLForAttribute:122 node:node.var0];
+  v14 = [attributesCopy stringForAttribute:203 node:node.var0];
   v15 = [TUIBox textAlignmentFromString:v14];
 
-  v16 = [v10 serviceConformingToProtocol:&OBJC_PROTOCOL___TUIWPService];
-  v17 = [v10 environment];
-  v18 = [v17 layoutDirection];
+  v16 = [contextCopy serviceConformingToProtocol:&OBJC_PROTOCOL___TUIWPService];
+  environment = [contextCopy environment];
+  layoutDirection = [environment layoutDirection];
 
-  v19 = [v9 BOOLForAttribute:191 node:a3.var0];
-  v20 = [v12 role];
+  v19 = [attributesCopy BOOLForAttribute:191 node:node.var0];
+  role = [objectCopy role];
 
-  if (v20 == &dword_4 + 2)
+  if (role == &dword_4 + 2)
   {
     v22 = v33;
     v21 = v34;
@@ -62,7 +62,7 @@
 
   else
   {
-    v32 = v18 == &dword_0 + 2;
+    v32 = layoutDirection == &dword_0 + 2;
     if (v13)
     {
       v24 = 4;
@@ -73,8 +73,8 @@
       v24 = 0;
     }
 
-    v25 = [v10 environment];
-    [v25 language];
+    environment2 = [contextCopy environment];
+    [environment2 language];
     v27 = v26 = v16;
     LOBYTE(v31) = v19;
     v22 = v33;
@@ -85,70 +85,70 @@
     v16 = v26;
   }
 
-  v29 = [v9 stringForAttribute:102 node:var0];
+  v29 = [attributesCopy stringForAttribute:102 node:var0];
   [(TUIAttributedStringBuilder *)v23 setOptions:sub_5E5B8(v29, 2uLL)];
 
   return v23;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v9 setMaxLines:{fmax(objc_msgSend(v8, "integerForAttribute:withDefault:node:", 129, 0, var0), 0.0)}];
-  [v9 setHideEllipses:{objc_msgSend(v8, "BOOLForAttribute:node:", 100, var0)}];
-  [v9 setAllowHangingPunctuation:{objc_msgSend(v8, "BOOLForAttribute:node:", 6, var0)}];
-  [v9 setAllowShrinkToFit:{objc_msgSend(v8, "BOOLForAttribute:node:", 7, var0)}];
-  v11 = [v8 stringForAttribute:37 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [boxCopy setMaxLines:{fmax(objc_msgSend(attributesCopy, "integerForAttribute:withDefault:node:", 129, 0, var0), 0.0)}];
+  [boxCopy setHideEllipses:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 100, var0)}];
+  [boxCopy setAllowHangingPunctuation:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 6, var0)}];
+  [boxCopy setAllowShrinkToFit:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 7, var0)}];
+  v11 = [attributesCopy stringForAttribute:37 node:var0];
 
   v10 = [TUIBox blendModeFromString:v11];
-  [v9 setBlendMode:v10];
+  [boxCopy setBlendMode:v10];
 }
 
-+ (void)preconfigureBox:(id)a3 context:(id)a4
++ (void)preconfigureBox:(id)box context:(id)context
 {
-  v4 = a3;
-  [v4 setAXElement:1];
-  [v4 setAxStaticText:1];
+  boxCopy = box;
+  [boxCopy setAXElement:1];
+  [boxCopy setAxStaticText:1];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v14 role];
-  v10 = [v7 finalizeTextModelWithContext:v8];
-  if (v9 == &dword_4 + 2)
+  objectCopy = object;
+  builderCopy = builder;
+  contextCopy = context;
+  role = [objectCopy role];
+  v10 = [builderCopy finalizeTextModelWithContext:contextCopy];
+  if (role == &dword_4 + 2)
   {
-    [v14 setPlaceholderString:v10];
+    [objectCopy setPlaceholderString:v10];
   }
 
   else
   {
-    [v14 setTextModel:v10];
+    [objectCopy setTextModel:v10];
   }
 
-  v11 = [v7 finalizeModelsWithParent:v14 box:v14 context:v8];
-  if ([v14 isAXElement])
+  v11 = [builderCopy finalizeModelsWithParent:objectCopy box:objectCopy context:contextCopy];
+  if ([objectCopy isAXElement])
   {
-    v12 = [v14 axLabel];
+    axLabel = [objectCopy axLabel];
 
-    if (!v12)
+    if (!axLabel)
     {
-      v13 = [v14 string];
-      [v14 setAxLabel:v13];
+      string = [objectCopy string];
+      [objectCopy setAxLabel:string];
     }
   }
 }
 
-+ (void)configureChildBox:(id)a3 withChildNode:(id)a4 attributes:(id)a5 builder:(id)a6 context:(id)a7
++ (void)configureChildBox:(id)box withChildNode:(id)node attributes:(id)attributes builder:(id)builder context:(id)context
 {
-  var0 = a4.var0;
-  v9 = a6;
-  [a5 floatForAttribute:34 node:var0];
-  [v9 setBaselineOffset:?];
+  var0 = node.var0;
+  builderCopy = builder;
+  [attributes floatForAttribute:34 node:var0];
+  [builderCopy setBaselineOffset:?];
 }
 
 @end

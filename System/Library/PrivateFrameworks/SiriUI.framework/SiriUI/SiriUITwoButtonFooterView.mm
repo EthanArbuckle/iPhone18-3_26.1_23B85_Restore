@@ -1,21 +1,21 @@
 @interface SiriUITwoButtonFooterView
 + (double)defaultHeight;
-- (SiriUITwoButtonFooterView)initWithFrame:(CGRect)a3;
+- (SiriUITwoButtonFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation SiriUITwoButtonFooterView
 
-- (SiriUITwoButtonFooterView)initWithFrame:(CGRect)a3
+- (SiriUITwoButtonFooterView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SiriUITwoButtonFooterView;
-  v3 = [(SiriUITwoButtonFooterView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUITwoButtonFooterView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(SiriUITwoButtonFooterView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SiriUITwoButtonFooterView *)v3 setBackgroundColor:clearColor];
 
     v5 = +[SiriUIKeyline verticalKeyline];
     verticalKeyline = v3->_verticalKeyline;
@@ -35,8 +35,8 @@
 
 + (double)defaultHeight
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   return 44.0;
 }
@@ -77,8 +77,8 @@
   v26.size.width = width;
   v26.size.height = height;
   MinX = CGRectGetMinX(v26);
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = v11 < 2.0;
   v13 = 0.5;
   if (v12)

@@ -1,23 +1,23 @@
 @interface CSDCallDirectoryManager
-+ (id)sharedInstanceWithQueue:(id)a3;
-- (BOOL)fetchLiveBlockingInfoForHandle:(id)a3;
-- (CSDCallDirectoryManager)initWithQueue:(id)a3;
-- (id)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)a3;
-- (void)beginDailyMaintenanceWithActivity:(id)a3;
-- (void)callDirectoryNSExtensionManager:(id)a3 extensionsChanged:(id)a4;
++ (id)sharedInstanceWithQueue:(id)queue;
+- (BOOL)fetchLiveBlockingInfoForHandle:(id)handle;
+- (CSDCallDirectoryManager)initWithQueue:(id)queue;
+- (id)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)number;
+- (void)beginDailyMaintenanceWithActivity:(id)activity;
+- (void)callDirectoryNSExtensionManager:(id)manager extensionsChanged:(id)changed;
 @end
 
 @implementation CSDCallDirectoryManager
 
-+ (id)sharedInstanceWithQueue:(id)a3
++ (id)sharedInstanceWithQueue:(id)queue
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DCC6C;
   block[3] = &unk_100619D38;
-  v9 = a3;
+  queueCopy = queue;
   v3 = qword_1006ACC68;
-  v4 = v9;
+  v4 = queueCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_1006ACC68, block);
@@ -29,16 +29,16 @@
   return v5;
 }
 
-- (CSDCallDirectoryManager)initWithQueue:(id)a3
+- (CSDCallDirectoryManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v23.receiver = self;
   v23.super_class = CSDCallDirectoryManager;
   v6 = [(CSDCallDirectoryManager *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = [[CSDDeviceLockStateObserver alloc] initWithQueue:v7->_queue];
     deviceLockObserver = v7->_deviceLockObserver;
     v7->_deviceLockObserver = v8;
@@ -79,31 +79,31 @@
   return v7;
 }
 
-- (BOOL)fetchLiveBlockingInfoForHandle:(id)a3
+- (BOOL)fetchLiveBlockingInfoForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CSDCallDirectoryManager *)self featureFlags];
-  v6 = [v5 liveIDLookupEnabled];
+  handleCopy = handle;
+  featureFlags = [(CSDCallDirectoryManager *)self featureFlags];
+  liveIDLookupEnabled = [featureFlags liveIDLookupEnabled];
 
-  if (v6)
+  if (liveIDLookupEnabled)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = handleCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "fetchLiveBlockingInfoForHandle handle=%@", &v15, 0xCu);
     }
 
-    v8 = [(CSDCallDirectoryManager *)self manager];
+    manager = [(CSDCallDirectoryManager *)self manager];
 
     v9 = 0;
-    if (v4 && v8)
+    if (handleCopy && manager)
     {
-      v10 = [(CSDCallDirectoryManager *)self manager];
-      v11 = [(CSDCallDirectoryManager *)self serverBag];
-      [v11 liveLookupTimeoutSeconds];
-      v9 = [v10 fetchLiveBlockingInfoForHandle:v4 timeout:?];
+      manager2 = [(CSDCallDirectoryManager *)self manager];
+      serverBag = [(CSDCallDirectoryManager *)self serverBag];
+      [serverBag liveLookupTimeoutSeconds];
+      v9 = [manager2 fetchLiveBlockingInfoForHandle:handleCopy timeout:?];
     }
 
     v12 = sub_100004778();
@@ -116,7 +116,7 @@
       }
 
       v15 = 138412546;
-      v16 = v4;
+      v16 = handleCopy;
       v17 = 2112;
       v18 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "fetchLiveBlockingInfoForHandle handle=%@ block=%@", &v15, 0x16u);
@@ -131,30 +131,30 @@
   return v9;
 }
 
-- (id)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)a3
+- (id)firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(CSDCallDirectoryManager *)self featureFlags];
-  v6 = [v5 liveIDLookupEnabled];
+  numberCopy = number;
+  featureFlags = [(CSDCallDirectoryManager *)self featureFlags];
+  liveIDLookupEnabled = [featureFlags liveIDLookupEnabled];
 
-  if (v6)
+  if (liveIDLookupEnabled)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = numberCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber handle=%@", &v14, 0xCu);
     }
 
-    v8 = [(CSDCallDirectoryManager *)self manager];
+    manager = [(CSDCallDirectoryManager *)self manager];
 
-    if (v8)
+    if (manager)
     {
-      v9 = [(CSDCallDirectoryManager *)self manager];
-      v10 = [(CSDCallDirectoryManager *)self serverBag];
-      [v10 liveLookupTimeoutSeconds];
-      v11 = [v9 firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:v4 timeout:?];
+      manager2 = [(CSDCallDirectoryManager *)self manager];
+      serverBag = [(CSDCallDirectoryManager *)self serverBag];
+      [serverBag liveLookupTimeoutSeconds];
+      v11 = [manager2 firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:numberCopy timeout:?];
     }
 
     else
@@ -166,7 +166,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v4;
+      v15 = numberCopy;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber handle=%@ blockedByExtension=%@", &v14, 0x16u);
@@ -181,9 +181,9 @@
   return v11;
 }
 
-- (void)beginDailyMaintenanceWithActivity:(id)a3
+- (void)beginDailyMaintenanceWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -191,7 +191,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setting activity state to XPC_ACTIVITY_STATE_CONTINUE", buf, 2u);
   }
 
-  if (!xpc_activity_set_state(v4, 4))
+  if (!xpc_activity_set_state(activityCopy, 4))
   {
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -200,33 +200,33 @@
     }
   }
 
-  v7 = [(CSDCallDirectoryManager *)self queue];
+  queue = [(CSDCallDirectoryManager *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000DD4D4;
   v9[3] = &unk_100619D88;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = activityCopy;
+  v8 = activityCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)callDirectoryNSExtensionManager:(id)a3 extensionsChanged:(id)a4
+- (void)callDirectoryNSExtensionManager:(id)manager extensionsChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(CSDCallDirectoryManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  managerCopy = manager;
+  queue = [(CSDCallDirectoryManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDCallDirectoryManager *)self manager];
+  manager = [(CSDCallDirectoryManager *)self manager];
 
-  if (v7)
+  if (manager)
   {
     [(CSDCallDirectoryManager *)self setCountOfNotificationsReceived:[(CSDCallDirectoryManager *)self countOfNotificationsReceived]+ 1];
     v8 = [NSString stringWithFormat:@"extensionsChangedForCallDirectoryExtensionManager-%lu", [(CSDCallDirectoryManager *)self countOfNotificationsReceived]];
     v9 = +[CSDTransactionManager sharedInstance];
     [v9 beginTransactionIfNecessaryForObject:v8 withReason:@"CXCallDirectoryNSExtensionManagerDelegate"];
 
-    v10 = [(CSDCallDirectoryManager *)self manager];
+    manager2 = [(CSDCallDirectoryManager *)self manager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000DDA34;
@@ -234,7 +234,7 @@
     v12[4] = self;
     v13 = v8;
     v11 = v8;
-    [v10 synchronizeExtensionsWithCompletionHandler:v12];
+    [manager2 synchronizeExtensionsWithCompletionHandler:v12];
   }
 
   else

@@ -1,14 +1,14 @@
 @interface ECAccountsObserver
 + (OS_os_log)log;
 + (id)observedAccountTypes;
-- (BOOL)_shouldNotifyOnAccountChangeForNotification:(id)a3;
-- (ECAccountsObserver)initWithAccountStore:(id)a3;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_credentialsDidChange:(id)a3;
-- (void)_mailAccountsChanged:(id)a3;
-- (void)handleAccountStoreChangeForAccountIdentifier:(id)a3;
-- (void)handleCredentialChangeForAccountIdentifier:(id)a3;
-- (void)handleMailAccountsHaveChanged:(id)a3 accountsNeedInitialization:(BOOL)a4;
+- (BOOL)_shouldNotifyOnAccountChangeForNotification:(id)notification;
+- (ECAccountsObserver)initWithAccountStore:(id)store;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_credentialsDidChange:(id)change;
+- (void)_mailAccountsChanged:(id)changed;
+- (void)handleAccountStoreChangeForAccountIdentifier:(id)identifier;
+- (void)handleCredentialChangeForAccountIdentifier:(id)identifier;
+- (void)handleMailAccountsHaveChanged:(id)changed accountsNeedInitialization:(BOOL)initialization;
 @end
 
 @implementation ECAccountsObserver
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __25__ECAccountsObserver_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -38,13 +38,13 @@ void __25__ECAccountsObserver_log__block_invoke(uint64_t a1)
   log_log_0 = v1;
 }
 
-- (ECAccountsObserver)initWithAccountStore:(id)a3
+- (ECAccountsObserver)initWithAccountStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"ECAccountsObserver.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"accountStore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECAccountsObserver.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"accountStore"}];
   }
 
   v12.receiver = self;
@@ -53,32 +53,32 @@ void __25__ECAccountsObserver_log__block_invoke(uint64_t a1)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_accountStore, a3);
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v8 selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v8->_accountStore];
-    [v9 addObserver:v8 selector:sel__credentialsDidChange_ name:*MEMORY[0x277CB8910] object:0];
-    [v9 addObserver:v8 selector:sel__mailAccountsChanged_ name:@"ECMailAccountsChangedNotification" object:0];
+    objc_storeStrong(&v7->_accountStore, store);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__accountStoreDidChange_ name:*MEMORY[0x277CB8B78] object:v8->_accountStore];
+    [defaultCenter addObserver:v8 selector:sel__credentialsDidChange_ name:*MEMORY[0x277CB8910] object:0];
+    [defaultCenter addObserver:v8 selector:sel__mailAccountsChanged_ name:@"ECMailAccountsChangedNotification" object:0];
   }
 
   return v8;
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = +[ECAccountsObserver log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_22D092000, v5, OS_LOG_TYPE_DEFAULT, "Received account store did change notification: %{public}@", &v9, 0xCu);
   }
 
-  if ([(ECAccountsObserver *)self _shouldNotifyOnAccountChangeForNotification:v4])
+  if ([(ECAccountsObserver *)self _shouldNotifyOnAccountChangeForNotification:changeCopy])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CB8A60]];
+    userInfo = [changeCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8A60]];
 
     [(ECAccountsObserver *)self handleAccountStoreChangeForAccountIdentifier:v7];
   }
@@ -86,22 +86,22 @@ void __25__ECAccountsObserver_log__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_credentialsDidChange:(id)a3
+- (void)_credentialsDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = +[ECAccountsObserver log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = changeCopy;
     _os_log_impl(&dword_22D092000, v5, OS_LOG_TYPE_DEFAULT, "Received account credentials did change notification: %{public}@", &v9, 0xCu);
   }
 
-  if ([(ECAccountsObserver *)self _shouldNotifyOnAccountChangeForNotification:v4])
+  if ([(ECAccountsObserver *)self _shouldNotifyOnAccountChangeForNotification:changeCopy])
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CB8A60]];
+    userInfo = [changeCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8A60]];
 
     [(ECAccountsObserver *)self handleCredentialChangeForAccountIdentifier:v7];
   }
@@ -109,31 +109,31 @@ void __25__ECAccountsObserver_log__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mailAccountsChanged:(id)a3
+- (void)_mailAccountsChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = +[ECAccountsObserver log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = changedCopy;
     _os_log_impl(&dword_22D092000, v5, OS_LOG_TYPE_DEFAULT, "Received accounts did change notification: %{public}@", &v11, 0xCu);
   }
 
-  v6 = [v4 object];
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"ECMailAccountInitialization"];
-  v9 = [v8 BOOLValue];
+  object = [changedCopy object];
+  userInfo = [changedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"ECMailAccountInitialization"];
+  bOOLValue = [v8 BOOLValue];
 
-  [(ECAccountsObserver *)self handleMailAccountsHaveChanged:v6 accountsNeedInitialization:v9];
+  [(ECAccountsObserver *)self handleMailAccountsHaveChanged:object accountsNeedInitialization:bOOLValue];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldNotifyOnAccountChangeForNotification:(id)a3
+- (BOOL)_shouldNotifyOnAccountChangeForNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CB8C90]];
 
   if (v4)
   {
@@ -192,23 +192,23 @@ void __42__ECAccountsObserver_observedAccountTypes__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAccountStoreChangeForAccountIdentifier:(id)a3
+- (void)handleAccountStoreChangeForAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   [(ECAccountsObserver *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ECAccountsObserver handleAccountStoreChangeForAccountIdentifier:]", "ECAccountsObserver.m", 105, "0");
 }
 
-- (void)handleCredentialChangeForAccountIdentifier:(id)a3
+- (void)handleCredentialChangeForAccountIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   [(ECAccountsObserver *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ECAccountsObserver handleCredentialChangeForAccountIdentifier:]", "ECAccountsObserver.m", 109, "0");
 }
 
-- (void)handleMailAccountsHaveChanged:(id)a3 accountsNeedInitialization:(BOOL)a4
+- (void)handleMailAccountsHaveChanged:(id)changed accountsNeedInitialization:(BOOL)initialization
 {
-  v6 = a3;
+  changedCopy = changed;
   [(ECAccountsObserver *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[ECAccountsObserver handleMailAccountsHaveChanged:accountsNeedInitialization:]", "ECAccountsObserver.m", 113, "0");
 }

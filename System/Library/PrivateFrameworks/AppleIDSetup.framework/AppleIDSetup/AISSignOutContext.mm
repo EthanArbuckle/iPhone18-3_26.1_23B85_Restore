@@ -1,13 +1,13 @@
 @interface AISSignOutContext
 - (AISSignOutContext)init;
-- (AISSignOutContext)initWithAccountAltDSIDsByService:(id)a3;
-- (AISSignOutContext)initWithAltDSID:(id)a3 machineIdToSignOut:(id)a4 type:(int64_t)a5;
-- (AISSignOutContext)initWithCoder:(id)a3;
+- (AISSignOutContext)initWithAccountAltDSIDsByService:(id)service;
+- (AISSignOutContext)initWithAltDSID:(id)d machineIdToSignOut:(id)out type:(int64_t)type;
+- (AISSignOutContext)initWithCoder:(id)coder;
 - (NSDictionary)accountAltDSIDsByService;
 - (NSString)altDSID;
 - (NSString)description;
 - (NSString)machineIdToSignOut;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AISSignOutContext
@@ -25,7 +25,7 @@
 
 - (NSString)altDSID
 {
-  v2 = self;
+  selfCopy = self;
   sub_240719100();
   v4 = v3;
 
@@ -60,22 +60,22 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_240719234(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_240719234(coderCopy);
 }
 
-- (AISSignOutContext)initWithCoder:(id)a3
+- (AISSignOutContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_24071A30C(v3);
+  coderCopy = coder;
+  v4 = sub_24071A30C(coderCopy);
 
   return v4;
 }
 
-- (AISSignOutContext)initWithAccountAltDSIDsByService:(id)a3
+- (AISSignOutContext)initWithAccountAltDSIDsByService:(id)service
 {
   type metadata accessor for AIDAServiceType(0);
   sub_240665FC0();
@@ -96,10 +96,10 @@
   return v7;
 }
 
-- (AISSignOutContext)initWithAltDSID:(id)a3 machineIdToSignOut:(id)a4 type:(int64_t)a5
+- (AISSignOutContext)initWithAltDSID:(id)d machineIdToSignOut:(id)out type:(int64_t)type
 {
   v7 = sub_24075A0B4();
-  if (a4)
+  if (out)
   {
     v9 = v7;
     v10 = v8;
@@ -115,7 +115,7 @@
     v13 = 0;
   }
 
-  return sub_240719CD0(v7, v8, v11, v13, a5);
+  return sub_240719CD0(v7, v8, v11, v13, type);
 }
 
 - (AISSignOutContext)init
@@ -127,7 +127,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   SignOutContext.description.getter();
 
   v3 = sub_24075A084();

@@ -10,10 +10,10 @@
 - (OADDrawable)drawable;
 - (WDAContent)init;
 - (id)createAnchor;
-- (id)createTextBoxWithDocument:(id)a3 textType:(int)a4;
+- (id)createTextBoxWithDocument:(id)document textType:(int)type;
 - (unint64_t)linkedTextBoxSupport;
 - (void)clearAnchor;
-- (void)setTextBox:(id)a3 document:(id)a4;
+- (void)setTextBox:(id)box document:(id)document;
 @end
 
 @implementation WDAContent
@@ -70,8 +70,8 @@
 
 - (BOOL)floating
 {
-  v2 = [(WDAContent *)self anchor];
-  v3 = v2 != 0;
+  anchor = [(WDAContent *)self anchor];
+  v3 = anchor != 0;
 
   return v3;
 }
@@ -82,64 +82,64 @@
   self->mAnchor = 0;
 }
 
-- (id)createTextBoxWithDocument:(id)a3 textType:(int)a4
+- (id)createTextBoxWithDocument:(id)document textType:(int)type
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&type;
+  documentCopy = document;
   v7 = objc_alloc_init(WDATextBox);
   mTextBox = self->mTextBox;
   self->mTextBox = v7;
 
-  [(WDATextBox *)self->mTextBox setDocument:v6];
+  [(WDATextBox *)self->mTextBox setDocument:documentCopy];
   [(WDATextBox *)self->mTextBox setParent:self];
-  v9 = [[WDText alloc] initWithDocument:v6 textType:v4];
+  v9 = [[WDText alloc] initWithDocument:documentCopy textType:v4];
   [(WDATextBox *)self->mTextBox setText:v9];
-  [v6 addObjPointer:self->mTextBox];
-  [v6 addObjPointer:self];
+  [documentCopy addObjPointer:self->mTextBox];
+  [documentCopy addObjPointer:self];
   v10 = self->mTextBox;
   v11 = v10;
 
   return v10;
 }
 
-- (void)setTextBox:(id)a3 document:(id)a4
+- (void)setTextBox:(id)box document:(id)document
 {
-  v6 = a3;
-  v8 = a4;
-  [v8 addObjPointer:v6];
+  boxCopy = box;
+  documentCopy = document;
+  [documentCopy addObjPointer:boxCopy];
   if (self->mTextBox)
   {
-    [v8 removeObjPointer:?];
+    [documentCopy removeObjPointer:?];
   }
 
   else
   {
-    [v8 addObjPointer:self];
+    [documentCopy addObjPointer:self];
   }
 
   mTextBox = self->mTextBox;
-  self->mTextBox = v6;
+  self->mTextBox = boxCopy;
 }
 
 - (BOOL)isLine
 {
-  v3 = [(WDAContent *)self isShape];
-  if (v3)
+  isShape = [(WDAContent *)self isShape];
+  if (isShape)
   {
     WeakRetained = objc_loadWeakRetained(&self->mDrawable);
-    v5 = [WeakRetained type];
+    type = [WeakRetained type];
 
-    LOBYTE(v3) = v5 == 20;
+    LOBYTE(isShape) = type == 20;
   }
 
-  return v3;
+  return isShape;
 }
 
 - (BOOL)isTopLevelObject
 {
-  v2 = [(WDAContent *)self drawable];
-  v3 = [v2 parent];
-  v4 = v3 == 0;
+  drawable = [(WDAContent *)self drawable];
+  parent = [drawable parent];
+  v4 = parent == 0;
 
   return v4;
 }
@@ -147,9 +147,9 @@
 - (unint64_t)linkedTextBoxSupport
 {
   WeakRetained = objc_loadWeakRetained(&self->mDrawable);
-  v3 = [WeakRetained parent];
+  parent = [WeakRetained parent];
 
-  if (v3)
+  if (parent)
   {
     return 2;
   }
@@ -162,11 +162,11 @@
 
 - (BOOL)isLinked
 {
-  v3 = [(WDATextBox *)self->mTextBox flowId];
-  if (v3)
+  flowId = [(WDATextBox *)self->mTextBox flowId];
+  if (flowId)
   {
-    v4 = [(WDATextBox *)self->mTextBox flowSequence];
-    v5 = [v4 intValue] > 0 || -[WDATextBox nextTextBoxId](self->mTextBox, "nextTextBoxId") != 0;
+    flowSequence = [(WDATextBox *)self->mTextBox flowSequence];
+    v5 = [flowSequence intValue] > 0 || -[WDATextBox nextTextBoxId](self->mTextBox, "nextTextBoxId") != 0;
   }
 
   else
@@ -179,11 +179,11 @@
 
 - (BOOL)hasText
 {
-  v2 = [(WDATextBox *)self->mTextBox text];
-  v3 = v2;
-  if (v2)
+  text = [(WDATextBox *)self->mTextBox text];
+  v3 = text;
+  if (text)
   {
-    v4 = [v2 isEmpty] ^ 1;
+    v4 = [text isEmpty] ^ 1;
   }
 
   else

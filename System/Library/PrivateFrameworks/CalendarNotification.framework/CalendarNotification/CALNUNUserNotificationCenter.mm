@@ -1,44 +1,44 @@
 @interface CALNUNUserNotificationCenter
-+ (id)_statsPayloadKeyForSettingName:(id)a3 topicIdentifier:(id)a4;
-+ (void)_addSettingName:(id)a3 value:(id)a4 toStatsPayload:(id)a5 forTopicIdentifier:(id)a6;
-- (BOOL)addNotificationRequest:(id)a3 error:(id *)a4;
-- (BOOL)replaceNotificationRequest:(id)a3 error:(id *)a4;
-- (CALNUNUserNotificationCenter)initWithBundleIdentifier:(id)a3 userNotificationCenterFactory:(id)a4 storage:(id)a5 iconProvider:(id)a6;
++ (id)_statsPayloadKeyForSettingName:(id)name topicIdentifier:(id)identifier;
++ (void)_addSettingName:(id)name value:(id)value toStatsPayload:(id)payload forTopicIdentifier:(id)identifier;
+- (BOOL)addNotificationRequest:(id)request error:(id *)error;
+- (BOOL)replaceNotificationRequest:(id)request error:(id *)error;
+- (CALNUNUserNotificationCenter)initWithBundleIdentifier:(id)identifier userNotificationCenterFactory:(id)factory storage:(id)storage iconProvider:(id)provider;
 - (CALNUserNotificationCenterDelegate)delegate;
-- (id)_updatedRecord:(id)a3;
+- (id)_updatedRecord:(id)record;
 - (id)deliveredNotifications;
 - (id)notificationCategories;
 - (void)activate;
-- (void)collectSettingsStats:(id)a3;
+- (void)collectSettingsStats:(id)stats;
 - (void)removeAllDeliveredNotifications;
 - (void)removeAllPendingNotificationRequests;
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3;
-- (void)setNotificationCategories:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers;
+- (void)setNotificationCategories:(id)categories;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation CALNUNUserNotificationCenter
 
-- (CALNUNUserNotificationCenter)initWithBundleIdentifier:(id)a3 userNotificationCenterFactory:(id)a4 storage:(id)a5 iconProvider:(id)a6
+- (CALNUNUserNotificationCenter)initWithBundleIdentifier:(id)identifier userNotificationCenterFactory:(id)factory storage:(id)storage iconProvider:(id)provider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  factoryCopy = factory;
+  storageCopy = storage;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = CALNUNUserNotificationCenter;
   v14 = [(CALNUNUserNotificationCenter *)&v28 init];
   if (v14)
   {
-    v15 = [v11 userNotificationCenterWithBundleIdentifier:v10];
+    v15 = [factoryCopy userNotificationCenterWithBundleIdentifier:identifierCopy];
     [v15 setDelegate:v14];
     userNotificationCenter = v14->_userNotificationCenter;
     v14->_userNotificationCenter = v15;
     v17 = v15;
 
-    objc_storeStrong(&v14->_storage, a5);
-    v18 = [[CALNUNNotificationIconMapper alloc] initWithIconProvider:v13];
+    objc_storeStrong(&v14->_storage, storage);
+    v18 = [[CALNUNNotificationIconMapper alloc] initWithIconProvider:providerCopy];
     v19 = [[CALNUNNotificationContentMapper alloc] initWithNotificationIconMapper:v18];
     notificationContentMapper = v14->_notificationContentMapper;
     v14->_notificationContentMapper = v19;
@@ -61,33 +61,33 @@
 
 - (void)activate
 {
-  v3 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  [v3 setWantsNotificationResponsesDelivered];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter setWantsNotificationResponsesDelivered];
 
   [(CALNUNUserNotificationCenter *)self setActive:1];
 }
 
-- (BOOL)addNotificationRequest:(id)a3 error:(id *)a4
+- (BOOL)addNotificationRequest:(id)request error:(id *)error
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   if ([(CALNUNUserNotificationCenter *)self isActive])
   {
-    v7 = [CALNNotificationMapper notificationRecordFromNotificationRequest:v6];
+    v7 = [CALNNotificationMapper notificationRecordFromNotificationRequest:requestCopy];
     if (v7)
     {
-      v8 = [(CALNUNUserNotificationCenter *)self storage];
-      [v8 addNotificationRecord:v7];
+      storage = [(CALNUNUserNotificationCenter *)self storage];
+      [storage addNotificationRecord:v7];
 
       v9 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [v7 sourceIdentifier];
-        v11 = [v7 sourceClientIdentifier];
+        sourceIdentifier = [v7 sourceIdentifier];
+        sourceClientIdentifier = [v7 sourceClientIdentifier];
         v26 = 138543874;
-        v27 = v10;
+        v27 = sourceIdentifier;
         v28 = 2114;
-        v29 = v11;
+        v29 = sourceClientIdentifier;
         v30 = 2112;
         v31 = v7;
         _os_log_impl(&dword_242909000, v9, OS_LOG_TYPE_INFO, "Added notification record to storage. Notification record source identifier = %{public}@, source client identifier = %{public}@, record = %@", &v26, 0x20u);
@@ -103,31 +103,31 @@
       }
     }
 
-    v18 = [(CALNUNUserNotificationCenter *)self notificationRequestMapper];
-    v15 = [v18 unNotificationRequestFromCALNNotificationRequest:v6];
+    notificationRequestMapper = [(CALNUNUserNotificationCenter *)self notificationRequestMapper];
+    v15 = [notificationRequestMapper unNotificationRequestFromCALNNotificationRequest:requestCopy];
 
     v19 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v15 identifier];
+      identifier = [v15 identifier];
       v26 = 138543618;
-      v27 = v20;
+      v27 = identifier;
       v28 = 2112;
       v29 = v15;
       _os_log_impl(&dword_242909000, v19, OS_LOG_TYPE_DEFAULT, "Adding unNotificationRequest with identifier = %{public}@, request = %@", &v26, 0x16u);
     }
 
-    v21 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-    v17 = [v21 addNotificationRequest:v15 error:a4];
+    userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+    v17 = [userNotificationCenter addNotificationRequest:v15 error:error];
 
     if (v17)
     {
       v22 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v15 identifier];
+        identifier2 = [v15 identifier];
         v26 = 138543362;
-        v27 = v23;
+        v27 = identifier2;
         _os_log_impl(&dword_242909000, v22, OS_LOG_TYPE_DEFAULT, "Added unNotificationRequest with identifier = %{public}@", &v26, 0xCu);
       }
     }
@@ -151,11 +151,11 @@
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CALNUNUserNotificationCenterErrorDomain" code:0 userInfo:v7];
     v15 = v14;
-    if (a4)
+    if (error)
     {
       v16 = v14;
       LOBYTE(v17) = 0;
-      *a4 = v15;
+      *error = v15;
     }
 
     else
@@ -170,48 +170,48 @@
 
 - (id)deliveredNotifications
 {
-  v3 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  v4 = [v3 deliveredNotifications];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  deliveredNotifications = [userNotificationCenter deliveredNotifications];
 
-  v5 = [(CALNUNUserNotificationCenter *)self notificationMapper];
-  v6 = [v5 calnNotificationsFromUNNotifications:v4];
+  notificationMapper = [(CALNUNUserNotificationCenter *)self notificationMapper];
+  v6 = [notificationMapper calnNotificationsFromUNNotifications:deliveredNotifications];
 
   return v6;
 }
 
 - (id)notificationCategories
 {
-  v2 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  v3 = [v2 notificationCategories];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  notificationCategories = [userNotificationCenter notificationCategories];
 
-  v4 = [CALNUNNotificationCategoryMapper calnNotificationCategoriesFromUNNotificationCategories:v3];
+  v4 = [CALNUNNotificationCategoryMapper calnNotificationCategoriesFromUNNotificationCategories:notificationCategories];
 
   return v4;
 }
 
 - (void)removeAllDeliveredNotifications
 {
-  v3 = [(CALNUNUserNotificationCenter *)self storage];
-  [v3 removeNotificationRecordsPassingTest:&__block_literal_global_5];
+  storage = [(CALNUNUserNotificationCenter *)self storage];
+  [storage removeNotificationRecordsPassingTest:&__block_literal_global_5];
 
-  v4 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  [v4 removeAllDeliveredNotifications];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeAllDeliveredNotifications];
 }
 
-- (void)removeDeliveredNotificationsWithIdentifiers:(id)a3
+- (void)removeDeliveredNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(CALNUNUserNotificationCenter *)self storage];
+  identifiersCopy = identifiers;
+  storage = [(CALNUNUserNotificationCenter *)self storage];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIdentifiers___block_invoke;
   v8[3] = &unk_278D6F3C0;
-  v9 = v4;
-  v6 = v4;
-  [v5 removeNotificationRecordsPassingTest:v8];
+  v9 = identifiersCopy;
+  v6 = identifiersCopy;
+  [storage removeNotificationRecordsPassingTest:v8];
 
-  v7 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  [v7 removeDeliveredNotificationsWithIdentifiers:v6];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeDeliveredNotificationsWithIdentifiers:v6];
 }
 
 uint64_t __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -238,30 +238,30 @@ uint64_t __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIden
 
 - (void)removeAllPendingNotificationRequests
 {
-  v2 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  [v2 removeAllPendingNotificationRequests];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter removeAllPendingNotificationRequests];
 }
 
-- (BOOL)replaceNotificationRequest:(id)a3 error:(id *)a4
+- (BOOL)replaceNotificationRequest:(id)request error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [CALNNotificationMapper notificationRecordFromNotificationRequest:v6];
+  requestCopy = request;
+  v7 = [CALNNotificationMapper notificationRecordFromNotificationRequest:requestCopy];
   if (v7)
   {
     v8 = [(CALNUNUserNotificationCenter *)self _updatedRecord:v7];
-    v9 = [(CALNUNUserNotificationCenter *)self storage];
-    [v9 addNotificationRecord:v8];
+    storage = [(CALNUNUserNotificationCenter *)self storage];
+    [storage addNotificationRecord:v8];
 
     v10 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v8 sourceIdentifier];
-      v12 = [v8 sourceClientIdentifier];
+      sourceIdentifier = [v8 sourceIdentifier];
+      sourceClientIdentifier = [v8 sourceClientIdentifier];
       v23 = 138543874;
-      v24 = v11;
+      v24 = sourceIdentifier;
       v25 = 2114;
-      v26 = v12;
+      v26 = sourceClientIdentifier;
       v27 = 2112;
       v28 = v8;
       _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_INFO, "Added updated notification record to storage. Notification record source identifier = %{public}@, source client identifier = %{public}@, record = %@", &v23, 0x20u);
@@ -273,26 +273,26 @@ uint64_t __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIden
     v8 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CALNUNUserNotificationCenter replaceNotificationRequest:v6 error:?];
+      [CALNUNUserNotificationCenter replaceNotificationRequest:requestCopy error:?];
     }
   }
 
-  v13 = [(CALNUNUserNotificationCenter *)self notificationContentMapper];
-  v14 = [v6 content];
-  v15 = [v13 unNotificationContentFromCALNNotificationContent:v14];
+  notificationContentMapper = [(CALNUNUserNotificationCenter *)self notificationContentMapper];
+  content = [requestCopy content];
+  v15 = [notificationContentMapper unNotificationContentFromCALNNotificationContent:content];
 
-  v16 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  v17 = [v6 identifier];
-  v18 = [v16 replaceContentForRequestWithIdentifier:v17 replacementContent:v15 error:a4];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  identifier = [requestCopy identifier];
+  v18 = [userNotificationCenter replaceContentForRequestWithIdentifier:identifier replacementContent:v15 error:error];
 
   if (v18)
   {
     v19 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v6 identifier];
+      identifier2 = [requestCopy identifier];
       v23 = 138543618;
-      v24 = v20;
+      v24 = identifier2;
       v25 = 2112;
       v26 = v15;
       _os_log_impl(&dword_242909000, v19, OS_LOG_TYPE_DEFAULT, "Replaced request with identifier = %{public}@, unNotificationContent = %@", &v23, 0x16u);
@@ -303,32 +303,32 @@ uint64_t __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIden
   return v18;
 }
 
-- (void)setNotificationCategories:(id)a3
+- (void)setNotificationCategories:(id)categories
 {
-  v5 = [CALNUNNotificationCategoryMapper unNotificationCategoriesFromCALNNotificationCategories:a3];
-  v4 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  [v4 setNotificationCategories:v5];
+  v5 = [CALNUNNotificationCategoryMapper unNotificationCategoriesFromCALNNotificationCategories:categories];
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  [userNotificationCenter setNotificationCategories:v5];
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CALNUNUserNotificationCenter *)self delegate];
+  notificationCopy = notification;
+  handlerCopy = handler;
+  delegate = [(CALNUNUserNotificationCenter *)self delegate];
   v10 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 request];
-    v12 = [v11 identifier];
+    request = [notificationCopy request];
+    identifier = [request identifier];
     *buf = 138543618;
-    v23 = v12;
+    v23 = identifier;
     v24 = 2112;
-    v25 = v7;
+    v25 = notificationCopy;
     _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "Will present notification with identifier = %{public}@, notification = %@", buf, 0x16u);
   }
 
-  if (!v9)
+  if (!delegate)
   {
     v13 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -336,21 +336,21 @@ uint64_t __76__CALNUNUserNotificationCenter_removeDeliveredNotificationsWithIden
       [CALNUNUserNotificationCenter userNotificationCenter:willPresentNotification:withCompletionHandler:];
     }
 
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  v14 = [(CALNUNUserNotificationCenter *)self notificationMapper];
-  v15 = [v14 calnNotificationFromUNNotification:v7];
+  notificationMapper = [(CALNUNUserNotificationCenter *)self notificationMapper];
+  v15 = [notificationMapper calnNotificationFromUNNotification:notificationCopy];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __101__CALNUNUserNotificationCenter_userNotificationCenter_willPresentNotification_withCompletionHandler___block_invoke;
   v19[3] = &unk_278D6F3E8;
   v20 = v15;
-  v21 = v8;
-  v16 = v8;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v15;
-  [v9 userNotificationCenter:self willPresentNotification:v17 withCompletionHandler:v19];
+  [delegate userNotificationCenter:self willPresentNotification:v17 withCompletionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -377,26 +377,26 @@ uint64_t __101__CALNUNUserNotificationCenter_userNotificationCenter_willPresentN
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 notification];
-    v11 = [v10 request];
-    v12 = [v11 identifier];
+    notification = [responseCopy notification];
+    request = [notification request];
+    identifier = [request identifier];
     v18 = 138543618;
-    v19 = v12;
+    v19 = identifier;
     v20 = 2112;
-    v21 = v7;
+    v21 = responseCopy;
     _os_log_impl(&dword_242909000, v9, OS_LOG_TYPE_DEFAULT, "Did receive notification response. identifier = %{public}@, response = %@", &v18, 0x16u);
   }
 
-  v13 = [(CALNUNUserNotificationCenter *)self delegate];
-  if (!v13)
+  delegate = [(CALNUNUserNotificationCenter *)self delegate];
+  if (!delegate)
   {
     v14 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -404,74 +404,74 @@ uint64_t __101__CALNUNUserNotificationCenter_userNotificationCenter_willPresentN
       [CALNUNUserNotificationCenter userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
     }
 
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
-  v15 = [(CALNUNUserNotificationCenter *)self notificationResponseMapper];
-  v16 = [v15 calnNotificationResponseFromUNNotificationResponse:v7];
+  notificationResponseMapper = [(CALNUNUserNotificationCenter *)self notificationResponseMapper];
+  v16 = [notificationResponseMapper calnNotificationResponseFromUNNotificationResponse:responseCopy];
 
-  [v13 userNotificationCenter:self didReceiveNotificationResponse:v16 withCompletionHandler:v8];
+  [delegate userNotificationCenter:self didReceiveNotificationResponse:v16 withCompletionHandler:handlerCopy];
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_updatedRecord:(id)a3
+- (id)_updatedRecord:(id)record
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = [v4 date];
+  recordCopy = record;
+  content = [recordCopy content];
+  date = [content date];
 
-  v6 = [v3 date];
-  v7 = v6;
-  if (v6)
+  date2 = [recordCopy date];
+  v7 = date2;
+  if (date2)
   {
-    v8 = v6;
-    if (v5)
+    v8 = date2;
+    if (date)
     {
-      v8 = v6;
-      if (([v5 isEqualToDate:v6] & 1) == 0)
+      v8 = date2;
+      if (([date isEqualToDate:date2] & 1) == 0)
       {
-        v8 = v5;
+        v8 = date;
       }
     }
   }
 
   else
   {
-    if (v5)
+    if (date)
     {
-      v9 = v5;
+      date3 = date;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
+      date3 = [MEMORY[0x277CBEAA8] date];
     }
 
-    v8 = v9;
+    v8 = date3;
   }
 
   v10 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [(CALNUNUserNotificationCenter *)v3 _updatedRecord:v8, v10];
+    [(CALNUNUserNotificationCenter *)recordCopy _updatedRecord:v8, v10];
   }
 
-  v11 = [v3 mutableCopy];
+  v11 = [recordCopy mutableCopy];
   [v11 setDate:v8];
   v12 = [v11 copy];
   v13 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v3 sourceIdentifier];
-    v15 = [v3 sourceClientIdentifier];
-    v16 = [v12 date];
+    sourceIdentifier = [recordCopy sourceIdentifier];
+    sourceClientIdentifier = [recordCopy sourceClientIdentifier];
+    date4 = [v12 date];
     v19 = 138544130;
-    v20 = v14;
+    v20 = sourceIdentifier;
     v21 = 2114;
-    v22 = v15;
+    v22 = sourceClientIdentifier;
     v23 = 2114;
-    v24 = v16;
+    v24 = date4;
     v25 = 2112;
     v26 = v12;
     _os_log_impl(&dword_242909000, v13, OS_LOG_TYPE_DEFAULT, "Updated record. Source identifier = %{public}@, source client identifier = %{public}@, date = %{public}@, record = %@", &v19, 0x2Au);
@@ -482,26 +482,26 @@ uint64_t __101__CALNUNUserNotificationCenter_userNotificationCenter_willPresentN
   return v12;
 }
 
-- (void)collectSettingsStats:(id)a3
+- (void)collectSettingsStats:(id)stats
 {
-  v4 = a3;
-  v5 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  v6 = [v5 notificationSettings];
+  statsCopy = stats;
+  userNotificationCenter = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  notificationSettings = [userNotificationCenter notificationSettings];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "authorizationStatus")}];
-  [v4 setObject:v7 forKeyedSubscript:@"CalendarNotificationsAuthorization"];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(notificationSettings, "authorizationStatus")}];
+  [statsCopy setObject:v7 forKeyedSubscript:@"CalendarNotificationsAuthorization"];
 
-  v8 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
-  v9 = [v8 notificationSettingsForTopics];
+  userNotificationCenter2 = [(CALNUNUserNotificationCenter *)self userNotificationCenter];
+  notificationSettingsForTopics = [userNotificationCenter2 notificationSettingsForTopics];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__CALNUNUserNotificationCenter_collectSettingsStats___block_invoke;
   v11[3] = &unk_278D6F410;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v9 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = statsCopy;
+  v10 = statsCopy;
+  [notificationSettingsForTopics enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __53__CALNUNUserNotificationCenter_collectSettingsStats___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -567,33 +567,33 @@ void __53__CALNUNUserNotificationCenter_collectSettingsStats___block_invoke(uint
   [v38 _addSettingName:@"scheduledDeliverySetting" value:v41 toStatsPayload:*(a1 + 40) forTopicIdentifier:v7];
 }
 
-+ (void)_addSettingName:(id)a3 value:(id)a4 toStatsPayload:(id)a5 forTopicIdentifier:(id)a6
++ (void)_addSettingName:(id)name value:(id)value toStatsPayload:(id)payload forTopicIdentifier:(id)identifier
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [a1 _statsPayloadKeyForSettingName:a3 topicIdentifier:a6];
-  [v10 setObject:v11 forKeyedSubscript:v12];
+  payloadCopy = payload;
+  valueCopy = value;
+  v12 = [self _statsPayloadKeyForSettingName:name topicIdentifier:identifier];
+  [payloadCopy setObject:valueCopy forKeyedSubscript:v12];
 }
 
-+ (id)_statsPayloadKeyForSettingName:(id)a3 topicIdentifier:(id)a4
++ (id)_statsPayloadKeyForSettingName:(id)name topicIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v5 hasPrefix:@"com.apple.mobilecal.bulletin-subsection."])
+  identifierCopy = identifier;
+  nameCopy = name;
+  if ([identifierCopy hasPrefix:@"com.apple.mobilecal.bulletin-subsection."])
   {
-    v7 = [v5 substringFromIndex:{objc_msgSend(@"com.apple.mobilecal.bulletin-subsection.", "length")}];
+    v7 = [identifierCopy substringFromIndex:{objc_msgSend(@"com.apple.mobilecal.bulletin-subsection.", "length")}];
 
-    v5 = v7;
+    identifierCopy = v7;
   }
 
   v8 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_"];
-  v9 = [v8 invertedSet];
+  invertedSet = [v8 invertedSet];
 
-  v10 = [v5 stringByReplacingCharactersInSet:v9 withString:@"_"];
+  v10 = [identifierCopy stringByReplacingCharactersInSet:invertedSet withString:@"_"];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"notifications_%@_%@", v10, v6];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"notifications_%@_%@", v10, nameCopy];
 
-  return v11;
+  return nameCopy;
 }
 
 - (CALNUserNotificationCenterDelegate)delegate

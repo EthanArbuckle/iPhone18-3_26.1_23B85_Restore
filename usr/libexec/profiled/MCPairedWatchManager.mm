@@ -1,5 +1,5 @@
 @interface MCPairedWatchManager
-- (id)_derCertificatesFromPersistentRefArray:(id)a3;
+- (id)_derCertificatesFromPersistentRefArray:(id)array;
 - (id)_errorBadProfile;
 - (id)_errorEnrollmentCannotBeStaged;
 - (id)_errorEnrollmentMalformed;
@@ -7,23 +7,23 @@
 - (id)_errorMissingMDMPayload;
 - (id)_errorMissingServiceURL;
 - (id)_errorPhoneUnsupervised;
-- (id)_organizationNameFromProfile:(id)a3 payload:(id)a4;
-- (id)_serviceURLFromEnrollmentDictionary:(id)a3 outError:(id *)a4;
-- (id)detailsFromMDMProfile:(id)a3 error:(id *)a4;
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 source:(id)a4 usingProfileInstaller:(id)a5 cloudConfigReader:(id)a6 cloudConfigWriter:(id)a7 completion:(id)a8;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3;
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4;
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3;
-- (void)installEnrollmentProfile:(id)a3 devicePasscode:(id)a4 devicePasscodeContext:(id)a5 passcodeContextExtractable:(BOOL)a6 personaID:(id)a7 rmAccountIdentifier:(id)a8 isESSO:(BOOL)a9 essoAppITunesStoreID:(id)a10 managedProfileIdentifiers:(id)a11 installationSource:(id)a12 completionHandler:(id)a13;
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3;
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4;
+- (id)_organizationNameFromProfile:(id)profile payload:(id)payload;
+- (id)_serviceURLFromEnrollmentDictionary:(id)dictionary outError:(id *)error;
+- (id)detailsFromMDMProfile:(id)profile error:(id *)error;
+- (void)applyPairingWatchMDMEnrollmentData:(id)data source:(id)source usingProfileInstaller:(id)installer cloudConfigReader:(id)reader cloudConfigWriter:(id)writer completion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion;
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion;
+- (void)installEnrollmentProfile:(id)profile devicePasscode:(id)passcode devicePasscodeContext:(id)context passcodeContextExtractable:(BOOL)extractable personaID:(id)d rmAccountIdentifier:(id)identifier isESSO:(BOOL)o essoAppITunesStoreID:(id)self0 managedProfileIdentifiers:(id)self1 installationSource:(id)self2 completionHandler:(id)self3;
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion;
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion;
 @end
 
 @implementation MCPairedWatchManager
 
-- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)a3
+- (void)unstageMDMEnrollmentInfoForPairingWatchWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NSFileManager defaultManager];
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
@@ -49,7 +49,7 @@
       }
     }
 
-    v3[2](v3, v7);
+    completionCopy[2](completionCopy, v7);
   }
 
   else
@@ -61,13 +61,13 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Watch enrollment could not be unstaged because it does not exist", buf, 2u);
     }
 
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
@@ -78,13 +78,13 @@
   v5 = MCSystemWatchEnrollmentDataFilePath();
   v6 = [NSData MCDataFromFile:v5];
 
-  v3[2](v3, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)a3 completion:(id)a4
+- (void)fetchStagedMDMEnrollmentDataForPairingWatchWithPairingToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   v8 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
@@ -102,14 +102,14 @@
     v12 = v19;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v11 setObject:v6 forKeyedSubscript:kMCWatchEnrollmentPairingTokenKey];
+      [v11 setObject:tokenCopy forKeyedSubscript:kMCWatchEnrollmentPairingTokenKey];
       v18 = 0;
-      v13 = [NSPropertyListSerialization dataWithPropertyList:v11 format:200 options:0 error:&v18];
+      _errorEnrollmentMalformed = [NSPropertyListSerialization dataWithPropertyList:v11 format:200 options:0 error:&v18];
       v14 = v18;
 
-      if (v13)
+      if (_errorEnrollmentMalformed)
       {
-        v15 = v13;
+        v15 = _errorEnrollmentMalformed;
         v16 = 0;
       }
 
@@ -119,7 +119,7 @@
         v16 = v14;
       }
 
-      v7[2](v7, v15, v16);
+      completionCopy[2](completionCopy, v15, v16);
       v12 = v14;
     }
 
@@ -133,20 +133,20 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Watch enrollment is malformed: %{public}@", buf, 0xCu);
       }
 
-      v13 = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
-      v7[2](v7, 0, v13);
+      _errorEnrollmentMalformed = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
+      completionCopy[2](completionCopy, 0, _errorEnrollmentMalformed);
     }
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)a3
+- (void)fetchStagedMDMEnrollmentDeclarationKeysForPairingWatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
@@ -164,16 +164,16 @@
     v9 = v13;
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v8 objectForKeyedSubscript:kMCWatchEnrollmentDeclarationKeysKey];
-      if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      _errorEnrollmentMalformed = [v8 objectForKeyedSubscript:kMCWatchEnrollmentDeclarationKeysKey];
+      if (_errorEnrollmentMalformed && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v11 = [NSSet setWithArray:v10];
-        v4[2](v4, v11, 0);
+        v11 = [NSSet setWithArray:_errorEnrollmentMalformed];
+        completionCopy[2](completionCopy, v11, 0);
       }
 
       else
       {
-        v4[2](v4, 0, 0);
+        completionCopy[2](completionCopy, 0, 0);
       }
     }
 
@@ -187,25 +187,25 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Watch enrollment is malformed: %{public}@", buf, 0xCu);
       }
 
-      v10 = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
-      (v4)[2](v4, 0, v10);
+      _errorEnrollmentMalformed = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
+      (completionCopy)[2](completionCopy, 0, _errorEnrollmentMalformed);
     }
   }
 
   else
   {
-    v4[2](v4, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)applyPairingWatchMDMEnrollmentData:(id)a3 source:(id)a4 usingProfileInstaller:(id)a5 cloudConfigReader:(id)a6 cloudConfigWriter:(id)a7 completion:(id)a8
+- (void)applyPairingWatchMDMEnrollmentData:(id)data source:(id)source usingProfileInstaller:(id)installer cloudConfigReader:(id)reader cloudConfigWriter:(id)writer completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v48 = a6;
-  v17 = a7;
-  v18 = a8;
+  dataCopy = data;
+  sourceCopy = source;
+  installerCopy = installer;
+  readerCopy = reader;
+  writerCopy = writer;
+  completionCopy = completion;
   v19 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
@@ -214,13 +214,13 @@
   }
 
   v57 = 0;
-  v47 = v14;
-  v20 = [NSPropertyListSerialization propertyListWithData:v14 options:0 format:0 error:&v57];
+  v47 = dataCopy;
+  v20 = [NSPropertyListSerialization propertyListWithData:dataCopy options:0 format:0 error:&v57];
   v21 = v57;
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v24 = _MCLogObjects[0];
-    v25 = v48;
+    v25 = readerCopy;
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
@@ -228,7 +228,7 @@
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Watch enrollment is malformed: %{public}@", buf, 0xCu);
     }
 
-    v26 = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
+    _errorEnrollmentMalformed = [(MCPairedWatchManager *)self _errorEnrollmentMalformed];
     goto LABEL_11;
   }
 
@@ -242,15 +242,15 @@
   {
     v56 = v21;
     v23 = [(MCPairedWatchManager *)self _serviceURLFromEnrollmentDictionary:v20 outError:&v56];
-    v26 = v56;
+    _errorEnrollmentMalformed = v56;
 
-    if (v26)
+    if (_errorEnrollmentMalformed)
     {
       v21 = v23;
-      v25 = v48;
+      v25 = readerCopy;
 LABEL_11:
 
-      v18[2](v18, v26);
+      completionCopy[2](completionCopy, _errorEnrollmentMalformed);
       goto LABEL_12;
     }
 
@@ -296,20 +296,20 @@ LABEL_22:
   v31 = v30;
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
   }
 
   else
   {
-    v32 = 0;
+    bOOLValue = 0;
   }
 
-  v25 = v48;
+  v25 = readerCopy;
   v55 = v21;
-  [(MCPairedWatchManager *)self _updateSupervision:v32 cloudConfigReader:v48 cloudConfigWriter:v17 outError:&v55];
-  v26 = v55;
+  [(MCPairedWatchManager *)self _updateSupervision:bOOLValue cloudConfigReader:readerCopy cloudConfigWriter:writerCopy outError:&v55];
+  _errorEnrollmentMalformed = v55;
 
-  if (v26)
+  if (_errorEnrollmentMalformed)
   {
 
     v21 = v46;
@@ -320,7 +320,7 @@ LABEL_22:
   v53[1] = 3221225472;
   v53[2] = sub_100019894;
   v53[3] = &unk_10011BE40;
-  v54 = v18;
+  v54 = completionCopy;
   v33 = objc_retainBlock(v53);
   v34 = v33;
   if (v42)
@@ -328,7 +328,7 @@ LABEL_22:
     v35 = [DMCEnrollmentFlowController enrollmentFlowControllerWithPresenter:0 managedConfigurationHelper:self];
     [(MCPairedWatchManager *)self setEnrollmentController:v35];
 
-    v36 = [(MCPairedWatchManager *)self enrollmentController];
+    enrollmentController = [(MCPairedWatchManager *)self enrollmentController];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_100019978;
@@ -338,7 +338,7 @@ LABEL_22:
     v37 = v34;
     v38 = v43;
     v39 = v45;
-    [v36 startWatchEnrollmentFlowWithServiceURL:v43 anchorCertificates:v45 restartIfFail:0 completionHandler:v49];
+    [enrollmentController startWatchEnrollmentFlowWithServiceURL:v43 anchorCertificates:v45 restartIfFail:0 completionHandler:v49];
 
     v40 = v46;
   }
@@ -352,25 +352,25 @@ LABEL_22:
     v52 = v33;
     v41 = v33;
     v40 = v46;
-    [v16 installProfileData:v46 interactionClient:0 options:0 source:v15 completion:v51];
+    [installerCopy installProfileData:v46 interactionClient:0 options:0 source:sourceCopy completion:v51];
 
     v39 = v45;
     v38 = v43;
   }
 
-  v26 = 0;
-  v25 = v48;
+  _errorEnrollmentMalformed = 0;
+  v25 = readerCopy;
 LABEL_12:
 }
 
-- (void)updateMDMEnrollmentInfoForPairingWatch:(id)a3 completion:(id)a4
+- (void)updateMDMEnrollmentInfoForPairingWatch:(id)watch completion:(id)completion
 {
   v5 = kDMCPairingParametersSecurityTokenKey;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:v5];
+  completionCopy = completion;
+  watchCopy = watch;
+  v8 = [watchCopy objectForKeyedSubscript:v5];
   v9 = +[DMCMobileGestalt deviceUDID];
-  v10 = [v7 objectForKeyedSubscript:kDMCPairingParametersWatchUDIDKey];
+  v10 = [watchCopy objectForKeyedSubscript:kDMCPairingParametersWatchUDIDKey];
 
   v11 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
@@ -384,48 +384,48 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "MCPairedWatchManager.updateMDMEnrollmentInfoForPairingWatch security token: %@ ; deviceID : %@ ; watchID : %@", &v12, 0x20u);
   }
 
-  [MDMConfiguration getWatchPairingTokenForPhoneID:v9 watchID:v10 securityToken:v8 completionHandler:v6];
+  [MDMConfiguration getWatchPairingTokenForPhoneID:v9 watchID:v10 securityToken:v8 completionHandler:completionCopy];
 }
 
-- (id)detailsFromMDMProfile:(id)a3 error:(id *)a4
+- (id)detailsFromMDMProfile:(id)profile error:(id *)error
 {
-  v6 = [MCProfile profileWithData:a3 outError:?];
+  v6 = [MCProfile profileWithData:profile outError:?];
   if (v6)
   {
     v7 = [v6 payloadsWithClass:objc_opt_class()];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
-    if (v8)
+    if (firstObject)
     {
       v9 = [NSMutableDictionary dictionaryWithCapacity:7];
-      v10 = [v6 identifier];
-      [v9 setObject:v10 forKeyedSubscript:kMCBridgeProfileIdentifierKey];
+      identifier = [v6 identifier];
+      [v9 setObject:identifier forKeyedSubscript:kMCBridgeProfileIdentifierKey];
 
-      v11 = [v8 managedAppleID];
-      [v9 setObject:v11 forKeyedSubscript:kMCBridgeManagedAppleIDKey];
+      managedAppleID = [firstObject managedAppleID];
+      [v9 setObject:managedAppleID forKeyedSubscript:kMCBridgeManagedAppleIDKey];
 
-      v12 = [v8 assignedManagedAppleID];
-      [v9 setObject:v12 forKeyedSubscript:kMCBridgeAssignedManagedAppleIDKey];
+      assignedManagedAppleID = [firstObject assignedManagedAppleID];
+      [v9 setObject:assignedManagedAppleID forKeyedSubscript:kMCBridgeAssignedManagedAppleIDKey];
 
-      v13 = [v8 friendlyName];
-      [v9 setObject:v13 forKeyedSubscript:kMCBridgeFriendlyNameKey];
+      friendlyName = [firstObject friendlyName];
+      [v9 setObject:friendlyName forKeyedSubscript:kMCBridgeFriendlyNameKey];
 
-      v14 = [(MCPairedWatchManager *)self _organizationNameFromProfile:v6 payload:v8];
+      v14 = [(MCPairedWatchManager *)self _organizationNameFromProfile:v6 payload:firstObject];
       [v9 setObject:v14 forKeyedSubscript:kMCBridgeOrganizationNameKey];
 
-      v15 = [v8 enrollmentMode];
-      [v9 setObject:v15 forKeyedSubscript:kMCBridgeEnrollmentModeKey];
+      enrollmentMode = [firstObject enrollmentMode];
+      [v9 setObject:enrollmentMode forKeyedSubscript:kMCBridgeEnrollmentModeKey];
 
-      v16 = [v8 serverCapabilities];
-      [v9 setObject:v16 forKeyedSubscript:kMCBridgeServerCapabilitiesKey];
+      serverCapabilities = [firstObject serverCapabilities];
+      [v9 setObject:serverCapabilities forKeyedSubscript:kMCBridgeServerCapabilitiesKey];
 
       v17 = [v9 copy];
     }
 
-    else if (a4)
+    else if (error)
     {
       [(MCPairedWatchManager *)self _errorMissingMDMPayload];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -434,10 +434,10 @@ LABEL_12:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [(MCPairedWatchManager *)self _errorBadProfile];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -448,62 +448,62 @@ LABEL_12:
   return v17;
 }
 
-- (id)_organizationNameFromProfile:(id)a3 payload:(id)a4
+- (id)_organizationNameFromProfile:(id)profile payload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 organization];
+  profileCopy = profile;
+  payloadCopy = payload;
+  organization = [payloadCopy organization];
 
-  if (v7)
+  if (organization)
   {
-    v8 = v6;
+    v8 = payloadCopy;
 LABEL_5:
-    v10 = [v8 organization];
+    organization2 = [v8 organization];
     goto LABEL_6;
   }
 
-  v9 = [v5 organization];
+  organization3 = [profileCopy organization];
 
-  if (v9)
+  if (organization3)
   {
-    v8 = v5;
+    v8 = profileCopy;
     goto LABEL_5;
   }
 
-  v10 = [v6 serverURLString];
+  organization2 = [payloadCopy serverURLString];
 
-  if (v10)
+  if (organization2)
   {
-    v12 = [v6 serverURLString];
-    v13 = [NSURL URLWithString:v12];
+    serverURLString = [payloadCopy serverURLString];
+    v13 = [NSURL URLWithString:serverURLString];
 
     if (v13)
     {
-      v10 = [v13 host];
+      organization2 = [v13 host];
     }
 
     else
     {
-      v10 = 0;
+      organization2 = 0;
     }
   }
 
 LABEL_6:
 
-  return v10;
+  return organization2;
 }
 
-- (void)installEnrollmentProfile:(id)a3 devicePasscode:(id)a4 devicePasscodeContext:(id)a5 passcodeContextExtractable:(BOOL)a6 personaID:(id)a7 rmAccountIdentifier:(id)a8 isESSO:(BOOL)a9 essoAppITunesStoreID:(id)a10 managedProfileIdentifiers:(id)a11 installationSource:(id)a12 completionHandler:(id)a13
+- (void)installEnrollmentProfile:(id)profile devicePasscode:(id)passcode devicePasscodeContext:(id)context passcodeContextExtractable:(BOOL)extractable personaID:(id)d rmAccountIdentifier:(id)identifier isESSO:(BOOL)o essoAppITunesStoreID:(id)self0 managedProfileIdentifiers:(id)self1 installationSource:(id)self2 completionHandler:(id)self3
 {
-  v16 = a13;
-  v17 = a8;
-  v18 = a7;
-  v19 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  dCopy = d;
+  profileCopy = profile;
   v20 = objc_opt_new();
-  [v20 setObject:v18 forKeyedSubscript:kMCInstallProfileOptionPersonaID];
+  [v20 setObject:dCopy forKeyedSubscript:kMCInstallProfileOptionPersonaID];
 
-  [v20 setObject:v17 forKeyedSubscript:kMCInstallProfileOptionRMAccountIdentifier];
-  if (v18)
+  [v20 setObject:identifierCopy forKeyedSubscript:kMCInstallProfileOptionRMAccountIdentifier];
+  if (dCopy)
   {
     [v20 setObject:kDMCProfileInstallationSourceAccountDrivenUserEnrollment forKeyedSubscript:kMCInstallProfileOptionInstallationSource];
   }
@@ -515,18 +515,18 @@ LABEL_6:
   v23[1] = 3221225472;
   v23[2] = sub_10001A194;
   v23[3] = &unk_10011C058;
-  v24 = v16;
-  v22 = v16;
-  [v21 installProfileData:v19 interactionClient:0 options:v20 source:@"MCPairedWatchManager" completion:v23];
+  v24 = handlerCopy;
+  v22 = handlerCopy;
+  [v21 installProfileData:profileCopy interactionClient:0 options:v20 source:@"MCPairedWatchManager" completion:v23];
 }
 
-- (id)_derCertificatesFromPersistentRefArray:(id)a3
+- (id)_derCertificatesFromPersistentRefArray:(id)array
 {
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v15 = v3;
-    v4 = [objc_opt_class() copyCertificatesWithPersistentIDs:v3 useSystemKeychain:1 enforcePersonalPersona:0];
+    v15 = arrayCopy;
+    v4 = [objc_opt_class() copyCertificatesWithPersistentIDs:arrayCopy useSystemKeychain:1 enforcePersonalPersona:0];
     v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
     v16 = 0u;
     v17 = 0u;
@@ -563,7 +563,7 @@ LABEL_6:
       while (v8);
     }
 
-    v3 = v15;
+    arrayCopy = v15;
   }
 
   else
@@ -580,10 +580,10 @@ LABEL_6:
   return v5;
 }
 
-- (id)_serviceURLFromEnrollmentDictionary:(id)a3 outError:(id *)a4
+- (id)_serviceURLFromEnrollmentDictionary:(id)dictionary outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:kMCWatchEnrollmentServiceURLKey];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:kMCWatchEnrollmentServiceURLKey];
   if (v7)
   {
     v8 = [NSURL URLWithString:v7];
@@ -603,9 +603,9 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Watch enrollment service URL is invalid: %{public}@", &v14, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [(MCPairedWatchManager *)self _errorInvalidServiceURL];
+        *error = [(MCPairedWatchManager *)self _errorInvalidServiceURL];
       }
     }
   }
@@ -616,14 +616,14 @@ LABEL_6:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v14 = 138543362;
-      v15 = v6;
+      v15 = dictionaryCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Watch enrollment is missing a profile service URL: %{public}@", &v14, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       [(MCPairedWatchManager *)self _errorMissingServiceURL];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else

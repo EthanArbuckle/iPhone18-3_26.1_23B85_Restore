@@ -1,10 +1,10 @@
 @interface CRKCurrentPlatformIPAddressProvider
-+ (id)makePathMonitorWithPrimitives:(id)a3;
++ (id)makePathMonitorWithPrimitives:(id)primitives;
 - (CRKCurrentPlatformIPAddressProvider)init;
-- (CRKCurrentPlatformIPAddressProvider)initWithNetworkPrimitives:(id)a3;
+- (CRKCurrentPlatformIPAddressProvider)initWithNetworkPrimitives:(id)primitives;
 - (id)currentIPAddress;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CRKCurrentPlatformIPAddressProvider
@@ -25,15 +25,15 @@
   return v4;
 }
 
-- (CRKCurrentPlatformIPAddressProvider)initWithNetworkPrimitives:(id)a3
+- (CRKCurrentPlatformIPAddressProvider)initWithNetworkPrimitives:(id)primitives
 {
-  v4 = a3;
+  primitivesCopy = primitives;
   v9.receiver = self;
   v9.super_class = CRKCurrentPlatformIPAddressProvider;
   v5 = [(CRKCurrentPlatformIPAddressProvider *)&v9 init];
   if (v5)
   {
-    v6 = [objc_opt_class() makePathMonitorWithPrimitives:v4];
+    v6 = [objc_opt_class() makePathMonitorWithPrimitives:primitivesCopy];
     pathMonitor = v5->_pathMonitor;
     v5->_pathMonitor = v6;
 
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 != @"ObservationContext")
+  if (context != @"ObservationContext")
   {
     v13.receiver = self;
     v13.super_class = CRKCurrentPlatformIPAddressProvider;
-    [(CRKCurrentPlatformIPAddressProvider *)&v13 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRKCurrentPlatformIPAddressProvider *)&v13 observeValueForKeyPath:path ofObject:object change:change context:?];
     return;
   }
 
-  v8 = [(CRKCurrentPlatformIPAddressProvider *)self IPAddress:a3];
+  v8 = [(CRKCurrentPlatformIPAddressProvider *)self IPAddress:path];
   if (v8 || ([(CRKCurrentPlatformIPAddressProvider *)self currentIPAddress], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = [(CRKCurrentPlatformIPAddressProvider *)self IPAddress];
-    v10 = [(CRKCurrentPlatformIPAddressProvider *)self currentIPAddress];
-    v11 = [v9 isEqual:v10];
+    iPAddress = [(CRKCurrentPlatformIPAddressProvider *)self IPAddress];
+    currentIPAddress = [(CRKCurrentPlatformIPAddressProvider *)self currentIPAddress];
+    v11 = [iPAddress isEqual:currentIPAddress];
 
     if (v8)
     {
@@ -79,26 +79,26 @@
       }
     }
 
-    v12 = [(CRKCurrentPlatformIPAddressProvider *)self currentIPAddress];
-    [(CRKCurrentPlatformIPAddressProvider *)self setIPAddress:v12];
+    currentIPAddress2 = [(CRKCurrentPlatformIPAddressProvider *)self currentIPAddress];
+    [(CRKCurrentPlatformIPAddressProvider *)self setIPAddress:currentIPAddress2];
   }
 }
 
-+ (id)makePathMonitorWithPrimitives:(id)a3
++ (id)makePathMonitorWithPrimitives:(id)primitives
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"CRKPreferEthernet"];
+  primitivesCopy = primitives;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"CRKPreferEthernet"];
 
   if (v6)
   {
-    [v4 ethernetNetworkPathMonitor];
+    [primitivesCopy ethernetNetworkPathMonitor];
   }
 
   else
   {
-    [v4 wifiNetworkPathMonitor];
+    [primitivesCopy wifiNetworkPathMonitor];
   }
   v7 = ;
 
@@ -107,25 +107,25 @@
 
 - (id)currentIPAddress
 {
-  v2 = [(CRKCurrentPlatformIPAddressProvider *)self pathMonitor];
-  v3 = [v2 path];
+  pathMonitor = [(CRKCurrentPlatformIPAddressProvider *)self pathMonitor];
+  path = [pathMonitor path];
 
-  if ([v3 isSatisfied])
+  if ([path isSatisfied])
   {
-    v4 = [v3 interfaces];
-    v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_30];
+    interfaces = [path interfaces];
+    v5 = [interfaces sortedArrayUsingComparator:&__block_literal_global_30];
     v6 = [v5 crk_firstMatching:&__block_literal_global_12_0];
 
-    v7 = [v6 ipv4Endpoint];
-    v8 = [v7 IPAddress];
+    ipv4Endpoint = [v6 ipv4Endpoint];
+    iPAddress = [ipv4Endpoint IPAddress];
   }
 
   else
   {
-    v8 = 0;
+    iPAddress = 0;
   }
 
-  return v8;
+  return iPAddress;
 }
 
 uint64_t __55__CRKCurrentPlatformIPAddressProvider_currentIPAddress__block_invoke(uint64_t a1, void *a2, void *a3)

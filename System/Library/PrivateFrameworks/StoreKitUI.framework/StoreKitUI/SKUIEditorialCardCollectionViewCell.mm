@@ -1,25 +1,25 @@
 @interface SKUIEditorialCardCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (SKUIEditorialCardCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)viewForElementIdentifier:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (SKUIEditorialCardCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)viewForElementIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setPerspectiveTargetView:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setPerspectiveTargetView:(id)view;
 @end
 
 @implementation SKUIEditorialCardCollectionViewCell
 
-- (SKUIEditorialCardCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIEditorialCardCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIEditorialCardCollectionViewCell initWithFrame:];
@@ -27,30 +27,30 @@
 
   v12.receiver = self;
   v12.super_class = SKUIEditorialCardCollectionViewCell;
-  v8 = [(SKUIViewReuseCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIViewReuseCollectionViewCell *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    allLockupViews = v8->_allLockupViews;
-    v8->_allLockupViews = v9;
+    allLockupViews = height->_allLockupViews;
+    height->_allLockupViews = v9;
 
-    [(SKUIViewReuseCollectionViewCell *)v8 registerClass:objc_opt_class() forViewWithReuseIdentifier:@"editorialCardLockup"];
+    [(SKUIViewReuseCollectionViewCell *)height registerClass:objc_opt_class() forViewWithReuseIdentifier:@"editorialCardLockup"];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
   primaryLockupView = self->_primaryLockupView;
-  v4 = a3;
-  [(SKUIVerticalLockupView *)primaryLockupView setPerspectiveTargetView:v4];
+  viewCopy = view;
+  [(SKUIVerticalLockupView *)primaryLockupView setPerspectiveTargetView:viewCopy];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -59,15 +59,15 @@
   v11[1] = 3221225472;
   v11[2] = __86__SKUIEditorialCardCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2781F95A0;
-  v14 = a4;
-  v9 = v8;
+  reasonCopy = reason;
+  v9 = contextCopy;
   v12 = v9;
   v13 = &v15;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 void __86__SKUIEditorialCardCollectionViewCell_prefetchResourcesForViewElement_reason_context___block_invoke(void *a1, void *a2)
@@ -79,12 +79,12 @@ void __86__SKUIEditorialCardCollectionViewCell_prefetchResourcesForViewElement_r
   }
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -95,32 +95,32 @@ void __86__SKUIEditorialCardCollectionViewCell_prefetchResourcesForViewElement_r
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[SKUIEditorialCardLayout alloc] initWithCard:v8 width:v7 context:a4];
+  contextCopy = context;
+  elementCopy = element;
+  v9 = [[SKUIEditorialCardLayout alloc] initWithCard:elementCopy width:contextCopy context:width];
 
-  v10 = [(SKUIEditorialCardLayout *)v9 primaryLockup];
-  if (v10)
+  primaryLockup = [(SKUIEditorialCardLayout *)v9 primaryLockup];
+  if (primaryLockup)
   {
     [(SKUIEditorialCardLayout *)v9 primaryLockupSize];
-    [SKUIVerticalLockupView requestLayoutForViewElement:v10 width:v7 context:?];
+    [SKUIVerticalLockupView requestLayoutForViewElement:primaryLockup width:contextCopy context:?];
   }
 
   [(SKUIEditorialCardLayout *)v9 secondaryLockupWidth];
   v12 = v11;
-  v13 = [(SKUIEditorialCardLayout *)v9 allLockups];
+  allLockups = [(SKUIEditorialCardLayout *)v9 allLockups];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__SKUIEditorialCardCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v16[3] = &unk_2781FDAF8;
   v19 = v12;
-  v17 = v10;
-  v18 = v7;
-  v14 = v7;
-  v15 = v10;
-  [v13 enumerateObjectsUsingBlock:v16];
+  v17 = primaryLockup;
+  v18 = contextCopy;
+  v14 = contextCopy;
+  v15 = primaryLockup;
+  [allLockups enumerateObjectsUsingBlock:v16];
 }
 
 uint64_t __81__SKUIEditorialCardCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(uint64_t result, uint64_t a2)
@@ -133,19 +133,19 @@ uint64_t __81__SKUIEditorialCardCollectionViewCell_requestLayoutForViewElement_w
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3010000000;
   v29 = &unk_215F8ACD7;
-  v30 = a3;
+  widthCopy = width;
   v31 = 0;
-  v9 = [[SKUIEditorialCardLayout alloc] initWithCard:v7 width:v8 context:a3];
-  v10 = [(SKUIEditorialCardLayout *)v9 primaryLockup];
-  if (v10)
+  v9 = [[SKUIEditorialCardLayout alloc] initWithCard:elementCopy width:contextCopy context:width];
+  primaryLockup = [(SKUIEditorialCardLayout *)v9 primaryLockup];
+  if (primaryLockup)
   {
     [(SKUIEditorialCardLayout *)v9 primaryLockupSize];
     *(v27 + 5) = v11;
@@ -153,18 +153,18 @@ uint64_t __81__SKUIEditorialCardCollectionViewCell_requestLayoutForViewElement_w
 
   [(SKUIEditorialCardLayout *)v9 secondaryLockupWidth];
   v13 = v12;
-  v14 = [(SKUIEditorialCardLayout *)v9 allLockups];
+  allLockups = [(SKUIEditorialCardLayout *)v9 allLockups];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __77__SKUIEditorialCardCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v21[3] = &unk_2781FDB20;
-  v15 = v10;
+  v15 = primaryLockup;
   v22 = v15;
   v25 = v13;
-  v16 = v8;
+  v16 = contextCopy;
   v23 = v16;
   v24 = &v26;
-  [v14 enumerateObjectsUsingBlock:v21];
+  [allLockups enumerateObjectsUsingBlock:v21];
 
   v17 = v27[4];
   v18 = v27[5];
@@ -196,11 +196,11 @@ uint64_t __77__SKUIEditorialCardCollectionViewCell_sizeThatFitsWidth_viewElement
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[SKUIEditorialCardLayout alloc] initWithCard:v8 width:v9 context:a4];
+  elementCopy = element;
+  contextCopy = context;
+  v10 = [[SKUIEditorialCardLayout alloc] initWithCard:elementCopy width:contextCopy context:width];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -220,16 +220,16 @@ uint64_t __77__SKUIEditorialCardCollectionViewCell_sizeThatFitsWidth_viewElement
   v21 = &unk_2781FDB70;
   v14 = v10;
   v22 = v14;
-  v15 = v9;
+  v15 = contextCopy;
   v23 = v15;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:&v18];
   v16 = v27[5];
   if (v16)
   {
-    v17 = [v16 superview];
-    [v17 bringSubviewToFront:v27[5]];
+    superview = [v16 superview];
+    [superview bringSubviewToFront:v27[5]];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -285,12 +285,12 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
   [*(*(a1 + 56) + 824) addObject:v3];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -311,7 +311,7 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
           objc_enumerationMutation(v11);
         }
 
-        v14 |= [*(*(&v18 + 1) + 8 * i) setImage:v8 forArtworkRequest:v9 context:{v10, v18}];
+        v14 |= [*(*(&v18 + 1) + 8 * i) setImage:imageCopy forArtworkRequest:requestCopy context:{contextCopy, v18}];
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -328,12 +328,12 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
   return v14 & 1;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  contextCopy = context;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -354,7 +354,7 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
           objc_enumerationMutation(v10);
         }
 
-        v13 |= [*(*(&v17 + 1) + 8 * i) updateWithItemState:v8 context:v9 animated:{v5, v17}];
+        v13 |= [*(*(&v17 + 1) + 8 * i) updateWithItemState:stateCopy context:contextCopy animated:{animatedCopy, v17}];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -371,10 +371,10 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
   return v13 & 1;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -394,7 +394,7 @@ void __75__SKUIEditorialCardCollectionViewCell_reloadWithViewElement_width_conte
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) viewForElementIdentifier:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) viewForElementIdentifier:{identifierCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -429,8 +429,8 @@ LABEL_11:
   if (v3 >= 1)
   {
     v5 = v3;
-    v6 = [(SKUIEditorialCardCollectionViewCell *)self contentView];
-    [v6 bounds];
+    contentView = [(SKUIEditorialCardCollectionViewCell *)self contentView];
+    [contentView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -489,8 +489,8 @@ LABEL_11:
             height = self->_primaryLockupSize.height;
           }
 
-          v40 = [(SKUIEditorialCardCollectionViewCell *)self contentView];
-          [v40 bounds];
+          contentView2 = [(SKUIEditorialCardCollectionViewCell *)self contentView];
+          [contentView2 bounds];
           SKUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(v30, v31, width, height, v41, v42, v43, v44);
           [(SKUIVerticalLockupView *)v37 setFrame:?];
 

@@ -1,12 +1,12 @@
 @interface TTRIRemindersListCellAttributePillView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC15RemindersUICore38TTRIRemindersListCellAttributePillView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore38TTRIRemindersListCellAttributePillView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TTRIRemindersListCellAttributePillView
 
-- (_TtC15RemindersUICore38TTRIRemindersListCellAttributePillView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore38TTRIRemindersListCellAttributePillView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore38TTRIRemindersListCellAttributePillView_iconView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore38TTRIRemindersListCellAttributePillView_labelView) = 0;

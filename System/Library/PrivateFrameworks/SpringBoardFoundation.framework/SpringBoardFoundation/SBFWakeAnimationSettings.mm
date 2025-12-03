@@ -14,65 +14,65 @@
   self->_awakeColorBrightness = 0.0;
   self->_awakeDateAlpha = 1.0;
   self->_sleepColorBrightness = -1.0;
-  v3 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  [v3 setAnimationType:0];
+  contentWakeSettings = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  [contentWakeSettings setAnimationType:0];
 
-  v4 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  [v4 setDelay:0.0];
+  contentWakeSettings2 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  [contentWakeSettings2 setDelay:0.0];
 
-  v5 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  [v5 setDuration:0.185];
+  contentWakeSettings3 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  [contentWakeSettings3 setDuration:0.185];
 
-  v6 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  [v6 setCurve:393216];
+  contentWakeSettings4 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  [contentWakeSettings4 setCurve:393216];
 
-  v7 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  v8 = [v7 controlPoint1Settings];
-  [v8 setPointValue:{0.25, 0.1}];
+  contentWakeSettings5 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  controlPoint1Settings = [contentWakeSettings5 controlPoint1Settings];
+  [controlPoint1Settings setPointValue:{0.25, 0.1}];
 
-  v9 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
-  v10 = [v9 controlPoint2Settings];
-  [v10 setPointValue:{0.25, 1.0}];
+  contentWakeSettings6 = [(SBFWakeAnimationSettings *)self contentWakeSettings];
+  controlPoint2Settings = [contentWakeSettings6 controlPoint2Settings];
+  [controlPoint2Settings setPointValue:{0.25, 1.0}];
 
-  v11 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  [v11 setAnimationType:0];
+  awakeWallpaperFilterSettings = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  [awakeWallpaperFilterSettings setAnimationType:0];
 
-  v12 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  [v12 setDelay:0.0];
+  awakeWallpaperFilterSettings2 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  [awakeWallpaperFilterSettings2 setDelay:0.0];
 
-  v13 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  [v13 setDuration:0.65];
+  awakeWallpaperFilterSettings3 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  [awakeWallpaperFilterSettings3 setDuration:0.65];
 
-  v14 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  [v14 setCurve:393216];
+  awakeWallpaperFilterSettings4 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  [awakeWallpaperFilterSettings4 setCurve:393216];
 
-  v15 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  v16 = [v15 controlPoint1Settings];
-  [v16 setPointValue:{0.25, 0.1}];
+  awakeWallpaperFilterSettings5 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  controlPoint1Settings2 = [awakeWallpaperFilterSettings5 controlPoint1Settings];
+  [controlPoint1Settings2 setPointValue:{0.25, 0.1}];
 
-  v17 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
-  v18 = [v17 controlPoint2Settings];
-  [v18 setPointValue:{0.25, 1.0}];
+  awakeWallpaperFilterSettings6 = [(SBFWakeAnimationSettings *)self awakeWallpaperFilterSettings];
+  controlPoint2Settings2 = [awakeWallpaperFilterSettings6 controlPoint2Settings];
+  [controlPoint2Settings2 setPointValue:{0.25, 1.0}];
 
-  v19 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  [v19 setAnimationType:0];
+  sleepWallpaperFilterSettings = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  [sleepWallpaperFilterSettings setAnimationType:0];
 
-  v20 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  [v20 setDelay:0.0];
+  sleepWallpaperFilterSettings2 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  [sleepWallpaperFilterSettings2 setDelay:0.0];
 
-  v21 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  [v21 setDuration:0.65];
+  sleepWallpaperFilterSettings3 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  [sleepWallpaperFilterSettings3 setDuration:0.65];
 
-  v22 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  [v22 setCurve:393216];
+  sleepWallpaperFilterSettings4 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  [sleepWallpaperFilterSettings4 setCurve:393216];
 
-  v23 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  v24 = [v23 controlPoint1Settings];
-  [v24 setPointValue:{0.25, 0.1}];
+  sleepWallpaperFilterSettings5 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  controlPoint1Settings3 = [sleepWallpaperFilterSettings5 controlPoint1Settings];
+  [controlPoint1Settings3 setPointValue:{0.25, 0.1}];
 
-  v26 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
-  v25 = [v26 controlPoint2Settings];
-  [v25 setPointValue:{0.25, 1.0}];
+  sleepWallpaperFilterSettings6 = [(SBFWakeAnimationSettings *)self sleepWallpaperFilterSettings];
+  controlPoint2Settings3 = [sleepWallpaperFilterSettings6 controlPoint2Settings];
+  [controlPoint2Settings3 setPointValue:{0.25, 1.0}];
 }
 
 + (id)settingsControllerModule

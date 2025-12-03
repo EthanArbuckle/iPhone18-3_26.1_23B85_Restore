@@ -1,6 +1,6 @@
 @interface CRXFDeviceSharingContext
 - (CRXFDeviceSharingContext)init;
-- (void)validateAndApplyLensEnrollmentAssetsWithCompletion:(id)a3;
+- (void)validateAndApplyLensEnrollmentAssetsWithCompletion:(id)completion;
 @end
 
 @implementation CRXFDeviceSharingContext
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (void)validateAndApplyLensEnrollmentAssetsWithCompletion:(id)a3
+- (void)validateAndApplyLensEnrollmentAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   p_serialQueue = &self->_serialQueue;
   serialQueue = self->_serialQueue;
   v6 = p_serialQueue[1];
@@ -41,8 +41,8 @@
   v9[1] = 3221225472;
   v9[2] = __79__CRXFDeviceSharingContext_validateAndApplyLensEnrollmentAssetsWithCompletion___block_invoke;
   v9[3] = &unk_278E9FF60;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(CRXUDispatchQueue *)v6 validateAndApplySharedLensEnrollmentAssetsWithCompletionQueue:serialQueue completion:v9];
 }
 

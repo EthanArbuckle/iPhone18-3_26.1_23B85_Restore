@@ -1,42 +1,42 @@
 @interface _BCULayerRendererOperation
-- (_BCULayerRendererOperation)initWithRenderer:(id)a3 priority:(float)a4 waitForCPUSynchronization:(BOOL)a5 logKey:(id)a6 layerBlock:(id)a7 completion:(id)a8;
+- (_BCULayerRendererOperation)initWithRenderer:(id)renderer priority:(float)priority waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key layerBlock:(id)block completion:(id)completion;
 - (float)priority;
 - (id)configureLayer;
-- (int64_t)_compareHoldingStateLock:(id)a3;
+- (int64_t)_compareHoldingStateLock:(id)lock;
 - (void)cancel;
-- (void)completeWithImage:(id)a3;
+- (void)completeWithImage:(id)image;
 - (void)dealloc;
-- (void)setPriority:(float)a3;
+- (void)setPriority:(float)priority;
 @end
 
 @implementation _BCULayerRendererOperation
 
-- (_BCULayerRendererOperation)initWithRenderer:(id)a3 priority:(float)a4 waitForCPUSynchronization:(BOOL)a5 logKey:(id)a6 layerBlock:(id)a7 completion:(id)a8
+- (_BCULayerRendererOperation)initWithRenderer:(id)renderer priority:(float)priority waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key layerBlock:(id)block completion:(id)completion
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  rendererCopy = renderer;
+  keyCopy = key;
+  blockCopy = block;
+  completionCopy = completion;
   v40.receiver = self;
   v40.super_class = _BCULayerRendererOperation;
   v19 = [(_BCULayerRendererOperation *)&v40 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_renderer, a3);
-    v23 = objc_msgSend_copy(v17, v21, v22);
+    objc_storeStrong(&v19->_renderer, renderer);
+    v23 = objc_msgSend_copy(blockCopy, v21, v22);
     layerBlock = v20->_layerBlock;
     v20->_layerBlock = v23;
 
-    v27 = objc_msgSend_copy(v18, v25, v26);
+    v27 = objc_msgSend_copy(completionCopy, v25, v26);
     completion = v20->_completion;
     v20->_completion = v27;
 
-    v20->_priority = a4;
-    v20->_waitForCPUSynchronization = a5;
-    if (objc_msgSend_length(v16, v29, v30))
+    v20->_priority = priority;
+    v20->_waitForCPUSynchronization = synchronization;
+    if (objc_msgSend_length(keyCopy, v29, v30))
     {
-      v33 = objc_msgSend_copy(v16, v31, v32);
+      v33 = objc_msgSend_copy(keyCopy, v31, v32);
       logKey = v20->_logKey;
       v20->_logKey = v33;
     }
@@ -54,16 +54,16 @@
 
   else
   {
-    (*(v18 + 2))(v18, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   return v20;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
   os_unfair_lock_lock(&unk_2810D5150);
-  self->_priority = a3;
+  self->_priority = priority;
 
   os_unfair_lock_unlock(&unk_2810D5150);
 }
@@ -147,9 +147,9 @@ LABEL_8:
   }
 }
 
-- (void)completeWithImage:(id)a3
+- (void)completeWithImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&unk_2810D5150);
   v4 = MEMORY[0x245CFD010](self->_completion);
   completion = self->_completion;
@@ -158,7 +158,7 @@ LABEL_8:
   os_unfair_lock_unlock(&unk_2810D5150);
   if (v4)
   {
-    (v4)[2](v4, self, v6);
+    (v4)[2](v4, self, imageCopy);
   }
 }
 
@@ -170,17 +170,17 @@ LABEL_8:
   [(_BCULayerRendererOperation *)&v4 dealloc];
 }
 
-- (int64_t)_compareHoldingStateLock:(id)a3
+- (int64_t)_compareHoldingStateLock:(id)lock
 {
-  v4 = a3;
-  v5 = *(v4 + 5);
+  lockCopy = lock;
+  v5 = *(lockCopy + 5);
   priority = self->_priority;
   if (priority >= v5)
   {
     if (priority == v5)
     {
       v8 = atomic_load(&self->_operationId);
-      v9 = atomic_load(v4 + 1);
+      v9 = atomic_load(lockCopy + 1);
       if (v8 > v9)
       {
         v7 = -1;

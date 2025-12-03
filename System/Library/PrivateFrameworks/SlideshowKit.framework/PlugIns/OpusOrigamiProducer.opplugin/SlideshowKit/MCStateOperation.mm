@@ -1,33 +1,33 @@
 @interface MCStateOperation
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4;
-- (MCStateOperation)initWithImprint:(id)a3;
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key;
+- (MCStateOperation)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
-- (void)setAlwaysNotifies:(BOOL)a3;
-- (void)setRecordsTime:(BOOL)a3;
+- (void)setAlwaysNotifies:(BOOL)notifies;
+- (void)setRecordsTime:(BOOL)time;
 @end
 
 @implementation MCStateOperation
 
-+ (id)stateOperationForTargetPlugObjectID:(id)a3 withStateKey:(id)a4
++ (id)stateOperationForTargetPlugObjectID:(id)d withStateKey:(id)key
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setTargetObjectID:a3];
-  [v6 setStateKey:a4];
+  v6 = objc_alloc_init(self);
+  [v6 setTargetObjectID:d];
+  [v6 setStateKey:key];
 
   return v6;
 }
 
-- (MCStateOperation)initWithImprint:(id)a3
+- (MCStateOperation)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCStateOperation;
   v4 = [(MCAction *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_stateKey = [a3 objectForKey:@"stateKey"];
+    v4->_stateKey = [imprint objectForKey:@"stateKey"];
   }
 
   return v4;
@@ -45,20 +45,20 @@
 {
   v7.receiver = self;
   v7.super_class = MCStateOperation;
-  v3 = [(MCAction *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v7 imprint];
+  v4 = imprint;
   stateKey = self->_stateKey;
   if (stateKey)
   {
-    [v3 setObject:stateKey forKey:@"stateKey"];
+    [imprint setObject:stateKey forKey:@"stateKey"];
   }
 
   return v4;
 }
 
-- (void)setAlwaysNotifies:(BOOL)a3
+- (void)setAlwaysNotifies:(BOOL)notifies
 {
-  if (a3)
+  if (notifies)
   {
     v3 = 2;
   }
@@ -71,9 +71,9 @@
   self->super._flags = self->super._flags & 0xFFFFFFFD | v3;
 }
 
-- (void)setRecordsTime:(BOOL)a3
+- (void)setRecordsTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -86,7 +86,7 @@
   self->super._flags = self->super._flags & 0xFFFFFFFB | v3;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCStateOperation;
@@ -94,7 +94,7 @@
   stateKey = self->_stateKey;
   if (stateKey)
   {
-    *(a3 + 3) = [(NSString *)stateKey copy];
+    *(snapshot + 3) = [(NSString *)stateKey copy];
   }
 }
 

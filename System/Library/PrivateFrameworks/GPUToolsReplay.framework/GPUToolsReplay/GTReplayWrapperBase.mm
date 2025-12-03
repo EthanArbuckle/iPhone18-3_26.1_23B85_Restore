@@ -1,19 +1,19 @@
 @interface GTReplayWrapperBase
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)setTracingDelegate:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)setTracingDelegate:(id)delegate;
 @end
 
 @implementation GTReplayWrapperBase
 
-- (void)setTracingDelegate:(id)a3
+- (void)setTracingDelegate:(id)delegate
 {
   gpuScaler = self->_gpuScaler;
-  v5 = a3;
-  [gpuScaler setTracingDelegate:v5];
-  [self->_aneScaler setTracingDelegate:v5];
+  delegateCopy = delegate;
+  [gpuScaler setTracingDelegate:delegateCopy];
+  [self->_aneScaler setTracingDelegate:delegateCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v3 = 8;
   if (!self->_executionMode)

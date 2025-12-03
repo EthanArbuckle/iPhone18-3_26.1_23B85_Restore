@@ -1,12 +1,12 @@
 @interface MVSAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 @end
 
 @implementation MVSAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = [IMDaemonController sharedInstance:a3];
+  v4 = [IMDaemonController sharedInstance:application];
   [v4 _setBlocksConnectionAtResume:1];
 
   v5 = +[IMDaemonController sharedInstance];

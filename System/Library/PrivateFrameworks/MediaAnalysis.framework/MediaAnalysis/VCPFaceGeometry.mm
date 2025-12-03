@@ -1,13 +1,13 @@
 @interface VCPFaceGeometry
-- (VCPFaceGeometry)initWithCoder:(id)a3;
-- (VCPFaceGeometry)initWithVertices:(VCPFaceGeometry *)self vertexCount:(SEL)a2;
+- (VCPFaceGeometry)initWithCoder:(id)coder;
+- (VCPFaceGeometry)initWithVertices:(VCPFaceGeometry *)self vertexCount:(SEL)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCPFaceGeometry
 
-- (VCPFaceGeometry)initWithVertices:(VCPFaceGeometry *)self vertexCount:(SEL)a2
+- (VCPFaceGeometry)initWithVertices:(VCPFaceGeometry *)self vertexCount:(SEL)count
 {
   v3 = v2;
   v9.receiver = self;
@@ -38,22 +38,22 @@
   [(VCPFaceGeometry *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:*self->_vertices length:16 * self->_vertexCount];
-  [v5 encodeObject:v4 forKey:@"vertices"];
+  [coderCopy encodeObject:v4 forKey:@"vertices"];
 }
 
-- (VCPFaceGeometry)initWithCoder:(id)a3
+- (VCPFaceGeometry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vertices"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vertices"];
   v6 = [v5 length];
   if (v6 > 0xF)
   {
     self = -[VCPFaceGeometry initWithVertices:vertexCount:](self, "initWithVertices:vertexCount:", [v5 bytes], v6 >> 4);
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -64,10 +64,10 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPFaceGeometry initWithCoder - vertices data missing", v9, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

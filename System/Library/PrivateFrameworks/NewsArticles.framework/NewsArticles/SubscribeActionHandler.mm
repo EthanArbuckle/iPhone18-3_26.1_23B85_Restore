@@ -1,9 +1,9 @@
 @interface SubscribeActionHandler
 - (_TtC12NewsArticles22SubscribeActionHandler)init;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 - (void)handleAMSPurchaseCompletion;
-- (void)handleSubscribeActionOnPresenter:(id)a3 completionBlock:(id)a4;
-- (void)handleSubscribeActionOnPresenter:(id)a3 inAppPurchaseIdKey:(id)a4 completionBlock:(id)a5;
+- (void)handleSubscribeActionOnPresenter:(id)presenter completionBlock:(id)block;
+- (void)handleSubscribeActionOnPresenter:(id)presenter inAppPurchaseIdKey:(id)key completionBlock:(id)block;
 @end
 
 @implementation SubscribeActionHandler
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (void)handleSubscribeActionOnPresenter:(id)a3 inAppPurchaseIdKey:(id)a4 completionBlock:(id)a5
+- (void)handleSubscribeActionOnPresenter:(id)presenter inAppPurchaseIdKey:(id)key completionBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (key)
   {
     v9 = sub_1D7D3034C();
-    a4 = v10;
+    key = v10;
   }
 
   else
@@ -31,20 +31,20 @@
 
   _Block_copy(v8);
   swift_unknownObjectRetain();
-  v11 = self;
-  sub_1D7BF62A0(a3, v9, a4, v11, v8);
+  selfCopy = self;
+  sub_1D7BF62A0(presenter, v9, key, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
   swift_unknownObjectRelease();
 }
 
-- (void)handleSubscribeActionOnPresenter:(id)a3 completionBlock:(id)a4
+- (void)handleSubscribeActionOnPresenter:(id)presenter completionBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   _Block_copy(v6);
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1D7BF62A0(a3, 0, 0, v7, v6);
+  selfCopy = self;
+  sub_1D7BF62A0(presenter, 0, 0, selfCopy, v6);
   _Block_release(v6);
 
   _Block_release(v6);
@@ -58,27 +58,27 @@
   if (Strong)
   {
     v4 = Strong;
-    v7 = self;
-    v5 = [v4 controller];
+    selfCopy = self;
+    controller = [v4 controller];
     swift_unknownObjectRelease();
-    if (v5)
+    if (controller)
     {
-      [(SubscribeActionHandler *)v5 dismissViewControllerAnimated:1 completion:0];
+      [(SubscribeActionHandler *)controller dismissViewControllerAnimated:1 completion:0];
 
-      v6 = v5;
+      v6 = controller;
     }
 
     else
     {
-      v6 = v7;
+      v6 = selfCopy;
     }
   }
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_1D7BF9C0C();
 }
 

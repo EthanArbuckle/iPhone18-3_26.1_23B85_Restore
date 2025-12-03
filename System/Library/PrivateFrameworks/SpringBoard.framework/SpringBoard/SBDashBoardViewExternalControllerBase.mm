@@ -8,14 +8,14 @@
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardViewExternalControllerBase;
-  v2 = [(CSCoverSheetExternalViewControllerBase *)&v5 coverSheetViewController];
-  if (!v2)
+  coverSheetViewController = [(CSCoverSheetExternalViewControllerBase *)&v5 coverSheetViewController];
+  if (!coverSheetViewController)
   {
     v3 = +[SBLockScreenManager sharedInstance];
-    v2 = [v3 coverSheetViewController];
+    coverSheetViewController = [v3 coverSheetViewController];
   }
 
-  return v2;
+  return coverSheetViewController;
 }
 
 @end

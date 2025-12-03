@@ -1,5 +1,5 @@
 @interface WFEnumerationParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (BOOL)preferContextMenu;
 - (BOOL)wf_usesGroupTableViewStyle;
 - (BOOL)wf_usesTogglesForSelection;
@@ -8,17 +8,17 @@
 - (NSArray)staticPossibleStates;
 - (NSArray)subtitles;
 - (NSArray)symbolNames;
-- (WFEnumerationParameter)initWithDefinition:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
-- (id)localizedLabelForMultipleState:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (id)localizedSubtitleLabelForPossibleState:(id)a3;
-- (id)localizedTitleForButtonWithState:(id)a3;
-- (id)parameterStateFromDialogResponse:(id)a3;
-- (id)statesForMultipleStateLabelWithStates:(id)a3;
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6;
+- (WFEnumerationParameter)initWithDefinition:(id)definition;
+- (id)accessoryImageForPossibleState:(id)state;
+- (id)localizedLabelForMultipleState:(id)state;
+- (id)localizedLabelForPossibleState:(id)state;
+- (id)localizedSubtitleLabelForPossibleState:(id)state;
+- (id)localizedTitleForButtonWithState:(id)state;
+- (id)parameterStateFromDialogResponse:(id)response;
+- (id)statesForMultipleStateLabelWithStates:(id)states;
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler;
 - (void)possibleStatesDidChange;
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4;
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFEnumerationParameter
@@ -38,8 +38,8 @@
     goto LABEL_4;
   }
 
-  v5 = [(WFParameter *)self definition];
-  v6 = [v5 objectForKey:@"Items"];
+  definition = [(WFParameter *)self definition];
+  v6 = [definition objectForKey:@"Items"];
   v7 = objc_opt_class();
   v8 = WFEnforceClass_1501(v6, v7);
 
@@ -79,13 +79,13 @@ LABEL_5:
   displayNames = self->_displayNames;
   if (!displayNames)
   {
-    v5 = [(WFParameter *)self definition];
-    v6 = [v5 objectForKey:@"Items"];
+    definition = [(WFParameter *)self definition];
+    v6 = [definition objectForKey:@"Items"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
 
-    v9 = [(WFParameter *)self definition];
-    v10 = [v9 objectForKey:@"ItemDisplayNames"];
+    definition2 = [(WFParameter *)self definition];
+    v10 = [definition2 objectForKey:@"ItemDisplayNames"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
 
@@ -128,13 +128,13 @@ LABEL_5:
   subtitles = self->_subtitles;
   if (!subtitles)
   {
-    v5 = [(WFParameter *)self definition];
-    v6 = [v5 objectForKey:@"ItemSubtitles"];
+    definition = [(WFParameter *)self definition];
+    v6 = [definition objectForKey:@"ItemSubtitles"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
 
-    v9 = [(WFParameter *)self definition];
-    v10 = [v9 objectForKey:@"Items"];
+    definition2 = [(WFParameter *)self definition];
+    v10 = [definition2 objectForKey:@"Items"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
 
@@ -153,20 +153,20 @@ LABEL_5:
   return v14;
 }
 
-- (id)parameterStateFromDialogResponse:(id)a3
+- (id)parameterStateFromDialogResponse:(id)response
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  responseCopy = response;
+  if (responseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    v6 = [v4 selectedItems];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    v21 = responseCopy;
+    selectedItems = [responseCopy selectedItems];
+    v7 = [selectedItems countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
@@ -177,13 +177,13 @@ LABEL_5:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selectedItems);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = objc_alloc([(WFEnumerationParameter *)self singleStateClass]);
-          v13 = [v11 serializedPossibleState];
-          v14 = [v12 initWithSerializedRepresentation:v13 variableProvider:0 parameter:self];
+          serializedPossibleState = [v11 serializedPossibleState];
+          v14 = [v12 initWithSerializedRepresentation:serializedPossibleState variableProvider:0 parameter:self];
 
           if (v14)
           {
@@ -195,17 +195,17 @@ LABEL_5:
             v15 = getWFWorkflowExecutionLogObject();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
             {
-              v16 = [v11 serializedPossibleState];
+              serializedPossibleState2 = [v11 serializedPossibleState];
               *buf = 136315394;
               v27 = "[WFEnumerationParameter parameterStateFromDialogResponse:]";
               v28 = 2112;
-              v29 = v16;
+              v29 = serializedPossibleState2;
               _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_FAULT, "%s Failed to instantiate selected parameter state from serializedRepresentation: %@", buf, 0x16u);
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v8 = [selectedItems countByEnumeratingWithState:&v22 objects:v30 count:16];
       }
 
       while (v8);
@@ -213,16 +213,16 @@ LABEL_5:
 
     if ([(WFParameter *)self allowsMultipleValues])
     {
-      v17 = [objc_alloc(-[WFParameter stateClass](self "stateClass"))];
+      firstObject = [objc_alloc(-[WFParameter stateClass](self "stateClass"))];
     }
 
     else
     {
-      v17 = [v5 firstObject];
+      firstObject = [v5 firstObject];
     }
 
-    v18 = v17;
-    v4 = v21;
+    v18 = firstObject;
+    responseCopy = v21;
   }
 
   else
@@ -236,43 +236,43 @@ LABEL_5:
   return v18;
 }
 
-- (void)createDialogRequestWithAttribution:(id)a3 defaultState:(id)a4 prompt:(id)a5 completionHandler:(id)a6
+- (void)createDialogRequestWithAttribution:(id)attribution defaultState:(id)state prompt:(id)prompt completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attributionCopy = attribution;
+  stateCopy = state;
+  promptCopy = prompt;
+  handlerCopy = handler;
   if ([(WFEnumerationParameter *)self liveUpdatesPossibleStatesInEditor])
   {
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v14 = [(WFParameter *)self allowsMultipleValues];
+    allowsMultipleValues = [(WFParameter *)self allowsMultipleValues];
     v27[0] = 0;
     v27[1] = v27;
     v27[2] = 0x2020000000;
     v28 = 0;
-    v15 = [(WFEnumerationParameter *)self possibleStates];
+    possibleStates = [(WFEnumerationParameter *)self possibleStates];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __99__WFEnumerationParameter_createDialogRequestWithAttribution_defaultState_prompt_completionHandler___block_invoke;
     v22[3] = &unk_1E8373780;
-    v26 = v14;
-    v24 = self;
+    v26 = allowsMultipleValues;
+    selfCopy = self;
     v25 = v27;
-    v23 = v11;
+    v23 = stateCopy;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __99__WFEnumerationParameter_createDialogRequestWithAttribution_defaultState_prompt_completionHandler___block_invoke_3;
     v16[3] = &unk_1E83737A8;
-    v20 = v13;
-    v21 = v14;
-    v17 = v10;
-    v18 = v12;
-    v19 = self;
-    [v15 if_mapAsynchronously:v22 completionHandler:v16];
+    v20 = handlerCopy;
+    v21 = allowsMultipleValues;
+    v17 = attributionCopy;
+    v18 = promptCopy;
+    selfCopy2 = self;
+    [possibleStates if_mapAsynchronously:v22 completionHandler:v16];
 
     _Block_object_dispose(v27, 8);
   }
@@ -343,18 +343,18 @@ void __99__WFEnumerationParameter_createDialogRequestWithAttribution_defaultStat
   [(WFParameter *)self attributesDidChange];
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 variable];
+  validCopy = valid;
+  variable = [validCopy variable];
 
-  if (v6)
+  if (variable)
   {
-    v7 = [(WFParameter *)self supportedVariableTypes];
-    v8 = [v5 variable];
-    v9 = [v8 type];
-    v10 = [v7 containsObject:v9];
+    supportedVariableTypes = [(WFParameter *)self supportedVariableTypes];
+    variable2 = [validCopy variable];
+    type = [variable2 type];
+    v10 = [supportedVariableTypes containsObject:type];
 
 LABEL_21:
     goto LABEL_22;
@@ -365,16 +365,16 @@ LABEL_21:
   {
     if (![(WFParameter *)self allowsMultipleValues])
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"WFEnumerationParameter.m" lineNumber:331 description:@"Multiple state found in parameter that doesn't support multiple values"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WFEnumerationParameter.m" lineNumber:331 description:@"Multiple state found in parameter that doesn't support multiple values"];
     }
 
-    [v5 parameterStates];
+    [validCopy parameterStates];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v7 = v31 = 0u;
-    v11 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    supportedVariableTypes = v31 = 0u;
+    v11 = [supportedVariableTypes countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -385,17 +385,17 @@ LABEL_21:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(supportedVariableTypes);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [(WFEnumerationParameter *)self possibleStates];
+          possibleStates = [(WFEnumerationParameter *)self possibleStates];
           v27[0] = MEMORY[0x1E69E9820];
           v27[1] = 3221225472;
           v27[2] = __48__WFEnumerationParameter_parameterStateIsValid___block_invoke;
           v27[3] = &unk_1E837AAC8;
           v27[4] = v15;
-          v17 = [v16 indexOfObjectPassingTest:v27];
+          v17 = [possibleStates indexOfObjectPassingTest:v27];
 
           if (v17 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -404,7 +404,7 @@ LABEL_21:
           }
         }
 
-        v12 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [supportedVariableTypes countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v12)
         {
           continue;
@@ -426,8 +426,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v18 = [(WFEnumerationParameter *)self possibleStates];
-  v19 = [v18 containsObject:v5];
+  possibleStates2 = [(WFEnumerationParameter *)self possibleStates];
+  v19 = [possibleStates2 containsObject:validCopy];
 
   if (v19)
   {
@@ -436,13 +436,13 @@ LABEL_20:
 
   else
   {
-    v20 = [(WFEnumerationParameter *)self possibleStates];
+    possibleStates3 = [(WFEnumerationParameter *)self possibleStates];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __48__WFEnumerationParameter_parameterStateIsValid___block_invoke_2;
     v25[3] = &unk_1E837AAC8;
-    v26 = v5;
-    v21 = [v20 indexesOfObjectsPassingTest:v25];
+    v26 = validCopy;
+    v21 = [possibleStates3 indexesOfObjectsPassingTest:v25];
 
     v10 = [v21 count] == 1;
   }
@@ -466,16 +466,16 @@ LABEL_22:
   }
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFEnumerationParameter *)self staticPossibleStates];
-  v6 = [(WFEnumerationParameter *)self symbolNames];
-  v7 = v6;
+  stateCopy = state;
+  staticPossibleStates = [(WFEnumerationParameter *)self staticPossibleStates];
+  symbolNames = [(WFEnumerationParameter *)self symbolNames];
+  v7 = symbolNames;
   v8 = 0;
-  if (v5 && v6)
+  if (staticPossibleStates && symbolNames)
   {
-    v9 = [v5 indexOfObject:v4];
+    v9 = [staticPossibleStates indexOfObject:stateCopy];
     if (v9 >= [v7 count])
     {
       v10 = 0;
@@ -502,34 +502,34 @@ LABEL_9:
   return v8;
 }
 
-- (id)localizedSubtitleLabelForPossibleState:(id)a3
+- (id)localizedSubtitleLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFEnumerationParameter *)self staticPossibleStates];
-  v6 = [(WFEnumerationParameter *)self subtitles];
-  v7 = [v5 indexOfObject:v4];
+  stateCopy = state;
+  staticPossibleStates = [(WFEnumerationParameter *)self staticPossibleStates];
+  subtitles = [(WFEnumerationParameter *)self subtitles];
+  v7 = [staticPossibleStates indexOfObject:stateCopy];
 
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL || v7 >= [v6 count])
+  if (v7 == 0x7FFFFFFFFFFFFFFFLL || v7 >= [subtitles count])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndex:v7];
+    v8 = [subtitles objectAtIndex:v7];
   }
 
   return v8;
 }
 
-- (id)statesForMultipleStateLabelWithStates:(id)a3
+- (id)statesForMultipleStateLabelWithStates:(id)states
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__WFEnumerationParameter_statesForMultipleStateLabelWithStates___block_invoke;
   v5[3] = &unk_1E8373730;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [states sortedArrayUsingComparator:v5];
 
   return v3;
 }
@@ -554,16 +554,16 @@ uint64_t __64__WFEnumerationParameter_statesForMultipleStateLabelWithStates___bl
   return v16;
 }
 
-- (id)localizedLabelForMultipleState:(id)a3
+- (id)localizedLabelForMultipleState:(id)state
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 parameterStates];
+  stateCopy = state;
+  parameterStates = [stateCopy parameterStates];
   v6 = MEMORY[0x1E695DFB8];
-  v7 = [(WFEnumerationParameter *)self possibleStates];
-  v8 = [v6 orderedSetWithArray:v7];
+  possibleStates = [(WFEnumerationParameter *)self possibleStates];
+  v8 = [v6 orderedSetWithArray:possibleStates];
 
-  if (![v5 count])
+  if (![parameterStates count])
   {
     v11 = WFLocalizedString(@"Choose");
 LABEL_5:
@@ -571,17 +571,17 @@ LABEL_5:
     goto LABEL_22;
   }
 
-  if ([v5 count] != 1)
+  if ([parameterStates count] != 1)
   {
-    v12 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+    v12 = [MEMORY[0x1E695DFD8] setWithArray:parameterStates];
     v13 = [v8 set];
     if ([v12 isEqualToSet:v13])
     {
-      v14 = [v5 count];
+      v14 = [parameterStates count];
 
       if (v14 >= 3)
       {
-        v11 = [(WFEnumerationParameter *)self localizedLabelForMultipleCompleteState:v4];
+        v11 = [(WFEnumerationParameter *)self localizedLabelForMultipleCompleteState:stateCopy];
         goto LABEL_5;
       }
     }
@@ -590,14 +590,14 @@ LABEL_5:
     {
     }
 
-    v9 = [(WFEnumerationParameter *)self statesForMultipleStateLabelWithStates:v5];
+    v9 = [(WFEnumerationParameter *)self statesForMultipleStateLabelWithStates:parameterStates];
     v15 = [v9 objectAtIndexedSubscript:0];
-    v16 = [(WFEnumerationParameter *)self localizedLabelForPossibleState:v15 inMultipleState:v4];
+    v16 = [(WFEnumerationParameter *)self localizedLabelForPossibleState:v15 inMultipleState:stateCopy];
 
     if ([v9 count] == 2)
     {
       v17 = [v9 objectAtIndexedSubscript:1];
-      [(WFEnumerationParameter *)self localizedLabelForPossibleState:v17 inMultipleState:v4];
+      [(WFEnumerationParameter *)self localizedLabelForPossibleState:v17 inMultipleState:stateCopy];
     }
 
     else
@@ -635,7 +635,7 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  v9 = [v5 objectAtIndexedSubscript:0];
+  v9 = [parameterStates objectAtIndexedSubscript:0];
   v10 = [(WFEnumerationParameter *)self localizedTitleForButtonWithState:v9];
 LABEL_21:
 
@@ -645,24 +645,24 @@ LABEL_22:
   return v10;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 value];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  stateCopy = state;
+  value = [stateCopy value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if ([(WFParameter *)self doNotLocalizeValues])
     {
       goto LABEL_10;
     }
 
-    v6 = [(WFEnumerationParameter *)self staticPossibleStates];
-    v7 = [(WFEnumerationParameter *)self displayNames];
-    v8 = v7;
+    staticPossibleStates = [(WFEnumerationParameter *)self staticPossibleStates];
+    displayNames = [(WFEnumerationParameter *)self displayNames];
+    v8 = displayNames;
     v9 = 0;
-    if (v6 && v7)
+    if (staticPossibleStates && displayNames)
     {
-      v10 = [v6 indexOfObject:v4];
+      v10 = [staticPossibleStates indexOfObject:stateCopy];
       if (v10 >= [v8 count])
       {
         v9 = 0;
@@ -680,23 +680,23 @@ LABEL_22:
     v9 = 0;
   }
 
-  v5 = v9;
+  value = v9;
 LABEL_10:
 
-  return v5;
+  return value;
 }
 
-- (id)localizedTitleForButtonWithState:(id)a3
+- (id)localizedTitleForButtonWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(WFParameter *)self allowsMultipleValues]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(WFEnumerationParameter *)self localizedLabelForMultipleState:v4];
+    v5 = [(WFEnumerationParameter *)self localizedLabelForMultipleState:stateCopy];
   }
 
   else
   {
-    v5 = [(WFEnumerationParameter *)self localizedLabelForPossibleState:v4];
+    v5 = [(WFEnumerationParameter *)self localizedLabelForPossibleState:stateCopy];
   }
 
   v6 = v5;
@@ -708,15 +708,15 @@ LABEL_10:
 {
   if ([(WFEnumerationParameter *)self providesLocalizedValuesForSummary])
   {
-    v3 = [(WFEnumerationParameter *)self staticPossibleStates];
+    staticPossibleStates = [(WFEnumerationParameter *)self staticPossibleStates];
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    staticPossibleStates = MEMORY[0x1E695E0F0];
   }
 
-  return v3;
+  return staticPossibleStates;
 }
 
 - (NSArray)symbolNames
@@ -731,13 +731,13 @@ LABEL_10:
   symbolNames = self->_symbolNames;
   if (!symbolNames)
   {
-    v5 = [(WFParameter *)self definition];
-    v6 = [v5 objectForKey:@"ItemIconNames"];
+    definition = [(WFParameter *)self definition];
+    v6 = [definition objectForKey:@"ItemIconNames"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
 
-    v9 = [(WFParameter *)self definition];
-    v10 = [v9 objectForKey:@"Items"];
+    definition2 = [(WFParameter *)self definition];
+    v10 = [definition2 objectForKey:@"Items"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
 
@@ -849,12 +849,12 @@ id __46__WFEnumerationParameter_staticPossibleStates__block_invoke_2(uint64_t a1
   return v5;
 }
 
-- (WFEnumerationParameter)initWithDefinition:(id)a3
+- (WFEnumerationParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v32.receiver = self;
   v32.super_class = WFEnumerationParameter;
-  v5 = [(WFParameter *)&v32 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v32 initWithDefinition:definitionCopy];
   v6 = v5;
   if (v5)
   {
@@ -865,24 +865,24 @@ id __46__WFEnumerationParameter_staticPossibleStates__block_invoke_2(uint64_t a1
 
     else
     {
-      v7 = [v4 objectForKey:@"AlwaysShowsButton"];
+      v7 = [definitionCopy objectForKey:@"AlwaysShowsButton"];
       v8 = objc_opt_class();
       v9 = WFEnforceClass_1501(v7, v8);
       v6->_alwaysShowsButton = [v9 BOOLValue];
     }
 
-    v10 = [v4 objectForKey:@"HideClearButton"];
+    v10 = [definitionCopy objectForKey:@"HideClearButton"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     v6->_hideClearButton = [v12 BOOLValue];
 
-    v13 = [v4 objectForKey:@"PreferParameterValuePicker"];
+    v13 = [definitionCopy objectForKey:@"PreferParameterValuePicker"];
     v14 = objc_opt_class();
     v15 = WFEnforceClass_1501(v13, v14);
     v6->_prefersParameterValuePicker = [v15 BOOLValue];
 
     v6->_definitionLock._os_unfair_lock_opaque = 0;
-    v16 = [v4 objectForKey:@"ProvidesLocalizedValues"];
+    v16 = [definitionCopy objectForKey:@"ProvidesLocalizedValues"];
     v17 = objc_opt_class();
     v18 = WFEnforceClass_1501(v16, v17);
     v19 = v18;
@@ -893,7 +893,7 @@ id __46__WFEnumerationParameter_staticPossibleStates__block_invoke_2(uint64_t a1
 
     v6->_providesLocalizedValuesForSummary = [v18 BOOLValue];
 
-    v20 = [v4 objectForKey:@"SelectionType"];
+    v20 = [definitionCopy objectForKey:@"SelectionType"];
     v21 = objc_opt_class();
     v22 = WFEnforceClass_1501(v20, v21);
     v23 = v22;
@@ -909,7 +909,7 @@ id __46__WFEnumerationParameter_staticPossibleStates__block_invoke_2(uint64_t a1
 
     objc_storeStrong(&v6->_selectionType, v24);
 
-    v25 = [v4 objectForKey:@"TableViewStyle"];
+    v25 = [definitionCopy objectForKey:@"TableViewStyle"];
     v26 = objc_opt_class();
     v27 = WFEnforceClass_1501(v25, v26);
     v28 = v27;
@@ -931,36 +931,36 @@ id __46__WFEnumerationParameter_staticPossibleStates__block_invoke_2(uint64_t a1
   return v6;
 }
 
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_alloc(MEMORY[0x1E696E918]);
-  v7 = [(WFEnumerationParameter *)self possibleStates];
-  v8 = [v6 initWithItems:v7];
+  possibleStates = [(WFEnumerationParameter *)self possibleStates];
+  v8 = [v6 initWithItems:possibleStates];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__WFEnumerationParameter_WFParameterPicker__wf_loadStatesWithSearchTerm_completionHandler___block_invoke;
   v11[3] = &unk_1E837E1F8;
   v12 = v8;
-  v13 = v5;
+  v13 = handlerCopy;
   v9 = v8;
-  v10 = v5;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
 - (BOOL)wf_usesGroupTableViewStyle
 {
-  v2 = [(WFEnumerationParameter *)self tableViewStyle];
-  v3 = [v2 isEqualToString:@"InsetGrouped"];
+  tableViewStyle = [(WFEnumerationParameter *)self tableViewStyle];
+  v3 = [tableViewStyle isEqualToString:@"InsetGrouped"];
 
   return v3;
 }
 
 - (BOOL)wf_usesTogglesForSelection
 {
-  v2 = [(WFEnumerationParameter *)self selectionType];
-  v3 = [v2 isEqualToString:@"Toggle"];
+  selectionType = [(WFEnumerationParameter *)self selectionType];
+  v3 = [selectionType isEqualToString:@"Toggle"];
 
   return v3;
 }

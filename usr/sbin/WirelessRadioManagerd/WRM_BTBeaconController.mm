@@ -2,7 +2,7 @@
 + (id)WRM_BTBeaconControllerSingleton;
 - (WRM_BTBeaconController)init;
 - (int)getRSSI;
-- (void)onBleBeaconReceived:(id)a3;
+- (void)onBleBeaconReceived:(id)received;
 @end
 
 @implementation WRM_BTBeaconController
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007E100;
   block[3] = &unk_10023DD00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E40 != -1)
   {
     dispatch_once(&qword_1002B7E40, block);
@@ -62,25 +62,25 @@
   return v9;
 }
 
-- (void)onBleBeaconReceived:(id)a3
+- (void)onBleBeaconReceived:(id)received
 {
-  v11 = a3;
-  if (([v11 deviceFlags] & 0x80) != 0)
+  receivedCopy = received;
+  if (([receivedCopy deviceFlags] & 0x80) != 0)
   {
-    v4 = [v11 idsDeviceID];
-    v5 = [v4 UTF8String];
-    v6 = [v11 identifier];
-    v7 = [v6 UTF8String];
-    v8 = [v11 model];
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"BTBeacon Controller::onBleBeaconReceived: IDS ID %s, BT identifier %s, Model %s, RSSI %d", v5, v7, [v8 UTF8String], objc_msgSend(v11, "bleRSSI"));
+    idsDeviceID = [receivedCopy idsDeviceID];
+    uTF8String = [idsDeviceID UTF8String];
+    identifier = [receivedCopy identifier];
+    uTF8String2 = [identifier UTF8String];
+    model = [receivedCopy model];
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 24, @"BTBeacon Controller::onBleBeaconReceived: IDS ID %s, BT identifier %s, Model %s, RSSI %d", uTF8String, uTF8String2, [model UTF8String], objc_msgSend(receivedCopy, "bleRSSI"));
 
-    self->mRSSI = [v11 bleRSSI];
-    v9 = [(WRM_BTBeaconController *)self clientCBDeviceHandler];
+    self->mRSSI = [receivedCopy bleRSSI];
+    clientCBDeviceHandler = [(WRM_BTBeaconController *)self clientCBDeviceHandler];
 
-    if (v9)
+    if (clientCBDeviceHandler)
     {
-      v10 = [(WRM_BTBeaconController *)self clientCBDeviceHandler];
-      (v10)[2](v10, v11);
+      clientCBDeviceHandler2 = [(WRM_BTBeaconController *)self clientCBDeviceHandler];
+      (clientCBDeviceHandler2)[2](clientCBDeviceHandler2, receivedCopy);
     }
   }
 }

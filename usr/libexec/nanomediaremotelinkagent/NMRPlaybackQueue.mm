@@ -1,25 +1,25 @@
 @interface NMRPlaybackQueue
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeOfItemsNeedingMetadataForMediaRemoteQueue:(void *)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeOfItemsNeedingMetadataForMediaRemoteQueue:(void *)queue;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)observedRange;
-- (BOOL)_needsMetadataForMediaRemoteItem:(void *)a3;
-- (BOOL)_needsUpdateForMediaRemoteQueue:(void *)a3;
+- (BOOL)_needsMetadataForMediaRemoteItem:(void *)item;
+- (BOOL)_needsUpdateForMediaRemoteQueue:(void *)queue;
 - (NMRPlaybackQueue)init;
 - (NMRPlaybackQueueDelegate)delegate;
 - (NSData)fullPlaybackQueueData;
 - (id)_contentItemIdentifiers;
-- (id)_itemWithIdentifier:(id)a3;
-- (id)_metadataForItemWithIdentifier:(id)a3;
-- (id)deltaPlaybackQueueDataFromPreviousData:(id)a3 invalidatedMetadataIdentifiers:(id)a4;
-- (void)_mediaRemotePlaybackQueueWithRange:(id)a3 includeMetadata:(BOOL)a4;
-- (void)_refreshCurrentPlaybackQueueFromMediaRemoteWithCompletion:(id)a3;
-- (void)_updateMetadataWithMediaRemoteItems:(id)a3;
-- (void)_updateWithMediaRemoteQueue:(void *)a3;
-- (void)beginObservingMediaRemotePlaybackQueueForOrigin:(id)a3;
-- (void)copyFullMediaRemotePlaybackQueueIncludingMetadata:(BOOL)a3;
-- (void)copyMediaRemotePlaybackQueueWithRange:(id)a3 includeMetadata:(BOOL)a4;
+- (id)_itemWithIdentifier:(id)identifier;
+- (id)_metadataForItemWithIdentifier:(id)identifier;
+- (id)deltaPlaybackQueueDataFromPreviousData:(id)data invalidatedMetadataIdentifiers:(id)identifiers;
+- (void)_mediaRemotePlaybackQueueWithRange:(id)range includeMetadata:(BOOL)metadata;
+- (void)_refreshCurrentPlaybackQueueFromMediaRemoteWithCompletion:(id)completion;
+- (void)_updateMetadataWithMediaRemoteItems:(id)items;
+- (void)_updateWithMediaRemoteQueue:(void *)queue;
+- (void)beginObservingMediaRemotePlaybackQueueForOrigin:(id)origin;
+- (void)copyFullMediaRemotePlaybackQueueIncludingMetadata:(BOOL)metadata;
+- (void)copyMediaRemotePlaybackQueueWithRange:(id)range includeMetadata:(BOOL)metadata;
 - (void)dealloc;
-- (void)setNowPlayingInfo:(id)a3;
-- (void)updateWithData:(id)a3;
+- (void)setNowPlayingInfo:(id)info;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation NMRPlaybackQueue
@@ -69,10 +69,10 @@
   [(NMRPlaybackQueue *)&v4 dealloc];
 }
 
-- (void)beginObservingMediaRemotePlaybackQueueForOrigin:(id)a3
+- (void)beginObservingMediaRemotePlaybackQueueForOrigin:(id)origin
 {
-  v6 = a3;
-  objc_storeStrong(&self->_origin, a3);
+  originCopy = origin;
+  objc_storeStrong(&self->_origin, origin);
   if (!self->_observingMediaRemote)
   {
     self->_observingMediaRemote = 1;
@@ -107,7 +107,7 @@
   return v3;
 }
 
-- (void)copyFullMediaRemotePlaybackQueueIncludingMetadata:(BOOL)a3
+- (void)copyFullMediaRemotePlaybackQueueIncludingMetadata:(BOOL)metadata
 {
   v7 = 0;
   v8 = &v7;
@@ -126,7 +126,7 @@
   return v4;
 }
 
-- (void)copyMediaRemotePlaybackQueueWithRange:(id)a3 includeMetadata:(BOOL)a4
+- (void)copyMediaRemotePlaybackQueueWithRange:(id)range includeMetadata:(BOOL)metadata
 {
   v10 = 0;
   v11 = &v10;
@@ -139,18 +139,18 @@
   block[3] = &unk_100048E18;
   block[4] = self;
   block[5] = &v10;
-  v8 = a3;
-  v9 = a4;
+  rangeCopy = range;
+  metadataCopy = metadata;
   dispatch_sync(serialQueue, block);
   v5 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v5;
 }
 
-- (id)deltaPlaybackQueueDataFromPreviousData:(id)a3 invalidatedMetadataIdentifiers:(id)a4
+- (id)deltaPlaybackQueueDataFromPreviousData:(id)data invalidatedMetadataIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifiersCopy = identifiers;
   v8 = sub_10002C180(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -169,12 +169,12 @@
   v14[1] = 3221225472;
   v14[2] = sub_10000FF18;
   v14[3] = &unk_100048E68;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
+  v15 = dataCopy;
+  selfCopy = self;
+  v17 = identifiersCopy;
   v18 = buf;
-  v10 = v7;
-  v11 = v6;
+  v10 = identifiersCopy;
+  v11 = dataCopy;
   dispatch_sync(serialQueue, v14);
   v12 = *(v20 + 5);
 
@@ -183,42 +183,42 @@
   return v12;
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000109A4;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   nowPlayingInfo = self->_nowPlayingInfo;
   p_nowPlayingInfo = &self->_nowPlayingInfo;
-  v8 = v5;
+  v8 = infoCopy;
   if (([(NSDictionary *)nowPlayingInfo isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(p_nowPlayingInfo, a3);
+    objc_storeStrong(p_nowPlayingInfo, info);
   }
 }
 
-- (void)_refreshCurrentPlaybackQueueFromMediaRemoteWithCompletion:(id)a3
+- (void)_refreshCurrentPlaybackQueueFromMediaRemoteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NMRPlaybackQueue *)self observedRange];
+  completionCopy = completion;
+  observedRange = [(NMRPlaybackQueue *)self observedRange];
   v7 = v6;
   v8 = sub_10002C180(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = v5;
+    v14 = observedRange;
     v15 = 2048;
     v16 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requesting playback queue information for range: %ld -> %ld", buf, 0x16u);
@@ -230,7 +230,7 @@
   [(NMROrigin *)self->_origin mediaRemoteOrigin];
   v10 = MRNowPlayingPlayerPathCreate();
   serialQueue = self->_serialQueue;
-  v12 = v4;
+  v12 = completionCopy;
   MRMediaRemoteRequestNowPlayingPlaybackQueueForPlayerSync();
   CFRelease(v9);
   CFRelease(v10);
@@ -238,13 +238,13 @@
 
 - (id)_contentItemIdentifiers
 {
-  v2 = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
+  contentItems = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
   v3 = objc_opt_new();
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = contentItems;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -259,8 +259,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v11 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -272,23 +272,23 @@
   return v3;
 }
 
-- (void)_mediaRemotePlaybackQueueWithRange:(id)a3 includeMetadata:(BOOL)a4
+- (void)_mediaRemotePlaybackQueueWithRange:(id)range includeMetadata:(BOOL)metadata
 {
-  v24 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  metadataCopy = metadata;
+  var1 = range.var1;
+  var0 = range.var0;
   dispatch_assert_queue_V2(self->_serialQueue);
   if (self->_nowPlayingInfo)
   {
-    v7 = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
+    contentItems = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
     v23 = objc_opt_new();
-    v8 = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue location];
-    v9 = [v7 count];
+    location = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue location];
+    v9 = [contentItems count];
     if (var1 >= 1)
     {
-      v10 = v8;
-      v11 = v9 + v8 - 1;
-      v12 = -v8;
+      v10 = location;
+      v11 = v9 + location - 1;
+      v12 = -location;
       v13 = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
@@ -299,9 +299,9 @@
             break;
           }
 
-          v14 = v7;
-          v15 = [v7 objectAtIndexedSubscript:v12 + var0];
-          v16 = sub_100010E64(v15, v24);
+          v14 = contentItems;
+          var0 = [contentItems objectAtIndexedSubscript:v12 + var0];
+          v16 = sub_100010E64(var0, metadataCopy);
           if (!var0)
           {
             nowPlayingInfo = self->_nowPlayingInfo;
@@ -318,7 +318,7 @@
             }
           }
 
-          v7 = v14;
+          contentItems = v14;
         }
 
         ++var0;
@@ -345,11 +345,11 @@
 
   else
   {
-    v7 = sub_10002C180(2);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    contentItems = sub_10002C180(2);
+    if (os_log_type_enabled(contentItems, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No now playing info yet, returning nil queue representation.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, contentItems, OS_LOG_TYPE_DEFAULT, "No now playing info yet, returning nil queue representation.", buf, 2u);
     }
 
     v18 = 0;
@@ -358,10 +358,10 @@
   return v18;
 }
 
-- (void)_updateWithMediaRemoteQueue:(void *)a3
+- (void)_updateWithMediaRemoteQueue:(void *)queue
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (a3)
+  if (queue)
   {
     Range = MRPlaybackQueueGetRange();
     v6 = objc_opt_new();
@@ -370,12 +370,12 @@
     v15 = 3221225472;
     v16 = sub_1000118AC;
     v17 = &unk_100048EE0;
-    v18 = self;
+    selfCopy = self;
     v8 = v6;
     v19 = v8;
     [v7 enumerateObjectsUsingBlock:&v14];
     v9 = objc_opt_new();
-    [v9 setLocation:{Range, v14, v15, v16, v17, v18}];
+    [v9 setLocation:{Range, v14, v15, v16, v17, selfCopy}];
     [v9 setContentItems:v8];
     objc_storeStrong(&self->_upNextPlaybackQueue, v9);
     v10 = sub_10002C180(2);
@@ -398,21 +398,21 @@
   }
 }
 
-- (void)_updateMetadataWithMediaRemoteItems:(id)a3
+- (void)_updateMetadataWithMediaRemoteItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011B24;
   v7[3] = &unk_100048C80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeOfItemsNeedingMetadataForMediaRemoteQueue:(void *)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_rangeOfItemsNeedingMetadataForMediaRemoteQueue:(void *)queue
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   Range = MRPlaybackQueueGetRange();
@@ -459,17 +459,17 @@
   return result;
 }
 
-- (BOOL)_needsUpdateForMediaRemoteQueue:(void *)a3
+- (BOOL)_needsUpdateForMediaRemoteQueue:(void *)queue
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (a3)
+  if (queue)
   {
     Range = MRPlaybackQueueGetRange();
     v7 = v6;
     if (Range == -[_NMRPlaybackQueue location](self->_upNextPlaybackQueue, "location") && (-[_NMRPlaybackQueue contentItems](self->_upNextPlaybackQueue, "contentItems"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v7 == v9))
     {
       v10 = MRPlaybackQueueCopyContentItems();
-      v11 = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
+      contentItems = [(_NMRPlaybackQueue *)self->_upNextPlaybackQueue contentItems];
       if (v7 < 1)
       {
         v13 = 0;
@@ -483,10 +483,10 @@
         {
           [v10 objectAtIndexedSubscript:v12];
 
-          v14 = [v11 objectAtIndexedSubscript:v12];
+          v14 = [contentItems objectAtIndexedSubscript:v12];
           v15 = MRContentItemGetIdentifier();
-          v16 = [v14 identifier];
-          v17 = [v15 isEqualToString:v16];
+          identifier = [v14 identifier];
+          v17 = [v15 isEqualToString:identifier];
 
           if ((v17 & 1) == 0)
           {
@@ -514,7 +514,7 @@
   return v13;
 }
 
-- (BOOL)_needsMetadataForMediaRemoteItem:(void *)a3
+- (BOOL)_needsMetadataForMediaRemoteItem:(void *)item
 {
   v4 = MRContentItemGetIdentifier();
   v5 = [(NMRPlaybackQueue *)self _metadataForItemWithIdentifier:v4];
@@ -523,20 +523,20 @@
   return self;
 }
 
-- (id)_metadataForItemWithIdentifier:(id)a3
+- (id)_metadataForItemWithIdentifier:(id)identifier
 {
-  v3 = [(NMRPlaybackQueue *)self _itemWithIdentifier:a3];
-  v4 = [v3 metadata];
+  v3 = [(NMRPlaybackQueue *)self _itemWithIdentifier:identifier];
+  metadata = [v3 metadata];
 
-  return v4;
+  return metadata;
 }
 
-- (id)_itemWithIdentifier:(id)a3
+- (id)_itemWithIdentifier:(id)identifier
 {
   upNextPlaybackQueue = self->_upNextPlaybackQueue;
-  v4 = a3;
-  v5 = [(_NMRPlaybackQueue *)upNextPlaybackQueue contentItems];
-  v6 = sub_1000105B4(v4, v5);
+  identifierCopy = identifier;
+  contentItems = [(_NMRPlaybackQueue *)upNextPlaybackQueue contentItems];
+  v6 = sub_1000105B4(identifierCopy, contentItems);
 
   return v6;
 }

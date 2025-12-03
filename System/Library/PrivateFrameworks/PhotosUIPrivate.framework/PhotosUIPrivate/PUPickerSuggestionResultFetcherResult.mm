@@ -52,7 +52,7 @@
 
 - (BOOL)shouldReverseSortOrder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PickerSuggestionResultFetcher.Result.shouldReverseSortOrder.getter();
 
   return v3 & 1;
@@ -60,7 +60,7 @@
 
 - (NSString)analyticsName
 {
-  v2 = self;
+  selfCopy = self;
   PickerSuggestionResultFetcher.Result.analyticsName.getter();
 
   v3 = sub_1B3C9C5A8();
@@ -70,7 +70,7 @@
 
 - (unint64_t)posterClassification
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PickerSuggestionResultFetcher.Result.posterClassification.getter();
 
   return v3;
@@ -78,7 +78,7 @@
 
 - (int64_t)numberOfItemsToPlayInline
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PickerSuggestionResultFetcher.Result.numberOfItemsToPlayInline.getter();
 
   return v3;
@@ -101,7 +101,7 @@
 
 - (BOOL)isFilteredBackdropSuggestions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PickerSuggestionResultFetcher.Result.isFilteredBackdropSuggestions.getter();
 
   return v3 & 1;

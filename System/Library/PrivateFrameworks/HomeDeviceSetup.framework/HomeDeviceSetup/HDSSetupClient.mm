@@ -1,10 +1,10 @@
 @interface HDSSetupClient
 - (HDSSetupClient)init;
 - (SetupEngineDelegate)delegate;
-- (void)_activateWithCompletion:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)startAdvertisingWithCompletion:(id)a3;
+- (void)startAdvertisingWithCompletion:(id)completion;
 @end
 
 @implementation HDSSetupClient
@@ -24,23 +24,23 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__HDSSetupClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_279714210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_HDSSetupClient <= 30 && (gLogCategory_HDSSetupClient != -1 || _LogCategory_Initialize()))
   {
     [HDSSetupClient _activateWithCompletion:];
@@ -54,8 +54,8 @@
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2864F5D78];
   [v5 setExportedInterface:v7];
 
-  v8 = [(HDSSetupClient *)self delegate];
-  [v5 setExportedObject:v8];
+  delegate = [(HDSSetupClient *)self delegate];
+  [v5 setExportedObject:delegate];
 
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -72,9 +72,9 @@
   [v5 setInvalidationHandler:v9];
   [v5 resume];
   objc_storeStrong(&self->_connection, v5);
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   objc_destroyWeak(&v10);
@@ -123,11 +123,11 @@ uint64_t __42__HDSSetupClient__activateWithCompletion___block_invoke_2(uint64_t 
   self->_connection = 0;
 }
 
-- (void)startAdvertisingWithCompletion:(id)a3
+- (void)startAdvertisingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = v4;
-  if (gLogCategory_HDSSetupClient <= 30 && (gLogCategory_HDSSetupClient != -1 || (v5 = _LogCategory_Initialize(), v4 = v7, v5)))
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (gLogCategory_HDSSetupClient <= 30 && (gLogCategory_HDSSetupClient != -1 || (v5 = _LogCategory_Initialize(), completionCopy = v7, v5)))
   {
     [HDSSetupClient startAdvertisingWithCompletion:];
     if (v7)
@@ -136,11 +136,11 @@ uint64_t __42__HDSSetupClient__activateWithCompletion___block_invoke_2(uint64_t 
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
 LABEL_5:
-    v6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v6 startAdvertisingWithCompletion:v7];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy startAdvertisingWithCompletion:v7];
 
     goto LABEL_10;
   }

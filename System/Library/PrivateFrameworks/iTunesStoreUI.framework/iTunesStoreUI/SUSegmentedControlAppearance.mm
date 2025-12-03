@@ -1,14 +1,14 @@
 @interface SUSegmentedControlAppearance
 + (id)defaultBarAppearance;
-+ (id)defaultOptionsAppearanceForTintStyle:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (id)titleTextAttributesForState:(unint64_t)a3;
++ (id)defaultOptionsAppearanceForTintStyle:(int64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics;
+- (id)titleTextAttributesForState:(unint64_t)state;
 - (void)dealloc;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5;
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 barMetrics:(int64_t)a6;
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)styleSegmentedControl:(id)a3;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics;
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics;
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)styleSegmentedControl:(id)control;
 @end
 
 @implementation SUSegmentedControlAppearance
@@ -49,11 +49,11 @@
   return v2;
 }
 
-+ (id)defaultOptionsAppearanceForTintStyle:(int64_t)a3
++ (id)defaultOptionsAppearanceForTintStyle:(int64_t)style
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  if (a3 == 1)
+  if (style == 1)
   {
     [v4 setBackgroundImage:objc_msgSend(MEMORY[0x1E69DCAB8] forState:"imageNamed:inBundle:" barMetrics:{@"UISegmentOptionsDarkButton", v5), 0, 0}];
     [v4 setBackgroundImage:objc_msgSend(MEMORY[0x1E69DCAB8] forState:"imageNamed:inBundle:" barMetrics:{@"UISegmentOptionsDarkButtonSelected", v5), 4, 0}];
@@ -107,15 +107,15 @@
   return v4;
 }
 
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics
 {
-  v6 = [(SUSegmentedControlAppearance *)self _newDividerImageKeyWithLeftState:a3 rightState:a4 barMetrics:a5];
+  v6 = [(SUSegmentedControlAppearance *)self _newDividerImageKeyWithLeftState:state rightState:segmentState barMetrics:metrics];
   v7 = [(NSMutableDictionary *)self->_dividerImages objectForKey:v6];
 
   return v7;
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 barMetrics:(int64_t)a5
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state barMetrics:(int64_t)metrics
 {
   backgroundImages = self->_backgroundImages;
   if (!backgroundImages)
@@ -124,15 +124,15 @@
     self->_backgroundImages = backgroundImages;
   }
 
-  [(SUControlAppearance *)backgroundImages setImage:a3 forState:a4 barMetrics:a5];
+  [(SUControlAppearance *)backgroundImages setImage:image forState:state barMetrics:metrics];
 }
 
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 barMetrics:(int64_t)a6
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState barMetrics:(int64_t)metrics
 {
-  v8 = [(SUSegmentedControlAppearance *)self _newDividerImageKeyWithLeftState:a4 rightState:a5 barMetrics:a6];
+  v8 = [(SUSegmentedControlAppearance *)self _newDividerImageKeyWithLeftState:state rightState:segmentState barMetrics:metrics];
   dividerImages = self->_dividerImages;
   v10 = v8;
-  if (a3)
+  if (image)
   {
     if (!dividerImages)
     {
@@ -141,7 +141,7 @@
       self->_dividerImages = dividerImages;
     }
 
-    [(NSMutableDictionary *)dividerImages setObject:a3 forKey:v8];
+    [(NSMutableDictionary *)dividerImages setObject:image forKey:v8];
   }
 
   else
@@ -150,7 +150,7 @@
   }
 }
 
-- (void)styleSegmentedControl:(id)a3
+- (void)styleSegmentedControl:(id)control
 {
   v38 = *MEMORY[0x1E69E9840];
   backgroundImages = self->_backgroundImages;
@@ -158,7 +158,7 @@
   v35[1] = 3221225472;
   v35[2] = __54__SUSegmentedControlAppearance_styleSegmentedControl___block_invoke;
   v35[3] = &unk_1E8167200;
-  v35[4] = a3;
+  v35[4] = control;
   [(SUControlAppearance *)backgroundImages enumerateImagesUsingBlock:v35];
   v33 = 0u;
   v34 = 0u;
@@ -190,12 +190,12 @@
           v16 = [(NSMutableDictionary *)self->_dividerImages objectForKey:v10];
           if (v15)
           {
-            [a3 _setDividerImage:v16 forLeftSegmentState:v12 rightSegmentState:v13 barMetrics:v14];
+            [control _setDividerImage:v16 forLeftSegmentState:v12 rightSegmentState:v13 barMetrics:v14];
           }
 
           else
           {
-            [a3 setDividerImage:v16 forLeftSegmentState:v12 rightSegmentState:v13 barMetrics:v14];
+            [control setDividerImage:v16 forLeftSegmentState:v12 rightSegmentState:v13 barMetrics:v14];
           }
         }
       }
@@ -208,7 +208,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [a3 _setOptionsBackgroundImage:self->_optionsBackgroundImage];
+    [control _setOptionsBackgroundImage:self->_optionsBackgroundImage];
   }
 
   v29 = 0u;
@@ -233,15 +233,15 @@
         v22 = *(*(&v27 + 1) + 8 * j);
         v23 = objc_opt_respondsToSelector();
         v24 = [(NSMutableDictionary *)self->_titleTextAttributes objectForKey:v22];
-        v25 = [v22 integerValue];
+        integerValue = [v22 integerValue];
         if (v23)
         {
-          [a3 _setTitleTextAttributes:v24 forState:v25];
+          [control _setTitleTextAttributes:v24 forState:integerValue];
         }
 
         else
         {
-          [a3 setTitleTextAttributes:v24 forState:v25];
+          [control setTitleTextAttributes:v24 forState:integerValue];
         }
       }
 
@@ -273,19 +273,19 @@ uint64_t __54__SUSegmentedControlAppearance_styleSegmentedControl___block_invoke
   }
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   titleTextAttributes = self->_titleTextAttributes;
   v9 = v6;
-  if (a3)
+  if (attributes)
   {
     if (!titleTextAttributes)
     {
       self->_titleTextAttributes = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    v8 = [a3 copy];
+    v8 = [attributes copy];
     [(NSMutableDictionary *)self->_titleTextAttributes setObject:v8 forKey:v9];
   }
 
@@ -295,21 +295,21 @@ uint64_t __54__SUSegmentedControlAppearance_styleSegmentedControl___block_invoke
   }
 }
 
-- (id)titleTextAttributesForState:(unint64_t)a3
+- (id)titleTextAttributesForState:(unint64_t)state
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:state];
   v5 = [(NSMutableDictionary *)self->_titleTextAttributes objectForKey:v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(SUControlAppearance *)self->_backgroundImages copyWithZone:a3];
-  v5[2] = [(NSMutableDictionary *)self->_dividerImages mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(SUControlAppearance *)self->_backgroundImages copyWithZone:zone];
+  v5[2] = [(NSMutableDictionary *)self->_dividerImages mutableCopyWithZone:zone];
   v5[3] = self->_optionsBackgroundImage;
-  v5[4] = [(NSMutableDictionary *)self->_titleTextAttributes mutableCopyWithZone:a3];
+  v5[4] = [(NSMutableDictionary *)self->_titleTextAttributes mutableCopyWithZone:zone];
   return v5;
 }
 

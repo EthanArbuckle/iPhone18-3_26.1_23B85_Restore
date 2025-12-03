@@ -1,17 +1,17 @@
 @interface HMDIDSActivityMonitorHomeManagerDataSource
 + (id)logCategory;
-- (BOOL)homeHasCamera:(id)a3;
+- (BOOL)homeHasCamera:(id)camera;
 - (HMDIDSActivityMonitorBroadcasterPushTokenDataSourceDelegate)delegate;
-- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)a3 appleAccountManager:(id)a4;
+- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)manager appleAccountManager:(id)accountManager;
 - (id)currentDevice;
-- (void)handleDeviceAdded:(id)a3;
-- (void)handleDeviceRemoved:(id)a3;
-- (void)handleRegistrationUpdated:(id)a3;
-- (void)pushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4 queue:(id)a5 completionHandler:(id)a6;
+- (void)handleDeviceAdded:(id)added;
+- (void)handleDeviceRemoved:(id)removed;
+- (void)handleRegistrationUpdated:(id)updated;
+- (void)pushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity queue:(id)queue completionHandler:(id)handler;
 - (void)start;
-- (void)startObservingDevice:(id)a3 subActivity:(id)a4;
-- (void)startWithNotificationCenter:(id)a3;
-- (void)stopObservingDevice:(id)a3 subActivity:(id)a4;
+- (void)startObservingDevice:(id)device subActivity:(id)activity;
+- (void)startWithNotificationCenter:(id)center;
+- (void)stopObservingDevice:(id)device subActivity:(id)activity;
 @end
 
 @implementation HMDIDSActivityMonitorHomeManagerDataSource
@@ -23,12 +23,12 @@
   return WeakRetained;
 }
 
-- (void)handleRegistrationUpdated:(id)a3
+- (void)handleRegistrationUpdated:(id)updated
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,18 +39,18 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 delegate];
-  [v9 dataSourceDidUpdate:v6];
+  delegate = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy delegate];
+  [delegate dataSourceDidUpdate:selfCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeviceRemoved:(id)a3
+- (void)handleDeviceRemoved:(id)removed
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
+  removedCopy = removed;
+  userInfo = [removedCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -66,16 +66,16 @@
   v8 = v7;
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 name];
+    name = [v8 name];
     *buf = 138543618;
     v29 = v12;
     v30 = 2112;
-    v31 = v13;
+    v31 = name;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Device %@ was removed from account, reregistering IDS Activity and notifying delegate", buf, 0x16u);
   }
 
@@ -84,10 +84,10 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v10 homeManager];
-  v15 = [v14 homes];
+  homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy homeManager];
+  homes = [homeManager homes];
 
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v16 = [homes countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
     v17 = v16;
@@ -99,18 +99,18 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(homes);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * v19) currentUser];
-        v21 = [v8 identifier];
-        [v20 deregisterIDSActivityObserver:v21];
+        currentUser = [*(*(&v23 + 1) + 8 * v19) currentUser];
+        identifier = [v8 identifier];
+        [currentUser deregisterIDSActivityObserver:identifier];
 
         ++v19;
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v17 = [homes countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v17);
@@ -119,12 +119,12 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeviceAdded:(id)a3
+- (void)handleDeviceAdded:(id)added
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -135,8 +135,8 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
+  userInfo = [addedCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -151,8 +151,8 @@
 
   v12 = v11;
 
-  v13 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 currentDevice];
-  if (v13)
+  currentDevice = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy currentDevice];
+  if (currentDevice)
   {
     if (HMFEqualObjects())
     {
@@ -160,10 +160,10 @@
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v14 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 homeManager];
-      v15 = [v14 homes];
+      homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy homeManager];
+      homes = [homeManager homes];
 
-      v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v16 = [homes countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v16)
       {
         v17 = v16;
@@ -174,28 +174,28 @@
           {
             if (*v28 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(homes);
             }
 
-            v20 = [*(*(&v27 + 1) + 8 * i) currentUser];
-            [v20 updateIDSActivityObserver:v12];
+            currentUser = [*(*(&v27 + 1) + 8 * i) currentUser];
+            [currentUser updateIDSActivityObserver:v12];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v17 = [homes countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v17);
       }
 
-      v21 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 delegate];
-      [v21 dataSourceDidUpdate:v6];
+      delegate = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy delegate];
+      [delegate dataSourceDidUpdate:selfCopy];
     }
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v6;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -211,39 +211,39 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopObservingDevice:(id)a3 subActivity:(id)a4
+- (void)stopObservingDevice:(id)device subActivity:(id)activity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  activityCopy = activity;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 name];
+    name = [deviceCopy name];
     *buf = 138543874;
     v32 = v11;
     v33 = 2112;
-    v34 = v12;
+    v34 = name;
     v35 = 2112;
-    v36 = v7;
+    v36 = activityCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Deregistering for IDS Activity on %@ for subActivity %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v9 currentDevice];
-  if (v13)
+  currentDevice = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy currentDevice];
+  if (currentDevice)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v9 homeManager];
-    v15 = [v14 homes];
+    homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy homeManager];
+    homes = [homeManager homes];
 
-    v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v16 = [homes countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -254,14 +254,14 @@
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(homes);
           }
 
-          v20 = [*(*(&v26 + 1) + 8 * i) currentUser];
-          [v20 deregisterIDSActivityObserver:v13 subActivity:v7 subjectDevice:v6];
+          currentUser = [*(*(&v26 + 1) + 8 * i) currentUser];
+          [currentUser deregisterIDSActivityObserver:currentDevice subActivity:activityCopy subjectDevice:deviceCopy];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v17 = [homes countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v17);
@@ -271,7 +271,7 @@
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v9;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -287,39 +287,39 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startObservingDevice:(id)a3 subActivity:(id)a4
+- (void)startObservingDevice:(id)device subActivity:(id)activity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  activityCopy = activity;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 identifier];
+    identifier = [deviceCopy identifier];
     *buf = 138543874;
     v32 = v11;
     v33 = 2112;
-    v34 = v12;
+    v34 = identifier;
     v35 = 2112;
-    v36 = v7;
+    v36 = activityCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Registering for IDS Activity on %@ for subActivity %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v13 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v9 currentDevice];
-  if (v13)
+  currentDevice = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy currentDevice];
+  if (currentDevice)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v9 homeManager];
-    v15 = [v14 homes];
+    homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy homeManager];
+    homes = [homeManager homes];
 
-    v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v16 = [homes countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -330,14 +330,14 @@
         {
           if (*v27 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(homes);
           }
 
-          v20 = [*(*(&v26 + 1) + 8 * i) currentUser];
-          [v20 registerIDSActivityObserver:v13 subActivity:v7 subjectDevice:v6];
+          currentUser = [*(*(&v26 + 1) + 8 * i) currentUser];
+          [currentUser registerIDSActivityObserver:currentDevice subActivity:activityCopy subjectDevice:deviceCopy];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v17 = [homes countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v17);
@@ -347,7 +347,7 @@
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v9;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -363,15 +363,15 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)homeHasCamera:(id)a3
+- (BOOL)homeHasCamera:(id)camera
 {
   v30 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [a3 accessories];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  accessories = [camera accessories];
+  v4 = [accessories countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -383,7 +383,7 @@
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accessories);
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
@@ -391,8 +391,8 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v9 = [v8 accessoryProfiles];
-        v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        accessoryProfiles = [v8 accessoryProfiles];
+        v10 = [accessoryProfiles countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v10)
         {
           v11 = v10;
@@ -403,7 +403,7 @@
             {
               if (*v21 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(accessoryProfiles);
               }
 
               v14 = *(*(&v20 + 1) + 8 * j);
@@ -418,7 +418,7 @@
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v11 = [accessoryProfiles countByEnumeratingWithState:&v20 objects:v28 count:16];
             if (v11)
             {
               continue;
@@ -431,7 +431,7 @@
         v6 = v19;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [accessories countByEnumeratingWithState:&v24 objects:v29 count:16];
       v16 = 0;
     }
 
@@ -449,56 +449,56 @@ LABEL_20:
   return v16;
 }
 
-- (void)pushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)pushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity queue:(id)queue completionHandler:(id)handler
 {
   v82 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDIDSActivityMonitorHomeManagerDataSource *)self currentDevice];
+  deviceCopy = device;
+  activityCopy = activity;
+  queueCopy = queue;
+  handlerCopy = handler;
+  currentDevice = [(HMDIDSActivityMonitorHomeManagerDataSource *)self currentDevice];
   v15 = objc_autoreleasePoolPush();
-  v64 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   v17 = v16;
-  if (v14)
+  if (currentDevice)
   {
-    v55 = v12;
-    v62 = v10;
+    v55 = queueCopy;
+    v62 = deviceCopy;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v10 name];
+      name = [deviceCopy name];
       *buf = 138543874;
       v77 = v18;
       v78 = 2112;
-      v79 = v19;
+      v79 = name;
       v80 = 2112;
-      v81 = v11;
+      v81 = activityCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Fetching tokens for observers of %@ on subActivity %@", buf, 0x20u);
 
-      v10 = v62;
+      deviceCopy = v62;
     }
 
     objc_autoreleasePoolPop(v15);
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v21 = [(HMDIDSActivityMonitorHomeManagerDataSource *)v64 homeManager];
-    v22 = [v21 homes];
+    homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy homeManager];
+    homes = [homeManager homes];
 
-    v23 = v20;
-    obj = v22;
-    v60 = [v22 countByEnumeratingWithState:&v70 objects:v75 count:16];
+    v23 = array;
+    obj = homes;
+    v60 = [homes countByEnumeratingWithState:&v70 objects:v75 count:16];
     if (v60)
     {
       v59 = *v71;
-      v63 = v11;
-      v56 = v14;
-      v57 = v13;
-      v65 = v20;
+      v63 = activityCopy;
+      v56 = currentDevice;
+      v57 = handlerCopy;
+      v65 = array;
       do
       {
         v24 = 0;
@@ -511,52 +511,52 @@ LABEL_20:
 
           v61 = v24;
           v25 = *(*(&v70 + 1) + 8 * v24);
-          v26 = [v25 residentEnabledDevices];
-          v27 = [v26 containsObject:v14];
+          residentEnabledDevices = [v25 residentEnabledDevices];
+          v27 = [residentEnabledDevices containsObject:currentDevice];
 
           if ((v27 & 1) == 0)
           {
             v40 = objc_autoreleasePoolPush();
-            v41 = v64;
+            v41 = selfCopy;
             v42 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
             {
               v43 = HMFGetLogIdentifier();
-              v44 = [v14 shortDescription];
-              v45 = [v25 name];
+              shortDescription = [currentDevice shortDescription];
+              name2 = [v25 name];
               *buf = 138543874;
               v77 = v43;
               v78 = 2112;
-              v79 = v44;
+              v79 = shortDescription;
               v80 = 2112;
-              v81 = v45;
+              v81 = name2;
               _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_INFO, "%{public}@Current device %@ is not a resident in home %@, filtering out", buf, 0x20u);
 
-              v10 = v62;
+              deviceCopy = v62;
             }
 
             objc_autoreleasePoolPop(v40);
-            v11 = v63;
+            activityCopy = v63;
             goto LABEL_29;
           }
 
           v23 = v65;
-          if (([v25 isResidentFirstAccessoryCommunicationEnabled] & 1) == 0 && !-[HMDIDSActivityMonitorHomeManagerDataSource homeHasCamera:](v64, "homeHasCamera:", v25))
+          if (([v25 isResidentFirstAccessoryCommunicationEnabled] & 1) == 0 && !-[HMDIDSActivityMonitorHomeManagerDataSource homeHasCamera:](selfCopy, "homeHasCamera:", v25))
           {
             v46 = objc_autoreleasePoolPush();
-            v47 = v64;
+            v47 = selfCopy;
             v48 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
               v49 = HMFGetLogIdentifier();
-              v50 = [v25 name];
+              name3 = [v25 name];
               *buf = 138543618;
               v77 = v49;
               v78 = 2112;
-              v79 = v50;
+              v79 = name3;
               _os_log_impl(&dword_2531F8000, v48, OS_LOG_TYPE_INFO, "%{public}@Home %@ did not contain a camera capable of recording, filtering out", buf, 0x16u);
 
-              v10 = v62;
+              deviceCopy = v62;
             }
 
             objc_autoreleasePoolPop(v46);
@@ -569,8 +569,8 @@ LABEL_29:
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v28 = [v25 users];
-          v29 = [v28 countByEnumeratingWithState:&v66 objects:v74 count:16];
+          users = [v25 users];
+          v29 = [users countByEnumeratingWithState:&v66 objects:v74 count:16];
           if (v29)
           {
             v30 = v29;
@@ -581,47 +581,47 @@ LABEL_29:
               {
                 if (*v67 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(users);
                 }
 
                 v33 = *(*(&v66 + 1) + 8 * i);
                 if ([v25 isResidentFirstAccessoryCommunicationEnabled] & 1) != 0 || (objc_msgSend(v33, "isRemoteAccessAllowed"))
                 {
-                  v34 = [v33 pushTokensForDevicesObservingSubjectDevice:v10 subActivity:v11];
+                  v34 = [v33 pushTokensForDevicesObservingSubjectDevice:deviceCopy subActivity:activityCopy];
                   [v23 addObjectsFromArray:v34];
                 }
 
                 else
                 {
                   v35 = objc_autoreleasePoolPush();
-                  v36 = v64;
+                  v36 = selfCopy;
                   v37 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
                   {
                     v38 = HMFGetLogIdentifier();
-                    v39 = [v33 displayName];
+                    displayName = [v33 displayName];
                     *buf = 138543618;
                     v77 = v38;
                     v78 = 2112;
-                    v79 = v39;
+                    v79 = displayName;
                     _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_INFO, "%{public}@User %@ does not have remote access, filtering out", buf, 0x16u);
                   }
 
                   objc_autoreleasePoolPop(v35);
-                  v10 = v62;
-                  v11 = v63;
+                  deviceCopy = v62;
+                  activityCopy = v63;
                   v23 = v65;
                 }
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v66 objects:v74 count:16];
+              v30 = [users countByEnumeratingWithState:&v66 objects:v74 count:16];
             }
 
             while (v30);
           }
 
-          v14 = v56;
-          v13 = v57;
+          currentDevice = v56;
+          handlerCopy = v57;
 LABEL_30:
           v24 = v61 + 1;
         }
@@ -635,9 +635,9 @@ LABEL_30:
     }
 
     v52 = [v23 copy];
-    v13[2](v13, v52);
+    handlerCopy[2](handlerCopy, v52);
 
-    v12 = v55;
+    queueCopy = v55;
   }
 
   else
@@ -651,7 +651,7 @@ LABEL_30:
     }
 
     objc_autoreleasePoolPop(v15);
-    v13[2](v13, MEMORY[0x277CBEBF8]);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8]);
   }
 
   v54 = *MEMORY[0x277D85DE8];
@@ -659,22 +659,22 @@ LABEL_30:
 
 - (id)currentDevice
 {
-  v2 = [(HMDIDSActivityMonitorHomeManagerDataSource *)self appleAccountManager];
-  v3 = [v2 account];
-  v4 = [v3 currentDevice];
+  appleAccountManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)self appleAccountManager];
+  account = [appleAccountManager account];
+  currentDevice = [account currentDevice];
 
-  return v4;
+  return currentDevice;
 }
 
-- (void)startWithNotificationCenter:(id)a3
+- (void)startWithNotificationCenter:(id)center
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorHomeManagerDataSource *)self appleAccountManager];
-  v6 = [v5 account];
+  centerCopy = center;
+  appleAccountManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)self appleAccountManager];
+  account = [appleAccountManager account];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -682,42 +682,42 @@ LABEL_30:
     v12 = 138543618;
     v13 = v10;
     v14 = 2112;
-    v15 = v6;
+    v15 = account;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@Starting to monitor devices for account %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  [v4 addObserver:v8 selector:sel_handleDeviceAdded_ name:@"HMDAccountAddedDeviceNotification" object:v6];
-  [v4 addObserver:v8 selector:sel_handleDeviceAdded_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:v6];
-  [v4 addObserver:v8 selector:sel_handleDeviceRemoved_ name:@"HMDAccountRemovedDeviceNotification" object:v6];
-  [v4 addObserver:v8 selector:sel_handleRegistrationUpdated_ name:@"HMDUserDidUpdateIDSActivityRegistration" object:0];
-  [v4 addObserver:v8 selector:sel_handleRegistrationUpdated_ name:@"HMDUserRemoteAccessDidChangeNotification" object:0];
-  [v4 addObserver:v8 selector:sel_handleRegistrationUpdated_ name:@"HMDNotificationHomeAddedAccessory" object:0];
+  [centerCopy addObserver:selfCopy selector:sel_handleDeviceAdded_ name:@"HMDAccountAddedDeviceNotification" object:account];
+  [centerCopy addObserver:selfCopy selector:sel_handleDeviceAdded_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:account];
+  [centerCopy addObserver:selfCopy selector:sel_handleDeviceRemoved_ name:@"HMDAccountRemovedDeviceNotification" object:account];
+  [centerCopy addObserver:selfCopy selector:sel_handleRegistrationUpdated_ name:@"HMDUserDidUpdateIDSActivityRegistration" object:0];
+  [centerCopy addObserver:selfCopy selector:sel_handleRegistrationUpdated_ name:@"HMDUserRemoteAccessDidChangeNotification" object:0];
+  [centerCopy addObserver:selfCopy selector:sel_handleRegistrationUpdated_ name:@"HMDNotificationHomeAddedAccessory" object:0];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [(HMDIDSActivityMonitorHomeManagerDataSource *)self startWithNotificationCenter:v3];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [(HMDIDSActivityMonitorHomeManagerDataSource *)self startWithNotificationCenter:defaultCenter];
 }
 
-- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)a3 appleAccountManager:(id)a4
+- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)manager appleAccountManager:(id)accountManager
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  if (managerCopy)
   {
-    v9 = v8;
+    v9 = accountManagerCopy;
     v15.receiver = self;
     v15.super_class = HMDIDSActivityMonitorHomeManagerDataSource;
     v10 = [(HMDIDSActivityMonitorHomeManagerDataSource *)&v15 init];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_homeManager, a3);
-      objc_storeStrong(&v11->_appleAccountManager, a4);
+      objc_storeStrong(&v10->_homeManager, manager);
+      objc_storeStrong(&v11->_appleAccountManager, accountManager);
     }
 
     return v11;

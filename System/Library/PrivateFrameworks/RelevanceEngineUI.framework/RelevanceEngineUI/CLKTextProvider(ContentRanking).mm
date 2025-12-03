@@ -6,10 +6,10 @@
 
 - (id)contentEncodedString
 {
-  v1 = [a1 attributedString];
-  v2 = [v1 contentEncodedString];
+  attributedString = [self attributedString];
+  contentEncodedString = [attributedString contentEncodedString];
 
-  return v2;
+  return contentEncodedString;
 }
 
 @end

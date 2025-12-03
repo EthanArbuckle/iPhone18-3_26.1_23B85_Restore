@@ -1,49 +1,49 @@
 @interface HDFeatureAvailabilityHealthDataRequirementEvaluationManager
-- (BOOL)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5 error:(id *)a6;
-- (HDFeatureAvailabilityHealthDataRequirementEvaluationManager)initWithProfile:(id)a3;
-- (id)_evaluatorForRequirement:(void *)a3 error:;
-- (id)evaluationOfRequirements:(id)a3 error:(id *)a4;
-- (void)unregisterObserver:(id)a3;
+- (BOOL)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue error:(id *)error;
+- (HDFeatureAvailabilityHealthDataRequirementEvaluationManager)initWithProfile:(id)profile;
+- (id)_evaluatorForRequirement:(void *)requirement error:;
+- (id)evaluationOfRequirements:(id)requirements error:(id *)error;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDFeatureAvailabilityHealthDataRequirementEvaluationManager
 
-- (HDFeatureAvailabilityHealthDataRequirementEvaluationManager)initWithProfile:(id)a3
+- (HDFeatureAvailabilityHealthDataRequirementEvaluationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDFeatureAvailabilityHealthDataRequirementEvaluationManager;
   v5 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     lock_observedRequirementsByObserver = v6->_lock_observedRequirementsByObserver;
-    v6->_lock_observedRequirementsByObserver = v7;
+    v6->_lock_observedRequirementsByObserver = weakToStrongObjectsMapTable;
   }
 
   return v6;
 }
 
-- (id)evaluationOfRequirements:(id)a3 error:(id *)a4
+- (id)evaluationOfRequirements:(id)requirements error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requirementsCopy = requirements;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = requirementsCopy;
   v35 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v35)
   {
     v8 = *v37;
-    v28 = a4;
+    errorCopy = error;
     v29 = *v37;
-    v30 = self;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v35; ++i)
@@ -63,7 +63,7 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v12 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)self _evaluatorForRequirement:v10 error:a4];
+        v12 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)self _evaluatorForRequirement:v10 error:error];
         v13 = v12;
         if (v12)
         {
@@ -77,15 +77,15 @@ LABEL_27:
 
           else
           {
-            v34 = [objc_opt_class() requirementIdentifier];
+            requirementIdentifier = [objc_opt_class() requirementIdentifier];
             _HKInitializeLogging();
             v17 = HKLogInfrastructure();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543874;
-              v47 = self;
+              selfCopy2 = self;
               v48 = 2114;
-              v49 = v34;
+              v49 = requirementIdentifier;
               v50 = 2114;
               v51 = v15;
               _os_log_error_impl(&dword_228986000, v17, OS_LOG_TYPE_ERROR, "[%{public}@] Error evaluating requirement %{public}@: %{public}@", buf, 0x20u);
@@ -94,37 +94,37 @@ LABEL_27:
             v18 = MEMORY[0x277CCA9B8];
             if (v15)
             {
-              v19 = [v15 domain];
-              v32 = [v15 code];
-              v31 = [v15 userInfo];
+              domain = [v15 domain];
+              code = [v15 code];
+              userInfo = [v15 userInfo];
               v44 = @"HKFeatureAvailabilityRequirementIdentifier";
-              v45 = v34;
+              v45 = requirementIdentifier;
               v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-              [v31 hk_dictionaryByAddingEntriesFromDictionary:v20];
+              [userInfo hk_dictionaryByAddingEntriesFromDictionary:v20];
               v22 = v21 = v7;
-              v23 = [v18 errorWithDomain:v19 code:v32 userInfo:v22];
+              v23 = [v18 errorWithDomain:domain code:code userInfo:v22];
 
               v7 = v21;
-              a4 = v28;
+              error = errorCopy;
             }
 
             else
             {
               v42 = @"HKFeatureAvailabilityRequirementIdentifier";
-              v43 = v34;
-              v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-              v23 = [v18 hk_error:2000 userInfo:v19];
+              v43 = requirementIdentifier;
+              domain = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
+              v23 = [v18 hk_error:2000 userInfo:domain];
             }
 
             v15 = v23;
             v8 = v29;
-            self = v30;
+            self = selfCopy;
             if (v15)
             {
-              if (a4)
+              if (error)
               {
                 v24 = v15;
-                *a4 = v15;
+                *error = v15;
               }
 
               else
@@ -166,29 +166,29 @@ LABEL_28:
   return v25;
 }
 
-- (id)_evaluatorForRequirement:(void *)a3 error:
+- (id)_evaluatorForRequirement:(void *)requirement error:
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     if (WeakRetained)
     {
-      v7 = objc_loadWeakRetained((a1 + 8));
-      v8 = [v7 profileExtensionsConformingToProtocol:{&unk_283D71798, v23}];
+      v7 = objc_loadWeakRetained((self + 8));
+      requirementIdentifier = [v7 profileExtensionsConformingToProtocol:{&unk_283D71798, v23}];
     }
 
     else
     {
-      v8 = MEMORY[0x277CBEBF8];
+      requirementIdentifier = MEMORY[0x277CBEBF8];
     }
 
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v33 count:16];
+    v9 = [requirementIdentifier countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -199,7 +199,7 @@ LABEL_28:
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(requirementIdentifier);
           }
 
           v13 = [*(*(&v23 + 1) + 8 * i) evaluatorForRequirement:{v5, v23}];
@@ -210,7 +210,7 @@ LABEL_28:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v33 count:16];
+        v10 = [requirementIdentifier countByEnumeratingWithState:&v23 objects:v33 count:16];
         if (v10)
         {
           continue;
@@ -220,31 +220,31 @@ LABEL_28:
       }
     }
 
-    v8 = [objc_opt_class() requirementIdentifier];
+    requirementIdentifier = [objc_opt_class() requirementIdentifier];
     _HKInitializeLogging();
     v14 = HKLogInfrastructure();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v30 = a1;
+      selfCopy = self;
       v31 = 2114;
-      v32 = v8;
+      v32 = requirementIdentifier;
       _os_log_error_impl(&dword_228986000, v14, OS_LOG_TYPE_ERROR, "[%{public}@] No evaluator found for requirement %{public}@", buf, 0x16u);
     }
 
     v15 = MEMORY[0x277CCA9B8];
     v27 = @"HKFeatureAvailabilityRequirementIdentifier";
-    v28 = v8;
+    v28 = requirementIdentifier;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v17 = [v15 hk_error:3 userInfo:v16];
 
     v18 = v17;
     if (v18)
     {
-      if (a3)
+      if (requirement)
       {
         v19 = v18;
-        *a3 = v18;
+        *requirement = v18;
       }
 
       else
@@ -267,27 +267,27 @@ LABEL_21:
   return v20;
 }
 
-- (BOOL)registerObserver:(id)a3 forRequirements:(id)a4 queue:(id)a5 error:(id *)a6
+- (BOOL)registerObserver:(id)observer forRequirements:(id)requirements queue:(id)queue error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v11 count])
+  observerCopy = observer;
+  requirementsCopy = requirements;
+  queueCopy = queue;
+  if ([requirementsCopy count])
   {
     _HKInitializeLogging();
     v13 = HKLogInfrastructure();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v39 = self;
+      selfCopy = self;
       v40 = 2114;
-      v41 = v10;
+      v41 = observerCopy;
       _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Registering %{public}@ for changes", buf, 0x16u);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v14 = [(NSMapTable *)self->_lock_observedRequirementsByObserver objectForKey:v10];
+    v14 = [(NSMapTable *)self->_lock_observedRequirementsByObserver objectForKey:observerCopy];
     v15 = v14;
     if (v14)
     {
@@ -302,8 +302,8 @@ LABEL_21:
     v18 = v16;
 
     v31 = v18;
-    v32 = v11;
-    [v11 hk_minus:v18];
+    v32 = requirementsCopy;
+    [requirementsCopy hk_minus:v18];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -323,7 +323,7 @@ LABEL_21:
           }
 
           v24 = *(*(&v33 + 1) + 8 * i);
-          v25 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)self _evaluatorForRequirement:v24 error:a6];
+          v25 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)self _evaluatorForRequirement:v24 error:error];
           if (!v25)
           {
             v17 = 0;
@@ -333,7 +333,7 @@ LABEL_21:
           }
 
           v26 = v25;
-          [v25 registerObserver:v10 forRequirement:v24 queue:v12];
+          [v25 registerObserver:observerCopy forRequirement:v24 queue:queueCopy];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -348,12 +348,12 @@ LABEL_21:
 
     v27 = v31;
     v28 = [v31 setByAddingObjectsFromSet:v19];
-    [(NSMapTable *)self->_lock_observedRequirementsByObserver setObject:v28 forKey:v10];
+    [(NSMapTable *)self->_lock_observedRequirementsByObserver setObject:v28 forKey:observerCopy];
     v17 = 1;
 LABEL_18:
     os_unfair_lock_unlock(&self->_lock);
 
-    v11 = v32;
+    requirementsCopy = v32;
   }
 
   else
@@ -365,23 +365,23 @@ LABEL_18:
   return v17;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v4;
+    v23 = observerCopy;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Unregistering %{public}@ from changes", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(NSMapTable *)self->_lock_observedRequirementsByObserver objectForKey:v4];
+  v6 = [(NSMapTable *)self->_lock_observedRequirementsByObserver objectForKey:observerCopy];
   v7 = v6;
   if (v6)
   {
@@ -405,7 +405,7 @@ LABEL_18:
 
           v12 = *(*(&v15 + 1) + 8 * i);
           v13 = [(HDFeatureAvailabilityHealthDataRequirementEvaluationManager *)self _evaluatorForRequirement:v12 error:0];
-          [v13 unregisterObserver:v4 forRequirement:v12];
+          [v13 unregisterObserver:observerCopy forRequirement:v12];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -414,7 +414,7 @@ LABEL_18:
       while (v9);
     }
 
-    [(NSMapTable *)self->_lock_observedRequirementsByObserver removeObjectForKey:v4];
+    [(NSMapTable *)self->_lock_observedRequirementsByObserver removeObjectForKey:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);

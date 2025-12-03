@@ -1,27 +1,27 @@
 @interface VNVersionParser
-+ (BOOL)_isSeparatedString:(id)a3 equalToString:(id)a4 atIndex:(unint64_t)a5 usingSeparator:(id)a6;
++ (BOOL)_isSeparatedString:(id)string equalToString:(id)toString atIndex:(unint64_t)index usingSeparator:(id)separator;
 @end
 
 @implementation VNVersionParser
 
-+ (BOOL)_isSeparatedString:(id)a3 equalToString:(id)a4 atIndex:(unint64_t)a5 usingSeparator:(id)a6
++ (BOOL)_isSeparatedString:(id)string equalToString:(id)toString atIndex:(unint64_t)index usingSeparator:(id)separator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  stringCopy = string;
+  toStringCopy = toString;
+  separatorCopy = separator;
   v12 = 0;
-  if (v9 && v10)
+  if (stringCopy && toStringCopy)
   {
-    if ([v9 isEqualToString:v10])
+    if ([stringCopy isEqualToString:toStringCopy])
     {
-      v13 = [v9 componentsSeparatedByString:v11];
-      v14 = [v10 componentsSeparatedByString:v11];
+      v13 = [stringCopy componentsSeparatedByString:separatorCopy];
+      v14 = [toStringCopy componentsSeparatedByString:separatorCopy];
       v15 = [v13 count];
       v12 = 0;
-      if (v15 == [v14 count] && v15 >= a5 + 1)
+      if (v15 == [v14 count] && v15 >= index + 1)
       {
-        v16 = [v13 objectAtIndexedSubscript:a5];
-        v17 = [v13 objectAtIndexedSubscript:a5];
+        v16 = [v13 objectAtIndexedSubscript:index];
+        v17 = [v13 objectAtIndexedSubscript:index];
         v12 = [v16 isEqualToString:v17];
       }
     }

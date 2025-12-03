@@ -1,12 +1,12 @@
 @interface HMDSelectedSleepConfigurationTLV
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDSelectedSleepConfigurationTLV)init;
-- (HMDSelectedSleepConfigurationTLV)initWithOperationType:(id)a3 operationStatus:(id)a4 backoffTime:(id)a5;
+- (HMDSelectedSleepConfigurationTLV)initWithOperationType:(id)type operationStatus:(id)status backoffTime:(id)time;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDSelectedSleepConfigurationTLV
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
-  v5 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
-  v6 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
-  v7 = [v3 stringWithFormat:@"<HMDSelectedSleepConfigurationTLV operationType=%@, operationStatus=%@, backoffTime=%@>", v4, v5, v6];
+  operationType = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+  operationStatus = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+  backoffTime = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
+  v7 = [v3 stringWithFormat:@"<HMDSelectedSleepConfigurationTLV operationType=%@, operationStatus=%@, backoffTime=%@>", operationType, operationStatus, backoffTime];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
-      v9 = [(HMDSelectedSleepConfigurationTLV *)v7 operationType];
-      if (v8 != v9)
+      v7 = equalCopy;
+      operationType = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+      operationType2 = [(HMDSelectedSleepConfigurationTLV *)v7 operationType];
+      if (operationType != operationType2)
       {
-        v3 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
-        v4 = [(HMDSelectedSleepConfigurationTLV *)v7 operationType];
-        if (![v3 isEqual:v4])
+        operationType3 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+        operationType4 = [(HMDSelectedSleepConfigurationTLV *)v7 operationType];
+        if (![operationType3 isEqual:operationType4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
-      v12 = [(HMDSelectedSleepConfigurationTLV *)v7 operationStatus];
-      v13 = v12;
-      if (v11 == v12)
+      operationStatus = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+      operationStatus2 = [(HMDSelectedSleepConfigurationTLV *)v7 operationStatus];
+      v13 = operationStatus2;
+      if (operationStatus == operationStatus2)
       {
-        v28 = v12;
+        v28 = operationStatus2;
       }
 
       else
       {
-        v14 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
-        v27 = [(HMDSelectedSleepConfigurationTLV *)v7 operationStatus];
-        if (![v14 isEqual:?])
+        operationStatus3 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+        operationStatus4 = [(HMDSelectedSleepConfigurationTLV *)v7 operationStatus];
+        if (![operationStatus3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = operationStatus3;
         v28 = v13;
       }
 
-      v15 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
-      v16 = [(HMDSelectedSleepConfigurationTLV *)v7 backoffTime];
-      v17 = v16;
-      if (v15 == v16)
+      backoffTime = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
+      backoffTime2 = [(HMDSelectedSleepConfigurationTLV *)v7 backoffTime];
+      v17 = backoffTime2;
+      if (backoffTime == backoffTime2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
-        v18 = v25 = v3;
+        v18 = v25 = operationType3;
         [(HMDSelectedSleepConfigurationTLV *)v7 backoffTime];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = operationStatus;
+        v19 = operationType4;
+        v20 = operationType2;
+        v22 = v21 = operationType;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        operationType = v21;
+        operationType2 = v20;
+        operationType4 = v19;
+        operationStatus = v24;
 
-        v3 = v25;
+        operationType3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      operationStatus3 = v26;
+      if (operationStatus == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (operationType == operationType2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDSelectedSleepConfigurationTLV allocWithZone:a3];
-  v5 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
-  v6 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
-  v7 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
-  v8 = [(HMDSelectedSleepConfigurationTLV *)v4 initWithOperationType:v5 operationStatus:v6 backoffTime:v7];
+  v4 = [HMDSelectedSleepConfigurationTLV allocWithZone:zone];
+  operationType = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+  operationStatus = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+  backoffTime = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
+  v8 = [(HMDSelectedSleepConfigurationTLV *)v4 initWithOperationType:operationType operationStatus:operationStatus backoffTime:backoffTime];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v23 = 0u;
   v21 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+  operationType = [(HMDSelectedSleepConfigurationTLV *)self operationType];
 
-  if (v5)
+  if (operationType)
   {
-    v6 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
+    operationType2 = [(HMDSelectedSleepConfigurationTLV *)self operationType];
     v20 = 0;
-    v7 = [v6 serializeWithError:&v20];
+    v7 = [operationType2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
@@ -187,11 +187,11 @@ LABEL_21:
 LABEL_8:
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_20;
       }
 
@@ -202,13 +202,13 @@ LABEL_17:
     }
   }
 
-  v9 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+  operationStatus = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
 
-  if (v9)
+  if (operationStatus)
   {
-    v10 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
+    operationStatus2 = [(HMDSelectedSleepConfigurationTLV *)self operationStatus];
     v19 = 0;
-    v7 = [v10 serializeWithError:&v19];
+    v7 = [operationStatus2 serializeWithError:&v19];
     v8 = v19;
 
     if (v8)
@@ -224,24 +224,24 @@ LABEL_17:
     }
   }
 
-  v12 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
+  backoffTime = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
 
-  if (v12)
+  if (backoffTime)
   {
-    v13 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
+    backoffTime2 = [(HMDSelectedSleepConfigurationTLV *)self backoffTime];
     v18 = 0;
-    v7 = [v13 serializeWithError:&v18];
+    v7 = [backoffTime2 serializeWithError:&v18];
     v8 = v18;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v14 = v8;
         v11 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_20;
       }
 
@@ -268,11 +268,11 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -287,13 +287,13 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v22 = self;
-  v23 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v30 = 0;
@@ -352,11 +352,11 @@ LABEL_11:
       if (v9)
       {
 LABEL_14:
-        if (v23)
+        if (errorCopy)
         {
           v18 = v9;
           v19 = 0;
-          *v23 = v9;
+          *errorCopy = v9;
           goto LABEL_23;
         }
 
@@ -364,15 +364,15 @@ LABEL_14:
       }
 
 LABEL_20:
-      self = v22;
+      self = selfCopy;
       goto LABEL_21;
     }
   }
 
-  if (v23)
+  if (errorCopy)
   {
     HMErrorFromOSStatus();
-    *v23 = v19 = 0;
+    *errorCopy = v19 = 0;
     goto LABEL_23;
   }
 
@@ -383,20 +383,20 @@ LABEL_23:
   return v19;
 }
 
-- (HMDSelectedSleepConfigurationTLV)initWithOperationType:(id)a3 operationStatus:(id)a4 backoffTime:(id)a5
+- (HMDSelectedSleepConfigurationTLV)initWithOperationType:(id)type operationStatus:(id)status backoffTime:(id)time
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  statusCopy = status;
+  timeCopy = time;
   v15.receiver = self;
   v15.super_class = HMDSelectedSleepConfigurationTLV;
   v12 = [(HMDSelectedSleepConfigurationTLV *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_operationType, a3);
-    objc_storeStrong(&v13->_operationStatus, a4);
-    objc_storeStrong(&v13->_backoffTime, a5);
+    objc_storeStrong(&v12->_operationType, type);
+    objc_storeStrong(&v13->_operationStatus, status);
+    objc_storeStrong(&v13->_backoffTime, time);
   }
 
   return v13;
@@ -409,24 +409,24 @@ LABEL_23:
   return [(HMDSelectedSleepConfigurationTLV *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDSelectedSleepConfigurationTLV);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDSelectedSleepConfigurationTLV *)v6 parseFromData:v5 error:&v11];
+    [(HMDSelectedSleepConfigurationTLV *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

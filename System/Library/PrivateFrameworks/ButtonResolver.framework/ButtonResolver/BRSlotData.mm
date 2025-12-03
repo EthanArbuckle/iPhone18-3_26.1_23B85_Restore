@@ -1,6 +1,6 @@
 @interface BRSlotData
-- (BRSlotData)initWithSlotData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BRSlotData)initWithSlotData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)propertyList;
 - (void)dealloc;
@@ -8,19 +8,19 @@
 
 @implementation BRSlotData
 
-- (BRSlotData)initWithSlotData:(id)a3
+- (BRSlotData)initWithSlotData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v6.receiver = self;
     v6.super_class = BRSlotData;
     v4 = [(BRSlotData *)&v6 init];
     if (v4)
     {
-      v4->_slot = [objc_msgSend(a3 "slot")];
-      v4->_asset = [a3 asset];
-      v4->_isProgrammed = [a3 isProgrammed];
-      v4->_refCount = [a3 refCount];
+      v4->_slot = [objc_msgSend(data "slot")];
+      v4->_asset = [data asset];
+      v4->_isProgrammed = [data isProgrammed];
+      v4->_refCount = [data refCount];
     }
   }
 
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithSlotData:self];
 }
@@ -54,9 +54,9 @@
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:{-[BRSlotData description](&v7, sel_description)}];
   [v3 appendFormat:@"Slot: %@;", -[BRSlotData slot](self, "slot")];
   [v3 appendFormat:@"Asset: %@;", -[BRSlotData asset](self, "asset")];
-  v4 = [(BRSlotData *)self isProgrammed];
+  isProgrammed = [(BRSlotData *)self isProgrammed];
   v5 = "N";
-  if (v4)
+  if (isProgrammed)
   {
     v5 = "Y";
   }
@@ -68,40 +68,40 @@
 
 - (id)propertyList
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(BRSlotData *)self slot])
   {
-    v4 = [(BRSlotData *)self slot];
+    slot = [(BRSlotData *)self slot];
   }
 
   else
   {
-    v4 = &unk_285467E50;
+    slot = &unk_285467E50;
   }
 
-  [v3 setObject:v4 forKey:@"Slot"];
+  [dictionary setObject:slot forKey:@"Slot"];
   if ([(BRAsset *)[(BRSlotData *)self asset] propertyList])
   {
-    v5 = [(BRAsset *)[(BRSlotData *)self asset] propertyList];
+    propertyList = [(BRAsset *)[(BRSlotData *)self asset] propertyList];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionary];
+    propertyList = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  [v3 setObject:v5 forKey:@"Asset"];
+  [dictionary setObject:propertyList forKey:@"Asset"];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(BRSlotData *)self isProgrammed];
+  isProgrammed = [(BRSlotData *)self isProgrammed];
   v8 = "N";
-  if (v7)
+  if (isProgrammed)
   {
     v8 = "Y";
   }
 
-  [v3 setObject:objc_msgSend(v6 forKey:{"stringWithFormat:", @"%s;", v8), @"IsProgrammed"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRSlotData refCount](self, "refCount")), @"RefCount"}];
-  return v3;
+  [dictionary setObject:objc_msgSend(v6 forKey:{"stringWithFormat:", @"%s;", v8), @"IsProgrammed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", -[BRSlotData refCount](self, "refCount")), @"RefCount"}];
+  return dictionary;
 }
 
 @end

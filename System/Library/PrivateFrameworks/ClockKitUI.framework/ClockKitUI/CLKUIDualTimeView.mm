@@ -1,30 +1,30 @@
 @interface CLKUIDualTimeView
-- (CLKUIDualTimeView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (CLKUIDualTimeView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)layoutSubviews;
-- (void)setAodTransform:(CGAffineTransform *)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setTimeColor:(id)a3;
+- (void)setAodTransform:(CGAffineTransform *)transform;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setState:(unint64_t)state;
+- (void)setTimeColor:(id)color;
 @end
 
 @implementation CLKUIDualTimeView
 
-- (CLKUIDualTimeView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (CLKUIDualTimeView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v14.receiver = self;
   v14.super_class = CLKUIDualTimeView;
-  v8 = [(CLKUITimeView *)&v14 initWithDevice:v6 clockTimer:v7];
+  v8 = [(CLKUITimeView *)&v14 initWithDevice:deviceCopy clockTimer:timerCopy];
   if (v8)
   {
-    v9 = [[CLKUIAnalogTimeView alloc] initWithDevice:v6 clockTimer:v7];
+    v9 = [[CLKUIAnalogTimeView alloc] initWithDevice:deviceCopy clockTimer:timerCopy];
     analogTimeView = v8->_analogTimeView;
     v8->_analogTimeView = v9;
 
     [(CLKUIDualTimeView *)v8 addSubview:v8->_analogTimeView];
-    v11 = [[CLKUIDigitalClockView alloc] initWithDevice:v6 clockTimer:v7];
+    v11 = [[CLKUIDigitalClockView alloc] initWithDevice:deviceCopy clockTimer:timerCopy];
     digitalTimeView = v8->_digitalTimeView;
     v8->_digitalTimeView = v11;
 
@@ -49,21 +49,21 @@
   [(CLKUITimeView *)self->_digitalTimeView setDialInset:?];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = CLKUIDualTimeView;
-  v4 = a3;
-  [(CLKUITimeView *)&v11 setConfiguration:v4];
-  v5 = [v4 analogConfiguration];
-  [(CLKUIAnalogTimeView *)self->_analogTimeView setConfiguration:v5];
+  configurationCopy = configuration;
+  [(CLKUITimeView *)&v11 setConfiguration:configurationCopy];
+  analogConfiguration = [configurationCopy analogConfiguration];
+  [(CLKUIAnalogTimeView *)self->_analogTimeView setConfiguration:analogConfiguration];
 
-  v6 = [v4 digitalConfiguration];
-  [(CLKUIDigitalClockView *)self->_digitalTimeView setConfiguration:v6];
+  digitalConfiguration = [configurationCopy digitalConfiguration];
+  [(CLKUIDigitalClockView *)self->_digitalTimeView setConfiguration:digitalConfiguration];
 
-  v7 = [v4 timeStyle];
-  v8 = v7 == 0;
-  v9 = v7 == 0;
+  timeStyle = [configurationCopy timeStyle];
+  v8 = timeStyle == 0;
+  v9 = timeStyle == 0;
   v10 = !v8;
   [(CLKUIAnalogTimeView *)self->_analogTimeView setHidden:v10];
   [(CLKUIDigitalClockView *)self->_digitalTimeView setHidden:v9];
@@ -71,74 +71,74 @@
   [(CLKUIDigitalClockView *)self->_digitalTimeView setState:v9];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = CLKUIDualTimeView;
   [(CLKUITimeView *)&v7 setState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     [(CLKUIAnalogTimeView *)self->_analogTimeView setState:1];
   }
 
   else
   {
-    if (a3)
+    if (state)
     {
       return;
     }
 
-    v5 = [(CLKUIAnalogTimeView *)self->_analogTimeView isHidden];
+    isHidden = [(CLKUIAnalogTimeView *)self->_analogTimeView isHidden];
     analogTimeView = self->_analogTimeView;
-    if (v5)
+    if (isHidden)
     {
       [(CLKUIAnalogTimeView *)analogTimeView setState:1];
-      a3 = 0;
+      state = 0;
     }
 
     else
     {
       [(CLKUIAnalogTimeView *)analogTimeView setState:0];
-      a3 = 1;
+      state = 1;
     }
   }
 
-  [(CLKUIDigitalClockView *)self->_digitalTimeView setState:a3];
+  [(CLKUIDigitalClockView *)self->_digitalTimeView setState:state];
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v5.receiver = self;
   v5.super_class = CLKUIDualTimeView;
-  v4 = a3;
-  [(CLKUITimeView *)&v5 setOverrideDate:v4];
-  [(CLKUIAnalogTimeView *)self->_analogTimeView setOverrideDate:v4, v5.receiver, v5.super_class];
-  [(CLKUIDigitalClockView *)self->_digitalTimeView setOverrideDate:v4];
+  dateCopy = date;
+  [(CLKUITimeView *)&v5 setOverrideDate:dateCopy];
+  [(CLKUIAnalogTimeView *)self->_analogTimeView setOverrideDate:dateCopy, v5.receiver, v5.super_class];
+  [(CLKUIDigitalClockView *)self->_digitalTimeView setOverrideDate:dateCopy];
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = CLKUIDualTimeView;
-  v4 = a3;
-  [(CLKUITimeView *)&v5 setTimeColor:v4];
-  [(CLKUITimeView *)self->_analogTimeView setTimeColor:v4, v5.receiver, v5.super_class];
-  [(CLKUITimeView *)self->_digitalTimeView setTimeColor:v4];
+  colorCopy = color;
+  [(CLKUITimeView *)&v5 setTimeColor:colorCopy];
+  [(CLKUITimeView *)self->_analogTimeView setTimeColor:colorCopy, v5.receiver, v5.super_class];
+  [(CLKUITimeView *)self->_digitalTimeView setTimeColor:colorCopy];
 }
 
-- (void)setAodTransform:(CGAffineTransform *)a3
+- (void)setAodTransform:(CGAffineTransform *)transform
 {
   v10.receiver = self;
   v10.super_class = CLKUIDualTimeView;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v5;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUITimeView *)&v10 setAodTransform:&v7];
-  v6 = *&a3->c;
-  v7 = *&a3->a;
+  v6 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v6;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUIDualTimeView *)self setTransform:&v7];
 }
 

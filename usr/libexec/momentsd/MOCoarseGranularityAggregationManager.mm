@@ -1,22 +1,22 @@
 @interface MOCoarseGranularityAggregationManager
-- (MOCoarseGranularityAggregationManager)initWithUniverse:(id)a3;
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 handler:(id)a5;
+- (MOCoarseGranularityAggregationManager)initWithUniverse:(id)universe;
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters handler:(id)handler;
 @end
 
 @implementation MOCoarseGranularityAggregationManager
 
-- (MOCoarseGranularityAggregationManager)initWithUniverse:(id)a3
+- (MOCoarseGranularityAggregationManager)initWithUniverse:(id)universe
 {
   v11.receiver = self;
   v11.super_class = MOCoarseGranularityAggregationManager;
-  v3 = [(MOAggregationManager *)&v11 initWithUniverse:a3];
+  v3 = [(MOAggregationManager *)&v11 initWithUniverse:universe];
   if (v3)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     queue = v3->_queue;
     v3->_queue = v8;
   }
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count] == 0;
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  v11 = [bundlesCopy count] == 0;
   v12 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
   if (v11)
@@ -40,7 +40,7 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation: No eventBundle to be proccessed", &buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -48,7 +48,7 @@
     if (v13)
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v8 count];
+      *(&buf + 4) = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation: input eventBundles count, %lu", &buf, 0xCu);
     }
 
@@ -62,10 +62,10 @@
     v57 = __Block_byref_object_dispose__2;
     v58 = 0;
     v15 = [MOTimeContextAggregationManager alloc];
-    v16 = [(MOAggregationManager *)self fUniverse];
-    v31 = [(MOAggregationManager *)v15 initWithUniverse:v16];
+    fUniverse = [(MOAggregationManager *)self fUniverse];
+    v31 = [(MOAggregationManager *)v15 initWithUniverse:fUniverse];
 
-    v17 = [(MOAggregationManager *)self filterEventBundlesEligibleForSummarization:v8];
+    v17 = [(MOAggregationManager *)self filterEventBundlesEligibleForSummarization:bundlesCopy];
     v18 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -81,7 +81,7 @@
     p_buf = &buf;
     v19 = v14;
     v47 = v19;
-    [(MOTimeContextAggregationManager *)v31 aggregateBundles:v17 withParameters:v9 granularity:2 handler:v46];
+    [(MOTimeContextAggregationManager *)v31 aggregateBundles:v17 withParameters:parametersCopy granularity:2 handler:v46];
     dispatch_group_enter(v19);
     *&v49 = 0;
     *(&v49 + 1) = &v49;
@@ -90,8 +90,8 @@
     v52 = __Block_byref_object_dispose__2;
     v53 = 0;
     v20 = [MOContactAggregationManager alloc];
-    v21 = [(MOAggregationManager *)self fUniverse];
-    v22 = [(MOContactAggregationManager *)v20 initWithUniverse:v21];
+    fUniverse2 = [(MOAggregationManager *)self fUniverse];
+    v22 = [(MOContactAggregationManager *)v20 initWithUniverse:fUniverse2];
 
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
@@ -100,7 +100,7 @@
     v45 = &v49;
     v23 = v19;
     v44 = v23;
-    [(MOContactAggregationManager *)v22 aggregateBundles:v8 withParameters:v9 granularity:2 handler:v43];
+    [(MOContactAggregationManager *)v22 aggregateBundles:bundlesCopy withParameters:parametersCopy granularity:2 handler:v43];
     dispatch_group_enter(v23);
     v41[0] = 0;
     v41[1] = v41;
@@ -109,8 +109,8 @@
     v41[4] = __Block_byref_object_dispose__2;
     v42 = 0;
     v24 = [MOMediaAggregationManager alloc];
-    v25 = [(MOAggregationManager *)self fUniverse];
-    v26 = [(MOAggregationManager *)v24 initWithUniverse:v25];
+    fUniverse3 = [(MOAggregationManager *)self fUniverse];
+    v26 = [(MOAggregationManager *)v24 initWithUniverse:fUniverse3];
 
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
@@ -119,8 +119,8 @@
     v40 = v41;
     v27 = v23;
     v39 = v27;
-    [(MOMediaAggregationManager *)v26 aggregateBundles:v8 withParameters:v9 granularity:2 handler:v38];
-    v28 = [(MOCoarseGranularityAggregationManager *)self queue];
+    [(MOMediaAggregationManager *)v26 aggregateBundles:bundlesCopy withParameters:parametersCopy granularity:2 handler:v38];
+    queue = [(MOCoarseGranularityAggregationManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __81__MOCoarseGranularityAggregationManager_aggregateBundles_withParameters_handler___block_invoke_106;
@@ -129,9 +129,9 @@
     v33 = v30;
     v36 = &v49;
     v37 = v41;
-    v34 = v10;
+    v34 = handlerCopy;
     v29 = v30;
-    dispatch_group_notify(v27, v28, block);
+    dispatch_group_notify(v27, queue, block);
 
     _Block_object_dispose(v41, 8);
     _Block_object_dispose(&v49, 8);

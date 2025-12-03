@@ -1,89 +1,89 @@
 @interface PISegmentationLoader
 + (BOOL)clientIsMobileSlideShow;
 + (BOOL)currentDeviceSupportsSettlingEffect;
-+ (BOOL)saveSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 toWallpaperURL:(id)a6 error:(id *)a7;
-+ (BOOL)saveSegmentationItem:(id)a3 toURL:(id)a4 error:(id *)a5;
-+ (id)_loadSegmentationItemFromURL:(id)a3 error:(id *)a4;
-+ (id)_loadSegmentationItemFromWallpaperURL:(id)a3 error:(id *)a4;
-+ (id)effectiveLayoutForSegmentationItem:(id)a3 editConfiguration:(id)a4 layerStackOptions:(unint64_t)a5;
-+ (id)generateLayerStackForItem:(id)a3 style:(id)a4 layout:(id)a5 ignoreOriginalLayout:(BOOL)a6 options:(unint64_t)a7 enableSettlingEffect:(BOOL)a8 enableSpatialPhoto:(BOOL)a9 allowedLayoutStrategies:(unint64_t)a10 shouldRecalculateLayoutProperties:(BOOL)a11 useLegacyHeadroom:(BOOL)a12 userAdjustedVisibleFrame:(BOOL)a13 completion:(id)a14;
-+ (id)livePhotoCompositionForVideoData:(id)a3 cropRect:(CGRect)a4 photoComposition:(id)a5;
-+ (id)loadCompoundLayerStackFromWallpaperURL:(id)a3 options:(unint64_t)a4 error:(id *)specific;
-+ (id)loadSegmentationItemFromURL:(id)a3 error:(id *)a4;
-+ (id)loadSegmentationItemFromWallpaperURL:(id)a3 error:(id *)a4;
-+ (id)loadStyleFromWallpaperURL:(id)a3 error:(id *)specific;
++ (BOOL)saveSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style toWallpaperURL:(id)l error:(id *)error;
++ (BOOL)saveSegmentationItem:(id)item toURL:(id)l error:(id *)error;
++ (id)_loadSegmentationItemFromURL:(id)l error:(id *)error;
++ (id)_loadSegmentationItemFromWallpaperURL:(id)l error:(id *)error;
++ (id)effectiveLayoutForSegmentationItem:(id)item editConfiguration:(id)configuration layerStackOptions:(unint64_t)options;
++ (id)generateLayerStackForItem:(id)item style:(id)style layout:(id)layout ignoreOriginalLayout:(BOOL)originalLayout options:(unint64_t)options enableSettlingEffect:(BOOL)effect enableSpatialPhoto:(BOOL)photo allowedLayoutStrategies:(unint64_t)self0 shouldRecalculateLayoutProperties:(BOOL)self1 useLegacyHeadroom:(BOOL)self2 userAdjustedVisibleFrame:(BOOL)self3 completion:(id)self4;
++ (id)livePhotoCompositionForVideoData:(id)data cropRect:(CGRect)rect photoComposition:(id)composition;
++ (id)loadCompoundLayerStackFromWallpaperURL:(id)l options:(unint64_t)options error:(id *)specific;
++ (id)loadSegmentationItemFromURL:(id)l error:(id *)error;
++ (id)loadSegmentationItemFromWallpaperURL:(id)l error:(id *)error;
++ (id)loadStyleFromWallpaperURL:(id)l error:(id *)specific;
 + (id)proxyScalePolicy;
-+ (id)reloadSegmentationItemFromWallpaperURL:(id)a3 asset:(id)a4 completion:(id)a5;
-+ (id)renderPriorityForResourcePriority:(int64_t)a3;
-+ (id)saveSegmentationItem:(id)a3 layerStackOptions:(unint64_t)a4 configuration:(id)a5 style:(id)a6 layout:(id)a7 allowedLayoutStrategies:(unint64_t)a8 shouldRecalculateLayoutProperties:(BOOL)a9 shouldKeepSpecifiedStyle:(BOOL)a10 toWallpaperURL:(id)a11 completion:(id)a12;
-+ (id)segmentationCompositionForAssetResource:(id)a3;
-+ (id)segmentationCompositionForImageURL:(id)a3 fileUTI:(id)a4 orientation:(int64_t)a5 proxyImage:(CGImage *)a6;
-+ (id)segmentationCompositionForProxyImage:(CGImage *)a3 orientation:(int64_t)a4;
-+ (id)segmentationSourceForImageURL:(id)a3 fileUTI:(id)a4 orientation:(int64_t)a5 proxyImage:(CGImage *)a6;
++ (id)reloadSegmentationItemFromWallpaperURL:(id)l asset:(id)asset completion:(id)completion;
++ (id)renderPriorityForResourcePriority:(int64_t)priority;
++ (id)saveSegmentationItem:(id)item layerStackOptions:(unint64_t)options configuration:(id)configuration style:(id)style layout:(id)layout allowedLayoutStrategies:(unint64_t)strategies shouldRecalculateLayoutProperties:(BOOL)properties shouldKeepSpecifiedStyle:(BOOL)self0 toWallpaperURL:(id)self1 completion:(id)self2;
++ (id)segmentationCompositionForAssetResource:(id)resource;
++ (id)segmentationCompositionForImageURL:(id)l fileUTI:(id)i orientation:(int64_t)orientation proxyImage:(CGImage *)image;
++ (id)segmentationCompositionForProxyImage:(CGImage *)image orientation:(int64_t)orientation;
++ (id)segmentationSourceForImageURL:(id)l fileUTI:(id)i orientation:(int64_t)orientation proxyImage:(CGImage *)image;
 + (void)_freeResources;
-+ (void)_renderPreviewLayerStackFromWallpaperURL:(id)a3 styleCategory:(id)a4 completion:(id)a5;
-+ (void)_saveSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 toWallpaperURL:(id)a6 completion:(id)a7;
++ (void)_renderPreviewLayerStackFromWallpaperURL:(id)l styleCategory:(id)category completion:(id)completion;
++ (void)_saveSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style toWallpaperURL:(id)l completion:(id)completion;
 + (void)ensureResources;
 + (void)freeResources;
 + (void)initialize;
-+ (void)loadSpatialPhotoForSegmentationItem:(id)a3 asset:(id)a4 completion:(id)a5;
-+ (void)renderPreviewLayerStackFromWallpaperURL:(id)a3 styleCategory:(id)a4 completion:(id)a5;
++ (void)loadSpatialPhotoForSegmentationItem:(id)item asset:(id)asset completion:(id)completion;
++ (void)renderPreviewLayerStackFromWallpaperURL:(id)l styleCategory:(id)category completion:(id)completion;
 + (void)warmUpClassificationDetectors;
 + (void)warmUpResources;
-- (BOOL)_isValidSegmentationMatteHistogramForDepth:(id)a3;
+- (BOOL)_isValidSegmentationMatteHistogramForDepth:(id)depth;
 - (BOOL)_shouldEnableSegmentationByDefault;
 - (BOOL)_shouldEnableSettlingEffectByDefault;
 - (BOOL)_shouldEnableSpatialPhotoByDefault;
-- (BOOL)_shouldLoadSettlingEffectForItem:(id)a3;
-- (PISegmentationLoader)initWithParallaxAsset:(id)a3;
-- (PISegmentationLoader)initWithSegmentationItem:(id)a3 parallaxAsset:(id)a4;
-- (id)_computeDefaultLayoutForItem:(id)a3 error:(id *)a4;
-- (id)_defaultLayoutRequestForItem:(id)a3;
-- (id)_tryLoadSegmentationItemFromCache:(id)a3;
+- (BOOL)_shouldLoadSettlingEffectForItem:(id)item;
+- (PISegmentationLoader)initWithParallaxAsset:(id)asset;
+- (PISegmentationLoader)initWithSegmentationItem:(id)item parallaxAsset:(id)asset;
+- (id)_computeDefaultLayoutForItem:(id)item error:(id *)error;
+- (id)_defaultLayoutRequestForItem:(id)item;
+- (id)_tryLoadSegmentationItemFromCache:(id)cache;
 - (id)currentContextInfo;
-- (void)_abort:(id)a3;
-- (void)_analyzeColors:(id)a3 completion:(id)a4;
-- (void)_cacheSegmentationDataForItem:(id)a3;
-- (void)_classify:(id)a3 completion:(id)a4;
-- (void)_didLoad:(id)a3 completion:(id)a4;
-- (void)_handlePartialItem:(id)a3 loadingState:(unint64_t)a4;
-- (void)_load:(id)a3;
-- (void)_loadAssetResource:(int64_t)a3 allowNetworkAccess:(BOOL)a4 options:(id)a5 completion:(id)a6;
-- (void)_loadAssetResource:(int64_t)a3 options:(id)a4 completion:(id)a5;
-- (void)_loadAssetResourceForLiveOriginalWithCompletion:(id)a3;
-- (void)_loadAssetResourceForProxy:(BOOL)a3 completion:(id)a4;
-- (void)_loadBackground:(id)a3 completion:(id)a4;
-- (void)_loadFinalResource:(id)a3 completion:(id)a4;
-- (void)_loadFirstPreferredResource:(id)a3 completion:(id)a4;
-- (void)_loadFullSizeResource:(id)a3 completion:(id)a4;
-- (void)_loadHDRGainMap:(id)a3 completion:(id)a4;
-- (void)_loadItem:(id)a3 completion:(id)a4;
-- (void)_loadLiveOriginalResource:(id)a3 completion:(id)a4;
-- (void)_loadLocalLightData:(id)a3 completion:(id)a4;
-- (void)_loadMotionScore:(id)a3 completion:(id)a4;
-- (void)_loadProxyResource:(id)a3 completion:(id)a4;
-- (void)_loadRegions:(id)a3 completion:(id)a4;
-- (void)_loadSegmentationData:(id)a3 layoutGroup:(id)a4 completion:(id)a5;
-- (void)_loadSettlingEffect:(id)a3 layoutGroup:(id)a4 completion:(id)a5;
-- (void)_loadSpatialPhoto:(id)a3 layoutGroup:(id)a4 completion:(id)a5;
-- (void)_performLayout:(id)a3 completion:(id)a4;
-- (void)_performSegmentation:(id)a3 type:(int64_t)a4 completion:(id)a5;
-- (void)_performSettlingEffectLayout:(id)a3 completion:(id)a4;
-- (void)_performSpatialPhotoLayout:(id)a3 completion:(id)a4;
-- (void)_segment:(id)a3 completion:(id)a4;
-- (void)_updateItem:(id)a3 withSettlingEffectGatingFailures:(unint64_t)a4;
-- (void)_updateItem:(id)a3 withSpatialPhotoGatingFailures:(unint64_t)a4;
+- (void)_abort:(id)_abort;
+- (void)_analyzeColors:(id)colors completion:(id)completion;
+- (void)_cacheSegmentationDataForItem:(id)item;
+- (void)_classify:(id)_classify completion:(id)completion;
+- (void)_didLoad:(id)load completion:(id)completion;
+- (void)_handlePartialItem:(id)item loadingState:(unint64_t)state;
+- (void)_load:(id)_load;
+- (void)_loadAssetResource:(int64_t)resource allowNetworkAccess:(BOOL)access options:(id)options completion:(id)completion;
+- (void)_loadAssetResource:(int64_t)resource options:(id)options completion:(id)completion;
+- (void)_loadAssetResourceForLiveOriginalWithCompletion:(id)completion;
+- (void)_loadAssetResourceForProxy:(BOOL)proxy completion:(id)completion;
+- (void)_loadBackground:(id)background completion:(id)completion;
+- (void)_loadFinalResource:(id)resource completion:(id)completion;
+- (void)_loadFirstPreferredResource:(id)resource completion:(id)completion;
+- (void)_loadFullSizeResource:(id)resource completion:(id)completion;
+- (void)_loadHDRGainMap:(id)map completion:(id)completion;
+- (void)_loadItem:(id)item completion:(id)completion;
+- (void)_loadLiveOriginalResource:(id)resource completion:(id)completion;
+- (void)_loadLocalLightData:(id)data completion:(id)completion;
+- (void)_loadMotionScore:(id)score completion:(id)completion;
+- (void)_loadProxyResource:(id)resource completion:(id)completion;
+- (void)_loadRegions:(id)regions completion:(id)completion;
+- (void)_loadSegmentationData:(id)data layoutGroup:(id)group completion:(id)completion;
+- (void)_loadSettlingEffect:(id)effect layoutGroup:(id)group completion:(id)completion;
+- (void)_loadSpatialPhoto:(id)photo layoutGroup:(id)group completion:(id)completion;
+- (void)_performLayout:(id)layout completion:(id)completion;
+- (void)_performSegmentation:(id)segmentation type:(int64_t)type completion:(id)completion;
+- (void)_performSettlingEffectLayout:(id)layout completion:(id)completion;
+- (void)_performSpatialPhotoLayout:(id)layout completion:(id)completion;
+- (void)_segment:(id)_segment completion:(id)completion;
+- (void)_updateItem:(id)item withSettlingEffectGatingFailures:(unint64_t)failures;
+- (void)_updateItem:(id)item withSpatialPhotoGatingFailures:(unint64_t)failures;
 - (void)cancel;
-- (void)loadSegmentationItemWithCompletion:(id)a3;
-- (void)refreshSegmentationItem:(id)a3 completion:(id)a4;
+- (void)loadSegmentationItemWithCompletion:(id)completion;
+- (void)refreshSegmentationItem:(id)item completion:(id)completion;
 @end
 
 @implementation PISegmentationLoader
 
-- (void)_cacheSegmentationDataForItem:(id)a3
+- (void)_cacheSegmentationDataForItem:(id)item
 {
-  v4 = a3;
-  if (v4 && !self->_isCancelled && !self->_loadingError)
+  itemCopy = item;
+  if (itemCopy && !self->_isCancelled && !self->_loadingError)
   {
     v5 = +[PIGlobalSettings globalSettings];
     if ([v5 segmentationDisableCaching])
@@ -92,27 +92,27 @@
 
     else
     {
-      v6 = [(PISegmentationLoader *)self disableCache];
+      disableCache = [(PISegmentationLoader *)self disableCache];
 
-      if (!v6)
+      if (!disableCache)
       {
-        v7 = [v4 segmentationDataURL];
+        segmentationDataURL = [itemCopy segmentationDataURL];
 
-        if (!v7)
+        if (!segmentationDataURL)
         {
-          v8 = [(PISegmentationLoader *)self asset];
-          v9 = [v8 supportsSegmentationResourceCaching];
+          asset = [(PISegmentationLoader *)self asset];
+          supportsSegmentationResourceCaching = [asset supportsSegmentationResourceCaching];
 
-          if (v9)
+          if (supportsSegmentationResourceCaching)
           {
-            v10 = [(PISegmentationLoader *)self asset];
+            asset2 = [(PISegmentationLoader *)self asset];
             v11[0] = MEMORY[0x1E69E9820];
             v11[1] = 3221225472;
             v11[2] = __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke;
             v11[3] = &unk_1E82AC3E8;
-            v12 = v4;
-            v13 = self;
-            [v10 updateSegmentationResource:v11];
+            v12 = itemCopy;
+            selfCopy = self;
+            [asset2 updateSegmentationResource:v11];
           }
         }
       }
@@ -171,11 +171,11 @@ uint64_t __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke
   return v8;
 }
 
-- (id)_tryLoadSegmentationItemFromCache:(id)a3
+- (id)_tryLoadSegmentationItemFromCache:(id)cache
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  cacheCopy = cache;
+  if (!cacheCopy)
   {
     v53 = NUAssertLogger_24364();
     v15 = &qword_1C7845000;
@@ -187,7 +187,7 @@ uint64_t __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke
       _os_log_error_impl(&dword_1C7694000, v53, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v13 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v5 = NUAssertLogger_24364();
     v55 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -195,11 +195,11 @@ uint64_t __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke
     {
       if (v55)
       {
-        specific = dispatch_get_specific(v13->super.isa);
+        specific = dispatch_get_specific(callStackSymbols->super.isa);
         v56 = MEMORY[0x1E696AF00];
         v15 = specific;
-        v13 = [v56 callStackSymbols];
-        v57 = [(PIParallaxSegmentationItem *)v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v56 callStackSymbols];
+        v57 = [(PIParallaxSegmentationItem *)callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *v60 = specific;
         *&v60[8] = 2114;
@@ -211,9 +211,9 @@ uint64_t __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke
     else if (v55)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      *v60 = v13;
+      *v60 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v5, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -221,7 +221,7 @@ uint64_t __54__PISegmentationLoader__cacheSegmentationDataForItem___block_invoke
     goto LABEL_63;
   }
 
-  v5 = v4;
+  v5 = cacheCopy;
   v6 = +[PIGlobalSettings globalSettings];
   if ([v6 segmentationDisableCaching])
   {
@@ -231,9 +231,9 @@ LABEL_5:
     goto LABEL_37;
   }
 
-  v7 = [(PISegmentationLoader *)self disableCache];
+  disableCache = [(PISegmentationLoader *)self disableCache];
 
-  if (v7)
+  if (disableCache)
   {
     goto LABEL_5;
   }
@@ -250,9 +250,9 @@ LABEL_5:
       _os_signpost_emit_with_name_impl(&dword_1C7694000, v11, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "PISegmentationLoader.data.read", "", buf, 2u);
     }
 
-    v13 = objc_alloc_init(PIParallaxSegmentationItem);
+    callStackSymbols = objc_alloc_init(PIParallaxSegmentationItem);
     v58 = 0;
-    v14 = [(PIParallaxSegmentationItem *)v13 loadSegmentationDataFromURL:specific error:&v58];
+    v14 = [(PIParallaxSegmentationItem *)callStackSymbols loadSegmentationDataFromURL:specific error:&v58];
     v15 = v58;
     v16 = s_log_24360;
     v17 = v16;
@@ -265,25 +265,25 @@ LABEL_5:
 
     if (v14)
     {
-      v19 = [(PIParallaxSegmentationItem *)v13 contextInfo];
-      v20 = [v19 version];
-      if (v20 == [v5 version])
+      contextInfo = [(PIParallaxSegmentationItem *)callStackSymbols contextInfo];
+      version = [contextInfo version];
+      if (version == [v5 version])
       {
-        v21 = [v19 sourceMode];
-        if (v21 == [v5 sourceMode])
+        sourceMode = [contextInfo sourceMode];
+        if (sourceMode == [v5 sourceMode])
         {
-          v22 = [v19 segmentationDisabled];
-          if (v22 != [v5 segmentationDisabled])
+          segmentationDisabled = [contextInfo segmentationDisabled];
+          if (segmentationDisabled != [v5 segmentationDisabled])
           {
             v23 = NULogger_24372();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
-              v24 = [v19 segmentationDisabled];
-              v25 = [v5 segmentationDisabled];
+              segmentationDisabled2 = [contextInfo segmentationDisabled];
+              segmentationDisabled3 = [v5 segmentationDisabled];
               *buf = 67109376;
-              *v60 = v24;
+              *v60 = segmentationDisabled2;
               *&v60[4] = 1024;
-              *&v60[6] = v25;
+              *&v60[6] = segmentationDisabled3;
               v26 = "Cached segmentation disabled flag mismatch: got %d, expected %d";
               v27 = v23;
               v28 = 14;
@@ -301,24 +301,24 @@ LABEL_35:
             goto LABEL_36;
           }
 
-          v36 = [v19 infillAlgorithm];
-          if (v36 == [v5 infillAlgorithm])
+          infillAlgorithm = [contextInfo infillAlgorithm];
+          if (infillAlgorithm == [v5 infillAlgorithm])
           {
-            v37 = [v19 layoutConfiguration];
-            v38 = [v5 layoutConfiguration];
-            v39 = [v37 isEqualToLayoutConfiguration:v38];
+            layoutConfiguration = [contextInfo layoutConfiguration];
+            layoutConfiguration2 = [v5 layoutConfiguration];
+            v39 = [layoutConfiguration isEqualToLayoutConfiguration:layoutConfiguration2];
 
             if ((v39 & 1) == 0)
             {
               v23 = NULogger_24372();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
-                v46 = [v19 layoutConfiguration];
-                v47 = [v5 layoutConfiguration];
+                layoutConfiguration3 = [contextInfo layoutConfiguration];
+                layoutConfiguration4 = [v5 layoutConfiguration];
                 *buf = 138543618;
-                *v60 = v46;
+                *v60 = layoutConfiguration3;
                 *&v60[8] = 2114;
-                v61 = v47;
+                v61 = layoutConfiguration4;
                 _os_log_impl(&dword_1C7694000, v23, OS_LOG_TYPE_INFO, "Cached segmentation layout configuration mismatch: got %{public}@, expected %{public}@", buf, 0x16u);
               }
 
@@ -327,13 +327,13 @@ LABEL_35:
 
             if ([(PISegmentationLoader *)self classification])
             {
-              v40 = [(PISegmentationLoader *)self classification];
-              if (v40 != [(PIParallaxSegmentationItem *)v13 classification])
+              classification = [(PISegmentationLoader *)self classification];
+              if (classification != [(PIParallaxSegmentationItem *)callStackSymbols classification])
               {
                 v50 = NULogger_24372();
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
                 {
-                  [(PIParallaxSegmentationItem *)v13 classification];
+                  [(PIParallaxSegmentationItem *)callStackSymbols classification];
                   v51 = PFPosterClassificationName();
                   [(PISegmentationLoader *)self classification];
                   v52 = PFPosterClassificationName();
@@ -348,10 +348,10 @@ LABEL_35:
               }
             }
 
-            v41 = [v5 role];
-            if (v41 == [v19 role])
+            role = [v5 role];
+            if (role == [contextInfo role])
             {
-              v8 = v13;
+              v8 = callStackSymbols;
               goto LABEL_34;
             }
 
@@ -361,12 +361,12 @@ LABEL_35:
               goto LABEL_32;
             }
 
-            v48 = [v5 role];
-            v49 = [v19 role];
+            role2 = [v5 role];
+            role3 = [contextInfo role];
             *buf = 134218240;
-            *v60 = v48;
+            *v60 = role2;
             *&v60[8] = 2048;
-            v61 = v49;
+            v61 = role3;
             v26 = "Cached segmentation role mismatch: got %ld, expected %ld";
           }
 
@@ -378,12 +378,12 @@ LABEL_35:
               goto LABEL_32;
             }
 
-            v42 = [v19 infillAlgorithm];
-            v43 = [v5 infillAlgorithm];
+            infillAlgorithm2 = [contextInfo infillAlgorithm];
+            infillAlgorithm3 = [v5 infillAlgorithm];
             *buf = 134218240;
-            *v60 = v42;
+            *v60 = infillAlgorithm2;
             *&v60[8] = 2048;
-            v61 = v43;
+            v61 = infillAlgorithm3;
             v26 = "Cached segmentation infill algorithm mismatch: got %ld, expected %ld";
           }
         }
@@ -396,12 +396,12 @@ LABEL_35:
             goto LABEL_32;
           }
 
-          v33 = [v19 sourceMode];
-          v34 = [v5 sourceMode];
+          sourceMode2 = [contextInfo sourceMode];
+          sourceMode3 = [v5 sourceMode];
           *buf = 134218240;
-          *v60 = v33;
+          *v60 = sourceMode2;
           *&v60[8] = 2048;
-          v61 = v34;
+          v61 = sourceMode3;
           v26 = "Cached segmentation source mode mismatch: got %ld, expected %ld";
         }
       }
@@ -420,12 +420,12 @@ LABEL_35:
         }
 
         v23 = v30;
-        v31 = [v19 version];
-        v32 = [v5 version];
+        version2 = [contextInfo version];
+        version3 = [v5 version];
         *buf = 134218240;
-        *v60 = v31;
+        *v60 = version2;
         *&v60[8] = 2048;
-        v61 = v32;
+        v61 = version3;
         v26 = "Cached segmentation version mismatch: got %ld, expected %ld";
       }
 
@@ -441,9 +441,9 @@ LABEL_21:
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
       {
         v44 = v29;
-        v45 = [specific path];
+        path = [specific path];
         *buf = 138543618;
-        *v60 = v45;
+        *v60 = path;
         *&v60[8] = 2114;
         v61 = v15;
         _os_log_error_impl(&dword_1C7694000, v44, OS_LOG_TYPE_ERROR, "Failed to read cached segmentation data from: %{public}@, error: %{public}@", buf, 0x16u);
@@ -466,14 +466,14 @@ LABEL_37:
   return v8;
 }
 
-- (void)_loadLocalLightData:(id)a3 completion:(id)a4
+- (void)_loadLocalLightData:(id)data completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 composition];
+  dataCopy = data;
+  completionCopy = completion;
+  composition = [dataCopy composition];
 
-  if (!v8)
+  if (!composition)
   {
     v15 = NUAssertLogger_24364();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -495,8 +495,8 @@ LABEL_37:
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v23;
         v33 = 2114;
@@ -507,8 +507,8 @@ LABEL_37:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -517,18 +517,18 @@ LABEL_37:
     _NUAssertFailHandler();
   }
 
-  v9 = [v6 localLightData];
+  localLightData = [dataCopy localLightData];
 
-  if (v9 || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
+  if (localLightData || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
     v10 = objc_alloc(MEMORY[0x1E69B3AE8]);
-    v11 = [v6 composition];
-    v12 = [v10 initWithComposition:v11 dataExtractor:@"CILocalLight" options:0];
+    composition2 = [dataCopy composition];
+    v12 = [v10 initWithComposition:composition2 dataExtractor:@"CILocalLight" options:0];
 
     v13 = [objc_alloc(MEMORY[0x1E69B3BE8]) initWithTargetPixelCount:0x40000];
     [v12 setScalePolicy:v13];
@@ -543,8 +543,8 @@ LABEL_37:
     v28[1] = 3221225472;
     v28[2] = __55__PISegmentationLoader__loadLocalLightData_completion___block_invoke;
     v28[3] = &unk_1E82ACC00;
-    v29 = v6;
-    v30 = v7;
+    v29 = dataCopy;
+    v30 = completionCopy;
     [v12 submit:v28];
   }
 }
@@ -596,55 +596,55 @@ void __55__PISegmentationLoader__loadLocalLightData_completion___block_invoke(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_updateItem:(id)a3 withSpatialPhotoGatingFailures:(unint64_t)a4
+- (void)_updateItem:(id)item withSpatialPhotoGatingFailures:(unint64_t)failures
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scores];
+  itemCopy = item;
+  scores = [itemCopy scores];
   v7 = *MEMORY[0x1E69C0D40];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0D40]];
+  v8 = [scores objectForKeyedSubscript:*MEMORY[0x1E69C0D40]];
 
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   v12 = v7;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 | a4];
-  v13[0] = v10;
+  failures = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue | failures];
+  v13[0] = failures;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v5 updateScores:v11];
+  [itemCopy updateScores:v11];
 }
 
-- (void)_updateItem:(id)a3 withSettlingEffectGatingFailures:(unint64_t)a4
+- (void)_updateItem:(id)item withSettlingEffectGatingFailures:(unint64_t)failures
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 scores];
+  itemCopy = item;
+  scores = [itemCopy scores];
   v7 = *MEMORY[0x1E69C0D18];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C0D18]];
+  v8 = [scores objectForKeyedSubscript:*MEMORY[0x1E69C0D18]];
 
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   v12 = v7;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 | a4];
-  v13[0] = v10;
+  failures = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue | failures];
+  v13[0] = failures;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v5 updateScores:v11];
+  [itemCopy updateScores:v11];
 }
 
-- (void)_performSpatialPhotoLayout:(id)a3 completion:(id)a4
+- (void)_performSpatialPhotoLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 spatialPhotoLayout];
+  layoutCopy = layout;
+  completionCopy = completion;
+  spatialPhotoLayout = [layoutCopy spatialPhotoLayout];
 
-  if (v8 || self->_isCancelled)
+  if (spatialPhotoLayout || self->_isCancelled)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:v6];
+    v9 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:layoutCopy];
     [v9 setShouldConsiderHeadroom:!self->_disableHeadroomLayout];
     [v9 setShouldComputeSpatialLayout:1];
-    [v6 spatialPhotoNormalizedBounds];
+    [layoutCopy spatialPhotoNormalizedBounds];
     [v9 setSpatialPadding:?];
     if ([(PISegmentationLoader *)self disableSpatialAdaptiveLayout])
     {
@@ -655,8 +655,8 @@ void __55__PISegmentationLoader__loadLocalLightData_completion___block_invoke(ui
     v10[1] = 3221225472;
     v10[2] = __62__PISegmentationLoader__performSpatialPhotoLayout_completion___block_invoke;
     v10[3] = &unk_1E82ACC00;
-    v11 = v6;
-    v12 = v7;
+    v11 = layoutCopy;
+    v12 = completionCopy;
     [v9 submit:v10];
   }
 }
@@ -719,31 +719,31 @@ void __62__PISegmentationLoader__performSpatialPhotoLayout_completion___block_in
   }
 }
 
-- (void)_performSettlingEffectLayout:(id)a3 completion:(id)a4
+- (void)_performSettlingEffectLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 settlingEffectLayout];
+  layoutCopy = layout;
+  completionCopy = completion;
+  settlingEffectLayout = [layoutCopy settlingEffectLayout];
 
-  if (v8 || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
+  if (settlingEffectLayout || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:v6];
+    v9 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:layoutCopy];
     [v9 setShouldComputeAllScores:0];
     [v9 setShouldConstrainLayoutToBounds:1];
     [v9 setHasSettlingEffect:1];
-    [v6 settlingEffectNormalizedBounds];
+    [layoutCopy settlingEffectNormalizedBounds];
     [v9 setNormalizedLayoutBounds:?];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __64__PISegmentationLoader__performSettlingEffectLayout_completion___block_invoke;
     v10[3] = &unk_1E82ACC00;
-    v11 = v6;
-    v12 = v7;
+    v11 = layoutCopy;
+    v12 = completionCopy;
     [v9 submit:v10];
   }
 }
@@ -806,15 +806,15 @@ void __64__PISegmentationLoader__performSettlingEffectLayout_completion___block_
   }
 }
 
-- (void)_performLayout:(id)a3 completion:(id)a4
+- (void)_performLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 originalLayout];
+  layoutCopy = layout;
+  completionCopy = completion;
+  originalLayout = [layoutCopy originalLayout];
 
-  if (v8 || self->_isCancelled)
+  if (originalLayout || self->_isCancelled)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -827,14 +827,14 @@ void __64__PISegmentationLoader__performSettlingEffectLayout_completion___block_
     v20[4] = __Block_byref_object_dispose__24388;
     v21 = 0;
     dispatch_group_enter(v9);
-    v10 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:v6];
+    v10 = [(PISegmentationLoader *)self _defaultLayoutRequestForItem:layoutCopy];
     [v10 setShouldConsiderHeadroom:!self->_disableHeadroomLayout];
     [v10 setRole:{-[PISegmentationLoader role](self, "role")}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __50__PISegmentationLoader__performLayout_completion___block_invoke;
     v16[3] = &unk_1E82AC370;
-    v17 = v6;
+    v17 = layoutCopy;
     v19 = v20;
     v11 = v9;
     v18 = v11;
@@ -845,7 +845,7 @@ void __64__PISegmentationLoader__performSettlingEffectLayout_completion___block_
     block[1] = 3221225472;
     block[2] = __50__PISegmentationLoader__performLayout_completion___block_invoke_171;
     block[3] = &unk_1E82AC398;
-    v14 = v7;
+    v14 = completionCopy;
     v15 = v20;
     dispatch_group_notify(v11, queue, block);
 
@@ -909,11 +909,11 @@ void __50__PISegmentationLoader__performLayout_completion___block_invoke(uint64_
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)refreshSegmentationItem:(id)a3 completion:(id)a4
+- (void)refreshSegmentationItem:(id)item completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -937,8 +937,8 @@ void __50__PISegmentationLoader__performLayout_completion___block_invoke(uint64_
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v26;
         v36 = 2114;
@@ -949,8 +949,8 @@ void __50__PISegmentationLoader__performLayout_completion___block_invoke(uint64_
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -959,23 +959,23 @@ void __50__PISegmentationLoader__performLayout_completion___block_invoke(uint64_
     _NUAssertFailHandler();
   }
 
-  v8 = [v6 layoutConfiguration];
-  v9 = [(PISegmentationLoader *)self layoutConfiguration];
-  v10 = [v8 isEqualToLayoutConfiguration:v9];
+  layoutConfiguration = [itemCopy layoutConfiguration];
+  layoutConfiguration2 = [(PISegmentationLoader *)self layoutConfiguration];
+  v10 = [layoutConfiguration isEqualToLayoutConfiguration:layoutConfiguration2];
 
   if (v10)
   {
-    v7[2](v7, v6);
+    completionCopy[2](completionCopy, itemCopy);
   }
 
   else
   {
-    v11 = [v6 copy];
+    v11 = [itemCopy copy];
     v12 = dispatch_group_create();
     [v11 setOriginalLayout:0];
     [v11 setColorAnalysis:0];
-    v13 = [(PISegmentationLoader *)self currentContextInfo];
-    [v11 setContextInfo:v13];
+    currentContextInfo = [(PISegmentationLoader *)self currentContextInfo];
+    [v11 setContextInfo:currentContextInfo];
 
     v14 = s_log_24360;
     v15 = v14;
@@ -992,7 +992,7 @@ void __50__PISegmentationLoader__performLayout_completion___block_invoke(uint64_
     v31[3] = &unk_1E82ABF90;
     v31[4] = self;
     v32 = v11;
-    v33 = v7;
+    v33 = completionCopy;
     v17 = v11;
     [(PISegmentationLoader *)self _loadSegmentationData:v17 layoutGroup:v12 completion:v31];
   }
@@ -1012,13 +1012,13 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
   return (*(*(a1 + 48) + 16))();
 }
 
-- (id)_defaultLayoutRequestForItem:(id)a3
+- (id)_defaultLayoutRequestForItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 composition];
+  itemCopy = item;
+  composition = [itemCopy composition];
 
-  if (!v5)
+  if (!composition)
   {
     v16 = NUAssertLogger_24364();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1040,8 +1040,8 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
         v24 = dispatch_get_specific(*v18);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         v29 = 138543618;
         v30 = v24;
         v31 = 2114;
@@ -1052,8 +1052,8 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v29 = 138543362;
       v30 = v23;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v29, 0xCu);
@@ -1063,25 +1063,25 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
   }
 
   v6 = [PIPosterLayoutRequest alloc];
-  v7 = [v4 composition];
-  v8 = [(NURenderRequest *)v6 initWithComposition:v7];
+  composition2 = [itemCopy composition];
+  v8 = [(NURenderRequest *)v6 initWithComposition:composition2];
 
-  v9 = [(PISegmentationLoader *)self layoutProvider];
-  [(PIPosterLayoutRequest *)v8 setLayoutProvider:v9];
+  layoutProvider = [(PISegmentationLoader *)self layoutProvider];
+  [(PIPosterLayoutRequest *)v8 setLayoutProvider:layoutProvider];
 
-  v10 = [(PISegmentationLoader *)self layoutConfiguration];
-  [(PIPosterLayoutRequest *)v8 setLayoutConfiguration:v10];
+  layoutConfiguration = [(PISegmentationLoader *)self layoutConfiguration];
+  [(PIPosterLayoutRequest *)v8 setLayoutConfiguration:layoutConfiguration];
 
-  v11 = [v4 regions];
-  [(PIPosterLayoutRequest *)v8 setLayoutRegions:v11];
+  regions = [itemCopy regions];
+  [(PIPosterLayoutRequest *)v8 setLayoutRegions:regions];
 
-  v12 = [v4 segmentationMatte];
-  [(PIPosterLayoutRequest *)v8 setSegmentationMatte:v12];
+  segmentationMatte = [itemCopy segmentationMatte];
+  [(PIPosterLayoutRequest *)v8 setSegmentationMatte:segmentationMatte];
 
-  v13 = [v4 segmentationConfidenceMap];
-  [(PIPosterLayoutRequest *)v8 setSegmentationConfidenceMap:v13];
+  segmentationConfidenceMap = [itemCopy segmentationConfidenceMap];
+  [(PIPosterLayoutRequest *)v8 setSegmentationConfidenceMap:segmentationConfidenceMap];
 
-  -[PIPosterLayoutRequest setSegmentationClassification:](v8, "setSegmentationClassification:", [v4 classification]);
+  -[PIPosterLayoutRequest setSegmentationClassification:](v8, "setSegmentationClassification:", [itemCopy classification]);
   if ([(PISegmentationLoader *)self disableAdaptiveLayout])
   {
     [(PIPosterLayoutRequest *)v8 setAllowedLayoutStrategies:1];
@@ -1095,23 +1095,23 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
   return v8;
 }
 
-- (void)_loadRegions:(id)a3 completion:(id)a4
+- (void)_loadRegions:(id)regions completion:(id)completion
 {
   v128 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 regions];
+  regionsCopy = regions;
+  completionCopy = completion;
+  regions = [regionsCopy regions];
 
-  if (v8 || self->_isCancelled)
+  if (regions || self->_isCancelled)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v9 = [v6 composition];
+    composition = [regionsCopy composition];
 
-    if (!v9)
+    if (!composition)
     {
       v45 = NUAssertLogger_24364();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -1133,8 +1133,8 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
           v53 = dispatch_get_specific(*v47);
           v54 = MEMORY[0x1E696AF00];
           v55 = v53;
-          v56 = [v54 callStackSymbols];
-          v57 = [v56 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v54 callStackSymbols];
+          v57 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           *&buf[4] = v53;
           *&buf[12] = 2114;
@@ -1145,8 +1145,8 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
 
       else if (v50)
       {
-        v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v52 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v52;
         _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1245,7 +1245,7 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
     v27 = *(MEMORY[0x1E695F050] + 16);
     v106 = *MEMORY[0x1E695F050];
     v107 = v27;
-    if ([v6 classification] == 1 && (-[PFParallaxAsset gazeAreaRect](self->_asset, "gazeAreaRect"), v103[1] = v129, CGRectIsNull(v129)))
+    if ([regionsCopy classification] == 1 && (-[PFParallaxAsset gazeAreaRect](self->_asset, "gazeAreaRect"), v103[1] = v129, CGRectIsNull(v129)))
     {
       v28 = objc_alloc_init(MEMORY[0x1E69844C0]);
       [v25 addObject:v28];
@@ -1262,7 +1262,7 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
     v99 = __Block_byref_object_copy__24387;
     v100 = __Block_byref_object_dispose__24388;
     v101 = 0;
-    if ([v6 classification] == 1 && (-[PFParallaxAsset faceRegions](self->_asset, "faceRegions"), v29 = objc_claimAutoreleasedReturnValue(), v30 = v97[5], v97[5] = v29, v30, !v97[5]))
+    if ([regionsCopy classification] == 1 && (-[PFParallaxAsset faceRegions](self->_asset, "faceRegions"), v29 = objc_claimAutoreleasedReturnValue(), v30 = v97[5], v97[5] = v29, v30, !v97[5]))
     {
       v31 = objc_alloc_init(MEMORY[0x1E69844D0]);
       [v25 addObject:v31];
@@ -1285,20 +1285,20 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
     v87 = __Block_byref_object_copy__24387;
     v88 = __Block_byref_object_dispose__24388;
     v89 = 0;
-    if ([v6 classification] == 2)
+    if ([regionsCopy classification] == 2)
     {
       petsRegions = self->_petsRegions;
       if (petsRegions)
       {
-        v33 = self->_petsRegions;
+        petRegions = self->_petsRegions;
       }
 
       else
       {
-        v33 = [(PFParallaxAsset *)self->_asset petRegions];
+        petRegions = [(PFParallaxAsset *)self->_asset petRegions];
       }
 
-      objc_storeStrong(v91 + 5, v33);
+      objc_storeStrong(v91 + 5, petRegions);
       if (!petsRegions)
       {
       }
@@ -1306,15 +1306,15 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
       petsFaceRegions = self->_petsFaceRegions;
       if (petsFaceRegions)
       {
-        v35 = self->_petsFaceRegions;
+        faceRegions = self->_petsFaceRegions;
       }
 
       else
       {
-        v35 = [(PFParallaxAsset *)self->_asset faceRegions];
+        faceRegions = [(PFParallaxAsset *)self->_asset faceRegions];
       }
 
-      objc_storeStrong(v85 + 5, v35);
+      objc_storeStrong(v85 + 5, faceRegions);
       if (!petsFaceRegions)
       {
       }
@@ -1341,12 +1341,12 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
     {
       dispatch_group_enter(v10);
       v38 = objc_alloc(MEMORY[0x1E69B3D48]);
-      v39 = [v6 composition];
-      v40 = [v38 initWithComposition:v39];
+      composition2 = [regionsCopy composition];
+      v40 = [v38 initWithComposition:composition2];
 
       [v40 setVisionRequests:v25];
-      v41 = [objc_opt_class() proxyScalePolicy];
-      [v40 setScalePolicy:v41];
+      proxyScalePolicy = [objc_opt_class() proxyScalePolicy];
+      [v40 setScalePolicy:proxyScalePolicy];
 
       v42 = +[PIPhotoEditHelper pipelineFiltersForShowingOriginalWithGeometry];
       [v40 setPipelineFilters:v42];
@@ -1385,8 +1385,8 @@ uint64_t __59__PISegmentationLoader_refreshSegmentationItem_completion___block_i
     v67 = &v118;
     v68 = &v102;
     v69 = &v90;
-    v60 = v6;
-    v61 = v7;
+    v60 = regionsCopy;
+    v61 = completionCopy;
     dispatch_group_notify(v10, queue, block);
 
     _Block_object_dispose(&v84, 8);
@@ -1748,23 +1748,23 @@ void __48__PISegmentationLoader__loadRegions_completion___block_invoke_168(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_loadBackground:(id)a3 completion:(id)a4
+- (void)_loadBackground:(id)background completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 segmentationBackground];
+  backgroundCopy = background;
+  completionCopy = completion;
+  segmentationBackground = [backgroundCopy segmentationBackground];
 
-  if (v8 || self->_isCancelled || ((+[PIGlobalSettings globalSettings](PIGlobalSettings, "globalSettings"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 segmentationInfillAlgorithm], v9, v10 != 5) ? (v11 = v10 == 0) : (v11 = 1), v11 || (objc_msgSend(v6, "segmentationMatte"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12)))
+  if (segmentationBackground || self->_isCancelled || ((+[PIGlobalSettings globalSettings](PIGlobalSettings, "globalSettings"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 segmentationInfillAlgorithm], v9, v10 != 5) ? (v11 = v10 == 0) : (v11 = 1), v11 || (objc_msgSend(backgroundCopy, "segmentationMatte"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12)))
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v13 = [v6 composition];
+    composition = [backgroundCopy composition];
 
-    if (!v13)
+    if (!composition)
     {
       v21 = NUAssertLogger_24364();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1786,8 +1786,8 @@ void __48__PISegmentationLoader__loadRegions_completion___block_invoke_168(uint6
           v29 = dispatch_get_specific(*v23);
           v30 = MEMORY[0x1E696AF00];
           v31 = v29;
-          v32 = [v30 callStackSymbols];
-          v33 = [v32 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v30 callStackSymbols];
+          v33 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v38 = v29;
           v39 = 2114;
@@ -1798,8 +1798,8 @@ void __48__PISegmentationLoader__loadRegions_completion___block_invoke_168(uint6
 
       else if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v38 = v28;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1809,16 +1809,16 @@ void __48__PISegmentationLoader__loadRegions_completion___block_invoke_168(uint6
     }
 
     v14 = [PIParallaxInfillRequest alloc];
-    v15 = [v6 composition];
-    v16 = [(NURenderRequest *)v14 initWithComposition:v15];
+    composition2 = [backgroundCopy composition];
+    v16 = [(NURenderRequest *)v14 initWithComposition:composition2];
 
-    v17 = [v6 segmentationMatte];
-    [(PIParallaxInfillRequest *)v16 setSegmentationMatte:v17];
+    segmentationMatte = [backgroundCopy segmentationMatte];
+    [(PIParallaxInfillRequest *)v16 setSegmentationMatte:segmentationMatte];
 
-    v18 = [v6 classification] == 3 || objc_msgSend(v6, "classification") == 4;
+    v18 = [backgroundCopy classification] == 3 || objc_msgSend(backgroundCopy, "classification") == 4;
     [(PIParallaxInfillRequest *)v16 setShouldInfillForeground:v18];
-    v19 = [objc_opt_class() proxyScalePolicy];
-    [(PIParallaxInfillRequest *)v16 setScalePolicy:v19];
+    proxyScalePolicy = [objc_opt_class() proxyScalePolicy];
+    [(PIParallaxInfillRequest *)v16 setScalePolicy:proxyScalePolicy];
 
     [(NURenderRequest *)v16 setResponseQueue:self->_queue];
     [(NURenderRequest *)v16 setRenderContext:self->_renderContext];
@@ -1829,8 +1829,8 @@ void __48__PISegmentationLoader__loadRegions_completion___block_invoke_168(uint6
     v34[1] = 3221225472;
     v34[2] = __51__PISegmentationLoader__loadBackground_completion___block_invoke;
     v34[3] = &unk_1E82ACC00;
-    v35 = v6;
-    v36 = v7;
+    v35 = backgroundCopy;
+    v36 = completionCopy;
     [(PIParallaxInfillRequest *)v16 submit:v34];
   }
 }
@@ -1882,23 +1882,23 @@ void __51__PISegmentationLoader__loadBackground_completion___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_loadHDRGainMap:(id)a3 completion:(id)a4
+- (void)_loadHDRGainMap:(id)map completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 HDRGainMap];
+  mapCopy = map;
+  completionCopy = completion;
+  hDRGainMap = [mapCopy HDRGainMap];
 
-  if (v8 || self->_isCancelled)
+  if (hDRGainMap || self->_isCancelled)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v9 = [v6 composition];
+    composition = [mapCopy composition];
 
-    if (!v9)
+    if (!composition)
     {
       v14 = NUAssertLogger_24364();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1920,8 +1920,8 @@ void __51__PISegmentationLoader__loadBackground_completion___block_invoke(uint64
           v22 = dispatch_get_specific(*v16);
           v23 = MEMORY[0x1E696AF00];
           v24 = v22;
-          v25 = [v23 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v23 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v31 = v22;
           v32 = 2114;
@@ -1932,8 +1932,8 @@ void __51__PISegmentationLoader__loadBackground_completion___block_invoke(uint64
 
       else if (v19)
       {
-        v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v31 = v21;
         _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1943,8 +1943,8 @@ void __51__PISegmentationLoader__loadBackground_completion___block_invoke(uint64
     }
 
     v10 = objc_alloc(MEMORY[0x1E69B3960]);
-    v11 = [v6 composition];
-    v12 = [v10 initWithComposition:v11];
+    composition2 = [mapCopy composition];
+    v12 = [v10 initWithComposition:composition2];
 
     [v12 setAuxiliaryImageType:7];
     [v12 setResponseQueue:self->_queue];
@@ -1956,8 +1956,8 @@ void __51__PISegmentationLoader__loadBackground_completion___block_invoke(uint64
     v27[1] = 3221225472;
     v27[2] = __51__PISegmentationLoader__loadHDRGainMap_completion___block_invoke;
     v27[3] = &unk_1E82ACC00;
-    v28 = v6;
-    v29 = v7;
+    v28 = mapCopy;
+    v29 = completionCopy;
     [v12 submit:v27];
   }
 }
@@ -2011,22 +2011,22 @@ void __51__PISegmentationLoader__loadHDRGainMap_completion___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_analyzeColors:(id)a3 completion:(id)a4
+- (void)_analyzeColors:(id)colors completion:(id)completion
 {
   v87 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 colorAnalysis];
+  colorsCopy = colors;
+  completionCopy = completion;
+  colorAnalysis = [colorsCopy colorAnalysis];
 
-  if (v8 || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
+  if (colorAnalysis || self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_5;
   }
 
-  v9 = [v6 composition];
+  composition = [colorsCopy composition];
 
-  if (!v9)
+  if (!composition)
   {
     v50 = NUAssertLogger_24364();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -2048,8 +2048,8 @@ void __51__PISegmentationLoader__loadHDRGainMap_completion___block_invoke(uint64
         v63 = dispatch_get_specific(*v52);
         v64 = MEMORY[0x1E696AF00];
         v65 = v63;
-        v66 = [v64 callStackSymbols];
-        v67 = [v66 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v64 callStackSymbols];
+        v67 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v63;
         *&buf[12] = 2114;
@@ -2061,8 +2061,8 @@ void __51__PISegmentationLoader__loadHDRGainMap_completion___block_invoke(uint64
     else if (v55)
     {
 LABEL_29:
-      v61 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v62 = [v61 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v62 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v62;
       _os_log_error_impl(&dword_1C7694000, v54, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2074,9 +2074,9 @@ LABEL_35:
     __break(1u);
   }
 
-  v10 = [v6 originalLayout];
+  originalLayout = [colorsCopy originalLayout];
 
-  if (!v10)
+  if (!originalLayout)
   {
     v56 = NUAssertLogger_24364();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -2106,8 +2106,8 @@ LABEL_35:
       v68 = dispatch_get_specific(*v58);
       v69 = MEMORY[0x1E696AF00];
       v70 = v68;
-      v71 = [v69 callStackSymbols];
-      v72 = [v71 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v69 callStackSymbols];
+      v72 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v68;
       *&buf[12] = 2114;
@@ -2128,26 +2128,26 @@ LABEL_35:
     v11 = 0;
   }
 
-  v12 = [v6 originalLayout];
-  v13 = [v12 portraitLayout];
+  originalLayout2 = [colorsCopy originalLayout];
+  portraitLayout = [originalLayout2 portraitLayout];
 
   if (v11)
   {
-    [v13 extendedImageSize];
+    [portraitLayout extendedImageSize];
   }
 
   else
   {
-    [v13 imageSize];
+    [portraitLayout imageSize];
   }
 
-  [v13 visibleFrame];
+  [portraitLayout visibleFrame];
   NURectNormalize();
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [v13 visibleFrame];
+  [portraitLayout visibleFrame];
   NURectNormalize();
   v73 = v22;
   v24 = v23;
@@ -2162,14 +2162,14 @@ LABEL_35:
   v29 = [objc_opt_class() renderPriorityForResourcePriority:{-[PISegmentationLoader priority](self, "priority")}];
   [MEMORY[0x1E69B3C60] begin];
   v30 = [PIParallaxColorAnalysisRequest alloc];
-  v31 = [v6 composition];
-  v32 = [(NURenderRequest *)v30 initWithComposition:v31];
+  composition2 = [colorsCopy composition];
+  v32 = [(NURenderRequest *)v30 initWithComposition:composition2];
 
   [(PIParallaxColorAnalysisRequest *)v32 setSegmentationMatte:0];
   [(PIParallaxColorAnalysisRequest *)v32 setAnalyzeBackground:1];
   [(PIParallaxColorAnalysisRequest *)v32 setNormalizedClipRect:v15, v17, v19, v21];
-  v33 = [v6 segmentationMatte];
-  if (v33)
+  segmentationMatte = [colorsCopy segmentationMatte];
+  if (segmentationMatte)
   {
     v34 = 1;
   }
@@ -2191,17 +2191,17 @@ LABEL_35:
   v82[3] = &unk_1E82AC5F8;
   v82[4] = buf;
   [(PIParallaxColorAnalysisRequest *)v32 submit:v82];
-  v35 = [v6 segmentationMatte];
-  v36 = v35 == 0;
+  segmentationMatte2 = [colorsCopy segmentationMatte];
+  v36 = segmentationMatte2 == 0;
 
   if (!v36)
   {
     v37 = [PIParallaxColorAnalysisRequest alloc];
-    v38 = [v6 composition];
-    v39 = [(NURenderRequest *)v37 initWithComposition:v38];
+    composition3 = [colorsCopy composition];
+    v39 = [(NURenderRequest *)v37 initWithComposition:composition3];
 
-    v40 = [v6 segmentationMatte];
-    [(PIParallaxColorAnalysisRequest *)v39 setSegmentationMatte:v40];
+    segmentationMatte3 = [colorsCopy segmentationMatte];
+    [(PIParallaxColorAnalysisRequest *)v39 setSegmentationMatte:segmentationMatte3];
 
     [(PIParallaxColorAnalysisRequest *)v39 setAnalyzeBackground:0];
     [(PIParallaxColorAnalysisRequest *)v39 setNormalizedClipRect:v15, v17, v19, v21];
@@ -2216,11 +2216,11 @@ LABEL_35:
     v81[4] = buf;
     [(PIParallaxColorAnalysisRequest *)v39 submit:v81];
     v41 = [PIParallaxColorAnalysisRequest alloc];
-    v42 = [v6 composition];
-    v43 = [(NURenderRequest *)v41 initWithComposition:v42];
+    composition4 = [colorsCopy composition];
+    v43 = [(NURenderRequest *)v41 initWithComposition:composition4];
 
-    v44 = [v6 segmentationMatte];
-    [(PIParallaxColorAnalysisRequest *)v43 setSegmentationMatte:v44];
+    segmentationMatte4 = [colorsCopy segmentationMatte];
+    [(PIParallaxColorAnalysisRequest *)v43 setSegmentationMatte:segmentationMatte4];
 
     [(PIParallaxColorAnalysisRequest *)v43 setAnalyzeBackground:1];
     [(PIParallaxColorAnalysisRequest *)v43 setNormalizedClipRect:v15, v17, v19, v21];
@@ -2238,8 +2238,8 @@ LABEL_35:
   }
 
   v45 = [PIParallaxColorAnalysisRequest alloc];
-  v46 = [v6 composition];
-  v47 = [(NURenderRequest *)v45 initWithComposition:v46];
+  composition5 = [colorsCopy composition];
+  v47 = [(NURenderRequest *)v45 initWithComposition:composition5];
 
   [(PIParallaxColorAnalysisRequest *)v47 setSegmentationMatte:0];
   [(PIParallaxColorAnalysisRequest *)v47 setAnalyzeBackground:1];
@@ -2261,9 +2261,9 @@ LABEL_35:
   v75[1] = 3221225472;
   v75[2] = __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150;
   v75[3] = &unk_1E82AC2A8;
-  v76 = v6;
+  v76 = colorsCopy;
   v78 = buf;
-  v77 = v7;
+  v77 = completionCopy;
   [v48 commitAndNotifyOnQueue:queue withBlock:v75];
 
   _Block_object_dispose(buf, 8);
@@ -2491,19 +2491,19 @@ uint64_t __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150
   return v5();
 }
 
-- (BOOL)_isValidSegmentationMatteHistogramForDepth:(id)a3
+- (BOOL)_isValidSegmentationMatteHistogramForDepth:(id)depth
 {
-  [PISegmentationHelper bimodalScoreForHistogram:a3];
+  [PISegmentationHelper bimodalScoreForHistogram:depth];
 
   return [PISegmentationGating isValidSegmentationScoreForDepth:?];
 }
 
-- (void)_performSegmentation:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)_performSegmentation:(id)segmentation type:(int64_t)type completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  segmentationCopy = segmentation;
+  completionCopy = completion;
+  if (!segmentationCopy)
   {
     v15 = NUAssertLogger_24364();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -2525,8 +2525,8 @@ uint64_t __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150
         v23 = dispatch_get_specific(*v17);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v23;
         v32 = 2114;
@@ -2537,8 +2537,8 @@ uint64_t __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v22;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2547,19 +2547,19 @@ uint64_t __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
+  v10 = completionCopy;
   if (self->_isCancelled)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x1E69B3D58]) initWithComposition:v8];
-    [v11 setSegmentationType:a4];
+    v11 = [objc_alloc(MEMORY[0x1E69B3D58]) initWithComposition:segmentationCopy];
+    [v11 setSegmentationType:type];
     [v11 setVisionSegmentationPolicy:3];
-    v12 = [objc_opt_class() proxyScalePolicy];
-    [v11 setScalePolicy:v12];
+    proxyScalePolicy = [objc_opt_class() proxyScalePolicy];
+    [v11 setScalePolicy:proxyScalePolicy];
 
     v13 = +[PIPhotoEditHelper pipelineFiltersForShowingOriginalWithGeometry];
     [v11 setPipelineFilters:v13];
@@ -2569,7 +2569,7 @@ uint64_t __50__PISegmentationLoader__analyzeColors_completion___block_invoke_150
     v14 = [objc_opt_class() renderPriorityForResourcePriority:{-[PISegmentationLoader priority](self, "priority")}];
     [v11 setPriority:v14];
 
-    [v11 setProduceConfidenceMap:a4 == 1];
+    [v11 setProduceConfidenceMap:type == 1];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __61__PISegmentationLoader__performSegmentation_type_completion___block_invoke;
@@ -2628,23 +2628,23 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
   }
 }
 
-- (void)_segment:(id)a3 completion:(id)a4
+- (void)_segment:(id)_segment completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 segmentationMatte];
+  _segmentCopy = _segment;
+  completionCopy = completion;
+  segmentationMatte = [_segmentCopy segmentationMatte];
 
-  if (v8 || [v6 classification] == 5 || self->_isCancelled || -[PISegmentationLoader disableSegmentation](self, "disableSegmentation") || -[PISegmentationLoader disableRendering](self, "disableRendering"))
+  if (segmentationMatte || [_segmentCopy classification] == 5 || self->_isCancelled || -[PISegmentationLoader disableSegmentation](self, "disableSegmentation") || -[PISegmentationLoader disableRendering](self, "disableRendering"))
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v9 = [v6 composition];
+    composition = [_segmentCopy composition];
 
-    if (!v9)
+    if (!composition)
     {
       v26 = NUAssertLogger_24364();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2666,8 +2666,8 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
           v34 = dispatch_get_specific(*v28);
           v35 = MEMORY[0x1E696AF00];
           v36 = v34;
-          v37 = [v35 callStackSymbols];
-          v38 = [v37 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v35 callStackSymbols];
+          v38 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v51 = v34;
           v52 = 2114;
@@ -2678,8 +2678,8 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
 
       else if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v51 = v33;
         _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2688,15 +2688,15 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
       _NUAssertFailHandler();
     }
 
-    v10 = [v6 classification];
-    v11 = v10;
-    if ((v10 - 1) < 2)
+    classification = [_segmentCopy classification];
+    v11 = classification;
+    if ((classification - 1) < 2)
     {
       v12 = 0;
       v13 = 1;
     }
 
-    else if ((v10 - 3) > 1)
+    else if ((classification - 3) > 1)
     {
       v11 = 0;
       v13 = 0;
@@ -2716,10 +2716,10 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
     v47[3] = &unk_1E82AC258;
     v49 = v13;
     v47[4] = self;
-    v14 = v6;
+    v14 = _segmentCopy;
     v48 = v14;
     v15 = MEMORY[0x1CCA61740](v47);
-    v16 = [v14 composition];
+    composition2 = [v14 composition];
     if (v12)
     {
       v39[0] = MEMORY[0x1E69E9820];
@@ -2731,11 +2731,11 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
       v18 = &v40;
       v40 = v14;
       v19 = &v42;
-      v42 = v7;
+      v42 = completionCopy;
       v20 = v15;
       v21 = v39;
-      v22 = self;
-      v23 = v16;
+      selfCopy2 = self;
+      v23 = composition2;
       v24 = 3;
     }
 
@@ -2750,15 +2750,15 @@ void __61__PISegmentationLoader__performSegmentation_type_completion___block_inv
       v18 = &v44;
       v44 = v14;
       v19 = &v46;
-      v46 = v7;
+      v46 = completionCopy;
       v25 = v15;
       v21 = v43;
-      v22 = self;
-      v23 = v16;
+      selfCopy2 = self;
+      v23 = composition2;
       v24 = v11;
     }
 
-    [(PISegmentationLoader *)v22 _performSegmentation:v23 type:v24 completion:v21];
+    [(PISegmentationLoader *)selfCopy2 _performSegmentation:v23 type:v24 completion:v21];
   }
 }
 
@@ -2821,13 +2821,13 @@ uint64_t __44__PISegmentationLoader__segment_completion___block_invoke_3(uint64_
   return v4();
 }
 
-- (void)_classify:(id)a3 completion:(id)a4
+- (void)_classify:(id)_classify completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 classification];
-  if ((v8 - 1) < 4)
+  _classifyCopy = _classify;
+  completionCopy = completion;
+  classification = [_classifyCopy classification];
+  if ((classification - 1) < 4)
   {
     if (*MEMORY[0x1E69B3D78] != -1)
     {
@@ -2838,7 +2838,7 @@ uint64_t __44__PISegmentationLoader__segment_completion___block_invoke_3(uint64_
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      [v6 classification];
+      [_classifyCopy classification];
       v11 = PFPosterClassificationName();
       *buf = 138543362;
       v46 = v11;
@@ -2848,9 +2848,9 @@ uint64_t __44__PISegmentationLoader__segment_completion___block_invoke_3(uint64_
     goto LABEL_18;
   }
 
-  if (v8)
+  if (classification)
   {
-    if (v8 == 5)
+    if (classification == 5)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -2886,13 +2886,13 @@ uint64_t __44__PISegmentationLoader__segment_completion___block_invoke_3(uint64_
   if (self->_isCancelled || [(PISegmentationLoader *)self disableRendering])
   {
 LABEL_18:
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_19;
   }
 
-  v14 = [v6 composition];
+  composition = [_classifyCopy composition];
 
-  if (!v14)
+  if (!composition)
   {
     v26 = NUAssertLogger_24364();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2914,8 +2914,8 @@ LABEL_18:
         v34 = dispatch_get_specific(*v28);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v46 = v34;
         v47 = 2114;
@@ -2926,8 +2926,8 @@ LABEL_18:
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v46 = v33;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2939,16 +2939,16 @@ LABEL_18:
   v15 = objc_alloc_init(MEMORY[0x1E69844D0]);
   v16 = objc_alloc_init(MEMORY[0x1E6984618]);
   v17 = objc_alloc(MEMORY[0x1E69B3D48]);
-  v18 = [v6 composition];
-  v19 = [v17 initWithComposition:v18];
+  composition2 = [_classifyCopy composition];
+  v19 = [v17 initWithComposition:composition2];
 
   v44[0] = v15;
   v44[1] = v16;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
   [v19 setVisionRequests:v20];
 
-  v21 = [objc_opt_class() proxyScalePolicy];
-  [v19 setScalePolicy:v21];
+  proxyScalePolicy = [objc_opt_class() proxyScalePolicy];
+  [v19 setScalePolicy:proxyScalePolicy];
 
   v22 = +[PIPhotoEditHelper pipelineFiltersForShowingOriginalWithGeometry];
   [v19 setPipelineFilters:v22];
@@ -2964,8 +2964,8 @@ LABEL_18:
   v39[3] = &unk_1E82AC230;
   v40 = v15;
   v41 = v16;
-  v42 = v6;
-  v43 = v7;
+  v42 = _classifyCopy;
+  v43 = completionCopy;
   v24 = v16;
   v25 = v15;
   [v19 submit:v39];
@@ -3181,16 +3181,16 @@ LABEL_63:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_loadSpatialPhoto:(id)a3 layoutGroup:(id)a4 completion:(id)a5
+- (void)_loadSpatialPhoto:(id)photo layoutGroup:(id)group completion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PISegmentationLoader *)self asset];
-  v12 = [v11 localIdentifier];
+  photoCopy = photo;
+  groupCopy = group;
+  completionCopy = completion;
+  asset = [(PISegmentationLoader *)self asset];
+  localIdentifier = [asset localIdentifier];
 
-  if ([(PISegmentationLoader *)self _shouldLoadSpatialPhotoForItem:v8])
+  if ([(PISegmentationLoader *)self _shouldLoadSpatialPhotoForItem:photoCopy])
   {
     if ([(PISegmentationLoader *)self disableSpatialPhoto])
     {
@@ -3204,7 +3204,7 @@ LABEL_63:
       {
         v14 = v13;
         *buf = 138543874;
-        *&buf[4] = v12;
+        *&buf[4] = localIdentifier;
         *&buf[12] = 1024;
         *&buf[14] = [(PISegmentationLoader *)self disableSpatialPhoto];
         *&buf[18] = 1024;
@@ -3212,16 +3212,16 @@ LABEL_63:
         _os_log_impl(&dword_1C7694000, v14, OS_LOG_TYPE_INFO, "Skipping spatial photo loading for asset %{public}@, disableSpatialPhoto: %d, disableRendering: %d", buf, 0x18u);
       }
 
-      [(PISegmentationLoader *)self _updateItem:v8 withSpatialPhotoGatingFailures:1];
-      v10[2](v10, 0);
+      [(PISegmentationLoader *)self _updateItem:photoCopy withSpatialPhotoGatingFailures:1];
+      completionCopy[2](completionCopy, 0);
     }
 
     else
     {
       v16 = +[PIGlobalSettings globalSettings];
-      v17 = [v16 forceEnableSpatialPhoto];
+      forceEnableSpatialPhoto = [v16 forceEnableSpatialPhoto];
 
-      if (v17 & 1) != 0 || ([objc_opt_class() currentDeviceSupportsSpatialPhoto])
+      if (forceEnableSpatialPhoto & 1) != 0 || ([objc_opt_class() currentDeviceSupportsSpatialPhoto])
       {
         v18 = PIParallaxDefaultSpatialPhotoProducer();
         v19 = *MEMORY[0x1E69B3D78];
@@ -3237,11 +3237,11 @@ LABEL_63:
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
-            *&buf[4] = v12;
+            *&buf[4] = localIdentifier;
             _os_log_impl(&dword_1C7694000, v20, OS_LOG_TYPE_INFO, "Loading spatial photo for asset %{public}@.", buf, 0xCu);
           }
 
-          [v8 resetSpatialPhotoGatingFailure];
+          [photoCopy resetSpatialPhotoGatingFailure];
           *buf = 0;
           *&buf[8] = buf;
           *&buf[16] = 0x3032000000;
@@ -3267,13 +3267,13 @@ LABEL_63:
           v55[4] = __Block_byref_object_dispose__24388;
           v56 = 0;
           v21 = dispatch_group_create();
-          v22 = [v8 resource];
-          v23 = [v22 imageFileURL];
+          resource = [photoCopy resource];
+          imageFileURL = [resource imageFileURL];
 
-          if (v23)
+          if (imageFileURL)
           {
             dispatch_group_enter(v21);
-            v24 = [[PIParallaxAsset alloc] initWithFileURL:v23];
+            v24 = [[PIParallaxAsset alloc] initWithFileURL:imageFileURL];
             v51[0] = MEMORY[0x1E69E9820];
             v51[1] = 3221225472;
             v51[2] = __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block_invoke;
@@ -3301,7 +3301,7 @@ LABEL_63:
 
           v26 = dispatch_group_create();
           dispatch_group_enter(v26);
-          v34 = v23;
+          v34 = imageFileURL;
           queue = self->_queue;
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
@@ -3309,11 +3309,11 @@ LABEL_63:
           block[3] = &unk_1E82AC208;
           v45 = buf;
           v46 = v59;
-          v39 = v8;
-          v40 = v9;
-          v41 = self;
+          v39 = photoCopy;
+          v40 = groupCopy;
+          selfCopy = self;
           v42 = v35;
-          v43 = v12;
+          v43 = localIdentifier;
           v44 = v26;
           v28 = v26;
           dispatch_group_notify(v21, queue, block);
@@ -3322,7 +3322,7 @@ LABEL_63:
           v36[1] = 3221225472;
           v36[2] = __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block_invoke_130;
           v36[3] = &unk_1E82AC0C8;
-          v37 = v10;
+          v37 = completionCopy;
           dispatch_group_notify(v28, v29, v36);
 
           _Block_object_dispose(v55, 8);
@@ -3343,12 +3343,12 @@ LABEL_63:
           if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
-            *&buf[4] = v12;
+            *&buf[4] = localIdentifier;
             _os_log_impl(&dword_1C7694000, v30, OS_LOG_TYPE_INFO, "Skipping spatial photo loading for asset %{public}@, PIParallaxDefaultSpatialPhotoProducer() is nil", buf, 0xCu);
           }
 
-          [(PISegmentationLoader *)self _updateItem:v8 withSpatialPhotoGatingFailures:8];
-          v10[2](v10, 0);
+          [(PISegmentationLoader *)self _updateItem:photoCopy withSpatialPhotoGatingFailures:8];
+          completionCopy[2](completionCopy, 0);
         }
       }
 
@@ -3366,14 +3366,14 @@ LABEL_63:
           [(PISegmentationLoader *)self spatialPhotoGatingLevel];
           v33 = PFPosterSpatialPhotoGatingLevelDescription();
           *buf = 138543618;
-          *&buf[4] = v12;
+          *&buf[4] = localIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v33;
           _os_log_impl(&dword_1C7694000, v32, OS_LOG_TYPE_INFO, "Skipping spatial photo loading for asset %{public}@, unsupported device for gating level %{public}@", buf, 0x16u);
         }
 
-        [(PISegmentationLoader *)self _updateItem:v8 withSpatialPhotoGatingFailures:4];
-        v10[2](v10, 0);
+        [(PISegmentationLoader *)self _updateItem:photoCopy withSpatialPhotoGatingFailures:4];
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
@@ -3389,11 +3389,11 @@ LABEL_63:
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      *&buf[4] = v12;
+      *&buf[4] = localIdentifier;
       _os_log_impl(&dword_1C7694000, v15, OS_LOG_TYPE_INFO, "Skipping spatial photo loading for asset %{public}@, cached results are sufficient for the current session", buf, 0xCu);
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -3552,14 +3552,14 @@ void __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (void)_loadMotionScore:(id)a3 completion:(id)a4
+- (void)_loadMotionScore:(id)score completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PISegmentationLoader *)self asset];
+  scoreCopy = score;
+  completionCopy = completion;
+  asset = [(PISegmentationLoader *)self asset];
 
-  if (!v8)
+  if (!asset)
   {
     v18 = NUAssertLogger_24364();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -3581,8 +3581,8 @@ void __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v26;
         v37 = 2114;
@@ -3593,8 +3593,8 @@ void __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3603,8 +3603,8 @@ void __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block
     _NUAssertFailHandler();
   }
 
-  v9 = [(PISegmentationLoader *)self asset];
-  v10 = [v9 localIdentifier];
+  asset2 = [(PISegmentationLoader *)self asset];
+  localIdentifier = [asset2 localIdentifier];
 
   v11 = s_log_24360;
   v12 = v11;
@@ -3615,19 +3615,19 @@ void __65__PISegmentationLoader__loadSpatialPhoto_layoutGroup_completion___block
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v12, OS_SIGNPOST_INTERVAL_BEGIN, signpost, "PISegmentationLoader.settlingEffect.motion", "", buf, 2u);
   }
 
-  v14 = [(PISegmentationLoader *)self asset];
+  asset3 = [(PISegmentationLoader *)self asset];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __52__PISegmentationLoader__loadMotionScore_completion___block_invoke;
   v31[3] = &unk_1E82AC190;
   v31[4] = self;
-  v32 = v6;
-  v33 = v10;
-  v34 = v7;
-  v15 = v7;
-  v16 = v10;
-  v17 = v6;
-  self->_loadMotionRequestID = [v14 loadMotionScore:v31];
+  v32 = scoreCopy;
+  v33 = localIdentifier;
+  v34 = completionCopy;
+  v15 = completionCopy;
+  v16 = localIdentifier;
+  v17 = scoreCopy;
+  self->_loadMotionRequestID = [asset3 loadMotionScore:v31];
 }
 
 void __52__PISegmentationLoader__loadMotionScore_completion___block_invoke(void *a1, void *a2, float a3)
@@ -3692,16 +3692,16 @@ void __52__PISegmentationLoader__loadMotionScore_completion___block_invoke(void 
   (*(a1[7] + 16))();
 }
 
-- (void)_loadSettlingEffect:(id)a3 layoutGroup:(id)a4 completion:(id)a5
+- (void)_loadSettlingEffect:(id)effect layoutGroup:(id)group completion:(id)completion
 {
   *&v35[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PISegmentationLoader *)self asset];
-  v12 = [v11 localIdentifier];
+  effectCopy = effect;
+  groupCopy = group;
+  completionCopy = completion;
+  asset = [(PISegmentationLoader *)self asset];
+  localIdentifier = [asset localIdentifier];
 
-  if (![(PISegmentationLoader *)self _shouldLoadSettlingEffectForItem:v8])
+  if (![(PISegmentationLoader *)self _shouldLoadSettlingEffectForItem:effectCopy])
   {
     if (*MEMORY[0x1E69B3D78] != -1)
     {
@@ -3712,7 +3712,7 @@ void __52__PISegmentationLoader__loadMotionScore_completion___block_invoke(void 
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v33 = v12;
+      v33 = localIdentifier;
       _os_log_impl(&dword_1C7694000, v18, OS_LOG_TYPE_INFO, "Skipping settling effect loading for asset %{public}@, cached results are sufficient for the current session", buf, 0xCu);
     }
 
@@ -3731,7 +3731,7 @@ void __52__PISegmentationLoader__loadMotionScore_completion___block_invoke(void 
     {
       v14 = v13;
       *buf = 138543874;
-      v33 = v12;
+      v33 = localIdentifier;
       v34 = 1024;
       *v35 = [(PISegmentationLoader *)self disableSettlingEffect];
       v35[2] = 1024;
@@ -3739,20 +3739,20 @@ void __52__PISegmentationLoader__loadMotionScore_completion___block_invoke(void 
       _os_log_impl(&dword_1C7694000, v14, OS_LOG_TYPE_INFO, "Skipping settling effect loading for asset %{public}@, disableSettlingEffect: %d, disableRendering: %d", buf, 0x18u);
     }
 
-    v15 = self;
-    v16 = v8;
+    selfCopy2 = self;
+    v16 = effectCopy;
     v17 = 64;
 LABEL_9:
-    [(PISegmentationLoader *)v15 _updateItem:v16 withSettlingEffectGatingFailures:v17];
+    [(PISegmentationLoader *)selfCopy2 _updateItem:v16 withSettlingEffectGatingFailures:v17];
 LABEL_14:
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_15;
   }
 
   v19 = +[PIGlobalSettings globalSettings];
-  v20 = [v19 forceEnableSettlingEffect];
+  forceEnableSettlingEffect = [v19 forceEnableSettlingEffect];
 
-  if ((v20 & 1) == 0 && ([objc_opt_class() currentDeviceSupportsSettlingEffect] & 1) == 0)
+  if ((forceEnableSettlingEffect & 1) == 0 && ([objc_opt_class() currentDeviceSupportsSettlingEffect] & 1) == 0)
   {
     if (*MEMORY[0x1E69B3D78] != -1)
     {
@@ -3766,19 +3766,19 @@ LABEL_14:
       [(PISegmentationLoader *)self settlingEffectGatingLevel];
       v26 = PFPosterSettlingEffectGatingLevelDescription();
       *buf = 138543618;
-      v33 = v12;
+      v33 = localIdentifier;
       v34 = 2114;
       *v35 = v26;
       _os_log_impl(&dword_1C7694000, v25, OS_LOG_TYPE_INFO, "Skipping settling effect loading for asset %{public}@, unsupported device for gating level %{public}@", buf, 0x16u);
     }
 
-    v15 = self;
-    v16 = v8;
+    selfCopy2 = self;
+    v16 = effectCopy;
     v17 = 2048;
     goto LABEL_9;
   }
 
-  [v8 resetSettlingEffectGatingFailure];
+  [effectCopy resetSettlingEffectGatingFailure];
   v21 = s_log_24360;
   v22 = v21;
   signpost = self->_signpost;
@@ -3793,10 +3793,10 @@ LABEL_14:
   v27[2] = __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___block_invoke;
   v27[3] = &unk_1E82AC168;
   v27[4] = self;
-  v28 = v8;
-  v29 = v12;
-  v31 = v10;
-  v30 = v9;
+  v28 = effectCopy;
+  v29 = localIdentifier;
+  v31 = completionCopy;
+  v30 = groupCopy;
   [(PISegmentationLoader *)self _loadLiveOriginalResource:v28 completion:v27];
 
 LABEL_15:
@@ -4237,12 +4237,12 @@ void __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___blo
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (BOOL)_shouldLoadSettlingEffectForItem:(id)a3
+- (BOOL)_shouldLoadSettlingEffectForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 settlingEffectStatus])
+  itemCopy = item;
+  if ([itemCopy settlingEffectStatus])
   {
-    if ([v4 settlingEffectStatus] == 3)
+    if ([itemCopy settlingEffectStatus] == 3)
     {
       v5 = ![(PISegmentationLoader *)self shouldUseInteractiveSettlingEffectGating];
     }
@@ -4261,13 +4261,13 @@ void __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___blo
   return v5;
 }
 
-- (void)_loadSegmentationData:(id)a3 layoutGroup:(id)a4 completion:(id)a5
+- (void)_loadSegmentationData:(id)data layoutGroup:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  groupCopy = group;
+  completionCopy = completion;
   v11 = dispatch_group_create();
-  dispatch_group_enter(v9);
+  dispatch_group_enter(groupCopy);
   v12 = s_log_24360;
   v13 = v12;
   signpost = self->_signpost;
@@ -4282,9 +4282,9 @@ void __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___blo
   v35[2] = __69__PISegmentationLoader__loadSegmentationData_layoutGroup_completion___block_invoke;
   v35[3] = &unk_1E82ABEC8;
   v35[4] = self;
-  v15 = v9;
+  v15 = groupCopy;
   v36 = v15;
-  v16 = v8;
+  v16 = dataCopy;
   v37 = v16;
   v17 = v11;
   v38 = v17;
@@ -4297,7 +4297,7 @@ void __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___blo
   block[3] = &unk_1E82AC0A0;
   v19 = v17;
   v32 = v19;
-  v33 = self;
+  selfCopy = self;
   v20 = v16;
   v34 = v20;
   dispatch_group_notify(v15, queue, block);
@@ -4324,8 +4324,8 @@ void __67__PISegmentationLoader__loadSettlingEffect_layoutGroup_completion___blo
   v27[1] = 3221225472;
   v27[2] = __69__PISegmentationLoader__loadSegmentationData_layoutGroup_completion___block_invoke_107;
   v27[3] = &unk_1E82AC0C8;
-  v28 = v10;
-  v26 = v10;
+  v28 = completionCopy;
+  v26 = completionCopy;
   dispatch_group_notify(v24, v25, v27);
 }
 
@@ -4554,13 +4554,13 @@ void __69__PISegmentationLoader__loadSegmentationData_layoutGroup_completion___b
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_loadAssetResource:(int64_t)a3 allowNetworkAccess:(BOOL)a4 options:(id)a5 completion:(id)a6
+- (void)_loadAssetResource:(int64_t)resource allowNetworkAccess:(BOOL)access options:(id)options completion:(id)completion
 {
-  v7 = a4;
+  accessCopy = access;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  [v10 setNetworkAccessAllowed:v7];
+  optionsCopy = options;
+  completionCopy = completion;
+  [optionsCopy setNetworkAccessAllowed:accessCopy];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_637);
@@ -4571,13 +4571,13 @@ void __69__PISegmentationLoader__loadSegmentationData_layoutGroup_completion___b
   {
     asset = self->_asset;
     v14 = v12;
-    v15 = [(PFParallaxAsset *)asset localIdentifier];
+    localIdentifier = [(PFParallaxAsset *)asset localIdentifier];
     *buf = 134218498;
-    v25 = a3;
+    resourceCopy = resource;
     v26 = 2114;
-    v27 = v15;
+    v27 = localIdentifier;
     v28 = 1024;
-    v29 = [v10 networkAccessAllowed];
+    networkAccessAllowed = [optionsCopy networkAccessAllowed];
     _os_log_impl(&dword_1C7694000, v14, OS_LOG_TYPE_INFO, "Loading resource %ld for asset %{public}@, allow download? %d", buf, 0x1Cu);
   }
 
@@ -4589,11 +4589,11 @@ void __69__PISegmentationLoader__loadSegmentationData_layoutGroup_completion___b
   v20[3] = &unk_1E82AC078;
   v20[4] = self;
   v21 = v16;
-  v22 = v11;
-  v23 = a3;
-  v18 = v11;
+  v22 = completionCopy;
+  resourceCopy2 = resource;
+  v18 = completionCopy;
   v19 = v16;
-  self->_loadRequestID = [(PFParallaxAsset *)v17 loadParallaxResource:a3 options:v10 resultHandler:v20];
+  self->_loadRequestID = [(PFParallaxAsset *)v17 loadParallaxResource:resource options:optionsCopy resultHandler:v20];
 }
 
 void __81__PISegmentationLoader__loadAssetResource_allowNetworkAccess_options_completion___block_invoke(void *a1, void *a2, void *a3)
@@ -4693,21 +4693,21 @@ LABEL_7:
   (*(a1[6] + 16))();
 }
 
-- (void)_loadAssetResource:(int64_t)a3 options:(id)a4 completion:(id)a5
+- (void)_loadAssetResource:(int64_t)resource options:(id)options completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PISegmentationLoader__loadAssetResource_options_completion___block_invoke;
   v12[3] = &unk_1E82AC078;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
-  [(PISegmentationLoader *)self _loadAssetResource:a3 allowNetworkAccess:0 options:v11 completion:v12];
+  v13 = optionsCopy;
+  v14 = completionCopy;
+  resourceCopy = resource;
+  v10 = completionCopy;
+  v11 = optionsCopy;
+  [(PISegmentationLoader *)self _loadAssetResource:resource allowNetworkAccess:0 options:v11 completion:v12];
 }
 
 void __62__PISegmentationLoader__loadAssetResource_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4759,18 +4759,18 @@ void __62__PISegmentationLoader__loadAssetResource_options_completion___block_in
   }
 }
 
-- (void)_loadAssetResourceForProxy:(BOOL)a3 completion:(id)a4
+- (void)_loadAssetResourceForProxy:(BOOL)proxy completion:(id)completion
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v6 = MEMORY[0x1E69C0748];
-  v7 = a4;
+  completionCopy = completion;
   v8 = objc_alloc_init(v6);
   sourceMode = self->_sourceMode;
   v13 = v8;
   if (sourceMode < 2)
   {
-    v10 = v4;
-    v11 = !v4;
+    v10 = proxyCopy;
+    v11 = !proxyCopy;
   }
 
   else
@@ -4791,8 +4791,8 @@ void __62__PISegmentationLoader__loadAssetResource_options_completion___block_in
       goto LABEL_13;
     }
 
-    v11 = !v4;
-    if (v4)
+    v11 = !proxyCopy;
+    if (proxyCopy)
     {
       v10 = 3;
     }
@@ -4812,27 +4812,27 @@ void __62__PISegmentationLoader__loadAssetResource_options_completion___block_in
   [v8 setImageSize:{v12, v12}];
 LABEL_13:
   [v13 setResultHandlerQueue:self->_queue];
-  [(PISegmentationLoader *)self _loadAssetResource:v10 options:v13 completion:v7];
+  [(PISegmentationLoader *)self _loadAssetResource:v10 options:v13 completion:completionCopy];
 }
 
-- (void)_loadAssetResourceForLiveOriginalWithCompletion:(id)a3
+- (void)_loadAssetResourceForLiveOriginalWithCompletion:(id)completion
 {
   v4 = MEMORY[0x1E69C0748];
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_alloc_init(v4);
   [v6 setCanHandleAdjustmentData:&__block_literal_global_24484];
   [v6 setResultHandlerQueue:self->_queue];
-  [(PISegmentationLoader *)self _loadAssetResource:6 options:v6 completion:v5];
+  [(PISegmentationLoader *)self _loadAssetResource:6 options:v6 completion:completionCopy];
 }
 
-- (void)_loadFullSizeResource:(id)a3 completion:(id)a4
+- (void)_loadFullSizeResource:(id)resource completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 resource];
-  if (v8 && (v9 = v8, [v6 resource], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isProxyOnly"), v10, v9, (v11 & 1) == 0) || self->_isCancelled)
+  resourceCopy = resource;
+  completionCopy = completion;
+  resource = [resourceCopy resource];
+  if (resource && (v9 = resource, [resourceCopy resource], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isProxyOnly"), v10, v9, (v11 & 1) == 0) || self->_isCancelled)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -4841,8 +4841,8 @@ LABEL_13:
     v12[1] = 3221225472;
     v12[2] = __57__PISegmentationLoader__loadFullSizeResource_completion___block_invoke;
     v12[3] = &unk_1E82AC008;
-    v13 = v6;
-    v14 = v7;
+    v13 = resourceCopy;
+    v14 = completionCopy;
     [(PISegmentationLoader *)self _loadAssetResourceForProxy:0 completion:v12];
   }
 }
@@ -4882,15 +4882,15 @@ void __57__PISegmentationLoader__loadFullSizeResource_completion___block_invoke(
   }
 }
 
-- (void)_loadProxyResource:(id)a3 completion:(id)a4
+- (void)_loadProxyResource:(id)resource completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 resource];
+  resourceCopy = resource;
+  completionCopy = completion;
+  resource = [resourceCopy resource];
 
-  if (v8 || self->_isCancelled)
+  if (resource || self->_isCancelled)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -4899,8 +4899,8 @@ void __57__PISegmentationLoader__loadFullSizeResource_completion___block_invoke(
     v9[1] = 3221225472;
     v9[2] = __54__PISegmentationLoader__loadProxyResource_completion___block_invoke;
     v9[3] = &unk_1E82AC008;
-    v10 = v6;
-    v11 = v7;
+    v10 = resourceCopy;
+    v11 = completionCopy;
     [(PISegmentationLoader *)self _loadAssetResourceForProxy:1 completion:v9];
   }
 }
@@ -4918,46 +4918,46 @@ void __54__PISegmentationLoader__loadProxyResource_completion___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_loadFinalResource:(id)a3 completion:(id)a4
+- (void)_loadFinalResource:(id)resource completion:(id)completion
 {
-  v9 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  completionCopy = completion;
   if ([(PISegmentationLoader *)self preferFullResolutionResource])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PISegmentationLoader.m" lineNumber:683 description:@"Item already has full resolution resource loaded."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PISegmentationLoader.m" lineNumber:683 description:@"Item already has full resolution resource loaded."];
   }
 
   else
   {
-    [(PISegmentationLoader *)self _loadFullSizeResource:v9 completion:v7];
+    [(PISegmentationLoader *)self _loadFullSizeResource:resourceCopy completion:completionCopy];
   }
 }
 
-- (void)_loadFirstPreferredResource:(id)a3 completion:(id)a4
+- (void)_loadFirstPreferredResource:(id)resource completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  resourceCopy = resource;
   if ([(PISegmentationLoader *)self preferFullResolutionResource])
   {
-    [(PISegmentationLoader *)self _loadFullSizeResource:v7 completion:v6];
+    [(PISegmentationLoader *)self _loadFullSizeResource:resourceCopy completion:completionCopy];
   }
 
   else
   {
-    [(PISegmentationLoader *)self _loadProxyResource:v7 completion:v6];
+    [(PISegmentationLoader *)self _loadProxyResource:resourceCopy completion:completionCopy];
   }
 }
 
-- (void)_loadLiveOriginalResource:(id)a3 completion:(id)a4
+- (void)_loadLiveOriginalResource:(id)resource completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 livePhotoResource];
+  resourceCopy = resource;
+  completionCopy = completion;
+  livePhotoResource = [resourceCopy livePhotoResource];
 
-  if (v8 || self->_isCancelled)
+  if (livePhotoResource || self->_isCancelled)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -4966,8 +4966,8 @@ void __54__PISegmentationLoader__loadProxyResource_completion___block_invoke(uin
     v9[1] = 3221225472;
     v9[2] = __61__PISegmentationLoader__loadLiveOriginalResource_completion___block_invoke;
     v9[3] = &unk_1E82AC008;
-    v10 = v6;
-    v11 = v7;
+    v10 = resourceCopy;
+    v11 = completionCopy;
     [(PISegmentationLoader *)self _loadAssetResourceForLiveOriginalWithCompletion:v9];
   }
 }
@@ -4984,14 +4984,14 @@ void __61__PISegmentationLoader__loadLiveOriginalResource_completion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_abort:(id)a3
+- (void)_abort:(id)_abort
 {
-  v5 = a3;
+  _abortCopy = _abort;
   p_loadingError = &self->_loadingError;
   if (!self->_loadingError)
   {
-    v7 = v5;
-    objc_storeStrong(p_loadingError, a3);
+    v7 = _abortCopy;
+    objc_storeStrong(p_loadingError, _abort);
     if (self->_loadRequestID)
     {
       [(PFParallaxAsset *)self->_asset cancelParallaxResourceRequest:?];
@@ -5023,10 +5023,10 @@ void __61__PISegmentationLoader__loadLiveOriginalResource_completion___block_inv
     }
 
     p_loadingError = [(NURenderContext *)self->_renderContext cancelAllRequests];
-    v5 = v7;
+    _abortCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_loadingError, v5);
+  MEMORY[0x1EEE66BB8](p_loadingError, _abortCopy);
 }
 
 - (void)cancel
@@ -5052,15 +5052,15 @@ void __61__PISegmentationLoader__loadLiveOriginalResource_completion___block_inv
   dispatch_sync(queue, block);
 }
 
-- (id)_computeDefaultLayoutForItem:(id)a3 error:(id *)a4
+- (id)_computeDefaultLayoutForItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   v7 = [PIPosterLayoutRequest alloc];
-  v8 = [v6 composition];
-  v9 = [(NURenderRequest *)v7 initWithComposition:v8];
+  composition = [itemCopy composition];
+  v9 = [(NURenderRequest *)v7 initWithComposition:composition];
 
-  v10 = [(PISegmentationLoader *)self layoutConfiguration];
-  [(PIPosterLayoutRequest *)v9 setLayoutConfiguration:v10];
+  layoutConfiguration = [(PISegmentationLoader *)self layoutConfiguration];
+  [(PIPosterLayoutRequest *)v9 setLayoutConfiguration:layoutConfiguration];
 
   [(PIPosterLayoutRequest *)v9 setLayoutRegions:self->_asset];
   [(PIPosterLayoutRequest *)v9 setSegmentationClassification:[(PISegmentationLoader *)self classification]];
@@ -5097,7 +5097,7 @@ void __61__PISegmentationLoader__loadLiveOriginalResource_completion___block_inv
   v13 = v27[5];
   if (!v13)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v13 = v27[5];
   }
 
@@ -5134,25 +5134,25 @@ void __59__PISegmentationLoader__computeDefaultLayoutForItem_error___block_invok
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_handlePartialItem:(id)a3 loadingState:(unint64_t)a4
+- (void)_handlePartialItem:(id)item loadingState:(unint64_t)state
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PISegmentationLoader *)self loadingHandler];
-  if (v7)
+  itemCopy = item;
+  loadingHandler = [(PISegmentationLoader *)self loadingHandler];
+  if (loadingHandler)
   {
-    v8 = [v6 loadingState];
-    v9 = a4 == 128 ? v8 | 0x80 : v8 & 0x80 | a4;
-    [v6 setLoadingState:v9];
-    v10 = [v6 defaultLayout];
+    loadingState = [itemCopy loadingState];
+    v9 = state == 128 ? loadingState | 0x80 : loadingState & 0x80 | state;
+    [itemCopy setLoadingState:v9];
+    defaultLayout = [itemCopy defaultLayout];
 
-    if (v10)
+    if (defaultLayout)
     {
       goto LABEL_6;
     }
 
     v27 = 0;
-    v14 = [(PISegmentationLoader *)self _computeDefaultLayoutForItem:v6 error:&v27];
+    v14 = [(PISegmentationLoader *)self _computeDefaultLayoutForItem:itemCopy error:&v27];
     v13 = v27;
     if (!v14)
     {
@@ -5173,8 +5173,8 @@ void __59__PISegmentationLoader__computeDefaultLayoutForItem_error___block_invok
     }
 
     v15 = objc_alloc(MEMORY[0x1E69B3AA8]);
-    v16 = [v6 composition];
-    v17 = [v15 initWithComposition:v16];
+    composition = [itemCopy composition];
+    v17 = [v15 initWithComposition:composition];
 
     v26 = 0;
     v18 = [v17 submitSynchronous:&v26];
@@ -5182,7 +5182,7 @@ void __59__PISegmentationLoader__computeDefaultLayoutForItem_error___block_invok
 
     if (v18)
     {
-      [v6 setDefaultLayout:v14];
+      [itemCopy setDefaultLayout:v14];
     }
 
     else
@@ -5204,14 +5204,14 @@ void __59__PISegmentationLoader__computeDefaultLayoutForItem_error___block_invok
     if (v18)
     {
 LABEL_6:
-      v11 = [v6 copy];
+      v11 = [itemCopy copy];
       loadingHandlerQueue = self->_loadingHandlerQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __56__PISegmentationLoader__handlePartialItem_loadingState___block_invoke;
       block[3] = &unk_1E82ABFB8;
       v23 = v11;
-      v24 = v7;
+      v24 = loadingHandler;
       v25 = v9;
       v13 = v11;
       dispatch_async(loadingHandlerQueue, block);
@@ -5221,10 +5221,10 @@ LABEL_7:
   }
 }
 
-- (void)_loadItem:(id)a3 completion:(id)a4
+- (void)_loadItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
   v9 = s_log_24360;
@@ -5241,7 +5241,7 @@ LABEL_7:
   v20[2] = __45__PISegmentationLoader__loadItem_completion___block_invoke;
   v20[3] = &unk_1E82ABEF0;
   v20[4] = self;
-  v12 = v6;
+  v12 = itemCopy;
   v21 = v12;
   v22 = v8;
   v13 = v8;
@@ -5252,10 +5252,10 @@ LABEL_7:
   v17[2] = __45__PISegmentationLoader__loadItem_completion___block_invoke_79;
   v17[3] = &unk_1E82ABF90;
   v18 = v12;
-  v19 = v7;
+  v19 = completionCopy;
   v17[4] = self;
   v15 = v12;
-  v16 = v7;
+  v16 = completionCopy;
   dispatch_group_notify(v13, queue, v17);
 }
 
@@ -5625,28 +5625,28 @@ void __45__PISegmentationLoader__loadItem_completion___block_invoke_77(uint64_t 
   v3 = +[PISegmentationContextInfo currentContextInfo];
   [v3 setSourceMode:{-[PISegmentationLoader sourceMode](self, "sourceMode")}];
   [v3 setSegmentationDisabled:{-[PISegmentationLoader disableSegmentation](self, "disableSegmentation")}];
-  v4 = [(PISegmentationLoader *)self layoutConfiguration];
-  [v3 setLayoutConfiguration:v4];
+  layoutConfiguration = [(PISegmentationLoader *)self layoutConfiguration];
+  [v3 setLayoutConfiguration:layoutConfiguration];
 
   [v3 setRole:{-[PISegmentationLoader role](self, "role")}];
 
   return v3;
 }
 
-- (void)_load:(id)a3
+- (void)_load:(id)_load
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _loadCopy = _load;
   self->_isLoading = 1;
-  v5 = [(PISegmentationLoader *)self layoutConfiguration];
+  layoutConfiguration = [(PISegmentationLoader *)self layoutConfiguration];
 
-  if (!v5)
+  if (!layoutConfiguration)
   {
     v6 = +[PIGlobalSettings globalSettings];
-    v7 = [v6 parallaxLayoutConfigurationOverride];
+    parallaxLayoutConfigurationOverride = [v6 parallaxLayoutConfigurationOverride];
 
     v8 = MEMORY[0x1E69B3D78];
-    if (v7)
+    if (parallaxLayoutConfigurationOverride)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -5658,16 +5658,16 @@ void __45__PISegmentationLoader__loadItem_completion___block_invoke_77(uint64_t 
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = parallaxLayoutConfigurationOverride;
         _os_log_impl(&dword_1C7694000, v10, OS_LOG_TYPE_DEFAULT, "Warning: PISegmentationLoader layout configuration unspecified! Using override layout configuration '%{public}@'", &v19, 0xCu);
       }
 
-      v11 = [MEMORY[0x1E69C0938] configurationWithDeviceName:v7];
+      v11 = [MEMORY[0x1E69C0938] configurationWithDeviceName:parallaxLayoutConfigurationOverride];
       [(PISegmentationLoader *)self setLayoutConfiguration:v11];
 
-      v12 = [(PISegmentationLoader *)self layoutConfiguration];
+      layoutConfiguration2 = [(PISegmentationLoader *)self layoutConfiguration];
 
-      if (v12)
+      if (layoutConfiguration2)
       {
         goto LABEL_19;
       }
@@ -5681,11 +5681,11 @@ void __45__PISegmentationLoader__loadItem_completion___block_invoke_77(uint64_t 
       if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = v7;
+        v20 = parallaxLayoutConfigurationOverride;
         _os_log_impl(&dword_1C7694000, v13, OS_LOG_TYPE_DEFAULT, "Warning: Override layout configuration '%{public}@' not found, using generic fallback", &v19, 0xCu);
       }
 
-      v14 = [MEMORY[0x1E69C0938] genericConfiguration];
+      genericConfiguration = [MEMORY[0x1E69C0938] genericConfiguration];
     }
 
     else
@@ -5702,18 +5702,18 @@ void __45__PISegmentationLoader__loadItem_completion___block_invoke_77(uint64_t 
         _os_log_impl(&dword_1C7694000, v15, OS_LOG_TYPE_DEFAULT, "Warning: PISegmentationLoader layout configuration unspecified! Using the layout configuration matching this device", &v19, 2u);
       }
 
-      v14 = [MEMORY[0x1E69C0938] deviceConfiguration];
+      genericConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
     }
 
-    v16 = v14;
-    [(PISegmentationLoader *)self setLayoutConfiguration:v14];
+    v16 = genericConfiguration;
+    [(PISegmentationLoader *)self setLayoutConfiguration:genericConfiguration];
 
 LABEL_19:
   }
 
   v17 = self->_item;
-  v18 = [(PIParallaxSegmentationItem *)v17 contextInfo];
-  if (v18)
+  contextInfo = [(PIParallaxSegmentationItem *)v17 contextInfo];
+  if (contextInfo)
   {
     if (v17)
     {
@@ -5723,36 +5723,36 @@ LABEL_19:
 
   else
   {
-    v18 = [(PISegmentationLoader *)self currentContextInfo];
+    contextInfo = [(PISegmentationLoader *)self currentContextInfo];
     if (v17)
     {
       goto LABEL_26;
     }
   }
 
-  v17 = [(PISegmentationLoader *)self _tryLoadSegmentationItemFromCache:v18];
+  v17 = [(PISegmentationLoader *)self _tryLoadSegmentationItemFromCache:contextInfo];
   if (!v17)
   {
     v17 = objc_alloc_init(PIParallaxSegmentationItem);
-    [(PIParallaxSegmentationItem *)v17 setContextInfo:v18];
+    [(PIParallaxSegmentationItem *)v17 setContextInfo:contextInfo];
     [(PIParallaxSegmentationItem *)v17 setClassification:[(PISegmentationLoader *)self classification]];
   }
 
 LABEL_26:
-  [(PISegmentationLoader *)self _loadItem:v17 completion:v4];
+  [(PISegmentationLoader *)self _loadItem:v17 completion:_loadCopy];
 }
 
-- (void)_didLoad:(id)a3 completion:(id)a4
+- (void)_didLoad:(id)load completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  loadCopy = load;
+  completionCopy = completion;
   self->_isLoading = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__PISegmentationLoader__didLoad_completion___block_invoke;
   v15[3] = &unk_1E82AC908;
   v15[4] = self;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v9 = MEMORY[0x1CCA61740](v15);
   v12 = v9;
@@ -5764,14 +5764,14 @@ LABEL_26:
 
   else
   {
-    if (!v6)
+    if (!loadCopy)
     {
       (*(v9 + 16))(v9, 0, self->_loadingError, v10, v11);
       goto LABEL_6;
     }
 
     v13 = *(v9 + 16);
-    v14 = v6;
+    v14 = loadCopy;
   }
 
   v13(v9, v14, 0, v10, v11);
@@ -5796,17 +5796,17 @@ void __44__PISegmentationLoader__didLoad_completion___block_invoke(uint64_t a1, 
   dispatch_async(v7, block);
 }
 
-- (void)loadSegmentationItemWithCompletion:(id)a3
+- (void)loadSegmentationItemWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invoke;
   v7[3] = &unk_1E82ABEA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -5849,9 +5849,9 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 - (BOOL)_shouldEnableSpatialPhotoByDefault
 {
   v2 = +[PIGlobalSettings globalSettings];
-  v3 = [v2 forceEnableSpatialPhoto];
+  forceEnableSpatialPhoto = [v2 forceEnableSpatialPhoto];
 
-  if (v3)
+  if (forceEnableSpatialPhoto)
   {
     LOBYTE(IsSpatialPhotoEnabled) = 1;
   }
@@ -5872,9 +5872,9 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 - (BOOL)_shouldEnableSettlingEffectByDefault
 {
   v2 = +[PIGlobalSettings globalSettings];
-  v3 = [v2 forceEnableSettlingEffect];
+  forceEnableSettlingEffect = [v2 forceEnableSettlingEffect];
 
-  if (v3)
+  if (forceEnableSettlingEffect)
   {
     return 1;
   }
@@ -5885,17 +5885,17 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 - (BOOL)_shouldEnableSegmentationByDefault
 {
   v2 = +[PIGlobalSettings globalSettings];
-  v3 = [v2 forceEnableSegmentation];
+  forceEnableSegmentation = [v2 forceEnableSegmentation];
 
-  if (v3)
+  if (forceEnableSegmentation)
   {
     return 1;
   }
 
   v5 = +[PIGlobalSettings globalSettings];
-  v6 = [v5 disableSegmentation];
+  disableSegmentation = [v5 disableSegmentation];
 
-  if (v6)
+  if (disableSegmentation)
   {
     return 0;
   }
@@ -5903,12 +5903,12 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
   return MEMORY[0x1EEE299C8]();
 }
 
-- (PISegmentationLoader)initWithSegmentationItem:(id)a3 parallaxAsset:(id)a4
+- (PISegmentationLoader)initWithSegmentationItem:(id)item parallaxAsset:(id)asset
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  itemCopy = item;
+  assetCopy = asset;
+  if (!itemCopy)
   {
     v16 = NUAssertLogger_24364();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -5930,8 +5930,8 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
         v24 = dispatch_get_specific(*v18);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v24;
         v31 = 2114;
@@ -5942,8 +5942,8 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v23;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -5952,34 +5952,34 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
     _NUAssertFailHandler();
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = assetCopy;
+  if (!assetCopy)
   {
     v9 = objc_alloc_init(_PISegmentationNullAsset);
   }
 
   v10 = [(PISegmentationLoader *)self initWithParallaxAsset:v9];
-  [v7 setSegmentationDataURL:0];
-  objc_storeStrong(&v10->_item, a3);
-  v11 = [v7 contextInfo];
-  v12 = v11;
-  if (v11)
+  [itemCopy setSegmentationDataURL:0];
+  objc_storeStrong(&v10->_item, item);
+  contextInfo = [itemCopy contextInfo];
+  v12 = contextInfo;
+  if (contextInfo)
   {
-    v10->_sourceMode = [v11 sourceMode];
+    v10->_sourceMode = [contextInfo sourceMode];
     v10->_disableSegmentation = [v12 segmentationDisabled];
-    v13 = [v12 layoutConfiguration];
+    layoutConfiguration = [v12 layoutConfiguration];
     layoutConfiguration = v10->_layoutConfiguration;
-    v10->_layoutConfiguration = v13;
+    v10->_layoutConfiguration = layoutConfiguration;
   }
 
   return v10;
 }
 
-- (PISegmentationLoader)initWithParallaxAsset:(id)a3
+- (PISegmentationLoader)initWithParallaxAsset:(id)asset
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v18 = NUAssertLogger_24364();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -6001,8 +6001,8 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
         v26 = dispatch_get_specific(*v20);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v26;
         v34 = 2114;
@@ -6013,8 +6013,8 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v25;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -6023,7 +6023,7 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = assetCopy;
   v31.receiver = self;
   v31.super_class = PISegmentationLoader;
   v6 = [(PISegmentationLoader *)&v31 init];
@@ -6056,36 +6056,36 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
 
 + (BOOL)currentDeviceSupportsSettlingEffect
 {
-  v2 = [MEMORY[0x1E69B3BF8] currentPlatform];
-  v3 = [v2 mainDevice];
+  currentPlatform = [MEMORY[0x1E69B3BF8] currentPlatform];
+  mainDevice = [currentPlatform mainDevice];
 
-  LOBYTE(v2) = [v3 family] > 4;
-  return v2;
+  LOBYTE(currentPlatform) = [mainDevice family] > 4;
+  return currentPlatform;
 }
 
-+ (void)loadSpatialPhotoForSegmentationItem:(id)a3 asset:(id)a4 completion:(id)a5
++ (void)loadSpatialPhotoForSegmentationItem:(id)item asset:(id)asset completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  assetCopy = asset;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    v10 = itemCopy;
     v11 = objc_opt_class();
     if (v10)
     {
       if (objc_opt_isKindOfClass())
       {
-        v12 = [[PISegmentationLoader alloc] initWithSegmentationItem:v10 parallaxAsset:v8];
+        v12 = [[PISegmentationLoader alloc] initWithSegmentationItem:v10 parallaxAsset:assetCopy];
         v13 = dispatch_group_create();
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __77__PISegmentationLoader_loadSpatialPhotoForSegmentationItem_asset_completion___block_invoke;
         v19[3] = &unk_1E82AC488;
         v20 = v10;
-        v21 = v9;
+        v21 = completionCopy;
         v14 = v10;
         [(PISegmentationLoader *)v12 _loadSpatialPhoto:v14 layoutGroup:v13 completion:v19];
 
@@ -6123,8 +6123,8 @@ void __59__PISegmentationLoader_loadSegmentationItemWithCompletion___block_invok
     _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Failed to load spatial photo: segmentationItem is Unsupported class: %{public}@", buf, 0xCu);
   }
 
-  v12 = [MEMORY[0x1E69B3A48] invalidError:@"Unsupported class" object:v7];
-  (*(v9 + 2))(v9, 0, v12);
+  v12 = [MEMORY[0x1E69B3A48] invalidError:@"Unsupported class" object:itemCopy];
+  (*(completionCopy + 2))(completionCopy, 0, v12);
 LABEL_10:
 }
 
@@ -6227,13 +6227,13 @@ LABEL_22:
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)reloadSegmentationItemFromWallpaperURL:(id)a3 asset:(id)a4 completion:(id)a5
++ (id)reloadSegmentationItemFromWallpaperURL:(id)l asset:(id)asset completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  specific = a4;
-  v11 = a5;
-  if (!v9)
+  lCopy = l;
+  specific = asset;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v22 = NUAssertLogger_24364();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -6244,34 +6244,34 @@ LABEL_22:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v12 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v9 = NUAssertLogger_24364();
-    v24 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
+    lCopy = NUAssertLogger_24364();
+    v24 = os_log_type_enabled(lCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v24)
       {
-        specific = dispatch_get_specific(*v12);
+        specific = dispatch_get_specific(*callStackSymbols);
         v25 = MEMORY[0x1E696AF00];
-        a1 = specific;
-        v12 = [v25 callStackSymbols];
-        v5 = [v12 componentsJoinedByString:@"\n"];
+        self = specific;
+        callStackSymbols = [v25 callStackSymbols];
+        v5 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = specific;
         v33 = 2114;
         v34 = v5;
-        _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, lCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v24)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v32 = v12;
-      _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v32 = callStackSymbols;
+      _os_log_error_impl(&dword_1C7694000, lCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     v26 = "wallpaperURL != nil";
@@ -6279,11 +6279,11 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v12 = v11;
+  callStackSymbols = completionCopy;
   v30 = 0;
-  a1 = [a1 _loadSegmentationItemFromWallpaperURL:v9 error:&v30];
+  self = [self _loadSegmentationItemFromWallpaperURL:lCopy error:&v30];
   v5 = v30;
-  if (!a1)
+  if (!self)
   {
     if (*MEMORY[0x1E69B3D78] == -1)
     {
@@ -6296,8 +6296,8 @@ LABEL_6:
         _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Failed to load segmentation item from wallpaper: %{public}@", buf, 0xCu);
       }
 
-      v14 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load segmentation item from wallpaper" object:v9 underlyingError:{v5, v26}];
-      (*(v12 + 16))(v12, 0, v14);
+      v14 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load segmentation item from wallpaper" object:lCopy underlyingError:{v5, v26}];
+      (*(callStackSymbols + 16))(callStackSymbols, 0, v14);
 
       goto LABEL_9;
     }
@@ -6307,22 +6307,22 @@ LABEL_24:
     goto LABEL_6;
   }
 
-  if ([a1 isComplete])
+  if ([self isComplete])
   {
-    (*(v12 + 16))(v12, a1, 0);
+    (*(callStackSymbols + 16))(callStackSymbols, self, 0);
 LABEL_9:
     v15 = 0;
     goto LABEL_13;
   }
 
-  v16 = [[PISegmentationLoader alloc] initWithSegmentationItem:a1 parallaxAsset:specific];
+  v16 = [[PISegmentationLoader alloc] initWithSegmentationItem:self parallaxAsset:specific];
   if (!specific)
   {
-    v17 = [a1 resource];
-    -[PISegmentationLoader setLoadFirstResourceOnly:](v16, "setLoadFirstResourceOnly:", [v17 isProxyOnly]);
+    resource = [self resource];
+    -[PISegmentationLoader setLoadFirstResourceOnly:](v16, "setLoadFirstResourceOnly:", [resource isProxyOnly]);
 
-    v18 = [a1 livePhotoResource];
-    [(PISegmentationLoader *)v16 setDisableSettlingEffect:v18 == 0];
+    livePhotoResource = [self livePhotoResource];
+    [(PISegmentationLoader *)v16 setDisableSettlingEffect:livePhotoResource == 0];
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -6331,7 +6331,7 @@ LABEL_9:
   v27[3] = &unk_1E82AC908;
   v19 = v16;
   v28 = v19;
-  v29 = v12;
+  v29 = callStackSymbols;
   [(PISegmentationLoader *)v19 loadSegmentationItemWithCompletion:v27];
   v20 = v29;
   v15 = v19;
@@ -6341,13 +6341,13 @@ LABEL_13:
   return v15;
 }
 
-+ (void)_renderPreviewLayerStackFromWallpaperURL:(id)a3 styleCategory:(id)a4 completion:(id)a5
++ (void)_renderPreviewLayerStackFromWallpaperURL:(id)l styleCategory:(id)category completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  categoryCopy = category;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v14 = NUAssertLogger_24364();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -6369,8 +6369,8 @@ LABEL_13:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v22;
         v33 = 2114;
@@ -6381,8 +6381,8 @@ LABEL_13:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -6395,12 +6395,12 @@ LABEL_13:
   v27[1] = 3221225472;
   v27[2] = __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCategory_completion___block_invoke;
   v27[3] = &unk_1E82AC700;
-  v29 = v10;
-  v30 = a1;
-  v28 = v9;
-  v11 = v10;
-  v12 = v9;
-  v13 = [a1 reloadSegmentationItemFromWallpaperURL:v8 asset:0 completion:v27];
+  v29 = completionCopy;
+  selfCopy = self;
+  v28 = categoryCopy;
+  v11 = completionCopy;
+  v12 = categoryCopy;
+  v13 = [self reloadSegmentationItemFromWallpaperURL:lCopy asset:0 completion:v27];
 }
 
 void __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCategory_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6496,13 +6496,13 @@ void __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCa
   v7();
 }
 
-+ (void)renderPreviewLayerStackFromWallpaperURL:(id)a3 styleCategory:(id)a4 completion:(id)a5
++ (void)renderPreviewLayerStackFromWallpaperURL:(id)l styleCategory:(id)category completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  categoryCopy = category;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v13 = NUAssertLogger_24364();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -6524,8 +6524,8 @@ void __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCa
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v21;
         v31 = 2114;
@@ -6536,8 +6536,8 @@ void __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCa
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -6546,16 +6546,16 @@ void __90__PISegmentationLoader__renderPreviewLayerStackFromWallpaperURL_styleCa
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
-  [a1 ensureResources];
+  v11 = completionCopy;
+  [self ensureResources];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCategory_completion___block_invoke;
   v26[3] = &unk_1E82AC438;
   v27 = v11;
-  v28 = a1;
+  selfCopy = self;
   v12 = v11;
-  [a1 _renderPreviewLayerStackFromWallpaperURL:v8 styleCategory:v9 completion:v26];
+  [self _renderPreviewLayerStackFromWallpaperURL:lCopy styleCategory:categoryCopy completion:v26];
 }
 
 void __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCategory_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -6569,11 +6569,11 @@ void __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCat
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)loadStyleFromWallpaperURL:(id)a3 error:(id *)specific
++ (id)loadStyleFromWallpaperURL:(id)l error:(id *)specific
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
     v21 = NUAssertLogger_24364();
     v13 = "wallpaperURL != nil";
@@ -6585,7 +6585,7 @@ void __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCat
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v12 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v8 = NUAssertLogger_24364();
     v23 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -6593,11 +6593,11 @@ void __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCat
     {
       if (v23)
       {
-        specific = dispatch_get_specific(*v12);
+        specific = dispatch_get_specific(*callStackSymbols);
         v24 = MEMORY[0x1E696AF00];
         v4 = specific;
-        v12 = [v24 callStackSymbols];
-        v5 = [v12 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v5 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = specific;
         v30 = 2114;
@@ -6609,9 +6609,9 @@ void __89__PISegmentationLoader_renderPreviewLayerStackFromWallpaperURL_styleCat
     else if (v23)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v29 = v12;
+      v29 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -6622,7 +6622,7 @@ LABEL_30:
     goto LABEL_14;
   }
 
-  v8 = v7;
+  v8 = lCopy;
   v9 = s_log_24360;
   v10 = v9;
   v11 = s_signpost_24361;
@@ -6632,9 +6632,9 @@ LABEL_30:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PISegmentationLoader.style.read", "", buf, 2u);
   }
 
-  v12 = [v8 URLByAppendingPathComponent:@"style.plist"];
+  callStackSymbols = [v8 URLByAppendingPathComponent:@"style.plist"];
   v27 = 0;
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v12 error:&v27];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:callStackSymbols error:&v27];
   v5 = v27;
   if (v4)
   {
@@ -6696,11 +6696,11 @@ LABEL_17:
   return v13;
 }
 
-+ (id)loadCompoundLayerStackFromWallpaperURL:(id)a3 options:(unint64_t)a4 error:(id *)specific
++ (id)loadCompoundLayerStackFromWallpaperURL:(id)l options:(unint64_t)options error:(id *)specific
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (!v9)
+  lCopy = l;
+  if (!lCopy)
   {
     v21 = NUAssertLogger_24364();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -6711,7 +6711,7 @@ LABEL_17:
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v10 = NUAssertLogger_24364();
     v23 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
@@ -6719,11 +6719,11 @@ LABEL_17:
     {
       if (v23)
       {
-        specific = dispatch_get_specific(*v14);
+        specific = dispatch_get_specific(*callStackSymbols);
         v24 = MEMORY[0x1E696AF00];
         v5 = specific;
-        v14 = [v24 callStackSymbols];
-        v6 = [v14 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v6 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = specific;
         v29 = 2114;
@@ -6735,9 +6735,9 @@ LABEL_17:
     else if (v23)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v28 = v14;
+      v28 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -6748,7 +6748,7 @@ LABEL_27:
     goto LABEL_11;
   }
 
-  v10 = v9;
+  v10 = lCopy;
   v11 = s_log_24360;
   v12 = v11;
   v13 = s_signpost_24361;
@@ -6760,7 +6760,7 @@ LABEL_27:
 
   v5 = [v10 URLByAppendingPathComponent:@"output.layerStack"];
   v26 = 0;
-  v14 = [MEMORY[0x1E69C0780] loadCompoundLayerStackFromURL:v5 options:a4 error:&v26];
+  callStackSymbols = [MEMORY[0x1E69C0780] loadCompoundLayerStackFromURL:v5 options:options error:&v26];
   v6 = v26;
   v15 = s_log_24360;
   v16 = v15;
@@ -6771,9 +6771,9 @@ LABEL_27:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v16, OS_SIGNPOST_INTERVAL_END, v17, "PISegmentationLoader.layerStack.read", "", buf, 2u);
   }
 
-  if (v14)
+  if (callStackSymbols)
   {
-    v18 = v14;
+    v18 = callStackSymbols;
     goto LABEL_14;
   }
 
@@ -6805,16 +6805,16 @@ LABEL_13:
 
 LABEL_14:
 
-  return v14;
+  return callStackSymbols;
 }
 
-+ (id)_loadSegmentationItemFromWallpaperURL:(id)a3 error:(id *)a4
++ (id)_loadSegmentationItemFromWallpaperURL:(id)l error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 URLByAppendingPathComponent:@"input.segmentation"];
+  lCopy = l;
+  v7 = [lCopy URLByAppendingPathComponent:@"input.segmentation"];
   v13 = 0;
-  v8 = [a1 _loadSegmentationItemFromURL:v7 error:&v13];
+  v8 = [self _loadSegmentationItemFromURL:v7 error:&v13];
   v9 = v13;
   if (v8)
   {
@@ -6830,7 +6830,7 @@ LABEL_14:
   v11 = *MEMORY[0x1E69B3D80];
   if (!os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -6841,10 +6841,10 @@ LABEL_14:
   *buf = 138543362;
   v15 = v9;
   _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Failed to load segmentation item from wallpaper: %{public}@", buf, 0xCu);
-  if (a4)
+  if (error)
   {
 LABEL_7:
-    *a4 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load segmentation item from wallpaper" object:v6 underlyingError:v9];
+    *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to load segmentation item from wallpaper" object:lCopy underlyingError:v9];
   }
 
 LABEL_8:
@@ -6852,11 +6852,11 @@ LABEL_8:
   return v8;
 }
 
-+ (id)loadSegmentationItemFromWallpaperURL:(id)a3 error:(id *)a4
++ (id)loadSegmentationItemFromWallpaperURL:(id)l error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v12 = NUAssertLogger_24364();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -6878,8 +6878,8 @@ LABEL_8:
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v20;
         v27 = 2114;
@@ -6890,8 +6890,8 @@ LABEL_8:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -6900,8 +6900,8 @@ LABEL_8:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [a1 _loadSegmentationItemFromWallpaperURL:v6 error:a4];
+  v7 = lCopy;
+  v8 = [self _loadSegmentationItemFromWallpaperURL:lCopy error:error];
   v9 = v8;
   if (!v8)
   {
@@ -6914,10 +6914,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Segmentation item from wallpaper is incomplete" object:0];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -6931,72 +6931,72 @@ LABEL_8:
   return v10;
 }
 
-+ (id)effectiveLayoutForSegmentationItem:(id)a3 editConfiguration:(id)a4 layerStackOptions:(unint64_t)a5
++ (id)effectiveLayoutForSegmentationItem:(id)item editConfiguration:(id)configuration layerStackOptions:(unint64_t)options
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  itemCopy = item;
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v9 = [v7 originalLayout];
-    if ((v5 & 0x100) != 0 && [v7 isSpatialPhotoAvailable] && objc_msgSend(v8, "isSpatialPhotoEnabled"))
+    originalLayout = [itemCopy originalLayout];
+    if ((optionsCopy & 0x100) != 0 && [itemCopy isSpatialPhotoAvailable] && objc_msgSend(configurationCopy, "isSpatialPhotoEnabled"))
     {
-      v10 = [v7 spatialPhotoLayout];
+      spatialPhotoLayout = [itemCopy spatialPhotoLayout];
 
-      v9 = v10;
+      originalLayout = spatialPhotoLayout;
     }
 
-    [v8 normalizedVisibleFrame];
+    [configurationCopy normalizedVisibleFrame];
     if (!CGRectIsNull(v51))
     {
-      [v8 normalizedVisibleFrame];
+      [configurationCopy normalizedVisibleFrame];
       NURectFlipYOrigin();
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      [v8 normalizedLandscapeVisibleFrame];
+      [configurationCopy normalizedLandscapeVisibleFrame];
       NURectFlipYOrigin();
-      v23 = [v9 layoutByUpdatingNormalizedPortraitVisibleFrame:v12 landscapeVisibleFrame:{v14, v16, v18, v19, v20, v21, v22}];
+      v23 = [originalLayout layoutByUpdatingNormalizedPortraitVisibleFrame:v12 landscapeVisibleFrame:{v14, v16, v18, v19, v20, v21, v22}];
 
-      [v8 normalizedAdaptiveVisibleFrame];
+      [configurationCopy normalizedAdaptiveVisibleFrame];
       NURectFlipYOrigin();
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v31 = v30;
-      [v8 normalizedLandscapeAdaptiveVisibleFrame];
+      [configurationCopy normalizedLandscapeAdaptiveVisibleFrame];
       NURectFlipYOrigin();
       v36 = [v23 layoutByUpdatingNormalizedPortraitAdaptiveVisibleFrame:v25 landscapeAdaptiveVisibleFrame:{v27, v29, v31, v32, v33, v34, v35}];
 
-      [v8 normalizedAdaptiveTimeFrame];
+      [configurationCopy normalizedAdaptiveTimeFrame];
       NURectFlipYOrigin();
       v38 = v37;
       v40 = v39;
       v42 = v41;
       v44 = v43;
-      [v8 normalizedLandscapeAdaptiveTimeFrame];
+      [configurationCopy normalizedLandscapeAdaptiveTimeFrame];
       NURectFlipYOrigin();
-      v9 = [v36 layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:v38 landscapeAdaptiveTimeFrame:{v40, v42, v44, v45, v46, v47, v48}];
+      originalLayout = [v36 layoutByUpdatingNormalizedPortraitAdaptiveTimeFrame:v38 landscapeAdaptiveTimeFrame:{v40, v42, v44, v45, v46, v47, v48}];
     }
   }
 
   else
   {
-    v9 = 0;
+    originalLayout = 0;
   }
 
-  return v9;
+  return originalLayout;
 }
 
-+ (BOOL)saveSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 toWallpaperURL:(id)a6 error:(id *)a7
++ (BOOL)saveSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style toWallpaperURL:(id)l error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v15)
+  itemCopy = item;
+  stackCopy = stack;
+  styleCopy = style;
+  lCopy = l;
+  if (!lCopy)
   {
     v51 = NUAssertLogger_24364();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -7009,22 +7009,22 @@ LABEL_8:
 
     v53 = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v12 = NUAssertLogger_24364();
-    v54 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
+    itemCopy = NUAssertLogger_24364();
+    v54 = os_log_type_enabled(itemCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v54)
       {
         specific = dispatch_get_specific(*v53);
         v56 = MEMORY[0x1E696AF00];
-        a5 = specific;
-        v57 = [v56 callStackSymbols];
-        v7 = [v57 componentsJoinedByString:@"\n"];
+        style = specific;
+        callStackSymbols = [v56 callStackSymbols];
+        defaultManager = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = specific;
         v69 = 2114;
-        v70 = v7;
-        _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        v70 = defaultManager;
+        _os_log_error_impl(&dword_1C7694000, itemCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
@@ -7034,7 +7034,7 @@ LABEL_8:
       v55 = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v55;
-      _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_1C7694000, itemCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     v58 = "wallpaperURL != nil";
@@ -7048,34 +7048,34 @@ LABEL_28:
       *buf = 138543362;
       v68 = specific;
       _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Failed to create wallpaper directory: %{public}@", buf, 0xCu);
-      if (!a7)
+      if (!error)
       {
         goto LABEL_43;
       }
     }
 
-    else if (!a7)
+    else if (!error)
     {
 LABEL_43:
       v41 = 0;
       goto LABEL_51;
     }
 
-    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create wallpaper directory" object:a5 underlyingError:{specific, v58}];
-    *a7 = v41 = 0;
+    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to create wallpaper directory" object:style underlyingError:{specific, v58}];
+    *error = v41 = 0;
     goto LABEL_51;
   }
 
-  a5 = v15;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [a5 path];
-  v17 = [v7 fileExistsAtPath:v16];
+  style = lCopy;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [style path];
+  v17 = [defaultManager fileExistsAtPath:path];
 
   if (v17)
   {
-    v62 = a7;
+    errorCopy2 = error;
     v18 = 0;
-    if (!v12)
+    if (!itemCopy)
     {
       goto LABEL_9;
     }
@@ -7084,7 +7084,7 @@ LABEL_43:
   }
 
   v66 = 0;
-  v19 = [v7 createDirectoryAtURL:a5 withIntermediateDirectories:0 attributes:0 error:&v66];
+  v19 = [defaultManager createDirectoryAtURL:style withIntermediateDirectories:0 attributes:0 error:&v66];
   v20 = v66;
   specific = v20;
   if ((v19 & 1) == 0)
@@ -7097,17 +7097,17 @@ LABEL_43:
     goto LABEL_68;
   }
 
-  v62 = a7;
+  errorCopy2 = error;
   v18 = v20;
-  if (!v12)
+  if (!itemCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_7:
-  v22 = [a5 URLByAppendingPathComponent:@"input.segmentation"];
+  v22 = [style URLByAppendingPathComponent:@"input.segmentation"];
   v65 = v18;
-  v23 = [PISegmentationLoader saveSegmentationItem:v12 toURL:v22 error:&v65];
+  v23 = [PISegmentationLoader saveSegmentationItem:itemCopy toURL:v22 error:&v65];
   specific = v65;
 
   if (!v23)
@@ -7117,27 +7117,27 @@ LABEL_7:
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_637);
     }
 
-    v43 = v62;
+    v43 = errorCopy2;
     v44 = *MEMORY[0x1E69B3D80];
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v68 = specific;
       _os_log_error_impl(&dword_1C7694000, v44, OS_LOG_TYPE_ERROR, "Failed to export segmentation item: %{public}@", buf, 0xCu);
-      if (!v62)
+      if (!errorCopy2)
       {
         goto LABEL_42;
       }
     }
 
-    else if (!v62)
+    else if (!errorCopy2)
     {
       goto LABEL_42;
     }
 
     v45 = MEMORY[0x1E69B3A48];
     v46 = @"Failed to export segmentation item";
-    v47 = v12;
+    v47 = itemCopy;
 LABEL_41:
     *v43 = [v45 errorWithCode:1 reason:v46 object:v47 underlyingError:specific];
     goto LABEL_42;
@@ -7145,8 +7145,8 @@ LABEL_41:
 
   v18 = specific;
 LABEL_9:
-  v61 = v14;
-  if (!v13)
+  v61 = styleCopy;
+  if (!stackCopy)
   {
     goto LABEL_18;
   }
@@ -7160,10 +7160,10 @@ LABEL_9:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v26, "PISegmentationLoader.layerStack.write", "", buf, 2u);
   }
 
-  v22 = [a5 URLByAppendingPathComponent:@"output.layerStack"];
+  v22 = [style URLByAppendingPathComponent:@"output.layerStack"];
   v64 = v18;
-  v27 = v13;
-  v28 = [MEMORY[0x1E69C0780] saveCompoundLayerStack:v13 toURL:v22 options:0xFFFFLL error:&v64];
+  v27 = stackCopy;
+  v28 = [MEMORY[0x1E69C0780] saveCompoundLayerStack:stackCopy toURL:v22 options:0xFFFFLL error:&v64];
   specific = v64;
 
   v29 = s_log_24360;
@@ -7177,21 +7177,21 @@ LABEL_9:
 
   if ((v28 & 1) == 0)
   {
-    v14 = v61;
-    v43 = v62;
+    styleCopy = v61;
+    v43 = errorCopy2;
     if (*MEMORY[0x1E69B3D78] != -1)
     {
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_637);
     }
 
-    v13 = v27;
+    stackCopy = v27;
     v48 = *MEMORY[0x1E69B3D80];
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v68 = specific;
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Failed to export layer stack: %{public}@", buf, 0xCu);
-      if (!v62)
+      if (!errorCopy2)
       {
         goto LABEL_42;
       }
@@ -7199,12 +7199,12 @@ LABEL_9:
       goto LABEL_40;
     }
 
-    if (v62)
+    if (errorCopy2)
     {
 LABEL_40:
       v45 = MEMORY[0x1E69B3A48];
       v46 = @"Failed to export layer stack";
-      v47 = v13;
+      v47 = stackCopy;
       goto LABEL_41;
     }
 
@@ -7214,17 +7214,17 @@ LABEL_42:
   }
 
   v18 = specific;
-  v13 = v27;
-  v14 = v61;
+  stackCopy = v27;
+  styleCopy = v61;
 LABEL_18:
-  if (!v14)
+  if (!styleCopy)
   {
     v41 = 1;
     specific = v18;
     goto LABEL_51;
   }
 
-  v60 = v13;
+  v60 = stackCopy;
   v32 = s_log_24360;
   v33 = v32;
   v34 = s_signpost_24361;
@@ -7234,8 +7234,8 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v33, OS_SIGNPOST_INTERVAL_BEGIN, v34, "PISegmentationLoader.style.write", "", buf, 2u);
   }
 
-  v35 = [a5 URLByAppendingPathComponent:@"style.plist"];
-  v36 = [MEMORY[0x1E69C0788] dictionaryWithStyle:v14];
+  v35 = [style URLByAppendingPathComponent:@"style.plist"];
+  v36 = [MEMORY[0x1E69C0788] dictionaryWithStyle:styleCopy];
   v63 = v18;
   v59 = v35;
   v37 = [v36 writeToURL:v35 error:&v63];
@@ -7258,47 +7258,47 @@ LABEL_18:
     }
 
     v49 = *MEMORY[0x1E69B3D80];
-    v14 = v61;
+    styleCopy = v61;
     if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v68 = specific;
       _os_log_error_impl(&dword_1C7694000, v49, OS_LOG_TYPE_ERROR, "Failed to export style: %{public}@", buf, 0xCu);
-      if (!v62)
+      if (!errorCopy2)
       {
         goto LABEL_50;
       }
     }
 
-    else if (!v62)
+    else if (!errorCopy2)
     {
 LABEL_50:
 
       v41 = 0;
-      v13 = v60;
+      stackCopy = v60;
       goto LABEL_51;
     }
 
-    *v62 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to export style" object:v61 underlyingError:specific];
+    *errorCopy2 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to export style" object:v61 underlyingError:specific];
     goto LABEL_50;
   }
 
   v41 = 1;
-  v13 = v60;
-  v14 = v61;
+  stackCopy = v60;
+  styleCopy = v61;
 LABEL_51:
 
   return v41;
 }
 
-+ (void)_saveSegmentationItem:(id)a3 compoundLayerStack:(id)a4 style:(id)a5 toWallpaperURL:(id)a6 completion:(id)a7
++ (void)_saveSegmentationItem:(id)item compoundLayerStack:(id)stack style:(id)style toWallpaperURL:(id)l completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  itemCopy = item;
+  stackCopy = stack;
+  styleCopy = style;
+  lCopy = l;
+  completionCopy = completion;
   v17 = s_log_24360;
   v18 = v17;
   v19 = s_signpost_24361;
@@ -7309,7 +7309,7 @@ LABEL_51:
   }
 
   v28 = 0;
-  v20 = [a1 saveSegmentationItem:v12 compoundLayerStack:v13 style:v14 toWallpaperURL:v15 error:&v28];
+  v20 = [self saveSegmentationItem:itemCopy compoundLayerStack:stackCopy style:styleCopy toWallpaperURL:lCopy error:&v28];
   v21 = v28;
   v22 = s_log_24360;
   v23 = v22;
@@ -7344,19 +7344,19 @@ LABEL_51:
     }
   }
 
-  (v16)[2](v16, v25);
+  (completionCopy)[2](completionCopy, v25);
 }
 
-+ (id)generateLayerStackForItem:(id)a3 style:(id)a4 layout:(id)a5 ignoreOriginalLayout:(BOOL)a6 options:(unint64_t)a7 enableSettlingEffect:(BOOL)a8 enableSpatialPhoto:(BOOL)a9 allowedLayoutStrategies:(unint64_t)a10 shouldRecalculateLayoutProperties:(BOOL)a11 useLegacyHeadroom:(BOOL)a12 userAdjustedVisibleFrame:(BOOL)a13 completion:(id)a14
++ (id)generateLayerStackForItem:(id)item style:(id)style layout:(id)layout ignoreOriginalLayout:(BOOL)originalLayout options:(unint64_t)options enableSettlingEffect:(BOOL)effect enableSpatialPhoto:(BOOL)photo allowedLayoutStrategies:(unint64_t)self0 shouldRecalculateLayoutProperties:(BOOL)self1 useLegacyHeadroom:(BOOL)self2 userAdjustedVisibleFrame:(BOOL)self3 completion:(id)self4
 {
-  v14 = a8;
-  v50 = a6;
+  effectCopy = effect;
+  originalLayoutCopy = originalLayout;
   v57 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a14;
-  if (!v18)
+  itemCopy = item;
+  styleCopy = style;
+  layoutCopy = layout;
+  completionCopy = completion;
+  if (!itemCopy)
   {
     v36 = NUAssertLogger_24364();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -7378,8 +7378,8 @@ LABEL_51:
         v44 = dispatch_get_specific(*v38);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v45 callStackSymbols];
+        v48 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v44;
         v55 = 2114;
@@ -7390,8 +7390,8 @@ LABEL_51:
 
     else if (v41)
     {
-      v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v43 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v43;
       _os_log_error_impl(&dword_1C7694000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -7400,26 +7400,26 @@ LABEL_51:
     _NUAssertFailHandler();
   }
 
-  v22 = v21;
-  if (!a7)
+  v22 = completionCopy;
+  if (!options)
   {
-    (*(v21 + 2))(v21, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     v23 = 0;
     goto LABEL_20;
   }
 
-  v49 = v21;
-  v23 = [[PIParallaxCompoundLayerStackRequest alloc] initWithSegmentationItem:v18];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setSettlingEffectEnabled:v14];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setSpatialPhotoEnabled:a9];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setForegroundLayerEnabled:(a7 & 0x200) == 0];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setAllowedLayoutStrategies:a10];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setShouldRecalculateLayoutProperties:a11];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setUserAdjustedVisibleFrame:a13];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setUseLegacyHeadroom:a12];
-  if (v19)
+  v49 = completionCopy;
+  v23 = [[PIParallaxCompoundLayerStackRequest alloc] initWithSegmentationItem:itemCopy];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setSettlingEffectEnabled:effectCopy];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setSpatialPhotoEnabled:photo];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setForegroundLayerEnabled:(options & 0x200) == 0];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setAllowedLayoutStrategies:strategies];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setShouldRecalculateLayoutProperties:properties];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setUserAdjustedVisibleFrame:frame];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setUseLegacyHeadroom:headroom];
+  if (styleCopy)
   {
-    v24 = [PIParallaxStyle styleWithBakedStyle:v19];
+    v24 = [PIParallaxStyle styleWithBakedStyle:styleCopy];
     [(PIParallaxCompoundLayerStackRequest *)v23 setStyle:v24];
   }
 
@@ -7428,24 +7428,24 @@ LABEL_51:
     [(PIParallaxCompoundLayerStackRequest *)v23 setStyle:0];
   }
 
-  if (!v20)
+  if (!layoutCopy)
   {
     [(PIParallaxCompoundLayerStackRequest *)v23 setUpdateInactiveFrame:1];
     goto LABEL_16;
   }
 
-  [(PIParallaxCompoundLayerStackRequest *)v23 setLayout:v20];
-  v25 = [v20 supportsBothOrientations];
-  v26 = [v20 portraitLayout];
-  [v26 inactiveFrame];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setLayout:layoutCopy];
+  supportsBothOrientations = [layoutCopy supportsBothOrientations];
+  portraitLayout = [layoutCopy portraitLayout];
+  [portraitLayout inactiveFrame];
   IsNull = CGRectIsNull(v59);
   v28 = IsNull;
-  if (v25)
+  if (supportsBothOrientations)
   {
     if (!IsNull)
     {
-      v30 = [v20 landscapeLayout];
-      [v30 inactiveFrame];
+      landscapeLayout = [layoutCopy landscapeLayout];
+      [landscapeLayout inactiveFrame];
       [(PIParallaxCompoundLayerStackRequest *)v23 setUpdateInactiveFrame:CGRectIsNull(v60)];
 
       goto LABEL_15;
@@ -7466,8 +7466,8 @@ LABEL_15:
 LABEL_16:
   [(PIParallaxCompoundLayerStackRequest *)v23 setUpdateClockAreaLuminance:1];
   [(PIParallaxCompoundLayerStackRequest *)v23 setUpdateClockZPosition:1];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setLayerStackOptions:a7];
-  [(PIParallaxCompoundLayerStackRequest *)v23 setIgnoreOriginalLayout:v50];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setLayerStackOptions:options];
+  [(PIParallaxCompoundLayerStackRequest *)v23 setIgnoreOriginalLayout:originalLayoutCopy];
   v31 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:1];
   [(NURenderRequest *)v23 setPriority:v31];
 
@@ -7534,16 +7534,16 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
   }
 }
 
-+ (id)saveSegmentationItem:(id)a3 layerStackOptions:(unint64_t)a4 configuration:(id)a5 style:(id)a6 layout:(id)a7 allowedLayoutStrategies:(unint64_t)a8 shouldRecalculateLayoutProperties:(BOOL)a9 shouldKeepSpecifiedStyle:(BOOL)a10 toWallpaperURL:(id)a11 completion:(id)a12
++ (id)saveSegmentationItem:(id)item layerStackOptions:(unint64_t)options configuration:(id)configuration style:(id)style layout:(id)layout allowedLayoutStrategies:(unint64_t)strategies shouldRecalculateLayoutProperties:(BOOL)properties shouldKeepSpecifiedStyle:(BOOL)self0 toWallpaperURL:(id)self1 completion:(id)self2
 {
   v80 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
-  v21 = a12;
-  if (!v16)
+  itemCopy = item;
+  configurationCopy = configuration;
+  styleCopy = style;
+  layoutCopy = layout;
+  lCopy = l;
+  completionCopy = completion;
+  if (!itemCopy)
   {
     v37 = NUAssertLogger_24364();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -7554,7 +7554,7 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v39 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v41 = NUAssertLogger_24364();
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_ERROR);
@@ -7562,11 +7562,11 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
     {
       if (v42)
       {
-        v50 = dispatch_get_specific(*v39);
+        v50 = dispatch_get_specific(*callStackSymbols);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v39 = [v51 callStackSymbols];
-        v53 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v51 callStackSymbols];
+        v53 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v77 = v50;
         v78 = 2114;
@@ -7577,10 +7577,10 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
 
     else if (v42)
     {
-      v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v77 = v39;
+      v77 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -7588,7 +7588,7 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
     goto LABEL_40;
   }
 
-  if (!v20)
+  if (!lCopy)
   {
     v44 = NUAssertLogger_24364();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -7599,7 +7599,7 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
       _os_log_error_impl(&dword_1C7694000, v44, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v39 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v46 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v41 = NUAssertLogger_24364();
     v47 = os_log_type_enabled(v41, OS_LOG_TYPE_ERROR);
@@ -7607,8 +7607,8 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
     {
       if (v47)
       {
-        v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v77 = v49;
         _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -7620,11 +7620,11 @@ void __244__PISegmentationLoader_generateLayerStackForItem_style_layout_ignoreOr
 LABEL_40:
     if (v47)
     {
-      v54 = dispatch_get_specific(*v39);
+      v54 = dispatch_get_specific(*callStackSymbols);
       v55 = MEMORY[0x1E696AF00];
       v56 = v54;
-      v57 = [v55 callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v55 callStackSymbols];
+      v58 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v77 = v54;
       v78 = 2114;
@@ -7637,63 +7637,63 @@ LABEL_42:
     _NUAssertFailHandler();
   }
 
-  v62 = v21;
-  if ((a4 & 0x100) != 0)
+  v62 = completionCopy;
+  if ((options & 0x100) != 0)
   {
-    v24 = [v16 isSpatialPhotoAvailable];
-    v23 = v17 != 0;
-    v22 = (v17 == 0) & v24;
-    if (v17 && (v24 & 1) != 0)
+    isSpatialPhotoAvailable = [itemCopy isSpatialPhotoAvailable];
+    v23 = configurationCopy != 0;
+    isSpatialPhotoEnabled = (configurationCopy == 0) & isSpatialPhotoAvailable;
+    if (configurationCopy && (isSpatialPhotoAvailable & 1) != 0)
     {
-      v22 = [v17 isSpatialPhotoEnabled];
+      isSpatialPhotoEnabled = [configurationCopy isSpatialPhotoEnabled];
       v23 = 1;
     }
   }
 
   else
   {
-    v22 = 0;
-    v23 = v17 != 0;
+    isSpatialPhotoEnabled = 0;
+    v23 = configurationCopy != 0;
   }
 
-  v64 = v22;
-  if (!v19 && v23)
+  v64 = isSpatialPhotoEnabled;
+  if (!layoutCopy && v23)
   {
-    [v17 normalizedVisibleFrame];
+    [configurationCopy normalizedVisibleFrame];
     if (CGRectIsNull(v82))
     {
-      v19 = 0;
+      layoutCopy = 0;
     }
 
     else
     {
-      v19 = [a1 effectiveLayoutForSegmentationItem:v16 editConfiguration:v17 layerStackOptions:a4];
+      layoutCopy = [self effectiveLayoutForSegmentationItem:itemCopy editConfiguration:configurationCopy layerStackOptions:options];
     }
   }
 
-  v66 = v18;
-  if (v18)
+  v66 = styleCopy;
+  if (styleCopy)
   {
-    v25 = v18;
+    style = styleCopy;
   }
 
   else
   {
-    v25 = [v17 style];
+    style = [configurationCopy style];
   }
 
-  v26 = v25;
-  if (v25 && !a10)
+  v26 = style;
+  if (style && !specifiedStyle)
   {
-    v27 = [v16 adjustedStyleForHeadroom:v25];
+    v27 = [itemCopy adjustedStyleForHeadroom:style];
 
     v26 = v27;
   }
 
-  v65 = a4;
-  if ((a4 & 0x40) != 0)
+  optionsCopy = options;
+  if ((options & 0x40) != 0)
   {
-    v28 = [v16 isSettlingEffectAvailable];
+    isSettlingEffectAvailable = [itemCopy isSettlingEffectAvailable];
     if (!v23)
     {
       goto LABEL_24;
@@ -7702,37 +7702,37 @@ LABEL_42:
     goto LABEL_23;
   }
 
-  v28 = 0;
+  isSettlingEffectAvailable = 0;
   if (v23)
   {
 LABEL_23:
-    v28 = v28 & [v17 isSettlingEffectEnabled];
+    isSettlingEffectAvailable = isSettlingEffectAvailable & [configurationCopy isSettlingEffectEnabled];
   }
 
 LABEL_24:
-  v61 = (v17 | v19) == 0;
-  v29 = [v17 userAdjustedVisibleFrame];
-  v30 = [v17 preserveLegacyHeadroom];
+  v61 = (configurationCopy | layoutCopy) == 0;
+  userAdjustedVisibleFrame = [configurationCopy userAdjustedVisibleFrame];
+  preserveLegacyHeadroom = [configurationCopy preserveLegacyHeadroom];
   v69[0] = MEMORY[0x1E69E9820];
   v69[1] = 3221225472;
   v69[2] = __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configuration_style_layout_allowedLayoutStrategies_shouldRecalculateLayoutProperties_shouldKeepSpecifiedStyle_toWallpaperURL_completion___block_invoke;
   v69[3] = &unk_1E82AC410;
-  v70 = v17;
-  v71 = v16;
+  v70 = configurationCopy;
+  v71 = itemCopy;
   v72 = v26;
-  v73 = v20;
+  v73 = lCopy;
   v74 = v62;
-  v75 = a1;
+  selfCopy = self;
   v63 = v62;
-  v31 = v20;
+  v31 = lCopy;
   v32 = v26;
-  v33 = v16;
-  v34 = v17;
-  BYTE2(v60) = v29;
-  BYTE1(v60) = v30;
-  LOBYTE(v60) = a9;
+  v33 = itemCopy;
+  v34 = configurationCopy;
+  BYTE2(v60) = userAdjustedVisibleFrame;
+  BYTE1(v60) = preserveLegacyHeadroom;
+  LOBYTE(v60) = properties;
   LOBYTE(v59) = v64;
-  v35 = [a1 generateLayerStackForItem:v33 style:v32 layout:v19 ignoreOriginalLayout:v61 options:v65 enableSettlingEffect:v28 enableSpatialPhoto:v59 allowedLayoutStrategies:a8 shouldRecalculateLayoutProperties:v60 useLegacyHeadroom:v69 userAdjustedVisibleFrame:? completion:?];
+  v35 = [self generateLayerStackForItem:v33 style:v32 layout:layoutCopy ignoreOriginalLayout:v61 options:optionsCopy enableSettlingEffect:isSettlingEffectAvailable enableSpatialPhoto:v59 allowedLayoutStrategies:strategies shouldRecalculateLayoutProperties:v60 useLegacyHeadroom:v69 userAdjustedVisibleFrame:? completion:?];
 
   return v35;
 }
@@ -7766,9 +7766,9 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
   }
 }
 
-+ (id)_loadSegmentationItemFromURL:(id)a3 error:(id *)a4
++ (id)_loadSegmentationItemFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = objc_alloc_init(PIParallaxSegmentationItem);
   v8 = s_log_24360;
   v9 = v8;
@@ -7780,29 +7780,29 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
   }
 
   v36 = 0;
-  v11 = [(PIParallaxSegmentationItem *)v7 loadFromURL:v6 error:&v36];
+  v11 = [(PIParallaxSegmentationItem *)v7 loadFromURL:lCopy error:&v36];
 
   v12 = v36;
-  v13 = [(PIParallaxSegmentationItem *)v7 resource];
+  resource = [(PIParallaxSegmentationItem *)v7 resource];
 
-  if (v13)
+  if (resource)
   {
-    v14 = [(PIParallaxSegmentationItem *)v7 resource];
-    v15 = [a1 segmentationCompositionForAssetResource:v14];
+    resource2 = [(PIParallaxSegmentationItem *)v7 resource];
+    v15 = [self segmentationCompositionForAssetResource:resource2];
     [(PIParallaxSegmentationItem *)v7 setComposition:v15];
 
-    v16 = [(PIParallaxSegmentationItem *)v7 settlingEffectVideoData];
+    settlingEffectVideoData = [(PIParallaxSegmentationItem *)v7 settlingEffectVideoData];
 
-    if (v16)
+    if (settlingEffectVideoData)
     {
-      v17 = [(PIParallaxSegmentationItem *)v7 settlingEffectVideoData];
+      settlingEffectVideoData2 = [(PIParallaxSegmentationItem *)v7 settlingEffectVideoData];
       [(PIParallaxSegmentationItem *)v7 settlingEffectNormalizedBounds];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [(PIParallaxSegmentationItem *)v7 composition];
-      v27 = [a1 livePhotoCompositionForVideoData:v17 cropRect:v26 photoComposition:{v19, v21, v23, v25}];
+      composition = [(PIParallaxSegmentationItem *)v7 composition];
+      v27 = [self livePhotoCompositionForVideoData:settlingEffectVideoData2 cropRect:composition photoComposition:{v19, v21, v23, v25}];
       [(PIParallaxSegmentationItem *)v7 setComposition:v27];
     }
   }
@@ -7816,7 +7816,7 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v29, OS_SIGNPOST_INTERVAL_BEGIN, v30, "PISegmentationLoader.archive.read", "", v35, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v31 = v11;
   }
@@ -7835,17 +7835,17 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
   {
     v33 = v12;
     v32 = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v32;
 }
 
-+ (id)loadSegmentationItemFromURL:(id)a3 error:(id *)a4
++ (id)loadSegmentationItemFromURL:(id)l error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     v11 = NUAssertLogger_24364();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -7867,8 +7867,8 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
         v19 = dispatch_get_specific(*v13);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v19;
         v26 = 2114;
@@ -7879,8 +7879,8 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v18;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -7889,17 +7889,17 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [a1 _loadSegmentationItemFromURL:v6 error:a4];
+  v7 = lCopy;
+  v8 = [self _loadSegmentationItemFromURL:lCopy error:error];
   if ([v8 isComplete])
   {
     v9 = v8;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Segmentation item is incomplete" object:v7];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -7910,12 +7910,12 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
   return v9;
 }
 
-+ (BOOL)saveSegmentationItem:(id)a3 toURL:(id)a4 error:(id *)a5
++ (BOOL)saveSegmentationItem:(id)item toURL:(id)l error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  itemCopy = item;
+  lCopy = l;
+  if (!itemCopy)
   {
     v22 = NUAssertLogger_24364();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -7926,7 +7926,7 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_24364();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -7934,11 +7934,11 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
     {
       if (v27)
       {
-        specific = dispatch_get_specific(*v24);
+        specific = dispatch_get_specific(*callStackSymbols);
         v38 = MEMORY[0x1E696AF00];
         v5 = specific;
-        v24 = [v38 callStackSymbols];
-        v39 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = specific;
         v51 = 2114;
@@ -7950,9 +7950,9 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
     else if (v27)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v50 = v24;
+      v50 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -7960,8 +7960,8 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
     goto LABEL_34;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = lCopy;
+  if (!lCopy)
   {
     v28 = NUAssertLogger_24364();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -7972,7 +7972,7 @@ void __199__PISegmentationLoader_saveSegmentationItem_layerStackOptions_configur
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v24 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v26 = NUAssertLogger_24364();
     v30 = os_log_type_enabled(v26, OS_LOG_TYPE_ERROR);
@@ -7996,11 +7996,11 @@ LABEL_36:
 LABEL_34:
     if (v30)
     {
-      specific = dispatch_get_specific(*v24);
+      specific = dispatch_get_specific(*callStackSymbols);
       v40 = MEMORY[0x1E696AF00];
       v5 = specific;
-      v41 = [v40 callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v40 callStackSymbols];
+      v42 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v50 = specific;
       v51 = 2114;
@@ -8017,9 +8017,9 @@ LABEL_34:
     v32 = NUAssertLogger_24364();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
-      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid segmentation item: %@", v8];
+      itemCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid segmentation item: %@", itemCopy];
       *buf = 138543362;
-      v50 = v33;
+      v50 = itemCopy;
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -8031,8 +8031,8 @@ LABEL_34:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v37 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v50 = v37;
         _os_log_error_impl(&dword_1C7694000, specific, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -8047,8 +8047,8 @@ LABEL_37:
       v43 = dispatch_get_specific(*v5);
       v44 = MEMORY[0x1E696AF00];
       v45 = v43;
-      v46 = [v44 callStackSymbols];
-      v47 = [v46 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v44 callStackSymbols];
+      v47 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v50 = v43;
       v51 = 2114;
@@ -8071,7 +8071,7 @@ LABEL_39:
   }
 
   v48 = 0;
-  v14 = [v8 saveToURL:v10 error:&v48];
+  v14 = [itemCopy saveToURL:v10 error:&v48];
   v15 = v48;
   v16 = s_log_24360;
   v17 = v16;
@@ -8082,7 +8082,7 @@ LABEL_39:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v17, OS_SIGNPOST_INTERVAL_END, v18, "PISegmentationLoader.archive.write", "", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v14;
   }
@@ -8095,18 +8095,18 @@ LABEL_39:
   if ((v19 & 1) == 0)
   {
     v20 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v14;
 }
 
-+ (id)segmentationSourceForImageURL:(id)a3 fileUTI:(id)a4 orientation:(int64_t)a5 proxyImage:(CGImage *)a6
++ (id)segmentationSourceForImageURL:(id)l fileUTI:(id)i orientation:(int64_t)orientation proxyImage:(CGImage *)image
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  lCopy = l;
+  iCopy = i;
+  if (!lCopy)
   {
     v14 = NUAssertLogger_24364();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -8128,8 +8128,8 @@ LABEL_39:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v22;
         v29 = 2114;
@@ -8140,8 +8140,8 @@ LABEL_39:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -8150,27 +8150,27 @@ LABEL_39:
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if (a6)
+  v10 = iCopy;
+  if (image)
   {
-    v11 = [MEMORY[0x1E695F658] imageWithCGImage:a6];
-    v12 = [PIPhotoEditHelper imageSourceWithURL:v8 type:v10 proxyImage:v11 orientation:1 useEmbeddedPreview:1];
+    v11 = [MEMORY[0x1E695F658] imageWithCGImage:image];
+    v12 = [PIPhotoEditHelper imageSourceWithURL:lCopy type:v10 proxyImage:v11 orientation:1 useEmbeddedPreview:1];
   }
 
   else
   {
-    v12 = [PIPhotoEditHelper imageSourceWithURL:v8 type:v9 useEmbeddedPreview:0];
+    v12 = [PIPhotoEditHelper imageSourceWithURL:lCopy type:iCopy useEmbeddedPreview:0];
   }
 
   return v12;
 }
 
-+ (id)segmentationCompositionForImageURL:(id)a3 fileUTI:(id)a4 orientation:(int64_t)a5 proxyImage:(CGImage *)a6
++ (id)segmentationCompositionForImageURL:(id)l fileUTI:(id)i orientation:(int64_t)orientation proxyImage:(CGImage *)image
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  lCopy = l;
+  iCopy = i;
+  if (!lCopy)
   {
     v25 = NUAssertLogger_24364();
     v16 = "imageURL != nil";
@@ -8183,34 +8183,34 @@ LABEL_39:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v15 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v11 = NUAssertLogger_24364();
-    v27 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
+    lCopy = NUAssertLogger_24364();
+    v27 = os_log_type_enabled(lCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v27)
       {
-        specific = dispatch_get_specific(*v15);
+        specific = dispatch_get_specific(*callStackSymbols);
         v28 = MEMORY[0x1E696AF00];
         v14 = specific;
-        v15 = [v28 callStackSymbols];
-        a5 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        orientation = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = specific;
         v33 = 2114;
-        v34 = a5;
-        _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        orientationCopy = orientation;
+        _os_log_error_impl(&dword_1C7694000, lCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v27)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v32 = v15;
-      _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v32 = callStackSymbols;
+      _os_log_error_impl(&dword_1C7694000, lCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     _NUAssertFailHandler();
@@ -8219,19 +8219,19 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  specific = v12;
+  specific = iCopy;
   v14 = +[PIPhotoEditHelper newComposition];
-  v15 = [a1 segmentationSourceForImageURL:v11 fileUTI:specific orientation:a5 proxyImage:a6];
-  [v14 setObject:v15 forKeyedSubscript:@"source"];
+  callStackSymbols = [self segmentationSourceForImageURL:lCopy fileUTI:specific orientation:orientation proxyImage:image];
+  [v14 setObject:callStackSymbols forKeyedSubscript:@"source"];
   [v14 setMediaType:1];
-  a5 = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:v14];
+  orientation = [objc_alloc(MEMORY[0x1E69B3B30]) initWithComposition:v14];
   v30 = 0;
-  v16 = [a5 submitSynchronous:&v30];
+  v16 = [orientation submitSynchronous:&v30];
   v6 = v30;
   if (v16)
   {
-    v17 = [v16 properties];
-    v18 = [v17 orientation];
+    properties = [v16 properties];
+    orientation = [properties orientation];
 
     goto LABEL_8;
   }
@@ -8246,38 +8246,38 @@ LABEL_5:
   if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
   {
     v23 = v19;
-    v24 = [v11 path];
+    path = [lCopy path];
     *buf = 138412546;
-    v32 = v24;
+    v32 = path;
     v33 = 2114;
-    v34 = v6;
+    orientationCopy = v6;
     _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Failed to read orientation for image file: %@, error: %{public}@", buf, 0x16u);
   }
 
-  v18 = 1;
+  orientation = 1;
 LABEL_8:
   v20 = [[PICompositionController alloc] initWithComposition:v14];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __90__PISegmentationLoader_segmentationCompositionForImageURL_fileUTI_orientation_proxyImage___block_invoke;
   v29[3] = &__block_descriptor_40_e43_v16__0__PIOrientationAdjustmentController_8l;
-  v29[4] = v18;
+  v29[4] = orientation;
   [(PICompositionController *)v20 modifyAdjustmentWithKey:@"orientation" modificationBlock:v29];
-  v21 = [(PICompositionController *)v20 composition];
+  composition = [(PICompositionController *)v20 composition];
 
-  return v21;
+  return composition;
 }
 
-+ (id)livePhotoCompositionForVideoData:(id)a3 cropRect:(CGRect)a4 photoComposition:(id)a5
++ (id)livePhotoCompositionForVideoData:(id)data cropRect:(CGRect)rect photoComposition:(id)composition
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  dataCopy = data;
+  compositionCopy = composition;
+  if (!dataCopy)
   {
     v20 = NUAssertLogger_24364();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -8288,7 +8288,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_24364();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -8296,11 +8296,11 @@ LABEL_8:
     {
       if (v25)
       {
-        v38 = dispatch_get_specific(*v22);
+        v38 = dispatch_get_specific(*callStackSymbols);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v22 = [v39 callStackSymbols];
-        v41 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v55 = v38;
         v56 = 2114;
@@ -8311,10 +8311,10 @@ LABEL_8:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v55 = v22;
+      v55 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -8322,8 +8322,8 @@ LABEL_8:
     goto LABEL_25;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = compositionCopy;
+  if (!compositionCopy)
   {
     v27 = NUAssertLogger_24364();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -8334,7 +8334,7 @@ LABEL_8:
       _os_log_error_impl(&dword_1C7694000, v27, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v29 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_24364();
     v30 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -8342,10 +8342,10 @@ LABEL_8:
     {
       if (v30)
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v22 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v55 = v22;
+        v55 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -8358,11 +8358,11 @@ LABEL_27:
 LABEL_25:
     if (v30)
     {
-      v42 = dispatch_get_specific(*v22);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v22 = [v43 callStackSymbols];
-      v45 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v43 callStackSymbols];
+      v45 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v55 = v42;
       v56 = 2114;
@@ -8373,7 +8373,7 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if ([v11 mediaType] != 1)
+  if ([compositionCopy mediaType] != 1)
   {
     v32 = NUAssertLogger_24364();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -8384,7 +8384,7 @@ LABEL_25:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v22 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v34 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v24 = NUAssertLogger_24364();
     v35 = os_log_type_enabled(v24, OS_LOG_TYPE_ERROR);
@@ -8392,8 +8392,8 @@ LABEL_25:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v37 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v55 = v37;
         _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -8405,11 +8405,11 @@ LABEL_25:
 LABEL_28:
     if (v35)
     {
-      v46 = dispatch_get_specific(*v22);
+      v46 = dispatch_get_specific(*callStackSymbols);
       v47 = MEMORY[0x1E696AF00];
       v48 = v46;
-      v49 = [v47 callStackSymbols];
-      v50 = [v49 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v47 callStackSymbols];
+      v50 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v55 = v46;
       v56 = 2114;
@@ -8422,7 +8422,7 @@ LABEL_30:
     _NUAssertFailHandler();
   }
 
-  v13 = [PIPhotoEditHelper videoSourceWithVideoData:v10 orientation:1];
+  v13 = [PIPhotoEditHelper videoSourceWithVideoData:dataCopy orientation:1];
   v52 = @"appliedCropRect";
   *v51 = x;
   *&v51[1] = y;
@@ -8431,8 +8431,8 @@ LABEL_30:
   v14 = [MEMORY[0x1E696B098] valueWithBytes:v51 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   v53 = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-  v16 = [v13 definition];
-  [v16 setSourceOptions:v15];
+  definition = [v13 definition];
+  [definition setSourceOptions:v15];
 
   v17 = [v12 objectForKeyedSubscript:@"source"];
   v18 = [PIPhotoEditHelper livePhotoSourceWithPhotoSource:v17 videoSource:v13];
@@ -8442,10 +8442,10 @@ LABEL_30:
   return v12;
 }
 
-+ (id)segmentationCompositionForProxyImage:(CGImage *)a3 orientation:(int64_t)a4
++ (id)segmentationCompositionForProxyImage:(CGImage *)image orientation:(int64_t)orientation
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     v12 = NUAssertLogger_24364();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -8467,8 +8467,8 @@ LABEL_30:
         v20 = dispatch_get_specific(*v14);
         v21 = MEMORY[0x1E696AF00];
         v22 = v20;
-        v23 = [v21 callStackSymbols];
-        v24 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v21 callStackSymbols];
+        v24 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v20;
         v29 = 2114;
@@ -8479,8 +8479,8 @@ LABEL_30:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v19;
       _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -8494,20 +8494,20 @@ LABEL_30:
   v25 = *MEMORY[0x1E695F998];
   v26 = MEMORY[0x1E695E110];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-  v9 = [v7 imageWithCGImage:a3 options:v8];
+  v9 = [v7 imageWithCGImage:image options:v8];
 
-  v10 = [PIPhotoEditHelper imageSourceWithCIImage:v9 orientation:a4];
+  v10 = [PIPhotoEditHelper imageSourceWithCIImage:v9 orientation:orientation];
   [v6 setObject:v10 forKeyedSubscript:@"source"];
   [v6 setMediaType:1];
 
   return v6;
 }
 
-+ (id)segmentationCompositionForAssetResource:(id)a3
++ (id)segmentationCompositionForAssetResource:(id)resource
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  resourceCopy = resource;
+  if (!resourceCopy)
   {
     v26 = NUAssertLogger_24364();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -8518,7 +8518,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v11 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v5 = NUAssertLogger_24364();
     v28 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -8526,11 +8526,11 @@ LABEL_30:
     {
       if (v28)
       {
-        specific = dispatch_get_specific(*v11);
+        specific = dispatch_get_specific(*callStackSymbols);
         v29 = MEMORY[0x1E696AF00];
         v30 = specific;
-        v11 = [v29 callStackSymbols];
-        v31 = [v11 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = specific;
         v44 = 2114;
@@ -8542,9 +8542,9 @@ LABEL_30:
     else if (v28)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [specific componentsJoinedByString:@"\n"];
+      callStackSymbols = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v43 = v11;
+      v43 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v5, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -8553,19 +8553,19 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  v5 = v4;
-  v6 = [v4 type];
+  v5 = resourceCopy;
+  type = [resourceCopy type];
   v7 = 0;
-  if (v6 <= 2)
+  if (type <= 2)
   {
-    if (v6)
+    if (type)
     {
-      if (v6 == 1)
+      if (type == 1)
       {
         goto LABEL_13;
       }
 
-      if (v6 != 2)
+      if (type != 2)
       {
 LABEL_14:
 
@@ -8573,30 +8573,30 @@ LABEL_14:
       }
     }
 
-    v11 = [v5 imageFileURL];
-    v14 = [v5 fileType];
-    v7 = [specific segmentationCompositionForImageURL:v11 fileUTI:v14 orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
+    callStackSymbols = [v5 imageFileURL];
+    fileType = [v5 fileType];
+    v7 = [specific segmentationCompositionForImageURL:callStackSymbols fileUTI:fileType orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
     goto LABEL_11;
   }
 
-  if (v6 <= 4)
+  if (type <= 4)
   {
-    if (v6 != 3)
+    if (type != 3)
     {
-      v8 = [v5 adjustmentData];
-      v9 = [v5 adjustmentFormat];
-      v10 = [v5 adjustmentVersion];
+      adjustmentData = [v5 adjustmentData];
+      adjustmentFormat = [v5 adjustmentFormat];
+      adjustmentVersion = [v5 adjustmentVersion];
       v41 = 0;
-      v7 = [PICompositionSerializer deserializeCompositionFromData:v8 formatIdentifier:v9 formatVersion:v10 error:&v41];
-      v11 = v41;
+      v7 = [PICompositionSerializer deserializeCompositionFromData:adjustmentData formatIdentifier:adjustmentFormat formatVersion:adjustmentVersion error:&v41];
+      callStackSymbols = v41;
 
       if (v7)
       {
-        v12 = [v5 imageFileURL];
-        v13 = [v5 fileType];
-        v14 = [specific segmentationSourceForImageURL:v12 fileUTI:v13 orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
+        imageFileURL = [v5 imageFileURL];
+        fileType2 = [v5 fileType];
+        fileType = [specific segmentationSourceForImageURL:imageFileURL fileUTI:fileType2 orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
 
-        [v7 setObject:v14 forKeyedSubscript:@"source"];
+        [v7 setObject:fileType forKeyedSubscript:@"source"];
         [v7 setMediaType:1];
 LABEL_11:
 
@@ -8610,13 +8610,13 @@ LABEL_18:
         if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v43 = v11;
+          v43 = callStackSymbols;
           _os_log_error_impl(&dword_1C7694000, v16, OS_LOG_TYPE_ERROR, "Failed to deserialize segmentation adjustment data: %{public}@", buf, 0xCu);
         }
 
-        v14 = [v5 imageFileURL];
-        v17 = [v5 fileType];
-        v7 = [specific segmentationCompositionForImageURL:v14 fileUTI:v17 orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
+        fileType = [v5 imageFileURL];
+        fileType3 = [v5 fileType];
+        v7 = [specific segmentationCompositionForImageURL:fileType fileUTI:fileType3 orientation:-[NSObject orientation](v5 proxyImage:{"orientation"), -[NSObject proxyImage](v5, "proxyImage")}];
 
         goto LABEL_11;
       }
@@ -8631,12 +8631,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v6 == 5)
+  if (type == 5)
   {
     goto LABEL_13;
   }
 
-  if (v6 != 6)
+  if (type != 6)
   {
     goto LABEL_14;
   }
@@ -8661,8 +8661,8 @@ LABEL_13:
       v32 = dispatch_get_specific(*v20);
       v33 = MEMORY[0x1E696AF00];
       v34 = v32;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v33 callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v43 = v32;
       v44 = 2114;
@@ -8673,8 +8673,8 @@ LABEL_13:
 
   else if (v23)
   {
-    v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v25 = [callStackSymbols3 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v43 = v25;
     _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -8684,9 +8684,9 @@ LABEL_13:
   return [(PISegmentationLoader *)v37 renderPriorityForResourcePriority:v38, v39];
 }
 
-+ (id)renderPriorityForResourcePriority:(int64_t)a3
++ (id)renderPriorityForResourcePriority:(int64_t)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -8710,11 +8710,11 @@ LABEL_13:
 
 + (BOOL)clientIsMobileSlideShow
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.mobileslideshow"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.mobileslideshow"];
+  return mainBundle;
 }
 
 + (void)_freeResources
@@ -8728,7 +8728,7 @@ LABEL_13:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v4, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PISegmentationLoader.memory.purge", "", buf, 2u);
   }
 
-  if (([a1 clientIsMobileSlideShow] & 1) == 0)
+  if (([self clientIsMobileSlideShow] & 1) == 0)
   {
     [MEMORY[0x1E69B3A58] freeAllResources:1];
   }
@@ -8763,7 +8763,7 @@ LABEL_13:
       _os_log_debug_impl(&dword_1C7694000, v4, OS_LOG_TYPE_DEBUG, "Freeing segmentation loader resources with counter %ld", &v7, 0xCu);
     }
 
-    [a1 _freeResources];
+    [self _freeResources];
     v5 = 0;
   }
 
@@ -8824,7 +8824,7 @@ LABEL_13:
       _os_log_debug_impl(&dword_1C7694000, v4, OS_LOG_TYPE_DEBUG, "Ensuring segmentation resources with counter %ld", &v5, 0xCu);
     }
 
-    [a1 _ensureResources];
+    [self _ensureResources];
   }
 
   ++sResourceCounter;
@@ -8855,7 +8855,7 @@ LABEL_13:
   }
 
   [MEMORY[0x1E69B3D58] warmUp];
-  [a1 warmUpClassificationDetectors];
+  [self warmUpClassificationDetectors];
   v6 = s_log_24360;
   v7 = v6;
   v8 = s_signpost_24361;
@@ -8872,7 +8872,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __34__PISegmentationLoader_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_24731 != -1)
   {
     dispatch_once(&initialize_onceToken_24731, block);

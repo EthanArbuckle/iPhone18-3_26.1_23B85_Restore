@@ -1,17 +1,17 @@
 @interface AVTStickerSheetControllerSwiftProvider
-+ (id)stickerCacheWithEnvironment:(id)a3;
++ (id)stickerCacheWithEnvironment:(id)environment;
 - (AVTStickerSheetControllerSwiftProvider)init;
 - (AVTStickerSheetControllerSwiftProviderDelegate)delegate;
 - (UIEdgeInsets)sectionInsets;
-- (id)stickerSheetController:(id)a3 requestsStickerForFileURL:(id)a4 localizedDescription:(id)a5 forItemWithIdentifier:(id)a6;
-- (id)stickerSheetControllerForAvatarRecord:(id)a3;
-- (id)stickerSheetViewForAvatarRecord:(id)a3;
+- (id)stickerSheetController:(id)controller requestsStickerForFileURL:(id)l localizedDescription:(id)description forItemWithIdentifier:(id)identifier;
+- (id)stickerSheetControllerForAvatarRecord:(id)record;
+- (id)stickerSheetViewForAvatarRecord:(id)record;
 - (void)_notifyStoreChanged;
 - (void)beginObservingAvatarStoreChanges;
 - (void)dealloc;
 - (void)endObservingAvatarStoreChanges;
-- (void)stickerSheetController:(id)a3 didFinishRenderingStickersForRecord:(id)a4;
-- (void)stickerSheetController:(id)a3 didScrollToContentOffset:(CGPoint)a4;
+- (void)stickerSheetController:(id)controller didFinishRenderingStickersForRecord:(id)record;
+- (void)stickerSheetController:(id)controller didScrollToContentOffset:(CGPoint)offset;
 @end
 
 @implementation AVTStickerSheetControllerSwiftProvider
@@ -28,9 +28,9 @@
     environment = v2->_environment;
     v2->_environment = v3;
 
-    v5 = [(AVTUIEnvironment *)v2->_environment logger];
+    logger = [(AVTUIEnvironment *)v2->_environment logger];
     logger = v2->_logger;
-    v2->_logger = v5;
+    v2->_logger = logger;
 
     v7 = objc_alloc_init(AVTAvatarStore);
     avatarStore = v2->_avatarStore;
@@ -40,13 +40,13 @@
     generatorPool = v2->_generatorPool;
     v2->_generatorPool = v9;
 
-    v11 = [(AVTUIEnvironment *)v2->_environment backgroundRenderingQueue];
+    backgroundRenderingQueue = [(AVTUIEnvironment *)v2->_environment backgroundRenderingQueue];
     renderingQueue = v2->_renderingQueue;
-    v2->_renderingQueue = v11;
+    v2->_renderingQueue = backgroundRenderingQueue;
 
-    v13 = [(AVTUIEnvironment *)v2->_environment backgroundEncodingQueue];
+    backgroundEncodingQueue = [(AVTUIEnvironment *)v2->_environment backgroundEncodingQueue];
     encodingQueue = v2->_encodingQueue;
-    v2->_encodingQueue = v13;
+    v2->_encodingQueue = backgroundEncodingQueue;
 
     v15 = [objc_opt_class() stickerCacheWithEnvironment:v2->_environment];
     cache = v2->_cache;
@@ -77,8 +77,8 @@
 
     v24 = [AVTAvatarRecordDataSource alloc];
     v25 = v2->_avatarStore;
-    v26 = [MEMORY[0x1E698E310] requestForAllAvatars];
-    v27 = [(AVTAvatarRecordDataSource *)v24 initWithRecordStore:v25 fetchRequest:v26 environment:v2->_environment];
+    requestForAllAvatars = [MEMORY[0x1E698E310] requestForAllAvatars];
+    v27 = [(AVTAvatarRecordDataSource *)v24 initWithRecordStore:v25 fetchRequest:requestForAllAvatars environment:v2->_environment];
 
     v28 = [AVTStickerTaskScheduler schedulerWithRecordDataSource:v27];
     stickerScheduler = v2->_stickerScheduler;
@@ -103,8 +103,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -114,14 +114,14 @@
   [(AVTStickerSheetControllerSwiftProvider *)&v5 dealloc];
 }
 
-+ (id)stickerCacheWithEnvironment:(id)a3
++ (id)stickerCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
@@ -131,12 +131,12 @@
   return v6;
 }
 
-- (id)stickerSheetControllerForAvatarRecord:(id)a3
+- (id)stickerSheetControllerForAvatarRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(AVTStickerSheetControllerSwiftProvider *)self sheetControllers];
-  v6 = [v4 identifier];
-  v7 = [v5 objectForKey:v6];
+  recordCopy = record;
+  sheetControllers = [(AVTStickerSheetControllerSwiftProvider *)self sheetControllers];
+  identifier = [recordCopy identifier];
+  v7 = [sheetControllers objectForKey:identifier];
 
   if (v7)
   {
@@ -145,13 +145,13 @@
 
   else
   {
-    v9 = [(AVTStickerConfigurationProvider *)self->_configurationProvider stickerConfigurationsForAvatarRecord:v4];
-    v10 = [AVTStickerSheetModel sheetModelForAvatarRecord:v4 withConfigurations:v9 cache:self->_cache taskScheduler:self->_stickerScheduler renderingQueue:self->_renderingQueue encodingQueue:self->_encodingQueue stickerGeneratorPool:self->_generatorPool imageProvider:self->_imageProvider environment:self->_environment];
+    v9 = [(AVTStickerConfigurationProvider *)self->_configurationProvider stickerConfigurationsForAvatarRecord:recordCopy];
+    v10 = [AVTStickerSheetModel sheetModelForAvatarRecord:recordCopy withConfigurations:v9 cache:self->_cache taskScheduler:self->_stickerScheduler renderingQueue:self->_renderingQueue encodingQueue:self->_encodingQueue stickerGeneratorPool:self->_generatorPool imageProvider:self->_imageProvider environment:self->_environment];
     v11 = [[AVTStickerSheetController alloc] initWithStickerSheetModel:v10 taskScheduler:self->_stickerScheduler allowsPeel:1];
     [(AVTStickerSheetController *)v11 setSectionInsets:self->_sectionInsets.top, self->_sectionInsets.left, self->_sectionInsets.bottom, self->_sectionInsets.right];
-    v12 = [(AVTStickerSheetControllerSwiftProvider *)self sheetControllers];
-    v13 = [v4 identifier];
-    [v12 setObject:v11 forKey:v13];
+    sheetControllers2 = [(AVTStickerSheetControllerSwiftProvider *)self sheetControllers];
+    identifier2 = [recordCopy identifier];
+    [sheetControllers2 setObject:v11 forKey:identifier2];
 
     v8 = v11;
   }
@@ -159,44 +159,44 @@
   return v8;
 }
 
-- (id)stickerSheetViewForAvatarRecord:(id)a3
+- (id)stickerSheetViewForAvatarRecord:(id)record
 {
-  v4 = [(AVTStickerSheetControllerSwiftProvider *)self stickerSheetControllerForAvatarRecord:a3];
+  v4 = [(AVTStickerSheetControllerSwiftProvider *)self stickerSheetControllerForAvatarRecord:record];
   [v4 setDelegate:self];
   [v4 sheetWillAppear];
-  v5 = [v4 view];
+  view = [v4 view];
 
-  return v5;
+  return view;
 }
 
-- (void)stickerSheetController:(id)a3 didFinishRenderingStickersForRecord:(id)a4
+- (void)stickerSheetController:(id)controller didFinishRenderingStickersForRecord:(id)record
 {
-  v5 = a4;
-  v6 = [(AVTStickerSheetControllerSwiftProvider *)self generatorPool];
-  [v6 flushGeneratorForRecord:v5];
+  recordCopy = record;
+  generatorPool = [(AVTStickerSheetControllerSwiftProvider *)self generatorPool];
+  [generatorPool flushGeneratorForRecord:recordCopy];
 }
 
-- (void)stickerSheetController:(id)a3 didScrollToContentOffset:(CGPoint)a4
+- (void)stickerSheetController:(id)controller didScrollToContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
+  y = offset.y;
+  x = offset.x;
+  delegate = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
-    [v9 stickerSheetControllerDidScrollToContentOffset:{x, y}];
+    delegate2 = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
+    [delegate2 stickerSheetControllerDidScrollToContentOffset:{x, y}];
   }
 }
 
-- (id)stickerSheetController:(id)a3 requestsStickerForFileURL:(id)a4 localizedDescription:(id)a5 forItemWithIdentifier:(id)a6
+- (id)stickerSheetController:(id)controller requestsStickerForFileURL:(id)l localizedDescription:(id)description forItemWithIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
-  v13 = [v12 stickerSheetControllerProvider:self requestsStickerForFileURL:v11 localizedDescription:v10 forItemWithIdentifier:v9];
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  lCopy = l;
+  delegate = [(AVTStickerSheetControllerSwiftProvider *)self delegate];
+  v13 = [delegate stickerSheetControllerProvider:self requestsStickerForFileURL:lCopy localizedDescription:descriptionCopy forItemWithIdentifier:identifierCopy];
 
   return v13;
 }
@@ -204,14 +204,14 @@
 - (void)beginObservingAvatarStoreChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E698E308];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__AVTStickerSheetControllerSwiftProvider_beginObservingAvatarStoreChanges__block_invoke;
   v7[3] = &unk_1E7F3B248;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+  v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = v5;
 
@@ -227,8 +227,8 @@ void __74__AVTStickerSheetControllerSwiftProvider_beginObservingAvatarStoreChang
 
 - (void)endObservingAvatarStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;

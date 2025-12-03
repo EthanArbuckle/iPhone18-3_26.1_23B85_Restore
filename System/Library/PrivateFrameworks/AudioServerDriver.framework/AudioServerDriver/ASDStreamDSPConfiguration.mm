@@ -1,23 +1,23 @@
 @interface ASDStreamDSPConfiguration
-- (ASDStreamDSPConfiguration)initWithDictionary:(id)a3 resourcePath:(id)a4;
+- (ASDStreamDSPConfiguration)initWithDictionary:(id)dictionary resourcePath:(id)path;
 @end
 
 @implementation ASDStreamDSPConfiguration
 
-- (ASDStreamDSPConfiguration)initWithDictionary:(id)a3 resourcePath:(id)a4
+- (ASDStreamDSPConfiguration)initWithDictionary:(id)dictionary resourcePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = ASDStreamDSPConfiguration;
   v8 = [(ASDStreamDSPConfiguration *)&v21 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"Hardware"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Hardware"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [[ASDDSPConfiguration alloc] initWithArray:v9 resourcePath:v7];
+      v10 = [[ASDDSPConfiguration alloc] initWithArray:v9 resourcePath:pathCopy];
       hardwareDSP = v8->_hardwareDSP;
       v8->_hardwareDSP = v10;
 

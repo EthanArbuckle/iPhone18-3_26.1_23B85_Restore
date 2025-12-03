@@ -1,6 +1,6 @@
 @interface SASHeadphonesAuthenticationManager
-- (BOOL)_inEarDetectionStateEligibleForState:(id)a3;
-- (BOOL)_shouldIgnoreConnectionChangesForState:(id)a3;
+- (BOOL)_inEarDetectionStateEligibleForState:(id)state;
+- (BOOL)_shouldIgnoreConnectionChangesForState:(id)state;
 - (BOOL)_wearingSessionEligible;
 - (BOOL)isAuthenticated;
 - (SASHeadphonesAuthenticationManager)init;
@@ -8,17 +8,17 @@
 - (id)_initForTesting;
 - (id)_lockStateMonitor;
 - (void)_fetchInitialState;
-- (void)_invalidateAuthenticationWithReason:(int64_t)a3;
-- (void)_logEligibilityForAuthenticatedState:(BOOL)a3 andTimedOut:(BOOL)a4;
+- (void)_invalidateAuthenticationWithReason:(int64_t)reason;
+- (void)_logEligibilityForAuthenticatedState:(BOOL)state andTimedOut:(BOOL)out;
 - (void)_recomputeAuthentication;
 - (void)_startObserving;
-- (void)currentAudioRouteDidChange:(id)a3;
+- (void)currentAudioRouteDidChange:(id)change;
 - (void)dealloc;
-- (void)didChangeLockState:(unint64_t)a3;
-- (void)getHeadphonesAuthenticationStatusWithCompletion:(id)a3;
-- (void)inEarDetectionStateDidChangeForBTAddress:(id)a3 toState:(id)a4;
-- (void)privateAudioSessionStateDidChange:(unint64_t)a3;
-- (void)setHeadphoneVoiceTriggerDiscoveryNotificationAllowed:(BOOL)a3;
+- (void)didChangeLockState:(unint64_t)state;
+- (void)getHeadphonesAuthenticationStatusWithCompletion:(id)completion;
+- (void)inEarDetectionStateDidChangeForBTAddress:(id)address toState:(id)state;
+- (void)privateAudioSessionStateDidChange:(unint64_t)change;
+- (void)setHeadphoneVoiceTriggerDiscoveryNotificationAllowed:(BOOL)allowed;
 @end
 
 @implementation SASHeadphonesAuthenticationManager
@@ -33,11 +33,11 @@
   {
     v5 = MEMORY[0x1E696AF00];
     v6 = v4;
-    v7 = [v5 currentThread];
+    currentThread = [v5 currentThread];
     v11 = 136315394;
     v12 = "[SASHeadphonesAuthenticationManager _recomputeAuthentication]";
     v13 = 2048;
-    v14 = [v7 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _authenticatedLock about to lock with qos: %zd", &v11, 0x16u);
   }
 
@@ -174,9 +174,9 @@ void __42__SASHeadphonesAuthenticationManager_init__block_invoke(uint64_t a1)
   headphonesMonitor = self->_headphonesMonitor;
   if (!headphonesMonitor)
   {
-    v4 = [MEMORY[0x1E698D200] sharedMonitor];
+    mEMORY[0x1E698D200] = [MEMORY[0x1E698D200] sharedMonitor];
     v5 = self->_headphonesMonitor;
-    self->_headphonesMonitor = v4;
+    self->_headphonesMonitor = mEMORY[0x1E698D200];
 
     headphonesMonitor = self->_headphonesMonitor;
   }
@@ -210,14 +210,14 @@ void __42__SASHeadphonesAuthenticationManager_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s 🎧 Adding delegates", &v8, 0xCu);
   }
 
-  v4 = [(SASHeadphonesAuthenticationManager *)self _lockStateMonitor];
-  [v4 setDelegate:self];
+  _lockStateMonitor = [(SASHeadphonesAuthenticationManager *)self _lockStateMonitor];
+  [_lockStateMonitor setDelegate:self];
 
-  v5 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
-  [v5 addDelegate:self];
+  _headphonesMonitor = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
+  [_headphonesMonitor addDelegate:self];
 
-  v6 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
-  [v6 startObservingBluetoothConnections];
+  _headphonesMonitor2 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
+  [_headphonesMonitor2 startObservingBluetoothConnections];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -233,33 +233,33 @@ void __42__SASHeadphonesAuthenticationManager_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s 🎧 Fetching initial state", buf, 0xCu);
   }
 
-  v4 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
-  v5 = [v4 currentAudioRoute];
+  _headphonesMonitor = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
+  currentAudioRoute = [_headphonesMonitor currentAudioRoute];
 
-  [(SASHeadphonesAuthenticationManager *)self currentAudioRouteDidChange:v5];
+  [(SASHeadphonesAuthenticationManager *)self currentAudioRouteDidChange:currentAudioRoute];
   objc_initWeak(buf, self);
-  if ([v5 hasAuthenticationCapability])
+  if ([currentAudioRoute hasAuthenticationCapability])
   {
-    v6 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
-    v7 = [v5 btAddress];
+    _headphonesMonitor2 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
+    btAddress = [currentAudioRoute btAddress];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__SASHeadphonesAuthenticationManager__fetchInitialState__block_invoke;
     v12[3] = &unk_1E82F3CB8;
     objc_copyWeak(&v14, buf);
-    v13 = v5;
-    [v6 fetchInEarDetctionStateForBTAddress:v7 withCompletion:v12];
+    v13 = currentAudioRoute;
+    [_headphonesMonitor2 fetchInEarDetctionStateForBTAddress:btAddress withCompletion:v12];
 
     objc_destroyWeak(&v14);
   }
 
-  v8 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
+  _headphonesMonitor3 = [(SASHeadphonesAuthenticationManager *)self _headphonesMonitor];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__SASHeadphonesAuthenticationManager__fetchInitialState__block_invoke_3;
   v10[3] = &unk_1E82F3CE0;
   objc_copyWeak(&v11, buf);
-  [v8 fetchPrivateSessionStateWithCompletion:v10];
+  [_headphonesMonitor3 fetchPrivateSessionStateWithCompletion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -357,7 +357,7 @@ void __56__SASHeadphonesAuthenticationManager__fetchInitialState__block_invoke_4
   return v2;
 }
 
-- (void)privateAudioSessionStateDidChange:(unint64_t)a3
+- (void)privateAudioSessionStateDidChange:(unint64_t)change
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -366,7 +366,7 @@ void __56__SASHeadphonesAuthenticationManager__fetchInitialState__block_invoke_4
   block[2] = __72__SASHeadphonesAuthenticationManager_privateAudioSessionStateDidChange___block_invoke;
   block[3] = &unk_1E82F36A8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = change;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -410,9 +410,9 @@ void __72__SASHeadphonesAuthenticationManager_privateAudioSessionStateDidChange_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentAudioRouteDidChange:(id)a3
+- (void)currentAudioRouteDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -420,8 +420,8 @@ void __72__SASHeadphonesAuthenticationManager_privateAudioSessionStateDidChange_
   block[2] = __65__SASHeadphonesAuthenticationManager_currentAudioRouteDidChange___block_invoke;
   block[3] = &unk_1E82F37D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -467,10 +467,10 @@ void __65__SASHeadphonesAuthenticationManager_currentAudioRouteDidChange___block
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inEarDetectionStateDidChangeForBTAddress:(id)a3 toState:(id)a4
+- (void)inEarDetectionStateDidChangeForBTAddress:(id)address toState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  stateCopy = state;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -478,10 +478,10 @@ void __65__SASHeadphonesAuthenticationManager_currentAudioRouteDidChange___block
   v11[2] = __87__SASHeadphonesAuthenticationManager_inEarDetectionStateDidChangeForBTAddress_toState___block_invoke;
   v11[3] = &unk_1E82F3C90;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = addressCopy;
+  v13 = stateCopy;
+  v9 = stateCopy;
+  v10 = addressCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -539,7 +539,7 @@ void __87__SASHeadphonesAuthenticationManager_inEarDetectionStateDidChangeForBTA
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didChangeLockState:(unint64_t)a3
+- (void)didChangeLockState:(unint64_t)state
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -548,7 +548,7 @@ void __87__SASHeadphonesAuthenticationManager_inEarDetectionStateDidChangeForBTA
   block[2] = __57__SASHeadphonesAuthenticationManager_didChangeLockState___block_invoke;
   block[3] = &unk_1E82F36A8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = state;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -632,11 +632,11 @@ LABEL_12:
   {
     v5 = MEMORY[0x1E696AF00];
     v6 = v4;
-    v7 = [v5 currentThread];
+    currentThread = [v5 currentThread];
     v15 = 136315394;
     v16 = "[SASHeadphonesAuthenticationManager isAuthenticated]";
     v17 = 2048;
-    v18 = [v7 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v6, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _authenticatedLock about to lock with qos: %zd", &v15, 0x16u);
   }
 
@@ -672,7 +672,7 @@ LABEL_12:
   return authenticated;
 }
 
-- (void)_logEligibilityForAuthenticatedState:(BOOL)a3 andTimedOut:(BOOL)a4
+- (void)_logEligibilityForAuthenticatedState:(BOOL)state andTimedOut:(BOOL)out
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -681,8 +681,8 @@ LABEL_12:
   block[2] = __87__SASHeadphonesAuthenticationManager__logEligibilityForAuthenticatedState_andTimedOut___block_invoke;
   block[3] = &unk_1E82F3D08;
   objc_copyWeak(&v9, &location);
-  v10 = a3;
-  v11 = a4;
+  stateCopy = state;
+  outCopy = out;
   dispatch_async(queue, block);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -727,10 +727,10 @@ void __87__SASHeadphonesAuthenticationManager__logEligibilityForAuthenticatedSta
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getHeadphonesAuthenticationStatusWithCompletion:(id)a3
+- (void)getHeadphonesAuthenticationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     queue = self->_queue;
@@ -739,7 +739,7 @@ void __87__SASHeadphonesAuthenticationManager__logEligibilityForAuthenticatedSta
     block[2] = __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusWithCompletion___block_invoke;
     block[3] = &unk_1E82F3D30;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v9);
@@ -767,19 +767,19 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
   }
 }
 
-- (BOOL)_inEarDetectionStateEligibleForState:(id)a3
+- (BOOL)_inEarDetectionStateEligibleForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 isEnabled] && (objc_msgSend(v3, "primaryInEarStatus") == 3 || objc_msgSend(v3, "secondaryInEarStatus") == 3) && objc_msgSend(v3, "primaryInEarStatus") != 2 && objc_msgSend(v3, "secondaryInEarStatus") != 2;
+  stateCopy = state;
+  v4 = [stateCopy isEnabled] && (objc_msgSend(stateCopy, "primaryInEarStatus") == 3 || objc_msgSend(stateCopy, "secondaryInEarStatus") == 3) && objc_msgSend(stateCopy, "primaryInEarStatus") != 2 && objc_msgSend(stateCopy, "secondaryInEarStatus") != 2;
 
   return v4;
 }
 
-- (BOOL)_shouldIgnoreConnectionChangesForState:(id)a3
+- (BOOL)_shouldIgnoreConnectionChangesForState:(id)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = -[AFBluetoothHeadphoneInEarDetectionState secondaryInEarStatus](self->_inEarDetectionState, "secondaryInEarStatus") == 1 && [v4 secondaryInEarStatus] == 0;
+  stateCopy = state;
+  v5 = -[AFBluetoothHeadphoneInEarDetectionState secondaryInEarStatus](self->_inEarDetectionState, "secondaryInEarStatus") == 1 && [stateCopy secondaryInEarStatus] == 0;
   if ([(AFBluetoothHeadphoneInEarDetectionState *)self->_inEarDetectionState secondaryInEarStatus])
   {
     v6 = 0;
@@ -787,7 +787,7 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
 
   else
   {
-    v6 = [v4 secondaryInEarStatus] == 1;
+    v6 = [stateCopy secondaryInEarStatus] == 1;
   }
 
   v7 = v5 || v6;
@@ -814,7 +814,7 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
   return v7;
 }
 
-- (void)_invalidateAuthenticationWithReason:(int64_t)a3
+- (void)_invalidateAuthenticationWithReason:(int64_t)reason
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E698D0A0];
@@ -823,11 +823,11 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
   {
     v7 = MEMORY[0x1E696AF00];
     v8 = v6;
-    v9 = [v7 currentThread];
+    currentThread = [v7 currentThread];
     v16 = 136315394;
     v17 = "[SASHeadphonesAuthenticationManager _invalidateAuthenticationWithReason:]";
     v18 = 2048;
-    v19 = [v9 qualityOfService];
+    qualityOfService = [currentThread qualityOfService];
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation #locks #noisy _authenticatedLock about to lock with qos: %zd", &v16, 0x16u);
   }
 
@@ -846,11 +846,11 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = SASHeadphonesAuthenticationInvalidationReasonGetName(a3);
+      v13 = SASHeadphonesAuthenticationInvalidationReasonGetName(reason);
       v16 = 136315394;
       v17 = "[SASHeadphonesAuthenticationManager _invalidateAuthenticationWithReason:]";
       v18 = 2112;
-      v19 = v13;
+      qualityOfService = v13;
       _os_log_impl(&dword_1C8137000, v12, OS_LOG_TYPE_DEFAULT, "%s 🎧 Invalidating authentication for reason: %@", &v16, 0x16u);
     }
 
@@ -869,7 +869,7 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHeadphoneVoiceTriggerDiscoveryNotificationAllowed:(BOOL)a3
+- (void)setHeadphoneVoiceTriggerDiscoveryNotificationAllowed:(BOOL)allowed
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -878,7 +878,7 @@ void __86__SASHeadphonesAuthenticationManager_getHeadphonesAuthenticationStatusW
   block[2] = __91__SASHeadphonesAuthenticationManager_setHeadphoneVoiceTriggerDiscoveryNotificationAllowed___block_invoke;
   block[3] = &unk_1E82F3A58;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  allowedCopy = allowed;
   dispatch_async(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -942,7 +942,7 @@ LABEL_9:
     *buf = 136315394;
     v8 = "[SASHeadphonesAuthenticationManager dealloc]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C8137000, v3, OS_LOG_TYPE_DEFAULT, "%s 🎧 Deallocating: %@", buf, 0x16u);
   }
 

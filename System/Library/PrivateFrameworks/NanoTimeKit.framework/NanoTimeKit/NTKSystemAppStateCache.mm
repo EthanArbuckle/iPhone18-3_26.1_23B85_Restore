@@ -1,7 +1,7 @@
 @interface NTKSystemAppStateCache
 + (id)sharedInstance;
-- (BOOL)isRemovedSystemApp:(id)a3;
-- (BOOL)isRestrictedSystemApp:(id)a3;
+- (BOOL)isRemovedSystemApp:(id)app;
+- (BOOL)isRestrictedSystemApp:(id)app;
 - (NTKSystemAppStateCache)init;
 - (id)_queue_cachedAppStateBundleId;
 - (id)_queue_removedSystemApps;
@@ -9,17 +9,17 @@
 - (id)removedSystemApps;
 - (id)restrictedSystemApps;
 - (void)_deviceDidPair;
-- (void)_queue_applicationsDidChange:(id)a3 state:(unint64_t)a4;
+- (void)_queue_applicationsDidChange:(id)change state:(unint64_t)state;
 - (void)_queue_deviceDidPair;
 - (void)_queue_initializeRemovedSystemApps;
 - (void)_queue_initializeRestrictedSystemApps;
 - (void)_queue_tinCanSettingsChanged;
-- (void)_queue_verifyStateForAppBundleId:(id)a3;
+- (void)_queue_verifyStateForAppBundleId:(id)id;
 - (void)_tinCanSettingsChanged;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationStateDidChange:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationStateDidChange:(id)change;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)prewarmGizmoDaemon;
 @end
@@ -56,17 +56,17 @@ void __40__NTKSystemAppStateCache_sharedInstance__block_invoke()
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v3;
 
-    v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v5 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     tinCanBundleID = v2->_tinCanBundleID;
     v2->_tinCanBundleID = @"com.apple.facetime";
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__tinCanSettingsChanged name:@"NTKCTinCanSettingsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__tinCanSettingsChanged name:@"NTKCTinCanSettingsChangedNotification" object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__deviceDidPair name:*MEMORY[0x277D37C18] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__deviceDidPair name:*MEMORY[0x277D37C18] object:0];
   }
 
   return v2;
@@ -74,14 +74,14 @@ void __40__NTKSystemAppStateCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"NTKCTinCanSettingsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"NTKCTinCanSettingsChangedNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D37C18] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D37C18] object:0];
 
   v6.receiver = self;
   v6.super_class = NTKSystemAppStateCache;
@@ -155,9 +155,9 @@ LABEL_11:
   xpc_set_event_stream_handler("com.apple.distnoted.matching", 0, &__block_literal_global_320);
 }
 
-- (BOOL)isRemovedSystemApp:(id)a3
+- (BOOL)isRemovedSystemApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -168,9 +168,9 @@ LABEL_11:
   block[2] = __45__NTKSystemAppStateCache_isRemovedSystemApp___block_invoke;
   block[3] = &unk_278783A68;
   block[4] = self;
-  v9 = v4;
+  v9 = appCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = appCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -192,9 +192,9 @@ void __45__NTKSystemAppStateCache_isRemovedSystemApp___block_invoke(uint64_t a1)
   *(*(*(a1 + 48) + 8) + 24) = [v4 containsObject:*(a1 + 40)];
 }
 
-- (BOOL)isRestrictedSystemApp:(id)a3
+- (BOOL)isRestrictedSystemApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -205,9 +205,9 @@ void __45__NTKSystemAppStateCache_isRemovedSystemApp___block_invoke(uint64_t a1)
   block[2] = __48__NTKSystemAppStateCache_isRestrictedSystemApp___block_invoke;
   block[3] = &unk_278783A68;
   block[4] = self;
-  v9 = v4;
+  v9 = appCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = appCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v12 + 24);
 
@@ -291,59 +291,59 @@ void __43__NTKSystemAppStateCache_removedSystemApps__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__NTKSystemAppStateCache_applicationStateDidChange___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
+  installCopy = install;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__NTKSystemAppStateCache_applicationsDidInstall___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = installCopy;
+  v6 = installCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__NTKSystemAppStateCache_applicationsDidUninstall___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = uninstallCopy;
+  v6 = uninstallCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NTKSystemAppStateCache_applicationInstallsDidStart___block_invoke;
   v7[3] = &unk_27877E438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startCopy;
+  v6 = startCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -377,14 +377,14 @@ void __43__NTKSystemAppStateCache_removedSystemApps__block_invoke(uint64_t a1)
   self->_restrictedSystemApps = v3;
 
   v5 = NTKBundleIDToComplicationTypesMappingForGloryDevices();
-  v6 = [v5 allKeys];
+  allKeys = [v5 allKeys];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__NTKSystemAppStateCache__queue_initializeRestrictedSystemApps__block_invoke;
   v9[3] = &unk_27877DED0;
   v9[4] = self;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [allKeys enumerateObjectsUsingBlock:v9];
   v7 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -403,14 +403,14 @@ void __43__NTKSystemAppStateCache_removedSystemApps__block_invoke(uint64_t a1)
   self->_removedSystemApps = v3;
 
   v5 = NTKBundleIDToComplicationTypesMappingForGloryDevices();
-  v6 = [v5 allKeys];
+  allKeys = [v5 allKeys];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__NTKSystemAppStateCache__queue_initializeRemovedSystemApps__block_invoke;
   v9[3] = &unk_27877DED0;
   v9[4] = self;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [allKeys enumerateObjectsUsingBlock:v9];
   v7 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -453,34 +453,34 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)_queue_verifyStateForAppBundleId:(id)a3
+- (void)_queue_verifyStateForAppBundleId:(id)id
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKSystemAppStateCache *)self _queue_cachedAppStateBundleId];
-  [v5 addObject:v4];
+  idCopy = id;
+  _queue_cachedAppStateBundleId = [(NTKSystemAppStateCache *)self _queue_cachedAppStateBundleId];
+  [_queue_cachedAppStateBundleId addObject:idCopy];
 
   v18 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v18];
+  v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:idCopy allowPlaceholder:1 error:&v18];
   v7 = v18;
   if (v6)
   {
-    v8 = [v6 applicationState];
-    v9 = [v8 isInstalled];
+    applicationState = [v6 applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    if ((v9 & 1) == 0)
+    if ((isInstalled & 1) == 0)
     {
-      v10 = [v6 applicationState];
-      v11 = [v10 isPlaceholder];
+      applicationState2 = [v6 applicationState];
+      isPlaceholder = [applicationState2 isPlaceholder];
 
       v12 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v11)
+      if (isPlaceholder)
       {
         if (v13)
         {
           *buf = 138412290;
-          v20 = v4;
+          v20 = idCopy;
           _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "found placeholder for system app (%@)", buf, 0xCu);
         }
       }
@@ -490,25 +490,25 @@ LABEL_8:
         if (v13)
         {
           *buf = 138412290;
-          v20 = v4;
+          v20 = idCopy;
           _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "system app (%@) is not installed", buf, 0xCu);
         }
 
-        [(NSMutableSet *)self->_removedSystemApps addObject:v4];
+        [(NSMutableSet *)self->_removedSystemApps addObject:idCopy];
       }
     }
 
-    v15 = [v6 applicationState];
-    v16 = [v15 isRestricted];
+    applicationState3 = [v6 applicationState];
+    isRestricted = [applicationState3 isRestricted];
 
-    if (v16)
+    if (isRestricted)
     {
-      [(NSMutableSet *)self->_restrictedSystemApps addObject:v4];
+      [(NSMutableSet *)self->_restrictedSystemApps addObject:idCopy];
       v17 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = idCopy;
         _os_log_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_DEFAULT, "system app (%@) is restricted", buf, 0xCu);
       }
     }
@@ -520,22 +520,22 @@ LABEL_8:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = idCopy;
       _os_log_impl(&dword_22D9C5000, v14, OS_LOG_TYPE_DEFAULT, "system app (%@) does not have a record", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_removedSystemApps addObject:v4];
+    [(NSMutableSet *)self->_removedSystemApps addObject:idCopy];
   }
 }
 
-- (void)_queue_applicationsDidChange:(id)a3 state:(unint64_t)a4
+- (void)_queue_applicationsDidChange:(id)change state:(unint64_t)state
 {
   v46 = *MEMORY[0x277D85DE8];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = a3;
+  obj = change;
   v6 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (!v6)
   {
@@ -557,26 +557,26 @@ LABEL_8:
       }
 
       v12 = *(*(&v39 + 1) + 8 * i);
-      v13 = [v12 applicationIdentifier];
-      if (a4 > 1)
+      applicationIdentifier = [v12 applicationIdentifier];
+      if (state > 1)
       {
-        if (a4 == 2)
+        if (state == 2)
         {
-          v29 = [v12 appState];
-          v30 = [v29 isRestricted];
+          appState = [v12 appState];
+          isRestricted = [appState isRestricted];
 
-          v31 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
-          v32 = [v31 containsObject:v13];
+          _queue_restrictedSystemApps = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
+          v32 = [_queue_restrictedSystemApps containsObject:applicationIdentifier];
 
-          if (v30)
+          if (isRestricted)
           {
             if (v32)
             {
               goto LABEL_37;
             }
 
-            v33 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
-            [v33 addObject:v13];
+            _queue_restrictedSystemApps2 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
+            [_queue_restrictedSystemApps2 addObject:applicationIdentifier];
 
             v17 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -585,7 +585,7 @@ LABEL_8:
             }
 
             *buf = v36;
-            v44 = v13;
+            v44 = applicationIdentifier;
             v18 = v17;
             v19 = "system app (%@) restricted";
           }
@@ -597,8 +597,8 @@ LABEL_8:
               goto LABEL_37;
             }
 
-            v35 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
-            [v35 removeObject:v13];
+            _queue_restrictedSystemApps3 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
+            [_queue_restrictedSystemApps3 removeObject:applicationIdentifier];
 
             v17 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
             if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -607,7 +607,7 @@ LABEL_8:
             }
 
             *buf = v36;
-            v44 = v13;
+            v44 = applicationIdentifier;
             v18 = v17;
             v19 = "system app (%@) un-restricted";
           }
@@ -615,38 +615,38 @@ LABEL_8:
 
         else
         {
-          if (a4 != 3)
+          if (state != 3)
           {
             goto LABEL_37;
           }
 
-          v20 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-          v21 = [v20 containsObject:v13];
+          _queue_removedSystemApps = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+          v21 = [_queue_removedSystemApps containsObject:applicationIdentifier];
 
           if (v21)
           {
-            v22 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-            [v22 removeObject:v13];
+            _queue_removedSystemApps2 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+            [_queue_removedSystemApps2 removeObject:applicationIdentifier];
           }
 
-          v23 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
-          v24 = [v23 containsObject:v13];
+          _queue_restrictedSystemApps4 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
+          v24 = [_queue_restrictedSystemApps4 containsObject:applicationIdentifier];
 
           if (v24)
           {
-            v25 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
-            [v25 removeObject:v13];
+            _queue_restrictedSystemApps5 = [(NTKSystemAppStateCache *)self _queue_restrictedSystemApps];
+            [_queue_restrictedSystemApps5 removeObject:applicationIdentifier];
 
 LABEL_26:
             v34 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v36;
-              v44 = v13;
+              v44 = applicationIdentifier;
               _os_log_impl(&dword_22D9C5000, v34, OS_LOG_TYPE_DEFAULT, "system app (%@) install started and was previously removed or restricted, re-evaluating", buf, 0xCu);
             }
 
-            [(NTKSystemAppStateCache *)self _queue_verifyStateForAppBundleId:v13];
+            [(NTKSystemAppStateCache *)self _queue_verifyStateForAppBundleId:applicationIdentifier];
             goto LABEL_36;
           }
 
@@ -662,7 +662,7 @@ LABEL_26:
           }
 
           *buf = v36;
-          v44 = v13;
+          v44 = applicationIdentifier;
           v18 = v17;
           v19 = "system app (%@) install started";
         }
@@ -672,18 +672,18 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      if (!a4)
+      if (!state)
       {
-        v26 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-        v27 = [v26 containsObject:v13];
+        _queue_removedSystemApps3 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+        v27 = [_queue_removedSystemApps3 containsObject:applicationIdentifier];
 
         if (!v27)
         {
           goto LABEL_37;
         }
 
-        v28 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-        [v28 removeObject:v13];
+        _queue_removedSystemApps4 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+        [_queue_removedSystemApps4 removeObject:applicationIdentifier];
 
         v17 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
         if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -692,27 +692,27 @@ LABEL_34:
         }
 
         *buf = v36;
-        v44 = v13;
+        v44 = applicationIdentifier;
         v18 = v17;
         v19 = "system app (%@) was installed";
         goto LABEL_34;
       }
 
-      if (a4 == 1)
+      if (state == 1)
       {
-        v14 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-        v15 = [v14 containsObject:v13];
+        _queue_removedSystemApps5 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+        v15 = [_queue_removedSystemApps5 containsObject:applicationIdentifier];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-          [v16 addObject:v13];
+          _queue_removedSystemApps6 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+          [_queue_removedSystemApps6 addObject:applicationIdentifier];
 
           v17 = _NTKLoggingObjectForDomain(0, "NTKLoggingDomainDefault");
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v36;
-            v44 = v13;
+            v44 = applicationIdentifier;
             v18 = v17;
             v19 = "system app (%@) was uninstalled";
             goto LABEL_34;
@@ -754,15 +754,15 @@ void __61__NTKSystemAppStateCache__queue_applicationsDidChange_state___block_inv
 - (void)_queue_tinCanSettingsChanged
 {
   v3 = +[NTKCTinCanSettings sharedInstance];
-  v4 = [v3 tinCanEnabled];
+  tinCanEnabled = [v3 tinCanEnabled];
 
-  v5 = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
-  v6 = [v5 containsObject:self->_tinCanBundleID];
-  if (v4)
+  _queue_removedSystemApps = [(NTKSystemAppStateCache *)self _queue_removedSystemApps];
+  v6 = [_queue_removedSystemApps containsObject:self->_tinCanBundleID];
+  if (tinCanEnabled)
   {
     if (v6)
     {
-      [v5 removeObject:self->_tinCanBundleID];
+      [_queue_removedSystemApps removeObject:self->_tinCanBundleID];
 LABEL_6:
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
@@ -775,7 +775,7 @@ LABEL_6:
 
   else if ((v6 & 1) == 0)
   {
-    [v5 addObject:self->_tinCanBundleID];
+    [_queue_removedSystemApps addObject:self->_tinCanBundleID];
     goto LABEL_6;
   }
 }

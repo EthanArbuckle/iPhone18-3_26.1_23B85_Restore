@@ -1,14 +1,14 @@
 @interface NTKActivityDigitalRichFaceView
 - ($0133E12197E66152D7F90595F26F386E)_layoutConstants;
-- (id)_newFaceViewFactoryForDevice:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (id)_newFaceViewFactoryForDevice:(id)device;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 @end
 
 @implementation NTKActivityDigitalRichFaceView
 
 - ($0133E12197E66152D7F90595F26F386E)_layoutConstants
 {
-  v4 = [(NTKActivityDigitalRichFaceView *)self device];
+  device = [(NTKActivityDigitalRichFaceView *)self device];
   *&retstr->var15.diameter = 0u;
   *&retstr->var15.bottomEdgeInset = 0u;
   *&retstr->var14.thickness = 0u;
@@ -28,7 +28,7 @@
   *&retstr->var16.leftEdgeInset = 0u;
   *&retstr->var16.thickness = 0u;
   *&retstr->var15.interspacing = 0u;
-  v5 = v4;
+  v5 = device;
   sub_1034C(v5, retstr);
   v6 = [CLKDeviceMetrics metricsWithDevice:v5 identitySizeClass:2];
 
@@ -75,23 +75,23 @@
   return result;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v7.receiver = self;
   v7.super_class = NTKActivityDigitalRichFaceView;
-  [(NTKActivityDigitalRichFaceView *)&v7 _configureComplicationView:v6 forSlot:a4];
+  [(NTKActivityDigitalRichFaceView *)&v7 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 transitionToMonochromeWithFraction:0.0];
+    [viewCopy transitionToMonochromeWithFraction:0.0];
   }
 }
 
-- (id)_newFaceViewFactoryForDevice:(id)a3
+- (id)_newFaceViewFactoryForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKActivityFaceViewFactory alloc] initForAnalog:0 richComplications:1 forDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKActivityFaceViewFactory alloc] initForAnalog:0 richComplications:1 forDevice:deviceCopy];
 
   return v4;
 }

@@ -1,79 +1,79 @@
 @interface FPArchiveOperation
-+ (id)extensionForArchiveFormat:(unint64_t)a3 utType:(id *)a4;
++ (id)extensionForArchiveFormat:(unint64_t)format utType:(id *)type;
 - (BOOL)_checkNeedOfTemporaryDirectory;
-- (FPArchiveOperation)initWithItems:(id)a3 destinationFolder:(id)a4;
-- (id)findUniqueArchivedName:(id)a3 parent:(id)a4;
-- (unint64_t)_fpToDSArchiveFormat:(unint64_t)a3;
-- (void)_archiveURLForDSEnumeratedDestination:(id)a3 service:(id)a4 completionHandler:(id)a5;
-- (void)_archiveURLForFPEnumeratedDestination:(id)a3 targetArchiveName:(id)a4 service:(id)a5 completionHandler:(id)a6;
-- (void)_archiveURLs:(id)a3 targetArchiveName:(id)a4 completionHandler:(id)a5;
+- (FPArchiveOperation)initWithItems:(id)items destinationFolder:(id)folder;
+- (id)findUniqueArchivedName:(id)name parent:(id)parent;
+- (unint64_t)_fpToDSArchiveFormat:(unint64_t)format;
+- (void)_archiveURLForDSEnumeratedDestination:(id)destination service:(id)service completionHandler:(id)handler;
+- (void)_archiveURLForFPEnumeratedDestination:(id)destination targetArchiveName:(id)name service:(id)service completionHandler:(id)handler;
+- (void)_archiveURLs:(id)ls targetArchiveName:(id)name completionHandler:(id)handler;
 - (void)_checkNeedOfTemporaryDirectory;
-- (void)_coordinateArchivedItemsWithCompletionHandler:(id)a3;
-- (void)_copyArchivedItemsWithCompletionHandler:(id)a3;
-- (void)_materializeDestinationFolder:(id)a3;
-- (void)_prepareItemsWithCompletionHandler:(id)a3;
+- (void)_coordinateArchivedItemsWithCompletionHandler:(id)handler;
+- (void)_copyArchivedItemsWithCompletionHandler:(id)handler;
+- (void)_materializeDestinationFolder:(id)folder;
+- (void)_prepareItemsWithCompletionHandler:(id)handler;
 - (void)actionMain;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
 @end
 
 @implementation FPArchiveOperation
 
-+ (id)extensionForArchiveFormat:(unint64_t)a3 utType:(id *)a4
++ (id)extensionForArchiveFormat:(unint64_t)format utType:(id *)type
 {
-  if (a3 <= 2)
+  if (format <= 2)
   {
-    switch(a3)
+    switch(format)
     {
       case 0uLL:
 LABEL_14:
         v10 = MEMORY[0x1E69830D0];
         goto LABEL_18;
       case 1uLL:
-        if (a4)
+        if (type)
         {
           v8 = *MEMORY[0x1E6982CC0];
-          v9 = @"cpio";
+          preferredFilenameExtension = @"cpio";
           goto LABEL_19;
         }
 
-        v9 = @"cpio";
+        preferredFilenameExtension = @"cpio";
         goto LABEL_20;
       case 2uLL:
-        if (a4)
+        if (type)
         {
           v8 = *MEMORY[0x1E6982CC0];
-          v9 = @"cpgz";
+          preferredFilenameExtension = @"cpgz";
 LABEL_19:
           v12 = v8;
-          *a4 = v8;
+          *type = v8;
           goto LABEL_20;
         }
 
-        v9 = @"cpgz";
+        preferredFilenameExtension = @"cpgz";
         goto LABEL_20;
     }
 
 LABEL_13:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"FPArchiveOperation.m" lineNumber:168 description:{@"No DS match for FP archive format: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:168 description:{@"No DS match for FP archive format: %ld", format}];
 
     goto LABEL_14;
   }
 
-  if (a3 == 3)
+  if (format == 3)
   {
     v10 = MEMORY[0x1E6983018];
     goto LABEL_18;
   }
 
-  if (a3 == 4)
+  if (format == 4)
   {
     v10 = MEMORY[0x1E6982C88];
 LABEL_18:
     v8 = *v10;
-    v9 = [*v10 preferredFilenameExtension];
-    if (!a4)
+    preferredFilenameExtension = [*v10 preferredFilenameExtension];
+    if (!type)
     {
       goto LABEL_20;
     }
@@ -81,31 +81,31 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 != 5)
+  if (format != 5)
   {
     goto LABEL_13;
   }
 
-  if (a4)
+  if (type)
   {
     v8 = *MEMORY[0x1E6982CC0];
-    v9 = @"aea";
+    preferredFilenameExtension = @"aea";
     goto LABEL_19;
   }
 
-  v9 = @"aea";
+  preferredFilenameExtension = @"aea";
 LABEL_20:
 
-  return v9;
+  return preferredFilenameExtension;
 }
 
-- (FPArchiveOperation)initWithItems:(id)a3 destinationFolder:(id)a4
+- (FPArchiveOperation)initWithItems:(id)items destinationFolder:(id)folder
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  itemsCopy = items;
+  folderCopy = folder;
+  if ([itemsCopy count])
   {
-    if (v9)
+    if (folderCopy)
     {
       goto LABEL_3;
     }
@@ -113,8 +113,8 @@ LABEL_20:
 
   else
   {
-    [(FPArchiveOperation *)a2 initWithItems:v8 destinationFolder:?];
-    if (v9)
+    [(FPArchiveOperation *)a2 initWithItems:itemsCopy destinationFolder:?];
+    if (folderCopy)
     {
       goto LABEL_3;
     }
@@ -122,15 +122,15 @@ LABEL_20:
 
   [FPArchiveOperation initWithItems:destinationFolder:];
 LABEL_3:
-  v10 = [v9 providerDomainID];
+  providerDomainID = [folderCopy providerDomainID];
   v20.receiver = self;
   v20.super_class = FPArchiveOperation;
-  v11 = [(FPActionOperation *)&v20 initWithProvider:v10 action:0];
+  v11 = [(FPActionOperation *)&v20 initWithProvider:providerDomainID action:0];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_items, a3);
-    objc_storeStrong(&v11->_destinationFolder, a4);
+    objc_storeStrong(&v11->_items, items);
+    objc_storeStrong(&v11->_destinationFolder, folder);
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_create("com.apple.FileProvider.ArchiveOperation", v12);
     queue = v11->_queue;
@@ -146,17 +146,17 @@ LABEL_3:
     v17 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
     [(FPActionOperation *)v11 setProgress:v17];
 
-    v18 = [(FPActionOperation *)v11 progress];
-    [v18 fp_setFileOperationKind:*MEMORY[0x1E696A840]];
+    progress = [(FPActionOperation *)v11 progress];
+    [progress fp_setFileOperationKind:*MEMORY[0x1E696A840]];
   }
 
   return v11;
 }
 
-- (void)_coordinateArchivedItemsWithCompletionHandler:(id)a3
+- (void)_coordinateArchivedItemsWithCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  handlerCopy = handler;
   v19 = +[FPItemManager defaultManager];
   v34[0] = 0;
   v34[1] = v34;
@@ -213,16 +213,16 @@ LABEL_3:
   block[2] = __68__FPArchiveOperation__coordinateArchivedItemsWithCompletionHandler___block_invoke_2;
   block[3] = &unk_1E793AE10;
   v25 = v34;
-  v11 = v16;
+  v11 = handlerCopy;
   v24 = v11;
   v12 = v3;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v13 = v9;
   v23 = v13;
   dispatch_group_notify(v4, queue, block);
-  v14 = [(FPActionOperation *)self progress];
-  [v14 addChild:v13 withPendingUnitCount:10];
+  progress = [(FPActionOperation *)self progress];
+  [progress addChild:v13 withPendingUnitCount:10];
 
   _Block_object_dispose(v34, 8);
   v15 = *MEMORY[0x1E69E9840];
@@ -415,21 +415,21 @@ uint64_t __68__FPArchiveOperation__coordinateArchivedItemsWithCompletionHandler_
   return result;
 }
 
-- (void)_copyArchivedItemsWithCompletionHandler:(id)a3
+- (void)_copyArchivedItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[FPItemManager defaultManager];
-  v6 = [(NSArray *)self->_items firstObject];
+  firstObject = [(NSArray *)self->_items firstObject];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__FPArchiveOperation__copyArchivedItemsWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E793AE60;
   v10 = v5;
-  v11 = v4;
+  v11 = handlerCopy;
   v9[4] = self;
   v7 = v5;
-  v8 = v4;
-  [v7 fetchURLForItem:v6 completionHandler:v9];
+  v8 = handlerCopy;
+  [v7 fetchURLForItem:firstObject completionHandler:v9];
 }
 
 void __62__FPArchiveOperation__copyArchivedItemsWithCompletionHandler___block_invoke(id *a1, void *a2, void *a3)
@@ -541,10 +541,10 @@ void __62__FPArchiveOperation__copyArchivedItemsWithCompletionHandler___block_in
       }
 
       v8 = *(*(&v28 + 1) + 8 * i);
-      v9 = [v8 providerDomainID];
-      v10 = [(NSArray *)self->_items firstObject];
-      v11 = [v10 providerDomainID];
-      v12 = [v9 isEqualToString:v11];
+      providerDomainID = [v8 providerDomainID];
+      firstObject = [(NSArray *)self->_items firstObject];
+      providerDomainID2 = [firstObject providerDomainID];
+      v12 = [providerDomainID isEqualToString:providerDomainID2];
 
       if ((v12 & 1) == 0)
       {
@@ -557,10 +557,10 @@ void __62__FPArchiveOperation__copyArchivedItemsWithCompletionHandler___block_in
         goto LABEL_18;
       }
 
-      v13 = [v8 parentItemID];
-      v14 = [(NSArray *)self->_items firstObject];
-      v15 = [v14 parentItemID];
-      v16 = [v13 isEqualToItemID:v15];
+      parentItemID = [v8 parentItemID];
+      firstObject2 = [(NSArray *)self->_items firstObject];
+      parentItemID2 = [firstObject2 parentItemID];
+      v16 = [parentItemID isEqualToItemID:parentItemID2];
 
       if ((v16 & 1) == 0)
       {
@@ -572,7 +572,7 @@ void __62__FPArchiveOperation__copyArchivedItemsWithCompletionHandler___block_in
 
 LABEL_18:
         v19 = 1;
-        v18 = obj;
+        providerID = obj;
         goto LABEL_19;
       }
     }
@@ -589,22 +589,22 @@ LABEL_18:
 
 LABEL_10:
 
-  v17 = [(NSArray *)self->_items firstObject];
-  v18 = [v17 providerID];
+  firstObject3 = [(NSArray *)self->_items firstObject];
+  providerID = [firstObject3 providerID];
 
-  if ([v18 isEqualToString:@"com.apple.FileProvider.LocalStorage"] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"com.apple.filesystems.UserFS.FileProvider") & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"com.apple.SMBClientProvider.FileProvider"))
+  if ([providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"] & 1) != 0 || (objc_msgSend(providerID, "isEqualToString:", @"com.apple.filesystems.UserFS.FileProvider") & 1) != 0 || (objc_msgSend(providerID, "isEqualToString:", @"com.apple.SMBClientProvider.FileProvider"))
   {
     v19 = 0;
   }
 
   else
   {
-    v23 = [(NSArray *)self->_items firstObject];
-    v24 = [v23 providerDomainID];
-    v20 = [FPProviderDomain providerDomainWithID:v24 cachePolicy:1 error:0];
+    firstObject4 = [(NSArray *)self->_items firstObject];
+    providerDomainID3 = [firstObject4 providerDomainID];
+    v20 = [FPProviderDomain providerDomainWithID:providerDomainID3 cachePolicy:1 error:0];
 
-    v25 = [v20 isUsingFPFS];
-    if ((v25 & 1) == 0)
+    isUsingFPFS = [v20 isUsingFPFS];
+    if ((isUsingFPFS & 1) == 0)
     {
       v26 = fp_current_or_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -613,7 +613,7 @@ LABEL_10:
       }
     }
 
-    v19 = v25 ^ 1;
+    v19 = isUsingFPFS ^ 1;
 LABEL_19:
   }
 
@@ -621,9 +621,9 @@ LABEL_19:
   return v19;
 }
 
-- (void)_materializeDestinationFolder:(id)a3
+- (void)_materializeDestinationFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[FPItemManager defaultManager];
   destinationFolder = self->_destinationFolder;
   v8[0] = MEMORY[0x1E69E9820];
@@ -631,8 +631,8 @@ LABEL_19:
   v8[2] = __52__FPArchiveOperation__materializeDestinationFolder___block_invoke;
   v8[3] = &unk_1E793AED8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = folderCopy;
+  v7 = folderCopy;
   [v5 fetchURLForItem:destinationFolder completionHandler:v8];
 }
 
@@ -723,14 +723,14 @@ uint64_t __52__FPArchiveOperation__materializeDestinationFolder___block_invoke_3
   return result;
 }
 
-- (void)_prepareItemsWithCompletionHandler:(id)a3
+- (void)_prepareItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(NSArray *)self->_items count])
   {
     if ([(FPArchiveOperation *)self _checkNeedOfTemporaryDirectory])
     {
-      [(FPArchiveOperation *)self _copyArchivedItemsWithCompletionHandler:v4];
+      [(FPArchiveOperation *)self _copyArchivedItemsWithCompletionHandler:handlerCopy];
     }
 
     else
@@ -741,37 +741,37 @@ uint64_t __52__FPArchiveOperation__materializeDestinationFolder___block_invoke_3
         [FPArchiveOperation _prepareItemsWithCompletionHandler:];
       }
 
-      [(FPArchiveOperation *)self _coordinateArchivedItemsWithCompletionHandler:v4];
+      [(FPArchiveOperation *)self _coordinateArchivedItemsWithCompletionHandler:handlerCopy];
     }
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:0];
-    v4[2](v4, 0, v5, &__block_literal_global_86);
+    handlerCopy[2](handlerCopy, 0, v5, &__block_literal_global_86);
   }
 }
 
-- (unint64_t)_fpToDSArchiveFormat:(unint64_t)a3
+- (unint64_t)_fpToDSArchiveFormat:(unint64_t)format
 {
-  v3 = a3;
-  if (a3 >= 6)
+  formatCopy = format;
+  if (format >= 6)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:423 description:{@"No DS match for FP archive format: %ld", v3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPArchiveOperation.m" lineNumber:423 description:{@"No DS match for FP archive format: %ld", formatCopy}];
 
     return 0;
   }
 
-  return v3;
+  return formatCopy;
 }
 
-- (void)_archiveURLForFPEnumeratedDestination:(id)a3 targetArchiveName:(id)a4 service:(id)a5 completionHandler:(id)a6
+- (void)_archiveURLForFPEnumeratedDestination:(id)destination targetArchiveName:(id)name service:(id)service completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
+  destinationCopy = destination;
+  nameCopy = name;
+  handlerCopy = handler;
+  serviceCopy = service;
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -779,18 +779,18 @@ uint64_t __52__FPArchiveOperation__materializeDestinationFolder___block_invoke_3
   }
 
   v16 = [(FPArchiveOperation *)self _fpToDSArchiveFormat:[(FPArchiveOperation *)self archiveFormat]];
-  v17 = [v11 firstObject];
+  firstObject = [destinationCopy firstObject];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __104__FPArchiveOperation__archiveURLForFPEnumeratedDestination_targetArchiveName_service_completionHandler___block_invoke;
   v25 = &unk_1E793AF28;
-  v28 = v13;
+  v28 = handlerCopy;
   v29 = a2;
-  v26 = self;
-  v27 = v12;
-  v18 = v12;
-  v19 = v13;
-  v20 = [v14 archiveItemsWithURLs:v11 compressionFormat:v16 destinationFolderURL:v17 completionHandler:&v22];
+  selfCopy = self;
+  v27 = nameCopy;
+  v18 = nameCopy;
+  v19 = handlerCopy;
+  v20 = [serviceCopy archiveItemsWithURLs:destinationCopy compressionFormat:v16 destinationFolderURL:firstObject completionHandler:&v22];
 
   v21 = [(FPActionOperation *)self progress:v22];
   [v21 addChild:v20 withPendingUnitCount:80];
@@ -916,22 +916,22 @@ void __104__FPArchiveOperation__archiveURLForFPEnumeratedDestination_targetArchi
   (*(v6 + 16))(v6, v8, v4);
 }
 
-- (void)_archiveURLForDSEnumeratedDestination:(id)a3 service:(id)a4 completionHandler:(id)a5
+- (void)_archiveURLForDSEnumeratedDestination:(id)destination service:(id)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  serviceCopy = service;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__FPArchiveOperation__archiveURLForDSEnumeratedDestination_service_completionHandler___block_invoke;
   v14[3] = &unk_1E793AFA0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = destinationCopy;
+  v16 = serviceCopy;
+  v17 = handlerCopy;
+  v11 = serviceCopy;
+  v12 = destinationCopy;
+  v13 = handlerCopy;
   [(FPArchiveOperation *)self _materializeDestinationFolder:v14];
 }
 
@@ -1024,15 +1024,15 @@ void __86__FPArchiveOperation__archiveURLForDSEnumeratedDestination_service_comp
   (*(a1[6] + 16))();
 }
 
-- (void)_archiveURLs:(id)a3 targetArchiveName:(id)a4 completionHandler:(id)a5
+- (void)_archiveURLs:(id)ls targetArchiveName:(id)name completionHandler:(id)handler
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  lsCopy = ls;
+  nameCopy = name;
+  handlerCopy = handler;
   getDSArchiveServiceClass();
   v10 = objc_opt_new();
-  v11 = [(FPItem *)self->_destinationFolder providerDomainID];
-  v12 = [FPProviderDomain providerDomainWithID:v11 cachePolicy:1 error:0];
+  providerDomainID = [(FPItem *)self->_destinationFolder providerDomainID];
+  v12 = [FPProviderDomain providerDomainWithID:providerDomainID cachePolicy:1 error:0];
 
   if ([v12 isUsingFPFS])
   {
@@ -1042,12 +1042,12 @@ void __86__FPArchiveOperation__archiveURLForDSEnumeratedDestination_service_comp
     }
 
 LABEL_6:
-    [(FPArchiveOperation *)self _archiveURLForDSEnumeratedDestination:v15 service:v10 completionHandler:v9];
+    [(FPArchiveOperation *)self _archiveURLForDSEnumeratedDestination:lsCopy service:v10 completionHandler:handlerCopy];
     goto LABEL_9;
   }
 
-  v13 = [v12 providerID];
-  if ([v13 isEqualToString:@"com.apple.FileProvider.LocalStorage"])
+  providerID = [v12 providerID];
+  if ([providerID isEqualToString:@"com.apple.FileProvider.LocalStorage"])
   {
     v14 = objc_opt_respondsToSelector();
 
@@ -1062,15 +1062,15 @@ LABEL_6:
   }
 
 LABEL_8:
-  [(FPArchiveOperation *)self _archiveURLForFPEnumeratedDestination:v15 targetArchiveName:v8 service:v10 completionHandler:v9];
+  [(FPArchiveOperation *)self _archiveURLForFPEnumeratedDestination:lsCopy targetArchiveName:nameCopy service:v10 completionHandler:handlerCopy];
 LABEL_9:
 }
 
-- (id)findUniqueArchivedName:(id)a3 parent:(id)a4
+- (id)findUniqueArchivedName:(id)name parent:(id)parent
 {
-  v5 = a3;
+  nameCopy = name;
   v11 = 0;
-  v6 = [a4 fp_existingURLOfChildWithName:v5 isFolder:0 notMatchingFileID:0 nextAvailableBounceNumber:&v11 forceFetchingBounceNumber:1];
+  v6 = [parent fp_existingURLOfChildWithName:nameCopy isFolder:0 notMatchingFileID:0 nextAvailableBounceNumber:&v11 forceFetchingBounceNumber:1];
   v7 = v11;
   v8 = v7;
   if (v6)
@@ -1080,12 +1080,12 @@ LABEL_9:
       v8 = &unk_1F1FC9A58;
     }
 
-    v9 = [v5 fp_bouncedNameWithIndex:objc_msgSend(v8 isDir:{"longValue") + 1, 0}];
+    v9 = [nameCopy fp_bouncedNameWithIndex:objc_msgSend(v8 isDir:{"longValue") + 1, 0}];
   }
 
   else
   {
-    v9 = v5;
+    v9 = nameCopy;
   }
 
   return v9;
@@ -1094,7 +1094,7 @@ LABEL_9:
 - (void)actionMain
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 448);
+  v1 = *(self + 448);
   OUTLINED_FUNCTION_2();
   v6 = 2112;
   v7 = v2;
@@ -1168,71 +1168,71 @@ void __32__FPArchiveOperation_actionMain__block_invoke_2(uint64_t a1, void *a2, 
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v14 = [(NSArray *)self->_items firstObject];
+  firstObject = [(NSArray *)self->_items firstObject];
   v4 = [(NSArray *)self->_items count];
-  v5 = [(FPActionOperation *)self stitcher];
-  v6 = [v14 parentItemIdentifier];
-  v7 = [v14 providerDomainID];
-  v8 = [(FPArchiveOperation *)self archiveFormat];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  parentItemIdentifier = [firstObject parentItemIdentifier];
+  providerDomainID = [firstObject providerDomainID];
+  archiveFormat = [(FPArchiveOperation *)self archiveFormat];
   if (v4 == 1)
   {
-    [v5 createArchivePlaceholderForItem:v14 underParent:v6 inProviderDomainID:v7 withArchiveFormat:v8];
+    [stitcher2 createArchivePlaceholderForItem:firstObject underParent:parentItemIdentifier inProviderDomainID:providerDomainID withArchiveFormat:archiveFormat];
   }
 
   else
   {
-    [v5 createGenericArchivePlaceholderUnderParent:v6 inProviderDomainID:v7 withArchiveFormat:v8];
+    [stitcher2 createGenericArchivePlaceholderUnderParent:parentItemIdentifier inProviderDomainID:providerDomainID withArchiveFormat:archiveFormat];
   }
   v9 = ;
   placeholderID = self->_placeholderID;
   self->_placeholderID = v9;
 
   v11 = +[FPProgressManager defaultManager];
-  v12 = [(FPActionOperation *)self progress];
-  [v11 registerCopyProgress:v12 forItemID:self->_placeholderID];
+  progress = [(FPActionOperation *)self progress];
+  [v11 registerCopyProgress:progress forItemID:self->_placeholderID];
 
-  v13 = [(FPActionOperation *)self stitcher];
-  [v13 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  v8 = resultCopy;
+  if (errorCopy)
   {
     if ([(NSArray *)self->_items count]== 1)
     {
-      v9 = [(NSArray *)self->_items firstObject];
+      firstObject = [(NSArray *)self->_items firstObject];
     }
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
 
-    v10 = [v7 fp_annotatedErrorWithItem:v9 variant:@"Archive"];
+    v10 = [errorCopy fp_annotatedErrorWithItem:firstObject variant:@"Archive"];
   }
 
   else
   {
-    v9 = [(FPActionOperation *)self stitcher];
-    [v9 associateItem:v8 withPlaceholderID:self->_placeholderID];
+    firstObject = [(FPActionOperation *)self stitcher];
+    [firstObject associateItem:v8 withPlaceholderID:self->_placeholderID];
     v10 = 0;
   }
 
-  v11 = [(FPActionOperation *)self stitcher];
-  [v11 finishWithItem:v8 error:v10];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItem:v8 error:v10];
 
-  v12 = [(FPArchiveOperation *)self archiveCompletionBlock];
-  v13 = v12;
-  if (v12)
+  archiveCompletionBlock = [(FPArchiveOperation *)self archiveCompletionBlock];
+  v13 = archiveCompletionBlock;
+  if (archiveCompletionBlock)
   {
-    (*(v12 + 16))(v12, v8, v10);
+    (*(archiveCompletionBlock + 16))(archiveCompletionBlock, v8, v10);
     [(FPArchiveOperation *)self setArchiveCompletionBlock:0];
   }
 

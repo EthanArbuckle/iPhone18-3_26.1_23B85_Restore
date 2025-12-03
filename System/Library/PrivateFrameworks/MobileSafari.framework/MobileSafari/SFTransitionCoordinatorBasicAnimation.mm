@@ -1,17 +1,17 @@
 @interface SFTransitionCoordinatorBasicAnimation
-- (void)initWithAnimations:(void *)a1;
+- (void)initWithAnimations:(void *)animations;
 @end
 
 @implementation SFTransitionCoordinatorBasicAnimation
 
-- (void)initWithAnimations:(void *)a1
+- (void)initWithAnimations:(void *)animations
 {
-  if (!a1)
+  if (!animations)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = animations;
   v7.super_class = SFTransitionCoordinatorBasicAnimation;
   v2 = a2;
   v3 = objc_msgSendSuper2(&v7, sel_init);

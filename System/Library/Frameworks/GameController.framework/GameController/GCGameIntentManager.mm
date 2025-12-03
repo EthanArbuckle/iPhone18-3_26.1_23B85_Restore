@@ -1,9 +1,9 @@
 @interface GCGameIntentManager
 + (void)initialize;
 - (GCGameIntentManager)init;
-- (void)_ui_launchApplicationWithBundleIdentifier:(id)a3;
+- (void)_ui_launchApplicationWithBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)launchApplicationWithBundleIdentifier:(id)a3;
+- (void)launchApplicationWithBundleIdentifier:(id)identifier;
 - (void)toggleGamesFolder;
 - (void)tryPresentAppLibraryPod;
 - (void)ui_togglePlatformGamesLibrary;
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     LoadGameControllerUIFramework(2);
@@ -42,15 +42,15 @@
   [(GCGameIntentManager *)&v2 dealloc];
 }
 
-- (void)launchApplicationWithBundleIdentifier:(id)a3
+- (void)launchApplicationWithBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E6963608];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
-  [v5 openApplicationWithBundleID:v4];
+  identifierCopy = identifier;
+  defaultWorkspace = [v3 defaultWorkspace];
+  [defaultWorkspace openApplicationWithBundleID:identifierCopy];
 }
 
-- (void)_ui_launchApplicationWithBundleIdentifier:(id)a3
+- (void)_ui_launchApplicationWithBundleIdentifier:(id)identifier
 {
   if (gc_isInternalBuild())
   {
@@ -110,8 +110,8 @@ void __40__GCGameIntentManager_toggleGamesFolder__block_invoke(uint64_t a1, void
 - (void)tryPresentAppLibraryPod
 {
   service = self->_service;
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", 6014];
-  [(SBSHomeScreenService *)service presentAppLibraryCategoryPodForCategoryIdentifier:v3 completion:&__block_literal_global_19];
+  6014 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", 6014];
+  [(SBSHomeScreenService *)service presentAppLibraryCategoryPodForCategoryIdentifier:6014 completion:&__block_literal_global_19];
 }
 
 void __46__GCGameIntentManager_tryPresentAppLibraryPod__block_invoke(uint64_t a1, void *a2)

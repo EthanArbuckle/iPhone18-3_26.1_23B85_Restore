@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer
-- (PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer)initWithViewModel:(id)a3;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer)initWithViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -9,21 +9,21 @@
 
 - (void)performUserInteractionTask
 {
-  v5 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  [v5 setIncludeScreenshots:{objc_msgSend(v5, "isContentFilterActive:", 2) ^ 1}];
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "includeScreenshots")}];
-  v4 = [off_1E7721948 standardUserDefaults];
-  [v4 setIncludeScreenshots:v3];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setIncludeScreenshots:{objc_msgSend(currentContentFilterState, "isContentFilterActive:", 2) ^ 1}];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(currentContentFilterState, "includeScreenshots")}];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  [standardUserDefaults setIncludeScreenshots:v3];
 
-  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v5];
+  [(PXCuratedLibraryToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v3 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-    v4 = [v3 isContentFilterActive:2];
+    currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+    v4 = [currentContentFilterState isContentFilterActive:2];
 
     if (v4)
     {
@@ -48,17 +48,17 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:2];
+  currentContentFilterState = [(PXCuratedLibraryToggleFilterActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:2];
 
   return v3;
 }
 
-- (PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer)initWithViewModel:(id)a3
+- (PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer)initWithViewModel:(id)model
 {
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryToggleIncludeScreenshotFilterActionPerformer;
-  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleIncludeScreenshotFilter" viewModel:a3];
+  return [(PXCuratedLibraryActionPerformer *)&v4 initWithActionType:@"PXCuratedLibraryActionToggleIncludeScreenshotFilter" viewModel:model];
 }
 
 @end

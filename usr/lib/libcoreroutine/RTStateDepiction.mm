@@ -1,28 +1,28 @@
 @interface RTStateDepiction
 + (int64_t)maximumNumberOfDataPoints;
-- (BOOL)cleanState:(double)a3;
+- (BOOL)cleanState:(double)state;
 - (BOOL)exemptFromPurge;
 - (GEOMapItem)geoMapItem;
 - (NSDate)geocodeDate;
 - (NSString)customLabel;
 - (RTMapItem)mapItem;
-- (RTStateDepiction)initWithCoder:(id)a3;
-- (RTStateDepiction)initWithLocation:(id)a3 type:(int64_t)a4 typeSource:(unint64_t)a5 customLabel:(id)a6 mapItem:(id)a7;
+- (RTStateDepiction)initWithCoder:(id)coder;
+- (RTStateDepiction)initWithLocation:(id)location type:(int64_t)type typeSource:(unint64_t)source customLabel:(id)label mapItem:(id)item;
 - (RTStateModelLocation)location;
-- (double)_calculateStandardDeviationForDates:(id)a3 options:(id)a4 error:(id *)a5;
-- (double)calculateStandardDeviationWithOptions:(id)a3 error:(id *)a4;
-- (double)getAggTimeScaleFactor:(double)a3 predictionWindow:(double)a4;
+- (double)_calculateStandardDeviationForDates:(id)dates options:(id)options error:(id *)error;
+- (double)calculateStandardDeviationWithOptions:(id)options error:(id *)error;
+- (double)getAggTimeScaleFactor:(double)factor predictionWindow:(double)window;
 - (double)getLastVisit;
-- (id)_excludeEntryExitOutlierDates:(id)a3 options:(id)a4;
-- (id)_filterEntryExitData:(id)a3 options:(id)a4;
-- (id)_referenceAdjustEntryExitDates:(id)a3 options:(id)a4;
+- (id)_excludeEntryExitOutlierDates:(id)dates options:(id)options;
+- (id)_filterEntryExitData:(id)data options:(id)options;
+- (id)_referenceAdjustEntryExitDates:(id)dates options:(id)options;
 - (id)description;
 - (id)getAggStateStat;
 - (id)getAllOneVisits;
 - (id)getEarliestLatestEntry;
-- (id)getGetWeeklyStats:(double)a3 numOfWeeks:(int)a4 uniqueID:(id)a5;
-- (id)getPredState:(double)a3 predictionWindow:(double)a4 numOfWeeks:(int)a5 uniqueID:(id)a6;
-- (id)getRecentVisits:(double)a3;
+- (id)getGetWeeklyStats:(double)stats numOfWeeks:(int)weeks uniqueID:(id)d;
+- (id)getPredState:(double)state predictionWindow:(double)window numOfWeeks:(int)weeks uniqueID:(id)d;
+- (id)getRecentVisits:(double)visits;
 - (id)lastEntyExit;
 - (int64_t)type;
 - (unint64_t)getNumOfVisitsOverall;
@@ -30,55 +30,55 @@
 - (unint64_t)typeSource;
 - (void)_performErrorCorrection;
 - (void)_performIntegrityCheck;
-- (void)addOneVisitsFromStateDepiction:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementNumOfDataPtsByInteger:(int64_t)a3;
+- (void)addOneVisitsFromStateDepiction:(id)depiction;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementNumOfDataPtsByInteger:(int64_t)integer;
 - (void)removeAllVisitsExceptMostRecent;
-- (void)removeEntry:(double)a3 exit:(double)a4;
-- (void)setCustomLabel:(id)a3;
-- (void)setGeoMapItem:(id)a3;
-- (void)setGeocodeDate:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setMapItemSource:(unint64_t)a3;
-- (void)setType:(int64_t)a3;
-- (void)setTypeSource:(unint64_t)a3;
+- (void)removeEntry:(double)entry exit:(double)exit;
+- (void)setCustomLabel:(id)label;
+- (void)setGeoMapItem:(id)item;
+- (void)setGeocodeDate:(id)date;
+- (void)setLocation:(id)location;
+- (void)setMapItem:(id)item;
+- (void)setMapItemSource:(unint64_t)source;
+- (void)setType:(int64_t)type;
+- (void)setTypeSource:(unint64_t)source;
 - (void)showState;
-- (void)submitEntry:(double)a3 exit:(double)a4;
+- (void)submitEntry:(double)entry exit:(double)exit;
 @end
 
 @implementation RTStateDepiction
 
 - (NSString)customLabel
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 customLabel];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  customLabel = [clusterState customLabel];
 
-  return v3;
+  return customLabel;
 }
 
 - (unint64_t)typeSource
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 typeSource];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  typeSource = [clusterState typeSource];
 
-  return v3;
+  return typeSource;
 }
 
 - (RTMapItem)mapItem
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 mapItem];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  mapItem = [clusterState mapItem];
 
-  return v3;
+  return mapItem;
 }
 
 - (int64_t)type
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 type];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  type = [clusterState type];
 
-  return v3;
+  return type;
 }
 
 - (id)lastEntyExit
@@ -89,14 +89,14 @@
   v10 = __Block_byref_object_copy__139;
   v11 = __Block_byref_object_dispose__139;
   v12 = 0;
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__RTStateDepiction_lastEntyExit__block_invoke;
   v6[3] = &unk_2788CF868;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [histEntryExit_s enumerateObjectsUsingBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -114,15 +114,15 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0xC26D1A94A2000000;
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__RTStateDepiction_getEarliestLatestEntry__block_invoke;
   v7[3] = &unk_2788CF378;
   v7[4] = &v12;
   v7[5] = &v8;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [histEntryExit_s enumerateObjectsUsingBlock:v7];
 
   v4 = [RTStateModelEarliestLatestEl alloc];
   v5 = [(RTStateModelEarliestLatestEl *)v4 initWithEarliest:v13[3] andLatest:v9[3]];
@@ -134,10 +134,10 @@
 
 - (RTStateModelLocation)location
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 location];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  location = [clusterState location];
 
-  return v3;
+  return location;
 }
 
 void __42__RTStateDepiction_getEarliestLatestEntry__block_invoke(uint64_t a1, void *a2)
@@ -181,17 +181,17 @@ void __32__RTStateDepiction_lastEntyExit__block_invoke(uint64_t a1, void *a2)
 LABEL_5:
 }
 
-- (RTStateDepiction)initWithLocation:(id)a3 type:(int64_t)a4 typeSource:(unint64_t)a5 customLabel:(id)a6 mapItem:(id)a7
+- (RTStateDepiction)initWithLocation:(id)location type:(int64_t)type typeSource:(unint64_t)source customLabel:(id)label mapItem:(id)item
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  locationCopy = location;
+  labelCopy = label;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = RTStateDepiction;
   v15 = [(RTStateDepiction *)&v19 init];
   if (v15)
   {
-    v16 = [[RTStateDepictionOneState alloc] initWithLocation:v12 type:a4 typeSource:a5 customLabel:v13 mapItem:v14];
+    v16 = [[RTStateDepictionOneState alloc] initWithLocation:locationCopy type:type typeSource:source customLabel:labelCopy mapItem:itemCopy];
     clusterState = v15->_clusterState;
     v15->_clusterState = v16;
 
@@ -201,27 +201,27 @@ LABEL_5:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RTStateDepiction *)self _performIntegrityCheck];
-  [v4 encodeObject:self->_clusterState forKey:@"clusterState"];
-  [v4 encodeInteger:self->_numOfDataPts forKey:@"numOfDataPts"];
+  [coderCopy encodeObject:self->_clusterState forKey:@"clusterState"];
+  [coderCopy encodeInteger:self->_numOfDataPts forKey:@"numOfDataPts"];
 }
 
-- (RTStateDepiction)initWithCoder:(id)a3
+- (RTStateDepiction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RTStateDepiction;
   v5 = [(RTStateDepiction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterState"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterState"];
     clusterState = v5->_clusterState;
     v5->_clusterState = v6;
 
-    v5->_numOfDataPts = [v4 decodeIntegerForKey:@"numOfDataPts"];
+    v5->_numOfDataPts = [coderCopy decodeIntegerForKey:@"numOfDataPts"];
     [(RTStateDepiction *)v5 _performErrorCorrection];
   }
 
@@ -266,7 +266,7 @@ LABEL_5:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v5 = 134218240;
-      v6 = [(RTStateDepiction *)self numOfDataPts];
+      numOfDataPts = [(RTStateDepiction *)self numOfDataPts];
       v7 = 2048;
       v8 = v3;
       _os_log_error_impl(&dword_2304B3000, v4, OS_LOG_TYPE_ERROR, "data point count, %ld, exceeded maximum, %ld", &v5, 0x16u);
@@ -286,10 +286,10 @@ LABEL_5:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v4 = [(RTStateDepiction *)self clusterState];
-    v5 = [v4 histEntryExit_s];
+    clusterState = [(RTStateDepiction *)self clusterState];
+    histEntryExit_s = [clusterState histEntryExit_s];
 
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    v6 = [histEntryExit_s countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -301,7 +301,7 @@ LABEL_5:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(histEntryExit_s);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
@@ -333,7 +333,7 @@ LABEL_5:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v7 = [histEntryExit_s countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v7)
         {
           continue;
@@ -354,7 +354,7 @@ LABEL_5:
           _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "estimated data point count, %llu, exceeded maximum, %ld", buf, 0x16u);
         }
 
-        v19 = self;
+        selfCopy2 = self;
         v20 = 0;
         goto LABEL_22;
       }
@@ -367,43 +367,43 @@ LABEL_5:
     }
 
     v20 = v8;
-    v19 = self;
+    selfCopy2 = self;
 LABEL_22:
-    [(RTStateDepiction *)v19 setNumOfDataPts:v20];
+    [(RTStateDepiction *)selfCopy2 setNumOfDataPts:v20];
   }
 }
 
-- (void)submitEntry:(double)a3 exit:(double)a4
+- (void)submitEntry:(double)entry exit:(double)exit
 {
-  [RTStateDepiction quantizeTimeIntervalSinceReferenceDate:a3];
+  [RTStateDepiction quantizeTimeIntervalSinceReferenceDate:entry];
   v7 = v6;
-  [RTStateDepiction quantizeTimeIntervalSinceReferenceDate:a4];
+  [RTStateDepiction quantizeTimeIntervalSinceReferenceDate:exit];
   v11 = [[RTStateModelEntryExit alloc] initWithEntry:v7 exit:v8];
-  v9 = [(RTStateDepiction *)self clusterState];
-  v10 = [v9 histEntryExit_s];
-  [v10 addObject:v11];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
+  [histEntryExit_s addObject:v11];
 }
 
-- (void)removeEntry:(double)a3 exit:(double)a4
+- (void)removeEntry:(double)entry exit:(double)exit
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__139;
   v14 = __Block_byref_object_dispose__139;
-  v15 = [[RTStateModelEntryExit alloc] initWithEntry:a3 exit:a4];
-  v5 = [(RTStateDepiction *)self clusterState];
-  v6 = [v5 histEntryExit_s];
+  v15 = [[RTStateModelEntryExit alloc] initWithEntry:entry exit:exit];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__RTStateDepiction_removeEntry_exit___block_invoke;
   v9[3] = &unk_2788CA700;
   v9[4] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [histEntryExit_s enumerateObjectsUsingBlock:v9];
 
-  v7 = [(RTStateDepiction *)self clusterState];
-  v8 = [v7 histEntryExit_s];
-  [v8 removeObject:v11[5]];
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s2 = [clusterState2 histEntryExit_s];
+  [histEntryExit_s2 removeObject:v11[5]];
 
   _Block_object_dispose(&v10, 8);
 }
@@ -418,33 +418,33 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTStateDepiction *)self clusterState];
-  [v5 setLocation:v4];
+  locationCopy = location;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setLocation:locationCopy];
 
-  v6 = [(RTStateDepiction *)self clusterState];
-  v7 = [v6 mapItem];
-  v8 = [v7 source];
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  mapItem = [clusterState2 mapItem];
+  source = [mapItem source];
 
-  if (v8)
+  if (source)
   {
-    v34 = [(RTStateDepiction *)self clusterState];
-    v9 = [v34 mapItem];
-    v10 = [v9 location];
-    [v10 latitude];
-    v11 = [(RTStateDepiction *)self clusterState];
-    v12 = [v11 mapItem];
-    v13 = [v12 location];
-    [v13 longitude];
-    v14 = [(RTStateDepiction *)self clusterState];
-    v15 = [v14 location];
-    [v15 Latitude_deg];
-    v16 = [(RTStateDepiction *)self clusterState];
-    v17 = [v16 location];
-    [v17 Longitude_deg];
+    clusterState3 = [(RTStateDepiction *)self clusterState];
+    mapItem2 = [clusterState3 mapItem];
+    location = [mapItem2 location];
+    [location latitude];
+    clusterState4 = [(RTStateDepiction *)self clusterState];
+    mapItem3 = [clusterState4 mapItem];
+    location2 = [mapItem3 location];
+    [location2 longitude];
+    clusterState5 = [(RTStateDepiction *)self clusterState];
+    location3 = [clusterState5 location];
+    [location3 Latitude_deg];
+    clusterState6 = [(RTStateDepiction *)self clusterState];
+    location4 = [clusterState6 location];
+    [location4 Longitude_deg];
     RTCommonCalculateDistanceHighPrecision();
     v19 = v18;
 
@@ -455,45 +455,45 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
         v20 = _rt_log_facility_get_os_log(RTLogFacilityStateModel);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v22 = [(RTStateDepiction *)self clusterState];
-          v23 = [v22 mapItem];
-          v24 = [v23 location];
-          [v24 latitude];
+          clusterState7 = [(RTStateDepiction *)self clusterState];
+          mapItem4 = [clusterState7 mapItem];
+          location5 = [mapItem4 location];
+          [location5 latitude];
           v26 = v25;
-          v27 = [(RTStateDepiction *)self clusterState];
-          v28 = [v27 mapItem];
-          v29 = [v28 location];
-          [v29 longitude];
+          clusterState8 = [(RTStateDepiction *)self clusterState];
+          mapItem5 = [clusterState8 mapItem];
+          location6 = [mapItem5 location];
+          [location6 longitude];
           v31 = v30;
-          v32 = [(RTStateDepiction *)self clusterState];
-          v33 = [v32 location];
+          clusterState9 = [(RTStateDepiction *)self clusterState];
+          location7 = [clusterState9 location];
           *buf = 134546435;
           v36 = v26;
           v37 = 2053;
           v38 = v31;
           v39 = 2112;
-          v40 = v33;
+          v40 = location7;
           v41 = 2053;
           v42 = v19;
           _os_log_debug_impl(&dword_2304B3000, v20, OS_LOG_TYPE_DEBUG, "underlying location moved from, <%{sensitive}f, %{sensitive}f>, to, %@. The new distance from the location to the mapItem center, %{sensitive}f, resulted in marking the geocoded mapItem dirty", buf, 0x2Au);
         }
       }
 
-      v21 = [(RTStateDepiction *)self clusterState];
-      [v21 setGeocodeDate:0];
+      clusterState10 = [(RTStateDepiction *)self clusterState];
+      [clusterState10 setGeocodeDate:0];
     }
   }
 }
 
-- (void)incrementNumOfDataPtsByInteger:(int64_t)a3
+- (void)incrementNumOfDataPtsByInteger:(int64_t)integer
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 >= 1)
+  if (integer >= 1)
   {
     v5 = +[RTStateDepiction maximumNumberOfDataPoints];
-    if (v5 - [(RTStateDepiction *)self numOfDataPts]>= a3)
+    if (v5 - [(RTStateDepiction *)self numOfDataPts]>= integer)
     {
-      v7 = [(RTStateDepiction *)self numOfDataPts]+ a3;
+      v7 = [(RTStateDepiction *)self numOfDataPts]+ integer;
 
       [(RTStateDepiction *)self setNumOfDataPts:v7];
     }
@@ -504,11 +504,11 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v8 = 134218496;
-        v9 = [(RTStateDepiction *)self numOfDataPts];
+        numOfDataPts = [(RTStateDepiction *)self numOfDataPts];
         v10 = 2048;
         v11 = v5;
         v12 = 2048;
-        v13 = a3;
+        integerCopy = integer;
         _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "data point count, %ld, exceeded maximum, %ld, after increment, %ld", &v8, 0x20u);
       }
 
@@ -520,80 +520,80 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
 
 - (GEOMapItem)geoMapItem
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 geoMapItem];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  geoMapItem = [clusterState geoMapItem];
 
-  return v3;
+  return geoMapItem;
 }
 
-- (void)setGeoMapItem:(id)a3
+- (void)setGeoMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RTStateDepiction *)self clusterState];
-  [v5 setGeoMapItem:v4];
+  itemCopy = item;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setGeoMapItem:itemCopy];
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RTStateDepiction *)self clusterState];
-  [v5 setMapItem:v4];
+  itemCopy = item;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setMapItem:itemCopy];
 }
 
 - (unint64_t)mapItemSource
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 mapItemSource];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  mapItemSource = [clusterState mapItemSource];
 
-  return v3;
+  return mapItemSource;
 }
 
-- (void)setMapItemSource:(unint64_t)a3
+- (void)setMapItemSource:(unint64_t)source
 {
-  v4 = [(RTStateDepiction *)self clusterState];
-  [v4 setMapItemSource:a3];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setMapItemSource:source];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = [(RTStateDepiction *)self clusterState];
-  [v4 setType:a3];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setType:type];
 }
 
-- (void)setTypeSource:(unint64_t)a3
+- (void)setTypeSource:(unint64_t)source
 {
-  v4 = [(RTStateDepiction *)self clusterState];
-  [v4 setTypeSource:a3];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setTypeSource:source];
 }
 
 - (NSDate)geocodeDate
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 geocodeDate];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  geocodeDate = [clusterState geocodeDate];
 
-  return v3;
+  return geocodeDate;
 }
 
-- (void)setGeocodeDate:(id)a3
+- (void)setGeocodeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(RTStateDepiction *)self clusterState];
-  [v5 setGeocodeDate:v4];
+  dateCopy = date;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setGeocodeDate:dateCopy];
 }
 
-- (void)setCustomLabel:(id)a3
+- (void)setCustomLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(RTStateDepiction *)self clusterState];
-  [v5 setCustomLabel:v4];
+  labelCopy = label;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  [clusterState setCustomLabel:labelCopy];
 }
 
-- (double)getAggTimeScaleFactor:(double)a3 predictionWindow:(double)a4
+- (double)getAggTimeScaleFactor:(double)factor predictionWindow:(double)window
 {
   result = 1.0;
-  if (a3 > 0.0 && a4 > 0.0 && a4 + 0.000001 >= a3)
+  if (factor > 0.0 && window > 0.0 && window + 0.000001 >= factor)
   {
-    return a3 / (a4 * 0.5) + 0.2;
+    return factor / (window * 0.5) + 0.2;
   }
 
   return result;
@@ -601,11 +601,11 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
 
 - (double)getLastVisit
 {
-  v2 = [(RTStateDepiction *)self lastEntyExit];
-  v3 = v2;
-  if (v2)
+  lastEntyExit = [(RTStateDepiction *)self lastEntyExit];
+  v3 = lastEntyExit;
+  if (lastEntyExit)
   {
-    [v2 exit_s];
+    [lastEntyExit exit_s];
     v5 = v4;
   }
 
@@ -617,19 +617,19 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (BOOL)cleanState:(double)a3
+- (BOOL)cleanState:(double)state
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(RTStateDepiction *)self clusterState];
-  v7 = [v6 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __31__RTStateDepiction_cleanState___block_invoke;
   v17 = &unk_2788CF328;
-  v19 = a3;
+  stateCopy = state;
   v8 = v5;
   v18 = v8;
-  [v7 enumerateObjectsUsingBlock:&v14];
+  [histEntryExit_s enumerateObjectsUsingBlock:&v14];
 
   v9 = [(RTStateDepiction *)self clusterState:v14];
   [v9 setHistEntryExit_s:v8];
@@ -641,9 +641,9 @@ void __37__RTStateDepiction_removeEntry_exit___block_invoke(uint64_t a1, void *a
 
   else
   {
-    v11 = [(RTStateDepiction *)self clusterState];
-    v12 = [v11 histEntryExit_s];
-    v10 = [v12 count] == 0;
+    clusterState2 = [(RTStateDepiction *)self clusterState];
+    histEntryExit_s2 = [clusterState2 histEntryExit_s];
+    v10 = [histEntryExit_s2 count] == 0;
   }
 
   return v10;
@@ -659,20 +659,20 @@ void __31__RTStateDepiction_cleanState___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)getRecentVisits:(double)a3
+- (id)getRecentVisits:(double)visits
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(RTStateDepiction *)self clusterState];
-  v7 = [v6 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __36__RTStateDepiction_getRecentVisits___block_invoke;
   v12[3] = &unk_2788CF890;
-  v14 = a3;
+  visitsCopy = visits;
   v12[4] = self;
   v8 = v5;
   v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [histEntryExit_s enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -697,24 +697,24 @@ void __36__RTStateDepiction_getRecentVisits___block_invoke(uint64_t a1, void *a2
 
 - (id)getAllOneVisits
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
 
-  return v3;
+  return histEntryExit_s;
 }
 
-- (void)addOneVisitsFromStateDepiction:(id)a3
+- (void)addOneVisitsFromStateDepiction:(id)depiction
 {
-  v4 = [a3 getAllOneVisits];
+  getAllOneVisits = [depiction getAllOneVisits];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTStateDepiction_addOneVisitsFromStateDepiction___block_invoke;
   v7[3] = &unk_2788C4BA8;
   v7[4] = self;
-  [v4 enumerateObjectsUsingBlock:v7];
-  v5 = [(RTStateDepiction *)self clusterState];
-  v6 = [v5 histEntryExit_s];
-  [v6 sortUsingComparator:&__block_literal_global_114];
+  [getAllOneVisits enumerateObjectsUsingBlock:v7];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
+  [histEntryExit_s sortUsingComparator:&__block_literal_global_114];
 }
 
 void __51__RTStateDepiction_addOneVisitsFromStateDepiction___block_invoke(uint64_t a1, void *a2)
@@ -759,9 +759,9 @@ uint64_t __51__RTStateDepiction_addOneVisitsFromStateDepiction___block_invoke_25
 
 - (unint64_t)getNumOfVisitsOverall
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 histEntryExit_s];
-  v4 = [v3 count];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
+  v4 = [histEntryExit_s count];
 
   return v4;
 }
@@ -777,25 +777,25 @@ uint64_t __51__RTStateDepiction_addOneVisitsFromStateDepiction___block_invoke_25
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0xBFF0000000000000;
-  v4 = [(RTStateDepiction *)self clusterState];
-  v5 = [v4 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __35__RTStateDepiction_getAggStateStat__block_invoke;
   v11[3] = &unk_2788CF378;
   v11[4] = &v12;
   v11[5] = &v16;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [histEntryExit_s enumerateObjectsUsingBlock:v11];
 
   [(RTStateDepictionAggStateStats *)v3 setAggregateTime_s:v13[3]];
   [(RTStateDepictionAggStateStats *)v3 setLastExit_s:v17[3]];
-  v6 = [(RTStateDepiction *)self clusterState];
-  v7 = [v6 location];
-  [(RTStateDepictionAggStateStats *)v3 setLocation:v7];
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  location = [clusterState2 location];
+  [(RTStateDepictionAggStateStats *)v3 setLocation:location];
 
-  v8 = [(RTStateDepiction *)self clusterState];
-  v9 = [v8 histEntryExit_s];
-  -[RTStateDepictionAggStateStats setNumOfEntries:](v3, "setNumOfEntries:", [v9 count]);
+  clusterState3 = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s2 = [clusterState3 histEntryExit_s];
+  -[RTStateDepictionAggStateStats setNumOfEntries:](v3, "setNumOfEntries:", [histEntryExit_s2 count]);
 
   _Block_object_dispose(&v12, 8);
   _Block_object_dispose(&v16, 8);
@@ -825,14 +825,14 @@ void __35__RTStateDepiction_getAggStateStat__block_invoke(uint64_t a1, void *a2)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__RTStateDepiction_showState__block_invoke;
   v6[3] = &unk_2788CF868;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [histEntryExit_s enumerateObjectsUsingBlock:v6];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -872,43 +872,43 @@ void __29__RTStateDepiction_showState__block_invoke(uint64_t a1, void *a2, uint6
   *(*(*(a1 + 32) + 8) + 24) = v8 - v9 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (id)getGetWeeklyStats:(double)a3 numOfWeeks:(int)a4 uniqueID:(id)a5
+- (id)getGetWeeklyStats:(double)stats numOfWeeks:(int)weeks uniqueID:(id)d
 {
   v93 = *MEMORY[0x277D85DE8];
-  v65 = a5;
-  v8 = [(RTStateDepiction *)self clusterState];
-  v9 = [v8 histEntryExit_s];
-  [v9 sortUsingComparator:&__block_literal_global_263];
+  dCopy = d;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
+  [histEntryExit_s sortUsingComparator:&__block_literal_global_263];
 
   Current = CFAbsoluteTimeGetCurrent();
-  v11 = [(RTStateDepiction *)self clusterState];
-  v12 = [v11 histEntryExit_s];
-  v13 = [v12 objectEnumerator];
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s2 = [clusterState2 histEntryExit_s];
+  objectEnumerator = [histEntryExit_s2 objectEnumerator];
 
-  v14 = [v13 nextObject];
-  v63 = a4;
-  v15 = Current + a4 * -604800.0 + -86400.0;
+  nextObject = [objectEnumerator nextObject];
+  weeksCopy = weeks;
+  v15 = Current + weeks * -604800.0 + -86400.0;
   v64 = 1.0e12;
-  if (v14)
+  if (nextObject)
   {
     while (1)
     {
-      [v14 exit_s];
+      [nextObject exit_s];
       if (v16 >= v15)
       {
         break;
       }
 
-      v17 = [v13 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v14 = v17;
-      if (!v17)
+      nextObject = nextObject2;
+      if (!nextObject2)
       {
         goto LABEL_4;
       }
     }
 
-    [v14 entry_s];
+    [nextObject entry_s];
     v64 = v19;
     v18 = 0;
   }
@@ -919,13 +919,13 @@ LABEL_4:
     v18 = 1;
   }
 
-  v20 = [(RTStateDepiction *)self clusterState];
-  v21 = [v20 histEntryExit_s];
-  v66 = [v21 lastObject];
+  clusterState3 = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s3 = [clusterState3 histEntryExit_s];
+  lastObject = [histEntryExit_s3 lastObject];
 
-  if (v66)
+  if (lastObject)
   {
-    [v66 exit_s];
+    [lastObject exit_s];
   }
 
   else
@@ -940,7 +940,7 @@ LABEL_4:
   if (v18)
   {
 LABEL_35:
-    v14 = 0;
+    nextObject = 0;
   }
 
   else
@@ -948,30 +948,30 @@ LABEL_35:
     v24 = 0;
     while (1)
     {
-      [v14 exit_s];
-      if (v25 >= a3)
+      [nextObject exit_s];
+      if (v25 >= stats)
       {
         break;
       }
 
       v26 = v15 + 86400.0;
-      if (v14)
+      if (nextObject)
       {
         v27 = 0;
         v28 = 0.0;
         do
         {
-          [v14 entry_s];
+          [nextObject entry_s];
           v30 = v27 || v29 >= v26;
           if (v27 || v29 >= v26)
           {
             break;
           }
 
-          [v14 exit_s];
+          [nextObject exit_s];
           if (v15 >= v31)
           {
-            v41 = [v13 nextObject];
+            nextObject3 = [objectEnumerator nextObject];
 
             v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -984,20 +984,20 @@ LABEL_35:
             }
 
             v27 = 0;
-            v14 = v41;
+            nextObject = nextObject3;
           }
 
           else
           {
             v32 = MEMORY[0x277CCABB0];
-            [v14 exit_s];
+            [nextObject exit_s];
             v34 = v33;
-            [v14 entry_s];
+            [nextObject entry_s];
             v36 = v34 - v35;
             *&v36 = v36;
             v37 = [v32 numberWithFloat:v36];
             [v23 addObject:v37];
-            [v14 entry_s];
+            [nextObject entry_s];
             if (v15 >= v38)
             {
               v40 = v15;
@@ -1005,12 +1005,12 @@ LABEL_35:
 
             else
             {
-              [v14 entry_s];
+              [nextObject entry_s];
               v40 = v39;
               ++v24;
             }
 
-            [v14 exit_s];
+            [nextObject exit_s];
             v27 = v26 < v42;
             if (v26 < v42)
             {
@@ -1019,18 +1019,18 @@ LABEL_35:
 
             else
             {
-              [v14 exit_s];
+              [nextObject exit_s];
               v44 = v43;
-              v45 = [v13 nextObject];
+              nextObject4 = [objectEnumerator nextObject];
 
-              v14 = v45;
+              nextObject = nextObject4;
             }
 
             v28 = v28 + v44 - v40;
           }
         }
 
-        while (v14);
+        while (nextObject);
         v46 = !v30;
       }
 
@@ -1136,7 +1136,7 @@ LABEL_35:
   v69[9] = buf;
   [v67 enumerateObjectsUsingBlock:v69];
   v52 = *(v88 + 6);
-  if (v52 < 1 || ((v53 = (v62 - v64) / 604800.0, v52 / v63 > 0.6) ? (v54 = v53 <= 2.0) : (v54 = 1), v54))
+  if (v52 < 1 || ((v53 = (v62 - v64) / 604800.0, v52 / weeksCopy > 0.6) ? (v54 = v53 <= 2.0) : (v54 = 1), v54))
   {
     [(RTStateWeeklyStatisticsEl *)v51 setAvgAggTime_s:0.0];
     [(RTStateWeeklyStatisticsEl *)v51 setStdAggTime_s:-1.0];
@@ -1186,7 +1186,7 @@ LABEL_45:
 LABEL_50:
 
 LABEL_51:
-  [(RTStateWeeklyStatisticsEl *)v51 setStateUUID:v65];
+  [(RTStateWeeklyStatisticsEl *)v51 setStateUUID:dCopy];
   _Block_object_dispose(&v70, 8);
   _Block_object_dispose(&v74, 8);
   _Block_object_dispose(&v78, 8);
@@ -1274,42 +1274,42 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
   }
 }
 
-- (id)getPredState:(double)a3 predictionWindow:(double)a4 numOfWeeks:(int)a5 uniqueID:(id)a6
+- (id)getPredState:(double)state predictionWindow:(double)window numOfWeeks:(int)weeks uniqueID:(id)d
 {
-  v101 = a6;
+  dCopy = d;
   v108 = objc_alloc_init(RTStateDepcitionOneStatePred);
-  v10 = -a5;
+  v10 = -weeks;
   v11 = 7 * v10;
-  v109 = a3;
-  [RTStateModelAlgorithms timeByAddingUnit:16 value:v11 toTime:a3];
+  stateCopy = state;
+  [RTStateModelAlgorithms timeByAddingUnit:16 value:v11 toTime:state];
   v13 = v12;
-  v14 = [(RTStateDepiction *)self clusterState];
-  v15 = [v14 histEntryExit_s];
-  [v15 sortUsingComparator:&__block_literal_global_272];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
+  [histEntryExit_s sortUsingComparator:&__block_literal_global_272];
 
-  v102 = self;
-  v16 = [(RTStateDepiction *)self clusterState];
-  v17 = [v16 histEntryExit_s];
-  v18 = [v17 objectEnumerator];
+  selfCopy = self;
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s2 = [clusterState2 histEntryExit_s];
+  objectEnumerator = [histEntryExit_s2 objectEnumerator];
 
-  v19 = [v18 nextObject];
-  if (v19)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
     do
     {
-      [v19 exit_s];
+      [nextObject exit_s];
       v21 = v20 < v13;
       if (v20 >= v13)
       {
         break;
       }
 
-      v22 = [v18 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v19 = v22;
+      nextObject = nextObject2;
     }
 
-    while (v22);
+    while (nextObject2);
   }
 
   else
@@ -1317,14 +1317,14 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
     v21 = 1;
   }
 
-  v100 = a4;
-  v23 = v13 + a4;
+  windowCopy = window;
+  v23 = v13 + window;
   v106 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v105 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v107 = a5;
+  weeksCopy = weeks;
   if (v21)
   {
-    v19 = 0;
+    nextObject = 0;
     v24 = 0.0;
     v25 = -1.0e12;
     v26 = 1.0e12;
@@ -1339,45 +1339,45 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
     v28 = v13;
     while (1)
     {
-      [v19 exit_s];
-      if (v29 >= v109)
+      [nextObject exit_s];
+      if (v29 >= stateCopy)
       {
         break;
       }
 
-      if (v19)
+      if (nextObject)
       {
         v30 = 0;
         v31 = 0;
         do
         {
-          [v19 entry_s];
+          [nextObject entry_s];
           v33 = v30 || v32 >= v27;
           if (v30 || v32 >= v27)
           {
             break;
           }
 
-          [v19 exit_s];
+          [nextObject exit_s];
           if (v28 >= v34)
           {
-            v39 = [v18 nextObject];
+            nextObject3 = [objectEnumerator nextObject];
 
             v30 = 0;
-            v19 = v39;
+            nextObject = nextObject3;
           }
 
           else
           {
-            [v19 entry_s];
+            [nextObject entry_s];
             v35 = v28;
             if (v28 < v36)
             {
-              [v19 entry_s];
+              [nextObject entry_s];
               v35 = v37;
             }
 
-            [v19 exit_s];
+            [nextObject exit_s];
             v30 = v27 < v38;
             if (v27 < v38)
             {
@@ -1386,11 +1386,11 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
 
             else
             {
-              [v19 exit_s];
+              [nextObject exit_s];
               v25 = v40;
-              v41 = [v18 nextObject];
+              nextObject4 = [objectEnumerator nextObject];
 
-              v19 = v41;
+              nextObject = nextObject4;
             }
 
             v24 = v24 + v25 - v35;
@@ -1402,7 +1402,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
           }
         }
 
-        while (v19);
+        while (nextObject);
         v42 = !v33;
         if (v31 >= 1)
         {
@@ -1426,7 +1426,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
       v10 = (v10 + 1);
       if (v42)
       {
-        v19 = 0;
+        nextObject = 0;
         break;
       }
     }
@@ -1447,7 +1447,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
   v117[4] = &v120;
   v117[5] = v118;
   [v106 enumerateObjectsUsingBlock:v117];
-  if (a5 < 1)
+  if (weeks < 1)
   {
     v50 = 0.0;
     v47 = 0.0;
@@ -1455,53 +1455,53 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
 
   else
   {
-    v47 = v24 / a5;
+    v47 = v24 / weeks;
     v48 = *(v121 + 6);
-    [(RTStateDepiction *)v102 getAggTimeScaleFactor:v47 predictionWindow:v100];
-    v50 = v49 * (v48 / a5);
+    [(RTStateDepiction *)selfCopy getAggTimeScaleFactor:v47 predictionWindow:windowCopy];
+    v50 = v49 * (v48 / weeks);
   }
 
-  v51 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v51 setNumOfClustEntries:*(v121 + 6)];
+  weekly = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly setNumOfClustEntries:*(v121 + 6)];
 
-  v52 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v52 setLatestVisitTime_s:v25];
+  weekly2 = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly2 setLatestVisitTime_s:v25];
 
-  v53 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v53 setAggregateTime_s:v47];
+  weekly3 = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly3 setAggregateTime_s:v47];
 
-  v54 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v54 setEarliestVisitTime_s:v26];
+  weekly4 = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly4 setEarliestVisitTime_s:v26];
 
-  v55 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v55 setVisitHist:v105];
+  weekly5 = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly5 setVisitHist:v105];
 
-  v56 = [(RTStateDepcitionOneStatePred *)v108 weekly];
-  [v56 setDensity:v50];
+  weekly6 = [(RTStateDepcitionOneStatePred *)v108 weekly];
+  [weekly6 setDensity:v50];
 
-  v57 = [(RTStateDepiction *)v102 clusterState];
-  v58 = [v57 histEntryExit_s];
-  v59 = [v58 objectEnumerator];
+  clusterState3 = [(RTStateDepiction *)selfCopy clusterState];
+  histEntryExit_s3 = [clusterState3 histEntryExit_s];
+  objectEnumerator2 = [histEntryExit_s3 objectEnumerator];
 
-  v60 = [v59 nextObject];
+  nextObject5 = [objectEnumerator2 nextObject];
 
-  if (v60)
+  if (nextObject5)
   {
     do
     {
-      [v60 exit_s];
+      [nextObject5 exit_s];
       v62 = v61 < v13;
       if (v61 >= v13)
       {
         break;
       }
 
-      v63 = [v59 nextObject];
+      nextObject6 = [objectEnumerator2 nextObject];
 
-      v60 = v63;
+      nextObject5 = nextObject6;
     }
 
-    while (v63);
+    while (nextObject6);
   }
 
   else
@@ -1513,7 +1513,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
   v103 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v62)
   {
-    v60 = 0;
+    nextObject5 = 0;
     v64 = 0.0;
     v65 = 1.0e12;
     v66 = -1.0e12;
@@ -1528,45 +1528,45 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
     v67 = v108;
     while (1)
     {
-      [v60 exit_s];
-      if (v68 >= v109)
+      [nextObject5 exit_s];
+      if (v68 >= stateCopy)
       {
         break;
       }
 
-      if (v60)
+      if (nextObject5)
       {
         v69 = 0;
         v70 = 0;
         do
         {
-          [v60 entry_s];
+          [nextObject5 entry_s];
           v72 = v69 || v71 >= v23;
           if (v69 || v71 >= v23)
           {
             break;
           }
 
-          [v60 exit_s];
+          [nextObject5 exit_s];
           if (v13 >= v73)
           {
-            v78 = [v59 nextObject];
+            nextObject7 = [objectEnumerator2 nextObject];
 
             v69 = 0;
-            v60 = v78;
+            nextObject5 = nextObject7;
           }
 
           else
           {
-            [v60 entry_s];
+            [nextObject5 entry_s];
             v74 = v13;
             if (v13 < v75)
             {
-              [v60 entry_s];
+              [nextObject5 entry_s];
               v74 = v76;
             }
 
-            [v60 exit_s];
+            [nextObject5 exit_s];
             v69 = v23 < v77;
             if (v23 < v77)
             {
@@ -1575,11 +1575,11 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
 
             else
             {
-              [v60 exit_s];
+              [nextObject5 exit_s];
               v66 = v79;
-              v80 = [v59 nextObject];
+              nextObject8 = [objectEnumerator2 nextObject];
 
-              v60 = v80;
+              nextObject5 = nextObject8;
             }
 
             v64 = v64 + v66 - v74;
@@ -1591,17 +1591,17 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
           }
         }
 
-        while (v60);
+        while (nextObject5);
         v81 = !v72;
         if (v70 < 1)
         {
-          a5 = v107;
+          weeks = weeksCopy;
         }
 
         else
         {
           [MEMORY[0x277CCABB0] numberWithInt:1];
-          v82 = a5 = v107;
+          v82 = weeks = weeksCopy;
           [v104 addObject:v82];
 
           v83 = [MEMORY[0x277CCABB0] numberWithLong:v11];
@@ -1622,7 +1622,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
       ++v11;
       if (v81)
       {
-        v60 = 0;
+        nextObject5 = 0;
         break;
       }
     }
@@ -1643,7 +1643,7 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
   v110[4] = &v113;
   v110[5] = v111;
   [v104 enumerateObjectsUsingBlock:v110];
-  if (a5 < 1)
+  if (weeks < 1)
   {
     v91 = 0.0;
     v88 = 0.0;
@@ -1651,32 +1651,32 @@ uint64_t __58__RTStateDepiction_getGetWeeklyStats_numOfWeeks_uniqueID___block_in
 
   else
   {
-    v87 = (7 * a5);
+    v87 = (7 * weeks);
     v88 = v64 / v87;
     v89 = *(v114 + 6);
-    [(RTStateDepiction *)v102 getAggTimeScaleFactor:v64 / v87 predictionWindow:v100];
+    [(RTStateDepiction *)selfCopy getAggTimeScaleFactor:v64 / v87 predictionWindow:windowCopy];
     v91 = v90 * (v89 / v87);
   }
 
-  v92 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v92 setNumOfClustEntries:*(v114 + 6)];
+  daily = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily setNumOfClustEntries:*(v114 + 6)];
 
-  v93 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v93 setLatestVisitTime_s:v66];
+  daily2 = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily2 setLatestVisitTime_s:v66];
 
-  v94 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v94 setAggregateTime_s:v88];
+  daily3 = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily3 setAggregateTime_s:v88];
 
-  v95 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v95 setEarliestVisitTime_s:v65];
+  daily4 = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily4 setEarliestVisitTime_s:v65];
 
-  v96 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v96 setVisitHist:v103];
+  daily5 = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily5 setVisitHist:v103];
 
-  v97 = [(RTStateDepcitionOneStatePred *)v67 daily];
-  [v97 setDensity:v91];
+  daily6 = [(RTStateDepcitionOneStatePred *)v67 daily];
+  [daily6 setDensity:v91];
 
-  [(RTStateDepcitionOneStatePred *)v67 setStateUUID:v101];
+  [(RTStateDepcitionOneStatePred *)v67 setStateUUID:dCopy];
   v98 = v67;
   _Block_object_dispose(v111, 8);
   _Block_object_dispose(&v113, 8);
@@ -1730,24 +1730,24 @@ uint64_t __70__RTStateDepiction_getPredState_predictionWindow_numOfWeeks_uniqueI
   v13 = __Block_byref_object_copy__139;
   v14 = __Block_byref_object_dispose__139;
   v15 = 0;
-  v3 = [(RTStateDepiction *)self clusterState];
-  v4 = [v3 histEntryExit_s];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  histEntryExit_s = [clusterState histEntryExit_s];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__RTStateDepiction_removeAllVisitsExceptMostRecent__block_invoke;
   v9[3] = &unk_2788CA700;
   v9[4] = &v10;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [histEntryExit_s enumerateObjectsUsingBlock:v9];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(RTStateDepiction *)self clusterState];
-  [v6 setHistEntryExit_s:v5];
+  clusterState2 = [(RTStateDepiction *)self clusterState];
+  [clusterState2 setHistEntryExit_s:v5];
 
   if (v11[5])
   {
-    v7 = [(RTStateDepiction *)self clusterState];
-    v8 = [v7 histEntryExit_s];
-    [v8 addObject:v11[5]];
+    clusterState3 = [(RTStateDepiction *)self clusterState];
+    histEntryExit_s2 = [clusterState3 histEntryExit_s];
+    [histEntryExit_s2 addObject:v11[5]];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -1767,9 +1767,9 @@ void __51__RTStateDepiction_removeAllVisitsExceptMostRecent__block_invoke(uint64
 
 - (BOOL)exemptFromPurge
 {
-  v2 = [(RTStateDepiction *)self clusterState];
-  v3 = [v2 mapItem];
-  v4 = ([v3 source] & 0xC) != 0;
+  clusterState = [(RTStateDepiction *)self clusterState];
+  mapItem = [clusterState mapItem];
+  v4 = ([mapItem source] & 0xC) != 0;
 
   return v4;
 }
@@ -1777,16 +1777,16 @@ void __51__RTStateDepiction_removeAllVisitsExceptMostRecent__block_invoke(uint64
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(RTStateDepiction *)self clusterState];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  clusterState = [(RTStateDepiction *)self clusterState];
+  v4 = [v2 stringWithFormat:@"%@", clusterState];
 
   return v4;
 }
 
-- (double)calculateStandardDeviationWithOptions:(id)a3 error:(id *)a4
+- (double)calculateStandardDeviationWithOptions:(id)options error:(id *)error
 {
-  v7 = [a3 mutableCopy];
-  if (!a3)
+  v7 = [options mutableCopy];
+  if (!options)
   {
     v8 = objc_opt_new();
 
@@ -1814,52 +1814,52 @@ void __51__RTStateDepiction_removeAllVisitsExceptMostRecent__block_invoke(uint64
     [v7 setObject:MEMORY[0x277CBEC28] forKey:@"RTMetricStandardDeviationOptionsIncludeOutliersKey"];
   }
 
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [v12 components:2097404 fromDate:v13];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [currentCalendar components:2097404 fromDate:date];
 
   [v14 setHour:0];
   [v14 setMinute:0];
   [v14 setSecond:0];
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  v16 = [v15 timeZone];
-  [v14 setTimeZone:v16];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  timeZone = [currentCalendar2 timeZone];
+  [v14 setTimeZone:timeZone];
 
-  v17 = [MEMORY[0x277CBEA80] currentCalendar];
-  v18 = [v17 dateFromComponents:v14];
+  currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+  v18 = [currentCalendar3 dateFromComponents:v14];
   [v7 setObject:v18 forKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
 
-  v19 = [(RTStateDepictionOneState *)self->_clusterState histEntryExit_s];
-  v20 = [(RTStateDepiction *)self _filterEntryExitData:v19 options:v7];
+  histEntryExit_s = [(RTStateDepictionOneState *)self->_clusterState histEntryExit_s];
+  v20 = [(RTStateDepiction *)self _filterEntryExitData:histEntryExit_s options:v7];
 
   v21 = [(RTStateDepiction *)self _referenceAdjustEntryExitDates:v20 options:v7];
   v22 = [v7 objectForKey:@"RTMetricStandardDeviationOptionsIncludeOutliersKey"];
-  v23 = [v22 BOOLValue];
+  bOOLValue = [v22 BOOLValue];
 
-  if ((v23 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v24 = [(RTStateDepiction *)self _excludeEntryExitOutlierDates:v21 options:v7];
 
     v21 = v24;
   }
 
-  [(RTStateDepiction *)self _calculateStandardDeviationForDates:v21 options:v7 error:a4];
+  [(RTStateDepiction *)self _calculateStandardDeviationForDates:v21 options:v7 error:error];
   v26 = v25;
 
   return v26;
 }
 
-- (id)_referenceAdjustEntryExitDates:(id)a3 options:(id)a4
+- (id)_referenceAdjustEntryExitDates:(id)dates options:(id)options
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
+  optionsCopy = options;
+  datesCopy = dates;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
 
-  v10 = [v8 components:2097404 fromDate:v9];
+  v10 = [currentCalendar components:2097404 fromDate:v9];
 
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(datesCopy, "count")}];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_options___block_invoke;
@@ -1868,7 +1868,7 @@ void __51__RTStateDepiction_removeAllVisitsExceptMostRecent__block_invoke(uint64
   v12 = v11;
   v19 = v12;
   v13 = v10;
-  [v7 enumerateObjectsUsingBlock:v17];
+  [datesCopy enumerateObjectsUsingBlock:v17];
 
   v14 = v19;
   v15 = v12;
@@ -1892,23 +1892,23 @@ void __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_opti
   [*(a1 + 40) addObject:v7];
 }
 
-- (double)_calculateStandardDeviationForDates:(id)a3 options:(id)a4 error:(id *)a5
+- (double)_calculateStandardDeviationForDates:(id)dates options:(id)options error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  datesCopy = dates;
+  optionsCopy = options;
+  if ([datesCopy count])
   {
-    v9 = [v8 objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if ([v7 count] >= v10)
+    if ([datesCopy count] >= unsignedIntegerValue)
     {
       v37 = 0;
       v38 = &v37;
       v39 = 0x2020000000;
       v40 = 0;
-      v18 = [v8 objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
+      v18 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __87__RTStateDepiction_RTMetricManager___calculateStandardDeviationForDates_options_error___block_invoke;
@@ -1916,9 +1916,9 @@ void __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_opti
       v36 = &v37;
       v19 = v18;
       v35 = v19;
-      [v7 enumerateObjectsUsingBlock:v34];
+      [datesCopy enumerateObjectsUsingBlock:v34];
       v20 = v38[3];
-      v21 = v20 / [v7 count];
+      v21 = v20 / [datesCopy count];
       v30 = 0;
       v31 = &v30;
       v32 = 0x2020000000;
@@ -1931,9 +1931,9 @@ void __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_opti
       v27 = v22;
       v28 = &v30;
       v29 = v21;
-      [v7 enumerateObjectsUsingBlock:v26];
+      [datesCopy enumerateObjectsUsingBlock:v26];
       v23 = v31[3];
-      v24 = [v7 count];
+      v24 = [datesCopy count];
 
       _Block_object_dispose(&v30, 8);
       v11 = round(sqrt(v23 / v24));
@@ -1943,20 +1943,20 @@ void __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_opti
     else
     {
       v11 = -1.0;
-      if (a5)
+      if (error)
       {
         v12 = MEMORY[0x277CCA9B8];
         v41 = *MEMORY[0x277CCA450];
         v13 = @"dates";
-        if (v10 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v13 = @"date";
         }
 
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Calculating the standard deviation requires at least %lu %@.", v10, v13];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Calculating the standard deviation requires at least %lu %@.", unsignedIntegerValue, v13];
         v42 = v14;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-        *a5 = [v12 errorWithDomain:@"RTMetricManagerErrorDomain" code:7 userInfo:v15];
+        *error = [v12 errorWithDomain:@"RTMetricManagerErrorDomain" code:7 userInfo:v15];
       }
     }
   }
@@ -1964,13 +1964,13 @@ void __76__RTStateDepiction_RTMetricManager___referenceAdjustEntryExitDates_opti
   else
   {
     v11 = -1.0;
-    if (a5)
+    if (error)
     {
       v16 = MEMORY[0x277CCA9B8];
       v43 = *MEMORY[0x277CCA450];
       v44[0] = @"Calculating the standard deviation requires at least one date.";
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-      *a5 = [v16 errorWithDomain:@"RTMetricManagerErrorDomain" code:7 userInfo:v17];
+      *error = [v16 errorWithDomain:@"RTMetricManagerErrorDomain" code:7 userInfo:v17];
     }
   }
 
@@ -1995,28 +1995,28 @@ double __87__RTStateDepiction_RTMetricManager___calculateStandardDeviationForDat
   return result;
 }
 
-- (id)_filterEntryExitData:(id)a3 options:(id)a4
+- (id)_filterEntryExitData:(id)data options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   v7 = objc_opt_new();
-  if ([v5 count])
+  if ([dataCopy count])
   {
-    v8 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsTransitionTypeKey"];
-    v9 = [v8 unsignedIntegerValue];
+    v8 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsTransitionTypeKey"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v10 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
-    v11 = [v10 unsignedIntegerValue];
+    v10 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
+    unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___block_invoke;
     v28[3] = &unk_2788CF958;
-    v30 = v9;
+    v30 = unsignedIntegerValue;
     v12 = v7;
     v29 = v12;
-    [v5 enumerateObjectsUsingBlock:v28];
-    v13 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsWeekdayKey"];
+    [dataCopy enumerateObjectsUsingBlock:v28];
+    v13 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsWeekdayKey"];
 
     if (!v13)
     {
@@ -2030,8 +2030,8 @@ double __87__RTStateDepiction_RTMetricManager___calculateStandardDeviationForDat
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Options specified calculation of weekly pattern type but didn't specify the weekday."];
     }
 
-    v15 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsWeekdayKey"];
-    v16 = [v15 unsignedIntegerValue];
+    v15 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsWeekdayKey"];
+    unsignedIntegerValue3 = [v15 unsignedIntegerValue];
 
     v17 = objc_opt_new();
     v21 = MEMORY[0x277D85DD0];
@@ -2039,11 +2039,11 @@ double __87__RTStateDepiction_RTMetricManager___calculateStandardDeviationForDat
     v23 = __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___block_invoke_369;
     v24 = &unk_2788CF328;
     v25 = v17;
-    v26 = v16;
+    v26 = unsignedIntegerValue3;
     v18 = v17;
     [v12 enumerateObjectsUsingBlock:&v21];
     [v12 removeObjectsInArray:{v18, v21, v22, v23, v24}];
-    if ([v12 count] >= v11)
+    if ([v12 count] >= unsignedIntegerValue2)
     {
       v19 = v12;
     }
@@ -2091,40 +2091,40 @@ void __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___bloc
   }
 }
 
-- (id)_excludeEntryExitOutlierDates:(id)a3 options:(id)a4
+- (id)_excludeEntryExitOutlierDates:(id)dates options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  datesCopy = dates;
+  optionsCopy = options;
+  v7 = [datesCopy mutableCopy];
   if (![v7 count])
   {
     goto LABEL_11;
   }
 
-  v8 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsMinimumVisitsKey"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsOutlierTimeIntervalKey"];
-  v11 = [v10 integerValue];
+  v10 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsOutlierTimeIntervalKey"];
+  integerValue = [v10 integerValue];
 
   v12 = malloc_type_calloc(0x18uLL, 4uLL, 0x100004052888210uLL);
   if (v12)
   {
     v13 = v12;
     v39 = v7;
-    v14 = v11;
+    v14 = integerValue;
     v15 = 0x277CBE000uLL;
-    v16 = [MEMORY[0x277CBEA80] currentCalendar];
-    v40 = v6;
-    v17 = [v6 objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
-    v18 = [v16 components:2097404 fromDate:v17];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v40 = optionsCopy;
+    v17 = [optionsCopy objectForKey:@"RTMetricStandardDeviationOptionsReferenceDateKey"];
+    v18 = [currentCalendar components:2097404 fromDate:v17];
 
     [v18 setHour:0];
     [v18 setMinute:0];
     [v18 setSecond:0];
-    v19 = [MEMORY[0x277CBEA80] currentCalendar];
-    v20 = [v19 timeZone];
-    [v18 setTimeZone:v20];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    timeZone = [currentCalendar2 timeZone];
+    [v18 setTimeZone:timeZone];
 
     v21 = 0;
     v22 = 0;
@@ -2146,7 +2146,7 @@ void __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___bloc
       v49 = i;
       v28 = v27;
       v29 = v26;
-      [v5 enumerateObjectsUsingBlock:v45];
+      [datesCopy enumerateObjectsUsingBlock:v45];
       if (v13[i] > v22)
       {
         v22 = v13[i];
@@ -2160,19 +2160,19 @@ void __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___bloc
     if (v22)
     {
       [v18 setHour:v21];
-      v30 = [*(v15 + 2688) currentCalendar];
-      v31 = [v30 dateFromComponents:v18];
+      currentCalendar3 = [*(v15 + 2688) currentCalendar];
+      v31 = [currentCalendar3 dateFromComponents:v18];
 
       v32 = [v31 dateByAddingTimeInterval:v14];
-      v33 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __75__RTStateDepiction_RTMetricManager___excludeEntryExitOutlierDates_options___block_invoke_2;
       v41[3] = &unk_2788CE100;
       v42 = v31;
       v43 = v32;
-      v44 = v33;
-      v34 = v33;
+      v44 = array;
+      v34 = array;
       v35 = v32;
       v36 = v31;
       [v39 enumerateObjectsUsingBlock:v41];
@@ -2181,10 +2181,10 @@ void __66__RTStateDepiction_RTMetricManager___filterEntryExitData_options___bloc
 
     free(v13);
 
-    v6 = v40;
+    optionsCopy = v40;
   }
 
-  if ([v7 count] >= v9)
+  if ([v7 count] >= unsignedIntegerValue)
   {
     v37 = v7;
   }

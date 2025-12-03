@@ -1,12 +1,12 @@
 @interface PlayerProfileRequiredDataPresenter
-- (void)updateSections:(id)a3;
+- (void)updateSections:(id)sections;
 @end
 
 @implementation PlayerProfileRequiredDataPresenter
 
-- (void)updateSections:(id)a3
+- (void)updateSections:(id)sections
 {
-  v3 = a3;
+  sectionsCopy = sections;
 
   sub_24DFE653C();
 }

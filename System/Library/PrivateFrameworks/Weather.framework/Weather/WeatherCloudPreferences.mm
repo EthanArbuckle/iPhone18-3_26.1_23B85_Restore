@@ -1,42 +1,42 @@
 @interface WeatherCloudPreferences
-- (BOOL)areCloudCities:(id)a3 equalToLocalCities:(id)a4;
-- (BOOL)shouldWriteCitiesToCloud:(id)a3;
+- (BOOL)areCloudCities:(id)cities equalToLocalCities:(id)localCities;
+- (BOOL)shouldWriteCitiesToCloud:(id)cloud;
 - (SynchronizedDefaultsDelegate)syncDelegate;
-- (WeatherCloudPreferences)initWithLocalPreferences:(id)a3;
-- (WeatherCloudPreferences)initWithLocalPreferences:(id)a3 persistence:(id)a4;
-- (id)citiesByEnforcingSizeLimitOnResults:(id)a3;
-- (id)prepareLocalCitiesForReconciliation:(id)a3 isInitialSync:(BOOL)a4;
-- (id)reconcileCloudCities:(id)a3 withLocal:(id)a4 isInitialSync:(BOOL)a5;
-- (void)cloudCitiesChangedExternally:(id)a3;
+- (WeatherCloudPreferences)initWithLocalPreferences:(id)preferences;
+- (WeatherCloudPreferences)initWithLocalPreferences:(id)preferences persistence:(id)persistence;
+- (id)citiesByEnforcingSizeLimitOnResults:(id)results;
+- (id)prepareLocalCitiesForReconciliation:(id)reconciliation isInitialSync:(BOOL)sync;
+- (id)reconcileCloudCities:(id)cities withLocal:(id)local isInitialSync:(BOOL)sync;
+- (void)cloudCitiesChangedExternally:(id)externally;
 - (void)purgeLegacyCloudCities;
-- (void)saveCitiesToCloud:(id)a3;
-- (void)setCloudStoreCities:(id)a3;
-- (void)setSyncDelegate:(id)a3;
-- (void)updateLocalStoreWithRemoteChanges:(id)a3;
+- (void)saveCitiesToCloud:(id)cloud;
+- (void)setCloudStoreCities:(id)cities;
+- (void)setSyncDelegate:(id)delegate;
+- (void)updateLocalStoreWithRemoteChanges:(id)changes;
 @end
 
 @implementation WeatherCloudPreferences
 
-- (WeatherCloudPreferences)initWithLocalPreferences:(id)a3
+- (WeatherCloudPreferences)initWithLocalPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v5 = [WeatherCloudPersistence cloudPersistenceWithDelegate:self];
-  v6 = [(WeatherCloudPreferences *)self initWithLocalPreferences:v4 persistence:v5];
+  v6 = [(WeatherCloudPreferences *)self initWithLocalPreferences:preferencesCopy persistence:v5];
 
   return v6;
 }
 
-- (WeatherCloudPreferences)initWithLocalPreferences:(id)a3 persistence:(id)a4
+- (WeatherCloudPreferences)initWithLocalPreferences:(id)preferences persistence:(id)persistence
 {
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  persistenceCopy = persistence;
   if (+[WeatherCloudPersistence processIsWhitelistedForSync]&& (v16.receiver = self, v16.super_class = WeatherCloudPreferences, v8 = [(WeatherCloudPreferences *)&v16 init], (self = v8) != 0))
   {
-    [(WeatherCloudPreferences *)v8 setLocalPreferences:v6];
-    [(WeatherCloudPreferences *)self setCloudStore:v7];
+    [(WeatherCloudPreferences *)v8 setLocalPreferences:preferencesCopy];
+    [(WeatherCloudPreferences *)self setCloudStore:persistenceCopy];
     [(WeatherCloudPreferences *)self purgeLegacyCloudCities];
     objc_opt_class();
-    v9 = v7;
+    v9 = persistenceCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -50,51 +50,51 @@
     v11 = v10;
 
     [v11 setDelegate:self];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    v13 = [(WeatherCloudPreferences *)self cloudStore];
-    [v12 addObserver:self selector:sel_cloudCitiesChangedExternally_ name:@"WeatherCloudStoreChangedExternally" object:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+    [defaultCenter addObserver:self selector:sel_cloudCitiesChangedExternally_ name:@"WeatherCloudStoreChangedExternally" object:cloudStore];
 
     self = self;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)purgeLegacyCloudCities
 {
-  v3 = [(WeatherCloudPreferences *)self cloudStore];
-  v6 = [v3 objectForKey:@"CloudCities"];
+  cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+  v6 = [cloudStore objectForKey:@"CloudCities"];
 
   if ([v6 count])
   {
-    v4 = [(WeatherCloudPreferences *)self cloudStore];
-    [v4 removeObjectForKey:@"CloudCities"];
+    cloudStore2 = [(WeatherCloudPreferences *)self cloudStore];
+    [cloudStore2 removeObjectForKey:@"CloudCities"];
 
-    v5 = [(WeatherCloudPreferences *)self cloudStore];
-    [v5 synchronize];
+    cloudStore3 = [(WeatherCloudPreferences *)self cloudStore];
+    [cloudStore3 synchronize];
   }
 }
 
-- (void)setSyncDelegate:(id)a3
+- (void)setSyncDelegate:(id)delegate
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_syncDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_syncDelegate, v4);
+    objc_storeWeak(&self->_syncDelegate, delegateCopy);
     v6 = WALogForCategory(5);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = delegateCopy;
       _os_log_impl(&dword_272ACF000, v6, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] CloudPreferences setting syncDelegate to %@", &v8, 0xCu);
     }
   }
@@ -102,18 +102,18 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)citiesByEnforcingSizeLimitOnResults:(id)a3
+- (id)citiesByEnforcingSizeLimitOnResults:(id)results
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] <= 0x14)
+  resultsCopy = results;
+  if ([resultsCopy count] <= 0x14)
   {
-    v6 = v3;
+    v6 = resultsCopy;
   }
 
   else
   {
-    v4 = [v3 subarrayWithRange:{20, objc_msgSend(v3, "count") - 20}];
+    v4 = [resultsCopy subarrayWithRange:{20, objc_msgSend(resultsCopy, "count") - 20}];
     v5 = WALogForCategory(5);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -122,7 +122,7 @@
       _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] City list exceeds size limit after sync, dropping %@", &v9, 0xCu);
     }
 
-    v6 = [v3 subarrayWithRange:{0, 20}];
+    v6 = [resultsCopy subarrayWithRange:{0, 20}];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -130,14 +130,14 @@
   return v6;
 }
 
-- (BOOL)areCloudCities:(id)a3 equalToLocalCities:(id)a4
+- (BOOL)areCloudCities:(id)cities equalToLocalCities:(id)localCities
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 na_filter:&__block_literal_global_7_0];
+  citiesCopy = cities;
+  v6 = [localCities na_filter:&__block_literal_global_7_0];
   v7 = [v6 copy];
 
-  v8 = [v5 na_map:&__block_literal_global_10];
+  v8 = [citiesCopy na_map:&__block_literal_global_10];
   v9 = [v8 copy];
 
   v10 = [v9 count];
@@ -188,9 +188,9 @@
   return v14;
 }
 
-- (void)cloudCitiesChangedExternally:(id)a3
+- (void)cloudCitiesChangedExternally:(id)externally
 {
-  v4 = a3;
+  externallyCopy = externally;
   v5 = WALogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -199,23 +199,23 @@
   }
 
   v6 = MEMORY[0x277CBEB18];
-  v7 = [(WeatherCloudPreferences *)self localPreferences];
-  v8 = [v7 loadSavedCities];
-  v9 = [v6 arrayWithArray:v8];
+  localPreferences = [(WeatherCloudPreferences *)self localPreferences];
+  loadSavedCities = [localPreferences loadSavedCities];
+  v9 = [v6 arrayWithArray:loadSavedCities];
 
-  v10 = [(WeatherCloudPreferences *)self cloudStore];
-  v11 = [v10 objectForKey:@"CloudCities_v2.0"];
+  cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+  v11 = [cloudStore objectForKey:@"CloudCities_v2.0"];
 
-  v12 = [v4 userInfo];
+  userInfo = [externallyCopy userInfo];
 
-  v13 = [v12 objectForKey:@"WeatherCloudStoreIsInitialSyncKey"];
-  v14 = [v13 BOOLValue];
+  v13 = [userInfo objectForKey:@"WeatherCloudStoreIsInitialSyncKey"];
+  bOOLValue = [v13 BOOLValue];
 
-  v15 = [(WeatherCloudPreferences *)self reconcileCloudCities:v11 withLocal:v9 isInitialSync:v14];
-  if (![(WeatherCloudPreferences *)self areCloudCities:v11 equalToLocalCities:v9]|| v14)
+  v15 = [(WeatherCloudPreferences *)self reconcileCloudCities:v11 withLocal:v9 isInitialSync:bOOLValue];
+  if (![(WeatherCloudPreferences *)self areCloudCities:v11 equalToLocalCities:v9]|| bOOLValue)
   {
     [(WeatherCloudPreferences *)self updateLocalStoreWithRemoteChanges:v15];
-    if (v14)
+    if (bOOLValue)
     {
       [(WeatherCloudPreferences *)self saveCitiesToCloud:v15];
     }
@@ -232,37 +232,37 @@
   }
 }
 
-- (void)updateLocalStoreWithRemoteChanges:(id)a3
+- (void)updateLocalStoreWithRemoteChanges:(id)changes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   v5 = WALogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changesCopy;
     _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] Updating local store with reconciled changes: %@", &v9, 0xCu);
   }
 
-  v6 = [(WeatherCloudPreferences *)self localPreferences];
-  [v6 saveToDiskWithCities:v4 activeCity:0];
+  localPreferences = [(WeatherCloudPreferences *)self localPreferences];
+  [localPreferences saveToDiskWithCities:changesCopy activeCity:0];
 
-  v7 = [(WeatherCloudPreferences *)self syncDelegate];
-  [v7 ubiquitousDefaultsDidChange:v4];
+  syncDelegate = [(WeatherCloudPreferences *)self syncDelegate];
+  [syncDelegate ubiquitousDefaultsDidChange:changesCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)reconcileCloudCities:(id)a3 withLocal:(id)a4 isInitialSync:(BOOL)a5
+- (id)reconcileCloudCities:(id)cities withLocal:(id)local isInitialSync:(BOOL)sync
 {
-  v5 = a5;
+  syncCopy = sync;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  citiesCopy = cities;
+  localCopy = local;
   v10 = WALogForCategory(5);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 na_map:&__block_literal_global_13_0];
+    v11 = [citiesCopy na_map:&__block_literal_global_13_0];
     *buf = 138412290;
     v37 = v11;
     _os_log_impl(&dword_272ACF000, v10, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] Preparing to reconcile local data with cities from cloud: %@", buf, 0xCu);
@@ -286,7 +286,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v8 && v5)
+  if (!citiesCopy && syncCopy)
   {
     v14 = WALogForCategory(5);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -298,17 +298,17 @@ LABEL_10:
 
 LABEL_11:
 
-    v16 = v9;
+    _defaultCities = localCopy;
     goto LABEL_28;
   }
 
-  if (v8 || v5)
+  if (citiesCopy || syncCopy)
   {
-    v18 = [MEMORY[0x277CBEB18] array];
-    v19 = [v8 na_map:&__block_literal_global_18];
-    if (v5)
+    array = [MEMORY[0x277CBEB18] array];
+    v19 = [citiesCopy na_map:&__block_literal_global_18];
+    if (syncCopy)
     {
-      v20 = [(WeatherCloudPreferences *)self prepareLocalCitiesForReconciliation:v9 isInitialSync:1];
+      v20 = [(WeatherCloudPreferences *)self prepareLocalCitiesForReconciliation:localCopy isInitialSync:1];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __72__WeatherCloudPreferences_reconcileCloudCities_withLocal_isInitialSync___block_invoke_19;
@@ -331,17 +331,17 @@ LABEL_11:
       v23 = v20;
       v33 = v23;
       v24 = [v21 na_filter:&v29];
-      [v18 addObjectsFromArray:{v23, v29, v30, v31, v32}];
-      [v18 addObjectsFromArray:v24];
+      [array addObjectsFromArray:{v23, v29, v30, v31, v32}];
+      [array addObjectsFromArray:v24];
       v25 = WALogForCategory(5);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v37 = v18;
+        v37 = array;
         _os_log_impl(&dword_272ACF000, v25, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] Initial sync - merge results: %@", buf, 0xCu);
       }
 
-      v16 = [(WeatherCloudPreferences *)self citiesByEnforcingSizeLimitOnResults:v18];
+      _defaultCities = [(WeatherCloudPreferences *)self citiesByEnforcingSizeLimitOnResults:array];
     }
 
     else
@@ -353,8 +353,8 @@ LABEL_11:
         _os_log_impl(&dword_272ACF000, v26, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] Not initial sync, so replacing local cities with list from cloud", buf, 2u);
       }
 
-      [v18 addObjectsFromArray:v19];
-      v16 = [(WeatherCloudPreferences *)self citiesByEnforcingSizeLimitOnResults:v18];
+      [array addObjectsFromArray:v19];
+      _defaultCities = [(WeatherCloudPreferences *)self citiesByEnforcingSizeLimitOnResults:array];
     }
   }
 
@@ -367,14 +367,14 @@ LABEL_11:
       _os_log_impl(&dword_272ACF000, v17, OS_LOG_TYPE_DEFAULT, "[WeatherKVS] All cities deleted from cloud. Resetting local store to the default city list", buf, 2u);
     }
 
-    v18 = [(WeatherCloudPreferences *)self localPreferences];
-    v16 = [v18 _defaultCities];
+    array = [(WeatherCloudPreferences *)self localPreferences];
+    _defaultCities = [array _defaultCities];
   }
 
 LABEL_28:
   v27 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return _defaultCities;
 }
 
 id __72__WeatherCloudPreferences_reconcileCloudCities_withLocal_isInitialSync___block_invoke_16(uint64_t a1, void *a2)
@@ -452,41 +452,41 @@ uint64_t __72__WeatherCloudPreferences_reconcileCloudCities_withLocal_isInitialS
   return v4 ^ 1;
 }
 
-- (id)prepareLocalCitiesForReconciliation:(id)a3 isInitialSync:(BOOL)a4
+- (id)prepareLocalCitiesForReconciliation:(id)reconciliation isInitialSync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && (-[WeatherCloudPreferences localPreferences](self, "localPreferences"), v7 = objc_claimAutoreleasedReturnValue(), -[WeatherCloudPreferences cloudRepresentationFromCities:](self, "cloudRepresentationFromCities:", v6), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 areCitiesDefault:v8], v8, v7, (v9 & 1) != 0))
+  syncCopy = sync;
+  reconciliationCopy = reconciliation;
+  if (syncCopy && (-[WeatherCloudPreferences localPreferences](self, "localPreferences"), v7 = objc_claimAutoreleasedReturnValue(), -[WeatherCloudPreferences cloudRepresentationFromCities:](self, "cloudRepresentationFromCities:", reconciliationCopy), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 areCitiesDefault:v8], v8, v7, (v9 & 1) != 0))
   {
     v10 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v10 = v6;
+    v10 = reconciliationCopy;
   }
 
   return v10;
 }
 
-- (void)setCloudStoreCities:(id)a3
+- (void)setCloudStoreCities:(id)cities
 {
-  v5 = [a3 na_filter:&__block_literal_global_28];
-  v4 = [(WeatherCloudPreferences *)self cloudStore];
-  [v4 setObject:v5 forKey:@"CloudCities_v2.0"];
+  v5 = [cities na_filter:&__block_literal_global_28];
+  cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+  [cloudStore setObject:v5 forKey:@"CloudCities_v2.0"];
 }
 
-- (void)saveCitiesToCloud:(id)a3
+- (void)saveCitiesToCloud:(id)cloud
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a3 na_filter:&__block_literal_global_30];
+  v4 = [cloud na_filter:&__block_literal_global_30];
   if ([(WeatherCloudPreferences *)self shouldWriteCitiesToCloud:v4])
   {
     v5 = [(WeatherCloudPreferences *)self cloudRepresentationFromCities:v4];
     [(WeatherCloudPreferences *)self setCloudStoreCities:v5];
 
-    v6 = [(WeatherCloudPreferences *)self cloudStore];
-    [v6 synchronize];
+    cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+    [cloudStore synchronize];
 
     v7 = WALogForCategory(5);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -517,12 +517,12 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldWriteCitiesToCloud:(id)a3
+- (BOOL)shouldWriteCitiesToCloud:(id)cloud
 {
-  v4 = a3;
-  v5 = [(WeatherCloudPreferences *)self localPreferences];
-  v6 = [(WeatherCloudPreferences *)self cloudRepresentationFromCities:v4];
-  v7 = [v5 areCitiesDefault:v6];
+  cloudCopy = cloud;
+  localPreferences = [(WeatherCloudPreferences *)self localPreferences];
+  v6 = [(WeatherCloudPreferences *)self cloudRepresentationFromCities:cloudCopy];
+  v7 = [localPreferences areCitiesDefault:v6];
 
   if (v7)
   {
@@ -531,9 +531,9 @@ LABEL_6:
 
   else
   {
-    v9 = [(WeatherCloudPreferences *)self cloudStore];
-    v10 = [v9 objectForKey:@"CloudCities_v2.0"];
-    v8 = ![(WeatherCloudPreferences *)self areCloudCities:v10 equalToLocalCities:v4];
+    cloudStore = [(WeatherCloudPreferences *)self cloudStore];
+    v10 = [cloudStore objectForKey:@"CloudCities_v2.0"];
+    v8 = ![(WeatherCloudPreferences *)self areCloudCities:v10 equalToLocalCities:cloudCopy];
   }
 
   return v8;

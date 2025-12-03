@@ -1,10 +1,10 @@
 @interface HKTinkerSharingGizmoPermissionController
-- (HKTinkerSharingGizmoPermissionController)initWithStyle:(int64_t)a3 delegate:(id)a4;
-- (id)_localizedFullNameForFirstName:(id)a3 lastName:(id)a4;
+- (HKTinkerSharingGizmoPermissionController)initWithStyle:(int64_t)style delegate:(id)delegate;
+- (id)_localizedFullNameForFirstName:(id)name lastName:(id)lastName;
 - (id)detailString;
 - (id)tapToRadarMetadata;
 - (id)titleString;
-- (void)optInDidFailWithError:(id)a3;
+- (void)optInDidFailWithError:(id)error;
 - (void)optInDidSucceed;
 - (void)sendOptInRequest;
 - (void)viewDidLoad;
@@ -12,17 +12,17 @@
 
 @implementation HKTinkerSharingGizmoPermissionController
 
-- (HKTinkerSharingGizmoPermissionController)initWithStyle:(int64_t)a3 delegate:(id)a4
+- (HKTinkerSharingGizmoPermissionController)initWithStyle:(int64_t)style delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HKTinkerSharingGizmoPermissionController;
   v7 = [(BPSWelcomeOptinViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_layoutStyle = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_layoutStyle = style;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     [(BPSWelcomeOptinViewController *)v8 setStyle:2];
   }
 
@@ -37,14 +37,14 @@
   v3 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [v3 setHidesWhenStopped:1];
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v3];
-  v5 = [(OBBaseWelcomeController *)self navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   [v3 startAnimating];
   if (self->_layoutStyle == 2)
   {
-    v6 = [(OBBaseWelcomeController *)self navigationItem];
-    [v6 setHidesBackButton:1];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1];
 
     [(HKTinkerSharingGizmoPermissionController *)self setModalInPresentation:1];
     [(HKTinkerSharingGizmoPermissionController *)self sendOptInRequest];
@@ -57,14 +57,14 @@
   v3 = objc_opt_new();
   v4 = [objc_alloc(MEMORY[0x1E696C3E0]) initWithHealthStore:v3];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained tinkerMember];
-  if (v6)
+  tinkerMember = [WeakRetained tinkerMember];
+  if (tinkerMember)
   {
-    v7 = v6;
+    v7 = tinkerMember;
     v8 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v8 guardianMember];
+    guardianMember = [v8 guardianMember];
 
-    if (v9)
+    if (guardianMember)
     {
       v25 = v4;
       _HKInitializeLogging();
@@ -73,30 +73,30 @@
       {
         v11 = v10;
         v12 = objc_loadWeakRetained(&self->_delegate);
-        v13 = [v12 tinkerMember];
+        tinkerMember2 = [v12 tinkerMember];
         *buf = 138543362;
-        v28 = v13;
+        v28 = tinkerMember2;
         _os_log_impl(&dword_1C3942000, v11, OS_LOG_TYPE_DEFAULT, "[sharing-setup] Setting up Tinker sharing opt-in request for %{public}@ (#t0)", buf, 0xCu);
       }
 
       v14 = objc_loadWeakRetained(&self->_delegate);
-      v15 = [v14 guardianMember];
-      v16 = [v15 firstName];
+      guardianMember2 = [v14 guardianMember];
+      firstName = [guardianMember2 firstName];
       v17 = objc_loadWeakRetained(&self->_delegate);
-      v18 = [v17 guardianMember];
-      v19 = [v18 lastName];
-      v20 = [(HKTinkerSharingGizmoPermissionController *)self _localizedFullNameForFirstName:v16 lastName:v19];
+      guardianMember3 = [v17 guardianMember];
+      lastName = [guardianMember3 lastName];
+      v20 = [(HKTinkerSharingGizmoPermissionController *)self _localizedFullNameForFirstName:firstName lastName:lastName];
 
       v21 = objc_loadWeakRetained(&self->_delegate);
-      v22 = [v21 tinkerDevice];
-      v23 = [v22 pairingID];
+      tinkerDevice = [v21 tinkerDevice];
+      pairingID = [tinkerDevice pairingID];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __60__HKTinkerSharingGizmoPermissionController_sendOptInRequest__block_invoke;
       v26[3] = &unk_1E81B59C0;
       v26[4] = self;
       v4 = v25;
-      [v25 requestTinkerSharingOptInWithGuardianDisplayName:v20 NRDeviceUUID:v23 completion:v26];
+      [v25 requestTinkerSharingOptInWithGuardianDisplayName:v20 NRDeviceUUID:pairingID completion:v26];
 
       goto LABEL_10;
     }
@@ -172,15 +172,15 @@ uint64_t __60__HKTinkerSharingGizmoPermissionController_sendOptInRequest__block_
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [(HKTinkerSharingSyncSetupController *)v4 initWithStyle:layoutStyle delegate:WeakRetained];
 
-  v8 = [(HKTinkerSharingGizmoPermissionController *)self navigationController];
-  [v8 pushViewController:v7 animated:1];
+  navigationController = [(HKTinkerSharingGizmoPermissionController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
-- (void)optInDidFailWithError:(id)a3
+- (void)optInDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained sharingSetupDidFailWithError:v4];
+  [WeakRetained sharingSetupDidFailWithError:errorCopy];
 }
 
 - (id)titleString
@@ -189,9 +189,9 @@ uint64_t __60__HKTinkerSharingGizmoPermissionController_sendOptInRequest__block_
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:@"HEALTH_TINKER_TITLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained tinkerMember];
-  v8 = [v7 firstName];
-  v9 = [v3 stringWithFormat:v5, v8];
+  tinkerMember = [WeakRetained tinkerMember];
+  firstName = [tinkerMember firstName];
+  v9 = [v3 stringWithFormat:v5, firstName];
 
   return v9;
 }
@@ -199,13 +199,13 @@ uint64_t __60__HKTinkerSharingGizmoPermissionController_sendOptInRequest__block_
 - (id)detailString
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained tinkerMember];
-  v4 = [v3 firstName];
+  tinkerMember = [WeakRetained tinkerMember];
+  firstName = [tinkerMember firstName];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"HEALTH_TINKER_WAIT_FOR_RESPONSE_%@_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
-  v8 = [v5 stringWithFormat:v7, v4, v4];
+  v8 = [v5 stringWithFormat:v7, firstName, firstName];
 
   return v8;
 }
@@ -217,15 +217,15 @@ uint64_t __60__HKTinkerSharingGizmoPermissionController_sendOptInRequest__block_
   return v2;
 }
 
-- (id)_localizedFullNameForFirstName:(id)a3 lastName:(id)a4
+- (id)_localizedFullNameForFirstName:(id)name lastName:(id)lastName
 {
   v5 = MEMORY[0x1E696ADF0];
-  v6 = a4;
-  v7 = a3;
+  lastNameCopy = lastName;
+  nameCopy = name;
   v8 = objc_alloc_init(v5);
-  [v8 setGivenName:v7];
+  [v8 setGivenName:nameCopy];
 
-  [v8 setFamilyName:v6];
+  [v8 setFamilyName:lastNameCopy];
   v9 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v8 style:2 options:0];
 
   return v9;

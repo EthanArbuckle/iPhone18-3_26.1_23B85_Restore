@@ -1,31 +1,31 @@
 @interface CDPRecoveryKeyEntryViewModel
 - (BOOL)isDataRecoveryFlow;
-- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)a3 validator:(id)a4;
-- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)a3 validator:(id)a4 mode:(int)a5;
+- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)context validator:(id)validator;
+- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)context validator:(id)validator mode:(int)mode;
 - (id)footerButtonTitle;
 - (id)footerLabelText;
 - (id)headerSubtitle;
 - (id)headerTitle;
 - (id)placeholderText;
 - (void)handleCancel;
-- (void)handleForgotRecoveryKeyWithCDPStateError:(int64_t)a3;
-- (void)handleNoRecoveryKeyWithCDPStateError:(int64_t)a3;
-- (void)processCollectedRecoveryKey:(id)a3 completion:(id)a4;
+- (void)handleForgotRecoveryKeyWithCDPStateError:(int64_t)error;
+- (void)handleNoRecoveryKeyWithCDPStateError:(int64_t)error;
+- (void)processCollectedRecoveryKey:(id)key completion:(id)completion;
 @end
 
 @implementation CDPRecoveryKeyEntryViewModel
 
-- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)a3 validator:(id)a4 mode:(int)a5
+- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)context validator:(id)validator mode:(int)mode
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  validatorCopy = validator;
   v11 = [(CDPRecoveryKeyEntryViewModel *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    v12->_mode = a5;
-    objc_storeStrong(&v12->_validator, a4);
+    objc_storeStrong(&v11->_context, context);
+    v12->_mode = mode;
+    objc_storeStrong(&v12->_validator, validator);
     if ([(CDPRecoveryKeyEntryViewModel *)v12 supportsRKRecovery])
     {
       v12->_shouldSuppressCancelButton = 0;
@@ -43,15 +43,15 @@
   return v12;
 }
 
-- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)a3 validator:(id)a4
+- (CDPRecoveryKeyEntryViewModel)initWithContext:(id)context validator:(id)validator
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  validatorCopy = validator;
   v9 = [(CDPRecoveryKeyEntryViewModel *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
+    objc_storeStrong(&v9->_context, context);
     if ([(CDPContext *)v10->_context type]== 8)
     {
       v10->_shouldSuppressCancelButton = 0;
@@ -67,7 +67,7 @@
         v12 = 34;
 LABEL_8:
         *(&v10->super.isa + v12) = v11;
-        objc_storeStrong(&v10->_secretValidator, a4);
+        objc_storeStrong(&v10->_secretValidator, validator);
         v10->_mode = 2;
         goto LABEL_9;
       }
@@ -88,14 +88,14 @@ LABEL_9:
 - (id)footerButtonTitle
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [MEMORY[0x277D75348] _systemInteractionTintColor];
+  _systemInteractionTintColor = [MEMORY[0x277D75348] _systemInteractionTintColor];
   v5 = *MEMORY[0x277D740C0];
   v6 = MEMORY[0x277D74300];
   v7 = *MEMORY[0x277D76918];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  v9 = [v8 traitCollection];
-  v10 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:v9];
-  v11 = [v3 dictionaryWithObjectsAndKeys:{v4, v5, v10, *MEMORY[0x277D740A8], 0}];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v10 = [v6 preferredFontForTextStyle:v7 compatibleWithTraitCollection:traitCollection];
+  v11 = [v3 dictionaryWithObjectsAndKeys:{_systemInteractionTintColor, v5, v10, *MEMORY[0x277D740A8], 0}];
 
   mode = self->_mode;
   if (mode == 2)
@@ -136,8 +136,8 @@ LABEL_9:
     v15 = @"RECOVERY_KEY_CONTINUE_BUTTON_TITLE";
 LABEL_13:
     v17 = [v14 builderForKey:v15];
-    v18 = [v17 localizedString];
-    v19 = [v13 initWithString:v18 attributes:v11];
+    localizedString = [v17 localizedString];
+    v19 = [v13 initWithString:localizedString attributes:v11];
 
     goto LABEL_15;
   }
@@ -164,24 +164,24 @@ LABEL_15:
     }
 
     v3 = [MEMORY[0x277CFD508] builderForKey:v2];
-    v4 = [v3 localizedString];
+    localizedString = [v3 localizedString];
   }
 
   else
   {
-    v4 = 0;
+    localizedString = 0;
   }
 
-  return v4;
+  return localizedString;
 }
 
 - (id)headerTitle
 {
   if ([(CDPContext *)self->_context type]== 5 || [(CDPContext *)self->_context type]== 4 || [(CDPContext *)self->_context type]== 8 || [(CDPContext *)self->_context type]== 9)
   {
-    v3 = [(CDPRecoveryKeyEntryViewModel *)self mode];
+    mode = [(CDPRecoveryKeyEntryViewModel *)self mode];
     v4 = MEMORY[0x277CFD508];
-    if (v3 == 1)
+    if (mode == 1)
     {
       v5 = @"RECOVERY_KEY_TITLE";
     }
@@ -199,17 +199,17 @@ LABEL_15:
   }
 
   v6 = [v4 builderForKey:v5];
-  v7 = [v6 localizedString];
+  localizedString = [v6 localizedString];
 
-  return v7;
+  return localizedString;
 }
 
 - (id)headerSubtitle
 {
-  v3 = [(CDPRecoveryKeyEntryViewModel *)self mode];
-  v4 = [(CDPContext *)self->_context type];
-  v5 = v4;
-  if (v3 == 1)
+  mode = [(CDPRecoveryKeyEntryViewModel *)self mode];
+  type = [(CDPContext *)self->_context type];
+  v5 = type;
+  if (mode == 1)
   {
     v6 = MEMORY[0x277CFD508];
     if (v5 == 4)
@@ -223,7 +223,7 @@ LABEL_15:
     }
   }
 
-  else if (v4 == 4)
+  else if (type == 4)
   {
     v6 = MEMORY[0x277CFD508];
     v7 = @"RECOVERY_KEY_SUBTITLE_VERIFY_REGEN_FLOW";
@@ -231,9 +231,9 @@ LABEL_15:
 
   else
   {
-    v8 = [(CDPContext *)self->_context type];
+    type2 = [(CDPContext *)self->_context type];
     v6 = MEMORY[0x277CFD508];
-    if (v8 == 5)
+    if (type2 == 5)
     {
       v7 = @"RECOVERY_KEY_SUBTITLE_VERIFY_ENABLE_FLOW";
     }
@@ -245,24 +245,24 @@ LABEL_15:
   }
 
   v9 = [v6 builderForKey:v7];
-  v10 = [v9 localizedString];
+  localizedString = [v9 localizedString];
 
-  return v10;
+  return localizedString;
 }
 
 - (id)placeholderText
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"RECOVERY_KEY_PLACEHOLDER"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
-- (void)processCollectedRecoveryKey:(id)a3 completion:(id)a4
+- (void)processCollectedRecoveryKey:(id)key completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -278,7 +278,7 @@ LABEL_15:
   aBlock[2] = __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion___block_invoke;
   aBlock[3] = &unk_278E2B2A8;
   aBlock[4] = self;
-  v9 = v7;
+  v9 = completionCopy;
   v16 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
@@ -290,12 +290,12 @@ LABEL_15:
     v13[2] = __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion___block_invoke_70;
     v13[3] = &unk_278E2BAA0;
     v14 = v10;
-    [(CDPRemoteDeviceSecretValidatorProtocol *)secretValidator validateRecoveryKey:v6 withCompletion:v13];
+    [(CDPRemoteDeviceSecretValidatorProtocol *)secretValidator validateRecoveryKey:keyCopy withCompletion:v13];
   }
 
   else
   {
-    [(CDPRecoveryKeyValidator *)self->_validator confirmRecoveryKey:v6 completion:v10];
+    [(CDPRecoveryKeyValidator *)self->_validator confirmRecoveryKey:keyCopy completion:v10];
   }
 }
 
@@ -352,13 +352,13 @@ void __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion__
     _os_log_impl(&dword_2451DB000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling the recovery key flow in mode: %@", &v10, 0xCu);
   }
 
-  v5 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+  completionHandler = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+    completionHandler2 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
     v7 = _CDPStateError();
-    (v6)[2](v6, 0, v7);
+    (completionHandler2)[2](completionHandler2, 0, v7);
   }
 
   secretValidator = self->_secretValidator;
@@ -369,7 +369,7 @@ void __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion__
   }
 }
 
-- (void)handleForgotRecoveryKeyWithCDPStateError:(int64_t)a3
+- (void)handleForgotRecoveryKeyWithCDPStateError:(int64_t)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
@@ -379,21 +379,21 @@ void __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion__
     v10 = 138412546;
     v11 = v6;
     v12 = 2048;
-    v13 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_2451DB000, v5, OS_LOG_TYPE_DEFAULT, "Forgot Recovery key tapped in mode: %@, error: %ld", &v10, 0x16u);
   }
 
-  v7 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+  completionHandler = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+    completionHandler2 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
     v9 = _CDPStateError();
-    (v8)[2](v8, 0, v9);
+    (completionHandler2)[2](completionHandler2, 0, v9);
   }
 }
 
-- (void)handleNoRecoveryKeyWithCDPStateError:(int64_t)a3
+- (void)handleNoRecoveryKeyWithCDPStateError:(int64_t)error
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
@@ -402,17 +402,17 @@ void __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion__
     v9[0] = 67109376;
     v9[1] = [(CDPRecoveryKeyEntryViewModel *)self mode];
     v10 = 2048;
-    v11 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_2451DB000, v5, OS_LOG_TYPE_DEFAULT, "Don't Have Recovery Key? was tapped in account recovery flow. Mode: %d, error: %ld", v9, 0x12u);
   }
 
-  v6 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+  completionHandler = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
 
-  if (v6)
+  if (completionHandler)
   {
-    v7 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
+    completionHandler2 = [(CDPRecoveryKeyEntryViewModel *)self completionHandler];
     v8 = _CDPStateError();
-    (v7)[2](v7, 0, v8);
+    (completionHandler2)[2](completionHandler2, 0, v8);
   }
 }
 
@@ -422,9 +422,9 @@ void __71__CDPRecoveryKeyEntryViewModel_processCollectedRecoveryKey_completion__
   v3 = _CDPLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CDPContext *)self->_context type];
+    type = [(CDPContext *)self->_context type];
     v6 = 134217984;
-    v7 = v4;
+    v7 = type;
     _os_log_impl(&dword_2451DB000, v3, OS_LOG_TYPE_DEFAULT, "cdpContextType = %ld", &v6, 0xCu);
   }
 

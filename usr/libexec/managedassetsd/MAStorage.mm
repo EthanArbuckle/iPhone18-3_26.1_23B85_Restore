@@ -1,65 +1,65 @@
 @interface MAStorage
 + (id)defaultManager;
-+ (id)ensureDirectoryExists:(char *)a3 parent:(id)a4 fileMgr:(id)a5 error:(id *)a6;
-- (BOOL)addAnchorGroupIdentifier:(id)a3 client:(id)a4 error:(id *)a5;
-- (BOOL)changeProfileType:(id)a3 profileType:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6;
-- (BOOL)createAsset:(id)a3 token:(id)a4 protectionClass:(id)a5 assetPathOut:(id *)a6 error:(id *)a7;
-- (BOOL)createOrLoadLocalDatabase:(id)a3 error:(id *)a4;
-- (BOOL)createProfile:(id)a3 type:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6;
-- (BOOL)createTempAssetFile:(id)a3 protectionType:(id)a4 pathOut:(id *)a5 fileHandleOut:(id *)a6 error:(id *)a7;
-- (BOOL)deleteAllAssetsExcept:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllAssetsWith:(id)a3 recordIDs:(id *)a4 error:(id *)a5 wipeOutProfile:(BOOL)a6;
-- (BOOL)deleteAllLocalAssets:(id)a3 assetType:(unint64_t)a4 error:(id *)a5;
-- (BOOL)deleteAssets:(id)a3 error:(id *)a4;
-- (BOOL)deleteTempAssetFile:(id)a3 error:(id *)a4;
-- (BOOL)persistGuestProfile:(id)a3 timestamp:(double)a4 error:(id *)a5;
-- (BOOL)removeAllAnchorGroups:(id)a3 error:(id *)a4;
-- (BOOL)removeAnchorGroupIdentifier:(id)a3 client:(id)a4 error:(id *)a5;
-- (BOOL)renameAssetFileFromTempAsset:(id)a3 token:(id)a4 error:(id *)a5;
-- (BOOL)setConfigWith:(id)a3 value:(id)a4 error:(id *)a5;
-- (BOOL)updateAsset:(id)a3 event:(unint64_t)a4 options:(id)a5 process:(id)a6 profile:(id)a7 error:(id *)a8;
-- (BOOL)updateProfileLastSwitchTS:(id)a3 mode:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6;
-- (BOOL)validateSessionToken:(id)a3;
++ (id)ensureDirectoryExists:(char *)exists parent:(id)parent fileMgr:(id)mgr error:(id *)error;
+- (BOOL)addAnchorGroupIdentifier:(id)identifier client:(id)client error:(id *)error;
+- (BOOL)changeProfileType:(id)type profileType:(unint64_t)profileType timestamp:(double)timestamp error:(id *)error;
+- (BOOL)createAsset:(id)asset token:(id)token protectionClass:(id)class assetPathOut:(id *)out error:(id *)error;
+- (BOOL)createOrLoadLocalDatabase:(id)database error:(id *)error;
+- (BOOL)createProfile:(id)profile type:(unint64_t)type timestamp:(double)timestamp error:(id *)error;
+- (BOOL)createTempAssetFile:(id)file protectionType:(id)type pathOut:(id *)out fileHandleOut:(id *)handleOut error:(id *)error;
+- (BOOL)deleteAllAssetsExcept:(id)except error:(id *)error;
+- (BOOL)deleteAllAssetsWith:(id)with recordIDs:(id *)ds error:(id *)error wipeOutProfile:(BOOL)profile;
+- (BOOL)deleteAllLocalAssets:(id)assets assetType:(unint64_t)type error:(id *)error;
+- (BOOL)deleteAssets:(id)assets error:(id *)error;
+- (BOOL)deleteTempAssetFile:(id)file error:(id *)error;
+- (BOOL)persistGuestProfile:(id)profile timestamp:(double)timestamp error:(id *)error;
+- (BOOL)removeAllAnchorGroups:(id)groups error:(id *)error;
+- (BOOL)removeAnchorGroupIdentifier:(id)identifier client:(id)client error:(id *)error;
+- (BOOL)renameAssetFileFromTempAsset:(id)asset token:(id)token error:(id *)error;
+- (BOOL)setConfigWith:(id)with value:(id)value error:(id *)error;
+- (BOOL)updateAsset:(id)asset event:(unint64_t)event options:(id)options process:(id)process profile:(id)profile error:(id *)error;
+- (BOOL)updateProfileLastSwitchTS:(id)s mode:(unint64_t)mode timestamp:(double)timestamp error:(id *)error;
+- (BOOL)validateSessionToken:(id)token;
 - (MAStorage)init;
-- (id)buildMetaDataFromSqlStatement:(sqlite3_stmt *)a3;
-- (id)getAllAnchorGroups:(id)a3 error:(id *)a4;
-- (id)getAllProfilesWithError:(id *)a3;
-- (id)getAsset:(id)a3 profile:(id)a4 option:(unint64_t)a5 assetPathOut:(id *)a6 bypassProfileCheck:(unint64_t)a7 error:(id *)a8;
-- (id)getConfigWith:(id)a3 error:(id *)a4;
-- (id)getInactiveProfilesWith:(unint64_t)a3 profileType:(unint64_t)a4 error:(id *)a5;
+- (id)buildMetaDataFromSqlStatement:(sqlite3_stmt *)statement;
+- (id)getAllAnchorGroups:(id)groups error:(id *)error;
+- (id)getAllProfilesWithError:(id *)error;
+- (id)getAsset:(id)asset profile:(id)profile option:(unint64_t)option assetPathOut:(id *)out bypassProfileCheck:(unint64_t)check error:(id *)error;
+- (id)getConfigWith:(id)with error:(id *)error;
+- (id)getInactiveProfilesWith:(unint64_t)with profileType:(unint64_t)type error:(id *)error;
 - (id)getLastSeenProfile;
-- (id)getLastSwitchOutTimeForRecentPersistedGuestWithError:(id *)a3;
-- (id)getLastSwitchTS:(id)a3 mode:(unint64_t)a4 error:(id *)a5;
-- (id)getProfile:(id)a3 error:(id *)a4;
-- (id)getTableColumns:(id)a3;
+- (id)getLastSwitchOutTimeForRecentPersistedGuestWithError:(id *)error;
+- (id)getLastSwitchTS:(id)s mode:(unint64_t)mode error:(id *)error;
+- (id)getProfile:(id)profile error:(id *)error;
+- (id)getTableColumns:(id)columns;
 - (id)outdatedAssetTableColumns;
-- (id)queryA06AssetsWithError:(id *)a3;
-- (id)queryAssetHandleAndTypeBy:(id)a3 type:(id *)a4 error:(id *)a5;
-- (id)queryAssets:(id)a3 profile:(id)a4 error:(id *)a5;
-- (id)queryAssetsMetaData:(id)a3 profile:(id)a4 error:(id *)a5;
+- (id)queryA06AssetsWithError:(id *)error;
+- (id)queryAssetHandleAndTypeBy:(id)by type:(id *)type error:(id *)error;
+- (id)queryAssets:(id)assets profile:(id)profile error:(id *)error;
+- (id)queryAssetsMetaData:(id)data profile:(id)profile error:(id *)error;
 - (void)close;
-- (void)convertAssetCaches:(unint64_t)a3 deviceState:(unint64_t)a4;
-- (void)deleteConfigWith:(id)a3;
+- (void)convertAssetCaches:(unint64_t)caches deviceState:(unint64_t)state;
+- (void)deleteConfigWith:(id)with;
 - (void)deviceFirstUnlock;
 - (void)loadDBInClassD;
-- (void)removeAssetMetaDataDbIfCorruptedWith:(id)a3;
-- (void)setLastSeenProfile:(id)a3;
+- (void)removeAssetMetaDataDbIfCorruptedWith:(id)with;
+- (void)setLastSeenProfile:(id)profile;
 - (void)wipeIdentityFolderForPresence;
 @end
 
 @implementation MAStorage
 
-+ (id)ensureDirectoryExists:(char *)a3 parent:(id)a4 fileMgr:(id)a5 error:(id *)a6
++ (id)ensureDirectoryExists:(char *)exists parent:(id)parent fileMgr:(id)mgr error:(id *)error
 {
-  v9 = a5;
-  v10 = [NSString stringWithFormat:@"%@%s", a4, a3];
-  if ([v9 fileExistsAtPath:v10])
+  mgrCopy = mgr;
+  exists = [NSString stringWithFormat:@"%@%s", parent, exists];
+  if ([mgrCopy fileExistsAtPath:exists])
   {
     goto LABEL_2;
   }
 
   v20 = 0;
-  [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v20];
+  [mgrCopy createDirectoryAtPath:exists withIntermediateDirectories:1 attributes:0 error:&v20];
   v12 = v20;
   v13 = off_100127CD8;
   if (!v12)
@@ -67,13 +67,13 @@
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v22 = v10;
+      v22 = exists;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "created directory %@", buf, 0xCu);
     }
 
 LABEL_2:
     v11 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -84,7 +84,7 @@ LABEL_2:
   v11 = v12;
   if (!os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -93,11 +93,11 @@ LABEL_2:
   }
 
   sub_1000181A4();
-  if (a6)
+  if (error)
   {
 LABEL_7:
     v14 = v11;
-    *a6 = v11;
+    *error = v11;
   }
 
 LABEL_8:
@@ -109,7 +109,7 @@ LABEL_9:
   }
 
   bzero(buf, 0x400uLL);
-  if (realpath_DARWIN_EXTSN([v10 fileSystemRepresentation], buf))
+  if (realpath_DARWIN_EXTSN([exists fileSystemRepresentation], buf))
   {
     v16 = [NSString stringWithUTF8String:buf];
     v15 = [NSString stringWithFormat:@"%@/", v16];
@@ -121,14 +121,14 @@ LABEL_9:
   {
     v17 = createManagedAssetError();
     v11 = v17;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_9;
     }
 
     v18 = v17;
     v15 = 0;
-    *a6 = v11;
+    *error = v11;
   }
 
 LABEL_16:
@@ -142,7 +142,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_10000E690;
   block[3] = &unk_100115D08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001293D8 != -1)
   {
     dispatch_once(&qword_1001293D8, block);
@@ -166,8 +166,8 @@ LABEL_16:
 
   v3 = +[NSFileManager defaultManager];
   v4 = +[NSBundle mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.managedassetsd"];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.managedassetsd"];
 
   if (v6)
   {
@@ -179,8 +179,8 @@ LABEL_16:
   {
     v7 = NSTemporaryDirectory();
     v11 = +[NSUUID UUID];
-    v12 = [v11 UUIDString];
-    v8 = [NSString stringWithFormat:@"%@/%@", v7, v12];
+    uUIDString = [v11 UUIDString];
+    v8 = [NSString stringWithFormat:@"%@/%@", v7, uUIDString];
   }
 
   v88 = 0;
@@ -494,19 +494,19 @@ LABEL_41:
   }
 }
 
-- (BOOL)createOrLoadLocalDatabase:(id)a3 error:(id *)a4
+- (BOOL)createOrLoadLocalDatabase:(id)database error:(id *)error
 {
-  v6 = a3;
+  databaseCopy = database;
   errmsg = 0;
-  v7 = [v6 stringByAppendingPathComponent:@"managedAssets.sqlite"];
+  v7 = [databaseCopy stringByAppendingPathComponent:@"managedAssets.sqlite"];
   databasePath = self->_databasePath;
   self->_databasePath = v7;
 
-  v9 = [v6 stringByAppendingPathComponent:@"managedAssetsC.sqlite"];
+  v9 = [databaseCopy stringByAppendingPathComponent:@"managedAssetsC.sqlite"];
   dbInClassCPath = self->_dbInClassCPath;
   self->_dbInClassCPath = v9;
 
-  v11 = [v6 stringByAppendingPathComponent:@"managedAssetsD.sqlite"];
+  v11 = [databaseCopy stringByAppendingPathComponent:@"managedAssetsD.sqlite"];
   dbInClassDPath = self->_dbInClassDPath;
   self->_dbInClassDPath = v11;
 
@@ -527,18 +527,18 @@ LABEL_41:
   p_database = &self->_database;
   if (self->_database)
   {
-    v14 = [(MAStorage *)self outdatedAssetTableColumns];
+    outdatedAssetTableColumns = [(MAStorage *)self outdatedAssetTableColumns];
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_DEBUG))
     {
       sub_100018490();
     }
 
     v15 = [NSMutableString stringWithFormat:@"drop table if exists mProfiles                                 create table if not exists                                 mProfileInfo (profileID INTEGER PRIMARY KEY AUTOINCREMENT, profileName VARCHAR(255) NOT NULL, isGuest TINYINT DEFAULT 0, creationTime REAL NULL, lastSwitchInTime REAL NULL, lastSwitchOutTime REAL NULL);"];;
-    if (v14)
+    if (outdatedAssetTableColumns)
     {
       v45 = &self->_database;
-      v46 = a4;
-      v47 = self;
+      errorCopy = error;
+      selfCopy = self;
       v60[0] = @"assetState";
       v16 = [NSString stringWithFormat:@"alter table mAssets add assetState INTEGER DEFAULT %@", &off_10011DB50];;
       v61[0] = v16;
@@ -563,8 +563,8 @@ LABEL_41:
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v44 = v14;
-      v19 = v14;
+      v44 = outdatedAssetTableColumns;
+      v19 = outdatedAssetTableColumns;
       v20 = [v19 countByEnumeratingWithState:&v48 objects:v59 count:16];
       if (v20)
       {
@@ -596,10 +596,10 @@ LABEL_41:
         while (v21);
       }
 
-      self = v47;
+      self = selfCopy;
       p_database = v45;
-      a4 = v46;
-      v14 = v44;
+      error = errorCopy;
+      outdatedAssetTableColumns = v44;
     }
 
     [v15 appendString:@"                            pragma journal_mode = WAL;"];
@@ -610,7 +610,7 @@ LABEL_41:
       v29 = [NSNumber numberWithInt:v28];
       v58 = v29;
       v30 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
 
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
@@ -636,7 +636,7 @@ LABEL_41:
       v54 = v38;
       v39 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
       sqlite3_errmsg(*p_database);
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
 
       v40 = off_100127CD8;
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -663,7 +663,7 @@ LABEL_41:
         v36 = [NSNumber numberWithInt:v35];
         v56 = v36;
         v37 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-        *a4 = createManagedAssetError();
+        *error = createManagedAssetError();
 
         if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
         {
@@ -698,10 +698,10 @@ LABEL_41:
 - (id)outdatedAssetTableColumns
 {
   v2 = [(MAStorage *)self getTableColumns:@"mAssets"];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
   v4 = +[NSMutableArray array];
-  if (v3)
+  if (allKeys)
   {
     v13 = 0u;
     v14 = 0u;
@@ -722,7 +722,7 @@ LABEL_41:
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if (([v3 containsObject:v9] & 1) == 0)
+          if (([allKeys containsObject:v9] & 1) == 0)
           {
             [v4 addObject:v9];
           }
@@ -743,16 +743,16 @@ LABEL_41:
   return v4;
 }
 
-- (id)getTableColumns:(id)a3
+- (id)getTableColumns:(id)columns
 {
-  v4 = a3;
+  columnsCopy = columns;
   v5 = +[NSMutableDictionary dictionary];
   ppStmt = 0;
-  v6 = [NSString stringWithFormat:@"PRAGMA table_info(%@)", v4];
-  v7 = [v6 UTF8String];
+  columnsCopy = [NSString stringWithFormat:@"PRAGMA table_info(%@)", columnsCopy];
+  uTF8String = [columnsCopy UTF8String];
   database = self->_database;
   p_database = &self->_database;
-  if (sqlite3_prepare_v2(database, v7, -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(database, uTF8String, -1, &ppStmt, 0))
   {
 
     v10 = off_100127CD8;
@@ -784,18 +784,18 @@ LABEL_41:
   return v5;
 }
 
-- (void)removeAssetMetaDataDbIfCorruptedWith:(id)a3
+- (void)removeAssetMetaDataDbIfCorruptedWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  v6 = [v5 fileExistsAtPath:withCopy];
 
   if (!v6)
   {
     goto LABEL_31;
   }
 
-  if (sqlite3_open_v2([v4 fileSystemRepresentation], &self->_database, 4194306, 0))
+  if (sqlite3_open_v2([withCopy fileSystemRepresentation], &self->_database, 4194306, 0))
   {
     v7 = off_100127CD8;
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -816,7 +816,7 @@ LABEL_21:
     self->_database = 0;
     v14 = +[NSFileManager defaultManager];
     v18 = 0;
-    v15 = [v14 removeItemAtPath:v4 error:&v18];
+    v15 = [v14 removeItemAtPath:withCopy error:&v18];
     v16 = v18;
 
     v17 = off_100127CD8;
@@ -825,11 +825,11 @@ LABEL_21:
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_INFO))
       {
         *ppStmt = 138412290;
-        *&ppStmt[4] = v4;
+        *&ppStmt[4] = withCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "delete corrupted db file %@ directly", ppStmt, 0xCu);
       }
 
-      [MAUtilityHelper deleteSqliteTempFiles:v4 logger:off_100127CD8];
+      [MAUtilityHelper deleteSqliteTempFiles:withCopy logger:off_100127CD8];
     }
 
     else if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -891,35 +891,35 @@ LABEL_21:
 LABEL_31:
 }
 
-- (BOOL)createAsset:(id)a3 token:(id)a4 protectionClass:(id)a5 assetPathOut:(id *)a6 error:(id *)a7
+- (BOOL)createAsset:(id)asset token:(id)token protectionClass:(id)class assetPathOut:(id *)out error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = v14;
-  v17 = v15;
+  assetCopy = asset;
+  tokenCopy = token;
+  classCopy = class;
+  v16 = tokenCopy;
+  v17 = classCopy;
   ppStmt = 0;
-  v18 = [v13 assetMetadata];
-  if (v14)
+  assetMetadata = [assetCopy assetMetadata];
+  if (tokenCopy)
   {
-    if (![(MAStorage *)self validateSessionToken:v14])
+    if (![(MAStorage *)self validateSessionToken:tokenCopy])
     {
       createManagedAssetError();
-      v14 = 0;
-      v19 = 0;
+      tokenCopy = 0;
+      tokenCopy = 0;
       v21 = 0;
-      *a7 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_72;
     }
 
-    v19 = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, v14];
-    v20 = [(NSFileManager *)self->_fileMgr attributesOfItemAtPath:v19 error:a7];
-    v14 = v20;
-    if (*a7)
+    tokenCopy = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, tokenCopy];
+    v20 = [(NSFileManager *)self->_fileMgr attributesOfItemAtPath:tokenCopy error:error];
+    tokenCopy = v20;
+    if (*error)
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
-        sub_1000189A0(v19, a7);
+        sub_1000189A0(tokenCopy, error);
       }
 
       v21 = 0;
@@ -928,10 +928,10 @@ LABEL_31:
     }
 
     v122 = v16;
-    v118 = a6;
-    v120 = a7;
+    outCopy = out;
+    errorCopy = error;
     v42 = [v20 objectForKeyedSubscript:NSFileSize];
-    if (!v42 || (v43 = v42, [v14 objectForKeyedSubscript:NSFileSize], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "intValue"), v44, v43, !v45))
+    if (!v42 || (v43 = v42, [tokenCopy objectForKeyedSubscript:NSFileSize], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "intValue"), v44, v43, !v45))
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
@@ -940,18 +940,18 @@ LABEL_31:
 
       createManagedAssetError();
       v21 = 0;
-      *v120 = v22 = 0;
+      *errorCopy = v22 = 0;
       goto LABEL_69;
     }
 
-    a7 = v120;
-    a6 = v118;
+    error = errorCopy;
+    out = outCopy;
     v16 = v122;
   }
 
   else
   {
-    v19 = 0;
+    tokenCopy = 0;
   }
 
   p_database = &self->_database;
@@ -965,47 +965,47 @@ LABEL_31:
 
     v113 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a7 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v21 = 0;
     goto LABEL_12;
   }
 
-  v115 = self;
+  selfCopy = self;
   v116 = v17;
-  v117 = a6;
-  v119 = v19;
+  outCopy2 = out;
+  v119 = tokenCopy;
   v23 = ppStmt;
-  v24 = [v13 assetOwner];
-  sqlite3_bind_int64(v23, 1, [v24 profileID]);
+  assetOwner = [assetCopy assetOwner];
+  sqlite3_bind_int64(v23, 1, [assetOwner profileID]);
 
   v25 = ppStmt;
-  v26 = [v13 assetOwner];
-  v27 = [v26 profileName];
-  v28 = [v27 cStringUsingEncoding:4];
-  v29 = [v13 assetOwner];
-  v30 = [v29 profileName];
-  sqlite3_bind_text(v25, 2, v28, [v30 lengthOfBytesUsingEncoding:4], 0);
+  assetOwner2 = [assetCopy assetOwner];
+  profileName = [assetOwner2 profileName];
+  v28 = [profileName cStringUsingEncoding:4];
+  assetOwner3 = [assetCopy assetOwner];
+  profileName2 = [assetOwner3 profileName];
+  sqlite3_bind_text(v25, 2, v28, [profileName2 lengthOfBytesUsingEncoding:4], 0);
 
   v31 = ppStmt;
-  v32 = [v13 assetProcess];
-  v33 = [v32 cStringUsingEncoding:4];
-  v34 = [v13 assetProcess];
-  sqlite3_bind_text(v31, 3, v33, [v34 lengthOfBytesUsingEncoding:4], 0);
+  assetProcess = [assetCopy assetProcess];
+  v33 = [assetProcess cStringUsingEncoding:4];
+  assetProcess2 = [assetCopy assetProcess];
+  sqlite3_bind_text(v31, 3, v33, [assetProcess2 lengthOfBytesUsingEncoding:4], 0);
 
   v35 = ppStmt;
-  v36 = [v13 assetMetadata];
-  sqlite3_bind_int64(v35, 4, [v36 type]);
+  assetMetadata2 = [assetCopy assetMetadata];
+  sqlite3_bind_int64(v35, 4, [assetMetadata2 type]);
 
-  v37 = [v18 label];
+  label = [assetMetadata label];
 
   v38 = ppStmt;
-  if (v37)
+  if (label)
   {
-    v39 = [v18 label];
-    v40 = [v39 cStringUsingEncoding:4];
-    v41 = [v18 label];
-    sqlite3_bind_text(v38, 5, v40, [v41 lengthOfBytesUsingEncoding:4], 0);
+    label2 = [assetMetadata label];
+    v40 = [label2 cStringUsingEncoding:4];
+    label3 = [assetMetadata label];
+    sqlite3_bind_text(v38, 5, v40, [label3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1013,22 +1013,22 @@ LABEL_31:
     sqlite3_bind_null(ppStmt, 5);
   }
 
-  sqlite3_bind_int(ppStmt, 6, [v13 syncOption]);
+  sqlite3_bind_int(ppStmt, 6, [assetCopy syncOption]);
   v46 = ppStmt;
-  v47 = [v18 lastUpdatedOSVersion];
-  v48 = [v47 cStringUsingEncoding:4];
-  v49 = [v18 lastUpdatedOSVersion];
-  sqlite3_bind_text(v46, 7, v48, [v49 lengthOfBytesUsingEncoding:4], 0);
+  lastUpdatedOSVersion = [assetMetadata lastUpdatedOSVersion];
+  v48 = [lastUpdatedOSVersion cStringUsingEncoding:4];
+  lastUpdatedOSVersion2 = [assetMetadata lastUpdatedOSVersion];
+  sqlite3_bind_text(v46, 7, v48, [lastUpdatedOSVersion2 lengthOfBytesUsingEncoding:4], 0);
 
-  v50 = [v18 lastUpdatedAlgorithmVersion];
+  lastUpdatedAlgorithmVersion = [assetMetadata lastUpdatedAlgorithmVersion];
 
   v51 = ppStmt;
-  if (v50)
+  if (lastUpdatedAlgorithmVersion)
   {
-    v52 = [v18 lastUpdatedAlgorithmVersion];
-    v53 = [v52 cStringUsingEncoding:4];
-    v54 = [v18 lastUpdatedAlgorithmVersion];
-    sqlite3_bind_text(v51, 8, v53, [v54 lengthOfBytesUsingEncoding:4], 0);
+    lastUpdatedAlgorithmVersion2 = [assetMetadata lastUpdatedAlgorithmVersion];
+    v53 = [lastUpdatedAlgorithmVersion2 cStringUsingEncoding:4];
+    lastUpdatedAlgorithmVersion3 = [assetMetadata lastUpdatedAlgorithmVersion];
+    sqlite3_bind_text(v51, 8, v53, [lastUpdatedAlgorithmVersion3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1037,21 +1037,21 @@ LABEL_31:
   }
 
   v55 = ppStmt;
-  v56 = [v13 assetHandle];
-  v57 = [v56 cStringUsingEncoding:4];
-  v58 = [v13 assetHandle];
-  sqlite3_bind_text(v55, 9, v57, [v58 lengthOfBytesUsingEncoding:4], 0);
+  assetHandle = [assetCopy assetHandle];
+  v57 = [assetHandle cStringUsingEncoding:4];
+  assetHandle2 = [assetCopy assetHandle];
+  sqlite3_bind_text(v55, 9, v57, [assetHandle2 lengthOfBytesUsingEncoding:4], 0);
 
-  sqlite3_bind_int(ppStmt, 10, [v18 assetState]);
-  v59 = [v18 enrollmentIdentifier];
+  sqlite3_bind_int(ppStmt, 10, [assetMetadata assetState]);
+  enrollmentIdentifier = [assetMetadata enrollmentIdentifier];
 
   v60 = ppStmt;
-  if (v59)
+  if (enrollmentIdentifier)
   {
-    v61 = [v18 enrollmentIdentifier];
-    v62 = [v61 cStringUsingEncoding:4];
-    v63 = [v18 enrollmentIdentifier];
-    sqlite3_bind_text(v60, 11, v62, [v63 lengthOfBytesUsingEncoding:4], 0);
+    enrollmentIdentifier2 = [assetMetadata enrollmentIdentifier];
+    v62 = [enrollmentIdentifier2 cStringUsingEncoding:4];
+    enrollmentIdentifier3 = [assetMetadata enrollmentIdentifier];
+    sqlite3_bind_text(v60, 11, v62, [enrollmentIdentifier3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1059,7 +1059,7 @@ LABEL_31:
     sqlite3_bind_null(ppStmt, 11);
   }
 
-  if ([v18 assetState])
+  if ([assetMetadata assetState])
   {
     v64 = 1;
   }
@@ -1071,26 +1071,26 @@ LABEL_31:
 
   sqlite3_bind_int(ppStmt, 12, v64);
   v65 = ppStmt;
-  v66 = [v13 creatorAttest];
-  v67 = [v66 bytes];
-  v68 = [v13 creatorAttest];
-  sqlite3_bind_blob(v65, 13, v67, [v68 length], 0);
+  creatorAttest = [assetCopy creatorAttest];
+  bytes = [creatorAttest bytes];
+  creatorAttest2 = [assetCopy creatorAttest];
+  sqlite3_bind_blob(v65, 13, bytes, [creatorAttest2 length], 0);
 
   v69 = ppStmt;
-  v70 = [v13 serverAttest];
-  v71 = [v70 bytes];
-  v72 = [v13 serverAttest];
-  sqlite3_bind_blob(v69, 14, v71, [v72 length], 0);
+  serverAttest = [assetCopy serverAttest];
+  bytes2 = [serverAttest bytes];
+  serverAttest2 = [assetCopy serverAttest];
+  sqlite3_bind_blob(v69, 14, bytes2, [serverAttest2 length], 0);
 
-  v73 = [v18 deviceIdentifier];
+  deviceIdentifier = [assetMetadata deviceIdentifier];
 
   v74 = ppStmt;
-  if (v73)
+  if (deviceIdentifier)
   {
-    v75 = [v18 deviceIdentifier];
-    v76 = [v75 cStringUsingEncoding:4];
-    v77 = [v18 deviceIdentifier];
-    sqlite3_bind_text(v74, 15, v76, [v77 lengthOfBytesUsingEncoding:4], 0);
+    deviceIdentifier2 = [assetMetadata deviceIdentifier];
+    v76 = [deviceIdentifier2 cStringUsingEncoding:4];
+    deviceIdentifier3 = [assetMetadata deviceIdentifier];
+    sqlite3_bind_text(v74, 15, v76, [deviceIdentifier3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1098,16 +1098,16 @@ LABEL_31:
     sqlite3_bind_null(ppStmt, 15);
   }
 
-  v19 = v119;
-  v78 = [v18 deviceName];
+  tokenCopy = v119;
+  deviceName = [assetMetadata deviceName];
 
   v79 = ppStmt;
-  if (v78)
+  if (deviceName)
   {
-    v80 = [v18 deviceName];
-    v81 = [v80 cStringUsingEncoding:4];
-    v82 = [v18 deviceName];
-    sqlite3_bind_text(v79, 16, v81, [v82 lengthOfBytesUsingEncoding:4], 0);
+    deviceName2 = [assetMetadata deviceName];
+    v81 = [deviceName2 cStringUsingEncoding:4];
+    deviceName3 = [assetMetadata deviceName];
+    sqlite3_bind_text(v79, 16, v81, [deviceName3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1115,15 +1115,15 @@ LABEL_31:
     sqlite3_bind_null(ppStmt, 16);
   }
 
-  v83 = [v18 ckrecordIdentifier];
+  ckrecordIdentifier = [assetMetadata ckrecordIdentifier];
 
   v84 = ppStmt;
-  if (v83)
+  if (ckrecordIdentifier)
   {
-    v85 = [v18 ckrecordIdentifier];
-    v86 = [v85 cStringUsingEncoding:4];
-    v87 = [v18 ckrecordIdentifier];
-    sqlite3_bind_text(v84, 17, v86, [v87 lengthOfBytesUsingEncoding:4], 0);
+    ckrecordIdentifier2 = [assetMetadata ckrecordIdentifier];
+    v86 = [ckrecordIdentifier2 cStringUsingEncoding:4];
+    ckrecordIdentifier3 = [assetMetadata ckrecordIdentifier];
+    sqlite3_bind_text(v84, 17, v86, [ckrecordIdentifier3 lengthOfBytesUsingEncoding:4], 0);
   }
 
   else
@@ -1136,11 +1136,11 @@ LABEL_31:
   v89 = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v88 setLocale:v89];
 
-  v90 = [v18 creationTime];
+  creationTime = [assetMetadata creationTime];
 
-  if (v90)
+  if (creationTime)
   {
-    [v18 creationTime];
+    [assetMetadata creationTime];
   }
 
   else
@@ -1151,11 +1151,11 @@ LABEL_31:
   v92 = [v88 stringFromDate:v91];
 
   sqlite3_bind_text(ppStmt, 18, [v92 cStringUsingEncoding:4], objc_msgSend(v92, "lengthOfBytesUsingEncoding:", 4), 0);
-  v93 = [v18 lastUpdatedTime];
+  lastUpdatedTime = [assetMetadata lastUpdatedTime];
 
-  if (v93)
+  if (lastUpdatedTime)
   {
-    [v18 lastUpdatedTime];
+    [assetMetadata lastUpdatedTime];
   }
 
   else
@@ -1175,7 +1175,7 @@ LABEL_31:
     }
 
     sqlite3_errmsg(*p_database);
-    *a7 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v21 = 0;
     v22 = 0;
@@ -1183,9 +1183,9 @@ LABEL_31:
     goto LABEL_69;
   }
 
-  malocalAssetPath = v115->_malocalAssetPath;
-  v97 = [v13 assetHandle];
-  v21 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, v97];
+  malocalAssetPath = selfCopy->_malocalAssetPath;
+  assetHandle3 = [assetCopy assetHandle];
+  v21 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, assetHandle3];
 
   if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_DEBUG))
   {
@@ -1194,18 +1194,18 @@ LABEL_31:
 
   if (!v122)
   {
-    fileMgr = v115->_fileMgr;
-    v105 = [v13 assetData];
+    fileMgr = selfCopy->_fileMgr;
+    assetData = [assetCopy assetData];
     v124 = NSFileProtectionKey;
     v125 = v116;
     v106 = [NSDictionary dictionaryWithObjects:&v125 forKeys:&v124 count:1];
-    LOBYTE(fileMgr) = [(NSFileManager *)fileMgr createFileAtPath:v21 contents:v105 attributes:v106];
+    LOBYTE(fileMgr) = [(NSFileManager *)fileMgr createFileAtPath:v21 contents:assetData attributes:v106];
 
     v17 = v116;
     if ((fileMgr & 1) == 0)
     {
       *__error();
-      *a7 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
         sub_100018CB0();
@@ -1217,55 +1217,55 @@ LABEL_31:
 LABEL_60:
     if ([v17 isEqualToString:NSFileProtectionCompleteUnlessOpen])
     {
-      cachedAssets = v115->_cachedAssets;
-      v109 = [v13 assetHandle];
-      [(NSMutableDictionary *)cachedAssets setObject:v13 forKeyedSubscript:v109];
+      cachedAssets = selfCopy->_cachedAssets;
+      assetHandle4 = [assetCopy assetHandle];
+      [(NSMutableDictionary *)cachedAssets setObject:assetCopy forKeyedSubscript:assetHandle4];
 
       v17 = v116;
       v110 = off_100127CD8;
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_DEBUG))
       {
-        sub_100018D2C(v13, v110);
+        sub_100018D2C(assetCopy, v110);
       }
     }
 
-    if (v117)
+    if (outCopy2)
     {
       v111 = v21;
-      *v117 = v21;
+      *outCopy2 = v21;
     }
 
     v22 = 1;
-    v19 = v119;
+    tokenCopy = v119;
     v16 = v122;
     goto LABEL_70;
   }
 
-  v98 = [v119 fileSystemRepresentation];
-  v99 = [v21 fileSystemRepresentation];
-  rename(v98, v99, v100);
+  fileSystemRepresentation = [v119 fileSystemRepresentation];
+  fileSystemRepresentation2 = [v21 fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v100);
   if (!v101)
   {
     v107 = [NSFileHandle fileHandleForUpdatingAtPath:v21];
-    [v13 setAssetFileHandle:v107];
+    [assetCopy setAssetFileHandle:v107];
 
     v17 = v116;
     goto LABEL_60;
   }
 
   v114 = *__error();
-  *a7 = createManagedAssetError();
+  *error = createManagedAssetError();
   v102 = off_100127CD8;
   v17 = v116;
   if (!os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
   {
 LABEL_68:
     v22 = 0;
-    v19 = v119;
+    tokenCopy = v119;
     goto LABEL_69;
   }
 
-  v19 = v119;
+  tokenCopy = v119;
   sub_100018C14(v119, v21, v102);
 LABEL_12:
   v22 = 0;
@@ -1282,52 +1282,52 @@ LABEL_72:
   return v22;
 }
 
-- (BOOL)updateAsset:(id)a3 event:(unint64_t)a4 options:(id)a5 process:(id)a6 profile:(id)a7 error:(id *)a8
+- (BOOL)updateAsset:(id)asset event:(unint64_t)event options:(id)options process:(id)process profile:(id)profile error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a5;
+  eventCopy = event;
+  assetCopy = asset;
+  optionsCopy = options;
   ppStmt = 0;
   v13 = +[NSMutableArray array];
   v14 = v13;
-  if ((v10 & 4) != 0)
+  if ((eventCopy & 4) != 0)
   {
     [v13 addObject:@"lastUpdatedAlgorithmVersion = ?"];
   }
 
-  v15 = [v12 objectForKeyedSubscript:kManagedAssetsAssetStateKey];
+  v15 = [optionsCopy objectForKeyedSubscript:kManagedAssetsAssetStateKey];
   if (v15)
   {
     [v14 addObject:@"assetState = ?"];
     [v14 addObject:@"activeState = ?"];
   }
 
-  v16 = [v12 objectForKeyedSubscript:kManagedAssetsEnrollmentIDKey];
+  v16 = [optionsCopy objectForKeyedSubscript:kManagedAssetsEnrollmentIDKey];
   if (v16)
   {
     [v14 addObject:@"enrollmentIdentifier = ?"];
   }
 
-  v17 = [v12 objectForKeyedSubscript:kManagedAssetsRecordNameKey];
+  v17 = [optionsCopy objectForKeyedSubscript:kManagedAssetsRecordNameKey];
   if (v17)
   {
     [v14 addObject:@"recordName = ?"];
   }
 
-  v69 = [v12 objectForKeyedSubscript:kManagedAssetsRecordAccountKey];
+  v69 = [optionsCopy objectForKeyedSubscript:kManagedAssetsRecordAccountKey];
   if (v69)
   {
     [v14 addObject:@"recordAccount = ?"];
   }
 
-  v68 = [v12 objectForKeyedSubscript:kManagedAssetsLastUpdatedOSKey];
+  v68 = [optionsCopy objectForKeyedSubscript:kManagedAssetsLastUpdatedOSKey];
   if (v68)
   {
     [v14 addObject:@"lastUpdatedOSVersion = ?"];
   }
 
   v18 = kManagedAssetsLastUpdatedTimeKey;
-  v19 = [v12 objectForKeyedSubscript:kManagedAssetsLastUpdatedTimeKey];
+  v19 = [optionsCopy objectForKeyedSubscript:kManagedAssetsLastUpdatedTimeKey];
 
   if (v19)
   {
@@ -1368,17 +1368,17 @@ LABEL_72:
     else
     {
       v63 = v16;
-      v60 = a8;
-      if ((v10 & 4) != 0)
+      errorCopy = error;
+      if ((eventCopy & 4) != 0)
       {
         v61 = ppStmt;
-        v64 = [v11 assetMetadata];
-        v32 = [v64 lastUpdatedAlgorithmVersion];
+        assetMetadata = [assetCopy assetMetadata];
+        lastUpdatedAlgorithmVersion = [assetMetadata lastUpdatedAlgorithmVersion];
         v33 = v15;
-        v34 = [v32 cStringUsingEncoding:4];
-        v35 = [v11 assetMetadata];
-        v36 = [v35 lastUpdatedAlgorithmVersion];
-        v37 = [v36 lengthOfBytesUsingEncoding:4];
+        v34 = [lastUpdatedAlgorithmVersion cStringUsingEncoding:4];
+        assetMetadata2 = [assetCopy assetMetadata];
+        lastUpdatedAlgorithmVersion2 = [assetMetadata2 lastUpdatedAlgorithmVersion];
+        v37 = [lastUpdatedAlgorithmVersion2 lengthOfBytesUsingEncoding:4];
         v38 = v34;
         v15 = v33;
         sqlite3_bind_text(v61, 1, v38, v37, 0);
@@ -1396,13 +1396,13 @@ LABEL_72:
       if (v15)
       {
         v39 = ppStmt;
-        v40 = [v11 assetMetadata];
-        sqlite3_bind_int(v39, v31, [v40 assetState]);
+        assetMetadata3 = [assetCopy assetMetadata];
+        sqlite3_bind_int(v39, v31, [assetMetadata3 assetState]);
 
-        v41 = [v11 assetMetadata];
-        LOBYTE(v40) = [v41 assetState];
+        assetMetadata4 = [assetCopy assetMetadata];
+        LOBYTE(assetMetadata3) = [assetMetadata4 assetState];
 
-        if (v40)
+        if (assetMetadata3)
         {
           v42 = 1;
         }
@@ -1416,16 +1416,16 @@ LABEL_72:
         v31 += 2;
       }
 
-      v65 = v11;
+      v65 = assetCopy;
       if (v16)
       {
         v59 = ppStmt;
-        v43 = [v11 assetMetadata];
-        v44 = [v43 enrollmentIdentifier];
-        v45 = [v44 cStringUsingEncoding:4];
-        v46 = [v11 assetMetadata];
-        v47 = [v46 enrollmentIdentifier];
-        sqlite3_bind_text(v59, v31, v45, [v47 lengthOfBytesUsingEncoding:4], 0);
+        assetMetadata5 = [assetCopy assetMetadata];
+        enrollmentIdentifier = [assetMetadata5 enrollmentIdentifier];
+        v45 = [enrollmentIdentifier cStringUsingEncoding:4];
+        assetMetadata6 = [assetCopy assetMetadata];
+        enrollmentIdentifier2 = [assetMetadata6 enrollmentIdentifier];
+        sqlite3_bind_text(v59, v31, v45, [enrollmentIdentifier2 lengthOfBytesUsingEncoding:4], 0);
 
         ++v31;
       }
@@ -1435,7 +1435,7 @@ LABEL_72:
         sqlite3_bind_text(ppStmt, v31++, [v66 cStringUsingEncoding:4], objc_msgSend(v66, "lengthOfBytesUsingEncoding:", 4), 0);
       }
 
-      v11 = v65;
+      assetCopy = v65;
       if (v69)
       {
         sqlite3_bind_text(ppStmt, v31++, [v69 cStringUsingEncoding:4], objc_msgSend(v69, "lengthOfBytesUsingEncoding:", 4), 0);
@@ -1446,7 +1446,7 @@ LABEL_72:
         sqlite3_bind_text(ppStmt, v31++, [v68 cStringUsingEncoding:4], objc_msgSend(v68, "lengthOfBytesUsingEncoding:", 4), 0);
       }
 
-      v48 = [v12 objectForKeyedSubscript:v18];
+      v48 = [optionsCopy objectForKeyedSubscript:v18];
 
       if (v48)
       {
@@ -1455,22 +1455,22 @@ LABEL_72:
         v50 = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
         [v49 setLocale:v50];
 
-        v51 = [v12 objectForKeyedSubscript:v18];
-        v52 = [v65 assetMetadata];
-        [v52 setLastUpdatedTime:v51];
+        v51 = [optionsCopy objectForKeyedSubscript:v18];
+        assetMetadata7 = [v65 assetMetadata];
+        [assetMetadata7 setLastUpdatedTime:v51];
 
         v53 = [v49 stringFromDate:v51];
         sqlite3_bind_text(ppStmt, v31, [v53 cStringUsingEncoding:4], objc_msgSend(v53, "lengthOfBytesUsingEncoding:", 4), 0);
 
         ++v31;
-        v11 = v65;
+        assetCopy = v65;
       }
 
       v54 = ppStmt;
-      v55 = [v11 assetHandle];
-      v56 = [v55 cStringUsingEncoding:4];
-      v57 = [v11 assetHandle];
-      sqlite3_bind_text(v54, v31, v56, [v57 lengthOfBytesUsingEncoding:4], 0);
+      assetHandle = [assetCopy assetHandle];
+      v56 = [assetHandle cStringUsingEncoding:4];
+      assetHandle2 = [assetCopy assetHandle];
+      sqlite3_bind_text(v54, v31, v56, [assetHandle2 lengthOfBytesUsingEncoding:4], 0);
 
       if (sqlite3_step(ppStmt) == 101)
       {
@@ -1499,10 +1499,10 @@ LABEL_49:
       v26 = createManagedAssetError();
       v15 = v62;
       v16 = v63;
-      a8 = v60;
+      error = errorCopy;
     }
 
-    *a8 = v26;
+    *error = v26;
 
     v28 = 0;
     goto LABEL_49;
@@ -1523,11 +1523,11 @@ LABEL_52:
   return v28;
 }
 
-- (id)getAsset:(id)a3 profile:(id)a4 option:(unint64_t)a5 assetPathOut:(id *)a6 bypassProfileCheck:(unint64_t)a7 error:(id *)a8
+- (id)getAsset:(id)asset profile:(id)profile option:(unint64_t)option assetPathOut:(id *)out bypassProfileCheck:(unint64_t)check error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:v15];
+  assetCopy = asset;
+  profileCopy = profile;
+  v17 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:assetCopy];
   v18 = v17;
   if (v17)
   {
@@ -1546,16 +1546,16 @@ LABEL_52:
 
     v59 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a8 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v21 = 0;
-    v22 = 0;
+    assetCopy = 0;
     v23 = 0;
     goto LABEL_45;
   }
 
-  v68 = a6;
-  sqlite3_bind_text(ppStmt, 1, [v15 cStringUsingEncoding:4], objc_msgSend(v15, "lengthOfBytesUsingEncoding:", 4), 0);
+  outCopy = out;
+  sqlite3_bind_text(ppStmt, 1, [assetCopy cStringUsingEncoding:4], objc_msgSend(assetCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_DEBUG))
   {
     sub_100018E84();
@@ -1574,7 +1574,7 @@ LABEL_52:
   {
     if (v24 == 100)
     {
-      v66 = a8;
+      errorCopy = error;
       v25 = [(MAStorage *)self getTableColumns:@"mAssets"];
       v63 = sqlite3_column_int64(ppStmt, 1);
       v62 = sqlite3_column_text(ppStmt, 2);
@@ -1602,17 +1602,17 @@ LABEL_52:
       v37 = [v25 objectForKeyedSubscript:@"recordAccount"];
       v38 = sqlite3_column_text(v36, [v37 intValue]);
 
-      if (a7 && (a7 != 2 || [v16 profileType] == -1) || objc_msgSend(v16, "profileID") == v63 && (objc_msgSend(v16, "profileName"), v39 = objc_claimAutoreleasedReturnValue(), +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", v62), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v39, "isEqualToString:", v40), v40, v39, (v41 & 1) != 0))
+      if (check && (check != 2 || [profileCopy profileType] == -1) || objc_msgSend(profileCopy, "profileID") == v63 && (objc_msgSend(profileCopy, "profileName"), v39 = objc_claimAutoreleasedReturnValue(), +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", v62), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v39, "isEqualToString:", v40), v40, v39, (v41 & 1) != 0))
       {
         v42 = &_s8CloudKit12CKSyncEngineC5EventO13AccountChangeV0G4TypeO6signInyAISo10CKRecordIDC_tcAImFWC_ptr;
         v60 = v38;
-        v22 = [NSString stringWithFormat:@"%@%@.asset", self->_malocalAssetPath, v15];
-        v43 = v66;
-        if ([(NSFileManager *)self->_fileMgr isReadableFileAtPath:v22])
+        assetCopy = [NSString stringWithFormat:@"%@%@.asset", self->_malocalAssetPath, assetCopy];
+        v43 = errorCopy;
+        if ([(NSFileManager *)self->_fileMgr isReadableFileAtPath:assetCopy])
         {
           v23 = objc_alloc_init(MASDAsset);
-          [(MASDAsset *)v23 setAssetHandle:v15];
-          if (a7 == 1)
+          [(MASDAsset *)v23 setAssetHandle:assetCopy];
+          if (check == 1)
           {
             v44 = [MASDUserProfile alloc];
             v45 = [NSString stringWithFormat:@"%s", v62];
@@ -1624,7 +1624,7 @@ LABEL_52:
 
           else
           {
-            [(MASDAsset *)v23 setAssetOwner:v16];
+            [(MASDAsset *)v23 setAssetOwner:profileCopy];
           }
 
           v51 = [v42[85] stringWithFormat:@"%s", v61];
@@ -1633,12 +1633,12 @@ LABEL_52:
           v52 = [(MAStorage *)self buildMetaDataFromSqlStatement:ppStmt];
           [(MASDAsset *)v23 setAssetMetadata:v52];
 
-          if (a5 != 1)
+          if (option != 1)
           {
             goto LABEL_39;
           }
 
-          v53 = [NSURL fileURLWithPath:v22];
+          v53 = [NSURL fileURLWithPath:assetCopy];
           v69 = 0;
           v54 = [NSFileHandle fileHandleForReadingFromURL:v53 error:&v69];
           v21 = v69;
@@ -1652,18 +1652,18 @@ LABEL_52:
               sub_100018FF8();
             }
 
-            *v66 = createManagedAssetError();
+            *errorCopy = createManagedAssetError();
 
             v23 = 0;
-            a6 = v68;
+            out = outCopy;
             v49 = v65;
           }
 
           else
           {
 LABEL_39:
-            v55 = [(MASDAsset *)v23 assetMetadata];
-            -[MASDAsset setSyncOption:](v23, "setSyncOption:", [v55 syncOption]);
+            assetMetadata = [(MASDAsset *)v23 assetMetadata];
+            -[MASDAsset setSyncOption:](v23, "setSyncOption:", [assetMetadata syncOption]);
 
             v49 = v65;
             [(MASDAsset *)v23 setCreatorAttest:v65];
@@ -1681,13 +1681,13 @@ LABEL_39:
             }
 
             v21 = 0;
-            a6 = v68;
+            out = outCopy;
           }
 
           goto LABEL_44;
         }
 
-        a6 = v68;
+        out = outCopy;
         if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
         {
           sub_100018F90();
@@ -1699,8 +1699,8 @@ LABEL_39:
 
       else
       {
-        a6 = v68;
-        v43 = v66;
+        out = outCopy;
+        v43 = errorCopy;
         if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
         {
           sub_100018F54();
@@ -1708,7 +1708,7 @@ LABEL_39:
 
         v48 = createManagedAssetError();
         v21 = 0;
-        v22 = 0;
+        assetCopy = 0;
       }
 
       v23 = 0;
@@ -1731,18 +1731,18 @@ LABEL_44:
 
   createManagedAssetError();
   v21 = 0;
-  v22 = 0;
-  *a8 = v23 = 0;
+  assetCopy = 0;
+  *error = v23 = 0;
 LABEL_45:
   if (ppStmt)
   {
     sqlite3_finalize(ppStmt);
   }
 
-  if (a6)
+  if (out)
   {
-    v57 = v22;
-    *a6 = v22;
+    v57 = assetCopy;
+    *out = assetCopy;
   }
 
   v19 = v23;
@@ -1752,30 +1752,30 @@ LABEL_50:
   return v19;
 }
 
-- (id)buildMetaDataFromSqlStatement:(sqlite3_stmt *)a3
+- (id)buildMetaDataFromSqlStatement:(sqlite3_stmt *)statement
 {
   v4 = [(MAStorage *)self getTableColumns:@"mAssets"];
-  v5 = sqlite3_column_int64(a3, 4);
-  v43 = sqlite3_column_text(a3, 5);
-  v6 = sqlite3_column_int(a3, 6);
-  v7 = sqlite3_column_text(a3, 7);
-  v8 = sqlite3_column_text(a3, 8);
-  v37 = sqlite3_column_text(a3, 9);
-  v42 = sqlite3_column_text(a3, 10);
+  v5 = sqlite3_column_int64(statement, 4);
+  v43 = sqlite3_column_text(statement, 5);
+  v6 = sqlite3_column_int(statement, 6);
+  v7 = sqlite3_column_text(statement, 7);
+  v8 = sqlite3_column_text(statement, 8);
+  v37 = sqlite3_column_text(statement, 9);
+  v42 = sqlite3_column_text(statement, 10);
   v9 = [v4 objectForKeyedSubscript:@"assetState"];
-  v10 = sqlite3_column_int(a3, [v9 intValue]);
+  v10 = sqlite3_column_int(statement, [v9 intValue]);
 
   v11 = [v4 objectForKeyedSubscript:@"enrollmentIdentifier"];
-  v38 = sqlite3_column_text(a3, [v11 intValue]);
+  v38 = sqlite3_column_text(statement, [v11 intValue]);
 
   v12 = [v4 objectForKeyedSubscript:@"deviceIdentifier"];
-  v39 = sqlite3_column_text(a3, [v12 intValue]);
+  v39 = sqlite3_column_text(statement, [v12 intValue]);
 
   v13 = [v4 objectForKeyedSubscript:@"deviceName"];
-  v40 = sqlite3_column_text(a3, [v13 intValue]);
+  v40 = sqlite3_column_text(statement, [v13 intValue]);
 
   v14 = [v4 objectForKeyedSubscript:@"recordName"];
-  v41 = sqlite3_column_text(a3, [v14 intValue]);
+  v41 = sqlite3_column_text(statement, [v14 intValue]);
 
   v15 = objc_alloc_init(NSDateFormatter);
   [v15 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
@@ -1861,15 +1861,15 @@ LABEL_50:
   return v35;
 }
 
-- (BOOL)createTempAssetFile:(id)a3 protectionType:(id)a4 pathOut:(id *)a5 fileHandleOut:(id *)a6 error:(id *)a7
+- (BOOL)createTempAssetFile:(id)file protectionType:(id)type pathOut:(id *)out fileHandleOut:(id *)handleOut error:(id *)error
 {
   malocalTmpAssetPath = self->_malocalTmpAssetPath;
-  v13 = a4;
-  v14 = [NSString stringWithFormat:@"%@%@.asset", malocalTmpAssetPath, a3];
+  typeCopy = type;
+  file = [NSString stringWithFormat:@"%@%@.asset", malocalTmpAssetPath, file];
   fileMgr = self->_fileMgr;
-  v16 = [NSDictionary dictionaryWithObject:v13 forKey:NSFileProtectionKey];
+  v16 = [NSDictionary dictionaryWithObject:typeCopy forKey:NSFileProtectionKey];
 
-  LOBYTE(fileMgr) = [(NSFileManager *)fileMgr createFileAtPath:v14 contents:0 attributes:v16];
+  LOBYTE(fileMgr) = [(NSFileManager *)fileMgr createFileAtPath:file contents:0 attributes:v16];
   if ((fileMgr & 1) == 0)
   {
     v19 = __error();
@@ -1878,7 +1878,7 @@ LABEL_50:
       v22 = *v19;
     }
 
-    *a7 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
       sub_10001914C();
@@ -1887,22 +1887,22 @@ LABEL_50:
     goto LABEL_14;
   }
 
-  if (a5)
+  if (out)
   {
-    v17 = v14;
-    *a5 = v14;
+    v17 = file;
+    *out = file;
   }
 
-  if (a6)
+  if (handleOut)
   {
-    v18 = [NSURL fileURLWithPath:v14 isDirectory:0];
-    *a6 = [NSFileHandle fileHandleForWritingToURL:v18 error:a7];
+    v18 = [NSURL fileURLWithPath:file isDirectory:0];
+    *handleOut = [NSFileHandle fileHandleForWritingToURL:v18 error:error];
 
-    if (*a7)
+    if (*error)
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
-        sub_1000191C8(v14, a7);
+        sub_1000191C8(file, error);
       }
 
 LABEL_14:
@@ -1917,16 +1917,16 @@ LABEL_15:
   return v20;
 }
 
-- (BOOL)validateSessionToken:(id)a3
+- (BOOL)validateSessionToken:(id)token
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  tokenCopy = token;
+  v4 = tokenCopy;
+  if (tokenCopy && [tokenCopy length])
   {
     v5 = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEF"];
-    v6 = [v5 invertedSet];
+    invertedSet = [v5 invertedSet];
 
-    v7 = [v4 rangeOfCharacterFromSet:v6] != 0x7FFFFFFFFFFFFFFFLL;
+    v7 = [v4 rangeOfCharacterFromSet:invertedSet] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -1937,43 +1937,43 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)deleteTempAssetFile:(id)a3 error:(id *)a4
+- (BOOL)deleteTempAssetFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, v6];
-  if ([(MAStorage *)self validateSessionToken:v6]&& [(NSFileManager *)self->_fileMgr fileExistsAtPath:v7])
+  fileCopy = file;
+  fileCopy = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, fileCopy];
+  if ([(MAStorage *)self validateSessionToken:fileCopy]&& [(NSFileManager *)self->_fileMgr fileExistsAtPath:fileCopy])
   {
-    v8 = [(NSFileManager *)self->_fileMgr removeItemAtPath:v7 error:a4];
+    v8 = [(NSFileManager *)self->_fileMgr removeItemAtPath:fileCopy error:error];
   }
 
   else
   {
     createManagedAssetError();
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   return v8;
 }
 
-- (BOOL)renameAssetFileFromTempAsset:(id)a3 token:(id)a4 error:(id *)a5
+- (BOOL)renameAssetFileFromTempAsset:(id)asset token:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(MAStorage *)self validateSessionToken:v9])
+  assetCopy = asset;
+  tokenCopy = token;
+  if ([(MAStorage *)self validateSessionToken:tokenCopy])
   {
-    v10 = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, v9];
+    tokenCopy = [NSString stringWithFormat:@"%@%@.asset", self->_malocalTmpAssetPath, tokenCopy];
 
     malocalAssetPath = self->_malocalAssetPath;
-    v12 = [v8 assetHandle];
-    v13 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, v12];
+    assetHandle = [assetCopy assetHandle];
+    v13 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, assetHandle];
 
-    if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v10])
+    if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:tokenCopy])
     {
-      if ([(NSFileManager *)self->_fileMgr contentsEqualAtPath:v10 andPath:v13])
+      if ([(NSFileManager *)self->_fileMgr contentsEqualAtPath:tokenCopy andPath:v13])
       {
         fileMgr = self->_fileMgr;
         v27 = 0;
-        [(NSFileManager *)fileMgr removeItemAtPath:v10 error:&v27];
+        [(NSFileManager *)fileMgr removeItemAtPath:tokenCopy error:&v27];
         v15 = v27;
         if (v15 && os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
         {
@@ -1983,31 +1983,31 @@ LABEL_15:
 
       else
       {
-        v19 = [v10 fileSystemRepresentation];
-        v20 = [v13 fileSystemRepresentation];
-        rename(v19, v20, v21);
+        fileSystemRepresentation = [tokenCopy fileSystemRepresentation];
+        fileSystemRepresentation2 = [v13 fileSystemRepresentation];
+        rename(fileSystemRepresentation, fileSystemRepresentation2, v21);
         if (!v22)
         {
           v25 = [NSFileHandle fileHandleForUpdatingAtPath:v13];
-          [v8 setAssetFileHandle:v25];
+          [assetCopy setAssetFileHandle:v25];
 
           v18 = 1;
           goto LABEL_15;
         }
 
         v26 = *__error();
-        *a5 = createManagedAssetError();
+        *error = createManagedAssetError();
         v23 = off_100127CD8;
         if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
         {
-          sub_1000192B0(v10, v13, v23);
+          sub_1000192B0(tokenCopy, v13, v23);
         }
       }
     }
 
     else
     {
-      *a5 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
         sub_100019248();
@@ -2024,37 +2024,37 @@ LABEL_15:
 
   v17 = v16;
   v18 = 0;
-  *a5 = v16;
+  *error = v16;
 LABEL_16:
 
   return v18;
 }
 
-- (id)queryAssets:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)queryAssets:(id)assets profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  assetsCopy = assets;
+  profileCopy = profile;
   v10 = +[NSMutableArray array];
   ppStmt = 0;
   v11 = [NSMutableString stringWithString:@"SELECT assetHandle FROM mAssets WHERE "];
-  v12 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionAssetType];
+  v12 = [assetsCopy objectForKeyedSubscript:kManagedAssetsQueryOptionAssetType];
   if (v12)
   {
     [v11 appendString:@"assetType = ? AND "];
   }
 
-  v56 = [v8 objectForKeyedSubscript:kManagedAssetsRecordNameKey];
+  v56 = [assetsCopy objectForKeyedSubscript:kManagedAssetsRecordNameKey];
   if (v56)
   {
     [v11 appendString:@"recordName = ? AND "];
   }
 
   v13 = kManagedAssetsImportOptionSelectedAssetTypes;
-  v14 = [v8 objectForKeyedSubscript:kManagedAssetsImportOptionSelectedAssetTypes];
+  v14 = [assetsCopy objectForKeyedSubscript:kManagedAssetsImportOptionSelectedAssetTypes];
 
-  if (v14 || (v13 = kManagedAssetsExportOptionAssetTypes, [v8 objectForKeyedSubscript:kManagedAssetsExportOptionAssetTypes], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  if (v14 || (v13 = kManagedAssetsExportOptionAssetTypes, [assetsCopy objectForKeyedSubscript:kManagedAssetsExportOptionAssetTypes], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    v15 = [v8 objectForKeyedSubscript:v13];
+    v15 = [assetsCopy objectForKeyedSubscript:v13];
   }
 
   objc_opt_class();
@@ -2064,27 +2064,27 @@ LABEL_16:
     [v11 appendFormat:@"assetType IN (%@) AND ", v16];
   }
 
-  v55 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionAssetLabel];
+  v55 = [assetsCopy objectForKeyedSubscript:kManagedAssetsQueryOptionAssetLabel];
   if (v55)
   {
     [v11 appendString:@"assetLabel = ? AND "];
   }
 
-  v54 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionAlgorithmVer];
+  v54 = [assetsCopy objectForKeyedSubscript:kManagedAssetsQueryOptionAlgorithmVer];
   if (v54)
   {
     [v11 appendString:@"lastUpdatedAlgorithmVersion = ? AND "];
   }
 
-  v49 = [v8 objectForKeyedSubscript:kManagedAssetsAssetStateKey];
-  v17 = [v49 unsignedIntegerValue];
-  v18 = v17 & 3;
-  if (!v17)
+  v49 = [assetsCopy objectForKeyedSubscript:kManagedAssetsAssetStateKey];
+  unsignedIntegerValue = [v49 unsignedIntegerValue];
+  v18 = unsignedIntegerValue & 3;
+  if (!unsignedIntegerValue)
   {
     v18 = 1;
   }
 
-  v19 = v17 & 0x4070;
+  v19 = unsignedIntegerValue & 0x4070;
   if (v18 < 2 || (v18 & 1) == 0)
   {
     if (v18 > 1)
@@ -2112,7 +2112,7 @@ LABEL_24:
     [v11 appendString:@"((assetState & ?) != 0) AND "];
   }
 
-  v21 = [v8 objectForKeyedSubscript:kManagedAssetsAssetStateNegativeFilterKey];
+  v21 = [assetsCopy objectForKeyedSubscript:kManagedAssetsAssetStateNegativeFilterKey];
   v48 = v21;
   if (v21 && (v22 = v21, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v23 = [v22 unsignedIntegerValue]) != 0)
   {
@@ -2127,19 +2127,19 @@ LABEL_24:
     v24 = 1;
   }
 
-  v53 = [v8 objectForKeyedSubscript:kManagedAssetsEnrollmentIDKey];
+  v53 = [assetsCopy objectForKeyedSubscript:kManagedAssetsEnrollmentIDKey];
   if (v53)
   {
     [v11 appendString:@"enrollmentIdentifier = ? AND "];
   }
 
-  v52 = [v8 objectForKeyedSubscript:kManagedAssetsRXUUIDKey];
+  v52 = [assetsCopy objectForKeyedSubscript:kManagedAssetsRXUUIDKey];
   if (v52)
   {
     [v11 appendString:{@"assetLabel LIKE ? AND assetType IN (100, 125) AND "}];
   }
 
-  v57 = [v8 objectForKeyedSubscript:kManagedAssetsSerializedFeatureKey];
+  v57 = [assetsCopy objectForKeyedSubscript:kManagedAssetsSerializedFeatureKey];
   if (v57)
   {
     objc_opt_class();
@@ -2149,7 +2149,7 @@ LABEL_24:
     }
   }
 
-  v25 = [v8 objectForKeyedSubscript:kManagedAssetsRecordAccountKey];
+  v25 = [assetsCopy objectForKeyedSubscript:kManagedAssetsRecordAccountKey];
   if (v25)
   {
     objc_opt_class();
@@ -2160,17 +2160,17 @@ LABEL_24:
   }
 
   v47 = v25;
-  v26 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionProfileUUID];
+  v26 = [assetsCopy objectForKeyedSubscript:kManagedAssetsQueryOptionProfileUUID];
   v46 = v26;
   if (v26)
   {
     v27 = v26;
 
-    v9 = v27;
+    profileCopy = v27;
   }
 
   [v11 appendString:@" assetProfileName = ? "];
-  v28 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionEntryOnly];
+  v28 = [assetsCopy objectForKeyedSubscript:kManagedAssetsQueryOptionEntryOnly];
   v45 = v28;
   if (v28)
   {
@@ -2183,7 +2183,7 @@ LABEL_24:
   }
 
   v58 = v29;
-  v30 = [v8 objectForKeyedSubscript:kManagedAssetsSortOptionASCByUpdateTime];
+  v30 = [assetsCopy objectForKeyedSubscript:kManagedAssetsSortOptionASCByUpdateTime];
   v44 = v30;
   if (v30 && ([v30 BOOLValue] & 1) != 0)
   {
@@ -2207,7 +2207,7 @@ LABEL_24:
 
     v40 = NSStringFromSelector(a2);
     sqlite3_errmsg(self->_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   else
@@ -2261,7 +2261,7 @@ LABEL_24:
       ++v32;
     }
 
-    sqlite3_bind_text(ppStmt, v32, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, v32, [profileCopy cStringUsingEncoding:4], objc_msgSend(profileCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     while (sqlite3_step(ppStmt) != 101)
     {
       v34 = [NSString stringWithFormat:@"%s", sqlite3_column_text(ppStmt, 0)];
@@ -2303,19 +2303,19 @@ LABEL_24:
   return v38;
 }
 
-- (id)queryAssetsMetaData:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)queryAssetsMetaData:(id)data profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  profileCopy = profile;
   v10 = +[NSMutableDictionary dictionary];
   ppStmt = 0;
   v11 = [NSMutableString stringWithString:@"SELECT * FROM mAssets WHERE "];
   v12 = kManagedAssetsQueryOptionAssetList;
-  v13 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionAssetList];
+  v13 = [dataCopy objectForKeyedSubscript:kManagedAssetsQueryOptionAssetList];
 
   if (v13)
   {
-    v13 = [v8 objectForKeyedSubscript:v12];
+    v13 = [dataCopy objectForKeyedSubscript:v12];
   }
 
   if ([v13 isValidAssetTypeArray])
@@ -2324,22 +2324,22 @@ LABEL_24:
     [v11 appendFormat:@"assetType IN (%@) AND ", v14];
   }
 
-  v36 = [v8 objectForKeyedSubscript:kManagedAssetsAssetLabelKey];
+  v36 = [dataCopy objectForKeyedSubscript:kManagedAssetsAssetLabelKey];
   if (v36)
   {
     [v11 appendFormat:@"assetLabel = ? AND "];
   }
 
-  v35 = [v8 objectForKeyedSubscript:kManagedAssetsAlgorithmVerKey];
+  v35 = [dataCopy objectForKeyedSubscript:kManagedAssetsAlgorithmVerKey];
   if (v35)
   {
     [v11 appendFormat:@"lastUpdatedAlgorithmVersion = ? AND "];
   }
 
-  v33 = [v8 objectForKeyedSubscript:kManagedAssetsAssetStateKey];
-  v15 = [v33 unsignedIntegerValue];
-  v16 = v15 & 3;
-  if (!v15)
+  v33 = [dataCopy objectForKeyedSubscript:kManagedAssetsAssetStateKey];
+  unsignedIntegerValue = [v33 unsignedIntegerValue];
+  v16 = unsignedIntegerValue & 3;
+  if (!unsignedIntegerValue)
   {
     v16 = 1;
   }
@@ -2365,13 +2365,13 @@ LABEL_24:
   }
 
 LABEL_21:
-  v19 = [v8 objectForKeyedSubscript:kManagedAssetsQueryOptionProfileUUID];
+  v19 = [dataCopy objectForKeyedSubscript:kManagedAssetsQueryOptionProfileUUID];
   v32 = v19;
   if (v19)
   {
     v20 = v19;
 
-    v9 = v20;
+    profileCopy = v20;
   }
 
   [v11 appendString:@" assetProfileName = ?"];
@@ -2391,7 +2391,7 @@ LABEL_21:
     v30 = NSStringFromSelector(a2);
     sqlite3_errmsg(self->_database);
     createManagedAssetError();
-    *a5 = v21 = a5;
+    *error = errorCopy = error;
   }
 
   else
@@ -2409,13 +2409,13 @@ LABEL_21:
       v24 = 1;
     }
 
-    v21 = a5;
+    errorCopy = error;
     if (v35)
     {
       sqlite3_bind_text(ppStmt, v24++, [v35 cStringUsingEncoding:4], objc_msgSend(v35, "lengthOfBytesUsingEncoding:", 4), 0);
     }
 
-    sqlite3_bind_text(ppStmt, v24, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, v24, [profileCopy cStringUsingEncoding:4], objc_msgSend(profileCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     while (sqlite3_step(ppStmt) != 101)
     {
       v25 = [NSString stringWithFormat:@"%s", sqlite3_column_text(ppStmt, 0)];
@@ -2424,8 +2424,8 @@ LABEL_21:
       if (v26)
       {
         v27 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:v25];
-        v28 = [v27 assetMetadata];
-        [v10 setObject:v28 forKeyedSubscript:v25];
+        assetMetadata = [v27 assetMetadata];
+        [v10 setObject:assetMetadata forKeyedSubscript:v25];
       }
 
       else
@@ -2436,7 +2436,7 @@ LABEL_21:
     }
   }
 
-  if (*v21)
+  if (*errorCopy)
   {
     [v10 removeAllObjects];
 
@@ -2451,7 +2451,7 @@ LABEL_21:
   return v10;
 }
 
-- (id)queryA06AssetsWithError:(id *)a3
+- (id)queryA06AssetsWithError:(id *)error
 {
   v6 = objc_alloc_init(NSDateFormatter);
   [v6 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
@@ -2478,7 +2478,7 @@ LABEL_21:
 
     v19 = NSStringFromSelector(a2);
     sqlite3_errmsg(self->_database);
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   else
@@ -2507,23 +2507,23 @@ LABEL_21:
   return v21;
 }
 
-- (BOOL)deleteAllAssetsExcept:(id)a3 error:(id *)a4
+- (BOOL)deleteAllAssetsExcept:(id)except error:(id *)error
 {
-  v6 = a3;
+  exceptCopy = except;
   errmsg = 0;
-  if ([v6 count])
+  if ([exceptCopy count])
   {
-    v7 = [v6 componentsJoinedByString:{@"', '"}];
+    v7 = [exceptCopy componentsJoinedByString:{@"', '"}];
     v8 = [NSString stringWithFormat:@"DELETE FROM mAssets WHERE assetHandle NOT IN ('%@')", v7];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
   }
 
   else
   {
-    v9 = "DELETE FROM mAssets";
+    uTF8String = "DELETE FROM mAssets";
   }
 
-  if (sqlite3_exec(self->_database, v9, 0, 0, &errmsg))
+  if (sqlite3_exec(self->_database, uTF8String, 0, 0, &errmsg))
   {
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
@@ -2531,26 +2531,26 @@ LABEL_21:
     }
 
     createManagedAssetError();
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_32;
   }
 
-  v11 = [v6 count];
+  v11 = [exceptCopy count];
   p_malocalAssetPath = &self->_malocalAssetPath;
   malocalAssetPath = self->_malocalAssetPath;
   fileMgr = self->_fileMgr;
   if (!v11)
   {
-    if ([(NSFileManager *)fileMgr removeItemAtPath:malocalAssetPath error:a4])
+    if ([(NSFileManager *)fileMgr removeItemAtPath:malocalAssetPath error:error])
     {
       v10 = 1;
-      if ([(NSFileManager *)self->_fileMgr createDirectoryAtPath:self->_malocalAssetPath withIntermediateDirectories:1 attributes:0 error:a4])
+      if ([(NSFileManager *)self->_fileMgr createDirectoryAtPath:self->_malocalAssetPath withIntermediateDirectories:1 attributes:0 error:error])
       {
         goto LABEL_32;
       }
 
       v33 = *p_malocalAssetPath;
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
         sub_1000195FC(&self->_malocalAssetPath);
@@ -2560,7 +2560,7 @@ LABEL_21:
     else
     {
       v34 = *p_malocalAssetPath;
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
         sub_100019594(&self->_malocalAssetPath);
@@ -2570,12 +2570,12 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  v15 = [(NSFileManager *)fileMgr contentsOfDirectoryAtPath:malocalAssetPath error:a4];
+  v15 = [(NSFileManager *)fileMgr contentsOfDirectoryAtPath:malocalAssetPath error:error];
   v16 = v15;
-  if (*a4)
+  if (*error)
   {
     v32 = *p_malocalAssetPath;
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
       sub_10001952C(&self->_malocalAssetPath);
@@ -2586,7 +2586,7 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v35 = self;
+  selfCopy = self;
   obj = v15;
   v40 = 0u;
   v41 = 0u;
@@ -2611,12 +2611,12 @@ LABEL_31:
         v23 = [v22 objectAtIndexedSubscript:0];
 
         v24 = [NSString stringWithFormat:@"%@%@", *p_malocalAssetPath, v21];
-        v25 = v6;
-        v26 = [v6 containsObject:v23];
+        v25 = exceptCopy;
+        v26 = [exceptCopy containsObject:v23];
         v27 = 0;
         if ((v26 & 1) == 0)
         {
-          v28 = v35->_fileMgr;
+          v28 = selfCopy->_fileMgr;
           v37 = 0;
           v29 = [(NSFileManager *)v28 removeItemAtPath:v24 error:&v37];
           v27 = v37;
@@ -2634,7 +2634,7 @@ LABEL_31:
           }
         }
 
-        v6 = v25;
+        exceptCopy = v25;
       }
 
       v18 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
@@ -2653,10 +2653,10 @@ LABEL_32:
   return v10;
 }
 
-- (BOOL)createProfile:(id)a3 type:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6
+- (BOOL)createProfile:(id)profile type:(unint64_t)type timestamp:(double)timestamp error:(id *)error
 {
-  v8 = a4;
-  v11 = a3;
+  typeCopy = type;
+  profileCopy = profile;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -2669,7 +2669,7 @@ LABEL_32:
 
     v21 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a6 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v14 = 0;
   }
@@ -2677,14 +2677,14 @@ LABEL_32:
   else
   {
     v15 = ppStmt;
-    v16 = [v11 UUIDString];
-    v17 = [v16 cStringUsingEncoding:4];
-    v18 = [v11 UUIDString];
+    uUIDString = [profileCopy UUIDString];
+    v17 = [uUIDString cStringUsingEncoding:4];
+    uUIDString2 = [profileCopy UUIDString];
     v14 = 1;
-    sqlite3_bind_text(v15, 1, v17, [v18 lengthOfBytesUsingEncoding:4], 0);
+    sqlite3_bind_text(v15, 1, v17, [uUIDString2 lengthOfBytesUsingEncoding:4], 0);
 
-    sqlite3_bind_int(ppStmt, 2, v8);
-    sqlite3_bind_double(ppStmt, 3, a5);
+    sqlite3_bind_int(ppStmt, 2, typeCopy);
+    sqlite3_bind_double(ppStmt, 3, timestamp);
     if (sqlite3_step(ppStmt) != 101)
     {
       v19 = off_100127CD8;
@@ -2695,7 +2695,7 @@ LABEL_32:
 
       sqlite3_errmsg(*p_database);
       createManagedAssetError();
-      *a6 = v14 = 0;
+      *error = v14 = 0;
     }
   }
 
@@ -2707,10 +2707,10 @@ LABEL_32:
   return v14;
 }
 
-- (id)getProfile:(id)a3 error:(id *)a4
+- (id)getProfile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  profileCopy = profile;
+  if (profileCopy)
   {
     ppStmt = 0;
     database = self->_database;
@@ -2724,16 +2724,16 @@ LABEL_32:
 
       v24 = NSStringFromSelector(a2);
       sqlite3_errmsg(*p_database);
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
     }
 
     else
     {
       v12 = ppStmt;
-      v13 = [v7 UUIDString];
-      v14 = [v13 cStringUsingEncoding:4];
-      v15 = [v7 UUIDString];
-      sqlite3_bind_text(v12, 1, v14, [v15 lengthOfBytesUsingEncoding:4], 0);
+      uUIDString = [profileCopy UUIDString];
+      v14 = [uUIDString cStringUsingEncoding:4];
+      uUIDString2 = [profileCopy UUIDString];
+      sqlite3_bind_text(v12, 1, v14, [uUIDString2 lengthOfBytesUsingEncoding:4], 0);
 
       v16 = sqlite3_step(ppStmt);
       if (v16 != 101)
@@ -2758,7 +2758,7 @@ LABEL_32:
 
           sqlite3_errmsg(*p_database);
           createManagedAssetError();
-          *a4 = v10 = 0;
+          *error = v10 = 0;
         }
 
         goto LABEL_7;
@@ -2770,8 +2770,8 @@ LABEL_32:
         sub_100019664(v22);
       }
 
-      v25 = [v7 UUIDString];
-      *a4 = createManagedAssetError();
+      uUIDString3 = [profileCopy UUIDString];
+      *error = createManagedAssetError();
     }
 
     v10 = 0;
@@ -2790,16 +2790,16 @@ LABEL_7:
   }
 
   createManagedAssetError();
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_12:
 
   return v10;
 }
 
-- (BOOL)deleteAllAssetsWith:(id)a3 recordIDs:(id *)a4 error:(id *)a5 wipeOutProfile:(BOOL)a6
+- (BOOL)deleteAllAssetsWith:(id)with recordIDs:(id *)ds error:(id *)error wipeOutProfile:(BOOL)profile
 {
-  v6 = a6;
-  v10 = a3;
+  profileCopy = profile;
+  withCopy = with;
   v11 = +[NSMutableDictionary dictionary];
   ppStmt = 0;
   p_database = &self->_database;
@@ -2813,14 +2813,14 @@ LABEL_12:
 LABEL_30:
     v21 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v20 = 0;
     goto LABEL_31;
   }
 
-  v25 = a4;
-  sqlite3_bind_text(ppStmt, 1, [v10 cStringUsingEncoding:4], objc_msgSend(v10, "lengthOfBytesUsingEncoding:", 4), 0);
+  dsCopy = ds;
+  sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   if (sqlite3_step(ppStmt) == 101)
   {
 LABEL_11:
@@ -2840,7 +2840,7 @@ LABEL_11:
       goto LABEL_30;
     }
 
-    sqlite3_bind_text(ppStmt, 1, [v10 cStringUsingEncoding:4], objc_msgSend(v10, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) != 101)
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -2857,8 +2857,8 @@ LABEL_11:
       ppStmt = 0;
     }
 
-    v19 = v25;
-    if (!v6)
+    v19 = dsCopy;
+    if (!profileCopy)
     {
       goto LABEL_36;
     }
@@ -2873,7 +2873,7 @@ LABEL_11:
       goto LABEL_30;
     }
 
-    sqlite3_bind_text(ppStmt, 1, [v10 cStringUsingEncoding:4], objc_msgSend(v10, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) != 101)
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -2884,7 +2884,7 @@ LABEL_11:
       goto LABEL_30;
     }
 
-    v19 = v25;
+    v19 = dsCopy;
     if (!sqlite3_changes(*p_database))
     {
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -2893,7 +2893,7 @@ LABEL_11:
       }
 
       createManagedAssetError();
-      *a5 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -2920,7 +2920,7 @@ LABEL_36:
         [v11 setObject:v17 forKeyedSubscript:v18];
       }
 
-      if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v13]&& ![(NSFileManager *)self->_fileMgr removeItemAtPath:v13 error:a5])
+      if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v13]&& ![(NSFileManager *)self->_fileMgr removeItemAtPath:v13 error:error])
       {
         break;
       }
@@ -2933,11 +2933,11 @@ LABEL_36:
 
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
-      sub_100019738(a5);
+      sub_100019738(error);
     }
 
-    v24 = *a5;
-    *a5 = createManagedAssetError();
+    v24 = *error;
+    *error = createManagedAssetError();
 
     v20 = 0;
   }
@@ -2951,7 +2951,7 @@ LABEL_31:
   return v20;
 }
 
-- (id)getAllProfilesWithError:(id *)a3
+- (id)getAllProfilesWithError:(id *)error
 {
   v6 = +[NSMutableDictionary dictionary];
   [v6 setObject:&off_10011DB80 forKey:kMASDDefaultLocalUser];
@@ -2967,7 +2967,7 @@ LABEL_31:
 
     v14 = NSStringFromSelector(a2);
     v15 = sqlite3_errmsg(*p_database);
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   else
@@ -2991,11 +2991,11 @@ LABEL_31:
   return v12;
 }
 
-- (BOOL)updateProfileLastSwitchTS:(id)a3 mode:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6
+- (BOOL)updateProfileLastSwitchTS:(id)s mode:(unint64_t)mode timestamp:(double)timestamp error:(id *)error
 {
-  v11 = a3;
+  sCopy = s;
   ppStmt = 0;
-  if (a4)
+  if (mode)
   {
     v12 = "UPDATE mProfileInfo SET lastSwitchInTime = ? WHERE profileName = ?";
   }
@@ -3018,8 +3018,8 @@ LABEL_31:
   else
   {
     v15 = 1;
-    sqlite3_bind_double(ppStmt, 1, a5);
-    sqlite3_bind_text(ppStmt, 2, [v11 cStringUsingEncoding:4], objc_msgSend(v11, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_double(ppStmt, 1, timestamp);
+    sqlite3_bind_text(ppStmt, 2, [sCopy cStringUsingEncoding:4], objc_msgSend(sCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) == 101)
     {
       goto LABEL_12;
@@ -3033,7 +3033,7 @@ LABEL_31:
 
   v16 = NSStringFromSelector(a2);
   sqlite3_errmsg(*p_database);
-  *a6 = createManagedAssetError();
+  *error = createManagedAssetError();
 
   v15 = 0;
 LABEL_12:
@@ -3134,9 +3134,9 @@ LABEL_10:
   return v10;
 }
 
-- (void)setLastSeenProfile:(id)a3
+- (void)setLastSeenProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v20[0] = self->_marootPath;
   v20[1] = @"lastSeenProfile.profile";
   v5 = [NSArray arrayWithObjects:v20 count:2];
@@ -3168,7 +3168,7 @@ LABEL_10:
   {
     v10 = [[NSFileHandle alloc] initWithFileDescriptor:v9];
     v16 = v8;
-    v11 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v16];
+    v11 = [NSKeyedArchiver archivedDataWithRootObject:profileCopy requiringSecureCoding:1 error:&v16];
     v12 = v16;
 
     if (v12)
@@ -3207,11 +3207,11 @@ LABEL_10:
   }
 }
 
-- (BOOL)changeProfileType:(id)a3 profileType:(unint64_t)a4 timestamp:(double)a5 error:(id *)a6
+- (BOOL)changeProfileType:(id)type profileType:(unint64_t)profileType timestamp:(double)timestamp error:(id *)error
 {
-  v11 = a3;
+  typeCopy = type;
   ppStmt = 0;
-  if (a4 == 2)
+  if (profileType == 2)
   {
     v12 = "UPDATE mProfileInfo SET isGuest = ?, lastSwitchInTime = ?, lastSwitchOutTime = ? WHERE profileName = ?";
   }
@@ -3233,15 +3233,15 @@ LABEL_10:
 
   else
   {
-    sqlite3_bind_int(ppStmt, 1, a4);
-    sqlite3_bind_double(ppStmt, 2, a5);
+    sqlite3_bind_int(ppStmt, 1, profileType);
+    sqlite3_bind_double(ppStmt, 2, timestamp);
     v15 = ppStmt;
-    if (a4 == 2)
+    if (profileType == 2)
     {
-      sqlite3_bind_double(ppStmt, 3, a5);
+      sqlite3_bind_double(ppStmt, 3, timestamp);
       v16 = ppStmt;
-      v17 = [v11 cStringUsingEncoding:4];
-      v18 = [v11 lengthOfBytesUsingEncoding:4];
+      v17 = [typeCopy cStringUsingEncoding:4];
+      v18 = [typeCopy lengthOfBytesUsingEncoding:4];
       v19 = v16;
       v20 = 4;
       v21 = v17;
@@ -3249,8 +3249,8 @@ LABEL_10:
 
     else
     {
-      v22 = [v11 cStringUsingEncoding:4];
-      v18 = [v11 lengthOfBytesUsingEncoding:4];
+      v22 = [typeCopy cStringUsingEncoding:4];
+      v18 = [typeCopy lengthOfBytesUsingEncoding:4];
       v19 = v15;
       v20 = 3;
       v21 = v22;
@@ -3271,7 +3271,7 @@ LABEL_10:
 
   v24 = NSStringFromSelector(a2);
   sqlite3_errmsg(*p_database);
-  *a6 = createManagedAssetError();
+  *error = createManagedAssetError();
 
   v23 = 0;
 LABEL_16:
@@ -3283,9 +3283,9 @@ LABEL_16:
   return v23;
 }
 
-- (BOOL)persistGuestProfile:(id)a3 timestamp:(double)a4 error:(id *)a5
+- (BOOL)persistGuestProfile:(id)profile timestamp:(double)timestamp error:(id *)error
 {
-  v9 = a3;
+  profileCopy = profile;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -3300,8 +3300,8 @@ LABEL_16:
   else
   {
     v12 = 1;
-    sqlite3_bind_double(ppStmt, 1, a4);
-    sqlite3_bind_text(ppStmt, 2, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_double(ppStmt, 1, timestamp);
+    sqlite3_bind_text(ppStmt, 2, [profileCopy cStringUsingEncoding:4], objc_msgSend(profileCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) == 101)
     {
       goto LABEL_9;
@@ -3315,7 +3315,7 @@ LABEL_16:
 
   v13 = NSStringFromSelector(a2);
   sqlite3_errmsg(*p_database);
-  *a5 = createManagedAssetError();
+  *error = createManagedAssetError();
 
   v12 = 0;
 LABEL_9:
@@ -3327,7 +3327,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)getLastSwitchOutTimeForRecentPersistedGuestWithError:(id *)a3
+- (id)getLastSwitchOutTimeForRecentPersistedGuestWithError:(id *)error
 {
   ppStmt = 0;
   p_database = &self->_database;
@@ -3340,18 +3340,18 @@ LABEL_9:
 
     v8 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     goto LABEL_11;
   }
 
   if (sqlite3_step(ppStmt) != 100)
   {
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
 LABEL_10:
-      sub_100019A6C(a3);
+      sub_100019A6C(error);
     }
 
 LABEL_11:
@@ -3361,7 +3361,7 @@ LABEL_11:
 
   if (sqlite3_column_type(ppStmt, 0) == 5)
   {
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_10;
@@ -3372,7 +3372,7 @@ LABEL_11:
 
   if (sqlite3_column_double(ppStmt, 0) == 0.0)
   {
-    *a3 = createManagedAssetError();
+    *error = createManagedAssetError();
     if (!os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_11;
@@ -3391,11 +3391,11 @@ LABEL_12:
   return v6;
 }
 
-- (id)getLastSwitchTS:(id)a3 mode:(unint64_t)a4 error:(id *)a5
+- (id)getLastSwitchTS:(id)s mode:(unint64_t)mode error:(id *)error
 {
-  v9 = a3;
+  sCopy = s;
   ppStmt = 0;
-  if (a4)
+  if (mode)
   {
     v10 = "SELECT lastSwitchInTime from mProfileInfo WHERE profileName = ?";
   }
@@ -3416,24 +3416,24 @@ LABEL_12:
 
     v23 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     goto LABEL_8;
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 1, [sCopy cStringUsingEncoding:4], objc_msgSend(sCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   v15 = sqlite3_step(ppStmt);
   if (v15 == 101)
   {
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
     v16 = off_100127CD8;
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
-      v17 = *a5;
+      v17 = *error;
       *buf = 134218498;
-      v26 = a4;
+      modeCopy = mode;
       v27 = 2112;
-      v28 = v9;
+      v28 = sCopy;
       v29 = 2112;
       v30 = v17;
       v18 = "Failed to get lastSwitchTS mode %lu for %@, error = %@";
@@ -3454,7 +3454,7 @@ LABEL_8:
 
   if (sqlite3_column_double(ppStmt, 0) == 0.0)
   {
-    if (a4)
+    if (mode)
     {
       v20 = @"lastSwitchInTime";
     }
@@ -3464,18 +3464,18 @@ LABEL_8:
       v20 = @"lastSwitchOutTime";
     }
 
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
     v21 = off_100127CD8;
     if (!os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_8;
     }
 
-    v22 = *a5;
+    v22 = *error;
     *buf = 138412802;
-    v26 = v20;
+    modeCopy = v20;
     v27 = 2112;
-    v28 = v9;
+    v28 = sCopy;
     v29 = 2112;
     v30 = v22;
     v18 = "Failed to get %@ for %@, error=%@";
@@ -3493,7 +3493,7 @@ LABEL_9:
   return v13;
 }
 
-- (id)getInactiveProfilesWith:(unint64_t)a3 profileType:(unint64_t)a4 error:(id *)a5
+- (id)getInactiveProfilesWith:(unint64_t)with profileType:(unint64_t)type error:(id *)error
 {
   v10 = +[NSMutableArray array];
   ppStmt = 0;
@@ -3501,7 +3501,7 @@ LABEL_9:
   [v11 timeIntervalSince1970];
   v13 = v12;
 
-  if (a3)
+  if (with)
   {
     v14 = @"SELECT profileName from mProfileInfo WHERE isGuest = %ld AND lastSwitchOutTime IS NOT NULL AND lastSwitchOutTime <= ?";
   }
@@ -3511,11 +3511,11 @@ LABEL_9:
     v14 = @"SELECT profileName from mProfileInfo WHERE isGuest = %ld";
   }
 
-  v15 = [NSString stringWithFormat:v14, a4];
-  v16 = [v15 UTF8String];
+  type = [NSString stringWithFormat:v14, type];
+  uTF8String = [type UTF8String];
   database = self->_database;
   p_database = &self->_database;
-  if (sqlite3_prepare_v2(database, v16, -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(database, uTF8String, -1, &ppStmt, 0))
   {
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
@@ -3524,14 +3524,14 @@ LABEL_9:
 
     v23 = NSStringFromSelector(a2);
     v24 = sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
   }
 
   else
   {
-    if (a3)
+    if (with)
     {
-      sqlite3_bind_double(ppStmt, 1, v13 + a3 * -60.0);
+      sqlite3_bind_double(ppStmt, 1, v13 + with * -60.0);
     }
 
     while (sqlite3_step(ppStmt) == 100)
@@ -3555,13 +3555,13 @@ LABEL_9:
   return v21;
 }
 
-- (id)queryAssetHandleAndTypeBy:(id)a3 type:(id *)a4 error:(id *)a5
+- (id)queryAssetHandleAndTypeBy:(id)by type:(id *)type error:(id *)error
 {
-  v9 = a3;
+  byCopy = by;
   ppStmt = 0;
   v10 = [NSMutableString stringWithString:@"SELECT assetHandle"];
   v11 = v10;
-  if (a4)
+  if (type)
   {
     [v10 appendString:{@", assetType"}];
   }
@@ -3579,21 +3579,21 @@ LABEL_9:
 
     v17 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v15 = 0;
   }
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 1, [byCopy cStringUsingEncoding:4], objc_msgSend(byCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     v15 = 0;
     if (sqlite3_step(ppStmt) == 100)
     {
       v15 = [NSString stringWithFormat:@"%s", sqlite3_column_text(ppStmt, 0)];
-      if (a4)
+      if (type)
       {
-        *a4 = [NSNumber numberWithUnsignedInteger:sqlite3_column_int64(ppStmt, 1)];
+        *type = [NSNumber numberWithUnsignedInteger:sqlite3_column_int64(ppStmt, 1)];
       }
     }
   }
@@ -3606,11 +3606,11 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)deleteAssets:(id)a3 error:(id *)a4
+- (BOOL)deleteAssets:(id)assets error:(id *)error
 {
-  v6 = a3;
+  assetsCopy = assets;
   ppStmt = 0;
-  if (![v6 count])
+  if (![assetsCopy count])
   {
     v7 = 0;
     v20 = 0;
@@ -3624,7 +3624,7 @@ LABEL_9:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v8 = v6;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v9)
   {
@@ -3647,7 +3647,7 @@ LABEL_9:
             sub_100019AD4();
           }
 
-          *a4 = createManagedAssetError();
+          *error = createManagedAssetError();
 
           v7 = 0;
           goto LABEL_33;
@@ -3669,10 +3669,10 @@ LABEL_9:
 
   v15 = [v7 componentsJoinedByString:{@", "}];
   v16 = [NSString stringWithFormat:@"DELETE FROM mAssets WHERE assetHandle IN (%@)", v15];
-  v17 = [v16 UTF8String];
+  uTF8String = [v16 UTF8String];
 
   p_database = &self->_database;
-  if (sqlite3_prepare_v2(self->_database, v17, -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(self->_database, uTF8String, -1, &ppStmt, 0))
   {
     v19 = aSelector;
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
@@ -3694,7 +3694,7 @@ LABEL_9:
 LABEL_32:
     v29 = NSStringFromSelector(v19);
     sqlite3_errmsg(*p_database);
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
 
 LABEL_33:
     v20 = 0;
@@ -3730,16 +3730,16 @@ LABEL_33:
           malocalAssetPath = self->_malocalAssetPath;
           v20 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, v27];
 
-          if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v20]&& ![(NSFileManager *)self->_fileMgr removeItemAtPath:v20 error:a4])
+          if ([(NSFileManager *)self->_fileMgr fileExistsAtPath:v20]&& ![(NSFileManager *)self->_fileMgr removeItemAtPath:v20 error:error])
           {
             if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
             {
-              sub_100019738(a4);
+              sub_100019738(error);
             }
 
-            v31 = *a4;
+            v31 = *error;
             createManagedAssetError();
-            *a4 = v21 = 0;
+            *error = v21 = 0;
             goto LABEL_45;
           }
 
@@ -3777,7 +3777,7 @@ LABEL_45:
 
     createManagedAssetError();
     v20 = 0;
-    *a4 = v21 = 0;
+    *error = v21 = 0;
   }
 
 LABEL_34:
@@ -3791,11 +3791,11 @@ LABEL_36:
   return v21;
 }
 
-- (BOOL)deleteAllLocalAssets:(id)a3 assetType:(unint64_t)a4 error:(id *)a5
+- (BOOL)deleteAllLocalAssets:(id)assets assetType:(unint64_t)type error:(id *)error
 {
-  v9 = a3;
+  assetsCopy = assets;
   ppStmt = 0;
-  if (a4)
+  if (type)
   {
     v10 = "DELETE FROM mAssets WHERE recordAccount = ? AND assetType = ? AND isSyncedToiCloud > 0";
   }
@@ -3816,17 +3816,17 @@ LABEL_36:
 
     v16 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     v13 = 0;
   }
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
-    if (a4)
+    sqlite3_bind_text(ppStmt, 1, [assetsCopy cStringUsingEncoding:4], objc_msgSend(assetsCopy, "lengthOfBytesUsingEncoding:", 4), 0);
+    if (type)
     {
-      sqlite3_bind_int64(ppStmt, 2, a4);
+      sqlite3_bind_int64(ppStmt, 2, type);
     }
 
     if (sqlite3_step(ppStmt) == 101)
@@ -3844,7 +3844,7 @@ LABEL_36:
 
       sqlite3_errmsg(*p_database);
       createManagedAssetError();
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 
@@ -3856,12 +3856,12 @@ LABEL_36:
   return v13;
 }
 
-- (BOOL)setConfigWith:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setConfigWith:(id)with value:(id)value error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  withCopy = with;
+  valueCopy = value;
   ppStmt = 0;
-  *a5 = 0;
+  *error = 0;
   database = self->_database;
   p_database = &self->_database;
   v13 = sqlite3_prepare_v2(database, "INSERT OR REPLACE INTO mConfig (mKey, mValue) VALUES(?,?)", -1, &ppStmt, 0);
@@ -3873,7 +3873,7 @@ LABEL_36:
     v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v21 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a5 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
@@ -3883,8 +3883,8 @@ LABEL_36:
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
-    sqlite3_bind_blob(ppStmt, 2, [v10 bytes], objc_msgSend(v10, "length"), 0);
+    sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_blob(ppStmt, 2, [valueCopy bytes], objc_msgSend(valueCopy, "length"), 0);
     v16 = sqlite3_step(ppStmt);
     if (v16 != 101)
     {
@@ -3894,7 +3894,7 @@ LABEL_36:
       v18 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v22 = NSStringFromSelector(a2);
       sqlite3_errmsg(*p_database);
-      *a5 = createManagedAssetError();
+      *error = createManagedAssetError();
 
       if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
       {
@@ -3908,16 +3908,16 @@ LABEL_36:
     sqlite3_finalize(ppStmt);
   }
 
-  v19 = *a5 == 0;
+  v19 = *error == 0;
 
   return v19;
 }
 
-- (id)getConfigWith:(id)a3 error:(id *)a4
+- (id)getConfigWith:(id)with error:(id *)error
 {
-  v7 = a3;
+  withCopy = with;
   ppStmt = 0;
-  *a4 = 0;
+  *error = 0;
   database = self->_database;
   p_database = &self->_database;
   v10 = sqlite3_prepare_v2(database, "SELECT mValue FROM mConfig WHERE mKey = ?", -1, &ppStmt, 0);
@@ -3929,7 +3929,7 @@ LABEL_36:
     v12 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v20 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
@@ -3939,7 +3939,7 @@ LABEL_36:
     goto LABEL_4;
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v7 cStringUsingEncoding:4], objc_msgSend(v7, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   v15 = sqlite3_step(ppStmt);
   if (v15 == 11)
   {
@@ -3965,7 +3965,7 @@ LABEL_17:
     v19 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v21 = NSStringFromSelector(a2);
     sqlite3_errmsg(*p_database);
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
 
     if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_ERROR))
     {
@@ -3994,10 +3994,10 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)addAnchorGroupIdentifier:(id)a3 client:(id)a4 error:(id *)a5
+- (BOOL)addAnchorGroupIdentifier:(id)identifier client:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -4013,8 +4013,8 @@ LABEL_5:
   else
   {
     v13 = 1;
-    sqlite3_bind_text(ppStmt, 1, [v8 cStringUsingEncoding:4], objc_msgSend(v8, "lengthOfBytesUsingEncoding:", 4), 0);
-    sqlite3_bind_text(ppStmt, 2, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 1, [identifierCopy cStringUsingEncoding:4], objc_msgSend(identifierCopy, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 2, [clientCopy cStringUsingEncoding:4], objc_msgSend(clientCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) == 101)
     {
       goto LABEL_9;
@@ -4029,7 +4029,7 @@ LABEL_5:
 
   sqlite3_errmsg(*p_database);
   createManagedAssetError();
-  *a5 = v13 = 0;
+  *error = v13 = 0;
 LABEL_9:
   if (ppStmt)
   {
@@ -4039,10 +4039,10 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)removeAnchorGroupIdentifier:(id)a3 client:(id)a4 error:(id *)a5
+- (BOOL)removeAnchorGroupIdentifier:(id)identifier client:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -4059,8 +4059,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v8 cStringUsingEncoding:4], objc_msgSend(v8, "lengthOfBytesUsingEncoding:", 4), 0);
-  sqlite3_bind_text(ppStmt, 2, [v9 cStringUsingEncoding:4], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 1, [identifierCopy cStringUsingEncoding:4], objc_msgSend(identifierCopy, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 2, [clientCopy cStringUsingEncoding:4], objc_msgSend(clientCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   if (sqlite3_step(ppStmt) != 101)
   {
     v14 = off_100127CD8;
@@ -4085,7 +4085,7 @@ LABEL_10:
 
 LABEL_11:
   createManagedAssetError();
-  *a5 = v13 = 0;
+  *error = v13 = 0;
 LABEL_12:
   if (ppStmt)
   {
@@ -4095,9 +4095,9 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)removeAllAnchorGroups:(id)a3 error:(id *)a4
+- (BOOL)removeAllAnchorGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
+  groupsCopy = groups;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -4114,7 +4114,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v6 cStringUsingEncoding:4], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 1, [groupsCopy cStringUsingEncoding:4], objc_msgSend(groupsCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   if (sqlite3_step(ppStmt) != 101)
   {
     v11 = off_100127CD8;
@@ -4139,7 +4139,7 @@ LABEL_10:
 
 LABEL_11:
   createManagedAssetError();
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_12:
   if (ppStmt)
   {
@@ -4149,9 +4149,9 @@ LABEL_12:
   return v10;
 }
 
-- (id)getAllAnchorGroups:(id)a3 error:(id *)a4
+- (id)getAllAnchorGroups:(id)groups error:(id *)error
 {
-  v6 = a3;
+  groupsCopy = groups;
   v7 = +[NSMutableArray array];
   ppStmt = 0;
   database = self->_database;
@@ -4166,11 +4166,11 @@ LABEL_12:
 
     sqlite3_errmsg(*p_database);
 LABEL_5:
-    *a4 = createManagedAssetError();
+    *error = createManagedAssetError();
     goto LABEL_11;
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v6 cStringUsingEncoding:4], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4), 0);
+  sqlite3_bind_text(ppStmt, 1, [groupsCopy cStringUsingEncoding:4], objc_msgSend(groupsCopy, "lengthOfBytesUsingEncoding:", 4), 0);
   while (sqlite3_step(ppStmt) == 100)
   {
     v11 = sqlite3_column_text(ppStmt, 0);
@@ -4200,9 +4200,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)deleteConfigWith:(id)a3
+- (void)deleteConfigWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   ppStmt = 0;
   database = self->_database;
   p_database = &self->_database;
@@ -4216,7 +4216,7 @@ LABEL_11:
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v4 cStringUsingEncoding:4], objc_msgSend(v4, "lengthOfBytesUsingEncoding:", 4), 0);
+    sqlite3_bind_text(ppStmt, 1, [withCopy cStringUsingEncoding:4], objc_msgSend(withCopy, "lengthOfBytesUsingEncoding:", 4), 0);
     if (sqlite3_step(ppStmt) != 101)
     {
       v7 = off_100127CD8;
@@ -4272,7 +4272,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)convertAssetCaches:(unint64_t)a3 deviceState:(unint64_t)a4
+- (void)convertAssetCaches:(unint64_t)caches deviceState:(unint64_t)state
 {
   if ([(NSMutableDictionary *)self->_cachedAssets count])
   {
@@ -4296,12 +4296,12 @@ LABEL_9:
           }
 
           v8 = *(*(&v25 + 1) + 8 * i);
-          v9 = [v8 assetMetadata];
-          v10 = +[MAUtilityHelper determinePClassWith:profileType:deviceState:](MAUtilityHelper, "determinePClassWith:profileType:deviceState:", [v9 type], a3, a4);
+          assetMetadata = [v8 assetMetadata];
+          v10 = +[MAUtilityHelper determinePClassWith:profileType:deviceState:](MAUtilityHelper, "determinePClassWith:profileType:deviceState:", [assetMetadata type], caches, state);
 
           malocalAssetPath = self->_malocalAssetPath;
-          v12 = [v8 assetHandle];
-          v13 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, v12];
+          assetHandle = [v8 assetHandle];
+          v13 = [NSString stringWithFormat:@"%@%@.asset", malocalAssetPath, assetHandle];
 
           fileMgr = self->_fileMgr;
           v33 = NSFileProtectionKey;
@@ -4317,9 +4317,9 @@ LABEL_9:
             if (os_log_type_enabled(off_100127CD8, OS_LOG_TYPE_DEBUG))
             {
               v18 = v17;
-              v19 = [v8 assetHandle];
+              assetHandle2 = [v8 assetHandle];
               *buf = 138412546;
-              v30 = v19;
+              v30 = assetHandle2;
               v31 = 2112;
               v32 = v10;
               _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "convert guest asset (handle:%@) to protection class %@", buf, 0x16u);

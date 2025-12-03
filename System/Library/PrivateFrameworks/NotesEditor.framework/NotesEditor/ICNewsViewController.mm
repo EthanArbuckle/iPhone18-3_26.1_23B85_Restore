@@ -1,20 +1,20 @@
 @interface ICNewsViewController
-- (ICNewsViewController)initWithURL:(id)a3;
+- (ICNewsViewController)initWithURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation ICNewsViewController
 
-- (ICNewsViewController)initWithURL:(id)a3
+- (ICNewsViewController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ICNewsViewController;
   v5 = [(ICNewsViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICNewsViewController *)v5 setUrl:v4];
+    [(ICNewsViewController *)v5 setUrl:lCopy];
   }
 
   return v6;
@@ -31,26 +31,26 @@
   v7 = [v5 initWithURL:v6];
   [(ICNewsViewController *)self setNewsViewController:v7];
 
-  v8 = [(ICNewsViewController *)self newsViewController];
-  [v8 setLinkPreviewing:1];
+  newsViewController = [(ICNewsViewController *)self newsViewController];
+  [newsViewController setLinkPreviewing:1];
 
-  v9 = [(ICNewsViewController *)self view];
-  [v9 bounds];
+  view = [(ICNewsViewController *)self view];
+  [view bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(ICNewsViewController *)self newsViewController];
-  v19 = [v18 view];
-  [v19 setFrame:{v11, v13, v15, v17}];
+  newsViewController2 = [(ICNewsViewController *)self newsViewController];
+  view2 = [newsViewController2 view];
+  [view2 setFrame:{v11, v13, v15, v17}];
 
-  v20 = [(ICNewsViewController *)self view];
-  v21 = [(ICNewsViewController *)self newsViewController];
-  v22 = [v21 view];
-  [v20 addSubview:v22];
+  view3 = [(ICNewsViewController *)self view];
+  newsViewController3 = [(ICNewsViewController *)self newsViewController];
+  view4 = [newsViewController3 view];
+  [view3 addSubview:view4];
 
-  v23 = [(ICNewsViewController *)self newsViewController];
-  [(ICNewsViewController *)self addChildViewController:v23];
+  newsViewController4 = [(ICNewsViewController *)self newsViewController];
+  [(ICNewsViewController *)self addChildViewController:newsViewController4];
 }
 
 @end

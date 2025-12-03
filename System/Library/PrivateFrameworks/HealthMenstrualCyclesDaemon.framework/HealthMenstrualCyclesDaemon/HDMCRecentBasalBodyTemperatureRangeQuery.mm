@@ -1,52 +1,52 @@
 @interface HDMCRecentBasalBodyTemperatureRangeQuery
-+ (id)recentRangeForAnalysisWithProfile:(id)a3;
-- (HDMCRecentBasalBodyTemperatureRangeQuery)initWithProfile:(id)a3 sampleLimit:(int64_t)a4 upperQuantileBound:(double)a5 lowerQuantileBound:(double)a6;
-- (id)_basalBodyTemperatureDescendingEndDateQueryWithTransaction:(uint64_t)a3 limit:;
++ (id)recentRangeForAnalysisWithProfile:(id)profile;
+- (HDMCRecentBasalBodyTemperatureRangeQuery)initWithProfile:(id)profile sampleLimit:(int64_t)limit upperQuantileBound:(double)bound lowerQuantileBound:(double)quantileBound;
+- (id)_basalBodyTemperatureDescendingEndDateQueryWithTransaction:(uint64_t)transaction limit:;
 - (id)_bbtType;
-- (id)rangeWithError:(id *)a3;
-- (uint64_t)enumerateValuesInTransaction:(uint64_t)a1 handler:(void *)a2 error:(void *)a3;
-- (uint64_t)enumerateValuesWithHandler:(uint64_t)a3 error:;
-- (void)accumulateSortedValuesWithError:(void *)a3@<X8>;
+- (id)rangeWithError:(id *)error;
+- (uint64_t)enumerateValuesInTransaction:(uint64_t)transaction handler:(void *)handler error:(void *)error;
+- (uint64_t)enumerateValuesWithHandler:(uint64_t)handler error:;
+- (void)accumulateSortedValuesWithError:(void *)error@<X8>;
 @end
 
 @implementation HDMCRecentBasalBodyTemperatureRangeQuery
 
-- (HDMCRecentBasalBodyTemperatureRangeQuery)initWithProfile:(id)a3 sampleLimit:(int64_t)a4 upperQuantileBound:(double)a5 lowerQuantileBound:(double)a6
+- (HDMCRecentBasalBodyTemperatureRangeQuery)initWithProfile:(id)profile sampleLimit:(int64_t)limit upperQuantileBound:(double)bound lowerQuantileBound:(double)quantileBound
 {
-  v11 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = HDMCRecentBasalBodyTemperatureRangeQuery;
   v12 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_profile, v11);
-    v13->_sampleLimit = a4;
-    v13->_upperQuantileBound = a5;
-    v13->_lowerQuantileBound = a6;
+    objc_storeWeak(&v12->_profile, profileCopy);
+    v13->_sampleLimit = limit;
+    v13->_upperQuantileBound = bound;
+    v13->_lowerQuantileBound = quantileBound;
     if (HKCompareDoubles() != -1)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(upperQuantileBound, 1.0) == NSOrderedAscending"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(upperQuantileBound, 1.0) == NSOrderedAscending"}];
     }
 
     if (HKCompareDoubles() == -1)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(lowerQuantileBound, 0.0) != NSOrderedAscending"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(lowerQuantileBound, 0.0) != NSOrderedAscending"}];
     }
 
     if (HKCompareDoubles() == 1)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(lowerQuantileBound, upperQuantileBound) != NSOrderedDescending"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v13 file:@"HDMCRecentBasalBodyTemperatureRangeQuery.mm" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"HKCompareDoubles(lowerQuantileBound, upperQuantileBound) != NSOrderedDescending"}];
     }
   }
 
   return v13;
 }
 
-- (id)rangeWithError:(id *)a3
+- (id)rangeWithError:(id *)error
 {
   v21 = 0;
   [(HDMCRecentBasalBodyTemperatureRangeQuery *)self accumulateSortedValuesWithError:&__p];
@@ -62,20 +62,20 @@
     v12 = *(__p + vcvtmd_s64_f64(upperQuantileBound * v10));
     v13 = *(__p + vcvtmd_s64_f64(vcvtd_n_f64_s64(v6 >> 3, 1uLL)));
     v14 = *(__p + v11);
-    v15 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)self _bbtType];
-    v16 = [v15 canonicalUnit];
-    v17 = [(HDMCRecentBasalBodyTemperatureRange *)v9 _initWithUpperQuantileValue:v16 medianValue:v12 lowerQuantileValue:v13 unit:v14];
+    _bbtType = [(HDMCRecentBasalBodyTemperatureRangeQuery *)self _bbtType];
+    canonicalUnit = [_bbtType canonicalUnit];
+    v17 = [(HDMCRecentBasalBodyTemperatureRange *)v9 _initWithUpperQuantileValue:canonicalUnit medianValue:v12 lowerQuantileValue:v13 unit:v14];
     goto LABEL_9;
   }
 
   v18 = [MEMORY[0x277CCA9B8] hk_error:11 description:@"Could not compute a range due to no values"];
-  v16 = v18;
+  canonicalUnit = v18;
   if (!v18)
   {
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_7:
@@ -85,9 +85,9 @@ LABEL_7:
 
   v19 = v18;
   v17 = 0;
-  *a3 = v16;
+  *error = canonicalUnit;
 LABEL_8:
-  v15 = v16;
+  _bbtType = canonicalUnit;
 LABEL_9:
 
   if (__p)
@@ -99,9 +99,9 @@ LABEL_9:
   return v17;
 }
 
-- (void)accumulateSortedValuesWithError:(void *)a3@<X8>
+- (void)accumulateSortedValuesWithError:(void *)error@<X8>
 {
-  if (a1)
+  if (self)
   {
     v16 = 0;
     v17 = &v16;
@@ -118,7 +118,7 @@ LABEL_9:
     v15[2] = __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWithError___block_invoke;
     v15[3] = &unk_27865B048;
     v15[4] = &v16;
-    v5 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)a1 enumerateValuesWithHandler:v15 error:&v14];
+    v5 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)self enumerateValuesWithHandler:v15 error:&v14];
     v6 = v14;
     v7 = v6;
     if (v5)
@@ -127,10 +127,10 @@ LABEL_9:
       v9 = v17[7];
       std::__sort<std::__less<double,double> &,double *>();
       v10 = v17;
-      a3[1] = 0;
-      a3[2] = 0;
-      *a3 = 0;
-      std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(a3, v10[6], v10[7], (v10[7] - v10[6]) >> 3);
+      error[1] = 0;
+      error[2] = 0;
+      *error = 0;
+      std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(error, v10[6], v10[7], (v10[7] - v10[6]) >> 3);
     }
 
     else
@@ -151,9 +151,9 @@ LABEL_9:
         }
       }
 
-      *a3 = 0;
-      a3[1] = 0;
-      a3[2] = 0;
+      *error = 0;
+      error[1] = 0;
+      error[2] = 0;
     }
 
     _Block_object_dispose(&v16, 8);
@@ -166,9 +166,9 @@ LABEL_9:
 
   else
   {
-    *a3 = 0;
-    a3[1] = 0;
-    a3[2] = 0;
+    *error = 0;
+    error[1] = 0;
+    error[2] = 0;
   }
 }
 
@@ -232,21 +232,21 @@ uint64_t __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWi
   return 1;
 }
 
-- (uint64_t)enumerateValuesWithHandler:(uint64_t)a3 error:
+- (uint64_t)enumerateValuesWithHandler:(uint64_t)handler error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = MEMORY[0x277D10810];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v8 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __77__HDMCRecentBasalBodyTemperatureRangeQuery_enumerateValuesWithHandler_error___block_invoke;
     v11[3] = &unk_27865B070;
-    v11[4] = a1;
+    v11[4] = self;
     v12 = v5;
-    v9 = [v6 performReadTransactionWithHealthDatabase:v8 error:a3 block:v11];
+    v9 = [v6 performReadTransactionWithHealthDatabase:database error:handler block:v11];
   }
 
   else
@@ -257,14 +257,14 @@ uint64_t __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWi
   return v9;
 }
 
-- (uint64_t)enumerateValuesInTransaction:(uint64_t)a1 handler:(void *)a2 error:(void *)a3
+- (uint64_t)enumerateValuesInTransaction:(uint64_t)transaction handler:(void *)handler error:(void *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  v6 = a3;
-  if (a1)
+  handlerCopy = handler;
+  errorCopy = error;
+  if (transaction)
   {
-    v7 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)a1 _basalBodyTemperatureDescendingEndDateQueryWithTransaction:v5 limit:*(a1 + 16)];
+    v7 = [(HDMCRecentBasalBodyTemperatureRangeQuery *)transaction _basalBodyTemperatureDescendingEndDateQueryWithTransaction:handlerCopy limit:*(transaction + 16)];
     v16[0] = *MEMORY[0x277D10498];
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
     v15 = 0;
@@ -272,7 +272,7 @@ uint64_t __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWi
     v13[1] = 3221225472;
     v13[2] = __87__HDMCRecentBasalBodyTemperatureRangeQuery_enumerateValuesInTransaction_handler_error___block_invoke;
     v13[3] = &unk_27865B098;
-    v14 = v6;
+    v14 = errorCopy;
     v9 = [v7 enumerateProperties:v8 error:&v15 enumerationHandler:v13];
     v10 = v15;
   }
@@ -286,11 +286,11 @@ uint64_t __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWi
   return v9;
 }
 
-- (id)_basalBodyTemperatureDescendingEndDateQueryWithTransaction:(uint64_t)a3 limit:
+- (id)_basalBodyTemperatureDescendingEndDateQueryWithTransaction:(uint64_t)transaction limit:
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC958]];
     v7 = HDSampleEntityPredicateForDataType();
@@ -301,7 +301,7 @@ uint64_t __76__HDMCRecentBasalBodyTemperatureRangeQuery_accumulateSortedValuesWi
     v15[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
 
-    v12 = [v8 queryWithDatabase:v9 predicate:v7 limit:a3 orderingTerms:v11 groupBy:0];
+    v12 = [v8 queryWithDatabase:v9 predicate:v7 limit:transaction orderingTerms:v11 groupBy:0];
   }
 
   else
@@ -322,10 +322,10 @@ uint64_t __87__HDMCRecentBasalBodyTemperatureRangeQuery_enumerateValuesInTransac
   return v4();
 }
 
-+ (id)recentRangeForAnalysisWithProfile:(id)a3
++ (id)recentRangeForAnalysisWithProfile:(id)profile
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   _HKInitializeLogging();
   v5 = MEMORY[0x277CCC2E8];
   v6 = *MEMORY[0x277CCC2E8];
@@ -335,7 +335,7 @@ uint64_t __87__HDMCRecentBasalBodyTemperatureRangeQuery_enumerateValuesInTransac
     _os_signpost_emit_with_name_impl(&dword_2293D1000, v6, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "recentRangeForAnalysis", "", buf, 2u);
   }
 
-  v7 = [[a1 alloc] initWithProfile:v4 sampleLimit:90 upperQuantileBound:0.9 lowerQuantileBound:0.1];
+  v7 = [[self alloc] initWithProfile:profileCopy sampleLimit:90 upperQuantileBound:0.9 lowerQuantileBound:0.1];
   v17 = 0;
   v8 = [v7 rangeWithError:&v17];
   v9 = v17;
@@ -366,13 +366,13 @@ uint64_t __87__HDMCRecentBasalBodyTemperatureRangeQuery_enumerateValuesInTransac
 
 - (id)_bbtType
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC958]];
+    self = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC958]];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (void)recentRangeForAnalysisWithProfile:(uint64_t)a3 .cold.1(void *a1, uint64_t a2, uint64_t a3, NSObject *a4)

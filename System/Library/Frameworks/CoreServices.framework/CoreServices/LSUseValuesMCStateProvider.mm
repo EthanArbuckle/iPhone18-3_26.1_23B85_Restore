@@ -1,41 +1,41 @@
 @interface LSUseValuesMCStateProvider
-- (id)initWithAllowlistEnabled:(void *)a3 allowlistedBundles:(void *)a4 restrictedBundles:(void *)a5 ratingRankExceptions:(void *)a6 maximumRating:;
+- (id)initWithAllowlistEnabled:(void *)enabled allowlistedBundles:(void *)bundles restrictedBundles:(void *)restrictedBundles ratingRankExceptions:(void *)exceptions maximumRating:;
 @end
 
 @implementation LSUseValuesMCStateProvider
 
-- (id)initWithAllowlistEnabled:(void *)a3 allowlistedBundles:(void *)a4 restrictedBundles:(void *)a5 ratingRankExceptions:(void *)a6 maximumRating:
+- (id)initWithAllowlistEnabled:(void *)enabled allowlistedBundles:(void *)bundles restrictedBundles:(void *)restrictedBundles ratingRankExceptions:(void *)exceptions maximumRating:
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  enabledCopy = enabled;
+  bundlesCopy = bundles;
+  restrictedBundlesCopy = restrictedBundles;
+  exceptionsCopy = exceptions;
+  if (self)
   {
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = LSUseValuesMCStateProvider;
     v15 = objc_msgSendSuper2(&v23, sel_init);
-    a1 = v15;
+    self = v15;
     if (v15)
     {
       *(v15 + 8) = a2;
-      v16 = [v11 copy];
-      v17 = a1[2];
-      a1[2] = v16;
+      v16 = [enabledCopy copy];
+      v17 = self[2];
+      self[2] = v16;
 
-      v18 = [v12 copy];
-      v19 = a1[3];
-      a1[3] = v18;
+      v18 = [bundlesCopy copy];
+      v19 = self[3];
+      self[3] = v18;
 
-      v20 = [v13 copy];
-      v21 = a1[4];
-      a1[4] = v20;
+      v20 = [restrictedBundlesCopy copy];
+      v21 = self[4];
+      self[4] = v20;
 
-      objc_storeStrong(a1 + 5, a6);
+      objc_storeStrong(self + 5, exceptions);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

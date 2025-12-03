@@ -1,28 +1,28 @@
 @interface ActionCellSummaryView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)viewControllerForCoordinator:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)viewControllerForCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6;
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5;
-- (void)showParameterEditingHint:(id)a3;
-- (void)showVariableEditorWithOptions:(id)a3 fromSourceRect:(CGRect)a4;
-- (void)summaryCoordinator:(id)a3 disclosureArrowDidChange:(BOOL)a4;
-- (void)summaryCoordinator:(id)a3 outputButtonDidChange:(BOOL)a4;
-- (void)summaryCoordinatorDidInvalidateSize:(id)a3;
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler;
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler;
+- (void)showParameterEditingHint:(id)hint;
+- (void)showVariableEditorWithOptions:(id)options fromSourceRect:(CGRect)rect;
+- (void)summaryCoordinator:(id)coordinator disclosureArrowDidChange:(BOOL)change;
+- (void)summaryCoordinator:(id)coordinator outputButtonDidChange:(BOOL)change;
+- (void)summaryCoordinatorDidInvalidateSize:(id)size;
 @end
 
 @implementation ActionCellSummaryView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_274459198();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_27445927C(width);
   v7 = v6;
 
@@ -33,49 +33,49 @@
   return result;
 }
 
-- (void)summaryCoordinatorDidInvalidateSize:(id)a3
+- (void)summaryCoordinatorDidInvalidateSize:(id)size
 {
-  v4 = a3;
-  v5 = self;
+  sizeCopy = size;
+  selfCopy = self;
   sub_27445A9EC();
 }
 
-- (void)summaryCoordinator:(id)a3 disclosureArrowDidChange:(BOOL)a4
+- (void)summaryCoordinator:(id)coordinator disclosureArrowDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_27445AABC(v7, a4);
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_27445AABC(selfCopy, change);
 }
 
-- (id)viewControllerForCoordinator:(id)a3
+- (id)viewControllerForCoordinator:(id)coordinator
 {
   v3 = sub_27445AB8C();
 
   return v3;
 }
 
-- (void)summaryCoordinator:(id)a3 outputButtonDidChange:(BOOL)a4
+- (void)summaryCoordinator:(id)coordinator outputButtonDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_27445ABD4(v7, a4);
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_27445ABD4(selfCopy, change);
 }
 
-- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)a3 variableProvider:(id)a4 completionHandler:(id)a5
+- (void)showActionOutputPickerAllowingShortcutInput:(BOOL)input variableProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v6;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_27445ACB0();
   swift_unknownObjectRelease();
 }
 
-- (void)revealAction:(id)a3 preScrollHandler:(id)a4 goBackHandler:(id)a5 scrolledAwayHandler:(id)a6
+- (void)revealAction:(id)action preScrollHandler:(id)handler goBackHandler:(id)backHandler scrolledAwayHandler:(id)awayHandler
 {
-  v10 = _Block_copy(a4);
-  v11 = _Block_copy(a5);
-  v12 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
+  v11 = _Block_copy(backHandler);
+  v12 = _Block_copy(awayHandler);
   *(swift_allocObject() + 16) = v10;
   v13 = swift_allocObject();
   *(v13 + 16) = v11;
@@ -91,27 +91,27 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = self;
-  sub_27445AE90(v15, v17, v18, sub_27445B624, v13, v12, v14);
+  actionCopy = action;
+  selfCopy = self;
+  sub_27445AE90(actionCopy, v17, v18, sub_27445B624, v13, v12, v14);
   sub_274406A94(v12);
 }
 
-- (void)showVariableEditorWithOptions:(id)a3 fromSourceRect:(CGRect)a4
+- (void)showVariableEditorWithOptions:(id)options fromSourceRect:(CGRect)rect
 {
-  v5 = a3;
-  v6 = self;
-  sub_27445B1BC(v5);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_27445B1BC(optionsCopy);
 }
 
-- (void)showParameterEditingHint:(id)a3
+- (void)showParameterEditingHint:(id)hint
 {
-  if (a3)
+  if (hint)
   {
     sub_27463B6AC();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_27445B448();
 }
 

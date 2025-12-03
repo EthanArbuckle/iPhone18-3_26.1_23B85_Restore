@@ -1,9 +1,9 @@
 @interface PXContentSyndicationAttributionInfo
-+ (id)_applyAttributesToTitle:(id)a3;
-+ (id)_nameStringForContact:(id)a3;
++ (id)_applyAttributesToTitle:(id)title;
++ (id)_nameStringForContact:(id)contact;
 + (id)_sharedContactFetchSerialQueue;
 + (id)appIconFetchQueue;
-- (BOOL)_isAppInstalledOnDeviceForBundleIdentifier:(id)a3;
+- (BOOL)_isAppInstalledOnDeviceForBundleIdentifier:(id)identifier;
 - (CNContact)contact;
 - (NSAttributedString)savedFromTitle;
 - (NSAttributedString)syndicationSharedWithInMessagesAttributedTitle;
@@ -14,17 +14,17 @@
 - (NSString)senderAppName;
 - (NSString)syndicationAttributionIdentifier;
 - (NSString)syndicationSenderDisplayName;
-- (PXContentSyndicationAttributionInfo)initWithAsset:(id)a3;
+- (PXContentSyndicationAttributionInfo)initWithAsset:(id)asset;
 - (PXContentSyndicationAttributionInfoChangeDelegate)changeDelegate;
 - (UIImage)senderThumbnailImage;
-- (void)_fetchContactWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_fetchContactWithIdentifier:(id)identifier completion:(id)completion;
 - (void)_handleAttributionChanges;
-- (void)_handleContactFetchCompletion:(id)a3 error:(id)a4 oldSyndicationSenderDisplayName:(id)a5 oldSyndicationSharedWithTitle:(id)a6 oldImageData:(id)a7;
+- (void)_handleContactFetchCompletion:(id)completion error:(id)error oldSyndicationSenderDisplayName:(id)name oldSyndicationSharedWithTitle:(id)title oldImageData:(id)data;
 - (void)_invalidateAttributedStrings;
-- (void)_updateAppNameColorForAttributedString:(id)a3 defaultFontValue:(id)a4;
-- (void)createSyndicatedAppIconWithSize:(CGSize)a3 scale:(double)a4 completion:(id)a5;
-- (void)fetchAppIconThumbnailImageWithCompletion:(id)a3;
-- (void)setHighlight:(id)a3;
+- (void)_updateAppNameColorForAttributedString:(id)string defaultFontValue:(id)value;
+- (void)createSyndicatedAppIconWithSize:(CGSize)size scale:(double)scale completion:(id)completion;
+- (void)fetchAppIconThumbnailImageWithCompletion:(id)completion;
+- (void)setHighlight:(id)highlight;
 @end
 
 @implementation PXContentSyndicationAttributionInfo
@@ -36,48 +36,48 @@
   return WeakRetained;
 }
 
-- (void)_handleContactFetchCompletion:(id)a3 error:(id)a4 oldSyndicationSenderDisplayName:(id)a5 oldSyndicationSharedWithTitle:(id)a6 oldImageData:(id)a7
+- (void)_handleContactFetchCompletion:(id)completion error:(id)error oldSyndicationSenderDisplayName:(id)name oldSyndicationSharedWithTitle:(id)title oldImageData:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  completionCopy = completion;
+  errorCopy = error;
+  nameCopy = name;
+  titleCopy = title;
+  dataCopy = data;
+  if (!completionCopy)
   {
     v17 = PLUIGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(PXContentSyndicationAttributionInfo *)self asset];
-      v19 = [v18 uuid];
+      asset = [(PXContentSyndicationAttributionInfo *)self asset];
+      uuid = [asset uuid];
       *buf = 138543618;
-      v31 = v19;
+      v31 = uuid;
       v32 = 2112;
-      v33 = v13;
+      v33 = errorCopy;
       _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_ERROR, "Info Panel attribution: Contact refresh failed for asset UUID: %{public}@ with error: %@", buf, 0x16u);
     }
   }
 
-  [(PXContentSyndicationAttributionInfo *)self setContact:v12];
-  v20 = [(PXContentSyndicationAttributionInfo *)self syndicationSenderDisplayName];
-  if (v20 == v14 || [v14 isEqualToString:v20])
+  [(PXContentSyndicationAttributionInfo *)self setContact:completionCopy];
+  syndicationSenderDisplayName = [(PXContentSyndicationAttributionInfo *)self syndicationSenderDisplayName];
+  if (syndicationSenderDisplayName == nameCopy || [nameCopy isEqualToString:syndicationSenderDisplayName])
   {
-    v21 = [(PXContentSyndicationAttributionInfo *)self syndicationSharedWithInMessagesAttributedTitle];
-    v22 = [v21 copy];
-    if (v22 == v15 || ([v15 isEqualToString:v22] & 1) != 0)
+    syndicationSharedWithInMessagesAttributedTitle = [(PXContentSyndicationAttributionInfo *)self syndicationSharedWithInMessagesAttributedTitle];
+    v22 = [syndicationSharedWithInMessagesAttributedTitle copy];
+    if (v22 == titleCopy || ([titleCopy isEqualToString:v22] & 1) != 0)
     {
-      _ThumbnailImageDataFromAttributionContact(v12);
-      v23 = v12;
-      v24 = v14;
-      v25 = v15;
-      v27 = v26 = v13;
-      v29 = [v16 isEqualToData:v27];
+      _ThumbnailImageDataFromAttributionContact(completionCopy);
+      v23 = completionCopy;
+      v24 = nameCopy;
+      v25 = titleCopy;
+      v27 = v26 = errorCopy;
+      v29 = [dataCopy isEqualToData:v27];
 
-      v13 = v26;
-      v15 = v25;
-      v14 = v24;
-      v12 = v23;
+      errorCopy = v26;
+      titleCopy = v25;
+      nameCopy = v24;
+      completionCopy = v23;
 
       if (v29)
       {
@@ -89,26 +89,26 @@
   }
 
 LABEL_13:
-  v28 = [(PXContentSyndicationAttributionInfo *)self changeDelegate];
-  [v28 syndicationAttributionInfoDidChange:self];
+  changeDelegate = [(PXContentSyndicationAttributionInfo *)self changeDelegate];
+  [changeDelegate syndicationAttributionInfoDidChange:self];
 
 LABEL_14:
 }
 
-- (void)_fetchContactWithIdentifier:(id)a3 completion:(id)a4
+- (void)_fetchContactWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
     v8 = +[PXContentSyndicationAttributionInfo _sharedContactFetchSerialQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __78__PXContentSyndicationAttributionInfo__fetchContactWithIdentifier_completion___block_invoke;
     v15[3] = &unk_1E774C2F0;
-    v16 = v6;
-    v17 = v7;
+    v16 = identifierCopy;
+    v17 = completionCopy;
     dispatch_async(v8, v15);
 
     v9 = v16;
@@ -119,10 +119,10 @@ LABEL_14:
     v10 = PLUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(PXContentSyndicationAttributionInfo *)self asset];
-      v12 = [v11 uuid];
+      asset = [(PXContentSyndicationAttributionInfo *)self asset];
+      uuid = [asset uuid];
       *buf = 138543362;
-      v21 = v12;
+      v21 = uuid;
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "Info Panel attribution: No contact to fetch with asset UUID: %{public}@", buf, 0xCu);
     }
 
@@ -131,7 +131,7 @@ LABEL_14:
     v19 = @"Contact ID nil while attempting to fetch contact.";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v14 = [v13 initWithDomain:@"PhotosUISyndicationDomain" code:0 userInfo:v9];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -169,31 +169,31 @@ void __78__PXContentSyndicationAttributionInfo__fetchContactWithIdentifier_compl
 
 - (void)_handleAttributionChanges
 {
-  v3 = [(PXContentSyndicationAttributionInfo *)self syndicationSenderDisplayName];
-  v4 = [(PXContentSyndicationAttributionInfo *)self syndicationSharedWithInMessagesAttributedTitle];
-  v5 = [v4 copy];
+  syndicationSenderDisplayName = [(PXContentSyndicationAttributionInfo *)self syndicationSenderDisplayName];
+  syndicationSharedWithInMessagesAttributedTitle = [(PXContentSyndicationAttributionInfo *)self syndicationSharedWithInMessagesAttributedTitle];
+  v5 = [syndicationSharedWithInMessagesAttributedTitle copy];
 
-  v6 = [(PXContentSyndicationAttributionInfo *)self contact];
-  v7 = _ThumbnailImageDataFromAttributionContact(v6);
+  contact = [(PXContentSyndicationAttributionInfo *)self contact];
+  v7 = _ThumbnailImageDataFromAttributionContact(contact);
 
   [(PXContentSyndicationAttributionInfo *)self setContact:0];
   [(PXContentSyndicationAttributionInfo *)self setSenderThumbnailImage:0];
   [(PXContentSyndicationAttributionInfo *)self setSyndicationSenderDisplayName:0];
   objc_initWeak(&location, self);
-  v8 = [(PXContentSyndicationAttributionInfo *)self contact];
-  v9 = [v8 identifier];
+  contact2 = [(PXContentSyndicationAttributionInfo *)self contact];
+  identifier = [contact2 identifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__PXContentSyndicationAttributionInfo__handleAttributionChanges__block_invoke;
   v13[3] = &unk_1E7730C38;
   objc_copyWeak(&v17, &location);
-  v10 = v3;
+  v10 = syndicationSenderDisplayName;
   v14 = v10;
   v11 = v5;
   v15 = v11;
   v12 = v7;
   v16 = v12;
-  [(PXContentSyndicationAttributionInfo *)self _fetchContactWithIdentifier:v9 completion:v13];
+  [(PXContentSyndicationAttributionInfo *)self _fetchContactWithIdentifier:identifier completion:v13];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -213,37 +213,37 @@ void __64__PXContentSyndicationAttributionInfo__handleAttributionChanges__block_
   contact = self->_contact;
   if (!contact)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self highlight];
-    v5 = v4;
-    if (v4)
+    highlight = [(PXContentSyndicationAttributionInfo *)self highlight];
+    v5 = highlight;
+    if (highlight)
     {
-      v6 = [v4 attributions];
-      v7 = [v6 firstObject];
+      attributions = [highlight attributions];
+      firstObject = [attributions firstObject];
 
-      v8 = [v7 sender];
-      v9 = [v8 contact];
+      sender = [firstObject sender];
+      contact = [sender contact];
       v10 = self->_contact;
-      self->_contact = v9;
+      self->_contact = contact;
 
       if (!self->_contact)
       {
-        v11 = [v7 relatedPersons];
-        v12 = [v11 firstObject];
-        v13 = [v12 contact];
+        relatedPersons = [firstObject relatedPersons];
+        firstObject2 = [relatedPersons firstObject];
+        contact2 = [firstObject2 contact];
         v14 = self->_contact;
-        self->_contact = v13;
+        self->_contact = contact2;
 
         if (!self->_contact)
         {
           v15 = PLUIGetLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v16 = [(PXContentSyndicationAttributionInfo *)self asset];
-            v17 = [v16 uuid];
+            asset = [(PXContentSyndicationAttributionInfo *)self asset];
+            uuid = [asset uuid];
             v19 = 138412546;
             v20 = v5;
             v21 = 2114;
-            v22 = v17;
+            v22 = uuid;
             _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_ERROR, "Info Panel attribution: Contact not found for highlight: %@ asset UUID: %{public}@", &v19, 0x16u);
           }
         }
@@ -262,17 +262,17 @@ void __64__PXContentSyndicationAttributionInfo__handleAttributionChanges__block_
   if (!receivingGroupDisplayName)
   {
     self->_receivingGroupDisplayName = &stru_1F1741150;
-    v4 = [(PXContentSyndicationAttributionInfo *)self highlight];
-    v5 = v4;
-    if (v4)
+    highlight = [(PXContentSyndicationAttributionInfo *)self highlight];
+    v5 = highlight;
+    if (highlight)
     {
-      v6 = [v4 attributions];
-      v7 = [v6 firstObject];
+      attributions = [highlight attributions];
+      firstObject = [attributions firstObject];
 
-      if ([v7 isGroupConversation])
+      if ([firstObject isGroupConversation])
       {
-        v8 = [v7 groupDisplayName];
-        v9 = [v8 copy];
+        groupDisplayName = [firstObject groupDisplayName];
+        v9 = [groupDisplayName copy];
         v10 = self->_receivingGroupDisplayName;
         self->_receivingGroupDisplayName = v9;
       }
@@ -284,20 +284,20 @@ void __64__PXContentSyndicationAttributionInfo__handleAttributionChanges__block_
   return receivingGroupDisplayName;
 }
 
-- (void)_updateAppNameColorForAttributedString:(id)a3 defaultFontValue:(id)a4
+- (void)_updateAppNameColorForAttributedString:(id)string defaultFontValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  valueCopy = value;
   v7 = *MEMORY[0x1E69DB648];
-  v8 = [v5 length];
+  v8 = [stringCopy length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95__PXContentSyndicationAttributionInfo__updateAppNameColorForAttributedString_defaultFontValue___block_invoke;
   v11[3] = &unk_1E7730C10;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = stringCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = stringCopy;
   [v10 enumerateAttribute:v7 inRange:0 options:v8 usingBlock:{0, v11}];
 }
 
@@ -332,13 +332,13 @@ void __95__PXContentSyndicationAttributionInfo__updateAppNameColorForAttributedS
   self->_syndicationSharedWithInMessagesAttributedTitle = 0;
 }
 
-- (void)setHighlight:(id)a3
+- (void)setHighlight:(id)highlight
 {
-  objc_storeStrong(&self->_highlight, a3);
+  objc_storeStrong(&self->_highlight, highlight);
   self->_syndicationAttributionInfoIsLoading = 0;
-  self->_hasSyndicationAttributionInfo = a3 != 0;
-  v5 = [(PXContentSyndicationAttributionInfo *)self changeDelegate];
-  [v5 syndicationAttributionInfoDidChange:self];
+  self->_hasSyndicationAttributionInfo = highlight != 0;
+  changeDelegate = [(PXContentSyndicationAttributionInfo *)self changeDelegate];
+  [changeDelegate syndicationAttributionInfoDidChange:self];
 }
 
 - (NSString)axHintForSyndicationButton
@@ -404,30 +404,30 @@ void __95__PXContentSyndicationAttributionInfo__updateAppNameColorForAttributedS
   syndicationAttributionIdentifier = self->_syndicationAttributionIdentifier;
   if (!syndicationAttributionIdentifier)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self highlight];
-    v5 = [v4 attributions];
-    v6 = [v5 firstObject];
+    highlight = [(PXContentSyndicationAttributionInfo *)self highlight];
+    attributions = [highlight attributions];
+    firstObject = [attributions firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      v7 = [v6 uniqueIdentifier];
-      v8 = [v7 copy];
+      uniqueIdentifier = [firstObject uniqueIdentifier];
+      v8 = [uniqueIdentifier copy];
       v9 = self->_syndicationAttributionIdentifier;
       self->_syndicationAttributionIdentifier = v8;
     }
 
     else
     {
-      v7 = PLSyndicationUIGetLog();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      uniqueIdentifier = PLSyndicationUIGetLog();
+      if (os_log_type_enabled(uniqueIdentifier, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(PXContentSyndicationAttributionInfo *)self asset];
-        v11 = [v10 uuid];
+        asset = [(PXContentSyndicationAttributionInfo *)self asset];
+        uuid = [asset uuid];
         v13 = 138543618;
-        v14 = v4;
+        v14 = highlight;
         v15 = 2114;
-        v16 = v11;
-        _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "Attribution Info: No SLAttribution found for highlight: %{public}@ asset UUID: %{public}@", &v13, 0x16u);
+        v16 = uuid;
+        _os_log_impl(&dword_1A3C1C000, uniqueIdentifier, OS_LOG_TYPE_ERROR, "Attribution Info: No SLAttribution found for highlight: %{public}@ asset UUID: %{public}@", &v13, 0x16u);
       }
     }
 
@@ -437,24 +437,24 @@ void __95__PXContentSyndicationAttributionInfo__updateAppNameColorForAttributedS
   return syndicationAttributionIdentifier;
 }
 
-- (BOOL)_isAppInstalledOnDeviceForBundleIdentifier:(id)a3
+- (BOOL)_isAppInstalledOnDeviceForBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
 
   return v5 != 0;
 }
 
-- (void)createSyndicatedAppIconWithSize:(CGSize)a3 scale:(double)a4 completion:(id)a5
+- (void)createSyndicatedAppIconWithSize:(CGSize)size scale:(double)scale completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = [(PXContentSyndicationAttributionInfo *)self asset];
-  v11 = [v10 curationProperties];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  asset = [(PXContentSyndicationAttributionInfo *)self asset];
+  curationProperties = [asset curationProperties];
 
-  v12 = [v11 importedByBundleIdentifier];
+  importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
   v13 = +[PXContentSyndicationAttributionInfo appIconFetchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -462,11 +462,11 @@ void __95__PXContentSyndicationAttributionInfo__updateAppNameColorForAttributedS
   block[3] = &unk_1E7730BE8;
   v19 = width;
   v20 = height;
-  v21 = a4;
-  v17 = v12;
-  v18 = v9;
-  v14 = v9;
-  v15 = v12;
+  scaleCopy = scale;
+  v17 = importedByBundleIdentifier;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = importedByBundleIdentifier;
   dispatch_async(v13, block);
 }
 
@@ -509,13 +509,13 @@ LABEL_6:
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
-- (void)fetchAppIconThumbnailImageWithCompletion:(id)a3
+- (void)fetchAppIconThumbnailImageWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(PXContentSyndicationAttributionInfo *)self senderAppName];
-  if (v4)
+  completionCopy = completion;
+  senderAppName = [(PXContentSyndicationAttributionInfo *)self senderAppName];
+  if (senderAppName)
   {
-    [(PXContentSyndicationAttributionInfo *)self createSyndicatedAppIconWithSize:v5 scale:32.0 completion:32.0, 3.0];
+    [(PXContentSyndicationAttributionInfo *)self createSyndicatedAppIconWithSize:completionCopy scale:32.0 completion:32.0, 3.0];
   }
 }
 
@@ -524,8 +524,8 @@ LABEL_6:
   senderThumbnailImage = self->_senderThumbnailImage;
   if (!senderThumbnailImage)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self contact];
-    v5 = _ThumbnailImageDataFromAttributionContact(v4);
+    contact = [(PXContentSyndicationAttributionInfo *)self contact];
+    v5 = _ThumbnailImageDataFromAttributionContact(contact);
     if (v5)
     {
       v6 = [MEMORY[0x1E69DCAB8] imageWithData:v5];
@@ -544,20 +544,20 @@ LABEL_6:
   savedFromTitle = self->_savedFromTitle;
   if (!savedFromTitle)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self senderAppName];
-    v5 = [(PXContentSyndicationAttributionInfo *)self _sfaAttributes];
-    v6 = [(PXContentSyndicationAttributionInfo *)self _sfaAppNameAttributes];
-    if (v4)
+    senderAppName = [(PXContentSyndicationAttributionInfo *)self senderAppName];
+    _sfaAttributes = [(PXContentSyndicationAttributionInfo *)self _sfaAttributes];
+    _sfaAppNameAttributes = [(PXContentSyndicationAttributionInfo *)self _sfaAppNameAttributes];
+    if (senderAppName)
     {
       PXLocalizedStringFromTable(@"ATTRIBUTION_SAVED_FROM_APP", @"PhotosUICore");
       objc_claimAutoreleasedReturnValue();
-      [v4 px_stringConvertedToHTMLString];
+      [senderAppName px_stringConvertedToHTMLString];
       objc_claimAutoreleasedReturnValue();
       PXLocalizedStringWithValidatedFormat();
     }
 
     v7 = PXLocalizedStringFromTable(@"ATTRIBUTION_SAVED_FROM", @"PhotosUICore");
-    v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v5];
+    v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:_sfaAttributes];
     v9 = self->_savedFromTitle;
     self->_savedFromTitle = v8;
 
@@ -587,9 +587,9 @@ LABEL_6:
   senderAppName = self->_senderAppName;
   if (!senderAppName)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self asset];
-    v5 = [v4 syndicatedAppDisplayName];
-    v6 = [v5 copy];
+    asset = [(PXContentSyndicationAttributionInfo *)self asset];
+    syndicatedAppDisplayName = [asset syndicatedAppDisplayName];
+    v6 = [syndicatedAppDisplayName copy];
     v7 = self->_senderAppName;
     self->_senderAppName = v6;
 
@@ -604,10 +604,10 @@ LABEL_6:
   syndicationSenderDisplayName = self->_syndicationSenderDisplayName;
   if (!syndicationSenderDisplayName)
   {
-    v4 = [(PXContentSyndicationAttributionInfo *)self contact];
-    if (v4)
+    contact = [(PXContentSyndicationAttributionInfo *)self contact];
+    if (contact)
     {
-      v5 = [objc_opt_class() _nameStringForContact:v4];
+      v5 = [objc_opt_class() _nameStringForContact:contact];
     }
 
     else
@@ -624,13 +624,13 @@ LABEL_6:
   return syndicationSenderDisplayName;
 }
 
-- (PXContentSyndicationAttributionInfo)initWithAsset:(id)a3
+- (PXContentSyndicationAttributionInfo)initWithAsset:(id)asset
 {
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v20.receiver = self;
@@ -639,10 +639,10 @@ LABEL_6:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_asset, a3);
-    if (([v6 px_isSyndicatedAsset] & 1) != 0 || objc_msgSend(v6, "px_wasSavedThroughSyndication"))
+    objc_storeStrong(&v7->_asset, asset);
+    if (([assetCopy px_isSyndicatedAsset] & 1) != 0 || objc_msgSend(assetCopy, "px_wasSavedThroughSyndication"))
     {
-      if ([v6 px_canLoadSyndicationAttributionInfo])
+      if ([assetCopy px_canLoadSyndicationAttributionInfo])
       {
         v9 = +[PXContentSyndicationPhotoKitSocialLayerHighlightProvider sharedInstance];
         highlightProvider = v8->_highlightProvider;
@@ -660,14 +660,14 @@ LABEL_6:
         v17[2] = __53__PXContentSyndicationAttributionInfo_initWithAsset___block_invoke;
         v17[3] = &unk_1E7730BC0;
         objc_copyWeak(&v18, &location);
-        [(PXContentSyndicationPhotoKitSocialLayerHighlightProvider *)v13 fetchSocialLayerHighlightForAsset:v6 completion:v17];
+        [(PXContentSyndicationPhotoKitSocialLayerHighlightProvider *)v13 fetchSocialLayerHighlightForAsset:assetCopy completion:v17];
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
       }
     }
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v8 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v8;
@@ -695,10 +695,10 @@ void __53__PXContentSyndicationAttributionInfo_initWithAsset___block_invoke(uint
   }
 }
 
-+ (id)_applyAttributesToTitle:(id)a3
++ (id)_applyAttributesToTitle:(id)title
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  titleCopy = title;
   v4 = +[PXContentSyndicationAttributionInfo _primaryFont];
   v5 = +[PXContentSyndicationAttributionInfo _displayNameFont];
   v7 = *MEMORY[0x1E69DB650];
@@ -706,68 +706,68 @@ void __53__PXContentSyndicationAttributionInfo_initWithAsset___block_invoke(uint
   v6 = v16[0];
   v16[1] = v7;
   v17[0] = v4;
-  v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v17[1] = v8;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v17[1] = secondaryLabelColor;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   v14[1] = v7;
   v15[0] = v5;
   v14[0] = v6;
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  v15[1] = v10;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v15[1] = labelColor;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [MEMORY[0x1E696AAB0] px_attributedStringWithHTMLString:v3 defaultAttributes:v9 emphasizedAttributes:v11 italicizedAttributes:v9];
+  v12 = [MEMORY[0x1E696AAB0] px_attributedStringWithHTMLString:titleCopy defaultAttributes:v9 emphasizedAttributes:v11 italicizedAttributes:v9];
 
   return v12;
 }
 
-+ (id)_nameStringForContact:(id)a3
++ (id)_nameStringForContact:(id)contact
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v6 = &stru_1F1741150;
     goto LABEL_17;
   }
 
-  v6 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:0];
+  v6 = [MEMORY[0x1E695CD80] stringFromContact:contactCopy style:0];
   if ([(__CFString *)v6 length])
   {
     goto LABEL_17;
   }
 
-  v7 = [v5 emailAddresses];
-  v8 = [v7 firstObject];
+  emailAddresses = [contactCopy emailAddresses];
+  firstObject = [emailAddresses firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
-    v11 = [v5 phoneNumbers];
-    v12 = [v11 firstObject];
+    phoneNumbers = [contactCopy phoneNumbers];
+    firstObject2 = [phoneNumbers firstObject];
 
-    if (!v12)
+    if (!firstObject2)
     {
       v16 = PLUIGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v29 = v5;
+        v29 = contactCopy;
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_ERROR, "Info Panel attribution: No display string found for attribution contact: %@", buf, 0xCu);
       }
 
       goto LABEL_15;
     }
 
-    v13 = [v12 value];
-    if (v13)
+    value = [firstObject2 value];
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_11:
-        v14 = [v13 stringValue];
-        v15 = [v14 copy];
+        stringValue = [value stringValue];
+        v15 = [stringValue copy];
 
         v6 = v15;
 LABEL_15:
@@ -775,31 +775,31 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = objc_opt_class();
       v25 = NSStringFromClass(v26);
-      v27 = [v13 px_descriptionForAssertionMessage];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"PXContentSyndicationAttributionInfo.m" lineNumber:438 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"phoneNumberValue", v25, v27}];
+      px_descriptionForAssertionMessage = [value px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:438 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"phoneNumberValue", v25, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
-      [v23 handleFailureInMethod:a2 object:a1 file:@"PXContentSyndicationAttributionInfo.m" lineNumber:438 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"phoneNumberValue", v25}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:438 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"phoneNumberValue", v25}];
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v8 value];
-  if (!v9)
+  value2 = [firstObject value];
+  if (!value2)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXContentSyndicationAttributionInfo.m" lineNumber:432 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"emailValue", v20}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:432 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"emailValue", v20}];
 LABEL_22:
 
     goto LABEL_6;
@@ -808,17 +808,17 @@ LABEL_22:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v20 = NSStringFromClass(v21);
-    v22 = [v9 px_descriptionForAssertionMessage];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXContentSyndicationAttributionInfo.m" lineNumber:432 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"emailValue", v20, v22}];
+    px_descriptionForAssertionMessage2 = [value2 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationAttributionInfo.m" lineNumber:432 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"emailValue", v20, px_descriptionForAssertionMessage2}];
 
     goto LABEL_22;
   }
 
 LABEL_6:
-  v10 = [v9 copy];
+  v10 = [value2 copy];
 
   v6 = v10;
 LABEL_16:

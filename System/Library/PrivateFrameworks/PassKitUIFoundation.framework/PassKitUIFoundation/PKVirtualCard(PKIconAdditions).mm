@@ -6,7 +6,7 @@
 
 - (id)cardIcon
 {
-  if ([a1 type] == 1)
+  if ([self type] == 1)
   {
     v1 = MEMORY[0x277D755B8];
     v2 = PKPassKitUIFoundationBundle();

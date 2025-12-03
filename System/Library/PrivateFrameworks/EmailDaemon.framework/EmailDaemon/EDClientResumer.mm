@@ -1,9 +1,9 @@
 @interface EDClientResumer
 + (id)log;
 + (id)signpostLog;
-- (EDClientResumer)initWithClientBundleIdentifier:(id)a3 hookRegistry:(id)a4 clientState:(id)a5;
+- (EDClientResumer)initWithClientBundleIdentifier:(id)identifier hookRegistry:(id)registry clientState:(id)state;
 - (unint64_t)signpostID;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resumeForUpdates;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __22__EDClientResumer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_24 != -1)
   {
     dispatch_once(&log_onceToken_24, block);
@@ -42,7 +42,7 @@ void __22__EDClientResumer_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__EDClientResumer_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken != -1)
   {
     dispatch_once(&signpostLog_onceToken, block);
@@ -63,28 +63,28 @@ void __30__EDClientResumer_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDClientResumer)initWithClientBundleIdentifier:(id)a3 hookRegistry:(id)a4 clientState:(id)a5
+- (EDClientResumer)initWithClientBundleIdentifier:(id)identifier hookRegistry:(id)registry clientState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  registryCopy = registry;
+  stateCopy = state;
   v21.receiver = self;
   v21.super_class = EDClientResumer;
   v11 = [(EDClientResumer *)&v21 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleID = v11->_bundleID;
     v11->_bundleID = v12;
 
-    objc_storeStrong(&v11->_clientState, a5);
-    objc_storeStrong(&v11->_hookRegistry, a4);
+    objc_storeStrong(&v11->_clientState, state);
+    objc_storeStrong(&v11->_hookRegistry, registry);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("com.apple.maild.EDClientResumer", v14);
     queue = v11->_queue;
@@ -163,14 +163,14 @@ LABEL_5:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v3 = [v8 optionsWithDictionary:v9];
 
-    v10 = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
     v11 = self->_bundleID;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __35__EDClientResumer_resumeForUpdates__block_invoke;
     v14[3] = &unk_1E8251AA0;
     v14[4] = self;
-    [v10 openApplication:v11 withOptions:v3 completion:v14];
+    [serviceWithDefaultShellEndpoint openApplication:v11 withOptions:v3 completion:v14];
   }
 
 LABEL_11:
@@ -314,10 +314,10 @@ void __35__EDClientResumer_resumeForUpdates__block_invoke_15(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
   v11 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) <= 1 && self->_assertion != 0)
+  if ((changed - 1) <= 1 && self->_assertion != 0)
   {
     v6 = +[EDClientResumer log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

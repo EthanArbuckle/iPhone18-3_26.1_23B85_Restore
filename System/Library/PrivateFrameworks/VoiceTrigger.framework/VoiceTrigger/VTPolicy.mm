@@ -3,12 +3,12 @@
 - (BOOL)_checkAllConditionsEnabled;
 - (BOOL)isEnabled;
 - (VTPolicy)init;
-- (void)VTEventMonitorDidReceiveEvent:(id)a3;
-- (void)addConditions:(id)a3;
+- (void)VTEventMonitorDidReceiveEvent:(id)event;
+- (void)addConditions:(id)conditions;
 - (void)dealloc;
-- (void)notifyCallback:(BOOL)a3;
-- (void)setCallback:(id)a3;
-- (void)subscribeEventMonitor:(id)a3;
+- (void)notifyCallback:(BOOL)callback;
+- (void)setCallback:(id)callback;
+- (void)subscribeEventMonitor:(id)monitor;
 @end
 
 @implementation VTPolicy
@@ -58,7 +58,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)VTEventMonitorDidReceiveEvent:(id)a3
+- (void)VTEventMonitorDidReceiveEvent:(id)event
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -84,7 +84,7 @@ void *__42__VTPolicy_VTEventMonitorDidReceiveEvent___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)notifyCallback:(BOOL)a3
+- (void)notifyCallback:(BOOL)callback
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -92,7 +92,7 @@ void *__42__VTPolicy_VTEventMonitorDidReceiveEvent___block_invoke(uint64_t a1)
   v4[2] = __27__VTPolicy_notifyCallback___block_invoke;
   v4[3] = &unk_2784ED0F0;
   v4[4] = self;
-  v5 = a3;
+  callbackCopy = callback;
   dispatch_async(queue, v4);
 }
 
@@ -133,17 +133,17 @@ uint64_t __21__VTPolicy_isEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)subscribeEventMonitor:(id)a3
+- (void)subscribeEventMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__VTPolicy_subscribeEventMonitor___block_invoke;
   v7[3] = &unk_2784ED118;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = monitorCopy;
+  selfCopy = self;
+  v6 = monitorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -156,17 +156,17 @@ uint64_t __34__VTPolicy_subscribeEventMonitor___block_invoke(uint64_t a1)
   return [v3 addObject:v2];
 }
 
-- (void)addConditions:(id)a3
+- (void)addConditions:(id)conditions
 {
-  v4 = a3;
+  conditionsCopy = conditions;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__VTPolicy_addConditions___block_invoke;
   v7[3] = &unk_2784ECD30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = conditionsCopy;
+  v6 = conditionsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -225,9 +225,9 @@ void __19__VTPolicy_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  self->_callback = MEMORY[0x223DF24E0](a3, a2);
+  self->_callback = MEMORY[0x223DF24E0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
@@ -239,13 +239,13 @@ void __19__VTPolicy_dealloc__block_invoke(uint64_t a1)
   v2 = [(VTPolicy *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     monitors = v2->_monitors;
-    v2->_monitors = v3;
+    v2->_monitors = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     conditions = v2->_conditions;
-    v2->_conditions = v5;
+    v2->_conditions = array2;
 
     v7 = dispatch_queue_create("Serial VTPolicy queue", 0);
     queue = v2->_queue;

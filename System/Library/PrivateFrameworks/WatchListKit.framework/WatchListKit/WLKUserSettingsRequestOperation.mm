@@ -1,20 +1,20 @@
 @interface WLKUserSettingsRequestOperation
-- (id)_initWithAction:(unint64_t)a3 userSettings:(id)a4 caller:(id)a5 dsid:(id)a6 isMigration:(BOOL)a7;
+- (id)_initWithAction:(unint64_t)action userSettings:(id)settings caller:(id)caller dsid:(id)dsid isMigration:(BOOL)migration;
 - (void)processResponse;
 @end
 
 @implementation WLKUserSettingsRequestOperation
 
-- (id)_initWithAction:(unint64_t)a3 userSettings:(id)a4 caller:(id)a5 dsid:(id)a6 isMigration:(BOOL)a7
+- (id)_initWithAction:(unint64_t)action userSettings:(id)settings caller:(id)caller dsid:(id)dsid isMigration:(BOOL)migration
 {
-  v7 = a7;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a3 == 1)
+  migrationCopy = migration;
+  settingsCopy = settings;
+  callerCopy = caller;
+  dsidCopy = dsid;
+  if (action == 1)
   {
-    WLKRequireNonNilParameter(v12);
-    if (v7)
+    WLKRequireNonNilParameter(settingsCopy);
+    if (migrationCopy)
     {
       v16 = &unk_288222E50;
     }
@@ -24,19 +24,19 @@
       v16 = 0;
     }
 
-    v17 = [v12 _patchData];
-    v15 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"user/settings" queryParameters:v16 httpMethod:@"PATCH" httpBody:v17 headers:&unk_288222E78 caller:v13 timeout:0 apiVersion:&unk_288222CC8 options:0x200000];
+    _patchData = [settingsCopy _patchData];
+    v15 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"user/settings" queryParameters:v16 httpMethod:@"PATCH" httpBody:_patchData headers:&unk_288222E78 caller:callerCopy timeout:0 apiVersion:&unk_288222CC8 options:0x200000];
   }
 
-  else if (a3)
+  else if (action)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid action provided (%ld)", a3}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Invalid action provided (%ld)", action}];
     v15 = 0;
   }
 
   else
   {
-    v15 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"user/settings" queryParameters:0 httpMethod:@"GET" httpBody:0 headers:0 caller:v13 timeout:0 apiVersion:&unk_288222CC8 options:2097160];
+    v15 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"user/settings" queryParameters:0 httpMethod:@"GET" httpBody:0 headers:0 caller:callerCopy timeout:0 apiVersion:&unk_288222CC8 options:2097160];
   }
 
   v26.receiver = self;
@@ -45,16 +45,16 @@
   v19 = v18;
   if (v18)
   {
-    v18->_action = a3;
-    v20 = [v12 copy];
+    v18->_action = action;
+    v20 = [settingsCopy copy];
     userSettings = v19->_userSettings;
     v19->_userSettings = v20;
 
-    v22 = [v13 copy];
+    v22 = [callerCopy copy];
     caller = v19->_caller;
     v19->_caller = v22;
 
-    v24 = [v14 copy];
+    v24 = [dsidCopy copy];
     [(WLKNetworkRequestOperation *)v19 setDSID:v24];
   }
 
@@ -65,8 +65,8 @@
 {
   v6 = objc_alloc_init(WLKDictionaryResponseProcessor);
   [(WLKDictionaryResponseProcessor *)v6 setObjectClass:objc_opt_class()];
-  v3 = [(WLKNetworkRequestOperation *)self data];
-  v4 = [(WLKDictionaryResponseProcessor *)v6 processResponseData:v3 error:0];
+  data = [(WLKNetworkRequestOperation *)self data];
+  v4 = [(WLKDictionaryResponseProcessor *)v6 processResponseData:data error:0];
   response = self->_response;
   self->_response = v4;
 }

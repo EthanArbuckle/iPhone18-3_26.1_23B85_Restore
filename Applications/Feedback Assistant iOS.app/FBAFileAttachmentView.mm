@@ -1,16 +1,16 @@
 @interface FBAFileAttachmentView
-- (FBAFileAttachmentView)initWithFileName:(id)a3 requirement:(id)a4 font:(id)a5 textColor:(id)a6;
-- (void)initializeWithFileName:(id)a3 requirement:(id)a4 font:(id)a5 textColor:(id)a6;
+- (FBAFileAttachmentView)initWithFileName:(id)name requirement:(id)requirement font:(id)font textColor:(id)color;
+- (void)initializeWithFileName:(id)name requirement:(id)requirement font:(id)font textColor:(id)color;
 @end
 
 @implementation FBAFileAttachmentView
 
-- (FBAFileAttachmentView)initWithFileName:(id)a3 requirement:(id)a4 font:(id)a5 textColor:(id)a6
+- (FBAFileAttachmentView)initWithFileName:(id)name requirement:(id)requirement font:(id)font textColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  requirementCopy = requirement;
+  fontCopy = font;
+  colorCopy = color;
   v17.receiver = self;
   v17.super_class = FBAFileAttachmentView;
   v14 = [(FBAFileAttachmentView *)&v17 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -18,44 +18,44 @@
   if (v14)
   {
     [(FBAFileAttachmentView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(FBAFileAttachmentView *)v15 initializeWithFileName:v10 requirement:v11 font:v12 textColor:v13];
+    [(FBAFileAttachmentView *)v15 initializeWithFileName:nameCopy requirement:requirementCopy font:fontCopy textColor:colorCopy];
   }
 
   return v15;
 }
 
-- (void)initializeWithFileName:(id)a3 requirement:(id)a4 font:(id)a5 textColor:(id)a6
+- (void)initializeWithFileName:(id)name requirement:(id)requirement font:(id)font textColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  requirementCopy = requirement;
+  fontCopy = font;
+  colorCopy = color;
   v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v14 setNumberOfLines:0];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v14 setFont:v12];
-  [v14 setTextColor:v13];
+  [v14 setFont:fontCopy];
+  [v14 setTextColor:colorCopy];
 
   [(FBAFileAttachmentView *)self addSubview:v14];
-  [v14 setText:v10];
-  v34 = v11;
-  if (v10)
+  [v14 setText:nameCopy];
+  v34 = requirementCopy;
+  if (nameCopy)
   {
-    v15 = [FBKFileMatcher iconForFileName:v10];
+    iconForRequirement = [FBKFileMatcher iconForFileName:nameCopy];
   }
 
   else
   {
-    if (!v11)
+    if (!requirementCopy)
     {
       v16 = 0;
       goto LABEL_6;
     }
 
-    v15 = [v11 iconForRequirement];
+    iconForRequirement = [requirementCopy iconForRequirement];
   }
 
-  v16 = v15;
+  v16 = iconForRequirement;
 LABEL_6:
   v17 = [[UIImageView alloc] initWithImage:v16];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -74,7 +74,7 @@ LABEL_6:
   v23 = v22;
   [v16 size];
   v25 = v23 / v24;
-  [v12 pointSize];
+  [fontCopy pointSize];
   v27 = v26 * 1.1 * v25;
   v37 = @"height";
   v28 = [NSNumber numberWithDouble:?];

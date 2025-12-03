@@ -1,35 +1,35 @@
 @interface StickerDataSource
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4;
-- (id)stickersForAchievement:(id)a3;
-- (id)stickersForAchievements:(id)a3;
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3;
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index;
+- (id)stickersForAchievement:(id)achievement;
+- (id)stickersForAchievements:(id)achievements;
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view;
 @end
 
 @implementation StickerDataSource
 
-- (int64_t)numberOfStickersInStickerBrowserView:(id)a3
+- (int64_t)numberOfStickersInStickerBrowserView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = sub_10000BDD4();
 
   return v6;
 }
 
-- (id)stickerBrowserView:(id)a3 stickerAtIndex:(int64_t)a4
+- (id)stickerBrowserView:(id)view stickerAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10000BFC4(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10000BFC4(index);
 
   return v8;
 }
 
-- (id)stickersForAchievements:(id)a3
+- (id)stickersForAchievements:(id)achievements
 {
   sub_10000BAB0(0, &qword_100018B50, ACHAchievement_ptr);
   v4 = sub_10000FAAC();
-  v5 = self;
+  selfCopy = self;
   sub_100003B38(v4);
 
   sub_10000BAB0(0, &qword_100018B38, MSSticker_ptr);
@@ -38,11 +38,11 @@
   return v6.super.isa;
 }
 
-- (id)stickersForAchievement:(id)a3
+- (id)stickersForAchievement:(id)achievement
 {
-  v4 = a3;
-  v5 = self;
-  sub_100004D44(v4);
+  achievementCopy = achievement;
+  selfCopy = self;
+  sub_100004D44(achievementCopy);
 
   sub_10000BAB0(0, &qword_100018B38, MSSticker_ptr);
   v6.super.isa = sub_10000FA9C().super.isa;

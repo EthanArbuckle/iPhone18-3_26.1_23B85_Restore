@@ -1,8 +1,8 @@
 @interface HUInputSourceItemModule
-+ (id)_serviceItemComparatorForTelevisionProfile:(id)a3;
++ (id)_serviceItemComparatorForTelevisionProfile:(id)profile;
 + (id)supportedServiceTypes;
-- (BOOL)canToggleConfigurationStateForItem:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)canToggleConfigurationStateForItem:(id)item;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUInputSourceItemModule
@@ -16,16 +16,16 @@
   return v2;
 }
 
-+ (id)_serviceItemComparatorForTelevisionProfile:(id)a3
++ (id)_serviceItemComparatorForTelevisionProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__HUInputSourceItemModule__serviceItemComparatorForTelevisionProfile___block_invoke;
   v8[3] = &unk_277DBB948;
-  v9 = v4;
-  v10 = a1;
-  v5 = v4;
+  v9 = profileCopy;
+  selfCopy = self;
+  v5 = profileCopy;
   v6 = _Block_copy(v8);
 
   return v6;
@@ -53,24 +53,24 @@ uint64_t __70__HUInputSourceItemModule__serviceItemComparatorForTelevisionProfil
   return v12;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
-  v6 = [v5 items];
+  itemsCopy = items;
+  childServiceItemProvider = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
+  items = [childServiceItemProvider items];
 
-  if ([v6 intersectsSet:v4])
+  if ([items intersectsSet:itemsCopy])
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUInputSourceItemSectionIdentifier"];
-    v8 = [(HUChildServiceEditorItemModule *)self accessory];
-    v9 = [v8 televisionProfiles];
-    v10 = [v9 firstObject];
+    accessory = [(HUChildServiceEditorItemModule *)self accessory];
+    televisionProfiles = [accessory televisionProfiles];
+    firstObject = [televisionProfiles firstObject];
 
-    v11 = [objc_opt_class() _serviceItemComparatorForTelevisionProfile:v10];
-    v12 = [v6 na_setByIntersectingWithSet:v4];
-    v13 = [v12 allObjects];
-    v14 = [v13 sortedArrayUsingComparator:v11];
+    v11 = [objc_opt_class() _serviceItemComparatorForTelevisionProfile:firstObject];
+    v12 = [items na_setByIntersectingWithSet:itemsCopy];
+    allObjects = [v12 allObjects];
+    v14 = [allObjects sortedArrayUsingComparator:v11];
 
     [v7 setItems:v14];
     v15 = _HULocalizedStringWithDefaultValue(@"HUTelevisionSettingsInputHeaderTitle", @"HUTelevisionSettingsInputHeaderTitle", 1);
@@ -88,18 +88,18 @@ uint64_t __70__HUInputSourceItemModule__serviceItemComparatorForTelevisionProfil
   return v16;
 }
 
-- (BOOL)canToggleConfigurationStateForItem:(id)a3
+- (BOOL)canToggleConfigurationStateForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13B20]];
-  v7 = [v6 BOOLValue];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13B20]];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v10.receiver = self;
     v10.super_class = HUInputSourceItemModule;
-    v8 = [(HUChildServiceEditorItemModule *)&v10 canToggleConfigurationStateForItem:v4];
+    v8 = [(HUChildServiceEditorItemModule *)&v10 canToggleConfigurationStateForItem:itemCopy];
   }
 
   else

@@ -1,12 +1,12 @@
 @interface MPCModelGenericAVItemUserIdentityPropertySet
-- (MPCModelGenericAVItemUserIdentityPropertySet)initWithRequestContext:(id)a3 error:(id *)a4;
+- (MPCModelGenericAVItemUserIdentityPropertySet)initWithRequestContext:(id)context error:(id *)error;
 @end
 
 @implementation MPCModelGenericAVItemUserIdentityPropertySet
 
-- (MPCModelGenericAVItemUserIdentityPropertySet)initWithRequestContext:(id)a3 error:(id *)a4
+- (MPCModelGenericAVItemUserIdentityPropertySet)initWithRequestContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = MPCModelGenericAVItemUserIdentityPropertySet;
   v7 = [(MPCModelGenericAVItemUserIdentityPropertySet *)&v18 init];
@@ -15,35 +15,35 @@
     goto LABEL_13;
   }
 
-  v8 = [v6 identity];
-  if (!v8)
+  identity = [contextCopy identity];
+  if (!identity)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:67 debugDescription:{@"No user identity for requestContext: %@", v6}];
+      *error = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:67 debugDescription:{@"No user identity for requestContext: %@", contextCopy}];
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v6 identityStore];
-  v10 = [v9 getPropertiesForUserIdentity:v8 error:a4];
+  identityStore = [contextCopy identityStore];
+  v10 = [identityStore getPropertiesForUserIdentity:identity error:error];
   identityProperties = v7->_identityProperties;
   v7->_identityProperties = v10;
 
-  if (!a4 || !*a4)
+  if (!error || !*error)
   {
-    v12 = [v6 delegatedIdentity];
-    if (v12)
+    delegatedIdentity = [contextCopy delegatedIdentity];
+    if (delegatedIdentity)
     {
-      v13 = [v6 identityStore];
-      v14 = [v13 getPropertiesForUserIdentity:v12 error:a4];
+      identityStore2 = [contextCopy identityStore];
+      v14 = [identityStore2 getPropertiesForUserIdentity:delegatedIdentity error:error];
       delegatedIdentityProperties = v7->_delegatedIdentityProperties;
       v7->_delegatedIdentityProperties = v14;
 
-      if (a4)
+      if (error)
       {
-        if (*a4)
+        if (*error)
         {
 
           goto LABEL_11;

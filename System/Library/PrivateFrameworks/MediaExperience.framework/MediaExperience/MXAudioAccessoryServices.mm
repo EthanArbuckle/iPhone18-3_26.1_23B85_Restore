@@ -2,19 +2,19 @@
 + (id)sharedInstance;
 - (BOOL)isAnyManagedDeviceConnected;
 - (MXAudioAccessoryServices)init;
-- (id)copyDeviceAddressFromVADPort:(unsigned int)a3;
+- (id)copyDeviceAddressFromVADPort:(unsigned int)port;
 - (id)copyHighestPriorityLocalSession;
 - (void)clearDevicesStateCache;
-- (void)copyPreferredDeviceAddress:(id *)a3 andPreemptivePortInfo:(id *)a4;
+- (void)copyPreferredDeviceAddress:(id *)address andPreemptivePortInfo:(id *)info;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 - (void)finalizeAudioAccessoryConnection;
 - (void)handleBTNotificationAudioRoutingChange;
-- (void)handlePortDisconnected:(unsigned int)a3;
+- (void)handlePortDisconnected:(unsigned int)disconnected;
 - (void)handleServerDeath;
 - (void)initializeAudioAccessoryConnection;
-- (void)routeToBTDeviceIfNeeded:(id)a3;
-- (void)updateDeviceManagementState:(id)a3 reason:(id)a4;
+- (void)routeToBTDeviceIfNeeded:(id)needed;
+- (void)updateDeviceManagementState:(id)state reason:(id)reason;
 @end
 
 @implementation MXAudioAccessoryServices
@@ -193,10 +193,10 @@ uint64_t __32__MXAudioAccessoryServices_init__block_invoke_4()
   v5 = objc_alloc_init(*(v4 + 1112));
   self->mAudioRoutingRequest = v5;
   [(BTAudioRoutingRequest *)v5 setDispatchQueue:self->mSerialQueue];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   mAudioRoutingRequest = self->mAudioRoutingRequest;
 
-  [v6 addObserver:self selector:sel_handleServerDeath name:@"AudioAccessorydDiedNotification" object:mAudioRoutingRequest];
+  [defaultCenter addObserver:self selector:sel_handleServerDeath name:@"AudioAccessorydDiedNotification" object:mAudioRoutingRequest];
 }
 
 - (void)finalizeAudioAccessoryConnection
@@ -233,7 +233,7 @@ uint64_t __45__MXAudioAccessoryServices_handleServerDeath__block_invoke(uint64_t
   return [v2 initializeAudioAccessoryConnection];
 }
 
-- (void)routeToBTDeviceIfNeeded:(id)a3
+- (void)routeToBTDeviceIfNeeded:(id)needed
 {
   v17 = *MEMORY[0x1E69E9840];
   IsBluetoothSharingSessionEnabled = CMSMVAUtility_IsBluetoothSharingSessionEnabled(0);
@@ -247,10 +247,10 @@ uint64_t __45__MXAudioAccessoryServices_handleServerDeath__block_invoke(uint64_t
     goto LABEL_23;
   }
 
-  if (!a3)
+  if (!needed)
   {
     ArrayFromPortIDAndPartners = [(MXAudioAccessoryServices *)self copyHighestPriorityLocalSession];
-    v10 = [(__CFArray *)ArrayFromPortIDAndPartners displayID];
+    displayID = [(__CFArray *)ArrayFromPortIDAndPartners displayID];
     LocalSessionPriority = CMSM_GetLocalSessionPriority(ArrayFromPortIDAndPartners, 1);
     if (!CMSUtility_IsSessionRouteEligibleForTipi(ArrayFromPortIDAndPartners))
     {
@@ -264,7 +264,7 @@ uint64_t __45__MXAudioAccessoryServices_handleServerDeath__block_invoke(uint64_t
       goto LABEL_22;
     }
 
-    v12 = [(MXAudioAccessoryServices *)self copyPreferredDeviceAddress:LocalSessionPriority bundleID:v10 isHypotheticalQuery:0 reason:@"Device became managed"];
+    v12 = [(MXAudioAccessoryServices *)self copyPreferredDeviceAddress:LocalSessionPriority bundleID:displayID isHypotheticalQuery:0 reason:@"Device became managed"];
     if (dword_1EB75DE40)
     {
       v13 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -289,7 +289,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  A2DPPort = cmsmGetA2DPPort(a3);
+  A2DPPort = cmsmGetA2DPPort(needed);
   if (!A2DPPort)
   {
     goto LABEL_23;
@@ -435,15 +435,15 @@ LABEL_23:
   vaemUpdateSharedAudioRouteState([v27 allObjects], objc_msgSend(v3, "allObjects"));
   if ((v11 & 1) != 0 && [v3 count])
   {
-    v23 = [v3 allObjects];
+    allObjects = [v3 allObjects];
 LABEL_31:
-    [(MXAudioAccessoryServices *)self routeToBTDeviceIfNeeded:v23];
+    [(MXAudioAccessoryServices *)self routeToBTDeviceIfNeeded:allObjects];
     goto LABEL_32;
   }
 
   if ([v27 count] && !objc_msgSend(v3, "count"))
   {
-    v23 = 0;
+    allObjects = 0;
     goto LABEL_31;
   }
 
@@ -453,7 +453,7 @@ LABEL_32:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyDeviceAddressFromVADPort:(unsigned int)a3
+- (id)copyDeviceAddressFromVADPort:(unsigned int)port
 {
   v8 = 0;
   v9 = &v8;
@@ -468,7 +468,7 @@ LABEL_32:
   v6[3] = &unk_1E7AEC940;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  portCopy = port;
   MXDispatchSync("[MXAudioAccessoryServices copyDeviceAddressFromVADPort:]", "MX_AudioAccessoryServices.m", 437, 0, 0, mSerialQueue, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -499,20 +499,20 @@ uint64_t __57__MXAudioAccessoryServices_copyDeviceAddressFromVADPort___block_inv
   return result;
 }
 
-- (void)updateDeviceManagementState:(id)a3 reason:(id)a4
+- (void)updateDeviceManagementState:(id)state reason:(id)reason
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (state)
   {
-    v7 = a3;
+    stateCopy = state;
     mSerialQueue = self->mSerialQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __63__MXAudioAccessoryServices_updateDeviceManagementState_reason___block_invoke;
     v11[3] = &unk_1E7AEC990;
     v11[4] = self;
-    v11[5] = a3;
-    v11[6] = a4;
+    v11[5] = state;
+    v11[6] = reason;
     MXDispatchAsync("[MXAudioAccessoryServices updateDeviceManagementState:reason:]", "MX_AudioAccessoryServices.m", 463, 0, 0, mSerialQueue, v11);
   }
 
@@ -662,7 +662,7 @@ void __59__MXAudioAccessoryServices_handleNewWirelessPortConnected___block_invok
   v2 = *(a1 + 40);
 }
 
-- (void)handlePortDisconnected:(unsigned int)a3
+- (void)handlePortDisconnected:(unsigned int)disconnected
 {
   v5 = [(MXAudioAccessoryServices *)self copyDeviceAddressFromVADPort:?];
   mSerialQueue = self->mSerialQueue;
@@ -670,7 +670,7 @@ void __59__MXAudioAccessoryServices_handleNewWirelessPortConnected___block_invok
   v7[1] = 3221225472;
   v7[2] = __51__MXAudioAccessoryServices_handlePortDisconnected___block_invoke;
   v7[3] = &unk_1E7AE7D58;
-  v8 = a3;
+  disconnectedCopy = disconnected;
   v7[4] = self;
   v7[5] = v5;
   MXDispatchAsync("[MXAudioAccessoryServices handlePortDisconnected:]", "MX_AudioAccessoryServices.m", 775, 0, 0, mSerialQueue, v7);
@@ -773,10 +773,10 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyPreferredDeviceAddress:(id *)a3 andPreemptivePortInfo:(id *)a4
+- (void)copyPreferredDeviceAddress:(id *)address andPreemptivePortInfo:(id *)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (address && info)
   {
     v18 = 0;
     v19 = &v18;
@@ -799,8 +799,8 @@ LABEL_13:
     v9[5] = &v12;
     v9[6] = &v18;
     MXDispatchSync("[MXAudioAccessoryServices copyPreferredDeviceAddress:andPreemptivePortInfo:]", "MX_AudioAccessoryServices.m", 819, 0, 0, mSerialQueue, v9);
-    *a3 = v13[5];
-    *a4 = v19[5];
+    *address = v13[5];
+    *info = v19[5];
     _Block_object_dispose(&v12, 8);
     _Block_object_dispose(&v18, 8);
   }

@@ -1,15 +1,15 @@
 @interface AFAudioSessionCoordinationSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationSnapshot)initWithBuilder:(id)a3;
-- (AFAudioSessionCoordinationSnapshot)initWithCoder:(id)a3;
-- (AFAudioSessionCoordinationSnapshot)initWithCurrentOrUpNextDateInterval:(id)a3 isAudioSessionActive:(BOOL)a4 localActiveAssertionContexts:(id)a5 localPendingAssertionContexts:(id)a6 remoteActiveAssertionContexts:(id)a7 remotePendingAssertionContexts:(id)a8 localDevice:(id)a9 remoteQualifiedInRangeDevices:(id)a10 remoteQualifiedOutOfRangeDevices:(id)a11 remoteDisqualifiedDevices:(id)a12;
-- (AFAudioSessionCoordinationSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationSnapshot)initWithBuilder:(id)builder;
+- (AFAudioSessionCoordinationSnapshot)initWithCoder:(id)coder;
+- (AFAudioSessionCoordinationSnapshot)initWithCurrentOrUpNextDateInterval:(id)interval isAudioSessionActive:(BOOL)active localActiveAssertionContexts:(id)contexts localPendingAssertionContexts:(id)assertionContexts remoteActiveAssertionContexts:(id)activeAssertionContexts remotePendingAssertionContexts:(id)pendingAssertionContexts localDevice:(id)device remoteQualifiedInRangeDevices:(id)self0 remoteQualifiedOutOfRangeDevices:(id)self1 remoteDisqualifiedDevices:(id)self2;
+- (AFAudioSessionCoordinationSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAudioSessionCoordinationSnapshot
@@ -50,8 +50,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v92 + 1) + 8 * i) buildDictionaryRepresentation];
-          [v7 addObject:v13];
+          buildDictionaryRepresentation = [*(*(&v92 + 1) + 8 * i) buildDictionaryRepresentation];
+          [v7 addObject:buildDictionaryRepresentation];
         }
 
         v10 = [(NSArray *)v8 countByEnumeratingWithState:&v92 objects:v102 count:16];
@@ -86,8 +86,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v88 + 1) + 8 * j) buildDictionaryRepresentation];
-          [v15 addObject:v21];
+          buildDictionaryRepresentation2 = [*(*(&v88 + 1) + 8 * j) buildDictionaryRepresentation];
+          [v15 addObject:buildDictionaryRepresentation2];
         }
 
         v18 = [(NSArray *)v16 countByEnumeratingWithState:&v88 objects:v101 count:16];
@@ -122,8 +122,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v84 + 1) + 8 * k) buildDictionaryRepresentation];
-          [v23 addObject:v29];
+          buildDictionaryRepresentation3 = [*(*(&v84 + 1) + 8 * k) buildDictionaryRepresentation];
+          [v23 addObject:buildDictionaryRepresentation3];
         }
 
         v26 = [(NSArray *)v24 countByEnumeratingWithState:&v84 objects:v100 count:16];
@@ -158,8 +158,8 @@
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v80 + 1) + 8 * m) buildDictionaryRepresentation];
-          [v31 addObject:v37];
+          buildDictionaryRepresentation4 = [*(*(&v80 + 1) + 8 * m) buildDictionaryRepresentation];
+          [v31 addObject:buildDictionaryRepresentation4];
         }
 
         v34 = [(NSArray *)v32 countByEnumeratingWithState:&v80 objects:v99 count:16];
@@ -175,8 +175,8 @@
   localDevice = self->_localDevice;
   if (localDevice)
   {
-    v40 = [(AFAudioSessionCoordinationDeviceInfo *)localDevice buildDictionaryRepresentation];
-    [v4 setObject:v40 forKey:@"localDevice"];
+    buildDictionaryRepresentation5 = [(AFAudioSessionCoordinationDeviceInfo *)localDevice buildDictionaryRepresentation];
+    [v4 setObject:buildDictionaryRepresentation5 forKey:@"localDevice"];
   }
 
   if (self->_remoteQualifiedInRangeDevices)
@@ -201,8 +201,8 @@
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v76 + 1) + 8 * n) buildDictionaryRepresentation];
-          [v41 addObject:v47];
+          buildDictionaryRepresentation6 = [*(*(&v76 + 1) + 8 * n) buildDictionaryRepresentation];
+          [v41 addObject:buildDictionaryRepresentation6];
         }
 
         v44 = [(NSArray *)v42 countByEnumeratingWithState:&v76 objects:v98 count:16];
@@ -237,8 +237,8 @@
             objc_enumerationMutation(v50);
           }
 
-          v55 = [*(*(&v72 + 1) + 8 * ii) buildDictionaryRepresentation];
-          [v49 addObject:v55];
+          buildDictionaryRepresentation7 = [*(*(&v72 + 1) + 8 * ii) buildDictionaryRepresentation];
+          [v49 addObject:buildDictionaryRepresentation7];
         }
 
         v52 = [(NSArray *)v50 countByEnumeratingWithState:&v72 objects:v97 count:16];
@@ -273,8 +273,8 @@
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v68 + 1) + 8 * jj) buildDictionaryRepresentation];
-          [v57 addObject:v63];
+          buildDictionaryRepresentation8 = [*(*(&v68 + 1) + 8 * jj) buildDictionaryRepresentation];
+          [v57 addObject:buildDictionaryRepresentation8];
         }
 
         v60 = [(NSArray *)v58 countByEnumeratingWithState:&v68 objects:v96 count:16];
@@ -294,14 +294,14 @@
   return v65;
 }
 
-- (AFAudioSessionCoordinationSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFAudioSessionCoordinationSnapshot)initWithDictionaryRepresentation:(id)representation
 {
   v131 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"currentOrUpNextDateInterval"];
+    v6 = [representationCopy objectForKey:@"currentOrUpNextDateInterval"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -315,7 +315,7 @@
 
     v8 = [v5 objectForKey:@"isAudioSessionActive"];
     objc_opt_class();
-    v93 = self;
+    selfCopy = self;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -326,7 +326,7 @@
       v9 = 0;
     }
 
-    v92 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
     v10 = [v5 objectForKey:@"localActiveAssertionContexts"];
     v11 = 0x1E695D000uLL;
     objc_opt_class();
@@ -762,88 +762,88 @@
       v82 = 0;
     }
 
-    self = [(AFAudioSessionCoordinationSnapshot *)v93 initWithCurrentOrUpNextDateInterval:v94 isAudioSessionActive:v92 localActiveAssertionContexts:v91 localPendingAssertionContexts:v90 remoteActiveAssertionContexts:v89 remotePendingAssertionContexts:v88 localDevice:v87 remoteQualifiedInRangeDevices:v61 remoteQualifiedOutOfRangeDevices:v85 remoteDisqualifiedDevices:v82];
-    v7 = self;
+    self = [(AFAudioSessionCoordinationSnapshot *)selfCopy initWithCurrentOrUpNextDateInterval:v94 isAudioSessionActive:bOOLValue localActiveAssertionContexts:v91 localPendingAssertionContexts:v90 remoteActiveAssertionContexts:v89 remotePendingAssertionContexts:v88 localDevice:v87 remoteQualifiedInRangeDevices:v61 remoteQualifiedOutOfRangeDevices:v85 remoteDisqualifiedDevices:v82];
+    selfCopy2 = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy2 = 0;
   }
 
   v83 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentOrUpNextDateInterval = self->_currentOrUpNextDateInterval;
-  v6 = a3;
-  [v6 encodeObject:currentOrUpNextDateInterval forKey:@"AFAudioSessionCoordinationSnapshot::currentOrUpNextDateInterval"];
+  coderCopy = coder;
+  [coderCopy encodeObject:currentOrUpNextDateInterval forKey:@"AFAudioSessionCoordinationSnapshot::currentOrUpNextDateInterval"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAudioSessionActive];
-  [v6 encodeObject:v5 forKey:@"AFAudioSessionCoordinationSnapshot::isAudioSessionActive"];
+  [coderCopy encodeObject:v5 forKey:@"AFAudioSessionCoordinationSnapshot::isAudioSessionActive"];
 
-  [v6 encodeObject:self->_localActiveAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::localActiveAssertionContexts"];
-  [v6 encodeObject:self->_localPendingAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::localPendingAssertionContexts"];
-  [v6 encodeObject:self->_remoteActiveAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::remoteActiveAssertionContexts"];
-  [v6 encodeObject:self->_remotePendingAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::remotePendingAssertionContexts"];
-  [v6 encodeObject:self->_localDevice forKey:@"AFAudioSessionCoordinationSnapshot::localDevice"];
-  [v6 encodeObject:self->_remoteQualifiedInRangeDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedInRangeDevices"];
-  [v6 encodeObject:self->_remoteQualifiedOutOfRangeDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedOutOfRangeDevices"];
-  [v6 encodeObject:self->_remoteDisqualifiedDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteDisqualifiedDevices"];
+  [coderCopy encodeObject:self->_localActiveAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::localActiveAssertionContexts"];
+  [coderCopy encodeObject:self->_localPendingAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::localPendingAssertionContexts"];
+  [coderCopy encodeObject:self->_remoteActiveAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::remoteActiveAssertionContexts"];
+  [coderCopy encodeObject:self->_remotePendingAssertionContexts forKey:@"AFAudioSessionCoordinationSnapshot::remotePendingAssertionContexts"];
+  [coderCopy encodeObject:self->_localDevice forKey:@"AFAudioSessionCoordinationSnapshot::localDevice"];
+  [coderCopy encodeObject:self->_remoteQualifiedInRangeDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedInRangeDevices"];
+  [coderCopy encodeObject:self->_remoteQualifiedOutOfRangeDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedOutOfRangeDevices"];
+  [coderCopy encodeObject:self->_remoteDisqualifiedDevices forKey:@"AFAudioSessionCoordinationSnapshot::remoteDisqualifiedDevices"];
 }
 
-- (AFAudioSessionCoordinationSnapshot)initWithCoder:(id)a3
+- (AFAudioSessionCoordinationSnapshot)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::currentOrUpNextDateInterval"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::isAudioSessionActive"];
-  v36 = [v4 BOOLValue];
+  coderCopy = coder;
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::currentOrUpNextDateInterval"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::isAudioSessionActive"];
+  bOOLValue = [v4 BOOLValue];
 
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v35 = [v3 decodeObjectOfClasses:v7 forKey:@"AFAudioSessionCoordinationSnapshot::localActiveAssertionContexts"];
+  v35 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AFAudioSessionCoordinationSnapshot::localActiveAssertionContexts"];
 
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v34 = [v3 decodeObjectOfClasses:v10 forKey:@"AFAudioSessionCoordinationSnapshot::localPendingAssertionContexts"];
+  v34 = [coderCopy decodeObjectOfClasses:v10 forKey:@"AFAudioSessionCoordinationSnapshot::localPendingAssertionContexts"];
 
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"AFAudioSessionCoordinationSnapshot::remoteActiveAssertionContexts"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"AFAudioSessionCoordinationSnapshot::remoteActiveAssertionContexts"];
 
   v15 = MEMORY[0x1E695DFD8];
   v16 = objc_opt_class();
   v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"AFAudioSessionCoordinationSnapshot::remotePendingAssertionContexts"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"AFAudioSessionCoordinationSnapshot::remotePendingAssertionContexts"];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::localDevice"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAudioSessionCoordinationSnapshot::localDevice"];
   v20 = MEMORY[0x1E695DFD8];
   v21 = objc_opt_class();
   v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-  v23 = [v3 decodeObjectOfClasses:v22 forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedInRangeDevices"];
+  v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedInRangeDevices"];
 
   v24 = MEMORY[0x1E695DFD8];
   v25 = objc_opt_class();
   v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-  v27 = [v3 decodeObjectOfClasses:v26 forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedOutOfRangeDevices"];
+  v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"AFAudioSessionCoordinationSnapshot::remoteQualifiedOutOfRangeDevices"];
 
   v28 = MEMORY[0x1E695DFD8];
   v29 = objc_opt_class();
   v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-  v31 = [v3 decodeObjectOfClasses:v30 forKey:@"AFAudioSessionCoordinationSnapshot::remoteDisqualifiedDevices"];
+  v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"AFAudioSessionCoordinationSnapshot::remoteDisqualifiedDevices"];
 
-  v32 = [(AFAudioSessionCoordinationSnapshot *)self initWithCurrentOrUpNextDateInterval:v37 isAudioSessionActive:v36 localActiveAssertionContexts:v35 localPendingAssertionContexts:v34 remoteActiveAssertionContexts:v14 remotePendingAssertionContexts:v18 localDevice:v19 remoteQualifiedInRangeDevices:v23 remoteQualifiedOutOfRangeDevices:v27 remoteDisqualifiedDevices:v31];
+  v32 = [(AFAudioSessionCoordinationSnapshot *)self initWithCurrentOrUpNextDateInterval:v37 isAudioSessionActive:bOOLValue localActiveAssertionContexts:v35 localPendingAssertionContexts:v34 remoteActiveAssertionContexts:v14 remotePendingAssertionContexts:v18 localDevice:v19 remoteQualifiedInRangeDevices:v23 remoteQualifiedOutOfRangeDevices:v27 remoteDisqualifiedDevices:v31];
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
@@ -853,48 +853,48 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isAudioSessionActive = self->_isAudioSessionActive;
       if (isAudioSessionActive == [(AFAudioSessionCoordinationSnapshot *)v5 isAudioSessionActive])
       {
-        v7 = [(AFAudioSessionCoordinationSnapshot *)v5 currentOrUpNextDateInterval];
+        currentOrUpNextDateInterval = [(AFAudioSessionCoordinationSnapshot *)v5 currentOrUpNextDateInterval];
         currentOrUpNextDateInterval = self->_currentOrUpNextDateInterval;
-        if (currentOrUpNextDateInterval == v7 || [(NSDateInterval *)currentOrUpNextDateInterval isEqual:v7])
+        if (currentOrUpNextDateInterval == currentOrUpNextDateInterval || [(NSDateInterval *)currentOrUpNextDateInterval isEqual:currentOrUpNextDateInterval])
         {
-          v9 = [(AFAudioSessionCoordinationSnapshot *)v5 localActiveAssertionContexts];
+          localActiveAssertionContexts = [(AFAudioSessionCoordinationSnapshot *)v5 localActiveAssertionContexts];
           localActiveAssertionContexts = self->_localActiveAssertionContexts;
-          if (localActiveAssertionContexts == v9 || [(NSArray *)localActiveAssertionContexts isEqual:v9])
+          if (localActiveAssertionContexts == localActiveAssertionContexts || [(NSArray *)localActiveAssertionContexts isEqual:localActiveAssertionContexts])
           {
-            v11 = [(AFAudioSessionCoordinationSnapshot *)v5 localPendingAssertionContexts];
+            localPendingAssertionContexts = [(AFAudioSessionCoordinationSnapshot *)v5 localPendingAssertionContexts];
             localPendingAssertionContexts = self->_localPendingAssertionContexts;
-            if (localPendingAssertionContexts == v11 || [(NSArray *)localPendingAssertionContexts isEqual:v11])
+            if (localPendingAssertionContexts == localPendingAssertionContexts || [(NSArray *)localPendingAssertionContexts isEqual:localPendingAssertionContexts])
             {
-              v13 = [(AFAudioSessionCoordinationSnapshot *)v5 remoteActiveAssertionContexts];
+              remoteActiveAssertionContexts = [(AFAudioSessionCoordinationSnapshot *)v5 remoteActiveAssertionContexts];
               remoteActiveAssertionContexts = self->_remoteActiveAssertionContexts;
-              if (remoteActiveAssertionContexts == v13 || [(NSArray *)remoteActiveAssertionContexts isEqual:v13])
+              if (remoteActiveAssertionContexts == remoteActiveAssertionContexts || [(NSArray *)remoteActiveAssertionContexts isEqual:remoteActiveAssertionContexts])
               {
-                v15 = [(AFAudioSessionCoordinationSnapshot *)v5 remotePendingAssertionContexts];
+                remotePendingAssertionContexts = [(AFAudioSessionCoordinationSnapshot *)v5 remotePendingAssertionContexts];
                 remotePendingAssertionContexts = self->_remotePendingAssertionContexts;
-                if (remotePendingAssertionContexts == v15 || [(NSArray *)remotePendingAssertionContexts isEqual:v15])
+                if (remotePendingAssertionContexts == remotePendingAssertionContexts || [(NSArray *)remotePendingAssertionContexts isEqual:remotePendingAssertionContexts])
                 {
-                  v17 = [(AFAudioSessionCoordinationSnapshot *)v5 localDevice];
+                  localDevice = [(AFAudioSessionCoordinationSnapshot *)v5 localDevice];
                   localDevice = self->_localDevice;
-                  if (localDevice == v17 || [(AFAudioSessionCoordinationDeviceInfo *)localDevice isEqual:v17])
+                  if (localDevice == localDevice || [(AFAudioSessionCoordinationDeviceInfo *)localDevice isEqual:localDevice])
                   {
-                    v19 = [(AFAudioSessionCoordinationSnapshot *)v5 remoteQualifiedInRangeDevices];
+                    remoteQualifiedInRangeDevices = [(AFAudioSessionCoordinationSnapshot *)v5 remoteQualifiedInRangeDevices];
                     remoteQualifiedInRangeDevices = self->_remoteQualifiedInRangeDevices;
-                    if (remoteQualifiedInRangeDevices == v19 || [(NSArray *)remoteQualifiedInRangeDevices isEqual:v19])
+                    if (remoteQualifiedInRangeDevices == remoteQualifiedInRangeDevices || [(NSArray *)remoteQualifiedInRangeDevices isEqual:remoteQualifiedInRangeDevices])
                     {
-                      v28 = v17;
-                      v21 = [(AFAudioSessionCoordinationSnapshot *)v5 remoteQualifiedOutOfRangeDevices];
+                      v28 = localDevice;
+                      remoteQualifiedOutOfRangeDevices = [(AFAudioSessionCoordinationSnapshot *)v5 remoteQualifiedOutOfRangeDevices];
                       remoteQualifiedOutOfRangeDevices = self->_remoteQualifiedOutOfRangeDevices;
-                      if (remoteQualifiedOutOfRangeDevices == v21 || [(NSArray *)remoteQualifiedOutOfRangeDevices isEqual:v21])
+                      if (remoteQualifiedOutOfRangeDevices == remoteQualifiedOutOfRangeDevices || [(NSArray *)remoteQualifiedOutOfRangeDevices isEqual:remoteQualifiedOutOfRangeDevices])
                       {
-                        v23 = [(AFAudioSessionCoordinationSnapshot *)v5 remoteDisqualifiedDevices];
+                        remoteDisqualifiedDevices = [(AFAudioSessionCoordinationSnapshot *)v5 remoteDisqualifiedDevices];
                         remoteDisqualifiedDevices = self->_remoteDisqualifiedDevices;
-                        v25 = remoteDisqualifiedDevices == v23 || [(NSArray *)remoteDisqualifiedDevices isEqual:v23];
+                        v25 = remoteDisqualifiedDevices == remoteDisqualifiedDevices || [(NSArray *)remoteDisqualifiedDevices isEqual:remoteDisqualifiedDevices];
 
-                        v19 = v27;
+                        remoteQualifiedInRangeDevices = v27;
                       }
 
                       else
@@ -902,7 +902,7 @@
                         v25 = 0;
                       }
 
-                      v17 = v28;
+                      localDevice = v28;
                     }
 
                     else
@@ -979,7 +979,7 @@
   return v11 ^ v13;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10.receiver = self;
@@ -1001,40 +1001,40 @@
   return v8;
 }
 
-- (AFAudioSessionCoordinationSnapshot)initWithCurrentOrUpNextDateInterval:(id)a3 isAudioSessionActive:(BOOL)a4 localActiveAssertionContexts:(id)a5 localPendingAssertionContexts:(id)a6 remoteActiveAssertionContexts:(id)a7 remotePendingAssertionContexts:(id)a8 localDevice:(id)a9 remoteQualifiedInRangeDevices:(id)a10 remoteQualifiedOutOfRangeDevices:(id)a11 remoteDisqualifiedDevices:(id)a12
+- (AFAudioSessionCoordinationSnapshot)initWithCurrentOrUpNextDateInterval:(id)interval isAudioSessionActive:(BOOL)active localActiveAssertionContexts:(id)contexts localPendingAssertionContexts:(id)assertionContexts remoteActiveAssertionContexts:(id)activeAssertionContexts remotePendingAssertionContexts:(id)pendingAssertionContexts localDevice:(id)device remoteQualifiedInRangeDevices:(id)self0 remoteQualifiedOutOfRangeDevices:(id)self1 remoteDisqualifiedDevices:(id)self2
 {
-  v35 = a3;
-  v34 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  intervalCopy = interval;
+  contextsCopy = contexts;
+  assertionContextsCopy = assertionContexts;
+  activeAssertionContextsCopy = activeAssertionContexts;
+  pendingAssertionContextsCopy = pendingAssertionContexts;
+  deviceCopy = device;
+  devicesCopy = devices;
+  rangeDevicesCopy = rangeDevices;
+  disqualifiedDevicesCopy = disqualifiedDevices;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __316__AFAudioSessionCoordinationSnapshot_initWithCurrentOrUpNextDateInterval_isAudioSessionActive_localActiveAssertionContexts_localPendingAssertionContexts_remoteActiveAssertionContexts_remotePendingAssertionContexts_localDevice_remoteQualifiedInRangeDevices_remoteQualifiedOutOfRangeDevices_remoteDisqualifiedDevices___block_invoke;
   v38[3] = &unk_1E7348090;
-  v48 = a4;
-  v39 = v35;
-  v40 = v34;
-  v41 = v16;
-  v42 = v17;
-  v43 = v18;
-  v44 = v19;
-  v45 = v20;
-  v46 = v21;
-  v47 = v22;
-  v23 = v22;
-  v24 = v21;
-  v25 = v20;
-  v26 = v19;
-  v27 = v18;
-  v28 = v17;
-  v29 = v16;
-  v30 = v34;
-  v31 = v35;
+  activeCopy = active;
+  v39 = intervalCopy;
+  v40 = contextsCopy;
+  v41 = assertionContextsCopy;
+  v42 = activeAssertionContextsCopy;
+  v43 = pendingAssertionContextsCopy;
+  v44 = deviceCopy;
+  v45 = devicesCopy;
+  v46 = rangeDevicesCopy;
+  v47 = disqualifiedDevicesCopy;
+  v23 = disqualifiedDevicesCopy;
+  v24 = rangeDevicesCopy;
+  v25 = devicesCopy;
+  v26 = deviceCopy;
+  v27 = pendingAssertionContextsCopy;
+  v28 = activeAssertionContextsCopy;
+  v29 = assertionContextsCopy;
+  v30 = contextsCopy;
+  v31 = intervalCopy;
   v32 = [(AFAudioSessionCoordinationSnapshot *)self initWithBuilder:v38];
 
   return v32;
@@ -1056,62 +1056,62 @@ void __316__AFAudioSessionCoordinationSnapshot_initWithCurrentOrUpNextDateInterv
   [v4 setRemoteDisqualifiedDevices:*(a1 + 96)];
 }
 
-- (AFAudioSessionCoordinationSnapshot)initWithBuilder:(id)a3
+- (AFAudioSessionCoordinationSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v36.receiver = self;
   v36.super_class = AFAudioSessionCoordinationSnapshot;
   v5 = [(AFAudioSessionCoordinationSnapshot *)&v36 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAudioSessionCoordinationSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAudioSessionCoordinationSnapshotMutation *)v7 isDirty])
     {
-      v8 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getCurrentOrUpNextDateInterval];
-      v9 = [v8 copy];
+      getCurrentOrUpNextDateInterval = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getCurrentOrUpNextDateInterval];
+      v9 = [getCurrentOrUpNextDateInterval copy];
       currentOrUpNextDateInterval = v6->_currentOrUpNextDateInterval;
       v6->_currentOrUpNextDateInterval = v9;
 
       v6->_isAudioSessionActive = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getIsAudioSessionActive];
-      v11 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalActiveAssertionContexts];
-      v12 = [v11 copy];
+      getLocalActiveAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalActiveAssertionContexts];
+      v12 = [getLocalActiveAssertionContexts copy];
       localActiveAssertionContexts = v6->_localActiveAssertionContexts;
       v6->_localActiveAssertionContexts = v12;
 
-      v14 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalPendingAssertionContexts];
-      v15 = [v14 copy];
+      getLocalPendingAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalPendingAssertionContexts];
+      v15 = [getLocalPendingAssertionContexts copy];
       localPendingAssertionContexts = v6->_localPendingAssertionContexts;
       v6->_localPendingAssertionContexts = v15;
 
-      v17 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteActiveAssertionContexts];
-      v18 = [v17 copy];
+      getRemoteActiveAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteActiveAssertionContexts];
+      v18 = [getRemoteActiveAssertionContexts copy];
       remoteActiveAssertionContexts = v6->_remoteActiveAssertionContexts;
       v6->_remoteActiveAssertionContexts = v18;
 
-      v20 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemotePendingAssertionContexts];
-      v21 = [v20 copy];
+      getRemotePendingAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemotePendingAssertionContexts];
+      v21 = [getRemotePendingAssertionContexts copy];
       remotePendingAssertionContexts = v6->_remotePendingAssertionContexts;
       v6->_remotePendingAssertionContexts = v21;
 
-      v23 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalDevice];
-      v24 = [v23 copy];
+      getLocalDevice = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getLocalDevice];
+      v24 = [getLocalDevice copy];
       localDevice = v6->_localDevice;
       v6->_localDevice = v24;
 
-      v26 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteQualifiedInRangeDevices];
-      v27 = [v26 copy];
+      getRemoteQualifiedInRangeDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteQualifiedInRangeDevices];
+      v27 = [getRemoteQualifiedInRangeDevices copy];
       remoteQualifiedInRangeDevices = v6->_remoteQualifiedInRangeDevices;
       v6->_remoteQualifiedInRangeDevices = v27;
 
-      v29 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteQualifiedOutOfRangeDevices];
-      v30 = [v29 copy];
+      getRemoteQualifiedOutOfRangeDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteQualifiedOutOfRangeDevices];
+      v30 = [getRemoteQualifiedOutOfRangeDevices copy];
       remoteQualifiedOutOfRangeDevices = v6->_remoteQualifiedOutOfRangeDevices;
       v6->_remoteQualifiedOutOfRangeDevices = v30;
 
-      v32 = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteDisqualifiedDevices];
-      v33 = [v32 copy];
+      getRemoteDisqualifiedDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v7 getRemoteDisqualifiedDevices];
+      v33 = [getRemoteDisqualifiedDevices copy];
       remoteDisqualifiedDevices = v6->_remoteDisqualifiedDevices;
       v6->_remoteDisqualifiedDevices = v33;
     }
@@ -1120,67 +1120,67 @@ void __316__AFAudioSessionCoordinationSnapshot_initWithCurrentOrUpNextDateInterv
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAudioSessionCoordinationSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAudioSessionCoordinationSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAudioSessionCoordinationSnapshot);
-      v7 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getCurrentOrUpNextDateInterval];
-      v8 = [v7 copy];
+      getCurrentOrUpNextDateInterval = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getCurrentOrUpNextDateInterval];
+      v8 = [getCurrentOrUpNextDateInterval copy];
       currentOrUpNextDateInterval = v6->_currentOrUpNextDateInterval;
       v6->_currentOrUpNextDateInterval = v8;
 
       v6->_isAudioSessionActive = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getIsAudioSessionActive];
-      v10 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalActiveAssertionContexts];
-      v11 = [v10 copy];
+      getLocalActiveAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalActiveAssertionContexts];
+      v11 = [getLocalActiveAssertionContexts copy];
       localActiveAssertionContexts = v6->_localActiveAssertionContexts;
       v6->_localActiveAssertionContexts = v11;
 
-      v13 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalPendingAssertionContexts];
-      v14 = [v13 copy];
+      getLocalPendingAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalPendingAssertionContexts];
+      v14 = [getLocalPendingAssertionContexts copy];
       localPendingAssertionContexts = v6->_localPendingAssertionContexts;
       v6->_localPendingAssertionContexts = v14;
 
-      v16 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteActiveAssertionContexts];
-      v17 = [v16 copy];
+      getRemoteActiveAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteActiveAssertionContexts];
+      v17 = [getRemoteActiveAssertionContexts copy];
       remoteActiveAssertionContexts = v6->_remoteActiveAssertionContexts;
       v6->_remoteActiveAssertionContexts = v17;
 
-      v19 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemotePendingAssertionContexts];
-      v20 = [v19 copy];
+      getRemotePendingAssertionContexts = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemotePendingAssertionContexts];
+      v20 = [getRemotePendingAssertionContexts copy];
       remotePendingAssertionContexts = v6->_remotePendingAssertionContexts;
       v6->_remotePendingAssertionContexts = v20;
 
-      v22 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalDevice];
-      v23 = [v22 copy];
+      getLocalDevice = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getLocalDevice];
+      v23 = [getLocalDevice copy];
       localDevice = v6->_localDevice;
       v6->_localDevice = v23;
 
-      v25 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteQualifiedInRangeDevices];
-      v26 = [v25 copy];
+      getRemoteQualifiedInRangeDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteQualifiedInRangeDevices];
+      v26 = [getRemoteQualifiedInRangeDevices copy];
       remoteQualifiedInRangeDevices = v6->_remoteQualifiedInRangeDevices;
       v6->_remoteQualifiedInRangeDevices = v26;
 
-      v28 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteQualifiedOutOfRangeDevices];
-      v29 = [v28 copy];
+      getRemoteQualifiedOutOfRangeDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteQualifiedOutOfRangeDevices];
+      v29 = [getRemoteQualifiedOutOfRangeDevices copy];
       remoteQualifiedOutOfRangeDevices = v6->_remoteQualifiedOutOfRangeDevices;
       v6->_remoteQualifiedOutOfRangeDevices = v29;
 
-      v31 = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteDisqualifiedDevices];
-      v32 = [v31 copy];
+      getRemoteDisqualifiedDevices = [(_AFAudioSessionCoordinationSnapshotMutation *)v5 getRemoteDisqualifiedDevices];
+      v32 = [getRemoteDisqualifiedDevices copy];
       remoteDisqualifiedDevices = v6->_remoteDisqualifiedDevices;
       v6->_remoteDisqualifiedDevices = v32;
     }

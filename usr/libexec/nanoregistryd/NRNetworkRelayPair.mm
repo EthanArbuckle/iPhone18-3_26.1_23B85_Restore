@@ -1,8 +1,8 @@
 @interface NRNetworkRelayPair
-+ (BOOL)candidateSupportsNetworkRelayPairing:(id)a3;
-+ (id)_extendedMetadataFromWatchSetupMetadata:(id)a3;
++ (BOOL)candidateSupportsNetworkRelayPairing:(id)pairing;
++ (id)_extendedMetadataFromWatchSetupMetadata:(id)metadata;
 + (id)sharedInstance;
-+ (void)_getProductMajorAndMinorFromProductType:(id)a3 result:(id)a4;
++ (void)_getProductMajorAndMinorFromProductType:(id)type result:(id)result;
 - (BOOL)isReady;
 - (NRExtensiblePairingDelegate)pairingDelegate;
 - (NRNetworkRelayPair)init;
@@ -10,23 +10,23 @@
 - (void)_invalidateIDSChannel;
 - (void)accountAndDeviceReady;
 - (void)dealloc;
-- (void)discoverAndPairWithAdvertisedName:(id)a3 deviceID:(id)a4;
-- (void)discoverAndPairWithAdvertisedName:(id)a3 deviceID:(id)a4 oobKey:(id)a5;
-- (void)discoveredCandidateIdentifier:(id)a3 bluetoothIdentifier:(id)a4 metadata:(id)a5;
-- (void)lostCandidateWithIdentifier:(id)a3;
-- (void)networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:(id)a3;
-- (void)networkRelayPairingCompletedWithIdentifier:(id)a3 error:(id)a4;
+- (void)discoverAndPairWithAdvertisedName:(id)name deviceID:(id)d;
+- (void)discoverAndPairWithAdvertisedName:(id)name deviceID:(id)d oobKey:(id)key;
+- (void)discoveredCandidateIdentifier:(id)identifier bluetoothIdentifier:(id)bluetoothIdentifier metadata:(id)metadata;
+- (void)lostCandidateWithIdentifier:(id)identifier;
+- (void)networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:(id)identifiers;
+- (void)networkRelayPairingCompletedWithIdentifier:(id)identifier error:(id)error;
 - (void)pairIDS;
 - (void)propertiesReceived;
-- (void)receivedNewPINAuthenticationData:(id)a3;
-- (void)receivedNewPreSharedKeyAuthenticationData:(id)a3;
+- (void)receivedNewPINAuthenticationData:(id)data;
+- (void)receivedNewPreSharedKeyAuthenticationData:(id)data;
 - (void)receivedNewPreSharedKeyAuthenticationRequest;
 - (void)reset;
-- (void)respondWithPasscode:(id)a3;
-- (void)startScanningForCandidatesWithDelegate:(id)a3;
-- (void)stopScanningForCandidatesWithDelegate:(id)a3;
+- (void)respondWithPasscode:(id)passcode;
+- (void)startScanningForCandidatesWithDelegate:(id)delegate;
+- (void)stopScanningForCandidatesWithDelegate:(id)delegate;
 - (void)timeout;
-- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4;
+- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion;
 @end
 
 @implementation NRNetworkRelayPair
@@ -62,9 +62,9 @@
   if (v2)
   {
     v3 = +[NRQueue registryDaemonQueue];
-    v4 = [v3 queue];
+    queue = [v3 queue];
     queue = v2->_queue;
-    v2->_queue = v4;
+    v2->_queue = queue;
 
     v6 = +[NSHashTable weakObjectsHashTable];
     weakDiscoveryDelegates = v2->_weakDiscoveryDelegates;
@@ -158,26 +158,26 @@
   v20 = v7;
   v8 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
-  v9 = [v5 domain];
-  v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v9, [v5 code], v8);
+  domain = [v5 domain];
+  v10 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", domain, [v5 code], v8);
 
-  v11 = [(NRNetworkRelayPair *)self pairingDelegate];
-  v12 = [v11 pairingReport];
-  [v12 setOriginalError:v10];
+  pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
+  pairingReport = [pairingDelegate pairingReport];
+  [pairingReport setOriginalError:v10];
 
   v13 = +[NRQueue registryDaemonQueue];
-  v14 = [v13 queue];
+  queue = [v13 queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000998D0;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v14, block);
+  dispatch_async(queue, block);
 
   [(NRNetworkRelayPair *)self reset];
 }
 
-+ (BOOL)candidateSupportsNetworkRelayPairing:(id)a3
++ (BOOL)candidateSupportsNetworkRelayPairing:(id)pairing
 {
   v3 = NRAdvertisingInfoFromPayload();
   v4 = [v3 objectForKeyedSubscript:NRBridgeAdvertisingVersionKey];
@@ -186,11 +186,11 @@
   return v5;
 }
 
-- (void)startScanningForCandidatesWithDelegate:(id)a3
+- (void)startScanningForCandidatesWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -198,16 +198,16 @@
     v7[2] = sub_100099A5C;
     v7[3] = &unk_100175598;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)stopScanningForCandidatesWithDelegate:(id)a3
+- (void)stopScanningForCandidatesWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (delegateCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -215,47 +215,47 @@
     v7[2] = sub_100099B68;
     v7[3] = &unk_100175598;
     v7[4] = self;
-    v8 = v4;
+    v8 = delegateCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)discoverAndPairWithAdvertisedName:(id)a3 deviceID:(id)a4 oobKey:(id)a5
+- (void)discoverAndPairWithAdvertisedName:(id)name deviceID:(id)d oobKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[WatchSetupAdvertisementIdentifier alloc] initWithHumanReadableName:v8];
-  v12 = [v11 packedIdentifierData];
+  nameCopy = name;
+  dCopy = d;
+  keyCopy = key;
+  v11 = [[WatchSetupAdvertisementIdentifier alloc] initWithHumanReadableName:nameCopy];
+  packedIdentifierData = [v11 packedIdentifierData];
   v13 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = v8;
+    v27 = nameCopy;
     v28 = 2114;
-    v29 = v12;
+    v29 = packedIdentifierData;
     v30 = 2114;
-    v31 = v10;
+    v31 = keyCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Discover and pair with OOBKey:- advertised name: %{public}@ (identifier %{public}@, OOBKey: %{public}@", buf, 0x20u);
   }
 
   [(NRNetworkRelayPair *)self _invalidateIDSChannel];
   nrDeviceUUID = self->_nrDeviceUUID;
-  self->_nrDeviceUUID = v9;
-  v15 = v9;
+  self->_nrDeviceUUID = dCopy;
+  v15 = dCopy;
 
-  objc_storeStrong(&self->_authData, a5);
-  v16 = [(NRNetworkRelayPair *)self pairingDelegate];
+  objc_storeStrong(&self->_authData, key);
+  pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100099E48;
   v23[3] = &unk_100178790;
   v23[4] = self;
-  v24 = v12;
-  v25 = v10;
-  v17 = v10;
-  v18 = v12;
-  [v16 createDeviceFromPairingRequest:v8 discoveredBy:2 withBlock:v23];
+  v24 = packedIdentifierData;
+  v25 = keyCopy;
+  v17 = keyCopy;
+  v18 = packedIdentifierData;
+  [pairingDelegate createDeviceFromPairingRequest:nameCopy discoveredBy:2 withBlock:v23];
 
   queue = self->_queue;
   v22[0] = _NSConcreteStackBlock;
@@ -268,38 +268,38 @@
   self->_timer = v20;
 }
 
-- (void)discoverAndPairWithAdvertisedName:(id)a3 deviceID:(id)a4
+- (void)discoverAndPairWithAdvertisedName:(id)name deviceID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[WatchSetupAdvertisementIdentifier alloc] initWithHumanReadableName:v6];
-  v9 = [v8 packedIdentifierData];
-  objc_storeStrong(&self->_nrDeviceUUID, a4);
-  objc_storeStrong(&self->_deviceBeingPairedIdentifier, v9);
+  nameCopy = name;
+  dCopy = d;
+  v8 = [[WatchSetupAdvertisementIdentifier alloc] initWithHumanReadableName:nameCopy];
+  packedIdentifierData = [v8 packedIdentifierData];
+  objc_storeStrong(&self->_nrDeviceUUID, d);
+  objc_storeStrong(&self->_deviceBeingPairedIdentifier, packedIdentifierData);
   v10 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = v6;
+    v22 = nameCopy;
     v23 = 2114;
-    v24 = v9;
+    v24 = packedIdentifierData;
     v25 = 2114;
-    v26 = v7;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Discover and pair with deviceID:- advertised name: %{public}@ (identifier %{public}@, device ID: %{public}@", buf, 0x20u);
   }
 
   [(NRNetworkRelayPair *)self _invalidateIDSChannel];
-  v11 = [(NRNetworkRelayPair *)self pairingDelegate];
+  pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10009A0B0;
   v18[3] = &unk_100178790;
   v18[4] = self;
-  v19 = v9;
-  v20 = v7;
-  v12 = v7;
-  v13 = v9;
-  [v11 createDeviceFromPairingRequest:v6 discoveredBy:2 withBlock:v18];
+  v19 = packedIdentifierData;
+  v20 = dCopy;
+  v12 = dCopy;
+  v13 = packedIdentifierData;
+  [pairingDelegate createDeviceFromPairingRequest:nameCopy discoveredBy:2 withBlock:v18];
 
   queue = self->_queue;
   v17[0] = _NSConcreteStackBlock;
@@ -319,7 +319,7 @@
     v3 = networkrelay_pairing_log_handle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NRNetworkRelayPair *)self pairingDelegate];
+      pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
       v8 = 138412290;
@@ -327,8 +327,8 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Asking %@ to invalidate IDS channels.", &v8, 0xCu);
     }
 
-    v7 = [(NRNetworkRelayPair *)self pairingDelegate];
-    [v7 invalidateIDSChannels];
+    pairingDelegate2 = [(NRNetworkRelayPair *)self pairingDelegate];
+    [pairingDelegate2 invalidateIDSChannels];
   }
 }
 
@@ -342,34 +342,34 @@
   return [(NRNetworkRelayPair *)self isInitialPropertiesReceived];
 }
 
-- (void)respondWithPasscode:(id)a3
+- (void)respondWithPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009A300;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = passcodeCopy;
+  selfCopy = self;
+  v6 = passcodeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)networkRelayPairingCompletedWithIdentifier:(id)a3 error:(id)a4
+- (void)networkRelayPairingCompletedWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009A450;
   block[3] = &unk_1001758F8;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = errorCopy;
   dispatch_async(queue, block);
 }
 
@@ -395,7 +395,7 @@
     v6 = [[IDSLocalPairingAddPairedDeviceInfo alloc] initWithCBUUID:self->_pairedBluetoothIdentifier pairingProtocolVersion:0 BTOutOfBandKey:self->_authData];
     [v6 setPairingType:self->_isTinkerPairing];
     [v6 setShouldPairDirectlyOverIPsec:1];
-    v7 = [(NRNetworkRelayPair *)self pairingDelegate];
+    pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
     nrDeviceUUID = self->_nrDeviceUUID;
     pairedBluetoothIdentifier = self->_pairedBluetoothIdentifier;
     v12[0] = _NSConcreteStackBlock;
@@ -406,7 +406,7 @@
     v13 = v6;
     v14 = v4;
     v10 = v6;
-    [v7 createLocalPairingStore:nrDeviceUUID andNotifyPairingBeginning:1 bluetoothIdentifier:pairedBluetoothIdentifier withBlock:v12];
+    [pairingDelegate createLocalPairingStore:nrDeviceUUID andNotifyPairingBeginning:1 bluetoothIdentifier:pairedBluetoothIdentifier withBlock:v12];
   }
 
   else
@@ -436,7 +436,7 @@
 - (id)_generateWatchSetupExtendedMetadata
 {
   v3 = +[NRPairingCompatibilityVersionInfo systemVersions];
-  v4 = [v3 maxPairingCompatibilityVersion];
+  maxPairingCompatibilityVersion = [v3 maxPairingCompatibilityVersion];
 
   v18 = 0;
   v19 = &v18;
@@ -446,48 +446,48 @@
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(NRNetworkRelayPair *)self postFailsafeObliteration];
-  v6 = [(NRSystemProperties *)self->_systemProperties encodedSystemVersion];
-  v7 = [v6 intValue];
+  postFailsafeObliteration = [(NRNetworkRelayPair *)self postFailsafeObliteration];
+  encodedSystemVersion = [(NRSystemProperties *)self->_systemProperties encodedSystemVersion];
+  intValue = [encodedSystemVersion intValue];
 
-  v8 = [(NRSystemProperties *)self->_systemProperties productType];
+  productType = [(NRSystemProperties *)self->_systemProperties productType];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10009B744;
   v13[3] = &unk_1001787E0;
   v13[4] = &v18;
   v13[5] = &v14;
-  [NRNetworkRelayPair _getProductMajorAndMinorFromProductType:v8 result:v13];
+  [NRNetworkRelayPair _getProductMajorAndMinorFromProductType:productType result:v13];
   v9 = [WatchSetupExtendedMetadata alloc];
-  v10 = [v9 initWithPairingVersion:v4 productVersionMajor:*(v19 + 24) productVersionMinor:*(v15 + 24) postFailSafeObliteration:v5 encodedSystemVersion:v7];
-  v11 = [v10 packedExtendedMetadataData];
+  v10 = [v9 initWithPairingVersion:maxPairingCompatibilityVersion productVersionMajor:*(v19 + 24) productVersionMinor:*(v15 + 24) postFailSafeObliteration:postFailsafeObliteration encodedSystemVersion:intValue];
+  packedExtendedMetadataData = [v10 packedExtendedMetadataData];
 
   _Block_object_dispose(&v14, 8);
   _Block_object_dispose(&v18, 8);
 
-  return v11;
+  return packedExtendedMetadataData;
 }
 
-- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)a3 completion:(id)a4
+- (void)waitForWatchPairingExtendedMetadataForAdvertisedName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009B824;
   block[3] = &unk_1001768B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = nameCopy;
   dispatch_async(queue, block);
 }
 
-+ (id)_extendedMetadataFromWatchSetupMetadata:(id)a3
++ (id)_extendedMetadataFromWatchSetupMetadata:(id)metadata
 {
-  v3 = sub_10009B8B4(a3);
+  v3 = sub_10009B8B4(metadata);
   if (v3)
   {
     v4 = objc_opt_new();
@@ -499,12 +499,12 @@
     [v4 setEncodedSystemVersion:{objc_msgSend(v6, "integerValue")}];
 
     v7 = [v3 objectForKeyedSubscript:off_1001B3140];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
     v9 = [v3 objectForKeyedSubscript:off_1001B3148];
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
-    v11 = [NRNetworkRelayPair _productTypeStringFromMajor:v8 minor:v10];
+    v11 = [NRNetworkRelayPair _productTypeStringFromMajor:unsignedIntegerValue minor:unsignedIntegerValue2];
     [v4 setProductType:v11];
 
     [v4 setIsCellularEnabled:1];
@@ -520,13 +520,13 @@
   return v4;
 }
 
-+ (void)_getProductMajorAndMinorFromProductType:(id)a3 result:(id)a4
++ (void)_getProductMajorAndMinorFromProductType:(id)type result:(id)result
 {
-  v5 = a3;
-  if (a4)
+  typeCopy = type;
+  if (result)
   {
     v20 = 0;
-    v6 = a4;
+    resultCopy = result;
     v7 = [NSRegularExpression regularExpressionWithPattern:@"Watch(?<MAJOR>\\d+) options:(?<MINOR>\\d+)" error:0, &v20];
     v8 = v20;
     if (v8)
@@ -539,67 +539,67 @@
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error creating a regular expression: %@", buf, 0xCu);
       }
 
-      v10 = 0;
-      v11 = 0;
+      integerValue2 = 0;
+      integerValue = 0;
     }
 
     else
     {
-      v9 = [v7 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+      v9 = [v7 matchesInString:typeCopy options:0 range:{0, objc_msgSend(typeCopy, "length")}];
       if ([v9 count]== 1)
       {
-        v12 = [v9 firstObject];
-        v13 = [v12 rangeWithName:@"MAJOR"];
-        v15 = [v5 substringWithRange:{v13, v14}];
-        v16 = [v12 rangeWithName:@"MINOR"];
-        v18 = [v5 substringWithRange:{v16, v17}];
-        v11 = [v15 integerValue];
-        v10 = [v18 integerValue];
+        firstObject = [v9 firstObject];
+        v13 = [firstObject rangeWithName:@"MAJOR"];
+        v15 = [typeCopy substringWithRange:{v13, v14}];
+        v16 = [firstObject rangeWithName:@"MINOR"];
+        v18 = [typeCopy substringWithRange:{v16, v17}];
+        integerValue = [v15 integerValue];
+        integerValue2 = [v18 integerValue];
       }
 
       else
       {
-        v12 = networkrelay_pairing_log_handle();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        firstObject = networkrelay_pairing_log_handle();
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           v19 = [v9 count];
           *buf = 138412546;
-          v22 = v5;
+          v22 = typeCopy;
           v23 = 2048;
           v24 = v19;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Unexpected number of matches from %@, got %lu", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_ERROR, "Unexpected number of matches from %@, got %lu", buf, 0x16u);
         }
 
-        v10 = 0;
-        v11 = 0;
+        integerValue2 = 0;
+        integerValue = 0;
       }
     }
 
-    v6[2](v6, v11, v10);
+    resultCopy[2](resultCopy, integerValue, integerValue2);
   }
 }
 
-- (void)discoveredCandidateIdentifier:(id)a3 bluetoothIdentifier:(id)a4 metadata:(id)a5
+- (void)discoveredCandidateIdentifier:(id)identifier bluetoothIdentifier:(id)bluetoothIdentifier metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[WatchSetupAdvertisementIdentifier alloc] initWithPackedIdentifierData:v8];
-  v12 = [v11 humanReadableName];
-  if (v12)
+  identifierCopy = identifier;
+  bluetoothIdentifierCopy = bluetoothIdentifier;
+  metadataCopy = metadata;
+  v11 = [[WatchSetupAdvertisementIdentifier alloc] initWithPackedIdentifierData:identifierCopy];
+  humanReadableName = [v11 humanReadableName];
+  if (humanReadableName)
   {
-    v13 = [NRNetworkRelayPair _extendedMetadataFromWatchSetupMetadata:v10];
+    v13 = [NRNetworkRelayPair _extendedMetadataFromWatchSetupMetadata:metadataCopy];
     v14 = networkrelay_pairing_log_handle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544386;
-      v23 = v8;
+      v23 = identifierCopy;
       v24 = 2114;
-      v25 = v12;
+      v25 = humanReadableName;
       v26 = 2114;
-      v27 = v9;
+      v27 = bluetoothIdentifierCopy;
       v28 = 2114;
-      v29 = v10;
+      v29 = metadataCopy;
       v30 = 2114;
       v31 = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Discovered candidate with identifier %{public}@ (name %{public}@), bluetooth UUID %{public}@, metadata %{public}@ (legacy %{public}@)", buf, 0x34u);
@@ -611,10 +611,10 @@
     block[2] = sub_10009C0E0;
     block[3] = &unk_1001783B8;
     block[4] = self;
-    v18 = v12;
-    v19 = v8;
+    v18 = humanReadableName;
+    v19 = identifierCopy;
     v20 = v13;
-    v21 = v9;
+    v21 = bluetoothIdentifierCopy;
     v16 = v13;
     dispatch_async(queue, block);
   }
@@ -625,27 +625,27 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v23 = v8;
+      v23 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Candidate discovered but failed to create a human readable name from Watch Setup identifier %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)lostCandidateWithIdentifier:(id)a3
+- (void)lostCandidateWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[WatchSetupAdvertisementIdentifier alloc] initWithPackedIdentifierData:v4];
-  v6 = [v5 humanReadableName];
+  identifierCopy = identifier;
+  v5 = [[WatchSetupAdvertisementIdentifier alloc] initWithPackedIdentifierData:identifierCopy];
+  humanReadableName = [v5 humanReadableName];
   v7 = networkrelay_pairing_log_handle();
   v8 = v7;
-  if (v6)
+  if (humanReadableName)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v13 = v4;
+      v13 = identifierCopy;
       v14 = 2114;
-      v15 = v6;
+      v15 = humanReadableName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Lost candidate with identifier %{public}@ (name %{public}@)", buf, 0x16u);
     }
 
@@ -655,7 +655,7 @@
     v10[2] = sub_10009C3E0;
     v10[3] = &unk_100175598;
     v10[4] = self;
-    v11 = v6;
+    v11 = humanReadableName;
     dispatch_async(queue, v10);
   }
 
@@ -664,23 +664,23 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v4;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Candidate lost but failed to create a human readable name from Watch Setup identifier %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)receivedNewPreSharedKeyAuthenticationData:(id)a3
+- (void)receivedNewPreSharedKeyAuthenticationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009C5AC;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
@@ -696,28 +696,28 @@
   dispatch_async(self->_queue, &stru_100178800);
 }
 
-- (void)receivedNewPINAuthenticationData:(id)a3
+- (void)receivedNewPINAuthenticationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009C754;
   v7[3] = &unk_100175598;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:(id)a3
+- (void)networkRelayPairFoundPreviouslyPairedBluetoothIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = networkrelay_pairing_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v4;
+    v20 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Previously paired Bluetooth identifiers: %{public}@", buf, 0xCu);
   }
 
@@ -725,7 +725,7 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -742,14 +742,14 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(NRNetworkRelayPair *)self pairingDelegate];
+        pairingDelegate = [(NRNetworkRelayPair *)self pairingDelegate];
         v13[0] = _NSConcreteStackBlock;
         v13[1] = 3221225472;
         v13[2] = sub_10009CA54;
         v13[3] = &unk_100178828;
         v13[4] = v11;
         v13[5] = self;
-        [v12 getPairedPairingIDForBluetoothID:v11 completion:v13];
+        [pairingDelegate getPairedPairingIDForBluetoothID:v11 completion:v13];
 
         v10 = v10 + 1;
       }

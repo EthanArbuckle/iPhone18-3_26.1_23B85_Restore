@@ -1,23 +1,23 @@
 @interface CKMergeableValueIDMutableProxy
-- (void)copyFromMergeableValueID:(id)a3;
-- (void)copyFromReadProxy:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIdentifierBytes:(void *)a3 length:(unint64_t)a4;
-- (void)setZoneName:(id)a3;
-- (void)setZoneNameBytes:(void *)a3 length:(unint64_t)a4;
-- (void)setZoneOwnerName:(id)a3;
-- (void)setZoneOwnerNameBytes:(void *)a3 length:(unint64_t)a4;
+- (void)copyFromMergeableValueID:(id)d;
+- (void)copyFromReadProxy:(id)proxy;
+- (void)setIdentifier:(id)identifier;
+- (void)setIdentifierBytes:(void *)bytes length:(unint64_t)length;
+- (void)setZoneName:(id)name;
+- (void)setZoneNameBytes:(void *)bytes length:(unint64_t)length;
+- (void)setZoneOwnerName:(id)name;
+- (void)setZoneOwnerNameBytes:(void *)bytes length:(unint64_t)length;
 @end
 
 @implementation CKMergeableValueIDMutableProxy
 
-- (void)copyFromReadProxy:(id)a3
+- (void)copyFromReadProxy:(id)proxy
 {
-  v79 = a3;
+  proxyCopy = proxy;
   v11 = objc_msgSend_backingStore(self, v5, v6, v7, v8, v9, v10);
   if (v11)
   {
-    v18 = v79;
+    v18 = proxyCopy;
     if (v18)
     {
       v19 = objc_msgSend_binding(v11, v12, v13, v14, v15, v16, v17);
@@ -45,16 +45,16 @@
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v28 = 0;
-  v6 = v5;
+  v6 = identifierCopy;
   v13 = objc_msgSend_bytes(v6, v7, v8, v9, v10, v11, v12);
   v20 = v13;
-  if (v5 && !v13)
+  if (identifierCopy && !v13)
   {
-    if (objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19))
+    if (objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19))
     {
       v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKAtomSerialization.mm", 875, @"Non-zero-length NSData has empty bytes");
@@ -63,13 +63,13 @@
     v20 = &v28;
   }
 
-  v21 = objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19);
+  v21 = objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setIdentifierBytes_length_(self, v22, v20, v21, v23, v24, v25);
 }
 
-- (void)setIdentifierBytes:(void *)a3 length:(unint64_t)a4
+- (void)setIdentifierBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -81,17 +81,17 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)setZoneName:(id)a3
+- (void)setZoneName:(id)name
 {
-  v4 = a3;
-  v22 = v4;
-  if (v4)
+  nameCopy = name;
+  v22 = nameCopy;
+  if (nameCopy)
   {
-    v9 = v4;
+    v9 = nameCopy;
     v16 = objc_msgSend_UTF8String(v9, v10, v11, v12, v13, v14, v15);
     v17 = strlen(v16);
     objc_msgSend_setZoneNameBytes_length_(self, v18, v16, v17, v19, v20, v21);
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)setZoneNameBytes:(void *)a3 length:(unint64_t)a4
+- (void)setZoneNameBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -117,17 +117,17 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)setZoneOwnerName:(id)a3
+- (void)setZoneOwnerName:(id)name
 {
-  v4 = a3;
-  v22 = v4;
-  if (v4)
+  nameCopy = name;
+  v22 = nameCopy;
+  if (nameCopy)
   {
-    v9 = v4;
+    v9 = nameCopy;
     v16 = objc_msgSend_UTF8String(v9, v10, v11, v12, v13, v14, v15);
     v17 = strlen(v16);
     objc_msgSend_setZoneOwnerNameBytes_length_(self, v18, v16, v17, v19, v20, v21);
@@ -139,9 +139,9 @@
   }
 }
 
-- (void)setZoneOwnerNameBytes:(void *)a3 length:(unint64_t)a4
+- (void)setZoneOwnerNameBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -153,20 +153,20 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)copyFromMergeableValueID:(id)a3
+- (void)copyFromMergeableValueID:(id)d
 {
-  v40 = a3;
-  v10 = objc_msgSend_identifier(v40, v4, v5, v6, v7, v8, v9);
+  dCopy = d;
+  v10 = objc_msgSend_identifier(dCopy, v4, v5, v6, v7, v8, v9);
   objc_msgSend_setIdentifier_(self, v11, v10, v12, v13, v14, v15);
 
-  v22 = objc_msgSend_zoneName(v40, v16, v17, v18, v19, v20, v21);
+  v22 = objc_msgSend_zoneName(dCopy, v16, v17, v18, v19, v20, v21);
   objc_msgSend_setZoneName_(self, v23, v22, v24, v25, v26, v27);
 
-  v34 = objc_msgSend_zoneOwner(v40, v28, v29, v30, v31, v32, v33);
+  v34 = objc_msgSend_zoneOwner(dCopy, v28, v29, v30, v31, v32, v33);
   objc_msgSend_setZoneOwnerName_(self, v35, v34, v36, v37, v38, v39);
 }
 

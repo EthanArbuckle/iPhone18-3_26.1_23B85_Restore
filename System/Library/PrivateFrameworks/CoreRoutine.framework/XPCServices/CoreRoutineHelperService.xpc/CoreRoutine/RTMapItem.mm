@@ -1,42 +1,42 @@
 @interface RTMapItem
-+ (BOOL)addressDictionaryContainsContactsKeys:(id)a3;
-+ (id)convertAddressDictionaryFromContactsToGeoServices:(id)a3;
-+ (id)extendedAttributesFromGEOMapItem:(id)a3 confidenceScalingFactor:(double)a4;
-+ (id)extendedAttributesFromGEOMapItem:(id)a3 wifiLabelType:(int64_t)a4 wifiConfidence:(double)a5;
-+ (id)locationFromGEOMapItem:(id)a3;
-+ (id)nameFromGEOMapItem:(id)a3 fromSource:(unint64_t)a4;
-+ (int64_t)labelTypeFromFromGEOMapItem:(id)a3;
-+ (unint64_t)mapItemPlaceTypeFromGEOMapItem:(id)a3 source:(unint64_t)a4;
-+ (unint64_t)mapItemPlaceTypeFromGEOMapItemPlaceType:(int)a3;
-- (RTMapItem)initWithIdentifier:(id)a3 geoMapItem:(id)a4 geoMapItemHandle:(id)a5 source:(unint64_t)a6 creationDate:(id)a7 expirationDate:(id)a8 confidenceScalingFactor:(double)a9;
-- (RTMapItem)initWithIdentifier:(id)a3 geoMapItem:(id)a4 geoMapItemHandle:(id)a5 source:(unint64_t)a6 creationDate:(id)a7 expirationDate:(id)a8 wifiLabelType:(int64_t)a9 wifiConfidence:(double)a10;
-- (id)addressFromGeoMapItem:(id)a3;
++ (BOOL)addressDictionaryContainsContactsKeys:(id)keys;
++ (id)convertAddressDictionaryFromContactsToGeoServices:(id)services;
++ (id)extendedAttributesFromGEOMapItem:(id)item confidenceScalingFactor:(double)factor;
++ (id)extendedAttributesFromGEOMapItem:(id)item wifiLabelType:(int64_t)type wifiConfidence:(double)confidence;
++ (id)locationFromGEOMapItem:(id)item;
++ (id)nameFromGEOMapItem:(id)item fromSource:(unint64_t)source;
++ (int64_t)labelTypeFromFromGEOMapItem:(id)item;
++ (unint64_t)mapItemPlaceTypeFromGEOMapItem:(id)item source:(unint64_t)source;
++ (unint64_t)mapItemPlaceTypeFromGEOMapItemPlaceType:(int)type;
+- (RTMapItem)initWithIdentifier:(id)identifier geoMapItem:(id)item geoMapItemHandle:(id)handle source:(unint64_t)source creationDate:(id)date expirationDate:(id)expirationDate confidenceScalingFactor:(double)factor;
+- (RTMapItem)initWithIdentifier:(id)identifier geoMapItem:(id)item geoMapItemHandle:(id)handle source:(unint64_t)source creationDate:(id)date expirationDate:(id)expirationDate wifiLabelType:(int64_t)type wifiConfidence:(double)self0;
+- (id)addressFromGeoMapItem:(id)item;
 @end
 
 @implementation RTMapItem
 
-- (RTMapItem)initWithIdentifier:(id)a3 geoMapItem:(id)a4 geoMapItemHandle:(id)a5 source:(unint64_t)a6 creationDate:(id)a7 expirationDate:(id)a8 confidenceScalingFactor:(double)a9
+- (RTMapItem)initWithIdentifier:(id)identifier geoMapItem:(id)item geoMapItemHandle:(id)handle source:(unint64_t)source creationDate:(id)date expirationDate:(id)expirationDate confidenceScalingFactor:(double)factor
 {
-  v16 = a4;
-  v35 = a8;
-  v34 = a7;
-  v32 = a5;
-  v31 = a3;
-  v37 = [RTMapItem nameFromGEOMapItem:v16 fromSource:a6];
-  v36 = [v16 _poiCategory];
-  v33 = [v16 _mapsCategoryMUID];
-  v30 = [(RTMapItem *)self addressFromGeoMapItem:v16];
-  v29 = [RTMapItem locationFromGEOMapItem:v16];
-  v17 = [RTMapItem extendedAttributesFromGEOMapItem:v16 confidenceScalingFactor:a9];
-  v18 = [v16 addressObject];
-  v19 = [v18 displayLanguage];
+  itemCopy = item;
+  expirationDateCopy = expirationDate;
+  dateCopy = date;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  v37 = [RTMapItem nameFromGEOMapItem:itemCopy fromSource:source];
+  _poiCategory = [itemCopy _poiCategory];
+  _mapsCategoryMUID = [itemCopy _mapsCategoryMUID];
+  v30 = [(RTMapItem *)self addressFromGeoMapItem:itemCopy];
+  v29 = [RTMapItem locationFromGEOMapItem:itemCopy];
+  v17 = [RTMapItem extendedAttributesFromGEOMapItem:itemCopy confidenceScalingFactor:factor];
+  addressObject = [itemCopy addressObject];
+  displayLanguage = [addressObject displayLanguage];
 
-  v20 = [v16 _identifier];
+  _identifier = [itemCopy _identifier];
 
-  if (v20)
+  if (_identifier)
   {
-    v21 = [v16 _identifier];
-    v22 = [NSKeyedArchiver archivedDataWithRootObject:v21 requiringSecureCoding:1 error:0];
+    _identifier2 = [itemCopy _identifier];
+    v22 = [NSKeyedArchiver archivedDataWithRootObject:_identifier2 requiringSecureCoding:1 error:0];
   }
 
   else
@@ -44,67 +44,67 @@
     v22 = 0;
   }
 
-  v23 = [objc_opt_class() mapItemPlaceTypeFromGEOMapItem:v16 source:a6];
-  v24 = [v16 _muid];
-  v25 = [v16 _resultProviderID];
-  LOBYTE(v27) = [v16 isDisputed];
-  v28 = [(RTMapItem *)self initWithIdentifier:v31 name:v37 category:v36 categoryMUID:v33 address:v30 location:v29 source:a6 mapItemPlaceType:v23 muid:v24 resultProviderID:v25 geoMapItemHandle:v32 geoMapItemIdentifier:v22 creationDate:v34 expirationDate:v35 extendedAttributes:v17 displayLanguage:v19 disputed:v27];
+  v23 = [objc_opt_class() mapItemPlaceTypeFromGEOMapItem:itemCopy source:source];
+  _muid = [itemCopy _muid];
+  _resultProviderID = [itemCopy _resultProviderID];
+  LOBYTE(v27) = [itemCopy isDisputed];
+  v28 = [(RTMapItem *)self initWithIdentifier:identifierCopy name:v37 category:_poiCategory categoryMUID:_mapsCategoryMUID address:v30 location:v29 source:source mapItemPlaceType:v23 muid:_muid resultProviderID:_resultProviderID geoMapItemHandle:handleCopy geoMapItemIdentifier:v22 creationDate:dateCopy expirationDate:expirationDateCopy extendedAttributes:v17 displayLanguage:displayLanguage disputed:v27];
 
   return v28;
 }
 
-- (RTMapItem)initWithIdentifier:(id)a3 geoMapItem:(id)a4 geoMapItemHandle:(id)a5 source:(unint64_t)a6 creationDate:(id)a7 expirationDate:(id)a8 wifiLabelType:(int64_t)a9 wifiConfidence:(double)a10
+- (RTMapItem)initWithIdentifier:(id)identifier geoMapItem:(id)item geoMapItemHandle:(id)handle source:(unint64_t)source creationDate:(id)date expirationDate:(id)expirationDate wifiLabelType:(int64_t)type wifiConfidence:(double)self0
 {
-  v17 = a4;
-  v34 = a8;
-  v33 = a7;
-  v18 = a5;
-  v19 = a3;
-  v35 = a6;
-  v38 = [RTMapItem nameFromGEOMapItem:v17 fromSource:a6];
-  v37 = [v17 _poiCategory];
-  v32 = [v17 _mapsCategoryMUID];
-  v31 = [(RTMapItem *)self addressFromGeoMapItem:v17];
-  v30 = [RTMapItem locationFromGEOMapItem:v17];
-  v20 = [RTMapItem extendedAttributesFromGEOMapItem:v17 wifiLabelType:a9 wifiConfidence:a10];
-  v21 = [v17 _identifier];
+  itemCopy = item;
+  expirationDateCopy = expirationDate;
+  dateCopy = date;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v38 = [RTMapItem nameFromGEOMapItem:itemCopy fromSource:source];
+  _poiCategory = [itemCopy _poiCategory];
+  _mapsCategoryMUID = [itemCopy _mapsCategoryMUID];
+  v31 = [(RTMapItem *)self addressFromGeoMapItem:itemCopy];
+  v30 = [RTMapItem locationFromGEOMapItem:itemCopy];
+  v20 = [RTMapItem extendedAttributesFromGEOMapItem:itemCopy wifiLabelType:type wifiConfidence:confidence];
+  _identifier = [itemCopy _identifier];
 
-  if (v21)
+  if (_identifier)
   {
-    v22 = [v17 _identifier];
-    v21 = [NSKeyedArchiver archivedDataWithRootObject:v22 requiringSecureCoding:1 error:0];
+    _identifier2 = [itemCopy _identifier];
+    _identifier = [NSKeyedArchiver archivedDataWithRootObject:_identifier2 requiringSecureCoding:1 error:0];
   }
 
-  if (a9 == 1)
+  if (type == 1)
   {
     v23 = 2;
   }
 
   else
   {
-    v23 = a9 == 2;
+    v23 = type == 2;
   }
 
-  v24 = [v17 addressObject];
-  v29 = [v24 displayLanguage];
+  addressObject = [itemCopy addressObject];
+  displayLanguage = [addressObject displayLanguage];
 
-  v25 = [v17 _muid];
-  v26 = [v17 _resultProviderID];
-  LOBYTE(v28) = [v17 isDisputed];
-  v36 = [(RTMapItem *)self initWithIdentifier:v19 name:v38 category:v37 categoryMUID:v32 address:v31 location:v30 source:v35 mapItemPlaceType:v23 muid:v25 resultProviderID:v26 geoMapItemHandle:v18 geoMapItemIdentifier:v21 creationDate:v33 expirationDate:v34 extendedAttributes:v20 displayLanguage:v29 disputed:v28];
+  _muid = [itemCopy _muid];
+  _resultProviderID = [itemCopy _resultProviderID];
+  LOBYTE(v28) = [itemCopy isDisputed];
+  v36 = [(RTMapItem *)self initWithIdentifier:identifierCopy name:v38 category:_poiCategory categoryMUID:_mapsCategoryMUID address:v31 location:v30 source:sourceCopy mapItemPlaceType:v23 muid:_muid resultProviderID:_resultProviderID geoMapItemHandle:handleCopy geoMapItemIdentifier:_identifier creationDate:dateCopy expirationDate:expirationDateCopy extendedAttributes:v20 displayLanguage:displayLanguage disputed:v28];
 
   return v36;
 }
 
-- (id)addressFromGeoMapItem:(id)a3
+- (id)addressFromGeoMapItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 _additionalPlaceInfos];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  _additionalPlaceInfos = [itemCopy _additionalPlaceInfos];
+  v5 = [_additionalPlaceInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = *v19;
@@ -114,7 +114,7 @@
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_additionalPlaceInfos);
         }
 
         if ([*(*(&v18 + 1) + 8 * i) placeType] == 11)
@@ -124,7 +124,7 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [_additionalPlaceInfos countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -136,7 +136,7 @@
 
 LABEL_11:
 
-  if ([v3 _placeType] == 11)
+  if ([itemCopy _placeType] == 11)
   {
     v8 = 1;
   }
@@ -150,55 +150,55 @@ LABEL_11:
   v10 = [v9 dateByAddingTimeInterval:4838400.0];
   v11 = [RTAddress alloc];
   v12 = +[NSUUID UUID];
-  v13 = [v3 addressObject];
-  v14 = [v3 _iso3166CountryCode];
-  v15 = [v3 _iso3166SubdivisionCode];
-  v16 = [v11 initWithIdentifier:v12 geoAddressObject:v13 subPremises:0 isIsland:v8 creationDate:v9 expirationDate:v10 iso3166CountryCode:v14 iso3166SubdivisionCode:v15];
+  addressObject = [itemCopy addressObject];
+  _iso3166CountryCode = [itemCopy _iso3166CountryCode];
+  _iso3166SubdivisionCode = [itemCopy _iso3166SubdivisionCode];
+  v16 = [v11 initWithIdentifier:v12 geoAddressObject:addressObject subPremises:0 isIsland:v8 creationDate:v9 expirationDate:v10 iso3166CountryCode:_iso3166CountryCode iso3166SubdivisionCode:_iso3166SubdivisionCode];
 
   return v16;
 }
 
-+ (id)nameFromGEOMapItem:(id)a3 fromSource:(unint64_t)a4
++ (id)nameFromGEOMapItem:(id)item fromSource:(unint64_t)source
 {
-  v5 = a3;
-  v6 = [v5 addressObject];
-  v7 = [v6 address];
-  v8 = [v7 structuredAddress];
-  v9 = [v5 name];
-  v10 = [v9 length];
+  itemCopy = item;
+  addressObject = [itemCopy addressObject];
+  address = [addressObject address];
+  structuredAddress = [address structuredAddress];
+  name = [itemCopy name];
+  v10 = [name length];
 
-  v11 = [v8 areaOfInterests];
-  v12 = [v11 count];
+  areaOfInterests = [structuredAddress areaOfInterests];
+  v12 = [areaOfInterests count];
 
   if (v10)
   {
-    v13 = (a4 & 1) != 0 || a4 == 0;
+    v13 = (source & 1) != 0 || source == 0;
     if (!v13 || v12)
     {
-      v14 = [v5 name];
+      name2 = [itemCopy name];
       goto LABEL_16;
     }
   }
 
-  if ([v7 hasStructuredAddress])
+  if ([address hasStructuredAddress])
   {
-    if ([v8 hasThoroughfare])
+    if ([structuredAddress hasThoroughfare])
     {
-      v14 = [v8 thoroughfare];
+      name2 = [structuredAddress thoroughfare];
 LABEL_16:
-      v15 = v14;
+      v15 = name2;
       goto LABEL_18;
     }
 
-    if ([v8 hasSubLocality])
+    if ([structuredAddress hasSubLocality])
     {
-      v14 = [v8 subLocality];
+      name2 = [structuredAddress subLocality];
       goto LABEL_16;
     }
 
-    if ([v8 hasLocality])
+    if ([structuredAddress hasLocality])
     {
-      v14 = [v8 locality];
+      name2 = [structuredAddress locality];
       goto LABEL_16;
     }
   }
@@ -209,9 +209,9 @@ LABEL_18:
   return v15;
 }
 
-+ (int64_t)labelTypeFromFromGEOMapItem:(id)a3
++ (int64_t)labelTypeFromFromGEOMapItem:(id)item
 {
-  LODWORD(result) = [a3 _wifiFingerprintLabelType];
+  LODWORD(result) = [item _wifiFingerprintLabelType];
   if (result < 3)
   {
     return result;
@@ -230,21 +230,21 @@ LABEL_18:
   return -1;
 }
 
-+ (id)extendedAttributesFromGEOMapItem:(id)a3 confidenceScalingFactor:(double)a4
++ (id)extendedAttributesFromGEOMapItem:(id)item confidenceScalingFactor:(double)factor
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (itemCopy)
   {
-    v7 = [v5 _clientAttributes];
-    v8 = [v7 addressBookAttributes];
-    v9 = [v8 addressIdentifier];
+    _clientAttributes = [itemCopy _clientAttributes];
+    addressBookAttributes = [_clientAttributes addressBookAttributes];
+    addressIdentifier = [addressBookAttributes addressIdentifier];
 
-    v10 = [v6 _clientAttributes];
-    v11 = [v10 addressBookAttributes];
-    v12 = [v11 isMe];
+    _clientAttributes2 = [v6 _clientAttributes];
+    addressBookAttributes2 = [_clientAttributes2 addressBookAttributes];
+    isMe = [addressBookAttributes2 isMe];
 
-    v13 = [v6 _wifiFingerprintConfidence] * a4;
+    v13 = [v6 _wifiFingerprintConfidence] * factor;
     if (v13 < 0.0)
     {
       v13 = 0.0;
@@ -252,9 +252,9 @@ LABEL_18:
 
     v14 = fmin(v13, 1.0);
     v15 = [RTMapItem labelTypeFromFromGEOMapItem:v6];
-    if (v9 || (v14 > 0.0 ? (v19 = 1) : (v19 = v12), (v19 & 1) != 0 || v15))
+    if (addressIdentifier || (v14 > 0.0 ? (v19 = 1) : (v19 = isMe), (v19 & 1) != 0 || v15))
     {
-      v16 = [[RTMapItemExtendedAttributes alloc] initWithAddressIdentifier:v9 isMe:v12 wifiConfidence:v15 wifiFingerprintLabelType:v14];
+      v16 = [[RTMapItemExtendedAttributes alloc] initWithAddressIdentifier:addressIdentifier isMe:isMe wifiConfidence:v15 wifiFingerprintLabelType:v14];
     }
 
     else
@@ -278,23 +278,23 @@ LABEL_18:
   return v16;
 }
 
-+ (id)extendedAttributesFromGEOMapItem:(id)a3 wifiLabelType:(int64_t)a4 wifiConfidence:(double)a5
++ (id)extendedAttributesFromGEOMapItem:(id)item wifiLabelType:(int64_t)type wifiConfidence:(double)confidence
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  itemCopy = item;
+  v8 = itemCopy;
+  if (itemCopy)
   {
-    v9 = [v7 _clientAttributes];
-    v10 = [v9 addressBookAttributes];
-    v11 = [v10 addressIdentifier];
+    _clientAttributes = [itemCopy _clientAttributes];
+    addressBookAttributes = [_clientAttributes addressBookAttributes];
+    addressIdentifier = [addressBookAttributes addressIdentifier];
 
-    v12 = [v8 _clientAttributes];
-    v13 = [v12 addressBookAttributes];
-    v14 = [v13 isMe];
+    _clientAttributes2 = [v8 _clientAttributes];
+    addressBookAttributes2 = [_clientAttributes2 addressBookAttributes];
+    isMe = [addressBookAttributes2 isMe];
 
-    if (v11 || (a5 <= 0.0 ? (v15 = a4 == 0) : (v15 = 0), !v15 ? (v16 = 1) : (v16 = v14), v16 == 1))
+    if (addressIdentifier || (confidence <= 0.0 ? (v15 = type == 0) : (v15 = 0), !v15 ? (v16 = 1) : (v16 = isMe), v16 == 1))
     {
-      v17 = [[RTMapItemExtendedAttributes alloc] initWithAddressIdentifier:v11 isMe:v14 wifiConfidence:a4 wifiFingerprintLabelType:a5];
+      v17 = [[RTMapItemExtendedAttributes alloc] initWithAddressIdentifier:addressIdentifier isMe:isMe wifiConfidence:type wifiFingerprintLabelType:confidence];
     }
 
     else
@@ -318,35 +318,35 @@ LABEL_18:
   return v17;
 }
 
-+ (id)locationFromGEOMapItem:(id)a3
++ (id)locationFromGEOMapItem:(id)item
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  itemCopy = item;
+  v4 = itemCopy;
+  if (itemCopy)
   {
-    v5 = [v3 _clientAttributes];
-    v6 = [v5 correctedLocationAttributes];
-    if ([v6 hasCorrectedCoordinate])
+    _clientAttributes = [itemCopy _clientAttributes];
+    correctedLocationAttributes = [_clientAttributes correctedLocationAttributes];
+    if ([correctedLocationAttributes hasCorrectedCoordinate])
     {
-      v7 = [v4 _clientAttributes];
-      v8 = [v7 correctedLocationAttributes];
-      v9 = [v8 correctedCoordinate];
-      [v9 coordinate];
+      _clientAttributes2 = [v4 _clientAttributes];
+      correctedLocationAttributes2 = [_clientAttributes2 correctedLocationAttributes];
+      correctedCoordinate = [correctedLocationAttributes2 correctedCoordinate];
+      [correctedCoordinate coordinate];
       v11 = v10;
       v13 = fabs(v12);
 
       if (v13 <= 180.0 && fabs(v11) <= 90.0)
       {
         v14 = [RTLocation alloc];
-        v15 = [v4 _clientAttributes];
-        v16 = [v15 correctedLocationAttributes];
-        v17 = [v16 correctedCoordinate];
-        [v17 lat];
+        _clientAttributes3 = [v4 _clientAttributes];
+        correctedLocationAttributes3 = [_clientAttributes3 correctedLocationAttributes];
+        correctedCoordinate2 = [correctedLocationAttributes3 correctedCoordinate];
+        [correctedCoordinate2 lat];
         v19 = v18;
-        v20 = [v4 _clientAttributes];
-        v21 = [v20 correctedLocationAttributes];
-        v22 = [v21 correctedCoordinate];
-        [v22 lng];
+        _clientAttributes4 = [v4 _clientAttributes];
+        correctedLocationAttributes4 = [_clientAttributes4 correctedLocationAttributes];
+        correctedCoordinate3 = [correctedLocationAttributes4 correctedCoordinate];
+        [correctedCoordinate3 lng];
         v24 = [v14 initWithLatitude:0 longitude:objc_msgSend(v4 horizontalUncertainty:"referenceFrame") date:v19 referenceFrame:{v23, 1.0}];
 
         goto LABEL_20;
@@ -357,18 +357,18 @@ LABEL_18:
     {
     }
 
-    v15 = [CLPlacemark placemarkWithGEOMapItem:v4];
-    v16 = [v15 region];
-    if (v16)
+    _clientAttributes3 = [CLPlacemark placemarkWithGEOMapItem:v4];
+    correctedLocationAttributes3 = [_clientAttributes3 region];
+    if (correctedLocationAttributes3)
     {
       v26 = [RTLocation alloc];
-      [v16 center];
+      [correctedLocationAttributes3 center];
       v28 = v27;
-      [v16 center];
+      [correctedLocationAttributes3 center];
       v30 = v29;
-      [v16 radius];
+      [correctedLocationAttributes3 radius];
       v32 = v31;
-      v33 = [v4 referenceFrame];
+      referenceFrame = [v4 referenceFrame];
       v34 = v26;
       v35 = v28;
       v36 = v30;
@@ -412,14 +412,14 @@ LABEL_18:
       }
 
       v47 = v43;
-      v33 = [v4 referenceFrame];
+      referenceFrame = [v4 referenceFrame];
       v37 = 1.0;
       v34 = v40;
       v35 = v42;
       v36 = v47;
     }
 
-    v24 = [v34 initWithLatitude:0 longitude:v33 horizontalUncertainty:v35 date:v36 referenceFrame:v37];
+    v24 = [v34 initWithLatitude:0 longitude:referenceFrame horizontalUncertainty:v35 date:v36 referenceFrame:v37];
 LABEL_20:
 
     goto LABEL_21;
@@ -441,51 +441,51 @@ LABEL_21:
   return v24;
 }
 
-+ (BOOL)addressDictionaryContainsContactsKeys:(id)a3
++ (BOOL)addressDictionaryContainsContactsKeys:(id)keys
 {
-  v3 = a3;
-  v4 = [v3 allKeys];
-  if ([v4 containsObject:CNPostalAddressStreetKey])
+  keysCopy = keys;
+  allKeys = [keysCopy allKeys];
+  if ([allKeys containsObject:CNPostalAddressStreetKey])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 allKeys];
-    if ([v6 containsObject:CNPostalAddressCityKey])
+    allKeys2 = [keysCopy allKeys];
+    if ([allKeys2 containsObject:CNPostalAddressCityKey])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 allKeys];
-      if ([v7 containsObject:CNPostalAddressStateKey])
+      allKeys3 = [keysCopy allKeys];
+      if ([allKeys3 containsObject:CNPostalAddressStateKey])
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [v3 allKeys];
-        if ([v8 containsObject:CNPostalAddressPostalCodeKey])
+        allKeys4 = [keysCopy allKeys];
+        if ([allKeys4 containsObject:CNPostalAddressPostalCodeKey])
         {
           v5 = 1;
         }
 
         else
         {
-          v9 = [v3 allKeys];
-          if ([v9 containsObject:CNPostalAddressCountryKey])
+          allKeys5 = [keysCopy allKeys];
+          if ([allKeys5 containsObject:CNPostalAddressCountryKey])
           {
             v5 = 1;
           }
 
           else
           {
-            v10 = [v3 allKeys];
-            v5 = [v10 containsObject:CNPostalAddressISOCountryCodeKey];
+            allKeys6 = [keysCopy allKeys];
+            v5 = [allKeys6 containsObject:CNPostalAddressISOCountryCodeKey];
           }
         }
       }
@@ -495,30 +495,30 @@ LABEL_21:
   return v5;
 }
 
-+ (id)convertAddressDictionaryFromContactsToGeoServices:(id)a3
++ (id)convertAddressDictionaryFromContactsToGeoServices:(id)services
 {
-  v3 = a3;
+  servicesCopy = services;
   +[NSMutableDictionary dictionary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10001D2C4;
   v4 = v6[3] = &unk_1000A8BB8;
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [servicesCopy enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
 
-+ (unint64_t)mapItemPlaceTypeFromGEOMapItem:(id)a3 source:(unint64_t)a4
++ (unint64_t)mapItemPlaceTypeFromGEOMapItem:(id)item source:(unint64_t)source
 {
-  v4 = a4;
-  v5 = a3;
-  if ((v4 & 0x4000) == 0)
+  sourceCopy = source;
+  itemCopy = item;
+  if ((sourceCopy & 0x4000) == 0)
   {
     goto LABEL_2;
   }
 
-  v7 = [objc_opt_class() labelTypeFromFromGEOMapItem:v5];
+  v7 = [objc_opt_class() labelTypeFromFromGEOMapItem:itemCopy];
   if (v7)
   {
     if (v7 == 2)
@@ -535,28 +535,28 @@ LABEL_9:
     }
   }
 
-  else if ([v5 _muid])
+  else if ([itemCopy _muid])
   {
     goto LABEL_9;
   }
 
 LABEL_2:
-  v6 = [objc_opt_class() mapItemPlaceTypeFromGEOMapItemPlaceType:{objc_msgSend(v5, "_placeType")}];
+  v6 = [objc_opt_class() mapItemPlaceTypeFromGEOMapItemPlaceType:{objc_msgSend(itemCopy, "_placeType")}];
 LABEL_10:
 
   return v6;
 }
 
-+ (unint64_t)mapItemPlaceTypeFromGEOMapItemPlaceType:(int)a3
++ (unint64_t)mapItemPlaceTypeFromGEOMapItemPlaceType:(int)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return qword_100092310[a3 - 1];
+    return qword_100092310[type - 1];
   }
 }
 

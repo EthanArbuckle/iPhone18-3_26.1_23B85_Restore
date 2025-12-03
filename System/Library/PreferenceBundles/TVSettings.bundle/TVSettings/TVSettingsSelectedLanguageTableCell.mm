@@ -1,23 +1,23 @@
 @interface TVSettingsSelectedLanguageTableCell
-- (TVSettingsSelectedLanguageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TVSettingsSelectedLanguageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TVSettingsSelectedLanguageTableCell
 
-- (TVSettingsSelectedLanguageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TVSettingsSelectedLanguageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = TVSettingsSelectedLanguageTableCell;
-  v4 = [(TVSettingsSelectedLanguageTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TVSettingsSelectedLanguageTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(TVSettingsSelectedLanguageTableCell *)v4 specifier];
-    v7 = [v6 propertyForKey:PSIDKey];
+    specifier = [(TVSettingsSelectedLanguageTableCell *)v4 specifier];
+    v7 = [specifier propertyForKey:PSIDKey];
     [(TVSettingsSelectedLanguageTableCell *)v5 setLanguageCode:v7];
 
-    v8 = [v6 name];
-    [(TVSettingsSelectedLanguageTableCell *)v5 setTitle:v8];
+    name = [specifier name];
+    [(TVSettingsSelectedLanguageTableCell *)v5 setTitle:name];
   }
 
   return v5;

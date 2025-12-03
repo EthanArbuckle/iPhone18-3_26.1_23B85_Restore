@@ -1,7 +1,7 @@
 @interface FTMutableAsrRecognitionMessage
-+ (Class)session_message_mutableClassForType:(int64_t)a3;
-+ (int64_t)session_message_typeForMutableObject:(id)a3;
-+ (int64_t)session_message_typeForObject:(id)a3;
++ (Class)session_message_mutableClassForType:(int64_t)type;
++ (int64_t)session_message_typeForMutableObject:(id)object;
++ (int64_t)session_message_typeForObject:(id)object;
 - (FTAudioLimitExceeded)session_messageAsFTAudioLimitExceeded;
 - (FTAudioPacket)session_messageAsFTAudioPacket;
 - (FTCheckForSpeechRequest)session_messageAsFTCheckForSpeechRequest;
@@ -28,35 +28,35 @@
 - (FTStartSpeechRequest)session_messageAsFTStartSpeechRequest;
 - (FTUpdateAudioInfo)session_messageAsFTUpdateAudioInfo;
 - (FTUpdatedAcousticProfile)session_messageAsFTUpdatedAcousticProfile;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)session_message_type;
-- (void)setSession_message:(id)a3;
-- (void)setSession_messageAsFTAudioLimitExceeded:(id)a3;
-- (void)setSession_messageAsFTAudioPacket:(id)a3;
-- (void)setSession_messageAsFTCheckForSpeechRequest:(id)a3;
-- (void)setSession_messageAsFTCheckForSpeechResponse:(id)a3;
-- (void)setSession_messageAsFTClientSetupInfo:(id)a3;
-- (void)setSession_messageAsFTEndPointCandidate:(id)a3;
-- (void)setSession_messageAsFTEndPointLikelihood:(id)a3;
-- (void)setSession_messageAsFTFinalSpeechRecognitionResponse:(id)a3;
-- (void)setSession_messageAsFTFinishAudio:(id)a3;
-- (void)setSession_messageAsFTMultiUserFinalSpeechRecognitionResponse:(id)a3;
-- (void)setSession_messageAsFTMultiUserRecognitionCandidate:(id)a3;
-- (void)setSession_messageAsFTPartialSpeechRecognitionResponse:(id)a3;
-- (void)setSession_messageAsFTRecognitionCandidate:(id)a3;
-- (void)setSession_messageAsFTRecognitionProgress:(id)a3;
-- (void)setSession_messageAsFTRequestStatsResponse:(id)a3;
-- (void)setSession_messageAsFTResetServerEndpointer:(id)a3;
-- (void)setSession_messageAsFTServerEndpointFeatures:(id)a3;
-- (void)setSession_messageAsFTSetAlternateRecognitionSausage:(id)a3;
-- (void)setSession_messageAsFTSetEndpointerState:(id)a3;
-- (void)setSession_messageAsFTSetRequestOrigin:(id)a3;
-- (void)setSession_messageAsFTSetSpeechContext:(id)a3;
-- (void)setSession_messageAsFTSetSpeechProfile:(id)a3;
-- (void)setSession_messageAsFTStartSpeechRequest:(id)a3;
-- (void)setSession_messageAsFTUpdateAudioInfo:(id)a3;
-- (void)setSession_messageAsFTUpdatedAcousticProfile:(id)a3;
-- (void)setSession_message_type:(int64_t)a3;
+- (void)setSession_message:(id)session_message;
+- (void)setSession_messageAsFTAudioLimitExceeded:(id)exceeded;
+- (void)setSession_messageAsFTAudioPacket:(id)packet;
+- (void)setSession_messageAsFTCheckForSpeechRequest:(id)request;
+- (void)setSession_messageAsFTCheckForSpeechResponse:(id)response;
+- (void)setSession_messageAsFTClientSetupInfo:(id)info;
+- (void)setSession_messageAsFTEndPointCandidate:(id)candidate;
+- (void)setSession_messageAsFTEndPointLikelihood:(id)likelihood;
+- (void)setSession_messageAsFTFinalSpeechRecognitionResponse:(id)response;
+- (void)setSession_messageAsFTFinishAudio:(id)audio;
+- (void)setSession_messageAsFTMultiUserFinalSpeechRecognitionResponse:(id)response;
+- (void)setSession_messageAsFTMultiUserRecognitionCandidate:(id)candidate;
+- (void)setSession_messageAsFTPartialSpeechRecognitionResponse:(id)response;
+- (void)setSession_messageAsFTRecognitionCandidate:(id)candidate;
+- (void)setSession_messageAsFTRecognitionProgress:(id)progress;
+- (void)setSession_messageAsFTRequestStatsResponse:(id)response;
+- (void)setSession_messageAsFTResetServerEndpointer:(id)endpointer;
+- (void)setSession_messageAsFTServerEndpointFeatures:(id)features;
+- (void)setSession_messageAsFTSetAlternateRecognitionSausage:(id)sausage;
+- (void)setSession_messageAsFTSetEndpointerState:(id)state;
+- (void)setSession_messageAsFTSetRequestOrigin:(id)origin;
+- (void)setSession_messageAsFTSetSpeechContext:(id)context;
+- (void)setSession_messageAsFTSetSpeechProfile:(id)profile;
+- (void)setSession_messageAsFTStartSpeechRequest:(id)request;
+- (void)setSession_messageAsFTUpdateAudioInfo:(id)info;
+- (void)setSession_messageAsFTUpdatedAcousticProfile:(id)profile;
+- (void)setSession_message_type:(int64_t)session_message_type;
 @end
 
 @implementation FTMutableAsrRecognitionMessage
@@ -68,17 +68,17 @@
   v2 = [(FTMutableAsrRecognitionMessage *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -89,14 +89,14 @@
 - (int64_t)session_message_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"session_message_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setSession_message_type:(int64_t)a3
+- (void)setSession_message_type:(int64_t)session_message_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:session_message_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -115,11 +115,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTStartSpeechRequest:(id)a3
+- (void)setSession_messageAsFTStartSpeechRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:1];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -138,11 +138,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTUpdateAudioInfo:(id)a3
+- (void)setSession_messageAsFTUpdateAudioInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:2];
-  v4 = [v5 copy];
+  v4 = [infoCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -161,11 +161,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTSetRequestOrigin:(id)a3
+- (void)setSession_messageAsFTSetRequestOrigin:(id)origin
 {
-  v5 = a3;
+  originCopy = origin;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:3];
-  v4 = [v5 copy];
+  v4 = [originCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -184,11 +184,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTSetSpeechContext:(id)a3
+- (void)setSession_messageAsFTSetSpeechContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:4];
-  v4 = [v5 copy];
+  v4 = [contextCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -207,11 +207,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTSetSpeechProfile:(id)a3
+- (void)setSession_messageAsFTSetSpeechProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:5];
-  v4 = [v5 copy];
+  v4 = [profileCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -230,11 +230,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTSetEndpointerState:(id)a3
+- (void)setSession_messageAsFTSetEndpointerState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:6];
-  v4 = [v5 copy];
+  v4 = [stateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -253,11 +253,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTAudioPacket:(id)a3
+- (void)setSession_messageAsFTAudioPacket:(id)packet
 {
-  v5 = a3;
+  packetCopy = packet;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:7];
-  v4 = [v5 copy];
+  v4 = [packetCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -276,11 +276,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTFinishAudio:(id)a3
+- (void)setSession_messageAsFTFinishAudio:(id)audio
 {
-  v5 = a3;
+  audioCopy = audio;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:8];
-  v4 = [v5 copy];
+  v4 = [audioCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -299,11 +299,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTResetServerEndpointer:(id)a3
+- (void)setSession_messageAsFTResetServerEndpointer:(id)endpointer
 {
-  v5 = a3;
+  endpointerCopy = endpointer;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:9];
-  v4 = [v5 copy];
+  v4 = [endpointerCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -322,11 +322,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTCheckForSpeechRequest:(id)a3
+- (void)setSession_messageAsFTCheckForSpeechRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:10];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -345,11 +345,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTSetAlternateRecognitionSausage:(id)a3
+- (void)setSession_messageAsFTSetAlternateRecognitionSausage:(id)sausage
 {
-  v5 = a3;
+  sausageCopy = sausage;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:11];
-  v4 = [v5 copy];
+  v4 = [sausageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -368,11 +368,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTFinalSpeechRecognitionResponse:(id)a3
+- (void)setSession_messageAsFTFinalSpeechRecognitionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:12];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -391,11 +391,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTMultiUserFinalSpeechRecognitionResponse:(id)a3
+- (void)setSession_messageAsFTMultiUserFinalSpeechRecognitionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:13];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -414,11 +414,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTPartialSpeechRecognitionResponse:(id)a3
+- (void)setSession_messageAsFTPartialSpeechRecognitionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:14];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -437,11 +437,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTUpdatedAcousticProfile:(id)a3
+- (void)setSession_messageAsFTUpdatedAcousticProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:15];
-  v4 = [v5 copy];
+  v4 = [profileCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -460,11 +460,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTEndPointLikelihood:(id)a3
+- (void)setSession_messageAsFTEndPointLikelihood:(id)likelihood
 {
-  v5 = a3;
+  likelihoodCopy = likelihood;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:16];
-  v4 = [v5 copy];
+  v4 = [likelihoodCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -483,11 +483,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTEndPointCandidate:(id)a3
+- (void)setSession_messageAsFTEndPointCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:17];
-  v4 = [v5 copy];
+  v4 = [candidateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -506,11 +506,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTRecognitionProgress:(id)a3
+- (void)setSession_messageAsFTRecognitionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:18];
-  v4 = [v5 copy];
+  v4 = [progressCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -529,11 +529,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTCheckForSpeechResponse:(id)a3
+- (void)setSession_messageAsFTCheckForSpeechResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:19];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -552,11 +552,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTRecognitionCandidate:(id)a3
+- (void)setSession_messageAsFTRecognitionCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:20];
-  v4 = [v5 copy];
+  v4 = [candidateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -575,11 +575,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTMultiUserRecognitionCandidate:(id)a3
+- (void)setSession_messageAsFTMultiUserRecognitionCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:21];
-  v4 = [v5 copy];
+  v4 = [candidateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -598,11 +598,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTRequestStatsResponse:(id)a3
+- (void)setSession_messageAsFTRequestStatsResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:22];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -621,11 +621,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTServerEndpointFeatures:(id)a3
+- (void)setSession_messageAsFTServerEndpointFeatures:(id)features
 {
-  v5 = a3;
+  featuresCopy = features;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:23];
-  v4 = [v5 copy];
+  v4 = [featuresCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -644,11 +644,11 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTClientSetupInfo:(id)a3
+- (void)setSession_messageAsFTClientSetupInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:24];
-  v4 = [v5 copy];
+  v4 = [infoCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
@@ -667,162 +667,162 @@
   return v3;
 }
 
-- (void)setSession_messageAsFTAudioLimitExceeded:(id)a3
+- (void)setSession_messageAsFTAudioLimitExceeded:(id)exceeded
 {
-  v5 = a3;
+  exceededCopy = exceeded;
   [(FTMutableAsrRecognitionMessage *)self setSession_message_type:25];
-  v4 = [v5 copy];
+  v4 = [exceededCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
-- (void)setSession_message:(id)a3
+- (void)setSession_message:(id)session_message
 {
-  v5 = a3;
-  -[FTMutableAsrRecognitionMessage setSession_message_type:](self, "setSession_message_type:", [objc_opt_class() session_message_typeForObject:v5]);
-  v4 = [v5 copy];
+  session_messageCopy = session_message;
+  -[FTMutableAsrRecognitionMessage setSession_message_type:](self, "setSession_message_type:", [objc_opt_class() session_message_typeForObject:session_messageCopy]);
+  v4 = [session_messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"session_message"];
 }
 
-+ (Class)session_message_mutableClassForType:(int64_t)a3
++ (Class)session_message_mutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0x18)
+  if ((type - 1) > 0x18)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B86D8[a3 - 1];
+    v4 = *off_2789B86D8[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)session_message_typeForMutableObject:(id)a3
++ (int64_t)session_message_typeForMutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 20;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 21;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 22;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 23;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 24;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 25;
   }
@@ -835,135 +835,135 @@
   return v4;
 }
 
-+ (int64_t)session_message_typeForObject:(id)a3
++ (int64_t)session_message_typeForObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 20;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 21;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 22;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 23;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 24;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 25;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 25;
   }

@@ -4,21 +4,21 @@
 - (CGRect)normalizedDisplayedAssetRect;
 - (CGRect)normalizedSubtitleRect;
 - (CGRect)normalizedTitleRect;
-- (CGRect)rectInCoordinateSpace:(id)a3 velocity:(CGRect *)a4;
-- (CGRect)rectInLayout:(id)a3 velocity:(CGRect *)a4;
+- (CGRect)rectInCoordinateSpace:(id)space velocity:(CGRect *)velocity;
+- (CGRect)rectInLayout:(id)layout velocity:(CGRect *)velocity;
 - (NSString)diagnosticDescription;
 - (PXGItemPlacement)adjustedPreferredPlacement;
 - (PXGItemPlacement)init;
-- (PXGItemPlacement)initWithContext:(id)a3 configuration:(id)a4;
+- (PXGItemPlacement)initWithContext:(id)context configuration:(id)configuration;
 - (PXRegionOfInterest)regionOfInterest;
-- (id)copyWithConfiguration:(id)a3;
-- (id)copyWithRegionOfInterest:(id)a3;
-- (void)adjustPreferredPlacementInSourceWithIdentifier:(id)a3 configuration:(id)a4;
-- (void)registerSourceIdentifier:(id)a3;
-- (void)setCornerRadius:(id)a3;
-- (void)setDisplayedAssetContentsRect:(id *)a3;
-- (void)setRect:(CGRect)a3 velocity:(CGRect)a4 inCoordinateSpace:(id)a5;
-- (void)setRect:(CGRect)a3 velocity:(CGRect)a4 inLayout:(id)a5;
+- (id)copyWithConfiguration:(id)configuration;
+- (id)copyWithRegionOfInterest:(id)interest;
+- (void)adjustPreferredPlacementInSourceWithIdentifier:(id)identifier configuration:(id)configuration;
+- (void)registerSourceIdentifier:(id)identifier;
+- (void)setCornerRadius:(id)radius;
+- (void)setDisplayedAssetContentsRect:(id *)rect;
+- (void)setRect:(CGRect)rect velocity:(CGRect)velocity inCoordinateSpace:(id)space;
+- (void)setRect:(CGRect)rect velocity:(CGRect)velocity inLayout:(id)layout;
 @end
 
 @implementation PXGItemPlacement
@@ -84,47 +84,47 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v7 = [WeakRetained diagnosticDescription];
+  diagnosticDescription = [WeakRetained diagnosticDescription];
   v8 = PXRectDescription();
   v9 = objc_loadWeakRetained(&self->_coordinateSpace);
-  v10 = [v3 initWithFormat:@"<%@: %p, context=%@, rect=%@, coordinateSpace=%@, layout=%@, rectReference=%li>", v5, self, v7, v8, v9, self->_layout, self->_rectReference];
+  v10 = [v3 initWithFormat:@"<%@: %p, context=%@, rect=%@, coordinateSpace=%@, layout=%@, rectReference=%li>", v5, self, diagnosticDescription, v8, v9, self->_layout, self->_rectReference];
 
   return v10;
 }
 
 - (PXGItemPlacement)adjustedPreferredPlacement
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v4 = [WeakRetained _adjustedPreferredPlacementForPlacement:v2];
+  v4 = [WeakRetained _adjustedPreferredPlacementForPlacement:selfCopy];
   v5 = v4;
   if (v4)
   {
-    v2 = v4;
+    selfCopy = v4;
   }
 
-  v6 = v2;
+  v6 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)adjustPreferredPlacementInSourceWithIdentifier:(id)a3 configuration:(id)a4
+- (void)adjustPreferredPlacementInSourceWithIdentifier:(id)identifier configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  [WeakRetained _adjustPreferredPlacementInSourceWithIdentifier:v7 configuration:v6];
+  [WeakRetained _adjustPreferredPlacementInSourceWithIdentifier:identifierCopy configuration:configurationCopy];
 }
 
-- (id)copyWithRegionOfInterest:(id)a3
+- (id)copyWithRegionOfInterest:(id)interest
 {
-  v4 = a3;
+  interestCopy = interest;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__PXGItemPlacement_copyWithRegionOfInterest___block_invoke;
   v8[3] = &unk_2782AB3A0;
-  v9 = v4;
-  v5 = v4;
+  v9 = interestCopy;
+  v5 = interestCopy;
   v6 = [(PXGItemPlacement *)self copyWithConfiguration:v8];
 
   return v6;
@@ -150,8 +150,8 @@ LABEL_9:
       WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
       goto LABEL_10;
     case 2:
-      v5 = [(PXGLayout *)self->_layout rootLayout];
-      WeakRetained = [v5 coordinateSpace];
+      rootLayout = [(PXGLayout *)self->_layout rootLayout];
+      WeakRetained = [rootLayout coordinateSpace];
 
       if (WeakRetained)
       {
@@ -169,8 +169,8 @@ LABEL_9:
 
       goto LABEL_9;
     case 0:
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXGItemPlacement.m" lineNumber:215 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGItemPlacement.m" lineNumber:215 description:@"Code which should be unreachable has been reached"];
 
       abort();
   }
@@ -184,9 +184,9 @@ LABEL_10:
   return v9;
 }
 
-- (id)copyWithConfiguration:(id)a3
+- (id)copyWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = objc_alloc(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->_context);
   v7 = [v5 initWithContext:WeakRetained configuration:&__block_literal_global_16576];
@@ -224,30 +224,30 @@ LABEL_10:
   *(v7 + 152) = self->_legibilityOverlayAlpha;
   *(v7 + 112) = self->_soundVolume;
   objc_storeStrong((v7 + 160), self->_otherItemsPlacement);
-  v4[2](v4, v7);
+  configurationCopy[2](configurationCopy, v7);
 
   return v7;
 }
 
-- (void)registerSourceIdentifier:(id)a3
+- (void)registerSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   registeredSourceIdentifiers = self->_registeredSourceIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!registeredSourceIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_registeredSourceIdentifiers;
     self->_registeredSourceIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     registeredSourceIdentifiers = self->_registeredSourceIdentifiers;
   }
 
-  [(NSMutableArray *)registeredSourceIdentifiers addObject:v4];
+  [(NSMutableArray *)registeredSourceIdentifiers addObject:identifierCopy];
 }
 
-- (void)setCornerRadius:(id)a3
+- (void)setCornerRadius:(id)radius
 {
   self->_cornerRadius.var0.var0.topLeft = v3;
   self->_cornerRadius.var0.var0.topRight = v4;
@@ -255,29 +255,29 @@ LABEL_10:
   self->_cornerRadius.var0.var0.bottomRight = v6;
 }
 
-- (void)setDisplayedAssetContentsRect:(id *)a3
+- (void)setDisplayedAssetContentsRect:(id *)rect
 {
-  v3 = *&a3->var0.a;
-  v4 = *&a3->var0.tx;
-  *&self->_displayedAssetContentsRect.t.c = *&a3->var0.c;
+  v3 = *&rect->var0.a;
+  v4 = *&rect->var0.tx;
+  *&self->_displayedAssetContentsRect.t.c = *&rect->var0.c;
   *&self->_displayedAssetContentsRect.t.tx = v4;
   *&self->_displayedAssetContentsRect.t.a = v3;
 }
 
-- (CGRect)rectInLayout:(id)a3 velocity:(CGRect *)a4
+- (CGRect)rectInLayout:(id)layout velocity:(CGRect *)velocity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
+  layoutCopy = layout;
+  v7 = layoutCopy;
   rectReference = self->_rectReference;
   if (rectReference == 2)
   {
-    [v6 convertRect:self->_layout fromLayout:{self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height}];
+    [layoutCopy convertRect:self->_layout fromLayout:{self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height}];
     v9 = v26;
     v10 = v27;
     v11 = v28;
     v12 = v29;
-    if (!a4)
+    if (!velocity)
     {
       goto LABEL_14;
     }
@@ -295,7 +295,7 @@ LABEL_10:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v30 = 138412290;
-        v31 = self;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_21AD38000, v15, OS_LOG_TYPE_ERROR, "missing context in %@", &v30, 0xCu);
       }
     }
@@ -324,18 +324,18 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v30 = 138412290;
-      v31 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&dword_21AD38000, v13, OS_LOG_TYPE_ERROR, "undefined rect reference in %@", &v30, 0xCu);
     }
   }
 
 LABEL_12:
-  if (a4)
+  if (velocity)
   {
 LABEL_13:
     size = self->_rectVelocity.size;
-    a4->origin = self->_rectVelocity.origin;
-    a4->size = size;
+    velocity->origin = self->_rectVelocity.origin;
+    velocity->size = size;
   }
 
 LABEL_14:
@@ -351,23 +351,23 @@ LABEL_14:
   return result;
 }
 
-- (void)setRect:(CGRect)a3 velocity:(CGRect)a4 inLayout:(id)a5
+- (void)setRect:(CGRect)rect velocity:(CGRect)velocity inLayout:(id)layout
 {
-  self->_rect = a3;
-  self->_rectVelocity = a4;
-  objc_storeStrong(&self->_layout, a5);
+  self->_rect = rect;
+  self->_rectVelocity = velocity;
+  objc_storeStrong(&self->_layout, layout);
   self->_rectReference = 2;
 }
 
-- (CGRect)rectInCoordinateSpace:(id)a3 velocity:(CGRect *)a4
+- (CGRect)rectInCoordinateSpace:(id)space velocity:(CGRect *)velocity
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  spaceCopy = space;
   rectReference = self->_rectReference;
   if (rectReference == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    [WeakRetained _convertRect:self->_layout fromLayout:v6 toCoordinateSpace:self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height];
+    [WeakRetained _convertRect:self->_layout fromLayout:spaceCopy toCoordinateSpace:self->_rect.origin.x, self->_rect.origin.y, self->_rect.size.width, self->_rect.size.height];
     goto LABEL_8;
   }
 
@@ -396,18 +396,18 @@ LABEL_8:
   if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
   {
     v22 = 138412290;
-    v23 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_21AD38000, WeakRetained, OS_LOG_TYPE_ERROR, "undefined rect reference in %@", &v22, 0xCu);
   }
 
 LABEL_9:
 
 LABEL_10:
-  if (a4)
+  if (velocity)
   {
     size = self->_rectVelocity.size;
-    a4->origin = self->_rectVelocity.origin;
-    a4->size = size;
+    velocity->origin = self->_rectVelocity.origin;
+    velocity->size = size;
   }
 
   v18 = v8;
@@ -421,25 +421,25 @@ LABEL_10:
   return result;
 }
 
-- (void)setRect:(CGRect)a3 velocity:(CGRect)a4 inCoordinateSpace:(id)a5
+- (void)setRect:(CGRect)rect velocity:(CGRect)velocity inCoordinateSpace:(id)space
 {
-  self->_rect = a3;
-  self->_rectVelocity = a4;
-  objc_storeWeak(&self->_coordinateSpace, a5);
+  self->_rect = rect;
+  self->_rectVelocity = velocity;
+  objc_storeWeak(&self->_coordinateSpace, space);
   self->_rectReference = 1;
 }
 
-- (PXGItemPlacement)initWithContext:(id)a3 configuration:(id)a4
+- (PXGItemPlacement)initWithContext:(id)context configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = PXGItemPlacement;
   v8 = [(PXGItemPlacement *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
+    objc_storeWeak(&v8->_context, contextCopy);
     v10 = objc_alloc_init(MEMORY[0x277CCAD78]);
     uuid = v9->_uuid;
     v9->_uuid = v10;
@@ -469,7 +469,7 @@ LABEL_10:
     *&v9->_chromeAlpha = _Q0;
     v9->_legibilityOverlayAlpha = 1.0;
     v9->_soundVolume = 1.0;
-    (v7)[2](v7, v9);
+    (configurationCopy)[2](configurationCopy, v9);
     WeakRetained = objc_loadWeakRetained(&v9->_context);
     [WeakRetained _registerOriginalPlacement:v9 forSourceIdentifiers:v9->_registeredSourceIdentifiers];
 
@@ -482,8 +482,8 @@ LABEL_10:
 
 - (PXGItemPlacement)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGItemPlacement.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXGItemPlacement init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGItemPlacement.m" lineNumber:47 description:{@"%s is not available as initializer", "-[PXGItemPlacement init]"}];
 
   abort();
 }

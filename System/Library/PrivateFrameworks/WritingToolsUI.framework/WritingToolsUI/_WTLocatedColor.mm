@@ -1,17 +1,17 @@
 @interface _WTLocatedColor
-+ (id)locatedColor:(id)a3 location:(double)a4;
++ (id)locatedColor:(id)color location:(double)location;
 @end
 
 @implementation _WTLocatedColor
 
-+ (id)locatedColor:(id)a3 location:(double)a4
++ (id)locatedColor:(id)color location:(double)location
 {
-  v5 = a3;
+  colorCopy = color;
   objc_opt_class();
   v6 = objc_opt_new();
-  [v6 setColor:v5];
+  [v6 setColor:colorCopy];
 
-  [v6 setLocation:a4];
+  [v6 setLocation:location];
 
   return v6;
 }

@@ -1,8 +1,8 @@
 @interface AMLFeaturesSpecification
-- (AMLFeaturesSpecification)initWithFeaturesDescription:(id)a3;
+- (AMLFeaturesSpecification)initWithFeaturesDescription:(id)description;
 - (NSArray)featuresDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFeaturesDescription:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFeaturesDescription:(id)description;
 @end
 
 @implementation AMLFeaturesSpecification
@@ -16,26 +16,26 @@
   return v2;
 }
 
-- (void)setFeaturesDescription:(id)a3
+- (void)setFeaturesDescription:(id)description
 {
   sub_21AEA7B80(0, &qword_281228800, 0x277CBFEE0);
   v4 = sub_21AF0988C();
-  v5 = self;
+  selfCopy = self;
   sub_21AEEDCB4(v4);
 }
 
-- (AMLFeaturesSpecification)initWithFeaturesDescription:(id)a3
+- (AMLFeaturesSpecification)initWithFeaturesDescription:(id)description
 {
   sub_21AEA7B80(0, &qword_281228800, 0x277CBFEE0);
   v3 = sub_21AF0988C();
   return AMLFeaturesSpecification.init(featuresDescription:)(v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_21AEEE224(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_21AEEE224(coderCopy);
 }
 
 @end

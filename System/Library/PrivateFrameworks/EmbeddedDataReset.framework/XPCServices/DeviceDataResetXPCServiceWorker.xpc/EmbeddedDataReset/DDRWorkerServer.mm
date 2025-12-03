@@ -1,10 +1,10 @@
 @interface DDRWorkerServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_run;
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4;
-- (void)resetWithMode:(int64_t)a3 didUpdateWithProgress:(double)a4;
-- (void)resetWithModeDidBegin:(int64_t)a3;
-- (void)setObserving:(BOOL)a3;
+- (void)resetDataWithRequest:(id)request completion:(id)completion;
+- (void)resetWithMode:(int64_t)mode didUpdateWithProgress:(double)progress;
+- (void)resetWithModeDidBegin:(int64_t)begin;
+- (void)setObserving:(BOOL)observing;
 - (void)start;
 @end
 
@@ -16,12 +16,12 @@
   [(DDRWorkerServer *)self setWorkerQueue:v3];
 
   v4 = [DDRWorker alloc];
-  v5 = [(DDRWorkerServer *)self workerQueue];
-  v6 = [(DDRWorker *)v4 initWithQueue:v5];
+  workerQueue = [(DDRWorkerServer *)self workerQueue];
+  v6 = [(DDRWorker *)v4 initWithQueue:workerQueue];
   [(DDRWorkerServer *)self setWorker:v6];
 
-  v7 = [(DDRWorkerServer *)self worker];
-  [v7 setDelegate:self];
+  worker = [(DDRWorkerServer *)self worker];
+  [worker setDelegate:self];
 
   v8 = +[NSXPCListener serviceListener];
   [v8 setDelegate:self];
@@ -35,9 +35,9 @@
   [v2 run];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = DDRLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,7 +45,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "got incomming connection in xpc worker server", buf, 2u);
   }
 
-  v7 = [BSAuditToken tokenFromNSXPCConnection:v5];
+  v7 = [BSAuditToken tokenFromNSXPCConnection:connectionCopy];
   v8 = DDRLogForCategory(0);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -92,18 +92,18 @@ LABEL_9:
     v17 = [NSSet setWithObjects:v15, v16, objc_opt_class(), 0];
     [v13 setClasses:v17 forSelector:"resetDataWithRequest:completion:" argumentIndex:0 ofReply:0];
 
-    [v5 setExportedInterface:v13];
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedInterface:v13];
+    [connectionCopy setExportedObject:self];
     v18 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DDRWorkerClientProtocol];
-    [v5 setRemoteObjectInterface:v18];
+    [connectionCopy setRemoteObjectInterface:v18];
 
-    [v5 setInvalidationHandler:&stru_1000146A8];
-    [v5 setInterruptionHandler:&stru_1000146C8];
-    v19 = [(DDRWorkerServer *)self workerQueue];
-    [v5 _setQueue:v19];
+    [connectionCopy setInvalidationHandler:&stru_1000146A8];
+    [connectionCopy setInterruptionHandler:&stru_1000146C8];
+    workerQueue = [(DDRWorkerServer *)self workerQueue];
+    [connectionCopy _setQueue:workerQueue];
 
-    [v5 resume];
-    [(DDRWorkerServer *)self setDevicedataresetdConnection:v5];
+    [connectionCopy resume];
+    [(DDRWorkerServer *)self setDevicedataresetdConnection:connectionCopy];
   }
 
   else if (v14)
@@ -115,10 +115,10 @@ LABEL_9:
   return v12;
 }
 
-- (void)resetDataWithRequest:(id)a3 completion:(id)a4
+- (void)resetDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v8 = DDRLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,11 +126,11 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "calling reset data with mode in xpc worker", v10, 2u);
   }
 
-  v9 = [(DDRWorkerServer *)self worker];
-  [v9 resetDataWithRequest:v7 completion:v6];
+  worker = [(DDRWorkerServer *)self worker];
+  [worker resetDataWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)setObserving:(BOOL)a3
+- (void)setObserving:(BOOL)observing
 {
   v5 = DDRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -139,25 +139,25 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Oberver is connected to xpc service worker", v6, 2u);
   }
 
-  self->_hasObserver = a3;
+  self->_hasObserver = observing;
 }
 
-- (void)resetWithMode:(int64_t)a3 didUpdateWithProgress:(double)a4
+- (void)resetWithMode:(int64_t)mode didUpdateWithProgress:(double)progress
 {
   v7 = DDRLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    progressCopy = progress;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "worker server update with progress: %lf", &v10, 0xCu);
   }
 
-  v8 = [(DDRWorkerServer *)self devicedataresetdConnection];
-  v9 = [v8 remoteObjectProxy];
-  [v9 resetWithMode:a3 didUpdateWithProgress:a4];
+  devicedataresetdConnection = [(DDRWorkerServer *)self devicedataresetdConnection];
+  remoteObjectProxy = [devicedataresetdConnection remoteObjectProxy];
+  [remoteObjectProxy resetWithMode:mode didUpdateWithProgress:progress];
 }
 
-- (void)resetWithModeDidBegin:(int64_t)a3
+- (void)resetWithModeDidBegin:(int64_t)begin
 {
   v5 = DDRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -166,9 +166,9 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "worker server reset did begin", v8, 2u);
   }
 
-  v6 = [(DDRWorkerServer *)self devicedataresetdConnection];
-  v7 = [v6 remoteObjectProxy];
-  [v7 resetWithModeDidBegin:a3];
+  devicedataresetdConnection = [(DDRWorkerServer *)self devicedataresetdConnection];
+  remoteObjectProxy = [devicedataresetdConnection remoteObjectProxy];
+  [remoteObjectProxy resetWithModeDidBegin:begin];
 }
 
 @end

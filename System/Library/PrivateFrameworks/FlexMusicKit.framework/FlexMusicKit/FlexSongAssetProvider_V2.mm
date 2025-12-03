@@ -1,25 +1,25 @@
 @interface FlexSongAssetProvider_V2
-- (FlexSongAssetProvider_V2)initWithFolderPath:(id)a3 audioFileExtension:(id)a4;
-- (id)_folderNameForSegmentType:(unint64_t)a3;
-- (id)urlToAudioContainerForSegmentType:(unint64_t)a3;
-- (id)urlToAudioForSegment:(id)a3;
+- (FlexSongAssetProvider_V2)initWithFolderPath:(id)path audioFileExtension:(id)extension;
+- (id)_folderNameForSegmentType:(unint64_t)type;
+- (id)urlToAudioContainerForSegmentType:(unint64_t)type;
+- (id)urlToAudioForSegment:(id)segment;
 - (id)urlToRoot;
 @end
 
 @implementation FlexSongAssetProvider_V2
 
-- (FlexSongAssetProvider_V2)initWithFolderPath:(id)a3 audioFileExtension:(id)a4
+- (FlexSongAssetProvider_V2)initWithFolderPath:(id)path audioFileExtension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  extensionCopy = extension;
   v12.receiver = self;
   v12.super_class = FlexSongAssetProvider_V2;
   v9 = [(FlexSongAssetProvider_V2 *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rootFolderPath, a3);
-    objc_storeStrong(&v10->_audioFileExtension, a4);
+    objc_storeStrong(&v9->_rootFolderPath, path);
+    objc_storeStrong(&v10->_audioFileExtension, extension);
   }
 
   return v10;
@@ -34,22 +34,22 @@
   return v10;
 }
 
-- (id)_folderNameForSegmentType:(unint64_t)a3
+- (id)_folderNameForSegmentType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return @"?";
   }
 
   else
   {
-    return off_27900EC60[a3 - 1];
+    return off_27900EC60[type - 1];
   }
 }
 
-- (id)urlToAudioContainerForSegmentType:(unint64_t)a3
+- (id)urlToAudioContainerForSegmentType:(unint64_t)type
 {
-  v6 = objc_msgSend__folderNameForSegmentType_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend__folderNameForSegmentType_(self, a2, type, v3, v4);
   v11 = objc_msgSend_rootFolderPath(self, v7, v8, v9, v10);
   v15 = objc_msgSend_stringByAppendingPathComponent_(v11, v12, v6, v13, v14);
 
@@ -58,17 +58,17 @@
   return v19;
 }
 
-- (id)urlToAudioForSegment:(id)a3
+- (id)urlToAudioForSegment:(id)segment
 {
-  if (a3)
+  if (segment)
   {
-    v4 = a3;
-    v9 = objc_msgSend_type(v4, v5, v6, v7, v8);
+    segmentCopy = segment;
+    v9 = objc_msgSend_type(segmentCopy, v5, v6, v7, v8);
     v13 = objc_msgSend__folderNameForSegmentType_(self, v10, v9, v11, v12);
     v18 = objc_msgSend_rootFolderPath(self, v14, v15, v16, v17);
     v22 = objc_msgSend_stringByAppendingPathComponent_(v18, v19, v13, v20, v21);
 
-    v27 = objc_msgSend_name(v4, v23, v24, v25, v26);
+    v27 = objc_msgSend_name(segmentCopy, v23, v24, v25, v26);
 
     v31 = objc_msgSend_stringByAppendingPathComponent_(v22, v28, v27, v29, v30);
 

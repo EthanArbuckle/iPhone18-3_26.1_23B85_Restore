@@ -9,14 +9,14 @@
 {
   v6 = a4;
   v7 = a3;
-  [a1 replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(a1, "length")}];
+  [self replaceOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(self, "length")}];
 }
 
 - (void)searchAndReplaceInString:()CalClassAdditions withString:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:a1];
+  v8 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self];
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v8 setCharactersToBeSkipped:0];
   if ([v8 scanString:v6 intoString:0])
@@ -53,7 +53,7 @@
     v14 = v11;
   }
 
-  [a1 setString:v9];
+  [self setString:v9];
 }
 
 @end

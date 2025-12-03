@@ -1,7 +1,7 @@
 @interface _MBLLoadMessageJob
 + (OS_os_log)signpostLog;
 + (id)log;
-- (id)initForMessage:(id)a3 forMBLMailbox:(id)a4;
+- (id)initForMessage:(id)message forMBLMailbox:(id)mailbox;
 - (unint64_t)signpostID;
 - (void)run;
 @end
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000455B4;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185718 != -1)
   {
     dispatch_once(&qword_100185718, block);
@@ -27,8 +27,8 @@
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004571C;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185728 != -1)
   {
     dispatch_once(&qword_100185728, block);
@@ -53,13 +53,13 @@
 - (void)run
 {
   v3 = +[MFPowerController sharedInstance];
-  v4 = [(MFMailMessage *)self->_message account];
-  [v3 retainAssertionWithIdentifier:@"com.apple.mobilemail.messagebodyloader_job.message" withAccount:v4];
+  account = [(MFMailMessage *)self->_message account];
+  [v3 retainAssertionWithIdentifier:@"com.apple.mobilemail.messagebodyloader_job.message" withAccount:account];
 
-  v5 = [(MFMailMessage *)self->_message messageStore];
-  LODWORD(v4) = [v5 shouldDownloadBodyDataForMessage:self->_message];
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  LODWORD(account) = [messageStore shouldDownloadBodyDataForMessage:self->_message];
 
-  if (v4)
+  if (account)
   {
     v6 = [MFMessageLoadingContext alloc];
     message = self->_message;
@@ -76,36 +76,36 @@
   if ([(MFMailMessage *)self->_message shouldSetSummary])
   {
     v12 = +[_MBLLoadMessageJob signpostLog];
-    v13 = [(_MBLLoadMessageJob *)self signpostID];
-    if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
+    signpostID = [(_MBLLoadMessageJob *)self signpostID];
+    if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
     {
-      v14 = [(MFMailMessage *)self->_message messageID];
+      messageID = [(MFMailMessage *)self->_message messageID];
       v32 = 138412290;
-      v33 = v14;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, v13, "MBL COPY SUMMARY", "Message=%@", &v32, 0xCu);
+      v33 = messageID;
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "MBL COPY SUMMARY", "Message=%@", &v32, 0xCu);
     }
 
     v15 = [MessageBodyLoader copySummaryForMessage:self->_message downloadIfNecessary:1];
     v16 = +[_MBLLoadMessageJob signpostLog];
-    v17 = [(_MBLLoadMessageJob *)self signpostID];
-    if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+    signpostID2 = [(_MBLLoadMessageJob *)self signpostID];
+    if (signpostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
     {
       LOWORD(v32) = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, v17, "MBL COPY SUMMARY", "", &v32, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, signpostID2, "MBL COPY SUMMARY", "", &v32, 2u);
     }
 
     v18 = +[MFActivityMonitor currentMonitor];
-    v19 = [v18 error];
-    if (v19)
+    error = [v18 error];
+    if (error)
     {
     }
 
     else
     {
       v20 = +[MFActivityMonitor currentMonitor];
-      v21 = [v20 shouldCancel];
+      shouldCancel = [v20 shouldCancel];
 
-      if (v21)
+      if (shouldCancel)
       {
         goto LABEL_26;
       }
@@ -119,22 +119,22 @@
       v23 = v22;
 
       v24 = +[_MBLLoadMessageJob signpostLog];
-      v25 = [(_MBLLoadMessageJob *)self signpostID];
-      if (v25 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
+      signpostID3 = [(_MBLLoadMessageJob *)self signpostID];
+      if (signpostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
       {
-        v26 = [(MFMailMessage *)self->_message messageID];
+        messageID2 = [(MFMailMessage *)self->_message messageID];
         v32 = 138412290;
-        v33 = v26;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_BEGIN, v25, "MBL WRITE SUMMARY", "Message=%@", &v32, 0xCu);
+        v33 = messageID2;
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_BEGIN, signpostID3, "MBL WRITE SUMMARY", "Message=%@", &v32, 0xCu);
       }
 
       [(MFMailMessage *)self->_message setSummary:v23];
       v27 = +[_MBLLoadMessageJob signpostLog];
-      v28 = [(_MBLLoadMessageJob *)self signpostID];
-      if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
+      signpostID4 = [(_MBLLoadMessageJob *)self signpostID];
+      if (signpostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
       {
         LOWORD(v32) = 0;
-        _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_END, v28, "MBL WRITE SUMMARY", "", &v32, 2u);
+        _os_signpost_emit_with_name_impl(&_mh_execute_header, v27, OS_SIGNPOST_INTERVAL_END, signpostID4, "MBL WRITE SUMMARY", "", &v32, 2u);
       }
 
       if (!-[__CFString length](v23, "length") || (-[MFMailMessage messageFlags](self->_message, "messageFlags") & 1) != 0 || (-[MFMailMessage mailbox](self->_message, "mailbox"), v29 = objc_claimAutoreleasedReturnValue(), v30 = [v29 mailboxType], v29, (v30 & 0xFFFFFFFFFFFFFFFDLL) == 1))
@@ -155,18 +155,18 @@ LABEL_26:
   [v31 releaseAssertionWithIdentifier:@"com.apple.mobilemail.messagebodyloader_job.message"];
 }
 
-- (id)initForMessage:(id)a3 forMBLMailbox:(id)a4
+- (id)initForMessage:(id)message forMBLMailbox:(id)mailbox
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  mailboxCopy = mailbox;
   v12.receiver = self;
   v12.super_class = _MBLLoadMessageJob;
   v9 = [(_MBLLoadMessageJob *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
-    objc_storeWeak(p_isa + 1, v8);
+    objc_storeStrong(&v9->_message, message);
+    objc_storeWeak(p_isa + 1, mailboxCopy);
   }
 
   return p_isa;

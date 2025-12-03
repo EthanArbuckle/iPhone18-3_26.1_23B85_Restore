@@ -1,8 +1,8 @@
 @interface TSWPTab
-+ (id)displayStringFromTabLeader:(id)a3;
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4 isVertical:(BOOL)a5;
++ (id)displayStringFromTabLeader:(id)leader;
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l isVertical:(BOOL)vertical;
 + (id)tab;
-+ (id)tabLeaderFromDisplayString:(id)a3;
++ (id)tabLeaderFromDisplayString:(id)string;
 + (id)tabStopAlignmentStringBottom;
 + (id)tabStopAlignmentStringCenter;
 + (id)tabStopAlignmentStringDecimal;
@@ -20,23 +20,23 @@
 + (id)tabStopLeaderStringDash;
 + (id)tabStopLeaderStringPoint;
 + (id)tabStopLeaderStringUnderscore;
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l;
+- (BOOL)isEqual:(id)equal;
 - (NSString)leader;
-- (TSWPTab)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPTab)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (int64_t)compareToPosition:(double)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (int64_t)compare:(id)compare;
+- (int64_t)compareToPosition:(double)position;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSWPTab
 
 + (id)tabStopAlignmentStringTop
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Top", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -44,7 +44,7 @@
 
 + (id)tabStopAlignmentStringMiddle
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Middle", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -52,7 +52,7 @@
 
 + (id)tabStopAlignmentStringBottom
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Bottom", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -60,7 +60,7 @@
 
 + (id)tabStopAlignmentStringLeft
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Left", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -68,7 +68,7 @@
 
 + (id)tabStopAlignmentStringCenter
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Center", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -76,7 +76,7 @@
 
 + (id)tabStopAlignmentStringRight
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Right", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -84,7 +84,7 @@
 
 + (id)tabStopAlignmentStringDecimal
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Decimal", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -92,7 +92,7 @@
 
 + (id)tabStopDisplayStringNone
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"None", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -100,7 +100,7 @@
 
 + (id)tabStopDisplayStringPoint
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @".....", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -108,7 +108,7 @@
 
 + (id)tabStopDisplayStringDash
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"-----", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -116,7 +116,7 @@
 
 + (id)tabStopDisplayStringUnderscore
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"_____", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -124,7 +124,7 @@
 
 + (id)tabStopDisplayStringArrow
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"→→→", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -132,7 +132,7 @@
 
 + (id)tabStopLeaderStringPoint
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @".", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -140,7 +140,7 @@
 
 + (id)tabStopLeaderStringDash
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"-", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -148,7 +148,7 @@
 
 + (id)tabStopLeaderStringUnderscore
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"_", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -156,7 +156,7 @@
 
 + (id)tabStopLeaderStringArrow
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"→", &stru_28860A0F0, @"TSText");
 
   return v5;
@@ -164,50 +164,50 @@
 
 + (id)tabStopLeaderStringArrowRTL
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"←", &stru_28860A0F0, @"TSText");
 
   return v5;
 }
 
-+ (id)tabLeaderFromDisplayString:(id)a3
++ (id)tabLeaderFromDisplayString:(id)string
 {
-  v4 = a3;
-  v7 = objc_msgSend_tabStopDisplayStringPoint(a1, v5, v6);
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v8, v7);
+  stringCopy = string;
+  v7 = objc_msgSend_tabStopDisplayStringPoint(self, v5, v6);
+  isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v8, v7);
 
   if (isEqualToString)
   {
-    v12 = objc_msgSend_tabStopLeaderStringPoint(a1, v10, v11);
+    v12 = objc_msgSend_tabStopLeaderStringPoint(self, v10, v11);
 LABEL_9:
     v28 = v12;
     goto LABEL_10;
   }
 
-  v13 = objc_msgSend_tabStopDisplayStringDash(a1, v10, v11);
-  v15 = objc_msgSend_isEqualToString_(v4, v14, v13);
+  v13 = objc_msgSend_tabStopDisplayStringDash(self, v10, v11);
+  v15 = objc_msgSend_isEqualToString_(stringCopy, v14, v13);
 
   if (v15)
   {
-    v12 = objc_msgSend_tabStopLeaderStringDash(a1, v16, v17);
+    v12 = objc_msgSend_tabStopLeaderStringDash(self, v16, v17);
     goto LABEL_9;
   }
 
-  v18 = objc_msgSend_tabStopDisplayStringUnderscore(a1, v16, v17);
-  v20 = objc_msgSend_isEqualToString_(v4, v19, v18);
+  v18 = objc_msgSend_tabStopDisplayStringUnderscore(self, v16, v17);
+  v20 = objc_msgSend_isEqualToString_(stringCopy, v19, v18);
 
   if (v20)
   {
-    v12 = objc_msgSend_tabStopLeaderStringUnderscore(a1, v21, v22);
+    v12 = objc_msgSend_tabStopLeaderStringUnderscore(self, v21, v22);
     goto LABEL_9;
   }
 
-  v23 = objc_msgSend_tabStopDisplayStringArrow(a1, v21, v22);
-  v25 = objc_msgSend_isEqualToString_(v4, v24, v23);
+  v23 = objc_msgSend_tabStopDisplayStringArrow(self, v21, v22);
+  v25 = objc_msgSend_isEqualToString_(stringCopy, v24, v23);
 
   if (v25)
   {
-    v12 = objc_msgSend_tabStopLeaderStringArrow(a1, v26, v27);
+    v12 = objc_msgSend_tabStopLeaderStringArrow(self, v26, v27);
     goto LABEL_9;
   }
 
@@ -217,16 +217,16 @@ LABEL_10:
   return v28;
 }
 
-+ (int)tabAlignmentFromString:(id)a3 isRTL:(BOOL)a4
++ (int)tabAlignmentFromString:(id)string isRTL:(BOOL)l
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = objc_msgSend_tabStopAlignmentStringLeft(a1, v7, v8);
-  isEqualToString = objc_msgSend_isEqualToString_(v6, v10, v9);
+  lCopy = l;
+  stringCopy = string;
+  v9 = objc_msgSend_tabStopAlignmentStringLeft(self, v7, v8);
+  isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v10, v9);
 
   if (isEqualToString)
   {
-    if (v4)
+    if (lCopy)
     {
       v14 = 2;
     }
@@ -239,8 +239,8 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v15 = objc_msgSend_tabStopAlignmentStringCenter(a1, v12, v13);
-  v17 = objc_msgSend_isEqualToString_(v6, v16, v15);
+  v15 = objc_msgSend_tabStopAlignmentStringCenter(self, v12, v13);
+  v17 = objc_msgSend_isEqualToString_(stringCopy, v16, v15);
 
   if (v17)
   {
@@ -249,13 +249,13 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v20 = objc_msgSend_tabStopAlignmentStringRight(a1, v18, v19);
-  v22 = objc_msgSend_isEqualToString_(v6, v21, v20);
+  v20 = objc_msgSend_tabStopAlignmentStringRight(self, v18, v19);
+  v22 = objc_msgSend_isEqualToString_(stringCopy, v21, v20);
 
   if (!v22)
   {
-    v25 = objc_msgSend_tabStopAlignmentStringDecimal(a1, v23, v24);
-    v27 = objc_msgSend_isEqualToString_(v6, v26, v25);
+    v25 = objc_msgSend_tabStopAlignmentStringDecimal(self, v23, v24);
+    v27 = objc_msgSend_isEqualToString_(stringCopy, v26, v25);
 
     if (v27)
     {
@@ -263,21 +263,21 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    v30 = objc_msgSend_tabStopAlignmentStringTop(a1, v28, v29);
-    v32 = objc_msgSend_isEqualToString_(v6, v31, v30);
+    v30 = objc_msgSend_tabStopAlignmentStringTop(self, v28, v29);
+    v32 = objc_msgSend_isEqualToString_(stringCopy, v31, v30);
 
     if ((v32 & 1) == 0)
     {
-      v36 = objc_msgSend_tabStopAlignmentStringMiddle(a1, v33, v34);
-      v38 = objc_msgSend_isEqualToString_(v6, v37, v36);
+      v36 = objc_msgSend_tabStopAlignmentStringMiddle(self, v33, v34);
+      v38 = objc_msgSend_isEqualToString_(stringCopy, v37, v36);
 
       if (v38)
       {
         goto LABEL_6;
       }
 
-      v41 = objc_msgSend_tabStopAlignmentStringBottom(a1, v39, v40);
-      v43 = objc_msgSend_isEqualToString_(v6, v42, v41);
+      v41 = objc_msgSend_tabStopAlignmentStringBottom(self, v39, v40);
+      v43 = objc_msgSend_isEqualToString_(stringCopy, v42, v41);
 
       if (v43)
       {
@@ -297,7 +297,7 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (v4)
+  if (lCopy)
   {
     v14 = 0;
   }
@@ -312,23 +312,23 @@ LABEL_15:
   return v14;
 }
 
-+ (id)stringFromTabAlignment:(int)a3 isRTL:(BOOL)a4 isVertical:(BOOL)a5
++ (id)stringFromTabAlignment:(int)alignment isRTL:(BOOL)l isVertical:(BOOL)vertical
 {
   v6 = &stru_28860A0F0;
-  if (a3 <= 1)
+  if (alignment <= 1)
   {
-    if (a3)
+    if (alignment)
     {
-      if (a3 == 1)
+      if (alignment == 1)
       {
-        if (a5)
+        if (vertical)
         {
-          objc_msgSend_tabStopAlignmentStringMiddle(a1, a2, *&a3, a4);
+          objc_msgSend_tabStopAlignmentStringMiddle(self, a2, *&alignment, l);
         }
 
         else
         {
-          objc_msgSend_tabStopAlignmentStringCenter(a1, a2, *&a3, a4);
+          objc_msgSend_tabStopAlignmentStringCenter(self, a2, *&alignment, l);
         }
         v6 = ;
       }
@@ -336,33 +336,33 @@ LABEL_15:
       goto LABEL_19;
     }
 
-    if (a5)
+    if (vertical)
     {
-      v6 = objc_msgSend_tabStopAlignmentStringTop(a1, a2, *&a3, a4);
+      v6 = objc_msgSend_tabStopAlignmentStringTop(self, a2, *&alignment, l);
       goto LABEL_19;
     }
 
-    if (a4)
+    if (l)
     {
 LABEL_16:
-      v6 = objc_msgSend_tabStopAlignmentStringRight(a1, a2, *&a3);
+      v6 = objc_msgSend_tabStopAlignmentStringRight(self, a2, *&alignment);
       goto LABEL_19;
     }
 
 LABEL_18:
-    v6 = objc_msgSend_tabStopAlignmentStringLeft(a1, a2, *&a3);
+    v6 = objc_msgSend_tabStopAlignmentStringLeft(self, a2, *&alignment);
     goto LABEL_19;
   }
 
-  if (a3 == 2)
+  if (alignment == 2)
   {
-    if (a5)
+    if (vertical)
     {
-      v6 = objc_msgSend_tabStopAlignmentStringBottom(a1, a2, *&a3, a4);
+      v6 = objc_msgSend_tabStopAlignmentStringBottom(self, a2, *&alignment, l);
       goto LABEL_19;
     }
 
-    if (!a4)
+    if (!l)
     {
       goto LABEL_16;
     }
@@ -370,9 +370,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a3 == 3)
+  if (alignment == 3)
   {
-    v6 = objc_msgSend_tabStopAlignmentStringDecimal(a1, a2, *&a3, a4, a5);
+    v6 = objc_msgSend_tabStopAlignmentStringDecimal(self, a2, *&alignment, l, vertical);
   }
 
 LABEL_19:
@@ -380,49 +380,49 @@ LABEL_19:
   return v6;
 }
 
-+ (id)displayStringFromTabLeader:(id)a3
++ (id)displayStringFromTabLeader:(id)leader
 {
-  v4 = a3;
-  v7 = objc_msgSend_tabStopDisplayStringNone(a1, v5, v6);
-  v10 = objc_msgSend_tabStopLeaderStringPoint(a1, v8, v9);
-  isEqualToString = objc_msgSend_isEqualToString_(v4, v11, v10);
+  leaderCopy = leader;
+  v7 = objc_msgSend_tabStopDisplayStringNone(self, v5, v6);
+  v10 = objc_msgSend_tabStopLeaderStringPoint(self, v8, v9);
+  isEqualToString = objc_msgSend_isEqualToString_(leaderCopy, v11, v10);
 
   if (isEqualToString)
   {
-    v15 = objc_msgSend_tabStopDisplayStringPoint(a1, v13, v14);
+    v15 = objc_msgSend_tabStopDisplayStringPoint(self, v13, v14);
   }
 
   else
   {
-    v16 = objc_msgSend_tabStopLeaderStringDash(a1, v13, v14);
-    v18 = objc_msgSend_isEqualToString_(v4, v17, v16);
+    v16 = objc_msgSend_tabStopLeaderStringDash(self, v13, v14);
+    v18 = objc_msgSend_isEqualToString_(leaderCopy, v17, v16);
 
     if (v18)
     {
-      v15 = objc_msgSend_tabStopDisplayStringDash(a1, v19, v20);
+      v15 = objc_msgSend_tabStopDisplayStringDash(self, v19, v20);
     }
 
     else
     {
-      v21 = objc_msgSend_tabStopLeaderStringUnderscore(a1, v19, v20);
-      v23 = objc_msgSend_isEqualToString_(v4, v22, v21);
+      v21 = objc_msgSend_tabStopLeaderStringUnderscore(self, v19, v20);
+      v23 = objc_msgSend_isEqualToString_(leaderCopy, v22, v21);
 
       if (v23)
       {
-        v15 = objc_msgSend_tabStopDisplayStringUnderscore(a1, v24, v25);
+        v15 = objc_msgSend_tabStopDisplayStringUnderscore(self, v24, v25);
       }
 
       else
       {
-        v26 = objc_msgSend_tabStopLeaderStringArrow(a1, v24, v25);
-        v28 = objc_msgSend_isEqualToString_(v4, v27, v26);
+        v26 = objc_msgSend_tabStopLeaderStringArrow(self, v24, v25);
+        v28 = objc_msgSend_isEqualToString_(leaderCopy, v27, v26);
 
         if (!v28)
         {
           goto LABEL_10;
         }
 
-        v15 = objc_msgSend_tabStopDisplayStringArrow(a1, v29, v30);
+        v15 = objc_msgSend_tabStopDisplayStringArrow(self, v29, v30);
       }
     }
   }
@@ -442,18 +442,18 @@ LABEL_10:
   return v2;
 }
 
-- (TSWPTab)initWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (TSWPTab)initWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
-  v8 = a5;
+  leaderCopy = leader;
   v16.receiver = self;
   v16.super_class = TSWPTab;
   v9 = [(TSWPTab *)&v16 init];
   v12 = v9;
   if (v9)
   {
-    v9->_position = a3;
-    v9->_alignment = a4;
-    v13 = objc_msgSend_copy(v8, v10, v11);
+    v9->_position = position;
+    v9->_alignment = alignment;
+    v13 = objc_msgSend_copy(leaderCopy, v10, v11);
     leader = v12->_leader;
     v12->_leader = v13;
   }
@@ -461,13 +461,13 @@ LABEL_10:
   return v12;
 }
 
-- (TSWPTab)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSWPTab)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  v8 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v8 = *(archive + 4);
   if ((v8 & 2) != 0)
   {
-    v9 = *(a3 + 8);
+    v9 = *(archive + 8);
   }
 
   else
@@ -475,11 +475,11 @@ LABEL_10:
     v9 = 0.0;
   }
 
-  v10 = *(a3 + 9);
+  v10 = *(archive + 9);
   if (v8)
   {
     v13 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v11 = objc_msgSend_tsp_initWithProtobufString_(v13, v14, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     v12 = objc_msgSend_initWithPosition_alignment_leader_(self, v15, v10 & (v8 << 29 >> 31), v11, v9);
   }
 
@@ -494,9 +494,9 @@ LABEL_10:
   return v16;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v28 = a4;
+  archiverCopy = archiver;
   position = self->_position;
   if (position != 0.0)
   {
@@ -536,26 +536,26 @@ LABEL_10:
 LABEL_7:
     v9 = position;
 LABEL_8:
-    *(a3 + 4) |= 2u;
-    *(a3 + 8) = v9;
+    *(archive + 4) |= 2u;
+    *(archive + 8) = v9;
   }
 
   alignment = self->_alignment;
   if (alignment)
   {
-    *(a3 + 4) |= 4u;
-    *(a3 + 9) = alignment;
+    *(archive + 4) |= 4u;
+    *(archive + 9) = alignment;
   }
 
   leader = self->_leader;
   if (leader)
   {
     v12 = objc_msgSend_UTF8String(leader, v6, v7);
-    sub_276D4E680(a3, v12);
+    sub_276D4E680(archive, v12);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   position = self->_position;
@@ -578,27 +578,27 @@ LABEL_8:
   }
 }
 
-- (int64_t)compareToPosition:(double)a3
+- (int64_t)compareToPosition:(double)position
 {
   position = self->_position;
-  if (position < a3)
+  if (position < position)
   {
     return -1;
   }
 
   else
   {
-    return position > a3;
+    return position > position;
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  compareCopy = compare;
+  v7 = compareCopy;
+  if (compareCopy)
   {
-    objc_msgSend_position(v4, v5, v6);
+    objc_msgSend_position(compareCopy, v5, v6);
     v10 = objc_msgSend_compareToPosition_(self, v8, v9);
   }
 
@@ -610,9 +610,9 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v8 = v5;

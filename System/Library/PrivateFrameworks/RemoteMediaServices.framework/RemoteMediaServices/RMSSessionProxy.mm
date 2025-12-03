@@ -1,9 +1,9 @@
 @interface RMSSessionProxy
-- (BOOL)sessionMatchesNotification:(id)a3;
-- (RMSSessionProxy)initWithTimeout:(double)a3;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActiveNotification:(id)a3;
-- (void)_sendHeartbeat:(id)a3;
+- (BOOL)sessionMatchesNotification:(id)notification;
+- (RMSSessionProxy)initWithTimeout:(double)timeout;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActiveNotification:(id)notification;
+- (void)_sendHeartbeat:(id)heartbeat;
 - (void)beginHeartbeat;
 - (void)dealloc;
 - (void)endHeartbeat;
@@ -11,7 +11,7 @@
 
 @implementation RMSSessionProxy
 
-- (RMSSessionProxy)initWithTimeout:(double)a3
+- (RMSSessionProxy)initWithTimeout:(double)timeout
 {
   v8.receiver = self;
   v8.super_class = RMSSessionProxy;
@@ -19,10 +19,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sessionTimeout = a3;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
-    [v6 addObserver:v5 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    v4->_sessionTimeout = timeout;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter addObserver:v5 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
   }
 
   return v5;
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RMSSessionProxy *)self endHeartbeat];
   v4.receiver = self;
@@ -39,7 +39,7 @@
   [(RMSSessionProxy *)&v4 dealloc];
 }
 
-- (void)_applicationWillResignActiveNotification:(id)a3
+- (void)_applicationWillResignActiveNotification:(id)notification
 {
   v9 = *MEMORY[0x277D85DE8];
   if (self->_heartbeatTimer)
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v19 = *MEMORY[0x277D85DE8];
   if (self->_isPaused)
@@ -165,21 +165,21 @@ uint64_t __33__RMSSessionProxy_beginHeartbeat__block_invoke(uint64_t a1)
   self->_isPaused = 0;
 }
 
-- (BOOL)sessionMatchesNotification:(id)a3
+- (BOOL)sessionMatchesNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"RMSIDSClientSessionIdentifierNotificationKey"];
-  v6 = [v5 intValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"RMSIDSClientSessionIdentifierNotificationKey"];
+  intValue = [v5 intValue];
 
-  LOBYTE(self) = self->_sessionIdentifier == v6;
+  LOBYTE(self) = self->_sessionIdentifier == intValue;
   return self;
 }
 
-- (void)_sendHeartbeat:(id)a3
+- (void)_sendHeartbeat:(id)heartbeat
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RMSSessionProxy *)self sessionIdentifier];
+  heartbeatCopy = heartbeat;
+  sessionIdentifier = [(RMSSessionProxy *)self sessionIdentifier];
   objc_initWeak(&location, self);
   v6 = RMSLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -197,7 +197,7 @@ uint64_t __33__RMSSessionProxy_beginHeartbeat__block_invoke(uint64_t a1)
   v10[2] = __34__RMSSessionProxy__sendHeartbeat___block_invoke;
   v10[3] = &unk_279B08930;
   objc_copyWeak(&v11, &location);
-  [v9 sendHeartbeatWithSessionIdentifier:v5 completionHandler:v10];
+  [v9 sendHeartbeatWithSessionIdentifier:sessionIdentifier completionHandler:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

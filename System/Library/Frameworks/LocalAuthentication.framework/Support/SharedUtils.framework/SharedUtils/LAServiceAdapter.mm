@@ -1,23 +1,23 @@
 @interface LAServiceAdapter
-- (LAServiceAdapter)initWithExportedInterface:(id)a3 exportedObject:(id)a4 queue:(id)a5;
+- (LAServiceAdapter)initWithExportedInterface:(id)interface exportedObject:(id)object queue:(id)queue;
 @end
 
 @implementation LAServiceAdapter
 
-- (LAServiceAdapter)initWithExportedInterface:(id)a3 exportedObject:(id)a4 queue:(id)a5
+- (LAServiceAdapter)initWithExportedInterface:(id)interface exportedObject:(id)object queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  interfaceCopy = interface;
+  objectCopy = object;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = LAServiceAdapter;
   v12 = [(LABaseService *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_exportedInterface, a3);
-    objc_storeStrong(&v13->_exportedObject, a4);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_exportedInterface, interface);
+    objc_storeStrong(&v13->_exportedObject, object);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;

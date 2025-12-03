@@ -1,32 +1,32 @@
 @interface ICMathNotesWindowSceneDelegate
 - (ICMathNotesWindowSceneDelegate)init;
-- (void)ic_setupWithScene:(id)a3 options:(id)a4;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)ic_setupWithScene:(id)scene options:(id)options;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 @end
 
 @implementation ICMathNotesWindowSceneDelegate
 
-- (void)ic_setupWithScene:(id)a3 options:(id)a4
+- (void)ic_setupWithScene:(id)scene options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1004966DC(v6);
+  sceneCopy = scene;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1004966DC(sceneCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004961BC(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1004961BC(foregroundCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004964CC(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_1004964CC(backgroundCopy);
 }
 
 - (ICMathNotesWindowSceneDelegate)init

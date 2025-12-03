@@ -1,13 +1,13 @@
 @interface STStorageSystemDetailController
 - (id)specifiers;
-- (id)valueForSpecifier:(id)a3;
+- (id)valueForSpecifier:(id)specifier;
 @end
 
 @implementation STStorageSystemDetailController
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [specifier propertyForKey:PSValueKey];
   [v3 longLongValue];
   v4 = STFormattedSize();
 

@@ -1,21 +1,21 @@
 @interface VCPProtoLivePhotoKeyFrameFaceResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoKeyFrameFaceResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"faceBounds"];
   v5 = [v3 objectForKeyedSubscript:@"faceQuality"];
   v6 = v5;
@@ -53,8 +53,8 @@
   v13[1] = *MEMORY[0x1E69E9840];
   v12 = @"attributes";
   v10[0] = @"faceBounds";
-  v3 = [(VCPProtoLivePhotoKeyFrameFaceResult *)self faceBounds];
-  [v3 rectValue];
+  faceBounds = [(VCPProtoLivePhotoKeyFrameFaceResult *)self faceBounds];
+  [faceBounds rectValue];
   v4 = NSStringFromRect(v15);
   v11[0] = v4;
   v10[1] = @"faceQuality";
@@ -75,48 +75,48 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoKeyFrameFaceResult;
   v4 = [(VCPProtoLivePhotoKeyFrameFaceResult *)&v8 description];
-  v5 = [(VCPProtoLivePhotoKeyFrameFaceResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoKeyFrameFaceResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   faceBounds = self->_faceBounds;
   if (faceBounds)
   {
-    v6 = [(VCPProtoBounds *)faceBounds dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"faceBounds"];
+    dictionaryRepresentation = [(VCPProtoBounds *)faceBounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"faceBounds"];
   }
 
   *&v4 = self->_faceQuality;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"faceQuality"];
+  [dictionary setObject:v7 forKey:@"faceQuality"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   faceBounds = self->_faceBounds;
-  v5 = a3;
-  [v5 setFaceBounds:faceBounds];
-  v5[4] = self->_faceQuality;
+  toCopy = to;
+  [toCopy setFaceBounds:faceBounds];
+  toCopy[4] = self->_faceQuality;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoBounds *)self->_faceBounds copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoBounds *)self->_faceBounds copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -124,10 +124,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((faceBounds = self->_faceBounds, !(faceBounds | *(v4 + 1))) || -[VCPProtoBounds isEqual:](faceBounds, "isEqual:")) && self->_faceQuality == *(v4 + 4);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((faceBounds = self->_faceBounds, !(faceBounds | *(equalCopy + 1))) || -[VCPProtoBounds isEqual:](faceBounds, "isEqual:")) && self->_faceQuality == *(equalCopy + 4);
 
   return v6;
 }
@@ -163,11 +163,11 @@
   return v11 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   faceBounds = self->_faceBounds;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (faceBounds)
   {
     if (!v6)
@@ -175,7 +175,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoBounds *)faceBounds mergeFrom:?];
   }
 
@@ -186,13 +186,13 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoLivePhotoKeyFrameFaceResult *)self setFaceBounds:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_faceQuality = *(v4 + 4);
+  self->_faceQuality = *(fromCopy + 4);
 }
 
 @end

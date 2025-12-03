@@ -1,29 +1,29 @@
 @interface SBHAddWidgetSheetViewControllerBase
-- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 addWidgetSheetStyle:(unint64_t)a6;
-- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7;
+- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets addWidgetSheetStyle:(unint64_t)style;
+- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style;
 - (SBHAddWidgetSheetViewControllerDelegate)delegate;
 - (SBHPadAddWidgetSheetMetrics)addWidgetSheetMetrics;
 - (SBHWidgetFilteringParameters)allowedWidgets;
 - (SBIconViewProviding)iconViewProvider;
-- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)orientation;
 - (int64_t)widgetWrapperViewControllerBackgroundType;
-- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)a3;
+- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)metrics;
 @end
 
 @implementation SBHAddWidgetSheetViewControllerBase
 
-- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 addWidgetSheetStyle:(unint64_t)a6
+- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets addWidgetSheetStyle:(unint64_t)style
 {
-  v7 = *&a5.includesNonStackable;
-  families = a5.families;
+  v7 = *&widgets.includesNonStackable;
+  families = widgets.families;
   v11 = MEMORY[0x1E69DCEB0];
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 mainScreen];
-  [v14 scale];
+  viewProviderCopy = viewProvider;
+  providerCopy = provider;
+  mainScreen = [v11 mainScreen];
+  [mainScreen scale];
   v16 = v15;
 
-  if (a6)
+  if (style)
   {
     v17 = 32.0;
     v18 = 10.0;
@@ -37,36 +37,36 @@
 
   v19 = SBIconImageInfoMake(v17, v17, v16, v18);
   v23 = [[SBHAddWidgetSheetAppCollectionViewCellConfigurator alloc] initWithIconImageInfo:v19, v20, v21, v22];
-  v24 = [(SBHAddWidgetSheetViewControllerBase *)self initWithListLayoutProvider:v13 iconViewProvider:v12 allowedWidgets:families appCellConfigurator:v7 addWidgetSheetStyle:v23, a6];
+  style = [(SBHAddWidgetSheetViewControllerBase *)self initWithListLayoutProvider:providerCopy iconViewProvider:viewProviderCopy allowedWidgets:families appCellConfigurator:v7 addWidgetSheetStyle:v23, style];
 
-  return v24;
+  return style;
 }
 
-- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)a3 iconViewProvider:(id)a4 allowedWidgets:(SBHWidgetFilteringParameters)a5 appCellConfigurator:(id)a6 addWidgetSheetStyle:(unint64_t)a7
+- (SBHAddWidgetSheetViewControllerBase)initWithListLayoutProvider:(id)provider iconViewProvider:(id)viewProvider allowedWidgets:(SBHWidgetFilteringParameters)widgets appCellConfigurator:(id)configurator addWidgetSheetStyle:(unint64_t)style
 {
-  v9 = *&a5.includesNonStackable;
-  families = a5.families;
+  v9 = *&widgets.includesNonStackable;
+  families = widgets.families;
   v29[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  providerCopy = provider;
+  viewProviderCopy = viewProvider;
+  configuratorCopy = configurator;
   v28.receiver = self;
   v28.super_class = SBHAddWidgetSheetViewControllerBase;
   v17 = [(SBHAddWidgetSheetViewControllerBase *)&v28 initWithNibName:0 bundle:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_listLayoutProvider, a3);
-    objc_storeWeak(&v18->_iconViewProvider, v15);
+    objc_storeStrong(&v17->_listLayoutProvider, provider);
+    objc_storeWeak(&v18->_iconViewProvider, viewProviderCopy);
     v18->_allowedWidgets.families = families;
     *&v18->_allowedWidgets.includesNonStackable = v9;
-    objc_storeStrong(&v18->_appCellConfigurator, a6);
-    v18->_addWidgetSheetStyle = a7;
+    objc_storeStrong(&v18->_appCellConfigurator, configurator);
+    v18->_addWidgetSheetStyle = style;
     v19 = MEMORY[0x1E69DD1B8];
-    v20 = [(SBHAddWidgetSheetViewControllerBase *)v18 traitCollection];
-    v21 = [v19 sbh_iconImageAppearanceFromTraitCollection:v20];
+    traitCollection = [(SBHAddWidgetSheetViewControllerBase *)v18 traitCollection];
+    v21 = [v19 sbh_iconImageAppearanceFromTraitCollection:traitCollection];
 
-    [v16 setIconImageAppearance:v21];
+    [configuratorCopy setIconImageAppearance:v21];
     v22 = objc_opt_self();
     v29[0] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -74,7 +74,7 @@
     v26[1] = 3221225472;
     v26[2] = __138__SBHAddWidgetSheetViewControllerBase_initWithListLayoutProvider_iconViewProvider_allowedWidgets_appCellConfigurator_addWidgetSheetStyle___block_invoke;
     v26[3] = &unk_1E808B8D0;
-    v27 = v16;
+    v27 = configuratorCopy;
     v24 = [(SBHAddWidgetSheetViewControllerBase *)v18 registerForTraitChanges:v23 withHandler:v26];
   }
 
@@ -90,7 +90,7 @@ void __138__SBHAddWidgetSheetViewControllerBase_initWithListLayoutProvider_iconV
   [*(a1 + 32) setIconImageAppearance:v5];
 }
 
-- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)preferredInsetsForSheetPresentationInInterfaceOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -158,22 +158,22 @@ void __138__SBHAddWidgetSheetViewControllerBase_initWithListLayoutProvider_iconV
   return self;
 }
 
-- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)a3
+- (void)setAddWidgetSheetMetrics:(SBHPadAddWidgetSheetMetrics *)metrics
 {
-  v3 = *&a3->sidebarWidth;
-  *&self->_addWidgetSheetMetrics.sheetMargin = *&a3->sheetMargin;
+  v3 = *&metrics->sidebarWidth;
+  *&self->_addWidgetSheetMetrics.sheetMargin = *&metrics->sheetMargin;
   *&self->_addWidgetSheetMetrics.sidebarWidth = v3;
-  detailWidgetPadding = a3->detailWidgetPadding;
-  v6 = *&a3->trailingPadding;
-  v5 = *&a3->widgetScaleFactor;
-  *&self->_addWidgetSheetMetrics.scaledWidgetSize.height = *&a3->scaledWidgetSize.height;
+  detailWidgetPadding = metrics->detailWidgetPadding;
+  v6 = *&metrics->trailingPadding;
+  v5 = *&metrics->widgetScaleFactor;
+  *&self->_addWidgetSheetMetrics.scaledWidgetSize.height = *&metrics->scaledWidgetSize.height;
   self->_addWidgetSheetMetrics.detailWidgetPadding = detailWidgetPadding;
   *&self->_addWidgetSheetMetrics.trailingPadding = v6;
   *&self->_addWidgetSheetMetrics.widgetScaleFactor = v5;
-  v8 = *&a3->detailPageControlTopSpacing;
-  v7 = *&a3->sidebarPadding.leading;
-  v9 = *&a3->detailAddButtonTopSpacing;
-  self->_addWidgetSheetMetrics.sidebarPadding.trailing = a3->sidebarPadding.trailing;
+  v8 = *&metrics->detailPageControlTopSpacing;
+  v7 = *&metrics->sidebarPadding.leading;
+  v9 = *&metrics->detailAddButtonTopSpacing;
+  self->_addWidgetSheetMetrics.sidebarPadding.trailing = metrics->sidebarPadding.trailing;
   *&self->_addWidgetSheetMetrics.detailPageControlTopSpacing = v8;
   *&self->_addWidgetSheetMetrics.sidebarPadding.leading = v7;
   *&self->_addWidgetSheetMetrics.detailAddButtonTopSpacing = v9;

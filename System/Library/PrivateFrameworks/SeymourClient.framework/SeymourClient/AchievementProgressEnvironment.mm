@@ -1,26 +1,26 @@
 @interface AchievementProgressEnvironment
 - (NSString)modalityIdentifier;
 - (_TtC13SeymourClient30AchievementProgressEnvironment)init;
-- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)a3;
-- (id)numberOfWorkoutsOver5MinutesForModality:(id)a3;
+- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)modality;
+- (id)numberOfWorkoutsOver5MinutesForModality:(id)modality;
 @end
 
 @implementation AchievementProgressEnvironment
 
-- (id)numberOfWorkoutsOver5MinutesForModality:(id)a3
+- (id)numberOfWorkoutsOver5MinutesForModality:(id)modality
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1B4DE40C0(v4);
+  modalityCopy = modality;
+  selfCopy = self;
+  v6 = sub_1B4DE40C0(modalityCopy);
 
   return v6;
 }
 
-- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)a3
+- (id)numberOfGuidedWorkoutsOver5MinutesForModality:(id)modality
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1B4DE4178(v4);
+  modalityCopy = modality;
+  selfCopy = self;
+  v6 = sub_1B4DE4178(modalityCopy);
 
   return v6;
 }

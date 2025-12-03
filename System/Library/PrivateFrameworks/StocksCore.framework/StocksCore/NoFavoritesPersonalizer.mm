@@ -1,12 +1,12 @@
 @interface NoFavoritesPersonalizer
-- (void)prepareFavorites:(id)a3;
+- (void)prepareFavorites:(id)favorites;
 @end
 
 @implementation NoFavoritesPersonalizer
 
-- (void)prepareFavorites:(id)a3
+- (void)prepareFavorites:(id)favorites
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(favorites);
   v3[2]();
 
   _Block_release(v3);

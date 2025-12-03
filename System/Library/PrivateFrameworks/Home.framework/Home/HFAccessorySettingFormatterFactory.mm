@@ -8,9 +8,9 @@
 + (id)_siriRecognitionLanguageFormatter;
 + (id)defaultFactory;
 - (HFAccessorySettingFormatterFactory)init;
-- (id)_buildFormatterForKey:(id)a3;
-- (id)formatterForKey:(id)a3;
-- (id)formatterForKey:(id)a3 copy:(BOOL)a4;
+- (id)_buildFormatterForKey:(id)key;
+- (id)formatterForKey:(id)key;
+- (id)formatterForKey:(id)key copy:(BOOL)copy;
 @end
 
 @implementation HFAccessorySettingFormatterFactory
@@ -49,12 +49,12 @@ void __52__HFAccessorySettingFormatterFactory_defaultFactory__block_invoke_2()
   return v2;
 }
 
-- (id)formatterForKey:(id)a3 copy:(BOOL)a4
+- (id)formatterForKey:(id)key copy:(BOOL)copy
 {
-  v4 = a4;
-  v5 = [(HFAccessorySettingFormatterFactory *)self formatterForKey:a3];
+  copyCopy = copy;
+  v5 = [(HFAccessorySettingFormatterFactory *)self formatterForKey:key];
   v6 = v5;
-  if (v4)
+  if (copyCopy)
   {
     v7 = [v5 copy];
 
@@ -64,79 +64,79 @@ void __52__HFAccessorySettingFormatterFactory_defaultFactory__block_invoke_2()
   return v6;
 }
 
-- (id)formatterForKey:(id)a3
+- (id)formatterForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HFAccessorySettingFormatterFactory *)self formattersForKey];
+  keyCopy = key;
+  formattersForKey = [(HFAccessorySettingFormatterFactory *)self formattersForKey];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __54__HFAccessorySettingFormatterFactory_formatterForKey___block_invoke;
   v12 = &unk_277E02DF0;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = [v5 na_objectForKey:v6 withDefaultValue:&v9];
+  selfCopy = self;
+  v14 = keyCopy;
+  v6 = keyCopy;
+  v7 = [formattersForKey na_objectForKey:v6 withDefaultValue:&v9];
 
   if (!v7)
   {
-    NSLog(&cfstr_RequestedNilFo.isa, v9, v10, v11, v12, v13, v14);
+    NSLog(&cfstr_RequestedNilFo.isa, v9, v10, v11, v12, selfCopy, v14);
   }
 
   return v7;
 }
 
-- (id)_buildFormatterForKey:(id)a3
+- (id)_buildFormatterForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AccessorySettingsDefaultFormatter"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"AccessorySettingsDefaultFormatter"])
   {
     v5 = [HFSimpleFormatter alloc];
     v6 = &__block_literal_global_89_0;
 LABEL_5:
-    v7 = [(HFSimpleFormatter *)v5 initWithFormatterBlock:v6];
+    _siriFormatter = [(HFSimpleFormatter *)v5 initWithFormatterBlock:v6];
 LABEL_6:
-    v8 = v7;
+    v8 = _siriFormatter;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"AccessorySettingsAccessibilitySecondsFormatter"])
+  if ([keyCopy isEqualToString:@"AccessorySettingsAccessibilitySecondsFormatter"])
   {
     v5 = [HFSimpleFormatter alloc];
     v6 = &__block_literal_global_104_1;
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"SiriFormatter"])
+  if ([keyCopy isEqualToString:@"SiriFormatter"])
   {
-    v7 = [objc_opt_class() _siriFormatter];
+    _siriFormatter = [objc_opt_class() _siriFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"SiriRecognitionLanguageFormatter"])
+  if ([keyCopy isEqualToString:@"SiriRecognitionLanguageFormatter"])
   {
-    v7 = [objc_opt_class() _siriRecognitionLanguageFormatter];
+    _siriFormatter = [objc_opt_class() _siriRecognitionLanguageFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"SiriOutputVoiceFormatter"])
+  if ([keyCopy isEqualToString:@"SiriOutputVoiceFormatter"])
   {
-    v7 = [objc_opt_class() _siriOutputVoiceFormatter];
+    _siriFormatter = [objc_opt_class() _siriOutputVoiceFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"SiriPersonalRequestsFormatter"])
+  if ([keyCopy isEqualToString:@"SiriPersonalRequestsFormatter"])
   {
-    v7 = [objc_opt_class() _siriPersonalRequestsFormatter];
+    _siriFormatter = [objc_opt_class() _siriPersonalRequestsFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"AnnounceEnabledFormatter"])
+  if ([keyCopy isEqualToString:@"AnnounceEnabledFormatter"])
   {
-    v7 = [objc_opt_class() _announceEnabledFormatter];
+    _siriFormatter = [objc_opt_class() _announceEnabledFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"AnnounceFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"AnnounceFooterTitleFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_112_1;
@@ -144,26 +144,26 @@ LABEL_22:
     v12 = [(HFSimpleFormatter *)v10 initWithFormatterBlock:v11];
 LABEL_23:
     v8 = v12;
-    v13 = [(HFAccessorySettingFormatterFactory *)self formattersForKey];
-    [v13 setObject:v8 forKey:v4];
+    formattersForKey = [(HFAccessorySettingFormatterFactory *)self formattersForKey];
+    [formattersForKey setObject:v8 forKey:keyCopy];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"AudioAnalysisEnabledFormatter"])
+  if ([keyCopy isEqualToString:@"AudioAnalysisEnabledFormatter"])
   {
-    v7 = [objc_opt_class() _audioAnalysisEnabledFormatter];
+    _siriFormatter = [objc_opt_class() _audioAnalysisEnabledFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"AudioAnalysisFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"AudioAnalysisFooterTitleFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_389;
     goto LABEL_22;
   }
 
-  if ([v4 isEqualToString:@"HFHomePodAnalyticImproveSiriDictationFooter"])
+  if ([keyCopy isEqualToString:@"HFHomePodAnalyticImproveSiriDictationFooter"])
   {
     v14 = [HFSimpleFormatter alloc];
     v15 = &__block_literal_global_395;
@@ -172,73 +172,73 @@ LABEL_30:
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:@"DoorbellChimeEnabledFormatter"])
+  if ([keyCopy isEqualToString:@"DoorbellChimeEnabledFormatter"])
   {
-    v7 = [objc_opt_class() _doorbellChimeEnabledFormatter];
+    _siriFormatter = [objc_opt_class() _doorbellChimeEnabledFormatter];
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"AccessorySettingsProfileCountFormatter"])
+  if ([keyCopy isEqualToString:@"AccessorySettingsProfileCountFormatter"])
   {
     v12 = objc_opt_new();
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:@"PrimaryUserAccountFormatterKey"])
+  if ([keyCopy isEqualToString:@"PrimaryUserAccountFormatterKey"])
   {
     v12 = __60__HFAccessorySettingFormatterFactory__buildFormatterForKey___block_invoke_6();
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:@"AllowExplicitContentFormatter"])
+  if ([keyCopy isEqualToString:@"AllowExplicitContentFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_417;
     goto LABEL_22;
   }
 
-  if ([v4 isEqualToString:@"PlaybackInfluencesFormatter"])
+  if ([keyCopy isEqualToString:@"PlaybackInfluencesFormatter"])
   {
     v12 = __60__HFAccessorySettingFormatterFactory__buildFormatterForKey___block_invoke_2_421();
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:@"SiriFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"SiriFooterTitleFormatter"])
   {
     v14 = [HFSimpleFormatter alloc];
     v15 = &__block_literal_global_432;
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"LocationFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"LocationFooterTitleFormatter"])
   {
     v14 = [HFSimpleFormatter alloc];
     v15 = &__block_literal_global_441_0;
     goto LABEL_30;
   }
 
-  if ([v4 isEqualToString:@"AirPlayFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"AirPlayFooterTitleFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_450_0;
     goto LABEL_22;
   }
 
-  if ([v4 isEqualToString:@"VoiceFeedbackHeaderTitleFormatter"])
+  if ([keyCopy isEqualToString:@"VoiceFeedbackHeaderTitleFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_456_0;
     goto LABEL_22;
   }
 
-  if ([v4 isEqualToString:@"VoiceFeedbackFooterTitleFormatter"])
+  if ([keyCopy isEqualToString:@"VoiceFeedbackFooterTitleFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_461_0;
     goto LABEL_22;
   }
 
-  if ([v4 isEqualToString:@"SiriTriggerPhraseSettingFormatter"])
+  if ([keyCopy isEqualToString:@"SiriTriggerPhraseSettingFormatter"])
   {
     v10 = [HFSimpleFormatter alloc];
     v11 = &__block_literal_global_466;

@@ -1,24 +1,24 @@
 @interface PLPhotoLibraryBundleController
-+ (id)_realPathForLibraryURL:(id)a3 error:(id *)a4;
-+ (id)sharedAssetsdClientForPhotoLibraryURL:(id)a3;
++ (id)_realPathForLibraryURL:(id)l error:(id *)error;
++ (id)sharedAssetsdClientForPhotoLibraryURL:(id)l;
 + (id)sharedBundleController;
 + (void)resetSharedBundleController;
-- (BOOL)bindAssetsdService:(id)a3 toBundle:(id)a4 error:(id *)a5;
+- (BOOL)bindAssetsdService:(id)service toBundle:(id)bundle error:(id *)error;
 - (PLPhotoLibraryBundleController)init;
-- (PLPhotoLibraryBundleController)initWithBundleType:(int64_t)a3 libraryServicesManagerDelegateClass:(Class)a4;
-- (id)_lookupOrCreateBundleForLibraryURL:(id)a3 replaceExisting:(BOOL)a4;
-- (id)_pathKeyForLibraryURL:(id)a3;
-- (id)bundleForLibraryURL:(id)a3;
+- (PLPhotoLibraryBundleController)initWithBundleType:(int64_t)type libraryServicesManagerDelegateClass:(Class)class;
+- (id)_lookupOrCreateBundleForLibraryURL:(id)l replaceExisting:(BOOL)existing;
+- (id)_pathKeyForLibraryURL:(id)l;
+- (id)bundleForLibraryURL:(id)l;
 - (id)currentLibraryServicesManagers;
 - (id)libraryBundlePaths;
 - (id)libraryBundles;
-- (id)newPhotoLibraryBundleWithLibraryURL:(id)a3;
-- (id)pauseUntilDateForShutdownReason:(id)a3;
-- (void)_unregisterBundle:(id)a3 pauseUntilDate:(id)a4;
-- (void)removeBundleForRebuildAtLibraryURL:(id)a3;
-- (void)removeManagedObjectModelIfNeededForShutdownReason:(id)a3;
-- (void)shutdownAllBundlesWithReason:(id)a3;
-- (void)shutdownBundle:(id)a3 reason:(id)a4;
+- (id)newPhotoLibraryBundleWithLibraryURL:(id)l;
+- (id)pauseUntilDateForShutdownReason:(id)reason;
+- (void)_unregisterBundle:(id)bundle pauseUntilDate:(id)date;
+- (void)removeBundleForRebuildAtLibraryURL:(id)l;
+- (void)removeManagedObjectModelIfNeededForShutdownReason:(id)reason;
+- (void)shutdownAllBundlesWithReason:(id)reason;
+- (void)shutdownBundle:(id)bundle reason:(id)reason;
 @end
 
 @implementation PLPhotoLibraryBundleController
@@ -47,33 +47,33 @@
   return [(PLPhotoLibraryBundleController *)self initWithBundleType:v3 libraryServicesManagerDelegateClass:v4];
 }
 
-- (void)removeBundleForRebuildAtLibraryURL:(id)a3
+- (void)removeBundleForRebuildAtLibraryURL:(id)l
 {
-  v4 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:a3];
+  v4 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:l];
   v3 = v4;
   PLRunWithUnfairLock();
 }
 
-- (BOOL)bindAssetsdService:(id)a3 toBundle:(id)a4 error:(id *)a5
+- (BOOL)bindAssetsdService:(id)service toBundle:(id)bundle error:(id *)error
 {
   v9 = 0;
-  v6 = [a4 bindAssetsdService:a3 error:&v9];
+  v6 = [bundle bindAssetsdService:service error:&v9];
   v7 = v9;
-  if (a5 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
     v7 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
   return v6;
 }
 
-- (id)_lookupOrCreateBundleForLibraryURL:(id)a3 replaceExisting:(BOOL)a4
+- (id)_lookupOrCreateBundleForLibraryURL:(id)l replaceExisting:(BOOL)existing
 {
-  v5 = a3;
-  v6 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:v5];
-  v11 = v5;
-  v7 = v5;
+  lCopy = l;
+  v6 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:lCopy];
+  v11 = lCopy;
+  v7 = lCopy;
   v8 = v6;
   v9 = PLSafeResultWithUnfairLock();
 
@@ -128,43 +128,43 @@ id __85__PLPhotoLibraryBundleController__lookupOrCreateBundleForLibraryURL_repla
   return v2;
 }
 
-- (id)_pathKeyForLibraryURL:(id)a3
+- (id)_pathKeyForLibraryURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 path];
+  lCopy = l;
+  path = [lCopy path];
 
-  if (!v6)
+  if (!path)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryBundleController.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"libraryURL.path != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryBundleController.m" lineNumber:275 description:{@"Invalid parameter not satisfying: %@", @"libraryURL.path != nil"}];
   }
 
   v12 = 0;
-  v7 = [objc_opt_class() _realPathForLibraryURL:v5 error:&v12];
+  path2 = [objc_opt_class() _realPathForLibraryURL:lCopy error:&v12];
   v8 = v12;
-  if (!v7)
+  if (!path2)
   {
-    v7 = [v5 path];
+    path2 = [lCopy path];
     v9 = PLLibraryBundleGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v14 = v5;
+      v14 = lCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = path2;
       v17 = 2112;
       v18 = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "lookupOrCreateBundleForLibraryURL unable to get realpath for %@, using %@ instead, error: %@", buf, 0x20u);
     }
   }
 
-  return v7;
+  return path2;
 }
 
-- (void)shutdownAllBundlesWithReason:(id)a3
+- (void)shutdownAllBundlesWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -178,7 +178,7 @@ id __85__PLPhotoLibraryBundleController__lookupOrCreateBundleForLibraryURL_repla
     v6 = v8[5];
     if (v6)
     {
-      [(PLPhotoLibraryBundleController *)self shutdownBundle:v6 reason:v4, v5, 3221225472, __63__PLPhotoLibraryBundleController_shutdownAllBundlesWithReason___block_invoke, &unk_1E7578910, self, &v7, v7];
+      [(PLPhotoLibraryBundleController *)self shutdownBundle:v6 reason:reasonCopy, v5, 3221225472, __63__PLPhotoLibraryBundleController_shutdownAllBundlesWithReason___block_invoke, &unk_1E7578910, self, &v7, v7];
     }
   }
 
@@ -195,7 +195,7 @@ void __63__PLPhotoLibraryBundleController_shutdownAllBundlesWithReason___block_i
   *(v3 + 40) = v2;
 }
 
-- (id)pauseUntilDateForShutdownReason:(id)a3
+- (id)pauseUntilDateForShutdownReason:(id)reason
 {
   v8 = *MEMORY[0x1E69E9840];
   if (PLIsErrorEqualToCode())
@@ -218,7 +218,7 @@ void __63__PLPhotoLibraryBundleController_shutdownAllBundlesWithReason___block_i
   return v3;
 }
 
-- (void)removeManagedObjectModelIfNeededForShutdownReason:(id)a3
+- (void)removeManagedObjectModelIfNeededForShutdownReason:(id)reason
 {
   if (PLIsErrorEqualToCode())
   {
@@ -233,51 +233,51 @@ void __63__PLPhotoLibraryBundleController_shutdownAllBundlesWithReason___block_i
   }
 }
 
-- (void)shutdownBundle:(id)a3 reason:(id)a4
+- (void)shutdownBundle:(id)bundle reason:(id)reason
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  bundleCopy = bundle;
+  reasonCopy = reason;
+  if (bundleCopy)
   {
-    v9 = v7;
+    v9 = bundleCopy;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryBundleController.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"bundle != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryBundleController.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"bundle != nil"}];
 
     v9 = 0;
   }
 
-  SetPLPhotoLibraryBundleControllerCrashTracerMessage(v9, v8);
+  SetPLPhotoLibraryBundleControllerCrashTracerMessage(v9, reasonCopy);
   v10 = PLLibraryBundleGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = MEMORY[0x1E69BF220];
-    v12 = [v7 libraryURL];
-    v13 = [v11 descriptionWithFileURL:v12];
+    libraryURL = [bundleCopy libraryURL];
+    v13 = [v11 descriptionWithFileURL:libraryURL];
     *buf = 138412546;
     v17 = v13;
     v18 = 2112;
-    v19 = v8;
+    v19 = reasonCopy;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Shutting down bundle: %@ for reason: %@", buf, 0x16u);
   }
 
-  [v7 shutdownWithReason:v8];
-  [(PLPhotoLibraryBundleController *)self removeManagedObjectModelIfNeededForShutdownReason:v8];
-  v14 = [(PLPhotoLibraryBundleController *)self pauseUntilDateForShutdownReason:v8];
-  [(PLPhotoLibraryBundleController *)self _unregisterBundle:v7 pauseUntilDate:v14];
+  [bundleCopy shutdownWithReason:reasonCopy];
+  [(PLPhotoLibraryBundleController *)self removeManagedObjectModelIfNeededForShutdownReason:reasonCopy];
+  v14 = [(PLPhotoLibraryBundleController *)self pauseUntilDateForShutdownReason:reasonCopy];
+  [(PLPhotoLibraryBundleController *)self _unregisterBundle:bundleCopy pauseUntilDate:v14];
   SetPLPhotoLibraryBundleControllerCrashTracerMessage(0, 0);
 }
 
-- (void)_unregisterBundle:(id)a3 pauseUntilDate:(id)a4
+- (void)_unregisterBundle:(id)bundle pauseUntilDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  bundleCopy = bundle;
+  dateCopy = date;
+  v5 = dateCopy;
+  v6 = bundleCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -370,11 +370,11 @@ void __57__PLPhotoLibraryBundleController_handleUnknownMergeEvent__block_invoke_
 
 - (id)currentLibraryServicesManagers
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   PLRunWithUnfairLock();
-  v2 = v4;
+  v2 = array;
 
-  return v4;
+  return array;
 }
 
 void __64__PLPhotoLibraryBundleController_currentLibraryServicesManagers__block_invoke(uint64_t a1)
@@ -399,16 +399,16 @@ void __64__PLPhotoLibraryBundleController_currentLibraryServicesManagers__block_
   }
 }
 
-- (id)newPhotoLibraryBundleWithLibraryURL:(id)a3
+- (id)newPhotoLibraryBundleWithLibraryURL:(id)l
 {
   if (self->_bundleType == 1)
   {
-    v4 = [[PLServerPhotoLibraryBundle alloc] initWithLibraryURL:a3 bundleController:self backgroundJobService:self->_backgroundJobService libraryServicesDelegateClass:self->_libraryServicesDelegateClass];
+    v4 = [[PLServerPhotoLibraryBundle alloc] initWithLibraryURL:l bundleController:self backgroundJobService:self->_backgroundJobService libraryServicesDelegateClass:self->_libraryServicesDelegateClass];
   }
 
   else
   {
-    v4 = [[PLClientPhotoLibraryBundle alloc] initWithLibraryURL:a3 bundleController:self];
+    v4 = [[PLClientPhotoLibraryBundle alloc] initWithLibraryURL:l bundleController:self];
   }
 
   v5 = v4;
@@ -463,16 +463,16 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (id)bundleForLibraryURL:(id)a3
+- (id)bundleForLibraryURL:(id)l
 {
-  v6 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:a3];
+  v6 = [(PLPhotoLibraryBundleController *)self _pathKeyForLibraryURL:l];
   v3 = v6;
   v4 = PLResultWithUnfairLock();
 
   return v4;
 }
 
-- (PLPhotoLibraryBundleController)initWithBundleType:(int64_t)a3 libraryServicesManagerDelegateClass:(Class)a4
+- (PLPhotoLibraryBundleController)initWithBundleType:(int64_t)type libraryServicesManagerDelegateClass:(Class)class
 {
   v13.receiver = self;
   v13.super_class = PLPhotoLibraryBundleController;
@@ -480,8 +480,8 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
   v7 = v6;
   if (v6)
   {
-    v6->_bundleType = a3;
-    v6->_libraryServicesDelegateClass = a4;
+    v6->_bundleType = type;
+    v6->_libraryServicesDelegateClass = class;
     v6->_bundlesByPathLock._os_unfair_lock_opaque = 0;
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     bundlesByPath = v7->_bundlesByPath;
@@ -497,31 +497,31 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
   return v7;
 }
 
-+ (id)sharedAssetsdClientForPhotoLibraryURL:(id)a3
++ (id)sharedAssetsdClientForPhotoLibraryURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 sharedBundleController];
-  v6 = [v5 lookupOrCreateBundleForLibraryURL:v4];
+  lCopy = l;
+  sharedBundleController = [self sharedBundleController];
+  v6 = [sharedBundleController lookupOrCreateBundleForLibraryURL:lCopy];
 
-  v7 = [v6 assetsdClient];
+  assetsdClient = [v6 assetsdClient];
 
-  return v7;
+  return assetsdClient;
 }
 
-+ (id)_realPathForLibraryURL:(id)a3 error:(id *)a4
++ (id)_realPathForLibraryURL:(id)l error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  lCopy = l;
+  if (!lCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibraryBundleController.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"libraryURL != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibraryBundleController.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"libraryURL != nil"}];
   }
 
-  v8 = [v7 path];
-  v9 = [v8 pathComponents];
-  v10 = [v9 count];
-  v11 = v8;
+  path = [lCopy path];
+  pathComponents = [path pathComponents];
+  v10 = [pathComponents count];
+  v11 = path;
   v12 = v11;
   if (v10)
   {
@@ -529,9 +529,9 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
     while (1)
     {
       v23 = 0;
-      v14 = [MEMORY[0x1E69BF238] realPathForPath:v13 error:&v23];
+      stringByDeletingLastPathComponent = [MEMORY[0x1E69BF238] realPathForPath:v13 error:&v23];
       v15 = v23;
-      if (v14)
+      if (stringByDeletingLastPathComponent)
       {
 
         goto LABEL_11;
@@ -542,20 +542,20 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
         break;
       }
 
-      v14 = [v13 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v13 stringByDeletingLastPathComponent];
 
       --v10;
-      v13 = v14;
+      v13 = stringByDeletingLastPathComponent;
       if (!v10)
       {
         goto LABEL_11;
       }
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v15;
-      *a4 = v15;
+      *error = v15;
     }
 
     v19 = 0;
@@ -563,25 +563,25 @@ void __52__PLPhotoLibraryBundleController_libraryBundlePaths__block_invoke(uint6
 
   else
   {
-    v14 = v11;
+    stringByDeletingLastPathComponent = v11;
 LABEL_11:
-    if (v10 >= [v9 count])
+    if (v10 >= [pathComponents count])
     {
-      v17 = v14;
+      v17 = stringByDeletingLastPathComponent;
     }
 
     else
     {
       do
       {
-        v16 = [v9 objectAtIndexedSubscript:v10];
-        v17 = [v14 stringByAppendingPathComponent:v16];
+        v16 = [pathComponents objectAtIndexedSubscript:v10];
+        v17 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v16];
 
         ++v10;
-        v14 = v17;
+        stringByDeletingLastPathComponent = v17;
       }
 
-      while (v10 < [v9 count]);
+      while (v10 < [pathComponents count]);
     }
 
     if ((PLObjectIsEqual() & 1) == 0 && (PLIsSuppressingLogsForUnitTesting() & 1) == 0)

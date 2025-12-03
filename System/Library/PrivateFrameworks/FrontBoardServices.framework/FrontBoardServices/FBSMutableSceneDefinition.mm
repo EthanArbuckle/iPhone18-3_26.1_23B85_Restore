@@ -1,10 +1,10 @@
 @interface FBSMutableSceneDefinition
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FBSMutableSceneDefinition
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FBSSceneDefinition allocWithZone:?]];
   [(FBSSceneDefinition *)v4 setIdentity:self->super._identity];

@@ -1,9 +1,9 @@
 @interface CTCellInfo
-- (CTCellInfo)initWithCoder:(id)a3;
+- (CTCellInfo)initWithCoder:(id)coder;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCellInfo
@@ -11,8 +11,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCellInfo *)self legacyInfo];
-  [v3 appendFormat:@", info=%@", v4];
+  legacyInfo = [(CTCellInfo *)self legacyInfo];
+  [v3 appendFormat:@", info=%@", legacyInfo];
 
   return v3;
 }
@@ -29,8 +29,8 @@
   v5 = v3;
   [(NSArray *)legacyInfo enumerateObjectsUsingBlock:v10];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(CTCellInfo *)self ct_shortName];
-  v8 = [v6 stringWithFormat:@"<%@ info=%@>", v7, v5];
+  ct_shortName = [(CTCellInfo *)self ct_shortName];
+  v8 = [v6 stringWithFormat:@"<%@ info=%@>", ct_shortName, v5];
 
   return v8;
 }
@@ -348,26 +348,26 @@ void __47__CTCellInfo_CTXPCLogging__ct_shortDescription__block_invoke(uint64_t a
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTCellInfo *)self legacyInfo];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  legacyInfo = [(CTCellInfo *)self legacyInfo];
+  v6 = [legacyInfo copy];
   [v4 setLegacyInfo:v6];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTCellInfo *)self legacyInfo];
-  [v4 encodeObject:v5 forKey:@"info"];
+  coderCopy = coder;
+  legacyInfo = [(CTCellInfo *)self legacyInfo];
+  [coderCopy encodeObject:legacyInfo forKey:@"info"];
 }
 
-- (CTCellInfo)initWithCoder:(id)a3
+- (CTCellInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CTCellInfo;
   v5 = [(CTCellInfo *)&v16 init];
@@ -380,7 +380,7 @@ void __47__CTCellInfo_CTXPCLogging__ct_shortDescription__block_invoke(uint64_t a
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"info"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"info"];
     legacyInfo = v5->_legacyInfo;
     v5->_legacyInfo = v13;
   }

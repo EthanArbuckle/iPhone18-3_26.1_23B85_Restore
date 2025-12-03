@@ -1,49 +1,49 @@
 @interface BKSHIDEventBiometricDescriptor
 - (BKSHIDEventBiometricDescriptor)init;
-- (BKSHIDEventBiometricDescriptor)initWithBiometricEventType:(unsigned int)a3;
-- (BKSHIDEventBiometricDescriptor)initWithCoder:(id)a3;
-- (BOOL)describes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventBiometricDescriptor)initWithBiometricEventType:(unsigned int)type;
+- (BKSHIDEventBiometricDescriptor)initWithCoder:(id)coder;
+- (BOOL)describes:(id)describes;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventBiometricDescriptor
 
-- (BKSHIDEventBiometricDescriptor)initWithCoder:(id)a3
+- (BKSHIDEventBiometricDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"biometricEventType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"biometricEventType"];
 
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  return [(BKSHIDEventBiometricDescriptor *)self initWithBiometricEventType:v6];
+  return [(BKSHIDEventBiometricDescriptor *)self initWithBiometricEventType:unsignedIntValue];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AD98];
   v4 = *&self->_isWildcard;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInt:v4];
-  [v5 encodeObject:v6 forKey:@"biometricEventType"];
+  [coderCopy encodeObject:v6 forKey:@"biometricEventType"];
 }
 
-- (BOOL)describes:(id)a3
+- (BOOL)describes:(id)describes
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(&self->super._hidEventType + 4) == 1 && [v4 hidEventType] == 29 || -[BKSHIDEventBiometricDescriptor isEqual:](self, "isEqual:", v5);
+  describesCopy = describes;
+  v5 = describesCopy;
+  v6 = *(&self->super._hidEventType + 4) == 1 && [describesCopy hidEventType] == 29 || -[BKSHIDEventBiometricDescriptor isEqual:](self, "isEqual:", v5);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -54,8 +54,8 @@
   v6 = v5;
   if (v6 && (v10.receiver = self, v10.super_class = BKSHIDEventBiometricDescriptor, [(BKSHIDEventDescriptor *)&v10 isEqual:v6]))
   {
-    v7 = [v6 biometricEventType];
-    v8 = v7 == [(BKSHIDEventBiometricDescriptor *)self biometricEventType];
+    biometricEventType = [v6 biometricEventType];
+    v8 = biometricEventType == [(BKSHIDEventBiometricDescriptor *)self biometricEventType];
   }
 
   else
@@ -66,14 +66,14 @@
   return v8;
 }
 
-- (BKSHIDEventBiometricDescriptor)initWithBiometricEventType:(unsigned int)a3
+- (BKSHIDEventBiometricDescriptor)initWithBiometricEventType:(unsigned int)type
 {
   v5.receiver = self;
   v5.super_class = BKSHIDEventBiometricDescriptor;
   result = [(BKSHIDEventDescriptor *)&v5 _initWithEventType:29];
   if (result)
   {
-    *&result->_isWildcard = a3;
+    *&result->_isWildcard = type;
   }
 
   return result;

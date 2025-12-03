@@ -1,8 +1,8 @@
 @interface JaliscoHideItemOperation
-- (JaliscoHideItemOperation)initWithCoder:(id)a3;
-- (JaliscoHideItemOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 itemPurchaseHistoryIDs:(id)a5;
-- (JaliscoHideItemOperation)initWithItemPurchaseHistoryIDs:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (JaliscoHideItemOperation)initWithCoder:(id)coder;
+- (JaliscoHideItemOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity itemPurchaseHistoryIDs:(id)ds;
+- (JaliscoHideItemOperation)initWithItemPurchaseHistoryIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
@@ -15,11 +15,11 @@
     v23 = [NSString stringWithFormat:@"JaliscoHideItemOperation - (purchase_history_id count = %llu)", [(NSArray *)self->_itemPurchaseHistoryIDs count]];
     v3 = [[MSVXPCTransaction alloc] initWithName:v23];
     [v3 beginTransaction];
-    v4 = [(CloudLibraryOperation *)self musicLibrary];
-    v5 = [(CloudLibraryOperation *)self clientIdentity];
-    [v4 setClientIdentity:v5];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
-    v6 = [(CloudLibraryOperation *)self connection];
+    connection = [(CloudLibraryOperation *)self connection];
     v7 = +[NSMutableArray array];
     if ([(NSArray *)self->_itemPurchaseHistoryIDs count])
     {
@@ -38,7 +38,7 @@
       while (v8 < [(NSArray *)self->_itemPurchaseHistoryIDs count]);
     }
 
-    v11 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [v6 databaseID], self->_itemPurchaseHistoryIDs, v7, 1);
+    v11 = +[ICBulkSetItemPropertyRequest requestWithDatabaseID:itemIDs:properties:useLongIDs:](ICBulkSetItemPropertyRequest, "requestWithDatabaseID:itemIDs:properties:useLongIDs:", [connection databaseID], self->_itemPurchaseHistoryIDs, v7, 1);
     [v11 setVerificationInteractionLevel:2];
     [v11 setRequestPersonalizationStyle:2];
     v12 = os_log_create("com.apple.amp.itunescloudd", "PurchaseSync_Oversize");
@@ -56,7 +56,7 @@
         v15 = @"GET";
       }
 
-      v16 = [v11 action];
+      action = [v11 action];
       itemPurchaseHistoryIDs = self->_itemPurchaseHistoryIDs;
       *buf = 138544386;
       v29 = v14;
@@ -65,7 +65,7 @@
       v32 = 2114;
       v33 = v15;
       v34 = 2114;
-      v35 = v16;
+      v35 = action;
       v36 = 2114;
       v37 = itemPurchaseHistoryIDs;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Sending hide items request <%{public}@: %p method=%{public}@ action=%{public}@> for purchase history ids: %{public}@", buf, 0x34u);
@@ -76,15 +76,15 @@
     v24[2] = sub_1000D1B00;
     v24[3] = &unk_1001DF440;
     v25 = v11;
-    v26 = self;
+    selfCopy = self;
     v27 = dispatch_semaphore_create(0);
     v18 = v27;
     v19 = v11;
-    [v6 sendRequest:v19 withResponseHandler:v24];
+    [connection sendRequest:v19 withResponseHandler:v24];
     dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-    v20 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
     v21 = MSVTCCIdentityForCurrentProcess();
-    [v20 setClientIdentity:v21];
+    [musicLibrary2 setClientIdentity:v21];
 
     [v3 endTransaction];
   }
@@ -102,26 +102,26 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = JaliscoHideItemOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_itemPurchaseHistoryIDs forKey:{@"JaliscoHideItemOperationItemPurchaseHistoryIDsKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_itemPurchaseHistoryIDs forKey:{@"JaliscoHideItemOperationItemPurchaseHistoryIDsKey", v5.receiver, v5.super_class}];
 }
 
-- (JaliscoHideItemOperation)initWithCoder:(id)a3
+- (JaliscoHideItemOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = JaliscoHideItemOperation;
-  v5 = [(CloudLibraryOperation *)&v12 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"JaliscoHideItemOperationItemPurchaseHistoryIDsKey"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"JaliscoHideItemOperationItemPurchaseHistoryIDsKey"];
     v9 = [v8 copy];
     itemPurchaseHistoryIDs = v5->_itemPurchaseHistoryIDs;
     v5->_itemPurchaseHistoryIDs = v9;
@@ -130,15 +130,15 @@
   return v5;
 }
 
-- (JaliscoHideItemOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 itemPurchaseHistoryIDs:(id)a5
+- (JaliscoHideItemOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity itemPurchaseHistoryIDs:(id)ds
 {
-  v8 = a5;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = JaliscoHideItemOperation;
-  v9 = [(CloudLibraryOperation *)&v13 initWithConfiguration:a3 clientIdentity:a4];
+  v9 = [(CloudLibraryOperation *)&v13 initWithConfiguration:configuration clientIdentity:identity];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dsCopy copy];
     itemPurchaseHistoryIDs = v9->_itemPurchaseHistoryIDs;
     v9->_itemPurchaseHistoryIDs = v10;
   }
@@ -146,12 +146,12 @@
   return v9;
 }
 
-- (JaliscoHideItemOperation)initWithItemPurchaseHistoryIDs:(id)a3
+- (JaliscoHideItemOperation)initWithItemPurchaseHistoryIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v6 = MSVTCCIdentityForCurrentProcess();
-  v7 = [(JaliscoHideItemOperation *)self initWithConfiguration:v5 clientIdentity:v6 itemPurchaseHistoryIDs:v4];
+  v7 = [(JaliscoHideItemOperation *)self initWithConfiguration:v5 clientIdentity:v6 itemPurchaseHistoryIDs:dsCopy];
 
   return v7;
 }

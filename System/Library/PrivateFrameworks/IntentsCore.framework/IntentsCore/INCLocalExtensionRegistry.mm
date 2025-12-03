@@ -1,10 +1,10 @@
 @interface INCLocalExtensionRegistry
 + (id)sharedInstance;
 - (INCLocalExtensionRegistry)init;
-- (id)localExtensionForIdentifier:(id)a3;
+- (id)localExtensionForIdentifier:(id)identifier;
 - (id)localExtensions;
-- (void)deregisterLocalExtension:(id)a3;
-- (void)registerLocalExtension:(id)a3;
+- (void)deregisterLocalExtension:(id)extension;
+- (void)registerLocalExtension:(id)extension;
 @end
 
 @implementation INCLocalExtensionRegistry
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)localExtensionForIdentifier:(id)a3
+- (id)localExtensionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_localExtensionsByIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_localExtensionsByIdentifier objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -36,23 +36,23 @@
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NSMutableDictionary *)self->_localExtensionsByIdentifier allValues];
-  v5 = [v3 setWithArray:v4];
+  allValues = [(NSMutableDictionary *)self->_localExtensionsByIdentifier allValues];
+  v5 = [v3 setWithArray:allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)deregisterLocalExtension:(id)a3
+- (void)deregisterLocalExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 localExtensionIdentifier];
-  v6 = v5;
-  if (v5)
+  localExtensionIdentifier = [extensionCopy localExtensionIdentifier];
+  v6 = localExtensionIdentifier;
+  if (localExtensionIdentifier)
   {
-    v7 = v5;
+    v7 = localExtensionIdentifier;
   }
 
   else
@@ -65,7 +65,7 @@
 
   v10 = [(NSMutableDictionary *)self->_localExtensionsByIdentifier objectForKey:v9];
   v11 = v10;
-  if (v10 && [v10 isEqual:v4])
+  if (v10 && [v10 isEqual:extensionCopy])
   {
     [(NSMutableDictionary *)self->_localExtensionsByIdentifier removeObjectForKey:v9];
   }
@@ -77,25 +77,25 @@
     v16[1] = 3221225472;
     v16[2] = __54__INCLocalExtensionRegistry_deregisterLocalExtension___block_invoke;
     v16[3] = &unk_2797E75C0;
-    v17 = v4;
+    v17 = extensionCopy;
     v13 = [(NSMutableDictionary *)localExtensionsByIdentifier keysOfEntriesPassingTest:v16];
     v14 = self->_localExtensionsByIdentifier;
-    v15 = [v13 allObjects];
-    [(NSMutableDictionary *)v14 removeObjectsForKeys:v15];
+    allObjects = [v13 allObjects];
+    [(NSMutableDictionary *)v14 removeObjectsForKeys:allObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)registerLocalExtension:(id)a3
+- (void)registerLocalExtension:(id)extension
 {
-  v9 = a3;
+  extensionCopy = extension;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [v9 localExtensionIdentifier];
-  v5 = v4;
-  if (v4)
+  localExtensionIdentifier = [extensionCopy localExtensionIdentifier];
+  v5 = localExtensionIdentifier;
+  if (localExtensionIdentifier)
   {
-    v6 = v4;
+    v6 = localExtensionIdentifier;
   }
 
   else
@@ -106,7 +106,7 @@
 
   v8 = v6;
 
-  [(NSMutableDictionary *)self->_localExtensionsByIdentifier setObject:v9 forKey:v8];
+  [(NSMutableDictionary *)self->_localExtensionsByIdentifier setObject:extensionCopy forKey:v8];
   os_unfair_lock_unlock(&self->_lock);
 }
 

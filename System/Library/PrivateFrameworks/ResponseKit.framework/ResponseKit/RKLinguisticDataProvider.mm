@@ -11,9 +11,9 @@
   v2 = [(RKLinguisticDataProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     polarityMapsByLanguageID = v2->_polarityMapsByLanguageID;
-    v2->_polarityMapsByLanguageID = v3;
+    v2->_polarityMapsByLanguageID = dictionary;
   }
 
   return v2;

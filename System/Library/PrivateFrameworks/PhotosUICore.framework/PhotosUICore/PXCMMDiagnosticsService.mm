@@ -8,12 +8,12 @@
 - (id)contextualViewController
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PXDiagnosticsService *)self itemProviders];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [itemProviders countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -21,9 +21,9 @@ LABEL_14:
     v12 = PLSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(PXDiagnosticsService *)self itemProviders];
+      itemProviders2 = [(PXDiagnosticsService *)self itemProviders];
       *buf = 138412290;
-      v20 = v13;
+      v20 = itemProviders2;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "Diagnosis Error: No item providers can be used (%@)", buf, 0xCu);
     }
 
@@ -40,7 +40,7 @@ LABEL_14:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(itemProviders);
       }
 
       v9 = *(*(&v15 + 1) + 8 * i);
@@ -52,7 +52,7 @@ LABEL_14:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    v5 = [itemProviders countByEnumeratingWithState:&v15 objects:v21 count:16];
   }
 
   while (v5);
@@ -76,9 +76,9 @@ LABEL_17:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[PXDiagnosticsSettings sharedInstance];
-  v4 = [v3 enableCompleteMyMomentService];
+  enableCompleteMyMomentService = [v3 enableCompleteMyMomentService];
 
-  if (!v4)
+  if (!enableCompleteMyMomentService)
   {
     return 0;
   }

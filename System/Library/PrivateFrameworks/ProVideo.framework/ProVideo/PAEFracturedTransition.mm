@@ -1,18 +1,18 @@
 @interface PAEFracturedTransition
-- (BOOL)canThrowRenderOutput:(id)a3 withInputA:(id)a4 withInputB:(id)a5 withTimeFraction:(float)a6 withInfo:(id *)a7;
-- (BOOL)frameSetup:(id *)a3 inputInfoA:(id *)a4 inputInfoB:(id *)a5 timeFraction:(float)a6 hardware:(BOOL *)a7 software:(BOOL *)a8;
-- (PAEFracturedTransition)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInputA:(id)a withInputB:(id)b withTimeFraction:(float)fraction withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfoA:(id *)a inputInfoB:(id *)b timeFraction:(float)fraction hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEFracturedTransition)initWithAPIManager:(id)manager;
 - (id).cxx_construct;
 - (void)dealloc;
 @end
 
 @implementation PAEFracturedTransition
 
-- (PAEFracturedTransition)initWithAPIManager:(id)a3
+- (PAEFracturedTransition)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEFracturedTransition;
-  if ([(PAESharedDefaultBase *)&v4 initWithAPIManager:a3])
+  if ([(PAESharedDefaultBase *)&v4 initWithAPIManager:manager])
   {
     operator new();
   }
@@ -55,17 +55,17 @@
   [(PAESharedDefaultBase *)&v6 dealloc];
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfoA:(id *)a4 inputInfoB:(id *)a5 timeFraction:(float)a6 hardware:(BOOL *)a7 software:(BOOL *)a8
+- (BOOL)frameSetup:(id *)setup inputInfoA:(id *)a inputInfoB:(id *)b timeFraction:(float)fraction hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a7 = 1;
-  *a8 = 0;
+  *hardware = 1;
+  *software = 0;
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInputA:(id)a4 withInputB:(id)a5 withTimeFraction:(float)a6 withInfo:(id *)a7
+- (BOOL)canThrowRenderOutput:(id)output withInputA:(id)a withInputB:(id)b withTimeFraction:(float)fraction withInfo:(id *)info
 {
   ReadyEffect = FracturedUtils::getReadyEffect(&self->_fxPool.__begin_, self->_fxPoolLock);
-  FracturedUtils::renderOutput(self, self->super.super._apiManager, ReadyEffect, self->_fxParams, a3, a4, a5, &a7->var0.var0, a6, 1);
+  FracturedUtils::renderOutput(self, self->super.super._apiManager, ReadyEffect, self->_fxParams, output, a, b, &info->var0.var0, fraction, 1);
   return 1;
 }
 

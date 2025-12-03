@@ -1,5 +1,5 @@
 @interface _SVXAlarmAndTimerFiringContextMutation
-- (_SVXAlarmAndTimerFiringContextMutation)initWithBaseModel:(id)a3;
+- (_SVXAlarmAndTimerFiringContextMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -14,26 +14,26 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_orderedFiringAlarms;
+        orderedFiringAlarms = self->_orderedFiringAlarms;
       }
 
       else
       {
-        v6 = [(SVXAlarmAndTimerFiringContext *)baseModel orderedFiringAlarms];
+        orderedFiringAlarms = [(SVXAlarmAndTimerFiringContext *)baseModel orderedFiringAlarms];
       }
 
-      v7 = v6;
+      v7 = orderedFiringAlarms;
       if ((*&self->_mutationFlags & 4) != 0)
       {
-        v8 = self->_orderedFiringTimers;
+        orderedFiringTimers = self->_orderedFiringTimers;
       }
 
       else
       {
-        v8 = [(SVXAlarmAndTimerFiringContext *)self->_baseModel orderedFiringTimers];
+        orderedFiringTimers = [(SVXAlarmAndTimerFiringContext *)self->_baseModel orderedFiringTimers];
       }
 
-      v9 = v8;
+      v9 = orderedFiringTimers;
       if ((*&self->_mutationFlags & 8) != 0)
       {
         hasOtherRunningTimers = self->_hasOtherRunningTimers;
@@ -63,16 +63,16 @@ LABEL_16:
   return v5;
 }
 
-- (_SVXAlarmAndTimerFiringContextMutation)initWithBaseModel:(id)a3
+- (_SVXAlarmAndTimerFiringContextMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXAlarmAndTimerFiringContextMutation;
   v6 = [(_SVXAlarmAndTimerFiringContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

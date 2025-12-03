@@ -1,23 +1,23 @@
 @interface BLSHDateSpecifierModel
-- (BLSHDateSpecifierModel)initWithInactiveBudgetPolicy:(id)a3;
-- (BLSHEnvironmentDatesModel)environmentModelForKey:(uint64_t)a1;
+- (BLSHDateSpecifierModel)initWithInactiveBudgetPolicy:(id)policy;
+- (BLSHEnvironmentDatesModel)environmentModelForKey:(uint64_t)key;
 - (BOOL)isEmpty;
-- (BOOL)missingAnySpecifiersInDateInterval:(id)a3 forPresentation:(id)a4;
-- (id)missingIntervalsForMinimumInterval:(id)a3 requestInterval:(id)a4 ofPresentation:(id)a5;
-- (id)updatesAfterSpecifier:(id)a3 coalesceFirstUpdateToNowDate:(id)a4 plusRenderEarlyEpsilon:(double)a5 untilGapOverDuration:(double)a6 coaelscingEpsilon:(double)a7 maximumUpdates:(int64_t)a8 lastValidDate:(id)a9 forPresentation:(id)a10 environmentFilter:(id)a11;
-- (void)addObserver:(id)a3;
-- (void)notifyObserversWithBlock:(uint64_t)a1;
-- (void)purgeSpecifiersBefore:(id)a3;
-- (void)registerSpecifiers:(id)a3 forDateInterval:(id)a4 environment:(id)a5;
-- (void)removeEnvironmentModelForKey:(void *)a3 reason:;
-- (void)removeObserver:(id)a3;
+- (BOOL)missingAnySpecifiersInDateInterval:(id)interval forPresentation:(id)presentation;
+- (id)missingIntervalsForMinimumInterval:(id)interval requestInterval:(id)requestInterval ofPresentation:(id)presentation;
+- (id)updatesAfterSpecifier:(id)specifier coalesceFirstUpdateToNowDate:(id)date plusRenderEarlyEpsilon:(double)epsilon untilGapOverDuration:(double)duration coaelscingEpsilon:(double)coaelscingEpsilon maximumUpdates:(int64_t)updates lastValidDate:(id)validDate forPresentation:(id)self0 environmentFilter:(id)self1;
+- (void)addObserver:(id)observer;
+- (void)notifyObserversWithBlock:(uint64_t)block;
+- (void)purgeSpecifiersBefore:(id)before;
+- (void)registerSpecifiers:(id)specifiers forDateInterval:(id)interval environment:(id)environment;
+- (void)removeEnvironmentModelForKey:(void *)key reason:;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BLSHDateSpecifierModel
 
-- (BLSHDateSpecifierModel)initWithInactiveBudgetPolicy:(id)a3
+- (BLSHDateSpecifierModel)initWithInactiveBudgetPolicy:(id)policy
 {
-  v5 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = BLSHDateSpecifierModel;
   v6 = [(BLSHDateSpecifierModel *)&v13 init];
@@ -25,7 +25,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_inactiveBudgetPolicy, a3);
+    objc_storeStrong(&v6->_inactiveBudgetPolicy, policy);
     v8 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:512 capacity:4];
     environmentModels = v7->_environmentModels;
     v7->_environmentModels = v8;
@@ -38,16 +38,16 @@
   return v7;
 }
 
-- (BOOL)missingAnySpecifiersInDateInterval:(id)a3 forPresentation:(id)a4
+- (BOOL)missingAnySpecifiersInDateInterval:(id)interval forPresentation:(id)presentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  intervalCopy = interval;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a4 presentationEntries];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  presentationEntries = [presentation presentationEntries];
+  v8 = [presentationEntries countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -59,18 +59,18 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(presentationEntries);
         }
 
-        v12 = [*(*(&v20 + 1) + 8 * v11) environment];
-        if ([v12 isAlwaysOnEnabledForEnvironment])
+        environment = [*(*(&v20 + 1) + 8 * v11) environment];
+        if ([environment isAlwaysOnEnabledForEnvironment])
         {
-          v13 = [(BLSHDateSpecifierModel *)self environmentModelForKey:v12];
-          v14 = [v13 dateInterval];
-          v15 = [v6 intersectionWithDateInterval:v14];
+          v13 = [(BLSHDateSpecifierModel *)self environmentModelForKey:environment];
+          dateInterval = [v13 dateInterval];
+          v15 = [intervalCopy intersectionWithDateInterval:dateInterval];
 
-          LOBYTE(v14) = [v15 isEqual:v6];
-          if ((v14 & 1) == 0)
+          LOBYTE(dateInterval) = [v15 isEqual:intervalCopy];
+          if ((dateInterval & 1) == 0)
           {
 
             v17 = 1;
@@ -82,7 +82,7 @@
       }
 
       while (v9 != v11);
-      v16 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v16 = [presentationEntries countByEnumeratingWithState:&v20 objects:v24 count:16];
       v9 = v16;
     }
 
@@ -96,45 +96,45 @@ LABEL_13:
   return v17;
 }
 
-- (id)missingIntervalsForMinimumInterval:(id)a3 requestInterval:(id)a4 ofPresentation:(id)a5
+- (id)missingIntervalsForMinimumInterval:(id)interval requestInterval:(id)requestInterval ofPresentation:(id)presentation
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v33 = a4;
-  v9 = a5;
-  v10 = [v9 expirationDate];
-  if (v10)
+  intervalCopy = interval;
+  requestIntervalCopy = requestInterval;
+  presentationCopy = presentation;
+  expirationDate = [presentationCopy expirationDate];
+  if (expirationDate)
   {
-    v11 = [v8 endDate];
-    v12 = [v11 compare:v10];
+    endDate = [intervalCopy endDate];
+    v12 = [endDate compare:expirationDate];
 
     if (v12 == 1)
     {
       v13 = bls_flipbook_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        v29 = [v8 bls_shortLoggingString];
-        v30 = [v10 bls_shortLoggingString];
+        bls_shortLoggingString = [intervalCopy bls_shortLoggingString];
+        bls_shortLoggingString2 = [expirationDate bls_shortLoggingString];
         *buf = 134218754;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2114;
-        v43 = v29;
+        v43 = bls_shortLoggingString;
         v44 = 2114;
-        v45 = v30;
+        v45 = bls_shortLoggingString2;
         v46 = 2114;
-        v47 = v9;
+        v47 = presentationCopy;
         _os_log_fault_impl(&dword_21FD11000, v13, OS_LOG_TYPE_FAULT, "%p minimumInterval:%{public}@ extends past expirationDate:%{public}@ for presentation:%{public}@", buf, 0x2Au);
       }
     }
   }
 
-  v32 = v9;
-  v14 = [v9 presentationEntries];
+  v32 = presentationCopy;
+  presentationEntries = [presentationCopy presentationEntries];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v15 = [presentationEntries countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v15)
   {
     v34 = 0;
@@ -151,29 +151,29 @@ LABEL_13:
     {
       if (*v36 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(presentationEntries);
       }
 
-      v19 = [*(*(&v35 + 1) + 8 * v18) environment];
-      if ([v19 isAlwaysOnEnabledForEnvironment])
+      environment = [*(*(&v35 + 1) + 8 * v18) environment];
+      if ([environment isAlwaysOnEnabledForEnvironment])
       {
-        v20 = [(BLSHDateSpecifierModel *)self environmentModelForKey:v19];
-        v21 = [v20 dateInterval];
-        v22 = [v8 intersectionWithDateInterval:v21];
+        v20 = [(BLSHDateSpecifierModel *)self environmentModelForKey:environment];
+        dateInterval = [v20 dateInterval];
+        identifier = [intervalCopy intersectionWithDateInterval:dateInterval];
 
-        if (([v22 isEqual:v8] & 1) == 0)
+        if (([identifier isEqual:intervalCopy] & 1) == 0)
         {
-          v23 = [v20 missingIntervalForDateInterval:v33];
+          v23 = [v20 missingIntervalForDateInterval:requestIntervalCopy];
           if (v23)
           {
-            v24 = v34;
+            array = v34;
             if (!v34)
             {
-              v24 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
             }
 
-            v34 = v24;
-            [v24 addObject:v23];
+            v34 = array;
+            [array addObject:v23];
           }
         }
       }
@@ -186,11 +186,11 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v22 = [v19 identifier];
+        identifier = [environment identifier];
         *buf = 134218242;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2114;
-        v43 = v22;
+        v43 = identifier;
         _os_log_debug_impl(&dword_21FD11000, v20, OS_LOG_TYPE_DEBUG, "%p missingIntervals skipping (alwaysOnDisabled) env:%{public}@", buf, 0x16u);
       }
 
@@ -199,7 +199,7 @@ LABEL_13:
     }
 
     while (v16 != v18);
-    v25 = [v14 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    v25 = [presentationEntries countByEnumeratingWithState:&v35 objects:v39 count:16];
     v16 = v25;
   }
 
@@ -212,90 +212,90 @@ LABEL_26:
   return v26;
 }
 
-- (id)updatesAfterSpecifier:(id)a3 coalesceFirstUpdateToNowDate:(id)a4 plusRenderEarlyEpsilon:(double)a5 untilGapOverDuration:(double)a6 coaelscingEpsilon:(double)a7 maximumUpdates:(int64_t)a8 lastValidDate:(id)a9 forPresentation:(id)a10 environmentFilter:(id)a11
+- (id)updatesAfterSpecifier:(id)specifier coalesceFirstUpdateToNowDate:(id)date plusRenderEarlyEpsilon:(double)epsilon untilGapOverDuration:(double)duration coaelscingEpsilon:(double)coaelscingEpsilon maximumUpdates:(int64_t)updates lastValidDate:(id)validDate forPresentation:(id)self0 environmentFilter:(id)self1
 {
   v313 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v247 = a9;
-  v253 = a10;
-  v246 = a11;
-  v236 = v18;
-  if (a5 > a7 || v18 == 0)
+  specifierCopy = specifier;
+  dateCopy = date;
+  validDateCopy = validDate;
+  presentationCopy = presentation;
+  filterCopy = filter;
+  v236 = specifierCopy;
+  if (epsilon > coaelscingEpsilon || specifierCopy == 0)
   {
-    v21 = a5;
+    coaelscingEpsilonCopy = epsilon;
   }
 
   else
   {
-    v21 = a7;
+    coaelscingEpsilonCopy = coaelscingEpsilon;
   }
 
-  v235 = [v19 dateByAddingTimeInterval:v21];
+  v235 = [dateCopy dateByAddingTimeInterval:coaelscingEpsilonCopy];
   v22 = bls_flipbook_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
-    v218 = [v235 bls_shortLoggingString];
-    [v247 bls_shortLoggingString];
-    v220 = v219 = v19;
-    v221 = [v253 bls_shortLoggingString];
+    bls_shortLoggingString = [v235 bls_shortLoggingString];
+    [validDateCopy bls_shortLoggingString];
+    v220 = v219 = dateCopy;
+    bls_shortLoggingString2 = [presentationCopy bls_shortLoggingString];
     *buf = 134220034;
-    v301 = self;
+    selfCopy23 = self;
     v302 = 2114;
     *v303 = v236;
     *&v303[8] = 2114;
-    *&v303[10] = v218;
+    *&v303[10] = bls_shortLoggingString;
     *&v303[18] = 2048;
-    *&v303[20] = a6;
+    *&v303[20] = duration;
     *&v303[28] = 2048;
-    *&v303[30] = a7;
+    *&v303[30] = coaelscingEpsilon;
     *&v303[38] = 2048;
-    *&v303[40] = a8;
+    *&v303[40] = updates;
     *&v303[48] = 2114;
     *&v303[50] = v220;
     *&v303[58] = 2114;
-    *&v303[60] = v221;
+    *&v303[60] = bls_shortLoggingString2;
     *&v303[68] = 1024;
-    *&v303[70] = v246 != 0;
+    *&v303[70] = filterCopy != 0;
     _os_log_debug_impl(&dword_21FD11000, v22, OS_LOG_TYPE_DEBUG, "%p updates (start) after:%{public}@ coalesceTo:%{public}@ gapDuration:%1.3lg epsilon:%.3lf max:%ld upTo:%{public}@ pres:%{public}@ filtered:%{BOOL}u", buf, 0x58u);
 
-    v19 = v219;
+    dateCopy = v219;
   }
 
-  if (!v19)
+  if (!dateCopy)
   {
     [BLSHDateSpecifierModel updatesAfterSpecifier:a2 coalesceFirstUpdateToNowDate:? plusRenderEarlyEpsilon:? untilGapOverDuration:? coaelscingEpsilon:? maximumUpdates:? lastValidDate:? forPresentation:? environmentFilter:?];
   }
 
-  v23 = [MEMORY[0x277CBEAA8] distantFuture];
-  v24 = [v23 isEqualToDate:v19];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v24 = [distantFuture isEqualToDate:dateCopy];
 
   if (v24)
   {
     [BLSHDateSpecifierModel updatesAfterSpecifier:a2 coalesceFirstUpdateToNowDate:self plusRenderEarlyEpsilon:? untilGapOverDuration:? coaelscingEpsilon:? maximumUpdates:? lastValidDate:? forPresentation:? environmentFilter:?];
   }
 
-  if (!v253)
+  if (!presentationCopy)
   {
     [BLSHDateSpecifierModel updatesAfterSpecifier:a2 coalesceFirstUpdateToNowDate:? plusRenderEarlyEpsilon:? untilGapOverDuration:? coaelscingEpsilon:? maximumUpdates:? lastValidDate:? forPresentation:? environmentFilter:?];
   }
 
-  v233 = v19;
-  v252 = [MEMORY[0x277CBEB18] array];
-  v267 = [MEMORY[0x277CBEB38] dictionary];
+  v233 = dateCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v296 = 0u;
   v297 = 0u;
   v298 = 0u;
   v299 = 0u;
-  v25 = [v253 presentationEntries];
-  v26 = [v25 countByEnumeratingWithState:&v296 objects:v312 count:16];
-  v27 = v246;
+  presentationEntries = [presentationCopy presentationEntries];
+  v26 = [presentationEntries countByEnumeratingWithState:&v296 objects:v312 count:16];
+  v27 = filterCopy;
   if (v26)
   {
     v28 = v26;
     v29 = *v297;
     v30 = 0x7FFFFFFFFFFFFFFFLL;
-    v265 = v25;
+    v265 = presentationEntries;
     do
     {
       v31 = 0;
@@ -303,11 +303,11 @@ LABEL_26:
       {
         if (*v297 != v29)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(presentationEntries);
         }
 
-        v32 = [*(*(&v296 + 1) + 8 * v31) environment];
-        if (v27 && (v27[2](v27, v32) & 1) == 0)
+        environment = [*(*(&v296 + 1) + 8 * v31) environment];
+        if (v27 && (v27[2](v27, environment) & 1) == 0)
         {
           v33 = bls_flipbook_log();
           if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -315,16 +315,16 @@ LABEL_26:
             goto LABEL_23;
           }
 
-          v34 = [v32 identifier];
+          identifier = [environment identifier];
           *buf = 134218242;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 2114;
-          *v303 = v34;
+          *v303 = identifier;
           _os_log_debug_impl(&dword_21FD11000, v33, OS_LOG_TYPE_DEBUG, "%p updates skipping env:%{public}@", buf, 0x16u);
           goto LABEL_29;
         }
 
-        if (([v32 isAlwaysOnEnabledForEnvironment] & 1) == 0)
+        if (([environment isAlwaysOnEnabledForEnvironment] & 1) == 0)
         {
           v33 = bls_flipbook_log();
           if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -332,11 +332,11 @@ LABEL_26:
             goto LABEL_23;
           }
 
-          v34 = [v32 identifier];
+          identifier = [environment identifier];
           *buf = 134218242;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 2114;
-          *v303 = v34;
+          *v303 = identifier;
           _os_log_debug_impl(&dword_21FD11000, v33, OS_LOG_TYPE_DEBUG, "%p updates skipping (alwaysOnDisabled) env:%{public}@", buf, 0x16u);
 
 LABEL_29:
@@ -345,33 +345,33 @@ LABEL_29:
 
         obj = (v30 - 1);
         v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30 - 1];
-        v36 = [v32 identifier];
-        [v267 setValue:v35 forKey:v36];
+        identifier2 = [environment identifier];
+        [dictionary setValue:v35 forKey:identifier2];
 
-        v33 = [(BLSHDateSpecifierModel *)self environmentModelForKey:v32];
-        v37 = [v33 specifiers];
+        v33 = [(BLSHDateSpecifierModel *)self environmentModelForKey:environment];
+        specifiers = [v33 specifiers];
         v38 = bls_flipbook_log();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
         {
-          v43 = [v32 identifier];
-          v44 = [v37 bls_boundedDescriptionWithMax:6 transformer:&__block_literal_global_5];
+          identifier3 = [environment identifier];
+          v44 = [specifiers bls_boundedDescriptionWithMax:6 transformer:&__block_literal_global_5];
           *buf = 134218498;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 2114;
-          *v303 = v43;
+          *v303 = identifier3;
           *&v303[8] = 2114;
           *&v303[10] = v44;
           _os_log_debug_impl(&dword_21FD11000, v38, OS_LOG_TYPE_DEBUG, "%p updates env:%{public}@ specifiers:%{public}@", buf, 0x20u);
         }
 
-        v39 = [v37 objectEnumerator];
-        v40 = [v39 nextObject];
-        v41 = [v33 dateInterval];
-        v42 = [BLSHEnvironmentDatesEnumerator createWithInitialSpecifier:v40 enumerator:v39 dateInterval:v41 environment:v32 sourceModel:v33];
-        [v252 addObject:v42];
+        objectEnumerator = [specifiers objectEnumerator];
+        nextObject = [objectEnumerator nextObject];
+        dateInterval = [v33 dateInterval];
+        v42 = [BLSHEnvironmentDatesEnumerator createWithInitialSpecifier:nextObject enumerator:objectEnumerator dateInterval:dateInterval environment:environment sourceModel:v33];
+        [array addObject:v42];
 
-        v27 = v246;
-        v25 = v265;
+        v27 = filterCopy;
+        presentationEntries = v265;
         v30 = obj;
 LABEL_23:
 
@@ -379,7 +379,7 @@ LABEL_23:
       }
 
       while (v28 != v31);
-      v45 = [v25 countByEnumeratingWithState:&v296 objects:v312 count:16];
+      v45 = [presentationEntries countByEnumeratingWithState:&v296 objects:v312 count:16];
       v28 = v45;
     }
 
@@ -390,10 +390,10 @@ LABEL_23:
   v294[1] = 3221225472;
   v294[2] = __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdateToNowDate_plusRenderEarlyEpsilon_untilGapOverDuration_coaelscingEpsilon_maximumUpdates_lastValidDate_forPresentation_environmentFilter___block_invoke_21;
   v294[3] = &unk_27841F018;
-  v232 = v267;
+  v232 = dictionary;
   v295 = v232;
   v234 = MEMORY[0x223D70730](v294);
-  v46 = [v252 count];
+  v46 = [array count];
   table = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:512 capacity:v46];
   v47 = v236;
   if (v236)
@@ -402,8 +402,8 @@ LABEL_23:
     v293 = 0u;
     v290 = 0u;
     v291 = 0u;
-    v48 = [v236 specifiers];
-    v49 = [v48 countByEnumeratingWithState:&v290 objects:v311 count:16];
+    specifiers2 = [v236 specifiers];
+    v49 = [specifiers2 countByEnumeratingWithState:&v290 objects:v311 count:16];
     if (v49)
     {
       v50 = v49;
@@ -414,21 +414,21 @@ LABEL_23:
         {
           if (*v291 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(specifiers2);
           }
 
           v53 = *(*(&v290 + 1) + 8 * i);
-          v54 = [v53 environment];
-          v55 = [v253 containsEnvironment:v54];
+          environment2 = [v53 environment];
+          v55 = [presentationCopy containsEnvironment:environment2];
 
           if (v55)
           {
-            v56 = [v53 environment];
-            [(NSMapTable *)table setObject:v53 forKey:v56];
+            environment3 = [v53 environment];
+            [(NSMapTable *)table setObject:v53 forKey:environment3];
           }
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v290 objects:v311 count:16];
+        v50 = [specifiers2 countByEnumeratingWithState:&v290 objects:v311 count:16];
       }
 
       while (v50);
@@ -437,12 +437,12 @@ LABEL_23:
     v47 = v236;
   }
 
-  v57 = [v47 presentationDate];
-  if (v57)
+  presentationDate = [v47 presentationDate];
+  if (presentationDate)
   {
-    v237 = [v233 earlierDate:v57];
+    v237 = [v233 earlierDate:presentationDate];
 
-    v58 = [v235 laterDate:v57];
+    v58 = [v235 laterDate:presentationDate];
   }
 
   else
@@ -458,15 +458,15 @@ LABEL_23:
   v242 = 0;
   v238 = 0;
   v243 = v58;
-  v244 = v57;
+  v244 = presentationDate;
   do
   {
     v60 = v59;
-    v268 = (v57 != 0) & (v250 ^ 1);
+    v268 = (presentationDate != 0) & (v250 ^ 1);
     if (v268)
     {
-      v61 = [MEMORY[0x277CBEAA8] distantPast];
-      v62 = v57;
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v62 = presentationDate;
       v250 = 1;
       v251 = v60;
     }
@@ -475,18 +475,18 @@ LABEL_23:
     {
       while ((v60 & 1) == 0)
       {
-        if (v57)
+        if (presentationDate)
         {
-          v61 = v57;
+          distantPast = presentationDate;
         }
 
         else
         {
-          v61 = [MEMORY[0x277CBEAA8] distantPast];
+          distantPast = [MEMORY[0x277CBEAA8] distantPast];
         }
 
         v62 = v58;
-        if ([v61 compare:v62] == -1)
+        if ([distantPast compare:v62] == -1)
         {
           v251 = 1;
           goto LABEL_66;
@@ -495,16 +495,16 @@ LABEL_23:
         v63 = bls_flipbook_log();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
         {
-          v64 = [v61 bls_shortLoggingString];
-          v65 = [v62 bls_shortLoggingString];
+          bls_shortLoggingString3 = [distantPast bls_shortLoggingString];
+          bls_shortLoggingString4 = [v62 bls_shortLoggingString];
           *buf = 134218754;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 1024;
           *v303 = v264;
           *&v303[4] = 2114;
-          *&v303[6] = v64;
+          *&v303[6] = bls_shortLoggingString3;
           *&v303[14] = 2114;
-          *&v303[16] = v65;
+          *&v303[16] = bls_shortLoggingString4;
           _os_log_debug_impl(&dword_21FD11000, v63, OS_LOG_TYPE_DEBUG, "%p updates(%d) (skipping initial) valid:(%{public}@->%{public}@)", buf, 0x26u);
         }
 
@@ -512,13 +512,13 @@ LABEL_23:
       }
 
       v248 = v60;
-      v66 = [MEMORY[0x277CBEAA8] distantFuture];
-      v67 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture3 = [MEMORY[0x277CBEAA8] distantFuture];
       v286 = 0u;
       v287 = 0u;
       v288 = 0u;
       v289 = 0u;
-      v68 = v252;
+      v68 = array;
       v69 = [v68 countByEnumeratingWithState:&v286 objects:v310 count:16];
       if (v69)
       {
@@ -527,8 +527,8 @@ LABEL_23:
         do
         {
           v72 = 0;
-          v73 = v67;
-          v74 = v66;
+          v73 = distantFuture3;
+          v74 = distantFuture2;
           do
           {
             if (*v287 != v71)
@@ -537,17 +537,17 @@ LABEL_23:
             }
 
             v75 = *(*(&v286 + 1) + 8 * v72);
-            v76 = [v75 specifier];
-            v77 = [v76 date];
-            v66 = [v77 earlierDate:v74];
+            specifier = [v75 specifier];
+            date = [specifier date];
+            distantFuture2 = [date earlierDate:v74];
 
-            v78 = [v75 dateInterval];
-            v79 = [v78 endDate];
-            v67 = [v79 earlierDate:v73];
+            dateInterval2 = [v75 dateInterval];
+            endDate = [dateInterval2 endDate];
+            distantFuture3 = [endDate earlierDate:v73];
 
             ++v72;
-            v73 = v67;
-            v74 = v66;
+            v73 = distantFuture3;
+            v74 = distantFuture2;
           }
 
           while (v70 != v72);
@@ -557,29 +557,29 @@ LABEL_23:
         while (v70);
       }
 
-      v80 = [MEMORY[0x277CBEAA8] distantFuture];
-      v81 = [v66 isEqualToDate:v80];
+      distantFuture4 = [MEMORY[0x277CBEAA8] distantFuture];
+      v81 = [distantFuture2 isEqualToDate:distantFuture4];
 
       if (v81)
       {
 
-        v240 = v67;
+        v240 = distantFuture3;
         v58 = v243;
-        v57 = v244;
+        presentationDate = v244;
         break;
       }
 
-      v61 = v66;
-      v62 = [v61 dateByAddingTimeInterval:a7];
+      distantPast = distantFuture2;
+      v62 = [distantPast dateByAddingTimeInterval:coaelscingEpsilon];
 
       v251 = 1;
       v58 = v243;
-      v57 = v244;
+      presentationDate = v244;
       LOBYTE(v60) = v248;
     }
 
 LABEL_66:
-    if (v247)
+    if (validDateCopy)
     {
       v82 = [v62 earlierDate:?];
 
@@ -591,16 +591,16 @@ LABEL_66:
     v84 = bls_flipbook_log();
     if (os_log_type_enabled(v84, OS_LOG_TYPE_DEBUG))
     {
-      v150 = [v61 bls_shortLoggingString];
-      v151 = [v62 bls_shortLoggingString];
+      bls_shortLoggingString5 = [distantPast bls_shortLoggingString];
+      bls_shortLoggingString6 = [v62 bls_shortLoggingString];
       *buf = 134219266;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 2114;
-      *&v303[6] = v150;
+      *&v303[6] = bls_shortLoggingString5;
       *&v303[14] = 2114;
-      *&v303[16] = v151;
+      *&v303[16] = bls_shortLoggingString6;
       *&v303[24] = 1024;
       *&v303[26] = v268;
       *&v303[30] = 1024;
@@ -610,20 +610,20 @@ LABEL_66:
 
     v245 = v83;
 
-    v259 = [MEMORY[0x277CBEAA8] distantPast];
-    v85 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+    distantFuture5 = [MEMORY[0x277CBEAA8] distantFuture];
     v282 = 0u;
     v283 = 0u;
     v284 = 0u;
     v285 = 0u;
-    v86 = v252;
+    v86 = array;
     v87 = [v86 countByEnumeratingWithState:&v282 objects:v309 count:16];
     v270 = v62;
     if (!v87)
     {
 
       v136 = 0;
-      v137 = v259;
+      v137 = distantPast2;
       goto LABEL_124;
     }
 
@@ -631,7 +631,7 @@ LABEL_66:
     v266 = 0;
     v256 = 0;
     v89 = *v283;
-    v263 = v61;
+    v263 = distantPast;
     v258 = v86;
     v261 = *v283;
     do
@@ -646,71 +646,71 @@ LABEL_66:
         }
 
         v91 = *(*(&v282 + 1) + 8 * v90);
-        v92 = [v91 specifier];
-        v93 = [v92 date];
+        specifier2 = [v91 specifier];
+        date2 = [specifier2 date];
         obja = [v91 environment];
-        if (![v93 bls_isOnOrAfter:v61])
+        if (![date2 bls_isOnOrAfter:distantPast])
         {
           goto LABEL_110;
         }
 
-        if (![v93 bls_isOnOrBefore:v62])
+        if (![date2 bls_isOnOrBefore:v62])
         {
-          v102 = v92;
+          v102 = specifier2;
           goto LABEL_108;
         }
 
-        v260 = v85;
-        v94 = 0;
+        v260 = distantFuture5;
+        nextObject2 = 0;
         while (1)
         {
-          v95 = v94;
-          v96 = [v91 enumerator];
-          v94 = [v96 nextObject];
+          v95 = nextObject2;
+          enumerator = [v91 enumerator];
+          nextObject2 = [enumerator nextObject];
 
-          v97 = [v94 date];
-          v98 = v97;
-          if (v97)
+          date3 = [nextObject2 date];
+          v98 = date3;
+          if (date3)
           {
-            v99 = v97;
+            distantFuture6 = date3;
           }
 
           else
           {
-            v99 = [MEMORY[0x277CBEAA8] distantFuture];
+            distantFuture6 = [MEMORY[0x277CBEAA8] distantFuture];
           }
 
-          if ([v99 bls_isOnOrAfter:v61 andOnOrBefore:v62])
+          if ([distantFuture6 bls_isOnOrAfter:distantPast andOnOrBefore:v62])
           {
             v100 = bls_flipbook_log();
             if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
             {
-              v112 = [v61 bls_shortLoggingString];
-              v113 = [v62 bls_shortLoggingString];
-              v114 = [obja identifier];
+              bls_shortLoggingString7 = [distantPast bls_shortLoggingString];
+              bls_shortLoggingString8 = [v62 bls_shortLoggingString];
+              identifier4 = [obja identifier];
               *buf = 134219778;
-              v301 = self;
+              selfCopy23 = self;
               v302 = 1024;
               *v303 = v264;
               *&v303[4] = 2114;
-              *&v303[6] = v92;
+              *&v303[6] = specifier2;
               *&v303[14] = 2114;
-              *&v303[16] = v94;
+              *&v303[16] = nextObject2;
               *&v303[24] = 2114;
-              *&v303[26] = v112;
+              *&v303[26] = bls_shortLoggingString7;
               *&v303[34] = 2114;
-              *&v303[36] = v113;
+              *&v303[36] = bls_shortLoggingString8;
               *&v303[44] = 2048;
-              *&v303[46] = a6;
+              *&v303[46] = duration;
               *&v303[54] = 2114;
-              *&v303[56] = v114;
+              *&v303[56] = identifier4;
               _os_log_debug_impl(&dword_21FD11000, v100, OS_LOG_TYPE_DEBUG, "%p updates(%d) (will coaelsce) specifier:%{public}@ nextSpecifier:%{public}@ valid:(%{public}@->%{public}@) gapDuration:%1.3lg env:%{public}@", buf, 0x4Eu);
 
-              v61 = v263;
+              distantPast = v263;
               v62 = v270;
             }
 
-            v101 = v94;
+            v101 = nextObject2;
 LABEL_93:
             LOBYTE(v110) = 1;
             goto LABEL_94;
@@ -721,15 +721,15 @@ LABEL_93:
             break;
           }
 
-          v102 = v92;
+          v102 = specifier2;
           if (v102)
           {
             goto LABEL_97;
           }
 
 LABEL_89:
-          v103 = [v94 date];
-          v104 = [v103 bls_isOnOrAfter:v61 andOnOrBefore:v62];
+          date4 = [nextObject2 date];
+          v104 = [date4 bls_isOnOrAfter:distantPast andOnOrBefore:v62];
 
           v105 = bls_flipbook_log();
           v106 = os_log_type_enabled(v105, OS_LOG_TYPE_INFO);
@@ -737,32 +737,32 @@ LABEL_89:
           {
             if (v106)
             {
-              v254 = [v61 bls_shortLoggingString];
-              v116 = [v270 bls_shortLoggingString];
-              v117 = [obja identifier];
+              bls_shortLoggingString9 = [distantPast bls_shortLoggingString];
+              bls_shortLoggingString10 = [v270 bls_shortLoggingString];
+              identifier5 = [obja identifier];
               *buf = 134219778;
-              v301 = self;
+              selfCopy23 = self;
               v302 = 1024;
               *v303 = v264;
               *&v303[4] = 2114;
-              *&v303[6] = v92;
+              *&v303[6] = specifier2;
               *&v303[14] = 2114;
-              *&v303[16] = v94;
+              *&v303[16] = nextObject2;
               *&v303[24] = 2114;
-              *&v303[26] = v254;
+              *&v303[26] = bls_shortLoggingString9;
               *&v303[34] = 2114;
-              *&v303[36] = v116;
-              v118 = v116;
+              *&v303[36] = bls_shortLoggingString10;
+              v118 = bls_shortLoggingString10;
               *&v303[44] = 2048;
-              *&v303[46] = a6;
+              *&v303[46] = duration;
               *&v303[54] = 2114;
-              v119 = v117;
-              *&v303[56] = v117;
+              v119 = identifier5;
+              *&v303[56] = identifier5;
               v266 = 1;
               _os_log_impl(&dword_21FD11000, v105, OS_LOG_TYPE_INFO, "%p updates(%d) (exceeded budget - will not coaelsce) specifier:%{public}@ nextSpecifier:%{public}@ valid:(%{public}@->%{public}@) gapDuration:%1.3lg env:%{public}@", buf, 0x4Eu);
 
               v62 = v270;
-              v61 = v263;
+              distantPast = v263;
             }
 
             else
@@ -776,36 +776,36 @@ LABEL_89:
 
           if (v106)
           {
-            v107 = [v61 bls_shortLoggingString];
-            v108 = [v270 bls_shortLoggingString];
-            v109 = [obja identifier];
+            bls_shortLoggingString11 = [distantPast bls_shortLoggingString];
+            bls_shortLoggingString12 = [v270 bls_shortLoggingString];
+            identifier6 = [obja identifier];
             *buf = 134219778;
-            v301 = self;
+            selfCopy23 = self;
             v302 = 1024;
             *v303 = v264;
             *&v303[4] = 2114;
-            *&v303[6] = v92;
+            *&v303[6] = specifier2;
             *&v303[14] = 2114;
-            *&v303[16] = v94;
+            *&v303[16] = nextObject2;
             *&v303[24] = 2114;
-            *&v303[26] = v107;
+            *&v303[26] = bls_shortLoggingString11;
             *&v303[34] = 2114;
-            *&v303[36] = v108;
+            *&v303[36] = bls_shortLoggingString12;
             *&v303[44] = 2048;
-            *&v303[46] = a6;
+            *&v303[46] = duration;
             *&v303[54] = 2114;
-            *&v303[56] = v109;
+            *&v303[56] = identifier6;
             _os_log_impl(&dword_21FD11000, v105, OS_LOG_TYPE_INFO, "%p updates(%d) (exceeded budget - will coaelsce) specifier:%{public}@ nextSpecifier:%{public}@ valid:(%{public}@->%{public}@) gapDuration:%1.3lg env:%{public}@", buf, 0x4Eu);
 
-            v61 = v263;
+            distantPast = v263;
           }
 
-          v110 = v94;
-          v111 = [v110 date];
+          v110 = nextObject2;
+          date5 = [v110 date];
 
           v266 = 1;
           v62 = v270;
-          v93 = v111;
+          date2 = date5;
           if (v110)
           {
             goto LABEL_93;
@@ -813,15 +813,15 @@ LABEL_89:
 
 LABEL_94:
 
-          v92 = v94;
+          specifier2 = nextObject2;
           if ((v110 & 1) == 0)
           {
-            v102 = v94;
+            v102 = nextObject2;
             goto LABEL_104;
           }
         }
 
-        v102 = [(BLSHInactiveBudgetPolicing_Private *)self->_inactiveBudgetPolicy validateAndChargeFutureSpecifier:v92 nextSpecifier:v94 forEnvironment:obja];
+        v102 = [(BLSHInactiveBudgetPolicing_Private *)self->_inactiveBudgetPolicy validateAndChargeFutureSpecifier:specifier2 nextSpecifier:nextObject2 forEnvironment:obja];
 
         if (!v102)
         {
@@ -832,63 +832,63 @@ LABEL_97:
         v115 = bls_flipbook_log();
         if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
         {
-          v255 = [v61 bls_shortLoggingString];
-          v128 = [v62 bls_shortLoggingString];
-          v129 = [obja identifier];
+          bls_shortLoggingString13 = [distantPast bls_shortLoggingString];
+          bls_shortLoggingString14 = [v62 bls_shortLoggingString];
+          identifier7 = [obja identifier];
           *buf = 134220034;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 1024;
           *v303 = v264;
           *&v303[4] = 2114;
           *&v303[6] = v102;
           *&v303[14] = 2114;
-          *&v303[16] = v92;
+          *&v303[16] = specifier2;
           *&v303[24] = 2114;
-          *&v303[26] = v94;
+          *&v303[26] = nextObject2;
           *&v303[34] = 2114;
-          *&v303[36] = v255;
+          *&v303[36] = bls_shortLoggingString13;
           *&v303[44] = 2114;
-          *&v303[46] = v128;
-          v130 = v128;
+          *&v303[46] = bls_shortLoggingString14;
+          v130 = bls_shortLoggingString14;
           *&v303[54] = 2048;
-          *&v303[56] = a6;
+          *&v303[56] = duration;
           *&v303[64] = 2114;
-          v131 = v129;
-          *&v303[66] = v129;
+          v131 = identifier7;
+          *&v303[66] = identifier7;
           _os_log_debug_impl(&dword_21FD11000, v115, OS_LOG_TYPE_DEBUG, "%p updates(%d) (will not coaelsce) validSpecifier:%{public}@ specifier:%{public}@ nextSpecifier:%{public}@ valid:(%{public}@->%{public}@) gapDuration:%1.3lg env:%{public}@", buf, 0x58u);
 
           v62 = v270;
-          v61 = v263;
+          distantPast = v263;
         }
 
-        v105 = v92;
-        v92 = v102;
+        v105 = specifier2;
+        specifier2 = v102;
 LABEL_103:
 
 LABEL_104:
-        [v91 setSpecifier:v94];
+        [v91 setSpecifier:nextObject2];
         v120 = bls_flipbook_log();
         if (os_log_type_enabled(v120, OS_LOG_TYPE_DEBUG))
         {
-          v125 = [v61 bls_shortLoggingString];
-          v126 = [v62 bls_shortLoggingString];
-          v127 = [obja identifier];
+          bls_shortLoggingString15 = [distantPast bls_shortLoggingString];
+          bls_shortLoggingString16 = [v62 bls_shortLoggingString];
+          identifier8 = [obja identifier];
           *buf = 134219778;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 1024;
           *v303 = v264;
           *&v303[4] = 2114;
           *&v303[6] = v102;
           *&v303[14] = 2114;
-          *&v303[16] = v94;
+          *&v303[16] = nextObject2;
           *&v303[24] = 2114;
-          *&v303[26] = v125;
+          *&v303[26] = bls_shortLoggingString15;
           *&v303[34] = 2114;
-          *&v303[36] = v126;
+          *&v303[36] = bls_shortLoggingString16;
           *&v303[44] = 2048;
-          *&v303[46] = a6;
+          *&v303[46] = duration;
           *&v303[54] = 2114;
-          *&v303[56] = v127;
+          *&v303[56] = identifier8;
           _os_log_debug_impl(&dword_21FD11000, v120, OS_LOG_TYPE_DEBUG, "%p updates(%d) (set enumerater) validSpecifier:%{public}@ nextSpecifier:%{public}@ valid:(%{public}@->%{public}@) gapDuration:%1.3lg env:%{public}@", buf, 0x4Eu);
 
           v62 = v270;
@@ -896,30 +896,30 @@ LABEL_104:
 
         if (v102)
         {
-          v121 = [v102 date];
-          v122 = [v102 date];
-          v123 = [BLSHEnvironmentDateSpecifier specifierWithPresentationDate:v122 fidelity:[v102 fidelity] environment:obja userObject:0];
+          date6 = [v102 date];
+          date7 = [v102 date];
+          v123 = [BLSHEnvironmentDateSpecifier specifierWithPresentationDate:date7 fidelity:[v102 fidelity] environment:obja userObject:0];
 
           [(NSMapTable *)table setObject:v123 forKey:obja];
-          v124 = [v121 laterDate:v259];
+          v124 = [date6 laterDate:distantPast2];
 
           v62 = v270;
           v256 = 1;
-          v259 = v124;
-          v85 = v260;
+          distantPast2 = v124;
+          distantFuture5 = v260;
           v86 = v258;
 LABEL_108:
-          [v93 earlierDate:v85];
-          v85 = v94 = v85;
+          [date2 earlierDate:distantFuture5];
+          distantFuture5 = nextObject2 = distantFuture5;
         }
 
         else
         {
-          v85 = v260;
+          distantFuture5 = v260;
           v86 = v258;
         }
 
-        v92 = v102;
+        specifier2 = v102;
         v89 = v261;
         v88 = v262;
 LABEL_110:
@@ -937,11 +937,11 @@ LABEL_110:
     if ((v256 & 1) == 0)
     {
       v58 = v243;
-      v57 = v244;
-      v137 = v259;
+      presentationDate = v244;
+      v137 = distantPast2;
       v136 = v266;
 LABEL_124:
-      v259 = v137;
+      distantPast2 = v137;
       if (v268)
       {
         v138 = bls_flipbook_log();
@@ -950,16 +950,16 @@ LABEL_124:
           goto LABEL_126;
         }
 
-        v140 = [v61 bls_shortLoggingString];
-        v141 = [v62 bls_shortLoggingString];
+        bls_shortLoggingString17 = [distantPast bls_shortLoggingString];
+        bls_shortLoggingString18 = [v62 bls_shortLoggingString];
         *buf = 134218754;
-        v301 = self;
+        selfCopy23 = self;
         v302 = 1024;
         *v303 = v264;
         *&v303[4] = 2114;
-        *&v303[6] = v140;
+        *&v303[6] = bls_shortLoggingString17;
         *&v303[14] = 2114;
-        *&v303[16] = v141;
+        *&v303[16] = bls_shortLoggingString18;
         v142 = v138;
         v143 = "%p updates(%d) (skip invalid - continuing) valid:(%{public}@->%{public}@)";
       }
@@ -973,16 +973,16 @@ LABEL_124:
           v138 = bls_flipbook_log();
           if (os_log_type_enabled(v138, OS_LOG_TYPE_DEBUG))
           {
-            v145 = [v61 bls_shortLoggingString];
-            v146 = [v62 bls_shortLoggingString];
+            bls_shortLoggingString19 = [distantPast bls_shortLoggingString];
+            bls_shortLoggingString20 = [v62 bls_shortLoggingString];
             *buf = 134218754;
-            v301 = self;
+            selfCopy23 = self;
             v302 = 1024;
             *v303 = v264;
             *&v303[4] = 2114;
-            *&v303[6] = v145;
+            *&v303[6] = bls_shortLoggingString19;
             *&v303[14] = 2114;
-            *&v303[16] = v146;
+            *&v303[16] = bls_shortLoggingString20;
             _os_log_debug_impl(&dword_21FD11000, v138, OS_LOG_TYPE_DEBUG, "%p updates(%d) (initial invalid - continuing) valid:(%{public}@->%{public}@)", buf, 0x26u);
             goto LABEL_140;
           }
@@ -999,28 +999,28 @@ LABEL_141:
         {
           if (v139)
           {
-            v167 = [v61 bls_shortLoggingString];
-            v168 = [v62 bls_shortLoggingString];
-            v169 = [v85 bls_shortLoggingString];
+            bls_shortLoggingString21 = [distantPast bls_shortLoggingString];
+            bls_shortLoggingString22 = [v62 bls_shortLoggingString];
+            bls_shortLoggingString23 = [distantFuture5 bls_shortLoggingString];
             *buf = 134219010;
-            v301 = self;
+            selfCopy23 = self;
             v302 = 1024;
             *v303 = v264;
             *&v303[4] = 2114;
-            *&v303[6] = v167;
+            *&v303[6] = bls_shortLoggingString21;
             *&v303[14] = 2114;
-            *&v303[16] = v168;
+            *&v303[16] = bls_shortLoggingString22;
             *&v303[24] = 2114;
-            *&v303[26] = v169;
+            *&v303[26] = bls_shortLoggingString23;
             _os_log_debug_impl(&dword_21FD11000, v138, OS_LOG_TYPE_DEBUG, "%p updates(%d) (invalid - stopping) valid:(%{public}@->%{public}@) earliestDate:%{public}@", buf, 0x30u);
 
             v62 = v270;
           }
 
-          v85 = v85;
+          distantFuture5 = distantFuture5;
           v135 = 1;
           v138 = v240;
-          v240 = v85;
+          v240 = distantFuture5;
           goto LABEL_150;
         }
 
@@ -1031,16 +1031,16 @@ LABEL_126:
           goto LABEL_150;
         }
 
-        v140 = [v61 bls_shortLoggingString];
-        v141 = [v62 bls_shortLoggingString];
+        bls_shortLoggingString17 = [distantPast bls_shortLoggingString];
+        bls_shortLoggingString18 = [v62 bls_shortLoggingString];
         *buf = 134218754;
-        v301 = self;
+        selfCopy23 = self;
         v302 = 1024;
         *v303 = v264;
         *&v303[4] = 2114;
-        *&v303[6] = v140;
+        *&v303[6] = bls_shortLoggingString17;
         *&v303[14] = 2114;
-        *&v303[16] = v141;
+        *&v303[16] = bls_shortLoggingString18;
         v142 = v138;
         v143 = "%p updates(%d) (invalid, exceeded budget - continuing) valid:(%{public}@->%{public}@)";
       }
@@ -1051,60 +1051,60 @@ LABEL_126:
     }
 
     v58 = v243;
-    v57 = v244;
-    if (v264 < a8)
+    presentationDate = v244;
+    if (v264 < updates)
     {
       if (v242)
       {
-        [v259 timeIntervalSinceDate:?];
-        if (v133 > a6)
+        [distantPast2 timeIntervalSinceDate:?];
+        if (v133 > duration)
         {
           v134 = bls_flipbook_log();
           if (os_log_type_enabled(v134, OS_LOG_TYPE_DEBUG))
           {
-            v173 = [v242 bls_shortLoggingString];
-            v174 = [v85 bls_shortLoggingString];
-            [v259 bls_shortLoggingString];
-            v176 = v175 = v85;
-            v177 = [v61 bls_shortLoggingString];
-            v178 = [v270 bls_shortLoggingString];
-            v179 = [v243 bls_shortLoggingString];
+            bls_shortLoggingString24 = [v242 bls_shortLoggingString];
+            bls_shortLoggingString25 = [distantFuture5 bls_shortLoggingString];
+            [distantPast2 bls_shortLoggingString];
+            v176 = v175 = distantFuture5;
+            bls_shortLoggingString26 = [distantPast bls_shortLoggingString];
+            bls_shortLoggingString27 = [v270 bls_shortLoggingString];
+            bls_shortLoggingString28 = [v243 bls_shortLoggingString];
             *buf = 134220290;
-            v301 = self;
+            selfCopy23 = self;
             v302 = 1024;
             *v303 = v264;
             *&v303[4] = 2114;
-            *&v303[6] = v173;
+            *&v303[6] = bls_shortLoggingString24;
             *&v303[14] = 2112;
-            *&v303[16] = v174;
+            *&v303[16] = bls_shortLoggingString25;
             *&v303[24] = 2112;
             *&v303[26] = v176;
             *&v303[34] = 2114;
-            *&v303[36] = v177;
+            *&v303[36] = bls_shortLoggingString26;
             *&v303[44] = 2114;
-            *&v303[46] = v178;
+            *&v303[46] = bls_shortLoggingString27;
             *&v303[54] = 1024;
             *&v303[56] = v245 & 1;
             *&v303[60] = 2114;
-            *&v303[62] = v179;
+            *&v303[62] = bls_shortLoggingString28;
             *&v303[70] = 2048;
-            *&v303[72] = a6;
+            *&v303[72] = duration;
             _os_log_debug_impl(&dword_21FD11000, v134, OS_LOG_TYPE_DEBUG, "%p updates(%d) (gap reached - stopping) previous:%{public}@ earliest:%@ latest:%@ valid:(%{public}@->%{public}@) (initial:%{BOOL}u) startingAtDate:%{public}@ gapDuration:%1.3lg", buf, 0x5Eu);
 
             v58 = v243;
-            v57 = v244;
+            presentationDate = v244;
 
-            v85 = v175;
+            distantFuture5 = v175;
           }
 
-          v85 = v85;
+          distantFuture5 = distantFuture5;
           if (v268)
           {
             [BLSHDateSpecifierModel updatesAfterSpecifier:a2 coalesceFirstUpdateToNowDate:? plusRenderEarlyEpsilon:? untilGapOverDuration:? coaelscingEpsilon:? maximumUpdates:? lastValidDate:? forPresentation:? environmentFilter:?];
           }
 
           v135 = 1;
-          v240 = v85;
+          v240 = distantFuture5;
           v62 = v270;
           goto LABEL_151;
         }
@@ -1117,28 +1117,28 @@ LABEL_126:
         v138 = bls_flipbook_log();
         if (os_log_type_enabled(v138, OS_LOG_TYPE_DEBUG))
         {
-          v145 = [v61 bls_shortLoggingString];
-          v146 = [v62 bls_shortLoggingString];
+          bls_shortLoggingString19 = [distantPast bls_shortLoggingString];
+          bls_shortLoggingString20 = [v62 bls_shortLoggingString];
           [v144 bls_shortLoggingString];
-          v149 = v148 = v85;
+          v149 = v148 = distantFuture5;
           *buf = 134219522;
-          v301 = self;
+          selfCopy23 = self;
           v302 = 1024;
           *v303 = v264;
           *&v303[4] = 2114;
-          *&v303[6] = v145;
+          *&v303[6] = bls_shortLoggingString19;
           *&v303[14] = 2114;
-          *&v303[16] = v146;
+          *&v303[16] = bls_shortLoggingString20;
           *&v303[24] = 1024;
           *&v303[26] = v245 & 1;
-          v57 = v244;
+          presentationDate = v244;
           *&v303[30] = 2114;
           *&v303[32] = v149;
           *&v303[40] = 2048;
-          *&v303[42] = a6;
+          *&v303[42] = duration;
           _os_log_debug_impl(&dword_21FD11000, v138, OS_LOG_TYPE_DEBUG, "%p updates(%d) (skipping) previous=start valid:(%{public}@->%{public}@) (initial:%{BOOL}u) startingAtDate:%{public}@ gapDuration:%1.3lg", buf, 0x40u);
 
-          v85 = v148;
+          distantFuture5 = v148;
 LABEL_140:
 
           v62 = v270;
@@ -1147,13 +1147,13 @@ LABEL_140:
         goto LABEL_141;
       }
 
-      v152 = v85;
-      v153 = v259;
+      v152 = distantFuture5;
+      v153 = distantPast2;
 
-      v154 = v238;
+      array2 = v238;
       if (!v238)
       {
-        v154 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
       }
 
       v155 = NSAllMapTableValues(table);
@@ -1165,46 +1165,46 @@ LABEL_140:
       v156 = [v155 sortedArrayUsingComparator:v280];
 
       v157 = [BLSHPresentationDateSpecifier specifierWithPresentationDate:v153 specifiers:v156];
-      v238 = v154;
-      [v154 addObject:v157];
+      v238 = array2;
+      [array2 addObject:v157];
       ++v264;
       v158 = [v237 earlierDate:v153];
 
       v159 = bls_flipbook_log();
       if (os_log_type_enabled(v159, OS_LOG_TYPE_DEBUG))
       {
-        v170 = [v61 bls_shortLoggingString];
-        v171 = [v270 bls_shortLoggingString];
-        v172 = [v243 bls_shortLoggingString];
+        bls_shortLoggingString29 = [distantPast bls_shortLoggingString];
+        bls_shortLoggingString30 = [v270 bls_shortLoggingString];
+        bls_shortLoggingString31 = [v243 bls_shortLoggingString];
         *buf = 134219778;
-        v301 = self;
+        selfCopy23 = self;
         v302 = 1024;
         *v303 = v264;
         *&v303[4] = 2114;
         *&v303[6] = v157;
         *&v303[14] = 2114;
-        *&v303[16] = v170;
+        *&v303[16] = bls_shortLoggingString29;
         *&v303[24] = 2114;
-        *&v303[26] = v171;
+        *&v303[26] = bls_shortLoggingString30;
         *&v303[34] = 1024;
         *&v303[36] = v245 & 1;
         *&v303[40] = 2114;
-        *&v303[42] = v172;
+        *&v303[42] = bls_shortLoggingString31;
         *&v303[50] = 2048;
-        *&v303[52] = a6;
+        *&v303[52] = duration;
         _os_log_debug_impl(&dword_21FD11000, v159, OS_LOG_TYPE_DEBUG, "%p updates(%d) (add) update:%{public}@ valid:(%{public}@->%{public}@) (initial:%{BOOL}u) startingAtDate:%{public}@ gapDuration:%1.3lg", buf, 0x4Au);
 
         v58 = v243;
-        v57 = v244;
+        presentationDate = v244;
       }
 
       v135 = 0;
       v138 = v281;
-      v259 = v153;
+      distantPast2 = v153;
       v242 = v153;
       v237 = v158;
       v62 = v270;
-      v85 = v152;
+      distantFuture5 = v152;
 LABEL_150:
 
       goto LABEL_151;
@@ -1213,52 +1213,52 @@ LABEL_150:
     v147 = bls_flipbook_log();
     if (os_log_type_enabled(v147, OS_LOG_TYPE_DEBUG))
     {
-      v160 = [v242 bls_shortLoggingString];
-      v161 = [v85 bls_shortLoggingString];
-      [v259 bls_shortLoggingString];
-      v163 = v162 = v85;
-      v164 = [v61 bls_shortLoggingString];
-      v165 = [v62 bls_shortLoggingString];
-      v166 = [v243 bls_shortLoggingString];
+      bls_shortLoggingString32 = [v242 bls_shortLoggingString];
+      bls_shortLoggingString33 = [distantFuture5 bls_shortLoggingString];
+      [distantPast2 bls_shortLoggingString];
+      v163 = v162 = distantFuture5;
+      bls_shortLoggingString34 = [distantPast bls_shortLoggingString];
+      bls_shortLoggingString35 = [v62 bls_shortLoggingString];
+      bls_shortLoggingString36 = [v243 bls_shortLoggingString];
       *buf = 134220546;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 1024;
-      *&v303[6] = a8;
+      *&v303[6] = updates;
       *&v303[10] = 2114;
-      *&v303[12] = v160;
+      *&v303[12] = bls_shortLoggingString32;
       *&v303[20] = 2112;
-      *&v303[22] = v161;
+      *&v303[22] = bls_shortLoggingString33;
       *&v303[30] = 2112;
       *&v303[32] = v163;
       *&v303[40] = 2114;
-      *&v303[42] = v164;
+      *&v303[42] = bls_shortLoggingString34;
       *&v303[50] = 2114;
-      *&v303[52] = v165;
+      *&v303[52] = bls_shortLoggingString35;
       *&v303[60] = 1024;
       *&v303[62] = v245 & 1;
       *&v303[66] = 2114;
-      *&v303[68] = v166;
+      *&v303[68] = bls_shortLoggingString36;
       *&v303[76] = 2048;
-      *&v303[78] = a6;
+      *&v303[78] = duration;
       _os_log_debug_impl(&dword_21FD11000, v147, OS_LOG_TYPE_DEBUG, "%p updates(%d) (%d limit reached - stopping) previous:%{public}@ earliest:%@ latest:%@ valid:(%{public}@->%{public}@) (initial:%{BOOL}u) startingAtDate:%{public}@ gapDuration:%1.3lg", buf, 0x64u);
 
       v58 = v243;
       v62 = v270;
 
-      v57 = v244;
-      v85 = v162;
+      presentationDate = v244;
+      distantFuture5 = v162;
     }
 
-    v85 = v85;
+    distantFuture5 = distantFuture5;
     if (v268)
     {
       [BLSHDateSpecifierModel updatesAfterSpecifier:a2 coalesceFirstUpdateToNowDate:? plusRenderEarlyEpsilon:? untilGapOverDuration:? coaelscingEpsilon:? maximumUpdates:? lastValidDate:? forPresentation:? environmentFilter:?];
     }
 
     v135 = 1;
-    v240 = v85;
+    v240 = distantFuture5;
 LABEL_151:
 
     v59 = v251;
@@ -1268,21 +1268,21 @@ LABEL_151:
   v180 = v240;
   if (!v240)
   {
-    if (v247)
+    if (validDateCopy)
     {
-      v181 = v247;
+      distantFuture7 = validDateCopy;
     }
 
     else
     {
-      v181 = [MEMORY[0x277CBEAA8] distantFuture];
+      distantFuture7 = [MEMORY[0x277CBEAA8] distantFuture];
     }
 
     v278 = 0u;
     v279 = 0u;
     v276 = 0u;
     v277 = 0u;
-    v182 = v252;
+    v182 = array;
     v183 = [v182 countByEnumeratingWithState:&v276 objects:v308 count:16];
     if (v183)
     {
@@ -1292,7 +1292,7 @@ LABEL_151:
       do
       {
         v186 = 0;
-        v187 = v181;
+        v187 = distantFuture7;
         do
         {
           if (*v277 != v185)
@@ -1301,17 +1301,17 @@ LABEL_151:
           }
 
           v188 = *(*(&v276 + 1) + 8 * v186);
-          v189 = [v188 specifier];
-          v190 = [v189 date];
-          v191 = [v188 sourceModel];
-          v192 = [v191 dateInterval];
-          v193 = [v192 endDate];
-          v194 = [v190 earlierDate:v193];
+          specifier3 = [v188 specifier];
+          date8 = [specifier3 date];
+          sourceModel = [v188 sourceModel];
+          dateInterval3 = [sourceModel dateInterval];
+          endDate2 = [dateInterval3 endDate];
+          v194 = [date8 earlierDate:endDate2];
 
-          v181 = [v187 earlierDate:v194];
+          distantFuture7 = [v187 earlierDate:v194];
 
           ++v186;
-          v187 = v181;
+          v187 = distantFuture7;
         }
 
         while (v184 != v186);
@@ -1327,48 +1327,48 @@ LABEL_151:
     if (os_log_type_enabled(v195, OS_LOG_TYPE_DEBUG))
     {
       v228 = [v182 count];
-      v229 = [v181 bls_shortLoggingString];
-      v230 = [v243 bls_shortLoggingString];
+      bls_shortLoggingString37 = [distantFuture7 bls_shortLoggingString];
+      bls_shortLoggingString38 = [v243 bls_shortLoggingString];
       *buf = 134219010;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 1024;
       *&v303[6] = v228;
       *&v303[10] = 2114;
-      *&v303[12] = v229;
+      *&v303[12] = bls_shortLoggingString37;
       *&v303[20] = 2114;
-      *&v303[22] = v230;
+      *&v303[22] = bls_shortLoggingString38;
       _os_log_debug_impl(&dword_21FD11000, v195, OS_LOG_TYPE_DEBUG, "%p updates(%d) (no nextStart) - will use earliest of %u environment model end next:%{public}@ startingAtDate:%{public}@", buf, 0x2Cu);
     }
 
-    v180 = v181;
-    v57 = v244;
+    v180 = distantFuture7;
+    presentationDate = v244;
   }
 
   v196 = v180;
   [v180 timeIntervalSinceDate:v58];
-  if (v197 < a7)
+  if (v197 < coaelscingEpsilon)
   {
     v198 = bls_flipbook_log();
     if (os_log_type_enabled(v198, OS_LOG_TYPE_ERROR))
     {
-      v226 = [v196 bls_shortLoggingString];
-      v227 = [v58 bls_shortLoggingString];
+      bls_shortLoggingString39 = [v196 bls_shortLoggingString];
+      bls_shortLoggingString40 = [v58 bls_shortLoggingString];
       *buf = 134219010;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 2048;
-      *&v303[6] = a7;
+      *&v303[6] = coaelscingEpsilon;
       *&v303[14] = 2114;
-      *&v303[16] = v226;
+      *&v303[16] = bls_shortLoggingString39;
       *&v303[24] = 2114;
-      *&v303[26] = v227;
+      *&v303[26] = bls_shortLoggingString40;
       _os_log_error_impl(&dword_21FD11000, v198, OS_LOG_TYPE_ERROR, "%p updates(%d) startDate->lastValidDate interval too small (<%.lfs) startDate:%{public}@ lastValidDate:%{public}@", buf, 0x30u);
     }
 
-    v199 = [v58 dateByAddingTimeInterval:a7];
+    v199 = [v58 dateByAddingTimeInterval:coaelscingEpsilon];
 
     v196 = v199;
   }
@@ -1381,49 +1381,49 @@ LABEL_151:
     if (os_log_type_enabled(v203, OS_LOG_TYPE_INFO))
     {
       objc = v200;
-      v212 = [v235 bls_shortLoggingString];
-      v213 = [v247 bls_shortLoggingString];
-      v214 = [v243 bls_shortLoggingString];
+      bls_shortLoggingString41 = [v235 bls_shortLoggingString];
+      bls_shortLoggingString42 = [validDateCopy bls_shortLoggingString];
+      bls_shortLoggingString43 = [v243 bls_shortLoggingString];
       v215 = v236;
       if (v236)
       {
-        v216 = @"<skip>";
-        v217 = v253;
+        bls_shortLoggingString44 = @"<skip>";
+        v217 = presentationCopy;
       }
 
       else
       {
-        v217 = v253;
-        v216 = [v253 bls_shortLoggingString];
+        v217 = presentationCopy;
+        bls_shortLoggingString44 = [presentationCopy bls_shortLoggingString];
         v215 = 0;
       }
 
       *buf = 134221058;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 2114;
       *&v303[6] = v215;
       *&v303[14] = 2114;
-      *&v303[16] = v212;
+      *&v303[16] = bls_shortLoggingString41;
       *&v303[24] = 2048;
-      *&v303[26] = a6;
+      *&v303[26] = duration;
       *&v303[34] = 2048;
-      *&v303[36] = a7;
+      *&v303[36] = coaelscingEpsilon;
       *&v303[44] = 2048;
-      *&v303[46] = a8;
+      *&v303[46] = updates;
       *&v303[54] = 2114;
-      *&v303[56] = v213;
+      *&v303[56] = bls_shortLoggingString42;
       *&v303[64] = 2048;
       *&v303[66] = v217;
       *&v303[74] = 1024;
-      *&v303[76] = v246 != 0;
+      *&v303[76] = filterCopy != 0;
       *&v303[80] = 2114;
       *&v303[82] = objc;
       v304 = 2114;
-      v305 = v214;
+      v305 = bls_shortLoggingString43;
       v306 = 2114;
-      v307 = v216;
+      v307 = bls_shortLoggingString44;
       v222 = v215;
       _os_log_impl(&dword_21FD11000, v203, OS_LOG_TYPE_INFO, "%p updates(%d) (complete) after:%{public}@ coalesceTo:%{public}@ gapDuration:%1.3lg epsilon:%.3lf max:%ld upTo:%{public}@ pres:%p filtered:%{BOOL}u result:%{public}@ startingAtDate:%{public}@ pres:%{public}@", buf, 0x7Cu);
       if (!v222)
@@ -1432,11 +1432,11 @@ LABEL_151:
 
       v211 = v235;
       v209 = v236;
-      v207 = v246;
-      v205 = v247;
-      v210 = v253;
+      v207 = filterCopy;
+      v205 = validDateCopy;
+      v210 = presentationCopy;
       v58 = v243;
-      v57 = v244;
+      presentationDate = v244;
       v200 = objc;
     }
 
@@ -1444,9 +1444,9 @@ LABEL_151:
     {
       v211 = v235;
       v209 = v236;
-      v207 = v246;
-      v205 = v247;
-      v210 = v253;
+      v207 = filterCopy;
+      v205 = validDateCopy;
+      v210 = presentationCopy;
       v58 = v243;
     }
   }
@@ -1456,39 +1456,39 @@ LABEL_151:
     v203 = bls_flipbook_log();
     if (os_log_type_enabled(v203, OS_LOG_TYPE_INFO))
     {
-      v204 = [v235 bls_shortLoggingString];
-      v205 = v247;
-      [v247 bls_shortLoggingString];
+      bls_shortLoggingString45 = [v235 bls_shortLoggingString];
+      v205 = validDateCopy;
+      [validDateCopy bls_shortLoggingString];
       v206 = objd = v200;
-      v207 = v246;
-      v208 = [v58 bls_shortLoggingString];
+      v207 = filterCopy;
+      bls_shortLoggingString46 = [v58 bls_shortLoggingString];
       *buf = 134220802;
-      v301 = self;
+      selfCopy23 = self;
       v302 = 1024;
       *v303 = v264;
       *&v303[4] = 2048;
       v209 = v236;
       *&v303[6] = v236;
       *&v303[14] = 2114;
-      *&v303[16] = v204;
+      *&v303[16] = bls_shortLoggingString45;
       *&v303[24] = 2048;
-      *&v303[26] = a6;
+      *&v303[26] = duration;
       *&v303[34] = 2048;
-      *&v303[36] = a7;
+      *&v303[36] = coaelscingEpsilon;
       *&v303[44] = 2048;
-      *&v303[46] = a8;
+      *&v303[46] = updates;
       *&v303[54] = 2114;
       *&v303[56] = v206;
       *&v303[64] = 2048;
-      v210 = v253;
-      *&v303[66] = v253;
+      v210 = presentationCopy;
+      *&v303[66] = presentationCopy;
       *&v303[74] = 1024;
-      *&v303[76] = v246 != 0;
-      v57 = v244;
+      *&v303[76] = filterCopy != 0;
+      presentationDate = v244;
       *&v303[80] = 2114;
       *&v303[82] = objd;
       v304 = 2114;
-      v305 = v208;
+      v305 = bls_shortLoggingString46;
       _os_log_impl(&dword_21FD11000, v203, OS_LOG_TYPE_INFO, "%p updates(%d) (complete) after:%p coalesceTo:%{public}@ gapDuration:%1.3lg epsilon:%.3lf max:%ld upTo:%{public}@ pres:%p filtered:%{BOOL}u result:%{public}@ startingAtDate:%{public}@", buf, 0x72u);
 
       v200 = objd;
@@ -1499,9 +1499,9 @@ LABEL_151:
     {
       v211 = v235;
       v209 = v236;
-      v207 = v246;
-      v205 = v247;
-      v210 = v253;
+      v207 = filterCopy;
+      v205 = validDateCopy;
+      v210 = presentationCopy;
     }
   }
 
@@ -1555,17 +1555,17 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
   return v11;
 }
 
-- (void)purgeSpecifiersBefore:(id)a3
+- (void)purgeSpecifiersBefore:(id)before
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  beforeCopy = before;
   os_unfair_lock_lock(&self->_lock);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(NSMapTable *)self->_environmentModels objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  objectEnumerator = [(NSMapTable *)self->_environmentModels objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1577,18 +1577,18 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 dateInterval];
-        v13 = [v12 endDate];
-        [v4 timeIntervalSinceDate:v13];
+        dateInterval = [v11 dateInterval];
+        endDate = [dateInterval endDate];
+        [beforeCopy timeIntervalSinceDate:endDate];
         v15 = v14;
 
         if (v15 <= 600.0)
         {
-          [v11 purgeSpecifiersBefore:v4];
+          [v11 purgeSpecifiersBefore:beforeCopy];
         }
 
         else
@@ -1598,12 +1598,12 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
             v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMapTable count](self->_environmentModels, "count")}];
           }
 
-          v16 = [v11 environment];
-          [v8 addObject:v16];
+          environment = [v11 environment];
+          [v8 addObject:environment];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v7);
@@ -1646,20 +1646,20 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1672,31 +1672,31 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
   return v3;
 }
 
-- (BLSHEnvironmentDatesModel)environmentModelForKey:(uint64_t)a1
+- (BLSHEnvironmentDatesModel)environmentModelForKey:(uint64_t)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v4 = [*(a1 + 16) objectForKey:v3];
+    os_unfair_lock_lock((key + 32));
+    v4 = [*(key + 16) objectForKey:v3];
     if (v4)
     {
       v5 = v4;
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_unlock((key + 32));
     }
 
     else
     {
       v5 = [[BLSHEnvironmentDatesModel alloc] initWithEnvironment:v3];
-      [*(a1 + 16) setObject:v5 forKey:v3];
-      os_unfair_lock_unlock((a1 + 32));
+      [*(key + 16) setObject:v5 forKey:v3];
+      os_unfair_lock_unlock((key + 32));
       OUTLINED_FUNCTION_12();
       v7[1] = 3221225472;
       v7[2] = __49__BLSHDateSpecifierModel_environmentModelForKey___block_invoke;
       v7[3] = &unk_27841F068;
-      v7[4] = a1;
+      v7[4] = key;
       v8 = v3;
-      [(BLSHDateSpecifierModel *)a1 notifyObserversWithBlock:v7];
+      [(BLSHDateSpecifierModel *)key notifyObserversWithBlock:v7];
     }
   }
 
@@ -1708,79 +1708,79 @@ uint64_t __202__BLSHDateSpecifierModel_updatesAfterSpecifier_coalesceFirstUpdate
   return v5;
 }
 
-- (void)removeEnvironmentModelForKey:(void *)a3 reason:
+- (void)removeEnvironmentModelForKey:(void *)key reason:
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v7 = [*(a1 + 16) objectForKey:v5];
+    os_unfair_lock_lock((self + 32));
+    v7 = [*(self + 16) objectForKey:v5];
     if (v7)
     {
       v9 = bls_flipbook_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v5 identifier];
+        identifier = [v5 identifier];
         v11 = [v7 count];
-        v12 = [v7 dateInterval];
-        v13 = [v12 bls_shortLoggingString];
+        dateInterval = [v7 dateInterval];
+        bls_shortLoggingString = [dateInterval bls_shortLoggingString];
         *buf = 134219010;
-        v17 = a1;
+        selfCopy = self;
         v18 = 2114;
-        v19 = v10;
+        v19 = identifier;
         v20 = 1024;
         v21 = v11;
         v22 = 2114;
-        v23 = v13;
+        v23 = bls_shortLoggingString;
         v24 = 2114;
-        v25 = v6;
+        v25 = keyCopy;
         _os_log_debug_impl(&dword_21FD11000, v9, OS_LOG_TYPE_DEBUG, "%p:%{public}@ will clear %d specifiers from interval:%{public}@ (%{public}@)", buf, 0x30u);
       }
 
-      [*(a1 + 16) removeObjectForKey:v5];
-      os_unfair_lock_unlock((a1 + 32));
+      [*(self + 16) removeObjectForKey:v5];
+      os_unfair_lock_unlock((self + 32));
       OUTLINED_FUNCTION_12();
       v14[1] = 3221225472;
       v14[2] = __62__BLSHDateSpecifierModel_removeEnvironmentModelForKey_reason___block_invoke;
       v14[3] = &unk_27841F068;
-      v14[4] = a1;
+      v14[4] = self;
       v15 = v5;
-      [(BLSHDateSpecifierModel *)a1 notifyObserversWithBlock:v14];
+      [(BLSHDateSpecifierModel *)self notifyObserversWithBlock:v14];
     }
 
     else
     {
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_unlock((self + 32));
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerSpecifiers:(id)a3 forDateInterval:(id)a4 environment:(id)a5
+- (void)registerSpecifiers:(id)specifiers forDateInterval:(id)interval environment:(id)environment
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(BLSHDateSpecifierModel *)self environmentModelForKey:a5];
-  [v10 registerSpecifiers:v9 forDateInterval:v8];
+  intervalCopy = interval;
+  specifiersCopy = specifiers;
+  v10 = [(BLSHDateSpecifierModel *)self environmentModelForKey:environment];
+  [v10 registerSpecifiers:specifiersCopy forDateInterval:intervalCopy];
 }
 
-- (void)notifyObserversWithBlock:(uint64_t)a1
+- (void)notifyObserversWithBlock:(uint64_t)block
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v4 = [*(a1 + 24) allObjects];
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_lock((block + 32));
+    allObjects = [*(block + 24) allObjects];
+    os_unfair_lock_unlock((block + 32));
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = allObjects;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {

@@ -1,31 +1,31 @@
 @interface WFTemperature
-- (BOOL)_unitIsHydrated:(int)a3 outputValue:(double *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTemperature:(id)a3;
+- (BOOL)_unitIsHydrated:(int)hydrated outputValue:(double *)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTemperature:(id)temperature;
 - (WFTemperature)init;
-- (WFTemperature)initWithCoder:(id)a3;
-- (WFTemperature)initWithTemperatureUnit:(int)a3 value:(double)a4;
+- (WFTemperature)initWithCoder:(id)coder;
+- (WFTemperature)initWithTemperatureUnit:(int)unit value:(double)value;
 - (double)celsius;
 - (double)fahrenheit;
 - (double)kelvin;
-- (double)temperatureForUnit:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)temperatureForUnit:(int)unit;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_setValue:(double)a3 forUnit:(int)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setValue:(double)value forUnit:(int)unit;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFTemperature
 
-- (WFTemperature)initWithTemperatureUnit:(int)a3 value:(double)a4
+- (WFTemperature)initWithTemperatureUnit:(int)unit value:(double)value
 {
-  v5 = *&a3;
+  v5 = *&unit;
   v6 = [(WFTemperature *)self init];
   v7 = v6;
   if (v6)
   {
-    [(WFTemperature *)v6 _setValue:v5 forUnit:a4];
+    [(WFTemperature *)v6 _setValue:v5 forUnit:value];
   }
 
   return v7;
@@ -45,18 +45,18 @@
   return v3;
 }
 
-- (WFTemperature)initWithCoder:(id)a3
+- (WFTemperature)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFTemperature;
   v5 = [(WFTemperature *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(WFTemperature *)v5 setKelvin:__31__WFTemperature_initWithCoder___block_invoke(v5, @"WFTemperatureKelvinKey", v4)];
-    v8 = [(WFTemperature *)v6 setFahrenheit:__31__WFTemperature_initWithCoder___block_invoke(v7, @"WFTemperatureFahrenheitKey", v4)];
-    [(WFTemperature *)v6 setCelsius:__31__WFTemperature_initWithCoder___block_invoke(v8, @"WFTemperatureCelsiusKey", v4)];
+    v7 = [(WFTemperature *)v5 setKelvin:__31__WFTemperature_initWithCoder___block_invoke(v5, @"WFTemperatureKelvinKey", coderCopy)];
+    v8 = [(WFTemperature *)v6 setFahrenheit:__31__WFTemperature_initWithCoder___block_invoke(v7, @"WFTemperatureFahrenheitKey", coderCopy)];
+    [(WFTemperature *)v6 setCelsius:__31__WFTemperature_initWithCoder___block_invoke(v8, @"WFTemperatureCelsiusKey", coderCopy)];
   }
 
   return v6;
@@ -80,15 +80,15 @@ double __31__WFTemperature_initWithCoder___block_invoke(uint64_t a1, void *a2, v
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeDouble:@"WFTemperatureKelvinKey" forKey:self->_temperatureValues.kelvinVal];
-  [v4 encodeDouble:@"WFTemperatureFahrenheitKey" forKey:self->_temperatureValues.fahrenheitVal];
-  [v4 encodeDouble:@"WFTemperatureCelsiusKey" forKey:self->_temperatureValues.celsiusVal];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"WFTemperatureKelvinKey" forKey:self->_temperatureValues.kelvinVal];
+  [coderCopy encodeDouble:@"WFTemperatureFahrenheitKey" forKey:self->_temperatureValues.fahrenheitVal];
+  [coderCopy encodeDouble:@"WFTemperatureCelsiusKey" forKey:self->_temperatureValues.celsiusVal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -101,10 +101,10 @@ double __31__WFTemperature_initWithCoder___block_invoke(uint64_t a1, void *a2, v
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -112,7 +112,7 @@ double __31__WFTemperature_initWithCoder___block_invoke(uint64_t a1, void *a2, v
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFTemperature *)self isEqualToTemperature:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFTemperature *)self isEqualToTemperature:equalCopy];
   }
 
   return v5;
@@ -128,9 +128,9 @@ double __31__WFTemperature_initWithCoder___block_invoke(uint64_t a1, void *a2, v
   return v4;
 }
 
-- (BOOL)isEqualToTemperature:(id)a3
+- (BOOL)isEqualToTemperature:(id)temperature
 {
-  [a3 temperatureForUnit:2];
+  [temperature temperatureForUnit:2];
   v5 = v4;
   [(WFTemperature *)self temperatureForUnit:2];
   return vabdd_f64(v6, v5) < 2.22044605e-16;
@@ -172,14 +172,14 @@ double __31__WFTemperature_initWithCoder___block_invoke(uint64_t a1, void *a2, v
   return result;
 }
 
-- (double)temperatureForUnit:(int)a3
+- (double)temperatureForUnit:(int)unit
 {
-  v3 = *&a3;
+  v3 = *&unit;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0x7FF8000000000000;
-  if ([(WFTemperature *)self _unitIsHydrated:*&a3 outputValue:&v16])
+  if ([(WFTemperature *)self _unitIsHydrated:*&unit outputValue:&v16])
   {
     v5 = v14[3];
   }
@@ -251,24 +251,24 @@ uint64_t __36__WFTemperature_temperatureForUnit___block_invoke(uint64_t a1, uint
   return v11;
 }
 
-- (void)_setValue:(double)a3 forUnit:(int)a4
+- (void)_setValue:(double)value forUnit:(int)unit
 {
-  if ((a4 - 1) <= 2)
+  if ((unit - 1) <= 2)
   {
-    *(&self->super.isa + qword_272BE4CE0[a4 - 1]) = a3;
+    *(&self->super.isa + qword_272BE4CE0[unit - 1]) = value;
   }
 }
 
-- (BOOL)_unitIsHydrated:(int)a3 outputValue:(double *)a4
+- (BOOL)_unitIsHydrated:(int)hydrated outputValue:(double *)value
 {
-  if ((a3 - 1) > 2)
+  if ((hydrated - 1) > 2)
   {
     return 0;
   }
 
-  if (a4)
+  if (value)
   {
-    *a4 = *(&self->super.isa + qword_272BE4CE0[a3 - 1]);
+    *value = *(&self->super.isa + qword_272BE4CE0[hydrated - 1]);
   }
 
   return 1;

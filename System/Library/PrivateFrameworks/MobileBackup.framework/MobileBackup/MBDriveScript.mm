@@ -1,17 +1,17 @@
 @interface MBDriveScript
-- (MBDriveScript)initWithProgress:(id)a3;
-- (void)addOperation:(id)a3;
-- (void)addOperations:(id)a3;
+- (MBDriveScript)initWithProgress:(id)progress;
+- (void)addOperation:(id)operation;
+- (void)addOperations:(id)operations;
 - (void)beginPerforming;
 - (void)dealloc;
 - (void)finishedPerforming;
-- (void)insertOperation:(id)a3 atIndex:(unint64_t)a4;
-- (void)performingOperation:(id)a3;
+- (void)insertOperation:(id)operation atIndex:(unint64_t)index;
+- (void)performingOperation:(id)operation;
 @end
 
 @implementation MBDriveScript
 
-- (MBDriveScript)initWithProgress:(id)a3
+- (MBDriveScript)initWithProgress:(id)progress
 {
   v6.receiver = self;
   v6.super_class = MBDriveScript;
@@ -19,7 +19,7 @@
   if (v4)
   {
     v4->_operations = [[NSMutableArray alloc] initWithCapacity:0];
-    v4->_progress = a3;
+    v4->_progress = progress;
     v4->_state = 0;
     v4->_index = 0;
   }
@@ -34,27 +34,27 @@
   [(MBDriveScript *)&v3 dealloc];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   if (self->_state)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"MBDriveScript.m" description:45, @"Invalid state"];
   }
 
-  [(NSMutableArray *)self->_operations addObject:a3];
+  [(NSMutableArray *)self->_operations addObject:operation];
   progress = self->_progress;
-  [a3 duration];
+  [operation duration];
 
   [(MBProgress *)progress addDuration:?];
 }
 
-- (void)addOperations:(id)a3
+- (void)addOperations:(id)operations
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,7 +66,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(operations);
         }
 
         [(MBDriveScript *)self addOperation:*(*(&v9 + 1) + 8 * v8)];
@@ -74,18 +74,18 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [operations countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)insertOperation:(id)a3 atIndex:(unint64_t)a4
+- (void)insertOperation:(id)operation atIndex:(unint64_t)index
 {
-  [(NSMutableArray *)self->_operations insertObject:a3 atIndex:a4];
+  [(NSMutableArray *)self->_operations insertObject:operation atIndex:index];
   progress = self->_progress;
-  [a3 duration];
+  [operation duration];
 
   [(MBProgress *)progress addDuration:?];
 }
@@ -100,7 +100,7 @@
   self->_state = 1;
 }
 
-- (void)performingOperation:(id)a3
+- (void)performingOperation:(id)operation
 {
   state = self->_state;
   if (state)
@@ -111,10 +111,10 @@
     }
 
     v7 = [(NSMutableArray *)self->_operations objectAtIndexedSubscript:self->_index];
-    v8 = [a3 type];
-    if (v8 != [v7 type])
+    type = [operation type];
+    if (type != [v7 type])
     {
-      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"MBDriveScript.m", 75, @"Deviating from script (expecting %@, got %@)", +[MBDriveOperation stringForType:](MBDriveOperation, "stringForType:", [v7 type]), +[MBDriveOperation stringForType:](MBDriveOperation, "stringForType:", objc_msgSend(a3, "type")));
+      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"MBDriveScript.m", 75, @"Deviating from script (expecting %@, got %@)", +[MBDriveOperation stringForType:](MBDriveOperation, "stringForType:", [v7 type]), +[MBDriveOperation stringForType:](MBDriveOperation, "stringForType:", objc_msgSend(operation, "type")));
     }
 
     progress = self->_progress;

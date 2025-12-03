@@ -1,5 +1,5 @@
 @interface FMDAccessoryInfoRequest
-- (FMDAccessoryInfoRequest)initWithAccount:(id)a3 registry:(id)a4 accessoryTypes:(id)a5;
+- (FMDAccessoryInfoRequest)initWithAccount:(id)account registry:(id)registry accessoryTypes:(id)types;
 - (id)requestBody;
 - (id)requestHeaders;
 - (id)requestUrl;
@@ -7,14 +7,14 @@
 
 @implementation FMDAccessoryInfoRequest
 
-- (FMDAccessoryInfoRequest)initWithAccount:(id)a3 registry:(id)a4 accessoryTypes:(id)a5
+- (FMDAccessoryInfoRequest)initWithAccount:(id)account registry:(id)registry accessoryTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  registryCopy = registry;
+  typesCopy = types;
   v17.receiver = self;
   v17.super_class = FMDAccessoryInfoRequest;
-  v11 = [(FMDRequest *)&v17 initWithAccount:v8];
+  v11 = [(FMDRequest *)&v17 initWithAccount:accountCopy];
   if (!v11)
   {
     goto LABEL_4;
@@ -23,12 +23,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v8 extAccessoryConfigURL];
+    extAccessoryConfigURL = [accountCopy extAccessoryConfigURL];
     baseURL = v11->_baseURL;
-    v11->_baseURL = v12;
+    v11->_baseURL = extAccessoryConfigURL;
 
-    objc_storeStrong(&v11->_registry, a4);
-    objc_storeStrong(&v11->_accessoryTypes, a5);
+    objc_storeStrong(&v11->_registry, registry);
+    objc_storeStrong(&v11->_accessoryTypes, types);
 LABEL_4:
     v14 = v11;
     goto LABEL_8;
@@ -37,7 +37,7 @@ LABEL_4:
   v15 = sub_10000BE38();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_1002265FC(v8, v15);
+    sub_1002265FC(accountCopy, v15);
   }
 
   v14 = 0;
@@ -48,8 +48,8 @@ LABEL_8:
 
 - (id)requestUrl
 {
-  v2 = [(FMDAccessoryInfoRequest *)self baseURL];
-  v3 = [NSString stringWithFormat:@"%@/accessoryInfo", v2];
+  baseURL = [(FMDAccessoryInfoRequest *)self baseURL];
+  v3 = [NSString stringWithFormat:@"%@/accessoryInfo", baseURL];
 
   v4 = [NSURL URLWithString:v3];
   v5 = sub_10000BE38();
@@ -67,22 +67,22 @@ LABEL_8:
 {
   v6.receiver = self;
   v6.super_class = FMDAccessoryInfoRequest;
-  v2 = [(FMDRequest *)&v6 requestHeaders];
+  requestHeaders = [(FMDRequest *)&v6 requestHeaders];
   v3 = +[FMDServerConfig sharedInstance];
-  v4 = [v3 mmeClientInfo];
-  [v2 fm_safelyMapKey:@"X-MMe-Client-Info" toObject:v4];
+  mmeClientInfo = [v3 mmeClientInfo];
+  [requestHeaders fm_safelyMapKey:@"X-MMe-Client-Info" toObject:mmeClientInfo];
 
-  return v2;
+  return requestHeaders;
 }
 
 - (id)requestBody
 {
   v25.receiver = self;
   v25.super_class = FMDAccessoryInfoRequest;
-  v19 = [(FMDRequest *)&v25 requestBody];
+  requestBody = [(FMDRequest *)&v25 requestBody];
   v3 = [NSMutableArray alloc];
-  v4 = [(FMDAccessoryInfoRequest *)self accessoryTypes];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  accessoryTypes = [(FMDAccessoryInfoRequest *)self accessoryTypes];
+  v5 = [v3 initWithCapacity:{objc_msgSend(accessoryTypes, "count")}];
 
   v23 = 0u;
   v24 = 0u;
@@ -104,14 +104,14 @@ LABEL_8:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [(FMDAccessoryInfoRequest *)self registry];
-        v12 = [v11 configForAccessoryType:v10];
-        v13 = [v12 version];
-        v14 = v13;
+        registry = [(FMDAccessoryInfoRequest *)self registry];
+        v12 = [registry configForAccessoryType:v10];
+        version = [v12 version];
+        v14 = version;
         v15 = &stru_1002DCE08;
-        if (v13)
+        if (version)
         {
-          v15 = v13;
+          v15 = version;
         }
 
         v16 = v15;
@@ -129,9 +129,9 @@ LABEL_8:
     while (v7);
   }
 
-  [v19 fm_safeSetObject:v5 forKey:@"accessoryTypes"];
+  [requestBody fm_safeSetObject:v5 forKey:@"accessoryTypes"];
 
-  return v19;
+  return requestBody;
 }
 
 @end

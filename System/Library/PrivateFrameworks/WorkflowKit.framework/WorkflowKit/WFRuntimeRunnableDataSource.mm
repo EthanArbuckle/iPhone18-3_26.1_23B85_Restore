@@ -1,18 +1,18 @@
 @interface WFRuntimeRunnableDataSource
 + (id)sharedDataSource;
 - (WFRuntimeRunnableDataSource)init;
-- (void)loadEntriesFor:(Class)a3 parameterKey:(id)a4 limit:(int64_t)a5 collectionIdentifier:(id)a6 completionHandler:(id)a7;
+- (void)loadEntriesFor:(Class)for parameterKey:(id)key limit:(int64_t)limit collectionIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation WFRuntimeRunnableDataSource
 
-- (void)loadEntriesFor:(Class)a3 parameterKey:(id)a4 limit:(int64_t)a5 collectionIdentifier:(id)a6 completionHandler:(id)a7
+- (void)loadEntriesFor:(Class)for parameterKey:(id)key limit:(int64_t)limit collectionIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [(WFRuntimeRunnableDataSource *)self impl];
-  [v15 loadEntriesFor:a3 parameterKey:v14 collectionIdentifier:v13 limit:a5 completionHandler:v12];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  keyCopy = key;
+  impl = [(WFRuntimeRunnableDataSource *)self impl];
+  [impl loadEntriesFor:for parameterKey:keyCopy collectionIdentifier:identifierCopy limit:limit completionHandler:handlerCopy];
 }
 
 - (WFRuntimeRunnableDataSource)init

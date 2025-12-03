@@ -1,15 +1,15 @@
 @interface _INPBGenericIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBGenericIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGenericIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDomain:(id)a3;
-- (void)setParameters:(id)a3;
-- (void)setVerb:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDomain:(id)domain;
+- (void)setParameters:(id)parameters;
+- (void)setVerb:(id)verb;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGenericIntent
@@ -17,21 +17,21 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_domain)
   {
-    v4 = [(_INPBGenericIntent *)self domain];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"domain"];
+    domain = [(_INPBGenericIntent *)self domain];
+    v5 = [domain copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"domain"];
   }
 
-  v6 = [(_INPBGenericIntent *)self metadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"metadata"];
+  metadata = [(_INPBGenericIntent *)self metadata];
+  dictionaryRepresentation = [metadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"metadata"];
 
   if ([(NSArray *)self->_parameters count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -51,8 +51,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -61,19 +61,19 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"parameters"];
+    [dictionary setObject:array forKeyedSubscript:@"parameters"];
   }
 
   if (self->_verb)
   {
-    v15 = [(_INPBGenericIntent *)self verb];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"verb"];
+    verb = [(_INPBGenericIntent *)self verb];
+    v16 = [verb copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"verb"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -84,28 +84,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_verb hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBGenericIntent *)self domain];
-  v6 = [v4 domain];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(_INPBGenericIntent *)self domain];
+  domain2 = [equalCopy domain];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBGenericIntent *)self domain];
-  if (v7)
+  domain3 = [(_INPBGenericIntent *)self domain];
+  if (domain3)
   {
-    v8 = v7;
-    v9 = [(_INPBGenericIntent *)self domain];
-    v10 = [v4 domain];
-    v11 = [v9 isEqual:v10];
+    v8 = domain3;
+    domain4 = [(_INPBGenericIntent *)self domain];
+    domain5 = [equalCopy domain];
+    v11 = [domain4 isEqual:domain5];
 
     if (!v11)
     {
@@ -117,20 +117,20 @@
   {
   }
 
-  v5 = [(_INPBGenericIntent *)self metadata];
-  v6 = [v4 metadata];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(_INPBGenericIntent *)self metadata];
+  domain2 = [equalCopy metadata];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBGenericIntent *)self metadata];
-  if (v12)
+  metadata = [(_INPBGenericIntent *)self metadata];
+  if (metadata)
   {
-    v13 = v12;
-    v14 = [(_INPBGenericIntent *)self metadata];
-    v15 = [v4 metadata];
-    v16 = [v14 isEqual:v15];
+    v13 = metadata;
+    metadata2 = [(_INPBGenericIntent *)self metadata];
+    metadata3 = [equalCopy metadata];
+    v16 = [metadata2 isEqual:metadata3];
 
     if (!v16)
     {
@@ -142,20 +142,20 @@
   {
   }
 
-  v5 = [(_INPBGenericIntent *)self parameters];
-  v6 = [v4 parameters];
-  if ((v5 != 0) == (v6 == 0))
+  domain = [(_INPBGenericIntent *)self parameters];
+  domain2 = [equalCopy parameters];
+  if ((domain != 0) == (domain2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBGenericIntent *)self parameters];
-  if (v17)
+  parameters = [(_INPBGenericIntent *)self parameters];
+  if (parameters)
   {
-    v18 = v17;
-    v19 = [(_INPBGenericIntent *)self parameters];
-    v20 = [v4 parameters];
-    v21 = [v19 isEqual:v20];
+    v18 = parameters;
+    parameters2 = [(_INPBGenericIntent *)self parameters];
+    parameters3 = [equalCopy parameters];
+    v21 = [parameters2 isEqual:parameters3];
 
     if (!v21)
     {
@@ -167,12 +167,12 @@
   {
   }
 
-  v5 = [(_INPBGenericIntent *)self verb];
-  v6 = [v4 verb];
-  if ((v5 != 0) != (v6 == 0))
+  domain = [(_INPBGenericIntent *)self verb];
+  domain2 = [equalCopy verb];
+  if ((domain != 0) != (domain2 == 0))
   {
-    v22 = [(_INPBGenericIntent *)self verb];
-    if (!v22)
+    verb = [(_INPBGenericIntent *)self verb];
+    if (!verb)
     {
 
 LABEL_25:
@@ -180,10 +180,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBGenericIntent *)self verb];
-    v25 = [v4 verb];
-    v26 = [v24 isEqual:v25];
+    v23 = verb;
+    verb2 = [(_INPBGenericIntent *)self verb];
+    verb3 = [equalCopy verb];
+    v26 = [verb2 isEqual:verb3];
 
     if (v26)
     {
@@ -203,65 +203,65 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGenericIntent allocWithZone:](_INPBGenericIntent init];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   [(_INPBGenericIntent *)v5 setDomain:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_metadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_metadata copyWithZone:zone];
   [(_INPBGenericIntent *)v5 setMetadata:v7];
 
-  v8 = [(NSArray *)self->_parameters copyWithZone:a3];
+  v8 = [(NSArray *)self->_parameters copyWithZone:zone];
   [(_INPBGenericIntent *)v5 setParameters:v8];
 
-  v9 = [(NSString *)self->_verb copyWithZone:a3];
+  v9 = [(NSString *)self->_verb copyWithZone:zone];
   [(_INPBGenericIntent *)v5 setVerb:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGenericIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBGenericIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGenericIntent)initWithCoder:(id)a3
+- (_INPBGenericIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGenericIntent *)self initWithData:v6];
+    self = [(_INPBGenericIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBGenericIntent *)self domain];
+  toCopy = to;
+  domain = [(_INPBGenericIntent *)self domain];
 
-  if (v5)
+  if (domain)
   {
     domain = self->_domain;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBGenericIntent *)self metadata];
+  metadata = [(_INPBGenericIntent *)self metadata];
 
-  if (v7)
+  if (metadata)
   {
-    v8 = [(_INPBGenericIntent *)self metadata];
+    metadata2 = [(_INPBGenericIntent *)self metadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,9 +297,9 @@ LABEL_23:
     while (v11);
   }
 
-  v15 = [(_INPBGenericIntent *)self verb];
+  verb = [(_INPBGenericIntent *)self verb];
 
-  if (v15)
+  if (verb)
   {
     verb = self->_verb;
     PBDataWriterWriteStringField();
@@ -308,45 +308,45 @@ LABEL_23:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVerb:(id)a3
+- (void)setVerb:(id)verb
 {
-  v4 = [a3 copy];
+  v4 = [verb copy];
   verb = self->_verb;
   self->_verb = v4;
 
   MEMORY[0x1EEE66BB8](v4, verb);
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameters;
-    self->_parameters = v6;
+    self->_parameters = array;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [parameters mutableCopy];
   parameters = self->_parameters;
   self->_parameters = v4;
 
   MEMORY[0x1EEE66BB8](v4, parameters);
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
-  v4 = [a3 copy];
+  v4 = [domain copy];
   domain = self->_domain;
   self->_domain = v4;
 

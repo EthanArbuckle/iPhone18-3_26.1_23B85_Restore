@@ -1,47 +1,47 @@
 @interface SUCorePurge
-+ (void)_trackPurgeBegin:(id)a3 withIdentifier:(id)a4;
-+ (void)_trackPurgeEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-+ (void)checkForAssetsOfType:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5;
-+ (void)checkForExistingAssetsWithPolicy:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5;
-+ (void)checkForExistingPrepareWithCompletionQueue:(id)a3 completion:(id)a4;
-+ (void)previousUpdateState:(BOOL *)a3 tetheredRestore:(BOOL *)a4 failedBackward:(BOOL *)a5 failedForward:(BOOL *)a6;
-+ (void)removeAllAssetsOfType:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5;
-+ (void)removeAllAssetsOfTypes:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5;
-+ (void)removeAllUpdateContentWithCompletionQueue:(id)a3 completion:(id)a4;
-+ (void)removeAllUpdateContentWithPolicy:(id)a3 completionQueue:(id)a4 completion:(id)a5;
++ (void)_trackPurgeBegin:(id)begin withIdentifier:(id)identifier;
++ (void)_trackPurgeEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error;
++ (void)checkForAssetsOfType:(id)type withCompletionQueue:(id)queue completion:(id)completion;
++ (void)checkForExistingAssetsWithPolicy:(id)policy withCompletionQueue:(id)queue completion:(id)completion;
++ (void)checkForExistingPrepareWithCompletionQueue:(id)queue completion:(id)completion;
++ (void)previousUpdateState:(BOOL *)state tetheredRestore:(BOOL *)restore failedBackward:(BOOL *)backward failedForward:(BOOL *)forward;
++ (void)removeAllAssetsOfType:(id)type withCompletionQueue:(id)queue completion:(id)completion;
++ (void)removeAllAssetsOfTypes:(id)types withCompletionQueue:(id)queue completion:(id)completion;
++ (void)removeAllUpdateContentWithCompletionQueue:(id)queue completion:(id)completion;
++ (void)removeAllUpdateContentWithPolicy:(id)policy completionQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation SUCorePurge
 
-+ (void)previousUpdateState:(BOOL *)a3 tetheredRestore:(BOOL *)a4 failedBackward:(BOOL *)a5 failedForward:(BOOL *)a6
++ (void)previousUpdateState:(BOOL *)state tetheredRestore:(BOOL *)restore failedBackward:(BOOL *)backward failedForward:(BOOL *)forward
 {
   v10 = [MEMORY[0x277D643F8] beginTransactionWithName:@"purge.PreviousUpdateState"];
   v26 = 0;
-  if (a3)
+  if (state)
   {
-    *a3 = 0;
+    *state = 0;
   }
 
-  if (a4)
+  if (restore)
   {
-    *a4 = 0;
+    *restore = 0;
   }
 
-  if (a5)
+  if (backward)
   {
-    *a5 = 0;
+    *backward = 0;
   }
 
-  if (a6)
+  if (forward)
   {
-    *a6 = 0;
+    *forward = 0;
   }
 
   [SUCorePurge _trackPurgeBegin:@"MSURetrievePreviousUpdateState"];
   if (!SUCoreBorder_MSURetrievePreviousUpdateState())
   {
-    v14 = [MEMORY[0x277D643F8] sharedCore];
-    v13 = [v14 buildError:8802 underlying:0 description:@"MSURetrievePreviousUpdateState failed to provide state"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v13 = [mEMORY[0x277D643F8] buildError:8802 underlying:0 description:@"MSURetrievePreviousUpdateState failed to provide state"];
 LABEL_18:
 
     goto LABEL_19;
@@ -51,19 +51,19 @@ LABEL_18:
   {
     if (v26 == 2)
     {
-      v20 = [MEMORY[0x277D64460] sharedLogger];
-      v21 = [v20 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *v23 = 0;
-        _os_log_impl(&dword_23193C000, v21, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateFailedBackward [OTA attempt failed back to previous OS]", v23, 2u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateFailedBackward [OTA attempt failed back to previous OS]", v23, 2u);
       }
 
-      if (a5)
+      if (backward)
       {
         v13 = 0;
-        *a5 = 1;
+        *backward = 1;
         goto LABEL_19;
       }
     }
@@ -75,19 +75,19 @@ LABEL_18:
         goto LABEL_26;
       }
 
-      v15 = [MEMORY[0x277D64460] sharedLogger];
-      v16 = [v15 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         *v22 = 0;
-        _os_log_impl(&dword_23193C000, v16, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateFailedForward [OTA attempt encountered failure but continued to the new OS]", v22, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateFailedForward [OTA attempt encountered failure but continued to the new OS]", v22, 2u);
       }
 
-      if (a6)
+      if (forward)
       {
         v13 = 0;
-        *a6 = 1;
+        *forward = 1;
         goto LABEL_19;
       }
     }
@@ -99,19 +99,19 @@ LABEL_35:
 
   if (!v26)
   {
-    v18 = [MEMORY[0x277D64460] sharedLogger];
-    v19 = [v18 oslog];
+    mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+    oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *v25 = 0;
-      _os_log_impl(&dword_23193C000, v19, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateNone [tethered restore]", v25, 2u);
+      _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateNone [tethered restore]", v25, 2u);
     }
 
-    if (a4)
+    if (restore)
     {
       v13 = 0;
-      *a4 = 1;
+      *restore = 1;
       goto LABEL_19;
     }
 
@@ -121,54 +121,54 @@ LABEL_35:
   if (v26 != 1)
   {
 LABEL_26:
-    v14 = [MEMORY[0x277D643F8] sharedCore];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown previous update state: %d", v26];
-    v13 = [v14 buildError:8116 underlying:0 description:v17];
+    v13 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:v17];
 
     goto LABEL_18;
   }
 
-  v11 = [MEMORY[0x277D64460] sharedLogger];
-  v12 = [v11 oslog];
+  mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+  oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateSuccessful [successful OTA]", buf, 2u);
+    _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "[PURGE] MSU previous update state:kMSUUpdateStateSuccessful [successful OTA]", buf, 2u);
   }
 
-  if (!a3)
+  if (!state)
   {
     goto LABEL_35;
   }
 
   v13 = 0;
-  *a3 = 1;
+  *state = 1;
 LABEL_19:
   +[SUCorePurge _trackPurgeEnd:withResult:withError:](SUCorePurge, "_trackPurgeEnd:withResult:withError:", @"MSURetrievePreviousUpdateState", [v13 code], v13);
   [MEMORY[0x277D643F8] endTransaction:v10 withName:@"purge.PreviousUpdateState"];
 }
 
-+ (void)checkForExistingPrepareWithCompletionQueue:(id)a3 completion:(id)a4
++ (void)checkForExistingPrepareWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v7 = [MEMORY[0x277D643F8] beginTransactionWithName:@"purge.CheckForExistingPrepare"];
-  v8 = [MEMORY[0x277D643F8] sharedCore];
-  v9 = [v8 buildError:8113 underlying:0 description:@"checkForExistingPrepare not yet supported by MSU SPI"];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v9 = [mEMORY[0x277D643F8] buildError:8113 underlying:0 description:@"checkForExistingPrepare not yet supported by MSU SPI"];
 
-  v10 = [MEMORY[0x277D64428] sharedDiag];
-  [v10 trackError:@"[PURGE]" forReason:@"checkForExistingPrepare not yet supported" withResult:8113 withError:v9];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  [mEMORY[0x277D64428] trackError:@"[PURGE]" forReason:@"checkForExistingPrepare not yet supported" withResult:8113 withError:v9];
 
-  if (v6)
+  if (completionCopy)
   {
-    v11 = [MEMORY[0x277D643F8] sharedCore];
-    v12 = [v11 selectCompletionQueue:v5];
+    mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+    v12 = [mEMORY[0x277D643F8]2 selectCompletionQueue:queueCopy];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__SUCorePurge_checkForExistingPrepareWithCompletionQueue_completion___block_invoke;
     block[3] = &unk_27892C830;
-    v16 = v6;
+    v16 = completionCopy;
     v14 = v9;
     v15 = v7;
     dispatch_async(v12, block);
@@ -190,29 +190,29 @@ uint64_t __69__SUCorePurge_checkForExistingPrepareWithCompletionQueue_completion
   return [v3 endTransaction:v4 withName:@"purge.CheckForExistingPrepare"];
 }
 
-+ (void)checkForExistingAssetsWithPolicy:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5
++ (void)checkForExistingAssetsWithPolicy:(id)policy withCompletionQueue:(id)queue completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v9 = MEMORY[0x277D643F8];
-  v10 = a3;
+  policyCopy = policy;
   v11 = [v9 beginTransactionWithName:@"purge.CheckForExistingAssets"];
-  v12 = [v10 copy];
+  v12 = [policyCopy copy];
 
-  v13 = [v12 softwareUpdateAssetType];
+  softwareUpdateAssetType = [v12 softwareUpdateAssetType];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__SUCorePurge_checkForExistingAssetsWithPolicy_withCompletionQueue_completion___block_invoke;
   v18[3] = &unk_27892DE98;
   v19 = v12;
-  v20 = v7;
+  v20 = queueCopy;
   v21 = v11;
-  v22 = v8;
+  v22 = completionCopy;
   v14 = v11;
-  v15 = v7;
-  v16 = v8;
+  v15 = queueCopy;
+  v16 = completionCopy;
   v17 = v12;
-  [SUCorePurge checkForAssetsOfType:v13 withCompletionQueue:0 completion:v18];
+  [SUCorePurge checkForAssetsOfType:softwareUpdateAssetType withCompletionQueue:0 completion:v18];
 }
 
 void __79__SUCorePurge_checkForExistingAssetsWithPolicy_withCompletionQueue_completion___block_invoke(id *a1, void *a2, void *a3)
@@ -280,24 +280,24 @@ uint64_t __79__SUCorePurge_checkForExistingAssetsWithPolicy_withCompletionQueue_
   return [v5 endTransaction:v6 withName:@"purge.CheckForExistingAssets"];
 }
 
-+ (void)checkForAssetsOfType:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5
++ (void)checkForAssetsOfType:(id)type withCompletionQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D643F8] sharedCore];
-  v11 = [v10 waitedOperationQueue];
+  typeCopy = type;
+  queueCopy = queue;
+  completionCopy = completion;
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  waitedOperationQueue = [mEMORY[0x277D643F8] waitedOperationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__SUCorePurge_checkForAssetsOfType_withCompletionQueue_completion___block_invoke;
   block[3] = &unk_27892D368;
-  v17 = v8;
-  v18 = v9;
-  v16 = v7;
-  v12 = v8;
-  v13 = v9;
-  v14 = v7;
-  dispatch_async(v11, block);
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v16 = typeCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = typeCopy;
+  dispatch_async(waitedOperationQueue, block);
 }
 
 void __67__SUCorePurge_checkForAssetsOfType_withCompletionQueue_completion___block_invoke(uint64_t a1)
@@ -389,51 +389,51 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeAllUpdateContentWithCompletionQueue:(id)a3 completion:(id)a4
++ (void)removeAllUpdateContentWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D643F8] sharedCore];
-  v8 = [v7 buildError:8123 underlying:0 description:{@"removeAllUpdateContent method has been deprecated, use removeAllUpdateContentWithPolicy instead"}];
+  queueCopy = queue;
+  completionCopy = completion;
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v8 = [mEMORY[0x277D643F8] buildError:8123 underlying:0 description:{@"removeAllUpdateContent method has been deprecated, use removeAllUpdateContentWithPolicy instead"}];
 
-  v9 = [MEMORY[0x277D64428] sharedDiag];
-  [v9 trackError:@"PURGE" forReason:@"removeAllUpdateContent method has been deprecated withResult:use removeAllUpdateContentWithPolicy instead" withError:{8123, v8}];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  [mEMORY[0x277D64428] trackError:@"PURGE" forReason:@"removeAllUpdateContent method has been deprecated withResult:use removeAllUpdateContentWithPolicy instead" withError:{8123, v8}];
 
-  if (v6)
+  if (completionCopy)
   {
-    v10 = [MEMORY[0x277D643F8] sharedCore];
-    v11 = [v10 selectCompletionQueue:v5];
+    mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+    v11 = [mEMORY[0x277D643F8]2 selectCompletionQueue:queueCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__SUCorePurge_removeAllUpdateContentWithCompletionQueue_completion___block_invoke;
     v12[3] = &unk_27892CA88;
-    v14 = v6;
+    v14 = completionCopy;
     v13 = v8;
     dispatch_async(v11, v12);
   }
 }
 
-+ (void)removeAllUpdateContentWithPolicy:(id)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)removeAllUpdateContentWithPolicy:(id)policy completionQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  policyCopy = policy;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = [MEMORY[0x277D643F8] beginTransactionWithName:@"purge.RemoveAllUpdateContentWithPolicy"];
-  v11 = [MEMORY[0x277D643F8] sharedCore];
-  v12 = [v11 waitedOperationQueue];
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  waitedOperationQueue = [mEMORY[0x277D643F8] waitedOperationQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__SUCorePurge_removeAllUpdateContentWithPolicy_completionQueue_completion___block_invoke;
   v17[3] = &unk_27892CA10;
-  v18 = v8;
+  v18 = queueCopy;
   v19 = v10;
-  v20 = v7;
-  v21 = v9;
-  v13 = v7;
+  v20 = policyCopy;
+  v21 = completionCopy;
+  v13 = policyCopy;
   v14 = v10;
-  v15 = v8;
-  v16 = v9;
-  dispatch_async(v12, v17);
+  v15 = queueCopy;
+  v16 = completionCopy;
+  dispatch_async(waitedOperationQueue, v17);
 }
 
 void __75__SUCorePurge_removeAllUpdateContentWithPolicy_completionQueue_completion___block_invoke(id *a1)
@@ -612,32 +612,32 @@ void __75__SUCorePurge_removeAllUpdateContentWithPolicy_completionQueue_completi
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)removeAllAssetsOfType:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5
++ (void)removeAllAssetsOfType:(id)type withCompletionQueue:(id)queue completion:(id)completion
 {
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithObjects:{v11, 0}];
+  completionCopy = completion;
+  queueCopy = queue;
+  typeCopy = type;
+  v12 = [[v8 alloc] initWithObjects:{typeCopy, 0}];
 
-  [a1 removeAllAssetsOfTypes:v12 withCompletionQueue:v10 completion:v9];
+  [self removeAllAssetsOfTypes:v12 withCompletionQueue:queueCopy completion:completionCopy];
 }
 
-+ (void)removeAllAssetsOfTypes:(id)a3 withCompletionQueue:(id)a4 completion:(id)a5
++ (void)removeAllAssetsOfTypes:(id)types withCompletionQueue:(id)queue completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  typesCopy = types;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = [MEMORY[0x277D643F8] beginTransactionWithName:@"purge.RemoveAssetsOfType"];
-  v11 = [MEMORY[0x277D64460] sharedLogger];
-  v12 = [v11 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v7;
-    _os_log_impl(&dword_23193C000, v12, OS_LOG_TYPE_DEFAULT, "[PURGE] removing all assets with types: %{public}@", buf, 0xCu);
+    v22 = typesCopy;
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "[PURGE] removing all assets with types: %{public}@", buf, 0xCu);
   }
 
   [SUCorePurge _trackPurgeBegin:@"MAPurgeAll"];
@@ -646,12 +646,12 @@ void __75__SUCorePurge_removeAllUpdateContentWithPolicy_completionQueue_completi
   v17[2] = __69__SUCorePurge_removeAllAssetsOfTypes_withCompletionQueue_completion___block_invoke;
   v17[3] = &unk_27892DEC0;
   v19 = v10;
-  v20 = v9;
-  v18 = v8;
+  v20 = completionCopy;
+  v18 = queueCopy;
   v13 = v10;
-  v14 = v8;
-  v15 = v9;
-  SUCoreBorder_MAPurgeAll(v7, v17);
+  v14 = queueCopy;
+  v15 = completionCopy;
+  SUCoreBorder_MAPurgeAll(typesCopy, v17);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -690,23 +690,23 @@ uint64_t __69__SUCorePurge_removeAllAssetsOfTypes_withCompletionQueue_completion
   return [v3 endTransaction:v4 withName:@"purge.RemoveAssetsOfType"];
 }
 
-+ (void)_trackPurgeBegin:(id)a3 withIdentifier:(id)a4
++ (void)_trackPurgeBegin:(id)begin withIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D64428];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedDiag];
-  [v8 trackBegin:v7 atLevel:1 forModule:@"purge" withIdentifier:v6];
+  identifierCopy = identifier;
+  beginCopy = begin;
+  sharedDiag = [v5 sharedDiag];
+  [sharedDiag trackBegin:beginCopy atLevel:1 forModule:@"purge" withIdentifier:identifierCopy];
 }
 
-+ (void)_trackPurgeEnd:(id)a3 withIdentifier:(id)a4 withResult:(int64_t)a5 withError:(id)a6
++ (void)_trackPurgeEnd:(id)end withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error
 {
   v9 = MEMORY[0x277D64428];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 sharedDiag];
-  [v13 trackEnd:v12 atLevel:1 forModule:@"purge" withIdentifier:v11 withResult:a5 withError:v10];
+  errorCopy = error;
+  identifierCopy = identifier;
+  endCopy = end;
+  sharedDiag = [v9 sharedDiag];
+  [sharedDiag trackEnd:endCopy atLevel:1 forModule:@"purge" withIdentifier:identifierCopy withResult:result withError:errorCopy];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MIBUWiFiHelper
 + (MIBUWiFiHelper)sharedInstance;
-- (BOOL)_associateFromScanResult:(id)a3 password:(id)a4 error:(id *)a5;
+- (BOOL)_associateFromScanResult:(id)result password:(id)password error:(id *)error;
 - (BOOL)_isWiFiConnected;
 - (MIBUWiFiHelper)init;
-- (id)_scanForSSID:(id)a3 skipEAP:(BOOL)a4 error:(id *)a5;
-- (void)_connectToWiFiWithError:(id *)a3;
+- (id)_scanForSSID:(id)d skipEAP:(BOOL)p error:(id *)error;
+- (void)_connectToWiFiWithError:(id *)error;
 - (void)_dispatchRetryOperation;
-- (void)_enableWiFi:(id *)a3;
+- (void)_enableWiFi:(id *)fi;
 - (void)_initNetworkMonitor;
-- (void)_retryWiFiConnection:(id *)a3;
-- (void)_waitForWiFiConnection:(id *)a3;
-- (void)_waitForWiFiInterface:(id *)a3;
-- (void)connectAndMonitor:(id *)a3;
+- (void)_retryWiFiConnection:(id *)connection;
+- (void)_waitForWiFiConnection:(id *)connection;
+- (void)_waitForWiFiInterface:(id *)interface;
+- (void)connectAndMonitor:(id *)monitor;
 - (void)disassociate;
-- (void)setWiFiSSID:(id)a3 andChannel:(unint64_t)a4;
+- (void)setWiFiSSID:(id)d andChannel:(unint64_t)channel;
 - (void)stopMonitor;
 @end
 
@@ -36,11 +36,11 @@
     v5 = objc_alloc_init(NSOperationQueue);
     [(MIBUWiFiHelper *)v3 setWifiRetryQueue:v5];
 
-    v6 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
-    [v6 setMaxConcurrentOperationCount:1];
+    wifiRetryQueue = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
+    [wifiRetryQueue setMaxConcurrentOperationCount:1];
 
-    v7 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
-    [v7 setName:@"com.apple.mobileinboxupdate.service_queue"];
+    wifiRetryQueue2 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
+    [wifiRetryQueue2 setName:@"com.apple.mobileinboxupdate.service_queue"];
 
     [(MIBUWiFiHelper *)v3 setLocalRetryDelay:3.0];
     [(MIBUWiFiHelper *)v3 setLocalRetryLimit:5];
@@ -65,7 +65,7 @@
   return v3;
 }
 
-- (void)connectAndMonitor:(id *)a3
+- (void)connectAndMonitor:(id *)monitor
 {
   v19 = 0;
   v20 = &v19;
@@ -78,22 +78,22 @@
   v17[2] = 0x3032000000;
   v17[3] = sub_1000337D4;
   v17[4] = sub_1000337E4;
-  v18 = self;
-  v4 = v18;
+  selfCopy = self;
+  v4 = selfCopy;
   objc_sync_enter(v4);
-  v5 = [(MIBUWiFiHelper *)v4 networkMonitor];
-  v6 = v5 == 0;
+  networkMonitor = [(MIBUWiFiHelper *)v4 networkMonitor];
+  v6 = networkMonitor == 0;
 
   if (v6)
   {
     v7 = objc_alloc_init(CWFInterface);
     [(MIBUWiFiHelper *)v4 setWifiInterface:v7];
 
-    v8 = [(MIBUWiFiHelper *)v4 wifiInterface];
-    [v8 activate];
+    wifiInterface = [(MIBUWiFiHelper *)v4 wifiInterface];
+    [wifiInterface activate];
 
     [(MIBUWiFiHelper *)v4 _initNetworkMonitor];
-    v9 = [(MIBUWiFiHelper *)v4 wifiRetryQueue];
+    wifiRetryQueue = [(MIBUWiFiHelper *)v4 wifiRetryQueue];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100033854;
@@ -101,36 +101,36 @@
     v16[4] = v17;
     v16[5] = &v19;
     v10 = [NSBlockOperation blockOperationWithBlock:v16];
-    [v9 addOperation:v10];
+    [wifiRetryQueue addOperation:v10];
 
-    v11 = [(MIBUWiFiHelper *)v4 wifiRetryQueue];
-    [v11 waitUntilAllOperationsAreFinished];
+    wifiRetryQueue2 = [(MIBUWiFiHelper *)v4 wifiRetryQueue];
+    [wifiRetryQueue2 waitUntilAllOperationsAreFinished];
   }
 
   else
   {
     v14 = sub_10005EC60(v25);
-    v11 = v25[0];
+    wifiRetryQueue2 = v25[0];
     if (v14)
     {
       v15 = objc_opt_class();
-      sub_10005ECC8(v15, v25, v11);
+      sub_10005ECC8(v15, v25, wifiRetryQueue2);
     }
   }
 
   objc_sync_exit(v4);
-  if (a3)
+  if (monitor)
   {
-    *a3 = v20[5];
+    *monitor = v20[5];
   }
 
   if (v20[5])
   {
-    v12 = [(MIBUWiFiHelper *)v4 wifiInterface];
-    [v12 invalidate];
+    wifiInterface2 = [(MIBUWiFiHelper *)v4 wifiInterface];
+    [wifiInterface2 invalidate];
 
-    v13 = [(MIBUWiFiHelper *)v4 networkMonitor];
-    nw_path_monitor_cancel(v13);
+    networkMonitor2 = [(MIBUWiFiHelper *)v4 networkMonitor];
+    nw_path_monitor_cancel(networkMonitor2);
 
     [(MIBUWiFiHelper *)v4 setNetworkMonitor:0];
   }
@@ -155,17 +155,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Disassociating with WiFi...", v5, 2u);
   }
 
-  v4 = [(MIBUWiFiHelper *)self wifiInterface];
-  [v4 disassociateWithReason:2];
+  wifiInterface = [(MIBUWiFiHelper *)self wifiInterface];
+  [wifiInterface disassociateWithReason:2];
 }
 
 - (void)stopMonitor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MIBUWiFiHelper *)v2 networkMonitor];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  networkMonitor = [(MIBUWiFiHelper *)selfCopy networkMonitor];
 
-  if (v3)
+  if (networkMonitor)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -179,32 +179,32 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping network monitoring...", v6, 2u);
     }
 
-    v5 = [(MIBUWiFiHelper *)v2 networkMonitor];
-    nw_path_monitor_cancel(v5);
+    networkMonitor2 = [(MIBUWiFiHelper *)selfCopy networkMonitor];
+    nw_path_monitor_cancel(networkMonitor2);
 
-    [(MIBUWiFiHelper *)v2 setNetworkMonitor:0];
+    [(MIBUWiFiHelper *)selfCopy setNetworkMonitor:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setWiFiSSID:(id)a3 andChannel:(unint64_t)a4
+- (void)setWiFiSSID:(id)d andChannel:(unint64_t)channel
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v6;
-  if (!v6)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  wifiSSID = dCopy;
+  if (!dCopy)
   {
-    v8 = [(MIBUWiFiHelper *)v7 wifiSSID];
+    wifiSSID = [(MIBUWiFiHelper *)selfCopy wifiSSID];
   }
 
-  [(MIBUWiFiHelper *)v7 setWifiSSID:v8];
-  if (!v6)
+  [(MIBUWiFiHelper *)selfCopy setWifiSSID:wifiSSID];
+  if (!dCopy)
   {
   }
 
-  [(MIBUWiFiHelper *)v7 setWifiChannel:a4];
+  [(MIBUWiFiHelper *)selfCopy setWifiChannel:channel];
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005ED5C();
@@ -213,15 +213,15 @@
   v9 = qword_1000B84A0;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(MIBUWiFiHelper *)v7 wifiSSID];
+    wifiSSID2 = [(MIBUWiFiHelper *)selfCopy wifiSSID];
     v11 = 138543618;
-    v12 = v10;
+    v12 = wifiSSID2;
     v13 = 2050;
-    v14 = [(MIBUWiFiHelper *)v7 wifiChannel];
+    wifiChannel = [(MIBUWiFiHelper *)selfCopy wifiChannel];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Setting for wifi with SSID: %{public}@ and channel: %{public}lu", &v11, 0x16u);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_initNetworkMonitor
@@ -229,51 +229,51 @@
   v3 = nw_path_monitor_create();
   [(MIBUWiFiHelper *)self setNetworkMonitor:v3];
 
-  v4 = [(MIBUWiFiHelper *)self networkMonitor];
-  v5 = [(MIBUWiFiHelper *)self networkMonitorQueue];
-  nw_path_monitor_set_queue(v4, v5);
+  networkMonitor = [(MIBUWiFiHelper *)self networkMonitor];
+  networkMonitorQueue = [(MIBUWiFiHelper *)self networkMonitorQueue];
+  nw_path_monitor_set_queue(networkMonitor, networkMonitorQueue);
 
-  v6 = [(MIBUWiFiHelper *)self networkMonitor];
+  networkMonitor2 = [(MIBUWiFiHelper *)self networkMonitor];
   update_handler[0] = _NSConcreteStackBlock;
   update_handler[1] = 3221225472;
   update_handler[2] = sub_100033DE0;
   update_handler[3] = &unk_10009D868;
   update_handler[4] = self;
-  nw_path_monitor_set_update_handler(v6, update_handler);
+  nw_path_monitor_set_update_handler(networkMonitor2, update_handler);
 
-  v7 = [(MIBUWiFiHelper *)self networkMonitor];
-  nw_path_monitor_start(v7);
+  networkMonitor3 = [(MIBUWiFiHelper *)self networkMonitor];
+  nw_path_monitor_start(networkMonitor3);
 }
 
 - (void)_dispatchRetryOperation
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
   v9[3] = sub_1000337D4;
   v9[4] = sub_1000337E4;
-  v3 = v2;
+  v3 = selfCopy;
   v10 = v3;
-  v4 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
-  v5 = [v4 operationCount];
+  wifiRetryQueue = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
+  operationCount = [wifiRetryQueue operationCount];
 
-  if (v5)
+  if (operationCount)
   {
     sub_10005EDAC();
   }
 
   else
   {
-    v6 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
+    wifiRetryQueue2 = [(MIBUWiFiHelper *)v3 wifiRetryQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100034250;
     v8[3] = &unk_10009B0A8;
     v8[4] = v9;
     v7 = [NSBlockOperation blockOperationWithBlock:v8];
-    [v6 addOperation:v7];
+    [wifiRetryQueue2 addOperation:v7];
   }
 
   _Block_object_dispose(v9, 8);
@@ -281,7 +281,7 @@
   objc_sync_exit(v3);
 }
 
-- (void)_retryWiFiConnection:(id *)a3
+- (void)_retryWiFiConnection:(id *)connection
 {
   v5 = 0;
   v6 = 5;
@@ -337,14 +337,14 @@
 
           v5 = 0;
 LABEL_23:
-          if (!a3)
+          if (!connection)
           {
             goto LABEL_25;
           }
 
 LABEL_24:
           v12 = v5;
-          *a3 = v5;
+          *connection = v5;
           goto LABEL_25;
         }
       }
@@ -381,7 +381,7 @@ LABEL_24:
 
   sub_10005EF6C(buf);
   v5 = *buf;
-  if (a3)
+  if (connection)
   {
     goto LABEL_24;
   }
@@ -413,11 +413,11 @@ LABEL_25:
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [(MIBUWiFiHelper *)self globalRetryCount];
+    globalRetryCount = [(MIBUWiFiHelper *)self globalRetryCount];
     *buf = 138543618;
     *&buf[4] = v5;
     v27 = 2048;
-    v28 = v20;
+    v28 = globalRetryCount;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Connection retry finished with error: %{public}@, total retry count: %lu", buf, 0x16u);
   }
 }
@@ -445,7 +445,7 @@ LABEL_25:
   return v5;
 }
 
-- (void)_enableWiFi:(id *)a3
+- (void)_enableWiFi:(id *)fi
 {
   if (qword_1000B84A8[0] != -1)
   {
@@ -464,38 +464,38 @@ LABEL_25:
   v6 = v21;
   if (v6)
   {
-    sub_10005F034(a3, v6, buf, v7, v8, v9, v10, v11);
+    sub_10005F034(fi, v6, buf, v7, v8, v9, v10, v11);
 LABEL_10:
     v14 = *buf;
     goto LABEL_7;
   }
 
-  v12 = [(MIBUWiFiHelper *)self wifiInterface];
+  wifiInterface = [(MIBUWiFiHelper *)self wifiInterface];
   v20 = 0;
-  v13 = [v12 setPower:1 error:&v20];
+  v13 = [wifiInterface setPower:1 error:&v20];
   v14 = v20;
 
   if ((v13 & 1) == 0)
   {
-    sub_10005F124(a3, v14, buf, v15, v16, v17, v18, v19);
+    sub_10005F124(fi, v14, buf, v15, v16, v17, v18, v19);
     goto LABEL_10;
   }
 
 LABEL_7:
 }
 
-- (void)_connectToWiFiWithError:(id *)a3
+- (void)_connectToWiFiWithError:(id *)error
 {
-  v5 = [(MIBUWiFiHelper *)self wifiSSID];
+  wifiSSID = [(MIBUWiFiHelper *)self wifiSSID];
   if (os_variant_has_internal_content())
   {
     v6 = +[MIBUTestPreferences sharedInstance];
-    v7 = [v6 wifiSSID];
+    wifiSSID2 = [v6 wifiSSID];
 
-    if (v7)
+    if (wifiSSID2)
     {
       v8 = +[MIBUTestPreferences sharedInstance];
-      v9 = [v8 wifiSSID];
+      wifiSSID3 = [v8 wifiSSID];
 
       if (qword_1000B84A8[0] != -1)
       {
@@ -506,23 +506,23 @@ LABEL_7:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = v9;
+        v35 = wifiSSID3;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Overriding wifi SSID to: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v9 = v5;
+      wifiSSID3 = wifiSSID;
     }
 
     v12 = +[MIBUTestPreferences sharedInstance];
-    v13 = [v12 wifiPassword];
+    wifiPassword = [v12 wifiPassword];
 
-    if (v13)
+    if (wifiPassword)
     {
       v14 = +[MIBUTestPreferences sharedInstance];
-      v11 = [v14 wifiPassword];
+      wifiPassword2 = [v14 wifiPassword];
 
       if (qword_1000B84A8[0] != -1)
       {
@@ -533,32 +533,32 @@ LABEL_7:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = v11;
+        v35 = wifiPassword2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Use wifi password: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v11 = 0;
+      wifiPassword2 = 0;
     }
 
-    v5 = v9;
+    wifiSSID = wifiSSID3;
   }
 
   else
   {
-    v11 = 0;
+    wifiPassword2 = 0;
   }
 
   v33 = 0;
-  v16 = [(MIBUWiFiHelper *)self _scanForSSID:v5 skipEAP:v11 != 0 error:&v33];
+  v16 = [(MIBUWiFiHelper *)self _scanForSSID:wifiSSID skipEAP:wifiPassword2 != 0 error:&v33];
   v17 = v33;
   v22 = v17;
   if (v16)
   {
     v32 = v17;
-    v23 = [(MIBUWiFiHelper *)self _associateFromScanResult:v16 password:v11 error:&v32];
+    v23 = [(MIBUWiFiHelper *)self _associateFromScanResult:v16 password:wifiPassword2 error:&v32];
     v24 = v32;
 
     if (v23)
@@ -572,14 +572,14 @@ LABEL_7:
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v35 = v5;
+        v35 = wifiSSID;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Successfully connected to SSID: %{public}@!", buf, 0xCu);
       }
     }
 
     else
     {
-      sub_100016130(a3, 1879048194, v24, @"Failed to associate to ssid", v25, v26, v27, v28, v32);
+      sub_100016130(error, 1879048194, v24, @"Failed to associate to ssid", v25, v26, v27, v28, v32);
       if (qword_1000B84A8[0] != -1)
       {
         sub_10005F250();
@@ -588,7 +588,7 @@ LABEL_7:
       v31 = qword_1000B84A0;
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
       {
-        sub_10005F278(v5, v31, self);
+        sub_10005F278(wifiSSID, v31, self);
       }
     }
 
@@ -597,7 +597,7 @@ LABEL_7:
 
   else
   {
-    sub_100016130(a3, 1879048193, v17, @"Failed to find matching ssid", v18, v19, v20, v21, v32);
+    sub_100016130(error, 1879048193, v17, @"Failed to find matching ssid", v18, v19, v20, v21, v32);
     if (qword_1000B84A8[0] != -1)
     {
       sub_10005F33C();
@@ -606,33 +606,33 @@ LABEL_7:
     v30 = qword_1000B84A0;
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005F364(v5, v30, self);
+      sub_10005F364(wifiSSID, v30, self);
     }
   }
 }
 
-- (void)_waitForWiFiInterface:(id *)a3
+- (void)_waitForWiFiInterface:(id *)interface
 {
   v5 = objc_alloc_init(NSCondition);
   v6 = [NSDate dateWithTimeIntervalSinceNow:5.0];
-  v7 = [(MIBUWiFiHelper *)self wifiInterface];
+  wifiInterface = [(MIBUWiFiHelper *)self wifiInterface];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100035784;
   v21[3] = &unk_10009DAD8;
   v8 = v5;
   v22 = v8;
-  [v7 setEventHandler:v21];
+  [wifiInterface setEventHandler:v21];
 
-  v9 = [(MIBUWiFiHelper *)self wifiInterface];
+  wifiInterface2 = [(MIBUWiFiHelper *)self wifiInterface];
   v20 = 0;
-  v10 = [v9 startMonitoringEventType:10 error:&v20];
+  v10 = [wifiInterface2 startMonitoringEventType:10 error:&v20];
   v11 = v20;
 
   if ((v10 & 1) == 0)
   {
     sub_10005F400(v11);
-    if (!a3)
+    if (!interface)
     {
       goto LABEL_19;
     }
@@ -643,10 +643,10 @@ LABEL_7:
   [v8 lock];
   while (1)
   {
-    v12 = [(MIBUWiFiHelper *)self wifiInterface];
-    v13 = [v12 interfaceName];
+    wifiInterface3 = [(MIBUWiFiHelper *)self wifiInterface];
+    interfaceName = [wifiInterface3 interfaceName];
 
-    if (v13)
+    if (interfaceName)
     {
       break;
     }
@@ -694,20 +694,20 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Wifi interface is initialized!", buf, 2u);
   }
 
-  v17 = [(MIBUWiFiHelper *)self wifiInterface];
-  [v17 stopMonitoringEventType:10];
+  wifiInterface4 = [(MIBUWiFiHelper *)self wifiInterface];
+  [wifiInterface4 stopMonitoringEventType:10];
 
-  if (a3)
+  if (interface)
   {
 LABEL_18:
     v18 = v11;
-    *a3 = v11;
+    *interface = v11;
   }
 
 LABEL_19:
 }
 
-- (void)_waitForWiFiConnection:(id *)a3
+- (void)_waitForWiFiConnection:(id *)connection
 {
   v5 = dispatch_semaphore_create(0);
   [(MIBUWiFiHelper *)self setConnectionSem:v5];
@@ -726,8 +726,8 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Waiting %ds for network connection...", buf, 8u);
   }
 
-  v8 = [(MIBUWiFiHelper *)self connectionSem];
-  v9 = dispatch_semaphore_wait(v8, v6);
+  connectionSem = [(MIBUWiFiHelper *)self connectionSem];
+  v9 = dispatch_semaphore_wait(connectionSem, v6);
 
   if (v9)
   {
@@ -744,19 +744,19 @@ LABEL_19:
   }
 
   [(MIBUWiFiHelper *)self setConnectionSem:0];
-  if (a3)
+  if (connection)
   {
     v10 = v9;
-    *a3 = v9;
+    *connection = v9;
   }
 }
 
-- (id)_scanForSSID:(id)a3 skipEAP:(BOOL)a4 error:(id *)a5
+- (id)_scanForSSID:(id)d skipEAP:(BOOL)p error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
+  pCopy = p;
+  dCopy = d;
   v8 = objc_alloc_init(CWFScanParameters);
-  v46 = [(MIBUWiFiHelper *)self localRetryLimit];
+  localRetryLimit = [(MIBUWiFiHelper *)self localRetryLimit];
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005F698();
@@ -767,9 +767,9 @@ LABEL_19:
   {
     v10 = v9;
     *buf = 138543618;
-    v55 = v7;
+    v55 = dCopy;
     v56 = 2050;
-    v57 = [(MIBUWiFiHelper *)self wifiChannel];
+    wifiChannel = [(MIBUWiFiHelper *)self wifiChannel];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Scanning for wifi with SSID: %{public}@ and channel: %{public}lu", buf, 0x16u);
   }
 
@@ -784,18 +784,18 @@ LABEL_19:
   }
 
   [v8 setIncludeHiddenNetworks:1];
-  [v8 setSSID:v7];
+  [v8 setSSID:dCopy];
   [v8 setBSSType:2];
   v47 = 0;
   v45 = 0;
-  v43 = self;
+  selfCopy = self;
   v44 = v8;
   while (1)
   {
     v13 = v47;
-    v14 = [(MIBUWiFiHelper *)self wifiInterface];
+    wifiInterface = [(MIBUWiFiHelper *)self wifiInterface];
     v52 = v45;
-    v47 = [v14 performScanWithParameters:v8 error:&v52];
+    v47 = [wifiInterface performScanWithParameters:v8 error:&v52];
     v15 = v52;
 
     v45 = v15;
@@ -813,43 +813,43 @@ LABEL_19:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v55 = v7;
+      v55 = dCopy;
       v56 = 2114;
-      v57 = v15;
+      wifiChannel = v15;
       v58 = 2048;
-      v59 = v46 - 1;
+      v59 = localRetryLimit - 1;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to scan for SSID: %{public}@ with error:%{public}@ (%lu tries remaining)", buf, 0x20u);
     }
 
     v17 = 2;
 LABEL_42:
     sleep(v17);
-    if (!--v46)
+    if (!--localRetryLimit)
     {
       if (qword_1000B84A8[0] != -1)
       {
         sub_10005F74C();
       }
 
-      v35 = a5;
+      errorCopy2 = error;
       v36 = qword_1000B84A0;
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v55 = v7;
+        v55 = dCopy;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "All wifi scan tries exhausted; %{public}@ not found", buf, 0xCu);
       }
 
       v22 = 0;
       v37 = v45;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_49;
       }
 
 LABEL_48:
       v38 = v37;
-      *v35 = v37;
+      *errorCopy2 = v37;
       goto LABEL_49;
     }
   }
@@ -888,11 +888,11 @@ LABEL_37:
       v32 = v31;
       [(MIBUWiFiHelper *)self localRetryDelay];
       *buf = 138543874;
-      v55 = v7;
+      v55 = dCopy;
       v56 = 2048;
-      v57 = v33;
+      wifiChannel = v33;
       v58 = 2048;
-      v59 = v46 - 1;
+      v59 = localRetryLimit - 1;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "SSID %{public}@ not found, waiting for %lfs and rescan (%lu tries remaining)", buf, 0x20u);
     }
 
@@ -915,17 +915,17 @@ LABEL_37:
       }
 
       v25 = *(*(&v48 + 1) + 8 * v24);
-      v26 = [v25 networkName];
-      if ([v26 isEqualToString:v7])
+      networkName = [v25 networkName];
+      if ([networkName isEqualToString:dCopy])
       {
-        v27 = [v25 isEAP];
+        isEAP = [v25 isEAP];
 
-        if ((v27 & 1) != 0 || v5)
+        if ((isEAP & 1) != 0 || pCopy)
         {
           if (v22)
           {
-            v28 = [v25 RSSI];
-            if (v28 > [v22 RSSI])
+            rSSI = [v25 RSSI];
+            if (rSSI > [v22 RSSI])
             {
               v29 = v25;
 
@@ -954,7 +954,7 @@ LABEL_37:
 
   while (v30);
 
-  self = v43;
+  self = selfCopy;
   v8 = v44;
   if (!v22)
   {
@@ -966,7 +966,7 @@ LABEL_37:
     sub_10005F6FC();
   }
 
-  v35 = a5;
+  errorCopy2 = error;
   v41 = qword_1000B84A0;
   if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
   {
@@ -976,7 +976,7 @@ LABEL_37:
   }
 
   v37 = 0;
-  if (a5)
+  if (error)
   {
     goto LABEL_48;
   }
@@ -987,10 +987,10 @@ LABEL_49:
   return v22;
 }
 
-- (BOOL)_associateFromScanResult:(id)a3 password:(id)a4 error:(id *)a5
+- (BOOL)_associateFromScanResult:(id)result password:(id)password error:(id *)error
 {
-  v34 = a3;
-  v32 = a4;
+  resultCopy = result;
+  passwordCopy = password;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -1010,7 +1010,7 @@ LABEL_49:
   v41 = sub_1000337E4;
   v42 = 0;
   v33 = objc_opt_new();
-  v8 = [(MIBUWiFiHelper *)self localRetryLimit];
+  localRetryLimit = [(MIBUWiFiHelper *)self localRetryLimit];
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005F774();
@@ -1019,9 +1019,9 @@ LABEL_49:
   v9 = qword_1000B84A0;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v34 networkName];
+    networkName = [resultCopy networkName];
     *buf = 138543362;
-    v56 = v10;
+    v56 = networkName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Associating with SSID: %{public}@", buf, 0xCu);
   }
 
@@ -1038,7 +1038,7 @@ LABEL_49:
   {
     v14 = 0;
     v26 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -1057,18 +1057,18 @@ LABEL_49:
     }
 
     v14 = objc_alloc_init(CWFAssocParameters);
-    [v14 setScanResult:v34];
-    [v14 setPassword:v32];
+    [v14 setScanResult:resultCopy];
+    [v14 setPassword:passwordCopy];
     [v14 setRememberUponSuccessfulAssociation:0];
     v15 = objc_alloc_init(CWFNetworkProfile);
     [v14 setKnownNetworkProfile:v15];
 
-    v16 = [v14 knownNetworkProfile];
-    [v16 setHiddenState:1];
+    knownNetworkProfile = [v14 knownNetworkProfile];
+    [knownNetworkProfile setHiddenState:1];
 
-    v17 = [v14 knownNetworkProfile];
-    v18 = v17;
-    if (v32)
+    knownNetworkProfile2 = [v14 knownNetworkProfile];
+    v18 = knownNetworkProfile2;
+    if (passwordCopy)
     {
       v19 = 0;
     }
@@ -1078,7 +1078,7 @@ LABEL_49:
       v19 = v33;
     }
 
-    [v17 setEAPProfile:{v19, v32}];
+    [knownNetworkProfile2 setEAPProfile:{v19, passwordCopy}];
 
     if (qword_1000B84A8[0] != -1)
     {
@@ -1088,20 +1088,20 @@ LABEL_49:
     v20 = qword_1000B84A0;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v14 knownNetworkProfile];
-      v22 = [v21 EAPProfile];
+      knownNetworkProfile3 = [v14 knownNetworkProfile];
+      eAPProfile = [knownNetworkProfile3 EAPProfile];
       *buf = 138543362;
-      v56 = v22;
+      v56 = eAPProfile;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "EAP Profile: %{public}@", buf, 0xCu);
     }
 
-    v23 = v8 - 1;
+    v23 = localRetryLimit - 1;
     do
     {
-      v24 = [(MIBUWiFiHelper *)self wifiInterface];
+      wifiInterface = [(MIBUWiFiHelper *)self wifiInterface];
       v25 = v50;
       obj = v50[5];
-      v26 = [v24 associateWithParameters:v14 error:&obj];
+      v26 = [wifiInterface associateWithParameters:v14 error:&obj];
       objc_storeStrong(v25 + 5, obj);
 
       if (v26)
@@ -1117,10 +1117,10 @@ LABEL_49:
       v27 = qword_1000B84A0;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v34 networkName];
+        networkName2 = [resultCopy networkName];
         [(MIBUWiFiHelper *)self localRetryDelay];
         *buf = 138543874;
-        v56 = v28;
+        v56 = networkName2;
         v57 = 2048;
         v58 = v29;
         v59 = 2048;

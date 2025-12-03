@@ -1,35 +1,35 @@
 @interface NTKAlaskanChronographStyleController
 - (BOOL)wantsStatusBarHidden;
-- (NTKAlaskanChronographStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4;
+- (NTKAlaskanChronographStyleController)initWithContentView:(id)view crownInputHandler:(id)handler;
 - (NTKAlaskanChronographView)view;
 - (NTKAnalogFaceView)faceView;
-- (void)_handleFaceViewWantsStatusBarHidden:(BOOL)a3;
-- (void)alaskanChronographViewDidEnterChronometerMode:(id)a3 completionBlock:(id)a4;
-- (void)alaskanChronographViewDidExitChronometerMode:(id)a3 completionBlock:(id)a4 animated:(BOOL)a5;
-- (void)applyVisibilityWithFraction:(double)a3;
+- (void)_handleFaceViewWantsStatusBarHidden:(BOOL)hidden;
+- (void)alaskanChronographViewDidEnterChronometerMode:(id)mode completionBlock:(id)block;
+- (void)alaskanChronographViewDidExitChronometerMode:(id)mode completionBlock:(id)block animated:(BOOL)animated;
+- (void)applyVisibilityWithFraction:(double)fraction;
 - (void)cleanupAfterEditing;
 - (void)dealloc;
 - (void)prepareForEditing;
-- (void)setFaceView:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setFaceView:(id)view;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKAlaskanChronographStyleController
 
-- (NTKAlaskanChronographStyleController)initWithContentView:(id)a3 crownInputHandler:(id)a4
+- (NTKAlaskanChronographStyleController)initWithContentView:(id)view crownInputHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = NTKAlaskanChronographStyleController;
   v8 = [(NTKAlaskanChronographStyleController *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_view, v6);
-    [v6 setDelegate:v9];
+    v10 = objc_storeWeak(&v8->_view, viewCopy);
+    [viewCopy setDelegate:v9];
 
-    objc_storeStrong(&v9->_crownInputHandler, a4);
+    objc_storeStrong(&v9->_crownInputHandler, handler);
     [(NTKCrownInputHandler *)v9->_crownInputHandler setOffsetPerRevolution:2.4];
     [(NTKCrownInputHandler *)v9->_crownInputHandler setUseWideIdleCheck:0];
   }
@@ -39,41 +39,41 @@
 
 - (void)dealloc
 {
-  v3 = [(NTKAlaskanChronographStyleController *)self faceView];
-  v4 = [v3 timeView];
-  v5 = [v4 secondHandView];
-  [v5 setAlpha:1.0];
+  faceView = [(NTKAlaskanChronographStyleController *)self faceView];
+  timeView = [faceView timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:1.0];
 
   v6.receiver = self;
   v6.super_class = NTKAlaskanChronographStyleController;
   [(NTKAlaskanChronographStyleController *)&v6 dealloc];
 }
 
-- (void)setFaceView:(id)a3
+- (void)setFaceView:(id)view
 {
-  v10 = a3;
-  v4 = objc_storeWeak(&self->_faceView, v10);
-  v5 = [v10 timeView];
+  viewCopy = view;
+  v4 = objc_storeWeak(&self->_faceView, viewCopy);
+  timeView = [viewCopy timeView];
 
-  v6 = [v5 secondHandView];
-  [v6 setAlpha:0.0];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:0.0];
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
   v8 = objc_loadWeakRetained(&self->_faceView);
-  v9 = [v8 timeView];
-  [WeakRetained setChronometerHandsParentView:v9];
+  timeView2 = [v8 timeView];
+  [WeakRetained setChronometerHandsParentView:timeView2];
 }
 
-- (void)applyVisibilityWithFraction:(double)a3
+- (void)applyVisibilityWithFraction:(double)fraction
 {
-  v5 = [(NTKAlaskanChronographStyleController *)self view];
-  v6 = [v5 primaryHandView];
-  [v6 setAlpha:a3];
+  view = [(NTKAlaskanChronographStyleController *)self view];
+  primaryHandView = [view primaryHandView];
+  [primaryHandView setAlpha:fraction];
 
   WeakRetained = objc_loadWeakRetained(&self->_faceView);
-  v7 = [WeakRetained timeView];
-  v8 = [v7 secondHandView];
-  [v8 setAlpha:1.0 - a3];
+  timeView = [WeakRetained timeView];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:1.0 - fraction];
 }
 
 - (void)prepareForEditing
@@ -91,55 +91,55 @@
   self->_isEditing = 0;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v5 = a3;
+  dateCopy = date;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [WeakRetained setClockOverrideDate:v5];
+  [WeakRetained setClockOverrideDate:dateCopy];
 
   v7 = objc_loadWeakRetained(&self->_view);
-  [v7 setStopwatchOverrideDate:v5];
+  [v7 setStopwatchOverrideDate:dateCopy];
 }
 
 - (BOOL)wantsStatusBarHidden
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v3 = [WeakRetained isChronoMode];
+  isChronoMode = [WeakRetained isChronoMode];
 
-  return v3;
+  return isChronoMode;
 }
 
-- (void)alaskanChronographViewDidEnterChronometerMode:(id)a3 completionBlock:(id)a4
+- (void)alaskanChronographViewDidEnterChronometerMode:(id)mode completionBlock:(id)block
 {
-  v7 = a4;
-  v5 = [(NTKAlaskanChronographStyleController *)self faceView];
-  [v5 enumerateComplicationDisplayWrappersWithBlock:&stru_38AA8];
+  blockCopy = block;
+  faceView = [(NTKAlaskanChronographStyleController *)self faceView];
+  [faceView enumerateComplicationDisplayWrappersWithBlock:&stru_38AA8];
 
   if (![(NTKAlaskanChronographStyleController *)self isEditing])
   {
     [(NTKAlaskanChronographStyleController *)self _handleFaceViewWantsStatusBarHidden:1];
   }
 
-  v6 = [(NTKAlaskanChronographStyleController *)self shouldAnimateTimescaleTransition];
-  if (v7 && (v6 & 1) == 0)
+  shouldAnimateTimescaleTransition = [(NTKAlaskanChronographStyleController *)self shouldAnimateTimescaleTransition];
+  if (blockCopy && (shouldAnimateTimescaleTransition & 1) == 0)
   {
-    v6 = v7[2](v7);
+    shouldAnimateTimescaleTransition = blockCopy[2](blockCopy);
   }
 
-  _objc_release_x1(v6);
+  _objc_release_x1(shouldAnimateTimescaleTransition);
 }
 
-- (void)_handleFaceViewWantsStatusBarHidden:(BOOL)a3
+- (void)_handleFaceViewWantsStatusBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(NTKAlaskanChronographStyleController *)self faceView];
-  v4 = [v5 delegate];
-  [v4 faceViewWantsStatusBarHidden:v3 animated:0];
+  hiddenCopy = hidden;
+  faceView = [(NTKAlaskanChronographStyleController *)self faceView];
+  delegate = [faceView delegate];
+  [delegate faceViewWantsStatusBarHidden:hiddenCopy animated:0];
 }
 
-- (void)alaskanChronographViewDidExitChronometerMode:(id)a3 completionBlock:(id)a4 animated:(BOOL)a5
+- (void)alaskanChronographViewDidExitChronometerMode:(id)mode completionBlock:(id)block animated:(BOOL)animated
 {
-  v6 = [(NTKAlaskanChronographStyleController *)self faceView:a3];
+  v6 = [(NTKAlaskanChronographStyleController *)self faceView:mode];
   [v6 enumerateComplicationDisplayWrappersWithBlock:&stru_38AC8];
 
   if (![(NTKAlaskanChronographStyleController *)self isEditing])

@@ -1,52 +1,52 @@
 @interface PDFPageAnalyzerV2
-+ (BOOL)addFormFieldsFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6;
-+ (BOOL)addTablesFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6;
-+ (BOOL)addTextFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6;
-+ (BOOL)isCreatedByCalendar:(id)a3;
-+ (CGAffineTransform)normalizedToCIImageTransformForImageWithSize:(SEL)a3;
-+ (CGAffineTransform)normalizedToPageTransformForPageWithBounds:(SEL)a3;
-+ (__CVBuffer)createPixelBufferForPage:(id)a3 withBox:(int64_t)a4;
-+ (double)sizeOfFont:(__CTFont *)a3 withHeight:(double)a4 string:(id)a5;
-+ (id)createImageFromImage:(id)a3 withBoundingQuad:(const PDFQuadPoints *)a4;
-+ (id)createImageFromImage:(id)a3 withBounds:(const CGRect *)a4;
-+ (tuple<unsigned)getBaselineAndHeightFromRowAverages:(CGImage *)a3;
-+ (tuple<unsigned)getXInsetsFromColAverages:(CGImage *)a3;
-+ (unint64_t)analyzePage:(id)a3 withBox:(int64_t)a4 requestTypes:(unint64_t)a5;
-+ (vector<unsigned)getVectorFromAveragesImage:(id)a2;
-+ (void)addDisplayList:(CGDisplayList *)a3 toPage:(id)a4;
-+ (void)drawQuad:(const PDFQuadPoints *)a3 lineAngle:(double)a4 baselineOffset:(double)a5 inContext:(CGContext *)a6;
++ (BOOL)addFormFieldsFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box;
++ (BOOL)addTablesFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box;
++ (BOOL)addTextFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box;
++ (BOOL)isCreatedByCalendar:(id)calendar;
++ (CGAffineTransform)normalizedToCIImageTransformForImageWithSize:(SEL)size;
++ (CGAffineTransform)normalizedToPageTransformForPageWithBounds:(SEL)bounds;
++ (__CVBuffer)createPixelBufferForPage:(id)page withBox:(int64_t)box;
++ (double)sizeOfFont:(__CTFont *)font withHeight:(double)height string:(id)string;
++ (id)createImageFromImage:(id)image withBoundingQuad:(const PDFQuadPoints *)quad;
++ (id)createImageFromImage:(id)image withBounds:(const CGRect *)bounds;
++ (tuple<unsigned)getBaselineAndHeightFromRowAverages:(CGImage *)averages;
++ (tuple<unsigned)getXInsetsFromColAverages:(CGImage *)averages;
++ (unint64_t)analyzePage:(id)page withBox:(int64_t)box requestTypes:(unint64_t)types;
++ (vector<unsigned)getVectorFromAveragesImage:(id)image;
++ (void)addDisplayList:(CGDisplayList *)list toPage:(id)page;
++ (void)drawQuad:(const PDFQuadPoints *)quad lineAngle:(double)angle baselineOffset:(double)offset inContext:(CGContext *)context;
 @end
 
 @implementation PDFPageAnalyzerV2
 
-+ (unint64_t)analyzePage:(id)a3 withBox:(int64_t)a4 requestTypes:(unint64_t)a5
++ (unint64_t)analyzePage:(id)page withBox:(int64_t)box requestTypes:(unint64_t)types
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 document];
-  if (([a1 isCreatedByCalendar:v9] & 1) == 0)
+  pageCopy = page;
+  document = [pageCopy document];
+  if (([self isCreatedByCalendar:document] & 1) == 0)
   {
-    v10 = [v9 indexForPage:v8];
+    v10 = [document indexForPage:pageCopy];
     Current = CFAbsoluteTimeGetCurrent();
-    v12 = v8;
+    v12 = pageCopy;
     objc_sync_enter(v12);
-    if ((a5 & 1) != 0 && (([v12 didPerformOCR] & 1) != 0 || !+[PDFPageEvaluator isPageCandidateForOCR:](PDFPageEvaluator, "isPageCandidateForOCR:", v12)))
+    if ((types & 1) != 0 && (([v12 didPerformOCR] & 1) != 0 || !+[PDFPageEvaluator isPageCandidateForOCR:](PDFPageEvaluator, "isPageCandidateForOCR:", v12)))
     {
-      a5 &= ~1uLL;
+      types &= ~1uLL;
     }
 
-    if ((a5 & 2) != 0 && [v12 didPerformFormDetection])
+    if ((types & 2) != 0 && [v12 didPerformFormDetection])
     {
-      a5 &= ~2uLL;
+      types &= ~2uLL;
     }
 
     objc_sync_exit(v12);
 
-    if (a5)
+    if (types)
     {
       v18 = v10 + 1;
       _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "analyzePage: (page #%lu) START", v13, v14, v15, v16, v17, v18);
-      v19 = [a1 createPixelBufferForPage:v12 withBox:a4];
+      v19 = [self createPixelBufferForPage:v12 withBox:box];
       v61[1] = v19;
       if (v19)
       {
@@ -94,7 +94,7 @@
         v30 = [[v28 alloc] init];
         v59 = v30;
         [v30 setRecognitionLevel:0];
-        [v30 setUsesFormFieldDetection:(a5 >> 1) & 1];
+        [v30 setUsesFormFieldDetection:(types >> 1) & 1];
         v67 = 0;
         v68 = &v67;
         v69 = 0x2050000000;
@@ -133,18 +133,18 @@ LABEL_31:
 
         CFAbsoluteTimeGetCurrent();
         _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "analyzePage: (page #%lu) VN Request complete. (+%g secs)", v37, v38, v39, v40, v41, v58);
-        v42 = [v59 results];
-        v43 = [v42 firstObject];
+        results = [v59 results];
+        firstObject = [results firstObject];
 
-        if (a5)
+        if (types)
         {
           v46 = v12;
           objc_sync_enter(v46);
           [v46 setDidPerformOCR:1];
           objc_sync_exit(v46);
 
-          v44 = [a1 addTextFromVisionDocument:v43 documentImage:v19 toPage:v46 withBox:a4];
-          if ((a5 & 2) == 0)
+          v44 = [self addTextFromVisionDocument:firstObject documentImage:v19 toPage:v46 withBox:box];
+          if ((types & 2) == 0)
           {
 LABEL_30:
             CFAbsoluteTimeGetCurrent();
@@ -157,7 +157,7 @@ LABEL_30:
         else
         {
           v44 = 0;
-          if ((a5 & 2) == 0)
+          if ((types & 2) == 0)
           {
             goto LABEL_30;
           }
@@ -168,8 +168,8 @@ LABEL_30:
         [v47 setDidPerformFormDetection:1];
         objc_sync_exit(v47);
 
-        v48 = [a1 addFormFieldsFromVisionDocument:v43 documentImage:v19 toPage:v47 withBox:a4];
-        v49 = [a1 addTablesFromVisionDocument:v43 documentImage:v19 toPage:v47 withBox:a4];
+        v48 = [self addFormFieldsFromVisionDocument:firstObject documentImage:v19 toPage:v47 withBox:box];
+        v49 = [self addTablesFromVisionDocument:firstObject documentImage:v19 toPage:v47 withBox:box];
         v50 = v44 | 2;
         if (!v48)
         {
@@ -197,10 +197,10 @@ LABEL_22:
   return v44;
 }
 
-+ (BOOL)isCreatedByCalendar:(id)a3
++ (BOOL)isCreatedByCalendar:(id)calendar
 {
-  v3 = a3;
-  Info = CGPDFDocumentGetInfo([v3 documentRef]);
+  calendarCopy = calendar;
+  Info = CGPDFDocumentGetInfo([calendarCopy documentRef]);
   v5 = Info;
   if (Info && (string = 0, value = 0, CGPDFDictionaryGetString(Info, "Creator", &value)) && CGPDFDictionaryGetString(v5, "Producer", &string))
   {
@@ -238,14 +238,14 @@ LABEL_22:
   return v9;
 }
 
-+ (__CVBuffer)createPixelBufferForPage:(id)a3 withBox:(int64_t)a4
++ (__CVBuffer)createPixelBufferForPage:(id)page withBox:(int64_t)box
 {
   v30[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [v5 boundsForBox:a4];
+  pageCopy = page;
+  [pageCopy boundsForBox:box];
   v7 = v6;
   v9 = v8;
-  if ([v5 rotation] == 90 || objc_msgSend(v5, "rotation") == 270)
+  if ([pageCopy rotation] == 90 || objc_msgSend(pageCopy, "rotation") == 270)
   {
     v10 = v9;
     v11 = v7;
@@ -309,7 +309,7 @@ LABEL_22:
   v23 = floor(v14) / v10;
   CGContextScaleCTM(v21, v23, v23);
   CGContextErase();
-  [v5 drawWithBox:a4 inContext:v21 withOptions:v22];
+  [pageCopy drawWithBox:box inContext:v21 withOptions:v22];
   v24 = pixelBuffer;
   pixelBuffer = 0;
 
@@ -332,7 +332,7 @@ LABEL_17:
   return v24;
 }
 
-+ (CGAffineTransform)normalizedToPageTransformForPageWithBounds:(SEL)a3
++ (CGAffineTransform)normalizedToPageTransformForPageWithBounds:(SEL)bounds
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -349,7 +349,7 @@ LABEL_17:
   return result;
 }
 
-+ (CGAffineTransform)normalizedToCIImageTransformForImageWithSize:(SEL)a3
++ (CGAffineTransform)normalizedToCIImageTransformForImageWithSize:(SEL)size
 {
   height = a4.height;
   width = a4.width;
@@ -366,63 +366,63 @@ LABEL_17:
   return result;
 }
 
-+ (void)drawQuad:(const PDFQuadPoints *)a3 lineAngle:(double)a4 baselineOffset:(double)a5 inContext:(CGContext *)a6
++ (void)drawQuad:(const PDFQuadPoints *)quad lineAngle:(double)angle baselineOffset:(double)offset inContext:(CGContext *)context
 {
-  CGContextSaveGState(a6);
-  CGContextMoveToPoint(a6, a3->var0.x, a3->var0.y);
-  CGContextAddLineToPoint(a6, a3->var1.x, a3->var1.y);
-  CGContextAddLineToPoint(a6, a3->var3.x, a3->var3.y);
-  CGContextAddLineToPoint(a6, a3->var2.x, a3->var2.y);
-  CGContextClosePath(a6);
-  CGContextStrokePath(a6);
-  if (a5 > 0.0)
+  CGContextSaveGState(context);
+  CGContextMoveToPoint(context, quad->var0.x, quad->var0.y);
+  CGContextAddLineToPoint(context, quad->var1.x, quad->var1.y);
+  CGContextAddLineToPoint(context, quad->var3.x, quad->var3.y);
+  CGContextAddLineToPoint(context, quad->var2.x, quad->var2.y);
+  CGContextClosePath(context);
+  CGContextStrokePath(context);
+  if (offset > 0.0)
   {
-    CGContextTranslateCTM(a6, a3->var2.x, a3->var2.y);
-    CGContextRotateCTM(a6, a4);
-    CGContextTranslateCTM(a6, -a3->var2.x, -a3->var2.y);
-    CGContextMoveToPoint(a6, a3->var2.x, a3->var2.y + a5);
-    CGContextAddLineToPoint(a6, a3->var3.x, a3->var2.y + a5);
-    CGContextStrokePath(a6);
+    CGContextTranslateCTM(context, quad->var2.x, quad->var2.y);
+    CGContextRotateCTM(context, angle);
+    CGContextTranslateCTM(context, -quad->var2.x, -quad->var2.y);
+    CGContextMoveToPoint(context, quad->var2.x, quad->var2.y + offset);
+    CGContextAddLineToPoint(context, quad->var3.x, quad->var2.y + offset);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a6);
+  CGContextRestoreGState(context);
 }
 
-+ (id)createImageFromImage:(id)a3 withBounds:(const CGRect *)a4
++ (id)createImageFromImage:(id)image withBounds:(const CGRect *)bounds
 {
-  v5 = [a3 imageByClampingToRect:{a4->origin.x, a4->origin.y, a4->size.width, a4->size.height}];
-  v6 = [v5 imageByCroppingToRect:{a4->origin.x, a4->origin.y, a4->size.width, a4->size.height}];
+  v5 = [image imageByClampingToRect:{bounds->origin.x, bounds->origin.y, bounds->size.width, bounds->size.height}];
+  v6 = [v5 imageByCroppingToRect:{bounds->origin.x, bounds->origin.y, bounds->size.width, bounds->size.height}];
 
   return v6;
 }
 
-+ (id)createImageFromImage:(id)a3 withBoundingQuad:(const PDFQuadPoints *)a4
++ (id)createImageFromImage:(id)image withBoundingQuad:(const PDFQuadPoints *)quad
 {
-  v6 = a3;
-  PDFQuadPoints::boundingBox(a4);
+  imageCopy = image;
+  PDFQuadPoints::boundingBox(quad);
   v16[0] = v7;
   v16[1] = v8;
   v16[2] = v9;
   v16[3] = v10;
-  v11 = [a1 createImageFromImage:v6 withBounds:v16];
-  y = a4->var0.y;
-  if (y != a4->var1.y || (y = a4->var2.y, y != a4->var3.y) || (y = a4->var0.x, a4->var0.x != a4->var2.x) || (y = a4->var1.x, y != a4->var3.x))
+  v11 = [self createImageFromImage:imageCopy withBounds:v16];
+  y = quad->var0.y;
+  if (y != quad->var1.y || (y = quad->var2.y, y != quad->var3.y) || (y = quad->var0.x, quad->var0.x != quad->var2.x) || (y = quad->var1.x, y != quad->var3.x))
   {
-    v13 = [MEMORY[0x1E695F648] perspectiveCorrectionFilter];
-    [v13 setInputImage:v11];
-    [v13 setTopLeft:{a4->var0.x, a4->var0.y}];
-    [v13 setTopRight:{a4->var1.x, a4->var1.y}];
-    [v13 setBottomLeft:{a4->var2.x, a4->var2.y}];
-    [v13 setBottomRight:{a4->var3.x, a4->var3.y}];
-    v14 = [v13 outputImage];
+    perspectiveCorrectionFilter = [MEMORY[0x1E695F648] perspectiveCorrectionFilter];
+    [perspectiveCorrectionFilter setInputImage:v11];
+    [perspectiveCorrectionFilter setTopLeft:{quad->var0.x, quad->var0.y}];
+    [perspectiveCorrectionFilter setTopRight:{quad->var1.x, quad->var1.y}];
+    [perspectiveCorrectionFilter setBottomLeft:{quad->var2.x, quad->var2.y}];
+    [perspectiveCorrectionFilter setBottomRight:{quad->var3.x, quad->var3.y}];
+    outputImage = [perspectiveCorrectionFilter outputImage];
 
-    v11 = v14;
+    v11 = outputImage;
   }
 
   return v11;
 }
 
-+ (vector<unsigned)getVectorFromAveragesImage:(id)a2
++ (vector<unsigned)getVectorFromAveragesImage:(id)image
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -524,9 +524,9 @@ LABEL_17:
   return result;
 }
 
-+ (tuple<unsigned)getBaselineAndHeightFromRowAverages:(CGImage *)a3
++ (tuple<unsigned)getBaselineAndHeightFromRowAverages:(CGImage *)averages
 {
-  [a1 getVectorFromAveragesImage:?];
+  [self getVectorFromAveragesImage:?];
   v4 = v17;
   if (v17 == v18)
   {
@@ -569,7 +569,7 @@ LABEL_8:
     }
   }
 
-  Width = CGImageGetWidth(a3);
+  Width = CGImageGetWidth(averages);
   v9 = 0;
   v4 = v17;
   while (&v18[v9] != v17)
@@ -605,9 +605,9 @@ LABEL_17:
   return result;
 }
 
-+ (tuple<unsigned)getXInsetsFromColAverages:(CGImage *)a3
++ (tuple<unsigned)getXInsetsFromColAverages:(CGImage *)averages
 {
-  [a1 getVectorFromAveragesImage:a3];
+  [self getVectorFromAveragesImage:averages];
   if (v17 == v18)
   {
     v10 = 0;
@@ -686,31 +686,31 @@ LABEL_21:
   return result;
 }
 
-+ (double)sizeOfFont:(__CTFont *)a3 withHeight:(double)a4 string:(id)a5
++ (double)sizeOfFont:(__CTFont *)font withHeight:(double)height string:(id)string
 {
-  v7 = a5;
-  v8 = [v7 uppercaseString];
-  v9 = [v8 isEqualToString:v7];
+  stringCopy = string;
+  uppercaseString = [stringCopy uppercaseString];
+  v9 = [uppercaseString isEqualToString:stringCopy];
 
-  Size = CTFontGetSize(a3);
+  Size = CTFontGetSize(font);
   if (v9)
   {
-    CapHeight = CTFontGetCapHeight(a3);
+    CapHeight = CTFontGetCapHeight(font);
   }
 
   else
   {
-    CapHeight = CTFontGetXHeight(a3);
+    CapHeight = CTFontGetXHeight(font);
   }
 
-  v12 = Size / CapHeight * a4;
+  v12 = Size / CapHeight * height;
 
   return v12;
 }
 
-+ (void)addDisplayList:(CGDisplayList *)a3 toPage:(id)a4
++ (void)addDisplayList:(CGDisplayList *)list toPage:(id)page
 {
-  v4 = a4;
+  pageCopy = page;
   Mutable = CFDataCreateMutable(*MEMORY[0x1E695E480], 0);
   value[5] = Mutable;
   v6 = CGDataConsumerCreateWithCFData(Mutable);
@@ -737,7 +737,7 @@ LABEL_21:
       if (CGPDFDictionaryGetStream(dict, "Fm1", &stream))
       {
         CGPDFStreamGetDictionary(stream);
-        [v4 setExtraContentStream:stream steamDocument:v9];
+        [pageCopy setExtraContentStream:stream steamDocument:v9];
       }
     }
   }
@@ -768,17 +768,17 @@ LABEL_21:
   }
 }
 
-+ (BOOL)addTextFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6
++ (BOOL)addTextFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box
 {
   v129[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v70 = a5;
-  v68 = v9;
-  v69 = [v9 blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
+  documentCopy = document;
+  pageCopy = page;
+  v68 = documentCopy;
+  v69 = [documentCopy blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
   v67 = [v69 count];
   if (v67)
   {
-    v87 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a4];
+    v87 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:image];
     DeviceGray = CGColorSpaceCreateDeviceGray();
     v10 = MEMORY[0x1E695F620];
     v128 = *MEMORY[0x1E695F838];
@@ -797,7 +797,7 @@ LABEL_21:
     v12 = CGDisplayListCreate();
     v118 = v12;
     c = CGDisplayListContextCreate();
-    [v70 boundsForBox:a6];
+    [pageCopy boundsForBox:box];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -814,8 +814,8 @@ LABEL_21:
       memset(&v116, 0, sizeof(v116));
     }
 
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(image);
+    Height = CVPixelBufferGetHeight(image);
     memset(&v115, 0, sizeof(v115));
     v24 = objc_opt_class();
     if (v24)
@@ -889,27 +889,27 @@ LABEL_21:
           _Block_object_dispose(&v107, 8);
           if (objc_opt_isKindOfClass())
           {
-            v72 = [v27 getCROutputRegion];
-            v30 = [v72 boundingQuad];
+            getCROutputRegion = [v27 getCROutputRegion];
+            boundingQuad = [getCROutputRegion boundingQuad];
             v89 = v27;
-            PDFQuadPoints::PDFQuadPoints(&v108, v30);
+            PDFQuadPoints::PDFQuadPoints(&v108, boundingQuad);
 
             v107 = v108;
             PDFQuadPoints::applyTransform(&v107, &v116);
             v31 = atan2(v107.var3.y - v107.var2.y, v107.var3.x - v107.var2.x);
             v106 = v108;
-            v77 = [a1 createImageFromImage:v87 withBoundingQuad:{&v106, PDFQuadPoints::applyTransform(&v106, &v115).f64[0]}];
-            v78 = [MEMORY[0x1E695F648] rowAverageFilter];
-            [v78 setInputImage:v77];
+            v77 = [self createImageFromImage:v87 withBoundingQuad:{&v106, PDFQuadPoints::applyTransform(&v106, &v115).f64[0]}];
+            rowAverageFilter = [MEMORY[0x1E695F648] rowAverageFilter];
+            [rowAverageFilter setInputImage:v77];
             [v77 extent];
-            [v78 setExtent:?];
-            v73 = [v78 outputImage];
-            [v73 extent];
-            v105 = [v86 createCGImage:v73 fromRect:?];
-            v32 = [a1 getBaselineAndHeightFromRowAverages:v105];
+            [rowAverageFilter setExtent:?];
+            outputImage = [rowAverageFilter outputImage];
+            [outputImage extent];
+            v105 = [v86 createCGImage:outputImage fromRect:?];
+            v32 = [self getBaselineAndHeightFromRowAverages:v105];
             v34 = v33;
-            v35 = [v27 getTranscript];
-            [a1 sizeOfFont:v75 withHeight:v35 string:{vcvtd_n_f64_u64(v34, 1uLL)}];
+            getTranscript = [v27 getTranscript];
+            [self sizeOfFont:v75 withHeight:getTranscript string:{vcvtd_n_f64_u64(v34, 1uLL)}];
             v37 = v36;
 
             v75 = font;
@@ -919,8 +919,8 @@ LABEL_21:
             v101 = 0u;
             v102 = 0u;
             v103 = 0u;
-            v81 = [v89 getChildren];
-            v39 = [v81 countByEnumeratingWithState:&v100 objects:v124 count:16];
+            getChildren = [v89 getChildren];
+            v39 = [getChildren countByEnumeratingWithState:&v100 objects:v124 count:16];
             v88 = CopyWithAttributes;
             if (v39)
             {
@@ -935,26 +935,26 @@ LABEL_21:
                 {
                   if (*v101 != v85)
                   {
-                    objc_enumerationMutation(v81);
+                    objc_enumerationMutation(getChildren);
                   }
 
                   v42 = *(*(&v100 + 1) + 8 * v41);
-                  v43 = [v42 getCROutputRegion];
-                  v44 = [v43 boundingQuad];
-                  PDFQuadPoints::PDFQuadPoints(&v99, v44);
+                  getCROutputRegion2 = [v42 getCROutputRegion];
+                  boundingQuad2 = [getCROutputRegion2 boundingQuad];
+                  PDFQuadPoints::PDFQuadPoints(&v99, boundingQuad2);
 
                   v98 = v99;
                   PDFQuadPoints::applyTransform(&v98, &v116);
                   v97 = v99;
-                  v45 = [a1 createImageFromImage:v87 withBoundingQuad:{&v97, PDFQuadPoints::applyTransform(&v97, &v115).f64[0]}];
-                  v46 = [MEMORY[0x1E695F648] columnAverageFilter];
-                  [v46 setInputImage:v45];
+                  v45 = [self createImageFromImage:v87 withBoundingQuad:{&v97, PDFQuadPoints::applyTransform(&v97, &v115).f64[0]}];
+                  columnAverageFilter = [MEMORY[0x1E695F648] columnAverageFilter];
+                  [columnAverageFilter setInputImage:v45];
                   [v45 extent];
-                  [v46 setExtent:?];
-                  v47 = [v46 outputImage];
-                  [v47 extent];
-                  v96 = [v86 createCGImage:v47 fromRect:?];
-                  v48 = [a1 getXInsetsFromColAverages:v96];
+                  [columnAverageFilter setExtent:?];
+                  outputImage2 = [columnAverageFilter outputImage];
+                  [outputImage2 extent];
+                  v96 = [v86 createCGImage:outputImage2 fromRect:?];
+                  v48 = [self getXInsetsFromColAverages:v96];
                   v50 = v49;
                   if (v119)
                   {
@@ -964,12 +964,12 @@ LABEL_21:
                   PDFQuadPoints::getSideLengths(&v98);
                   v52 = v51;
                   v53 = objc_alloc(MEMORY[0x1E696AD60]);
-                  v54 = [v42 string];
-                  v55 = [v53 initWithString:v54];
+                  string = [v42 string];
+                  v55 = [v53 initWithString:string];
 
-                  v56 = [v89 getChildren];
-                  v57 = [v56 lastObject];
-                  v58 = v42 == v57;
+                  getChildren2 = [v89 getChildren];
+                  lastObject = [getChildren2 lastObject];
+                  v58 = v42 == lastObject;
 
                   if (!v58)
                   {
@@ -1035,7 +1035,7 @@ LABEL_21:
                 }
 
                 while (v90 != v41);
-                v39 = [v81 countByEnumeratingWithState:&v100 objects:v124 count:16];
+                v39 = [getChildren countByEnumeratingWithState:&v100 objects:v124 count:16];
               }
 
               while (v39);
@@ -1065,10 +1065,10 @@ LABEL_21:
       v80 = 0;
     }
 
-    [a1 addDisplayList:v12 toPage:v70];
+    [self addDisplayList:v12 toPage:pageCopy];
     if (v120)
     {
-      [v70 setEffectLayerOCRContent:?];
+      [pageCopy setEffectLayerOCRContent:?];
     }
 
     v65 = CFAbsoluteTimeGetCurrent();
@@ -1113,25 +1113,25 @@ LABEL_21:
   return v67 != 0;
 }
 
-+ (BOOL)addFormFieldsFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6
++ (BOOL)addFormFieldsFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box
 {
   v110 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v63 = v9;
-  v59 = [a3 getCRDocumentOutputRegion];
-  v10 = [v9 annotations];
-  v11 = [v59 detectedFieldRegionsExcludingFields:v10 updateExcludedFields:1];
+  pageCopy = page;
+  v63 = pageCopy;
+  getCRDocumentOutputRegion = [document getCRDocumentOutputRegion];
+  annotations = [pageCopy annotations];
+  v11 = [getCRDocumentOutputRegion detectedFieldRegionsExcludingFields:annotations updateExcludedFields:1];
 
   v58 = v11;
   if ([v11 count])
   {
-    v57 = [v9 annotations];
-    v64 = [MEMORY[0x1E695DF70] array];
+    annotations2 = [pageCopy annotations];
+    array = [MEMORY[0x1E695DF70] array];
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    obj = v57;
+    obj = annotations2;
     v12 = [obj countByEnumeratingWithState:&v103 objects:v109 count:16];
     if (v12)
     {
@@ -1148,12 +1148,12 @@ LABEL_21:
           v15 = *(*(&v103 + 1) + 8 * i);
           if ([v15 isSynthesizedFormField])
           {
-            v16 = [v15 contents];
-            v17 = [v16 length] == 0;
+            contents = [v15 contents];
+            v17 = [contents length] == 0;
 
             if (v17)
             {
-              [v64 addObject:v15];
+              [array addObject:v15];
             }
           }
         }
@@ -1168,7 +1168,7 @@ LABEL_21:
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v65 = v64;
+    v65 = array;
     v18 = [v65 countByEnumeratingWithState:&v99 objects:v108 count:16];
     if (v18)
     {
@@ -1182,7 +1182,7 @@ LABEL_21:
             objc_enumerationMutation(v65);
           }
 
-          [v9 removeAnnotation:*(*(&v99 + 1) + 8 * j)];
+          [pageCopy removeAnnotation:*(*(&v99 + 1) + 8 * j)];
         }
 
         v18 = [v65 countByEnumeratingWithState:&v99 objects:v108 count:16];
@@ -1191,7 +1191,7 @@ LABEL_21:
       while (v18);
     }
 
-    [v9 boundsForBox:a6];
+    [pageCopy boundsForBox:box];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -1199,7 +1199,7 @@ LABEL_21:
     v97 = 0u;
     v98 = 0u;
     v96 = 0u;
-    [a1 normalizedToPageTransformForPageWithBounds:v21];
+    [self normalizedToPageTransformForPageWithBounds:v21];
     v29 = MEMORY[0x1E69DB878];
     v30 = +[PDFAnnotation detectedFormFieldDefaultFontName];
     +[PDFAnnotation detectedFormFieldDefaultFontSize];
@@ -1208,7 +1208,7 @@ LABEL_21:
     v31 = MEMORY[0x1E69DB878];
     +[PDFAnnotation detectedFormFieldDefaultFontSize];
     v61 = [v31 monospacedSystemFontOfSize:? weight:?];
-    v62 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
@@ -1232,8 +1232,8 @@ LABEL_21:
           getCRFormFieldOutputRegionClass();
           if (objc_opt_isKindOfClass())
           {
-            v38 = [v36 boundingQuad];
-            PDFQuadPoints::PDFQuadPoints(&v91, v38);
+            boundingQuad = [v36 boundingQuad];
+            PDFQuadPoints::PDFQuadPoints(&v91, boundingQuad);
 
             y = v91.var0.y;
             if (v91.var0.y == v91.var1.y)
@@ -1264,7 +1264,7 @@ LABEL_21:
                     v90 = v28;
                     v40 = v63;
                     v81 = v40;
-                    v41 = v62;
+                    v41 = array2;
                     v82 = v41;
                     v42 = _Block_copy(aBlock);
                     v70[0] = MEMORY[0x1E69E9820];
@@ -1280,16 +1280,16 @@ LABEL_21:
                     v72 = v43;
                     v73 = v41;
                     v44 = _Block_copy(v70);
-                    v45 = [v36 fieldType];
+                    fieldType = [v36 fieldType];
                     v46 = v42;
-                    if (v45 == 1 || (v47 = [v36 fieldType], v46 = v44, v47 == 2))
+                    if (fieldType == 1 || (v47 = [v36 fieldType], v46 = v44, v47 == 2))
                     {
                       v48 = v46[2](v46, v36);
                     }
 
                     else if (![v36 fieldType])
                     {
-                      v49 = [v36 children];
+                      children = [v36 children];
                       v50 = objc_alloc_init(MEMORY[0x1E695DFA0]);
                       v67[0] = MEMORY[0x1E69E9820];
                       v67[1] = 3221225472;
@@ -1298,7 +1298,7 @@ LABEL_21:
                       v69 = v42;
                       v51 = v50;
                       v68 = v51;
-                      [v49 enumerateObjectsUsingBlock:v67];
+                      [children enumerateObjectsUsingBlock:v67];
                       if ([v51 count])
                       {
                         [v43 addFormFieldGroup:v51];
@@ -1321,15 +1321,15 @@ LABEL_21:
       while (v52);
     }
 
-    v53 = [v62 count];
+    v53 = [array2 count];
     v54 = v53 != 0;
     if (v53)
     {
-      [v63 addDetectedAnnotations:v62];
-      v55 = [v59 formness];
-      if (v55 < 3)
+      [v63 addDetectedAnnotations:array2];
+      formness = [getCRDocumentOutputRegion formness];
+      if (formness < 3)
       {
-        [v63 setDetectedFormFieldsRecognitionConfidence:v55 + 1];
+        [v63 setDetectedFormFieldsRecognitionConfidence:formness + 1];
       }
     }
   }
@@ -1435,12 +1435,12 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
   }
 }
 
-+ (BOOL)addTablesFromVisionDocument:(id)a3 documentImage:(__CVBuffer *)a4 toPage:(id)a5 withBox:(int64_t)a6
++ (BOOL)addTablesFromVisionDocument:(id)document documentImage:(__CVBuffer *)image toPage:(id)page withBox:(int64_t)box
 {
   v113 = *MEMORY[0x1E69E9840];
-  v87 = a3;
-  v86 = a5;
-  [v86 boundsForBox:a6];
+  documentCopy = document;
+  pageCopy = page;
+  [pageCopy boundsForBox:box];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1457,14 +1457,14 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
     memset(&v109, 0, sizeof(v109));
   }
 
-  v84 = [v87 getCRDocumentOutputRegion];
-  v85 = [v84 layoutComponents];
+  getCRDocumentOutputRegion = [documentCopy getCRDocumentOutputRegion];
+  layoutComponents = [getCRDocumentOutputRegion layoutComponents];
   v88 = objc_opt_new();
   v107 = 0u;
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  obj = v85;
+  obj = layoutComponents;
   v91 = [obj countByEnumeratingWithState:&v105 objects:v112 count:16];
   if (v91)
   {
@@ -1481,8 +1481,8 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
         v17 = *(*(&v105 + 1) + 8 * i);
         if ([v17 type] == 64)
         {
-          v18 = [v17 boundingQuad];
-          [v18 boundingBox];
+          boundingQuad = [v17 boundingQuad];
+          [boundingQuad boundingBox];
           v20 = v19;
           v22 = v21;
           v24 = v23;
@@ -1504,10 +1504,10 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
           v103 = 0u;
           v100 = 0u;
           v101 = 0u;
-          v31 = [v17 children];
+          children = [v17 children];
           v32 = 0;
           v33 = 0;
-          v34 = [v31 countByEnumeratingWithState:&v100 objects:v111 count:16];
+          v34 = [children countByEnumeratingWithState:&v100 objects:v111 count:16];
           if (v34)
           {
             v35 = *v101;
@@ -1517,7 +1517,7 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
               {
                 if (*v101 != v35)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(children);
                 }
 
                 v37 = *(*(&v100 + 1) + 8 * j);
@@ -1538,8 +1538,8 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
                 v46 = [v44 numberWithUnsignedInteger:v45];
                 [v38 setValue:v46 forKey:@"Col Range"];
 
-                v47 = [v37 boundingQuad];
-                [v47 boundingBox];
+                boundingQuad2 = [v37 boundingQuad];
+                [boundingQuad2 boundingBox];
                 v49 = v48;
                 v51 = v50;
                 v53 = v52;
@@ -1555,22 +1555,22 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
                 [v38 setValue:v56 forKey:@"Rect"];
 
                 [v95 addObject:v38];
-                v57 = [v37 rowRange];
+                rowRange = [v37 rowRange];
                 [v37 rowRange];
-                if (v58 + v57 > v33)
+                if (v58 + rowRange > v33)
                 {
-                  v33 = v58 + v57;
+                  v33 = v58 + rowRange;
                 }
 
-                v59 = [v37 colRange];
+                colRange = [v37 colRange];
                 [v37 colRange];
-                if (v60 + v59 > v32)
+                if (v60 + colRange > v32)
                 {
-                  v32 = v60 + v59;
+                  v32 = v60 + colRange;
                 }
               }
 
-              v34 = [v31 countByEnumeratingWithState:&v100 objects:v111 count:16];
+              v34 = [children countByEnumeratingWithState:&v100 objects:v111 count:16];
             }
 
             while (v34);
@@ -1606,9 +1606,9 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
 
                 v67 = *(*(&v96 + 1) + 8 * m);
                 v68 = [v67 objectForKeyedSubscript:@"Row Index"];
-                v69 = [v68 integerValue];
+                integerValue = [v68 integerValue];
 
-                v70 = [v61 objectAtIndexedSubscript:v69];
+                v70 = [v61 objectAtIndexedSubscript:integerValue];
                 [v70 insertObject:v67 atIndex:{objc_msgSend(v70, "indexOfObject:inSortedRange:options:usingComparator:", v67, 0, objc_msgSend(v70, "count"), 1024, &__block_literal_global)}];
               }
 
@@ -1641,11 +1641,11 @@ void __82__PDFPageAnalyzerV2_addFormFieldsFromVisionDocument_documentImage_toPag
   if ([v88 count])
   {
     CFAbsoluteTimeGetCurrent();
-    [v86 pageRef];
+    [pageCopy pageRef];
     v74 = v88;
     inserted = CGPDFPageInsertTableDescriptions();
-    v76 = [v86 document];
-    v77 = [v76 indexForPage:v86];
+    document = [pageCopy document];
+    v77 = [document indexForPage:pageCopy];
     CFAbsoluteTimeGetCurrent();
     _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "table insertion for page: (page #%lu) COMPLETED (+%g secs)", v78, v79, v80, v81, v82, v77 + 1);
   }

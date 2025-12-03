@@ -1,32 +1,32 @@
 @interface PLMetric
-+ (unint64_t)binDurationValue:(int)a3;
-- (PLMetric)initWithKey:(id)a3 withPosition:(unint64_t)a4 withNumBits:(int)a5 withDefault:(int)a6 andType:(signed __int16)a7;
++ (unint64_t)binDurationValue:(int)value;
+- (PLMetric)initWithKey:(id)key withPosition:(unint64_t)position withNumBits:(int)bits withDefault:(int)default andType:(signed __int16)type;
 - (unint64_t)getBinnedMetricValue;
-- (void)constructMetricValueForInterval:(id)a3;
+- (void)constructMetricValueForInterval:(id)interval;
 - (void)resetMetric;
-- (void)updateMetricWithTimestamp:(id)a3 forEvent:(signed __int16)a4 withValue:(int)a5;
+- (void)updateMetricWithTimestamp:(id)timestamp forEvent:(signed __int16)event withValue:(int)value;
 @end
 
 @implementation PLMetric
 
-- (PLMetric)initWithKey:(id)a3 withPosition:(unint64_t)a4 withNumBits:(int)a5 withDefault:(int)a6 andType:(signed __int16)a7
+- (PLMetric)initWithKey:(id)key withPosition:(unint64_t)position withNumBits:(int)bits withDefault:(int)default andType:(signed __int16)type
 {
-  v13 = a3;
+  keyCopy = key;
   v18.receiver = self;
   v18.super_class = PLMetric;
   v14 = [(PLMetric *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_metricKey, a3);
-    v15->_metricType = a7;
+    objc_storeStrong(&v14->_metricKey, key);
+    v15->_metricType = type;
     lastOnTimestamp = v15->_lastOnTimestamp;
     v15->_lastOnTimestamp = 0;
 
-    v15->_bitPosition = a4;
-    v15->_metricValue = a6;
-    v15->_numBits = a5;
-    v15->_defaultValue = a6;
+    v15->_bitPosition = position;
+    v15->_metricValue = default;
+    v15->_numBits = bits;
+    v15->_defaultValue = default;
   }
 
   return v15;
@@ -40,15 +40,15 @@
   self->_metricValue = self->_defaultValue;
 }
 
-- (void)updateMetricWithTimestamp:(id)a3 forEvent:(signed __int16)a4 withValue:(int)a5
+- (void)updateMetricWithTimestamp:(id)timestamp forEvent:(signed __int16)event withValue:(int)value
 {
-  v6 = a4;
+  eventCopy = event;
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [(PLMetric *)self metricType];
-  if (v10 == 2)
+  timestampCopy = timestamp;
+  metricType = [(PLMetric *)self metricType];
+  if (metricType == 2)
   {
-    if (v6 == 2)
+    if (eventCopy == 2)
     {
       goto LABEL_26;
     }
@@ -56,14 +56,14 @@
     goto LABEL_14;
   }
 
-  if (v10 == 1)
+  if (metricType == 1)
   {
-    if (!v6)
+    if (!eventCopy)
     {
       goto LABEL_29;
     }
 
-    if (v6 == 2)
+    if (eventCopy == 2)
     {
       if (self->_lastOnTimestamp)
       {
@@ -73,30 +73,30 @@
       goto LABEL_26;
     }
 
-    if (v6 != 1)
+    if (eventCopy != 1)
     {
       goto LABEL_30;
     }
 
-    objc_storeStrong(&self->_lastOnTimestamp, a3);
+    objc_storeStrong(&self->_lastOnTimestamp, timestamp);
 LABEL_14:
-    self->_metricValue = a5;
+    self->_metricValue = value;
     goto LABEL_30;
   }
 
-  if (!v10)
+  if (!metricType)
   {
-    if (v6)
+    if (eventCopy)
     {
-      if (v6 != 2)
+      if (eventCopy != 2)
       {
-        if (v6 == 1)
+        if (eventCopy == 1)
         {
           lastOnTimestamp = self->_lastOnTimestamp;
           p_lastOnTimestamp = &self->_lastOnTimestamp;
           if (!lastOnTimestamp)
           {
-            objc_storeStrong(p_lastOnTimestamp, a3);
+            objc_storeStrong(p_lastOnTimestamp, timestamp);
           }
         }
 
@@ -105,7 +105,7 @@ LABEL_14:
 
       if (self->_lastOnTimestamp)
       {
-        objc_storeStrong(&self->_lastOnTimestamp, a3);
+        objc_storeStrong(&self->_lastOnTimestamp, timestamp);
       }
 
 LABEL_26:
@@ -118,7 +118,7 @@ LABEL_26:
       goto LABEL_30;
     }
 
-    [v9 timeIntervalSinceDate:?];
+    [timestampCopy timeIntervalSinceDate:?];
     self->_metricValue = (v20 + self->_metricValue);
 LABEL_29:
     v21 = self->_lastOnTimestamp;
@@ -145,9 +145,9 @@ LABEL_29:
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Unrecognized metric type %d!", self->_metricType, block, v24, v25, v26, v27];
       v15 = MEMORY[0x277D3F178];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent = [v16 lastPathComponent];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMetric updateMetricWithTimestamp:forEvent:withValue:]"];
-      [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:205];
+      [v15 logMessage:v14 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:205];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -171,14 +171,14 @@ uint64_t __57__PLMetric_updateMetricWithTimestamp_forEvent_withValue___block_inv
   return result;
 }
 
-- (void)constructMetricValueForInterval:(id)a3
+- (void)constructMetricValueForInterval:(id)interval
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  intervalCopy = interval;
+  v5 = intervalCopy;
   if (!self->_metricType && self->_lastOnTimestamp)
   {
-    [v4 timeIntervalSinceDate:?];
+    [intervalCopy timeIntervalSinceDate:?];
     if (v7 < 0)
     {
       if ([MEMORY[0x277D3F180] debugEnabled])
@@ -199,9 +199,9 @@ uint64_t __57__PLMetric_updateMetricWithTimestamp_forEvent_withValue___block_inv
           v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Event starting at %@ does not belong to interval %@", self->_lastOnTimestamp, v5];
           v10 = MEMORY[0x277D3F178];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLAggregateUsageService.m"];
-          v12 = [v11 lastPathComponent];
+          lastPathComponent = [v11 lastPathComponent];
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMetric constructMetricValueForInterval:]"];
-          [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:216];
+          [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:216];
 
           v14 = PLLogCommon();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -307,7 +307,7 @@ uint64_t __34__PLMetric_binBatteryTemperature___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (unint64_t)binDurationValue:(int)a3
++ (unint64_t)binDurationValue:(int)value
 {
   v3 = 1;
   v4 = 2;
@@ -315,37 +315,37 @@ uint64_t __34__PLMetric_binBatteryTemperature___block_invoke(uint64_t a1)
   v6 = 4;
   v7 = 5;
   v8 = 6;
-  if (a3 >= 0x384)
+  if (value >= 0x384)
   {
     v8 = 7;
   }
 
-  if (a3 >= 0x258)
+  if (value >= 0x258)
   {
     v7 = v8;
   }
 
-  if (a3 >= 0x12C)
+  if (value >= 0x12C)
   {
     v6 = v7;
   }
 
-  if (a3 >= 0x78)
+  if (value >= 0x78)
   {
     v5 = v6;
   }
 
-  if (a3 >= 0x3C)
+  if (value >= 0x3C)
   {
     v4 = v5;
   }
 
-  if (a3 >= 10)
+  if (value >= 10)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (value)
   {
     return v3;
   }

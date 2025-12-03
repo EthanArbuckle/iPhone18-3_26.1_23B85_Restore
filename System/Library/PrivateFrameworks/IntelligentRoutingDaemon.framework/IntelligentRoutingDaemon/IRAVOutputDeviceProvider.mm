@@ -1,10 +1,10 @@
 @interface IRAVOutputDeviceProvider
 - (IRAVOutputDeviceProvider)init;
-- (id)_logDevicesString:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)didUpdateAVOutputDevices:(id)a3;
+- (id)_logDevicesString:(id)string;
+- (void)addObserver:(id)observer;
+- (void)didUpdateAVOutputDevices:(id)devices;
 - (void)logActiveDevices;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation IRAVOutputDeviceProvider
@@ -20,8 +20,8 @@
     v4 = dispatch_queue_create("com.apple.intelligentroutingd.IRAVOutputDeviceProvider", v3);
     [(IRAVOutputDeviceProvider *)v2 setQueue:v4];
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(IRAVOutputDeviceProvider *)v2 setObservers:v5];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(IRAVOutputDeviceProvider *)v2 setObservers:weakObjectsHashTable];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB98]);
     [(IRAVOutputDeviceProvider *)v2 setCachedDevices:v6];
@@ -30,17 +30,17 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(IRAVOutputDeviceProvider *)self queue];
+  observerCopy = observer;
+  queue = [(IRAVOutputDeviceProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__IRAVOutputDeviceProvider_addObserver___block_invoke;
   v7[3] = &unk_2797E0DB0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchSyncWithStrongSelf(v5, self, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  IRDispatchSyncWithStrongSelf(queue, self, v7);
 }
 
 void __40__IRAVOutputDeviceProvider_addObserver___block_invoke(uint64_t a1, void *a2)
@@ -85,17 +85,17 @@ void __40__IRAVOutputDeviceProvider_addObserver___block_invoke(uint64_t a1, void
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(IRAVOutputDeviceProvider *)self queue];
+  observerCopy = observer;
+  queue = [(IRAVOutputDeviceProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__IRAVOutputDeviceProvider_removeObserver___block_invoke;
   v7[3] = &unk_2797E0DB0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchSyncWithStrongSelf(v5, self, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  IRDispatchSyncWithStrongSelf(queue, self, v7);
 }
 
 void __43__IRAVOutputDeviceProvider_removeObserver___block_invoke(uint64_t a1, void *a2)
@@ -135,17 +135,17 @@ void __43__IRAVOutputDeviceProvider_removeObserver___block_invoke(uint64_t a1, v
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateAVOutputDevices:(id)a3
+- (void)didUpdateAVOutputDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(IRAVOutputDeviceProvider *)self queue];
+  devicesCopy = devices;
+  queue = [(IRAVOutputDeviceProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__IRAVOutputDeviceProvider_didUpdateAVOutputDevices___block_invoke;
   v7[3] = &unk_2797E0DB0;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __53__IRAVOutputDeviceProvider_didUpdateAVOutputDevices___block_invoke(uint64_t a1, void *a2)
@@ -210,8 +210,8 @@ void __53__IRAVOutputDeviceProvider_didUpdateAVOutputDevices___block_invoke(uint
 
 - (void)logActiveDevices
 {
-  v3 = [(IRAVOutputDeviceProvider *)self queue];
-  IRDispatchAsyncWithStrongSelf(v3, self, &__block_literal_global_2);
+  queue = [(IRAVOutputDeviceProvider *)self queue];
+  IRDispatchAsyncWithStrongSelf(queue, self, &__block_literal_global_2);
 }
 
 void __44__IRAVOutputDeviceProvider_logActiveDevices__block_invoke(uint64_t a1, void *a2)
@@ -233,9 +233,9 @@ void __44__IRAVOutputDeviceProvider_logActiveDevices__block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_logDevicesString:(id)a3
+- (id)_logDevicesString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
@@ -243,7 +243,7 @@ void __44__IRAVOutputDeviceProvider_logActiveDevices__block_invoke(uint64_t a1, 
   v13 = &unk_2797E0DF8;
   v14 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:&v10];
+  [stringCopy enumerateObjectsUsingBlock:&v10];
 
   v6 = MEMORY[0x277CCACA8];
   v7 = [v5 componentsJoinedByString:@"\n"];

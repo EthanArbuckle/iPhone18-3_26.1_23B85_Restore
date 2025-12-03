@@ -1,15 +1,15 @@
 @interface WiFiDiagnosticsExtension
 - (id)WiFiDELog;
-- (id)__attachmentsForAirPlayWithParameters:(id)a3;
-- (id)__attachmentsForFBAWithParameters:(id)a3;
-- (id)__attachmentsForSymptomsDiagWithParameters:(id)a3;
-- (id)__attachmentsForTTRWithParameters:(id)a3;
-- (id)__attachmentsForWiFiDEWithParameters:(id)a3;
+- (id)__attachmentsForAirPlayWithParameters:(id)parameters;
+- (id)__attachmentsForFBAWithParameters:(id)parameters;
+- (id)__attachmentsForSymptomsDiagWithParameters:(id)parameters;
+- (id)__attachmentsForTTRWithParameters:(id)parameters;
+- (id)__attachmentsForWiFiDEWithParameters:(id)parameters;
 - (id)__collectCentauriLogs;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (unint64_t)attachmentSizes:(id)a3;
-- (void)sendTelemetryAndClearTimers:(id)a3 withAttachments:(id)a4;
+- (id)attachmentsForParameters:(id)parameters;
+- (unint64_t)attachmentSizes:(id)sizes;
+- (void)sendTelemetryAndClearTimers:(id)timers withAttachments:(id)attachments;
 @end
 
 @implementation WiFiDiagnosticsExtension
@@ -28,24 +28,24 @@
 
 - (id)attachmentList
 {
-  v2 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  wiFiDELog = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+  if (os_log_type_enabled(wiFiDELog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446466;
     v5 = "[WiFiDiagnosticsExtension attachmentList]";
     v6 = 1024;
     v7 = 82;
-    _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: attachmentList called", &v4, 0x12u);
+    _os_log_impl(&_mh_execute_header, wiFiDELog, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: attachmentList called", &v4, 0x12u);
   }
 
   return &__NSArray0__struct;
 }
 
-- (id)__attachmentsForSymptomsDiagWithParameters:(id)a3
+- (id)__attachmentsForSymptomsDiagWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = [NSMutableString stringWithUTF8String:"symptomsd"];
-  v5 = [v3 objectForKeyedSubscript:@"trigger"];
+  v5 = [parametersCopy objectForKeyedSubscript:@"trigger"];
 
   if (v5)
   {
@@ -53,8 +53,8 @@
   }
 
   v6 = +[NSMutableArray array];
-  v7 = [sub_10000121C() sharedClient];
-  if (v7)
+  sharedClient = [sub_10000121C() sharedClient];
+  if (sharedClient)
   {
     v8 = sub_100001328();
     v17 = @"Reason";
@@ -64,7 +64,7 @@
     v19 = v10;
     v11 = [NSArray arrayWithObjects:&v19 count:1];
     v16 = 0;
-    v12 = [v7 collectLogs:v11 configuration:0 update:0 receipts:0 error:&v16];
+    v12 = [sharedClient collectLogs:v11 configuration:0 update:0 receipts:0 error:&v16];
     v13 = v16;
 
     if (v12)
@@ -77,14 +77,14 @@
   return v6;
 }
 
-- (id)__attachmentsForAirPlayWithParameters:(id)a3
+- (id)__attachmentsForAirPlayWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v67 = +[NSMutableArray array];
-  v4 = [sub_10000121C() sharedClient];
-  if (v4)
+  sharedClient = [sub_10000121C() sharedClient];
+  if (sharedClient)
   {
-    v5 = [v3 objectForKeyedSubscript:@"uuid"];
+    v5 = [parametersCopy objectForKeyedSubscript:@"uuid"];
     if (v5)
     {
       v6 = [[NSUUID alloc] initWithUUIDString:v5];
@@ -96,15 +96,15 @@
       }
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-    v8 = [v3 objectForKeyedSubscript:@"trigger"];
+    v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"trigger"];
     v9 = v8;
     v66 = v8;
     if (v5)
     {
       if ([v8 isEqualToString:@"pre"])
       {
-        v62 = v3;
+        v62 = parametersCopy;
         v10 = [v5 substringToIndex:5];
         v65 = v7;
         v63 = [NSString stringWithFormat:@"%@.%@[%@]", v7, v9, v10];
@@ -122,7 +122,7 @@
         v93 = v5;
         v15 = [NSDictionary dictionaryWithObjects:&v93 forKeys:&v92 count:1];
         [v14 requestWithItemID:24 configuration:v15];
-        v16 = v61 = v4;
+        v16 = v61 = sharedClient;
         v96[2] = v16;
         v17 = [sub_100001328() requestWithItemID:45 configuration:0];
         v96[3] = v17;
@@ -135,7 +135,7 @@
         v21 = [NSArray arrayWithObjects:v96 count:7];
 
         v22 = v63;
-        v4 = v61;
+        sharedClient = v61;
 
         v90 = @"Reason";
         v91 = v63;
@@ -148,7 +148,7 @@
           [v67 addObject:v25];
         }
 
-        v3 = v62;
+        parametersCopy = v62;
 LABEL_10:
         v7 = v65;
         goto LABEL_25;
@@ -164,7 +164,7 @@ LABEL_10:
         v89 = v28;
         v22 = [NSArray arrayWithObjects:&v89 count:1];
 
-        v21 = [v4 collectLogs:v22 configuration:0 update:0 receipts:0 error:0];
+        v21 = [sharedClient collectLogs:v22 configuration:0 update:0 receipts:0 error:0];
         if (!v21)
         {
 LABEL_26:
@@ -215,7 +215,7 @@ LABEL_25:
         v80[0] = &__kCFBooleanTrue;
         v80[1] = v30;
         v42 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:2];
-        v24 = [v4 collectLogs:v21 configuration:v42 update:0 receipts:0 error:0];
+        v24 = [sharedClient collectLogs:v21 configuration:v42 update:0 receipts:0 error:0];
 
         if (v24)
         {
@@ -262,7 +262,7 @@ LABEL_25:
         v72[1] = v51;
         v64 = v51;
         v57 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
-        v21 = [v4 collectLogs:v56 configuration:v57 update:0 receipts:0 error:0];
+        v21 = [sharedClient collectLogs:v56 configuration:v57 update:0 receipts:0 error:0];
 
         if (!v21)
         {
@@ -289,7 +289,7 @@ LABEL_25:
     }
 
     v58 = [NSDictionary dictionaryWithObjects:v48 forKeys:v49 count:2];
-    v21 = [v4 collectLogs:v46 configuration:v58 update:0 receipts:0 error:0];
+    v21 = [sharedClient collectLogs:v46 configuration:v58 update:0 receipts:0 error:0];
 
     if (!v21)
     {
@@ -308,17 +308,17 @@ LABEL_27:
   return v67;
 }
 
-- (id)__attachmentsForFBAWithParameters:(id)a3
+- (id)__attachmentsForFBAWithParameters:(id)parameters
 {
   v4 = +[NSMutableArray array];
-  v5 = [sub_10000121C() sharedClient];
-  if (v5)
+  sharedClient = [sub_10000121C() sharedClient];
+  if (sharedClient)
   {
     v6 = [sub_100001328() requestWithItemID:59 configuration:0];
     v14 = v6;
     v7 = [NSArray arrayWithObjects:&v14 count:1];
     v13 = 0;
-    v8 = [v5 collectLogs:v7 configuration:&off_100008728 update:0 receipts:0 error:&v13];
+    v8 = [sharedClient collectLogs:v7 configuration:&off_100008728 update:0 receipts:0 error:&v13];
     v9 = v13;
 
     if (v8)
@@ -329,10 +329,10 @@ LABEL_27:
 
     if (&_isCentauriPlatform)
     {
-      v11 = [(WiFiDiagnosticsExtension *)self __collectCentauriLogs];
-      if (v11)
+      __collectCentauriLogs = [(WiFiDiagnosticsExtension *)self __collectCentauriLogs];
+      if (__collectCentauriLogs)
       {
-        [v4 addObject:v11];
+        [v4 addObject:__collectCentauriLogs];
       }
     }
   }
@@ -359,14 +359,14 @@ LABEL_18:
   v6 = [@"/private/var/tmp/ConnectivityDE/" stringByAppendingFormat:@"ConnectivityLogs_%@", v5];
   if (!v6)
   {
-    v9 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    wiFiDELog = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+    if (os_log_type_enabled(wiFiDELog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446466;
       v20 = "[WiFiDiagnosticsExtension __collectCentauriLogs]";
       v21 = 1024;
       v22 = 265;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to create output path", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, wiFiDELog, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to create output path", buf, 0x12u);
     }
 
     goto LABEL_12;
@@ -375,20 +375,20 @@ LABEL_18:
   v7 = +[NSFileManager defaultManager];
   v18 = 0;
   v8 = [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v18];
-  v9 = v18;
+  wiFiDELog = v18;
 
   if ((v8 & 1) == 0)
   {
-    v14 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    wiFiDELog2 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+    if (os_log_type_enabled(wiFiDELog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
       v20 = "[WiFiDiagnosticsExtension __collectCentauriLogs]";
       v21 = 1024;
       v22 = 274;
       v23 = 2112;
-      v24 = v9;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to create directory %@", buf, 0x1Cu);
+      v24 = wiFiDELog;
+      _os_log_impl(&_mh_execute_header, wiFiDELog2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to create directory %@", buf, 0x1Cu);
     }
 
 LABEL_12:
@@ -398,7 +398,7 @@ LABEL_12:
   }
 
   v10 = collectSubsystemLogsForClient();
-  v11 = v9;
+  v11 = wiFiDELog;
 
   v12 = v10 != 0;
   if (v10)
@@ -409,8 +409,8 @@ LABEL_12:
 
   else
   {
-    v15 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    wiFiDELog3 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+    if (os_log_type_enabled(wiFiDELog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446722;
       v20 = "[WiFiDiagnosticsExtension __collectCentauriLogs]";
@@ -418,13 +418,13 @@ LABEL_12:
       v22 = 286;
       v23 = 2112;
       v24 = v11;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to get attachments %@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, wiFiDELog3, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: failed to get attachments %@", buf, 0x1Cu);
     }
 
     v13 = 0;
   }
 
-  v9 = v11;
+  wiFiDELog = v11;
 LABEL_17:
 
   if (v12)
@@ -438,23 +438,23 @@ LABEL_20:
   return v16;
 }
 
-- (id)__attachmentsForTTRWithParameters:(id)a3
+- (id)__attachmentsForTTRWithParameters:(id)parameters
 {
   v3 = +[NSMutableArray array];
-  v4 = [sub_10000121C() sharedClient];
-  if (v4)
+  sharedClient = [sub_10000121C() sharedClient];
+  if (sharedClient)
   {
     v5 = [sub_100001328() requestWithItemID:60 configuration:0];
     v13 = v5;
     v6 = [NSArray arrayWithObjects:&v13 count:1];
     v12 = 0;
-    v7 = [v4 collectLogs:v6 configuration:&off_100008750 update:0 receipts:0 error:&v12];
+    v7 = [sharedClient collectLogs:v6 configuration:&off_100008750 update:0 receipts:0 error:&v12];
     v8 = v12;
 
     if (v7)
     {
-      v9 = [v7 path];
-      v10 = [DEAttachmentItem attachmentWithPath:v9];
+      path = [v7 path];
+      v10 = [DEAttachmentItem attachmentWithPath:path];
 
       [v3 addObject:v10];
     }
@@ -463,23 +463,23 @@ LABEL_20:
   return v3;
 }
 
-- (id)__attachmentsForWiFiDEWithParameters:(id)a3
+- (id)__attachmentsForWiFiDEWithParameters:(id)parameters
 {
   v3 = +[NSMutableArray array];
-  v4 = [sub_10000121C() sharedClient];
-  if (v4)
+  sharedClient = [sub_10000121C() sharedClient];
+  if (sharedClient)
   {
     v5 = [sub_100001328() requestWithItemID:55 configuration:0];
     v13 = v5;
     v6 = [NSArray arrayWithObjects:&v13 count:1];
     v12 = 0;
-    v7 = [v4 collectLogs:v6 configuration:&off_100008778 update:0 receipts:0 error:&v12];
+    v7 = [sharedClient collectLogs:v6 configuration:&off_100008778 update:0 receipts:0 error:&v12];
     v8 = v12;
 
     if (v7)
     {
-      v9 = [v7 path];
-      v10 = [DEAttachmentItem attachmentWithPath:v9];
+      path = [v7 path];
+      v10 = [DEAttachmentItem attachmentWithPath:path];
 
       [v3 addObject:v10];
     }
@@ -488,58 +488,58 @@ LABEL_20:
   return v3;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[NSMutableArray array];
   [(WiFiDiagnosticsExtension *)self clearTimers];
   qword_10000C298 = CFAbsoluteTimeGetCurrent();
-  v6 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  wiFiDELog = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+  if (os_log_type_enabled(wiFiDELog, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136446722;
     v17 = "[WiFiDiagnosticsExtension attachmentsForParameters:]";
     v18 = 1024;
     v19 = 348;
     v20 = 2112;
-    v21 = v4;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: called with param: %@", &v16, 0x1Cu);
+    v21 = parametersCopy;
+    _os_log_impl(&_mh_execute_header, wiFiDELog, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: called with param: %@", &v16, 0x1Cu);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   if ([v7 isEqualToString:@"com.apple.symptomsd"])
   {
-    v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForSymptomsDiagWithParameters:v4];
+    v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForSymptomsDiagWithParameters:parametersCopy];
   }
 
   else
   {
-    v9 = [v7 lowercaseString];
-    v10 = [v9 hasPrefix:@"airplay"];
+    lowercaseString = [v7 lowercaseString];
+    v10 = [lowercaseString hasPrefix:@"airplay"];
 
     if (v10)
     {
-      v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForAirPlayWithParameters:v4];
+      v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForAirPlayWithParameters:parametersCopy];
     }
 
     else if ([v7 isEqualToString:@"Feedback Assistant"])
     {
-      v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForFBAWithParameters:v4];
+      v8 = [(WiFiDiagnosticsExtension *)self __attachmentsForFBAWithParameters:parametersCopy];
     }
 
     else
     {
-      v11 = [v7 lowercaseString];
-      v12 = [v11 hasPrefix:@"com.apple.taptoradar"];
+      lowercaseString2 = [v7 lowercaseString];
+      v12 = [lowercaseString2 hasPrefix:@"com.apple.taptoradar"];
 
       if (v12)
       {
-        [(WiFiDiagnosticsExtension *)self __attachmentsForTTRWithParameters:v4];
+        [(WiFiDiagnosticsExtension *)self __attachmentsForTTRWithParameters:parametersCopy];
       }
 
       else
       {
-        [(WiFiDiagnosticsExtension *)self __attachmentsForWiFiDEWithParameters:v4];
+        [(WiFiDiagnosticsExtension *)self __attachmentsForWiFiDEWithParameters:parametersCopy];
       }
       v8 = ;
     }
@@ -549,29 +549,29 @@ LABEL_20:
   [v5 addObjectsFromArray:v8];
 
   qword_10000C2A0 = CFAbsoluteTimeGetCurrent();
-  v14 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  wiFiDELog2 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+  if (os_log_type_enabled(wiFiDELog2, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136446466;
     v17 = "[WiFiDiagnosticsExtension attachmentsForParameters:]";
     v18 = 1024;
     v19 = 381;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: done", &v16, 0x12u);
+    _os_log_impl(&_mh_execute_header, wiFiDELog2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: done", &v16, 0x12u);
   }
 
-  [(WiFiDiagnosticsExtension *)self sendTelemetryAndClearTimers:v4 withAttachments:v5];
+  [(WiFiDiagnosticsExtension *)self sendTelemetryAndClearTimers:parametersCopy withAttachments:v5];
 
   return v5;
 }
 
-- (unint64_t)attachmentSizes:(id)a3
+- (unint64_t)attachmentSizes:(id)sizes
 {
-  v3 = a3;
+  sizesCopy = sizes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v4 = [sizesCopy countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v4)
   {
     v5 = v4;
@@ -583,14 +583,14 @@ LABEL_20:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sizesCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) filesize];
-        v6 += [v9 unsignedIntValue];
+        filesize = [*(*(&v12 + 1) + 8 * i) filesize];
+        v6 += [filesize unsignedIntValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v5 = [sizesCopy countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v5);
@@ -604,36 +604,36 @@ LABEL_20:
   return v6;
 }
 
-- (void)sendTelemetryAndClearTimers:(id)a3 withAttachments:(id)a4
+- (void)sendTelemetryAndClearTimers:(id)timers withAttachments:(id)attachments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  timersCopy = timers;
+  attachmentsCopy = attachments;
+  wiFiDELog = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+  if (os_log_type_enabled(wiFiDELog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v15 = "[WiFiDiagnosticsExtension sendTelemetryAndClearTimers:withAttachments:]";
     v16 = 1024;
     v17 = 402;
     v18 = 2112;
-    v19 = v6;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: called with parameters: %@", buf, 0x1Cu);
+    v19 = timersCopy;
+    _os_log_impl(&_mh_execute_header, wiFiDELog, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: called with parameters: %@", buf, 0x1Cu);
   }
 
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = attachmentsCopy;
+  v13 = timersCopy;
+  v9 = timersCopy;
+  v10 = attachmentsCopy;
   AnalyticsSendEventLazy();
   [(WiFiDiagnosticsExtension *)self clearTimers];
-  v11 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  wiFiDELog2 = [(WiFiDiagnosticsExtension *)self WiFiDELog];
+  if (os_log_type_enabled(wiFiDELog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WiFiDiagnosticsExtension sendTelemetryAndClearTimers:withAttachments:]";
     v16 = 1024;
     v17 = 450;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: done", buf, 0x12u);
+    _os_log_impl(&_mh_execute_header, wiFiDELog2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: done", buf, 0x12u);
   }
 }
 

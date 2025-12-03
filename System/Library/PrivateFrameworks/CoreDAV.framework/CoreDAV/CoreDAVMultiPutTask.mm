@@ -1,37 +1,37 @@
 @interface CoreDAVMultiPutTask
-- (CoreDAVMultiPutTask)initWithURL:(id)a3 checkCTag:(id)a4 uuidsToAddActions:(id)a5 hrefsToModDeleteActions:(id)a6;
+- (CoreDAVMultiPutTask)initWithURL:(id)l checkCTag:(id)tag uuidsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions;
 - (id)additionalHeaderValues;
-- (id)copyDefaultParserForContentType:(id)a3;
-- (void)fillOutDataWithUUIDsToAddActions:(id)a3 hrefsToModDeleteActions:(id)a4;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
+- (void)fillOutDataWithUUIDsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVMultiPutTask
 
-- (CoreDAVMultiPutTask)initWithURL:(id)a3 checkCTag:(id)a4 uuidsToAddActions:(id)a5 hrefsToModDeleteActions:(id)a6
+- (CoreDAVMultiPutTask)initWithURL:(id)l checkCTag:(id)tag uuidsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  tagCopy = tag;
   if ([(CoreDAVMultiPutTask *)self isMemberOfClass:objc_opt_class()])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"CoreDAVMultiPutTask.m" lineNumber:43 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CoreDAVMultiPutTask.m" lineNumber:43 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v29.receiver = self;
     v29.super_class = CoreDAVMultiPutTask;
-    v13 = [(CoreDAVTask *)&v29 initWithURL:v9];
+    v13 = [(CoreDAVTask *)&v29 initWithURL:lCopy];
     if (v13)
     {
       v14 = objc_alloc_init(CoreDAVXMLData);
       pushedData = v13->_pushedData;
       v13->_pushedData = v14;
 
-      objc_storeStrong(&v13->_checkCTag, a4);
+      objc_storeStrong(&v13->_checkCTag, tag);
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
       uuidToHREF = v13->_uuidToHREF;
       v13->_uuidToHREF = v16;
@@ -58,10 +58,10 @@
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)additionalHeaderValues
@@ -69,8 +69,8 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v7.receiver = self;
   v7.super_class = CoreDAVMultiPutTask;
-  v4 = [(CoreDAVTask *)&v7 additionalHeaderValues];
-  [v3 addEntriesFromDictionary:v4];
+  additionalHeaderValues = [(CoreDAVTask *)&v7 additionalHeaderValues];
+  [v3 addEntriesFromDictionary:additionalHeaderValues];
 
   if (self->_checkCTag)
   {
@@ -84,18 +84,18 @@
   return v3;
 }
 
-- (void)fillOutDataWithUUIDsToAddActions:(id)a3 hrefsToModDeleteActions:(id)a4
+- (void)fillOutDataWithUUIDsToAddActions:(id)actions hrefsToModDeleteActions:(id)deleteActions
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  actionsCopy = actions;
+  deleteActionsCopy = deleteActions;
   [CoreDAVXMLData startElement:"startElement:inNamespace:withAttributes:" inNamespace:? withAttributes:?];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = v6;
-  obj = [v6 allKeys];
+  v26 = actionsCopy;
+  obj = [actionsCopy allKeys];
   v27 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v27)
   {
@@ -110,13 +110,13 @@
         }
 
         v30 = [v26 objectForKey:*(*(&v36 + 1) + 8 * i)];
-        v28 = [v30 context];
+        context = [v30 context];
         [(CoreDAVXMLData *)self->_pushedData startElement:@"resource" inNamespace:@"http://me.com/_namespace/" withAttributes:0];
         [(CoreDAVXMLData *)self->_pushedData startElement:@"set" inNamespace:@"DAV:" withAttributes:0];
         [(CoreDAVXMLData *)self->_pushedData startElement:@"prop" inNamespace:@"DAV:" withAttributes:0];
         v8 = objc_alloc(MEMORY[0x277CCACA8]);
-        v9 = [v28 dataPayload];
-        v10 = [v8 initWithData:v9 encoding:4];
+        dataPayload = [context dataPayload];
+        v10 = [v8 initWithData:dataPayload encoding:4];
 
         [(CoreDAVXMLData *)self->_pushedData appendElement:self->_appSpecificDataProp inNamespace:self->_appSpecificNamespace withStringContentAsCDATA:v10 withAttributeNamesAndValues:0];
         [(CoreDAVXMLData *)self->_pushedData endElement:@"prop" inNamespace:@"DAV:"];
@@ -134,9 +134,9 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v21;
-  v24 = [v21 allKeys];
-  v31 = [v24 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v11 = deleteActionsCopy;
+  allKeys = [deleteActionsCopy allKeys];
+  v31 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v31)
   {
     v29 = *v33;
@@ -146,15 +146,15 @@
       {
         if (*v33 != v29)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v32 + 1) + 8 * j);
         v14 = [v11 objectForKey:v13];
         [(CoreDAVXMLData *)self->_pushedData startElement:@"resource" inNamespace:@"http://me.com/_namespace/" withAttributes:0];
         pushedData = self->_pushedData;
-        v16 = [v13 CDVRawPath];
-        [(CoreDAVXMLData *)pushedData appendElement:@"href" inNamespace:@"DAV:" withStringContent:v16 withAttributeNamesAndValues:0];
+        cDVRawPath = [v13 CDVRawPath];
+        [(CoreDAVXMLData *)pushedData appendElement:@"href" inNamespace:@"DAV:" withStringContent:cDVRawPath withAttributeNamesAndValues:0];
 
         if ([v14 action] == 2)
         {
@@ -163,14 +163,14 @@
 
         else
         {
-          v25 = [v14 context];
+          context2 = [v14 context];
           [(CoreDAVXMLData *)self->_pushedData startElement:@"set" inNamespace:@"DAV:" withAttributes:0];
           [(CoreDAVXMLData *)self->_pushedData startElement:@"prop" inNamespace:@"DAV:" withAttributes:0];
           v17 = objc_alloc(MEMORY[0x277CCACA8]);
-          v18 = [v25 dataPayload];
-          v19 = [v17 initWithData:v18 encoding:4];
+          dataPayload2 = [context2 dataPayload];
+          v19 = [v17 initWithData:dataPayload2 encoding:4];
 
-          v11 = v21;
+          v11 = deleteActionsCopy;
           [(CoreDAVXMLData *)self->_pushedData appendElement:self->_appSpecificDataProp inNamespace:self->_appSpecificNamespace withStringContentAsCDATA:v19 withAttributeNamesAndValues:0];
 
           [(CoreDAVXMLData *)self->_pushedData endElement:@"prop" inNamespace:@"DAV:"];
@@ -180,7 +180,7 @@
         [(CoreDAVXMLData *)self->_pushedData endElement:@"resource" inNamespace:@"http://me.com/_namespace/"];
       }
 
-      v31 = [v24 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v31 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v31);
@@ -190,7 +190,7 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = [CoreDAVXMLParser alloc];
   v5 = objc_opt_class();
@@ -207,22 +207,22 @@
   return v7;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v5 = [(CoreDAVTask *)self responseBodyParser];
+    responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v35 = [(CoreDAVTask *)self responseBodyParser];
-      v7 = [v35 rootElement];
-      v8 = [(CoreDAVTask *)self responseHeaders];
-      v9 = [v8 CDVObjectForKeyCaseInsensitive:@"ctag"];
+      responseBodyParser2 = [(CoreDAVTask *)self responseBodyParser];
+      rootElement = [responseBodyParser2 rootElement];
+      responseHeaders = [(CoreDAVTask *)self responseHeaders];
+      v9 = [responseHeaders CDVObjectForKeyCaseInsensitive:@"ctag"];
       nextCTag = self->_nextCTag;
       self->_nextCTag = v9;
 
@@ -230,9 +230,9 @@
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v34 = v7;
-      obj = [v7 responses];
-      v11 = self;
+      v34 = rootElement;
+      obj = [rootElement responses];
+      selfCopy = self;
       v39 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (!v39)
       {
@@ -240,7 +240,7 @@
       }
 
       v38 = *v45;
-      v36 = self;
+      selfCopy2 = self;
       while (1)
       {
         v12 = 0;
@@ -252,20 +252,20 @@
           }
 
           v13 = *(*(&v44 + 1) + 8 * v12);
-          v14 = [v13 firstHref];
-          v15 = [v14 payloadAsFullURL];
+          firstHref = [v13 firstHref];
+          payloadAsFullURL = [firstHref payloadAsFullURL];
 
-          v16 = [v13 successfulPropertiesToValues];
-          v41 = [v16 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
-          v17 = [v41 payloadAsString];
-          v40 = [v16 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"uid"];
-          v18 = [v40 payloadAsString];
-          v19 = [v13 status];
-          v20 = [v19 payloadAsString];
+          successfulPropertiesToValues = [v13 successfulPropertiesToValues];
+          v41 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
+          payloadAsString = [v41 payloadAsString];
+          v40 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"uid"];
+          payloadAsString2 = [v40 payloadAsString];
+          status = [v13 status];
+          payloadAsString3 = [status payloadAsString];
 
-          if (v18)
+          if (payloadAsString2)
           {
-            v21 = v15 == 0;
+            v21 = payloadAsFullURL == 0;
           }
 
           else
@@ -275,12 +275,12 @@
 
           if (!v21)
           {
-            [(NSMutableDictionary *)v11->_uuidToHREF setObject:v15 forKey:v18];
+            [(NSMutableDictionary *)selfCopy->_uuidToHREF setObject:payloadAsFullURL forKey:payloadAsString2];
           }
 
-          if (v15)
+          if (payloadAsFullURL)
           {
-            v22 = v17 == 0;
+            v22 = payloadAsString == 0;
           }
 
           else
@@ -290,7 +290,7 @@
 
           if (v22)
           {
-            if (v18)
+            if (payloadAsString2)
             {
               goto LABEL_19;
             }
@@ -298,11 +298,11 @@
 
           else
           {
-            [(NSMutableDictionary *)v11->_hrefToETag setObject:v17 forKey:v15];
-            if (v18)
+            [(NSMutableDictionary *)selfCopy->_hrefToETag setObject:payloadAsString forKey:payloadAsFullURL];
+            if (payloadAsString2)
             {
 LABEL_19:
-              if (!v20)
+              if (!payloadAsString3)
               {
                 goto LABEL_27;
               }
@@ -311,39 +311,39 @@ LABEL_19:
             }
           }
 
-          v23 = [v13 serverUID];
-          v18 = [v23 payloadAsString];
+          serverUID = [v13 serverUID];
+          payloadAsString2 = [serverUID payloadAsString];
 
-          if (!v20)
+          if (!payloadAsString3)
           {
             goto LABEL_27;
           }
 
 LABEL_23:
-          if (v18)
+          if (payloadAsString2)
           {
-            [(NSMutableDictionary *)v11->_uuidToStatus setObject:v20 forKey:v18];
+            [(NSMutableDictionary *)selfCopy->_uuidToStatus setObject:payloadAsString3 forKey:payloadAsString2];
           }
 
-          if (v15)
+          if (payloadAsFullURL)
           {
-            [(NSMutableDictionary *)v11->_hrefToStatus setObject:v20 forKey:v15];
+            [(NSMutableDictionary *)selfCopy->_hrefToStatus setObject:payloadAsString3 forKey:payloadAsFullURL];
           }
 
 LABEL_27:
-          v24 = [v13 errorItem];
-          v25 = v24;
-          if (!v24)
+          errorItem = [v13 errorItem];
+          v25 = errorItem;
+          if (!errorItem)
           {
             goto LABEL_38;
           }
 
-          v26 = [v24 ctagOkay];
+          ctagOkay = [errorItem ctagOkay];
 
-          if (v26)
+          if (ctagOkay)
           {
             v27 = +[CoreDAVLogging sharedLogging];
-            WeakRetained = objc_loadWeakRetained(&v11->super._accountInfoProvider);
+            WeakRetained = objc_loadWeakRetained(&selfCopy->super._accountInfoProvider);
             v29 = [v27 logHandleForAccountInfoProvider:WeakRetained];
 
             if (v29 && os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
@@ -352,35 +352,35 @@ LABEL_27:
               _os_log_impl(&dword_2452FB000, v29, OS_LOG_TYPE_INFO, "Found a ctag-ok error item, marking our ctag as invalid", buf, 2u);
             }
 
-            v11 = v36;
-            v30 = v36->_nextCTag;
-            v36->_nextCTag = 0;
+            selfCopy = selfCopy2;
+            v30 = selfCopy2->_nextCTag;
+            selfCopy2->_nextCTag = 0;
           }
 
-          if (v18)
+          if (payloadAsString2)
           {
-            if (!v15)
+            if (!payloadAsFullURL)
             {
               goto LABEL_36;
             }
 
 LABEL_35:
-            [(NSMutableDictionary *)v11->_hrefToErrorItems setObject:v25 forKey:v15];
+            [(NSMutableDictionary *)selfCopy->_hrefToErrorItems setObject:v25 forKey:payloadAsFullURL];
             goto LABEL_36;
           }
 
           v31 = [v25 uid];
-          v18 = [v31 payloadAsString];
+          payloadAsString2 = [v31 payloadAsString];
 
-          if (v15)
+          if (payloadAsFullURL)
           {
             goto LABEL_35;
           }
 
 LABEL_36:
-          if (v18)
+          if (payloadAsString2)
           {
-            [(NSMutableDictionary *)v11->_uuidToErrorItems setObject:v25 forKey:v18];
+            [(NSMutableDictionary *)selfCopy->_uuidToErrorItems setObject:v25 forKey:payloadAsString2];
           }
 
 LABEL_38:
@@ -395,8 +395,8 @@ LABEL_38:
         {
 LABEL_43:
 
-          self = v11;
-          v4 = 0;
+          self = selfCopy;
+          errorCopy = 0;
           break;
         }
       }
@@ -405,7 +405,7 @@ LABEL_43:
 
   v42.receiver = self;
   v42.super_class = CoreDAVMultiPutTask;
-  [(CoreDAVTask *)&v42 finishCoreDAVTaskWithError:v4];
+  [(CoreDAVTask *)&v42 finishCoreDAVTaskWithError:errorCopy];
 
   v33 = *MEMORY[0x277D85DE8];
 }

@@ -1,29 +1,29 @@
 @interface CLKComplicationTemplateSimpleText
-+ (id)templateWithTextProvider:(id)a3;
-- (CLKComplicationTemplateSimpleText)initWithTextProvider:(id)a3;
++ (id)templateWithTextProvider:(id)provider;
+- (CLKComplicationTemplateSimpleText)initWithTextProvider:(id)provider;
 @end
 
 @implementation CLKComplicationTemplateSimpleText
 
-- (CLKComplicationTemplateSimpleText)initWithTextProvider:(id)a3
+- (CLKComplicationTemplateSimpleText)initWithTextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = CLKComplicationTemplateSimpleText;
-  v5 = [(CLKComplicationTemplate *)&v8 initPrivate];
-  v6 = v5;
-  if (v5)
+  initPrivate = [(CLKComplicationTemplate *)&v8 initPrivate];
+  v6 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateSimpleText *)v5 setTextProvider:v4];
+    [(CLKComplicationTemplateSimpleText *)initPrivate setTextProvider:providerCopy];
   }
 
   return v6;
 }
 
-+ (id)templateWithTextProvider:(id)a3
++ (id)templateWithTextProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTextProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] initWithTextProvider:providerCopy];
 
   return v5;
 }

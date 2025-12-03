@@ -1,10 +1,10 @@
 @interface HSTHostStateEvent
-- (HSTHostStateEvent)initWithDeviceOrientation:(unsigned __int8)a3 screenOrientation:(unsigned __int8)a4 coverClosed:(BOOL)a5 displayOff:(BOOL)a6;
+- (HSTHostStateEvent)initWithDeviceOrientation:(unsigned __int8)orientation screenOrientation:(unsigned __int8)screenOrientation coverClosed:(BOOL)closed displayOff:(BOOL)off;
 @end
 
 @implementation HSTHostStateEvent
 
-- (HSTHostStateEvent)initWithDeviceOrientation:(unsigned __int8)a3 screenOrientation:(unsigned __int8)a4 coverClosed:(BOOL)a5 displayOff:(BOOL)a6
+- (HSTHostStateEvent)initWithDeviceOrientation:(unsigned __int8)orientation screenOrientation:(unsigned __int8)screenOrientation coverClosed:(BOOL)closed displayOff:(BOOL)off
 {
   v14.receiver = self;
   v14.super_class = HSTHostStateEvent;
@@ -12,10 +12,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_deviceOrientation = a3;
-    v10->_screenOrientation = a4;
-    v10->_coverClosed = a5;
-    v10->_displayOff = a6;
+    v10->_deviceOrientation = orientation;
+    v10->_screenOrientation = screenOrientation;
+    v10->_coverClosed = closed;
+    v10->_displayOff = off;
     v12 = v10;
   }
 

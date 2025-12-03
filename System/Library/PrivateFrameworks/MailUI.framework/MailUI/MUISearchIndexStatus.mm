@@ -1,6 +1,6 @@
 @interface MUISearchIndexStatus
 - (BOOL)isNotFullyIndexed;
-- (MUISearchIndexStatus)initWithLocalMessageBodiesIndexed:(unint64_t)a3 totalLocalMessages:(unint64_t)a4 remoteMessageBodiesIndexed:(unint64_t)a5 totalRemoteMessages:(unint64_t)a6 messagesInLargestRemoteAccount:(unint64_t)a7;
+- (MUISearchIndexStatus)initWithLocalMessageBodiesIndexed:(unint64_t)indexed totalLocalMessages:(unint64_t)messages remoteMessageBodiesIndexed:(unint64_t)bodiesIndexed totalRemoteMessages:(unint64_t)remoteMessages messagesInLargestRemoteAccount:(unint64_t)account;
 - (int64_t)scenario;
 @end
 
@@ -23,7 +23,7 @@
 
   if (v3)
   {
-    v6 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
     if (v4)
     {
 LABEL_5:
@@ -35,7 +35,7 @@ LABEL_5:
 
   else
   {
-    v6 = 100;
+    unsignedIntegerValue = 100;
     if (v4)
     {
       goto LABEL_5;
@@ -44,10 +44,10 @@ LABEL_5:
 
   v8 = 0.95;
 LABEL_8:
-  v9 = [(MUISearchIndexStatus *)self messageBodiesIndexed];
-  v10 = v9 / [(MUISearchIndexStatus *)self totalMessages];
-  v11 = [(MUISearchIndexStatus *)self messageBodiesIndexed];
-  v13 = v10 < v8 && v11 > v6;
+  messageBodiesIndexed = [(MUISearchIndexStatus *)self messageBodiesIndexed];
+  v10 = messageBodiesIndexed / [(MUISearchIndexStatus *)self totalMessages];
+  messageBodiesIndexed2 = [(MUISearchIndexStatus *)self messageBodiesIndexed];
+  v13 = v10 < v8 && messageBodiesIndexed2 > unsignedIntegerValue;
   v14 = EMLogSearchableIndexStatus();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -72,36 +72,36 @@ LABEL_8:
   }
 }
 
-- (MUISearchIndexStatus)initWithLocalMessageBodiesIndexed:(unint64_t)a3 totalLocalMessages:(unint64_t)a4 remoteMessageBodiesIndexed:(unint64_t)a5 totalRemoteMessages:(unint64_t)a6 messagesInLargestRemoteAccount:(unint64_t)a7
+- (MUISearchIndexStatus)initWithLocalMessageBodiesIndexed:(unint64_t)indexed totalLocalMessages:(unint64_t)messages remoteMessageBodiesIndexed:(unint64_t)bodiesIndexed totalRemoteMessages:(unint64_t)remoteMessages messagesInLargestRemoteAccount:(unint64_t)account
 {
   v15.receiver = self;
   v15.super_class = MUISearchIndexStatus;
   result = [(MUISearchIndexStatus *)&v15 init];
   if (result)
   {
-    if (a3 <= a5)
+    if (indexed <= bodiesIndexed)
     {
-      v13 = a5;
+      indexedCopy = bodiesIndexed;
     }
 
     else
     {
-      v13 = a3;
+      indexedCopy = indexed;
     }
 
-    if (a4 <= a6)
+    if (messages <= remoteMessages)
     {
-      v14 = a6;
+      messagesCopy = remoteMessages;
     }
 
     else
     {
-      v14 = a4;
+      messagesCopy = messages;
     }
 
-    result->_messageBodiesIndexed = v13;
-    result->_totalMessages = v14;
-    result->_messagesInLargestRemoteAccount = a7;
+    result->_messageBodiesIndexed = indexedCopy;
+    result->_totalMessages = messagesCopy;
+    result->_messagesInLargestRemoteAccount = account;
   }
 
   return result;

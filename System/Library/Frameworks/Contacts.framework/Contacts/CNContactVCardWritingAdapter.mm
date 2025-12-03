@@ -1,7 +1,7 @@
 @interface CNContactVCardWritingAdapter
-+ (id)adapterWithContact:(id)a3 options:(id)a4;
-+ (id)descriptorForAllSupportedKeysWithOptions:(id)a3;
-- (CNContactVCardWritingAdapter)initWithContact:(id)a3 options:(id)a4;
++ (id)adapterWithContact:(id)contact options:(id)options;
++ (id)descriptorForAllSupportedKeysWithOptions:(id)options;
+- (CNContactVCardWritingAdapter)initWithContact:(id)contact options:(id)options;
 - (NSArray)addressingGrammars;
 - (NSArray)phoneNumbers;
 - (NSArray)relatedNames;
@@ -9,30 +9,30 @@
 - (NSData)wallpaper;
 - (NSDictionary)activityAlerts;
 - (NSString)note;
-- (id)vCardPropertyItemsForProperty:(id)a3 valueTransform:(id)a4;
+- (id)vCardPropertyItemsForProperty:(id)property valueTransform:(id)transform;
 - (int)downtimeWhitelistAuthorization;
 - (int)sharedPhotoDisplayPreference;
 @end
 
 @implementation CNContactVCardWritingAdapter
 
-+ (id)adapterWithContact:(id)a3 options:(id)a4
++ (id)adapterWithContact:(id)contact options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithContact:v7 options:v6];
+  optionsCopy = options;
+  contactCopy = contact;
+  v8 = [[self alloc] initWithContact:contactCopy options:optionsCopy];
 
   return v8;
 }
 
-+ (id)descriptorForAllSupportedKeysWithOptions:(id)a3
++ (id)descriptorForAllSupportedKeysWithOptions:(id)options
 {
   v9 = MEMORY[0x1E695DF70];
-  v8 = a3;
+  optionsCopy = options;
   v3 = [v9 arrayWithObjects:{@"givenName", @"familyName", @"middleName", @"namePrefix", @"nameSuffix", @"nickname", @"previousFamilyName", @"phoneticGivenName", @"phoneticMiddleName", @"phoneticFamilyName", @"pronunciationGivenName", @"pronunciationFamilyName", @"organizationName", @"phoneticOrganizationName", @"departmentName", @"jobTitle", @"contactType", @"emailAddresses", @"phoneNumbers", @"postalAddresses", @"socialProfiles", @"instantMessageAddresses", @"urlAddresses", @"calendarURIs", @"callAlert", @"textAlert", @"thumbnailImageData", @"imageData", @"birthday", @"nonGregorianBirthday", @"dates", @"contactRelations", @"note", @"preferredLikenessSource", @"preferredApplePersonaIdentifier", @"downtimeWhitelist", @"imageType", @"imageHash", @"memojiMetadata", @"wallpaper", @"watchWallpaperImageData", @"sharedPhotoDisplayPreference", @"imageBackgroundColorsData", @"sensitiveContentConfiguration", 0}];
-  v4 = [v8 includePronouns];
+  includePronouns = [optionsCopy includePronouns];
 
-  if (v4)
+  if (includePronouns)
   {
     [v3 addObject:@"addressingGrammars"];
   }
@@ -43,18 +43,18 @@
   return v6;
 }
 
-- (CNContactVCardWritingAdapter)initWithContact:(id)a3 options:(id)a4
+- (CNContactVCardWritingAdapter)initWithContact:(id)contact options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = CNContactVCardWritingAdapter;
   v9 = [(CNContactVCardWritingAdapter *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_contact, contact);
+    objc_storeStrong(&v10->_options, options);
     v11 = v10;
   }
 
@@ -126,11 +126,11 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
 
 - (NSDictionary)activityAlerts
 {
-  v2 = [(CNContact *)self->_contact activityAlerts];
-  v3 = [v2 allKeys];
-  v4 = [v3 _cn_map:&__block_literal_global_14_0];
-  v5 = [MEMORY[0x1E695DFB0] null];
-  v6 = [v2 objectsForKeys:v3 notFoundMarker:v5];
+  activityAlerts = [(CNContact *)self->_contact activityAlerts];
+  allKeys = [activityAlerts allKeys];
+  v4 = [allKeys _cn_map:&__block_literal_global_14_0];
+  null = [MEMORY[0x1E695DFB0] null];
+  v6 = [activityAlerts objectsForKeys:allKeys notFoundMarker:null];
 
   v7 = [v6 _cn_map:&__block_literal_global_17_2];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v4];
@@ -138,13 +138,13 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
   return v8;
 }
 
-- (id)vCardPropertyItemsForProperty:(id)a3 valueTransform:(id)a4
+- (id)vCardPropertyItemsForProperty:(id)property valueTransform:(id)transform
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  [(CNContact *)self->_contact valueForKey:v6];
+  propertyCopy = property;
+  transformCopy = transform;
+  array = [MEMORY[0x1E695DF70] array];
+  [(CNContact *)self->_contact valueForKey:propertyCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -164,20 +164,20 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 value];
-        if (v7)
+        value = [v13 value];
+        if (transformCopy)
         {
-          v15 = v7[2](v7, v14);
+          v15 = transformCopy[2](transformCopy, value);
 
-          v14 = v15;
+          value = v15;
         }
 
         v16 = MEMORY[0x1E69E4B28];
-        v17 = [v13 label];
-        v18 = [v13 identifier];
-        v19 = [v16 itemWithValue:v14 label:v17 identifier:v18];
+        label = [v13 label];
+        identifier = [v13 identifier];
+        v19 = [v16 itemWithValue:value label:label identifier:identifier];
 
-        [v8 _cn_addNonNilObject:v19];
+        [array _cn_addNonNilObject:v19];
       }
 
       v10 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -186,7 +186,7 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
     while (v10);
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)relatedNames
@@ -201,22 +201,22 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
 {
   if ([(CNContact *)self->_contact isKeyAvailable:@"note"])
   {
-    v3 = [(CNContact *)self->_contact note];
+    note = [(CNContact *)self->_contact note];
   }
 
   else
   {
-    v3 = 0;
+    note = 0;
   }
 
-  return v3;
+  return note;
 }
 
 - (int)downtimeWhitelistAuthorization
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNContact *)self->_contact downtimeWhitelist];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v4);
+  downtimeWhitelist = [(CNContact *)self->_contact downtimeWhitelist];
+  LOBYTE(v3) = (*(v3 + 16))(v3, downtimeWhitelist);
 
   if (v3)
   {
@@ -233,29 +233,29 @@ id __57__CNContactVCardWritingAdapter_instantMessagingAddresses__block_invoke(ui
 
 - (NSData)wallpaper
 {
-  v2 = [(CNContact *)self->_contact wallpaper];
-  v3 = [v2 dataRepresentation];
+  wallpaper = [(CNContact *)self->_contact wallpaper];
+  dataRepresentation = [wallpaper dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
 - (int)sharedPhotoDisplayPreference
 {
-  v2 = [(CNContact *)self->_contact sharedPhotoDisplayPreference];
-  if ((v2 - 1) >= 3)
+  sharedPhotoDisplayPreference = [(CNContact *)self->_contact sharedPhotoDisplayPreference];
+  if ((sharedPhotoDisplayPreference - 1) >= 3)
   {
-    LODWORD(v2) = 0;
+    LODWORD(sharedPhotoDisplayPreference) = 0;
   }
 
-  return v2;
+  return sharedPhotoDisplayPreference;
 }
 
 - (NSData)sensitiveContentConfiguration
 {
-  v2 = [(CNContact *)self->_contact sensitiveContentConfiguration];
-  v3 = [v2 dataRepresentation];
+  sensitiveContentConfiguration = [(CNContact *)self->_contact sensitiveContentConfiguration];
+  dataRepresentation = [sensitiveContentConfiguration dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
 @end

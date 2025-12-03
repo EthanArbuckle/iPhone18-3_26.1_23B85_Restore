@@ -1,31 +1,31 @@
 @interface CCUIRoundButton
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CCUIRoundButton)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6;
-- (CCUIRoundButton)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CCUIRoundButton)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style;
+- (CCUIRoundButton)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_cornerRadius;
-- (id)_initWithHighlightColor:(id)a3 useLightStyle:(BOOL)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_deactivateReachability:(id)a3;
-- (void)_setCornerRadius:(double)a3;
+- (id)_initWithHighlightColor:(id)color useLightStyle:(BOOL)style;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_deactivateReachability:(id)reachability;
+- (void)_setCornerRadius:(double)radius;
 - (void)_updateForStateChange;
 - (void)_updateForStateChangeIfNecessary;
 - (void)_updateHighlightColor;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_visualStylingProvider:(id)a3 didChangeWithOutgoingVisualStylingProvider:(id)a4;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_visualStylingProvider:(id)provider didChangeWithOutgoingVisualStylingProvider:(id)stylingProvider;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphScale:(double)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setUseAlternateBackground:(BOOL)a3;
-- (void)setUseTintedGlassAppearance:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphScale:(double)scale;
+- (void)setHighlightColor:(id)color;
+- (void)setUseAlternateBackground:(BOOL)background;
+- (void)setUseTintedGlassAppearance:(BOOL)appearance;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation CCUIRoundButton
@@ -42,10 +42,10 @@
   [(CCUIRoundButton *)&v3 dealloc];
 }
 
-- (id)_initWithHighlightColor:(id)a3 useLightStyle:(BOOL)a4
+- (id)_initWithHighlightColor:(id)color useLightStyle:(BOOL)style
 {
-  v4 = a4;
-  v6 = a3;
+  styleCopy = style;
+  colorCopy = color;
   v23.receiver = self;
   v23.super_class = CCUIRoundButton;
   v7 = [(CCUIRoundButton *)&v23 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -53,12 +53,12 @@
   if (v7)
   {
     v7->_glyphScale = 1.0;
-    v9 = [v6 copy];
+    v9 = [colorCopy copy];
     highlightColor = v8->_highlightColor;
     v8->_highlightColor = v9;
 
-    v8->_useTintedGlassAppearance = !v4;
-    if (!v4)
+    v8->_useTintedGlassAppearance = !styleCopy;
+    if (!styleCopy)
     {
       +[CCUIControlCenterMaterialView _blankMaterialView];
     }
@@ -104,10 +104,10 @@
     [(CCUIRoundButton *)v8 addObserver:v8 forKeyPath:@"selected" options:0 context:0];
     [(CCUIRoundButton *)v8 addObserver:v8 forKeyPath:@"glyphState" options:0 context:0];
     [(CCUIRoundButton *)v8 addObserver:v8 forKeyPath:@"useAlternateBackground" options:0 context:0];
-    v19 = [MEMORY[0x1E69DC938] currentDevice];
-    v20 = [v19 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v20 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v21 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v8];
       [(CCUIRoundButton *)v8 addInteraction:v21];
@@ -117,19 +117,19 @@
   return v8;
 }
 
-- (CCUIRoundButton)initWithGlyphImage:(id)a3 highlightColor:(id)a4 highlightTintColor:(id)a5 useLightStyle:(BOOL)a6
+- (CCUIRoundButton)initWithGlyphImage:(id)image highlightColor:(id)color highlightTintColor:(id)tintColor useLightStyle:(BOOL)style
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(CCUIRoundButton *)self _initWithHighlightColor:a4 useLightStyle:v6];
+  styleCopy = style;
+  imageCopy = image;
+  tintColorCopy = tintColor;
+  v12 = [(CCUIRoundButton *)self _initWithHighlightColor:color useLightStyle:styleCopy];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [tintColorCopy copy];
     highlightTintColor = v12->_highlightTintColor;
     v12->_highlightTintColor = v13;
 
-    v15 = [v10 imageWithRenderingMode:2];
+    v15 = [imageCopy imageWithRenderingMode:2];
     glyphImage = v12->_glyphImage;
     v12->_glyphImage = v15;
 
@@ -157,15 +157,15 @@
   return v12;
 }
 
-- (CCUIRoundButton)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4 useLightStyle:(BOOL)a5
+- (CCUIRoundButton)initWithGlyphPackageDescription:(id)description highlightColor:(id)color useLightStyle:(BOOL)style
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(CCUIRoundButton *)self _initWithHighlightColor:a4 useLightStyle:v5];
+  styleCopy = style;
+  descriptionCopy = description;
+  v9 = [(CCUIRoundButton *)self _initWithHighlightColor:color useLightStyle:styleCopy];
   v10 = v9;
   if (v9)
   {
-    [(CCUIRoundButton *)v9 setGlyphPackageDescription:v8];
+    [(CCUIRoundButton *)v9 setGlyphPackageDescription:descriptionCopy];
     v11 = MEMORY[0x1E69DD250];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -202,8 +202,8 @@
   v18 = v19;
   [(UIView *)glyphPackageContainerView setTransform:&v18];
   [(UIImage *)self->_glyphImage size];
-  v6 = [(CCUIRoundButton *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(CCUIRoundButton *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
   BSRectWithSize();
@@ -221,7 +221,7 @@
   [(CCUIRoundButton *)self _updateForStateChangeIfNecessary];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (_CCUIRoundButtonSize_onceToken != -1)
   {
@@ -252,11 +252,11 @@
   return result;
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  if (self->_glyphImage != a3)
+  if (self->_glyphImage != image)
   {
-    v4 = [a3 imageWithRenderingMode:2];
+    v4 = [image imageWithRenderingMode:2];
     glyphImage = self->_glyphImage;
     self->_glyphImage = v4;
 
@@ -267,33 +267,33 @@
   }
 }
 
-- (void)setUseAlternateBackground:(BOOL)a3
+- (void)setUseAlternateBackground:(BOOL)background
 {
-  if (self->_useAlternateBackground != a3)
+  if (self->_useAlternateBackground != background)
   {
-    self->_useAlternateBackground = a3;
+    self->_useAlternateBackground = background;
     [(CCUIRoundButton *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  if (self->_highlightColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_highlightColor, color);
     [(CCUIRoundButton *)self _updateHighlightColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_glyphPackageDescription, a3);
+    objc_storeStrong(&self->_glyphPackageDescription, description);
     glyphPackageView = self->_glyphPackageView;
     if (self->_glyphPackageDescription)
     {
@@ -323,8 +323,8 @@
         glyphPackageView = self->_glyphPackageView;
       }
 
-      [(CCUICAPackageView *)glyphPackageView setPackageDescription:v5];
-      if (-[CCUIRoundButton _shouldReverseLayoutDirection](self, "_shouldReverseLayoutDirection") && [v5 flipsForRightToLeftLayoutDirection])
+      [(CCUICAPackageView *)glyphPackageView setPackageDescription:descriptionCopy];
+      if (-[CCUIRoundButton _shouldReverseLayoutDirection](self, "_shouldReverseLayoutDirection") && [descriptionCopy flipsForRightToLeftLayoutDirection])
       {
         v12 = self->_glyphPackageView;
         CGAffineTransformMakeScale(&v15, -1.0, 1.0);
@@ -345,11 +345,11 @@
   }
 }
 
-- (void)setGlyphScale:(double)a3
+- (void)setGlyphScale:(double)scale
 {
-  if (self->_glyphScale != a3)
+  if (self->_glyphScale != scale)
   {
-    self->_glyphScale = a3;
+    self->_glyphScale = scale;
     [(CCUIRoundButton *)self setNeedsLayout];
   }
 }
@@ -359,9 +359,9 @@
   v6.receiver = self;
   v6.super_class = CCUIRoundButton;
   [(CCUIRoundButton *)&v6 didMoveToWindow];
-  v3 = [(CCUIRoundButton *)self window];
+  window = [(CCUIRoundButton *)self window];
 
-  if (v3)
+  if (window)
   {
     v5.receiver = self;
     v5.super_class = CCUIRoundButton;
@@ -370,20 +370,20 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (void)setUseTintedGlassAppearance:(BOOL)a3
+- (void)setUseTintedGlassAppearance:(BOOL)appearance
 {
-  if (self->_useTintedGlassAppearance != a3)
+  if (self->_useTintedGlassAppearance != appearance)
   {
-    self->_useTintedGlassAppearance = a3;
+    self->_useTintedGlassAppearance = appearance;
     [(CCUIRoundButton *)self _updateHighlightColor];
   }
 }
@@ -411,30 +411,30 @@
   [(UIView *)selectedStateBackgroundView setBackgroundColor:highlightColor];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 == self)
+  pathCopy = path;
+  v9 = pathCopy;
+  if (object == self)
   {
-    v10 = v8;
-    if (([v8 isEqualToString:@"selected"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"enabled") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"highlighted") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"glyphImage") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"glyphState") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"useAlternateBackground") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"useIndependentAlpha") & 1) != 0 || (v8 = objc_msgSend(v10, "isEqualToString:", @"useAutomaticSymbolColors"), v9 = v10, v8))
+    v10 = pathCopy;
+    if (([pathCopy isEqualToString:@"selected"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"enabled") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"highlighted") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"glyphImage") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"glyphState") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"useAlternateBackground") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"useIndependentAlpha") & 1) != 0 || (pathCopy = objc_msgSend(v10, "isEqualToString:", @"useAutomaticSymbolColors"), v9 = v10, pathCopy))
     {
-      v8 = [(CCUIRoundButton *)self _setNeedsStateChangeUpdate];
+      pathCopy = [(CCUIRoundButton *)self _setNeedsStateChangeUpdate];
       v9 = v10;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](pathCopy, v9);
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  if ([(CCUIRoundButton *)v4 _isInAWindow])
+  selfCopy = self;
+  if ([(CCUIRoundButton *)selfCopy _isInAWindow])
   {
-    v5 = [(CCUIRoundButton *)v4 window];
+    window = [(CCUIRoundButton *)selfCopy window];
     v6 = CCUILogUserInterface;
     if (os_log_type_enabled(CCUILogUserInterface, OS_LOG_TYPE_DEFAULT))
     {
@@ -444,13 +444,13 @@
       v14 = 138543874;
       v15 = v9;
       v16 = 2114;
-      v17 = v4;
+      v17 = selfCopy;
       v18 = 2114;
-      v19 = v5;
+      v19 = window;
       _os_log_impl(&dword_1D168A000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Control Center is about to call [UITargetedPreview initWithView:], view = %{public}@, window = %{public}@", &v14, 0x20u);
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v4];
+    v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:selfCopy];
     v11 = [MEMORY[0x1E69DCDB8] effectWithPreview:v10];
     v12 = [MEMORY[0x1E69DCDD0] styleWithEffect:v11 shape:0];
   }
@@ -463,7 +463,7 @@
   return v12;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   visualStylingProvider = self->_visualStylingProvider;
   if (visualStylingProvider)
@@ -475,32 +475,32 @@
   {
     v6.receiver = self;
     v6.super_class = CCUIRoundButton;
-    v4 = [(CCUIRoundButton *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(CCUIRoundButton *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v14 = a3;
-  v6 = [(CCUIRoundButton *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(CCUIRoundButton *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
-  v9 = v14;
+  v9 = providerCopy;
   if (v8)
   {
     visualStylingProvider = self->_visualStylingProvider;
-    if (visualStylingProvider != v14)
+    if (visualStylingProvider != providerCopy)
     {
-      v11 = v14;
+      v11 = providerCopy;
       v12 = self->_visualStylingProvider;
       self->_visualStylingProvider = v11;
       v13 = visualStylingProvider;
 
       [(CCUIRoundButton *)self _visualStylingProvider:v11 didChangeWithOutgoingVisualStylingProvider:v13];
-      v9 = v14;
+      v9 = providerCopy;
     }
   }
 }
@@ -519,31 +519,31 @@
   return Height * 0.5;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
   [(UIView *)self->_normalStateBackgroundView _setCornerRadius:?];
-  [(UIView *)self->_selectedStateBackgroundView _setCornerRadius:a3];
+  [(UIView *)self->_selectedStateBackgroundView _setCornerRadius:radius];
   alternateSelectedStateBackgroundView = self->_alternateSelectedStateBackgroundView;
 
-  [(UIView *)alternateSelectedStateBackgroundView _setCornerRadius:a3];
+  [(UIView *)alternateSelectedStateBackgroundView _setCornerRadius:radius];
 }
 
-- (void)_deactivateReachability:(id)a3
+- (void)_deactivateReachability:(id)reachability
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 _deactivateReachability];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _deactivateReachability];
 }
 
 - (void)_updateForStateChange
 {
   self->_isStateValid = 1;
-  v3 = [(CCUIRoundButton *)self window];
+  window = [(CCUIRoundButton *)self window];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __40__CCUIRoundButton__updateForStateChange__block_invoke;
   v4[3] = &unk_1E83EA478;
   v4[4] = self;
-  [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:v3 actions:v4];
+  [CCUIContentModuleContext performWithoutAnimationWhileHiddenInWindow:window actions:v4];
 }
 
 uint64_t __40__CCUIRoundButton__updateForStateChange__block_invoke(uint64_t a1)
@@ -669,14 +669,14 @@ LABEL_17:
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4 andObserverBlock:&__block_literal_global_51];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style andObserverBlock:&__block_literal_global_51];
   }
 }
 
@@ -693,13 +693,13 @@ id __91__CCUIRoundButton__updateVisualStylingOfView_style_visualStylingProvider_
   return v4;
 }
 
-- (void)_visualStylingProvider:(id)a3 didChangeWithOutgoingVisualStylingProvider:(id)a4
+- (void)_visualStylingProvider:(id)provider didChangeWithOutgoingVisualStylingProvider:(id)stylingProvider
 {
   glyphImageView = self->_glyphImageView;
-  v7 = a4;
-  v8 = a3;
-  [(CCUIRoundButton *)self _updateVisualStylingOfView:glyphImageView style:0 visualStylingProvider:v8 outgoingProvider:v7];
-  [(CCUIRoundButton *)self _updateVisualStylingOfView:self->_selectedGlyphView style:0 visualStylingProvider:v8 outgoingProvider:v7];
+  stylingProviderCopy = stylingProvider;
+  providerCopy = provider;
+  [(CCUIRoundButton *)self _updateVisualStylingOfView:glyphImageView style:0 visualStylingProvider:providerCopy outgoingProvider:stylingProviderCopy];
+  [(CCUIRoundButton *)self _updateVisualStylingOfView:self->_selectedGlyphView style:0 visualStylingProvider:providerCopy outgoingProvider:stylingProviderCopy];
 }
 
 @end

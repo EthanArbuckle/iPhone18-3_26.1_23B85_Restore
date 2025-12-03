@@ -1,29 +1,29 @@
 @interface HDCodableClinicalAccount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClinicalSharingLastSharedDate:(BOOL)a3;
-- (void)setHasClinicalSharingMultiDeviceStatus:(BOOL)a3;
-- (void)setHasClinicalSharingUserStatus:(BOOL)a3;
-- (void)setHasCreationDate:(BOOL)a3;
-- (void)setHasFailedFetchAttemptsCount:(BOOL)a3;
-- (void)setHasLastFailedFetchDate:(BOOL)a3;
-- (void)setHasLastFetchDate:(BOOL)a3;
-- (void)setHasLastFullFetchDate:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasUserEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClinicalSharingLastSharedDate:(BOOL)date;
+- (void)setHasClinicalSharingMultiDeviceStatus:(BOOL)status;
+- (void)setHasClinicalSharingUserStatus:(BOOL)status;
+- (void)setHasCreationDate:(BOOL)date;
+- (void)setHasFailedFetchAttemptsCount:(BOOL)count;
+- (void)setHasLastFailedFetchDate:(BOOL)date;
+- (void)setHasLastFetchDate:(BOOL)date;
+- (void)setHasLastFullFetchDate:(BOOL)date;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasUserEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableClinicalAccount
 
-- (void)setHasUserEnabled:(BOOL)a3
+- (void)setHasUserEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCreationDate:(BOOL)a3
+- (void)setHasCreationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 512;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLastFetchDate:(BOOL)a3
+- (void)setHasLastFetchDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 128;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasLastFullFetchDate:(BOOL)a3
+- (void)setHasLastFullFetchDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 256;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasClinicalSharingLastSharedDate:(BOOL)a3
+- (void)setHasClinicalSharingLastSharedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasClinicalSharingUserStatus:(BOOL)a3
+- (void)setHasClinicalSharingUserStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasClinicalSharingMultiDeviceStatus:(BOOL)a3
+- (void)setHasClinicalSharingMultiDeviceStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLastFailedFetchDate:(BOOL)a3
+- (void)setHasLastFailedFetchDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 64;
   }
@@ -156,9 +156,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFailedFetchAttemptsCount:(BOOL)a3
+- (void)setHasFailedFetchAttemptsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -177,20 +177,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableClinicalAccount;
   v4 = [(HDCodableClinicalAccount *)&v8 description];
-  v5 = [(HDCodableClinicalAccount *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableClinicalAccount *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   gatewayExternalID = self->_gatewayExternalID;
   if (gatewayExternalID)
   {
-    [v3 setObject:gatewayExternalID forKey:@"gatewayExternalID"];
+    [dictionary setObject:gatewayExternalID forKey:@"gatewayExternalID"];
   }
 
   has = self->_has;
@@ -271,8 +271,8 @@ LABEL_8:
   messageVersion = self->_messageVersion;
   if (messageVersion)
   {
-    v13 = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"messageVersion"];
+    dictionaryRepresentation = [(HDCodableMessageVersion *)messageVersion dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"messageVersion"];
   }
 
   signedClinicalDataIssuerIdentifier = self->_signedClinicalDataIssuerIdentifier;
@@ -362,21 +362,21 @@ LABEL_25:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v23 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"syncIdentity"];
+    dictionaryRepresentation2 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v19 = v4;
+  toCopy = to;
+  v19 = toCopy;
   if (self->_gatewayExternalID)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   has = self->_has;
@@ -384,7 +384,7 @@ LABEL_25:
   {
     userEnabled = self->_userEnabled;
     PBDataWriterWriteBOOLField();
-    v4 = v19;
+    toCopy = v19;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -405,7 +405,7 @@ LABEL_5:
 
   creationDate = self->_creationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v19;
+  toCopy = v19;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -421,51 +421,51 @@ LABEL_6:
 LABEL_40:
   modificationDate = self->_modificationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_7:
     lastFetchDate = self->_lastFetchDate;
     PBDataWriterWriteDoubleField();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_8:
   if (self->_syncIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
     lastFullFetchDate = self->_lastFullFetchDate;
     PBDataWriterWriteDoubleField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_accountIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_patientHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_messageVersion)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_signedClinicalDataIssuerIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   v8 = self->_has;
@@ -473,7 +473,7 @@ LABEL_8:
   {
     clinicalSharingFirstSharedDate = self->_clinicalSharingFirstSharedDate;
     PBDataWriterWriteDoubleField();
-    v4 = v19;
+    toCopy = v19;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -494,7 +494,7 @@ LABEL_22:
 
   clinicalSharingLastSharedDate = self->_clinicalSharingLastSharedDate;
   PBDataWriterWriteDoubleField();
-  v4 = v19;
+  toCopy = v19;
   v8 = self->_has;
   if ((v8 & 8) == 0)
   {
@@ -510,20 +510,20 @@ LABEL_23:
 LABEL_44:
   clinicalSharingUserStatus = self->_clinicalSharingUserStatus;
   PBDataWriterWriteInt64Field();
-  v4 = v19;
+  toCopy = v19;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_24:
     clinicalSharingMultiDeviceStatus = self->_clinicalSharingMultiDeviceStatus;
     PBDataWriterWriteInt64Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
 LABEL_25:
   if (self->_clinicalSharingPrimaryDeviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   v10 = self->_has;
@@ -531,7 +531,7 @@ LABEL_25:
   {
     lastFailedFetchDate = self->_lastFailedFetchDate;
     PBDataWriterWriteDoubleField();
-    v4 = v19;
+    toCopy = v19;
     v10 = self->_has;
   }
 
@@ -539,37 +539,37 @@ LABEL_25:
   {
     failedFetchAttemptsCount = self->_failedFetchAttemptsCount;
     PBDataWriterWriteInt64Field();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_credentialSyncIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v19;
+    toCopy = v19;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v19;
+    toCopy = v19;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_gatewayExternalID)
   {
-    [v4 setGatewayExternalID:?];
-    v4 = v8;
+    [toCopy setGatewayExternalID:?];
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(v4 + 160) = self->_userEnabled;
-    *(v4 + 82) |= 0x400u;
+    *(toCopy + 160) = self->_userEnabled;
+    *(toCopy + 82) |= 0x400u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -588,8 +588,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 5) = *&self->_creationDate;
-  *(v4 + 82) |= 0x10u;
+  *(toCopy + 5) = *&self->_creationDate;
+  *(toCopy + 82) |= 0x10u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -603,57 +603,57 @@ LABEL_6:
   }
 
 LABEL_40:
-  *(v4 + 10) = *&self->_modificationDate;
-  *(v4 + 82) |= 0x200u;
+  *(toCopy + 10) = *&self->_modificationDate;
+  *(toCopy + 82) |= 0x200u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_7:
-    *(v4 + 8) = *&self->_lastFetchDate;
-    *(v4 + 82) |= 0x80u;
+    *(toCopy + 8) = *&self->_lastFetchDate;
+    *(toCopy + 82) |= 0x80u;
   }
 
 LABEL_8:
   if (self->_syncIdentifier)
   {
     [v8 setSyncIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    *(v4 + 9) = *&self->_lastFullFetchDate;
-    *(v4 + 82) |= 0x100u;
+    *(toCopy + 9) = *&self->_lastFullFetchDate;
+    *(toCopy + 82) |= 0x100u;
   }
 
   if (self->_accountIdentifier)
   {
     [v8 setAccountIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_patientHash)
   {
     [v8 setPatientHash:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_messageVersion)
   {
     [v8 setMessageVersion:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_signedClinicalDataIssuerIdentifier)
   {
     [v8 setSignedClinicalDataIssuerIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = *&self->_clinicalSharingFirstSharedDate;
-    *(v4 + 82) |= 1u;
+    *(toCopy + 1) = *&self->_clinicalSharingFirstSharedDate;
+    *(toCopy + 82) |= 1u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -672,8 +672,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  *(v4 + 2) = *&self->_clinicalSharingLastSharedDate;
-  *(v4 + 82) |= 2u;
+  *(toCopy + 2) = *&self->_clinicalSharingLastSharedDate;
+  *(toCopy + 82) |= 2u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -687,53 +687,53 @@ LABEL_23:
   }
 
 LABEL_44:
-  *(v4 + 4) = self->_clinicalSharingUserStatus;
-  *(v4 + 82) |= 8u;
+  *(toCopy + 4) = self->_clinicalSharingUserStatus;
+  *(toCopy + 82) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_24:
-    *(v4 + 3) = self->_clinicalSharingMultiDeviceStatus;
-    *(v4 + 82) |= 4u;
+    *(toCopy + 3) = self->_clinicalSharingMultiDeviceStatus;
+    *(toCopy + 82) |= 4u;
   }
 
 LABEL_25:
   if (self->_clinicalSharingPrimaryDeviceName)
   {
     [v8 setClinicalSharingPrimaryDeviceName:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 0x40) != 0)
   {
-    *(v4 + 7) = *&self->_lastFailedFetchDate;
-    *(v4 + 82) |= 0x40u;
+    *(toCopy + 7) = *&self->_lastFailedFetchDate;
+    *(toCopy + 82) |= 0x40u;
     v7 = self->_has;
   }
 
   if ((v7 & 0x20) != 0)
   {
-    *(v4 + 6) = self->_failedFetchAttemptsCount;
-    *(v4 + 82) |= 0x20u;
+    *(toCopy + 6) = self->_failedFetchAttemptsCount;
+    *(toCopy + 82) |= 0x20u;
   }
 
   if (self->_credentialSyncIdentifier)
   {
     [v8 setCredentialSyncIdentifier:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_syncIdentity)
   {
     [v8 setSyncIdentity:?];
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_gatewayExternalID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_gatewayExternalID copyWithZone:zone];
   v7 = *(v5 + 112);
   *(v5 + 112) = v6;
 
@@ -785,7 +785,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSData *)self->_syncIdentifier copyWithZone:a3];
+  v9 = [(NSData *)self->_syncIdentifier copyWithZone:zone];
   v10 = *(v5 + 144);
   *(v5 + 144) = v9;
 
@@ -795,19 +795,19 @@ LABEL_6:
     *(v5 + 164) |= 0x100u;
   }
 
-  v11 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v12 = *(v5 + 88);
   *(v5 + 88) = v11;
 
-  v13 = [(NSString *)self->_patientHash copyWithZone:a3];
+  v13 = [(NSString *)self->_patientHash copyWithZone:zone];
   v14 = *(v5 + 128);
   *(v5 + 128) = v13;
 
-  v15 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:a3];
+  v15 = [(HDCodableMessageVersion *)self->_messageVersion copyWithZone:zone];
   v16 = *(v5 + 120);
   *(v5 + 120) = v15;
 
-  v17 = [(NSString *)self->_signedClinicalDataIssuerIdentifier copyWithZone:a3];
+  v17 = [(NSString *)self->_signedClinicalDataIssuerIdentifier copyWithZone:zone];
   v18 = *(v5 + 136);
   *(v5 + 136) = v17;
 
@@ -859,7 +859,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v20 = [(NSString *)self->_clinicalSharingPrimaryDeviceName copyWithZone:a3];
+  v20 = [(NSString *)self->_clinicalSharingPrimaryDeviceName copyWithZone:zone];
   v21 = *(v5 + 96);
   *(v5 + 96) = v20;
 
@@ -877,27 +877,27 @@ LABEL_13:
     *(v5 + 164) |= 0x20u;
   }
 
-  v23 = [(NSData *)self->_credentialSyncIdentifier copyWithZone:a3];
+  v23 = [(NSData *)self->_credentialSyncIdentifier copyWithZone:zone];
   v24 = *(v5 + 104);
   *(v5 + 104) = v23;
 
-  v25 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v25 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v26 = *(v5 + 152);
   *(v5 + 152) = v25;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_80;
   }
 
   gatewayExternalID = self->_gatewayExternalID;
-  if (gatewayExternalID | *(v4 + 14))
+  if (gatewayExternalID | *(equalCopy + 14))
   {
     if (![(NSString *)gatewayExternalID isEqual:?])
     {
@@ -906,37 +906,37 @@ LABEL_13:
   }
 
   has = self->_has;
-  v7 = *(v4 + 82);
+  v7 = *(equalCopy + 82);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 82) & 0x400) == 0)
+    if ((*(equalCopy + 82) & 0x400) == 0)
     {
       goto LABEL_80;
     }
 
-    v8 = *(v4 + 160);
+    v8 = *(equalCopy + 160);
     if (self->_userEnabled)
     {
-      if ((*(v4 + 160) & 1) == 0)
+      if ((*(equalCopy + 160) & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (*(v4 + 160))
+    else if (*(equalCopy + 160))
     {
       goto LABEL_80;
     }
   }
 
-  else if ((*(v4 + 82) & 0x400) != 0)
+  else if ((*(equalCopy + 82) & 0x400) != 0)
   {
     goto LABEL_80;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_creationDate != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_creationDate != *(equalCopy + 5))
     {
       goto LABEL_80;
     }
@@ -949,20 +949,20 @@ LABEL_13:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 82) & 0x200) == 0 || self->_modificationDate != *(v4 + 10))
+    if ((*(equalCopy + 82) & 0x200) == 0 || self->_modificationDate != *(equalCopy + 10))
     {
       goto LABEL_80;
     }
   }
 
-  else if ((*(v4 + 82) & 0x200) != 0)
+  else if ((*(equalCopy + 82) & 0x200) != 0)
   {
     goto LABEL_80;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_lastFetchDate != *(v4 + 8))
+    if ((v7 & 0x80) == 0 || self->_lastFetchDate != *(equalCopy + 8))
     {
       goto LABEL_80;
     }
@@ -974,7 +974,7 @@ LABEL_13:
   }
 
   syncIdentifier = self->_syncIdentifier;
-  if (syncIdentifier | *(v4 + 18))
+  if (syncIdentifier | *(equalCopy + 18))
   {
     if (![(NSData *)syncIdentifier isEqual:?])
     {
@@ -982,12 +982,12 @@ LABEL_13:
     }
 
     has = self->_has;
-    v7 = *(v4 + 82);
+    v7 = *(equalCopy + 82);
   }
 
   if ((has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_lastFullFetchDate != *(v4 + 9))
+    if ((v7 & 0x100) == 0 || self->_lastFullFetchDate != *(equalCopy + 9))
     {
       goto LABEL_80;
     }
@@ -999,13 +999,13 @@ LABEL_13:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier | *(v4 + 11) && ![(NSString *)accountIdentifier isEqual:?])
+  if (accountIdentifier | *(equalCopy + 11) && ![(NSString *)accountIdentifier isEqual:?])
   {
     goto LABEL_80;
   }
 
   patientHash = self->_patientHash;
-  if (patientHash | *(v4 + 16))
+  if (patientHash | *(equalCopy + 16))
   {
     if (![(NSString *)patientHash isEqual:?])
     {
@@ -1014,7 +1014,7 @@ LABEL_13:
   }
 
   messageVersion = self->_messageVersion;
-  if (messageVersion | *(v4 + 15))
+  if (messageVersion | *(equalCopy + 15))
   {
     if (![(HDCodableMessageVersion *)messageVersion isEqual:?])
     {
@@ -1023,7 +1023,7 @@ LABEL_13:
   }
 
   signedClinicalDataIssuerIdentifier = self->_signedClinicalDataIssuerIdentifier;
-  if (signedClinicalDataIssuerIdentifier | *(v4 + 17))
+  if (signedClinicalDataIssuerIdentifier | *(equalCopy + 17))
   {
     if (![(NSString *)signedClinicalDataIssuerIdentifier isEqual:?])
     {
@@ -1032,10 +1032,10 @@ LABEL_13:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 82);
+  v15 = *(equalCopy + 82);
   if (v14)
   {
-    if ((v15 & 1) == 0 || self->_clinicalSharingFirstSharedDate != *(v4 + 1))
+    if ((v15 & 1) == 0 || self->_clinicalSharingFirstSharedDate != *(equalCopy + 1))
     {
       goto LABEL_80;
     }
@@ -1048,7 +1048,7 @@ LABEL_13:
 
   if ((v14 & 2) != 0)
   {
-    if ((v15 & 2) == 0 || self->_clinicalSharingLastSharedDate != *(v4 + 2))
+    if ((v15 & 2) == 0 || self->_clinicalSharingLastSharedDate != *(equalCopy + 2))
     {
       goto LABEL_80;
     }
@@ -1061,7 +1061,7 @@ LABEL_13:
 
   if ((v14 & 8) != 0)
   {
-    if ((v15 & 8) == 0 || self->_clinicalSharingUserStatus != *(v4 + 4))
+    if ((v15 & 8) == 0 || self->_clinicalSharingUserStatus != *(equalCopy + 4))
     {
       goto LABEL_80;
     }
@@ -1074,7 +1074,7 @@ LABEL_13:
 
   if ((v14 & 4) != 0)
   {
-    if ((v15 & 4) == 0 || self->_clinicalSharingMultiDeviceStatus != *(v4 + 3))
+    if ((v15 & 4) == 0 || self->_clinicalSharingMultiDeviceStatus != *(equalCopy + 3))
     {
       goto LABEL_80;
     }
@@ -1086,12 +1086,12 @@ LABEL_13:
   }
 
   clinicalSharingPrimaryDeviceName = self->_clinicalSharingPrimaryDeviceName;
-  if (clinicalSharingPrimaryDeviceName | *(v4 + 12))
+  if (clinicalSharingPrimaryDeviceName | *(equalCopy + 12))
   {
     if ([(NSString *)clinicalSharingPrimaryDeviceName isEqual:?])
     {
       v14 = self->_has;
-      v15 = *(v4 + 82);
+      v15 = *(equalCopy + 82);
       goto LABEL_66;
     }
 
@@ -1103,7 +1103,7 @@ LABEL_80:
 LABEL_66:
   if ((v14 & 0x40) != 0)
   {
-    if ((v15 & 0x40) == 0 || self->_lastFailedFetchDate != *(v4 + 7))
+    if ((v15 & 0x40) == 0 || self->_lastFailedFetchDate != *(equalCopy + 7))
     {
       goto LABEL_80;
     }
@@ -1116,7 +1116,7 @@ LABEL_66:
 
   if ((v14 & 0x20) != 0)
   {
-    if ((v15 & 0x20) == 0 || self->_failedFetchAttemptsCount != *(v4 + 6))
+    if ((v15 & 0x20) == 0 || self->_failedFetchAttemptsCount != *(equalCopy + 6))
     {
       goto LABEL_80;
     }
@@ -1128,13 +1128,13 @@ LABEL_66:
   }
 
   credentialSyncIdentifier = self->_credentialSyncIdentifier;
-  if (credentialSyncIdentifier | *(v4 + 13) && ![(NSData *)credentialSyncIdentifier isEqual:?])
+  if (credentialSyncIdentifier | *(equalCopy + 13) && ![(NSData *)credentialSyncIdentifier isEqual:?])
   {
     goto LABEL_80;
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 19))
+  if (syncIdentity | *(equalCopy + 19))
   {
     v19 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
   }
@@ -1447,22 +1447,22 @@ LABEL_56:
   return v48 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v12 = v4;
-  if (*(v4 + 14))
+  fromCopy = from;
+  v12 = fromCopy;
+  if (*(fromCopy + 14))
   {
     [(HDCodableClinicalAccount *)self setGatewayExternalID:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  v5 = *(v4 + 82);
+  v5 = *(fromCopy + 82);
   if ((v5 & 0x400) != 0)
   {
-    self->_userEnabled = *(v4 + 160);
+    self->_userEnabled = *(fromCopy + 160);
     *&self->_has |= 0x400u;
-    v5 = *(v4 + 82);
+    v5 = *(fromCopy + 82);
     if ((v5 & 0x10) == 0)
     {
 LABEL_5:
@@ -1480,9 +1480,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_creationDate = *(v4 + 5);
+  self->_creationDate = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 82);
+  v5 = *(fromCopy + 82);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -1495,42 +1495,42 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_modificationDate = *(v4 + 10);
+  self->_modificationDate = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 82) & 0x80) != 0)
+  if ((*(fromCopy + 82) & 0x80) != 0)
   {
 LABEL_7:
-    self->_lastFetchDate = *(v4 + 8);
+    self->_lastFetchDate = *(fromCopy + 8);
     *&self->_has |= 0x80u;
   }
 
 LABEL_8:
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(HDCodableClinicalAccount *)self setSyncIdentifier:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if ((*(v4 + 82) & 0x100) != 0)
+  if ((*(fromCopy + 82) & 0x100) != 0)
   {
-    self->_lastFullFetchDate = *(v4 + 9);
+    self->_lastFullFetchDate = *(fromCopy + 9);
     *&self->_has |= 0x100u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCodableClinicalAccount *)self setAccountIdentifier:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(HDCodableClinicalAccount *)self setPatientHash:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
   messageVersion = self->_messageVersion;
-  v7 = *(v4 + 15);
+  v7 = *(fromCopy + 15);
   if (messageVersion)
   {
     if (!v7)
@@ -1551,20 +1551,20 @@ LABEL_8:
     [(HDCodableClinicalAccount *)self setMessageVersion:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_26:
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(HDCodableClinicalAccount *)self setSignedClinicalDataIssuerIdentifier:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  v8 = *(v4 + 82);
+  v8 = *(fromCopy + 82);
   if (v8)
   {
-    self->_clinicalSharingFirstSharedDate = *(v4 + 1);
+    self->_clinicalSharingFirstSharedDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v8 = *(v4 + 82);
+    v8 = *(fromCopy + 82);
     if ((v8 & 2) == 0)
     {
 LABEL_30:
@@ -1582,9 +1582,9 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  self->_clinicalSharingLastSharedDate = *(v4 + 2);
+  self->_clinicalSharingLastSharedDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v8 = *(v4 + 82);
+  v8 = *(fromCopy + 82);
   if ((v8 & 8) == 0)
   {
 LABEL_31:
@@ -1597,44 +1597,44 @@ LABEL_31:
   }
 
 LABEL_46:
-  self->_clinicalSharingUserStatus = *(v4 + 4);
+  self->_clinicalSharingUserStatus = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 82) & 4) != 0)
+  if ((*(fromCopy + 82) & 4) != 0)
   {
 LABEL_32:
-    self->_clinicalSharingMultiDeviceStatus = *(v4 + 3);
+    self->_clinicalSharingMultiDeviceStatus = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_33:
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(HDCodableClinicalAccount *)self setClinicalSharingPrimaryDeviceName:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  v9 = *(v4 + 82);
+  v9 = *(fromCopy + 82);
   if ((v9 & 0x40) != 0)
   {
-    self->_lastFailedFetchDate = *(v4 + 7);
+    self->_lastFailedFetchDate = *(fromCopy + 7);
     *&self->_has |= 0x40u;
-    v9 = *(v4 + 82);
+    v9 = *(fromCopy + 82);
   }
 
   if ((v9 & 0x20) != 0)
   {
-    self->_failedFetchAttemptsCount = *(v4 + 6);
+    self->_failedFetchAttemptsCount = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(HDCodableClinicalAccount *)self setCredentialSyncIdentifier:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
   syncIdentity = self->_syncIdentity;
-  v11 = *(v4 + 19);
+  v11 = *(fromCopy + 19);
   if (syncIdentity)
   {
     if (!v11)
@@ -1655,10 +1655,10 @@ LABEL_33:
     syncIdentity = [(HDCodableClinicalAccount *)self setSyncIdentity:?];
   }
 
-  v4 = v12;
+  fromCopy = v12;
 LABEL_51:
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

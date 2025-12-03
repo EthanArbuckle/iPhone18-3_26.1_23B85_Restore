@@ -1,51 +1,51 @@
 @interface FAUpdateFamilyInviteStatusRequest
-- (FAUpdateFamilyInviteStatusRequest)initWithInviteCode:(id)a3 inviteStatus:(int64_t)a4 responseFormat:(int64_t)a5 additionalRequestParameters:(id)a6;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FAUpdateFamilyInviteStatusRequest)initWithInviteCode:(id)code inviteStatus:(int64_t)status responseFormat:(int64_t)format additionalRequestParameters:(id)parameters;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FAUpdateFamilyInviteStatusRequest
 
-- (FAUpdateFamilyInviteStatusRequest)initWithInviteCode:(id)a3 inviteStatus:(int64_t)a4 responseFormat:(int64_t)a5 additionalRequestParameters:(id)a6
+- (FAUpdateFamilyInviteStatusRequest)initWithInviteCode:(id)code inviteStatus:(int64_t)status responseFormat:(int64_t)format additionalRequestParameters:(id)parameters
 {
-  v11 = a3;
-  v12 = a6;
+  codeCopy = code;
+  parametersCopy = parameters;
   v16.receiver = self;
   v16.super_class = FAUpdateFamilyInviteStatusRequest;
   v13 = [(FAFamilyCircleRequest *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_inviteCode, a3);
-    v14->_inviteStatus = a4;
-    v14->_responseFormat = a5;
-    objc_storeStrong(&v14->_additionalRequestParameters, a6);
+    objc_storeStrong(&v13->_inviteCode, code);
+    v14->_inviteStatus = status;
+    v14->_responseFormat = format;
+    objc_storeStrong(&v14->_additionalRequestParameters, parameters);
   }
 
   return v14;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__FAUpdateFamilyInviteStatusRequest_startRequestWithCompletionHandler___block_invoke;
   v15[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v16 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v15];
-  v7 = [(FAUpdateFamilyInviteStatusRequest *)self inviteStatus];
-  v8 = [(FAUpdateFamilyInviteStatusRequest *)self inviteCode];
-  v9 = [(FAFamilyCircleRequest *)self requestOptions];
-  v10 = [(FAUpdateFamilyInviteStatusRequest *)self responseFormat];
-  v11 = [(FAUpdateFamilyInviteStatusRequest *)self additionalRequestParameters];
+  inviteStatus = [(FAUpdateFamilyInviteStatusRequest *)self inviteStatus];
+  inviteCode = [(FAUpdateFamilyInviteStatusRequest *)self inviteCode];
+  requestOptions = [(FAFamilyCircleRequest *)self requestOptions];
+  responseFormat = [(FAUpdateFamilyInviteStatusRequest *)self responseFormat];
+  additionalRequestParameters = [(FAUpdateFamilyInviteStatusRequest *)self additionalRequestParameters];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__FAUpdateFamilyInviteStatusRequest_startRequestWithCompletionHandler___block_invoke_17;
   v13[3] = &unk_1E7CA47F0;
   v14 = v5;
   v12 = v5;
-  [v6 updateFamilyInviteStatusWith:v7 inviteCode:v8 options:v9 responseFormat:v10 additionalRequestParameters:v11 replyBlock:v13];
+  [v6 updateFamilyInviteStatusWith:inviteStatus inviteCode:inviteCode options:requestOptions responseFormat:responseFormat additionalRequestParameters:additionalRequestParameters replyBlock:v13];
 }
 
 void __71__FAUpdateFamilyInviteStatusRequest_startRequestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

@@ -1,6 +1,6 @@
 @interface QLMediaItemBaseViewController
 - (AVPlayer)player;
-- (BOOL)_assetIsDecodable:(id)a3;
+- (BOOL)_assetIsDecodable:(id)decodable;
 - (BOOL)endOfMediaReached;
 - (BOOL)pause;
 - (BOOL)play;
@@ -8,36 +8,36 @@
 - (CGSize)imageSize;
 - (double)mediaDuration;
 - (id)playbackObserverBlock;
-- (id)setupPlayerViewWithPlayer:(id)a3;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
+- (id)setupPlayerViewWithPlayer:(id)player;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
 - (void)_updateExternalPlayback;
 - (void)_updatePlayingStatus;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
 - (void)hostApplicationDidBecomeActive;
-- (void)hostApplicationDidEnterBackground:(id)a3;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)previewIsAppearingWithProgress:(double)a3;
+- (void)hostApplicationDidEnterBackground:(id)background;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)previewIsAppearingWithProgress:(double)progress;
 - (void)resetToBeginningAndPlay;
-- (void)setMediaVolume:(double)a3;
+- (void)setMediaVolume:(double)volume;
 - (void)stop;
 @end
 
 @implementation QLMediaItemBaseViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
-  objc_storeStrong(&self->_mediaAsset, a3);
-  v16 = v10;
-  v17 = v11;
-  v13 = v10;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = contentsCopy;
+  objc_storeStrong(&self->_mediaAsset, contents);
+  v16 = contextCopy;
+  v17 = handlerCopy;
+  v13 = contextCopy;
   v14 = v12;
-  v15 = v11;
+  v15 = handlerCopy;
   QLRunInBackgroundThread();
 }
 
@@ -285,36 +285,36 @@ void __93__QLMediaItemBaseViewController_loadPreviewControllerWithContents_conte
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setupPlayerViewWithPlayer:(id)a3
+- (id)setupPlayerViewWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v5 = objc_opt_new();
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
   [(QLMediaItemBaseViewController *)self imageSize];
   [v5 setFrame:{v6, v7, v8, v9}];
-  v10 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:v4];
+  v10 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:playerCopy];
 
   playerLayer = self->_playerLayer;
   self->_playerLayer = v10;
 
   [v5 bounds];
   [(AVPlayerLayer *)self->_playerLayer setFrame:?];
-  v12 = [v5 layer];
-  [v12 addSublayer:self->_playerLayer];
+  layer = [v5 layer];
+  [layer addSublayer:self->_playerLayer];
 
   [(QLScrollableContentItemViewController *)self setContentView:v5];
 
   return v5;
 }
 
-- (void)previewIsAppearingWithProgress:(double)a3
+- (void)previewIsAppearingWithProgress:(double)progress
 {
   v6.receiver = self;
   v6.super_class = QLMediaItemBaseViewController;
   [(QLItemViewController *)&v6 previewIsAppearingWithProgress:?];
-  v5 = a3 * 1.5;
-  if (a3 * 1.5 > 1.0)
+  v5 = progress * 1.5;
+  if (progress * 1.5 > 1.0)
   {
     v5 = 1.0;
   }
@@ -326,14 +326,14 @@ void __93__QLMediaItemBaseViewController_loadPreviewControllerWithContents_conte
 {
   if ([(QLMediaItemBaseViewController *)self playable])
   {
-    v3 = [(QLMediaItemBaseViewController *)self player];
-    [v3 removeObserver:self forKeyPath:@"rate"];
+    player = [(QLMediaItemBaseViewController *)self player];
+    [player removeObserver:self forKeyPath:@"rate"];
 
-    v4 = [(QLMediaItemBaseViewController *)self player];
-    [v4 removeObserver:self forKeyPath:@"status"];
+    player2 = [(QLMediaItemBaseViewController *)self player];
+    [player2 removeObserver:self forKeyPath:@"status"];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v6.receiver = self;
@@ -341,16 +341,16 @@ void __93__QLMediaItemBaseViewController_loadPreviewControllerWithContents_conte
   [(QLMediaItemBaseViewController *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(QLMediaItemBaseViewController *)self player];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  player = [(QLMediaItemBaseViewController *)self player];
 
-  if (v13 == a6)
+  if (player == context)
   {
-    if (([v10 isEqualToString:@"rate"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"status"))
+    if (([pathCopy isEqualToString:@"rate"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"status"))
     {
       [(QLMediaItemBaseViewController *)self _updatePlayingStatus];
     }
@@ -360,33 +360,33 @@ void __93__QLMediaItemBaseViewController_loadPreviewControllerWithContents_conte
   {
     v14.receiver = self;
     v14.super_class = QLMediaItemBaseViewController;
-    [(QLMediaItemBaseViewController *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(QLMediaItemBaseViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (void)_updateExternalPlayback
 {
   isVisible = self->_isVisible;
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  [v3 setAllowsExternalPlayback:isVisible];
+  player = [(QLMediaItemBaseViewController *)self player];
+  [player setAllowsExternalPlayback:isVisible];
 }
 
 - (void)_updatePlayingStatus
 {
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  v4 = [v3 error];
-  [(QLMediaItemBaseViewController *)self setError:v4];
+  player = [(QLMediaItemBaseViewController *)self player];
+  error = [player error];
+  [(QLMediaItemBaseViewController *)self setError:error];
 
-  v5 = [(QLMediaItemBaseViewController *)self player];
-  v6 = [v5 status];
+  player2 = [(QLMediaItemBaseViewController *)self player];
+  status = [player2 status];
 
-  if (v6 == 1)
+  if (status == 1)
   {
-    v7 = [(QLMediaItemBaseViewController *)self player];
-    if (v7)
+    player3 = [(QLMediaItemBaseViewController *)self player];
+    if (player3)
     {
-      v9 = [(QLMediaItemBaseViewController *)self player];
-      [v9 rate];
+      player4 = [(QLMediaItemBaseViewController *)self player];
+      [player4 rate];
       if (v10 == 0.0)
       {
         v8 = 2;
@@ -406,14 +406,14 @@ void __93__QLMediaItemBaseViewController_loadPreviewControllerWithContents_conte
 
   else
   {
-    if (v6 != 2)
+    if (status != 2)
     {
       v8 = 0;
       goto LABEL_12;
     }
 
-    v7 = [(QLMediaItemBaseViewController *)self error];
-    [(QLItemViewController *)self notifyDelegatesDidFailWithError:v7];
+    player3 = [(QLMediaItemBaseViewController *)self error];
+    [(QLItemViewController *)self notifyDelegatesDidFailWithError:player3];
     v8 = 3;
   }
 
@@ -425,15 +425,15 @@ LABEL_12:
     self->_playingStatus = v8;
     if (!playingStatus)
     {
-      v12 = [(QLMediaItemBaseViewController *)self player];
-      v13 = [v12 status];
+      player5 = [(QLMediaItemBaseViewController *)self player];
+      status2 = [player5 status];
 
-      if (v13 == 1)
+      if (status2 == 1)
       {
-        v14 = [(QLItemViewController *)self appearance];
-        v15 = [v14 presentationMode];
+        appearance = [(QLItemViewController *)self appearance];
+        presentationMode = [appearance presentationMode];
 
-        if (v15 == 4)
+        if (presentationMode == 4)
         {
           [(QLMediaItemBaseViewController *)self play];
         }
@@ -442,9 +442,9 @@ LABEL_12:
       previewItemLoadingBlock = self->_previewItemLoadingBlock;
       if (previewItemLoadingBlock)
       {
-        v17 = [(QLMediaItemBaseViewController *)self player];
-        v18 = [v17 error];
-        previewItemLoadingBlock[2](previewItemLoadingBlock, v18);
+        player6 = [(QLMediaItemBaseViewController *)self player];
+        error2 = [player6 error];
+        previewItemLoadingBlock[2](previewItemLoadingBlock, error2);
 
         v19 = self->_previewItemLoadingBlock;
         self->_previewItemLoadingBlock = 0;
@@ -453,13 +453,13 @@ LABEL_12:
 
     [(QLMediaItemBaseViewController *)self didChangeValueForKey:@"playingStatus"];
     [(QLMediaItemBaseViewController *)self didChangePlayingStatus];
-    v20 = [(QLItemViewController *)self delegate];
+    delegate = [(QLItemViewController *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(QLItemViewController *)self delegate];
-      [v22 previewItemViewControllerWantsUpdateOverlay:self animated:0];
+      delegate2 = [(QLItemViewController *)self delegate];
+      [delegate2 previewItemViewControllerWantsUpdateOverlay:self animated:0];
     }
   }
 }
@@ -489,15 +489,15 @@ LABEL_12:
   return player;
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v11[1] = *MEMORY[0x277D85DE8];
   if ([(QLMediaItemBaseViewController *)self shouldDisplayPlayButtonInNavigationBar]&& [(QLMediaItemBaseViewController *)self playable])
   {
     v4 = [objc_alloc(MEMORY[0x277D43FB0]) initWithIdentifier:@"togglePlay"];
     [v4 setPlacement:0];
-    v5 = [(QLMediaItemBaseViewController *)self playingStatus];
-    if (v5 == 1)
+    playingStatus = [(QLMediaItemBaseViewController *)self playingStatus];
+    if (playingStatus == 1)
     {
       v6 = 18;
     }
@@ -507,7 +507,7 @@ LABEL_12:
       v6 = 17;
     }
 
-    if (v5 == 1)
+    if (playingStatus == 1)
     {
       v7 = QLMediaItemViewControllerBarPlayButtonPausedAccessibilityIdentifier;
     }
@@ -538,14 +538,14 @@ LABEL_12:
   p_imageSize = &self->_imageSize;
   if (self->_imageSize.width == *MEMORY[0x277CBF3A8] && self->_imageSize.height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v5 = [(QLMediaItemBaseViewController *)self player];
+    player = [(QLMediaItemBaseViewController *)self player];
 
-    if (v5)
+    if (player)
     {
-      v6 = [(QLMediaItemBaseViewController *)self player];
-      v7 = [v6 currentItem];
-      v8 = [v7 asset];
-      [v8 ql_imageSizeOfFirstVideoTrack];
+      player2 = [(QLMediaItemBaseViewController *)self player];
+      currentItem = [player2 currentItem];
+      asset = [currentItem asset];
+      [asset ql_imageSizeOfFirstVideoTrack];
       p_imageSize->width = v9;
       p_imageSize->height = v10;
     }
@@ -560,11 +560,11 @@ LABEL_12:
 
 - (BOOL)endOfMediaReached
 {
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  v4 = v3;
-  if (v3)
+  player = [(QLMediaItemBaseViewController *)self player];
+  v4 = player;
+  if (player)
   {
-    [v3 currentTime];
+    [player currentTime];
   }
 
   else
@@ -572,13 +572,13 @@ LABEL_12:
     memset(&time1, 0, sizeof(time1));
   }
 
-  v5 = [(QLMediaItemBaseViewController *)self player];
-  v6 = [v5 currentItem];
-  v7 = [v6 asset];
-  v8 = v7;
-  if (v7)
+  player2 = [(QLMediaItemBaseViewController *)self player];
+  currentItem = [player2 currentItem];
+  asset = [currentItem asset];
+  v8 = asset;
+  if (asset)
   {
-    [v7 duration];
+    [asset duration];
   }
 
   else
@@ -647,10 +647,10 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
     return 0;
   }
 
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  v4 = [v3 status];
+  player = [(QLMediaItemBaseViewController *)self player];
+  status = [player status];
 
-  if (v4 != 1)
+  if (status != 1)
   {
     return 0;
   }
@@ -662,8 +662,8 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
 
   else
   {
-    v6 = [(QLMediaItemBaseViewController *)self player];
-    [v6 play];
+    player2 = [(QLMediaItemBaseViewController *)self player];
+    [player2 play];
   }
 
   return 1;
@@ -671,11 +671,11 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
 
 - (BOOL)pause
 {
-  v2 = [(QLMediaItemBaseViewController *)self player];
-  [v2 pause];
+  player = [(QLMediaItemBaseViewController *)self player];
+  [player pause];
 
-  v3 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v3 silenceOutput:1 error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] silenceOutput:1 error:0];
 
   return 1;
 }
@@ -683,14 +683,14 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
 - (void)stop
 {
   [(QLMediaItemBaseViewController *)self pause];
-  v3 = [(QLMediaItemBaseViewController *)self player];
+  player = [(QLMediaItemBaseViewController *)self player];
   v8 = *MEMORY[0x277CC08F0];
   v9 = *(MEMORY[0x277CC08F0] + 16);
   v6 = v8;
   v7 = v9;
   v4 = v8;
   v5 = v9;
-  [v3 seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4];
+  [player seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4];
 }
 
 - (BOOL)togglePlayback
@@ -710,16 +710,16 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
 
 - (double)mediaDuration
 {
-  v3 = [(QLMediaItemBaseViewController *)self player];
-  if (v3)
+  player = [(QLMediaItemBaseViewController *)self player];
+  if (player)
   {
-    v4 = [(QLMediaItemBaseViewController *)self player];
-    v5 = [v4 currentItem];
-    v6 = [v5 asset];
-    v7 = v6;
-    if (v6)
+    player2 = [(QLMediaItemBaseViewController *)self player];
+    currentItem = [player2 currentItem];
+    asset = [currentItem asset];
+    v7 = asset;
+    if (asset)
     {
-      [v6 duration];
+      [asset duration];
     }
 
     else
@@ -738,18 +738,18 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
   return Seconds;
 }
 
-- (void)setMediaVolume:(double)a3
+- (void)setMediaVolume:(double)volume
 {
-  v3 = a3;
-  v5 = [(QLMediaItemBaseViewController *)self player];
-  *&v4 = v3;
-  [v5 setVolume:v4];
+  volumeCopy = volume;
+  player = [(QLMediaItemBaseViewController *)self player];
+  *&v4 = volumeCopy;
+  [player setVolume:v4];
 }
 
 - (void)resetToBeginningAndPlay
 {
   objc_initWeak(&location, self);
-  v3 = [(QLMediaItemBaseViewController *)self player];
+  player = [(QLMediaItemBaseViewController *)self player];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__QLMediaItemBaseViewController_resetToBeginningAndPlay__block_invoke;
@@ -761,7 +761,7 @@ void __54__QLMediaItemBaseViewController_playbackObserverBlock__block_invoke(uin
   v7 = v9;
   v4 = v8;
   v5 = v9;
-  [v3 seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
+  [player seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -780,9 +780,9 @@ void __56__QLMediaItemBaseViewController_resetToBeginningAndPlay__block_invoke(u
   }
 }
 
-- (void)hostApplicationDidEnterBackground:(id)a3
+- (void)hostApplicationDidEnterBackground:(id)background
 {
-  if (([a3 BOOLValue] & 1) == 0)
+  if (([background BOOLValue] & 1) == 0)
   {
     self->_mediaWasPausedOnResignActive = [(QLMediaItemBaseViewController *)self playingStatus]== 1;
 
@@ -800,29 +800,29 @@ void __56__QLMediaItemBaseViewController_resetToBeginningAndPlay__block_invoke(u
   self->_mediaWasPausedOnResignActive = 0;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a4;
-  if ([a3 isEqualToString:@"togglePlay"])
+  handlerCopy = handler;
+  if ([identifier isEqualToString:@"togglePlay"])
   {
     [(QLMediaItemBaseViewController *)self togglePlayback];
   }
 
-  v6 = v7;
-  if (v7)
+  v6 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(handlerCopy + 2))(handlerCopy);
+    v6 = handlerCopy;
   }
 }
 
-- (BOOL)_assetIsDecodable:(id)a3
+- (BOOL)_assetIsDecodable:(id)decodable
 {
-  v3 = [a3 tracks];
-  v4 = [v3 firstObject];
+  tracks = [decodable tracks];
+  firstObject = [tracks firstObject];
 
-  LOBYTE(v3) = [v4 isDecodable];
-  return v3;
+  LOBYTE(tracks) = [firstObject isDecodable];
+  return tracks;
 }
 
 @end

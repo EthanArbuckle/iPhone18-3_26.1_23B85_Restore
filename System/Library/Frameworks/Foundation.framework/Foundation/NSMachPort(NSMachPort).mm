@@ -29,21 +29,21 @@
 - (unint64_t)retain
 {
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v4 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v4 = atomic_load(self + 1)) != 0)
   {
 
-    return CFRetain(a1);
+    return CFRetain(self);
   }
 
   else
   {
-    [a1 _increaseRetainCountWithLock:&_NSGlobalRetainLock];
+    [self _increaseRetainCountWithLock:&_NSGlobalRetainLock];
     if (*MEMORY[0x1E695E0C0] == 1)
     {
       __CFRecordAllocationEvent();
     }
 
-    return a1;
+    return self;
   }
 }
 
@@ -51,10 +51,10 @@
 {
   v4[5] = *MEMORY[0x1E69E9840];
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v3 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v3 = atomic_load(self + 1)) != 0)
   {
 
-    CFRelease(a1);
+    CFRelease(self);
   }
 
   else
@@ -68,46 +68,46 @@
     v4[1] = 3221225472;
     v4[2] = __33__NSMachPort_NSMachPort__release__block_invoke;
     v4[3] = &unk_1E69F2C00;
-    v4[4] = a1;
-    [a1 _decreaseRetainCountAndMaybeDeallocWithLock:&_NSGlobalRetainLock andPerformWhenZero:v4];
+    v4[4] = self;
+    [self _decreaseRetainCountAndMaybeDeallocWithLock:&_NSGlobalRetainLock andPerformWhenZero:v4];
   }
 }
 
 - (void)invalidate
 {
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v8 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v8 = atomic_load(self + 1)) != 0)
   {
-    if (CFMachPortIsValid(a1))
+    if (CFMachPortIsValid(self))
     {
 
-      CFMachPortInvalidate(a1);
+      CFMachPortInvalidate(self);
     }
   }
 
   else
   {
-    [a1 setDelegate:0];
-    v3 = [a1 _machPort];
-    if (v3)
+    [self setDelegate:0];
+    _machPort = [self _machPort];
+    if (_machPort)
     {
-      v4 = v3;
-      v5 = [a1 _flags];
+      v4 = _machPort;
+      _flags = [self _flags];
       v6 = MEMORY[0x1E69E9A60];
-      if ((v5 & 2) != 0)
+      if ((_flags & 2) != 0)
       {
         mach_port_mod_refs(*MEMORY[0x1E69E9A60], v4, 1u, -1);
       }
 
-      if (v5)
+      if (_flags)
       {
         mach_port_deallocate(*v6, v4);
       }
 
-      [a1 _setMachPort:0];
+      [self _setMachPort:0];
       v7 = +[NSNotificationCenter defaultCenter];
 
-      [(NSNotificationCenter *)v7 postNotificationName:@"NSPortDidBecomeInvalidNotification" object:a1 userInfo:0];
+      [(NSNotificationCenter *)v7 postNotificationName:@"NSPortDidBecomeInvalidNotification" object:self userInfo:0];
     }
   }
 }
@@ -115,36 +115,36 @@
 - (uint64_t)machPort
 {
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v4 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v4 = atomic_load(self + 1)) != 0)
   {
 
-    return CFMachPortGetPort(a1);
+    return CFMachPortGetPort(self);
   }
 
   else
   {
 
-    return [a1 _machPort];
+    return [self _machPort];
   }
 }
 
 + (id)port
 {
-  v1 = [objc_allocWithZone(a1) init];
+  v1 = [objc_allocWithZone(self) init];
 
   return v1;
 }
 
 + (id)portWithMachPort:()NSMachPort
 {
-  v3 = [objc_allocWithZone(a1) initWithMachPort:a3];
+  v3 = [objc_allocWithZone(self) initWithMachPort:a3];
 
   return v3;
 }
 
 + (id)portWithMachPort:()NSMachPort options:
 {
-  v4 = [objc_allocWithZone(a1) initWithMachPort:a3 options:a4];
+  v4 = [objc_allocWithZone(self) initWithMachPort:a3 options:a4];
 
   return v4;
 }
@@ -157,14 +157,14 @@
   }
 
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (v7 = atomic_load(a1 + 1)) != 0)
+  if (v5 == objc_opt_class() && (v7 = atomic_load(self + 1)) != 0)
   {
-    return CFEqual(a1, a3) != 0;
+    return CFEqual(self, a3) != 0;
   }
 
   else
   {
-    return a1 == a3;
+    return self == a3;
   }
 }
 
@@ -173,15 +173,15 @@
   v2 = objc_opt_class();
   if (v2 != objc_opt_class())
   {
-    return [a1 _machPort];
+    return [self _machPort];
   }
 
-  if (!atomic_load(a1 + 1))
+  if (!atomic_load(self + 1))
   {
-    return [a1 _machPort];
+    return [self _machPort];
   }
 
-  return CFHash(a1);
+  return CFHash(self);
 }
 
 - (CFIndex)retainCount
@@ -189,15 +189,15 @@
   v2 = objc_opt_class();
   if (v2 != objc_opt_class())
   {
-    return [a1 _retainCount] + 1;
+    return [self _retainCount] + 1;
   }
 
-  if (!atomic_load(a1 + 1))
+  if (!atomic_load(self + 1))
   {
-    return [a1 _retainCount] + 1;
+    return [self _retainCount] + 1;
   }
 
-  return CFGetRetainCount(a1);
+  return CFGetRetainCount(self);
 }
 
 - (uint64_t)isKindOfClass:()NSMachPort
@@ -206,7 +206,7 @@
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    if (atomic_load(a1 + 1))
+    if (atomic_load(self + 1))
     {
       if (objc_opt_class() == a3)
       {
@@ -215,7 +215,7 @@
     }
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1EEF97EB0;
   return objc_msgSendSuper2(&v8, sel_isKindOfClass_, a3);
 }
@@ -226,7 +226,7 @@
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    if (atomic_load(a1 + 1))
+    if (atomic_load(self + 1))
     {
       if (objc_opt_class() == a3)
       {
@@ -235,7 +235,7 @@
     }
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_1EEF97EB0;
   return objc_msgSendSuper2(&v8, sel_isMemberOfClass_, a3);
 }
@@ -243,14 +243,14 @@
 - (BOOL)isValid
 {
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v4 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v4 = atomic_load(self + 1)) != 0)
   {
-    IsValid = CFMachPortIsValid(a1);
+    IsValid = CFMachPortIsValid(self);
   }
 
   else
   {
-    IsValid = [a1 _machPort];
+    IsValid = [self _machPort];
   }
 
   return IsValid != 0;
@@ -260,13 +260,13 @@
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (v6 = atomic_load(a1 + 1)) != 0)
+  if (v5 == objc_opt_class() && (v6 = atomic_load(self + 1)) != 0)
   {
     memset(&v7.info, 0, 32);
-    if (CFMachPortIsValid(a1))
+    if (CFMachPortIsValid(self))
     {
       v7.version = 0;
-      CFMachPortGetContext(a1, &v7);
+      CFMachPortGetContext(self, &v7);
       if (v7.info)
       {
         if ((*(v7.info + 4) ^ *(v7.info + 3)) == -1)
@@ -280,7 +280,7 @@
   else
   {
 
-    [a1 _setDelegate:a3];
+    [self _setDelegate:a3];
   }
 }
 
@@ -288,10 +288,10 @@
 {
   v6 = *MEMORY[0x1E69E9840];
   v2 = objc_opt_class();
-  if (v2 == objc_opt_class() && (v4 = atomic_load(a1 + 1)) != 0)
+  if (v2 == objc_opt_class() && (v4 = atomic_load(self + 1)) != 0)
   {
     memset(&v5, 0, sizeof(v5));
-    CFMachPortGetContext(a1, &v5);
+    CFMachPortGetContext(self, &v5);
     result = 0;
     if ((*(v5.info + 4) ^ *(v5.info + 3)) == -1)
     {
@@ -302,7 +302,7 @@
   else
   {
 
-    return [a1 _delegate];
+    return [self _delegate];
   }
 
   return result;
@@ -412,7 +412,7 @@ LABEL_22:
     {
       v25 = v11;
       v26 = [v24 length];
-      v27 = [v24 bytes];
+      bytes = [v24 bytes];
       v28 = a9;
       if (v22)
       {
@@ -421,7 +421,7 @@ LABEL_22:
 
       v29 = v26 - v28;
       v11 = v25;
-      *v23 = v27 + v28;
+      *v23 = bytes + v28;
       *(v23 + 2) = ((v29 >= *MEMORY[0x1E69E9AC8] >> 1) << 8) | (v23[10] << 16) | 0x1000000;
       *(v23 + 3) = v29;
       v23 += 16;
@@ -453,8 +453,8 @@ LABEL_37:
   }
 
   v21->msgh_bits = v32;
-  v33 = a1 - CFAbsoluteTimeGetCurrent();
-  v34 = a6;
+  v33 = self - CFAbsoluteTimeGetCurrent();
+  machPort = a6;
   if (v33 < 0.0)
   {
     v35 = 0;
@@ -481,17 +481,17 @@ LABEL_37:
   if (a6)
   {
 LABEL_45:
-    v34 = [a6 machPort];
+    machPort = [a6 machPort];
   }
 
 LABEL_46:
-  v21->msgh_remote_port = v34;
+  v21->msgh_remote_port = machPort;
   if (v9)
   {
-    v36 = [v9 machPort];
-    v21->msgh_local_port = v36;
+    machPort2 = [v9 machPort];
+    v21->msgh_local_port = machPort2;
     v21->msgh_id = a8;
-    if (v36)
+    if (machPort2)
     {
       v37 = 5139;
       goto LABEL_51;
@@ -565,9 +565,9 @@ LABEL_64:
 - (uint64_t)sendBeforeTime:()NSMachPort streamData:components:from:msgid:
 {
   v13 = objc_opt_class();
-  v14 = [a1 reservedSpaceLength];
+  reservedSpaceLength = [self reservedSpaceLength];
 
-  return [v13 sendBeforeTime:a4 streamData:a5 components:a1 to:a6 from:a7 msgid:v14 reserved:a2];
+  return [v13 sendBeforeTime:a4 streamData:a5 components:self to:a6 from:a7 msgid:reservedSpaceLength reserved:a2];
 }
 
 - (uint64_t)sendBeforeDate:()NSMachPort components:from:reserved:
@@ -575,7 +575,7 @@ LABEL_64:
   v11 = objc_opt_class();
   [a3 timeIntervalSinceReferenceDate];
 
-  return [v11 sendBeforeTime:0 streamData:a4 components:a1 to:a5 from:0 msgid:a6 reserved:?];
+  return [v11 sendBeforeTime:0 streamData:a4 components:self to:a5 from:0 msgid:a6 reserved:?];
 }
 
 - (uint64_t)sendBeforeDate:()NSMachPort msgid:components:from:reserved:
@@ -583,7 +583,7 @@ LABEL_64:
   v13 = objc_opt_class();
   [a3 timeIntervalSinceReferenceDate];
 
-  return [v13 sendBeforeTime:0 streamData:a5 components:a1 to:a6 from:a4 msgid:a7 reserved:?];
+  return [v13 sendBeforeTime:0 streamData:a5 components:self to:a6 from:a4 msgid:a7 reserved:?];
 }
 
 - (void)scheduleInRunLoop:()NSMachPort forMode:
@@ -591,14 +591,14 @@ LABEL_64:
   if (a3)
   {
     v8 = objc_opt_class();
-    if (v8 != objc_opt_class() || (v9 = atomic_load(a1 + 1)) == 0)
+    if (v8 != objc_opt_class() || (v9 = atomic_load(self + 1)) == 0)
     {
       v12 = NSClassFromString(@"NSMachPort");
 
-      NSRequestConcreteImplementation(a1, a2, v12);
+      NSRequestConcreteImplementation(self, a2, v12);
     }
 
-    RunLoopSource = CFMachPortCreateRunLoopSource(0, a1, 200);
+    RunLoopSource = CFMachPortCreateRunLoopSource(0, self, 200);
     if (RunLoopSource)
     {
       v11 = RunLoopSource;
@@ -614,14 +614,14 @@ LABEL_64:
   if (a3)
   {
     v8 = objc_opt_class();
-    if (v8 != objc_opt_class() || (v9 = atomic_load(a1 + 1)) == 0)
+    if (v8 != objc_opt_class() || (v9 = atomic_load(self + 1)) == 0)
     {
       v12 = NSClassFromString(@"NSMachPort");
 
-      NSRequestConcreteImplementation(a1, a2, v12);
+      NSRequestConcreteImplementation(self, a2, v12);
     }
 
-    RunLoopSource = CFMachPortCreateRunLoopSource(0, a1, 200);
+    RunLoopSource = CFMachPortCreateRunLoopSource(0, self, 200);
     if (RunLoopSource)
     {
       v11 = RunLoopSource;
@@ -637,7 +637,7 @@ LABEL_64:
   v17 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = &off_1EEF97EB0;
     objc_msgSendSuper2(&v16, sel_dealloc);
     return 0;
@@ -646,7 +646,7 @@ LABEL_64:
   v7 = objc_opt_class();
   if (v7 != objc_opt_class())
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &off_1EEF97EB0;
     v8 = objc_msgSendSuper2(&v12, sel_init);
     [v8 _setFlags:a4 & 3];
@@ -704,13 +704,13 @@ LABEL_64:
   {
     mach_port_mod_refs(*v2, name, 1u, -1);
 LABEL_4:
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &off_1EEF97EB0;
     objc_msgSendSuper2(&v4, sel_dealloc);
     return 0;
   }
 
-  result = [a1 initWithMachPort:name options:3];
+  result = [self initWithMachPort:name options:3];
   if (!result)
   {
     mach_port_mod_refs(*v2, name, 1u, -1);

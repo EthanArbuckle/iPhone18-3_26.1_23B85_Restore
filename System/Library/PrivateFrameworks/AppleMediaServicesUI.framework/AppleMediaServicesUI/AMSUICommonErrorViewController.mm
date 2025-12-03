@@ -1,5 +1,5 @@
 @interface AMSUICommonErrorViewController
-- (AMSUICommonErrorViewController)initWithError:(id)a3 logKey:(id)a4 bag:(id)a5 retryAction:(id)a6 cancelAction:(id)a7;
+- (AMSUICommonErrorViewController)initWithError:(id)error logKey:(id)key bag:(id)bag retryAction:(id)action cancelAction:(id)cancelAction;
 - (id)navigationItem;
 - (void)_cancelButtonAction;
 - (void)_enqueuePageEventIfNeeded;
@@ -13,27 +13,27 @@
 
 @implementation AMSUICommonErrorViewController
 
-- (AMSUICommonErrorViewController)initWithError:(id)a3 logKey:(id)a4 bag:(id)a5 retryAction:(id)a6 cancelAction:(id)a7
+- (AMSUICommonErrorViewController)initWithError:(id)error logKey:(id)key bag:(id)bag retryAction:(id)action cancelAction:(id)cancelAction
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  errorCopy = error;
+  keyCopy = key;
+  bagCopy = bag;
+  actionCopy = action;
+  cancelActionCopy = cancelAction;
   v25.receiver = self;
   v25.super_class = AMSUICommonErrorViewController;
   v18 = [(AMSUICommonErrorViewController *)&v25 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_error, a3);
-    objc_storeStrong(&v19->_logKey, a4);
-    objc_storeStrong(&v19->_bag, a5);
-    v20 = _Block_copy(v16);
+    objc_storeStrong(&v18->_error, error);
+    objc_storeStrong(&v19->_logKey, key);
+    objc_storeStrong(&v19->_bag, bag);
+    v20 = _Block_copy(actionCopy);
     retryAction = v19->_retryAction;
     v19->_retryAction = v20;
 
-    v22 = _Block_copy(v17);
+    v22 = _Block_copy(cancelActionCopy);
     cancelAction = v19->_cancelAction;
     v19->_cancelAction = v22;
   }
@@ -46,9 +46,9 @@
   v5.receiver = self;
   v5.super_class = AMSUICommonErrorViewController;
   [(AMSUICommonViewController *)&v5 loadView];
-  v3 = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
-  v4 = [(AMSUICommonViewController *)self view];
-  [v4 ams_setBackgroundColor:v3];
+  ams_defaultPlatformBackgroundColor = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
+  view = [(AMSUICommonViewController *)self view];
+  [view ams_setBackgroundColor:ams_defaultPlatformBackgroundColor];
 }
 
 - (void)viewDidLoad
@@ -63,18 +63,18 @@
 - (void)_enqueuePageEventIfNeeded
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUICommonErrorViewController *)self engagementMetrics];
+  engagementMetrics = [(AMSUICommonErrorViewController *)self engagementMetrics];
 
-  if (v3)
+  if (engagementMetrics)
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v4)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v4 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = AMSLogKey();
@@ -82,7 +82,7 @@
       v18 = v6;
       v19 = 2114;
       v20 = v7;
-      _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing engagement display event.", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enqueueing engagement display event.", buf, 0x16u);
     }
 
     v8 = [(AMSUICommonErrorViewController *)self engagementMetrics:@"eventType"];
@@ -103,45 +103,45 @@
   v13.receiver = self;
   v13.super_class = AMSUICommonErrorViewController;
   [(AMSUICommonErrorViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUICommonErrorViewController *)self errorView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  errorView = [(AMSUICommonErrorViewController *)self errorView];
+  [errorView setFrame:{v5, v7, v9, v11}];
 }
 
 - (id)navigationItem
 {
-  v3 = [(AMSUICommonErrorViewController *)self parentViewController];
-  v4 = [v3 ams_navigationItemViewController];
+  parentViewController = [(AMSUICommonErrorViewController *)self parentViewController];
+  ams_navigationItemViewController = [parentViewController ams_navigationItemViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 navigationItem];
+    navigationItem = [ams_navigationItemViewController navigationItem];
   }
 
   else
   {
-    v5 = 0;
+    navigationItem = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    navigationItem2 = navigationItem;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AMSUICommonErrorViewController;
-    v6 = [(AMSUICommonErrorViewController *)&v9 navigationItem];
+    navigationItem2 = [(AMSUICommonErrorViewController *)&v9 navigationItem];
   }
 
-  v7 = v6;
+  v7 = navigationItem2;
 
   return v7;
 }
@@ -149,22 +149,22 @@
 - (void)_setupNavigationItem
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(AMSUICommonErrorViewController *)self navigationItem];
+  navigationItem = [(AMSUICommonErrorViewController *)self navigationItem];
   if (objc_opt_respondsToSelector())
   {
-    [v2 ams_configureWithTransparentBackground];
+    [navigationItem ams_configureWithTransparentBackground];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v3)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v3 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v5 = objc_opt_class();
       v6 = AMSLogKey();
@@ -174,7 +174,7 @@
       v11 = v6;
       v12 = 2114;
       v13 = objc_opt_class();
-      _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Unexpected navigation item of %{public}@ class", &v8, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@ [%{public}@]: Unexpected navigation item of %{public}@ class", &v8, 0x20u);
     }
   }
 
@@ -190,41 +190,41 @@
     v18[0] = v3;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
-    v5 = [(AMSUICommonErrorViewController *)self navigationController];
-    v6 = [v5 navigationBar];
-    v7 = [v6 backItem];
-    if (v7)
+    navigationController = [(AMSUICommonErrorViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    backItem = [navigationBar backItem];
+    if (backItem)
     {
     }
 
     else
     {
-      v14 = [(AMSUICommonErrorViewController *)self traitCollection];
-      v15 = [v14 userInterfaceIdiom];
+      traitCollection = [(AMSUICommonErrorViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v15 != 5)
+      if (userInterfaceIdiom != 5)
       {
-        v9 = [(AMSUICommonErrorViewController *)self navigationItem];
-        [v9 setLeftBarButtonItems:v4];
+        navigationItem = [(AMSUICommonErrorViewController *)self navigationItem];
+        [navigationItem setLeftBarButtonItems:v4];
         goto LABEL_8;
       }
     }
 
-    v9 = [(AMSUICommonErrorViewController *)self navigationItem];
-    [v9 setRightBarButtonItems:v4];
+    navigationItem = [(AMSUICommonErrorViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:v4];
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x1E69DC708]);
     v4 = [(AMSUICommonErrorViewController *)self bag];
-    v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-    v10 = AMSUILocalizedStringFromBundle(@"CANCEL", v4, v9);
+    navigationItem = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
+    v10 = AMSUILocalizedStringFromBundle(@"CANCEL", v4, navigationItem);
     v11 = [v8 initWithTitle:v10 style:0 target:self action:sel__cancelButtonAction];
     v17 = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-    v13 = [(AMSUICommonErrorViewController *)self navigationItem];
-    [v13 setLeftBarButtonItems:v12];
+    navigationItem2 = [(AMSUICommonErrorViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItems:v12];
   }
 
 LABEL_8:
@@ -234,8 +234,8 @@ LABEL_8:
 
 - (void)_cancelButtonAction
 {
-  v2 = [(AMSUICommonErrorViewController *)self cancelAction];
-  v2[2]();
+  cancelAction = [(AMSUICommonErrorViewController *)self cancelAction];
+  cancelAction[2]();
 }
 
 - (void)_setup
@@ -245,15 +245,15 @@ LABEL_8:
   v4 = [(AMSUIErrorView *)v3 initWithFrame:&stru_1F3921360 title:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(AMSUICommonErrorViewController *)self setErrorView:v4];
 
-  v5 = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
-  v6 = [(AMSUICommonErrorViewController *)self errorView];
-  [v6 ams_setBackgroundColor:v5];
+  ams_defaultPlatformBackgroundColor = [MEMORY[0x1E69DC888] ams_defaultPlatformBackgroundColor];
+  errorView = [(AMSUICommonErrorViewController *)self errorView];
+  [errorView ams_setBackgroundColor:ams_defaultPlatformBackgroundColor];
 
   v39 = objc_alloc_init(AMSUIAirplaneModeInquiry);
-  v7 = [(AMSUIAirplaneModeInquiry *)v39 isEnabled];
-  v8 = [(AMSUICommonErrorViewController *)self error];
-  v9 = [v8 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  isEnabled = [(AMSUIAirplaneModeInquiry *)v39 isEnabled];
+  error = [(AMSUICommonErrorViewController *)self error];
+  userInfo = [error userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -266,7 +266,7 @@ LABEL_8:
     v11 = 0;
   }
 
-  if (v11 && ([v11 domain], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == *MEMORY[0x1E695AD78] && v7, v12, v13))
+  if (v11 && ([v11 domain], v12 = objc_claimAutoreleasedReturnValue(), v13 = v12 == *MEMORY[0x1E695AD78] && isEnabled, v12, v13))
   {
     v14 = @"WIFI_AIRPLANE_MODE_ERROR";
   }
@@ -282,49 +282,49 @@ LABEL_8:
 
   if (v17 && [v17 length])
   {
-    v18 = [(AMSUICommonErrorViewController *)self errorView];
-    [v18 setTitle:v17];
+    errorView2 = [(AMSUICommonErrorViewController *)self errorView];
+    [errorView2 setTitle:v17];
   }
 
   if (os_variant_has_internal_content())
   {
-    v19 = [(AMSUICommonErrorViewController *)self error];
-    v20 = [v19 ams_message];
-    v21 = [(AMSUICommonErrorViewController *)self errorView];
-    [v21 setMessage:v20];
+    error2 = [(AMSUICommonErrorViewController *)self error];
+    ams_message = [error2 ams_message];
+    errorView3 = [(AMSUICommonErrorViewController *)self errorView];
+    [errorView3 setMessage:ams_message];
   }
 
   else
   {
-    v19 = [(AMSUICommonErrorViewController *)self bag];
-    v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-    v21 = AMSUILocalizedStringFromBundle(@"DEFAULT_ERROR_MESSAGE", v19, v20);
-    v22 = [(AMSUICommonErrorViewController *)self errorView];
-    [v22 setMessage:v21];
+    error2 = [(AMSUICommonErrorViewController *)self bag];
+    ams_message = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
+    errorView3 = AMSUILocalizedStringFromBundle(@"DEFAULT_ERROR_MESSAGE", error2, ams_message);
+    errorView4 = [(AMSUICommonErrorViewController *)self errorView];
+    [errorView4 setMessage:errorView3];
   }
 
   v23 = [(AMSUICommonErrorViewController *)self bag];
   v24 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
   v25 = AMSUILocalizedStringFromBundle(@"DEFAULT_ERROR_BUTTON", v23, v24);
-  v26 = [(AMSUICommonErrorViewController *)self errorView];
-  [v26 setButtonTitle:v25];
+  errorView5 = [(AMSUICommonErrorViewController *)self errorView];
+  [errorView5 setButtonTitle:v25];
 
   errorView = self->_errorView;
-  v28 = [(AMSUICommonErrorViewController *)self retryAction];
-  [(AMSUIErrorView *)errorView setButtonAction:v28];
+  retryAction = [(AMSUICommonErrorViewController *)self retryAction];
+  [(AMSUIErrorView *)errorView setButtonAction:retryAction];
 
-  v29 = [(AMSUICommonViewController *)self view];
-  v30 = [(AMSUICommonErrorViewController *)self errorView];
-  [v29 addSubview:v30];
+  view = [(AMSUICommonViewController *)self view];
+  errorView6 = [(AMSUICommonErrorViewController *)self errorView];
+  [view addSubview:errorView6];
 
-  v31 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v31)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v31 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v32 = [v31 OSLogObject];
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v33 = objc_opt_class();
     logKey = self->_logKey;
@@ -334,17 +334,17 @@ LABEL_8:
       v35 = AMSLogKey();
     }
 
-    v36 = [(AMSUIErrorView *)self->_errorView title];
-    v37 = [(AMSUIErrorView *)self->_errorView message];
+    title = [(AMSUIErrorView *)self->_errorView title];
+    message = [(AMSUIErrorView *)self->_errorView message];
     *buf = 138544130;
     v41 = v33;
     v42 = 2114;
     v43 = v35;
     v44 = 2114;
-    v45 = v36;
+    v45 = title;
     v46 = 2114;
-    v47 = v37;
-    _os_log_impl(&dword_1BB036000, v32, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error page displayed. Title: %{public}@, Message: %{public}@", buf, 0x2Au);
+    v47 = message;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error page displayed. Title: %{public}@, Message: %{public}@", buf, 0x2Au);
 
     if (!logKey)
     {

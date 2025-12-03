@@ -1,9 +1,9 @@
 @interface VCPCNNFastGestureRecognition
 + (id)detector;
 - (VCPCNNFastGestureRecognition)init;
-- (int)createInput:(float *)a3 keypoints:(id)a4;
-- (int)gestureDetection:(id)a3 score:(float *)a4;
-- (int)getDetectionScore:(float *)a3;
+- (int)createInput:(float *)input keypoints:(id)keypoints;
+- (int)gestureDetection:(id)detection score:(float *)score;
+- (int)getDetectionScore:(float *)score;
 - (void)dealloc;
 @end
 
@@ -23,10 +23,10 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "CNNFastGestureRecognition: start loading model", buf, 2u);
     }
 
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"gesture_recognition.espresso.net" relativeToURL:v4];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:@"gesture_recognition.espresso.net" relativeToURL:resourceURL];
     v6 = [[VCPCNNModelEspresso alloc] initWithParameters:v5 inputNames:0 outputNames:0 properties:0];
     modelEspresso = v2->_modelEspresso;
     v2->_modelEspresso = v6;
@@ -185,16 +185,16 @@ LABEL_32:
   return v2;
 }
 
-- (int)createInput:(float *)a3 keypoints:(id)a4
+- (int)createInput:(float *)input keypoints:(id)keypoints
 {
-  v5 = a4;
-  if (a3)
+  keypointsCopy = keypoints;
+  if (input)
   {
     v6 = 0;
-    v7 = a3 + 21;
+    v7 = input + 21;
     do
     {
-      v8 = [v5 objectAtIndex:v6];
+      v8 = [keypointsCopy objectAtIndex:v6];
       v9 = 0;
       v10 = v7;
       do
@@ -234,7 +234,7 @@ LABEL_32:
   return v18;
 }
 
-- (int)getDetectionScore:(float *)a3
+- (int)getDetectionScore:(float *)score
 {
   v5 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
   if (!v5)
@@ -243,19 +243,19 @@ LABEL_32:
     [(VCPCNNModelEspresso *)self->_modelEspresso outputBlob];
     [(VCPCNNModelEspresso *)self->_modelEspresso outputBlob];
     [(VCPCNNModelEspresso *)self->_modelEspresso outputBlob];
-    *a3 = *(v7 + 4);
+    *score = *(v7 + 4);
   }
 
   return v5;
 }
 
-- (int)gestureDetection:(id)a3 score:(float *)a4
+- (int)gestureDetection:(id)detection score:(float *)score
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = [(VCPCNNFastGestureRecognition *)self createInput:self->_inputData keypoints:a3];
+  v8 = [(VCPCNNFastGestureRecognition *)self createInput:self->_inputData keypoints:detection];
   if (!v8)
   {
-    v8 = [(VCPCNNFastGestureRecognition *)self getDetectionScore:a4];
+    v8 = [(VCPCNNFastGestureRecognition *)self getDetectionScore:score];
   }
 
   objc_autoreleasePoolPop(v7);

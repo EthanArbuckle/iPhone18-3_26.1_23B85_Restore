@@ -7,7 +7,7 @@
 
 - (BOOL)oldDevicesExist
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10032C6E0();
 
   v4 = *(v3 + 16);

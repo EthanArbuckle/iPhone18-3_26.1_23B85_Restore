@@ -1,34 +1,34 @@
 @interface _UIOrientationRequestAction
-- (_UIOrientationRequestAction)initWithRequestedInterfaceOrientationMask:(unint64_t)a3 policy:(unint64_t)a4 callbackQueue:(id)a5 completion:(id)a6;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6;
+- (_UIOrientationRequestAction)initWithRequestedInterfaceOrientationMask:(unint64_t)mask policy:(unint64_t)policy callbackQueue:(id)queue completion:(id)completion;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)policy;
 - (unint64_t)requestedInterfaceOrientationMask;
 @end
 
 @implementation _UIOrientationRequestAction
 
-- (_UIOrientationRequestAction)initWithRequestedInterfaceOrientationMask:(unint64_t)a3 policy:(unint64_t)a4 callbackQueue:(id)a5 completion:(id)a6
+- (_UIOrientationRequestAction)initWithRequestedInterfaceOrientationMask:(unint64_t)mask policy:(unint64_t)policy callbackQueue:(id)queue completion:(id)completion
 {
-  v11 = a5;
-  v12 = a6;
-  if (a4 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (policy - 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"_UIOrientationRequestAction.m" lineNumber:30 description:@"A valid policy must be provided."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIOrientationRequestAction.m" lineNumber:30 description:@"A valid policy must be provided."];
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v14 = [MEMORY[0x1E698E5F8] responderWithHandler:v12];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x1E698E5F8] responderWithHandler:completionCopy];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mask];
   [v13 setObject:v15 forSetting:1];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:policy];
   [v13 setObject:v16 forSetting:2];
 
-  if (v11)
+  if (queueCopy)
   {
-    [v14 setQueue:v11];
+    [v14 setQueue:queueCopy];
   }
 
   [v14 setTimeout:{dispatch_time(0, 2000000000)}];
@@ -41,51 +41,51 @@
 
 - (unint64_t)requestedInterfaceOrientationMask
 {
-  v2 = [(_UIOrientationRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(_UIOrientationRequestAction *)self info];
+  v3 = [info objectForSetting:1];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (unint64_t)policy
 {
-  v2 = [(_UIOrientationRequestAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(_UIOrientationRequestAction *)self info];
+  v3 = [info objectForSetting:2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntValue];
+    unsignedIntValue = [v3 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"Requested policy";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"Requested interface orientation mask";
   }
@@ -96,18 +96,18 @@
   }
 }
 
-- (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6
+- (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a3;
-  v9 = a5;
-  if (a6 != 2)
+  settingsCopy = settings;
+  objectCopy = object;
+  if (setting != 2)
   {
-    if (a6 == 1)
+    if (setting == 1)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v9 unsignedIntValue];
+        [objectCopy unsignedIntValue];
         v10 = BSInterfaceOrientationMaskDescription();
         goto LABEL_12;
       }
@@ -124,14 +124,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = [v9 unsignedIntValue];
+  unsignedIntValue = [objectCopy unsignedIntValue];
   v12 = @"honor user preference";
-  if (v11 != 2)
+  if (unsignedIntValue != 2)
   {
     v12 = 0;
   }
 
-  if (v11 == 1)
+  if (unsignedIntValue == 1)
   {
     v10 = @"default";
   }

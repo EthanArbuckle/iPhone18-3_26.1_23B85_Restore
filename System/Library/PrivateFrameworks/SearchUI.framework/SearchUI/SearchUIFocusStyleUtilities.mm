@@ -1,26 +1,26 @@
 @interface SearchUIFocusStyleUtilities
-+ (int64_t)bestFocusStyleForBackgroundStyle:(int64_t)a3;
-+ (int64_t)bestFocusStyleForCell:(id)a3;
++ (int64_t)bestFocusStyleForBackgroundStyle:(int64_t)style;
++ (int64_t)bestFocusStyleForCell:(id)cell;
 @end
 
 @implementation SearchUIFocusStyleUtilities
 
-+ (int64_t)bestFocusStyleForCell:(id)a3
++ (int64_t)bestFocusStyleForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 rowModel];
-  v6 = [v5 cardSection];
+  cellCopy = cell;
+  rowModel = [cellCopy rowModel];
+  cardSection = [rowModel cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 rowModel];
-    v9 = [v8 cardSection];
+    rowModel2 = [cellCopy rowModel];
+    cardSection2 = [rowModel2 cardSection];
 
-    if ([v9 useAppIconMetrics])
+    if ([cardSection2 useAppIconMetrics])
     {
-      v10 = [v9 command];
+      command = [cardSection2 command];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -30,7 +30,7 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v25 = [v9 command];
+      command2 = [cardSection2 command];
       objc_opt_class();
       v26 = objc_opt_isKindOfClass();
 
@@ -45,8 +45,8 @@ LABEL_19:
     }
   }
 
-  v11 = [v4 rowModel];
-  v12 = [v11 cardSection];
+  rowModel3 = [cellCopy rowModel];
+  cardSection3 = [rowModel3 cardSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,25 +54,25 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v13 = [v4 rowModel];
-  v14 = [v13 cardSection];
+  rowModel4 = [cellCopy rowModel];
+  cardSection4 = [rowModel4 cardSection];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
   if (v15)
   {
 LABEL_9:
-    v16 = [v4 rowModel];
-    v17 = [v16 fillsBackgroundWithContent];
+    rowModel5 = [cellCopy rowModel];
+    fillsBackgroundWithContent = [rowModel5 fillsBackgroundWithContent];
 
-    if (v17)
+    if (fillsBackgroundWithContent)
     {
       goto LABEL_10;
     }
   }
 
-  v19 = [v4 rowModel];
-  v20 = [v19 cardSection];
+  rowModel6 = [cellCopy rowModel];
+  cardSection5 = [rowModel6 cardSection];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
@@ -82,16 +82,16 @@ LABEL_9:
     goto LABEL_20;
   }
 
-  if ([v4 needsInternalFocus])
+  if ([cellCopy needsInternalFocus])
   {
     v18 = 6;
     goto LABEL_20;
   }
 
-  v22 = [v4 highlightReferenceView];
-  if (!v22 || (v23 = v22, v24 = [v4 sectionBackgroundStyle], v23, !v24))
+  highlightReferenceView = [cellCopy highlightReferenceView];
+  if (!highlightReferenceView || (v23 = highlightReferenceView, v24 = [cellCopy sectionBackgroundStyle], v23, !v24))
   {
-    v18 = [a1 bestFocusStyleForBackgroundStyle:{objc_msgSend(v4, "sectionBackgroundStyle")}];
+    v18 = [self bestFocusStyleForBackgroundStyle:{objc_msgSend(cellCopy, "sectionBackgroundStyle")}];
     goto LABEL_20;
   }
 
@@ -102,9 +102,9 @@ LABEL_20:
   return v18;
 }
 
-+ (int64_t)bestFocusStyleForBackgroundStyle:(int64_t)a3
++ (int64_t)bestFocusStyleForBackgroundStyle:(int64_t)style
 {
-  if ((a3 - 1) >= 3)
+  if ((style - 1) >= 3)
   {
     return 1;
   }

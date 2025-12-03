@@ -1,12 +1,12 @@
 @interface ICSystemPaperTextAttachment
 - (CGRect)_paperBoundsHint;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (CGSize)_paperSizeHint;
 - (ICDrawingHashtagsAndMentionsController)hashtagsAndMentionsController;
 - (ICSelectorDelayer)paperChangeSelectorDelayer;
-- (ICSystemPaperTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (ICSystemPaperTextAttachment)initWithPaperIdentifier:(id)a3;
+- (ICSystemPaperTextAttachment)initWithData:(id)data ofType:(id)type;
+- (ICSystemPaperTextAttachment)initWithPaperIdentifier:(id)identifier;
 - (NSHashTable)systemPaperViews;
 - (NSString)_paperIdentifier;
 - (NSURL)_encryptionDelegateCRContextURL;
@@ -17,17 +17,17 @@
 - (id)attachmentAsNSTextAttachment;
 - (id)attachmentViews;
 - (id)inlineViews;
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5;
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container;
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 - (void)_linkCanvasElementsDidChange;
 - (void)_paperDidChangeLocally;
-- (void)configureHashtagAndMentionsForView:(id)a3;
+- (void)configureHashtagAndMentionsForView:(id)view;
 - (void)dealloc;
-- (void)detachView:(id)a3 fromParentView:(id)a4;
+- (void)detachView:(id)view fromParentView:(id)parentView;
 - (void)paperDidChange;
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7;
-- (void)updateAttachmentChangeCountAndSave:(id)a3;
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (void)updateAttachmentChangeCountAndSave:(id)save;
 @end
 
 @implementation ICSystemPaperTextAttachment
@@ -40,29 +40,29 @@
   [(ICSystemPaperTextAttachment *)&v3 dealloc];
 }
 
-- (ICSystemPaperTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (ICSystemPaperTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if (!v6)
+  dataCopy = data;
+  typeCopy = type;
+  data = dataCopy;
+  if (!dataCopy)
   {
-    v8 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
   v14.receiver = self;
   v14.super_class = ICSystemPaperTextAttachment;
-  v9 = [(ICAbstractTextAttachment *)&v14 initWithData:v8 ofType:v7];
-  if (!v6)
+  v9 = [(ICAbstractTextAttachment *)&v14 initWithData:data ofType:typeCopy];
+  if (!dataCopy)
   {
   }
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     paperIdentifierBeforeAttachmentIsSet = v9->_paperIdentifierBeforeAttachmentIsSet;
-    v9->_paperIdentifierBeforeAttachmentIsSet = v11;
+    v9->_paperIdentifierBeforeAttachmentIsSet = uUIDString;
   }
 
   return v9;
@@ -72,13 +72,13 @@
 {
   if (!self->_hashtagsAndMentionsController)
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
 
-    if (v3)
+    if (attachment)
     {
       v4 = [ICDrawingHashtagsAndMentionsController alloc];
-      v5 = [(ICAbstractTextAttachment *)self attachment];
-      v6 = [(ICDrawingHashtagsAndMentionsController *)v4 initWithAttachment:v5];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      v6 = [(ICDrawingHashtagsAndMentionsController *)v4 initWithAttachment:attachment2];
       hashtagsAndMentionsController = self->_hashtagsAndMentionsController;
       self->_hashtagsAndMentionsController = v6;
     }
@@ -94,9 +94,9 @@
   systemPaperViews = self->_systemPaperViews;
   if (!systemPaperViews)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_systemPaperViews;
-    self->_systemPaperViews = v4;
+    self->_systemPaperViews = weakObjectsHashTable;
 
     systemPaperViews = self->_systemPaperViews;
   }
@@ -106,40 +106,40 @@
 
 - (id)attachmentAsNSTextAttachment
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 fallbackImageData];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  fallbackImageData = [attachment fallbackImageData];
 
   v4 = objc_alloc(MEMORY[0x1E69DB7F0]);
-  v5 = [MEMORY[0x1E69B7680] fallbackImageUTI];
-  v6 = [v4 initWithData:v3 ofType:v5];
+  fallbackImageUTI = [MEMORY[0x1E69B7680] fallbackImageUTI];
+  v6 = [v4 initWithData:fallbackImageData ofType:fallbackImageUTI];
 
-  v7 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ic_imageWithData:fallbackImageData];
   [v6 setImage:v7];
 
   return v6;
 }
 
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container
 {
-  v6 = [MEMORY[0x1E69B7678] appearanceInfoWithType:{0, a4, a5}];
+  v6 = [MEMORY[0x1E69B7678] appearanceInfoWithType:{0, collection, container}];
   v7 = MEMORY[0x1E69B76C0];
-  v8 = [(ICAbstractTextAttachment *)self attachment];
-  v9 = [v7 generateImageForAttachment:v8 fullResolution:1 appearanceInfo:v6];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  v9 = [v7 generateImageForAttachment:attachment fullResolution:1 appearanceInfo:v6];
 
-  v10 = [v9 ic_PNGData];
-  if (!v10)
+  ic_PNGData = [v9 ic_PNGData];
+  if (!ic_PNGData)
   {
-    v10 = [MEMORY[0x1E695DEF0] data];
+    ic_PNGData = [MEMORY[0x1E695DEF0] data];
   }
 
   v11 = [ICPrintableTextAttachment alloc];
-  v12 = [*MEMORY[0x1E6982F28] identifier];
-  v13 = [(ICPrintableTextAttachment *)v11 initWithData:v10 ofType:v12];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v13 = [(ICPrintableTextAttachment *)v11 initWithData:ic_PNGData ofType:identifier];
 
   v14 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v13];
-  if ([v10 length])
+  if ([ic_PNGData length])
   {
-    v15 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v10];
+    v15 = [MEMORY[0x1E69DCAB8] ic_imageWithData:ic_PNGData];
     v16 = *(MEMORY[0x1E695EFD0] + 16);
     v20[0] = *MEMORY[0x1E695EFD0];
     v20[1] = v16;
@@ -155,11 +155,11 @@
   return v14;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   v11.receiver = self;
   v11.super_class = ICSystemPaperTextAttachment;
-  [(ICBaseTextAttachment *)&v11 attachmentBoundsForAttributes:a3 location:a4 textContainer:a5 proposedLineFragment:a6.origin.x position:a6.origin.y, a6.size.width, a6.size.height, a7.x, a7.y];
+  [(ICBaseTextAttachment *)&v11 attachmentBoundsForAttributes:attributes location:location textContainer:container proposedLineFragment:fragment.origin.x position:fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -167,31 +167,31 @@
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
   v34.receiver = self;
   v34.super_class = ICSystemPaperTextAttachment;
-  v14 = a3;
-  [(ICBaseTextAttachment *)&v34 attachmentBoundsForTextContainer:v14 proposedLineFragment:a6 glyphPosition:v12 characterIndex:v11, width, height, x, y];
+  containerCopy = container;
+  [(ICBaseTextAttachment *)&v34 attachmentBoundsForTextContainer:containerCopy proposedLineFragment:index glyphPosition:v12 characterIndex:v11, width, height, x, y];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v14 layoutManager];
+  layoutManager = [containerCopy layoutManager];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v25 = [(ICAbstractTextAttachment *)self attachment];
-    [v25 bounds];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    [attachment bounds];
     v27 = v26;
     v29 = v28;
 
@@ -212,49 +212,49 @@
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  locationCopy = location;
+  containerCopy = container;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v30.receiver = self;
     v30.super_class = ICSystemPaperTextAttachment;
-    v11 = [(ICSystemPaperTextAttachment *)&v30 viewProviderForParentView:v8 location:v9 textContainer:v10];
-    v12 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-    v13 = [v11 view];
-    v14 = [v12 containsObject:v13];
+    v11 = [(ICSystemPaperTextAttachment *)&v30 viewProviderForParentView:viewCopy location:locationCopy textContainer:containerCopy];
+    systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+    view = [v11 view];
+    v14 = [systemPaperViews containsObject:view];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-      v16 = [v11 view];
-      [v15 addObject:v16];
+      systemPaperViews2 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+      view2 = [v11 view];
+      [systemPaperViews2 addObject:view2];
 
       objc_initWeak(&location, self);
-      v17 = [v11 view];
+      view3 = [v11 view];
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textContainer___block_invoke;
       v27 = &unk_1E8469558;
       objc_copyWeak(&v28, &location);
-      [v17 ic_addDidMoveToWindowHandler:&v24];
+      [view3 ic_addDidMoveToWindowHandler:&v24];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);
     }
 
-    v18 = [v8 window];
+    window = [viewCopy window];
 
-    if (v18)
+    if (window)
     {
-      v19 = [v8 window];
-      v20 = [ICInkPaletteController sharedToolPickerForWindow:v19];
+      window2 = [viewCopy window];
+      v20 = [ICInkPaletteController sharedToolPickerForWindow:window2];
 
-      v21 = [v20 isVisible];
-      v22 = [v11 view];
-      [v20 setVisible:v21 forFirstResponder:v22];
+      isVisible = [v20 isVisible];
+      view4 = [v11 view];
+      [v20 setVisible:isVisible forFirstResponder:view4];
     }
   }
 
@@ -273,16 +273,16 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
   [WeakRetained configureHashtagAndMentionsForView:v3];
 }
 
-- (void)configureHashtagAndMentionsForView:(id)a3
+- (void)configureHashtagAndMentionsForView:(id)view
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 tiledViewAttachmentViews];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  tiledViewAttachmentViews = [viewCopy tiledViewAttachmentViews];
+  v6 = [tiledViewAttachmentViews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -293,22 +293,22 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tiledViewAttachmentViews);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [(ICAbstractTextAttachment *)self attachment];
-        [v10 setWantsMentionDetection:{objc_msgSend(v11, "isSharedViaICloud")}];
+        attachment = [(ICAbstractTextAttachment *)self attachment];
+        [v10 setWantsMentionDetection:{objc_msgSend(attachment, "isSharedViaICloud")}];
 
-        v12 = [(ICAbstractTextAttachment *)self attachment];
-        v13 = [v12 note];
-        [v10 setWantsHashtagDetection:{objc_msgSend(v13, "isPasswordProtected") ^ 1}];
+        attachment2 = [(ICAbstractTextAttachment *)self attachment];
+        note = [attachment2 note];
+        [v10 setWantsHashtagDetection:{objc_msgSend(note, "isPasswordProtected") ^ 1}];
 
-        v14 = [v4 window];
-        if (v14)
+        window = [viewCopy window];
+        if (window)
         {
-          v15 = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
-          [v10 setHashtagAndMentionsDelegate:v15];
+          hashtagsAndMentionsController = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
+          [v10 setHashtagAndMentionsDelegate:hashtagsAndMentionsController];
         }
 
         else
@@ -317,59 +317,59 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [tiledViewAttachmentViews countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v16 = [v4 window];
+  window2 = [viewCopy window];
 
-  v17 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  v18 = v17;
-  if (v16)
+  systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  systemPaperViews2 = systemPaperViews;
+  if (window2)
   {
-    v19 = [v17 containsObject:v4];
+    v19 = [systemPaperViews containsObject:viewCopy];
 
     if ((v19 & 1) == 0)
     {
       [(ICInlineCanvasTextAttachment *)self updatePaletteVisibility];
     }
 
-    v18 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-    [v18 addObject:v4];
+    systemPaperViews2 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+    [systemPaperViews2 addObject:viewCopy];
     v20 = @"ICSystemPaperTextAttachmentDidAppearNotification";
   }
 
   else
   {
-    [v17 removeObject:v4];
+    [systemPaperViews removeObject:viewCopy];
     v20 = @"ICSystemPaperTextAttachmentWillDisappearNotification";
   }
 
-  v21 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v21 postNotificationName:v20 object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:v20 object:viewCopy];
 }
 
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  managerCopy = manager;
   if ([MEMORY[0x1E696AF00] isMainThread] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17.receiver = self;
     v17.super_class = ICSystemPaperTextAttachment;
-    v10 = [(ICSystemPaperTextAttachment *)&v17 viewProviderForParentView:v8 characterIndex:a4 layoutManager:v9];
-    v12 = [v8 window];
+    v10 = [(ICSystemPaperTextAttachment *)&v17 viewProviderForParentView:viewCopy characterIndex:index layoutManager:managerCopy];
+    window = [viewCopy window];
 
-    if (v12)
+    if (window)
     {
-      v13 = [v8 window];
-      v14 = [ICInkPaletteController sharedToolPickerForWindow:v13];
+      window2 = [viewCopy window];
+      v14 = [ICInkPaletteController sharedToolPickerForWindow:window2];
 
-      v15 = [v14 isVisible];
-      v16 = [v10 view];
-      [v14 setVisible:v15 forFirstResponder:v16];
+      isVisible = [v14 isVisible];
+      view = [v10 view];
+      [v14 setVisible:isVisible forFirstResponder:view];
     }
   }
 
@@ -381,29 +381,29 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
   return v10;
 }
 
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v43 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  [(ICSystemPaperTextAttachment *)self setCachedDrawingViewForPlaceView:v15];
-  [(ICSystemPaperTextAttachment *)self setCachedControlViewForPlaceView:v16];
-  v18 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  v19 = [v18 containsObject:v15];
+  viewCopy = view;
+  parentViewCopy = parentView;
+  managerCopy = manager;
+  [(ICSystemPaperTextAttachment *)self setCachedDrawingViewForPlaceView:viewCopy];
+  [(ICSystemPaperTextAttachment *)self setCachedControlViewForPlaceView:parentViewCopy];
+  systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  v19 = [systemPaperViews containsObject:viewCopy];
 
-  v20 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  [v20 addObject:v15];
+  systemPaperViews2 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  [systemPaperViews2 addObject:viewCopy];
 
   v41.receiver = self;
   v41.super_class = ICSystemPaperTextAttachment;
-  v35 = v17;
-  v36 = v16;
-  [(ICSystemPaperTextAttachment *)&v41 placeView:v15 withFrame:v16 inParentView:a6 characterIndex:v17 layoutManager:x, y, width, height];
+  v35 = managerCopy;
+  v36 = parentViewCopy;
+  [(ICSystemPaperTextAttachment *)&v41 placeView:viewCopy withFrame:parentViewCopy inParentView:index characterIndex:managerCopy layoutManager:x, y, width, height];
   if ((v19 & 1) == 0)
   {
     [(ICInlineCanvasTextAttachment *)self updatePaletteVisibility];
@@ -414,8 +414,8 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v22 = [v21 tiledViewAttachmentViews];
-  v23 = [v22 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  tiledViewAttachmentViews = [v21 tiledViewAttachmentViews];
+  v23 = [tiledViewAttachmentViews countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v23)
   {
     v24 = v23;
@@ -426,28 +426,28 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
       {
         if (*v38 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(tiledViewAttachmentViews);
         }
 
         v27 = *(*(&v37 + 1) + 8 * i);
-        v28 = [v27 hashtagAndMentionsDelegate];
-        v29 = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
+        hashtagAndMentionsDelegate = [v27 hashtagAndMentionsDelegate];
+        hashtagsAndMentionsController = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
 
-        if (v28 != v29)
+        if (hashtagAndMentionsDelegate != hashtagsAndMentionsController)
         {
-          v30 = [(ICAbstractTextAttachment *)self attachment];
-          [v27 setWantsMentionDetection:{objc_msgSend(v30, "isSharedViaICloud")}];
+          attachment = [(ICAbstractTextAttachment *)self attachment];
+          [v27 setWantsMentionDetection:{objc_msgSend(attachment, "isSharedViaICloud")}];
 
-          v31 = [(ICAbstractTextAttachment *)self attachment];
-          v32 = [v31 note];
-          [v27 setWantsHashtagDetection:{objc_msgSend(v32, "isPasswordProtected") ^ 1}];
+          attachment2 = [(ICAbstractTextAttachment *)self attachment];
+          note = [attachment2 note];
+          [v27 setWantsHashtagDetection:{objc_msgSend(note, "isPasswordProtected") ^ 1}];
 
-          v33 = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
-          [v27 setHashtagAndMentionsDelegate:v33];
+          hashtagsAndMentionsController2 = [(ICSystemPaperTextAttachment *)self hashtagsAndMentionsController];
+          [v27 setHashtagAndMentionsDelegate:hashtagsAndMentionsController2];
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v24 = [tiledViewAttachmentViews countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v24);
@@ -455,26 +455,26 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
 
   [(ICSystemPaperTextAttachment *)self setCachedDrawingViewForPlaceView:0];
   [(ICSystemPaperTextAttachment *)self setCachedControlViewForPlaceView:0];
-  v34 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v34 postNotificationName:@"ICSystemPaperTextAttachmentDidAppearNotification" object:v15];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICSystemPaperTextAttachmentDidAppearNotification" object:viewCopy];
 }
 
-- (void)detachView:(id)a3 fromParentView:(id)a4
+- (void)detachView:(id)view fromParentView:(id)parentView
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  parentViewCopy = parentView;
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"ICSystemPaperTextAttachmentWillDisappearNotification" object:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICSystemPaperTextAttachmentWillDisappearNotification" object:viewCopy];
 
   if (IsTextKit2Enabled)
   {
     v27.receiver = self;
     v27.super_class = ICSystemPaperTextAttachment;
-    [(ICBaseTextAttachment *)&v27 detachView:v6 fromParentView:v7];
-    v10 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-    [v10 removeObject:v6];
+    [(ICBaseTextAttachment *)&v27 detachView:viewCopy fromParentView:parentViewCopy];
+    systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+    [systemPaperViews removeObject:viewCopy];
 
     p_paperChangeSelectorDelayer = &self->_paperChangeSelectorDelayer;
     if (([(ICSelectorDelayer *)*p_paperChangeSelectorDelayer isScheduledToFire]& 1) == 0)
@@ -487,17 +487,17 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
 
   v26.receiver = self;
   v26.super_class = ICSystemPaperTextAttachment;
-  [(ICBaseTextAttachment *)&v26 detachView:v6 fromParentView:v7];
-  v12 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  [v12 removeObject:v6];
+  [(ICBaseTextAttachment *)&v26 detachView:viewCopy fromParentView:parentViewCopy];
+  systemPaperViews2 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  [systemPaperViews2 removeObject:viewCopy];
 
-  v13 = [(ICSystemPaperTextAttachment *)self cachedDrawingViewForPlaceView];
-  v14 = v13;
-  if (v13 == v6)
+  cachedDrawingViewForPlaceView = [(ICSystemPaperTextAttachment *)self cachedDrawingViewForPlaceView];
+  v14 = cachedDrawingViewForPlaceView;
+  if (cachedDrawingViewForPlaceView == viewCopy)
   {
-    v15 = [(ICSystemPaperTextAttachment *)self cachedControlViewForPlaceView];
+    cachedControlViewForPlaceView = [(ICSystemPaperTextAttachment *)self cachedControlViewForPlaceView];
 
-    if (v15 == v7)
+    if (cachedControlViewForPlaceView == parentViewCopy)
     {
       goto LABEL_15;
     }
@@ -512,8 +512,8 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = [v16 tiledViewAttachmentViews];
-  v18 = [v17 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  tiledViewAttachmentViews = [v16 tiledViewAttachmentViews];
+  v18 = [tiledViewAttachmentViews countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v18)
   {
     v19 = v18;
@@ -525,14 +525,14 @@ void __80__ICSystemPaperTextAttachment_viewProviderForParentView_location_textCo
       {
         if (*v23 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(tiledViewAttachmentViews);
         }
 
         [*(*(&v22 + 1) + 8 * v21++) setHashtagAndMentionsDelegate:0];
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v19 = [tiledViewAttachmentViews countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v19);
@@ -551,18 +551,18 @@ LABEL_17:
 
 - (id)inlineViews
 {
-  v2 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  v3 = [v2 allObjects];
+  systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  allObjects = [systemPaperViews allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)attachmentViews
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(ICSystemPaperTextAttachment *)self systemPaperViews];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  systemPaperViews = [(ICSystemPaperTextAttachment *)self systemPaperViews];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(systemPaperViews, "count")}];
 
   v18 = 0u;
   v19 = 0u;
@@ -585,10 +585,10 @@ LABEL_17:
         }
 
         v12 = ICProtocolCast();
-        v13 = [v12 topLevelAttachmentView];
-        if (v13)
+        topLevelAttachmentView = [v12 topLevelAttachmentView];
+        if (topLevelAttachmentView)
         {
-          [v5 addObject:v13];
+          [v5 addObject:topLevelAttachmentView];
         }
       }
 
@@ -620,7 +620,7 @@ LABEL_17:
 
 - (void)paperDidChange
 {
-  v1 = [a1 ic_loggingIdentifier];
+  ic_loggingIdentifier = [self ic_loggingIdentifier];
   OUTLINED_FUNCTION_0_2(&dword_1D4171000, v2, v3, "Received debounced paperDidChange for drawing %@", v4, v5, v6, v7, 2u);
 }
 
@@ -646,47 +646,47 @@ void __45__ICSystemPaperTextAttachment_paperDidChange__block_invoke_2(uint64_t a
   [v3 performBlockAndWait:v5];
 }
 
-- (void)updateAttachmentChangeCountAndSave:(id)a3
+- (void)updateAttachmentChangeCountAndSave:(id)save
 {
-  v3 = a3;
-  v4 = [v3 note];
-  [v4 updateModificationDateAndChangeCount];
+  saveCopy = save;
+  note = [saveCopy note];
+  [note updateModificationDateAndChangeCount];
 
-  v5 = [v3 note];
-  v6 = [v5 regenerateTitle:1 snippet:1];
+  note2 = [saveCopy note];
+  v6 = [note2 regenerateTitle:1 snippet:1];
 
   if (v6)
   {
-    v7 = [v3 note];
-    [v7 markShareDirtyIfNeededWithReason:@"Updated title after paper change"];
+    note3 = [saveCopy note];
+    [note3 markShareDirtyIfNeededWithReason:@"Updated title after paper change"];
 
-    v8 = [v3 note];
-    [v8 updateChangeCountWithReason:@"Updated title after paper change"];
+    note4 = [saveCopy note];
+    [note4 updateChangeCountWithReason:@"Updated title after paper change"];
   }
 
-  [v3 updateChangeCountWithReason:@"Paper changed"];
-  [v3 setPreviewUpdateDate:0];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v3 setModificationDate:v9];
+  [saveCopy updateChangeCountWithReason:@"Paper changed"];
+  [saveCopy setPreviewUpdateDate:0];
+  date = [MEMORY[0x1E695DF00] date];
+  [saveCopy setModificationDate:date];
 
-  v10 = [v3 managedObjectContext];
-  [v10 ic_save];
+  managedObjectContext = [saveCopy managedObjectContext];
+  [managedObjectContext ic_save];
 
   v11 = +[ICAttachmentPreviewGenerator sharedGenerator];
-  [v11 generatePreviewIfNeededForAttachment:v3];
+  [v11 generatePreviewIfNeededForAttachment:saveCopy];
 
-  v12 = [MEMORY[0x1E69B7800] sharedContext];
-  v13 = [v12 workerManagedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
   v14 = +[ICPaperSearchIndexer shared];
-  v15 = [v3 objectID];
+  objectID = [saveCopy objectID];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___block_invoke;
   v17[3] = &unk_1E8468BA0;
-  v18 = v13;
-  v16 = v13;
-  [v14 updateIndexForAttachment:v15 userInitiated:1 managedObjectContext:v16 completionHandler:v17];
+  v18 = workerManagedObjectContext;
+  v16 = workerManagedObjectContext;
+  [v14 updateIndexForAttachment:objectID userInitiated:1 managedObjectContext:v16 completionHandler:v17];
 }
 
 void __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___block_invoke(uint64_t a1)
@@ -714,18 +714,18 @@ void __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___bloc
   return WeakRetained;
 }
 
-- (ICSystemPaperTextAttachment)initWithPaperIdentifier:(id)a3
+- (ICSystemPaperTextAttachment)initWithPaperIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DEF0] data];
+  identifierCopy = identifier;
+  data = [MEMORY[0x1E695DEF0] data];
   v7 = *MEMORY[0x1E6978598];
   v10.receiver = self;
   v10.super_class = ICSystemPaperTextAttachment;
-  v8 = [(ICAbstractTextAttachment *)&v10 initWithData:v6 ofType:v7];
+  v8 = [(ICAbstractTextAttachment *)&v10 initWithData:data ofType:v7];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_paperIdentifierBeforeAttachmentIsSet, a3);
+    objc_storeStrong(&v8->_paperIdentifierBeforeAttachmentIsSet, identifier);
   }
 
   return v8;
@@ -734,99 +734,99 @@ void __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___bloc
 - (NSURL)_paperBundleURL
 {
   objc_opt_class();
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 attachmentModel];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [v5 paperBundleURL];
+    paperBundleURL = [v5 paperBundleURL];
   }
 
   else
   {
-    v7 = [(ICAbstractTextAttachment *)self attachment];
-    v8 = [v7 cloudAccount];
-    v9 = [v8 temporaryDirectoryURL];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
-    v6 = [v9 URLByAppendingPathComponent:v11 isDirectory:1];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    cloudAccount = [attachment2 cloudAccount];
+    temporaryDirectoryURL = [cloudAccount temporaryDirectoryURL];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    paperBundleURL = [temporaryDirectoryURL URLByAppendingPathComponent:uUIDString isDirectory:1];
   }
 
-  return v6;
+  return paperBundleURL;
 }
 
 - (NSURL)_nonEncryptedContentCRContextURL
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 isPasswordProtected];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  if (v4)
+  if (isPasswordProtected)
   {
-    v5 = 0;
+    paperCoherenceContextURL = 0;
   }
 
   else
   {
-    v6 = [(ICAbstractTextAttachment *)self attachment];
-    v5 = [v6 paperCoherenceContextURL];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    paperCoherenceContextURL = [attachment2 paperCoherenceContextURL];
   }
 
-  return v5;
+  return paperCoherenceContextURL;
 }
 
 - (NSURL)_encryptionDelegateCRContextURL
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 isPasswordProtected];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  isPasswordProtected = [attachment isPasswordProtected];
 
-  if (v4)
+  if (isPasswordProtected)
   {
-    v5 = [(ICAbstractTextAttachment *)self attachment];
-    v6 = [v5 paperCoherenceContextURL];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    paperCoherenceContextURL = [attachment2 paperCoherenceContextURL];
   }
 
   else
   {
-    v6 = 0;
+    paperCoherenceContextURL = 0;
   }
 
-  return v6;
+  return paperCoherenceContextURL;
 }
 
 - (NSString)_paperIdentifier
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
 
-  if (v3)
+  if (attachment)
   {
-    v4 = [(ICAbstractTextAttachment *)self attachment];
-    v5 = [v4 identifier];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    identifier = [attachment2 identifier];
   }
 
   else
   {
-    v5 = [(ICSystemPaperTextAttachment *)self paperIdentifierBeforeAttachmentIsSet];
+    identifier = [(ICSystemPaperTextAttachment *)self paperIdentifierBeforeAttachmentIsSet];
   }
 
-  return v5;
+  return identifier;
 }
 
 - (void)_linkCanvasElementsDidChange
 {
-  v5 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v5 modificationDate];
-  v4 = [(ICAbstractTextAttachment *)self attachment];
-  [v4 setModificationDate:v3];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  modificationDate = [attachment modificationDate];
+  attachment2 = [(ICAbstractTextAttachment *)self attachment];
+  [attachment2 setModificationDate:modificationDate];
 }
 
 - (CGSize)_paperSizeHint
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  [v3 sizeWidth];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  [attachment sizeWidth];
   v5 = v4;
-  v6 = [(ICAbstractTextAttachment *)self attachment];
-  [v6 sizeHeight];
+  attachment2 = [(ICAbstractTextAttachment *)self attachment];
+  [attachment2 sizeHeight];
   v8 = v7;
 
   v9 = v5;
@@ -839,8 +839,8 @@ void __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___bloc
 - (CGRect)_paperBoundsHint
 {
   objc_opt_class();
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 attachmentModel];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  attachmentModel = [attachment attachmentModel];
   v5 = ICDynamicCast();
 
   if (v5)
@@ -873,11 +873,11 @@ void __66__ICSystemPaperTextAttachment_updateAttachmentChangeCountAndSave___bloc
 
 - (void)_paperDidChangeLocally
 {
-  v3 = [(ICSystemPaperTextAttachment *)self paperChangeSelectorDelayer];
-  [v3 cancelPreviousFireRequests];
+  paperChangeSelectorDelayer = [(ICSystemPaperTextAttachment *)self paperChangeSelectorDelayer];
+  [paperChangeSelectorDelayer cancelPreviousFireRequests];
 
-  v4 = [(ICSystemPaperTextAttachment *)self paperChangeSelectorDelayer];
-  [v4 requestFire];
+  paperChangeSelectorDelayer2 = [(ICSystemPaperTextAttachment *)self paperChangeSelectorDelayer];
+  [paperChangeSelectorDelayer2 requestFire];
 }
 
 @end

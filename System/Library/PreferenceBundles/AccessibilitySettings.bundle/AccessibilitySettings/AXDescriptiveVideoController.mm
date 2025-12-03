@@ -1,5 +1,5 @@
 @interface AXDescriptiveVideoController
-- (id)preferenceValue:(id)a3;
+- (id)preferenceValue:(id)value;
 - (id)specifiers;
 @end
 
@@ -31,7 +31,7 @@
   return v4;
 }
 
-- (id)preferenceValue:(id)a3
+- (id)preferenceValue:(id)value
 {
   v3 = MAAudibleMediaPrefCopyPreferDescriptiveVideo();
 

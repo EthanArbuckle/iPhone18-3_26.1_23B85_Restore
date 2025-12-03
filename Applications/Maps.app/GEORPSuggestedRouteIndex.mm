@@ -1,18 +1,18 @@
 @interface GEORPSuggestedRouteIndex
-- (void)setRideSelections:(id)a3;
+- (void)setRideSelections:(id)selections;
 @end
 
 @implementation GEORPSuggestedRouteIndex
 
-- (void)setRideSelections:(id)a3
+- (void)setRideSelections:(id)selections
 {
-  v4 = a3;
+  selectionsCopy = selections;
   [(GEORPSuggestedRouteIndex *)self clearClusteredRouteRideSelections];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = selectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

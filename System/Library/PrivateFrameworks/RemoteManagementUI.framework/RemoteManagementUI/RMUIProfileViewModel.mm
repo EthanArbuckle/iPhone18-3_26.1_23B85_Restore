@@ -1,9 +1,9 @@
 @interface RMUIProfileViewModel
 - (RMUIProfileViewModel)init;
-- (RMUIProfileViewModel)initWithCoder:(id)a3;
+- (RMUIProfileViewModel)initWithCoder:(id)coder;
 - (void)clearModel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIsInteractiveProfile:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIsInteractiveProfile:(BOOL)profile;
 @end
 
 @implementation RMUIProfileViewModel
@@ -38,98 +38,98 @@
   [(RMUIProfileViewModel *)self setIsInteractiveProfile:0];
 }
 
-- (void)setIsInteractiveProfile:(BOOL)a3
+- (void)setIsInteractiveProfile:(BOOL)profile
 {
-  self->_isInteractiveProfile = a3;
-  if (!a3)
+  self->_isInteractiveProfile = profile;
+  if (!profile)
   {
     [(RMUIProfileViewModel *)self setInteractiveDetailsText:0];
-    v5 = [(RMUIProfileViewModel *)self toggleViewModel];
-    [v5 clearModel];
+    toggleViewModel = [(RMUIProfileViewModel *)self toggleViewModel];
+    [toggleViewModel clearModel];
 
-    v6 = [(RMUIProfileViewModel *)self footerViewModel];
-    [v6 clearModel];
+    footerViewModel = [(RMUIProfileViewModel *)self footerViewModel];
+    [footerViewModel clearModel];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithShort:{-[RMUIProfileViewModel symbol](self, "symbol")}];
-  [v5 encodeObject:v6 forKey:@"symbol"];
+  [coderCopy encodeObject:v6 forKey:@"symbol"];
 
-  v7 = [(RMUIProfileViewModel *)self title];
-  [v5 encodeObject:v7 forKey:@"title"];
+  title = [(RMUIProfileViewModel *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(RMUIProfileViewModel *)self value];
-  [v5 encodeObject:v8 forKey:@"value"];
+  value = [(RMUIProfileViewModel *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v9 = [(RMUIProfileViewModel *)self profileIdentifier];
-  [v5 encodeObject:v9 forKey:@"profileIdentifier"];
+  profileIdentifier = [(RMUIProfileViewModel *)self profileIdentifier];
+  [coderCopy encodeObject:profileIdentifier forKey:@"profileIdentifier"];
 
-  v10 = [(RMUIProfileViewModel *)self declaration];
-  [v5 encodeObject:v10 forKey:@"declaration"];
+  declaration = [(RMUIProfileViewModel *)self declaration];
+  [coderCopy encodeObject:declaration forKey:@"declaration"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[RMUIProfileViewModel isInteractiveProfile](self, "isInteractiveProfile")}];
-  [v5 encodeObject:v11 forKey:@"isInteractiveProfile"];
+  [coderCopy encodeObject:v11 forKey:@"isInteractiveProfile"];
 
-  v12 = [(RMUIProfileViewModel *)self interactiveDetailsText];
-  [v5 encodeObject:v12 forKey:@"interactiveDetailsText"];
+  interactiveDetailsText = [(RMUIProfileViewModel *)self interactiveDetailsText];
+  [coderCopy encodeObject:interactiveDetailsText forKey:@"interactiveDetailsText"];
 
-  v13 = [(RMUIProfileViewModel *)self toggleViewModel];
-  [v5 encodeObject:v13 forKey:@"toggleViewModel"];
+  toggleViewModel = [(RMUIProfileViewModel *)self toggleViewModel];
+  [coderCopy encodeObject:toggleViewModel forKey:@"toggleViewModel"];
 
-  v14 = [(RMUIProfileViewModel *)self footerViewModel];
-  [v5 encodeObject:v14 forKey:@"footerViewModel"];
+  footerViewModel = [(RMUIProfileViewModel *)self footerViewModel];
+  [coderCopy encodeObject:footerViewModel forKey:@"footerViewModel"];
 }
 
-- (RMUIProfileViewModel)initWithCoder:(id)a3
+- (RMUIProfileViewModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = RMUIProfileViewModel;
   v5 = [(RMUIProfileViewModel *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
     v5->_symbol = [v6 integerValue];
 
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"value"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"value"];
     value = v5->_value;
     v5->_value = v11;
 
     v13 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"profileIdentifier"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"profileIdentifier"];
     profileIdentifier = v5->_profileIdentifier;
     v5->_profileIdentifier = v14;
 
     v16 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"declaration"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"declaration"];
     declaration = v5->_declaration;
     v5->_declaration = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isInteractiveProfile"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInteractiveProfile"];
     v5->_isInteractiveProfile = [v19 BOOLValue];
 
     v20 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"interactiveDetailsText"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"interactiveDetailsText"];
     interactiveDetailsText = v5->_interactiveDetailsText;
     v5->_interactiveDetailsText = v21;
 
     v23 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"toggleViewModel"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"toggleViewModel"];
     toggleViewModel = v5->_toggleViewModel;
     v5->_toggleViewModel = v24;
 
     v26 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"footerViewModel"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"footerViewModel"];
     footerViewModel = v5->_footerViewModel;
     v5->_footerViewModel = v27;
   }

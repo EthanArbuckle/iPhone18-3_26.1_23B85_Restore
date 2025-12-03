@@ -1,22 +1,22 @@
 @interface EMTTranslator
 + (void)initialize;
-- (BOOL)isCompileRequiredFrom:(id)a3 to:(id)a4;
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4;
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5;
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6;
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6 useGlobalTranslationQueue:(BOOL)a7;
-- (EMTTranslator)initWithModelURLs:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6 useGlobalTranslationQueue:(BOOL)a7;
+- (BOOL)isCompileRequiredFrom:(id)from to:(id)to;
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task;
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup;
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size;
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size useGlobalTranslationQueue:(BOOL)queue;
+- (EMTTranslator)initWithModelURLs:(id)ls task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size useGlobalTranslationQueue:(BOOL)queue;
 - (id).cxx_construct;
-- (shared_ptr<quasar::Translator>)_prepareFor:(id)a3 to:(id)a4;
+- (shared_ptr<quasar::Translator>)_prepareFor:(id)for to:(id)to;
 - (vector<std::string,)_tokenizeString:(EMTTranslator *)self;
-- (void)_dispatchTranslationRequest:()vector<std:(std:(BOOL)a4 :(id)a5 allocator<std:(shared_ptr<quasar:(id)a7 :(id)a8 Translator>)a6 :(id)a9 string>> *)a3 :(id)a10 string isFinal:spans:translator:sourceLocale:targetLocale:options:completion:;
-- (void)getTranslatorWithCompletion:(id)a3;
-- (void)loadTranslatorFrom:(id)a3 to:(id)a4;
-- (void)prepareFor:(id)a3 to:(id)a4;
-- (void)translateSpeech:(id)a3 from:(id)a4 to:(id)a5 completion:(id)a6;
-- (void)translateString:(id)a3 from:(id)a4 to:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)translateTokens:(id)a3 from:(id)a4 to:(id)a5 spans:(id)a6 options:(id)a7 completion:(id)a8;
-- (void)translateTokens:(id)a3 isFinal:(BOOL)a4 spans:(id)a5 options:(id)a6 completion:(id)a7;
+- (void)_dispatchTranslationRequest:()vector<std:(std:(BOOL)std :(id)a5 allocator<std:(shared_ptr<quasar:(id)a7 :(id)a8 Translator>)a6 :(id)a9 string>> *)a3 :(id)self0 string isFinal:spans:translator:sourceLocale:targetLocale:options:completion:;
+- (void)getTranslatorWithCompletion:(id)completion;
+- (void)loadTranslatorFrom:(id)from to:(id)to;
+- (void)prepareFor:(id)for to:(id)to;
+- (void)translateSpeech:(id)speech from:(id)from to:(id)to completion:(id)completion;
+- (void)translateString:(id)string from:(id)from to:(id)to options:(id)options completion:(id)completion;
+- (void)translateTokens:(id)tokens from:(id)from to:(id)to spans:(id)spans options:(id)options completion:(id)completion;
+- (void)translateTokens:(id)tokens isFinal:(BOOL)final spans:(id)spans options:(id)options completion:(id)completion;
 @end
 
 @implementation EMTTranslator
@@ -24,75 +24,75 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v11[0] = v6;
+  lCopy = l;
+  taskCopy = task;
+  v11[0] = lCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  v9 = [(EMTTranslator *)self initWithModelURLs:v8 task:v7 skipNonFinalToCatchup:0 translatorCacheSize:-1 useGlobalTranslationQueue:0];
+  v9 = [(EMTTranslator *)self initWithModelURLs:v8 task:taskCopy skipNonFinalToCatchup:0 translatorCacheSize:-1 useGlobalTranslationQueue:0];
 
   return v9;
 }
 
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup
 {
-  v5 = a5;
+  catchupCopy = catchup;
   v13[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v13[0] = v8;
+  lCopy = l;
+  taskCopy = task;
+  v13[0] = lCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  v11 = [(EMTTranslator *)self initWithModelURLs:v10 task:v9 skipNonFinalToCatchup:v5 translatorCacheSize:-1 useGlobalTranslationQueue:0];
+  v11 = [(EMTTranslator *)self initWithModelURLs:v10 task:taskCopy skipNonFinalToCatchup:catchupCopy translatorCacheSize:-1 useGlobalTranslationQueue:0];
 
   return v11;
 }
 
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size
 {
-  v7 = a5;
+  catchupCopy = catchup;
   v15[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v15[0] = v10;
+  lCopy = l;
+  taskCopy = task;
+  v15[0] = lCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [(EMTTranslator *)self initWithModelURLs:v12 task:v11 skipNonFinalToCatchup:v7 translatorCacheSize:a6 useGlobalTranslationQueue:0];
+  v13 = [(EMTTranslator *)self initWithModelURLs:v12 task:taskCopy skipNonFinalToCatchup:catchupCopy translatorCacheSize:size useGlobalTranslationQueue:0];
 
   return v13;
 }
 
-- (EMTTranslator)initWithModelURL:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6 useGlobalTranslationQueue:(BOOL)a7
+- (EMTTranslator)initWithModelURL:(id)l task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size useGlobalTranslationQueue:(BOOL)queue
 {
-  v7 = a7;
-  v9 = a5;
+  queueCopy = queue;
+  catchupCopy = catchup;
   v17[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v17[0] = v12;
+  lCopy = l;
+  taskCopy = task;
+  v17[0] = lCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  v15 = [(EMTTranslator *)self initWithModelURLs:v14 task:v13 skipNonFinalToCatchup:v9 translatorCacheSize:a6 useGlobalTranslationQueue:v7];
+  v15 = [(EMTTranslator *)self initWithModelURLs:v14 task:taskCopy skipNonFinalToCatchup:catchupCopy translatorCacheSize:size useGlobalTranslationQueue:queueCopy];
 
   return v15;
 }
 
-- (EMTTranslator)initWithModelURLs:(id)a3 task:(id)a4 skipNonFinalToCatchup:(BOOL)a5 translatorCacheSize:(int64_t)a6 useGlobalTranslationQueue:(BOOL)a7
+- (EMTTranslator)initWithModelURLs:(id)ls task:(id)task skipNonFinalToCatchup:(BOOL)catchup translatorCacheSize:(int64_t)size useGlobalTranslationQueue:(BOOL)queue
 {
-  v7 = a7;
+  queueCopy = queue;
   v35 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v25 = a4;
-  if (!v25)
+  lsCopy = ls;
+  taskCopy = task;
+  if (!taskCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"EMTTranslator.mm" lineNumber:237 description:@"Task string cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMTTranslator.mm" lineNumber:237 description:@"Task string cannot be nil"];
   }
 
   v33.receiver = self;
@@ -101,16 +101,16 @@
   v13 = v12;
   if (v12)
   {
-    v12->_skipNonFinalToCatchup = a5;
+    v12->_skipNonFinalToCatchup = catchup;
     v14 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     translationRequestsQueue = v13->_translationRequestsQueue;
     v13->_translationRequestsQueue = v14;
 
     [(NSOperationQueue *)v13->_translationRequestsQueue setMaxConcurrentOperationCount:1];
-    v16 = [(NSOperationQueue *)v13->_translationRequestsQueue progress];
-    [v16 setTotalUnitCount:1];
+    progress = [(NSOperationQueue *)v13->_translationRequestsQueue progress];
+    [progress setTotalUnitCount:1];
 
-    if (v7)
+    if (queueCopy)
     {
       +[EMTTranslationQueue globalTranslationQueue];
     }
@@ -125,7 +125,7 @@
 
     objc_storeStrong(&v13->_callbackQueue, MEMORY[0x1E69E96A0]);
     memset(v32, 0, sizeof(v32));
-    v19 = v26;
+    v19 = lsCopy;
     if ([v19 countByEnumeratingWithState:v32 objects:v34 count:16])
     {
       [*v32[1] URLByAppendingPathComponent:@"mt-quasar-config.json"];
@@ -139,8 +139,8 @@
     block[2] = __108__EMTTranslator_initWithModelURLs_task_skipNonFinalToCatchup_translatorCacheSize_useGlobalTranslationQueue___block_invoke;
     block[3] = &unk_1E7C1BDA8;
     v28 = v13;
-    v29 = v25;
-    v30 = a6;
+    v29 = taskCopy;
+    sizeCopy = size;
     dispatch_async(v20, block);
   }
 
@@ -161,20 +161,20 @@ void __108__EMTTranslator_initWithModelURLs_task_skipNonFinalToCatchup_translato
   quasar::TranslatorFactory::createTranslatorFactory((v2 + 56));
 }
 
-- (void)loadTranslatorFrom:(id)a3 to:(id)a4
+- (void)loadTranslatorFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqual:v7] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (([fromCopy isEqual:toCopy] & 1) == 0)
   {
     translationQueue = self->_translationQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__EMTTranslator_loadTranslatorFrom_to___block_invoke;
     block[3] = &unk_1E7C1A488;
-    v10 = v6;
-    v11 = v7;
-    v12 = self;
+    v10 = fromCopy;
+    v11 = toCopy;
+    selfCopy = self;
     dispatch_async(translationQueue, block);
   }
 }
@@ -228,15 +228,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)isCompileRequiredFrom:(id)a3 to:(id)a4
+- (BOOL)isCompileRequiredFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  fromCopy = from;
+  toCopy = to;
+  v8 = toCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (fromCopy && toCopy)
   {
-    if ([v6 isEqual:v7])
+    if ([fromCopy isEqual:toCopy])
     {
       v9 = 0;
     }
@@ -252,8 +252,8 @@ LABEL_6:
       v12[1] = 3221225472;
       v12[2] = __42__EMTTranslator_isCompileRequiredFrom_to___block_invoke;
       v12[3] = &unk_1E7C1BDD0;
-      v13 = v6;
-      v15 = self;
+      v13 = fromCopy;
+      selfCopy = self;
       v16 = &v17;
       v14 = v8;
       dispatch_async_and_wait(translationQueue, v12);
@@ -310,28 +310,28 @@ LABEL_6:
   }
 }
 
-- (void)translateSpeech:(id)a3 from:(id)a4 to:(id)a5 completion:(id)a6
+- (void)translateSpeech:(id)speech from:(id)from to:(id)to completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  speechCopy = speech;
+  fromCopy = from;
+  toCopy = to;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__16;
   v21 = __Block_byref_object_dispose__16;
   v22 = [MEMORY[0x1E695E0F0] mutableCopy];
-  v14 = [v10 rawTranscription];
-  v15 = [v14 segments];
+  rawTranscription = [speechCopy rawTranscription];
+  segments = [rawTranscription segments];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__EMTTranslator_translateSpeech_from_to_completion___block_invoke;
   v16[3] = &unk_1E7C1BDF8;
   v16[4] = &v17;
-  [v15 enumerateObjectsUsingBlock:v16];
+  [segments enumerateObjectsUsingBlock:v16];
 
-  [(EMTTranslator *)self translateTokens:v18[5] from:v11 to:v12 spans:0 options:0 completion:v13];
+  [(EMTTranslator *)self translateTokens:v18[5] from:fromCopy to:toCopy spans:0 options:0 completion:completionCopy];
   _Block_object_dispose(&v17, 8);
 }
 
@@ -342,29 +342,29 @@ void __52__EMTTranslator_translateSpeech_from_to_completion___block_invoke(uint6
   [v2 addObject:?];
 }
 
-- (void)translateString:(id)a3 from:(id)a4 to:(id)a5 options:(id)a6 completion:(id)a7
+- (void)translateString:(id)string from:(id)from to:(id)to options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  fromCopy = from;
+  toCopy = to;
+  optionsCopy = options;
+  completionCopy = completion;
   translationQueue = self->_translationQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __60__EMTTranslator_translateString_from_to_options_completion___block_invoke;
   v23[3] = &unk_1E7C1BE20;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = stringCopy;
+  v25 = fromCopy;
+  v26 = toCopy;
+  v27 = optionsCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = optionsCopy;
+  v20 = toCopy;
+  v21 = fromCopy;
+  v22 = stringCopy;
   dispatch_async(translationQueue, v23);
 }
 
@@ -420,32 +420,32 @@ LABEL_6:
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v8);
 }
 
-- (void)translateTokens:(id)a3 from:(id)a4 to:(id)a5 spans:(id)a6 options:(id)a7 completion:(id)a8
+- (void)translateTokens:(id)tokens from:(id)from to:(id)to spans:(id)spans options:(id)options completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  tokensCopy = tokens;
+  fromCopy = from;
+  toCopy = to;
+  spansCopy = spans;
+  optionsCopy = options;
+  completionCopy = completion;
   translationQueue = self->_translationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__EMTTranslator_translateTokens_from_to_spans_options_completion___block_invoke;
   block[3] = &unk_1E7C1BE48;
-  v28 = v14;
-  v29 = self;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = tokensCopy;
+  selfCopy = self;
+  v30 = fromCopy;
+  v31 = toCopy;
+  v32 = spansCopy;
+  v33 = optionsCopy;
+  v34 = completionCopy;
+  v21 = completionCopy;
+  v22 = optionsCopy;
+  v23 = spansCopy;
+  v24 = toCopy;
+  v25 = fromCopy;
+  v26 = tokensCopy;
   dispatch_async(translationQueue, block);
 }
 
@@ -537,27 +537,27 @@ void __66__EMTTranslator_translateTokens_from_to_spans_options_completion___bloc
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&__p);
 }
 
-- (void)translateTokens:(id)a3 isFinal:(BOOL)a4 spans:(id)a5 options:(id)a6 completion:(id)a7
+- (void)translateTokens:(id)tokens isFinal:(BOOL)final spans:(id)spans options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  tokensCopy = tokens;
+  spansCopy = spans;
+  optionsCopy = options;
+  completionCopy = completion;
   translationQueue = self->_translationQueue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __66__EMTTranslator_translateTokens_isFinal_spans_options_completion___block_invoke;
   v21[3] = &unk_1E7C1BE70;
-  v22 = v12;
-  v23 = self;
-  v27 = a4;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = tokensCopy;
+  selfCopy = self;
+  finalCopy = final;
+  v24 = spansCopy;
+  v25 = optionsCopy;
+  v26 = completionCopy;
+  v17 = completionCopy;
+  v18 = optionsCopy;
+  v19 = spansCopy;
+  v20 = tokensCopy;
   dispatch_async(translationQueue, v21);
 }
 
@@ -637,20 +637,20 @@ void __66__EMTTranslator_translateTokens_isFinal_spans_options_completion___bloc
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&__p);
 }
 
-- (void)prepareFor:(id)a3 to:(id)a4
+- (void)prepareFor:(id)for to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  toCopy = to;
   translationQueue = self->_translationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__EMTTranslator_prepareFor_to___block_invoke;
   block[3] = &unk_1E7C1A488;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = forCopy;
+  v13 = toCopy;
+  v9 = toCopy;
+  v10 = forCopy;
   dispatch_async(translationQueue, block);
 }
 
@@ -688,11 +688,11 @@ void __31__EMTTranslator_prepareFor_to___block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) lowercaseString];
-        v11 = v10;
-        if (v10)
+        lowercaseString = [*(*(&v15 + 1) + 8 * i) lowercaseString];
+        v11 = lowercaseString;
+        if (lowercaseString)
         {
-          [v10 ear_toString];
+          [lowercaseString ear_toString];
         }
 
         else
@@ -717,20 +717,20 @@ void __31__EMTTranslator_prepareFor_to___block_invoke(uint64_t a1)
   return result;
 }
 
-- (shared_ptr<quasar::Translator>)_prepareFor:(id)a3 to:(id)a4
+- (shared_ptr<quasar::Translator>)_prepareFor:(id)for to:(id)to
 {
   v8 = v4;
-  v9 = a3;
-  v10 = a4;
+  forCopy = for;
+  toCopy = to;
   dispatch_assert_queue_V2(self->_translationQueue);
-  if ([(NSLocale *)self->_sourceLocale isEqual:v9]&& ([(NSLocale *)self->_targetLocale isEqual:v10]& 1) != 0)
+  if ([(NSLocale *)self->_sourceLocale isEqual:forCopy]&& ([(NSLocale *)self->_targetLocale isEqual:toCopy]& 1) != 0)
   {
     goto LABEL_21;
   }
 
-  objc_storeStrong(&self->_sourceLocale, a3);
-  objc_storeStrong(&self->_targetLocale, a4);
-  if (!v9 || !v10 || [v9 isEqual:v10])
+  objc_storeStrong(&self->_sourceLocale, for);
+  objc_storeStrong(&self->_targetLocale, to);
+  if (!forCopy || !toCopy || [forCopy isEqual:toCopy])
   {
     cntrl = self->_translator.__cntrl_;
     self->_translator.__ptr_ = 0;
@@ -743,13 +743,13 @@ void __31__EMTTranslator_prepareFor_to___block_invoke(uint64_t a1)
     goto LABEL_21;
   }
 
-  v12 = [v9 localeIdentifier];
-  v13 = [v10 localeIdentifier];
-  v14 = v13;
+  localeIdentifier = [forCopy localeIdentifier];
+  localeIdentifier2 = [toCopy localeIdentifier];
+  v14 = localeIdentifier2;
   ptr = self->_translatorFactory.__ptr_;
-  if (v12)
+  if (localeIdentifier)
   {
-    [v12 ear_toString];
+    [localeIdentifier ear_toString];
     if (v14)
     {
 LABEL_10:
@@ -763,7 +763,7 @@ LABEL_10:
     v23[0] = 0;
     v23[1] = 0;
     v24 = 0;
-    if (v13)
+    if (localeIdentifier2)
     {
       goto LABEL_10;
     }
@@ -811,7 +811,7 @@ LABEL_21:
   return result;
 }
 
-- (void)_dispatchTranslationRequest:()vector<std:(std:(BOOL)a4 :(id)a5 allocator<std:(shared_ptr<quasar:(id)a7 :(id)a8 Translator>)a6 :(id)a9 string>> *)a3 :(id)a10 string isFinal:spans:translator:sourceLocale:targetLocale:options:completion:
+- (void)_dispatchTranslationRequest:()vector<std:(std:(BOOL)std :(id)a5 allocator<std:(shared_ptr<quasar:(id)a7 :(id)a8 Translator>)a6 :(id)a9 string>> *)a3 :(id)self0 string isFinal:spans:translator:sourceLocale:targetLocale:options:completion:
 {
   cntrl = a6.__cntrl_;
   ptr = a6.__ptr_;
@@ -835,7 +835,7 @@ LABEL_21:
   v32[1] = 3321888768;
   v32[2] = __115__EMTTranslator__dispatchTranslationRequest_isFinal_spans_translator_sourceLocale_targetLocale_options_completion___block_invoke_2;
   v32[3] = &unk_1F2D315B8;
-  v40 = a4;
+  stdCopy = std;
   v32[4] = self;
   memset(v38, 0, 24);
   std::vector<std::string>::__init_with_size[abi:ne200100]<std::string*,std::string*>(v38, a3->__begin_, a3->__end_, 0xAAAAAAAAAAAAAAABLL * ((a3->__end_ - a3->__begin_) >> 3));
@@ -1563,17 +1563,17 @@ void __115__EMTTranslator__dispatchTranslationRequest_isFinal_spans_translator_s
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getTranslatorWithCompletion:(id)a3
+- (void)getTranslatorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   translationQueue = self->_translationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__EMTTranslator_getTranslatorWithCompletion___block_invoke;
   v7[3] = &unk_1E7C1A578;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(translationQueue, v7);
 }
 

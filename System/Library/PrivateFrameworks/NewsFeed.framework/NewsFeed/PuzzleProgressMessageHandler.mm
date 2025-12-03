@@ -1,6 +1,6 @@
 @interface PuzzleProgressMessageHandler
 - (_TtC8NewsFeed28PuzzleProgressMessageHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleProgressMessageHandler
@@ -15,12 +15,12 @@
   return [(PuzzleProgressMessageHandler *)&v5 init];
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1D5F151B4(a3);
+  selfCopy = self;
+  sub_1D5F151B4(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

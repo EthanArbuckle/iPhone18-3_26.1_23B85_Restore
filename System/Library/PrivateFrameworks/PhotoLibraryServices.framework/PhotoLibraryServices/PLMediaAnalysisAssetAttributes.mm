@@ -4,14 +4,14 @@
 - ($6C36EBF4C34944E14D6052B25C3B65B5)bestVideoTimeRange;
 - (id)_characterRecognitionAttributesCreateIfNeeded;
 - (void)prepareForDeletion;
-- (void)resetCharacterRecognitionAttributesResetVersion:(BOOL)a3 resetData:(BOOL)a4;
-- (void)resetTextUnderstandingAttributesResetVersion:(BOOL)a3 resetData:(BOOL)a4;
-- (void)setAnimatedStickerTimeRange:(id *)a3;
-- (void)setBestVideoTimeRange:(id *)a3;
-- (void)setCharacterRecognitionData:(id)a3 machineReadableCodeData:(id)a4 algorithmVersion:(signed __int16)a5 adjustmentVersion:(id)a6;
-- (void)setStickerConfidenceScore:(float)a3 stickerAlgorithmVersion:(signed __int16)a4;
-- (void)setTextUnderstandingData:(id)a3 version:(int64_t)a4;
-- (void)setVisualSearchData:(id)a3 algorithmVersion:(signed __int16)a4 adjustmentVersion:(id)a5;
+- (void)resetCharacterRecognitionAttributesResetVersion:(BOOL)version resetData:(BOOL)data;
+- (void)resetTextUnderstandingAttributesResetVersion:(BOOL)version resetData:(BOOL)data;
+- (void)setAnimatedStickerTimeRange:(id *)range;
+- (void)setBestVideoTimeRange:(id *)range;
+- (void)setCharacterRecognitionData:(id)data machineReadableCodeData:(id)codeData algorithmVersion:(signed __int16)version adjustmentVersion:(id)adjustmentVersion;
+- (void)setStickerConfidenceScore:(float)score stickerAlgorithmVersion:(signed __int16)version;
+- (void)setTextUnderstandingData:(id)data version:(int64_t)version;
+- (void)setVisualSearchData:(id)data algorithmVersion:(signed __int16)version adjustmentVersion:(id)adjustmentVersion;
 - (void)willSave;
 @end
 
@@ -23,60 +23,60 @@
   v28.receiver = self;
   v28.super_class = PLMediaAnalysisAssetAttributes;
   [(PLManagedObject *)&v28 willSave];
-  v3 = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
+  managedObjectContext = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  v4 = [(PLMediaAnalysisAssetAttributes *)self changedValues];
-  v5 = [v4 objectForKeyedSubscript:@"syndicationProcessingValue"];
+  changedValues = [(PLMediaAnalysisAssetAttributes *)self changedValues];
+  v5 = [changedValues objectForKeyedSubscript:@"syndicationProcessingValue"];
 
   if (v5)
   {
-    v6 = [(PLMediaAnalysisAssetAttributes *)self asset];
-    [v6 updateSyndicationStateWithSyndicationProcessingValue:{-[PLMediaAnalysisAssetAttributes syndicationProcessingValue](self, "syndicationProcessingValue")}];
+    asset = [(PLMediaAnalysisAssetAttributes *)self asset];
+    [asset updateSyndicationStateWithSyndicationProcessingValue:{-[PLMediaAnalysisAssetAttributes syndicationProcessingValue](self, "syndicationProcessingValue")}];
 
     if (PLPlatformMomentsSupported())
     {
       if ([(PLMediaAnalysisAssetAttributes *)self isUpdated])
       {
-        v7 = [(PLMediaAnalysisAssetAttributes *)self asset];
-        v8 = [v7 needsMomentUpdate];
+        asset2 = [(PLMediaAnalysisAssetAttributes *)self asset];
+        needsMomentUpdate = [asset2 needsMomentUpdate];
 
-        if ((v8 & 1) == 0)
+        if ((needsMomentUpdate & 1) == 0)
         {
           v9 = PLMomentsGetLog();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            v10 = [(PLMediaAnalysisAssetAttributes *)self asset];
-            v11 = [v10 objectID];
+            asset3 = [(PLMediaAnalysisAssetAttributes *)self asset];
+            objectID = [asset3 objectID];
             *buf = 138412290;
-            v30 = v11;
+            v30 = objectID;
             _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "Adding asset %@ to be updated in moments due to relevant MediaAnalysisAttributes change", buf, 0xCu);
           }
 
-          v12 = [(PLMediaAnalysisAssetAttributes *)self asset];
-          [v12 setNeedsMomentUpdate:1];
+          asset4 = [(PLMediaAnalysisAssetAttributes *)self asset];
+          [asset4 setNeedsMomentUpdate:1];
 
-          v13 = [v3 delayedSaveActions];
-          v14 = [(PLMediaAnalysisAssetAttributes *)self asset];
-          [v13 recordAssetForMomentUpdate:v14];
+          delayedSaveActions = [managedObjectContext delayedSaveActions];
+          asset5 = [(PLMediaAnalysisAssetAttributes *)self asset];
+          [delayedSaveActions recordAssetForMomentUpdate:asset5];
         }
       }
     }
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"exposureScore"];
+  v15 = [changedValues objectForKeyedSubscript:@"exposureScore"];
 
   if (v15)
   {
     [(PLMediaAnalysisAssetAttributes *)self exposureScore];
     v17 = v16;
-    v18 = [(PLMediaAnalysisAssetAttributes *)self asset];
-    v19 = [v18 additionalAttributes];
-    v20 = v19;
+    asset6 = [(PLMediaAnalysisAssetAttributes *)self asset];
+    additionalAttributes = [asset6 additionalAttributes];
+    v20 = additionalAttributes;
     if (v17 == 0.0)
     {
       v21 = 32;
@@ -89,28 +89,28 @@
       v22 = 32;
     }
 
-    [v19 addDuplicateDetectorPerceptualProcessingStates:v21 removeProcessingStates:v22];
+    [additionalAttributes addDuplicateDetectorPerceptualProcessingStates:v21 removeProcessingStates:v22];
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"textUnderstandingVersion"];
+  v23 = [changedValues objectForKeyedSubscript:@"textUnderstandingVersion"];
   if (v23)
   {
 
     goto LABEL_17;
   }
 
-  v24 = [v4 objectForKeyedSubscript:@"mediaAnalysisTimeStamp"];
+  v24 = [changedValues objectForKeyedSubscript:@"mediaAnalysisTimeStamp"];
 
   if (v24)
   {
 LABEL_17:
-    v25 = [(PLMediaAnalysisAssetAttributes *)self asset];
-    v26 = [v25 isReadyForPurgeSyndicationResources];
+    asset7 = [(PLMediaAnalysisAssetAttributes *)self asset];
+    isReadyForPurgeSyndicationResources = [asset7 isReadyForPurgeSyndicationResources];
 
-    if (v26)
+    if (isReadyForPurgeSyndicationResources)
     {
-      v27 = [(PLMediaAnalysisAssetAttributes *)self asset];
-      [v27 purgeSyndicationResourcesAfterMediaAnalysisProcessing];
+      asset8 = [(PLMediaAnalysisAssetAttributes *)self asset];
+      [asset8 purgeSyndicationResourcesAfterMediaAnalysisProcessing];
     }
   }
 
@@ -128,10 +128,10 @@ LABEL_22:
   v5.super_class = PLMediaAnalysisAssetAttributes;
   [(PLMediaAnalysisAssetAttributes *)&v5 prepareForDeletion];
   objc_opt_class();
-  v3 = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
+  managedObjectContext = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = managedObjectContext;
   }
 
   else
@@ -145,150 +145,150 @@ LABEL_22:
   }
 }
 
-- (void)setStickerConfidenceScore:(float)a3 stickerAlgorithmVersion:(signed __int16)a4
+- (void)setStickerConfidenceScore:(float)score stickerAlgorithmVersion:(signed __int16)version
 {
-  v4 = a4;
-  v10 = [(PLMediaAnalysisAssetAttributes *)self visualSearchAttributes];
-  if (!v10)
+  versionCopy = version;
+  visualSearchAttributes = [(PLMediaAnalysisAssetAttributes *)self visualSearchAttributes];
+  if (!visualSearchAttributes)
   {
-    v7 = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
-    v10 = [(PLManagedObject *)PLVisualSearchAttributes insertInManagedObjectContext:v7];
-    if (v10)
+    managedObjectContext = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
+    visualSearchAttributes = [(PLManagedObject *)PLVisualSearchAttributes insertInManagedObjectContext:managedObjectContext];
+    if (visualSearchAttributes)
     {
-      [(PLMediaAnalysisAssetAttributes *)self setVisualSearchAttributes:v10];
+      [(PLMediaAnalysisAssetAttributes *)self setVisualSearchAttributes:visualSearchAttributes];
     }
   }
 
-  v8 = [(PLMediaAnalysisAssetAttributes *)self asset];
-  *&v9 = a3;
-  [v8 setStickerConfidenceScore:v9];
+  asset = [(PLMediaAnalysisAssetAttributes *)self asset];
+  *&v9 = score;
+  [asset setStickerConfidenceScore:v9];
 
-  [(PLMediaAnalysisAssetAttributes *)self setVisualSearchStickerConfidenceVersion:v4];
+  [(PLMediaAnalysisAssetAttributes *)self setVisualSearchStickerConfidenceVersion:versionCopy];
 }
 
-- (void)setVisualSearchData:(id)a3 algorithmVersion:(signed __int16)a4 adjustmentVersion:(id)a5
+- (void)setVisualSearchData:(id)data algorithmVersion:(signed __int16)version adjustmentVersion:(id)adjustmentVersion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(PLMediaAnalysisAssetAttributes *)self visualSearchAttributes];
-  if (!v9)
+  versionCopy = version;
+  dataCopy = data;
+  adjustmentVersionCopy = adjustmentVersion;
+  visualSearchAttributes = [(PLMediaAnalysisAssetAttributes *)self visualSearchAttributes];
+  if (!visualSearchAttributes)
   {
-    v10 = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
-    v9 = [(PLManagedObject *)PLVisualSearchAttributes insertInManagedObjectContext:v10];
-    if (v9)
+    managedObjectContext = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
+    visualSearchAttributes = [(PLManagedObject *)PLVisualSearchAttributes insertInManagedObjectContext:managedObjectContext];
+    if (visualSearchAttributes)
     {
-      [(PLMediaAnalysisAssetAttributes *)self setVisualSearchAttributes:v9];
+      [(PLMediaAnalysisAssetAttributes *)self setVisualSearchAttributes:visualSearchAttributes];
     }
   }
 
-  [v9 setVisualSearchData:v11];
-  [(PLMediaAnalysisAssetAttributes *)self setVisualSearchVersion:v6];
-  [v9 setAdjustmentVersion:v8];
+  [visualSearchAttributes setVisualSearchData:dataCopy];
+  [(PLMediaAnalysisAssetAttributes *)self setVisualSearchVersion:versionCopy];
+  [visualSearchAttributes setAdjustmentVersion:adjustmentVersionCopy];
 }
 
-- (void)resetTextUnderstandingAttributesResetVersion:(BOOL)a3 resetData:(BOOL)a4
+- (void)resetTextUnderstandingAttributesResetVersion:(BOOL)version resetData:(BOOL)data
 {
-  v4 = a4;
-  if (a3 && [(PLMediaAnalysisAssetAttributes *)self textUnderstandingVersion])
+  dataCopy = data;
+  if (version && [(PLMediaAnalysisAssetAttributes *)self textUnderstandingVersion])
   {
     [(PLMediaAnalysisAssetAttributes *)self setTextUnderstandingVersion:0];
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v6 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-    v7 = [v6 textUnderstandingData];
+    characterRecognitionAttributes = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+    textUnderstandingData = [characterRecognitionAttributes textUnderstandingData];
 
-    if (v7)
+    if (textUnderstandingData)
     {
-      v8 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-      [v8 setTextUnderstandingData:0];
+      characterRecognitionAttributes2 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+      [characterRecognitionAttributes2 setTextUnderstandingData:0];
     }
   }
 }
 
-- (void)setTextUnderstandingData:(id)a3 version:(int64_t)a4
+- (void)setTextUnderstandingData:(id)data version:(int64_t)version
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PLMediaAnalysisAssetAttributes *)self _characterRecognitionAttributesCreateIfNeeded];
-  [(PLMediaAnalysisAssetAttributes *)self setTextUnderstandingVersion:v4];
-  [v7 setTextUnderstandingData:v6];
+  versionCopy = version;
+  dataCopy = data;
+  _characterRecognitionAttributesCreateIfNeeded = [(PLMediaAnalysisAssetAttributes *)self _characterRecognitionAttributesCreateIfNeeded];
+  [(PLMediaAnalysisAssetAttributes *)self setTextUnderstandingVersion:versionCopy];
+  [_characterRecognitionAttributesCreateIfNeeded setTextUnderstandingData:dataCopy];
 }
 
-- (void)resetCharacterRecognitionAttributesResetVersion:(BOOL)a3 resetData:(BOOL)a4
+- (void)resetCharacterRecognitionAttributesResetVersion:(BOOL)version resetData:(BOOL)data
 {
-  v4 = a4;
-  if (a3 && [(PLMediaAnalysisAssetAttributes *)self characterRecognitionVersion])
+  dataCopy = data;
+  if (version && [(PLMediaAnalysisAssetAttributes *)self characterRecognitionVersion])
   {
     [(PLMediaAnalysisAssetAttributes *)self setCharacterRecognitionVersion:0];
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v6 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-    v7 = [v6 characterRecognitionData];
+    characterRecognitionAttributes = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+    characterRecognitionData = [characterRecognitionAttributes characterRecognitionData];
 
-    if (v7)
+    if (characterRecognitionData)
     {
-      v8 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-      [v8 setCharacterRecognitionData:0];
+      characterRecognitionAttributes2 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+      [characterRecognitionAttributes2 setCharacterRecognitionData:0];
     }
 
-    v9 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-    v10 = [v9 machineReadableCodeData];
+    characterRecognitionAttributes3 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+    machineReadableCodeData = [characterRecognitionAttributes3 machineReadableCodeData];
 
-    if (v10)
+    if (machineReadableCodeData)
     {
-      v11 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-      [v11 setMachineReadableCodeData:0];
+      characterRecognitionAttributes4 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+      [characterRecognitionAttributes4 setMachineReadableCodeData:0];
     }
 
-    v12 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-    v13 = [v12 adjustmentVersion];
-    v14 = [MEMORY[0x1E695DF00] distantPast];
-    v15 = [v13 isEqualToDate:v14];
+    characterRecognitionAttributes5 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+    adjustmentVersion = [characterRecognitionAttributes5 adjustmentVersion];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    v15 = [adjustmentVersion isEqualToDate:distantPast];
 
     if ((v15 & 1) == 0)
     {
-      v17 = [MEMORY[0x1E695DF00] distantPast];
-      v16 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-      [v16 setAdjustmentVersion:v17];
+      distantPast2 = [MEMORY[0x1E695DF00] distantPast];
+      characterRecognitionAttributes6 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+      [characterRecognitionAttributes6 setAdjustmentVersion:distantPast2];
     }
   }
 }
 
-- (void)setCharacterRecognitionData:(id)a3 machineReadableCodeData:(id)a4 algorithmVersion:(signed __int16)a5 adjustmentVersion:(id)a6
+- (void)setCharacterRecognitionData:(id)data machineReadableCodeData:(id)codeData algorithmVersion:(signed __int16)version adjustmentVersion:(id)adjustmentVersion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PLMediaAnalysisAssetAttributes *)self _characterRecognitionAttributesCreateIfNeeded];
-  [v13 setCharacterRecognitionData:v12];
+  versionCopy = version;
+  adjustmentVersionCopy = adjustmentVersion;
+  codeDataCopy = codeData;
+  dataCopy = data;
+  _characterRecognitionAttributesCreateIfNeeded = [(PLMediaAnalysisAssetAttributes *)self _characterRecognitionAttributesCreateIfNeeded];
+  [_characterRecognitionAttributesCreateIfNeeded setCharacterRecognitionData:dataCopy];
 
-  [v13 setMachineReadableCodeData:v11];
-  [v13 setAdjustmentVersion:v10];
+  [_characterRecognitionAttributesCreateIfNeeded setMachineReadableCodeData:codeDataCopy];
+  [_characterRecognitionAttributesCreateIfNeeded setAdjustmentVersion:adjustmentVersionCopy];
 
-  [(PLMediaAnalysisAssetAttributes *)self setCharacterRecognitionVersion:v6];
+  [(PLMediaAnalysisAssetAttributes *)self setCharacterRecognitionVersion:versionCopy];
 }
 
 - (id)_characterRecognitionAttributesCreateIfNeeded
 {
-  v3 = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
-  if (!v3)
+  characterRecognitionAttributes = [(PLMediaAnalysisAssetAttributes *)self characterRecognitionAttributes];
+  if (!characterRecognitionAttributes)
   {
-    v4 = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
-    v3 = [(PLManagedObject *)PLCharacterRecognitionAttributes insertInManagedObjectContext:v4];
+    managedObjectContext = [(PLMediaAnalysisAssetAttributes *)self managedObjectContext];
+    characterRecognitionAttributes = [(PLManagedObject *)PLCharacterRecognitionAttributes insertInManagedObjectContext:managedObjectContext];
 
-    if (v3)
+    if (characterRecognitionAttributes)
     {
-      [(PLMediaAnalysisAssetAttributes *)self setCharacterRecognitionAttributes:v3];
+      [(PLMediaAnalysisAssetAttributes *)self setCharacterRecognitionAttributes:characterRecognitionAttributes];
     }
   }
 
-  return v3;
+  return characterRecognitionAttributes;
 }
 
 - ($6C36EBF4C34944E14D6052B25C3B65B5)animatedStickerTimeRange
@@ -302,13 +302,13 @@ LABEL_22:
   return CMTimeRangeMake(retstr, &start, &v6);
 }
 
-- (void)setAnimatedStickerTimeRange:(id *)a3
+- (void)setAnimatedStickerTimeRange:(id *)range
 {
-  var1 = a3->var0.var1;
-  [(PLMediaAnalysisAssetAttributes *)self setAnimatedStickerRangeStartValue:a3->var0.var0];
+  var1 = range->var0.var1;
+  [(PLMediaAnalysisAssetAttributes *)self setAnimatedStickerRangeStartValue:range->var0.var0];
   [(PLMediaAnalysisAssetAttributes *)self setAnimatedStickerRangeStartTimeScale:var1];
-  var0 = a3->var1.var0;
-  v7 = a3->var1.var1;
+  var0 = range->var1.var0;
+  v7 = range->var1.var1;
   [(PLMediaAnalysisAssetAttributes *)self setAnimatedStickerRangeDurationValue:var0];
 
   [(PLMediaAnalysisAssetAttributes *)self setAnimatedStickerRangeDurationTimeScale:v7];
@@ -325,13 +325,13 @@ LABEL_22:
   return CMTimeRangeMake(retstr, &start, &v6);
 }
 
-- (void)setBestVideoTimeRange:(id *)a3
+- (void)setBestVideoTimeRange:(id *)range
 {
-  var1 = a3->var0.var1;
-  [(PLMediaAnalysisAssetAttributes *)self setBestVideoRangeStartValue:a3->var0.var0];
+  var1 = range->var0.var1;
+  [(PLMediaAnalysisAssetAttributes *)self setBestVideoRangeStartValue:range->var0.var0];
   [(PLMediaAnalysisAssetAttributes *)self setBestVideoRangeStartTimeScale:var1];
-  var0 = a3->var1.var0;
-  v7 = a3->var1.var1;
+  var0 = range->var1.var0;
+  v7 = range->var1.var1;
   [(PLMediaAnalysisAssetAttributes *)self setBestVideoRangeDurationValue:var0];
 
   [(PLMediaAnalysisAssetAttributes *)self setBestVideoRangeDurationTimeScale:v7];

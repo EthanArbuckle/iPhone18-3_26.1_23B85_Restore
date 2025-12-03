@@ -1,23 +1,23 @@
 @interface SUIBSiriInAppResponse
-- (SUIBSiriInAppResponse)initWithBuilder:(id)a3;
-- (SUIBSiriInAppResponse)initWithCoder:(id)a3;
+- (SUIBSiriInAppResponse)initWithBuilder:(id)builder;
+- (SUIBSiriInAppResponse)initWithCoder:(id)coder;
 @end
 
 @implementation SUIBSiriInAppResponse
 
-- (SUIBSiriInAppResponse)initWithBuilder:(id)a3
+- (SUIBSiriInAppResponse)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = SUIBSiriInAppResponse;
   v5 = [(SUIBSiriInAppResponse *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBSiriInAppResponseMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBSiriInAppResponseMutation *)v7 bundleIdentifier];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    bundleIdentifier = [(SUIBSiriInAppResponseMutation *)v7 bundleIdentifier];
+    v9 = [bundleIdentifier copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v9;
   }
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (SUIBSiriInAppResponse)initWithCoder:(id)a3
+- (SUIBSiriInAppResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBSiriInAppResponse::bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBSiriInAppResponse::bundleIdentifier"];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

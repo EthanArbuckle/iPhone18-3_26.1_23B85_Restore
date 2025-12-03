@@ -1,13 +1,13 @@
 @interface SliderTableViewCell
-- (_TtC5TeaUI19SliderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC5TeaUI19SliderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)valueChanged;
 @end
 
 @implementation SliderTableViewCell
 
-- (_TtC5TeaUI19SliderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC5TeaUI19SliderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v4 = sub_1D8190F14();
     v6 = v5;
@@ -24,7 +24,7 @@
 
 - (void)valueChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D811A0E0();
 }
 

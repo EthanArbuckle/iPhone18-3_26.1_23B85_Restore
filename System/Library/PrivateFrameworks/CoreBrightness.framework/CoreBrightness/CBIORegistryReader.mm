@@ -1,28 +1,28 @@
 @interface CBIORegistryReader
-- (CBIORegistryReader)initWithService:(unsigned int)a3 andPlane:(char)a4[128] andOptions:(unsigned int)a5;
+- (CBIORegistryReader)initWithService:(unsigned int)service andPlane:(char)plane[128] andOptions:(unsigned int)options;
 - (void)dealloc;
 @end
 
 @implementation CBIORegistryReader
 
-- (CBIORegistryReader)initWithService:(unsigned int)a3 andPlane:(char)a4[128] andOptions:(unsigned int)a5
+- (CBIORegistryReader)initWithService:(unsigned int)service andPlane:(char)plane[128] andOptions:(unsigned int)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
-  v8 = a5;
+  serviceCopy = service;
+  planeCopy = plane;
+  optionsCopy = options;
   v7.receiver = self;
   v7.super_class = CBIORegistryReader;
-  v12 = [(CBIORegistryReader *)&v7 init];
-  if (strlcpy(v12->_plane, v9, 0x80uLL) < 0x80)
+  selfCopy = [(CBIORegistryReader *)&v7 init];
+  if (strlcpy(selfCopy->_plane, planeCopy, 0x80uLL) < 0x80)
   {
-    if (v10 && v9 && !IOObjectRetain(v10))
+    if (serviceCopy && planeCopy && !IOObjectRetain(serviceCopy))
     {
-      v12->_options = v8;
-      v12->_service = v10;
-      v13 = v12;
+      selfCopy->_options = optionsCopy;
+      selfCopy->_service = serviceCopy;
+      v13 = selfCopy;
       goto LABEL_13;
     }
   }
@@ -46,7 +46,7 @@
     }
   }
 
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](selfCopy);
   v13 = 0;
 LABEL_13:
   *MEMORY[0x1E69E9840];
@@ -55,10 +55,10 @@ LABEL_13:
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   IOObjectRelease(self->_service);
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBIORegistryReader;
   [(CBIORegistryReader *)&v2 dealloc];
 }

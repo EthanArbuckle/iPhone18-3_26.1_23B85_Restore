@@ -1,44 +1,44 @@
 @interface SGM2EventInBanner
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsApp:(id)a3;
-- (int)StringAsCategory:(id)a3;
-- (int)StringAsExtracted:(id)a3;
-- (int)StringAsState:(id)a3;
+- (int)StringAsApp:(id)app;
+- (int)StringAsCategory:(id)category;
+- (int)StringAsExtracted:(id)extracted;
+- (int)StringAsState:(id)state;
 - (int)app;
 - (int)category;
 - (int)extracted;
 - (int)state;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCategory:(BOOL)a3;
-- (void)setHasExtracted:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCategory:(BOOL)category;
+- (void)setHasExtracted:(BOOL)extracted;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2EventInBanner
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SGM2EventInBanner *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_app = v4[2];
+    self->_app = fromCopy[2];
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -51,14 +51,14 @@ LABEL_5:
     }
   }
 
-  else if ((v4[9] & 2) == 0)
+  else if ((fromCopy[9] & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_category = v4[3];
+  self->_category = fromCopy[3];
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -71,12 +71,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_extracted = v4[4];
+  self->_extracted = fromCopy[4];
   *&self->_has |= 4u;
-  if ((v4[9] & 8) != 0)
+  if ((fromCopy[9] & 8) != 0)
   {
 LABEL_7:
-    self->_state = v4[8];
+    self->_state = fromCopy[8];
     *&self->_has |= 8u;
   }
 
@@ -138,16 +138,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -157,13 +157,13 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_app != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_app != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_23:
     v6 = 0;
@@ -172,34 +172,34 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_category != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_category != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_extracted != *(v4 + 4))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_extracted != *(equalCopy + 4))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_23;
   }
 
-  v6 = (*(v4 + 36) & 8) == 0;
+  v6 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_state != *(v4 + 8))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_state != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
@@ -212,10 +212,10 @@ LABEL_24:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -269,21 +269,21 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    v6 = v4;
-    [v4 setKey:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_app;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 2) = self->_app;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = self->_category;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 3) = self->_category;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -317,26 +317,26 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 4) = self->_extracted;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 4) = self->_extracted;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 8) = self->_state;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 8) = self->_state;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -344,7 +344,7 @@ LABEL_8:
   {
     app = self->_app;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -365,7 +365,7 @@ LABEL_5:
 
   category = self->_category;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -381,13 +381,13 @@ LABEL_6:
 LABEL_13:
   extracted = self->_extracted;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     state = self->_state;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
@@ -395,12 +395,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -512,26 +512,26 @@ LABEL_26:
   v8.receiver = self;
   v8.super_class = SGM2EventInBanner;
   v4 = [(SGM2EventInBanner *)&v8 description];
-  v5 = [(SGM2EventInBanner *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2EventInBanner *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventStateUpdate"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"SGMEventStateUpdate"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStateCancel"])
+  else if ([stateCopy isEqualToString:@"SGMEventStateCancel"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStateNew"])
+  else if ([stateCopy isEqualToString:@"SGMEventStateNew"])
   {
     v4 = 2;
   }
@@ -544,9 +544,9 @@ LABEL_26:
   return v4;
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -572,25 +572,25 @@ LABEL_26:
   }
 }
 
-- (int)StringAsExtracted:(id)a3
+- (int)StringAsExtracted:(id)extracted
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventExtractionTypeICal"])
+  extractedCopy = extracted;
+  if ([extractedCopy isEqualToString:@"SGMEventExtractionTypeICal"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SGMEventExtractionTypeTemplate"];
+    v4 = [extractedCopy isEqualToString:@"SGMEventExtractionTypeTemplate"];
   }
 
   return v4;
 }
 
-- (void)setHasExtracted:(BOOL)a3
+- (void)setHasExtracted:(BOOL)extracted
 {
-  if (a3)
+  if (extracted)
   {
     v3 = 4;
   }
@@ -616,65 +616,65 @@ LABEL_26:
   }
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventCategoryFlight"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"SGMEventCategoryFlight"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryBus"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryBus"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryTrain"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryTrain"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryHotel"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryHotel"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryCar"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryCar"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryTicket"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryTicket"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryMovie"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryMovie"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryFood"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryFood"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategorySocial"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategorySocial"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryOther"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryOther"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryBoat"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryBoat"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventCategoryAppointment"])
+  else if ([categoryCopy isEqualToString:@"SGMEventCategoryAppointment"])
   {
     v4 = 11;
   }
@@ -687,9 +687,9 @@ LABEL_26:
   return v4;
 }
 
-- (void)setHasCategory:(BOOL)a3
+- (void)setHasCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -715,20 +715,20 @@ LABEL_26:
   }
 }
 
-- (int)StringAsApp:(id)a3
+- (int)StringAsApp:(id)app
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMBannerDisplayAppMail"])
+  appCopy = app;
+  if ([appCopy isEqualToString:@"SGMBannerDisplayAppMail"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerDisplayAppMessages"])
+  else if ([appCopy isEqualToString:@"SGMBannerDisplayAppMessages"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMBannerDisplayAppOther"])
+  else if ([appCopy isEqualToString:@"SGMBannerDisplayAppOther"])
   {
     v4 = 2;
   }

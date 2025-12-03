@@ -1,10 +1,10 @@
 @interface UIKeyboardBIUImageGenerator
 - (UIKeyboardBIUImageGenerator)init;
-- (id)BIUImageForBold:(BOOL)a3 italic:(BOOL)a4 underline:(BOOL)a5;
-- (void)_accessibilitySettingsChanged:(id)a3;
-- (void)_drawBIUAtSize:(CGSize)a3 bold:(BOOL)a4 italic:(BOOL)a5 underline:(BOOL)a6;
-- (void)setNormalColor:(id)a3;
-- (void)setTintColor:(id)a3;
+- (id)BIUImageForBold:(BOOL)bold italic:(BOOL)italic underline:(BOOL)underline;
+- (void)_accessibilitySettingsChanged:(id)changed;
+- (void)_drawBIUAtSize:(CGSize)size bold:(BOOL)bold italic:(BOOL)italic underline:(BOOL)underline;
+- (void)setNormalColor:(id)color;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation UIKeyboardBIUImageGenerator
@@ -24,12 +24,12 @@
     normalColor = v2->_normalColor;
     v2->_normalColor = v5;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     imageCache = v2->_imageCache;
-    v2->_imageCache = v7;
+    v2->_imageCache = dictionary;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__accessibilitySettingsChanged_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__accessibilitySettingsChanged_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
     v2->_useButtonShapes = _AXSButtonShapesEnabled() != 0;
     v10 = [UIImage kitImageNamed:@"UIButtonBarKeyboardBIUBold"];
@@ -48,27 +48,27 @@
   return v2;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_tintColor isEqual:?])
   {
-    objc_storeStrong(&self->_tintColor, a3);
+    objc_storeStrong(&self->_tintColor, color);
     [(UIKeyboardBIUImageGenerator *)self _invalidateCache];
   }
 }
 
-- (void)setNormalColor:(id)a3
+- (void)setNormalColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_normalColor isEqual:?])
   {
-    objc_storeStrong(&self->_normalColor, a3);
+    objc_storeStrong(&self->_normalColor, color);
     [(UIKeyboardBIUImageGenerator *)self _invalidateCache];
   }
 }
 
-- (void)_accessibilitySettingsChanged:(id)a3
+- (void)_accessibilitySettingsChanged:(id)changed
 {
   v4 = _AXSButtonShapesEnabled() != 0;
   if (self->_useButtonShapes != v4)
@@ -79,13 +79,13 @@
   }
 }
 
-- (void)_drawBIUAtSize:(CGSize)a3 bold:(BOOL)a4 italic:(BOOL)a5 underline:(BOOL)a6
+- (void)_drawBIUAtSize:(CGSize)size bold:(BOOL)bold italic:(BOOL)italic underline:(BOOL)underline
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  height = a3.height;
-  width = a3.width;
+  underlineCopy = underline;
+  italicCopy = italic;
+  boldCopy = bold;
+  height = size.height;
+  width = size.width;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -98,7 +98,7 @@
   }
 
   v14 = MEMORY[0x1E695EFF8];
-  if (v8)
+  if (boldCopy)
   {
     [(UIImage *)self->_biuBoldImage drawAtPoint:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
     if (self->_useButtonShapes)
@@ -111,7 +111,7 @@
     }
   }
 
-  if (v7)
+  if (italicCopy)
   {
     [(UIImage *)self->_biuItalicImage drawAtPoint:*v14, v14[1]];
     if (self->_useButtonShapes)
@@ -124,7 +124,7 @@
     }
   }
 
-  if (v6)
+  if (underlineCopy)
   {
     [(UIImage *)self->_biuUnderlineImage drawAtPoint:*v14, v14[1]];
     if (self->_useButtonShapes)
@@ -148,9 +148,9 @@
   v20.size.width = width;
   v20.size.height = height;
   CGContextBeginTransparencyLayerWithRect(v13, v20, 0);
-  if (v8)
+  if (boldCopy)
   {
-    if (v7)
+    if (italicCopy)
     {
       goto LABEL_15;
     }
@@ -159,10 +159,10 @@
   else
   {
     [(UIImage *)self->_biuBoldImage drawAtPoint:*v14, v14[1]];
-    if (v7)
+    if (italicCopy)
     {
 LABEL_15:
-      if (v6)
+      if (underlineCopy)
       {
         goto LABEL_17;
       }
@@ -172,7 +172,7 @@ LABEL_15:
   }
 
   [(UIImage *)self->_biuItalicImage drawAtPoint:*v14, v14[1]];
-  if (!v6)
+  if (!underlineCopy)
   {
 LABEL_16:
     [(UIImage *)self->_biuUnderlineImage drawAtPoint:*v14, v14[1]];
@@ -189,24 +189,24 @@ LABEL_17:
   CGContextEndTransparencyLayer(v13);
 }
 
-- (id)BIUImageForBold:(BOOL)a3 italic:(BOOL)a4 underline:(BOOL)a5
+- (id)BIUImageForBold:(BOOL)bold italic:(BOOL)italic underline:(BOOL)underline
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  underlineCopy = underline;
+  italicCopy = italic;
+  boldCopy = bold;
   v9 = 2;
-  if (!a4)
+  if (!italic)
   {
     v9 = 0;
   }
 
   v10 = 4;
-  if (!a5)
+  if (!underline)
   {
     v10 = 0;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9 | a3 | v10 | 8];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9 | bold | v10 | 8];
   v12 = [(NSMutableDictionary *)self->_imageCache objectForKeyedSubscript:v11];
   if (!v12)
   {
@@ -224,7 +224,7 @@ LABEL_17:
 
     [(UIImage *)self->_biuBoldImage scale];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v15, v16, v17);
-    [(UIKeyboardBIUImageGenerator *)self _drawBIUAtSize:v7 bold:v6 italic:v5 underline:v15, v16];
+    [(UIKeyboardBIUImageGenerator *)self _drawBIUAtSize:boldCopy bold:italicCopy italic:underlineCopy underline:v15, v16];
     v18 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
     if (self->_useButtonShapes)

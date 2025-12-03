@@ -16,7 +16,7 @@
 - (BOOL)restrictivePersonaPolicy;
 - (BOOL)transient;
 - (MCMUserIdentity)userIdentity;
-- (MCMXPCMessageQuery)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageQuery)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (NSSet)groupIdentifiers;
 - (NSSet)identifiers;
 - (NSString)partDomain;
@@ -37,15 +37,15 @@
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMXPCMessageQuery;
-  v3 = [(MCMXPCMessageWithContainerClassBase *)&v7 disposition];
-  if (v3 == 1)
+  disposition = [(MCMXPCMessageWithContainerClassBase *)&v7 disposition];
+  if (disposition == 1)
   {
-    v4 = [(MCMXPCMessageWithContainerClassBase *)self containerConfig];
-    v3 = [v4 disposition];
+    containerConfig = [(MCMXPCMessageWithContainerClassBase *)self containerConfig];
+    disposition = [containerConfig disposition];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return disposition;
 }
 
 - (BOOL)transient
@@ -264,21 +264,21 @@
   return result;
 }
 
-- (MCMXPCMessageQuery)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageQuery)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v134 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v115.receiver = self;
   v115.super_class = MCMXPCMessageQuery;
-  v10 = [(MCMXPCMessageWithContainerClassBase *)&v115 initWithXPCObject:v8 context:v9 error:a5];
+  v10 = [(MCMXPCMessageWithContainerClassBase *)&v115 initWithXPCObject:objectCopy context:contextCopy error:error];
 
   if (v10)
   {
-    v111 = a5;
-    v114 = 1;
-    v10->_privateFlags = xpc_dictionary_get_uint64(v8, "PrivateFlags");
-    v10->_explicitFlags = xpc_dictionary_get_uint64(v8, "Explicit");
+    errorCopy = error;
+    type = 1;
+    v10->_privateFlags = xpc_dictionary_get_uint64(objectCopy, "PrivateFlags");
+    v10->_explicitFlags = xpc_dictionary_get_uint64(objectCopy, "Explicit");
     identifiers = v10->_identifiers;
     v10->_identifiers = 0;
 
@@ -289,10 +289,10 @@
     v10->_includeInfoInResult = 0;
     v10->_includePathInResult = 0;
     v10->_sandboxExtensionType = 0;
-    v13 = [v9 clientIdentity];
-    v14 = [v13 userIdentity];
-    v15 = [v14 posixUser];
-    v10->_uid = [v15 UID];
+    clientIdentity = [contextCopy clientIdentity];
+    userIdentity = [clientIdentity userIdentity];
+    posixUser = [userIdentity posixUser];
+    v10->_uid = [posixUser UID];
 
     userIdentity = v10->_userIdentity;
     v10->_userIdentity = 0;
@@ -311,11 +311,11 @@
     partDomain = v10->_partDomain;
     v10->_partDomain = 0;
 
-    v112 = v8;
+    v112 = objectCopy;
     if ((v10->_privateFlags & 8) != 0)
     {
-      v25 = xpc_dictionary_get_value(v8, "Part");
-      v26 = v25;
+      v25 = xpc_dictionary_get_value(objectCopy, "Part");
+      staticConfig = v25;
       if (!v25)
       {
         goto LABEL_50;
@@ -326,7 +326,7 @@
         goto LABEL_50;
       }
 
-      value = xpc_uint64_get_value(v26);
+      value = xpc_uint64_get_value(staticConfig);
       if (value > 6)
       {
         goto LABEL_50;
@@ -334,10 +334,10 @@
 
       v10->_part = value;
 
-      v8 = v112;
+      objectCopy = v112;
     }
 
-    string = xpc_dictionary_get_string(v8, "SystemDataDomain");
+    string = xpc_dictionary_get_string(objectCopy, "SystemDataDomain");
     if (string)
     {
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -373,8 +373,8 @@ LABEL_9:
       explicitFlags = v10->_explicitFlags;
       if (explicitFlags)
       {
-        v26 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:v8 key:"IdentifiersArray" error:&v114];
-        if (v114 != 1)
+        staticConfig = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:objectCopy key:"IdentifiersArray" error:&type];
+        if (type != 1)
         {
           goto LABEL_52;
         }
@@ -385,13 +385,13 @@ LABEL_9:
           goto LABEL_50;
         }
 
-        v95 = v9;
+        v95 = contextCopy;
         v132 = 0u;
         v133 = 0u;
         v130 = 0u;
         v131 = 0u;
-        v26 = v26;
-        v28 = [v26 countByEnumeratingWithState:&v130 objects:v129 count:16];
+        staticConfig = staticConfig;
+        v28 = [staticConfig countByEnumeratingWithState:&v130 objects:v129 count:16];
         if (v28)
         {
           v29 = v28;
@@ -402,7 +402,7 @@ LABEL_23:
           {
             if (*v131 != v30)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(staticConfig);
             }
 
             v32 = *(*(&v130 + 1) + 8 * v31);
@@ -414,7 +414,7 @@ LABEL_23:
 
             if (v29 == ++v31)
             {
-              v29 = [v26 countByEnumeratingWithState:&v130 objects:v129 count:16];
+              v29 = [staticConfig countByEnumeratingWithState:&v130 objects:v129 count:16];
               if (v29)
               {
                 goto LABEL_23;
@@ -425,13 +425,13 @@ LABEL_23:
           }
         }
 
-        v33 = [MEMORY[0x1E695DFD8] setWithArray:v26];
+        v33 = [MEMORY[0x1E695DFD8] setWithArray:staticConfig];
         v34 = v10->_identifiers;
         v10->_identifiers = v33;
 
-        v9 = v95;
+        contextCopy = v95;
         explicitFlags = v10->_explicitFlags;
-        v8 = v112;
+        objectCopy = v112;
         if ((explicitFlags & 2) == 0)
         {
           goto LABEL_11;
@@ -444,7 +444,7 @@ LABEL_11:
         v23 = 0;
         v24 = 72;
 LABEL_113:
-        v114 = v24;
+        type = v24;
         goto LABEL_142;
       }
 
@@ -458,41 +458,41 @@ LABEL_113:
         goto LABEL_32;
       }
 
-      v26 = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:v8 key:"GroupIdentifiers" error:&v114];
-      if (v114 == 1)
+      staticConfig = [(MCMXPCMessageBase *)v10 nsObjectFromXPCObject:objectCopy key:"GroupIdentifiers" error:&type];
+      if (type == 1)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v95 = v9;
+          v95 = contextCopy;
           v127 = 0u;
           v128 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v26 = v26;
-          v35 = [v26 countByEnumeratingWithState:&v125 objects:v124 count:16];
+          staticConfig = staticConfig;
+          v35 = [staticConfig countByEnumeratingWithState:&v125 objects:v124 count:16];
           if (!v35)
           {
 LABEL_48:
 
-            v40 = [MEMORY[0x1E695DFD8] setWithArray:v26];
+            v40 = [MEMORY[0x1E695DFD8] setWithArray:staticConfig];
             v41 = v10->_groupIdentifiers;
             v10->_groupIdentifiers = v40;
 
-            v9 = v95;
+            contextCopy = v95;
             explicitFlags = v10->_explicitFlags;
-            v8 = v112;
+            objectCopy = v112;
             if ((explicitFlags & 8) == 0)
             {
 LABEL_33:
               if ((explicitFlags & 0x10) != 0)
               {
-                v43 = [v9 clientIdentity];
-                v44 = [v43 userIdentity];
+                clientIdentity2 = [contextCopy clientIdentity];
+                userIdentity2 = [clientIdentity2 userIdentity];
                 v45 = v10->_userIdentity;
-                v10->_userIdentity = v44;
+                v10->_userIdentity = userIdentity2;
 
-                v46 = xpc_dictionary_get_string(v8, "PersonaUniqueString");
+                v46 = xpc_dictionary_get_string(objectCopy, "PersonaUniqueString");
                 if (v46)
                 {
                   v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v46];
@@ -506,40 +506,40 @@ LABEL_33:
                 v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9978]];
                 v49 = [v47 isEqualToString:v48];
 
-                v26 = 0;
+                staticConfig = 0;
                 v23 = 0;
                 if ((v49 & 1) == 0 && v47)
                 {
-                  v50 = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
-                  v51 = +[MCMUserIdentity isUserIdentityRequiredForContainerClass:](MCMUserIdentity, "isUserIdentityRequiredForContainerClass:", [v50 containerClass]);
+                  containerConfig = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
+                  v51 = +[MCMUserIdentity isUserIdentityRequiredForContainerClass:](MCMUserIdentity, "isUserIdentityRequiredForContainerClass:", [containerConfig containerClass]);
 
                   if (v51)
                   {
-                    v52 = [v9 clientIdentity];
+                    clientIdentity3 = [contextCopy clientIdentity];
                     v113 = 0;
-                    v23 = [(MCMXPCMessageBase *)v10 userIdentityFromClientPersonaUniqueString:v47 clientIdentity:v52 error:&v113];
-                    v26 = v113;
+                    v23 = [(MCMXPCMessageBase *)v10 userIdentityFromClientPersonaUniqueString:v47 clientIdentity:clientIdentity3 error:&v113];
+                    staticConfig = v113;
 
                     objc_storeStrong(&v10->_userIdentity, v23);
                   }
 
                   else
                   {
-                    v26 = 0;
+                    staticConfig = 0;
                     v23 = 0;
                   }
                 }
 
                 if (!v10->_userIdentity)
                 {
-                  v114 = [v26 type];
+                  type = [staticConfig type];
                   goto LABEL_69;
                 }
 
                 v104 = v49;
 
                 explicitFlags = v10->_explicitFlags;
-                v8 = v112;
+                objectCopy = v112;
                 if ((explicitFlags & 0x20) == 0)
                 {
 LABEL_35:
@@ -562,7 +562,7 @@ LABEL_35:
                 }
               }
 
-              v10->_transient = xpc_dictionary_get_BOOL(v8, "Transient");
+              v10->_transient = xpc_dictionary_get_BOOL(objectCopy, "Transient");
               explicitFlags = v10->_explicitFlags;
               if ((explicitFlags & 0x40) == 0)
               {
@@ -576,14 +576,14 @@ LABEL_36:
               }
 
 LABEL_65:
-              v10->_includeUnowned = xpc_dictionary_get_BOOL(v8, "IncludeUnowned");
+              v10->_includeUnowned = xpc_dictionary_get_BOOL(objectCopy, "IncludeUnowned");
               if ((v10->_explicitFlags & 0x80) == 0)
               {
                 goto LABEL_71;
               }
 
 LABEL_66:
-              uuid = xpc_dictionary_get_uuid(v8, "UUID");
+              uuid = xpc_dictionary_get_uuid(objectCopy, "UUID");
               if (uuid)
               {
                 v54 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:uuid];
@@ -604,7 +604,7 @@ LABEL_66:
               }
 
 LABEL_71:
-              uint64 = xpc_dictionary_get_uint64(v8, "Flags");
+              uint64 = xpc_dictionary_get_uint64(objectCopy, "Flags");
               if (uint64)
               {
                 v10->_createIfNecessary = 1;
@@ -738,22 +738,22 @@ LABEL_97:
                       v10->_requireSecureByPlatformPolicy = 1;
                     }
 
-                    v57 = [(MCMXPCMessageBase *)v10 context];
-                    v58 = [v57 userIdentityCache];
-                    v59 = [objc_opt_class() personasAreSupported];
+                    context = [(MCMXPCMessageBase *)v10 context];
+                    userIdentityCache = [context userIdentityCache];
+                    personasAreSupported = [objc_opt_class() personasAreSupported];
 
                     v10->_expectedPersonaKernelID = -1;
-                    if (!v59)
+                    if (!personasAreSupported)
                     {
 LABEL_140:
-                      v26 = container_log_handle_for_category();
-                      if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+                      staticConfig = container_log_handle_for_category();
+                      if (!os_log_type_enabled(staticConfig, OS_LOG_TYPE_DEBUG))
                       {
 LABEL_141:
 
-                        v24 = v114;
-                        v8 = v112;
-                        if (v114 == 1)
+                        v24 = type;
+                        objectCopy = v112;
+                        if (type == 1)
                         {
 LABEL_145:
 
@@ -761,9 +761,9 @@ LABEL_145:
                         }
 
 LABEL_142:
-                        if (v111)
+                        if (errorCopy)
                         {
-                          *v111 = v24;
+                          *errorCopy = v24;
                         }
 
                         v10 = 0;
@@ -773,28 +773,28 @@ LABEL_142:
                       v47 = [(MCMUserIdentity *)v10->_userIdentity debugDescription];
                       *buf = 138412290;
                       v117 = v47;
-                      _os_log_debug_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_DEBUG, "Query's explicit userIdentity: %@", buf, 0xCu);
+                      _os_log_debug_impl(&dword_1DF2C3000, staticConfig, OS_LOG_TYPE_DEBUG, "Query's explicit userIdentity: %@", buf, 0xCu);
 
 LABEL_69:
                       goto LABEL_141;
                     }
 
-                    v60 = xpc_dictionary_get_value(v8, "PersonaKernelID");
-                    v26 = v60;
+                    v60 = xpc_dictionary_get_value(objectCopy, "PersonaKernelID");
+                    staticConfig = v60;
                     if (!v60 || MEMORY[0x1E12D4840](v60) != MEMORY[0x1E69E9F18])
                     {
                       v61 = container_log_handle_for_category();
                       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
                       {
-                        v69 = [v9 clientIdentity];
-                        v70 = [v69 codeSignInfo];
-                        v71 = [v70 identifier];
-                        v72 = [v9 clientIdentity];
-                        v73 = [v72 posixPID];
+                        clientIdentity4 = [contextCopy clientIdentity];
+                        codeSignInfo = [clientIdentity4 codeSignInfo];
+                        identifier = [codeSignInfo identifier];
+                        clientIdentity5 = [contextCopy clientIdentity];
+                        posixPID = [clientIdentity5 posixPID];
                         *buf = 138412546;
-                        v117 = v71;
+                        v117 = identifier;
                         v118 = 1024;
-                        v119 = v73;
+                        v119 = posixPID;
                         _os_log_error_impl(&dword_1DF2C3000, v61, OS_LOG_TYPE_ERROR, "Kernel persona ID is invalid; client[%@(%d)]", buf, 0x12u);
                       }
 
@@ -802,19 +802,19 @@ LABEL_69:
                       goto LABEL_51;
                     }
 
-                    v10->_expectedPersonaKernelID = xpc_uint64_get_value(v26);
-                    v96 = v9;
-                    v107 = [v9 kernelPersonaID];
+                    v10->_expectedPersonaKernelID = xpc_uint64_get_value(staticConfig);
+                    v96 = contextCopy;
+                    kernelPersonaID = [contextCopy kernelPersonaID];
                     expectedPersonaKernelID = v10->_expectedPersonaKernelID;
 
                     v64 = v10->_userIdentity;
-                    v8 = v112;
+                    objectCopy = v112;
                     if (!v64 || [(MCMUserIdentity *)v64 isNoSpecificPersona])
                     {
-                      v65 = [(MCMXPCMessageBase *)v10 context];
-                      v66 = [v65 clientIdentity];
-                      v67 = [v66 userIdentity];
-                      if (![v67 isNoSpecificPersona])
+                      context2 = [(MCMXPCMessageBase *)v10 context];
+                      clientIdentity6 = [context2 clientIdentity];
+                      userIdentity3 = [clientIdentity6 userIdentity];
+                      if (![userIdentity3 isNoSpecificPersona])
                       {
 LABEL_126:
 
@@ -822,8 +822,8 @@ LABEL_126:
                       }
 
                       v105 = expectedPersonaKernelID;
-                      v68 = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
-                      if (![v68 personaAndUserSpecific])
+                      containerConfig2 = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
+                      if (![containerConfig2 personaAndUserSpecific])
                       {
 LABEL_125:
 
@@ -836,33 +836,33 @@ LABEL_125:
 
                         expectedPersonaKernelID = v105;
 LABEL_121:
-                        v75 = [(MCMXPCMessageBase *)v10 context];
-                        v65 = [v75 clientIdentity];
+                        context3 = [(MCMXPCMessageBase *)v10 context];
+                        context2 = [context3 clientIdentity];
 
-                        v76 = [(NSSet *)v10->_identifiers anyObject];
-                        v77 = v76;
-                        if (v76)
+                        anyObject = [(NSSet *)v10->_identifiers anyObject];
+                        v77 = anyObject;
+                        if (anyObject)
                         {
-                          v66 = v76;
+                          clientIdentity6 = anyObject;
                         }
 
                         else
                         {
-                          v66 = [(NSSet *)v10->_groupIdentifiers anyObject];
+                          clientIdentity6 = [(NSSet *)v10->_groupIdentifiers anyObject];
                         }
 
-                        v103 = v107 != expectedPersonaKernelID;
+                        v103 = kernelPersonaID != expectedPersonaKernelID;
 
-                        v102 = [v23 kernelPersonaType];
-                        v67 = +[MCMAnalytics sharedInstance];
-                        v68 = [v65 codeSignInfo];
-                        v99 = [v68 identifier];
-                        v101 = [v65 proximateClient];
-                        v100 = [v101 codeSignInfo];
-                        v78 = [v100 identifier];
+                        kernelPersonaType = [v23 kernelPersonaType];
+                        userIdentity3 = +[MCMAnalytics sharedInstance];
+                        containerConfig2 = [context2 codeSignInfo];
+                        identifier2 = [containerConfig2 identifier];
+                        proximateClient = [context2 proximateClient];
+                        codeSignInfo2 = [proximateClient codeSignInfo];
+                        identifier3 = [codeSignInfo2 identifier];
                         legacyPersonaPolicy = v10->_legacyPersonaPolicy;
-                        v97 = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
-                        [v67 recordAmbiguousPersonaRequestWithIdentifier:v66 proxiedIdentifier:v99 proximateIdentifier:v78 explicitPersonaType:v102 legacyPersonaPolicy:legacyPersonaPolicy propagationFailed:v103 containerClass:{objc_msgSend(v97, "containerClass")}];
+                        containerConfig3 = [(MCMXPCMessageWithContainerClassBase *)v10 containerConfig];
+                        [userIdentity3 recordAmbiguousPersonaRequestWithIdentifier:clientIdentity6 proxiedIdentifier:identifier2 proximateIdentifier:identifier3 explicitPersonaType:kernelPersonaType legacyPersonaPolicy:legacyPersonaPolicy propagationFailed:v103 containerClass:{objc_msgSend(containerConfig3, "containerClass")}];
 
                         goto LABEL_125;
                       }
@@ -882,61 +882,61 @@ LABEL_127:
                       v79 = container_log_handle_for_category();
                       if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
                       {
-                        v108 = [v96 clientIdentity];
-                        v110 = [v108 codeSignInfo];
-                        v85 = [v110 identifier];
-                        v86 = [v96 clientIdentity];
-                        v87 = [v86 posixPID];
+                        clientIdentity7 = [v96 clientIdentity];
+                        codeSignInfo3 = [clientIdentity7 codeSignInfo];
+                        identifier4 = [codeSignInfo3 identifier];
+                        clientIdentity8 = [v96 clientIdentity];
+                        posixPID2 = [clientIdentity8 posixPID];
                         v88 = v10->_expectedPersonaKernelID;
-                        v89 = [v96 kernelPersonaID];
+                        kernelPersonaID2 = [v96 kernelPersonaID];
                         *buf = 138413058;
-                        v117 = v85;
+                        v117 = identifier4;
                         v118 = 1024;
-                        v119 = v87;
+                        v119 = posixPID2;
                         v120 = 1024;
                         v121 = v88;
                         v122 = 1024;
-                        v123 = v89;
+                        v123 = kernelPersonaID2;
                         _os_log_error_impl(&dword_1DF2C3000, v79, OS_LOG_TYPE_ERROR, "Persona is ambiguous; client[%@(%d)] = %u, server = %u", buf, 0x1Eu);
                       }
 
                       v24 = 115;
-                      v114 = 115;
-                      v9 = v96;
+                      type = 115;
+                      contextCopy = v96;
                       goto LABEL_142;
                     }
 
-                    v9 = v96;
+                    contextCopy = v96;
                     if (v104)
                     {
                       v80 = containermanager_copy_global_configuration();
-                      v26 = [v80 staticConfig];
+                      staticConfig = [v80 staticConfig];
 
-                      if (v107 != expectedPersonaKernelID)
+                      if (kernelPersonaID != expectedPersonaKernelID)
                       {
                         v81 = container_log_handle_for_category();
                         if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
                         {
-                          v109 = [v96 clientIdentity];
-                          v90 = [v109 codeSignInfo];
-                          v91 = [v90 identifier];
-                          v106 = [v96 clientIdentity];
-                          v92 = [v106 posixPID];
+                          clientIdentity9 = [v96 clientIdentity];
+                          codeSignInfo4 = [clientIdentity9 codeSignInfo];
+                          identifier5 = [codeSignInfo4 identifier];
+                          clientIdentity10 = [v96 clientIdentity];
+                          posixPID3 = [clientIdentity10 posixPID];
                           v93 = v10->_expectedPersonaKernelID;
-                          v94 = [v96 kernelPersonaID];
+                          kernelPersonaID3 = [v96 kernelPersonaID];
                           *buf = 138413058;
-                          v117 = v91;
+                          v117 = identifier5;
                           v118 = 1024;
-                          v119 = v92;
+                          v119 = posixPID3;
                           v120 = 1024;
                           v121 = v93;
-                          v9 = v96;
+                          contextCopy = v96;
                           v122 = 1024;
-                          v123 = v94;
+                          v123 = kernelPersonaID3;
                           _os_log_error_impl(&dword_1DF2C3000, v81, OS_LOG_TYPE_ERROR, "Persona failed to propgate; client[%@(%d)] = %u, server = %u", buf, 0x1Eu);
                         }
 
-                        if (v10->_restrictivePersonaPolicy || ([v26 errorOnPersonaPropagationFailure]& 1) != 0)
+                        if (v10->_restrictivePersonaPolicy || ([staticConfig errorOnPersonaPropagationFailure]& 1) != 0)
                         {
                           v42 = 151;
                           goto LABEL_51;
@@ -968,7 +968,7 @@ LABEL_86:
             }
 
 LABEL_32:
-            v10->_uid = xpc_dictionary_get_uint64(v8, "UID");
+            v10->_uid = xpc_dictionary_get_uint64(objectCopy, "UID");
             explicitFlags = v10->_explicitFlags;
             goto LABEL_33;
           }
@@ -981,7 +981,7 @@ LABEL_42:
           {
             if (*v126 != v37)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(staticConfig);
             }
 
             v39 = *(*(&v125 + 1) + 8 * v38);
@@ -993,7 +993,7 @@ LABEL_42:
 
             if (v36 == ++v38)
             {
-              v36 = [v26 countByEnumeratingWithState:&v125 objects:v124 count:16];
+              v36 = [staticConfig countByEnumeratingWithState:&v125 objects:v124 count:16];
               if (v36)
               {
                 goto LABEL_42;
@@ -1004,10 +1004,10 @@ LABEL_42:
           }
 
 LABEL_53:
-          v114 = 110;
+          type = 110;
 
           v23 = 0;
-          v9 = v95;
+          contextCopy = v95;
           goto LABEL_141;
         }
 
@@ -1015,7 +1015,7 @@ LABEL_50:
         v23 = 0;
         v42 = 110;
 LABEL_51:
-        v114 = v42;
+        type = v42;
         goto LABEL_141;
       }
 

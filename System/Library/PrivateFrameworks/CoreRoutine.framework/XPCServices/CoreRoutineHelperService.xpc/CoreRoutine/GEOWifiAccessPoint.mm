@@ -1,14 +1,14 @@
 @interface GEOWifiAccessPoint
-- (id)initWithRTWiFiAccessPoint:(id)a3 includeTimeStamp:(BOOL)a4;
+- (id)initWithRTWiFiAccessPoint:(id)point includeTimeStamp:(BOOL)stamp;
 @end
 
 @implementation GEOWifiAccessPoint
 
-- (id)initWithRTWiFiAccessPoint:(id)a3 includeTimeStamp:(BOOL)a4
+- (id)initWithRTWiFiAccessPoint:(id)point includeTimeStamp:(BOOL)stamp
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  stampCopy = stamp;
+  pointCopy = point;
+  if (pointCopy)
   {
     v20.receiver = self;
     v20.super_class = GEOWifiAccessPoint;
@@ -16,12 +16,12 @@
     v8 = v7;
     if (v7)
     {
-      if (v4)
+      if (stampCopy)
       {
-        [v6 age];
+        [pointCopy age];
         v10 = v9;
-        v11 = [v6 date];
-        v12 = [NSDate dateWithTimeInterval:v11 sinceDate:v10];
+        date = [pointCopy date];
+        v12 = [NSDate dateWithTimeInterval:date sinceDate:v10];
         [v12 timeIntervalSinceReferenceDate];
         [(GEOWifiAccessPoint *)v8 setScanTimestamp:v13];
       }
@@ -31,18 +31,18 @@
         [(GEOWifiAccessPoint *)v7 setScanTimestamp:0];
       }
 
-      [v6 age];
+      [pointCopy age];
       [(GEOWifiAccessPoint *)v8 setAge:v16];
-      -[GEOWifiAccessPoint setChannel:](v8, "setChannel:", [v6 channel]);
-      v17 = [v6 mac];
+      -[GEOWifiAccessPoint setChannel:](v8, "setChannel:", [pointCopy channel]);
+      v17 = [pointCopy mac];
       v18 = [v17 copy];
       [(GEOWifiAccessPoint *)v8 setMacId:v18];
 
-      -[GEOWifiAccessPoint setRssi:](v8, "setRssi:", [v6 rssi]);
+      -[GEOWifiAccessPoint setRssi:](v8, "setRssi:", [pointCopy rssi]);
     }
 
     self = v8;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -57,10 +57,10 @@
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: accessPoint (in %s:%d)", buf, 0x12u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

@@ -21,15 +21,15 @@
 {
   if (a3 == 5)
   {
-    v5 = [MEMORY[0x1E698E398] ui_cameraCaptureButtonEnvironment];
+    ui_cameraCaptureButtonEnvironment = [MEMORY[0x1E698E398] ui_cameraCaptureButtonEnvironment];
   }
 
   else
   {
-    v5 = 0;
+    ui_cameraCaptureButtonEnvironment = 0;
   }
 
-  return v5;
+  return ui_cameraCaptureButtonEnvironment;
 }
 
 @end

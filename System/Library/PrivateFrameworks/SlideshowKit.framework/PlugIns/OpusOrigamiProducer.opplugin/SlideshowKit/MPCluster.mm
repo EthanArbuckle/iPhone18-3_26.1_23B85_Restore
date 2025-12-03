@@ -1,11 +1,11 @@
 @interface MPCluster
 - (MPCluster)init;
-- (double)usageCountForLayer:(id)a3;
+- (double)usageCountForLayer:(id)layer;
 - (id)usageCountDescription;
 - (void)dealloc;
 - (void)detailedDescription;
 - (void)resetAllUsageCounters;
-- (void)setUsageCountForLayer:(id)a3 to:(double)a4;
+- (void)setUsageCountForLayer:(id)layer to:(double)to;
 @end
 
 @implementation MPCluster
@@ -36,19 +36,19 @@
   [(MPCluster *)&v3 dealloc];
 }
 
-- (void)setUsageCountForLayer:(id)a3 to:(double)a4
+- (void)setUsageCountForLayer:(id)layer to:(double)to
 {
-  v4 = a4;
+  toCopy = to;
   mUsageCounterPerLayer = self->mUsageCounterPerLayer;
   if (mUsageCounterPerLayer)
   {
-    if (a3)
+    if (layer)
     {
 LABEL_3:
-      *&a4 = v4;
-      v8 = [NSNumber numberWithFloat:a4];
+      *&to = toCopy;
+      v8 = [NSNumber numberWithFloat:to];
 
-      [(NSMutableDictionary *)mUsageCounterPerLayer setObject:v8 forKey:a3];
+      [(NSMutableDictionary *)mUsageCounterPerLayer setObject:v8 forKey:layer];
       return;
     }
   }
@@ -57,7 +57,7 @@ LABEL_3:
   {
     mUsageCounterPerLayer = objc_alloc_init(NSMutableDictionary);
     self->mUsageCounterPerLayer = mUsageCounterPerLayer;
-    if (a3)
+    if (layer)
     {
       goto LABEL_3;
     }
@@ -81,7 +81,7 @@ LABEL_3:
           objc_enumerationMutation(mUsageCounterPerLayer);
         }
 
-        [(MPCluster *)self setUsageCountForLayer:*(*(&v13 + 1) + 8 * i) to:v4];
+        [(MPCluster *)self setUsageCountForLayer:*(*(&v13 + 1) + 8 * i) to:toCopy];
       }
 
       v10 = [(NSMutableDictionary *)mUsageCounterPerLayer countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -91,15 +91,15 @@ LABEL_3:
   }
 }
 
-- (double)usageCountForLayer:(id)a3
+- (double)usageCountForLayer:(id)layer
 {
   mUsageCounterPerLayer = self->mUsageCounterPerLayer;
   if (mUsageCounterPerLayer)
   {
-    if (a3)
+    if (layer)
     {
 LABEL_3:
-      [-[NSMutableDictionary valueForKey:](mUsageCounterPerLayer valueForKey:{a3), "floatValue"}];
+      [-[NSMutableDictionary valueForKey:](mUsageCounterPerLayer valueForKey:{layer), "floatValue"}];
       return v6;
     }
   }
@@ -108,7 +108,7 @@ LABEL_3:
   {
     mUsageCounterPerLayer = objc_alloc_init(NSMutableDictionary);
     self->mUsageCounterPerLayer = mUsageCounterPerLayer;
-    if (a3)
+    if (layer)
     {
       goto LABEL_3;
     }
@@ -184,8 +184,8 @@ LABEL_3:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->mUsageCounterPerLayer allValues];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -197,14 +197,14 @@ LABEL_3:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * i) floatValue];
         v6 = [NSMutableString stringWithString:[(NSMutableString *)v6 stringByAppendingFormat:@"%.2f:", v8]];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -232,8 +232,8 @@ LABEL_3:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(MPCluster *)self allSlides];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSlides = [(MPCluster *)self allSlides];
+  v4 = [allSlides countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -246,7 +246,7 @@ LABEL_3:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allSlides);
         }
 
         NSLog(@"             slide[%d]:  usageCount = (%@), fileName: %@", v6, [*(*(&v9 + 1) + 8 * v8) usageCountDescription], objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v8), "path"), "lastPathComponent"));
@@ -255,7 +255,7 @@ LABEL_3:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allSlides countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

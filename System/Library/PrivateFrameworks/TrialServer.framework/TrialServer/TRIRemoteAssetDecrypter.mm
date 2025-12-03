@@ -1,15 +1,15 @@
 @interface TRIRemoteAssetDecrypter
-+ (BOOL)decryptAssetWithURL:(id)a3 destinationFilename:(id)a4 namespaceName:(id)a5 error:(id *)a6;
++ (BOOL)decryptAssetWithURL:(id)l destinationFilename:(id)filename namespaceName:(id)name error:(id *)error;
 @end
 
 @implementation TRIRemoteAssetDecrypter
 
-+ (BOOL)decryptAssetWithURL:(id)a3 destinationFilename:(id)a4 namespaceName:(id)a5 error:(id *)a6
++ (BOOL)decryptAssetWithURL:(id)l destinationFilename:(id)filename namespaceName:(id)name error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v27 = a5;
+  lCopy = l;
+  filenameCopy = filename;
+  nameCopy = name;
   v13 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:@"com.apple.trial.TrialArchivingService"];
   v14 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287FEF680];
   [v13 setRemoteObjectInterface:v14];
@@ -27,27 +27,27 @@
   v29[4] = &v30;
   v15 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v29];
   [v13 resume];
-  v16 = [v11 path];
-  if (!v16)
+  path = [lCopy path];
+  if (!path)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"TRIRemoteAssetDecrypter.m" lineNumber:34 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetDecrypter.m" lineNumber:34 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
   }
 
-  v17 = [TRISandboxExtensionFactory extensionTokenForPath:v16 extensionClass:0];
+  v17 = [TRISandboxExtensionFactory extensionTokenForPath:path extensionClass:0];
 
-  v18 = [TRISandboxExtensionFactory extensionTokenForPath:v12 extensionClass:1];
+  v18 = [TRISandboxExtensionFactory extensionTokenForPath:filenameCopy extensionClass:1];
   v19 = v18;
   if (!v17)
   {
     v22 = TRILogCategory_Server();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v11 path];
+      path2 = [lCopy path];
       *buf = 138543618;
-      *&buf[4] = v25;
+      *&buf[4] = path2;
       *&buf[12] = 2114;
-      *&buf[14] = v27;
+      *&buf[14] = nameCopy;
       _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "Unable to get source extension token for path: %{public}@, namespace name: %{public}@", buf, 0x16u);
     }
 
@@ -60,9 +60,9 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v12;
+      *&buf[4] = filenameCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v27;
+      *&buf[14] = nameCopy;
       _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "Unable to get destination extension token for path: %{public}@, namespace name: %{public}@", buf, 0x16u);
     }
 
@@ -76,18 +76,18 @@ LABEL_14:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v37 = 0;
-  v20 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12 isDirectory:1];
+  v20 = [MEMORY[0x277CBEBC0] fileURLWithPath:filenameCopy isDirectory:1];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __87__TRIRemoteAssetDecrypter_decryptAssetWithURL_destinationFilename_namespaceName_error___block_invoke_34;
   v28[3] = &unk_279DE0A70;
   v28[4] = buf;
-  [v15 decryptAssetWithURL:v11 toDestinationFileURL:v20 namespaceName:v27 sourceExtension:v17 destinationExtension:v19 completion:v28];
+  [v15 decryptAssetWithURL:lCopy toDestinationFileURL:v20 namespaceName:nameCopy sourceExtension:v17 destinationExtension:v19 completion:v28];
 
   [v13 invalidate];
-  if (a6)
+  if (error)
   {
-    *a6 = v31[5];
+    *error = v31[5];
   }
 
   if (v31[5])

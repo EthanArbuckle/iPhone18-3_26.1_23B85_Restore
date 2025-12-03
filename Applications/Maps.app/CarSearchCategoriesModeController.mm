@@ -1,5 +1,5 @@
 @interface CarSearchCategoriesModeController
-+ (id)_traitsForNavigation:(BOOL)a3;
++ (id)_traitsForNavigation:(BOOL)navigation;
 + (void)prepareNearby;
 + (void)prepareNearbySAR;
 - (BOOL)_isMapsOffline;
@@ -13,14 +13,14 @@
 - (int)currentUsageTarget;
 - (void)_offlineSettingDidChange;
 - (void)_ppt_selectKeyboardMode;
-- (void)_updateCategories:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)_updateCategories:(id)categories;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)checkFullTextSearchSupport;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)searchCategoriesCard:(id)a3 didSelectCategory:(id)a4;
-- (void)searchCategoriesCardDidSelectKeyboardSearch:(id)a3 usingInteractionModel:(unint64_t)a4;
-- (void)searchCategoriesCardDidSelectSiriSearch:(id)a3 usingInteractionModel:(unint64_t)a4;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)searchCategoriesCard:(id)card didSelectCategory:(id)category;
+- (void)searchCategoriesCardDidSelectKeyboardSearch:(id)search usingInteractionModel:(unint64_t)model;
+- (void)searchCategoriesCardDidSelectSiriSearch:(id)search usingInteractionModel:(unint64_t)model;
 - (void)updateCardViewTitle;
 @end
 
@@ -43,9 +43,9 @@
     v2->_isNavigating = [v7 isCarAppSceneHostingNavigation];
 
     v2->_supportsFullTextSearch = 1;
-    v8 = [(CarSearchCategoriesModeController *)v2 isNavigating];
+    isNavigating = [(CarSearchCategoriesModeController *)v2 isNavigating];
     v9 = @"Stark";
-    if (v8)
+    if (isNavigating)
     {
       v9 = @"Stark-SAR";
     }
@@ -56,13 +56,13 @@
     browseManager = v2->_browseManager;
     v2->_browseManager = v11;
 
-    v13 = [(BrowseManager *)v2->_browseManager imageManager];
-    [v13 setDesiredImageSize:{29.0, 29.0}];
+    imageManager = [(BrowseManager *)v2->_browseManager imageManager];
+    [imageManager setDesiredImageSize:{29.0, 29.0}];
 
     [(BrowseManager *)v2->_browseManager readCategoriesFromDiskIfNeeded];
-    v14 = [(CarSearchCategoriesModeController *)v2 browseManager];
-    v15 = [v14 cachedCategories];
-    [(CarSearchCategoriesModeController *)v2 _updateCategories:v15];
+    browseManager = [(CarSearchCategoriesModeController *)v2 browseManager];
+    cachedCategories = [browseManager cachedCategories];
+    [(CarSearchCategoriesModeController *)v2 _updateCategories:cachedCategories];
   }
 
   return v2;
@@ -74,8 +74,8 @@
   if (!categoriesCard)
   {
     v4 = [_TtC4Maps37CarSearchCategoriesCardViewController alloc];
-    v5 = [(CarSearchCategoriesModeController *)self categories];
-    v6 = [(CarSearchCategoriesCardViewController *)v4 initWithCategories:v5 delegate:self];
+    categories = [(CarSearchCategoriesModeController *)self categories];
+    v6 = [(CarSearchCategoriesCardViewController *)v4 initWithCategories:categories delegate:self];
     v7 = self->_categoriesCard;
     self->_categoriesCard = v6;
 
@@ -102,11 +102,11 @@
 
 - (NSArray)preferredCarFocusEnvironments
 {
-  v3 = [(CarSearchCategoriesModeController *)self categoriesCard];
-  if (v3)
+  categoriesCard = [(CarSearchCategoriesModeController *)self categoriesCard];
+  if (categoriesCard)
   {
-    v4 = [(CarSearchCategoriesModeController *)self categoriesCard];
-    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:v4];
+    categoriesCard2 = [(CarSearchCategoriesModeController *)self categoriesCard];
+    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:categoriesCard2];
     v8 = v5;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
@@ -140,11 +140,11 @@
 
 - (NSArray)carFocusOrderSequences
 {
-  v3 = [(CarSearchCategoriesModeController *)self chromeViewController];
-  v4 = [v3 itemRepresentingStatusBanner];
-  v5 = [(CarSearchCategoriesModeController *)self chromeViewController];
-  v6 = [v5 itemRepresentingOverlays];
-  v11[1] = v6;
+  chromeViewController = [(CarSearchCategoriesModeController *)self chromeViewController];
+  itemRepresentingStatusBanner = [chromeViewController itemRepresentingStatusBanner];
+  chromeViewController2 = [(CarSearchCategoriesModeController *)self chromeViewController];
+  itemRepresentingOverlays = [chromeViewController2 itemRepresentingOverlays];
+  v11[1] = itemRepresentingOverlays;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [CarFocusOrderSequence sequenceWithItems:v7 options:5];
   v12 = v8;
@@ -153,84 +153,84 @@
   return v9;
 }
 
-- (void)searchCategoriesCard:(id)a3 didSelectCategory:(id)a4
+- (void)searchCategoriesCard:(id)card didSelectCategory:(id)category
 {
-  v5 = a4;
+  categoryCopy = category;
   v6 = sub_100006E1C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = categoryCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "searchCategoriesCard:didSelectCategory: %@", &v13, 0xCu);
   }
 
-  v7 = [(CarSearchCategoriesModeController *)self categories];
-  v8 = sub_100021DB0(v7, &stru_10164E0D0);
+  categories = [(CarSearchCategoriesModeController *)self categories];
+  v8 = sub_100021DB0(categories, &stru_10164E0D0);
 
-  v9 = [(CarSearchCategoriesModeController *)self chromeViewController];
-  v10 = [v5 category];
-  [v9 captureUserActionSelectedSearchCategory:v10 categoriesDisplayed:v8];
+  chromeViewController = [(CarSearchCategoriesModeController *)self chromeViewController];
+  category = [categoryCopy category];
+  [chromeViewController captureUserActionSelectedSearchCategory:category categoriesDisplayed:v8];
 
-  LODWORD(v9) = [(CarSearchCategoriesModeController *)self isNavigating];
+  LODWORD(chromeViewController) = [(CarSearchCategoriesModeController *)self isNavigating];
   v11 = +[CarChromeModeCoordinator sharedInstance];
   v12 = v11;
-  if (v9)
+  if (chromeViewController)
   {
-    [v11 displaySearchAlongTheRouteForCategory:v5];
+    [v11 displaySearchAlongTheRouteForCategory:categoryCopy];
   }
 
   else
   {
-    [v11 displaySearchResultsWithCategory:v5];
+    [v11 displaySearchResultsWithCategory:categoryCopy];
   }
 }
 
-- (void)searchCategoriesCardDidSelectKeyboardSearch:(id)a3 usingInteractionModel:(unint64_t)a4
+- (void)searchCategoriesCardDidSelectKeyboardSearch:(id)search usingInteractionModel:(unint64_t)model
 {
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = a4;
+    modelCopy = model;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "searchCategoriesCardDidSelectKeyboardSearch, showing keyboard usingIneractionModel: %ld", &v7, 0xCu);
   }
 
   v6 = +[CarChromeModeCoordinator sharedInstance];
-  [v6 displayKeyboardSearchWithInteractionModel:a4];
+  [v6 displayKeyboardSearchWithInteractionModel:model];
 }
 
-- (void)searchCategoriesCardDidSelectSiriSearch:(id)a3 usingInteractionModel:(unint64_t)a4
+- (void)searchCategoriesCardDidSelectSiriSearch:(id)search usingInteractionModel:(unint64_t)model
 {
   v5 = sub_100006E1C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134217984;
-    v8 = a4;
+    modelCopy = model;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "searchCategoriesCardDidSelectSiriSearch, showing siri usingIneractionModel: %ld", &v7, 0xCu);
   }
 
   v6 = +[CarChromeModeCoordinator sharedInstance];
-  [v6 displaySearchWithInteractionModel:a4];
+  [v6 displaySearchWithInteractionModel:model];
 }
 
-- (void)_updateCategories:(id)a3
+- (void)_updateCategories:(id)categories
 {
-  v7 = a3;
-  v4 = [(CarSearchCategoriesModeController *)self categories];
-  v5 = [v7 isEqualToArray:v4];
+  categoriesCopy = categories;
+  categories = [(CarSearchCategoriesModeController *)self categories];
+  v5 = [categoriesCopy isEqualToArray:categories];
 
   if ((v5 & 1) == 0)
   {
-    [(CarSearchCategoriesModeController *)self setCategories:v7];
-    v6 = [(CarSearchCategoriesModeController *)self categoriesCard];
-    [v6 setCategories:v7];
+    [(CarSearchCategoriesModeController *)self setCategories:categoriesCopy];
+    categoriesCard = [(CarSearchCategoriesModeController *)self categoriesCard];
+    [categoriesCard setCategories:categoriesCopy];
   }
 }
 
 - (void)updateCardViewTitle
 {
-  v2 = [(CarSearchCategoriesModeController *)self chromeViewController];
-  [v2 setNeedsUpdateComponent:@"cards" animated:0];
+  chromeViewController = [(CarSearchCategoriesModeController *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:0];
 }
 
 - (void)checkFullTextSearchSupport
@@ -250,9 +250,9 @@
 - (void)_offlineSettingDidChange
 {
   v3 = +[MapsOfflineUIHelper sharedHelper];
-  v4 = [v3 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v3 isUsingOfflineMaps];
 
-  if (v4)
+  if (isUsingOfflineMaps)
   {
 
     [(CarSearchCategoriesModeController *)self checkFullTextSearchSupport];
@@ -262,16 +262,16 @@
   {
     if ([(CarSearchCategoriesModeController *)self _isMapsOffline])
     {
-      v5 = [(CarSearchCategoriesModeController *)self supportsFullTextSearch];
+      supportsFullTextSearch = [(CarSearchCategoriesModeController *)self supportsFullTextSearch];
     }
 
     else
     {
-      v5 = 1;
+      supportsFullTextSearch = 1;
     }
 
-    v6 = [(CarSearchCategoriesModeController *)self categoriesCard];
-    [v6 setShowSearchBar:v5];
+    categoriesCard = [(CarSearchCategoriesModeController *)self categoriesCard];
+    [categoriesCard setShowSearchBar:supportsFullTextSearch];
 
     [(CarSearchCategoriesModeController *)self updateCardViewTitle];
   }
@@ -280,21 +280,21 @@
 - (BOOL)_isMapsOffline
 {
   v2 = +[MapsOfflineUIHelper sharedHelper];
-  v3 = [v2 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v2 isUsingOfflineMaps];
 
-  return v3;
+  return isUsingOfflineMaps;
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v21 = a3;
-  if (![a4 isEqualToString:@"primary"])
+  cardCopy = card;
+  if (![key isEqualToString:@"primary"])
   {
     goto LABEL_32;
   }
 
-  v6 = [(CarSearchCategoriesModeController *)self categoriesCard];
-  [v21 setContent:v6];
+  categoriesCard = [(CarSearchCategoriesModeController *)self categoriesCard];
+  [cardCopy setContent:categoriesCard];
 
   v7 = +[MapsOfflineUIHelper sharedHelper];
   if (([v7 isUsingOfflineMaps] & 1) == 0)
@@ -303,10 +303,10 @@
     goto LABEL_6;
   }
 
-  v8 = [(CarSearchCategoriesModeController *)self categoriesCard];
-  v9 = [v8 showSearchBar];
+  categoriesCard2 = [(CarSearchCategoriesModeController *)self categoriesCard];
+  showSearchBar = [categoriesCard2 showSearchBar];
 
-  if (v9)
+  if (showSearchBar)
   {
 LABEL_6:
     v10 = @"CarPlay_Search_Title";
@@ -317,7 +317,7 @@ LABEL_6:
 LABEL_7:
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:v10 value:@"localized string not found" table:0];
-  [v21 setTitle:v12];
+  [cardCopy setTitle:v12];
 
   v13 = objc_alloc_init(CarCardLayout);
   [(CarCardLayout *)v13 setEdgePosition:0];
@@ -333,11 +333,11 @@ LABEL_7:
   [(CarCardLayout *)v13 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
   [(CarCardLayout *)v13 setFlipForRightHandDrive:1];
   v16 = v13;
-  v17 = [(CarCardLayout *)v16 primaryAxis];
-  v18 = [(CarCardLayout *)v16 cornerPosition];
-  if (v17 == 1)
+  primaryAxis = [(CarCardLayout *)v16 primaryAxis];
+  cornerPosition = [(CarCardLayout *)v16 cornerPosition];
+  if (primaryAxis == 1)
   {
-    if (v18 == 4 || [(CarCardLayout *)v16 cornerPosition]== 1 || [(CarCardLayout *)v16 edgePosition]== 2)
+    if (cornerPosition == 4 || [(CarCardLayout *)v16 cornerPosition]== 1 || [(CarCardLayout *)v16 edgePosition]== 2)
     {
       v19 = 8;
     }
@@ -362,7 +362,7 @@ LABEL_7:
 
   else
   {
-    v20 = v18 == 4 || [(CarCardLayout *)v16 cornerPosition]== 8 || [(CarCardLayout *)v16 edgePosition]== 4;
+    v20 = cornerPosition == 4 || [(CarCardLayout *)v16 cornerPosition]== 8 || [(CarCardLayout *)v16 edgePosition]== 4;
     if ([(CarCardLayout *)v16 cornerPosition]== 1 || [(CarCardLayout *)v16 cornerPosition]== 2 || [(CarCardLayout *)v16 edgePosition]== 1)
     {
       v20 |= 4uLL;
@@ -381,45 +381,45 @@ LABEL_7:
 
   [(CarCardLayout *)v16 setEdgesAffectingMapInsets:v20];
   [(CarCardLayout *)v16 setHorizontallyCenterMapInsets:0];
-  [v21 setLayout:v16];
+  [cardCopy setLayout:v16];
 
-  [v21 setAccessoryType:1];
+  [cardCopy setAccessoryType:1];
 LABEL_32:
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C218AC;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100C21980;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
 - (id)mapView
 {
-  v2 = [(CarSearchCategoriesModeController *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarSearchCategoriesModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 + (void)prepareNearbySAR
 {
   v4 = [[BrowseManager alloc] initWithCacheKey:@"Stark-SAR"];
-  v2 = [(BrowseManager *)v4 imageManager];
-  [v2 setDesiredImageSize:{29.0, 29.0}];
+  imageManager = [(BrowseManager *)v4 imageManager];
+  [imageManager setDesiredImageSize:{29.0, 29.0}];
 
   v3 = [objc_opt_class() _traitsForNavigation:1];
   [(BrowseManager *)v4 preCacheWithTraits:v3];
@@ -428,39 +428,39 @@ LABEL_32:
 + (void)prepareNearby
 {
   v4 = [[BrowseManager alloc] initWithCacheKey:@"Stark"];
-  v2 = [(BrowseManager *)v4 imageManager];
-  [v2 setDesiredImageSize:{29.0, 29.0}];
+  imageManager = [(BrowseManager *)v4 imageManager];
+  [imageManager setDesiredImageSize:{29.0, 29.0}];
 
   v3 = [objc_opt_class() _traitsForNavigation:0];
   [(BrowseManager *)v4 preCacheWithTraits:v3];
 }
 
-+ (id)_traitsForNavigation:(BOOL)a3
++ (id)_traitsForNavigation:(BOOL)navigation
 {
-  v3 = a3;
+  navigationCopy = navigation;
   v4 = +[CarDisplayController sharedInstance];
-  v5 = [v4 chromeViewController];
-  v6 = [v5 currentTraits];
+  chromeViewController = [v4 chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  [v6 setNavigating:v3];
-  if ([v6 navigating])
+  [currentTraits setNavigating:navigationCopy];
+  if ([currentTraits navigating])
   {
     v7 = +[NSUserDefaults standardUserDefaults];
     v8 = [v7 BOOLForKey:@"EnableCarSARCategoryWorkaround"];
 
     if (v8)
     {
-      [v6 setMapRegion:0];
-      [v6 setHasCarHeadunitInteractionModel:0];
-      [v6 setCarHeadunitModel:0];
-      [v6 setHasCarHeadunitPixelWidth:0];
-      [v6 setHasCarHeadunitPixelHeight:0];
-      [v6 setCarHeadunitManufacturer:0];
-      [v6 setHasCarHeadunitConnectionType:0];
+      [currentTraits setMapRegion:0];
+      [currentTraits setHasCarHeadunitInteractionModel:0];
+      [currentTraits setCarHeadunitModel:0];
+      [currentTraits setHasCarHeadunitPixelWidth:0];
+      [currentTraits setHasCarHeadunitPixelHeight:0];
+      [currentTraits setCarHeadunitManufacturer:0];
+      [currentTraits setHasCarHeadunitConnectionType:0];
     }
   }
 
-  return v6;
+  return currentTraits;
 }
 
 @end

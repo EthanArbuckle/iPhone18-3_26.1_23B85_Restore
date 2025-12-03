@@ -1,32 +1,32 @@
 @interface RMManagementSourceMetadata
-+ (id)fetchRequestWithManagementSource:(id)a3;
-+ (id)fetchRequestWithManagementSource:(id)a3 key:(id)a4;
++ (id)fetchRequestWithManagementSource:(id)source;
++ (id)fetchRequestWithManagementSource:(id)source key:(id)key;
 - (id)reportDetails;
 @end
 
 @implementation RMManagementSourceMetadata
 
-+ (id)fetchRequestWithManagementSource:(id)a3
++ (id)fetchRequestWithManagementSource:(id)source
 {
-  v4 = a3;
-  v5 = [a1 fetchRequest];
-  v6 = [NSPredicate predicateWithFormat:@"(%K == %@)", @"managementSource", v4];
+  sourceCopy = source;
+  fetchRequest = [self fetchRequest];
+  sourceCopy = [NSPredicate predicateWithFormat:@"(%K == %@)", @"managementSource", sourceCopy];
 
-  [v5 setPredicate:v6];
+  [fetchRequest setPredicate:sourceCopy];
 
-  return v5;
+  return fetchRequest;
 }
 
-+ (id)fetchRequestWithManagementSource:(id)a3 key:(id)a4
++ (id)fetchRequestWithManagementSource:(id)source key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 fetchRequest];
-  v9 = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", v7, @"key", v6];
+  keyCopy = key;
+  sourceCopy = source;
+  fetchRequest = [self fetchRequest];
+  keyCopy = [NSPredicate predicateWithFormat:@"(%K == %@) && (%K == %@)", @"managementSource", sourceCopy, @"key", keyCopy];
 
-  [v8 setPredicate:v9];
+  [fetchRequest setPredicate:keyCopy];
 
-  return v8;
+  return fetchRequest;
 }
 
 - (id)reportDetails
@@ -35,12 +35,12 @@
   v4 = [(RMManagementSourceMetadata *)self key];
   [v3 setObject:v4 forKeyedSubscript:@"key"];
 
-  v5 = [(RMManagementSourceMetadata *)self value];
-  [v3 setObject:v5 forKeyedSubscript:@"value"];
+  value = [(RMManagementSourceMetadata *)self value];
+  [v3 setObject:value forKeyedSubscript:@"value"];
 
-  v6 = [(RMManagementSourceMetadata *)self managementSource];
-  v7 = [v6 identifier];
-  [v3 setObject:v7 forKeyedSubscript:@"managementSource"];
+  managementSource = [(RMManagementSourceMetadata *)self managementSource];
+  identifier = [managementSource identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"managementSource"];
 
   v8 = [v3 copy];
 

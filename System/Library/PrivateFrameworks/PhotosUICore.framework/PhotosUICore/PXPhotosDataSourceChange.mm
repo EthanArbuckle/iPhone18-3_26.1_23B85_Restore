@@ -1,6 +1,6 @@
 @interface PXPhotosDataSourceChange
-- (BOOL)_shouldPerformFullReloadForCollectionListChangeNotifications:(id)a3 collectionChangeNotifications:(id)a4;
-- (BOOL)affectsSectionsInRange:(_NSRange)a3;
+- (BOOL)_shouldPerformFullReloadForCollectionListChangeNotifications:(id)notifications collectionChangeNotifications:(id)changeNotifications;
+- (BOOL)affectsSectionsInRange:(_NSRange)range;
 - (NSArray)changedIndexPaths;
 - (NSArray)contentChangedIndexPaths;
 - (NSArray)deletedIndexPaths;
@@ -10,11 +10,11 @@
 - (NSIndexSet)deletedSections;
 - (NSIndexSet)insertedSections;
 - (PHChange)originatingPhotoLibraryChange;
-- (PXPhotosDataSourceChange)initWithFromIdentifier:(int64_t)a3 toIdentifier:(int64_t)a4;
-- (PXPhotosDataSourceChange)initWithIncrementalChanges:(id)a3 assetCollectionChangeDetails:(id)a4 sectionsWithKeyAssetChanges:(id)a5 previousCollectionsCount:(int64_t)a6 assetCollectionToSectionCache:(id)a7 originatingPhotoLibraryChange:(id)a8 fromIdentifier:(int64_t)a9 toIdentifier:(int64_t)a10;
+- (PXPhotosDataSourceChange)initWithFromIdentifier:(int64_t)identifier toIdentifier:(int64_t)toIdentifier;
+- (PXPhotosDataSourceChange)initWithIncrementalChanges:(id)changes assetCollectionChangeDetails:(id)details sectionsWithKeyAssetChanges:(id)assetChanges previousCollectionsCount:(int64_t)count assetCollectionToSectionCache:(id)cache originatingPhotoLibraryChange:(id)change fromIdentifier:(int64_t)identifier toIdentifier:(int64_t)self0;
 - (id)description;
-- (id)indexPathAfterApplyingIncrementalChangesToIndexPath:(id)a3;
-- (id)indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath:(id)a3;
+- (id)indexPathAfterApplyingIncrementalChangesToIndexPath:(id)path;
+- (id)indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath:(id)path;
 - (void)_prepareIncrementalDetails;
 - (void)prepareIfNeeded;
 @end
@@ -28,12 +28,12 @@
   return WeakRetained;
 }
 
-- (id)indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath:(id)a3
+- (id)indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   if ([(PXPhotosDataSourceChange *)self hasIncrementalChanges])
   {
-    if (v6)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -41,10 +41,10 @@
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"[self hasIncrementalChanges] == YES"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:435 description:{@"Invalid parameter not satisfying: %@", @"[self hasIncrementalChanges] == YES"}];
 
-    if (v6)
+    if (pathCopy)
     {
 LABEL_3:
       v26 = 0;
@@ -53,55 +53,55 @@ LABEL_3:
       v29 = __Block_byref_object_copy__68023;
       v30 = __Block_byref_object_dispose__68024;
       v31 = 0;
-      v7 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
-      if (([v7 containsObject:v6] & 1) == 0)
+      insertedIndexPaths = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+      if (([insertedIndexPaths containsObject:pathCopy] & 1) == 0)
       {
-        v8 = [(PXPhotosDataSourceChange *)self insertedSections];
-        v9 = [v8 containsIndex:{objc_msgSend(v6, "px_section")}];
+        insertedSections = [(PXPhotosDataSourceChange *)self insertedSections];
+        v9 = [insertedSections containsIndex:{objc_msgSend(pathCopy, "px_section")}];
 
         if (v9)
         {
           goto LABEL_10;
         }
 
-        objc_storeStrong(v27 + 5, a3);
-        v10 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+        objc_storeStrong(v27 + 5, path);
+        insertedIndexPaths2 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
 
-        if (v10)
+        if (insertedIndexPaths2)
         {
           v11 = v27[5];
-          v12 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
-          v13 = [v11 px_alteredIndexPathAfterDeletingItemsAtIndexPaths:v12];
+          insertedIndexPaths3 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+          v13 = [v11 px_alteredIndexPathAfterDeletingItemsAtIndexPaths:insertedIndexPaths3];
           v14 = v27[5];
           v27[5] = v13;
         }
 
-        v15 = [(PXPhotosDataSourceChange *)self insertedSections];
+        insertedSections2 = [(PXPhotosDataSourceChange *)self insertedSections];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __89__PXPhotosDataSourceChange_indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath___block_invoke;
         v25[3] = &unk_1E7734980;
         v25[4] = &v26;
-        [v15 enumerateIndexesWithOptions:2 usingBlock:v25];
+        [insertedSections2 enumerateIndexesWithOptions:2 usingBlock:v25];
 
-        v16 = [(PXPhotosDataSourceChange *)self deletedSections];
+        deletedSections = [(PXPhotosDataSourceChange *)self deletedSections];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __89__PXPhotosDataSourceChange_indexPathAfterRevertingIncrementalChangeDetailsFromIndexPath___block_invoke_2;
         v24[3] = &unk_1E7734980;
         v24[4] = &v26;
-        [v16 enumerateIndexesUsingBlock:v24];
+        [deletedSections enumerateIndexesUsingBlock:v24];
 
-        v17 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+        deletedIndexPaths = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
 
-        if (!v17)
+        if (!deletedIndexPaths)
         {
           goto LABEL_10;
         }
 
         v18 = v27[5];
-        v7 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
-        v19 = [v18 px_alteredIndexPathAfterInsertingItemsAtIndexPaths:v7];
+        insertedIndexPaths = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+        v19 = [v18 px_alteredIndexPathAfterInsertingItemsAtIndexPaths:insertedIndexPaths];
         v20 = v27[5];
         v27[5] = v19;
       }
@@ -142,12 +142,12 @@ void __89__PXPhotosDataSourceChange_indexPathAfterRevertingIncrementalChangeDeta
   }
 }
 
-- (id)indexPathAfterApplyingIncrementalChangesToIndexPath:(id)a3
+- (id)indexPathAfterApplyingIncrementalChangesToIndexPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   if ([(PXPhotosDataSourceChange *)self hasIncrementalChanges])
   {
-    if (v6)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -155,10 +155,10 @@ void __89__PXPhotosDataSourceChange_indexPathAfterRevertingIncrementalChangeDeta
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"[self hasIncrementalChanges] == YES"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"[self hasIncrementalChanges] == YES"}];
 
-    if (v6)
+    if (pathCopy)
     {
 LABEL_3:
       v26 = 0;
@@ -167,55 +167,55 @@ LABEL_3:
       v29 = __Block_byref_object_copy__68023;
       v30 = __Block_byref_object_dispose__68024;
       v31 = 0;
-      v7 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
-      if (([v7 containsObject:v6] & 1) == 0)
+      deletedIndexPaths = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+      if (([deletedIndexPaths containsObject:pathCopy] & 1) == 0)
       {
-        v8 = [(PXPhotosDataSourceChange *)self deletedSections];
-        v9 = [v8 containsIndex:{objc_msgSend(v6, "px_section")}];
+        deletedSections = [(PXPhotosDataSourceChange *)self deletedSections];
+        v9 = [deletedSections containsIndex:{objc_msgSend(pathCopy, "px_section")}];
 
         if (v9)
         {
           goto LABEL_10;
         }
 
-        objc_storeStrong(v27 + 5, a3);
-        v10 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+        objc_storeStrong(v27 + 5, path);
+        deletedIndexPaths2 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
 
-        if (v10)
+        if (deletedIndexPaths2)
         {
           v11 = v27[5];
-          v12 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
-          v13 = [v11 px_alteredIndexPathAfterDeletingItemsAtIndexPaths:v12];
+          deletedIndexPaths3 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+          v13 = [v11 px_alteredIndexPathAfterDeletingItemsAtIndexPaths:deletedIndexPaths3];
           v14 = v27[5];
           v27[5] = v13;
         }
 
-        v15 = [(PXPhotosDataSourceChange *)self deletedSections];
+        deletedSections2 = [(PXPhotosDataSourceChange *)self deletedSections];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __80__PXPhotosDataSourceChange_indexPathAfterApplyingIncrementalChangesToIndexPath___block_invoke;
         v25[3] = &unk_1E7734980;
         v25[4] = &v26;
-        [v15 enumerateIndexesWithOptions:2 usingBlock:v25];
+        [deletedSections2 enumerateIndexesWithOptions:2 usingBlock:v25];
 
-        v16 = [(PXPhotosDataSourceChange *)self insertedSections];
+        insertedSections = [(PXPhotosDataSourceChange *)self insertedSections];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __80__PXPhotosDataSourceChange_indexPathAfterApplyingIncrementalChangesToIndexPath___block_invoke_2;
         v24[3] = &unk_1E7734980;
         v24[4] = &v26;
-        [v16 enumerateIndexesUsingBlock:v24];
+        [insertedSections enumerateIndexesUsingBlock:v24];
 
-        v17 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+        insertedIndexPaths = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
 
-        if (!v17)
+        if (!insertedIndexPaths)
         {
           goto LABEL_10;
         }
 
         v18 = v27[5];
-        v7 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
-        v19 = [v18 px_alteredIndexPathAfterInsertingItemsAtIndexPaths:v7];
+        deletedIndexPaths = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+        v19 = [v18 px_alteredIndexPathAfterInsertingItemsAtIndexPaths:deletedIndexPaths];
         v20 = v27[5];
         v27[5] = v19;
       }
@@ -256,15 +256,15 @@ void __80__PXPhotosDataSourceChange_indexPathAfterApplyingIncrementalChangesToIn
   }
 }
 
-- (BOOL)affectsSectionsInRange:(_NSRange)a3
+- (BOOL)affectsSectionsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v64 = *MEMORY[0x1E69E9840];
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:333 description:@"Must have a valid location"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:333 description:@"Must have a valid location"];
 
     if (length)
     {
@@ -276,7 +276,7 @@ LABEL_28:
     return v36 & 1;
   }
 
-  if (!a3.length)
+  if (!range.length)
   {
     goto LABEL_28;
   }
@@ -284,20 +284,20 @@ LABEL_28:
 LABEL_3:
   if (length == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:334 description:@"Must have a valid length"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosDataSourceChange.m" lineNumber:334 description:@"Must have a valid length"];
   }
 
-  v48 = [(PXPhotosDataSourceChange *)self deletedSections];
-  v47 = [(PXPhotosDataSourceChange *)self insertedSections];
-  v46 = [(PXPhotosDataSourceChange *)self changedSections];
-  v7 = [MEMORY[0x1E696AD50] indexSet];
+  deletedSections = [(PXPhotosDataSourceChange *)self deletedSections];
+  insertedSections = [(PXPhotosDataSourceChange *)self insertedSections];
+  changedSections = [(PXPhotosDataSourceChange *)self changedSections];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v8 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
-  v9 = [v8 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  deletedIndexPaths = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+  v9 = [deletedIndexPaths countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v9)
   {
     v10 = v9;
@@ -308,25 +308,25 @@ LABEL_3:
       {
         if (*v58 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(deletedIndexPaths);
         }
 
-        [v7 addIndex:{objc_msgSend(*(*(&v57 + 1) + 8 * i), "px_section")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v57 + 1) + 8 * i), "px_section")}];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      v10 = [deletedIndexPaths countByEnumeratingWithState:&v57 objects:v63 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v14 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
-  v15 = [v14 countByEnumeratingWithState:&v53 objects:v62 count:16];
+  insertedIndexPaths = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+  v15 = [insertedIndexPaths countByEnumeratingWithState:&v53 objects:v62 count:16];
   if (v15)
   {
     v16 = v15;
@@ -337,25 +337,25 @@ LABEL_3:
       {
         if (*v54 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(insertedIndexPaths);
         }
 
-        [v13 addIndex:{objc_msgSend(*(*(&v53 + 1) + 8 * j), "px_section")}];
+        [indexSet2 addIndex:{objc_msgSend(*(*(&v53 + 1) + 8 * j), "px_section")}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v53 objects:v62 count:16];
+      v16 = [insertedIndexPaths countByEnumeratingWithState:&v53 objects:v62 count:16];
     }
 
     while (v16);
   }
 
-  v19 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet3 = [MEMORY[0x1E696AD50] indexSet];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v20 = [(PXPhotosDataSourceChange *)self changedIndexPaths];
-  v21 = [v20 countByEnumeratingWithState:&v49 objects:v61 count:16];
+  changedIndexPaths = [(PXPhotosDataSourceChange *)self changedIndexPaths];
+  v21 = [changedIndexPaths countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v21)
   {
     v22 = v21;
@@ -366,13 +366,13 @@ LABEL_3:
       {
         if (*v50 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(changedIndexPaths);
         }
 
-        [v19 addIndex:{objc_msgSend(*(*(&v49 + 1) + 8 * k), "px_section")}];
+        [indexSet3 addIndex:{objc_msgSend(*(*(&v49 + 1) + 8 * k), "px_section")}];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v49 objects:v61 count:16];
+      v22 = [changedIndexPaths countByEnumeratingWithState:&v49 objects:v61 count:16];
     }
 
     while (v22);
@@ -380,57 +380,57 @@ LABEL_3:
 
   v25 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{location, length}];
   [v25 addIndex:{objc_msgSend(v25, "lastIndex") + 1}];
-  v45 = [v25 px_indexSetAdjustedForDeletions:v48];
-  v44 = [v45 px_indexSetAdjustedForInsertions:v47];
-  v26 = [v25 px_coveringRange];
+  v45 = [v25 px_indexSetAdjustedForDeletions:deletedSections];
+  v44 = [v45 px_indexSetAdjustedForInsertions:insertedSections];
+  px_coveringRange = [v25 px_coveringRange];
   v28 = v27;
-  v29 = [v45 px_coveringRange];
+  px_coveringRange2 = [v45 px_coveringRange];
   v40 = v30;
-  v41 = v29;
-  v31 = [v44 px_coveringRange];
+  v41 = px_coveringRange2;
+  px_coveringRange3 = [v44 px_coveringRange];
   v33 = v32;
-  v43 = [v48 intersectsIndexesInRange:{v26, v28}];
-  v42 = [v7 intersectsIndexesInRange:{v26, v28}];
-  v34 = [v47 intersectsIndexesInRange:{v41, v40}];
-  v35 = [v19 intersectsIndexesInRange:{v31, v33}];
-  LOBYTE(v26) = [v46 intersectsIndexesInRange:{v31, v33}];
-  v36 = v43 | v42 | v34 | v35 | v26 | [v19 intersectsIndexesInRange:{v31, v33}];
+  v43 = [deletedSections intersectsIndexesInRange:{px_coveringRange, v28}];
+  v42 = [indexSet intersectsIndexesInRange:{px_coveringRange, v28}];
+  v34 = [insertedSections intersectsIndexesInRange:{v41, v40}];
+  v35 = [indexSet3 intersectsIndexesInRange:{px_coveringRange3, v33}];
+  LOBYTE(px_coveringRange) = [changedSections intersectsIndexesInRange:{px_coveringRange3, v33}];
+  v36 = v43 | v42 | v34 | v35 | px_coveringRange | [indexSet3 intersectsIndexesInRange:{px_coveringRange3, v33}];
 
   return v36 & 1;
 }
 
-- (BOOL)_shouldPerformFullReloadForCollectionListChangeNotifications:(id)a3 collectionChangeNotifications:(id)a4
+- (BOOL)_shouldPerformFullReloadForCollectionListChangeNotifications:(id)notifications collectionChangeNotifications:(id)changeNotifications
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  notificationsCopy = notifications;
+  changeNotificationsCopy = changeNotifications;
+  if (!notificationsCopy)
   {
     goto LABEL_5;
   }
 
-  v7 = [v5 insertedIndexes];
-  v8 = [v7 count];
-  v9 = [v5 removedIndexes];
-  v10 = [v9 count];
+  insertedIndexes = [notificationsCopy insertedIndexes];
+  v8 = [insertedIndexes count];
+  removedIndexes = [notificationsCopy removedIndexes];
+  v10 = [removedIndexes count];
 
-  if (![v5 hasIncrementalChanges])
+  if (![notificationsCopy hasIncrementalChanges])
   {
     v11 = 1;
     goto LABEL_20;
   }
 
   v11 = 1;
-  if (([v5 hasMoves] & 1) == 0 && v10 + v8 <= 20)
+  if (([notificationsCopy hasMoves] & 1) == 0 && v10 + v8 <= 20)
   {
 LABEL_5:
-    v25 = v6;
-    v26 = v5;
+    v25 = changeNotificationsCopy;
+    v26 = notificationsCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = v6;
+    v12 = changeNotificationsCopy;
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
@@ -447,10 +447,10 @@ LABEL_5:
           }
 
           v18 = *(*(&v27 + 1) + 8 * i);
-          v19 = [v18 insertedIndexes];
-          v20 = [v19 count];
-          v21 = [v18 removedIndexes];
-          v22 = [v21 count];
+          insertedIndexes2 = [v18 insertedIndexes];
+          v20 = [insertedIndexes2 count];
+          removedIndexes2 = [v18 removedIndexes];
+          v22 = [removedIndexes2 count];
 
           if (![v18 hasIncrementalChanges])
           {
@@ -458,9 +458,9 @@ LABEL_5:
             goto LABEL_19;
           }
 
-          v23 = [v18 hasMoves];
+          hasMoves = [v18 hasMoves];
           v11 = 1;
-          if (v23)
+          if (hasMoves)
           {
             goto LABEL_19;
           }
@@ -490,8 +490,8 @@ LABEL_5:
 
 LABEL_19:
 
-    v6 = v25;
-    v5 = v26;
+    changeNotificationsCopy = v25;
+    notificationsCopy = v26;
   }
 
 LABEL_20:
@@ -503,18 +503,18 @@ LABEL_20:
 {
   v47 = *MEMORY[0x1E69E9840];
   p_collectionListChangeDetails = &self->_collectionListChangeDetails;
-  v4 = [(PHFetchResultChangeDetails *)self->_collectionListChangeDetails removedIndexes];
-  v5 = [(PHFetchResultChangeDetails *)*p_collectionListChangeDetails insertedIndexes];
-  v6 = [(PHFetchResultChangeDetails *)*p_collectionListChangeDetails changedIndexes];
+  removedIndexes = [(PHFetchResultChangeDetails *)self->_collectionListChangeDetails removedIndexes];
+  insertedIndexes = [(PHFetchResultChangeDetails *)*p_collectionListChangeDetails insertedIndexes];
+  changedIndexes = [(PHFetchResultChangeDetails *)*p_collectionListChangeDetails changedIndexes];
   previousCollectionsCount = self->_previousCollectionsCount;
-  v8 = [v5 count] + previousCollectionsCount;
-  v9 = v8 - [v4 count];
+  v8 = [insertedIndexes count] + previousCollectionsCount;
+  v9 = v8 - [removedIndexes count];
   v10 = [(NSDictionary *)self->_assetCollectionToSectionCache count];
   if (v9 == v10)
   {
-    objc_storeStrong(&self->_deletedSections, v4);
-    objc_storeStrong(&self->_insertedSections, v5);
-    objc_storeStrong(&self->_changedSections, v6);
+    objc_storeStrong(&self->_deletedSections, removedIndexes);
+    objc_storeStrong(&self->_insertedSections, insertedIndexes);
+    objc_storeStrong(&self->_changedSections, changedIndexes);
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -580,9 +580,9 @@ LABEL_20:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = self->_previousCollectionsCount;
-      v16 = [v5 count];
-      v17 = [v4 count];
-      v18 = [(NSDictionary *)self->_assetCollectionToSectionCache allKeys];
+      v16 = [insertedIndexes count];
+      v17 = [removedIndexes count];
+      allKeys = [(NSDictionary *)self->_assetCollectionToSectionCache allKeys];
       *buf = 134219010;
       *&buf[4] = v13;
       *&buf[12] = 2048;
@@ -592,7 +592,7 @@ LABEL_20:
       *v46 = 2048;
       *&v46[2] = v17;
       *&v46[10] = 2112;
-      *&v46[12] = v18;
+      *&v46[12] = allKeys;
       _os_log_impl(&dword_1A3C1C000, v14, OS_LOG_TYPE_ERROR, "The new collection count (%lu) doesn't match the expected count (%lu + %lu - %lu). Collection: %@", buf, 0x34u);
     }
   }
@@ -808,8 +808,8 @@ LABEL_8:
       collectionListChangeDetails = obj->_collectionListChangeDetails;
     }
 
-    v5 = [(NSDictionary *)v3->_assetCollectionChangeDetails allValues];
-    v6 = [(PXPhotosDataSourceChange *)obj _shouldPerformFullReloadForCollectionListChangeNotifications:collectionListChangeDetails collectionChangeNotifications:v5];
+    allValues = [(NSDictionary *)v3->_assetCollectionChangeDetails allValues];
+    v6 = [(PXPhotosDataSourceChange *)obj _shouldPerformFullReloadForCollectionListChangeNotifications:collectionListChangeDetails collectionChangeNotifications:allValues];
 
     if (!v6)
     {
@@ -829,28 +829,28 @@ LABEL_9:
   v24.super_class = PXPhotosDataSourceChange;
   v23 = [(PXPhotosDataSourceChange *)&v24 description];
   v21 = MEMORY[0x1E696AEC0];
-  v3 = [(PXPhotosDataSourceChange *)self hasIncrementalChanges];
+  hasIncrementalChanges = [(PXPhotosDataSourceChange *)self hasIncrementalChanges];
   v4 = @"NO";
-  if (v3)
+  if (hasIncrementalChanges)
   {
     v4 = @"YES";
   }
 
   v20 = v4;
-  v22 = [(PXPhotosDataSourceChange *)self deletedSections];
-  v19 = [v22 count];
-  v5 = [(PXPhotosDataSourceChange *)self insertedSections];
-  v18 = [v5 count];
-  v6 = [(PXPhotosDataSourceChange *)self changedSections];
-  v7 = [v6 count];
-  v8 = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
-  v9 = [v8 count];
-  v10 = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
-  v11 = [v10 count];
-  v12 = [(PXPhotosDataSourceChange *)self changedIndexPaths];
-  v13 = [v12 count];
-  v14 = [(PXPhotosDataSourceChange *)self contentChangedIndexPaths];
-  v15 = [v21 stringWithFormat:@" hasIncremental:%@ sections:(%lu, %lu, %lu) indexPaths:(%lu, %lu, %lu, %lu) (del, ins, change, contentChange)", v20, v19, v18, v7, v9, v11, v13, objc_msgSend(v14, "count")];
+  deletedSections = [(PXPhotosDataSourceChange *)self deletedSections];
+  v19 = [deletedSections count];
+  insertedSections = [(PXPhotosDataSourceChange *)self insertedSections];
+  v18 = [insertedSections count];
+  changedSections = [(PXPhotosDataSourceChange *)self changedSections];
+  v7 = [changedSections count];
+  deletedIndexPaths = [(PXPhotosDataSourceChange *)self deletedIndexPaths];
+  v9 = [deletedIndexPaths count];
+  insertedIndexPaths = [(PXPhotosDataSourceChange *)self insertedIndexPaths];
+  v11 = [insertedIndexPaths count];
+  changedIndexPaths = [(PXPhotosDataSourceChange *)self changedIndexPaths];
+  v13 = [changedIndexPaths count];
+  contentChangedIndexPaths = [(PXPhotosDataSourceChange *)self contentChangedIndexPaths];
+  v15 = [v21 stringWithFormat:@" hasIncremental:%@ sections:(%lu, %lu, %lu) indexPaths:(%lu, %lu, %lu, %lu) (del, ins, change, contentChange)", v20, v19, v18, v7, v9, v11, v13, objc_msgSend(contentChangedIndexPaths, "count")];
 
   v16 = [v23 stringByAppendingString:v15];
 
@@ -921,40 +921,40 @@ LABEL_9:
   return deletedSections;
 }
 
-- (PXPhotosDataSourceChange)initWithIncrementalChanges:(id)a3 assetCollectionChangeDetails:(id)a4 sectionsWithKeyAssetChanges:(id)a5 previousCollectionsCount:(int64_t)a6 assetCollectionToSectionCache:(id)a7 originatingPhotoLibraryChange:(id)a8 fromIdentifier:(int64_t)a9 toIdentifier:(int64_t)a10
+- (PXPhotosDataSourceChange)initWithIncrementalChanges:(id)changes assetCollectionChangeDetails:(id)details sectionsWithKeyAssetChanges:(id)assetChanges previousCollectionsCount:(int64_t)count assetCollectionToSectionCache:(id)cache originatingPhotoLibraryChange:(id)change fromIdentifier:(int64_t)identifier toIdentifier:(int64_t)self0
 {
-  v29 = a3;
-  v17 = a4;
-  v28 = a5;
-  v18 = a7;
-  v19 = a8;
+  changesCopy = changes;
+  detailsCopy = details;
+  assetChangesCopy = assetChanges;
+  cacheCopy = cache;
+  changeCopy = change;
   v34.receiver = self;
   v34.super_class = PXPhotosDataSourceChange;
   v20 = [(PXPhotosDataSourceChange *)&v34 init];
   v21 = v20;
   if (v20)
   {
-    v20->_previousCollectionsCount = a6;
-    objc_storeStrong(&v20->_collectionListChangeDetails, a3);
-    objc_storeStrong(&v21->_assetCollectionChangeDetails, a4);
-    objc_storeStrong(&v21->_assetCollectionToSectionCache, a7);
-    objc_storeWeak(&v21->_originatingPhotoLibraryChange, v19);
-    v22 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:v29 originatingChange:v19];
-    v23 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v17, "count")}];
+    v20->_previousCollectionsCount = count;
+    objc_storeStrong(&v20->_collectionListChangeDetails, changes);
+    objc_storeStrong(&v21->_assetCollectionChangeDetails, details);
+    objc_storeStrong(&v21->_assetCollectionToSectionCache, cache);
+    objc_storeWeak(&v21->_originatingPhotoLibraryChange, changeCopy);
+    v22 = [off_1E7721450 changeDetailsFromFetchResultChangeDetails:changesCopy originatingChange:changeCopy];
+    v23 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(detailsCopy, "count")}];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __225__PXPhotosDataSourceChange_initWithIncrementalChanges_assetCollectionChangeDetails_sectionsWithKeyAssetChanges_previousCollectionsCount_assetCollectionToSectionCache_originatingPhotoLibraryChange_fromIdentifier_toIdentifier___block_invoke;
     v30[3] = &unk_1E7734930;
-    v31 = v18;
+    v31 = cacheCopy;
     v32 = v23;
-    v33 = v19;
+    v33 = changeCopy;
     v24 = v23;
-    [v17 enumerateKeysAndObjectsUsingBlock:v30];
-    v25 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:a9 toDataSourceIdentifier:a10 sectionChanges:v22 itemChangeDetailsBySection:v24 subitemChangeDetailsByItemBySection:0];
+    [detailsCopy enumerateKeysAndObjectsUsingBlock:v30];
+    v25 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:toIdentifier sectionChanges:v22 itemChangeDetailsBySection:v24 subitemChangeDetailsByItemBySection:0];
     sectionedDataSourceChangeDetails = v21->_sectionedDataSourceChangeDetails;
     v21->_sectionedDataSourceChangeDetails = v25;
 
-    objc_storeStrong(&v21->_sectionsWithKeyAssetChanges, a5);
+    objc_storeStrong(&v21->_sectionsWithKeyAssetChanges, assetChanges);
   }
 
   return v21;
@@ -970,7 +970,7 @@ void __225__PXPhotosDataSourceChange_initWithIncrementalChanges_assetCollectionC
   [*(a1 + 40) setObject:v7 forKeyedSubscript:v8];
 }
 
-- (PXPhotosDataSourceChange)initWithFromIdentifier:(int64_t)a3 toIdentifier:(int64_t)a4
+- (PXPhotosDataSourceChange)initWithFromIdentifier:(int64_t)identifier toIdentifier:(int64_t)toIdentifier
 {
   v13.receiver = self;
   v13.super_class = PXPhotosDataSourceChange;
@@ -980,8 +980,8 @@ void __225__PXPhotosDataSourceChange_initWithIncrementalChanges_assetCollectionC
   {
     v6->_prepared = 1;
     v8 = [off_1E77218B0 alloc];
-    v9 = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
-    v10 = [v8 initWithFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4 sectionChanges:v9 itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
+    changeDetailsWithNoIncrementalChanges = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
+    v10 = [v8 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:toIdentifier sectionChanges:changeDetailsWithNoIncrementalChanges itemChangeDetailsBySection:0 subitemChangeDetailsByItemBySection:0];
     sectionedDataSourceChangeDetails = v7->_sectionedDataSourceChangeDetails;
     v7->_sectionedDataSourceChangeDetails = v10;
   }

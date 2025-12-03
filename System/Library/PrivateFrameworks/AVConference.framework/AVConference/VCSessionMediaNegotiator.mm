@@ -1,20 +1,20 @@
 @interface VCSessionMediaNegotiator
-+ (BOOL)initializeLocalConfiguration:(id)a3 negotiationData:(id)a4 deviceRole:(int)a5 preferredAudioPayload:(int)a6;
-+ (id)mediaBlobForVersion:(int)a3 negotiationData:(id)a4;
-+ (id)negotiationDataWithVersion1:(id)a3 version2:(id)a4;
-+ (id)negotiationDataWithVersion:(int)a3 mediaBlob:(id)a4;
-+ (id)serializeNegotiationData:(id)a3;
-+ (id)streamGroupIDsWithMediaBlob:(id)a3;
-+ (id)unserializeNegotiationData:(id)a3;
-- (BOOL)processRemoteNegotiationData:(id)a3;
-- (VCSessionMediaNegotiator)initWithLocalConfiguration:(id)a3;
++ (BOOL)initializeLocalConfiguration:(id)configuration negotiationData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload;
++ (id)mediaBlobForVersion:(int)version negotiationData:(id)data;
++ (id)negotiationDataWithVersion1:(id)version1 version2:(id)version2;
++ (id)negotiationDataWithVersion:(int)version mediaBlob:(id)blob;
++ (id)serializeNegotiationData:(id)data;
++ (id)streamGroupIDsWithMediaBlob:(id)blob;
++ (id)unserializeNegotiationData:(id)data;
+- (BOOL)processRemoteNegotiationData:(id)data;
+- (VCSessionMediaNegotiator)initWithLocalConfiguration:(id)configuration;
 - (id)negotiationData;
 - (void)dealloc;
 @end
 
 @implementation VCSessionMediaNegotiator
 
-- (VCSessionMediaNegotiator)initWithLocalConfiguration:(id)a3
+- (VCSessionMediaNegotiator)initWithLocalConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -26,19 +26,19 @@
     v4->_mediaNegotiatorMap = v5;
     if (v5)
     {
-      v6 = [[VCMediaNegotiator alloc] initWithLocalSettings:a3];
+      v6 = [[VCMediaNegotiator alloc] initWithLocalSettings:configuration];
       if (v6)
       {
         v7 = v6;
         [(NSMutableDictionary *)v4->_mediaNegotiatorMap setObject:v6 forKeyedSubscript:&unk_1F5799A38];
 
-        v8 = [(VCMediaNegotiatorBase *)[VCMediaNegotiatorV2 alloc] initWithLocalSettings:a3];
+        v8 = [(VCMediaNegotiatorBase *)[VCMediaNegotiatorV2 alloc] initWithLocalSettings:configuration];
         if (v8)
         {
           v9 = v8;
           [(NSMutableDictionary *)v4->_mediaNegotiatorMap setObject:v8 forKeyedSubscript:&unk_1F5799A50];
 
-          v4->_localSettings = a3;
+          v4->_localSettings = configuration;
           return v4;
         }
 
@@ -71,29 +71,29 @@
   [(VCSessionMediaNegotiator *)&v3 dealloc];
 }
 
-+ (id)mediaBlobForVersion:(int)a3 negotiationData:(id)a4
++ (id)mediaBlobForVersion:(int)version negotiationData:(id)data
 {
-  v4 = *&a3;
-  v5 = [VCSessionMediaNegotiator unserializeNegotiationData:a4];
+  v4 = *&version;
+  v5 = [VCSessionMediaNegotiator unserializeNegotiationData:data];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v4];
 
   return [v5 objectForKeyedSubscript:v6];
 }
 
-+ (id)negotiationDataWithVersion:(int)a3 mediaBlob:(id)a4
++ (id)negotiationDataWithVersion:(int)version mediaBlob:(id)blob
 {
-  v5 = *&a3;
+  v5 = *&version;
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
-  [v6 setObject:a4 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v5)}];
+  [v6 setObject:blob forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v5)}];
 
   return [VCSessionMediaNegotiator serializeNegotiationData:v6];
 }
 
-+ (id)negotiationDataWithVersion1:(id)a3 version2:(id)a4
++ (id)negotiationDataWithVersion1:(id)version1 version2:(id)version2
 {
   v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  [v6 setObject:a3 forKeyedSubscript:&unk_1F5799A38];
-  [v6 setObject:a4 forKeyedSubscript:&unk_1F5799A50];
+  [v6 setObject:version1 forKeyedSubscript:&unk_1F5799A38];
+  [v6 setObject:version2 forKeyedSubscript:&unk_1F5799A50];
 
   return [VCSessionMediaNegotiator serializeNegotiationData:v6];
 }
@@ -149,7 +149,7 @@ uint64_t __43__VCSessionMediaNegotiator_negotiationData__block_invoke(uint64_t a
   return [v8 setObject:v7 forKeyedSubscript:a2];
 }
 
-- (BOOL)processRemoteNegotiationData:(id)a3
+- (BOOL)processRemoteNegotiationData:(id)data
 {
   p_activeNegotiator = &self->_activeNegotiator;
   if (self->_activeNegotiator)
@@ -160,7 +160,7 @@ uint64_t __43__VCSessionMediaNegotiator_negotiationData__block_invoke(uint64_t a
 
   else
   {
-    v5 = [VCSessionMediaNegotiator unserializeNegotiationData:a3];
+    v5 = [VCSessionMediaNegotiator unserializeNegotiationData:data];
     if ([v5 count] == 1)
     {
       v6 = [objc_msgSend(v5 "allKeys")];
@@ -196,10 +196,10 @@ uint64_t __43__VCSessionMediaNegotiator_negotiationData__block_invoke(uint64_t a
   }
 }
 
-+ (id)streamGroupIDsWithMediaBlob:(id)a3
++ (id)streamGroupIDsWithMediaBlob:(id)blob
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [VCSessionMediaNegotiator unserializeNegotiationData:a3];
+  v3 = [VCSessionMediaNegotiator unserializeNegotiationData:blob];
   v18 = 0;
   v19[0] = &v18;
   v19[1] = 0x2020000000;
@@ -280,11 +280,11 @@ uint64_t __56__VCSessionMediaNegotiator_streamGroupIDsWithMediaBlob___block_invo
   return result;
 }
 
-+ (BOOL)initializeLocalConfiguration:(id)a3 negotiationData:(id)a4 deviceRole:(int)a5 preferredAudioPayload:(int)a6
++ (BOOL)initializeLocalConfiguration:(id)configuration negotiationData:(id)data deviceRole:(int)role preferredAudioPayload:(int)payload
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v9 = [VCSessionMediaNegotiator unserializeNegotiationData:a4];
+  v6 = *&payload;
+  v7 = *&role;
+  v9 = [VCSessionMediaNegotiator unserializeNegotiationData:data];
   if (v9)
   {
     v10 = v9;
@@ -302,7 +302,7 @@ uint64_t __56__VCSessionMediaNegotiator_streamGroupIDsWithMediaBlob___block_invo
 
       v15 = v14;
       v16 = v11 ? VCMediaNegotiatorV2 : VCMediaNegotiator;
-      if (([(__objc2_class *)v16 initializeLocalConfiguration:a3 negotiationData:v15 deviceRole:v7 preferredAudioPayload:v6]& 1) == 0)
+      if (([(__objc2_class *)v16 initializeLocalConfiguration:configuration negotiationData:v15 deviceRole:v7 preferredAudioPayload:v6]& 1) == 0)
       {
         break;
       }
@@ -327,15 +327,15 @@ uint64_t __56__VCSessionMediaNegotiator_streamGroupIDsWithMediaBlob___block_invo
   return v11;
 }
 
-+ (id)serializeNegotiationData:(id)a3
++ (id)serializeNegotiationData:(id)data
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:data];
 
   return [v3 archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
 }
 
-+ (id)unserializeNegotiationData:(id)a3
++ (id)unserializeNegotiationData:(id)data
 {
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
@@ -343,7 +343,7 @@ uint64_t __56__VCSessionMediaNegotiator_streamGroupIDsWithMediaBlob___block_invo
   v7 = [v4 setWithObjects:{v5, v6, objc_opt_class(), 0}];
   v8 = MEMORY[0x1E696ACD0];
 
-  return [v8 _strictlyUnarchivedObjectOfClasses:v7 fromData:a3 error:0];
+  return [v8 _strictlyUnarchivedObjectOfClasses:v7 fromData:data error:0];
 }
 
 - (void)initWithLocalConfiguration:.cold.1()

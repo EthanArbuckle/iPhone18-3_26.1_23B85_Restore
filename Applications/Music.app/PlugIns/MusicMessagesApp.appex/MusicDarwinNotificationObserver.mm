@@ -1,24 +1,24 @@
 @interface MusicDarwinNotificationObserver
-- (MusicDarwinNotificationObserver)initWithNotificationName:(id)a3 handler:(id)a4;
+- (MusicDarwinNotificationObserver)initWithNotificationName:(id)name handler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation MusicDarwinNotificationObserver
 
-- (MusicDarwinNotificationObserver)initWithNotificationName:(id)a3 handler:(id)a4
+- (MusicDarwinNotificationObserver)initWithNotificationName:(id)name handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = MusicDarwinNotificationObserver;
   v8 = [(MusicDarwinNotificationObserver *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     v10 = *(v8 + 1);
     *(v8 + 1) = v9;
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(handlerCopy);
     v12 = *(v8 + 2);
     *(v8 + 2) = v11;
 

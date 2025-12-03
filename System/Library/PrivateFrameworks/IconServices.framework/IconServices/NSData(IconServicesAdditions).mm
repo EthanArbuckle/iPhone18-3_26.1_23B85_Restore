@@ -25,7 +25,7 @@
 
 - (id)__is__bookmarkResourcePropertyForKey:()IconServicesAdditions
 {
-  v3 = MEMORY[0x1AC55AC80](0, a3, a1);
+  v3 = MEMORY[0x1AC55AC80](0, a3, self);
 
   return v3;
 }
@@ -36,8 +36,8 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _IF_isOnBootVolume];
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4 options:v5 error:0];
+    _IF_isOnBootVolume = [v3 _IF_isOnBootVolume];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4 options:_IF_isOnBootVolume error:0];
   }
 
   else

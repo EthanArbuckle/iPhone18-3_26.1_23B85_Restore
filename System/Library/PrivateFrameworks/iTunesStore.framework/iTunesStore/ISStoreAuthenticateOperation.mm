@@ -1,40 +1,40 @@
 @interface ISStoreAuthenticateOperation
-+ (BOOL)_copyErrorForAuthenticateResponse:(id)a3 error:(id *)a4;
-- (ISStoreAuthenticateOperation)initWithAuthenticationContext:(id)a3;
++ (BOOL)_copyErrorForAuthenticateResponse:(id)response error:(id *)error;
+- (ISStoreAuthenticateOperation)initWithAuthenticationContext:(id)context;
 - (SSAuthenticateResponse)authenticateResponse;
 - (SSAuthenticationContext)authenticationContext;
 - (id)authenticatedAccountDSID;
 - (id)uniqueKey;
-- (void)_handleAuthenticateResponse:(id)a3;
+- (void)_handleAuthenticateResponse:(id)response;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation ISStoreAuthenticateOperation
 
-- (ISStoreAuthenticateOperation)initWithAuthenticationContext:(id)a3
+- (ISStoreAuthenticateOperation)initWithAuthenticationContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D69A80] deviceIsInternalBuild])
   {
-    v5 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v5)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v5 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -46,7 +46,7 @@
       v19 = 2114;
       v20 = AMSLogKey();
       v21 = 2114;
-      v22 = [MEMORY[0x277D69C78] generateSymbolicatedStackShot];
+      generateSymbolicatedStackShot = [MEMORY[0x277D69C78] generateSymbolicatedStackShot];
       LODWORD(v16) = 32;
       v15 = &v17;
       v8 = _os_log_send_and_compose_impl();
@@ -64,7 +64,7 @@
   v11 = [(ISOperation *)self init];
   if (v11)
   {
-    v12 = [a3 mutableCopy];
+    v12 = [context mutableCopy];
     v11->_authenticationContext = v12;
     [(SSMutableAuthenticationContext *)v12 setShouldSuppressDialogs:1];
   }
@@ -103,9 +103,9 @@
   result = [-[SSAuthenticateResponse authenticatedAccount](-[ISStoreAuthenticateOperation authenticateResponse](self "authenticateResponse")];
   if (!result)
   {
-    v4 = [(ISStoreAuthenticateOperation *)self authenticationContext];
+    authenticationContext = [(ISStoreAuthenticateOperation *)self authenticationContext];
 
-    return [(SSAuthenticationContext *)v4 requiredUniqueIdentifier];
+    return [(SSAuthenticationContext *)authenticationContext requiredUniqueIdentifier];
   }
 
   return result;
@@ -116,26 +116,26 @@
   v26 = *MEMORY[0x277D85DE8];
   v3 = +[ISNetworkObserver sharedInstance];
   [(ISNetworkObserver *)v3 beginUsingNetwork];
-  v4 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v4)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  v6 = [v4 shouldLogToDisk];
-  v7 = [v4 OSLogObject];
-  if (v6)
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (shouldLogToDisk)
   {
-    v5 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v5 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (v5)
+  if (shouldLog)
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -293,28 +293,28 @@ intptr_t __35__ISStoreAuthenticateOperation_run__block_invoke(uint64_t a1, void 
 
 - (id)uniqueKey
 {
-  v2 = [(SSAuthenticationContext *)[(ISStoreAuthenticateOperation *)self authenticationContext] requiredUniqueIdentifier];
+  requiredUniqueIdentifier = [(SSAuthenticationContext *)[(ISStoreAuthenticateOperation *)self authenticationContext] requiredUniqueIdentifier];
   v3 = MEMORY[0x277CCACA8];
-  if (v2)
+  if (requiredUniqueIdentifier)
   {
-    v4 = [v2 stringValue];
+    stringValue = [requiredUniqueIdentifier stringValue];
   }
 
   else
   {
-    v4 = @"0";
+    stringValue = @"0";
   }
 
-  return [v3 stringWithFormat:@"com.apple.iTunesStore.auth.%@", v4];
+  return [v3 stringWithFormat:@"com.apple.iTunesStore.auth.%@", stringValue];
 }
 
-- (void)_handleAuthenticateResponse:(id)a3
+- (void)_handleAuthenticateResponse:(id)response
 {
-  v5 = [a3 responseDictionary];
+  responseDictionary = [response responseDictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[ISProcessPropertyListOperation alloc] initWithPropertyList:v5];
+    v6 = [[ISProcessPropertyListOperation alloc] initWithPropertyList:responseDictionary];
     v7 = objc_alloc_init(ISPropertyListProvider);
     [(ISProtocolDataProvider *)v7 setShouldProcessAccount:0];
     [(ISProcessPropertyListOperation *)v6 setDataProvider:v7];
@@ -323,7 +323,7 @@ intptr_t __35__ISStoreAuthenticateOperation_run__block_invoke(uint64_t a1, void 
   }
 
   v8 = 0;
-  if ([objc_opt_class() _copyErrorForAuthenticateResponse:a3 error:&v8])
+  if ([objc_opt_class() _copyErrorForAuthenticateResponse:response error:&v8])
   {
     [(ISOperation *)self setSuccess:1];
   }
@@ -335,39 +335,39 @@ intptr_t __35__ISStoreAuthenticateOperation_run__block_invoke(uint64_t a1, void 
 
   [(ISOperation *)self lock];
 
-  self->_authenticateResponse = a3;
+  self->_authenticateResponse = response;
   [(ISOperation *)self unlock];
 }
 
-+ (BOOL)_copyErrorForAuthenticateResponse:(id)a3 error:(id *)a4
++ (BOOL)_copyErrorForAuthenticateResponse:(id)response error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = [a3 authenticateResponseType];
+  authenticateResponseType = [response authenticateResponseType];
   v7 = 0;
-  if (v6 <= 3)
+  if (authenticateResponseType <= 3)
   {
-    if (v6 >= 2)
+    if (authenticateResponseType >= 2)
     {
-      if (v6 == 2)
+      if (authenticateResponseType == 2)
       {
-        v22 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-        if (!v22)
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v22 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v23 = [v22 shouldLog];
-        if ([v22 shouldLogToDisk])
+        shouldLog = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v24 = v23 | 2;
+          v24 = shouldLog | 2;
         }
 
         else
         {
-          v24 = v23;
+          v24 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_DEFAULT))
+        if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
         {
           v24 &= 2u;
         }
@@ -391,13 +391,13 @@ intptr_t __35__ISStoreAuthenticateOperation_run__block_invoke(uint64_t a1, void 
         goto LABEL_58;
       }
 
-      if (v6 != 3)
+      if (authenticateResponseType != 3)
       {
 LABEL_62:
         v19 = 0;
-        if (a4)
+        if (error)
         {
-          *a4 = v7;
+          *error = v7;
         }
 
         goto LABEL_64;
@@ -406,24 +406,24 @@ LABEL_62:
       goto LABEL_7;
     }
 
-    v13 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v13)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v13 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
-    if ([v13 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog2 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog2;
     }
 
-    if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v15 &= 2u;
     }
@@ -455,27 +455,27 @@ LABEL_59:
     goto LABEL_61;
   }
 
-  if ((v6 - 6) < 3)
+  if ((authenticateResponseType - 6) < 3)
   {
 LABEL_7:
-    v8 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v8)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v8 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog3 | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog3;
     }
 
-    if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -485,7 +485,7 @@ LABEL_7:
       *v32 = 138412546;
       *&v32[4] = objc_opt_class();
       *&v32[12] = 2048;
-      *&v32[14] = [a3 authenticateResponseType];
+      *&v32[14] = [response authenticateResponseType];
       LODWORD(v31) = 22;
       v11 = _os_log_send_and_compose_impl();
       v12 = 0;
@@ -501,26 +501,26 @@ LABEL_7:
     goto LABEL_61;
   }
 
-  if (v6 == 5)
+  if (authenticateResponseType == 5)
   {
-    v25 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v25)
+    mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38]4)
     {
-      v25 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v26 = [v25 shouldLog];
-    if ([v25 shouldLogToDisk])
+    shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+    if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog4 | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog4;
     }
 
-    if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38]4 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v27 &= 2u;
     }
@@ -533,30 +533,30 @@ LABEL_7:
     goto LABEL_59;
   }
 
-  if (v6 != 4)
+  if (authenticateResponseType != 4)
   {
     goto LABEL_62;
   }
 
-  v16 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v16)
+  mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38]5)
   {
-    v16 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
-  if ([v16 shouldLogToDisk])
+  shouldLog5 = [mEMORY[0x277D69B38]5 shouldLog];
+  if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog5 | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog5;
   }
 
   v19 = 1;
-  if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_INFO))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38]5 OSLogObject], OS_LOG_TYPE_INFO))
   {
     v18 &= 2u;
   }

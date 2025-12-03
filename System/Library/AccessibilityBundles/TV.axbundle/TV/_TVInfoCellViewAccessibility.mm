@@ -1,15 +1,15 @@
 @interface _TVInfoCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _TVInfoCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVInfoCellView" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVInfoCellView" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVInfoCellView" hasInstanceMethod:@"headerContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVInfoCellView" hasInstanceMethod:@"dataViews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

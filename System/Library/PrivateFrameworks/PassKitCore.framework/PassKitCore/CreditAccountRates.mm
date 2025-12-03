@@ -8,18 +8,18 @@
 - (id)creditAccountRates
 {
   v3 = objc_alloc_init(PKCreditAccountRates);
-  v4 = [objc_opt_class() _propertySettersForCreditAccountRates];
-  v5 = [v4 allKeys];
+  _propertySettersForCreditAccountRates = [objc_opt_class() _propertySettersForCreditAccountRates];
+  allKeys = [_propertySettersForCreditAccountRates allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100008B40;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForCreditAccountRates;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForCreditAccountRates;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

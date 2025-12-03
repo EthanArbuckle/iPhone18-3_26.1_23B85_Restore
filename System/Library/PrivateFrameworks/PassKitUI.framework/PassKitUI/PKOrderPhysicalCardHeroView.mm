@@ -1,22 +1,22 @@
 @interface PKOrderPhysicalCardHeroView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKOrderPhysicalCardHeroView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKOrderPhysicalCardHeroView)initWithFrame:(CGRect)frame;
 - (id)_backgroundImage;
 - (void)layoutSubviews;
 @end
 
 @implementation PKOrderPhysicalCardHeroView
 
-- (PKOrderPhysicalCardHeroView)initWithFrame:(CGRect)a3
+- (PKOrderPhysicalCardHeroView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PKOrderPhysicalCardHeroView;
-  v3 = [(PKOrderPhysicalCardHeroView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKOrderPhysicalCardHeroView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v5 = [(PKOrderPhysicalCardHeroView *)v3 _backgroundImage];
-    v6 = [v4 initWithImage:v5];
+    _backgroundImage = [(PKOrderPhysicalCardHeroView *)v3 _backgroundImage];
+    v6 = [v4 initWithImage:_backgroundImage];
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v6;
 
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKPhysicalCardArtworkView *)self->_artworkView sizeThatFits:a3.width, 1.79769313e308];
+  width = fits.width;
+  [(PKPhysicalCardArtworkView *)self->_artworkView sizeThatFits:fits.width, 1.79769313e308];
   v5 = v4 + 120.0;
   v6 = width;
   result.height = v5;

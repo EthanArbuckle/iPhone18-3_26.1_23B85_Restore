@@ -1,33 +1,33 @@
 @interface CHSplitTextMathStep
-- (CHSplitTextMathStep)initWithAdditionalRecognitionBlock:(id)a3 strokeProvider:(id)a4 locales:(id)a5;
-- (id)process:(id)a3 options:(id)a4;
-- (void)processSubGroupFromGroup:(id)a3 strokeIndexes:(id)a4 inputStrokeIdentifiers:(id)a5 classification:(int64_t)a6 result:(id)a7;
+- (CHSplitTextMathStep)initWithAdditionalRecognitionBlock:(id)block strokeProvider:(id)provider locales:(id)locales;
+- (id)process:(id)process options:(id)options;
+- (void)processSubGroupFromGroup:(id)group strokeIndexes:(id)indexes inputStrokeIdentifiers:(id)identifiers classification:(int64_t)classification result:(id)result;
 @end
 
 @implementation CHSplitTextMathStep
 
-- (CHSplitTextMathStep)initWithAdditionalRecognitionBlock:(id)a3 strokeProvider:(id)a4 locales:(id)a5
+- (CHSplitTextMathStep)initWithAdditionalRecognitionBlock:(id)block strokeProvider:(id)provider locales:(id)locales
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  providerCopy = provider;
+  localesCopy = locales;
   v35.receiver = self;
   v35.super_class = CHSplitTextMathStep;
   v11 = [(CHSplitTextMathStep *)&v35 init];
   if (v11)
   {
-    v12 = MEMORY[0x1865E6810](v8);
+    v12 = MEMORY[0x1865E6810](blockCopy);
     additionalRecognitionBlock = v11->_additionalRecognitionBlock;
     v11->_additionalRecognitionBlock = v12;
 
-    objc_storeStrong(&v11->_strokeProvider, a4);
+    objc_storeStrong(&v11->_strokeProvider, provider);
     v14 = [CHBottomUpStrokeGroupingStrategy alloc];
-    isInlineContinuousMode_inlineContinuousModeTargets = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v14, v15, v9, 1, v10, 0, 0);
+    isInlineContinuousMode_inlineContinuousModeTargets = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v14, v15, providerCopy, 1, localesCopy, 0, 0);
     leftToRightBottomUpStrategy = v11->_leftToRightBottomUpStrategy;
     v11->_leftToRightBottomUpStrategy = isInlineContinuousMode_inlineContinuousModeTargets;
 
     v18 = [CHBottomUpStrokeGroupingStrategy alloc];
-    v20 = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v18, v19, v9, 2, v10, 0, 0);
+    v20 = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v18, v19, providerCopy, 2, localesCopy, 0, 0);
     rightToLeftBottomUpStrategy = v11->_rightToLeftBottomUpStrategy;
     v11->_rightToLeftBottomUpStrategy = v20;
 
@@ -41,18 +41,18 @@
   return v11;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v406 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v379 = a4;
+  processCopy = process;
+  optionsCopy = options;
   v396 = 0u;
   v397 = 0u;
   v398 = 0u;
   v399 = 0u;
-  if (v6)
+  if (processCopy)
   {
-    v12 = v6[9];
+    v12 = processCopy[9];
   }
 
   else
@@ -60,9 +60,9 @@
     v12 = 0;
   }
 
-  v385 = v6;
+  v385 = processCopy;
   v13 = objc_msgSend_copy(v12, v7, v8, v9, v10, v11);
-  v387 = self;
+  selfCopy = self;
   obj = v13;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v396, v405, 16, v15);
   if (v16)
@@ -80,9 +80,9 @@
           objc_enumerationMutation(obj);
         }
 
-        if (v6)
+        if (processCopy)
         {
-          v19 = v6[10];
+          v19 = processCopy[10];
         }
 
         else
@@ -145,7 +145,7 @@
           height = *(MEMORY[0x1E695F050] + 24);
           while (1)
           {
-            if (v125 >= objc_msgSend_count(v48, v119, v120, v121, v122, v123, v378, v379))
+            if (v125 >= objc_msgSend_count(v48, v119, v120, v121, v122, v123, v378, optionsCopy))
             {
 LABEL_69:
 
@@ -281,8 +281,8 @@ LABEL_71:
                       if (objc_msgSend_count(v293, v314, v315, v316, v317, v318) && objc_msgSend_count(v135, v319, v320, v321, v322, v323))
                       {
                         v329 = objc_msgSend_inputStrokeIdentifiers(v389, v324, v325, v326, v327, v328);
-                        objc_msgSend_processSubGroupFromGroup_strokeIndexes_inputStrokeIdentifiers_classification_result_(v387, v330, v383, v293, v329, 1, v385);
-                        objc_msgSend_processSubGroupFromGroup_strokeIndexes_inputStrokeIdentifiers_classification_result_(v387, v331, v383, v135, v329, 3, v385);
+                        objc_msgSend_processSubGroupFromGroup_strokeIndexes_inputStrokeIdentifiers_classification_result_(selfCopy, v330, v383, v293, v329, 1, v385);
+                        objc_msgSend_processSubGroupFromGroup_strokeIndexes_inputStrokeIdentifiers_classification_result_(selfCopy, v331, v383, v135, v329, 3, v385);
                         if (v385)
                         {
                           v332 = v385[9];
@@ -342,7 +342,7 @@ LABEL_68:
             }
 
 LABEL_43:
-            v217 = objc_msgSend_allowedSymbolsInTextPrefix(v387, v161, v162, v163, v164, v165);
+            v217 = objc_msgSend_allowedSymbolsInTextPrefix(selfCopy, v161, v162, v163, v164, v165);
             v223 = objc_msgSend_string(v135, v218, v219, v220, v221, v222);
             v228 = objc_msgSend_containsObject_(v217, v224, v223, v225, v226, v227);
 
@@ -385,7 +385,7 @@ LABEL_43:
           }
         }
 
-        v6 = v385;
+        processCopy = v385;
       }
 
       v13 = obj;
@@ -398,15 +398,15 @@ LABEL_43:
   return v385;
 }
 
-- (void)processSubGroupFromGroup:(id)a3 strokeIndexes:(id)a4 inputStrokeIdentifiers:(id)a5 classification:(int64_t)a6 result:(id)a7
+- (void)processSubGroupFromGroup:(id)group strokeIndexes:(id)indexes inputStrokeIdentifiers:(id)identifiers classification:(int64_t)classification result:(id)result
 {
   v222 = *MEMORY[0x1E69E9840];
-  v199 = a3;
-  v204 = a7;
-  objc_msgSend_objectsAtIndexes_(a5, v12, a4, v13, v14, v15);
+  groupCopy = group;
+  resultCopy = result;
+  objc_msgSend_objectsAtIndexes_(identifiers, v12, indexes, v13, v14, v15);
   v198 = v197 = self;
   v200 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v16, v198, self->_strokeProvider, v17, v18);
-  if (a6 == 3)
+  if (classification == 3)
   {
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
@@ -453,7 +453,7 @@ LABEL_43:
     }
 
     v94 = [CHStrokeGroup alloc];
-    v100 = objc_msgSend_ancestorIdentifier(v199, v95, v96, v97, v98, v99);
+    v100 = objc_msgSend_ancestorIdentifier(groupCopy, v95, v96, v97, v98, v99);
     v105 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFD8], v101, v198, v102, v103, v104);
     v111 = objc_msgSend_firstObject(v198, v106, v107, v108, v109, v110);
     v117 = objc_msgSend_lastObject(v198, v112, v113, v114, v115, v116);
@@ -464,10 +464,10 @@ LABEL_43:
     goto LABEL_49;
   }
 
-  if (a6 != 1)
+  if (classification != 1)
   {
     StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin = 0;
-    if (a6 == 2)
+    if (classification == 2)
     {
       goto LABEL_47;
     }
@@ -502,7 +502,7 @@ LABEL_43:
       }
 
       v36 = *(*(&v213 + 1) + 8 * v35);
-      v37 = objc_msgSend_strokeClassificationResult(v204, v28, v29, v30, v31, v32);
+      v37 = objc_msgSend_strokeClassificationResult(resultCopy, v28, v29, v30, v31, v32);
       v43 = objc_msgSend_scriptClassificationRawResultsByStrokeIdentifier(v37, v38, v39, v40, v41, v42);
       v48 = objc_msgSend_objectForKeyedSubscript_(v43, v44, v36, v45, v46, v47);
 
@@ -595,7 +595,7 @@ LABEL_34:
   if (v27 <= objc_msgSend_count(obj, v70, v71, v72, v73, v74) - v26)
   {
     leftToRightBottomUpStrategy = v197->_leftToRightBottomUpStrategy;
-    v134 = objc_msgSend_ancestorIdentifier(v199, v19, v20, v21, v22, v23);
+    v134 = objc_msgSend_ancestorIdentifier(groupCopy, v19, v20, v21, v22, v23);
     v138 = objc_msgSend_strokeGroupFromStrokes_ancestorIdentifier_(leftToRightBottomUpStrategy, v135, v200, v134, v136, v137);
   }
 
@@ -603,7 +603,7 @@ LABEL_34:
   {
 LABEL_47:
     rightToLeftBottomUpStrategy = v197->_rightToLeftBottomUpStrategy;
-    v140 = objc_msgSend_ancestorIdentifier(v199, v19, v20, v21, v22, v23);
+    v140 = objc_msgSend_ancestorIdentifier(groupCopy, v19, v20, v21, v22, v23);
     v138 = objc_msgSend_strokeGroupFromStrokes_ancestorIdentifier_(rightToLeftBottomUpStrategy, v141, v200, v140, v142, v143);
   }
 
@@ -611,7 +611,7 @@ LABEL_47:
 
   StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin = v144;
 LABEL_49:
-  v145 = objc_msgSend_cachedRecognitionResultsFromPostProcessing(v204, v19, v20, v21, v22, v23);
+  v145 = objc_msgSend_cachedRecognitionResultsFromPostProcessing(resultCopy, v19, v20, v21, v22, v23);
   v151 = objc_msgSend_strokeIdentifiers(StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin, v146, v147, v148, v149, v150);
   v156 = objc_msgSend_objectForKeyedSubscript_(v145, v152, v151, v153, v154, v155);
 
@@ -624,12 +624,12 @@ LABEL_49:
   v163 = v156;
   v164 = v162;
   v168 = v164;
-  if (v204)
+  if (resultCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v204[1], v165, v163, v164, v166, v167);
-    objc_msgSend_setObject_forKeyedSubscript_(v204[2], v169, v163, v168, v170, v171);
+    objc_msgSend_setObject_forKeyedSubscript_(resultCopy[1], v165, v163, v164, v166, v167);
+    objc_msgSend_setObject_forKeyedSubscript_(resultCopy[2], v169, v163, v168, v170, v171);
 
-    objc_msgSend_addObject_(v204[9], v172, StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin, v173, v174, v175);
+    objc_msgSend_addObject_(resultCopy[9], v172, StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin, v173, v174, v175);
   }
 
   else
@@ -638,10 +638,10 @@ LABEL_49:
     objc_msgSend_addObject_(0, v193, StrokeIdentifier_lastStrokeIdentifier_bounds_classification_groupingConfidence_strategyIdentifier_firstStrokeOrigin, v194, v195, v196);
   }
 
-  v176 = v204;
-  if (v204)
+  v176 = resultCopy;
+  if (resultCopy)
   {
-    v176 = v204[10];
+    v176 = resultCopy[10];
   }
 
   v177 = v176;

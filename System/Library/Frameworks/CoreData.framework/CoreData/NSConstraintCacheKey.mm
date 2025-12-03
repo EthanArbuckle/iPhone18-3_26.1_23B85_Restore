@@ -1,5 +1,5 @@
 @interface NSConstraintCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
 @end
@@ -23,12 +23,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = *(a3 + 1);
+    v7 = *(equal + 1);
     v8 = [(NSArray *)self->_values count];
     if (v8)
     {

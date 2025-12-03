@@ -1,23 +1,23 @@
 @interface NTKWorldClockComplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityComplicationSubType;
 @end
 
 @implementation NTKWorldClockComplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKWorldClockComplication" hasInstanceVariable:@"_city" withType:"WorldClockCity"];
-  [v3 validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKWorldClockComplication" hasInstanceVariable:@"_city" withType:"WorldClockCity"];
+  [validationsCopy validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityComplicationSubType
 {
   v2 = [(NTKWorldClockComplicationAccessibility *)self safeValueForKey:@"_city"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

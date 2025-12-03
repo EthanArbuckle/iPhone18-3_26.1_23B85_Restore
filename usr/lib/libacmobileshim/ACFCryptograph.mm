@@ -1,21 +1,21 @@
 @interface ACFCryptograph
-- (id)compactDataFromPropertyList:(id)a3;
-- (id)compressData:(id)a3;
-- (id)encryptData:(id)a3 withKey:(__SecKey *)a4;
-- (id)hashStringSHA256WithString:(id)a3;
-- (id)signatureForData:(id)a3 withKey:(__SecKey *)a4;
-- (void)clearKey:(id)a3;
-- (void)fillEncryptionSuffix:(id)a3;
-- (void)fillHMACSuffix:(id)a3;
+- (id)compactDataFromPropertyList:(id)list;
+- (id)compressData:(id)data;
+- (id)encryptData:(id)data withKey:(__SecKey *)key;
+- (id)hashStringSHA256WithString:(id)string;
+- (id)signatureForData:(id)data withKey:(__SecKey *)key;
+- (void)clearKey:(id)key;
+- (void)fillEncryptionSuffix:(id)suffix;
+- (void)fillHMACSuffix:(id)suffix;
 @end
 
 @implementation ACFCryptograph
 
-- (id)encryptData:(id)a3 withKey:(__SecKey *)a4
+- (id)encryptData:(id)data withKey:(__SecKey *)key
 {
   cipherTextLen = 0;
-  v6 = [a3 length];
-  if (!a4 || !v6 || (v7 = [a3 length], BlockSize = SecKeyGetBlockSize(a4), cipherTextLen = BlockSize, v7 > BlockSize))
+  v6 = [data length];
+  if (!key || !v6 || (v7 = [data length], BlockSize = SecKeyGetBlockSize(key), cipherTextLen = BlockSize, v7 > BlockSize))
   {
     if (qword_2A1EB8EA8 && (ACFLogSettingsGetLevelMask() & 8) != 0)
     {
@@ -34,7 +34,7 @@ LABEL_13:
   }
 
   v10 = v9;
-  v11 = SecKeyEncrypt(a4, 1u, [a3 bytes], objc_msgSend(a3, "length"), v9, &cipherTextLen);
+  v11 = SecKeyEncrypt(key, 1u, [data bytes], objc_msgSend(data, "length"), v9, &cipherTextLen);
   v12 = [MEMORY[0x29EDB8DA0] dataWithBytes:v10 length:cipherTextLen];
   free(v10);
   if (v11 || !v12)
@@ -56,9 +56,9 @@ LABEL_14:
   return v12;
 }
 
-- (id)signatureForData:(id)a3 withKey:(__SecKey *)a4
+- (id)signatureForData:(id)data withKey:(__SecKey *)key
 {
-  if (!a3 || !a4 || (BlockSize = SecKeyGetBlockSize(a4), sigLen = BlockSize, BlockSize < [a3 length]))
+  if (!data || !key || (BlockSize = SecKeyGetBlockSize(key), sigLen = BlockSize, BlockSize < [data length]))
   {
     if (qword_2A1EB8EA8 && (ACFLogSettingsGetLevelMask() & 8) != 0)
     {
@@ -75,7 +75,7 @@ LABEL_14:
   }
 
   v8 = v7;
-  v9 = SecKeyRawSign(a4, 0, [a3 bytes], objc_msgSend(a3, "length"), v7, &sigLen);
+  v9 = SecKeyRawSign(key, 0, [data bytes], objc_msgSend(data, "length"), v7, &sigLen);
   v10 = [MEMORY[0x29EDB8DA0] dataWithBytes:v8 length:sigLen];
   free(v8);
   if (v9 || !v10)
@@ -91,19 +91,19 @@ LABEL_14:
   return v10;
 }
 
-- (id)hashStringSHA256WithString:(id)a3
+- (id)hashStringSHA256WithString:(id)string
 {
-  v3 = ACFSHA256AsString([a3 dataUsingEncoding:4]);
+  v3 = ACFSHA256AsString([string dataUsingEncoding:4]);
 
   return [v3 lowercaseString];
 }
 
-- (void)fillEncryptionSuffix:(id)a3
+- (void)fillEncryptionSuffix:(id)suffix
 {
-  if (a3)
+  if (suffix)
   {
-    [a3 setLength:16];
-    qmemcpy([a3 mutableBytes], "HARDCODEDKEY1321", 16);
+    [suffix setLength:16];
+    qmemcpy([suffix mutableBytes], "HARDCODEDKEY1321", 16);
   }
 
   else
@@ -112,12 +112,12 @@ LABEL_14:
   }
 }
 
-- (void)fillHMACSuffix:(id)a3
+- (void)fillHMACSuffix:(id)suffix
 {
-  if (a3)
+  if (suffix)
   {
-    [a3 setLength:16];
-    qmemcpy([a3 mutableBytes], "HARDCODEDKEY2abc", 16);
+    [suffix setLength:16];
+    qmemcpy([suffix mutableBytes], "HARDCODEDKEY2abc", 16);
   }
 
   else
@@ -126,17 +126,17 @@ LABEL_14:
   }
 }
 
-- (void)clearKey:(id)a3
+- (void)clearKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = [a3 mutableBytes];
-    for (i = [a3 length]; i; --i)
+    mutableBytes = [key mutableBytes];
+    for (i = [key length]; i; --i)
     {
-      *v4++ = 0;
+      *mutableBytes++ = 0;
     }
 
-    [a3 setLength:0];
+    [key setLength:0];
   }
 
   else
@@ -145,29 +145,29 @@ LABEL_14:
   }
 }
 
-- (id)compactDataFromPropertyList:(id)a3
+- (id)compactDataFromPropertyList:(id)list
 {
-  v3 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:a3 format:100 options:0 error:0];
+  v3 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:list format:100 options:0 error:0];
   v4 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithData:v3 encoding:4];
   v5 = [objc_msgSend(v4 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x29EDB9F50], "characterSetWithCharactersInString:", @"\t\n", "componentsJoinedByString:", &stru_2A1EB91A0}];
 
   return [v5 dataUsingEncoding:4];
 }
 
-- (id)compressData:(id)a3
+- (id)compressData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     [ACFCryptograph compressData:];
     return 0;
   }
 
-  destLen = compressBound([a3 length]);
+  destLen = compressBound([data length]);
   result = [MEMORY[0x29EDB8DF8] dataWithLength:destLen];
   if (result)
   {
     v5 = result;
-    v6 = compress2([result mutableBytes], &destLen, objc_msgSend(a3, "bytes"), objc_msgSend(a3, "length"), 9);
+    v6 = compress2([result mutableBytes], &destLen, objc_msgSend(data, "bytes"), objc_msgSend(data, "length"), 9);
     if (v6)
     {
       if (qword_2A1EB8EA8)

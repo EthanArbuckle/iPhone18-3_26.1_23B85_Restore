@@ -1,13 +1,13 @@
 @interface ATXUserFocusInferredMode
 + (id)currentMode;
 + (id)currentModeEvent;
-+ (id)currentModeEventAtGivenTime:(id)a3;
++ (id)currentModeEventAtGivenTime:(id)time;
 - (ATXUserFocusInferredMode)init;
-- (ATXUserFocusInferredMode)initWithStream:(id)a3;
+- (ATXUserFocusInferredMode)initWithStream:(id)stream;
 - (id)currentMode;
 - (id)currentModeEvent;
-- (id)currentModeEventAtGivenTime:(id)a3;
-- (id)inferredModeEventWithSuggestionUUID:(id)a3;
+- (id)currentModeEventAtGivenTime:(id)time;
+- (id)inferredModeEventWithSuggestionUUID:(id)d;
 - (id)lastTwoInferredModeEvents;
 - (id)previousModeEvent;
 @end
@@ -17,23 +17,23 @@
 - (ATXUserFocusInferredMode)init
 {
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 InferredMode];
-  v6 = [(ATXUserFocusInferredMode *)self initWithStream:v5];
+  userFocus = [v3 UserFocus];
+  inferredMode = [userFocus InferredMode];
+  v6 = [(ATXUserFocusInferredMode *)self initWithStream:inferredMode];
 
   return v6;
 }
 
-- (ATXUserFocusInferredMode)initWithStream:(id)a3
+- (ATXUserFocusInferredMode)initWithStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXUserFocusInferredMode;
   v6 = [(ATXUserFocusInferredMode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;
@@ -257,9 +257,9 @@ void __53__ATXUserFocusInferredMode_lastTwoInferredModeEvents__block_invoke(uint
   }
 }
 
-- (id)inferredModeEventWithSuggestionUUID:(id)a3
+- (id)inferredModeEventWithSuggestionUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
   v17 = 0;
   v18 = &v17;
@@ -272,7 +272,7 @@ void __53__ATXUserFocusInferredMode_lastTwoInferredModeEvents__block_invoke(uint
   v14[1] = 3221225472;
   v14[2] = __64__ATXUserFocusInferredMode_inferredModeEventWithSuggestionUUID___block_invoke;
   v14[3] = &unk_279AB8BB0;
-  v15 = v4;
+  v15 = dCopy;
   v16 = &v17;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -347,9 +347,9 @@ void __64__ATXUserFocusInferredMode_inferredModeEventWithSuggestionUUID___block_
 LABEL_5:
 }
 
-- (id)currentModeEventAtGivenTime:(id)a3
+- (id)currentModeEventAtGivenTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = objc_autoreleasePoolPush();
   v14 = 0;
   v15 = &v14;
@@ -357,12 +357,12 @@ LABEL_5:
   v17 = __Block_byref_object_copy__15;
   v18 = __Block_byref_object_dispose__15;
   v19 = 0;
-  v6 = [(BMStream *)self->_stream atx_publisherWithStartDate:v4 endDate:0 maxEvents:&unk_28733C880 lastN:0 reversed:1];
+  v6 = [(BMStream *)self->_stream atx_publisherWithStartDate:timeCopy endDate:0 maxEvents:&unk_28733C880 lastN:0 reversed:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__ATXUserFocusInferredMode_currentModeEventAtGivenTime___block_invoke_26;
   v11[3] = &unk_279AB88E0;
-  v7 = v4;
+  v7 = timeCopy;
   v12 = v7;
   v13 = &v14;
   v8 = [v6 sinkWithCompletion:&__block_literal_global_25_0 shouldContinue:v11];
@@ -424,30 +424,30 @@ uint64_t __56__ATXUserFocusInferredMode_currentModeEventAtGivenTime___block_invo
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentMode];
+  currentMode = [v3 currentMode];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentMode;
 }
 
 + (id)currentModeEvent
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentModeEvent];
+  currentModeEvent = [v3 currentModeEvent];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentModeEvent;
 }
 
-+ (id)currentModeEventAtGivenTime:(id)a3
++ (id)currentModeEventAtGivenTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  v6 = [v5 currentModeEventAtGivenTime:v3];
+  v6 = [v5 currentModeEventAtGivenTime:timeCopy];
 
   objc_autoreleasePoolPop(v4);
 

@@ -2,10 +2,10 @@
 - (PSSpecifier)mainSwitchSpecifier;
 - (TPSCallingLineIdRestrictionController)callingLineIdRestrictionController;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3;
-- (void)configureCell:(id)a3 forSpecifier:(id)a4;
-- (void)setMainSwitchOn:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)configureCell:(id)cell;
+- (void)configureCell:(id)cell forSpecifier:(id)specifier;
+- (void)setMainSwitchOn:(id)on;
 @end
 
 @implementation TPSCallingLineIdRestrictionListController
@@ -16,8 +16,8 @@
   if (!callingLineIdRestrictionController)
   {
     v4 = [TPSCallingLineIdRestrictionController alloc];
-    v5 = [(TPSCallingLineIdRestrictionListController *)self subscriptionContext];
-    v6 = [(TPSCallingLineIdRestrictionController *)v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSCallingLineIdRestrictionListController *)self subscriptionContext];
+    v6 = [(TPSCallingLineIdRestrictionController *)v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_callingLineIdRestrictionController;
     self->_callingLineIdRestrictionController = v6;
 
@@ -34,12 +34,12 @@
   v4 = *&self->TPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TPSCallingLineIdRestrictionListController *)self subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSCallingLineIdRestrictionListController *)self subscriptionContext];
+    if (subscriptionContext)
     {
       v6 = +[NSMutableArray array];
-      v7 = [(TPSCallingLineIdRestrictionListController *)self mainSwitchSpecifier];
-      [v6 addObject:v7];
+      mainSwitchSpecifier = [(TPSCallingLineIdRestrictionListController *)self mainSwitchSpecifier];
+      [v6 addObject:mainSwitchSpecifier];
 
       v8 = [v6 copy];
       v9 = *&self->TPSListController_opaque[v3];
@@ -52,11 +52,11 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TPSCallingLineIdRestrictionListController;
-  v5 = [(TPSCallingLineIdRestrictionListController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(TPSCallingLineIdRestrictionListController *)&v7 tableView:view cellForRowAtIndexPath:path];
   [(TPSCallingLineIdRestrictionListController *)self configureCell:v5];
 
   return v5;
@@ -78,9 +78,9 @@
   return mainSwitchSpecifier;
 }
 
-- (void)setMainSwitchOn:(id)a3
+- (void)setMainSwitchOn:(id)on
 {
-  if ([a3 isOn])
+  if ([on isOn])
   {
     v4 = 1;
   }
@@ -90,44 +90,44 @@
     v4 = 2;
   }
 
-  v5 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
-  [v5 requestStateChange:v4];
+  callingLineIdRestrictionController = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
+  [callingLineIdRestrictionController requestStateChange:v4];
 
   [(TPSCallingLineIdRestrictionListController *)self reloadSpecifiers];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
-    v5 = [v4 specifier];
-    [(TPSCallingLineIdRestrictionListController *)self configureCell:v4 forSpecifier:v5];
+    v4 = cellCopy;
+    specifier = [v4 specifier];
+    [(TPSCallingLineIdRestrictionListController *)self configureCell:v4 forSpecifier:specifier];
   }
 }
 
-- (void)configureCell:(id)a3 forSpecifier:(id)a4
+- (void)configureCell:(id)cell forSpecifier:(id)specifier
 {
-  v12 = a3;
-  v5 = [v12 specifier];
-  v6 = [(TPSCallingLineIdRestrictionListController *)self mainSwitchSpecifier];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  mainSwitchSpecifier = [(TPSCallingLineIdRestrictionListController *)self mainSwitchSpecifier];
 
-  if (v5 == v6)
+  if (specifier == mainSwitchSpecifier)
   {
-    v7 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
-    v8 = [v7 state];
+    callingLineIdRestrictionController = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
+    state = [callingLineIdRestrictionController state];
 
-    if (v8)
+    if (state)
     {
       v9 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [v9 addTarget:self action:"setMainSwitchOn:" forControlEvents:4096];
-      v10 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
-      [v9 setOn:{objc_msgSend(v10, "state") != &dword_0 + 2}];
+      callingLineIdRestrictionController2 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
+      [v9 setOn:{objc_msgSend(callingLineIdRestrictionController2, "state") != &dword_0 + 2}];
 
-      v11 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
-      [v9 setEnabled:{objc_msgSend(v11, "isEditable")}];
+      callingLineIdRestrictionController3 = [(TPSCallingLineIdRestrictionListController *)self callingLineIdRestrictionController];
+      [v9 setEnabled:{objc_msgSend(callingLineIdRestrictionController3, "isEditable")}];
     }
 
     else
@@ -136,7 +136,7 @@
       [v9 startAnimating];
     }
 
-    [v12 setAccessoryView:v9];
+    [cellCopy setAccessoryView:v9];
   }
 }
 

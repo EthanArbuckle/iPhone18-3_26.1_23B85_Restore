@@ -1,51 +1,51 @@
 @interface HMFStringIndentation
-+ (id)indentationWithWidth:(unint64_t)a3;
-- (HMFStringIndentation)initWithWidth:(unint64_t)a3;
++ (id)indentationWithWidth:(unint64_t)width;
+- (HMFStringIndentation)initWithWidth:(unint64_t)width;
 - (id)description;
-- (id)indentationByLevels:(int64_t)a3;
+- (id)indentationByLevels:(int64_t)levels;
 @end
 
 @implementation HMFStringIndentation
 
 - (id)description
 {
-  v3 = [(HMFStringIndentation *)self width];
-  v4 = v3 + v3 * [(HMFStringIndentation *)self level];
+  width = [(HMFStringIndentation *)self width];
+  v4 = width + width * [(HMFStringIndentation *)self level];
 
   return [&stru_283EBDA30 stringByPaddingToLength:v4 withString:@" " startingAtIndex:0];
 }
 
-+ (id)indentationWithWidth:(unint64_t)a3
++ (id)indentationWithWidth:(unint64_t)width
 {
-  v3 = [[a1 alloc] initWithWidth:a3];
+  v3 = [[self alloc] initWithWidth:width];
 
   return v3;
 }
 
-- (HMFStringIndentation)initWithWidth:(unint64_t)a3
+- (HMFStringIndentation)initWithWidth:(unint64_t)width
 {
   v6.receiver = self;
   v6.super_class = HMFStringIndentation;
   result = [(HMFStringIndentation *)&v6 init];
   if (result)
   {
-    v5 = 4;
-    if (a3)
+    widthCopy = 4;
+    if (width)
     {
-      v5 = a3;
+      widthCopy = width;
     }
 
-    result->_width = v5;
+    result->_width = widthCopy;
   }
 
   return result;
 }
 
-- (id)indentationByLevels:(int64_t)a3
+- (id)indentationByLevels:(int64_t)levels
 {
-  if ([(HMFStringIndentation *)self level]+ a3)
+  if ([(HMFStringIndentation *)self level]+ levels)
   {
-    v5 = [(HMFStringIndentation *)self level]+ a3;
+    v5 = [(HMFStringIndentation *)self level]+ levels;
   }
 
   else

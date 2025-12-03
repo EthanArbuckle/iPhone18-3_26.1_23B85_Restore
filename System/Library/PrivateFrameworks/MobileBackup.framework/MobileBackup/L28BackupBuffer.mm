@@ -1,18 +1,18 @@
 @interface L28BackupBuffer
-- (id)_initWithBuffer:(id)a3 nextDayIndex:(unsigned int)a4 endDay:(int64_t)a5;
+- (id)_initWithBuffer:(id)buffer nextDayIndex:(unsigned int)index endDay:(int64_t)day;
 - (id)_latestBackup;
-- (id)_slotAtIndex:(unsigned int)a3;
+- (id)_slotAtIndex:(unsigned int)index;
 - (id)_slots;
-- (void)_addNewEntry:(id)a3 entryDay:(int64_t)a4;
-- (void)_updateCurrentMetrics:(id)a3 forDay:(int64_t)a4;
+- (void)_addNewEntry:(id)entry entryDay:(int64_t)day;
+- (void)_updateCurrentMetrics:(id)metrics forDay:(int64_t)day;
 @end
 
 @implementation L28BackupBuffer
 
-- (id)_initWithBuffer:(id)a3 nextDayIndex:(unsigned int)a4 endDay:(int64_t)a5
+- (id)_initWithBuffer:(id)buffer nextDayIndex:(unsigned int)index endDay:(int64_t)day
 {
-  v8 = a3;
-  if ([v8 count] >= 0x1D)
+  bufferCopy = buffer;
+  if ([bufferCopy count] >= 0x1D)
   {
     __assert_rtn("[L28BackupBuffer _initWithBuffer:nextDayIndex:endDay:]", "MBL28BackupStats.m", 57, "slots.count <= kMBL28BufferCapacity");
   }
@@ -23,13 +23,13 @@
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (bufferCopy)
     {
       v11 = 0;
       slots = v9->_slots;
       do
       {
-        v13 = [v8 objectAtIndexedSubscript:v11];
+        v13 = [bufferCopy objectAtIndexedSubscript:v11];
         v14 = slots[v11];
         slots[v11] = v13;
 
@@ -48,21 +48,21 @@
       }
     }
 
-    v10->_nextDayIndex = a4;
-    v10->_endDay = a5;
+    v10->_nextDayIndex = index;
+    v10->_endDay = day;
   }
 
   return v10;
 }
 
-- (id)_slotAtIndex:(unsigned int)a3
+- (id)_slotAtIndex:(unsigned int)index
 {
-  if (a3 >= 0x1C)
+  if (index >= 0x1C)
   {
     __assert_rtn("[L28BackupBuffer _slotAtIndex:]", "MBL28BackupStats.m", 83, "index < kMBL28BufferCapacity");
   }
 
-  v4 = self->_slots[a3];
+  v4 = self->_slots[index];
 
   return v4;
 }
@@ -99,25 +99,25 @@
   return v2;
 }
 
-- (void)_addNewEntry:(id)a3 entryDay:(int64_t)a4
+- (void)_addNewEntry:(id)entry entryDay:(int64_t)day
 {
-  v6 = a3;
+  entryCopy = entry;
   endDay = self->_endDay;
-  if (endDay == a4)
+  if (endDay == day)
   {
     __assert_rtn("[L28BackupBuffer _addNewEntry:entryDay:]", "MBL28BackupStats.m", 102, "entryDay != _endDay");
   }
 
-  v8 = v6;
+  v8 = entryCopy;
   if (endDay)
   {
-    v9 = ~endDay + a4;
+    v9 = ~endDay + day;
     if (v9 >= 0x1C)
     {
       v9 = 28;
     }
 
-    if (endDay <= a4)
+    if (endDay <= day)
     {
       v10 = v9;
     }
@@ -150,19 +150,19 @@
   v14[1] = v8;
 
   self->_nextDayIndex = (self->_nextDayIndex + 1) % 28;
-  self->_endDay = a4;
+  self->_endDay = day;
 }
 
-- (void)_updateCurrentMetrics:(id)a3 forDay:(int64_t)a4
+- (void)_updateCurrentMetrics:(id)metrics forDay:(int64_t)day
 {
-  if (self->_endDay == a4)
+  if (self->_endDay == day)
   {
-    [(L28BackupBuffer *)self _updateLatestEntry:a3];
+    [(L28BackupBuffer *)self _updateLatestEntry:metrics];
   }
 
   else
   {
-    [(L28BackupBuffer *)self _addNewEntry:a3 entryDay:?];
+    [(L28BackupBuffer *)self _addNewEntry:metrics entryDay:?];
   }
 }
 

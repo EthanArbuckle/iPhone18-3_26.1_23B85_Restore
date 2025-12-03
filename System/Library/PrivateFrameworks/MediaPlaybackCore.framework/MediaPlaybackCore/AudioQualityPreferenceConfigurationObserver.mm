@@ -1,8 +1,8 @@
 @interface AudioQualityPreferenceConfigurationObserver
 - (id)preferenceChangeClosure;
-- (void)beginObservationWithPreferenceChangeClosure:(id)a3;
+- (void)beginObservationWithPreferenceChangeClosure:(id)closure;
 - (void)checkForAudioQualityPreferenceChanges;
-- (void)setPreferenceChangeClosure:(id)a3;
+- (void)setPreferenceChangeClosure:(id)closure;
 - (void)setupPreferenceChangeObserver;
 - (void)suspendObservation;
 @end
@@ -31,9 +31,9 @@
   return v4;
 }
 
-- (void)setPreferenceChangeClosure:(id)a3
+- (void)setPreferenceChangeClosure:(id)closure
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(closure);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -46,34 +46,34 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1C5D68E78(v4, v5);
 }
 
-- (void)beginObservationWithPreferenceChangeClosure:(id)a3
+- (void)beginObservationWithPreferenceChangeClosure:(id)closure
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(closure);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C5D68E98(sub_1C5D69674, v5);
 }
 
 - (void)suspendObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D6900C();
 }
 
 - (void)setupPreferenceChangeObserver
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D691AC();
 }
 
 - (void)checkForAudioQualityPreferenceChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5D693F4();
 }
 

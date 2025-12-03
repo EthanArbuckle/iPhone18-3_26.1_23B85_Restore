@@ -1,10 +1,10 @@
 @interface ASTSendPropertiesErrorStatus
-- (id)reasonForCode:(id)a3;
+- (id)reasonForCode:(id)code;
 @end
 
 @implementation ASTSendPropertiesErrorStatus
 
-- (id)reasonForCode:(id)a3
+- (id)reasonForCode:(id)code
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = &unk_2852D5EF8;
@@ -14,9 +14,9 @@
   v9[2] = &unk_2852D5F28;
   v10[2] = @"The client does not support the send properties query.";
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  codeCopy = code;
   v5 = [v3 dictionaryWithObjects:v10 forKeys:v9 count:3];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:codeCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 

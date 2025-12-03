@@ -1,11 +1,11 @@
 @interface INRestaurantGuestDisplayPreferences
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INRestaurantGuestDisplayPreferences)init;
-- (INRestaurantGuestDisplayPreferences)initWithCoder:(id)a3;
+- (INRestaurantGuestDisplayPreferences)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRestaurantGuestDisplayPreferences
@@ -44,23 +44,23 @@
   return v11;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRestaurantGuestDisplayPreferences;
   v6 = [(INRestaurantGuestDisplayPreferences *)&v11 description];
-  v7 = [(INRestaurantGuestDisplayPreferences *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRestaurantGuestDisplayPreferences *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -70,12 +70,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldFirstNameOptional];
-      if (v6 == [(INRestaurantGuestDisplayPreferences *)self nameFieldFirstNameOptional]&& (v7 = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldLastNameOptional], v7 == [(INRestaurantGuestDisplayPreferences *)self nameFieldLastNameOptional]) && (v8 = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldShouldBeDisplayed], v8 == [(INRestaurantGuestDisplayPreferences *)self nameFieldShouldBeDisplayed]) && (v9 = [(INRestaurantGuestDisplayPreferences *)v5 emailAddressFieldShouldBeDisplayed], v9 == [(INRestaurantGuestDisplayPreferences *)self emailAddressFieldShouldBeDisplayed]) && (v10 = [(INRestaurantGuestDisplayPreferences *)v5 phoneNumberFieldShouldBeDisplayed], v10 == [(INRestaurantGuestDisplayPreferences *)self phoneNumberFieldShouldBeDisplayed]) && (v11 = [(INRestaurantGuestDisplayPreferences *)v5 nameEditable], v11 == [(INRestaurantGuestDisplayPreferences *)self nameEditable]) && (v12 = [(INRestaurantGuestDisplayPreferences *)v5 emailAddressEditable], v12 == [(INRestaurantGuestDisplayPreferences *)self emailAddressEditable]))
+      v5 = equalCopy;
+      nameFieldFirstNameOptional = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldFirstNameOptional];
+      if (nameFieldFirstNameOptional == [(INRestaurantGuestDisplayPreferences *)self nameFieldFirstNameOptional]&& (v7 = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldLastNameOptional], v7 == [(INRestaurantGuestDisplayPreferences *)self nameFieldLastNameOptional]) && (v8 = [(INRestaurantGuestDisplayPreferences *)v5 nameFieldShouldBeDisplayed], v8 == [(INRestaurantGuestDisplayPreferences *)self nameFieldShouldBeDisplayed]) && (v9 = [(INRestaurantGuestDisplayPreferences *)v5 emailAddressFieldShouldBeDisplayed], v9 == [(INRestaurantGuestDisplayPreferences *)self emailAddressFieldShouldBeDisplayed]) && (v10 = [(INRestaurantGuestDisplayPreferences *)v5 phoneNumberFieldShouldBeDisplayed], v10 == [(INRestaurantGuestDisplayPreferences *)self phoneNumberFieldShouldBeDisplayed]) && (v11 = [(INRestaurantGuestDisplayPreferences *)v5 nameEditable], v11 == [(INRestaurantGuestDisplayPreferences *)self nameEditable]) && (v12 = [(INRestaurantGuestDisplayPreferences *)v5 emailAddressEditable], v12 == [(INRestaurantGuestDisplayPreferences *)self emailAddressEditable]))
       {
-        v15 = [(INRestaurantGuestDisplayPreferences *)v5 phoneNumberEditable];
-        v13 = v15 ^ [(INRestaurantGuestDisplayPreferences *)self phoneNumberEditable]^ 1;
+        phoneNumberEditable = [(INRestaurantGuestDisplayPreferences *)v5 phoneNumberEditable];
+        v13 = phoneNumberEditable ^ [(INRestaurantGuestDisplayPreferences *)self phoneNumberEditable]^ 1;
       }
 
       else
@@ -93,7 +93,7 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[INRestaurantGuestDisplayPreferences allocWithZone:?]];
   [(INRestaurantGuestDisplayPreferences *)v4 setNameFieldFirstNameOptional:[(INRestaurantGuestDisplayPreferences *)self nameFieldFirstNameOptional]];
@@ -107,34 +107,34 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nameFieldFirstNameOptional = self->_nameFieldFirstNameOptional;
-  v5 = a3;
-  [v5 encodeBool:nameFieldFirstNameOptional forKey:@"nameFieldFirstNameOptional"];
-  [v5 encodeBool:self->_nameFieldLastNameOptional forKey:@"nameFieldLastNameOptional"];
-  [v5 encodeBool:self->_nameFieldShouldBeDisplayed forKey:@"nameFieldShouldBeDisplayed"];
-  [v5 encodeBool:self->_emailAddressFieldShouldBeDisplayed forKey:@"emailAddressFieldShouldBeDisplayed"];
-  [v5 encodeBool:self->_phoneNumberFieldShouldBeDisplayed forKey:@"phoneNumberFieldShouldBeDisplayed"];
-  [v5 encodeBool:self->_nameEditable forKey:@"nameEditable"];
-  [v5 encodeBool:self->_emailAddressEditable forKey:@"emailAddressEditable"];
-  [v5 encodeBool:self->_phoneNumberEditable forKey:@"phoneNumberEditable"];
+  coderCopy = coder;
+  [coderCopy encodeBool:nameFieldFirstNameOptional forKey:@"nameFieldFirstNameOptional"];
+  [coderCopy encodeBool:self->_nameFieldLastNameOptional forKey:@"nameFieldLastNameOptional"];
+  [coderCopy encodeBool:self->_nameFieldShouldBeDisplayed forKey:@"nameFieldShouldBeDisplayed"];
+  [coderCopy encodeBool:self->_emailAddressFieldShouldBeDisplayed forKey:@"emailAddressFieldShouldBeDisplayed"];
+  [coderCopy encodeBool:self->_phoneNumberFieldShouldBeDisplayed forKey:@"phoneNumberFieldShouldBeDisplayed"];
+  [coderCopy encodeBool:self->_nameEditable forKey:@"nameEditable"];
+  [coderCopy encodeBool:self->_emailAddressEditable forKey:@"emailAddressEditable"];
+  [coderCopy encodeBool:self->_phoneNumberEditable forKey:@"phoneNumberEditable"];
 }
 
-- (INRestaurantGuestDisplayPreferences)initWithCoder:(id)a3
+- (INRestaurantGuestDisplayPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(INRestaurantGuestDisplayPreferences *)self init];
   if (v5)
   {
-    v5->_nameFieldFirstNameOptional = [v4 decodeBoolForKey:@"nameFieldFirstNameOptional"];
-    v5->_nameFieldLastNameOptional = [v4 decodeBoolForKey:@"nameFieldLastNameOptional"];
-    v5->_nameFieldShouldBeDisplayed = [v4 decodeBoolForKey:@"nameFieldShouldBeDisplayed"];
-    v5->_emailAddressFieldShouldBeDisplayed = [v4 decodeBoolForKey:@"emailAddressFieldShouldBeDisplayed"];
-    v5->_phoneNumberFieldShouldBeDisplayed = [v4 decodeBoolForKey:@"phoneNumberFieldShouldBeDisplayed"];
-    v5->_nameEditable = [v4 decodeBoolForKey:@"nameEditable"];
-    v5->_emailAddressEditable = [v4 decodeBoolForKey:@"emailAddressEditable"];
-    v5->_phoneNumberEditable = [v4 decodeBoolForKey:@"phoneNumberEditable"];
+    v5->_nameFieldFirstNameOptional = [coderCopy decodeBoolForKey:@"nameFieldFirstNameOptional"];
+    v5->_nameFieldLastNameOptional = [coderCopy decodeBoolForKey:@"nameFieldLastNameOptional"];
+    v5->_nameFieldShouldBeDisplayed = [coderCopy decodeBoolForKey:@"nameFieldShouldBeDisplayed"];
+    v5->_emailAddressFieldShouldBeDisplayed = [coderCopy decodeBoolForKey:@"emailAddressFieldShouldBeDisplayed"];
+    v5->_phoneNumberFieldShouldBeDisplayed = [coderCopy decodeBoolForKey:@"phoneNumberFieldShouldBeDisplayed"];
+    v5->_nameEditable = [coderCopy decodeBoolForKey:@"nameEditable"];
+    v5->_emailAddressEditable = [coderCopy decodeBoolForKey:@"emailAddressEditable"];
+    v5->_phoneNumberEditable = [coderCopy decodeBoolForKey:@"phoneNumberEditable"];
   }
 
   return v5;

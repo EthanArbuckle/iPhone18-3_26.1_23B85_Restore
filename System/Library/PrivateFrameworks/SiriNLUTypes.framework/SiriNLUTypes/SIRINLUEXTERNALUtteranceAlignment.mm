@@ -1,26 +1,26 @@
 @interface SIRINLUEXTERNALUtteranceAlignment
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNodeIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNodeIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUtteranceAlignment
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_asrHypothesisIndex = *(v4 + 2);
+    self->_asrHypothesisIndex = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -28,7 +28,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -89,31 +89,31 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_asrHypothesisIndex != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_asrHypothesisIndex != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_14;
   }
 
   spans = self->_spans;
-  if (spans | *(v4 + 2))
+  if (spans | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)spans isEqual:?])
     {
@@ -123,13 +123,13 @@ LABEL_14:
     }
 
     has = self->_has;
-    v6 = *(v4 + 24);
+    v6 = *(equalCopy + 24);
   }
 
   v8 = (v6 & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_nodeIndex != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_nodeIndex != *(equalCopy + 3))
     {
       goto LABEL_14;
     }
@@ -142,10 +142,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -173,7 +173,7 @@ LABEL_15:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addSpans:v12];
 
         ++v11;
@@ -196,23 +196,23 @@ LABEL_15:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_asrHypothesisIndex;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_asrHypothesisIndex;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(SIRINLUEXTERNALUtteranceAlignment *)self spansCount])
   {
     [v9 clearSpans];
-    v5 = [(SIRINLUEXTERNALUtteranceAlignment *)self spansCount];
-    if (v5)
+    spansCount = [(SIRINLUEXTERNALUtteranceAlignment *)self spansCount];
+    if (spansCount)
     {
-      v6 = v5;
+      v6 = spansCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUEXTERNALUtteranceAlignment *)self spansAtIndex:i];
@@ -228,10 +228,10 @@ LABEL_15:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     asrHypothesisIndex = self->_asrHypothesisIndex;
@@ -282,11 +282,11 @@ LABEL_15:
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_asrHypothesisIndex];
-    [v3 setObject:v4 forKey:@"asr_hypothesis_index"];
+    [dictionary setObject:v4 forKey:@"asr_hypothesis_index"];
   }
 
   if ([(NSMutableArray *)self->_spans count])
@@ -311,8 +311,8 @@ LABEL_15:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -321,18 +321,18 @@ LABEL_15:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"spans"];
+    [dictionary setObject:v5 forKey:@"spans"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_nodeIndex];
-    [v3 setObject:v12 forKey:@"node_index"];
+    [dictionary setObject:v12 forKey:@"node_index"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -341,15 +341,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUtteranceAlignment;
   v4 = [(SIRINLUEXTERNALUtteranceAlignment *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUtteranceAlignment *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUtteranceAlignment *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasNodeIndex:(BOOL)a3
+- (void)setHasNodeIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -362,22 +362,22 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSpans:(id)a3
+- (void)addSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   spans = self->_spans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!spans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_spans;
     self->_spans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     spans = self->_spans;
   }
 
-  [(NSMutableArray *)spans addObject:v4];
+  [(NSMutableArray *)spans addObject:spansCopy];
 }
 
 @end

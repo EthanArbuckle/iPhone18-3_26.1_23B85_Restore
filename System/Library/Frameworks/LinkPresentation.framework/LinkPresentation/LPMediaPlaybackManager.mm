@@ -4,12 +4,12 @@
 - (BOOL)releaseDecodingResourcesForInactivePlayers;
 - (LPMediaPlaybackManager)init;
 - (id)audioSession;
-- (void)_deactivateAllPlayingMediaPlayersExcept:(id)a3;
+- (void)_deactivateAllPlayingMediaPlayersExcept:(id)except;
 - (void)_updateAudioSessionCategory;
 - (void)_volumeChanged;
-- (void)mediaPlayer:(id)a3 didChangeMutedState:(BOOL)a4;
-- (void)mediaPlayer:(id)a3 didChangePlayingState:(BOOL)a4;
-- (void)volumeChanged:(id)a3;
+- (void)mediaPlayer:(id)player didChangeMutedState:(BOOL)state;
+- (void)mediaPlayer:(id)player didChangePlayingState:(BOOL)state;
+- (void)volumeChanged:(id)changed;
 @end
 
 @implementation LPMediaPlaybackManager
@@ -22,18 +22,18 @@
   v2 = [(LPMediaPlaybackManager *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     mediaPlayers = v2->_mediaPlayers;
-    v2->_mediaPlayers = v3;
+    v2->_mediaPlayers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
     v6 = MEMORY[0x1E69AECE8];
     v12[0] = *MEMORY[0x1E69AECE8];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v5 setAttribute:v7 forKey:*MEMORY[0x1E69AECD8] error:0];
+    [mEMORY[0x1E69AED10] setAttribute:v7 forKey:*MEMORY[0x1E69AECD8] error:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel_volumeChanged_ name:*v6 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_volumeChanged_ name:*v6 object:0];
 
     v9 = v2;
   }
@@ -56,33 +56,33 @@
   return v2;
 }
 
-- (void)mediaPlayer:(id)a3 didChangePlayingState:(BOOL)a4
+- (void)mediaPlayer:(id)player didChangePlayingState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && [v6 isActive])
+  stateCopy = state;
+  playerCopy = player;
+  if (stateCopy && [playerCopy isActive])
   {
-    [(LPMediaPlaybackManager *)self _deactivateAllPlayingMediaPlayersExcept:v6];
+    [(LPMediaPlaybackManager *)self _deactivateAllPlayingMediaPlayersExcept:playerCopy];
   }
 
   [(LPMediaPlaybackManager *)self _updateAudioSessionCategory];
 }
 
-- (void)mediaPlayer:(id)a3 didChangeMutedState:(BOOL)a4
+- (void)mediaPlayer:(id)player didChangeMutedState:(BOOL)state
 {
-  v6 = a3;
-  if (!a4)
+  playerCopy = player;
+  if (!state)
   {
-    [(LPMediaPlaybackManager *)self _deactivateAllPlayingMediaPlayersExcept:v6];
+    [(LPMediaPlaybackManager *)self _deactivateAllPlayingMediaPlayersExcept:playerCopy];
   }
 
   [(LPMediaPlaybackManager *)self _updateAudioSessionCategory];
 }
 
-- (void)_deactivateAllPlayingMediaPlayersExcept:(id)a3
+- (void)_deactivateAllPlayingMediaPlayersExcept:(id)except
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  exceptCopy = except;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -103,7 +103,7 @@
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if (v9 != v4 && [*(*(&v10 + 1) + 8 * v8) isActive] && objc_msgSend(v9, "isPlaying"))
+        if (v9 != exceptCopy && [*(*(&v10 + 1) + 8 * v8) isActive] && objc_msgSend(v9, "isPlaying"))
         {
           [v9 setActive:0];
         }
@@ -166,9 +166,9 @@
   v2 = audioSession_session;
   if (!audioSession_session)
   {
-    v3 = [objc_alloc(MEMORY[0x1E6958460]) initAuxiliarySession];
+    initAuxiliarySession = [objc_alloc(MEMORY[0x1E6958460]) initAuxiliarySession];
     v4 = audioSession_session;
-    audioSession_session = v3;
+    audioSession_session = initAuxiliarySession;
 
     [audioSession_session setCategory:*MEMORY[0x1E6958038] error:0];
     v2 = audioSession_session;
@@ -223,21 +223,21 @@ LABEL_13:
 
 - (void)_updateAudioSessionCategory
 {
-  v8 = [(LPMediaPlaybackManager *)self audioSession];
-  v3 = [(LPMediaPlaybackManager *)self _sharedSessionHasPlayingAudio];
+  audioSession = [(LPMediaPlaybackManager *)self audioSession];
+  _sharedSessionHasPlayingAudio = [(LPMediaPlaybackManager *)self _sharedSessionHasPlayingAudio];
   v4 = MEMORY[0x1E6958068];
-  if (!v3)
+  if (!_sharedSessionHasPlayingAudio)
   {
     v4 = MEMORY[0x1E6958038];
   }
 
   v5 = *v4;
-  v6 = [v8 category];
-  v7 = [v5 isEqualToString:v6];
+  category = [audioSession category];
+  v7 = [v5 isEqualToString:category];
 
   if ((v7 & 1) == 0)
   {
-    [v8 setCategory:v5 error:0];
+    [audioSession setCategory:v5 error:0];
   }
 }
 
@@ -311,8 +311,8 @@ LABEL_14:
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
-          v14 = [v13 lastInteractionTimestamp];
-          if (v14 > [(NSHashTable *)v4 lastInteractionTimestamp])
+          lastInteractionTimestamp = [v13 lastInteractionTimestamp];
+          if (lastInteractionTimestamp > [(NSHashTable *)v4 lastInteractionTimestamp])
           {
             v15 = v13;
 
@@ -381,10 +381,10 @@ LABEL_14:
 LABEL_36:
 }
 
-- (void)volumeChanged:(id)a3
+- (void)volumeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69AEA10]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69AEA10]];
   v6 = [v5 isEqualToString:@"ExplicitVolumeChange"];
 
   if (v6)

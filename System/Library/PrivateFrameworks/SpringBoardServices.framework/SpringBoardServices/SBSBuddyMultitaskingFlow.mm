@@ -3,11 +3,11 @@
 - (BOOL)needsToShow;
 - (SBSBuddyMultitaskingFlow)init;
 - (int64_t)_initialMultitaskingOptionSelectedInViewController;
-- (int64_t)_telemetryMultitaskingModeForOption:(int64_t)a3;
+- (int64_t)_telemetryMultitaskingModeForOption:(int64_t)option;
 - (int64_t)currentMultitaskingOption;
 - (void)_emitBuddyWindowingPersonalizationTelemetry;
 - (void)dealloc;
-- (void)setCurrentMultitaskingOption:(int64_t)a3;
+- (void)setCurrentMultitaskingOption:(int64_t)option;
 @end
 
 @implementation SBSBuddyMultitaskingFlow
@@ -21,7 +21,7 @@
 
 - (SBSBuddyMultitaskingFlow)init
 {
-  v2 = self;
+  selfCopy = self;
   if (__sharedInstance)
   {
     v3 = __sharedInstance;
@@ -46,7 +46,7 @@
 
     objc_storeStrong(&__sharedInstance, v4);
     v3 = v4;
-    v2 = v3;
+    selfCopy = v3;
   }
 
   v9 = v3;
@@ -93,12 +93,12 @@
   }
 }
 
-- (void)setCurrentMultitaskingOption:(int64_t)a3
+- (void)setCurrentMultitaskingOption:(int64_t)option
 {
   [(NSUserDefaults *)self->_sbDefaults setBool:0 forKey:@"SBChamoisWindowingEnabled"];
   sbDefaults = self->_sbDefaults;
 
-  [(NSUserDefaults *)sbDefaults setBool:a3 == 1 forKey:@"SBMedusaMultitaskingEnabled"];
+  [(NSUserDefaults *)sbDefaults setBool:option == 1 forKey:@"SBMedusaMultitaskingEnabled"];
 }
 
 - (BOOL)needsToShow
@@ -206,16 +206,16 @@ LABEL_6:
   [(SBSAbstractWindowingTelemetryPersonalizationMetrics *)v5 emit];
 }
 
-- (int64_t)_telemetryMultitaskingModeForOption:(int64_t)a3
+- (int64_t)_telemetryMultitaskingModeForOption:(int64_t)option
 {
-  if (a3 == 1)
+  if (option == 1)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 0;
+    return option == 0;
   }
 }
 

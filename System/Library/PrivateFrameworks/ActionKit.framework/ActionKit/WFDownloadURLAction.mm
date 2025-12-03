@@ -1,48 +1,48 @@
 @interface WFDownloadURLAction
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)configureHTTPBodyForRequest:(id)a3 withMethod:(id)a4 completionHandler:(id)a5;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)getContentsOfURLItem:(id)a3 expectedByteCountHandler:(id)a4 writtenByteCountHandler:(id)a5 completionHandler:(id)a6;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)configureHTTPBodyForRequest:(id)request withMethod:(id)method completionHandler:(id)handler;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)getContentsOfURLItem:(id)item expectedByteCountHandler:(id)handler writtenByteCountHandler:(id)countHandler completionHandler:(id)completionHandler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFDownloadURLAction
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
-  v7 = a3;
+  descriptionCopy = description;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a5;
-  v10 = a4;
-  if (v7)
+  nameCopy = name;
+  destinationCopy = destination;
+  if (descriptionCopy)
   {
     v11 = WFLocalizedString(@"Allow “%1$@” to send %2$@ to “%3$@”?");
-    [v8 localizedStringWithFormat:v11, v9, v7, v10];
+    [v8 localizedStringWithFormat:v11, nameCopy, descriptionCopy, destinationCopy];
   }
 
   else
   {
     v11 = WFLocalizedString(@"Allow “%1$@” to connect to “%2$@”?");
-    [v8 localizedStringWithFormat:v11, v9, v10, v14];
+    [v8 localizedStringWithFormat:v11, nameCopy, destinationCopy, v14];
   }
   v12 = ;
 
   return v12;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFDownloadURLAction *)self input];
+  handlerCopy = handler;
+  input = [(WFDownloadURLAction *)self input];
   WFGetContentLocationFromURLActionInput();
 }
 
-- (void)configureHTTPBodyForRequest:(id)a3 withMethod:(id)a4 completionHandler:(id)a5
+- (void)configureHTTPBodyForRequest:(id)request withMethod:(id)method completionHandler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (![a4 isEqualToString:@"GET"])
+  requestCopy = request;
+  handlerCopy = handler;
+  if (![method isEqualToString:@"GET"])
   {
     v10 = [(WFDownloadURLAction *)self parameterValueForKey:@"WFHTTPBodyType" ofClass:objc_opt_class()];
     if ([v10 isEqualToString:@"File"])
@@ -54,14 +54,14 @@
         v45[1] = 3221225472;
         v45[2] = __80__WFDownloadURLAction_configureHTTPBodyForRequest_withMethod_completionHandler___block_invoke;
         v45[3] = &unk_278C216C8;
-        v46 = v8;
-        v47 = v9;
+        v46 = requestCopy;
+        v47 = handlerCopy;
         [v11 getFileRepresentation:v45 forType:0];
       }
 
       else
       {
-        (*(v9 + 2))(v9, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0);
       }
 
       goto LABEL_15;
@@ -73,7 +73,7 @@
     if ((v12 & 1) == 0 && !v13)
     {
 LABEL_8:
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_15:
 
       goto LABEL_16;
@@ -99,16 +99,16 @@ LABEL_28:
 
         v25 = MEMORY[0x277CFC388];
         v26 = *v24;
-        v18 = [v25 itemWithObject:v16];
+        allValues = [v25 itemWithObject:v16];
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __80__WFDownloadURLAction_configureHTTPBodyForRequest_withMethod_completionHandler___block_invoke_2;
         v38[3] = &unk_278C216C8;
-        v39 = v8;
-        v40 = v9;
+        v39 = requestCopy;
+        v40 = handlerCopy;
         v27 = [MEMORY[0x277D79F68] typeFromMIMEType:v26];
 
-        [v18 getFileRepresentation:v38 forType:v27];
+        [allValues getFileRepresentation:v38 forType:v27];
 LABEL_32:
 
         goto LABEL_15;
@@ -134,8 +134,8 @@ LABEL_32:
     v41 = 0u;
     v42 = 0u;
     v37 = v16;
-    v18 = [v16 allValues];
-    v19 = [v18 countByEnumeratingWithState:&v41 objects:v55 count:16];
+    allValues = [v16 allValues];
+    v19 = [allValues countByEnumeratingWithState:&v41 objects:v55 count:16];
     if (v19)
     {
       v20 = v19;
@@ -146,18 +146,18 @@ LABEL_32:
         {
           if (*v42 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allValues);
           }
 
           v23 = *(*(&v41 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v28 = v8;
+            v28 = requestCopy;
             v29 = v37;
-            v30 = v9;
+            v30 = handlerCopy;
             v31 = objc_opt_new();
-            v32 = [v29 allKeys];
+            allKeys = [v29 allKeys];
             v52[0] = MEMORY[0x277D85DD0];
             v52[1] = 3221225472;
             v52[2] = __WFConfigureRequestBodyWithMultipartFormDictionary_block_invoke;
@@ -176,13 +176,13 @@ LABEL_32:
             v35 = v33;
             v36 = v28;
             v16 = v29;
-            [v32 if_enumerateAsynchronouslyInSequence:v52 completionHandler:v48];
+            [allKeys if_enumerateAsynchronouslyInSequence:v52 completionHandler:v48];
 
             goto LABEL_32;
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v41 objects:v55 count:16];
+        v20 = [allValues countByEnumeratingWithState:&v41 objects:v55 count:16];
         if (v20)
         {
           continue;
@@ -196,7 +196,7 @@ LABEL_32:
     goto LABEL_28;
   }
 
-  (*(v9 + 2))(v9, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_16:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -218,16 +218,16 @@ void __80__WFDownloadURLAction_configureHTTPBodyForRequest_withMethod_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getContentsOfURLItem:(id)a3 expectedByteCountHandler:(id)a4 writtenByteCountHandler:(id)a5 completionHandler:(id)a6
+- (void)getContentsOfURLItem:(id)item expectedByteCountHandler:(id)handler writtenByteCountHandler:(id)countHandler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  handlerCopy = handler;
+  countHandlerCopy = countHandler;
+  completionHandlerCopy = completionHandler;
   v14 = [(WFDownloadURLAction *)self parameterValueForKey:@"WFHTTPMethod" ofClass:objc_opt_class()];
   v15 = [(WFDownloadURLAction *)self parameterValueForKey:@"WFHTTPHeaders" ofClass:objc_opt_class()];
   v16 = objc_alloc(MEMORY[0x277CBAB50]);
-  v17 = [v10 URL];
+  v17 = [itemCopy URL];
   v18 = [v16 initWithURL:v17];
 
   [v18 _setNonAppInitiated:1];
@@ -243,16 +243,16 @@ void __80__WFDownloadURLAction_configureHTTPBodyForRequest_withMethod_completion
   v25[1] = 3221225472;
   v25[2] = __111__WFDownloadURLAction_getContentsOfURLItem_expectedByteCountHandler_writtenByteCountHandler_completionHandler___block_invoke_2;
   v25[3] = &unk_278C1ADE8;
-  v26 = v10;
+  v26 = itemCopy;
   v27 = v19;
-  v28 = v13;
-  v29 = v11;
-  v30 = v12;
-  v20 = v12;
-  v21 = v11;
+  v28 = completionHandlerCopy;
+  v29 = handlerCopy;
+  v30 = countHandlerCopy;
+  v20 = countHandlerCopy;
+  v21 = handlerCopy;
   v22 = v19;
-  v23 = v10;
-  v24 = v13;
+  v23 = itemCopy;
+  v24 = completionHandlerCopy;
   [(WFDownloadURLAction *)self configureHTTPBodyForRequest:v22 withMethod:v14 completionHandler:v25];
 }
 
@@ -324,16 +324,16 @@ LABEL_6:
   (*(v6 + 16))(v6, v14, v9);
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__WFDownloadURLAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __50__WFDownloadURLAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)

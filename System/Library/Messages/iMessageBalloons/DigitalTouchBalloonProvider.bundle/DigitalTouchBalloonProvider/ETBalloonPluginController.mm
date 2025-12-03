@@ -1,28 +1,28 @@
 @interface ETBalloonPluginController
 - (BOOL)_shouldShowPlaceholderView;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKTranscriptPluginView)pluginContentView;
-- (ETBalloonPluginController)initWithDataSource:(id)a3 isFromMe:(BOOL)a4;
+- (ETBalloonPluginController)initWithDataSource:(id)source isFromMe:(BOOL)me;
 - (double)_rightButtonInset;
 - (id)_attachmentPlaceholderImage;
 - (id)_placeholderImageURL;
 - (void)_applicationWillResignActive;
-- (void)_setShowingPlaceholderView:(BOOL)a3;
+- (void)_setShowingPlaceholderView:(BOOL)view;
 - (void)didEndSessionPlayback;
 - (void)loadView;
-- (void)setDataSource:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDataSource:(id)source;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBeginSessionPlayback;
-- (void)willEndSessionPlaybackInterrupted:(BOOL)a3;
+- (void)willEndSessionPlaybackInterrupted:(BOOL)interrupted;
 @end
 
 @implementation ETBalloonPluginController
 
-- (ETBalloonPluginController)initWithDataSource:(id)a3 isFromMe:(BOOL)a4
+- (ETBalloonPluginController)initWithDataSource:(id)source isFromMe:(BOOL)me
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = ETBalloonPluginController;
   v6 = [(ETBalloonPluginController *)&v10 init];
@@ -32,7 +32,7 @@
     [(ETBalloonPluginController *)v6 setComposeDisabled:1];
     [(ETBalloonPluginController *)v7 setAutoPlayOnAppearanceDisabled:1];
     [(ETBalloonPluginController *)v7 setOverrideAudioDefaultToOff:1];
-    [(ETBalloonPluginController *)v7 setDataSource:v5];
+    [(ETBalloonPluginController *)v7 setDataSource:sourceCopy];
     v8 = v7;
   }
 
@@ -43,27 +43,27 @@
 {
   v4 = objc_alloc_init(ETTranscriptPluginView);
   [(ETTranscriptPluginView *)v4 setAutoresizingMask:18];
-  v3 = [(ETBalloonPluginController *)self _audioToggleButton];
-  [(ETTranscriptPluginView *)v4 trackInteractiveSubview:v3];
+  _audioToggleButton = [(ETBalloonPluginController *)self _audioToggleButton];
+  [(ETTranscriptPluginView *)v4 trackInteractiveSubview:_audioToggleButton];
 
   [(ETBalloonPluginController *)self setView:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = ETBalloonPluginController;
-  [(ETBalloonPluginController *)&v11 viewWillAppear:a3];
-  v4 = [(ETBalloonPluginController *)self dataSource];
-  v5 = [v4 mediaURL];
-  if (v5 || ![v4 isLast])
+  [(ETBalloonPluginController *)&v11 viewWillAppear:appear];
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  mediaURL = [dataSource mediaURL];
+  if (mediaURL || ![dataSource isLast])
   {
-    v6 = 0;
+    isFromMe = 0;
   }
 
   else
   {
-    v6 = [v4 isFromMe];
+    isFromMe = [dataSource isFromMe];
   }
 
   v10[0] = _NSConcreteStackBlock;
@@ -73,7 +73,7 @@
   v10[4] = self;
   v7 = objc_retainBlock(v10);
   v8 = v7;
-  if (v6)
+  if (isFromMe)
   {
     v9 = dispatch_time(0, 500000000);
     dispatch_after(v9, &_dispatch_main_q, v8);
@@ -85,13 +85,13 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = ETBalloonPluginController;
-  [(ETBalloonPluginController *)&v6 viewDidDisappear:a3];
-  v4 = [(ETBalloonPluginController *)self dataSource];
-  -[ETBalloonPluginController _setShowingPlaceholderView:](self, "_setShowingPlaceholderView:", [v4 isPlayed] ^ 1);
+  [(ETBalloonPluginController *)&v6 viewDidDisappear:disappear];
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  -[ETBalloonPluginController _setShowingPlaceholderView:](self, "_setShowingPlaceholderView:", [dataSource isPlayed] ^ 1);
 
   [(UIView *)self->_playedSnapshotView removeFromSuperview];
   playedSnapshotView = self->_playedSnapshotView;
@@ -100,35 +100,35 @@
 
 - (BOOL)_shouldShowPlaceholderView
 {
-  v3 = [(ETBalloonPluginController *)self dataSource];
-  v4 = ([v3 isPlayed] & 1) == 0 && (-[ETBalloonPluginController isPlayingMessages](self, "isPlayingMessages") & 1) == 0 && self->_playedSnapshotView == 0;
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  v4 = ([dataSource isPlayed] & 1) == 0 && (-[ETBalloonPluginController isPlayingMessages](self, "isPlayingMessages") & 1) == 0 && self->_playedSnapshotView == 0;
 
   return v4;
 }
 
-- (void)_setShowingPlaceholderView:(BOOL)a3
+- (void)_setShowingPlaceholderView:(BOOL)view
 {
   unplayedPlaceholderView = self->_unplayedPlaceholderView;
-  if ((((unplayedPlaceholderView == 0) ^ a3) & 1) == 0)
+  if ((((unplayedPlaceholderView == 0) ^ view) & 1) == 0)
   {
-    if (a3)
+    if (view)
     {
       v5 = objc_alloc_init(BalloonPlaceholderView);
       v6 = self->_unplayedPlaceholderView;
       self->_unplayedPlaceholderView = v5;
 
       v7 = self->_unplayedPlaceholderView;
-      v8 = [(ETBalloonPluginController *)self _attachmentPlaceholderImage];
-      [(BalloonPlaceholderView *)v7 setBackgroundImage:v8];
+      _attachmentPlaceholderImage = [(ETBalloonPluginController *)self _attachmentPlaceholderImage];
+      [(BalloonPlaceholderView *)v7 setBackgroundImage:_attachmentPlaceholderImage];
 
       v9 = self->_unplayedPlaceholderView;
-      v10 = [(ETBalloonPluginController *)self canvasView];
-      [v10 bounds];
+      canvasView = [(ETBalloonPluginController *)self canvasView];
+      [canvasView bounds];
       [(BalloonPlaceholderView *)v9 setFrame:?];
 
-      v12 = [(ETBalloonPluginController *)self view];
-      [(BalloonPlaceholderView *)v12 addSubview:self->_unplayedPlaceholderView];
-      v11 = v12;
+      view = [(ETBalloonPluginController *)self view];
+      [(BalloonPlaceholderView *)view addSubview:self->_unplayedPlaceholderView];
+      v11 = view;
     }
 
     else
@@ -142,8 +142,8 @@
 
 - (double)_rightButtonInset
 {
-  v2 = [(ETBalloonPluginController *)self dataSource];
-  if ([v2 isFromMe])
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  if ([dataSource isFromMe])
   {
     v3 = 13.0;
   }
@@ -158,15 +158,15 @@
 
 - (id)_attachmentPlaceholderImage
 {
-  v2 = [(ETBalloonPluginController *)self _placeholderImageURL];
-  v3 = v2;
-  if (!v2)
+  _placeholderImageURL = [(ETBalloonPluginController *)self _placeholderImageURL];
+  v3 = _placeholderImageURL;
+  if (!_placeholderImageURL)
   {
     goto LABEL_6;
   }
 
-  v4 = [v2 pathExtension];
-  v5 = [v4 isEqualToString:@"cpbitmap"];
+  pathExtension = [_placeholderImageURL pathExtension];
+  v5 = [pathExtension isEqualToString:@"cpbitmap"];
 
   if (v5)
   {
@@ -194,16 +194,16 @@ LABEL_7:
 
 - (id)_placeholderImageURL
 {
-  v2 = [(ETBalloonPluginController *)self dataSource];
-  v3 = [v2 mediaURL];
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  mediaURL = [dataSource mediaURL];
 
-  if (v3)
+  if (mediaURL)
   {
     v4 = IMPreviewExtension();
     v5 = IMAttachmentPreviewFileURL();
     v6 = +[NSFileManager defaultManager];
-    v7 = [v5 path];
-    v8 = [v6 fileExistsAtPath:v7];
+    path = [v5 path];
+    v8 = [v6 fileExistsAtPath:path];
 
     if (v8)
     {
@@ -230,8 +230,8 @@ LABEL_7:
   v5.super_class = ETBalloonPluginController;
   [(ETBalloonPluginController *)&v5 viewDidLayoutSubviews];
   unplayedPlaceholderView = self->_unplayedPlaceholderView;
-  v4 = [(ETBalloonPluginController *)self canvasView];
-  [v4 frame];
+  canvasView = [(ETBalloonPluginController *)self canvasView];
+  [canvasView frame];
   [(BalloonPlaceholderView *)unplayedPlaceholderView setFrame:?];
 }
 
@@ -242,12 +242,12 @@ LABEL_7:
   return [(ETBalloonPluginController *)self view];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(ETBalloonPluginController *)self dataSource];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  dataSource = [(ETBalloonPluginController *)self dataSource];
+  [dataSource sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -258,19 +258,19 @@ LABEL_7:
   return result;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   v6.receiver = self;
   v6.super_class = ETBalloonPluginController;
-  [(ETBalloonPluginController *)&v6 setDataSource:a3];
+  [(ETBalloonPluginController *)&v6 setDataSource:source];
   [(ETBalloonPluginController *)self setAutoPlayOnAppearanceDisabled:1];
-  v4 = [(BalloonPlaceholderView *)self->_unplayedPlaceholderView superview];
+  superview = [(BalloonPlaceholderView *)self->_unplayedPlaceholderView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(ETBalloonPluginController *)self view];
+    view = [(ETBalloonPluginController *)self view];
     [(BalloonPlaceholderView *)self->_unplayedPlaceholderView setAlpha:1.0];
-    [v5 addSubview:self->_unplayedPlaceholderView];
+    [view addSubview:self->_unplayedPlaceholderView];
   }
 }
 
@@ -279,8 +279,8 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = ETBalloonPluginController;
   [(ETBalloonPluginController *)&v4 _applicationWillResignActive];
-  v3 = [(ETBalloonPluginController *)self canvasView];
-  [v3 setAlwaysPaused:1];
+  canvasView = [(ETBalloonPluginController *)self canvasView];
+  [canvasView setAlwaysPaused:1];
 
   [(ETBalloonPluginController *)self setPlaybackEnabled:0];
 }
@@ -290,9 +290,9 @@ LABEL_7:
   v7.receiver = self;
   v7.super_class = ETBalloonPluginController;
   [(ETBalloonPluginController *)&v7 willBeginSessionPlayback];
-  v3 = [(BalloonPlaceholderView *)self->_unplayedPlaceholderView backgroundImage];
+  backgroundImage = [(BalloonPlaceholderView *)self->_unplayedPlaceholderView backgroundImage];
 
-  if (v3)
+  if (backgroundImage)
   {
     v4 = 100000000;
   }
@@ -311,24 +311,24 @@ LABEL_7:
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)willEndSessionPlaybackInterrupted:(BOOL)a3
+- (void)willEndSessionPlaybackInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   v27.receiver = self;
   v27.super_class = ETBalloonPluginController;
   [(ETBalloonPluginController *)&v27 willEndSessionPlaybackInterrupted:?];
-  if (v3)
+  if (interruptedCopy)
   {
     [(ETBalloonPluginController *)self _setShowingPlaceholderView:1];
   }
 
   else
   {
-    v5 = [(ETBalloonPluginController *)self dataSource];
-    [v5 markAsPlayed];
+    dataSource = [(ETBalloonPluginController *)self dataSource];
+    [dataSource markAsPlayed];
 
-    v6 = [(ETBalloonPluginController *)self updateSnapshot];
-    if (v6)
+    updateSnapshot = [(ETBalloonPluginController *)self updateSnapshot];
+    if (updateSnapshot)
     {
       [(ETBalloonPluginController *)self view];
       v24[0] = _NSConcreteStackBlock;
@@ -337,27 +337,27 @@ LABEL_7:
       v24[3] = &unk_24C68;
       v7 = v24[4] = self;
       v25 = v7;
-      v26 = v6;
+      v26 = updateSnapshot;
       v8 = objc_retainBlock(v24);
       v9 = [v7 snapshotViewAfterScreenUpdates:0];
       playedSnapshotView = self->_playedSnapshotView;
       self->_playedSnapshotView = v9;
 
       [v7 addSubview:self->_playedSnapshotView];
-      v11 = [(ETBalloonPluginController *)self _playingParentMessage];
-      if ([v11 messageType] == 8 && objc_msgSend(v11, "mediaType") == &dword_0 + 1)
+      _playingParentMessage = [(ETBalloonPluginController *)self _playingParentMessage];
+      if ([_playingParentMessage messageType] == 8 && objc_msgSend(_playingParentMessage, "mediaType") == &dword_0 + 1)
       {
-        v12 = v11;
-        v13 = [v12 introMessage];
-        if (v13)
+        v12 = _playingParentMessage;
+        introMessage = [v12 introMessage];
+        if (introMessage)
         {
           v14 = 1;
         }
 
         else
         {
-          v15 = [v12 playingMessages];
-          v14 = [v15 count] != 0;
+          playingMessages = [v12 playingMessages];
+          v14 = [playingMessages count] != 0;
         }
 
         objc_initWeak(&location, self);
@@ -390,11 +390,11 @@ LABEL_7:
   v5.receiver = self;
   v5.super_class = ETBalloonPluginController;
   [(ETBalloonPluginController *)&v5 didEndSessionPlayback];
-  v3 = [(ETBalloonPluginController *)self balloonPlaybackCompletion];
-  v4 = v3;
-  if (v3)
+  balloonPlaybackCompletion = [(ETBalloonPluginController *)self balloonPlaybackCompletion];
+  v4 = balloonPlaybackCompletion;
+  if (balloonPlaybackCompletion)
   {
-    (*(v3 + 16))(v3, 0);
+    (*(balloonPlaybackCompletion + 16))(balloonPlaybackCompletion, 0);
   }
 
   [(ETBalloonPluginController *)self setBalloonPlaybackCompletion:0];

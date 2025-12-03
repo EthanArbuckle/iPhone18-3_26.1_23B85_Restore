@@ -1,44 +1,44 @@
 @interface _SKUIDynamicGridSizeCacheKey
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _SKUIDynamicGridSizeCacheKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_8;
   }
 
-  v5 = [a3 __isSKUIDynamicGridSizeCacheKey];
-  if (!v5)
+  __isSKUIDynamicGridSizeCacheKey = [equal __isSKUIDynamicGridSizeCacheKey];
+  if (!__isSKUIDynamicGridSizeCacheKey)
   {
-    return v5;
+    return __isSKUIDynamicGridSizeCacheKey;
   }
 
-  if (*(a3 + 1) != self->_position)
+  if (*(equal + 1) != self->_position)
   {
-    LOBYTE(v5) = 0;
-    return v5;
+    LOBYTE(__isSKUIDynamicGridSizeCacheKey) = 0;
+    return __isSKUIDynamicGridSizeCacheKey;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
   if (v6 == self->_viewElement)
   {
 LABEL_8:
-    LOBYTE(v5) = 1;
-    return v5;
+    LOBYTE(__isSKUIDynamicGridSizeCacheKey) = 1;
+    return __isSKUIDynamicGridSizeCacheKey;
   }
 
-  LOBYTE(v5) = [(SKUIViewElement *)v6 isEqual:?];
-  return v5;
+  LOBYTE(__isSKUIDynamicGridSizeCacheKey) = [(SKUIViewElement *)v6 isEqual:?];
+  return __isSKUIDynamicGridSizeCacheKey;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setViewElement:self->_viewElement];
   [v4 setPosition:self->_position];
   return v4;

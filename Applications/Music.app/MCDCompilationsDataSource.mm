@@ -15,15 +15,15 @@
 
 - (id)itemSortDescriptors
 {
-  v3 = [(_MCDLibraryDataSource *)self sortingPreference];
+  sortingPreference = [(_MCDLibraryDataSource *)self sortingPreference];
   if ([(_MCDLibraryDataSource *)self limitedUI])
   {
     v4 = MCDSortByRecentlyPlayed;
 
-    v3 = v4;
+    sortingPreference = v4;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyAdded])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyAdded])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyAlbumLibraryAddedDate ascending:0];
     v14 = v5;
@@ -35,7 +35,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:MCDSortByRecentlyPlayed])
+  if ([sortingPreference isEqualToString:MCDSortByRecentlyPlayed])
   {
     v5 = [NSSortDescriptor sortDescriptorWithKey:MPModelPropertyAlbumLastDevicePlaybackDate ascending:0];
     v13 = v5;
@@ -43,7 +43,7 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:MCDSortByArtist])
+  if ([sortingPreference isEqualToString:MCDSortByArtist])
   {
     v11[0] = MPModelRelationshipAlbumArtist;
     v11[1] = MPModelPropertyArtistName;

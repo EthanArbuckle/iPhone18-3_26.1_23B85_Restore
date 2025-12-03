@@ -1,30 +1,30 @@
 @interface CDRichComplicationRingView
 + (id)_disabledLayerActions;
-- (CDRichComplicationRingView)initWithCurveWidth:(double)a3 padding:(double)a4 forDevice:(id)a5 withFilterStyle:(int64_t)a6;
+- (CDRichComplicationRingView)initWithCurveWidth:(double)width padding:(double)padding forDevice:(id)device withFilterStyle:(int64_t)style;
 - (CGPath)_generatePath;
-- (CGPoint)_pointAtProgress:(float)a3;
-- (void)_layoutHeadTailView:(id)a3 forProgress:(double)a4;
-- (void)_setupGradientLayer:(id)a3;
+- (CGPoint)_pointAtProgress:(float)progress;
+- (void)_layoutHeadTailView:(id)view forProgress:(double)progress;
+- (void)_setupGradientLayer:(id)layer;
 - (void)_updateGradient;
 - (void)layoutSubviews;
-- (void)setClockwise:(BOOL)a3;
-- (void)setProgress:(double)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setClockwise:(BOOL)clockwise;
+- (void)setProgress:(double)progress;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation CDRichComplicationRingView
 
-- (CDRichComplicationRingView)initWithCurveWidth:(double)a3 padding:(double)a4 forDevice:(id)a5 withFilterStyle:(int64_t)a6
+- (CDRichComplicationRingView)initWithCurveWidth:(double)width padding:(double)padding forDevice:(id)device withFilterStyle:(int64_t)style
 {
   v20.receiver = self;
   v20.super_class = CDRichComplicationRingView;
-  v8 = [(CDRichComplicationShapeView *)&v20 initForDevice:a5 withFilterStyle:a6];
+  v8 = [(CDRichComplicationShapeView *)&v20 initForDevice:device withFilterStyle:style];
   v9 = v8;
   if (v8)
   {
-    v8->_curveWidth = a3;
-    v8->_padding = a4;
+    v8->_curveWidth = width;
+    v8->_padding = padding;
     v8->_clockwise = 1;
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
     foregroundView = v9->_foregroundView;
@@ -39,8 +39,8 @@
     tailStrokeLayer = v9->_tailStrokeLayer;
     v9->_tailStrokeLayer = v14;
 
-    v16 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v9->_tailStrokeLayer, "setFillColor:", [v16 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v9->_tailStrokeLayer, "setFillColor:", [clearColor CGColor]);
 
     v17 = [(CDRichComplicationRingView *)v9 _createHeadTailViewWithStartAngle:1 endAngle:0.0 clockwise:6.28318531 additionalWidth:0.0];
     tailLayer = v9->_tailLayer;
@@ -50,9 +50,9 @@
   return v9;
 }
 
-- (void)setClockwise:(BOOL)a3
+- (void)setClockwise:(BOOL)clockwise
 {
-  self->_clockwise = a3;
+  self->_clockwise = clockwise;
   [(CDRichComplicationRingView *)self _updateGradient];
 
   [(CDRichComplicationShapeView *)self _updatePath];
@@ -75,34 +75,34 @@
   [(CDRichComplicationRingView *)self _layoutHeadTailView:tailLayer forProgress:?];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (a3 == 0.0)
+  if (progress == 0.0)
   {
-    v4 = 0.001;
+    progressCopy = 0.001;
   }
 
   else
   {
-    v4 = a3;
+    progressCopy = progress;
   }
 
   v5.receiver = self;
   v5.super_class = CDRichComplicationRingView;
-  [(CDRichComplicationShapeView *)&v5 setProgress:v4];
-  [(CAShapeLayer *)self->_headLayer setHidden:v4 >= 1.0];
-  [(CAShapeLayer *)self->_tailLayer setHidden:v4 < 0.95];
+  [(CDRichComplicationShapeView *)&v5 setProgress:progressCopy];
+  [(CAShapeLayer *)self->_headLayer setHidden:progressCopy >= 1.0];
+  [(CAShapeLayer *)self->_tailLayer setHidden:progressCopy < 0.95];
   [(CAShapeLayer *)self->_tailStrokeLayer setHidden:[(CAShapeLayer *)self->_tailLayer isHidden]];
   [(CDRichComplicationRingView *)self setNeedsLayout];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v7.receiver = self;
   v7.super_class = CDRichComplicationRingView;
   [(CDRichComplicationShapeView *)&v7 transitionToMonochromeWithFraction:?];
-  v5 = [(CDRichComplicationShapeView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:-[CDRichComplicationShapeView filterStyle](self fraction:{"filterStyle"), a3}];
+  filterProvider = [(CDRichComplicationShapeView *)self filterProvider];
+  v6 = [filterProvider filtersForView:self style:-[CDRichComplicationShapeView filterStyle](self fraction:{"filterStyle"), fraction}];
 
   if (v6)
   {
@@ -116,8 +116,8 @@
   v5.receiver = self;
   v5.super_class = CDRichComplicationRingView;
   [(CDRichComplicationShapeView *)&v5 updateMonochromeColor];
-  v3 = [(CDRichComplicationShapeView *)self filterProvider];
-  v4 = [v3 filtersForView:self style:{-[CDRichComplicationShapeView filterStyle](self, "filterStyle")}];
+  filterProvider = [(CDRichComplicationShapeView *)self filterProvider];
+  v4 = [filterProvider filtersForView:self style:{-[CDRichComplicationShapeView filterStyle](self, "filterStyle")}];
 
   if (v4)
   {
@@ -126,19 +126,19 @@
   }
 }
 
-- (void)_setupGradientLayer:(id)a3
+- (void)_setupGradientLayer:(id)layer
 {
   v3 = *MEMORY[0x277CDA698];
-  v4 = a3;
-  [v4 setType:v3];
-  [v4 setStartPoint:{0.5, 0.5}];
-  [v4 setEndPoint:{0.5, 1.0}];
+  layerCopy = layer;
+  [layerCopy setType:v3];
+  [layerCopy setStartPoint:{0.5, 0.5}];
+  [layerCopy setEndPoint:{0.5, 1.0}];
   CGAffineTransformMakeRotation(&v6, 3.14159265);
   v5 = v6;
-  [v4 setAffineTransform:&v5];
+  [layerCopy setAffineTransform:&v5];
 }
 
-- (CGPoint)_pointAtProgress:(float)a3
+- (CGPoint)_pointAtProgress:(float)progress
 {
   [(CDRichComplicationRingView *)self bounds];
   x = v17.origin.x;
@@ -156,7 +156,7 @@
   v19.size.width = width;
   v19.size.height = height;
   v11 = CGRectGetWidth(v19) * 0.5 - self->_curveWidth * 0.5 - self->_padding;
-  v12 = a3 * 6.28318531;
+  v12 = progress * 6.28318531;
   v13 = __sincosf_stret(v12);
   v14 = v10 + v13.__sinval * v11;
   v15 = v9 + v13.__cosval * v11;
@@ -183,9 +183,9 @@
   v14.size.width = width;
   v14.size.height = height;
   v9 = [MEMORY[0x277D75208] bezierPathWithArcCenter:self->_clockwise radius:v7 startAngle:v8 endAngle:CGRectGetWidth(v14) * 0.5 - self->_curveWidth * 0.5 - self->_padding clockwise:{-1.57079633, 4.71238898}];
-  v10 = [v9 CGPath];
+  cGPath = [v9 CGPath];
 
-  return v10;
+  return cGPath;
 }
 
 - (void)_updateGradient
@@ -194,23 +194,23 @@
   v9.super_class = CDRichComplicationRingView;
   [(CDRichComplicationShapeView *)&v9 _updateGradient];
   headLayer = self->_headLayer;
-  v4 = [(CDRichComplicationShapeView *)self gradientColors];
-  v5 = [v4 firstObject];
-  -[CAShapeLayer setFillColor:](headLayer, "setFillColor:", [v5 CGColor]);
+  gradientColors = [(CDRichComplicationShapeView *)self gradientColors];
+  firstObject = [gradientColors firstObject];
+  -[CAShapeLayer setFillColor:](headLayer, "setFillColor:", [firstObject CGColor]);
 
   tailLayer = self->_tailLayer;
-  v7 = [(CDRichComplicationShapeView *)self gradientColors];
-  v8 = [v7 lastObject];
-  -[CAShapeLayer setFillColor:](tailLayer, "setFillColor:", [v8 CGColor]);
+  gradientColors2 = [(CDRichComplicationShapeView *)self gradientColors];
+  lastObject = [gradientColors2 lastObject];
+  -[CAShapeLayer setFillColor:](tailLayer, "setFillColor:", [lastObject CGColor]);
 }
 
-- (void)_layoutHeadTailView:(id)a3 forProgress:(double)a4
+- (void)_layoutHeadTailView:(id)view forProgress:(double)progress
 {
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   *&v17.a = *MEMORY[0x277CBF2C0];
   *&v17.c = v14;
   *&v17.tx = *(MEMORY[0x277CBF2C0] + 32);
-  v6 = a3;
+  viewCopy = view;
   [(CDRichComplicationRingView *)self bounds];
   v8 = v7 * 0.5;
   [(CDRichComplicationRingView *)self bounds];
@@ -224,7 +224,7 @@
   CGAffineTransformTranslate(&v16, &v15, 0.0, v11);
   v17 = v16;
   v15 = v16;
-  CGAffineTransformRotate(&v16, &v15, a4 * 3.14159265 + a4 * 3.14159265);
+  CGAffineTransformRotate(&v16, &v15, progress * 3.14159265 + progress * 3.14159265);
   v17 = v16;
   v12 = -(v10 * 0.5) - self->_padding;
   v15 = v16;
@@ -234,7 +234,7 @@
   v15 = v16;
   CGAffineTransformTranslate(&v16, &v15, 0.0, v13);
   v17 = v16;
-  [v6 setAffineTransform:&v16];
+  [viewCopy setAffineTransform:&v16];
 }
 
 + (id)_disabledLayerActions

@@ -1,13 +1,13 @@
 @interface MonogramArtworkToken
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)stringRepresentation;
 @end
 
 @implementation MonogramArtworkToken
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_216C4931C(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -18,7 +18,7 @@
 
 - (id)stringRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_216C49470();
   v4 = v3;
 

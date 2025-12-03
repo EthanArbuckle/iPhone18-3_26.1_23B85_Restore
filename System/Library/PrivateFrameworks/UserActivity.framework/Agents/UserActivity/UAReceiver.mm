@@ -1,29 +1,29 @@
 @interface UAReceiver
 - (BOOL)terminate;
-- (UAReceiver)initWithManager:(id)a3 name:(id)a4;
+- (UAReceiver)initWithManager:(id)manager name:(id)name;
 @end
 
 @implementation UAReceiver
 
-- (UAReceiver)initWithManager:(id)a3 name:(id)a4
+- (UAReceiver)initWithManager:(id)manager name:(id)name
 {
   v5.receiver = self;
   v5.super_class = UAReceiver;
-  return [(UACornerActionManagerHandler *)&v5 initWithManager:a3 name:a4];
+  return [(UACornerActionManagerHandler *)&v5 initWithManager:manager name:name];
 }
 
 - (BOOL)terminate
 {
   v6.receiver = self;
   v6.super_class = UAReceiver;
-  v3 = [(UACornerActionManagerHandler *)&v6 terminate];
-  if (v3)
+  terminate = [(UACornerActionManagerHandler *)&v6 terminate];
+  if (terminate)
   {
-    v4 = [(UACornerActionManagerHandler *)self manager];
-    [v4 removeReceiver:self];
+    manager = [(UACornerActionManagerHandler *)self manager];
+    [manager removeReceiver:self];
   }
 
-  return v3;
+  return terminate;
 }
 
 @end

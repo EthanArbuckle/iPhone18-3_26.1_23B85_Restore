@@ -6,10 +6,10 @@
 
 - (BOOL)hksp_isHealthDatabaseInaccessibleError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277CCBDB0]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCBDB0]])
   {
-    v3 = [a1 code] == 6;
+    v3 = [self code] == 6;
   }
 
   else

@@ -1,62 +1,62 @@
 @interface SVXSpeechSynthesisRequest
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXSpeechSynthesisRequest)initWithCoder:(id)a3;
-- (SVXSpeechSynthesisRequest)initWithPriority:(int64_t)a3 options:(unint64_t)a4 speakableText:(id)a5 speakableContext:(id)a6 localizationKey:(id)a7 presynthesizedAudio:(id)a8 streamID:(id)a9;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXSpeechSynthesisRequest)initWithCoder:(id)coder;
+- (SVXSpeechSynthesisRequest)initWithPriority:(int64_t)priority options:(unint64_t)options speakableText:(id)text speakableContext:(id)context localizationKey:(id)key presynthesizedAudio:(id)audio streamID:(id)d;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXSpeechSynthesisRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   priority = self->_priority;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:priority];
-  [v8 encodeObject:v6 forKey:@"SVXSpeechSynthesisRequest::priority"];
+  [coderCopy encodeObject:v6 forKey:@"SVXSpeechSynthesisRequest::priority"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_options];
-  [v8 encodeObject:v7 forKey:@"SVXSpeechSynthesisRequest::options"];
+  [coderCopy encodeObject:v7 forKey:@"SVXSpeechSynthesisRequest::options"];
 
-  [v8 encodeObject:self->_speakableText forKey:@"SVXSpeechSynthesisRequest::speakableText"];
-  [v8 encodeObject:self->_speakableContext forKey:@"SVXSpeechSynthesisRequest::speakableContext"];
-  [v8 encodeObject:self->_localizationKey forKey:@"SVXSpeechSynthesisRequest::localizationKey"];
-  [v8 encodeObject:self->_presynthesizedAudio forKey:@"SVXSpeechSynthesisRequest::presynthesizedAudio"];
-  [v8 encodeObject:self->_streamID forKey:@"SVXSpeechSynthesisRequest::streamID"];
+  [coderCopy encodeObject:self->_speakableText forKey:@"SVXSpeechSynthesisRequest::speakableText"];
+  [coderCopy encodeObject:self->_speakableContext forKey:@"SVXSpeechSynthesisRequest::speakableContext"];
+  [coderCopy encodeObject:self->_localizationKey forKey:@"SVXSpeechSynthesisRequest::localizationKey"];
+  [coderCopy encodeObject:self->_presynthesizedAudio forKey:@"SVXSpeechSynthesisRequest::presynthesizedAudio"];
+  [coderCopy encodeObject:self->_streamID forKey:@"SVXSpeechSynthesisRequest::streamID"];
 }
 
-- (SVXSpeechSynthesisRequest)initWithCoder:(id)a3
+- (SVXSpeechSynthesisRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::priority"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::priority"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::options"];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::options"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::speakableText"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::speakableText"];
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v10 setWithObjects:{v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"SVXSpeechSynthesisRequest::speakableContext"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SVXSpeechSynthesisRequest::speakableContext"];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::localizationKey"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::presynthesizedAudio"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::streamID"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::localizationKey"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::presynthesizedAudio"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXSpeechSynthesisRequest::streamID"];
 
-  v18 = [(SVXSpeechSynthesisRequest *)self initWithPriority:v6 options:v8 speakableText:v9 speakableContext:v14 localizationKey:v15 presynthesizedAudio:v16 streamID:v17];
+  v18 = [(SVXSpeechSynthesisRequest *)self initWithPriority:integerValue options:unsignedIntegerValue speakableText:v9 speakableContext:v14 localizationKey:v15 presynthesizedAudio:v16 streamID:v17];
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -66,29 +66,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       priority = self->_priority;
       if (priority == [(SVXSpeechSynthesisRequest *)v5 priority]&& (options = self->_options, options == [(SVXSpeechSynthesisRequest *)v5 options]))
       {
-        v8 = [(SVXSpeechSynthesisRequest *)v5 speakableText];
+        speakableText = [(SVXSpeechSynthesisRequest *)v5 speakableText];
         speakableText = self->_speakableText;
-        if (speakableText == v8 || [(NSString *)speakableText isEqual:v8])
+        if (speakableText == speakableText || [(NSString *)speakableText isEqual:speakableText])
         {
-          v10 = [(SVXSpeechSynthesisRequest *)v5 speakableContext];
+          speakableContext = [(SVXSpeechSynthesisRequest *)v5 speakableContext];
           speakableContext = self->_speakableContext;
-          if (speakableContext == v10 || [(NSDictionary *)speakableContext isEqual:v10])
+          if (speakableContext == speakableContext || [(NSDictionary *)speakableContext isEqual:speakableContext])
           {
-            v12 = [(SVXSpeechSynthesisRequest *)v5 localizationKey];
+            localizationKey = [(SVXSpeechSynthesisRequest *)v5 localizationKey];
             localizationKey = self->_localizationKey;
-            if (localizationKey == v12 || [(NSString *)localizationKey isEqual:v12])
+            if (localizationKey == localizationKey || [(NSString *)localizationKey isEqual:localizationKey])
             {
-              v14 = [(SVXSpeechSynthesisRequest *)v5 presynthesizedAudio];
+              presynthesizedAudio = [(SVXSpeechSynthesisRequest *)v5 presynthesizedAudio];
               presynthesizedAudio = self->_presynthesizedAudio;
-              if (presynthesizedAudio == v14 || [(SVXSpeechSynthesisAudio *)presynthesizedAudio isEqual:v14])
+              if (presynthesizedAudio == presynthesizedAudio || [(SVXSpeechSynthesisAudio *)presynthesizedAudio isEqual:presynthesizedAudio])
               {
-                v16 = [(SVXSpeechSynthesisRequest *)v5 streamID];
+                streamID = [(SVXSpeechSynthesisRequest *)v5 streamID];
                 streamID = self->_streamID;
-                v18 = streamID == v16 || [(NSString *)streamID isEqual:v16];
+                v18 = streamID == streamID || [(NSString *)streamID isEqual:streamID];
               }
 
               else
@@ -145,7 +145,7 @@
   return v10 ^ v11;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v13.receiver = self;
@@ -170,38 +170,38 @@
   return v11;
 }
 
-- (SVXSpeechSynthesisRequest)initWithPriority:(int64_t)a3 options:(unint64_t)a4 speakableText:(id)a5 speakableContext:(id)a6 localizationKey:(id)a7 presynthesizedAudio:(id)a8 streamID:(id)a9
+- (SVXSpeechSynthesisRequest)initWithPriority:(int64_t)priority options:(unint64_t)options speakableText:(id)text speakableContext:(id)context localizationKey:(id)key presynthesizedAudio:(id)audio streamID:(id)d
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  textCopy = text;
+  contextCopy = context;
+  keyCopy = key;
+  audioCopy = audio;
+  dCopy = d;
   v33.receiver = self;
   v33.super_class = SVXSpeechSynthesisRequest;
   v20 = [(SVXSpeechSynthesisRequest *)&v33 init];
   v21 = v20;
   if (v20)
   {
-    v20->_priority = a3;
-    v20->_options = a4;
-    v22 = [v15 copy];
+    v20->_priority = priority;
+    v20->_options = options;
+    v22 = [textCopy copy];
     speakableText = v21->_speakableText;
     v21->_speakableText = v22;
 
-    v24 = [v16 copy];
+    v24 = [contextCopy copy];
     speakableContext = v21->_speakableContext;
     v21->_speakableContext = v24;
 
-    v26 = [v17 copy];
+    v26 = [keyCopy copy];
     localizationKey = v21->_localizationKey;
     v21->_localizationKey = v26;
 
-    v28 = [v18 copy];
+    v28 = [audioCopy copy];
     presynthesizedAudio = v21->_presynthesizedAudio;
     v21->_presynthesizedAudio = v28;
 
-    v30 = [v19 copy];
+    v30 = [dCopy copy];
     streamID = v21->_streamID;
     v21->_streamID = v30;
   }
@@ -209,36 +209,36 @@
   return v21;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXSpeechSynthesisRequestMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXSpeechSynthesisRequestMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXSpeechSynthesisRequestMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXSpeechSynthesisRequest *)self copy];
+    generate = [(SVXSpeechSynthesisRequest *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXSpeechSynthesisRequestMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXSpeechSynthesisRequestMutation *)v4 generate];
+  generate = [(_SVXSpeechSynthesisRequestMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

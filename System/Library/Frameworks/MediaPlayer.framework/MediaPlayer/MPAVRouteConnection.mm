@@ -1,50 +1,50 @@
 @interface MPAVRouteConnection
 - (BOOL)isInvalidated;
-- (MPAVRouteConnection)initWithExternalDeviceObject:(id)a3;
+- (MPAVRouteConnection)initWithExternalDeviceObject:(id)object;
 - (id)description;
-- (void)_connectionStateDidChange:(unsigned int)a3 error:(id)a4;
-- (void)_externalDeviceConnectionStateDidChangeNotification:(id)a3;
-- (void)connectWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)connectWithOptions:(unint64_t)a3 userInfo:(id)a4 completion:(id)a5;
+- (void)_connectionStateDidChange:(unsigned int)change error:(id)error;
+- (void)_externalDeviceConnectionStateDidChangeNotification:(id)notification;
+- (void)connectWithOptions:(unint64_t)options completion:(id)completion;
+- (void)connectWithOptions:(unint64_t)options userInfo:(id)info completion:(id)completion;
 - (void)dealloc;
 - (void)reset;
-- (void)sendMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 completionHandler:(id)a5;
+- (void)sendMediaRemoteCommand:(unsigned int)command withOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation MPAVRouteConnection
 
-- (void)_externalDeviceConnectionStateDidChangeNotification:(id)a3
+- (void)_externalDeviceConnectionStateDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69B0BB0]];
-  v7 = [v6 unsignedIntValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69B0BB0]];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKey:*MEMORY[0x1E696AA08]];
+  v9 = [userInfo2 objectForKey:*MEMORY[0x1E696AA08]];
 
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MPAVRouteConnection__externalDeviceConnectionStateDidChangeNotification___block_invoke;
   block[3] = &unk_1E7676BC0;
-  v14 = v7;
+  v14 = unsignedIntValue;
   block[4] = self;
   v13 = v9;
   v11 = v9;
   dispatch_async(calloutQueue, block);
 }
 
-- (void)_connectionStateDidChange:(unsigned int)a3 error:(id)a4
+- (void)_connectionStateDidChange:(unsigned int)change error:(id)error
 {
-  v6 = a4;
-  v7 = v6;
-  switch(a3)
+  errorCopy = error;
+  v7 = errorCopy;
+  switch(change)
   {
     case 1u:
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      v12 = v11;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      v12 = defaultCenter;
       v13 = @"_MPAVRouteConnectionDidAttemptConnectionNotification";
       goto LABEL_7;
     case 2u:
@@ -55,11 +55,11 @@
       v14[3] = &unk_1E7682518;
       v14[4] = self;
       dispatch_sync(accessQueue, v14);
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      v12 = v11;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      v12 = defaultCenter;
       v13 = @"_MPAVRouteConnectionDidConnectNotification";
 LABEL_7:
-      [v11 postNotificationName:v13 object:self];
+      [defaultCenter postNotificationName:v13 object:self];
 
       break;
     case 3u:
@@ -69,10 +69,10 @@ LABEL_7:
       block[2] = __55__MPAVRouteConnection__connectionStateDidChange_error___block_invoke;
       block[3] = &unk_1E76823C0;
       block[4] = self;
-      v16 = v6;
+      v16 = errorCopy;
       dispatch_sync(v8, block);
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 postNotificationName:@"_MPAVRouteConnectionDidInvalidateNotification" object:self];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"_MPAVRouteConnectionDidInvalidateNotification" object:self];
 
       break;
   }
@@ -90,20 +90,20 @@ uint64_t __55__MPAVRouteConnection__connectionStateDidChange_error___block_invok
   return result;
 }
 
-- (void)sendMediaRemoteCommand:(unsigned int)a3 withOptions:(id)a4 completionHandler:(id)a5
+- (void)sendMediaRemoteCommand:(unsigned int)command withOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MRExternalDevice *)self->_externalDevice customOrigin];
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  customOrigin = [(MRExternalDevice *)self->_externalDevice customOrigin];
+  if (customOrigin)
   {
-    v10 = v8;
+    v10 = handlerCopy;
     MRMediaRemoteSendCommandToApp();
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -148,17 +148,17 @@ uint64_t __76__MPAVRouteConnection_sendMediaRemoteCommand_withOptions_completion
   return v3;
 }
 
-- (void)connectWithOptions:(unint64_t)a3 userInfo:(id)a4 completion:(id)a5
+- (void)connectWithOptions:(unint64_t)options userInfo:(id)info completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__MPAVRouteConnection_connectWithOptions_userInfo_completion___block_invoke;
   aBlock[3] = &unk_1E7680CA8;
   aBlock[4] = self;
-  v20 = v9;
-  v10 = v9;
+  v20 = completionCopy;
+  v10 = completionCopy;
   v11 = _Block_copy(aBlock);
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -166,10 +166,10 @@ uint64_t __76__MPAVRouteConnection_sendMediaRemoteCommand_withOptions_completion
   v15[2] = __62__MPAVRouteConnection_connectWithOptions_userInfo_completion___block_invoke_3;
   v15[3] = &unk_1E7681E88;
   v15[4] = self;
-  v16 = v8;
+  v16 = infoCopy;
   v17 = v11;
-  v18 = a3;
-  v13 = v8;
+  optionsCopy = options;
+  v13 = infoCopy;
   v14 = v11;
   dispatch_async(accessQueue, v15);
 }
@@ -390,15 +390,15 @@ LABEL_15:
   (*(a1[7] + 16))(a1[7], v3, v26, v27, v28, v29, v30, v31);
 }
 
-- (void)connectWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)connectWithOptions:(unint64_t)options completion:(id)completion
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"MPAVRouteConnectionReasonUserInfoKey";
   v10[0] = @"deprecated";
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
+  completionCopy = completion;
   v8 = [v6 dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  [(MPAVRouteConnection *)self connectWithOptions:a3 userInfo:v8 completion:v7];
+  [(MPAVRouteConnection *)self connectWithOptions:options userInfo:v8 completion:completionCopy];
 }
 
 - (id)description
@@ -449,29 +449,29 @@ void __34__MPAVRouteConnection_description__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B0BA8] object:self->_externalDevice];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0BA8] object:self->_externalDevice];
 
   v4.receiver = self;
   v4.super_class = MPAVRouteConnection;
   [(MPAVRouteConnection *)&v4 dealloc];
 }
 
-- (MPAVRouteConnection)initWithExternalDeviceObject:(id)a3
+- (MPAVRouteConnection)initWithExternalDeviceObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = MPAVRouteConnection;
   v7 = [(MPAVRouteConnection *)&v15 init];
   if (v7)
   {
-    if (!v6)
+    if (!objectCopy)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v7 file:@"MPAVRouteConnection.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"externalDevice"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"MPAVRouteConnection.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"externalDevice"}];
     }
 
-    objc_storeStrong(&v7->_externalDevice, a3);
+    objc_storeStrong(&v7->_externalDevice, object);
     v8 = dispatch_queue_create("com.apple.MediaPlayerFramework.MPAVRouteConnection.accessQueue", 0);
     accessQueue = v7->_accessQueue;
     v7->_accessQueue = v8;
@@ -480,8 +480,8 @@ void __34__MPAVRouteConnection_description__block_invoke(uint64_t a1)
     calloutQueue = v7->_calloutQueue;
     v7->_calloutQueue = v10;
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v7 selector:sel__externalDeviceConnectionStateDidChangeNotification_ name:*MEMORY[0x1E69B0BA8] object:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__externalDeviceConnectionStateDidChangeNotification_ name:*MEMORY[0x1E69B0BA8] object:objectCopy];
   }
 
   return v7;

@@ -1,38 +1,38 @@
 @interface CHRemoteSynthesisRequestHandler
-+ (BOOL)isValidRemoteSynthesisRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
++ (BOOL)isValidRemoteSynthesisRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error;
 + (BOOL)shouldFreezeCharacterInventory;
 - (BOOL)clearInventory;
-- (CHRemoteSynthesisRequestHandler)initWithServerQueue:(id)a3 recognitionHandler:(id)a4;
+- (CHRemoteSynthesisRequestHandler)initWithServerQueue:(id)queue recognitionHandler:(id)handler;
 - (id)_createDebugViewOfInventory;
 - (void)_asyncUpdateInventoryStylePredictions;
-- (void)_handleCharacterInventoryRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
-- (void)_waitForStyleInventoryIdleAndReplyWithStatus:(id)a3;
+- (void)_handleCharacterInventoryRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)_waitForStyleInventoryIdleAndReplyWithStatus:(id)status;
 - (void)checkInStyleInventory;
 - (void)checkInTextSynthesizer;
 - (void)checkOutStyleInventory;
 - (void)checkOutTextSynthesizer;
 - (void)evictInventory;
 - (void)evictTextSynthesizer;
-- (void)handleAwaitInventoryIdleRequestWithReply:(id)a3 bundleIdentifier:(id)a4;
-- (void)handleInventoryContainingSampleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
-- (void)handleInventoryRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
-- (void)handleInventoryStatusRequestWithReply:(id)a3 bundleIdentifier:(id)a4;
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
-- (void)handleSynthesisStringChunkingRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5;
+- (void)handleAwaitInventoryIdleRequestWithReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleInventoryContainingSampleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleInventoryRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleInventoryStatusRequestWithReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
+- (void)handleSynthesisStringChunkingRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier;
 - (void)optimizeResourceUsage;
-- (void)stageEvictionOfStyleInventoryWithTargetIdleLifetime:(double)a3;
-- (void)stageEvictionOfTextSynthesizerWithTargetIdleLifetime:(double)a3;
+- (void)stageEvictionOfStyleInventoryWithTargetIdleLifetime:(double)lifetime;
+- (void)stageEvictionOfTextSynthesizerWithTargetIdleLifetime:(double)lifetime;
 @end
 
 @implementation CHRemoteSynthesisRequestHandler
 
-- (CHRemoteSynthesisRequestHandler)initWithServerQueue:(id)a3 recognitionHandler:(id)a4
+- (CHRemoteSynthesisRequestHandler)initWithServerQueue:(id)queue recognitionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = CHRemoteSynthesisRequestHandler;
-  v8 = [(CHRemoteBasicRequestHandler *)&v18 initWithServerQueue:v6];
+  v8 = [(CHRemoteBasicRequestHandler *)&v18 initWithServerQueue:queueCopy];
   v9 = v8;
   if (v8)
   {
@@ -41,7 +41,7 @@
     +[NSDate timeIntervalSinceReferenceDate];
     v9->_lastActiveTimestamp = v10;
     v9->_lastInventorySynthesisTimestamp = 0.0;
-    objc_storeStrong(&v9->_recognitionRequestHandler, a4);
+    objc_storeStrong(&v9->_recognitionRequestHandler, handler);
     v11 = [CHSynthesisRequestConcreteHandler alloc];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -57,13 +57,13 @@
   return v9;
 }
 
-+ (BOOL)isValidRemoteSynthesisRequest:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (BOOL)isValidRemoteSynthesisRequest:(id)request bundleIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  requestCopy = request;
+  identifierCopy = identifier;
+  if (requestCopy)
   {
-    if ([v7 requestType] == 1 && (objc_msgSend(v7, "drawing"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    if ([requestCopy requestType] == 1 && (objc_msgSend(requestCopy, "drawing"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
       v24 = +[NSBundle mainBundle];
       v15 = [v24 localizedStringForKey:@"The synthesis request is invalid" value:&stru_100025778 table:0];
@@ -79,11 +79,11 @@
 
     else
     {
-      if ([v7 requestType] && objc_msgSend(v7, "requestType") != 2 || (objc_msgSend(v7, "string"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
+      if ([requestCopy requestType] && objc_msgSend(requestCopy, "requestType") != 2 || (objc_msgSend(requestCopy, "string"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
       {
         v12 = 0;
         v13 = 1;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_14;
         }
@@ -121,11 +121,11 @@
   v12 = v20;
 
   v13 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_13:
     v27 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_14:
@@ -142,9 +142,9 @@ LABEL_14:
     v4 = [v3 dictionaryForKey:@"com.apple.corehandwriting"];
 
     v5 = [v4 objectForKey:@"kCHFreezeCharacterInventory"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    LOBYTE(has_internal_diagnostics) = v6;
+    LOBYTE(has_internal_diagnostics) = bOOLValue;
   }
 
   return has_internal_diagnostics;
@@ -232,7 +232,7 @@ LABEL_11:
   [(CHRemoteSynthesisRequestHandler *)self stageEvictionOfTextSynthesizerWithTargetIdleLifetime:self->_targetIdleLifetime];
 }
 
-- (void)stageEvictionOfTextSynthesizerWithTargetIdleLifetime:(double)a3
+- (void)stageEvictionOfTextSynthesizerWithTargetIdleLifetime:(double)lifetime
 {
   if (qword_10002AD20 != -1)
   {
@@ -243,7 +243,7 @@ LABEL_11:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v8 = a3;
+    lifetimeCopy = lifetime;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Staging synthesizer for eviction with idle lifetime=%1.2f", buf, 0xCu);
   }
 
@@ -252,8 +252,8 @@ LABEL_11:
   v6[2] = sub_1000118E8;
   v6[3] = &unk_100024B10;
   v6[4] = self;
-  *&v6[5] = a3;
-  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:a3];
+  *&v6[5] = lifetime;
+  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:lifetime];
 }
 
 - (void)evictInventory
@@ -354,7 +354,7 @@ LABEL_12:
   }
 }
 
-- (void)stageEvictionOfStyleInventoryWithTargetIdleLifetime:(double)a3
+- (void)stageEvictionOfStyleInventoryWithTargetIdleLifetime:(double)lifetime
 {
   if (qword_10002AD20 != -1)
   {
@@ -365,7 +365,7 @@ LABEL_12:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v8 = a3;
+    lifetimeCopy = lifetime;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Staging style inventory for eviction with idle lifetime=%1.2f", buf, 0xCu);
   }
 
@@ -374,8 +374,8 @@ LABEL_12:
   v6[2] = sub_100011EE4;
   v6[3] = &unk_100024B10;
   v6[4] = self;
-  *&v6[5] = a3;
-  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:a3];
+  *&v6[5] = lifetime;
+  [(CHRemoteBasicRequestHandler *)self _stageEvictionOfResourceWithTargetLifetime:v6 block:lifetime];
 }
 
 - (BOOL)clearInventory
@@ -402,13 +402,13 @@ LABEL_12:
 
     else
     {
-      v5 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+      serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100012190;
       block[3] = &unk_100024AA0;
       block[4] = self;
-      dispatch_sync(v5, block);
+      dispatch_sync(serverQueue, block);
 
       LOBYTE(has_internal_diagnostics) = 1;
     }
@@ -417,11 +417,11 @@ LABEL_12:
   return has_internal_diagnostics;
 }
 
-- (void)_handleCharacterInventoryRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)_handleCharacterInventoryRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
   if (![objc_opt_class() shouldFreezeCharacterInventory])
   {
     if (qword_10002AD20 != -1)
@@ -444,16 +444,16 @@ LABEL_12:
     v29 = &v28;
     v30 = 0x2020000000;
     v31 = 0;
-    v13 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+    serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001265C;
     block[3] = &unk_100024C28;
     block[4] = self;
-    v25 = v8;
+    v25 = requestCopy;
     v26 = buf;
     v27 = &v28;
-    dispatch_sync(v13, block);
+    dispatch_sync(serverQueue, block);
 
     if (v33[24] != 1)
     {
@@ -467,13 +467,13 @@ LABEL_12:
       {
 LABEL_15:
 
-        v15 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+        serverQueue2 = [(CHRemoteBasicRequestHandler *)self serverQueue];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100012C58;
         v22[3] = &unk_100024AA0;
         v22[4] = self;
-        dispatch_sync(v15, v22);
+        dispatch_sync(serverQueue2, v22);
 
         [(CHSynthesisRequestConcreteHandler *)self->_concreteHandler createPersonalizationCandidatesForAll:*(v29 + 24)];
         concreteHandler = self->_concreteHandler;
@@ -483,18 +483,18 @@ LABEL_15:
         v19[3] = &unk_100024CB8;
         v19[4] = self;
         v21 = &stru_100024C68;
-        v20 = v10;
+        v20 = identifierCopy;
         [(CHSynthesisRequestConcreteHandler *)concreteHandler enumeratePersonalizedCandidatesWithBlock:v19];
-        v17 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+        serverQueue3 = [(CHRemoteBasicRequestHandler *)self serverQueue];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_100013094;
         v18[3] = &unk_100024AA0;
         v18[4] = self;
-        dispatch_async(v17, v18);
+        dispatch_async(serverQueue3, v18);
 
 LABEL_16:
-        (*(v9 + 2))(v9, 0, 0);
+        (*(replyCopy + 2))(replyCopy, 0, 0);
 
         _Block_object_dispose(&v28, 8);
         _Block_object_dispose(buf, 8);
@@ -542,14 +542,14 @@ LABEL_17:
     v11 = sub_100010AEC;
     v12 = sub_100010AFC;
     v13 = 0;
-    v3 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+    serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100013230;
     v7[3] = &unk_100024CE0;
     v7[4] = self;
     v7[5] = &v8;
-    dispatch_sync(v3, v7);
+    dispatch_sync(serverQueue, v7);
 
     v4 = v9[5];
     _Block_object_dispose(&v8, 8);
@@ -565,20 +565,20 @@ LABEL_17:
   return v5;
 }
 
-- (void)handleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 options];
-  v12 = [v11 synthesizeCharacterInventoryBehavior];
+  requestCopy = request;
+  replyCopy = reply;
+  identifierCopy = identifier;
+  options = [requestCopy options];
+  synthesizeCharacterInventoryBehavior = [options synthesizeCharacterInventoryBehavior];
 
-  if (!v12)
+  if (!synthesizeCharacterInventoryBehavior)
   {
-    v14 = [v8 options];
-    v15 = [v14 styleInventoryQuery];
+    options2 = [requestCopy options];
+    styleInventoryQuery = [options2 styleInventoryQuery];
 
-    if (!v15)
+    if (!styleInventoryQuery)
     {
       *buf = 0;
       v26 = buf;
@@ -586,17 +586,17 @@ LABEL_17:
       v28 = sub_100010AEC;
       v29 = sub_100010AFC;
       v30 = 0;
-      v19 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+      serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100013670;
       block[3] = &unk_100024D30;
       block[4] = self;
-      v21 = v8;
-      v22 = v10;
-      v23 = v9;
+      v21 = requestCopy;
+      v22 = identifierCopy;
+      v23 = replyCopy;
       v24 = buf;
-      dispatch_sync(v19, block);
+      dispatch_sync(serverQueue, block);
 
       _Block_object_dispose(buf, 8);
       goto LABEL_17;
@@ -614,7 +614,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Request triggered creation of style inventory debug view", buf, 2u);
     }
 
-    v17 = [(CHRemoteSynthesisRequestHandler *)self _createDebugViewOfInventory];
+    _createDebugViewOfInventory = [(CHRemoteSynthesisRequestHandler *)self _createDebugViewOfInventory];
     if (qword_10002AD20 == -1)
     {
       v18 = qword_10002ACF0;
@@ -622,8 +622,8 @@ LABEL_17:
       {
 LABEL_15:
 
-        (*(v9 + 2))(v9, v17, 0);
-        (*(v9 + 2))(v9, 0, 0);
+        (*(replyCopy + 2))(replyCopy, _createDebugViewOfInventory, 0);
+        (*(replyCopy + 2))(replyCopy, 0, 0);
 
         goto LABEL_17;
       }
@@ -656,109 +656,109 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Remote synthesis request will go through fast path synthesis", buf, 2u);
   }
 
-  [(CHRemoteSynthesisRequestHandler *)self _handleCharacterInventoryRequest:v8 withReply:v9 bundleIdentifier:v10];
+  [(CHRemoteSynthesisRequestHandler *)self _handleCharacterInventoryRequest:requestCopy withReply:replyCopy bundleIdentifier:identifierCopy];
 LABEL_17:
 }
 
-- (void)handleInventoryRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleInventoryRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  requestCopy = request;
+  replyCopy = reply;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100013BFC;
   block[3] = &unk_100024B38;
   block[4] = self;
-  v10 = v7;
+  v10 = requestCopy;
   v13 = v10;
-  v11 = v8;
+  v11 = replyCopy;
   v14 = v11;
-  dispatch_async(v9, block);
+  dispatch_async(serverQueue, block);
 
   [(CHRemoteSynthesisRequestHandler *)self _asyncUpdateInventoryStylePredictions];
 }
 
-- (void)handleInventoryStatusRequestWithReply:(id)a3 bundleIdentifier:(id)a4
+- (void)handleInventoryStatusRequestWithReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  replyCopy = reply;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100013E98;
   v8[3] = &unk_100024980;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = replyCopy;
+  v7 = replyCopy;
+  dispatch_async(serverQueue, v8);
 }
 
-- (void)handleAwaitInventoryIdleRequestWithReply:(id)a3 bundleIdentifier:(id)a4
+- (void)handleAwaitInventoryIdleRequestWithReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  replyCopy = reply;
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100013FF0;
   v8[3] = &unk_100024980;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = replyCopy;
+  v7 = replyCopy;
+  dispatch_async(serverQueue, v8);
 }
 
-- (void)_waitForStyleInventoryIdleAndReplyWithStatus:(id)a3
+- (void)_waitForStyleInventoryIdleAndReplyWithStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if (self->_activeStyleInventoryRequestCount < 1)
   {
     [(CHRemoteSynthesisRequestHandler *)self checkOutStyleInventory];
-    v7 = [(CHSynthesisRequestConcreteHandler *)self->_concreteHandler inventoryStatus];
+    inventoryStatus = [(CHSynthesisRequestConcreteHandler *)self->_concreteHandler inventoryStatus];
     [(CHRemoteSynthesisRequestHandler *)self checkInStyleInventory];
-    v4[2](v4, v7, 0);
+    statusCopy[2](statusCopy, inventoryStatus, 0);
   }
 
   else
   {
     v5 = dispatch_time(0, 100000000);
-    v6 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+    serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10001417C;
     v8[3] = &unk_100024980;
     v8[4] = self;
-    v9 = v4;
-    dispatch_after(v5, v6, v8);
+    v9 = statusCopy;
+    dispatch_after(v5, serverQueue, v8);
   }
 }
 
-- (void)handleInventoryContainingSampleRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleInventoryContainingSampleRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if ((os_variant_has_internal_diagnostics() & 1) == 0)
   {
     v9 = [NSNumber numberWithBool:0];
-    v8[2](v8, v9, 0);
+    replyCopy[2](replyCopy, v9, 0);
   }
 
-  v10 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000142D0;
   block[3] = &unk_100024B38;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  dispatch_async(v10, block);
+  v14 = requestCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = requestCopy;
+  dispatch_async(serverQueue, block);
 }
 
-- (void)handleSynthesisStringChunkingRequest:(id)a3 withReply:(id)a4 bundleIdentifier:(id)a5
+- (void)handleSynthesisStringChunkingRequest:(id)request withReply:(id)reply bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   if (qword_10002AD20 != -1)
   {
     dispatch_once(&qword_10002AD20, &stru_1000249F0);
@@ -767,39 +767,39 @@ LABEL_17:
   v9 = qword_10002ACF0;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 string];
-    v11 = [v7 string];
+    string = [requestCopy string];
+    string2 = [requestCopy string];
     *buf = 138740227;
-    v19 = v10;
+    v19 = string;
     v20 = 1024;
-    v21 = [v11 length];
+    v21 = [string2 length];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CHRemoteRequestHandlers: handleSynthesisStringChunkingRequest content %{sensitive}@ length %d", buf, 0x12u);
   }
 
-  v12 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001457C;
   block[3] = &unk_100024B38;
   block[4] = self;
-  v16 = v7;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
-  dispatch_async(v12, block);
+  v16 = requestCopy;
+  v17 = replyCopy;
+  v13 = replyCopy;
+  v14 = requestCopy;
+  dispatch_async(serverQueue, block);
 }
 
 - (void)_asyncUpdateInventoryStylePredictions
 {
   if ([(CHSynthesisRequestConcreteHandler *)self->_concreteHandler hasPersonalizationAvailable])
   {
-    v3 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+    serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000146B0;
     block[3] = &unk_100024AA0;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(serverQueue, block);
   }
 }
 

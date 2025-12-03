@@ -1,13 +1,13 @@
 @interface EKConferenceInvalidationRecord
-- (void)finishWithURL:(id)a3 error:(id)a4;
-- (void)generateNewValidURLForOriginalURL:(id)a3;
+- (void)finishWithURL:(id)l error:(id)error;
+- (void)generateNewValidURLForOriginalURL:(id)l;
 @end
 
 @implementation EKConferenceInvalidationRecord
 
-- (void)generateNewValidURLForOriginalURL:(id)a3
+- (void)generateNewValidURLForOriginalURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (generateNewValidURLForOriginalURL__onceToken != -1)
   {
     [EKConferenceInvalidationRecord generateNewValidURLForOriginalURL:];
@@ -19,8 +19,8 @@
   v7[2] = __68__EKConferenceInvalidationRecord_generateNewValidURLForOriginalURL___block_invoke_2;
   v7[3] = &unk_1E7801378;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   [EKConferenceUtils _findRoomTypeForURL:v6 queue:v5 completionHandler:v7];
 }
 
@@ -87,13 +87,13 @@ void __68__EKConferenceInvalidationRecord_generateNewValidURLForOriginalURL___bl
   }
 }
 
-- (void)finishWithURL:(id)a3 error:(id)a4
+- (void)finishWithURL:(id)l error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  errorCopy = error;
   os_unfair_lock_lock(&_invalidationLock);
-  objc_storeStrong(&self->_validURL, a3);
+  objc_storeStrong(&self->_validURL, l);
   v9 = self->_waitingCompletionHandlers;
   waitingCompletionHandlers = self->_waitingCompletionHandlers;
   self->_waitingCompletionHandlers = 0;

@@ -1,37 +1,37 @@
 @interface PUIPosterContentOcclusionRectSet
-+ (id)occlusionRectSetForName:(id)a3 rect:(CGRect)a4;
-+ (id)occlusionRectSetWithOcclusionRectSet:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)occlusionRectSetForName:(id)name rect:(CGRect)rect;
++ (id)occlusionRectSetWithOcclusionRectSet:(id)set;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)nameToRectDictionary;
 - (NSString)description;
-- (PUIPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)a3;
-- (PUIPosterContentOcclusionRectSet)initWithCoder:(id)a3;
-- (PUIPosterContentOcclusionRectSet)initWithNameToRectDictionary:(id)a3;
-- (PUIPosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3;
-- (PUIPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)a3;
+- (PUIPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)coder;
+- (PUIPosterContentOcclusionRectSet)initWithCoder:(id)coder;
+- (PUIPosterContentOcclusionRectSet)initWithNameToRectDictionary:(id)dictionary;
+- (PUIPosterContentOcclusionRectSet)initWithNameToRectMap:(id)map;
+- (PUIPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)set;
 - (id)allRects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)rectWithName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)rectWithName:(id)name;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIPosterContentOcclusionRectSet
 
-+ (id)occlusionRectSetWithOcclusionRectSet:(id)a3
++ (id)occlusionRectSetWithOcclusionRectSet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    v4 = a3;
-    v5 = [a1 alloc];
-    v6 = [v4 allRects];
+    setCopy = set;
+    v5 = [self alloc];
+    allRects = [setCopy allRects];
 
-    if (v6)
+    if (allRects)
     {
-      v7 = v6;
+      v7 = allRects;
     }
 
     else
@@ -50,18 +50,18 @@
   return v8;
 }
 
-+ (id)occlusionRectSetForName:(id)a3 rect:(CGRect)a4
++ (id)occlusionRectSetForName:(id)name rect:(CGRect)rect
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = a3;
-    v10 = [a1 alloc];
-    v16 = v9;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    nameCopy = name;
+    v10 = [self alloc];
+    v16 = nameCopy;
     *v15 = x;
     *&v15[1] = y;
     *&v15[2] = width;
@@ -81,24 +81,24 @@
   return v13;
 }
 
-- (PUIPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)a3
+- (PUIPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)set
 {
-  v4 = [a3 nameToRectMap];
-  v5 = [v4 copy];
+  nameToRectMap = [set nameToRectMap];
+  v5 = [nameToRectMap copy];
   v6 = [(PUIPosterContentOcclusionRectSet *)self initWithNameToRectMap:v5];
 
   return v6;
 }
 
-- (PUIPosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3
+- (PUIPosterContentOcclusionRectSet)initWithNameToRectMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = PUIPosterContentOcclusionRectSet;
   v5 = [(PUIPosterContentOcclusionRectSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mapCopy copy];
     nameToRectMap = v5->_nameToRectMap;
     v5->_nameToRectMap = v6;
   }
@@ -106,10 +106,10 @@
   return v5;
 }
 
-- (PUIPosterContentOcclusionRectSet)initWithNameToRectDictionary:(id)a3
+- (PUIPosterContentOcclusionRectSet)initWithNameToRectDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v5 = objc_opt_new();
     v9[0] = MEMORY[0x1E69E9820];
@@ -118,7 +118,7 @@
     v9[3] = &unk_1E7854958;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
     v7 = [(PUIPosterContentOcclusionRectSet *)self initWithNameToRectMap:v6];
   }
 
@@ -139,11 +139,11 @@ void __65__PUIPosterContentOcclusionRectSet_initWithNameToRectDictionary___block
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)rectWithName:(id)a3
+- (id)rectWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  nameToRectMap = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
+  v6 = [nameToRectMap objectForKeyedSubscript:nameCopy];
 
   v7 = [v6 copy];
 
@@ -152,8 +152,8 @@ void __65__PUIPosterContentOcclusionRectSet_initWithNameToRectDictionary___block
 
 - (id)allRects
 {
-  v2 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
-  v3 = [v2 copy];
+  nameToRectMap = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
+  v3 = [nameToRectMap copy];
 
   return v3;
 }
@@ -161,14 +161,14 @@ void __65__PUIPosterContentOcclusionRectSet_initWithNameToRectDictionary___block
 - (NSDictionary)nameToRectDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PUIPosterContentOcclusionRectSet *)self allRects];
+  allRects = [(PUIPosterContentOcclusionRectSet *)self allRects];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke;
   v8[3] = &unk_1E7854980;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [allRects enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = [v5 copy];
 
@@ -183,20 +183,20 @@ void __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke(u
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(PUIPosterContentOcclusionRectSet *)v5 nameToRectMap];
-    v7 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
-    v8 = [v6 isEqualToDictionary:v7];
+    nameToRectMap = [(PUIPosterContentOcclusionRectSet *)v5 nameToRectMap];
+    nameToRectMap2 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
+    v8 = [nameToRectMap isEqualToDictionary:nameToRectMap2];
   }
 
   else
@@ -209,11 +209,11 @@ void __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke(u
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  nameToRectMap = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
+  v5 = [builder appendObject:nameToRectMap];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
@@ -225,10 +225,10 @@ void __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke(u
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(PUIPosterContentOcclusionRectSet *)self allRects];
-  v5 = [v4 keyEnumerator];
+  allRects = [(PUIPosterContentOcclusionRectSet *)self allRects];
+  keyEnumerator = [allRects keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -239,7 +239,7 @@ void __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke(u
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -248,70 +248,70 @@ void __56__PUIPosterContentOcclusionRectSet_nameToRectDictionary__block_invoke(u
         v12 = [v3 appendRect:v10 withName:?];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 - (unint64_t)count
 {
-  v2 = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
-  v3 = [v2 count];
+  nameToRectMap = [(PUIPosterContentOcclusionRectSet *)self nameToRectMap];
+  v3 = [nameToRectMap count];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PUIPosterContentOcclusionRectSet allocWithZone:a3];
+  v4 = [PUIPosterContentOcclusionRectSet allocWithZone:zone];
 
   return [(PUIPosterContentOcclusionRectSet *)v4 initWithOcclusionRectSet:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PUIPosterContentOcclusionRectSet allocWithZone:a3];
+  v4 = [PUIPosterContentOcclusionRectSet allocWithZone:zone];
 
   return [(PUIPosterContentOcclusionRectSet *)v4 initWithOcclusionRectSet:self];
 }
 
-- (PUIPosterContentOcclusionRectSet)initWithCoder:(id)a3
+- (PUIPosterContentOcclusionRectSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"nameToRectDictionary"];
+  v6 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"nameToRectDictionary"];
 
   v7 = [(PUIPosterContentOcclusionRectSet *)self initWithNameToRectDictionary:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PUIPosterContentOcclusionRectSet *)self nameToRectDictionary];
-  [v4 encodeObject:v5 forKey:@"nameToRectDictionary"];
+  coderCopy = coder;
+  nameToRectDictionary = [(PUIPosterContentOcclusionRectSet *)self nameToRectDictionary];
+  [coderCopy encodeObject:nameToRectDictionary forKey:@"nameToRectDictionary"];
 }
 
-- (PUIPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)a3
+- (PUIPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeDictionaryOfClass:objc_opt_class() forKey:@"nameToRectDictionary"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"nameToRectDictionary"];
 
   v6 = [(PUIPosterContentOcclusionRectSet *)self initWithNameToRectDictionary:v5];
   return v6;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PUIPosterContentOcclusionRectSet *)self nameToRectDictionary];
-  [v4 encodeDictionary:v5 forKey:@"nameToRectDictionary"];
+  coderCopy = coder;
+  nameToRectDictionary = [(PUIPosterContentOcclusionRectSet *)self nameToRectDictionary];
+  [coderCopy encodeDictionary:nameToRectDictionary forKey:@"nameToRectDictionary"];
 }
 
 @end

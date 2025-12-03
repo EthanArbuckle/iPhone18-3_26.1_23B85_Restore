@@ -1,82 +1,82 @@
 @interface SBFloatingDockSuggestionsModel
-- (BOOL)_displayItemContainedInUserDock:(id)a3;
-- (BOOL)_shouldProcessAppSuggestion:(id)a3;
-- (BOOL)dataStore:(id)a3 shouldRestorePersistedDisplayItem:(id)a4;
-- (BOOL)recentDisplayItemsController:(id)a3 shouldAddItem:(id)a4;
-- (BOOL)shouldAddItem:(id)a3;
+- (BOOL)_displayItemContainedInUserDock:(id)dock;
+- (BOOL)_shouldProcessAppSuggestion:(id)suggestion;
+- (BOOL)dataStore:(id)store shouldRestorePersistedDisplayItem:(id)item;
+- (BOOL)recentDisplayItemsController:(id)controller shouldAddItem:(id)item;
+- (BOOL)shouldAddItem:(id)item;
 - (SBFloatingDockHomeScreenContextProviding)homeScreenContextProvider;
-- (SBFloatingDockSuggestionsModel)initWithMaximumNumberOfSuggestions:(unint64_t)a3 homeScreenContextProvider:(id)a4 recentsController:(id)a5 recentsDataStore:(id)a6 recentsDefaults:(id)a7 floatingDockDefaults:(id)a8 appSuggestionManager:(id)a9 applicationController:(id)a10;
+- (SBFloatingDockSuggestionsModel)initWithMaximumNumberOfSuggestions:(unint64_t)suggestions homeScreenContextProvider:(id)provider recentsController:(id)controller recentsDataStore:(id)store recentsDefaults:(id)defaults floatingDockDefaults:(id)dockDefaults appSuggestionManager:(id)manager applicationController:(id)self0;
 - (SBFloatingDockSuggestionsModelDelegate)delegate;
 - (SBRecentDisplayItemsController)recentsController;
 - (SBRecentDisplayItemsDataStore)recentsDataStore;
-- (id)_displayItemForAppSuggestion:(id)a3;
+- (id)_displayItemForAppSuggestion:(id)suggestion;
 - (id)_dockListModelFromContextProvider;
-- (id)_filterRecentDisplayItems:(id)a3 filteredOutItems:(id *)a4;
-- (id)_moveOrAddRecentThenCull:(id)a3;
-- (id)persistedDisplayItemsForDataStore:(id)a3;
-- (unint64_t)_indexForAppSuggestion:(id)a3;
+- (id)_filterRecentDisplayItems:(id)items filteredOutItems:(id *)outItems;
+- (id)_moveOrAddRecentThenCull:(id)cull;
+- (id)persistedDisplayItemsForDataStore:(id)store;
+- (unint64_t)_indexForAppSuggestion:(id)suggestion;
 - (void)_addStateCaptureHandlers;
-- (void)_appSuggestionsChanged:(id)a3;
-- (void)_handleNewRecentItem:(id)a3;
-- (void)_iconModelDidChange:(id)a3;
-- (void)_iconModelDidLayout:(id)a3;
+- (void)_appSuggestionsChanged:(id)changed;
+- (void)_handleNewRecentItem:(id)item;
+- (void)_iconModelDidChange:(id)change;
+- (void)_iconModelDidLayout:(id)layout;
 - (void)_initializeAndObserveDefaults;
-- (void)_performAppSuggestionChangedWithNewSuggestion:(id)a3;
+- (void)_performAppSuggestionChangedWithNewSuggestion:(id)suggestion;
 - (void)_reloadRecentsAndSuggestions;
-- (void)_runStressTestWithCompletion:(id)a3;
-- (void)_setRecentsEnabled:(BOOL)a3;
-- (void)_updateCurrentDisplayItemsAfterContinuityChange:(BOOL)a3 notifyDelegate:(BOOL)a4;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)beginPendingUpdatesForReason:(id)a3;
-- (void)dataStore:(id)a3 persistDisplayItems:(id)a4;
+- (void)_runStressTestWithCompletion:(id)completion;
+- (void)_setRecentsEnabled:(BOOL)enabled;
+- (void)_updateCurrentDisplayItemsAfterContinuityChange:(BOOL)change notifyDelegate:(BOOL)delegate;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)beginPendingUpdatesForReason:(id)reason;
+- (void)dataStore:(id)store persistDisplayItems:(id)items;
 - (void)dealloc;
-- (void)endPendingUpdatesForReason:(id)a3;
-- (void)recentDisplayItemsController:(id)a3 didAddItem:(id)a4;
-- (void)recentDisplayItemsController:(id)a3 didAddItem:(id)a4 andDropItem:(id)a5;
-- (void)recentDisplayItemsController:(id)a3 didMoveItemToFront:(id)a4;
-- (void)recentDisplayItemsController:(id)a3 didRemoveItem:(id)a4;
+- (void)endPendingUpdatesForReason:(id)reason;
+- (void)recentDisplayItemsController:(id)controller didAddItem:(id)item;
+- (void)recentDisplayItemsController:(id)controller didAddItem:(id)item andDropItem:(id)dropItem;
+- (void)recentDisplayItemsController:(id)controller didMoveItemToFront:(id)front;
+- (void)recentDisplayItemsController:(id)controller didRemoveItem:(id)item;
 - (void)resetRecentsAndSuggestions;
-- (void)setRequestedSuggestedApplication:(id)a3;
-- (void)setUserDockListModel:(id)a3;
+- (void)setRequestedSuggestedApplication:(id)application;
+- (void)setUserDockListModel:(id)model;
 @end
 
 @implementation SBFloatingDockSuggestionsModel
 
-- (SBFloatingDockSuggestionsModel)initWithMaximumNumberOfSuggestions:(unint64_t)a3 homeScreenContextProvider:(id)a4 recentsController:(id)a5 recentsDataStore:(id)a6 recentsDefaults:(id)a7 floatingDockDefaults:(id)a8 appSuggestionManager:(id)a9 applicationController:(id)a10
+- (SBFloatingDockSuggestionsModel)initWithMaximumNumberOfSuggestions:(unint64_t)suggestions homeScreenContextProvider:(id)provider recentsController:(id)controller recentsDataStore:(id)store recentsDefaults:(id)defaults floatingDockDefaults:(id)dockDefaults appSuggestionManager:(id)manager applicationController:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v19 = a10;
+  providerCopy = provider;
+  controllerCopy = controller;
+  storeCopy = store;
+  defaultsCopy = defaults;
+  dockDefaultsCopy = dockDefaults;
+  managerCopy = manager;
+  applicationControllerCopy = applicationController;
   v44.receiver = self;
   v44.super_class = SBFloatingDockSuggestionsModel;
   v20 = [(SBFloatingDockSuggestionsModel *)&v44 init];
   v21 = v20;
   if (v20)
   {
-    v20->_maxSuggestions = a3;
-    objc_storeWeak(&v20->_recentsDataStore, v18);
-    objc_storeWeak(&v21->_recentsController, v17);
-    objc_storeStrong(&v21->_appSuggestionManager, a9);
-    objc_storeWeak(&v21->_homeScreenContextProvider, v16);
-    objc_storeStrong(&v21->_applicationController, a10);
-    objc_storeStrong(&v21->_floatingDockDefaults, a8);
-    [(SBFloatingDockSuggestionsModel *)v21 _setRecentsEnabled:[(SBFloatingDockDefaults *)v21->_floatingDockDefaults recentsEnabled:v39]];
-    [v18 setPersistenceDelegate:v21];
-    objc_storeStrong(&v21->_recentsDefaults, a7);
-    v22 = [v18 displayItems];
-    [v17 setRecentDisplayItems:v22];
+    v20->_maxSuggestions = suggestions;
+    objc_storeWeak(&v20->_recentsDataStore, storeCopy);
+    objc_storeWeak(&v21->_recentsController, controllerCopy);
+    objc_storeStrong(&v21->_appSuggestionManager, manager);
+    objc_storeWeak(&v21->_homeScreenContextProvider, providerCopy);
+    objc_storeStrong(&v21->_applicationController, applicationController);
+    objc_storeStrong(&v21->_floatingDockDefaults, dockDefaults);
+    [(SBFloatingDockSuggestionsModel *)v21 _setRecentsEnabled:[(SBFloatingDockDefaults *)v21->_floatingDockDefaults recentsEnabled:managerCopy]];
+    [storeCopy setPersistenceDelegate:v21];
+    objc_storeStrong(&v21->_recentsDefaults, defaults);
+    displayItems = [storeCopy displayItems];
+    [controllerCopy setRecentDisplayItems:displayItems];
 
     [(SBFloatingDockSuggestionsModel *)v21 _initializeAndObserveDefaults];
     v23 = objc_alloc_init(MEMORY[0x277CBEB40]);
     currentDisplayItems = v21->_currentDisplayItems;
     v21->_currentDisplayItems = v23;
 
-    v25 = [(SBFloatingDockSuggestionsModel *)v21 _dockListModelFromContextProvider];
-    [(SBFloatingDockSuggestionsModel *)v21 setUserDockListModel:v25];
+    _dockListModelFromContextProvider = [(SBFloatingDockSuggestionsModel *)v21 _dockListModelFromContextProvider];
+    [(SBFloatingDockSuggestionsModel *)v21 setUserDockListModel:_dockListModelFromContextProvider];
 
     [(SBFloatingDockSuggestionsModel *)v21 _reloadRecentsAndSuggestions];
     v26 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -84,14 +84,14 @@
     v21->_pendingSuggestionUpdateReasons = v26;
 
     [(SBFloatingDockSuggestionsModel *)v21 _addStateCaptureHandlers];
-    v28 = [v16 iconModel];
+    iconModel = [providerCopy iconModel];
     iconModel = v21->_iconModel;
-    v21->_iconModel = v28;
+    v21->_iconModel = iconModel;
 
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:v21 selector:sel__appSuggestionsChanged_ name:@"SBSuggestedAppChangedNotification" object:v21->_appSuggestionManager];
-    [v30 addObserver:v21 selector:sel__iconModelDidLayout_ name:*MEMORY[0x277D666F0] object:v21->_iconModel];
-    [v30 addObserver:v21 selector:sel__iconModelDidChange_ name:SBIconControllerIconModelDidChangeNotification object:v16];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel__appSuggestionsChanged_ name:@"SBSuggestedAppChangedNotification" object:v21->_appSuggestionManager];
+    [defaultCenter addObserver:v21 selector:sel__iconModelDidLayout_ name:*MEMORY[0x277D666F0] object:v21->_iconModel];
+    [defaultCenter addObserver:v21 selector:sel__iconModelDidChange_ name:SBIconControllerIconModelDidChangeNotification object:providerCopy];
     v31 = MEMORY[0x277D43280];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
@@ -104,8 +104,8 @@
     v32->_stressTestRecipe = v33;
 
     [MEMORY[0x277D661A0] registerTestRecipe:v32->_stressTestRecipe];
-    v35 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v36 = [v35 addMonitor:v32 subjectMask:1 subscriptionOptions:1];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v36 = [subjectMonitorRegistry addMonitor:v32 subjectMask:1 subscriptionOptions:1];
     appProtectionSubscription = v32->_appProtectionSubscription;
     v32->_appProtectionSubscription = v36;
   }
@@ -115,8 +115,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBIconListModel *)self->_userDockListModel removeListObserver:self];
   [(APSubjectMonitorSubscription *)self->_appProtectionSubscription invalidate];
@@ -125,64 +125,64 @@
   [(SBFloatingDockSuggestionsModel *)&v4 dealloc];
 }
 
-- (void)beginPendingUpdatesForReason:(id)a3
+- (void)beginPendingUpdatesForReason:(id)reason
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableSet *)self->_pendingSuggestionUpdateReasons addObject:v4];
+  reasonCopy = reason;
+  [(NSMutableSet *)self->_pendingSuggestionUpdateReasons addObject:reasonCopy];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Beging pending app suggestions update because %@", &v6, 0xCu);
   }
 }
 
-- (void)endPendingUpdatesForReason:(id)a3
+- (void)endPendingUpdatesForReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBFloatingDockSuggestionsModel *)self _isPendingAppSuggestionsUpdate];
-  [(NSMutableSet *)self->_pendingSuggestionUpdateReasons removeObject:v4];
+  reasonCopy = reason;
+  _isPendingAppSuggestionsUpdate = [(SBFloatingDockSuggestionsModel *)self _isPendingAppSuggestionsUpdate];
+  [(NSMutableSet *)self->_pendingSuggestionUpdateReasons removeObject:reasonCopy];
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "End pending app suggestions update because %@", &v9, 0xCu);
   }
 
-  v7 = [(SBFloatingDockSuggestionsModel *)self _isPendingAppSuggestionsUpdate];
-  if (v5 && !v7)
+  _isPendingAppSuggestionsUpdate2 = [(SBFloatingDockSuggestionsModel *)self _isPendingAppSuggestionsUpdate];
+  if (_isPendingAppSuggestionsUpdate && !_isPendingAppSuggestionsUpdate2)
   {
-    v8 = [(SBAppSuggestionManager *)self->_appSuggestionManager currentSuggestedApp];
-    [(SBFloatingDockSuggestionsModel *)self _performAppSuggestionChangedWithNewSuggestion:v8];
+    currentSuggestedApp = [(SBAppSuggestionManager *)self->_appSuggestionManager currentSuggestedApp];
+    [(SBFloatingDockSuggestionsModel *)self _performAppSuggestionChangedWithNewSuggestion:currentSuggestedApp];
   }
 }
 
-- (void)setRequestedSuggestedApplication:(id)a3
+- (void)setRequestedSuggestedApplication:(id)application
 {
-  v5 = a3;
-  if (self->_requestedSuggestedApplication != v5)
+  applicationCopy = application;
+  if (self->_requestedSuggestedApplication != applicationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_requestedSuggestedApplication, a3);
+    v6 = applicationCopy;
+    objc_storeStrong(&self->_requestedSuggestedApplication, application);
     [(SBFloatingDockSuggestionsModel *)self _updateCurrentDisplayItemsAfterContinuityChange:0 notifyDelegate:1];
-    v5 = v6;
+    applicationCopy = v6;
   }
 }
 
-- (void)dataStore:(id)a3 persistDisplayItems:(id)a4
+- (void)dataStore:(id)store persistDisplayItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -198,8 +198,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) plistRepresentation];
-        [v6 addObject:v12];
+        plistRepresentation = [*(*(&v13 + 1) + 8 * v11) plistRepresentation];
+        [array addObject:plistRepresentation];
 
         ++v11;
       }
@@ -211,14 +211,14 @@
     while (v9);
   }
 
-  [(SBRecentDisplayItemsDefaults *)self->_recentsDefaults setDockRecentsPlistRepresentation:v6];
+  [(SBRecentDisplayItemsDefaults *)self->_recentsDefaults setDockRecentsPlistRepresentation:array];
 }
 
-- (id)persistedDisplayItemsForDataStore:(id)a3
+- (id)persistedDisplayItemsForDataStore:(id)store
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SBRecentDisplayItemsDefaults *)self->_recentsDefaults dockRecentsPlistRepresentation];
-  if (v3)
+  dockRecentsPlistRepresentation = [(SBRecentDisplayItemsDefaults *)self->_recentsDefaults dockRecentsPlistRepresentation];
+  if (dockRecentsPlistRepresentation)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -226,12 +226,12 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v3;
+    v6 = dockRecentsPlistRepresentation;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
-      v18 = v3;
+      v18 = dockRecentsPlistRepresentation;
       v9 = *v20;
       while (2)
       {
@@ -258,8 +258,8 @@
           }
 
           v13 = v12;
-          v14 = [(SBDisplayItem *)v12 bundleIdentifier];
-          if (!v14 || ([v5 containsObject:v14] & 1) == 0)
+          bundleIdentifier = [(SBDisplayItem *)v12 bundleIdentifier];
+          if (!bundleIdentifier || ([v5 containsObject:bundleIdentifier] & 1) == 0)
           {
             v15 = SBLogCommon();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -270,7 +270,7 @@
             }
 
             [v4 addObject:v13];
-            [v5 addObject:v14];
+            [v5 addObject:bundleIdentifier];
           }
         }
 
@@ -284,7 +284,7 @@
       }
 
 LABEL_19:
-      v3 = v18;
+      dockRecentsPlistRepresentation = v18;
     }
   }
 
@@ -296,33 +296,33 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)dataStore:(id)a3 shouldRestorePersistedDisplayItem:(id)a4
+- (BOOL)dataStore:(id)store shouldRestorePersistedDisplayItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
-  v7 = [v6 iconModel];
-  if ([v5 type])
+  itemCopy = item;
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
+  iconModel = [homeScreenContextProvider iconModel];
+  if ([itemCopy type])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v5 bundleIdentifier];
-    if (v9)
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    if (bundleIdentifier)
     {
-      v10 = [v7 applicationIconForBundleIdentifier:v9];
-      v11 = [v7 isIconVisible:v10];
-      v12 = [(SBApplicationController *)self->_applicationController restrictionController];
-      v13 = [v12 isApplicationIdentifierRestricted:v9];
+      v10 = [iconModel applicationIconForBundleIdentifier:bundleIdentifier];
+      v11 = [iconModel isIconVisible:v10];
+      restrictionController = [(SBApplicationController *)self->_applicationController restrictionController];
+      v13 = [restrictionController isApplicationIdentifierRestricted:bundleIdentifier];
 
       v8 = v11 & (v13 ^ 1);
       v14 = SBLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         v16 = 138413058;
-        v17 = v5;
+        v17 = itemCopy;
         v18 = 1024;
         v19 = v11 & (v13 ^ 1);
         v20 = 1024;
@@ -342,16 +342,16 @@ LABEL_19:
   return v8;
 }
 
-- (id)_moveOrAddRecentThenCull:(id)a3
+- (id)_moveOrAddRecentThenCull:(id)cull
 {
-  v5 = a3;
-  v6 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency sb_indexOfFloatingDockSuggestionDisplayItem:v5];
+  cullCopy = cull;
+  v6 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency sb_indexOfFloatingDockSuggestionDisplayItem:cullCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency removeObjectAtIndex:v6];
   }
 
-  [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency insertObject:v5 atIndex:0];
+  [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency insertObject:cullCopy atIndex:0];
   if (([(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency count]- self->_maxSuggestions) >= 2)
   {
     [(SBFloatingDockSuggestionsModel *)a2 _moveOrAddRecentThenCull:?];
@@ -359,31 +359,31 @@ LABEL_19:
 
   if ([(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency count]<= self->_maxSuggestions)
   {
-    v7 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v7 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency lastObject];
-    [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency removeObject:v7];
+    lastObject = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency lastObject];
+    [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency removeObject:lastObject];
   }
 
-  return v7;
+  return lastObject;
 }
 
-- (void)_handleNewRecentItem:(id)a3
+- (void)_handleNewRecentItem:(id)item
 {
-  v14 = a3;
-  v4 = [(SBFloatingDockSuggestionsModel *)self shouldAddItem:v14];
+  itemCopy = item;
+  v4 = [(SBFloatingDockSuggestionsModel *)self shouldAddItem:itemCopy];
   if (v4)
   {
-    v5 = [(SBFloatingDockSuggestionsModel *)self _moveOrAddRecentThenCull:v14];
+    v5 = [(SBFloatingDockSuggestionsModel *)self _moveOrAddRecentThenCull:itemCopy];
     currentAppSuggestion = self->_currentAppSuggestion;
     if (v5)
     {
       if (!currentAppSuggestion || (v7 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v5], [(SBFloatingDockSuggestionsModel *)self _displayItemForAppSuggestion:self->_currentAppSuggestion], v8 = objc_claimAutoreleasedReturnValue(), v9 = [(SBFloatingDockSuggestionsModel *)self _indexForAppSuggestion:v8], v8, v7 != v9))
       {
-        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v5] withObject:v14];
+        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v5] withObject:itemCopy];
 LABEL_12:
         WeakRetained = objc_loadWeakRetained(&self->_recentsDataStore);
         [WeakRetained setDisplayItems:self->_currentRecentDisplayItems];
@@ -392,24 +392,24 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v10 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency lastObject];
-      v11 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems indexOfObject:v10];
+      lastObject = [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency lastObject];
+      v11 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems indexOfObject:lastObject];
       v12 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems indexOfObject:v5];
-      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:v11 withObject:v14];
-      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:v12 withObject:v10];
+      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:v11 withObject:itemCopy];
+      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:v12 withObject:lastObject];
     }
 
     else
     {
       if (!currentAppSuggestion || [(NSMutableOrderedSet *)self->_currentRecentDisplayItems count]!= self->_maxSuggestions - 1)
       {
-        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems insertObject:v14 atIndex:0];
+        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems insertObject:itemCopy atIndex:0];
         goto LABEL_12;
       }
 
-      v10 = [(SBFloatingDockSuggestionsModel *)self _oldestRecent];
-      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems indexOfObject:v10] withObject:v14];
-      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems addObject:v10];
+      lastObject = [(SBFloatingDockSuggestionsModel *)self _oldestRecent];
+      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems indexOfObject:lastObject] withObject:itemCopy];
+      [(NSMutableOrderedSet *)self->_currentRecentDisplayItems addObject:lastObject];
     }
 
     goto LABEL_12;
@@ -420,38 +420,38 @@ LABEL_13:
   MEMORY[0x2821F9730](v4);
 }
 
-- (BOOL)shouldAddItem:(id)a3
+- (BOOL)shouldAddItem:(id)item
 {
   currentRecentDisplayItems = self->_currentRecentDisplayItems;
-  v4 = a3;
-  LODWORD(currentRecentDisplayItems) = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:v4];
+  itemCopy = item;
+  LODWORD(currentRecentDisplayItems) = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:itemCopy];
   v5 = MEMORY[0x277CEBE80];
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [itemCopy bundleIdentifier];
 
-  v7 = [v5 applicationWithBundleIdentifier:v6];
+  v7 = [v5 applicationWithBundleIdentifier:bundleIdentifier];
   LODWORD(v5) = [v7 isHidden];
 
   return ((v5 | currentRecentDisplayItems) & 1) == 0;
 }
 
-- (BOOL)recentDisplayItemsController:(id)a3 shouldAddItem:(id)a4
+- (BOOL)recentDisplayItemsController:(id)controller shouldAddItem:(id)item
 {
-  v5 = a4;
-  v6 = [(SBFloatingDockSuggestionsModel *)self _displayItemContainedInUserDock:v5];
-  v7 = [v5 type];
+  itemCopy = item;
+  v6 = [(SBFloatingDockSuggestionsModel *)self _displayItemContainedInUserDock:itemCopy];
+  type = [itemCopy type];
   iconModel = self->_iconModel;
-  if (v7 == 5)
+  if (type == 5)
   {
-    v9 = [v5 webClipIdentifier];
+    webClipIdentifier = [itemCopy webClipIdentifier];
 
-    [(SBIconModel *)iconModel bookmarkIconForWebClipIdentifier:v9];
+    [(SBIconModel *)iconModel bookmarkIconForWebClipIdentifier:webClipIdentifier];
   }
 
   else
   {
-    v9 = [v5 bundleIdentifier];
+    webClipIdentifier = [itemCopy bundleIdentifier];
 
-    [(SBIconModel *)iconModel applicationIconForBundleIdentifier:v9];
+    [(SBIconModel *)iconModel applicationIconForBundleIdentifier:webClipIdentifier];
   }
   v10 = ;
 
@@ -459,32 +459,32 @@ LABEL_13:
   return !v6 && v11;
 }
 
-- (void)recentDisplayItemsController:(id)a3 didAddItem:(id)a4
+- (void)recentDisplayItemsController:(id)controller didAddItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:v5];
+  [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:itemCopy];
 }
 
-- (void)recentDisplayItemsController:(id)a3 didAddItem:(id)a4 andDropItem:(id)a5
+- (void)recentDisplayItemsController:(id)controller didAddItem:(id)item andDropItem:(id)dropItem
 {
-  v6 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:v6];
+  [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:itemCopy];
 }
 
-- (void)recentDisplayItemsController:(id)a3 didMoveItemToFront:(id)a4
+- (void)recentDisplayItemsController:(id)controller didMoveItemToFront:(id)front
 {
-  v7 = a4;
+  frontCopy = front;
   BSDispatchQueueAssertMain();
-  if (![(SBFloatingDockSuggestionsModel *)self _displayItemContainedInUserDock:v7])
+  if (![(SBFloatingDockSuggestionsModel *)self _displayItemContainedInUserDock:frontCopy])
   {
-    if (([(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:v7]& 1) != 0)
+    if (([(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:frontCopy]& 1) != 0)
     {
-      v5 = [(SBFloatingDockSuggestionsModel *)self _moveOrAddRecentThenCull:v7];
+      v5 = [(SBFloatingDockSuggestionsModel *)self _moveOrAddRecentThenCull:frontCopy];
       if (v5)
       {
-        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v5] withObject:v7];
+        [(NSMutableOrderedSet *)self->_currentRecentDisplayItems replaceObjectAtIndex:[(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v5] withObject:frontCopy];
         WeakRetained = objc_loadWeakRetained(&self->_recentsDataStore);
         [WeakRetained setDisplayItems:self->_currentRecentDisplayItems];
 
@@ -494,16 +494,16 @@ LABEL_13:
 
     else
     {
-      [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:v7];
+      [(SBFloatingDockSuggestionsModel *)self _handleNewRecentItem:frontCopy];
     }
   }
 }
 
-- (void)recentDisplayItemsController:(id)a3 didRemoveItem:(id)a4
+- (void)recentDisplayItemsController:(id)controller didRemoveItem:(id)item
 {
-  v13 = a4;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v5 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:v13];
+  v5 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems sb_indexOfFloatingDockSuggestionDisplayItem:itemCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
@@ -519,7 +519,7 @@ LABEL_13:
       [(NSMutableOrderedSet *)self->_currentRecentDisplayItems removeObjectAtIndex:v6];
     }
 
-    [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency removeObject:v13];
+    [(NSMutableOrderedSet *)self->_currentRecentDisplayItemsSortedByRecency removeObject:itemCopy];
     WeakRetained = objc_loadWeakRetained(&self->_recentsDataStore);
     [WeakRetained setDisplayItems:self->_currentRecentDisplayItems];
 
@@ -527,25 +527,25 @@ LABEL_13:
   }
 }
 
-- (void)_updateCurrentDisplayItemsAfterContinuityChange:(BOOL)a3 notifyDelegate:(BOOL)a4
+- (void)_updateCurrentDisplayItemsAfterContinuityChange:(BOOL)change notifyDelegate:(BOOL)delegate
 {
-  v4 = a4;
-  v34 = a3;
-  v5 = self;
+  delegateCopy = delegate;
+  changeCopy = change;
+  selfCopy = self;
   v42 = *MEMORY[0x277D85DE8];
-  v33 = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
-  v6 = [(NSMutableOrderedSet *)v5->_currentRecentDisplayItems mutableCopy];
+  currentDisplayItems = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
+  v6 = [(NSMutableOrderedSet *)selfCopy->_currentRecentDisplayItems mutableCopy];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB40]);
   }
 
-  v7 = [(SBFloatingDockSuggestionsModel *)v5 requestedSuggestedApplication];
-  v8 = v7;
-  if (v7)
+  requestedSuggestedApplication = [(SBFloatingDockSuggestionsModel *)selfCopy requestedSuggestedApplication];
+  v8 = requestedSuggestedApplication;
+  if (requestedSuggestedApplication)
   {
-    v9 = [v7 bundleIdentifier];
-    v10 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:v9 sceneIdentifier:0];
+    bundleIdentifier = [requestedSuggestedApplication bundleIdentifier];
+    v10 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:bundleIdentifier sceneIdentifier:0];
 
     if (!v10)
     {
@@ -553,13 +553,13 @@ LABEL_13:
     }
 
 LABEL_8:
-    v11 = [v10 bundleIdentifier];
+    bundleIdentifier2 = [v10 bundleIdentifier];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __97__SBFloatingDockSuggestionsModel__updateCurrentDisplayItemsAfterContinuityChange_notifyDelegate___block_invoke;
     v39[3] = &unk_2783AF600;
-    v40 = v11;
-    v12 = v11;
+    v40 = bundleIdentifier2;
+    v12 = bundleIdentifier2;
     v13 = [v6 indexesOfObjectsPassingTest:v39];
     [v6 removeObjectsAtIndexes:v13];
     [v6 addObject:v10];
@@ -567,9 +567,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5->_currentAppSuggestion)
+  if (selfCopy->_currentAppSuggestion)
   {
-    v10 = [(SBFloatingDockSuggestionsModel *)v5 _displayItemForAppSuggestion:?];
+    v10 = [(SBFloatingDockSuggestionsModel *)selfCopy _displayItemForAppSuggestion:?];
     if (v10)
     {
       goto LABEL_8;
@@ -578,22 +578,22 @@ LABEL_8:
 
 LABEL_9:
   v14 = [v6 count];
-  maxSuggestions = v5->_maxSuggestions;
+  maxSuggestions = selfCopy->_maxSuggestions;
   v16 = v14 - maxSuggestions;
   if (v14 > maxSuggestions)
   {
-    [v6 removeObjectsInRange:{maxSuggestions - ((v8 | v5->_currentAppSuggestion) != 0), v16}];
+    [v6 removeObjectsInRange:{maxSuggestions - ((v8 | selfCopy->_currentAppSuggestion) != 0), v16}];
   }
 
-  if (([v6 isEqualToOrderedSet:{v33, v16}] & 1) == 0)
+  if (([v6 isEqualToOrderedSet:{currentDisplayItems, v16}] & 1) == 0)
   {
-    if (v4)
+    if (delegateCopy)
     {
       v31 = v8;
-      v17 = v5;
-      WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+      v17 = selfCopy;
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       v32 = v6;
-      v19 = [v6 differenceFromOrderedSet:v33 withOptions:4];
+      v19 = [v6 differenceFromOrderedSet:currentDisplayItems withOptions:4];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
@@ -613,30 +613,30 @@ LABEL_9:
             }
 
             v24 = *(*(&v35 + 1) + 8 * i);
-            v25 = [v24 object];
-            v26 = [v24 changeType];
-            v27 = [v24 index];
-            v28 = [v24 associatedIndex];
-            v29 = v28;
-            if (v26 == 1)
+            object = [v24 object];
+            changeType = [v24 changeType];
+            index = [v24 index];
+            associatedIndex = [v24 associatedIndex];
+            v29 = associatedIndex;
+            if (changeType == 1)
             {
-              if (v28 == 0x7FFFFFFFFFFFFFFFLL)
+              if (associatedIndex == 0x7FFFFFFFFFFFFFFFLL)
               {
-                [WeakRetained dockSuggestionsModel:v17 didRemoveItem:v25 atIndex:v27 involvesContinuity:v34];
+                [WeakRetained dockSuggestionsModel:v17 didRemoveItem:object atIndex:index involvesContinuity:changeCopy];
               }
             }
 
-            else if (!v26)
+            else if (!changeType)
             {
-              if (v28 == 0x7FFFFFFFFFFFFFFFLL)
+              if (associatedIndex == 0x7FFFFFFFFFFFFFFFLL)
               {
-                [WeakRetained dockSuggestionsModel:v17 didInsertItem:v25 atIndex:v27 involvesContinuity:v34];
+                [WeakRetained dockSuggestionsModel:v17 didInsertItem:object atIndex:index involvesContinuity:changeCopy];
               }
 
               else
               {
-                v30 = [v33 objectAtIndex:v28];
-                [WeakRetained dockSuggestionsModel:v17 didReplaceItem:v30 atIndex:v29 withItem:v25 atIndex:v27 involvesContinuity:v34];
+                v30 = [currentDisplayItems objectAtIndex:associatedIndex];
+                [WeakRetained dockSuggestionsModel:v17 didReplaceItem:v30 atIndex:v29 withItem:object atIndex:index involvesContinuity:changeCopy];
               }
             }
           }
@@ -647,12 +647,12 @@ LABEL_9:
         while (v21);
       }
 
-      v5 = v17;
+      selfCopy = v17;
       v8 = v31;
       v6 = v32;
     }
 
-    [(SBFloatingDockSuggestionsModel *)v5 setCurrentDisplayItems:v6, v31];
+    [(SBFloatingDockSuggestionsModel *)selfCopy setCurrentDisplayItems:v6, v31];
   }
 }
 
@@ -664,26 +664,26 @@ uint64_t __97__SBFloatingDockSuggestionsModel__updateCurrentDisplayItemsAfterCon
   return v4;
 }
 
-- (BOOL)_displayItemContainedInUserDock:(id)a3
+- (BOOL)_displayItemContainedInUserDock:(id)dock
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 5)
+  dockCopy = dock;
+  type = [dockCopy type];
+  if (type == 5)
   {
-    v6 = [v4 webClipIdentifier];
-    v8 = [(SBIconListModel *)self->_userDockListModel directlyContainsLeafIconWithIdentifier:v6];
+    webClipIdentifier = [dockCopy webClipIdentifier];
+    v8 = [(SBIconListModel *)self->_userDockListModel directlyContainsLeafIconWithIdentifier:webClipIdentifier];
   }
 
   else
   {
-    if (v5)
+    if (type)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v6 = [v4 bundleIdentifier];
-    v7 = [(SBIconListModel *)self->_userDockListModel lastDirectlyContainedLeafIconWithApplicationBundleIdentifier:v6];
+    webClipIdentifier = [dockCopy bundleIdentifier];
+    v7 = [(SBIconListModel *)self->_userDockListModel lastDirectlyContainedLeafIconWithApplicationBundleIdentifier:webClipIdentifier];
     v8 = v7 != 0;
   }
 
@@ -691,15 +691,15 @@ LABEL_7:
   return v8;
 }
 
-- (id)_filterRecentDisplayItems:(id)a3 filteredOutItems:(id *)a4
+- (id)_filterRecentDisplayItems:(id)items filteredOutItems:(id *)outItems
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemsCopy = items;
   v24 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  if (a4)
+  if (outItems)
   {
     v23 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    *a4 = v23;
+    *outItems = v23;
   }
 
   else
@@ -711,7 +711,7 @@ LABEL_7:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v6;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
@@ -730,18 +730,18 @@ LABEL_7:
 
         v13 = *(*(&v25 + 1) + 8 * i);
         v14 = MEMORY[0x277CEBE80];
-        v15 = [v13 bundleIdentifier];
-        v16 = [v14 applicationWithBundleIdentifier:v15];
-        v17 = [v16 isHidden];
+        bundleIdentifier = [v13 bundleIdentifier];
+        v16 = [v14 applicationWithBundleIdentifier:bundleIdentifier];
+        isHidden = [v16 isHidden];
 
-        if (v17)
+        if (isHidden)
         {
           v18 = SBLogCommon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v13 bundleIdentifier];
+            bundleIdentifier2 = [v13 bundleIdentifier];
             *buf = v22;
-            v30 = v19;
+            v30 = bundleIdentifier2;
             _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Removing %@ because it's hidden by AppProtection", buf, 0xCu);
           }
         }
@@ -780,19 +780,19 @@ LABEL_21:
   return v24;
 }
 
-- (BOOL)_shouldProcessAppSuggestion:(id)a3
+- (BOOL)_shouldProcessAppSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  suggestionCopy = suggestion;
+  v5 = suggestionCopy;
+  if (suggestionCopy && ([suggestionCopy bundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     if ([v5 isHandoff])
     {
       if (self->_currentAppSuggestion)
       {
-        v7 = [v5 uniqueIdentifier];
-        v8 = [(SBBestAppSuggestion *)self->_currentAppSuggestion uniqueIdentifier];
-        v9 = [v7 isEqual:v8] ^ 1;
+        uniqueIdentifier = [v5 uniqueIdentifier];
+        uniqueIdentifier2 = [(SBBestAppSuggestion *)self->_currentAppSuggestion uniqueIdentifier];
+        v9 = [uniqueIdentifier isEqual:uniqueIdentifier2] ^ 1;
       }
 
       else
@@ -807,13 +807,13 @@ LABEL_21:
     }
 
     userDockListModel = self->_userDockListModel;
-    v12 = [v5 bundleIdentifier];
-    LOBYTE(userDockListModel) = [(SBIconListModel *)userDockListModel directlyContainsLeafIconWithIdentifier:v12];
+    bundleIdentifier = [v5 bundleIdentifier];
+    LOBYTE(userDockListModel) = [(SBIconListModel *)userDockListModel directlyContainsLeafIconWithIdentifier:bundleIdentifier];
 
     currentRecentDisplayItems = self->_currentRecentDisplayItems;
     v14 = [(SBFloatingDockSuggestionsModel *)self _displayItemForAppSuggestion:v5];
-    v15 = [v14 displayItemForFloatingDockSuggestionsComparison];
-    LOBYTE(currentRecentDisplayItems) = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:v15];
+    displayItemForFloatingDockSuggestionsComparison = [v14 displayItemForFloatingDockSuggestionsComparison];
+    LOBYTE(currentRecentDisplayItems) = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:displayItemForFloatingDockSuggestionsComparison];
 
     v10 = v9 | (userDockListModel | currentRecentDisplayItems) ^ 1;
   }
@@ -826,7 +826,7 @@ LABEL_21:
   return v10 & 1;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -836,9 +836,9 @@ LABEL_21:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (unint64_t)_indexForAppSuggestion:(id)a3
+- (unint64_t)_indexForAppSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v5 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems count];
   currentRecentDisplayItems = self->_currentRecentDisplayItems;
   if (v5 >= self->_maxSuggestions)
@@ -848,17 +848,17 @@ LABEL_21:
 
   else
   {
-    v7 = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:v4];
+    v7 = [(NSMutableOrderedSet *)currentRecentDisplayItems sb_containsFloatingDockSuggestionDisplayItem:suggestionCopy];
     v8 = [(NSMutableOrderedSet *)self->_currentRecentDisplayItems count]- v7;
   }
 
   return v8;
 }
 
-- (void)_appSuggestionsChanged:(id)a3
+- (void)_appSuggestionsChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if ([(SBFloatingDockSuggestionsModel *)self _isPendingAppSuggestionsUpdate])
   {
     v5 = SBLogCommon();
@@ -873,19 +873,19 @@ LABEL_21:
 
   else
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:@"SBNewSuggestedAppKey"];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKey:@"SBNewSuggestedAppKey"];
 
     [(SBFloatingDockSuggestionsModel *)self _performAppSuggestionChangedWithNewSuggestion:v8];
   }
 }
 
-- (void)_performAppSuggestionChangedWithNewSuggestion:(id)a3
+- (void)_performAppSuggestionChangedWithNewSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   BSDispatchQueueAssertMain();
   currentAppSuggestion = self->_currentAppSuggestion;
-  self->_currentAppSuggestion = v4;
+  self->_currentAppSuggestion = suggestionCopy;
 
   [(SBFloatingDockSuggestionsModel *)self _updateCurrentDisplayItemsAfterContinuityChange:1 notifyDelegate:1];
 }
@@ -920,60 +920,60 @@ void __63__SBFloatingDockSuggestionsModel__initializeAndObserveDefaults__block_i
   }
 }
 
-- (void)_setRecentsEnabled:(BOOL)a3
+- (void)_setRecentsEnabled:(BOOL)enabled
 {
-  if (self->_recentsEnabled != a3)
+  if (self->_recentsEnabled != enabled)
   {
-    v5 = [(SBFloatingDockSuggestionsModel *)self recentsController];
-    v6 = v5;
+    recentsController = [(SBFloatingDockSuggestionsModel *)self recentsController];
+    v6 = recentsController;
     if (self->_recentsEnabled)
     {
       self->_recentsEnabled = 0;
-      [v5 setDelegate:0];
+      [recentsController setDelegate:0];
       [(SBFloatingDockSuggestionsModel *)self resetRecentsAndSuggestions];
     }
 
     else
     {
       self->_recentsEnabled = 1;
-      [v5 setDelegate:self];
+      [recentsController setDelegate:self];
       [(SBFloatingDockSuggestionsModel *)self _reloadRecentsAndSuggestions];
     }
   }
 }
 
-- (id)_displayItemForAppSuggestion:(id)a3
+- (id)_displayItemForAppSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  suggestionCopy = suggestion;
+  v4 = suggestionCopy;
+  if (!suggestionCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 bundleIdentifier];
-  if (!v5)
+  bundleIdentifier = [suggestionCopy bundleIdentifier];
+  if (!bundleIdentifier)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 uniqueIdentifier];
+  uniqueIdentifier = [v4 uniqueIdentifier];
 
-  if (v6)
+  if (uniqueIdentifier)
   {
-    v7 = [v4 bundleIdentifier];
-    v5 = [SBContinuityDisplayItem continuityAppDisplayItemWithBundleIdentifier:v7 appSuggestion:v4];
+    bundleIdentifier2 = [v4 bundleIdentifier];
+    bundleIdentifier = [SBContinuityDisplayItem continuityAppDisplayItemWithBundleIdentifier:bundleIdentifier2 appSuggestion:v4];
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    bundleIdentifier = 0;
   }
 
 LABEL_6:
 
-  return v5;
+  return bundleIdentifier;
 }
 
 - (void)_addStateCaptureHandlers
@@ -1057,20 +1057,20 @@ id __58__SBFloatingDockSuggestionsModel__addStateCaptureHandlers__block_invoke_3
 
 - (void)resetRecentsAndSuggestions
 {
-  v3 = [(SBFloatingDockSuggestionsModel *)self recentsController];
-  [v3 reset];
+  recentsController = [(SBFloatingDockSuggestionsModel *)self recentsController];
+  [recentsController reset];
   [(SBFloatingDockSuggestionsModel *)self _reloadRecentsAndSuggestions];
 }
 
 - (void)_reloadRecentsAndSuggestions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
+  currentDisplayItems = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
   if (self->_recentsEnabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_recentsController);
-    v5 = [WeakRetained recentDisplayItems];
-    v6 = [(SBFloatingDockSuggestionsModel *)self _filterRecentDisplayItems:v5 filteredOutItems:0];
+    recentDisplayItems = [WeakRetained recentDisplayItems];
+    v6 = [(SBFloatingDockSuggestionsModel *)self _filterRecentDisplayItems:recentDisplayItems filteredOutItems:0];
     currentRecentDisplayItems = self->_currentRecentDisplayItems;
     self->_currentRecentDisplayItems = v6;
 
@@ -1119,68 +1119,68 @@ id __58__SBFloatingDockSuggestionsModel__addStateCaptureHandlers__block_invoke_3
   }
 
   [(SBFloatingDockSuggestionsModel *)self _updateCurrentDisplayItemsAfterContinuityChange:0 notifyDelegate:0, v18];
-  v16 = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
+  currentDisplayItems2 = [(SBFloatingDockSuggestionsModel *)self currentDisplayItems];
   v17 = objc_loadWeakRetained(&self->_delegate);
-  [v17 dockSuggestionsModel:self didReloadItems:v3 withItems:v16];
+  [v17 dockSuggestionsModel:self didReloadItems:currentDisplayItems withItems:currentDisplayItems2];
 }
 
 - (id)_dockListModelFromContextProvider
 {
-  v2 = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
-  v3 = [v2 iconModel];
-  v4 = [v3 rootFolder];
-  v5 = [v4 dock];
+  homeScreenContextProvider = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
+  iconModel = [homeScreenContextProvider iconModel];
+  rootFolder = [iconModel rootFolder];
+  dock = [rootFolder dock];
 
-  return v5;
+  return dock;
 }
 
-- (void)setUserDockListModel:(id)a3
+- (void)setUserDockListModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   userDockListModel = self->_userDockListModel;
-  if (userDockListModel != v5)
+  if (userDockListModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(SBIconListModel *)userDockListModel removeListObserver:self];
-    objc_storeStrong(&self->_userDockListModel, a3);
+    objc_storeStrong(&self->_userDockListModel, model);
     [(SBIconListModel *)self->_userDockListModel addListObserver:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)_iconModelDidLayout:(id)a3
+- (void)_iconModelDidLayout:(id)layout
 {
-  v4 = [(SBFloatingDockSuggestionsModel *)self _dockListModelFromContextProvider];
-  [(SBFloatingDockSuggestionsModel *)self setUserDockListModel:v4];
+  _dockListModelFromContextProvider = [(SBFloatingDockSuggestionsModel *)self _dockListModelFromContextProvider];
+  [(SBFloatingDockSuggestionsModel *)self setUserDockListModel:_dockListModelFromContextProvider];
 
   [(SBFloatingDockSuggestionsModel *)self _reloadRecentsAndSuggestions];
 }
 
-- (void)_iconModelDidChange:(id)a3
+- (void)_iconModelDidChange:(id)change
 {
-  v4 = [(SBFloatingDockSuggestionsModel *)self _dockListModelFromContextProvider];
-  if (self->_userDockListModel != v4)
+  _dockListModelFromContextProvider = [(SBFloatingDockSuggestionsModel *)self _dockListModelFromContextProvider];
+  if (self->_userDockListModel != _dockListModelFromContextProvider)
   {
-    v10 = v4;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    v10 = _dockListModelFromContextProvider;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D666F0];
-    [v5 removeObserver:self name:*MEMORY[0x277D666F0] object:self->_iconModel];
-    v7 = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
-    v8 = [v7 iconModel];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D666F0] object:self->_iconModel];
+    homeScreenContextProvider = [(SBFloatingDockSuggestionsModel *)self homeScreenContextProvider];
+    iconModel = [homeScreenContextProvider iconModel];
     iconModel = self->_iconModel;
-    self->_iconModel = v8;
+    self->_iconModel = iconModel;
 
     [(SBFloatingDockSuggestionsModel *)self setUserDockListModel:v10];
-    [v5 addObserver:self selector:sel__iconModelDidLayout_ name:v6 object:self->_iconModel];
+    [defaultCenter addObserver:self selector:sel__iconModelDidLayout_ name:v6 object:self->_iconModel];
     [(SBFloatingDockSuggestionsModel *)self _reloadRecentsAndSuggestions];
 
-    v4 = v10;
+    _dockListModelFromContextProvider = v10;
   }
 }
 
-- (void)_runStressTestWithCompletion:(id)a3
+- (void)_runStressTestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -1197,7 +1197,7 @@ id __58__SBFloatingDockSuggestionsModel__addStateCaptureHandlers__block_invoke_3
   v10 = v13;
   v11 = v12;
   v8[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v9 = v6;
   v7 = [v5 scheduledTimerWithTimeInterval:1 repeats:v8 block:0.05];
 

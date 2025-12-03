@@ -1,16 +1,16 @@
 @interface AWDMDNSResponderResolveStatsDNSServer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
+- (int)StringAsNetworkType:(id)type;
 - (int)networkType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasServerID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasServerID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMDNSResponderResolveStatsDNSServer
@@ -36,22 +36,22 @@
   }
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  if ([a3 isEqualToString:@"NonCellular"])
+  if ([type isEqualToString:@"NonCellular"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"Cellular"];
+    return [type isEqualToString:@"Cellular"];
   }
 }
 
-- (void)setHasServerID:(BOOL)a3
+- (void)setHasServerID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -73,12 +73,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   address = self->_address;
   if (address)
   {
-    [v3 setObject:address forKey:@"address"];
+    [dictionary setObject:address forKey:@"address"];
   }
 
   has = self->_has;
@@ -115,7 +115,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_address)
   {
@@ -138,33 +138,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_address)
   {
-    [a3 setAddress:?];
+    [to setAddress:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_networkType;
-    *(a3 + 24) |= 1u;
+    *(to + 4) = self->_networkType;
+    *(to + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 5) = self->_serverID;
-    *(a3 + 24) |= 2u;
+    *(to + 5) = self->_serverID;
+    *(to + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 8) = [(NSData *)self->_address copyWithZone:a3];
+  *(v5 + 8) = [(NSData *)self->_address copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -182,33 +182,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     address = self->_address;
-    if (!(address | *(a3 + 1)) || (v5 = [(NSData *)address isEqual:?]) != 0)
+    if (!(address | *(equal + 1)) || (v5 = [(NSData *)address isEqual:?]) != 0)
     {
       if (*&self->_has)
       {
-        if ((*(a3 + 24) & 1) == 0 || self->_networkType != *(a3 + 4))
+        if ((*(equal + 24) & 1) == 0 || self->_networkType != *(equal + 4))
         {
           goto LABEL_13;
         }
       }
 
-      else if (*(a3 + 24))
+      else if (*(equal + 24))
       {
 LABEL_13:
         LOBYTE(v5) = 0;
         return v5;
       }
 
-      LOBYTE(v5) = (*(a3 + 24) & 2) == 0;
+      LOBYTE(v5) = (*(equal + 24) & 2) == 0;
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 24) & 2) == 0 || self->_serverID != *(a3 + 5))
+        if ((*(equal + 24) & 2) == 0 || self->_serverID != *(equal + 5))
         {
           goto LABEL_13;
         }
@@ -248,24 +248,24 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(AWDMDNSResponderResolveStatsDNSServer *)self setAddress:?];
   }
 
-  v5 = *(a3 + 24);
+  v5 = *(from + 24);
   if (v5)
   {
-    self->_networkType = *(a3 + 4);
+    self->_networkType = *(from + 4);
     *&self->_has |= 1u;
-    v5 = *(a3 + 24);
+    v5 = *(from + 24);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_serverID = *(a3 + 5);
+    self->_serverID = *(from + 5);
     *&self->_has |= 2u;
   }
 }

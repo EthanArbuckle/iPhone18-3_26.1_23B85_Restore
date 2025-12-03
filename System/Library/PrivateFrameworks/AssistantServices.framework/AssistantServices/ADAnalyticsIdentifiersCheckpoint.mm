@@ -1,11 +1,11 @@
 @interface ADAnalyticsIdentifiersCheckpoint
-+ (id)unarchive:(id)a3;
-- (ADAnalyticsIdentifiersCheckpoint)initWithCoder:(id)a3;
-- (ADAnalyticsIdentifiersCheckpoint)initWithCurrentUserSeed:(id)a3 currentUserSeedExpirationDate:(id)a4 nextUserSeed:(id)a5 nextUserSeedEffectiveFromDate:(id)a6 nextUserSeedExpirationDate:(id)a7;
-- (BOOL)hasValidCurrentUserSeed:(id)a3;
-- (BOOL)hasValidNextUserSeed:(id)a3;
++ (id)unarchive:(id)unarchive;
+- (ADAnalyticsIdentifiersCheckpoint)initWithCoder:(id)coder;
+- (ADAnalyticsIdentifiersCheckpoint)initWithCurrentUserSeed:(id)seed currentUserSeedExpirationDate:(id)date nextUserSeed:(id)userSeed nextUserSeedEffectiveFromDate:(id)fromDate nextUserSeedExpirationDate:(id)expirationDate;
+- (BOOL)hasValidCurrentUserSeed:(id)seed;
+- (BOOL)hasValidNextUserSeed:(id)seed;
 - (id)archive;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADAnalyticsIdentifiersCheckpoint
@@ -36,42 +36,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentUserSeed = self->_currentUserSeed;
-  v5 = a3;
-  [v5 encodeObject:currentUserSeed forKey:@"_currentUserSeed"];
-  [v5 encodeObject:self->_currentUserSeedExpirationDate forKey:@"_currentUserSeedExpirationDate"];
-  [v5 encodeObject:self->_nextUserSeed forKey:@"_nextUserSeed"];
-  [v5 encodeObject:self->_nextUserSeedEffectiveFromDate forKey:@"_nextUserSeedEffectiveFromDate"];
-  [v5 encodeObject:self->_nextUserSeedExpirationDate forKey:@"_nextUserSeedExpirationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:currentUserSeed forKey:@"_currentUserSeed"];
+  [coderCopy encodeObject:self->_currentUserSeedExpirationDate forKey:@"_currentUserSeedExpirationDate"];
+  [coderCopy encodeObject:self->_nextUserSeed forKey:@"_nextUserSeed"];
+  [coderCopy encodeObject:self->_nextUserSeedEffectiveFromDate forKey:@"_nextUserSeedEffectiveFromDate"];
+  [coderCopy encodeObject:self->_nextUserSeedExpirationDate forKey:@"_nextUserSeedExpirationDate"];
 }
 
-- (ADAnalyticsIdentifiersCheckpoint)initWithCoder:(id)a3
+- (ADAnalyticsIdentifiersCheckpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ADAnalyticsIdentifiersCheckpoint;
   v5 = [(ADAnalyticsIdentifiersCheckpoint *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_currentUserSeed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_currentUserSeed"];
     currentUserSeed = v5->_currentUserSeed;
     v5->_currentUserSeed = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_currentUserSeedExpirationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_currentUserSeedExpirationDate"];
     currentUserSeedExpirationDate = v5->_currentUserSeedExpirationDate;
     v5->_currentUserSeedExpirationDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeed"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeed"];
     nextUserSeed = v5->_nextUserSeed;
     v5->_nextUserSeed = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeedEffectiveFromDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeedEffectiveFromDate"];
     nextUserSeedEffectiveFromDate = v5->_nextUserSeedEffectiveFromDate;
     v5->_nextUserSeedEffectiveFromDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeedExpirationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nextUserSeedExpirationDate"];
     nextUserSeedExpirationDate = v5->_nextUserSeedExpirationDate;
     v5->_nextUserSeedExpirationDate = v14;
   }
@@ -79,22 +79,22 @@
   return v5;
 }
 
-- (BOOL)hasValidNextUserSeed:(id)a3
+- (BOOL)hasValidNextUserSeed:(id)seed
 {
-  v4 = a3;
-  v5 = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeed];
-  if (v5)
+  seedCopy = seed;
+  nextUserSeed = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeed];
+  if (nextUserSeed)
   {
-    v6 = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeedEffectiveFromDate];
-    if ([v6 compare:v4] == 1)
+    nextUserSeedEffectiveFromDate = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeedEffectiveFromDate];
+    if ([nextUserSeedEffectiveFromDate compare:seedCopy] == 1)
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeedExpirationDate];
-      v7 = [v8 compare:v4] == 1;
+      nextUserSeedExpirationDate = [(ADAnalyticsIdentifiersCheckpoint *)self nextUserSeedExpirationDate];
+      v7 = [nextUserSeedExpirationDate compare:seedCopy] == 1;
     }
   }
 
@@ -106,14 +106,14 @@
   return v7;
 }
 
-- (BOOL)hasValidCurrentUserSeed:(id)a3
+- (BOOL)hasValidCurrentUserSeed:(id)seed
 {
-  v4 = a3;
-  v5 = [(ADAnalyticsIdentifiersCheckpoint *)self currentUserSeed];
-  if (v5)
+  seedCopy = seed;
+  currentUserSeed = [(ADAnalyticsIdentifiersCheckpoint *)self currentUserSeed];
+  if (currentUserSeed)
   {
-    v6 = [(ADAnalyticsIdentifiersCheckpoint *)self currentUserSeedExpirationDate];
-    v7 = [v6 compare:v4] == 1;
+    currentUserSeedExpirationDate = [(ADAnalyticsIdentifiersCheckpoint *)self currentUserSeedExpirationDate];
+    v7 = [currentUserSeedExpirationDate compare:seedCopy] == 1;
   }
 
   else
@@ -124,41 +124,41 @@
   return v7;
 }
 
-- (ADAnalyticsIdentifiersCheckpoint)initWithCurrentUserSeed:(id)a3 currentUserSeedExpirationDate:(id)a4 nextUserSeed:(id)a5 nextUserSeedEffectiveFromDate:(id)a6 nextUserSeedExpirationDate:(id)a7
+- (ADAnalyticsIdentifiersCheckpoint)initWithCurrentUserSeed:(id)seed currentUserSeedExpirationDate:(id)date nextUserSeed:(id)userSeed nextUserSeedEffectiveFromDate:(id)fromDate nextUserSeedExpirationDate:(id)expirationDate
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  seedCopy = seed;
+  dateCopy = date;
+  userSeedCopy = userSeed;
+  fromDateCopy = fromDate;
+  expirationDateCopy = expirationDate;
   v21.receiver = self;
   v21.super_class = ADAnalyticsIdentifiersCheckpoint;
   v17 = [(ADAnalyticsIdentifiersCheckpoint *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_currentUserSeed, a3);
+    objc_storeStrong(&v17->_currentUserSeed, seed);
     if (v18->_currentUserSeed)
     {
-      objc_storeStrong(&v18->_currentUserSeedExpirationDate, a4);
+      objc_storeStrong(&v18->_currentUserSeedExpirationDate, date);
     }
 
-    objc_storeStrong(&v18->_nextUserSeed, a5);
+    objc_storeStrong(&v18->_nextUserSeed, userSeed);
     if (v18->_nextUserSeed)
     {
-      objc_storeStrong(&v18->_nextUserSeedEffectiveFromDate, a6);
-      objc_storeStrong(&v18->_nextUserSeedExpirationDate, a7);
+      objc_storeStrong(&v18->_nextUserSeedEffectiveFromDate, fromDate);
+      objc_storeStrong(&v18->_nextUserSeedExpirationDate, expirationDate);
     }
   }
 
   return v18;
 }
 
-+ (id)unarchive:(id)a3
++ (id)unarchive:(id)unarchive
 {
-  v3 = a3;
+  unarchiveCopy = unarchive;
   v9 = 0;
-  v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v9];
+  v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:unarchiveCopy error:&v9];
 
   v5 = v9;
   if (v5)

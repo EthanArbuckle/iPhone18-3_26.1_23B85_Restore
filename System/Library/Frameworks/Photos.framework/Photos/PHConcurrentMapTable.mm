@@ -1,26 +1,26 @@
 @interface PHConcurrentMapTable
 + (id)mapTable;
-- (BOOL)tryRemoveObjectForKey:(id)a3;
+- (BOOL)tryRemoveObjectForKey:(id)key;
 - (PHConcurrentMapTable)init;
 - (id)allKeys;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation PHConcurrentMapTable
 
 - (id)allKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __31__PHConcurrentMapTable_allKeys__block_invoke;
   v8[3] = &unk_1E75AAEB0;
   v8[4] = self;
-  v4 = v3;
+  v4 = array;
   v9 = v4;
   [(PHConcurrentMapTable *)self _dispatchIsolatedRead:v8];
   v5 = v9;
@@ -98,25 +98,25 @@ uint64_t __29__PHConcurrentMapTable_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __41__PHConcurrentMapTable_setObject_forKey___block_invoke;
   v10[3] = &unk_1E75AB248;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = objectCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = objectCopy;
   [(PHConcurrentMapTable *)self _dispatchIsolatedWriteAsync:v10];
 }
 
-- (BOOL)tryRemoveObjectForKey:(id)a3
+- (BOOL)tryRemoveObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -127,7 +127,7 @@ uint64_t __29__PHConcurrentMapTable_count__block_invoke(uint64_t a1)
   v7[3] = &unk_1E75AA3F8;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v8 = v5;
   [(PHConcurrentMapTable *)self _dispatchIsolatedWriteSync:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -147,22 +147,22 @@ uint64_t __46__PHConcurrentMapTable_tryRemoveObjectForKey___block_invoke(void *a
   return [v4 removeObjectForKey:v3];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PHConcurrentMapTable_removeObjectForKey___block_invoke;
   v6[3] = &unk_1E75AAEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(PHConcurrentMapTable *)self _dispatchIsolatedWriteAsync:v6];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -175,7 +175,7 @@ uint64_t __46__PHConcurrentMapTable_tryRemoveObjectForKey___block_invoke(void *a
   v8[3] = &unk_1E75AA3F8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(PHConcurrentMapTable *)self _dispatchIsolatedRead:v8];
   v6 = v12[5];
@@ -206,9 +206,9 @@ uint64_t __37__PHConcurrentMapTable_objectForKey___block_invoke(void *a1)
     isolationQueue = v2->_isolationQueue;
     v2->_isolationQueue = v3;
 
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     protectedTable = v2->_protectedTable;
-    v2->_protectedTable = v5;
+    v2->_protectedTable = strongToStrongObjectsMapTable;
   }
 
   return v2;

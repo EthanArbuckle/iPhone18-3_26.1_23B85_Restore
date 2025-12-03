@@ -33,7 +33,7 @@ LABEL_7:
     return 0;
   }
 
-  v11 = self;
+  selfCopy = self;
   result = sub_3B34();
   __break(1u);
   return result;

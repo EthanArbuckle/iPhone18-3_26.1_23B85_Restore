@@ -1,20 +1,20 @@
 @interface ADJasperColorInFieldCalibrationExecutorParameters
 - (ADJasperColorInFieldCalibrationExecutorParameters)init;
-- (ADJasperColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)a3;
-- (id)initForDevice:(id)a3;
+- (ADJasperColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)parameters;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADJasperColorInFieldCalibrationExecutorParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ADJasperColorInFieldCalibrationExecutorParameters;
-  v5 = [(ADExecutorParameters *)&v9 initForDevice:v4];
+  v5 = [(ADExecutorParameters *)&v9 initForDevice:deviceCopy];
   if (v5)
   {
-    v6 = [[ADJasperColorInFieldCalibrationPipelineParameters alloc] initForDevice:v4];
+    v6 = [[ADJasperColorInFieldCalibrationPipelineParameters alloc] initForDevice:deviceCopy];
     v7 = v5[7];
     v5[7] = v6;
 
@@ -24,16 +24,16 @@
   return v5;
 }
 
-- (ADJasperColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)a3
+- (ADJasperColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v9.receiver = self;
   v9.super_class = ADJasperColorInFieldCalibrationExecutorParameters;
   v6 = [(ADExecutorParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineParameters, a3);
+    objc_storeStrong(&v6->_pipelineParameters, parameters);
   }
 
   v7->_reportTelemetry = 1;

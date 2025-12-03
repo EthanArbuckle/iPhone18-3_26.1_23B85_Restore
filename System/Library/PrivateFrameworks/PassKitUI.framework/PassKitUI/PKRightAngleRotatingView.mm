@@ -1,7 +1,7 @@
 @interface PKRightAngleRotatingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKRightAngleRotatingView)initWithRotatedView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKRightAngleRotatingView)initWithRotatedView:(id)view;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 - (void)updateTransform;
@@ -9,17 +9,17 @@
 
 @implementation PKRightAngleRotatingView
 
-- (PKRightAngleRotatingView)initWithRotatedView:(id)a3
+- (PKRightAngleRotatingView)initWithRotatedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PKRightAngleRotatingView;
   v6 = [(PKRightAngleRotatingView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rotatedView, a3);
-    [(PKRightAngleRotatingView *)v7 addSubview:v5];
+    objc_storeStrong(&v6->_rotatedView, view);
+    [(PKRightAngleRotatingView *)v7 addSubview:viewCopy];
     v7->_orientation = 0;
     [(PKRightAngleRotatingView *)v7 updateTransform];
   }
@@ -73,9 +73,9 @@ LABEL_8:
   [(PKRightAngleRotatingView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_rotatedView sizeThatFits:vmlaq_n_f64(vmulq_n_f64(*&_transform[16], a3.height), *_transform, a3.width)];
+  [(UIView *)self->_rotatedView sizeThatFits:vmlaq_n_f64(vmulq_n_f64(*&_transform[16], fits.height), *_transform, fits.width)];
   result.height = v4;
   result.width = v3;
   return result;
@@ -111,8 +111,8 @@ LABEL_8:
   [(PKRightAngleRotatingView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKRightAngleRotatingView *)self _dimensionsAreRotated];
-  if (v7)
+  _dimensionsAreRotated = [(PKRightAngleRotatingView *)self _dimensionsAreRotated];
+  if (_dimensionsAreRotated)
   {
     v8 = v6;
   }
@@ -122,7 +122,7 @@ LABEL_8:
     v8 = v4;
   }
 
-  if (v7)
+  if (_dimensionsAreRotated)
   {
     v9 = v4;
   }

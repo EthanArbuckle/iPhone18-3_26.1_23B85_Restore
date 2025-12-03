@@ -13,7 +13,7 @@
 - (NSURL)absoluteImageURL;
 - (id)crossOrigin;
 - (id)currentSrc;
-- (id)dataRepresentation:(BOOL)a3;
+- (id)dataRepresentation:(BOOL)representation;
 - (id)mimeType;
 - (id)sizes;
 - (id)srcset;
@@ -28,16 +28,16 @@
 - (void)setAlign:(NSString *)align;
 - (void)setAlt:(NSString *)alt;
 - (void)setBorder:(NSString *)border;
-- (void)setCrossOrigin:(id)a3;
+- (void)setCrossOrigin:(id)origin;
 - (void)setHeight:(int)height;
 - (void)setHspace:(int)hspace;
 - (void)setIsMap:(BOOL)isMap;
 - (void)setLongDesc:(NSString *)longDesc;
 - (void)setLowsrc:(NSString *)lowsrc;
 - (void)setName:(NSString *)name;
-- (void)setSizes:(id)a3;
+- (void)setSizes:(id)sizes;
 - (void)setSrc:(NSString *)src;
-- (void)setSrcset:(id)a3;
+- (void)setSrcset:(id)srcset;
 - (void)setUseMap:(NSString *)useMap;
 - (void)setVspace:(int)vspace;
 - (void)setWidth:(int)width;
@@ -348,10 +348,10 @@ LABEL_6:
   return v5;
 }
 
-- (void)setCrossOrigin:(id)a3
+- (void)setCrossOrigin:(id)origin
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, origin, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -602,10 +602,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setSrcset:(id)a3
+- (void)setSrcset:(id)srcset
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, srcset, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -652,10 +652,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setSizes:(id)a3
+- (void)setSizes:(id)sizes
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, sizes, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -986,9 +986,9 @@ LABEL_15:
   return v3;
 }
 
-- (id)dataRepresentation:(BOOL)a3
+- (id)dataRepresentation:(BOOL)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   if (self)
   {
     self = self->super.super.super.super._internal;
@@ -1002,7 +1002,7 @@ LABEL_15:
     if (result)
     {
       v6 = (v5 + 408);
-      if (!v3)
+      if (!representationCopy)
       {
         v6 = (result + 24);
       }

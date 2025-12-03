@@ -1,13 +1,13 @@
 @interface WKNetworkSessionDelegateAllowingOnlyNonRedirectedJSON
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation WKNetworkSessionDelegateAllowingOnlyNonRedirectedJSON
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  MEMORY[0x19EB02040](&v11, [a5 MIMEType]);
+  MEMORY[0x19EB02040](&v11, [response MIMEType]);
   isSupportedJSONMIMEType = WebCore::MIMETypeRegistry::isSupportedJSONMIMEType(&v11, v7);
   v10 = v11;
   v11 = 0;
@@ -16,24 +16,24 @@
     WTF::StringImpl::destroy(v10, v8);
   }
 
-  (*(a6 + 2))(a6, isSupportedJSONMIMEType);
+  (*(handler + 2))(handler, isSupportedJSONMIMEType);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = [objc_msgSend(a5 protectionSpace];
-  if ([v8 isEqualToString:*MEMORY[0x1E695AB80]] && objc_msgSend(objc_msgSend(objc_msgSend(a5, "protectionSpace"), "host"), "isEqualToString:", @"127.0.0.1"))
+  protectionSpace = [objc_msgSend(challenge protectionSpace];
+  if ([protectionSpace isEqualToString:*MEMORY[0x1E695AB80]] && objc_msgSend(objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "host"), "isEqualToString:", @"127.0.0.1"))
   {
     {
       v9 = allowedLocalTestServerTrust(void)::serverTrust;
       if (allowedLocalTestServerTrust(void)::serverTrust)
       {
-        v10 = [objc_msgSend(a5 "protectionSpace")];
+        v10 = [objc_msgSend(challenge "protectionSpace")];
         if (WebCore::certificatesMatch(v9, v10, v11))
         {
-          v12 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(objc_msgSend(a5, "protectionSpace"), "serverTrust")}];
-          v13 = *(a6 + 2);
-          v14 = a6;
+          v12 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "serverTrust")}];
+          v13 = *(handler + 2);
+          handlerCopy2 = handler;
           v15 = 0;
           goto LABEL_9;
         }
@@ -46,13 +46,13 @@
     }
   }
 
-  v13 = *(a6 + 2);
-  v14 = a6;
+  v13 = *(handler + 2);
+  handlerCopy2 = handler;
   v15 = 1;
   v12 = 0;
 LABEL_9:
 
-  v13(v14, v15, v12);
+  v13(handlerCopy2, v15, v12);
 }
 
 @end

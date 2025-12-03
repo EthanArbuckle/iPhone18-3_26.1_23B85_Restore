@@ -1,64 +1,64 @@
 @interface WFContentLibraryFiltering
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 compoundPredicate:(id)a5 resultHandler:(id)a6;
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 resultHandler:(id)a5;
-+ (void)performFallbackFilteringWithItems:(id)a3 withContentPredicates:(id)a4 compoundPredicateType:(unint64_t)a5 originalQuery:(id)a6 resultHandler:(id)a7;
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input compoundPredicate:(id)predicate resultHandler:(id)handler;
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input resultHandler:(id)handler;
++ (void)performFallbackFilteringWithItems:(id)items withContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type originalQuery:(id)query resultHandler:(id)handler;
 @end
 
 @implementation WFContentLibraryFiltering
 
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 resultHandler:(id)a5
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input resultHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 predicate];
+  queryCopy = query;
+  inputCopy = input;
+  handlerCopy = handler;
+  predicate = [queryCopy predicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = predicate;
   }
 
   else
   {
-    v14[0] = v11;
+    v14[0] = predicate;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     v12 = [WFContentCompoundPredicate andPredicateWithSubpredicates:v13];
   }
 
-  [a1 getItemsMatchingQuery:v8 withInput:v9 compoundPredicate:v12 resultHandler:v10];
+  [self getItemsMatchingQuery:queryCopy withInput:inputCopy compoundPredicate:v12 resultHandler:handlerCopy];
 }
 
-+ (void)getItemsMatchingQuery:(id)a3 withInput:(id)a4 compoundPredicate:(id)a5 resultHandler:(id)a6
++ (void)getItemsMatchingQuery:(id)query withInput:(id)input compoundPredicate:(id)predicate resultHandler:(id)handler
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [v12 subpredicates];
-  v14 = [v12 compoundPredicateType];
+  queryCopy = query;
+  inputCopy = input;
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  subpredicates = [predicateCopy subpredicates];
+  compoundPredicateType = [predicateCopy compoundPredicateType];
 
-  if ([v13 count] == 1 && (v14 - 1) <= 1 && (objc_msgSend(v13, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
+  if ([subpredicates count] == 1 && (compoundPredicateType - 1) <= 1 && (objc_msgSend(subpredicates, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) != 0))
   {
-    v17 = [v13 firstObject];
-    [a1 getItemsMatchingQuery:v18 withInput:v10 compoundPredicate:v17 resultHandler:v11];
+    firstObject = [subpredicates firstObject];
+    [self getItemsMatchingQuery:queryCopy withInput:inputCopy compoundPredicate:firstObject resultHandler:handlerCopy];
   }
 
   else
   {
-    [a1 performCustomFilteringUsingContentPredicates:v13 compoundPredicateType:v14 forQuery:v18 withInput:v10 resultHandler:v11];
+    [self performCustomFilteringUsingContentPredicates:subpredicates compoundPredicateType:compoundPredicateType forQuery:queryCopy withInput:inputCopy resultHandler:handlerCopy];
   }
 }
 
-+ (void)performFallbackFilteringWithItems:(id)a3 withContentPredicates:(id)a4 compoundPredicateType:(unint64_t)a5 originalQuery:(id)a6 resultHandler:(id)a7
++ (void)performFallbackFilteringWithItems:(id)items withContentPredicates:(id)predicates compoundPredicateType:(unint64_t)type originalQuery:(id)query resultHandler:(id)handler
 {
-  v20 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if ([v11 count])
+  itemsCopy = items;
+  predicatesCopy = predicates;
+  queryCopy = query;
+  handlerCopy = handler;
+  if ([predicatesCopy count])
   {
-    v14 = [[WFContentCompoundPredicate alloc] initWithType:a5 subpredicates:v11];
+    v14 = [[WFContentCompoundPredicate alloc] initWithType:type subpredicates:predicatesCopy];
   }
 
   else
@@ -67,18 +67,18 @@
   }
 
   v15 = [[WFContentQuery alloc] initWithPredicate:v14];
-  if (v12)
+  if (queryCopy)
   {
-    v16 = [v12 sortDescriptors];
-    [(WFContentQuery *)v15 setSortDescriptors:v16];
+    sortDescriptors = [queryCopy sortDescriptors];
+    [(WFContentQuery *)v15 setSortDescriptors:sortDescriptors];
 
-    v17 = [v12 slice];
-    [(WFContentQuery *)v15 setSlice:v17, v18];
-    v19 = [v12 userInfo];
-    [(WFContentQuery *)v15 setUserInfo:v19];
+    slice = [queryCopy slice];
+    [(WFContentQuery *)v15 setSlice:slice, v18];
+    userInfo = [queryCopy userInfo];
+    [(WFContentQuery *)v15 setUserInfo:userInfo];
   }
 
-  [(WFContentQuery *)v15 runWithObjects:v20 completionHandler:v13];
+  [(WFContentQuery *)v15 runWithObjects:itemsCopy completionHandler:handlerCopy];
 }
 
 @end

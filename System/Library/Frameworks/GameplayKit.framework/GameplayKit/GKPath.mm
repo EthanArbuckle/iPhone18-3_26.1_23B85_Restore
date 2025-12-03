@@ -85,7 +85,7 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"GKPath: only GKGraphNode2D and GKGraphNode3D are accepted by initWithGraphNodes:radius:"];
-        v7 = 0;
+        selfCopy2 = 0;
 LABEL_21:
 
         goto LABEL_22;
@@ -120,16 +120,16 @@ LABEL_21:
       operator delete(__p);
     }
 
-    v7 = self;
+    selfCopy2 = self;
     goto LABEL_21;
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"GKPath: must be initialized with 2 or more graph nodes.  Single node paths are not allowed"];
   self = [(GKPath *)self init];
-  v7 = self;
+  selfCopy2 = self;
 LABEL_22:
 
-  return v7;
+  return selfCopy2;
 }
 
 - (GKPath)initWithFloat3Points:(vector_float3 *)points count:(size_t)count radius:(float)radius cyclical:(BOOL)cyclical
@@ -161,15 +161,15 @@ LABEL_22:
 
 - (vector_float2)pointAtIndex:(NSUInteger)index
 {
-  v5 = [(GKPath *)self numPoints];
+  numPoints = [(GKPath *)self numPoints];
   result = 0;
-  if (v5 > index)
+  if (numPoints > index)
   {
     v7 = index;
     v9 = *([(GKPath *)self pathway][16] + v7 * 12);
-    v8 = [(GKPath *)self pathway];
+    pathway = [(GKPath *)self pathway];
     result.i32[0] = v9;
-    result.i32[1] = LODWORD(v8->points[v7].z);
+    result.i32[1] = LODWORD(pathway->points[v7].z);
   }
 
   return result;
@@ -177,15 +177,15 @@ LABEL_22:
 
 - (vector_float2)float2AtIndex:(NSUInteger)index
 {
-  v5 = [(GKPath *)self numPoints];
+  numPoints = [(GKPath *)self numPoints];
   result = 0;
-  if (v5 > index)
+  if (numPoints > index)
   {
     v7 = index;
     v9 = *([(GKPath *)self pathway][16] + v7 * 12);
-    v8 = [(GKPath *)self pathway];
+    pathway = [(GKPath *)self pathway];
     result.i32[0] = v9;
-    result.i32[1] = LODWORD(v8->points[v7].z);
+    result.i32[1] = LODWORD(pathway->points[v7].z);
   }
 
   return result;
@@ -193,18 +193,18 @@ LABEL_22:
 
 - (vector_float3)float3AtIndex:(NSUInteger)index
 {
-  v5 = [(GKPath *)self numPoints];
-  if (v5 > index)
+  numPoints = [(GKPath *)self numPoints];
+  if (numPoints > index)
   {
     v7 = 12 * index;
     v8 = *([(GKPath *)self pathway][16] + v7);
     v9 = *([(GKPath *)self pathway][16] + v7 + 4);
-    v5 = [(GKPath *)self pathway];
-    z = v5->points[v7 / 0xC].z;
+    numPoints = [(GKPath *)self pathway];
+    z = numPoints->points[v7 / 0xC].z;
   }
 
   result.i64[1] = v6;
-  result.i64[0] = v5;
+  result.i64[0] = numPoints;
   return result;
 }
 

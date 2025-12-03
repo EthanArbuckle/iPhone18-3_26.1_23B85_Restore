@@ -1,41 +1,41 @@
 @interface HSTWakeSystemEvent
-- (BOOL)decodeFromMap:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
 - (id).cxx_construct;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTWakeSystemEvent
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v5.receiver = self;
   v5.super_class = HSTWakeSystemEvent;
   [(HSTEvent *)&v5 encodeToMap:?];
   if (self->tapPosition.__engaged_)
   {
-    HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(a3, HSUtil::CoderKey::Literal<(char)116,(char)97,(char)112,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &self->tapPosition);
+    HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(map, HSUtil::CoderKey::Literal<(char)116,(char)97,(char)112,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &self->tapPosition);
   }
 
   if (self->swipeDirection.__engaged_)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)119,(char)105,(char)112,(char)101,(char)68,(char)105,(char)114,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110>::Key, self->swipeDirection.var0.__val_);
+    HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)119,(char)105,(char)112,(char)101,(char)68,(char)105,(char)114,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110>::Key, self->swipeDirection.var0.__val_);
   }
 
   if (self->longPressPosition.__engaged_)
   {
-    HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(a3, HSUtil::CoderKey::Literal<(char)108,(char)111,(char)110,(char)103,(char)80,(char)114,(char)101,(char)115,(char)115,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &self->longPressPosition);
+    HSUtil::Encoder::encodeCodable<HSTPipeline::Position const>(map, HSUtil::CoderKey::Literal<(char)108,(char)111,(char)110,(char)103,(char)80,(char)114,(char)101,(char)115,(char)115,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &self->longPressPosition);
   }
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v12.receiver = self;
   v12.super_class = HSTWakeSystemEvent;
   if ([(HSTEvent *)&v12 decodeFromMap:?])
   {
     v11 = 0xAAAAAAAAAAAAAAAALL;
-    HSUtil::Decoder::decodeCodable<HSTPipeline::Position>(a3, HSUtil::CoderKey::Literal<(char)116,(char)97,(char)112,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &v11);
-    if (*a3)
+    HSUtil::Decoder::decodeCodable<HSTPipeline::Position>(map, HSUtil::CoderKey::Literal<(char)116,(char)97,(char)112,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &v11);
+    if (*map)
     {
       if (self->tapPosition.__engaged_)
       {
@@ -54,8 +54,8 @@
       self->tapPosition.var0 = v6;
     }
 
-    v7 = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)119,(char)105,(char)112,(char)101,(char)68,(char)105,(char)114,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110>::Key);
-    if (*a3)
+    v7 = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)119,(char)105,(char)112,(char)101,(char)68,(char)105,(char)114,(char)101,(char)99,(char)116,(char)105,(char)111,(char)110>::Key);
+    if (*map)
     {
       if (self->swipeDirection.__engaged_)
       {
@@ -68,9 +68,9 @@
       self->swipeDirection = (v7 | 0x100);
     }
 
-    HSUtil::Decoder::decodeCodable<HSTPipeline::Position>(a3, HSUtil::CoderKey::Literal<(char)108,(char)111,(char)110,(char)103,(char)80,(char)114,(char)101,(char)115,(char)115,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &v11);
-    v8 = *a3;
-    if (*a3)
+    HSUtil::Decoder::decodeCodable<HSTPipeline::Position>(map, HSUtil::CoderKey::Literal<(char)108,(char)111,(char)110,(char)103,(char)80,(char)114,(char)101,(char)115,(char)115,(char)80,(char)111,(char)115,(char)105,(char)116,(char)105,(char)111,(char)110>::Key, &v11);
+    v8 = *map;
+    if (*map)
     {
       if (self->longPressPosition.__engaged_)
       {
@@ -87,7 +87,7 @@
       }
 
       self->longPressPosition.var0 = v9;
-      v8 = *a3;
+      v8 = *map;
     }
 
     v5 = v8 < 5;

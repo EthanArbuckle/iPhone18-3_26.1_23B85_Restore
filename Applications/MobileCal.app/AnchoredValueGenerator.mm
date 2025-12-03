@@ -1,15 +1,15 @@
 @interface AnchoredValueGenerator
 - (AnchoredValueGenerator)init;
-- (double)_interpolatedValueForSize:(double)a3;
-- (double)_nearestValueForSize:(double)a3;
-- (double)_roundValue:(double)a3;
-- (double)valueForSize:(double)a3;
-- (double)valueForWindowSizeHeight:(unint64_t)a3;
-- (double)valueForWindowSizeWidth:(unint64_t)a3;
-- (void)_findBoundsForSize:(double)a3 outLowerBound:(id *)a4 outUpperBound:(id *)a5 outExactMatchValue:(double *)a6 outFoundExactMatch:(BOOL *)a7;
-- (void)addAnchoredValue:(double)a3 forSize:(double)a4 layoutShift:(BOOL)a5;
-- (void)addAnchoredValue:(double)a3 forWindowSizeHeight:(unint64_t)a4 layoutShift:(BOOL)a5;
-- (void)addAnchoredValue:(double)a3 forWindowSizeWidth:(unint64_t)a4 layoutShift:(BOOL)a5;
+- (double)_interpolatedValueForSize:(double)size;
+- (double)_nearestValueForSize:(double)size;
+- (double)_roundValue:(double)value;
+- (double)valueForSize:(double)size;
+- (double)valueForWindowSizeHeight:(unint64_t)height;
+- (double)valueForWindowSizeWidth:(unint64_t)width;
+- (void)_findBoundsForSize:(double)size outLowerBound:(id *)bound outUpperBound:(id *)upperBound outExactMatchValue:(double *)value outFoundExactMatch:(BOOL *)match;
+- (void)addAnchoredValue:(double)value forSize:(double)size layoutShift:(BOOL)shift;
+- (void)addAnchoredValue:(double)value forWindowSizeHeight:(unint64_t)height layoutShift:(BOOL)shift;
+- (void)addAnchoredValue:(double)value forWindowSizeWidth:(unint64_t)width layoutShift:(BOOL)shift;
 @end
 
 @implementation AnchoredValueGenerator
@@ -27,9 +27,9 @@
   return result;
 }
 
-- (void)addAnchoredValue:(double)a3 forSize:(double)a4 layoutShift:(BOOL)a5
+- (void)addAnchoredValue:(double)value forSize:(double)size layoutShift:(BOOL)shift
 {
-  v5 = a5;
+  shiftCopy = shift;
   self->_needsSorting = 1;
   cachedLastResult = self->_cachedLastResult;
   self->_cachedLastResult = 0;
@@ -44,27 +44,27 @@
     pairs = self->_pairs;
   }
 
-  v13 = [AnchoredValuePair pairWithValue:v5 size:a3 layoutShift:a4];
+  v13 = [AnchoredValuePair pairWithValue:shiftCopy size:value layoutShift:size];
   [(NSMutableArray *)pairs addObject:v13];
 }
 
-- (void)addAnchoredValue:(double)a3 forWindowSizeWidth:(unint64_t)a4 layoutShift:(BOOL)a5
+- (void)addAnchoredValue:(double)value forWindowSizeWidth:(unint64_t)width layoutShift:(BOOL)shift
 {
-  v5 = a5;
+  shiftCopy = shift;
   EKUIWidthForWindowSizeParadigm();
 
-  [(AnchoredValueGenerator *)self addAnchoredValue:v5 forSize:a3 layoutShift:v8];
+  [(AnchoredValueGenerator *)self addAnchoredValue:shiftCopy forSize:value layoutShift:v8];
 }
 
-- (void)addAnchoredValue:(double)a3 forWindowSizeHeight:(unint64_t)a4 layoutShift:(BOOL)a5
+- (void)addAnchoredValue:(double)value forWindowSizeHeight:(unint64_t)height layoutShift:(BOOL)shift
 {
-  v5 = a5;
+  shiftCopy = shift;
   EKUIHeightForWindowSizeParadigm();
 
-  [(AnchoredValueGenerator *)self addAnchoredValue:v5 forSize:a3 layoutShift:v8];
+  [(AnchoredValueGenerator *)self addAnchoredValue:shiftCopy forSize:value layoutShift:v8];
 }
 
-- (double)valueForSize:(double)a3
+- (double)valueForSize:(double)size
 {
   if (!self->_pairs)
   {
@@ -86,7 +86,7 @@
   }
 
   [(AnchoredValuePair *)cachedLastResult size];
-  v7 = v6 - a3;
+  v7 = v6 - size;
   if (v7 < 0.0)
   {
     v7 = -v7;
@@ -95,16 +95,16 @@
   if (v7 >= 0.00001)
   {
 LABEL_11:
-    v10 = [(AnchoredValueGenerator *)self calculationType];
-    if (v10 - 1 >= 3)
+    calculationType = [(AnchoredValueGenerator *)self calculationType];
+    if (calculationType - 1 >= 3)
     {
-      if (v10 && v10 != 4)
+      if (calculationType && calculationType != 4)
       {
         v23 = 0.0;
         v22 = 0;
         v20 = 0;
         v21 = 0;
-        [(AnchoredValueGenerator *)self _findBoundsForSize:&v21 outLowerBound:&v20 outUpperBound:&v23 outExactMatchValue:&v22 outFoundExactMatch:a3];
+        [(AnchoredValueGenerator *)self _findBoundsForSize:&v21 outLowerBound:&v20 outUpperBound:&v23 outExactMatchValue:&v22 outFoundExactMatch:size];
         v19 = v21;
         if (v22)
         {
@@ -119,12 +119,12 @@ LABEL_11:
         goto LABEL_18;
       }
 
-      [(AnchoredValueGenerator *)self _interpolatedValueForSize:a3];
+      [(AnchoredValueGenerator *)self _interpolatedValueForSize:size];
     }
 
     else
     {
-      [(AnchoredValueGenerator *)self _nearestValueForSize:a3];
+      [(AnchoredValueGenerator *)self _nearestValueForSize:size];
     }
 
     v15 = v11;
@@ -144,7 +144,7 @@ LABEL_18:
   return result;
 }
 
-- (double)valueForWindowSizeWidth:(unint64_t)a3
+- (double)valueForWindowSizeWidth:(unint64_t)width
 {
   EKUIWidthForWindowSizeParadigm();
 
@@ -152,7 +152,7 @@ LABEL_18:
   return result;
 }
 
-- (double)valueForWindowSizeHeight:(unint64_t)a3
+- (double)valueForWindowSizeHeight:(unint64_t)height
 {
   EKUIHeightForWindowSizeParadigm();
 
@@ -160,7 +160,7 @@ LABEL_18:
   return result;
 }
 
-- (void)_findBoundsForSize:(double)a3 outLowerBound:(id *)a4 outUpperBound:(id *)a5 outExactMatchValue:(double *)a6 outFoundExactMatch:(BOOL *)a7
+- (void)_findBoundsForSize:(double)size outLowerBound:(id *)bound outUpperBound:(id *)upperBound outExactMatchValue:(double *)value outFoundExactMatch:(BOOL *)match
 {
   v35 = 0u;
   v36 = 0u;
@@ -185,7 +185,7 @@ LABEL_18:
 
         v18 = *(*(&v35 + 1) + 8 * i);
         [v18 size];
-        v20 = v19 - a3;
+        v20 = v19 - size;
         if (v20 < 0.0)
         {
           v20 = -v20;
@@ -193,35 +193,35 @@ LABEL_18:
 
         if (v20 < 0.00001)
         {
-          if (a5)
+          if (upperBound)
           {
-            *a5 = 0;
+            *upperBound = 0;
           }
 
-          if (a4)
+          if (bound)
           {
-            *a4 = 0;
+            *bound = 0;
           }
 
-          if (a6)
+          if (value)
           {
             [v18 value];
-            *a6 = v31;
+            *value = v31;
           }
 
-          if (a7)
+          if (match)
           {
-            *a7 = 1;
+            *match = 1;
           }
 
           goto LABEL_40;
         }
 
         [v18 size];
-        if (v21 >= a3)
+        if (v21 >= size)
         {
           [v18 size];
-          if (v26 > a3)
+          if (v26 > size)
           {
             if (v14)
             {
@@ -278,32 +278,32 @@ LABEL_18:
     v15 = 0;
   }
 
-  if (a5)
+  if (upperBound)
   {
     v32 = v14;
-    *a5 = v14;
+    *upperBound = v14;
   }
 
-  if (a4)
+  if (bound)
   {
     v33 = v15;
-    *a4 = v15;
+    *bound = v15;
   }
 
-  if (a6)
+  if (value)
   {
-    *a6 = 0.0;
+    *value = 0.0;
   }
 
-  if (a7)
+  if (match)
   {
-    *a7 = 0;
+    *match = 0;
   }
 
 LABEL_40:
 }
 
-- (double)_interpolatedValueForSize:(double)a3
+- (double)_interpolatedValueForSize:(double)size
 {
   v37 = 0.0;
   v36 = 0;
@@ -318,21 +318,21 @@ LABEL_40:
     {
       if ([v6 layoutShift])
       {
-        v12 = 1;
+        layoutShift = 1;
       }
 
       else
       {
-        v12 = [v7 layoutShift];
+        layoutShift = [v7 layoutShift];
       }
     }
 
     else
     {
-      v12 = 0;
+      layoutShift = 0;
     }
 
-    v13 = v7 == 0;
+    layoutShift2 = v7 == 0;
     if (!(v7 | v6))
     {
       v14 = +[NSAssertionHandler currentHandler];
@@ -353,10 +353,10 @@ LABEL_40:
     }
 
     v16 = v15;
-    if (((v16 | v12) & 1) == 0)
+    if (((v16 | layoutShift) & 1) == 0)
     {
       [v6 size];
-      v20 = a3 - v19;
+      v20 = size - v19;
       [v7 size];
       v22 = v21;
       [v6 size];
@@ -372,22 +372,22 @@ LABEL_40:
 
     if ((v16 & 1) == 0)
     {
-      if (!v12)
+      if (!layoutShift)
       {
         v18 = 0;
 LABEL_27:
         [v18 value];
         v31 = v30;
         [v18 size];
-        v8 = v31 / v32 * a3;
+        v8 = v31 / v32 * size;
 
         goto LABEL_28;
       }
 
-      v13 = [v7 layoutShift];
+      layoutShift2 = [v7 layoutShift];
     }
 
-    if (v13)
+    if (layoutShift2)
     {
       v17 = v6;
     }
@@ -407,7 +407,7 @@ LABEL_28:
   return v8;
 }
 
-- (double)_nearestValueForSize:(double)a3
+- (double)_nearestValueForSize:(double)size
 {
   v21 = 0.0;
   v20 = 0;
@@ -437,7 +437,7 @@ LABEL_28:
       if (v7 && v6)
       {
         [v7 size];
-        v13 = v12 - a3;
+        v13 = v12 - size;
         if (v13 >= 0.0)
         {
           v14 = v13;
@@ -449,7 +449,7 @@ LABEL_28:
         }
 
         [v6 size];
-        v16 = v15 - a3;
+        v16 = v15 - size;
         if (v16 < 0.0)
         {
           v16 = -v16;
@@ -482,25 +482,25 @@ LABEL_10:
   return v8;
 }
 
-- (double)_roundValue:(double)a3
+- (double)_roundValue:(double)value
 {
-  v4 = [(AnchoredValueGenerator *)self roundingType];
-  if (v4 > 2)
+  roundingType = [(AnchoredValueGenerator *)self roundingType];
+  if (roundingType > 2)
   {
-    switch(v4)
+    switch(roundingType)
     {
       case 3:
-        return round(a3);
+        return round(value);
       case 4:
-        return floor(a3);
+        return floor(value);
       case 5:
-        return ceil(a3);
+        return ceil(value);
     }
 
     goto LABEL_16;
   }
 
-  if (v4 == 1)
+  if (roundingType == 1)
   {
 
     CalFloorToScreenScale();
@@ -508,7 +508,7 @@ LABEL_10:
 
   else
   {
-    if (v4 != 2)
+    if (roundingType != 2)
     {
 LABEL_16:
 

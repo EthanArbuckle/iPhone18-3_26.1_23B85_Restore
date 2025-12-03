@@ -2,21 +2,21 @@
 + (id)sharedClientConnection;
 - (AXUIClientConnection)init;
 - (BSServiceConnectionClient)serviceConnection;
-- (id)_clientWithIdentifier:(id)a3;
+- (id)_clientWithIdentifier:(id)identifier;
 - (void)_broadcastConnectedStateChange;
 - (void)_initializeServiceConnection;
-- (void)_processXPCReply:(id)a3 context:(id)a4;
+- (void)_processXPCReply:(id)reply context:(id)context;
 - (void)cleanUp;
 - (void)dealloc;
 - (void)performLaunchAngelQueuedTasks;
-- (void)performLaunchAngelTask:(id)a3;
-- (void)registerClient:(id)a3 withIdentifier:(id)a4;
-- (void)registerConnectionStateObserver:(id)a3;
-- (void)sendBoardServiceMessage:(id)a3 callback:(id)a4;
-- (void)setServiceConnection:(id)a3;
+- (void)performLaunchAngelTask:(id)task;
+- (void)registerClient:(id)client withIdentifier:(id)identifier;
+- (void)registerConnectionStateObserver:(id)observer;
+- (void)sendBoardServiceMessage:(id)message callback:(id)callback;
+- (void)setServiceConnection:(id)connection;
 - (void)tearDownConnection;
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4;
-- (void)unregisterConnectionStateObserver:(id)a3;
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier;
+- (void)unregisterConnectionStateObserver:(id)observer;
 @end
 
 @implementation AXUIClientConnection
@@ -64,8 +64,8 @@ uint64_t __46__AXUIClientConnection_sharedClientConnection__block_invoke()
     {
       [(AXUIClientConnection *)v2 setConnectionAccessQueue:v4];
       [(AXUIClientConnection *)v2 setRegisteredClientsAccessQueue:v5];
-      v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-      [(AXUIClientConnection *)v2 setStateObservers:v11];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      [(AXUIClientConnection *)v2 setStateObservers:weakObjectsHashTable];
 
       p_super = dispatch_queue_create("com.apple.AXUIClientConnection.stateObservers", 0);
       [(AXUIClientConnection *)v2 setStateObserverQueue:p_super];
@@ -157,10 +157,10 @@ void __52__AXUIClientConnection__initializeServiceConnection__block_invoke(uint6
   objc_destroyWeak(&v11);
 }
 
-- (void)setServiceConnection:(id)a3
+- (void)setServiceConnection:(id)connection
 {
-  v4 = a3;
-  v3 = v4;
+  connectionCopy = connection;
+  v3 = connectionCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
@@ -389,25 +389,25 @@ LABEL_10:
   [(AXUIClientConnection *)&v3 dealloc];
 }
 
-- (void)performLaunchAngelTask:(id)a3
+- (void)performLaunchAngelTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v11 = 0;
   v12[0] = &v11;
   v12[1] = 0x3032000000;
   v12[2] = __Block_byref_object_copy_;
   v12[3] = __Block_byref_object_dispose_;
   v13 = 0;
-  v5 = [(AXUIClientConnection *)self connectionAccessQueue];
+  connectionAccessQueue = [(AXUIClientConnection *)self connectionAccessQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__AXUIClientConnection_performLaunchAngelTask___block_invoke;
   v8[3] = &unk_278BF23C8;
   v8[4] = self;
   v10 = &v11;
-  v6 = v4;
+  v6 = taskCopy;
   v9 = v6;
-  [v5 performSynchronousWritingBlock:v8];
+  [connectionAccessQueue performSynchronousWritingBlock:v8];
 
   if (*(v12[0] + 40))
   {
@@ -494,7 +494,7 @@ void __47__AXUIClientConnection_performLaunchAngelTask___block_invoke(uint64_t a
 - (void)performLaunchAngelQueuedTasks
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_23DBC7000, a2, OS_LOG_TYPE_DEBUG, "performLaunchAngelQueuedTasks: %@", &v4, 0xCu);
@@ -513,21 +513,21 @@ void __53__AXUIClientConnection_performLaunchAngelQueuedTasks__block_invoke(uint
   [v6 removeAllObjects];
 }
 
-- (void)sendBoardServiceMessage:(id)a3 callback:(id)a4
+- (void)sendBoardServiceMessage:(id)message callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  messageCopy = message;
   v11 = objc_opt_new();
-  [v11 setXpc_handler:v6];
+  [v11 setXpc_handler:callbackCopy];
 
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [v8 remoteProcess];
-  [v11 setProcessHandle:v9];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  [v11 setProcessHandle:remoteProcess];
 
-  v10 = [MEMORY[0x277CF3280] currentContext];
-  [v11 setServiceConnection:v10];
+  currentContext2 = [MEMORY[0x277CF3280] currentContext];
+  [v11 setServiceConnection:currentContext2];
 
-  [(AXUIClientConnection *)self _processXPCReply:v7 context:v11];
+  [(AXUIClientConnection *)self _processXPCReply:messageCopy context:v11];
 }
 
 - (void)tearDownConnection
@@ -539,13 +539,13 @@ void __53__AXUIClientConnection_performLaunchAngelQueuedTasks__block_invoke(uint
     _os_log_impl(&dword_23DBC7000, v3, OS_LOG_TYPE_DEFAULT, "ClientConnection teared down xpc connection", buf, 2u);
   }
 
-  v4 = [(AXUIClientConnection *)self connectionAccessQueue];
+  connectionAccessQueue = [(AXUIClientConnection *)self connectionAccessQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__AXUIClientConnection_tearDownConnection__block_invoke;
   v5[3] = &unk_278BF22E0;
   v5[4] = self;
-  [v4 performSynchronousWritingBlock:v5];
+  [connectionAccessQueue performSynchronousWritingBlock:v5];
 }
 
 uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1)
@@ -561,18 +561,18 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
   return [*(a1 + 32) _broadcastConnectedStateChange];
 }
 
-- (void)_processXPCReply:(id)a3 context:(id)a4
+- (void)_processXPCReply:(id)reply context:(id)context
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = MEMORY[0x23EEF8420](v6);
+  replyCopy = reply;
+  contextCopy = context;
+  v8 = MEMORY[0x23EEF8420](replyCopy);
   if (v8 != MEMORY[0x277D86468])
   {
     if (v8 == MEMORY[0x277D86480])
     {
       v20 = MEMORY[0x277D863F8];
-      if (v6 == MEMORY[0x277D863F8])
+      if (replyCopy == MEMORY[0x277D863F8])
       {
         v23 = AXLogUI();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -583,7 +583,7 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
 
       else
       {
-        v21 = v6 == MEMORY[0x277D863F0];
+        v21 = replyCopy == MEMORY[0x277D863F0];
         v22 = AXLogUI();
         v23 = v22;
         if (v21)
@@ -599,24 +599,24 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
 
         else if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [AXUIClientConnection _processXPCReply:v6 context:v23];
+          [AXUIClientConnection _processXPCReply:replyCopy context:v23];
         }
       }
 
       v35 = AXLogIPC();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
       {
-        [(AXUIClientConnection *)v6 == v20 _processXPCReply:v6 context:v35];
+        [(AXUIClientConnection *)replyCopy == v20 _processXPCReply:replyCopy context:v35];
       }
 
       objc_initWeak(&buf, self);
-      v36 = [(AXUIClientConnection *)self connectionAccessQueue];
+      connectionAccessQueue = [(AXUIClientConnection *)self connectionAccessQueue];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __49__AXUIClientConnection__processXPCReply_context___block_invoke_344;
       v46[3] = &unk_278BF2468;
       objc_copyWeak(&v47, &buf);
-      [v36 performSynchronousWritingBlock:v46];
+      [connectionAccessQueue performSynchronousWritingBlock:v46];
 
       objc_destroyWeak(&v47);
       objc_destroyWeak(&buf);
@@ -624,9 +624,9 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
 
     else
     {
-      if (v6)
+      if (replyCopy)
       {
-        v9 = MEMORY[0x23EEF83B0](v6);
+        v9 = MEMORY[0x23EEF83B0](replyCopy);
       }
 
       else
@@ -649,12 +649,12 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
     goto LABEL_60;
   }
 
-  v10 = v6;
+  v10 = replyCopy;
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __49__AXUIClientConnection__processXPCReply_context___block_invoke;
   v51[3] = &unk_278BF23F0;
-  v52 = v7;
+  v52 = contextCopy;
   v11 = v10;
   v53 = v11;
   v12 = MEMORY[0x23EEF82A0](v51);
@@ -698,8 +698,8 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
     uint64 = xpc_dictionary_get_uint64(v11, *MEMORY[0x277CE77C8]);
     if (uint64)
     {
-      v18 = [v16 delegate];
-      if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && ([v18 userInterfaceClient:v16 messageFromServerForWithIdentifierShouldBeProcessedAsynchronously:uint64])
+      delegate = [v16 delegate];
+      if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && ([delegate userInterfaceClient:v16 messageFromServerForWithIdentifierShouldBeProcessedAsynchronously:uint64])
       {
         v19 = 1;
       }
@@ -708,7 +708,7 @@ uint64_t __42__AXUIClientConnection_tearDownConnection__block_invoke(uint64_t a1
       {
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
-          v38 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7760] description:{@"Delegate of client %@ cannot process any messages: %@", v16, v18}];
+          v38 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7760] description:{@"Delegate of client %@ cannot process any messages: %@", v16, delegate}];
           v39 = *(*(&buf + 1) + 40);
           *(*(&buf + 1) + 40) = v38;
 LABEL_55:
@@ -741,7 +741,7 @@ LABEL_55:
           v49[1] = 3221225472;
           v49[2] = __49__AXUIClientConnection__processXPCReply_context___block_invoke_2;
           v49[3] = &unk_278BF2418;
-          v49[4] = v18;
+          v49[4] = delegate;
           v49[5] = v16;
           v49[6] = v45;
           v49[8] = uint64;
@@ -754,7 +754,7 @@ LABEL_55:
           v48[1] = 3221225472;
           v48[2] = __49__AXUIClientConnection__processXPCReply_context___block_invoke_3;
           v48[3] = &unk_278BF2440;
-          v48[4] = v18;
+          v48[4] = delegate;
           v48[5] = v16;
           v48[6] = v45;
           v48[8] = &buf;
@@ -764,9 +764,9 @@ LABEL_55:
         v41[7] = v12;
         v44 = MEMORY[0x23EEF82A0](v41);
 
-        if ((objc_opt_respondsToSelector() & 1) != 0 && ([v18 userInterfaceClient:v16 accessQueueForProcessingMessageWithIdentifier:uint64], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
+        if ((objc_opt_respondsToSelector() & 1) != 0 && ([delegate userInterfaceClient:v16 accessQueueForProcessingMessageWithIdentifier:uint64], (v42 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          if ((objc_opt_respondsToSelector() & 1) != 0 && ![v18 userInterfaceClient:v16 messageWithIdentifierRequiresWritingBlock:uint64])
+          if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate userInterfaceClient:v16 messageWithIdentifierRequiresWritingBlock:uint64])
           {
             [v42 performAsynchronousReadingBlock:v44];
           }
@@ -796,7 +796,7 @@ LABEL_55:
     v37 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:*MEMORY[0x277CE7760] description:{@"Couldn't find client for identifier: %@.", v14}];
   }
 
-  v18 = *(*(&buf + 1) + 40);
+  delegate = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v37;
 LABEL_56:
 
@@ -872,30 +872,30 @@ void __49__AXUIClientConnection__processXPCReply_context___block_invoke_344(uint
   [v3 _broadcastConnectedStateChange];
 }
 
-- (void)registerClient:(id)a3 withIdentifier:(id)a4
+- (void)registerClient:(id)client withIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v8 = AXLogAssertions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v7;
+    v17 = identifierCopy;
     _os_log_impl(&dword_23DBC7000, v8, OS_LOG_TYPE_DEFAULT, "ClientConnection registered client %@", buf, 0xCu);
   }
 
-  v9 = [(AXUIClientConnection *)self registeredClientsAccessQueue];
+  registeredClientsAccessQueue = [(AXUIClientConnection *)self registeredClientsAccessQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__AXUIClientConnection_registerClient_withIdentifier___block_invoke;
   v13[3] = &unk_278BF2490;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 performSynchronousWritingBlock:v13];
+  v14 = clientCopy;
+  v15 = identifierCopy;
+  v10 = identifierCopy;
+  v11 = clientCopy;
+  [registeredClientsAccessQueue performSynchronousWritingBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -913,27 +913,27 @@ void __54__AXUIClientConnection_registerClient_withIdentifier___block_invoke(uin
   [v3 setObject:v2 forKey:*(a1 + 48)];
 }
 
-- (void)unregisterClient:(id)a3 withIdentifier:(id)a4
+- (void)unregisterClient:(id)client withIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = AXLogAssertions();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = identifierCopy;
     _os_log_impl(&dword_23DBC7000, v6, OS_LOG_TYPE_DEFAULT, "ClientConnection unregistered client %@", buf, 0xCu);
   }
 
-  v7 = [(AXUIClientConnection *)self registeredClientsAccessQueue];
+  registeredClientsAccessQueue = [(AXUIClientConnection *)self registeredClientsAccessQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__AXUIClientConnection_unregisterClient_withIdentifier___block_invoke;
   v10[3] = &unk_278BF2290;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
-  [v7 performSynchronousWritingBlock:v10];
+  v11 = identifierCopy;
+  v8 = identifierCopy;
+  [registeredClientsAccessQueue performSynchronousWritingBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -948,25 +948,25 @@ void __56__AXUIClientConnection_unregisterClient_withIdentifier___block_invoke(u
   }
 }
 
-- (id)_clientWithIdentifier:(id)a3
+- (id)_clientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(AXUIClientConnection *)self registeredClientsAccessQueue];
+  registeredClientsAccessQueue = [(AXUIClientConnection *)self registeredClientsAccessQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__AXUIClientConnection__clientWithIdentifier___block_invoke;
   v9[3] = &unk_278BF24B8;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
-  [v5 performSynchronousWritingBlock:v9];
+  [registeredClientsAccessQueue performSynchronousWritingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -993,14 +993,14 @@ void __46__AXUIClientConnection__clientWithIdentifier___block_invoke(uint64_t a1
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v3 = [(AXUIClientConnection *)self stateObserverQueue];
+  stateObserverQueue = [(AXUIClientConnection *)self stateObserverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__AXUIClientConnection__broadcastConnectedStateChange__block_invoke;
   block[3] = &unk_278BF22B8;
   block[4] = self;
   block[5] = &v14;
-  dispatch_sync(v3, block);
+  dispatch_sync(stateObserverQueue, block);
 
   v11 = 0u;
   v12 = 0u;
@@ -1044,18 +1044,18 @@ void __54__AXUIClientConnection__broadcastConnectedStateChange__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)registerConnectionStateObserver:(id)a3
+- (void)registerConnectionStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXUIClientConnection *)self stateObserverQueue];
+  observerCopy = observer;
+  stateObserverQueue = [(AXUIClientConnection *)self stateObserverQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__AXUIClientConnection_registerConnectionStateObserver___block_invoke;
   v7[3] = &unk_278BF2290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(stateObserverQueue, v7);
 }
 
 void __56__AXUIClientConnection_registerConnectionStateObserver___block_invoke(uint64_t a1)
@@ -1064,18 +1064,18 @@ void __56__AXUIClientConnection_registerConnectionStateObserver___block_invoke(u
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterConnectionStateObserver:(id)a3
+- (void)unregisterConnectionStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXUIClientConnection *)self stateObserverQueue];
+  observerCopy = observer;
+  stateObserverQueue = [(AXUIClientConnection *)self stateObserverQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__AXUIClientConnection_unregisterConnectionStateObserver___block_invoke;
   v7[3] = &unk_278BF2290;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(stateObserverQueue, v7);
 }
 
 void __58__AXUIClientConnection_unregisterConnectionStateObserver___block_invoke(uint64_t a1)
@@ -1091,14 +1091,14 @@ void __58__AXUIClientConnection_unregisterConnectionStateObserver___block_invoke
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(AXUIClientConnection *)self stateObserverQueue];
+  stateObserverQueue = [(AXUIClientConnection *)self stateObserverQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__AXUIClientConnection_cleanUp__block_invoke;
   v7[3] = &unk_278BF2328;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(stateObserverQueue, v7);
 
   v4 = AXLogAssertions();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

@@ -1,21 +1,21 @@
 @interface WBSLocalAssetController
-- (WBSLocalAssetController)initWithURL:(id)a3;
+- (WBSLocalAssetController)initWithURL:(id)l;
 - (WBSMobileAssetControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation WBSLocalAssetController
 
-- (WBSLocalAssetController)initWithURL:(id)a3
+- (WBSLocalAssetController)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = WBSLocalAssetController;
   v6 = [(WBSLocalAssetController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = dispatch_queue_create("com.apple.SafariSharedUI.WBSLocalAssetController", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -56,17 +56,17 @@ void __35__WBSLocalAssetController_delegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__WBSLocalAssetController_setDelegate___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 

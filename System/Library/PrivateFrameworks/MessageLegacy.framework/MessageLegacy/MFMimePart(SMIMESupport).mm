@@ -7,14 +7,14 @@
 
 - (id)SMIMEError
 {
-  v1 = [*(a1 + *MEMORY[0x277D25040]) objectForKey:@"x-apple-smime-error"];
+  v1 = [*(self + *MEMORY[0x277D25040]) objectForKey:@"x-apple-smime-error"];
 
   return v1;
 }
 
 - (uint64_t)copySigners
 {
-  v1 = [*(a1 + *MEMORY[0x277D25040]) objectForKey:@"x-apple-smime-signers"];
+  v1 = [*(self + *MEMORY[0x277D25040]) objectForKey:@"x-apple-smime-signers"];
 
   return [v1 copy];
 }

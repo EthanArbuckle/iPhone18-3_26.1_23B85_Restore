@@ -17,7 +17,7 @@
   v12 = [v11 initWithFeatureIdentifier:*MEMORY[0x277CCC0A8] defaultsEnabledKey:@"WristTemperatureBasedProjectionsEnabled"];
   v17[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  v14 = [a1 initWithProfile:v8 userDefaults:v7 managedKeys:v13 debugIdentifier:@"HealthMenstrualCycles" loggingCategory:*MEMORY[0x277CCC2E8]];
+  v14 = [self initWithProfile:v8 userDefaults:v7 managedKeys:v13 debugIdentifier:@"HealthMenstrualCycles" loggingCategory:*MEMORY[0x277CCC2E8]];
 
   v15 = *MEMORY[0x277D85DE8];
   return v14;

@@ -1,40 +1,40 @@
 @interface CKCommSafetyAnalytics
-+ (int64_t)contentTypeForURL:(id)a3;
-+ (void)recordContextMenuButtonTappedWithContentType:(int64_t)a3 subContentType:(int64_t)a4 direction:(int64_t)a5 options:(int64_t)a6 isBlurred:(BOOL)a7 identifier:(id)a8;
-+ (void)recordObscuredViewRemovedWithIdentifier:(id)a3;
-+ (void)recordObscuredViewShownWithContentType:(int64_t)a3 subcontentType:(int64_t)a4 identifier:(id)a5;
-+ (void)recordWaysToGetHelpTappedWithOptions:(int64_t)a3;
++ (int64_t)contentTypeForURL:(id)l;
++ (void)recordContextMenuButtonTappedWithContentType:(int64_t)type subContentType:(int64_t)contentType direction:(int64_t)direction options:(int64_t)options isBlurred:(BOOL)blurred identifier:(id)identifier;
++ (void)recordObscuredViewRemovedWithIdentifier:(id)identifier;
++ (void)recordObscuredViewShownWithContentType:(int64_t)type subcontentType:(int64_t)subcontentType identifier:(id)identifier;
++ (void)recordWaysToGetHelpTappedWithOptions:(int64_t)options;
 @end
 
 @implementation CKCommSafetyAnalytics
 
-+ (void)recordObscuredViewShownWithContentType:(int64_t)a3 subcontentType:(int64_t)a4 identifier:(id)a5
++ (void)recordObscuredViewShownWithContentType:(int64_t)type subcontentType:(int64_t)subcontentType identifier:(id)identifier
 {
-  v7 = a5;
+  identifierCopy = identifier;
   if (getSCUIAnalyticsClass())
   {
     getSCUIAnalyticsClass();
     if (objc_opt_respondsToSelector())
     {
-      [getSCUIAnalyticsClass() obscuredViewShownWithContentType:a3 subcontentType:a4 identifier:v7];
+      [getSCUIAnalyticsClass() obscuredViewShownWithContentType:type subcontentType:subcontentType identifier:identifierCopy];
     }
   }
 }
 
-+ (void)recordObscuredViewRemovedWithIdentifier:(id)a3
++ (void)recordObscuredViewRemovedWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (getSCUIAnalyticsClass())
   {
     getSCUIAnalyticsClass();
     if (objc_opt_respondsToSelector())
     {
-      [getSCUIAnalyticsClass() obscuredViewRemovedWithIdentifier:v3];
+      [getSCUIAnalyticsClass() obscuredViewRemovedWithIdentifier:identifierCopy];
     }
   }
 }
 
-+ (void)recordWaysToGetHelpTappedWithOptions:(int64_t)a3
++ (void)recordWaysToGetHelpTappedWithOptions:(int64_t)options
 {
   if (getSCUIAnalyticsClass())
   {
@@ -43,28 +43,28 @@
     {
       SCUIAnalyticsClass = getSCUIAnalyticsClass();
 
-      [SCUIAnalyticsClass waysToGetHelpTappedWithOptions:a3];
+      [SCUIAnalyticsClass waysToGetHelpTappedWithOptions:options];
     }
   }
 }
 
-+ (void)recordContextMenuButtonTappedWithContentType:(int64_t)a3 subContentType:(int64_t)a4 direction:(int64_t)a5 options:(int64_t)a6 isBlurred:(BOOL)a7 identifier:(id)a8
++ (void)recordContextMenuButtonTappedWithContentType:(int64_t)type subContentType:(int64_t)contentType direction:(int64_t)direction options:(int64_t)options isBlurred:(BOOL)blurred identifier:(id)identifier
 {
-  v8 = a7;
-  v13 = a8;
+  blurredCopy = blurred;
+  identifierCopy = identifier;
   if (getSCUIAnalyticsClass())
   {
     getSCUIAnalyticsClass();
     if (objc_opt_respondsToSelector())
     {
-      [getSCUIAnalyticsClass() contextMenuButtonTappedWithContentType:a3 subContentType:a4 direction:a5 options:a6 isBlurred:v8 identifier:v13];
+      [getSCUIAnalyticsClass() contextMenuButtonTappedWithContentType:type subContentType:contentType direction:direction options:options isBlurred:blurredCopy identifier:identifierCopy];
     }
   }
 }
 
-+ (int64_t)contentTypeForURL:(id)a3
++ (int64_t)contentTypeForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (IMCommSafetyContentAttachmentTypeForURL() == 1)
   {
     v4 = 2;

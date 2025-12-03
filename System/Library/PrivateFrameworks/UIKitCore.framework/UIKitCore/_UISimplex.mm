@@ -1,42 +1,42 @@
 @interface _UISimplex
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UISimplex)initWithCoder:(id)a3;
-- (_UISimplex)initWithDimensions:(unint64_t)a3 pointCount:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4;
-- (void)_mutatePoints:(id)a3;
+- (_UISimplex)initWithCoder:(id)coder;
+- (_UISimplex)initWithDimensions:(unint64_t)dimensions pointCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint;
+- (void)_mutatePoints:(id)points;
 - (void)_recomputeMetadata;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISimplex
 
-- (_UISimplex)initWithDimensions:(unint64_t)a3 pointCount:(unint64_t)a4
+- (_UISimplex)initWithDimensions:(unint64_t)dimensions pointCount:(unint64_t)count
 {
   v19.receiver = self;
   v19.super_class = _UISimplex;
   v7 = [(_UISimplex *)&v19 init];
   if (v7)
   {
-    if (!a3)
+    if (!dimensions)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v7 file:@"_UIHyperregion.m" lineNumber:986 description:@"dimensions must be greater than zero"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"_UIHyperregion.m" lineNumber:986 description:@"dimensions must be greater than zero"];
     }
 
-    v7->__dimensions = a3;
-    v7->__pointCount = a4;
-    v7->__points = malloc_type_calloc(a4 * a3, 8uLL, 0x100004000313F17uLL);
-    v8 = malloc_type_calloc(a3 * a3, 8uLL, 0x100004000313F17uLL);
-    v9 = a3 - a4 + 1;
+    v7->__dimensions = dimensions;
+    v7->__pointCount = count;
+    v7->__points = malloc_type_calloc(count * dimensions, 8uLL, 0x100004000313F17uLL);
+    v8 = malloc_type_calloc(dimensions * dimensions, 8uLL, 0x100004000313F17uLL);
+    v9 = dimensions - count + 1;
     v7->__projection = v8;
     v7->__missingNormalCount = v9;
-    v7->__missingNormals = malloc_type_calloc(v9 * a3, 8uLL, 0x100004000313F17uLL);
-    v7->__facetNormals = malloc_type_calloc(v7->__pointCount * a3, 8uLL, 0x100004000313F17uLL);
+    v7->__missingNormals = malloc_type_calloc(v9 * dimensions, 8uLL, 0x100004000313F17uLL);
+    v7->__facetNormals = malloc_type_calloc(v7->__pointCount * dimensions, 8uLL, 0x100004000313F17uLL);
     v7->__facetNormalOffsets = malloc_type_calloc(v7->__pointCount, 8uLL, 0x100004000313F17uLL);
-    if (a4 >= 2)
+    if (count >= 2)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (v7->__pointCount)
@@ -44,7 +44,7 @@
         v11 = 0;
         do
         {
-          v12 = [[_UISimplex alloc] initWithDimensions:a3 pointCount:a4 - 1];
+          v12 = [[_UISimplex alloc] initWithDimensions:dimensions pointCount:count - 1];
           [(NSArray *)v10 addObject:v12];
 
           ++v11;
@@ -61,17 +61,17 @@
     v15 = ilaenv_NEWLAPACK();
     v7->__cggetriWorkspaceSize = v15 * v14;
     v7->__cggetriWorkspace = malloc_type_calloc(v15 * v14, 8uLL, 0x100004000313F17uLL);
-    if (a3 <= a4)
+    if (dimensions <= count)
     {
-      v16 = a4;
+      dimensionsCopy = count;
     }
 
     else
     {
-      v16 = a3;
+      dimensionsCopy = dimensions;
     }
 
-    v7->__temp = malloc_type_calloc(v16 * v16, 8uLL, 0x100004000313F17uLL);
+    v7->__temp = malloc_type_calloc(dimensionsCopy * dimensionsCopy, 8uLL, 0x100004000313F17uLL);
   }
 
   return v7;
@@ -202,18 +202,18 @@
   *&self->_clean |= 1u;
 }
 
-- (void)_mutatePoints:(id)a3
+- (void)_mutatePoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   [(_UISimplex *)self willChangeValueForKey:@"_points"];
-  v4[2](v4, self->__points);
+  pointsCopy[2](pointsCopy, self->__points);
 
   *&self->_clean &= ~1u;
 
   [(_UISimplex *)self didChangeValueForKey:@"_points"];
 }
 
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint
 {
   if ((*&self->_clean & 1) == 0)
   {
@@ -228,7 +228,7 @@
       dimensions = self->__dimensions;
       v9 = &self->__facetNormals[dimensions * v7];
       __C = 0.0;
-      vDSP_dotprD(v9, 1, a4, 1, &__C, dimensions);
+      vDSP_dotprD(v9, 1, toPoint, 1, &__C, dimensions);
       if (__C > self->__facetNormalOffsets[v7])
       {
         break;
@@ -247,12 +247,12 @@
 
         else
         {
-          vDSP_vsubD(self->__points, 1, a4, 1, a3, 1, v11);
+          vDSP_vsubD(self->__points, 1, toPoint, 1, point, 1, v11);
           cblas_dgemv_NEWLAPACK();
           points = self->__points;
           v13 = self->__dimensions;
 
-          vDSP_vaddD(a3, 1, points, 1, a3, 1, v13);
+          vDSP_vaddD(point, 1, points, 1, point, 1, v13);
         }
 
         return;
@@ -268,11 +268,11 @@
     do
     {
       v16 = [(NSArray *)self->__facets objectAtIndexedSubscript:v14];
-      [v16 _closestPoint:self->__temp toPoint:a4];
+      [v16 _closestPoint:self->__temp toPoint:toPoint];
       temp = self->__temp;
       v18 = self->__dimensions;
       __C = 0.0;
-      vDSP_distancesqD(a4, 1, temp, 1, &__C, v18);
+      vDSP_distancesqD(toPoint, 1, temp, 1, &__C, v18);
       v19 = sqrt(__C);
       if (v19 < v15)
       {
@@ -287,18 +287,18 @@
   }
 }
 
-- (_UISimplex)initWithCoder:(id)a3
+- (_UISimplex)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeIntegerForKey:@"_pointCount"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeIntegerForKey:@"_pointCount"];
   v12 = 0;
-  v7 = [v5 _ui_decodeVectorForKey:@"_points" returnedCount:&v12];
+  v7 = [coderCopy _ui_decodeVectorForKey:@"_points" returnedCount:&v12];
 
   v8 = v12;
   if (v12 % v6)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:1213 description:{@"Decoded pointCount (%lu) is of unexpected size", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:1213 description:{@"Decoded pointCount (%lu) is of unexpected size", v6}];
 
     v8 = v12;
   }
@@ -309,15 +309,15 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pointCount = self->__pointCount;
-  v5 = a3;
-  [v5 encodeInteger:pointCount forKey:@"_pointCount"];
-  [v5 _ui_encodeVector:self->__points count:self->__pointCount * self->__dimensions forKey:@"_points"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:pointCount forKey:@"_pointCount"];
+  [coderCopy _ui_encodeVector:self->__points count:self->__pointCount * self->__dimensions forKey:@"_points"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UISimplex alloc] initWithDimensions:[(_UISimplex *)self _dimensions] pointCount:[(_UISimplex *)self _pointCount]];
   v6[0] = MEMORY[0x1E69E9820];
@@ -329,15 +329,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UISimplex *)self _dimensions];
-    v8 = v6 == [v5 _dimensions] && (v7 = -[_UISimplex _pointCount](self, "_pointCount"), v7 == objc_msgSend(v5, "_pointCount")) && memcmp(-[_UISimplex _points](self, "_points"), objc_msgSend(v5, "_points"), 8 * -[_UISimplex _dimensions](self, "_dimensions") * -[_UISimplex _pointCount](self, "_pointCount")) == 0;
+    v5 = equalCopy;
+    _dimensions = [(_UISimplex *)self _dimensions];
+    v8 = _dimensions == [v5 _dimensions] && (v7 = -[_UISimplex _pointCount](self, "_pointCount"), v7 == objc_msgSend(v5, "_pointCount")) && memcmp(-[_UISimplex _points](self, "_points"), objc_msgSend(v5, "_points"), 8 * -[_UISimplex _dimensions](self, "_dimensions") * -[_UISimplex _pointCount](self, "_pointCount")) == 0;
   }
 
   else

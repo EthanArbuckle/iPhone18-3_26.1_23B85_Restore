@@ -1,38 +1,38 @@
 @interface BCStatusBarBackgroundController
-+ (id)backgroundControllerForViewController:(id)a3;
-+ (id)backgroundControllerForWindow:(id)a3;
-- (BCStatusBarBackgroundController)initWithWindow:(id)a3;
++ (id)backgroundControllerForViewController:(id)controller;
++ (id)backgroundControllerForWindow:(id)window;
+- (BCStatusBarBackgroundController)initWithWindow:(id)window;
 - (CGRect)_statusBarFrame;
 - (UIView)cardStackBackgroundView;
 - (UIWindow)window;
 - (double)opacity;
 - (id)windowScene;
 - (void)_updateParentViewOfCardStackBackgroundView;
-- (void)setOpacity:(double)a3 animated:(BOOL)a4;
-- (void)updateParentViewOfCardStackBackgroundViewWithParentViewController:(id)a3;
+- (void)setOpacity:(double)opacity animated:(BOOL)animated;
+- (void)updateParentViewOfCardStackBackgroundViewWithParentViewController:(id)controller;
 @end
 
 @implementation BCStatusBarBackgroundController
 
 - (id)windowScene
 {
-  v2 = [(BCStatusBarBackgroundController *)self window];
-  v3 = [v2 windowScene];
+  window = [(BCStatusBarBackgroundController *)self window];
+  windowScene = [window windowScene];
 
-  return v3;
+  return windowScene;
 }
 
 - (CGRect)_statusBarFrame
 {
-  v3 = [(BCStatusBarBackgroundController *)self windowScene];
-  v4 = [v3 statusBarManager];
-  [v4 statusBarFrame];
+  windowScene = [(BCStatusBarBackgroundController *)self windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
 
-  v11 = [(BCStatusBarBackgroundController *)self window];
-  [v11 safeAreaInsets];
+  window = [(BCStatusBarBackgroundController *)self window];
+  [window safeAreaInsets];
   v13 = v12;
 
   v14 = v6;
@@ -48,10 +48,10 @@
 
 - (void)_updateParentViewOfCardStackBackgroundView
 {
-  v3 = [(BCStatusBarBackgroundController *)self window];
-  v5 = [v3 rootViewController];
+  window = [(BCStatusBarBackgroundController *)self window];
+  rootViewController = [window rootViewController];
 
-  v4 = [v5 bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
+  v4 = [rootViewController bc_firstVisibleChildViewControllerOfClass:objc_opt_class() includePresented:1];
   [(BCStatusBarBackgroundController *)self updateParentViewOfCardStackBackgroundViewWithParentViewController:v4];
 }
 
@@ -77,32 +77,32 @@
   return cardStackBackgroundView;
 }
 
-+ (id)backgroundControllerForViewController:(id)a3
++ (id)backgroundControllerForViewController:(id)controller
 {
-  v3 = [a3 im_ancestorConformingToProtocol:&OBJC_PROTOCOL___BCStatusBarBackgroundControllerProviding];
-  v4 = [v3 statusBarBackgroundController];
+  v3 = [controller im_ancestorConformingToProtocol:&OBJC_PROTOCOL___BCStatusBarBackgroundControllerProviding];
+  statusBarBackgroundController = [v3 statusBarBackgroundController];
 
-  return v4;
+  return statusBarBackgroundController;
 }
 
-+ (id)backgroundControllerForWindow:(id)a3
++ (id)backgroundControllerForWindow:(id)window
 {
-  v3 = [a3 im_ancestorConformingToProtocol:&OBJC_PROTOCOL___BCStatusBarBackgroundControllerProviding];
-  v4 = [v3 statusBarBackgroundController];
+  v3 = [window im_ancestorConformingToProtocol:&OBJC_PROTOCOL___BCStatusBarBackgroundControllerProviding];
+  statusBarBackgroundController = [v3 statusBarBackgroundController];
 
-  return v4;
+  return statusBarBackgroundController;
 }
 
-- (BCStatusBarBackgroundController)initWithWindow:(id)a3
+- (BCStatusBarBackgroundController)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = BCStatusBarBackgroundController;
   v5 = [(BCStatusBarBackgroundController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_window, v4);
+    objc_storeWeak(&v5->_window, windowCopy);
   }
 
   return v6;
@@ -110,28 +110,28 @@
 
 - (double)opacity
 {
-  v2 = [(BCStatusBarBackgroundController *)self effectiveBackgroundView];
-  [v2 alpha];
+  effectiveBackgroundView = [(BCStatusBarBackgroundController *)self effectiveBackgroundView];
+  [effectiveBackgroundView alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOpacity:(double)a3 animated:(BOOL)a4
+- (void)setOpacity:(double)opacity animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(BCStatusBarBackgroundController *)self _updateParentViewOfCardStackBackgroundView];
   [(BCStatusBarBackgroundController *)self effectiveBackgroundView];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_B89B4;
   v10[3] = &unk_2C8DD0;
-  v7 = v13 = a3;
+  v7 = v13 = opacity;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v8 = objc_retainBlock(v10);
   v9 = v8;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v8 animations:0.2];
   }
@@ -142,17 +142,17 @@
   }
 }
 
-- (void)updateParentViewOfCardStackBackgroundViewWithParentViewController:(id)a3
+- (void)updateParentViewOfCardStackBackgroundViewWithParentViewController:(id)controller
 {
-  v8 = a3;
-  v4 = [(BCStatusBarBackgroundController *)self cardStackBackgroundView];
-  v5 = [v4 superview];
-  v6 = [v8 view];
+  controllerCopy = controller;
+  cardStackBackgroundView = [(BCStatusBarBackgroundController *)self cardStackBackgroundView];
+  superview = [cardStackBackgroundView superview];
+  view = [controllerCopy view];
 
-  if (v5 != v6)
+  if (superview != view)
   {
-    v7 = [v8 view];
-    [v7 addSubview:v4];
+    view2 = [controllerCopy view];
+    [view2 addSubview:cardStackBackgroundView];
   }
 }
 

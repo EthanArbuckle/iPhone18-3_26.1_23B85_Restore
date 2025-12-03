@@ -1,23 +1,23 @@
 @interface TSCHSemanticTagAndPropertyPair
-+ (id)pairWithSemanticTag:(id)a3 property:(int)a4;
-+ (id)semanticTagToSemanticUsagesMapForSemanticUsages:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSCHSemanticTagAndPropertyPair)initWithSemanticTag:(id)a3 property:(int)a4;
++ (id)pairWithSemanticTag:(id)tag property:(int)property;
++ (id)semanticTagToSemanticUsagesMapForSemanticUsages:(id)usages;
+- (BOOL)isEqual:(id)equal;
+- (TSCHSemanticTagAndPropertyPair)initWithSemanticTag:(id)tag property:(int)property;
 - (id)description;
 @end
 
 @implementation TSCHSemanticTagAndPropertyPair
 
-+ (id)semanticTagToSemanticUsagesMapForSemanticUsages:(id)a3
++ (id)semanticTagToSemanticUsagesMapForSemanticUsages:(id)usages
 {
   v64 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  usagesCopy = usages;
   v8 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v4, v5, v6, v7);
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v3;
+  obj = usagesCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, v10, v11, v12, &v59, v63, 16);
   if (v13)
   {
@@ -61,42 +61,42 @@
   return v56;
 }
 
-+ (id)pairWithSemanticTag:(id)a3 property:(int)a4
++ (id)pairWithSemanticTag:(id)tag property:(int)property
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithSemanticTag_property_(v7, v8, v9, v10, v11, v6, v4);
+  v4 = *&property;
+  tagCopy = tag;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithSemanticTag_property_(v7, v8, v9, v10, v11, tagCopy, v4);
 
   return v12;
 }
 
-- (TSCHSemanticTagAndPropertyPair)initWithSemanticTag:(id)a3 property:(int)a4
+- (TSCHSemanticTagAndPropertyPair)initWithSemanticTag:(id)tag property:(int)property
 {
-  v6 = a3;
+  tagCopy = tag;
   v15.receiver = self;
   v15.super_class = TSCHSemanticTagAndPropertyPair;
   v8 = [(TSCHSemanticTagAndPropertyPair *)&v15 init];
   if (v8)
   {
-    v12 = objc_msgSend_copy(v6, v7, v9, v10, v11);
+    v12 = objc_msgSend_copy(tagCopy, v7, v9, v10, v11);
     semanticTag = v8->_semanticTag;
     v8->_semanticTag = v12;
 
-    v8->_property = a4;
+    v8->_property = property;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

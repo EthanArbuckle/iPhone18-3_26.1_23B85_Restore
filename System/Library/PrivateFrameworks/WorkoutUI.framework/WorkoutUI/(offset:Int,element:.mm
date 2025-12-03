@@ -27,7 +27,7 @@
 - (uint64_t)String)
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(a3);
-  (*(*(v5 - 8) + 32))(a2, a1, v5);
+  (*(*(v5 - 8) + 32))(a2, self, v5);
   return a2;
 }
 
@@ -49,12 +49,12 @@
 
 - (uint64_t)HKWorkoutMetricType)
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(a2);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -81,12 +81,12 @@
 
 - (uint64_t)PowerZonesBarChartElement)
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(a2);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -94,12 +94,12 @@
 
 - (uint64_t)MetricValue)
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(a2);
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

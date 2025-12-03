@@ -9,22 +9,22 @@
 
 - (id)appendSource:()RTExtensions
 {
-  if ((a3 & ~[a1 source]) != 0)
+  if ((a3 & ~[self source]) != 0)
   {
-    [a1 setSource:{(objc_msgSend(a1, "source") | a3) & 0xFFFFFFFFFFFFFFFELL}];
+    [self setSource:{(objc_msgSend(self, "source") | a3) & 0xFFFFFFFFFFFFFFFELL}];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)removeSource:()RTExtensions
 {
-  if (([a1 source] & a3) != 0)
+  if (([self source] & a3) != 0)
   {
-    [a1 setSource:{objc_msgSend(a1, "source") & ~a3}];
+    [self setSource:{objc_msgSend(self, "source") & ~a3}];
   }
 
-  return a1;
+  return self;
 }
 
 - (id)mergeWithMapItem:()RTExtensions preservingProperties:
@@ -33,7 +33,7 @@
   v7 = a4;
   if ([v7 count])
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
     outCount = 0;
     v9 = objc_opt_class();
     v10 = class_copyPropertyList(v9, &outCount);
@@ -105,15 +105,15 @@
             }
 
             v24 = *(*(&v50 + 1) + 8 * i);
-            v25 = [v24 geoMapItemHandle];
-            if (v25)
+            geoMapItemHandle = [v24 geoMapItemHandle];
+            if (geoMapItemHandle)
             {
-              v26 = v25;
-              v27 = [v24 mapItemPlaceType];
+              v26 = geoMapItemHandle;
+              mapItemPlaceType = [v24 mapItemPlaceType];
 
-              if (v27 == 1)
+              if (mapItemPlaceType == 1)
               {
-                v12 = v24;
+                firstObject = v24;
 
                 v17 = v43;
                 goto LABEL_33;
@@ -153,9 +153,9 @@
             }
 
             v34 = *(*(&v46 + 1) + 8 * j);
-            v35 = [v34 location];
+            location = [v34 location];
             v45 = 0;
-            [v11 distanceFromLocation:v10 toLocation:v35 error:&v45];
+            [v11 distanceFromLocation:v10 toLocation:location error:&v45];
             v37 = v36;
             v38 = v45;
 
@@ -167,7 +167,7 @@
                 *v42 = v38;
               }
 
-              v12 = 0;
+              firstObject = 0;
               goto LABEL_32;
             }
 
@@ -196,14 +196,14 @@
       }
 
       v30 = v30;
-      v12 = v30;
+      firstObject = v30;
 LABEL_32:
       v17 = v43;
     }
 
     else
     {
-      v12 = [v17 firstObject];
+      firstObject = [v17 firstObject];
     }
 
 LABEL_33:
@@ -211,10 +211,10 @@ LABEL_33:
 
   else
   {
-    v12 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
-  return v12;
+  return firstObject;
 }
 
 @end

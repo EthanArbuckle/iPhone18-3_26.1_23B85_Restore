@@ -1,9 +1,9 @@
 @interface NRPairedDevice
-- (NRPairedDevice)initWithCoder:(id)a3;
-- (NRPairedDevice)initWithDeviceIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NRPairedDevice)initWithCoder:(id)coder;
+- (NRPairedDevice)initWithDeviceIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRPairedDevice
@@ -11,16 +11,16 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCAB68]);
-  v4 = [(NRPairedDevice *)self nrDeviceIdentifier];
-  v5 = [v4 nrDeviceIdentifier];
-  v6 = [v3 initWithFormat:@"NRPairedDevice[%@", v5];
+  nrDeviceIdentifier = [(NRPairedDevice *)self nrDeviceIdentifier];
+  v4NrDeviceIdentifier = [nrDeviceIdentifier nrDeviceIdentifier];
+  v6 = [v3 initWithFormat:@"NRPairedDevice[%@", v4NrDeviceIdentifier];
 
-  v7 = [(NRPairedDevice *)self device];
+  device = [(NRPairedDevice *)self device];
 
-  if (v7)
+  if (device)
   {
-    v8 = [(NRPairedDevice *)self device];
-    [v6 appendFormat:@", %@", v8];
+    device2 = [(NRPairedDevice *)self device];
+    [v6 appendFormat:@", %@", device2];
   }
 
   [v6 appendString:@"]"];
@@ -28,49 +28,49 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NRPairedDevice *)self device];
-  [v4 encodeObject:v5 forKey:@"device"];
+  coderCopy = coder;
+  device = [(NRPairedDevice *)self device];
+  [coderCopy encodeObject:device forKey:@"device"];
 
-  v6 = [(NRPairedDevice *)self nrDeviceIdentifier];
-  [v4 encodeObject:v6 forKey:@"nrDeviceIdentifier"];
+  nrDeviceIdentifier = [(NRPairedDevice *)self nrDeviceIdentifier];
+  [coderCopy encodeObject:nrDeviceIdentifier forKey:@"nrDeviceIdentifier"];
 }
 
-- (NRPairedDevice)initWithCoder:(id)a3
+- (NRPairedDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nrDeviceIdentifier"];
   v6 = [(NRPairedDevice *)self initWithDeviceIdentifier:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"device"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"device"];
     [(NRPairedDevice *)v6 setDevice:v7];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NRPairedDevice *)self nrDeviceIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  nrDeviceIdentifier = [(NRPairedDevice *)self nrDeviceIdentifier];
+  v6 = [nrDeviceIdentifier copy];
   v7 = [v4 initWithDeviceIdentifier:v6];
 
-  v8 = [(NRPairedDevice *)self device];
-  v9 = [v8 copy];
+  device = [(NRPairedDevice *)self device];
+  v9 = [device copy];
   [v7 setDevice:v9];
 
   return v7;
 }
 
-- (NRPairedDevice)initWithDeviceIdentifier:(id)a3
+- (NRPairedDevice)initWithDeviceIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v34.receiver = self;
     v34.super_class = NRPairedDevice;
@@ -78,9 +78,9 @@
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_nrDeviceIdentifier, a3);
+      objc_storeStrong(&v6->_nrDeviceIdentifier, identifier);
       self = v7;
-      v8 = self;
+      selfCopy = self;
       goto LABEL_4;
     }
 
@@ -126,7 +126,7 @@ LABEL_13:
 
     if (!v14)
     {
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_4;
     }
   }
@@ -134,11 +134,11 @@ LABEL_13:
   v15 = nrCopyLogObj_1529();
   _NRLogWithArgs(v15, 17, "%s called with null nrDeviceIdentifier", v16, v17, v18, v19, v20, "[NRPairedDevice initWithDeviceIdentifier:]");
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_4:
 
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 @end

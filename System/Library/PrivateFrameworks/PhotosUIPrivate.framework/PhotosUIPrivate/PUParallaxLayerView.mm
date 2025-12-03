@@ -1,27 +1,27 @@
 @interface PUParallaxLayerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (PFParallaxLayer)parallaxLayer;
 - (PUParallaxLayerLayoutInfo)currentLayoutInfo;
 - (id)primaryContentView;
-- (void)_updateContentPortalViewWithLayoutInfo:(id)a3;
+- (void)_updateContentPortalViewWithLayoutInfo:(id)info;
 - (void)updatePortalViewGeometryAndEffects;
 @end
 
 @implementation PUParallaxLayerView
 
-- (void)_updateContentPortalViewWithLayoutInfo:(id)a3
+- (void)_updateContentPortalViewWithLayoutInfo:(id)info
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(PUParallaxLayerView *)self _shouldUpdatePortalViewWithLayoutInfo:v4])
+  infoCopy = info;
+  if ([(PUParallaxLayerView *)self _shouldUpdatePortalViewWithLayoutInfo:infoCopy])
   {
-    [v4 visibilityAmount];
+    [infoCopy visibilityAmount];
     v5 = PXFloatApproximatelyEqualToFloat();
-    v6 = [(PUParallaxLayerView *)self contentPortalView];
-    v7 = v6;
+    contentPortalView = [(PUParallaxLayerView *)self contentPortalView];
+    v7 = contentPortalView;
     if (v5)
     {
-      [v6 removeFromSuperview];
+      [contentPortalView removeFromSuperview];
 
       [(PUParallaxLayerView *)self setContentPortalView:0];
     }
@@ -31,14 +31,14 @@
 
       if (!v7)
       {
-        v8 = [(PUParallaxLayerView *)self primaryContentView];
-        v9 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:v8];
+        primaryContentView = [(PUParallaxLayerView *)self primaryContentView];
+        v9 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:primaryContentView];
         [v9 setHidesSourceView:1];
-        v10 = [v8 layer];
-        [v10 zPosition];
+        layer = [primaryContentView layer];
+        [layer zPosition];
         v12 = v11 + 1.0;
-        v13 = [v9 portalLayer];
-        [v13 setZPosition:v12];
+        portalLayer = [v9 portalLayer];
+        [portalLayer setZPosition:v12];
 
         [(PUParallaxLayerView *)self addSubview:v9];
         [(PUParallaxLayerView *)self setContentPortalView:v9];
@@ -52,49 +52,49 @@
       [v16 setName:@"colorMonochromeFilter"];
       [v16 setValue:&unk_1F2B7D9E8 forKey:v15];
       [v16 setValue:&unk_1F2B7D9E8 forKey:*MEMORY[0x1E69799C8]];
-      v17 = [MEMORY[0x1E69DC888] whiteColor];
-      v18 = [v17 CGColor];
-      [v16 setValue:v18 forKey:*MEMORY[0x1E6979AA0]];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      cGColor = [whiteColor CGColor];
+      [v16 setValue:cGColor forKey:*MEMORY[0x1E6979AA0]];
 
       v22[0] = v14;
       v22[1] = v16;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-      v20 = [(PUParallaxLayerView *)self contentPortalView];
-      v21 = [v20 portalLayer];
-      [v21 setFilters:v19];
+      contentPortalView2 = [(PUParallaxLayerView *)self contentPortalView];
+      portalLayer2 = [contentPortalView2 portalLayer];
+      [portalLayer2 setFilters:v19];
     }
   }
 }
 
 - (void)updatePortalViewGeometryAndEffects
 {
-  v3 = [(PUParallaxLayerView *)self currentLayoutInfo];
-  v4 = [(PUParallaxLayerView *)self _shouldUpdatePortalViewWithLayoutInfo:v3];
+  currentLayoutInfo = [(PUParallaxLayerView *)self currentLayoutInfo];
+  v4 = [(PUParallaxLayerView *)self _shouldUpdatePortalViewWithLayoutInfo:currentLayoutInfo];
 
   if (v4)
   {
-    v5 = [(PUParallaxLayerView *)self primaryContentView];
-    [v5 frame];
+    primaryContentView = [(PUParallaxLayerView *)self primaryContentView];
+    [primaryContentView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(PUParallaxLayerView *)self contentPortalView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    contentPortalView = [(PUParallaxLayerView *)self contentPortalView];
+    [contentPortalView setFrame:{v7, v9, v11, v13}];
 
-    v22 = [(PUParallaxLayerView *)self currentLayoutInfo];
-    v15 = [(_UIPortalView *)self->_contentPortalView portalLayer];
+    currentLayoutInfo2 = [(PUParallaxLayerView *)self currentLayoutInfo];
+    portalLayer = [(_UIPortalView *)self->_contentPortalView portalLayer];
     v16 = MEMORY[0x1E696AD98];
-    [v22 visibilityAmount];
+    [currentLayoutInfo2 visibilityAmount];
     v18 = [v16 numberWithDouble:v17 + -1.0];
-    [v15 setValue:v18 forKeyPath:@"filters.colorBrightnessFilter.inputAmount"];
+    [portalLayer setValue:v18 forKeyPath:@"filters.colorBrightnessFilter.inputAmount"];
 
-    v19 = [(_UIPortalView *)self->_contentPortalView portalLayer];
+    portalLayer2 = [(_UIPortalView *)self->_contentPortalView portalLayer];
     v20 = MEMORY[0x1E696AD98];
-    [v22 visibilityAmount];
+    [currentLayoutInfo2 visibilityAmount];
     PXClamp();
     v21 = [v20 numberWithDouble:?];
-    [v19 setValue:v21 forKeyPath:@"filters.colorMonochromeFilter.inputAmount"];
+    [portalLayer2 setValue:v21 forKeyPath:@"filters.colorMonochromeFilter.inputAmount"];
   }
 }
 
@@ -112,10 +112,10 @@
   return [(PUParallaxLayerView *)v4 supportsPortalViewEffects];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.colorMatrix.inputColorMatrix"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.colorMatrix.inputColorMatrix"))
   {
     v5 = 1;
   }
@@ -124,7 +124,7 @@
   {
     v7.receiver = self;
     v7.super_class = PUParallaxLayerView;
-    v5 = [(PUParallaxLayerView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PUParallaxLayerView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

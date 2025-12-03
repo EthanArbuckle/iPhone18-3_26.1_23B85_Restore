@@ -124,7 +124,7 @@ LABEL_4:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  result = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  result = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (result)
   {
     v6 = result;
@@ -136,7 +136,7 @@ LABEL_4:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         if (*(*(&v9 + 1) + 8 * v8) == a3)
@@ -148,7 +148,7 @@ LABEL_4:
       }
 
       while (v6 != v8);
-      result = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      result = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
       v6 = result;
       if (result)
       {
@@ -164,9 +164,9 @@ LABEL_4:
 
 - (uint64_t)tsu_sortedArray
 {
-  v1 = [a1 allObjects];
+  allObjects = [self allObjects];
 
-  return [v1 sortedArrayUsingSelector:sel_compare_];
+  return [allObjects sortedArrayUsingSelector:sel_compare_];
 }
 
 - (id)tsu_setByMappingObjectsUsingBlock:()TSUAdditions
@@ -179,12 +179,12 @@ LABEL_4:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v13 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(a1, "count")}];
+  v13 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(self, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [self countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -195,7 +195,7 @@ LABEL_4:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         v10 = (*(a3 + 16))(a3, *(*(&v14 + 1) + 8 * i));
@@ -212,7 +212,7 @@ LABEL_4:
         }
       }
 
-      v7 = [a1 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [self countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -228,7 +228,7 @@ LABEL_4:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [a1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v2 = [self countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
     v3 = v2;
@@ -240,7 +240,7 @@ LABEL_4:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -252,7 +252,7 @@ LABEL_4:
       }
 
       while (v3 != v5);
-      v3 = [a1 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [self countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -267,19 +267,19 @@ LABEL_4:
 
 - (uint64_t)tsu_onlyObject
 {
-  if ([a1 count] >= 2)
+  if ([self count] >= 2)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSSet(TSUAdditions) tsu_onlyObject]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/NSSetAdditions.m"], 117, 0, "As this method returns the only object in the set, it only makes sense if the set has at most one object.");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  return [a1 anyObject];
+  return [self anyObject];
 }
 
 - (uint64_t)tsu_setByIntersectingSet:()TSUAdditions
 {
-  v4 = [MEMORY[0x277CBEB58] setWithSet:a1];
+  v4 = [MEMORY[0x277CBEB58] setWithSet:self];
   [v4 intersectSet:a3];
   v5 = objc_opt_class();
 
@@ -288,7 +288,7 @@ LABEL_4:
 
 - (uint64_t)tsu_setBySubtractingSet:()TSUAdditions
 {
-  v4 = [MEMORY[0x277CBEB58] setWithSet:a1];
+  v4 = [MEMORY[0x277CBEB58] setWithSet:self];
   [v4 minusSet:a3];
   v5 = objc_opt_class();
 

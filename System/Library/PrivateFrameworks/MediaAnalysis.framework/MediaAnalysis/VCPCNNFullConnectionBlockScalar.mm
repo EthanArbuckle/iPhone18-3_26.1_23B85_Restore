@@ -26,13 +26,13 @@
   }
 
   v9 = [(NSMutableArray *)self->super.super._outputSize objectAtIndexedSubscript:0];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  v11 = [(VCPCNNData *)self->super.super._output data];
+  data = [(VCPCNNData *)self->super.super._output data];
   v12 = objc_loadWeakRetained(&self->super.super._input);
-  v13 = [v12 data];
+  data2 = [v12 data];
 
-  if (v10 >= 1)
+  if (intValue >= 1)
   {
     v14 = 0;
     weight = self->super._weight;
@@ -40,14 +40,14 @@
     neuronType = self->super._neuronType;
     do
     {
-      v11[v14] = 0.0;
+      data[v14] = 0.0;
       v18 = 0.0;
       if (v4 >= 1)
       {
         for (i = 0; i != v4; ++i)
         {
-          v18 = v18 + (*(v13 + i * 4) * weight[i]);
-          v11[v14] = v18;
+          v18 = v18 + (*(data2 + i * 4) * weight[i]);
+          data[v14] = v18;
         }
       }
 
@@ -58,11 +58,11 @@
         v20 = v21;
       }
 
-      v11[v14++] = v20;
+      data[v14++] = v20;
       weight += v4;
     }
 
-    while (v14 != v10);
+    while (v14 != intValue);
   }
 
   return 0;

@@ -1,37 +1,37 @@
 @interface IPFeatureTextMessageScanner
-- (double)confidenceForEvent:(id)a3 baseConfidence:(double)a4;
-- (double)experimentalConfidenceForEvent:(id)a3 experimentalBaseConfidence:(double)a4;
+- (double)confidenceForEvent:(id)event baseConfidence:(double)confidence;
+- (double)experimentalConfidenceForEvent:(id)event experimentalBaseConfidence:(double)confidence;
 - (id)commonComponentsForConfidence;
-- (id)dataDetectorsFeaturesForMessageUnit:(id)a3 context:(id)a4;
-- (id)eventSpecificComponentsForConfidence:(id)a3;
-- (id)keywordFeaturesForMessageUnit:(id)a3;
-- (id)processScanOfMainMessageUnit:(id)a3 contextMessageUnits:(id)a4;
-- (id)sentenceFeaturesForMessageUnit:(id)a3;
-- (unint64_t)mainSentencePolarityFrom:(id)a3;
-- (unint64_t)mainSentencePolarityFromMessageUnit:(id)a3 index:(unint64_t)a4;
-- (void)confidenceForEvents:(id)a3;
-- (void)doSynchronousScanWithCompletionHandler:(id)a3;
-- (void)experimentalConfidenceForEvents:(id)a3;
+- (id)dataDetectorsFeaturesForMessageUnit:(id)unit context:(id)context;
+- (id)eventSpecificComponentsForConfidence:(id)confidence;
+- (id)keywordFeaturesForMessageUnit:(id)unit;
+- (id)processScanOfMainMessageUnit:(id)unit contextMessageUnits:(id)units;
+- (id)sentenceFeaturesForMessageUnit:(id)unit;
+- (unint64_t)mainSentencePolarityFrom:(id)from;
+- (unint64_t)mainSentencePolarityFromMessageUnit:(id)unit index:(unint64_t)index;
+- (void)confidenceForEvents:(id)events;
+- (void)doSynchronousScanWithCompletionHandler:(id)handler;
+- (void)experimentalConfidenceForEvents:(id)events;
 - (void)resetScanState;
-- (void)scanEventsInMessageUnits:(id)a3 contextMessageUnits:(id)a4 synchronously:(BOOL)a5 completionHandler:(id)a6;
+- (void)scanEventsInMessageUnits:(id)units contextMessageUnits:(id)messageUnits synchronously:(BOOL)synchronously completionHandler:(id)handler;
 @end
 
 @implementation IPFeatureTextMessageScanner
 
-- (void)scanEventsInMessageUnits:(id)a3 contextMessageUnits:(id)a4 synchronously:(BOOL)a5 completionHandler:(id)a6
+- (void)scanEventsInMessageUnits:(id)units contextMessageUnits:(id)messageUnits synchronously:(BOOL)synchronously completionHandler:(id)handler
 {
-  v7 = a5;
+  synchronouslyCopy = synchronously;
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
-  [(IPFeatureTextMessageScanner *)v13 resetScanState];
-  objc_sync_exit(v13);
+  unitsCopy = units;
+  messageUnitsCopy = messageUnits;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IPFeatureTextMessageScanner *)selfCopy resetScanState];
+  objc_sync_exit(selfCopy);
 
-  [(IPFeatureScanner *)v13 setBodyMessageUnits:v10];
-  [(IPFeatureTextMessageScanner *)v13 setContextMessageUnits:v11];
+  [(IPFeatureScanner *)selfCopy setBodyMessageUnits:unitsCopy];
+  [(IPFeatureTextMessageScanner *)selfCopy setContextMessageUnits:messageUnitsCopy];
   if (IPDebuggingModeEnabled_once != -1)
   {
     [IPFeatureScanner isEventProposalOrConfirmationFromFeatures:fromFeatureAtIndex:messageUnit:eventIsTenseDependent:extractedFromSubject:extractedPolarity:polarityInfluencedByIpsosPlistRef:];
@@ -49,9 +49,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [v10 firstObject];
+      firstObject = [unitsCopy firstObject];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v16;
+      *(&buf + 4) = firstObject;
       _os_log_impl(&dword_2485E4000, v15, OS_LOG_TYPE_INFO, "Start with message units: %@ #FeatureManager", &buf, 0xCu);
     }
 
@@ -73,23 +73,23 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(IPFeatureTextMessageScanner *)v13 contextMessageUnits];
-      v20 = [v19 count];
+      contextMessageUnits = [(IPFeatureTextMessageScanner *)selfCopy contextMessageUnits];
+      v20 = [contextMessageUnits count];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v20;
       _os_log_impl(&dword_2485E4000, v18, OS_LOG_TYPE_INFO, "Context: %lu message units #FeatureManager", &buf, 0xCu);
     }
   }
 
-  v21 = [v10 firstObject];
-  v22 = [v21 text];
-  v23 = [v22 length] == 0;
+  firstObject2 = [unitsCopy firstObject];
+  text = [firstObject2 text];
+  v23 = [text length] == 0;
 
   if (v23)
   {
-    [(IPFeatureScanner *)v13 setResultType:0];
-    v27 = [(IPFeatureScanner *)v13 resultType];
-    v12[2](v12, MEMORY[0x277CBEBF8], v27);
+    [(IPFeatureScanner *)selfCopy setResultType:0];
+    resultType = [(IPFeatureScanner *)selfCopy resultType];
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], resultType);
   }
 
   else
@@ -99,19 +99,19 @@
     v34 = 0x3032000000;
     v35 = __Block_byref_object_copy_;
     v36 = __Block_byref_object_dispose_;
-    v24 = [v10 firstObject];
-    v37 = [v24 originalMessage];
+    firstObject3 = [unitsCopy firstObject];
+    originalMessage = [firstObject3 originalMessage];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageUnits_synchronously_completionHandler___block_invoke;
     v30[3] = &unk_278F22DD0;
-    v30[4] = v13;
-    v31 = v12;
+    v30[4] = selfCopy;
+    v31 = handlerCopy;
     p_buf = &buf;
     v25 = MEMORY[0x24C1D4200](v30);
     v26 = v25;
-    if (v7)
+    if (synchronouslyCopy)
     {
       (*(v25 + 16))(v25);
     }
@@ -140,12 +140,12 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
   *(v3 + 40) = 0;
 }
 
-- (void)doSynchronousScanWithCompletionHandler:(id)a3
+- (void)doSynchronousScanWithCompletionHandler:(id)handler
 {
   v69 = *MEMORY[0x277D85DE8];
-  v66 = a3;
-  v4 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-  v5 = [v4 count];
+  handlerCopy = handler;
+  contextMessageUnits = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+  v5 = [contextMessageUnits count];
 
   if (v5 >= 1)
   {
@@ -153,17 +153,17 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     v7 = v5 & 0x7FFFFFFF;
     do
     {
-      v8 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-      v9 = [v8 objectAtIndexedSubscript:v6];
+      contextMessageUnits2 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+      v9 = [contextMessageUnits2 objectAtIndexedSubscript:v6];
 
-      v10 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-      v11 = [v10 subarrayWithRange:{0, v6}];
+      contextMessageUnits3 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+      v11 = [contextMessageUnits3 subarrayWithRange:{0, v6}];
 
       v12 = [(IPFeatureTextMessageScanner *)self processScanOfMainMessageUnit:v9 contextMessageUnits:v11];
       if ([v12 count])
       {
-        v13 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
-        [v13 addObject:v12];
+        detectedEventsInContext = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
+        [detectedEventsInContext addObject:v12];
       }
 
       ++v6;
@@ -172,10 +172,10 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     while (v7 != v6);
   }
 
-  v14 = [(IPFeatureScanner *)self bodyMessageUnits];
-  v15 = [v14 firstObject];
-  v16 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-  v17 = [(IPFeatureTextMessageScanner *)self processScanOfMainMessageUnit:v15 contextMessageUnits:v16];
+  bodyMessageUnits = [(IPFeatureScanner *)self bodyMessageUnits];
+  firstObject = [bodyMessageUnits firstObject];
+  contextMessageUnits4 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+  v17 = [(IPFeatureTextMessageScanner *)self processScanOfMainMessageUnit:firstObject contextMessageUnits:contextMessageUnits4];
   v18 = [v17 mutableCopy];
   [(IPFeatureScanner *)self setDetectedEvents:v18];
 
@@ -189,9 +189,9 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = v19;
-    v21 = [(IPFeatureScanner *)self detectedEvents];
+    detectedEvents = [(IPFeatureScanner *)self detectedEvents];
     *buf = 134217984;
-    v68 = [v21 count];
+    v68 = [detectedEvents count];
     _os_log_impl(&dword_2485E4000, v20, OS_LOG_TYPE_INFO, "%lu detected events #FeatureManager", buf, 0xCu);
   }
 
@@ -212,16 +212,16 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = v22;
-      v24 = [(IPFeatureScanner *)self detectedEvents];
-      v25 = [v24 valueForKey:@"ipsos_betterDescription"];
+      detectedEvents2 = [(IPFeatureScanner *)self detectedEvents];
+      v25 = [detectedEvents2 valueForKey:@"ipsos_betterDescription"];
       *buf = 138412290;
       v68 = v25;
       _os_log_impl(&dword_2485E4000, v23, OS_LOG_TYPE_INFO, "Detected Events: %@ #FeatureManager", buf, 0xCu);
     }
   }
 
-  v26 = [(IPFeatureScanner *)self detectedEvents];
-  v27 = [(IPFeatureScanner *)self stitchedEventsFromEvents:v26];
+  detectedEvents3 = [(IPFeatureScanner *)self detectedEvents];
+  v27 = [(IPFeatureScanner *)self stitchedEventsFromEvents:detectedEvents3];
   [(IPFeatureScanner *)self setStitchedEvents:v27];
 
   if (IPDebuggingModeEnabled_once != -1)
@@ -241,18 +241,18 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       v29 = v28;
-      v30 = [(IPFeatureScanner *)self stitchedEvents];
-      v31 = [v30 valueForKey:@"ipsos_betterDescription"];
+      stitchedEvents = [(IPFeatureScanner *)self stitchedEvents];
+      v31 = [stitchedEvents valueForKey:@"ipsos_betterDescription"];
       *buf = 138412290;
       v68 = v31;
       _os_log_impl(&dword_2485E4000, v29, OS_LOG_TYPE_INFO, "Stitched Events: %@ #FeatureManager", buf, 0xCu);
     }
   }
 
-  v32 = [(IPFeatureScanner *)self stitchedEvents];
-  v33 = [(IPFeatureScanner *)self bodyMessageUnits];
-  v34 = [(IPFeatureTextMessageScanner *)self dataFeaturesExtractedInContextAndMain];
-  [(IPFeatureScanner *)self enrichEvents:v32 messageUnits:v33 dateInSubject:0 dataFeatures:v34];
+  stitchedEvents2 = [(IPFeatureScanner *)self stitchedEvents];
+  bodyMessageUnits2 = [(IPFeatureScanner *)self bodyMessageUnits];
+  dataFeaturesExtractedInContextAndMain = [(IPFeatureTextMessageScanner *)self dataFeaturesExtractedInContextAndMain];
+  [(IPFeatureScanner *)self enrichEvents:stitchedEvents2 messageUnits:bodyMessageUnits2 dateInSubject:0 dataFeatures:dataFeaturesExtractedInContextAndMain];
 
   if (IPDebuggingModeEnabled_once != -1)
   {
@@ -271,29 +271,29 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = v35;
-      v37 = [(IPFeatureScanner *)self stitchedEvents];
-      v38 = [v37 valueForKey:@"ipsos_betterDescription"];
+      stitchedEvents3 = [(IPFeatureScanner *)self stitchedEvents];
+      v38 = [stitchedEvents3 valueForKey:@"ipsos_betterDescription"];
       *buf = 138412290;
       v68 = v38;
       _os_log_impl(&dword_2485E4000, v36, OS_LOG_TYPE_INFO, "Enriched Events based on Event Type: %@ #FeatureManager", buf, 0xCu);
     }
   }
 
-  v39 = [(IPFeatureScanner *)self stitchedEvents];
-  [(IPFeatureScanner *)self adjustTimeForEvents:v39];
+  stitchedEvents4 = [(IPFeatureScanner *)self stitchedEvents];
+  [(IPFeatureScanner *)self adjustTimeForEvents:stitchedEvents4];
 
-  v40 = [(IPFeatureScanner *)self stitchedEvents];
-  [(IPFeatureTextMessageScanner *)self confidenceForEvents:v40];
+  stitchedEvents5 = [(IPFeatureScanner *)self stitchedEvents];
+  [(IPFeatureTextMessageScanner *)self confidenceForEvents:stitchedEvents5];
 
-  v41 = [(IPFeatureScanner *)self stitchedEvents];
-  [(IPFeatureTextMessageScanner *)self experimentalConfidenceForEvents:v41];
+  stitchedEvents6 = [(IPFeatureScanner *)self stitchedEvents];
+  [(IPFeatureTextMessageScanner *)self experimentalConfidenceForEvents:stitchedEvents6];
 
-  v42 = [(IPFeatureScanner *)self stitchedEvents];
-  v43 = [(IPFeatureScanner *)self bodyMessageUnits];
-  v44 = [v43 firstObject];
-  v45 = [v44 originalMessage];
-  v46 = [v45 dateSent];
-  v47 = [(IPFeatureScanner *)self filteredEventsForDetectedEvents:v42 referenceDate:v46];
+  stitchedEvents7 = [(IPFeatureScanner *)self stitchedEvents];
+  bodyMessageUnits3 = [(IPFeatureScanner *)self bodyMessageUnits];
+  firstObject2 = [bodyMessageUnits3 firstObject];
+  originalMessage = [firstObject2 originalMessage];
+  dateSent = [originalMessage dateSent];
+  v47 = [(IPFeatureScanner *)self filteredEventsForDetectedEvents:stitchedEvents7 referenceDate:dateSent];
   [(IPFeatureScanner *)self setFilteredDetectedEvents:v47];
 
   v48 = _IPLogHandle;
@@ -306,8 +306,8 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
   if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
   {
     v49 = v48;
-    v50 = [(IPFeatureScanner *)self filteredDetectedEvents];
-    v51 = [v50 count];
+    filteredDetectedEvents = [(IPFeatureScanner *)self filteredDetectedEvents];
+    v51 = [filteredDetectedEvents count];
     *buf = 134217984;
     v68 = v51;
     _os_log_impl(&dword_2485E4000, v49, OS_LOG_TYPE_INFO, "%lu detected events after filtering #FeatureManager", buf, 0xCu);
@@ -330,28 +330,28 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
       v53 = v52;
-      v54 = [(IPFeatureScanner *)self filteredDetectedEvents];
-      v55 = [v54 valueForKey:@"ipsos_betterDescription"];
+      filteredDetectedEvents2 = [(IPFeatureScanner *)self filteredDetectedEvents];
+      v55 = [filteredDetectedEvents2 valueForKey:@"ipsos_betterDescription"];
       *buf = 138412290;
       v68 = v55;
       _os_log_impl(&dword_2485E4000, v53, OS_LOG_TYPE_INFO, "Filtered Events: %@ #FeatureManager", buf, 0xCu);
     }
   }
 
-  v56 = [(IPFeatureScanner *)self filteredDetectedEvents];
-  v57 = [v56 count];
+  filteredDetectedEvents3 = [(IPFeatureScanner *)self filteredDetectedEvents];
+  v57 = [filteredDetectedEvents3 count];
 
   if (v57 < 2)
   {
-    v61 = [(IPFeatureScanner *)self filteredDetectedEvents];
-    [(IPFeatureScanner *)self normalizedEvents:v61];
+    filteredDetectedEvents4 = [(IPFeatureScanner *)self filteredDetectedEvents];
+    [(IPFeatureScanner *)self normalizedEvents:filteredDetectedEvents4];
 
-    v62 = [(IPFeatureScanner *)self filteredDetectedEvents];
-    v63 = [v62 count];
+    filteredDetectedEvents5 = [(IPFeatureScanner *)self filteredDetectedEvents];
+    v63 = [filteredDetectedEvents5 count];
 
-    v64 = [(IPFeatureScanner *)self filteredDetectedEvents];
-    v60 = v66;
-    (*(v66 + 2))(v66, v64, v63 != 0);
+    filteredDetectedEvents6 = [(IPFeatureScanner *)self filteredDetectedEvents];
+    v60 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, filteredDetectedEvents6, v63 != 0);
   }
 
   else
@@ -370,23 +370,23 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
     }
 
     [(IPFeatureScanner *)self setResultType:-68];
-    v59 = [(IPFeatureScanner *)self resultType];
-    v60 = v66;
-    (*(v66 + 2))(v66, MEMORY[0x277CBEBF8], v59);
+    resultType = [(IPFeatureScanner *)self resultType];
+    v60 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], resultType);
   }
 
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)mainSentencePolarityFrom:(id)a3
+- (unint64_t)mainSentencePolarityFrom:(id)from
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fromCopy = from;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v4 = [fromCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -400,7 +400,7 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fromCopy);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -408,8 +408,8 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 fragments];
-        v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        fragments = [v11 fragments];
+        v13 = [fragments countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v13)
         {
           v14 = v13;
@@ -420,11 +420,11 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
             {
               if (*v21 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(fragments);
               }
 
-              v17 = [*(*(&v20 + 1) + 8 * j) mainPolarity];
-              switch(v17)
+              mainPolarity = [*(*(&v20 + 1) + 8 * j) mainPolarity];
+              switch(mainPolarity)
               {
                 case 2:
                   v7 = v7 + 1.0;
@@ -438,7 +438,7 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v14 = [fragments countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v14);
@@ -447,7 +447,7 @@ void __108__IPFeatureTextMessageScanner_scanEventsInMessageUnits_contextMessageU
 LABEL_19:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v5 = [fromCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v5);
@@ -474,14 +474,14 @@ LABEL_19:
   return v8;
 }
 
-- (id)processScanOfMainMessageUnit:(id)a3 contextMessageUnits:(id)a4
+- (id)processScanOfMainMessageUnit:(id)unit contextMessageUnits:(id)units
 {
   v115 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 count];
-  v9 = [v7 count];
-  v10 = [(IPFeatureTextMessageScanner *)self mainSentencePolarityFromMessageUnit:v6 index:v8];
+  unitCopy = unit;
+  unitsCopy = units;
+  v8 = [unitsCopy count];
+  v9 = [unitsCopy count];
+  v10 = [(IPFeatureTextMessageScanner *)self mainSentencePolarityFromMessageUnit:unitCopy index:v8];
   if (v10 != 4)
   {
     v86 = v10;
@@ -492,7 +492,7 @@ LABEL_19:
     {
       for (i = 0; i != v9; ++i)
       {
-        v22 = [v7 objectAtIndexedSubscript:i];
+        v22 = [unitsCopy objectAtIndexedSubscript:i];
         if (([(IPFeatureTextMessageScanner *)self mainSentencePolarityFromMessageUnit:v22 index:i]& 0xFFFFFFFFFFFFFFFELL) == 2)
         {
           [v22 text];
@@ -509,7 +509,7 @@ LABEL_19:
       }
     }
 
-    v26 = [(IPFeatureTextMessageScanner *)self keywordFeaturesForMessageUnit:v6];
+    v26 = [(IPFeatureTextMessageScanner *)self keywordFeaturesForMessageUnit:unitCopy];
     v27 = [v26 mutableCopy];
     [(IPFeatureScanner *)self setBodyKeywordFeatures:v27];
 
@@ -526,44 +526,44 @@ LABEL_19:
     }
 
     v82 = v28;
-    v29 = [(IPFeatureTextMessageScanner *)self dataDetectorsFeaturesForMessageUnit:v6 context:?];
+    v29 = [(IPFeatureTextMessageScanner *)self dataDetectorsFeaturesForMessageUnit:unitCopy context:?];
     v30 = [v29 mutableCopy];
     [(IPFeatureScanner *)self setBodyDataDetectorsFeatures:v30];
 
-    v31 = [(IPFeatureTextMessageScanner *)self dataFeaturesExtractedInContextAndMain];
-    v32 = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
-    [v31 addObjectsFromArray:v32];
+    dataFeaturesExtractedInContextAndMain = [(IPFeatureTextMessageScanner *)self dataFeaturesExtractedInContextAndMain];
+    bodyDataDetectorsFeatures = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
+    [dataFeaturesExtractedInContextAndMain addObjectsFromArray:bodyDataDetectorsFeatures];
 
     v33 = objc_alloc(MEMORY[0x277CBEB18]);
-    v34 = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
-    v35 = [v33 initWithArray:v34];
+    bodyDataDetectorsFeatures2 = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
+    v35 = [v33 initWithArray:bodyDataDetectorsFeatures2];
 
-    v36 = [(IPFeatureScanner *)self bodySentenceFeatures];
-    [v35 addObjectsFromArray:v36];
+    bodySentenceFeatures = [(IPFeatureScanner *)self bodySentenceFeatures];
+    [v35 addObjectsFromArray:bodySentenceFeatures];
 
-    v37 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-    [v35 addObjectsFromArray:v37];
+    bodyKeywordFeatures = [(IPFeatureScanner *)self bodyKeywordFeatures];
+    [v35 addObjectsFromArray:bodyKeywordFeatures];
 
     v85 = v35;
     [(IPFeatureScanner *)self setBodyAllFeatures:v35];
     v38 = v92;
-    v84 = v6;
+    v84 = unitCopy;
     if ((v86 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v39 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-      if ([v39 count])
+      bodyKeywordFeatures2 = [(IPFeatureScanner *)self bodyKeywordFeatures];
+      if ([bodyKeywordFeatures2 count])
       {
       }
 
       else
       {
-        v40 = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
-        v41 = [v40 count];
+        bodyDataDetectorsFeatures3 = [(IPFeatureScanner *)self bodyDataDetectorsFeatures];
+        v41 = [bodyDataDetectorsFeatures3 count];
 
         if (!v41)
         {
-          v74 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
-          v75 = [v74 count];
+          detectedEventsInContext = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
+          v75 = [detectedEventsInContext count];
 
           if (!v75)
           {
@@ -572,14 +572,14 @@ LABEL_19:
             goto LABEL_46;
           }
 
-          v76 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
-          v77 = [v76 lastObject];
+          detectedEventsInContext2 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
+          lastObject = [detectedEventsInContext2 lastObject];
 
           v103 = 0u;
           v104 = 0u;
           v101 = 0u;
           v102 = 0u;
-          v61 = v77;
+          v61 = lastObject;
           v78 = [v61 countByEnumeratingWithState:&v101 objects:v111 count:16];
           if (v78)
           {
@@ -617,7 +617,7 @@ LABEL_46:
       }
     }
 
-    v89 = self;
+    selfCopy = self;
     v83 = v20;
     v90 = objc_opt_new();
     if (v92)
@@ -626,18 +626,18 @@ LABEL_46:
       v43 = 0;
       v44 = MEMORY[0x277CBEC38];
       v87 = v14;
-      v88 = v7;
+      v88 = unitsCopy;
       do
       {
-        v45 = v7;
-        v46 = [v7 objectAtIndexedSubscript:v43];
+        v45 = unitsCopy;
+        v46 = [unitsCopy objectAtIndexedSubscript:v43];
         v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v43];
         v48 = [v14 containsObject:v47];
 
         if (v48)
         {
           v91 = v46;
-          v49 = [(IPFeatureTextMessageScanner *)v89 keywordFeaturesForMessageUnit:v46];
+          v49 = [(IPFeatureTextMessageScanner *)selfCopy keywordFeaturesForMessageUnit:v46];
           v97 = 0u;
           v98 = 0u;
           v99 = 0u;
@@ -657,11 +657,11 @@ LABEL_46:
                 }
 
                 v54 = *(*(&v97 + 1) + 8 * k);
-                v55 = [v54 matchRange];
+                matchRange = [v54 matchRange];
                 [v54 matchRange];
-                [v54 setMatchRange:{v55 + v42, v56}];
-                v57 = [v54 contextDictionary];
-                [v57 setObject:v44 forKeyedSubscript:@"extractedInSubject"];
+                [v54 setMatchRange:{matchRange + v42, v56}];
+                contextDictionary = [v54 contextDictionary];
+                [contextDictionary setObject:v44 forKeyedSubscript:@"extractedInSubject"];
               }
 
               v51 = [v49 countByEnumeratingWithState:&v97 objects:v110 count:16];
@@ -678,29 +678,29 @@ LABEL_46:
           v38 = v92;
         }
 
-        v58 = [v46 text];
-        v42 += [v58 length];
+        text = [v46 text];
+        v42 += [text length];
 
         ++v43;
-        v7 = v45;
+        unitsCopy = v45;
       }
 
       while (v43 != v38);
     }
 
-    v59 = [(IPFeatureScanner *)v89 bodyKeywordFeatures];
-    v60 = [v59 mutableCopy];
+    bodyKeywordFeatures3 = [(IPFeatureScanner *)selfCopy bodyKeywordFeatures];
+    v60 = [bodyKeywordFeatures3 mutableCopy];
 
     v61 = v90;
     [v60 addObjectsFromArray:v90];
-    v19 = [(IPFeatureScanner *)v89 analyzeFeatures:v85 messageUnit:v6 checkPolarity:0 polarity:v86];
+    v19 = [(IPFeatureScanner *)selfCopy analyzeFeatures:v85 messageUnit:unitCopy checkPolarity:0 polarity:v86];
     if ([v19 count])
     {
-      v62 = [v6 originalMessage];
-      [v62 setSubject:v83];
+      originalMessage = [unitCopy originalMessage];
+      [originalMessage setSubject:v83];
 
-      v63 = [(IPFeatureScanner *)v89 bodyDataDetectorsFeatures];
-      v64 = [IPEventClassificationType eventClassificationTypeFromMessageUnit:v6 keywordFeatures:v60 datafeatures:v63];
+      bodyDataDetectorsFeatures4 = [(IPFeatureScanner *)selfCopy bodyDataDetectorsFeatures];
+      v64 = [IPEventClassificationType eventClassificationTypeFromMessageUnit:unitCopy keywordFeatures:v60 datafeatures:bodyDataDetectorsFeatures4];
 
       v95 = 0u;
       v96 = 0u;
@@ -732,7 +732,7 @@ LABEL_46:
         while (v67);
       }
 
-      v6 = v84;
+      unitCopy = v84;
       v61 = v90;
     }
 
@@ -740,9 +740,9 @@ LABEL_46:
     goto LABEL_44;
   }
 
-  v11 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
-  v12 = [v11 lastObject];
-  v13 = [v12 copy];
+  detectedEventsInContext3 = [(IPFeatureTextMessageScanner *)self detectedEventsInContext];
+  lastObject2 = [detectedEventsInContext3 lastObject];
+  v13 = [lastObject2 copy];
 
   v107 = 0u;
   v108 = 0u;
@@ -780,83 +780,83 @@ LABEL_47:
   return v19;
 }
 
-- (id)dataDetectorsFeaturesForMessageUnit:(id)a3 context:(id)a4
+- (id)dataDetectorsFeaturesForMessageUnit:(id)unit context:(id)context
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dataFeatures];
+  unitCopy = unit;
+  contextCopy = context;
+  dataFeatures = [unitCopy dataFeatures];
 
-  if (!v8)
+  if (!dataFeatures)
   {
-    v9 = [objc_opt_class() dataDetectorsFeatureExtractor];
-    v16[0] = v9;
+    dataDetectorsFeatureExtractor = [objc_opt_class() dataDetectorsFeatureExtractor];
+    v16[0] = dataDetectorsFeatureExtractor;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
 
-    v11 = [v6 text];
-    v12 = [(IPFeatureScanner *)self featuresForTextString:v11 inMessageUnit:v6 extractors:v10 context:v7];
-    [v6 setDataFeatures:v12];
+    text = [unitCopy text];
+    v12 = [(IPFeatureScanner *)self featuresForTextString:text inMessageUnit:unitCopy extractors:v10 context:contextCopy];
+    [unitCopy setDataFeatures:v12];
   }
 
-  v13 = [v6 dataFeatures];
+  dataFeatures2 = [unitCopy dataFeatures];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return dataFeatures2;
 }
 
-- (id)sentenceFeaturesForMessageUnit:(id)a3
+- (id)sentenceFeaturesForMessageUnit:(id)unit
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sentenceFeatures];
+  unitCopy = unit;
+  sentenceFeatures = [unitCopy sentenceFeatures];
 
-  if (!v5)
+  if (!sentenceFeatures)
   {
-    v6 = [objc_opt_class() sentenceFeatureExtractor];
-    v7 = [v4 text];
-    v13[0] = v6;
+    sentenceFeatureExtractor = [objc_opt_class() sentenceFeatureExtractor];
+    text = [unitCopy text];
+    v13[0] = sentenceFeatureExtractor;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v9 = [(IPFeatureScanner *)self featuresForTextString:v7 inMessageUnit:v4 extractors:v8 context:0];
+    v9 = [(IPFeatureScanner *)self featuresForTextString:text inMessageUnit:unitCopy extractors:v8 context:0];
 
-    [v4 setSentenceFeatures:v9];
+    [unitCopy setSentenceFeatures:v9];
   }
 
-  v10 = [v4 sentenceFeatures];
+  sentenceFeatures2 = [unitCopy sentenceFeatures];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return sentenceFeatures2;
 }
 
-- (id)keywordFeaturesForMessageUnit:(id)a3
+- (id)keywordFeaturesForMessageUnit:(id)unit
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 keywordFeatures];
+  unitCopy = unit;
+  keywordFeatures = [unitCopy keywordFeatures];
 
-  if (!v5)
+  if (!keywordFeatures)
   {
-    v6 = [objc_opt_class() keywordFeatureExtractor];
-    v7 = [v4 lowercaseTextTruncated];
-    v13[0] = v6;
+    keywordFeatureExtractor = [objc_opt_class() keywordFeatureExtractor];
+    lowercaseTextTruncated = [unitCopy lowercaseTextTruncated];
+    v13[0] = keywordFeatureExtractor;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    v9 = [(IPFeatureScanner *)self featuresForTextString:v7 inMessageUnit:v4 extractors:v8 context:0];
+    v9 = [(IPFeatureScanner *)self featuresForTextString:lowercaseTextTruncated inMessageUnit:unitCopy extractors:v8 context:0];
 
-    [v4 setKeywordFeatures:v9];
+    [unitCopy setKeywordFeatures:v9];
   }
 
-  v10 = [v4 keywordFeatures];
+  keywordFeatures2 = [unitCopy keywordFeatures];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return keywordFeatures2;
 }
 
-- (unint64_t)mainSentencePolarityFromMessageUnit:(id)a3 index:(unint64_t)a4
+- (unint64_t)mainSentencePolarityFromMessageUnit:(id)unit index:(unint64_t)index
 {
-  v5 = [(IPFeatureTextMessageScanner *)self sentenceFeaturesForMessageUnit:a3, a4];
-  v6 = [(IPFeatureTextMessageScanner *)self mainSentencePolarityFrom:v5];
+  index = [(IPFeatureTextMessageScanner *)self sentenceFeaturesForMessageUnit:unit, index];
+  v6 = [(IPFeatureTextMessageScanner *)self mainSentencePolarityFrom:index];
 
   return v6;
 }
@@ -876,22 +876,22 @@ LABEL_47:
   [(IPFeatureScanner *)&v5 resetScanState];
 }
 
-- (void)confidenceForEvents:(id)a3
+- (void)confidenceForEvents:(id)events
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IPFeatureScanner *)self detectedEvents];
-  v6 = [v5 count];
+  eventsCopy = events;
+  detectedEvents = [(IPFeatureScanner *)self detectedEvents];
+  v6 = [detectedEvents count];
 
   if (v6 <= 4)
   {
-    v8 = [(IPFeatureScanner *)self detectedEvents];
-    v9 = [v8 count];
+    detectedEvents2 = [(IPFeatureScanner *)self detectedEvents];
+    v9 = [detectedEvents2 count];
 
     if (v9 <= 3)
     {
-      v10 = [(IPFeatureScanner *)self detectedEvents];
-      v11 = [v10 count];
+      detectedEvents3 = [(IPFeatureScanner *)self detectedEvents];
+      v11 = [detectedEvents3 count];
 
       if (v11 <= 2)
       {
@@ -915,8 +915,8 @@ LABEL_47:
     v7 = 0.7;
   }
 
-  v12 = [(IPFeatureScanner *)self stitchedEvents];
-  v13 = [v12 count];
+  stitchedEvents = [(IPFeatureScanner *)self stitchedEvents];
+  v13 = [stitchedEvents count];
 
   if (v13 >= 4)
   {
@@ -926,8 +926,8 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v15 = [(IPFeatureScanner *)self stitchedEvents];
-  v16 = [v15 count];
+  stitchedEvents2 = [(IPFeatureScanner *)self stitchedEvents];
+  v16 = [stitchedEvents2 count];
 
   if (v16 >= 3)
   {
@@ -935,8 +935,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v17 = [(IPFeatureScanner *)self stitchedEvents];
-  v18 = [v17 count];
+  stitchedEvents3 = [(IPFeatureScanner *)self stitchedEvents];
+  v18 = [stitchedEvents3 count];
 
   if (v18 > 1)
   {
@@ -944,16 +944,16 @@ LABEL_12:
   }
 
 LABEL_15:
-  v19 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v20 = [v19 count];
+  bodyKeywordFeatures = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v20 = [bodyKeywordFeatures count];
 
   if (v20 > 5)
   {
     v7 = v7 * 0.9;
   }
 
-  v21 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v22 = [v21 count];
+  bodyKeywordFeatures2 = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v22 = [bodyKeywordFeatures2 count];
 
   if (v22 >= 4)
   {
@@ -963,8 +963,8 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v24 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v25 = [v24 count];
+  bodyKeywordFeatures3 = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v25 = [bodyKeywordFeatures3 count];
 
   if (v25 >= 3)
   {
@@ -972,8 +972,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v26 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v27 = [v26 count];
+  bodyKeywordFeatures4 = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v27 = [bodyKeywordFeatures4 count];
 
   if (v27 > 1)
   {
@@ -985,7 +985,7 @@ LABEL_24:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v28 = v4;
+  v28 = eventsCopy;
   v29 = [v28 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v29)
   {
@@ -1021,51 +1021,51 @@ LABEL_24:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (double)confidenceForEvent:(id)a3 baseConfidence:(double)a4
+- (double)confidenceForEvent:(id)event baseConfidence:(double)confidence
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 isAllDay])
+  eventCopy = event;
+  if ([eventCopy isAllDay])
   {
     v6 = 0.95;
 LABEL_5:
-    a4 = a4 * v6;
+    confidence = confidence * v6;
     goto LABEL_8;
   }
 
-  if ([v5 ipsos_usesDefaultClassificationTypeStartTime])
+  if ([eventCopy ipsos_usesDefaultClassificationTypeStartTime])
   {
     v6 = 0.8;
     goto LABEL_5;
   }
 
-  if ([v5 ipsos_isTimeApproximate])
+  if ([eventCopy ipsos_isTimeApproximate])
   {
-    a4 = a4 * 0.8;
+    confidence = confidence * 0.8;
   }
 
 LABEL_8:
-  if ([v5 ipsos_isDateTimeTenseDependent])
+  if ([eventCopy ipsos_isDateTimeTenseDependent])
   {
-    a4 = a4 * 0.8;
+    confidence = confidence * 0.8;
   }
 
-  if ([v5 ipsos_timeNeedsMeridianGuess])
+  if ([eventCopy ipsos_timeNeedsMeridianGuess])
   {
-    a4 = a4 * 0.9;
+    confidence = confidence * 0.9;
   }
 
   v21 = 0u;
   v22 = 0u;
-  if ([v5 ipsos_isEventTimeOnlyAndReferrengingToSentDate])
+  if ([eventCopy ipsos_isEventTimeOnlyAndReferrengingToSentDate])
   {
-    a4 = a4 * 0.75;
+    confidence = confidence * 0.75;
   }
 
   v23 = 0uLL;
   v24 = 0uLL;
-  v7 = [v5 ipsos_dataFeatures];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  ipsos_dataFeatures = [eventCopy ipsos_dataFeatures];
+  v8 = [ipsos_dataFeatures countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1078,11 +1078,11 @@ LABEL_8:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(ipsos_dataFeatures);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * i) contextDictionary];
-        v15 = [v14 objectForKeyedSubscript:@"polarityProbability"];
+        contextDictionary = [*(*(&v21 + 1) + 8 * i) contextDictionary];
+        v15 = [contextDictionary objectForKeyedSubscript:@"polarityProbability"];
 
         if (v15)
         {
@@ -1095,14 +1095,14 @@ LABEL_8:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [ipsos_dataFeatures countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
 
     if (v11 > 0.0)
     {
-      a4 = a4 * ((1.0 - v12 / v11) * -0.5 + 1.0);
+      confidence = confidence * ((1.0 - v12 / v11) * -0.5 + 1.0);
     }
   }
 
@@ -1110,35 +1110,35 @@ LABEL_8:
   {
   }
 
-  v17 = [v5 title];
-  v18 = [v17 length];
+  title = [eventCopy title];
+  v18 = [title length];
 
   if (!v18)
   {
-    a4 = a4 * 0.85;
+    confidence = confidence * 0.85;
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return a4;
+  return confidence;
 }
 
-- (void)experimentalConfidenceForEvents:(id)a3
+- (void)experimentalConfidenceForEvents:(id)events
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IPFeatureTextMessageScanner *)self commonComponentsForConfidence];
-  v6 = [v5 objectForKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNormTextLength"];
+  eventsCopy = events;
+  commonComponentsForConfidence = [(IPFeatureTextMessageScanner *)self commonComponentsForConfidence];
+  v6 = [commonComponentsForConfidence objectForKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNormTextLength"];
   [v6 doubleValue];
   v8 = v7 < 27.5;
 
-  v9 = [v5 objectForKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNumberOfEventTypes"];
-  v10 = [v9 intValue];
+  v9 = [commonComponentsForConfidence objectForKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNumberOfEventTypes"];
+  intValue = [v9 intValue];
 
-  if (v10 >= 2)
+  if (intValue >= 2)
   {
-    if (v10 >= 4)
+    if (intValue >= 4)
     {
-      v11 = dbl_24860E030[v10 < 6];
+      v11 = dbl_24860E030[intValue < 6];
     }
 
     else
@@ -1152,17 +1152,17 @@ LABEL_8:
     v11 = -0.05;
   }
 
-  v12 = [(IPFeatureScanner *)self stitchedEvents];
-  v13 = [v12 count];
+  stitchedEvents = [(IPFeatureScanner *)self stitchedEvents];
+  v13 = [stitchedEvents count];
 
-  v14 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v15 = [v14 count];
+  bodyKeywordFeatures = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v15 = [bodyKeywordFeatures count];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = v4;
+  v16 = eventsCopy;
   v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v17)
   {
@@ -1205,10 +1205,10 @@ LABEL_8:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (double)experimentalConfidenceForEvent:(id)a3 experimentalBaseConfidence:(double)a4
+- (double)experimentalConfidenceForEvent:(id)event experimentalBaseConfidence:(double)confidence
 {
-  v6 = a3;
-  v7 = [(IPFeatureTextMessageScanner *)self eventSpecificComponentsForConfidence:v6];
+  eventCopy = event;
+  v7 = [(IPFeatureTextMessageScanner *)self eventSpecificComponentsForConfidence:eventCopy];
   v8 = [v7 objectForKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceMatchedRatio"];
   [v8 doubleValue];
   v10 = v9;
@@ -1247,10 +1247,10 @@ LABEL_8:
     v11 = -0.13;
   }
 
-  v12 = v11 + a4;
-  v13 = [v6 ipsos_isTimeApproximate];
+  v12 = v11 + confidence;
+  ipsos_isTimeApproximate = [eventCopy ipsos_isTimeApproximate];
   v14 = 0.03;
-  if (v13)
+  if (ipsos_isTimeApproximate)
   {
     v14 = -0.08;
   }
@@ -1270,42 +1270,42 @@ LABEL_8:
     v19 = v15;
   }
 
-  if ([v6 ipsos_usesDefaultClassificationTypeStartTime])
+  if ([eventCopy ipsos_usesDefaultClassificationTypeStartTime])
   {
     v19 = v19 + 0.01;
   }
 
-  v20 = [v6 isAllDay];
+  isAllDay = [eventCopy isAllDay];
   v21 = -0.24;
-  if (!v20)
+  if (!isAllDay)
   {
     v21 = 0.01;
   }
 
   v22 = v19 + v21;
-  v23 = [v6 title];
+  title = [eventCopy title];
 
-  v24 = [v23 length] == 0;
+  v24 = [title length] == 0;
   v25 = v22 + dbl_24860E060[v24];
 
   return v25;
 }
 
-- (id)eventSpecificComponentsForConfidence:(id)a3
+- (id)eventSpecificComponentsForConfidence:(id)confidence
 {
   v49 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  confidenceCopy = confidence;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v6 = [v4 setWithArray:v5];
+  bodyKeywordFeatures = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v6 = [v4 setWithArray:bodyKeywordFeatures];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-  v8 = [v7 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  contextMessageUnits = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+  v8 = [contextMessageUnits countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1316,14 +1316,14 @@ LABEL_8:
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(contextMessageUnits);
         }
 
-        v12 = [*(*(&v43 + 1) + 8 * i) keywordFeatures];
-        [v6 addObjectsFromArray:v12];
+        keywordFeatures = [*(*(&v43 + 1) + 8 * i) keywordFeatures];
+        [v6 addObjectsFromArray:keywordFeatures];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v9 = [contextMessageUnits countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v9);
@@ -1353,19 +1353,19 @@ LABEL_8:
         }
 
         v22 = *(*(&v39 + 1) + 8 * j);
-        v23 = [v22 eventTypes];
-        v24 = [v38 ipsos_eventClassificationType];
-        v25 = [v23 containsObject:v24];
+        eventTypes = [v22 eventTypes];
+        ipsos_eventClassificationType = [confidenceCopy ipsos_eventClassificationType];
+        v25 = [eventTypes containsObject:ipsos_eventClassificationType];
 
         if (v25)
         {
-          v26 = [v22 contextDictionary];
-          v27 = [v26 objectForKeyedSubscript:@"IPFeatureKeywordContextDistanceToDate"];
+          contextDictionary = [v22 contextDictionary];
+          v27 = [contextDictionary objectForKeyedSubscript:@"IPFeatureKeywordContextDistanceToDate"];
           [v27 doubleValue];
           v20 = v20 + v28;
 
-          v29 = [v22 contextDictionary];
-          v30 = [v29 objectForKeyedSubscript:@"IPFeatureKeywordContextMatchedRatio"];
+          contextDictionary2 = [v22 contextDictionary];
+          v30 = [contextDictionary2 objectForKeyedSubscript:@"IPFeatureKeywordContextMatchedRatio"];
           [v30 doubleValue];
           v19 = v19 + v31;
 
@@ -1379,7 +1379,7 @@ LABEL_8:
     while (v15);
     v13 = v16;
 
-    v32 = v37;
+    v32 = dictionary;
     if (v17 >= 1)
     {
       v20 = v20 / v17;
@@ -1391,7 +1391,7 @@ LABEL_8:
 
     v19 = 0.0;
     v20 = 0.0;
-    v32 = v37;
+    v32 = dictionary;
   }
 
   v33 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
@@ -1408,18 +1408,18 @@ LABEL_8:
 - (id)commonComponentsForConfidence
 {
   v133 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CBEB58];
-  v5 = [(IPFeatureScanner *)self bodyKeywordFeatures];
-  v6 = [v4 setWithArray:v5];
+  bodyKeywordFeatures = [(IPFeatureScanner *)self bodyKeywordFeatures];
+  v6 = [v4 setWithArray:bodyKeywordFeatures];
 
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v89 = self;
-  v7 = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
-  v8 = [v7 countByEnumeratingWithState:&v121 objects:v132 count:16];
+  selfCopy = self;
+  contextMessageUnits = [(IPFeatureTextMessageScanner *)self contextMessageUnits];
+  v8 = [contextMessageUnits countByEnumeratingWithState:&v121 objects:v132 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1430,14 +1430,14 @@ LABEL_8:
       {
         if (*v122 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(contextMessageUnits);
         }
 
-        v12 = [*(*(&v121 + 1) + 8 * i) keywordFeatures];
-        [v6 addObjectsFromArray:v12];
+        keywordFeatures = [*(*(&v121 + 1) + 8 * i) keywordFeatures];
+        [v6 addObjectsFromArray:keywordFeatures];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v121 objects:v132 count:16];
+      v9 = [contextMessageUnits countByEnumeratingWithState:&v121 objects:v132 count:16];
     }
 
     while (v9);
@@ -1463,8 +1463,8 @@ LABEL_8:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v117 + 1) + 8 * j) eventTypes];
-        [v13 addObjectsFromArray:v19];
+        eventTypes = [*(*(&v117 + 1) + 8 * j) eventTypes];
+        [v13 addObjectsFromArray:eventTypes];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v117 objects:v131 count:16];
@@ -1475,10 +1475,10 @@ LABEL_8:
 
   v87 = v13;
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-  v88 = v3;
-  [v3 setObject:v20 forKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNumberOfEventTypes"];
+  v88 = dictionary;
+  [dictionary setObject:v20 forKeyedSubscript:@"IPFeatureTextMessageScannerConfidenceNumberOfEventTypes"];
 
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
@@ -1504,8 +1504,8 @@ LABEL_8:
         v110 = 0u;
         v111 = 0u;
         v112 = 0u;
-        v24 = [v23 eventTypes];
-        v25 = [v24 countByEnumeratingWithState:&v109 objects:v129 count:16];
+        eventTypes2 = [v23 eventTypes];
+        v25 = [eventTypes2 countByEnumeratingWithState:&v109 objects:v129 count:16];
         if (v25)
         {
           v26 = v25;
@@ -1516,28 +1516,28 @@ LABEL_8:
             {
               if (*v110 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(eventTypes2);
               }
 
               v29 = *(*(&v109 + 1) + 8 * k);
-              v30 = [v29 identifier];
-              v31 = [v21 objectForKeyedSubscript:v30];
+              identifier = [v29 identifier];
+              v31 = [dictionary2 objectForKeyedSubscript:identifier];
 
               if (!v31)
               {
-                v32 = [v29 identifier];
-                [v21 setObject:&unk_285B089E8 forKeyedSubscript:v32];
+                identifier2 = [v29 identifier];
+                [dictionary2 setObject:&unk_285B089E8 forKeyedSubscript:identifier2];
               }
 
               v33 = MEMORY[0x277CCABB0];
-              v34 = [v29 identifier];
-              v35 = [v21 objectForKeyedSubscript:v34];
+              identifier3 = [v29 identifier];
+              v35 = [dictionary2 objectForKeyedSubscript:identifier3];
               v36 = [v33 numberWithInt:{objc_msgSend(v35, "intValue") + 1}];
-              v37 = [v29 identifier];
-              [v21 setObject:v36 forKeyedSubscript:v37];
+              identifier4 = [v29 identifier];
+              [dictionary2 setObject:v36 forKeyedSubscript:identifier4];
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v109 objects:v129 count:16];
+            v26 = [eventTypes2 countByEnumeratingWithState:&v109 objects:v129 count:16];
           }
 
           while (v26);
@@ -1553,12 +1553,12 @@ LABEL_8:
     while (v92);
   }
 
-  v38 = [v21 allValues];
-  v93 = v38;
-  if ([v38 count])
+  allValues = [dictionary2 allValues];
+  v93 = allValues;
+  if ([allValues count])
   {
     v39 = MEMORY[0x277CCA9C0];
-    v40 = [MEMORY[0x277CCA9C0] expressionForConstantValue:v38];
+    v40 = [MEMORY[0x277CCA9C0] expressionForConstantValue:allValues];
     v128 = v40;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v128 count:1];
     v42 = [v39 expressionForFunction:@"stddev:" arguments:v41];
@@ -1580,9 +1580,9 @@ LABEL_8:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v47 = [(IPFeatureTextMessageScanner *)v89 contextMessageUnits];
-  v48 = [(IPFeatureScanner *)v89 bodyMessageUnits];
-  v49 = [v47 arrayByAddingObjectsFromArray:v48];
+  contextMessageUnits2 = [(IPFeatureTextMessageScanner *)selfCopy contextMessageUnits];
+  bodyMessageUnits = [(IPFeatureScanner *)selfCopy bodyMessageUnits];
+  v49 = [contextMessageUnits2 arrayByAddingObjectsFromArray:bodyMessageUnits];
 
   v95 = v49;
   v50 = [v49 countByEnumeratingWithState:&v105 objects:v127 count:16];
@@ -1606,8 +1606,8 @@ LABEL_8:
         v102 = 0u;
         v103 = 0u;
         v104 = 0u;
-        v57 = [v56 sentenceFeatures];
-        v58 = [v57 countByEnumeratingWithState:&v101 objects:v126 count:16];
+        sentenceFeatures = [v56 sentenceFeatures];
+        v58 = [sentenceFeatures countByEnumeratingWithState:&v101 objects:v126 count:16];
         if (v58)
         {
           v59 = v58;
@@ -1618,11 +1618,11 @@ LABEL_8:
             {
               if (*v102 != v60)
               {
-                objc_enumerationMutation(v57);
+                objc_enumerationMutation(sentenceFeatures);
               }
 
-              v62 = [*(*(&v101 + 1) + 8 * n) polarity];
-              if (v62 == 4)
+              polarity = [*(*(&v101 + 1) + 8 * n) polarity];
+              if (polarity == 4)
               {
                 if ((v52 & 0xFFFFFFFFFFFFFFFELL) == 2)
                 {
@@ -1637,7 +1637,7 @@ LABEL_8:
                 v52 = 4;
               }
 
-              else if ((v62 & 0xFFFFFFFFFFFFFFFELL) == 2)
+              else if ((polarity & 0xFFFFFFFFFFFFFFFELL) == 2)
               {
                 if (v52 == 4)
                 {
@@ -1649,11 +1649,11 @@ LABEL_8:
                   v53 = v53;
                 }
 
-                v52 = v62;
+                v52 = polarity;
               }
             }
 
-            v59 = [v57 countByEnumeratingWithState:&v101 objects:v126 count:16];
+            v59 = [sentenceFeatures countByEnumeratingWithState:&v101 objects:v126 count:16];
           }
 
           while (v59);
@@ -1678,8 +1678,8 @@ LABEL_8:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v64 = [(IPFeatureScanner *)v89 bodyMessageUnits];
-  v65 = [v64 countByEnumeratingWithState:&v97 objects:v125 count:16];
+  bodyMessageUnits2 = [(IPFeatureScanner *)selfCopy bodyMessageUnits];
+  v65 = [bodyMessageUnits2 countByEnumeratingWithState:&v97 objects:v125 count:16];
   if (v65)
   {
     v66 = v65;
@@ -1691,18 +1691,18 @@ LABEL_8:
       {
         if (*v98 != v67)
         {
-          objc_enumerationMutation(v64);
+          objc_enumerationMutation(bodyMessageUnits2);
         }
 
         v70 = *(*(&v97 + 1) + 8 * ii);
-        v71 = [v70 text];
-        v72 = [v71 length];
-        v73 = [v70 originalMessage];
-        v74 = [v73 subject];
-        v68 = v68 + ([v74 length] + v72);
+        text = [v70 text];
+        v72 = [text length];
+        originalMessage = [v70 originalMessage];
+        subject = [originalMessage subject];
+        v68 = v68 + ([subject length] + v72);
       }
 
-      v66 = [v64 countByEnumeratingWithState:&v97 objects:v125 count:16];
+      v66 = [bodyMessageUnits2 countByEnumeratingWithState:&v97 objects:v125 count:16];
     }
 
     while (v66);
@@ -1713,15 +1713,15 @@ LABEL_8:
     v68 = 0.0;
   }
 
-  v75 = [(IPFeatureScanner *)v89 bodyMessageUnits];
-  v76 = [v75 firstObject];
-  v77 = [v76 bestLanguageID];
+  bodyMessageUnits3 = [(IPFeatureScanner *)selfCopy bodyMessageUnits];
+  firstObject = [bodyMessageUnits3 firstObject];
+  bestLanguageID = [firstObject bestLanguageID];
 
-  v78 = [&unk_285B0FCF0 objectForKeyedSubscript:v77];
+  v78 = [&unk_285B0FCF0 objectForKeyedSubscript:bestLanguageID];
 
   if (v78)
   {
-    v79 = [&unk_285B0FCF0 objectForKeyedSubscript:v77];
+    v79 = [&unk_285B0FCF0 objectForKeyedSubscript:bestLanguageID];
     [v79 doubleValue];
     v68 = v68 * v80;
 

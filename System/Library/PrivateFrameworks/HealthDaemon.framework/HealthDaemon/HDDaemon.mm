@@ -1,15 +1,15 @@
 @interface HDDaemon
 - (HDContentProtectionManager)contentProtectionManager;
 - (HDDaemon)init;
-- (HDDaemon)initWithContainerDirectoryPath:(id)a3;
-- (HDDaemon)initWithHealthDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4;
+- (HDDaemon)initWithContainerDirectoryPath:(id)path;
+- (HDDaemon)initWithHealthDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath;
 - (HDDaemonTester)daemonTester;
 - (HDPluginManager)pluginManager;
 - (HDProcessStateManager)processStateManager;
 - (HDProfileManager)profileManager;
-- (NSObject)_setupSignal:(void *)a3 handler:;
+- (NSObject)_setupSignal:(void *)signal handler:;
 - (NSURL)localContentURL;
-- (id)IDSServiceWithIdentifier:(id)a3;
+- (id)IDSServiceWithIdentifier:(id)identifier;
 - (id)_newAnalyticsSubmissionCoordinator;
 - (id)_newAutoBugCaptureReporter;
 - (id)_newCloudSyncCoordinator;
@@ -25,30 +25,30 @@
 - (id)_newTaskServerRegistry;
 - (id)createApplicationStateMonitor;
 - (id)createRBSProcessStateProvider;
-- (id)daemonExtensionsConformingToProtocol:(id)a3;
+- (id)daemonExtensionsConformingToProtocol:(id)protocol;
 - (id)diagnosticDescription;
 - (id)healthDirectorySizeInBytes;
-- (id)healthDomainAccessorWithPairedDevice:(id)a3;
+- (id)healthDomainAccessorWithPairedDevice:(id)device;
 - (id)healthLiteUserDefaultsDomain;
 - (id)protectedResourceStoreProviders;
 - (id)taskServerClasses;
 - (void)_resetPrivacySettings;
 - (void)_terminationCleanup;
-- (void)applicationStateDidChange:(id)a3;
+- (void)applicationStateDidChange:(id)change;
 - (void)dealloc;
-- (void)exitClean:(BOOL)a3 reason:(id)a4;
-- (void)invalidateAndWaitWithReason:(id)a3;
-- (void)obliterateAndTerminateProfiles:(id)a3 options:(unint64_t)a4 reason:(id)a5 completion:(id)a6;
-- (void)obliterateAndTerminateWithOptions:(unint64_t)a3 reason:(id)a4 completion:(id)a5;
-- (void)performBlockWithPowerAssertionIdentifier:(id)a3 transactionName:(id)a4 powerAssertionInterval:(double)a5 block:(id)a6;
-- (void)registerDaemonActivatedObserver:(id)a3 queue:(id)queue;
-- (void)registerDaemonReadyObserver:(id)a3 queue:(id)a4;
-- (void)registerForLaunchNotification:(const char *)a3;
-- (void)registerProtectedResourceStoreProvider:(id)a3;
-- (void)setDaemonTester:(id)a3;
+- (void)exitClean:(BOOL)clean reason:(id)reason;
+- (void)invalidateAndWaitWithReason:(id)reason;
+- (void)obliterateAndTerminateProfiles:(id)profiles options:(unint64_t)options reason:(id)reason completion:(id)completion;
+- (void)obliterateAndTerminateWithOptions:(unint64_t)options reason:(id)reason completion:(id)completion;
+- (void)performBlockWithPowerAssertionIdentifier:(id)identifier transactionName:(id)name powerAssertionInterval:(double)interval block:(id)block;
+- (void)registerDaemonActivatedObserver:(id)observer queue:(id)queue;
+- (void)registerDaemonReadyObserver:(id)observer queue:(id)queue;
+- (void)registerForLaunchNotification:(const char *)notification;
+- (void)registerProtectedResourceStoreProvider:(id)provider;
+- (void)setDaemonTester:(id)tester;
 - (void)start;
-- (void)unregisterForLaunchNotification:(const char *)a3;
-- (void)unregisterProtectedResourceStoreProvider:(id)a3;
+- (void)unregisterForLaunchNotification:(const char *)notification;
+- (void)unregisterProtectedResourceStoreProvider:(id)provider;
 @end
 
 @implementation HDDaemon
@@ -58,8 +58,8 @@
   profileManager = self->_profileManager;
   if (!profileManager)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1098 description:{@"Invalid parameter not satisfying: %@", @"_profileManager != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1098 description:{@"Invalid parameter not satisfying: %@", @"_profileManager != nil"}];
 
     profileManager = self->_profileManager;
   }
@@ -72,8 +72,8 @@
   processStateManager = self->_processStateManager;
   if (!processStateManager)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1084 description:{@"Invalid parameter not satisfying: %@", @"_processStateManager != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1084 description:{@"Invalid parameter not satisfying: %@", @"_processStateManager != nil"}];
 
     processStateManager = self->_processStateManager;
   }
@@ -86,8 +86,8 @@
   pluginManager = self->_pluginManager;
   if (!pluginManager)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1089 description:{@"Invalid parameter not satisfying: %@", @"_pluginManager != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1089 description:{@"Invalid parameter not satisfying: %@", @"_pluginManager != nil"}];
 
     pluginManager = self->_pluginManager;
   }
@@ -121,8 +121,8 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
   contentProtectionManager = self->_contentProtectionManager;
   if (!contentProtectionManager)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1071 description:{@"Invalid parameter not satisfying: %@", @"_contentProtectionManager != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1071 description:{@"Invalid parameter not satisfying: %@", @"_contentProtectionManager != nil"}];
 
     contentProtectionManager = self->_contentProtectionManager;
   }
@@ -200,20 +200,20 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
   return v4;
 }
 
-- (id)IDSServiceWithIdentifier:(id)a3
+- (id)IDSServiceWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D18778];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithService:v4];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithService:identifierCopy];
 
   return v5;
 }
 
-- (id)healthDomainAccessorWithPairedDevice:(id)a3
+- (id)healthDomainAccessorWithPairedDevice:(id)device
 {
   v3 = MEMORY[0x277D2BA58];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDomain:@"com.apple.healthd" pairedDevice:v4];
+  deviceCopy = device;
+  v5 = [[v3 alloc] initWithDomain:@"com.apple.healthd" pairedDevice:deviceCopy];
 
   return v5;
 }
@@ -221,8 +221,8 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
 - (id)healthLiteUserDefaultsDomain
 {
   v3 = [HDKeyValueDomain alloc];
-  v4 = [(HDDaemon *)self primaryProfile];
-  v5 = [(HDKeyValueDomain *)v3 initWithCategory:105 domainName:@"HealthLite" profile:v4];
+  primaryProfile = [(HDDaemon *)self primaryProfile];
+  v5 = [(HDKeyValueDomain *)v3 initWithCategory:105 domainName:@"HealthLite" profile:primaryProfile];
 
   return v5;
 }
@@ -237,20 +237,20 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
   return 0;
 }
 
-- (HDDaemon)initWithContainerDirectoryPath:(id)a3
+- (HDDaemon)initWithContainerDirectoryPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingPathComponent:@"Health"];
-  v6 = [v4 stringByAppendingPathComponent:@"MedicalID"];
+  pathCopy = path;
+  v5 = [pathCopy stringByAppendingPathComponent:@"Health"];
+  v6 = [pathCopy stringByAppendingPathComponent:@"MedicalID"];
 
   v7 = [(HDDaemon *)self initWithHealthDirectoryPath:v5 medicalIDDirectoryPath:v6];
   return v7;
 }
 
-- (HDDaemon)initWithHealthDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4
+- (HDDaemon)initWithHealthDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  directoryPathCopy = directoryPath;
   v27.receiver = self;
   v27.super_class = HDDaemon;
   v8 = [(HDDaemon *)&v27 init];
@@ -259,9 +259,9 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
   {
     v8->_isTerminating = 0;
     atomic_store(0, &v8->_hasCalledExit);
-    v10 = [MEMORY[0x277CCDD30] sharedBehavior];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
     behavior = v9->_behavior;
-    v9->_behavior = v10;
+    v9->_behavior = mEMORY[0x277CCDD30];
 
     v12 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
@@ -275,19 +275,19 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
     daemonActivatedBlocks = v9->_daemonActivatedBlocks;
     v9->_daemonActivatedBlocks = v16;
 
-    v18 = [v6 copy];
+    v18 = [pathCopy copy];
     healthDirectoryPath = v9->_healthDirectoryPath;
     v9->_healthDirectoryPath = v18;
 
-    v20 = [v7 copy];
+    v20 = [directoryPathCopy copy];
     medicalIDDirectoryPath = v9->_medicalIDDirectoryPath;
     v9->_medicalIDDirectoryPath = v20;
 
     v9->_daemonReadyLock._os_unfair_lock_opaque = 0;
     v9->_protectedResourceStoreProvidersLock._os_unfair_lock_opaque = 0;
-    v22 = [(HDDaemon *)v9 _newConnectionManager];
+    _newConnectionManager = [(HDDaemon *)v9 _newConnectionManager];
     connectionManager = v9->_connectionManager;
-    v9->_connectionManager = v22;
+    v9->_connectionManager = _newConnectionManager;
 
     v24 = objc_alloc_init(HDBackgroundObservationServerExtensionManager);
     extensionManager = v9->_extensionManager;
@@ -302,16 +302,16 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
   v155[13] = *MEMORY[0x277D85DE8];
   if (atomic_exchange(&self->_didStart._Value, 1u))
   {
-    v127 = [MEMORY[0x277CCA890] currentHandler];
-    [v127 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"alreadyStarted == false"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"alreadyStarted == false"}];
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     healthDirectoryPath = self->_healthDirectoryPath;
     v137 = 0;
-    v5 = [v3 createDirectoryAtPath:healthDirectoryPath withIntermediateDirectories:1 attributes:0 error:&v137];
+    v5 = [defaultManager createDirectoryAtPath:healthDirectoryPath withIntermediateDirectories:1 attributes:0 error:&v137];
     v129 = v137;
 
     v6 = MEMORY[0x277CCC2B0];
@@ -347,52 +347,52 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
 
     if ([(_HKBehavior *)self->_behavior isDeviceSupported])
     {
-      v11 = [(HDDaemon *)self _newPluginManager];
+      _newPluginManager = [(HDDaemon *)self _newPluginManager];
       pluginManager = self->_pluginManager;
-      self->_pluginManager = v11;
+      self->_pluginManager = _newPluginManager;
 
-      v13 = [(HDDaemon *)self _newCacheDeleteCoordinator];
+      _newCacheDeleteCoordinator = [(HDDaemon *)self _newCacheDeleteCoordinator];
       cacheDeleteCoordinator = self->_cacheDeleteCoordinator;
-      self->_cacheDeleteCoordinator = v13;
+      self->_cacheDeleteCoordinator = _newCacheDeleteCoordinator;
 
-      v15 = [(HDDaemon *)self _newContentProtectionManager];
+      _newContentProtectionManager = [(HDDaemon *)self _newContentProtectionManager];
       contentProtectionManager = self->_contentProtectionManager;
-      self->_contentProtectionManager = v15;
+      self->_contentProtectionManager = _newContentProtectionManager;
 
-      v17 = [(HDDaemon *)self _newProcessStateManager];
+      _newProcessStateManager = [(HDDaemon *)self _newProcessStateManager];
       processStateManager = self->_processStateManager;
-      self->_processStateManager = v17;
+      self->_processStateManager = _newProcessStateManager;
 
-      v19 = [(HDDaemon *)self _newBackgroundSystemScheduler];
+      _newBackgroundSystemScheduler = [(HDDaemon *)self _newBackgroundSystemScheduler];
       systemScheduler = self->_systemScheduler;
-      self->_systemScheduler = v19;
+      self->_systemScheduler = _newBackgroundSystemScheduler;
 
-      v21 = [(HDDaemon *)self _newNotificationInstructionSyncService];
+      _newNotificationInstructionSyncService = [(HDDaemon *)self _newNotificationInstructionSyncService];
       notificationInstructionSyncService = self->_notificationInstructionSyncService;
-      self->_notificationInstructionSyncService = v21;
+      self->_notificationInstructionSyncService = _newNotificationInstructionSyncService;
 
       if ([(_HKBehavior *)self->_behavior healthAppSupportedOnDevice])
       {
-        v23 = [(HDDaemon *)self _newHealthAppNewDeviceNotificationService];
+        _newHealthAppNewDeviceNotificationService = [(HDDaemon *)self _newHealthAppNewDeviceNotificationService];
         healthAppNewDeviceNotificationService = self->_healthAppNewDeviceNotificationService;
-        self->_healthAppNewDeviceNotificationService = v23;
+        self->_healthAppNewDeviceNotificationService = _newHealthAppNewDeviceNotificationService;
       }
 
-      v25 = [(HDDaemon *)self _newNanoRegistryDeviceCapabilityProvider];
+      _newNanoRegistryDeviceCapabilityProvider = [(HDDaemon *)self _newNanoRegistryDeviceCapabilityProvider];
       nanoRegistryDeviceCapabilityProvider = self->_nanoRegistryDeviceCapabilityProvider;
-      self->_nanoRegistryDeviceCapabilityProvider = v25;
+      self->_nanoRegistryDeviceCapabilityProvider = _newNanoRegistryDeviceCapabilityProvider;
 
-      v27 = [(HDDaemon *)self _newOTAFeatureAvailabilityManager];
+      _newOTAFeatureAvailabilityManager = [(HDDaemon *)self _newOTAFeatureAvailabilityManager];
       OTAFeatureAvailabilityManager = self->_OTAFeatureAvailabilityManager;
-      self->_OTAFeatureAvailabilityManager = v27;
+      self->_OTAFeatureAvailabilityManager = _newOTAFeatureAvailabilityManager;
 
       v29 = objc_alloc_init(MEMORY[0x277D10BD0]);
       alarmScheduler = self->_alarmScheduler;
       self->_alarmScheduler = v29;
 
-      v31 = [MEMORY[0x277CCD418] requirementSatisfactionOverridesDataSource];
+      requirementSatisfactionOverridesDataSource = [MEMORY[0x277CCD418] requirementSatisfactionOverridesDataSource];
       featureAvailabilityRequirementSatisfactionOverridesDataSource = self->_featureAvailabilityRequirementSatisfactionOverridesDataSource;
-      self->_featureAvailabilityRequirementSatisfactionOverridesDataSource = v31;
+      self->_featureAvailabilityRequirementSatisfactionOverridesDataSource = requirementSatisfactionOverridesDataSource;
 
       v33 = objc_alloc_init(MEMORY[0x277CCDBE0]);
       watchLowPowerModeDataSource = self->_watchLowPowerModeDataSource;
@@ -402,35 +402,35 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
       wristDetectionSettingManager = self->_wristDetectionSettingManager;
       self->_wristDetectionSettingManager = v35;
 
-      v37 = [(HDDaemon *)self _newPrimaryProfile];
+      _newPrimaryProfile = [(HDDaemon *)self _newPrimaryProfile];
       primaryProfile = self->_primaryProfile;
-      self->_primaryProfile = v37;
+      self->_primaryProfile = _newPrimaryProfile;
 
       [(HDDaemon *)self unitTest_didCreateProfile:self->_primaryProfile];
-      v39 = [(HDDaemon *)self _newProfileManager];
+      _newProfileManager = [(HDDaemon *)self _newProfileManager];
       profileManager = self->_profileManager;
-      self->_profileManager = v39;
+      self->_profileManager = _newProfileManager;
 
       [(HDProfileManager *)self->_profileManager addProfile:self->_primaryProfile];
-      v41 = [(HDDaemon *)self _newCloudSyncCoordinator];
+      _newCloudSyncCoordinator = [(HDDaemon *)self _newCloudSyncCoordinator];
       cloudSyncCoordinator = self->_cloudSyncCoordinator;
-      self->_cloudSyncCoordinator = v41;
+      self->_cloudSyncCoordinator = _newCloudSyncCoordinator;
 
-      v43 = [(HDDaemon *)self _newDatabasePruningCoordinator];
+      _newDatabasePruningCoordinator = [(HDDaemon *)self _newDatabasePruningCoordinator];
       databasePruningCoordinator = self->_databasePruningCoordinator;
-      self->_databasePruningCoordinator = v43;
+      self->_databasePruningCoordinator = _newDatabasePruningCoordinator;
 
-      v45 = [(HDDaemon *)self _newAnalyticsSubmissionCoordinator];
+      _newAnalyticsSubmissionCoordinator = [(HDDaemon *)self _newAnalyticsSubmissionCoordinator];
       analyticsSubmissionCoordinator = self->_analyticsSubmissionCoordinator;
-      self->_analyticsSubmissionCoordinator = v45;
+      self->_analyticsSubmissionCoordinator = _newAnalyticsSubmissionCoordinator;
 
-      v47 = [(HDDaemon *)self _newMaintenanceWorkCoordinator];
+      _newMaintenanceWorkCoordinator = [(HDDaemon *)self _newMaintenanceWorkCoordinator];
       maintenanceWorkCoordinator = self->_maintenanceWorkCoordinator;
-      self->_maintenanceWorkCoordinator = v47;
+      self->_maintenanceWorkCoordinator = _newMaintenanceWorkCoordinator;
 
-      v49 = [(HDDaemon *)self _newAutoBugCaptureReporter];
+      _newAutoBugCaptureReporter = [(HDDaemon *)self _newAutoBugCaptureReporter];
       autoBugCaptureReporter = self->_autoBugCaptureReporter;
-      self->_autoBugCaptureReporter = v49;
+      self->_autoBugCaptureReporter = _newAutoBugCaptureReporter;
 
       if ([(_HKBehavior *)self->_behavior supportsOntology])
       {
@@ -439,27 +439,27 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
         self->_ontologyConfigurationProvider = v51;
       }
 
-      v53 = [(HDDaemon *)self _newDevicePowerMonitor];
+      _newDevicePowerMonitor = [(HDDaemon *)self _newDevicePowerMonitor];
       devicePowerMonitor = self->_devicePowerMonitor;
-      self->_devicePowerMonitor = v53;
+      self->_devicePowerMonitor = _newDevicePowerMonitor;
 
       v55 = [[HDQueryManager alloc] initWithDaemon:self];
       queryManager = self->_queryManager;
       self->_queryManager = v55;
 
-      v57 = [(HDDaemon *)self _newTaskServerRegistry];
+      _newTaskServerRegistry = [(HDDaemon *)self _newTaskServerRegistry];
       taskServerRegistry = self->_taskServerRegistry;
-      self->_taskServerRegistry = v57;
+      self->_taskServerRegistry = _newTaskServerRegistry;
 
       v59 = [HDUserDomainConceptEntityRegistry registryWithDaemon:self setSharedInstance:1];
       userDomainConceptEntityRegistry = self->_userDomainConceptEntityRegistry;
       self->_userDomainConceptEntityRegistry = v59;
 
-      v147 = self;
-      v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&v147 count:1];
+      selfCopy = self;
+      v61 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
       v128 = [(HDPluginManager *)self->_pluginManager pluginsConformingToProtocol:&unk_283CCAEA0];
-      v62 = [v128 allValues];
-      v63 = [v61 arrayByAddingObjectsFromArray:v62];
+      allValues = [v128 allValues];
+      v63 = [v61 arrayByAddingObjectsFromArray:allValues];
 
       v135 = 0u;
       v136 = 0u;
@@ -567,11 +567,11 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
     objc_destroyWeak(v152);
     objc_destroyWeak(v155);
     objc_destroyWeak(location);
-    v85 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v85 addObserver:self];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:self];
 
-    v86 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v86 addObject:self];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:self];
 
     os_unfair_lock_lock(&self->_daemonReadyLock);
     self->_daemonReady = 1;
@@ -758,8 +758,8 @@ void __38__HDDaemon__setupMemoryWarningHandler__block_invoke(uint64_t a1, double
     v121 = self->_queue;
     hd_xpc_set_event_stream_handler();
     [(HDPostInstallUpdateManager *)self->_postInstallUpdateManager start];
-    v122 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v122 addObserver:self selector:sel__localeOrLanguageChanged_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__localeOrLanguageChanged_ name:*MEMORY[0x277CBE620] object:0];
 
     objc_initWeak(buf, self);
     v123 = self->_queue;
@@ -811,12 +811,12 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
 
   deviceNameChangesToken = self->_deviceNameChangesToken;
   MGCancelNotifications();
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   notify_cancel(self->_languageChangeNotifyToken);
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v5 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   if (self->_healthdStateHandler)
   {
@@ -828,46 +828,46 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
   [(HDDaemon *)&v6 dealloc];
 }
 
-- (id)daemonExtensionsConformingToProtocol:(id)a3
+- (id)daemonExtensionsConformingToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_daemonExtensionsByIdentifier allValues];
+  protocolCopy = protocol;
+  allValues = [(NSDictionary *)self->_daemonExtensionsByIdentifier allValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HDDaemon_daemonExtensionsConformingToProtocol___block_invoke;
   v9[3] = &unk_27861B3E0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 hk_filter:v9];
+  v10 = protocolCopy;
+  v6 = protocolCopy;
+  v7 = [allValues hk_filter:v9];
 
   return v7;
 }
 
-- (void)invalidateAndWaitWithReason:(id)a3
+- (void)invalidateAndWaitWithReason:(id)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   [(HDCloudSyncCoordinator *)self->_cloudSyncCoordinator invalidate];
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v4;
+    v21 = reasonCopy;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidating (%{public}@).", buf, 0x16u);
   }
 
   [(HDDaemonConnectionManager *)self->_connectionManager invalidate];
   [(HDMaintenanceWorkCoordinator *)self->_maintenanceWorkCoordinator cancelAllOperations];
-  [(HDProfileManager *)self->_profileManager invalidateAndWaitWithReason:v4];
-  v6 = [(NSDictionary *)self->_daemonExtensionsByIdentifier allValues];
+  [(HDProfileManager *)self->_profileManager invalidateAndWaitWithReason:reasonCopy];
+  allValues = [(NSDictionary *)self->_daemonExtensionsByIdentifier allValues];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -879,7 +879,7 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -892,7 +892,7 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -901,21 +901,21 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)obliterateAndTerminateWithOptions:(unint64_t)a3 reason:(id)a4 completion:(id)a5
+- (void)obliterateAndTerminateWithOptions:(unint64_t)options reason:(id)reason completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(HDDaemon *)self profileManager];
-  v10 = [v11 allProfileIdentifiers];
-  [(HDDaemon *)self obliterateAndTerminateProfiles:v10 options:a3 reason:v9 completion:v8];
+  completionCopy = completion;
+  reasonCopy = reason;
+  profileManager = [(HDDaemon *)self profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
+  [(HDDaemon *)self obliterateAndTerminateProfiles:allProfileIdentifiers options:options reason:reasonCopy completion:completionCopy];
 }
 
-- (void)obliterateAndTerminateProfiles:(id)a3 options:(unint64_t)a4 reason:(id)a5 completion:(id)a6
+- (void)obliterateAndTerminateProfiles:(id)profiles options:(unint64_t)options reason:(id)reason completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  profilesCopy = profiles;
+  reasonCopy = reason;
+  completionCopy = completion;
   v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"Obliteration"];
   self->_isTerminating = 1;
   _HKInitializeLogging();
@@ -923,13 +923,13 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_ERROR))
   {
     v21 = v14;
-    v22 = [v10 componentsJoinedByString:{@", "}];
+    v22 = [profilesCopy componentsJoinedByString:{@", "}];
     *buf = 138543874;
     v27 = v22;
     v28 = 2114;
-    v29 = v11;
+    v29 = reasonCopy;
     v30 = 2048;
-    v31 = a4;
+    optionsCopy = options;
     _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "*** OBLITERATING HEALTH DATA (%{public}@): %{public}@ (%ld)", buf, 0x20u);
   }
 
@@ -938,12 +938,12 @@ void __17__HDDaemon_start__block_invoke_2(uint64_t a1)
   v25[2] = __69__HDDaemon_obliterateAndTerminateProfiles_options_reason_completion___block_invoke;
   v25[3] = &unk_27861B408;
   v25[4] = self;
-  v15 = [v10 hk_map:v25];
-  v24 = v12;
-  v23 = v11;
+  v15 = [profilesCopy hk_map:v25];
+  v24 = completionCopy;
+  v23 = reasonCopy;
   v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v17 = completionCopy;
+  v18 = reasonCopy;
   v19 = v15;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 
@@ -1322,25 +1322,25 @@ void __69__HDDaemon_obliterateAndTerminateProfiles_options_reason_completion___b
 
 - (void)_terminationCleanup
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 120) terminationCleanup];
-    v1 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v1 synchronize];
+    [*(self + 120) terminationCleanup];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults synchronize];
   }
 }
 
-- (void)exitClean:(BOOL)a3 reason:(id)a4
+- (void)exitClean:(BOOL)clean reason:(id)reason
 {
-  v4 = a3;
+  cleanCopy = clean;
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = "";
-    if (v4)
+    if (cleanCopy)
     {
       v8 = " clean";
     }
@@ -1348,11 +1348,11 @@ void __69__HDDaemon_obliterateAndTerminateProfiles_options_reason_completion___b
     *buf = 136315394;
     v12 = v8;
     v13 = 2114;
-    v14 = v6;
+    v14 = reasonCopy;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "Exiting%s: %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (cleanCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1413,18 +1413,18 @@ void __32__HDDaemon__setUpSignalHandlers__block_invoke(uint64_t a1)
   }
 }
 
-- (NSObject)_setupSignal:(void *)a3 handler:
+- (NSObject)_setupSignal:(void *)signal handler:
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = dispatch_source_create(MEMORY[0x277D85D30], a2, 0, *(a1 + 32));
+  signalCopy = signal;
+  v6 = dispatch_source_create(MEMORY[0x277D85D30], a2, 0, *(self + 32));
   if (v6)
   {
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __33__HDDaemon__setupSignal_handler___block_invoke;
     handler[3] = &unk_278613658;
-    v11 = v5;
+    v11 = signalCopy;
     dispatch_source_set_event_handler(v6, handler);
     dispatch_resume(v6);
     signal(a2, 1);
@@ -1713,27 +1713,27 @@ void __37__HDDaemon__setupRapportEventHandler__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)registerDaemonReadyObserver:(id)a3 queue:(id)a4
+- (void)registerDaemonReadyObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   objc_initWeak(&location, self);
-  queue = v7;
-  if (!v7)
+  queue = queueCopy;
+  if (!queueCopy)
   {
     queue = self->_queue;
   }
 
-  v9 = queue;
+  queueCopy2 = queue;
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __46__HDDaemon_registerDaemonReadyObserver_queue___block_invoke;
   aBlock[3] = &unk_27861B498;
   aBlock[4] = self;
-  v10 = v6;
+  v10 = observerCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = queueCopy2;
   v17 = v11;
   objc_copyWeak(&v18, &location);
   v12 = _Block_copy(aBlock);
@@ -1808,14 +1808,14 @@ uint64_t __46__HDDaemon_registerDaemonReadyObserver_queue___block_invoke_476(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)registerDaemonActivatedObserver:(id)a3 queue:(id)queue
+- (void)registerDaemonActivatedObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = self;
-  v8 = v7;
+  observerCopy = observer;
+  selfCopy = self;
+  v8 = selfCopy;
   if (!queue)
   {
-    queue = v7->_queue;
+    queue = selfCopy->_queue;
   }
 
   v9 = queue;
@@ -1824,7 +1824,7 @@ uint64_t __46__HDDaemon_registerDaemonReadyObserver_queue___block_invoke_476(uin
   v18 = __50__HDDaemon_registerDaemonActivatedObserver_queue___block_invoke;
   v19 = &unk_278616D68;
   v20 = v8;
-  v10 = v6;
+  v10 = observerCopy;
   v21 = v10;
   v11 = v9;
   v22 = v11;
@@ -1885,29 +1885,29 @@ void __50__HDDaemon_registerDaemonActivatedObserver_queue___block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerProtectedResourceStoreProvider:(id)a3
+- (void)registerProtectedResourceStoreProvider:(id)provider
 {
-  v7 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&self->_protectedResourceStoreProvidersLock);
   protectedResourceStoreProviders = self->_protectedResourceStoreProviders;
   if (!protectedResourceStoreProviders)
   {
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v6 = self->_protectedResourceStoreProviders;
-    self->_protectedResourceStoreProviders = v5;
+    self->_protectedResourceStoreProviders = weakObjectsHashTable;
 
     protectedResourceStoreProviders = self->_protectedResourceStoreProviders;
   }
 
-  [(NSHashTable *)protectedResourceStoreProviders addObject:v7];
+  [(NSHashTable *)protectedResourceStoreProviders addObject:providerCopy];
   os_unfair_lock_unlock(&self->_protectedResourceStoreProvidersLock);
 }
 
-- (void)unregisterProtectedResourceStoreProvider:(id)a3
+- (void)unregisterProtectedResourceStoreProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&self->_protectedResourceStoreProvidersLock);
-  [(NSHashTable *)self->_protectedResourceStoreProviders removeObject:v4];
+  [(NSHashTable *)self->_protectedResourceStoreProviders removeObject:providerCopy];
 
   os_unfair_lock_unlock(&self->_protectedResourceStoreProvidersLock);
 }
@@ -1918,22 +1918,22 @@ void __50__HDDaemon_registerDaemonActivatedObserver_queue___block_invoke(uint64_
   protectedResourceStoreProviders = self->_protectedResourceStoreProviders;
   if (protectedResourceStoreProviders)
   {
-    v4 = [(NSHashTable *)protectedResourceStoreProviders allObjects];
+    allObjects = [(NSHashTable *)protectedResourceStoreProviders allObjects];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   os_unfair_lock_unlock(&self->_protectedResourceStoreProvidersLock);
 
-  return v4;
+  return allObjects;
 }
 
-- (void)setDaemonTester:(id)a3
+- (void)setDaemonTester:(id)tester
 {
-  obj = a3;
+  obj = tester;
   os_unfair_lock_lock(&self->_daemonReadyLock);
   objc_storeWeak(&self->_daemonTester, obj);
   daemonReady = self->_daemonReady;
@@ -1944,23 +1944,23 @@ void __50__HDDaemon_registerDaemonActivatedObserver_queue___block_invoke(uint64_
   }
 }
 
-- (void)performBlockWithPowerAssertionIdentifier:(id)a3 transactionName:(id)a4 powerAssertionInterval:(double)a5 block:(id)a6
+- (void)performBlockWithPowerAssertionIdentifier:(id)identifier transactionName:(id)name powerAssertionInterval:(double)interval block:(id)block
 {
-  v18 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v18)
+  identifierCopy = identifier;
+  nameCopy = name;
+  blockCopy = block;
+  if (identifierCopy)
   {
-    if (v11)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"transactionName != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:937 description:{@"Invalid parameter not satisfying: %@", @"transactionName != nil"}];
 
-    if (v12)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -1968,33 +1968,33 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:936 description:{@"Invalid parameter not satisfying: %@", @"powerAssertionIdentifier != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:936 description:{@"Invalid parameter not satisfying: %@", @"powerAssertionIdentifier != nil"}];
 
-  if (!v11)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:938 description:{@"Invalid parameter not satisfying: %@", @"block != NULL"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:938 description:{@"Invalid parameter not satisfying: %@", @"block != NULL"}];
 
 LABEL_4:
-  v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:v11];
-  v14 = [HDPowerAssertion powerAssertionWithIdentifier:v18 timeout:0 timeoutHandler:a5];
-  v12[2](v12);
+  v13 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:nameCopy];
+  v14 = [HDPowerAssertion powerAssertionWithIdentifier:identifierCopy timeout:0 timeoutHandler:interval];
+  blockCopy[2](blockCopy);
   [v14 invalidate];
   [v13 invalidate];
 }
 
-- (void)unregisterForLaunchNotification:(const char *)a3
+- (void)unregisterForLaunchNotification:(const char *)notification
 {
   if (self)
   {
@@ -2002,12 +2002,12 @@ LABEL_4:
   }
 }
 
-- (void)registerForLaunchNotification:(const char *)a3
+- (void)registerForLaunchNotification:(const char *)notification
 {
   if (self)
   {
     v4 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_string(v4, "Notification", a3);
+    xpc_dictionary_set_string(v4, "Notification", notification);
     xpc_set_event();
   }
 }
@@ -2015,12 +2015,12 @@ LABEL_4:
 - (id)healthDirectorySizeInBytes
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(HDDaemon *)self healthDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  healthDirectoryURL = [(HDDaemon *)self healthDirectoryURL];
   v5 = *MEMORY[0x277CBE908];
   v35[0] = *MEMORY[0x277CBE908];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v7 = [v3 enumeratorAtURL:v4 includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_491];
+  v7 = [defaultManager enumeratorAtURL:healthDirectoryURL includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_491];
 
   v28 = 0u;
   v29 = 0u;
@@ -2193,9 +2193,9 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
     _os_log_error_impl(&dword_228986000, v3, OS_LOG_TYPE_ERROR, "Resetting privacy settings", buf, 2u);
   }
 
-  v4 = [(HDDaemon *)self primaryProfile];
-  v5 = [v4 authorizationManager];
-  [v5 resetAllAuthorizationRecordsWithCompletion:0];
+  primaryProfile = [(HDDaemon *)self primaryProfile];
+  authorizationManager = [primaryProfile authorizationManager];
+  [authorizationManager resetAllAuthorizationRecordsWithCompletion:0];
 
   v6 = objc_alloc(MEMORY[0x277D2BA58]);
   v7 = *MEMORY[0x277CCE500];
@@ -2235,8 +2235,8 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
     while (v15);
   }
 
-  v18 = [v8 synchronize];
-  if (v18)
+  synchronize = [v8 synchronize];
+  if (synchronize)
   {
     _HKInitializeLogging();
     v19 = *MEMORY[0x277CCC2B0];
@@ -2245,7 +2245,7 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
       *buf = 138543618;
       v27 = v8;
       v28 = 2114;
-      v29 = v18;
+      v29 = synchronize;
       _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "Failed to synchronize %{public}@: %{public}@", buf, 0x16u);
     }
   }
@@ -2261,8 +2261,8 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
 
 - (NSURL)localContentURL
 {
-  v2 = [(HDDaemon *)self healthDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Local" isDirectory:1];
+  healthDirectoryURL = [(HDDaemon *)self healthDirectoryURL];
+  v3 = [healthDirectoryURL URLByAppendingPathComponent:@"Local" isDirectory:1];
 
   return v3;
 }
@@ -2316,8 +2316,8 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
 {
   if (!self->_primaryProfile)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1169 description:{@"Invalid parameter not satisfying: %@", @"_primaryProfile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1169 description:{@"Invalid parameter not satisfying: %@", @"_primaryProfile"}];
   }
 
   v3 = [HDAnalyticsSubmissionCoordinator alloc];
@@ -2351,8 +2351,8 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
 {
   if (!self->_healthDirectoryPath)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1194 description:{@"Invalid parameter not satisfying: %@", @"_healthDirectoryPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDaemon.m" lineNumber:1194 description:{@"Invalid parameter not satisfying: %@", @"_healthDirectoryPath"}];
   }
 
   v3 = [HDPrimaryProfile alloc];
@@ -2399,10 +2399,10 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
   return [(HDTaskServerRegistry *)v3 initWithDaemon:self];
 }
 
-- (void)applicationStateDidChange:(id)a3
+- (void)applicationStateDidChange:(id)change
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CCE340];
   v30[0] = @"com.apple.ActivityMonitorApp";
@@ -2417,7 +2417,7 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
   v27[3] = &unk_27861B508;
   v9 = v8;
   v28 = v9;
-  v10 = [v4 hk_filter:v27];
+  v10 = [changeCopy hk_filter:v27];
   if ([v10 count])
   {
     v25 = 0u;
@@ -2429,7 +2429,7 @@ void __41__HDDaemon__registerForDeviceNameChanges__block_invoke(uint64_t a1)
     if (v12)
     {
       v13 = v12;
-      v22 = self;
+      selfCopy = self;
       v14 = *v24;
       v15 = &HDHealthDaemonFitnessAppsRestrictedNotification;
 LABEL_4:
@@ -2441,10 +2441,10 @@ LABEL_4:
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * v16) appState];
-        v18 = [v17 isRestricted];
+        appState = [*(*(&v23 + 1) + 8 * v16) appState];
+        isRestricted = [appState isRestricted];
 
-        if (v18)
+        if (isRestricted)
         {
           break;
         }
@@ -2462,7 +2462,7 @@ LABEL_4:
         }
       }
 
-      self = v22;
+      self = selfCopy;
     }
 
     else
@@ -2471,8 +2471,8 @@ LABEL_4:
     }
 
     v19 = *v15;
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:v19 object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:v19 object:self];
   }
 
   v21 = *MEMORY[0x277D85DE8];

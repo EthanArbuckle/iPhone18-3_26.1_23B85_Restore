@@ -1,13 +1,13 @@
 @interface CHXScatterType
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXScatterType
 
-+ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdChartTypeFromXmlChartTypeElement:(_xmlNode *)element state:(id)state
 {
-  v4 = [a4 chart];
-  v5 = [(CHDChartType *)CHDScatterType chartTypeWithChart:v4];
+  chart = [state chart];
+  v5 = [(CHDChartType *)CHDScatterType chartTypeWithChart:chart];
 
   [v5 setVaryColors:0];
 

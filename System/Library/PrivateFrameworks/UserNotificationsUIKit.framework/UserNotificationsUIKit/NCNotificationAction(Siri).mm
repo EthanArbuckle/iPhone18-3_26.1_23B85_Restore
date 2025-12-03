@@ -18,7 +18,7 @@
   if (result)
   {
 
-    return [a1 _isSiriAction];
+    return [self _isSiriAction];
   }
 
   return result;
@@ -26,16 +26,16 @@
 
 - (uint64_t)_isSiriAction
 {
-  v2 = [a1 isSiriActionCandidate];
-  v3 = [a1 isSiriAvailable];
-  v4 = [a1 isDrivingFocusEnabled];
-  v5 = v4 & ([a1 isUserConnectedToCarPlay] ^ 1);
-  if (!v3)
+  isSiriActionCandidate = [self isSiriActionCandidate];
+  isSiriAvailable = [self isSiriAvailable];
+  isDrivingFocusEnabled = [self isDrivingFocusEnabled];
+  v5 = isDrivingFocusEnabled & ([self isUserConnectedToCarPlay] ^ 1);
+  if (!isSiriAvailable)
   {
     v5 = 0;
   }
 
-  if (v2)
+  if (isSiriActionCandidate)
   {
     return v5;
   }
@@ -48,13 +48,13 @@
 
 - (uint64_t)isSiriAvailable
 {
-  result = [a1 isSiriEnabled];
+  result = [self isSiriEnabled];
   if (result)
   {
-    result = [a1 isSiriSupported];
+    result = [self isSiriSupported];
     if (result)
     {
-      return [a1 isSiriRestricted] ^ 1;
+      return [self isSiriRestricted] ^ 1;
     }
   }
 
@@ -63,50 +63,50 @@
 
 - (uint64_t)isSiriEnabled
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 siriIsEnabled];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  siriIsEnabled = [mEMORY[0x277D551B0] siriIsEnabled];
 
-  return v1;
+  return siriIsEnabled;
 }
 
 - (uint64_t)isSiriRestricted
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 siriIsRestricted];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  siriIsRestricted = [mEMORY[0x277D551B0] siriIsRestricted];
 
-  return v1;
+  return siriIsRestricted;
 }
 
 - (uint64_t)isSiriSupported
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 siriIsSupported];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  siriIsSupported = [mEMORY[0x277D551B0] siriIsSupported];
 
-  return v1;
+  return siriIsSupported;
 }
 
 - (uint64_t)isDrivingFocusEnabled
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 carDNDActive];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  carDNDActive = [mEMORY[0x277D551B0] carDNDActive];
 
-  return v1;
+  return carDNDActive;
 }
 
 - (uint64_t)isUserConnectedToBluetoothDevice
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 isConnectedToEyesFreeDevice];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  isConnectedToEyesFreeDevice = [mEMORY[0x277D551B0] isConnectedToEyesFreeDevice];
 
-  return v1;
+  return isConnectedToEyesFreeDevice;
 }
 
 - (uint64_t)isUserConnectedToCarPlay
 {
-  v0 = [MEMORY[0x277D551B0] sharedSystemState];
-  v1 = [v0 isConnectedToCarPlay];
+  mEMORY[0x277D551B0] = [MEMORY[0x277D551B0] sharedSystemState];
+  isConnectedToCarPlay = [mEMORY[0x277D551B0] isConnectedToCarPlay];
 
-  return v1;
+  return isConnectedToCarPlay;
 }
 
 @end

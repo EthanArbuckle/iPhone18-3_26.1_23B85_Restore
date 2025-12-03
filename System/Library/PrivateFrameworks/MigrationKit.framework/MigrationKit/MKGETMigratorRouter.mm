@@ -1,17 +1,17 @@
 @interface MKGETMigratorRouter
 - (NSHashTable)migrators;
-- (id)keyFromMigratorType:(int64_t)a3;
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (id)keyFromMigratorType:(int64_t)type;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKGETMigratorRouter
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
   v37 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
+  serverCopy = server;
+  requestCopy = request;
+  responseCopy = response;
   v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v30 = 0u;
   v31 = 0u;
@@ -82,22 +82,22 @@
     }
   }
 
-  v22 = v24;
-  [v24 setBody:{v19, v24}];
+  v22 = responseCopy;
+  [responseCopy setBody:{v19, responseCopy}];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)keyFromMigratorType:(int64_t)a3
+- (id)keyFromMigratorType:(int64_t)type
 {
-  if (a3 > 0x10)
+  if (type > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return off_2798DD068[a3];
+    return off_2798DD068[type];
   }
 }
 

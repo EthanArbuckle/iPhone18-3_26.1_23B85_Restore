@@ -1,5 +1,5 @@
 @interface BWFigCaptureDeviceVendorDeviceState
-- (BWFigCaptureDeviceVendorDeviceState)initWithDevice:(id)a3 figCaptureDevice:(OpaqueFigCaptureDevice *)a4;
+- (BWFigCaptureDeviceVendorDeviceState)initWithDevice:(id)device figCaptureDevice:(OpaqueFigCaptureDevice *)captureDevice;
 - (NSArray)streamsRequiringControlControlledByOtherClients;
 - (id)description;
 - (void)dealloc;
@@ -7,17 +7,17 @@
 
 @implementation BWFigCaptureDeviceVendorDeviceState
 
-- (BWFigCaptureDeviceVendorDeviceState)initWithDevice:(id)a3 figCaptureDevice:(OpaqueFigCaptureDevice *)a4
+- (BWFigCaptureDeviceVendorDeviceState)initWithDevice:(id)device figCaptureDevice:(OpaqueFigCaptureDevice *)captureDevice
 {
   v9.receiver = self;
   v9.super_class = BWFigCaptureDeviceVendorDeviceState;
   v6 = [(BWFigCaptureDeviceVendorDeviceState *)&v9 init];
   if (v6)
   {
-    v6->_device = a3;
-    if (a4)
+    v6->_device = device;
+    if (captureDevice)
     {
-      v7 = CFRetain(a4);
+      v7 = CFRetain(captureDevice);
     }
 
     else
@@ -63,7 +63,7 @@
 
 - (NSArray)streamsRequiringControlControlledByOtherClients
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -86,7 +86,7 @@
         v9 = *(*(&v12 + 1) + 8 * i);
         if ((-[NSMutableArray containsObject:](self->_portTypesAllowingStreamControlLoss, "containsObject:", [v9 portType]) & 1) == 0)
         {
-          [(NSArray *)v3 addObject:v9];
+          [(NSArray *)array addObject:v9];
         }
       }
 
@@ -96,7 +96,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)description

@@ -1,10 +1,10 @@
 @interface tmd86fe6187ee41b8649354ac4ec3a992b
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 @end
 
 @implementation tmd86fe6187ee41b8649354ac4ec3a992b
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = qword_1000AB824;
   v5 = qword_1000AB82C;

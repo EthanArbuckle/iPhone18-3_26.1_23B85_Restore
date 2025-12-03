@@ -1,28 +1,28 @@
 @interface GTTelemetryStatistics
-- (GTTelemetryStatistics)initWithCoder:(id)a3;
+- (GTTelemetryStatistics)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryStatistics
 
-- (GTTelemetryStatistics)initWithCoder:(id)a3
+- (GTTelemetryStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = GTTelemetryStatistics;
   v5 = [(GTTelemetryStatistics *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"devices"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"devices"];
     devices = v5->_devices;
     v5->_devices = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"queues"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"queues"];
     queues = v5->_queues;
     v5->_queues = v8;
 
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"layers"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"layers"];
     layers = v5->_layers;
     v5->_layers = v10;
   }
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   devices = self->_devices;
-  v5 = a3;
-  [v5 encodeObject:devices forKey:@"devices"];
-  [v5 encodeObject:self->_queues forKey:@"queues"];
-  [v5 encodeObject:self->_layers forKey:@"layers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:devices forKey:@"devices"];
+  [coderCopy encodeObject:self->_queues forKey:@"queues"];
+  [coderCopy encodeObject:self->_layers forKey:@"layers"];
 }
 
 - (id)description

@@ -1,22 +1,22 @@
 @interface SpeakableLocationResolutionResult
-+ (id)confirmationRequiredWithSpeakableLocationToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithSpeakableLocationsToDisambiguate:(id)a3;
-+ (id)successWithResolvedSpeakableLocation:(id)a3;
++ (id)confirmationRequiredWithSpeakableLocationToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithSpeakableLocationsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedSpeakableLocation:(id)location;
 @end
 
 @implementation SpeakableLocationResolutionResult
 
-+ (id)successWithResolvedSpeakableLocation:(id)a3
++ (id)successWithResolvedSpeakableLocation:(id)location
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA4F44(v4);
+  locationCopy = location;
+  v5 = sub_266DA4F44(locationCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithSpeakableLocationsToDisambiguate:(id)a3
++ (id)disambiguationWithSpeakableLocationsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for SpeakableLocation();
   v3 = sub_266DAA93C();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithSpeakableLocationToConfirm:(id)a3
++ (id)confirmationRequiredWithSpeakableLocationToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA50A0(a3);
+  confirmCopy = confirm;
+  v5 = sub_266DA50A0(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_266DA3968();
   sub_266DAA93C();

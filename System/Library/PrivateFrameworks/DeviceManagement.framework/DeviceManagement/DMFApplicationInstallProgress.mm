@@ -1,44 +1,44 @@
 @interface DMFApplicationInstallProgress
-- (BOOL)isEqual:(id)a3;
-- (DMFApplicationInstallProgress)initWithCoder:(id)a3;
-- (DMFApplicationInstallProgress)initWithState:(unint64_t)a3 phase:(unint64_t)a4 fractionCompleted:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (DMFApplicationInstallProgress)initWithCoder:(id)coder;
+- (DMFApplicationInstallProgress)initWithState:(unint64_t)state phase:(unint64_t)phase fractionCompleted:(double)completed;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFApplicationInstallProgress
 
-- (DMFApplicationInstallProgress)initWithState:(unint64_t)a3 phase:(unint64_t)a4 fractionCompleted:(double)a5
+- (DMFApplicationInstallProgress)initWithState:(unint64_t)state phase:(unint64_t)phase fractionCompleted:(double)completed
 {
   v9.receiver = self;
   v9.super_class = DMFApplicationInstallProgress;
   result = [(DMFApplicationInstallProgress *)&v9 init];
   if (result)
   {
-    result->_state = a3;
-    result->_phase = a4;
-    result->_fractionCompleted = a5;
+    result->_state = state;
+    result->_phase = phase;
+    result->_fractionCompleted = completed;
   }
 
   return result;
 }
 
-- (DMFApplicationInstallProgress)initWithCoder:(id)a3
+- (DMFApplicationInstallProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DMFApplicationInstallProgress;
   v5 = [(DMFApplicationInstallProgress *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     v5->_state = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phase"];
     v5->_phase = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fractionCompleted"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fractionCompleted"];
     [v8 doubleValue];
     v5->_fractionCompleted = v9;
   }
@@ -46,26 +46,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[DMFApplicationInstallProgress state](self, "state")}];
-  [v5 encodeObject:v6 forKey:@"state"];
+  [coderCopy encodeObject:v6 forKey:@"state"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[DMFApplicationInstallProgress phase](self, "phase")}];
-  [v5 encodeObject:v7 forKey:@"phase"];
+  [coderCopy encodeObject:v7 forKey:@"phase"];
 
   v8 = MEMORY[0x1E696AD98];
   [(DMFApplicationInstallProgress *)self fractionCompleted];
   v9 = [v8 numberWithDouble:?];
-  [v5 encodeObject:v9 forKey:@"fractionCompleted"];
+  [coderCopy encodeObject:v9 forKey:@"fractionCompleted"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -75,9 +75,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DMFApplicationInstallProgress *)self state];
-      if (v6 == [(DMFApplicationInstallProgress *)v5 state]&& (v7 = [(DMFApplicationInstallProgress *)self phase], v7 == [(DMFApplicationInstallProgress *)v5 phase]))
+      v5 = equalCopy;
+      state = [(DMFApplicationInstallProgress *)self state];
+      if (state == [(DMFApplicationInstallProgress *)v5 state]&& (v7 = [(DMFApplicationInstallProgress *)self phase], v7 == [(DMFApplicationInstallProgress *)v5 phase]))
       {
         [(DMFApplicationInstallProgress *)self fractionCompleted];
         v9 = v8;
@@ -103,17 +103,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@:%p {\nState              : ", objc_opt_class(), self];
-  v4 = [(DMFApplicationInstallProgress *)self state];
-  if (v4 <= 5)
+  state = [(DMFApplicationInstallProgress *)self state];
+  if (state <= 5)
   {
-    [v3 appendString:off_1E8616030[v4]];
+    [v3 appendString:off_1E8616030[state]];
   }
 
   [v3 appendString:@"\nPhase              : "];
-  v5 = [(DMFApplicationInstallProgress *)self phase];
-  if (v5 <= 3)
+  phase = [(DMFApplicationInstallProgress *)self phase];
+  if (phase <= 3)
   {
-    [v3 appendString:off_1E8616060[v5]];
+    [v3 appendString:off_1E8616060[phase]];
   }
 
   [(DMFApplicationInstallProgress *)self fractionCompleted];
@@ -123,14 +123,14 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(DMFApplicationInstallProgress *)self state];
-  v6 = [(DMFApplicationInstallProgress *)self phase];
+  state = [(DMFApplicationInstallProgress *)self state];
+  phase = [(DMFApplicationInstallProgress *)self phase];
   [(DMFApplicationInstallProgress *)self fractionCompleted];
 
-  return [v4 initWithState:v5 phase:v6 fractionCompleted:?];
+  return [v4 initWithState:state phase:phase fractionCompleted:?];
 }
 
 @end

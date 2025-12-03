@@ -1,19 +1,19 @@
 @interface PNPDoubleTapViewController
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6;
-- (BOOL)scratchPadViewIsPlayingAnimation:(id)a3;
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4;
-- (void)pencilInteractionDidTap:(id)a3;
-- (void)scratchPadViewHadInteractionEvent:(id)a3;
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate;
+- (BOOL)scratchPadViewIsPlayingAnimation:(id)animation;
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped;
+- (void)pencilInteractionDidTap:(id)tap;
+- (void)scratchPadViewHadInteractionEvent:(id)event;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PNPDoubleTapViewController
 
-+ (id)_controllerWithType:(int64_t)a3 buttonType:(int64_t)a4 deviceType:(int64_t)a5 delegate:(id)a6
++ (id)_controllerWithType:(int64_t)type buttonType:(int64_t)buttonType deviceType:(int64_t)deviceType delegate:(id)delegate
 {
-  v9 = a6;
+  delegateCopy = delegate;
   v10 = [PNPDoubleTapViewController alloc];
   v11 = PencilPairingUIBundle();
   v12 = [v11 localizedStringForKey:@"QUICK_SWAP_TITLE" value:&stru_286FDFDB8 table:0];
@@ -21,7 +21,7 @@
   v14 = [v13 localizedStringForKey:@"QUICK_SWAP_DESCRIPTION" value:&stru_286FDFDB8 table:0];
   v15 = [(PNPWelcomeController *)v10 initWithTitle:v12 detailText:v14 icon:0];
 
-  [(PNPWelcomeController *)v15 setControllerType:a3 buttonType:a4 deviceType:a5 delegate:v9];
+  [(PNPWelcomeController *)v15 setControllerType:type buttonType:buttonType deviceType:deviceType delegate:delegateCopy];
 
   return v15;
 }
@@ -31,127 +31,127 @@
   v36.receiver = self;
   v36.super_class = PNPDoubleTapViewController;
   [(OBBaseWelcomeController *)&v36 viewDidLoad];
-  v3 = [(PNPDoubleTapViewController *)self contentView];
+  contentView = [(PNPDoubleTapViewController *)self contentView];
   v4 = objc_alloc_init(PNPWizardScratchpadView);
   [(PNPWizardScratchpadView *)v4 setDelegate:self];
   [(PNPWizardScratchpadView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v4];
-  v5 = [(PNPWizardScratchpadView *)v4 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:448.0];
+  [contentView addSubview:v4];
+  widthAnchor = [(PNPWizardScratchpadView *)v4 widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:448.0];
   [v6 setActive:1];
 
-  v7 = [(PNPWizardScratchpadView *)v4 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:286.0];
+  heightAnchor = [(PNPWizardScratchpadView *)v4 heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:286.0];
   [v8 setActive:1];
 
-  v9 = [(PNPWizardScratchpadView *)v4 topAnchor];
-  v10 = [v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(PNPWizardScratchpadView *)v4 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [(PNPWizardScratchpadView *)v4 centerXAnchor];
-  v13 = [v3 centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [(PNPWizardScratchpadView *)v4 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v14 setActive:1];
 
   [(PNPDoubleTapViewController *)self setScratchPadView:v4];
   v15 = [[PNPPencilView alloc] initWithVariant:0];
   [(PNPPencilView *)v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v15];
-  v16 = [(PNPPencilView *)v15 leadingAnchor];
-  v17 = [(PNPWizardScratchpadView *)v4 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  [contentView addSubview:v15];
+  leadingAnchor = [(PNPPencilView *)v15 leadingAnchor];
+  leadingAnchor2 = [(PNPWizardScratchpadView *)v4 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v18 setActive:1];
 
-  v19 = [(PNPPencilView *)v15 trailingAnchor];
-  v20 = [(PNPWizardScratchpadView *)v4 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor = [(PNPPencilView *)v15 trailingAnchor];
+  trailingAnchor2 = [(PNPWizardScratchpadView *)v4 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v21 setActive:1];
 
-  v22 = [(PNPPencilView *)v15 topAnchor];
-  v23 = [(PNPWizardScratchpadView *)v4 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:-20.0];
+  topAnchor3 = [(PNPPencilView *)v15 topAnchor];
+  bottomAnchor = [(PNPWizardScratchpadView *)v4 bottomAnchor];
+  v24 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:-20.0];
   [v24 setActive:1];
 
-  v25 = [(PNPPencilView *)v15 heightAnchor];
-  v26 = [v25 constraintEqualToConstant:100.0];
+  heightAnchor2 = [(PNPPencilView *)v15 heightAnchor];
+  v26 = [heightAnchor2 constraintEqualToConstant:100.0];
   [v26 setActive:1];
 
-  v27 = [(PNPPencilView *)v15 bottomAnchor];
-  v28 = [v3 bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  bottomAnchor2 = [(PNPPencilView *)v15 bottomAnchor];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v29 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v29 setActive:1];
 
   [(PNPDoubleTapViewController *)self setPencilView:v15];
   v30 = objc_alloc_init(MEMORY[0x277D75820]);
   [(PNPDoubleTapViewController *)self setPencilInteraction:v30];
 
-  v31 = [(PNPDoubleTapViewController *)self pencilInteraction];
-  [v31 setDelegate:self];
+  pencilInteraction = [(PNPDoubleTapViewController *)self pencilInteraction];
+  [pencilInteraction setDelegate:self];
 
-  v32 = [(PNPDoubleTapViewController *)self view];
-  v33 = [(PNPDoubleTapViewController *)self pencilInteraction];
-  [v32 addInteraction:v33];
+  view = [(PNPDoubleTapViewController *)self view];
+  pencilInteraction2 = [(PNPDoubleTapViewController *)self pencilInteraction];
+  [view addInteraction:pencilInteraction2];
 
   v34 = objc_alloc_init(PNPQuickSwapEventSource);
   [(PNPDoubleTapViewController *)self setQuickSwapEventSource:v34];
 
-  v35 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v35 setEventDestination:self];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource setEventDestination:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PNPDoubleTapViewController;
-  [(PNPDoubleTapViewController *)&v7 viewWillAppear:a3];
-  v4 = [(PNPDoubleTapViewController *)self scratchPadView];
-  [v4 prepareCanvasViews];
+  [(PNPDoubleTapViewController *)&v7 viewWillAppear:appear];
+  scratchPadView = [(PNPDoubleTapViewController *)self scratchPadView];
+  [scratchPadView prepareCanvasViews];
 
-  v5 = [(PNPDoubleTapViewController *)self scratchPadView];
-  [v5 setStep:1];
+  scratchPadView2 = [(PNPDoubleTapViewController *)self scratchPadView];
+  [scratchPadView2 setStep:1];
 
-  v6 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v6 play];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource play];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PNPDoubleTapViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
-  v4 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v4 stop];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource stop];
 }
 
-- (void)pencilInteractionDidTap:(id)a3
+- (void)pencilInteractionDidTap:(id)tap
 {
-  v4 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v4 stop];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource stop];
 
-  v5 = [(PNPDoubleTapViewController *)self pencilView];
-  [v5 eventSource:0 hadPencilDoubleTapped:0];
+  pencilView = [(PNPDoubleTapViewController *)self pencilView];
+  [pencilView eventSource:0 hadPencilDoubleTapped:0];
 
-  v6 = [(PNPDoubleTapViewController *)self scratchPadView];
-  [v6 eventSource:0 hadPencilDoubleTapped:0];
+  scratchPadView = [(PNPDoubleTapViewController *)self scratchPadView];
+  [scratchPadView eventSource:0 hadPencilDoubleTapped:0];
 }
 
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v8 stop];
+  sourceCopy = source;
+  tappedCopy = tapped;
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource stop];
 
   objc_initWeak(&location, self);
-  v9 = [(PNPDoubleTapViewController *)self pencilView];
+  pencilView = [(PNPDoubleTapViewController *)self pencilView];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__PNPDoubleTapViewController_eventSource_hadPencilDoubleTapped___block_invoke;
   v10[3] = &unk_279A0A578;
   v10[4] = self;
   objc_copyWeak(&v11, &location);
-  [v9 eventSource:0 hadPencilDoubleTapped:v10];
+  [pencilView eventSource:0 hadPencilDoubleTapped:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -176,19 +176,19 @@ void __64__PNPDoubleTapViewController_eventSource_hadPencilDoubleTapped___block_
   }
 }
 
-- (void)scratchPadViewHadInteractionEvent:(id)a3
+- (void)scratchPadViewHadInteractionEvent:(id)event
 {
   [(PNPDoubleTapViewController *)self setAnimationsCancelled:1];
-  v4 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  [v4 stop];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  [quickSwapEventSource stop];
 }
 
-- (BOOL)scratchPadViewIsPlayingAnimation:(id)a3
+- (BOOL)scratchPadViewIsPlayingAnimation:(id)animation
 {
-  v3 = [(PNPDoubleTapViewController *)self quickSwapEventSource];
-  v4 = [v3 isPlaying];
+  quickSwapEventSource = [(PNPDoubleTapViewController *)self quickSwapEventSource];
+  isPlaying = [quickSwapEventSource isPlaying];
 
-  return v4;
+  return isPlaying;
 }
 
 @end

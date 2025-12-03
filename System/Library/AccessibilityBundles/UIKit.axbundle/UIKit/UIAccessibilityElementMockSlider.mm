@@ -1,5 +1,5 @@
 @interface UIAccessibilityElementMockSlider
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGPoint)_accessibilityMaxScrubberPosition;
 - (CGPoint)_accessibilityMinScrubberPosition;
 - (CGRect)accessibilityFrame;
@@ -7,24 +7,24 @@
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setView:(id *)a1;
+- (void)setView:(id *)view;
 @end
 
 @implementation UIAccessibilityElementMockSlider
 
-- (void)setView:(id *)a1
+- (void)setView:(id *)view
 {
-  v5 = a1;
+  viewCopy = view;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (viewCopy)
   {
     [location setAccessibilityContainer:0];
-    objc_storeStrong(v5 + 6, location);
-    v2 = v5[6];
-    v3 = [v5 accessibilityContainer];
+    objc_storeStrong(viewCopy + 6, location);
+    v2 = viewCopy[6];
+    accessibilityContainer = [viewCopy accessibilityContainer];
     [v2 setAccessibilityContainer:?];
-    MEMORY[0x29EDC9740](v3);
+    MEMORY[0x29EDC9740](accessibilityContainer);
   }
 
   objc_storeStrong(&location, 0);
@@ -39,15 +39,15 @@
   *(&v15 + 1) = *&v16.size.height;
   if (CGRectIsEmpty(v16))
   {
-    v10 = [(UIAccessibilityElementMockSlider *)self accessibilityContainer];
-    [v10 accessibilityFrame];
+    accessibilityContainer = [(UIAccessibilityElementMockSlider *)self accessibilityContainer];
+    [accessibilityContainer accessibilityFrame];
     *&v11 = v2;
     *(&v11 + 1) = v3;
     *&v12 = v4;
     *(&v12 + 1) = v5;
     v14 = v11;
     v15 = v12;
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](accessibilityContainer);
   }
 
   v7 = *(&v14 + 1);
@@ -63,13 +63,13 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = *MEMORY[0x29EDC7FA0];
-  v3 = [(UIView *)self->_view accessibilityTraits];
-  v4.receiver = v8;
+  accessibilityTraits = [(UIView *)self->_view accessibilityTraits];
+  v4.receiver = selfCopy;
   v4.super_class = UIAccessibilityElementMockSlider;
-  v5 = v3 | [(UIAccessibilityElementMockSlider *)&v4 accessibilityTraits];
+  v5 = accessibilityTraits | [(UIAccessibilityElementMockSlider *)&v4 accessibilityTraits];
   if ((v5 & *MEMORY[0x29EDC7FA8]) == *MEMORY[0x29EDC7FA8])
   {
     v6 |= *MEMORY[0x29EDC7FA8];
@@ -78,9 +78,9 @@
   return v6 | *MEMORY[0x29EDC7F60];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 3)
+  if (scroll == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = objc_opt_respondsToSelector();
@@ -95,7 +95,7 @@
     return 1;
   }
 
-  else if (a3 == 4)
+  else if (scroll == 4)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
     v6 = objc_opt_respondsToSelector();

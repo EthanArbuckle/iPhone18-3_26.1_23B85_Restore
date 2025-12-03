@@ -21,8 +21,8 @@
   [(GKRectShadowCell *)&v6 awakeFromNib];
   v3 = GKGameCenterUIFrameworkBundle();
   v4 = GKGetLocalizedStringFromTableInBundle();
-  v5 = [(GKDashboardShowMoreTextCell *)self label];
-  [v5 setText:v4];
+  label = [(GKDashboardShowMoreTextCell *)self label];
+  [label setText:v4];
 }
 
 @end

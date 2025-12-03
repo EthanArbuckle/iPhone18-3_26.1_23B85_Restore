@@ -1,5 +1,5 @@
 @interface PFCoalescerActivityToken
-- (PFCoalescerActivityToken)initWithDispatchGroup:(id)a3 reason:(id)a4;
+- (PFCoalescerActivityToken)initWithDispatchGroup:(id)group reason:(id)reason;
 - (id)description;
 - (void)dealloc;
 - (void)endActivity;
@@ -40,8 +40,8 @@ void __39__PFCoalescerActivityToken_endActivity__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_creationDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_creationDate];
   v5 = v4;
 
   v6 = MEMORY[0x1E696AEC0];
@@ -52,32 +52,32 @@ void __39__PFCoalescerActivityToken_endActivity__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (PFCoalescerActivityToken)initWithDispatchGroup:(id)a3 reason:(id)a4
+- (PFCoalescerActivityToken)initWithDispatchGroup:(id)group reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  reasonCopy = reason;
   v19.receiver = self;
   v19.super_class = PFCoalescerActivityToken;
   v9 = [(PFCoalescerActivityToken *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reason, a4);
+    objc_storeStrong(&v9->_reason, reason);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("activity token isolation", v11);
     isolationQueue = v10->_isolationQueue;
     v10->_isolationQueue = v12;
 
-    objc_storeStrong(&v10->_group, a3);
-    v14 = [MEMORY[0x1E696AF00] callStackReturnAddresses];
+    objc_storeStrong(&v10->_group, group);
+    callStackReturnAddresses = [MEMORY[0x1E696AF00] callStackReturnAddresses];
     callStackReturnAddresses = v10->_callStackReturnAddresses;
-    v10->_callStackReturnAddresses = v14;
+    v10->_callStackReturnAddresses = callStackReturnAddresses;
 
-    v16 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v10->_creationDate;
-    v10->_creationDate = v16;
+    v10->_creationDate = date;
 
-    dispatch_group_enter(v7);
+    dispatch_group_enter(groupCopy);
   }
 
   return v10;

@@ -1,31 +1,31 @@
 @interface PhotosCustomNotificationsController
 - (PHPhotoLibrary)systemPhotoLibrary;
-- (id)memoriesNotificationEnabledForSpecifier:(id)a3;
-- (id)sharedAlbumsNotificationEnabledForSpecifier:(id)a3;
-- (id)sharedLibraryDeletionNotificationsNotificationEnabledForSpecifier:(id)a3;
-- (id)sharedLibrarySuggestionsNotificationEnabledForSpecifier:(id)a3;
-- (id)sharingSuggestionsNotificationEnabledForSpecifier:(id)a3;
+- (id)memoriesNotificationEnabledForSpecifier:(id)specifier;
+- (id)sharedAlbumsNotificationEnabledForSpecifier:(id)specifier;
+- (id)sharedLibraryDeletionNotificationsNotificationEnabledForSpecifier:(id)specifier;
+- (id)sharedLibrarySuggestionsNotificationEnabledForSpecifier:(id)specifier;
+- (id)sharingSuggestionsNotificationEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)photoLibraryDidBecomeUnavailable:(id)a3;
-- (void)setMemoriesNotificationEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSharedAlbumsNotificationEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSharedLibraryDeletionNotificationsNotificationEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSharedLibrarySuggestionsNotificationEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSharingSuggestionsNotificationEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable;
+- (void)setMemoriesNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSharedAlbumsNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSharedLibraryDeletionNotificationsNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSharedLibrarySuggestionsNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSharingSuggestionsNotificationEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation PhotosCustomNotificationsController
 
-- (void)photoLibraryDidBecomeUnavailable:(id)a3
+- (void)photoLibraryDidBecomeUnavailable:(id)unavailable
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v6 unregisterAvailabilityObserver:v4];
-  systemPhotoLibrary = v4->_systemPhotoLibrary;
-  v4->_systemPhotoLibrary = 0;
+  unavailableCopy = unavailable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [unavailableCopy unregisterAvailabilityObserver:selfCopy];
+  systemPhotoLibrary = selfCopy->_systemPhotoLibrary;
+  selfCopy->_systemPhotoLibrary = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)specifiers
@@ -52,8 +52,8 @@
     v12 = [NSArray arrayWithObjects:v27 count:2];
     [v5 addObjectsFromArray:v12];
 
-    v13 = [(PhotosCustomNotificationsController *)self systemPhotoLibrary];
-    v14 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v13];
+    systemPhotoLibrary = [(PhotosCustomNotificationsController *)self systemPhotoLibrary];
+    v14 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:systemPhotoLibrary];
 
     if (PXSharedLibraryShouldDisplaySettings())
     {
@@ -89,75 +89,75 @@
   return v4;
 }
 
-- (void)setSharedLibraryDeletionNotificationsNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSharedLibraryDeletionNotificationsNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v4 = kNotificationEnablementKeySharedLibraryDeletionNotifications;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PLSetNotificationTypeEnabledForKey(v4, v5);
+  _PLSetNotificationTypeEnabledForKey(v4, bOOLValue);
 }
 
-- (id)sharedLibraryDeletionNotificationsNotificationEnabledForSpecifier:(id)a3
+- (id)sharedLibraryDeletionNotificationsNotificationEnabledForSpecifier:(id)specifier
 {
   v3 = PLIsNotificationTypeEnabledForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSharedLibrarySuggestionsNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSharedLibrarySuggestionsNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v4 = kNotificationEnablementKeySharedLibrarySuggestions;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PLSetNotificationTypeEnabledForKey(v4, v5);
+  _PLSetNotificationTypeEnabledForKey(v4, bOOLValue);
 }
 
-- (id)sharedLibrarySuggestionsNotificationEnabledForSpecifier:(id)a3
+- (id)sharedLibrarySuggestionsNotificationEnabledForSpecifier:(id)specifier
 {
   v3 = PLIsNotificationTypeEnabledForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSharingSuggestionsNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSharingSuggestionsNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v4 = kNotificationEnablementKeySharingSuggestions;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PLSetNotificationTypeEnabledForKey(v4, v5);
+  _PLSetNotificationTypeEnabledForKey(v4, bOOLValue);
 }
 
-- (id)sharingSuggestionsNotificationEnabledForSpecifier:(id)a3
+- (id)sharingSuggestionsNotificationEnabledForSpecifier:(id)specifier
 {
   v3 = PLIsNotificationTypeEnabledForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setSharedAlbumsNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSharedAlbumsNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v4 = kNotificationEnablementKeySharedAlbums;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PLSetNotificationTypeEnabledForKey(v4, v5);
+  _PLSetNotificationTypeEnabledForKey(v4, bOOLValue);
 }
 
-- (id)sharedAlbumsNotificationEnabledForSpecifier:(id)a3
+- (id)sharedAlbumsNotificationEnabledForSpecifier:(id)specifier
 {
   v3 = PLIsNotificationTypeEnabledForKey();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setMemoriesNotificationEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setMemoriesNotificationEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v4 = kNotificationEnablementKeyMemories;
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  _PLSetNotificationTypeEnabledForKey(v4, v5);
+  _PLSetNotificationTypeEnabledForKey(v4, bOOLValue);
 }
 
-- (id)memoriesNotificationEnabledForSpecifier:(id)a3
+- (id)memoriesNotificationEnabledForSpecifier:(id)specifier
 {
   v3 = PLIsNotificationTypeEnabledForKey();
 
@@ -166,28 +166,28 @@
 
 - (PHPhotoLibrary)systemPhotoLibrary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  systemPhotoLibrary = v2->_systemPhotoLibrary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  systemPhotoLibrary = selfCopy->_systemPhotoLibrary;
   if (!systemPhotoLibrary)
   {
     v4 = [PHPhotoLibrary alloc];
     v5 = +[PHPhotoLibrary systemPhotoLibraryURL];
     v6 = [v4 initWithPhotoLibraryURL:v5];
-    v7 = v2->_systemPhotoLibrary;
-    v2->_systemPhotoLibrary = v6;
+    v7 = selfCopy->_systemPhotoLibrary;
+    selfCopy->_systemPhotoLibrary = v6;
 
-    v8 = v2->_systemPhotoLibrary;
+    v8 = selfCopy->_systemPhotoLibrary;
     v18 = 0;
     LODWORD(v4) = [(PHPhotoLibrary *)v8 openAndWaitWithUpgrade:0 error:&v18];
     v9 = v18;
     v10 = v9;
     if (v4)
     {
-      [(PHPhotoLibrary *)v2->_systemPhotoLibrary registerAvailabilityObserver:v2];
+      [(PHPhotoLibrary *)selfCopy->_systemPhotoLibrary registerAvailabilityObserver:selfCopy];
 LABEL_11:
 
-      systemPhotoLibrary = v2->_systemPhotoLibrary;
+      systemPhotoLibrary = selfCopy->_systemPhotoLibrary;
       goto LABEL_12;
     }
 
@@ -219,15 +219,15 @@ LABEL_9:
       }
     }
 
-    v15 = v2->_systemPhotoLibrary;
-    v2->_systemPhotoLibrary = 0;
+    v15 = selfCopy->_systemPhotoLibrary;
+    selfCopy->_systemPhotoLibrary = 0;
 
     goto LABEL_11;
   }
 
 LABEL_12:
   v16 = systemPhotoLibrary;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }

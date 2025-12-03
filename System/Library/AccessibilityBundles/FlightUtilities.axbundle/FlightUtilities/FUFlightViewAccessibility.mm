@@ -1,6 +1,6 @@
 @interface FUFlightViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
 - (id)_accessibilityGetScrollView;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,14 +8,14 @@
 
 @implementation FUFlightViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FUFlightView" hasInstanceMethod:@"mapView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightView" hasInstanceMethod:@"errorView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightView" hasInstanceMethod:@"loadingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightStep" hasInstanceMethod:@"time" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FUFlightView" hasInstanceVariable:@"_planeTracker" withType:"FUPlaneTrackerAnnotationView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FUFlightView" hasInstanceMethod:@"mapView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightView" hasInstanceMethod:@"errorView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightView" hasInstanceMethod:@"loadingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightStep" hasInstanceMethod:@"time" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FUFlightView" hasInstanceVariable:@"_planeTracker" withType:"FUPlaneTrackerAnnotationView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -56,12 +56,12 @@
 
     objc_opt_class();
     v5 = (objc_opt_isKindOfClass() & 1) != 0 ? v4 : 0;
-    v6 = [(FUFlightViewAccessibility *)v4 superview];
+    superview = [(FUFlightViewAccessibility *)v4 superview];
 
-    v4 = v6;
+    v4 = superview;
   }
 
-  while (v6);
+  while (superview);
   if (!v5)
   {
 LABEL_10:
@@ -72,26 +72,26 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   v5 = [(FUFlightViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:childCopy];
 
   if (v6)
   {
-    v7 = [(FUFlightViewAccessibility *)self _accessibilityGetScrollView];
-    v8 = [v4 _accessibilityWindow];
-    [v4 accessibilityFrame];
-    [v8 convertRect:0 fromWindow:?];
+    _accessibilityGetScrollView = [(FUFlightViewAccessibility *)self _accessibilityGetScrollView];
+    _accessibilityWindow = [childCopy _accessibilityWindow];
+    [childCopy accessibilityFrame];
+    [_accessibilityWindow convertRect:0 fromWindow:?];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    [v7 convertRect:0 fromView:{v10, v12, v14, v16}];
-    [v7 scrollRectToVisible:0 animated:?];
-    v17 = v7 != 0;
+    [_accessibilityGetScrollView convertRect:0 fromView:{v10, v12, v14, v16}];
+    [_accessibilityGetScrollView scrollRectToVisible:0 animated:?];
+    v17 = _accessibilityGetScrollView != 0;
   }
 
   else
@@ -106,9 +106,9 @@ LABEL_10:
 {
   v12[1] = *MEMORY[0x29EDCA608];
   v3 = [(FUFlightViewAccessibility *)self safeValueForKey:@"errorView"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(FUFlightViewAccessibility *)self safeValueForKey:@"errorView"];
     v12[0] = v5;
@@ -120,9 +120,9 @@ LABEL_5:
   }
 
   v7 = [(FUFlightViewAccessibility *)self safeValueForKey:@"loadingView"];
-  v8 = [v7 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible2 = [v7 _accessibilityViewIsVisible];
 
-  if (v8)
+  if (_accessibilityViewIsVisible2)
   {
     v5 = [(FUFlightViewAccessibility *)self safeValueForKey:@"loadingView"];
     v11 = v5;

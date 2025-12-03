@@ -1,63 +1,63 @@
 @interface MBRestorePolicy
 - (BOOL)_isUnencryptedLocal;
-- (BOOL)_pluginsAllowForegroundRestoreFile:(id)a3;
-- (BOOL)shouldAlwaysRestoreSystemSharedContainerDomain:(id)a3;
-- (BOOL)shouldForegroundRestoreDomain:(id)a3;
-- (BOOL)shouldRemoveAndRetryPlacingAssetsForRestorable:(id)a3;
-- (BOOL)shouldRestoreFile:(id)a3 markFileAsSkipped:(BOOL *)a4 error:(id *)a5;
-- (BOOL)shouldRestoreSystemFile:(id)a3;
-- (MBRestorePolicy)initWithPersona:(id)a3 enginePolicyProvider:(id)a4 appManager:(id)a5 plugins:(id)a6 serviceRestoreMode:(id)a7 osBuildVersionOfBackup:(id)a8 shouldRestoreSystemFiles:(BOOL)a9 isRestoringPrimaryAccount:(BOOL)a10 shouldCreateMissingIntermediateDirectories:(BOOL)a11;
-- (id)_localRootPathForDomain:(id)a3;
-- (id)deprecated_destinationPathForiCloudRestorable:(id)a3 safeHarborDir:(id)a4;
-- (id)deprecated_validateFile:(id)a3 debugContext:(id)a4;
+- (BOOL)_pluginsAllowForegroundRestoreFile:(id)file;
+- (BOOL)shouldAlwaysRestoreSystemSharedContainerDomain:(id)domain;
+- (BOOL)shouldForegroundRestoreDomain:(id)domain;
+- (BOOL)shouldRemoveAndRetryPlacingAssetsForRestorable:(id)restorable;
+- (BOOL)shouldRestoreFile:(id)file markFileAsSkipped:(BOOL *)skipped error:(id *)error;
+- (BOOL)shouldRestoreSystemFile:(id)file;
+- (MBRestorePolicy)initWithPersona:(id)persona enginePolicyProvider:(id)provider appManager:(id)manager plugins:(id)plugins serviceRestoreMode:(id)mode osBuildVersionOfBackup:(id)backup shouldRestoreSystemFiles:(BOOL)files isRestoringPrimaryAccount:(BOOL)self0 shouldCreateMissingIntermediateDirectories:(BOOL)self1;
+- (id)_localRootPathForDomain:(id)domain;
+- (id)deprecated_destinationPathForiCloudRestorable:(id)restorable safeHarborDir:(id)dir;
+- (id)deprecated_validateFile:(id)file debugContext:(id)context;
 - (id)deriveATCPolicy;
-- (id)notifyPluginsEndedRestoreWithEngine:(id)a3 error:(id)a4;
-- (id)notifyPluginsEndingRestoreWithEngine:(id)a3;
-- (id)notifyPluginsPreparingRestoreWithEngine:(id)a3;
-- (id)notifyPluginsStartingRestoreWithEngine:(id)a3;
-- (id)restorePathForDriveRestorable:(id)a3;
-- (id)restoreRootForDomain:(id)a3;
-- (id)validateRestoreDomain:(id)a3 relativePath:(id)a4;
+- (id)notifyPluginsEndedRestoreWithEngine:(id)engine error:(id)error;
+- (id)notifyPluginsEndingRestoreWithEngine:(id)engine;
+- (id)notifyPluginsPreparingRestoreWithEngine:(id)engine;
+- (id)notifyPluginsStartingRestoreWithEngine:(id)engine;
+- (id)restorePathForDriveRestorable:(id)restorable;
+- (id)restoreRootForDomain:(id)domain;
+- (id)validateRestoreDomain:(id)domain relativePath:(id)path;
 - (int)restoreType;
-- (int64_t)restoreBehaviorForDomain:(id)a3 error:(id *)a4;
+- (int64_t)restoreBehaviorForDomain:(id)domain error:(id *)error;
 - (unint64_t)_enginePolicy;
-- (unint64_t)foregroundStateForRestorable:(id)a3;
+- (unint64_t)foregroundStateForRestorable:(id)restorable;
 @end
 
 @implementation MBRestorePolicy
 
-- (MBRestorePolicy)initWithPersona:(id)a3 enginePolicyProvider:(id)a4 appManager:(id)a5 plugins:(id)a6 serviceRestoreMode:(id)a7 osBuildVersionOfBackup:(id)a8 shouldRestoreSystemFiles:(BOOL)a9 isRestoringPrimaryAccount:(BOOL)a10 shouldCreateMissingIntermediateDirectories:(BOOL)a11
+- (MBRestorePolicy)initWithPersona:(id)persona enginePolicyProvider:(id)provider appManager:(id)manager plugins:(id)plugins serviceRestoreMode:(id)mode osBuildVersionOfBackup:(id)backup shouldRestoreSystemFiles:(BOOL)files isRestoringPrimaryAccount:(BOOL)self0 shouldCreateMissingIntermediateDirectories:(BOOL)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v28 = a7;
-  v22 = a8;
-  if (!v18)
+  personaCopy = persona;
+  providerCopy = provider;
+  managerCopy = manager;
+  pluginsCopy = plugins;
+  modeCopy = mode;
+  backupCopy = backup;
+  if (!personaCopy)
   {
     __assert_rtn("[MBRestorePolicy initWithPersona:enginePolicyProvider:appManager:plugins:serviceRestoreMode:osBuildVersionOfBackup:shouldRestoreSystemFiles:isRestoringPrimaryAccount:shouldCreateMissingIntermediateDirectories:]", "MBRestorePolicy.m", 48, "persona");
   }
 
-  if (!v20)
+  if (!managerCopy)
   {
     __assert_rtn("[MBRestorePolicy initWithPersona:enginePolicyProvider:appManager:plugins:serviceRestoreMode:osBuildVersionOfBackup:shouldRestoreSystemFiles:isRestoringPrimaryAccount:shouldCreateMissingIntermediateDirectories:]", "MBRestorePolicy.m", 49, "appManager");
   }
 
-  v23 = v22;
+  v23 = backupCopy;
   v29.receiver = self;
   v29.super_class = MBRestorePolicy;
   v24 = [(MBRestorePolicy *)&v29 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_persona, a3);
-    objc_storeWeak(&v25->_enginePolicyProvider, v19);
+    objc_storeStrong(&v24->_persona, persona);
+    objc_storeWeak(&v25->_enginePolicyProvider, providerCopy);
     v25->_enginePolicy = 0;
-    objc_storeStrong(&v25->_appManager, a5);
-    if (v21)
+    objc_storeStrong(&v25->_appManager, manager);
+    if (pluginsCopy)
     {
-      v26 = v21;
+      v26 = pluginsCopy;
     }
 
     else
@@ -66,11 +66,11 @@
     }
 
     objc_storeStrong(&v25->_plugins, v26);
-    objc_storeStrong(&v25->_serviceRestoreMode, a7);
-    objc_storeStrong(&v25->_osBuildVersionOfBackup, a8);
-    v25->_shouldRestoreSystemFiles = a9;
-    v25->_isRestoringPrimaryAccount = a10;
-    v25->_shouldCreateMissingIntermediateDirectories = a11;
+    objc_storeStrong(&v25->_serviceRestoreMode, mode);
+    objc_storeStrong(&v25->_osBuildVersionOfBackup, backup);
+    v25->_shouldRestoreSystemFiles = files;
+    v25->_isRestoringPrimaryAccount = account;
+    v25->_shouldCreateMissingIntermediateDirectories = directories;
   }
 
   return v25;
@@ -109,21 +109,21 @@
 
 - (BOOL)_isUnencryptedLocal
 {
-  v3 = [(MBRestorePolicy *)self _isDriveEngine];
-  if (v3)
+  _isDriveEngine = [(MBRestorePolicy *)self _isDriveEngine];
+  if (_isDriveEngine)
   {
     if ([(MBRestorePolicy *)self _isEncrypted])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_isDriveEngine) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(MBRestorePolicy *)self _isDeviceTransferEngine];
+      LOBYTE(_isDriveEngine) = ![(MBRestorePolicy *)self _isDeviceTransferEngine];
     }
   }
 
-  return v3;
+  return _isDriveEngine;
 }
 
 - (int)restoreType
@@ -140,27 +140,27 @@
   }
 }
 
-- (BOOL)shouldForegroundRestoreDomain:(id)a3
+- (BOOL)shouldForegroundRestoreDomain:(id)domain
 {
-  v4 = a3;
-  if ([(NSSet *)self->_domainNamesToForegroundInstall containsObject:v4]|| ![MBDomain isContainerizedName:v4])
+  domainCopy = domain;
+  if ([(NSSet *)self->_domainNamesToForegroundInstall containsObject:domainCopy]|| ![MBDomain isContainerizedName:domainCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
+    v5 = [domainCopy isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
   }
 
   return v5;
 }
 
-- (unint64_t)foregroundStateForRestorable:(id)a3
+- (unint64_t)foregroundStateForRestorable:(id)restorable
 {
   v8 = 0;
   v7 = 0;
-  v3 = [(MBRestorePolicy *)self shouldRestoreFile:a3 markFileAsSkipped:&v8 error:&v7];
+  v3 = [(MBRestorePolicy *)self shouldRestoreFile:restorable markFileAsSkipped:&v8 error:&v7];
   v4 = v7;
   v5 = 0;
   if ((v3 & 1) == 0)
@@ -184,20 +184,20 @@
   return v5;
 }
 
-- (id)restoreRootForDomain:(id)a3
+- (id)restoreRootForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(MBRestorePolicy *)self persona];
-  v6 = [v4 rootPath];
+  domainCopy = domain;
+  persona = [(MBRestorePolicy *)self persona];
+  rootPath = [domainCopy rootPath];
   if ([(MBServiceRestoreMode *)self->_serviceRestoreMode type]== 6)
   {
-    if ([v4 isBackupDomain])
+    if ([domainCopy isBackupDomain])
     {
       v7 = MBGetDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v13 = v6;
+        v13 = rootPath;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "=restore-policy= Restoring BackupDomain for EDS persona in-place at %@", buf, 0xCu);
 LABEL_11:
         _MBLog();
@@ -207,13 +207,13 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if ([v4 isLegacyPerAppPlaceholderDomain])
+    if ([domainCopy isLegacyPerAppPlaceholderDomain])
     {
       v7 = MBGetDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v13 = v6;
+        v13 = rootPath;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "=restore-policy= Restoring legacy placeholder for EDS persona in-place at %@", buf, 0xCu);
         goto LABEL_11;
       }
@@ -229,126 +229,126 @@ LABEL_12:
   if ([(MBServiceRestoreMode *)self->_serviceRestoreMode type])
   {
 LABEL_13:
-    v9 = v6;
+    v9 = rootPath;
     goto LABEL_16;
   }
 
-  if (![v4 shouldRestoreToSharedVolume])
+  if (![domainCopy shouldRestoreToSharedVolume])
   {
 LABEL_14:
-    v8 = [v5 userIncompleteRestoreDirectory];
+    userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
     goto LABEL_15;
   }
 
-  v8 = [v5 sharedIncompleteRestoreDirectory];
+  userIncompleteRestoreDirectory = [persona sharedIncompleteRestoreDirectory];
 LABEL_15:
-  v10 = v8;
-  v9 = [v8 stringByAppendingPathComponent:v6];
+  v10 = userIncompleteRestoreDirectory;
+  v9 = [userIncompleteRestoreDirectory stringByAppendingPathComponent:rootPath];
 
 LABEL_16:
 
   return v9;
 }
 
-- (id)restorePathForDriveRestorable:(id)a3
+- (id)restorePathForDriveRestorable:(id)restorable
 {
-  v4 = a3;
-  if (!v4)
+  restorableCopy = restorable;
+  if (!restorableCopy)
   {
     __assert_rtn("[MBRestorePolicy restorePathForDriveRestorable:]", "MBRestorePolicy.m", 208, "restorable");
   }
 
-  v5 = v4;
-  v6 = [(MBRestorePolicy *)self persona];
-  v7 = [v5 domain];
-  if ([v7 shouldRestoreToSharedVolume])
+  v5 = restorableCopy;
+  persona = [(MBRestorePolicy *)self persona];
+  domain = [v5 domain];
+  if ([domain shouldRestoreToSharedVolume])
   {
-    [v6 sharedIncompleteRestoreDirectory];
+    [persona sharedIncompleteRestoreDirectory];
   }
 
   else
   {
-    [v6 userIncompleteRestoreDirectory];
+    [persona userIncompleteRestoreDirectory];
   }
   v8 = ;
-  v9 = [v5 absolutePath];
-  v10 = [v8 stringByAppendingPathComponent:v9];
+  absolutePath = [v5 absolutePath];
+  v10 = [v8 stringByAppendingPathComponent:absolutePath];
 
   return v10;
 }
 
-- (id)deprecated_destinationPathForiCloudRestorable:(id)a3 safeHarborDir:(id)a4
+- (id)deprecated_destinationPathForiCloudRestorable:(id)restorable safeHarborDir:(id)dir
 {
-  v6 = a3;
-  v7 = a4;
+  restorableCopy = restorable;
+  dirCopy = dir;
   if ([(MBServiceRestoreMode *)self->_serviceRestoreMode type]== 6)
   {
-    v8 = [v6 domain];
-    if (([v8 isBackupDomain] & 1) != 0 || objc_msgSend(v8, "isLegacyPerAppPlaceholderDomain"))
+    domain = [restorableCopy domain];
+    if (([domain isBackupDomain] & 1) != 0 || objc_msgSend(domain, "isLegacyPerAppPlaceholderDomain"))
     {
-      v9 = [v6 absolutePath];
+      absolutePath = [restorableCopy absolutePath];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v12 = [(MBRestorePolicy *)self persona];
-    v10 = v12;
+    persona = [(MBRestorePolicy *)self persona];
+    domain2 = persona;
     goto LABEL_12;
   }
 
   if ([(MBRestorePolicy *)self _isForegroundRestore])
   {
-    v8 = [(MBRestorePolicy *)self persona];
-    v10 = [v6 domain];
-    if ([v10 shouldRestoreToSharedVolume])
+    domain = [(MBRestorePolicy *)self persona];
+    domain2 = [restorableCopy domain];
+    if ([domain2 shouldRestoreToSharedVolume])
     {
-      v11 = [v8 sharedIncompleteRestoreDirectory];
+      sharedIncompleteRestoreDirectory = [domain sharedIncompleteRestoreDirectory];
 LABEL_13:
-      v13 = v11;
-      v14 = [v6 absolutePath];
-      v9 = [v13 stringByAppendingPathComponent:v14];
+      v13 = sharedIncompleteRestoreDirectory;
+      absolutePath2 = [restorableCopy absolutePath];
+      absolutePath = [v13 stringByAppendingPathComponent:absolutePath2];
 
       goto LABEL_14;
     }
 
-    v12 = v8;
+    persona = domain;
 LABEL_12:
-    v11 = [v12 userIncompleteRestoreDirectory];
+    sharedIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
     goto LABEL_13;
   }
 
-  if ([v7 length])
+  if ([dirCopy length])
   {
-    v8 = [v7 stringByAppendingPathComponent:kMBSafeHarborDataDirName];
-    v10 = [v6 relativePath];
-    v9 = [v8 stringByAppendingPathComponent:v10];
+    domain = [dirCopy stringByAppendingPathComponent:kMBSafeHarborDataDirName];
+    domain2 = [restorableCopy relativePath];
+    absolutePath = [domain stringByAppendingPathComponent:domain2];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v9 = [v6 absolutePath];
+  absolutePath = [restorableCopy absolutePath];
 LABEL_16:
 
-  return v9;
+  return absolutePath;
 }
 
-- (BOOL)shouldRestoreSystemFile:(id)a3
+- (BOOL)shouldRestoreSystemFile:(id)file
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (([v5 isPlaceholderDomain] & 1) == 0 && (-[MBServiceRestoreMode type](self->_serviceRestoreMode, "type") != 6 || (objc_msgSend(v5, "isBackupDomain") & 1) == 0) && (!objc_msgSend(v5, "isSystemSharedContainerDomain") || !-[MBRestorePolicy shouldAlwaysRestoreSystemSharedContainerDomain:](self, "shouldAlwaysRestoreSystemSharedContainerDomain:", v5)))
+  fileCopy = file;
+  domain = [fileCopy domain];
+  if (([domain isPlaceholderDomain] & 1) == 0 && (-[MBServiceRestoreMode type](self->_serviceRestoreMode, "type") != 6 || (objc_msgSend(domain, "isBackupDomain") & 1) == 0) && (!objc_msgSend(domain, "isSystemSharedContainerDomain") || !-[MBRestorePolicy shouldAlwaysRestoreSystemSharedContainerDomain:](self, "shouldAlwaysRestoreSystemSharedContainerDomain:", domain)))
   {
-    v7 = [v5 relativePathsOfSystemFilesToAlwaysRestore];
-    if ([v7 count])
+    relativePathsOfSystemFilesToAlwaysRestore = [domain relativePathsOfSystemFilesToAlwaysRestore];
+    if ([relativePathsOfSystemFilesToAlwaysRestore count])
     {
-      v32 = v7;
-      v8 = [v4 relativePath];
-      v9 = [v8 pathComponents];
+      v32 = relativePathsOfSystemFilesToAlwaysRestore;
+      relativePath = [fileCopy relativePath];
+      pathComponents = [relativePath pathComponents];
 
-      v33 = v9;
-      v10 = [v9 count];
+      v33 = pathComponents;
+      v10 = [pathComponents count];
       v11 = 0;
       do
       {
@@ -356,15 +356,15 @@ LABEL_16:
         v13 = [v33 subarrayWithRange:{0, v11}];
         v14 = [NSString pathWithComponents:v13];
 
-        v15 = [v5 relativePathsOfSystemFilesToAlwaysRestore];
-        v16 = [v15 containsObject:v14];
+        relativePathsOfSystemFilesToAlwaysRestore2 = [domain relativePathsOfSystemFilesToAlwaysRestore];
+        v16 = [relativePathsOfSystemFilesToAlwaysRestore2 containsObject:v14];
 
         objc_autoreleasePoolPop(v12);
         if (v16)
         {
 
           v6 = 1;
-          v7 = v32;
+          relativePathsOfSystemFilesToAlwaysRestore = v32;
           goto LABEL_30;
         }
 
@@ -376,13 +376,13 @@ LABEL_16:
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v7 = v32;
+      relativePathsOfSystemFilesToAlwaysRestore = v32;
       v17 = v32;
       v36 = [v17 countByEnumeratingWithState:&v38 objects:v44 count:16];
       if (v36)
       {
-        v30 = self;
-        v31 = v5;
+        selfCopy = self;
+        v31 = domain;
         v18 = 0;
         obj = v17;
         v35 = *v39;
@@ -397,16 +397,16 @@ LABEL_16:
 
             v20 = *(*(&v38 + 1) + 8 * i);
             context = objc_autoreleasePoolPush();
-            v21 = [v20 pathComponents];
-            v22 = [v21 count];
+            pathComponents2 = [v20 pathComponents];
+            v22 = [pathComponents2 count];
             v23 = 0;
             do
             {
-              v24 = [v21 subarrayWithRange:{0, v23}];
+              v24 = [pathComponents2 subarrayWithRange:{0, v23}];
               v25 = [NSString pathWithComponents:v24];
 
-              v26 = [v4 relativePath];
-              v27 = [v26 isEqualToString:v25];
+              relativePath2 = [fileCopy relativePath];
+              v27 = [relativePath2 isEqualToString:v25];
 
               v18 |= v27;
               ++v23;
@@ -422,9 +422,9 @@ LABEL_16:
 
         while (v36);
 
-        v5 = v31;
-        v7 = v32;
-        self = v30;
+        domain = v31;
+        relativePathsOfSystemFilesToAlwaysRestore = v32;
+        self = selfCopy;
         if (v18)
         {
           goto LABEL_26;
@@ -436,13 +436,13 @@ LABEL_16:
       }
     }
 
-    if (([v5 isAppDomain] & 1) == 0 && !self->_shouldRestoreSystemFiles)
+    if (([domain isAppDomain] & 1) == 0 && !self->_shouldRestoreSystemFiles)
     {
       v28 = MBGetDefaultLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v43 = v4;
+        v43 = fileCopy;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "=restore-policy= Not restoring system file: %@", buf, 0xCu);
         _MBLog();
       }
@@ -464,27 +464,27 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)shouldRestoreFile:(id)a3 markFileAsSkipped:(BOOL *)a4 error:(id *)a5
+- (BOOL)shouldRestoreFile:(id)file markFileAsSkipped:(BOOL *)skipped error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  fileCopy = file;
+  if (skipped)
   {
-    *a4 = 0;
+    *skipped = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [v8 domain];
-  if (!v10)
+  domain = [fileCopy domain];
+  if (!domain)
   {
     __assert_rtn("[MBRestorePolicy shouldRestoreFile:markFileAsSkipped:error:]", "MBRestorePolicy.m", 294, "domain");
   }
 
-  v11 = v10;
-  v12 = [v10 rootPath];
-  if ([v12 hasPrefix:@"/private"])
+  v11 = domain;
+  rootPath = [domain rootPath];
+  if ([rootPath hasPrefix:@"/private"])
   {
-    v13 = [v11 rootPath];
-    v14 = [v13 hasPrefix:@"/private/var/PersonaVolumes"];
+    rootPath2 = [v11 rootPath];
+    v14 = [rootPath2 hasPrefix:@"/private/var/PersonaVolumes"];
 
     if ((v14 & 1) == 0)
     {
@@ -492,14 +492,14 @@ LABEL_31:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v74 = v8;
+        v74 = fileCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "=restore-policy= Not restoring (invalid path prefix): %@", buf, 0xCu);
         _MBLog();
       }
 
-      v16 = [v11 rootPath];
-      v17 = [v11 rootPath];
-      v18 = [MBError errorWithCode:205 path:v16 format:@"Domain %@ has an invalid root path: %@", v11, v17];
+      rootPath3 = [v11 rootPath];
+      rootPath4 = [v11 rootPath];
+      v18 = [MBError errorWithCode:205 path:rootPath3 format:@"Domain %@ has an invalid root path: %@", v11, rootPath4];
 LABEL_9:
 
       goto LABEL_21;
@@ -510,38 +510,38 @@ LABEL_9:
   {
   }
 
-  v19 = [v11 rootPath];
-  v20 = [v8 relativePath];
-  v16 = [v19 stringByAppendingPathComponent:v20];
+  rootPath5 = [v11 rootPath];
+  relativePath = [fileCopy relativePath];
+  rootPath3 = [rootPath5 stringByAppendingPathComponent:relativePath];
 
-  if (strlen([v16 fileSystemRepresentation]) >= 0x3E6)
+  if (strlen([rootPath3 fileSystemRepresentation]) >= 0x3E6)
   {
     v21 = MBGetDefaultLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v11 name];
+      name = [v11 name];
       *buf = 138412546;
-      v74 = v22;
+      v74 = name;
       v75 = 2112;
-      v76 = v16;
+      v76 = rootPath3;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "=restore-policy= Not restoring (file name too long): %@:%@", buf, 0x16u);
 
-      v64 = [v11 name];
-      v65 = v16;
+      name2 = [v11 name];
+      v65 = rootPath3;
       _MBLog();
     }
 
-    if (a4)
+    if (skipped)
     {
-      *a4 = 1;
+      *skipped = 1;
     }
 
-    v18 = [MBError errorWithCode:107 path:v16 format:@"Cannot restore file with path name that is too long", v64, v65];
+    v18 = [MBError errorWithCode:107 path:rootPath3 format:@"Cannot restore file with path name that is too long", name2, v65];
     goto LABEL_21;
   }
 
   v72 = 0;
-  v23 = [(MBRestorePolicy *)self restoreBehaviorForFile:v8 debugContext:0 error:&v72];
+  v23 = [(MBRestorePolicy *)self restoreBehaviorForFile:fileCopy debugContext:0 error:&v72];
   v24 = v72;
   v18 = v24;
   if (v23 == -1)
@@ -550,11 +550,11 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v9);
 LABEL_22:
-    if (a5)
+    if (error)
     {
       v25 = v18;
       v26 = 0;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -567,9 +567,9 @@ LABEL_22:
 
   if (v23 == 1)
   {
-    if (a4)
+    if (skipped)
     {
-      *a4 = 1;
+      *skipped = 1;
     }
 
     goto LABEL_21;
@@ -580,9 +580,9 @@ LABEL_22:
   {
     if ([(MBRestorePolicy *)self _isForegroundRestore])
     {
-      v28 = [v8 domain];
-      v29 = [v28 name];
-      v30 = [v29 isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
+      domain2 = [fileCopy domain];
+      name3 = [domain2 name];
+      v30 = [name3 isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
 
       if (v30)
       {
@@ -590,48 +590,48 @@ LABEL_22:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v74 = v8;
+          v74 = fileCopy;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "=restore-policy= Not restoring in foreground because file is in LocalStorage domain: %@", buf, 0xCu);
           _MBLog();
         }
 
-        v17 = [v8 relativePath];
-        v18 = [MBError errorWithCode:213 path:v17 format:@"Not restoring in foreground because file is in LocalStorage domain"];
+        rootPath4 = [fileCopy relativePath];
+        v18 = [MBError errorWithCode:213 path:rootPath4 format:@"Not restoring in foreground because file is in LocalStorage domain"];
 
         goto LABEL_9;
       }
     }
   }
 
-  v66 = v16;
+  v66 = rootPath3;
   v67 = v9;
-  v68 = a5;
-  v70 = v8;
-  v32 = [v8 relativePath];
-  v33 = [v32 pathComponents];
+  errorCopy = error;
+  v70 = fileCopy;
+  relativePath2 = [fileCopy relativePath];
+  pathComponents = [relativePath2 pathComponents];
 
-  v71 = v33;
-  v34 = [v33 count];
+  v71 = pathComponents;
+  v34 = [pathComponents count];
   v35 = 0;
   do
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = [v33 subarrayWithRange:{0, v35}];
+    v37 = [pathComponents subarrayWithRange:{0, v35}];
     v38 = [NSString pathWithComponents:v37];
 
-    v39 = [v11 relativePathsNotToRestore];
-    v40 = [v39 containsObject:v38];
+    relativePathsNotToRestore = [v11 relativePathsNotToRestore];
+    v40 = [relativePathsNotToRestore containsObject:v38];
 
     if (v40)
     {
-      a5 = v68;
-      if (a4)
+      error = errorCopy;
+      if (skipped)
       {
-        *a4 = 1;
+        *skipped = 1;
       }
 
       v53 = MBGetDefaultLog();
-      v8 = v70;
+      fileCopy = v70;
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
@@ -651,8 +651,8 @@ LABEL_67:
 
     if (-[MBRestorePolicy _isForegroundRestore](self, "_isForegroundRestore") && ([v70 type] & 0xF000) == 0x8000)
     {
-      v41 = [v11 relativePathsToBackgroundRestore];
-      if ([v41 containsObject:v38])
+      relativePathsToBackgroundRestore = [v11 relativePathsToBackgroundRestore];
+      if ([relativePathsToBackgroundRestore containsObject:v38])
       {
         shouldRestoreSystemFiles = self->_shouldRestoreSystemFiles;
 
@@ -660,7 +660,7 @@ LABEL_67:
         {
           v55 = MBGetDefaultLog();
           v56 = os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG);
-          v8 = v70;
+          fileCopy = v70;
           if (v56)
           {
             *buf = 138412290;
@@ -673,7 +673,7 @@ LABEL_67:
 
           v52 = 6;
           v69 = v57;
-          a5 = v68;
+          error = errorCopy;
           goto LABEL_67;
         }
       }
@@ -685,14 +685,14 @@ LABEL_67:
 
     if (![(MBRestorePolicy *)self isRestoringToSameDevice])
     {
-      v43 = [v11 relativePathsNotToMigrate];
-      v44 = [v43 containsObject:v38];
+      relativePathsNotToMigrate = [v11 relativePathsNotToMigrate];
+      v44 = [relativePathsNotToMigrate containsObject:v38];
 
       if (v44)
       {
         v54 = MBGetDefaultLog();
-        v8 = v70;
-        a5 = v68;
+        fileCopy = v70;
+        error = errorCopy;
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
@@ -702,9 +702,9 @@ LABEL_67:
         }
 
         v52 = 1;
-        if (a4)
+        if (skipped)
         {
-          *a4 = 1;
+          *skipped = 1;
         }
 
         goto LABEL_67;
@@ -716,8 +716,8 @@ LABEL_67:
   }
 
   while (v35 <= v34);
-  v8 = v70;
-  a5 = v68;
+  fileCopy = v70;
+  error = errorCopy;
   if ([(MBRestorePolicy *)self shouldRestoreSystemFile:v70])
   {
     v45 = v67;
@@ -729,8 +729,8 @@ LABEL_67:
     if ([v11 isAppDomain])
     {
       appManager = self->_appManager;
-      v47 = [v11 containerID];
-      v48 = [(MBAppManager *)appManager appWithIdentifier:v47];
+      containerID = [v11 containerID];
+      v48 = [(MBAppManager *)appManager appWithIdentifier:containerID];
 
       if (([v48 isSystemApp] & 1) != 0 || (objc_msgSend(v11, "name"), v49 = objc_claimAutoreleasedReturnValue(), v50 = -[MBRestorePolicy shouldForegroundRestoreDomain:](self, "shouldForegroundRestoreDomain:", v49), v49, v50))
       {
@@ -773,7 +773,7 @@ LABEL_51:
             *buf = 138412290;
             v74 = v70;
             _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "=restore-policy= Restoring app plugin file in the background: %@", buf, 0xCu);
-            v64 = v70;
+            name2 = v70;
             _MBLog();
           }
 
@@ -782,17 +782,17 @@ LABEL_51:
 
         else
         {
-          v61 = [v11 isGroupAppDomain];
+          isGroupAppDomain = [v11 isGroupAppDomain];
           v62 = MBGetDefaultLog();
           v63 = os_log_type_enabled(v62, OS_LOG_TYPE_INFO);
-          if (v61)
+          if (isGroupAppDomain)
           {
             if (v63)
             {
               *buf = 138412290;
               v74 = v70;
               _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "=restore-policy= Restoring group container file in the background: %@", buf, 0xCu);
-              v64 = v70;
+              name2 = v70;
               _MBLog();
             }
 
@@ -806,7 +806,7 @@ LABEL_51:
               *buf = 138412290;
               v74 = v70;
               _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "=restore-policy= Restoring app file in the background: %@", buf, 0xCu);
-              v64 = v70;
+              name2 = v70;
               _MBLog();
             }
 
@@ -814,7 +814,7 @@ LABEL_51:
           }
         }
 
-        [MBError errorWithCode:213 format:v60, v64];
+        [MBError errorWithCode:213 format:v60, name2];
         v26 = 0;
         v51 = v69;
         v69 = v52 = 6;
@@ -845,9 +845,9 @@ LABEL_71:
     v52 = 1;
     v45 = v67;
     v26 = 0;
-    if (a4)
+    if (skipped)
     {
-      *a4 = 1;
+      *skipped = 1;
     }
   }
 
@@ -865,9 +865,9 @@ LABEL_25:
   return v26;
 }
 
-- (BOOL)_pluginsAllowForegroundRestoreFile:(id)a3
+- (BOOL)_pluginsAllowForegroundRestoreFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -881,7 +881,7 @@ LABEL_25:
   }
 
   v6 = v5;
-  v32 = v4;
+  v32 = fileCopy;
   v7 = *v34;
   v8 = &selRef_setServiceDelegate_;
   v9 = &selRef_setServiceDelegate_;
@@ -902,8 +902,8 @@ LABEL_25:
       v15 = *(*(&v33 + 1) + 8 * v11);
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v32 absolutePath];
-        v17 = [v15 shouldRestoreContentWithPolicy:self atPath:v16];
+        absolutePath = [v32 absolutePath];
+        v17 = [v15 shouldRestoreContentWithPolicy:self atPath:absolutePath];
 
         if ((v17 & 1) == 0)
         {
@@ -915,7 +915,7 @@ LABEL_25:
             *buf = 136446466;
             v38 = Name;
             v39 = 2112;
-            v4 = v32;
+            fileCopy = v32;
             v40 = v32;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "=restore-policy= Not restoring because it was refused by plugin %{public}s: %@", buf, 0x16u);
             v22 = objc_opt_class();
@@ -925,7 +925,7 @@ LABEL_25:
 
           else
           {
-            v4 = v32;
+            fileCopy = v32;
           }
 
           goto LABEL_32;
@@ -953,7 +953,7 @@ LABEL_15:
             *buf = 136446466;
             v38 = v28;
             v39 = 2112;
-            v4 = v32;
+            fileCopy = v32;
             v40 = v32;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "=restore-policy= Not restoring because it was refused by plugin %{public}s: %@", buf, 0x16u);
             goto LABEL_28;
@@ -976,7 +976,7 @@ LABEL_15:
           *buf = 136446466;
           v38 = v24;
           v39 = 2112;
-          v4 = v32;
+          fileCopy = v32;
           v40 = v32;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "=restore-policy= Restoring system file in the background (requested by plugin %{public}s: %@", buf, 0x16u);
 LABEL_28:
@@ -991,7 +991,7 @@ LABEL_32:
         }
 
 LABEL_29:
-        v4 = v32;
+        fileCopy = v32;
         goto LABEL_30;
       }
 
@@ -1024,29 +1024,29 @@ LABEL_18:
   }
 
   v19 = 1;
-  v4 = v32;
+  fileCopy = v32;
 LABEL_33:
 
   return v19;
 }
 
-- (int64_t)restoreBehaviorForDomain:(id)a3 error:(id *)a4
+- (int64_t)restoreBehaviorForDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isPlaceholderDomain] & 1) != 0 || -[MBServiceRestoreMode type](self->_serviceRestoreMode, "type") == 6 && (objc_msgSend(v6, "isBackupDomain"))
+  domainCopy = domain;
+  if ([domainCopy isPlaceholderDomain] & 1) != 0 || -[MBServiceRestoreMode type](self->_serviceRestoreMode, "type") == 6 && (objc_msgSend(domainCopy, "isBackupDomain"))
   {
 LABEL_2:
-    v7 = 0;
+    integerValue = 0;
     goto LABEL_54;
   }
 
-  if (!self->_shouldRestoreSystemFiles && ([v6 isAppDomain] & 1) == 0)
+  if (!self->_shouldRestoreSystemFiles && ([domainCopy isAppDomain] & 1) == 0)
   {
-    v8 = [v6 relativePathsOfSystemFilesToAlwaysRestore];
+    relativePathsOfSystemFilesToAlwaysRestore = [domainCopy relativePathsOfSystemFilesToAlwaysRestore];
 
-    if (!v8)
+    if (!relativePathsOfSystemFilesToAlwaysRestore)
     {
-      if (![(MBRestorePolicy *)self shouldAlwaysRestoreSystemSharedContainerDomain:v6])
+      if (![(MBRestorePolicy *)self shouldAlwaysRestoreSystemSharedContainerDomain:domainCopy])
       {
         v11 = MBGetDefaultLog();
         if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1054,12 +1054,12 @@ LABEL_2:
           goto LABEL_13;
         }
 
-        v34 = [v6 name];
+        name = [domainCopy name];
         *buf = 138412290;
-        v47 = v34;
+        v47 = name;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "=restore-policy= Not restoring system domain: %@", buf, 0xCu);
 
-        v13 = [v6 name];
+        name2 = [domainCopy name];
         goto LABEL_12;
       }
 
@@ -1069,8 +1069,8 @@ LABEL_2:
 
   if ([(MBRestorePolicy *)self _isDriveEngine])
   {
-    v9 = [v6 containerID];
-    v10 = [v9 isEqualToString:@"systemgroup.com.apple.mobilegestaltcache"];
+    containerID = [domainCopy containerID];
+    v10 = [containerID isEqualToString:@"systemgroup.com.apple.mobilegestaltcache"];
 
     if (v10)
     {
@@ -1079,16 +1079,16 @@ LABEL_2:
       {
 LABEL_13:
 
-        v7 = 1;
+        integerValue = 1;
         goto LABEL_54;
       }
 
-      v12 = [v6 name];
+      name3 = [domainCopy name];
       *buf = 138543362;
-      v47 = v12;
+      v47 = name3;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "=restore-policy= Not restoring mobile gestalt cache: %{public}@", buf, 0xCu);
 
-      v13 = [v6 name];
+      name2 = [domainCopy name];
 LABEL_12:
       _MBLog();
 
@@ -1096,24 +1096,24 @@ LABEL_12:
     }
   }
 
-  v14 = [v6 rootPath];
-  if (([v14 hasPrefix:@"/private"] & 1) == 0)
+  rootPath = [domainCopy rootPath];
+  if (([rootPath hasPrefix:@"/private"] & 1) == 0)
   {
 
 LABEL_20:
     cachedDomainRestoreBehaviors = self->_cachedDomainRestoreBehaviors;
-    v20 = [v6 name];
-    v21 = [(NSMutableDictionary *)cachedDomainRestoreBehaviors objectForKeyedSubscript:v20];
+    name4 = [domainCopy name];
+    v21 = [(NSMutableDictionary *)cachedDomainRestoreBehaviors objectForKeyedSubscript:name4];
 
     if (v21)
     {
-      v7 = [v21 integerValue];
+      integerValue = [v21 integerValue];
 LABEL_53:
 
       goto LABEL_54;
     }
 
-    v22 = [(MBRestorePolicy *)self _localRootPathForDomain:v6];
+    v22 = [(MBRestorePolicy *)self _localRootPathForDomain:domainCopy];
     v23 = [NSURL fileURLWithPath:v22];
 
     v45 = 0;
@@ -1127,19 +1127,19 @@ LABEL_53:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v47 = v6;
+        v47 = domainCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "=restore-policy= Not restoring domain (attribute set locally): %@", buf, 0xCu);
         _MBLog();
       }
 
       v28 = self->_cachedDomainRestoreBehaviors;
-      v29 = [v6 name];
-      [(NSMutableDictionary *)v28 setObject:&off_1003E0E10 forKeyedSubscript:v29];
+      name5 = [domainCopy name];
+      [(NSMutableDictionary *)v28 setObject:&off_1003E0E10 forKeyedSubscript:name5];
 
       goto LABEL_44;
     }
 
-    v30 = [(MBRestorePolicy *)self _isMegaBackup];
+    _isMegaBackup = [(MBRestorePolicy *)self _isMegaBackup];
     if ([(MBRestorePolicy *)self _isUnencryptedLocal])
     {
       error = 0;
@@ -1157,7 +1157,7 @@ LABEL_53:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v47 = v6;
+              v47 = domainCopy;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "=restore-policy= Not restoring domain from unencrypted iTunes backup (attribute set locally): %@", buf, 0xCu);
 LABEL_42:
               _MBLog();
@@ -1178,17 +1178,17 @@ LABEL_48:
         *buf = 138543618;
         v47 = v31;
         v48 = 2112;
-        v49 = error;
+        errorCopy = error;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "=restore-policy= Error fetching value for property %{public}@: %@", buf, 0x16u);
         v40 = v31;
-        v41 = error;
+        errorCopy2 = error;
         _MBLog();
       }
     }
 
     else
     {
-      if (v30 & 1 | ![(MBRestorePolicy *)self _isCloudKitEngine])
+      if (_isMegaBackup & 1 | ![(MBRestorePolicy *)self _isCloudKitEngine])
       {
         goto LABEL_51;
       }
@@ -1208,7 +1208,7 @@ LABEL_48:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v47 = v6;
+              v47 = domainCopy;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "=restore-policy= Not restoring domain from iCloud (attribute set locally): %@", buf, 0xCu);
               goto LABEL_42;
             }
@@ -1216,7 +1216,7 @@ LABEL_48:
 LABEL_43:
 
 LABEL_44:
-            v7 = 1;
+            integerValue = 1;
 LABEL_52:
 
             goto LABEL_53;
@@ -1225,10 +1225,10 @@ LABEL_52:
 
 LABEL_51:
         v37 = self->_cachedDomainRestoreBehaviors;
-        v38 = [v6 name];
-        [(NSMutableDictionary *)v37 setObject:&off_1003E0E28 forKeyedSubscript:v38];
+        name6 = [domainCopy name];
+        [(NSMutableDictionary *)v37 setObject:&off_1003E0E28 forKeyedSubscript:name6];
 
-        v7 = 0;
+        integerValue = 0;
         goto LABEL_52;
       }
 
@@ -1247,41 +1247,41 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  v15 = [v6 rootPath];
-  v16 = [v15 hasPrefix:@"/private/var/PersonaVolumes"];
+  rootPath2 = [domainCopy rootPath];
+  v16 = [rootPath2 hasPrefix:@"/private/var/PersonaVolumes"];
 
   if (v16)
   {
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
-    v17 = [v6 rootPath];
-    v18 = [v6 rootPath];
-    *a4 = [MBError errorWithCode:205 path:v17 format:@"Domain %@ has an invalid root path: %@", v6, v18];
+    rootPath3 = [domainCopy rootPath];
+    rootPath4 = [domainCopy rootPath];
+    *error = [MBError errorWithCode:205 path:rootPath3 format:@"Domain %@ has an invalid root path: %@", domainCopy, rootPath4];
   }
 
-  v7 = -1;
+  integerValue = -1;
 LABEL_54:
 
-  return v7;
+  return integerValue;
 }
 
-- (id)_localRootPathForDomain:(id)a3
+- (id)_localRootPathForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = v4;
+  domainCopy = domain;
+  v5 = domainCopy;
   if (!self->_appManager)
   {
     goto LABEL_9;
   }
 
-  if ([v4 isSystemContainerDomain])
+  if ([domainCopy isSystemContainerDomain])
   {
     appManager = self->_appManager;
-    v7 = [v5 name];
-    v8 = [MBDomain containerIDWithName:v7];
+    name = [v5 name];
+    v8 = [MBDomain containerIDWithName:name];
     v9 = [(MBAppManager *)appManager systemDataContainerWithIdentifier:v8];
     goto LABEL_6;
   }
@@ -1289,53 +1289,53 @@ LABEL_54:
   if (![v5 isSystemSharedContainerDomain])
   {
 LABEL_9:
-    v15 = [v5 rootPath];
+    rootPath = [v5 rootPath];
     goto LABEL_12;
   }
 
   v10 = self->_appManager;
-  v7 = [v5 name];
-  v8 = [MBDomain containerIDWithName:v7];
+  name = [v5 name];
+  v8 = [MBDomain containerIDWithName:name];
   v9 = [(MBAppManager *)v10 systemSharedContainerWithIdentifier:v8];
 LABEL_6:
   v11 = v9;
 
   if (v11 && ([v11 domain], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "hasRootPath"), v12, (v13 & 1) != 0))
   {
-    v14 = [v11 domain];
-    v15 = [v14 rootPath];
+    domain = [v11 domain];
+    rootPath = [domain rootPath];
   }
 
   else
   {
-    v15 = [v5 rootPath];
+    rootPath = [v5 rootPath];
   }
 
 LABEL_12:
 
-  return v15;
+  return rootPath;
 }
 
-- (id)deprecated_validateFile:(id)a3 debugContext:(id)a4
+- (id)deprecated_validateFile:(id)file debugContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 relativePath];
+  fileCopy = file;
+  contextCopy = context;
+  relativePath = [fileCopy relativePath];
   valid = MBIsValidRelativePath();
 
   if ((valid & 1) == 0)
   {
-    v12 = [v6 domain];
-    v13 = [v12 name];
-    v14 = [v6 relativePath];
-    v15 = [MBError errorWithCode:205 format:@"File path is invalid: %@:%@", v13, v14];
+    domain = [fileCopy domain];
+    name = [domain name];
+    relativePath2 = [fileCopy relativePath];
+    v15 = [MBError errorWithCode:205 format:@"File path is invalid: %@:%@", name, relativePath2];
 LABEL_61:
 
     goto LABEL_62;
   }
 
-  LODWORD(v10) = [(MBRestorePolicy *)self _isMegaBackup];
-  v11 = [(MBRestorePolicy *)self _isDriveEngine];
+  LODWORD(relativePathsNotToTransferDeviceToDevice) = [(MBRestorePolicy *)self _isMegaBackup];
+  _isDriveEngine = [(MBRestorePolicy *)self _isDriveEngine];
   if ([(MBRestorePolicy *)self _isDriveEngine])
   {
     v48 = ![(MBRestorePolicy *)self _isDeviceTransferEngine];
@@ -1346,36 +1346,36 @@ LABEL_61:
     v48 = 0;
   }
 
-  v16 = [(MBRestorePolicy *)self _isServiceEngine];
-  v37 = [(MBRestorePolicy *)self _isDeviceTransferEngine];
-  v12 = [v6 relativePath];
-  v13 = [v6 domain];
-  v14 = [v13 relativePathsToRestore];
-  if ([v14 containsObject:v12])
+  _isServiceEngine = [(MBRestorePolicy *)self _isServiceEngine];
+  _isDeviceTransferEngine = [(MBRestorePolicy *)self _isDeviceTransferEngine];
+  domain = [fileCopy relativePath];
+  name = [fileCopy domain];
+  relativePath2 = [name relativePathsToRestore];
+  if ([relativePath2 containsObject:domain])
   {
     v15 = 0;
     goto LABEL_61;
   }
 
-  v34 = v7;
-  v17 = v11 | v10;
-  v18 = v16 & ((v11 | v10) ^ 1);
-  v40 = v10;
+  v34 = contextCopy;
+  v17 = _isDriveEngine | relativePathsNotToTransferDeviceToDevice;
+  v18 = _isServiceEngine & ((_isDriveEngine | relativePathsNotToTransferDeviceToDevice) ^ 1);
+  v40 = relativePathsNotToTransferDeviceToDevice;
   while (1)
   {
     if (v18)
     {
-      v47 = [v6 domain];
-      v11 = [v47 relativePathsToRestoreOnlyFromService];
-      if ([v11 containsObject:v12])
+      domain2 = [fileCopy domain];
+      _isDriveEngine = [domain2 relativePathsToRestoreOnlyFromService];
+      if ([_isDriveEngine containsObject:domain])
       {
         v19 = 1;
         goto LABEL_20;
       }
 
-      v42 = [v6 domain];
-      v41 = [v42 relativePathsToBackupToDriveAndStandardAccount];
-      if ([v41 containsObject:v12])
+      domain3 = [fileCopy domain];
+      relativePathsToBackupToDriveAndStandardAccount = [domain3 relativePathsToBackupToDriveAndStandardAccount];
+      if ([relativePathsToBackupToDriveAndStandardAccount containsObject:domain])
       {
         v19 = 1;
 LABEL_19:
@@ -1390,8 +1390,8 @@ LABEL_20:
       }
     }
 
-    v20 = [v6 domain];
-    if (![v20 isExternalConfig])
+    domain4 = [fileCopy domain];
+    if (![domain4 isExternalConfig])
     {
 
       if (!v18)
@@ -1404,51 +1404,51 @@ LABEL_20:
       goto LABEL_19;
     }
 
-    v21 = [v6 domain];
-    v22 = [v21 hasExternalConfig];
+    domain5 = [fileCopy domain];
+    hasExternalConfig = [domain5 hasExternalConfig];
 
     if (v18)
     {
-      v19 = v22 ^ 1;
-      LOBYTE(v10) = v40;
+      v19 = hasExternalConfig ^ 1;
+      LOBYTE(relativePathsNotToTransferDeviceToDevice) = v40;
       goto LABEL_19;
     }
 
-    LOBYTE(v10) = v40;
-    if ((v22 & 1) == 0)
+    LOBYTE(relativePathsNotToTransferDeviceToDevice) = v40;
+    if ((hasExternalConfig & 1) == 0)
     {
 LABEL_65:
       v15 = 0;
-      v7 = v34;
+      contextCopy = v34;
       goto LABEL_62;
     }
 
 LABEL_21:
-    v23 = [v6 domain];
-    v24 = [v23 relativePathsNotToBackup];
-    if ([v24 containsObject:v12])
+    domain6 = [fileCopy domain];
+    relativePathsNotToBackup = [domain6 relativePathsNotToBackup];
+    if ([relativePathsNotToBackup containsObject:domain])
     {
 
       v30 = @"File path in set of paths not to back up: %@:%@";
       v31 = @"RestorePathInSetOfPathsNotToBackup";
-      v7 = v34;
+      contextCopy = v34;
 LABEL_60:
-      [v7 setFlag:v31];
-      v13 = [v6 domain];
-      v14 = [v13 name];
-      v32 = [v6 relativePath];
-      v15 = [MBError errorWithCode:205 format:v30, v14, v32];
+      [contextCopy setFlag:v31];
+      name = [fileCopy domain];
+      relativePath2 = [name name];
+      relativePath3 = [fileCopy relativePath];
+      v15 = [MBError errorWithCode:205 format:v30, relativePath2, relativePath3];
 
       goto LABEL_61;
     }
 
-    if ((v17 & 1) == 0 || ([v6 domain], v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "relativePathsNotToBackupToDrive"), v45 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v45, "containsObject:", v12) & 1) == 0))
+    if ((v17 & 1) == 0 || ([fileCopy domain], v46 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v46, "relativePathsNotToBackupToDrive"), v45 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v45, "containsObject:", domain) & 1) == 0))
     {
       if (v18)
       {
-        v44 = [v6 domain];
-        v43 = [v44 relativePathsNotToBackupToService];
-        if ([v43 containsObject:v12])
+        domain7 = [fileCopy domain];
+        relativePathsNotToBackupToService = [domain7 relativePathsNotToBackupToService];
+        if ([relativePathsNotToBackupToService containsObject:domain])
         {
           v25 = 1;
           goto LABEL_48;
@@ -1457,46 +1457,46 @@ LABEL_60:
 
       if (v48)
       {
-        v39 = [v6 domain];
-        v38 = [v39 relativePathsNotToBackupToLocal];
-        if ([v38 containsObject:v12])
+        domain8 = [fileCopy domain];
+        relativePathsNotToBackupToLocal = [domain8 relativePathsNotToBackupToLocal];
+        if ([relativePathsNotToBackupToLocal containsObject:domain])
         {
           v25 = 1;
           goto LABEL_47;
         }
       }
 
-      if (v10)
+      if (relativePathsNotToTransferDeviceToDevice)
       {
-        v26 = [v6 domain];
-        v27 = [v26 relativePathsNotToBackupInMegaBackup];
-        v35 = v27;
-        v36 = v26;
-        if ([v27 containsObject:v12])
+        domain9 = [fileCopy domain];
+        relativePathsNotToBackupInMegaBackup = [domain9 relativePathsNotToBackupInMegaBackup];
+        v35 = relativePathsNotToBackupInMegaBackup;
+        v36 = domain9;
+        if ([relativePathsNotToBackupInMegaBackup containsObject:domain])
         {
 
           v25 = 1;
           goto LABEL_46;
         }
 
-        if ((v37 & 1) == 0)
+        if ((_isDeviceTransferEngine & 1) == 0)
         {
           v25 = 0;
           goto LABEL_45;
         }
       }
 
-      else if ((v37 & 1) == 0)
+      else if ((_isDeviceTransferEngine & 1) == 0)
       {
         v25 = 0;
         goto LABEL_41;
       }
 
-      v28 = [v6 domain];
-      v10 = [v28 relativePathsNotToTransferDeviceToDevice];
-      v25 = [v10 containsObject:v12];
+      domain10 = [fileCopy domain];
+      relativePathsNotToTransferDeviceToDevice = [domain10 relativePathsNotToTransferDeviceToDevice];
+      v25 = [relativePathsNotToTransferDeviceToDevice containsObject:domain];
 
-      LOBYTE(v10) = v40;
+      LOBYTE(relativePathsNotToTransferDeviceToDevice) = v40;
       if ((v40 & 1) == 0)
       {
 LABEL_41:
@@ -1546,33 +1546,33 @@ LABEL_50:
 LABEL_51:
     if (v25)
     {
-      v7 = v34;
+      contextCopy = v34;
       v30 = @"File path in set of paths not to back up: %@:%@";
       v31 = @"RestorePathInSetOfPathsNotToBackup";
       goto LABEL_60;
     }
 
-    if (![v12 length])
+    if (![domain length])
     {
       break;
     }
 
-    v29 = [v12 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [domain stringByDeletingLastPathComponent];
 
-    v13 = [v6 domain];
-    v14 = [v13 relativePathsToRestore];
-    v12 = v29;
-    if ([v14 containsObject:v29])
+    name = [fileCopy domain];
+    relativePath2 = [name relativePathsToRestore];
+    domain = stringByDeletingLastPathComponent;
+    if ([relativePath2 containsObject:stringByDeletingLastPathComponent])
     {
       v15 = 0;
-      v12 = v29;
-      v7 = v34;
+      domain = stringByDeletingLastPathComponent;
+      contextCopy = v34;
       goto LABEL_61;
     }
   }
 
-  v7 = v34;
-  if (([v6 type] & 0xF000) != 0x4000 || objc_msgSend(v12, "length"))
+  contextCopy = v34;
+  if (([fileCopy type] & 0xF000) != 0x4000 || objc_msgSend(domain, "length"))
   {
     v30 = @"File path not in set of paths to back up: %@:%@";
     v31 = @"RestorePathNotInSetOfPathsToBackup";
@@ -1585,21 +1585,21 @@ LABEL_62:
   return v15;
 }
 
-- (id)validateRestoreDomain:(id)a3 relativePath:(id)a4
+- (id)validateRestoreDomain:(id)domain relativePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rootPath];
-  if ([v8 hasPrefix:@"/private"])
+  domainCopy = domain;
+  pathCopy = path;
+  rootPath = [domainCopy rootPath];
+  if ([rootPath hasPrefix:@"/private"])
   {
-    v9 = [v6 rootPath];
-    v10 = [v9 hasPrefix:@"/private/var/PersonaVolumes"];
+    rootPath2 = [domainCopy rootPath];
+    v10 = [rootPath2 hasPrefix:@"/private/var/PersonaVolumes"];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [v6 rootPath];
-      v12 = [v6 rootPath];
-      v13 = [MBError errorWithCode:205 path:v11 format:@"Domain %@ has an invalid root path: %@", v6, v12];
+      rootPath3 = [domainCopy rootPath];
+      rootPath4 = [domainCopy rootPath];
+      v13 = [MBError errorWithCode:205 path:rootPath3 format:@"Domain %@ has an invalid root path: %@", domainCopy, rootPath4];
 
       goto LABEL_24;
     }
@@ -1609,8 +1609,8 @@ LABEL_62:
   {
   }
 
-  v14 = [v6 rootPath];
-  v15 = [v14 stringByAppendingPathComponent:v7];
+  rootPath5 = [domainCopy rootPath];
+  v15 = [rootPath5 stringByAppendingPathComponent:pathCopy];
 
   if (strlen([v15 fileSystemRepresentation]) >= 0x3E6)
   {
@@ -1618,21 +1618,21 @@ LABEL_62:
     goto LABEL_23;
   }
 
-  v16 = [v7 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
 
-  if (![v16 length])
+  if (![stringByDeletingLastPathComponent length])
   {
     v13 = 0;
-    v7 = v16;
+    pathCopy = stringByDeletingLastPathComponent;
     goto LABEL_23;
   }
 
-  v7 = v16;
+  pathCopy = stringByDeletingLastPathComponent;
   while (1)
   {
-    v17 = [(MBRestorePolicy *)self persona];
-    v18 = sub_100150D7C(v6, v17);
-    v19 = [v18 stringByAppendingPathComponent:v7];
+    persona = [(MBRestorePolicy *)self persona];
+    v18 = sub_100150D7C(domainCopy, persona);
+    v19 = [v18 stringByAppendingPathComponent:pathCopy];
 
     v30 = 0;
     v29 = 0;
@@ -1657,13 +1657,13 @@ LABEL_62:
     }
 
 LABEL_15:
-    v22 = [v7 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent2 = [pathCopy stringByDeletingLastPathComponent];
 
-    v7 = v22;
-    if (![v22 length])
+    pathCopy = stringByDeletingLastPathComponent2;
+    if (![stringByDeletingLastPathComponent2 length])
     {
       v13 = 0;
-      v7 = v22;
+      pathCopy = stringByDeletingLastPathComponent2;
       goto LABEL_23;
     }
   }
@@ -1695,13 +1695,13 @@ LABEL_24:
   return v13;
 }
 
-- (BOOL)shouldAlwaysRestoreSystemSharedContainerDomain:(id)a3
+- (BOOL)shouldAlwaysRestoreSystemSharedContainerDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isSystemSharedContainerDomain])
+  domainCopy = domain;
+  if ([domainCopy isSystemSharedContainerDomain])
   {
-    v4 = [v3 name];
-    v5 = [v4 isEqualToString:@"SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles"];
+    name = [domainCopy name];
+    v5 = [name isEqualToString:@"SysSharedContainerDomain-systemgroup.com.apple.configurationprofiles"];
   }
 
   else
@@ -1712,16 +1712,16 @@ LABEL_24:
   return v5;
 }
 
-- (BOOL)shouldRemoveAndRetryPlacingAssetsForRestorable:(id)a3
+- (BOOL)shouldRemoveAndRetryPlacingAssetsForRestorable:(id)restorable
 {
-  v4 = a3;
-  v5 = [(MBRestorePolicy *)self serviceRestoreMode];
+  restorableCopy = restorable;
+  serviceRestoreMode = [(MBRestorePolicy *)self serviceRestoreMode];
   v9 = 1;
-  if (([v5 isBackgroundFiles] & 1) != 0 || objc_msgSend(v5, "isBackgroundFile"))
+  if (([serviceRestoreMode isBackgroundFiles] & 1) != 0 || objc_msgSend(serviceRestoreMode, "isBackgroundFile"))
   {
-    v6 = [v4 domain];
-    v7 = [v6 name];
-    v8 = [v7 isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
+    domain = [restorableCopy domain];
+    name = [domain name];
+    v8 = [name isEqualToString:@"AppDomainGroup-group.com.apple.FileProvider.LocalStorage"];
 
     if (v8)
     {
@@ -1732,69 +1732,69 @@ LABEL_24:
   return v9;
 }
 
-- (id)notifyPluginsStartingRestoreWithEngine:(id)a3
+- (id)notifyPluginsStartingRestoreWithEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_plugins objectEnumerator];
+  engineCopy = engine;
+  objectEnumerator = [(NSArray *)self->_plugins objectEnumerator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100151AC8;
   v9[3] = &unk_1003BFCB8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = MBNotifyPluginsBlock(v6, v5, "startingRestoreWithPolicy:engine:", v9);
+  v10 = engineCopy;
+  v6 = engineCopy;
+  v7 = MBNotifyPluginsBlock(v6, objectEnumerator, "startingRestoreWithPolicy:engine:", v9);
 
   return v7;
 }
 
-- (id)notifyPluginsPreparingRestoreWithEngine:(id)a3
+- (id)notifyPluginsPreparingRestoreWithEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_plugins objectEnumerator];
+  engineCopy = engine;
+  objectEnumerator = [(NSArray *)self->_plugins objectEnumerator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100151BB0;
   v9[3] = &unk_1003BFCB8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = MBNotifyPluginsBlock(v6, v5, "preparingRestoreWithPolicy:engine:", v9);
+  v10 = engineCopy;
+  v6 = engineCopy;
+  v7 = MBNotifyPluginsBlock(v6, objectEnumerator, "preparingRestoreWithPolicy:engine:", v9);
 
   return v7;
 }
 
-- (id)notifyPluginsEndingRestoreWithEngine:(id)a3
+- (id)notifyPluginsEndingRestoreWithEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(NSArray *)self->_plugins reverseObjectEnumerator];
+  engineCopy = engine;
+  reverseObjectEnumerator = [(NSArray *)self->_plugins reverseObjectEnumerator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100151C98;
   v9[3] = &unk_1003BFCB8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = MBNotifyPluginsBlock(v6, v5, "endingRestoreWithPolicy:engine:", v9);
+  v10 = engineCopy;
+  v6 = engineCopy;
+  v7 = MBNotifyPluginsBlock(v6, reverseObjectEnumerator, "endingRestoreWithPolicy:engine:", v9);
 
   return v7;
 }
 
-- (id)notifyPluginsEndedRestoreWithEngine:(id)a3 error:(id)a4
+- (id)notifyPluginsEndedRestoreWithEngine:(id)engine error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSArray *)self->_plugins reverseObjectEnumerator];
+  engineCopy = engine;
+  errorCopy = error;
+  reverseObjectEnumerator = [(NSArray *)self->_plugins reverseObjectEnumerator];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100151DAC;
   v13[3] = &unk_1003BFCE0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = MBNotifyPluginsBlock(v10, v8, "endedRestoreWithPolicy:engine:error:", v13);
+  v14 = engineCopy;
+  v15 = errorCopy;
+  v9 = errorCopy;
+  v10 = engineCopy;
+  v11 = MBNotifyPluginsBlock(v10, reverseObjectEnumerator, "endedRestoreWithPolicy:engine:error:", v13);
 
   return v11;
 }

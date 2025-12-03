@@ -1,17 +1,17 @@
 @interface FCSubscriptionButtonConfiguration
 + (id)defaultAmsSheetTargetSubscriptionButton;
-+ (id)defaultArticleSubscriptionButtonWithLandingPageArticleID:(id)a3;
-+ (id)defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:(id)a3;
-+ (id)defaultLandingPageSubscriptionButtonWithLandingPageArticleID:(id)a3;
-+ (id)defaultLandingPageTargetSubscriptionButtonWithLandingPageArticleID:(id)a3;
++ (id)defaultArticleSubscriptionButtonWithLandingPageArticleID:(id)d;
++ (id)defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:(id)d;
++ (id)defaultLandingPageSubscriptionButtonWithLandingPageArticleID:(id)d;
++ (id)defaultLandingPageTargetSubscriptionButtonWithLandingPageArticleID:(id)d;
 + (id)defaultNonTrialText;
 + (id)defaultOsloSheetTargetSubscriptionButton;
 + (id)defaultSubscriptionButtonText;
 + (id)defaultTrialText;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCSubscriptionButtonConfiguration)init;
-- (FCSubscriptionButtonConfiguration)initWithConfigDictionary:(id)a3;
-- (FCSubscriptionButtonConfiguration)initWithSubscriptionButtonType:(unint64_t)a3 trialText:(id)a4 nonTrialText:(id)a5 buttonColor:(id)a6 buttonTextColor:(id)a7 targetType:(unint64_t)a8 postPurchaseActionType:(unint64_t)a9 postPurchaseURL:(id)a10 landingPageArticleID:(id)a11 dismissLandingPagePostPurchase:(BOOL)a12;
+- (FCSubscriptionButtonConfiguration)initWithConfigDictionary:(id)dictionary;
+- (FCSubscriptionButtonConfiguration)initWithSubscriptionButtonType:(unint64_t)type trialText:(id)text nonTrialText:(id)trialText buttonColor:(id)color buttonTextColor:(id)textColor targetType:(unint64_t)targetType postPurchaseActionType:(unint64_t)actionType postPurchaseURL:(id)self0 landingPageArticleID:(id)self1 dismissLandingPagePostPurchase:(BOOL)self2;
 - (unint64_t)hash;
 @end
 
@@ -43,24 +43,24 @@
   objc_exception_throw(v6);
 }
 
-- (FCSubscriptionButtonConfiguration)initWithConfigDictionary:(id)a3
+- (FCSubscriptionButtonConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v3 = a3;
-  v22 = FCAppConfigurationStringValue(v3, @"subscriptionButtonType", 0);
+  dictionaryCopy = dictionary;
+  v22 = FCAppConfigurationStringValue(dictionaryCopy, @"subscriptionButtonType", 0);
   v19 = FCSubscriptionButtonTypeWithValue(v22);
-  v18 = FCAppConfigurationStringValue(v3, @"trialText", 0);
-  v17 = FCAppConfigurationStringValue(v3, @"nonTrialText", 0);
-  v20 = FCAppConfigurationStringValue(v3, @"buttonColor", 0);
+  v18 = FCAppConfigurationStringValue(dictionaryCopy, @"trialText", 0);
+  v17 = FCAppConfigurationStringValue(dictionaryCopy, @"nonTrialText", 0);
+  v20 = FCAppConfigurationStringValue(dictionaryCopy, @"buttonColor", 0);
   v16 = [FCColor nullableColorWithHexString:v20];
-  v4 = FCAppConfigurationStringValue(v3, @"buttonTextColor", 0);
+  v4 = FCAppConfigurationStringValue(dictionaryCopy, @"buttonTextColor", 0);
   v5 = [FCColor nullableColorWithHexString:v4];
-  v6 = FCAppConfigurationStringValue(v3, @"targetType", 0);
+  v6 = FCAppConfigurationStringValue(dictionaryCopy, @"targetType", 0);
   v7 = FCTargetTypeWithValue(v6);
-  v8 = FCAppConfigurationStringValue(v3, @"postPurchaseActionType", 0);
+  v8 = FCAppConfigurationStringValue(dictionaryCopy, @"postPurchaseActionType", 0);
   v9 = FCPostPurchaseActionTypeWithValue(v8);
-  v10 = FCAppConfigurationURLValue(v3, @"postPurchaseURL");
-  v11 = FCAppConfigurationStringValue(v3, @"landingPageArticleID", 0);
-  v12 = FCAppConfigurationBoolValue(v3, @"dismissLandingPagePostPurchase", 0);
+  v10 = FCAppConfigurationURLValue(dictionaryCopy, @"postPurchaseURL");
+  v11 = FCAppConfigurationStringValue(dictionaryCopy, @"landingPageArticleID", 0);
+  v12 = FCAppConfigurationBoolValue(dictionaryCopy, @"dismissLandingPagePostPurchase", 0);
 
   LOBYTE(v15) = v12;
   v13 = [(FCSubscriptionButtonConfiguration *)self initWithSubscriptionButtonType:v19 trialText:v18 nonTrialText:v17 buttonColor:v16 buttonTextColor:v5 targetType:v7 postPurchaseActionType:v9 postPurchaseURL:v10 landingPageArticleID:v11 dismissLandingPagePostPurchase:v15];
@@ -68,56 +68,56 @@
   return v13;
 }
 
-- (FCSubscriptionButtonConfiguration)initWithSubscriptionButtonType:(unint64_t)a3 trialText:(id)a4 nonTrialText:(id)a5 buttonColor:(id)a6 buttonTextColor:(id)a7 targetType:(unint64_t)a8 postPurchaseActionType:(unint64_t)a9 postPurchaseURL:(id)a10 landingPageArticleID:(id)a11 dismissLandingPagePostPurchase:(BOOL)a12
+- (FCSubscriptionButtonConfiguration)initWithSubscriptionButtonType:(unint64_t)type trialText:(id)text nonTrialText:(id)trialText buttonColor:(id)color buttonTextColor:(id)textColor targetType:(unint64_t)targetType postPurchaseActionType:(unint64_t)actionType postPurchaseURL:(id)self0 landingPageArticleID:(id)self1 dismissLandingPagePostPurchase:(BOOL)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v34 = a6;
-  v19 = a7;
-  v20 = a10;
-  v21 = a11;
+  textCopy = text;
+  trialTextCopy = trialText;
+  colorCopy = color;
+  textColorCopy = textColor;
+  lCopy = l;
+  dCopy = d;
   v35.receiver = self;
   v35.super_class = FCSubscriptionButtonConfiguration;
   v22 = [(FCSubscriptionButtonConfiguration *)&v35 init];
   v23 = v22;
   if (v22)
   {
-    v22->_subscriptionButtonType = a3;
-    v24 = [v17 copy];
+    v22->_subscriptionButtonType = type;
+    v24 = [textCopy copy];
     trialText = v23->_trialText;
     v23->_trialText = v24;
 
-    v26 = [v18 copy];
+    v26 = [trialTextCopy copy];
     nonTrialText = v23->_nonTrialText;
     v23->_nonTrialText = v26;
 
-    objc_storeStrong(&v23->_buttonColor, a6);
-    objc_storeStrong(&v23->_buttonTextColor, a7);
-    v23->_targetType = a8;
-    v23->_postPurchaseActionType = a9;
-    v28 = [v20 copy];
+    objc_storeStrong(&v23->_buttonColor, color);
+    objc_storeStrong(&v23->_buttonTextColor, textColor);
+    v23->_targetType = targetType;
+    v23->_postPurchaseActionType = actionType;
+    v28 = [lCopy copy];
     postPurchaseURL = v23->_postPurchaseURL;
     v23->_postPurchaseURL = v28;
 
-    v30 = [v21 copy];
+    v30 = [dCopy copy];
     landingPageArticleID = v23->_landingPageArticleID;
     v23->_landingPageArticleID = v30;
 
-    v23->_dismissLandingPagePostPurchase = a12;
+    v23->_dismissLandingPagePostPurchase = purchase;
   }
 
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -136,24 +136,24 @@
   if (v6 && (v7 = -[FCSubscriptionButtonConfiguration subscriptionButtonType](self, "subscriptionButtonType"), v7 == [v6 subscriptionButtonType]) && (v8 = -[FCSubscriptionButtonConfiguration targetType](self, "targetType"), v8 == objc_msgSend(v6, "targetType")) && (v9 = -[FCSubscriptionButtonConfiguration postPurchaseActionType](self, "postPurchaseActionType"), v9 == objc_msgSend(v6, "postPurchaseActionType")) && (v10 = -[FCSubscriptionButtonConfiguration shouldDismissLandingPagePostPurchase](self, "shouldDismissLandingPagePostPurchase"), v10 == objc_msgSend(v6, "shouldDismissLandingPagePostPurchase")))
   {
     v13 = MEMORY[0x1E69E58C0];
-    v14 = [(FCSubscriptionButtonConfiguration *)self trialText];
-    v15 = [v6 trialText];
-    if ([v13 nf_object:v14 isEqualToObject:v15])
+    trialText = [(FCSubscriptionButtonConfiguration *)self trialText];
+    trialText2 = [v6 trialText];
+    if ([v13 nf_object:trialText isEqualToObject:trialText2])
     {
       v16 = MEMORY[0x1E69E58C0];
-      v17 = [(FCSubscriptionButtonConfiguration *)self nonTrialText];
-      v18 = [v6 nonTrialText];
-      if ([v16 nf_object:v17 isEqualToObject:v18])
+      nonTrialText = [(FCSubscriptionButtonConfiguration *)self nonTrialText];
+      nonTrialText2 = [v6 nonTrialText];
+      if ([v16 nf_object:nonTrialText isEqualToObject:nonTrialText2])
       {
         v19 = MEMORY[0x1E69E58C0];
-        v20 = [(FCSubscriptionButtonConfiguration *)self postPurchaseURL];
-        v21 = [v6 postPurchaseURL];
-        if ([v19 nf_object:v20 isEqualToObject:v21])
+        postPurchaseURL = [(FCSubscriptionButtonConfiguration *)self postPurchaseURL];
+        postPurchaseURL2 = [v6 postPurchaseURL];
+        if ([v19 nf_object:postPurchaseURL isEqualToObject:postPurchaseURL2])
         {
           v24 = MEMORY[0x1E69E58C0];
-          v22 = [(FCSubscriptionButtonConfiguration *)self landingPageArticleID];
-          v23 = [v6 landingPageArticleID];
-          v11 = [v24 nf_object:v22 isEqualToObject:v23];
+          landingPageArticleID = [(FCSubscriptionButtonConfiguration *)self landingPageArticleID];
+          landingPageArticleID2 = [v6 landingPageArticleID];
+          v11 = [v24 nf_object:landingPageArticleID isEqualToObject:landingPageArticleID2];
         }
 
         else
@@ -192,28 +192,28 @@
   v8 = [v7 hash];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[FCSubscriptionButtonConfiguration shouldDismissLandingPagePostPurchase](self, "shouldDismissLandingPagePostPurchase")}];
   v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(FCSubscriptionButtonConfiguration *)self trialText];
-  v12 = [v11 hash];
-  v13 = [(FCSubscriptionButtonConfiguration *)self nonTrialText];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(FCSubscriptionButtonConfiguration *)self postPurchaseURL];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(FCSubscriptionButtonConfiguration *)self landingPageArticleID];
-  v18 = v16 ^ [v17 hash];
+  trialText = [(FCSubscriptionButtonConfiguration *)self trialText];
+  v12 = [trialText hash];
+  nonTrialText = [(FCSubscriptionButtonConfiguration *)self nonTrialText];
+  v14 = v12 ^ [nonTrialText hash];
+  postPurchaseURL = [(FCSubscriptionButtonConfiguration *)self postPurchaseURL];
+  v16 = v14 ^ [postPurchaseURL hash];
+  landingPageArticleID = [(FCSubscriptionButtonConfiguration *)self landingPageArticleID];
+  v18 = v16 ^ [landingPageArticleID hash];
 
   return v10 ^ v18;
 }
 
-+ (id)defaultLandingPageTargetSubscriptionButtonWithLandingPageArticleID:(id)a3
++ (id)defaultLandingPageTargetSubscriptionButtonWithLandingPageArticleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__FCSubscriptionButtonConfiguration_defaultLandingPageTargetSubscriptionButtonWithLandingPageArticleID___block_invoke;
   block[3] = &unk_1E7C36EA0;
-  v10 = v3;
+  v10 = dCopy;
   v4 = qword_1EDB274E0;
-  v5 = v3;
+  v5 = dCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EDB274E0, block);
@@ -288,16 +288,16 @@ void __76__FCSubscriptionButtonConfiguration_defaultAmsSheetTargetSubscriptionBu
   qword_1EDB274F8 = v4;
 }
 
-+ (id)defaultArticleSubscriptionButtonWithLandingPageArticleID:(id)a3
++ (id)defaultArticleSubscriptionButtonWithLandingPageArticleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__FCSubscriptionButtonConfiguration_defaultArticleSubscriptionButtonWithLandingPageArticleID___block_invoke;
   block[3] = &unk_1E7C36EA0;
-  v10 = v3;
+  v10 = dCopy;
   v4 = qword_1EDB27510;
-  v5 = v3;
+  v5 = dCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EDB27510, block);
@@ -323,7 +323,7 @@ void __94__FCSubscriptionButtonConfiguration_defaultArticleSubscriptionButtonWit
   qword_1EDB27508 = v6;
 }
 
-+ (id)defaultLandingPageSubscriptionButtonWithLandingPageArticleID:(id)a3
++ (id)defaultLandingPageSubscriptionButtonWithLandingPageArticleID:(id)d
 {
   if (qword_1EDB27520 != -1)
   {
@@ -348,16 +348,16 @@ void __98__FCSubscriptionButtonConfiguration_defaultLandingPageSubscriptionButto
   qword_1EDB27518 = v4;
 }
 
-+ (id)defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:(id)a3
++ (id)defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__FCSubscriptionButtonConfiguration_defaultIssueCoverSubscriptionButtonWithLandingPageArticleID___block_invoke;
   block[3] = &unk_1E7C36EA0;
-  v10 = v3;
+  v10 = dCopy;
   v4 = qword_1EDB27530;
-  v5 = v3;
+  v5 = dCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EDB27530, block);

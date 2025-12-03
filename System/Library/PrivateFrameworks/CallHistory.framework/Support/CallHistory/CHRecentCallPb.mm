@@ -1,6 +1,6 @@
 @interface CHRecentCallPb
-+ (id)protoRecentCallWithRecentCall:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)protoRecentCallWithRecentCall:(id)call;
+- (BOOL)isEqual:(id)equal;
 - (CHRecentCall)chRecentCall;
 - (NSSet)chRemoteParticipantHandles;
 - (NSUUID)localParticipantUUID;
@@ -8,120 +8,120 @@
 - (NSUUID)participantGroupUUID;
 - (NSUUID)relayHostDeviceParticipantUUID;
 - (NSUUID)reminderUUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRemoteParticipantHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setChRemoteParticipantHandles:(id)a3;
-- (void)setHasAutoAnsweredReason:(BOOL)a3;
-- (void)setHasBytesOfDataUsed:(BOOL)a3;
-- (void)setHasCallCategory:(BOOL)a3;
-- (void)setHasCallStatus:(BOOL)a3;
-- (void)setHasCallType:(BOOL)a3;
-- (void)setHasCallerIdAvailability:(BOOL)a3;
-- (void)setHasCommunicationTrustScore:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasHandleType:(BOOL)a3;
-- (void)setHasJunkConfidence:(BOOL)a3;
-- (void)setHasMobileCountryCode:(BOOL)a3;
-- (void)setHasMobileNetworkCode:(BOOL)a3;
-- (void)setHasRead:(BOOL)a3;
-- (void)setHasScreenSharingType:(BOOL)a3;
-- (void)setHasTimeToEstablish:(BOOL)a3;
-- (void)setHasUnreadCount:(BOOL)a3;
-- (void)setHasVerificationStatus:(BOOL)a3;
-- (void)setLocalParticipantUUID:(id)a3;
-- (void)setOutgoingLocalParticipantUUID:(id)a3;
-- (void)setParticipantGroupUUID:(id)a3;
-- (void)setRelayHostDeviceParticipantUUID:(id)a3;
-- (void)setReminderUUID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRemoteParticipantHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setChRemoteParticipantHandles:(id)handles;
+- (void)setHasAutoAnsweredReason:(BOOL)reason;
+- (void)setHasBytesOfDataUsed:(BOOL)used;
+- (void)setHasCallCategory:(BOOL)category;
+- (void)setHasCallStatus:(BOOL)status;
+- (void)setHasCallType:(BOOL)type;
+- (void)setHasCallerIdAvailability:(BOOL)availability;
+- (void)setHasCommunicationTrustScore:(BOOL)score;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasHandleType:(BOOL)type;
+- (void)setHasJunkConfidence:(BOOL)confidence;
+- (void)setHasMobileCountryCode:(BOOL)code;
+- (void)setHasMobileNetworkCode:(BOOL)code;
+- (void)setHasRead:(BOOL)read;
+- (void)setHasScreenSharingType:(BOOL)type;
+- (void)setHasTimeToEstablish:(BOOL)establish;
+- (void)setHasUnreadCount:(BOOL)count;
+- (void)setHasVerificationStatus:(BOOL)status;
+- (void)setLocalParticipantUUID:(id)d;
+- (void)setOutgoingLocalParticipantUUID:(id)d;
+- (void)setParticipantGroupUUID:(id)d;
+- (void)setRelayHostDeviceParticipantUUID:(id)d;
+- (void)setReminderUUID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CHRecentCallPb
 
-+ (id)protoRecentCallWithRecentCall:(id)a3
++ (id)protoRecentCallWithRecentCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
   v4 = objc_alloc_init(CHRecentCallPb);
-  v5 = [v3 bytesOfDataUsed];
-  [v5 floatValue];
+  bytesOfDataUsed = [callCopy bytesOfDataUsed];
+  [bytesOfDataUsed floatValue];
   [(CHRecentCallPb *)v4 setBytesOfDataUsed:?];
 
-  v6 = [v3 name];
-  [(CHRecentCallPb *)v4 setCallerName:v6];
+  name = [callCopy name];
+  [(CHRecentCallPb *)v4 setCallerName:name];
 
-  -[CHRecentCallPb setCallStatus:](v4, "setCallStatus:", [v3 callStatus]);
-  v7 = [v3 date];
-  [v7 timeIntervalSince1970];
+  -[CHRecentCallPb setCallStatus:](v4, "setCallStatus:", [callCopy callStatus]);
+  date = [callCopy date];
+  [date timeIntervalSince1970];
   [(CHRecentCallPb *)v4 setDate:?];
 
-  [v3 duration];
+  [callCopy duration];
   [(CHRecentCallPb *)v4 setDuration:?];
-  v8 = [v3 isoCountryCode];
-  [(CHRecentCallPb *)v4 setIsoCountryCode:v8];
+  isoCountryCode = [callCopy isoCountryCode];
+  [(CHRecentCallPb *)v4 setIsoCountryCode:isoCountryCode];
 
-  v9 = [v3 localParticipantUUID];
-  [(CHRecentCallPb *)v4 setLocalParticipantUUID:v9];
+  localParticipantUUID = [callCopy localParticipantUUID];
+  [(CHRecentCallPb *)v4 setLocalParticipantUUID:localParticipantUUID];
 
-  v10 = [v3 outgoingLocalParticipantUUID];
-  [(CHRecentCallPb *)v4 setOutgoingLocalParticipantUUID:v10];
+  outgoingLocalParticipantUUID = [callCopy outgoingLocalParticipantUUID];
+  [(CHRecentCallPb *)v4 setOutgoingLocalParticipantUUID:outgoingLocalParticipantUUID];
 
   v11 = objc_alloc_init(CHFeatureFlags);
   if ([v11 isDualSimParityEnabled])
   {
-    v12 = [v3 localParticipantUUID];
-    [(CHRecentCallPb *)v4 setRelayHostDeviceParticipantUUID:v12];
+    localParticipantUUID2 = [callCopy localParticipantUUID];
+    [(CHRecentCallPb *)v4 setRelayHostDeviceParticipantUUID:localParticipantUUID2];
   }
 
-  v13 = [v3 participantGroupUUID];
-  [(CHRecentCallPb *)v4 setParticipantGroupUUID:v13];
+  participantGroupUUID = [callCopy participantGroupUUID];
+  [(CHRecentCallPb *)v4 setParticipantGroupUUID:participantGroupUUID];
 
-  v14 = [v3 serviceProvider];
-  [(CHRecentCallPb *)v4 setServiceProvider:v14];
+  serviceProvider = [callCopy serviceProvider];
+  [(CHRecentCallPb *)v4 setServiceProvider:serviceProvider];
 
-  v15 = [v3 timeToEstablish];
-  [v15 doubleValue];
+  timeToEstablish = [callCopy timeToEstablish];
+  [timeToEstablish doubleValue];
   [(CHRecentCallPb *)v4 setTimeToEstablish:?];
 
-  v16 = [v3 remoteParticipantHandles];
-  [(CHRecentCallPb *)v4 setChRemoteParticipantHandles:v16];
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  [(CHRecentCallPb *)v4 setChRemoteParticipantHandles:remoteParticipantHandles];
 
-  -[CHRecentCallPb setJunkConfidence:](v4, "setJunkConfidence:", [v3 junkConfidence]);
-  -[CHRecentCallPb setVerificationStatus:](v4, "setVerificationStatus:", [v3 verificationStatus]);
-  v17 = [v3 conversationID];
-  v18 = [v17 UUIDString];
-  [(CHRecentCallPb *)v4 setConversationID:v18];
+  -[CHRecentCallPb setJunkConfidence:](v4, "setJunkConfidence:", [callCopy junkConfidence]);
+  -[CHRecentCallPb setVerificationStatus:](v4, "setVerificationStatus:", [callCopy verificationStatus]);
+  conversationID = [callCopy conversationID];
+  uUIDString = [conversationID UUIDString];
+  [(CHRecentCallPb *)v4 setConversationID:uUIDString];
 
-  -[CHRecentCallPb setAutoAnsweredReason:](v4, "setAutoAnsweredReason:", [v3 autoAnsweredReason]);
-  -[CHRecentCallPb setScreenSharingType:](v4, "setScreenSharingType:", [v3 screenSharingType]);
-  v19 = [v3 reminderUUID];
-  [(CHRecentCallPb *)v4 setReminderUUID:v19];
+  -[CHRecentCallPb setAutoAnsweredReason:](v4, "setAutoAnsweredReason:", [callCopy autoAnsweredReason]);
+  -[CHRecentCallPb setScreenSharingType:](v4, "setScreenSharingType:", [callCopy screenSharingType]);
+  reminderUUID = [callCopy reminderUUID];
+  [(CHRecentCallPb *)v4 setReminderUUID:reminderUUID];
 
-  -[CHRecentCallPb setCommunicationTrustScore:](v4, "setCommunicationTrustScore:", [v3 communicationTrustScore]);
-  -[CHRecentCallPb setCallCategory:](v4, "setCallCategory:", [v3 callCategory]);
-  v20 = [v3 callerId];
-  [(CHRecentCallPb *)v4 setCallerId:v20];
+  -[CHRecentCallPb setCommunicationTrustScore:](v4, "setCommunicationTrustScore:", [callCopy communicationTrustScore]);
+  -[CHRecentCallPb setCallCategory:](v4, "setCallCategory:", [callCopy callCategory]);
+  callerId = [callCopy callerId];
+  [(CHRecentCallPb *)v4 setCallerId:callerId];
 
-  -[CHRecentCallPb setCallType:](v4, "setCallType:", [v3 callType]);
-  -[CHRecentCallPb setHandleType:](v4, "setHandleType:", [v3 handleType]);
-  v21 = [v3 uniqueId];
-  [(CHRecentCallPb *)v4 setUniqueId:v21];
+  -[CHRecentCallPb setCallType:](v4, "setCallType:", [callCopy callType]);
+  -[CHRecentCallPb setHandleType:](v4, "setHandleType:", [callCopy handleType]);
+  uniqueId = [callCopy uniqueId];
+  [(CHRecentCallPb *)v4 setUniqueId:uniqueId];
 
   return v4;
 }
 
 - (NSUUID)localParticipantUUID
 {
-  v3 = [(CHRecentCallPb *)self localParticipantUUIDString];
-  if (v3)
+  localParticipantUUIDString = [(CHRecentCallPb *)self localParticipantUUIDString];
+  if (localParticipantUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CHRecentCallPb *)self localParticipantUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    localParticipantUUIDString2 = [(CHRecentCallPb *)self localParticipantUUIDString];
+    v6 = [v4 initWithUUIDString:localParticipantUUIDString2];
   }
 
   else
@@ -132,20 +132,20 @@
   return v6;
 }
 
-- (void)setLocalParticipantUUID:(id)a3
+- (void)setLocalParticipantUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CHRecentCallPb *)self setLocalParticipantUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CHRecentCallPb *)self setLocalParticipantUUIDString:uUIDString];
 }
 
 - (NSUUID)outgoingLocalParticipantUUID
 {
-  v3 = [(CHRecentCallPb *)self outgoingLocalParticipantUUIDString];
-  if (v3)
+  outgoingLocalParticipantUUIDString = [(CHRecentCallPb *)self outgoingLocalParticipantUUIDString];
+  if (outgoingLocalParticipantUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CHRecentCallPb *)self outgoingLocalParticipantUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    outgoingLocalParticipantUUIDString2 = [(CHRecentCallPb *)self outgoingLocalParticipantUUIDString];
+    v6 = [v4 initWithUUIDString:outgoingLocalParticipantUUIDString2];
   }
 
   else
@@ -156,20 +156,20 @@
   return v6;
 }
 
-- (void)setOutgoingLocalParticipantUUID:(id)a3
+- (void)setOutgoingLocalParticipantUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CHRecentCallPb *)self setOutgoingLocalParticipantUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CHRecentCallPb *)self setOutgoingLocalParticipantUUIDString:uUIDString];
 }
 
 - (NSUUID)relayHostDeviceParticipantUUID
 {
-  v3 = [(CHRecentCallPb *)self relayHostDeviceParticipantUUIDString];
-  if (v3)
+  relayHostDeviceParticipantUUIDString = [(CHRecentCallPb *)self relayHostDeviceParticipantUUIDString];
+  if (relayHostDeviceParticipantUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CHRecentCallPb *)self relayHostDeviceParticipantUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    relayHostDeviceParticipantUUIDString2 = [(CHRecentCallPb *)self relayHostDeviceParticipantUUIDString];
+    v6 = [v4 initWithUUIDString:relayHostDeviceParticipantUUIDString2];
   }
 
   else
@@ -180,20 +180,20 @@
   return v6;
 }
 
-- (void)setRelayHostDeviceParticipantUUID:(id)a3
+- (void)setRelayHostDeviceParticipantUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CHRecentCallPb *)self setRelayHostDeviceParticipantUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CHRecentCallPb *)self setRelayHostDeviceParticipantUUIDString:uUIDString];
 }
 
 - (NSUUID)reminderUUID
 {
-  v3 = [(CHRecentCallPb *)self reminderUUIDString];
-  if (v3)
+  reminderUUIDString = [(CHRecentCallPb *)self reminderUUIDString];
+  if (reminderUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CHRecentCallPb *)self reminderUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    reminderUUIDString2 = [(CHRecentCallPb *)self reminderUUIDString];
+    v6 = [v4 initWithUUIDString:reminderUUIDString2];
   }
 
   else
@@ -204,20 +204,20 @@
   return v6;
 }
 
-- (void)setReminderUUID:(id)a3
+- (void)setReminderUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CHRecentCallPb *)self setReminderUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CHRecentCallPb *)self setReminderUUIDString:uUIDString];
 }
 
 - (NSUUID)participantGroupUUID
 {
-  v3 = [(CHRecentCallPb *)self participantGroupUUIDString];
-  if (v3)
+  participantGroupUUIDString = [(CHRecentCallPb *)self participantGroupUUIDString];
+  if (participantGroupUUIDString)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CHRecentCallPb *)self participantGroupUUIDString];
-    v6 = [v4 initWithUUIDString:v5];
+    participantGroupUUIDString2 = [(CHRecentCallPb *)self participantGroupUUIDString];
+    v6 = [v4 initWithUUIDString:participantGroupUUIDString2];
   }
 
   else
@@ -228,23 +228,23 @@
   return v6;
 }
 
-- (void)setParticipantGroupUUID:(id)a3
+- (void)setParticipantGroupUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(CHRecentCallPb *)self setParticipantGroupUUIDString:v4];
+  uUIDString = [d UUIDString];
+  [(CHRecentCallPb *)self setParticipantGroupUUIDString:uUIDString];
 }
 
 - (NSSet)chRemoteParticipantHandles
 {
-  v3 = [(CHRecentCallPb *)self remoteParticipantHandles];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  remoteParticipantHandles = [(CHRecentCallPb *)self remoteParticipantHandles];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [remoteParticipantHandles count]);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CHRecentCallPb *)self remoteParticipantHandles];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  remoteParticipantHandles2 = [(CHRecentCallPb *)self remoteParticipantHandles];
+  v6 = [remoteParticipantHandles2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -255,14 +255,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(remoteParticipantHandles2);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) chHandle];
-        [v4 addObject:v10];
+        chHandle = [*(*(&v13 + 1) + 8 * i) chHandle];
+        [v4 addObject:chHandle];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [remoteParticipantHandles2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -273,15 +273,15 @@
   return v11;
 }
 
-- (void)setChRemoteParticipantHandles:(id)a3
+- (void)setChRemoteParticipantHandles:(id)handles
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  handlesCopy = handles;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [handlesCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = handlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -329,51 +329,51 @@
 
   [(CHRecentCallPb *)self duration];
   [v3 setDuration:?];
-  v7 = [(CHRecentCallPb *)self isoCountryCode];
-  [v3 setIsoCountryCode:v7];
+  isoCountryCode = [(CHRecentCallPb *)self isoCountryCode];
+  [v3 setIsoCountryCode:isoCountryCode];
 
   v8 = objc_alloc_init(CHFeatureFlags);
   if (![v8 isDualSimParityEnabled] || (+[TUCallCapabilities supportsPrimaryCalling](TUCallCapabilities, "supportsPrimaryCalling") & 1) != 0)
   {
-    v9 = [(CHRecentCallPb *)self localParticipantUUID];
+    localParticipantUUID = [(CHRecentCallPb *)self localParticipantUUID];
 LABEL_4:
-    [v3 setLocalParticipantUUID:v9];
+    [v3 setLocalParticipantUUID:localParticipantUUID];
     goto LABEL_5;
   }
 
-  v9 = [(CHRecentCallPb *)self localParticipantUUID];
-  if (v9)
+  localParticipantUUID = [(CHRecentCallPb *)self localParticipantUUID];
+  if (localParticipantUUID)
   {
     goto LABEL_4;
   }
 
-  v32 = [(CHRecentCallPb *)self relayHostDeviceParticipantUUID];
-  [v3 setLocalParticipantUUID:v32];
+  relayHostDeviceParticipantUUID = [(CHRecentCallPb *)self relayHostDeviceParticipantUUID];
+  [v3 setLocalParticipantUUID:relayHostDeviceParticipantUUID];
 
 LABEL_5:
-  v10 = [(CHRecentCallPb *)self callerName];
-  [v3 setName:v10];
+  callerName = [(CHRecentCallPb *)self callerName];
+  [v3 setName:callerName];
 
-  v11 = [(CHRecentCallPb *)self outgoingLocalParticipantUUID];
-  [v3 setOutgoingLocalParticipantUUID:v11];
+  outgoingLocalParticipantUUID = [(CHRecentCallPb *)self outgoingLocalParticipantUUID];
+  [v3 setOutgoingLocalParticipantUUID:outgoingLocalParticipantUUID];
 
-  v12 = [(CHRecentCallPb *)self participantGroupUUID];
-  [v3 setParticipantGroupUUID:v12];
+  participantGroupUUID = [(CHRecentCallPb *)self participantGroupUUID];
+  [v3 setParticipantGroupUUID:participantGroupUUID];
 
-  v13 = [(CHRecentCallPb *)self chRemoteParticipantHandles];
-  [v3 setRemoteParticipantHandles:v13];
+  chRemoteParticipantHandles = [(CHRecentCallPb *)self chRemoteParticipantHandles];
+  [v3 setRemoteParticipantHandles:chRemoteParticipantHandles];
 
-  v14 = [(CHRecentCallPb *)self serviceProvider];
-  [v3 setServiceProvider:v14];
+  serviceProvider = [(CHRecentCallPb *)self serviceProvider];
+  [v3 setServiceProvider:serviceProvider];
 
-  v15 = [(CHRecentCallPb *)self reminderUUID];
-  [v3 setReminderUUID:v15];
+  reminderUUID = [(CHRecentCallPb *)self reminderUUID];
+  [v3 setReminderUUID:reminderUUID];
 
   if ([(CHRecentCallPb *)self hasConversationID])
   {
     v16 = [NSUUID alloc];
-    v17 = [(CHRecentCallPb *)self conversationID];
-    v18 = [v16 initWithUUIDString:v17];
+    conversationID = [(CHRecentCallPb *)self conversationID];
+    v18 = [v16 initWithUUIDString:conversationID];
     [v3 setConversationID:v18];
   }
 
@@ -387,66 +387,66 @@ LABEL_5:
 
   if ([(CHRecentCallPb *)self hasJunkConfidence])
   {
-    v21 = [(CHRecentCallPb *)self junkConfidence];
+    junkConfidence = [(CHRecentCallPb *)self junkConfidence];
   }
 
   else
   {
-    v21 = 0;
+    junkConfidence = 0;
   }
 
-  [v3 setJunkConfidence:v21];
+  [v3 setJunkConfidence:junkConfidence];
   if ([(CHRecentCallPb *)self verificationStatus])
   {
-    v22 = [(CHRecentCallPb *)self verificationStatus];
+    verificationStatus = [(CHRecentCallPb *)self verificationStatus];
   }
 
   else
   {
-    v22 = 0;
+    verificationStatus = 0;
   }
 
-  [v3 setVerificationStatus:v22];
+  [v3 setVerificationStatus:verificationStatus];
   if ([(CHRecentCallPb *)self autoAnsweredReason])
   {
-    v23 = [(CHRecentCallPb *)self autoAnsweredReason];
+    autoAnsweredReason = [(CHRecentCallPb *)self autoAnsweredReason];
   }
 
   else
   {
-    v23 = 0;
+    autoAnsweredReason = 0;
   }
 
-  [v3 setAutoAnsweredReason:v23];
+  [v3 setAutoAnsweredReason:autoAnsweredReason];
   if ([(CHRecentCallPb *)self screenSharingType])
   {
-    v24 = [(CHRecentCallPb *)self screenSharingType];
+    screenSharingType = [(CHRecentCallPb *)self screenSharingType];
   }
 
   else
   {
-    v24 = 0;
+    screenSharingType = 0;
   }
 
-  [v3 setScreenSharingType:v24];
+  [v3 setScreenSharingType:screenSharingType];
   if ([(CHRecentCallPb *)self communicationTrustScore])
   {
-    v25 = [(CHRecentCallPb *)self communicationTrustScore];
+    communicationTrustScore = [(CHRecentCallPb *)self communicationTrustScore];
   }
 
   else
   {
-    v25 = 4;
+    communicationTrustScore = 4;
   }
 
-  [v3 setCommunicationTrustScore:v25];
+  [v3 setCommunicationTrustScore:communicationTrustScore];
   [v3 setCallCategory:{-[CHRecentCallPb callCategory](self, "callCategory")}];
-  v26 = [(CHRecentCallPb *)self callerId];
-  [v3 setCallerId:v26];
+  callerId = [(CHRecentCallPb *)self callerId];
+  [v3 setCallerId:callerId];
 
   [v3 setCallType:{-[CHRecentCallPb callType](self, "callType")}];
-  v27 = [(CHRecentCallPb *)self uniqueId];
-  [v3 setUniqueId:v27];
+  uniqueId = [(CHRecentCallPb *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
   if ([(CHRecentCallPb *)self hasHandleType])
   {
@@ -455,21 +455,21 @@ LABEL_5:
 
   else
   {
-    v28 = [(CHRecentCallPb *)self callerId];
-    [v3 setHandleType:{+[CHHandle handleTypeForValue:](CHHandle, "handleTypeForValue:", v28)}];
+    callerId2 = [(CHRecentCallPb *)self callerId];
+    [v3 setHandleType:{+[CHHandle handleTypeForValue:](CHHandle, "handleTypeForValue:", callerId2)}];
   }
 
-  v29 = [v3 dictionaryRepresentation];
-  v33 = v29;
+  dictionaryRepresentation = [v3 dictionaryRepresentation];
+  v33 = dictionaryRepresentation;
   v30 = [NSArray arrayWithObjects:&v33 count:1];
   [v3 setCallOccurrences:v30];
 
   return v3;
 }
 
-- (void)setHasCallType:(BOOL)a3
+- (void)setHasCallType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 128;
   }
@@ -482,9 +482,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasCallStatus:(BOOL)a3
+- (void)setHasCallStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 64;
   }
@@ -497,9 +497,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasCallerIdAvailability:(BOOL)a3
+- (void)setHasCallerIdAvailability:(BOOL)availability
 {
-  if (a3)
+  if (availability)
   {
     v3 = 256;
   }
@@ -512,9 +512,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasRead:(BOOL)a3
+- (void)setHasRead:(BOOL)read
 {
-  if (a3)
+  if (read)
   {
     v3 = 0x20000;
   }
@@ -527,9 +527,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasUnreadCount:(BOOL)a3
+- (void)setHasUnreadCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x8000;
   }
@@ -542,9 +542,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -557,9 +557,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasBytesOfDataUsed:(BOOL)a3
+- (void)setHasBytesOfDataUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 16;
   }
@@ -572,9 +572,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasMobileCountryCode:(BOOL)a3
+- (void)setHasMobileCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4096;
   }
@@ -587,9 +587,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasMobileNetworkCode:(BOOL)a3
+- (void)setHasMobileNetworkCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 0x2000;
   }
@@ -602,9 +602,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasCallCategory:(BOOL)a3
+- (void)setHasCallCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 32;
   }
@@ -617,9 +617,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasHandleType:(BOOL)a3
+- (void)setHasHandleType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -632,9 +632,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTimeToEstablish:(BOOL)a3
+- (void)setHasTimeToEstablish:(BOOL)establish
 {
-  if (a3)
+  if (establish)
   {
     v3 = 4;
   }
@@ -647,27 +647,27 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)addRemoteParticipantHandles:(id)a3
+- (void)addRemoteParticipantHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   remoteParticipantHandles = self->_remoteParticipantHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!remoteParticipantHandles)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_remoteParticipantHandles;
     self->_remoteParticipantHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     remoteParticipantHandles = self->_remoteParticipantHandles;
   }
 
-  [(NSMutableArray *)remoteParticipantHandles addObject:v4];
+  [(NSMutableArray *)remoteParticipantHandles addObject:handlesCopy];
 }
 
-- (void)setHasJunkConfidence:(BOOL)a3
+- (void)setHasJunkConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 2048;
   }
@@ -680,9 +680,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasVerificationStatus:(BOOL)a3
+- (void)setHasVerificationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x10000;
   }
@@ -695,9 +695,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasAutoAnsweredReason:(BOOL)a3
+- (void)setHasAutoAnsweredReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -710,9 +710,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasScreenSharingType:(BOOL)a3
+- (void)setHasScreenSharingType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x4000;
   }
@@ -725,9 +725,9 @@ LABEL_5:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasCommunicationTrustScore:(BOOL)a3
+- (void)setHasCommunicationTrustScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 512;
   }
@@ -745,8 +745,8 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = CHRecentCallPb;
   v3 = [(CHRecentCallPb *)&v7 description];
-  v4 = [(CHRecentCallPb *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CHRecentCallPb *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -969,8 +969,8 @@ LABEL_16:
   localParticipantHandle = self->_localParticipantHandle;
   if (localParticipantHandle)
   {
-    v20 = [(CHHandlePb *)localParticipantHandle dictionaryRepresentation];
-    [v5 setObject:v20 forKey:@"localParticipantHandle"];
+    dictionaryRepresentation = [(CHHandlePb *)localParticipantHandle dictionaryRepresentation];
+    [v5 setObject:dictionaryRepresentation forKey:@"localParticipantHandle"];
   }
 
   if ([(NSMutableArray *)self->_remoteParticipantHandles count])
@@ -995,8 +995,8 @@ LABEL_16:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v53 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation2 = [*(*(&v53 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation2];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v53 objects:v57 count:16];
@@ -1091,9 +1091,9 @@ LABEL_16:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
@@ -1394,27 +1394,27 @@ LABEL_16:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v14;
+    [toCopy setUniqueId:?];
+    toCopy = v14;
   }
 
   if (self->_callerId)
   {
     [v14 setCallerId:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
   if (*&has)
   {
-    *(v4 + 1) = *&self->_date;
-    *(v4 + 61) |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    *(toCopy + 61) |= 1u;
     has = self->_has;
     if ((*&has & 0x80) == 0)
     {
@@ -1433,8 +1433,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 12) = self->_callType;
-  *(v4 + 61) |= 0x80u;
+  *(toCopy + 12) = self->_callType;
+  *(toCopy + 61) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1448,8 +1448,8 @@ LABEL_8:
   }
 
 LABEL_67:
-  *(v4 + 11) = self->_callStatus;
-  *(v4 + 61) |= 0x40u;
+  *(toCopy + 11) = self->_callStatus;
+  *(toCopy + 61) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1463,8 +1463,8 @@ LABEL_9:
   }
 
 LABEL_68:
-  *(v4 + 16) = self->_callerIdAvailability;
-  *(v4 + 61) |= 0x100u;
+  *(toCopy + 16) = self->_callerIdAvailability;
+  *(toCopy + 61) |= 0x100u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1478,8 +1478,8 @@ LABEL_10:
   }
 
 LABEL_69:
-  *(v4 + 240) = self->_read;
-  *(v4 + 61) |= 0x20000u;
+  *(toCopy + 240) = self->_read;
+  *(toCopy + 61) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1493,8 +1493,8 @@ LABEL_11:
   }
 
 LABEL_70:
-  *(v4 + 58) = self->_unreadCount;
-  *(v4 + 61) |= 0x8000u;
+  *(toCopy + 58) = self->_unreadCount;
+  *(toCopy + 61) |= 0x8000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1508,8 +1508,8 @@ LABEL_12:
   }
 
 LABEL_71:
-  *(v4 + 2) = *&self->_duration;
-  *(v4 + 61) |= 2u;
+  *(toCopy + 2) = *&self->_duration;
+  *(toCopy + 61) |= 2u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1523,8 +1523,8 @@ LABEL_13:
   }
 
 LABEL_72:
-  *(v4 + 9) = LODWORD(self->_bytesOfDataUsed);
-  *(v4 + 61) |= 0x10u;
+  *(toCopy + 9) = LODWORD(self->_bytesOfDataUsed);
+  *(toCopy + 61) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1538,64 +1538,64 @@ LABEL_14:
   }
 
 LABEL_73:
-  *(v4 + 38) = self->_mobileCountryCode;
-  *(v4 + 61) |= 0x1000u;
+  *(toCopy + 38) = self->_mobileCountryCode;
+  *(toCopy + 61) |= 0x1000u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_15:
-    *(v4 + 39) = self->_mobileNetworkCode;
-    *(v4 + 61) |= 0x2000u;
+    *(toCopy + 39) = self->_mobileNetworkCode;
+    *(toCopy + 61) |= 0x2000u;
   }
 
 LABEL_16:
   if (self->_devicePhoneId)
   {
     [v14 setDevicePhoneId:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_transaction)
   {
     [v14 setTransaction:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_isoCountryCode)
   {
     [v14 setIsoCountryCode:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if (self->_callerIdLocation)
   {
     [v14 setCallerIdLocation:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(v4 + 10) = self->_callCategory;
-    *(v4 + 61) |= 0x20u;
+    *(toCopy + 10) = self->_callCategory;
+    *(toCopy + 61) |= 0x20u;
   }
 
   if (self->_serviceProvider)
   {
     [v14 setServiceProvider:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x400) != 0)
   {
-    *(v4 + 28) = self->_handleType;
-    *(v4 + 61) |= 0x400u;
+    *(toCopy + 28) = self->_handleType;
+    *(toCopy + 61) |= 0x400u;
     v6 = self->_has;
   }
 
   if ((*&v6 & 4) != 0)
   {
-    *(v4 + 3) = *&self->_timeToEstablish;
-    *(v4 + 61) |= 4u;
+    *(toCopy + 3) = *&self->_timeToEstablish;
+    *(toCopy + 61) |= 4u;
   }
 
   if (self->_localParticipantHandle)
@@ -1606,10 +1606,10 @@ LABEL_16:
   if ([(CHRecentCallPb *)self remoteParticipantHandlesCount])
   {
     [v14 clearRemoteParticipantHandles];
-    v7 = [(CHRecentCallPb *)self remoteParticipantHandlesCount];
-    if (v7)
+    remoteParticipantHandlesCount = [(CHRecentCallPb *)self remoteParticipantHandlesCount];
+    if (remoteParticipantHandlesCount)
     {
-      v8 = v7;
+      v8 = remoteParticipantHandlesCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(CHRecentCallPb *)self remoteParticipantHandlesAtIndex:i];
@@ -1695,14 +1695,14 @@ LABEL_16:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = v5[28];
   v5[28] = v6;
 
-  v8 = [(NSString *)self->_callerId copyWithZone:a3];
+  v8 = [(NSString *)self->_callerId copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
@@ -1844,19 +1844,19 @@ LABEL_11:
   }
 
 LABEL_12:
-  v11 = [(NSString *)self->_devicePhoneId copyWithZone:a3];
+  v11 = [(NSString *)self->_devicePhoneId copyWithZone:zone];
   v12 = v5[13];
   v5[13] = v11;
 
-  v13 = [(NSString *)self->_transaction copyWithZone:a3];
+  v13 = [(NSString *)self->_transaction copyWithZone:zone];
   v14 = v5[27];
   v5[27] = v13;
 
-  v15 = [(NSString *)self->_isoCountryCode copyWithZone:a3];
+  v15 = [(NSString *)self->_isoCountryCode copyWithZone:zone];
   v16 = v5[15];
   v5[15] = v15;
 
-  v17 = [(NSString *)self->_callerIdLocation copyWithZone:a3];
+  v17 = [(NSString *)self->_callerIdLocation copyWithZone:zone];
   v18 = v5[9];
   v5[9] = v17;
 
@@ -1866,7 +1866,7 @@ LABEL_12:
     *(v5 + 61) |= 0x20u;
   }
 
-  v19 = [(NSString *)self->_serviceProvider copyWithZone:a3];
+  v19 = [(NSString *)self->_serviceProvider copyWithZone:zone];
   v20 = v5[26];
   v5[26] = v19;
 
@@ -1884,7 +1884,7 @@ LABEL_12:
     *(v5 + 61) |= 4u;
   }
 
-  v22 = [(CHHandlePb *)self->_localParticipantHandle copyWithZone:a3];
+  v22 = [(CHHandlePb *)self->_localParticipantHandle copyWithZone:zone];
   v23 = v5[17];
   v5[17] = v22;
 
@@ -1908,7 +1908,7 @@ LABEL_12:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v47 + 1) + 8 * v28) copyWithZone:{a3, v47}];
+        v29 = [*(*(&v47 + 1) + 8 * v28) copyWithZone:{zone, v47}];
         [v5 addRemoteParticipantHandles:v29];
 
         v28 = v28 + 1;
@@ -1921,11 +1921,11 @@ LABEL_12:
     while (v26);
   }
 
-  v30 = [(NSString *)self->_localParticipantUUIDString copyWithZone:a3];
+  v30 = [(NSString *)self->_localParticipantUUIDString copyWithZone:zone];
   v31 = v5[18];
   v5[18] = v30;
 
-  v32 = [(NSString *)self->_outgoingLocalParticipantUUIDString copyWithZone:a3];
+  v32 = [(NSString *)self->_outgoingLocalParticipantUUIDString copyWithZone:zone];
   v33 = v5[20];
   v5[20] = v32;
 
@@ -1943,15 +1943,15 @@ LABEL_12:
     *(v5 + 61) |= 0x10000u;
   }
 
-  v35 = [(NSString *)self->_callerName copyWithZone:a3, v47];
+  v35 = [(NSString *)self->_callerName copyWithZone:zone, v47];
   v36 = v5[10];
   v5[10] = v35;
 
-  v37 = [(NSString *)self->_participantGroupUUIDString copyWithZone:a3];
+  v37 = [(NSString *)self->_participantGroupUUIDString copyWithZone:zone];
   v38 = v5[21];
   v5[21] = v37;
 
-  v39 = [(NSString *)self->_conversationID copyWithZone:a3];
+  v39 = [(NSString *)self->_conversationID copyWithZone:zone];
   v40 = v5[12];
   v5[12] = v39;
 
@@ -1969,11 +1969,11 @@ LABEL_12:
     *(v5 + 61) |= 0x4000u;
   }
 
-  v42 = [(NSString *)self->_relayHostDeviceParticipantUUIDString copyWithZone:a3];
+  v42 = [(NSString *)self->_relayHostDeviceParticipantUUIDString copyWithZone:zone];
   v43 = v5[22];
   v5[22] = v42;
 
-  v44 = [(NSString *)self->_reminderUUIDString copyWithZone:a3];
+  v44 = [(NSString *)self->_reminderUUIDString copyWithZone:zone];
   v45 = v5[23];
   v5[23] = v44;
 
@@ -1986,16 +1986,16 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_128;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 28))
+  if (uniqueId | *(equalCopy + 28))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -2004,7 +2004,7 @@ LABEL_12:
   }
 
   callerId = self->_callerId;
-  if (callerId | *(v4 + 7))
+  if (callerId | *(equalCopy + 7))
   {
     if (![(NSString *)callerId isEqual:?])
     {
@@ -2013,10 +2013,10 @@ LABEL_12:
   }
 
   has = self->_has;
-  v8 = *(v4 + 61);
+  v8 = *(equalCopy + 61);
   if (*&has)
   {
-    if ((v8 & 1) == 0 || self->_date != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_128;
     }
@@ -2029,7 +2029,7 @@ LABEL_12:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_callType != *(v4 + 12))
+    if ((v8 & 0x80) == 0 || self->_callType != *(equalCopy + 12))
     {
       goto LABEL_128;
     }
@@ -2042,7 +2042,7 @@ LABEL_12:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_callStatus != *(v4 + 11))
+    if ((v8 & 0x40) == 0 || self->_callStatus != *(equalCopy + 11))
     {
       goto LABEL_128;
     }
@@ -2055,7 +2055,7 @@ LABEL_12:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v8 & 0x100) == 0 || self->_callerIdAvailability != *(v4 + 16))
+    if ((v8 & 0x100) == 0 || self->_callerIdAvailability != *(equalCopy + 16))
     {
       goto LABEL_128;
     }
@@ -2073,16 +2073,16 @@ LABEL_12:
       goto LABEL_128;
     }
 
-    v9 = *(v4 + 240);
+    v9 = *(equalCopy + 240);
     if (self->_read)
     {
-      if ((*(v4 + 240) & 1) == 0)
+      if ((*(equalCopy + 240) & 1) == 0)
       {
         goto LABEL_128;
       }
     }
 
-    else if (*(v4 + 240))
+    else if (*(equalCopy + 240))
     {
       goto LABEL_128;
     }
@@ -2095,7 +2095,7 @@ LABEL_12:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v8 & 0x8000) == 0 || self->_unreadCount != *(v4 + 58))
+    if ((v8 & 0x8000) == 0 || self->_unreadCount != *(equalCopy + 58))
     {
       goto LABEL_128;
     }
@@ -2108,7 +2108,7 @@ LABEL_12:
 
   if ((*&has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_duration != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_128;
     }
@@ -2121,7 +2121,7 @@ LABEL_12:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_bytesOfDataUsed != *(v4 + 9))
+    if ((v8 & 0x10) == 0 || self->_bytesOfDataUsed != *(equalCopy + 9))
     {
       goto LABEL_128;
     }
@@ -2134,7 +2134,7 @@ LABEL_12:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v8 & 0x1000) == 0 || self->_mobileCountryCode != *(v4 + 38))
+    if ((v8 & 0x1000) == 0 || self->_mobileCountryCode != *(equalCopy + 38))
     {
       goto LABEL_128;
     }
@@ -2147,7 +2147,7 @@ LABEL_12:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v8 & 0x2000) == 0 || self->_mobileNetworkCode != *(v4 + 39))
+    if ((v8 & 0x2000) == 0 || self->_mobileNetworkCode != *(equalCopy + 39))
     {
       goto LABEL_128;
     }
@@ -2159,13 +2159,13 @@ LABEL_12:
   }
 
   devicePhoneId = self->_devicePhoneId;
-  if (devicePhoneId | *(v4 + 13) && ![(NSString *)devicePhoneId isEqual:?])
+  if (devicePhoneId | *(equalCopy + 13) && ![(NSString *)devicePhoneId isEqual:?])
   {
     goto LABEL_128;
   }
 
   transaction = self->_transaction;
-  if (transaction | *(v4 + 27))
+  if (transaction | *(equalCopy + 27))
   {
     if (![(NSString *)transaction isEqual:?])
     {
@@ -2174,7 +2174,7 @@ LABEL_12:
   }
 
   isoCountryCode = self->_isoCountryCode;
-  if (isoCountryCode | *(v4 + 15))
+  if (isoCountryCode | *(equalCopy + 15))
   {
     if (![(NSString *)isoCountryCode isEqual:?])
     {
@@ -2183,7 +2183,7 @@ LABEL_12:
   }
 
   callerIdLocation = self->_callerIdLocation;
-  if (callerIdLocation | *(v4 + 9))
+  if (callerIdLocation | *(equalCopy + 9))
   {
     if (![(NSString *)callerIdLocation isEqual:?])
     {
@@ -2192,10 +2192,10 @@ LABEL_12:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 61);
+  v15 = *(equalCopy + 61);
   if ((*&v14 & 0x20) != 0)
   {
-    if ((v15 & 0x20) == 0 || self->_callCategory != *(v4 + 10))
+    if ((v15 & 0x20) == 0 || self->_callCategory != *(equalCopy + 10))
     {
       goto LABEL_128;
     }
@@ -2207,7 +2207,7 @@ LABEL_12:
   }
 
   serviceProvider = self->_serviceProvider;
-  if (serviceProvider | *(v4 + 26))
+  if (serviceProvider | *(equalCopy + 26))
   {
     if ([(NSString *)serviceProvider isEqual:?])
     {
@@ -2221,10 +2221,10 @@ LABEL_128:
   }
 
 LABEL_75:
-  v17 = *(v4 + 61);
+  v17 = *(equalCopy + 61);
   if ((*&v14 & 0x400) != 0)
   {
-    if ((v17 & 0x400) == 0 || self->_handleType != *(v4 + 28))
+    if ((v17 & 0x400) == 0 || self->_handleType != *(equalCopy + 28))
     {
       goto LABEL_128;
     }
@@ -2237,7 +2237,7 @@ LABEL_75:
 
   if ((*&v14 & 4) != 0)
   {
-    if ((v17 & 4) == 0 || self->_timeToEstablish != *(v4 + 3))
+    if ((v17 & 4) == 0 || self->_timeToEstablish != *(equalCopy + 3))
     {
       goto LABEL_128;
     }
@@ -2249,13 +2249,13 @@ LABEL_75:
   }
 
   localParticipantHandle = self->_localParticipantHandle;
-  if (localParticipantHandle | *(v4 + 17) && ![(CHHandlePb *)localParticipantHandle isEqual:?])
+  if (localParticipantHandle | *(equalCopy + 17) && ![(CHHandlePb *)localParticipantHandle isEqual:?])
   {
     goto LABEL_128;
   }
 
   remoteParticipantHandles = self->_remoteParticipantHandles;
-  if (remoteParticipantHandles | *(v4 + 24))
+  if (remoteParticipantHandles | *(equalCopy + 24))
   {
     if (![(NSMutableArray *)remoteParticipantHandles isEqual:?])
     {
@@ -2264,7 +2264,7 @@ LABEL_75:
   }
 
   localParticipantUUIDString = self->_localParticipantUUIDString;
-  if (localParticipantUUIDString | *(v4 + 18))
+  if (localParticipantUUIDString | *(equalCopy + 18))
   {
     if (![(NSString *)localParticipantUUIDString isEqual:?])
     {
@@ -2273,7 +2273,7 @@ LABEL_75:
   }
 
   outgoingLocalParticipantUUIDString = self->_outgoingLocalParticipantUUIDString;
-  if (outgoingLocalParticipantUUIDString | *(v4 + 20))
+  if (outgoingLocalParticipantUUIDString | *(equalCopy + 20))
   {
     if (![(NSString *)outgoingLocalParticipantUUIDString isEqual:?])
     {
@@ -2282,10 +2282,10 @@ LABEL_75:
   }
 
   v22 = self->_has;
-  v23 = *(v4 + 61);
+  v23 = *(equalCopy + 61);
   if ((*&v22 & 0x800) != 0)
   {
-    if ((v23 & 0x800) == 0 || self->_junkConfidence != *(v4 + 32))
+    if ((v23 & 0x800) == 0 || self->_junkConfidence != *(equalCopy + 32))
     {
       goto LABEL_128;
     }
@@ -2298,7 +2298,7 @@ LABEL_75:
 
   if ((*&v22 & 0x10000) != 0)
   {
-    if ((v23 & 0x10000) == 0 || self->_verificationStatus != *(v4 + 59))
+    if ((v23 & 0x10000) == 0 || self->_verificationStatus != *(equalCopy + 59))
     {
       goto LABEL_128;
     }
@@ -2310,13 +2310,13 @@ LABEL_75:
   }
 
   callerName = self->_callerName;
-  if (callerName | *(v4 + 10) && ![(NSString *)callerName isEqual:?])
+  if (callerName | *(equalCopy + 10) && ![(NSString *)callerName isEqual:?])
   {
     goto LABEL_128;
   }
 
   participantGroupUUIDString = self->_participantGroupUUIDString;
-  if (participantGroupUUIDString | *(v4 + 21))
+  if (participantGroupUUIDString | *(equalCopy + 21))
   {
     if (![(NSString *)participantGroupUUIDString isEqual:?])
     {
@@ -2325,7 +2325,7 @@ LABEL_75:
   }
 
   conversationID = self->_conversationID;
-  if (conversationID | *(v4 + 12))
+  if (conversationID | *(equalCopy + 12))
   {
     if (![(NSString *)conversationID isEqual:?])
     {
@@ -2334,10 +2334,10 @@ LABEL_75:
   }
 
   v27 = self->_has;
-  v28 = *(v4 + 61);
+  v28 = *(equalCopy + 61);
   if ((*&v27 & 8) != 0)
   {
-    if ((v28 & 8) == 0 || self->_autoAnsweredReason != *(v4 + 8))
+    if ((v28 & 8) == 0 || self->_autoAnsweredReason != *(equalCopy + 8))
     {
       goto LABEL_128;
     }
@@ -2350,7 +2350,7 @@ LABEL_75:
 
   if ((*&v27 & 0x4000) != 0)
   {
-    if ((v28 & 0x4000) == 0 || self->_screenSharingType != *(v4 + 50))
+    if ((v28 & 0x4000) == 0 || self->_screenSharingType != *(equalCopy + 50))
     {
       goto LABEL_128;
     }
@@ -2362,13 +2362,13 @@ LABEL_75:
   }
 
   relayHostDeviceParticipantUUIDString = self->_relayHostDeviceParticipantUUIDString;
-  if (relayHostDeviceParticipantUUIDString | *(v4 + 22) && ![(NSString *)relayHostDeviceParticipantUUIDString isEqual:?])
+  if (relayHostDeviceParticipantUUIDString | *(equalCopy + 22) && ![(NSString *)relayHostDeviceParticipantUUIDString isEqual:?])
   {
     goto LABEL_128;
   }
 
   reminderUUIDString = self->_reminderUUIDString;
-  if (reminderUUIDString | *(v4 + 23))
+  if (reminderUUIDString | *(equalCopy + 23))
   {
     if (![(NSString *)reminderUUIDString isEqual:?])
     {
@@ -2378,7 +2378,7 @@ LABEL_75:
 
   if ((*(&self->_has + 1) & 2) != 0)
   {
-    if ((*(v4 + 61) & 0x200) == 0 || self->_communicationTrustScore != *(v4 + 22))
+    if ((*(equalCopy + 61) & 0x200) == 0 || self->_communicationTrustScore != *(equalCopy + 22))
     {
       goto LABEL_128;
     }
@@ -2388,7 +2388,7 @@ LABEL_75:
 
   else
   {
-    v31 = (*(v4 + 61) & 0x200) == 0;
+    v31 = (*(equalCopy + 61) & 0x200) == 0;
   }
 
 LABEL_129:
@@ -2725,25 +2725,25 @@ LABEL_62:
   return v61 ^ v62 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v26 ^ v27 ^ v28 ^ v29 ^ v31 ^ v32 ^ v33 ^ v34 ^ v35;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 28))
+  fromCopy = from;
+  if (*(fromCopy + 28))
   {
     [(CHRecentCallPb *)self setUniqueId:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CHRecentCallPb *)self setCallerId:?];
   }
 
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if (v5)
   {
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 61);
+    v5 = *(fromCopy + 61);
     if ((v5 & 0x80) == 0)
     {
 LABEL_7:
@@ -2761,9 +2761,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_callType = *(v4 + 12);
+  self->_callType = *(fromCopy + 12);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -2776,9 +2776,9 @@ LABEL_8:
   }
 
 LABEL_37:
-  self->_callStatus = *(v4 + 11);
+  self->_callStatus = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x100) == 0)
   {
 LABEL_9:
@@ -2791,9 +2791,9 @@ LABEL_9:
   }
 
 LABEL_38:
-  self->_callerIdAvailability = *(v4 + 16);
+  self->_callerIdAvailability = *(fromCopy + 16);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_10:
@@ -2806,9 +2806,9 @@ LABEL_10:
   }
 
 LABEL_39:
-  self->_read = *(v4 + 240);
+  self->_read = *(fromCopy + 240);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_11:
@@ -2821,9 +2821,9 @@ LABEL_11:
   }
 
 LABEL_40:
-  self->_unreadCount = *(v4 + 58);
+  self->_unreadCount = *(fromCopy + 58);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -2836,9 +2836,9 @@ LABEL_12:
   }
 
 LABEL_41:
-  self->_duration = *(v4 + 2);
+  self->_duration = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x10) == 0)
   {
 LABEL_13:
@@ -2851,9 +2851,9 @@ LABEL_13:
   }
 
 LABEL_42:
-  self->_bytesOfDataUsed = *(v4 + 9);
+  self->_bytesOfDataUsed = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 61);
+  v5 = *(fromCopy + 61);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_14:
@@ -2866,63 +2866,63 @@ LABEL_14:
   }
 
 LABEL_43:
-  self->_mobileCountryCode = *(v4 + 38);
+  self->_mobileCountryCode = *(fromCopy + 38);
   *&self->_has |= 0x1000u;
-  if ((*(v4 + 61) & 0x2000) != 0)
+  if ((*(fromCopy + 61) & 0x2000) != 0)
   {
 LABEL_15:
-    self->_mobileNetworkCode = *(v4 + 39);
+    self->_mobileNetworkCode = *(fromCopy + 39);
     *&self->_has |= 0x2000u;
   }
 
 LABEL_16:
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(CHRecentCallPb *)self setDevicePhoneId:?];
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(CHRecentCallPb *)self setTransaction:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(CHRecentCallPb *)self setIsoCountryCode:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(CHRecentCallPb *)self setCallerIdLocation:?];
   }
 
-  if ((*(v4 + 244) & 0x20) != 0)
+  if ((*(fromCopy + 244) & 0x20) != 0)
   {
-    self->_callCategory = *(v4 + 10);
+    self->_callCategory = *(fromCopy + 10);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(CHRecentCallPb *)self setServiceProvider:?];
   }
 
-  v6 = *(v4 + 61);
+  v6 = *(fromCopy + 61);
   if ((v6 & 0x400) != 0)
   {
-    self->_handleType = *(v4 + 28);
+    self->_handleType = *(fromCopy + 28);
     *&self->_has |= 0x400u;
-    v6 = *(v4 + 61);
+    v6 = *(fromCopy + 61);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_timeToEstablish = *(v4 + 3);
+    self->_timeToEstablish = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
   localParticipantHandle = self->_localParticipantHandle;
-  v8 = *(v4 + 17);
+  v8 = *(fromCopy + 17);
   if (localParticipantHandle)
   {
     if (v8)
@@ -2940,7 +2940,7 @@ LABEL_16:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = *(v4 + 24);
+  v9 = *(fromCopy + 24);
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -2964,72 +2964,72 @@ LABEL_16:
     while (v11);
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(CHRecentCallPb *)self setLocalParticipantUUIDString:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(CHRecentCallPb *)self setOutgoingLocalParticipantUUIDString:?];
   }
 
-  v14 = *(v4 + 61);
+  v14 = *(fromCopy + 61);
   if ((v14 & 0x800) != 0)
   {
-    self->_junkConfidence = *(v4 + 32);
+    self->_junkConfidence = *(fromCopy + 32);
     *&self->_has |= 0x800u;
-    v14 = *(v4 + 61);
+    v14 = *(fromCopy + 61);
   }
 
   if ((v14 & 0x10000) != 0)
   {
-    self->_verificationStatus = *(v4 + 59);
+    self->_verificationStatus = *(fromCopy + 59);
     *&self->_has |= 0x10000u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(CHRecentCallPb *)self setCallerName:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(CHRecentCallPb *)self setParticipantGroupUUIDString:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(CHRecentCallPb *)self setConversationID:?];
   }
 
-  v15 = *(v4 + 61);
+  v15 = *(fromCopy + 61);
   if ((v15 & 8) != 0)
   {
-    self->_autoAnsweredReason = *(v4 + 8);
+    self->_autoAnsweredReason = *(fromCopy + 8);
     *&self->_has |= 8u;
-    v15 = *(v4 + 61);
+    v15 = *(fromCopy + 61);
   }
 
   if ((v15 & 0x4000) != 0)
   {
-    self->_screenSharingType = *(v4 + 50);
+    self->_screenSharingType = *(fromCopy + 50);
     *&self->_has |= 0x4000u;
   }
 
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(CHRecentCallPb *)self setRelayHostDeviceParticipantUUIDString:?];
   }
 
-  if (*(v4 + 23))
+  if (*(fromCopy + 23))
   {
     [(CHRecentCallPb *)self setReminderUUIDString:?];
   }
 
-  if ((*(v4 + 245) & 2) != 0)
+  if ((*(fromCopy + 245) & 2) != 0)
   {
-    self->_communicationTrustScore = *(v4 + 22);
+    self->_communicationTrustScore = *(fromCopy + 22);
     *&self->_has |= 0x200u;
   }
 }

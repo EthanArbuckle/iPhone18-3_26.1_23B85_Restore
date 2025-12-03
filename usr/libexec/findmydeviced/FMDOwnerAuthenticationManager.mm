@@ -28,9 +28,9 @@
 
 - (void)evaluateOperation
 {
-  v3 = [(FMDOwnerAuthenticationManager *)self currentTask];
+  currentTask = [(FMDOwnerAuthenticationManager *)self currentTask];
 
-  if (!v3)
+  if (!currentTask)
   {
     v4 = objc_alloc_init(FMFuture);
     [(FMDOwnerAuthenticationManager *)self permittedOperationBlock];
@@ -61,9 +61,9 @@
 - (id)evaluationOptions
 {
   v7[0] = &off_1002E79D8;
-  v3 = [(FMDOwnerAuthenticationManager *)self localizedReason];
+  localizedReason = [(FMDOwnerAuthenticationManager *)self localizedReason];
   v7[1] = &off_1002E79F0;
-  v8[0] = v3;
+  v8[0] = localizedReason;
   v4 = [NSNumber numberWithBool:[(FMDOwnerAuthenticationManager *)self fallbackToNoAuthentication]];
   v8[1] = v4;
   v5 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
@@ -73,9 +73,9 @@
 
 - (void)evaluatePolicy
 {
-  v3 = [(FMDOwnerAuthenticationManager *)self context];
+  context = [(FMDOwnerAuthenticationManager *)self context];
 
-  if (v3)
+  if (context)
   {
     v4 = sub_10017DF3C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -88,12 +88,12 @@
   {
     v4 = objc_alloc_init(LAContext);
     [(FMDOwnerAuthenticationManager *)self setContext:v4];
-    v5 = [(FMDOwnerAuthenticationManager *)self evaluationOptions];
+    evaluationOptions = [(FMDOwnerAuthenticationManager *)self evaluationOptions];
     v6 = sub_10017DF3C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v5;
+      v9 = evaluationOptions;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Evaluating location-based owner authentication policy with options %@.", buf, 0xCu);
     }
 
@@ -102,7 +102,7 @@
     v7[2] = sub_100136458;
     v7[3] = &unk_1002CD7C0;
     v7[4] = self;
-    [v4 evaluatePolicy:1025 options:v5 reply:v7];
+    [v4 evaluatePolicy:1025 options:evaluationOptions reply:v7];
   }
 }
 

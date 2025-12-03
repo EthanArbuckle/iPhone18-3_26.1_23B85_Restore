@@ -1,36 +1,36 @@
 @interface ATXFaceSuggestionUprankedDateIntervalSignal
-- (ATXFaceSuggestionUprankedDateIntervalSignal)initWithParameters:(id)a3;
-- (double)valueForDescriptor:(id)a3;
+- (ATXFaceSuggestionUprankedDateIntervalSignal)initWithParameters:(id)parameters;
+- (double)valueForDescriptor:(id)descriptor;
 @end
 
 @implementation ATXFaceSuggestionUprankedDateIntervalSignal
 
-- (ATXFaceSuggestionUprankedDateIntervalSignal)initWithParameters:(id)a3
+- (ATXFaceSuggestionUprankedDateIntervalSignal)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v9.receiver = self;
   v9.super_class = ATXFaceSuggestionUprankedDateIntervalSignal;
   v5 = [(ATXFaceSuggestionUprankedDateIntervalSignal *)&v9 init];
   if (v5)
   {
-    v6 = [v4 uprankedDateIntervals];
+    uprankedDateIntervals = [parametersCopy uprankedDateIntervals];
     uprankedDateIntervals = v5->_uprankedDateIntervals;
-    v5->_uprankedDateIntervals = v6;
+    v5->_uprankedDateIntervals = uprankedDateIntervals;
   }
 
   return v5;
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  descriptorCopy = descriptor;
+  v5 = descriptorCopy;
   uprankedDateIntervals = self->_uprankedDateIntervals;
   if (uprankedDateIntervals)
   {
-    v7 = [v4 extensionBundleIdentifier];
-    v8 = [(NSDictionary *)uprankedDateIntervals objectForKeyedSubscript:v7];
+    extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+    v8 = [(NSDictionary *)uprankedDateIntervals objectForKeyedSubscript:extensionBundleIdentifier];
 
     if (v8)
     {

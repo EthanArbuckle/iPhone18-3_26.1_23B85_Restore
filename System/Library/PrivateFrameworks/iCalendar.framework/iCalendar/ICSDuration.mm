@@ -1,70 +1,70 @@
 @interface ICSDuration
-+ (id)durationFromICSString:(id)a3;
-+ (id)durationFromRFC2445UTF8String:(const char *)a3;
-- (ICSDuration)initWithCoder:(id)a3;
-- (ICSDuration)initWithWeeks:(int64_t)a3 days:(int64_t)a4 hours:(int64_t)a5 minutes:(int64_t)a6 seconds:(int64_t)a7;
-- (id)ICSStringWithOptions:(unint64_t)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)durationFromICSString:(id)string;
++ (id)durationFromRFC2445UTF8String:(const char *)string;
+- (ICSDuration)initWithCoder:(id)coder;
+- (ICSDuration)initWithWeeks:(int64_t)weeks days:(int64_t)days hours:(int64_t)hours minutes:(int64_t)minutes seconds:(int64_t)seconds;
+- (id)ICSStringWithOptions:(unint64_t)options;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSDuration
 
-- (ICSDuration)initWithWeeks:(int64_t)a3 days:(int64_t)a4 hours:(int64_t)a5 minutes:(int64_t)a6 seconds:(int64_t)a7
+- (ICSDuration)initWithWeeks:(int64_t)weeks days:(int64_t)days hours:(int64_t)hours minutes:(int64_t)minutes seconds:(int64_t)seconds
 {
   v13.receiver = self;
   v13.super_class = ICSDuration;
   result = [(ICSDuration *)&v13 init];
   if (result)
   {
-    result->_duration = (604800 * a3 + 86400 * a4 + 3600 * a5 + 60 * a6 + a7);
+    result->_duration = (604800 * weeks + 86400 * days + 3600 * hours + 60 * minutes + seconds);
   }
 
   return result;
 }
 
-- (id)ICSStringWithOptions:(unint64_t)a3
+- (id)ICSStringWithOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(ICSStringWriter);
-  [(ICSDuration *)self _ICSStringWithOptions:a3 appendingToString:v5];
-  v6 = [(ICSStringWriter *)v5 result];
+  [(ICSDuration *)self _ICSStringWithOptions:options appendingToString:v5];
+  result = [(ICSStringWriter *)v5 result];
 
-  return v6;
+  return result;
 }
 
-- (ICSDuration)initWithCoder:(id)a3
+- (ICSDuration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ICSDuration;
   v5 = [(ICSDuration *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"Duration"];
+    [coderCopy decodeDoubleForKey:@"Duration"];
     v5->_duration = v6;
   }
 
   return v5;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v17 = a4;
+  stringCopy = string;
   if ([(ICSDuration *)self isNegative])
   {
-    [v17 appendString:@"-"];
+    [stringCopy appendString:@"-"];
   }
 
-  [v17 appendString:@"P"];
-  v5 = [(ICSDuration *)self weeks];
-  v6 = [(ICSDuration *)self days];
-  v7 = [(ICSDuration *)self hours];
-  v8 = [(ICSDuration *)self minutes];
-  v9 = [(ICSDuration *)self seconds];
-  v10 = v9;
-  if (!v5 || v6 || v7 || v8 || v9)
+  [stringCopy appendString:@"P"];
+  weeks = [(ICSDuration *)self weeks];
+  days = [(ICSDuration *)self days];
+  hours = [(ICSDuration *)self hours];
+  minutes = [(ICSDuration *)self minutes];
+  seconds = [(ICSDuration *)self seconds];
+  v10 = seconds;
+  if (!weeks || days || hours || minutes || seconds)
   {
-    v5 = v6 - v5 + 8 * v5;
-    if (!v5)
+    weeks = days - weeks + 8 * weeks;
+    if (!weeks)
     {
       goto LABEL_15;
     }
@@ -77,49 +77,49 @@
     v11 = @"%ldW";
   }
 
-  if (v5 >= 0)
+  if (weeks >= 0)
   {
-    v12 = v5;
+    v12 = weeks;
   }
 
   else
   {
-    v12 = -v5;
+    v12 = -weeks;
   }
 
-  [v17 appendFormat:v11, v12];
+  [stringCopy appendFormat:v11, v12];
 LABEL_15:
-  if (v7 || v8 || v10)
+  if (hours || minutes || v10)
   {
-    [v17 appendString:@"T"];
-    if (v7)
+    [stringCopy appendString:@"T"];
+    if (hours)
     {
-      if (v7 >= 0)
+      if (hours >= 0)
       {
-        v13 = v7;
+        v13 = hours;
       }
 
       else
       {
-        v13 = -v7;
+        v13 = -hours;
       }
 
-      [v17 appendFormat:@"%ldH", v13];
+      [stringCopy appendFormat:@"%ldH", v13];
     }
 
-    if (v8)
+    if (minutes)
     {
-      if (v8 >= 0)
+      if (minutes >= 0)
       {
-        v14 = v8;
+        v14 = minutes;
       }
 
       else
       {
-        v14 = -v8;
+        v14 = -minutes;
       }
 
-      [v17 appendFormat:@"%ldM", v14];
+      [stringCopy appendFormat:@"%ldM", v14];
     }
 
     if (v10)
@@ -134,27 +134,27 @@ LABEL_15:
         v15 = -v10;
       }
 
-      [v17 appendFormat:@"%ldS", v15];
+      [stringCopy appendFormat:@"%ldS", v15];
     }
   }
 
   [(ICSDuration *)self timeInterval];
   if (fabs(v16) < 2.22044605e-16)
   {
-    [v17 appendString:@"T0S"];
+    [stringCopy appendString:@"T0S"];
   }
 }
 
-+ (id)durationFromRFC2445UTF8String:(const char *)a3
++ (id)durationFromRFC2445UTF8String:(const char *)string
 {
-  if (!a3)
+  if (!string)
   {
     v6 = 0;
 
     return v6;
   }
 
-  v4 = *a3;
+  v4 = *string;
   if (v4 == 45)
   {
     v5 = -1;
@@ -169,7 +169,7 @@ LABEL_15:
     }
   }
 
-  v8 = *++a3;
+  v8 = *++string;
   v4 = v8;
 LABEL_10:
   if (v4 == 80)
@@ -180,19 +180,19 @@ LABEL_10:
       v10 = -1;
       while (1)
       {
-        v12 = a3 + 1;
-        v11 = *(a3 + 1);
-        if (!a3[1] || v11 == 84)
+        v12 = string + 1;
+        v11 = *(string + 1);
+        if (!string[1] || v11 == 84)
         {
           v15 = v11 == 84;
           v16 = 1;
           if (v15)
           {
             v16 = 2;
-            v12 = a3 + 2;
+            v12 = string + 2;
           }
 
-          LOBYTE(v17) = a3[v16];
+          LOBYTE(v17) = string[v16];
           if (v17)
           {
             v18 = -1;
@@ -337,11 +337,11 @@ LABEL_48:
         }
 
         v13 = 0;
-        ++a3;
+        ++string;
         do
         {
           v13 = 10 * v13 + (v11 - 48);
-          v14 = *++a3;
+          v14 = *++string;
           v11 = v14;
         }
 
@@ -389,11 +389,11 @@ LABEL_54:
   return v6;
 }
 
-+ (id)durationFromICSString:(id)a3
++ (id)durationFromICSString:(id)string
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [string UTF8String];
 
-  return [ICSDuration durationFromRFC2445UTF8String:v3];
+  return [ICSDuration durationFromRFC2445UTF8String:uTF8String];
 }
 
 @end

@@ -2,84 +2,84 @@
 + (id)_migrationDataSource;
 + (id)_migrationDelegateQueue;
 + (id)sharedDatabase;
-+ (void)setMigrationDataSource:(id)a3;
-- (BOOL)_executeSQL:(id)a3;
-- (BOOL)_getDeletePendingForUniqueID:(id)a3;
-- (BOOL)_hasPassForUniqueIDLocked:(id)a3;
-- (BOOL)_migrateDatabase:(id)a3;
++ (void)setMigrationDataSource:(id)source;
+- (BOOL)_executeSQL:(id)l;
+- (BOOL)_getDeletePendingForUniqueID:(id)d;
+- (BOOL)_hasPassForUniqueIDLocked:(id)locked;
+- (BOOL)_migrateDatabase:(id)database;
 - (BOOL)_preconditionsMetForDatabaseOpen;
-- (BOOL)_removePassWithUniqueIDLocked:(id)a3;
-- (BOOL)_repairEncodedImagesDuringMigration:(id)a3;
-- (BOOL)_table:(id)a3 containsColumn:(id)a4;
-- (BOOL)_updateAvailableActionsDuringMigration:(id)a3;
-- (BOOL)_updateCompleteLocalHashesDuringMigration:(id)a3;
-- (BOOL)_updateDeviceAndPreferredPaymentApplicationsDuringMigration:(id)a3;
-- (BOOL)_updateDevicePaymentApplicationsDuringMigration:(id)a3;
-- (BOOL)_updateEffectivePaymentApplicationStateDuringMigration:(id)a3;
-- (BOOL)_updateEncodedImageSetsDuringMigration:(id)a3;
-- (BOOL)_updateEncodedPaymentPassDuringMigration:(id)a3;
-- (BOOL)_updateExpressPassTypesMaskDuringMigration:(id)a3;
-- (BOOL)_updateFrontAndBackFieldBucketsDuringMigration:(id)a3;
-- (BOOL)_updateHasStoredValueDuringMigration:(id)a3;
-- (BOOL)_updateHasUserSelectableContactlessPaymentApplications:(id)a3;
-- (BOOL)_updateIngestedDatesDuringMigration:(id)a3;
-- (BOOL)_updateIssuerCountryCodesDuringMigration:(id)a3;
-- (BOOL)_updateLocalizedDescriptionDuringMigration:(id)a3;
-- (BOOL)_updateNFCPayloadDuringMigration:(id)a3;
-- (BOOL)_updateOrganizationNamesDuringMigration:(id)a3;
-- (BOOL)_updatePrimaryContactlessAndInAppPaymentApplicationsDuringMigration:(id)a3;
-- (BOOL)_updatePrivateLabelAndCobrandDuringMigration:(id)a3;
-- (BOOL)_updateSettingsDuringMigration:(id)a3;
-- (BOOL)_updateSubcredentialsDuringMigration:(id)a3;
-- (BOOL)_updateTransactionSourceIdentifiersDuringMigration:(id)a3;
-- (BOOL)hasPassForUniqueID:(id)a3;
-- (BOOL)hasPassesMatchingPassDescriptionPredicate:(id)a3;
+- (BOOL)_removePassWithUniqueIDLocked:(id)locked;
+- (BOOL)_repairEncodedImagesDuringMigration:(id)migration;
+- (BOOL)_table:(id)_table containsColumn:(id)column;
+- (BOOL)_updateAvailableActionsDuringMigration:(id)migration;
+- (BOOL)_updateCompleteLocalHashesDuringMigration:(id)migration;
+- (BOOL)_updateDeviceAndPreferredPaymentApplicationsDuringMigration:(id)migration;
+- (BOOL)_updateDevicePaymentApplicationsDuringMigration:(id)migration;
+- (BOOL)_updateEffectivePaymentApplicationStateDuringMigration:(id)migration;
+- (BOOL)_updateEncodedImageSetsDuringMigration:(id)migration;
+- (BOOL)_updateEncodedPaymentPassDuringMigration:(id)migration;
+- (BOOL)_updateExpressPassTypesMaskDuringMigration:(id)migration;
+- (BOOL)_updateFrontAndBackFieldBucketsDuringMigration:(id)migration;
+- (BOOL)_updateHasStoredValueDuringMigration:(id)migration;
+- (BOOL)_updateHasUserSelectableContactlessPaymentApplications:(id)applications;
+- (BOOL)_updateIngestedDatesDuringMigration:(id)migration;
+- (BOOL)_updateIssuerCountryCodesDuringMigration:(id)migration;
+- (BOOL)_updateLocalizedDescriptionDuringMigration:(id)migration;
+- (BOOL)_updateNFCPayloadDuringMigration:(id)migration;
+- (BOOL)_updateOrganizationNamesDuringMigration:(id)migration;
+- (BOOL)_updatePrimaryContactlessAndInAppPaymentApplicationsDuringMigration:(id)migration;
+- (BOOL)_updatePrivateLabelAndCobrandDuringMigration:(id)migration;
+- (BOOL)_updateSettingsDuringMigration:(id)migration;
+- (BOOL)_updateSubcredentialsDuringMigration:(id)migration;
+- (BOOL)_updateTransactionSourceIdentifiersDuringMigration:(id)migration;
+- (BOOL)hasPassForUniqueID:(id)d;
+- (BOOL)hasPassesMatchingPassDescriptionPredicate:(id)predicate;
 - (BOOL)passDBIsAvailable;
 - (NPKGizmoDatabase)init;
 - (NSArray)passDescriptions;
 - (NSDictionary)manifestHashes;
-- (id)_currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)a3;
-- (id)_decodeObjectOfClasses:(id)a3 fromStatement:(sqlite3_stmt *)a4 column:(int)a5;
-- (id)_diffForUniqueIDLocked:(id)a3;
-- (id)_getPreferredPaymentApplicationForPaymentPass:(id)a3 aid:(id *)a4;
-- (id)_lastAddValueAmountForPassWithUniqueIDLocked:(id)a3;
-- (id)_libraryHashLockedForWatchOSMajorVersion:(unint64_t)a3;
-- (id)_passForUniqueIDLocked:(id)a3 includeImageSets:(BOOL)a4;
-- (id)_passUniqueIdentifierForTransactionSourceIdentifierLocked:(id)a3;
-- (id)_paymentBalancesForPassWithUniqueIDLocked:(id)a3;
-- (id)_pendingAddValueDateForPassWithUniqueIDLocked:(id)a3;
-- (id)_subcredentialsForPassWithUniqueIDLocked:(id)a3 paymentApplicationIdentifier:(id)a4;
-- (id)_transactionSourceIdentifierForPassUniqueIdentifierLocked:(id)a3;
-- (id)_transactionSourceIdentifierForTransactionWithIdentifierLocked:(id)a3;
-- (id)_transactionSourceIdentifierForTransactionWithServiceIdentifierLocked:(id)a3;
-- (id)_transactionWithIdentifierLocked:(id)a3;
-- (id)_transactionWithServiceIdentifierLocked:(id)a3;
-- (id)_transactionsForTransactionSourceIdentifierLocked:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderByDate:(int64_t)a8 limit:(unint64_t)a9;
-- (id)_transitAppletStateForPassWithUniqueIDLocked:(id)a3;
-- (id)currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)a3;
-- (id)diffForUniqueID:(id)a3;
-- (id)filteredPassesUsingPassDescriptionPredicate:(id)a3 includeImageSets:(BOOL)a4;
-- (id)lastAddValueAmountForPassWithUniqueID:(id)a3;
-- (id)libraryHashForWatchOSMajorVersion:(unint64_t)a3;
-- (id)manifestHashesForWatchOSMajorVersion:(unint64_t)a3;
-- (id)passForUniqueID:(id)a3 includeImageSets:(BOOL)a4;
-- (id)passUniqueIDForTransactionSourceIdentifier:(id)a3;
-- (id)paymentBalancesForPassWithUniqueID:(id)a3;
-- (id)pendingAddValueDateForPassWithUniqueID:(id)a3;
-- (id)preferredPaymentApplicationForPaymentPass:(id)a3;
-- (id)rebuildDatabaseWithPasses:(id)a3;
-- (id)removePassWithUniqueID:(id)a3;
+- (id)_currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)identifier;
+- (id)_decodeObjectOfClasses:(id)classes fromStatement:(sqlite3_stmt *)statement column:(int)column;
+- (id)_diffForUniqueIDLocked:(id)locked;
+- (id)_getPreferredPaymentApplicationForPaymentPass:(id)pass aid:(id *)aid;
+- (id)_lastAddValueAmountForPassWithUniqueIDLocked:(id)locked;
+- (id)_libraryHashLockedForWatchOSMajorVersion:(unint64_t)version;
+- (id)_passForUniqueIDLocked:(id)locked includeImageSets:(BOOL)sets;
+- (id)_passUniqueIdentifierForTransactionSourceIdentifierLocked:(id)locked;
+- (id)_paymentBalancesForPassWithUniqueIDLocked:(id)locked;
+- (id)_pendingAddValueDateForPassWithUniqueIDLocked:(id)locked;
+- (id)_subcredentialsForPassWithUniqueIDLocked:(id)locked paymentApplicationIdentifier:(id)identifier;
+- (id)_transactionSourceIdentifierForPassUniqueIdentifierLocked:(id)locked;
+- (id)_transactionSourceIdentifierForTransactionWithIdentifierLocked:(id)locked;
+- (id)_transactionSourceIdentifierForTransactionWithServiceIdentifierLocked:(id)locked;
+- (id)_transactionWithIdentifierLocked:(id)locked;
+- (id)_transactionWithServiceIdentifierLocked:(id)locked;
+- (id)_transactionsForTransactionSourceIdentifierLocked:(id)locked withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderByDate:(int64_t)byDate limit:(unint64_t)limit;
+- (id)_transitAppletStateForPassWithUniqueIDLocked:(id)locked;
+- (id)currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)identifier;
+- (id)diffForUniqueID:(id)d;
+- (id)filteredPassesUsingPassDescriptionPredicate:(id)predicate includeImageSets:(BOOL)sets;
+- (id)lastAddValueAmountForPassWithUniqueID:(id)d;
+- (id)libraryHashForWatchOSMajorVersion:(unint64_t)version;
+- (id)manifestHashesForWatchOSMajorVersion:(unint64_t)version;
+- (id)passForUniqueID:(id)d includeImageSets:(BOOL)sets;
+- (id)passUniqueIDForTransactionSourceIdentifier:(id)identifier;
+- (id)paymentBalancesForPassWithUniqueID:(id)d;
+- (id)pendingAddValueDateForPassWithUniqueID:(id)d;
+- (id)preferredPaymentApplicationForPaymentPass:(id)pass;
+- (id)rebuildDatabaseWithPasses:(id)passes;
+- (id)removePassWithUniqueID:(id)d;
 - (id)restoreBlockForVolatilePassData;
-- (id)savePass:(id)a3 isLocalPass:(BOOL)a4;
-- (id)subcredentialsForPassWithUniqueID:(id)a3 paymentApplicationIdentifier:(id)a4;
-- (id)transactionSourceIdentifierForPassWithUniqueID:(id)a3;
-- (id)transactionSourceIdentifierForTransactionWithIdentifier:(id)a3;
-- (id)transactionSourceIdentifierForTransactionWithServiceIdentifier:(id)a3;
-- (id)transactionWithIdentifier:(id)a3;
-- (id)transactionWithServiceIdentifier:(id)a3;
-- (id)transactionsForTransactionSourceIdentifier:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9;
-- (id)transitAppletStateForPassWithUniqueID:(id)a3;
-- (int64_t)_databaseVersionExists:(BOOL *)a3 valid:(BOOL *)a4;
+- (id)savePass:(id)pass isLocalPass:(BOOL)localPass;
+- (id)subcredentialsForPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier;
+- (id)transactionSourceIdentifierForPassWithUniqueID:(id)d;
+- (id)transactionSourceIdentifierForTransactionWithIdentifier:(id)identifier;
+- (id)transactionSourceIdentifierForTransactionWithServiceIdentifier:(id)identifier;
+- (id)transactionWithIdentifier:(id)identifier;
+- (id)transactionWithServiceIdentifier:(id)identifier;
+- (id)transactionsForTransactionSourceIdentifier:(id)identifier withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit;
+- (id)transitAppletStateForPassWithUniqueID:(id)d;
+- (int64_t)_databaseVersionExists:(BOOL *)exists valid:(BOOL *)valid;
 - (sqlite3)database;
 - (sqlite3_stmt)currentEphemeralTransactionIdentifierStatement;
 - (sqlite3_stmt)deleteAllSubcredentialsForPassUniqueIDStatement;
@@ -111,7 +111,7 @@
 - (sqlite3_stmt)selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement;
 - (sqlite3_stmt)selectTransactionWithIdentifierStatement;
 - (sqlite3_stmt)selectTransactionWithServiceIdentifierStatement;
-- (sqlite3_stmt)selectTransactionsStatementWithTransactionSource:(unint64_t)a3 orderByDate:(int64_t)a4 limit:(unint64_t)a5;
+- (sqlite3_stmt)selectTransactionsStatementWithTransactionSource:(unint64_t)source orderByDate:(int64_t)date limit:(unint64_t)limit;
 - (sqlite3_stmt)selectTransitAppletStateForPassStatement;
 - (sqlite3_stmt)trimTransactionsForTransactionSourceStatement;
 - (sqlite3_stmt)updateBalancesForPassStatement;
@@ -122,51 +122,51 @@
 - (sqlite3_stmt)updateTransitAppletStateForPassStatement;
 - (unint64_t)numberOfPasses;
 - (void)_attemptDatabaseOpen;
-- (void)_createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:(id)a3;
-- (void)_enumerateAllPassesForMigration:(id)a3;
-- (void)_executeSQLQuery:(id)a3 processResultsBlock:(id)a4;
+- (void)_createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:(id)locked;
+- (void)_enumerateAllPassesForMigration:(id)migration;
+- (void)_executeSQLQuery:(id)query processResultsBlock:(id)block;
 - (void)_handleDatabaseChangedExternally;
 - (void)_handleFirstUnlock;
 - (void)_handleHasMigrationDataSource;
 - (void)_inQueue_teardownDB;
-- (void)_insertDatabaseVersionRow:(int64_t)a3;
+- (void)_insertDatabaseVersionRow:(int64_t)row;
 - (void)_loadInitialManifestLocked;
 - (void)_notifyDatabaseChangedExternally;
-- (void)_notifyDatabaseChangedWithNoop:(BOOL)a3 firstUnlock:(BOOL)a4;
-- (void)_performTransactionWithBlock:(id)a3;
+- (void)_notifyDatabaseChangedWithNoop:(BOOL)noop firstUnlock:(BOOL)unlock;
+- (void)_performTransactionWithBlock:(id)block;
 - (void)_rebuildDatabaseWithPassesFromCompanionPasses;
-- (void)_removeSubcredentialsForPassWithUniqueIDLocked:(id)a3;
-- (void)_removeTransactionSourceIdentifierForPassWithUniqueIDLocked:(id)a3;
-- (void)_removeTransactionWithIdentifier:(id)a3;
-- (void)_removeTransactionWithServiceIdentifierLocked:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)_removeTransactionsForTransactionSource:(id)a3;
-- (void)_saveDiffLocked:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_savePassLocked:(id)a3 locallyAdded:(BOOL)a4 wasUpdate:(BOOL *)a5;
-- (void)_saveTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4 withPaymentCredentialType:(int64_t)a5 shouldTrim:(BOOL)a6;
-- (void)_saveTransactionLocked:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)_setCurrentEphemeralTransactionIdentifier:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)_setLastAddValueAmountLocked:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_setPaymentBalancesLocked:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_setPendingAddValueDateLocked:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_setSubcredentialsLocked:(id)a3 forPassWithUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5;
-- (void)_setTransitAppletStateLocked:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)_trimTransactionsForTransactionSourceIdentifierLocked:(id)a3 withPaymentCredentialType:(int64_t)a4;
-- (void)_updateDatabaseVersionRow:(int64_t)a3;
-- (void)_verifyPassDataIsUnarchivedCorrectlyWithData:(id)a3 forPassWithUniqueID:(id)a4;
+- (void)_removeSubcredentialsForPassWithUniqueIDLocked:(id)locked;
+- (void)_removeTransactionSourceIdentifierForPassWithUniqueIDLocked:(id)locked;
+- (void)_removeTransactionWithIdentifier:(id)identifier;
+- (void)_removeTransactionWithServiceIdentifierLocked:(id)locked forTransactionSourceIdentifier:(id)identifier;
+- (void)_removeTransactionsForTransactionSource:(id)source;
+- (void)_saveDiffLocked:(id)locked forPassWithUniqueID:(id)d;
+- (void)_savePassLocked:(id)locked locallyAdded:(BOOL)added wasUpdate:(BOOL *)update;
+- (void)_saveTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier withPaymentCredentialType:(int64_t)type shouldTrim:(BOOL)trim;
+- (void)_saveTransactionLocked:(id)locked forTransactionSourceIdentifier:(id)identifier;
+- (void)_setCurrentEphemeralTransactionIdentifier:(id)identifier forTransactionSourceIdentifier:(id)sourceIdentifier;
+- (void)_setLastAddValueAmountLocked:(id)locked forPassWithUniqueID:(id)d;
+- (void)_setPaymentBalancesLocked:(id)locked forPassWithUniqueID:(id)d;
+- (void)_setPendingAddValueDateLocked:(id)locked forPassWithUniqueID:(id)d;
+- (void)_setSubcredentialsLocked:(id)locked forPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier;
+- (void)_setTransitAppletStateLocked:(id)locked forPassWithUniqueID:(id)d;
+- (void)_trimTransactionsForTransactionSourceIdentifierLocked:(id)locked withPaymentCredentialType:(int64_t)type;
+- (void)_updateDatabaseVersionRow:(int64_t)row;
+- (void)_verifyPassDataIsUnarchivedCorrectlyWithData:(id)data forPassWithUniqueID:(id)d;
 - (void)dealloc;
-- (void)enumerateAllPassesAndDescriptionsWithBlock:(id)a3 includeImageSets:(BOOL)a4;
-- (void)removeTransactionWithIdentifier:(id)a3;
-- (void)removeTransactionsForTransactionSource:(id)a3;
-- (void)saveDiff:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)saveTransaction:(id)a3 forPass:(id)a4;
-- (void)setCurrentEphemeralTransactionIdentifier:(id)a3 forTransactionSourceIdentifier:(id)a4;
-- (void)setDeletePending:(BOOL)a3 forUniqueID:(id)a4;
-- (void)setLastAddValueAmount:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)setPaymentBalances:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)setPendingAddValueDate:(id)a3 forPassWithUniqueID:(id)a4;
-- (void)setPreferredPaymentApplication:(id)a3 forPaymentPass:(id)a4;
-- (void)setSubcredentials:(id)a3 forPassWithUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5;
-- (void)setTransitAppletState:(id)a3 forPassWithUniqueID:(id)a4;
+- (void)enumerateAllPassesAndDescriptionsWithBlock:(id)block includeImageSets:(BOOL)sets;
+- (void)removeTransactionWithIdentifier:(id)identifier;
+- (void)removeTransactionsForTransactionSource:(id)source;
+- (void)saveDiff:(id)diff forPassWithUniqueID:(id)d;
+- (void)saveTransaction:(id)transaction forPass:(id)pass;
+- (void)setCurrentEphemeralTransactionIdentifier:(id)identifier forTransactionSourceIdentifier:(id)sourceIdentifier;
+- (void)setDeletePending:(BOOL)pending forUniqueID:(id)d;
+- (void)setLastAddValueAmount:(id)amount forPassWithUniqueID:(id)d;
+- (void)setPaymentBalances:(id)balances forPassWithUniqueID:(id)d;
+- (void)setPendingAddValueDate:(id)date forPassWithUniqueID:(id)d;
+- (void)setPreferredPaymentApplication:(id)application forPaymentPass:(id)pass;
+- (void)setSubcredentials:(id)subcredentials forPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier;
+- (void)setTransitAppletState:(id)state forPassWithUniqueID:(id)d;
 - (void)teardownDB;
 @end
 
@@ -218,13 +218,13 @@ void __43__NPKGizmoDatabase__migrationDelegateQueue__block_invoke()
   v9 = __Block_byref_object_copy__13;
   v10 = __Block_byref_object_dispose__13;
   v11 = 0;
-  v2 = [a1 _migrationDelegateQueue];
+  _migrationDelegateQueue = [self _migrationDelegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__NPKGizmoDatabase__migrationDataSource__block_invoke;
   block[3] = &unk_2799457C8;
   block[4] = &v6;
-  dispatch_sync(v2, block);
+  dispatch_sync(_migrationDelegateQueue, block);
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -240,27 +240,27 @@ void __40__NPKGizmoDatabase__migrationDataSource__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-+ (void)setMigrationDataSource:(id)a3
++ (void)setMigrationDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [a1 _migrationDelegateQueue];
+  _migrationDelegateQueue = [self _migrationDelegateQueue];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke;
   v11 = &unk_279944FE8;
   v13 = &v14;
-  v6 = v4;
+  v6 = sourceCopy;
   v12 = v6;
-  dispatch_sync(v5, &v8);
+  dispatch_sync(_migrationDelegateQueue, &v8);
 
   if (v6 && (v15[3] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"NPKGizmoDatabaseMigrationDataSourceSetNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"NPKGizmoDatabaseMigrationDataSourceSetNotification" object:0];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -290,8 +290,8 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _NPKGizmoDatabaseChangedExternally, @"_NPKGizmoDatabaseExternallyChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _NPKGizmoDatabaseKeybagFirstUnlock, @"com.apple.mobile.keybagd.first_unlock", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleHasMigrationDataSource name:@"NPKGizmoDatabaseMigrationDataSourceSetNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleHasMigrationDataSource name:@"NPKGizmoDatabaseMigrationDataSourceSetNotification" object:0];
     [(NPKGizmoDatabase *)v2 setPassDBIsAvailable:0];
   }
 
@@ -344,20 +344,20 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
   sqlite3_close(self->_database);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = NPKGizmoDatabase;
   [(NPKGizmoDatabase *)&v5 dealloc];
 }
 
-- (BOOL)_executeSQL:(id)a3
+- (BOOL)_executeSQL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   errmsg = 0;
-  v5 = sqlite3_exec(-[NPKGizmoDatabase database](self, "database"), [v4 UTF8String], 0, 0, &errmsg);
+  v5 = sqlite3_exec(-[NPKGizmoDatabase database](self, "database"), [lCopy UTF8String], 0, 0, &errmsg);
   if (v5)
   {
     v6 = errmsg;
@@ -378,7 +378,7 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
         *buf = 138413058;
         v16 = v10;
         v17 = 2112;
-        v18 = v4;
+        v18 = lCopy;
         v19 = 1024;
         v20 = v5;
         v21 = 2080;
@@ -393,13 +393,13 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
   return v5 == 0;
 }
 
-- (void)_executeSQLQuery:(id)a3 processResultsBlock:(id)a4
+- (void)_executeSQLQuery:(id)query processResultsBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  blockCopy = block;
   ppStmt = 0;
-  if (sqlite3_prepare_v2(-[NPKGizmoDatabase database](self, "database"), [v6 UTF8String], -1, &ppStmt, 0))
+  if (sqlite3_prepare_v2(-[NPKGizmoDatabase database](self, "database"), [queryCopy UTF8String], -1, &ppStmt, 0))
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -416,7 +416,7 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
         v17 = 2048;
         v18 = 452;
         v19 = 2112;
-        v20 = v6;
+        v20 = queryCopy;
         _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Unable to prepare %@ statement)", buf, 0x2Au);
       }
     }
@@ -424,7 +424,7 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
     _NPKAssertAbort();
   }
 
-  v7[2](v7, 1, ppStmt);
+  blockCopy[2](blockCopy, 1, ppStmt);
   sqlite3_reset(ppStmt);
   sqlite3_finalize(ppStmt);
 
@@ -443,11 +443,11 @@ id __43__NPKGizmoDatabase_setMigrationDataSource___block_invoke(uint64_t a1)
   v43 = 0;
   while ([(NPKGizmoDatabase *)self _preconditionsMetForDatabaseOpen])
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = NPKHomeDirectoryPath();
-    if (([v6 fileExistsAtPath:v7] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:v7] & 1) == 0)
     {
-      [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+      [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v8 = NPKHomeDirectoryPath();
@@ -534,18 +534,18 @@ LABEL_40:
 
       sqlite3_close_v2(self->_database);
       self->_database = 0;
-      v30 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v46 = 0;
-      [v30 removeItemAtPath:v9 error:&v46];
+      [defaultManager2 removeItemAtPath:v9 error:&v46];
       v31 = v46;
       v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-shm", v9];
       v45 = v31;
-      [v30 removeItemAtPath:v32 error:&v45];
+      [defaultManager2 removeItemAtPath:v32 error:&v45];
       v33 = v45;
 
       v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", v9];
       v44 = v33;
-      [v30 removeItemAtPath:v34 error:&v44];
+      [defaultManager2 removeItemAtPath:v34 error:&v44];
       v35 = v44;
 
       [(NPKGizmoDatabase *)self _notifyDatabaseChangedExternally];
@@ -2010,10 +2010,10 @@ void __28__NPKGizmoDatabase_database__block_invoke_2(uint64_t a1, void *a2, _BYT
   return result;
 }
 
-- (sqlite3_stmt)selectTransactionsStatementWithTransactionSource:(unint64_t)a3 orderByDate:(int64_t)a4 limit:(unint64_t)a5
+- (sqlite3_stmt)selectTransactionsStatementWithTransactionSource:(unint64_t)source orderByDate:(int64_t)date limit:(unint64_t)limit
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a4 == -1)
+  if (date == -1)
   {
     v8 = @"ORDER BY transaction_date ASC";
   }
@@ -2025,12 +2025,12 @@ void __28__NPKGizmoDatabase_database__block_invoke_2(uint64_t a1, void *a2, _BYT
 
   v9 = [(__CFString *)v8 mutableCopy];
   v10 = v9;
-  if (a5)
+  if (limit)
   {
     [v9 appendString:@" LIMIT ?"];
   }
 
-  if (a3 == 2)
+  if (source == 2)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ AND transaction_source == 0 %@", @"SELECT encoded_transaction FROM transactions WHERE transaction_source_identifier = ? AND ((? OR has_notification_service_data == ?) OR ((? OR transaction_type == ?) AND (? OR transaction_type != ?))) AND transaction_date >= ? AND transaction_date <= ?", v10];
     p_selectTransactionsStatementWithoutSource = &self->_selectTransactionsStatementWithoutSource;
@@ -2066,7 +2066,7 @@ LABEL_26:
     goto LABEL_24;
   }
 
-  if (a3 == 1)
+  if (source == 1)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ AND transaction_source != 0 %@", @"SELECT encoded_transaction FROM transactions WHERE transaction_source_identifier = ? AND ((? OR has_notification_service_data == ?) OR ((? OR transaction_type == ?) AND (? OR transaction_type != ?))) AND transaction_date >= ? AND transaction_date <= ?", v10];
     p_selectTransactionsStatementWithoutSource = &self->_selectTransactionsStatementWithSource;
@@ -2101,7 +2101,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3)
+  if (source)
   {
     v21 = 0;
     goto LABEL_29;
@@ -3222,13 +3222,13 @@ LABEL_50:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performTransactionWithBlock:(id)a3
+- (void)_performTransactionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   isInTransaction = self->_isInTransaction;
   if (isInTransaction || (v6 = [(NPKGizmoDatabase *)self _executeSQL:@"BEGIN IMMEDIATE TRANSACTION;"], self->_isInTransaction = v6, v6))
   {
-    v7 = v4[2](v4);
+    v7 = blockCopy[2](blockCopy);
     if (!isInTransaction)
     {
       if (v7)
@@ -3259,12 +3259,12 @@ LABEL_50:
   }
 }
 
-- (id)_decodeObjectOfClasses:(id)a3 fromStatement:(sqlite3_stmt *)a4 column:(int)a5
+- (id)_decodeObjectOfClasses:(id)classes fromStatement:(sqlite3_stmt *)statement column:(int)column
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = sqlite3_column_blob(a4, a5);
-  v9 = sqlite3_column_bytes(a4, a5);
+  classesCopy = classes;
+  v8 = sqlite3_column_blob(statement, column);
+  v9 = sqlite3_column_bytes(statement, column);
   if (v9 < 1)
   {
     v12 = 0;
@@ -3276,7 +3276,7 @@ LABEL_50:
     if (v10)
     {
       v11 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v10 error:0];
-      v12 = [v11 decodeObjectOfClasses:v7 forKey:*MEMORY[0x277CCA308]];
+      v12 = [v11 decodeObjectOfClasses:classesCopy forKey:*MEMORY[0x277CCA308]];
     }
 
     else
@@ -3290,12 +3290,12 @@ LABEL_50:
   return v12;
 }
 
-- (id)savePass:(id)a3 isLocalPass:(BOOL)a4
+- (id)savePass:(id)pass isLocalPass:(BOOL)localPass
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  passCopy = pass;
+  v7 = passCopy;
+  if (!passCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -3318,9 +3318,9 @@ LABEL_50:
     _NPKAssertAbort();
   }
 
-  v11 = [v6 uniqueID];
+  uniqueID = [passCopy uniqueID];
 
-  if (!v11)
+  if (!uniqueID)
   {
     v12 = pk_General_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -3345,9 +3345,9 @@ LABEL_50:
     _NPKAssertAbort();
   }
 
-  v15 = [v7 npkCompleteHash];
+  npkCompleteHash = [v7 npkCompleteHash];
 
-  if (!v15)
+  if (!npkCompleteHash)
   {
     v16 = pk_General_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -3385,7 +3385,7 @@ LABEL_50:
   v24[3] = &unk_279948068;
   v24[4] = self;
   v25 = v7;
-  v27 = a4;
+  localPassCopy = localPass;
   v26 = buf;
   v20 = v7;
   dispatch_sync(dbQueue, v24);
@@ -3467,12 +3467,12 @@ void __41__NPKGizmoDatabase_savePass_isLocalPass___block_invoke_465(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveDiff:(id)a3 forPassWithUniqueID:(id)a4
+- (void)saveDiff:(id)diff forPassWithUniqueID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  diffCopy = diff;
+  dCopy = d;
+  if (!dCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -3503,10 +3503,10 @@ void __41__NPKGizmoDatabase_savePass_isLocalPass___block_invoke_465(uint64_t a1)
   block[2] = __49__NPKGizmoDatabase_saveDiff_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = diffCopy;
+  v17 = dCopy;
+  v12 = dCopy;
+  v13 = diffCopy;
   dispatch_sync(dbQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -3544,11 +3544,11 @@ uint64_t __49__NPKGizmoDatabase_saveDiff_forPassWithUniqueID___block_invoke(uint
   return result;
 }
 
-- (id)removePassWithUniqueID:(id)a3
+- (id)removePassWithUniqueID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -3583,9 +3583,9 @@ uint64_t __49__NPKGizmoDatabase_saveDiff_forPassWithUniqueID___block_invoke(uint
   block[2] = __43__NPKGizmoDatabase_removePassWithUniqueID___block_invoke;
   block[3] = &unk_279948090;
   block[4] = self;
-  v14 = v4;
+  v14 = dCopy;
   v15 = buf;
-  v9 = v4;
+  v9 = dCopy;
   dispatch_sync(dbQueue, block);
   v10 = *(*&buf[8] + 40);
 
@@ -3610,9 +3610,9 @@ uint64_t __43__NPKGizmoDatabase_removePassWithUniqueID___block_invoke(uint64_t a
   return [v6 _notifyDatabaseChangedWithNoop:v2 ^ 1u];
 }
 
-- (id)rebuildDatabaseWithPasses:(id)a3
+- (id)rebuildDatabaseWithPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3625,9 +3625,9 @@ uint64_t __43__NPKGizmoDatabase_removePassWithUniqueID___block_invoke(uint64_t a
   block[2] = __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke;
   block[3] = &unk_279948090;
   block[4] = self;
-  v10 = v4;
+  v10 = passesCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = passesCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -3726,20 +3726,20 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
   return 1;
 }
 
-- (void)saveTransaction:(id)a3 forPass:(id)a4
+- (void)saveTransaction:(id)transaction forPass:(id)pass
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (NPKIsTransactionAllowedInUI(v6, v7))
+  transactionCopy = transaction;
+  passCopy = pass;
+  if (NPKIsTransactionAllowedInUI(transactionCopy, passCopy))
   {
-    v8 = [v6 transactionSourceIdentifier];
-    v9 = [v7 paymentPass];
-    v10 = [v9 devicePrimaryPaymentApplication];
-    v11 = [v10 paymentNetworkIdentifier];
+    transactionSourceIdentifier = [transactionCopy transactionSourceIdentifier];
+    paymentPass = [passCopy paymentPass];
+    devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+    paymentNetworkIdentifier = [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
-    v12 = [v7 paymentPass];
-    if ([v12 isPeerPaymentPass])
+    paymentPass2 = [passCopy paymentPass];
+    if ([paymentPass2 isPeerPaymentPass])
     {
       v13 = 0;
     }
@@ -3749,7 +3749,7 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
       v13 = PKTransactionsUnlimitedForCredentialType() ^ 1;
     }
 
-    [(NPKGizmoDatabase *)self _saveTransaction:v6 forTransactionSourceIdentifier:v8 withPaymentCredentialType:v11 shouldTrim:v13];
+    [(NPKGizmoDatabase *)self _saveTransaction:transactionCopy forTransactionSourceIdentifier:transactionSourceIdentifier withPaymentCredentialType:paymentNetworkIdentifier shouldTrim:v13];
   }
 
   else
@@ -3762,11 +3762,11 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v7 uniqueID];
+        uniqueID = [passCopy uniqueID];
         v19 = 138412546;
-        v20 = v6;
+        v20 = transactionCopy;
         v21 = 2112;
-        v22 = v17;
+        v22 = uniqueID;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_ERROR, "Error: Transaction is not allowed in UI; not inserting transaction %@ for pass: %@", &v19, 0x16u);
       }
     }
@@ -3775,13 +3775,13 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveTransaction:(id)a3 forTransactionSourceIdentifier:(id)a4 withPaymentCredentialType:(int64_t)a5 shouldTrim:(BOOL)a6
+- (void)_saveTransaction:(id)transaction forTransactionSourceIdentifier:(id)identifier withPaymentCredentialType:(int64_t)type shouldTrim:(BOOL)trim
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!v10)
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  v12 = identifierCopy;
+  if (!transactionCopy)
   {
     v18 = pk_General_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -3804,13 +3804,13 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
     _NPKAssertAbort();
   }
 
-  if (v11)
+  if (identifierCopy)
   {
-    v13 = [v10 identifier];
+    identifier = [transactionCopy identifier];
 
-    if (v13)
+    if (identifier)
     {
-      if ([v10 suppressBehavior] != 1)
+      if ([transactionCopy suppressBehavior] != 1)
       {
         dbQueue = self->_dbQueue;
         block[0] = MEMORY[0x277D85DD0];
@@ -3818,10 +3818,10 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
         block[2] = __105__NPKGizmoDatabase__saveTransaction_forTransactionSourceIdentifier_withPaymentCredentialType_shouldTrim___block_invoke;
         block[3] = &unk_2799480E0;
         block[4] = self;
-        v28 = v10;
-        v31 = a6;
+        v28 = transactionCopy;
+        trimCopy = trim;
         v29 = v12;
-        v30 = a5;
+        typeCopy = type;
         dispatch_sync(dbQueue, block);
 
         goto LABEL_22;
@@ -3836,7 +3836,7 @@ uint64_t __46__NPKGizmoDatabase_rebuildDatabaseWithPasses___block_invoke_467(uin
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v33 = v10;
+          v33 = transactionCopy;
           v17 = "Error: Transaction should be suppressed from UI; not inserting %@";
 LABEL_19:
           _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_ERROR, v17, buf, 0xCu);
@@ -3858,7 +3858,7 @@ LABEL_19:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v33 = v10;
+          v33 = transactionCopy;
           v17 = "Error: Transaction does not have identifier; not inserting %@";
           goto LABEL_19;
         }
@@ -3879,7 +3879,7 @@ LABEL_19:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v33 = v10;
+        v33 = transactionCopy;
         v17 = "Error: No transaction source identifier; not inserting transaction %@";
         goto LABEL_19;
       }
@@ -3930,11 +3930,11 @@ uint64_t __105__NPKGizmoDatabase__saveTransaction_forTransactionSourceIdentifier
   return result;
 }
 
-- (void)removeTransactionWithIdentifier:(id)a3
+- (void)removeTransactionWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -3963,8 +3963,8 @@ uint64_t __105__NPKGizmoDatabase__saveTransaction_forTransactionSourceIdentifier
   v11[2] = __52__NPKGizmoDatabase_removeTransactionWithIdentifier___block_invoke;
   v11[3] = &unk_2799454E0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = identifierCopy;
+  v9 = identifierCopy;
   dispatch_async(dbQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4001,11 +4001,11 @@ uint64_t __52__NPKGizmoDatabase_removeTransactionWithIdentifier___block_invoke(u
   return result;
 }
 
-- (void)removeTransactionsForTransactionSource:(id)a3
+- (void)removeTransactionsForTransactionSource:(id)source
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -4034,8 +4034,8 @@ uint64_t __52__NPKGizmoDatabase_removeTransactionWithIdentifier___block_invoke(u
   v11[2] = __59__NPKGizmoDatabase_removeTransactionsForTransactionSource___block_invoke;
   v11[3] = &unk_2799454E0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = sourceCopy;
+  v9 = sourceCopy;
   dispatch_async(dbQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4072,11 +4072,11 @@ uint64_t __59__NPKGizmoDatabase_removeTransactionsForTransactionSource___block_i
   return result;
 }
 
-- (id)transactionsForTransactionSourceIdentifier:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9
+- (id)transactionsForTransactionSourceIdentifier:(id)identifier withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -4089,17 +4089,17 @@ uint64_t __59__NPKGizmoDatabase_removeTransactionsForTransactionSource___block_i
   block[2] = __139__NPKGizmoDatabase_transactionsForTransactionSourceIdentifier_withTransactionSource_withBackingData_startDate_endDate_orderedByDate_limit___block_invoke;
   block[3] = &unk_279948108;
   block[4] = self;
-  v25 = v15;
+  v25 = identifierCopy;
   v28 = &v33;
-  v29 = a4;
-  v26 = v16;
-  v27 = v17;
-  v30 = a5;
-  v31 = a8;
-  v32 = a9;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
+  sourceCopy = source;
+  v26 = dateCopy;
+  v27 = endDateCopy;
+  dataCopy = data;
+  byDateCopy = byDate;
+  limitCopy = limit;
+  v19 = endDateCopy;
+  v20 = dateCopy;
+  v21 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v22 = v34[5];
 
@@ -4120,9 +4120,9 @@ void __139__NPKGizmoDatabase_transactionsForTransactionSourceIdentifier_withTran
   }
 }
 
-- (id)transactionWithIdentifier:(id)a3
+- (id)transactionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4134,10 +4134,10 @@ void __139__NPKGizmoDatabase_transactionsForTransactionSourceIdentifier_withTran
   block[1] = 3221225472;
   block[2] = __46__NPKGizmoDatabase_transactionWithIdentifier___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4158,9 +4158,9 @@ void __46__NPKGizmoDatabase_transactionWithIdentifier___block_invoke(uint64_t a1
   }
 }
 
-- (id)transactionWithServiceIdentifier:(id)a3
+- (id)transactionWithServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4172,10 +4172,10 @@ void __46__NPKGizmoDatabase_transactionWithIdentifier___block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __53__NPKGizmoDatabase_transactionWithServiceIdentifier___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4196,9 +4196,9 @@ void __53__NPKGizmoDatabase_transactionWithServiceIdentifier___block_invoke(uint
   }
 }
 
-- (id)transactionSourceIdentifierForTransactionWithIdentifier:(id)a3
+- (id)transactionSourceIdentifierForTransactionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4210,10 +4210,10 @@ void __53__NPKGizmoDatabase_transactionWithServiceIdentifier___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __76__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithIdentifier___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4234,9 +4234,9 @@ void __76__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithIdentif
   }
 }
 
-- (id)transactionSourceIdentifierForTransactionWithServiceIdentifier:(id)a3
+- (id)transactionSourceIdentifierForTransactionWithServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4248,10 +4248,10 @@ void __76__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithIdentif
   block[1] = 3221225472;
   block[2] = __83__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithServiceIdentifier___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4272,9 +4272,9 @@ void __83__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithService
   }
 }
 
-- (id)transactionSourceIdentifierForPassWithUniqueID:(id)a3
+- (id)transactionSourceIdentifierForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4286,10 +4286,10 @@ void __83__NPKGizmoDatabase_transactionSourceIdentifierForTransactionWithService
   block[1] = 3221225472;
   block[2] = __67__NPKGizmoDatabase_transactionSourceIdentifierForPassWithUniqueID___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4310,9 +4310,9 @@ void __67__NPKGizmoDatabase_transactionSourceIdentifierForPassWithUniqueID___blo
   }
 }
 
-- (id)passUniqueIDForTransactionSourceIdentifier:(id)a3
+- (id)passUniqueIDForTransactionSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4324,10 +4324,10 @@ void __67__NPKGizmoDatabase_transactionSourceIdentifierForPassWithUniqueID___blo
   block[1] = 3221225472;
   block[2] = __63__NPKGizmoDatabase_passUniqueIDForTransactionSourceIdentifier___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4348,9 +4348,9 @@ void __63__NPKGizmoDatabase_passUniqueIDForTransactionSourceIdentifier___block_i
   }
 }
 
-- (id)transitAppletStateForPassWithUniqueID:(id)a3
+- (id)transitAppletStateForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4362,10 +4362,10 @@ void __63__NPKGizmoDatabase_passUniqueIDForTransactionSourceIdentifier___block_i
   block[1] = 3221225472;
   block[2] = __58__NPKGizmoDatabase_transitAppletStateForPassWithUniqueID___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4386,20 +4386,20 @@ void __58__NPKGizmoDatabase_transitAppletStateForPassWithUniqueID___block_invoke
   }
 }
 
-- (void)setTransitAppletState:(id)a3 forPassWithUniqueID:(id)a4
+- (void)setTransitAppletState:(id)state forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  dCopy = d;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__NPKGizmoDatabase_setTransitAppletState_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = stateCopy;
   dispatch_sync(dbQueue, block);
 }
 
@@ -4435,9 +4435,9 @@ uint64_t __62__NPKGizmoDatabase_setTransitAppletState_forPassWithUniqueID___bloc
   return result;
 }
 
-- (id)paymentBalancesForPassWithUniqueID:(id)a3
+- (id)paymentBalancesForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4449,10 +4449,10 @@ uint64_t __62__NPKGizmoDatabase_setTransitAppletState_forPassWithUniqueID___bloc
   block[1] = 3221225472;
   block[2] = __55__NPKGizmoDatabase_paymentBalancesForPassWithUniqueID___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4508,20 +4508,20 @@ LABEL_8:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPaymentBalances:(id)a3 forPassWithUniqueID:(id)a4
+- (void)setPaymentBalances:(id)balances forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  balancesCopy = balances;
+  dCopy = d;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__NPKGizmoDatabase_setPaymentBalances_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = balancesCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = balancesCopy;
   dispatch_sync(dbQueue, block);
 }
 
@@ -4557,10 +4557,10 @@ uint64_t __59__NPKGizmoDatabase_setPaymentBalances_forPassWithUniqueID___block_i
   return result;
 }
 
-- (id)subcredentialsForPassWithUniqueID:(id)a3 paymentApplicationIdentifier:(id)a4
+- (id)subcredentialsForPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -4573,11 +4573,11 @@ uint64_t __59__NPKGizmoDatabase_setPaymentBalances_forPassWithUniqueID___block_i
   v13[2] = __83__NPKGizmoDatabase_subcredentialsForPassWithUniqueID_paymentApplicationIdentifier___block_invoke;
   v13[3] = &unk_279948158;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = identifierCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = identifierCopy;
+  v10 = dCopy;
   dispatch_sync(dbQueue, v13);
   v11 = v18[5];
 
@@ -4598,23 +4598,23 @@ void __83__NPKGizmoDatabase_subcredentialsForPassWithUniqueID_paymentApplication
   }
 }
 
-- (void)setSubcredentials:(id)a3 forPassWithUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5
+- (void)setSubcredentials:(id)subcredentials forPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subcredentialsCopy = subcredentials;
+  dCopy = d;
+  identifierCopy = identifier;
   dbQueue = self->_dbQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__NPKGizmoDatabase_setSubcredentials_forPassWithUniqueID_paymentApplicationIdentifier___block_invoke;
   v15[3] = &unk_279946260;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = subcredentialsCopy;
+  v17 = dCopy;
+  v18 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = dCopy;
+  v14 = subcredentialsCopy;
   dispatch_sync(dbQueue, v15);
 }
 
@@ -4662,26 +4662,26 @@ void __87__NPKGizmoDatabase_setSubcredentials_forPassWithUniqueID_paymentApplica
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentEphemeralTransactionIdentifier:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)setCurrentEphemeralTransactionIdentifier:(id)identifier forTransactionSourceIdentifier:(id)sourceIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__NPKGizmoDatabase_setCurrentEphemeralTransactionIdentifier_forTransactionSourceIdentifier___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = sourceIdentifierCopy;
+  v9 = sourceIdentifierCopy;
+  v10 = identifierCopy;
   dispatch_async(dbQueue, block);
 }
 
-- (id)currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)a3
+- (id)currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4693,10 +4693,10 @@ void __87__NPKGizmoDatabase_setSubcredentials_forPassWithUniqueID_paymentApplica
   block[1] = 3221225472;
   block[2] = __88__NPKGizmoDatabase_currentEphemeralTransactionIdentifierForTransactionSourceIdentifier___block_invoke;
   block[3] = &unk_279946940;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4713,26 +4713,26 @@ void __88__NPKGizmoDatabase_currentEphemeralTransactionIdentifierForTransactionS
   *(v3 + 40) = v2;
 }
 
-- (void)setLastAddValueAmount:(id)a3 forPassWithUniqueID:(id)a4
+- (void)setLastAddValueAmount:(id)amount forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  amountCopy = amount;
+  dCopy = d;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__NPKGizmoDatabase_setLastAddValueAmount_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = amountCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = amountCopy;
   dispatch_async(dbQueue, block);
 }
 
-- (id)lastAddValueAmountForPassWithUniqueID:(id)a3
+- (id)lastAddValueAmountForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4744,10 +4744,10 @@ void __88__NPKGizmoDatabase_currentEphemeralTransactionIdentifierForTransactionS
   block[1] = 3221225472;
   block[2] = __58__NPKGizmoDatabase_lastAddValueAmountForPassWithUniqueID___block_invoke;
   block[3] = &unk_279946940;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4764,26 +4764,26 @@ void __58__NPKGizmoDatabase_lastAddValueAmountForPassWithUniqueID___block_invoke
   *(v3 + 40) = v2;
 }
 
-- (void)setPendingAddValueDate:(id)a3 forPassWithUniqueID:(id)a4
+- (void)setPendingAddValueDate:(id)date forPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  dCopy = d;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__NPKGizmoDatabase_setPendingAddValueDate_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = dateCopy;
   dispatch_async(dbQueue, block);
 }
 
-- (id)pendingAddValueDateForPassWithUniqueID:(id)a3
+- (id)pendingAddValueDateForPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4795,10 +4795,10 @@ void __58__NPKGizmoDatabase_lastAddValueAmountForPassWithUniqueID___block_invoke
   block[1] = 3221225472;
   block[2] = __59__NPKGizmoDatabase_pendingAddValueDateForPassWithUniqueID___block_invoke;
   block[3] = &unk_279946940;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -4830,28 +4830,28 @@ void __59__NPKGizmoDatabase_pendingAddValueDateForPassWithUniqueID___block_invok
     }
   }
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [(NPKGizmoDatabase *)self passDescriptions];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+  passDescriptions = [(NPKGizmoDatabase *)self passDescriptions];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __51__NPKGizmoDatabase_restoreBlockForVolatilePassData__block_invoke;
   v31[3] = &unk_2799481A8;
-  v12 = v9;
+  v12 = dictionary4;
   v32 = v12;
-  v33 = self;
-  v13 = v6;
+  selfCopy = self;
+  v13 = dictionary;
   v34 = v13;
-  v14 = v7;
+  v14 = dictionary2;
   v35 = v14;
-  v15 = v8;
+  v15 = dictionary3;
   v36 = v15;
-  v16 = v10;
+  v16 = dictionary5;
   v37 = v16;
-  [v11 enumerateObjectsUsingBlock:v31];
+  [passDescriptions enumerateObjectsUsingBlock:v31];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__NPKGizmoDatabase_restoreBlockForVolatilePassData__block_invoke_2;
@@ -5053,7 +5053,7 @@ void __51__NPKGizmoDatabase_restoreBlockForVolatilePassData__block_invoke_2_473(
   }
 }
 
-- (void)_notifyDatabaseChangedWithNoop:(BOOL)a3 firstUnlock:(BOOL)a4
+- (void)_notifyDatabaseChangedWithNoop:(BOOL)noop firstUnlock:(BOOL)unlock
 {
   sendingLocalNotifyDatabaseChanged = self->_sendingLocalNotifyDatabaseChanged;
   v8 = pk_General_log();
@@ -5091,8 +5091,8 @@ void __51__NPKGizmoDatabase_restoreBlockForVolatilePassData__block_invoke_2_473(
     v12[1] = 3221225472;
     v12[2] = __63__NPKGizmoDatabase__notifyDatabaseChangedWithNoop_firstUnlock___block_invoke;
     v12[3] = &unk_279948248;
-    v13 = a3;
-    v14 = a4;
+    noopCopy = noop;
+    unlockCopy = unlock;
     v12[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
@@ -5201,62 +5201,62 @@ uint64_t __37__NPKGizmoDatabase_passDBIsAvailable__block_invoke(uint64_t a1)
 
 - (unint64_t)numberOfPasses
 {
-  v2 = [(NPKGizmoDatabase *)self manifestHashes];
-  v3 = [v2 count];
+  manifestHashes = [(NPKGizmoDatabase *)self manifestHashes];
+  v3 = [manifestHashes count];
 
   return v3;
 }
 
-- (void)_savePassLocked:(id)a3 locallyAdded:(BOOL)a4 wasUpdate:(BOOL *)a5
+- (void)_savePassLocked:(id)locked locallyAdded:(BOOL)added wasUpdate:(BOOL *)update
 {
   v68 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lockedCopy = locked;
   context = objc_autoreleasePoolPush();
-  v8 = [v7 passTypeIdentifier];
-  v44 = [v8 copy];
+  passTypeIdentifier = [lockedCopy passTypeIdentifier];
+  v44 = [passTypeIdentifier copy];
 
-  v50 = v7;
-  v9 = [v7 copy];
-  v10 = [v9 uniqueID];
-  v11 = [(NPKGizmoDatabase *)self _passForUniqueIDLocked:v10 includeImageSets:0];
+  v50 = lockedCopy;
+  v9 = [lockedCopy copy];
+  uniqueID = [v9 uniqueID];
+  v11 = [(NPKGizmoDatabase *)self _passForUniqueIDLocked:uniqueID includeImageSets:0];
 
-  v12 = [v11 paymentPass];
+  paymentPass = [v11 paymentPass];
   v42 = NPKPassDescriptionExpressTypesMaskWithPass(v9);
   if (v11)
   {
     manifest = self->_manifest;
-    v14 = [v9 uniqueID];
-    v15 = [(NSMutableDictionary *)manifest objectForKey:v14];
-    v41 = [v15 remoteManifestHashes];
+    uniqueID2 = [v9 uniqueID];
+    v15 = [(NSMutableDictionary *)manifest objectForKey:uniqueID2];
+    remoteManifestHashes = [v15 remoteManifestHashes];
   }
 
   else
   {
-    v41 = 0;
+    remoteManifestHashes = 0;
   }
 
-  v48 = v12;
-  if (v12)
+  v48 = paymentPass;
+  if (paymentPass)
   {
     v65 = 0;
-    v16 = [(NPKGizmoDatabase *)self _getPreferredPaymentApplicationForPaymentPass:v12 aid:&v65];
+    v16 = [(NPKGizmoDatabase *)self _getPreferredPaymentApplicationForPaymentPass:paymentPass aid:&v65];
     v40 = v65;
-    v17 = [v9 uniqueID];
-    LOBYTE(v12) = [(NPKGizmoDatabase *)self _getDeletePendingForUniqueID:v17];
+    uniqueID3 = [v9 uniqueID];
+    LOBYTE(paymentPass) = [(NPKGizmoDatabase *)self _getDeletePendingForUniqueID:uniqueID3];
 
-    v18 = [v9 uniqueID];
-    v39 = [(NPKGizmoDatabase *)self _transitAppletStateForPassWithUniqueIDLocked:v18];
+    uniqueID4 = [v9 uniqueID];
+    v39 = [(NPKGizmoDatabase *)self _transitAppletStateForPassWithUniqueIDLocked:uniqueID4];
 
-    v19 = [v9 uniqueID];
-    v37 = [(NPKGizmoDatabase *)self _lastAddValueAmountForPassWithUniqueIDLocked:v19];
+    uniqueID5 = [v9 uniqueID];
+    v37 = [(NPKGizmoDatabase *)self _lastAddValueAmountForPassWithUniqueIDLocked:uniqueID5];
 
-    v20 = [v9 uniqueID];
-    v21 = [(NPKGizmoDatabase *)self _pendingAddValueDateForPassWithUniqueIDLocked:v20];
+    uniqueID6 = [v9 uniqueID];
+    v21 = [(NPKGizmoDatabase *)self _pendingAddValueDateForPassWithUniqueIDLocked:uniqueID6];
 
-    v22 = [v9 uniqueID];
-    v23 = [(NPKGizmoDatabase *)self _paymentBalancesForPassWithUniqueIDLocked:v22];
+    uniqueID7 = [v9 uniqueID];
+    v23 = [(NPKGizmoDatabase *)self _paymentBalancesForPassWithUniqueIDLocked:uniqueID7];
 
-    if (!a5)
+    if (!update)
     {
       goto LABEL_7;
     }
@@ -5269,10 +5269,10 @@ uint64_t __37__NPKGizmoDatabase_passDBIsAvailable__block_invoke(uint64_t a1)
   v37 = 0;
   v39 = 0;
   v40 = 0;
-  if (a5)
+  if (update)
   {
 LABEL_6:
-    *a5 = v11 != 0;
+    *update = v11 != 0;
   }
 
 LABEL_7:
@@ -5299,19 +5299,19 @@ LABEL_7:
   v52 = v9;
   v53 = v11;
   v54 = v24;
-  v63 = v12;
+  v63 = paymentPass;
   v55 = v40;
   v56 = v39;
   v57 = v38;
   v58 = v21;
-  v64 = a4;
-  v59 = v41;
+  addedCopy = added;
+  v59 = remoteManifestHashes;
   v60 = v23;
   v61 = v44;
   v62 = v42;
   v47 = v44;
   v43 = v23;
-  v28 = v41;
+  v28 = remoteManifestHashes;
   v45 = v21;
   v29 = v38;
   v30 = v39;
@@ -5320,8 +5320,8 @@ LABEL_7:
   v33 = v11;
   v34 = v9;
   [(NPKGizmoDatabase *)self _performTransactionWithBlock:v51];
-  v35 = [v34 uniqueID];
-  [(NPKGizmoDatabase *)self _createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:v35];
+  uniqueID8 = [v34 uniqueID];
+  [(NPKGizmoDatabase *)self _createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:uniqueID8];
 
   objc_autoreleasePoolPop(context);
   v36 = *MEMORY[0x277D85DE8];
@@ -6190,10 +6190,10 @@ void __59__NPKGizmoDatabase__savePassLocked_locallyAdded_wasUpdate___block_invok
   }
 }
 
-- (BOOL)_removePassWithUniqueIDLocked:(id)a3
+- (BOOL)_removePassWithUniqueIDLocked:(id)locked
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockedCopy = locked;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -6213,8 +6213,8 @@ void __59__NPKGizmoDatabase__savePassLocked_locallyAdded_wasUpdate___block_invok
         }
 
         v9 = *(*(&v33 + 1) + 8 * i);
-        v10 = [v9 uniqueID];
-        v11 = [v10 isEqualToString:v4];
+        uniqueID = [v9 uniqueID];
+        v11 = [uniqueID isEqualToString:lockedCopy];
 
         if (v11)
         {
@@ -6242,12 +6242,12 @@ LABEL_11:
 
   else
   {
-    v12 = [(NPKGizmoDatabase *)self _passForUniqueIDLocked:v4 includeImageSets:0];
+    v12 = [(NPKGizmoDatabase *)self _passForUniqueIDLocked:lockedCopy includeImageSets:0];
   }
 
-  v13 = [(NPKGizmoDatabase *)self deleteStatement];
-  sqlite3_bind_text(v13, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v13) & 0xFFFFFFFE) != 0x64)
+  deleteStatement = [(NPKGizmoDatabase *)self deleteStatement];
+  sqlite3_bind_text(deleteStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(deleteStatement) & 0xFFFFFFFE) != 0x64)
   {
     v14 = pk_General_log();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
@@ -6257,7 +6257,7 @@ LABEL_11:
       v16 = pk_General_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = sqlite3_sql(v13);
+        v17 = sqlite3_sql(deleteStatement);
         v18 = sqlite3_errmsg(self->_database);
         *buf = 136447234;
         v40 = "[NPKGizmoDatabase _removePassWithUniqueIDLocked:]";
@@ -6276,14 +6276,14 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v13);
-  sqlite3_reset(v13);
-  v19 = [(NPKGizmoDatabase *)self _transactionSourceIdentifierForPassUniqueIdentifierLocked:v4];
+  sqlite3_clear_bindings(deleteStatement);
+  sqlite3_reset(deleteStatement);
+  v19 = [(NPKGizmoDatabase *)self _transactionSourceIdentifierForPassUniqueIdentifierLocked:lockedCopy];
   if (v19)
   {
-    v20 = [(NPKGizmoDatabase *)self deleteTransactionsForTransactionSourceStatement];
-    sqlite3_bind_text(v20, 1, [v19 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    if ((sqlite3_step(v20) & 0xFFFFFFFE) != 0x64)
+    deleteTransactionsForTransactionSourceStatement = [(NPKGizmoDatabase *)self deleteTransactionsForTransactionSourceStatement];
+    sqlite3_bind_text(deleteTransactionsForTransactionSourceStatement, 1, [v19 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    if ((sqlite3_step(deleteTransactionsForTransactionSourceStatement) & 0xFFFFFFFE) != 0x64)
     {
       v21 = pk_General_log();
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
@@ -6293,7 +6293,7 @@ LABEL_11:
         v23 = pk_General_log();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v24 = sqlite3_sql(v20);
+          v24 = sqlite3_sql(deleteTransactionsForTransactionSourceStatement);
           v25 = sqlite3_errmsg(self->_database);
           *buf = 136447234;
           v40 = "[NPKGizmoDatabase _removePassWithUniqueIDLocked:]";
@@ -6312,70 +6312,70 @@ LABEL_11:
       _NPKAssertAbort();
     }
 
-    sqlite3_clear_bindings(v20);
-    sqlite3_reset(v20);
+    sqlite3_clear_bindings(deleteTransactionsForTransactionSourceStatement);
+    sqlite3_reset(deleteTransactionsForTransactionSourceStatement);
     [(NPKGizmoDatabase *)self setCurrentEphemeralTransactionIdentifier:0 forTransactionSourceIdentifier:v19];
-    [(NPKGizmoDatabase *)self _removeTransactionSourceIdentifierForPassWithUniqueIDLocked:v4];
+    [(NPKGizmoDatabase *)self _removeTransactionSourceIdentifierForPassWithUniqueIDLocked:lockedCopy];
   }
 
-  [(NPKGizmoDatabase *)self _removeSubcredentialsForPassWithUniqueIDLocked:v4];
-  [(NSMutableDictionary *)self->_manifest removeObjectForKey:v4];
+  [(NPKGizmoDatabase *)self _removeSubcredentialsForPassWithUniqueIDLocked:lockedCopy];
+  [(NSMutableDictionary *)self->_manifest removeObjectForKey:lockedCopy];
   libraryHashes = self->_libraryHashes;
   self->_libraryHashes = 0;
 
   [(NSMutableArray *)self->_passDescriptions removeObject:v6];
   if (v12)
   {
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v28 = NPKGizmoDatabasePassRemovedNotificationName;
     v37 = NPKGizmoDatabasePassKeyName;
     v38 = v12;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-    [v27 postNotificationName:v28 object:self userInfo:v29];
+    [defaultCenter postNotificationName:v28 object:self userInfo:v29];
   }
 
-  v30 = [v6 deletePending];
+  deletePending = [v6 deletePending];
 
   v31 = *MEMORY[0x277D85DE8];
-  return v30 ^ 1;
+  return deletePending ^ 1;
 }
 
-- (void)_saveTransactionLocked:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)_saveTransactionLocked:(id)locked forTransactionSourceIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKGizmoDatabase *)self insertTransactionStatement];
-  v9 = [v7 UTF8String];
+  lockedCopy = locked;
+  identifierCopy = identifier;
+  insertTransactionStatement = [(NPKGizmoDatabase *)self insertTransactionStatement];
+  uTF8String = [identifierCopy UTF8String];
 
-  sqlite3_bind_text(v8, 1, v9, -1, 0xFFFFFFFFFFFFFFFFLL);
-  sqlite3_bind_text(v8, 2, "", -1, 0xFFFFFFFFFFFFFFFFLL);
-  v10 = [v6 identifier];
-  sqlite3_bind_text(v8, 3, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(insertTransactionStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(insertTransactionStatement, 2, "", -1, 0xFFFFFFFFFFFFFFFFLL);
+  identifier = [lockedCopy identifier];
+  sqlite3_bind_text(insertTransactionStatement, 3, [identifier UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
-  v11 = [v6 transactionDate];
-  [v11 timeIntervalSinceReferenceDate];
-  sqlite3_bind_int(v8, 4, v12);
+  transactionDate = [lockedCopy transactionDate];
+  [transactionDate timeIntervalSinceReferenceDate];
+  sqlite3_bind_int(insertTransactionStatement, 4, v12);
 
-  sqlite3_bind_int(v8, 5, [v6 transactionSource]);
-  sqlite3_bind_int(v8, 6, [v6 transactionType]);
-  sqlite3_bind_int(v8, 7, [v6 hasNotificationServiceData]);
-  v13 = NPKSecureArchiveObject(v6);
+  sqlite3_bind_int(insertTransactionStatement, 5, [lockedCopy transactionSource]);
+  sqlite3_bind_int(insertTransactionStatement, 6, [lockedCopy transactionType]);
+  sqlite3_bind_int(insertTransactionStatement, 7, [lockedCopy hasNotificationServiceData]);
+  v13 = NPKSecureArchiveObject(lockedCopy);
   v14 = v13;
   if (v13)
   {
-    sqlite3_bind_blob(v8, 8, [v13 bytes], objc_msgSend(v13, "length"), 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_blob(insertTransactionStatement, 8, [v13 bytes], objc_msgSend(v13, "length"), 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    sqlite3_bind_null(v8, 8);
+    sqlite3_bind_null(insertTransactionStatement, 8);
   }
 
-  v15 = [v6 serviceIdentifier];
-  sqlite3_bind_text(v8, 10, [v15 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  serviceIdentifier = [lockedCopy serviceIdentifier];
+  sqlite3_bind_text(insertTransactionStatement, 10, [serviceIdentifier UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
-  if ((sqlite3_step(v8) & 0xFFFFFFFE) != 0x64)
+  if ((sqlite3_step(insertTransactionStatement) & 0xFFFFFFFE) != 0x64)
   {
     v16 = pk_General_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
@@ -6385,7 +6385,7 @@ LABEL_11:
       v18 = pk_General_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = sqlite3_sql(v8);
+        v19 = sqlite3_sql(insertTransactionStatement);
         v20 = sqlite3_errmsg(self->_database);
         v22 = 136447234;
         v23 = "[NPKGizmoDatabase _saveTransactionLocked:forTransactionSourceIdentifier:]";
@@ -6404,25 +6404,25 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v8);
-  sqlite3_reset(v8);
+  sqlite3_clear_bindings(insertTransactionStatement);
+  sqlite3_reset(insertTransactionStatement);
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeTransactionWithServiceIdentifierLocked:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)_removeTransactionWithServiceIdentifierLocked:(id)locked forTransactionSourceIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKGizmoDatabase *)self removeTransactionWithServiceIdentifierStatement];
-  v9 = [v6 UTF8String];
+  identifierCopy = identifier;
+  lockedCopy = locked;
+  removeTransactionWithServiceIdentifierStatement = [(NPKGizmoDatabase *)self removeTransactionWithServiceIdentifierStatement];
+  uTF8String = [identifierCopy UTF8String];
 
-  sqlite3_bind_text(v8, 1, v9, -1, 0xFFFFFFFFFFFFFFFFLL);
-  v10 = [v7 UTF8String];
+  sqlite3_bind_text(removeTransactionWithServiceIdentifierStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  uTF8String2 = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v8, 2, v10, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v8) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(removeTransactionWithServiceIdentifierStatement, 2, uTF8String2, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(removeTransactionWithServiceIdentifierStatement) & 0xFFFFFFFE) != 0x64)
   {
     v11 = pk_General_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
@@ -6432,7 +6432,7 @@ LABEL_11:
       v13 = pk_General_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = sqlite3_sql(v8);
+        v14 = sqlite3_sql(removeTransactionWithServiceIdentifierStatement);
         v15 = sqlite3_errmsg(self->_database);
         v17 = 136447234;
         v18 = "[NPKGizmoDatabase _removeTransactionWithServiceIdentifierLocked:forTransactionSourceIdentifier:]";
@@ -6451,20 +6451,20 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v8);
-  sqlite3_reset(v8);
+  sqlite3_clear_bindings(removeTransactionWithServiceIdentifierStatement);
+  sqlite3_reset(removeTransactionWithServiceIdentifierStatement);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeTransactionWithIdentifier:(id)a3
+- (void)_removeTransactionWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self removeTransactionStatement];
-  v6 = [v4 UTF8String];
+  identifierCopy = identifier;
+  removeTransactionStatement = [(NPKGizmoDatabase *)self removeTransactionStatement];
+  uTF8String = [identifierCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v5) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(removeTransactionStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(removeTransactionStatement) & 0xFFFFFFFE) != 0x64)
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -6474,7 +6474,7 @@ LABEL_11:
       v9 = pk_General_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = sqlite3_sql(v5);
+        v10 = sqlite3_sql(removeTransactionStatement);
         v11 = sqlite3_errmsg(self->_database);
         v13 = 136447234;
         v14 = "[NPKGizmoDatabase _removeTransactionWithIdentifier:]";
@@ -6493,20 +6493,20 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(removeTransactionStatement);
+  sqlite3_reset(removeTransactionStatement);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeTransactionsForTransactionSource:(id)a3
+- (void)_removeTransactionsForTransactionSource:(id)source
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self deleteTransactionsForTransactionSourceStatement];
-  v6 = [v4 UTF8String];
+  sourceCopy = source;
+  deleteTransactionsForTransactionSourceStatement = [(NPKGizmoDatabase *)self deleteTransactionsForTransactionSourceStatement];
+  uTF8String = [sourceCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v5) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(deleteTransactionsForTransactionSourceStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(deleteTransactionsForTransactionSourceStatement) & 0xFFFFFFFE) != 0x64)
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -6516,7 +6516,7 @@ LABEL_11:
       v9 = pk_General_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = sqlite3_sql(v5);
+        v10 = sqlite3_sql(deleteTransactionsForTransactionSourceStatement);
         v11 = sqlite3_errmsg(self->_database);
         v13 = 136447234;
         v14 = "[NPKGizmoDatabase _removeTransactionsForTransactionSource:]";
@@ -6535,23 +6535,23 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(deleteTransactionsForTransactionSourceStatement);
+  sqlite3_reset(deleteTransactionsForTransactionSourceStatement);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trimTransactionsForTransactionSourceIdentifierLocked:(id)a3 withPaymentCredentialType:(int64_t)a4
+- (void)_trimTransactionsForTransactionSourceIdentifierLocked:(id)locked withPaymentCredentialType:(int64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lockedCopy = locked;
   v6 = PKMaxPaymentTransactionsForCredentialType();
-  v7 = [(NPKGizmoDatabase *)self trimTransactionsForTransactionSourceStatement];
-  sqlite3_bind_text(v7, 1, [v5 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  v8 = [v5 UTF8String];
+  trimTransactionsForTransactionSourceStatement = [(NPKGizmoDatabase *)self trimTransactionsForTransactionSourceStatement];
+  sqlite3_bind_text(trimTransactionsForTransactionSourceStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v7, 2, v8, -1, 0xFFFFFFFFFFFFFFFFLL);
-  sqlite3_bind_int(v7, 3, v6);
-  if ((sqlite3_step(v7) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(trimTransactionsForTransactionSourceStatement, 2, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_int(trimTransactionsForTransactionSourceStatement, 3, v6);
+  if ((sqlite3_step(trimTransactionsForTransactionSourceStatement) & 0xFFFFFFFE) != 0x64)
   {
     v9 = pk_General_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -6561,7 +6561,7 @@ LABEL_11:
       v11 = pk_General_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = sqlite3_sql(v7);
+        v12 = sqlite3_sql(trimTransactionsForTransactionSourceStatement);
         v13 = sqlite3_errmsg(self->_database);
         v15 = 136447234;
         v16 = "[NPKGizmoDatabase _trimTransactionsForTransactionSourceIdentifierLocked:withPaymentCredentialType:]";
@@ -6580,28 +6580,28 @@ LABEL_11:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v7);
-  sqlite3_reset(v7);
+  sqlite3_clear_bindings(trimTransactionsForTransactionSourceStatement);
+  sqlite3_reset(trimTransactionsForTransactionSourceStatement);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_transactionsForTransactionSourceIdentifierLocked:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderByDate:(int64_t)a8 limit:(unint64_t)a9
+- (id)_transactionsForTransactionSourceIdentifierLocked:(id)locked withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderByDate:(int64_t)byDate limit:(unint64_t)limit
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = [MEMORY[0x277CBEB18] array];
-  v19 = [(NPKGizmoDatabase *)self selectTransactionsStatementWithTransactionSource:a4 orderByDate:a8 limit:a9];
-  sqlite3_bind_text(v19, 1, [v15 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  sqlite3_bind_int(v19, 2, a5 == 0);
-  sqlite3_bind_int(v19, 3, a5 == 1);
-  sqlite3_bind_int(v19, 4, a5 != 1);
+  lockedCopy = locked;
+  dateCopy = date;
+  endDateCopy = endDate;
+  array = [MEMORY[0x277CBEB18] array];
+  v19 = [(NPKGizmoDatabase *)self selectTransactionsStatementWithTransactionSource:source orderByDate:byDate limit:limit];
+  sqlite3_bind_text(v19, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_int(v19, 2, data == 0);
+  sqlite3_bind_int(v19, 3, data == 1);
+  sqlite3_bind_int(v19, 4, data != 1);
   sqlite3_bind_int(v19, 5, 2);
-  sqlite3_bind_int(v19, 6, a5 != 2);
+  sqlite3_bind_int(v19, 6, data != 2);
   sqlite3_bind_int(v19, 7, 2);
-  if (v16)
+  if (dateCopy)
   {
-    if (v17)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -6609,22 +6609,22 @@ LABEL_11:
 
   else
   {
-    v16 = [MEMORY[0x277CBEAA8] distantPast];
-    if (v17)
+    dateCopy = [MEMORY[0x277CBEAA8] distantPast];
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v17 = [MEMORY[0x277CBEAA8] distantFuture];
+  endDateCopy = [MEMORY[0x277CBEAA8] distantFuture];
 LABEL_3:
-  [v16 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   sqlite3_bind_int(v19, 8, v20);
-  [v17 timeIntervalSinceReferenceDate];
+  [endDateCopy timeIntervalSinceReferenceDate];
   sqlite3_bind_int(v19, 9, v21);
-  if (a9)
+  if (limit)
   {
-    sqlite3_bind_int(v19, 10, a9);
+    sqlite3_bind_int(v19, 10, limit);
   }
 
   while (sqlite3_step(v19) == 100)
@@ -6637,7 +6637,7 @@ LABEL_3:
     v27 = NPKSecureUnarchiveObject(v25, v26);
     if (v27)
     {
-      [v18 addObject:v27];
+      [array addObject:v27];
     }
 
     objc_autoreleasePoolPop(v24);
@@ -6646,18 +6646,18 @@ LABEL_3:
   sqlite3_clear_bindings(v19);
   sqlite3_reset(v19);
 
-  return v18;
+  return array;
 }
 
-- (id)_transactionWithIdentifierLocked:(id)a3
+- (id)_transactionWithIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransactionWithIdentifierStatement];
-  sqlite3_bind_text(v5, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  lockedCopy = locked;
+  selectTransactionWithIdentifierStatement = [(NPKGizmoDatabase *)self selectTransactionWithIdentifierStatement];
+  sqlite3_bind_text(selectTransactionWithIdentifierStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransactionWithIdentifierStatement) == 100)
   {
-    v6 = sqlite3_column_blob(v5, 0);
-    v7 = sqlite3_column_bytes(v5, 0);
+    v6 = sqlite3_column_blob(selectTransactionWithIdentifierStatement, 0);
+    v7 = sqlite3_column_bytes(selectTransactionWithIdentifierStatement, 0);
     v8 = objc_autoreleasePoolPush();
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:v7];
     v10 = objc_opt_class();
@@ -6671,21 +6671,21 @@ LABEL_3:
     v11 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransactionWithIdentifierStatement);
+  sqlite3_reset(selectTransactionWithIdentifierStatement);
 
   return v11;
 }
 
-- (id)_transactionWithServiceIdentifierLocked:(id)a3
+- (id)_transactionWithServiceIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransactionWithServiceIdentifierStatement];
-  sqlite3_bind_text(v5, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  lockedCopy = locked;
+  selectTransactionWithServiceIdentifierStatement = [(NPKGizmoDatabase *)self selectTransactionWithServiceIdentifierStatement];
+  sqlite3_bind_text(selectTransactionWithServiceIdentifierStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransactionWithServiceIdentifierStatement) == 100)
   {
-    v6 = sqlite3_column_blob(v5, 0);
-    v7 = sqlite3_column_bytes(v5, 0);
+    v6 = sqlite3_column_blob(selectTransactionWithServiceIdentifierStatement, 0);
+    v7 = sqlite3_column_bytes(selectTransactionWithServiceIdentifierStatement, 0);
     v8 = objc_autoreleasePoolPush();
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:v7];
     v10 = objc_opt_class();
@@ -6699,22 +6699,22 @@ LABEL_3:
     v11 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransactionWithServiceIdentifierStatement);
+  sqlite3_reset(selectTransactionWithServiceIdentifierStatement);
 
   return v11;
 }
 
-- (id)_transactionSourceIdentifierForTransactionWithIdentifierLocked:(id)a3
+- (id)_transactionSourceIdentifierForTransactionWithIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForTransactionWithIdentifierStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectTransactionSourceIdentifierForTransactionWithIdentifierStatement = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForTransactionWithIdentifierStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectTransactionSourceIdentifierForTransactionWithIdentifierStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransactionSourceIdentifierForTransactionWithIdentifierStatement) == 100)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(v5, 0)}];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(selectTransactionSourceIdentifierForTransactionWithIdentifierStatement, 0)}];
   }
 
   else
@@ -6722,28 +6722,28 @@ LABEL_3:
     v7 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransactionSourceIdentifierForTransactionWithIdentifierStatement);
+  sqlite3_reset(selectTransactionSourceIdentifierForTransactionWithIdentifierStatement);
 
   return v7;
 }
 
-- (void)_createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:(id)a3
+- (void)_createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:(id)locked
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self _transactionSourceIdentifierForPassUniqueIdentifierLocked:v4];
+  lockedCopy = locked;
+  v5 = [(NPKGizmoDatabase *)self _transactionSourceIdentifierForPassUniqueIdentifierLocked:lockedCopy];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v8 = [(NPKGizmoDatabase *)self insertTransactionSourceIdentifierForPassStatement];
-    sqlite3_bind_text(v8, 1, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    sqlite3_bind_int(v8, 2, 0);
-    sqlite3_bind_text(v8, 3, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    if ((sqlite3_step(v8) & 0xFFFFFFFE) != 0x64)
+    insertTransactionSourceIdentifierForPassStatement = [(NPKGizmoDatabase *)self insertTransactionSourceIdentifierForPassStatement];
+    sqlite3_bind_text(insertTransactionSourceIdentifierForPassStatement, 1, [uUIDString UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_int(insertTransactionSourceIdentifierForPassStatement, 2, 0);
+    sqlite3_bind_text(insertTransactionSourceIdentifierForPassStatement, 3, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    if ((sqlite3_step(insertTransactionSourceIdentifierForPassStatement) & 0xFFFFFFFE) != 0x64)
     {
       v9 = pk_General_log();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -6753,7 +6753,7 @@ LABEL_3:
         v11 = pk_General_log();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v12 = sqlite3_sql(v8);
+          v12 = sqlite3_sql(insertTransactionSourceIdentifierForPassStatement);
           v13 = sqlite3_errmsg(self->_database);
           v15 = 136447234;
           v16 = "[NPKGizmoDatabase _createTransactionSourceIdentifierIfNecessaryForPassWithUniqueIDLocked:]";
@@ -6772,22 +6772,22 @@ LABEL_3:
       _NPKAssertAbort();
     }
 
-    sqlite3_clear_bindings(v8);
-    sqlite3_reset(v8);
+    sqlite3_clear_bindings(insertTransactionSourceIdentifierForPassStatement);
+    sqlite3_reset(insertTransactionSourceIdentifierForPassStatement);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeTransactionSourceIdentifierForPassWithUniqueIDLocked:(id)a3
+- (void)_removeTransactionSourceIdentifierForPassWithUniqueIDLocked:(id)locked
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self deleteTransactionSourceIdentifierForPassStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  deleteTransactionSourceIdentifierForPassStatement = [(NPKGizmoDatabase *)self deleteTransactionSourceIdentifierForPassStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v5) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(deleteTransactionSourceIdentifierForPassStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(deleteTransactionSourceIdentifierForPassStatement) & 0xFFFFFFFE) != 0x64)
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -6797,7 +6797,7 @@ LABEL_3:
       v9 = pk_General_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = sqlite3_sql(v5);
+        v10 = sqlite3_sql(deleteTransactionSourceIdentifierForPassStatement);
         v11 = sqlite3_errmsg(self->_database);
         v13 = 136447234;
         v14 = "[NPKGizmoDatabase _removeTransactionSourceIdentifierForPassWithUniqueIDLocked:]";
@@ -6816,21 +6816,21 @@ LABEL_3:
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(deleteTransactionSourceIdentifierForPassStatement);
+  sqlite3_reset(deleteTransactionSourceIdentifierForPassStatement);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_transactionSourceIdentifierForTransactionWithServiceIdentifierLocked:(id)a3
+- (id)_transactionSourceIdentifierForTransactionWithServiceIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement) == 100)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(v5, 0)}];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement, 0)}];
   }
 
   else
@@ -6838,22 +6838,22 @@ LABEL_3:
     v7 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement);
+  sqlite3_reset(selectTransactionSourceIdentifierForTransactionWithServiceIdentifierStatement);
 
   return v7;
 }
 
-- (id)_transactionSourceIdentifierForPassUniqueIdentifierLocked:(id)a3
+- (id)_transactionSourceIdentifierForPassUniqueIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForPassUniqueIdentifierStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectTransactionSourceIdentifierForPassUniqueIdentifierStatement = [(NPKGizmoDatabase *)self selectTransactionSourceIdentifierForPassUniqueIdentifierStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectTransactionSourceIdentifierForPassUniqueIdentifierStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransactionSourceIdentifierForPassUniqueIdentifierStatement) == 100)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(v5, 0)}];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(selectTransactionSourceIdentifierForPassUniqueIdentifierStatement, 0)}];
   }
 
   else
@@ -6861,22 +6861,22 @@ LABEL_3:
     v7 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransactionSourceIdentifierForPassUniqueIdentifierStatement);
+  sqlite3_reset(selectTransactionSourceIdentifierForPassUniqueIdentifierStatement);
 
   return v7;
 }
 
-- (id)_passUniqueIdentifierForTransactionSourceIdentifierLocked:(id)a3
+- (id)_passUniqueIdentifierForTransactionSourceIdentifierLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectPassUniqueIdentifierForTransactionSourceIdentifierStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectPassUniqueIdentifierForTransactionSourceIdentifierStatement = [(NPKGizmoDatabase *)self selectPassUniqueIdentifierForTransactionSourceIdentifierStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectPassUniqueIdentifierForTransactionSourceIdentifierStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectPassUniqueIdentifierForTransactionSourceIdentifierStatement) == 100)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(v5, 0)}];
+    v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(selectPassUniqueIdentifierForTransactionSourceIdentifierStatement, 0)}];
   }
 
   else
@@ -6884,21 +6884,21 @@ LABEL_3:
     v7 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectPassUniqueIdentifierForTransactionSourceIdentifierStatement);
+  sqlite3_reset(selectPassUniqueIdentifierForTransactionSourceIdentifierStatement);
 
   return v7;
 }
 
-- (id)_transitAppletStateForPassWithUniqueIDLocked:(id)a3
+- (id)_transitAppletStateForPassWithUniqueIDLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectTransitAppletStateForPassStatement];
-  sqlite3_bind_text(v5, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  lockedCopy = locked;
+  selectTransitAppletStateForPassStatement = [(NPKGizmoDatabase *)self selectTransitAppletStateForPassStatement];
+  sqlite3_bind_text(selectTransitAppletStateForPassStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectTransitAppletStateForPassStatement) == 100)
   {
-    v6 = sqlite3_column_blob(v5, 0);
-    v7 = sqlite3_column_bytes(v5, 0);
+    v6 = sqlite3_column_blob(selectTransitAppletStateForPassStatement, 0);
+    v7 = sqlite3_column_bytes(selectTransitAppletStateForPassStatement, 0);
     v8 = objc_autoreleasePoolPush();
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:v7];
     if ([v9 length])
@@ -6920,18 +6920,18 @@ LABEL_3:
     v11 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectTransitAppletStateForPassStatement);
+  sqlite3_reset(selectTransitAppletStateForPassStatement);
 
   return v11;
 }
 
-- (void)_setTransitAppletStateLocked:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_setTransitAppletStateLocked:(id)locked forPassWithUniqueID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lockedCopy = locked;
+  dCopy = d;
+  if (!dCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -6962,10 +6962,10 @@ LABEL_3:
   block[2] = __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = lockedCopy;
+  v17 = dCopy;
+  v12 = dCopy;
+  v13 = lockedCopy;
   dispatch_async(dbQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -7088,12 +7088,12 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setCurrentEphemeralTransactionIdentifier:(id)a3 forTransactionSourceIdentifier:(id)a4
+- (void)_setCurrentEphemeralTransactionIdentifier:(id)identifier forTransactionSourceIdentifier:(id)sourceIdentifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  if (!sourceIdentifierCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -7141,25 +7141,25 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
     _NPKAssertAbort();
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v14 = [(NPKGizmoDatabase *)self insertEphemeralTransactionStatement];
-    sqlite3_bind_text(v14, 1, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    v15 = [v6 UTF8String];
-    v16 = v14;
+    insertEphemeralTransactionStatement = [(NPKGizmoDatabase *)self insertEphemeralTransactionStatement];
+    sqlite3_bind_text(insertEphemeralTransactionStatement, 1, [sourceIdentifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    uTF8String = [identifierCopy UTF8String];
+    v16 = insertEphemeralTransactionStatement;
     v17 = 2;
   }
 
   else
   {
-    v14 = [(NPKGizmoDatabase *)self deleteEphemeralTransactionByTransactionSourceIdentifierStatement];
-    v15 = [v7 UTF8String];
-    v16 = v14;
+    insertEphemeralTransactionStatement = [(NPKGizmoDatabase *)self deleteEphemeralTransactionByTransactionSourceIdentifierStatement];
+    uTF8String = [sourceIdentifierCopy UTF8String];
+    v16 = insertEphemeralTransactionStatement;
     v17 = 1;
   }
 
-  sqlite3_bind_text(v16, v17, v15, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v14) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(v16, v17, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(insertEphemeralTransactionStatement) & 0xFFFFFFFE) != 0x64)
   {
     v18 = pk_General_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -7169,7 +7169,7 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
       v20 = pk_General_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = sqlite3_sql(v14);
+        v21 = sqlite3_sql(insertEphemeralTransactionStatement);
         v22 = sqlite3_errmsg(self->_database);
         v24 = 136447234;
         v25 = "[NPKGizmoDatabase _setCurrentEphemeralTransactionIdentifier:forTransactionSourceIdentifier:]";
@@ -7188,17 +7188,17 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v14);
-  sqlite3_reset(v14);
+  sqlite3_clear_bindings(insertEphemeralTransactionStatement);
+  sqlite3_reset(insertEphemeralTransactionStatement);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)a3
+- (id)_currentEphemeralTransactionIdentifierForTransactionSourceIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -7246,11 +7246,11 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
     _NPKAssertAbort();
   }
 
-  v11 = [(NPKGizmoDatabase *)self currentEphemeralTransactionIdentifierStatement];
-  sqlite3_bind_text(v11, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v11) == 100)
+  currentEphemeralTransactionIdentifierStatement = [(NPKGizmoDatabase *)self currentEphemeralTransactionIdentifierStatement];
+  sqlite3_bind_text(currentEphemeralTransactionIdentifierStatement, 1, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(currentEphemeralTransactionIdentifierStatement) == 100)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(v11, 0)}];
+    v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:{sqlite3_column_text(currentEphemeralTransactionIdentifierStatement, 0)}];
   }
 
   else
@@ -7258,22 +7258,22 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
     v12 = 0;
   }
 
-  sqlite3_clear_bindings(v11);
-  sqlite3_reset(v11);
+  sqlite3_clear_bindings(currentEphemeralTransactionIdentifierStatement);
+  sqlite3_reset(currentEphemeralTransactionIdentifierStatement);
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)_lastAddValueAmountForPassWithUniqueIDLocked:(id)a3
+- (id)_lastAddValueAmountForPassWithUniqueIDLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectLastAddValueAmountForPassStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectLastAddValueAmountForPassStatement = [(NPKGizmoDatabase *)self selectLastAddValueAmountForPassStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100 && (v7 = sqlite3_column_text(v5, 0)) != 0 && *v7)
+  sqlite3_bind_text(selectLastAddValueAmountForPassStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectLastAddValueAmountForPassStatement) == 100 && (v7 = sqlite3_column_text(selectLastAddValueAmountForPassStatement, 0)) != 0 && *v7)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
     v9 = [MEMORY[0x277CCA980] decimalNumberWithString:v8];
@@ -7284,18 +7284,18 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
     v9 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectLastAddValueAmountForPassStatement);
+  sqlite3_reset(selectLastAddValueAmountForPassStatement);
 
   return v9;
 }
 
-- (void)_setLastAddValueAmountLocked:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_setLastAddValueAmountLocked:(id)locked forPassWithUniqueID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lockedCopy = locked;
+  dCopy = d;
+  if (!dCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -7326,10 +7326,10 @@ void __69__NPKGizmoDatabase__setTransitAppletStateLocked_forPassWithUniqueID___b
   block[2] = __69__NPKGizmoDatabase__setLastAddValueAmountLocked_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = lockedCopy;
+  v17 = dCopy;
+  v12 = dCopy;
+  v13 = lockedCopy;
   dispatch_async(dbQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -7454,14 +7454,14 @@ void __69__NPKGizmoDatabase__setLastAddValueAmountLocked_forPassWithUniqueID___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_pendingAddValueDateForPassWithUniqueIDLocked:(id)a3
+- (id)_pendingAddValueDateForPassWithUniqueIDLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectPendingAddValueDateForPassStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectPendingAddValueDateForPassStatement = [(NPKGizmoDatabase *)self selectPendingAddValueDateForPassStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100 && (v7 = sqlite3_column_int(v5, 0)) != 0)
+  sqlite3_bind_text(selectPendingAddValueDateForPassStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectPendingAddValueDateForPassStatement) == 100 && (v7 = sqlite3_column_int(selectPendingAddValueDateForPassStatement, 0)) != 0)
   {
     v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v7];
   }
@@ -7471,18 +7471,18 @@ void __69__NPKGizmoDatabase__setLastAddValueAmountLocked_forPassWithUniqueID___b
     v8 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectPendingAddValueDateForPassStatement);
+  sqlite3_reset(selectPendingAddValueDateForPassStatement);
 
   return v8;
 }
 
-- (void)_setPendingAddValueDateLocked:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_setPendingAddValueDateLocked:(id)locked forPassWithUniqueID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lockedCopy = locked;
+  dCopy = d;
+  if (!dCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -7513,10 +7513,10 @@ void __69__NPKGizmoDatabase__setLastAddValueAmountLocked_forPassWithUniqueID___b
   block[2] = __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = lockedCopy;
+  v17 = dCopy;
+  v12 = dCopy;
+  v13 = lockedCopy;
   dispatch_async(dbQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -7641,15 +7641,15 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_paymentBalancesForPassWithUniqueIDLocked:(id)a3
+- (id)_paymentBalancesForPassWithUniqueIDLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectBalancesForPassStatement];
-  sqlite3_bind_text(v5, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  lockedCopy = locked;
+  selectBalancesForPassStatement = [(NPKGizmoDatabase *)self selectBalancesForPassStatement];
+  sqlite3_bind_text(selectBalancesForPassStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectBalancesForPassStatement) == 100)
   {
-    v6 = sqlite3_column_blob(v5, 0);
-    v7 = sqlite3_column_bytes(v5, 0);
+    v6 = sqlite3_column_blob(selectBalancesForPassStatement, 0);
+    v7 = sqlite3_column_bytes(selectBalancesForPassStatement, 0);
     v8 = objc_autoreleasePoolPush();
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:v7];
     v10 = MEMORY[0x277CBEB98];
@@ -7678,18 +7678,18 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     v13 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectBalancesForPassStatement);
+  sqlite3_reset(selectBalancesForPassStatement);
 
   return v13;
 }
 
-- (void)_setPaymentBalancesLocked:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_setPaymentBalancesLocked:(id)locked forPassWithUniqueID:(id)d
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lockedCopy = locked;
+  dCopy = d;
+  if (!dCopy)
   {
     v8 = pk_General_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
@@ -7738,11 +7738,11 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     _NPKAssertAbort();
   }
 
-  v14 = [(NPKGizmoDatabase *)self updateBalancesForPassStatement];
-  if (v6)
+  updateBalancesForPassStatement = [(NPKGizmoDatabase *)self updateBalancesForPassStatement];
+  if (lockedCopy)
   {
-    v15 = NPKSecureArchiveObject(v6);
-    sqlite3_bind_blob(v14, 1, [v15 bytes], objc_msgSend(v15, "length"), 0xFFFFFFFFFFFFFFFFLL);
+    v15 = NPKSecureArchiveObject(lockedCopy);
+    sqlite3_bind_blob(updateBalancesForPassStatement, 1, [v15 bytes], objc_msgSend(v15, "length"), 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
@@ -7760,11 +7760,11 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       }
     }
 
-    sqlite3_bind_null(v14, 1);
+    sqlite3_bind_null(updateBalancesForPassStatement, 1);
   }
 
-  sqlite3_bind_text(v14, 2, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  v19 = sqlite3_step(v14);
+  sqlite3_bind_text(updateBalancesForPassStatement, 2, [dCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  v19 = sqlite3_step(updateBalancesForPassStatement);
   v20 = pk_General_log();
   v21 = v20;
   if (v19 != 101)
@@ -7776,7 +7776,7 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       v26 = pk_General_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = sqlite3_sql(v14);
+        v27 = sqlite3_sql(updateBalancesForPassStatement);
         v28 = sqlite3_errmsg(self->_database);
         v30 = 136447234;
         v31 = "[NPKGizmoDatabase _setPaymentBalancesLocked:forPassWithUniqueID:]";
@@ -7802,31 +7802,31 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     v23 = pk_General_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(NPKGizmoDatabase *)self database];
+      database = [(NPKGizmoDatabase *)self database];
       v30 = 134218498;
-      v31 = v24;
+      v31 = database;
       v32 = 2112;
-      v33 = v6;
+      v33 = lockedCopy;
       v34 = 2112;
-      v35 = v7;
+      v35 = dCopy;
       _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Notice: Successfully wrote balances in database: %p, balance: %@, uniqueID: %@", &v30, 0x20u);
     }
   }
 
-  sqlite3_clear_bindings(v14);
-  sqlite3_reset(v14);
+  sqlite3_clear_bindings(updateBalancesForPassStatement);
+  sqlite3_reset(updateBalancesForPassStatement);
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_subcredentialsForPassWithUniqueIDLocked:(id)a3 paymentApplicationIdentifier:(id)a4
+- (id)_subcredentialsForPassWithUniqueIDLocked:(id)locked paymentApplicationIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lockedCopy = locked;
+  identifierCopy = identifier;
   v8 = [MEMORY[0x277CBEB58] set];
   ppStmt = 0;
-  if ([v7 length])
+  if ([identifierCopy length])
   {
     v9 = @"SELECT encoded_subcredentials FROM subcredentials WHERE pass_unique_id = ? AND payment_application_id = ?";
   }
@@ -7862,10 +7862,10 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     _NPKAssertAbort();
   }
 
-  sqlite3_bind_text(ppStmt, 1, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ([v7 length])
+  sqlite3_bind_text(ppStmt, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ([identifierCopy length])
   {
-    sqlite3_bind_text(ppStmt, 2, [v7 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(ppStmt, 2, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   while (sqlite3_step(ppStmt) == 100)
@@ -7881,8 +7881,8 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
       v21 = NPKSecureUnarchiveObjectOfClasses(v17, v20);
 
-      v22 = [v21 allObjects];
-      [v8 addObjectsFromArray:v22];
+      allObjects = [v21 allObjects];
+      [v8 addObjectsFromArray:allObjects];
     }
 
     objc_autoreleasePoolPop(v16);
@@ -7898,13 +7898,13 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
   return v23;
 }
 
-- (void)_setSubcredentialsLocked:(id)a3 forPassWithUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5
+- (void)_setSubcredentialsLocked:(id)locked forPassWithUniqueID:(id)d paymentApplicationIdentifier:(id)identifier
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  lockedCopy = locked;
+  dCopy = d;
+  identifierCopy = identifier;
+  if (!dCopy)
   {
     v11 = pk_General_log();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_ERROR);
@@ -7952,19 +7952,19 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     _NPKAssertAbort();
   }
 
-  v17 = [(NPKGizmoDatabase *)self deleteSubcredentialsStatement];
-  sqlite3_bind_text(v17, 1, [v9 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ([v10 length])
+  deleteSubcredentialsStatement = [(NPKGizmoDatabase *)self deleteSubcredentialsStatement];
+  sqlite3_bind_text(deleteSubcredentialsStatement, 1, [dCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ([identifierCopy length])
   {
-    sqlite3_bind_text(v17, 2, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(deleteSubcredentialsStatement, 2, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    sqlite3_bind_null(v17, 2);
+    sqlite3_bind_null(deleteSubcredentialsStatement, 2);
   }
 
-  if ((sqlite3_step(v17) - 102) <= 0xFFFFFFFD)
+  if ((sqlite3_step(deleteSubcredentialsStatement) - 102) <= 0xFFFFFFFD)
   {
     v18 = pk_General_log();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -7974,7 +7974,7 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       v20 = pk_General_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = sqlite3_sql(v17);
+        v21 = sqlite3_sql(deleteSubcredentialsStatement);
         v22 = sqlite3_errmsg(self->_database);
         v31 = 136447234;
         v32 = "[NPKGizmoDatabase _setSubcredentialsLocked:forPassWithUniqueID:paymentApplicationIdentifier:]";
@@ -7993,25 +7993,25 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v17);
-  sqlite3_reset(v17);
-  if (v8 && [v8 count])
+  sqlite3_clear_bindings(deleteSubcredentialsStatement);
+  sqlite3_reset(deleteSubcredentialsStatement);
+  if (lockedCopy && [lockedCopy count])
   {
-    v23 = [(NPKGizmoDatabase *)self insertSubcredentialsStatement];
-    v24 = NPKSecureArchiveObject(v8);
-    sqlite3_bind_text(v23, 1, [v9 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
-    if ([v10 length])
+    insertSubcredentialsStatement = [(NPKGizmoDatabase *)self insertSubcredentialsStatement];
+    v24 = NPKSecureArchiveObject(lockedCopy);
+    sqlite3_bind_text(insertSubcredentialsStatement, 1, [dCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    if ([identifierCopy length])
     {
-      sqlite3_bind_text(v23, 2, [v10 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+      sqlite3_bind_text(insertSubcredentialsStatement, 2, [identifierCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     }
 
     else
     {
-      sqlite3_bind_null(v23, 2);
+      sqlite3_bind_null(insertSubcredentialsStatement, 2);
     }
 
-    sqlite3_bind_blob(v23, 3, [v24 bytes], objc_msgSend(v24, "length"), 0xFFFFFFFFFFFFFFFFLL);
-    if (sqlite3_step(v23) != 101)
+    sqlite3_bind_blob(insertSubcredentialsStatement, 3, [v24 bytes], objc_msgSend(v24, "length"), 0xFFFFFFFFFFFFFFFFLL);
+    if (sqlite3_step(insertSubcredentialsStatement) != 101)
     {
       v25 = pk_General_log();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -8021,7 +8021,7 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
         v27 = pk_General_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v28 = sqlite3_sql(v23);
+          v28 = sqlite3_sql(insertSubcredentialsStatement);
           v29 = sqlite3_errmsg(self->_database);
           v31 = 136447234;
           v32 = "[NPKGizmoDatabase _setSubcredentialsLocked:forPassWithUniqueID:paymentApplicationIdentifier:]";
@@ -8040,8 +8040,8 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       _NPKAssertAbort();
     }
 
-    sqlite3_clear_bindings(v23);
-    sqlite3_reset(v23);
+    sqlite3_clear_bindings(insertSubcredentialsStatement);
+    sqlite3_reset(insertSubcredentialsStatement);
   }
 
   [(NPKGizmoDatabase *)self _notifyDatabaseChangedExternally];
@@ -8050,15 +8050,15 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeSubcredentialsForPassWithUniqueIDLocked:(id)a3
+- (void)_removeSubcredentialsForPassWithUniqueIDLocked:(id)locked
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self deleteAllSubcredentialsForPassUniqueIDStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  deleteAllSubcredentialsForPassUniqueIDStatement = [(NPKGizmoDatabase *)self deleteAllSubcredentialsForPassUniqueIDStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if ((sqlite3_step(v5) & 0xFFFFFFFE) != 0x64)
+  sqlite3_bind_text(deleteAllSubcredentialsForPassUniqueIDStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if ((sqlite3_step(deleteAllSubcredentialsForPassUniqueIDStatement) & 0xFFFFFFFE) != 0x64)
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -8068,7 +8068,7 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
       v9 = pk_General_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = sqlite3_sql(v5);
+        v10 = sqlite3_sql(deleteAllSubcredentialsForPassUniqueIDStatement);
         v11 = sqlite3_errmsg(self->_database);
         v13 = 136447234;
         v14 = "[NPKGizmoDatabase _removeSubcredentialsForPassWithUniqueIDLocked:]";
@@ -8087,21 +8087,21 @@ void __70__NPKGizmoDatabase__setPendingAddValueDateLocked_forPassWithUniqueID___
     _NPKAssertAbort();
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(deleteAllSubcredentialsForPassUniqueIDStatement);
+  sqlite3_reset(deleteAllSubcredentialsForPassUniqueIDStatement);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enumerateAllPassesForMigration:(id)a3
+- (void)_enumerateAllPassesForMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__NPKGizmoDatabase__enumerateAllPassesForMigration___block_invoke;
   v6[3] = &unk_2799482C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = migrationCopy;
+  v5 = migrationCopy;
   [(NPKGizmoDatabase *)self _executeSQLQuery:@"SELECT encoded_pass processResultsBlock:encoded_image_sets, preferred_aid FROM pass", v6];
 }
 
@@ -8212,9 +8212,9 @@ uint64_t __52__NPKGizmoDatabase__enumerateAllPassesForMigration___block_invoke(u
   return result;
 }
 
-- (BOOL)_updateNFCPayloadDuringMigration:(id)a3
+- (BOOL)_updateNFCPayloadDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8234,7 +8234,7 @@ uint64_t __52__NPKGizmoDatabase__enumerateAllPassesForMigration___block_invoke(u
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
     v5 = *(v10 + 24);
   }
 
@@ -8266,9 +8266,9 @@ void __53__NPKGizmoDatabase__updateNFCPayloadDuringMigration___block_invoke(uint
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updatePrivateLabelAndCobrandDuringMigration:(id)a3
+- (BOOL)_updatePrivateLabelAndCobrandDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8288,7 +8288,7 @@ void __53__NPKGizmoDatabase__updateNFCPayloadDuringMigration___block_invoke(uint
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
     v5 = *(v10 + 24);
   }
 
@@ -8320,9 +8320,9 @@ void __65__NPKGizmoDatabase__updatePrivateLabelAndCobrandDuringMigration___block
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateDeviceAndPreferredPaymentApplicationsDuringMigration:(id)a3
+- (BOOL)_updateDeviceAndPreferredPaymentApplicationsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8336,7 +8336,7 @@ void __65__NPKGizmoDatabase__updatePrivateLabelAndCobrandDuringMigration___block
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8384,9 +8384,9 @@ void __80__NPKGizmoDatabase__updateDeviceAndPreferredPaymentApplicationsDuringMi
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updatePrimaryContactlessAndInAppPaymentApplicationsDuringMigration:(id)a3
+- (BOOL)_updatePrimaryContactlessAndInAppPaymentApplicationsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8400,7 +8400,7 @@ void __80__NPKGizmoDatabase__updateDeviceAndPreferredPaymentApplicationsDuringMi
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8448,9 +8448,9 @@ void __88__NPKGizmoDatabase__updatePrimaryContactlessAndInAppPaymentApplications
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateEncodedImageSetsDuringMigration:(id)a3
+- (BOOL)_updateEncodedImageSetsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8465,7 +8465,7 @@ void __88__NPKGizmoDatabase__updatePrimaryContactlessAndInAppPaymentApplications
     v7[4] = self;
     v7[5] = &v9;
     v7[6] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8491,9 +8491,9 @@ void __59__NPKGizmoDatabase__updateEncodedImageSetsDuringMigration___block_invok
   sqlite3_reset(*(a1 + 48));
 }
 
-- (BOOL)_repairEncodedImagesDuringMigration:(id)a3
+- (BOOL)_repairEncodedImagesDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -8510,7 +8510,7 @@ void __59__NPKGizmoDatabase__updateEncodedImageSetsDuringMigration___block_invok
     v8[4] = &v11;
     v8[5] = ppStmt;
     v8[6] = v9;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [migrationCopy enumerateObjectsUsingBlock:v8];
   }
 
   v6 = *(v12 + 24);
@@ -8566,9 +8566,9 @@ void __56__NPKGizmoDatabase__repairEncodedImagesDuringMigration___block_invoke(u
   }
 }
 
-- (BOOL)_updateIssuerCountryCodesDuringMigration:(id)a3
+- (BOOL)_updateIssuerCountryCodesDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8582,7 +8582,7 @@ void __56__NPKGizmoDatabase__repairEncodedImagesDuringMigration___block_invoke(u
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8625,9 +8625,9 @@ LABEL_6:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateExpressPassTypesMaskDuringMigration:(id)a3
+- (BOOL)_updateExpressPassTypesMaskDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8641,7 +8641,7 @@ LABEL_6:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8672,9 +8672,9 @@ void __63__NPKGizmoDatabase__updateExpressPassTypesMaskDuringMigration___block_i
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateDevicePaymentApplicationsDuringMigration:(id)a3
+- (BOOL)_updateDevicePaymentApplicationsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8688,7 +8688,7 @@ void __63__NPKGizmoDatabase__updateExpressPassTypesMaskDuringMigration___block_i
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8724,9 +8724,9 @@ void __68__NPKGizmoDatabase__updateDevicePaymentApplicationsDuringMigration___bl
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateIngestedDatesDuringMigration:(id)a3
+- (BOOL)_updateIngestedDatesDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8740,7 +8740,7 @@ void __68__NPKGizmoDatabase__updateDevicePaymentApplicationsDuringMigration___bl
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8774,9 +8774,9 @@ void __56__NPKGizmoDatabase__updateIngestedDatesDuringMigration___block_invoke(u
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateCompleteLocalHashesDuringMigration:(id)a3
+- (BOOL)_updateCompleteLocalHashesDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8790,7 +8790,7 @@ void __56__NPKGizmoDatabase__updateIngestedDatesDuringMigration___block_invoke(u
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8854,9 +8854,9 @@ LABEL_11:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateFrontAndBackFieldBucketsDuringMigration:(id)a3
+- (BOOL)_updateFrontAndBackFieldBucketsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8870,7 +8870,7 @@ LABEL_11:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8934,9 +8934,9 @@ LABEL_12:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateAvailableActionsDuringMigration:(id)a3
+- (BOOL)_updateAvailableActionsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -8950,7 +8950,7 @@ LABEL_12:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -8993,9 +8993,9 @@ LABEL_7:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateOrganizationNamesDuringMigration:(id)a3
+- (BOOL)_updateOrganizationNamesDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9009,7 +9009,7 @@ LABEL_7:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9052,9 +9052,9 @@ LABEL_6:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateLocalizedDescriptionDuringMigration:(id)a3
+- (BOOL)_updateLocalizedDescriptionDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9068,7 +9068,7 @@ LABEL_6:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9111,9 +9111,9 @@ LABEL_6:
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateEffectivePaymentApplicationStateDuringMigration:(id)a3
+- (BOOL)_updateEffectivePaymentApplicationStateDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9127,7 +9127,7 @@ LABEL_6:
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9162,9 +9162,9 @@ void __75__NPKGizmoDatabase__updateEffectivePaymentApplicationStateDuringMigrati
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateHasUserSelectableContactlessPaymentApplications:(id)a3
+- (BOOL)_updateHasUserSelectableContactlessPaymentApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9178,7 +9178,7 @@ void __75__NPKGizmoDatabase__updateEffectivePaymentApplicationStateDuringMigrati
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [applicationsCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9213,9 +9213,9 @@ void __75__NPKGizmoDatabase__updateHasUserSelectableContactlessPaymentApplicatio
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateEncodedPaymentPassDuringMigration:(id)a3
+- (BOOL)_updateEncodedPaymentPassDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9230,7 +9230,7 @@ void __75__NPKGizmoDatabase__updateHasUserSelectableContactlessPaymentApplicatio
     v7[4] = self;
     v7[5] = &v9;
     v7[6] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9255,9 +9255,9 @@ void __61__NPKGizmoDatabase__updateEncodedPaymentPassDuringMigration___block_inv
   sqlite3_reset(*(a1 + 48));
 }
 
-- (BOOL)_updateHasStoredValueDuringMigration:(id)a3
+- (BOOL)_updateHasStoredValueDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9271,7 +9271,7 @@ void __61__NPKGizmoDatabase__updateEncodedPaymentPassDuringMigration___block_inv
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9306,9 +9306,9 @@ void __57__NPKGizmoDatabase__updateHasStoredValueDuringMigration___block_invoke(
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateSettingsDuringMigration:(id)a3
+- (BOOL)_updateSettingsDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -9322,7 +9322,7 @@ void __57__NPKGizmoDatabase__updateHasStoredValueDuringMigration___block_invoke(
     v7[3] = &unk_2799482E8;
     v7[4] = &v9;
     v7[5] = ppStmt;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [migrationCopy enumerateObjectsUsingBlock:v7];
   }
 
   v5 = *(v10 + 24);
@@ -9357,9 +9357,9 @@ void __51__NPKGizmoDatabase__updateSettingsDuringMigration___block_invoke(uint64
   sqlite3_reset(*(a1 + 40));
 }
 
-- (BOOL)_updateTransactionSourceIdentifiersDuringMigration:(id)a3
+- (BOOL)_updateTransactionSourceIdentifiersDuringMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -9380,7 +9380,7 @@ void __51__NPKGizmoDatabase__updateSettingsDuringMigration___block_invoke(uint64
     v10[5] = ppStmt;
     v10[6] = v12;
     v10[7] = pStmt;
-    [v4 enumerateObjectsUsingBlock:v10];
+    [migrationCopy enumerateObjectsUsingBlock:v10];
   }
 
   sqlite3_finalize(ppStmt);
@@ -9502,10 +9502,10 @@ void __71__NPKGizmoDatabase__updateTransactionSourceIdentifiersDuringMigration__
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateSubcredentialsDuringMigration:(id)a3
+- (BOOL)_updateSubcredentialsDuringMigration:(id)migration
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  migrationCopy = migration;
   pStmt = 0;
   ppStmt = 0;
   v62 = 0;
@@ -9515,7 +9515,7 @@ void __71__NPKGizmoDatabase__updateTransactionSourceIdentifiersDuringMigration__
   v8 = v7;
   if (v5 || v6 || v7)
   {
-    v39 = v4;
+    v39 = migrationCopy;
     v40 = pk_General_log();
     v41 = os_log_type_enabled(v40, OS_LOG_TYPE_ERROR);
 
@@ -9538,7 +9538,7 @@ void __71__NPKGizmoDatabase__updateTransactionSourceIdentifiersDuringMigration__
     }
 
     LOBYTE(v18) = 0;
-    v4 = v39;
+    migrationCopy = v39;
   }
 
   else
@@ -9547,13 +9547,13 @@ void __71__NPKGizmoDatabase__updateTransactionSourceIdentifiersDuringMigration__
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v9 = v4;
+    v9 = migrationCopy;
     v10 = [v9 countByEnumeratingWithState:&v58 objects:v69 count:16];
     if (v10)
     {
       v11 = v10;
-      v56 = self;
-      v55 = v4;
+      selfCopy = self;
+      v55 = migrationCopy;
       v12 = *v59;
       v13 = 1;
       obj = v9;
@@ -9592,7 +9592,7 @@ void __71__NPKGizmoDatabase__updateTransactionSourceIdentifiersDuringMigration__
 LABEL_56:
             LOBYTE(v18) = 0;
 LABEL_58:
-            v4 = v55;
+            migrationCopy = v55;
             goto LABEL_59;
           }
 
@@ -9639,7 +9639,7 @@ LABEL_58:
                 v31 = pk_General_log();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
                 {
-                  v32 = sqlite3_errmsg([(NPKGizmoDatabase *)v56 database]);
+                  v32 = sqlite3_errmsg([(NPKGizmoDatabase *)selfCopy database]);
                   *buf = 138413058;
                   *v66 = v16;
                   *&v66[8] = 2112;
@@ -9699,7 +9699,7 @@ LABEL_58:
               v37 = pk_General_log();
               if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
               {
-                v38 = sqlite3_errmsg([(NPKGizmoDatabase *)v56 database]);
+                v38 = sqlite3_errmsg([(NPKGizmoDatabase *)selfCopy database]);
                 *buf = 138413058;
                 *v66 = v16;
                 *&v66[8] = 2112;
@@ -9726,8 +9726,8 @@ LABEL_58:
         break;
       }
 
-      v4 = v55;
-      self = v56;
+      migrationCopy = v55;
+      self = selfCopy;
       if (v34 != 101)
       {
         LOBYTE(v18) = 0;
@@ -9786,23 +9786,23 @@ LABEL_59:
   return v18;
 }
 
-- (id)_passForUniqueIDLocked:(id)a3 includeImageSets:(BOOL)a4
+- (id)_passForUniqueIDLocked:(id)locked includeImageSets:(BOOL)sets
 {
-  v4 = a4;
+  setsCopy = sets;
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  lockedCopy = locked;
+  if (setsCopy)
   {
-    v7 = [(NPKGizmoDatabase *)self selectPassAndImageSetsDataStatement];
+    selectPassAndImageSetsDataStatement = [(NPKGizmoDatabase *)self selectPassAndImageSetsDataStatement];
   }
 
   else
   {
-    v7 = [(NPKGizmoDatabase *)self selectPassDataStatement];
+    selectPassAndImageSetsDataStatement = [(NPKGizmoDatabase *)self selectPassDataStatement];
   }
 
-  v8 = v7;
-  sqlite3_bind_text(v7, 1, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  v8 = selectPassAndImageSetsDataStatement;
+  sqlite3_bind_text(selectPassAndImageSetsDataStatement, 1, [lockedCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   if (sqlite3_step(v8) == 100)
   {
     v9 = sqlite3_column_blob(v8, 0);
@@ -9818,8 +9818,8 @@ LABEL_59:
       v15 = *MEMORY[0x277D38650];
       if (os_variant_has_internal_ui())
       {
-        v16 = [v14 passTypeIdentifier];
-        v17 = [v16 length];
+        passTypeIdentifier = [v14 passTypeIdentifier];
+        v17 = [passTypeIdentifier length];
 
         if (!v17)
         {
@@ -9831,18 +9831,18 @@ LABEL_59:
             v20 = pk_General_log();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v14 uniqueID];
+              uniqueID = [v14 uniqueID];
               *buf = 136315394;
               v42 = "[NPKGizmoDatabase _passForUniqueIDLocked:includeImageSets:]";
               v43 = 2112;
-              v44 = v21;
+              v44 = uniqueID;
               _os_log_impl(&dword_25B300000, v20, OS_LOG_TYPE_DEFAULT, "Warning: %s encoded_pass Unarchived pass with unique identifier %@ is missing the type identifier", buf, 0x16u);
             }
           }
         }
       }
 
-      if (v4)
+      if (setsCopy)
       {
         v22 = sqlite3_column_blob(v8, 1);
         v23 = sqlite3_column_bytes(v8, 1);
@@ -9862,36 +9862,36 @@ LABEL_59:
     v28 = NPKPairedDeviceSecureElementIdentifiers();
     if ([v28 count])
     {
-      v29 = [v14 paymentPass];
+      paymentPass = [v14 paymentPass];
 
-      if (v29)
+      if (paymentPass)
       {
-        v30 = [v14 paymentPass];
-        NPKIdentifyDevicePaymentApplicationsForPass(v30, v28);
+        paymentPass2 = [v14 paymentPass];
+        NPKIdentifyDevicePaymentApplicationsForPass(paymentPass2, v28);
       }
     }
 
-    v31 = [v14 paymentPass];
+    paymentPass3 = [v14 paymentPass];
 
-    if (v31)
+    if (paymentPass3)
     {
-      v32 = [(NPKGizmoDatabase *)self _subcredentialsForPassWithUniqueIDLocked:v6 paymentApplicationIdentifier:0];
+      v32 = [(NPKGizmoDatabase *)self _subcredentialsForPassWithUniqueIDLocked:lockedCopy paymentApplicationIdentifier:0];
       if ([v32 count])
       {
-        v33 = [v14 paymentPass];
-        v34 = [v33 devicePrimaryPaymentApplication];
-        [v34 setSubcredentials:v32];
+        paymentPass4 = [v14 paymentPass];
+        devicePrimaryPaymentApplication = [paymentPass4 devicePrimaryPaymentApplication];
+        [devicePrimaryPaymentApplication setSubcredentials:v32];
       }
 
-      v35 = [v14 paymentPass];
-      v36 = [v35 devicePaymentApplications];
+      paymentPass5 = [v14 paymentPass];
+      devicePaymentApplications = [paymentPass5 devicePaymentApplications];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invoke;
       v39[3] = &unk_279947FF0;
       v39[4] = self;
-      v40 = v6;
-      [v36 enumerateObjectsUsingBlock:v39];
+      v40 = lockedCopy;
+      [devicePaymentApplications enumerateObjectsUsingBlock:v39];
     }
   }
 
@@ -9922,17 +9922,17 @@ void __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invo
   }
 }
 
-- (BOOL)_hasPassForUniqueIDLocked:(id)a3
+- (BOOL)_hasPassForUniqueIDLocked:(id)locked
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectPassExistsStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectPassExistsStatement = [(NPKGizmoDatabase *)self selectPassExistsStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectPassExistsStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectPassExistsStatement) == 100)
   {
-    v7 = sqlite3_column_int(v5, 0) == 1;
+    v7 = sqlite3_column_int(selectPassExistsStatement, 0) == 1;
   }
 
   else
@@ -9954,23 +9954,23 @@ void __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invo
     v7 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectPassExistsStatement);
+  sqlite3_reset(selectPassExistsStatement);
   v11 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (id)_diffForUniqueIDLocked:(id)a3
+- (id)_diffForUniqueIDLocked:(id)locked
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectPassDiffStatement];
-  v6 = [v4 UTF8String];
+  lockedCopy = locked;
+  selectPassDiffStatement = [(NPKGizmoDatabase *)self selectPassDiffStatement];
+  uTF8String = [lockedCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  if (sqlite3_step(v5) == 100)
+  sqlite3_bind_text(selectPassDiffStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  if (sqlite3_step(selectPassDiffStatement) == 100)
   {
-    v7 = sqlite3_column_blob(v5, 0);
-    v8 = [MEMORY[0x277CBEA90] dataWithBytes:v7 length:{sqlite3_column_bytes(v5, 0)}];
+    v7 = sqlite3_column_blob(selectPassDiffStatement, 0);
+    v8 = [MEMORY[0x277CBEA90] dataWithBytes:v7 length:{sqlite3_column_bytes(selectPassDiffStatement, 0)}];
     v9 = objc_opt_class();
     v10 = NPKSecureUnarchiveObject(v8, v9);
   }
@@ -9980,33 +9980,33 @@ void __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invo
     v10 = 0;
   }
 
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_clear_bindings(selectPassDiffStatement);
+  sqlite3_reset(selectPassDiffStatement);
 
   return v10;
 }
 
-- (void)_saveDiffLocked:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_saveDiffLocked:(id)locked forPassWithUniqueID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKGizmoDatabase *)self insertDiffStatement];
-  v9 = v8;
-  if (v6)
+  lockedCopy = locked;
+  dCopy = d;
+  insertDiffStatement = [(NPKGizmoDatabase *)self insertDiffStatement];
+  v9 = insertDiffStatement;
+  if (lockedCopy)
   {
-    v10 = NPKSecureArchiveObject(v6);
+    v10 = NPKSecureArchiveObject(lockedCopy);
     sqlite3_bind_blob(v9, 1, [v10 bytes], objc_msgSend(v10, "length"), 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    sqlite3_bind_null(v8, 1);
+    sqlite3_bind_null(insertDiffStatement, 1);
   }
 
-  v11 = [v7 UTF8String];
+  uTF8String = [dCopy UTF8String];
 
-  sqlite3_bind_text(v9, 2, v11, -1, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_text(v9, 2, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
   if (sqlite3_step(v9) != 101)
   {
     v12 = pk_General_log();
@@ -10042,9 +10042,9 @@ void __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)passForUniqueID:(id)a3 includeImageSets:(BOOL)a4
+- (id)passForUniqueID:(id)d includeImageSets:(BOOL)sets
 {
-  v6 = a3;
+  dCopy = d;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -10056,11 +10056,11 @@ void __60__NPKGizmoDatabase__passForUniqueIDLocked_includeImageSets___block_invo
   v11[1] = 3221225472;
   v11[2] = __53__NPKGizmoDatabase_passForUniqueID_includeImageSets___block_invoke;
   v11[3] = &unk_279948388;
-  v12 = v6;
+  v12 = dCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  setsCopy = sets;
+  v8 = dCopy;
   dispatch_sync(dbQueue, v11);
   v9 = v16[5];
 
@@ -10081,9 +10081,9 @@ void __53__NPKGizmoDatabase_passForUniqueID_includeImageSets___block_invoke(uint
   }
 }
 
-- (BOOL)hasPassForUniqueID:(id)a3
+- (BOOL)hasPassForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -10093,10 +10093,10 @@ void __53__NPKGizmoDatabase_passForUniqueID_includeImageSets___block_invoke(uint
   block[1] = 3221225472;
   block[2] = __39__NPKGizmoDatabase_hasPassForUniqueID___block_invoke;
   block[3] = &unk_279948130;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   LOBYTE(dbQueue) = *(v12 + 24);
 
@@ -10117,9 +10117,9 @@ uint64_t __39__NPKGizmoDatabase_hasPassForUniqueID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)diffForUniqueID:(id)a3
+- (id)diffForUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -10131,10 +10131,10 @@ uint64_t __39__NPKGizmoDatabase_hasPassForUniqueID___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__NPKGizmoDatabase_diffForUniqueID___block_invoke;
   block[3] = &unk_279948130;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(dbQueue, block);
   v7 = v13[5];
 
@@ -10155,11 +10155,11 @@ void __36__NPKGizmoDatabase_diffForUniqueID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDeletePending:(BOOL)a3 forUniqueID:(id)a4
+- (void)setDeletePending:(BOOL)pending forUniqueID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = pk_General_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
@@ -10188,9 +10188,9 @@ void __36__NPKGizmoDatabase_diffForUniqueID___block_invoke(uint64_t a1)
   block[2] = __49__NPKGizmoDatabase_setDeletePending_forUniqueID___block_invoke;
   block[3] = &unk_279946490;
   block[4] = self;
-  v14 = v6;
-  v15 = a3;
-  v11 = v6;
+  v14 = dCopy;
+  pendingCopy = pending;
+  v11 = dCopy;
   dispatch_sync(dbQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -10322,26 +10322,26 @@ LABEL_24:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_getDeletePendingForUniqueID:(id)a3
+- (BOOL)_getDeletePendingForUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(NPKGizmoDatabase *)self selectDeletePendingStatement];
-  v6 = [v4 UTF8String];
+  dCopy = d;
+  selectDeletePendingStatement = [(NPKGizmoDatabase *)self selectDeletePendingStatement];
+  uTF8String = [dCopy UTF8String];
 
-  sqlite3_bind_text(v5, 1, v6, -1, 0xFFFFFFFFFFFFFFFFLL);
-  v7 = sqlite3_step(v5) == 100 && sqlite3_column_int(v5, 0) != 0;
-  sqlite3_clear_bindings(v5);
-  sqlite3_reset(v5);
+  sqlite3_bind_text(selectDeletePendingStatement, 1, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
+  v7 = sqlite3_step(selectDeletePendingStatement) == 100 && sqlite3_column_int(selectDeletePendingStatement, 0) != 0;
+  sqlite3_clear_bindings(selectDeletePendingStatement);
+  sqlite3_reset(selectDeletePendingStatement);
   return v7;
 }
 
-- (void)setPreferredPaymentApplication:(id)a3 forPaymentPass:(id)a4
+- (void)setPreferredPaymentApplication:(id)application forPaymentPass:(id)pass
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  applicationCopy = application;
+  passCopy = pass;
+  v8 = passCopy;
+  if (!passCopy)
   {
     v9 = pk_General_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -10366,16 +10366,16 @@ LABEL_24:
     _NPKAssertAbort();
   }
 
-  if (v6)
+  if (applicationCopy)
   {
-    v12 = [v7 paymentApplications];
+    paymentApplications = [passCopy paymentApplications];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __66__NPKGizmoDatabase_setPreferredPaymentApplication_forPaymentPass___block_invoke;
     v26[3] = &unk_2799483B0;
-    v13 = v6;
+    v13 = applicationCopy;
     v27 = v13;
-    v14 = [v12 pk_anyObjectPassingTest:v26];
+    v14 = [paymentApplications pk_anyObjectPassingTest:v26];
 
     if (!v14)
     {
@@ -10387,7 +10387,7 @@ LABEL_24:
         v17 = pk_General_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v8 paymentApplications];
+          paymentApplications2 = [v8 paymentApplications];
           *buf = 136447490;
           v29 = "[NPKGizmoDatabase setPreferredPaymentApplication:forPaymentPass:]";
           v30 = 2082;
@@ -10399,7 +10399,7 @@ LABEL_24:
           v36 = 2112;
           v37 = v13;
           v38 = 2112;
-          v39 = v18;
+          v39 = paymentApplications2;
           _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Payment pass %@ did not contain payment application %@ (has applications = %@))", buf, 0x3Eu);
         }
       }
@@ -10414,10 +10414,10 @@ LABEL_24:
   v23[2] = __66__NPKGizmoDatabase_setPreferredPaymentApplication_forPaymentPass___block_invoke_583;
   v23[3] = &unk_279945880;
   v23[4] = self;
-  v24 = v6;
+  v24 = applicationCopy;
   v25 = v8;
   v20 = v8;
-  v21 = v6;
+  v21 = applicationCopy;
   dispatch_async(dbQueue, v23);
 
   v22 = *MEMORY[0x277D85DE8];
@@ -10559,11 +10559,11 @@ void __66__NPKGizmoDatabase_setPreferredPaymentApplication_forPaymentPass___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)preferredPaymentApplicationForPaymentPass:(id)a3
+- (id)preferredPaymentApplicationForPaymentPass:(id)pass
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  passCopy = pass;
+  if (!passCopy)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -10599,10 +10599,10 @@ void __66__NPKGizmoDatabase_setPreferredPaymentApplication_forPaymentPass___bloc
   block[1] = 3221225472;
   block[2] = __62__NPKGizmoDatabase_preferredPaymentApplicationForPaymentPass___block_invoke;
   block[3] = &unk_279948130;
-  v14 = v4;
+  v14 = passCopy;
   v15 = buf;
   block[4] = self;
-  v9 = v4;
+  v9 = passCopy;
   dispatch_sync(dbQueue, block);
   v10 = *(*&buf[8] + 40);
 
@@ -10647,9 +10647,9 @@ void __62__NPKGizmoDatabase_preferredPaymentApplicationForPaymentPass___block_in
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getPreferredPaymentApplicationForPaymentPass:(id)a3 aid:(id *)a4
+- (id)_getPreferredPaymentApplicationForPaymentPass:(id)pass aid:(id *)aid
 {
-  v6 = a3;
+  passCopy = pass;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -10662,35 +10662,35 @@ void __62__NPKGizmoDatabase_preferredPaymentApplicationForPaymentPass___block_in
   v19 = __Block_byref_object_copy__13;
   v20 = __Block_byref_object_dispose__13;
   v21 = 0;
-  v7 = [(NPKGizmoDatabase *)self selectPreferredAIDStatement];
-  v8 = [v6 uniqueID];
-  sqlite3_bind_text(v7, 1, [v8 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+  selectPreferredAIDStatement = [(NPKGizmoDatabase *)self selectPreferredAIDStatement];
+  uniqueID = [passCopy uniqueID];
+  sqlite3_bind_text(selectPreferredAIDStatement, 1, [uniqueID UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 
-  if (sqlite3_step(v7) == 100)
+  if (sqlite3_step(selectPreferredAIDStatement) == 100)
   {
-    v9 = sqlite3_column_text(v7, 0);
+    v9 = sqlite3_column_text(selectPreferredAIDStatement, 0);
     if (v9)
     {
       v10 = [MEMORY[0x277CCACA8] stringWithCString:v9 encoding:4];
       v11 = v17[5];
       v17[5] = v10;
 
-      v12 = [v6 paymentApplications];
+      paymentApplications = [passCopy paymentApplications];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __70__NPKGizmoDatabase__getPreferredPaymentApplicationForPaymentPass_aid___block_invoke;
       v15[3] = &unk_2799483D8;
       v15[4] = &v16;
       v15[5] = &v22;
-      [v12 enumerateObjectsUsingBlock:v15];
+      [paymentApplications enumerateObjectsUsingBlock:v15];
     }
   }
 
-  sqlite3_clear_bindings(v7);
-  sqlite3_reset(v7);
-  if (a4)
+  sqlite3_clear_bindings(selectPreferredAIDStatement);
+  sqlite3_reset(selectPreferredAIDStatement);
+  if (aid)
   {
-    *a4 = v17[5];
+    *aid = v17[5];
   }
 
   v13 = v23[5];
@@ -10745,7 +10745,7 @@ void __36__NPKGizmoDatabase_passDescriptions__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)libraryHashForWatchOSMajorVersion:(unint64_t)a3
+- (id)libraryHashForWatchOSMajorVersion:(unint64_t)version
 {
   v7 = 0;
   v8 = &v7;
@@ -10760,7 +10760,7 @@ void __36__NPKGizmoDatabase_passDescriptions__block_invoke(uint64_t a1)
   block[3] = &unk_279947890;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = version;
   dispatch_sync(dbQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -10780,10 +10780,10 @@ void __54__NPKGizmoDatabase_libraryHashForWatchOSMajorVersion___block_invoke(uin
   }
 }
 
-- (id)_libraryHashLockedForWatchOSMajorVersion:(unint64_t)a3
+- (id)_libraryHashLockedForWatchOSMajorVersion:(unint64_t)version
 {
   v37 = *MEMORY[0x277D85DE8];
-  if (!a3 || [objc_opt_class() latestWatchOSMajorVersion] < a3)
+  if (!version || [objc_opt_class() latestWatchOSMajorVersion] < version)
   {
     v5 = pk_General_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_ERROR);
@@ -10800,7 +10800,7 @@ void __54__NPKGizmoDatabase_libraryHashForWatchOSMajorVersion___block_invoke(uin
         v33 = 2048;
         v34 = 4632;
         v35 = 2048;
-        v36 = a3;
+        versionCopy = version;
         _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Received invalid watch OS version %lu)", buf, 0x2Au);
       }
     }
@@ -10811,21 +10811,21 @@ void __54__NPKGizmoDatabase_libraryHashForWatchOSMajorVersion___block_invoke(uin
   libraryHashes = self->_libraryHashes;
   if (libraryHashes)
   {
-    v9 = [(NSArray *)libraryHashes objectAtIndexedSubscript:a3 - 1];
+    v9 = [(NSArray *)libraryHashes objectAtIndexedSubscript:version - 1];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [MEMORY[0x277CBEB18] array];
-    v12 = [(NSMutableDictionary *)self->_manifest allKeys];
-    v13 = [v12 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    array = [MEMORY[0x277CBEB18] array];
+    allKeys = [(NSMutableDictionary *)self->_manifest allKeys];
+    v13 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __61__NPKGizmoDatabase__libraryHashLockedForWatchOSMajorVersion___block_invoke;
     v27[3] = &unk_279947210;
     v27[4] = self;
-    v14 = v11;
+    v14 = array;
     v28 = v14;
     [v13 enumerateObjectsUsingBlock:v27];
 
@@ -10858,7 +10858,7 @@ void __54__NPKGizmoDatabase_libraryHashForWatchOSMajorVersion___block_invoke(uin
       v21 = self->_libraryHashes;
       self->_libraryHashes = v20;
 
-      v9 = [(NSArray *)self->_libraryHashes objectAtIndexedSubscript:a3 - 1];
+      v9 = [(NSArray *)self->_libraryHashes objectAtIndexedSubscript:version - 1];
 
       v10 = v25;
     }
@@ -10909,12 +10909,12 @@ void __61__NPKGizmoDatabase__libraryHashLockedForWatchOSMajorVersion___block_inv
 
 - (NSDictionary)manifestHashes
 {
-  v3 = [objc_opt_class() latestWatchOSMajorVersion];
+  latestWatchOSMajorVersion = [objc_opt_class() latestWatchOSMajorVersion];
 
-  return [(NPKGizmoDatabase *)self manifestHashesForWatchOSMajorVersion:v3];
+  return [(NPKGizmoDatabase *)self manifestHashesForWatchOSMajorVersion:latestWatchOSMajorVersion];
 }
 
-- (id)manifestHashesForWatchOSMajorVersion:(unint64_t)a3
+- (id)manifestHashesForWatchOSMajorVersion:(unint64_t)version
 {
   v7 = 0;
   v8 = &v7;
@@ -10928,7 +10928,7 @@ void __61__NPKGizmoDatabase__libraryHashLockedForWatchOSMajorVersion___block_inv
   block[2] = __57__NPKGizmoDatabase_manifestHashesForWatchOSMajorVersion___block_invoke;
   block[3] = &unk_279947890;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = version;
   block[4] = self;
   dispatch_sync(dbQueue, block);
   v4 = v8[5];
@@ -11023,18 +11023,18 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateAllPassesAndDescriptionsWithBlock:(id)a3 includeImageSets:(BOOL)a4
+- (void)enumerateAllPassesAndDescriptionsWithBlock:(id)block includeImageSets:(BOOL)sets
 {
-  v6 = a3;
+  blockCopy = block;
   dbQueue = self->_dbQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__NPKGizmoDatabase_enumerateAllPassesAndDescriptionsWithBlock_includeImageSets___block_invoke;
   block[3] = &unk_279945CF0;
-  v11 = a4;
+  setsCopy = sets;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_sync(dbQueue, block);
 }
 
@@ -11078,9 +11078,9 @@ void __80__NPKGizmoDatabase_enumerateAllPassesAndDescriptionsWithBlock_includeIm
   (*(v6 + 16))();
 }
 
-- (BOOL)hasPassesMatchingPassDescriptionPredicate:(id)a3
+- (BOOL)hasPassesMatchingPassDescriptionPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -11091,9 +11091,9 @@ void __80__NPKGizmoDatabase_enumerateAllPassesAndDescriptionsWithBlock_includeIm
   block[2] = __62__NPKGizmoDatabase_hasPassesMatchingPassDescriptionPredicate___block_invoke;
   block[3] = &unk_279948090;
   block[4] = self;
-  v9 = v4;
+  v9 = predicateCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = predicateCopy;
   dispatch_sync(dbQueue, block);
   LOBYTE(dbQueue) = *(v12 + 24);
 
@@ -11149,9 +11149,9 @@ LABEL_12:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filteredPassesUsingPassDescriptionPredicate:(id)a3 includeImageSets:(BOOL)a4
+- (id)filteredPassesUsingPassDescriptionPredicate:(id)predicate includeImageSets:(BOOL)sets
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -11164,10 +11164,10 @@ LABEL_12:
   v11[2] = __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeImageSets___block_invoke;
   v11[3] = &unk_279948068;
   v11[4] = self;
-  v12 = v6;
-  v14 = a4;
+  v12 = predicateCopy;
+  setsCopy = sets;
   v13 = &v15;
-  v8 = v6;
+  v8 = predicateCopy;
   dispatch_sync(dbQueue, v11);
   v9 = v16[5];
 
@@ -11231,14 +11231,14 @@ void __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeI
 - (void)_rebuildDatabaseWithPassesFromCompanionPasses
 {
   v83 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _migrationDataSource];
-  v4 = [v3 companionPaymentPassUniqueIDs];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  _migrationDataSource = [objc_opt_class() _migrationDataSource];
+  companionPaymentPassUniqueIDs = [_migrationDataSource companionPaymentPassUniqueIDs];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(companionPaymentPassUniqueIDs, "count")}];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v6 = v4;
+  v6 = companionPaymentPassUniqueIDs;
   v7 = [v6 countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v7)
   {
@@ -11253,7 +11253,7 @@ void __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeI
           objc_enumerationMutation(v6);
         }
 
-        v11 = [v3 companionPaymentPassWithUniqueID:*(*(&v70 + 1) + 8 * i)];
+        v11 = [_migrationDataSource companionPaymentPassWithUniqueID:*(*(&v70 + 1) + 8 * i)];
         [v5 npkSafelyAddObject:v11];
       }
 
@@ -11309,12 +11309,12 @@ void __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeI
           v23 = pk_General_log();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v20 uniqueID];
-            v25 = [v20 localizedDescription];
+            uniqueID = [v20 uniqueID];
+            localizedDescription = [v20 localizedDescription];
             *buf = 138412546;
-            v76 = v24;
+            v76 = uniqueID;
             v77 = 2112;
-            v78 = v25;
+            v78 = localizedDescription;
             _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Notice: NPKGizmoDatabase: Re-encoding - Will save payment pass with unique id: %@, localized description: %@", buf, 0x16u);
           }
         }
@@ -11329,13 +11329,13 @@ void __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeI
           v28 = pk_General_log();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v20 uniqueID];
-            v30 = [v20 localizedDescription];
+            uniqueID2 = [v20 uniqueID];
+            localizedDescription2 = [v20 localizedDescription];
             v31 = NSStringFromBOOL();
             *buf = 138412802;
-            v76 = v29;
+            v76 = uniqueID2;
             v77 = 2112;
-            v78 = v30;
+            v78 = localizedDescription2;
             v79 = 2112;
             v80 = v31;
             _os_log_impl(&dword_25B300000, v28, OS_LOG_TYPE_DEFAULT, "Notice: NPKGizmoDatabase: Re-encoding - Did save save payment pass with unique id: %@ localized description: %@, was update?: %@", buf, 0x20u);
@@ -11389,13 +11389,13 @@ void __81__NPKGizmoDatabase_filteredPassesUsingPassDescriptionPredicate_includeI
 
           v42 = *(*(&v61 + 1) + 8 * k);
           v43 = [(NPKGizmoDatabase *)self _passForUniqueIDLocked:v42 includeImageSets:0];
-          v44 = [v43 passTypeIdentifier];
-          v45 = [v44 length];
+          passTypeIdentifier = [v43 passTypeIdentifier];
+          v45 = [passTypeIdentifier length];
 
           if (!v45)
           {
-            v46 = [v43 localizedDescription];
-            [v59 setObject:v46 forKeyedSubscript:v42];
+            localizedDescription3 = [v43 localizedDescription];
+            [v59 setObject:localizedDescription3 forKeyedSubscript:v42];
           }
         }
 
@@ -11459,21 +11459,21 @@ LABEL_49:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_verifyPassDataIsUnarchivedCorrectlyWithData:(id)a3 forPassWithUniqueID:(id)a4
+- (void)_verifyPassDataIsUnarchivedCorrectlyWithData:(id)data forPassWithUniqueID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  dCopy = d;
   v7 = *MEMORY[0x277D38650];
   if (os_variant_has_internal_ui())
   {
     v8 = objc_opt_class();
-    v9 = NPKSecureUnarchiveObject(v5, v8);
+    v9 = NPKSecureUnarchiveObject(dataCopy, v8);
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 passTypeIdentifier];
-      v12 = [v11 length];
+      passTypeIdentifier = [v9 passTypeIdentifier];
+      v12 = [passTypeIdentifier length];
 
       if (v12)
       {
@@ -11497,7 +11497,7 @@ LABEL_49:
       v20 = 136315394;
       v21 = "[NPKGizmoDatabase _verifyPassDataIsUnarchivedCorrectlyWithData:forPassWithUniqueID:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v16 = "Warning: %s encoded_pass Updating the pass with encoded data of pass with uniqueID %@ is missing the type identifier.";
     }
 
@@ -11524,7 +11524,7 @@ LABEL_11:
       v20 = 136315394;
       v21 = "[NPKGizmoDatabase _verifyPassDataIsUnarchivedCorrectlyWithData:forPassWithUniqueID:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v16 = "Warning: %s encoded_pass There was a problem unarchiving the pass archive for pass with uniqueID %@.";
     }
 
@@ -11537,18 +11537,18 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_migrateDatabase:(id)a3
+- (BOOL)_migrateDatabase:(id)database
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
   v20 = 0;
   v5 = [(NPKGizmoDatabase *)self _databaseVersionExists:&v20 + 1 valid:&v20];
-  v6 = [objc_opt_class() maxDatabaseVersion];
-  if (v5 >= v6)
+  maxDatabaseVersion = [objc_opt_class() maxDatabaseVersion];
+  if (v5 >= maxDatabaseVersion)
   {
     v9 = pk_General_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -11574,9 +11574,9 @@ LABEL_13:
     v14[2] = __37__NPKGizmoDatabase__migrateDatabase___block_invoke;
     v14[3] = &unk_2799484C0;
     v17 = v5;
-    v18 = v6;
+    v18 = maxDatabaseVersion;
     v16 = &v21;
-    v7 = v4;
+    v7 = databaseCopy;
     v19 = HIBYTE(v20);
     v14[4] = self;
     v15 = v7;
@@ -11651,7 +11651,7 @@ uint64_t __37__NPKGizmoDatabase__migrateDatabase___block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)_databaseVersionExists:(BOOL *)a3 valid:(BOOL *)a4
+- (int64_t)_databaseVersionExists:(BOOL *)exists valid:(BOOL *)valid
 {
   [(NPKGizmoDatabase *)self _executeSQL:@"CREATE TABLE IF NOT EXISTS key_value_store (key TEXT NOT NULL, value TEXT);"];
   [(NPKGizmoDatabase *)self _executeSQL:@"CREATE UNIQUE INDEX IF NOT EXISTS key_value_store_idx1 ON key_value_store(key)"];
@@ -11664,8 +11664,8 @@ uint64_t __37__NPKGizmoDatabase__migrateDatabase___block_invoke(uint64_t a1)
   v9[2] = __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke;
   v9[3] = &unk_2799484E8;
   v9[4] = &v10;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = exists;
+  v9[6] = valid;
   [(NPKGizmoDatabase *)self _executeSQLQuery:@"SELECT value FROM key_value_store WHERE KEY=version" processResultsBlock:v9];
   v7 = v11[3];
   _Block_object_dispose(&v10, 8);
@@ -11738,11 +11738,11 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_insertDatabaseVersionRow:(int64_t)a3
+- (void)_insertDatabaseVersionRow:(int64_t)row
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() maxDatabaseVersion];
-  if (a3 < 1 || v5 < a3)
+  maxDatabaseVersion = [objc_opt_class() maxDatabaseVersion];
+  if (row < 1 || maxDatabaseVersion < row)
   {
     v6 = pk_General_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
@@ -11759,7 +11759,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
         v19 = 2048;
         v20 = 4875;
         v21 = 2048;
-        v22 = a3;
+        rowCopy2 = row;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Cannot save unsupported database version %ld)", buf, 0x2Au);
       }
     }
@@ -11767,7 +11767,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
     _NPKAssertAbort();
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSERT INTO key_value_store (key, value) VALUES (version, %ld)", a3];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"INSERT INTO key_value_store (key, value) VALUES (version, %ld)", row];
   v10 = [(NPKGizmoDatabase *)self _executeSQL:v9];
 
   if (!v10)
@@ -11787,7 +11787,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
         v19 = 2048;
         v20 = 4877;
         v21 = 2048;
-        v22 = a3;
+        rowCopy2 = row;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Unable to save version number to DB: %ld)", buf, 0x2Au);
       }
     }
@@ -11798,11 +11798,11 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDatabaseVersionRow:(int64_t)a3
+- (void)_updateDatabaseVersionRow:(int64_t)row
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() maxDatabaseVersion];
-  if (a3 < 1 || v5 < a3)
+  maxDatabaseVersion = [objc_opt_class() maxDatabaseVersion];
+  if (row < 1 || maxDatabaseVersion < row)
   {
     v6 = pk_General_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
@@ -11819,7 +11819,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
         v19 = 2048;
         v20 = 4881;
         v21 = 2048;
-        v22 = a3;
+        rowCopy2 = row;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Cannot save unsupported database version %ld)", buf, 0x2Au);
       }
     }
@@ -11827,7 +11827,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
     _NPKAssertAbort();
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE key_value_store SET value=%ld WHERE key=version", a3];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"UPDATE key_value_store SET value=%ld WHERE key=version", row];
   v10 = [(NPKGizmoDatabase *)self _executeSQL:v9];
 
   if (!v10)
@@ -11847,7 +11847,7 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
         v19 = 2048;
         v20 = 4883;
         v21 = 2048;
-        v22 = a3;
+        rowCopy2 = row;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Unable to save version number to DB: %ld)", buf, 0x2Au);
       }
     }
@@ -11860,9 +11860,9 @@ void __49__NPKGizmoDatabase__databaseVersionExists_valid___block_invoke(void *a1
 
 - (BOOL)_preconditionsMetForDatabaseOpen
 {
-  v2 = [objc_opt_class() _migrationDataSource];
+  _migrationDataSource = [objc_opt_class() _migrationDataSource];
 
-  return v2 && MKBDeviceUnlockedSinceBoot() == 1;
+  return _migrationDataSource && MKBDeviceUnlockedSinceBoot() == 1;
 }
 
 - (void)_handleDatabaseChangedExternally
@@ -12344,11 +12344,11 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
   return result;
 }
 
-- (BOOL)_table:(id)a3 containsColumn:(id)a4
+- (BOOL)_table:(id)_table containsColumn:(id)column
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _tableCopy = _table;
+  columnCopy = column;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -12358,16 +12358,16 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v7;
+      v29 = columnCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = _tableCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Start search column:%@ in table:%@", buf, 0x16u);
     }
   }
 
   ppStmt = 0;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info('%@')", v6];
-  if (sqlite3_prepare_v2(-[NPKGizmoDatabase database](self, "database"), [v11 UTF8String], -1, &ppStmt, 0))
+  _tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"PRAGMA table_info('%@')", _tableCopy];
+  if (sqlite3_prepare_v2(-[NPKGizmoDatabase database](self, "database"), [_tableCopy UTF8String], -1, &ppStmt, 0))
   {
     v12 = pk_General_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
@@ -12384,9 +12384,9 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
         v32 = 2048;
         v33 = 5060;
         v34 = 2112;
-        v35 = v7;
+        v35 = columnCopy;
         v36 = 2112;
-        v37 = v6;
+        v37 = _tableCopy;
         _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_ERROR, "Error: *** NPKAssertion failure in %{public}s, %{public}s:%ld (reason: Unable to prepare statement to find column:%@ in table:%@)", buf, 0x34u);
       }
     }
@@ -12408,9 +12408,9 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v29 = v7;
+          v29 = columnCopy;
           v30 = 2112;
-          v31 = v6;
+          v31 = _tableCopy;
           _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Notice: Could not find column:%@ in table:%@", buf, 0x16u);
         }
 
@@ -12424,7 +12424,7 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
     if (v17)
     {
       v18 = [MEMORY[0x277CCACA8] stringWithCString:v17 encoding:4];
-      v19 = [v7 isEqualToString:v18];
+      v19 = [columnCopy isEqualToString:v18];
 
       if (v19)
       {
@@ -12442,9 +12442,9 @@ uint64_t __40__NPKGizmoDatabase__attemptDatabaseOpen__block_invoke(uint64_t resu
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v7;
+      v29 = columnCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = _tableCopy;
       _os_log_impl(&dword_25B300000, v26, OS_LOG_TYPE_DEFAULT, "Notice: found column:%@ in table:%@", buf, 0x16u);
     }
   }

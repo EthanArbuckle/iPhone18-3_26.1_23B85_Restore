@@ -1,17 +1,17 @@
 @interface IMUnreadCountReportDelta
-- (IMUnreadCountReportDelta)initWithCoder:(id)a3;
-- (IMUnreadCountReportDelta)initWithDeletedGUIDs:(id)a3 updatedReports:(id)a4 isReplacement:(BOOL)a5 fromStamp:(id)a6 toStamp:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (IMUnreadCountReportDelta)initWithCoder:(id)coder;
+- (IMUnreadCountReportDelta)initWithDeletedGUIDs:(id)ds updatedReports:(id)reports isReplacement:(BOOL)replacement fromStamp:(id)stamp toStamp:(id)toStamp;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMUnreadCountReportDelta
 
-- (IMUnreadCountReportDelta)initWithDeletedGUIDs:(id)a3 updatedReports:(id)a4 isReplacement:(BOOL)a5 fromStamp:(id)a6 toStamp:(id)a7
+- (IMUnreadCountReportDelta)initWithDeletedGUIDs:(id)ds updatedReports:(id)reports isReplacement:(BOOL)replacement fromStamp:(id)stamp toStamp:(id)toStamp
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dsCopy = ds;
+  reportsCopy = reports;
+  stampCopy = stamp;
+  toStampCopy = toStamp;
   v22.receiver = self;
   v22.super_class = IMUnreadCountReportDelta;
   v16 = [(IMUnreadCountReportDelta *)&v22 init];
@@ -19,9 +19,9 @@
   if (v16)
   {
     v18 = MEMORY[0x1E695E0F0];
-    if (v12)
+    if (dsCopy)
     {
-      v19 = v12;
+      v19 = dsCopy;
     }
 
     else
@@ -30,9 +30,9 @@
     }
 
     objc_storeStrong(&v16->_deletedGUIDs, v19);
-    if (v13)
+    if (reportsCopy)
     {
-      v20 = v13;
+      v20 = reportsCopy;
     }
 
     else
@@ -41,70 +41,70 @@
     }
 
     objc_storeStrong(&v17->_updatedReports, v20);
-    v17->_replacement = a5;
-    objc_storeStrong(&v17->_fromStamp, a6);
-    objc_storeStrong(&v17->_toStamp, a7);
+    v17->_replacement = replacement;
+    objc_storeStrong(&v17->_fromStamp, stamp);
+    objc_storeStrong(&v17->_toStamp, toStamp);
   }
 
   return v17;
 }
 
-- (IMUnreadCountReportDelta)initWithCoder:(id)a3
+- (IMUnreadCountReportDelta)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"d"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"u"];
-  v7 = [v4 decodeBoolForKey:@"r"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"f"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"d"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"u"];
+  v7 = [coderCopy decodeBoolForKey:@"r"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"f"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
 
   v10 = [(IMUnreadCountReportDelta *)self initWithDeletedGUIDs:v5 updatedReports:v6 isReplacement:v7 fromStamp:v8 toStamp:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  v4 = [(IMUnreadCountReportDelta *)self deletedGUIDs];
-  v5 = [v4 count];
+  coderCopy = coder;
+  deletedGUIDs = [(IMUnreadCountReportDelta *)self deletedGUIDs];
+  v5 = [deletedGUIDs count];
 
   if (v5)
   {
-    v6 = [(IMUnreadCountReportDelta *)self deletedGUIDs];
-    [v15 encodeObject:v6 forKey:@"d"];
+    deletedGUIDs2 = [(IMUnreadCountReportDelta *)self deletedGUIDs];
+    [coderCopy encodeObject:deletedGUIDs2 forKey:@"d"];
   }
 
-  v7 = [(IMUnreadCountReportDelta *)self updatedReports];
-  v8 = [v7 count];
+  updatedReports = [(IMUnreadCountReportDelta *)self updatedReports];
+  v8 = [updatedReports count];
 
   if (v8)
   {
-    v9 = [(IMUnreadCountReportDelta *)self updatedReports];
-    [v15 encodeObject:v9 forKey:@"u"];
+    updatedReports2 = [(IMUnreadCountReportDelta *)self updatedReports];
+    [coderCopy encodeObject:updatedReports2 forKey:@"u"];
   }
 
   if ([(IMUnreadCountReportDelta *)self isReplacement])
   {
-    [v15 encodeBool:-[IMUnreadCountReportDelta isReplacement](self forKey:{"isReplacement"), @"r"}];
+    [coderCopy encodeBool:-[IMUnreadCountReportDelta isReplacement](self forKey:{"isReplacement"), @"r"}];
   }
 
-  v10 = [(IMUnreadCountReportDelta *)self fromStamp];
+  fromStamp = [(IMUnreadCountReportDelta *)self fromStamp];
 
-  if (v10)
+  if (fromStamp)
   {
-    v11 = [(IMUnreadCountReportDelta *)self fromStamp];
-    [v15 encodeObject:v11 forKey:@"f"];
+    fromStamp2 = [(IMUnreadCountReportDelta *)self fromStamp];
+    [coderCopy encodeObject:fromStamp2 forKey:@"f"];
   }
 
-  v12 = [(IMUnreadCountReportDelta *)self toStamp];
+  toStamp = [(IMUnreadCountReportDelta *)self toStamp];
 
-  v13 = v15;
-  if (v12)
+  v13 = coderCopy;
+  if (toStamp)
   {
-    v14 = [(IMUnreadCountReportDelta *)self toStamp];
-    [v15 encodeObject:v14 forKey:@"t"];
+    toStamp2 = [(IMUnreadCountReportDelta *)self toStamp];
+    [coderCopy encodeObject:toStamp2 forKey:@"t"];
 
-    v13 = v15;
+    v13 = coderCopy;
   }
 }
 

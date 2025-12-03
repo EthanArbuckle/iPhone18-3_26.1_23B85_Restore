@@ -1,58 +1,58 @@
 @interface PKRewardsHubSummarySectionController
-- (BOOL)_hasFooterForSection:(id)a3;
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
-- (PKRewardsHubSummarySectionController)initWithSectionIdentifiers:(id)a3 rewardsFetcher:(id)a4 paymentDataProvider:(id)a5 showRewardsGraph:(BOOL)a6 delegate:(id)a7;
-- (id)_cellPresenterIdentifierForItem:(id)a3;
+- (BOOL)_hasFooterForSection:(id)section;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
+- (PKRewardsHubSummarySectionController)initWithSectionIdentifiers:(id)identifiers rewardsFetcher:(id)fetcher paymentDataProvider:(id)provider showRewardsGraph:(BOOL)graph delegate:(id)delegate;
+- (id)_cellPresenterIdentifierForItem:(id)item;
 - (id)_collectionView;
-- (id)_createPresenterForSection:(id)a3;
-- (id)_sectionIdentifierForItem:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_configureFooterView:(id)a3 inSection:(id)a4;
-- (void)_configureHeaderView:(id)a3 inSection:(id)a4;
+- (id)_createPresenterForSection:(id)section;
+- (id)_sectionIdentifierForItem:(id)item;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_configureFooterView:(id)view inSection:(id)section;
+- (void)_configureHeaderView:(id)view inSection:(id)section;
 - (void)_reloadDataAndUpdateDelegate;
-- (void)_reloadDataWithCompletion:(id)a3;
-- (void)_setCornerMaskForCell:(id)a3 indexPath:(id)a4 section:(id)a5;
-- (void)_setItems:(id)a3 forSection:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (void)_reloadDataWithCompletion:(id)completion;
+- (void)_setCornerMaskForCell:(id)cell indexPath:(id)path section:(id)section;
+- (void)_setItems:(id)items forSection:(id)section;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 @end
 
 @implementation PKRewardsHubSummarySectionController
 
-- (PKRewardsHubSummarySectionController)initWithSectionIdentifiers:(id)a3 rewardsFetcher:(id)a4 paymentDataProvider:(id)a5 showRewardsGraph:(BOOL)a6 delegate:(id)a7
+- (PKRewardsHubSummarySectionController)initWithSectionIdentifiers:(id)identifiers rewardsFetcher:(id)fetcher paymentDataProvider:(id)provider showRewardsGraph:(BOOL)graph delegate:(id)delegate
 {
   v40 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  identifiersCopy = identifiers;
+  fetcherCopy = fetcher;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v38.receiver = self;
   v38.super_class = PKRewardsHubSummarySectionController;
   v17 = [(PKRewardsHubSummarySectionController *)&v38 init];
   v18 = v17;
   if (v17)
   {
-    v33 = v14;
-    objc_storeStrong(&v17->_identifiers, a3);
-    v18->_showRewardsGraph = a6;
-    objc_storeStrong(&v18->_rewardsFetcher, a4);
+    v33 = fetcherCopy;
+    objc_storeStrong(&v17->_identifiers, identifiers);
+    v18->_showRewardsGraph = graph;
+    objc_storeStrong(&v18->_rewardsFetcher, fetcher);
     v18->_summaryFetchLock._os_unfair_lock_opaque = 0;
     v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     pendingCompletionHandlers = v18->_pendingCompletionHandlers;
     v18->_pendingCompletionHandlers = v19;
 
-    objc_storeStrong(&v18->_paymentDataProvider, a5);
+    objc_storeStrong(&v18->_paymentDataProvider, provider);
     [(PKPaymentDataProvider *)v18->_paymentDataProvider addDelegate:v18];
-    objc_storeWeak(&v18->_delegate, v16);
-    v21 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    v21 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     sectionIDToPresenterMap = v18->_sectionIDToPresenterMap;
     v18->_sectionIDToPresenterMap = v21;
 
-    v23 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v13, "count")}];
+    v23 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     sectionIDToItemsMap = v18->_sectionIDToItemsMap;
     v18->_sectionIDToItemsMap = v23;
 
@@ -60,7 +60,7 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = v13;
+    v25 = identifiersCopy;
     v26 = [v25 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v26)
     {
@@ -86,7 +86,7 @@
       while (v27);
     }
 
-    v14 = v33;
+    fetcherCopy = v33;
   }
 
   return v18;
@@ -100,18 +100,18 @@
   [(PKRewardsHubSummarySectionController *)&v3 dealloc];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  viewCopy = view;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(NSMutableDictionary *)self->_sectionIDToPresenterMap allValues];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allValues = [(NSMutableDictionary *)self->_sectionIDToPresenterMap allValues];
+  v12 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -123,32 +123,32 @@
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v17 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 traitCollectionDidChangeFromTrait:v8 toTrait:v9 inCollectionView:v10];
+          [v16 traitCollectionDidChangeFromTrait:traitCopy toTrait:toTraitCopy inCollectionView:viewCopy];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
   }
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  snapshotCopy = snapshot;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   if (!self->_showRewardsGraph)
   {
 LABEL_10:
@@ -157,21 +157,21 @@ LABEL_10:
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      array = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
-    v17 = v16;
+    v17 = array;
 
     [v12 appendItems:v17];
     goto LABEL_14;
   }
 
-  v9 = v7;
+  v9 = identifierCopy;
   v10 = v9;
   if (@"PKRewardsHubSectionLifetimeSummary" == v9)
   {
@@ -203,9 +203,9 @@ LABEL_14:
   return v12;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (self->_showRewardsGraph)
   {
     v5 = [MEMORY[0x1E69DC800] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_182];
@@ -214,13 +214,13 @@ LABEL_14:
   else
   {
     v6 = objc_opt_class();
-    v7 = [(PKRewardsHubSummarySectionController *)self _sectionIdentifierForItem:v4];
+    v7 = [(PKRewardsHubSummarySectionController *)self _sectionIdentifierForItem:itemCopy];
     v8 = [(PKRewardsHubSummarySectionController *)self _presenterForSection:v7];
     if (v8)
     {
-      v9 = [(PKRewardsHubSummarySectionController *)self _cellPresenterIdentifierForItem:v4];
-      v10 = [v8 collectionViewCellClasses];
-      v11 = [v10 objectForKey:v9];
+      v9 = [(PKRewardsHubSummarySectionController *)self _cellPresenterIdentifierForItem:itemCopy];
+      collectionViewCellClasses = [v8 collectionViewCellClasses];
+      v11 = [collectionViewCellClasses objectForKey:v9];
 
       if (v6 && ([v6 isSubclassOfClass:objc_opt_class()] & 1) != 0)
       {
@@ -228,7 +228,7 @@ LABEL_14:
       }
     }
 
-    v12 = [(PKRewardsHubSummarySectionController *)self _collectionView];
+    _collectionView = [(PKRewardsHubSummarySectionController *)self _collectionView];
     objc_initWeak(&location, self);
     v13 = MEMORY[0x1E69DC800];
     v18[0] = MEMORY[0x1E69E9820];
@@ -238,7 +238,7 @@ LABEL_14:
     objc_copyWeak(&v22, &location);
     v14 = v8;
     v19 = v14;
-    v15 = v12;
+    v15 = _collectionView;
     v20 = v15;
     v16 = v7;
     v21 = v16;
@@ -275,18 +275,18 @@ void __64__PKRewardsHubSummarySectionController_cellRegistrationForItem___block_
   }
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E69DC7E0];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  environmentCopy = environment;
   v9 = [[v6 alloc] initWithAppearance:2];
-  LODWORD(v6) = [(PKRewardsHubSummarySectionController *)self _hasHeaderForSection:v7];
-  LODWORD(self) = [(PKRewardsHubSummarySectionController *)self _hasFooterForSection:v7];
+  LODWORD(v6) = [(PKRewardsHubSummarySectionController *)self _hasHeaderForSection:identifierCopy];
+  LODWORD(self) = [(PKRewardsHubSummarySectionController *)self _hasFooterForSection:identifierCopy];
 
   [v9 setHeaderMode:v6];
   [v9 setFooterMode:self];
-  v10 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v9 layoutEnvironment:v8];
+  v10 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v9 layoutEnvironment:environmentCopy];
 
   [v9 setHeaderTopPadding:0.0];
   +[PKDashboardCollectionViewCell defaultHorizontalInset];
@@ -305,12 +305,12 @@ void __64__PKRewardsHubSummarySectionController_cellRegistrationForItem___block_
   return v10;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v7 = *MEMORY[0x1E69DDC08];
-  v8 = v5;
+  v8 = kindCopy;
   v9 = v8;
   if (v7 == v8)
   {
@@ -351,13 +351,13 @@ LABEL_14:
   return v14;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
   v10 = *MEMORY[0x1E69DDC08];
-  v11 = v8;
+  v11 = kindCopy;
   v12 = v11;
   if (v10 == v11)
   {
@@ -384,7 +384,7 @@ LABEL_14:
 LABEL_13:
       if (self->_showRewardsGraph)
       {
-        v17 = v9;
+        v17 = identifierCopy;
         v18 = @"PKRewardsHubSectionLifetimeSummary";
         v19 = v18;
         if (v18 == v17)
@@ -407,7 +407,7 @@ LABEL_13:
         v20 = 0;
       }
 
-      v21 = v9;
+      v21 = identifierCopy;
       v22 = v21;
       if (@"PKRewardsHubSectionDateRangeSummary" == v21)
       {
@@ -427,12 +427,12 @@ LABEL_13:
         }
       }
 
-      [(PKRewardsHubSummarySectionController *)self _configureFooterView:v24 inSection:v22];
+      [(PKRewardsHubSummarySectionController *)self _configureFooterView:registrationCopy inSection:v22];
       goto LABEL_32;
     }
   }
 
-  v15 = v9;
+  v15 = identifierCopy;
   v13 = v15;
   if (@"PKRewardsHubSectionLifetimeSummary" == v15)
   {
@@ -458,23 +458,23 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PKRewardsHubSummarySectionController *)self _configureHeaderView:v24 inSection:v13];
+    [(PKRewardsHubSummarySectionController *)self _configureHeaderView:registrationCopy inSection:v13];
   }
 
 LABEL_32:
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 transactionType];
-  v9 = [v7 transactionStatus];
-  if (!v8 && (v9 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  transactionType = [transactionCopy transactionType];
+  transactionStatus = [transactionCopy transactionStatus];
+  if (!transactionType && (transactionStatus & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    v10 = [v7 rewardsTotalAmount];
-    v11 = v10;
-    if (v10 && ([v10 pk_isZeroNumber] & 1) == 0 && -[PKRewardsSummaryFetcher isTransactionSourceIdentifierRelevant:](self->_rewardsFetcher, "isTransactionSourceIdentifierRelevant:", v6))
+    rewardsTotalAmount = [transactionCopy rewardsTotalAmount];
+    v11 = rewardsTotalAmount;
+    if (rewardsTotalAmount && ([rewardsTotalAmount pk_isZeroNumber] & 1) == 0 && -[PKRewardsSummaryFetcher isTransactionSourceIdentifierRelevant:](self->_rewardsFetcher, "isTransactionSourceIdentifierRelevant:", identifierCopy))
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -486,33 +486,33 @@ LABEL_32:
   }
 }
 
-- (void)_configureHeaderView:(id)a3 inSection:(id)a4
+- (void)_configureHeaderView:(id)view inSection:(id)section
 {
-  v4 = a3;
+  viewCopy = view;
   [objc_opt_class() defaultHorizontalInset];
-  [v4 setHorizontalInset:?];
-  [v4 setUseCompactTopInset:0];
+  [viewCopy setHorizontalInset:?];
+  [viewCopy setUseCompactTopInset:0];
 }
 
-- (BOOL)_hasFooterForSection:(id)a3
+- (BOOL)_hasFooterForSection:(id)section
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v5 = @"PKRewardsHubSectionLifetimeSummary";
   v6 = v5;
-  if (v5 == v4)
+  if (v5 == sectionCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v4 || !v5)
+  if (!sectionCopy || !v5)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [(__CFString *)v4 isEqualToString:v5];
+  v7 = [(__CFString *)sectionCopy isEqualToString:v5];
 
   if (v7)
   {
@@ -522,7 +522,7 @@ LABEL_7:
   }
 
 LABEL_9:
-  v9 = v4;
+  v9 = sectionCopy;
   v10 = @"PKRewardsHubSectionDateRangeSummary";
   v11 = v10;
   if (v10 == v9)
@@ -531,7 +531,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if (v4 && v10)
+  if (sectionCopy && v10)
   {
     v12 = [(__CFString *)v9 isEqualToString:v10];
 
@@ -560,14 +560,14 @@ LABEL_20:
   return showRewardsGraph;
 }
 
-- (void)_configureFooterView:(id)a3 inSection:(id)a4
+- (void)_configureFooterView:(id)view inSection:(id)section
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  sectionCopy = section;
   [objc_opt_class() defaultHorizontalInset];
-  [v6 setHorizontalInset:?];
-  v8 = v7;
+  [viewCopy setHorizontalInset:?];
+  v8 = sectionCopy;
   v9 = v8;
   if (@"PKRewardsHubSectionDateRangeSummary" == v8)
   {
@@ -576,10 +576,10 @@ LABEL_13:
 LABEL_14:
     v14 = PKLocalizedFeatureString();
     v15 = PKLocalizedFeatureString();
-    [v6 setBottomInsetType:{2, v14}];
-    [v6 setFooterText:v15];
-    v16 = [MEMORY[0x1E69DC888] linkColor];
-    [v6 setLinkTextColor:v16];
+    [viewCopy setBottomInsetType:{2, v14}];
+    [viewCopy setFooterText:v15];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    [viewCopy setLinkTextColor:linkColor];
 
     objc_initWeak(&location, self);
     v17 = [PKTextRangeHyperlink alloc];
@@ -591,7 +591,7 @@ LABEL_14:
     v18 = [(PKTextRangeHyperlink *)v17 initWithLinkText:v14 action:v20];
     v23[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-    [v6 setSources:v19];
+    [viewCopy setSources:v19];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -666,11 +666,11 @@ void __71__PKRewardsHubSummarySectionController__configureFooterView_inSection__
   }
 }
 
-- (void)_setCornerMaskForCell:(id)a3 indexPath:(id)a4 section:(id)a5
+- (void)_setCornerMaskForCell:(id)cell indexPath:(id)path section:(id)section
 {
-  v19 = a3;
-  v8 = a5;
-  v9 = [a4 row];
+  cellCopy = cell;
+  sectionCopy = section;
+  v9 = [path row];
   if (self->_showRewardsGraph)
   {
     v10 = 0;
@@ -681,7 +681,7 @@ void __71__PKRewardsHubSummarySectionController__configureFooterView_inSection__
   {
     v12 = v9;
     v13 = v9 != 0;
-    v14 = [(PKRewardsHubSummarySectionController *)self _itemsForSection:v8];
+    v14 = [(PKRewardsHubSummarySectionController *)self _itemsForSection:sectionCopy];
     v15 = [v14 count];
     v10 = v12 != v15 - 1;
     v16 = v12 != v15 - 1 || v13;
@@ -703,29 +703,29 @@ void __71__PKRewardsHubSummarySectionController__configureFooterView_inSection__
     }
   }
 
-  [v19 setMaskType:v11];
-  [v19 setShowsBottomSeparator:v10];
+  [cellCopy setMaskType:v11];
+  [cellCopy setShowsBottomSeparator:v10];
 }
 
-- (id)_createPresenterForSection:(id)a3
+- (id)_createPresenterForSection:(id)section
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sectionCopy = section;
   v4 = @"PKRewardsHubSectionLifetimeSummary";
   v5 = v4;
-  if (v4 == v3)
+  if (v4 == sectionCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v3 || !v4)
+  if (!sectionCopy || !v4)
   {
 
     goto LABEL_9;
   }
 
-  v6 = [(__CFString *)v3 isEqualToString:v4];
+  v6 = [(__CFString *)sectionCopy isEqualToString:v4];
 
   if (v6)
   {
@@ -739,7 +739,7 @@ LABEL_16:
   }
 
 LABEL_9:
-  v10 = v3;
+  v10 = sectionCopy;
   v11 = @"PKRewardsHubSectionDateRangeSummary";
   v12 = v11;
   if (v11 == v10)
@@ -752,7 +752,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v3 && v11)
+  if (sectionCopy && v11)
   {
     v13 = [(__CFString *)v10 isEqualToString:v11];
 
@@ -779,24 +779,24 @@ LABEL_21:
   return v8;
 }
 
-- (void)_setItems:(id)a3 forSection:(id)a4
+- (void)_setItems:(id)items forSection:(id)section
 {
-  v7 = a3;
-  v6 = a4;
-  if (v6)
+  itemsCopy = items;
+  sectionCopy = section;
+  if (sectionCopy)
   {
-    [(NSMutableDictionary *)self->_sectionIDToItemsMap removeObjectForKey:v6];
-    if (v7)
+    [(NSMutableDictionary *)self->_sectionIDToItemsMap removeObjectForKey:sectionCopy];
+    if (itemsCopy)
     {
-      [(NSMutableDictionary *)self->_sectionIDToItemsMap setObject:v7 forKey:v6];
+      [(NSMutableDictionary *)self->_sectionIDToItemsMap setObject:itemsCopy forKey:sectionCopy];
     }
   }
 }
 
-- (id)_sectionIdentifierForItem:(id)a3
+- (id)_sectionIdentifierForItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a3 wrappedItem];
+  wrappedItem = [item wrappedItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -828,10 +828,10 @@ LABEL_9:
   return v5;
 }
 
-- (id)_cellPresenterIdentifierForItem:(id)a3
+- (id)_cellPresenterIdentifierForItem:(id)item
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a3 wrappedItem];
+  wrappedItem = [item wrappedItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -869,15 +869,15 @@ LABEL_9:
   if (WeakRetained && (v4 = WeakRetained, v5 = objc_loadWeakRetained(&self->_delegate), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) != 0))
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 rewardsHubCollectionView];
+    rewardsHubCollectionView = [v7 rewardsHubCollectionView];
   }
 
   else
   {
-    v8 = 0;
+    rewardsHubCollectionView = 0;
   }
 
-  return v8;
+  return rewardsHubCollectionView;
 }
 
 - (void)_reloadDataAndUpdateDelegate
@@ -957,15 +957,15 @@ void __68__PKRewardsHubSummarySectionController__reloadDataAndUpdateDelegate__bl
   }
 }
 
-- (void)_reloadDataWithCompletion:(id)a3
+- (void)_reloadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_summaryFetchLock);
   if (self->_summaryFetchInProgress)
   {
     self->_transactionsNeedUpdate = 1;
     pendingCompletionHandlers = self->_pendingCompletionHandlers;
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     [(NSMutableSet *)pendingCompletionHandlers pk_safelyAddObject:v6];
 
     os_unfair_lock_unlock(&self->_summaryFetchLock);
@@ -975,7 +975,7 @@ void __68__PKRewardsHubSummarySectionController__reloadDataAndUpdateDelegate__bl
   {
     self->_summaryFetchInProgress = 1;
     v7 = self->_pendingCompletionHandlers;
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     [(NSMutableSet *)v7 pk_safelyAddObject:v8];
 
     os_unfair_lock_unlock(&self->_summaryFetchLock);
@@ -986,7 +986,7 @@ void __68__PKRewardsHubSummarySectionController__reloadDataAndUpdateDelegate__bl
     v10[2] = __66__PKRewardsHubSummarySectionController__reloadDataWithCompletion___block_invoke;
     v10[3] = &unk_1E801EF38;
     objc_copyWeak(&v12, &location);
-    v11 = v4;
+    v11 = completionCopy;
     [(PKRewardsSummaryFetcher *)rewardsFetcher rewardsTierSummariesWithCompletion:v10];
 
     objc_destroyWeak(&v12);

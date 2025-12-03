@@ -1,20 +1,20 @@
 @interface PHAnimatedImage
-+ (int64_t)requestAnimatedImageWithURL:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)cancelAnimatedImageRequest:(int64_t)a3;
-- (PHAnimatedImage)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useSharedDecoding:(BOOL)a5;
-- (void)_initializePropertiesWithAnimatedImage:(id)a3;
++ (int64_t)requestAnimatedImageWithURL:(id)l options:(id)options completion:(id)completion;
++ (void)cancelAnimatedImageRequest:(int64_t)request;
+- (PHAnimatedImage)initWithURL:(id)l cachingStrategy:(int64_t)strategy useSharedDecoding:(BOOL)decoding;
+- (void)_initializePropertiesWithAnimatedImage:(id)image;
 @end
 
 @implementation PHAnimatedImage
 
-- (void)_initializePropertiesWithAnimatedImage:(id)a3
+- (void)_initializePropertiesWithAnimatedImage:(id)image
 {
-  v4 = a3;
-  self->_frameCount = [v4 frameCount];
-  self->_loopCount = [v4 loopCount];
-  [v4 duration];
+  imageCopy = image;
+  self->_frameCount = [imageCopy frameCount];
+  self->_loopCount = [imageCopy loopCount];
+  [imageCopy duration];
   self->_duration = v5;
-  [v4 pixelSize];
+  [imageCopy pixelSize];
   v7 = v6;
   v9 = v8;
 
@@ -22,12 +22,12 @@
   self->_pixelHeight = v9;
 }
 
-- (PHAnimatedImage)initWithURL:(id)a3 cachingStrategy:(int64_t)a4 useSharedDecoding:(BOOL)a5
+- (PHAnimatedImage)initWithURL:(id)l cachingStrategy:(int64_t)strategy useSharedDecoding:(BOOL)decoding
 {
-  v5 = a5;
+  decodingCopy = decoding;
   v8 = MEMORY[0x1E69C0640];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithURL:v9 cachingStrategy:a4 useGlobalDecodeQueue:v5];
+  lCopy = l;
+  v10 = [[v8 alloc] initWithURL:lCopy cachingStrategy:strategy useGlobalDecodeQueue:decodingCopy];
 
   if (v10)
   {
@@ -42,33 +42,33 @@
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (void)cancelAnimatedImageRequest:(int64_t)a3
++ (void)cancelAnimatedImageRequest:(int64_t)request
 {
-  v3 = [_PHAnimatedImageLoadOperation _removeOperation:a3];
+  v3 = [_PHAnimatedImageLoadOperation _removeOperation:request];
   [v3 cancel];
 }
 
-+ (int64_t)requestAnimatedImageWithURL:(id)a3 options:(id)a4 completion:(id)a5
++ (int64_t)requestAnimatedImageWithURL:(id)l options:(id)options completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  lCopy = l;
+  optionsCopy = options;
+  completionCopy = completion;
+  v10 = completionCopy;
   v11 = 0;
-  if (v7 && v9)
+  if (lCopy && completionCopy)
   {
-    v12 = v8;
+    v12 = optionsCopy;
     if (!v12)
     {
       v12 = objc_alloc_init(PHAnimatedImageRequestOptions);
@@ -86,7 +86,7 @@
       v14 = 0;
     }
 
-    v15 = [[_PHAnimatedImageLoadOperation alloc] initWithURL:v7 cachingStrategy:v14 useSharedDecoding:[(PHAnimatedImageRequestOptions *)v12 useSharedImageDecoding]];
+    v15 = [[_PHAnimatedImageLoadOperation alloc] initWithURL:lCopy cachingStrategy:v14 useSharedDecoding:[(PHAnimatedImageRequestOptions *)v12 useSharedImageDecoding]];
     objc_initWeak(&location, v15);
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;

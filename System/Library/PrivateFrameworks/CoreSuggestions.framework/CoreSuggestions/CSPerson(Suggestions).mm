@@ -52,7 +52,7 @@
       v13 = 0;
     }
 
-    v8 = [a1 initWithDisplayName:v7 handles:v13 handleIdentifier:v12];
+    v8 = [self initWithDisplayName:v7 handles:v13 handleIdentifier:v12];
   }
 
   else
@@ -67,12 +67,12 @@
 
 - (id)sg_serialized
 {
-  v3 = [a1 displayName];
-  v4 = v3;
+  displayName = [self displayName];
+  v4 = displayName;
   v5 = &stru_1F385B250;
-  if (v3)
+  if (displayName)
   {
-    v6 = v3;
+    v6 = displayName;
   }
 
   else
@@ -80,15 +80,15 @@
     v6 = &stru_1F385B250;
   }
 
-  v7 = [a1 handles];
-  v8 = [v7 count];
+  handles = [self handles];
+  v8 = [handles count];
   if (v8)
   {
-    v1 = [a1 handles];
-    v5 = [v1 objectAtIndexedSubscript:0];
+    handles2 = [self handles];
+    v5 = [handles2 objectAtIndexedSubscript:0];
   }
 
-  v18 = [a1 handleIdentifier];
+  handleIdentifier = [self handleIdentifier];
   v16 = SGDelimitedStringsSerialize(v6, v9, v10, v11, v12, v13, v14, v15, v5);
 
   if (v8)
@@ -101,14 +101,14 @@
 - (id)sg_initWithNamedEmailAddress:()Suggestions
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a1;
+  selfCopy = self;
   v5 = a3;
-  v6 = [v5 name];
-  v7 = [v5 emailAddress];
+  name = [v5 name];
+  emailAddress = [v5 emailAddress];
 
-  v12[0] = v7;
+  v12[0] = emailAddress;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v9 = [v4 initWithDisplayName:v6 handles:v8 handleIdentifier:@"emailAddresses"];
+  v9 = [selfCopy initWithDisplayName:name handles:v8 handleIdentifier:@"emailAddresses"];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -117,12 +117,12 @@
 
 - (SGSimpleNamedEmailAddress)sg_namedEmailAddress
 {
-  v2 = [a1 sg_emailAddress];
-  if (v2)
+  sg_emailAddress = [self sg_emailAddress];
+  if (sg_emailAddress)
   {
     v3 = [SGSimpleNamedEmailAddress alloc];
-    v4 = [a1 displayName];
-    v5 = [(SGSimpleNamedEmailAddress *)v3 initWithName:v4 emailAddress:v2];
+    displayName = [self displayName];
+    v5 = [(SGSimpleNamedEmailAddress *)v3 initWithName:displayName emailAddress:sg_emailAddress];
   }
 
   else
@@ -135,13 +135,13 @@
 
 - (id)sg_emailAddress
 {
-  v2 = [a1 handleIdentifier];
-  v3 = [v2 isEqualToString:@"emailAddresses"];
+  handleIdentifier = [self handleIdentifier];
+  v3 = [handleIdentifier isEqualToString:@"emailAddresses"];
 
-  if (v3 && ([a1 handles], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5))
+  if (v3 && ([self handles], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5))
   {
-    v6 = [a1 handles];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    handles = [self handles];
+    v7 = [handles objectAtIndexedSubscript:0];
   }
 
   else

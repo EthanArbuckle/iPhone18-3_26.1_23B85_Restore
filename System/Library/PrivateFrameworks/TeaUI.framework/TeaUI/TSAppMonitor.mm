@@ -1,13 +1,13 @@
 @interface TSAppMonitor
-- (void)triggerWithEvent:(int64_t)a3;
+- (void)triggerWithEvent:(int64_t)event;
 @end
 
 @implementation TSAppMonitor
 
-- (void)triggerWithEvent:(int64_t)a3
+- (void)triggerWithEvent:(int64_t)event
 {
-  v4 = self;
-  AppMonitor.trigger(event:)(a3);
+  selfCopy = self;
+  AppMonitor.trigger(event:)(event);
 }
 
 @end

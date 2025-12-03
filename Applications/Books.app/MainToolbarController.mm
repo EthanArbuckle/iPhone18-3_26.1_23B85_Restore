@@ -1,22 +1,22 @@
 @interface MainToolbarController
-- (_TtC5Books21MainToolbarController)initWithCoder:(id)a3;
-- (_TtC5Books21MainToolbarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setSyncLayoutController:(id)a3;
-- (void)syncLayoutControllerNeedsFlushing:(id)a3;
+- (_TtC5Books21MainToolbarController)initWithCoder:(id)coder;
+- (_TtC5Books21MainToolbarController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setSyncLayoutController:(id)controller;
+- (void)syncLayoutControllerNeedsFlushing:(id)flushing;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation MainToolbarController
 
-- (void)setSyncLayoutController:(id)a3
+- (void)setSyncLayoutController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books21MainToolbarController_syncLayoutController);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books21MainToolbarController_syncLayoutController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books21MainToolbarController_syncLayoutController) = controller;
+  controllerCopy = controller;
 }
 
-- (_TtC5Books21MainToolbarController)initWithCoder:(id)a3
+- (_TtC5Books21MainToolbarController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books21MainToolbarController_cancellable) = 0;
   swift_unknownObjectWeakInit();
@@ -28,28 +28,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065B844();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065BE20();
 }
 
-- (_TtC5Books21MainToolbarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Books21MainToolbarController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)syncLayoutControllerNeedsFlushing:(id)a3
+- (void)syncLayoutControllerNeedsFlushing:(id)flushing
 {
-  v4 = self;
-  v3 = [(MainToolbarController *)v4 view];
-  [v3 setNeedsLayout];
+  selfCopy = self;
+  view = [(MainToolbarController *)selfCopy view];
+  [view setNeedsLayout];
 }
 
 @end

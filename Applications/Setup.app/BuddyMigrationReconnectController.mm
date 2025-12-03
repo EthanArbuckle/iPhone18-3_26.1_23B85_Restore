@@ -1,11 +1,11 @@
 @interface BuddyMigrationReconnectController
 - (BuddyMigrationReconnectController)init;
-- (void)_cancelTapped:(id)a3;
+- (void)_cancelTapped:(id)tapped;
 - (void)_startMigration;
 - (void)_startMigrationIfPossible;
 - (void)exitMigrationReconnectController;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyMigrationReconnectController
@@ -23,16 +23,16 @@
 
   if (location)
   {
-    v5 = [location navigationItem];
-    [v5 setTitle:&stru_10032F900];
+    navigationItem = [location navigationItem];
+    [navigationItem setTitle:&stru_10032F900];
 
-    v6 = [location navigationItem];
-    [v6 setHidesBackButton:1 animated:0];
+    navigationItem2 = [location navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
 
-    v7 = [location navigationItem];
+    navigationItem3 = [location navigationItem];
     v8 = [UIBarButtonItem alloc];
     v9 = [v8 initWithBarButtonSystemItem:1 target:location action:"_cancelTapped:"];
-    [v7 setLeftBarButtonItem:v9 animated:0];
+    [navigationItem3 setLeftBarButtonItem:v9 animated:0];
 
     [location setDidReconnect:0];
     [location setUserDidCancelReconnect:0];
@@ -43,14 +43,14 @@
   return v10;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  appearCopy = appear;
   v16.receiver = self;
   v16.super_class = BuddyMigrationReconnectController;
-  [(BuddyMigrationReconnectController *)&v16 viewDidAppear:a3];
+  [(BuddyMigrationReconnectController *)&v16 viewDidAppear:appear];
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -62,31 +62,31 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyMigrationReconnectController *)v19 proximitySetupController];
-  [(ProximitySetupController *)v5 startReconnecting];
+  proximitySetupController = [(BuddyMigrationReconnectController *)selfCopy proximitySetupController];
+  [(ProximitySetupController *)proximitySetupController startReconnecting];
 
-  v6 = [(BuddyMigrationReconnectController *)v19 proximitySetupController];
+  proximitySetupController2 = [(BuddyMigrationReconnectController *)selfCopy proximitySetupController];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_100147F1C;
   v11 = &unk_10032B2E0;
-  v12 = v19;
-  [(ProximitySetupController *)v6 waitForSessionReconnection:&v7];
+  v12 = selfCopy;
+  [(ProximitySetupController *)proximitySetupController2 waitForSessionReconnection:&v7];
 
   objc_storeStrong(&v12, 0);
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationReconnectController *)v11 proximitySetupController];
-  v4 = [(ProximitySetupController *)v3 hasConnection];
+  objc_storeStrong(location, completion);
+  proximitySetupController = [(BuddyMigrationReconnectController *)selfCopy proximitySetupController];
+  hasConnection = [(ProximitySetupController *)proximitySetupController hasConnection];
 
-  if (v4)
+  if (hasConnection)
   {
     oslog = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -99,7 +99,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyMigrationReconnectController *)v11 _startMigration];
+    [(BuddyMigrationReconnectController *)selfCopy _startMigration];
     if (location[0])
     {
       (*(location[0] + 2))(location[0], 0);
@@ -116,42 +116,42 @@
 
 - (void)_startMigrationIfPossible
 {
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100075A38(buf, [(BuddyMigrationReconnectController *)v4 didReconnect], [(BuddyMigrationReconnectController *)v4 userDidCancelReconnect]);
+    sub_100075A38(buf, [(BuddyMigrationReconnectController *)selfCopy didReconnect], [(BuddyMigrationReconnectController *)selfCopy userDidCancelReconnect]);
     _os_log_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEFAULT, "Considering starting migration - did reconnect %d, user did cancel %d", buf, 0xEu);
   }
 
   objc_storeStrong(oslog, 0);
-  if ([(BuddyMigrationReconnectController *)v4 didReconnect]&& ![(BuddyMigrationReconnectController *)v4 userDidCancelReconnect])
+  if ([(BuddyMigrationReconnectController *)selfCopy didReconnect]&& ![(BuddyMigrationReconnectController *)selfCopy userDidCancelReconnect])
   {
-    [(BuddyMigrationReconnectController *)v4 _startMigration];
-    v2 = [(BuddyMigrationReconnectController *)v4 delegate];
-    [v2 flowItemDone:v4];
+    [(BuddyMigrationReconnectController *)selfCopy _startMigration];
+    delegate = [(BuddyMigrationReconnectController *)selfCopy delegate];
+    [delegate flowItemDone:selfCopy];
   }
 }
 
 - (void)_startMigration
 {
-  v2 = [(BuddyMigrationReconnectController *)self prepareForDeviceMigrationBlock];
-  v2[2](v2, 1);
+  prepareForDeviceMigrationBlock = [(BuddyMigrationReconnectController *)self prepareForDeviceMigrationBlock];
+  prepareForDeviceMigrationBlock[2](prepareForDeviceMigrationBlock, 1);
 
-  v3 = [(BuddyMigrationReconnectController *)self startDeviceMigrationBlock];
-  v3[2](v3);
+  startDeviceMigrationBlock = [(BuddyMigrationReconnectController *)self startDeviceMigrationBlock];
+  startDeviceMigrationBlock[2](startDeviceMigrationBlock);
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyMigrationReconnectController *)v15 setUserDidCancelReconnect:1];
-  v3 = [(BuddyMigrationReconnectController *)v15 doesRestartFlowCauseEraseBlock];
-  v4 = v3[2](v3);
+  objc_storeStrong(location, tapped);
+  [(BuddyMigrationReconnectController *)selfCopy setUserDidCancelReconnect:1];
+  doesRestartFlowCauseEraseBlock = [(BuddyMigrationReconnectController *)selfCopy doesRestartFlowCauseEraseBlock];
+  v4 = doesRestartFlowCauseEraseBlock[2](doesRestartFlowCauseEraseBlock);
 
   v13 = v4 & 1;
   v5 = _NSConcreteStackBlock;
@@ -159,10 +159,10 @@
   v7 = 0;
   v8 = sub_1001484C8;
   v9 = &unk_10032D920;
-  v10 = v15;
+  v10 = selfCopy;
   v11 = v4 & 1;
   v12 = [BuddyMigrationCancelAlertController alertControllerForTargetWithNeedsErase:v4 & 1 completion:&v5];
-  [(BuddyMigrationReconnectController *)v15 presentViewController:v12 animated:1 completion:0];
+  [(BuddyMigrationReconnectController *)selfCopy presentViewController:v12 animated:1 completion:0];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);

@@ -2,7 +2,7 @@
 + (id)customAttributes;
 - (CGImage)outputCGImage;
 - (void)setDefaults;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIQRCodeGenerator
@@ -40,20 +40,20 @@
   return v4;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"inputOptions"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"inputOptions"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 objectForKey:@"QRCodeOptionErrorCorrectionLevel"];
+      v8 = [valueCopy objectForKey:@"QRCodeOptionErrorCorrectionLevel"];
 
       if (v8)
       {
-        v9 = [v6 objectForKey:@"QRCodeOptionErrorCorrectionLevel"];
+        v9 = [valueCopy objectForKey:@"QRCodeOptionErrorCorrectionLevel"];
         [(CIQRCodeGenerator *)self setInputCorrectionLevel:v9];
       }
     }
@@ -63,7 +63,7 @@
   {
     v10.receiver = self;
     v10.super_class = CIQRCodeGenerator;
-    [(CIQRCodeGenerator *)&v10 setValue:v6 forUndefinedKey:v7];
+    [(CIQRCodeGenerator *)&v10 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
@@ -91,9 +91,9 @@ LABEL_11:
   }
 
   v4 = [(CIQRCodeGenerator *)self valueForKey:kCIInputVersionKey];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  v6 = sub_8BF0(self->super.inputMessage, self->inputCorrectionLevel, 0, v5 > 0);
+  v6 = sub_8BF0(self->super.inputMessage, self->inputCorrectionLevel, 0, intValue > 0);
   v7 = v6;
   if (v6)
   {

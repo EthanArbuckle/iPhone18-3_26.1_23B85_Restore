@@ -7,10 +7,10 @@
 - (id)accessibilityLabel
 {
   v3 = [(CKLinkSearchResultCellAccessibility *)self safeUIViewForKey:@"linkView"];
-  v4 = [(CKLinkSearchResultCellAccessibility *)self _axContact];
-  v5 = AXCKLocalizedFromStringWithContact(v4);
+  _axContact = [(CKLinkSearchResultCellAccessibility *)self _axContact];
+  v5 = AXCKLocalizedFromStringWithContact(_axContact);
 
-  v8 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

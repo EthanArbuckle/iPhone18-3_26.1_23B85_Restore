@@ -1,6 +1,6 @@
 @interface TapticChimesScheduleController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -11,9 +11,9 @@
   v5.receiver = self;
   v5.super_class = TapticChimesScheduleController;
   [(AccessibilityBridgeBaseController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277CE6FA8] sharedInstance];
-  v4 = [v3 tapticChimesScheduleLocalizedTitle];
-  [(TapticChimesScheduleController *)self setTitle:v4];
+  mEMORY[0x277CE6FA8] = [MEMORY[0x277CE6FA8] sharedInstance];
+  tapticChimesScheduleLocalizedTitle = [mEMORY[0x277CE6FA8] tapticChimesScheduleLocalizedTitle];
+  [(TapticChimesScheduleController *)self setTitle:tapticChimesScheduleLocalizedTitle];
 }
 
 - (id)specifiers
@@ -23,19 +23,19 @@
   if (!v3)
   {
     v25 = *MEMORY[0x277D3FC48];
-    v27 = self;
-    v4 = [MEMORY[0x277CE6FA8] sharedInstance];
-    v5 = [v4 tapticChimesFrequencyOptions];
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count") + 1}];
-    v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
-    v24 = v7;
-    [v6 addObject:v7];
+    selfCopy = self;
+    mEMORY[0x277CE6FA8] = [MEMORY[0x277CE6FA8] sharedInstance];
+    tapticChimesFrequencyOptions = [mEMORY[0x277CE6FA8] tapticChimesFrequencyOptions];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tapticChimesFrequencyOptions, "count") + 1}];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
+    v24 = emptyGroupSpecifier;
+    [v6 addObject:emptyGroupSpecifier];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v5;
+    obj = tapticChimesFrequencyOptions;
     v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v8)
     {
@@ -52,16 +52,16 @@
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v28 + 1) + 8 * i) integerValue];
+          integerValue = [*(*(&v28 + 1) + 8 * i) integerValue];
           v15 = MEMORY[0x277D3FAD8];
-          v16 = [v4 localizedStringForTapticChimesFrequencyEncoding:v14];
-          v17 = [v15 preferenceSpecifierNamed:v16 target:v27 set:0 get:0 detail:0 cell:3 edit:0];
+          v16 = [mEMORY[0x277CE6FA8] localizedStringForTapticChimesFrequencyEncoding:integerValue];
+          v17 = [v15 preferenceSpecifierNamed:v16 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
-          v18 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
+          v18 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
           [v17 setProperty:v18 forKey:v12];
 
           [v6 addObject:v17];
-          if ([v4 voiceOverTapticChimesFrequencyEncoding] == v14)
+          if ([mEMORY[0x277CE6FA8] voiceOverTapticChimesFrequencyEncoding] == integerValue)
           {
             v19 = v17;
 
@@ -81,11 +81,11 @@
     }
 
     [v24 setProperty:v10 forKey:*MEMORY[0x277D40090]];
-    v20 = *(&v27->super.super.super.super.super.super.isa + v25);
-    *(&v27->super.super.super.super.super.super.isa + v25) = v6;
+    v20 = *(&selfCopy->super.super.super.super.super.super.isa + v25);
+    *(&selfCopy->super.super.super.super.super.super.isa + v25) = v6;
     v21 = v6;
 
-    v3 = *(&v27->super.super.super.super.super.super.isa + v25);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v25);
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -93,30 +93,30 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = TapticChimesScheduleController;
-  v6 = a4;
-  [(TapticChimesScheduleController *)&v18 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(TapticChimesScheduleController *)self indexForIndexPath:v6, v18.receiver, v18.super_class];
-  v8 = [(TapticChimesScheduleController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(TapticChimesScheduleController *)&v18 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(TapticChimesScheduleController *)self indexForIndexPath:pathCopy, v18.receiver, v18.super_class];
+  specifiers = [(TapticChimesScheduleController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(TapticChimesScheduleController *)self specifierAtIndex:[(TapticChimesScheduleController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(TapticChimesScheduleController *)self specifierAtIndex:[(TapticChimesScheduleController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 integerValue];
-      v17 = [MEMORY[0x277CE6FA8] sharedInstance];
-      [v17 setVoiceOverTapticChimesFrequencyEncoding:v16];
+      integerValue = [v14 integerValue];
+      mEMORY[0x277CE6FA8] = [MEMORY[0x277CE6FA8] sharedInstance];
+      [mEMORY[0x277CE6FA8] setVoiceOverTapticChimesFrequencyEncoding:integerValue];
 
       [(TapticChimesScheduleController *)self reloadSpecifiers];
     }

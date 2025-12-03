@@ -1,20 +1,20 @@
 @interface FailedPartViewController
-- (FailedPartViewController)initWithComponents:(id)a3;
+- (FailedPartViewController)initWithComponents:(id)components;
 - (RepairResultNavigationCoordinator)coordinator;
 - (void)_continueTapped;
 @end
 
 @implementation FailedPartViewController
 
-- (FailedPartViewController)initWithComponents:(id)a3
+- (FailedPartViewController)initWithComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v5 = +[NSMutableArray array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = componentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
@@ -50,8 +50,8 @@
   v13 = [v12 localizedStringForKey:@"FAILED_PART_TITLE" value:&stru_100008370 table:@"RepairResultPlugin-Release"];
 
   v14 = [v5 componentsJoinedByString:@"\n"];
-  v15 = [(FailedPartViewController *)self navigationItem];
-  [v15 setHidesBackButton:1];
+  navigationItem = [(FailedPartViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   [(FailedPartViewController *)self setScrollingDisabled:0];
   v16 = [v6 count];
@@ -80,8 +80,8 @@
     [v22 setTitle:v24 forState:0];
 
     [v22 addTarget:v21 action:"_continueTapped" forControlEvents:64];
-    v25 = [(FailedPartViewController *)v21 buttonTray];
-    [v25 addButton:v22];
+    buttonTray = [(FailedPartViewController *)v21 buttonTray];
+    [buttonTray addButton:v22];
   }
 
   return v21;
@@ -96,8 +96,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Continue button tapped", v5, 2u);
   }
 
-  v4 = [(FailedPartViewController *)self coordinator];
-  [v4 moveToNextViewController];
+  coordinator = [(FailedPartViewController *)self coordinator];
+  [coordinator moveToNextViewController];
 }
 
 - (RepairResultNavigationCoordinator)coordinator

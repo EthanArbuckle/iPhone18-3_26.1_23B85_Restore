@@ -1,15 +1,15 @@
 @interface PXStoryAutoEditMomentsProvider
 - (NSArray)moments;
-- (PXStoryAutoEditMomentsProvider)initWithConfiguration:(id)a3 assetCollection:(id)a4 displayAssets:(id)a5;
+- (PXStoryAutoEditMomentsProvider)initWithConfiguration:(id)configuration assetCollection:(id)collection displayAssets:(id)assets;
 - (id)_diagnosticSwiftCodeForMomentsUnitTest;
-- (id)_faceprintDatasByAssetUUIDWithAssets:(id)a3;
-- (id)_faceprintsByAssetUUIDWithAssets:(id)a3;
-- (id)_faceprintsByAssetUUIDWithAssets:(id)a3 faceprintDatas:(id)a4;
-- (id)_locationsByAssetUUIDWithAssets:(id)a3;
-- (id)momentForDisplayAssetIndex:(unint64_t)a3;
+- (id)_faceprintDatasByAssetUUIDWithAssets:(id)assets;
+- (id)_faceprintsByAssetUUIDWithAssets:(id)assets;
+- (id)_faceprintsByAssetUUIDWithAssets:(id)assets faceprintDatas:(id)datas;
+- (id)_locationsByAssetUUIDWithAssets:(id)assets;
+- (id)momentForDisplayAssetIndex:(unint64_t)index;
 - (unint64_t)count;
 - (void)_computeClustering;
-- (void)enumerateMomentsUsingBlock:(id)a3;
+- (void)enumerateMomentsUsingBlock:(id)block;
 @end
 
 @implementation PXStoryAutoEditMomentsProvider
@@ -31,12 +31,12 @@
   {
     v6 = 0;
     v7 = MEMORY[0x1E695E0F0];
-    v75 = self;
+    selfCopy = self;
     do
     {
       v8 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndex:v6];
-      v9 = [v8 uuid];
-      v10 = [v76 objectForKeyedSubscript:v9];
+      uuid = [v8 uuid];
+      v10 = [v76 objectForKeyedSubscript:uuid];
 
       v78 = v10;
       if (v10)
@@ -56,10 +56,10 @@
         [v82 addObject:&unk_1F190E088];
       }
 
-      v15 = [v8 creationDate];
-      [v81 addObject:v15];
-      v16 = [v8 uuid];
-      v17 = [v77 objectForKeyedSubscript:v16];
+      creationDate = [v8 creationDate];
+      [v81 addObject:creationDate];
+      uuid2 = [v8 uuid];
+      v17 = [v77 objectForKeyedSubscript:uuid2];
       v18 = v17;
       v19 = v7;
       if (v17)
@@ -74,7 +74,7 @@
 
       v21 = v20;
 
-      v22 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if ([v21 count])
       {
         v23 = 0;
@@ -84,7 +84,7 @@
           v25 = [v24 base64EncodedStringWithOptions:34];
           if (v25)
           {
-            [v22 addObject:v25];
+            [array addObject:v25];
           }
 
           ++v23;
@@ -94,9 +94,9 @@
       }
 
       v7 = v19;
-      if (v22)
+      if (array)
       {
-        v26 = v22;
+        v26 = array;
       }
 
       else
@@ -108,29 +108,29 @@
       [v80 addObject:v26];
 
       ++v6;
-      self = v75;
+      self = selfCopy;
     }
 
-    while (v6 < [(PXDisplayAssetFetchResult *)v75->_displayAssets count]);
+    while (v6 < [(PXDisplayAssetFetchResult *)selfCopy->_displayAssets count]);
   }
 
-  v27 = [(PXStoryAutoEditMomentsProvider *)self statistics];
+  statistics = [(PXStoryAutoEditMomentsProvider *)self statistics];
   [v3 appendFormat:@"    func testFromTTR() throws {\n"];
   [v3 appendFormat:@"        let dictionary: [AnyHashable : Any] = [\n"];
   [v3 appendFormat:@"            version : PFStoryAutoEditConfiguration.currentVersion, \n"];
   [v3 appendFormat:@"            memoryCategories : [\n"];
-  v28 = [v27 memoryCategoryName];
-  [v3 appendFormat:@"                %@ : [\n", v28];
+  memoryCategoryName = [statistics memoryCategoryName];
+  [v3 appendFormat:@"                %@ : [\n", memoryCategoryName];
 
   [v3 appendFormat:@"                    clustering : [\n"];
-  v29 = [v27 clusteringProperties];
-  v30 = [v29 algorithm];
-  [v3 appendFormat:@"                        algorithm : %@, \n", v30];
+  clusteringProperties = [statistics clusteringProperties];
+  algorithm = [clusteringProperties algorithm];
+  [v3 appendFormat:@"                        algorithm : %@, \n", algorithm];
 
   [v3 appendFormat:@"                        algorithmProperties : [\n"];
-  v31 = [v27 clusteringProperties];
-  v32 = [v31 algorithmProperties];
-  v33 = [v32 objectForKeyedSubscript:@"minimumNumberOfObjects"];
+  clusteringProperties2 = [statistics clusteringProperties];
+  algorithmProperties = [clusteringProperties2 algorithmProperties];
+  v33 = [algorithmProperties objectForKeyedSubscript:@"minimumNumberOfObjects"];
   v34 = v33;
   if (v33)
   {
@@ -144,9 +144,9 @@
 
   [v3 appendFormat:@"                            minimumNumberOfObjects : %@, \n", v35];
 
-  v36 = [v27 clusteringProperties];
-  v37 = [v36 algorithmProperties];
-  v38 = [v37 objectForKeyedSubscript:@"maximumDistance"];
+  clusteringProperties3 = [statistics clusteringProperties];
+  algorithmProperties2 = [clusteringProperties3 algorithmProperties];
+  v38 = [algorithmProperties2 objectForKeyedSubscript:@"maximumDistance"];
   v39 = v38;
   if (v38)
   {
@@ -162,9 +162,9 @@
 
   [v3 appendFormat:@"                        ], \n"];
   [v3 appendFormat:@"                        distanceWeights : [\n"];
-  v41 = [v27 clusteringProperties];
-  v42 = [v41 distanceWeights];
-  v43 = [v42 objectForKeyedSubscript:@"time"];
+  clusteringProperties4 = [statistics clusteringProperties];
+  distanceWeights = [clusteringProperties4 distanceWeights];
+  v43 = [distanceWeights objectForKeyedSubscript:@"time"];
   v44 = v43;
   if (v43)
   {
@@ -178,9 +178,9 @@
 
   [v3 appendFormat:@"                            time : %@, \n", v45];
 
-  v46 = [v27 clusteringProperties];
-  v47 = [v46 distanceWeights];
-  v48 = [v47 objectForKeyedSubscript:@"location"];
+  clusteringProperties5 = [statistics clusteringProperties];
+  distanceWeights2 = [clusteringProperties5 distanceWeights];
+  v48 = [distanceWeights2 objectForKeyedSubscript:@"location"];
   v49 = v48;
   if (v48)
   {
@@ -194,10 +194,10 @@
 
   [v3 appendFormat:@"                            location : %@, \n", v50];
 
-  v79 = v27;
-  v51 = [v27 clusteringProperties];
-  v52 = [v51 distanceWeights];
-  v53 = [v52 objectForKeyedSubscript:@"face"];
+  v79 = statistics;
+  clusteringProperties6 = [statistics clusteringProperties];
+  distanceWeights3 = [clusteringProperties6 distanceWeights];
+  v53 = [distanceWeights3 objectForKeyedSubscript:@"face"];
   v54 = v53;
   if (v53)
   {
@@ -288,8 +288,8 @@
   [v3 appendFormat:@"        \n"];
   [v3 appendFormat:@"        let assetCollection = MockPHAssetCollection() { collection in\n"];
   [v3 appendFormat:@"            collection.testAssetCollectionType = .memory\n"];
-  v71 = [v79 memoryCategoryName];
-  [v3 appendFormat:@"            collection.testCategory = .%@\n", v71];
+  memoryCategoryName2 = [v79 memoryCategoryName];
+  [v3 appendFormat:@"            collection.testCategory = .%@\n", memoryCategoryName2];
 
   [v3 appendFormat:@"        }\n"];
   [v3 appendFormat:@"        let displayAssets = PXDisplayAssetFetchResultFromArray(assets)\n"];
@@ -304,48 +304,48 @@
   return v3;
 }
 
-- (id)momentForDisplayAssetIndex:(unint64_t)a3
+- (id)momentForDisplayAssetIndex:(unint64_t)index
 {
-  v6 = [(PXStoryAutoEditMomentsProvider *)self moments];
-  v7 = [v6 firstObject];
-  if ([v7 firstGlobalIndex] > a3)
+  moments = [(PXStoryAutoEditMomentsProvider *)self moments];
+  firstObject = [moments firstObject];
+  if ([firstObject firstGlobalIndex] > index)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:590 description:{@"Invalid asset index: %lu", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:590 description:{@"Invalid asset index: %lu", index}];
   }
 
-  if ([v7 lastGlobalIndex] >= a3)
+  if ([firstObject lastGlobalIndex] >= index)
   {
-    v13 = v7;
+    v13 = firstObject;
   }
 
   else
   {
-    v8 = [v6 lastObject];
-    if ([v8 lastGlobalIndex] < a3)
+    lastObject = [moments lastObject];
+    if ([lastObject lastGlobalIndex] < index)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:596 description:{@"Invalid asset index: %lu", a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryAutoEditMomentsProvider.m" lineNumber:596 description:{@"Invalid asset index: %lu", index}];
     }
 
-    if ([v8 firstGlobalIndex] <= a3)
+    if ([lastObject firstGlobalIndex] <= index)
     {
-      v14 = v8;
+      v14 = lastObject;
     }
 
     else
     {
-      v9 = [v6 count] - 1;
+      v9 = [moments count] - 1;
       if (v9 >= 2)
       {
         v10 = 0;
         while (1)
         {
           v11 = (v10 + v9) >> 1;
-          v12 = [v6 objectAtIndexedSubscript:v11];
-          if ([v12 firstGlobalIndex] <= a3)
+          v12 = [moments objectAtIndexedSubscript:v11];
+          if ([v12 firstGlobalIndex] <= index)
           {
-            if ([v12 lastGlobalIndex] >= a3)
+            if ([v12 lastGlobalIndex] >= index)
             {
 
               goto LABEL_21;
@@ -375,7 +375,7 @@ LABEL_18:
       }
 
 LABEL_21:
-      v14 = [v6 objectAtIndexedSubscript:v11];
+      v14 = [moments objectAtIndexedSubscript:v11];
     }
 
     v13 = v14;
@@ -386,37 +386,37 @@ LABEL_21:
 
 - (unint64_t)count
 {
-  v2 = [(PXStoryAutoEditMomentsProvider *)self moments];
-  v3 = [v2 count];
+  moments = [(PXStoryAutoEditMomentsProvider *)self moments];
+  v3 = [moments count];
 
   return v3;
 }
 
-- (void)enumerateMomentsUsingBlock:(id)a3
+- (void)enumerateMomentsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXStoryAutoEditMomentsProvider *)self moments];
+  blockCopy = block;
+  moments = [(PXStoryAutoEditMomentsProvider *)self moments];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__PXStoryAutoEditMomentsProvider_enumerateMomentsUsingBlock___block_invoke;
   v7[3] = &unk_1E7734A40;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [moments enumerateObjectsUsingBlock:v7];
 }
 
 - (NSArray)moments
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_moments)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_moments)
   {
-    [(PXStoryAutoEditMomentsProvider *)v2 _computeClustering];
+    [(PXStoryAutoEditMomentsProvider *)selfCopy _computeClustering];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  moments = v2->_moments;
+  moments = selfCopy->_moments;
 
   return moments;
 }
@@ -428,12 +428,12 @@ LABEL_21:
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v4 = v3;
-    v5 = [(PXStoryAutoEditMomentsProvider *)self assetCollection];
+    assetCollection = [(PXStoryAutoEditMomentsProvider *)self assetCollection];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 category];
+      category = [assetCollection category];
       v7 = @"singleMoment";
-      switch(v6)
+      switch(category)
       {
         case 1:
           break;
@@ -516,7 +516,7 @@ LABEL_21:
           v7 = @"childAndPerson";
           break;
         default:
-          if (v6 == 202)
+          if (category == 202)
           {
 LABEL_67:
             v7 = @"dayInHistory";
@@ -524,7 +524,7 @@ LABEL_67:
 
           else
           {
-            if (v6 != 216)
+            if (category != 216)
             {
               goto LABEL_6;
             }
@@ -538,12 +538,12 @@ LABEL_67:
 
     else
     {
-      v6 = 0;
+      category = 0;
 LABEL_6:
       v7 = @"default";
     }
 
-    v88 = v6;
+    v88 = category;
     v8 = os_signpost_id_make_with_pointer(self->_log, self);
     v9 = self->_log;
     v10 = v9;
@@ -559,15 +559,15 @@ LABEL_6:
     }
 
     v12 = [(PFStoryAutoEditConfiguration *)self->_configuration clusteringPropertiesForMemoryCategoryName:v7];
-    v13 = [(PXStoryAutoEditMomentsProvider *)self clusteringProperties];
+    clusteringProperties = [(PXStoryAutoEditMomentsProvider *)self clusteringProperties];
 
-    v95 = v5;
+    v95 = assetCollection;
     spid = v8;
-    if (v13)
+    if (clusteringProperties)
     {
-      v14 = [(PXStoryAutoEditMomentsProvider *)self clusteringProperties];
+      clusteringProperties2 = [(PXStoryAutoEditMomentsProvider *)self clusteringProperties];
 
-      v12 = v14;
+      v12 = clusteringProperties2;
     }
 
     v93 = v7;
@@ -588,15 +588,15 @@ LABEL_6:
     }
 
     v19 = [(PXStoryAutoEditMomentsProvider *)self _locationsByAssetUUIDWithAssets:v15];
-    v94 = self;
+    selfCopy = self;
     v20 = [(PXStoryAutoEditMomentsProvider *)self _faceprintsByAssetUUIDWithAssets:v15];
     v21 = [PXStoryMemoryMomentConcreteClusteringDistanceCalculator alloc];
-    v22 = [v12 distanceWeights];
+    distanceWeights = [v12 distanceWeights];
     v89 = v20;
     v90 = v19;
-    v99 = [(PXStoryMemoryMomentConcreteClusteringDistanceCalculator *)v21 initWithWeights:v22 locationsByAssetUUID:v19 faceprintsByAssetUUID:v20];
+    v99 = [(PXStoryMemoryMomentConcreteClusteringDistanceCalculator *)v21 initWithWeights:distanceWeights locationsByAssetUUID:v19 faceprintsByAssetUUID:v20];
 
-    v23 = [v12 algorithm];
+    algorithm = [v12 algorithm];
     v115[0] = objc_opt_class();
     v115[1] = objc_opt_class();
     v115[2] = objc_opt_class();
@@ -605,7 +605,7 @@ LABEL_6:
     v115[5] = objc_opt_class();
     v115[6] = objc_opt_class();
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:7];
-    v25 = v23;
+    v25 = algorithm;
     v26 = v24;
     v100 = v15;
     if ([v26 count])
@@ -675,19 +675,19 @@ LABEL_22:
     {
       v40 = [(PXStoryMemoryMomentConcreteClusteringDistanceCalculator *)v99 densityClusteringDistanceBlockForAssets:v15];
       v41 = [[v32 alloc] initWithDistanceBlock:v40];
-      v42 = [v12 algorithmProperties];
-      [v41 setValuesForKeysWithDictionary:v42];
+      algorithmProperties = [v12 algorithmProperties];
+      [v41 setValuesForKeysWithDictionary:algorithmProperties];
 
-      v43 = [v41 performWithDataset:v16 progressBlock:&__block_literal_global_68762];
+      array = [v41 performWithDataset:v16 progressBlock:&__block_literal_global_68762];
     }
 
     else
     {
-      v43 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
     v92 = v16;
-    v97 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v43, "count")}];
+    v97 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(array, "count")}];
     v44 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[PXDisplayAssetFetchResult count](v15, "count")}];
     if ([(PXDisplayAssetFetchResult *)v15 count]>= 1)
     {
@@ -701,24 +701,24 @@ LABEL_22:
       while (v45 < [(PXDisplayAssetFetchResult *)v15 count]);
     }
 
-    v98 = v43;
-    if ([v43 count])
+    v98 = array;
+    if ([array count])
     {
       v46 = 0;
       do
       {
-        v47 = [v43 objectAtIndexedSubscript:v46];
-        v48 = [v47 objects];
+        v47 = [array objectAtIndexedSubscript:v46];
+        objects = [v47 objects];
 
-        if ([v48 count])
+        if ([objects count])
         {
           v49 = 0;
           do
           {
-            v50 = [v48 objectAtIndexedSubscript:v49];
-            v51 = [v50 integerValue];
+            v50 = [objects objectAtIndexedSubscript:v49];
+            integerValue = [v50 integerValue];
 
-            v52 = [v44 objectAtIndexedSubscript:v51];
+            v52 = [v44 objectAtIndexedSubscript:integerValue];
             v53 = [v52 isEqual:&unk_1F190B4D0];
 
             if ((v53 & 1) == 0)
@@ -726,12 +726,12 @@ LABEL_22:
               v54 = PLStoryGetLog();
               if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
               {
-                v55 = [v44 objectAtIndexedSubscript:v51];
-                v56 = [v55 integerValue];
+                v55 = [v44 objectAtIndexedSubscript:integerValue];
+                integerValue2 = [v55 integerValue];
                 *buf = 134218496;
-                v102 = v51;
+                v102 = integerValue;
                 v103 = 2048;
-                v104 = v56;
+                v104 = integerValue2;
                 v105 = 2048;
                 v106 = v46;
                 _os_log_impl(&dword_1A3C1C000, v54, OS_LOG_TYPE_INFO, "Moments clustering reused asset %lu in multiple clusters, cluster %ld and %lu", buf, 0x20u);
@@ -739,16 +739,16 @@ LABEL_22:
             }
 
             v57 = [MEMORY[0x1E696AD98] numberWithInteger:v46];
-            [v44 setObject:v57 atIndexedSubscript:v51];
+            [v44 setObject:v57 atIndexedSubscript:integerValue];
 
             ++v49;
           }
 
-          while (v49 < [v48 count]);
+          while (v49 < [objects count]);
         }
 
         ++v46;
-        v43 = v98;
+        array = v98;
       }
 
       while (v46 < [v98 count]);
@@ -763,7 +763,7 @@ LABEL_22:
       {
         v61 = v59;
         v62 = [v44 objectAtIndexedSubscript:v59];
-        v63 = [v62 integerValue];
+        integerValue3 = [v62 integerValue];
 
         v64 = v61 + 1;
         do
@@ -775,12 +775,12 @@ LABEL_22:
           }
 
           v65 = [v44 objectAtIndexedSubscript:v59];
-          v66 = [v65 integerValue];
+          integerValue4 = [v65 integerValue];
 
           v64 = v59 + 1;
         }
 
-        while (v63 == v66);
+        while (integerValue3 == integerValue4);
         v67 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v61, v59 - v61}];
         v68 = [[PXStoryMemoryMoment alloc] initWithDisplayAssets:v100 indexSet:v67 diagnosticDistanceCalculator:v99];
         v69 = [(PXStoryMemoryMoment *)v68 count];
@@ -811,11 +811,11 @@ LABEL_22:
     v73 = PLStoryGetLog();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = [v95 localizedTitle];
+      localizedTitle = [v95 localizedTitle];
       v75 = [MEMORY[0x1E69788F0] stringForCategory:v88];
       v76 = [v97 count];
       *buf = 138413826;
-      v102 = v74;
+      v102 = localizedTitle;
       v103 = 2112;
       v104 = v75;
       v105 = 2112;
@@ -832,18 +832,18 @@ LABEL_22:
     }
 
     v77 = [v97 copy];
-    moments = v94->_moments;
-    v94->_moments = v77;
+    moments = selfCopy->_moments;
+    selfCopy->_moments = v77;
 
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setMinimumAssetCount:v60];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setMaximumAssetCount:v58];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setAverageAssetCount:v72];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setMemoryCategoryName:v93];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setMinimumAssetCount:v60];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setMaximumAssetCount:v58];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setAverageAssetCount:v72];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setMemoryCategoryName:v93];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setClusteringDuration:v79 - v4];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setClusteringProperties:v96];
-    [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics setClusteringDistanceCalculator:v99];
-    v80 = v94->_log;
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setClusteringDuration:v79 - v4];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setClusteringProperties:v96];
+    [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics setClusteringDistanceCalculator:v99];
+    v80 = selfCopy->_log;
     v81 = v80;
     if (v91 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v80))
     {
@@ -865,7 +865,7 @@ LABEL_22:
     v84 = PLStoryGetLog();
     if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
     {
-      [(PXStoryAutoEditConcreteMomentsStatistics *)v94->_statistics clusteringDuration];
+      [(PXStoryAutoEditConcreteMomentsStatistics *)selfCopy->_statistics clusteringDuration];
       *buf = 134217984;
       v102 = v85;
       _os_log_impl(&dword_1A3C1C000, v84, OS_LOG_TYPE_DEFAULT, "clustering finished in %.3fs", buf, 0xCu);
@@ -873,32 +873,32 @@ LABEL_22:
   }
 }
 
-- (id)_locationsByAssetUUIDWithAssets:(id)a3
+- (id)_locationsByAssetUUIDWithAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v3 count] >= 2)
+  if ([assetsCopy count] >= 2)
   {
-    v6 = [v3 firstObject];
+    firstObject = [assetsCopy firstObject];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      if ([v3 count])
+      if ([assetsCopy count])
       {
         v8 = 0;
         do
         {
-          v9 = [v3 objectAtIndex:v8];
-          v10 = [v9 location];
-          v11 = [v9 uuid];
-          v12 = v11;
-          if (v10)
+          v9 = [assetsCopy objectAtIndex:v8];
+          location = [v9 location];
+          uuid = [v9 uuid];
+          v12 = uuid;
+          if (location)
           {
-            if (v11)
+            if (uuid)
             {
-              [v10 coordinate];
+              [location coordinate];
               latitude = v18.latitude;
               longitude = v18.longitude;
               if (CLLocationCoordinate2DIsValid(v18))
@@ -912,7 +912,7 @@ LABEL_22:
           ++v8;
         }
 
-        while (v8 < [v3 count]);
+        while (v8 < [assetsCopy count]);
       }
     }
   }
@@ -922,13 +922,13 @@ LABEL_22:
   return v5;
 }
 
-- (id)_faceprintsByAssetUUIDWithAssets:(id)a3
+- (id)_faceprintsByAssetUUIDWithAssets:(id)assets
 {
-  v4 = a3;
-  if ([v4 count] >= 2)
+  assetsCopy = assets;
+  if ([assetsCopy count] >= 2)
   {
-    v6 = [(PXStoryAutoEditMomentsProvider *)self _faceprintDatasByAssetUUIDWithAssets:v4];
-    v5 = [(PXStoryAutoEditMomentsProvider *)self _faceprintsByAssetUUIDWithAssets:v4 faceprintDatas:v6];
+    v6 = [(PXStoryAutoEditMomentsProvider *)self _faceprintDatasByAssetUUIDWithAssets:assetsCopy];
+    v5 = [(PXStoryAutoEditMomentsProvider *)self _faceprintsByAssetUUIDWithAssets:assetsCopy faceprintDatas:v6];
   }
 
   else
@@ -939,43 +939,43 @@ LABEL_22:
   return v5;
 }
 
-- (id)_faceprintDatasByAssetUUIDWithAssets:(id)a3
+- (id)_faceprintDatasByAssetUUIDWithAssets:(id)assets
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_autoreleasePoolPush();
-  if ([v3 count] < 2)
+  if ([assetsCopy count] < 2)
   {
     v29 = 0;
     goto LABEL_23;
   }
 
-  v5 = [v3 firstObject];
+  firstObject = [assetsCopy firstObject];
   if (objc_opt_respondsToSelector())
   {
     v29 = objc_opt_new();
-    if ([v3 count] >= 1)
+    if ([assetsCopy count] >= 1)
     {
-      v27 = v5;
+      v27 = firstObject;
       v6 = 0;
-      v28 = v3;
+      v28 = assetsCopy;
       do
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = [v3 objectAtIndexedSubscript:v6];
-        v9 = [v8 uuid];
+        v8 = [assetsCopy objectAtIndexedSubscript:v6];
+        uuid = [v8 uuid];
         if (objc_opt_respondsToSelector())
         {
           v30 = v7;
           v10 = v8;
           v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          v12 = [v10 faceStrings];
-          if ([v12 count])
+          faceStrings = [v10 faceStrings];
+          if ([faceStrings count])
           {
             v13 = 0;
             do
             {
-              v14 = [v12 objectAtIndexedSubscript:v13];
+              v14 = [faceStrings objectAtIndexedSubscript:v13];
               v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v14 options:1];
               if (v15)
               {
@@ -985,12 +985,12 @@ LABEL_22:
               ++v13;
             }
 
-            while (v13 < [v12 count]);
+            while (v13 < [faceStrings count]);
           }
 
-          [v29 setObject:v11 forKeyedSubscript:v9];
+          [v29 setObject:v11 forKeyedSubscript:uuid];
 
-          v3 = v28;
+          assetsCopy = v28;
           v7 = v30;
         }
 
@@ -998,8 +998,8 @@ LABEL_22:
         ++v6;
       }
 
-      while (v6 < [v3 count]);
-      v5 = v27;
+      while (v6 < [assetsCopy count]);
+      firstObject = v27;
     }
 
     goto LABEL_22;
@@ -1013,31 +1013,31 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v16 = [v5 photoLibrary];
-  v17 = v16;
-  if (!v16)
+  photoLibrary = [firstObject photoLibrary];
+  v17 = photoLibrary;
+  if (!photoLibrary)
   {
     goto LABEL_20;
   }
 
-  v18 = [v16 photoLibraryForCurrentQueueQoS];
+  photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
 
-  if (!v18)
+  if (!photoLibraryForCurrentQueueQoS)
   {
     goto LABEL_20;
   }
 
-  v19 = [v17 librarySpecificFetchOptions];
-  v20 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v19 setIncludedDetectionTypes:v20];
+  librarySpecificFetchOptions = [v17 librarySpecificFetchOptions];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
   v33[0] = *MEMORY[0x1E6978D60];
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-  [v19 setFetchPropertySets:v21];
+  [librarySpecificFetchOptions setFetchPropertySets:v21];
 
-  v22 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v3, "count")}];
-  v23 = [v3 objectsAtIndexes:v22];
-  v24 = [MEMORY[0x1E69787C8] fetchFacesGroupedByAssetLocalIdentifierForAssets:v23 options:v19];
+  v22 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(assetsCopy, "count")}];
+  v23 = [assetsCopy objectsAtIndexes:v22];
+  v24 = [MEMORY[0x1E69787C8] fetchFacesGroupedByAssetLocalIdentifierForAssets:v23 options:librarySpecificFetchOptions];
   v25 = objc_opt_new();
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -1104,24 +1104,24 @@ void __71__PXStoryAutoEditMomentsProvider__faceprintDatasByAssetUUIDWithAssets__
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_faceprintsByAssetUUIDWithAssets:(id)a3 faceprintDatas:(id)a4
+- (id)_faceprintsByAssetUUIDWithAssets:(id)assets faceprintDatas:(id)datas
 {
-  v5 = a3;
-  v20 = a4;
+  assetsCopy = assets;
+  datasCopy = datas;
   v6 = objc_autoreleasePoolPush();
-  if ([v5 count] >= 2)
+  if ([assetsCopy count] >= 2)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([v5 count] >= 1)
+    if ([assetsCopy count] >= 1)
     {
       v18 = v6;
-      v19 = v5;
+      v19 = assetsCopy;
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:{v8, v18}];
-        v10 = [v9 uuid];
-        v11 = [v20 objectForKeyedSubscript:v10];
+        v9 = [assetsCopy objectAtIndexedSubscript:{v8, v18}];
+        uuid = [v9 uuid];
+        v11 = [datasCopy objectForKeyedSubscript:uuid];
         v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
         if ([v11 count])
         {
@@ -1146,10 +1146,10 @@ void __71__PXStoryAutoEditMomentsProvider__faceprintDatasByAssetUUIDWithAssets__
           while (v13 < [v11 count]);
         }
 
-        [v7 setObject:v12 forKeyedSubscript:v10];
+        [v7 setObject:v12 forKeyedSubscript:uuid];
 
         ++v8;
-        v5 = v19;
+        assetsCopy = v19;
       }
 
       while (v8 < [v19 count]);
@@ -1167,20 +1167,20 @@ void __71__PXStoryAutoEditMomentsProvider__faceprintDatasByAssetUUIDWithAssets__
   return v7;
 }
 
-- (PXStoryAutoEditMomentsProvider)initWithConfiguration:(id)a3 assetCollection:(id)a4 displayAssets:(id)a5
+- (PXStoryAutoEditMomentsProvider)initWithConfiguration:(id)configuration assetCollection:(id)collection displayAssets:(id)assets
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  collectionCopy = collection;
+  assetsCopy = assets;
   v22.receiver = self;
   v22.super_class = PXStoryAutoEditMomentsProvider;
   v12 = [(PXStoryAutoEditMomentsProvider *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_configuration, a3);
-    objc_storeStrong(&v13->_assetCollection, a4);
-    objc_storeStrong(&v13->_displayAssets, a5);
+    objc_storeStrong(&v12->_configuration, configuration);
+    objc_storeStrong(&v13->_assetCollection, collection);
+    objc_storeStrong(&v13->_displayAssets, assets);
     v14 = objc_alloc_init(PXStoryAutoEditConcreteMomentsStatistics);
     statistics = v13->_statistics;
     v13->_statistics = v14;

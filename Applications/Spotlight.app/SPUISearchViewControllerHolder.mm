@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002380;
   block[3] = &unk_10000C4D8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100011F28 != -1)
   {
     dispatch_once(&qword_100011F28, block);
@@ -35,8 +35,8 @@
     [(SPUISearchViewControllerHolder *)v2 setSearchViewController:v3];
 
     v4 = [SPUINavigationController alloc];
-    v5 = [(SPUISearchViewControllerHolder *)v2 searchViewController];
-    v6 = [v4 initWithSearchViewController:v5];
+    searchViewController = [(SPUISearchViewControllerHolder *)v2 searchViewController];
+    v6 = [v4 initWithSearchViewController:searchViewController];
 
     [(SPUISearchViewControllerHolder *)v2 setNavigationController:v6];
     if (+[SPUIDefaults enableFloatingWindow])
@@ -59,7 +59,7 @@
 {
   if (+[SPUIDefaults bottomSearchFieldEnabled])
   {
-    v3 = [(SPUISearchViewControllerHolder *)self unifiedFieldController];
+    unifiedFieldController = [(SPUISearchViewControllerHolder *)self unifiedFieldController];
   }
 
   else
@@ -73,18 +73,18 @@
     {
       [(SPUISearchViewControllerHolder *)self navigationController];
     }
-    v3 = ;
+    unifiedFieldController = ;
   }
 
-  return v3;
+  return unifiedFieldController;
 }
 
 - (CALayer)searchProtectorLayer
 {
-  v2 = [(SPUISearchViewControllerHolder *)self unifiedFieldController];
-  v3 = [v2 searchProtectorLayer];
+  unifiedFieldController = [(SPUISearchViewControllerHolder *)self unifiedFieldController];
+  searchProtectorLayer = [unifiedFieldController searchProtectorLayer];
 
-  return v3;
+  return searchProtectorLayer;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface NotchedPlatformSlider
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
-- (_TtC19VolumeLimitSettings21NotchedPlatformSlider)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)handleSliderTap:(id)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+- (_TtC19VolumeLimitSettings21NotchedPlatformSlider)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)handleSliderTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation NotchedPlatformSlider
@@ -19,18 +19,18 @@
   [v2 setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_3F04();
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
   [(NotchedPlatformSlider *)&v11 trackRectForBounds:x, y, width, height];
@@ -42,31 +42,31 @@
   return result;
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v6 = self;
-  sub_2D08(a4, a3);
+  selfCopy = self;
+  sub_2D08(animated, value);
 }
 
-- (void)handleSliderTap:(id)a3
+- (void)handleSliderTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_2F4C(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_2F4C(tapCopy);
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v12 = self;
-  v13 = sub_3130(v11, v10, v9, v8, x, y, width, height, a5);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
+  selfCopy = self;
+  v13 = sub_3130(v11, v10, v9, v8, x, y, width, height, value);
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -82,7 +82,7 @@
   return result;
 }
 
-- (_TtC19VolumeLimitSettings21NotchedPlatformSlider)initWithFrame:(CGRect)a3
+- (_TtC19VolumeLimitSettings21NotchedPlatformSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

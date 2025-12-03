@@ -1,12 +1,12 @@
 @interface NSKeyValueOrderedSet
 + (id)_proxyShare;
 - ($6C36EBF4C34944E14D6052B25C3B65B5)_proxyLocator;
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
 - (void)_proxyNonGCFinalize;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
 @end
 
 @implementation NSKeyValueOrderedSet
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -31,9 +31,9 @@
   v6 = [(NSKeyValueOrderedSet *)&v8 init];
   if (v6)
   {
-    v6->_container = a3;
-    v6->_key = [a4 key];
-    v6->_methods = [a4 methods];
+    v6->_container = container;
+    v6->_key = [getter key];
+    v6->_methods = [getter methods];
   }
 
   return v6;
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_methods->getObjectsRange)
@@ -79,11 +79,11 @@
   {
     v4.receiver = self;
     v4.super_class = NSKeyValueOrderedSet;
-    [(NSKeyValueOrderedSet *)&v4 getObjects:a3 range:a4.location, a4.length];
+    [(NSKeyValueOrderedSet *)&v4 getObjects:objects range:range.location, range.length];
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   if (self->_methods->objectAtIndex)
   {
@@ -93,7 +93,7 @@
 
   else
   {
-    v4 = [[NSIndexSet alloc] initWithIndex:a3];
+    v4 = [[NSIndexSet alloc] initWithIndex:index];
     method_invoke();
     v6 = v5;
 
@@ -103,7 +103,7 @@
   return result;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_methods->objectsAtIndexes)
@@ -116,7 +116,7 @@
   {
     v4.receiver = self;
     v4.super_class = NSKeyValueOrderedSet;
-    return [(NSKeyValueOrderedSet *)&v4 objectsAtIndexes:a3];
+    return [(NSKeyValueOrderedSet *)&v4 objectsAtIndexes:indexes];
   }
 
   return result;

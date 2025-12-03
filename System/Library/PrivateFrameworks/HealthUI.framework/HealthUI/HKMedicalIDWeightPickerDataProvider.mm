@@ -1,9 +1,9 @@
 @interface HKMedicalIDWeightPickerDataProvider
-+ (double)getWeightInKilogramsForRow:(int64_t)a3;
-+ (double)localWeightValueForRow:(int64_t)a3;
-+ (id)titleForRow:(int64_t)a3;
++ (double)getWeightInKilogramsForRow:(int64_t)row;
++ (double)localWeightValueForRow:(int64_t)row;
++ (id)titleForRow:(int64_t)row;
 + (int64_t)numberOfRows;
-+ (int64_t)rowForWeightInKilograms:(double)a3;
++ (int64_t)rowForWeightInKilograms:(double)kilograms;
 @end
 
 @implementation HKMedicalIDWeightPickerDataProvider
@@ -11,15 +11,15 @@
 + (int64_t)numberOfRows
 {
   v2 = +[HKPersonWeightFormatter sharedFormatter];
-  v3 = [v2 localWeightUnit];
+  localWeightUnit = [v2 localWeightUnit];
 
   v4 = 1316;
-  if (v3 == 1538)
+  if (localWeightUnit == 1538)
   {
     v4 = 1451;
   }
 
-  if (v3 == 1539)
+  if (localWeightUnit == 1539)
   {
     return 1036;
   }
@@ -30,75 +30,75 @@
   }
 }
 
-+ (int64_t)rowForWeightInKilograms:(double)a3
++ (int64_t)rowForWeightInKilograms:(double)kilograms
 {
   v4 = +[HKPersonWeightFormatter sharedFormatter];
-  v5 = [v4 localWeightUnit];
+  localWeightUnit = [v4 localWeightUnit];
 
-  if (v5 == 1538)
+  if (localWeightUnit == 1538)
   {
-    v6 = a3 / 0.453592;
+    v6 = kilograms / 0.453592;
   }
 
-  else if (v5 == 1539)
+  else if (localWeightUnit == 1539)
   {
-    v6 = a3 / 6.35029 * 10.0;
+    v6 = kilograms / 6.35029 * 10.0;
   }
 
   else
   {
-    v6 = a3 + a3;
+    v6 = kilograms + kilograms;
   }
 
   return llround(v6);
 }
 
-+ (double)localWeightValueForRow:(int64_t)a3
++ (double)localWeightValueForRow:(int64_t)row
 {
-  v3 = a3;
+  rowCopy = row;
   v4 = +[HKPersonWeightFormatter sharedFormatter];
-  v5 = [v4 localWeightUnit];
+  localWeightUnit = [v4 localWeightUnit];
 
-  if (v5 == 14)
+  if (localWeightUnit == 14)
   {
-    return v3 * 0.5;
+    return rowCopy * 0.5;
   }
 
-  if (v5 == 1539)
+  if (localWeightUnit == 1539)
   {
-    return v3 / 10.0;
+    return rowCopy / 10.0;
   }
 
-  return v3;
+  return rowCopy;
 }
 
-+ (id)titleForRow:(int64_t)a3
++ (id)titleForRow:(int64_t)row
 {
-  [a1 localWeightValueForRow:a3];
+  [self localWeightValueForRow:row];
   v4 = v3;
   v5 = +[HKPersonWeightFormatter sharedFormatter];
-  v6 = [v5 localWeightUnit];
+  localWeightUnit = [v5 localWeightUnit];
 
   v7 = +[HKPersonWeightFormatter sharedFormatter];
-  v8 = [v7 stringFromWeightValue:v6 inUnit:v4];
+  v8 = [v7 stringFromWeightValue:localWeightUnit inUnit:v4];
 
   return v8;
 }
 
-+ (double)getWeightInKilogramsForRow:(int64_t)a3
++ (double)getWeightInKilogramsForRow:(int64_t)row
 {
   v4 = +[HKPersonWeightFormatter sharedFormatter];
-  v5 = [v4 localWeightUnit];
+  localWeightUnit = [v4 localWeightUnit];
 
-  v6 = a3;
-  if (v5 == 1538)
+  rowCopy = row;
+  if (localWeightUnit == 1538)
   {
     v7 = 0.453592;
   }
 
-  else if (v5 == 1539)
+  else if (localWeightUnit == 1539)
   {
-    v6 = v6 / 10.0;
+    rowCopy = rowCopy / 10.0;
     v7 = 6.35029;
   }
 
@@ -107,7 +107,7 @@
     v7 = 0.5;
   }
 
-  return v6 * v7;
+  return rowCopy * v7;
 }
 
 @end

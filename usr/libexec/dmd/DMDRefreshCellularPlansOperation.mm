@@ -1,8 +1,8 @@
 @interface DMDRefreshCellularPlansOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (id)invalidResponseError:(id)a3;
-- (void)runWithRequest:(id)a3;
+- (id)invalidResponseError:(id)error;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -22,31 +22,31 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  requestCopy = request;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DMDRefreshCellularPlansOperation;
-  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 eSIMServerURL];
-  if (!v7)
+  eSIMServerURL = [requestCopy eSIMServerURL];
+  if (!eSIMServerURL)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
-  v9 = [v6 eSIMServerURL];
-  v10 = [v9 scheme];
-  v11 = [&off_1000D73E8 containsObject:v10];
+  v8 = eSIMServerURL;
+  eSIMServerURL2 = [requestCopy eSIMServerURL];
+  scheme = [eSIMServerURL2 scheme];
+  v11 = [&off_1000D73E8 containsObject:scheme];
 
   if ((v11 & 1) == 0)
   {
 LABEL_5:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -54,41 +54,41 @@ LABEL_5:
     v15 = DMFInvalidParameterErrorKey;
     v16 = @"request.eSIMServerURL";
     v12 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_7:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_8;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_8:
 
-  return a4;
+  return error;
 }
 
-- (id)invalidResponseError:(id)a3
+- (id)invalidResponseError:(id)error
 {
   v7 = DMFCoreTelephonyErrorResponseKey;
-  v8 = a3;
-  v3 = a3;
-  v4 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
+  errorCopy = error;
+  errorCopy2 = error;
+  v4 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v7 count:1];
 
   v5 = DMFErrorWithCodeAndUserInfo();
 
   return v5;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 eSIMServerURL];
+    eSIMServerURL = [requestCopy eSIMServerURL];
     *buf = 136315394;
     v11 = "[DMDRefreshCellularPlansOperation(iOS) runWithRequest:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = eSIMServerURL;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s with URL: %@", buf, 0x16u);
   }
 
@@ -100,7 +100,7 @@ LABEL_8:
     v7[3] = &unk_1000CFD90;
     v7[4] = self;
     v8 = objc_opt_new();
-    v9 = v4;
+    v9 = requestCopy;
     v6 = v8;
     [v6 fetchCachedVinylInfoWithCompletion:v7];
   }

@@ -1,36 +1,36 @@
 @interface ActivitySceneDelegate
 - (_TtC14WidgetRenderer21ActivitySceneDelegate)init;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation ActivitySceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1DAE9150C(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1DAE9150C(sceneCopy);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAE8AC64(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1DAE8AC64(disconnectCopy);
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   sub_1DAD674D4(0, &unk_1EE00A880, 0x1E698E5F0);
   sub_1DAD8D6A4(&qword_1EE00A870, &unk_1EE00A880, 0x1E698E5F0);
   v6 = sub_1DAED1F6C();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_1DAE917A8(v6);
   v10 = v9;
 
@@ -47,15 +47,15 @@
   return v11;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v5 = a4;
-  v10 = self;
-  v6 = [v5 settingsDiff];
-  if (v6)
+  settingsCopy = settings;
+  selfCopy = self;
+  settingsDiff = [settingsCopy settingsDiff];
+  if (settingsDiff)
   {
-    v7 = v6;
-    v8 = *(&v10->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer21ActivitySceneDelegate__appSceneDiffInspector);
+    v7 = settingsDiff;
+    v8 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer21ActivitySceneDelegate__appSceneDiffInspector);
     if (v8)
     {
       v9 = v8;

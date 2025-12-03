@@ -1,23 +1,23 @@
 @interface PKPaymentPrepareTransactionDetailsResponse
-- (PKPaymentPrepareTransactionDetailsResponse)initWithData:(id)a3;
+- (PKPaymentPrepareTransactionDetailsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentPrepareTransactionDetailsResponse
 
-- (PKPaymentPrepareTransactionDetailsResponse)initWithData:(id)a3
+- (PKPaymentPrepareTransactionDetailsResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKPaymentPrepareTransactionDetailsResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v4->_instructionsDictionary, v5);
+      objc_storeStrong(&v4->_instructionsDictionary, jSONObject);
       v6 = [(NSDictionary *)v4->_instructionsDictionary PKDecimalNumberFromStringForKey:@"amount"];
       amount = v4->_amount;
       v4->_amount = v6;

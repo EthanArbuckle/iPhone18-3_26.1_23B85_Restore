@@ -1,20 +1,20 @@
 @interface CHBBar3DSeries
-+ (id)chdSeriesWithState:(id)a3;
++ (id)chdSeriesWithState:(id)state;
 @end
 
 @implementation CHBBar3DSeries
 
-+ (id)chdSeriesWithState:(id)a3
++ (id)chdSeriesWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDBar3DSeries alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDSeries *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDSeries *)v4 initWithChart:chart];
 
-  v7 = [v3 xlCurrentDefaultSeriesFormat];
-  if (v7)
+  xlCurrentDefaultSeriesFormat = [stateCopy xlCurrentDefaultSeriesFormat];
+  if (xlCurrentDefaultSeriesFormat)
   {
-    [(CHDBar3DSeries *)v6 setShapeType:chdShapeTypeFromXlShapeTypeEnum(*(v7 + 76))];
+    [(CHDBar3DSeries *)v6 setShapeType:chdShapeTypeFromXlShapeTypeEnum(*(xlCurrentDefaultSeriesFormat + 76))];
   }
 
   return v6;

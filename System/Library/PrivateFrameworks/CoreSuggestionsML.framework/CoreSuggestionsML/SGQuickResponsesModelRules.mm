@@ -1,19 +1,19 @@
 @interface SGQuickResponsesModelRules
-+ (BOOL)areModelsAvailableInLanguage:(id)a3;
++ (BOOL)areModelsAvailableInLanguage:(id)language;
 @end
 
 @implementation SGQuickResponsesModelRules
 
-+ (BOOL)areModelsAvailableInLanguage:(id)a3
++ (BOOL)areModelsAvailableInLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [a1 rules];
-  v6 = [v5 objectForKeyedSubscript:@"SGQuickResponses"];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  rules = [self rules];
+  v6 = [rules objectForKeyedSubscript:@"SGQuickResponses"];
+  v7 = [v6 objectForKeyedSubscript:languageCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -22,10 +22,10 @@
   v10 = @"SGQRTextMessage";
   v11 = &v12;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
-  LOBYTE(v5) = *(v13 + 24);
+  LOBYTE(rules) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v5;
+  return rules;
 }
 
 void __59__SGQuickResponsesModelRules_areModelsAvailableInLanguage___block_invoke(uint64_t a1, void *a2, void *a3, BOOL *a4)

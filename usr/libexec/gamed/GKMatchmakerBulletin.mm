@@ -1,14 +1,14 @@
 @interface GKMatchmakerBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (void)executeBulletinWithBulletinController:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (void)executeBulletinWithBulletinController:(id)controller;
 @end
 
 @implementation GKMatchmakerBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v5;
+    v18 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "didReceiveMatchmakingPush: %@", &v17, 0xCu);
   }
 
@@ -38,7 +38,7 @@
   [v11 reportEvent:GKReporterDomainPushCount type:GKReporterPushCountMatchmaking];
 
   v12 = [[NSMutableArray alloc] initWithCapacity:1];
-  v13 = [v5 objectForKey:GKMatchmakerMatchRID];
+  v13 = [notificationCopy objectForKey:GKMatchmakerMatchRID];
   if (v13)
   {
     v14 = objc_alloc_init(GKMatchmakerBulletin);
@@ -62,15 +62,15 @@
     }
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 }
 
-- (void)executeBulletinWithBulletinController:(id)a3
+- (void)executeBulletinWithBulletinController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -104,9 +104,9 @@
     v8 = os_log_GKMatch;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(GKMatchmakerBulletin *)self matchID];
+      matchID = [(GKMatchmakerBulletin *)self matchID];
       *v15 = 138412290;
-      v16 = v9;
+      v16 = matchID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "matchmaking push:%@ for unknown rid", v15, 0xCu);
     }
   }

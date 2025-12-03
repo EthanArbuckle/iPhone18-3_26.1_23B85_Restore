@@ -1,28 +1,28 @@
 @interface SBGridSwitcherModifier
 - (CGRect)containerViewBounds;
-- (char)activityModeForAppLayout:(id)a3;
-- (char)jetsamModeForAppLayout:(id)a3;
+- (char)activityModeForAppLayout:(id)layout;
+- (char)jetsamModeForAppLayout:(id)layout;
 - (id)foregroundAppLayouts;
 - (id)gridLayoutModifier;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleScrollEvent:(id)a3;
-- (id)handleSwipeToKillEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTapOutsideToDismissEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleScrollEvent:(id)event;
+- (id)handleSwipeToKillEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTapOutsideToDismissEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 - (void)gridLayoutModifier;
 @end
 
 @implementation SBGridSwitcherModifier
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v11.receiver = self;
   v11.super_class = SBGridSwitcherModifier;
   [(SBChainableModifier *)&v11 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_gridLayoutModifier)
     {
@@ -64,44 +64,44 @@
   return gridLayoutModifier;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 toEnvironmentMode] == 2)
+  eventCopy = event;
+  if ([eventCopy toEnvironmentMode] == 2)
   {
-    v5 = [v4 fromAppLayout];
+    fromAppLayout = [eventCopy fromAppLayout];
     activeAppLayoutInSwitcher = self->_activeAppLayoutInSwitcher;
-    self->_activeAppLayoutInSwitcher = v5;
+    self->_activeAppLayoutInSwitcher = fromAppLayout;
   }
 
-  v7 = [v4 toAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
   currentAppLayout = self->_currentAppLayout;
-  self->_currentAppLayout = v7;
+  self->_currentAppLayout = toAppLayout;
 
   v11.receiver = self;
   v11.super_class = SBGridSwitcherModifier;
-  v9 = [(SBSwitcherModifier *)&v11 handleTransitionEvent:v4];
+  v9 = [(SBSwitcherModifier *)&v11 handleTransitionEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = SBGridSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v16 handleRemovalEvent:v4];
-  if ([v4 phase] == 1)
+  v5 = [(SBSwitcherModifier *)&v16 handleRemovalEvent:eventCopy];
+  if ([eventCopy phase] == 1)
   {
     ++self->_ongoingAppLayoutRemovals;
     goto LABEL_13;
   }
 
-  if ([v4 phase] == 2)
+  if ([eventCopy phase] == 2)
   {
     --self->_ongoingAppLayoutRemovals;
-    v6 = [(SBGridSwitcherModifier *)self appLayouts];
-    if ([v6 count])
+    appLayouts = [(SBGridSwitcherModifier *)self appLayouts];
+    if ([appLayouts count])
     {
     }
 
@@ -125,7 +125,7 @@ LABEL_12:
       }
     }
 
-    v8 = [v4 appLayout];
+    appLayout = [eventCopy appLayout];
     if (!BSEqualObjects())
     {
 
@@ -152,22 +152,22 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SBGridSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v14 handleScrollEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v14 handleScrollEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 1)
+  if (phase == 1)
   {
     v11 = *(MEMORY[0x277CBF398] + 16);
     self->_containerViewBounds_lastBounds.origin = *MEMORY[0x277CBF398];
     self->_containerViewBounds_lastBounds.size = v11;
   }
 
-  else if (!v6)
+  else if (!phase)
   {
     v13.receiver = self;
     v13.super_class = SBGridSwitcherModifier;
@@ -181,13 +181,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleSwipeToKillEvent:(id)a3
+- (id)handleSwipeToKillEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBGridSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v13 handleSwipeToKillEvent:v4];
-  if ([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "progress"), BSFloatIsZero()) && (objc_msgSend(v4, "decelerationTargetProgress"), (BSFloatIsZero()))
+  v5 = [(SBSwitcherModifier *)&v13 handleSwipeToKillEvent:eventCopy];
+  if ([eventCopy isDragging] & 1) == 0 && (objc_msgSend(eventCopy, "progress"), BSFloatIsZero()) && (objc_msgSend(eventCopy, "decelerationTargetProgress"), (BSFloatIsZero()))
   {
     v6 = *(MEMORY[0x277CBF398] + 16);
     self->_containerViewBounds_lastBounds.origin = *MEMORY[0x277CBF398];
@@ -208,13 +208,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBGridSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:v4];
-  v6 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:v4, v10.receiver, v10.super_class];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTapAppLayoutEvent:eventCopy];
+  v6 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForTapAppLayoutEvent:eventCopy, v10.receiver, v10.super_class];
 
   [v6 setRetainsSiri:{-[SBGridSwitcherModifier isSystemAssistantExperiencePersistentSiriEnabled](self, "isSystemAssistantExperiencePersistentSiriEnabled")}];
   v7 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v6 gestureInitiated:0];
@@ -223,15 +223,15 @@ LABEL_13:
   return v8;
 }
 
-- (id)handleTapOutsideToDismissEvent:(id)a3
+- (id)handleTapOutsideToDismissEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBGridSwitcherModifier;
-  v3 = a3;
-  v4 = [(SBSwitcherModifier *)&v11 handleTapOutsideToDismissEvent:v3];
-  v5 = [v3 isHandled];
+  eventCopy = event;
+  v4 = [(SBSwitcherModifier *)&v11 handleTapOutsideToDismissEvent:eventCopy];
+  isHandled = [eventCopy isHandled];
 
-  if ((v5 & 1) == 0)
+  if ((isHandled & 1) == 0)
   {
     v6 = [SBPerformTransitionSwitcherEventResponse alloc];
     v7 = +[SBSwitcherTransitionRequest requestForActivatingHomeScreen];
@@ -272,11 +272,11 @@ LABEL_13:
 
 - (id)topMostLayoutElements
 {
-  v3 = [(SBGridSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBGridSwitcherModifier *)self appLayouts];
   gridLayoutModifier = self->_gridLayoutModifier;
   [(SBGridSwitcherModifier *)self scrollViewContentOffset];
   v5 = [(SBGridLayoutSwitcherModifier *)gridLayoutModifier visibleAppLayoutRangeForContentOffset:?];
-  v7 = [v3 subarrayWithRange:{v5, v6}];
+  v7 = [appLayouts subarrayWithRange:{v5, v6}];
 
   return v7;
 }
@@ -285,14 +285,14 @@ LABEL_13:
 {
   v4.receiver = self;
   v4.super_class = SBGridSwitcherModifier;
-  v2 = [(SBGridSwitcherModifier *)&v4 foregroundAppLayouts];
+  foregroundAppLayouts = [(SBGridSwitcherModifier *)&v4 foregroundAppLayouts];
 
-  return v2;
+  return foregroundAppLayouts;
 }
 
-- (char)jetsamModeForAppLayout:(id)a3
+- (char)jetsamModeForAppLayout:(id)layout
 {
-  if (self->_activeAppLayoutInSwitcher == a3)
+  if (self->_activeAppLayoutInSwitcher == layout)
   {
     return 0;
   }
@@ -304,9 +304,9 @@ LABEL_13:
   return [(SBGridSwitcherModifier *)&v6 jetsamModeForAppLayout:?];
 }
 
-- (char)activityModeForAppLayout:(id)a3
+- (char)activityModeForAppLayout:(id)layout
 {
-  if (self->_activeAppLayoutInSwitcher == a3)
+  if (self->_activeAppLayoutInSwitcher == layout)
   {
     return 0;
   }
@@ -320,8 +320,8 @@ LABEL_13:
 
 - (void)gridLayoutModifier
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBGridSwitcherModifier.m" lineNumber:78 description:@"Trying to use the grid layout modifier but it doesn't exist yet!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBGridSwitcherModifier.m" lineNumber:78 description:@"Trying to use the grid layout modifier but it doesn't exist yet!"];
 
   *a4 = *a3;
 }

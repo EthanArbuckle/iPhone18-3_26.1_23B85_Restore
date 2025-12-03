@@ -1,15 +1,15 @@
 @interface PLPlaceholderImage
 + (id)sharedManager;
-- (CGImage)newPlaceholderImageWithSize:(CGSize)a3;
+- (CGImage)newPlaceholderImageWithSize:(CGSize)size;
 - (PLPlaceholderImage)init;
 @end
 
 @implementation PLPlaceholderImage
 
-- (CGImage)newPlaceholderImageWithSize:(CGSize)a3
+- (CGImage)newPlaceholderImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = DCIM_resolvedPlaceholderImageColor();
   v7 = MEMORY[0x1E696AEC0];
   v14.width = width;

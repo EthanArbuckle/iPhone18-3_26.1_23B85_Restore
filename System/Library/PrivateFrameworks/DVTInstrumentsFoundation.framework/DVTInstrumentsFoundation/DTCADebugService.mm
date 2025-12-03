@@ -1,37 +1,37 @@
 @interface DTCADebugService
-+ (void)registerCapabilities:(id)a3;
-- (BOOL)_switchNamed:(id)a3 toDebugOption:(unsigned int *)a4;
-- (DTCADebugService)initWithChannel:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (BOOL)_switchNamed:(id)named toDebugOption:(unsigned int *)option;
+- (DTCADebugService)initWithChannel:(id)channel;
 - (id)availableStatistics;
 - (id)driverNames;
-- (id)valueForSwitch:(id)a3;
+- (id)valueForSwitch:(id)switch;
 - (void)_collectData;
 - (void)cleanup;
 - (void)cleanupSwitches;
 - (void)dealloc;
-- (void)setValue:(id)a3 forSwitchName:(id)a4;
+- (void)setValue:(id)value forSwitchName:(id)name;
 @end
 
 @implementation DTCADebugService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation.immediate" withVersion:1 forClass:a1];
-  [v4 publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation.deferred" withVersion:1 forClass:a1];
+  capabilitiesCopy = capabilities;
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation.immediate" withVersion:1 forClass:self];
+  [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.graphics.coreanimation.deferred" withVersion:1 forClass:self];
 }
 
-- (DTCADebugService)initWithChannel:(id)a3
+- (DTCADebugService)initWithChannel:(id)channel
 {
   v7.receiver = self;
   v7.super_class = DTCADebugService;
-  v3 = [(DTGraphicsService *)&v7 initWithChannel:a3];
+  v3 = [(DTGraphicsService *)&v7 initWithChannel:channel];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     enabledSwitches = v3->_enabledSwitches;
-    v3->_enabledSwitches = v4;
+    v3->_enabledSwitches = dictionary;
   }
 
   return v3;
@@ -52,8 +52,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(DTCADebugService *)self enabledSwitches];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  enabledSwitches = [(DTCADebugService *)self enabledSwitches];
+  v4 = [enabledSwitches countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -65,7 +65,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(enabledSwitches);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
@@ -79,14 +79,14 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [enabledSwitches countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(DTCADebugService *)self enabledSwitches];
-  [v9 removeAllObjects];
+  enabledSwitches2 = [(DTCADebugService *)self enabledSwitches];
+  [enabledSwitches2 removeAllObjects];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -132,16 +132,16 @@
   [(DTGraphicsService *)&v3 cleanup];
 }
 
-- (BOOL)_switchNamed:(id)a3 toDebugOption:(unsigned int *)a4
+- (BOOL)_switchNamed:(id)named toDebugOption:(unsigned int *)option
 {
-  v5 = a3;
-  if (!a4)
+  namedCopy = named;
+  if (!option)
   {
     sub_24802FCA8();
   }
 
-  v6 = v5;
-  if ([v5 isEqual:@"flashUpdatedRegions"])
+  v6 = namedCopy;
+  if ([namedCopy isEqual:@"flashUpdatedRegions"])
   {
     v7 = 0;
 LABEL_6:
@@ -206,16 +206,16 @@ LABEL_6:
   }
 
 LABEL_7:
-  *a4 = v7;
+  *option = v7;
 
   return v8;
 }
 
-- (id)valueForSwitch:(id)a3
+- (id)valueForSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   v9 = 0;
-  if ([(DTCADebugService *)self _switchNamed:v4 toDebugOption:&v9])
+  if ([(DTCADebugService *)self _switchNamed:switchCopy toDebugOption:&v9])
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:CARenderServerGetDebugOption()];
   }
@@ -224,7 +224,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = DTCADebugService;
-    v5 = [(DTGraphicsService *)&v8 valueForSwitch:v4];
+    v5 = [(DTGraphicsService *)&v8 valueForSwitch:switchCopy];
   }
 
   v6 = v5;
@@ -232,25 +232,25 @@ LABEL_7:
   return v6;
 }
 
-- (void)setValue:(id)a3 forSwitchName:(id)a4
+- (void)setValue:(id)value forSwitchName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  nameCopy = name;
   v11 = 0;
-  if ([(DTCADebugService *)self _switchNamed:v7 toDebugOption:&v11])
+  if ([(DTCADebugService *)self _switchNamed:nameCopy toDebugOption:&v11])
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     CARenderServerSetDebugOption();
-    v9 = [(DTCADebugService *)self enabledSwitches];
-    v10 = v9;
-    if (v8)
+    enabledSwitches = [(DTCADebugService *)self enabledSwitches];
+    v10 = enabledSwitches;
+    if (bOOLValue)
     {
-      [v9 setValue:v6 forKey:v7];
+      [enabledSwitches setValue:valueCopy forKey:nameCopy];
     }
 
     else
     {
-      [v9 removeObjectForKey:v7];
+      [enabledSwitches removeObjectForKey:nameCopy];
     }
   }
 }
@@ -276,23 +276,23 @@ LABEL_7:
     v6 = v5 - self->super._startTime;
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(v6 * 1000000.0)];
     v8 = [(DTGraphicsService *)self currentFramesPerSecond:v6];
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    v10 = v9;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v10 = dictionary;
     if (v8)
     {
-      [v9 setObject:v8 forKey:@"FramesPerSecond"];
+      [dictionary setObject:v8 forKey:@"FramesPerSecond"];
     }
 
     [v10 setObject:XRVideoCardRunTimeStamp forKey:v7];
     [v10 setObject:XRVideoCardIdentifier forKey:XRVideoCardBuiltIn];
     v11 = [MEMORY[0x277D03668] messageWithObject:v10];
-    v12 = [(DTXService *)self channel];
+    channel = [(DTXService *)self channel];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_247FE3764;
     v13[3] = &unk_278EF32E8;
     v13[4] = self;
-    [v12 sendMessage:v11 replyHandler:v13];
+    [channel sendMessage:v11 replyHandler:v13];
 
     objc_autoreleasePoolPop(v4);
     usleep(self->super._samplingRate);

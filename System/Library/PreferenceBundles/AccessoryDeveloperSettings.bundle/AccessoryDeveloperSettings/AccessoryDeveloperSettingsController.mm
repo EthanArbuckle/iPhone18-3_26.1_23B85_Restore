@@ -1,43 +1,43 @@
 @interface AccessoryDeveloperSettingsController
 - (id)_carPlayLogsFolderURL;
 - (id)_carplayLibraryURL;
-- (id)_overrideAssetDestinationURLForAssetFolder:(id)a3;
-- (id)airPlayCarPlayReceiverLogsForSpecifier:(id)a3;
-- (id)alwaysAcceptHeadUnitPairingForSpecifier:(id)a3;
-- (id)getAlwaysUpdateAssetForSpecifier:(id)a3;
-- (id)getFerriteEnabledForSpecifier:(id)a3;
-- (id)headUnitPairingPreviewEnabledForSpecifier:(id)a3;
+- (id)_overrideAssetDestinationURLForAssetFolder:(id)folder;
+- (id)airPlayCarPlayReceiverLogsForSpecifier:(id)specifier;
+- (id)alwaysAcceptHeadUnitPairingForSpecifier:(id)specifier;
+- (id)getAlwaysUpdateAssetForSpecifier:(id)specifier;
+- (id)getFerriteEnabledForSpecifier:(id)specifier;
+- (id)headUnitPairingPreviewEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_didSelectLogArchiveSpecifier:(id)a3;
-- (void)_enumerateCurrentAccessoryLogsUsingBlock:(id)a3;
-- (void)_enumerateCurrentOverrideAssetsUsingBlock:(id)a3;
+- (void)_didSelectLogArchiveSpecifier:(id)specifier;
+- (void)_enumerateCurrentAccessoryLogsUsingBlock:(id)block;
+- (void)_enumerateCurrentOverrideAssetsUsingBlock:(id)block;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 - (void)initDefaultsKeys;
-- (void)presentThemePickerFromSpecifier:(id)a3;
-- (void)removeAllAssetsForSpecifier:(id)a3;
-- (void)resetUserAppearancePrefs:(id)a3;
-- (void)setAirPlayCarPlayReceiverLogs:(id)a3 specifier:(id)a4;
-- (void)setAlwaysAcceptHeadUnitPairing:(id)a3 specifier:(id)a4;
-- (void)setAlwaysUpdateAsset:(id)a3 specifier:(id)a4;
-- (void)setDefaultKeyIfNotPresent:(__CFString *)a3 value:(__CFString *)a4 applicationID:(__CFString *)a5;
-- (void)setFerriteEnabled:(id)a3 specifier:(id)a4;
-- (void)setHeadUnitPairingPreviewEnabled:(id)a3 specifier:(id)a4;
+- (void)presentThemePickerFromSpecifier:(id)specifier;
+- (void)removeAllAssetsForSpecifier:(id)specifier;
+- (void)resetUserAppearancePrefs:(id)prefs;
+- (void)setAirPlayCarPlayReceiverLogs:(id)logs specifier:(id)specifier;
+- (void)setAlwaysAcceptHeadUnitPairing:(id)pairing specifier:(id)specifier;
+- (void)setAlwaysUpdateAsset:(id)asset specifier:(id)specifier;
+- (void)setDefaultKeyIfNotPresent:(__CFString *)present value:(__CFString *)value applicationID:(__CFString *)d;
+- (void)setFerriteEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHeadUnitPairingPreviewEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AccessoryDeveloperSettingsController
 
-- (void)_didSelectLogArchiveSpecifier:(id)a3
+- (void)_didSelectLogArchiveSpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [specifier userInfo];
+  if (userInfo)
   {
-    v5 = v4;
+    v5 = userInfo;
     -[AccessoryDeveloperSettingsController presentViewController:animated:completion:](self, "presentViewController:animated:completion:", [[UIActivityViewController alloc] initWithActivityItems:+[NSArray arrayWithObjects:count:](NSArray applicationActivities:{"arrayWithObjects:count:", &v5, 1), 0}], 1, &stru_8488);
   }
 }
 
-- (void)_enumerateCurrentAccessoryLogsUsingBlock:(id)a3
+- (void)_enumerateCurrentAccessoryLogsUsingBlock:(id)block
 {
   v19[0] = NSURLNameKey;
   v19[1] = NSURLIsDirectoryKey;
@@ -77,11 +77,11 @@
           else if (v7)
           {
             v11 = [v12 isEqualToString:@"VehicleLogs.tar.gz"];
-            if (a3)
+            if (block)
             {
               if (v11)
               {
-                (*(a3 + 2))(a3, v7, v10);
+                (*(block + 2))(block, v7, v10);
               }
             }
           }
@@ -105,42 +105,42 @@
   return [v2 URLByAppendingPathComponent:@"Logs/com.apple.CarPlay" isDirectory:1];
 }
 
-- (void)_enumerateCurrentOverrideAssetsUsingBlock:(id)a3
+- (void)_enumerateCurrentOverrideAssetsUsingBlock:(id)block
 {
   v4 = 0;
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1104;
   v3[3] = &unk_8428;
-  v3[4] = a3;
+  v3[4] = block;
   -[NSArray enumerateObjectsUsingBlock:]([+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtURL:"contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:" includingPropertiesForKeys:[(AccessoryDeveloperSettingsController *)self _carplayLibraryURL] options:0 error:0, &v4], "enumerateObjectsUsingBlock:", v3);
 }
 
-- (id)_overrideAssetDestinationURLForAssetFolder:(id)a3
+- (id)_overrideAssetDestinationURLForAssetFolder:(id)folder
 {
-  v4 = [(AccessoryDeveloperSettingsController *)self _carplayLibraryURL];
-  if (!-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [v4 path], 0))
+  _carplayLibraryURL = [(AccessoryDeveloperSettingsController *)self _carplayLibraryURL];
+  if (!-[NSFileManager fileExistsAtPath:isDirectory:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:isDirectory:", [_carplayLibraryURL path], 0))
   {
     v9 = 0;
-    if (!-[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [v4 path], 1, 0, &v9))
+    if (!-[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [_carplayLibraryURL path], 1, 0, &v9))
     {
-      v8 = [v4 path];
-      NSLog(@"failed to create %@: %@", v8, v9);
+      path = [_carplayLibraryURL path];
+      NSLog(@"failed to create %@: %@", path, v9);
       return 0;
     }
   }
 
-  v5 = [a3 lastPathComponent];
-  if (([v5 hasSuffix:@".zip"] & 1) == 0)
+  lastPathComponent = [folder lastPathComponent];
+  if (([lastPathComponent hasSuffix:@".zip"] & 1) == 0)
   {
-    NSLog(@"invalid asset filename, not a zip file: %@", v5);
+    NSLog(@"invalid asset filename, not a zip file: %@", lastPathComponent);
     return 0;
   }
 
-  v6 = [objc_msgSend(v4 URLByAppendingPathComponent:v5 isDirectory:{0), "URLByStandardizingPath"}];
+  v6 = [objc_msgSend(_carplayLibraryURL URLByAppendingPathComponent:lastPathComponent isDirectory:{0), "URLByStandardizingPath"}];
   if (([objc_msgSend(v6 "path")] & 1) == 0)
   {
-    NSLog(@"invalid asset filename %@", v5);
+    NSLog(@"invalid asset filename %@", lastPathComponent);
     return 0;
   }
 
@@ -154,13 +154,13 @@
   return [v2 URLByAppendingPathComponent:@"CarPlay" isDirectory:1];
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v5 = [a4 firstObject];
-  if (v5)
+  firstObject = [ls firstObject];
+  if (firstObject)
   {
-    v6 = v5;
-    v7 = [(AccessoryDeveloperSettingsController *)self _overrideAssetDestinationURLForAssetFolder:v5];
+    v6 = firstObject;
+    v7 = [(AccessoryDeveloperSettingsController *)self _overrideAssetDestinationURLForAssetFolder:firstObject];
     if (v7)
     {
       v8 = v7;
@@ -177,7 +177,7 @@
   }
 }
 
-- (void)removeAllAssetsForSpecifier:(id)a3
+- (void)removeAllAssetsForSpecifier:(id)specifier
 {
   v4 = 0;
   if (![+[NSFileManager removeItemAtURL:"removeItemAtURL:error:"]
@@ -188,7 +188,7 @@
   [(AccessoryDeveloperSettingsController *)self reloadSpecifiers];
 }
 
-- (void)presentThemePickerFromSpecifier:(id)a3
+- (void)presentThemePickerFromSpecifier:(id)specifier
 {
   v5 = UTTypeZIP;
   v4 = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v5, 1)}];
@@ -197,7 +197,7 @@
   [(AccessoryDeveloperSettingsController *)self presentViewController:v4 animated:1 completion:&stru_8388];
 }
 
-- (id)getAlwaysUpdateAssetForSpecifier:(id)a3
+- (id)getAlwaysUpdateAssetForSpecifier:(id)specifier
 {
   v3 = CFPreferencesCopyValue(@"AlwaysUpdateAsset", @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v3)
@@ -216,11 +216,11 @@
   return [NSNumber numberWithBool:v6];
 }
 
-- (void)setAlwaysUpdateAsset:(id)a3 specifier:(id)a4
+- (void)setAlwaysUpdateAsset:(id)asset specifier:(id)specifier
 {
-  v6 = [a3 BOOLValue];
+  bOOLValue = [asset BOOLValue];
   v7 = &kCFBooleanTrue;
-  if (!v6)
+  if (!bOOLValue)
   {
     v7 = &kCFBooleanFalse;
   }
@@ -228,10 +228,10 @@
   CFPreferencesSetValue(@"AlwaysUpdateAsset", *v7, @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(@"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
-  [(AccessoryDeveloperSettingsController *)self removeAllAssetsForSpecifier:a4];
+  [(AccessoryDeveloperSettingsController *)self removeAllAssetsForSpecifier:specifier];
 }
 
-- (id)getFerriteEnabledForSpecifier:(id)a3
+- (id)getFerriteEnabledForSpecifier:(id)specifier
 {
   v3 = CFPreferencesCopyValue(@"EnableFerrite", @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v3)
@@ -250,11 +250,11 @@
   return [NSNumber numberWithBool:v6];
 }
 
-- (void)setFerriteEnabled:(id)a3 specifier:(id)a4
+- (void)setFerriteEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = &kCFBooleanTrue;
-  if (!v4)
+  if (!bOOLValue)
   {
     v5 = &kCFBooleanFalse;
   }
@@ -264,11 +264,11 @@
   CFPreferencesSynchronize(@"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-- (void)setAlwaysAcceptHeadUnitPairing:(id)a3 specifier:(id)a4
+- (void)setAlwaysAcceptHeadUnitPairing:(id)pairing specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [pairing BOOLValue];
   v5 = &kCFBooleanTrue;
-  if (!v4)
+  if (!bOOLValue)
   {
     v5 = &kCFBooleanFalse;
   }
@@ -278,7 +278,7 @@
   CFPreferencesSynchronize(@"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-- (id)alwaysAcceptHeadUnitPairingForSpecifier:(id)a3
+- (id)alwaysAcceptHeadUnitPairingForSpecifier:(id)specifier
 {
   v3 = CFPreferencesCopyValue(@"AlwaysAcceptHeadUnitPairing", @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v3)
@@ -297,11 +297,11 @@
   return [NSNumber numberWithBool:v6];
 }
 
-- (void)setHeadUnitPairingPreviewEnabled:(id)a3 specifier:(id)a4
+- (void)setHeadUnitPairingPreviewEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v7 = &kCFBooleanTrue;
-  if (!v6)
+  if (!bOOLValue)
   {
     v7 = &kCFBooleanFalse;
   }
@@ -309,12 +309,12 @@
   CFPreferencesSetValue(@"EnableHeadUnitPairingPreview", *v7, @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(@"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   v8 = [(AccessoryDeveloperSettingsController *)self specifierForID:@"ALWAYS_ACCEPT_HEAD_UNIT_PAIRING"];
-  [v8 setProperty:a3 forKey:PSEnabledKey];
+  [v8 setProperty:enabled forKey:PSEnabledKey];
 
   [(AccessoryDeveloperSettingsController *)self reloadSpecifier:v8];
 }
 
-- (id)headUnitPairingPreviewEnabledForSpecifier:(id)a3
+- (id)headUnitPairingPreviewEnabledForSpecifier:(id)specifier
 {
   v3 = CFPreferencesCopyValue(@"EnableHeadUnitPairingPreview", @"com.apple.carplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v3)
@@ -333,11 +333,11 @@
   return [NSNumber numberWithBool:v6];
 }
 
-- (void)setAirPlayCarPlayReceiverLogs:(id)a3 specifier:(id)a4
+- (void)setAirPlayCarPlayReceiverLogs:(id)logs specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [logs BOOLValue];
   v5 = &kCFBooleanTrue;
-  if (!v4)
+  if (!bOOLValue)
   {
     v5 = &kCFBooleanFalse;
   }
@@ -347,14 +347,14 @@
   CFPreferencesSynchronize(@"com.apple.airplay", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-- (id)airPlayCarPlayReceiverLogsForSpecifier:(id)a3
+- (id)airPlayCarPlayReceiverLogsForSpecifier:(id)specifier
 {
   v3 = CFPreferencesGetAppBooleanValue(@"airPlayCarPlayReceiverLogs", @"com.apple.airplay", 0) != 0;
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)resetUserAppearancePrefs:(id)a3
+- (void)resetUserAppearancePrefs:(id)prefs
 {
   CFPreferencesSetValue(@"CarPlayUserInterfaceStyle", 0, @"com.apple.UIKit", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(@"com.apple.UIKit", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
@@ -476,9 +476,9 @@
   CFPreferencesSynchronize(kCFPreferencesAnyApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 }
 
-- (void)setDefaultKeyIfNotPresent:(__CFString *)a3 value:(__CFString *)a4 applicationID:(__CFString *)a5
+- (void)setDefaultKeyIfNotPresent:(__CFString *)present value:(__CFString *)value applicationID:(__CFString *)d
 {
-  v8 = CFPreferencesCopyAppValue(a3, a5);
+  v8 = CFPreferencesCopyAppValue(present, d);
   if (v8)
   {
 
@@ -488,7 +488,7 @@
   else
   {
 
-    CFPreferencesSetValue(a3, a4, a5, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+    CFPreferencesSetValue(present, value, d, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   }
 }
 

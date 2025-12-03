@@ -1,27 +1,27 @@
 @interface UIPanelWrapperView
-+ (id)existingWrapperViewForView:(id)a3;
-+ (id)wrapperViewForView:(id)a3;
++ (id)existingWrapperViewForView:(id)view;
++ (id)wrapperViewForView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation UIPanelWrapperView
 
-+ (id)wrapperViewForView:(id)a3
++ (id)wrapperViewForView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [a1 existingWrapperViewForView:v4];
+    v5 = [self existingWrapperViewForView:viewCopy];
     if (!v5)
     {
-      v6 = [a1 alloc];
-      [v4 frame];
+      v6 = [self alloc];
+      [viewCopy frame];
       v5 = [v6 initWithFrame:?];
       [v5 setAutoresizingMask:0];
       [v5 setAutoresizesSubviews:0];
       [v5 bounds];
-      [v4 setFrame:?];
-      [v5 addSubview:v4];
+      [viewCopy setFrame:?];
+      [v5 addSubview:viewCopy];
     }
   }
 
@@ -33,12 +33,12 @@
   return v5;
 }
 
-+ (id)existingWrapperViewForView:(id)a3
++ (id)existingWrapperViewForView:(id)view
 {
-  v3 = [a3 superview];
+  superview = [view superview];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = superview;
   }
 
   else
@@ -54,12 +54,12 @@
   v6.receiver = self;
   v6.super_class = UIPanelWrapperView;
   [(UIView *)&v6 layoutSubviews];
-  v3 = [(UIView *)self subviews];
-  v4 = [v3 firstObject];
+  subviews = [(UIView *)self subviews];
+  firstObject = [subviews firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = v4[10];
+    v5 = firstObject[10];
     [(UIView *)self bounds];
     if (v5)
     {
@@ -68,7 +68,7 @@
 
     else
     {
-      [v4 setFrame:?];
+      [firstObject setFrame:?];
     }
   }
 }

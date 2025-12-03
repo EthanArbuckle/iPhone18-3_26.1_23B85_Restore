@@ -7,11 +7,11 @@
 - (MRDeviceInfo)mrDeviceInfo
 {
   v2 = objc_alloc_init(MRDeviceInfo);
-  v3 = [a1 mediaRouteIdentifier];
-  [(MRDeviceInfo *)v2 setDeviceUID:v3];
+  mediaRouteIdentifier = [self mediaRouteIdentifier];
+  [(MRDeviceInfo *)v2 setDeviceUID:mediaRouteIdentifier];
 
-  v4 = [a1 name];
-  [(MRDeviceInfo *)v2 setName:v4];
+  name = [self name];
+  [(MRDeviceInfo *)v2 setName:name];
 
   return v2;
 }

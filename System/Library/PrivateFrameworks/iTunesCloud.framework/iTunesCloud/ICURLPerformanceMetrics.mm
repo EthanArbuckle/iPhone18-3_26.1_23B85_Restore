@@ -1,6 +1,6 @@
 @interface ICURLPerformanceMetrics
-- (ICURLPerformanceMetrics)initWithDictionaryRepresentation:(id)a3;
-- (ICURLPerformanceMetrics)initWithTransactionMetrics:(id)a3 request:(id)a4 taskIdentifier:(id)a5;
+- (ICURLPerformanceMetrics)initWithDictionaryRepresentation:(id)representation;
+- (ICURLPerformanceMetrics)initWithTransactionMetrics:(id)metrics request:(id)request taskIdentifier:(id)identifier;
 - (double)connectionTime;
 - (double)dnsTime;
 - (double)endTime;
@@ -149,10 +149,10 @@
 - (id)humanDescription
 {
   v3 = [MEMORY[0x1E696AD60] stringWithString:self->_taskIdentifier];
-  v4 = [(ICURLPerformanceMetrics *)self statusCode];
+  statusCode = [(ICURLPerformanceMetrics *)self statusCode];
   v5 = [(ICURLPerformanceMetrics *)self responseMessageSize]/ 0x3E8;
   [(ICURLPerformanceMetrics *)self totalTime];
-  [v3 appendFormat:@" %ld %ldkB total:%.0fms", v4, v5, v6 * 1000.0];
+  [v3 appendFormat:@" %ld %ldkB total:%.0fms", statusCode, v5, v6 * 1000.0];
   if ([(ICURLPerformanceMetrics *)self cachedResponse])
   {
     v7 = @" cached:YES";
@@ -172,189 +172,189 @@ LABEL_5:
   [(ICURLPerformanceMetrics *)self dnsTime];
   [v3 appendFormat:@" conn:%.0fms dns:%.0fms", *&v9, v10 * 1000.0];
 LABEL_7:
-  v11 = [(ICURLPerformanceMetrics *)self jingleCorrelationKey];
+  jingleCorrelationKey = [(ICURLPerformanceMetrics *)self jingleCorrelationKey];
 
-  if (v11)
+  if (jingleCorrelationKey)
   {
     [v3 appendString:@" jingleCorrelationKey:"];
-    v12 = [(ICURLPerformanceMetrics *)self jingleCorrelationKey];
-    [v3 appendString:v12];
+    jingleCorrelationKey2 = [(ICURLPerformanceMetrics *)self jingleCorrelationKey];
+    [v3 appendString:jingleCorrelationKey2];
   }
 
-  v13 = [(ICURLPerformanceMetrics *)self requestUrl];
-  [v3 appendFormat:@" %@", v13];
+  requestUrl = [(ICURLPerformanceMetrics *)self requestUrl];
+  [v3 appendFormat:@" %@", requestUrl];
 
   return v3;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_taskIdentifier forKeyedSubscript:@"taskIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_taskIdentifier forKeyedSubscript:@"taskIdentifier"];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_connectionStartTime];
-  [v3 setObject:v4 forKeyedSubscript:@"connectionStartTime"];
+  [dictionary setObject:v4 forKeyedSubscript:@"connectionStartTime"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_connectionEndTime];
-  [v3 setObject:v5 forKeyedSubscript:@"connectionEndTime"];
+  [dictionary setObject:v5 forKeyedSubscript:@"connectionEndTime"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_domainLookupStartTime];
-  [v3 setObject:v6 forKeyedSubscript:@"domainLookupStartTime"];
+  [dictionary setObject:v6 forKeyedSubscript:@"domainLookupStartTime"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_domainLookupEndTime];
-  [v3 setObject:v7 forKeyedSubscript:@"domainLookupEndTime"];
+  [dictionary setObject:v7 forKeyedSubscript:@"domainLookupEndTime"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_fetchStartTime];
-  [v3 setObject:v8 forKeyedSubscript:@"fetchStartTime"];
+  [dictionary setObject:v8 forKeyedSubscript:@"fetchStartTime"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_requestStartTime];
-  [v3 setObject:v9 forKeyedSubscript:@"requestStartTime"];
+  [dictionary setObject:v9 forKeyedSubscript:@"requestStartTime"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_responseStartTime];
-  [v3 setObject:v10 forKeyedSubscript:@"responseStartTime"];
+  [dictionary setObject:v10 forKeyedSubscript:@"responseStartTime"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_responseEndTime];
-  [v3 setObject:v11 forKeyedSubscript:@"responseEndTime"];
+  [dictionary setObject:v11 forKeyedSubscript:@"responseEndTime"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secureConnectionStartTime];
-  [v3 setObject:v12 forKeyedSubscript:@"secureConnectionStartTime"];
+  [dictionary setObject:v12 forKeyedSubscript:@"secureConnectionStartTime"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_cachedResponse];
-  [v3 setObject:v13 forKeyedSubscript:@"cachedResponse"];
+  [dictionary setObject:v13 forKeyedSubscript:@"cachedResponse"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_connectionReused];
-  [v3 setObject:v14 forKeyedSubscript:@"connectionReused"];
+  [dictionary setObject:v14 forKeyedSubscript:@"connectionReused"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_redirectCount];
-  [v3 setObject:v15 forKeyedSubscript:@"redirectCount"];
+  [dictionary setObject:v15 forKeyedSubscript:@"redirectCount"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_requestMessageSize];
-  [v3 setObject:v16 forKeyedSubscript:@"requestMessageSize"];
+  [dictionary setObject:v16 forKeyedSubscript:@"requestMessageSize"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_requestBytesSent];
-  [v3 setObject:v17 forKeyedSubscript:@"requestBytesSent"];
+  [dictionary setObject:v17 forKeyedSubscript:@"requestBytesSent"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_responseMessageSize];
-  [v3 setObject:v18 forKeyedSubscript:@"responseMessageSize"];
+  [dictionary setObject:v18 forKeyedSubscript:@"responseMessageSize"];
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_responseBytesReceived];
-  [v3 setObject:v19 forKeyedSubscript:@"responseBytesReceived"];
+  [dictionary setObject:v19 forKeyedSubscript:@"responseBytesReceived"];
 
-  [v3 setObject:self->_requestUrl forKeyedSubscript:@"requestUrl"];
-  [v3 setObject:self->_appleTimingApp forKeyedSubscript:@"appleTimingApp"];
-  [v3 setObject:self->_connectionType forKeyedSubscript:@"connectionType"];
-  [v3 setObject:self->_edgeNodeCacheStatus forKeyedSubscript:@"edgeNodeCacheStatus"];
-  [v3 setObject:self->_environmentDataCenter forKeyedSubscript:@"environmentDataCenter"];
-  [v3 setObject:self->_jingleCorrelationKey forKeyedSubscript:@"jingleCorrelationKey"];
-  [v3 setObject:self->_responseDate forKeyedSubscript:@"responseDate"];
+  [dictionary setObject:self->_requestUrl forKeyedSubscript:@"requestUrl"];
+  [dictionary setObject:self->_appleTimingApp forKeyedSubscript:@"appleTimingApp"];
+  [dictionary setObject:self->_connectionType forKeyedSubscript:@"connectionType"];
+  [dictionary setObject:self->_edgeNodeCacheStatus forKeyedSubscript:@"edgeNodeCacheStatus"];
+  [dictionary setObject:self->_environmentDataCenter forKeyedSubscript:@"environmentDataCenter"];
+  [dictionary setObject:self->_jingleCorrelationKey forKeyedSubscript:@"jingleCorrelationKey"];
+  [dictionary setObject:self->_responseDate forKeyedSubscript:@"responseDate"];
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_statusCode];
-  [v3 setObject:v20 forKeyedSubscript:@"statusCode"];
+  [dictionary setObject:v20 forKeyedSubscript:@"statusCode"];
 
-  [v3 setObject:self->_resolvedIPAddress forKeyedSubscript:@"resolvedIPAddress"];
+  [dictionary setObject:self->_resolvedIPAddress forKeyedSubscript:@"resolvedIPAddress"];
 
-  return v3;
+  return dictionary;
 }
 
-- (ICURLPerformanceMetrics)initWithDictionaryRepresentation:(id)a3
+- (ICURLPerformanceMetrics)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v51.receiver = self;
   v51.super_class = ICURLPerformanceMetrics;
   v5 = [(ICURLPerformanceMetrics *)&v51 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"taskIdentifier"];
+    v6 = [representationCopy objectForKeyedSubscript:@"taskIdentifier"];
     taskIdentifier = v5->_taskIdentifier;
     v5->_taskIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"connectionStartTime"];
+    v8 = [representationCopy objectForKeyedSubscript:@"connectionStartTime"];
     [v8 doubleValue];
     v5->_connectionStartTime = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"connectionEndTime"];
+    v10 = [representationCopy objectForKeyedSubscript:@"connectionEndTime"];
     [v10 doubleValue];
     v5->_connectionEndTime = v11;
 
-    v12 = [v4 objectForKeyedSubscript:@"domainLookupStartTime"];
+    v12 = [representationCopy objectForKeyedSubscript:@"domainLookupStartTime"];
     [v12 doubleValue];
     v5->_domainLookupStartTime = v13;
 
-    v14 = [v4 objectForKeyedSubscript:@"domainLookupEndTime"];
+    v14 = [representationCopy objectForKeyedSubscript:@"domainLookupEndTime"];
     [v14 doubleValue];
     v5->_domainLookupEndTime = v15;
 
-    v16 = [v4 objectForKeyedSubscript:@"fetchStartTime"];
+    v16 = [representationCopy objectForKeyedSubscript:@"fetchStartTime"];
     [v16 doubleValue];
     v5->_fetchStartTime = v17;
 
-    v18 = [v4 objectForKeyedSubscript:@"requestStartTime"];
+    v18 = [representationCopy objectForKeyedSubscript:@"requestStartTime"];
     [v18 doubleValue];
     v5->_requestStartTime = v19;
 
-    v20 = [v4 objectForKeyedSubscript:@"responseStartTime"];
+    v20 = [representationCopy objectForKeyedSubscript:@"responseStartTime"];
     [v20 doubleValue];
     v5->_responseStartTime = v21;
 
-    v22 = [v4 objectForKeyedSubscript:@"responseEndTime"];
+    v22 = [representationCopy objectForKeyedSubscript:@"responseEndTime"];
     [v22 doubleValue];
     v5->_responseEndTime = v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"secureConnectionStartTime"];
+    v24 = [representationCopy objectForKeyedSubscript:@"secureConnectionStartTime"];
     [v24 doubleValue];
     v5->_secureConnectionStartTime = v25;
 
-    v26 = [v4 objectForKeyedSubscript:@"cachedResponse"];
+    v26 = [representationCopy objectForKeyedSubscript:@"cachedResponse"];
     v5->_cachedResponse = [v26 BOOLValue];
 
-    v27 = [v4 objectForKeyedSubscript:@"connectionReused"];
+    v27 = [representationCopy objectForKeyedSubscript:@"connectionReused"];
     v5->_connectionReused = [v27 BOOLValue];
 
-    v28 = [v4 objectForKeyedSubscript:@"redirectCount"];
+    v28 = [representationCopy objectForKeyedSubscript:@"redirectCount"];
     v5->_redirectCount = [v28 integerValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"requestMessageSize"];
+    v29 = [representationCopy objectForKeyedSubscript:@"requestMessageSize"];
     v5->_requestMessageSize = [v29 integerValue];
 
-    v30 = [v4 objectForKeyedSubscript:@"requestBytesSent"];
+    v30 = [representationCopy objectForKeyedSubscript:@"requestBytesSent"];
     v5->_requestBytesSent = [v30 integerValue];
 
-    v31 = [v4 objectForKeyedSubscript:@"responseMessageSize"];
+    v31 = [representationCopy objectForKeyedSubscript:@"responseMessageSize"];
     v5->_responseMessageSize = [v31 integerValue];
 
-    v32 = [v4 objectForKeyedSubscript:@"responseBytesReceived"];
+    v32 = [representationCopy objectForKeyedSubscript:@"responseBytesReceived"];
     v5->_responseBytesReceived = [v32 integerValue];
 
-    v33 = [v4 objectForKeyedSubscript:@"requestUrl"];
+    v33 = [representationCopy objectForKeyedSubscript:@"requestUrl"];
     requestUrl = v5->_requestUrl;
     v5->_requestUrl = v33;
 
-    v35 = [v4 objectForKeyedSubscript:@"appleTimingApp"];
+    v35 = [representationCopy objectForKeyedSubscript:@"appleTimingApp"];
     appleTimingApp = v5->_appleTimingApp;
     v5->_appleTimingApp = v35;
 
-    v37 = [v4 objectForKeyedSubscript:@"connectionType"];
+    v37 = [representationCopy objectForKeyedSubscript:@"connectionType"];
     connectionType = v5->_connectionType;
     v5->_connectionType = v37;
 
-    v39 = [v4 objectForKeyedSubscript:@"edgeNodeCacheStatus"];
+    v39 = [representationCopy objectForKeyedSubscript:@"edgeNodeCacheStatus"];
     edgeNodeCacheStatus = v5->_edgeNodeCacheStatus;
     v5->_edgeNodeCacheStatus = v39;
 
-    v41 = [v4 objectForKeyedSubscript:@"environmentDataCenter"];
+    v41 = [representationCopy objectForKeyedSubscript:@"environmentDataCenter"];
     environmentDataCenter = v5->_environmentDataCenter;
     v5->_environmentDataCenter = v41;
 
-    v43 = [v4 objectForKeyedSubscript:@"jingleCorrelationKey"];
+    v43 = [representationCopy objectForKeyedSubscript:@"jingleCorrelationKey"];
     jingleCorrelationKey = v5->_jingleCorrelationKey;
     v5->_jingleCorrelationKey = v43;
 
-    v45 = [v4 objectForKeyedSubscript:@"responseDate"];
+    v45 = [representationCopy objectForKeyedSubscript:@"responseDate"];
     responseDate = v5->_responseDate;
     v5->_responseDate = v45;
 
-    v47 = [v4 objectForKeyedSubscript:@"statusCode"];
+    v47 = [representationCopy objectForKeyedSubscript:@"statusCode"];
     v5->_statusCode = [v47 integerValue];
 
-    v48 = [v4 objectForKeyedSubscript:@"resolvedIPAddress"];
+    v48 = [representationCopy objectForKeyedSubscript:@"resolvedIPAddress"];
     resolvedIPAddress = v5->_resolvedIPAddress;
     v5->_resolvedIPAddress = v48;
   }
@@ -362,80 +362,80 @@ LABEL_7:
   return v5;
 }
 
-- (ICURLPerformanceMetrics)initWithTransactionMetrics:(id)a3 request:(id)a4 taskIdentifier:(id)a5
+- (ICURLPerformanceMetrics)initWithTransactionMetrics:(id)metrics request:(id)request taskIdentifier:(id)identifier
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metricsCopy = metrics;
+  requestCopy = request;
+  identifierCopy = identifier;
   v64.receiver = self;
   v64.super_class = ICURLPerformanceMetrics;
   v11 = [(ICURLPerformanceMetrics *)&v64 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_taskIdentifier, a5);
-    v13 = [v8 connectStartDate];
-    [v13 timeIntervalSince1970];
+    objc_storeStrong(&v11->_taskIdentifier, identifier);
+    connectStartDate = [metricsCopy connectStartDate];
+    [connectStartDate timeIntervalSince1970];
     v12->_connectionStartTime = v14;
 
-    v15 = [v8 connectEndDate];
-    [v15 timeIntervalSince1970];
+    connectEndDate = [metricsCopy connectEndDate];
+    [connectEndDate timeIntervalSince1970];
     v12->_connectionEndTime = v16;
 
-    v17 = [v8 domainLookupStartDate];
-    [v17 timeIntervalSince1970];
+    domainLookupStartDate = [metricsCopy domainLookupStartDate];
+    [domainLookupStartDate timeIntervalSince1970];
     v12->_domainLookupStartTime = v18;
 
-    v19 = [v8 domainLookupEndDate];
-    [v19 timeIntervalSince1970];
+    domainLookupEndDate = [metricsCopy domainLookupEndDate];
+    [domainLookupEndDate timeIntervalSince1970];
     v12->_domainLookupEndTime = v20;
 
-    v21 = [v8 fetchStartDate];
-    [v21 timeIntervalSince1970];
+    fetchStartDate = [metricsCopy fetchStartDate];
+    [fetchStartDate timeIntervalSince1970];
     v12->_fetchStartTime = v22;
 
-    v23 = [v8 requestStartDate];
-    [v23 timeIntervalSince1970];
+    requestStartDate = [metricsCopy requestStartDate];
+    [requestStartDate timeIntervalSince1970];
     v12->_requestStartTime = v24;
 
-    v25 = [v8 responseStartDate];
-    [v25 timeIntervalSince1970];
+    responseStartDate = [metricsCopy responseStartDate];
+    [responseStartDate timeIntervalSince1970];
     v12->_responseStartTime = v26;
 
-    v27 = [v8 responseEndDate];
-    [v27 timeIntervalSince1970];
+    responseEndDate = [metricsCopy responseEndDate];
+    [responseEndDate timeIntervalSince1970];
     v12->_responseEndTime = v28;
 
-    v29 = [v8 secureConnectionStartDate];
-    [v29 timeIntervalSince1970];
+    secureConnectionStartDate = [metricsCopy secureConnectionStartDate];
+    [secureConnectionStartDate timeIntervalSince1970];
     v12->_secureConnectionStartTime = v30;
 
-    v12->_cachedResponse = [v8 resourceFetchType] == 3;
-    v12->_connectionReused = [v8 isReusedConnection];
-    v12->_redirectCount = [v9 redirectCount];
-    v31 = [v9 urlRequest];
-    v32 = [v31 HTTPBody];
-    v12->_requestMessageSize = [v32 length];
+    v12->_cachedResponse = [metricsCopy resourceFetchType] == 3;
+    v12->_connectionReused = [metricsCopy isReusedConnection];
+    v12->_redirectCount = [requestCopy redirectCount];
+    urlRequest = [requestCopy urlRequest];
+    hTTPBody = [urlRequest HTTPBody];
+    v12->_requestMessageSize = [hTTPBody length];
 
-    v33 = [v8 countOfRequestHeaderBytesSent];
-    v12->_requestBytesSent = [v8 countOfRequestBodyBytesSent] + v33;
-    v34 = [v9 responseData];
-    v12->_responseMessageSize = [v34 length];
+    countOfRequestHeaderBytesSent = [metricsCopy countOfRequestHeaderBytesSent];
+    v12->_requestBytesSent = [metricsCopy countOfRequestBodyBytesSent] + countOfRequestHeaderBytesSent;
+    responseData = [requestCopy responseData];
+    v12->_responseMessageSize = [responseData length];
 
-    v35 = [v8 countOfResponseBodyBytesReceived];
-    v12->_responseBytesReceived = [v8 countOfResponseHeaderBytesReceived] + v35;
-    v36 = [v9 urlRequest];
-    v37 = [v36 URL];
-    v38 = [v37 absoluteString];
+    countOfResponseBodyBytesReceived = [metricsCopy countOfResponseBodyBytesReceived];
+    v12->_responseBytesReceived = [metricsCopy countOfResponseHeaderBytesReceived] + countOfResponseBodyBytesReceived;
+    urlRequest2 = [requestCopy urlRequest];
+    v37 = [urlRequest2 URL];
+    absoluteString = [v37 absoluteString];
     requestUrl = v12->_requestUrl;
-    v12->_requestUrl = v38;
+    v12->_requestUrl = absoluteString;
 
-    v40 = [v8 response];
+    response = [metricsCopy response];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v41 = v40;
+      v41 = response;
       v42 = [v41 valueForHTTPHeaderField:@"apple-timing-app"];
       appleTimingApp = v12->_appleTimingApp;
       v12->_appleTimingApp = v42;
@@ -460,13 +460,13 @@ LABEL_7:
       responseDate = v12->_responseDate;
       v12->_responseDate = v52;
 
-      v54 = [v41 statusCode];
-      v12->_statusCode = v54;
+      statusCode = [v41 statusCode];
+      v12->_statusCode = statusCode;
     }
 
-    if ([v40 _CFURLResponse])
+    if ([response _CFURLResponse])
     {
-      [v40 _CFURLResponse];
+      [response _CFURLResponse];
       v55 = CFURLResponseCopyPeerAddress();
       if (v55)
       {

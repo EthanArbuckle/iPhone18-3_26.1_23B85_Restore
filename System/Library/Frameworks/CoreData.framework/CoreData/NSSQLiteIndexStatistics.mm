@@ -1,6 +1,6 @@
 @interface NSSQLiteIndexStatistics
-- (NSSQLiteIndexStatistics)initWithName:(id)a3 storeID:(id)a4;
-- (NSSQLiteIndexStatistics)initWithResultDictionary:(id)a3 storeID:(id)a4;
+- (NSSQLiteIndexStatistics)initWithName:(id)name storeID:(id)d;
+- (NSSQLiteIndexStatistics)initWithResultDictionary:(id)dictionary storeID:(id)d;
 - (void)dealloc;
 @end
 
@@ -13,28 +13,28 @@
   [(NSSQLiteIndexStatistics *)&v3 dealloc];
 }
 
-- (NSSQLiteIndexStatistics)initWithName:(id)a3 storeID:(id)a4
+- (NSSQLiteIndexStatistics)initWithName:(id)name storeID:(id)d
 {
   v8.receiver = self;
   v8.super_class = NSSQLiteIndexStatistics;
   v6 = [(NSSQLiteIndexStatistics *)&v8 init];
   if (v6)
   {
-    v6->_indexName = [a3 copy];
-    v6->_storeIdentifier = [a4 copy];
+    v6->_indexName = [name copy];
+    v6->_storeIdentifier = [d copy];
   }
 
   return v6;
 }
 
-- (NSSQLiteIndexStatistics)initWithResultDictionary:(id)a3 storeID:(id)a4
+- (NSSQLiteIndexStatistics)initWithResultDictionary:(id)dictionary storeID:(id)d
 {
-  v5 = -[NSSQLiteIndexStatistics initWithName:storeID:](self, "initWithName:storeID:", [a3 objectForKeyedSubscript:@"indexName"], a4);
+  v5 = -[NSSQLiteIndexStatistics initWithName:storeID:](self, "initWithName:storeID:", [dictionary objectForKeyedSubscript:@"indexName"], d);
   if (v5)
   {
-    v5->_executionCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"executionCount", "longLongValue"}];
-    v5->_instructionCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"instructionCount", "longLongValue"}];
-    v5->_rowCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"rowCount", "longLongValue"}];
+    v5->_executionCount = [objc_msgSend(dictionary objectForKeyedSubscript:{@"executionCount", "longLongValue"}];
+    v5->_instructionCount = [objc_msgSend(dictionary objectForKeyedSubscript:{@"instructionCount", "longLongValue"}];
+    v5->_rowCount = [objc_msgSend(dictionary objectForKeyedSubscript:{@"rowCount", "longLongValue"}];
   }
 
   return v5;

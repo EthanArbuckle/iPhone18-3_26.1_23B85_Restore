@@ -1,35 +1,35 @@
 @interface _SFPBCollectionStyleRow
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCollectionStyleRow)initWithDictionary:(id)a3;
-- (_SFPBCollectionStyleRow)initWithFacade:(id)a3;
-- (_SFPBCollectionStyleRow)initWithJSON:(id)a3;
+- (_SFPBCollectionStyleRow)initWithDictionary:(id)dictionary;
+- (_SFPBCollectionStyleRow)initWithFacade:(id)facade;
+- (_SFPBCollectionStyleRow)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCollectionStyleRow
 
-- (_SFPBCollectionStyleRow)initWithFacade:(id)a3
+- (_SFPBCollectionStyleRow)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCollectionStyleRow *)self init];
   if (v5)
   {
-    if ([v4 hasDrawPlattersIfNecessary])
+    if ([facadeCopy hasDrawPlattersIfNecessary])
     {
-      -[_SFPBCollectionStyleRow setDrawPlattersIfNecessary:](v5, "setDrawPlattersIfNecessary:", [v4 drawPlattersIfNecessary]);
+      -[_SFPBCollectionStyleRow setDrawPlattersIfNecessary:](v5, "setDrawPlattersIfNecessary:", [facadeCopy drawPlattersIfNecessary]);
     }
 
-    if ([v4 hasIsInsetGrouped])
+    if ([facadeCopy hasIsInsetGrouped])
     {
-      -[_SFPBCollectionStyleRow setIsInsetGrouped:](v5, "setIsInsetGrouped:", [v4 isInsetGrouped]);
+      -[_SFPBCollectionStyleRow setIsInsetGrouped:](v5, "setIsInsetGrouped:", [facadeCopy isInsetGrouped]);
     }
 
-    if ([v4 hasRowStyle])
+    if ([facadeCopy hasRowStyle])
     {
-      -[_SFPBCollectionStyleRow setRowStyle:](v5, "setRowStyle:", [v4 rowStyle]);
+      -[_SFPBCollectionStyleRow setRowStyle:](v5, "setRowStyle:", [facadeCopy rowStyle]);
     }
 
     v6 = v5;
@@ -38,29 +38,29 @@
   return v5;
 }
 
-- (_SFPBCollectionStyleRow)initWithDictionary:(id)a3
+- (_SFPBCollectionStyleRow)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBCollectionStyleRow;
   v5 = [(_SFPBCollectionStyleRow *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"drawPlattersIfNecessary"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"drawPlattersIfNecessary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCollectionStyleRow setDrawPlattersIfNecessary:](v5, "setDrawPlattersIfNecessary:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isInsetGrouped"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isInsetGrouped"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCollectionStyleRow setIsInsetGrouped:](v5, "setIsInsetGrouped:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rowStyle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rowStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (_SFPBCollectionStyleRow)initWithJSON:(id)a3
+- (_SFPBCollectionStyleRow)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCollectionStyleRow *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCollectionStyleRow *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCollectionStyleRow *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,36 +109,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_drawPlattersIfNecessary)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCollectionStyleRow drawPlattersIfNecessary](self, "drawPlattersIfNecessary")}];
-    [v3 setObject:v4 forKeyedSubscript:@"drawPlattersIfNecessary"];
+    [dictionary setObject:v4 forKeyedSubscript:@"drawPlattersIfNecessary"];
   }
 
   if (self->_isInsetGrouped)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCollectionStyleRow isInsetGrouped](self, "isInsetGrouped")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isInsetGrouped"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isInsetGrouped"];
   }
 
   if (self->_rowStyle)
   {
-    v6 = [(_SFPBCollectionStyleRow *)self rowStyle];
-    if (v6 >= 5)
+    rowStyle = [(_SFPBCollectionStyleRow *)self rowStyle];
+    if (rowStyle >= 5)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", rowStyle];
     }
 
     else
     {
-      v7 = off_1E7ACE448[v6];
+      v7 = off_1E7ACE448[rowStyle];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"rowStyle"];
+    [dictionary setObject:v7 forKeyedSubscript:@"rowStyle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -166,13 +166,13 @@
   return v3 ^ v2 ^ (2654435761 * self->_rowStyle);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (drawPlattersIfNecessary = self->_drawPlattersIfNecessary, drawPlattersIfNecessary == objc_msgSend(v4, "drawPlattersIfNecessary")) && (isInsetGrouped = self->_isInsetGrouped, isInsetGrouped == objc_msgSend(v4, "isInsetGrouped")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (drawPlattersIfNecessary = self->_drawPlattersIfNecessary, drawPlattersIfNecessary == objc_msgSend(equalCopy, "drawPlattersIfNecessary")) && (isInsetGrouped = self->_isInsetGrouped, isInsetGrouped == objc_msgSend(equalCopy, "isInsetGrouped")))
   {
     rowStyle = self->_rowStyle;
-    v8 = rowStyle == [v4 rowStyle];
+    v8 = rowStyle == [equalCopy rowStyle];
   }
 
   else
@@ -183,9 +183,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_SFPBCollectionStyleRow *)self drawPlattersIfNecessary])
   {
     PBDataWriterWriteBOOLField();
@@ -196,12 +196,12 @@
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(_SFPBCollectionStyleRow *)self rowStyle];
-  v5 = v6;
-  if (v4)
+  rowStyle = [(_SFPBCollectionStyleRow *)self rowStyle];
+  v5 = toCopy;
+  if (rowStyle)
   {
     PBDataWriterWriteInt32Field();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

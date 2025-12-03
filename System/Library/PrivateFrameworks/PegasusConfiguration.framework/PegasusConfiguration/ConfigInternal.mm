@@ -1,20 +1,20 @@
 @interface ConfigInternal
-- (BOOL)configBoolForKey:(id)a3;
+- (BOOL)configBoolForKey:(id)key;
 - (BOOL)isEnabled;
 - (BOOL)isExpired;
-- (id)findConfigForUserAgent:(id)a3;
+- (id)findConfigForUserAgent:(id)agent;
 - (id)rawConfig;
-- (id)valueForKey:(id)a3;
-- (id)valueForKey:(id)a3 ofType:(Class)a4;
-- (id)valueForKey:(id)a3 shouldConsiderOverrides:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForKey:(id)key ofType:(Class)type;
+- (id)valueForKey:(id)key shouldConsiderOverrides:(BOOL)overrides;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConfigInternal
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D8CD0028();
 
   return v3;
@@ -22,15 +22,15 @@
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D8CD0274();
 
   return v3;
 }
 
-- (id)findConfigForUserAgent:(id)a3
+- (id)findConfigForUserAgent:(id)agent
 {
-  if (a3)
+  if (agent)
   {
     v4 = sub_1D8CD7B04();
     v6 = v5;
@@ -42,24 +42,24 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1D8CD0904(v4, v6);
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D8CD0BD8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1D8CD0BD8(coderCopy);
 }
 
-- (id)valueForKey:(id)a3 shouldConsiderOverrides:(BOOL)a4
+- (id)valueForKey:(id)key shouldConsiderOverrides:(BOOL)overrides
 {
   v5 = sub_1D8CD7B04();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_1D8CD0EE8(v5, v7, v17);
 
   v9 = v18;
@@ -84,22 +84,22 @@
   return v15;
 }
 
-- (BOOL)configBoolForKey:(id)a3
+- (BOOL)configBoolForKey:(id)key
 {
   v4 = sub_1D8CD7B04();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1D8CD005C(v4, v6);
 
   return v4 & 1;
 }
 
-- (id)valueForKey:(id)a3 ofType:(Class)a4
+- (id)valueForKey:(id)key ofType:(Class)type
 {
   v5 = sub_1D8CD7B04();
   v7 = v6;
   swift_getObjCClassMetadata();
-  v8 = self;
+  selfCopy = self;
   sub_1D8CD1C00(v5, v7, v17);
 
   v9 = v18;
@@ -124,11 +124,11 @@
   return v15;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v4 = sub_1D8CD7B04();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1D8CD1D7C(v4, v6, v16);
 
   v8 = v17;
@@ -155,7 +155,7 @@
 
 - (id)rawConfig
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D8CD1FDC();
 
   if (v3)

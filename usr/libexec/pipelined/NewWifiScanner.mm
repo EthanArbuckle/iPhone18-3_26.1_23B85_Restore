@@ -1,54 +1,54 @@
 @interface NewWifiScanner
-+ (duration<long)expectedScanDuration:(id)a3;
++ (duration<long)expectedScanDuration:(id)duration;
 - (BOOL)sensorPresent;
-- (NewWifiScanner)initWithDelegate:(id)a3;
-- (NewWifiScanner)initWithPlatform:(id)a3 andTimer:(id)a4 andDelegate:(id)a5;
+- (NewWifiScanner)initWithDelegate:(id)delegate;
+- (NewWifiScanner)initWithPlatform:(id)platform andTimer:(id)timer andDelegate:(id)delegate;
 - (WifiScannerDelegateProtocol)delegate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)onQueueHandleScan:(id)a3 forSettings:(id)a4;
-- (void)onQueueHandleScanFailed:(id)a3 forSettings:(id)a4;
+- (void)onQueueHandleScan:(id)scan forSettings:(id)settings;
+- (void)onQueueHandleScanFailed:(id)failed forSettings:(id)settings;
 - (void)onQueueHandleScanTimer;
 - (void)onQueueInvalidate;
 - (void)onQueueScanAfter:(duration<long)long;
-- (void)onQueueScheduleScanFromSettingsWithFailure:(BOOL)a3;
+- (void)onQueueScheduleScanFromSettingsWithFailure:(BOOL)failure;
 - (void)onQueueStartScanning;
 - (void)onQueueStopScanning;
 - (void)startListeningCachedScans;
 - (void)startScanning;
 - (void)stopListeningCachedScans;
 - (void)stopScanning;
-- (void)wifiCachedScanResult:(id)a3 withSettings:(id)a4;
-- (void)wifiScanFailed:(id)a3 withSettings:(id)a4;
-- (void)wifiScanResult:(id)a3 withSettings:(id)a4;
+- (void)wifiCachedScanResult:(id)result withSettings:(id)settings;
+- (void)wifiScanFailed:(id)failed withSettings:(id)settings;
+- (void)wifiScanResult:(id)result withSettings:(id)settings;
 @end
 
 @implementation NewWifiScanner
 
-+ (duration<long)expectedScanDuration:(id)a3
++ (duration<long)expectedScanDuration:(id)duration
 {
-  v3 = a3;
-  v4 = [v3 dwell];
-  v5 = [v3 channels];
-  v6 = 1000000 * v4 * [v5 count];
+  durationCopy = duration;
+  dwell = [durationCopy dwell];
+  channels = [durationCopy channels];
+  v6 = 1000000 * dwell * [channels count];
 
   return v6;
 }
 
-- (NewWifiScanner)initWithDelegate:(id)a3
+- (NewWifiScanner)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(WifiScannerBackend);
-  v6 = [(NewWifiScanner *)self initWithPlatform:v5 andTimer:0 andDelegate:v4];
+  v6 = [(NewWifiScanner *)self initWithPlatform:v5 andTimer:0 andDelegate:delegateCopy];
 
   return v6;
 }
 
-- (NewWifiScanner)initWithPlatform:(id)a3 andTimer:(id)a4 andDelegate:(id)a5
+- (NewWifiScanner)initWithPlatform:(id)platform andTimer:(id)timer andDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  platformCopy = platform;
+  timerCopy = timer;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = NewWifiScanner;
   v12 = [(NewWifiScanner *)&v25 init];
@@ -59,13 +59,13 @@
     goto LABEL_10;
   }
 
-  if (!v11)
+  if (!delegateCopy)
   {
     v21 = @"delegate for scanner is nil";
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!platformCopy)
   {
     v21 = @"scanning backend is nil";
 LABEL_14:
@@ -73,14 +73,14 @@ LABEL_14:
     objc_exception_throw(v22);
   }
 
-  objc_storeWeak(&v12->_delegate, v11);
+  objc_storeWeak(&v12->_delegate, delegateCopy);
   v15 = objc_alloc_init(WifiScannerSettings);
   scanSettings = v14->_scanSettings;
   v14->_scanSettings = v15;
 
   if (v14->_scanSettings && (v17 = dispatch_queue_create("com.apple.wifiscanner", 0), wifiScanQueue = v14->_wifiScanQueue, v14->_wifiScanQueue = v17, wifiScanQueue, v14->_wifiScanQueue))
   {
-    objc_storeStrong(&v13->_platform, a3);
+    objc_storeStrong(&v13->_platform, platform);
     [(WifiScannerBackendProtocol *)v14->_platform setDelegate:v14];
     objc_initWeak(location, v14);
     v23[0] = _NSConcreteStackBlock;
@@ -91,10 +91,10 @@ LABEL_14:
     v19 = objc_retainBlock(v23);
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
-    if (!v10)
+    if (!timerCopy)
     {
-      v10 = [[DispatchMonotonicTimer alloc] initWithName:@"com.apple.wifiscanner.timer"];
-      if (!v10)
+      timerCopy = [[DispatchMonotonicTimer alloc] initWithName:@"com.apple.wifiscanner.timer"];
+      if (!timerCopy)
       {
         sub_100014A08(location, "");
         sub_10038523C(__p, location);
@@ -102,7 +102,7 @@ LABEL_14:
       }
     }
 
-    objc_storeStrong(&v13->_scanTimer, v10);
+    objc_storeStrong(&v13->_scanTimer, timerCopy);
     [(MonotonicTimerProtocol *)v14->_scanTimer setEventHandler:v19 onQueue:v14->_wifiScanQueue];
     [(MonotonicTimerProtocol *)v13->_scanTimer setDelay:0x7FFFFFFFFFFFFFFFLL];
     [(MonotonicTimerProtocol *)v13->_scanTimer setInterval:0x7FFFFFFFFFFFFFFFLL];
@@ -131,7 +131,7 @@ LABEL_10:
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "wifi scanner %p: dealloc", buf, 0xCu);
   }
 
@@ -159,8 +159,8 @@ LABEL_10:
 
   dispatch_assert_queue_not_V2(self->_wifiScanQueue);
   wifiScanQueue = self->_wifiScanQueue;
-  v5 = self;
-  v7 = v5;
+  selfCopy = self;
+  v7 = selfCopy;
   v6 = wifiScanQueue;
   std::promise<void>::promise(&v9);
   std::promise<void>::get_future(&v9);
@@ -175,7 +175,7 @@ LABEL_10:
   std::future<void>::~future(&v8);
   std::promise<void>::~promise(&v9);
 
-  [(WifiScannerBackendProtocol *)v5->_platform invalidate];
+  [(WifiScannerBackendProtocol *)selfCopy->_platform invalidate];
 }
 
 - (void)onQueueInvalidate
@@ -189,24 +189,24 @@ LABEL_10:
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_DEBUG))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "wifi scanner %p: invalidate timer", &v8, 0xCu);
   }
 
   if (self->_scansInProgress > 0 || ![(NewWifiScanner *)self scanning])
   {
-    v4 = [(NewWifiScanner *)self scanTimer];
-    [v4 setDelay:0x7FFFFFFFFFFFFFFFLL];
+    scanTimer = [(NewWifiScanner *)self scanTimer];
+    [scanTimer setDelay:0x7FFFFFFFFFFFFFFFLL];
 
-    v5 = [(NewWifiScanner *)self scanTimer];
-    [v5 setInterval:0x7FFFFFFFFFFFFFFFLL];
+    scanTimer2 = [(NewWifiScanner *)self scanTimer];
+    [scanTimer2 setInterval:0x7FFFFFFFFFFFFFFFLL];
 
-    v6 = [(NewWifiScanner *)self scanTimer];
-    [v6 resume];
+    scanTimer3 = [(NewWifiScanner *)self scanTimer];
+    [scanTimer3 resume];
   }
 
-  v7 = [(NewWifiScanner *)self scanTimer];
-  [v7 invalidate];
+  scanTimer4 = [(NewWifiScanner *)self scanTimer];
+  [scanTimer4 invalidate];
 
   [(NewWifiScanner *)self setScanTimer:0];
 }
@@ -233,7 +233,7 @@ LABEL_10:
 - (void)startListeningCachedScans
 {
   wifiScanQueue = self->_wifiScanQueue;
-  v5 = self;
+  selfCopy = self;
   v3 = wifiScanQueue;
   v4 = std::promise<void>::promise(&v8);
   std::promise<void>::get_future(v4);
@@ -241,7 +241,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_1003003F0;
   block[3] = &unk_1004406E8;
-  block[4] = &v5;
+  block[4] = &selfCopy;
   block[5] = &v8;
   dispatch_sync(v3, block);
   std::future<void>::get(&v7);
@@ -252,7 +252,7 @@ LABEL_10:
 - (void)stopListeningCachedScans
 {
   wifiScanQueue = self->_wifiScanQueue;
-  v5 = self;
+  selfCopy = self;
   v3 = wifiScanQueue;
   v4 = std::promise<void>::promise(&v8);
   std::promise<void>::get_future(v4);
@@ -260,7 +260,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_1003004A0;
   block[3] = &unk_1004406E8;
-  block[4] = &v5;
+  block[4] = &selfCopy;
   block[5] = &v8;
   dispatch_sync(v3, block);
   std::future<void>::get(&v7);
@@ -294,12 +294,12 @@ LABEL_10:
 {
   if ([(NewWifiScanner *)self scanning])
   {
-    v3 = [(NewWifiScanner *)self delegate];
-    if (v3)
+    delegate = [(NewWifiScanner *)self delegate];
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v3 wifiScanInitiating];
+        [delegate wifiScanInitiating];
       }
 
       if (qword_10045B050 != -1)
@@ -311,7 +311,7 @@ LABEL_10:
       if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v20 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "scan timer tick - %p requesting scan & pausing timer", buf, 0xCu);
       }
 
@@ -338,9 +338,9 @@ LABEL_10:
         v14 = 3321888768;
         v15 = sub_1002FEC24;
         v16 = &unk_100448938;
-        v10 = self;
-        v11 = v3;
-        v12 = v10;
+        selfCopy2 = self;
+        v11 = delegate;
+        v12 = selfCopy2;
         v17 = v12;
         v18 = v11;
         [(WifiScannerBackendProtocol *)platform scanAsync:scanSettings initiated:&v13];
@@ -384,60 +384,60 @@ LABEL_10:
   }
 }
 
-- (void)wifiScanResult:(id)a3 withSettings:(id)a4
+- (void)wifiScanResult:(id)result withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  settingsCopy = settings;
   wifiScanQueue = self->_wifiScanQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FEF2C;
   block[3] = &unk_100448970;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = settingsCopy;
+  v9 = settingsCopy;
+  v10 = resultCopy;
   dispatch_sync(wifiScanQueue, block);
 }
 
-- (void)wifiCachedScanResult:(id)a3 withSettings:(id)a4
+- (void)wifiCachedScanResult:(id)result withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  settingsCopy = settings;
   wifiScanQueue = self->_wifiScanQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FF038;
   block[3] = &unk_100448970;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = settingsCopy;
+  v9 = settingsCopy;
+  v10 = resultCopy;
   dispatch_sync(wifiScanQueue, block);
 }
 
-- (void)wifiScanFailed:(id)a3 withSettings:(id)a4
+- (void)wifiScanFailed:(id)failed withSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  settingsCopy = settings;
   wifiScanQueue = self->_wifiScanQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002FF148;
   block[3] = &unk_100448970;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = settingsCopy;
+  v13 = failedCopy;
+  selfCopy = self;
+  v9 = failedCopy;
+  v10 = settingsCopy;
   dispatch_sync(wifiScanQueue, block);
 }
 
-- (void)onQueueScheduleScanFromSettingsWithFailure:(BOOL)a3
+- (void)onQueueScheduleScanFromSettingsWithFailure:(BOOL)failure
 {
-  v3 = a3;
+  failureCopy = failure;
   if (qword_10045B050 != -1)
   {
     sub_10038726C();
@@ -450,10 +450,10 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "scheduling next scan", &v18, 2u);
   }
 
-  if (v3)
+  if (failureCopy)
   {
-    v6 = [(WifiScannerSettings *)self->_scanSettings channels];
-    v7 = [v6 count];
+    channels = [(WifiScannerSettings *)self->_scanSettings channels];
+    v7 = [channels count];
     v8.__rep_ = [(WifiScannerSettings *)self->_scanSettings dwell];
 
     v9 = 1000000 * v7 * v8.__rep_;
@@ -464,10 +464,10 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [(NewWifiScanner *)self delegate];
-  [v10 updateWifiSettingsForNextScan:self->_scanSettings];
-  v11 = [(WifiScannerSettings *)self->_scanSettings channels];
-  v12 = [v11 count];
+  delegate = [(NewWifiScanner *)self delegate];
+  [delegate updateWifiSettingsForNextScan:self->_scanSettings];
+  channels2 = [(WifiScannerSettings *)self->_scanSettings channels];
+  v12 = [channels2 count];
   v13.__rep_ = [(WifiScannerSettings *)self->_scanSettings dwell];
   [(WifiScannerSettings *)self->_scanSettings dutyCycle];
   v15 = sub_1000E075C(v13.__rep_ * v12, v14);
@@ -547,11 +547,11 @@ LABEL_11:
   }
 }
 
-- (void)onQueueHandleScan:(id)a3 forSettings:(id)a4
+- (void)onQueueHandleScan:(id)scan forSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 cachedScan])
+  scanCopy = scan;
+  settingsCopy = settings;
+  if ([settingsCopy cachedScan])
   {
     if (qword_10045B050 != -1)
     {
@@ -565,7 +565,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Got cached scan from backend", &v16, 2u);
     }
 
-    if (!v6)
+    if (!scanCopy)
     {
 LABEL_13:
       if (qword_10045B050 != -1)
@@ -580,7 +580,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "unexpected nil result from scanning platform", &v16, 2u);
       }
 
-      v6 = &__NSArray0__struct;
+      scanCopy = &__NSArray0__struct;
     }
   }
 
@@ -599,7 +599,7 @@ LABEL_13:
     }
 
     --self->_scansInProgress;
-    if (!v6)
+    if (!scanCopy)
     {
       goto LABEL_13;
     }
@@ -607,8 +607,8 @@ LABEL_13:
 
   if ([(NewWifiScanner *)self scanning])
   {
-    v11 = [(NewWifiScanner *)self delegate];
-    if (v11)
+    delegate = [(NewWifiScanner *)self delegate];
+    if (delegate)
     {
       if (qword_10045B050 != -1)
       {
@@ -618,14 +618,14 @@ LABEL_13:
       v12 = qword_10045B058;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v6 count];
+        v13 = [scanCopy count];
         v16 = 134217984;
         v17 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "notifying delegate of %zu scan results", &v16, 0xCu);
       }
 
-      [v11 wifiScanData:v6 forSettings:v7];
-      if (([v7 cachedScan] & 1) == 0)
+      [delegate wifiScanData:scanCopy forSettings:settingsCopy];
+      if (([settingsCopy cachedScan] & 1) == 0)
       {
         [(NewWifiScanner *)self onQueueScheduleScanFromSettingsWithFailure:0];
       }
@@ -665,11 +665,11 @@ LABEL_13:
   }
 }
 
-- (void)onQueueHandleScanFailed:(id)a3 forSettings:(id)a4
+- (void)onQueueHandleScanFailed:(id)failed forSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 cachedScan])
+  failedCopy = failed;
+  settingsCopy = settings;
+  if ([settingsCopy cachedScan])
   {
     if (qword_10045B050 != -1)
     {
@@ -680,7 +680,7 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v22 = 67109120;
-      LODWORD(v23[0]) = [v6 code];
+      LODWORD(v23[0]) = [failedCopy code];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "cached scan failed with %d", &v22, 8u);
     }
   }
@@ -696,7 +696,7 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v22 = 67109120;
-      LODWORD(v23[0]) = [v6 code];
+      LODWORD(v23[0]) = [failedCopy code];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "our scan failed with %d", &v22, 8u);
     }
 
@@ -705,7 +705,7 @@ LABEL_13:
 
   if ([(NewWifiScanner *)self scanning])
   {
-    if ([v6 code] == 82)
+    if ([failedCopy code] == 82)
     {
       if (qword_10045B050 != -1)
       {
@@ -722,10 +722,10 @@ LABEL_13:
 
     else
     {
-      v13 = [v7 settings];
-      v14 = [v13 lowPriorityScan];
+      settings = [settingsCopy settings];
+      lowPriorityScan = [settings lowPriorityScan];
 
-      if (v14)
+      if (lowPriorityScan)
       {
         if (qword_10045B050 != -1)
         {
@@ -735,10 +735,10 @@ LABEL_13:
         v15 = qword_10045B058;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
-          v16 = [v6 code];
-          v17 = [v6 description];
+          code = [failedCopy code];
+          v17 = [failedCopy description];
           v22 = 67109378;
-          LODWORD(v23[0]) = v16;
+          LODWORD(v23[0]) = code;
           WORD2(v23[0]) = 2112;
           *(v23 + 6) = v17;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "WARNING: got an error (%d) initiating a scan: %@", &v22, 0x12u);
@@ -755,10 +755,10 @@ LABEL_13:
         v15 = qword_10045B058;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v6 code];
-          v19 = [v6 description];
+          code2 = [failedCopy code];
+          v19 = [failedCopy description];
           v22 = 67109378;
-          LODWORD(v23[0]) = v18;
+          LODWORD(v23[0]) = code2;
           WORD2(v23[0]) = 2112;
           *(v23 + 6) = v19;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "got an error (%d) initiating a scan: %@", &v22, 0x12u);
@@ -766,12 +766,12 @@ LABEL_13:
       }
     }
 
-    v20 = [(NewWifiScanner *)self delegate];
-    v11 = v20;
-    if (v20)
+    delegate = [(NewWifiScanner *)self delegate];
+    v11 = delegate;
+    if (delegate)
     {
-      [v20 wifiScanFailed:v7];
-      if (([v7 cachedScan] & 1) == 0)
+      [delegate wifiScanFailed:settingsCopy];
+      if (([settingsCopy cachedScan] & 1) == 0)
       {
         [(NewWifiScanner *)self onQueueScheduleScanFromSettingsWithFailure:1];
       }
@@ -805,7 +805,7 @@ LABEL_13:
     v11 = qword_10045B058;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v6 description];
+      v12 = [failedCopy description];
       v22 = 138412290;
       v23[0] = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "got an error: %@, but not scanning anymore", &v22, 0xCu);
@@ -832,8 +832,8 @@ LABEL_13:
 
   else
   {
-    v4 = [(NewWifiScanner *)self delegate];
-    if (v4)
+    delegate = [(NewWifiScanner *)self delegate];
+    if (delegate)
     {
       if (qword_10045B050 != -1)
       {
@@ -844,12 +844,12 @@ LABEL_13:
       if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
       {
         v8 = 134217984;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "wifi scanner %p: start scanning", &v8, 0xCu);
       }
 
       [(NewWifiScanner *)self setScanning:1];
-      [v4 updateWifiSettingsForNextScan:self->_scanSettings];
+      [delegate updateWifiSettingsForNextScan:self->_scanSettings];
       if (qword_10045B050 != -1)
       {
         sub_100387280();
@@ -900,7 +900,7 @@ LABEL_13:
     if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "wifi scanner %p: stop scanning", &v6, 0xCu);
     }
 

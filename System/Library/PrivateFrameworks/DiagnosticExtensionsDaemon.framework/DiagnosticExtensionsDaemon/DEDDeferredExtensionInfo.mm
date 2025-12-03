@@ -1,19 +1,19 @@
 @interface DEDDeferredExtensionInfo
-+ (double)recommendedGracePeriodForDate:(id)a3;
-+ (id)activityStringForBugSessionIdentifier:(id)a3 dedIdentifier:(id)a4;
++ (double)recommendedGracePeriodForDate:(id)date;
++ (id)activityStringForBugSessionIdentifier:(id)identifier dedIdentifier:(id)dedIdentifier;
 + (id)allInfo;
 + (id)archivedClasses;
 + (id)log;
 + (void)allInfo;
 + (void)checkIn;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOverdue;
-- (DEDDeferredExtensionInfo)initWithBugSessionIdentifier:(id)a3 dedIdentifier:(id)a4 runOnDate:(id)a5 withGracePeriod:(double)a6;
-- (DEDDeferredExtensionInfo)initWithCoder:(id)a3;
+- (DEDDeferredExtensionInfo)initWithBugSessionIdentifier:(id)identifier dedIdentifier:(id)dedIdentifier runOnDate:(id)date withGracePeriod:(double)period;
+- (DEDDeferredExtensionInfo)initWithCoder:(id)coder;
 - (NSString)activityString;
 - (id)criteria;
 - (void)addToStore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeFromStore;
 - (void)run;
 - (void)schedule;
@@ -42,9 +42,9 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
   log__log = v0;
 }
 
-+ (double)recommendedGracePeriodForDate:(id)a3
++ (double)recommendedGracePeriodForDate:(id)date
 {
-  [a3 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v4 = 10.0;
   if (v3 > 60.0)
   {
@@ -76,43 +76,43 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bugSessionIdentifier = self->_bugSessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bugSessionIdentifier forKey:@"bugSessionIdentifier"];
-  [v5 encodeObject:self->_dedIdentifier forKey:@"dedIdentifier"];
-  [v5 encodeObject:self->_triggerDate forKey:@"triggerDate"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
-  [v5 encodeDouble:@"gracePeriod" forKey:self->_gracePeriod];
-  [v5 encodeBool:self->_scheduled forKey:@"scheduled"];
-  [v5 encodeBool:self->_requiresClassBDataAccess forKey:@"requiresClassBDataAccess"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bugSessionIdentifier forKey:@"bugSessionIdentifier"];
+  [coderCopy encodeObject:self->_dedIdentifier forKey:@"dedIdentifier"];
+  [coderCopy encodeObject:self->_triggerDate forKey:@"triggerDate"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
+  [coderCopy encodeDouble:@"gracePeriod" forKey:self->_gracePeriod];
+  [coderCopy encodeBool:self->_scheduled forKey:@"scheduled"];
+  [coderCopy encodeBool:self->_requiresClassBDataAccess forKey:@"requiresClassBDataAccess"];
 }
 
-- (DEDDeferredExtensionInfo)initWithCoder:(id)a3
+- (DEDDeferredExtensionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = DEDDeferredExtensionInfo;
   v5 = [(DEDDeferredExtensionInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bugSessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bugSessionIdentifier"];
     bugSessionIdentifier = v5->_bugSessionIdentifier;
     v5->_bugSessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dedIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dedIdentifier"];
     dedIdentifier = v5->_dedIdentifier;
     v5->_dedIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"triggerDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"triggerDate"];
     triggerDate = v5->_triggerDate;
     v5->_triggerDate = v10;
 
-    [v4 decodeDoubleForKey:@"gracePeriod"];
+    [coderCopy decodeDoubleForKey:@"gracePeriod"];
     v5->_gracePeriod = v12;
-    v5->_scheduled = [v4 decodeBoolForKey:@"scheduled"];
-    v5->_requiresClassBDataAccess = [v4 decodeBoolForKey:@"requiresClassBDataAccess"];
+    v5->_scheduled = [coderCopy decodeBoolForKey:@"scheduled"];
+    v5->_requiresClassBDataAccess = [coderCopy decodeBoolForKey:@"requiresClassBDataAccess"];
     v13 = MEMORY[0x277CBEB98];
     v14 = objc_opt_class();
     v15 = objc_opt_class();
@@ -120,7 +120,7 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
     v17 = objc_opt_class();
     v18 = objc_opt_class();
     v19 = [v13 setWithObjects:{v14, v15, v16, v17, v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"parameters"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v20;
   }
@@ -143,21 +143,21 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
   return v8;
 }
 
-- (DEDDeferredExtensionInfo)initWithBugSessionIdentifier:(id)a3 dedIdentifier:(id)a4 runOnDate:(id)a5 withGracePeriod:(double)a6
+- (DEDDeferredExtensionInfo)initWithBugSessionIdentifier:(id)identifier dedIdentifier:(id)dedIdentifier runOnDate:(id)date withGracePeriod:(double)period
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identifierCopy = identifier;
+  dedIdentifierCopy = dedIdentifier;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = DEDDeferredExtensionInfo;
   v14 = [(DEDDeferredExtensionInfo *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_bugSessionIdentifier, a3);
-    objc_storeStrong(&v15->_dedIdentifier, a4);
-    objc_storeStrong(&v15->_triggerDate, a5);
-    v15->_gracePeriod = a6;
+    objc_storeStrong(&v14->_bugSessionIdentifier, identifier);
+    objc_storeStrong(&v15->_dedIdentifier, dedIdentifier);
+    objc_storeStrong(&v15->_triggerDate, date);
+    v15->_gracePeriod = period;
     v15->_scheduled = 0;
   }
 
@@ -166,54 +166,54 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
 
 + (id)allInfo
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"deferred-execution-info"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"deferred-execution-info"];
   if (v4)
   {
     v5 = MEMORY[0x277CCAAC8];
-    v6 = [a1 archivedClasses];
+    archivedClasses = [self archivedClasses];
     v14 = 0;
-    v7 = [v5 unarchivedObjectOfClasses:v6 fromData:v4 error:&v14];
+    v7 = [v5 unarchivedObjectOfClasses:archivedClasses fromData:v4 error:&v14];
     v8 = v14;
 
     if (v8)
     {
-      v9 = [a1 log];
+      v9 = [self log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         +[(DEDDeferredExtensionInfo *)v8];
       }
 
-      v10 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
     else
     {
-      v10 = v7;
+      dictionary = v7;
     }
 
-    v12 = v10;
+    dictionary2 = dictionary;
   }
 
   else
   {
-    v11 = [a1 log];
+    v11 = [self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_INFO, "Creating dictionary for deferred execution info", buf, 2u);
     }
 
-    v12 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  return v12;
+  return dictionary2;
 }
 
 - (void)addToStore
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 activityString];
+  activityString = [self activityString];
   OUTLINED_FUNCTION_1_5();
   OUTLINED_FUNCTION_0_8(&dword_248AD7000, v2, v3, "Archiving failed for extension: %{public}@\nReason:%{public}@", v4, v5, v6, v7, v9);
 
@@ -223,7 +223,7 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
 - (void)removeFromStore
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 activityString];
+  activityString = [self activityString];
   OUTLINED_FUNCTION_1_5();
   OUTLINED_FUNCTION_0_8(&dword_248AD7000, v2, v3, "Archiving failed for extension: %{public}@\nReason: %{public}@", v4, v5, v6, v7, v9);
 
@@ -238,23 +238,23 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
   handler[1] = 3221225472;
   handler[2] = __35__DEDDeferredExtensionInfo_checkIn__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
+  handler[4] = self;
   xpc_activity_register("com.apple.diagnosticextensionsd.reschedule", v3, handler);
-  v4 = [a1 log];
+  v4 = [self log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_248AD7000, v4, OS_LOG_TYPE_DEFAULT, "Rescheduling all activities", buf, 2u);
   }
 
-  v5 = [objc_opt_class() allInfo];
-  +[DEDAnalytics didCheckInDeferredExtensionsWithCount:](DEDAnalytics, "didCheckInDeferredExtensionsWithCount:", [v5 count]);
+  allInfo = [objc_opt_class() allInfo];
+  +[DEDAnalytics didCheckInDeferredExtensionsWithCount:](DEDAnalytics, "didCheckInDeferredExtensionsWithCount:", [allInfo count]);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 allValues];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  allValues = [allInfo allValues];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -266,14 +266,14 @@ void __31__DEDDeferredExtensionInfo_log__block_invoke()
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) schedule];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v8);
@@ -306,8 +306,8 @@ void __35__DEDDeferredExtensionInfo_checkIn__block_invoke(uint64_t a1, xpc_activ
 
   else
   {
-    v4 = [(DEDDeferredExtensionInfo *)self triggerDate];
-    [v4 timeIntervalSinceNow];
+    triggerDate = [(DEDDeferredExtensionInfo *)self triggerDate];
+    [triggerDate timeIntervalSinceNow];
     v6 = v5;
 
     xpc_dictionary_set_int64(v3, *MEMORY[0x277D86250], v6);
@@ -326,31 +326,31 @@ void __35__DEDDeferredExtensionInfo_checkIn__block_invoke(uint64_t a1, xpc_activ
   v19 = *MEMORY[0x277D85DE8];
   [(DEDDeferredExtensionInfo *)self setScheduled:1];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DEDDeferredExtensionInfo *)self activityString];
-  v5 = [v3 stringWithFormat:@"transaction.%@", v4];
+  activityString = [(DEDDeferredExtensionInfo *)self activityString];
+  v5 = [v3 stringWithFormat:@"transaction.%@", activityString];
 
   [v5 UTF8String];
   v6 = os_transaction_create();
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(DEDDeferredExtensionInfo *)self activityString];
+    activityString2 = [(DEDDeferredExtensionInfo *)self activityString];
     *buf = 138543362;
-    v18 = v8;
+    v18 = activityString2;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Scheduling deferred DE: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(DEDDeferredExtensionInfo *)self activityString];
-  v10 = [v9 UTF8String];
+  activityString3 = [(DEDDeferredExtensionInfo *)self activityString];
+  uTF8String = [activityString3 UTF8String];
   v11 = *MEMORY[0x277D86238];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __36__DEDDeferredExtensionInfo_schedule__block_invoke;
   handler[3] = &unk_278F65D78;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v12 = v6;
-  xpc_activity_register(v10, v11, handler);
+  xpc_activity_register(uTF8String, v11, handler);
 
   [(DEDDeferredExtensionInfo *)self addToStore];
   v13 = *MEMORY[0x277D85DE8];
@@ -402,22 +402,22 @@ void __36__DEDDeferredExtensionInfo_schedule__block_invoke(uint64_t a1, void *a2
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = +[DEDDaemon sharedInstance];
-  v4 = [v3 controller];
-  v5 = [(DEDDeferredExtensionInfo *)self bugSessionIdentifier];
-  v6 = [v4 sessionForIdentifier:v5];
+  controller = [v3 controller];
+  bugSessionIdentifier = [(DEDDeferredExtensionInfo *)self bugSessionIdentifier];
+  v6 = [controller sessionForIdentifier:bugSessionIdentifier];
 
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 prettyDescription];
+    prettyDescription = [v6 prettyDescription];
     v12 = 138543362;
-    v13 = v8;
+    v13 = prettyDescription;
     _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Starting deferred DE for bug session: %{public}@", &v12, 0xCu);
   }
 
-  v9 = [(DEDDeferredExtensionInfo *)self dedIdentifier];
-  v10 = [(DEDDeferredExtensionInfo *)self parameters];
-  [v6 finallyStartDiagnosticWithIdentifier:v9 parameters:v10 completion:0];
+  dedIdentifier = [(DEDDeferredExtensionInfo *)self dedIdentifier];
+  parameters = [(DEDDeferredExtensionInfo *)self parameters];
+  [v6 finallyStartDiagnosticWithIdentifier:dedIdentifier parameters:parameters completion:0];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -435,22 +435,22 @@ void __36__DEDDeferredExtensionInfo_schedule__block_invoke(uint64_t a1, void *a2
 
   [(DEDDeferredExtensionInfo *)self setScheduled:0];
   [(DEDDeferredExtensionInfo *)self removeFromStore];
-  v4 = [(DEDDeferredExtensionInfo *)self activityString];
-  xpc_activity_unregister([v4 UTF8String]);
+  activityString = [(DEDDeferredExtensionInfo *)self activityString];
+  xpc_activity_unregister([activityString UTF8String]);
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isOverdue
 {
-  v2 = self;
-  v3 = [(DEDDeferredExtensionInfo *)self triggerDate];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 earlierDate:v4];
-  v6 = [(DEDDeferredExtensionInfo *)v2 triggerDate];
-  LOBYTE(v2) = v5 == v6;
+  selfCopy = self;
+  triggerDate = [(DEDDeferredExtensionInfo *)self triggerDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [triggerDate earlierDate:date];
+  triggerDate2 = [(DEDDeferredExtensionInfo *)selfCopy triggerDate];
+  LOBYTE(selfCopy) = v5 == triggerDate2;
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSString)activityString
@@ -459,9 +459,9 @@ void __36__DEDDeferredExtensionInfo_schedule__block_invoke(uint64_t a1, void *a2
   if (!activityString)
   {
     v4 = objc_opt_class();
-    v5 = [(DEDDeferredExtensionInfo *)self bugSessionIdentifier];
-    v6 = [(DEDDeferredExtensionInfo *)self dedIdentifier];
-    v7 = [v4 activityStringForBugSessionIdentifier:v5 dedIdentifier:v6];
+    bugSessionIdentifier = [(DEDDeferredExtensionInfo *)self bugSessionIdentifier];
+    dedIdentifier = [(DEDDeferredExtensionInfo *)self dedIdentifier];
+    v7 = [v4 activityStringForBugSessionIdentifier:bugSessionIdentifier dedIdentifier:dedIdentifier];
     v8 = self->_activityString;
     self->_activityString = v7;
 
@@ -471,12 +471,12 @@ void __36__DEDDeferredExtensionInfo_schedule__block_invoke(uint64_t a1, void *a2
   return activityString;
 }
 
-+ (id)activityStringForBugSessionIdentifier:(id)a3 dedIdentifier:(id)a4
++ (id)activityStringForBugSessionIdentifier:(id)identifier dedIdentifier:(id)dedIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 extensionIdentifier];
-  v9 = [v8 componentsSeparatedByString:@"."];
+  identifierCopy = identifier;
+  dedIdentifierCopy = dedIdentifier;
+  extensionIdentifier = [dedIdentifierCopy extensionIdentifier];
+  v9 = [extensionIdentifier componentsSeparatedByString:@"."];
   v10 = [v9 mutableCopy];
 
   v11 = [v10 ded_mapWithBlock:&__block_literal_global_60_0];
@@ -493,34 +493,34 @@ void __36__DEDDeferredExtensionInfo_schedule__block_invoke(uint64_t a1, void *a2
   {
     v14 = [v12 componentsJoinedByString:@"."];
 
-    v8 = v14;
+    extensionIdentifier = v14;
   }
 
-  if ([v6 length] >= 0x29)
+  if ([identifierCopy length] >= 0x29)
   {
-    v15 = [v6 substringWithRange:{0, 40}];
+    v15 = [identifierCopy substringWithRange:{0, 40}];
 
-    v6 = v15;
+    identifierCopy = v15;
   }
 
-  if ([v8 length] >= 0x33)
+  if ([extensionIdentifier length] >= 0x33)
   {
-    v16 = [v8 substringWithRange:{0, 50}];
+    v16 = [extensionIdentifier substringWithRange:{0, 50}];
 
-    v8 = v16;
+    extensionIdentifier = v16;
   }
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd.%@.%@", v6, v8];
-  if ([v7 invocationNumber] >= 1)
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.diagnosticextensionsd.%@.%@", identifierCopy, extensionIdentifier];
+  if ([dedIdentifierCopy invocationNumber] >= 1)
   {
-    v18 = [v17 stringByAppendingFormat:@".%ld", objc_msgSend(v7, "invocationNumber")];
+    v18 = [v17 stringByAppendingFormat:@".%ld", objc_msgSend(dedIdentifierCopy, "invocationNumber")];
 
     v17 = v18;
   }
 
   if ([v17 length] >= 0x80)
   {
-    v19 = [a1 log];
+    v19 = [self log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       [DEDDeferredExtensionInfo activityStringForBugSessionIdentifier:v17 dedIdentifier:?];
@@ -550,17 +550,17 @@ uint64_t __80__DEDDeferredExtensionInfo_activityStringForBugSessionIdentifier_de
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DEDDeferredExtensionInfo *)self activityString];
-    v7 = [v5 activityString];
+    v5 = equalCopy;
+    activityString = [(DEDDeferredExtensionInfo *)self activityString];
+    activityString2 = [v5 activityString];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [activityString isEqualToString:activityString2];
   }
 
   else
@@ -575,7 +575,7 @@ uint64_t __80__DEDDeferredExtensionInfo_activityStringForBugSessionIdentifier_de
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248AD7000, a2, OS_LOG_TYPE_ERROR, "Unarchiving failed for reason: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

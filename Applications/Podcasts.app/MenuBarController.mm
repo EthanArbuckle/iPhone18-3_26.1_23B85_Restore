@@ -1,15 +1,15 @@
 @interface MenuBarController
 - (_TtC8Podcasts17MenuBarController)init;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation MenuBarController
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1002493A8(a3);
+  selfCopy = self;
+  sub_1002493A8(builder);
   swift_unknownObjectRelease();
 }
 

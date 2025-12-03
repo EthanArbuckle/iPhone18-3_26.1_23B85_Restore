@@ -1,6 +1,6 @@
 @interface AXGuestPassSettingsSwiftUI
-- (AXGuestPassSettingsSwiftUI)initWithCoder:(id)a3;
-- (AXGuestPassSettingsSwiftUI)initWithNibName:(id)a3 bundle:(id)a4;
+- (AXGuestPassSettingsSwiftUI)initWithCoder:(id)coder;
+- (AXGuestPassSettingsSwiftUI)initWithNibName:(id)name bundle:(id)bundle;
 - (id)makeController;
 @end
 
@@ -16,34 +16,34 @@
   return v2;
 }
 
-- (AXGuestPassSettingsSwiftUI)initWithNibName:(id)a3 bundle:(id)a4
+- (AXGuestPassSettingsSwiftUI)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_19BFE4();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_19BFB4();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for GuestPassSettingsSwiftUI();
-  v9 = [(AXGuestPassSettingsSwiftUI *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AXGuestPassSettingsSwiftUI *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (AXGuestPassSettingsSwiftUI)initWithCoder:(id)a3
+- (AXGuestPassSettingsSwiftUI)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for GuestPassSettingsSwiftUI();
-  v4 = a3;
-  v5 = [(AXGuestPassSettingsSwiftUI *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AXGuestPassSettingsSwiftUI *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

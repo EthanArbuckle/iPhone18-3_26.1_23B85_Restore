@@ -1,64 +1,64 @@
 @interface SBDockToStageZoomWindowingModifier
 - (BOOL)_isEffectivelyHome;
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3;
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)_frameForZoomingIndex:(unint64_t)a3 isEffectivelyHome:(BOOL)a4 ignoringGenie:(BOOL)a5;
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)_frameForZoomingIndex:(unint64_t)index isEffectivelyHome:(BOOL)home ignoringGenie:(BOOL)genie;
 - (CGRect)_iconFrame;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4;
-- (SBDockToStageZoomWindowingModifier)initWithAppLayout:(id)a3 addingToStage:(BOOL)a4;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)a3;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame;
+- (SBDockToStageZoomWindowingModifier)initWithAppLayout:(id)layout addingToStage:(BOOL)stage;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)bottom;
 - (double)dockProgress;
 - (double)fadeInDelayForSplitViewHandles;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 - (id)_appLayoutForIcon;
 - (id)_layoutSettings;
-- (id)_layoutSettingsForTargetCenter:(CGPoint)a3;
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
+- (id)_layoutSettingsForTargetCenter:(CGPoint)center;
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
 - (id)appLayoutsToCacheSnapshots;
-- (id)genieAttributesForAppLayout:(id)a3;
+- (id)genieAttributesForAppLayout:(id)layout;
 - (id)keyboardSuppressionMode;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
 - (void)complete;
-- (void)timerFired:(id)a3;
-- (void)transitionDidComplete:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (void)timerFired:(id)fired;
+- (void)transitionDidComplete:(id)complete;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBDockToStageZoomWindowingModifier
 
-- (SBDockToStageZoomWindowingModifier)initWithAppLayout:(id)a3 addingToStage:(BOOL)a4
+- (SBDockToStageZoomWindowingModifier)initWithAppLayout:(id)layout addingToStage:(BOOL)stage
 {
-  v8 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBDockToStageZoomWindowingModifier;
   v9 = [(SBWindowingModifier *)&v11 init];
   if (v9)
   {
-    if (!v8)
+    if (!layoutCopy)
     {
       [SBDockToStageZoomWindowingModifier initWithAppLayout:a2 addingToStage:v9];
     }
 
-    objc_storeStrong(&v9->_appLayout, a3);
-    v9->_isAddingToStage = a4;
+    objc_storeStrong(&v9->_appLayout, layout);
+    v9->_isAddingToStage = stage;
     v9->_wantsResignActiveAndAsyncRenderingAssertions = 1;
   }
 
@@ -74,8 +74,8 @@
 
 - (CGRect)_iconFrame
 {
-  v3 = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
-  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconFrameForAppLayout:v3];
+  _appLayoutForIcon = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
+  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconFrameForAppLayout:_appLayoutForIcon];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -92,46 +92,46 @@
   return result;
 }
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 transitionID];
+  beginCopy = begin;
+  transitionID = [beginCopy transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v5;
+  self->_transitionID = transitionID;
 
   v7 = objc_opt_new();
   [(SBWindowingModifier *)self appendResponse:v7];
 
-  v8 = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
-  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconCornerRadiusForAppLayout:v8];
+  _appLayoutForIcon = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
+  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconCornerRadiusForAppLayout:_appLayoutForIcon];
   self->_iconCornerRadius = v9;
-  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconScaleForAppLayout:v8];
+  [(SBDockToStageZoomWindowingModifier *)self homeScreenIconScaleForAppLayout:_appLayoutForIcon];
   self->_iconScale = v10;
   self->_itemContainerOverlapsDock = [(SBDockToStageZoomWindowingModifier *)self itemContainerForAppLayoutOverlapsFloatingDock:self->_appLayout];
   v11 = objc_opt_new();
@@ -165,36 +165,36 @@
   [(SBWindowingModifier *)self appendResponse:v14];
   if (self->_isAddingToStage)
   {
-    v15 = 0;
+    isFloatingDockFullyPresented = 0;
   }
 
   else
   {
-    v15 = [(SBDockToStageZoomWindowingModifier *)self isFloatingDockFullyPresented];
+    isFloatingDockFullyPresented = [(SBDockToStageZoomWindowingModifier *)self isFloatingDockFullyPresented];
   }
 
   v16 = [[SBIconOverlayVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:1];
   [(SBWindowingModifier *)self appendResponse:v16];
 
-  v17 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-  v18 = [v17 animationSettings];
+  switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  v53 = v18;
+  v53 = animationSettings;
   if (self->_isAddingToStage)
   {
-    v19 = 0;
+    floatingDockIconFadeSettings = 0;
   }
 
   else
   {
-    v19 = [v18 floatingDockIconFadeSettings];
+    floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
   }
 
-  v51 = v19;
-  v20 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:v8 visible:0 animationSettings:v19 excludedIconLocations:0];
+  v51 = floatingDockIconFadeSettings;
+  v20 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:_appLayoutForIcon visible:0 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
   [(SBWindowingModifier *)self appendResponse:v20];
   self->_isHidingDockIcon = 1;
-  if (v15)
+  if (isFloatingDockFullyPresented)
   {
     objc_initWeak(location, self);
     [v53 iconZoomFloatingDockFadeDelay];
@@ -209,23 +209,23 @@
     objc_destroyWeak(location);
   }
 
-  v49 = v4;
-  if (self->_isAddingToStage || (v23 = [[SBNotifyIconWillZoomDownSwitcherEventResponse alloc] initWithAppLayout:v8, v4], [(SBWindowingModifier *)self appendResponse:v23], v23, self->_isAddingToStage))
+  v49 = beginCopy;
+  if (self->_isAddingToStage || (v23 = [[SBNotifyIconWillZoomDownSwitcherEventResponse alloc] initWithAppLayout:_appLayoutForIcon, beginCopy], [(SBWindowingModifier *)self appendResponse:v23], v23, self->_isAddingToStage))
   {
     v24 = [SBTimerEventSwitcherEventResponse alloc];
-    v25 = [v53 floatingDockIconFadeSettings];
-    [v25 response];
+    floatingDockIconFadeSettings2 = [v53 floatingDockIconFadeSettings];
+    [floatingDockIconFadeSettings2 response];
     v26 = [(SBTimerEventSwitcherEventResponse *)v24 initWithDelay:0 validator:@"kSBDockToStageIconFadeInDelay" reason:?];
     [(SBWindowingModifier *)self appendResponse:v26];
   }
 
-  v27 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-  v28 = [v27 animationSettings];
-  [v28 disableAsyncRenderingTransitionPercentage];
+  switcherSettings2 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+  animationSettings2 = [switcherSettings2 animationSettings];
+  [animationSettings2 disableAsyncRenderingTransitionPercentage];
   v30 = v29;
 
-  v31 = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
-  [v31 settlingDuration];
+  _layoutSettings = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v33 = v32;
   UIAnimationDragCoefficient();
   v35 = v34;
@@ -241,7 +241,7 @@
   [(SBWindowingModifier *)self appendResponse:v37];
   if (self->_isAddingToStage)
   {
-    v38 = [(SBWindowingModifier *)self windowingConfiguration];
+    windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
     v39 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_appLayout];
     v40 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
     v41 = [v39 flexibleAutoLayoutItemForDisplayItem:v40];
@@ -251,7 +251,7 @@
     v45 = v44;
     [(SBDockToStageZoomWindowingModifier *)self containerViewBounds];
     v47 = v46;
-    [v38 floatingDockHeightWithTopAndBottomPadding];
+    [windowingConfiguration floatingDockHeightWithTopAndBottomPadding];
     self->_shouldDodgeDock = v43 + v45 > v47 - v48;
   }
 
@@ -277,9 +277,9 @@ BOOL __58__SBDockToStageZoomWindowingModifier_transitionWillBegin___block_invoke
   return v3;
 }
 
-- (void)transitionDidComplete:(id)a3
+- (void)transitionDidComplete:(id)complete
 {
-  v9 = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
+  _appLayoutForIcon = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
   v4 = [[SBIconOverlayVisibilitySwitcherEventResponse alloc] initWithAppLayout:self->_appLayout visible:0];
   [(SBWindowingModifier *)self appendResponse:v4];
 
@@ -288,59 +288,59 @@ BOOL __58__SBDockToStageZoomWindowingModifier_transitionWillBegin___block_invoke
     self->_isHidingDockIcon = 0;
     if (self->_isAddingToStage)
     {
-      v5 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-      v6 = [v5 animationSettings];
-      v7 = [v6 floatingDockIconFadeSettings];
+      switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
     }
 
     else
     {
-      v7 = 0;
+      floatingDockIconFadeSettings = 0;
     }
 
-    v8 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:v9 visible:1 animationSettings:v7 excludedIconLocations:0];
+    v8 = [[SBIconViewVisibilitySwitcherEventResponse alloc] initWithAppLayout:_appLayoutForIcon visible:1 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
     [(SBWindowingModifier *)self appendResponse:v8];
   }
 
   [(SBDockToStageZoomWindowingModifier *)self complete];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v10 = [a3 reason];
-  if ([v10 isEqualToString:@"kSBDockToStageIconFadeInDelay"])
+  reason = [fired reason];
+  if ([reason isEqualToString:@"kSBDockToStageIconFadeInDelay"])
   {
     if (self->_isHidingDockIcon)
     {
       self->_isHidingDockIcon = 0;
-      v4 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-      v5 = [v4 animationSettings];
-      v6 = [v5 floatingDockIconFadeSettings];
+      switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      floatingDockIconFadeSettings = [animationSettings floatingDockIconFadeSettings];
 
       v7 = [SBIconViewVisibilitySwitcherEventResponse alloc];
-      v8 = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
-      v9 = [(SBIconViewVisibilitySwitcherEventResponse *)v7 initWithAppLayout:v8 visible:1 animationSettings:v6 excludedIconLocations:0];
+      _appLayoutForIcon = [(SBDockToStageZoomWindowingModifier *)self _appLayoutForIcon];
+      v9 = [(SBIconViewVisibilitySwitcherEventResponse *)v7 initWithAppLayout:_appLayoutForIcon visible:1 animationSettings:floatingDockIconFadeSettings excludedIconLocations:0];
 
       [(SBWindowingModifier *)self appendResponse:v9];
     }
   }
 
-  else if ([v10 isEqualToString:@"kSBDockToStageZoomInvalidateAsyncRenderingReason"])
+  else if ([reason isEqualToString:@"kSBDockToStageZoomInvalidateAsyncRenderingReason"])
   {
     self->_wantsResignActiveAndAsyncRenderingAssertions = 0;
   }
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBDockToStageZoomWindowingModifier;
-  v5 = [(SBDockToStageZoomWindowingModifier *)&v13 appLayoutsForContinuousExposeIdentifier:v4];
-  v6 = [(SBDockToStageZoomWindowingModifier *)self windowManagementContext];
-  if ([v6 isChamoisOrFlexibleWindowing])
+  v5 = [(SBDockToStageZoomWindowingModifier *)&v13 appLayoutsForContinuousExposeIdentifier:identifierCopy];
+  windowManagementContext = [(SBDockToStageZoomWindowingModifier *)self windowManagementContext];
+  if ([windowManagementContext isChamoisOrFlexibleWindowing])
   {
-    v7 = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
+    continuousExposeIdentifier = [(SBAppLayout *)self->_appLayout continuousExposeIdentifier];
     v8 = BSEqualStrings();
 
     if (v8)
@@ -382,26 +382,26 @@ uint64_t __78__SBDockToStageZoomWindowingModifier_appLayoutsForContinuousExposeI
   return v4;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v49.receiver = self;
   v49.super_class = SBDockToStageZoomWindowingModifier;
-  v5 = [(SBDockToStageZoomWindowingModifier *)&v49 adjustedAppLayoutsForAppLayouts:v4];
-  v6 = [(SBAppLayout *)self->_appLayout leafAppLayouts];
-  v7 = v6;
+  v5 = [(SBDockToStageZoomWindowingModifier *)&v49 adjustedAppLayoutsForAppLayouts:layoutsCopy];
+  leafAppLayouts = [(SBAppLayout *)self->_appLayout leafAppLayouts];
+  v7 = leafAppLayouts;
   v8 = 216;
   if (self->_launchingOverDesktopSpaceAppLayout)
   {
-    v9 = [v6 arrayByAddingObject:?];
+    v9 = [leafAppLayouts arrayByAddingObject:?];
 
     v7 = v9;
   }
 
   if ([v7 count])
   {
-    v33 = v4;
+    v33 = layoutsCopy;
     v32 = v5;
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v5];
     v45 = 0u;
@@ -415,7 +415,7 @@ uint64_t __78__SBDockToStageZoomWindowingModifier_appLayoutsForContinuousExposeI
     {
       v12 = v11;
       v13 = *v46;
-      v35 = self;
+      selfCopy = self;
       v36 = v10;
       v34 = *v46;
       do
@@ -443,13 +443,13 @@ uint64_t __78__SBDockToStageZoomWindowingModifier_appLayoutsForContinuousExposeI
                 v39[4] = self;
                 v16 = [v5 bs_compactMap:v39];
                 v17 = v8;
-                v18 = self;
+                selfCopy2 = self;
                 v19 = v14;
                 v20 = [v16 mutableCopy];
 
                 v5 = v20;
                 v14 = v19;
-                self = v18;
+                self = selfCopy2;
                 v8 = v17;
                 v10 = v36;
                 v12 = v37;
@@ -507,7 +507,7 @@ uint64_t __78__SBDockToStageZoomWindowingModifier_appLayoutsForContinuousExposeI
               }
 
               v8 = 216;
-              self = v35;
+              self = selfCopy;
               v10 = v36;
               v12 = v37;
               v13 = v34;
@@ -527,7 +527,7 @@ uint64_t __78__SBDockToStageZoomWindowingModifier_appLayoutsForContinuousExposeI
       while (v12);
     }
 
-    v4 = v33;
+    layoutsCopy = v33;
     v7 = v31;
   }
 
@@ -556,7 +556,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return v2;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v29.receiver = self;
   v29.super_class = SBDockToStageZoomWindowingModifier;
@@ -565,13 +565,13 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
-  v15 = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
-  if ([(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:a3])
+  _isEffectivelyHome = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
+  if ([(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:index])
   {
-    [(SBDockToStageZoomWindowingModifier *)self _frameForZoomingIndex:a3 isEffectivelyHome:v15 ignoringGenie:0];
+    [(SBDockToStageZoomWindowingModifier *)self _frameForZoomingIndex:index isEffectivelyHome:_isEffectivelyHome ignoringGenie:0];
     v6 = v16;
     v8 = v17;
     v10 = v18;
@@ -599,35 +599,35 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (CGRect)_frameForZoomingIndex:(unint64_t)a3 isEffectivelyHome:(BOOL)a4 ignoringGenie:(BOOL)a5
+- (CGRect)_frameForZoomingIndex:(unint64_t)index isEffectivelyHome:(BOOL)home ignoringGenie:(BOOL)genie
 {
-  v5 = a4;
+  homeCopy = home;
   v34.receiver = self;
   v34.super_class = SBDockToStageZoomWindowingModifier;
-  [(SBWindowingModifier *)&v34 frameForIndex:a3, a4, a5];
+  [(SBWindowingModifier *)&v34 frameForIndex:index, home, genie];
   v9 = v8;
   v11 = v10;
   v33.receiver = self;
   v33.super_class = SBDockToStageZoomWindowingModifier;
-  [(SBWindowingModifier *)&v33 frameForIndex:a3];
+  [(SBWindowingModifier *)&v33 frameForIndex:index];
   if (self->_isAddingToStage)
   {
-    v12 = [(SBWindowingModifier *)self transitioningToAppLayout];
+    transitioningToAppLayout = [(SBWindowingModifier *)self transitioningToAppLayout];
     v13 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
-    v14 = [v12 layoutRoleForItem:v13];
+    v14 = [transitioningToAppLayout layoutRoleForItem:v13];
 
     SBRectWithSize();
-    [(SBDockToStageZoomWindowingModifier *)&v32 frameForLayoutRole:v14 inAppLayout:v12 withBounds:v31.receiver, v31.super_class, self, SBDockToStageZoomWindowingModifier];
+    [(SBDockToStageZoomWindowingModifier *)&v32 frameForLayoutRole:v14 inAppLayout:transitioningToAppLayout withBounds:v31.receiver, v31.super_class, self, SBDockToStageZoomWindowingModifier];
   }
 
   else
   {
-    v12 = [(SBWindowingModifier *)self transitioningFromAppLayout];
+    transitioningToAppLayout = [(SBWindowingModifier *)self transitioningFromAppLayout];
     v19 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
-    v20 = [v12 layoutRoleForItem:v19];
+    v20 = [transitioningToAppLayout layoutRoleForItem:v19];
 
     SBRectWithSize();
-    [(SBDockToStageZoomWindowingModifier *)&v31 frameForLayoutRole:v20 inAppLayout:v12 withBounds:self, SBDockToStageZoomWindowingModifier, v32.receiver, v32.super_class];
+    [(SBDockToStageZoomWindowingModifier *)&v31 frameForLayoutRole:v20 inAppLayout:transitioningToAppLayout withBounds:self, SBDockToStageZoomWindowingModifier, v32.receiver, v32.super_class];
   }
 
   v21 = v15;
@@ -635,7 +635,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   v23 = v17;
   v24 = v18;
 
-  if (v5)
+  if (homeCopy)
   {
     [(SBDockToStageZoomWindowingModifier *)self _iconFrame];
     BSFloatGreaterThanFloat();
@@ -661,7 +661,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   v5 = [(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:?];
   v6 = 0.5;
@@ -670,7 +670,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   {
     v8.receiver = self;
     v8.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v8 anchorPointForIndex:a3, 0.5, 0.5];
+    [(SBWindowingModifier *)&v8 anchorPointForIndex:index, 0.5, 0.5];
   }
 
   result.y = v7;
@@ -678,7 +678,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
   if ([(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:?])
   {
@@ -687,10 +687,10 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
 
   v6.receiver = self;
   v6.super_class = SBDockToStageZoomWindowingModifier;
-  return [(SBDockToStageZoomWindowingModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBDockToStageZoomWindowingModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
   if ([(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:?])
   {
@@ -699,13 +699,13 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
 
   v6.receiver = self;
   v6.super_class = SBDockToStageZoomWindowingModifier;
-  return [(SBDockToStageZoomWindowingModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBDockToStageZoomWindowingModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_appLayout])
   {
@@ -717,7 +717,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   {
     v13.receiver = self;
     v13.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBWindowingModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -729,17 +729,17 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if ([v9 isEqual:self->_appLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_appLayout])
   {
-    v10 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-    -[SBDockToStageZoomWindowingModifier frameForIndex:](self, "frameForIndex:", [v10 indexOfObject:self->_appLayout]);
+    appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+    -[SBDockToStageZoomWindowingModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_appLayout]);
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -750,7 +750,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   {
     v27.receiver = self;
     v27.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v27 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBWindowingModifier *)&v27 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     v12 = v19;
     v14 = v20;
     v16 = v21;
@@ -768,18 +768,18 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
   v8 = 0.5;
   v9 = 0.5;
-  if (([v7 isEqual:self->_appLayout] & 1) == 0)
+  if (([layoutCopy isEqual:self->_appLayout] & 1) == 0)
   {
     v14.receiver = self;
     v14.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v14 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBWindowingModifier *)&v14 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     v8 = v10;
     v9 = v11;
   }
@@ -791,13 +791,13 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (CGRect)fullyPresentedFrameForIndex:(unint64_t)a3 frame:(CGRect)a4
+- (CGRect)fullyPresentedFrameForIndex:(unint64_t)index frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if ([(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]&& [(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:a3])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if ([(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]&& [(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:index])
   {
     if (self->_isAddingToStage)
     {
@@ -812,28 +812,28 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
     v19 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
     v20 = [v18 layoutRoleForItem:v19];
 
-    v21 = [(SBDockToStageZoomWindowingModifier *)self displayItemLayoutAttributesCalculator];
+    displayItemLayoutAttributesCalculator = [(SBDockToStageZoomWindowingModifier *)self displayItemLayoutAttributesCalculator];
     [(SBDockToStageZoomWindowingModifier *)self containerViewBounds];
     v57 = v23;
     v58 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(SBDockToStageZoomWindowingModifier *)self switcherInterfaceOrientation];
+    switcherInterfaceOrientation = [(SBDockToStageZoomWindowingModifier *)self switcherInterfaceOrientation];
     [(SBDockToStageZoomWindowingModifier *)self floatingDockHeight];
     v30 = v29;
     [(SBDockToStageZoomWindowingModifier *)self screenScale];
     v32 = v31;
-    v33 = [(SBDockToStageZoomWindowingModifier *)self isDisplayEmbedded];
-    v34 = [(SBDockToStageZoomWindowingModifier *)self prefersStripHidden];
-    v35 = [(SBDockToStageZoomWindowingModifier *)self prefersDockHidden];
+    isDisplayEmbedded = [(SBDockToStageZoomWindowingModifier *)self isDisplayEmbedded];
+    prefersStripHidden = [(SBDockToStageZoomWindowingModifier *)self prefersStripHidden];
+    prefersDockHidden = [(SBDockToStageZoomWindowingModifier *)self prefersDockHidden];
     [(SBDockToStageZoomWindowingModifier *)self leftStatusBarPartIntersectionRegion];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
     [(SBDockToStageZoomWindowingModifier *)self rightStatusBarPartIntersectionRegion];
-    LOBYTE(v56) = v35;
-    [v21 frameForLayoutRole:v20 inAppLayout:v18 containerBounds:v28 containerOrientation:1 floatingDockHeight:v33 screenScale:v34 isChamoisWindowingUIEnabled:v58 isEmbeddedDisplay:v57 prefersStripHidden:v25 prefersDockHidden:v27 leftStatusBarPartIntersectionRegion:v30 rightStatusBarPartIntersectionRegion:{v32, v56, v37, v39, v41, v43, v44, v45, v46, v47}];
+    LOBYTE(v56) = prefersDockHidden;
+    [displayItemLayoutAttributesCalculator frameForLayoutRole:v20 inAppLayout:v18 containerBounds:switcherInterfaceOrientation containerOrientation:1 floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden isChamoisWindowingUIEnabled:v58 isEmbeddedDisplay:v57 prefersStripHidden:v25 prefersDockHidden:v27 leftStatusBarPartIntersectionRegion:v30 rightStatusBarPartIntersectionRegion:{v32, v56, v37, v39, v41, v43, v44, v45, v46, v47}];
     v11 = v48;
     v13 = v49;
     v15 = v50;
@@ -844,7 +844,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   {
     v59.receiver = self;
     v59.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBDockToStageZoomWindowingModifier *)&v59 fullyPresentedFrameForIndex:a3 frame:x, y, width, height];
+    [(SBDockToStageZoomWindowingModifier *)&v59 fullyPresentedFrameForIndex:index frame:x, y, width, height];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -862,7 +862,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)a3
+- (SBSwitcherShelfPresentationAttributes)presentationAttributesForShelf:(SEL)shelf
 {
   retstr->var3 = 0;
   *&retstr->var1.origin.y = 0u;
@@ -875,13 +875,13 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  if ([(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]&& [(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:a3])
+  if ([(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]&& [(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:index])
   {
     v18.receiver = self;
     v18.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v18 frameForIndex:a3];
+    [(SBWindowingModifier *)&v18 frameForIndex:index];
     v6 = v5;
     v8 = v7;
     [(SBDockToStageZoomWindowingModifier *)self _iconFrame];
@@ -920,7 +920,7 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   {
     v17.receiver = self;
     v17.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v17 scaleForIndex:a3];
+    [(SBWindowingModifier *)&v17 scaleForIndex:index];
   }
 
   return result;
@@ -930,35 +930,35 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
 {
   v6.receiver = self;
   v6.super_class = SBDockToStageZoomWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBWindowingModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBDockToStageZoomWindowingModifier;
-  v4 = [(SBWindowingModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBWindowingModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   [v5 setUpdateMode:3];
 
@@ -978,12 +978,12 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
   return [(SBDockToStageZoomWindowingModifier *)self _layoutSettingsForTargetCenter:?];
 }
 
-- (id)_layoutSettingsForTargetCenter:(CGPoint)a3
+- (id)_layoutSettingsForTargetCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
+  y = center.y;
+  x = center.x;
+  switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   if (self->_isAddingToStage)
   {
@@ -993,50 +993,50 @@ id __70__SBDockToStageZoomWindowingModifier_adjustedAppLayoutsForAppLayouts___bl
 
     if (v10)
     {
-      v11 = [v7 genieFullScreenCenterRowZoomUpSettings];
-      v12 = [v7 genieFullScreenEdgeRowZoomUpSettings];
+      genieFullScreenCenterRowZoomUpSettings = [animationSettings genieFullScreenCenterRowZoomUpSettings];
+      genieFullScreenEdgeRowZoomUpSettings = [animationSettings genieFullScreenEdgeRowZoomUpSettings];
       [(SBDockToStageZoomWindowingModifier *)self _normalizedHomeScreenTargetZoomPercentBetweenCenterAndEdge:x, y];
-      v13 = [(SBDockToStageZoomWindowingModifier *)self _settingsByInterpolatingBetween:v11 and:v12 progress:?];
+      v13 = [(SBDockToStageZoomWindowingModifier *)self _settingsByInterpolatingBetween:genieFullScreenCenterRowZoomUpSettings and:genieFullScreenEdgeRowZoomUpSettings progress:?];
 
       goto LABEL_7;
     }
 
-    v14 = [v7 genieWindowedZoomUpSettings];
+    genieWindowedZoomUpSettings = [animationSettings genieWindowedZoomUpSettings];
   }
 
   else
   {
-    v14 = [v7 iconZoomDownSettings];
+    genieWindowedZoomUpSettings = [animationSettings iconZoomDownSettings];
   }
 
-  v13 = v14;
+  v13 = genieWindowedZoomUpSettings;
 LABEL_7:
 
   return v13;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v25.receiver = self;
   v25.super_class = SBDockToStageZoomWindowingModifier;
-  v11 = a4;
-  [(SBDockToStageZoomWindowingModifier *)&v25 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  layoutCopy = layout;
+  [(SBDockToStageZoomWindowingModifier *)&v25 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  LODWORD(a3) = [(SBAppLayout *)self->_appLayout isEqual:v11, v25.receiver, v25.super_class];
+  LODWORD(role) = [(SBAppLayout *)self->_appLayout isEqual:layoutCopy, v25.receiver, v25.super_class];
 
-  if (a3)
+  if (role)
   {
-    v20 = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
+    _isEffectivelyHome = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
     v13 = *MEMORY[0x277CBF348];
     v15 = *(MEMORY[0x277CBF348] + 8);
-    if (v20)
+    if (_isEffectivelyHome)
     {
       if (v17 > width)
       {
@@ -1061,16 +1061,16 @@ LABEL_7:
   return result;
 }
 
-- (id)genieAttributesForAppLayout:(id)a3
+- (id)genieAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([(SBAppLayout *)self->_appLayout isEqual:v4])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)self->_appLayout isEqual:layoutCopy])
   {
     v57 = 0;
     v55 = 0u;
     v56 = 0u;
     v5 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:1];
-    v6 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:v4];
+    v6 = [(SBWindowingModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
     v7 = [v6 flexibleAutoLayoutItemForDisplayItem:v5];
     [(SBDockToStageZoomWindowingModifier *)self _iconFrame];
     v9 = v8;
@@ -1085,8 +1085,8 @@ LABEL_7:
     [v7 size];
     v18 = v17;
     v20 = v19;
-    v21 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-    -[SBDockToStageZoomWindowingModifier _frameForZoomingIndex:isEffectivelyHome:ignoringGenie:](self, "_frameForZoomingIndex:isEffectivelyHome:ignoringGenie:", [v21 indexOfObject:v4], 1, 1);
+    appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+    -[SBDockToStageZoomWindowingModifier _frameForZoomingIndex:isEffectivelyHome:ignoringGenie:](self, "_frameForZoomingIndex:isEffectivelyHome:ignoringGenie:", [appLayouts indexOfObject:layoutCopy], 1, 1);
     v46 = v23;
     v47 = v22;
 
@@ -1118,7 +1118,7 @@ LABEL_7:
     v36 = *v16;
     v37 = v16[1];
     v38 = v26 / v27;
-    v39 = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
+    _isEffectivelyHome = [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome];
     if (self->_isAddingToStage)
     {
       v40 = SBSwitcherGenieGlassHighlightNone(&v55);
@@ -1129,28 +1129,28 @@ LABEL_7:
       [(SBDockToStageZoomWindowingModifier *)self homeScreenGlassHighlightForAppLayout:self->_appLayout];
     }
 
-    v42 = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
+    _layoutSettings = [(SBDockToStageZoomWindowingModifier *)self _layoutSettings];
     v53[0] = v55;
     v53[1] = v56;
     v54 = v57;
-    v41 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:v39 windowPosition:v53 initialVelocity:v42 windowSize:v51 minimizedSize:v50 minimizedScale:v49 containerSize:v48 minimumOutsetSize:v36 genieScale:v37 multiplier:v18 active:v20 glassHighlight:v47 layoutSettings:v46, *&v27, v45, v44, *&v30, *&v31, *&v38, 0x3FE0000000000000, 0x3FE0000000000000];
+    0x3FE0000000000000 = [SBSwitcherGenieAttributes genieAttributesForIconPosition:_isEffectivelyHome windowPosition:v53 initialVelocity:_layoutSettings windowSize:v51 minimizedSize:v50 minimizedScale:v49 containerSize:v48 minimumOutsetSize:v36 genieScale:v37 multiplier:v18 active:v20 glassHighlight:v47 layoutSettings:v46, *&v27, v45, v44, *&v30, *&v31, *&v38, 0x3FE0000000000000, 0x3FE0000000000000];
   }
 
   else
   {
     v52.receiver = self;
     v52.super_class = SBDockToStageZoomWindowingModifier;
-    v41 = [(SBDockToStageZoomWindowingModifier *)&v52 genieAttributesForAppLayout:v4];
+    0x3FE0000000000000 = [(SBDockToStageZoomWindowingModifier *)&v52 genieAttributesForAppLayout:layoutCopy];
   }
 
-  return v41;
+  return 0x3FE0000000000000;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if ([(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:?]&& [(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome])
   {
-    [(SBDockToStageZoomWindowingModifier *)self scaleForIndex:a3];
+    [(SBDockToStageZoomWindowingModifier *)self scaleForIndex:index];
 
     SBRectCornerRadiiForRadius();
   }
@@ -1159,7 +1159,7 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v9 cornerRadiiForIndex:a3];
+    [(SBWindowingModifier *)&v9 cornerRadiiForIndex:index];
   }
 
   result.topRight = v8;
@@ -1169,14 +1169,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index
 {
   result = 0;
   if ([(SBDockToStageZoomWindowingModifier *)self isDevicePad])
   {
     v6.receiver = self;
     v6.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v6 frameForIndex:a3];
+    [(SBWindowingModifier *)&v6 frameForIndex:index];
     SBRectWithSize();
     [(SBDockToStageZoomWindowingModifier *)self _iconFrame];
     if (BSFloatLessThanFloat())
@@ -1188,42 +1188,42 @@ LABEL_7:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [v8 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v9 = [layoutCopy itemForLayoutRole:role];
   v10 = 1.0;
-  if (![(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:a5])
+  if (![(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:index])
   {
-    v11 = [(SBDockToStageZoomWindowingModifier *)self desktopSpaceDisplayItems];
-    if ([v11 containsObject:v9])
+    desktopSpaceDisplayItems = [(SBDockToStageZoomWindowingModifier *)self desktopSpaceDisplayItems];
+    if ([desktopSpaceDisplayItems containsObject:v9])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v12 = [(SBWindowingModifier *)self transitioningToAppLayout];
-    if ([v12 containsItem:v9])
+    transitioningToAppLayout = [(SBWindowingModifier *)self transitioningToAppLayout];
+    if ([transitioningToAppLayout containsItem:v9])
     {
 
       goto LABEL_5;
     }
 
-    v14 = [(SBWindowingModifier *)self transitioningFromAppLayout];
-    v15 = [v14 containsItem:v9];
+    transitioningFromAppLayout = [(SBWindowingModifier *)self transitioningFromAppLayout];
+    v15 = [transitioningFromAppLayout containsItem:v9];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(SBDockToStageZoomWindowingModifier *)self peekingAppLayout];
-      if ([v16 containsItem:v9])
+      peekingAppLayout = [(SBDockToStageZoomWindowingModifier *)self peekingAppLayout];
+      if ([peekingAppLayout containsItem:v9])
       {
       }
 
       else
       {
-        v17 = [(SBDockToStageZoomWindowingModifier *)self strip];
-        v18 = [v17 containsDisplayItem:v9];
+        strip = [(SBDockToStageZoomWindowingModifier *)self strip];
+        v18 = [strip containsDisplayItem:v9];
 
         v10 = 0.0;
         if (!v18)
@@ -1234,7 +1234,7 @@ LABEL_5:
 
       v20.receiver = self;
       v20.super_class = SBDockToStageZoomWindowingModifier;
-      [(SBWindowingModifier *)&v20 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+      [(SBWindowingModifier *)&v20 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
       v10 = v19;
     }
   }
@@ -1244,13 +1244,13 @@ LABEL_6:
   return v10;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  if (![(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:a4]|| ![(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]|| (result = 0.0, !self->_isAddingToStage))
+  if (![(SBDockToStageZoomWindowingModifier *)self _isIndexZoomAppLayout:index]|| ![(SBDockToStageZoomWindowingModifier *)self _isEffectivelyHome]|| (result = 0.0, !self->_isAddingToStage))
   {
     v8.receiver = self;
     v8.super_class = SBDockToStageZoomWindowingModifier;
-    [(SBWindowingModifier *)&v8 shadowOpacityForLayoutRole:a3 atIndex:a4, result];
+    [(SBWindowingModifier *)&v8 shadowOpacityForLayoutRole:role atIndex:index, result];
   }
 
   return result;
@@ -1258,16 +1258,16 @@ LABEL_6:
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v3 = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
-  v4 = [v3 numberOfSnapshotsToAlwaysKeepAround];
+  switcherSettings = [(SBDockToStageZoomWindowingModifier *)self switcherSettings];
+  numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToAlwaysKeepAround];
 
-  v5 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-  v11.length = [v5 count];
+  appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+  v11.length = [appLayouts count];
   v10.location = 0;
-  v10.length = v4;
+  v10.length = numberOfSnapshotsToAlwaysKeepAround;
   v11.location = 0;
   v6 = NSIntersectionRange(v10, v11);
-  v7 = [v5 subarrayWithRange:{v6.location, v6.length}];
+  v7 = [appLayouts subarrayWithRange:{v6.location, v6.length}];
 
   return v7;
 }
@@ -1276,21 +1276,21 @@ LABEL_6:
 {
   v18.receiver = self;
   v18.super_class = SBDockToStageZoomWindowingModifier;
-  v3 = [(SBWindowingModifier *)&v18 topMostLayoutElements];
+  topMostLayoutElements = [(SBWindowingModifier *)&v18 topMostLayoutElements];
   v17.receiver = self;
   v17.super_class = SBDockToStageZoomWindowingModifier;
-  v4 = [(SBDockToStageZoomWindowingModifier *)&v17 dockPortalViewLayoutElement];
-  if (v4)
+  dockPortalViewLayoutElement = [(SBDockToStageZoomWindowingModifier *)&v17 dockPortalViewLayoutElement];
+  if (dockPortalViewLayoutElement)
   {
-    v5 = [v3 sb_arrayByInsertingOrMovingObject:v4 toIndex:0];
+    v5 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:dockPortalViewLayoutElement toIndex:0];
 
-    v3 = v5;
+    topMostLayoutElements = v5;
   }
 
-  v6 = [v3 sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
+  v6 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
 
-  v7 = [(SBDockToStageZoomWindowingModifier *)self visibleSplitViewHandleNubViews];
-  v8 = [v7 count];
+  visibleSplitViewHandleNubViews = [(SBDockToStageZoomWindowingModifier *)self visibleSplitViewHandleNubViews];
+  v8 = [visibleSplitViewHandleNubViews count];
 
   if (v8)
   {
@@ -1300,12 +1300,12 @@ LABEL_6:
     v6 = v10;
   }
 
-  v11 = [(SBDockToStageZoomWindowingModifier *)self displayItemInSlideOver];
-  v12 = [(SBDockToStageZoomWindowingModifier *)self appLayout];
-  v13 = v12;
-  if (v11 && [v12 containsItem:v11])
+  displayItemInSlideOver = [(SBDockToStageZoomWindowingModifier *)self displayItemInSlideOver];
+  appLayout = [(SBDockToStageZoomWindowingModifier *)self appLayout];
+  v13 = appLayout;
+  if (displayItemInSlideOver && [appLayout containsItem:displayItemInSlideOver])
   {
-    v14 = [v13 leafAppLayoutForItem:v11];
+    v14 = [v13 leafAppLayoutForItem:displayItemInSlideOver];
     v15 = [v6 sb_arrayByInsertingOrMovingObject:v14 toIndex:0];
 
     v6 = v15;
@@ -1325,28 +1325,28 @@ LABEL_6:
   return result;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = SBDockToStageZoomWindowingModifier;
-  return ([(SBDockToStageZoomWindowingModifier *)&v4 asyncRenderingAttributesForAppLayout:a3]& 0xFF01 | self->_wantsResignActiveAndAsyncRenderingAssertions);
+  return ([(SBDockToStageZoomWindowingModifier *)&v4 asyncRenderingAttributesForAppLayout:layout]& 0xFF01 | self->_wantsResignActiveAndAsyncRenderingAssertions);
 }
 
 - (id)keyboardSuppressionMode
 {
   if (self->_wantsResignActiveAndAsyncRenderingAssertions)
   {
-    v2 = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
+    keyboardSuppressionMode = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBDockToStageZoomWindowingModifier;
-    v2 = [(SBDockToStageZoomWindowingModifier *)&v4 keyboardSuppressionMode];
+    keyboardSuppressionMode = [(SBDockToStageZoomWindowingModifier *)&v4 keyboardSuppressionMode];
   }
 
-  return v2;
+  return keyboardSuppressionMode;
 }
 
 - (id)_appLayoutForIcon
@@ -1370,10 +1370,10 @@ LABEL_6:
 
 - (BOOL)_isEffectivelyHome
 {
-  v3 = [(SBWindowingModifier *)self transitionPhase];
-  if (v3)
+  transitionPhase = [(SBWindowingModifier *)self transitionPhase];
+  if (transitionPhase)
   {
-    if (v3 == 1)
+    if (transitionPhase == 1)
     {
       return self->_isAddingToStage;
     }
@@ -1390,34 +1390,34 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBDockToStageZoomWindowingModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
-- (id)_settingsByInterpolatingBetween:(id)a3 and:(id)a4 progress:(double)a5
+- (id)_settingsByInterpolatingBetween:(id)between and:(id)and progress:(double)progress
 {
   v6 = MEMORY[0x277D65E60];
-  v7 = a4;
-  v8 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v9 = objc_alloc_init(v6);
   [v9 setDefaultValues];
-  [v8 dampingRatio];
-  [v7 dampingRatio];
+  [betweenCopy dampingRatio];
+  [andCopy dampingRatio];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setDampingRatio:?];
-  [v8 response];
-  [v7 response];
+  [betweenCopy response];
+  [andCopy response];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setResponse:?];
-  [v8 retargetImpulse];
+  [betweenCopy retargetImpulse];
 
-  [v7 retargetImpulse];
+  [andCopy retargetImpulse];
   BSFloatByLinearlyInterpolatingFloats();
   [v9 setRetargetImpulse:?];
   v12 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
@@ -1426,9 +1426,9 @@ LABEL_6:
   return v9;
 }
 
-- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)a3
+- (double)_normalizedHomeScreenIconZoomPercentBetweenTopAndBottom:(CGPoint)bottom
 {
-  y = a3.y;
+  y = bottom.y;
   if (([(SBDockToStageZoomWindowingModifier *)self switcherInterfaceOrientation]- 1) >= 2)
   {
     v5 = 0.0;

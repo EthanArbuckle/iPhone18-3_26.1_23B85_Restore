@@ -2,7 +2,7 @@
 - (ASAuthorizationPublicKeyCredentialResidentKeyPreference)residentKeyPreference;
 - (ASCPublicKeyCredentialCreationOptions)coreCredentialCreationOptions;
 - (ASPublicKeyCredentialClientData)clientData;
-- (BOOL)supportsStyle:(int64_t)a3;
+- (BOOL)supportsStyle:(int64_t)style;
 - (NSArray)credentialParameters;
 - (NSArray)excludedCredentials;
 - (NSData)challenge;
@@ -11,43 +11,43 @@
 - (NSString)displayName;
 - (NSString)name;
 - (NSString)userVerificationPreference;
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 displayName:(id)a6 name:(id)a7 userID:(id)a8 clientData:(id)a9;
-- (void)setAttestationPreference:(id)a3;
-- (void)setChallenge:(id)a3;
-- (void)setClientData:(id)a3;
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge displayName:(id)name name:(id)a7 userID:(id)d clientData:(id)data;
+- (void)setAttestationPreference:(id)preference;
+- (void)setChallenge:(id)challenge;
+- (void)setClientData:(id)data;
 - (void)setCredentialParameters:(NSArray *)credentialParameters;
-- (void)setDisplayName:(id)a3;
+- (void)setDisplayName:(id)name;
 - (void)setExcludedCredentials:(NSArray *)excludedCredentials;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 - (void)setResidentKeyPreference:(ASAuthorizationPublicKeyCredentialResidentKeyPreference)residentKeyPreference;
-- (void)setUserID:(id)a3;
-- (void)setUserVerificationPreference:(id)a3;
+- (void)setUserID:(id)d;
+- (void)setUserVerificationPreference:(id)preference;
 @end
 
 @implementation ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest
 
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 displayName:(id)a6 name:(id)a7 userID:(id)a8 clientData:(id)a9
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge displayName:(id)name name:(id)a7 userID:(id)d clientData:(id)data
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  nameCopy = name;
   v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  dataCopy = data;
   v37.receiver = self;
   v37.super_class = ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest;
-  v21 = [(ASAuthorizationRequest *)&v37 initWithProvider:a3];
+  v21 = [(ASAuthorizationRequest *)&v37 initWithProvider:provider];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     relyingPartyIdentifier = v21->_relyingPartyIdentifier;
     v21->_relyingPartyIdentifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [challengeCopy copy];
     challenge = v21->_challenge;
     v21->_challenge = v24;
 
-    v26 = [v17 copy];
+    v26 = [nameCopy copy];
     displayName = v21->_displayName;
     v21->_displayName = v26;
 
@@ -55,7 +55,7 @@
     name = v21->_name;
     v21->_name = v28;
 
-    v30 = [v19 copy];
+    v30 = [dCopy copy];
     userID = v21->_userID;
     v21->_userID = v30;
 
@@ -70,7 +70,7 @@
 
     objc_storeStrong(&v21->_residentKeyPreference, @"preferred");
     v21->_internalLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v21->_clientData, a9);
+    objc_storeStrong(&v21->_clientData, data);
     v35 = v21;
   }
 
@@ -80,22 +80,22 @@
 - (ASCPublicKeyCredentialCreationOptions)coreCredentialCreationOptions
 {
   v21 = [(NSArray *)self->_credentialParameters safari_mapObjectsUsingBlock:&__block_literal_global_19];
-  v3 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self excludedCredentials];
-  v20 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_4];
+  excludedCredentials = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self excludedCredentials];
+  v20 = [excludedCredentials safari_mapObjectsUsingBlock:&__block_literal_global_4];
 
   v16 = objc_alloc(MEMORY[0x1E698DFF8]);
-  v19 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self challenge];
-  v18 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self clientData];
-  v4 = [v18 jsonForOperationType:0];
-  v5 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self relyingPartyIdentifier];
-  v6 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self name];
-  v7 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self userID];
-  v8 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self displayName];
-  v9 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self attestationPreference];
-  v10 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self userVerificationPreference];
-  v11 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self clientData];
-  v12 = [v11 origin];
-  v17 = [v16 initWithChallenge:v19 clientDataJSON:v4 clientDataHash:0 relyingPartyIdentifier:v5 userName:v6 userIdentifier:v7 userDisplayName:v8 supportedAlgorithmIdentifiers:v21 attestationPreference:v9 userVerificationPreference:v10 excludedCredentials:v20 extensions:0 origin:v12];
+  challenge = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self challenge];
+  clientData = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self clientData];
+  v4 = [clientData jsonForOperationType:0];
+  relyingPartyIdentifier = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self relyingPartyIdentifier];
+  name = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self name];
+  userID = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self userID];
+  displayName = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self displayName];
+  attestationPreference = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self attestationPreference];
+  userVerificationPreference = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self userVerificationPreference];
+  clientData2 = [(ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest *)self clientData];
+  origin = [clientData2 origin];
+  v17 = [v16 initWithChallenge:challenge clientDataJSON:v4 clientDataHash:0 relyingPartyIdentifier:relyingPartyIdentifier userName:name userIdentifier:userID userDisplayName:displayName supportedAlgorithmIdentifiers:v21 attestationPreference:attestationPreference userVerificationPreference:userVerificationPreference excludedCredentials:v20 extensions:0 origin:origin];
 
   v13 = self->_residentKeyPreference;
   if ([(NSString *)v13 isEqualToString:@"discouraged"])
@@ -131,11 +131,11 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return [v2 numberWithInteger:v3];
 }
 
-- (BOOL)supportsStyle:(int64_t)a3
+- (BOOL)supportsStyle:(int64_t)style
 {
-  if (a3 < 3)
+  if (style < 3)
   {
-    return 1u >> (a3 & 7);
+    return 1u >> (style & 7);
   }
 
   else
@@ -153,12 +153,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setUserID:(id)a3
+- (void)setUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_internalLock);
   userID = self->_userID;
-  self->_userID = v4;
+  self->_userID = dCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -172,12 +172,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_internalLock);
   name = self->_name;
-  self->_name = v4;
+  self->_name = nameCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -191,12 +191,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_internalLock);
   displayName = self->_displayName;
-  self->_displayName = v4;
+  self->_displayName = nameCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -210,12 +210,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setChallenge:(id)a3
+- (void)setChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   os_unfair_lock_lock(&self->_internalLock);
   challenge = self->_challenge;
-  self->_challenge = v4;
+  self->_challenge = challengeCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -229,12 +229,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setUserVerificationPreference:(id)a3
+- (void)setUserVerificationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   userVerificationPreference = self->_userVerificationPreference;
-  self->_userVerificationPreference = v4;
+  self->_userVerificationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -248,12 +248,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setAttestationPreference:(id)a3
+- (void)setAttestationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   attestationPreference = self->_attestationPreference;
-  self->_attestationPreference = v4;
+  self->_attestationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -324,12 +324,12 @@ uint64_t __97__ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest_
   return v3;
 }
 
-- (void)setClientData:(id)a3
+- (void)setClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_internalLock);
   clientData = self->_clientData;
-  self->_clientData = v4;
+  self->_clientData = dataCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }

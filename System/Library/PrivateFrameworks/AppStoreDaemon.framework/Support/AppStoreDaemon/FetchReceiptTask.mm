@@ -1,15 +1,15 @@
 @interface FetchReceiptTask
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation FetchReceiptTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!*(&self->_customReceiptURL + 2))
   {
     v5 = objc_alloc_init(_TtC9appstored6LogKey);
@@ -58,8 +58,8 @@
 
       else
       {
-        v23 = [v19 accountMediaType];
-        v22 = sub_100331288(self, v23);
+        accountMediaType = [v19 accountMediaType];
+        v22 = sub_100331288(self, accountMediaType);
       }
 
       v24 = [[AMSAuthenticateRequest alloc] initWithAccount:v22 options:v20];
@@ -69,7 +69,7 @@
       v30[2] = sub_100331330;
       v30[3] = &unk_10051E040;
       v30[4] = self;
-      v31 = v4;
+      v31 = handlerCopy;
       [v25 handleAuthenticateRequest:v24 resultHandler:v30];
     }
 
@@ -88,20 +88,20 @@
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%@] [%{public}@] No delegate to handle authentication request", buf, 0x16u);
       }
 
-      (*(v4 + 2))(v4, v10);
+      (*(handlerCopy + 2))(handlerCopy, v10);
     }
   }
 
   else
   {
-    sub_100331400(self, v9, v10, v4);
+    sub_100331400(self, v9, v10, handlerCopy);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = sub_100331250(self);
   v11 = objc_opt_respondsToSelector();
 
@@ -135,7 +135,7 @@
     }
 
     v19 = sub_100331250(self);
-    [v19 handleDialogRequest:v8 resultHandler:v9];
+    [v19 handleDialogRequest:requestCopy resultHandler:completionCopy];
   }
 
   else
@@ -166,14 +166,14 @@
     }
 
     v19 = ASDErrorWithDescription();
-    v9[2](v9, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = sub_100331250(self);
   v11 = objc_opt_respondsToSelector();
 
@@ -207,7 +207,7 @@
     }
 
     v19 = sub_100331250(self);
-    [v19 handleAuthenticateRequest:v8 resultHandler:v9];
+    [v19 handleAuthenticateRequest:requestCopy resultHandler:completionCopy];
   }
 
   else
@@ -238,14 +238,14 @@
     }
 
     v19 = ASDErrorWithDescription();
-    v9[2](v9, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = sub_100331250(self);
   v11 = objc_opt_respondsToSelector();
 
@@ -279,7 +279,7 @@
     }
 
     v19 = sub_100331250(self);
-    [v19 handleEngagementRequest:v8 resultHandler:v9];
+    [v19 handleEngagementRequest:requestCopy resultHandler:completionCopy];
   }
 
   else
@@ -310,7 +310,7 @@
     }
 
     v19 = ASDErrorWithDescription();
-    v9[2](v9, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 

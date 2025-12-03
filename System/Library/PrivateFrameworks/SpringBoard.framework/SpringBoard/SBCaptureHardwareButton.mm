@@ -7,38 +7,38 @@
 - (BOOL)_sendCaptureIntentToEligibleForegroundScene;
 - (BOOL)_shouldContinueAfterProcessingStateForClickDown;
 - (BOOL)_waitingForCaptureAppActivation;
-- (BOOL)handleSimulatedCaptureButtonEvent:(uint64_t)a1;
+- (BOOL)handleSimulatedCaptureButtonEvent:(uint64_t)event;
 - (double)_doubleClickInterval;
 - (id)_sendCameraCaptureButtonDownToSceneOverride;
-- (id)initWithActivationManager:(void *)a3 suppressionManager:(void *)a4 configurationCoordinator:(void *)a5 restrictionCoordinator:(void *)a6 mainWindowScene:(void *)a7 setupManager:(void *)a8 authenticationController:(void *)a9 HUDController:;
-- (id)requestActiveScanningModeForReason:(id)a3;
-- (id)requestActiveScanningModeUntilSceneAcquisition:(id)a3;
+- (id)initWithActivationManager:(void *)manager suppressionManager:(void *)suppressionManager configurationCoordinator:(void *)coordinator restrictionCoordinator:(void *)restrictionCoordinator mainWindowScene:(void *)scene setupManager:(void *)setupManager authenticationController:(void *)controller HUDController:;
+- (id)requestActiveScanningModeForReason:(id)reason;
+- (id)requestActiveScanningModeUntilSceneAcquisition:(id)acquisition;
 - (uint64_t)simulationButtonArbiter;
 - (unint64_t)_clickGesture;
-- (void)_attemptButtonActivationWithClickCountToActivate:(int64_t)a3 atTimestamp:(unint64_t)a4 forDownTimestamp:(unint64_t)a5 isAccessibilityEvent:(BOOL)a6;
-- (void)_bufferPressForBundleIdentifier:(id)a3 timestamp:(unint64_t)a4;
-- (void)_captureButtonGestureRecognizerAction:(id)a3;
+- (void)_attemptButtonActivationWithClickCountToActivate:(int64_t)activate atTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp isAccessibilityEvent:(BOOL)event;
+- (void)_bufferPressForBundleIdentifier:(id)identifier timestamp:(unint64_t)timestamp;
+- (void)_captureButtonGestureRecognizerAction:(id)action;
 - (void)_configureButtonProcessor;
-- (void)_handleButtonDownAtTimestamp:(unint64_t)a3 isAccessibilityEvent:(BOOL)a4;
-- (void)_handleButtonUpAtTimestamp:(unint64_t)a3 forDownTimestamp:(unint64_t)a4 isAccessibilityEvent:(BOOL)a5;
-- (void)_handleLongPressAtTimestamp:(unint64_t)a3 forDownTimestamp:(unint64_t)a4;
-- (void)_ignoreNextButtonUpForReason:(id)a3;
+- (void)_handleButtonDownAtTimestamp:(unint64_t)timestamp isAccessibilityEvent:(BOOL)event;
+- (void)_handleButtonUpAtTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp isAccessibilityEvent:(BOOL)event;
+- (void)_handleLongPressAtTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp;
+- (void)_ignoreNextButtonUpForReason:(id)reason;
 - (void)_invalidateBufferedPress;
 - (void)_nextClickTimeoutDidFire;
 - (void)_postBufferedPress;
-- (void)_processZStackParticipantSettings:(id)a3;
+- (void)_processZStackParticipantSettings:(id)settings;
 - (void)_reevaluateButtonScanState;
 - (void)_resetNextClickTimer;
 - (void)_sendCaptureIntentToEligibleForegroundScene;
 - (void)cancelHardwareButtonPress;
-- (void)captureButtonAppActivatorLaunchDidComplete:(BOOL)a3;
+- (void)captureButtonAppActivatorLaunchDidComplete:(BOOL)complete;
 - (void)dealloc;
-- (void)performActionsForButtonDown:(id)a3;
-- (void)performActionsForButtonLongPress:(id)a3;
-- (void)performActionsForButtonUp:(id)a3;
-- (void)physicalButtonSceneOverridesDidChange:(id)a3;
-- (void)setSimulationButtonArbiter:(uint64_t)a1;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)performActionsForButtonDown:(id)down;
+- (void)performActionsForButtonLongPress:(id)press;
+- (void)performActionsForButtonUp:(id)up;
+- (void)physicalButtonSceneOverridesDidChange:(id)change;
+- (void)setSimulationButtonArbiter:(uint64_t)arbiter;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBCaptureHardwareButton
@@ -61,23 +61,23 @@
 {
   objc_opt_self();
   v0 = +[SBDefaults localDefaults];
-  v1 = [v0 captureButtonDefaults];
-  v2 = [v1 simulateCaptureButtonUsingActionButton];
+  captureButtonDefaults = [v0 captureButtonDefaults];
+  simulateCaptureButtonUsingActionButton = [captureButtonDefaults simulateCaptureButtonUsingActionButton];
 
-  return v2;
+  return simulateCaptureButtonUsingActionButton;
 }
 
-- (id)initWithActivationManager:(void *)a3 suppressionManager:(void *)a4 configurationCoordinator:(void *)a5 restrictionCoordinator:(void *)a6 mainWindowScene:(void *)a7 setupManager:(void *)a8 authenticationController:(void *)a9 HUDController:
+- (id)initWithActivationManager:(void *)manager suppressionManager:(void *)suppressionManager configurationCoordinator:(void *)coordinator restrictionCoordinator:(void *)restrictionCoordinator mainWindowScene:(void *)scene setupManager:(void *)setupManager authenticationController:(void *)controller HUDController:
 {
   v17 = a2;
-  v45 = a3;
-  v47 = a4;
-  v44 = a5;
-  v48 = a6;
-  v43 = a7;
-  v42 = a8;
-  v46 = a9;
-  if (!a1)
+  managerCopy = manager;
+  suppressionManagerCopy = suppressionManager;
+  coordinatorCopy = coordinator;
+  restrictionCoordinatorCopy = restrictionCoordinator;
+  sceneCopy = scene;
+  setupManagerCopy = setupManager;
+  controllerCopy = controller;
+  if (!self)
   {
     goto LABEL_10;
   }
@@ -85,62 +85,62 @@
   v41 = v17;
   if (!v17)
   {
-    [SBCaptureHardwareButton initWithActivationManager:a1 suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
+    [SBCaptureHardwareButton initWithActivationManager:self suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
   }
 
-  if (!v47)
+  if (!suppressionManagerCopy)
   {
-    [SBCaptureHardwareButton initWithActivationManager:a1 suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
+    [SBCaptureHardwareButton initWithActivationManager:self suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
   }
 
-  if (!v48)
+  if (!restrictionCoordinatorCopy)
   {
-    [SBCaptureHardwareButton initWithActivationManager:a1 suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
+    [SBCaptureHardwareButton initWithActivationManager:self suppressionManager:? configurationCoordinator:? restrictionCoordinator:? mainWindowScene:? setupManager:? authenticationController:? HUDController:?];
   }
 
-  v54.receiver = a1;
+  v54.receiver = self;
   v54.super_class = SBCaptureHardwareButton;
-  a1 = objc_msgSendSuper2(&v54, sel_init);
-  if (a1)
+  self = objc_msgSendSuper2(&v54, sel_init);
+  if (self)
   {
     v40 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v18 = [v40 physicalButtonSceneOverrideManager];
-    objc_storeStrong(a1 + 9, v18);
-    v39 = v18;
-    v19 = [(SBPhysicalButtonSceneOverrideManager *)v18 addObserver:a1 forReason:@"capture button"];
-    v20 = a1[10];
-    a1[10] = v19;
+    physicalButtonSceneOverrideManager = [v40 physicalButtonSceneOverrideManager];
+    objc_storeStrong(self + 9, physicalButtonSceneOverrideManager);
+    v39 = physicalButtonSceneOverrideManager;
+    v19 = [(SBPhysicalButtonSceneOverrideManager *)physicalButtonSceneOverrideManager addObserver:self forReason:@"capture button"];
+    v20 = self[10];
+    self[10] = v19;
 
-    objc_storeStrong(a1 + 11, a2);
-    objc_storeStrong(a1 + 12, a3);
-    objc_storeStrong(a1 + 13, a4);
-    objc_storeStrong(a1 + 8, a6);
-    objc_storeStrong(a1 + 11, a2);
-    objc_storeStrong(a1 + 15, a5);
-    objc_storeStrong(a1 + 20, a7);
-    objc_storeStrong(a1 + 21, a8);
-    objc_storeStrong(a1 + 22, a9);
-    [a1 _configureButtonProcessor];
+    objc_storeStrong(self + 11, a2);
+    objc_storeStrong(self + 12, manager);
+    objc_storeStrong(self + 13, suppressionManager);
+    objc_storeStrong(self + 8, restrictionCoordinator);
+    objc_storeStrong(self + 11, a2);
+    objc_storeStrong(self + 15, coordinator);
+    objc_storeStrong(self + 20, scene);
+    objc_storeStrong(self + 21, setupManager);
+    objc_storeStrong(self + 22, controller);
+    [self _configureButtonProcessor];
     v21 = +[SBCaptureButtonDomain rootSettings];
-    v22 = a1[17];
-    a1[17] = v21;
+    v22 = self[17];
+    self[17] = v21;
 
-    v23 = v46;
-    v24 = [[SBCaptureHardwareButtonAppActivator alloc] initWithSettingsSnapshot:a1[17] windowScene:a1[8] scanModeResource:a1 activationManager:a1[11] suppressionManager:a1[12] setupManager:a1[20] authenticationController:a1[21] HUDController:v46];
-    v25 = a1[14];
-    a1[14] = v24;
+    v23 = controllerCopy;
+    v24 = [[SBCaptureHardwareButtonAppActivator alloc] initWithSettingsSnapshot:self[17] windowScene:self[8] scanModeResource:self activationManager:self[11] suppressionManager:self[12] setupManager:self[20] authenticationController:self[21] HUDController:controllerCopy];
+    v25 = self[14];
+    self[14] = v24;
 
-    v26 = [v48 zStackResolver];
-    v27 = [v26 addObserver:a1 ofParticipantWithIdentifier:29];
-    [a1 _processZStackParticipantSettings:v27];
-    v28 = [v48 systemGestureManager];
-    [v28 addGestureRecognizer:a1[16] withType:139];
-    [a1[17] addKeyObserver:a1];
+    zStackResolver = [restrictionCoordinatorCopy zStackResolver];
+    v27 = [zStackResolver addObserver:self ofParticipantWithIdentifier:29];
+    [self _processZStackParticipantSettings:v27];
+    systemGestureManager = [restrictionCoordinatorCopy systemGestureManager];
+    [systemGestureManager addGestureRecognizer:self[16] withType:139];
+    [self[17] addKeyObserver:self];
     v29 = +[SBDefaults localDefaults];
-    v30 = [v29 captureButtonDefaults];
+    captureButtonDefaults = [v29 captureButtonDefaults];
 
-    a1[27] = [v30 captureButtonClickCount];
-    objc_initWeak(&location, a1);
+    self[27] = [captureButtonDefaults captureButtonClickCount];
+    objc_initWeak(&location, self);
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"captureButtonClickCount"];
     v32 = MEMORY[0x277D85CD0];
     v33 = MEMORY[0x277D85CD0];
@@ -149,16 +149,16 @@
     v49[2] = __188__SBCaptureHardwareButton_initWithActivationManager_suppressionManager_configurationCoordinator_restrictionCoordinator_mainWindowScene_setupManager_authenticationController_HUDController___block_invoke;
     v49[3] = &unk_2783B00B0;
     objc_copyWeak(&v52, &location);
-    a1 = a1;
-    v50 = a1;
-    v34 = v30;
+    self = self;
+    selfCopy = self;
+    v34 = captureButtonDefaults;
     v51 = v34;
     v35 = [v34 observeDefault:v31 onQueue:v32 withBlock:v49];
 
-    [a1 _resetNextClickTimer];
+    [self _resetNextClickTimer];
     v36 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.camera"];
-    v37 = a1[32];
-    a1[32] = v36;
+    v37 = self[32];
+    self[32] = v36;
 
     objc_destroyWeak(&v52);
     objc_destroyWeak(&location);
@@ -169,10 +169,10 @@
   else
   {
 LABEL_10:
-    v23 = v46;
+    v23 = controllerCopy;
   }
 
-  return a1;
+  return self;
 }
 
 void __188__SBCaptureHardwareButton_initWithActivationManager_suppressionManager_configurationCoordinator_restrictionCoordinator_mainWindowScene_setupManager_authenticationController_HUDController___block_invoke(id *a1)
@@ -203,9 +203,9 @@ void __188__SBCaptureHardwareButton_initWithActivationManager_suppressionManager
   [(SBCaptureHardwareButton *)&v5 dealloc];
 }
 
-- (id)requestActiveScanningModeForReason:(id)a3
+- (id)requestActiveScanningModeForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   buttonScanningActiveAssertion = self->_buttonScanningActiveAssertion;
   if (!buttonScanningActiveAssertion)
   {
@@ -229,7 +229,7 @@ void __188__SBCaptureHardwareButton_initWithActivationManager_suppressionManager
     buttonScanningActiveAssertion = self->_buttonScanningActiveAssertion;
   }
 
-  v11 = [(BSCompoundAssertion *)buttonScanningActiveAssertion acquireForReason:v4];
+  v11 = [(BSCompoundAssertion *)buttonScanningActiveAssertion acquireForReason:reasonCopy];
 
   return v11;
 }
@@ -240,9 +240,9 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   [WeakRetained _reevaluateButtonScanState];
 }
 
-- (id)requestActiveScanningModeUntilSceneAcquisition:(id)a3
+- (id)requestActiveScanningModeUntilSceneAcquisition:(id)acquisition
 {
-  v5 = a3;
+  acquisitionCopy = acquisition;
   launchGracePeriodButtonPowerAssertion = self->_launchGracePeriodButtonPowerAssertion;
   if (self->_clientRequestedButtonPowerAssertion)
   {
@@ -257,7 +257,7 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   else
   {
     v8 = launchGracePeriodButtonPowerAssertion;
-    v9 = [(SBCaptureHardwareButton *)self requestActiveScanningModeForReason:v5];
+    v9 = [(SBCaptureHardwareButton *)self requestActiveScanningModeForReason:acquisitionCopy];
     v10 = self->_launchGracePeriodButtonPowerAssertion;
     self->_launchGracePeriodButtonPowerAssertion = v9;
 
@@ -270,14 +270,14 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   return v7;
 }
 
-- (void)captureButtonAppActivatorLaunchDidComplete:(BOOL)a3
+- (void)captureButtonAppActivatorLaunchDidComplete:(BOOL)complete
 {
   if (self->_bufferedPressAbsoluteTimestamp)
   {
-    v3 = a3;
+    completeCopy = complete;
     v5 = SBLogButtonsCapture();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (completeCopy)
     {
       if (v6)
       {
@@ -301,9 +301,9 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if ([&unk_28336EA90 containsObject:a4])
+  if ([&unk_28336EA90 containsObject:key])
   {
     [(SBCaptureHardwareButtonAppActivator *)self->_appActivator invalidate];
     v5 = [[SBCaptureHardwareButtonAppActivator alloc] initWithSettingsSnapshot:self->_settings windowScene:self->_mainWindowScene scanModeResource:self activationManager:self->_activationManager suppressionManager:self->_suppressionManager setupManager:self->_setupManager authenticationController:self->_authenticationController HUDController:self->_hudController];
@@ -333,14 +333,14 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   }
 }
 
-- (void)_processZStackParticipantSettings:(id)a3
+- (void)_processZStackParticipantSettings:(id)settings
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 captureButtonFullFidelityEventRequestingScenes];
+  settingsCopy = settings;
+  captureButtonFullFidelityEventRequestingScenes = [settingsCopy captureButtonFullFidelityEventRequestingScenes];
   if ((BSEqualArrays() & 1) == 0)
   {
-    v6 = [v5 copy];
+    v6 = [captureButtonFullFidelityEventRequestingScenes copy];
     buttonEventRequestingScenes = self->_buttonEventRequestingScenes;
     self->_buttonEventRequestingScenes = v6;
 
@@ -379,10 +379,10 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
     }
   }
 
-  v16 = [v4 foregroundCaptureSceneTargets];
+  foregroundCaptureSceneTargets = [settingsCopy foregroundCaptureSceneTargets];
   if ((BSEqualArrays() & 1) == 0)
   {
-    v17 = [v16 copy];
+    v17 = [foregroundCaptureSceneTargets copy];
     foregroundCaptureSceneTargets = self->_foregroundCaptureSceneTargets;
     self->_foregroundCaptureSceneTargets = v17;
 
@@ -396,10 +396,10 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
     }
   }
 
-  v21 = [v4 physicalButtonSceneTargets];
+  physicalButtonSceneTargets = [settingsCopy physicalButtonSceneTargets];
   if ((BSEqualArrays() & 1) == 0)
   {
-    v22 = [v21 copy];
+    v22 = [physicalButtonSceneTargets copy];
     physicalButtonSceneTargets = self->_physicalButtonSceneTargets;
     self->_physicalButtonSceneTargets = v22;
 
@@ -416,25 +416,25 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
 
 - (BOOL)_physicalButtonTargetMatchesExpectedTargetScene
 {
-  v2 = self;
-  v3 = [(NSArray *)self->_physicalButtonSceneTargets lastObject];
-  v4 = [v3 scene];
-  v5 = [v4 clientHandle];
-  v6 = [v5 bundleIdentifier];
-  LOBYTE(v2) = [v6 isEqual:v2->_captureAppBundleIdentifierForBufferedPress];
+  selfCopy = self;
+  lastObject = [(NSArray *)self->_physicalButtonSceneTargets lastObject];
+  scene = [lastObject scene];
+  clientHandle = [scene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  LOBYTE(selfCopy) = [bundleIdentifier isEqual:selfCopy->_captureAppBundleIdentifierForBufferedPress];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_waitingForCaptureAppActivation
 {
-  v3 = [(SBCaptureHardwareButtonAppActivator *)self->_appActivator isActivationInProgress];
-  if (v3)
+  isActivationInProgress = [(SBCaptureHardwareButtonAppActivator *)self->_appActivator isActivationInProgress];
+  if (isActivationInProgress)
   {
-    LOBYTE(v3) = ![(SBCaptureHardwareButton *)self _physicalButtonTargetMatchesExpectedTargetScene];
+    LOBYTE(isActivationInProgress) = ![(SBCaptureHardwareButton *)self _physicalButtonTargetMatchesExpectedTargetScene];
   }
 
-  return v3;
+  return isActivationInProgress;
 }
 
 - (void)_invalidateBufferedPress
@@ -447,23 +447,23 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   }
 }
 
-- (void)_bufferPressForBundleIdentifier:(id)a3 timestamp:(unint64_t)a4
+- (void)_bufferPressForBundleIdentifier:(id)identifier timestamp:(unint64_t)timestamp
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = SBLogButtonsCapture();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Buffering press(down time: %llu)", &v10, 0xCu);
   }
 
-  v8 = [v6 copy];
+  v8 = [identifierCopy copy];
   captureAppBundleIdentifierForBufferedPress = self->_captureAppBundleIdentifierForBufferedPress;
   self->_captureAppBundleIdentifierForBufferedPress = v8;
 
-  self->_bufferedPressAbsoluteTimestamp = a4;
+  self->_bufferedPressAbsoluteTimestamp = timestamp;
 }
 
 - (void)_postBufferedPress
@@ -472,12 +472,12 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
   p_bufferedPressAbsoluteTimestamp = &self->_bufferedPressAbsoluteTimestamp;
   if (self->_bufferedPressAbsoluteTimestamp)
   {
-    v4 = [(NSArray *)self->_foregroundCaptureSceneTargets lastObject];
-    v5 = [v4 scene];
+    lastObject = [(NSArray *)self->_foregroundCaptureSceneTargets lastObject];
+    scene = [lastObject scene];
 
-    if (v5)
+    if (scene)
     {
-      if ([v5 contentState] == 2)
+      if ([scene contentState] == 2)
       {
         BSMonotonicReferencedTimeFromMachTime();
         v7 = v6;
@@ -496,35 +496,35 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
 
         if (v9 <= 2.0)
         {
-          v17 = [v5 clientHandle];
-          v12 = [v17 bundleIdentifier];
+          clientHandle = [scene clientHandle];
+          bundleIdentifier = [clientHandle bundleIdentifier];
 
-          if ([v12 isEqual:self->_captureAppBundleIdentifierForBufferedPress])
+          if ([bundleIdentifier isEqual:self->_captureAppBundleIdentifierForBufferedPress])
           {
-            v18 = [(SBCaptureHardwareButton *)self _sendCameraCaptureButtonDownToSceneOverride];
-            if (v18)
+            _sendCameraCaptureButtonDownToSceneOverride = [(SBCaptureHardwareButton *)self _sendCameraCaptureButtonDownToSceneOverride];
+            if (_sendCameraCaptureButtonDownToSceneOverride)
             {
               v19 = SBLogButtonsCapture();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [v18 identifier];
+                identifier = [_sendCameraCaptureButtonDownToSceneOverride identifier];
                 v21 = *p_bufferedPressAbsoluteTimestamp;
                 v34 = 138543618;
-                v35 = *&v20;
+                v35 = *&identifier;
                 v36 = 2048;
                 v37 = v21;
                 _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "Buffer: Invoking scene override Button Down Action for %{public}@ (down time: %llu)", &v34, 0x16u);
               }
 
-              [v18 completeWithResult:0];
+              [_sendCameraCaptureButtonDownToSceneOverride completeWithResult:0];
             }
 
             else
             {
-              v24 = [(SBCaptureHardwareButton *)self _sendCaptureIntentToEligibleForegroundScene];
+              _sendCaptureIntentToEligibleForegroundScene = [(SBCaptureHardwareButton *)self _sendCaptureIntentToEligibleForegroundScene];
               v25 = SBLogButtonsCapture();
               v26 = v25;
-              if (v24)
+              if (_sendCaptureIntentToEligibleForegroundScene)
               {
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
@@ -544,31 +544,31 @@ void __62__SBCaptureHardwareButton_requestActiveScanningModeForReason___block_in
 
           else
           {
-            v18 = SBLogButtonsCapture();
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            _sendCameraCaptureButtonDownToSceneOverride = SBLogButtonsCapture();
+            if (os_log_type_enabled(_sendCameraCaptureButtonDownToSceneOverride, OS_LOG_TYPE_ERROR))
             {
               bufferedPressAbsoluteTimestamp = self->_bufferedPressAbsoluteTimestamp;
               captureAppBundleIdentifierForBufferedPress = self->_captureAppBundleIdentifierForBufferedPress;
               v34 = 138544130;
-              v35 = *&v12;
+              v35 = *&bundleIdentifier;
               v36 = 2114;
               v37 = captureAppBundleIdentifierForBufferedPress;
               v38 = 2048;
               v39 = bufferedPressAbsoluteTimestamp;
               v40 = 2114;
-              v41 = v5;
-              _os_log_error_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_ERROR, "Buffer: bundleID is %{public}@; expected %{public}@ (down time: %llu) %{public}@", &v34, 0x2Au);
+              v41 = scene;
+              _os_log_error_impl(&dword_21ED4E000, _sendCameraCaptureButtonDownToSceneOverride, OS_LOG_TYPE_ERROR, "Buffer: bundleID is %{public}@; expected %{public}@ (down time: %llu) %{public}@", &v34, 0x2Au);
             }
           }
         }
 
         else
         {
-          v12 = SBLogButtonsCapture();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+          bundleIdentifier = SBLogButtonsCapture();
+          if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(v34) = 0;
-            _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Buffer: press too old, dropping", &v34, 2u);
+            _os_log_impl(&dword_21ED4E000, bundleIdentifier, OS_LOG_TYPE_DEFAULT, "Buffer: press too old, dropping", &v34, 2u);
           }
         }
 
@@ -607,9 +607,9 @@ LABEL_30:
 
 - (void)_reevaluateButtonScanState
 {
-  v3 = [(BSCompoundAssertion *)self->_buttonScanningActiveAssertion isActive];
+  isActive = [(BSCompoundAssertion *)self->_buttonScanningActiveAssertion isActive];
   underlyingButtonPowerAssertion = self->_underlyingButtonPowerAssertion;
-  if (v3)
+  if (isActive)
   {
     if (underlyingButtonPowerAssertion)
     {
@@ -657,89 +657,89 @@ LABEL_9:
 - (id)_sendCameraCaptureButtonDownToSceneOverride
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(SBPhysicalButtonSceneOverrideManager *)&self->_physicalButtonOverrideManager->super.isa sendCameraCaptureButtonDown];
-  if (v2)
+  sendCameraCaptureButtonDown = [(SBPhysicalButtonSceneOverrideManager *)&self->_physicalButtonOverrideManager->super.isa sendCameraCaptureButtonDown];
+  if (sendCameraCaptureButtonDown)
   {
     v3 = SBLogButtonsCapture();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [v2 identifier];
+      identifier = [sendCameraCaptureButtonDown identifier];
       v6 = 138543362;
-      v7 = v4;
+      v7 = identifier;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "_sendCameraCaptureButtonDownToSceneOverride to: %{public}@", &v6, 0xCu);
     }
   }
 
-  return v2;
+  return sendCameraCaptureButtonDown;
 }
 
 - (BOOL)_sendCaptureIntentToEligibleForegroundScene
 {
-  v3 = [(NSArray *)self->_foregroundCaptureSceneTargets lastObject];
-  v4 = v3;
-  if (v3)
+  lastObject = [(NSArray *)self->_foregroundCaptureSceneTargets lastObject];
+  v4 = lastObject;
+  if (lastObject)
   {
-    v5 = [v3 scene];
-    if ([v5 isActive])
+    scene = [lastObject scene];
+    if ([scene isActive])
     {
-      v6 = [v4 captureApplication];
-      v7 = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
-      v8 = [v6 bundleIdentifier];
-      v9 = [v7 isEqualToString:v8];
-      v10 = SBLogButtonsCapture();
-      v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-      if (v9)
+      captureApplication = [v4 captureApplication];
+      associatedAppBundleIdentifier = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
+      bundleIdentifier = [captureApplication bundleIdentifier];
+      hasVisionModality = [associatedAppBundleIdentifier isEqualToString:bundleIdentifier];
+      launchActions = SBLogButtonsCapture();
+      v11 = os_log_type_enabled(launchActions, OS_LOG_TYPE_ERROR);
+      if (hasVisionModality)
       {
         if (v11)
         {
-          [(SBCaptureHardwareButton *)v5 _sendCaptureIntentToEligibleForegroundScene:v10];
+          [(SBCaptureHardwareButton *)scene _sendCaptureIntentToEligibleForegroundScene:launchActions];
         }
 
-        v10 = [v6 launchActions];
-        [v5 sendActions:v10];
+        launchActions = [captureApplication launchActions];
+        [scene sendActions:launchActions];
       }
 
       else if (v11)
       {
-        [(SBCaptureHardwareButton *)v8 _sendCaptureIntentToEligibleForegroundScene];
+        [(SBCaptureHardwareButton *)bundleIdentifier _sendCaptureIntentToEligibleForegroundScene];
       }
     }
 
     else
     {
-      v6 = SBLogButtonsCapture();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      captureApplication = SBLogButtonsCapture();
+      if (os_log_type_enabled(captureApplication, OS_LOG_TYPE_ERROR))
       {
-        [(SBCaptureHardwareButton *)v5 _sendCaptureIntentToEligibleForegroundScene:v6];
+        [(SBCaptureHardwareButton *)scene _sendCaptureIntentToEligibleForegroundScene:captureApplication];
       }
 
-      LOBYTE(v9) = 0;
+      LOBYTE(hasVisionModality) = 0;
     }
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  v18 = [(SBWindowScene *)self->_mainWindowScene assistantController];
-  v19 = [v18 presentationContext];
-  v9 = [v19 hasVisionModality];
+  assistantController = [(SBWindowScene *)self->_mainWindowScene assistantController];
+  presentationContext = [assistantController presentationContext];
+  hasVisionModality = [presentationContext hasVisionModality];
 
-  if (v9)
+  if (hasVisionModality)
   {
-    v5 = SBLogButtonsCapture();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    scene = SBLogButtonsCapture();
+    if (os_log_type_enabled(scene, OS_LOG_TYPE_DEFAULT))
     {
       *v27 = 0;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "_sendCaptureIntentToEligibleForegroundScene consuming on behalf of siri", v27, 2u);
+      _os_log_impl(&dword_21ED4E000, scene, OS_LOG_TYPE_DEFAULT, "_sendCaptureIntentToEligibleForegroundScene consuming on behalf of siri", v27, 2u);
     }
 
-    LOBYTE(v9) = 1;
+    LOBYTE(hasVisionModality) = 1;
     goto LABEL_18;
   }
 
 LABEL_19:
 
-  return v9;
+  return hasVisionModality;
 }
 
 - (void)_resetNextClickTimer
@@ -769,9 +769,9 @@ LABEL_19:
 - (double)_doubleClickInterval
 {
   v2 = [(NSUserDefaults *)self->_cameraDefaults objectForKey:@"systemOverlay.doubleClickMaxIntervalMilliseconds"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  result = v3 / 1000.0;
+  result = intValue / 1000.0;
   if (result == 0.0)
   {
     return 0.4;
@@ -831,13 +831,13 @@ LABEL_19:
   return v5 == 0;
 }
 
-- (void)_ignoreNextButtonUpForReason:(id)a3
+- (void)_ignoreNextButtonUpForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_buttonActiveAssertion)
   {
     ignoreButtonUpReasons = self->_ignoreButtonUpReasons;
-    v8 = v4;
+    v8 = reasonCopy;
     if (!ignoreButtonUpReasons)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -848,11 +848,11 @@ LABEL_19:
     }
 
     [(NSMutableSet *)ignoreButtonUpReasons addObject:v8];
-    v4 = v8;
+    reasonCopy = v8;
   }
 }
 
-- (void)_handleLongPressAtTimestamp:(unint64_t)a3 forDownTimestamp:(unint64_t)a4
+- (void)_handleLongPressAtTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp
 {
   v7 = SBLogButtonsCapture();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -866,26 +866,26 @@ LABEL_19:
   longPressTimer = self->_longPressTimer;
   self->_longPressTimer = 0;
 
-  [(SBCaptureHardwareButton *)self _attemptButtonActivationWithClickCountToActivate:0 atTimestamp:a3 forDownTimestamp:a4 isAccessibilityEvent:0];
+  [(SBCaptureHardwareButton *)self _attemptButtonActivationWithClickCountToActivate:0 atTimestamp:timestamp forDownTimestamp:downTimestamp isAccessibilityEvent:0];
   [(SBCaptureHardwareButton *)self _resetNextClickTimer];
 }
 
-- (void)_handleButtonDownAtTimestamp:(unint64_t)a3 isAccessibilityEvent:(BOOL)a4
+- (void)_handleButtonDownAtTimestamp:(unint64_t)timestamp isAccessibilityEvent:(BOOL)event
 {
   v46 = *MEMORY[0x277D85DE8];
   [(SBCaptureHardwareButton *)self _invalidateBufferedPress];
   if (!self->_buttonActiveAssertion)
   {
     hardwareButtonCoordinator = self->_hardwareButtonCoordinator;
-    v10 = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
-    v11 = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator assertButtonIsActive:v10];
+    hardwareButtonIdentifier = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
+    v11 = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator assertButtonIsActive:hardwareButtonIdentifier];
     buttonActiveAssertion = self->_buttonActiveAssertion;
     self->_buttonActiveAssertion = v11;
 
     [(SBCaptureHardwareButton *)self _stopIgnoringNextButtonUp];
     v13 = self->_hardwareButtonCoordinator;
-    v14 = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
-    LOBYTE(v13) = [(SBHardwareButtonCoordinator *)v13 buttonShouldStart:v14];
+    hardwareButtonIdentifier2 = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
+    LOBYTE(v13) = [(SBHardwareButtonCoordinator *)v13 buttonShouldStart:hardwareButtonIdentifier2];
 
     if ((v13 & 1) == 0)
     {
@@ -909,7 +909,7 @@ LABEL_19:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v45 = v8;
+        timestampCopy2 = v8;
         _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "[button down] Ignoring button press to inhibit assertion(s): %{public}@.", buf, 0xCu);
       }
 
@@ -924,15 +924,15 @@ LABEL_19:
 
     if ([(SBCaptureHardwareButton *)self _waitingForCaptureAppActivation])
     {
-      v19 = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
-      [(SBCaptureHardwareButton *)self _bufferPressForBundleIdentifier:v19 timestamp:a3];
+      associatedAppBundleIdentifier = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
+      [(SBCaptureHardwareButton *)self _bufferPressForBundleIdentifier:associatedAppBundleIdentifier timestamp:timestamp];
 
       goto LABEL_25;
     }
 
-    v20 = [(SBCaptureHardwareButton *)self _sendCameraCaptureButtonDownToSceneOverride];
+    _sendCameraCaptureButtonDownToSceneOverride = [(SBCaptureHardwareButton *)self _sendCameraCaptureButtonDownToSceneOverride];
     overrideButtonUpHandler = self->_overrideButtonUpHandler;
-    self->_overrideButtonUpHandler = v20;
+    self->_overrideButtonUpHandler = _sendCameraCaptureButtonDownToSceneOverride;
 
     if (self->_overrideButtonUpHandler)
     {
@@ -940,7 +940,7 @@ LABEL_19:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v45 = a3;
+        timestampCopy2 = timestamp;
         v23 = "Invoking scene override Button Down Action (down time: %llu)";
 LABEL_22:
         _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
@@ -951,26 +951,26 @@ LABEL_22:
     {
       if (![(SBCaptureHardwareButton *)self _sendCaptureIntentToEligibleForegroundScene])
       {
-        v25 = [(SBCaptureHardwareButton *)self _shouldContinueAfterProcessingStateForClickDown];
+        _shouldContinueAfterProcessingStateForClickDown = [(SBCaptureHardwareButton *)self _shouldContinueAfterProcessingStateForClickDown];
         clickCountToActivateApp = self->_clickCountToActivateApp;
         remainingClicksUpToActivateApp = self->_remainingClicksUpToActivateApp;
-        v28 = [(SBCaptureHardwareButton *)self _isVisionIntelligenceSupported];
-        v29 = v28;
-        if (v25)
+        _isVisionIntelligenceSupported = [(SBCaptureHardwareButton *)self _isVisionIntelligenceSupported];
+        v29 = _isVisionIntelligenceSupported;
+        if (_shouldContinueAfterProcessingStateForClickDown)
         {
           appActivator = self->_appActivator;
-          if (a4)
+          if (event)
           {
-            v31 = 4;
+            _clickGesture = 4;
           }
 
           else
           {
-            v31 = [(SBCaptureHardwareButton *)self _clickGesture];
+            _clickGesture = [(SBCaptureHardwareButton *)self _clickGesture];
           }
 
-          v32 = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
-          [(SBCaptureHardwareButtonAppActivator *)appActivator prepareForGesture:v31 forAppBundleID:v32 atMachAbsoluteTime:a3 suppressionOptions:[(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions]];
+          associatedAppBundleIdentifier2 = [(SBCaptureButtonAppConfigurationCoordinator *)self->_configurationCoordinator associatedAppBundleIdentifier];
+          [(SBCaptureHardwareButtonAppActivator *)appActivator prepareForGesture:_clickGesture forAppBundleID:associatedAppBundleIdentifier2 atMachAbsoluteTime:timestamp suppressionOptions:[(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions]];
         }
 
         else
@@ -980,22 +980,22 @@ LABEL_22:
             goto LABEL_24;
           }
 
-          if (!v28)
+          if (!_isVisionIntelligenceSupported)
           {
             if (self->_hintDropletAssertion)
             {
               [SBCaptureHardwareButton _handleButtonDownAtTimestamp:a2 isAccessibilityEvent:?];
             }
 
-            v39 = [(SBWindowScene *)self->_mainWindowScene hardwareButtonBezelEffectsCoordinator];
-            v40 = [v39 activateHintDropletForButton:9];
+            hardwareButtonBezelEffectsCoordinator = [(SBWindowScene *)self->_mainWindowScene hardwareButtonBezelEffectsCoordinator];
+            v40 = [hardwareButtonBezelEffectsCoordinator activateHintDropletForButton:9];
             hintDropletAssertion = self->_hintDropletAssertion;
             self->_hintDropletAssertion = v40;
 
             goto LABEL_24;
           }
 
-          [(SBCaptureHardwareButtonAppActivator *)self->_appActivator prepareForGesture:3 forAppBundleID:@"com.apple.siri" atMachAbsoluteTime:a3 suppressionOptions:[(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions]];
+          [(SBCaptureHardwareButtonAppActivator *)self->_appActivator prepareForGesture:3 forAppBundleID:@"com.apple.siri" atMachAbsoluteTime:timestamp suppressionOptions:[(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions]];
         }
 
         if (clickCountToActivateApp == remainingClicksUpToActivateApp && v29)
@@ -1013,7 +1013,7 @@ LABEL_22:
           v42[2] = __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibilityEvent___block_invoke;
           v42[3] = &unk_2783BF7D0;
           v42[4] = self;
-          v42[5] = a3;
+          v42[5] = timestamp;
           [(BSAbsoluteMachTimer *)v37 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v42 queue:v36 * v38 handler:0.01];
         }
 
@@ -1024,15 +1024,15 @@ LABEL_22:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v45 = a3;
+        timestampCopy2 = timestamp;
         v23 = "Sending capture intent to foreground scene (down time: %llu)";
         goto LABEL_22;
       }
     }
 
 LABEL_24:
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 postNotificationName:@"SBCaptureHardwareButtonPressNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBCaptureHardwareButtonPressNotification" object:0];
 
     goto LABEL_25;
   }
@@ -1057,10 +1057,10 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
 
 - (BOOL)_isVisionIntelligenceSupported
 {
-  v2 = [(SBWindowScene *)self->_mainWindowScene assistantController];
-  v3 = [v2 isVisualSearchEnabled];
+  assistantController = [(SBWindowScene *)self->_mainWindowScene assistantController];
+  isVisualSearchEnabled = [assistantController isVisualSearchEnabled];
 
-  return v3;
+  return isVisualSearchEnabled;
 }
 
 - (unint64_t)_clickGesture
@@ -1076,9 +1076,9 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   }
 }
 
-- (void)_handleButtonUpAtTimestamp:(unint64_t)a3 forDownTimestamp:(unint64_t)a4 isAccessibilityEvent:(BOOL)a5
+- (void)_handleButtonUpAtTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp isAccessibilityEvent:(BOOL)event
 {
-  v5 = a5;
+  eventCopy = event;
   v25 = *MEMORY[0x277D85DE8];
   [(BSInvalidatable *)self->_buttonActiveAssertion invalidate];
   buttonActiveAssertion = self->_buttonActiveAssertion;
@@ -1104,7 +1104,7 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
     {
       v13 = [MEMORY[0x277CF0C08] descriptionForRootObject:self->_ignoreButtonUpReasons];
       v21 = 138412290;
-      v22 = v13;
+      downTimestampCopy = v13;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[button up] Ignoring button up because %@", &v21, 0xCu);
     }
   }
@@ -1125,9 +1125,9 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134218240;
-      v22 = a4;
+      downTimestampCopy = downTimestamp;
       v23 = 2048;
-      v24 = a3;
+      timestampCopy = timestamp;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Invoking scene override Button Up Action (down time: %llu, up time: %llu)", &v21, 0x16u);
     }
 
@@ -1151,7 +1151,7 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
       }
 
       [(SBCaptureHardwareButton *)self _resetNextClickTimer];
-      [(SBCaptureHardwareButton *)self _attemptButtonActivationWithClickCountToActivate:self->_clickCountToActivateApp atTimestamp:a3 forDownTimestamp:a4 isAccessibilityEvent:v5];
+      [(SBCaptureHardwareButton *)self _attemptButtonActivationWithClickCountToActivate:self->_clickCountToActivateApp atTimestamp:timestamp forDownTimestamp:downTimestamp isAccessibilityEvent:eventCopy];
     }
 
     else
@@ -1160,35 +1160,35 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
       {
         v20 = self->_remainingClicksUpToActivateApp;
         v21 = 67109120;
-        LODWORD(v22) = v20;
+        LODWORD(downTimestampCopy) = v20;
         _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "[button up] Waiting for next click (%d remaining)", &v21, 8u);
       }
     }
   }
 }
 
-- (void)_attemptButtonActivationWithClickCountToActivate:(int64_t)a3 atTimestamp:(unint64_t)a4 forDownTimestamp:(unint64_t)a5 isAccessibilityEvent:(BOOL)a6
+- (void)_attemptButtonActivationWithClickCountToActivate:(int64_t)activate atTimestamp:(unint64_t)timestamp forDownTimestamp:(unint64_t)downTimestamp isAccessibilityEvent:(BOOL)event
 {
-  v6 = a6;
+  eventCopy = event;
   hardwareButtonCoordinator = self->_hardwareButtonCoordinator;
-  v11 = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
-  LODWORD(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:v11];
+  hardwareButtonIdentifier = [(SBCaptureHardwareButton *)self hardwareButtonIdentifier];
+  LODWORD(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:hardwareButtonIdentifier];
 
   if (hardwareButtonCoordinator)
   {
     BSTimeDifferenceFromMachTimeToMachTime();
     v13 = v12;
-    if (a3 > 2)
+    if (activate > 2)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = qword_21F8A8260[a3];
+      v14 = qword_21F8A8260[activate];
     }
 
-    if (v6)
+    if (eventCopy)
     {
       v17 = 4;
     }
@@ -1199,78 +1199,78 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
     }
 
     appActivator = self->_appActivator;
-    v19 = [(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions];
+    captureButtonSuppressionOptions = [(SBCaptureButtonRestrictionCoordinator *)self->_restrictionCoordinator captureButtonSuppressionOptions];
 
-    [(SBCaptureHardwareButtonAppActivator *)appActivator activateForGesture:v17 atMachAbsoluteTime:a4 pressDuration:v19 suppressionOptions:v13];
+    [(SBCaptureHardwareButtonAppActivator *)appActivator activateForGesture:v17 atMachAbsoluteTime:timestamp pressDuration:captureButtonSuppressionOptions suppressionOptions:v13];
   }
 
   else
   {
     v15 = self->_appActivator;
-    v16 = [(SBCaptureHardwareButton *)self _clickGesture];
+    _clickGesture = [(SBCaptureHardwareButton *)self _clickGesture];
 
-    [(SBCaptureHardwareButtonAppActivator *)v15 cancelActivationForGesture:v16];
+    [(SBCaptureHardwareButtonAppActivator *)v15 cancelActivationForGesture:_clickGesture];
   }
 }
 
-- (void)_captureButtonGestureRecognizerAction:(id)a3
+- (void)_captureButtonGestureRecognizerAction:(id)action
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  switch(v5)
+  actionCopy = action;
+  state = [actionCopy state];
+  switch(state)
   {
     case 4:
-      v11 = [v4 pressDownTimestamp];
+      pressDownTimestamp = [actionCopy pressDownTimestamp];
       v12 = SBLogButtonsCapture();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134217984;
-        v14 = v11;
+        v14 = pressDownTimestamp;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Capture Button Press Cancel (down time: %llu)", &v13, 0xCu);
       }
 
       [(SBCaptureHardwareButton *)self cancelHardwareButtonPress];
       break;
     case 3:
-      v8 = [v4 pressUpTimestamp];
-      v9 = [v4 pressDownTimestamp];
+      pressUpTimestamp = [actionCopy pressUpTimestamp];
+      pressDownTimestamp2 = [actionCopy pressDownTimestamp];
       v10 = SBLogButtonsCapture();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134218240;
-        v14 = v9;
+        v14 = pressDownTimestamp2;
         v15 = 2048;
-        v16 = v8;
+        v16 = pressUpTimestamp;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Capture Button Up (down time: %llu, up time: %llu)", &v13, 0x16u);
       }
 
-      -[SBCaptureHardwareButton _handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:](self, "_handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:", v8, v9, [v4 isCaptureButtonSourceAccessibility]);
+      -[SBCaptureHardwareButton _handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:](self, "_handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:", pressUpTimestamp, pressDownTimestamp2, [actionCopy isCaptureButtonSourceAccessibility]);
       break;
     case 1:
-      v6 = [v4 pressDownTimestamp];
+      pressDownTimestamp3 = [actionCopy pressDownTimestamp];
       v7 = SBLogButtonsCapture();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 134217984;
-        v14 = v6;
+        v14 = pressDownTimestamp3;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Capture Button Down (down time: %llu)", &v13, 0xCu);
       }
 
-      -[SBCaptureHardwareButton _handleButtonDownAtTimestamp:isAccessibilityEvent:](self, "_handleButtonDownAtTimestamp:isAccessibilityEvent:", v6, [v4 isCaptureButtonSourceAccessibility]);
+      -[SBCaptureHardwareButton _handleButtonDownAtTimestamp:isAccessibilityEvent:](self, "_handleButtonDownAtTimestamp:isAccessibilityEvent:", pressDownTimestamp3, [actionCopy isCaptureButtonSourceAccessibility]);
       break;
   }
 }
 
-- (void)physicalButtonSceneOverridesDidChange:(id)a3
+- (void)physicalButtonSceneOverridesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_bufferedPressAbsoluteTimestamp)
   {
-    v5 = [(SBCaptureHardwareButton *)self _physicalButtonTargetMatchesExpectedTargetScene];
+    _physicalButtonTargetMatchesExpectedTargetScene = [(SBCaptureHardwareButton *)self _physicalButtonTargetMatchesExpectedTargetScene];
     v6 = SBLogButtonsCapture();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (_physicalButtonTargetMatchesExpectedTargetScene)
     {
       if (v7)
       {
@@ -1292,7 +1292,7 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   }
 }
 
-- (void)performActionsForButtonLongPress:(id)a3
+- (void)performActionsForButtonLongPress:(id)press
 {
   v3 = SBLogButtonsCapture();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1302,37 +1302,37 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   }
 }
 
-- (void)performActionsForButtonDown:(id)a3
+- (void)performActionsForButtonDown:(id)down
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downCopy = down;
   v5 = SBLogButtonsCapture();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = [v4 downTime];
+    downTime = [downCopy downTime];
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Simulated Capture Button Down (down time: %llu)", &v6, 0xCu);
   }
 
-  -[SBCaptureHardwareButton _handleButtonDownAtTimestamp:isAccessibilityEvent:](self, "_handleButtonDownAtTimestamp:isAccessibilityEvent:", [v4 downTime], 0);
+  -[SBCaptureHardwareButton _handleButtonDownAtTimestamp:isAccessibilityEvent:](self, "_handleButtonDownAtTimestamp:isAccessibilityEvent:", [downCopy downTime], 0);
 }
 
-- (void)performActionsForButtonUp:(id)a3
+- (void)performActionsForButtonUp:(id)up
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   v5 = mach_absolute_time();
   v6 = SBLogButtonsCapture();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = [v4 downTime];
+    downTime = [upCopy downTime];
     v9 = 2048;
     v10 = v5;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Simulated Capture Button Up (down time: %llu, up time: %llu)", &v7, 0x16u);
   }
 
-  -[SBCaptureHardwareButton _handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:](self, "_handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:", v5, [v4 downTime], 0);
+  -[SBCaptureHardwareButton _handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:](self, "_handleButtonUpAtTimestamp:forDownTimestamp:isAccessibilityEvent:", v5, [upCopy downTime], 0);
 }
 
 - (void)cancelHardwareButtonPress
@@ -1362,15 +1362,15 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   [(SBCaptureHardwareButton *)self _resetNextClickTimer];
   if (self->_overrideButtonUpHandler)
   {
-    v7 = [(SBCaptureHardwareButtonFullPressRecognizer *)self->_captureButtonRecognizer pressUpTimestamp];
-    v8 = [(SBCaptureHardwareButtonFullPressRecognizer *)self->_captureButtonRecognizer pressDownTimestamp];
+    pressUpTimestamp = [(SBCaptureHardwareButtonFullPressRecognizer *)self->_captureButtonRecognizer pressUpTimestamp];
+    pressDownTimestamp = [(SBCaptureHardwareButtonFullPressRecognizer *)self->_captureButtonRecognizer pressDownTimestamp];
     v9 = SBLogButtonsCapture();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134218240;
-      v14 = v8;
+      v14 = pressDownTimestamp;
       v15 = 2048;
-      v16 = v7;
+      v16 = pressUpTimestamp;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Invoking scene override Button Up Action due to press cancellation (down time: %llu, up time: %llu)", &v13, 0x16u);
     }
 
@@ -1382,24 +1382,24 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   else
   {
     appActivator = self->_appActivator;
-    v12 = [(SBCaptureHardwareButton *)self _clickGesture];
+    _clickGesture = [(SBCaptureHardwareButton *)self _clickGesture];
 
-    [(SBCaptureHardwareButtonAppActivator *)appActivator cancelActivationForGesture:v12];
+    [(SBCaptureHardwareButtonAppActivator *)appActivator cancelActivationForGesture:_clickGesture];
   }
 }
 
-- (BOOL)handleSimulatedCaptureButtonEvent:(uint64_t)a1
+- (BOOL)handleSimulatedCaptureButtonEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
     objc_opt_self();
     if (CAMIsCameraButtonEnabled())
     {
-      [*(a1 + 272) processEvent:a2];
+      [*(event + 272) processEvent:a2];
     }
   }
 
-  return a1 != 0;
+  return event != 0;
 }
 
 - (uint64_t)simulationButtonArbiter
@@ -1412,11 +1412,11 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
   return result;
 }
 
-- (void)setSimulationButtonArbiter:(uint64_t)a1
+- (void)setSimulationButtonArbiter:(uint64_t)arbiter
 {
-  if (a1)
+  if (arbiter)
   {
-    objc_storeStrong((a1 + 272), a2);
+    objc_storeStrong((arbiter + 272), a2);
   }
 }
 
@@ -1464,7 +1464,7 @@ uint64_t __77__SBCaptureHardwareButton__handleButtonDownAtTimestamp_isAccessibil
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2114;
   v6 = a2;
   _os_log_error_impl(&dword_21ED4E000, log, OS_LOG_TYPE_ERROR, "sendCaptureIntent: Capture app (%{public}@) is not the expected one (%{public}@); unable to send capture intent.", &v3, 0x16u);

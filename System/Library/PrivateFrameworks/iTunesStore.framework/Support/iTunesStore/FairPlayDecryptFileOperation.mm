@@ -1,17 +1,17 @@
 @interface FairPlayDecryptFileOperation
-- (BOOL)_decryptWithSession:(id)a3 error:(id *)a4;
-- (FairPlayDecryptFileOperation)initWithPath:(id)a3 dpInfo:(id)a4;
-- (void)_initializeProgressWithFileHandle:(id)a3;
-- (void)_updateProgressWithByteCount:(int64_t)a3;
+- (BOOL)_decryptWithSession:(id)session error:(id *)error;
+- (FairPlayDecryptFileOperation)initWithPath:(id)path dpInfo:(id)info;
+- (void)_initializeProgressWithFileHandle:(id)handle;
+- (void)_updateProgressWithByteCount:(int64_t)count;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation FairPlayDecryptFileOperation
 
-- (FairPlayDecryptFileOperation)initWithPath:(id)a3 dpInfo:(id)a4
+- (FairPlayDecryptFileOperation)initWithPath:(id)path dpInfo:(id)info
 {
-  if (!a3 || !a4)
+  if (!path || !info)
   {
     sub_1002721EC(a2, self);
   }
@@ -21,8 +21,8 @@
   v7 = [(FairPlayDecryptFileOperation *)&v9 init];
   if (v7)
   {
-    v7->_dpInfo = a4;
-    v7->_path = a3;
+    v7->_dpInfo = info;
+    v7->_path = path;
   }
 
   return v7;
@@ -46,7 +46,7 @@
     v24[1] = 3221225472;
     v25 = sub_100102CDC;
     v26 = &unk_100327350;
-    v27 = self;
+    selfCopy = self;
     v28 = v3;
     HIDWORD(v23) = 0;
     v4 = IOPMAssertionCreateWithDescription(@"PreventUserIdleSystemSleep", [(FairPlayDecryptSession *)v3 identifier], 0, @"itunesstored FairPlay asset decryption", 0, 900.0, @"TimeoutActionRelease", &v23 + 1);
@@ -59,15 +59,15 @@
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -104,15 +104,15 @@
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v17 = [v6 shouldLog];
+      shouldLog2 = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -123,11 +123,11 @@
       if (v18)
       {
         v19 = objc_opt_class();
-        v20 = [(FairPlayDecryptSession *)v3 identifier];
+        identifier = [(FairPlayDecryptSession *)v3 identifier];
         v29 = 138412546;
         v30 = v19;
         v31 = 2112;
-        v32 = v20;
+        v32 = identifier;
         LODWORD(v23) = 22;
         v21 = _os_log_send_and_compose_impl();
         if (v21)
@@ -152,15 +152,15 @@
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v12 shouldLog];
+    shouldLog3 = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog3 | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -187,13 +187,13 @@
   }
 }
 
-- (BOOL)_decryptWithSession:(id)a3 error:(id *)a4
+- (BOOL)_decryptWithSession:(id)session error:(id *)error
 {
   v7 = [NSFileHandle fileHandleForUpdatingAtPath:self->_path];
   if (v7)
   {
     v8 = v7;
-    v29 = a4;
+    errorCopy = error;
     [(FairPlayDecryptFileOperation *)self _initializeProgressWithFileHandle:v7];
     v9 = 0;
     while (1)
@@ -209,7 +209,7 @@
       }
 
       v30 = 0;
-      v13 = [a3 decryptBytes:v10 error:&v30];
+      v13 = [session decryptBytes:v10 error:&v30];
       if (v13)
       {
         [(NSFileHandle *)v8 seekToFileOffset:[(NSFileHandle *)v8 offsetInFile]- [(NSData *)v10 length]];
@@ -225,20 +225,20 @@
           v14 = +[SSLogConfig sharedConfig];
         }
 
-        v15 = [v14 shouldLog];
-        v16 = [v14 shouldLogToDisk];
-        v17 = [v14 OSLogObject];
-        if (v16)
+        shouldLog = [v14 shouldLog];
+        shouldLogToDisk = [v14 shouldLogToDisk];
+        oSLogObject = [v14 OSLogObject];
+        if (shouldLogToDisk)
         {
-          v18 = v15 | 2;
+          v18 = shouldLog | 2;
         }
 
         else
         {
-          v18 = v15;
+          v18 = shouldLog;
         }
 
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v19 = v18;
         }
@@ -279,7 +279,7 @@
     v24 = 0;
 LABEL_21:
     [(NSFileHandle *)v8 synchronizeFile];
-    a4 = v29;
+    error = errorCopy;
     [(NSFileHandle *)v8 closeFile];
     [v9 drain];
     v25 = v24;
@@ -291,18 +291,18 @@ LABEL_21:
     v12 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v24;
+    *error = v24;
   }
 
   return v12;
 }
 
-- (void)_initializeProgressWithFileHandle:(id)a3
+- (void)_initializeProgressWithFileHandle:(id)handle
 {
   memset(&v5.st_size, 0, 48);
-  if (fstat([a3 fileDescriptor], &v5) != -1)
+  if (fstat([handle fileDescriptor], &v5) != -1)
   {
     v4 = OBJC_IVAR___ISOperation__progress;
     [*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] setUnits:1];
@@ -313,17 +313,17 @@ LABEL_21:
   }
 }
 
-- (void)_updateProgressWithByteCount:(int64_t)a3
+- (void)_updateProgressWithByteCount:(int64_t)count
 {
-  v3 = a3;
+  countCopy = count;
   v5 = OBJC_IVAR___ISOperation__progress;
   v6 = *&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress];
-  if ([v6 maxValue] <= a3)
+  if ([v6 maxValue] <= count)
   {
-    v3 = [*&self->ISOperation_opaque[v5] maxValue];
+    countCopy = [*&self->ISOperation_opaque[v5] maxValue];
   }
 
-  [v6 setCurrentValue:v3];
+  [v6 setCurrentValue:countCopy];
   Current = CFAbsoluteTimeGetCurrent();
   if (self->_lastSnapshotTime + kSSOperationDefaultSnapshotInterval < Current)
   {

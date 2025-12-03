@@ -2,12 +2,12 @@
 + (id)sharedFormatter;
 - (BOOL)usesImperialUnits;
 - (HKPersonHeightFormatter)init;
-- (id)formattedValueForCentimeters:(double)a3;
-- (id)formattedValueForFeet:(double)a3;
-- (id)formattedValueForInches:(double)a3;
-- (id)localizedStringFromHeightInCentimeters:(id)a3;
+- (id)formattedValueForCentimeters:(double)centimeters;
+- (id)formattedValueForFeet:(double)feet;
+- (id)formattedValueForInches:(double)inches;
+- (id)localizedStringFromHeightInCentimeters:(id)centimeters;
 - (void)dealloc;
-- (void)getFeet:(int64_t *)a3 inches:(int64_t *)a4 fromCentimeters:(double)a5;
+- (void)getFeet:(int64_t *)feet inches:(int64_t *)inches fromCentimeters:(double)centimeters;
 @end
 
 @implementation HKPersonHeightFormatter
@@ -41,12 +41,12 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
     v3 = objc_alloc_init(MEMORY[0x1E696ACF8]);
     [(HKPersonHeightFormatter *)v2 setHeightFormatter:v3];
 
-    v4 = [(HKPersonHeightFormatter *)v2 heightFormatter];
-    v5 = [v4 numberFormatter];
-    [v5 setMaximumFractionDigits:0];
+    heightFormatter = [(HKPersonHeightFormatter *)v2 heightFormatter];
+    numberFormatter = [heightFormatter numberFormatter];
+    [numberFormatter setMaximumFractionDigits:0];
 
-    v6 = [(HKPersonHeightFormatter *)v2 heightFormatter];
-    [v6 setForPersonHeightUse:1];
+    heightFormatter2 = [(HKPersonHeightFormatter *)v2 heightFormatter];
+    [heightFormatter2 setForPersonHeightUse:1];
 
     if ([(HKPersonHeightFormatter *)v2 usesImperialUnits])
     {
@@ -58,11 +58,11 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
       v7 = 2;
     }
 
-    v8 = [(HKPersonHeightFormatter *)v2 heightFormatter];
-    [v8 setUnitStyle:v7];
+    heightFormatter3 = [(HKPersonHeightFormatter *)v2 heightFormatter];
+    [heightFormatter3 setUnitStyle:v7];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__localeChanged_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v2;
@@ -70,8 +70,8 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
   v4.receiver = self;
   v4.super_class = HKPersonHeightFormatter;
@@ -84,8 +84,8 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
   if (!usesImperialUnits)
   {
     v11 = 0;
-    v4 = [(HKPersonHeightFormatter *)self heightFormatter];
-    v5 = [v4 unitStringFromMeters:&v11 usedUnit:1.0];
+    heightFormatter = [(HKPersonHeightFormatter *)self heightFormatter];
+    v5 = [heightFormatter unitStringFromMeters:&v11 usedUnit:1.0];
 
     v7 = v11 == 1281 || (v11 & 0xFFFFFFFFFFFFFFFELL) == 1282;
     v8 = [MEMORY[0x1E696AD98] numberWithInt:v7];
@@ -98,55 +98,55 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
   return [(NSNumber *)usesImperialUnits BOOLValue];
 }
 
-- (id)formattedValueForCentimeters:(double)a3
+- (id)formattedValueForCentimeters:(double)centimeters
 {
-  v4 = [(HKPersonHeightFormatter *)self heightFormatter];
-  v5 = [v4 stringFromValue:9 unit:a3];
+  heightFormatter = [(HKPersonHeightFormatter *)self heightFormatter];
+  v5 = [heightFormatter stringFromValue:9 unit:centimeters];
 
   return v5;
 }
 
-- (id)formattedValueForFeet:(double)a3
+- (id)formattedValueForFeet:(double)feet
 {
-  v4 = [(HKPersonHeightFormatter *)self heightFormatter];
-  v5 = [v4 stringFromValue:1282 unit:a3];
+  heightFormatter = [(HKPersonHeightFormatter *)self heightFormatter];
+  v5 = [heightFormatter stringFromValue:1282 unit:feet];
 
   return v5;
 }
 
-- (id)formattedValueForInches:(double)a3
+- (id)formattedValueForInches:(double)inches
 {
-  v4 = [(HKPersonHeightFormatter *)self heightFormatter];
-  v5 = [v4 stringFromValue:1281 unit:a3];
+  heightFormatter = [(HKPersonHeightFormatter *)self heightFormatter];
+  v5 = [heightFormatter stringFromValue:1281 unit:inches];
 
   return v5;
 }
 
-- (void)getFeet:(int64_t *)a3 inches:(int64_t *)a4 fromCentimeters:(double)a5
+- (void)getFeet:(int64_t *)feet inches:(int64_t *)inches fromCentimeters:(double)centimeters
 {
-  v5 = llround(a5 / 2.54);
+  v5 = llround(centimeters / 2.54);
   v6 = v5 % 12;
-  if (a3)
+  if (feet)
   {
-    *a3 = llround((v5 - v6) / 12.0);
+    *feet = llround((v5 - v6) / 12.0);
   }
 
-  if (a4)
+  if (inches)
   {
-    *a4 = v6;
+    *inches = v6;
   }
 }
 
-- (id)localizedStringFromHeightInCentimeters:(id)a3
+- (id)localizedStringFromHeightInCentimeters:(id)centimeters
 {
-  v4 = a3;
-  if (v4)
+  centimetersCopy = centimeters;
+  if (centimetersCopy)
   {
     if ([(HKPersonHeightFormatter *)self usesImperialUnits])
     {
       v12 = 0;
       v13 = 0;
-      [v4 doubleValue];
+      [centimetersCopy doubleValue];
       [(HKPersonHeightFormatter *)self getFeet:&v13 inches:&v12 fromCentimeters:?];
       v5 = [(HKPersonHeightFormatter *)self formattedValueForFeet:v13];
       if (v12 < 1)
@@ -175,7 +175,7 @@ uint64_t __42__HKPersonHeightFormatter_sharedFormatter__block_invoke()
 
     else
     {
-      [v4 doubleValue];
+      [centimetersCopy doubleValue];
       v7 = [(HKPersonHeightFormatter *)self formattedValueForCentimeters:?];
     }
   }

@@ -1,29 +1,29 @@
 @interface CKTapbackPickerBalloonParentView
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKTapbackPickerBalloonDisplayConfiguration)displayConfiguration;
-- (CKTapbackPickerBalloonParentView)initWithFrame:(CGRect)a3;
+- (CKTapbackPickerBalloonParentView)initWithFrame:(CGRect)frame;
 - (CKTapbackPickerViewController)tapbackPickerViewController;
 - (UIColor)tintColor;
-- (double)preferredOriginXWithBalloonSourceFrame:(CGRect)a3 presentationBounds:(CGRect)a4 proposedSize:(CGSize)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (double)preferredOriginXWithBalloonSourceFrame:(CGRect)frame presentationBounds:(CGRect)bounds proposedSize:(CGSize)size;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)currentDisplayMode;
 - (void)dealloc;
 - (void)dismiss;
-- (void)insertEmoji:(id)a3;
-- (void)insertSticker:(id)a3;
-- (void)insertTapback:(id)a3;
+- (void)insertEmoji:(id)emoji;
+- (void)insertSticker:(id)sticker;
+- (void)insertTapback:(id)tapback;
 - (void)interfaceStyleChanged;
 - (void)layoutSubviews;
 - (void)returnToSelection;
-- (void)setCurrentDisplayMode:(int64_t)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGradientReferenceView:(id)a3;
-- (void)setTapbackPickerViewController:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setCurrentDisplayMode:(int64_t)mode;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setFrame:(CGRect)frame;
+- (void)setGradientReferenceView:(id)view;
+- (void)setTapbackPickerViewController:(id)controller;
+- (void)setTintColor:(id)color;
 - (void)showEmojiKeyboard;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 - (void)updateForBackgroundState;
 @end
 
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for TapbackPickerBalloonParentView();
   v7 = v8.receiver;
@@ -58,26 +58,26 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TapbackPickerBalloonParentView();
-  v2 = [(CKTapbackPickerBalloonParentView *)&v4 tintColor];
+  tintColor = [(CKTapbackPickerBalloonParentView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for TapbackPickerBalloonParentView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(CKTapbackPickerBalloonParentView *)&v6 setTintColor:v4];
+  [(CKTapbackPickerBalloonParentView *)&v6 setTintColor:colorCopy];
   sub_190929D5C();
 }
 
-- (void)setGradientReferenceView:(id)a3
+- (void)setGradientReferenceView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_19092A080(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_19092A080(view);
 }
 
 - (CKTapbackPickerViewController)tapbackPickerViewController
@@ -87,14 +87,14 @@
   return *(self + v3);
 }
 
-- (void)setTapbackPickerViewController:(id)a3
+- (void)setTapbackPickerViewController:(id)controller
 {
   v5 = OBJC_IVAR___CKTapbackPickerBalloonParentView_tapbackPickerViewController;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = controller;
+  controllerCopy = controller;
+  selfCopy = self;
 
   sub_19092A530();
 }
@@ -106,11 +106,11 @@
   return *(self + v3);
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
-  v4 = self;
-  sub_19092FF80(v5);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_19092FF80(configurationCopy);
 }
 
 - (int64_t)currentDisplayMode
@@ -120,63 +120,63 @@
   return *(self + v3);
 }
 
-- (void)setCurrentDisplayMode:(int64_t)a3
+- (void)setCurrentDisplayMode:(int64_t)mode
 {
-  v4 = self;
-  sub_19092AA74(a3);
+  selfCopy = self;
+  sub_19092AA74(mode);
 }
 
 - (void)updateForBackgroundState
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092B548();
 }
 
 - (void)interfaceStyleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092E2B0();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092B854();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for TapbackPickerBalloonParentView();
   [(CKTapbackPickerBalloonParentView *)&v3 dealloc];
 }
 
 - (void)dismiss
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092D1EC();
 }
 
 - (void)returnToSelection
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092D4D0();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_19092DDD0(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_19092DDD0(event, x, y);
 
   return v10;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_19092E0F0();
 }
 
-- (CKTapbackPickerBalloonParentView)initWithFrame:(CGRect)a3
+- (CKTapbackPickerBalloonParentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -190,9 +190,9 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = [Strong respondsToSelector_];
-    v6 = self;
-    if (v5)
+    respondsToSelector_ = [Strong respondsToSelector_];
+    selfCopy = self;
+    if (respondsToSelector_)
     {
       [v4 tapbackPickerBalloonParentViewRequestedShowEmojiKeyboard_];
     }
@@ -202,46 +202,46 @@
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   [*(self + OBJC_IVAR___CKTapbackPickerBalloonParentView_inputController) becomeFirstResponder];
 }
 
-- (void)insertEmoji:(id)a3
+- (void)insertEmoji:(id)emoji
 {
   v4 = sub_190D56F10();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   TapbackPickerBalloonParentView.insertEmoji(_:)(v8);
 }
 
-- (void)insertTapback:(id)a3
+- (void)insertTapback:(id)tapback
 {
-  v4 = a3;
-  v5 = self;
-  TapbackPickerBalloonParentView.insertTapback(tapback:)(v4);
+  tapbackCopy = tapback;
+  selfCopy = self;
+  TapbackPickerBalloonParentView.insertTapback(tapback:)(tapbackCopy);
 }
 
-- (void)insertSticker:(id)a3
+- (void)insertSticker:(id)sticker
 {
-  v5 = a3;
-  v4 = self;
-  sub_190CE9A90(v5);
+  stickerCopy = sticker;
+  selfCopy = self;
+  sub_190CE9A90(stickerCopy);
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  TapbackPickerBalloonParentView.textViewDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  TapbackPickerBalloonParentView.textViewDidChange(_:)(changeCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = _s7ChatKit30TapbackPickerBalloonParentViewC12sizeThatFitsySo6CGSizeVAFF_0();
   v6 = v5;
 
@@ -252,17 +252,17 @@
   return result;
 }
 
-- (double)preferredOriginXWithBalloonSourceFrame:(CGRect)a3 presentationBounds:(CGRect)a4 proposedSize:(CGSize)a5
+- (double)preferredOriginXWithBalloonSourceFrame:(CGRect)frame presentationBounds:(CGRect)bounds proposedSize:(CGSize)size
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v11 = self;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = frame.size.height;
+  v8 = frame.size.width;
+  v9 = frame.origin.y;
+  v10 = frame.origin.x;
+  selfCopy = self;
   TapbackPickerBalloonParentView.preferredOriginX(withBalloonSourceFrame:presentationBounds:proposedSize:)(v10, v9, v8, v7, x, y, width, height, v17, v18);
   v13 = v12;
 

@@ -2,12 +2,12 @@
 - (COSInternalPairingDashboardModel)init;
 - (id)_classicPairingEventList;
 - (id)_tinkerPairingEventList;
-- (id)changedIndicesForGenericPairingEvent:(id)a3 andValue:(id)a4;
-- (id)changedIndicesForPairingBegins:(id)a3 andValue:(id)a4;
-- (id)changedIndicesForPushedController:(id)a3 andValue:(id)a4;
-- (id)eventSummaryForKey:(id)a3;
+- (id)changedIndicesForGenericPairingEvent:(id)event andValue:(id)value;
+- (id)changedIndicesForPairingBegins:(id)begins andValue:(id)value;
+- (id)changedIndicesForPushedController:(id)controller andValue:(id)value;
+- (id)eventSummaryForKey:(id)key;
 - (id)pairingEvents;
-- (id)updateEvent:(id)a3;
+- (id)updateEvent:(id)event;
 - (void)_checkIfTinker;
 - (void)populateEventGuide;
 @end
@@ -48,8 +48,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(COSInternalPairingDashboardModel *)self eventNames];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  eventNames = [(COSInternalPairingDashboardModel *)self eventNames];
+  v5 = [eventNames countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -61,26 +61,26 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventNames);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(COSInternalPairingDashboardModel *)self eventGuide];
-        v11 = [v10 objectForKey:v9];
+        eventGuide = [(COSInternalPairingDashboardModel *)self eventGuide];
+        v11 = [eventGuide objectForKey:v9];
 
         if (!v11)
         {
           v12 = objc_alloc_init(COSDashboardPairingEventSummary);
           [(COSDashboardPairingEventSummary *)v12 setDashboardKey:v9];
-          v13 = [(COSInternalPairingDashboardModel *)self eventGuide];
-          [v13 setObject:v12 forKey:v9];
+          eventGuide2 = [(COSInternalPairingDashboardModel *)self eventGuide];
+          [eventGuide2 setObject:v12 forKey:v9];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [eventNames countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -130,8 +130,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(COSInternalPairingDashboardModel *)self eventNames];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  eventNames = [(COSInternalPairingDashboardModel *)self eventNames];
+  v5 = [eventNames countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -142,16 +142,16 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventNames);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [(COSInternalPairingDashboardModel *)self eventGuide];
-        v11 = [v10 objectForKey:v9];
+        eventGuide = [(COSInternalPairingDashboardModel *)self eventGuide];
+        v11 = [eventGuide objectForKey:v9];
         [v3 addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [eventNames countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -160,16 +160,16 @@
   return v3;
 }
 
-- (id)updateEvent:(id)a3
+- (id)updateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (![(COSInternalPairingDashboardModel *)self tinker])
   {
     [(COSInternalPairingDashboardModel *)self _checkIfTinker];
   }
 
   v5 = BRGetAllMetricKeysAndValues();
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:eventCopy];
   if (!v6)
   {
     v7 = &__NSArray0__struct;
@@ -177,21 +177,21 @@
   }
 
   v7 = objc_opt_new();
-  if ([v4 containsString:@"Pushed"])
+  if ([eventCopy containsString:@"Pushed"])
   {
-    v8 = [(COSInternalPairingDashboardModel *)self changedIndicesForPushedController:v4 andValue:v6];
+    v8 = [(COSInternalPairingDashboardModel *)self changedIndicesForPushedController:eventCopy andValue:v6];
   }
 
   else
   {
-    if ([v4 isEqualToString:kPairingBeginsKey])
+    if ([eventCopy isEqualToString:kPairingBeginsKey])
     {
-      [(COSInternalPairingDashboardModel *)self changedIndicesForPairingBegins:v4 andValue:v6];
+      [(COSInternalPairingDashboardModel *)self changedIndicesForPairingBegins:eventCopy andValue:v6];
     }
 
     else
     {
-      [(COSInternalPairingDashboardModel *)self changedIndicesForGenericPairingEvent:v4 andValue:v6];
+      [(COSInternalPairingDashboardModel *)self changedIndicesForGenericPairingEvent:eventCopy andValue:v6];
     }
     v8 = ;
   }
@@ -200,14 +200,14 @@
   [v7 addObjectsFromArray:v8];
 
   v10 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Locked-On"];
-  v11 = [v10 eventValue];
-  if (v11)
+  eventValue = [v10 eventValue];
+  if (eventValue)
   {
-    v12 = v11;
+    v12 = eventValue;
     v13 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Pairing Mode"];
-    v14 = [v13 eventValue];
+    eventValue2 = [v13 eventValue];
 
-    if (v14)
+    if (eventValue2)
     {
       goto LABEL_19;
     }
@@ -246,11 +246,11 @@ LABEL_19:
   }
 }
 
-- (id)changedIndicesForPushedController:(id)a3 andValue:(id)a4
+- (id)changedIndicesForPushedController:(id)controller andValue:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v6 = objc_opt_new();
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v5 containsString:@"Terms"])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [valueCopy containsString:@"Terms"])
   {
     v7 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Terms Presented"];
     [v7 setEventValue:&off_100281D38];
@@ -258,11 +258,11 @@ LABEL_19:
     v8 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Activated"];
     [v8 setEventValue:&off_100281D38];
 
-    v9 = [(COSInternalPairingDashboardModel *)self eventNames];
-    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v9 indexOfObject:@"Terms Presented"], 0);
+    eventNames = [(COSInternalPairingDashboardModel *)self eventNames];
+    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [eventNames indexOfObject:@"Terms Presented"], 0);
 
-    v11 = [(COSInternalPairingDashboardModel *)self eventNames];
-    v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v11 indexOfObject:@"Activated"], 0);
+    eventNames2 = [(COSInternalPairingDashboardModel *)self eventNames];
+    v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [eventNames2 indexOfObject:@"Activated"], 0);
 
     v18[0] = v10;
     v18[1] = v12;
@@ -274,10 +274,10 @@ LABEL_19:
   else
   {
     v14 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Pushed Controller"];
-    [v14 setEventValue:v5];
+    [v14 setEventValue:valueCopy];
 
-    v15 = [(COSInternalPairingDashboardModel *)self eventNames];
-    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v15 indexOfObject:@"Pushed Controller"], 0);
+    eventNames3 = [(COSInternalPairingDashboardModel *)self eventNames];
+    v10 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [eventNames3 indexOfObject:@"Pushed Controller"], 0);
 
     v17 = v10;
     v13 = [NSArray arrayWithObjects:&v17 count:1];
@@ -286,11 +286,11 @@ LABEL_19:
   return v13;
 }
 
-- (id)changedIndicesForPairingBegins:(id)a3 andValue:(id)a4
+- (id)changedIndicesForPairingBegins:(id)begins andValue:(id)value
 {
-  v5 = a4;
+  valueCopy = value;
   v6 = objc_opt_new();
-  v7 = [v5 isEqual:&off_100281D50];
+  v7 = [valueCopy isEqual:&off_100281D50];
 
   v8 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:@"Pairing Mode"];
   v9 = v8;
@@ -306,8 +306,8 @@ LABEL_19:
 
   [v8 setEventValue:v10];
 
-  v11 = [(COSInternalPairingDashboardModel *)self eventNames];
-  v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v11 indexOfObject:@"Pairing Mode"], 0);
+  eventNames = [(COSInternalPairingDashboardModel *)self eventNames];
+  v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [eventNames indexOfObject:@"Pairing Mode"], 0);
 
   v15 = v12;
   v13 = [NSArray arrayWithObjects:&v15 count:1];
@@ -315,20 +315,20 @@ LABEL_19:
   return v13;
 }
 
-- (id)changedIndicesForGenericPairingEvent:(id)a3 andValue:(id)a4
+- (id)changedIndicesForGenericPairingEvent:(id)event andValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  eventCopy = event;
   v8 = objc_opt_new();
-  v9 = sub_1000D28B4(v7);
+  v9 = sub_1000D28B4(eventCopy);
 
   if (v9)
   {
     v10 = [(COSInternalPairingDashboardModel *)self eventSummaryForKey:v9];
-    [v10 setEventValue:v6];
+    [v10 setEventValue:valueCopy];
 
-    v11 = [(COSInternalPairingDashboardModel *)self eventNames];
-    v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v11 indexOfObject:v9], 0);
+    eventNames = [(COSInternalPairingDashboardModel *)self eventNames];
+    v12 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [eventNames indexOfObject:v9], 0);
 
     v15 = v12;
     v13 = [NSArray arrayWithObjects:&v15 count:1];
@@ -339,11 +339,11 @@ LABEL_19:
   return v8;
 }
 
-- (id)eventSummaryForKey:(id)a3
+- (id)eventSummaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(COSInternalPairingDashboardModel *)self eventGuide];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  eventGuide = [(COSInternalPairingDashboardModel *)self eventGuide];
+  v6 = [eventGuide objectForKey:keyCopy];
 
   return v6;
 }

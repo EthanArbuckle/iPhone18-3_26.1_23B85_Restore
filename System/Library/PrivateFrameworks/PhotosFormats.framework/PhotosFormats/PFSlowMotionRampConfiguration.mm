@@ -1,28 +1,28 @@
 @interface PFSlowMotionRampConfiguration
 - (PFSlowMotionRampConfiguration)init;
-- (id)initForRampDown:(BOOL)a3;
-- (void)computeRampToTargetRate:(float)a3 forExport:(BOOL)a4 outTimeSteps:(id *)a5 outIntermediateRates:(id *)a6;
+- (id)initForRampDown:(BOOL)down;
+- (void)computeRampToTargetRate:(float)rate forExport:(BOOL)export outTimeSteps:(id *)steps outIntermediateRates:(id *)rates;
 @end
 
 @implementation PFSlowMotionRampConfiguration
 
-- (void)computeRampToTargetRate:(float)a3 forExport:(BOOL)a4 outTimeSteps:(id *)a5 outIntermediateRates:(id *)a6
+- (void)computeRampToTargetRate:(float)rate forExport:(BOOL)export outTimeSteps:(id *)steps outIntermediateRates:(id *)rates
 {
-  v8 = a4;
+  exportCopy = export;
   v61 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  if (v8)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (exportCopy)
   {
-    v13 = [(PFSlowMotionRampConfiguration *)self exportNumIntermediateSteps];
+    exportNumIntermediateSteps = [(PFSlowMotionRampConfiguration *)self exportNumIntermediateSteps];
   }
 
   else
   {
-    v13 = [(PFSlowMotionRampConfiguration *)self playbackNumIntermediateSteps];
+    exportNumIntermediateSteps = [(PFSlowMotionRampConfiguration *)self playbackNumIntermediateSteps];
   }
 
-  v14 = v13;
+  v14 = exportNumIntermediateSteps;
   [(PFSlowMotionRampConfiguration *)self rampTime];
   v16 = v15;
   [(PFSlowMotionRampConfiguration *)self introTime];
@@ -30,7 +30,7 @@
   [(PFSlowMotionRampConfiguration *)self outroTime];
   v20 = v19;
   v21 = 1.0;
-  v22 = 1.0 - a3;
+  v22 = 1.0 - rate;
   if (v14)
   {
     v23 = v22 / (v14 + 1);
@@ -39,7 +39,7 @@
       v21 = v21 - v23;
       *&v19 = v21;
       v24 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
-      [v12 addObject:v24];
+      [array2 addObject:v24];
 
       --v14;
     }
@@ -47,7 +47,7 @@
     while (v14);
   }
 
-  if (v8)
+  if (exportCopy)
   {
     [(PFSlowMotionRampConfiguration *)self exportRampCurveExponent];
   }
@@ -62,7 +62,7 @@
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v27 = v12;
+  v27 = array2;
   v28 = [v27 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (v28)
   {
@@ -85,7 +85,7 @@
         v32 = v32 + v36;
         *&v37 = v35 * (v36 * v30);
         v38 = [MEMORY[0x1E696AD98] numberWithFloat:v37];
-        [v11 addObject:v38];
+        [array addObject:v38];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v56 objects:v60 count:16];
@@ -104,7 +104,7 @@
   v52 = __101__PFSlowMotionRampConfiguration_computeRampToTargetRate_forExport_outTimeSteps_outIntermediateRates___block_invoke;
   v53 = &unk_1E7B65910;
   v55 = v32;
-  v39 = v11;
+  v39 = array;
   v54 = v39;
   [v39 enumerateObjectsUsingBlock:&v50];
   [(PFSlowMotionRampConfiguration *)self introTime:v50];
@@ -123,19 +123,19 @@
   *&v44 = v44;
   if (*&v44 > 0.0)
   {
-    *&v44 = *&v44 * a3;
+    *&v44 = *&v44 * rate;
     v45 = [MEMORY[0x1E696AD98] numberWithFloat:v44];
     [v39 addObject:v45];
 
-    *&v46 = a3;
+    *&v46 = rate;
     v47 = [MEMORY[0x1E696AD98] numberWithFloat:v46];
     [v27 addObject:v47];
   }
 
   v48 = v39;
-  *a5 = v39;
+  *steps = v39;
   v49 = v27;
-  *a6 = v27;
+  *rates = v27;
 }
 
 void __101__PFSlowMotionRampConfiguration_computeRampToTargetRate_forExport_outTimeSteps_outIntermediateRates___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -155,23 +155,23 @@ void __101__PFSlowMotionRampConfiguration_computeRampToTargetRate_forExport_outT
   return 0;
 }
 
-- (id)initForRampDown:(BOOL)a3
+- (id)initForRampDown:(BOOL)down
 {
-  v3 = a3;
+  downCopy = down;
   v10.receiver = self;
   v10.super_class = PFSlowMotionRampConfiguration;
   result = [(PFSlowMotionRampConfiguration *)&v10 init];
   if (result)
   {
     v5 = 0.35;
-    if (v3)
+    if (downCopy)
     {
       v5 = 0.56;
     }
 
     v6 = 0.08;
     v7 = 0.1;
-    if (v3)
+    if (downCopy)
     {
       v6 = 0.1;
     }
@@ -182,13 +182,13 @@ void __101__PFSlowMotionRampConfiguration_computeRampToTargetRate_forExport_outT
     }
 
     v8 = 20;
-    if (v3)
+    if (downCopy)
     {
       v8 = 34;
     }
 
     v9 = 1.2;
-    if (!v3)
+    if (!downCopy)
     {
       v9 = 2.0;
     }

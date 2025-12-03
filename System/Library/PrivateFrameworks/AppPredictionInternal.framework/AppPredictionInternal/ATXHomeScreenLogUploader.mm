@@ -1,7 +1,7 @@
 @interface ATXHomeScreenLogUploader
-+ (BOOL)_shouldProcessATXUIEvent:(id)a3 startTime:(double)a4;
++ (BOOL)_shouldProcessATXUIEvent:(id)event startTime:(double)time;
 - (ATXHomeScreenLogUploader)init;
-- (void)uploadHomeScreenSummaryLogsToCoreAnalyticsWithActivity:(id)a3 customStartDate:(id)a4 dryRunCompletionHandler:(id)a5;
+- (void)uploadHomeScreenSummaryLogsToCoreAnalyticsWithActivity:(id)activity customStartDate:(id)date dryRunCompletionHandler:(id)handler;
 @end
 
 @implementation ATXHomeScreenLogUploader
@@ -49,124 +49,124 @@
   return v2;
 }
 
-+ (BOOL)_shouldProcessATXUIEvent:(id)a3 startTime:(double)a4
++ (BOOL)_shouldProcessATXUIEvent:(id)event startTime:(double)time
 {
-  v5 = [a3 homeScreenEvent];
-  v6 = v5;
-  if (v5 && ([v5 date], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "timeIntervalSinceReferenceDate"), v9 = v8, v7, v9 > a4))
+  homeScreenEvent = [event homeScreenEvent];
+  v6 = homeScreenEvent;
+  if (homeScreenEvent && ([homeScreenEvent date], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "timeIntervalSinceReferenceDate"), v9 = v8, v7, v9 > time))
   {
-    v10 = [v6 eventTypeString];
-    if ([v10 isEqualToString:@"Unknown"])
+    eventTypeString = [v6 eventTypeString];
+    if ([eventTypeString isEqualToString:@"Unknown"])
     {
       v11 = 0;
     }
 
-    else if ([v10 isEqualToString:@"HomeScreenPageShown"])
+    else if ([eventTypeString isEqualToString:@"HomeScreenPageShown"])
     {
       v11 = 1;
     }
 
-    else if ([v10 isEqualToString:@"HomeScreenDisappeared"])
+    else if ([eventTypeString isEqualToString:@"HomeScreenDisappeared"])
     {
       v11 = 2;
     }
 
-    else if ([v10 isEqualToString:@"StackChanged"])
+    else if ([eventTypeString isEqualToString:@"StackChanged"])
     {
       v11 = 3;
     }
 
-    else if ([v10 isEqualToString:@"WidgetTapped"])
+    else if ([eventTypeString isEqualToString:@"WidgetTapped"])
     {
       v11 = 4;
     }
 
-    else if ([v10 isEqualToString:@"WidgetLongLook"])
+    else if ([eventTypeString isEqualToString:@"WidgetLongLook"])
     {
       v11 = 5;
     }
 
-    else if ([v10 isEqualToString:@"WidgetUserFeedback"])
+    else if ([eventTypeString isEqualToString:@"WidgetUserFeedback"])
     {
       v11 = 6;
     }
 
-    else if ([v10 isEqualToString:@"UserStackConfigChanged"])
+    else if ([eventTypeString isEqualToString:@"UserStackConfigChanged"])
     {
       v11 = 7;
     }
 
-    else if ([v10 isEqualToString:@"DeviceLocked"])
+    else if ([eventTypeString isEqualToString:@"DeviceLocked"])
     {
       v11 = 8;
     }
 
-    else if ([v10 isEqualToString:@"DeviceUnlocked"])
+    else if ([eventTypeString isEqualToString:@"DeviceUnlocked"])
     {
       v11 = 9;
     }
 
-    else if ([v10 isEqualToString:@"PinnedWidgetAdded"])
+    else if ([eventTypeString isEqualToString:@"PinnedWidgetAdded"])
     {
       v11 = 10;
     }
 
-    else if ([v10 isEqualToString:@"PinnedWidgetDeleted"])
+    else if ([eventTypeString isEqualToString:@"PinnedWidgetDeleted"])
     {
       v11 = 11;
     }
 
-    else if ([v10 isEqualToString:@"SpecialPageAppeared"])
+    else if ([eventTypeString isEqualToString:@"SpecialPageAppeared"])
     {
       v11 = 12;
     }
 
-    else if ([v10 isEqualToString:@"SpecialPageDisappeared"])
+    else if ([eventTypeString isEqualToString:@"SpecialPageDisappeared"])
     {
       v11 = 13;
     }
 
-    else if ([v10 isEqualToString:@"StackShown"])
+    else if ([eventTypeString isEqualToString:@"StackShown"])
     {
       v11 = 14;
     }
 
-    else if ([v10 isEqualToString:@"StackDisappeared"])
+    else if ([eventTypeString isEqualToString:@"StackDisappeared"])
     {
       v11 = 15;
     }
 
-    else if ([v10 isEqualToString:@"StackCreated"])
+    else if ([eventTypeString isEqualToString:@"StackCreated"])
     {
       v11 = 16;
     }
 
-    else if ([v10 isEqualToString:@"StackDeleted"])
+    else if ([eventTypeString isEqualToString:@"StackDeleted"])
     {
       v11 = 17;
     }
 
-    else if ([v10 isEqualToString:@"WidgetAddedToStack"])
+    else if ([eventTypeString isEqualToString:@"WidgetAddedToStack"])
     {
       v11 = 18;
     }
 
-    else if ([v10 isEqualToString:@"WidgetRemovedFromStack"])
+    else if ([eventTypeString isEqualToString:@"WidgetRemovedFromStack"])
     {
       v11 = 19;
     }
 
-    else if ([v10 isEqualToString:@"StackVisibilityChanged"])
+    else if ([eventTypeString isEqualToString:@"StackVisibilityChanged"])
     {
       v11 = 20;
     }
 
-    else if ([v10 isEqualToString:@"AppAdded"])
+    else if ([eventTypeString isEqualToString:@"AppAdded"])
     {
       v11 = 21;
     }
 
-    else if ([v10 isEqualToString:@"AppRemoved"])
+    else if ([eventTypeString isEqualToString:@"AppRemoved"])
     {
       v11 = 22;
     }
@@ -210,15 +210,15 @@ uint64_t __73__ATXHomeScreenLogUploader__timeBasedMergePublisher_withOtherPublis
   return v9;
 }
 
-- (void)uploadHomeScreenSummaryLogsToCoreAnalyticsWithActivity:(id)a3 customStartDate:(id)a4 dryRunCompletionHandler:(id)a5
+- (void)uploadHomeScreenSummaryLogsToCoreAnalyticsWithActivity:(id)activity customStartDate:(id)date dryRunCompletionHandler:(id)handler
 {
   v128[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 didDefer] & 1) == 0)
+  activityCopy = activity;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (([activityCopy didDefer] & 1) == 0)
   {
-    v77 = v10;
+    v77 = handlerCopy;
     v11 = objc_opt_new();
     v124 = 0;
     v79 = [v11 loadHomeScreenAndTodayPageConfigurationsWithError:&v124];
@@ -237,17 +237,17 @@ uint64_t __73__ATXHomeScreenLogUploader__timeBasedMergePublisher_withOtherPublis
 
     else
     {
-      if ([v8 didDefer])
+      if ([activityCopy didDefer])
       {
 LABEL_47:
 
-        v10 = v77;
+        handlerCopy = v77;
         goto LABEL_48;
       }
 
-      if (v9)
+      if (dateCopy)
       {
-        [v9 timeIntervalSinceNow];
+        [dateCopy timeIntervalSinceNow];
         v13 = -v12;
       }
 
@@ -262,13 +262,13 @@ LABEL_47:
       [(ATXHomeScreenLogSystemEventDictionaries *)self->_systemEventDictionary updateSystemLevelSummaryForHomeScreenPages:v79 startDate:v76];
       [(ATXHomeScreenLogSystemChangeDictionary *)self->_systemChangeDictionary updateSystemChangeSummaryForHomeScreenPages:v79];
       [(ATXHomeScreenLogWidgetSetupDictionaries *)self->_widgetSetupDictionaries updateWidgetSetupSummaryForHomeScreenPages:v79];
-      [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self->_widgetDiscoverabilityDictionaries generateWidgetDiscoverabilityMetricsWithActivity:v8];
+      [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self->_widgetDiscoverabilityDictionaries generateWidgetDiscoverabilityMetricsWithActivity:activityCopy];
       [(ATXTVWidgetLogHarvester *)self->_tvWidgetLogHarvester generateTVWidgetMetrics];
-      if (([v8 didDefer] & 1) == 0)
+      if (([activityCopy didDefer] & 1) == 0)
       {
         objc_initWeak(&location, self);
         v18 = dispatch_semaphore_create(0);
-        v75 = [MEMORY[0x277CEB450] sharedInstance];
+        mEMORY[0x277CEB450] = [MEMORY[0x277CEB450] sharedInstance];
         if ([MEMORY[0x277D42590] isiPad])
         {
           v19 = 2;
@@ -286,7 +286,7 @@ LABEL_47:
         v20 = v18;
         v121 = v20;
         objc_copyWeak(&v122, &location);
-        [v75 fetchSuggestedGalleryItemsOfGridSize:v19 widgetFamilyMask:7294 withCompletionHandler:v120];
+        [mEMORY[0x277CEB450] fetchSuggestedGalleryItemsOfGridSize:v19 widgetFamilyMask:7294 withCompletionHandler:v120];
         if ([MEMORY[0x277D425A0] waitForSemaphore:v20 timeoutSeconds:2.0] == 1)
         {
           v21 = __atxlog_handle_home_screen();
@@ -306,7 +306,7 @@ LABEL_47:
         objc_copyWeak(&v119, &location);
         v23 = v20;
         v118 = v23;
-        [v75 fetchSmartStackOfVariant:0 completionHandler:v116];
+        [mEMORY[0x277CEB450] fetchSmartStackOfVariant:0 completionHandler:v116];
         v67 = v23;
         if ([MEMORY[0x277D425A0] waitForSemaphore:v74 timeoutSeconds:2.0] == 1)
         {
@@ -357,9 +357,9 @@ LABEL_47:
 
         v30 = BiomeLibrary();
         v31 = [v30 App];
-        v32 = [v31 InFocus];
+        inFocus = [v31 InFocus];
         v33 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-        v72 = [v32 atx_publisherFromStartTime:v33];
+        v72 = [inFocus atx_publisherFromStartTime:v33];
 
         v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-(v25 + 3600.0)];
         [v34 timeIntervalSinceReferenceDate];
@@ -381,7 +381,7 @@ LABEL_47:
         v85[2] = __123__ATXHomeScreenLogUploader_uploadHomeScreenSummaryLogsToCoreAnalyticsWithActivity_customStartDate_dryRunCompletionHandler___block_invoke_45;
         v85[3] = &unk_2785A1AB8;
         objc_copyWeak(v95, &location);
-        v42 = v8;
+        v42 = activityCopy;
         v86 = v42;
         v89 = &v112;
         v68 = v40;
@@ -423,8 +423,8 @@ LABEL_47:
             v84 = 0u;
             v81 = 0u;
             v82 = 0u;
-            v48 = [v69 removeAndReturnCompletedSessions];
-            v49 = [v48 countByEnumeratingWithState:&v81 objects:v127 count:16];
+            removeAndReturnCompletedSessions = [v69 removeAndReturnCompletedSessions];
+            v49 = [removeAndReturnCompletedSessions countByEnumeratingWithState:&v81 objects:v127 count:16];
             if (v49)
             {
               v50 = *v82;
@@ -434,12 +434,12 @@ LABEL_47:
                 {
                   if (*v82 != v50)
                   {
-                    objc_enumerationMutation(v48);
+                    objc_enumerationMutation(removeAndReturnCompletedSessions);
                   }
 
                   v52 = *(*(&v81 + 1) + 8 * i);
-                  v53 = [v52 sessionEndDate];
-                  [v53 timeIntervalSinceReferenceDate];
+                  sessionEndDate = [v52 sessionEndDate];
+                  [sessionEndDate timeIntervalSinceReferenceDate];
                   v55 = v54 < *&v17;
 
                   if (!v55)
@@ -449,7 +449,7 @@ LABEL_47:
                   }
                 }
 
-                v49 = [v48 countByEnumeratingWithState:&v81 objects:v127 count:16];
+                v49 = [removeAndReturnCompletedSessions countByEnumeratingWithState:&v81 objects:v127 count:16];
               }
 
               while (v49);
@@ -464,29 +464,29 @@ LABEL_47:
             if (v77)
             {
               v125[0] = @"System Event Dictionary";
-              v56 = [(ATXHomeScreenLogSystemEventDictionaries *)self->_systemEventDictionary dryRunResult];
-              v126[0] = v56;
+              dryRunResult = [(ATXHomeScreenLogSystemEventDictionaries *)self->_systemEventDictionary dryRunResult];
+              v126[0] = dryRunResult;
               v125[1] = @"System Change Dictionary";
-              v57 = [(ATXHomeScreenLogSystemChangeDictionary *)self->_systemChangeDictionary dryRunResult];
-              v126[1] = v57;
+              dryRunResult2 = [(ATXHomeScreenLogSystemChangeDictionary *)self->_systemChangeDictionary dryRunResult];
+              v126[1] = dryRunResult2;
               v125[2] = @"Widget Setup Dictionary";
-              v58 = [(ATXHomeScreenLogWidgetSetupDictionaries *)self->_widgetSetupDictionaries dryRunResult];
-              v126[2] = v58;
+              dryRunResult3 = [(ATXHomeScreenLogWidgetSetupDictionaries *)self->_widgetSetupDictionaries dryRunResult];
+              v126[2] = dryRunResult3;
               v125[3] = @"Widget Event Dictionary";
-              v66 = [(ATXHomeScreenLogWidgetEventDictionaries *)self->_widgetEventDictionaries dryRunResult];
-              v126[3] = v66;
+              dryRunResult4 = [(ATXHomeScreenLogWidgetEventDictionaries *)self->_widgetEventDictionaries dryRunResult];
+              v126[3] = dryRunResult4;
               v125[4] = @"Widget Add Sheet Dictionary";
-              v59 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self->_widgetAddSheetDictionaries dryRunResult];
-              v126[4] = v59;
+              dryRunResult5 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self->_widgetAddSheetDictionaries dryRunResult];
+              v126[4] = dryRunResult5;
               v125[5] = @"Widget Rotation Dictionary";
-              v60 = [(ATXHomeScreenLogWidgetRotationDictionaries *)self->_widgetRotationDictionaries dryRunResult];
-              v126[5] = v60;
+              dryRunResult6 = [(ATXHomeScreenLogWidgetRotationDictionaries *)self->_widgetRotationDictionaries dryRunResult];
+              v126[5] = dryRunResult6;
               v125[6] = @"Default Stack Metrics Dictionary";
-              v61 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self->_widgetDiscoverabilityDictionaries dryRunResult];
-              v126[6] = v61;
+              dryRunResult7 = [(ATXHomeScreenWidgetDiscoverabilityLogHarvester *)self->_widgetDiscoverabilityDictionaries dryRunResult];
+              v126[6] = dryRunResult7;
               v125[7] = @"TV Widget Metrics Dictionary";
-              v62 = [(ATXTVWidgetLogHarvester *)self->_tvWidgetLogHarvester dryRunResult];
-              v126[7] = v62;
+              dryRunResult8 = [(ATXTVWidgetLogHarvester *)self->_tvWidgetLogHarvester dryRunResult];
+              v126[7] = dryRunResult8;
               v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v126 forKeys:v125 count:8];
 
               (*(v77 + 2))(v77, v63, 0);

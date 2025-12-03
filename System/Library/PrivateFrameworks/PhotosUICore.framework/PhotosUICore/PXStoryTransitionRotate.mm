@@ -1,17 +1,17 @@
 @interface PXStoryTransitionRotate
-- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)a3 effect:(id)a4 auxiliaryEffect:(id)a5;
-- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5;
-- (void)configureEffectForTime:(id *)a3;
+- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)info effect:(id)effect auxiliaryEffect:(id)auxiliaryEffect;
+- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts;
+- (void)configureEffectForTime:(id *)time;
 - (void)timeDidChange;
 - (void)wasStopped;
 @end
 
 @implementation PXStoryTransitionRotate
 
-- (void)configureEffectForTime:(id *)a3
+- (void)configureEffectForTime:(id *)time
 {
-  v6 = [(PXStoryConcreteTransition *)self effect];
-  if (v6)
+  effect = [(PXStoryConcreteTransition *)self effect];
+  if (effect)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -19,24 +19,24 @@
       goto LABEL_3;
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v10 = NSStringFromClass(v14);
-    v15 = [v6 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:900 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.effect", v10, v15}];
+    px_descriptionForAssertionMessage = [effect px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:900 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.effect", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:900 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.effect", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:900 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.effect", v10}];
   }
 
 LABEL_3:
-  v7 = [(PXStoryConcreteTransition *)self auxiliaryEffect];
-  if (v7)
+  auxiliaryEffect = [(PXStoryConcreteTransition *)self auxiliaryEffect];
+  if (auxiliaryEffect)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -44,19 +44,19 @@ LABEL_3:
       goto LABEL_5;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v13 = NSStringFromClass(v16);
-    v17 = [v7 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:901 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.auxiliaryEffect", v13, v17}];
+    px_descriptionForAssertionMessage2 = [auxiliaryEffect px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:901 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"self.auxiliaryEffect", v13, px_descriptionForAssertionMessage2}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:901 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.auxiliaryEffect", v13}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:901 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"self.auxiliaryEffect", v13}];
   }
 
 LABEL_5:
@@ -65,7 +65,7 @@ LABEL_5:
   [(PXStoryConcreteTransition *)self duration];
   time = v18;
   CMTimeGetSeconds(&time);
-  time = *a3;
+  time = *time;
   CMTimeGetSeconds(&time);
   PXClamp();
 }
@@ -77,8 +77,8 @@ LABEL_5:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(PXStoryConcreteTransition *)self clipLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  v4 = [clipLayouts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -93,7 +93,7 @@ LABEL_5:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clipLayouts);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -105,7 +105,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [clipLayouts countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -119,8 +119,8 @@ LABEL_5:
 - (void)timeDidChange
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(PXStoryConcreteTransition *)self clipLayouts];
-  if (!v4)
+  clipLayouts = [(PXStoryConcreteTransition *)self clipLayouts];
+  if (!clipLayouts)
   {
     goto LABEL_17;
   }
@@ -136,8 +136,8 @@ LABEL_5:
   angle = self->_angle;
   memset(&time, 0, sizeof(time));
   v8 = Seconds / v6;
-  v9 = [(PXStoryConcreteTransition *)self event];
-  switch(v9)
+  event = [(PXStoryConcreteTransition *)self event];
+  switch(event)
   {
     case 1:
       *&v10 = v8;
@@ -158,8 +158,8 @@ LABEL_5:
       v16 = v13 * -0.33 + 1.0;
       break;
     case 0:
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:864 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:864 description:@"Code which should be unreachable has been reached"];
 
       abort();
     default:
@@ -179,7 +179,7 @@ LABEL_9:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = v4;
+  v19 = clipLayouts;
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v20)
   {
@@ -211,28 +211,28 @@ LABEL_17:
   [(PXStoryConcreteTransition *)&v25 timeDidChange];
 }
 
-- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)a3 effect:(id)a4 auxiliaryEffect:(id)a5
+- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)info effect:(id)effect auxiliaryEffect:(id)auxiliaryEffect
 {
-  v9 = *(&a3->var1 + 3);
-  *&v10 = *&a3->var2.var2;
-  v6 = [(PXStoryConcreteTransition *)self initWithKind:7 duration:&v9 effect:a4 auxiliaryEffect:a5];
-  v7 = *&a3->var2.var1;
-  v9 = *&a3->var0;
+  v9 = *(&info->var1 + 3);
+  *&v10 = *&info->var2.var2;
+  v6 = [(PXStoryConcreteTransition *)self initWithKind:7 duration:&v9 effect:effect auxiliaryEffect:auxiliaryEffect];
+  v7 = *&info->var2.var1;
+  v9 = *&info->var0;
   v10 = v7;
-  v11 = *&a3->var3;
+  v11 = *&info->var3;
   [(PXStoryTransitionRotate *)v6 _configureWithTransitionInfo:&v9];
   return v6;
 }
 
-- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5
+- (PXStoryTransitionRotate)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts
 {
-  v9 = *(&a3->var1 + 3);
-  *&v10 = *&a3->var2.var2;
-  v6 = [(PXStoryConcreteTransition *)self initWithKind:7 duration:&v9 event:a4 clipLayouts:a5];
-  v7 = *&a3->var2.var1;
-  v9 = *&a3->var0;
+  v9 = *(&info->var1 + 3);
+  *&v10 = *&info->var2.var2;
+  v6 = [(PXStoryConcreteTransition *)self initWithKind:7 duration:&v9 event:event clipLayouts:layouts];
+  v7 = *&info->var2.var1;
+  v9 = *&info->var0;
   v10 = v7;
-  v11 = *&a3->var3;
+  v11 = *&info->var3;
   [(PXStoryTransitionRotate *)v6 _configureWithTransitionInfo:&v9];
   return v6;
 }

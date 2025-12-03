@@ -1,13 +1,13 @@
 @interface ICSComponent
 + (id)inheritanceKeywords;
 + (id)makeUID;
-+ (id)stringFromRelationshipType:(unint64_t)a3;
-+ (id)stringFromStatus:(int)a3;
-+ (int)statusFromString:(id)a3;
++ (id)stringFromRelationshipType:(unint64_t)type;
++ (id)stringFromStatus:(int)status;
++ (int)statusFromString:(id)string;
 - (BOOL)forcedAllDay;
-- (BOOL)ignorePropertyWithName:(id)a3;
+- (BOOL)ignorePropertyWithName:(id)name;
 - (BOOL)isAllDay;
-- (BOOL)validate:(id *)a3;
+- (BOOL)validate:(id *)validate;
 - (BOOL)x_apple_ews_needsserverconfirmation;
 - (BOOL)x_apple_ignore_on_restore;
 - (BOOL)x_apple_suggestionInfoChangesAcknowledged;
@@ -44,7 +44,7 @@
 - (NSString)x_apple_suggestionInfoUniqueKey;
 - (NSString)x_apple_universalID;
 - (NSURL)url;
-- (id)ICSStringWithOptions:(unint64_t)a3;
+- (id)ICSStringWithOptions:(unint64_t)options;
 - (id)allProperties;
 - (id)debugDescription;
 - (id)x_apple_end_location;
@@ -57,59 +57,59 @@
 - (unint64_t)priority;
 - (unint64_t)sequence;
 - (unint64_t)x_apple_suggestionInfoChangedFields;
-- (void)ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)addComponent:(id)a3 withUIDGenerator:(id)a4;
-- (void)addProperty:(id)a3 withValue:(id)a4;
+- (void)ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)addComponent:(id)component withUIDGenerator:(id)generator;
+- (void)addProperty:(id)property withValue:(id)value;
 - (void)fixAlarms;
 - (void)fixAttachments;
 - (void)fixAttendees;
 - (void)fixComponent;
 - (void)fixExceptionDates;
 - (void)fixExceptionRules;
-- (void)fixPropertiesInheritance:(id)a3;
+- (void)fixPropertiesInheritance:(id)inheritance;
 - (void)fixRecurrenceDates;
 - (void)fixRecurrenceRules;
 - (void)fixRelatedTo;
 - (void)fixSuggestionInfo;
-- (void)removeComponent:(id)a3;
-- (void)setClassification:(int)a3;
-- (void)setDtend:(id)a3;
-- (void)setDuration:(id)a3;
-- (void)setExrule:(id)a3;
-- (void)setPriority:(unint64_t)a3;
-- (void)setProperties:(id)a3 forName:(id)a4;
-- (void)setProperty:(id)a3 forName:(id)a4;
-- (void)setPropertyValue:(id)a3 forName:(id)a4;
-- (void)setPropertyValue:(id)a3 type:(int)a4 forName:(id)a5;
-- (void)setRrule:(id)a3;
-- (void)setSequence:(unint64_t)a3;
-- (void)setStatus:(int)a3;
-- (void)setStatusString:(id)a3;
-- (void)setUnrecognizedComponentName:(id)a3;
-- (void)setX_apple_ews_needsserverconfirmation:(BOOL)a3;
-- (void)setX_apple_ignore_on_restore:(BOOL)a3;
-- (void)setX_apple_suggestionInfoChangedFields:(unint64_t)a3;
-- (void)setX_calendarserver_access:(int)a3;
+- (void)removeComponent:(id)component;
+- (void)setClassification:(int)classification;
+- (void)setDtend:(id)dtend;
+- (void)setDuration:(id)duration;
+- (void)setExrule:(id)exrule;
+- (void)setPriority:(unint64_t)priority;
+- (void)setProperties:(id)properties forName:(id)name;
+- (void)setProperty:(id)property forName:(id)name;
+- (void)setPropertyValue:(id)value forName:(id)name;
+- (void)setPropertyValue:(id)value type:(int)type forName:(id)name;
+- (void)setRrule:(id)rrule;
+- (void)setSequence:(unint64_t)sequence;
+- (void)setStatus:(int)status;
+- (void)setStatusString:(id)string;
+- (void)setUnrecognizedComponentName:(id)name;
+- (void)setX_apple_ews_needsserverconfirmation:(BOOL)x_apple_ews_needsserverconfirmation;
+- (void)setX_apple_ignore_on_restore:(BOOL)x_apple_ignore_on_restore;
+- (void)setX_apple_suggestionInfoChangedFields:(unint64_t)fields;
+- (void)setX_calendarserver_access:(int)x_calendarserver_access;
 @end
 
 @implementation ICSComponent
 
-- (void)setUnrecognizedComponentName:(id)a3
+- (void)setUnrecognizedComponentName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   unrecognizedComponentName = self->_unrecognizedComponentName;
   p_unrecognizedComponentName = &self->_unrecognizedComponentName;
-  if (unrecognizedComponentName != v5)
+  if (unrecognizedComponentName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_unrecognizedComponentName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_unrecognizedComponentName, name);
+    nameCopy = v8;
   }
 }
 
-+ (id)stringFromRelationshipType:(unint64_t)a3
++ (id)stringFromRelationshipType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"X-CALENDARSERVER-RECURRENCE-SET";
   }
@@ -122,67 +122,67 @@
   return v4;
 }
 
-+ (id)stringFromStatus:(int)a3
++ (id)stringFromStatus:(int)status
 {
-  if ((a3 - 1) > 7)
+  if ((status - 1) > 7)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_27A64B8C0[a3 - 1];
+    v4 = *off_27A64B8C0[status - 1];
   }
 
   return v4;
 }
 
-+ (int)statusFromString:(id)a3
++ (int)statusFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TENTATIVE"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"TENTATIVE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CONFIRMED"])
+  else if ([stringCopy isEqualToString:@"CONFIRMED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([stringCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NEEDS-ACTION"])
+  else if ([stringCopy isEqualToString:@"NEEDS-ACTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CANCELLED"])
+  else if ([stringCopy isEqualToString:@"CANCELLED"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN-PROCESS"])
+  else if ([stringCopy isEqualToString:@"IN-PROCESS"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"DRAFT"])
+  else if ([stringCopy isEqualToString:@"DRAFT"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"FINAL"])
+  else if ([stringCopy isEqualToString:@"FINAL"])
   {
     v4 = 7;
   }
 
   else
   {
-    [v3 length];
+    [stringCopy length];
     v4 = 0;
   }
 
@@ -227,7 +227,7 @@
   return v2;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -249,7 +249,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if (![*(*(&v12 + 1) + 8 * i) validate:{a3, v12}])
+        if (![*(*(&v12 + 1) + 8 * i) validate:{validate, v12}])
         {
           v9 = 0;
           goto LABEL_11;
@@ -273,61 +273,61 @@ LABEL_11:
   return v9;
 }
 
-- (void)setProperties:(id)a3 forName:(id)a4
+- (void)setProperties:(id)properties forName:(id)name
 {
   properties = self->_properties;
-  if (a3)
+  if (properties)
   {
-    [(NSMutableDictionary *)properties setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)properties setObject:properties forKey:name];
   }
 
   else
   {
-    [(NSMutableDictionary *)properties removeObjectForKey:a4];
+    [(NSMutableDictionary *)properties removeObjectForKey:name];
   }
 }
 
-- (void)setProperty:(id)a3 forName:(id)a4
+- (void)setProperty:(id)property forName:(id)name
 {
-  v9 = a3;
-  if (v9)
+  propertyCopy = property;
+  if (propertyCopy)
   {
     v6 = MEMORY[0x277CBEB18];
-    v7 = a4;
-    v8 = [[v6 alloc] initWithObjects:{v9, 0}];
-    [(ICSComponent *)self setProperties:v8 forName:v7];
+    nameCopy = name;
+    nameCopy2 = [[v6 alloc] initWithObjects:{propertyCopy, 0}];
+    [(ICSComponent *)self setProperties:nameCopy2 forName:nameCopy];
   }
 
   else
   {
-    v8 = a4;
-    [(ICSComponent *)self removePropertiesForName:v8];
+    nameCopy2 = name;
+    [(ICSComponent *)self removePropertiesForName:nameCopy2];
   }
 }
 
-- (void)ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
   v83 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3 & 8;
-  v52 = [(ICSComponent *)self propertiesToExcludeForChecksum];
-  v8 = [objc_opt_class() name];
-  if (!v8)
+  stringCopy = string;
+  v7 = options & 8;
+  propertiesToExcludeForChecksum = [(ICSComponent *)self propertiesToExcludeForChecksum];
+  name = [objc_opt_class() name];
+  if (!name)
   {
-    v8 = [(ICSComponent *)self unrecognizedComponentName];
+    name = [(ICSComponent *)self unrecognizedComponentName];
   }
 
-  [v6 appendString:@"BEGIN:"];
-  [v6 appendString:v8];
-  [v6 appendString:@"\r\n"];
-  v9 = [(NSMutableDictionary *)self->_properties allKeys];
-  v10 = v9;
-  v58 = a3;
-  v11 = a3 | (v7 >> 1);
-  v51 = v8;
+  [stringCopy appendString:@"BEGIN:"];
+  [stringCopy appendString:name];
+  [stringCopy appendString:@"\r\n"];
+  allKeys = [(NSMutableDictionary *)self->_properties allKeys];
+  v10 = allKeys;
+  optionsCopy = options;
+  v11 = options | (v7 >> 1);
+  v51 = name;
   if ((v11 & 4) != 0)
   {
-    v12 = [v9 sortedArrayUsingSelector:sel_compare_];
+    v12 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v62 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v12, "count")}];
     v10 = v12;
@@ -344,14 +344,14 @@ LABEL_11:
   v77 = 0u;
   obj = v10;
   v13 = [obj countByEnumeratingWithState:&v76 objects:v82 count:16];
-  v61 = a3 | (v7 >> 1);
+  v61 = options | (v7 >> 1);
   if (v13)
   {
     v14 = v13;
-    v64 = a3 & 0x48;
+    v64 = options & 0x48;
     v15 = *v77;
-    v54 = a3 & 8;
-    v55 = self;
+    v54 = options & 8;
+    selfCopy = self;
     v53 = *v77;
     do
     {
@@ -365,18 +365,18 @@ LABEL_11:
         }
 
         v17 = *(*(&v76 + 1) + 8 * v16);
-        if (!-[ICSComponent ignorePropertyWithName:](self, "ignorePropertyWithName:", v17) && (!v7 || ([v52 containsObject:v17] & 1) == 0))
+        if (!-[ICSComponent ignorePropertyWithName:](self, "ignorePropertyWithName:", v17) && (!v7 || ([propertiesToExcludeForChecksum containsObject:v17] & 1) == 0))
         {
           v59 = v16;
           v60 = [(NSMutableDictionary *)self->_properties objectForKey:v17];
-          v18 = v58;
-          if ((v58 & 0x200) == 0 || (-[ICSComponent propertiesToHide](self, "propertiesToHide"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 containsObject:v17], v19, v18 = v58, (v20 & 1) == 0))
+          v18 = optionsCopy;
+          if ((optionsCopy & 0x200) == 0 || (-[ICSComponent propertiesToHide](self, "propertiesToHide"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 containsObject:v17], v19, v18 = optionsCopy, (v20 & 1) == 0))
           {
             v67 = v17;
             if ((v18 & 0x10) != 0)
             {
-              v21 = [(ICSComponent *)self propertiesToObscure];
-              v66 = [v21 containsObject:v17];
+              propertiesToObscure = [(ICSComponent *)self propertiesToObscure];
+              v66 = [propertiesToObscure containsObject:v17];
             }
 
             else
@@ -411,23 +411,23 @@ LABEL_11:
                   {
                     v27 = objc_alloc_init(ICSStringWriter);
                     [v25 ICSStringWithOptions:v11 appendingToString:v27];
-                    v28 = [(ICSStringWriter *)v27 result];
-                    if ([v28 hasPrefix:@":"])
+                    result = [(ICSStringWriter *)v27 result];
+                    if ([result hasPrefix:@":"])
                     {
-                      v29 = [v28 substringFromIndex:1];
-                      v30 = v6;
+                      v29 = [result substringFromIndex:1];
+                      v30 = stringCopy;
                       v31 = MEMORY[0x277CCACA8];
                       v32 = ICSRedactString(v29);
                       v33 = [v31 stringWithFormat:@":%@", v32];
                       [v26 appendString:v33];
 
-                      v6 = v30;
+                      stringCopy = v30;
                       v11 = v61;
                     }
 
                     else
                     {
-                      v29 = ICSRedactString(v28);
+                      v29 = ICSRedactString(result);
                       [v26 appendString:v29];
                     }
                   }
@@ -437,7 +437,7 @@ LABEL_11:
                     v27 = [[ICSStringWriter alloc] initWithString:v26];
                     [v25 ICSStringWithOptions:v11 appendingToString:v27];
                     [(ICSStringWriter *)v27 mutableResult];
-                    v26 = v28 = v26;
+                    v26 = result = v26;
                   }
 
                   if (!v64)
@@ -477,7 +477,7 @@ LABEL_11:
 
                   else
                   {
-                    [v6 appendString:v26];
+                    [stringCopy appendString:v26];
                   }
 
                   ++v24;
@@ -492,7 +492,7 @@ LABEL_11:
             }
 
             v7 = v54;
-            self = v55;
+            self = selfCopy;
             v14 = v56;
             v15 = v53;
           }
@@ -514,7 +514,7 @@ LABEL_11:
   {
     v41 = [v62 sortedArrayUsingSelector:sel_compare_];
     v42 = [v41 componentsJoinedByString:&stru_28841D818];
-    [v6 appendString:v42];
+    [stringCopy appendString:v42];
   }
 
   v70 = 0u;
@@ -538,7 +538,7 @@ LABEL_11:
 
         v48 = *(*(&v68 + 1) + 8 * i);
         v49 = objc_autoreleasePoolPush();
-        [v48 ICSStringWithOptions:v61 appendingToString:v6];
+        [v48 ICSStringWithOptions:v61 appendingToString:stringCopy];
         objc_autoreleasePoolPop(v49);
       }
 
@@ -548,36 +548,36 @@ LABEL_11:
     while (v45);
   }
 
-  [v6 appendString:@"END:"];
-  [v6 appendString:v51];
-  [v6 appendString:@"\r\n"];
+  [stringCopy appendString:@"END:"];
+  [stringCopy appendString:v51];
+  [stringCopy appendString:@"\r\n"];
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)ignorePropertyWithName:(id)a3
+- (BOOL)ignorePropertyWithName:(id)name
 {
-  v4 = a3;
-  if ((([v4 isEqualToString:@"X-MICROSOFT-CDO-ALLDAYEVENT"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"X-FUNAMBOL-ALLDAY")) && !-[ICSComponent isAllDay](self, "isAllDay"))
+  nameCopy = name;
+  if ((([nameCopy isEqualToString:@"X-MICROSOFT-CDO-ALLDAYEVENT"] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", @"X-FUNAMBOL-ALLDAY")) && !-[ICSComponent isAllDay](self, "isAllDay"))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"iCalendar-ForcedAllDay"];
+    v5 = [nameCopy isEqualToString:@"iCalendar-ForcedAllDay"];
   }
 
   return v5;
 }
 
-- (id)ICSStringWithOptions:(unint64_t)a3
+- (id)ICSStringWithOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(ICSStringWriter);
-  [(ICSComponent *)self ICSStringWithOptions:a3 appendingToString:v5];
-  v6 = [(ICSStringWriter *)v5 result];
+  [(ICSComponent *)self ICSStringWithOptions:options appendingToString:v5];
+  result = [(ICSStringWriter *)v5 result];
 
-  return v6;
+  return result;
 }
 
 - (NSSet)propertiesToExcludeForChecksum
@@ -605,80 +605,80 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addComponent:(id)a3 withUIDGenerator:(id)a4
+- (void)addComponent:(id)component withUIDGenerator:(id)generator
 {
-  if (a3)
+  if (component)
   {
-    v5 = a3;
-    v6 = [(ICSComponent *)self components];
+    componentCopy = component;
+    components = [(ICSComponent *)self components];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
       v8 = objc_alloc(MEMORY[0x277CBEB18]);
-      v9 = [(ICSComponent *)self components];
-      v10 = [v8 initWithArray:v9];
+      components2 = [(ICSComponent *)self components];
+      v10 = [v8 initWithArray:components2];
 
       [(ICSComponent *)self setComponents:v10];
     }
 
-    v11 = [(ICSComponent *)self components];
-    [v11 addObject:v5];
+    components3 = [(ICSComponent *)self components];
+    [components3 addObject:componentCopy];
   }
 }
 
-- (void)removeComponent:(id)a3
+- (void)removeComponent:(id)component
 {
-  if (a3)
+  if (component)
   {
-    v4 = a3;
-    v5 = [(ICSComponent *)self components];
+    componentCopy = component;
+    components = [(ICSComponent *)self components];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
       v7 = objc_alloc(MEMORY[0x277CBEB18]);
-      v8 = [(ICSComponent *)self components];
-      v9 = [v7 initWithArray:v8];
+      components2 = [(ICSComponent *)self components];
+      v9 = [v7 initWithArray:components2];
 
       [(ICSComponent *)self setComponents:v9];
     }
 
-    v10 = [(ICSComponent *)self components];
-    [v10 removeObject:v4];
+    components3 = [(ICSComponent *)self components];
+    [components3 removeObject:componentCopy];
   }
 }
 
-- (void)addProperty:(id)a3 withValue:(id)a4
+- (void)addProperty:(id)property withValue:(id)value
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6)
+  propertyCopy = property;
+  valueCopy = value;
+  if (propertyCopy && valueCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_properties objectForKey:v10];
+    v7 = [(NSMutableDictionary *)self->_properties objectForKey:propertyCopy];
     v8 = v7;
     if (v7)
     {
-      if (([v7 containsObject:v6] & 1) == 0)
+      if (([v7 containsObject:valueCopy] & 1) == 0)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v9 = [MEMORY[0x277CBEB18] arrayWithArray:v8];
 
-          [(ICSComponent *)self setProperties:v9 forName:v10];
+          [(ICSComponent *)self setProperties:v9 forName:propertyCopy];
           v8 = v9;
         }
 
-        [v8 addObject:v6];
+        [v8 addObject:valueCopy];
       }
     }
 
     else
     {
-      [(ICSComponent *)self setProperty:v6 forName:v10];
+      [(ICSComponent *)self setProperty:valueCopy forName:propertyCopy];
     }
   }
 }
@@ -686,8 +686,8 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (id)allProperties
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(ICSComponent *)self properties];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  properties = [(ICSComponent *)self properties];
+  v4 = [v2 dictionaryWithDictionary:properties];
 
   return v4;
 }
@@ -695,28 +695,28 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (int)classification
 {
   v2 = [(ICSComponent *)self propertiesForName:@"CLASS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 longValue];
+    longValue = [value longValue];
   }
 
   else
   {
-    v5 = 0;
+    longValue = 0;
   }
 
-  return v5;
+  return longValue;
 }
 
-- (void)setClassification:(int)a3
+- (void)setClassification:(int)classification
 {
-  if (a3)
+  if (classification)
   {
-    v4 = [(ICSPredefinedValue *)ICSClassificationValue numberWithLong:a3];
+    v4 = [(ICSPredefinedValue *)ICSClassificationValue numberWithLong:classification];
     [(ICSComponent *)self setPropertyValue:v4 type:5005 forName:@"CLASS"];
   }
 
@@ -730,68 +730,68 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (ICSDate)created
 {
   v2 = [(ICSComponent *)self propertiesForName:@"CREATED"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)description
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DESCRIPTION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (void)setPropertyValue:(id)a3 forName:(id)a4
+- (void)setPropertyValue:(id)value forName:(id)name
 {
-  v8 = a3;
-  if (v8)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v6 = a4;
-    v7 = [[ICSProperty alloc] initWithValue:v8 type:5007];
-    [(ICSComponent *)self setProperty:v7 forName:v6];
+    nameCopy = name;
+    nameCopy2 = [[ICSProperty alloc] initWithValue:valueCopy type:5007];
+    [(ICSComponent *)self setProperty:nameCopy2 forName:nameCopy];
   }
 
   else
   {
-    v7 = a4;
-    [(ICSComponent *)self removePropertiesForName:v7];
+    nameCopy2 = name;
+    [(ICSComponent *)self removePropertiesForName:nameCopy2];
   }
 }
 
-- (void)setPropertyValue:(id)a3 type:(int)a4 forName:(id)a5
+- (void)setPropertyValue:(id)value type:(int)type forName:(id)name
 {
-  v10 = a3;
-  if (v10)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v8 = a5;
-    v9 = [[ICSProperty alloc] initWithValue:v10 type:a4];
-    [(ICSComponent *)self setProperty:v9 forName:v8];
+    nameCopy = name;
+    nameCopy2 = [[ICSProperty alloc] initWithValue:valueCopy type:type];
+    [(ICSComponent *)self setProperty:nameCopy2 forName:nameCopy];
   }
 
   else
   {
-    v9 = a5;
-    [(ICSComponent *)self removePropertiesForName:v9];
+    nameCopy2 = name;
+    [(ICSComponent *)self removePropertiesForName:nameCopy2];
   }
 }
 
 - (ICSDate)dtstamp
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DTSTAMP"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (ICSDate)dtstart
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DTSTART"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)isAllDay
@@ -803,8 +803,8 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 
   else
   {
-    v4 = [(ICSComponent *)self dtstart];
-    v3 = [v4 hasTimeComponent] ^ 1;
+    dtstart = [(ICSComponent *)self dtstart];
+    v3 = [dtstart hasTimeComponent] ^ 1;
   }
 
   return v3;
@@ -813,15 +813,15 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (ICSDate)dtend
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DTEND"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setDtend:(id)a3
+- (void)setDtend:(id)dtend
 {
-  [(ICSComponent *)self setProperty:a3 forName:@"DTEND"];
-  if (a3)
+  [(ICSComponent *)self setProperty:dtend forName:@"DTEND"];
+  if (dtend)
   {
 
     [(ICSComponent *)self removePropertiesForName:@"DURATION"];
@@ -831,33 +831,33 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (ICSDuration)duration
 {
   v2 = [(ICSComponent *)self propertiesForName:@"DURATION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
-- (void)setDuration:(id)a3
+- (void)setDuration:(id)duration
 {
-  v4 = a3;
-  if (v4)
+  durationCopy = duration;
+  if (durationCopy)
   {
     [(ICSComponent *)self removePropertiesForName:@"DTEND"];
   }
 
-  [(ICSComponent *)self setPropertyValue:v4 type:5011 forName:@"DURATION"];
+  [(ICSComponent *)self setPropertyValue:durationCopy type:5011 forName:@"DURATION"];
 }
 
-- (void)setExrule:(id)a3
+- (void)setExrule:(id)exrule
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  exruleCopy = exrule;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = exruleCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -876,7 +876,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = [ICSProperty alloc];
         v13 = [(ICSProperty *)v12 initWithValue:v11 type:5029, v15];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -888,7 +888,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
     while (v8);
   }
 
-  [(ICSComponent *)self setProperties:v5 forName:@"EXRULE"];
+  [(ICSComponent *)self setProperties:array forName:@"EXRULE"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -898,7 +898,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   v2 = [(ICSComponent *)self propertiesForName:@"EXRULE"];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -918,8 +918,8 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) value];
-          [v3 addObject:v9];
+          value = [*(*(&v12 + 1) + 8 * i) value];
+          [array addObject:value];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -931,57 +931,57 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (ICSDate)last_modified
 {
   v2 = [(ICSComponent *)self propertiesForName:@"LAST-MODIFIED"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)location
 {
   v2 = [(ICSComponent *)self propertiesForName:@"LOCATION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (ICSUserAddress)organizer
 {
   v2 = [(ICSComponent *)self propertiesForName:@"ORGANIZER"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (ICSDate)recurrence_id
 {
   v2 = [(ICSComponent *)self propertiesForName:@"RECURRENCE-ID"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setRrule:(id)a3
+- (void)setRrule:(id)rrule
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  rruleCopy = rrule;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = rruleCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1000,7 +1000,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = [ICSProperty alloc];
         v13 = [(ICSProperty *)v12 initWithValue:v11 type:5029, v15];
-        [v5 addObject:v13];
+        [array addObject:v13];
 
         ++v10;
       }
@@ -1012,7 +1012,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
     while (v8);
   }
 
-  [(ICSComponent *)self setProperties:v5 forName:@"RRULE"];
+  [(ICSComponent *)self setProperties:array forName:@"RRULE"];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -1022,7 +1022,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   v2 = [(ICSComponent *)self propertiesForName:@"RRULE"];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -1042,8 +1042,8 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) value];
-          [v3 addObject:v9];
+          value = [*(*(&v12 + 1) + 8 * i) value];
+          [array addObject:value];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1055,17 +1055,17 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 
   else
   {
-    v3 = 0;
+    array = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (void)setSequence:(unint64_t)a3
+- (void)setSequence:(unint64_t)sequence
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sequence];
   [(ICSComponent *)self setPropertyValue:v4 type:5008 forName:@"SEQUENCE"];
 }
 
@@ -1079,38 +1079,38 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"SEQUENCE"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 unsignedIntegerValue];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (int)status
 {
   v2 = [(ICSComponent *)self propertiesForName:@"STATUS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 longValue];
+    longValue = [value longValue];
   }
 
   else
   {
-    v5 = 0;
+    longValue = 0;
   }
 
-  return v5;
+  return longValue;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = [(ICSPredefinedValue *)ICSStatusValue numberWithLong:a3];
+    v4 = [(ICSPredefinedValue *)ICSStatusValue numberWithLong:status];
     [(ICSComponent *)self setPropertyValue:v4 type:5003 forName:@"STATUS"];
   }
 
@@ -1124,29 +1124,29 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (NSString)statusString
 {
   v2 = [(ICSComponent *)self propertiesForName:@"STATUS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 statusString];
+    statusString = [value statusString];
   }
 
   else
   {
-    v5 = 0;
+    statusString = 0;
   }
 
-  return v5;
+  return statusString;
 }
 
-- (void)setStatusString:(id)a3
+- (void)setStatusString:(id)string
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [ICSStatusValue statusValueFromICSString:v5];
+    v4 = [ICSStatusValue statusValueFromICSString:stringCopy];
     [(ICSComponent *)self setPropertyValue:v4 type:5003 forName:@"STATUS"];
   }
 
@@ -1159,36 +1159,36 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (NSString)summary
 {
   v2 = [(ICSComponent *)self propertiesForName:@"SUMMARY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (ICSTrigger)trigger
 {
   v2 = [(ICSComponent *)self propertiesForName:@"TRIGGER"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)uid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"UID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSURL)url
 {
   v2 = [(ICSComponent *)self propertiesForName:@"URL"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (unint64_t)priority
@@ -1201,16 +1201,16 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   }
 
   v4 = [(ICSComponent *)self propertiesForName:@"PRIORITY"];
-  v5 = [v4 lastObject];
-  v6 = [v5 value];
-  v7 = [v6 unsignedIntegerValue];
+  lastObject = [v4 lastObject];
+  value = [lastObject value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setPriority:(unint64_t)a3
+- (void)setPriority:(unint64_t)priority
 {
-  if (a3)
+  if (priority)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   }
@@ -1227,28 +1227,28 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (int)x_calendarserver_access
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-CALENDARSERVER-ACCESS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 longValue];
+    longValue = [value longValue];
   }
 
   else
   {
-    v5 = 0;
+    longValue = 0;
   }
 
-  return v5;
+  return longValue;
 }
 
-- (void)setX_calendarserver_access:(int)a3
+- (void)setX_calendarserver_access:(int)x_calendarserver_access
 {
-  if (a3)
+  if (x_calendarserver_access)
   {
-    v4 = [(ICSPredefinedValue *)ICSCalendarServerAccessValue numberWithLong:a3];
+    v4 = [(ICSPredefinedValue *)ICSCalendarServerAccessValue numberWithLong:x_calendarserver_access];
     [(ICSComponent *)self setPropertyValue:v4 type:5030 forName:@"X-CALENDARSERVER-ACCESS"];
   }
 
@@ -1262,52 +1262,52 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (NSString)x_apple_dropbox
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-DROPBOX"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_ews_changekey
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EWS-CHANGEKEY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_ews_itemid
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EWS-ITEMID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_ews_permission
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EWS-PERMISSION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (BOOL)x_apple_ews_needsserverconfirmation
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EWS-NEEDSSERVERCONFIRMATION"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setX_apple_ews_needsserverconfirmation:(BOOL)a3
+- (void)setX_apple_ews_needsserverconfirmation:(BOOL)x_apple_ews_needsserverconfirmation
 {
-  if (a3)
+  if (x_apple_ews_needsserverconfirmation)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   }
@@ -1321,9 +1321,9 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-EWS-NEEDSSERVERCONFIRMATION"];
 }
 
-- (void)setX_apple_ignore_on_restore:(BOOL)a3
+- (void)setX_apple_ignore_on_restore:(BOOL)x_apple_ignore_on_restore
 {
-  if (a3)
+  if (x_apple_ignore_on_restore)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSComponent *)self setPropertyValue:v4 type:5012 forName:@"X-APPLE-IGNORE-ON-RESTORE"];
@@ -1339,173 +1339,173 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
 - (BOOL)x_apple_ignore_on_restore
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-IGNORE-ON-RESTORE"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (ICSStructuredLocation)x_apple_structured_location
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-STRUCTURED-LOCATION"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)x_apple_etag
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-ETAG"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_scheduletag
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SCHEDULETAG"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_serverFilename
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SERVERFILENAME"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (id)x_apple_travel_duration
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-TRAVEL-DURATION"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)x_apple_travel_advisory_behavior
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-TRAVEL-ADVISORY-BEHAVIOR"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)x_apple_travel_start
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-TRAVEL-START"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)x_apple_end_location
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-END-LOCATION"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)forcedAllDay
 {
   v2 = [(ICSComponent *)self propertiesForName:@"iCalendar-ForcedAllDay"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)x_apple_suggestionInfoChangesAcknowledged
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SUGGESTION-INFO-CHANGES-ACKNOWLEDGED"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 BOOLValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  bOOLValue = [value BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (unint64_t)x_apple_suggestionInfoChangedFields
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SUGGESTION-INFO-CHANGED-FIELDS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
-  v5 = [v4 unsignedIntegerValue];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
+  unsignedIntegerValue = [value unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)setX_apple_suggestionInfoChangedFields:(unint64_t)a3
+- (void)setX_apple_suggestionInfoChangedFields:(unint64_t)fields
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:fields];
   [(ICSComponent *)self setPropertyValue:v4 type:5008 forName:@"X-APPLE-SUGGESTION-INFO-CHANGED-FIELDS"];
 }
 
 - (NSString)x_apple_suggestionInfoOpaqueKey
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SUGGESTION-INFO-OPAQUE-KEY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (ICSDate)x_apple_suggestionInfoTimestamp
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SUGGESTION-INFO-TIMESTAMP"];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (NSString)x_apple_suggestionInfoUniqueKey
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-SUGGESTION-INFO-UNIQUE-KEY"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_contactIdentifiers
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-CONTACT-IDENTIFIERS"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_relatedExternalID
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-EXTERNAL-REFERENCE-ID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 - (NSString)x_apple_universalID
 {
   v2 = [(ICSComponent *)self propertiesForName:@"X-APPLE-UNIVERSAL-ID"];
-  v3 = [v2 lastObject];
-  v4 = [v3 value];
+  lastObject = [v2 lastObject];
+  value = [lastObject value];
 
-  return v4;
+  return value;
 }
 
 + (id)inheritanceKeywords
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!_sInheritanceKeywords)
   {
     v3 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"DTEND", @"DTSTART", @"DURATION", @"EXDATE", @"EXRULE", @"RDATE", @"RRULE", 0}];
@@ -1513,29 +1513,29 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
     _sInheritanceKeywords = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = _sInheritanceKeywords;
 
   return v5;
 }
 
-- (void)fixPropertiesInheritance:(id)a3
+- (void)fixPropertiesInheritance:(id)inheritance
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inheritanceCopy = inheritance;
   v5 = [(ICSComponent *)self propertiesForName:@"RECURRENCE-ID"];
 
   if (v5)
   {
     v6 = +[ICSComponent inheritanceKeywords];
-    [v4 properties];
+    [inheritanceCopy properties];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v16 = v20 = 0u;
-    v7 = [v16 allValues];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allValues = [v16 allValues];
+    v8 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1546,13 +1546,13 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
           if (([v6 containsObject:v12] & 1) == 0)
           {
-            v13 = [v4 propertiesForName:v12];
+            v13 = [inheritanceCopy propertiesForName:v12];
             v14 = [(ICSComponent *)self propertiesForName:v12];
             if (!v14)
             {
@@ -1561,7 +1561,7 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -1579,9 +1579,9 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = self;
-  v4 = [(ICSComponent *)self components];
-  v5 = [v4 copy];
+  selfCopy = self;
+  components = [(ICSComponent *)self components];
+  v5 = [components copy];
 
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
@@ -1606,22 +1606,22 @@ void __46__ICSComponent_propertiesToExcludeForChecksum__block_invoke()
         if (objc_opt_isKindOfClass())
         {
           v13 = v11;
-          v14 = [v13 x_wr_alarmuid];
-          if ([v3 containsObject:v14])
+          x_wr_alarmuid = [v13 x_wr_alarmuid];
+          if ([v3 containsObject:x_wr_alarmuid])
           {
             goto LABEL_8;
           }
 
           if ([v13 action] == 3)
           {
-            v16 = [v13 attendee];
-            v17 = [v16 count];
+            attendee = [v13 attendee];
+            v17 = [attendee count];
 
             if (!v17)
             {
 LABEL_8:
-              v15 = [(ICSComponent *)v31 components];
-              [v15 removeObject:v13];
+              components2 = [(ICSComponent *)selfCopy components];
+              [components2 removeObject:v13];
 
 LABEL_24:
               goto LABEL_25;
@@ -1630,16 +1630,16 @@ LABEL_24:
 
           else if ([v13 action] == 4)
           {
-            v18 = [v13 attach];
-            if (v18)
+            attach = [v13 attach];
+            if (attach)
             {
             }
 
             else
             {
-              v19 = [v13 bookmark];
+              bookmark = [v13 bookmark];
 
-              if (!v19)
+              if (!bookmark)
               {
                 goto LABEL_8;
               }
@@ -1648,22 +1648,22 @@ LABEL_24:
 
           v20 = v5;
           v21 = v9;
-          v22 = [v13 trigger];
-          v23 = [v22 isDurationBased];
+          trigger = [v13 trigger];
+          isDurationBased = [trigger isDurationBased];
 
-          v24 = [v13 trigger];
-          v25 = v24;
-          if (v23)
+          trigger2 = [v13 trigger];
+          trigger3 = trigger2;
+          if (isDurationBased)
           {
-            v26 = [v24 value];
+            value = [trigger2 value];
 LABEL_20:
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if ((isKindOfClass & 1) == 0)
             {
-              v28 = [(ICSComponent *)v31 components];
-              [v28 removeObject:v13];
+              components3 = [(ICSComponent *)selfCopy components];
+              [components3 removeObject:v13];
 
               v9 = v21;
               v5 = v20;
@@ -1675,10 +1675,10 @@ LABEL_20:
           else
           {
 
-            if (v25)
+            if (trigger3)
             {
-              v25 = [v13 trigger];
-              v26 = [v25 value];
+              trigger3 = [v13 trigger];
+              value = [trigger3 value];
               goto LABEL_20;
             }
           }
@@ -1687,9 +1687,9 @@ LABEL_20:
           v9 = v21;
           v5 = v20;
           v3 = v30;
-          if ([v14 length])
+          if ([x_wr_alarmuid length])
           {
-            [v30 addObject:v14];
+            [v30 addObject:x_wr_alarmuid];
           }
 
           goto LABEL_24;
@@ -1721,7 +1721,7 @@ LABEL_14:
     return;
   }
 
-  v4 = [(ICSComponent *)self relatedTo];
+  relatedTo = [(ICSComponent *)self relatedTo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1731,8 +1731,8 @@ LABEL_14:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(ICSComponent *)self relatedTo];
-    v7 = [v6 copy];
+    relatedTo2 = [(ICSComponent *)self relatedTo];
+    v7 = [relatedTo2 copy];
 
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
@@ -1752,8 +1752,8 @@ LABEL_14:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v13 = [(ICSComponent *)self relatedTo];
-            [v13 removeObject:v12];
+            relatedTo3 = [(ICSComponent *)self relatedTo];
+            [relatedTo3 removeObject:v12];
           }
         }
 
@@ -1763,8 +1763,8 @@ LABEL_14:
       while (v9);
     }
 
-    v14 = [(ICSComponent *)self relatedTo];
-    v15 = [v14 count];
+    relatedTo4 = [(ICSComponent *)self relatedTo];
+    v15 = [relatedTo4 count];
 
     if (!v15)
     {
@@ -1786,28 +1786,28 @@ LABEL_14:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB58]);
-    v5 = [(ICSComponent *)self attendee];
-    v14 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+    attendee = [(ICSComponent *)self attendee];
+    v14 = [v4 initWithCapacity:{objc_msgSend(attendee, "count")}];
 
-    v6 = [(ICSComponent *)self attendee];
-    v7 = [MEMORY[0x277CCAB58] indexSet];
-    if ([v6 count])
+    attendee2 = [(ICSComponent *)self attendee];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
+    if ([attendee2 count])
     {
       v8 = 0;
       do
       {
-        v9 = [v6 objectAtIndexedSubscript:v8];
+        v9 = [attendee2 objectAtIndexedSubscript:v8];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v10 = MEMORY[0x277CCACA8];
           v11 = [v9 cn];
-          v12 = [v9 value];
-          v13 = [v10 stringWithFormat:@"%@ <%@>", v11, v12];
+          value = [v9 value];
+          v13 = [v10 stringWithFormat:@"%@ <%@>", v11, value];
 
           if ([v14 containsObject:v13])
           {
-            [v7 addIndex:v8];
+            [indexSet addIndex:v8];
           }
 
           else
@@ -1818,17 +1818,17 @@ LABEL_14:
 
         else
         {
-          [v7 addIndex:v8];
+          [indexSet addIndex:v8];
         }
 
         ++v8;
       }
 
-      while (v8 < [v6 count]);
+      while (v8 < [attendee2 count]);
     }
 
-    [v6 removeObjectsAtIndexes:v7];
-    if (![v6 count])
+    [attendee2 removeObjectsAtIndexes:indexSet];
+    if (![attendee2 count])
     {
       [(ICSComponent *)self removePropertiesForName:@"ATTENDEE"];
     }
@@ -1846,8 +1846,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(ICSComponent *)self attach];
-    v5 = [v4 copy];
+    attach = [(ICSComponent *)self attach];
+    v5 = [attach copy];
 
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
@@ -1868,8 +1868,8 @@ LABEL_14:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v11 = [(ICSComponent *)self attach];
-            [v11 removeObject:v10];
+            attach2 = [(ICSComponent *)self attach];
+            [attach2 removeObject:v10];
           }
 
           ++v9;
@@ -1882,8 +1882,8 @@ LABEL_14:
       while (v7);
     }
 
-    v12 = [(ICSComponent *)self attach];
-    v13 = [v12 count];
+    attach3 = [(ICSComponent *)self attach];
+    v13 = [attach3 count];
 
     if (!v13)
     {
@@ -1923,14 +1923,14 @@ LABEL_14:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 value];
+          value = [v10 value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if ((isKindOfClass & 1) == 0)
           {
-            v13 = [(ICSComponent *)self rrule];
-            [v13 removeObject:v10];
+            rrule = [(ICSComponent *)self rrule];
+            [rrule removeObject:v10];
           }
         }
 
@@ -1963,8 +1963,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(ICSComponent *)self rdate];
-    v5 = [v4 copy];
+    rdate = [(ICSComponent *)self rdate];
+    v5 = [rdate copy];
 
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
@@ -2040,14 +2040,14 @@ LABEL_14:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 value];
+          value = [v10 value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if ((isKindOfClass & 1) == 0)
           {
-            v13 = [(ICSComponent *)self exrule];
-            [v13 removeObject:v10];
+            exrule = [(ICSComponent *)self exrule];
+            [exrule removeObject:v10];
           }
         }
 
@@ -2080,8 +2080,8 @@ LABEL_14:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(ICSComponent *)self exdate];
-    v5 = [v4 copy];
+    exdate = [(ICSComponent *)self exdate];
+    v5 = [exdate copy];
 
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
@@ -2130,11 +2130,11 @@ LABEL_14:
 
 - (void)fixSuggestionInfo
 {
-  v3 = [(ICSComponent *)self x_apple_suggestionInfoOpaqueKey];
-  if ([v3 length])
+  x_apple_suggestionInfoOpaqueKey = [(ICSComponent *)self x_apple_suggestionInfoOpaqueKey];
+  if ([x_apple_suggestionInfoOpaqueKey length])
   {
-    v4 = [(ICSComponent *)self x_apple_suggestionInfoUniqueKey];
-    v5 = [v4 length];
+    x_apple_suggestionInfoUniqueKey = [(ICSComponent *)self x_apple_suggestionInfoUniqueKey];
+    v5 = [x_apple_suggestionInfoUniqueKey length];
 
     if (v5)
     {
@@ -2152,7 +2152,7 @@ LABEL_14:
   [(ICSComponent *)self removePropertiesForName:@"X-APPLE-SUGGESTION-INFO-TIMESTAMP"];
   [(ICSComponent *)self removePropertiesForName:@"X-APPLE-SUGGESTION-INFO-UNIQUE-KEY"];
 LABEL_6:
-  v6 = [(ICSComponent *)self x_apple_suggestionInfoTimestamp];
+  x_apple_suggestionInfoTimestamp = [(ICSComponent *)self x_apple_suggestionInfoTimestamp];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2183,7 +2183,7 @@ LABEL_6:
 
   if (v6)
   {
-    v7 = [(ICSComponent *)self summary];
+    summary = [(ICSComponent *)self summary];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass();
 
@@ -2212,8 +2212,8 @@ LABEL_6:
   if (v12)
   {
     v13 = [(ICSComponent *)self propertiesForName:@"STATUS"];
-    v14 = [v13 lastObject];
-    v15 = [v14 value];
+    lastObject = [v13 lastObject];
+    value = [lastObject value];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 
@@ -2227,7 +2227,7 @@ LABEL_6:
 
   if (v17)
   {
-    v18 = [(ICSComponent *)self dtstart];
+    dtstart = [(ICSComponent *)self dtstart];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
@@ -2255,7 +2255,7 @@ LABEL_6:
 
   if (v23)
   {
-    v24 = [(ICSComponent *)self created];
+    created = [(ICSComponent *)self created];
     objc_opt_class();
     v25 = objc_opt_isKindOfClass();
 
@@ -2269,7 +2269,7 @@ LABEL_6:
 
   if (v26)
   {
-    v27 = [(ICSComponent *)self last_modified];
+    last_modified = [(ICSComponent *)self last_modified];
     objc_opt_class();
     v28 = objc_opt_isKindOfClass();
 
@@ -2283,7 +2283,7 @@ LABEL_6:
 
   if (v29)
   {
-    v30 = [(ICSComponent *)self dtstamp];
+    dtstamp = [(ICSComponent *)self dtstamp];
     objc_opt_class();
     v31 = objc_opt_isKindOfClass();
 
@@ -2298,8 +2298,8 @@ LABEL_6:
   if (v32)
   {
     v33 = [(ICSComponent *)self propertiesForName:@"SEQUENCE"];
-    v34 = [v33 lastObject];
-    v35 = [v34 value];
+    lastObject2 = [v33 lastObject];
+    value2 = [lastObject2 value];
     objc_opt_class();
     v36 = objc_opt_isKindOfClass();
 
@@ -2310,15 +2310,15 @@ LABEL_6:
   }
 
   [(ICSComponent *)self fixAlarms];
-  v37 = [(ICSComponent *)self organizer];
+  organizer = [(ICSComponent *)self organizer];
   objc_opt_class();
   v38 = objc_opt_isKindOfClass();
 
   if ((v38 & 1) == 0)
   {
     [(ICSComponent *)self removePropertiesForName:@"ORGANIZER"];
-    v39 = [(ICSComponent *)self organizer];
-    [v39 fixAddress];
+    organizer2 = [(ICSComponent *)self organizer];
+    [organizer2 fixAddress];
   }
 
   [(ICSComponent *)self fixAttendees];
@@ -2328,8 +2328,8 @@ LABEL_6:
   if (v40)
   {
     v41 = [(ICSComponent *)self propertiesForName:@"X-WR-ITIPSTATUSATTENDEEML"];
-    v42 = [v41 lastObject];
-    v43 = [v42 value];
+    lastObject3 = [v41 lastObject];
+    value3 = [lastObject3 value];
     objc_opt_class();
     v44 = objc_opt_isKindOfClass();
 
@@ -2344,8 +2344,8 @@ LABEL_6:
   if (v45)
   {
     v46 = [(ICSComponent *)self propertiesForName:@"X-WR-ITIPALREADYSENT"];
-    v47 = [v46 lastObject];
-    v48 = [v47 value];
+    lastObject4 = [v46 lastObject];
+    value4 = [lastObject4 value];
     objc_opt_class();
     v49 = objc_opt_isKindOfClass();
 
@@ -2360,8 +2360,8 @@ LABEL_6:
   if (v50)
   {
     v51 = [(ICSComponent *)self propertiesForName:@"X-WR-ITIPSTATUSML"];
-    v52 = [v51 lastObject];
-    v53 = [v52 value];
+    lastObject5 = [v51 lastObject];
+    value5 = [lastObject5 value];
     objc_opt_class();
     v54 = objc_opt_isKindOfClass();
 
@@ -2375,7 +2375,7 @@ LABEL_6:
 
   if (v55)
   {
-    v56 = [(ICSComponent *)self recurrence_id];
+    recurrence_id = [(ICSComponent *)self recurrence_id];
     objc_opt_class();
     v57 = objc_opt_isKindOfClass();
 

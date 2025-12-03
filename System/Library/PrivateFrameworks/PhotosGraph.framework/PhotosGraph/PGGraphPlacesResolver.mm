@@ -1,18 +1,18 @@
 @interface PGGraphPlacesResolver
-+ (id)_businessItemsAtCoordinate:(CLLocationCoordinate2D)a3 inCache:(id)a4;
-+ (id)_clusteredRegionsFromFeeder:(id)a3;
-+ (id)poiStringFromSpatialLookupCategory:(int64_t)a3;
-+ (id)resolvePlacesForMomentNode:(id)a3 feeder:(id)a4 poiCache:(id)a5;
-+ (id)resolvedPlaceForRegion:(id)a3 withPlaceItems:(id)a4;
++ (id)_businessItemsAtCoordinate:(CLLocationCoordinate2D)coordinate inCache:(id)cache;
++ (id)_clusteredRegionsFromFeeder:(id)feeder;
++ (id)poiStringFromSpatialLookupCategory:(int64_t)category;
++ (id)resolvePlacesForMomentNode:(id)node feeder:(id)feeder poiCache:(id)cache;
++ (id)resolvedPlaceForRegion:(id)region withPlaceItems:(id)items;
 @end
 
 @implementation PGGraphPlacesResolver
 
-+ (id)_businessItemsAtCoordinate:(CLLocationCoordinate2D)a3 inCache:(id)a4
++ (id)_businessItemsAtCoordinate:(CLLocationCoordinate2D)coordinate inCache:(id)cache
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = a4;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  cacheCopy = cache;
   v18.latitude = latitude;
   v18.longitude = longitude;
   v7 = CLLocationCoordinate2DIsValid(v18);
@@ -20,11 +20,11 @@
   if (v7)
   {
     v9 = objc_alloc(MEMORY[0x277CBFBC8]);
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 initWithCenter:v11 radius:latitude identifier:{longitude, 100.0}];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [v9 initWithCenter:uUIDString radius:latitude identifier:{longitude, 100.0}];
 
-    v13 = [v6 businessItemsForRegion:v12];
+    v13 = [cacheCopy businessItemsForRegion:v12];
     v14 = v13;
     if (v13)
     {
@@ -42,29 +42,29 @@
   return v8;
 }
 
-+ (id)_clusteredRegionsFromFeeder:(id)a3
++ (id)_clusteredRegionsFromFeeder:(id)feeder
 {
-  v3 = [a3 allItems];
-  v4 = [MEMORY[0x277D3AD58] performClustering:0 dataset:v3 progressBlock:&__block_literal_global_47222];
-  v5 = [v4 allKeys];
+  allItems = [feeder allItems];
+  v4 = [MEMORY[0x277D3AD58] performClustering:0 dataset:allItems progressBlock:&__block_literal_global_47222];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
-+ (id)resolvedPlaceForRegion:(id)a3 withPlaceItems:(id)a4
++ (id)resolvedPlaceForRegion:(id)region withPlaceItems:(id)items
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  regionCopy = region;
+  itemsCopy = items;
   v7 = [MEMORY[0x277CBEB58] set];
-  [v5 center];
+  [regionCopy center];
   v9 = v8;
   v11 = v10;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v13)
   {
@@ -80,18 +80,18 @@
         }
 
         v17 = *(*(&v41 + 1) + 8 * i);
-        v18 = [v17 categoryNames];
-        if ([v18 count])
+        categoryNames = [v17 categoryNames];
+        if ([categoryNames count])
         {
-          v19 = [v17 region];
-          [v19 center];
+          region = [v17 region];
+          [region center];
           v21 = v20;
           v23 = v22;
-          v24 = [v19 containsCoordinate:{v9, v11}];
-          v25 = [v5 containsCoordinate:{v21, v23}];
+          v24 = [region containsCoordinate:{v9, v11}];
+          v25 = [regionCopy containsCoordinate:{v21, v23}];
           if ((v24 & 1) != 0 || v25)
           {
-            [v7 addObjectsFromArray:v18];
+            [v7 addObjectsFromArray:categoryNames];
           }
         }
       }
@@ -139,10 +139,10 @@
   return v26;
 }
 
-+ (id)poiStringFromSpatialLookupCategory:(int64_t)a3
++ (id)poiStringFromSpatialLookupCategory:(int64_t)category
 {
   v3 = 0;
-  switch(a3)
+  switch(category)
   {
     case 0:
     case 2:
@@ -196,15 +196,15 @@
   return v3;
 }
 
-+ (id)resolvePlacesForMomentNode:(id)a3 feeder:(id)a4 poiCache:(id)a5
++ (id)resolvePlacesForMomentNode:(id)node feeder:(id)feeder poiCache:(id)cache
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
-  if (v6)
+  feederCopy = feeder;
+  cacheCopy = cache;
+  if (feederCopy)
   {
-    v8 = [objc_opt_class() _clusteredRegionsFromFeeder:v6];
-    v9 = [MEMORY[0x277CBEB18] array];
+    v8 = [objc_opt_class() _clusteredRegionsFromFeeder:feederCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -227,11 +227,11 @@
           v15 = *(*(&v21 + 1) + 8 * i);
           v16 = objc_opt_class();
           [v15 center];
-          v17 = [v16 _businessItemsAtCoordinate:v7 inCache:?];
+          v17 = [v16 _businessItemsAtCoordinate:cacheCopy inCache:?];
           if ([v17 count])
           {
             v18 = [objc_opt_class() resolvedPlaceForRegion:v15 withPlaceItems:v17];
-            [v9 addObjectsFromArray:v18];
+            [array addObjectsFromArray:v18];
           }
         }
 
@@ -244,12 +244,12 @@
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
 @end

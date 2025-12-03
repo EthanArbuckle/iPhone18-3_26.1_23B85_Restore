@@ -1,128 +1,128 @@
 @interface BMPBPersonEntity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAddresses:(id)a3;
-- (void)addAttributes:(id)a3;
-- (void)addEmailAddresses:(id)a3;
-- (void)addNames:(id)a3;
-- (void)addPhoneNumbers:(id)a3;
-- (void)addSocialMediaHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAddresses:(id)addresses;
+- (void)addAttributes:(id)attributes;
+- (void)addEmailAddresses:(id)addresses;
+- (void)addNames:(id)names;
+- (void)addPhoneNumbers:(id)numbers;
+- (void)addSocialMediaHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBPersonEntity
 
-- (void)addNames:(id)a3
+- (void)addNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   names = self->_names;
-  v8 = v4;
+  v8 = namesCopy;
   if (!names)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_names;
     self->_names = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     names = self->_names;
   }
 
-  [(NSMutableArray *)names addObject:v4];
+  [(NSMutableArray *)names addObject:namesCopy];
 }
 
-- (void)addEmailAddresses:(id)a3
+- (void)addEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!emailAddresses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_emailAddresses;
     self->_emailAddresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSMutableArray *)emailAddresses addObject:v4];
+  [(NSMutableArray *)emailAddresses addObject:addressesCopy];
 }
 
-- (void)addAddresses:(id)a3
+- (void)addAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   addresses = self->_addresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!addresses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_addresses;
     self->_addresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     addresses = self->_addresses;
   }
 
-  [(NSMutableArray *)addresses addObject:v4];
+  [(NSMutableArray *)addresses addObject:addressesCopy];
 }
 
-- (void)addPhoneNumbers:(id)a3
+- (void)addPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!phoneNumbers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_phoneNumbers;
     self->_phoneNumbers = v6;
 
-    v4 = v8;
+    numbersCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSMutableArray *)phoneNumbers addObject:v4];
+  [(NSMutableArray *)phoneNumbers addObject:numbersCopy];
 }
 
-- (void)addSocialMediaHandles:(id)a3
+- (void)addSocialMediaHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   socialMediaHandles = self->_socialMediaHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!socialMediaHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_socialMediaHandles;
     self->_socialMediaHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     socialMediaHandles = self->_socialMediaHandles;
   }
 
-  [(NSMutableArray *)socialMediaHandles addObject:v4];
+  [(NSMutableArray *)socialMediaHandles addObject:handlesCopy];
 }
 
-- (void)addAttributes:(id)a3
+- (void)addAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   attributes = self->_attributes;
-  v8 = v4;
+  v8 = attributesCopy;
   if (!attributes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_attributes;
     self->_attributes = v6;
 
-    v4 = v8;
+    attributesCopy = v8;
     attributes = self->_attributes;
   }
 
-  [(NSMutableArray *)attributes addObject:v4];
+  [(NSMutableArray *)attributes addObject:attributesCopy];
 }
 
 - (id)description
@@ -131,8 +131,8 @@
   v8.receiver = self;
   v8.super_class = BMPBPersonEntity;
   v4 = [(BMPBPersonEntity *)&v8 description];
-  v5 = [(BMPBPersonEntity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBPersonEntity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -140,7 +140,7 @@
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_names count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_names, "count")}];
@@ -163,8 +163,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v40 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
@@ -173,37 +173,37 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"names"];
+    [dictionary setObject:v4 forKey:@"names"];
   }
 
   customId = self->_customId;
   if (customId)
   {
-    [v3 setObject:customId forKey:@"customId"];
+    [dictionary setObject:customId forKey:@"customId"];
   }
 
   contactId = self->_contactId;
   if (contactId)
   {
-    [v3 setObject:contactId forKey:@"contactId"];
+    [dictionary setObject:contactId forKey:@"contactId"];
   }
 
   emailAddresses = self->_emailAddresses;
   if (emailAddresses)
   {
-    [v3 setObject:emailAddresses forKey:@"emailAddresses"];
+    [dictionary setObject:emailAddresses forKey:@"emailAddresses"];
   }
 
   addresses = self->_addresses;
   if (addresses)
   {
-    [v3 setObject:addresses forKey:@"addresses"];
+    [dictionary setObject:addresses forKey:@"addresses"];
   }
 
   phoneNumbers = self->_phoneNumbers;
   if (phoneNumbers)
   {
-    [v3 setObject:phoneNumbers forKey:@"phoneNumbers"];
+    [dictionary setObject:phoneNumbers forKey:@"phoneNumbers"];
   }
 
   if ([(NSMutableArray *)self->_socialMediaHandles count])
@@ -228,8 +228,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v36 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v36 objects:v45 count:16];
@@ -238,7 +238,7 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKey:@"socialMediaHandles"];
+    [dictionary setObject:v16 forKey:@"socialMediaHandles"];
   }
 
   if ([(NSMutableArray *)self->_attributes count])
@@ -263,8 +263,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v32 + 1) + 8 * k) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v32 + 1) + 8 * k) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v32 objects:v44 count:16];
@@ -273,18 +273,18 @@
       while (v26);
     }
 
-    [v3 setObject:v23 forKey:@"attributes"];
+    [dictionary setObject:v23 forKey:@"attributes"];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -490,114 +490,114 @@
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v28 = a3;
+  toCopy = to;
   if ([(BMPBPersonEntity *)self namesCount])
   {
-    [v28 clearNames];
-    v4 = [(BMPBPersonEntity *)self namesCount];
-    if (v4)
+    [toCopy clearNames];
+    namesCount = [(BMPBPersonEntity *)self namesCount];
+    if (namesCount)
     {
-      v5 = v4;
+      v5 = namesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBPersonEntity *)self namesAtIndex:i];
-        [v28 addNames:v7];
+        [toCopy addNames:v7];
       }
     }
   }
 
   if (self->_customId)
   {
-    [v28 setCustomId:?];
+    [toCopy setCustomId:?];
   }
 
   if (self->_contactId)
   {
-    [v28 setContactId:?];
+    [toCopy setContactId:?];
   }
 
   if ([(BMPBPersonEntity *)self emailAddressesCount])
   {
-    [v28 clearEmailAddresses];
-    v8 = [(BMPBPersonEntity *)self emailAddressesCount];
-    if (v8)
+    [toCopy clearEmailAddresses];
+    emailAddressesCount = [(BMPBPersonEntity *)self emailAddressesCount];
+    if (emailAddressesCount)
     {
-      v9 = v8;
+      v9 = emailAddressesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(BMPBPersonEntity *)self emailAddressesAtIndex:j];
-        [v28 addEmailAddresses:v11];
+        [toCopy addEmailAddresses:v11];
       }
     }
   }
 
   if ([(BMPBPersonEntity *)self addressesCount])
   {
-    [v28 clearAddresses];
-    v12 = [(BMPBPersonEntity *)self addressesCount];
-    if (v12)
+    [toCopy clearAddresses];
+    addressesCount = [(BMPBPersonEntity *)self addressesCount];
+    if (addressesCount)
     {
-      v13 = v12;
+      v13 = addressesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(BMPBPersonEntity *)self addressesAtIndex:k];
-        [v28 addAddresses:v15];
+        [toCopy addAddresses:v15];
       }
     }
   }
 
   if ([(BMPBPersonEntity *)self phoneNumbersCount])
   {
-    [v28 clearPhoneNumbers];
-    v16 = [(BMPBPersonEntity *)self phoneNumbersCount];
-    if (v16)
+    [toCopy clearPhoneNumbers];
+    phoneNumbersCount = [(BMPBPersonEntity *)self phoneNumbersCount];
+    if (phoneNumbersCount)
     {
-      v17 = v16;
+      v17 = phoneNumbersCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(BMPBPersonEntity *)self phoneNumbersAtIndex:m];
-        [v28 addPhoneNumbers:v19];
+        [toCopy addPhoneNumbers:v19];
       }
     }
   }
 
   if ([(BMPBPersonEntity *)self socialMediaHandlesCount])
   {
-    [v28 clearSocialMediaHandles];
-    v20 = [(BMPBPersonEntity *)self socialMediaHandlesCount];
-    if (v20)
+    [toCopy clearSocialMediaHandles];
+    socialMediaHandlesCount = [(BMPBPersonEntity *)self socialMediaHandlesCount];
+    if (socialMediaHandlesCount)
     {
-      v21 = v20;
+      v21 = socialMediaHandlesCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(BMPBPersonEntity *)self socialMediaHandlesAtIndex:n];
-        [v28 addSocialMediaHandles:v23];
+        [toCopy addSocialMediaHandles:v23];
       }
     }
   }
 
   if ([(BMPBPersonEntity *)self attributesCount])
   {
-    [v28 clearAttributes];
-    v24 = [(BMPBPersonEntity *)self attributesCount];
-    if (v24)
+    [toCopy clearAttributes];
+    attributesCount = [(BMPBPersonEntity *)self attributesCount];
+    if (attributesCount)
     {
-      v25 = v24;
+      v25 = attributesCount;
       for (ii = 0; ii != v25; ++ii)
       {
         v27 = [(BMPBPersonEntity *)self attributesAtIndex:ii];
-        [v28 addAttributes:v27];
+        [toCopy addAttributes:v27];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v78 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
@@ -618,7 +618,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v68 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v68 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addNames:v11];
 
         ++v10;
@@ -631,11 +631,11 @@
     while (v8);
   }
 
-  v12 = [(NSString *)self->_customId copyWithZone:a3];
+  v12 = [(NSString *)self->_customId copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_contactId copyWithZone:a3];
+  v14 = [(NSString *)self->_contactId copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
@@ -659,7 +659,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v64 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v64 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addEmailAddresses:v21];
 
         ++v20;
@@ -692,7 +692,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v60 + 1) + 8 * v26) copyWithZone:a3];
+        v27 = [*(*(&v60 + 1) + 8 * v26) copyWithZone:zone];
         [v5 addAddresses:v27];
 
         ++v26;
@@ -725,7 +725,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v56 + 1) + 8 * v32) copyWithZone:a3];
+        v33 = [*(*(&v56 + 1) + 8 * v32) copyWithZone:zone];
         [v5 addPhoneNumbers:v33];
 
         ++v32;
@@ -758,7 +758,7 @@
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v52 + 1) + 8 * v38) copyWithZone:a3];
+        v39 = [*(*(&v52 + 1) + 8 * v38) copyWithZone:zone];
         [v5 addSocialMediaHandles:v39];
 
         ++v38;
@@ -791,7 +791,7 @@
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v48 + 1) + 8 * v44) copyWithZone:{a3, v48}];
+        v45 = [*(*(&v48 + 1) + 8 * v44) copyWithZone:{zone, v48}];
         [v5 addAttributes:v45];
 
         ++v44;
@@ -808,13 +808,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((names = self->_names, !(names | v4[6])) || -[NSMutableArray isEqual:](names, "isEqual:")) && ((customId = self->_customId, !(customId | v4[4])) || -[NSString isEqual:](customId, "isEqual:")) && ((contactId = self->_contactId, !(contactId | v4[3])) || -[NSString isEqual:](contactId, "isEqual:")) && ((emailAddresses = self->_emailAddresses, !(emailAddresses | v4[5])) || -[NSMutableArray isEqual:](emailAddresses, "isEqual:")) && ((addresses = self->_addresses, !(addresses | v4[1])) || -[NSMutableArray isEqual:](addresses, "isEqual:")) && ((phoneNumbers = self->_phoneNumbers, !(phoneNumbers | v4[7])) || -[NSMutableArray isEqual:](phoneNumbers, "isEqual:")) && ((socialMediaHandles = self->_socialMediaHandles, !(socialMediaHandles | v4[8])) || -[NSMutableArray isEqual:](socialMediaHandles, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((names = self->_names, !(names | equalCopy[6])) || -[NSMutableArray isEqual:](names, "isEqual:")) && ((customId = self->_customId, !(customId | equalCopy[4])) || -[NSString isEqual:](customId, "isEqual:")) && ((contactId = self->_contactId, !(contactId | equalCopy[3])) || -[NSString isEqual:](contactId, "isEqual:")) && ((emailAddresses = self->_emailAddresses, !(emailAddresses | equalCopy[5])) || -[NSMutableArray isEqual:](emailAddresses, "isEqual:")) && ((addresses = self->_addresses, !(addresses | equalCopy[1])) || -[NSMutableArray isEqual:](addresses, "isEqual:")) && ((phoneNumbers = self->_phoneNumbers, !(phoneNumbers | equalCopy[7])) || -[NSMutableArray isEqual:](phoneNumbers, "isEqual:")) && ((socialMediaHandles = self->_socialMediaHandles, !(socialMediaHandles | equalCopy[8])) || -[NSMutableArray isEqual:](socialMediaHandles, "isEqual:")))
   {
     attributes = self->_attributes;
-    if (attributes | v4[2])
+    if (attributes | equalCopy[2])
     {
       v13 = [(NSMutableArray *)attributes isEqual:?];
     }
@@ -845,15 +845,15 @@
   return v9 ^ [(NSMutableArray *)self->_attributes hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v66 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v5 = v4[6];
+  v5 = fromCopy[6];
   v6 = [v5 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v6)
   {
@@ -877,12 +877,12 @@
     while (v7);
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(BMPBPersonEntity *)self setCustomId:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(BMPBPersonEntity *)self setContactId:?];
   }
@@ -891,7 +891,7 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v10 = v4[5];
+  v10 = fromCopy[5];
   v11 = [v10 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v11)
   {
@@ -919,7 +919,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v15 = v4[1];
+  v15 = fromCopy[1];
   v16 = [v15 countByEnumeratingWithState:&v48 objects:v63 count:16];
   if (v16)
   {
@@ -947,7 +947,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v20 = v4[7];
+  v20 = fromCopy[7];
   v21 = [v20 countByEnumeratingWithState:&v44 objects:v62 count:16];
   if (v21)
   {
@@ -975,7 +975,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = v4[8];
+  v25 = fromCopy[8];
   v26 = [v25 countByEnumeratingWithState:&v40 objects:v61 count:16];
   if (v26)
   {
@@ -1003,7 +1003,7 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v30 = v4[2];
+  v30 = fromCopy[2];
   v31 = [v30 countByEnumeratingWithState:&v36 objects:v60 count:16];
   if (v31)
   {

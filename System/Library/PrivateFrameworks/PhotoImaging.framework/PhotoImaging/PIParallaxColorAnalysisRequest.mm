@@ -1,6 +1,6 @@
 @interface PIParallaxColorAnalysisRequest
 - (CGRect)normalizedClipRect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
 @end
@@ -27,16 +27,16 @@
   return [(_PIParallaxColorAnalysisJob *)v3 initWithParallaxColorAnalysisRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = PIParallaxColorAnalysisRequest;
-  v4 = [(NURenderRequest *)&v14 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v14 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxColorAnalysisRequest *)self segmentationMatte];
+    segmentationMatte = [(PIParallaxColorAnalysisRequest *)self segmentationMatte];
     v6 = v4[21];
-    v4[21] = v5;
+    v4[21] = segmentationMatte;
 
     *(v4 + 160) = [(PIParallaxColorAnalysisRequest *)self analyzeBackground];
     *(v4 + 161) = [(PIParallaxColorAnalysisRequest *)self analyzeHeadroom];

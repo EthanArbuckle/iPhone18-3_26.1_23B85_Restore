@@ -1,6 +1,6 @@
 @interface LocalNewsChannelService
 - (NSArray)lastKnownChannelIDs;
-- (void)setLastKnownChannelIDs:(id)a3;
+- (void)setLastKnownChannelIDs:(id)ds;
 @end
 
 @implementation LocalNewsChannelService
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (void)setLastKnownChannelIDs:(id)a3
+- (void)setLastKnownChannelIDs:(id)ds
 {
   sub_219BF5924();
 

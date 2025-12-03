@@ -8,26 +8,26 @@
 {
   v7.receiver = self;
   v7.super_class = FIUIActionButtonAccessibility;
-  v3 = [(FIUIActionButtonAccessibility *)&v7 accessibilityPath];
-  if ([(FIUIActionButtonAccessibility *)self _accessibilityIsFKARunningForFocusItem]&& !v3)
+  accessibilityPath = [(FIUIActionButtonAccessibility *)&v7 accessibilityPath];
+  if ([(FIUIActionButtonAccessibility *)self _accessibilityIsFKARunningForFocusItem]&& !accessibilityPath)
   {
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 _backgroundView];
+    _backgroundView = [v4 _backgroundView];
 
-    if ([v5 _accessibilityViewIsVisible])
+    if ([_backgroundView _accessibilityViewIsVisible])
     {
-      [v5 accessibilityFrame];
-      v3 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
+      [_backgroundView accessibilityFrame];
+      accessibilityPath = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
     }
 
     else
     {
-      v3 = 0;
+      accessibilityPath = 0;
     }
   }
 
-  return v3;
+  return accessibilityPath;
 }
 
 @end

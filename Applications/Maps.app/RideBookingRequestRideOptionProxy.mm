@@ -1,13 +1,13 @@
 @interface RideBookingRequestRideOptionProxy
-- (RideBookingRequestRideOptionProxy)initWithDelegate:(id)a3;
+- (RideBookingRequestRideOptionProxy)initWithDelegate:(id)delegate;
 - (RideBookingRequestRideOptionProxyDelegate)delegate;
-- (void)_updateAnalyticsWithRequestRideStatus:(id)a3;
-- (void)_updateAnalyticsWithRideStatus:(id)a3;
-- (void)requestRideStatusDidChange:(id)a3;
-- (void)requestRideWithCompletion:(id)a3;
-- (void)updateRequestRidePassengers:(id)a3;
-- (void)updateRequestRidePaymentMethod:(id)a3;
-- (void)updateStartingWaypointCoordinate:(CLLocationCoordinate2D)a3;
+- (void)_updateAnalyticsWithRequestRideStatus:(id)status;
+- (void)_updateAnalyticsWithRideStatus:(id)status;
+- (void)requestRideStatusDidChange:(id)change;
+- (void)requestRideWithCompletion:(id)completion;
+- (void)updateRequestRidePassengers:(id)passengers;
+- (void)updateRequestRidePaymentMethod:(id)method;
+- (void)updateStartingWaypointCoordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation RideBookingRequestRideOptionProxy
@@ -19,17 +19,17 @@
   return WeakRetained;
 }
 
-- (void)_updateAnalyticsWithRideStatus:(id)a3
+- (void)_updateAnalyticsWithRideStatus:(id)status
 {
-  v4 = a3;
-  v5 = [v4 application];
-  v6 = [v5 identifier];
-  v7 = [v4 identifier];
-  v8 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:v6 rideIdentifier:v7];
+  statusCopy = status;
+  application = [statusCopy application];
+  identifier = [application identifier];
+  identifier2 = [statusCopy identifier];
+  v8 = [RideBookingAccessProxy rideBookingCurrentBookedSessionForAppIdentifier:identifier rideIdentifier:identifier2];
 
-  v9 = [v4 application];
-  v10 = [v9 version];
-  [v8 setAppVersion:v10];
+  application2 = [statusCopy application];
+  version = [application2 version];
+  [v8 setAppVersion:version];
 
   [v8 setNumberOfEnabledExtensions:{-[RidesharingAnalyticsBookingSession numberOfEnabledExtensions](self->_analyticsBookingSession, "numberOfEnabledExtensions")}];
   [v8 setNumberOfInstalledExtensions:{-[RidesharingAnalyticsBookingSession numberOfInstalledExtensions](self->_analyticsBookingSession, "numberOfInstalledExtensions")}];
@@ -37,8 +37,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v4 intentResponseFailures];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  intentResponseFailures = [statusCopy intentResponseFailures];
+  v12 = [intentResponseFailures countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -50,7 +50,7 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(intentResponseFailures);
         }
 
         [v8 captureIntent:3 withFailure:{objc_msgSend(*(*(&v20 + 1) + 8 * v15), "failure")}];
@@ -58,17 +58,17 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [intentResponseFailures countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
   }
 
-  if ([v4 isValidRide])
+  if ([statusCopy isValidRide])
   {
     [v8 setBookedUsingMaps:1];
-    v16 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-    v17 = v16;
+    analyticsBookingSession = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+    v17 = analyticsBookingSession;
     v18 = 4;
     v19 = 1;
   }
@@ -76,32 +76,32 @@
   else
   {
     [v8 endSession];
-    v16 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-    v17 = v16;
+    analyticsBookingSession = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+    v17 = analyticsBookingSession;
     v18 = 3;
     v19 = 5;
   }
 
-  [v16 endSessionOnView:v18 state:v19];
+  [analyticsBookingSession endSessionOnView:v18 state:v19];
 }
 
-- (void)_updateAnalyticsWithRequestRideStatus:(id)a3
+- (void)_updateAnalyticsWithRequestRideStatus:(id)status
 {
-  v14 = a3;
-  v4 = [v14 origin];
-  v5 = [v4 location];
-  v6 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-  [v6 setOrigin:v5];
+  statusCopy = status;
+  origin = [statusCopy origin];
+  location = [origin location];
+  analyticsBookingSession = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+  [analyticsBookingSession setOrigin:location];
 
-  v7 = [v14 destination];
-  v8 = [v7 location];
-  v9 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-  [v9 setDestination:v8];
+  destination = [statusCopy destination];
+  location2 = [destination location];
+  analyticsBookingSession2 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+  [analyticsBookingSession2 setDestination:location2];
 
   v10 = objc_opt_new();
   [v10 setIntent:2];
   [v10 setFailure:0];
-  v11 = [v14 requestRideStatusError] - 1;
+  v11 = [statusCopy requestRideStatusError] - 1;
   if (v11 <= 7)
   {
     [v10 setFailure:dword_101215444[v11]];
@@ -109,38 +109,38 @@
 
   if ([v10 failure])
   {
-    v12 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-    [v12 captureIntent:objc_msgSend(v10 withFailure:{"intent"), objc_msgSend(v10, "failure")}];
+    analyticsBookingSession3 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+    [analyticsBookingSession3 captureIntent:objc_msgSend(v10 withFailure:{"intent"), objc_msgSend(v10, "failure")}];
   }
 
-  if ([v14 requestRideStatusError])
+  if ([statusCopy requestRideStatusError])
   {
-    v13 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-    [v13 endSessionOnView:2 state:5];
+    analyticsBookingSession4 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+    [analyticsBookingSession4 endSessionOnView:2 state:5];
   }
 }
 
-- (void)requestRideStatusDidChange:(id)a3
+- (void)requestRideStatusDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100B2242C;
   block[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)requestRideWithCompletion:(id)a3
+- (void)requestRideWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
     v5 = +[RideBookingAccessProxy coordinator];
@@ -149,7 +149,7 @@
     v7[2] = sub_100B22738;
     v7[3] = &unk_101638528;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = completionCopy;
     [v5 requestRideWithCompletion:v7];
 
     objc_destroyWeak(&v9);
@@ -174,44 +174,44 @@
   }
 }
 
-- (void)updateRequestRidePassengers:(id)a3
+- (void)updateRequestRidePassengers:(id)passengers
 {
-  v3 = a3;
+  passengersCopy = passengers;
   v4 = +[RideBookingAccessProxy coordinator];
-  [v4 updateRequestRidePassengers:v3];
+  [v4 updateRequestRidePassengers:passengersCopy];
 }
 
-- (void)updateRequestRidePaymentMethod:(id)a3
+- (void)updateRequestRidePaymentMethod:(id)method
 {
-  v4 = a3;
-  v5 = [v4 intentsPaymentMethod];
-  v6 = [v5 type] == 8;
+  methodCopy = method;
+  intentsPaymentMethod = [methodCopy intentsPaymentMethod];
+  v6 = [intentsPaymentMethod type] == 8;
 
-  v7 = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
-  [v7 setPaymentIsApplePay:v6];
+  analyticsBookingSession = [(RideBookingRequestRideOptionProxy *)self analyticsBookingSession];
+  [analyticsBookingSession setPaymentIsApplePay:v6];
 
   v8 = +[RideBookingAccessProxy coordinator];
-  [v8 updateRequestRidePaymentMethod:v4];
+  [v8 updateRequestRidePaymentMethod:methodCopy];
 }
 
-- (void)updateStartingWaypointCoordinate:(CLLocationCoordinate2D)a3
+- (void)updateStartingWaypointCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v5 = +[RideBookingAccessProxy coordinator];
   [v5 updateRequestRideStartingWaypointCoordinate:{latitude, longitude}];
 }
 
-- (RideBookingRequestRideOptionProxy)initWithDelegate:(id)a3
+- (RideBookingRequestRideOptionProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = RideBookingRequestRideOptionProxy;
   v5 = [(RideBookingRequestRideOptionProxy *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [RideBookingAccessProxy rideBookingCurrentRideBookingSessionCreateIfNecessary:0];
     analyticsBookingSession = v6->_analyticsBookingSession;
     v6->_analyticsBookingSession = v7;

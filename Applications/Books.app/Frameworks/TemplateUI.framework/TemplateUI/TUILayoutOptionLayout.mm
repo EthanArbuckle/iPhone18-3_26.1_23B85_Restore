@@ -1,19 +1,19 @@
 @interface TUILayoutOptionLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
-- (TUILayoutOptionLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUILayoutOptionLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (double)computedScale;
 - (void)computeLayout;
-- (void)setScale:(double)a3;
+- (void)setScale:(double)scale;
 @end
 
 @implementation TUILayoutOptionLayout
 
-- (TUILayoutOptionLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUILayoutOptionLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TUILayoutOptionLayout;
-  result = [(TUILayout *)&v6 initWithModel:a3 parent:a4 controller:a5];
+  result = [(TUILayout *)&v6 initWithModel:model parent:parent controller:controller];
   if (result)
   {
     result->_scale = 1.0;
@@ -30,50 +30,50 @@
   return v3 * self->_scale;
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(TUILayout *)self onComputedScaleDidChange];
   }
 }
 
 - (void)computeLayout
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
   [(TUILayout *)self containingWidth];
-  [v4 setContainingWidth:?];
+  [firstObject setContainingWidth:?];
   [(TUILayout *)self containingHeight];
-  [v4 setContainingHeight:?];
+  [firstObject setContainingHeight:?];
   [(TUILayout *)self flexedWidth];
-  [v4 setFlexedWidth:?];
+  [firstObject setFlexedWidth:?];
   [(TUILayout *)self flexedHeight];
-  [v4 setFlexedHeight:?];
-  [v4 validateLayout];
-  [v4 setComputedOrigin:{CGPointZero.x, CGPointZero.y}];
-  [v4 computedTransformedSize];
+  [firstObject setFlexedHeight:?];
+  [firstObject validateLayout];
+  [firstObject setComputedOrigin:{CGPointZero.x, CGPointZero.y}];
+  [firstObject computedTransformedSize];
   [(TUILayout *)self setComputedNaturalSize:?];
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 validatedIntrinsicWidthConsideringSpecified];
-  return v5;
+  validatedIntrinsicWidthConsideringSpecified = [firstObject validatedIntrinsicWidthConsideringSpecified];
+  return validatedIntrinsicWidthConsideringSpecified;
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight
 {
-  v3 = [(TUILayout *)self children];
-  v4 = [v3 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  v5 = [v4 validatedIntrinsicHeightConsideringSpecified];
-  return v5;
+  validatedIntrinsicHeightConsideringSpecified = [firstObject validatedIntrinsicHeightConsideringSpecified];
+  return validatedIntrinsicHeightConsideringSpecified;
 }
 
 @end

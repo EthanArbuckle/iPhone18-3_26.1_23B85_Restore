@@ -1,9 +1,9 @@
 @interface HDWorkoutEventCollector
 - (HDProfile)profile;
-- (HDWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4;
+- (HDWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate;
 - (HDWorkoutEventCollectorDelegate)delegate;
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4;
-- (void)startWithSessionId:(id)a3;
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion;
+- (void)startWithSessionId:(id)id;
 - (void)stop;
 @end
 
@@ -25,11 +25,11 @@
   {
     sessionId = self->_sessionId;
     v5 = v3;
-    v6 = [(NSUUID *)sessionId UUIDString];
+    uUIDString = [(NSUUID *)sessionId UUIDString];
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = uUIDString;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%@: Stopping with session ID %@", &v9, 0x16u);
   }
 
@@ -39,51 +39,51 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HDWorkoutEventCollector)initWithProfile:(id)a3 delegate:(id)a4
+- (HDWorkoutEventCollector)initWithProfile:(id)profile delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = HDWorkoutEventCollector;
   v8 = [(HDWorkoutEventCollector *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-- (void)startWithSessionId:(id)a3
+- (void)startWithSessionId:(id)id
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NSUUID *)v4 UUIDString];
+    uUIDString = [(NSUUID *)idCopy UUIDString];
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v7;
+    v13 = uUIDString;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%@: Starting with session ID %@", &v10, 0x16u);
   }
 
   sessionId = self->_sessionId;
-  self->_sessionId = v4;
+  self->_sessionId = idCopy;
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPendingEventsThroughDate:(id)a3 completion:(id)a4
+- (void)requestPendingEventsThroughDate:(id)date completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 

@@ -2,7 +2,7 @@
 + (id)_queue;
 - (NSString)originAppName;
 - (SGEvent)suggestedEvent;
-- (void)updateSuggestedEventWithEventStore:(id)a3;
+- (void)updateSuggestedEventWithEventStore:(id)store;
 @end
 
 @implementation EKCalendarSuggestionNotification
@@ -12,14 +12,14 @@
   originAppName = self->_originAppName;
   if (!originAppName)
   {
-    v4 = [(EKCalendarSuggestionNotification *)self suggestedEvent];
-    v5 = [v4 origin];
-    v6 = [v5 bundleId];
+    suggestedEvent = [(EKCalendarSuggestionNotification *)self suggestedEvent];
+    origin = [suggestedEvent origin];
+    bundleId = [origin bundleId];
 
-    v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
-    v8 = [v7 localizedName];
+    v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:bundleId allowPlaceholder:0 error:0];
+    localizedName = [v7 localizedName];
     v9 = self->_originAppName;
-    self->_originAppName = v8;
+    self->_originAppName = localizedName;
 
     originAppName = self->_originAppName;
   }
@@ -46,18 +46,18 @@ uint64_t __42__EKCalendarSuggestionNotification__queue__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateSuggestedEventWithEventStore:(id)a3
+- (void)updateSuggestedEventWithEventStore:(id)store
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _queue];
+  storeCopy = store;
+  _queue = [objc_opt_class() _queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__EKCalendarSuggestionNotification_updateSuggestedEventWithEventStore___block_invoke;
   v7[3] = &unk_1E77FD580;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = storeCopy;
+  v6 = storeCopy;
+  dispatch_async(_queue, v7);
 }
 
 void __71__EKCalendarSuggestionNotification_updateSuggestedEventWithEventStore___block_invoke(uint64_t a1)
@@ -150,8 +150,8 @@ void __71__EKCalendarSuggestionNotification_updateSuggestedEventWithEventStore__
   suggestedEvent = self->_suggestedEvent;
   if (!suggestedEvent)
   {
-    v4 = [objc_opt_class() _queue];
-    dispatch_sync(v4, &__block_literal_global_18_1);
+    _queue = [objc_opt_class() _queue];
+    dispatch_sync(_queue, &__block_literal_global_18_1);
 
     suggestedEvent = self->_suggestedEvent;
   }

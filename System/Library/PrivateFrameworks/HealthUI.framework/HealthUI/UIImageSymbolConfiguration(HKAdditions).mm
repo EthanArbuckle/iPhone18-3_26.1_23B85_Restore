@@ -6,8 +6,8 @@
 
 + (id)hk_medicationTrackingSymbolConfiguration
 {
-  v2 = [MEMORY[0x1E69DC888] hk_medicationTrackingKeyColor];
-  v3 = [a1 hk_prefersHierarchicalColorConfigurationWithColor:v2];
+  hk_medicationTrackingKeyColor = [MEMORY[0x1E69DC888] hk_medicationTrackingKeyColor];
+  v3 = [self hk_prefersHierarchicalColorConfigurationWithColor:hk_medicationTrackingKeyColor];
 
   return v3;
 }

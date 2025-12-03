@@ -19,10 +19,10 @@
   [v3 frame];
   v13 = v12;
   v14 = [(GuidedAccessDevicePINPane *)self safeUIViewForKey:@"_pinView"];
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v16)
+  if (userInterfaceIdiom)
   {
     v17 = 1;
   }
@@ -42,8 +42,8 @@
     v25 = v24 + -50.0;
     v5 = v5 + -50.0;
     v9 = v9 + 50.0;
-    v26 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [v3 setBackgroundColor:v26];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [v3 setBackgroundColor:tertiarySystemFillColor];
 
     v27 = v25;
     v7 = v23;

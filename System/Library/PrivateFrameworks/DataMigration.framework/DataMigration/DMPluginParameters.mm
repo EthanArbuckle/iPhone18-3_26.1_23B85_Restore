@@ -1,48 +1,48 @@
 @interface DMPluginParameters
-+ (id)backupDeviceUUIDFromDispositionSupersetOfContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (DMPluginParameters)initWithDispositionSupersetOfContext:(id)a3 backupDeviceUUID:(id)a4;
++ (id)backupDeviceUUIDFromDispositionSupersetOfContext:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (DMPluginParameters)initWithDispositionSupersetOfContext:(id)context backupDeviceUUID:(id)d;
 @end
 
 @implementation DMPluginParameters
 
-- (DMPluginParameters)initWithDispositionSupersetOfContext:(id)a3 backupDeviceUUID:(id)a4
+- (DMPluginParameters)initWithDispositionSupersetOfContext:(id)context backupDeviceUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = DMPluginParameters;
   v8 = [(DMPluginParameters *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(DMPluginParameters *)v8 setDispositionSupersetOfContext:v6];
-    [(DMPluginParameters *)v9 setBackupDeviceUUID:v7];
+    [(DMPluginParameters *)v8 setDispositionSupersetOfContext:contextCopy];
+    [(DMPluginParameters *)v9 setBackupDeviceUUID:dCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_4;
   }
 
-  v5 = [(DMPluginParameters *)self dispositionSupersetOfContext];
-  v6 = [v4 dispositionSupersetOfContext];
-  v7 = v6;
-  if (v5 == v6)
+  dispositionSupersetOfContext = [(DMPluginParameters *)self dispositionSupersetOfContext];
+  dispositionSupersetOfContext2 = [equalCopy dispositionSupersetOfContext];
+  v7 = dispositionSupersetOfContext2;
+  if (dispositionSupersetOfContext == dispositionSupersetOfContext2)
   {
   }
 
   else
   {
-    v8 = [(DMPluginParameters *)self dispositionSupersetOfContext];
-    v9 = [v4 dispositionSupersetOfContext];
-    v10 = [v8 isEqualToDictionary:v9];
+    dispositionSupersetOfContext3 = [(DMPluginParameters *)self dispositionSupersetOfContext];
+    dispositionSupersetOfContext4 = [equalCopy dispositionSupersetOfContext];
+    v10 = [dispositionSupersetOfContext3 isEqualToDictionary:dispositionSupersetOfContext4];
 
     if (!v10)
     {
@@ -52,27 +52,27 @@ LABEL_4:
     }
   }
 
-  v12 = [(DMPluginParameters *)self backupDeviceUUID];
-  v13 = [v4 backupDeviceUUID];
-  if (v12 == v13)
+  backupDeviceUUID = [(DMPluginParameters *)self backupDeviceUUID];
+  backupDeviceUUID2 = [equalCopy backupDeviceUUID];
+  if (backupDeviceUUID == backupDeviceUUID2)
   {
     v11 = 1;
   }
 
   else
   {
-    v14 = [(DMPluginParameters *)self backupDeviceUUID];
-    v15 = [v4 backupDeviceUUID];
-    v11 = [v14 isEqualToString:v15];
+    backupDeviceUUID3 = [(DMPluginParameters *)self backupDeviceUUID];
+    backupDeviceUUID4 = [equalCopy backupDeviceUUID];
+    v11 = [backupDeviceUUID3 isEqualToString:backupDeviceUUID4];
   }
 
 LABEL_10:
   return v11;
 }
 
-+ (id)backupDeviceUUIDFromDispositionSupersetOfContext:(id)a3
++ (id)backupDeviceUUIDFromDispositionSupersetOfContext:(id)context
 {
-  v3 = [a3 objectForKeyedSubscript:@"BackupDeviceUUID"];
+  v3 = [context objectForKeyedSubscript:@"BackupDeviceUUID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

@@ -1,24 +1,24 @@
 @interface CloudPendingChangesCoordinator
-- (BOOL)_savePendingChanges:(id)a3;
-- (CloudPendingChangesCoordinator)initWithConfiguration:(id)a3 prefix:(id)a4 loggable:(Class)a5;
+- (BOOL)_savePendingChanges:(id)changes;
+- (CloudPendingChangesCoordinator)initWithConfiguration:(id)configuration prefix:(id)prefix loggable:(Class)loggable;
 - (id)_pendingChanges;
-- (void)addPendingChange:(id)a3;
-- (void)processPendingChangesUsingLibrary:(id)a3;
-- (void)removeAllPendingChangesWithCompletion:(id)a3;
+- (void)addPendingChange:(id)change;
+- (void)processPendingChangesUsingLibrary:(id)library;
+- (void)removeAllPendingChangesWithCompletion:(id)completion;
 @end
 
 @implementation CloudPendingChangesCoordinator
 
-- (BOOL)_savePendingChanges:(id)a3
+- (BOOL)_savePendingChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 count];
+    v6 = [changesCopy count];
     pendingChangesPath = self->_pendingChangesPath;
     *buf = 134218498;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
     v18 = v6;
     v19 = 2112;
@@ -26,10 +26,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CloudPendingChangesCoordinator %p - Saving pending changes [%lu] - path=%@", buf, 0x20u);
   }
 
-  if ([v4 count])
+  if ([changesCopy count])
   {
     v14 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v14];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:changesCopy requiringSecureCoding:1 error:&v14];
     v9 = v14;
     if (v8)
     {
@@ -39,12 +39,12 @@
     else
     {
       loggable = self->_loggable;
-      v12 = [objc_opt_class() logCategory];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      logCategory = [objc_opt_class() logCategory];
+      if (os_log_type_enabled(logCategory, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v16 = v9;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to encode pending changes. err=%{public}@", buf, 0xCu);
+        selfCopy = v9;
+        _os_log_impl(&_mh_execute_header, logCategory, OS_LOG_TYPE_ERROR, "Failed to encode pending changes. err=%{public}@", buf, 0xCu);
       }
 
       v10 = 0;
@@ -67,7 +67,7 @@
   {
     pendingChangesPath = self->_pendingChangesPath;
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = pendingChangesPath;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CloudPendingChangesCoordinator %p - Retrieving pending changes - path=%@", buf, 0x16u);
@@ -90,12 +90,12 @@
       if (!v10)
       {
         loggable = self->_loggable;
-        v13 = [objc_opt_class() logCategory];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        logCategory = [objc_opt_class() logCategory];
+        if (os_log_type_enabled(logCategory, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v17 = v11;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to decode pending changes. err=%{public}@", buf, 0xCu);
+          selfCopy = v11;
+          _os_log_impl(&_mh_execute_header, logCategory, OS_LOG_TYPE_ERROR, "Failed to decode pending changes. err=%{public}@", buf, 0xCu);
         }
       }
     }
@@ -114,15 +114,15 @@
   return v10;
 }
 
-- (void)removeAllPendingChangesWithCompletion:(id)a3
+- (void)removeAllPendingChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     pendingChangesPath = self->_pendingChangesPath;
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
     v19 = pendingChangesPath;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CloudPendingChangesCoordinator %p - removeAllPendingChangesWithCompletion - path=%@", buf, 0x16u);
@@ -139,27 +139,27 @@
   block[2] = sub_1000E418C;
   block[3] = &unk_1001DF5F0;
   v14 = v9;
-  v15 = v4;
+  v15 = completionCopy;
   block[4] = self;
   v11 = v9;
-  v12 = v4;
+  v12 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)processPendingChangesUsingLibrary:(id)a3
+- (void)processPendingChangesUsingLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     pendingChangesPath = self->_pendingChangesPath;
-    v7 = [v4 libraryIdentifier];
+    libraryIdentifier = [libraryCopy libraryIdentifier];
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = pendingChangesPath;
     v21 = 2112;
-    v22 = v7;
+    v22 = libraryIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - processPendingChangesUsingLibrary - path=%@ - libraryIdentifier=%@", buf, 0x20u);
   }
 
@@ -174,22 +174,22 @@
   block[2] = sub_1000E4428;
   block[3] = &unk_1001DE918;
   block[4] = self;
-  v15 = v4;
+  v15 = libraryCopy;
   v16 = v10;
   v12 = v10;
-  v13 = v4;
+  v13 = libraryCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)addPendingChange:(id)a3
+- (void)addPendingChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     pendingChangesPath = self->_pendingChangesPath;
     *buf = 134218242;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = pendingChangesPath;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CloudPendingChangesCoordinator %p - addPendingChange: - path=%@", buf, 0x16u);
@@ -200,7 +200,7 @@
   v9 = [v7 initWithName:v8];
 
   [v9 beginTransaction];
-  if ([v4 isPersistent])
+  if ([changeCopy isPersistent])
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -208,7 +208,7 @@
     block[2] = sub_1000E4AF8;
     block[3] = &unk_1001DE918;
     block[4] = self;
-    v12 = v4;
+    v12 = changeCopy;
     v13 = v9;
     dispatch_async(queue, block);
   }
@@ -219,42 +219,42 @@
   }
 }
 
-- (CloudPendingChangesCoordinator)initWithConfiguration:(id)a3 prefix:(id)a4 loggable:(Class)a5
+- (CloudPendingChangesCoordinator)initWithConfiguration:(id)configuration prefix:(id)prefix loggable:(Class)loggable
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  prefixCopy = prefix;
   v32.receiver = self;
   v32.super_class = CloudPendingChangesCoordinator;
   v10 = [(CloudPendingChangesCoordinator *)&v32 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [configurationCopy copy];
     configuration = v10->_configuration;
     v10->_configuration = v11;
 
-    v13 = [NSString stringWithFormat:@"%@-CloudPendingChanges", v9];
+    prefixCopy = [NSString stringWithFormat:@"%@-CloudPendingChanges", prefixCopy];
     name = v10->_name;
-    v10->_name = v13;
+    v10->_name = prefixCopy;
 
-    v15 = [v8 userIdentity];
-    v16 = [v15 accountDSID];
-    v17 = v16;
+    userIdentity = [configurationCopy userIdentity];
+    accountDSID = [userIdentity accountDSID];
+    v17 = accountDSID;
     v18 = @"noDSID";
-    if (v16)
+    if (accountDSID)
     {
-      v18 = v16;
+      v18 = accountDSID;
     }
 
     v19 = v18;
 
-    v20 = [NSString stringWithFormat:@"com.apple.itunescloudd.pendingchanges.%@.%@", v9, v19];
+    v20 = [NSString stringWithFormat:@"com.apple.itunescloudd.pendingchanges.%@.%@", prefixCopy, v19];
 
     v21 = dispatch_queue_create([v20 UTF8String], 0);
     queue = v10->_queue;
     v10->_queue = v21;
 
-    v23 = [v8 userIdentity];
-    v24 = [ML3MusicLibrary musicLibraryForUserAccount:v23];
+    userIdentity2 = [configurationCopy userIdentity];
+    v24 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity2];
 
     v25 = [v24 pathForResourceFileOrFolder:25];
     v26 = [NSString stringWithFormat:@"%@.plist", v10->_name];
@@ -262,7 +262,7 @@
     pendingChangesPath = v10->_pendingChangesPath;
     v10->_pendingChangesPath = v27;
 
-    v10->_loggable = a5;
+    v10->_loggable = loggable;
     v29 = os_log_create("com.apple.amp.itunescloudd", "Default");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {

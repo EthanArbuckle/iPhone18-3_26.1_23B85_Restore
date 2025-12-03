@@ -1,39 +1,39 @@
 @interface _DPRandomizedBit
-+ (id)randomizedBit:(int64_t)a3 atIndex:(unint64_t)a4;
++ (id)randomizedBit:(int64_t)bit atIndex:(unint64_t)index;
 - (id)description;
-- (id)initBit:(int64_t)a3 atIndex:(unint64_t)a4;
+- (id)initBit:(int64_t)bit atIndex:(unint64_t)index;
 @end
 
 @implementation _DPRandomizedBit
 
-- (id)initBit:(int64_t)a3 atIndex:(unint64_t)a4
+- (id)initBit:(int64_t)bit atIndex:(unint64_t)index
 {
-  if (a3 == 1 || a3 == -1)
+  if (bit == 1 || bit == -1)
   {
     v9.receiver = self;
     v9.super_class = _DPRandomizedBit;
     v6 = [(_DPRandomizedBit *)&v9 init];
     if (v6)
     {
-      v6->_index = a4;
-      v6->_value = a3;
+      v6->_index = index;
+      v6->_value = bit;
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)randomizedBit:(int64_t)a3 atIndex:(unint64_t)a4
++ (id)randomizedBit:(int64_t)bit atIndex:(unint64_t)index
 {
-  v4 = [[a1 alloc] initBit:a3 atIndex:a4];
+  v4 = [[self alloc] initBit:bit atIndex:index];
 
   return v4;
 }

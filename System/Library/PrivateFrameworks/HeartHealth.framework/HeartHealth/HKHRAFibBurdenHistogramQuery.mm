@@ -1,16 +1,16 @@
 @interface HKHRAFibBurdenHistogramQuery
-- (HKHRAFibBurdenHistogramQuery)initWithResultsHandler:(id)a3;
-- (void)client_deliverHistogramResult:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKHRAFibBurdenHistogramQuery)initWithResultsHandler:(id)handler;
+- (void)client_deliverHistogramResult:(id)result queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKHRAFibBurdenHistogramQuery
 
-- (HKHRAFibBurdenHistogramQuery)initWithResultsHandler:(id)a3
+- (HKHRAFibBurdenHistogramQuery)initWithResultsHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC950]];
   v10.receiver = self;
   v10.super_class = HKHRAFibBurdenHistogramQuery;
@@ -18,7 +18,7 @@
 
   if (v6)
   {
-    v7 = MEMORY[0x22AAC4F80](v4);
+    v7 = MEMORY[0x22AAC4F80](handlerCopy);
     resultsHandler = v6->_resultsHandler;
     v6->_resultsHandler = v7;
   }
@@ -26,21 +26,21 @@
   return v6;
 }
 
-- (void)client_deliverHistogramResult:(id)a3 queryUUID:(id)a4
+- (void)client_deliverHistogramResult:(id)result queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  resultCopy = result;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HKHRAFibBurdenHistogramQuery_client_deliverHistogramResult_queryUUID___block_invoke;
   block[3] = &unk_27860AA48;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__HKHRAFibBurdenHistogramQuery_client_deliverHistogramResult_queryUUID___block_invoke(uint64_t a1)
@@ -85,21 +85,21 @@ uint64_t __72__HKHRAFibBurdenHistogramQuery_client_deliverHistogramResult_queryU
   return result;
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x22AAC4F80](self->_resultsHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__HKHRAFibBurdenHistogramQuery_queue_deliverError___block_invoke;
     block[3] = &unk_27860AA70;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -114,7 +114,7 @@ uint64_t __72__HKHRAFibBurdenHistogramQuery_client_deliverHistogramResult_queryU
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;

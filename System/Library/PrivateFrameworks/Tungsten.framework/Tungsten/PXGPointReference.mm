@@ -2,7 +2,7 @@
 - (CGPoint)point;
 - (PXGLayout)layout;
 - (PXGPointReference)init;
-- (PXGPointReference)initWithPoint:(CGPoint)a3 layout:(id)a4;
+- (PXGPointReference)initWithPoint:(CGPoint)point layout:(id)layout;
 - (void)invalidate;
 @end
 
@@ -27,23 +27,23 @@
 - (void)invalidate
 {
   self->_isValid = 0;
-  v3 = [(PXGPointReference *)self layout];
-  [v3 removePointReference:self];
+  layout = [(PXGPointReference *)self layout];
+  [layout removePointReference:self];
 }
 
 - (PXGPointReference)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGPointReference.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXGPointReference init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPointReference.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXGPointReference init]"}];
 
   abort();
 }
 
-- (PXGPointReference)initWithPoint:(CGPoint)a3 layout:(id)a4
+- (PXGPointReference)initWithPoint:(CGPoint)point layout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = PXGPointReference;
   v8 = [(PXGPointReference *)&v11 init];
@@ -52,7 +52,7 @@
   {
     v8->_point.x = x;
     v8->_point.y = y;
-    objc_storeWeak(&v8->_layout, v7);
+    objc_storeWeak(&v8->_layout, layoutCopy);
     v9->_isValid = 1;
   }
 

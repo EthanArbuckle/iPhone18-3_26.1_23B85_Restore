@@ -1,25 +1,25 @@
 @interface InterstitialViewController
-- (_TtC9MomentsUI26InterstitialViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9MomentsUI26InterstitialViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)toggleViewMode;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation InterstitialViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   InterstitialViewController.viewDidLoad()();
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  InterstitialViewController.willTransition(to:with:)(v6, a4);
+  selfCopy = self;
+  InterstitialViewController.willTransition(to:with:)(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
@@ -30,21 +30,21 @@
   swift_beginAccess();
   v4 = *(&self->super.super.super.isa + v3);
   *(&self->super.super.super.isa + v3) = v4 ^ 1;
-  v5 = self;
+  selfCopy = self;
   InterstitialViewController.viewMode.didset(v4);
 }
 
-- (_TtC9MomentsUI26InterstitialViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MomentsUI26InterstitialViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  InterstitialViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  InterstitialViewController.viewWillDisappear(_:)(disappear);
 }
 
 @end

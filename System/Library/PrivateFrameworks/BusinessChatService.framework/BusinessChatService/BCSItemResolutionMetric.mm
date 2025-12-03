@@ -1,5 +1,5 @@
 @interface BCSItemResolutionMetric
-+ (id)metricForItemIdentifier:(id)a3 postProcessingMetricHandlers:(id)a4;
++ (id)metricForItemIdentifier:(id)identifier postProcessingMetricHandlers:(id)handlers;
 - (BCSItemIdentifying)itemIdentifier;
 - (NSDictionary)coreAnalyticsPayload;
 @end
@@ -11,18 +11,18 @@
   v18[4] = *MEMORY[0x277D85DE8];
   v17[0] = @"type";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(BCSItemResolutionMetric *)self itemIdentifier];
-  v5 = [v3 numberWithInteger:{objc_msgSend(v4, "type")}];
+  itemIdentifier = [(BCSItemResolutionMetric *)self itemIdentifier];
+  v5 = [v3 numberWithInteger:{objc_msgSend(itemIdentifier, "type")}];
   v18[0] = v5;
   v17[1] = @"cacheHit";
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(BCSItemResolutionMetric *)self cacheHitMeasurement];
-  v8 = [v6 numberWithBool:{objc_msgSend(v7, "flag")}];
+  cacheHitMeasurement = [(BCSItemResolutionMetric *)self cacheHitMeasurement];
+  v8 = [v6 numberWithBool:{objc_msgSend(cacheHitMeasurement, "flag")}];
   v18[1] = v8;
   v17[2] = @"duration";
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(BCSItemResolutionMetric *)self timingMeasurement];
-  [v10 duration];
+  timingMeasurement = [(BCSItemResolutionMetric *)self timingMeasurement];
+  [timingMeasurement duration];
   v12 = [v9 numberWithInteger:(v11 * 1000.0)];
   v18[2] = v12;
   v17[3] = @"errorCode";
@@ -35,11 +35,11 @@
   return v14;
 }
 
-+ (id)metricForItemIdentifier:(id)a3 postProcessingMetricHandlers:(id)a4
++ (id)metricForItemIdentifier:(id)identifier postProcessingMetricHandlers:(id)handlers
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(BCSMetric *)[BCSItemResolutionMetric alloc] _initWithType:v6 context:v5 postProcessingMetricHandlers:?];
+  handlersCopy = handlers;
+  identifierCopy = identifier;
+  v7 = [(BCSMetric *)[BCSItemResolutionMetric alloc] _initWithType:identifierCopy context:handlersCopy postProcessingMetricHandlers:?];
 
   return v7;
 }

@@ -1,21 +1,21 @@
 @interface ATXSpotlightClientResponse
-+ (id)_createEmptyResultsWithCount:(unint64_t)a3;
-+ (id)_limitingResults:(id)a3 scores:(id)a4 spotlightRecentIndex:(unint64_t)a5 limit:(unint64_t)a6;
-+ (id)_removeDuplicates:(id)a3;
-+ (id)_resultForError:(id)a3 subtitles:(id)a4 searchString:(id)a5;
-+ (id)createSectionWithTitle:(id)a3 sectionBundleIdentifier:(id)a4 resultCount:(unint64_t)a5;
-+ (unint64_t)_indexOfFirstSpotlightRecentInServerResults:(id)a3 withSections:(id)a4;
-+ (unint64_t)_trialSuggestionsMaxCountWithDefault:(unint64_t)a3;
-+ (void)_logWeatherResponsesWithTopics:(id)a3 serverResults:(id)a4;
-- (ATXSpotlightClientResponse)initWithTopics:(id)a3 scores:(id)a4 sections:(id)a5;
++ (id)_createEmptyResultsWithCount:(unint64_t)count;
++ (id)_limitingResults:(id)results scores:(id)scores spotlightRecentIndex:(unint64_t)index limit:(unint64_t)limit;
++ (id)_removeDuplicates:(id)duplicates;
++ (id)_resultForError:(id)error subtitles:(id)subtitles searchString:(id)string;
++ (id)createSectionWithTitle:(id)title sectionBundleIdentifier:(id)identifier resultCount:(unint64_t)count;
++ (unint64_t)_indexOfFirstSpotlightRecentInServerResults:(id)results withSections:(id)sections;
++ (unint64_t)_trialSuggestionsMaxCountWithDefault:(unint64_t)default;
++ (void)_logWeatherResponsesWithTopics:(id)topics serverResults:(id)results;
+- (ATXSpotlightClientResponse)initWithTopics:(id)topics scores:(id)scores sections:(id)sections;
 - (NSArray)codePathIdTriggers;
-- (id)_addIdentifiersFromTopics:(id)a3 serverTopics:(id)a4;
-- (id)_createSectionsFromServerResults:(id)a3;
-- (id)_createSectionsFromServerResults:(id)a3 limit:(unint64_t)a4;
-- (id)_removeDuplicateTopics:(id)a3;
-- (id)_removeHidden:(id)a3;
-- (id)_replaceMissingWithError:(id)a3;
-- (void)_updateSectionBundleIdentifiersWithServerResults:(id)a3;
+- (id)_addIdentifiersFromTopics:(id)topics serverTopics:(id)serverTopics;
+- (id)_createSectionsFromServerResults:(id)results;
+- (id)_createSectionsFromServerResults:(id)results limit:(unint64_t)limit;
+- (id)_removeDuplicateTopics:(id)topics;
+- (id)_removeHidden:(id)hidden;
+- (id)_replaceMissingWithError:(id)error;
+- (void)_updateSectionBundleIdentifiersWithServerResults:(id)results;
 - (void)dealloc;
 @end
 
@@ -37,10 +37,10 @@
   [(ATXSpotlightClientResponse *)&v6 dealloc];
 }
 
-- (id)_createSectionsFromServerResults:(id)a3 limit:(unint64_t)a4
+- (id)_createSectionsFromServerResults:(id)results limit:(unint64_t)limit
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  resultsCopy = results;
   v7 = __atxlog_handle_metrics();
   v8 = v7;
   signpostId = self->_signpostId;
@@ -56,7 +56,7 @@
   {
     v11 = [(NSArray *)self->_topics count];
     v12 = [(NSArray *)self->_scores count];
-    v13 = [v6 count];
+    v13 = [resultsCopy count];
     v39 = 134218496;
     v40 = v11;
     v41 = 2048;
@@ -67,14 +67,14 @@
   }
 
   v14 = [(NSArray *)self->_topics count];
-  if (v14 != -[NSArray count](self->_scores, "count") || (v15 = -[NSArray count](self->_topics, "count"), v15 != [v6 count]))
+  if (v14 != -[NSArray count](self->_scores, "count") || (v15 = -[NSArray count](self->_topics, "count"), v15 != [resultsCopy count]))
   {
     v31 = __atxlog_handle_ui();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
     {
       v36 = [(NSArray *)self->_topics count];
       v37 = [(NSArray *)self->_scores count];
-      v38 = [v6 count];
+      v38 = [resultsCopy count];
       v39 = 134218496;
       v40 = v36;
       v41 = 2048;
@@ -94,7 +94,7 @@
     {
       v33 = [(NSArray *)self->_topics count];
       v34 = [(NSArray *)self->_scores count];
-      v35 = [v6 count];
+      v35 = [resultsCopy count];
       v39 = 134218496;
       v40 = v33;
       v41 = 2048;
@@ -110,17 +110,17 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [objc_opt_class() _logWeatherResponsesWithTopics:self->_topics serverResults:v6];
-  v16 = [(ATXSpotlightClientResponse *)self _replaceMissingWithError:v6];
+  [objc_opt_class() _logWeatherResponsesWithTopics:self->_topics serverResults:resultsCopy];
+  v16 = [(ATXSpotlightClientResponse *)self _replaceMissingWithError:resultsCopy];
 
   v17 = [objc_opt_class() _removeDuplicates:v16];
 
   [(ATXSpotlightClientResponse *)self _updateSectionBundleIdentifiersWithServerResults:v17];
   v18 = [(ATXSpotlightClientResponse *)self _addIdentifiersFromTopics:self->_topics serverTopics:v17];
 
-  v19 = [MEMORY[0x1E698AFE8] isZKWHideContextsEnabled];
-  self->_isZKWHideContextsEnabled = v19;
-  if (v19)
+  isZKWHideContextsEnabled = [MEMORY[0x1E698AFE8] isZKWHideContextsEnabled];
+  self->_isZKWHideContextsEnabled = isZKWHideContextsEnabled;
+  if (isZKWHideContextsEnabled)
   {
     v20 = objc_opt_new();
     controller = self->_controller;
@@ -150,14 +150,14 @@ LABEL_20:
     v28 = +[ATXSpotlightZKWTrialClientWrapper sharedInstance];
     if ([v28 matchesSuggestionsMaxCount])
     {
-      v29 = [v28 codePathIdForSuggestionsMaxCount];
-      [(ATXSpotlightClientResponse *)self addCodePathId:v29];
+      codePathIdForSuggestionsMaxCount = [v28 codePathIdForSuggestionsMaxCount];
+      [(ATXSpotlightClientResponse *)self addCodePathId:codePathIdForSuggestionsMaxCount];
     }
   }
 
-  v6 = [objc_opt_class() _limitingResults:v23 scores:self->_scores spotlightRecentIndex:v24 limit:a4];
+  resultsCopy = [objc_opt_class() _limitingResults:v23 scores:self->_scores spotlightRecentIndex:v24 limit:limit];
 
-  v30 = [(ATXSpotlightClientResponse *)self _createSectionsFromServerResults:v6];
+  v30 = [(ATXSpotlightClientResponse *)self _createSectionsFromServerResults:resultsCopy];
 LABEL_21:
 
   return v30;
@@ -171,20 +171,20 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
   return v3 != 0;
 }
 
-- (ATXSpotlightClientResponse)initWithTopics:(id)a3 scores:(id)a4 sections:(id)a5
+- (ATXSpotlightClientResponse)initWithTopics:(id)topics scores:(id)scores sections:(id)sections
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  topicsCopy = topics;
+  scoresCopy = scores;
+  sectionsCopy = sections;
   v22.receiver = self;
   v22.super_class = ATXSpotlightClientResponse;
   v12 = [(ATXSpotlightClientResponse *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_topics, a3);
-    objc_storeStrong(&v13->_scores, a4);
-    objc_storeStrong(&v13->_sections, a5);
+    objc_storeStrong(&v12->_topics, topics);
+    objc_storeStrong(&v13->_scores, scores);
+    objc_storeStrong(&v13->_sections, sections);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     codePathIdTriggers = v13->_codePathIdTriggers;
     v13->_codePathIdTriggers = v14;
@@ -217,24 +217,24 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
   return v2;
 }
 
-+ (id)createSectionWithTitle:(id)a3 sectionBundleIdentifier:(id)a4 resultCount:(unint64_t)a5
++ (id)createSectionWithTitle:(id)title sectionBundleIdentifier:(id)identifier resultCount:(unint64_t)count
 {
   v8 = MEMORY[0x1E69CA390];
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  titleCopy = title;
   v11 = objc_alloc_init(v8);
-  [v11 setSubtitle:v10];
+  [v11 setSubtitle:titleCopy];
 
-  [v11 setBundleIdentifier:v9];
-  v12 = [a1 _createEmptyResultsWithCount:a5];
+  [v11 setBundleIdentifier:identifierCopy];
+  v12 = [self _createEmptyResultsWithCount:count];
   [v11 setResults:v12];
 
   return v11;
 }
 
-+ (id)_createEmptyResultsWithCount:(unint64_t)a3
++ (id)_createEmptyResultsWithCount:(unint64_t)count
 {
-  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a3; --a3)
+  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); count; --count)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69CA3E8]);
     [i addObject:v5];
@@ -245,10 +245,10 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
   return v6;
 }
 
-- (void)_updateSectionBundleIdentifiersWithServerResults:(id)a3
+- (void)_updateSectionBundleIdentifiersWithServerResults:(id)results
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -259,7 +259,7 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
   {
     v5 = 0;
     v20 = *v29;
-    v23 = v4;
+    v23 = resultsCopy;
     do
     {
       v6 = 0;
@@ -272,26 +272,26 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
 
         v22 = v6;
         v7 = *(*(&v28 + 1) + 8 * v6);
-        v8 = [v7 results];
-        if ([v8 count])
+        results = [v7 results];
+        if ([results count])
         {
           v9 = 0;
           while (1)
           {
-            v10 = [v4 count];
+            v10 = [resultsCopy count];
 
             if (v5 >= v10)
             {
               break;
             }
 
-            v11 = [v4 objectAtIndexedSubscript:v5];
+            v11 = [resultsCopy objectAtIndexedSubscript:v5];
             v24 = 0u;
             v25 = 0u;
             v26 = 0u;
             v27 = 0u;
-            v12 = [v11 results];
-            v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            results2 = [v11 results];
+            v13 = [results2 countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v13)
             {
               v14 = v13;
@@ -302,15 +302,15 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
                 {
                   if (*v25 != v15)
                   {
-                    objc_enumerationMutation(v12);
+                    objc_enumerationMutation(results2);
                   }
 
                   v17 = *(*(&v24 + 1) + 8 * i);
-                  v18 = [v7 bundleIdentifier];
-                  [v17 setSectionBundleIdentifier:v18];
+                  bundleIdentifier = [v7 bundleIdentifier];
+                  [v17 setSectionBundleIdentifier:bundleIdentifier];
                 }
 
-                v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+                v14 = [results2 countByEnumeratingWithState:&v24 objects:v32 count:16];
               }
 
               while (v14);
@@ -319,9 +319,9 @@ BOOL __69__ATXSpotlightClientResponse__createSectionsFromServerResults_limit___b
             ++v5;
 
             ++v9;
-            v8 = [v7 results];
-            v4 = v23;
-            if (v9 >= [v8 count])
+            results = [v7 results];
+            resultsCopy = v23;
+            if (v9 >= [results count])
             {
               goto LABEL_17;
             }
@@ -344,16 +344,16 @@ LABEL_17:
   }
 }
 
-- (id)_addIdentifiersFromTopics:(id)a3 serverTopics:(id)a4
+- (id)_addIdentifiersFromTopics:(id)topics serverTopics:(id)serverTopics
 {
-  v5 = a3;
+  topicsCopy = topics;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__ATXSpotlightClientResponse__addIdentifiersFromTopics_serverTopics___block_invoke;
   v9[3] = &unk_1E80C4A48;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 _pas_mappedArrayWithIndexedTransform:v9];
+  v10 = topicsCopy;
+  v6 = topicsCopy;
+  v7 = [serverTopics _pas_mappedArrayWithIndexedTransform:v9];
 
   return v7;
 }
@@ -462,15 +462,15 @@ LABEL_11:
   return v8;
 }
 
-+ (id)_removeDuplicates:(id)a3
++ (id)_removeDuplicates:(id)duplicates
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  duplicatesCopy = duplicates;
   v4 = __atxlog_handle_ui();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v3 count];
+    *(&buf + 4) = [duplicatesCopy count];
     _os_log_impl(&dword_1BF549000, v4, OS_LOG_TYPE_DEFAULT, "ZKW Server Result: Removing duplicates in %lu serverResults", &buf, 0xCu);
   }
 
@@ -485,7 +485,7 @@ LABEL_11:
   v7[2] = __48__ATXSpotlightClientResponse__removeDuplicates___block_invoke;
   v7[3] = &unk_1E80C4A98;
   v7[4] = &buf;
-  v5 = [v3 _pas_mappedArrayWithTransform:v7];
+  v5 = [duplicatesCopy _pas_mappedArrayWithTransform:v7];
   _Block_object_dispose(&buf, 8);
 
   return v5;
@@ -536,15 +536,15 @@ uint64_t __48__ATXSpotlightClientResponse__removeDuplicates___block_invoke_2(uin
   return v4 ^ 1u;
 }
 
-- (id)_removeHidden:(id)a3
+- (id)_removeHidden:(id)hidden
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hiddenCopy = hidden;
   v5 = __atxlog_handle_ui();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = [v4 count];
+    v10 = [hiddenCopy count];
     _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "ZKW Server Result: Removing hidden in %lu results", buf, 0xCu);
   }
 
@@ -553,7 +553,7 @@ uint64_t __48__ATXSpotlightClientResponse__removeDuplicates___block_invoke_2(uin
   v8[2] = __44__ATXSpotlightClientResponse__removeHidden___block_invoke;
   v8[3] = &unk_1E80C4AE8;
   v8[4] = self;
-  v6 = [v4 _pas_mappedArrayWithTransform:v8];
+  v6 = [hiddenCopy _pas_mappedArrayWithTransform:v8];
 
   return v6;
 }
@@ -574,15 +574,15 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (id)_removeDuplicateTopics:(id)a3
+- (id)_removeDuplicateTopics:(id)topics
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  topicsCopy = topics;
   v4 = __atxlog_handle_ui();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v48 = [v3 count];
+    v48 = [topicsCopy count];
     _os_log_impl(&dword_1BF549000, v4, OS_LOG_TYPE_DEFAULT, "ZKW Server Result: _removeDuplicateTopics in %lu results", buf, 0xCu);
   }
 
@@ -598,7 +598,7 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
   {
     v7 = 0;
     v26 = *v42;
-    v29 = v3;
+    v29 = topicsCopy;
     do
     {
       v8 = 0;
@@ -611,13 +611,13 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
 
         v28 = v8;
         v31 = *(*(&v41 + 1) + 8 * v8);
-        v9 = [v31 results];
-        if ([v9 count])
+        results = [v31 results];
+        if ([results count])
         {
           v10 = 0;
           while (1)
           {
-            v11 = [v3 count];
+            v11 = [topicsCopy count];
 
             if (v7 >= v11)
             {
@@ -626,14 +626,14 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
 
             v34 = v10;
             v12 = [(NSArray *)self->_topics objectAtIndexedSubscript:v7];
-            v13 = [v3 objectAtIndexedSubscript:v7];
+            v13 = [topicsCopy objectAtIndexedSubscript:v7];
             v37 = 0u;
             v38 = 0u;
             v39 = 0u;
             v40 = 0u;
             v33 = v13;
-            v14 = [v13 results];
-            v15 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            results2 = [v13 results];
+            v15 = [results2 countByEnumeratingWithState:&v37 objects:v45 count:16];
             if (v15)
             {
               v16 = v15;
@@ -646,7 +646,7 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
                 {
                   if (*v38 != v18)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(results2);
                   }
 
                   v20 = *(*(&v37 + 1) + 8 * i);
@@ -661,12 +661,12 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
                   }
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+                v16 = [results2 countByEnumeratingWithState:&v37 objects:v45 count:16];
               }
 
               while (v16);
 
-              v3 = v29;
+              topicsCopy = v29;
               v7 = v32;
               v21 = v34;
               if (v17)
@@ -683,9 +683,9 @@ id __44__ATXSpotlightClientResponse__removeHidden___block_invoke(uint64_t a1, vo
 
             ++v7;
 
-            v9 = [v31 results];
+            results = [v31 results];
             v10 = v21 + 1;
-            if (v21 + 1 >= [v9 count])
+            if (v21 + 1 >= [results count])
             {
               goto LABEL_25;
             }
@@ -713,7 +713,7 @@ LABEL_25:
   v35[3] = &unk_1E80C4AE8;
   v36 = v6;
   v22 = v6;
-  v23 = [v3 _pas_mappedArrayWithTransform:v35];
+  v23 = [topicsCopy _pas_mappedArrayWithTransform:v35];
 
   return v23;
 }
@@ -734,16 +734,16 @@ id __53__ATXSpotlightClientResponse__removeDuplicateTopics___block_invoke(uint64
   return v3;
 }
 
-+ (unint64_t)_indexOfFirstSpotlightRecentInServerResults:(id)a3 withSections:(id)a4
++ (unint64_t)_indexOfFirstSpotlightRecentInServerResults:(id)results withSections:(id)sections
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  sectionsCopy = sections;
+  v7 = [sectionsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -757,55 +757,55 @@ id __53__ATXSpotlightClientResponse__removeDuplicateTopics___block_invoke(uint64
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sectionsCopy);
         }
 
         v12 = *(*(&v27 + 1) + 8 * v11);
-        v13 = [v12 bundleIdentifier];
-        v14 = [v13 isEqual:@"com.apple.spotlight.dec.zkw.recents"];
+        bundleIdentifier = [v12 bundleIdentifier];
+        v14 = [bundleIdentifier isEqual:@"com.apple.spotlight.dec.zkw.recents"];
 
-        v15 = [v12 results];
-        v16 = [v15 count];
+        results = [v12 results];
+        v16 = [results count];
         if (v14)
         {
           if (v16)
           {
-            v17 = v6;
+            v17 = sectionsCopy;
             v18 = 0;
             while (1)
             {
-              v19 = [v5 count];
+              v19 = [resultsCopy count];
 
               if (v9 + v18 >= v19)
               {
                 v9 += v18;
-                v6 = v17;
+                sectionsCopy = v17;
                 v10 = v26;
                 goto LABEL_15;
               }
 
-              v20 = [v5 objectAtIndexedSubscript:v9 + v18];
-              v21 = [v20 results];
-              v22 = [v21 firstObject];
+              v20 = [resultsCopy objectAtIndexedSubscript:v9 + v18];
+              results2 = [v20 results];
+              firstObject = [results2 firstObject];
 
-              if (v22)
+              if (firstObject)
               {
                 break;
               }
 
               ++v18;
-              v15 = [v12 results];
-              if (v18 >= [v15 count])
+              results = [v12 results];
+              if (v18 >= [results count])
               {
                 v9 += v18;
-                v6 = v17;
+                sectionsCopy = v17;
                 v10 = v26;
                 goto LABEL_14;
               }
             }
 
             v24 = v9 + v18;
-            v6 = v17;
+            sectionsCopy = v17;
             goto LABEL_22;
           }
         }
@@ -822,7 +822,7 @@ LABEL_15:
       }
 
       while (v11 != v8);
-      v23 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v23 = [sectionsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       v8 = v23;
       v24 = 0x7FFFFFFFFFFFFFFFLL;
       if (v23)
@@ -844,11 +844,11 @@ LABEL_22:
   return v24;
 }
 
-+ (id)_limitingResults:(id)a3 scores:(id)a4 spotlightRecentIndex:(unint64_t)a5 limit:(unint64_t)a6
++ (id)_limitingResults:(id)results scores:(id)scores spotlightRecentIndex:(unint64_t)index limit:(unint64_t)limit
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  resultsCopy = results;
+  scoresCopy = scores;
   keyExistsAndHasValidFormat[0] = 0;
   if (CFPreferencesGetAppBooleanValue(@"zkwShowAllContexts", *MEMORY[0x1E698B030], keyExistsAndHasValidFormat))
   {
@@ -858,19 +858,19 @@ LABEL_22:
       *keyExistsAndHasValidFormat = 0;
     }
 
-    v13 = v10;
+    v13 = resultsCopy;
   }
 
   else
   {
-    v14 = [a1 _trialSuggestionsMaxCountWithDefault:a6];
+    v14 = [self _trialSuggestionsMaxCountWithDefault:limit];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __81__ATXSpotlightClientResponse__limitingResults_scores_spotlightRecentIndex_limit___block_invoke;
     v39[3] = &unk_1E80C4B10;
-    v15 = v10;
+    v15 = resultsCopy;
     v40 = v15;
-    v28 = [v11 _pas_mappedArrayWithIndexedTransform:v39];
+    v28 = [scoresCopy _pas_mappedArrayWithIndexedTransform:v39];
     v16 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:0];
     v49[0] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:1];
@@ -887,7 +887,7 @@ LABEL_22:
       v20 = v14;
     }
 
-    v21 = v20 - (a5 != 0x7FFFFFFFFFFFFFFFLL);
+    v21 = v20 - (index != 0x7FFFFFFFFFFFFFFFLL);
     v22 = MEMORY[0x1E695DFD8];
     v23 = [v18 subarrayWithRange:{0, v21}];
     v24 = [v22 setWithArray:v23];
@@ -899,14 +899,14 @@ LABEL_22:
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x2020000000;
-    v37 = a5 != 0x7FFFFFFFFFFFFFFFLL;
+    v37 = index != 0x7FFFFFFFFFFFFFFFLL;
     v25 = __atxlog_handle_ui();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *keyExistsAndHasValidFormat = 134218754;
       v42 = v21;
       v43 = 2112;
-      v44 = v11;
+      v44 = scoresCopy;
       v45 = 2112;
       v46 = v28;
       v47 = 2112;
@@ -918,10 +918,10 @@ LABEL_22:
     v29[1] = 3221225472;
     v29[2] = __81__ATXSpotlightClientResponse__limitingResults_scores_spotlightRecentIndex_limit___block_invoke_54;
     v29[3] = &unk_1E80C4B38;
-    v30 = v11;
+    v30 = scoresCopy;
     v32 = v38;
     v34 = v14;
-    v35 = a5;
+    indexCopy = index;
     v33 = v36;
     v26 = v24;
     v31 = v26;
@@ -1092,10 +1092,10 @@ LABEL_26:
   return v5;
 }
 
-- (id)_createSectionsFromServerResults:(id)a3
+- (id)_createSectionsFromServerResults:(id)results
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v55 = 0u;
   v56 = 0u;
@@ -1109,8 +1109,8 @@ LABEL_26:
     v42 = *v56;
     *&v5 = 134217984;
     v39 = v5;
-    v45 = self;
-    v46 = v4;
+    selfCopy = self;
+    v46 = resultsCopy;
     do
     {
       v7 = 0;
@@ -1126,22 +1126,22 @@ LABEL_26:
         v9 = __atxlog_handle_ui();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 subtitle];
-          v11 = [v10 hash];
+          subtitle = [v8 subtitle];
+          v11 = [subtitle hash];
           *buf = v39;
           v60 = v11;
           _os_log_impl(&dword_1BF549000, v9, OS_LOG_TYPE_DEFAULT, "ZKW Server Result: Section considered with title.hash %lu", buf, 0xCu);
         }
 
         v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v13 = [v8 results];
-        if ([v13 count])
+        results = [v8 results];
+        if ([results count])
         {
           v14 = 0;
           v47 = v8;
           while (1)
           {
-            v15 = [v4 count];
+            v15 = [resultsCopy count];
 
             if (v6 >= v15)
             {
@@ -1150,15 +1150,15 @@ LABEL_26:
 
             v49 = v14;
             v16 = [(NSArray *)self->_topics objectAtIndexedSubscript:v6];
-            v17 = [v4 objectAtIndexedSubscript:v6];
+            v17 = [resultsCopy objectAtIndexedSubscript:v6];
             v50 = v6 + 1;
             v51 = 0u;
             v52 = 0u;
             v53 = 0u;
             v54 = 0u;
             v48 = v17;
-            v18 = [v17 results];
-            v19 = [v18 countByEnumeratingWithState:&v51 objects:v65 count:16];
+            results2 = [v17 results];
+            v19 = [results2 countByEnumeratingWithState:&v51 objects:v65 count:16];
             if (v19)
             {
               v20 = v19;
@@ -1169,7 +1169,7 @@ LABEL_26:
                 {
                   if (*v52 != v21)
                   {
-                    objc_enumerationMutation(v18);
+                    objc_enumerationMutation(results2);
                   }
 
                   v23 = *(*(&v51 + 1) + 8 * i);
@@ -1194,40 +1194,40 @@ LABEL_26:
                   [v12 addObject:v23];
                 }
 
-                v20 = [v18 countByEnumeratingWithState:&v51 objects:v65 count:16];
+                v20 = [results2 countByEnumeratingWithState:&v51 objects:v65 count:16];
               }
 
               while (v20);
             }
 
-            v29 = [v48 results];
-            v30 = [v29 firstObject];
+            results3 = [v48 results];
+            firstObject = [results3 firstObject];
 
             v6 = v50;
             v8 = v47;
-            if (!v30)
+            if (!firstObject)
             {
               v31 = __atxlog_handle_ui();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
                 v32 = objc_opt_class();
                 v33 = NSStringFromClass(v32);
-                v34 = [v16 identifier];
+                identifier = [v16 identifier];
                 *buf = 134218499;
                 v60 = v50;
                 v61 = 2112;
                 v62 = v33;
                 v63 = 2117;
-                v64 = v34;
+                v64 = identifier;
                 _os_log_impl(&dword_1BF549000, v31, OS_LOG_TYPE_DEFAULT, "ZKW Server Result: Result %lu empty: %@ %{sensitive}@", buf, 0x20u);
               }
             }
 
             v14 = v49 + 1;
-            v13 = [v47 results];
-            self = v45;
-            v4 = v46;
-            if (v49 + 1 >= [v13 count])
+            results = [v47 results];
+            self = selfCopy;
+            resultsCopy = v46;
+            if (v49 + 1 >= [results count])
             {
               goto LABEL_25;
             }
@@ -1285,16 +1285,16 @@ LABEL_25:
   return v41;
 }
 
-+ (void)_logWeatherResponsesWithTopics:(id)a3 serverResults:(id)a4
++ (void)_logWeatherResponsesWithTopics:(id)topics serverResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__ATXSpotlightClientResponse__logWeatherResponsesWithTopics_serverResults___block_invoke;
   v7[3] = &unk_1E80C4B60;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateObjectsUsingBlock:v7];
+  v8 = resultsCopy;
+  v6 = resultsCopy;
+  [topics enumerateObjectsUsingBlock:v7];
 }
 
 void __75__ATXSpotlightClientResponse__logWeatherResponsesWithTopics_serverResults___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1576,9 +1576,9 @@ LABEL_43:
   }
 }
 
-- (id)_replaceMissingWithError:(id)a3
+- (id)_replaceMissingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   keyExistsAndHasValidFormat[0] = 0;
   if (CFPreferencesGetAppBooleanValue(@"zkwShowErrorTopicResponse", *MEMORY[0x1E698B030], keyExistsAndHasValidFormat))
   {
@@ -1594,12 +1594,12 @@ LABEL_43:
     v9[2] = __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke;
     v9[3] = &unk_1E80C4A48;
     v9[4] = self;
-    v6 = [v4 _pas_mappedArrayWithIndexedTransform:v9];
+    v6 = [errorCopy _pas_mappedArrayWithIndexedTransform:v9];
   }
 
   else
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   v7 = v6;
@@ -1751,18 +1751,18 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   return v5;
 }
 
-+ (id)_resultForError:(id)a3 subtitles:(id)a4 searchString:(id)a5
++ (id)_resultForError:(id)error subtitles:(id)subtitles searchString:(id)string
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
+  errorCopy = error;
+  subtitlesCopy = subtitles;
+  stringCopy = string;
   v9 = objc_alloc_init(MEMORY[0x1E69CA3E8]);
   [v9 setResultBundleId:&stru_1F3E050C8];
   v10 = objc_opt_new();
-  [v10 setText:v7];
+  [v10 setText:errorCopy];
   [v9 setTitle:v10];
-  [v9 setCompletion:v7];
+  [v9 setCompletion:errorCopy];
   v11 = objc_opt_new();
   [v11 setSymbolName:@"exclamationmark.triangle.fill"];
   [v11 setPunchThroughBackground:0];
@@ -1770,8 +1770,8 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   v12 = objc_opt_new();
   [v12 setShouldUseCompactDisplay:1];
   [v12 setThumbnail:v11];
-  v26 = v7;
-  v13 = [MEMORY[0x1E69CA3A0] textWithString:v7];
+  v26 = errorCopy;
+  v13 = [MEMORY[0x1E69CA3A0] textWithString:errorCopy];
   [v12 setTitle:v13];
 
   v14 = objc_opt_new();
@@ -1779,7 +1779,7 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = v8;
+  v15 = subtitlesCopy;
   v16 = [v15 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v16)
   {
@@ -1805,10 +1805,10 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   }
 
   [v12 setDescriptions:v14];
-  if (v25)
+  if (stringCopy)
   {
     v21 = objc_alloc_init(MEMORY[0x1E69CA408]);
-    [v21 setSearchString:v25];
+    [v21 setSearchString:stringCopy];
     [v12 setCommand:v21];
   }
 
@@ -1822,7 +1822,7 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   return v9;
 }
 
-+ (unint64_t)_trialSuggestionsMaxCountWithDefault:(unint64_t)a3
++ (unint64_t)_trialSuggestionsMaxCountWithDefault:(unint64_t)default
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E69DB518] clientWithIdentifier:232];
@@ -1831,17 +1831,17 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
-    v10 = v5;
+    defaultCopy = v5;
     v11 = 2112;
     v12 = @"ZKWSuggestionsMaxCount";
     v13 = 2048;
-    v14 = [v5 longValue];
+    longValue = [v5 longValue];
     _os_log_impl(&dword_1BF549000, v6, OS_LOG_TYPE_DEFAULT, "+[ATXSpotlightClientResponse _trialSuggestionsMaxCount]: level(%@)=%@ level.longValue=%lld", &v9, 0x20u);
   }
 
   if (v5)
   {
-    a3 = [v5 longValue];
+    default = [v5 longValue];
   }
 
   else
@@ -1850,12 +1850,12 @@ id __55__ATXSpotlightClientResponse__replaceMissingWithError___block_invoke(uint
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      defaultCopy = default;
       _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "+[ATXSpotlightClientResponse _trialSuggestionsMaxCount]: level is null. returning default value of %lu", &v9, 0xCu);
     }
   }
 
-  return a3;
+  return default;
 }
 
 void __75__ATXSpotlightClientResponse__logWeatherResponsesWithTopics_serverResults___block_invoke_cold_1(uint64_t a1, NSObject *a2)

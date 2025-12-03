@@ -1,28 +1,28 @@
 @interface HKDatabaseValidation
-- (HKDatabaseValidation)initWithHealthStore:(id)a3;
-- (void)clientRemote_processIntegrityErrorString:(id)a3 errorHandlerIdentifier:(id)a4;
-- (void)clientRemote_processValidationError:(id)a3 errorHandlerIdentifier:(id)a4;
-- (void)clientRemote_synchronizeWithCompletion:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (HKDatabaseValidation)initWithHealthStore:(id)store;
+- (void)clientRemote_processIntegrityErrorString:(id)string errorHandlerIdentifier:(id)identifier;
+- (void)clientRemote_processValidationError:(id)error errorHandlerIdentifier:(id)identifier;
+- (void)clientRemote_synchronizeWithCompletion:(id)completion success:(BOOL)success error:(id)error;
 - (void)connectionInvalidated;
-- (void)performIntegrityCheckOnDatabase:(int64_t)a3 identifier:(id)a4 errorHandler:(id)a5 completion:(id)a6;
-- (void)validateEntitiesWithIdentifier:(id)a3 errorHandler:(id)a4 completion:(id)a5;
+- (void)performIntegrityCheckOnDatabase:(int64_t)database identifier:(id)identifier errorHandler:(id)handler completion:(id)completion;
+- (void)validateEntitiesWithIdentifier:(id)identifier errorHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation HKDatabaseValidation
 
-- (HKDatabaseValidation)initWithHealthStore:(id)a3
+- (HKDatabaseValidation)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = HKDatabaseValidation;
   v6 = [(HKDatabaseValidation *)&v18 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v6->_identifier;
-    v6->_identifier = v7;
+    v6->_identifier = uUID;
 
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v9 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v6->_healthStore taskIdentifier:@"HKDatabaseValidationTaskServerIdentifier" exportedObject:v6 taskUUID:v6->_identifier];
     proxyProvider = v6->_proxyProvider;
     v6->_proxyProvider = v9;
@@ -44,23 +44,23 @@
   return v6;
 }
 
-- (void)performIntegrityCheckOnDatabase:(int64_t)a3 identifier:(id)a4 errorHandler:(id)a5 completion:(id)a6
+- (void)performIntegrityCheckOnDatabase:(int64_t)database identifier:(id)identifier errorHandler:(id)handler completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  completionCopy = completion;
   integrityErrorHandlerDict = self->_integrityErrorHandlerDict;
-  v13 = _Block_copy(a5);
-  [(NSMutableDictionary *)integrityErrorHandlerDict setObject:v13 forKey:v10];
+  v13 = _Block_copy(handler);
+  [(NSMutableDictionary *)integrityErrorHandlerDict setObject:v13 forKey:identifierCopy];
 
   proxyProvider = self->_proxyProvider;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __91__HKDatabaseValidation_performIntegrityCheckOnDatabase_identifier_errorHandler_completion___block_invoke;
   v19[3] = &unk_1E737A7C8;
-  v22 = a3;
+  databaseCopy = database;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
+  v20 = identifierCopy;
+  v21 = completionCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__HKDatabaseValidation_performIntegrityCheckOnDatabase_identifier_errorHandler_completion___block_invoke_3;
@@ -68,7 +68,7 @@
   v17[4] = self;
   v18 = v21;
   v15 = v21;
-  v16 = v10;
+  v16 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v19 errorHandler:v17];
 }
 
@@ -106,13 +106,13 @@ void __91__HKDatabaseValidation_performIntegrityCheckOnDatabase_identifier_error
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)validateEntitiesWithIdentifier:(id)a3 errorHandler:(id)a4 completion:(id)a5
+- (void)validateEntitiesWithIdentifier:(id)identifier errorHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   validationErrorHandlerDict = self->_validationErrorHandlerDict;
-  v11 = _Block_copy(a4);
-  [(NSMutableDictionary *)validationErrorHandlerDict setObject:v11 forKey:v8];
+  v11 = _Block_copy(handler);
+  [(NSMutableDictionary *)validationErrorHandlerDict setObject:v11 forKey:identifierCopy];
 
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
@@ -120,8 +120,8 @@ void __91__HKDatabaseValidation_performIntegrityCheckOnDatabase_identifier_error
   v17[2] = __79__HKDatabaseValidation_validateEntitiesWithIdentifier_errorHandler_completion___block_invoke;
   v17[3] = &unk_1E737A7F0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = identifierCopy;
+  v19 = completionCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__HKDatabaseValidation_validateEntitiesWithIdentifier_errorHandler_completion___block_invoke_3;
@@ -129,7 +129,7 @@ void __91__HKDatabaseValidation_performIntegrityCheckOnDatabase_identifier_error
   v15[4] = self;
   v16 = v19;
   v13 = v19;
-  v14 = v8;
+  v14 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
@@ -174,25 +174,25 @@ void __79__HKDatabaseValidation_validateEntitiesWithIdentifier_errorHandler_comp
   if (os_log_type_enabled(HKLogDatabase, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Connection invalidated", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_processIntegrityErrorString:(id)a3 errorHandlerIdentifier:(id)a4
+- (void)clientRemote_processIntegrityErrorString:(id)string errorHandlerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_integrityErrorHandlerDict valueForKey:a4];
+  stringCopy = string;
+  v7 = [(NSMutableDictionary *)self->_integrityErrorHandlerDict valueForKey:identifier];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__HKDatabaseValidation_clientRemote_processIntegrityErrorString_errorHandlerIdentifier___block_invoke;
   v11[3] = &unk_1E7376AC0;
-  v12 = v6;
+  v12 = stringCopy;
   v13 = v7;
-  v9 = v6;
+  v9 = stringCopy;
   v10 = v7;
   dispatch_sync(queue, v11);
 }
@@ -208,18 +208,18 @@ uint64_t __88__HKDatabaseValidation_clientRemote_processIntegrityErrorString_err
   return result;
 }
 
-- (void)clientRemote_processValidationError:(id)a3 errorHandlerIdentifier:(id)a4
+- (void)clientRemote_processValidationError:(id)error errorHandlerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_validationErrorHandlerDict valueForKey:a4];
+  errorCopy = error;
+  v7 = [(NSMutableDictionary *)self->_validationErrorHandlerDict valueForKey:identifier];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__HKDatabaseValidation_clientRemote_processValidationError_errorHandlerIdentifier___block_invoke;
   v11[3] = &unk_1E7376AC0;
-  v12 = v6;
+  v12 = errorCopy;
   v13 = v7;
-  v9 = v6;
+  v9 = errorCopy;
   v10 = v7;
   dispatch_sync(queue, v11);
 }
@@ -235,20 +235,20 @@ uint64_t __83__HKDatabaseValidation_clientRemote_processValidationError_errorHan
   return result;
 }
 
-- (void)clientRemote_synchronizeWithCompletion:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)clientRemote_synchronizeWithCompletion:(id)completion success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  completionCopy = completion;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__HKDatabaseValidation_clientRemote_synchronizeWithCompletion_success_error___block_invoke;
   block[3] = &unk_1E7376678;
-  v16 = a4;
-  v14 = v9;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
+  successCopy = success;
+  v14 = errorCopy;
+  v15 = completionCopy;
+  v11 = errorCopy;
+  v12 = completionCopy;
   dispatch_sync(queue, block);
 }
 

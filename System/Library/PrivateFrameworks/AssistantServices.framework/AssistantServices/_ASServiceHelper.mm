@@ -3,24 +3,24 @@
 - (BOOL)isDeviceInStarkMode;
 - (BOOL)isDeviceLockedWithPasscode;
 - (BOOL)isTimeoutSuspended;
-- (BOOL)openSensitiveURL:(id)a3;
+- (BOOL)openSensitiveURL:(id)l;
 - (NSString)description;
-- (_ASServiceHelper)initWithCommandClassName:(id)a3 infoDictionary:(id)a4 executionInfo:(id)a5 serviceClient:(id)a6;
-- (id)_providerServiceDelegateWithErrorHandler:(id)a3;
-- (id)_synchronousProviderServiceDelegateWithErrorHandler:(id)a3;
-- (id)assistantLocalizedStringForKey:(id)a3 table:(id)a4 bundle:(id)a5;
+- (_ASServiceHelper)initWithCommandClassName:(id)name infoDictionary:(id)dictionary executionInfo:(id)info serviceClient:(id)client;
+- (id)_providerServiceDelegateWithErrorHandler:(id)handler;
+- (id)_synchronousProviderServiceDelegateWithErrorHandler:(id)handler;
+- (id)assistantLocalizedStringForKey:(id)key table:(id)table bundle:(id)bundle;
 - (id)endpointInfo;
 - (id)instanceInfo;
 - (id)peerInfoForCurrentCommand;
 - (id)speechInfo;
 - (void)dealloc;
 - (void)dismissAssistant;
-- (void)dismissAssistantWithReason:(int64_t)a3;
-- (void)handleCommand:(id)a3 completion:(id)a4;
+- (void)dismissAssistantWithReason:(int64_t)reason;
+- (void)handleCommand:(id)command completion:(id)completion;
 - (void)invalidate;
-- (void)isDeviceWatchAuthenticatedWithCompletion:(id)a3;
-- (void)prepareForAudioHandoffFailedWithCompletion:(id)a3;
-- (void)prepareForAudioHandoffWithCompletion:(id)a3;
+- (void)isDeviceWatchAuthenticatedWithCompletion:(id)completion;
+- (void)prepareForAudioHandoffFailedWithCompletion:(id)completion;
+- (void)prepareForAudioHandoffWithCompletion:(id)completion;
 @end
 
 @implementation _ASServiceHelper
@@ -34,9 +34,9 @@
   v9 = *&self->_commandClassName;
   commandExecutionInfo = self->_commandExecutionInfo;
   WeakRetained = objc_loadWeakRetained(&self->_serviceClient);
-  v7 = [v3 initWithFormat:@"%@ {commandClass = %@, commandInfo = %@, executionInfo = %@, serviceClient = %@}", v4, v9, commandExecutionInfo, WeakRetained];
+  weakRetained = [v3 initWithFormat:@"%@ {commandClass = %@, commandInfo = %@, executionInfo = %@, serviceClient = %@}", v4, v9, commandExecutionInfo, WeakRetained];
 
-  return v7;
+  return weakRetained;
 }
 
 - (void)invalidate
@@ -47,7 +47,7 @@
     v4 = 136315394;
     v5 = "[_ASServiceHelper invalidate]";
     v6 = 2112;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %@", &v4, 0x16u);
   }
 
@@ -62,7 +62,7 @@
     *buf = 136315394;
     v6 = "[_ASServiceHelper dealloc]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
   }
 
@@ -71,23 +71,23 @@
   [(_ASServiceHelper *)&v4 dealloc];
 }
 
-- (id)_synchronousProviderServiceDelegateWithErrorHandler:(id)a3
+- (id)_synchronousProviderServiceDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_serviceClient);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained synchronousProviderServiceDelegateWithErrorHandler:v4];
+    v7 = [WeakRetained synchronousProviderServiceDelegateWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    if (v4)
+    if (handlerCopy)
     {
       v8 = [[NSString alloc] initWithFormat:@"Service helper %@ is already invalidated.", self];
       v9 = [AFError errorWithCode:104 description:v8];
-      v4[2](v4, v9);
+      handlerCopy[2](handlerCopy, v9);
     }
 
     v7 = 0;
@@ -96,23 +96,23 @@
   return v7;
 }
 
-- (id)_providerServiceDelegateWithErrorHandler:(id)a3
+- (id)_providerServiceDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_serviceClient);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained providerServiceDelegateWithErrorHandler:v4];
+    v7 = [WeakRetained providerServiceDelegateWithErrorHandler:handlerCopy];
   }
 
   else
   {
-    if (v4)
+    if (handlerCopy)
     {
       v8 = [[NSString alloc] initWithFormat:@"Service helper %@ is already invalidated.", self];
       v9 = [AFError errorWithCode:104 description:v8];
-      v4[2](v4, v9);
+      handlerCopy[2](handlerCopy, v9);
     }
 
     v7 = 0;
@@ -131,14 +131,14 @@
       v6 = 136315394;
       v7 = "[_ASServiceHelper speechInfo]";
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v3, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v6, 0x16u);
     }
   }
 
-  v4 = [(AFCommandExecutionInfo *)self->_commandExecutionInfo speechInfo];
+  speechInfo = [(AFCommandExecutionInfo *)self->_commandExecutionInfo speechInfo];
 
-  return v4;
+  return speechInfo;
 }
 
 - (id)instanceInfo
@@ -151,14 +151,14 @@
       v6 = 136315394;
       v7 = "[_ASServiceHelper instanceInfo]";
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v3, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v6, 0x16u);
     }
   }
 
-  v4 = [(AFCommandExecutionInfo *)self->_commandExecutionInfo instanceInfo];
+  instanceInfo = [(AFCommandExecutionInfo *)self->_commandExecutionInfo instanceInfo];
 
-  return v4;
+  return instanceInfo;
 }
 
 - (id)endpointInfo
@@ -179,14 +179,14 @@
       v7 = 136315394;
       v8 = "[_ASServiceHelper endpointInfo]";
       v9 = 2112;
-      v10 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v4, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v7, 0x16u);
     }
   }
 
-  v5 = [(AFCommandExecutionInfo *)self->_commandExecutionInfo endpointInfo];
+  endpointInfo = [(AFCommandExecutionInfo *)self->_commandExecutionInfo endpointInfo];
 
-  return v5;
+  return endpointInfo;
 }
 
 - (id)peerInfoForCurrentCommand
@@ -199,14 +199,14 @@
       v6 = 136315394;
       v7 = "[_ASServiceHelper peerInfoForCurrentCommand]";
       v8 = 2112;
-      v9 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v3, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v6, 0x16u);
     }
   }
 
-  v4 = [(AFCommandExecutionInfo *)self->_commandExecutionInfo originPeerInfo];
+  originPeerInfo = [(AFCommandExecutionInfo *)self->_commandExecutionInfo originPeerInfo];
 
-  return v4;
+  return originPeerInfo;
 }
 
 - (BOOL)isTimeoutSuspended
@@ -241,9 +241,9 @@
   return v4;
 }
 
-- (void)prepareForAudioHandoffWithCompletion:(id)a3
+- (void)prepareForAudioHandoffWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isInvalid)
   {
     v5 = AFSiriLogContextService;
@@ -252,7 +252,7 @@
       *buf = 136315394;
       v14 = "[_ASServiceHelper prepareForAudioHandoffWithCompletion:]";
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", buf, 0x16u);
     }
   }
@@ -261,7 +261,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000082B0;
   v11[3] = &unk_100014550;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(_ASServiceHelper *)self _providerServiceDelegateWithErrorHandler:v11];
   v9[0] = _NSConcreteStackBlock;
@@ -273,9 +273,9 @@
   [v7 prepareForAudioHandoffWithCompletion:v9];
 }
 
-- (void)prepareForAudioHandoffFailedWithCompletion:(id)a3
+- (void)prepareForAudioHandoffFailedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isInvalid)
   {
     v5 = AFSiriLogContextService;
@@ -284,7 +284,7 @@
       *buf = 136315394;
       v14 = "[_ASServiceHelper prepareForAudioHandoffFailedWithCompletion:]";
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", buf, 0x16u);
     }
   }
@@ -293,7 +293,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_100008618;
   v11[3] = &unk_100014550;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(_ASServiceHelper *)self _providerServiceDelegateWithErrorHandler:v11];
   v9[0] = _NSConcreteStackBlock;
@@ -305,10 +305,10 @@
   [v7 prepareForAudioHandoffFailedWithCompletion:v9];
 }
 
-- (void)handleCommand:(id)a3 completion:(id)a4
+- (void)handleCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   if (self->_isInvalid)
   {
     v8 = AFSiriLogContextService;
@@ -317,7 +317,7 @@
       *buf = 136315394;
       v24 = "[_ASServiceHelper handleCommand:completion:]";
       v25 = 2112;
-      v26 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", buf, 0x16u);
     }
   }
@@ -334,7 +334,7 @@
       *buf = 136316162;
       v24 = "[_ASServiceHelper handleCommand:completion:]";
       v25 = 2112;
-      v26 = v6;
+      selfCopy = commandCopy;
       v27 = 2112;
       v28 = commandClassName;
       v29 = 2112;
@@ -348,7 +348,7 @@
     v21[1] = 3221225472;
     v21[2] = sub_100008A70;
     v21[3] = &unk_100014550;
-    v13 = v7;
+    v13 = completionCopy;
     v22 = v13;
     v14 = [(_ASServiceHelper *)self _providerServiceDelegateWithErrorHandler:v21];
     v15 = self->_commandExecutionInfo;
@@ -356,8 +356,8 @@
     v17[1] = 3221225472;
     v17[2] = sub_100008A90;
     v17[3] = &unk_1000147E0;
-    v18 = v6;
-    v19 = self;
+    v18 = commandCopy;
+    selfCopy2 = self;
     v20 = v13;
     [v14 handleCommand:v18 executionInfo:v15 completion:v17];
 
@@ -365,10 +365,10 @@
     goto LABEL_10;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v16 = [AFError errorWithCode:11];
-    (*(v7 + 2))(v7, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
 LABEL_10:
   }
 }
@@ -405,9 +405,9 @@ LABEL_10:
   return v4;
 }
 
-- (void)isDeviceWatchAuthenticatedWithCompletion:(id)a3
+- (void)isDeviceWatchAuthenticatedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isInvalid)
   {
     v5 = AFSiriLogContextService;
@@ -416,7 +416,7 @@ LABEL_10:
       *buf = 136315394;
       v11 = "[_ASServiceHelper isDeviceWatchAuthenticatedWithCompletion:]";
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", buf, 0x16u);
     }
   }
@@ -426,8 +426,8 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = sub_100008F58;
   v8[3] = &unk_100014798;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 getWatchAuthenticatedWithReply:v8];
 }
 
@@ -495,18 +495,18 @@ LABEL_10:
   return v4;
 }
 
-- (id)assistantLocalizedStringForKey:(id)a3 table:(id)a4 bundle:(id)a5
+- (id)assistantLocalizedStringForKey:(id)key table:(id)table bundle:(id)bundle
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  bundleCopy = bundle;
+  tableCopy = table;
+  keyCopy = key;
   v10 = +[ASLocalization sharedLocalization];
-  v11 = [v10 localizedStringForKey:v9 table:v8 bundle:v7];
+  v11 = [v10 localizedStringForKey:keyCopy table:tableCopy bundle:bundleCopy];
 
   return v11;
 }
 
-- (void)dismissAssistantWithReason:(int64_t)a3
+- (void)dismissAssistantWithReason:(int64_t)reason
 {
   if (self->_isInvalid)
   {
@@ -516,13 +516,13 @@ LABEL_10:
       v7 = 136315394;
       v8 = "[_ASServiceHelper dismissAssistantWithReason:]";
       v9 = 2112;
-      v10 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v7, 0x16u);
     }
   }
 
   v6 = [(_ASServiceHelper *)self _providerServiceDelegateWithErrorHandler:0];
-  [v6 dismissAssistantWithReason:a3];
+  [v6 dismissAssistantWithReason:reason];
 }
 
 - (void)dismissAssistant
@@ -535,7 +535,7 @@ LABEL_10:
       v5 = 136315394;
       v6 = "[_ASServiceHelper dismissAssistant]";
       v7 = 2112;
-      v8 = self;
+      selfCopy = self;
       _os_log_fault_impl(&_mh_execute_header, v3, OS_LOG_TYPE_FAULT, "%s Attempting to access %@ after it has been invalidated.", &v5, 0x16u);
     }
   }
@@ -544,9 +544,9 @@ LABEL_10:
   [v4 dismissAssistant];
 }
 
-- (BOOL)openSensitiveURL:(id)a3
+- (BOOL)openSensitiveURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = AFSiriLogContextService;
   if (self->_isInvalid && os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_FAULT))
   {
@@ -563,11 +563,11 @@ LABEL_10:
     *buf = 136315394;
     *&buf[4] = "[_ASServiceHelper openSensitiveURL:]";
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Trying to open URL %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (lCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -579,7 +579,7 @@ LABEL_10:
     v11[2] = sub_10000998C;
     v11[3] = &unk_100014710;
     v11[4] = buf;
-    [v6 openURL:v4 reply:v11];
+    [v6 openURL:lCopy reply:v11];
 
     v7 = AFSiriLogContextService;
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_INFO))
@@ -613,12 +613,12 @@ LABEL_10:
   return v9 & 1;
 }
 
-- (_ASServiceHelper)initWithCommandClassName:(id)a3 infoDictionary:(id)a4 executionInfo:(id)a5 serviceClient:(id)a6
+- (_ASServiceHelper)initWithCommandClassName:(id)name infoDictionary:(id)dictionary executionInfo:(id)info serviceClient:(id)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  clientCopy = client;
   v24.receiver = self;
   v24.super_class = _ASServiceHelper;
   v14 = [(_ASServiceHelper *)&v24 init];
@@ -626,19 +626,19 @@ LABEL_10:
   if (v14)
   {
     v14->_isInvalid = 0;
-    v16 = [v10 copy];
+    v16 = [nameCopy copy];
     commandClassName = v15->_commandClassName;
     v15->_commandClassName = v16;
 
-    v18 = [v11 copy];
+    v18 = [dictionaryCopy copy];
     commandInfoDictionary = v15->_commandInfoDictionary;
     v15->_commandInfoDictionary = v18;
 
-    v20 = [v12 copy];
+    v20 = [infoCopy copy];
     commandExecutionInfo = v15->_commandExecutionInfo;
     v15->_commandExecutionInfo = v20;
 
-    objc_storeWeak(&v15->_serviceClient, v13);
+    objc_storeWeak(&v15->_serviceClient, clientCopy);
     v22 = AFSiriLogContextService;
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
     {

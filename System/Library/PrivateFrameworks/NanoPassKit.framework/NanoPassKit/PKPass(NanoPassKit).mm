@@ -24,19 +24,19 @@
 
 - (uint64_t)npkAccessoryType
 {
-  if ([a1 style] == 7)
+  if ([self style] == 7)
   {
     return 2;
   }
 
-  v3 = [a1 barcode];
-  v4 = [v3 messageData];
-  if (v4)
+  barcode = [self barcode];
+  messageData = [barcode messageData];
+  if (messageData)
   {
-    v5 = v4;
-    v6 = [a1 barcode];
-    v7 = [v6 messageData];
-    v2 = [v7 length] != 0;
+    v5 = messageData;
+    barcode2 = [self barcode];
+    messageData2 = [barcode2 messageData];
+    v2 = [messageData2 length] != 0;
   }
 
   else
@@ -55,13 +55,13 @@
     return 1;
   }
 
-  if ([a1 npkAccessoryType] != 1)
+  if ([self npkAccessoryType] != 1)
   {
-    return [a1 npkAccessoryType] != 2;
+    return [self npkAccessoryType] != 2;
   }
 
-  v3 = [a1 nfcPayload];
-  v2 = v3 != 0;
+  nfcPayload = [self nfcPayload];
+  v2 = nfcPayload != 0;
 
   return v2;
 }
@@ -94,26 +94,26 @@
     _NPKAssertAbort();
   }
 
-  v8 = [a1 manifestHash];
+  manifestHash = [self manifestHash];
 
-  if (v8)
+  if (manifestHash)
   {
     v9 = MEMORY[0x277CBEB28];
-    v10 = [a1 manifestHash];
-    v11 = [v9 dataWithData:v10];
+    manifestHash2 = [self manifestHash];
+    v11 = [v9 dataWithData:manifestHash2];
 
     if (a3 == 1)
     {
-      v19[0] = [a1 settings] & 1;
+      v19[0] = [self settings] & 1;
       v12 = v11;
       v13 = 1;
     }
 
     else
     {
-      v15 = [a1 settings];
-      v16 = [a1 settings] & 0x20 | v15 & 1;
-      *v19 = v16 | [a1 settings] & 0x10;
+      settings = [self settings];
+      v16 = [self settings] & 0x20 | settings & 1;
+      *v19 = v16 | [self settings] & 0x10;
       v12 = v11;
       v13 = 2;
     }
@@ -134,24 +134,24 @@
 
 - (uint64_t)npkUsesDynamicView
 {
-  if ([a1 npkCanUseDynamicTransactionView] & 1) != 0 || (objc_msgSend(a1, "npkCanUseDynamicMaterialView") & 1) != 0 || (objc_msgSend(a1, "npkCanUseDynamicMotionView"))
+  if ([self npkCanUseDynamicTransactionView] & 1) != 0 || (objc_msgSend(self, "npkCanUseDynamicMaterialView") & 1) != 0 || (objc_msgSend(self, "npkCanUseDynamicMotionView"))
   {
     return 1;
   }
 
-  return [a1 npkIsLiveRenderEnabled];
+  return [self npkIsLiveRenderEnabled];
 }
 
 - (uint64_t)npkCanUseDynamicTransactionView
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 paymentPass];
-  v3 = [v2 isAppleCardPass];
+  paymentPass = [self paymentPass];
+  isAppleCardPass = [paymentPass isAppleCardPass];
 
-  if (v3)
+  if (isAppleCardPass)
   {
-    v4 = [a1 paymentPass];
-    v5 = [v4 supportsCategoryVisualization];
+    paymentPass2 = [self paymentPass];
+    supportsCategoryVisualization = [paymentPass2 supportsCategoryVisualization];
 
     v6 = pk_ui_log();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -161,16 +161,16 @@
       v8 = pk_ui_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [a1 uniqueID];
-        v10 = v9;
+        uniqueID = [self uniqueID];
+        v10 = uniqueID;
         v11 = @"NO";
-        if (v5)
+        if (supportsCategoryVisualization)
         {
           v11 = @"YES";
         }
 
         v14 = 138412546;
-        v15 = v9;
+        v15 = uniqueID;
         v16 = 2112;
         v17 = v11;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Checking dynamic view setup for account account pass id %@ supportsCategoryVisualization %@", &v14, 0x16u);
@@ -180,11 +180,11 @@
 
   else
   {
-    v5 = 0;
+    supportsCategoryVisualization = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return supportsCategoryVisualization;
 }
 
 - (uint64_t)npkCanUseDynamicMaterialView
@@ -194,27 +194,27 @@
     return 0;
   }
 
-  v3 = [a1 liveRenderType];
-  if ((v3 - 1) < 3)
+  liveRenderType = [self liveRenderType];
+  if ((liveRenderType - 1) < 3)
   {
     return 1;
   }
 
-  if (v3 != 5)
+  if (liveRenderType != 5)
   {
     return 0;
   }
 
-  return [a1 npkIsLiveRenderEnabled];
+  return [self npkIsLiveRenderEnabled];
 }
 
 - (BOOL)npkCanUseDynamicMotionView
 {
-  v2 = [a1 paymentPass];
-  v3 = [v2 dynamicLayerConfiguration];
-  if (v3)
+  paymentPass = [self paymentPass];
+  dynamicLayerConfiguration = [paymentPass dynamicLayerConfiguration];
+  if (dynamicLayerConfiguration)
   {
-    v4 = [a1 passType] == 1;
+    v4 = [self passType] == 1;
   }
 
   else
@@ -227,31 +227,31 @@
 
 - (uint64_t)npkIsLiveRenderEnabled
 {
-  v2 = [a1 npkPassDynamicState];
-  v3 = [v2 liveRender];
-  if (v3)
+  npkPassDynamicState = [self npkPassDynamicState];
+  liveRender = [npkPassDynamicState liveRender];
+  if (liveRender)
   {
-    v4 = [a1 npkPassDynamicState];
-    v5 = [v4 liveRender];
-    v6 = [v5 enabled];
+    npkPassDynamicState2 = [self npkPassDynamicState];
+    liveRender2 = [npkPassDynamicState2 liveRender];
+    enabled = [liveRender2 enabled];
   }
 
   else
   {
-    v6 = 0;
+    enabled = 0;
   }
 
-  return v6;
+  return enabled;
 }
 
 - (uint64_t)npkHasValidNFCPayload
 {
-  v1 = [a1 nfcPayload];
-  v2 = [v1 message];
-  if (v2)
+  nfcPayload = [self nfcPayload];
+  message = [nfcPayload message];
+  if (message)
   {
-    v3 = [v1 encryptionPublicKeyData];
-    if (v3)
+    encryptionPublicKeyData = [nfcPayload encryptionPublicKeyData];
+    if (encryptionPublicKeyData)
     {
       v4 = 1;
     }
@@ -272,9 +272,9 @@
 
 - (uint64_t)npkIsDefaultPassEligible
 {
-  v1 = [a1 secureElementPass];
-  v2 = v1;
-  if (v1 && ![v1 contactlessActivationState] && objc_msgSend(v2, "supportsDefaultCardSelection") && (objc_msgSend(v2, "effectiveContactlessPaymentApplicationState"), PKPaymentApplicationStateIsPersonalized()) && (objc_msgSend(v2, "isAccessPass") & 1) == 0)
+  secureElementPass = [self secureElementPass];
+  v2 = secureElementPass;
+  if (secureElementPass && ![secureElementPass contactlessActivationState] && objc_msgSend(v2, "supportsDefaultCardSelection") && (objc_msgSend(v2, "effectiveContactlessPaymentApplicationState"), PKPaymentApplicationStateIsPersonalized()) && (objc_msgSend(v2, "isAccessPass") & 1) == 0)
   {
     v3 = [v2 isIdentityPass] ^ 1;
   }
@@ -289,31 +289,31 @@
 
 - (uint64_t)npkIsHomeKeyUWB
 {
-  v2 = [a1 secureElementPass];
-  if (([v2 npkSupportsBluetooth] & 1) != 0 || NPKMockUWBHomeKey())
+  secureElementPass = [self secureElementPass];
+  if (([secureElementPass npkSupportsBluetooth] & 1) != 0 || NPKMockUWBHomeKey())
   {
-    v3 = [a1 secureElementPass];
-    v4 = [v3 isHomeKeyPass];
+    secureElementPass2 = [self secureElementPass];
+    isHomeKeyPass = [secureElementPass2 isHomeKeyPass];
   }
 
   else
   {
-    v4 = 0;
+    isHomeKeyPass = 0;
   }
 
-  return v4;
+  return isHomeKeyPass;
 }
 
 - (__CFString)npkUWBLocalizationKey
 {
-  v2 = [a1 secureElementPass];
-  v3 = [v2 npkSupportsBluetooth];
+  secureElementPass = [self secureElementPass];
+  npkSupportsBluetooth = [secureElementPass npkSupportsBluetooth];
 
-  if (v3)
+  if (npkSupportsBluetooth)
   {
-    v4 = [a1 npkIsHomeKeyUWB];
+    npkIsHomeKeyUWB = [self npkIsHomeKeyUWB];
     v5 = @"PASSIVE_ENTRY";
-    if (v4)
+    if (npkIsHomeKeyUWB)
     {
       v5 = @"UNLOCK_ON_APPROACH";
     }
@@ -347,8 +347,8 @@
   v21 = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nanopassbook"];
   v3 = [v2 objectForKey:@"TransitValuePending"];
-  v4 = [a1 uniqueID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  uniqueID = [self uniqueID];
+  v5 = [v3 objectForKeyedSubscript:uniqueID];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -365,8 +365,8 @@
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [v5 allValues];
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      allValues = [v5 allValues];
+      v9 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -378,7 +378,7 @@
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allValues);
             }
 
             v13 = [*(*(&v16 + 1) + 8 * v12) objectForKeyedSubscript:@"date"];
@@ -393,7 +393,7 @@
           }
 
           while (v10 != v12);
-          v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v10)
           {
             continue;
@@ -422,8 +422,8 @@ LABEL_15:
   v31 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 uniqueID];
-  v9 = __pendingFieldValueInfo(v8, v6);
+  uniqueID = [self uniqueID];
+  v9 = __pendingFieldValueInfo(uniqueID, v6);
 
   v10 = [v9 objectForKey:@"date"];
   v11 = [v9 objectForKey:@"balance"];
@@ -451,11 +451,11 @@ LABEL_15:
     v19 = pk_Payment_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [a1 uniqueID];
+      uniqueID2 = [self uniqueID];
       v23 = 138413058;
       v24 = v16;
       v25 = 2112;
-      v26 = v20;
+      v26 = uniqueID2;
       v27 = 2112;
       v28 = v6;
       v29 = 1024;
@@ -475,11 +475,11 @@ LABEL_15:
   v8 = a3;
   v9 = a5;
   v10 = a4;
-  v11 = [a1 uniqueID];
-  v12 = __pendingFieldValueInfo(v11, v8);
+  uniqueID = [self uniqueID];
+  v12 = __pendingFieldValueInfo(uniqueID, v8);
 
   v13 = [v12 objectForKey:@"date"];
-  v14 = [a1 _hasPlanUpdatedWithFieldIdentifier:v8 fieldInfo:v12 renewalDate:v13 expiryDate:v10 rawCountValue:v9];
+  v14 = [self _hasPlanUpdatedWithFieldIdentifier:v8 fieldInfo:v12 renewalDate:v13 expiryDate:v10 rawCountValue:v9];
 
   v15 = 0;
   if (v13 && (v14 & 1) == 0)
@@ -495,11 +495,11 @@ LABEL_15:
     v18 = pk_Payment_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [a1 uniqueID];
+      uniqueID2 = [self uniqueID];
       v22 = 138413314;
       v23 = v15;
       v24 = 2112;
-      v25 = v19;
+      v25 = uniqueID2;
       v26 = 2112;
       v27 = v8;
       v28 = 1024;
@@ -583,27 +583,27 @@ LABEL_15:
     }
   }
 
-  v13 = [v8 balance];
-  v14 = [v13 value];
+  balance = [v8 balance];
+  value = [balance value];
 
   if (v9)
   {
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v16 = [MEMORY[0x277CBEAA8] date];
-    [v15 setObject:v16 forKey:@"date"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v15 setObject:date forKey:@"date"];
 
     if (v7)
     {
       [v15 setObject:v7 forKey:@"amount"];
     }
 
-    if (v14)
+    if (value)
     {
-      [v15 setObject:v14 forKey:@"balance"];
+      [v15 setObject:value forKey:@"balance"];
     }
 
-    v17 = [v8 identifier];
-    __setPendingFieldValueInfo(v15, v9, v17);
+    identifier = [v8 identifier];
+    __setPendingFieldValueInfo(v15, v9, identifier);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -615,10 +615,10 @@ LABEL_15:
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [v8 usageDateRange];
-  v11 = [v10 expiryDate];
+  usageDateRange = [v8 usageDateRange];
+  expiryDate = [usageDateRange expiryDate];
 
-  v12 = [v8 rawCountValue];
+  rawCountValue = [v8 rawCountValue];
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -634,9 +634,9 @@ LABEL_15:
       v24 = 2112;
       v25 = v9;
       v26 = 2112;
-      v27 = v11;
+      v27 = expiryDate;
       v28 = 2112;
-      v29 = v12;
+      v29 = rawCountValue;
       _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: addValuePending: npkHandleTransitValuePendingExpiryDate %@ withField:%@ forPassWithID %@ currentExpiry: %@, tripCount: %@", &v20, 0x34u);
     }
   }
@@ -644,21 +644,21 @@ LABEL_15:
   if (v9)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [MEMORY[0x277CBEAA8] date];
-    [v16 setObject:v17 forKey:@"date"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v16 setObject:date forKey:@"date"];
 
-    if (v11)
+    if (expiryDate)
     {
-      [v16 setObject:v11 forKey:@"planExpiry"];
+      [v16 setObject:expiryDate forKey:@"planExpiry"];
     }
 
-    if (v12)
+    if (rawCountValue)
     {
-      [v16 setObject:v12 forKey:@"planTripCount"];
+      [v16 setObject:rawCountValue forKey:@"planTripCount"];
     }
 
-    v18 = [v8 identifier];
-    __setPendingFieldValueInfo(v16, v9, v18);
+    identifier = [v8 identifier];
+    __setPendingFieldValueInfo(v16, v9, identifier);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -712,18 +712,18 @@ LABEL_15:
           }
 
           v17 = *(*(&v63 + 1) + 8 * i);
-          v18 = [v17 identifier];
-          v19 = __pendingFieldValueInfo(v58, v18);
+          identifier = [v17 identifier];
+          v19 = __pendingFieldValueInfo(v58, identifier);
 
           if (v19)
           {
             v20 = [v19 objectForKey:v15];
-            v21 = [v17 balance];
-            v22 = [v21 value];
+            balance = [v17 balance];
+            value = [balance value];
 
             if (v20)
             {
-              v23 = v22 == 0;
+              v23 = value == 0;
             }
 
             else
@@ -731,7 +731,7 @@ LABEL_15:
               v23 = 1;
             }
 
-            if (!v23 && [v20 compare:v22] == -1)
+            if (!v23 && [v20 compare:value] == -1)
             {
               v24 = v15;
               v25 = pk_Payment_log();
@@ -750,8 +750,8 @@ LABEL_15:
               v28 = [v19 mutableCopy];
               [v28 removeObjectForKey:@"date"];
               [v28 removeObjectForKey:v24];
-              v29 = [v17 identifier];
-              __setPendingFieldValueInfo(v28, v58, v29);
+              identifier2 = [v17 identifier];
+              __setPendingFieldValueInfo(v28, v58, identifier2);
 
               v15 = v24;
               v11 = obj;
@@ -787,20 +787,20 @@ LABEL_15:
           }
 
           v34 = *(*(&v59 + 1) + 8 * v33);
-          v35 = [v34 identifier];
-          v36 = __pendingFieldValueInfo(v58, v35);
+          identifier3 = [v34 identifier];
+          v36 = __pendingFieldValueInfo(v58, identifier3);
 
           if (v36)
           {
             v37 = [v36 objectForKey:@"planExpiry"];
-            v38 = [v34 usageDateRange];
-            v39 = [v38 expiryDate];
+            usageDateRange = [v34 usageDateRange];
+            expiryDate = [usageDateRange expiryDate];
 
             v40 = [v36 objectForKey:@"planTripCount"];
-            v41 = [v34 rawCountValue];
+            rawCountValue = [v34 rawCountValue];
             if (v37)
             {
-              v42 = v39 == 0;
+              v42 = expiryDate == 0;
             }
 
             else
@@ -808,10 +808,10 @@ LABEL_15:
               v42 = 1;
             }
 
-            v43 = !v42 && [v37 compare:v39] == -1;
+            v43 = !v42 && [v37 compare:expiryDate] == -1;
             if (v40)
             {
-              v44 = v41 == 0;
+              v44 = rawCountValue == 0;
             }
 
             else
@@ -819,7 +819,7 @@ LABEL_15:
               v44 = 1;
             }
 
-            v45 = !v44 && [v40 compare:v41] == -1;
+            v45 = !v44 && [v40 compare:rawCountValue] == -1;
             if (v43 || v45)
             {
               v46 = v32;
@@ -840,8 +840,8 @@ LABEL_15:
               [v50 removeObjectForKey:@"date"];
               [v50 removeObjectForKey:@"planExpiry"];
               [v50 removeObjectForKey:@"planTripCount"];
-              v51 = [v34 identifier];
-              __setPendingFieldValueInfo(v50, v58, v51);
+              identifier4 = [v34 identifier];
+              __setPendingFieldValueInfo(v50, v58, identifier4);
 
               v32 = v46;
               v31 = v55;

@@ -1,23 +1,23 @@
 @interface CAMPortraitModeDescriptionOverlayView
-- (id)descriptionTextUsingNarrowWidth:(BOOL)a3;
-- (id)infoTextUsingNarrowWidth:(BOOL)a3;
+- (id)descriptionTextUsingNarrowWidth:(BOOL)width;
+- (id)infoTextUsingNarrowWidth:(BOOL)width;
 @end
 
 @implementation CAMPortraitModeDescriptionOverlayView
 
-- (id)descriptionTextUsingNarrowWidth:(BOOL)a3
+- (id)descriptionTextUsingNarrowWidth:(BOOL)width
 {
-  v3 = a3;
+  widthCopy = width;
   v4 = +[CAMCaptureCapabilities capabilities];
-  v5 = [v4 arePortraitEffectsSupported];
+  arePortraitEffectsSupported = [v4 arePortraitEffectsSupported];
 
   v6 = @"PORTRAIT_MODE_LIGHTING_DESCRIPTION_OVERLAY_DESCRIPTION";
-  if (v3)
+  if (widthCopy)
   {
     v6 = @"PORTRAIT_MODE_LIGHTING_DESCRIPTION_OVERLAY_DESCRIPTION_NO_NEWLINE";
   }
 
-  if (v5)
+  if (arePortraitEffectsSupported)
   {
     v7 = v6;
   }
@@ -30,12 +30,12 @@
   return CAMLocalizedFrameworkString(v7, &stru_1F1660A30);
 }
 
-- (id)infoTextUsingNarrowWidth:(BOOL)a3
+- (id)infoTextUsingNarrowWidth:(BOOL)width
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 arePortraitEffectsSupported];
+  arePortraitEffectsSupported = [v3 arePortraitEffectsSupported];
 
-  if (v4)
+  if (arePortraitEffectsSupported)
   {
     v5 = @"PORTRAIT_MODE_LIGHTING_DESCRIPTION_OVERLAY_INFO";
   }

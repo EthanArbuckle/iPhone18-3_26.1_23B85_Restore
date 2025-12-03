@@ -1,18 +1,18 @@
 @interface MKTransitInfoPreload
-- (MKTransitInfoPreload)initWithAttributedString:(id)a3;
+- (MKTransitInfoPreload)initWithAttributedString:(id)string;
 @end
 
 @implementation MKTransitInfoPreload
 
-- (MKTransitInfoPreload)initWithAttributedString:(id)a3
+- (MKTransitInfoPreload)initWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = MKTransitInfoPreload;
   v5 = [(MKTransitInfoPreload *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     attributedString = v5->_attributedString;
     v5->_attributedString = v6;
   }

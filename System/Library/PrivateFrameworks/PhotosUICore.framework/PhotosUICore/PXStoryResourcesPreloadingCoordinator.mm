@@ -1,31 +1,31 @@
 @interface PXStoryResourcesPreloadingCoordinator
-- (PXStoryResourcesPreloadingCoordinator)initWithQueue:(id)a3;
-- (id)_infoForPreloadingController:(id)a3 createIfNeeded:(BOOL)a4;
+- (PXStoryResourcesPreloadingCoordinator)initWithQueue:(id)queue;
+- (id)_infoForPreloadingController:(id)controller createIfNeeded:(BOOL)needed;
 - (void)_invalidateInfosOrder;
 - (void)_invalidatePreloadingControllers;
 - (void)_updatePreloadingControllers;
-- (void)addPreloadingController:(id)a3 withPriority:(int64_t)a4;
+- (void)addPreloadingController:(id)controller withPriority:(int64_t)priority;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)removePreloadingController:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)removePreloadingController:(id)controller;
 @end
 
 @implementation PXStoryResourcesPreloadingCoordinator
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PreloadinControllerObservationContext != a5)
+  observableCopy = observable;
+  if (PreloadinControllerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloadingCoordinator.m" lineNumber:144 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryResourcesPreloadingCoordinator.m" lineNumber:144 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (([v9 isCompletedChangeDescriptor] & ~a4) == 0)
+  v10 = observableCopy;
+  if (([observableCopy isCompletedChangeDescriptor] & ~change) == 0)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -59,12 +59,12 @@
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
-        v9 = [v8 preloadingController];
-        v10 = [v9 isCompleted];
+        preloadingController = [v8 preloadingController];
+        isCompleted = [preloadingController isCompleted];
 
-        if ((v10 & 1) == 0)
+        if ((isCompleted & 1) == 0)
         {
-          v11 = [v8 priority];
+          priority = [v8 priority];
           goto LABEL_11;
         }
       }
@@ -79,7 +79,7 @@
     }
   }
 
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
+  priority = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_11:
 
   v22 = 0u;
@@ -102,9 +102,9 @@ LABEL_11:
         }
 
         v17 = *(*(&v20 + 1) + 8 * j);
-        v18 = [v17 priority] <= v11;
-        v19 = [v17 preloadingController];
-        [v19 setIsPreloadingEnabled:v18];
+        v18 = [v17 priority] <= priority;
+        preloadingController2 = [v17 preloadingController];
+        [preloadingController2 setIsPreloadingEnabled:v18];
       }
 
       v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -116,8 +116,8 @@ LABEL_11:
 
 - (void)_invalidatePreloadingControllers
 {
-  v2 = [(PXStoryResourcesPreloadingCoordinator *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePreloadingControllers];
+  updater = [(PXStoryResourcesPreloadingCoordinator *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePreloadingControllers];
 }
 
 uint64_t __58__PXStoryResourcesPreloadingCoordinator__updateInfosOrder__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -136,38 +136,38 @@ uint64_t __58__PXStoryResourcesPreloadingCoordinator__updateInfosOrder__block_in
 
 - (void)_invalidateInfosOrder
 {
-  v2 = [(PXStoryResourcesPreloadingCoordinator *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInfosOrder];
+  updater = [(PXStoryResourcesPreloadingCoordinator *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInfosOrder];
 }
 
-- (void)removePreloadingController:(id)a3
+- (void)removePreloadingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v4 = [PXStoryResourcesPreloadingCoordinator _infoForPreloadingController:"_infoForPreloadingController:createIfNeeded:" createIfNeeded:?];
   if (v4)
   {
-    [v5 setIsPreloadingEnabled:0];
-    [v5 unregisterChangeObserver:self context:PreloadinControllerObservationContext];
+    [controllerCopy setIsPreloadingEnabled:0];
+    [controllerCopy unregisterChangeObserver:self context:PreloadinControllerObservationContext];
     [(NSMutableArray *)self->_infos removeObject:v4];
     [(PXStoryResourcesPreloadingCoordinator *)self _invalidatePreloadingControllers];
   }
 }
 
-- (void)addPreloadingController:(id)a3 withPriority:(int64_t)a4
+- (void)addPreloadingController:(id)controller withPriority:(int64_t)priority
 {
-  v6 = [(PXStoryResourcesPreloadingCoordinator *)self _infoForPreloadingController:a3 createIfNeeded:1];
-  [v6 setPriority:a4];
+  v6 = [(PXStoryResourcesPreloadingCoordinator *)self _infoForPreloadingController:controller createIfNeeded:1];
+  [v6 setPriority:priority];
 
   [(PXStoryResourcesPreloadingCoordinator *)self _invalidateInfosOrder];
 
   [(PXStoryResourcesPreloadingCoordinator *)self _invalidatePreloadingControllers];
 }
 
-- (id)_infoForPreloadingController:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_infoForPreloadingController:(id)controller createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -187,9 +187,9 @@ uint64_t __58__PXStoryResourcesPreloadingCoordinator__updateInfosOrder__block_in
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 preloadingController];
+        preloadingController = [v11 preloadingController];
 
-        if (v12 == v6)
+        if (preloadingController == controllerCopy)
         {
           v8 = v11;
           goto LABEL_11;
@@ -208,11 +208,11 @@ uint64_t __58__PXStoryResourcesPreloadingCoordinator__updateInfosOrder__block_in
 
 LABEL_11:
 
-  if (!v8 && v4)
+  if (!v8 && neededCopy)
   {
     v8 = objc_alloc_init(_PXStoryPreloadingControllerInfo);
-    [(_PXStoryPreloadingControllerInfo *)v8 setPreloadingController:v6];
-    [v6 registerChangeObserver:self context:PreloadinControllerObservationContext];
+    [(_PXStoryPreloadingControllerInfo *)v8 setPreloadingController:controllerCopy];
+    [controllerCopy registerChangeObserver:self context:PreloadinControllerObservationContext];
     [(NSMutableArray *)self->_infos addObject:v8];
   }
 
@@ -224,32 +224,32 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = PXStoryResourcesPreloadingCoordinator;
   [(PXStoryResourcesPreloadingCoordinator *)&v4 didPerformChanges];
-  v3 = [(PXStoryResourcesPreloadingCoordinator *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryResourcesPreloadingCoordinator *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryResourcesPreloadingCoordinator *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryResourcesPreloadingCoordinator *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryResourcesPreloadingCoordinator;
-  [(PXStoryResourcesPreloadingCoordinator *)&v6 performChanges:v4];
+  [(PXStoryResourcesPreloadingCoordinator *)&v6 performChanges:changesCopy];
 }
 
-- (PXStoryResourcesPreloadingCoordinator)initWithQueue:(id)a3
+- (PXStoryResourcesPreloadingCoordinator)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = PXStoryResourcesPreloadingCoordinator;
   v5 = [(PXStoryResourcesPreloadingCoordinator *)&v15 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
       storyQueue = v5->_storyQueue;
       v5->_storyQueue = v6;
     }

@@ -1,16 +1,16 @@
 @interface TTKDirSink
-- (id)init:(id)a3 inputMode:(id)a4 layouts:(id)a5 writeOnFlush:(BOOL)a6 maxTestCasesPerFile:(unsigned int)a7 maxFilesPerDirectory:(unsigned int)a8;
-- (void)addLayouts:(id)a3;
+- (id)init:(id)init inputMode:(id)mode layouts:(id)layouts writeOnFlush:(BOOL)flush maxTestCasesPerFile:(unsigned int)file maxFilesPerDirectory:(unsigned int)directory;
+- (void)addLayouts:(id)layouts;
 - (void)close;
 - (void)flushFiles;
-- (void)pushNextTestCase:(id)a3;
+- (void)pushNextTestCase:(id)case;
 @end
 
 @implementation TTKDirSink
 
-- (void)pushNextTestCase:(id)a3
+- (void)pushNextTestCase:(id)case
 {
-  [(NSMutableArray *)self->_testCasesToWrite addObject:a3];
+  [(NSMutableArray *)self->_testCasesToWrite addObject:case];
   if ([(NSMutableArray *)self->_testCasesToWrite count]== self->_maxTestCasesPerFile)
   {
 
@@ -28,20 +28,20 @@
     v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_rootDir isDirectory:1];
     v21 = v3;
     v6 = [v5 URLByAppendingPathComponent:v3];
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager fileExistsAtPath:path];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      v11 = [v6 path];
-      [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      path2 = [v6 path];
+      [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v12 = [v6 URLByAppendingPathComponent:v4];
-    v13 = [v12 path];
-    v14 = [TTKTestCaseWriter storeToFile:v13 inputMode:self->_inputMode layouts:0];
+    path3 = [v12 path];
+    v14 = [TTKTestCaseWriter storeToFile:path3 inputMode:self->_inputMode layouts:0];
 
     v24 = 0u;
     v25 = 0u;
@@ -89,42 +89,42 @@
   [(TTKDirSink *)self flushFiles];
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_rootDir isDirectory:1];
   v3 = [v6 URLByAppendingPathComponent:@"layouts.json"];
-  v4 = [v3 path];
-  v5 = [TTKTestCaseWriter storeToFile:v4 inputMode:self->_inputMode layouts:self->_layouts];
+  path = [v3 path];
+  v5 = [TTKTestCaseWriter storeToFile:path inputMode:self->_inputMode layouts:self->_layouts];
 
   [v5 close];
 }
 
-- (void)addLayouts:(id)a3
+- (void)addLayouts:(id)layouts
 {
   v4 = MEMORY[0x277CBEB38];
   layouts = self->_layouts;
-  v6 = a3;
+  layoutsCopy = layouts;
   v7 = [v4 dictionaryWithDictionary:layouts];
-  [(NSDictionary *)v7 addEntriesFromDictionary:v6];
+  [(NSDictionary *)v7 addEntriesFromDictionary:layoutsCopy];
 
   v8 = self->_layouts;
   self->_layouts = v7;
 }
 
-- (id)init:(id)a3 inputMode:(id)a4 layouts:(id)a5 writeOnFlush:(BOOL)a6 maxTestCasesPerFile:(unsigned int)a7 maxFilesPerDirectory:(unsigned int)a8
+- (id)init:(id)init inputMode:(id)mode layouts:(id)layouts writeOnFlush:(BOOL)flush maxTestCasesPerFile:(unsigned int)file maxFilesPerDirectory:(unsigned int)directory
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  initCopy = init;
+  modeCopy = mode;
+  layoutsCopy = layouts;
   v23.receiver = self;
   v23.super_class = TTKDirSink;
   v18 = [(TTKDirSink *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_inputMode, a4);
-    objc_storeStrong(&v19->_rootDir, a3);
-    objc_storeStrong(&v19->_layouts, a5);
-    v19->_writeOnFlush = a6;
-    v19->_maxTestCasesPerFile = a7;
-    v19->_maxFilesPerDirectory = a8;
-    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:a8];
+    objc_storeStrong(&v18->_inputMode, mode);
+    objc_storeStrong(&v19->_rootDir, init);
+    objc_storeStrong(&v19->_layouts, layouts);
+    v19->_writeOnFlush = flush;
+    v19->_maxTestCasesPerFile = file;
+    v19->_maxFilesPerDirectory = directory;
+    v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:directory];
     testCasesToWrite = v19->_testCasesToWrite;
     v19->_testCasesToWrite = v20;
   }

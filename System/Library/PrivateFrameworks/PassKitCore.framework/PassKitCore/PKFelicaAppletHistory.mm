@@ -1,41 +1,41 @@
 @interface PKFelicaAppletHistory
-+ (int64_t)appletTypeForDictionary:(id)a3;
++ (int64_t)appletTypeForDictionary:(id)dictionary;
 - (BOOL)isInShinkansenStation;
 - (BOOL)isInStation;
-- (PKFelicaAppletHistory)initWithCoder:(id)a3;
-- (PKFelicaAppletHistory)initWithDictionary:(id)a3 source:(int64_t)a4;
-- (void)_addEnrouteTransitType:(id)a3;
+- (PKFelicaAppletHistory)initWithCoder:(id)coder;
+- (PKFelicaAppletHistory)initWithDictionary:(id)dictionary source:(int64_t)source;
+- (void)_addEnrouteTransitType:(id)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)sanitizeValuesWithState:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)sanitizeValuesWithState:(id)state;
 @end
 
 @implementation PKFelicaAppletHistory
 
-+ (int64_t)appletTypeForDictionary:(id)a3
++ (int64_t)appletTypeForDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"NFServiceProviderID"];
+  v3 = [dictionary objectForKeyedSubscript:@"NFServiceProviderID"];
   v4 = PKFelicaAppletTypeFromSPID(v3);
 
   return v4;
 }
 
-- (PKFelicaAppletHistory)initWithDictionary:(id)a3 source:(int64_t)a4
+- (PKFelicaAppletHistory)initWithDictionary:(id)dictionary source:(int64_t)source
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = PKFelicaAppletHistory;
   v7 = [(PKTransitAppletHistory *)&v46 init];
   v8 = v7;
   if (v7)
   {
-    [(PKTransitAppletHistory *)v7 setSource:a4];
-    if (v6)
+    [(PKTransitAppletHistory *)v7 setSource:source];
+    if (dictionaryCopy)
     {
       v9 = objc_alloc(MEMORY[0x1E695DFD8]);
-      a4 = [v6 allKeys];
-      v10 = [v9 initWithArray:a4];
+      source = [dictionaryCopy allKeys];
+      v10 = [v9 initWithArray:source];
     }
 
     else
@@ -44,27 +44,27 @@
     }
 
     objc_storeStrong(&v8->_existingKeys, v10);
-    if (v6)
+    if (dictionaryCopy)
     {
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"NFServiceProviderID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"NFServiceProviderID"];
     v12 = [v11 copy];
     SPID = v8->_SPID;
     v8->_SPID = v12;
 
     v8->_type = PKFelicaAppletTypeFromSPID(v8->_SPID);
-    v14 = [v6 objectForKeyedSubscript:@"NFBlacklisted"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"NFBlacklisted"];
     -[PKTransitAppletHistory setBlacklisted:](v8, "setBlacklisted:", [v14 BOOLValue]);
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v16 = [v6 objectForKeyedSubscript:@"NFInStation"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"NFInStation"];
 
     if ([v16 BOOLValue])
     {
       [v15 addObject:@"Transit"];
     }
 
-    v17 = [v6 objectForKeyedSubscript:@"NFInStationShinkansen"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"NFInStationShinkansen"];
 
     if ([v17 BOOLValue])
     {
@@ -72,24 +72,24 @@
     }
 
     [(PKTransitAppletHistory *)v8 setEnrouteTransitTypes:v15];
-    v18 = [v6 objectForKeyedSubscript:@"NFTicketUsed"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"NFTicketUsed"];
 
     v8->_greenCarTicketUsed = [v18 BOOLValue];
-    v19 = [v6 objectForKeyedSubscript:@"NFTicketSelected"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"NFTicketSelected"];
 
     v8->_shinkansenTicketActive = [v19 unsignedIntegerValue] != 0;
-    v20 = [v6 objectForKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"NFAllowBalanceUsageForCommute"];
 
     v8->_balanceAllowedForCommute = [v20 BOOLValue];
-    v21 = [v6 objectForKeyedSubscript:@"NFNotifyOnLowBalance"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"NFNotifyOnLowBalance"];
 
     v8->_lowBalanceNotificationEnabled = [v21 BOOLValue];
-    v22 = [v6 objectForKeyedSubscript:@"NFBalance"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"NFBalance"];
     v23 = PKDecimalAmountFromAmount(v22, @"JPY");
     [(PKTransitAppletHistory *)v8 setBalance:v23];
 
     [(PKTransitAppletHistory *)v8 setCurrency:@"JPY"];
-    v24 = [v6 objectForKeyedSubscript:@"NFHistoryRecords"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"NFHistoryRecords"];
     v25 = [v24 count];
     if (v25)
     {
@@ -137,7 +137,7 @@
       v15 = v41;
     }
 
-    v33 = [v6 objectForKeyedSubscript:{@"NFShinkansenTicket", v40, v41, v42}];
+    v33 = [dictionaryCopy objectForKeyedSubscript:{@"NFShinkansenTicket", v40, v41, v42}];
 
     if (v33)
     {
@@ -146,7 +146,7 @@
       v8->_shinkansenTicket = v34;
     }
 
-    v36 = [v6 objectForKeyedSubscript:@"NFGreenCarTicket"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"NFGreenCarTicket"];
 
     if (v36)
     {
@@ -159,52 +159,52 @@
   return v8;
 }
 
-- (PKFelicaAppletHistory)initWithCoder:(id)a3
+- (PKFelicaAppletHistory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKFelicaAppletHistory;
-  v5 = [(PKTransitAppletHistory *)&v19 initWithCoder:v4];
+  v5 = [(PKTransitAppletHistory *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"existingKeys"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"existingKeys"];
     existingKeys = v5->_existingKeys;
     v5->_existingKeys = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SPID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SPID"];
     SPID = v5->_SPID;
     v5->_SPID = v11;
 
     v5->_type = PKFelicaAppletTypeFromSPID(v5->_SPID);
-    v5->_shinkansenTicketActive = [v4 decodeBoolForKey:@"shinkansenTicketActive"];
-    v5->_greenCarTicketUsed = [v4 decodeBoolForKey:@"ticketUsed"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenTicket"];
+    v5->_shinkansenTicketActive = [coderCopy decodeBoolForKey:@"shinkansenTicketActive"];
+    v5->_greenCarTicketUsed = [coderCopy decodeBoolForKey:@"ticketUsed"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shinkansenTicket"];
     shinkansenTicket = v5->_shinkansenTicket;
     v5->_shinkansenTicket = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"greenCarTicket"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"greenCarTicket"];
     greenCarTicket = v5->_greenCarTicket;
     v5->_greenCarTicket = v15;
 
-    v5->_balanceAllowedForCommute = [v4 decodeBoolForKey:@"balanceAllowedForCommute"];
-    v5->_lowBalanceNotificationEnabled = [v4 decodeBoolForKey:@"lowBalanceNotificationEnabled"];
-    v17 = [(PKTransitAppletHistory *)v5 enrouteTransitTypes];
-    LODWORD(v7) = [v17 containsObject:@"TransitMetro"];
+    v5->_balanceAllowedForCommute = [coderCopy decodeBoolForKey:@"balanceAllowedForCommute"];
+    v5->_lowBalanceNotificationEnabled = [coderCopy decodeBoolForKey:@"lowBalanceNotificationEnabled"];
+    enrouteTransitTypes = [(PKTransitAppletHistory *)v5 enrouteTransitTypes];
+    LODWORD(v7) = [enrouteTransitTypes containsObject:@"TransitMetro"];
 
     if (v7)
     {
       [(PKTransitAppletHistory *)v5 setEnrouteTransitTypes:0];
     }
 
-    if ([v4 decodeBoolForKey:@"inStation"] && !-[PKFelicaAppletHistory isInStation](v5, "isInStation"))
+    if ([coderCopy decodeBoolForKey:@"inStation"] && !-[PKFelicaAppletHistory isInStation](v5, "isInStation"))
     {
       [(PKFelicaAppletHistory *)v5 _addEnrouteTransitType:@"Transit"];
     }
 
-    if ([v4 decodeBoolForKey:@"inShinkansenStation"] && !-[PKFelicaAppletHistory isInShinkansenStation](v5, "isInShinkansenStation"))
+    if ([coderCopy decodeBoolForKey:@"inShinkansenStation"] && !-[PKFelicaAppletHistory isInShinkansenStation](v5, "isInShinkansenStation"))
     {
       [(PKFelicaAppletHistory *)v5 _addEnrouteTransitType:@"TransitTrainShinkansen"];
     }
@@ -220,70 +220,70 @@
   [(PKTransitAppletHistory *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFelicaAppletHistory;
-  v4 = a3;
-  [(PKTransitAppletHistory *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_existingKeys forKey:{@"existingKeys", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_SPID forKey:@"SPID"];
-  [v4 encodeBool:-[PKFelicaAppletHistory isInShinkansenStation](self forKey:{"isInShinkansenStation"), @"inShinkansenStation"}];
-  [v4 encodeBool:self->_shinkansenTicketActive forKey:@"shinkansenTicketActive"];
-  [v4 encodeBool:self->_greenCarTicketUsed forKey:@"ticketUsed"];
-  [v4 encodeObject:self->_shinkansenTicket forKey:@"shinkansenTicket"];
-  [v4 encodeObject:self->_greenCarTicket forKey:@"greenCarTicket"];
-  [v4 encodeBool:self->_balanceAllowedForCommute forKey:@"balanceAllowedForCommute"];
-  [v4 encodeBool:self->_lowBalanceNotificationEnabled forKey:@"lowBalanceNotificationEnabled"];
+  coderCopy = coder;
+  [(PKTransitAppletHistory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_existingKeys forKey:{@"existingKeys", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_SPID forKey:@"SPID"];
+  [coderCopy encodeBool:-[PKFelicaAppletHistory isInShinkansenStation](self forKey:{"isInShinkansenStation"), @"inShinkansenStation"}];
+  [coderCopy encodeBool:self->_shinkansenTicketActive forKey:@"shinkansenTicketActive"];
+  [coderCopy encodeBool:self->_greenCarTicketUsed forKey:@"ticketUsed"];
+  [coderCopy encodeObject:self->_shinkansenTicket forKey:@"shinkansenTicket"];
+  [coderCopy encodeObject:self->_greenCarTicket forKey:@"greenCarTicket"];
+  [coderCopy encodeBool:self->_balanceAllowedForCommute forKey:@"balanceAllowedForCommute"];
+  [coderCopy encodeBool:self->_lowBalanceNotificationEnabled forKey:@"lowBalanceNotificationEnabled"];
 }
 
-- (void)sanitizeValuesWithState:(id)a3
+- (void)sanitizeValuesWithState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 felicaState];
-  if (v5)
+  stateCopy = state;
+  felicaState = [stateCopy felicaState];
+  if (felicaState)
   {
     if ([(PKTransitAppletHistory *)self source]!= 1)
     {
       if (![(NSSet *)self->_existingKeys containsObject:@"NFBlacklisted"])
       {
-        -[PKTransitAppletHistory setBlacklisted:](self, "setBlacklisted:", [v4 isBlacklisted]);
+        -[PKTransitAppletHistory setBlacklisted:](self, "setBlacklisted:", [stateCopy isBlacklisted]);
       }
 
-      if (!-[NSSet containsObject:](self->_existingKeys, "containsObject:", @"NFInStation") && [v5 isInStation] && !-[PKFelicaAppletHistory isInStation](self, "isInStation"))
+      if (!-[NSSet containsObject:](self->_existingKeys, "containsObject:", @"NFInStation") && [felicaState isInStation] && !-[PKFelicaAppletHistory isInStation](self, "isInStation"))
       {
         [(PKFelicaAppletHistory *)self _addEnrouteTransitType:@"Transit"];
       }
 
-      if (!-[NSSet containsObject:](self->_existingKeys, "containsObject:", @"NFInStationShinkansen") && [v5 isInShinkansenStation] && !-[PKFelicaAppletHistory isInShinkansenStation](self, "isInShinkansenStation"))
+      if (!-[NSSet containsObject:](self->_existingKeys, "containsObject:", @"NFInStationShinkansen") && [felicaState isInShinkansenStation] && !-[PKFelicaAppletHistory isInShinkansenStation](self, "isInShinkansenStation"))
       {
         [(PKFelicaAppletHistory *)self _addEnrouteTransitType:@"TransitTrainShinkansen"];
       }
 
       if (![(NSSet *)self->_existingKeys containsObject:@"NFTicketSelected"])
       {
-        self->_shinkansenTicketActive = [v5 isShinkansenTicketActive];
+        self->_shinkansenTicketActive = [felicaState isShinkansenTicketActive];
       }
 
       if (![(NSSet *)self->_existingKeys containsObject:@"NFTicketUsed"])
       {
-        self->_greenCarTicketUsed = [v5 isGreenCarTicketUsed];
+        self->_greenCarTicketUsed = [felicaState isGreenCarTicketUsed];
       }
 
       if (![(NSSet *)self->_existingKeys containsObject:@"NFBalance"])
       {
-        v6 = [v5 balance];
-        [(PKTransitAppletHistory *)self setBalance:v6];
+        balance = [felicaState balance];
+        [(PKTransitAppletHistory *)self setBalance:balance];
       }
 
       if (![(NSSet *)self->_existingKeys containsObject:@"NFAllowBalanceUsageForCommute"])
       {
-        self->_balanceAllowedForCommute = [v5 isBalanceAllowedForCommute];
+        self->_balanceAllowedForCommute = [felicaState isBalanceAllowedForCommute];
       }
 
       if (![(NSSet *)self->_existingKeys containsObject:@"NFNotifyOnLowBalance"])
       {
-        self->_lowBalanceNotificationEnabled = [v5 isLowBalanceNotificationEnabled];
+        self->_lowBalanceNotificationEnabled = [felicaState isLowBalanceNotificationEnabled];
       }
     }
 
@@ -307,25 +307,25 @@
 
 - (BOOL)isInShinkansenStation
 {
-  v2 = [(PKTransitAppletHistory *)self enrouteTransitTypes];
-  v3 = [v2 containsObject:@"TransitTrainShinkansen"];
+  enrouteTransitTypes = [(PKTransitAppletHistory *)self enrouteTransitTypes];
+  v3 = [enrouteTransitTypes containsObject:@"TransitTrainShinkansen"];
 
   return v3;
 }
 
 - (BOOL)isInStation
 {
-  v2 = [(PKTransitAppletHistory *)self enrouteTransitTypes];
-  v3 = [v2 containsObject:@"Transit"];
+  enrouteTransitTypes = [(PKTransitAppletHistory *)self enrouteTransitTypes];
+  v3 = [enrouteTransitTypes containsObject:@"Transit"];
 
   return v3;
 }
 
-- (void)_addEnrouteTransitType:(id)a3
+- (void)_addEnrouteTransitType:(id)type
 {
-  v4 = a3;
-  v5 = [(PKTransitAppletHistory *)self enrouteTransitTypes];
-  v6 = [v5 mutableCopy];
+  typeCopy = type;
+  enrouteTransitTypes = [(PKTransitAppletHistory *)self enrouteTransitTypes];
+  v6 = [enrouteTransitTypes mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -339,7 +339,7 @@
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:typeCopy];
   [(PKTransitAppletHistory *)self setEnrouteTransitTypes:v9];
 }
 

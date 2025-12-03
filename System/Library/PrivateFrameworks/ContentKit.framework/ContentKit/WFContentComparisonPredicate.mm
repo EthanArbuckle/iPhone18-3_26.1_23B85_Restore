@@ -1,14 +1,14 @@
 @interface WFContentComparisonPredicate
-+ (id)predicateWithValue:(id)a3 forProperty:(id)a4 comparisonType:(unint64_t)a5;
-+ (id)predicateWithValueBlock:(id)a3 forProperty:(id)a4;
++ (id)predicateWithValue:(id)value forProperty:(id)property comparisonType:(unint64_t)type;
++ (id)predicateWithValueBlock:(id)block forProperty:(id)property;
 + (void)initialize;
-+ (void)registerValueMapping:(id)a3;
-- (BOOL)evaluateWithValues:(id)a3;
++ (void)registerValueMapping:(id)mapping;
+- (BOOL)evaluateWithValues:(id)values;
 - (NSSet)containedProperties;
-- (WFContentComparisonPredicate)initWithValue:(id)a3 valueBlock:(id)a4 property:(id)a5 comparisonType:(unint64_t)a6;
-- (id)comparableValueForValue:(id)a3;
+- (WFContentComparisonPredicate)initWithValue:(id)value valueBlock:(id)block property:(id)property comparisonType:(unint64_t)type;
+- (id)comparableValueForValue:(id)value;
 - (id)description;
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5;
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler;
 @end
 
 @implementation WFContentComparisonPredicate
@@ -16,24 +16,24 @@
 - (NSSet)containedProperties
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(WFContentComparisonPredicate *)self property];
-  v4 = [v2 setWithObject:v3];
+  property = [(WFContentComparisonPredicate *)self property];
+  v4 = [v2 setWithObject:property];
 
   return v4;
 }
 
-- (BOOL)evaluateWithValues:(id)a3
+- (BOOL)evaluateWithValues:(id)values
 {
-  v4 = a3;
-  v5 = [(WFContentComparisonPredicate *)self valueBlock];
-  if (!v5)
+  valuesCopy = values;
+  valueBlock = [(WFContentComparisonPredicate *)self valueBlock];
+  if (!valueBlock)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__WFContentComparisonPredicate_evaluateWithValues___block_invoke;
     aBlock[3] = &unk_278346F28;
     aBlock[4] = self;
-    v5 = _Block_copy(aBlock);
+    valueBlock = _Block_copy(aBlock);
   }
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -41,8 +41,8 @@
   v9[2] = __51__WFContentComparisonPredicate_evaluateWithValues___block_invoke_2;
   v9[3] = &unk_27834A228;
   v9[4] = self;
-  v6 = [v4 if_map:v9];
-  v7 = (v5)[2](v5, v6);
+  v6 = [valuesCopy if_map:v9];
+  v7 = (valueBlock)[2](valueBlock, v6);
 
   return v7;
 }
@@ -137,17 +137,17 @@ LABEL_18:
   return v6;
 }
 
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  objectCopy = object;
+  substitutorCopy = substitutor;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(WFContentComparisonPredicate *)self property];
-    if (v9 && (v9[2](v9, v8, v11), v12 = objc_claimAutoreleasedReturnValue(), v11, (v11 = v12) == 0))
+    property = [(WFContentComparisonPredicate *)self property];
+    if (substitutorCopy && (substitutorCopy[2](substitutorCopy, objectCopy, property), v12 = objc_claimAutoreleasedReturnValue(), property, (property = v12) == 0))
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -157,8 +157,8 @@ LABEL_18:
       v13[2] = __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitutor_completionHandler___block_invoke;
       v13[3] = &unk_278349A90;
       v13[4] = self;
-      v14 = v10;
-      [v11 getValuesForObject:v8 completionHandler:v13];
+      v14 = handlerCopy;
+      [property getValuesForObject:objectCopy completionHandler:v13];
     }
   }
 }
@@ -172,10 +172,10 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
   return v4(v2, v3);
 }
 
-- (id)comparableValueForValue:(id)a3
+- (id)comparableValueForValue:(id)value
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -189,7 +189,7 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
     do
     {
       v9 = 0;
-      v10 = v4;
+      v10 = valueCopy;
       do
       {
         if (*v15 != v8)
@@ -198,11 +198,11 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
         }
 
         v11 = *(*(&v14 + 1) + 8 * v9);
-        v12 = [(WFContentComparisonPredicate *)self property];
-        v4 = (*(v11 + 16))(v11, v12, v10);
+        property = [(WFContentComparisonPredicate *)self property];
+        valueCopy = (*(v11 + 16))(v11, property, v10);
 
         ++v9;
-        v10 = v4;
+        v10 = valueCopy;
       }
 
       while (v7 != v9);
@@ -212,7 +212,7 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
     while (v7);
   }
 
-  return v4;
+  return valueCopy;
 }
 
 - (id)description
@@ -220,42 +220,42 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFContentComparisonPredicate *)self property];
-  v7 = [(WFContentComparisonPredicate *)self value];
-  v8 = [v3 stringWithFormat:@"<%@: %p, property: %@, value: %@, comparison: %lu>", v5, self, v6, v7, -[WFContentComparisonPredicate comparisonType](self, "comparisonType")];
+  property = [(WFContentComparisonPredicate *)self property];
+  value = [(WFContentComparisonPredicate *)self value];
+  v8 = [v3 stringWithFormat:@"<%@: %p, property: %@, value: %@, comparison: %lu>", v5, self, property, value, -[WFContentComparisonPredicate comparisonType](self, "comparisonType")];
 
   return v8;
 }
 
-- (WFContentComparisonPredicate)initWithValue:(id)a3 valueBlock:(id)a4 property:(id)a5 comparisonType:(unint64_t)a6
+- (WFContentComparisonPredicate)initWithValue:(id)value valueBlock:(id)block property:(id)property comparisonType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  valueCopy = value;
+  blockCopy = block;
+  propertyCopy = property;
   v20.receiver = self;
   v20.super_class = WFContentComparisonPredicate;
   v13 = [(WFContentComparisonPredicate *)&v20 init];
   if (v13)
   {
-    if ([v10 conformsToProtocol:&unk_282F7EE80])
+    if ([valueCopy conformsToProtocol:&unk_282F7EE80])
     {
-      v14 = [v10 copyWithZone:MEMORY[0x223D55DD0]()];
+      v14 = [valueCopy copyWithZone:MEMORY[0x223D55DD0]()];
     }
 
     else
     {
-      v14 = v10;
+      v14 = valueCopy;
     }
 
     value = v13->_value;
     v13->_value = v14;
 
-    v16 = [v11 copy];
+    v16 = [blockCopy copy];
     valueBlock = v13->_valueBlock;
     v13->_valueBlock = v16;
 
-    objc_storeStrong(&v13->_property, a5);
-    v13->_comparisonType = a6;
+    objc_storeStrong(&v13->_property, property);
+    v13->_comparisonType = type;
     v18 = v13;
   }
 
@@ -268,7 +268,7 @@ uint64_t __89__WFContentComparisonPredicate_evaluateWithObject_propertySubstitut
   block[1] = 3221225472;
   block[2] = __42__WFContentComparisonPredicate_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -381,17 +381,17 @@ id __42__WFContentComparisonPredicate_initialize__block_invoke_2(uint64_t a1, ui
   return v5;
 }
 
-+ (void)registerValueMapping:(id)a3
++ (void)registerValueMapping:(id)mapping
 {
   v3 = registerValueMapping__onceToken;
-  v4 = a3;
+  mappingCopy = mapping;
   if (v3 != -1)
   {
     dispatch_once(&registerValueMapping__onceToken, &__block_literal_global_11226);
   }
 
   v5 = mappings;
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(mappingCopy);
 
   [v5 addObject:v6];
 }
@@ -403,20 +403,20 @@ uint64_t __53__WFContentComparisonPredicate_registerValueMapping___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)predicateWithValueBlock:(id)a3 forProperty:(id)a4
++ (id)predicateWithValueBlock:(id)block forProperty:(id)property
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithValue:0 valueBlock:v7 property:v6 comparisonType:4];
+  propertyCopy = property;
+  blockCopy = block;
+  v8 = [[self alloc] initWithValue:0 valueBlock:blockCopy property:propertyCopy comparisonType:4];
 
   return v8;
 }
 
-+ (id)predicateWithValue:(id)a3 forProperty:(id)a4 comparisonType:(unint64_t)a5
++ (id)predicateWithValue:(id)value forProperty:(id)property comparisonType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithValue:v9 valueBlock:0 property:v8 comparisonType:a5];
+  propertyCopy = property;
+  valueCopy = value;
+  v10 = [[self alloc] initWithValue:valueCopy valueBlock:0 property:propertyCopy comparisonType:type];
 
   return v10;
 }

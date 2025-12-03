@@ -1,16 +1,16 @@
 @interface VMHandle
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandle:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandle:(id)handle;
 - (VMHandle)init;
-- (VMHandle)initWithCoder:(id)a3;
-- (VMHandle)initWithHandle:(id)a3;
-- (VMHandle)initWithType:(int64_t)a3 value:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VMHandle)initWithCoder:(id)coder;
+- (VMHandle)initWithHandle:(id)handle;
+- (VMHandle)initWithType:(int64_t)type value:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMHandle
@@ -22,31 +22,31 @@
   return 0;
 }
 
-- (VMHandle)initWithHandle:(id)a3
+- (VMHandle)initWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 value];
+  handleCopy = handle;
+  type = [handleCopy type];
+  value = [handleCopy value];
 
-  v7 = [(VMHandle *)self initWithType:v5 value:v6];
+  v7 = [(VMHandle *)self initWithType:type value:value];
   return v7;
 }
 
-- (VMHandle)initWithType:(int64_t)a3 value:(id)a4
+- (VMHandle)initWithType:(int64_t)type value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = VMHandle;
   v7 = [(VMHandle *)&v11 init];
   if (v7)
   {
-    if (a3)
+    if (type)
     {
-      if (v6)
+      if (valueCopy)
       {
 LABEL_4:
-        v7->_type = a3;
-        v8 = [v6 copy];
+        v7->_type = type;
+        v8 = [valueCopy copy];
         value = v7->_value;
         v7->_value = v8;
 
@@ -57,7 +57,7 @@ LABEL_4:
     else
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%s: parameter '%@' cannot be nil", "-[VMHandle initWithType:value:]", @"type"}];
-      if (v6)
+      if (valueCopy)
       {
         goto LABEL_4;
       }
@@ -72,39 +72,39 @@ LABEL_5:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [VMHandle allocWithZone:a3];
+  v4 = [VMHandle allocWithZone:zone];
 
   return [(VMHandle *)v4 initWithHandle:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
   value = self->_value;
   v8 = NSStringFromSelector(sel_value);
-  [v5 encodeObject:value forKey:v8];
+  [coderCopy encodeObject:value forKey:v8];
 }
 
-- (VMHandle)initWithCoder:(id)a3
+- (VMHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VMHandle;
   v5 = [(VMHandle *)&v12 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_type);
-    v5->_type = [v4 decodeIntegerForKey:v6];
+    v5->_type = [coderCopy decodeIntegerForKey:v6];
 
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_value);
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     value = v5->_value;
     v5->_value = v9;
   }
@@ -121,8 +121,8 @@ LABEL_5:
 
   [v3 appendFormat:@", "];
   v5 = NSStringFromSelector(sel_value);
-  v6 = [(VMHandle *)self value];
-  [v3 appendFormat:@"%@=%@", v5, v6];
+  value = [(VMHandle *)self value];
+  [v3 appendFormat:@"%@=%@", v5, value];
 
   [v3 appendFormat:@">"];
   v7 = [v3 copy];
@@ -132,17 +132,17 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v3 = [(VMHandle *)self type];
-  v4 = [(VMHandle *)self value];
-  v5 = [v4 hash];
+  type = [(VMHandle *)self type];
+  value = [(VMHandle *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -150,31 +150,31 @@ LABEL_5:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VMHandle *)self isEqualToHandle:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(VMHandle *)self isEqualToHandle:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHandle:(id)a3
+- (BOOL)isEqualToHandle:(id)handle
 {
-  v4 = a3;
-  if (self == v4)
+  handleCopy = handle;
+  if (self == handleCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(VMHandle *)self type];
-    if (v5 == [(VMHandle *)v4 type])
+    type = [(VMHandle *)self type];
+    if (type == [(VMHandle *)handleCopy type])
     {
-      v6 = [(VMHandle *)self value];
-      v7 = [(VMHandle *)v4 value];
-      v8 = (v6 | v7) == 0;
-      if (v7)
+      value = [(VMHandle *)self value];
+      value2 = [(VMHandle *)handleCopy value];
+      v8 = (value | value2) == 0;
+      if (value2)
       {
-        v8 = [v6 isEqualToString:v7];
+        v8 = [value isEqualToString:value2];
       }
     }
 
@@ -194,12 +194,12 @@ LABEL_5:
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface TSWPLinkedLayout
 - (BOOL)descendersCannotClip;
-- (BOOL)discardLayoutsForDrawableAttachmentsInRange:(_NSRange)a3;
+- (BOOL)discardLayoutsForDrawableAttachmentsInRange:(_NSRange)range;
 - (BOOL)isLastTarget;
 - (BOOL)isOverflowing;
 - (BOOL)repShouldPreventCaret;
 - (id)nextTargetFirstColumn;
 - (id)previousTargetLastColumn;
-- (void)killDrawableLayouts:(id)a3;
+- (void)killDrawableLayouts:(id)layouts;
 - (void)validate;
-- (void)willBeRemovedFromLayoutController:(id)a3;
-- (void)wrappableChildInvalidated:(id)a3;
+- (void)willBeRemovedFromLayoutController:(id)controller;
+- (void)wrappableChildInvalidated:(id)invalidated;
 @end
 
 @implementation TSWPLinkedLayout
 
-- (void)killDrawableLayouts:(id)a3
+- (void)killDrawableLayouts:(id)layouts
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = objc_msgSend_copy(a3, a2, a3);
+  v3 = objc_msgSend_copy(layouts, a2, layouts);
   v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v12, v16, 16);
   if (v5)
   {
@@ -50,17 +50,17 @@
   }
 }
 
-- (void)wrappableChildInvalidated:(id)a3
+- (void)wrappableChildInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v10.receiver = self;
   v10.super_class = TSWPLinkedLayout;
-  [(TSWPLayout *)&v10 wrappableChildInvalidated:v4];
+  [(TSWPLayout *)&v10 wrappableChildInvalidated:invalidatedCopy];
   v7 = objc_msgSend_wrapInvalidationParent(self, v5, v6);
   v9 = v7;
   if (v7 != self)
   {
-    objc_msgSend_wrappableChildInvalidated_(v7, v8, v4);
+    objc_msgSend_wrappableChildInvalidated_(v7, v8, invalidatedCopy);
   }
 }
 
@@ -134,15 +134,15 @@
   return v9;
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
   layoutManager = self->super._layoutManager;
   self->super._layoutManager = 0;
-  v5 = a3;
+  controllerCopy = controller;
 
   v6.receiver = self;
   v6.super_class = TSWPLinkedLayout;
-  [(TSWPLayout *)&v6 willBeRemovedFromLayoutController:v5];
+  [(TSWPLayout *)&v6 willBeRemovedFromLayoutController:controllerCopy];
 }
 
 - (BOOL)repShouldPreventCaret
@@ -178,17 +178,17 @@
   }
 }
 
-- (BOOL)discardLayoutsForDrawableAttachmentsInRange:(_NSRange)a3
+- (BOOL)discardLayoutsForDrawableAttachmentsInRange:(_NSRange)range
 {
   v53 = *MEMORY[0x277D85DE8];
-  if (!a3.length)
+  if (!range.length)
   {
     return 0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_storage(self, a2, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_storage(self, a2, range.location);
   v8 = objc_msgSend_attachmentIndexRangeForTextRange_(v6, v7, location, length);
   v47 = v8 + v9;
   v45 = v6;
@@ -198,7 +198,7 @@
   }
 
   v10 = v8;
-  v44 = self;
+  selfCopy = self;
   v11 = 0;
   do
   {
@@ -218,14 +218,14 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
       }
 
-      if ((objc_msgSend_isAnchored(v14, v17, v18, v44) & 1) == 0)
+      if ((objc_msgSend_isAnchored(v14, v17, v18, selfCopy) & 1) == 0)
       {
         v46 = v10;
         v50 = 0u;
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v28 = objc_msgSend_children(v44, v26, v27);
+        v28 = objc_msgSend_children(selfCopy, v26, v27);
         v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v28, v29, &v48, v52, 16);
         if (v30)
         {
@@ -272,7 +272,7 @@
   while (v10 != v47);
   if (v11)
   {
-    objc_msgSend_killDrawableLayouts_(v44, v41, v11);
+    objc_msgSend_killDrawableLayouts_(selfCopy, v41, v11);
 
     v42 = 1;
   }

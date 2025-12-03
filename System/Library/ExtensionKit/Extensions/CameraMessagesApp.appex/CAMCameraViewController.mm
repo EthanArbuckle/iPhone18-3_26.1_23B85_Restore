@@ -1,15 +1,15 @@
 @interface CAMCameraViewController
-- (void)setUberDelegate:(id)a3;
+- (void)setUberDelegate:(id)delegate;
 @end
 
 @implementation CAMCameraViewController
 
-- (void)setUberDelegate:(id)a3
+- (void)setUberDelegate:(id)delegate
 {
-  v4 = a3;
-  [(CAMCameraViewController *)self setCaptureDelegate:v4];
-  [(CAMCameraViewController *)self setCameraSessionDelegate:v4];
-  [(CAMCameraViewController *)self setPresentationDelegate:v4];
+  delegateCopy = delegate;
+  [(CAMCameraViewController *)self setCaptureDelegate:delegateCopy];
+  [(CAMCameraViewController *)self setCameraSessionDelegate:delegateCopy];
+  [(CAMCameraViewController *)self setPresentationDelegate:delegateCopy];
 }
 
 @end

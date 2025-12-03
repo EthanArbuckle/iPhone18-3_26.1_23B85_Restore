@@ -1,6 +1,6 @@
 @interface SPEmbeddingResult
 + (id)log;
-- (SPEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 scale:(float)a6 bias:(float)a7;
+- (SPEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type scale:(float)scale bias:(float)bias;
 - (id)description;
 - (unint64_t)elementCount;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __24__SPEmbeddingResult_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -33,20 +33,20 @@ void __24__SPEmbeddingResult_log__block_invoke(uint64_t a1)
   log_log_2 = v2;
 }
 
-- (SPEmbeddingResult)initWithVersion:(unint64_t)a3 data:(id)a4 type:(unint64_t)a5 scale:(float)a6 bias:(float)a7
+- (SPEmbeddingResult)initWithVersion:(unint64_t)version data:(id)data type:(unint64_t)type scale:(float)scale bias:(float)bias
 {
-  v13 = a4;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = SPEmbeddingResult;
   v14 = [(SPEmbeddingResult *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_version = a3;
-    objc_storeStrong(&v14->_embeddingData, a4);
-    v15->_elementType = a5;
-    v15->_scale = a6;
-    v15->_bias = a7;
+    v14->_version = version;
+    objc_storeStrong(&v14->_embeddingData, data);
+    v15->_elementType = type;
+    v15->_scale = scale;
+    v15->_bias = bias;
   }
 
   return v15;
@@ -86,16 +86,16 @@ void __24__SPEmbeddingResult_log__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"elementType: %d, ", self->_elementType];
-  [v3 appendFormat:@"elementCount: %d, ", -[SPEmbeddingResult elementCount](self, "elementCount")];
-  [v3 appendFormat:@"embeddingData: %@>", self->_embeddingData];
+  [string appendFormat:@"elementType: %d, ", self->_elementType];
+  [string appendFormat:@"elementCount: %d, ", -[SPEmbeddingResult elementCount](self, "elementCount")];
+  [string appendFormat:@"embeddingData: %@>", self->_embeddingData];
 
-  return v3;
+  return string;
 }
 
 @end

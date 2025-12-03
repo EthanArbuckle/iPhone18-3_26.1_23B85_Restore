@@ -7,27 +7,27 @@
 - (__CFString)_mapkit_roundedPastUnitsStringFromDate:()MKReviewDateFormatting
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [v4 earlierDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [date earlierDate:v3];
 
-  if (v5 == v4)
+  if (v5 == date)
   {
     v16 = &stru_1F15B23C0;
     goto LABEL_20;
   }
 
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v6 components:28 fromDate:v3];
-  v8 = [v6 components:28 fromDate:v4];
-  v9 = [v8 year];
-  v10 = v9 - [v7 year];
-  v11 = [v8 month];
-  v12 = [v7 month];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [currentCalendar components:28 fromDate:v3];
+  v8 = [currentCalendar components:28 fromDate:date];
+  year = [v8 year];
+  v10 = year - [v7 year];
+  month = [v8 month];
+  month2 = [v7 month];
   v13 = [v8 day];
   v14 = [v7 day];
   if (v10 < 1)
   {
-    v17 = (v11 - v12);
+    v17 = (month - month2);
     if (v17 < 1)
     {
       v17 = (v13 - v14);

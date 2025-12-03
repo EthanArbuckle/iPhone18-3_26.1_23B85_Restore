@@ -1,24 +1,24 @@
 @interface CNAvatarImageRenderer
 + (id)descriptorForRequiredKeys;
 - (CNAvatarImageRenderer)init;
-- (CNAvatarImageRenderer)initWithSettings:(id)a3;
-- (id)avatarImageForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5;
-- (id)imageForAvatarAccessoryView:(id)a3 scope:(id)a4;
+- (CNAvatarImageRenderer)initWithSettings:(id)settings;
+- (id)avatarImageForContacts:(id)contacts withBadges:(id)badges scope:(id)scope;
+- (id)imageForAvatarAccessoryView:(id)view scope:(id)scope;
 - (id)loadingPlaceholderImageProvider;
 - (id)placeholderImageProvider;
-- (id)renderAvatarsForContacts:(id)a3 handler:(id)a4;
-- (id)renderAvatarsForContacts:(id)a3 scope:(id)a4 includePlaceholder:(BOOL)a5 imageHandler:(id)a6;
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 includePlaceholder:(BOOL)a6 imageHandler:(id)a7;
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7 imageHandler:(id)a8;
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7 observer:(id)a8;
-- (id)renderMonogramForContact:(id)a3 color:(id)a4 scope:(id)a5 prohibitedSources:(int64_t)a6;
-- (id)renderMonogramForString:(id)a3 color:(id)a4 scope:(id)a5 prohibitedSources:(int64_t)a6;
-- (id)renderMonogramForString:(id)a3 handler:(id)a4;
-- (id)renderMonogramForString:(id)a3 scope:(id)a4 imageHandler:(id)a5;
-- (id)renderedLikenessesForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7;
-- (id)renderedMonogramObservableForString:(id)a3 scope:(id)a4;
-- (id)runScopeBasedImageObservable:(id)a3 scope:(id)a4 imageHandler:(id)a5;
-- (id)runScopeBasedImageObservable:(id)a3 scope:(id)a4 observer:(id)a5;
+- (id)renderAvatarsForContacts:(id)contacts handler:(id)handler;
+- (id)renderAvatarsForContacts:(id)contacts scope:(id)scope includePlaceholder:(BOOL)placeholder imageHandler:(id)handler;
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope includePlaceholder:(BOOL)placeholder imageHandler:(id)handler;
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler imageHandler:(id)handler;
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler observer:(id)observer;
+- (id)renderMonogramForContact:(id)contact color:(id)color scope:(id)scope prohibitedSources:(int64_t)sources;
+- (id)renderMonogramForString:(id)string color:(id)color scope:(id)scope prohibitedSources:(int64_t)sources;
+- (id)renderMonogramForString:(id)string handler:(id)handler;
+- (id)renderMonogramForString:(id)string scope:(id)scope imageHandler:(id)handler;
+- (id)renderedLikenessesForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler;
+- (id)renderedMonogramObservableForString:(id)string scope:(id)scope;
+- (id)runScopeBasedImageObservable:(id)observable scope:(id)scope imageHandler:(id)handler;
+- (id)runScopeBasedImageObservable:(id)observable scope:(id)scope observer:(id)observer;
 @end
 
 @implementation CNAvatarImageRenderer
@@ -34,10 +34,10 @@
 - (id)placeholderImageProvider
 {
   v3 = [_CNAvatarImageProvider alloc];
-  v4 = [(CNAvatarImageRenderer *)self resolver];
-  v5 = [v4 placeholderProviderFactory];
-  v6 = [v5 placeholderProvider];
-  v7 = [(_CNAvatarImageProvider *)v3 initWithLikenessProvider:v6];
+  resolver = [(CNAvatarImageRenderer *)self resolver];
+  placeholderProviderFactory = [resolver placeholderProviderFactory];
+  placeholderProvider = [placeholderProviderFactory placeholderProvider];
+  v7 = [(_CNAvatarImageProvider *)v3 initWithLikenessProvider:placeholderProvider];
 
   return v7;
 }
@@ -45,10 +45,10 @@
 - (id)loadingPlaceholderImageProvider
 {
   v3 = [_CNAvatarImageProvider alloc];
-  v4 = [(CNAvatarImageRenderer *)self resolver];
-  v5 = [v4 placeholderProviderFactory];
-  v6 = [v5 loadingPlaceholderProvider];
-  v7 = [(_CNAvatarImageProvider *)v3 initWithLikenessProvider:v6];
+  resolver = [(CNAvatarImageRenderer *)self resolver];
+  placeholderProviderFactory = [resolver placeholderProviderFactory];
+  loadingPlaceholderProvider = [placeholderProviderFactory loadingPlaceholderProvider];
+  v7 = [(_CNAvatarImageProvider *)v3 initWithLikenessProvider:loadingPlaceholderProvider];
 
   return v7;
 }
@@ -57,8 +57,8 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695CD58];
-  v3 = [MEMORY[0x1E6996BB8] descriptorForRequiredKeys];
-  v8[0] = v3;
+  descriptorForRequiredKeys = [MEMORY[0x1E6996BB8] descriptorForRequiredKeys];
+  v8[0] = descriptorForRequiredKeys;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNAvatarImageRenderer descriptorForRequiredKeys]"];
   v6 = [v2 descriptorWithKeyDescriptors:v4 description:v5];
@@ -66,34 +66,34 @@
   return v6;
 }
 
-- (id)renderMonogramForContact:(id)a3 color:(id)a4 scope:(id)a5 prohibitedSources:(int64_t)a6
+- (id)renderMonogramForContact:(id)contact color:(id)color scope:(id)scope prohibitedSources:(int64_t)sources
 {
   v10 = MEMORY[0x1E695CD80];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 stringFromContact:a3 style:1002];
-  v14 = [(CNAvatarImageRenderer *)self renderMonogramForString:v13 color:v12 scope:v11 prohibitedSources:a6];
+  scopeCopy = scope;
+  colorCopy = color;
+  v13 = [v10 stringFromContact:contact style:1002];
+  v14 = [(CNAvatarImageRenderer *)self renderMonogramForString:v13 color:colorCopy scope:scopeCopy prohibitedSources:sources];
 
   return v14;
 }
 
-- (id)renderMonogramForString:(id)a3 color:(id)a4 scope:(id)a5 prohibitedSources:(int64_t)a6
+- (id)renderMonogramForString:(id)string color:(id)color scope:(id)scope prohibitedSources:(int64_t)sources
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a5 likenessRenderingScope];
-  v13 = [(CNAvatarImageRenderer *)self renderer];
-  v14 = [v13 renderedBasicMonogramForString:v11 color:v10 scope:v12 prohibitedSources:a6];
+  colorCopy = color;
+  stringCopy = string;
+  likenessRenderingScope = [scope likenessRenderingScope];
+  renderer = [(CNAvatarImageRenderer *)self renderer];
+  v14 = [renderer renderedBasicMonogramForString:stringCopy color:colorCopy scope:likenessRenderingScope prohibitedSources:sources];
 
   return v14;
 }
 
-- (id)imageForAvatarAccessoryView:(id)a3 scope:(id)a4
+- (id)imageForAvatarAccessoryView:(id)view scope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v9 = [v8 immediateScheduler];
+  viewCopy = view;
+  scopeCopy = scope;
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  immediateScheduler = [schedulerProvider immediateScheduler];
 
   v21 = 0;
   v22 = &v21;
@@ -106,9 +106,9 @@
   v18[2] = __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invoke;
   v18[3] = &unk_1E74E3250;
   v18[4] = self;
-  v10 = v6;
+  v10 = viewCopy;
   v19 = v10;
-  v11 = v9;
+  v11 = immediateScheduler;
   v20 = v11;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -116,7 +116,7 @@
   v15[3] = &unk_1E74E31B0;
   v16 = 0;
   v17 = &v21;
-  v12 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v18 scope:v7 imageHandler:v15];
+  v12 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v18 scope:scopeCopy imageHandler:v15];
   [v12 cancel];
   v13 = v22[5];
 
@@ -148,39 +148,39 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
   }
 }
 
-- (id)renderedMonogramObservableForString:(id)a3 scope:(id)a4
+- (id)renderedMonogramObservableForString:(id)string scope:(id)scope
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarImageRenderer *)self renderer];
-  v9 = [MEMORY[0x1E6996798] observableWithResult:v7];
+  scopeCopy = scope;
+  stringCopy = string;
+  renderer = [(CNAvatarImageRenderer *)self renderer];
+  v9 = [MEMORY[0x1E6996798] observableWithResult:stringCopy];
 
-  v10 = [v8 renderedBasicMonogramFromString:v9 scope:v6];
+  v10 = [renderer renderedBasicMonogramFromString:v9 scope:scopeCopy];
 
-  v11 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v12 = [v11 backgroundScheduler];
-  v13 = [v10 subscribeOn:v12];
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v13 = [v10 subscribeOn:backgroundScheduler];
 
   return v13;
 }
 
-- (id)renderedLikenessesForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7
+- (id)renderedLikenessesForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler
 {
-  v8 = a6;
+  placeholderCopy = placeholder;
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a4;
-  v16 = [(CNAvatarImageRenderer *)self renderer];
-  v17 = [v16 renderedLikenessesForContacts:v12 withBadges:v15 scope:v13 workScheduler:v14];
+  contactsCopy = contacts;
+  scopeCopy = scope;
+  schedulerCopy = scheduler;
+  badgesCopy = badges;
+  renderer = [(CNAvatarImageRenderer *)self renderer];
+  v17 = [renderer renderedLikenessesForContacts:contactsCopy withBadges:badgesCopy scope:scopeCopy workScheduler:schedulerCopy];
 
-  v18 = [v17 subscribeOn:v14];
+  v18 = [v17 subscribeOn:schedulerCopy];
 
-  if (v8)
+  if (placeholderCopy)
   {
-    v19 = [(CNAvatarImageRenderer *)self renderer];
-    v20 = [v19 loadingPlaceholderForContactCount:objc_msgSend(v12 scope:{"count"), v13}];
+    renderer2 = [(CNAvatarImageRenderer *)self renderer];
+    v20 = [renderer2 loadingPlaceholderForContactCount:objc_msgSend(contactsCopy scope:{"count"), scopeCopy}];
 
     if (v20)
     {
@@ -197,7 +197,7 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v27 = v13;
+        v27 = scopeCopy;
         _os_log_error_impl(&dword_199A75000, v20, OS_LOG_TYPE_ERROR, "Loading placeholder is nil for scope: %@", buf, 0xCu);
       }
     }
@@ -208,27 +208,27 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
   return v18;
 }
 
-- (id)runScopeBasedImageObservable:(id)a3 scope:(id)a4 imageHandler:(id)a5
+- (id)runScopeBasedImageObservable:(id)observable scope:(id)scope imageHandler:(id)handler
 {
   v8 = MEMORY[0x1E69967A0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 observerWithResultBlock:a5 completionBlock:0 failureBlock:&__block_literal_global_72];
-  v12 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v10 scope:v9 observer:v11];
+  scopeCopy = scope;
+  observableCopy = observable;
+  v11 = [v8 observerWithResultBlock:handler completionBlock:0 failureBlock:&__block_literal_global_72];
+  v12 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:observableCopy scope:scopeCopy observer:v11];
 
   return v12;
 }
 
-- (id)runScopeBasedImageObservable:(id)a3 scope:(id)a4 observer:(id)a5
+- (id)runScopeBasedImageObservable:(id)observable scope:(id)scope observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 conformsToProtocol:&unk_1F0E0EAB8])
+  observableCopy = observable;
+  scopeCopy = scope;
+  observerCopy = observer;
+  if ([scopeCopy conformsToProtocol:&unk_1F0E0EAB8])
   {
-    v10 = [v8 likenessRenderingScope];
-    v11 = v7[2](v7, v10);
-    v12 = [v11 subscribe:v9];
+    likenessRenderingScope = [scopeCopy likenessRenderingScope];
+    v11 = observableCopy[2](observableCopy, likenessRenderingScope);
+    v12 = [v11 subscribe:observerCopy];
   }
 
   else
@@ -240,72 +240,72 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
   return v12;
 }
 
-- (id)renderMonogramForString:(id)a3 scope:(id)a4 imageHandler:(id)a5
+- (id)renderMonogramForString:(id)string scope:(id)scope imageHandler:(id)handler
 {
-  v8 = a3;
+  stringCopy = string;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__CNAvatarImageRenderer_renderMonogramForString_scope_imageHandler___block_invoke;
   v12[3] = &unk_1E74E3228;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v12 scope:a4 imageHandler:a5];
+  v13 = stringCopy;
+  v9 = stringCopy;
+  v10 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v12 scope:scope imageHandler:handler];
 
   return v10;
 }
 
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7 imageHandler:(id)a8
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler imageHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
+  contactsCopy = contacts;
+  badgesCopy = badges;
+  schedulerCopy = scheduler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __106__CNAvatarImageRenderer_renderAvatarsForContacts_withBadges_scope_placeholder_workScheduler_imageHandler___block_invoke;
   v22[3] = &unk_1E74E3200;
   v22[4] = self;
-  v23 = v14;
-  v26 = a6;
-  v24 = v15;
-  v25 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v22 scope:a5 imageHandler:a8];
+  v23 = contactsCopy;
+  placeholderCopy = placeholder;
+  v24 = badgesCopy;
+  v25 = schedulerCopy;
+  v17 = schedulerCopy;
+  v18 = badgesCopy;
+  v19 = contactsCopy;
+  v20 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v22 scope:scope imageHandler:handler];
 
   return v20;
 }
 
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 placeholder:(BOOL)a6 workScheduler:(id)a7 observer:(id)a8
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope placeholder:(BOOL)placeholder workScheduler:(id)scheduler observer:(id)observer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
+  contactsCopy = contacts;
+  badgesCopy = badges;
+  schedulerCopy = scheduler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __102__CNAvatarImageRenderer_renderAvatarsForContacts_withBadges_scope_placeholder_workScheduler_observer___block_invoke;
   v22[3] = &unk_1E74E3200;
   v22[4] = self;
-  v23 = v14;
-  v26 = a6;
-  v24 = v15;
-  v25 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v22 scope:a5 observer:a8];
+  v23 = contactsCopy;
+  placeholderCopy = placeholder;
+  v24 = badgesCopy;
+  v25 = schedulerCopy;
+  v17 = schedulerCopy;
+  v18 = badgesCopy;
+  v19 = contactsCopy;
+  v20 = [(CNAvatarImageRenderer *)self runScopeBasedImageObservable:v22 scope:scope observer:observer];
 
   return v20;
 }
 
-- (id)avatarImageForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5
+- (id)avatarImageForContacts:(id)contacts withBadges:(id)badges scope:(id)scope
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v12 = [v11 immediateScheduler];
+  contactsCopy = contacts;
+  badgesCopy = badges;
+  scopeCopy = scope;
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  immediateScheduler = [schedulerProvider immediateScheduler];
 
   v31 = 0;
   v32 = &v31;
@@ -313,9 +313,9 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
   v34 = __Block_byref_object_copy__21846;
   v35 = __Block_byref_object_dispose__21847;
   v36 = 0;
-  v13 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v14 = [v13 featureFlags];
-  v15 = [v14 isFeatureEnabled:6];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v15 = [featureFlags isFeatureEnabled:6];
 
   if ((v15 & 1) != 0 && (v16 = dispatch_semaphore_create(0)) != 0)
   {
@@ -338,7 +338,7 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
     v18 = v27;
     v25 = v18;
     v19 = [v17 observerWithResultBlock:v28 completionBlock:v26 failureBlock:v24];
-    v20 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:v8 withBadges:v9 scope:v10 placeholder:0 workScheduler:v12 observer:v19];
+    v20 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:contactsCopy withBadges:badgesCopy scope:scopeCopy placeholder:0 workScheduler:immediateScheduler observer:v19];
 
     dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -350,7 +350,7 @@ void __59__CNAvatarImageRenderer_imageForAvatarAccessoryView_scope___block_invok
     v23[2] = __65__CNAvatarImageRenderer_avatarImageForContacts_withBadges_scope___block_invoke_10;
     v23[3] = &unk_1E74E31D8;
     v23[4] = &v31;
-    v20 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:v8 withBadges:v9 scope:v10 placeholder:0 workScheduler:v12 imageHandler:v23];
+    v20 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:contactsCopy withBadges:badgesCopy scope:scopeCopy placeholder:0 workScheduler:immediateScheduler imageHandler:v23];
     v18 = 0;
   }
 
@@ -391,53 +391,53 @@ void __65__CNAvatarImageRenderer_avatarImageForContacts_withBadges_scope___block
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)renderAvatarsForContacts:(id)a3 withBadges:(id)a4 scope:(id)a5 includePlaceholder:(BOOL)a6 imageHandler:(id)a7
+- (id)renderAvatarsForContacts:(id)contacts withBadges:(id)badges scope:(id)scope includePlaceholder:(BOOL)placeholder imageHandler:(id)handler
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v17 = [v16 backgroundScheduler];
-  v18 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:v15 withBadges:v14 scope:v13 placeholder:v7 workScheduler:v17 imageHandler:v12];
+  placeholderCopy = placeholder;
+  handlerCopy = handler;
+  scopeCopy = scope;
+  badgesCopy = badges;
+  contactsCopy = contacts;
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v18 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:contactsCopy withBadges:badgesCopy scope:scopeCopy placeholder:placeholderCopy workScheduler:backgroundScheduler imageHandler:handlerCopy];
 
   return v18;
 }
 
-- (id)renderAvatarsForContacts:(id)a3 scope:(id)a4 includePlaceholder:(BOOL)a5 imageHandler:(id)a6
+- (id)renderAvatarsForContacts:(id)contacts scope:(id)scope includePlaceholder:(BOOL)placeholder imageHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v14 = [v13 backgroundScheduler];
-  v15 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:v12 withBadges:0 scope:v11 placeholder:v6 workScheduler:v14 imageHandler:v10];
+  placeholderCopy = placeholder;
+  handlerCopy = handler;
+  scopeCopy = scope;
+  contactsCopy = contacts;
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v15 = [(CNAvatarImageRenderer *)self renderAvatarsForContacts:contactsCopy withBadges:0 scope:scopeCopy placeholder:placeholderCopy workScheduler:backgroundScheduler imageHandler:handlerCopy];
 
   return v15;
 }
 
-- (id)renderMonogramForString:(id)a3 handler:(id)a4
+- (id)renderMonogramForString:(id)string handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarImageRenderer *)self resolver];
-  v9 = [MEMORY[0x1E6996798] observableWithResult:v7];
+  handlerCopy = handler;
+  stringCopy = string;
+  resolver = [(CNAvatarImageRenderer *)self resolver];
+  v9 = [MEMORY[0x1E6996798] observableWithResult:stringCopy];
 
-  v10 = [v8 basicMonogramObservableFromString:v9 color:0];
+  v10 = [resolver basicMonogramObservableFromString:v9 color:0];
 
-  v11 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v12 = [v11 backgroundScheduler];
-  v13 = [v10 subscribeOn:v12];
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v13 = [v10 subscribeOn:backgroundScheduler];
 
   v14 = MEMORY[0x1E69967A0];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __57__CNAvatarImageRenderer_renderMonogramForString_handler___block_invoke;
   v19[3] = &unk_1E74E3188;
-  v20 = v6;
-  v15 = v6;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [v14 observerWithResultBlock:v19];
   v17 = [v13 subscribe:v16];
 
@@ -452,20 +452,20 @@ void __57__CNAvatarImageRenderer_renderMonogramForString_handler___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)renderAvatarsForContacts:(id)a3 handler:(id)a4
+- (id)renderAvatarsForContacts:(id)contacts handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarImageRenderer *)self resolver];
-  v9 = [(CNAvatarImageRenderer *)self schedulerProvider];
-  v10 = [v9 backgroundScheduler];
+  handlerCopy = handler;
+  contactsCopy = contacts;
+  resolver = [(CNAvatarImageRenderer *)self resolver];
+  schedulerProvider = [(CNAvatarImageRenderer *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__CNAvatarImageRenderer_renderAvatarsForContacts_handler___block_invoke;
   v14[3] = &unk_1E74E3E20;
-  v15 = v6;
-  v11 = v6;
-  v12 = [v8 resolveLikenessesForContacts:v7 workScheduler:v10 withContentHandler:v14];
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [resolver resolveLikenessesForContacts:contactsCopy workScheduler:backgroundScheduler withContentHandler:v14];
 
   return v12;
 }
@@ -484,25 +484,25 @@ _CNAvatarImageProvider *__58__CNAvatarImageRenderer_renderAvatarsForContacts_han
   return v3;
 }
 
-- (CNAvatarImageRenderer)initWithSettings:(id)a3
+- (CNAvatarImageRenderer)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = CNAvatarImageRenderer;
   v5 = [(CNAvatarImageRenderer *)&v13 init];
   if (v5)
   {
-    v6 = [v4 likenessResolver];
+    likenessResolver = [settingsCopy likenessResolver];
     resolver = v5->_resolver;
-    v5->_resolver = v6;
+    v5->_resolver = likenessResolver;
 
-    v8 = [v4 likenessRenderer];
+    likenessRenderer = [settingsCopy likenessRenderer];
     renderer = v5->_renderer;
-    v5->_renderer = v8;
+    v5->_renderer = likenessRenderer;
 
-    v10 = [v4 schedulerProvider];
+    schedulerProvider = [settingsCopy schedulerProvider];
     schedulerProvider = v5->_schedulerProvider;
-    v5->_schedulerProvider = v10;
+    v5->_schedulerProvider = schedulerProvider;
   }
 
   return v5;

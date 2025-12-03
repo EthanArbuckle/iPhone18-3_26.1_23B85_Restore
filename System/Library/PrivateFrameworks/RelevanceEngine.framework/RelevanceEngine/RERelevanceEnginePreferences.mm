@@ -1,11 +1,11 @@
 @interface RERelevanceEnginePreferences
 + (id)defaultPreferences;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RERelevanceEnginePreferences)init;
 - (RERelevanceEnginePreferencesDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDisabledDataSourceIdentifiers:(id)a3;
-- (void)setMode:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDisabledDataSourceIdentifiers:(id)identifiers;
+- (void)setMode:(unint64_t)mode;
 @end
 
 @implementation RERelevanceEnginePreferences
@@ -25,10 +25,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_mode == v5->_mode)
       {
@@ -72,19 +72,19 @@
   return v11;
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained relevanceEnginePreferencesDidUpdate:self];
   }
 }
 
-- (void)setDisabledDataSourceIdentifiers:(id)a3
+- (void)setDisabledDataSourceIdentifiers:(id)identifiers
 {
-  v4 = [a3 copy];
+  v4 = [identifiers copy];
   disabledDataSourceIdentifiers = self->_disabledDataSourceIdentifiers;
   self->_disabledDataSourceIdentifiers = v4;
 
@@ -92,9 +92,9 @@
   [WeakRetained relevanceEnginePreferencesDidUpdate:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 16), self->_disabledDataSourceIdentifiers);
   *(v4 + 24) = self->_mode;
   return v4;

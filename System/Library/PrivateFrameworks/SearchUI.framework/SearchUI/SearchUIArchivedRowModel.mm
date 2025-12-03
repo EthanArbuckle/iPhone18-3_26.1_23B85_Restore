@@ -3,19 +3,19 @@
 - (NSString)accessibilityIdentifier;
 - (NSString)reuseIdentifier;
 - (SearchUIArchivedRowModel)init;
-- (SearchUIArchivedRowModel)initWithCardSection:(id)a3 queryId:(unint64_t)a4 itemIdentifier:(id)a5;
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6;
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4;
-- (SearchUIArchivedRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4;
+- (SearchUIArchivedRowModel)initWithCardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIArchivedRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIArchivedRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIArchivedRowModel)initWithResult:(id)result itemIdentifier:(id)identifier;
+- (SearchUIArchivedRowModel)initWithResults:(id)results itemIdentifier:(id)identifier;
 @end
 
 @implementation SearchUIArchivedRowModel
 
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUIArchivedRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v8 = a5;
-  if (a7)
+  inlineCopy = inline;
+  if (identifier)
   {
     v11 = sub_1DA25F244();
     v13 = v12;
@@ -27,9 +27,9 @@
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a4;
-  return sub_1DA223DA8(a3, a4, v8, a6, v11, v13);
+  resultCopy = result;
+  sectionCopy = section;
+  return sub_1DA223DA8(result, section, inlineCopy, id, v11, v13);
 }
 
 - (BOOL)hasView
@@ -56,28 +56,28 @@
   return v2;
 }
 
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 itemIdentifier:(id)a4
+- (SearchUIArchivedRowModel)initWithResult:(id)result itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIArchivedRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6
+- (SearchUIArchivedRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIArchivedRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4
+- (SearchUIArchivedRowModel)initWithResults:(id)results itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (SearchUIArchivedRowModel)initWithCardSection:(id)a3 queryId:(unint64_t)a4 itemIdentifier:(id)a5
+- (SearchUIArchivedRowModel)initWithCardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

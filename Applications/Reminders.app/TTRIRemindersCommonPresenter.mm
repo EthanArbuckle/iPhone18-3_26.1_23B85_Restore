@@ -1,14 +1,14 @@
 @interface TTRIRemindersCommonPresenter
-- (void)dismissViewContact:(id)a3;
+- (void)dismissViewContact:(id)contact;
 - (void)representedListWasDeleted;
 - (void)willNavigateTo;
 @end
 
 @implementation TTRIRemindersCommonPresenter
 
-- (void)dismissViewContact:(id)a3
+- (void)dismissViewContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
 
     swift_unknownObjectRetain();

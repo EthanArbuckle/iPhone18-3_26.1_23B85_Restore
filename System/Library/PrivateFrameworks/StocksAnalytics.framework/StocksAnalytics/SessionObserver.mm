@@ -1,9 +1,9 @@
 @interface SessionObserver
 - (_TtC15StocksAnalytics15SessionObserver)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 - (void)dealloc;
-- (void)offerDidChange:(id)a3;
+- (void)offerDidChange:(id)change;
 - (void)pushOrientationData;
 @end
 
@@ -11,33 +11,33 @@
 
 - (void)pushOrientationData
 {
-  v2 = self;
+  selfCopy = self;
   sub_2201F8378();
 }
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
-  _s15StocksAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(v4);
+  subscribeCopy = subscribe;
+  selfCopy = self;
+  _s15StocksAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(subscribeCopy);
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
-  v5 = a3;
-  v6 = self;
-  _s15StocksAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(v5);
+  changeCopy = change;
+  selfCopy = self;
+  _s15StocksAnalytics15SessionObserverC27bundleSubscriptionDidExpireyySo08FCBundleF0CF_0(changeCopy);
 }
 
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 currentDevice];
-  [v6 endGeneratingDeviceOrientationNotifications];
+  selfCopy = self;
+  currentDevice = [v4 currentDevice];
+  [currentDevice endGeneratingDeviceOrientationNotifications];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(SessionObserver *)&v7 dealloc];
 }
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (void)offerDidChange:(id)a3
+- (void)offerDidChange:(id)change
 {
   v4 = sub_22036E448();
   v5 = *(v4 - 8);
@@ -57,7 +57,7 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22036E428();
-  v9 = self;
+  selfCopy = self;
   sub_22032D1AC();
 
   (*(v5 + 8))(v8, v4);

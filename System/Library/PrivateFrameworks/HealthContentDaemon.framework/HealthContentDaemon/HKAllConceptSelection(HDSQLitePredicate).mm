@@ -6,7 +6,7 @@
 
 - (id)predicateWithProfile:()HDSQLitePredicate
 {
-  if ([a1 value])
+  if ([self value])
   {
     [MEMORY[0x277D10B70] truePredicate];
   }

@@ -1,20 +1,20 @@
 @interface SUBannerCell
-- (SUBannerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_buttonAction:(id)a3;
+- (SUBannerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)_reloadButtons;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation SUBannerCell
 
-- (SUBannerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SUBannerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = SUBannerCell;
-  v4 = [(SUTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SUTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -49,10 +49,10 @@
   v9.receiver = self;
   v9.super_class = SUBannerCell;
   [(SUTableCell *)&v9 layoutSubviews];
-  v3 = [(SUTableCell *)self configuration];
-  if (v3)
+  configuration = [(SUTableCell *)self configuration];
+  if (configuration)
   {
-    v4 = v3;
+    v4 = configuration;
     [-[SUBannerCell contentView](self "contentView")];
     [(SUCellConfiguration *)v4 setLayoutSize:v5, v6];
     if (![(UIButton *)self->_leftButton backgroundImageForState:0]|| ![(UIButton *)self->_rightButton backgroundImageForState:0])
@@ -72,7 +72,7 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -80,43 +80,43 @@
     [(SUBannerCell *)a2 setConfiguration:?];
   }
 
-  v6 = [(SUTableCell *)self configuration];
-  if ([(SUCellConfiguration *)v6 view]== self)
+  configuration = [(SUTableCell *)self configuration];
+  if ([(SUCellConfiguration *)configuration view]== self)
   {
-    [(SUCellConfiguration *)v6 setView:0];
+    [(SUCellConfiguration *)configuration setView:0];
   }
 
   v7.receiver = self;
   v7.super_class = SUBannerCell;
-  [(SUTableCell *)&v7 setConfiguration:a3];
-  [a3 setView:self];
+  [(SUTableCell *)&v7 setConfiguration:configuration];
+  [configuration setView:self];
   [(SUBannerCell *)self _reloadButtons];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SUBannerCell;
   [(SUTableCell *)&v4 setHighlighted:0 animated:0];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = self->_leftButton != a3;
-  v5 = [(SUBannerCell *)self nextResponder];
-  if (v5)
+  v4 = self->_leftButton != action;
+  nextResponder = [(SUBannerCell *)self nextResponder];
+  if (nextResponder)
   {
-    v6 = v5;
+    nextResponder2 = nextResponder;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v6 = [v6 nextResponder];
-      if (!v6)
+      nextResponder2 = [nextResponder2 nextResponder];
+      if (!nextResponder2)
       {
         return;
       }
     }
 
-    [v6 bannerCell:self tappedButtonAtIndex:v4];
+    [nextResponder2 bannerCell:self tappedButtonAtIndex:v4];
   }
 }
 
@@ -124,14 +124,14 @@
 {
   if ([(SUTableCell *)self configuration])
   {
-    v3 = [(SUBannerCell *)self contentView];
+    contentView = [(SUBannerCell *)self contentView];
     leftButton = self->_leftButton;
     if (!leftButton)
     {
-      v5 = [(SUBannerCell *)self _newButton];
-      self->_leftButton = v5;
-      [(UIButton *)v5 addTarget:self action:sel__buttonAction_ forControlEvents:64];
-      [v3 addSubview:self->_leftButton];
+      _newButton = [(SUBannerCell *)self _newButton];
+      self->_leftButton = _newButton;
+      [(UIButton *)_newButton addTarget:self action:sel__buttonAction_ forControlEvents:64];
+      [contentView addSubview:self->_leftButton];
       leftButton = self->_leftButton;
     }
 
@@ -139,10 +139,10 @@
     rightButton = self->_rightButton;
     if (!rightButton)
     {
-      v7 = [(SUBannerCell *)self _newButton];
-      self->_rightButton = v7;
-      [(UIButton *)v7 addTarget:self action:sel__buttonAction_ forControlEvents:64];
-      [v3 addSubview:self->_rightButton];
+      _newButton2 = [(SUBannerCell *)self _newButton];
+      self->_rightButton = _newButton2;
+      [(UIButton *)_newButton2 addTarget:self action:sel__buttonAction_ forControlEvents:64];
+      [contentView addSubview:self->_rightButton];
       rightButton = self->_rightButton;
     }
 

@@ -1,63 +1,63 @@
 @interface RTEventModelProvider
-- (BOOL)_deleteUserInteractionsBeforeDate:(id)a3;
-- (BOOL)_hasSuggestedLocationForEvent:(id)a3;
+- (BOOL)_deleteUserInteractionsBeforeDate:(id)date;
+- (BOOL)_hasSuggestedLocationForEvent:(id)event;
 - (BOOL)_persistEventModel;
-- (BOOL)_persistUserInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5;
+- (BOOL)_persistUserInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback;
 - (BOOL)deleteEventModel;
-- (RTEventModelProvider)initWithDefaultsManager:(id)a3 eventManager:(id)a4 learnedLocationManager:(id)a5 managedObjectContext:(id)a6 metricManager:(id)a7 persistenceManager:(id)a8;
+- (RTEventModelProvider)initWithDefaultsManager:(id)manager eventManager:(id)eventManager learnedLocationManager:(id)locationManager managedObjectContext:(id)context metricManager:(id)metricManager persistenceManager:(id)persistenceManager;
 - (RTLocationShifter)locationShifter;
-- (double)getOverlapTimeForIntervalStart1:(id)a3 intervalEnd1:(id)a4 intervalStart2:(id)a5 intervalEnd2:(id)a6;
-- (id)_createMetricFromEventCounter:(id)a3 categories:(id)a4;
+- (double)getOverlapTimeForIntervalStart1:(id)start1 intervalEnd1:(id)end1 intervalStart2:(id)start2 intervalEnd2:(id)end2;
+- (id)_createMetricFromEventCounter:(id)counter categories:(id)categories;
 - (id)_fetchCalendarEvents;
-- (id)_geoLocationOfEvent:(id)a3;
-- (id)_getLocationOfInterestWithIdentifier:(id)a3 fromArray:(id)a4;
-- (id)_suggestedLocationForEvent:(id)a3;
-- (id)appendFieldToCategoryString:(id)a3 field:(id)a4 value:(int64_t)a5;
-- (id)categoryForLocationState:(unint64_t)a3 ttlTrigggerd:(BOOL)a4;
-- (id)getLOIHistogramForEvents:(id)a3 andLocationsOfInterest:(id)a4;
-- (id)lastDateOfLOIVisits:(id)a3;
-- (unint64_t)_locationStateOfEvent:(id)a3;
-- (unint64_t)lengthOfEvent:(id)a3;
-- (unint64_t)timeOfDayOfEvent:(id)a3;
-- (unint64_t)verifyPresenceOfUserWithEventLocation:(id)a3 deviceLOIs:(id)a4;
-- (void)_buildLocationOfInterestHistogramWithHandler:(id)a3;
-- (void)_fetchLOIHistogramForEventLocation:(id)a3 withHandler:(id)a4;
-- (void)_finishRestoreEventModelWithIdentifiers:(id)a3 histoItems:(id)a4 locationsOfInterest:(id)a5 handler:(id)a6;
-- (void)_restoreEventModelWithHandler:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_submitMetricScoreBoardFromStartDate:(id)a3 endDate:(id)a4 submissionHandler:(id)a5;
-- (void)_submitMetricScoreBoardOnDate:(id)a3;
-- (void)_submitMetricScoreBoardOnDate:(id)a3 submissionHandler:(id)a4;
-- (void)_updateRegisteredDefaults:(id)a3;
-- (void)fetchAllLOIHistogramsWithHandler:(id)a3;
-- (void)fetchLOIHistogramForEventLocation:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 withHandler:(id)a4;
-- (void)fetchLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6;
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6;
-- (void)onDailyMetricNotification:(id)a3;
-- (void)onLearnedLocationManagerNotification:(id)a3;
-- (void)onManagedObjectContextCreated:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (id)_geoLocationOfEvent:(id)event;
+- (id)_getLocationOfInterestWithIdentifier:(id)identifier fromArray:(id)array;
+- (id)_suggestedLocationForEvent:(id)event;
+- (id)appendFieldToCategoryString:(id)string field:(id)field value:(int64_t)value;
+- (id)categoryForLocationState:(unint64_t)state ttlTrigggerd:(BOOL)trigggerd;
+- (id)getLOIHistogramForEvents:(id)events andLocationsOfInterest:(id)interest;
+- (id)lastDateOfLOIVisits:(id)visits;
+- (unint64_t)_locationStateOfEvent:(id)event;
+- (unint64_t)lengthOfEvent:(id)event;
+- (unint64_t)timeOfDayOfEvent:(id)event;
+- (unint64_t)verifyPresenceOfUserWithEventLocation:(id)location deviceLOIs:(id)is;
+- (void)_buildLocationOfInterestHistogramWithHandler:(id)handler;
+- (void)_fetchLOIHistogramForEventLocation:(id)location withHandler:(id)handler;
+- (void)_finishRestoreEventModelWithIdentifiers:(id)identifiers histoItems:(id)items locationsOfInterest:(id)interest handler:(id)handler;
+- (void)_restoreEventModelWithHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_submitMetricScoreBoardFromStartDate:(id)date endDate:(id)endDate submissionHandler:(id)handler;
+- (void)_submitMetricScoreBoardOnDate:(id)date;
+- (void)_submitMetricScoreBoardOnDate:(id)date submissionHandler:(id)handler;
+- (void)_updateRegisteredDefaults:(id)defaults;
+- (void)fetchAllLOIHistogramsWithHandler:(id)handler;
+- (void)fetchLOIHistogramForEventLocation:(id)location withHandler:(id)handler;
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier withHandler:(id)handler;
+- (void)fetchLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler;
+- (void)onDailyMetricNotification:(id)notification;
+- (void)onLearnedLocationManagerNotification:(id)notification;
+- (void)onManagedObjectContextCreated:(id)created;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 - (void)persistEventModel;
-- (void)refreshAllLOIHistogramsWithHandler:(id)a3;
+- (void)refreshAllLOIHistogramsWithHandler:(id)handler;
 - (void)restoreEventModelIfAppropriate;
-- (void)restoreEventModelWithHandler:(id)a3;
-- (void)updateValueForKey:(id)a3 expectedClass:(Class)a4 handler:(id)a5;
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 mapItem:(id)a6 handler:(id)a7;
+- (void)restoreEventModelWithHandler:(id)handler;
+- (void)updateValueForKey:(id)key expectedClass:(Class)class handler:(id)handler;
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback mapItem:(id)item handler:(id)handler;
 @end
 
 @implementation RTEventModelProvider
 
-- (RTEventModelProvider)initWithDefaultsManager:(id)a3 eventManager:(id)a4 learnedLocationManager:(id)a5 managedObjectContext:(id)a6 metricManager:(id)a7 persistenceManager:(id)a8
+- (RTEventModelProvider)initWithDefaultsManager:(id)manager eventManager:(id)eventManager learnedLocationManager:(id)locationManager managedObjectContext:(id)context metricManager:(id)metricManager persistenceManager:(id)persistenceManager
 {
-  v15 = a3;
-  v16 = a4;
-  v37 = a5;
-  v17 = a6;
-  v36 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (!v15)
+  managerCopy = manager;
+  eventManagerCopy = eventManager;
+  locationManagerCopy = locationManager;
+  contextCopy = context;
+  metricManagerCopy = metricManager;
+  persistenceManagerCopy = persistenceManager;
+  v19 = persistenceManagerCopy;
+  if (!managerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v16)
+  if (!eventManagerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v37)
+  if (!locationManagerCopy)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!(v17 | v18))
+  if (!(contextCopy | persistenceManagerCopy))
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -110,7 +110,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v28 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -120,17 +120,17 @@ LABEL_17:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_learnedLocationManager, a5);
-    objc_storeStrong(&v21->_eventManager, a4);
-    objc_storeStrong(&v21->_metricManager, a7);
-    objc_storeStrong(&v21->_persistenceManager, a8);
+    objc_storeStrong(&v20->_learnedLocationManager, locationManager);
+    objc_storeStrong(&v21->_eventManager, eventManager);
+    objc_storeStrong(&v21->_metricManager, metricManager);
+    objc_storeStrong(&v21->_persistenceManager, persistenceManager);
     v22 = objc_alloc_init(RTEventHistogramOptions);
     histogramOptions = v21->_histogramOptions;
     v21->_histogramOptions = v22;
 
-    if (v17)
+    if (contextCopy)
     {
-      v24 = v17;
+      v24 = contextCopy;
       managedObjectContext = v21->_managedObjectContext;
       v21->_managedObjectContext = v24;
     }
@@ -147,27 +147,27 @@ LABEL_17:
       managedObjectContext = v41;
     }
 
-    objc_storeStrong(&v21->_defaultsManager, a3);
+    objc_storeStrong(&v21->_defaultsManager, manager);
     v31 = [RTInvocationDispatcher alloc];
-    v32 = [(RTNotifier *)v21 queue];
-    v33 = [(RTInvocationDispatcher *)v31 initWithQueue:v32];
+    queue = [(RTNotifier *)v21 queue];
+    v33 = [(RTInvocationDispatcher *)v31 initWithQueue:queue];
     dispatcher = v21->_dispatcher;
     v21->_dispatcher = v33;
 
-    v35 = [(RTNotifier *)v21 queue];
+    queue2 = [(RTNotifier *)v21 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLocationManager_managedObjectContext_metricManager_persistenceManager___block_invoke_3;
     block[3] = &unk_2788C4EA0;
     v39 = v21;
-    dispatch_async(v35, block);
+    dispatch_async(queue2, block);
   }
 
   self = v21;
-  v28 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v28;
+  return selfCopy;
 }
 
 void __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLocationManager_managedObjectContext_metricManager_persistenceManager___block_invoke(uint64_t a1, void *a2)
@@ -234,9 +234,9 @@ void __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLoc
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityEventModel);
@@ -248,15 +248,15 @@ void __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLoc
   }
 
   [(RTNotifier *)self->_learnedLocationManager removeObserver:self];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v7 = [(RTEventModelProvider *)self dispatcher];
-  [v7 shutdown];
+  dispatcher = [(RTEventModelProvider *)self dispatcher];
+  [dispatcher shutdown];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -275,9 +275,9 @@ void __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLoc
   return locationShifter;
 }
 
-- (void)_updateRegisteredDefaults:(id)a3
+- (void)_updateRegisteredDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = dispatch_group_create();
   dispatch_group_enter(v5);
   v6 = objc_opt_class();
@@ -309,14 +309,14 @@ void __138__RTEventModelProvider_initWithDefaultsManager_eventManager_learnedLoc
   v17 = v9;
   v11 = v9;
   [(RTEventModelProvider *)self updateValueForKey:@"RTDefaultsEventModelProviderHighProbabilityItemMinNumOfEvents" expectedClass:v10 handler:v16];
-  v12 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RTEventModelProvider__updateRegisteredDefaults___block_invoke_4;
   block[3] = &unk_2788C4758;
-  v15 = v4;
-  v13 = v4;
-  dispatch_group_notify(v11, v12, block);
+  v15 = defaultsCopy;
+  v13 = defaultsCopy;
+  dispatch_group_notify(v11, queue, block);
 }
 
 void __50__RTEventModelProvider__updateRegisteredDefaults___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -365,22 +365,22 @@ uint64_t __50__RTEventModelProvider__updateRegisteredDefaults___block_invoke_4(u
   return result;
 }
 
-- (void)updateValueForKey:(id)a3 expectedClass:(Class)a4 handler:(id)a5
+- (void)updateValueForKey:(id)key expectedClass:(Class)class handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  keyCopy = key;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __64__RTEventModelProvider_updateValueForKey_expectedClass_handler___block_invoke;
     v11[3] = &unk_2788CE088;
     v11[4] = self;
-    v12 = v8;
-    v14 = a4;
-    v13 = v9;
-    dispatch_async(v10, v11);
+    v12 = keyCopy;
+    classCopy = class;
+    v13 = handlerCopy;
+    dispatch_async(queue, v11);
   }
 }
 
@@ -447,12 +447,12 @@ void __64__RTEventModelProvider_updateValueForKey_expectedClass_handler___block_
   }
 }
 
-- (double)getOverlapTimeForIntervalStart1:(id)a3 intervalEnd1:(id)a4 intervalStart2:(id)a5 intervalEnd2:(id)a6
+- (double)getOverlapTimeForIntervalStart1:(id)start1 intervalEnd1:(id)end1 intervalStart2:(id)start2 intervalEnd2:(id)end2
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = [a3 laterDate:a5];
-  v12 = [v10 earlierDate:v9];
+  end2Copy = end2;
+  end1Copy = end1;
+  v11 = [start1 laterDate:start2];
+  v12 = [end1Copy earlierDate:end2Copy];
 
   [v12 timeIntervalSinceDate:v11];
   v14 = fmax(v13, 0.0);
@@ -460,22 +460,22 @@ void __64__RTEventModelProvider_updateValueForKey_expectedClass_handler___block_
   return v14;
 }
 
-- (id)getLOIHistogramForEvents:(id)a3 andLocationsOfInterest:(id)a4
+- (id)getLOIHistogramForEvents:(id)events andLocationsOfInterest:(id)interest
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  interestCopy = interest;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __72__RTEventModelProvider_getLOIHistogramForEvents_andLocationsOfInterest___block_invoke;
   v21[3] = &unk_2788CE100;
-  v10 = v7;
+  v10 = interestCopy;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   v11 = v9;
   v24 = v11;
-  [v6 enumerateObjectsUsingBlock:v21];
+  [eventsCopy enumerateObjectsUsingBlock:v21];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -618,55 +618,55 @@ uint64_t __72__RTEventModelProvider_getLOIHistogramForEvents_andLocationsOfInter
   return v9;
 }
 
-- (void)fetchLOIHistogramForEventLocation:(id)a3 withHandler:(id)a4
+- (void)fetchLOIHistogramForEventLocation:(id)location withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__RTEventModelProvider_fetchLOIHistogramForEventLocation_withHandler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = locationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchLOIHistogramForEventLocation:(id)a3 withHandler:(id)a4
+- (void)_fetchLOIHistogramForEventLocation:(id)location withHandler:(id)handler
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+  locationCopy = location;
+  handlerCopy = handler;
+  locationOfInterestEventHistograms = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
 
-  if (v7)
+  if (locationOfInterestEventHistograms)
   {
-    v8 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
-    v9 = [v8 _loiHistogramForEventLocation:v10];
+    locationOfInterestEventHistograms2 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+    v9 = [locationOfInterestEventHistograms2 _loiHistogramForEventLocation:locationCopy];
 
-    v6[2](v6, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)fetchAllLOIHistogramsWithHandler:(id)a3
+- (void)fetchAllLOIHistogramsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__RTEventModelProvider_fetchAllLOIHistogramsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __57__RTEventModelProvider_fetchAllLOIHistogramsWithHandler___block_invoke(uint64_t a1)
@@ -719,7 +719,7 @@ void __57__RTEventModelProvider_fetchAllLOIHistogramsWithHandler___block_invoke(
     {
       v6 = [v34 dateByAddingTimeInterval:v4];
       v7 = [v34 dateByAddingTimeInterval:v2 * 604800.0];
-      v8 = [(RTEventModelProvider *)self eventManager];
+      eventManager = [(RTEventModelProvider *)self eventManager];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __44__RTEventModelProvider__fetchCalendarEvents__block_invoke;
@@ -733,7 +733,7 @@ void __57__RTEventModelProvider_fetchAllLOIHistogramsWithHandler___block_invoke(
       v10 = v33;
       v44 = v10;
       v37 = v9;
-      [v8 fetchEventsBetweenStartDate:v5 andEndDate:v9 withHandler:v41];
+      [eventManager fetchEventsBetweenStartDate:v5 andEndDate:v9 withHandler:v41];
 
       v11 = v10;
       v12 = [MEMORY[0x277CBEAA8] now];
@@ -746,11 +746,11 @@ void __57__RTEventModelProvider_fetchAllLOIHistogramsWithHandler___block_invoke(
         v16 = v15;
         v35 = objc_opt_new();
         v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_368];
-        v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v19 = [v18 filteredArrayUsingPredicate:v17];
-        v20 = [v19 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+        firstObject = [v19 firstObject];
 
-        [v35 submitToCoreAnalytics:v20 type:1 duration:v16];
+        [v35 submitToCoreAnalytics:firstObject type:1 duration:v16];
         v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
         {
@@ -861,10 +861,10 @@ void __44__RTEventModelProvider__fetchCalendarEvents__block_invoke(uint64_t a1, 
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_buildLocationOfInterestHistogramWithHandler:(id)a3
+- (void)_buildLocationOfInterestHistogramWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTEventModelProvider *)self _fetchCalendarEvents];
+  handlerCopy = handler;
+  _fetchCalendarEvents = [(RTEventModelProvider *)self _fetchCalendarEvents];
   v6 = dispatch_group_create();
   v19[0] = 0;
   v19[1] = v19;
@@ -873,7 +873,7 @@ void __44__RTEventModelProvider__fetchCalendarEvents__block_invoke(uint64_t a1, 
   v19[4] = __Block_byref_object_dispose__110;
   v20 = 0;
   dispatch_group_enter(v6);
-  v7 = [(RTEventModelProvider *)self learnedLocationManager];
+  learnedLocationManager = [(RTEventModelProvider *)self learnedLocationManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __69__RTEventModelProvider__buildLocationOfInterestHistogramWithHandler___block_invoke;
@@ -881,20 +881,20 @@ void __44__RTEventModelProvider__fetchCalendarEvents__block_invoke(uint64_t a1, 
   v18 = v19;
   v8 = v6;
   v17 = v8;
-  [v7 fetchRecentLocationsOfInterestWithHandler:v16];
+  [learnedLocationManager fetchRecentLocationsOfInterestWithHandler:v16];
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__RTEventModelProvider__buildLocationOfInterestHistogramWithHandler___block_invoke_94;
   v12[3] = &unk_2788CE260;
   v12[4] = self;
-  v13 = v5;
-  v14 = v4;
+  v13 = _fetchCalendarEvents;
+  v14 = handlerCopy;
   v15 = v19;
-  v10 = v4;
-  v11 = v5;
-  dispatch_group_notify(v8, v9, v12);
+  v10 = handlerCopy;
+  v11 = _fetchCalendarEvents;
+  dispatch_group_notify(v8, queue, v12);
 
   _Block_object_dispose(v19, 8);
 }
@@ -1137,32 +1137,32 @@ void __69__RTEventModelProvider__buildLocationOfInterestHistogramWithHandler___b
   }
 }
 
-- (void)refreshAllLOIHistogramsWithHandler:(id)a3
+- (void)refreshAllLOIHistogramsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__RTEventModelProvider_refreshAllLOIHistogramsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)onLearnedLocationManagerNotification:(id)a3
+- (void)onLearnedLocationManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__RTEventModelProvider_onLearnedLocationManagerNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __61__RTEventModelProvider_onLearnedLocationManagerNotification___block_invoke(uint64_t a1)
@@ -1225,21 +1225,21 @@ void __61__RTEventModelProvider_onLearnedLocationManagerNotification___block_inv
   }
 }
 
-- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)a3 withHandler:(id)a4
+- (void)fetchLocationsOfInterestAssociatedToIdentifier:(id)identifier withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__RTEventModelProvider_fetchLocationsOfInterestAssociatedToIdentifier_withHandler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = identifierCopy;
+    v11 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -1261,25 +1261,25 @@ void __83__RTEventModelProvider_fetchLocationsOfInterestAssociatedToIdentifier_w
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6
+- (void)fetchLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  titleCopy = title;
+  locationCopy = location;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v14 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __106__RTEventModelProvider_fetchLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_withHandler___block_invoke;
     block[3] = &unk_2788C5580;
     block[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v18 = v12;
-    v19 = v13;
-    dispatch_async(v14, block);
+    v16 = titleCopy;
+    v17 = locationCopy;
+    v18 = identifierCopy;
+    v19 = handlerCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -1292,26 +1292,26 @@ void __106__RTEventModelProvider_fetchLocationsOfInterestAssociatedToTitle_locat
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)a3 location:(id)a4 calendarIdentifier:(id)a5 withHandler:(id)a6
+- (void)fetchPredictedLocationsOfInterestAssociatedToTitle:(id)title location:(id)location calendarIdentifier:(id)identifier withHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  titleCopy = title;
+  locationCopy = location;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v15 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __115__RTEventModelProvider_fetchPredictedLocationsOfInterestAssociatedToTitle_location_calendarIdentifier_withHandler___block_invoke;
     v16[3] = &unk_2788C56E8;
     v22 = a2;
-    v17 = v11;
-    v18 = v12;
-    v19 = v13;
-    v20 = self;
-    v21 = v14;
-    dispatch_async(v15, v16);
+    v17 = titleCopy;
+    v18 = locationCopy;
+    v19 = identifierCopy;
+    selfCopy = self;
+    v21 = handlerCopy;
+    dispatch_async(queue, v16);
   }
 }
 
@@ -1345,18 +1345,18 @@ void __115__RTEventModelProvider_fetchPredictedLocationsOfInterestAssociatedToTi
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)onManagedObjectContextCreated:(id)a3
+- (void)onManagedObjectContextCreated:(id)created
 {
-  if (a3)
+  if (created)
   {
     [(RTEventModelProvider *)self setManagedObjectContext:?];
-    v4 = [(RTEventModelProvider *)self dispatcher];
-    v5 = [v4 invocationsPending];
+    dispatcher = [(RTEventModelProvider *)self dispatcher];
+    invocationsPending = [dispatcher invocationsPending];
 
-    if (v5)
+    if (invocationsPending)
     {
-      v6 = [(RTEventModelProvider *)self dispatcher];
-      [v6 dispatchPendingInvocations];
+      dispatcher2 = [(RTEventModelProvider *)self dispatcher];
+      [dispatcher2 dispatchPendingInvocations];
     }
 
     [(RTEventModelProvider *)self restoreEventModelIfAppropriate];
@@ -1376,9 +1376,9 @@ void __115__RTEventModelProvider_fetchPredictedLocationsOfInterestAssociatedToTi
 - (BOOL)deleteEventModel
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(RTEventModelProvider *)self managedObjectContext];
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
 
-  if (v3)
+  if (managedObjectContext)
   {
     *buf = 0;
     v13 = buf;
@@ -1386,14 +1386,14 @@ void __115__RTEventModelProvider_fetchPredictedLocationsOfInterestAssociatedToTi
     v15 = __Block_byref_object_copy__110;
     v16 = __Block_byref_object_dispose__110;
     v17 = 0;
-    v4 = [(RTEventModelProvider *)self managedObjectContext];
+    managedObjectContext2 = [(RTEventModelProvider *)self managedObjectContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __40__RTEventModelProvider_deleteEventModel__block_invoke;
     v11[3] = &unk_2788C4FD8;
     v11[4] = self;
     v11[5] = buf;
-    [v4 performBlockAndWait:v11];
+    [managedObjectContext2 performBlockAndWait:v11];
 
     v5 = *(v13 + 5);
     v6 = v5 == 0;
@@ -1464,9 +1464,9 @@ void __40__RTEventModelProvider_deleteEventModel__block_invoke(uint64_t a1)
   v28 = *MEMORY[0x277D85DE8];
   if ([(RTEventModelProvider *)self deleteEventModel])
   {
-    v3 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+    locationOfInterestEventHistograms = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
 
-    if (v3)
+    if (locationOfInterestEventHistograms)
     {
       *v20 = 0;
       v21 = v20;
@@ -1474,19 +1474,19 @@ void __40__RTEventModelProvider_deleteEventModel__block_invoke(uint64_t a1)
       v23 = __Block_byref_object_copy__110;
       v24 = __Block_byref_object_dispose__110;
       v25 = 0;
-      v4 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
-      v5 = [v4 getRawHistogram];
+      locationOfInterestEventHistograms2 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+      getRawHistogram = [locationOfInterestEventHistograms2 getRawHistogram];
 
-      v6 = [(RTEventModelProvider *)self managedObjectContext];
+      managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __42__RTEventModelProvider__persistEventModel__block_invoke;
       v16[3] = &unk_2788C51F0;
-      v7 = v5;
+      v7 = getRawHistogram;
       v17 = v7;
-      v18 = self;
+      selfCopy = self;
       v19 = v20;
-      [v6 performBlockAndWait:v16];
+      [managedObjectContext performBlockAndWait:v16];
 
       v8 = *(v21 + 5);
       v9 = v8 == 0;
@@ -1601,18 +1601,18 @@ void __42__RTEventModelProvider__persistEventModel__block_invoke_3(uint64_t a1, 
   [v6 setEventLocationIdentifier:*(a1 + 40)];
 }
 
-- (void)_restoreEventModelWithHandler:(id)a3
+- (void)_restoreEventModelWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTEventModelProvider *)self managedObjectContext];
+  handlerCopy = handler;
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTEventModelProvider__restoreEventModelWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [managedObjectContext performBlockAndWait:v7];
 }
 
 void __54__RTEventModelProvider__restoreEventModelWithHandler___block_invoke(uint64_t a1)
@@ -1749,10 +1749,10 @@ void __54__RTEventModelProvider__restoreEventModelWithHandler___block_invoke_2(u
   }
 }
 
-- (id)_getLocationOfInterestWithIdentifier:(id)a3 fromArray:(id)a4
+- (id)_getLocationOfInterestWithIdentifier:(id)identifier fromArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  arrayCopy = array;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -1763,10 +1763,10 @@ void __54__RTEventModelProvider__restoreEventModelWithHandler___block_invoke_2(u
   v10[1] = 3221225472;
   v10[2] = __71__RTEventModelProvider__getLocationOfInterestWithIdentifier_fromArray___block_invoke;
   v10[3] = &unk_2788CE300;
-  v7 = v5;
+  v7 = identifierCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [arrayCopy enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -1788,13 +1788,13 @@ void __71__RTEventModelProvider__getLocationOfInterestWithIdentifier_fromArray__
   }
 }
 
-- (void)_finishRestoreEventModelWithIdentifiers:(id)a3 histoItems:(id)a4 locationsOfInterest:(id)a5 handler:(id)a6
+- (void)_finishRestoreEventModelWithIdentifiers:(id)identifiers histoItems:(id)items locationsOfInterest:(id)interest handler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  itemsCopy = items;
+  interestCopy = interest;
+  handlerCopy = handler;
   v14 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -1802,31 +1802,31 @@ void __71__RTEventModelProvider__getLocationOfInterestWithIdentifier_fromArray__
   v35 = __Block_byref_object_copy__110;
   v36 = __Block_byref_object_dispose__110;
   v37 = 0;
-  v15 = [(RTEventModelProvider *)self managedObjectContext];
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __103__RTEventModelProvider__finishRestoreEventModelWithIdentifiers_histoItems_locationsOfInterest_handler___block_invoke;
   v26[3] = &unk_2788CE378;
-  v16 = v10;
+  v16 = identifiersCopy;
   v27 = v16;
-  v28 = self;
-  v17 = v12;
+  selfCopy = self;
+  v17 = interestCopy;
   v29 = v17;
   v31 = &v32;
   v18 = v14;
   v30 = v18;
-  [v15 performBlockAndWait:v26];
+  [managedObjectContext performBlockAndWait:v26];
 
   if (v33[5])
   {
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
     v19 = [RTEventHistogram alloc];
-    v20 = [(RTEventModelProvider *)self histogramOptions];
-    v21 = [(RTEventHistogram *)v19 initWithDictionary:v18 options:v20];
+    histogramOptions = [(RTEventModelProvider *)self histogramOptions];
+    v21 = [(RTEventHistogram *)v19 initWithDictionary:v18 options:histogramOptions];
     [(RTEventModelProvider *)self setLocationOfInterestEventHistograms:v21];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1840,12 +1840,12 @@ void __71__RTEventModelProvider__getLocationOfInterestWithIdentifier_fromArray__
         _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "Finished restoring event model with %lu identifiers.", buf, 0xCu);
       }
 
-      v24 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
-      v25 = [v24 getRawHistogram];
-      [v25 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_132];
+      locationOfInterestEventHistograms = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+      getRawHistogram = [locationOfInterestEventHistograms getRawHistogram];
+      [getRawHistogram enumerateKeysAndObjectsUsingBlock:&__block_literal_global_132];
     }
 
-    (v13[2])(v13, 0);
+    (handlerCopy[2])(handlerCopy, 0);
   }
 
   _Block_object_dispose(&v32, 8);
@@ -2010,12 +2010,12 @@ void __103__RTEventModelProvider__finishRestoreEventModelWithIdentifiers_histoIt
 
 - (void)restoreEventModelIfAppropriate
 {
-  v3 = [(RTEventModelProvider *)self managedObjectContext];
-  if (v3 && (v5 = v3, [(RTEventModelProvider *)self locationsOfInterestsAvailable]))
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
+  if (managedObjectContext && (v5 = managedObjectContext, [(RTEventModelProvider *)self locationsOfInterestsAvailable]))
   {
-    v4 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+    locationOfInterestEventHistograms = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
 
-    if (!v4)
+    if (!locationOfInterestEventHistograms)
     {
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
@@ -2054,51 +2054,51 @@ void __54__RTEventModelProvider_restoreEventModelIfAppropriate__block_invoke(uin
 
 - (void)persistEventModel
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__RTEventModelProvider_persistEventModel__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)restoreEventModelWithHandler:(id)a3
+- (void)restoreEventModelWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__RTEventModelProvider_restoreEventModelWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)userInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5 mapItem:(id)a6 handler:(id)a7
+- (void)userInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback mapItem:(id)item handler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(RTNotifier *)self queue];
+  interestCopy = interest;
+  feedbackCopy = feedback;
+  itemCopy = item;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __108__RTEventModelProvider_userInteractionWithPredictedLocationOfInterest_interaction_feedback_mapItem_handler___block_invoke;
   v21[3] = &unk_2788C56E8;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = self;
-  v26 = v15;
-  v27 = a4;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v16, v21);
+  v22 = interestCopy;
+  v23 = feedbackCopy;
+  v24 = itemCopy;
+  selfCopy = self;
+  v26 = handlerCopy;
+  interactionCopy = interaction;
+  v17 = handlerCopy;
+  v18 = itemCopy;
+  v19 = feedbackCopy;
+  v20 = interestCopy;
+  dispatch_async(queue, v21);
 }
 
 void __108__RTEventModelProvider_userInteractionWithPredictedLocationOfInterest_interaction_feedback_mapItem_handler___block_invoke(uint64_t a1)
@@ -2161,14 +2161,14 @@ uint64_t __108__RTEventModelProvider_userInteractionWithPredictedLocationOfInter
   return result;
 }
 
-- (BOOL)_persistUserInteractionWithPredictedLocationOfInterest:(id)a3 interaction:(unint64_t)a4 feedback:(id)a5
+- (BOOL)_persistUserInteractionWithPredictedLocationOfInterest:(id)interest interaction:(unint64_t)interaction feedback:(id)feedback
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTEventModelProvider *)self managedObjectContext];
+  interestCopy = interest;
+  feedbackCopy = feedback;
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
 
-  if (!v10)
+  if (!managedObjectContext)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityEventModel);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2180,10 +2180,10 @@ uint64_t __108__RTEventModelProvider_userInteractionWithPredictedLocationOfInter
     goto LABEL_13;
   }
 
-  v11 = [v8 locationOfInterest];
-  v12 = [v11 identifier];
+  locationOfInterest = [interestCopy locationOfInterest];
+  identifier = [locationOfInterest identifier];
 
-  if (!v12)
+  if (!identifier)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityEventModel);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2204,17 +2204,17 @@ LABEL_13:
   v29 = __Block_byref_object_copy__110;
   v30 = __Block_byref_object_dispose__110;
   v31 = 0;
-  v13 = [(RTEventModelProvider *)self managedObjectContext];
+  managedObjectContext2 = [(RTEventModelProvider *)self managedObjectContext];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __100__RTEventModelProvider__persistUserInteractionWithPredictedLocationOfInterest_interaction_feedback___block_invoke;
   v20[3] = &unk_2788CB638;
-  v21 = v9;
-  v25 = a4;
-  v22 = v8;
-  v23 = self;
+  v21 = feedbackCopy;
+  interactionCopy = interaction;
+  v22 = interestCopy;
+  selfCopy = self;
   v24 = v26;
-  [v13 performBlockAndWait:v20];
+  [managedObjectContext2 performBlockAndWait:v20];
 
   v14 = *(v27 + 5);
   v15 = v14 == 0;
@@ -2270,13 +2270,13 @@ void __100__RTEventModelProvider__persistUserInteractionWithPredictedLocationOfI
   objc_storeStrong((v11 + 40), obj);
 }
 
-- (BOOL)_deleteUserInteractionsBeforeDate:(id)a3
+- (BOOL)_deleteUserInteractionsBeforeDate:(id)date
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(RTEventModelProvider *)self managedObjectContext];
+  dateCopy = date;
+  managedObjectContext = [(RTEventModelProvider *)self managedObjectContext];
 
-  if (v6)
+  if (managedObjectContext)
   {
     *buf = 0;
     v23 = buf;
@@ -2284,15 +2284,15 @@ void __100__RTEventModelProvider__persistUserInteractionWithPredictedLocationOfI
     v25 = __Block_byref_object_copy__110;
     v26 = __Block_byref_object_dispose__110;
     v27 = 0;
-    v7 = [(RTEventModelProvider *)self managedObjectContext];
+    managedObjectContext2 = [(RTEventModelProvider *)self managedObjectContext];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __58__RTEventModelProvider__deleteUserInteractionsBeforeDate___block_invoke_144;
     v18[3] = &unk_2788C51F0;
-    v19 = v5;
-    v20 = self;
+    v19 = dateCopy;
+    selfCopy = self;
     v21 = buf;
-    [v7 performBlockAndWait:v18];
+    [managedObjectContext2 performBlockAndWait:v18];
 
     v8 = *(v23 + 5);
     v9 = v8 == 0;
@@ -2323,13 +2323,13 @@ void __100__RTEventModelProvider__persistUserInteractionWithPredictedLocationOfI
       }
     }
 
-    v12 = [(RTEventModelProvider *)self dispatcher];
+    dispatcher = [(RTEventModelProvider *)self dispatcher];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __58__RTEventModelProvider__deleteUserInteractionsBeforeDate___block_invoke;
     v29[3] = &unk_2788C4A70;
     v29[4] = self;
-    v30 = v5;
+    v30 = dateCopy;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __58__RTEventModelProvider__deleteUserInteractionsBeforeDate___block_invoke_2;
@@ -2338,7 +2338,7 @@ void __100__RTEventModelProvider__persistUserInteractionWithPredictedLocationOfI
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v15 = NSStringFromSelector(a2);
-    [v12 enqueueBlock:v29 failureBlock:v28 description:{@"%@-%@", v14, v15}];
+    [dispatcher enqueueBlock:v29 failureBlock:v28 description:{@"%@-%@", v14, v15}];
 
     v9 = 0;
   }
@@ -2379,22 +2379,22 @@ void __58__RTEventModelProvider__deleteUserInteractionsBeforeDate___block_invoke
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__RTEventModelProvider_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __68__RTEventModelProvider_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)
@@ -2413,106 +2413,106 @@ void __68__RTEventModelProvider_performPurgeOfType_referenceDate_completion___bl
   (*(*(a1 + 48) + 16))();
 }
 
-- (unint64_t)_locationStateOfEvent:(id)a3
+- (unint64_t)_locationStateOfEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 hasConfirmedSuggestedLocation])
+  eventCopy = event;
+  if ([eventCopy hasConfirmedSuggestedLocation])
   {
     v5 = 2;
   }
 
-  else if ([v4 hasUserSpecifiedLocation])
+  else if ([eventCopy hasUserSpecifiedLocation])
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = ([v4 hasRejectedSuggestion] & 1) == 0 && -[RTEventModelProvider _hasSuggestedLocationForEvent:](self, "_hasSuggestedLocationForEvent:", v4);
+    v5 = ([eventCopy hasRejectedSuggestion] & 1) == 0 && -[RTEventModelProvider _hasSuggestedLocationForEvent:](self, "_hasSuggestedLocationForEvent:", eventCopy);
   }
 
   return v5;
 }
 
-- (id)_geoLocationOfEvent:(id)a3
+- (id)_geoLocationOfEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 preferredLocationWithoutPrediction];
-  v6 = [v5 geoLocation];
+  eventCopy = event;
+  preferredLocationWithoutPrediction = [eventCopy preferredLocationWithoutPrediction];
+  geoLocation = [preferredLocationWithoutPrediction geoLocation];
 
-  if (v6)
+  if (geoLocation)
   {
-    v7 = [v4 preferredLocationWithoutPrediction];
-    v8 = [v7 geoLocation];
+    preferredLocationWithoutPrediction2 = [eventCopy preferredLocationWithoutPrediction];
+    geoLocation2 = [preferredLocationWithoutPrediction2 geoLocation];
 LABEL_3:
 
     goto LABEL_8;
   }
 
-  if (([v4 hasRejectedSuggestion] & 1) == 0)
+  if (([eventCopy hasRejectedSuggestion] & 1) == 0)
   {
-    v9 = [(RTEventModelProvider *)self _suggestedLocationForEvent:v4];
+    v9 = [(RTEventModelProvider *)self _suggestedLocationForEvent:eventCopy];
     if (v9)
     {
-      v7 = v9;
+      preferredLocationWithoutPrediction2 = v9;
       v10 = objc_alloc(MEMORY[0x277CE41F8]);
-      v11 = [v7 locationOfInterest];
-      v8 = [v10 initWithRTLocationOfInterest:v11];
+      locationOfInterest = [preferredLocationWithoutPrediction2 locationOfInterest];
+      geoLocation2 = [v10 initWithRTLocationOfInterest:locationOfInterest];
 
       goto LABEL_3;
     }
   }
 
-  v8 = 0;
+  geoLocation2 = 0;
 LABEL_8:
 
-  return v8;
+  return geoLocation2;
 }
 
-- (BOOL)_hasSuggestedLocationForEvent:(id)a3
+- (BOOL)_hasSuggestedLocationForEvent:(id)event
 {
-  v3 = [(RTEventModelProvider *)self _suggestedLocationForEvent:a3];
+  v3 = [(RTEventModelProvider *)self _suggestedLocationForEvent:event];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_suggestedLocationForEvent:(id)a3
+- (id)_suggestedLocationForEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 needsSuggestedLocation])
+  eventCopy = event;
+  if ([eventCopy needsSuggestedLocation])
   {
-    v5 = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
-    v6 = [v4 title];
-    v7 = [v4 locationWithoutPrediction];
-    v8 = [v4 calendar];
-    v9 = [v8 calendarIdentifier];
-    v10 = [v5 predictedLocationsOfInterestAssociatedToTitle:v6 location:v7 calendarIdentifier:v9];
+    locationOfInterestEventHistograms = [(RTEventModelProvider *)self locationOfInterestEventHistograms];
+    title = [eventCopy title];
+    locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+    calendar = [eventCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    v10 = [locationOfInterestEventHistograms predictedLocationsOfInterestAssociatedToTitle:title location:locationWithoutPrediction calendarIdentifier:calendarIdentifier];
 
     if ([v10 count])
     {
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
     }
 
     else
     {
-      v11 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
-  return v11;
+  return firstObject;
 }
 
-- (void)_submitMetricScoreBoardOnDate:(id)a3
+- (void)_submitMetricScoreBoardOnDate:(id)date
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -2525,15 +2525,15 @@ LABEL_8:
     }
   }
 
-  [(RTEventModelProvider *)self _submitMetricScoreBoardOnDate:v4 submissionHandler:0];
+  [(RTEventModelProvider *)self _submitMetricScoreBoardOnDate:dateCopy submissionHandler:0];
 }
 
-- (void)_submitMetricScoreBoardOnDate:(id)a3 submissionHandler:(id)a4
+- (void)_submitMetricScoreBoardOnDate:(id)date submissionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2546,20 +2546,20 @@ LABEL_8:
     }
   }
 
-  v9 = [v6 startOfDay];
-  v10 = [v6 endOfDay];
-  [(RTEventModelProvider *)self _submitMetricScoreBoardFromStartDate:v9 endDate:v10 submissionHandler:v7];
+  startOfDay = [dateCopy startOfDay];
+  endOfDay = [dateCopy endOfDay];
+  [(RTEventModelProvider *)self _submitMetricScoreBoardFromStartDate:startOfDay endDate:endOfDay submissionHandler:handlerCopy];
 }
 
-- (void)_submitMetricScoreBoardFromStartDate:(id)a3 endDate:(id)a4 submissionHandler:(id)a5
+- (void)_submitMetricScoreBoardFromStartDate:(id)date endDate:(id)endDate submissionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (dateCopy)
   {
-    if (v9)
+    if (endDateCopy)
     {
       goto LABEL_10;
     }
@@ -2577,7 +2577,7 @@ LABEL_8:
     _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v9)
+  if (!endDateCopy)
   {
 LABEL_7:
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -2597,29 +2597,29 @@ LABEL_10:
     v13 = _rt_log_facility_get_os_log(RTLogFacilityEventModel);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v8 stringFromDate];
-      v15 = [v9 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
+      stringFromDate2 = [endDateCopy stringFromDate];
       *buf = 138412546;
-      v25 = v14;
+      v25 = stringFromDate;
       v26 = 2112;
-      v27 = v15;
+      v27 = stringFromDate2;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "LMP ScoreBoardOnDate:%@ - %@", buf, 0x16u);
     }
   }
 
-  v16 = [(RTEventModelProvider *)self metricManager];
+  metricManager = [(RTEventModelProvider *)self metricManager];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromStartDate_endDate_submissionHandler___block_invoke;
   v20[3] = &unk_2788CE4B8;
   v20[4] = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v17 = v10;
-  v18 = v9;
-  v19 = v8;
-  [v16 fetchDiagnosticsEnabled:v20];
+  v21 = dateCopy;
+  v22 = endDateCopy;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = endDateCopy;
+  v19 = dateCopy;
+  [metricManager fetchDiagnosticsEnabled:v20];
 }
 
 void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromStartDate_endDate_submissionHandler___block_invoke(id *a1, int a2)
@@ -3229,14 +3229,14 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
   }
 }
 
-- (id)lastDateOfLOIVisits:(id)a3
+- (id)lastDateOfLOIVisits:(id)visits
 {
   v31 = *MEMORY[0x277D85DE8];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a3;
+  obj = visits;
   v3 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v3)
   {
@@ -3257,8 +3257,8 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v7 visits];
-        v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        visits = [v7 visits];
+        v9 = [visits countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v9)
         {
           v10 = v9;
@@ -3269,29 +3269,29 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
             {
               if (*v22 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(visits);
               }
 
               v13 = *(*(&v21 + 1) + 8 * j);
-              v14 = [v13 entryDate];
-              v15 = [v13 exitDate];
+              entryDate = [v13 entryDate];
+              exitDate = [v13 exitDate];
 
-              if (v15)
+              if (exitDate)
               {
-                v16 = [v13 exitDate];
+                exitDate2 = [v13 exitDate];
 
-                v14 = v16;
+                entryDate = exitDate2;
               }
 
-              if (!v5 || [v14 compare:v5] == 1)
+              if (!v5 || [entryDate compare:v5] == 1)
               {
-                v17 = v14;
+                v17 = entryDate;
 
                 v5 = v17;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v10 = [visits countByEnumeratingWithState:&v21 objects:v29 count:16];
           }
 
           while (v10);
@@ -3312,13 +3312,13 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
   return v5;
 }
 
-- (unint64_t)lengthOfEvent:(id)a3
+- (unint64_t)lengthOfEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 endDate];
-  v5 = [v3 startDate];
+  eventCopy = event;
+  endDate = [eventCopy endDate];
+  startDate = [eventCopy startDate];
 
-  [v4 timeIntervalSinceDate:v5];
+  [endDate timeIntervalSinceDate:startDate];
   v7 = v6;
 
   if (v7 < 900.0)
@@ -3349,18 +3349,18 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
   return 4;
 }
 
-- (unint64_t)timeOfDayOfEvent:(id)a3
+- (unint64_t)timeOfDayOfEvent:(id)event
 {
-  v3 = [a3 startDate];
-  v4 = [v3 hour];
+  startDate = [event startDate];
+  hour = [startDate hour];
 
   v5 = 1;
-  if (v4 > 18)
+  if (hour > 18)
   {
     v5 = 2;
   }
 
-  if (v4 >= 8)
+  if (hour >= 8)
   {
     return v5;
   }
@@ -3371,15 +3371,15 @@ void __104__RTEventModelProvider_RTMetricManager___submitMetricScoreBoardFromSta
   }
 }
 
-- (id)_createMetricFromEventCounter:(id)a3 categories:(id)a4
+- (id)_createMetricFromEventCounter:(id)counter categories:(id)categories
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  counterCopy = counter;
+  categoriesCopy = categories;
+  v8 = categoriesCopy;
+  if (counterCopy)
   {
-    if (v7)
+    if (categoriesCopy)
     {
       goto LABEL_10;
     }
@@ -3417,11 +3417,11 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __82__RTEventModelProvider_RTMetricManager___createMetricFromEventCounter_categories___block_invoke;
   v17[3] = &unk_2788CE4E0;
-  v18 = v6;
-  v19 = self;
+  v18 = counterCopy;
+  selfCopy = self;
   v12 = v11;
   v20 = v12;
-  v13 = v6;
+  v13 = counterCopy;
   [v8 enumerateObjectsUsingBlock:v17];
   v14 = v20;
   v15 = v12;
@@ -3473,23 +3473,23 @@ void __82__RTEventModelProvider_RTMetricManager___createMetricFromEventCounter_c
   [*(a1 + 48) addObject:v22];
 }
 
-- (id)categoryForLocationState:(unint64_t)a3 ttlTrigggerd:(BOOL)a4
+- (id)categoryForLocationState:(unint64_t)state ttlTrigggerd:(BOOL)trigggerd
 {
-  v4 = a4;
-  v6 = [(RTEventModelProvider *)self appendFieldToCategoryString:0 field:@"LOC" value:a3];
-  v7 = [(RTEventModelProvider *)self appendFieldToCategoryString:v6 field:@"TTL" value:v4];
+  trigggerdCopy = trigggerd;
+  v6 = [(RTEventModelProvider *)self appendFieldToCategoryString:0 field:@"LOC" value:state];
+  v7 = [(RTEventModelProvider *)self appendFieldToCategoryString:v6 field:@"TTL" value:trigggerdCopy];
 
   return v7;
 }
 
-- (id)appendFieldToCategoryString:(id)a3 field:(id)a4 value:(int64_t)a5
+- (id)appendFieldToCategoryString:(id)string field:(id)field value:(int64_t)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  stringCopy = string;
+  fieldCopy = field;
+  if (fieldCopy)
   {
-    if (!v7)
+    if (!stringCopy)
     {
       goto LABEL_10;
     }
@@ -3507,13 +3507,13 @@ void __82__RTEventModelProvider_RTMetricManager___createMetricFromEventCounter_c
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: field (in %s:%d)", buf, 0x12u);
     }
 
-    if (!v7)
+    if (!stringCopy)
     {
 LABEL_10:
 
-      v7 = &stru_284528390;
+      stringCopy = &stru_284528390;
       v10 = &stru_284528390;
-      if (!v8)
+      if (!fieldCopy)
       {
         goto LABEL_13;
       }
@@ -3522,46 +3522,46 @@ LABEL_10:
     }
   }
 
-  if (![(__CFString *)v7 length])
+  if (![(__CFString *)stringCopy length])
   {
     goto LABEL_10;
   }
 
   v10 = @",";
-  if (!v8)
+  if (!fieldCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_11:
-  if ([v8 length])
+  if ([fieldCopy length])
   {
-    v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@%@=%ld", v7, v10, v8, a5];
+    value = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@%@%@=%ld", stringCopy, v10, fieldCopy, value];
     goto LABEL_14;
   }
 
 LABEL_13:
-  v11 = v7;
+  value = stringCopy;
 LABEL_14:
-  v12 = v11;
+  v12 = value;
 
   return v12;
 }
 
-- (unint64_t)verifyPresenceOfUserWithEventLocation:(id)a3 deviceLOIs:(id)a4
+- (unint64_t)verifyPresenceOfUserWithEventLocation:(id)location deviceLOIs:(id)is
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  locationCopy = location;
+  isCopy = is;
+  if ([isCopy count])
   {
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
     v7 = 2;
     v17 = 2;
-    if (v5)
+    if (locationCopy)
     {
-      v8 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:v5];
+      v8 = [objc_alloc(MEMORY[0x277D01160]) initWithCLLocation:locationCopy];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __90__RTEventModelProvider_RTMetricManager__verifyPresenceOfUserWithEventLocation_deviceLOIs___block_invoke;
@@ -3569,7 +3569,7 @@ LABEL_14:
       v9 = v8;
       v12 = v9;
       v13 = &v14;
-      [v6 enumerateObjectsUsingBlock:v11];
+      [isCopy enumerateObjectsUsingBlock:v11];
       v7 = v15[3];
     }
 
@@ -3639,18 +3639,18 @@ void __90__RTEventModelProvider_RTMetricManager__verifyPresenceOfUserWithEventLo
   }
 }
 
-- (void)onDailyMetricNotification:(id)a3
+- (void)onDailyMetricNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__RTEventModelProvider_RTMetricManager__onDailyMetricNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__RTEventModelProvider_RTMetricManager__onDailyMetricNotification___block_invoke(uint64_t a1)

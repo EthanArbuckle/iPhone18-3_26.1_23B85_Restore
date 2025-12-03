@@ -1,81 +1,81 @@
 @interface REElementDataSourceController
-- (BOOL)_containsElementIdentifier:(id)a3;
+- (BOOL)_containsElementIdentifier:(id)identifier;
 - (BOOL)_isWhitelisted;
-- (BOOL)_supportsContentRelevanceProviderForElement:(id)a3;
-- (BOOL)_validElement:(id)a3;
-- (BOOL)hasElementWithId:(id)a3 inSectionWithIdentifier:(id)a4;
+- (BOOL)_supportsContentRelevanceProviderForElement:(id)element;
+- (BOOL)_validElement:(id)element;
+- (BOOL)hasElementWithId:(id)id inSectionWithIdentifier:(id)identifier;
 - (NSArray)allElements;
 - (NSArray)allProvidedElements;
 - (NSString)name;
-- (REElementDataSourceController)initWithRelevanceEngine:(id)a3 dataSource:(id)a4;
+- (REElementDataSourceController)initWithRelevanceEngine:(id)engine dataSource:(id)source;
 - (REElementDataSourceControllerDelegate)delegate;
-- (id)_dataSourceIdentifierFromIdentifier:(id)a3;
-- (id)_elementForIdentifier:(id)a3;
-- (id)_elementsByRemovingInvalidElements:(id)a3;
-- (id)_groupElements:(id)a3 bySections:(id)a4;
-- (id)_initWithRelevanceEngine:(id)a3 dataSourceClass:(Class)a4 dataSource:(id)a5;
-- (id)_queue_elementsForIds:(id)a3;
-- (id)_sectionForElementWithIdentifier:(id)a3;
-- (id)_shallowCopiedElements:(id)a3;
-- (id)_updateRelevanceProvidersForElement:(id)a3;
+- (id)_dataSourceIdentifierFromIdentifier:(id)identifier;
+- (id)_elementForIdentifier:(id)identifier;
+- (id)_elementsByRemovingInvalidElements:(id)elements;
+- (id)_groupElements:(id)elements bySections:(id)sections;
+- (id)_initWithRelevanceEngine:(id)engine dataSourceClass:(Class)class dataSource:(id)source;
+- (id)_queue_elementsForIds:(id)ids;
+- (id)_sectionForElementWithIdentifier:(id)identifier;
+- (id)_shallowCopiedElements:(id)elements;
+- (id)_updateRelevanceProvidersForElement:(id)element;
 - (unsigned)_defaultDataSourceQOS;
-- (void)_addElementIdentifier:(id)a3;
-- (void)_handleDeviceLockStateChange:(id)a3;
+- (void)_addElementIdentifier:(id)identifier;
+- (void)_handleDeviceLockStateChange:(id)change;
 - (void)_loadLoggingHeader;
-- (void)_namespaceElementIdentifier:(id)a3 section:(id)a4;
-- (void)_performOrEnqueueUpdateBlock:(id)a3;
-- (void)_queue_invalidateSections:(id)a3 completion:(id)a4;
+- (void)_namespaceElementIdentifier:(id)identifier section:(id)section;
+- (void)_performOrEnqueueUpdateBlock:(id)block;
+- (void)_queue_invalidateSections:(id)sections completion:(id)completion;
 - (void)_queue_pause;
-- (void)_queue_performContentInvalidateWithElement:(id)a3 expectation:(id)a4 sections:(id)a5;
+- (void)_queue_performContentInvalidateWithElement:(id)element expectation:(id)expectation sections:(id)sections;
 - (void)_queue_performUpdates;
-- (void)_queue_processPendingUpdatesWhilePause:(id)a3;
-- (void)_queue_processUpdates:(id)a3 forSection:(id)a4;
-- (void)_queue_purgeContentWithCompletion:(id)a3;
-- (void)_queue_reloadWithQOS:(unsigned int)a3 qosOffset:(int)a4 forceReload:(BOOL)a5 operations:(id)a6 completion:(id)a7;
+- (void)_queue_processPendingUpdatesWhilePause:(id)pause;
+- (void)_queue_processUpdates:(id)updates forSection:(id)section;
+- (void)_queue_purgeContentWithCompletion:(id)completion;
+- (void)_queue_reloadWithQOS:(unsigned int)s qosOffset:(int)offset forceReload:(BOOL)reload operations:(id)operations completion:(id)completion;
 - (void)_queue_resume;
-- (void)_queue_scheduleUpdate:(id)a3;
+- (void)_queue_scheduleUpdate:(id)update;
 - (void)_queue_updateDataSourceLocationUse;
-- (void)_removeElementForIdentifier:(id)a3;
-- (void)_removeElementIdentifier:(id)a3;
-- (void)_setSection:(id)a3 forElementWithIdentifier:(id)a4;
-- (void)_storeElement:(id)a3;
-- (void)addElements:(id)a3 toSectionWithIdentifier:(id)a4;
+- (void)_removeElementForIdentifier:(id)identifier;
+- (void)_removeElementIdentifier:(id)identifier;
+- (void)_setSection:(id)section forElementWithIdentifier:(id)identifier;
+- (void)_storeElement:(id)element;
+- (void)addElements:(id)elements toSectionWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)elementDidBecomeHidden:(id)a3;
-- (void)elementWillBecomeVisible:(id)a3;
-- (void)fetchElementWithIdentifierVisible:(id)a3 withHandler:(id)a4;
-- (void)invalidateAndReloadWithCompletion:(id)a3;
+- (void)elementDidBecomeHidden:(id)hidden;
+- (void)elementWillBecomeVisible:(id)visible;
+- (void)fetchElementWithIdentifierVisible:(id)visible withHandler:(id)handler;
+- (void)invalidateAndReloadWithCompletion:(id)completion;
 - (void)invalidateElements;
-- (void)invalidateElementsInSection:(id)a3;
-- (void)invalidateElementsInSections:(id)a3 completion:(id)a4;
+- (void)invalidateElementsInSection:(id)section;
+- (void)invalidateElementsInSections:(id)sections completion:(id)completion;
 - (void)pause;
 - (void)pauseIfNeeded;
 - (void)prepareToUnload;
-- (void)processPendingUpdatesWhilePause:(id)a3;
-- (void)refreshElement:(id)a3;
-- (void)reloadElement:(id)a3;
-- (void)removeElementsWithIds:(id)a3;
+- (void)processPendingUpdatesWhilePause:(id)pause;
+- (void)refreshElement:(id)element;
+- (void)reloadElement:(id)element;
+- (void)removeElementsWithIds:(id)ids;
 - (void)resume;
-- (void)setAllowsLocationUse:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setAllowsLocationUse:(BOOL)use;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation REElementDataSourceController
 
-- (REElementDataSourceController)initWithRelevanceEngine:(id)a3 dataSource:(id)a4
+- (REElementDataSourceController)initWithRelevanceEngine:(id)engine dataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REElementDataSourceController *)self _initWithRelevanceEngine:v7 dataSourceClass:objc_opt_class() dataSource:v6];
+  sourceCopy = source;
+  engineCopy = engine;
+  v8 = [(REElementDataSourceController *)self _initWithRelevanceEngine:engineCopy dataSourceClass:objc_opt_class() dataSource:sourceCopy];
 
   return v8;
 }
 
-- (id)_initWithRelevanceEngine:(id)a3 dataSourceClass:(Class)a4 dataSource:(id)a5
+- (id)_initWithRelevanceEngine:(id)engine dataSourceClass:(Class)class dataSource:(id)source
 {
   v85 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v72 = a5;
+  engineCopy = engine;
+  sourceCopy = source;
   v82.receiver = self;
   v82.super_class = REElementDataSourceController;
   v9 = [(REElementDataSourceController *)&v82 init];
@@ -84,47 +84,47 @@
   {
     v9->_state = 1;
     v9->_isPerformingReload = 0;
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     enqueuedBlocks = v10->_enqueuedBlocks;
-    v10->_enqueuedBlocks = v11;
+    v10->_enqueuedBlocks = array;
 
     *&v10->_willUnload = 0;
     v10->_wantsReloadWhilePaused = 0;
-    objc_storeWeak(&v10->_relevanceEngine, v8);
-    v13 = [v8 configuration];
-    v10->_disableAutomaticContentManagement = [v13 disableAutomaticContentManagement];
+    objc_storeWeak(&v10->_relevanceEngine, engineCopy);
+    configuration = [engineCopy configuration];
+    v10->_disableAutomaticContentManagement = [configuration disableAutomaticContentManagement];
 
-    objc_storeStrong(&v10->_dataSourceClass, a4);
+    objc_storeStrong(&v10->_dataSourceClass, class);
     [(REElementDataSourceController *)v10 _loadLoggingHeader];
     v14 = [MEMORY[0x277CBEB58] set];
     dataSourceElements = v10->_dataSourceElements;
     v10->_dataSourceElements = v14;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dataSourceElementIdentifierMap = v10->_dataSourceElementIdentifierMap;
-    v10->_dataSourceElementIdentifierMap = v16;
+    v10->_dataSourceElementIdentifierMap = dictionary;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     dataSourceElementSectionMap = v10->_dataSourceElementSectionMap;
-    v10->_dataSourceElementSectionMap = v18;
+    v10->_dataSourceElementSectionMap = dictionary2;
 
-    v20 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     updates = v10->_updates;
-    v10->_updates = v20;
+    v10->_updates = array2;
 
-    v10->_contentMode = [(objc_class *)a4 elementContentMode];
-    v22 = [(REElementDataSourceController *)v10 _defaultDataSourceQOS];
+    v10->_contentMode = [(objc_class *)class elementContentMode];
+    _defaultDataSourceQOS = [(REElementDataSourceController *)v10 _defaultDataSourceQOS];
     v23 = MEMORY[0x277CCACA8];
-    v70 = NSStringFromClass(a4);
+    v70 = NSStringFromClass(class);
     v24 = [v23 stringWithFormat:@"com.apple.relevanceengine.%@Controller"];
 
-    attr = dispatch_queue_attr_make_with_qos_class(0, v22, 0);
+    attr = dispatch_queue_attr_make_with_qos_class(0, _defaultDataSourceQOS, 0);
     v25 = v24;
     v26 = dispatch_queue_create([v24 UTF8String], attr);
     queue = v10->_queue;
     v10->_queue = v26;
 
-    if (([(objc_class *)a4 wantsPrivateQueue]& 1) == 0)
+    if (([(objc_class *)class wantsPrivateQueue]& 1) == 0)
     {
       if (_initWithRelevanceEngine_dataSourceClass_dataSource__onceToken != -1)
       {
@@ -132,11 +132,11 @@
       }
 
       v28 = v10->_queue;
-      v29 = [_initWithRelevanceEngine_dataSourceClass_dataSource__QueuePool nextAvailableQueue];
-      dispatch_set_target_queue(v28, v29);
+      nextAvailableQueue = [_initWithRelevanceEngine_dataSourceClass_dataSource__QueuePool nextAvailableQueue];
+      dispatch_set_target_queue(v28, nextAvailableQueue);
     }
 
-    if ([v8 wantsImmutableContent])
+    if ([engineCopy wantsImmutableContent])
     {
       v30 = 0.0;
     }
@@ -163,12 +163,12 @@
     v76[2] = __85__REElementDataSourceController__initWithRelevanceEngine_dataSourceClass_dataSource___block_invoke_3;
     v76[3] = &unk_2785FA3A8;
     objc_copyWeak(&v77, &location);
-    v78 = v22;
+    v78 = _defaultDataSourceQOS;
     v35 = [REUpNextScheduler schedulerWithTransaction:@"com.apple.relevanceengine.element-invalidation" queue:v34 delay:v76 updateBlock:v30];
     reloadScheduler = v10->_reloadScheduler;
     v10->_reloadScheduler = v35;
 
-    if ([(objc_class *)a4 wantsReloadForSignificantTimeChange])
+    if ([(objc_class *)class wantsReloadForSignificantTimeChange])
     {
       v37 = RELogForDomain(2);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -179,18 +179,18 @@
         _os_log_impl(&dword_22859F000, v37, OS_LOG_TYPE_DEFAULT, "%@ wantsReloadForSignificantTimeChange", buf, 0xCu);
       }
 
-      v39 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v40 = RESignificantTimeChangeNotification();
-      [v39 addObserver:v10 selector:sel__handleSignifiantTimeChange_ name:v40 object:0];
+      [defaultCenter addObserver:v10 selector:sel__handleSignifiantTimeChange_ name:v40 object:0];
     }
 
     v10->_hasDataAvailable = 1;
-    v41 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v41 addObserver:v10 selector:sel__handleDeviceLockStateChange_ name:@"REDeviceLockStateChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__handleDeviceLockStateChange_ name:@"REDeviceLockStateChangedNotification" object:0];
 
-    if (v72)
+    if (sourceCopy)
     {
-      v42 = v72;
+      v42 = sourceCopy;
     }
 
     else
@@ -205,8 +205,8 @@
     [(REElementDataSource *)v10->_dataSource setUnlockedSinceBoot:REDeviceUnlockedSinceBoot()];
     v44 = [MEMORY[0x277CBEB58] set];
     v45 = MEMORY[0x277CBEB98];
-    v46 = [(REElementDataSource *)v10->_dataSource supportedSections];
-    v47 = [v45 setWithArray:v46];
+    supportedSections = [(REElementDataSource *)v10->_dataSource supportedSections];
+    v47 = [v45 setWithArray:supportedSections];
 
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
@@ -216,16 +216,16 @@
     v74 = v48;
     v49 = v44;
     v75 = v49;
-    [v8 enumerateSectionDescriptorsWithOptions:0 includeHistoric:0 usingBlock:v73];
+    [engineCopy enumerateSectionDescriptorsWithOptions:0 includeHistoric:0 usingBlock:v73];
     v50 = [v49 copy];
     supportedSections = v10->_supportedSections;
     v10->_supportedSections = v50;
 
-    v52 = [v8 coordinator];
-    v53 = [v52 elementRelevanceEngine];
-    v54 = [v53 relevanceProviderEnvironment];
+    coordinator = [engineCopy coordinator];
+    elementRelevanceEngine = [coordinator elementRelevanceEngine];
+    relevanceProviderEnvironment = [elementRelevanceEngine relevanceProviderEnvironment];
     providerEnvironment = v10->_providerEnvironment;
-    v10->_providerEnvironment = v54;
+    v10->_providerEnvironment = relevanceProviderEnvironment;
 
     v62 = v10->_providerEnvironment;
     if (!v62)
@@ -237,20 +237,20 @@
     v63 = [[REContentRelevanceProvider alloc] initWithContent:&stru_283B97458];
     v10->_supportsContentRelevance = [(RERelevanceProviderEnvironment *)v62 isSupportedRelevanceProvider:v63];
 
-    v64 = [(objc_class *)a4 contentAttributes];
+    contentAttributes = [(objc_class *)class contentAttributes];
     contentAttributes = v10->_contentAttributes;
-    v10->_contentAttributes = v64;
+    v10->_contentAttributes = contentAttributes;
 
     if (![(NSArray *)v10->_contentAttributes count])
     {
       v10->_supportsContentRelevance = 0;
     }
 
-    v66 = [v8 logger];
-    [v66 addLoggable:v10];
+    logger = [engineCopy logger];
+    [logger addLoggable:v10];
 
-    v67 = [v8 logger];
-    [v67 addLoggable:v10->_dataSource];
+    logger2 = [engineCopy logger];
+    [logger2 addLoggable:v10->_dataSource];
 
     objc_destroyWeak(&v77);
     objc_destroyWeak(&v80);
@@ -307,25 +307,25 @@ void __85__REElementDataSourceController__initWithRelevanceEngine_dataSourceClas
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  v4 = [WeakRetained logger];
-  [v4 removeLoggable:self->_dataSource];
+  logger = [WeakRetained logger];
+  [logger removeLoggable:self->_dataSource];
 
   dataSource = self->_dataSource;
   self->_dataSource = 0;
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7 = objc_loadWeakRetained(&self->_relevanceEngine);
-  v8 = [v7 logger];
-  [v8 removeLoggable:self];
+  logger2 = [v7 logger];
+  [logger2 removeLoggable:self];
 
   v9.receiver = self;
   v9.super_class = REElementDataSourceController;
   [(REElementDataSourceController *)&v9 dealloc];
 }
 
-- (void)_handleDeviceLockStateChange:(id)a3
+- (void)_handleDeviceLockStateChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -380,19 +380,19 @@ uint64_t __62__REElementDataSourceController__handleDeviceLockStateChange___bloc
   return result;
 }
 
-- (id)_elementsByRemovingInvalidElements:(id)a3
+- (id)_elementsByRemovingInvalidElements:(id)elements
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  elementsCopy = elements;
+  v5 = elementsCopy;
+  if (elementsCopy && [elementsCopy count])
   {
-    v6 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __68__REElementDataSourceController__elementsByRemovingInvalidElements___block_invoke;
     v14 = &unk_2785FA3F8;
-    v15 = self;
-    v7 = v6;
+    selfCopy = self;
+    v7 = indexSet;
     v16 = v7;
     [v5 enumerateObjectsUsingBlock:&v11];
     if ([v7 count])
@@ -429,14 +429,14 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
   return result;
 }
 
-- (id)_shallowCopiedElements:(id)a3
+- (id)_shallowCopiedElements:(id)elements
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  elementsCopy = elements;
+  v4 = elementsCopy;
+  if (elementsCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(elementsCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -456,8 +456,8 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) shallowCopy];
-          [v5 addObject:v11];
+          shallowCopy = [*(*(&v15 + 1) + 8 * i) shallowCopy];
+          [v5 addObject:shallowCopy];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -479,59 +479,59 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
   return v12;
 }
 
-- (void)_namespaceElementIdentifier:(id)a3 section:(id)a4
+- (void)_namespaceElementIdentifier:(id)identifier section:(id)section
 {
-  v16 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  sectionCopy = section;
   v7 = [REIdentifier alloc];
-  v8 = [(REElementDataSourceController *)self bundleIdentifier];
-  v9 = [v16 identifier];
-  v10 = [(REIdentifier *)v7 initWithDataSource:v8 section:v6 identifier:v9];
+  bundleIdentifier = [(REElementDataSourceController *)self bundleIdentifier];
+  identifier = [identifierCopy identifier];
+  v10 = [(REIdentifier *)v7 initWithDataSource:bundleIdentifier section:sectionCopy identifier:identifier];
 
-  v11 = [v16 bundleIdentifier];
+  bundleIdentifier2 = [identifierCopy bundleIdentifier];
 
-  if (!v11)
+  if (!bundleIdentifier2)
   {
-    v12 = [(REElementDataSourceController *)self bundleIdentifier];
-    [v16 setBundleIdentifier:v12];
+    bundleIdentifier3 = [(REElementDataSourceController *)self bundleIdentifier];
+    [identifierCopy setBundleIdentifier:bundleIdentifier3];
   }
 
-  v13 = [v16 applicationBundleIdentifier];
+  applicationBundleIdentifier = [identifierCopy applicationBundleIdentifier];
 
-  if (!v13)
+  if (!applicationBundleIdentifier)
   {
-    v14 = [(REElementDataSourceController *)self applicationBundleIdentifier];
-    if (v14)
+    applicationBundleIdentifier2 = [(REElementDataSourceController *)self applicationBundleIdentifier];
+    if (applicationBundleIdentifier2)
     {
-      [v16 setApplicationBundleIdentifier:v14];
+      [identifierCopy setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     else
     {
-      v15 = [v16 bundleIdentifier];
-      [v16 setApplicationBundleIdentifier:v15];
+      bundleIdentifier4 = [identifierCopy bundleIdentifier];
+      [identifierCopy setApplicationBundleIdentifier:bundleIdentifier4];
     }
   }
 
-  [v16 _updateIdentifier:v10];
-  [v16 _updateNamespacedIdentifier:v10];
+  [identifierCopy _updateIdentifier:v10];
+  [identifierCopy _updateNamespacedIdentifier:v10];
 }
 
-- (BOOL)_validElement:(id)a3
+- (BOOL)_validElement:(id)element
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 relevanceProviders];
-  v41 = [v5 setWithArray:v6];
+  relevanceProviders = [elementCopy relevanceProviders];
+  v41 = [v5 setWithArray:relevanceProviders];
 
   v7 = [v41 count];
-  v8 = [v4 relevanceProviders];
-  v9 = [v8 count];
+  relevanceProviders2 = [elementCopy relevanceProviders];
+  v9 = [relevanceProviders2 count];
 
   if (v7 != v9)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Duplicate relevance providers in %@", v10, v11, v12, v13, v14, v15, v4);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Duplicate relevance providers in %@", v10, v11, v12, v13, v14, v15, elementCopy);
     v31 = 0;
     goto LABEL_20;
   }
@@ -540,8 +540,8 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v16 = [v4 relevanceProviders];
-  v17 = [v16 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  relevanceProviders3 = [elementCopy relevanceProviders];
+  v17 = [relevanceProviders3 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v17)
   {
     v31 = 1;
@@ -556,7 +556,7 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
     {
       if (*v43 != v19)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(relevanceProviders3);
       }
 
       v21 = *(*(&v42 + 1) + 8 * i);
@@ -566,8 +566,8 @@ uint64_t __68__REElementDataSourceController__elementsByRemovingInvalidElements_
         goto LABEL_18;
       }
 
-      v22 = [v4 identifier];
-      v23 = v22 == 0;
+      identifier = [elementCopy identifier];
+      v23 = identifier == 0;
 
       if (v23)
       {
@@ -588,14 +588,14 @@ LABEL_18:
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass & v18)
       {
-        RERaiseInternalException(*MEMORY[0x277CBE660], @"Element cannot be added to multiple groups: %@", v25, v26, v27, v28, v29, v30, v4);
+        RERaiseInternalException(*MEMORY[0x277CBE660], @"Element cannot be added to multiple groups: %@", v25, v26, v27, v28, v29, v30, elementCopy);
         goto LABEL_18;
       }
 
       v18 |= isKindOfClass;
     }
 
-    v17 = [v16 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    v17 = [relevanceProviders3 countByEnumeratingWithState:&v42 objects:v46 count:16];
     v31 = 1;
     if (v17)
     {
@@ -612,11 +612,11 @@ LABEL_20:
   return v31;
 }
 
-- (BOOL)_supportsContentRelevanceProviderForElement:(id)a3
+- (BOOL)_supportsContentRelevanceProviderForElement:(id)element
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  elementCopy = element;
+  v5 = elementCopy;
   if (self->_supportsContentRelevance)
   {
     contentMode = self->_contentMode;
@@ -626,8 +626,8 @@ LABEL_20:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = [v4 relevanceProviders];
-      v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      relevanceProviders = [elementCopy relevanceProviders];
+      v9 = [relevanceProviders countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -638,7 +638,7 @@ LABEL_20:
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(relevanceProviders);
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
@@ -650,7 +650,7 @@ LABEL_20:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [relevanceProviders countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v10)
           {
             continue;
@@ -679,42 +679,42 @@ LABEL_15:
   return v7;
 }
 
-- (id)_updateRelevanceProvidersForElement:(id)a3
+- (id)_updateRelevanceProvidersForElement:(id)element
 {
-  v4 = a3;
-  if (![(REElementDataSourceController *)self _supportsContentRelevanceProviderForElement:v4])
+  elementCopy = element;
+  if (![(REElementDataSourceController *)self _supportsContentRelevanceProviderForElement:elementCopy])
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   contentAttributes = self->_contentAttributes;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__REElementDataSourceController__updateRelevanceProvidersForElement___block_invoke;
   v14[3] = &unk_2785FA420;
-  v7 = v5;
+  v7 = string;
   v15 = v7;
-  REEnumerateContentAttributesOfElement(contentAttributes, v4, v14);
+  REEnumerateContentAttributesOfElement(contentAttributes, elementCopy, v14);
   v8 = [[REContentRelevanceProvider alloc] initWithContent:v7];
-  v9 = [(REContentRelevanceProvider *)v8 keywords];
-  v10 = [v9 count];
+  keywords = [(REContentRelevanceProvider *)v8 keywords];
+  v10 = [keywords count];
 
   if (v10)
   {
-    v11 = [v4 relevanceProviders];
-    v12 = [v11 arrayByAddingObject:v8];
+    relevanceProviders = [elementCopy relevanceProviders];
+    v12 = [relevanceProviders arrayByAddingObject:v8];
 
-    v9 = [v4 copyElementWithUpdatedRelevanceProviders:v12];
+    keywords = [elementCopy copyElementWithUpdatedRelevanceProviders:v12];
   }
 
   if (!v10)
   {
 LABEL_5:
-    v9 = v4;
+    keywords = elementCopy;
   }
 
-  return v9;
+  return keywords;
 }
 
 uint64_t __69__REElementDataSourceController__updateRelevanceProvidersForElement___block_invoke(uint64_t a1, uint64_t a2)
@@ -725,126 +725,126 @@ uint64_t __69__REElementDataSourceController__updateRelevanceProvidersForElement
   return [v3 appendString:@"\n"];
 }
 
-- (void)_addElementIdentifier:(id)a3
+- (void)_addElementIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v4, v5, v6, v7, v8, v9, v10);
   }
 
-  [(NSMutableSet *)self->_dataSourceElements addObject:v11];
+  [(NSMutableSet *)self->_dataSourceElements addObject:identifierCopy];
 }
 
-- (void)_removeElementIdentifier:(id)a3
+- (void)_removeElementIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v4, v5, v6, v7, v8, v9, v10);
   }
 
-  [(NSMutableSet *)self->_dataSourceElements removeObject:v11];
+  [(NSMutableSet *)self->_dataSourceElements removeObject:identifierCopy];
 }
 
-- (BOOL)_containsElementIdentifier:(id)a3
+- (BOOL)_containsElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v5, v6, v7, v8, v9, v10, v13);
   }
 
-  v11 = [(NSMutableSet *)self->_dataSourceElements containsObject:v4];
+  v11 = [(NSMutableSet *)self->_dataSourceElements containsObject:identifierCopy];
 
   return v11;
 }
 
-- (void)_setSection:(id)a3 forElementWithIdentifier:(id)a4
+- (void)_setSection:(id)section forElementWithIdentifier:(id)identifier
 {
-  v14 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v7, v8, v9, v10, v11, v12, v13);
   }
 
-  [(NSMutableDictionary *)self->_dataSourceElementSectionMap setObject:v14 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_dataSourceElementSectionMap setObject:sectionCopy forKeyedSubscript:identifierCopy];
 }
 
-- (id)_sectionForElementWithIdentifier:(id)a3
+- (id)_sectionForElementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v5, v6, v7, v8, v9, v10, v13);
   }
 
-  v11 = [(NSMutableDictionary *)self->_dataSourceElementSectionMap objectForKeyedSubscript:v4];
+  v11 = [(NSMutableDictionary *)self->_dataSourceElementSectionMap objectForKeyedSubscript:identifierCopy];
 
   return v11;
 }
 
-- (void)_storeElement:(id)a3
+- (void)_storeElement:(id)element
 {
-  v12 = a3;
-  v4 = [v12 identifier];
+  elementCopy = element;
+  identifier = [elementCopy identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v5, v6, v7, v8, v9, v10, v11);
   }
 
-  [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap setObject:v12 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap setObject:elementCopy forKeyedSubscript:identifier];
 }
 
-- (void)_removeElementForIdentifier:(id)a3
+- (void)_removeElementForIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v4, v5, v6, v7, v8, v9, v10);
   }
 
-  [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap setObject:0 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap setObject:0 forKeyedSubscript:identifierCopy];
 }
 
-- (id)_elementForIdentifier:(id)a3
+- (id)_elementForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v5, v6, v7, v8, v9, v10, v13);
   }
 
-  v11 = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap objectForKeyedSubscript:v4];
+  v11 = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap objectForKeyedSubscript:identifierCopy];
 
   return v11;
 }
 
-- (id)_dataSourceIdentifierFromIdentifier:(id)a3
+- (id)_dataSourceIdentifierFromIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v3 identifier];
+    identifier = [identifierCopy identifier];
   }
 
   else
   {
     RERaiseInternalException(*MEMORY[0x277CBE658], @"Wrong type of identifier being used", v4, v5, v6, v7, v8, v9, v13);
-    v10 = v3;
+    identifier = identifierCopy;
   }
 
-  v11 = v10;
+  v11 = identifier;
 
   return v11;
 }
@@ -852,15 +852,15 @@ uint64_t __69__REElementDataSourceController__updateRelevanceProvidersForElement
 - (BOOL)_isWhitelisted
 {
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  v4 = [WeakRetained configuration];
-  v5 = [v4 whitelistedDataSourceClassNames];
+  configuration = [WeakRetained configuration];
+  whitelistedDataSourceClassNames = [configuration whitelistedDataSourceClassNames];
 
-  if ([v5 count])
+  if ([whitelistedDataSourceClassNames count])
   {
     dataSource = self->_dataSource;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v5 containsObject:v8];
+    v9 = [whitelistedDataSourceClassNames containsObject:v8];
   }
 
   else
@@ -904,53 +904,53 @@ void __39__REElementDataSourceController_resume__block_invoke(uint64_t a1)
 - (void)_queue_resume
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_1_0(&dword_22859F000, v2, v3, "%@ did open data source", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPendingUpdatesWhilePause:(id)a3
+- (void)processPendingUpdatesWhilePause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__REElementDataSourceController_processPendingUpdatesWhilePause___block_invoke;
   v6[3] = &unk_2785F9A40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = pauseCopy;
+  v5 = pauseCopy;
   [(REElementDataSourceController *)self _performOrEnqueueUpdateBlock:v6];
 }
 
-- (void)_queue_processPendingUpdatesWhilePause:(id)a3
+- (void)_queue_processPendingUpdatesWhilePause:(id)pause
 {
-  v4 = a3;
-  v5 = v4;
+  pauseCopy = pause;
+  v5 = pauseCopy;
   sectionsToReloadWhilePaused = self->_sectionsToReloadWhilePaused;
   if (sectionsToReloadWhilePaused)
   {
-    v8 = v4;
-    [(REElementDataSourceController *)self _queue_invalidateSections:sectionsToReloadWhilePaused completion:v4];
+    v8 = pauseCopy;
+    [(REElementDataSourceController *)self _queue_invalidateSections:sectionsToReloadWhilePaused completion:pauseCopy];
     v7 = self->_sectionsToReloadWhilePaused;
     self->_sectionsToReloadWhilePaused = 0;
   }
 
   else
   {
-    if (!v4)
+    if (!pauseCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = v4;
-    v4 = v4[2](v4);
+    v8 = pauseCopy;
+    pauseCopy = pauseCopy[2](pauseCopy);
   }
 
   v5 = v8;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](pauseCopy, v5);
 }
 
 - (void)pause
@@ -1009,7 +1009,7 @@ uint64_t __46__REElementDataSourceController_pauseIfNeeded__block_invoke(uint64_
 - (void)_queue_pause
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_1_0(&dword_22859F000, v2, v3, "%@ did close data source", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x277D85DE8];
@@ -1030,7 +1030,7 @@ void __45__REElementDataSourceController__queue_pause__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAllowsLocationUse:(BOOL)a3
+- (void)setAllowsLocationUse:(BOOL)use
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1038,7 +1038,7 @@ void __45__REElementDataSourceController__queue_pause__block_invoke(uint64_t a1)
   v4[2] = __54__REElementDataSourceController_setAllowsLocationUse___block_invoke;
   v4[3] = &unk_2785FA448;
   v4[4] = self;
-  v5 = a3;
+  useCopy = use;
   dispatch_async(queue, v4);
 }
 
@@ -1061,8 +1061,8 @@ uint64_t __54__REElementDataSourceController_setAllowsLocationUse___block_invoke
   dataSource = self->_dataSource;
   if (allowsLocationUse)
   {
-    v5 = [(REElementDataSource *)dataSource isRunning];
-    if (v5 == [(REElementDataSource *)self->_dataSource allowsLocationUse])
+    isRunning = [(REElementDataSource *)dataSource isRunning];
+    if (isRunning == [(REElementDataSource *)self->_dataSource allowsLocationUse])
     {
       return;
     }
@@ -1075,12 +1075,12 @@ uint64_t __54__REElementDataSourceController_setAllowsLocationUse___block_invoke
       return;
     }
 
-    v5 = 0;
+    isRunning = 0;
   }
 
   v6 = self->_dataSource;
 
-  [(REElementDataSource *)v6 setAllowsLocationUse:v5];
+  [(REElementDataSource *)v6 setAllowsLocationUse:isRunning];
 }
 
 - (void)prepareToUnload
@@ -1103,13 +1103,13 @@ uint64_t __48__REElementDataSourceController_prepareToUnload__block_invoke(uint6
   return [v2 performImmediately];
 }
 
-- (void)invalidateAndReloadWithCompletion:(id)a3
+- (void)invalidateAndReloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dataSource = self->_dataSource;
-  v6 = [objc_opt_class() wantsAutomaticFetching];
-  v7 = v6;
-  if (v6)
+  wantsAutomaticFetching = [objc_opt_class() wantsAutomaticFetching];
+  v7 = wantsAutomaticFetching;
+  if (wantsAutomaticFetching)
   {
     [(REElementDataSource *)self->_dataSource beginFetchingData];
   }
@@ -1120,9 +1120,9 @@ uint64_t __48__REElementDataSourceController_prepareToUnload__block_invoke(uint6
   block[2] = __67__REElementDataSourceController_invalidateAndReloadWithCompletion___block_invoke;
   block[3] = &unk_2785FA498;
   block[4] = self;
-  v12 = v4;
+  v12 = completionCopy;
   v13 = v7;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, -1, block);
   dispatch_async(queue, v10);
 }
@@ -1159,20 +1159,20 @@ uint64_t __67__REElementDataSourceController_invalidateAndReloadWithCompletion__
   return result;
 }
 
-- (void)invalidateElementsInSections:(id)a3 completion:(id)a4
+- (void)invalidateElementsInSections:(id)sections completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sectionsCopy = sections;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__REElementDataSourceController_invalidateElementsInSections_completion___block_invoke;
   block[3] = &unk_2785F99C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sectionsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = sectionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -1267,24 +1267,24 @@ void __51__REElementDataSourceController_invalidateElements__block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateElementsInSection:(id)a3
+- (void)invalidateElementsInSection:(id)section
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  sectionCopy = section;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  sectionCopy2 = section;
+  v6 = [v4 arrayWithObjects:&sectionCopy count:1];
 
-  [(REElementDataSourceController *)self invalidateElementsInSections:v6 completion:0, v8, v9];
+  [(REElementDataSourceController *)self invalidateElementsInSections:v6 completion:0, sectionCopy, v9];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addElements:(id)a3 toSectionWithIdentifier:(id)a4
+- (void)addElements:(id)elements toSectionWithIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(NSSet *)self->_supportedSections containsObject:v7])
+  elementsCopy = elements;
+  identifierCopy = identifier;
+  if (![(NSSet *)self->_supportedSections containsObject:identifierCopy])
   {
     v9 = RELogForDomain(2);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1295,7 +1295,7 @@ void __51__REElementDataSourceController_invalidateElements__block_invoke(uint64
     goto LABEL_14;
   }
 
-  v8 = [(REElementDataSourceController *)self _elementsByRemovingInvalidElements:v6];
+  v8 = [(REElementDataSourceController *)self _elementsByRemovingInvalidElements:elementsCopy];
 
   if (v8 && [v8 count])
   {
@@ -1341,15 +1341,15 @@ void __51__REElementDataSourceController_invalidateElements__block_invoke(uint64
     v20[2] = __69__REElementDataSourceController_addElements_toSectionWithIdentifier___block_invoke;
     v20[3] = &unk_2785FA4C0;
     v21 = v17;
-    v22 = self;
-    v23 = v7;
-    v6 = v10;
-    v24 = v6;
+    selfCopy = self;
+    v23 = identifierCopy;
+    elementsCopy = v10;
+    v24 = elementsCopy;
     v18 = v17;
     [(REElementDataSourceController *)self _performOrEnqueueUpdateBlock:v20];
 
 LABEL_14:
-    v8 = v6;
+    v8 = elementsCopy;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1485,10 +1485,10 @@ void __69__REElementDataSourceController_addElements_toSectionWithIdentifier___b
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadElement:(id)a3
+- (void)reloadElement:(id)element
 {
-  v4 = a3;
-  if (!v4)
+  elementCopy = element;
+  if (!elementCopy)
   {
     v7 = RELogForDomain(2);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1500,8 +1500,8 @@ void __69__REElementDataSourceController_addElements_toSectionWithIdentifier___b
     goto LABEL_7;
   }
 
-  v5 = v4;
-  if ([(REElementDataSourceController *)self _validElement:v4])
+  v5 = elementCopy;
+  if ([(REElementDataSourceController *)self _validElement:elementCopy])
   {
     v6 = [(REElementDataSourceController *)self _updateRelevanceProvidersForElement:v5];
 
@@ -1511,7 +1511,7 @@ void __69__REElementDataSourceController_addElements_toSectionWithIdentifier___b
     v8[3] = &unk_2785F9AE0;
     v5 = v6;
     v9 = v5;
-    v10 = self;
+    selfCopy = self;
     [(REElementDataSourceController *)self _performOrEnqueueUpdateBlock:v8];
     v7 = v9;
 LABEL_7:
@@ -1597,10 +1597,10 @@ void __47__REElementDataSourceController_reloadElement___block_invoke(uint64_t a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshElement:(id)a3
+- (void)refreshElement:(id)element
 {
-  v4 = a3;
-  if (!v4)
+  elementCopy = element;
+  if (!elementCopy)
   {
     v7 = RELogForDomain(2);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1612,8 +1612,8 @@ void __47__REElementDataSourceController_reloadElement___block_invoke(uint64_t a
     goto LABEL_7;
   }
 
-  v5 = v4;
-  if ([(REElementDataSourceController *)self _validElement:v4])
+  v5 = elementCopy;
+  if ([(REElementDataSourceController *)self _validElement:elementCopy])
   {
     v6 = [(REElementDataSourceController *)self _updateRelevanceProvidersForElement:v5];
 
@@ -1623,7 +1623,7 @@ void __47__REElementDataSourceController_reloadElement___block_invoke(uint64_t a
     v11 = &unk_2785F9AE0;
     v5 = v6;
     v12 = v5;
-    v13 = self;
+    selfCopy = self;
     [(REElementDataSourceController *)self _performOrEnqueueUpdateBlock:&v8];
     [(REUpNextScheduler *)self->_reloadScheduler performImmediately:v8];
     v7 = v12;
@@ -1700,18 +1700,18 @@ void __48__REElementDataSourceController_refreshElement___block_invoke(uint64_t 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeElementsWithIds:(id)a3
+- (void)removeElementsWithIds:(id)ids
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  idsCopy = ids;
+  v5 = idsCopy;
+  if (idsCopy && [idsCopy count])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__REElementDataSourceController_removeElementsWithIds___block_invoke;
     v6[3] = &unk_2785F9AE0;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
     [(REElementDataSourceController *)self _performOrEnqueueUpdateBlock:v6];
   }
 }
@@ -1901,17 +1901,17 @@ void __55__REElementDataSourceController_removeElementsWithIds___block_invoke(ui
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performOrEnqueueUpdateBlock:(id)a3
+- (void)_performOrEnqueueUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__REElementDataSourceController__performOrEnqueueUpdateBlock___block_invoke;
   v7[3] = &unk_2785F9A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1936,12 +1936,12 @@ void __62__REElementDataSourceController__performOrEnqueueUpdateBlock___block_in
   }
 }
 
-- (void)_queue_invalidateSections:(id)a3 completion:(id)a4
+- (void)_queue_invalidateSections:(id)sections completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REElementDataSourceController *)self _defaultDataSourceQOS];
-  v9 = [MEMORY[0x277CBEB58] setWithArray:v7];
+  completionCopy = completion;
+  sectionsCopy = sections;
+  _defaultDataSourceQOS = [(REElementDataSourceController *)self _defaultDataSourceQOS];
+  v9 = [MEMORY[0x277CBEB58] setWithArray:sectionsCopy];
 
   [v9 intersectSet:self->_supportedSections];
   v11[0] = MEMORY[0x277D85DD0];
@@ -1949,9 +1949,9 @@ void __62__REElementDataSourceController__performOrEnqueueUpdateBlock___block_in
   v11[2] = __70__REElementDataSourceController__queue_invalidateSections_completion___block_invoke;
   v11[3] = &unk_2785F9A40;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(REElementDataSourceController *)self _queue_reloadWithQOS:v8 qosOffset:0 forceReload:0 sections:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(REElementDataSourceController *)self _queue_reloadWithQOS:_defaultDataSourceQOS qosOffset:0 forceReload:0 sections:v9 completion:v11];
 }
 
 void __70__REElementDataSourceController__queue_invalidateSections_completion___block_invoke(uint64_t a1)
@@ -1977,23 +1977,23 @@ void __70__REElementDataSourceController__queue_invalidateSections_completion___
   }
 }
 
-- (void)_queue_purgeContentWithCompletion:(id)a3
+- (void)_queue_purgeContentWithCompletion:(id)completion
 {
-  v4 = a3;
-  [(REElementDataSourceController *)self _queue_reloadWithQOS:[(REElementDataSourceController *)self _defaultDataSourceQOS] qosOffset:0 forceReload:0 operations:&__block_literal_global_96 completion:v4];
+  completionCopy = completion;
+  [(REElementDataSourceController *)self _queue_reloadWithQOS:[(REElementDataSourceController *)self _defaultDataSourceQOS] qosOffset:0 forceReload:0 operations:&__block_literal_global_96 completion:completionCopy];
 }
 
-- (void)_queue_reloadWithQOS:(unsigned int)a3 qosOffset:(int)a4 forceReload:(BOOL)a5 operations:(id)a6 completion:(id)a7
+- (void)_queue_reloadWithQOS:(unsigned int)s qosOffset:(int)offset forceReload:(BOOL)reload operations:(id)operations completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
-  v14 = v13;
+  operationsCopy = operations;
+  completionCopy = completion;
+  v14 = completionCopy;
   if (self->_willUnload)
   {
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -2032,10 +2032,10 @@ void __70__REElementDataSourceController__queue_invalidateSections_completion___
     else
     {
       dataSource = self->_dataSource;
-      v22 = [objc_opt_class() wantsAutomaticFetching];
-      v23 = v22;
+      wantsAutomaticFetching = [objc_opt_class() wantsAutomaticFetching];
+      v23 = wantsAutomaticFetching;
       self->_isPerformingReload = 1;
-      if (v22)
+      if (wantsAutomaticFetching)
       {
         [(REElementDataSource *)self->_dataSource beginFetchingData];
       }
@@ -2050,33 +2050,33 @@ void __70__REElementDataSourceController__queue_invalidateSections_completion___
       }
 
       v26 = objc_alloc_init(REExpectation);
-      v27 = [MEMORY[0x277CBEB38] dictionary];
-      if (v12)
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      if (operationsCopy)
       {
-        v12[2](v12, v27, v26);
+        operationsCopy[2](operationsCopy, dictionary, v26);
       }
 
       *&buf = 0;
       *(&buf + 1) = &buf;
       v43 = 0x2020000000;
-      v44 = a5;
+      reloadCopy = reload;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forceReload_operations_completion___block_invoke_98;
       v33[3] = &unk_2785FA5A8;
       v33[4] = self;
-      v28 = v27;
+      v28 = dictionary;
       v39 = v23;
       v34 = v28;
       p_buf = &buf;
-      v37 = a3;
-      v38 = a4;
+      sCopy = s;
+      offsetCopy = offset;
       v35 = v14;
       v29 = MEMORY[0x22AABC5E0](v33);
       if ([(REExpectation *)v26 outstandingOperations])
       {
         queue = self->_queue;
-        v31 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, a4, v29);
+        v31 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, s, offset, v29);
         [(REExpectation *)v26 notifyOperationsCompleteOnQueue:queue block:v31];
       }
 
@@ -2547,11 +2547,11 @@ uint64_t __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forc
   return result;
 }
 
-- (void)_queue_performContentInvalidateWithElement:(id)a3 expectation:(id)a4 sections:(id)a5
+- (void)_queue_performContentInvalidateWithElement:(id)element expectation:(id)expectation sections:(id)sections
 {
   v48 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v8 = a4;
+  elementCopy = element;
+  expectationCopy = expectation;
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x2810000000;
@@ -2561,7 +2561,7 @@ uint64_t __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forc
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = a5;
+  obj = sections;
   v9 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v9)
   {
@@ -2577,14 +2577,14 @@ uint64_t __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forc
         }
 
         v11 = *(*(&v41 + 1) + 8 * v10);
-        [v8 beginOperation];
+        [expectationCopy beginOperation];
         v12 = [REBlockSentinel alloc];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __97__REElementDataSourceController__queue_performContentInvalidateWithElement_expectation_sections___block_invoke;
         v39[3] = &unk_2785F9AE0;
         v39[4] = self;
-        v13 = v8;
+        v13 = expectationCopy;
         v40 = v13;
         v14 = [(REBlockSentinel *)v12 initWithFailureBlock:v39];
         v15 = NSStringFromClass(self->_dataSourceClass);
@@ -2606,7 +2606,7 @@ uint64_t __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forc
         v30[3] = &unk_2785FA620;
         v30[4] = self;
         v36 = v45;
-        v31 = v28;
+        v31 = elementCopy;
         v32 = v11;
         v21 = v16;
         v33 = v21;
@@ -2614,8 +2614,8 @@ uint64_t __98__REElementDataSourceController__queue_reloadWithQOS_qosOffset_forc
         v34 = v22;
         v35 = v29;
         v23 = MEMORY[0x22AABC5E0](v30);
-        v24 = [(REElementDataSourceController *)self dataSource];
-        [v24 getElementsInSection:v11 withHandler:v23];
+        dataSource = [(REElementDataSourceController *)self dataSource];
+        [dataSource getElementsInSection:v11 withHandler:v23];
 
         ++v10;
       }
@@ -2752,17 +2752,17 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
   }
 }
 
-- (id)_groupElements:(id)a3 bySections:(id)a4
+- (id)_groupElements:(id)elements bySections:(id)sections
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  elementsCopy = elements;
+  sectionsCopy = sections;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v5;
+  v8 = elementsCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -2779,18 +2779,18 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v21 = [v6 objectForKeyedSubscript:v14];
+        v21 = [sectionsCopy objectForKeyedSubscript:v14];
         if (v21)
         {
-          v22 = [v7 objectForKeyedSubscript:v21];
+          v22 = [dictionary objectForKeyedSubscript:v21];
 
           if (!v22)
           {
-            v23 = [MEMORY[0x277CBEB18] array];
-            [v7 setObject:v23 forKeyedSubscript:v21];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:v21];
           }
 
-          v24 = [v7 objectForKeyedSubscript:v21];
+          v24 = [dictionary objectForKeyedSubscript:v21];
           [v24 addObject:v14];
         }
 
@@ -2806,22 +2806,22 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
     while (v10);
   }
 
-  v25 = [v7 copy];
+  v25 = [dictionary copy];
   v26 = *MEMORY[0x277D85DE8];
 
   return v25;
 }
 
-- (void)_queue_scheduleUpdate:(id)a3
+- (void)_queue_scheduleUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_updates addObject:v4];
+  [(NSMutableArray *)self->_updates addObject:updateCopy];
   [(REUpNextScheduler *)self->_updateScheduler schedule];
   v5 = RELogForDomain(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(REElementDataSourceController *)self _queue_scheduleUpdate:v4, v5];
+    [(REElementDataSourceController *)self _queue_scheduleUpdate:updateCopy, v5];
   }
 }
 
@@ -2830,7 +2830,7 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
   v25 = *MEMORY[0x277D85DE8];
   if (!self->_willUnload)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -2851,16 +2851,16 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [v9 section];
-          v11 = [v3 objectForKeyedSubscript:v10];
+          section = [v9 section];
+          v11 = [dictionary objectForKeyedSubscript:section];
 
           if (!v11)
           {
-            v12 = [MEMORY[0x277CBEB18] array];
-            [v3 setObject:v12 forKeyedSubscript:v10];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:section];
           }
 
-          v13 = [v3 objectForKeyedSubscript:v10];
+          v13 = [dictionary objectForKeyedSubscript:section];
           [v13 addObject:v9];
         }
 
@@ -2872,15 +2872,15 @@ void __97__REElementDataSourceController__queue_performContentInvalidateWithElem
 
     [(NSMutableArray *)self->_updates removeAllObjects];
     [(REElementDataSource *)self->_dataSource beginFetchingData];
-    v14 = [(REElementDataSourceController *)self delegate];
+    delegate = [(REElementDataSourceController *)self delegate];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __54__REElementDataSourceController__queue_performUpdates__block_invoke;
     v17[3] = &unk_2785F9AE0;
-    v18 = v3;
-    v19 = self;
-    v15 = v3;
-    [v14 elementDataSourceController:self performBatchUpdates:v17];
+    v18 = dictionary;
+    selfCopy = self;
+    v15 = dictionary;
+    [delegate elementDataSourceController:self performBatchUpdates:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2898,28 +2898,28 @@ uint64_t __54__REElementDataSourceController__queue_performUpdates__block_invoke
   return [*(*(a1 + 40) + 176) finishFetchingData];
 }
 
-- (void)_queue_processUpdates:(id)a3 forSection:(id)a4
+- (void)_queue_processUpdates:(id)updates forSection:(id)section
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v32 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v36 = [MEMORY[0x277CBEB38] dictionary];
+  updatesCopy = updates;
+  sectionCopy = section;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = v7;
-  obj = v5;
+  v9 = dictionary2;
+  obj = updatesCopy;
   v10 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v44;
-    v34 = v8;
-    v35 = v6;
+    v34 = dictionary3;
+    v35 = dictionary;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -2930,100 +2930,100 @@ uint64_t __54__REElementDataSourceController__queue_performUpdates__block_invoke
         }
 
         v14 = *(*(&v43 + 1) + 8 * i);
-        v15 = [v14 type];
-        if (v15 > 1)
+        type = [v14 type];
+        if (type > 1)
         {
-          if (v15 == 2)
+          if (type == 2)
           {
-            v16 = [v14 element];
-            v17 = [v16 identifier];
-            v22 = [v9 objectForKeyedSubscript:v17];
+            element = [v14 element];
+            identifier = [element identifier];
+            v22 = [v9 objectForKeyedSubscript:identifier];
 
             if (v22)
             {
-              v16 = v16;
+              element = element;
               v23 = v9;
-              v24 = [v9 objectForKeyedSubscript:v17];
-              v25 = [v24 relevanceProviders];
-              v26 = [v16 relevanceProviders];
-              v27 = [v25 isEqualToArray:v26];
+              v24 = [v9 objectForKeyedSubscript:identifier];
+              relevanceProviders = [v24 relevanceProviders];
+              relevanceProviders2 = [element relevanceProviders];
+              v27 = [relevanceProviders isEqualToArray:relevanceProviders2];
 
-              v28 = v16;
+              v28 = element;
               if (v27)
               {
-                v29 = [v24 relevanceProviders];
-                v28 = [v16 copyElementWithUpdatedRelevanceProviders:v29];
+                relevanceProviders3 = [v24 relevanceProviders];
+                v28 = [element copyElementWithUpdatedRelevanceProviders:relevanceProviders3];
               }
 
               v9 = v23;
-              [v23 removeObjectForKey:v17];
-              v8 = v34;
-              [v34 setObject:v28 forKeyedSubscript:v17];
+              [v23 removeObjectForKey:identifier];
+              dictionary3 = v34;
+              [v34 setObject:v28 forKeyedSubscript:identifier];
 
-              v6 = v35;
+              dictionary = v35;
               goto LABEL_24;
             }
 
-            v19 = v6;
+            v19 = dictionary;
           }
 
           else
           {
-            if (v15 != 4)
+            if (type != 4)
             {
               continue;
             }
 
-            v16 = [v14 element];
-            v17 = [v16 identifier];
-            v19 = v36;
+            element = [v14 element];
+            identifier = [element identifier];
+            v19 = dictionary4;
           }
 
           goto LABEL_23;
         }
 
-        if (!v15)
+        if (!type)
         {
-          v16 = [v14 element];
-          v17 = [v16 identifier];
-          v20 = [v6 objectForKeyedSubscript:v17];
+          element = [v14 element];
+          identifier = [element identifier];
+          v20 = [dictionary objectForKeyedSubscript:identifier];
 
-          v19 = v6;
+          v19 = dictionary;
           if (!v20)
           {
-            v21 = [v36 objectForKeyedSubscript:v17];
+            v21 = [dictionary4 objectForKeyedSubscript:identifier];
 
-            v19 = v8;
+            v19 = dictionary3;
             if (v21)
             {
-              [v36 removeObjectForKey:v17];
-              v19 = v8;
+              [dictionary4 removeObjectForKey:identifier];
+              v19 = dictionary3;
             }
           }
 
           goto LABEL_23;
         }
 
-        if (v15 != 1)
+        if (type != 1)
         {
           continue;
         }
 
-        v16 = [v14 element];
-        v17 = [v16 identifier];
-        [v8 removeObjectForKey:v17];
-        [v36 removeObjectForKey:v17];
-        v18 = [v6 objectForKeyedSubscript:v17];
+        element = [v14 element];
+        identifier = [element identifier];
+        [dictionary3 removeObjectForKey:identifier];
+        [dictionary4 removeObjectForKey:identifier];
+        v18 = [dictionary objectForKeyedSubscript:identifier];
 
         if (!v18)
         {
           v19 = v9;
 LABEL_23:
-          [v19 setObject:v16 forKeyedSubscript:v17];
+          [v19 setObject:element forKeyedSubscript:identifier];
           goto LABEL_24;
         }
 
-        [v6 removeObjectForKey:v17];
+        [dictionary removeObjectForKey:identifier];
 LABEL_24:
       }
 
@@ -3044,21 +3044,21 @@ LABEL_24:
   v40[2] = __66__REElementDataSourceController__queue_processUpdates_forSection___block_invoke_2;
   v40[3] = &unk_2785FA698;
   v40[4] = self;
-  v41 = v32;
-  v30 = v32;
-  [v6 enumerateKeysAndObjectsUsingBlock:v40];
+  v41 = sectionCopy;
+  v30 = sectionCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v40];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __66__REElementDataSourceController__queue_processUpdates_forSection___block_invoke_3;
   v39[3] = &unk_2785FA670;
   v39[4] = self;
-  [v8 enumerateKeysAndObjectsUsingBlock:v39];
+  [dictionary3 enumerateKeysAndObjectsUsingBlock:v39];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __66__REElementDataSourceController__queue_processUpdates_forSection___block_invoke_4;
   v38[3] = &unk_2785FA670;
   v38[4] = self;
-  [v36 enumerateKeysAndObjectsUsingBlock:v38];
+  [dictionary4 enumerateKeysAndObjectsUsingBlock:v38];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -3095,9 +3095,9 @@ void __66__REElementDataSourceController__queue_processUpdates_forSection___bloc
   [v6 elementDataSourceController:*(a1 + 32) didRefreshElement:v5];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v8[8] = v3;
     v8[9] = v4;
@@ -3107,9 +3107,9 @@ void __66__REElementDataSourceController__queue_processUpdates_forSection___bloc
     v8[2] = __42__REElementDataSourceController_setState___block_invoke;
     v8[3] = &unk_2785F9C80;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = state;
     dispatch_async(queue, v8);
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
@@ -3129,17 +3129,17 @@ void __42__REElementDataSourceController_setState___block_invoke(uint64_t a1)
   }
 }
 
-- (void)elementWillBecomeVisible:(id)a3
+- (void)elementWillBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__REElementDataSourceController_elementWillBecomeVisible___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = visibleCopy;
+  v6 = visibleCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3166,17 +3166,17 @@ void __58__REElementDataSourceController_elementWillBecomeVisible___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)elementDidBecomeHidden:(id)a3
+- (void)elementDidBecomeHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__REElementDataSourceController_elementDidBecomeHidden___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hiddenCopy;
+  v6 = hiddenCopy;
   dispatch_async(queue, v7);
 }
 
@@ -3195,23 +3195,23 @@ void __56__REElementDataSourceController_elementDidBecomeHidden___block_invoke(u
   }
 }
 
-- (BOOL)hasElementWithId:(id)a3 inSectionWithIdentifier:(id)a4
+- (BOOL)hasElementWithId:(id)id inSectionWithIdentifier:(id)identifier
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  idCopy = id;
   dispatch_assert_queue_V2(queue);
-  v9 = [(REElementDataSourceController *)self _sectionForElementWithIdentifier:v8];
+  v9 = [(REElementDataSourceController *)self _sectionForElementWithIdentifier:idCopy];
 
-  LOBYTE(v8) = [v9 isEqualToString:v7];
-  return v8;
+  LOBYTE(idCopy) = [v9 isEqualToString:identifierCopy];
+  return idCopy;
 }
 
-- (void)fetchElementWithIdentifierVisible:(id)a3 withHandler:(id)a4
+- (void)fetchElementWithIdentifierVisible:(id)visible withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  visibleCopy = visible;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -3219,8 +3219,8 @@ void __56__REElementDataSourceController_elementDidBecomeHidden___block_invoke(u
     block[2] = __79__REElementDataSourceController_fetchElementWithIdentifierVisible_withHandler___block_invoke;
     block[3] = &unk_2785F99C8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = visibleCopy;
+    v11 = handlerCopy;
     dispatch_async(queue, block);
   }
 }
@@ -3264,16 +3264,16 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
   return v3();
 }
 
-- (id)_queue_elementsForIds:(id)a3
+- (id)_queue_elementsForIds:(id)ids
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  idsCopy = ids;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = idsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -3289,7 +3289,7 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
         }
 
         v11 = [(REElementDataSourceController *)self _elementForIdentifier:*(*(&v15 + 1) + 8 * i), v15];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -3298,7 +3298,7 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
@@ -3306,8 +3306,8 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
 
 - (NSArray)allElements
 {
-  v2 = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap allValues];
-  v3 = [v2 copy];
+  allValues = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap allValues];
+  v3 = [allValues copy];
 
   return v3;
 }
@@ -3323,8 +3323,8 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
   [v8 replaceOccurrencesOfString:@"DataSource" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v8, "length")}];
   [v8 replaceOccurrencesOfString:@"Watch" withString:&stru_283B97458 options:1 range:{0, objc_msgSend(v8, "length")}];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v8 lowercaseString];
-  v6 = [v4 stringWithFormat:@"[DSC: %@]", v5];
+  lowercaseString = [v8 lowercaseString];
+  v6 = [v4 stringWithFormat:@"[DSC: %@]", lowercaseString];
   loggingHeader = self->_loggingHeader;
   self->_loggingHeader = v6;
 }
@@ -3346,8 +3346,8 @@ uint64_t __79__REElementDataSourceController_fetchElementWithIdentifierVisible_w
 
 - (NSArray)allProvidedElements
 {
-  v2 = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap allValues];
-  v3 = [v2 copy];
+  allValues = [(NSMutableDictionary *)self->_dataSourceElementIdentifierMap allValues];
+  v3 = [allValues copy];
 
   return v3;
 }

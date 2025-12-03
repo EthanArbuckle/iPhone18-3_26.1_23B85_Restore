@@ -1,19 +1,19 @@
 @interface CKActionMenuWindow
 + (id)sharedInstance;
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)actionMenuGestureRecognized:(id)a3;
-- (void)dismissActionMenuViewAnimated:(BOOL)a3;
-- (void)presentActionMenuView:(id)a3 fromPoint:(CGPoint)a4 inView:(id)a5 animated:(BOOL)a6;
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)actionMenuGestureRecognized:(id)recognized;
+- (void)dismissActionMenuViewAnimated:(BOOL)animated;
+- (void)presentActionMenuView:(id)view fromPoint:(CGPoint)point inView:(id)inView animated:(BOOL)animated;
 @end
 
 @implementation CKActionMenuWindow
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CKActionMenuWindow;
-  v5 = [(UIAutoRotatingWindow *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(UIAutoRotatingWindow *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -30,18 +30,18 @@
   return v7;
 }
 
-- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)_shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if (([(CKActionMenuWindow *)self isHidden]& 1) != 0)
   {
     return 1;
   }
 
-  v5 = [(CKActionMenuWindow *)self rootViewController];
-  v6 = [v5 view];
-  v7 = [v6 isHidden];
+  rootViewController = [(CKActionMenuWindow *)self rootViewController];
+  view = [rootViewController view];
+  isHidden = [view isHidden];
 
-  return v7;
+  return isHidden;
 }
 
 + (id)sharedInstance
@@ -71,23 +71,23 @@ void __36__CKActionMenuWindow_sharedInstance__block_invoke()
   [v4 setWindowLevel:?];
 }
 
-- (void)presentActionMenuView:(id)a3 fromPoint:(CGPoint)a4 inView:(id)a5 animated:(BOOL)a6
+- (void)presentActionMenuView:(id)view fromPoint:(CGPoint)point inView:(id)inView animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v48 = a3;
-  v11 = a5;
-  v12 = [v11 window];
-  [v12 frame];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  inViewCopy = inView;
+  window = [inViewCopy window];
+  [window frame];
   [(CKActionMenuWindow *)self setFrame:?];
 
-  v13 = [(CKActionMenuWindow *)self actionMenuView];
-  if (v13 != v48)
+  actionMenuView = [(CKActionMenuWindow *)self actionMenuView];
+  if (actionMenuView != viewCopy)
   {
-    [v13 removeFromSuperview];
-    [(CKActionMenuWindow *)self setActionMenuView:v48];
-    [(CKActionMenuWindow *)self addSubview:v48];
+    [actionMenuView removeFromSuperview];
+    [(CKActionMenuWindow *)self setActionMenuView:viewCopy];
+    [(CKActionMenuWindow *)self addSubview:viewCopy];
     [MEMORY[0x1E69DD258] attemptRotationToDeviceOrientation];
   }
 
@@ -96,8 +96,8 @@ void __36__CKActionMenuWindow_sharedInstance__block_invoke()
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v22 statusBarFrame];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] statusBarFrame];
   v24 = v23;
 
   if (CKMainScreenScale_once_61 != -1)
@@ -142,28 +142,28 @@ void __36__CKActionMenuWindow_sharedInstance__block_invoke()
   v40 = v17 + v27;
   v41 = v19 - vaddvq_f64(v38);
   v42 = v21 - (v27 + ceil(v26 * 4.0) / v26);
-  [(CKActionMenuWindow *)self convertPoint:v11 fromView:x, y];
+  [(CKActionMenuWindow *)self convertPoint:inViewCopy fromView:x, y];
   v44 = v43;
   v46 = v45;
 
-  [v48 presentActionMenuViewFromPoint:v6 inRect:0 animated:v44 completion:{v46, v39, v40, v41, v42}];
+  [viewCopy presentActionMenuViewFromPoint:animatedCopy inRect:0 animated:v44 completion:{v46, v39, v40, v41, v42}];
   [(CKActionMenuWindow *)self setHidden:0];
-  v47 = [(CKActionMenuWindow *)self actionMenuView];
-  [(CKActionMenuWindow *)self bringSubviewToFront:v47];
+  actionMenuView2 = [(CKActionMenuWindow *)self actionMenuView];
+  [(CKActionMenuWindow *)self bringSubviewToFront:actionMenuView2];
 }
 
-- (void)dismissActionMenuViewAnimated:(BOOL)a3
+- (void)dismissActionMenuViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CKActionMenuWindow *)self actionMenuView];
+  animatedCopy = animated;
+  actionMenuView = [(CKActionMenuWindow *)self actionMenuView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__CKActionMenuWindow_dismissActionMenuViewAnimated___block_invoke;
   v7[3] = &unk_1E72ECCA8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
-  [v6 dismissActionMenuViewAnimated:v3 completion:v7];
+  v8 = actionMenuView;
+  selfCopy = self;
+  v6 = actionMenuView;
+  [v6 dismissActionMenuViewAnimated:animatedCopy completion:v7];
 }
 
 void __52__CKActionMenuWindow_dismissActionMenuViewAnimated___block_invoke(uint64_t a1)
@@ -181,11 +181,11 @@ void __52__CKActionMenuWindow_dismissActionMenuViewAnimated___block_invoke(uint6
   }
 }
 
-- (void)actionMenuGestureRecognized:(id)a3
+- (void)actionMenuGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = [(CKActionMenuWindow *)self actionMenuView];
-  [v5 actionMenuGestureRecognized:v4];
+  recognizedCopy = recognized;
+  actionMenuView = [(CKActionMenuWindow *)self actionMenuView];
+  [actionMenuView actionMenuGestureRecognized:recognizedCopy];
 }
 
 @end

@@ -6,7 +6,7 @@
 
 - (id)hk_base64URLEncodedString
 {
-  v1 = [a1 base64EncodedStringWithOptions:0];
+  v1 = [self base64EncodedStringWithOptions:0];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];

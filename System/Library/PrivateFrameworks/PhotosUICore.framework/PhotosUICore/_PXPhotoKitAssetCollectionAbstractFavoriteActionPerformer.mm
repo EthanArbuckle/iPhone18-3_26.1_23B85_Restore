@@ -1,8 +1,8 @@
 @interface _PXPhotoKitAssetCollectionAbstractFavoriteActionPerformer
-+ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)a3;
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
++ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)reference;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
@@ -13,19 +13,19 @@
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v4 = objc_opt_class();
-  v5 = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
-  v6 = [v4 _targetFavoriteStateForAssetCollectionReference:v5];
+  assetCollectionReference = [(PXAssetCollectionActionPerformer *)self assetCollectionReference];
+  v6 = [v4 _targetFavoriteStateForAssetCollectionReference:assetCollectionReference];
 
-  v7 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  if (![v7 px_isMemory])
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  if (![assetCollection px_isMemory])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:967 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:967 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = assetCollection;
   if (v8)
   {
     objc_opt_class();
@@ -34,19 +34,19 @@
       goto LABEL_4;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v16 = NSStringFromClass(v18);
-    v19 = [v8 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:950 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v16, v19}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:950 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:950 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v16}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:950 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v16}];
   }
 
 LABEL_4:
@@ -57,20 +57,20 @@ LABEL_4:
 
   if (!v11)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"action != nil"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"action != nil"}];
   }
 
-  v12 = [(PXActionPerformer *)self undoManager];
+  undoManager = [(PXActionPerformer *)self undoManager];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __82___PXPhotoKitAssetCollectionAbstractFavoriteActionPerformer_performBackgroundTask__block_invoke;
   v21[3] = &unk_1E7742910;
   v24 = v6;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v13 = v8;
-  [(PXAction *)v11 executeWithUndoManager:v12 completionHandler:v21];
+  [(PXAction *)v11 executeWithUndoManager:undoManager completionHandler:v21];
 }
 
 - (void)performUserInteractionTask
@@ -85,13 +85,13 @@ LABEL_4:
   [v4 performSaveActionIfNeededOnUnsavedSyndicatedAssetsWithCompletion:v5];
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = a4;
-  v7 = [objc_opt_class() _targetFavoriteStateForAssetCollectionReference:v6];
+  referenceCopy = reference;
+  v7 = [objc_opt_class() _targetFavoriteStateForAssetCollectionReference:referenceCopy];
 
   v8 = @"Standard";
-  if (!a3)
+  if (!case)
   {
     v8 = @"Preview";
   }
@@ -108,9 +108,9 @@ LABEL_4:
   return v11;
 }
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  if ([a1 _targetFavoriteStateForAssetCollectionReference:{a3, a4}])
+  if ([self _targetFavoriteStateForAssetCollectionReference:{reference, inputs}])
   {
     v4 = @"heart";
   }
@@ -123,31 +123,31 @@ LABEL_4:
   return v4;
 }
 
-+ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)a3
++ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)reference
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  referenceCopy = reference;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:902 description:{@"Method %s is a responsibility of subclass %@", "+[_PXPhotoKitAssetCollectionAbstractFavoriteActionPerformer _targetFavoriteStateForAssetCollectionReference:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:902 description:{@"Method %s is a responsibility of subclass %@", "+[_PXPhotoKitAssetCollectionAbstractFavoriteActionPerformer _targetFavoriteStateForAssetCollectionReference:]", v8}];
 
   abort();
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = [a3 assetCollection];
-  if ([v4 px_isMemory])
+  assetCollection = [reference assetCollection];
+  if ([assetCollection px_isMemory])
   {
-    v5 = [v4 px_canEditFavoriteState];
+    px_canEditFavoriteState = [assetCollection px_canEditFavoriteState];
   }
 
   else
   {
-    v5 = 0;
+    px_canEditFavoriteState = 0;
   }
 
-  return v5;
+  return px_canEditFavoriteState;
 }
 
 @end

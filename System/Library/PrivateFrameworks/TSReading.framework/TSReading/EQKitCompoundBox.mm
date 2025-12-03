@@ -1,27 +1,27 @@
 @interface EQKitCompoundBox
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
 - (CGRect)p_cacheErasableBounds;
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3;
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes;
 - (double)depth;
 - (double)height;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 @end
 
 @implementation EQKitCompoundBox
 
-- (EQKitCompoundBox)initWithChildBoxes:(id)a3
+- (EQKitCompoundBox)initWithChildBoxes:(id)boxes
 {
   v6.receiver = self;
   v6.super_class = EQKitCompoundBox;
   v4 = [(EQKitCompoundBox *)&v6 init];
   if (v4)
   {
-    v4->mChildBoxes = [a3 copy];
+    v4->mChildBoxes = [boxes copy];
   }
 
   return v4;
@@ -34,41 +34,41 @@
   [(EQKitCompoundBox *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitCompoundBox *)self childBoxes];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
 
-  return [v4 initWithChildBoxes:v5];
+  return [v4 initWithChildBoxes:childBoxes];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        v6 = [(EQKitCompoundBox *)v3 childBoxes];
-        self = [a3 childBoxes];
-        if (v6 == self)
+        childBoxes = [(EQKitCompoundBox *)selfCopy childBoxes];
+        self = [equal childBoxes];
+        if (childBoxes == self)
         {
           LOBYTE(self) = 1;
         }
 
         else
         {
-          v7 = self;
+          selfCopy2 = self;
           LOBYTE(self) = 0;
-          if (v6 && v7)
+          if (childBoxes && selfCopy2)
           {
 
-            LOBYTE(self) = [(EQKitCompoundBox *)v6 isEqual:?];
+            LOBYTE(self) = [(EQKitCompoundBox *)childBoxes isEqual:?];
           }
         }
       }
@@ -150,21 +150,21 @@
   return [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@", v4, self, v6, v8, v9, -[EQKitCompoundBox childBoxes](self, "childBoxes")];
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
-  if (a3)
+  if (height)
   {
-    *a3 = 0.0;
+    *height = 0.0;
   }
 
-  if (a4)
+  if (depth)
   {
-    *a4 = 0.0;
+    *depth = 0.0;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = 0.0;
+    *width = 0.0;
   }
 }
 

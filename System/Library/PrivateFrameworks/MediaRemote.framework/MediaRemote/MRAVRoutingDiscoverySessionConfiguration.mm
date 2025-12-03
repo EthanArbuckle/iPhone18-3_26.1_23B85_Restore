@@ -1,30 +1,30 @@
 @interface MRAVRoutingDiscoverySessionConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isLocal;
-- (MRAVRoutingDiscoverySessionConfiguration)initWithCoder:(id)a3;
-- (MRAVRoutingDiscoverySessionConfiguration)initWithEndpointFeatures:(unsigned int)a3;
-- (MRAVRoutingDiscoverySessionConfiguration)initWithProtobuf:(id)a3;
+- (MRAVRoutingDiscoverySessionConfiguration)initWithCoder:(id)coder;
+- (MRAVRoutingDiscoverySessionConfiguration)initWithEndpointFeatures:(unsigned int)features;
+- (MRAVRoutingDiscoverySessionConfiguration)initWithProtobuf:(id)protobuf;
 - (_MRDiscoverySessionConfigurationProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRAVRoutingDiscoverySessionConfiguration
 
 - (BOOL)isLocal
 {
-  v3 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+  outputDeviceUID = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
 
-  if (!v3)
+  if (!outputDeviceUID)
   {
     return 1;
   }
 
-  v4 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+  outputDeviceUID2 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
   v5 = +[MRAVOutputDevice localDeviceUID];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [outputDeviceUID2 isEqualToString:v5];
 
   if (v6)
   {
@@ -34,9 +34,9 @@
   v8 = +[MROrigin localOrigin];
   v9 = [MRDeviceInfoRequest deviceInfoForOrigin:v8];
 
-  v10 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
-  v11 = [v9 clusterID];
-  v12 = [v10 isEqualToString:v11];
+  outputDeviceUID3 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+  clusterID = [v9 clusterID];
+  v12 = [outputDeviceUID3 isEqualToString:clusterID];
 
   if (v12 & 1) != 0 || (-[MRAVRoutingDiscoverySessionConfiguration outputDeviceUID](self, "outputDeviceUID"), v13 = objc_claimAutoreleasedReturnValue(), [v9 deviceUID], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "isEqualToString:", v14), v14, v13, (v15))
   {
@@ -45,9 +45,9 @@
 
   else
   {
-    v16 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
-    v17 = [v9 identifier];
-    v7 = [v16 isEqualToString:v17];
+    outputDeviceUID4 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+    identifier = [v9 identifier];
+    v7 = [outputDeviceUID4 isEqualToString:identifier];
   }
 
   return v7;
@@ -94,73 +94,73 @@
   return v3;
 }
 
-- (MRAVRoutingDiscoverySessionConfiguration)initWithEndpointFeatures:(unsigned int)a3
+- (MRAVRoutingDiscoverySessionConfiguration)initWithEndpointFeatures:(unsigned int)features
 {
   v5.receiver = self;
   v5.super_class = MRAVRoutingDiscoverySessionConfiguration;
   result = [(MRAVRoutingDiscoverySessionConfiguration *)&v5 init];
   if (result)
   {
-    result->_features = a3;
+    result->_features = features;
   }
 
   return result;
 }
 
-- (MRAVRoutingDiscoverySessionConfiguration)initWithProtobuf:(id)a3
+- (MRAVRoutingDiscoverySessionConfiguration)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v14.receiver = self;
     v14.super_class = MRAVRoutingDiscoverySessionConfiguration;
     v5 = [(MRAVRoutingDiscoverySessionConfiguration *)&v14 init];
     if (v5)
     {
-      v5->_features = [v4 features];
-      v6 = [v4 outputDeviceUID];
-      v7 = [v6 copy];
+      v5->_features = [protobufCopy features];
+      outputDeviceUID = [protobufCopy outputDeviceUID];
+      v7 = [outputDeviceUID copy];
       outputDeviceUID = v5->_outputDeviceUID;
       v5->_outputDeviceUID = v7;
 
-      v9 = [v4 routingContextUID];
-      v10 = [v9 copy];
+      routingContextUID = [protobufCopy routingContextUID];
+      v10 = [routingContextUID copy];
       routingContextUID = v5->_routingContextUID;
       v5->_routingContextUID = v10;
 
-      v5->_alwaysAllowUpdates = [v4 alwaysAllowUpdates];
-      v5->_targetAudioSessionID = [v4 targetSessionID];
-      v5->_cachedDiscoveryEnabled = [v4 cachedDiscoveryEnabled];
+      v5->_alwaysAllowUpdates = [protobufCopy alwaysAllowUpdates];
+      v5->_targetAudioSessionID = [protobufCopy targetSessionID];
+      v5->_cachedDiscoveryEnabled = [protobufCopy cachedDiscoveryEnabled];
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [v7 features] != self->_features || (v8 = objc_msgSend(v7, "alwaysAllowUpdates"), v8 != -[MRAVRoutingDiscoverySessionConfiguration alwaysAllowUpdates](self, "alwaysAllowUpdates")) || (v9 = objc_msgSend(v7, "targetAudioSessionID"), v9 != -[MRAVRoutingDiscoverySessionConfiguration targetAudioSessionID](self, "targetAudioSessionID")))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [equalCopy features] != self->_features || (v8 = objc_msgSend(equalCopy, "alwaysAllowUpdates"), v8 != -[MRAVRoutingDiscoverySessionConfiguration alwaysAllowUpdates](self, "alwaysAllowUpdates")) || (v9 = objc_msgSend(equalCopy, "targetAudioSessionID"), v9 != -[MRAVRoutingDiscoverySessionConfiguration targetAudioSessionID](self, "targetAudioSessionID")))
   {
     v12 = 0;
     goto LABEL_10;
   }
 
-  v10 = [v7 routingContextUID];
-  if (v10 || ([(MRAVRoutingDiscoverySessionConfiguration *)self routingContextUID], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  routingContextUID = [equalCopy routingContextUID];
+  if (routingContextUID || ([(MRAVRoutingDiscoverySessionConfiguration *)self routingContextUID], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [v7 routingContextUID];
-    v4 = [(MRAVRoutingDiscoverySessionConfiguration *)self routingContextUID];
-    if (![v3 isEqualToString:v4])
+    routingContextUID2 = [equalCopy routingContextUID];
+    routingContextUID3 = [(MRAVRoutingDiscoverySessionConfiguration *)self routingContextUID];
+    if (![routingContextUID2 isEqualToString:routingContextUID3])
     {
       v12 = 0;
 LABEL_17:
@@ -177,11 +177,11 @@ LABEL_17:
     v11 = 0;
   }
 
-  v14 = [v7 outputDeviceUID];
-  if (!v14)
+  outputDeviceUID = [equalCopy outputDeviceUID];
+  if (!outputDeviceUID)
   {
-    v5 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
-    if (!v5)
+    outputDeviceUID2 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+    if (!outputDeviceUID2)
     {
       v12 = 1;
 LABEL_22:
@@ -195,11 +195,11 @@ LABEL_22:
     }
   }
 
-  v15 = [v7 outputDeviceUID];
-  v16 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
-  v12 = [v15 isEqualToString:v16];
+  outputDeviceUID3 = [equalCopy outputDeviceUID];
+  outputDeviceUID4 = [(MRAVRoutingDiscoverySessionConfiguration *)self outputDeviceUID];
+  v12 = [outputDeviceUID3 isEqualToString:outputDeviceUID4];
 
-  if (!v14)
+  if (!outputDeviceUID)
   {
     goto LABEL_22;
   }
@@ -210,7 +210,7 @@ LABEL_22:
   }
 
 LABEL_18:
-  if (!v10)
+  if (!routingContextUID)
   {
   }
 
@@ -220,13 +220,13 @@ LABEL_10:
 
 - (id)description
 {
-  v2 = [(MRAVRoutingDiscoverySessionConfiguration *)self protobuf];
-  v3 = [v2 description];
+  protobuf = [(MRAVRoutingDiscoverySessionConfiguration *)self protobuf];
+  v3 = [protobuf description];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[9] = self->_alwaysAllowUpdates;
@@ -244,17 +244,17 @@ LABEL_10:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRAVRoutingDiscoverySessionConfiguration *)self protobuf];
-  [v4 encodeObject:v5 forKey:@"protobuf"];
+  coderCopy = coder;
+  protobuf = [(MRAVRoutingDiscoverySessionConfiguration *)self protobuf];
+  [coderCopy encodeObject:protobuf forKey:@"protobuf"];
 }
 
-- (MRAVRoutingDiscoverySessionConfiguration)initWithCoder:(id)a3
+- (MRAVRoutingDiscoverySessionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
 
   v6 = [(MRAVRoutingDiscoverySessionConfiguration *)self initWithProtobuf:v5];
   return v6;

@@ -1,41 +1,41 @@
 @interface WFURLComponents
-+ (id)componentsForLocation:(id)a3;
-+ (id)componentsForURL:(id)a3;
-+ (void)locationForURL:(id)a3 completion:(id)a4;
-+ (void)locationForURLComponents:(id)a3 completion:(id)a4;
++ (id)componentsForLocation:(id)location;
++ (id)componentsForURL:(id)l;
++ (void)locationForURL:(id)l completion:(id)completion;
++ (void)locationForURLComponents:(id)components completion:(id)completion;
 - (BOOL)_canBuildURLWithProvidedComponents;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToComponents:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToComponents:(id)components;
 - (NSURL)URL;
 - (WFURLComponents)init;
-- (WFURLComponents)initWithCoder:(id)a3;
-- (WFURLComponents)initWithLocation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFURLComponents)initWithCoder:(id)coder;
+- (WFURLComponents)initWithLocation:(id)location;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFURLComponents
 
-+ (void)locationForURLComponents:(id)a3 completion:(id)a4
++ (void)locationForURLComponents:(id)components completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  componentsCopy = components;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v5 cityIndex] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([componentsCopy cityIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = [WFGeocodeRequest alloc];
-      v8 = [v5 location];
-      [v8 coordinate];
+      location = [componentsCopy location];
+      [location coordinate];
       v10 = v9;
       v12 = v11;
       v15 = MEMORY[0x277D85DD0];
       v16 = 3221225472;
       v17 = __55__WFURLComponents_locationForURLComponents_completion___block_invoke;
       v18 = &unk_279E6F010;
-      v20 = v6;
-      v19 = v5;
+      v20 = completionCopy;
+      v19 = componentsCopy;
       v13 = [(WFGeocodeRequest *)v7 initWithCoordinate:&v15 resultHandler:v10, v12];
 
       [(WFTask *)v13 start:v15];
@@ -44,7 +44,7 @@
     else
     {
       v14 = [MEMORY[0x277CCA9B8] wf_errorWithCode:5];
-      (*(v6 + 2))(v6, 0, v14);
+      (*(completionCopy + 2))(completionCopy, 0, v14);
     }
   }
 }
@@ -76,35 +76,35 @@ void __55__WFURLComponents_locationForURLComponents_completion___block_invoke(ui
   v5();
 }
 
-+ (void)locationForURL:(id)a3 completion:(id)a4
++ (void)locationForURL:(id)l completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  lCopy = l;
   v7 = objc_opt_class();
-  v8 = [WFURLComponents componentsForURL:v6];
+  v8 = [WFURLComponents componentsForURL:lCopy];
 
-  [v7 locationForURLComponents:v8 completion:v5];
+  [v7 locationForURLComponents:v8 completion:completionCopy];
 }
 
-+ (id)componentsForURL:(id)a3
++ (id)componentsForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  v5 = [v3 host];
-  v6 = [v5 isEqualToString:@"weather.apple.com"];
+  host = [lCopy host];
+  v6 = [host isEqualToString:@"weather.apple.com"];
 
   if (v6)
   {
     v7 = 1;
 LABEL_4:
     [v4 setDestination:v7];
-    v11 = [MEMORY[0x277CCACE0] componentsWithURL:v3 resolvingAgainstBaseURL:0];
+    v11 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     v23 = 0;
     v24 = &v23;
     v25 = 0x3010000000;
     v26 = &unk_272BEF6E2;
     v27 = *MEMORY[0x277CE4278];
-    v12 = [v11 queryItems];
+    queryItems = [v11 queryItems];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __36__WFURLComponents_componentsForURL___block_invoke;
@@ -112,7 +112,7 @@ LABEL_4:
     v22 = &v23;
     v13 = v4;
     v21 = v13;
-    [v12 enumerateObjectsUsingBlock:&v17];
+    [queryItems enumerateObjectsUsingBlock:&v17];
 
     if (CLLocationCoordinate2DIsValid(v24[2]))
     {
@@ -132,8 +132,8 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v8 = [v3 host];
-  v9 = [v8 hasSuffix:@"weather.com"];
+  host2 = [lCopy host];
+  v9 = [host2 hasSuffix:@"weather.com"];
 
   v7 = 0;
   v10 = 0;
@@ -206,10 +206,10 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
   }
 }
 
-+ (id)componentsForLocation:(id)a3
++ (id)componentsForLocation:(id)location
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithLocation:v3];
+  locationCopy = location;
+  v4 = [objc_alloc(objc_opt_class()) initWithLocation:locationCopy];
 
   return v4;
 }
@@ -221,12 +221,12 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
   v2 = [(WFURLComponents *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [(WFURLComponents *)v2 setLocale:v3];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [(WFURLComponents *)v2 setLocale:autoupdatingCurrentLocale];
 
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v5 = [v4 processName];
-    [(WFURLComponents *)v2 setPlatform:v5];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [(WFURLComponents *)v2 setPlatform:processName];
 
     [(WFURLComponents *)v2 setCityIndex:0x7FFFFFFFFFFFFFFFLL];
   }
@@ -234,76 +234,76 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
   return v2;
 }
 
-- (WFURLComponents)initWithLocation:(id)a3
+- (WFURLComponents)initWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [(WFURLComponents *)self init];
   if (v5)
   {
-    v6 = [v4 geoLocation];
-    [(WFURLComponents *)v5 setLocation:v6];
+    geoLocation = [locationCopy geoLocation];
+    [(WFURLComponents *)v5 setLocation:geoLocation];
 
-    v7 = [v4 displayName];
-    [(WFURLComponents *)v5 setLocationName:v7];
+    displayName = [locationCopy displayName];
+    [(WFURLComponents *)v5 setLocationName:displayName];
   }
 
   return v5;
 }
 
-- (WFURLComponents)initWithCoder:(id)a3
+- (WFURLComponents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WFURLComponents *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     [(WFURLComponents *)v5 setLocation:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationName"];
     [(WFURLComponents *)v5 setLocationName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     [(WFURLComponents *)v5 setLocale:v8];
 
-    -[WFURLComponents setShowHourlyWeatherOnly:](v5, "setShowHourlyWeatherOnly:", [v4 decodeBoolForKey:@"showHourlyWeatherOnly"]);
-    -[WFURLComponents setDestination:](v5, "setDestination:", [v4 decodeIntegerForKey:@"destination"]);
-    -[WFURLComponents setIsLocalWeatherCity:](v5, "setIsLocalWeatherCity:", [v4 decodeBoolForKey:@"isLocalWeatherCity"]);
-    -[WFURLComponents setCityIndex:](v5, "setCityIndex:", [v4 decodeIntegerForKey:@"cityIndex"]);
+    -[WFURLComponents setShowHourlyWeatherOnly:](v5, "setShowHourlyWeatherOnly:", [coderCopy decodeBoolForKey:@"showHourlyWeatherOnly"]);
+    -[WFURLComponents setDestination:](v5, "setDestination:", [coderCopy decodeIntegerForKey:@"destination"]);
+    -[WFURLComponents setIsLocalWeatherCity:](v5, "setIsLocalWeatherCity:", [coderCopy decodeBoolForKey:@"isLocalWeatherCity"]);
+    -[WFURLComponents setCityIndex:](v5, "setCityIndex:", [coderCopy decodeIntegerForKey:@"cityIndex"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(WFURLComponents *)self location];
-  [v7 encodeObject:v4 forKey:@"location"];
+  coderCopy = coder;
+  location = [(WFURLComponents *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  v5 = [(WFURLComponents *)self locationName];
-  [v7 encodeObject:v5 forKey:@"locationName"];
+  locationName = [(WFURLComponents *)self locationName];
+  [coderCopy encodeObject:locationName forKey:@"locationName"];
 
-  v6 = [(WFURLComponents *)self locale];
-  [v7 encodeObject:v6 forKey:@"locale"];
+  locale = [(WFURLComponents *)self locale];
+  [coderCopy encodeObject:locale forKey:@"locale"];
 
-  [v7 encodeBool:-[WFURLComponents showHourlyWeatherOnly](self forKey:{"showHourlyWeatherOnly"), @"showHourlyWeatherOnly"}];
-  [v7 encodeInteger:-[WFURLComponents destination](self forKey:{"destination"), @"destination"}];
-  [v7 encodeBool:-[WFURLComponents isLocalWeatherCity](self forKey:{"isLocalWeatherCity"), @"isLocalWeatherCity"}];
-  [v7 encodeInteger:-[WFURLComponents cityIndex](self forKey:{"cityIndex"), @"cityIndex"}];
+  [coderCopy encodeBool:-[WFURLComponents showHourlyWeatherOnly](self forKey:{"showHourlyWeatherOnly"), @"showHourlyWeatherOnly"}];
+  [coderCopy encodeInteger:-[WFURLComponents destination](self forKey:{"destination"), @"destination"}];
+  [coderCopy encodeBool:-[WFURLComponents isLocalWeatherCity](self forKey:{"isLocalWeatherCity"), @"isLocalWeatherCity"}];
+  [coderCopy encodeInteger:-[WFURLComponents cityIndex](self forKey:{"cityIndex"), @"cityIndex"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(WFURLComponents *)self location];
-  [v4 setLocation:v5];
+  location = [(WFURLComponents *)self location];
+  [v4 setLocation:location];
 
-  v6 = [(WFURLComponents *)self locationName];
-  [v4 setLocationName:v6];
+  locationName = [(WFURLComponents *)self locationName];
+  [v4 setLocationName:locationName];
 
-  v7 = [(WFURLComponents *)self locale];
-  [v4 setLocale:v7];
+  locale = [(WFURLComponents *)self locale];
+  [v4 setLocale:locale];
 
   [v4 setShowHourlyWeatherOnly:{-[WFURLComponents showHourlyWeatherOnly](self, "showHourlyWeatherOnly")}];
   [v4 setDestination:{-[WFURLComponents destination](self, "destination")}];
@@ -312,19 +312,19 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFURLComponents *)self isEqualToComponents:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFURLComponents *)self isEqualToComponents:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToComponents:(id)a3
+- (BOOL)isEqualToComponents:(id)components
 {
-  v4 = a3;
-  if (v4 == self || (v11.receiver = self, v11.super_class = WFURLComponents, [(WFURLComponents *)&v11 isEqual:v4]))
+  componentsCopy = components;
+  if (componentsCopy == self || (v11.receiver = self, v11.super_class = WFURLComponents, [(WFURLComponents *)&v11 isEqual:componentsCopy]))
   {
     v5 = 1;
   }
@@ -332,10 +332,10 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
   else
   {
     v6 = [(WFURLComponents *)self URL];
-    v7 = [v6 absoluteString];
-    v8 = [(WFURLComponents *)v4 URL];
-    v9 = [v8 absoluteString];
-    v5 = [v7 isEqualToString:v9];
+    absoluteString = [v6 absoluteString];
+    v8 = [(WFURLComponents *)componentsCopy URL];
+    absoluteString2 = [v8 absoluteString];
+    v5 = [absoluteString isEqualToString:absoluteString2];
   }
 
   return v5;
@@ -357,50 +357,50 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
     goto LABEL_19;
   }
 
-  v3 = [(WFURLComponents *)self destination];
-  if (!v3)
+  destination = [(WFURLComponents *)self destination];
+  if (!destination)
   {
     v4 = [MEMORY[0x277CCACE0] componentsWithString:@"https://www.weather.com/wx/today/"];
     v5 = objc_opt_new();
-    v31 = [(WFURLComponents *)self location];
-    v6 = v31;
-    if (v31)
+    location = [(WFURLComponents *)self location];
+    location2 = location;
+    if (location)
     {
       v32 = MEMORY[0x277CCAD18];
       v33 = MEMORY[0x277CCACA8];
-      [v31 coordinate];
+      [location coordinate];
       v35 = [v33 stringWithFormat:@"%.2f", v34];
       v36 = [v32 queryItemWithName:@"lat" value:v35];
       [v5 addObject:v36];
 
       v37 = MEMORY[0x277CCAD18];
       v38 = MEMORY[0x277CCACA8];
-      [v6 coordinate];
+      [location2 coordinate];
       v40 = [v38 stringWithFormat:@"%.2f", v39];
       v41 = [v37 queryItemWithName:@"lon" value:v40];
       [v5 addObject:v41];
     }
 
-    v27 = [(WFURLComponents *)self locale];
-    v42 = [v27 objectForKey:*MEMORY[0x277CBE690]];
-    v28 = [v42 uppercaseString];
+    locale = [(WFURLComponents *)self locale];
+    v42 = [locale objectForKey:*MEMORY[0x277CBE690]];
+    uppercaseString = [v42 uppercaseString];
 
-    v43 = [v27 objectForKey:*MEMORY[0x277CBE6C8]];
-    v44 = [v43 lowercaseString];
+    v43 = [locale objectForKey:*MEMORY[0x277CBE6C8]];
+    lowercaseString = [v43 lowercaseString];
 
-    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v44, v28];
+    v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", lowercaseString, uppercaseString];
     v46 = [MEMORY[0x277CCAD18] queryItemWithName:@"locale" value:v45];
     [v5 addObject:v46];
 
     v47 = MEMORY[0x277CCAD18];
-    v48 = [(WFURLComponents *)self platform];
-    v49 = [v47 queryItemWithName:@"par" value:v48];
+    platform = [(WFURLComponents *)self platform];
+    v49 = [v47 queryItemWithName:@"par" value:platform];
     [v5 addObject:v49];
 
     goto LABEL_15;
   }
 
-  if (v3 == 1)
+  if (destination == 1)
   {
     v4 = objc_opt_new();
     [v4 setScheme:@"https"];
@@ -409,37 +409,37 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
     v5 = objc_opt_new();
     if ([(WFURLComponents *)self cityIndex]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(WFURLComponents *)self location];
+      location2 = [(WFURLComponents *)self location];
       v7 = MEMORY[0x277CCAD18];
       v8 = MEMORY[0x277CCABB0];
-      [v6 coordinate];
+      [location2 coordinate];
       v9 = [v8 numberWithDouble:?];
-      v10 = [v9 stringValue];
-      v11 = [v7 queryItemWithName:@"lat" value:v10];
+      stringValue = [v9 stringValue];
+      v11 = [v7 queryItemWithName:@"lat" value:stringValue];
       [v5 addObject:v11];
 
       v12 = MEMORY[0x277CCAD18];
       v13 = MEMORY[0x277CCABB0];
-      [v6 coordinate];
+      [location2 coordinate];
       v15 = [v13 numberWithDouble:v14];
-      v16 = [v15 stringValue];
-      v17 = [v12 queryItemWithName:@"long" value:v16];
+      stringValue2 = [v15 stringValue];
+      v17 = [v12 queryItemWithName:@"long" value:stringValue2];
       [v5 addObject:v17];
 
-      v18 = [(WFURLComponents *)self locationName];
+      locationName = [(WFURLComponents *)self locationName];
 
-      if (v18)
+      if (locationName)
       {
         v19 = MEMORY[0x277CCAD18];
-        v20 = [(WFURLComponents *)self locationName];
-        v21 = [v19 queryItemWithName:@"city" value:v20];
+        locationName2 = [(WFURLComponents *)self locationName];
+        v21 = [v19 queryItemWithName:@"city" value:locationName2];
         [v5 addObject:v21];
       }
 
       v22 = MEMORY[0x277CCAD18];
       v23 = [MEMORY[0x277CCABB0] numberWithInt:{-[WFURLComponents showHourlyWeatherOnly](self, "showHourlyWeatherOnly")}];
-      v24 = [v23 stringValue];
-      v25 = [v22 queryItemWithName:@"isShowingHourly" value:v24];
+      stringValue3 = [v23 stringValue];
+      v25 = [v22 queryItemWithName:@"isShowingHourly" value:stringValue3];
       [v5 addObject:v25];
 
       if (![(WFURLComponents *)self isLocalWeatherCity])
@@ -448,19 +448,19 @@ void __36__WFURLComponents_componentsForURL___block_invoke(uint64_t a1, void *a2
       }
 
       v26 = MEMORY[0x277CCAD18];
-      v27 = [MEMORY[0x277CCABB0] numberWithInt:{-[WFURLComponents isLocalWeatherCity](self, "isLocalWeatherCity")}];
-      v28 = [v27 stringValue];
-      v29 = [v26 queryItemWithName:@"isLocal" value:v28];
+      locale = [MEMORY[0x277CCABB0] numberWithInt:{-[WFURLComponents isLocalWeatherCity](self, "isLocalWeatherCity")}];
+      uppercaseString = [locale stringValue];
+      v29 = [v26 queryItemWithName:@"isLocal" value:uppercaseString];
       [v5 addObject:v29];
     }
 
     else
     {
       v50 = MEMORY[0x277CCAD18];
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WFURLComponents cityIndex](self, "cityIndex")}];
-      v27 = [v6 stringValue];
-      v28 = [v50 queryItemWithName:@"index" value:v27];
-      [v5 addObject:v28];
+      location2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WFURLComponents cityIndex](self, "cityIndex")}];
+      locale = [location2 stringValue];
+      uppercaseString = [v50 queryItemWithName:@"index" value:locale];
+      [v5 addObject:uppercaseString];
     }
 
 LABEL_15:
@@ -486,19 +486,19 @@ LABEL_19:
 
 - (BOOL)_canBuildURLWithProvidedComponents
 {
-  v3 = [(WFURLComponents *)self destination];
-  if (!v3)
+  destination = [(WFURLComponents *)self destination];
+  if (!destination)
   {
     return 1;
   }
 
-  if (v3 != 1)
+  if (destination != 1)
   {
     return 0;
   }
 
-  v4 = [(WFURLComponents *)self location];
-  if (v4)
+  location = [(WFURLComponents *)self location];
+  if (location)
   {
     v5 = 1;
   }

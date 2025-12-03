@@ -1,10 +1,10 @@
 @interface ProvisioningCarKeyStepFindReader
 - (_TtC11PassKitCore32ProvisioningCarKeyStepFindReader)init;
-- (void)appletSubcredentialPairingSession:(id)a3 didEndPairingWithError:(id)a4;
-- (void)appletSubcredentialPairingSession:(id)a3 didEndPairingWithSubcredential:(id)a4 registrationData:(id)a5;
-- (void)appletSubcredentialPairingSession:(id)a3 didFinishPreWarmWithResult:(id)a4;
-- (void)appletSubcredentialPairingSessionDidBeginPairing:(id)a3;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)appletSubcredentialPairingSession:(id)session didEndPairingWithError:(id)error;
+- (void)appletSubcredentialPairingSession:(id)session didEndPairingWithSubcredential:(id)subcredential registrationData:(id)data;
+- (void)appletSubcredentialPairingSession:(id)session didFinishPreWarmWithResult:(id)result;
+- (void)appletSubcredentialPairingSessionDidBeginPairing:(id)pairing;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 @end
 
 @implementation ProvisioningCarKeyStepFindReader
@@ -16,30 +16,30 @@
   return result;
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1AD48D3E0(a4);
+  selfCopy = self;
+  sub_1AD48D3E0(state);
   swift_unknownObjectRelease();
 }
 
-- (void)appletSubcredentialPairingSessionDidBeginPairing:(id)a3
+- (void)appletSubcredentialPairingSessionDidBeginPairing:(id)pairing
 {
-  v4 = a3;
-  v5 = self;
+  pairingCopy = pairing;
+  selfCopy = self;
   _s11PassKitCore32ProvisioningCarKeyStepFindReaderC041appletSubcredentialPairingSessionDidBeginL0yySo08PKAppletklM0CSgF_0();
 }
 
-- (void)appletSubcredentialPairingSession:(id)a3 didEndPairingWithSubcredential:(id)a4 registrationData:(id)a5
+- (void)appletSubcredentialPairingSession:(id)session didEndPairingWithSubcredential:(id)subcredential registrationData:(id)data
 {
-  if (a4)
+  if (subcredential)
   {
-    v7 = a5;
-    v9 = self;
-    v8 = a4;
-    [v8 setTrackingRequest_];
-    sub_1AD48C0C4(a4, 0);
+    dataCopy = data;
+    selfCopy = self;
+    subcredentialCopy = subcredential;
+    [subcredentialCopy setTrackingRequest_];
+    sub_1AD48C0C4(subcredential, 0);
   }
 
   else
@@ -48,20 +48,20 @@
   }
 }
 
-- (void)appletSubcredentialPairingSession:(id)a3 didEndPairingWithError:(id)a4
+- (void)appletSubcredentialPairingSession:(id)session didEndPairingWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1AD48D6F8(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1AD48D6F8(error);
 }
 
-- (void)appletSubcredentialPairingSession:(id)a3 didFinishPreWarmWithResult:(id)a4
+- (void)appletSubcredentialPairingSession:(id)session didFinishPreWarmWithResult:(id)result
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1AD48D8A0(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  resultCopy = result;
+  sub_1AD48D8A0(result);
 }
 
 @end

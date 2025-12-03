@@ -1,10 +1,10 @@
 @interface STRestrictionsToPresetMappingViewModel
 + (id)BOOLPresetKeys;
 + (id)presetKeys;
-- (STRestrictionsToPresetMappingViewModel)initWithSelectedValueProvider:(id)a3;
-- (id)_presetForValuesByRestriction:(id)a3;
-- (id)_restrictionsWithValuesByRestriction:(id)a3 presetKeys:(id)a4;
-- (void)loadPresetMatchingCurrentRestrictionsWithCompletionHandler:(id)a3;
+- (STRestrictionsToPresetMappingViewModel)initWithSelectedValueProvider:(id)provider;
+- (id)_presetForValuesByRestriction:(id)restriction;
+- (id)_restrictionsWithValuesByRestriction:(id)restriction presetKeys:(id)keys;
+- (void)loadPresetMatchingCurrentRestrictionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation STRestrictionsToPresetMappingViewModel
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __52__STRestrictionsToPresetMappingViewModel_presetKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (presetKeys_onceToken != -1)
   {
     dispatch_once(&presetKeys_onceToken, block);
@@ -60,30 +60,30 @@ uint64_t __56__STRestrictionsToPresetMappingViewModel_BOOLPresetKeys__block_invo
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (STRestrictionsToPresetMappingViewModel)initWithSelectedValueProvider:(id)a3
+- (STRestrictionsToPresetMappingViewModel)initWithSelectedValueProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = STRestrictionsToPresetMappingViewModel;
   v5 = [(STRestrictionsToPresetMappingViewModel *)&v8 init];
   selectedValueProvider = v5->_selectedValueProvider;
-  v5->_selectedValueProvider = v4;
+  v5->_selectedValueProvider = providerCopy;
 
   return v5;
 }
 
-- (void)loadPresetMatchingCurrentRestrictionsWithCompletionHandler:(id)a3
+- (void)loadPresetMatchingCurrentRestrictionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STRestrictionsToPresetMappingViewModel *)self selectedValueProvider];
+  handlerCopy = handler;
+  selectedValueProvider = [(STRestrictionsToPresetMappingViewModel *)self selectedValueProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __101__STRestrictionsToPresetMappingViewModel_loadPresetMatchingCurrentRestrictionsWithCompletionHandler___block_invoke;
   v7[3] = &unk_279B7E4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 loadValuesByRestrictionWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [selectedValueProvider loadValuesByRestrictionWithCompletionHandler:v7];
 }
 
 void __101__STRestrictionsToPresetMappingViewModel_loadPresetMatchingCurrentRestrictionsWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -112,14 +112,14 @@ void __101__STRestrictionsToPresetMappingViewModel_loadPresetMatchingCurrentRest
   }
 }
 
-- (id)_presetForValuesByRestriction:(id)a3
+- (id)_presetForValuesByRestriction:(id)restriction
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  restrictionCopy = restriction;
+  if ([restrictionCopy count])
   {
-    v5 = [objc_opt_class() presetKeys];
-    v6 = [(STRestrictionsToPresetMappingViewModel *)self _restrictionsWithValuesByRestriction:v4 presetKeys:v5];
+    presetKeys = [objc_opt_class() presetKeys];
+    v6 = [(STRestrictionsToPresetMappingViewModel *)self _restrictionsWithValuesByRestriction:restrictionCopy presetKeys:presetKeys];
     v7 = [objc_alloc(MEMORY[0x277D08318]) initWithValues:v6];
     v8 = [objc_alloc(MEMORY[0x277D08320]) initWithIdentifier:@"com.apple.ScreenTime" configuration:v7];
     v9 = objc_alloc(MEMORY[0x277D08310]);
@@ -136,17 +136,17 @@ void __101__STRestrictionsToPresetMappingViewModel_loadPresetMatchingCurrentRest
   return v11;
 }
 
-- (id)_restrictionsWithValuesByRestriction:(id)a3 presetKeys:(id)a4
+- (id)_restrictionsWithValuesByRestriction:(id)restriction presetKeys:(id)keys
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  restrictionCopy = restriction;
+  keysCopy = keys;
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(restrictionCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = restrictionCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -162,7 +162,7 @@ void __101__STRestrictionsToPresetMappingViewModel_loadPresetMatchingCurrentRest
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v6 containsObject:{v13, v16}])
+        if ([keysCopy containsObject:{v13, v16}])
         {
           v14 = [v8 objectForKeyedSubscript:v13];
           [v7 setObject:v14 forKeyedSubscript:v13];

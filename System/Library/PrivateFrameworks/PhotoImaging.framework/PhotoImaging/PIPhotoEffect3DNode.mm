@@ -1,17 +1,17 @@
 @interface PIPhotoEffect3DNode
-- (PIPhotoEffect3DNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5;
-- (PIPhotoEffect3DNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (PIPhotoEffect3DNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings;
+- (PIPhotoEffect3DNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation PIPhotoEffect3DNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v27 = NUAssertLogger_16450();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v35 = dispatch_get_specific(*v29);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v35;
         v43 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v34;
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,41 +55,41 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  v11 = [v9 auxiliaryImageType];
-  v12 = [(PIPortraitNode *)self input];
-  v13 = [v12 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+  v10 = stateCopy;
+  auxiliaryImageType = [stateCopy auxiliaryImageType];
+  input = [(PIPortraitNode *)self input];
+  v13 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
-  if (v11 == 1)
+  if (auxiliaryImageType == 1)
   {
     if (v13)
     {
       v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v14 setObject:v13 forKeyedSubscript:@"inputImage"];
-      v15 = [(PIPortraitNode *)self blurMap];
+      blurMap = [(PIPortraitNode *)self blurMap];
       v40 = 0;
-      v16 = [v15 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:&v40];
+      v16 = [blurMap nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:&v40];
 
       if (v16)
       {
         [v14 setObject:v16 forKeyedSubscript:@"inputBlurMap"];
       }
 
-      v17 = [MEMORY[0x1E695DF90] dictionary];
-      v18 = [(NURenderNode *)self settings];
-      v19 = [v18 objectForKeyedSubscript:@"kind"];
-      [v17 setObject:v19 forKeyedSubscript:@"inputKind"];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      settings = [(NURenderNode *)self settings];
+      v19 = [settings objectForKeyedSubscript:@"kind"];
+      [dictionary setObject:v19 forKeyedSubscript:@"inputKind"];
 
-      v20 = [(NURenderNode *)self settings];
-      v21 = [v20 objectForKeyedSubscript:@"intensity"];
-      [v17 setObject:v21 forKeyedSubscript:@"inputIntensity"];
+      settings2 = [(NURenderNode *)self settings];
+      v21 = [settings2 objectForKeyedSubscript:@"intensity"];
+      [dictionary setObject:v21 forKeyedSubscript:@"inputIntensity"];
 
-      v22 = [(NURenderNode *)self settings];
-      v23 = [v22 objectForKeyedSubscript:@"isHDR"];
-      [v17 setObject:v23 forKeyedSubscript:@"inputIsHDR"];
+      settings3 = [(NURenderNode *)self settings];
+      v23 = [settings3 objectForKeyedSubscript:@"isHDR"];
+      [dictionary setObject:v23 forKeyedSubscript:@"inputIsHDR"];
 
-      v24 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIPhotoEffect3DFilter" settings:v17 inputs:v14];
-      v25 = [v24 resolvedNodeWithCachedInputs:v14 cache:v8 pipelineState:v10 error:a5];
+      v24 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIPhotoEffect3DFilter" settings:dictionary inputs:v14];
+      v25 = [v24 resolvedNodeWithCachedInputs:v14 cache:cacheCopy pipelineState:v10 error:error];
     }
 
     else
@@ -103,13 +103,13 @@
   return v13;
 }
 
-- (PIPhotoEffect3DNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5
+- (PIPhotoEffect3DNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  inputCopy = input;
+  mapCopy = map;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v19 = NUAssertLogger_16450();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -131,8 +131,8 @@
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -143,8 +143,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -153,13 +153,13 @@
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
-  if (v9)
+  v11 = settingsCopy;
+  if (mapCopy)
   {
     v35[0] = @"inputImage";
     v35[1] = @"inputBlurMap";
-    v36[0] = v8;
-    v36[1] = v9;
+    v36[0] = inputCopy;
+    v36[1] = mapCopy;
     v12 = MEMORY[0x1E695DF20];
     v13 = v36;
     v14 = v35;
@@ -169,7 +169,7 @@
   else
   {
     v33 = @"inputImage";
-    v34 = v8;
+    v34 = inputCopy;
     v12 = MEMORY[0x1E695DF20];
     v13 = &v34;
     v14 = &v33;
@@ -184,11 +184,11 @@
   return v17;
 }
 
-- (PIPhotoEffect3DNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIPhotoEffect3DNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -227,8 +227,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -255,8 +255,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

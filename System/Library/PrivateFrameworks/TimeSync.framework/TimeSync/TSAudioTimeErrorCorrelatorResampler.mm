@@ -1,16 +1,16 @@
 @interface TSAudioTimeErrorCorrelatorResampler
-- (TSAudioTimeErrorCorrelatorResampler)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5;
+- (TSAudioTimeErrorCorrelatorResampler)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate;
 - (void)_makeBlock;
 - (void)dealloc;
 @end
 
 @implementation TSAudioTimeErrorCorrelatorResampler
 
-- (TSAudioTimeErrorCorrelatorResampler)initWithMaxCorrelationLength:(int64_t)a3 andUpscaleFactor:(int64_t)a4 forSamplingRate:(double)a5
+- (TSAudioTimeErrorCorrelatorResampler)initWithMaxCorrelationLength:(int64_t)length andUpscaleFactor:(int64_t)factor forSamplingRate:(double)rate
 {
   v10.receiver = self;
   v10.super_class = TSAudioTimeErrorCorrelatorResampler;
-  v5 = [(TSAudioTimeErrorCorrelator *)&v10 initWithMaxCorrelationLength:a3 andUpscaleFactor:a4 forSamplingRate:a5];
+  v5 = [(TSAudioTimeErrorCorrelator *)&v10 initWithMaxCorrelationLength:length andUpscaleFactor:factor forSamplingRate:rate];
   v6 = v5;
   if (v5)
   {

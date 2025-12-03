@@ -1,8 +1,8 @@
 @interface SSMetricsLoadURLEvent
-+ (BOOL)shouldCollectTimingDataWithSessionDelegate:(id)a3;
-+ (BOOL)shouldCollectTimingDataWithSessionDuration:(double)a3 samplingPercentage:(double)a4;
++ (BOOL)shouldCollectTimingDataWithSessionDelegate:(id)delegate;
++ (BOOL)shouldCollectTimingDataWithSessionDuration:(double)duration samplingPercentage:(double)percentage;
 + (BOOL)shouldReportCachedEvent;
-+ (BOOL)shouldReportCachedEventWithSamplingPercentage:(double)a3;
++ (BOOL)shouldReportCachedEventWithSamplingPercentage:(double)percentage;
 + (double)_randomDouble;
 + (id)_timingMetricsWindowStartTime;
 - (BOOL)TLSSessionTickets;
@@ -37,36 +37,36 @@
 - (unint64_t)redirectCount;
 - (unint64_t)requestMessageSize;
 - (unint64_t)responseMessageSize;
-- (void)setApsRelayAttempted:(BOOL)a3;
-- (void)setApsRelayDidFallback:(BOOL)a3;
-- (void)setApsRelayRequested:(BOOL)a3;
-- (void)setApsRelaySucceeded:(BOOL)a3;
-- (void)setCachedResponse:(BOOL)a3;
-- (void)setConnectionEndTime:(double)a3;
-- (void)setConnectionReused:(BOOL)a3;
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3;
-- (void)setConnectionStartTime:(double)a3;
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3;
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3;
-- (void)setDomainLookupEndTime:(double)a3;
-- (void)setDomainLookupStartTime:(double)a3;
-- (void)setFetchStartTime:(double)a3;
-- (void)setRedirectCount:(unint64_t)a3;
-- (void)setRedirectEndTime:(double)a3;
-- (void)setRedirectStartTime:(double)a3;
-- (void)setRequestMessageSize:(unint64_t)a3;
-- (void)setRequestStartTime:(double)a3;
-- (void)setResponseEndTime:(double)a3;
-- (void)setResponseMessageSize:(unint64_t)a3;
-- (void)setResponseStartTime:(double)a3;
-- (void)setSecureConnectionStartTime:(double)a3;
-- (void)setStatusCode:(int64_t)a3;
-- (void)setTLSSessionTickets:(BOOL)a3;
-- (void)setXPSamplingForced:(BOOL)a3;
-- (void)setXPSamplingPercentageCachedResponses:(double)a3;
-- (void)setXPSamplingPercentageUsers:(double)a3;
-- (void)setXPSessionDuration:(double)a3;
+- (void)setApsRelayAttempted:(BOOL)attempted;
+- (void)setApsRelayDidFallback:(BOOL)fallback;
+- (void)setApsRelayRequested:(BOOL)requested;
+- (void)setApsRelaySucceeded:(BOOL)succeeded;
+- (void)setCachedResponse:(BOOL)response;
+- (void)setConnectionEndTime:(double)time;
+- (void)setConnectionReused:(BOOL)reused;
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes;
+- (void)setConnectionStartTime:(double)time;
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes;
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes;
+- (void)setDomainLookupEndTime:(double)time;
+- (void)setDomainLookupStartTime:(double)time;
+- (void)setFetchStartTime:(double)time;
+- (void)setRedirectCount:(unint64_t)count;
+- (void)setRedirectEndTime:(double)time;
+- (void)setRedirectStartTime:(double)time;
+- (void)setRequestMessageSize:(unint64_t)size;
+- (void)setRequestStartTime:(double)time;
+- (void)setResponseEndTime:(double)time;
+- (void)setResponseMessageSize:(unint64_t)size;
+- (void)setResponseStartTime:(double)time;
+- (void)setSecureConnectionStartTime:(double)time;
+- (void)setStatusCode:(int64_t)code;
+- (void)setTLSSessionTickets:(BOOL)tickets;
+- (void)setXPSamplingForced:(BOOL)forced;
+- (void)setXPSamplingPercentageCachedResponses:(double)responses;
+- (void)setXPSamplingPercentageUsers:(double)users;
+- (void)setXPSessionDuration:(double)duration;
 @end
 
 @implementation SSMetricsLoadURLEvent
@@ -78,9 +78,9 @@
   v2 = [(SSMetricsMutableEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [(SSMetricsLoadURLEvent *)v2 setClientCorrelationKey:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(SSMetricsLoadURLEvent *)v2 setClientCorrelationKey:uUIDString];
 
     [(SSMetricsMutableEvent *)v2 setEventType:@"loadUrl"];
     [(SSMetricsMutableEvent *)v2 setTopic:@"xp_amp_clientperf"];
@@ -92,41 +92,41 @@
 - (BOOL)apsRelayAttempted
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"apsRelayAttempted"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)apsRelayDidFallback
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"apsRelayDidFallback"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)apsRelaySucceeded
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"apsRelaySucceeded"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)apsRelayRequested
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"apsRelayRequested"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)cachedResponse
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"cachedResponse"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)connectionEndTime
@@ -141,41 +141,41 @@
 - (BOOL)connectionReused
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionReused"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)connectionStartNStatRXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStartNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStartNStatTXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStartNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatRXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStopNStatRXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)connectionStopNStatTXBytes
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"connectionStopNStatTXBytes"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)connectionStartTime
@@ -217,9 +217,9 @@
 - (unint64_t)redirectCount
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"redirectCount"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)redirectEndTime
@@ -234,9 +234,9 @@
 - (unint64_t)requestMessageSize
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"requestMessageSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)redirectStartTime
@@ -269,9 +269,9 @@
 - (unint64_t)responseMessageSize
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"responseMessageSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (double)responseStartTime
@@ -295,52 +295,52 @@
 - (int64_t)statusCode
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"statusCode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)TLSSessionTickets
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"tlsSessionTicketsEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setApsRelayAttempted:(BOOL)a3
+- (void)setApsRelayAttempted:(BOOL)attempted
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:attempted];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"apsRelayAttempted"];
 }
 
-- (void)setApsRelayDidFallback:(BOOL)a3
+- (void)setApsRelayDidFallback:(BOOL)fallback
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:fallback];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"apsRelayDidFallback"];
 }
 
-- (void)setApsRelayRequested:(BOOL)a3
+- (void)setApsRelayRequested:(BOOL)requested
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:requested];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"apsRelayRequested"];
 }
 
-- (void)setApsRelaySucceeded:(BOOL)a3
+- (void)setApsRelaySucceeded:(BOOL)succeeded
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:succeeded];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"apsRelaySucceeded"];
 }
 
-- (void)setCachedResponse:(BOOL)a3
+- (void)setCachedResponse:(BOOL)response
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:response];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"cachedResponse"];
 }
 
-- (void)setConnectionEndTime:(double)a3
+- (void)setConnectionEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -354,39 +354,39 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionEndTime"];
 }
 
-- (void)setConnectionReused:(BOOL)a3
+- (void)setConnectionReused:(BOOL)reused
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:reused];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionReused"];
 }
 
-- (void)setConnectionStartNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatRXBytes"];
 }
 
-- (void)setConnectionStartNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStartNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartNStatTXBytes"];
 }
 
-- (void)setConnectionStopNStatRXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatRXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatRXBytes"];
 }
 
-- (void)setConnectionStopNStatTXBytes:(unint64_t)a3
+- (void)setConnectionStopNStatTXBytes:(unint64_t)bytes
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:bytes];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStopNStatTXBytes"];
 }
 
-- (void)setConnectionStartTime:(double)a3
+- (void)setConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -400,9 +400,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"connectionStartTime"];
 }
 
-- (void)setDomainLookupEndTime:(double)a3
+- (void)setDomainLookupEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -416,9 +416,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"domainLookupEndTime"];
 }
 
-- (void)setDomainLookupStartTime:(double)a3
+- (void)setDomainLookupStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -432,9 +432,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"domainLookupStartTime"];
 }
 
-- (void)setFetchStartTime:(double)a3
+- (void)setFetchStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -448,15 +448,15 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"fetchStartTime"];
 }
 
-- (void)setRedirectCount:(unint64_t)a3
+- (void)setRedirectCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectCount"];
 }
 
-- (void)setRedirectEndTime:(double)a3
+- (void)setRedirectEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -470,9 +470,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectEndTime"];
 }
 
-- (void)setRedirectStartTime:(double)a3
+- (void)setRedirectStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -486,9 +486,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"redirectStartTime"];
 }
 
-- (void)setRequestStartTime:(double)a3
+- (void)setRequestStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -502,15 +502,15 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requestStartTime"];
 }
 
-- (void)setRequestMessageSize:(unint64_t)a3
+- (void)setRequestMessageSize:(unint64_t)size
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requestMessageSize"];
 }
 
-- (void)setResponseEndTime:(double)a3
+- (void)setResponseEndTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -524,15 +524,15 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseEndTime"];
 }
 
-- (void)setResponseMessageSize:(unint64_t)a3
+- (void)setResponseMessageSize:(unint64_t)size
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseMessageSize"];
 }
 
-- (void)setResponseStartTime:(double)a3
+- (void)setResponseStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -546,9 +546,9 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"responseStartTime"];
 }
 
-- (void)setSecureConnectionStartTime:(double)a3
+- (void)setSecureConnectionStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0;
   }
@@ -562,39 +562,39 @@
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"secureConnectionStartTime"];
 }
 
-- (void)setStatusCode:(int64_t)a3
+- (void)setStatusCode:(int64_t)code
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"statusCode"];
 }
 
-- (void)setTLSSessionTickets:(BOOL)a3
+- (void)setTLSSessionTickets:(BOOL)tickets
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:tickets];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"tlsSessionTicketsEnabled"];
 }
 
-- (void)setXPSessionDuration:(double)a3
+- (void)setXPSessionDuration:(double)duration
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSessionDuration"];
 }
 
-- (void)setXPSamplingForced:(BOOL)a3
+- (void)setXPSamplingForced:(BOOL)forced
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:forced];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingForced"];
 }
 
-- (void)setXPSamplingPercentageUsers:(double)a3
+- (void)setXPSamplingPercentageUsers:(double)users
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:users];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageUsers"];
 }
 
-- (void)setXPSamplingPercentageCachedResponses:(double)a3
+- (void)setXPSamplingPercentageCachedResponses:(double)responses
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:responses];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"xpSamplingPercentageCachedResponses"];
 }
 
@@ -610,9 +610,9 @@
 - (BOOL)xpSamplingForced
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"xpSamplingForced"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (double)xpSamplingPercentageUsers
@@ -633,36 +633,36 @@
   return v4;
 }
 
-+ (BOOL)shouldCollectTimingDataWithSessionDelegate:(id)a3
++ (BOOL)shouldCollectTimingDataWithSessionDelegate:(id)delegate
 {
-  v4 = [SSMetricsTimingDefaults sharedInstanceWithSessionDelegate:a3];
+  v4 = [SSMetricsTimingDefaults sharedInstanceWithSessionDelegate:delegate];
   [v4 sessionDurationLoadURL];
   v6 = v5 * 1000.0;
   [v4 samplingPercentageUsersLoadURL];
-  LOBYTE(a1) = [a1 shouldCollectTimingDataWithSessionDuration:v6 samplingPercentage:v7];
+  LOBYTE(self) = [self shouldCollectTimingDataWithSessionDuration:v6 samplingPercentage:v7];
   [v4 update];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)shouldCollectTimingDataWithSessionDuration:(double)a3 samplingPercentage:(double)a4
++ (BOOL)shouldCollectTimingDataWithSessionDuration:(double)duration samplingPercentage:(double)percentage
 {
-  if (([a1 shouldLogTimingMetrics] & 1) == 0)
+  if (([self shouldLogTimingMetrics] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [a1 _timingMetricsWindowStartTime];
-    v10 = [v9 dateByAddingTimeInterval:a3 / 1000.0];
+    date = [MEMORY[0x1E695DF00] date];
+    _timingMetricsWindowStartTime = [self _timingMetricsWindowStartTime];
+    v10 = [_timingMetricsWindowStartTime dateByAddingTimeInterval:duration / 1000.0];
 
-    if ([v8 compare:v10] != -1)
+    if ([date compare:v10] != -1)
     {
-      [a1 _randomDouble];
+      [self _randomDouble];
       v7 = 0;
-      if (v11 == 0.0 || v11 > a4)
+      if (v11 == 0.0 || v11 > percentage)
       {
         goto LABEL_8;
       }
 
-      [a1 _setTimingMetricsWindowStartTime:v8];
+      [self _setTimingMetricsWindowStartTime:date];
     }
 
     v7 = 1;
@@ -678,21 +678,21 @@ LABEL_8:
 {
   v3 = +[SSMetricsTimingDefaults sharedInstance];
   [v3 samplingPercentageCachedResponsesLoadURL];
-  LOBYTE(a1) = [a1 shouldReportCachedEventWithSamplingPercentage:?];
+  LOBYTE(self) = [self shouldReportCachedEventWithSamplingPercentage:?];
   [v3 update];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)shouldReportCachedEventWithSamplingPercentage:(double)a3
++ (BOOL)shouldReportCachedEventWithSamplingPercentage:(double)percentage
 {
-  if (a3 == 0.0)
+  if (percentage == 0.0)
   {
     return 0;
   }
 
-  [a1 _randomDouble];
-  return v5 <= a3;
+  [self _randomDouble];
+  return v5 <= percentage;
 }
 
 - (id)description
@@ -703,8 +703,8 @@ LABEL_8:
   v4 = [(SSMetricsLoadURLEvent *)&v34 description];
   [v3 appendString:v4];
 
-  v5 = [(SSMetricsLoadURLEvent *)self appleTimingApp];
-  [v3 appendFormat:@"\nappleTimingApp = %@", v5];
+  appleTimingApp = [(SSMetricsLoadURLEvent *)self appleTimingApp];
+  [v3 appendFormat:@"\nappleTimingApp = %@", appleTimingApp];
 
   if ([(SSMetricsLoadURLEvent *)self apsRelayAttempted])
   {
@@ -739,27 +739,27 @@ LABEL_8:
   }
 
   [v3 appendFormat:@"\napsRelaySucceeded = %@", v8];
-  v9 = [(SSMetricsLoadURLEvent *)self clientCorrelationKey];
-  [v3 appendFormat:@"\nclientCorrelationKey = %@", v9];
+  clientCorrelationKey = [(SSMetricsLoadURLEvent *)self clientCorrelationKey];
+  [v3 appendFormat:@"\nclientCorrelationKey = %@", clientCorrelationKey];
 
-  v10 = [(SSMetricsLoadURLEvent *)self requestURL];
-  [v3 appendFormat:@"\nrequestUrl = %@", v10];
+  requestURL = [(SSMetricsLoadURLEvent *)self requestURL];
+  [v3 appendFormat:@"\nrequestUrl = %@", requestURL];
 
-  v11 = [(SSMetricsLoadURLEvent *)self connectionType];
-  [v3 appendFormat:@"\nconnectionType = %@", v11];
+  connectionType = [(SSMetricsLoadURLEvent *)self connectionType];
+  [v3 appendFormat:@"\nconnectionType = %@", connectionType];
 
-  v12 = [(SSMetricsLoadURLEvent *)self DNSServers];
-  [v3 appendFormat:@"\ndnsServers = %@", v12];
+  dNSServers = [(SSMetricsLoadURLEvent *)self DNSServers];
+  [v3 appendFormat:@"\ndnsServers = %@", dNSServers];
 
-  v13 = [(SSMetricsLoadURLEvent *)self resolvedIPAddress];
-  [v3 appendFormat:@"\nresolvedIPAddress = %@", v13];
+  resolvedIPAddress = [(SSMetricsLoadURLEvent *)self resolvedIPAddress];
+  [v3 appendFormat:@"\nresolvedIPAddress = %@", resolvedIPAddress];
 
   [v3 appendFormat:@"\nstatusCode = %ld", -[SSMetricsLoadURLEvent statusCode](self, "statusCode")];
-  v14 = [(SSMetricsLoadURLEvent *)self TIDState];
-  [v3 appendFormat:@"\ntidState = %@", v14];
+  tIDState = [(SSMetricsLoadURLEvent *)self TIDState];
+  [v3 appendFormat:@"\ntidState = %@", tIDState];
 
-  v15 = [(SSMetricsLoadURLEvent *)self clientError];
-  [v3 appendFormat:@"\nclientError = %@", v15];
+  clientError = [(SSMetricsLoadURLEvent *)self clientError];
+  [v3 appendFormat:@"\nclientError = %@", clientError];
 
   [(SSMetricsLoadURLEvent *)self fetchStartTime];
   [v3 appendFormat:@"\nfetchStartTime = %f", v16];
@@ -790,8 +790,8 @@ LABEL_8:
   [v3 appendFormat:@"\nconnectionReused = %@", v22];
   [(SSMetricsLoadURLEvent *)self requestStartTime];
   [v3 appendFormat:@"\nrequestStartTime = %f", v23];
-  v24 = [(SSMetricsLoadURLEvent *)self responseDate];
-  [v3 appendFormat:@"\nresponseDate = %@", v24];
+  responseDate = [(SSMetricsLoadURLEvent *)self responseDate];
+  [v3 appendFormat:@"\nresponseDate = %@", responseDate];
 
   [(SSMetricsLoadURLEvent *)self responseStartTime];
   [v3 appendFormat:@"\nresponseStartTime = %f", v25];

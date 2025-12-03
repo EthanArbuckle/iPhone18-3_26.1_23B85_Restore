@@ -1,16 +1,16 @@
 @interface SKUIProductPageTableExpandableHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)actionString;
 - (NSString)title;
 - (UIColor)bottomBorderColor;
 - (UIColor)topBorderColor;
 - (void)layoutSubviews;
-- (void)setActionString:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBottomBorderColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopBorderColor:(id)a3;
+- (void)setActionString:(id)string;
+- (void)setBackgroundColor:(id)color;
+- (void)setBottomBorderColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setTitle:(id)title;
+- (void)setTopBorderColor:(id)color;
 @end
 
 @implementation SKUIProductPageTableExpandableHeaderView
@@ -29,9 +29,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_actionLabel text];
+  text = [(UILabel *)self->_actionLabel text];
 
-  return v11;
+  return text;
 }
 
 - (UIColor)bottomBorderColor
@@ -48,14 +48,14 @@
     }
   }
 
-  v11 = [(UIView *)self->_bottomBorderView backgroundColor];
+  backgroundColor = [(UIView *)self->_bottomBorderView backgroundColor];
 
-  return v11;
+  return backgroundColor;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -68,11 +68,11 @@
     }
   }
 
-  v13 = [(SKUIProductPageTableExpandableHeaderView *)self actionString];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  actionString = [(SKUIProductPageTableExpandableHeaderView *)self actionString];
+  v14 = actionString;
+  if (actionString != stringCopy && ([actionString isEqualToString:stringCopy] & 1) == 0)
   {
-    v15 = [v4 length];
+    v15 = [stringCopy length];
     actionLabel = self->_actionLabel;
     if (v15)
     {
@@ -83,31 +83,31 @@
         self->_actionLabel = v17;
 
         v19 = self->_actionLabel;
-        v20 = [(SKUIProductPageTableExpandableHeaderView *)self backgroundColor];
-        [(UILabel *)v19 setBackgroundColor:v20];
+        backgroundColor = [(SKUIProductPageTableExpandableHeaderView *)self backgroundColor];
+        [(UILabel *)v19 setBackgroundColor:backgroundColor];
 
         v21 = self->_actionLabel;
         v22 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
         [(UILabel *)v21 setFont:v22];
 
         v23 = self->_actionLabel;
-        v24 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v24)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v23 setTextColor:v24];
+          [(UILabel *)v23 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v26 = [(SKUIProductPageTableExpandableHeaderView *)self tintColor];
-          [(UILabel *)v23 setTextColor:v26];
+          tintColor = [(SKUIProductPageTableExpandableHeaderView *)self tintColor];
+          [(UILabel *)v23 setTextColor:tintColor];
         }
 
         [(SKUIProductPageTableExpandableHeaderView *)self addSubview:self->_actionLabel];
         actionLabel = self->_actionLabel;
       }
 
-      [(UILabel *)actionLabel setText:v4];
+      [(UILabel *)actionLabel setText:stringCopy];
       [(UILabel *)self->_actionLabel sizeToFit];
     }
 
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)setBottomBorderColor:(id)a3
+- (void)setBottomBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -138,7 +138,7 @@
   }
 
   bottomBorderView = self->_bottomBorderView;
-  if (v4)
+  if (colorCopy)
   {
     if (!bottomBorderView)
     {
@@ -150,7 +150,7 @@
       bottomBorderView = self->_bottomBorderView;
     }
 
-    [(UIView *)bottomBorderView setBackgroundColor:v4];
+    [(UIView *)bottomBorderView setBackgroundColor:colorCopy];
   }
 
   else
@@ -161,9 +161,9 @@
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -176,40 +176,40 @@
     }
   }
 
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    objc_storeStrong(&self->_colorScheme, a3);
+    objc_storeStrong(&self->_colorScheme, scheme);
     actionLabel = self->_actionLabel;
-    v15 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v15)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)actionLabel setTextColor:v15];
+      [(UILabel *)actionLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v16 = [(SKUIProductPageTableExpandableHeaderView *)self tintColor];
-      [(UILabel *)actionLabel setTextColor:v16];
+      tintColor = [(SKUIProductPageTableExpandableHeaderView *)self tintColor];
+      [(UILabel *)actionLabel setTextColor:tintColor];
     }
 
     titleLabel = self->_titleLabel;
-    v18 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v18)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)titleLabel setTextColor:v18];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor2];
     }
 
     else
     {
-      v19 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v19];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -222,11 +222,11 @@
     }
   }
 
-  v13 = [(SKUIProductPageTableExpandableHeaderView *)self title];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  title = [(SKUIProductPageTableExpandableHeaderView *)self title];
+  v14 = title;
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    v15 = [v4 length];
+    v15 = [titleCopy length];
     titleLabel = self->_titleLabel;
     if (v15)
     {
@@ -237,31 +237,31 @@
         self->_titleLabel = v17;
 
         v19 = self->_titleLabel;
-        v20 = [(SKUIProductPageTableExpandableHeaderView *)self backgroundColor];
-        [(UILabel *)v19 setBackgroundColor:v20];
+        backgroundColor = [(SKUIProductPageTableExpandableHeaderView *)self backgroundColor];
+        [(UILabel *)v19 setBackgroundColor:backgroundColor];
 
         v21 = self->_titleLabel;
         v22 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
         [(UILabel *)v21 setFont:v22];
 
         v23 = self->_titleLabel;
-        v24 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v24)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v23 setTextColor:v24];
+          [(UILabel *)v23 setTextColor:secondaryTextColor];
         }
 
         else
         {
-          v26 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v23 setTextColor:v26];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v23 setTextColor:blackColor];
         }
 
         [(SKUIProductPageTableExpandableHeaderView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v4];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -276,9 +276,9 @@
   }
 }
 
-- (void)setTopBorderColor:(id)a3
+- (void)setTopBorderColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -292,7 +292,7 @@
   }
 
   topBorderView = self->_topBorderView;
-  if (v4)
+  if (colorCopy)
   {
     if (!topBorderView)
     {
@@ -304,7 +304,7 @@
       topBorderView = self->_topBorderView;
     }
 
-    [(UIView *)topBorderView setBackgroundColor:v4];
+    [(UIView *)topBorderView setBackgroundColor:colorCopy];
   }
 
   else
@@ -329,9 +329,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  return v11;
+  return text;
 }
 
 - (UIColor)topBorderColor
@@ -348,9 +348,9 @@
     }
   }
 
-  v11 = [(UIView *)self->_topBorderView backgroundColor];
+  backgroundColor = [(UIView *)self->_topBorderView backgroundColor];
 
-  return v11;
+  return backgroundColor;
 }
 
 - (void)layoutSubviews
@@ -371,12 +371,12 @@
   v12 = v11;
   v14 = v13;
   bottomBorderView = self->_bottomBorderView;
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v18 = v14 - 1.0 / v17;
   v19 = v12 + -15.0;
-  v20 = [MEMORY[0x277D759A0] mainScreen];
-  [v20 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   [(UIView *)bottomBorderView setFrame:15.0, v18, v19, 1.0 / v21];
 
   [(UIView *)self->_topBorderView setFrame:15.0, 0.0, v19, 1.0];
@@ -406,9 +406,9 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -421,16 +421,16 @@
     }
   }
 
-  [(UILabel *)self->_actionLabel setBackgroundColor:v4];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UILabel *)self->_actionLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIProductPageTableExpandableHeaderView;
-  [(SKUIProductPageTableExpandableHeaderView *)&v13 setBackgroundColor:v4];
+  [(SKUIProductPageTableExpandableHeaderView *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

@@ -1,17 +1,17 @@
 @interface NSLengthFormatter
 - (NSLengthFormatter)init;
-- (NSLengthFormatter)initWithCoder:(id)a3;
+- (NSLengthFormatter)initWithCoder:(id)coder;
 - (NSString)stringFromMeters:(double)numberInMeters;
 - (NSString)stringFromValue:(double)value unit:(NSLengthFormatterUnit)unit;
 - (NSString)unitStringFromMeters:(double)numberInMeters usedUnit:(NSLengthFormatterUnit *)unitp;
 - (NSString)unitStringFromValue:(double)value unit:(NSLengthFormatterUnit)unit;
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
-- (int64_t)targetUnitFromMeters:(double)a3;
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
+- (int64_t)targetUnitFromMeters:(double)meters;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)receiveObservedValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)receiveObservedValue:(id)value;
 @end
 
 @implementation NSLengthFormatter
@@ -39,13 +39,13 @@
   [(NSLengthFormatter *)&v3 dealloc];
 }
 
-- (int64_t)targetUnitFromMeters:(double)a3
+- (int64_t)targetUnitFromMeters:(double)meters
 {
-  v5 = [(NSNumberFormatter *)[(NSLengthFormatter *)self numberFormatter] locale];
-  v6 = [-[NSLocale objectForKey:](v5 objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}];
+  locale = [(NSNumberFormatter *)[(NSLengthFormatter *)self numberFormatter] locale];
+  v6 = [-[NSLocale objectForKey:](locale objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}];
   if ([(NSLengthFormatter *)self isForPersonHeightUse])
   {
-    if (v6 && ![(NSString *)[(NSLocale *)v5 localeIdentifier] isEqual:@"en_GB"])
+    if (v6 && ![(NSString *)[(NSLocale *)locale localeIdentifier] isEqual:@"en_GB"])
     {
       return 9;
     }
@@ -68,7 +68,7 @@
       v8 = &us_units;
     }
 
-    return findUnit(v8, a3);
+    return findUnit(v8, meters);
   }
 }
 
@@ -165,20 +165,20 @@
   {
     v9 = [(NSLengthFormatter *)self targetUnitFromMeters:numberInMeters];
     v6 = convertUnitFromMeters(v9, numberInMeters);
-    v7 = self;
+    selfCopy2 = self;
     v8 = v9;
     goto LABEL_5;
   }
 
-  v5 = [(NSNumberFormatter *)[(NSLengthFormatter *)self numberFormatter] locale];
-  if ([-[NSLocale objectForKey:](v5 objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}])
+  locale = [(NSNumberFormatter *)[(NSLengthFormatter *)self numberFormatter] locale];
+  if ([-[NSLocale objectForKey:](locale objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}])
   {
     v6 = numberInMeters / 0.01;
-    v7 = self;
+    selfCopy2 = self;
     v8 = 9;
 LABEL_5:
 
-    return [(NSLengthFormatter *)v7 stringFromValue:v8 unit:v6];
+    return [(NSLengthFormatter *)selfCopy2 stringFromValue:v8 unit:v6];
   }
 
   unitFormatter = self->_unitFormatter;
@@ -259,35 +259,35 @@ LABEL_5:
   return [(NSUnitFormatter *)self->_unitFormatter stringForValue:v12 unit:value];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || !_NSIsNSNumber())
+  if (!value || !_NSIsNSNumber())
   {
     return 0;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
 
   return [(NSLengthFormatter *)self stringFromMeters:?];
 }
 
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes
 {
-  if (!a3 || !_NSIsNSNumber())
+  if (!value || !_NSIsNSNumber())
   {
     return 0;
   }
 
-  [a3 doubleValue];
-  v7 = [[NSAttributedString alloc] initWithString:[(NSLengthFormatter *)self stringFromMeters:?] attributes:a4];
+  [value doubleValue];
+  v7 = [[NSAttributedString alloc] initWithString:[(NSLengthFormatter *)self stringFromMeters:?] attributes:attributes];
 
   return v7;
 }
 
-- (NSLengthFormatter)initWithCoder:(id)a3
+- (NSLengthFormatter)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSLengthFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -295,53 +295,53 @@ LABEL_5:
 
   v7.receiver = self;
   v7.super_class = NSLengthFormatter;
-  v5 = [(NSFormatter *)&v7 initWithCoder:a3];
+  v5 = [(NSFormatter *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_unitFormatter = [[NSUnitFormatter alloc] initWithCoder:a3];
-    v5->_isForPersonHeight = [a3 decodeBoolForKey:@"NS.forPersonHeightUse"];
+    v5->_unitFormatter = [[NSUnitFormatter alloc] initWithCoder:coder];
+    v5->_isForPersonHeight = [coder decodeBoolForKey:@"NS.forPersonHeightUse"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSLengthFormatter cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSLengthFormatter;
-  [(NSFormatter *)&v5 encodeWithCoder:a3];
-  [(NSUnitFormatter *)self->_unitFormatter encodeWithCoder:a3];
+  [(NSFormatter *)&v5 encodeWithCoder:coder];
+  [(NSUnitFormatter *)self->_unitFormatter encodeWithCoder:coder];
   if (self->_isForPersonHeight)
   {
-    [a3 encodeBool:1 forKey:@"NS.forPersonHeightUse"];
+    [coder encodeBool:1 forKey:@"NS.forPersonHeightUse"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(NSUnitFormatter *)self->_unitFormatter copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(NSUnitFormatter *)self->_unitFormatter copyWithZone:zone];
   *(v5 + 16) = self->_isForPersonHeight;
   return v5;
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSNumber() & 1) == 0)
+  if (value && (_NSIsNSNumber() & 1) == 0)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSObservationFormatterSupport.m" description:72, @"Invalid parameter not satisfying: %@", @"!value || _NSIsNSNumber(value)"];
   }
 
   v6.receiver = self;
   v6.super_class = NSLengthFormatter;
-  [(NSLengthFormatter *)&v6 receiveObservedValue:[(NSLengthFormatter *)self stringForObjectValue:a3]];
+  [(NSLengthFormatter *)&v6 receiveObservedValue:[(NSLengthFormatter *)self stringForObjectValue:value]];
 }
 
 @end

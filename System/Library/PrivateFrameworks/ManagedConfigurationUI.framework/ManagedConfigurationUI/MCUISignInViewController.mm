@@ -1,23 +1,23 @@
 @interface MCUISignInViewController
 - (AKAppleIDAuthenticationInAppContext)context;
-- (MCUISignInViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MCUISignInViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MCUISignInViewControllerDelegate)delegate;
 - (NSString)orgName;
-- (void)setContext:(id)a3;
-- (void)setOrgName:(id)a3;
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
-- (void)signInViewController:(id)a3 willPerformAuthenticationWithContext:(id)a4 completionHandler:(id)a5;
+- (void)setContext:(id)context;
+- (void)setOrgName:(id)name;
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
+- (void)signInViewController:(id)controller willPerformAuthenticationWithContext:(id)context completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation MCUISignInViewController
 
-- (MCUISignInViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MCUISignInViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = MCUISignInViewController;
-  v4 = [(MCUISignInViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(MCUISignInViewController *)&v13 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -28,8 +28,8 @@
     authSectionController = v4->_authSectionController;
     v4->_authSectionController = v7;
 
-    v9 = [(MCSignInPageAuthenticationSectionController *)v4->_authSectionController inlineSignInViewController];
-    [v9 setDelegate:v4];
+    inlineSignInViewController = [(MCSignInPageAuthenticationSectionController *)v4->_authSectionController inlineSignInViewController];
+    [inlineSignInViewController setDelegate:v4];
 
     v14[0] = v4->_titleSectionController;
     v14[1] = v4->_authSectionController;
@@ -46,78 +46,78 @@
   v7.receiver = self;
   v7.super_class = MCUISignInViewController;
   [(MCSectionBasedTableViewController *)&v7 viewDidLoad];
-  v3 = [(MCUISignInViewController *)self authSectionController];
-  v4 = [v3 inlineSignInViewController];
-  [(MCUISignInViewController *)self addChildViewController:v4];
+  authSectionController = [(MCUISignInViewController *)self authSectionController];
+  inlineSignInViewController = [authSectionController inlineSignInViewController];
+  [(MCUISignInViewController *)self addChildViewController:inlineSignInViewController];
 
-  v5 = [(MCUISignInViewController *)self authSectionController];
-  v6 = [v5 inlineSignInViewController];
-  [v6 didMoveToParentViewController:self];
+  authSectionController2 = [(MCUISignInViewController *)self authSectionController];
+  inlineSignInViewController2 = [authSectionController2 inlineSignInViewController];
+  [inlineSignInViewController2 didMoveToParentViewController:self];
 }
 
 - (AKAppleIDAuthenticationInAppContext)context
 {
-  v2 = [(MCUISignInViewController *)self authSectionController];
-  v3 = [v2 inlineSignInViewController];
-  v4 = [v3 context];
+  authSectionController = [(MCUISignInViewController *)self authSectionController];
+  inlineSignInViewController = [authSectionController inlineSignInViewController];
+  context = [inlineSignInViewController context];
 
-  return v4;
+  return context;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v6 = [(MCUISignInViewController *)self authSectionController];
-  v5 = [v6 inlineSignInViewController];
-  [v5 setContext:v4];
+  contextCopy = context;
+  authSectionController = [(MCUISignInViewController *)self authSectionController];
+  inlineSignInViewController = [authSectionController inlineSignInViewController];
+  [inlineSignInViewController setContext:contextCopy];
 }
 
-- (void)setOrgName:(id)a3
+- (void)setOrgName:(id)name
 {
-  v5 = [a3 copy];
-  v4 = [(MCUISignInViewController *)self titleSectionController];
-  [v4 setOrgName:v5];
+  v5 = [name copy];
+  titleSectionController = [(MCUISignInViewController *)self titleSectionController];
+  [titleSectionController setOrgName:v5];
 }
 
 - (NSString)orgName
 {
-  v2 = [(MCUISignInViewController *)self titleSectionController];
-  v3 = [v2 orgName];
+  titleSectionController = [(MCUISignInViewController *)self titleSectionController];
+  orgName = [titleSectionController orgName];
 
-  return v3;
+  return orgName;
 }
 
-- (void)signInViewController:(id)a3 willPerformAuthenticationWithContext:(id)a4 completionHandler:(id)a5
+- (void)signInViewController:(id)controller willPerformAuthenticationWithContext:(id)context completionHandler:(id)handler
 {
-  v9 = a5;
-  v6 = [(MCUISignInViewController *)self delegate];
+  handlerCopy = handler;
+  delegate = [(MCUISignInViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MCUISignInViewController *)self delegate];
-    [v8 signInViewController:self willAuthenticateWithCompletionHandler:v9];
+    delegate2 = [(MCUISignInViewController *)self delegate];
+    [delegate2 signInViewController:self willAuthenticateWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  resultsCopy = results;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__MCUISignInViewController_signInViewController_didAuthenticateWithResults_error___block_invoke;
   block[3] = &unk_279861DF8;
   block[4] = self;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = errorCopy;
+  v13 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

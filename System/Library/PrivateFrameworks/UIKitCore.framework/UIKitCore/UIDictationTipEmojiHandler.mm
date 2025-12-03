@@ -1,6 +1,6 @@
 @interface UIDictationTipEmojiHandler
 - (UIDictationTipEmojiHandler)init;
-- (id)replaceEmojiInStringWithEmojiDictationCommand:(id)a3;
+- (id)replaceEmojiInStringWithEmojiDictationCommand:(id)command;
 @end
 
 @implementation UIDictationTipEmojiHandler
@@ -12,10 +12,10 @@
   return [(UIDictationTipEmojiHandler *)&v3 init];
 }
 
-- (id)replaceEmojiInStringWithEmojiDictationCommand:(id)a3
+- (id)replaceEmojiInStringWithEmojiDictationCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 _containsEmoji])
+  commandCopy = command;
+  if ([commandCopy _containsEmoji])
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v18 = 0;
@@ -24,7 +24,7 @@
     v22 = 0;
     v23 = 0;
     v21 = "";
-    v5 = [v3 length];
+    v5 = [commandCopy length];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __76__UIDictationTipEmojiHandler_replaceEmojiInStringWithEmojiDictationCommand___block_invoke;
@@ -32,7 +32,7 @@
     v17 = &v18;
     v6 = v4;
     v15 = v6;
-    v7 = v3;
+    v7 = commandCopy;
     v16 = v7;
     [v7 _enumerateEmojiTokensInRange:0 block:{v5, v14}];
     v8 = v19[4];
@@ -48,7 +48,7 @@
 
   else
   {
-    v12 = v3;
+    v12 = commandCopy;
   }
 
   return v12;

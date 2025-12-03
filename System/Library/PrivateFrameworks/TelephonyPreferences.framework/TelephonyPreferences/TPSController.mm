@@ -1,8 +1,8 @@
 @interface TPSController
 - (TPSController)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)performAtomicDelegateBlock:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)performAtomicDelegateBlock:(id)block;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation TPSController
@@ -16,27 +16,27 @@
   if (v2)
   {
     v2->_delegateLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     delegateToQueue = v3->_delegateToQueue;
-    v3->_delegateToQueue = v4;
+    v3->_delegateToQueue = weakToStrongObjectsMapTable;
   }
 
   return v3;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __35__TPSController_addDelegate_queue___block_invoke;
   v10[3] = &unk_2782E3888;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = queueCopy;
+  v12 = delegateCopy;
+  v8 = delegateCopy;
+  v9 = queueCopy;
   [(TPSController *)self performAtomicDelegateBlock:v10];
 }
 
@@ -57,16 +57,16 @@ void __35__TPSController_addDelegate_queue___block_invoke(uint64_t a1)
   [v2 setObject:v3 forKey:*(a1 + 48)];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__TPSController_removeDelegate___block_invoke;
   v6[3] = &unk_2782E39D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = delegateCopy;
+  v5 = delegateCopy;
   [(TPSController *)self performAtomicDelegateBlock:v6];
 }
 
@@ -76,13 +76,13 @@ void __32__TPSController_removeDelegate___block_invoke(uint64_t a1)
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)performAtomicDelegateBlock:(id)a3
+- (void)performAtomicDelegateBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
+    blockCopy = block;
     os_unfair_lock_lock_with_options();
-    v4[2](v4);
+    blockCopy[2](blockCopy);
 
     os_unfair_lock_unlock(&self->_delegateLock);
   }

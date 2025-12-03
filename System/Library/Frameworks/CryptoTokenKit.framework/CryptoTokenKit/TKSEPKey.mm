@@ -1,19 +1,19 @@
 @interface TKSEPKey
 + (BOOL)canUseSEPLocally;
-- (BOOL)deleteWithError:(id *)a3;
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4;
+- (BOOL)deleteWithError:(id *)error;
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error;
 - (NSDictionary)attributes;
-- (TKSEPKey)initWithAttributes:(id)a3 authContext:(id)a4 forceSystemSession:(BOOL)a5 error:(id *)a6;
-- (id)_initWithAuthContext:(id)a3;
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5;
-- (id)computeSharedSecret:(id)a3 error:(id *)a4;
-- (id)decapsulateKey:(id)a3 error:(id *)a4;
-- (id)initLocalWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 caller:(id)a8 forceSystemSession:(BOOL)a9 error:(id *)a10;
+- (TKSEPKey)initWithAttributes:(id)attributes authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error;
+- (id)_initWithAuthContext:(id)context;
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error;
+- (id)computeSharedSecret:(id)secret error:(id *)error;
+- (id)decapsulateKey:(id)key error:(id *)error;
+- (id)initLocalWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context caller:(id)caller forceSystemSession:(BOOL)session error:(id *)self0;
 - (id)keyType;
-- (id)publicKeyWithError:(id *)a3;
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (id)signDigest:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (id)signDigest:(id)a3 error:(id *)a4;
+- (id)publicKeyWithError:(id *)error;
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error;
+- (id)signDigest:(id)digest attributes:(id)attributes error:(id *)error;
+- (id)signDigest:(id)digest error:(id *)error;
 - (void)attributes;
 @end
 
@@ -21,9 +21,9 @@
 
 + (BOOL)canUseSEPLocally
 {
-  v2 = [a1 ctkdConnection];
+  ctkdConnection = [self ctkdConnection];
 
-  if (v2)
+  if (ctkdConnection)
   {
     return 0;
   }
@@ -44,16 +44,16 @@
   v4 = *MEMORY[0x1E697AD68];
   v30[0] = v3;
   v30[1] = v4;
-  v5 = [(TKSEPKey *)self keyType];
-  v31[1] = v5;
+  keyType = [(TKSEPKey *)self keyType];
+  v31[1] = keyType;
   v30[2] = *MEMORY[0x1E697AD50];
-  v6 = [(TKSEPKey *)self keySize];
-  v31[2] = v6;
+  keySize = [(TKSEPKey *)self keySize];
+  v31[2] = keySize;
   v30[3] = *MEMORY[0x1E697ACE8];
-  v7 = [(TKSEPKey *)self keySize];
+  keySize2 = [(TKSEPKey *)self keySize];
   v8 = *MEMORY[0x1E697AD30];
   v9 = *MEMORY[0x1E697AD38];
-  v31[3] = v7;
+  v31[3] = keySize2;
   v31[4] = v9;
   v10 = *MEMORY[0x1E697AD20];
   v30[4] = v8;
@@ -92,8 +92,8 @@
   v21 = SecAccessControlCopyData();
   v31[15] = v21;
   v30[16] = *MEMORY[0x1E697AEE8];
-  v22 = [(TKSEPKey *)self objectID];
-  v31[16] = v22;
+  objectID = [(TKSEPKey *)self objectID];
+  v31[16] = objectID;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:17];
   v24 = [v23 mutableCopy];
 
@@ -150,29 +150,29 @@ void __28__TKSEPKey_canUseSEPLocally__block_invoke()
   }
 }
 
-- (id)_initWithAuthContext:(id)a3
+- (id)_initWithAuthContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TKSEPKey;
   v6 = [(TKSEPKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authContext, a3);
+    objc_storeStrong(&v6->_authContext, context);
   }
 
   return v7;
 }
 
-- (id)initLocalWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 caller:(id)a8 forceSystemSession:(BOOL)a9 error:(id *)a10
+- (id)initLocalWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context caller:(id)caller forceSystemSession:(BOOL)session error:(id *)self0
 {
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a3;
-  LOBYTE(v22) = a9;
-  v20 = [[TKLocalSEPKey alloc] _initWithKeyType:v19 keySize:a4 accessControl:a5 options:v18 authContext:v17 caller:v16 forceSystemSession:v22 error:a10];
+  callerCopy = caller;
+  contextCopy = context;
+  optionsCopy = options;
+  typeCopy = type;
+  LOBYTE(v22) = session;
+  v20 = [[TKLocalSEPKey alloc] _initWithKeyType:typeCopy keySize:size accessControl:control options:optionsCopy authContext:contextCopy caller:callerCopy forceSystemSession:v22 error:error];
 
   return v20;
 }
@@ -185,114 +185,114 @@ void __28__TKSEPKey_canUseSEPLocally__block_invoke()
   return v2;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)publicKeyWithError:(id *)a3
+- (id)publicKeyWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)signDigest:(id)a3 error:(id *)a4
+- (id)signDigest:(id)digest error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)signDigest:(id)a3 attributes:(id)a4 error:(id *)a5
+- (id)signDigest:(id)digest attributes:(id)attributes error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)computeSharedSecret:(id)a3 error:(id *)a4
+- (id)computeSharedSecret:(id)secret error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)decapsulateKey:(id)a3 error:(id *)a4
+- (id)decapsulateKey:(id)key error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:0];
   }
 
   return 0;
 }
 
-- (TKSEPKey)initWithAttributes:(id)a3 authContext:(id)a4 forceSystemSession:(BOOL)a5 error:(id *)a6
+- (TKSEPKey)initWithAttributes:(id)attributes authContext:(id)context forceSystemSession:(BOOL)session error:(id *)error
 {
-  v66 = a5;
+  sessionCopy = session;
   v138[17] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v69 = a4;
+  attributesCopy = attributes;
+  contextCopy = context;
   v108 = 0;
   v109 = &v108;
   v110 = 0x3032000000;
   v111 = __Block_byref_object_copy__1;
   v112 = __Block_byref_object_dispose__1;
-  v113 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v102 = 0;
   v103 = &v102;
   v104 = 0x3032000000;
   v105 = __Block_byref_object_copy__1;
   v106 = __Block_byref_object_dispose__1;
-  v107 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
   v98 = 0;
   v99 = &v98;
   v100 = 0x2020000000;
@@ -309,8 +309,8 @@ void __28__TKSEPKey_canUseSEPLocally__block_invoke()
   v138[1] = v85;
   v67 = *MEMORY[0x1E697AD68];
   v135[0] = *MEMORY[0x1E697AD68];
-  v83 = [MEMORY[0x1E695DFB0] null];
-  v135[1] = v83;
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v135[1] = null3;
   v97[0] = MEMORY[0x1E69E9820];
   v97[1] = 3221225472;
   v97[2] = __68__TKSEPKey_initWithAttributes_authContext_forceSystemSession_error___block_invoke;
@@ -434,7 +434,7 @@ LABEL_3:
         v27 = [v25 objectAtIndexedSubscript:1];
       }
 
-      v28 = [v7 objectForKeyedSubscript:v26];
+      v28 = [attributesCopy objectForKeyedSubscript:v26];
       if ([v25 count] < 3)
       {
         v30 = 0;
@@ -466,14 +466,14 @@ LABEL_11:
             if (!v31)
             {
 LABEL_35:
-              if (a6)
+              if (error)
               {
                 v44 = MEMORY[0x1E696ABC0];
                 v118 = v86;
                 v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"sepkey: %@ requires '%@' value when present", v26, v27];
                 v119 = v45;
                 v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
-                *a6 = [v44 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v46];
+                *error = [v44 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v46];
               }
 
               v47 = 0;
@@ -499,8 +499,8 @@ LABEL_35:
 
       if (v27)
       {
-        v32 = [MEMORY[0x1E695DFB0] null];
-        v33 = [v27 isEqual:v32];
+        null4 = [MEMORY[0x1E695DFB0] null];
+        v33 = [v27 isEqual:null4];
 
         if ((v33 & 1) == 0)
         {
@@ -511,7 +511,7 @@ LABEL_35:
             v27 = v34;
           }
 
-          [v7 setObject:v27 forKeyedSubscript:v26];
+          [attributesCopy setObject:v27 forKeyedSubscript:v26];
         }
       }
 
@@ -531,18 +531,18 @@ LABEL_25:
   }
 
   v36 = v103[5];
-  v37 = [MEMORY[0x1E695DFB0] null];
-  LODWORD(v36) = [v36 isEqual:v37];
+  null5 = [MEMORY[0x1E695DFB0] null];
+  LODWORD(v36) = [v36 isEqual:null5];
 
   if (v36)
   {
     objc_storeStrong(v103 + 5, *MEMORY[0x1E697AD78]);
   }
 
-  [v7 setObject:v103[5] forKeyedSubscript:v67];
+  [attributesCopy setObject:v103[5] forKeyedSubscript:v67];
   v38 = v109[5];
-  v39 = [MEMORY[0x1E695DFB0] null];
-  LODWORD(v38) = [v38 isEqual:v39];
+  null6 = [MEMORY[0x1E695DFB0] null];
+  LODWORD(v38) = [v38 isEqual:null6];
 
   if (v38)
   {
@@ -556,7 +556,7 @@ LABEL_25:
 
     v42 = SecAccessControlCreateWithFlags(0, v40, 0, 0);
     v43 = SecAccessControlCopyData();
-    [v7 setObject:v43 forKeyedSubscript:v65];
+    [attributesCopy setObject:v43 forKeyedSubscript:v65];
   }
 
   else
@@ -568,51 +568,51 @@ LABEL_25:
   v114 = *MEMORY[0x1E697B200];
   v49 = MEMORY[0x1E696AD98];
   v87 = v114;
-  v50 = [v7 objectForKeyedSubscript:?];
+  v50 = [attributesCopy objectForKeyedSubscript:?];
   v51 = [v49 numberWithBool:{objc_msgSend(v50, "BOOLValue")}];
   v117[0] = v51;
   v115 = *MEMORY[0x1E697B238];
   v52 = MEMORY[0x1E696AD98];
   v84 = v115;
-  v53 = [v7 objectForKeyedSubscript:?];
+  v53 = [attributesCopy objectForKeyedSubscript:?];
   v54 = [v52 numberWithBool:{objc_msgSend(v53, "BOOLValue")}];
   v117[1] = v54;
   v116 = *MEMORY[0x1E697B248];
   v55 = MEMORY[0x1E696AD98];
   v82 = v116;
-  v56 = [v7 objectForKeyedSubscript:?];
+  v56 = [attributesCopy objectForKeyedSubscript:?];
   v57 = [v55 numberWithBool:{objc_msgSend(v56, "BOOLValue")}];
   v117[2] = v57;
   v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v117 forKeys:&v114 count:3];
   v26 = [v58 mutableCopy];
 
-  v59 = [v7 objectForKey:@"ECCompactable"];
+  v59 = [attributesCopy objectForKey:@"ECCompactable"];
 
   if (v59)
   {
-    v60 = [v7 objectForKeyedSubscript:@"ECCompactable"];
+    v60 = [attributesCopy objectForKeyedSubscript:@"ECCompactable"];
     [v26 setObject:v60 forKeyedSubscript:@"ECCompactable"];
   }
 
-  v61 = [(TKSEPKey *)self initWithKeyType:v103[5] keySize:v99[3] accessControl:v42 options:v26 authContext:v69 forceSystemSession:v66 error:a6];
+  v61 = [(TKSEPKey *)self initWithKeyType:v103[5] keySize:v99[3] accessControl:v42 options:v26 authContext:contextCopy forceSystemSession:sessionCopy error:error];
   if ([(TKSEPKey *)v61 accessControl])
   {
     [(TKSEPKey *)v61 accessControl];
-    [v7 setObject:SecAccessControlGetProtection() forKeyedSubscript:*MEMORY[0x1E697ABD8]];
+    [attributesCopy setObject:SecAccessControlGetProtection() forKeyedSubscript:*MEMORY[0x1E697ABD8]];
   }
 
-  v62 = [(TKSEPKey *)v61 objectID];
-  [v7 setObject:v62 forKeyedSubscript:*MEMORY[0x1E697AEE8]];
+  objectID = [(TKSEPKey *)v61 objectID];
+  [attributesCopy setObject:objectID forKeyedSubscript:*MEMORY[0x1E697AEE8]];
 
   if ([(TKSEPKey *)v61 systemSessionKey])
   {
-    [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3B0]];
+    [attributesCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3B0]];
   }
 
-  [v7 removeObjectForKey:v87];
-  [v7 removeObjectForKey:@"ECCompactable"];
-  [v7 removeObjectForKey:v84];
-  [v7 removeObjectForKey:v82];
+  [attributesCopy removeObjectForKey:v87];
+  [attributesCopy removeObjectForKey:@"ECCompactable"];
+  [attributesCopy removeObjectForKey:v84];
+  [attributesCopy removeObjectForKey:v82];
   v47 = v61;
   self = v47;
 LABEL_46:
@@ -757,7 +757,7 @@ id __68__TKSEPKey_initWithAttributes_authContext_forceSystemSession_error___bloc
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = 138543874;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   v8 = 2114;

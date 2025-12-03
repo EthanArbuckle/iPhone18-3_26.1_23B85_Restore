@@ -1,29 +1,29 @@
 @interface WiFiAnalyticsAWDWiFiNWActivityTxCompletions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpired:(BOOL)a3;
-- (void)setHasInternalerror:(BOOL)a3;
-- (void)setHasIoerror:(BOOL)a3;
-- (void)setHasMbfree:(BOOL)a3;
-- (void)setHasNoack:(BOOL)a3;
-- (void)setHasNobuf:(BOOL)a3;
-- (void)setHasNoremotepeer:(BOOL)a3;
-- (void)setHasNoresources:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasTxfailure:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpired:(BOOL)expired;
+- (void)setHasInternalerror:(BOOL)internalerror;
+- (void)setHasIoerror:(BOOL)ioerror;
+- (void)setHasMbfree:(BOOL)mbfree;
+- (void)setHasNoack:(BOOL)noack;
+- (void)setHasNobuf:(BOOL)nobuf;
+- (void)setHasNoremotepeer:(BOOL)noremotepeer;
+- (void)setHasNoresources:(BOOL)noresources;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasTxfailure:(BOOL)txfailure;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiNWActivityTxCompletions
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 512;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasExpired:(BOOL)a3
+- (void)setHasExpired:(BOOL)expired
 {
-  if (a3)
+  if (expired)
   {
     v3 = 2;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNobuf:(BOOL)a3
+- (void)setHasNobuf:(BOOL)nobuf
 {
-  if (a3)
+  if (nobuf)
   {
     v3 = 64;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNoack:(BOOL)a3
+- (void)setHasNoack:(BOOL)noack
 {
-  if (a3)
+  if (noack)
   {
     v3 = 32;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTxfailure:(BOOL)a3
+- (void)setHasTxfailure:(BOOL)txfailure
 {
-  if (a3)
+  if (txfailure)
   {
     v3 = 1024;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasNoresources:(BOOL)a3
+- (void)setHasNoresources:(BOOL)noresources
 {
-  if (a3)
+  if (noresources)
   {
     v3 = 256;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIoerror:(BOOL)a3
+- (void)setHasIoerror:(BOOL)ioerror
 {
-  if (a3)
+  if (ioerror)
   {
     v3 = 8;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasMbfree:(BOOL)a3
+- (void)setHasMbfree:(BOOL)mbfree
 {
-  if (a3)
+  if (mbfree)
   {
     v3 = 16;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNoremotepeer:(BOOL)a3
+- (void)setHasNoremotepeer:(BOOL)noremotepeer
 {
-  if (a3)
+  if (noremotepeer)
   {
     v3 = 128;
   }
@@ -156,9 +156,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasInternalerror:(BOOL)a3
+- (void)setHasInternalerror:(BOOL)internalerror
 {
-  if (a3)
+  if (internalerror)
   {
     v3 = 4;
   }
@@ -177,20 +177,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiNWActivityTxCompletions;
   v4 = [(WiFiAnalyticsAWDWiFiNWActivityTxCompletions *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiNWActivityTxCompletions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiNWActivityTxCompletions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_success];
-    [v3 setObject:v7 forKey:@"success"];
+    [dictionary setObject:v7 forKey:@"success"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -211,7 +211,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_expired];
-  [v3 setObject:v8 forKey:@"expired"];
+  [dictionary setObject:v8 forKey:@"expired"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -227,7 +227,7 @@ LABEL_4:
 
 LABEL_18:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_nobuf];
-  [v3 setObject:v9 forKey:@"nobuf"];
+  [dictionary setObject:v9 forKey:@"nobuf"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -243,7 +243,7 @@ LABEL_5:
 
 LABEL_19:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_noack];
-  [v3 setObject:v10 forKey:@"noack"];
+  [dictionary setObject:v10 forKey:@"noack"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -259,7 +259,7 @@ LABEL_6:
 
 LABEL_20:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txfailure];
-  [v3 setObject:v11 forKey:@"txfailure"];
+  [dictionary setObject:v11 forKey:@"txfailure"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -275,7 +275,7 @@ LABEL_7:
 
 LABEL_21:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_noresources];
-  [v3 setObject:v12 forKey:@"noresources"];
+  [dictionary setObject:v12 forKey:@"noresources"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -291,7 +291,7 @@ LABEL_8:
 
 LABEL_22:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_ioerror];
-  [v3 setObject:v13 forKey:@"ioerror"];
+  [dictionary setObject:v13 forKey:@"ioerror"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -307,7 +307,7 @@ LABEL_9:
 
 LABEL_23:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_mbfree];
-  [v3 setObject:v14 forKey:@"mbfree"];
+  [dictionary setObject:v14 forKey:@"mbfree"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -323,7 +323,7 @@ LABEL_10:
 
 LABEL_24:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_chipmodeerror];
-  [v3 setObject:v15 forKey:@"chipmodeerror"];
+  [dictionary setObject:v15 forKey:@"chipmodeerror"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -339,23 +339,23 @@ LABEL_11:
 
 LABEL_25:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_noremotepeer];
-  [v3 setObject:v16 forKey:@"noremotepeer"];
+  [dictionary setObject:v16 forKey:@"noremotepeer"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_internalerror];
-    [v3 setObject:v5 forKey:@"internalerror"];
+    [dictionary setObject:v5 forKey:@"internalerror"];
   }
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -511,14 +511,14 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    v4[11] = self->_success;
-    *(v4 + 26) |= 0x200u;
+    toCopy[11] = self->_success;
+    *(toCopy + 26) |= 0x200u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -537,8 +537,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_expired;
-  *(v4 + 26) |= 2u;
+  toCopy[3] = self->_expired;
+  *(toCopy + 26) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -552,8 +552,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  v4[8] = self->_nobuf;
-  *(v4 + 26) |= 0x40u;
+  toCopy[8] = self->_nobuf;
+  *(toCopy + 26) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -567,8 +567,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  v4[7] = self->_noack;
-  *(v4 + 26) |= 0x20u;
+  toCopy[7] = self->_noack;
+  *(toCopy + 26) |= 0x20u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -582,8 +582,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  v4[12] = self->_txfailure;
-  *(v4 + 26) |= 0x400u;
+  toCopy[12] = self->_txfailure;
+  *(toCopy + 26) |= 0x400u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -597,8 +597,8 @@ LABEL_7:
   }
 
 LABEL_21:
-  v4[10] = self->_noresources;
-  *(v4 + 26) |= 0x100u;
+  toCopy[10] = self->_noresources;
+  *(toCopy + 26) |= 0x100u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -612,8 +612,8 @@ LABEL_8:
   }
 
 LABEL_22:
-  v4[5] = self->_ioerror;
-  *(v4 + 26) |= 8u;
+  toCopy[5] = self->_ioerror;
+  *(toCopy + 26) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -627,8 +627,8 @@ LABEL_9:
   }
 
 LABEL_23:
-  v4[6] = self->_mbfree;
-  *(v4 + 26) |= 0x10u;
+  toCopy[6] = self->_mbfree;
+  *(toCopy + 26) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -642,8 +642,8 @@ LABEL_10:
   }
 
 LABEL_24:
-  v4[2] = self->_chipmodeerror;
-  *(v4 + 26) |= 1u;
+  toCopy[2] = self->_chipmodeerror;
+  *(toCopy + 26) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -657,21 +657,21 @@ LABEL_11:
   }
 
 LABEL_25:
-  v4[9] = self->_noremotepeer;
-  *(v4 + 26) |= 0x80u;
+  toCopy[9] = self->_noremotepeer;
+  *(toCopy + 26) |= 0x80u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    v4[4] = self->_internalerror;
-    *(v4 + 26) |= 4u;
+    toCopy[4] = self->_internalerror;
+    *(toCopy + 26) |= 4u;
   }
 
 LABEL_13:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -828,25 +828,25 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   has = self->_has;
-  v6 = *(v4 + 26);
+  v6 = *(equalCopy + 26);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 26) & 0x200) == 0 || self->_success != *(v4 + 11))
+    if ((*(equalCopy + 26) & 0x200) == 0 || self->_success != *(equalCopy + 11))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 26) & 0x200) != 0)
+  else if ((*(equalCopy + 26) & 0x200) != 0)
   {
 LABEL_57:
     v7 = 0;
@@ -855,7 +855,7 @@ LABEL_57:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_expired != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_expired != *(equalCopy + 3))
     {
       goto LABEL_57;
     }
@@ -868,7 +868,7 @@ LABEL_57:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_nobuf != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_nobuf != *(equalCopy + 8))
     {
       goto LABEL_57;
     }
@@ -881,7 +881,7 @@ LABEL_57:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_noack != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_noack != *(equalCopy + 7))
     {
       goto LABEL_57;
     }
@@ -894,33 +894,33 @@ LABEL_57:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 26) & 0x400) == 0 || self->_txfailure != *(v4 + 12))
+    if ((*(equalCopy + 26) & 0x400) == 0 || self->_txfailure != *(equalCopy + 12))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 26) & 0x400) != 0)
+  else if ((*(equalCopy + 26) & 0x400) != 0)
   {
     goto LABEL_57;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 26) & 0x100) == 0 || self->_noresources != *(v4 + 10))
+    if ((*(equalCopy + 26) & 0x100) == 0 || self->_noresources != *(equalCopy + 10))
     {
       goto LABEL_57;
     }
   }
 
-  else if ((*(v4 + 26) & 0x100) != 0)
+  else if ((*(equalCopy + 26) & 0x100) != 0)
   {
     goto LABEL_57;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_ioerror != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_ioerror != *(equalCopy + 5))
     {
       goto LABEL_57;
     }
@@ -933,7 +933,7 @@ LABEL_57:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_mbfree != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_mbfree != *(equalCopy + 6))
     {
       goto LABEL_57;
     }
@@ -946,7 +946,7 @@ LABEL_57:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_chipmodeerror != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_chipmodeerror != *(equalCopy + 2))
     {
       goto LABEL_57;
     }
@@ -959,7 +959,7 @@ LABEL_57:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_noremotepeer != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_noremotepeer != *(equalCopy + 9))
     {
       goto LABEL_57;
     }
@@ -972,7 +972,7 @@ LABEL_57:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_internalerror != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_internalerror != *(equalCopy + 4))
     {
       goto LABEL_57;
     }
@@ -1143,15 +1143,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 26);
+  fromCopy = from;
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x200) != 0)
   {
-    self->_success = *(v4 + 11);
+    self->_success = *(fromCopy + 11);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 26);
+    v5 = *(fromCopy + 26);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -1169,9 +1169,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_expired = *(v4 + 3);
+  self->_expired = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -1184,9 +1184,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_nobuf = *(v4 + 8);
+  self->_nobuf = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1199,9 +1199,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_noack = *(v4 + 7);
+  self->_noack = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x400) == 0)
   {
 LABEL_6:
@@ -1214,9 +1214,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_txfailure = *(v4 + 12);
+  self->_txfailure = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x100) == 0)
   {
 LABEL_7:
@@ -1229,9 +1229,9 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_noresources = *(v4 + 10);
+  self->_noresources = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1244,9 +1244,9 @@ LABEL_8:
   }
 
 LABEL_22:
-  self->_ioerror = *(v4 + 5);
+  self->_ioerror = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x10) == 0)
   {
 LABEL_9:
@@ -1259,9 +1259,9 @@ LABEL_9:
   }
 
 LABEL_23:
-  self->_mbfree = *(v4 + 6);
+  self->_mbfree = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -1274,9 +1274,9 @@ LABEL_10:
   }
 
 LABEL_24:
-  self->_chipmodeerror = *(v4 + 2);
+  self->_chipmodeerror = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 26);
+  v5 = *(fromCopy + 26);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -1289,12 +1289,12 @@ LABEL_11:
   }
 
 LABEL_25:
-  self->_noremotepeer = *(v4 + 9);
+  self->_noremotepeer = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 26) & 4) != 0)
+  if ((*(fromCopy + 26) & 4) != 0)
   {
 LABEL_12:
-    self->_internalerror = *(v4 + 4);
+    self->_internalerror = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

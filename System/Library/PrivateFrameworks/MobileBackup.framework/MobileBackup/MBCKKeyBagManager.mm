@@ -1,33 +1,33 @@
 @interface MBCKKeyBagManager
-- (BOOL)fetchKeybagsWithOperationTracker:(id)a3 error:(id *)a4;
-- (BOOL)hasKeybagForEncryptionKey:(id)a3;
-- (BOOL)hasKeybagWithUUID:(id)a3;
+- (BOOL)fetchKeybagsWithOperationTracker:(id)tracker error:(id *)error;
+- (BOOL)hasKeybagForEncryptionKey:(id)key;
+- (BOOL)hasKeybagWithUUID:(id)d;
 - (BOOL)hasKeybags;
 - (MBCKDevice)device;
-- (MBCKKeyBagManager)initWithDevice:(id)a3 keybagRefs:(id)a4;
+- (MBCKKeyBagManager)initWithDevice:(id)device keybagRefs:(id)refs;
 - (NSDictionary)keybagsByUUIDString;
 - (id)keybagRefs;
-- (id)keybagWithUUID:(id)a3;
-- (void)addKeybag:(id)a3;
-- (void)fetchAllKeybagsWithOperationTracker:(id)a3 completion:(id)a4;
-- (void)mergeKeybagRefs:(id)a3;
-- (void)removeKeybagWithUUID:(id)a3;
+- (id)keybagWithUUID:(id)d;
+- (void)addKeybag:(id)keybag;
+- (void)fetchAllKeybagsWithOperationTracker:(id)tracker completion:(id)completion;
+- (void)mergeKeybagRefs:(id)refs;
+- (void)removeKeybagWithUUID:(id)d;
 @end
 
 @implementation MBCKKeyBagManager
 
-- (MBCKKeyBagManager)initWithDevice:(id)a3 keybagRefs:(id)a4
+- (MBCKKeyBagManager)initWithDevice:(id)device keybagRefs:(id)refs
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  refsCopy = refs;
   v27.receiver = self;
   v27.super_class = MBCKKeyBagManager;
   v8 = [(MBCKKeyBagManager *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    v22 = v6;
-    [(MBCKKeyBagManager *)v8 setDevice:v6];
+    v22 = deviceCopy;
+    [(MBCKKeyBagManager *)v8 setDevice:deviceCopy];
     v10 = +[NSMutableDictionary dictionary];
     [(MBCKKeyBagManager *)v9 setKeybagRefsByUUID:v10];
 
@@ -38,7 +38,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v7;
+    v12 = refsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
@@ -54,11 +54,11 @@
           }
 
           v17 = *(*(&v23 + 1) + 8 * i);
-          v18 = [v17 recordID];
-          v19 = [MBCKKeyBag UUIDStringFromRecordID:v18];
+          recordID = [v17 recordID];
+          v19 = [MBCKKeyBag UUIDStringFromRecordID:recordID];
 
-          v20 = [(MBCKKeyBagManager *)v9 keybagRefsByUUID];
-          [v20 setObject:v17 forKeyedSubscript:v19];
+          keybagRefsByUUID = [(MBCKKeyBagManager *)v9 keybagRefsByUUID];
+          [keybagRefsByUUID setObject:v17 forKeyedSubscript:v19];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -67,32 +67,32 @@
       while (v14);
     }
 
-    v6 = v22;
+    deviceCopy = v22;
   }
 
   return v9;
 }
 
-- (void)fetchAllKeybagsWithOperationTracker:(id)a3 completion:(id)a4
+- (void)fetchAllKeybagsWithOperationTracker:(id)tracker completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  trackerCopy = tracker;
+  completionCopy = completion;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBCKKeyBagManager fetchAllKeybagsWithOperationTracker:completion:]", "MBCKKeyBagManager.m", 39, "tracker");
   }
 
-  v8 = v7;
-  v9 = [(MBCKKeyBagManager *)self device];
+  v8 = completionCopy;
+  device = [(MBCKKeyBagManager *)self device];
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 deviceUUID];
+    deviceUUID = [device deviceUUID];
     *buf = 138543362;
-    v32 = v11;
+    v32 = deviceUUID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Fetching all keybags from server for device %{public}@", buf, 0xCu);
 
-    v23 = [v9 deviceUUID];
+    deviceUUID2 = [device deviceUUID];
     _MBLog();
   }
 
@@ -103,8 +103,8 @@
 
   else
   {
-    v12 = [(MBCKKeyBagManager *)self keybagRefs];
-    v13 = [v12 count] == 0;
+    keybagRefs = [(MBCKKeyBagManager *)self keybagRefs];
+    v13 = [keybagRefs count] == 0;
 
     if (v13)
     {
@@ -122,25 +122,25 @@
 
     else
     {
-      v14 = [(MBCKKeyBagManager *)self keybagRefs];
-      v15 = [NSPredicate predicateWithFormat:@"recordID IN %@", v14];
+      keybagRefs2 = [(MBCKKeyBagManager *)self keybagRefs];
+      v15 = [NSPredicate predicateWithFormat:@"recordID IN %@", keybagRefs2];
 
       v16 = [CKQuery alloc];
       v17 = +[(MBCKModel *)MBCKKeyBag];
       v18 = [v16 initWithRecordType:v17 predicate:v15];
 
       v19 = [[CKQueryOperation alloc] initWithQuery:v18];
-      v20 = [v6 syncZoneID];
-      [v19 setZoneID:v20];
+      syncZoneID = [trackerCopy syncZoneID];
+      [v19 setZoneID:syncZoneID];
 
       objc_initWeak(buf, v19);
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_1001B4E04;
       v28[3] = &unk_1003C0E28;
-      v21 = v9;
+      v21 = device;
       v29 = v21;
-      v30 = self;
+      selfCopy = self;
       [v19 setRecordFetchedBlock:v28];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
@@ -151,7 +151,7 @@
       v25 = v21;
       v26 = v8;
       [v19 setQueryCompletionBlock:v24];
-      [v6 addDatabaseOperation:v19];
+      [trackerCopy addDatabaseOperation:v19];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(buf);
@@ -159,9 +159,9 @@
   }
 }
 
-- (BOOL)fetchKeybagsWithOperationTracker:(id)a3 error:(id *)a4
+- (BOOL)fetchKeybagsWithOperationTracker:(id)tracker error:(id *)error
 {
-  v6 = a3;
+  trackerCopy = tracker;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -175,11 +175,11 @@
   v12 = &v13;
   v7 = dispatch_semaphore_create(0);
   v11 = v7;
-  [(MBCKKeyBagManager *)self fetchAllKeybagsWithOperationTracker:v6 completion:v10];
+  [(MBCKKeyBagManager *)self fetchAllKeybagsWithOperationTracker:trackerCopy completion:v10];
   MBSemaphoreWaitForever();
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v8 = v14[5] == 0;
@@ -188,10 +188,10 @@
   return v8;
 }
 
-- (BOOL)hasKeybagForEncryptionKey:(id)a3
+- (BOOL)hasKeybagForEncryptionKey:(id)key
 {
   v9 = 0;
-  v4 = MBKeybagUUIDForEncryptionKey(a3, &v9);
+  v4 = MBKeybagUUIDForEncryptionKey(key, &v9);
   v5 = v9;
   if (v4)
   {
@@ -216,13 +216,13 @@
   return v7;
 }
 
-- (BOOL)hasKeybagWithUUID:(id)a3
+- (BOOL)hasKeybagWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MBCKKeyBagManager *)v5 keybagsByUUID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  v7 = [keybagsByUUID objectForKeyedSubscript:dCopy];
   if (v7)
   {
     v8 = 1;
@@ -230,102 +230,102 @@
 
   else
   {
-    v9 = [(MBCKKeyBagManager *)v5 keybagRefsByUUID];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    keybagRefsByUUID = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+    v10 = [keybagRefsByUUID objectForKeyedSubscript:dCopy];
     v8 = v10 != 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
 - (BOOL)hasKeybags
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MBCKKeyBagManager *)v2 keybagsByUUID];
-  if ([v3 count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  if ([keybagsByUUID count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MBCKKeyBagManager *)v2 keybagRefsByUUID];
-    v4 = [v5 count] != 0;
+    keybagRefsByUUID = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+    v4 = [keybagRefsByUUID count] != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)addKeybag:(id)a3
+- (void)addKeybag:(id)keybag
 {
-  v7 = a3;
-  v4 = [v7 keybagUUIDString];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MBCKKeyBagManager *)v5 keybagsByUUID];
-  [v6 setObject:v7 forKeyedSubscript:v4];
+  keybagCopy = keybag;
+  keybagUUIDString = [keybagCopy keybagUUIDString];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  [keybagsByUUID setObject:keybagCopy forKeyedSubscript:keybagUUIDString];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeKeybagWithUUID:(id)a3
+- (void)removeKeybagWithUUID:(id)d
 {
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
     __assert_rtn("[MBCKKeyBagManager removeKeybagWithUUID:]", "MBCKKeyBagManager.m", 125, "keybagUUIDString");
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MBCKKeyBagManager *)v4 keybagsByUUID];
-  [v5 setObject:0 forKeyedSubscript:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  [keybagsByUUID setObject:0 forKeyedSubscript:dCopy];
 
-  v6 = [(MBCKKeyBagManager *)v4 keybagRefsByUUID];
-  [v6 setObject:0 forKeyedSubscript:v7];
+  keybagRefsByUUID = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+  [keybagRefsByUUID setObject:0 forKeyedSubscript:dCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)keybagWithUUID:(id)a3
+- (id)keybagWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MBCKKeyBagManager *)v5 keybagsByUUID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  v7 = [keybagsByUUID objectForKeyedSubscript:dCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSDictionary)keybagsByUUIDString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MBCKKeyBagManager *)v2 keybagsByUUID];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return keybagsByUUID;
 }
 
 - (id)keybagRefs
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = +[NSMutableArray array];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [(MBCKKeyBagManager *)v2 keybagRefsByUUID];
-  v5 = [v4 allValues];
+  keybagRefsByUUID = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+  allValues = [keybagRefsByUUID allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = *v28;
@@ -335,13 +335,13 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [v3 addObject:*(*(&v27 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v6);
@@ -351,8 +351,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(MBCKKeyBagManager *)v2 keybagsByUUID];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+  v10 = [keybagsByUUID countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v10)
   {
     v11 = *v24;
@@ -362,48 +362,48 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keybagsByUUID);
         }
 
         v13 = *(*(&v23 + 1) + 8 * j);
-        v14 = [(MBCKKeyBagManager *)v2 keybagRefsByUUID];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        keybagRefsByUUID2 = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+        v15 = [keybagRefsByUUID2 objectForKeyedSubscript:v13];
         v16 = v15 == 0;
 
         if (v16)
         {
-          v17 = [(MBCKKeyBagManager *)v2 keybagsByUUID];
-          v18 = [v17 objectForKeyedSubscript:v13];
+          keybagsByUUID2 = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+          v18 = [keybagsByUUID2 objectForKeyedSubscript:v13];
 
           v19 = [CKReference alloc];
-          v20 = [v18 recordID];
-          v21 = [v19 initWithRecordID:v20 action:0];
+          recordID = [v18 recordID];
+          v21 = [v19 initWithRecordID:recordID action:0];
 
           [v3 addObject:v21];
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v10 = [keybagsByUUID countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)mergeKeybagRefs:(id)a3
+- (void)mergeKeybagRefs:(id)refs
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  refsCopy = refs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = refsCopy;
   v6 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -418,27 +418,27 @@
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 recordID];
-        v11 = [MBCKKeyBag UUIDStringFromRecordID:v10];
+        recordID = [v9 recordID];
+        v11 = [MBCKKeyBag UUIDStringFromRecordID:recordID];
 
-        v12 = [(MBCKKeyBagManager *)v5 keybagRefsByUUID];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        keybagRefsByUUID = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+        v13 = [keybagRefsByUUID objectForKeyedSubscript:v11];
         if (v13)
         {
         }
 
         else
         {
-          v14 = [(MBCKKeyBagManager *)v5 keybagsByUUID];
-          v15 = [v14 objectForKeyedSubscript:v11];
+          keybagsByUUID = [(MBCKKeyBagManager *)selfCopy keybagsByUUID];
+          v15 = [keybagsByUUID objectForKeyedSubscript:v11];
           v16 = v15 == 0;
 
           if (v16)
           {
-            v17 = [(MBCKKeyBagManager *)v5 keybagRefsByUUID];
-            [v17 setObject:v9 forKeyedSubscript:v11];
+            keybagRefsByUUID2 = [(MBCKKeyBagManager *)selfCopy keybagRefsByUUID];
+            [keybagRefsByUUID2 setObject:v9 forKeyedSubscript:v11];
 
-            [(MBCKKeyBagManager *)v5 setHasFetchedKeybags:0];
+            [(MBCKKeyBagManager *)selfCopy setHasFetchedKeybags:0];
           }
         }
       }
@@ -449,7 +449,7 @@
     while (v6);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (MBCKDevice)device

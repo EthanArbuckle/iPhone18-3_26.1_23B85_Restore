@@ -1,9 +1,9 @@
 @interface RouteRenderLayerObserverProxy
-- (RouteRenderLayerObserverProxy)initWithPolylineGroupObserver:(PolylineGroupChangeObserver *)a3;
+- (RouteRenderLayerObserverProxy)initWithPolylineGroupObserver:(PolylineGroupChangeObserver *)observer;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)startObserving:(id)a3;
-- (void)stopObserving:(id)a3;
+- (void)startObserving:(id)observing;
+- (void)stopObserving:(id)observing;
 @end
 
 @implementation RouteRenderLayerObserverProxy
@@ -90,10 +90,10 @@
   [(RouteRenderLayerObserverProxy *)&v15 dealloc];
 }
 
-- (void)stopObserving:(id)a3
+- (void)stopObserving:(id)observing
 {
-  v4 = a3;
-  if (!v4)
+  observingCopy = observing;
+  if (!observingCopy)
   {
     goto LABEL_41;
   }
@@ -108,7 +108,7 @@
   while (1)
   {
     v7 = v6[4];
-    if (v7 <= v4)
+    if (v7 <= observingCopy)
     {
       break;
     }
@@ -121,7 +121,7 @@ LABEL_7:
     }
   }
 
-  if (v7 < v4)
+  if (v7 < observingCopy)
   {
     ++v6;
     goto LABEL_7;
@@ -132,8 +132,8 @@ LABEL_7:
   do
   {
     cap = v9->_retainedGroups.__cap_;
-    v11 = cap >= v4;
-    v12 = cap < v4;
+    v11 = cap >= observingCopy;
+    v12 = cap < observingCopy;
     if (v11)
     {
       p_end_node = v9;
@@ -143,8 +143,8 @@ LABEL_7:
   }
 
   while (v9);
-  v29 = v4;
-  if (p_end_node != &self->_observedGroupsSet.__tree_.__end_node_ && p_end_node->_retainedGroups.__cap_ <= v4)
+  v29 = observingCopy;
+  if (p_end_node != &self->_observedGroupsSet.__tree_.__end_node_ && p_end_node->_retainedGroups.__cap_ <= observingCopy)
   {
     polylineGroupObserver = p_end_node->_polylineGroupObserver;
     if (polylineGroupObserver)
@@ -180,10 +180,10 @@ LABEL_7:
     std::__tree_remove[abi:nn200100]<std::__tree_node_base<void *> *>(left, p_end_node);
 
     operator delete(p_end_node);
-    v4 = v29;
+    observingCopy = v29;
   }
 
-  [v4 removeObserver:self];
+  [observingCopy removeObserver:self];
   v17 = self->_retainedGroups.__begin_;
   end = self->_retainedGroups.__end_;
   if (v17 != end)
@@ -217,7 +217,7 @@ LABEL_31:
     end = self->_retainedGroups.__end_;
   }
 
-  v4 = v29;
+  observingCopy = v29;
   if (v17 != end)
   {
     v23 = v17 + 3;
@@ -256,16 +256,16 @@ LABEL_31:
     }
 
     self->_retainedGroups.__end_ = v17;
-    v4 = v29;
+    observingCopy = v29;
   }
 
 LABEL_41:
 }
 
-- (void)startObserving:(id)a3
+- (void)startObserving:(id)observing
 {
-  v31 = a3;
-  if (v31)
+  observingCopy = observing;
+  if (observingCopy)
   {
     left = self->_observedGroupsSet.__tree_.__end_node_.__left_;
     if (!left)
@@ -278,9 +278,9 @@ LABEL_15:
     do
     {
       v6 = v5[4];
-      if (v6 <= v31)
+      if (v6 <= observingCopy)
       {
-        if (v6 >= v31)
+        if (v6 >= observingCopy)
         {
           goto LABEL_35;
         }
@@ -298,7 +298,7 @@ LABEL_15:
       {
         v7 = left;
         v8 = left[4];
-        if (v8 <= v31)
+        if (v8 <= observingCopy)
         {
           break;
         }
@@ -310,7 +310,7 @@ LABEL_15:
         }
       }
 
-      if (v8 >= v31)
+      if (v8 >= observingCopy)
       {
         break;
       }
@@ -322,7 +322,7 @@ LABEL_15:
       }
     }
 
-    [v31 addObserver:self];
+    [observingCopy addObserver:self];
     end = self->_retainedGroups.__end_;
     cap = self->_retainedGroups.__cap_;
     if (end >= cap)
@@ -361,7 +361,7 @@ LABEL_15:
         std::__throw_bad_array_new_length[abi:nn200100]();
       }
 
-      v17 = geo::_retain_ptr<VKPolylineGroupOverlay * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr((24 * v13), v31);
+      v17 = geo::_retain_ptr<VKPolylineGroupOverlay * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr((24 * v13), observingCopy);
       v18 = self->_retainedGroups.__begin_;
       v19 = self->_retainedGroups.__end_;
       v20 = v17 - (v19 - v18);
@@ -413,7 +413,7 @@ LABEL_15:
 
     else
     {
-      v11 = geo::_retain_ptr<VKPolylineGroupOverlay * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr(end, v31) + 3;
+      v11 = geo::_retain_ptr<VKPolylineGroupOverlay * {__strong},geo::_retain_objc_arc,geo::_release_objc_arc,geo::_hash_objc,geo::_equal_objc>::_retain_ptr(end, observingCopy) + 3;
       self->_retainedGroups.__end_ = v11;
     }
 
@@ -422,14 +422,14 @@ LABEL_35:
   }
 }
 
-- (RouteRenderLayerObserverProxy)initWithPolylineGroupObserver:(PolylineGroupChangeObserver *)a3
+- (RouteRenderLayerObserverProxy)initWithPolylineGroupObserver:(PolylineGroupChangeObserver *)observer
 {
   v5.receiver = self;
   v5.super_class = RouteRenderLayerObserverProxy;
   result = [(RouteRenderLayerObserverProxy *)&v5 init];
   if (result)
   {
-    result->_polylineGroupObserver = a3;
+    result->_polylineGroupObserver = observer;
   }
 
   return result;

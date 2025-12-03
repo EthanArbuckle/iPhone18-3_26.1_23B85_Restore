@@ -1,30 +1,30 @@
 @interface PSDriverPolicyForApp
-- (PSDriverPolicyForApp)initWithBundleIdentifier:(id)a3;
+- (PSDriverPolicyForApp)initWithBundleIdentifier:(id)identifier;
 - (PSDriverPolicyForAppDelegate)delegate;
 - (id)specifiers;
-- (id)valueForSpecifier:(id)a3;
-- (void)approvalStateDidChange:(BOOL)a3;
+- (id)valueForSpecifier:(id)specifier;
+- (void)approvalStateDidChange:(BOOL)change;
 - (void)dealloc;
-- (void)setValue:(id)a3 forSpecifier:(id)a4;
+- (void)setValue:(id)value forSpecifier:(id)specifier;
 @end
 
 @implementation PSDriverPolicyForApp
 
-- (PSDriverPolicyForApp)initWithBundleIdentifier:(id)a3
+- (PSDriverPolicyForApp)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = PSDriverPolicyForApp;
   v5 = [(PSDriverPolicyForApp *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(PSDriverPolicyForApp *)v5 setBundleIdentifier:v4];
-    v7 = [getDriverManagerClass() sharedManager];
-    [v7 addObserver:v6];
+    [(PSDriverPolicyForApp *)v5 setBundleIdentifier:identifierCopy];
+    sharedManager = [getDriverManagerClass() sharedManager];
+    [sharedManager addObserver:v6];
 
-    v8 = [getDriverManagerClass() sharedManager];
-    [v8 refresh];
+    sharedManager2 = [getDriverManagerClass() sharedManager];
+    [sharedManager2 refresh];
   }
 
   return v6;
@@ -32,21 +32,21 @@
 
 - (void)dealloc
 {
-  v3 = [getDriverManagerClass() sharedManager];
-  [v3 removeObserver:self];
+  sharedManager = [getDriverManagerClass() sharedManager];
+  [sharedManager removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSDriverPolicyForApp;
   [(PSDriverPolicyForApp *)&v4 dealloc];
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = v3;
-  if (v3)
+  userInfo = [specifier userInfo];
+  v4 = userInfo;
+  if (userInfo)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "driverIsApproved")}];
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(userInfo, "driverIsApproved")}];
   }
 
   else
@@ -57,28 +57,28 @@
   return v5;
 }
 
-- (void)setValue:(id)a3 forSpecifier:(id)a4
+- (void)setValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 userInfo];
-  v8 = v7;
-  if (v7 && ([v7 updatePending] & 1) == 0)
+  valueCopy = value;
+  userInfo = [specifier userInfo];
+  v8 = userInfo;
+  if (userInfo && ([userInfo updatePending] & 1) == 0)
   {
     if ([v8 driverIsApproved])
     {
-      v9 = [getDriverManagerClass() sharedManager];
-      [v9 setDriverState:v8 approved:{objc_msgSend(v6, "BOOLValue")}];
+      sharedManager = [getDriverManagerClass() sharedManager];
+      [sharedManager setDriverState:v8 approved:{objc_msgSend(valueCopy, "BOOLValue")}];
     }
 
-    else if ([v6 BOOLValue])
+    else if ([valueCopy BOOLValue])
     {
       v10 = MEMORY[0x1E69DC650];
       v11 = MEMORY[0x1E696AEC0];
       v12 = PS_LocalizedStringForDriverPolicy(@"CONFIRMATION_DIALOG_TITLE");
-      v13 = [v8 displayName];
-      v14 = [v11 stringWithFormat:v12, v13];
-      v15 = [v8 usageText];
-      v16 = [v10 alertControllerWithTitle:v14 message:v15 preferredStyle:1];
+      displayName = [v8 displayName];
+      v14 = [v11 stringWithFormat:v12, displayName];
+      usageText = [v8 usageText];
+      v16 = [v10 alertControllerWithTitle:v14 message:usageText preferredStyle:1];
 
       v17 = MEMORY[0x1E69DC648];
       v18 = PS_LocalizedStringForDriverPolicy(@"CONFIRMATION_DIALOG_ENABLE_BUTTON");
@@ -87,7 +87,7 @@
       v24[2] = __46__PSDriverPolicyForApp_setValue_forSpecifier___block_invoke;
       v24[3] = &unk_1E71DC000;
       v25 = v8;
-      v26 = v6;
+      v26 = valueCopy;
       v19 = [v17 actionWithTitle:v18 style:0 handler:v24];
 
       [v16 addAction:v19];
@@ -96,8 +96,8 @@
       v22 = [v20 actionWithTitle:v21 style:1 handler:&__block_literal_global_4];
 
       [v16 addAction:v22];
-      v23 = [(PSDriverPolicyForApp *)self delegate];
-      [v23 showController:v16 animate:1];
+      delegate = [(PSDriverPolicyForApp *)self delegate];
+      [delegate showController:v16 animate:1];
     }
   }
 }
@@ -111,10 +111,10 @@ void __46__PSDriverPolicyForApp_setValue_forSpecifier___block_invoke(uint64_t a1
 - (id)specifiers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v20 = [MEMORY[0x1E695DF70] array];
-  v3 = [getDriverManagerClass() sharedManager];
-  v4 = [(PSDriverPolicyForApp *)self bundleIdentifier];
-  v5 = [v3 driverApprovalStatesForThirdPartyApp:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  sharedManager = [getDriverManagerClass() sharedManager];
+  bundleIdentifier = [(PSDriverPolicyForApp *)self bundleIdentifier];
+  v5 = [sharedManager driverApprovalStatesForThirdPartyApp:bundleIdentifier];
 
   if ([v5 count])
   {
@@ -122,7 +122,7 @@ void __46__PSDriverPolicyForApp_setValue_forSpecifier___block_invoke(uint64_t a1
     v7 = [PSSpecifier groupSpecifierWithID:@"DRIVERS_GROUP" name:v6];
 
     v18 = v7;
-    [v20 addObject:v7];
+    [array addObject:v7];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -144,11 +144,11 @@ void __46__PSDriverPolicyForApp_setValue_forSpecifier___block_invoke(uint64_t a1
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 displayName];
-          v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:sel_setValue_forSpecifier_ get:sel_valueForSpecifier_ detail:0 cell:6 edit:0];
+          displayName = [v13 displayName];
+          v15 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:sel_setValue_forSpecifier_ get:sel_valueForSpecifier_ detail:0 cell:6 edit:0];
 
           [v15 setUserInfo:v13];
-          [v20 addObject:v15];
+          [array addObject:v15];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -163,10 +163,10 @@ void __46__PSDriverPolicyForApp_setValue_forSpecifier___block_invoke(uint64_t a1
     v5 = v19;
   }
 
-  return v20;
+  return array;
 }
 
-- (void)approvalStateDidChange:(BOOL)a3
+- (void)approvalStateDidChange:(BOOL)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

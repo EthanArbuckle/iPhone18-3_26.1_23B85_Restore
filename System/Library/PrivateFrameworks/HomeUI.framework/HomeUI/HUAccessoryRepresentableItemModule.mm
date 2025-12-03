@@ -1,15 +1,15 @@
 @interface HUAccessoryRepresentableItemModule
-- (HUAccessoryRepresentableItemModule)initWithContext:(id)a3 in:(id)a4 itemUpdater:(id)a5;
+- (HUAccessoryRepresentableItemModule)initWithContext:(id)context in:(id)in itemUpdater:(id)updater;
 @end
 
 @implementation HUAccessoryRepresentableItemModule
 
-- (HUAccessoryRepresentableItemModule)initWithContext:(id)a3 in:(id)a4 itemUpdater:(id)a5
+- (HUAccessoryRepresentableItemModule)initWithContext:(id)context in:(id)in itemUpdater:(id)updater
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  inCopy = in;
   swift_unknownObjectRetain();
-  return AccessoryRepresentableItemModule.init(context:in:itemUpdater:)(v7, v8, a5);
+  return AccessoryRepresentableItemModule.init(context:in:itemUpdater:)(contextCopy, inCopy, updater);
 }
 
 @end

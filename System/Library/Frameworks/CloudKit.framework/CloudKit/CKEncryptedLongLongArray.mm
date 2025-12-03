@@ -1,20 +1,20 @@
 @interface CKEncryptedLongLongArray
-- (CKEncryptedLongLongArray)initWithLongLongArray:(id)a3;
+- (CKEncryptedLongLongArray)initWithLongLongArray:(id)array;
 - (NSArray)longLongArray;
 @end
 
 @implementation CKEncryptedLongLongArray
 
-- (CKEncryptedLongLongArray)initWithLongLongArray:(id)a3
+- (CKEncryptedLongLongArray)initWithLongLongArray:(id)array
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v23, v27, 16);
   if (v8)
   {

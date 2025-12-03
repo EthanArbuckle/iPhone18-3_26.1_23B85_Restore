@@ -1,22 +1,22 @@
 @interface TSCEGridValue
-+ (BOOL)valueAtGridCoordPassesCriteria:(TSCEGridAccessContext *)a3 coord:(TSCEGridCoord)a4 criteria:(id)a5 outError:(id *)a6;
-+ (BOOL)valueAtIndexPassesCriteria:(TSCEGridAccessContext *)a3 index:(unint64_t)a4 criteria:(id)a5;
++ (BOOL)valueAtGridCoordPassesCriteria:(TSCEGridAccessContext *)criteria coord:(TSCEGridCoord)coord criteria:(id)a5 outError:(id *)error;
++ (BOOL)valueAtIndexPassesCriteria:(TSCEGridAccessContext *)criteria index:(unint64_t)index criteria:(id)a5;
 + (id)emptyGrid;
-+ (id)gridValue:(id)a3;
-+ (id)gridValue:(id)a3 format:(const TSCEFormat *)a4;
-+ (id)sortCriteriaByCost:(id)a3;
++ (id)gridValue:(id)value;
++ (id)gridValue:(id)value format:(const TSCEFormat *)format;
++ (id)sortCriteriaByCost:(id)cost;
 - (TSCEGridValue)init;
-- (TSCEGridValue)initWithGrid:(id)a3;
-- (TSCEGridValue)initWithGrid:(id)a3 format:(const TSCEFormat *)a4;
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepResolveInPlace:(id)a3;
-- (id)resolvedValueAtGridCoord:(TSCEGridCoord)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)subGridValueAtGridCoord:(TSCEGridCoord)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6;
-- (id)uniqueIndexForGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 considerTypeForUnique:(BOOL)a6 rowOffset:(unint64_t)a7;
-- (id)uniqueIndexesFor2DGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 byRowProcessing:(BOOL)a6 uniqueMode:(unint64_t)a7;
-- (id)valueAtGridCoord:(TSCEGridCoord)a3 accessContext:(TSCEGridAccessContext *)a4;
-- (id)valueAtIndexNoThrow:(TSCEGridAccessContext *)a3 index:(unint64_t)a4;
+- (TSCEGridValue)initWithGrid:(id)grid;
+- (TSCEGridValue)initWithGrid:(id)grid format:(const TSCEFormat *)format;
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepResolveInPlace:(id)place;
+- (id)resolvedValueAtGridCoord:(TSCEGridCoord)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)subGridValueAtGridCoord:(TSCEGridCoord)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context;
+- (id)uniqueIndexForGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index considerTypeForUnique:(BOOL)unique rowOffset:(unint64_t)offset;
+- (id)uniqueIndexesFor2DGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index byRowProcessing:(BOOL)processing uniqueMode:(unint64_t)mode;
+- (id)valueAtGridCoord:(TSCEGridCoord)coord accessContext:(TSCEGridAccessContext *)context;
+- (id)valueAtIndexNoThrow:(TSCEGridAccessContext *)throw index:(unint64_t)index;
 - (unint64_t)count;
 @end
 
@@ -29,20 +29,20 @@
   return v2;
 }
 
-+ (id)gridValue:(id)a3
++ (id)gridValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [TSCEGridValue alloc];
-  v8 = objc_msgSend_initWithGrid_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithGrid_(v4, v5, valueCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)gridValue:(id)a3 format:(const TSCEFormat *)a4
++ (id)gridValue:(id)value format:(const TSCEFormat *)format
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [TSCEGridValue alloc];
-  v9 = objc_msgSend_initWithGrid_format_(v6, v7, v5, a4, v8);
+  v9 = objc_msgSend_initWithGrid_format_(v6, v7, valueCopy, format, v8);
 
   return v9;
 }
@@ -54,37 +54,37 @@
   return [(TSCEValue *)&v3 init];
 }
 
-- (TSCEGridValue)initWithGrid:(id)a3
+- (TSCEGridValue)initWithGrid:(id)grid
 {
-  v5 = a3;
+  gridCopy = grid;
   v9.receiver = self;
   v9.super_class = TSCEGridValue;
   v6 = [(TSCEValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_grid, a3);
+    objc_storeStrong(&v6->_grid, grid);
   }
 
   return v7;
 }
 
-- (TSCEGridValue)initWithGrid:(id)a3 format:(const TSCEFormat *)a4
+- (TSCEGridValue)initWithGrid:(id)grid format:(const TSCEFormat *)format
 {
-  v7 = a3;
+  gridCopy = grid;
   v11.receiver = self;
   v11.super_class = TSCEGridValue;
-  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:a4];
+  v8 = [(TSCEValue *)&v11 initWithTSCEFormat:format];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_grid, a3);
+    objc_storeStrong(&v8->_grid, grid);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSCEGridValue;
@@ -93,18 +93,18 @@
   return v4;
 }
 
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error
 {
   grid = self->_grid;
-  objc_msgSend_format(self, a2, a3, a4, *&a5, a6, a7);
+  objc_msgSend_format(self, a2, grid, spec, *&index, format, error);
   v10 = objc_msgSend_gridValue_format_(TSCEGridValue, v8, grid, &v12, v9);
 
   return v10;
 }
 
-- (id)deepResolveInPlace:(id)a3
+- (id)deepResolveInPlace:(id)place
 {
-  v6 = objc_msgSend_deepResolveInPlace_(self->_grid, a2, a3, v3, v4);
+  v6 = objc_msgSend_deepResolveInPlace_(self->_grid, a2, place, v3, v4);
   grid = self->_grid;
   self->_grid = v6;
 
@@ -122,25 +122,25 @@
   return result;
 }
 
-- (id)valueAtGridCoord:(TSCEGridCoord)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)valueAtGridCoord:(TSCEGridCoord)coord accessContext:(TSCEGridAccessContext *)context
 {
-  v7 = a3;
-  v5 = objc_msgSend_valueAtGridCoord_accessContext_(self->_grid, a2, &v7, a4, v4);
+  coordCopy = coord;
+  v5 = objc_msgSend_valueAtGridCoord_accessContext_(self->_grid, a2, &coordCopy, context, v4);
 
   return v5;
 }
 
-- (id)resolvedValueAtGridCoord:(TSCEGridCoord)a3 accessContext:(TSCEGridAccessContext *)a4
+- (id)resolvedValueAtGridCoord:(TSCEGridCoord)coord accessContext:(TSCEGridAccessContext *)context
 {
-  v7 = a3;
-  v5 = objc_msgSend_resolvedValueAtGridCoord_accessContext_(self->_grid, a2, &v7, a4, v4);
+  coordCopy = coord;
+  v5 = objc_msgSend_resolvedValueAtGridCoord_accessContext_(self->_grid, a2, &coordCopy, context, v4);
 
   return v5;
 }
 
-- (id)valueAtIndexNoThrow:(TSCEGridAccessContext *)a3 index:(unint64_t)a4
+- (id)valueAtIndexNoThrow:(TSCEGridAccessContext *)throw index:(unint64_t)index
 {
-  if (objc_msgSend_count(self, a2, a3, a4, v4) <= a4)
+  if (objc_msgSend_count(self, a2, throw, index, v4) <= index)
   {
     v12 = objc_msgSend_errorForErrorType_(TSCEError, v8, 24, v9, v10);
     v11 = objc_msgSend_errorValue_(TSCEErrorValue, v13, v12, v14, v15);
@@ -148,49 +148,49 @@
 
   else
   {
-    v11 = objc_msgSend_valueAtIndex_accessContext_(self->_grid, v8, a4, a3, v10);
+    v11 = objc_msgSend_valueAtIndex_accessContext_(self->_grid, v8, index, throw, v10);
   }
 
   return v11;
 }
 
-- (id)subGridValueAtGridCoord:(TSCEGridCoord)a3 width:(int)a4 height:(int)a5 accessContext:(TSCEGridAccessContext *)a6
+- (id)subGridValueAtGridCoord:(TSCEGridCoord)coord width:(int)width height:(int)height accessContext:(TSCEGridAccessContext *)context
 {
-  v8 = a3;
-  v6 = objc_msgSend_subGridValueAtGridCoord_width_height_accessContext_(self->_grid, a2, &v8, *&a4, *&a5, a6);
+  coordCopy = coord;
+  v6 = objc_msgSend_subGridValueAtGridCoord_width_height_accessContext_(self->_grid, a2, &coordCopy, *&width, *&height, context);
 
   return v6;
 }
 
-- (id)uniqueIndexForGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 considerTypeForUnique:(BOOL)a6 rowOffset:(unint64_t)a7
+- (id)uniqueIndexForGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index considerTypeForUnique:(BOOL)unique rowOffset:(unint64_t)offset
 {
-  v87 = a6;
-  v84 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, a3, a4, *&a5);
-  v85 = a4;
-  v83 = objc_msgSend_functionIndex(a4, v11, v12, v13, v14);
+  uniqueCopy = unique;
+  v84 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, grid, spec, *&index);
+  specCopy = spec;
+  v83 = objc_msgSend_functionIndex(spec, v11, v12, v13, v14);
   v19 = objc_msgSend_count(self, v15, v16, v17, v18);
-  v20 = a3;
-  v90[0] = v20;
-  v90[1] = a4;
+  gridCopy = grid;
+  v90[0] = gridCopy;
+  v90[1] = spec;
   v91 = 0;
-  v92 = a5;
+  indexCopy = index;
   v93[0] = 0;
   *(v93 + 3) = 0;
   v94 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
   v95 = 0;
   v96 = 0;
-  v82 = objc_msgSend_locale(v20, v21, v22, v23, v24);
+  v82 = objc_msgSend_locale(gridCopy, v21, v22, v23, v24);
   v81 = objc_msgSend_locale(v82, v25, v26, v27, v28);
   if (v19)
   {
     v31 = 0;
-    v88 = v20;
+    v88 = gridCopy;
     do
     {
       v32 = objc_msgSend_valueAtIndex_accessContext_(self, v29, v31, v90, v30);
       if ((objc_msgSend_isError(v32, v33, v34, v35, v36) & 1) == 0 && (objc_msgSend_isNil(v32, v37, v38, v39, v40) & 1) == 0)
       {
-        if (v87)
+        if (uniqueCopy)
         {
           if (objc_msgSend_isReferenceValue(v32, v41, v42, v43, v44))
           {
@@ -215,7 +215,7 @@
         else
         {
           v89 = 0;
-          v60 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v32, v41, v20, v85, a5, &v89);
+          v60 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v32, v41, gridCopy, specCopy, index, &v89);
           v61 = v89;
           v66 = v61;
           if (v83 == 345)
@@ -233,10 +233,10 @@
           }
         }
 
-        v20 = v88;
+        gridCopy = v88;
         if (!v68)
         {
-          v20 = v88;
+          gridCopy = v88;
           if (objc_msgSend_length(v69, v62, v63, v64, v65))
           {
             v77 = objc_msgSend_objectForKey_(v84, v70, v69, v71, v72);
@@ -246,13 +246,13 @@
               objc_msgSend_setObject_forKey_(v84, v78, v77, v69, v79);
             }
 
-            objc_msgSend_addIndex_(v77, v73, a7, v75, v76);
+            objc_msgSend_addIndex_(v77, v73, offset, v75, v76);
           }
         }
       }
 
       ++v31;
-      ++a7;
+      ++offset;
     }
 
     while (v19 != v31);
@@ -261,14 +261,14 @@
   return v84;
 }
 
-- (id)uniqueIndexesFor2DGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 byRowProcessing:(BOOL)a6 uniqueMode:(unint64_t)a7
+- (id)uniqueIndexesFor2DGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index byRowProcessing:(BOOL)processing uniqueMode:(unint64_t)mode
 {
-  v190 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, a3, a4, *&a5);
+  v190 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, grid, spec, *&index);
   v192 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v12, v13, v14, v15);
-  v204[0] = a3;
-  v204[1] = a4;
+  v204[0] = grid;
+  v204[1] = spec;
   v205 = 0;
-  v206 = a5;
+  indexCopy = index;
   v207[0] = 0;
   *(v207 + 3) = 0;
   v208 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
@@ -277,14 +277,14 @@
   v193 = v204[0];
   v20 = objc_msgSend_locale(v204[0], v16, v17, v18, v19);
   v189 = objc_msgSend_locale(v20, v21, v22, v23, v24);
-  v188 = a5;
+  indexCopy2 = index;
   v203 = objc_msgSend_dimensions(self, v25, v26, v27, v28);
   v201 = 0;
   v202 = 0;
   v199 = 0;
   v200 = 0;
   v191 = v20;
-  if (a6)
+  if (processing)
   {
     v31 = 0;
     v32 = 0;
@@ -308,7 +308,7 @@
       if (v46 == 7)
       {
         v198 = 0;
-        v51 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v211[0], v47, v193, a4, v188, &v198);
+        v51 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v211[0], v47, v193, spec, indexCopy2, &v198);
         v52 = v198;
         v56 = objc_msgSend_lowercaseStringWithLocale_(v51, v53, v189, v54, v55);
 
@@ -331,7 +331,7 @@ LABEL_14:
         v95 = v90;
         if (v90)
         {
-          if (a7 == 1)
+          if (mode == 1)
           {
             v96 = objc_msgSend_unsignedIntegerValue(v90, v91, v92, v93, v94);
             objc_msgSend_removeIndex_(v190, v97, v96, v98, v99);
@@ -448,7 +448,7 @@ LABEL_14:
       }
 
       v195 = 0;
-      v128 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v211[0], v124, v193, a4, v188, &v195);
+      v128 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v211[0], v124, v193, spec, indexCopy2, &v195);
       v129 = v195;
       v133 = objc_msgSend_lowercaseStringWithLocale_(v128, v130, v189, v131, v132);
 
@@ -470,7 +470,7 @@ LABEL_40:
       v172 = v167;
       if (v167)
       {
-        if (a7 == 1)
+        if (mode == 1)
         {
           v173 = objc_msgSend_unsignedIntegerValue(v167, v168, v169, v170, v171);
           objc_msgSend_removeIndex_(v190, v174, v173, v175, v176);
@@ -506,17 +506,17 @@ LABEL_51:
   return v190;
 }
 
-+ (id)sortCriteriaByCost:(id)a3
++ (id)sortCriteriaByCost:(id)cost
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5, v6, v7) < 2)
+  costCopy = cost;
+  if (objc_msgSend_count(costCopy, v4, v5, v6, v7) < 2)
   {
-    v11 = v3;
+    v11 = costCopy;
   }
 
   else
   {
-    v11 = objc_msgSend_sortedArrayUsingComparator_(v3, v8, &unk_2834A2430, v9, v10);
+    v11 = objc_msgSend_sortedArrayUsingComparator_(costCopy, v8, &unk_2834A2430, v9, v10);
   }
 
   v12 = v11;
@@ -524,10 +524,10 @@ LABEL_51:
   return v12;
 }
 
-+ (BOOL)valueAtGridCoordPassesCriteria:(TSCEGridAccessContext *)a3 coord:(TSCEGridCoord)a4 criteria:(id)a5 outError:(id *)a6
++ (BOOL)valueAtGridCoordPassesCriteria:(TSCEGridAccessContext *)criteria coord:(TSCEGridCoord)coord criteria:(id)a5 outError:(id *)error
 {
   v72 = a5;
-  v71 = a3->var0;
+  v71 = criteria->var0;
   if (!v71)
   {
     v12 = MEMORY[0x277D81150];
@@ -541,14 +541,14 @@ LABEL_51:
   v26 = objc_msgSend_count(v72, v8, v9, v10, v11);
   if (v26)
   {
-    v69 = a6;
+    errorCopy = error;
     v27 = 1;
     while (1)
     {
       v28 = objc_msgSend_objectAtIndex_(v72, v23, v27 - 1, v24, v25);
       v33 = objc_msgSend_first(v28, v29, v30, v31, v32);
       v38 = objc_msgSend_value(v33, v34, v35, v36, v37);
-      v39 = a3->var1;
+      v39 = criteria->var1;
       v74 = 0;
       v41 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v38, v40, v71, v39, 0, 1, &v74);
       v42 = v74;
@@ -564,7 +564,7 @@ LABEL_51:
         break;
       }
 
-      v58 = objc_msgSend_valueAtGridCoord_accessContext_(v41, v52, *&a4, a3, v55);
+      v58 = objc_msgSend_valueAtGridCoord_accessContext_(v41, v52, *&coord, criteria, v55);
       v73 = 0;
       v61 = objc_msgSend_compare_outError_(v47, v59, v58, &v73, v60);
       v62 = v73;
@@ -574,7 +574,7 @@ LABEL_51:
         if (objc_msgSend_errorType(v62, v63, v64, v65, v66) == 68)
         {
           v67 = v42;
-          *v69 = v42;
+          *errorCopy = v42;
 
 LABEL_16:
           v47 = v41;
@@ -599,7 +599,7 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    *v69 = objc_msgSend_argumentSetUsedOutOfContextError(TSCEError, v52, v56, v57, v55);
+    *errorCopy = objc_msgSend_argumentSetUsedOutOfContextError(TSCEError, v52, v56, v57, v55);
 LABEL_18:
 
     v61 = 0;
@@ -615,9 +615,9 @@ LABEL_19:
   return v61;
 }
 
-+ (BOOL)valueAtIndexPassesCriteria:(TSCEGridAccessContext *)a3 index:(unint64_t)a4 criteria:(id)a5
++ (BOOL)valueAtIndexPassesCriteria:(TSCEGridAccessContext *)criteria index:(unint64_t)index criteria:(id)a5
 {
-  v53 = a4;
+  indexCopy = index;
   v6 = a5;
   v14 = objc_msgSend_count(v6, v7, v8, v9, v10);
   if (v14)
@@ -625,7 +625,7 @@ LABEL_19:
     v15 = 1;
     while (1)
     {
-      v16 = objc_msgSend_objectAtIndex_(v6, v11, v15 - 1, v12, v13, v53);
+      v16 = objc_msgSend_objectAtIndex_(v6, v11, v15 - 1, v12, v13, indexCopy);
       v21 = objc_msgSend_first(v16, v17, v18, v19, v20);
       v26 = objc_msgSend_value(v21, v22, v23, v24, v25);
       v31 = objc_msgSend_gridValue(v26, v27, v28, v29, v30);
@@ -639,7 +639,7 @@ LABEL_19:
 
       else
       {
-        v47 = objc_msgSend_valueAtIndex_accessContext_(v31, v41, v53, a3, v44);
+        v47 = objc_msgSend_valueAtIndex_accessContext_(v31, v41, indexCopy, criteria, v44);
         v54 = 0;
         v50 = objc_msgSend_compare_outError_(v36, v48, v47, &v54, v49);
         v46 = (v54 == 0) & v50;

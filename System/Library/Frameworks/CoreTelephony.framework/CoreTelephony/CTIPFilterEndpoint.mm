@@ -1,8 +1,8 @@
 @interface CTIPFilterEndpoint
-- (CTIPFilterEndpoint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTIPFilterEndpoint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTIPFilterEndpoint
@@ -10,36 +10,36 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTIPFilterEndpoint *)self addr];
+  addr = [(CTIPFilterEndpoint *)self addr];
 
-  if (v4)
+  if (addr)
   {
-    v5 = [(CTIPFilterEndpoint *)self addr];
-    [v3 appendFormat:@", addr=%@", v5];
+    addr2 = [(CTIPFilterEndpoint *)self addr];
+    [v3 appendFormat:@", addr=%@", addr2];
   }
 
-  v6 = [(CTIPFilterEndpoint *)self maskLen];
+  maskLen = [(CTIPFilterEndpoint *)self maskLen];
 
-  if (v6)
+  if (maskLen)
   {
-    v7 = [(CTIPFilterEndpoint *)self maskLen];
-    [v3 appendFormat:@", maskLen=%@", v7];
+    maskLen2 = [(CTIPFilterEndpoint *)self maskLen];
+    [v3 appendFormat:@", maskLen=%@", maskLen2];
   }
 
-  v8 = [(CTIPFilterEndpoint *)self port];
+  port = [(CTIPFilterEndpoint *)self port];
 
-  if (v8)
+  if (port)
   {
-    v9 = [(CTIPFilterEndpoint *)self port];
-    [v3 appendFormat:@", port=%@", v9];
+    port2 = [(CTIPFilterEndpoint *)self port];
+    [v3 appendFormat:@", port=%@", port2];
   }
 
-  v10 = [(CTIPFilterEndpoint *)self portRange];
+  portRange = [(CTIPFilterEndpoint *)self portRange];
 
-  if (v10)
+  if (portRange)
   {
-    v11 = [(CTIPFilterEndpoint *)self portRange];
-    [v3 appendFormat:@", portRange=%@", v11];
+    portRange2 = [(CTIPFilterEndpoint *)self portRange];
+    [v3 appendFormat:@", portRange=%@", portRange2];
   }
 
   [v3 appendString:@">"];
@@ -47,65 +47,65 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTIPFilterEndpoint *)self addr];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  addr = [(CTIPFilterEndpoint *)self addr];
+  v6 = [addr copy];
   [v4 setAddr:v6];
 
-  v7 = [(CTIPFilterEndpoint *)self maskLen];
-  v8 = [v7 copy];
+  maskLen = [(CTIPFilterEndpoint *)self maskLen];
+  v8 = [maskLen copy];
   [v4 setMaskLen:v8];
 
-  v9 = [(CTIPFilterEndpoint *)self port];
-  v10 = [v9 copy];
+  port = [(CTIPFilterEndpoint *)self port];
+  v10 = [port copy];
   [v4 setPort:v10];
 
-  v11 = [(CTIPFilterEndpoint *)self portRange];
-  v12 = [v11 copy];
+  portRange = [(CTIPFilterEndpoint *)self portRange];
+  v12 = [portRange copy];
   [v4 setPortRange:v12];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CTIPFilterEndpoint *)self addr];
-  [v4 encodeObject:v5 forKey:@"addr"];
+  coderCopy = coder;
+  addr = [(CTIPFilterEndpoint *)self addr];
+  [coderCopy encodeObject:addr forKey:@"addr"];
 
-  v6 = [(CTIPFilterEndpoint *)self maskLen];
-  [v4 encodeObject:v6 forKey:@"maskLen"];
+  maskLen = [(CTIPFilterEndpoint *)self maskLen];
+  [coderCopy encodeObject:maskLen forKey:@"maskLen"];
 
-  v7 = [(CTIPFilterEndpoint *)self port];
-  [v4 encodeObject:v7 forKey:@"port"];
+  port = [(CTIPFilterEndpoint *)self port];
+  [coderCopy encodeObject:port forKey:@"port"];
 
-  v8 = [(CTIPFilterEndpoint *)self portRange];
-  [v4 encodeObject:v8 forKey:@"portRange"];
+  portRange = [(CTIPFilterEndpoint *)self portRange];
+  [coderCopy encodeObject:portRange forKey:@"portRange"];
 }
 
-- (CTIPFilterEndpoint)initWithCoder:(id)a3
+- (CTIPFilterEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CTIPFilterEndpoint;
   v5 = [(CTIPFilterEndpoint *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addr"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addr"];
     addr = v5->_addr;
     v5->_addr = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maskLen"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maskLen"];
     maskLen = v5->_maskLen;
     v5->_maskLen = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"port"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"port"];
     port = v5->_port;
     v5->_port = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"portRange"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"portRange"];
     portRange = v5->_portRange;
     v5->_portRange = v12;
   }

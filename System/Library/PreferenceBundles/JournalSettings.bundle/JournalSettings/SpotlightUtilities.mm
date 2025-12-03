@@ -1,9 +1,9 @@
 @interface SpotlightUtilities
 + (CSSearchableIndex)searchableIndex;
 + (void)deleteAllSearchableItemsFromLegacyIndex;
-+ (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-+ (void)reindexAllSearchableItemsWithSpotlightDelegate:(NSCoreDataCoreSpotlightDelegate *)a3 completionHandler:(id)a4;
-+ (void)setDisableSearchInSpotlightFlagWithDisableSearchInSpotlight:(BOOL)a3 completionHandler:(id)a4;
++ (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
++ (void)reindexAllSearchableItemsWithSpotlightDelegate:(NSCoreDataCoreSpotlightDelegate *)delegate completionHandler:(id)handler;
++ (void)setDisableSearchInSpotlightFlagWithDisableSearchInSpotlight:(BOOL)spotlight completionHandler:(id)handler;
 - (_TtC15JournalSettings18SpotlightUtilities)init;
 @end
 
@@ -20,16 +20,16 @@
   return v6;
 }
 
-+ (void)setDisableSearchInSpotlightFlagWithDisableSearchInSpotlight:(BOOL)a3 completionHandler:(id)a4
++ (void)setDisableSearchInSpotlightFlagWithDisableSearchInSpotlight:(BOOL)spotlight completionHandler:(id)handler
 {
   v7 = sub_3A90(&qword_C8820);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = spotlight;
   *(v11 + 24) = v10;
-  *(v11 + 32) = a1;
+  *(v11 + 32) = self;
   v12 = sub_90880();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -45,15 +45,15 @@
   sub_76A34(0, 0, v9, &unk_9C998, v14);
 }
 
-+ (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
++ (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
   v5 = sub_3A90(&qword_C8820);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = sub_90880();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();
@@ -69,16 +69,16 @@
   sub_76A34(0, 0, v7, &unk_9C970, v12);
 }
 
-+ (void)reindexAllSearchableItemsWithSpotlightDelegate:(NSCoreDataCoreSpotlightDelegate *)a3 completionHandler:(id)a4
++ (void)reindexAllSearchableItemsWithSpotlightDelegate:(NSCoreDataCoreSpotlightDelegate *)delegate completionHandler:(id)handler
 {
   v7 = sub_3A90(&qword_C8820);
   __chkstk_darwin(v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = delegate;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = sub_90880();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -91,7 +91,7 @@
   v14[3] = 0;
   v14[4] = &unk_9C920;
   v14[5] = v13;
-  v15 = a3;
+  delegateCopy = delegate;
   sub_76A34(0, 0, v9, &unk_9C930, v14);
 }
 

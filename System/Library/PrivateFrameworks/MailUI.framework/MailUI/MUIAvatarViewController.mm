@@ -1,11 +1,11 @@
 @interface MUIAvatarViewController
 + (OS_os_log)log;
-- (MUIAvatarViewController)initWithContacts:(id)a3;
+- (MUIAvatarViewController)initWithContacts:(id)contacts;
 - (UIView)view;
-- (id)displayPersonForContext:(id)a3 avatarGenerationBlock:(id)a4;
-- (id)displayPersonForContext:(id)a3 avatarGenerator:(id)a4;
-- (void)updateContacts:(id)a3;
-- (void)updateWithResult:(id)a3;
+- (id)displayPersonForContext:(id)context avatarGenerationBlock:(id)block;
+- (id)displayPersonForContext:(id)context avatarGenerator:(id)generator;
+- (void)updateContacts:(id)contacts;
+- (void)updateWithResult:(id)result;
 @end
 
 @implementation MUIAvatarViewController
@@ -13,15 +13,15 @@
 - (UIView)view
 {
   view = self->_view;
-  v4 = [(MUIAvatarViewController *)self avatarViewController];
-  v5 = [v4 view];
+  avatarViewController = [(MUIAvatarViewController *)self avatarViewController];
+  view = [avatarViewController view];
 
-  if (view != v5)
+  if (view != view)
   {
-    v6 = [(MUIAvatarViewController *)self avatarViewController];
-    v7 = [v6 view];
+    avatarViewController2 = [(MUIAvatarViewController *)self avatarViewController];
+    view2 = [avatarViewController2 view];
     v8 = self->_view;
-    self->_view = v7;
+    self->_view = view2;
 
     [(UIView *)self->_view setTranslatesAutoresizingMaskIntoConstraints:0];
   }
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __30__MUIAvatarViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_7 != -1)
   {
     dispatch_once(&log_onceToken_7, block);
@@ -57,74 +57,74 @@ void __30__MUIAvatarViewController_log__block_invoke(uint64_t a1)
   log_log_7 = v2;
 }
 
-- (MUIAvatarViewController)initWithContacts:(id)a3
+- (MUIAvatarViewController)initWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v9.receiver = self;
   v9.super_class = MUIAvatarViewController;
   v5 = [(MUIAvatarViewController *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBDBF0] avatarViewController];
-    [(MUIAvatarViewController *)v5 setAvatarViewController:v6];
+    avatarViewController = [MEMORY[0x277CBDBF0] avatarViewController];
+    [(MUIAvatarViewController *)v5 setAvatarViewController:avatarViewController];
 
-    v7 = [(MUIAvatarViewController *)v5 avatarViewController];
-    [v7 setThreeDTouchEnabled:0];
+    avatarViewController2 = [(MUIAvatarViewController *)v5 avatarViewController];
+    [avatarViewController2 setThreeDTouchEnabled:0];
 
-    if ([v4 count])
+    if ([contactsCopy count])
     {
-      [(MUIAvatarViewController *)v5 updateContacts:v4];
+      [(MUIAvatarViewController *)v5 updateContacts:contactsCopy];
     }
   }
 
   return v5;
 }
 
-- (void)updateContacts:(id)a3
+- (void)updateContacts:(id)contacts
 {
-  v4 = a3;
-  if (!v4)
+  contactsCopy = contacts;
+  if (!contactsCopy)
   {
-    v4 = MEMORY[0x277CBEBF8];
+    contactsCopy = MEMORY[0x277CBEBF8];
   }
 
-  v6 = v4;
-  v5 = [(MUIAvatarViewController *)self avatarViewController];
-  [v5 setContacts:v6];
+  v6 = contactsCopy;
+  avatarViewController = [(MUIAvatarViewController *)self avatarViewController];
+  [avatarViewController setContacts:v6];
 
   [(MUIAvatarViewController *)self setContext:0];
 }
 
-- (void)updateWithResult:(id)a3
+- (void)updateWithResult:(id)result
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   v6 = +[MUIAvatarViewController log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 contact];
-    v9 = [v8 contactType];
-    v10 = [(MUIAvatarViewController *)self context];
-    v11 = [v10 ef_publicDescription];
+    contact = [resultCopy contact];
+    contactType = [contact contactType];
+    context = [(MUIAvatarViewController *)self context];
+    ef_publicDescription = [context ef_publicDescription];
     *buf = 138544386;
     v23 = v7;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     v26 = 2048;
-    v27 = v9;
+    v27 = contactType;
     v28 = 2114;
-    v29 = v5;
+    v29 = resultCopy;
     v30 = 2114;
-    v31 = v11;
+    v31 = ef_publicDescription;
     _os_log_impl(&dword_214A5E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - [%p] CNContact type %ld result %{public}@ context %{public}@", buf, 0x34u);
   }
 
-  v12 = [v5 contact];
-  if (v12)
+  contact2 = [resultCopy contact];
+  if (contact2)
   {
-    v13 = [v5 contact];
-    v21 = v13;
+    contact3 = [resultCopy contact];
+    v21 = contact3;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
   }
 
@@ -134,29 +134,29 @@ void __30__MUIAvatarViewController_log__block_invoke(uint64_t a1)
   }
 
   [(MUIAvatarViewController *)self updateContacts:v14];
-  v15 = [(MUIAvatarViewController *)self view];
-  v16 = [v15 traitCollection];
-  v17 = [v5 needsBorderFor:{objc_msgSend(v16, "userInterfaceStyle")}];
+  view = [(MUIAvatarViewController *)self view];
+  traitCollection = [view traitCollection];
+  v17 = [resultCopy needsBorderFor:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v18 = [(MUIAvatarViewController *)self view];
-  v19 = [(MUIAvatarViewController *)self view];
-  [v19 frame];
-  [MUIAvatarImageGenerator roundAvatarView:v18 withBorder:v17 size:v20];
+  view2 = [(MUIAvatarViewController *)self view];
+  view3 = [(MUIAvatarViewController *)self view];
+  [view3 frame];
+  [MUIAvatarImageGenerator roundAvatarView:view2 withBorder:v17 size:v20];
 }
 
-- (id)displayPersonForContext:(id)a3 avatarGenerator:(id)a4
+- (id)displayPersonForContext:(id)context avatarGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  contextCopy = context;
+  generatorCopy = generator;
+  v8 = generatorCopy;
+  if (contextCopy && generatorCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__MUIAvatarViewController_displayPersonForContext_avatarGenerator___block_invoke;
     v12[3] = &unk_27818A218;
-    v13 = v7;
-    v14 = v6;
+    v13 = generatorCopy;
+    v14 = contextCopy;
     v9 = [(MUIAvatarViewController *)self displayPersonForContext:v14 avatarGenerationBlock:v12];
   }
 
@@ -165,7 +165,7 @@ void __30__MUIAvatarViewController_log__block_invoke(uint64_t a1)
     v10 = +[MUIAvatarViewController log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      [(MUIAvatarViewController *)v6 displayPersonForContext:v8 avatarGenerator:v10];
+      [(MUIAvatarViewController *)contextCopy displayPersonForContext:v8 avatarGenerator:v10];
     }
 
     v9 = objc_alloc_init(MEMORY[0x277D07170]);
@@ -174,42 +174,42 @@ void __30__MUIAvatarViewController_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)displayPersonForContext:(id)a3 avatarGenerationBlock:(id)a4
+- (id)displayPersonForContext:(id)context avatarGenerationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  contextCopy = context;
+  blockCopy = block;
+  v8 = blockCopy;
+  if (!contextCopy || !blockCopy)
   {
     v12 = +[MUIAvatarViewController log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      [(MUIAvatarViewController *)v6 displayPersonForContext:v8 avatarGenerationBlock:v12];
+      [(MUIAvatarViewController *)contextCopy displayPersonForContext:v8 avatarGenerationBlock:v12];
     }
 
-    v11 = objc_alloc_init(MEMORY[0x277D07170]);
+    token = objc_alloc_init(MEMORY[0x277D07170]);
     goto LABEL_8;
   }
 
-  v9 = [(MUIAvatarViewController *)self context];
-  v10 = [v6 isEqual:v9];
+  context = [(MUIAvatarViewController *)self context];
+  v10 = [contextCopy isEqual:context];
 
   if (v10)
   {
-    v11 = [(MUIAvatarViewController *)self token];
+    token = [(MUIAvatarViewController *)self token];
 LABEL_8:
-    v13 = v11;
+    v13 = token;
     goto LABEL_10;
   }
 
-  [(MUIAvatarViewController *)self setContext:v6];
+  [(MUIAvatarViewController *)self setContext:contextCopy];
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __73__MUIAvatarViewController_displayPersonForContext_avatarGenerationBlock___block_invoke;
   v15[3] = &unk_27818A240;
   objc_copyWeak(&v17, &location);
-  v16 = v6;
+  v16 = contextCopy;
   v13 = (v8)[2](v8, v15);
   [(MUIAvatarViewController *)self setToken:v13];
 

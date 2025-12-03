@@ -1,205 +1,205 @@
 @interface TIAggdReporterMock
 - (TIAggdReporterMock)init;
-- (id)getDistributionObject:(id)a3;
+- (id)getDistributionObject:(id)object;
 - (id)toDictionary;
 - (id)toJsonString;
-- (int64_t)_getScalar:(id)a3;
-- (int64_t)getScalar:(id)a3;
-- (void)_setScalar:(id)a3 withValue:(int64_t)a4;
-- (void)addValue:(int64_t)a3 forKey:(id)a4;
+- (int64_t)_getScalar:(id)scalar;
+- (int64_t)getScalar:(id)scalar;
+- (void)_setScalar:(id)scalar withValue:(int64_t)value;
+- (void)addValue:(int64_t)value forKey:(id)key;
 - (void)clear;
-- (void)clearDistributionKey:(id)a3;
-- (void)clearScalarKey:(id)a3;
-- (void)decrementKey:(id)a3;
-- (void)incrementKey:(id)a3;
-- (void)pushValue:(double)a3 forKey:(id)a4;
-- (void)setScalar:(id)a3 withValue:(int64_t)a4;
-- (void)setValue:(double)a3 forDistributionKey:(id)a4;
-- (void)setValue:(int64_t)a3 forScalarKey:(id)a4;
-- (void)subtractValue:(int64_t)a3 forKey:(id)a4;
+- (void)clearDistributionKey:(id)key;
+- (void)clearScalarKey:(id)key;
+- (void)decrementKey:(id)key;
+- (void)incrementKey:(id)key;
+- (void)pushValue:(double)value forKey:(id)key;
+- (void)setScalar:(id)scalar withValue:(int64_t)value;
+- (void)setValue:(double)value forDistributionKey:(id)key;
+- (void)setValue:(int64_t)value forScalarKey:(id)key;
+- (void)subtractValue:(int64_t)value forKey:(id)key;
 @end
 
 @implementation TIAggdReporterMock
 
-- (id)getDistributionObject:(id)a3
+- (id)getDistributionObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TIAggdReporterMock *)v5 distributions];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  distributions = [(TIAggdReporterMock *)selfCopy distributions];
+  v7 = [distributions objectForKeyedSubscript:objectCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)pushValue:(double)a3 forKey:(id)a4
+- (void)pushValue:(double)value forKey:(id)key
 {
-  v11 = a4;
-  if (v11)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(TIAggdReporterMock *)v6 distributions];
-    v8 = [v7 objectForKeyedSubscript:v11];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    distributions = [(TIAggdReporterMock *)selfCopy distributions];
+    v8 = [distributions objectForKeyedSubscript:keyCopy];
 
     if (!v8)
     {
       v8 = [MEMORY[0x277CBEB18] arrayWithArray:MEMORY[0x277CBEBF8]];
-      v9 = [(TIAggdReporterMock *)v6 distributions];
-      [v9 setObject:v8 forKey:v11];
+      distributions2 = [(TIAggdReporterMock *)selfCopy distributions];
+      [distributions2 setObject:v8 forKey:keyCopy];
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:value];
     [v8 addObject:v10];
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)setValue:(double)a3 forDistributionKey:(id)a4
+- (void)setValue:(double)value forDistributionKey:(id)key
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(TIAggdReporterMock *)v7 distributions];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    distributions = [(TIAggdReporterMock *)selfCopy distributions];
     v9 = MEMORY[0x277CBEB18];
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithDouble:value];
     v13[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     v12 = [v9 arrayWithArray:v11];
-    [v8 setObject:v12 forKey:v6];
+    [distributions setObject:v12 forKey:keyCopy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)clearDistributionKey:(id)a3
+- (void)clearDistributionKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(TIAggdReporterMock *)v5 distributions];
-    [v6 removeObjectForKey:v7];
+    v7 = keyCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    distributions = [(TIAggdReporterMock *)selfCopy distributions];
+    [distributions removeObjectForKey:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    keyCopy = v7;
   }
 }
 
-- (void)decrementKey:(id)a3
+- (void)decrementKey:(id)key
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(TIAggdReporterMock *)v4 _setScalar:v5 withValue:[(TIAggdReporterMock *)v4 getScalar:v5]- 1];
-  objc_sync_exit(v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:keyCopy withValue:[(TIAggdReporterMock *)selfCopy getScalar:keyCopy]- 1];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)incrementKey:(id)a3
+- (void)incrementKey:(id)key
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(TIAggdReporterMock *)v4 _setScalar:v5 withValue:[(TIAggdReporterMock *)v4 getScalar:v5]+ 1];
-  objc_sync_exit(v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:keyCopy withValue:[(TIAggdReporterMock *)selfCopy getScalar:keyCopy]+ 1];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)subtractValue:(int64_t)a3 forKey:(id)a4
+- (void)subtractValue:(int64_t)value forKey:(id)key
 {
-  v7 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(TIAggdReporterMock *)v6 _setScalar:v7 withValue:[(TIAggdReporterMock *)v6 getScalar:v7]- a3];
-  objc_sync_exit(v6);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:keyCopy withValue:[(TIAggdReporterMock *)selfCopy getScalar:keyCopy]- value];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addValue:(int64_t)a3 forKey:(id)a4
+- (void)addValue:(int64_t)value forKey:(id)key
 {
-  v7 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(TIAggdReporterMock *)v6 _setScalar:v7 withValue:[(TIAggdReporterMock *)v6 getScalar:v7]+ a3];
-  objc_sync_exit(v6);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:keyCopy withValue:[(TIAggdReporterMock *)selfCopy getScalar:keyCopy]+ value];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setValue:(int64_t)a3 forScalarKey:(id)a4
+- (void)setValue:(int64_t)value forScalarKey:(id)key
 {
-  v7 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(TIAggdReporterMock *)v6 _setScalar:v7 withValue:a3];
-  objc_sync_exit(v6);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:keyCopy withValue:value];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)clearScalarKey:(id)a3
+- (void)clearScalarKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(TIAggdReporterMock *)v5 scalars];
-    [v6 removeObjectForKey:v7];
+    v7 = keyCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    scalars = [(TIAggdReporterMock *)selfCopy scalars];
+    [scalars removeObjectForKey:v7];
 
-    objc_sync_exit(v5);
-    v4 = v7;
+    objc_sync_exit(selfCopy);
+    keyCopy = v7;
   }
 }
 
-- (void)_setScalar:(id)a3 withValue:(int64_t)a4
+- (void)_setScalar:(id)scalar withValue:(int64_t)value
 {
-  if (a3)
+  if (scalar)
   {
-    v6 = a3;
-    v8 = [(TIAggdReporterMock *)self scalars];
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:a4];
-    [v8 setObject:v7 forKey:v6];
+    scalarCopy = scalar;
+    scalars = [(TIAggdReporterMock *)self scalars];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:value];
+    [scalars setObject:v7 forKey:scalarCopy];
   }
 }
 
-- (void)setScalar:(id)a3 withValue:(int64_t)a4
+- (void)setScalar:(id)scalar withValue:(int64_t)value
 {
-  v7 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(TIAggdReporterMock *)v6 _setScalar:v7 withValue:a4];
-  objc_sync_exit(v6);
+  scalarCopy = scalar;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(TIAggdReporterMock *)selfCopy _setScalar:scalarCopy withValue:value];
+  objc_sync_exit(selfCopy);
 }
 
-- (int64_t)_getScalar:(id)a3
+- (int64_t)_getScalar:(id)scalar
 {
-  v4 = a3;
-  if (v4 && (-[TIAggdReporterMock scalars](self, "scalars"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  scalarCopy = scalar;
+  if (scalarCopy && (-[TIAggdReporterMock scalars](self, "scalars"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:scalarCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(TIAggdReporterMock *)self scalars];
-    v8 = [v7 objectForKeyedSubscript:v4];
-    v9 = [v8 longLongValue];
+    scalars = [(TIAggdReporterMock *)self scalars];
+    v8 = [scalars objectForKeyedSubscript:scalarCopy];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
-  return v9;
+  return longLongValue;
 }
 
-- (int64_t)getScalar:(id)a3
+- (int64_t)getScalar:(id)scalar
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TIAggdReporterMock *)v5 _getScalar:v4];
-  objc_sync_exit(v5);
+  scalarCopy = scalar;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TIAggdReporterMock *)selfCopy _getScalar:scalarCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -207,9 +207,9 @@
 - (id)toJsonString
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(TIAggdReporterMock *)self toDictionary];
+  toDictionary = [(TIAggdReporterMock *)self toDictionary];
   v7 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v7];
+  v4 = [v2 dataWithJSONObject:toDictionary options:1 error:&v7];
 
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v4 encoding:4];
 
@@ -219,17 +219,17 @@
 - (id)toDictionary
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7[0] = @"scalars";
-  v3 = [(TIAggdReporterMock *)v2 scalars];
+  scalars = [(TIAggdReporterMock *)selfCopy scalars];
   v7[1] = @"distributions";
-  v8[0] = v3;
-  v4 = [(TIAggdReporterMock *)v2 distributions];
-  v8[1] = v4;
+  v8[0] = scalars;
+  distributions = [(TIAggdReporterMock *)selfCopy distributions];
+  v8[1] = distributions;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -238,11 +238,11 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(TIAggdReporterMock *)obj scalars];
-  [v2 removeAllObjects];
+  scalars = [(TIAggdReporterMock *)obj scalars];
+  [scalars removeAllObjects];
 
-  v3 = [(TIAggdReporterMock *)obj distributions];
-  [v3 removeAllObjects];
+  distributions = [(TIAggdReporterMock *)obj distributions];
+  [distributions removeAllObjects];
 
   objc_sync_exit(obj);
 }

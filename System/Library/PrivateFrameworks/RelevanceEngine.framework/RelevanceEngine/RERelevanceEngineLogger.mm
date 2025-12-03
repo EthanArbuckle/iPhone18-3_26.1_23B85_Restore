@@ -1,7 +1,7 @@
 @interface RERelevanceEngineLogger
 - (RERelevanceEngineLogger)init;
-- (void)collectLogs:(id)a3 completion:(id)a4;
-- (void)enumerateLoggables:(id)a3;
+- (void)collectLogs:(id)logs completion:(id)completion;
+- (void)enumerateLoggables:(id)loggables;
 @end
 
 @implementation RERelevanceEngineLogger
@@ -25,29 +25,29 @@
   return v2;
 }
 
-- (void)enumerateLoggables:(id)a3
+- (void)enumerateLoggables:(id)loggables
 {
-  v4 = a3;
+  loggablesCopy = loggables;
   loggables = self->_loggables;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RERelevanceEngineLogger_enumerateLoggables___block_invoke;
   v7[3] = &unk_2785FDD18;
-  v8 = v4;
-  v6 = v4;
+  v8 = loggablesCopy;
+  v6 = loggablesCopy;
   [(REObserverStore *)loggables enumerateObserversWithBlock:v7];
 }
 
-- (void)collectLogs:(id)a3 completion:(id)a4
+- (void)collectLogs:(id)logs completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  logsCopy = logs;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __50__RERelevanceEngineLogger_collectLogs_completion___block_invoke;
   v32[3] = &unk_2785FA0E0;
-  v9 = v8;
+  v9 = array;
   v33 = v9;
   [(RERelevanceEngineLogger *)self enumerateLoggables:v32];
   v26 = 0;
@@ -60,13 +60,13 @@
   v20[1] = 3221225472;
   v20[2] = __50__RERelevanceEngineLogger_collectLogs_completion___block_invoke_23;
   v20[3] = &unk_2785FDD68;
-  v24 = v6;
+  v24 = logsCopy;
   v25 = &v26;
-  v22 = self;
-  v23 = v7;
+  selfCopy = self;
+  v23 = completionCopy;
   v21 = v9;
-  v10 = v6;
-  v11 = v7;
+  v10 = logsCopy;
+  v11 = completionCopy;
   v12 = v9;
   v13 = MEMORY[0x22AABC5E0](v20);
   v14 = MEMORY[0x22AABC5E0]();

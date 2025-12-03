@@ -1,11 +1,11 @@
 @interface LPCircularProgressIndicatorStyle
-- (LPCircularProgressIndicatorStyle)initWithPlatform:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LPCircularProgressIndicatorStyle)initWithPlatform:(int64_t)platform;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPCircularProgressIndicatorStyle
 
-- (LPCircularProgressIndicatorStyle)initWithPlatform:(int64_t)a3
+- (LPCircularProgressIndicatorStyle)initWithPlatform:(int64_t)platform
 {
   v14.receiver = self;
   v14.super_class = LPCircularProgressIndicatorStyle;
@@ -14,31 +14,31 @@
   if (v4)
   {
     v4->_borderWidth = 3.0;
-    if (a3 < 5 || a3 == 6)
+    if (platform < 5 || platform == 6)
     {
-      v6 = [MEMORY[0x1E69DC888] lightGrayColor];
+      lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
       borderColor = v5->_borderColor;
-      v5->_borderColor = v6;
+      v5->_borderColor = lightGrayColor;
 
-      v8 = [MEMORY[0x1E69DC888] lightGrayColor];
+      lightGrayColor2 = [MEMORY[0x1E69DC888] lightGrayColor];
     }
 
     else
     {
-      if (a3 != 5)
+      if (platform != 5)
       {
         goto LABEL_5;
       }
 
-      v12 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       v13 = v5->_borderColor;
-      v5->_borderColor = v12;
+      v5->_borderColor = whiteColor;
 
-      v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      lightGrayColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
     fillColor = v5->_fillColor;
-    v5->_fillColor = v8;
+    v5->_fillColor = lightGrayColor2;
 
 LABEL_5:
     v10 = v5;
@@ -47,9 +47,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPCircularProgressIndicatorStyle allocWithZone:a3];
+  v4 = [LPCircularProgressIndicatorStyle allocWithZone:zone];
   v5 = v4;
   if (v4)
   {

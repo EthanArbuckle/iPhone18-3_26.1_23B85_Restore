@@ -1,37 +1,37 @@
 @interface NTKTimelineDataOperation
-+ (id)operationWithLocalDataSource:(id)a3;
-+ (id)operationWithRemoteDataSource:(id)a3 complication:(id)a4;
-- (BOOL)_validateEntry:(id)a3;
-- (BOOL)_validateTemplate:(id)a3;
++ (id)operationWithLocalDataSource:(id)source;
++ (id)operationWithRemoteDataSource:(id)source complication:(id)complication;
+- (BOOL)_validateEntry:(id)entry;
+- (BOOL)_validateTemplate:(id)template;
 - (id)_dataSourceDescription;
-- (id)_finalizedValidEntries:(id)a3;
+- (id)_finalizedValidEntries:(id)entries;
 - (void)cancel;
 - (void)start;
 @end
 
 @implementation NTKTimelineDataOperation
 
-+ (id)operationWithLocalDataSource:(id)a3
++ (id)operationWithLocalDataSource:(id)source
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  sourceCopy = source;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = sourceCopy;
 
   return v5;
 }
 
-+ (id)operationWithRemoteDataSource:(id)a3 complication:(id)a4
++ (id)operationWithRemoteDataSource:(id)source complication:(id)complication
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  sourceCopy = source;
+  complicationCopy = complication;
+  v8 = objc_alloc_init(self);
   v9 = v8[2];
-  v8[2] = v6;
-  v10 = v6;
+  v8[2] = sourceCopy;
+  v10 = sourceCopy;
 
   v11 = v8[3];
-  v8[3] = v7;
+  v8[3] = complicationCopy;
 
   return v8;
 }
@@ -55,11 +55,11 @@
   v3 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKTimelineDataOperation *)self _dataSourceDescription];
+    _dataSourceDescription = [(NTKTimelineDataOperation *)self _dataSourceDescription];
     v5 = 138412546;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
-    v8 = v4;
+    v8 = _dataSourceDescription;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Starting timeline operation %@ on %@", &v5, 0x16u);
   }
 
@@ -76,7 +76,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling timeline operation %@", &v4, 0xCu);
     }
 
@@ -86,9 +86,9 @@
   self->_canceled = 1;
 }
 
-- (BOOL)_validateEntry:(id)a3
+- (BOOL)_validateEntry:(id)entry
 {
-  v4 = [a3 validateWithError:0];
+  v4 = [entry validateWithError:0];
   if ((v4 & 1) == 0)
   {
     v5 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
@@ -101,9 +101,9 @@
   return v4;
 }
 
-- (BOOL)_validateTemplate:(id)a3
+- (BOOL)_validateTemplate:(id)template
 {
-  v4 = [a3 validateWithError:0];
+  v4 = [template validateWithError:0];
   if ((v4 & 1) == 0)
   {
     v5 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
@@ -116,16 +116,16 @@
   return v4;
 }
 
-- (id)_finalizedValidEntries:(id)a3
+- (id)_finalizedValidEntries:(id)entries
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  entriesCopy = entries;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = entriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -143,8 +143,8 @@
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([(NTKTimelineDataOperation *)self _validateEntry:v11, v14])
         {
-          v12 = [v11 finalizedCopy];
-          [v5 addObject:v12];
+          finalizedCopy = [v11 finalizedCopy];
+          [array addObject:finalizedCopy];
         }
       }
 
@@ -154,7 +154,7 @@
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (void)_validateEntry:(void *)a1 .cold.1(void *a1)

@@ -1,10 +1,10 @@
 @interface CLKClockComplicationCountSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLKClockComplicationCountSet)init;
 - (NSOrderedSet)orderedSet;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendCount:(id)a3;
-- (void)mergeSet:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendCount:(id)count;
+- (void)mergeSet:(id)set;
 @end
 
 @implementation CLKClockComplicationCountSet
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (void)appendCount:(id)a3
+- (void)appendCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -42,7 +42,7 @@
   v9[1] = 3221225472;
   v9[2] = __44__CLKClockComplicationCountSet_appendCount___block_invoke;
   v9[3] = &unk_278A1F6C0;
-  v6 = v4;
+  v6 = countCopy;
   v10 = v6;
   v11 = &v13;
   v12 = &v19;
@@ -78,15 +78,15 @@ void __44__CLKClockComplicationCountSet_appendCount___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)mergeSet:(id)a3
+- (void)mergeSet:(id)set
 {
-  v4 = [a3 orderedSet];
+  orderedSet = [set orderedSet];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__CLKClockComplicationCountSet_mergeSet___block_invoke;
   v5[3] = &unk_278A1F6E8;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [orderedSet enumerateObjectsUsingBlock:v5];
 }
 
 - (NSOrderedSet)orderedSet
@@ -96,13 +96,13 @@ void __44__CLKClockComplicationCountSet_appendCount___block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSMutableOrderedSet *)self->_orderedSet isEqual:v4[1]];
+    v5 = [(NSMutableOrderedSet *)self->_orderedSet isEqual:equalCopy[1]];
   }
 
   else
@@ -113,7 +113,7 @@ void __44__CLKClockComplicationCountSet_appendCount___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CLKClockComplicationCountSet allocWithZone:?]];
   v5 = [(NSMutableOrderedSet *)self->_orderedSet mutableCopy];

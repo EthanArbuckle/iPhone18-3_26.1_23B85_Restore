@@ -105,15 +105,15 @@
   v10 = __sincos_stret(v8);
   v11 = sin(v9 + v9);
   v12 = [CIVector vectorWithX:v10.__cosval * v10.__cosval / ((v4 + v4) * v4) + v10.__sinval * v10.__sinval / ((v7 + v7) * v7) Y:(v11 / (v7 * 4.0 * v7) - v11 / (v4 * 4.0 * v4)) Z:v10.__sinval * v10.__sinval / ((v4 + v4) * v4) + v10.__cosval * v10.__cosval / ((v7 + v7) * v7) W:v51];
-  v13 = [(CIPortraitLightingContour *)self _extractRed];
+  _extractRed = [(CIPortraitLightingContour *)self _extractRed];
   [(CIImage *)self->inputImage extent];
   inputImage = self->inputImage;
-  v18 = [objc_msgSend(v13 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v14, v15, v16, v17), "imageByClampingToExtent"}];
+  v18 = [objc_msgSend(_extractRed applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v14, v15, v16, v17), "imageByClampingToExtent"}];
   [(NSNumber *)self->inputScale doubleValue];
   v20 = [v18 imageByApplyingGaussianBlurWithSigma:v19 * 12.0];
   [(CIImage *)self->inputImage extent];
   v21 = [v20 imageByCroppingToRect:?];
-  v22 = [(CIPortraitLightingContour *)self _contourLightKernel];
+  _contourLightKernel = [(CIPortraitLightingContour *)self _contourLightKernel];
   [(CIVector *)self->inputEyes X];
   v24 = v23;
   [(CIVector *)self->inputEyes Z];
@@ -147,7 +147,7 @@
   v52[5] = inputStrength;
   *&v39 = v38 * v38;
   v52[6] = [NSNumber numberWithFloat:v39];
-  return [v22 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v52, 7), v40, v42, v44, v46}];
+  return [_contourLightKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v52, 7), v40, v42, v44, v46}];
 }
 
 @end

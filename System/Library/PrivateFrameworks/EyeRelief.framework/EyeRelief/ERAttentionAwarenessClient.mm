@@ -1,12 +1,12 @@
 @interface ERAttentionAwarenessClient
-+ (int64_t)_categoryForDistance:(float)a3 withFaceState:(unint64_t)a4;
-+ (int64_t)_categoryForDistance:(float)a3 withTooCloseDistanceThreshold:(int64_t)a4 withFaceState:(unint64_t)a5;
-+ (void)reportAnalyticsFaceDetectAttentionEvent:(id)a3;
-- (BOOL)cancelWithError:(id *)a3;
-- (BOOL)invalidateWithError:(id *)a3;
++ (int64_t)_categoryForDistance:(float)distance withFaceState:(unint64_t)state;
++ (int64_t)_categoryForDistance:(float)distance withTooCloseDistanceThreshold:(int64_t)threshold withFaceState:(unint64_t)state;
++ (void)reportAnalyticsFaceDetectAttentionEvent:(id)event;
+- (BOOL)cancelWithError:(id *)error;
+- (BOOL)invalidateWithError:(id *)error;
 - (ERAttentionAwarenessClient)init;
-- (void)_pollForDistanceWithCompletion:(id)a3;
-- (void)_resumeStreamingWithCompletion:(id)a3;
+- (void)_pollForDistanceWithCompletion:(id)completion;
+- (void)_resumeStreamingWithCompletion:(id)completion;
 @end
 
 @implementation ERAttentionAwarenessClient
@@ -94,11 +94,11 @@ void __34__ERAttentionAwarenessClient_init__block_invoke(uint64_t a1, char a2)
   }
 }
 
-- (BOOL)cancelWithError:(id *)a3
+- (BOOL)cancelWithError:(id *)error
 {
-  v4 = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
+  attentionAwarenessClient = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
   v10 = 0;
-  v5 = [v4 cancelFaceDetectStreamWithError:&v10];
+  v5 = [attentionAwarenessClient cancelFaceDetectStreamWithError:&v10];
   v6 = v10;
 
   if ((v5 & 1) == 0)
@@ -107,20 +107,20 @@ void __34__ERAttentionAwarenessClient_init__block_invoke(uint64_t a1, char a2)
     [ERLogging log:v7 withType:1];
   }
 
-  if (a3)
+  if (error)
   {
     v8 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v6 == 0;
 }
 
-- (BOOL)invalidateWithError:(id *)a3
+- (BOOL)invalidateWithError:(id *)error
 {
-  v4 = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
+  attentionAwarenessClient = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
   v10 = 0;
-  v5 = [v4 invalidateWithError:&v10];
+  v5 = [attentionAwarenessClient invalidateWithError:&v10];
   v6 = v10;
 
   if ((v5 & 1) == 0)
@@ -129,27 +129,27 @@ void __34__ERAttentionAwarenessClient_init__block_invoke(uint64_t a1, char a2)
     [ERLogging log:v7 withType:1];
   }
 
-  if (a3)
+  if (error)
   {
     v8 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v6 == 0;
 }
 
-- (void)_resumeStreamingWithCompletion:(id)a3
+- (void)_resumeStreamingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ERAttentionAwarenessClient *)self queue];
+  completionCopy = completion;
+  queue = [(ERAttentionAwarenessClient *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__ERAttentionAwarenessClient__resumeStreamingWithCompletion___block_invoke;
   v7[3] = &unk_278FD7D28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __61__ERAttentionAwarenessClient__resumeStreamingWithCompletion___block_invoke(uint64_t a1)
@@ -187,43 +187,43 @@ LABEL_6:
   }
 }
 
-+ (int64_t)_categoryForDistance:(float)a3 withFaceState:(unint64_t)a4
++ (int64_t)_categoryForDistance:(float)distance withFaceState:(unint64_t)state
 {
   v6 = objc_opt_class();
-  *&v7 = a3;
+  *&v7 = distance;
 
-  return [v6 _categoryForDistance:300 withTooCloseDistanceThreshold:a4 withFaceState:v7];
+  return [v6 _categoryForDistance:300 withTooCloseDistanceThreshold:state withFaceState:v7];
 }
 
-+ (int64_t)_categoryForDistance:(float)a3 withTooCloseDistanceThreshold:(int64_t)a4 withFaceState:(unint64_t)a5
++ (int64_t)_categoryForDistance:(float)distance withTooCloseDistanceThreshold:(int64_t)threshold withFaceState:(unint64_t)state
 {
-  if (a5 == 2)
+  if (state == 2)
   {
     return 0;
   }
 
-  if (a5 == 1)
+  if (state == 1)
   {
-    return a4 <= a3;
+    return threshold <= distance;
   }
 
   return 2;
 }
 
-- (void)_pollForDistanceWithCompletion:(id)a3
+- (void)_pollForDistanceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
-  v6 = [(ERAttentionAwarenessClient *)self queue];
+  attentionAwarenessClient = [(ERAttentionAwarenessClient *)self attentionAwarenessClient];
+  queue = [(ERAttentionAwarenessClient *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__ERAttentionAwarenessClient__pollForDistanceWithCompletion___block_invoke;
   v11[3] = &unk_278FD7D50;
   objc_copyWeak(&v13, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v12 = v7;
-  [v5 setEventStreamerWithQueue:v6 block:v11];
+  [attentionAwarenessClient setEventStreamerWithQueue:queue block:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -280,10 +280,10 @@ uint64_t __61__ERAttentionAwarenessClient__pollForDistanceWithCompletion___block
   return result;
 }
 
-+ (void)reportAnalyticsFaceDetectAttentionEvent:(id)a3
++ (void)reportAnalyticsFaceDetectAttentionEvent:(id)event
 {
-  v4 = a3;
-  v3 = v4;
+  eventCopy = event;
+  v3 = eventCopy;
   AnalyticsSendEventLazy();
 }
 

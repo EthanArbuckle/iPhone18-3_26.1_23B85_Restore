@@ -1,12 +1,12 @@
 @interface CKDPAdopterCapabilitiesCheckResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAdopterCapabilitiesCheckResponse
@@ -62,85 +62,85 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     isSupported = self->_isSupported;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signedSupportedAdopterCapabilities)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signedShareUsage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signedZoneUsage)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_continuation)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[40] = self->_isSupported;
-    v4[44] |= 1u;
+    toCopy[40] = self->_isSupported;
+    toCopy[44] |= 1u;
   }
 
   signedSupportedAdopterCapabilities = self->_signedSupportedAdopterCapabilities;
-  v10 = v4;
+  v10 = toCopy;
   if (signedSupportedAdopterCapabilities)
   {
-    objc_msgSend_setSignedSupportedAdopterCapabilities_(v4, v5, signedSupportedAdopterCapabilities);
-    v4 = v10;
+    objc_msgSend_setSignedSupportedAdopterCapabilities_(toCopy, v5, signedSupportedAdopterCapabilities);
+    toCopy = v10;
   }
 
   signedShareUsage = self->_signedShareUsage;
   if (signedShareUsage)
   {
     objc_msgSend_setSignedShareUsage_(v10, v5, signedShareUsage);
-    v4 = v10;
+    toCopy = v10;
   }
 
   signedZoneUsage = self->_signedZoneUsage;
   if (signedZoneUsage)
   {
     objc_msgSend_setSignedZoneUsage_(v10, v5, signedZoneUsage);
-    v4 = v10;
+    toCopy = v10;
   }
 
   continuation = self->_continuation;
   if (continuation)
   {
     objc_msgSend_setContinuation_(v10, v5, continuation);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -149,46 +149,46 @@
     *(v10 + 44) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_signedSupportedAdopterCapabilities, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_signedSupportedAdopterCapabilities, v11, zone);
   v14 = v12[3];
   v12[3] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_signedShareUsage, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_signedShareUsage, v15, zone);
   v17 = v12[2];
   v12[2] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_signedZoneUsage, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_signedZoneUsage, v18, zone);
   v20 = v12[4];
   v12[4] = v19;
 
-  v22 = objc_msgSend_copyWithZone_(self->_continuation, v21, a3);
+  v22 = objc_msgSend_copyWithZone_(self->_continuation, v21, zone);
   v23 = v12[1];
   v12[1] = v22;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (!self->_isSupported)
   {
 LABEL_3:
@@ -202,21 +202,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((v4[5] & 1) == 0)
+  if ((equalCopy[5] & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
   signedSupportedAdopterCapabilities = self->_signedSupportedAdopterCapabilities;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (signedSupportedAdopterCapabilities | v10 && !objc_msgSend_isEqual_(signedSupportedAdopterCapabilities, v7, v10))
   {
     goto LABEL_13;
   }
 
   signedShareUsage = self->_signedShareUsage;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (signedShareUsage | v12)
   {
     if (!objc_msgSend_isEqual_(signedShareUsage, v7, v12))
@@ -226,7 +226,7 @@ LABEL_4:
   }
 
   signedZoneUsage = self->_signedZoneUsage;
-  v14 = v4[4];
+  v14 = equalCopy[4];
   if (signedZoneUsage | v14)
   {
     if (!objc_msgSend_isEqual_(signedZoneUsage, v7, v14))
@@ -236,7 +236,7 @@ LABEL_4:
   }
 
   continuation = self->_continuation;
-  v16 = v4[1];
+  v16 = equalCopy[1];
   if (continuation | v16)
   {
     isEqual = objc_msgSend_isEqual_(continuation, v7, v16);
@@ -270,13 +270,13 @@ LABEL_14:
   return v11 ^ objc_msgSend_hash(self->_continuation, v12, v13);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[44])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[44])
   {
-    self->_isSupported = v4[40];
+    self->_isSupported = fromCopy[40];
     *&self->_has |= 1u;
   }
 

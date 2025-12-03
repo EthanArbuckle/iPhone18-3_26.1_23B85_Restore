@@ -1,9 +1,9 @@
 @interface PXGColorProgram
-- (BOOL)_compactProgramWithConversionInfo:(CGColorConversionInfo *)a3 cubeSize:(int)a4 cubeOnly:(BOOL)a5;
+- (BOOL)_compactProgramWithConversionInfo:(CGColorConversionInfo *)info cubeSize:(int)size cubeOnly:(BOOL)only;
 - (BOOL)_generateProgram;
 - (BOOL)needsHDRToSDRConversion;
 - (PXGColorProgram)init;
-- (PXGColorProgram)initWithContext:(id)a3 sourceColorSpace:(CGColorSpace *)a4 destinationColorSpace:(CGColorSpace *)a5 flags:(unint64_t)a6;
+- (PXGColorProgram)initWithContext:(id)context sourceColorSpace:(CGColorSpace *)space destinationColorSpace:(CGColorSpace *)colorSpace flags:(unint64_t)flags;
 - (id)description;
 - (id)diagnosticDescription;
 - (void)dealloc;
@@ -112,19 +112,19 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [(PXGColorProgram *)self sourceColorSpace];
+  sourceColorSpace = [(PXGColorProgram *)self sourceColorSpace];
 
-  return CGColorSpaceUsesITUR_2100TF(v4);
+  return CGColorSpaceUsesITUR_2100TF(sourceColorSpace);
 }
 
 - (id)diagnosticDescription
 {
   v47 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v49 = [(MTLBuffer *)self->_params contents];
+  contents = [(MTLBuffer *)self->_params contents];
   v3 = 0;
-  v4 = [(PXGColorProgram *)self numInputs];
+  numInputs = [(PXGColorProgram *)self numInputs];
   v5 = 0x277CCA000uLL;
-  v48 = self;
+  selfCopy = self;
   do
   {
     v6 = (self->_opcodes >> (4 * v3)) & 0xF;
@@ -145,18 +145,18 @@ LABEL_21:
               goto LABEL_48;
             }
 
-            v11 = [v9 stringByAppendingFormat:@"c = hlg_luma_scaling(c, %.5f, %.5f, colorp4(%.5f, %.5f, %.5f, %.5f))", *v49, v49[4], v49[8], v49[12], v49[16], v49[20]];;
+            v11 = [v9 stringByAppendingFormat:@"c = hlg_luma_scaling(c, %.5f, %.5f, colorp4(%.5f, %.5f, %.5f, %.5f))", *contents, contents[4], contents[8], contents[12], contents[16], contents[20]];;
 
-            v49 += 24;
+            contents += 24;
             goto LABEL_33;
           }
 
-          v49 += 4;
+          contents += 4;
           goto LABEL_43;
         }
 
-        v12 = v49;
-        v13 = [v9 stringByAppendingFormat:@"\n    c.rgb = c.rgb * %.5f + %.5f", *v49, v49[1]];;
+        v12 = contents;
+        v13 = [v9 stringByAppendingFormat:@"\n    c.rgb = c.rgb * %.5f + %.5f", *contents, contents[1]];;
 
         v14 = v13;
         v15 = @"\n    c.rgb = colorp3(color_cube.sample(lut_sampler, float3(c.rgb)).rgb);";
@@ -168,7 +168,7 @@ LABEL_21:
         {
           v19 = [v9 stringByAppendingFormat:@"for each color component:"];
 
-          if (v4 < 1)
+          if (numInputs < 1)
           {
             v9 = v19;
           }
@@ -176,7 +176,7 @@ LABEL_21:
           else
           {
             v20 = 0;
-            v21 = v49 + 12;
+            v21 = contents + 12;
             do
             {
               v9 = [v19 stringByAppendingFormat:@"\n    %d: t[i] = t[i] < %.5f ? %.5f * t[i] + %.5f : powr(%.5f * t[i] + %.5f, %.5f) + %.5f", v20, v21[4], *v21, v21[12], *(v21 - 8), *(v21 - 4), *(v21 - 12), v21[8]];;
@@ -186,10 +186,10 @@ LABEL_21:
               v19 = v9;
             }
 
-            while (v4 != v20);
+            while (numInputs != v20);
           }
 
-          v49 += 28;
+          contents += 28;
           v5 = 0x277CCA000;
           goto LABEL_48;
         }
@@ -198,7 +198,7 @@ LABEL_21:
         {
           v26 = [v9 stringByAppendingFormat:@"for each color component:"];
 
-          if (v4 < 1)
+          if (numInputs < 1)
           {
             v9 = v26;
           }
@@ -206,8 +206,8 @@ LABEL_21:
           else
           {
             v27 = 0;
-            v28 = v49 + 4;
-            v29 = v4;
+            v28 = contents + 4;
+            v29 = numInputs;
             do
             {
               v30 = *(v28 - 4);
@@ -222,12 +222,12 @@ LABEL_21:
             while (v29);
           }
 
-          v35 = v49 + 8;
+          v35 = contents + 8;
           goto LABEL_56;
         }
 
-        v12 = v49;
-        v13 = [v9 stringByAppendingFormat:@"\n    c.r = c.r * %.5f + %.5f", *v49, v49[1]];;
+        v12 = contents;
+        v13 = [v9 stringByAppendingFormat:@"\n    c.r = c.r * %.5f + %.5f", *contents, contents[1]];;
 
         v14 = v13;
         v15 = @"\n    c.rgb = colorp3(color_cube.sample(lut_sampler, float3(c.r, 0.5, 0.5)).rgb);";
@@ -235,9 +235,9 @@ LABEL_21:
 
       v9 = [v14 stringByAppendingFormat:v15];
 
-      v49 = v12 + 4;
+      contents = v12 + 4;
 LABEL_43:
-      v4 = 3;
+      numInputs = 3;
       goto LABEL_48;
     }
 
@@ -247,16 +247,16 @@ LABEL_43:
       {
         if (v6 == 1)
         {
-          v11 = [v9 stringByAppendingFormat:@"c = (c.r * (%.5f, %.5f, %.5f) + c.g * (%.5f, %.5f, %.5f) + c.b * (%.5f, %.5f, %.5f) + (%.5f, %.5f, %.5f), c.a)", *v49, v49[1], v49[2], v49[4], v49[5], v49[6], v49[8], v49[9], v49[10], v49[12], v49[13], v49[14]];
+          v11 = [v9 stringByAppendingFormat:@"c = (c.r * (%.5f, %.5f, %.5f) + c.g * (%.5f, %.5f, %.5f) + c.b * (%.5f, %.5f, %.5f) + (%.5f, %.5f, %.5f), c.a)", *contents, contents[1], contents[2], contents[4], contents[5], contents[6], contents[8], contents[9], contents[10], contents[12], contents[13], contents[14]];
 
-          v49 += 16;
-          v4 = 3;
+          contents += 16;
+          numInputs = 3;
         }
 
         else
         {
-          v10 = *v49;
-          v49 += 4;
+          v10 = *contents;
+          contents += 4;
           v11 = [v9 stringByAppendingFormat:@"c = sign(c) * powr(t, %.5f) // Y = X^g", v10];;
         }
 
@@ -265,7 +265,7 @@ LABEL_33:
         goto LABEL_48;
       }
 
-      self = v48;
+      self = selfCopy;
 LABEL_58:
 
       goto LABEL_59;
@@ -275,7 +275,7 @@ LABEL_58:
     {
       v22 = [v9 stringByAppendingFormat:@"for each color component:"];
 
-      if (v4 < 1)
+      if (numInputs < 1)
       {
         v9 = v22;
       }
@@ -283,8 +283,8 @@ LABEL_58:
       else
       {
         v23 = 0;
-        v24 = v49 + 8;
-        v25 = v4;
+        v24 = contents + 8;
+        v25 = numInputs;
         do
         {
           v9 = [v22 stringByAppendingFormat:@"\n    %d: t[i] = t[i] < -%.5f / %.5f ? 0 : powr(%.5f * t[i] + %.5f, %.5f)", v23, *v24, *(v24 - 4), *(v24 - 4), *v24, *(v24 - 8)];;
@@ -298,7 +298,7 @@ LABEL_58:
         while (v25);
       }
 
-      v35 = v49 + 12;
+      v35 = contents + 12;
       goto LABEL_56;
     }
 
@@ -306,7 +306,7 @@ LABEL_58:
     {
       v32 = [v9 stringByAppendingFormat:@"for each color component:"];
 
-      if (v4 < 1)
+      if (numInputs < 1)
       {
         v9 = v32;
       }
@@ -314,7 +314,7 @@ LABEL_58:
       else
       {
         v33 = 0;
-        v34 = v49 + 8;
+        v34 = contents + 8;
         do
         {
           v9 = [v32 stringByAppendingFormat:@"\n    %d: t[i] = t[i] < -%.5f / %.5f ? %.5f : powr(%.5f * t[i] + %.5f, %.5f) + %.5f", v33, *v34, *(v34 - 4), v34[4], *(v34 - 4), *v34, *(v34 - 8), v34[4]];;
@@ -324,14 +324,14 @@ LABEL_58:
           v32 = v9;
         }
 
-        while (v4 != v33);
+        while (numInputs != v33);
       }
 
-      v35 = v49 + 16;
+      v35 = contents + 16;
 LABEL_56:
-      v49 = v35;
+      contents = v35;
       v5 = 0x277CCA000uLL;
-      self = v48;
+      self = selfCopy;
       if (!v9)
       {
         goto LABEL_59;
@@ -344,7 +344,7 @@ LABEL_57:
 
     v16 = [v9 stringByAppendingFormat:@"for each color component:"];
 
-    if (v4 < 1)
+    if (numInputs < 1)
     {
       v9 = v16;
     }
@@ -352,7 +352,7 @@ LABEL_57:
     else
     {
       v17 = 0;
-      v18 = v49 + 8;
+      v18 = contents + 8;
       do
       {
         v9 = [v16 stringByAppendingFormat:@"\n    %d: t[i] = t[i] < %.5f ? %.5f * t[i] : powr(%.5f * t[i] + %.5f, %.5f)", v17, v18[8], v18[4], *(v18 - 4), *v18, *(v18 - 8)];;
@@ -362,13 +362,13 @@ LABEL_57:
         v16 = v9;
       }
 
-      while (v4 != v17);
+      while (numInputs != v17);
     }
 
-    v49 += 20;
+    contents += 20;
     v5 = 0x277CCA000;
 LABEL_48:
-    self = v48;
+    self = selfCopy;
     if (v9)
     {
       goto LABEL_57;
@@ -391,8 +391,8 @@ LABEL_59:
   }
 
   v40 = CGColorSpaceGetName([(PXGColorProgram *)self destinationColorSpace]);
-  v41 = [(PXGColorProgram *)self TRCLUTs];
-  v42 = [(PXGColorProgram *)self colorCube];
+  tRCLUTs = [(PXGColorProgram *)self TRCLUTs];
+  colorCube = [(PXGColorProgram *)self colorCube];
   if (self->_flags)
   {
     v43 = @"YES";
@@ -404,7 +404,7 @@ LABEL_59:
   }
 
   v44 = v43;
-  v45 = [v36 stringWithFormat:@"<%@ source:%@ destination:%@ TRCLUTs:%@ colorCube:%@ opaque:%@ stages:\n%@>", v37, Name, v40, v41, v42, v44, v47];
+  v45 = [v36 stringWithFormat:@"<%@ source:%@ destination:%@ TRCLUTs:%@ colorCube:%@ opaque:%@ stages:\n%@>", v37, Name, v40, tRCLUTs, colorCube, v44, v47];
 
   return v45;
 }
@@ -439,10 +439,10 @@ LABEL_59:
   return v10;
 }
 
-- (BOOL)_compactProgramWithConversionInfo:(CGColorConversionInfo *)a3 cubeSize:(int)a4 cubeOnly:(BOOL)a5
+- (BOOL)_compactProgramWithConversionInfo:(CGColorConversionInfo *)info cubeSize:(int)size cubeOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = *&a4;
+  onlyCopy = only;
+  v6 = *&size;
   v36 = *MEMORY[0x277D85DE8];
   v28 = 0;
   v29 = &v28;
@@ -465,29 +465,29 @@ LABEL_59:
   v22[1] = v22;
   v22[2] = 0x2020000000;
   v23 = 0;
-  v10 = [(PXGColorProgram *)self needsHDRToSDRConversion];
+  needsHDRToSDRConversion = [(PXGColorProgram *)self needsHDRToSDRConversion];
   v21 = MEMORY[0x277D85DD0];
   v20 = MEMORY[0x277D85DD0];
   v19 = MEMORY[0x277D85DD0];
   v17 = MEMORY[0x277D85DD0];
-  LOBYTE(v18) = v5;
+  LOBYTE(v18) = onlyCopy;
   v11 = CGColorConversionInfoIterateFunctionsWithCallbacks();
   if (v11)
   {
     goto LABEL_6;
   }
 
-  if (v5 || v10)
+  if (onlyCopy || needsHDRToSDRConversion)
   {
     v12 = PXGTungstenGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [(PXGColorProgram *)self sourceColorSpace:v17];
-      v14 = [(PXGColorProgram *)self destinationColorSpace];
+      destinationColorSpace = [(PXGColorProgram *)self destinationColorSpace];
       *buf = 138412546;
       v33 = v13;
       v34 = 2112;
-      v35 = v14;
+      v35 = destinationColorSpace;
       _os_log_impl(&dword_21AD38000, v12, OS_LOG_TYPE_DEFAULT, "Unable to create color program for %@ -> %@.", buf, 0x16u);
     }
 
@@ -501,7 +501,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  LOBYTE(v9) = [(PXGColorProgram *)self _compactProgramWithConversionInfo:a3 cubeSize:v6 cubeOnly:1, v17, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_2, &unk_2782ABCD0, self, v25, &v28, v26, v24, v18, v19, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_35, &unk_2782ABCA8, v24, v25, &v28, v26, v20, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_33, &unk_2782ABC80, self, v24, v25, v22, &v28, v26, v21, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke, &unk_2782ABC58, self, v24, v22, v25];
+  LOBYTE(v9) = [(PXGColorProgram *)self _compactProgramWithConversionInfo:info cubeSize:v6 cubeOnly:1, v17, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_2, &unk_2782ABCD0, self, v25, &v28, v26, v24, v18, v19, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_35, &unk_2782ABCA8, v24, v25, &v28, v26, v20, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke_33, &unk_2782ABC80, self, v24, v25, v22, &v28, v26, v21, 3221225472, __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOnly___block_invoke, &unk_2782ABC58, self, v24, v22, v25];
   if (!v11)
   {
     goto LABEL_13;
@@ -856,15 +856,15 @@ uint64_t __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOn
 
 - (PXGColorProgram)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGColorProgram.m" lineNumber:109 description:{@"%s is not available as initializer", "-[PXGColorProgram init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGColorProgram.m" lineNumber:109 description:{@"%s is not available as initializer", "-[PXGColorProgram init]"}];
 
   abort();
 }
 
-- (PXGColorProgram)initWithContext:(id)a3 sourceColorSpace:(CGColorSpace *)a4 destinationColorSpace:(CGColorSpace *)a5 flags:(unint64_t)a6
+- (PXGColorProgram)initWithContext:(id)context sourceColorSpace:(CGColorSpace *)space destinationColorSpace:(CGColorSpace *)colorSpace flags:(unint64_t)flags
 {
-  v12 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = PXGColorProgram;
   v13 = [(PXGColorProgram *)&v19 init];
@@ -873,20 +873,20 @@ uint64_t __71__PXGColorProgram__compactProgramWithConversionInfo_cubeSize_cubeOn
     goto LABEL_7;
   }
 
-  v14 = [v12 device];
+  device = [contextCopy device];
 
-  if (v14)
+  if (device)
   {
-    if (a4)
+    if (space)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"sourceColorSpace != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"sourceColorSpace != nil"}];
 
-    if (a5)
+    if (colorSpace)
     {
       goto LABEL_5;
     }
@@ -894,29 +894,29 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"context.device != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"context.device != nil"}];
 
-  if (!a4)
+  if (!space)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (a5)
+  if (colorSpace)
   {
     goto LABEL_5;
   }
 
 LABEL_10:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"destinationColorSpace != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:v13 file:@"PXGColorProgram.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"destinationColorSpace != nil"}];
 
 LABEL_5:
-  objc_storeStrong(&v13->_metalRenderContext, a3);
-  v13->_sourceColorSpace = CGColorSpaceRetain(a4);
-  v13->_destinationColorSpace = CGColorSpaceRetain(a5);
-  v13->_flags = a6;
+  objc_storeStrong(&v13->_metalRenderContext, context);
+  v13->_sourceColorSpace = CGColorSpaceRetain(space);
+  v13->_destinationColorSpace = CGColorSpaceRetain(colorSpace);
+  v13->_flags = flags;
   if (![(PXGColorProgram *)v13 _generateProgram])
   {
 

@@ -1,8 +1,8 @@
 @interface OCCEncryptor
-+ (id)allocTempFileWithBase:(id)a3 filename:(id *)a4;
++ (id)allocTempFileWithBase:(id)base filename:(id *)filename;
 - (BOOL)encrypt;
 - (BOOL)encryptIntoOutputFile;
-- (OCCEncryptor)initWithStreamer:(OCCStreamer *)a3;
+- (OCCEncryptor)initWithStreamer:(OCCStreamer *)streamer;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
   [(OCCEncryptor *)&v4 dealloc];
 }
 
-- (OCCEncryptor)initWithStreamer:(OCCStreamer *)a3
+- (OCCEncryptor)initWithStreamer:(OCCStreamer *)streamer
 {
   v10.receiver = self;
   v10.super_class = OCCEncryptor;
@@ -29,8 +29,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->mStreamer = a3;
-    var2 = a3->var2;
+    v4->mStreamer = streamer;
+    var2 = streamer->var2;
     if (var2)
     {
       v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:var2];
@@ -64,11 +64,11 @@
   return v3;
 }
 
-+ (id)allocTempFileWithBase:(id)a3 filename:(id *)a4
++ (id)allocTempFileWithBase:(id)base filename:(id *)filename
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a3 lastPathComponent];
-  v7 = [v5 stringWithFormat:@"%@.XXXXXX", v6];
+  lastPathComponent = [base lastPathComponent];
+  v7 = [v5 stringWithFormat:@"%@.XXXXXX", lastPathComponent];
 
   v8 = NSTemporaryDirectory();
   v9 = getenv("CIRRUSEXPORTERTEMPDIR");
@@ -80,14 +80,14 @@
   }
 
   v11 = [v8 stringByAppendingPathComponent:v7];
-  v12 = [(NSString *)v11 fileSystemRepresentation];
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v13 fileExistsAtPath:v11] && (TCRemoveFileSecurely(v11) & 1) == 0)
+  fileSystemRepresentation = [(NSString *)v11 fileSystemRepresentation];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:v11] && (TCRemoveFileSecurely(v11) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v14 = strlen(v12);
+  v14 = strlen(fileSystemRepresentation);
   v15 = malloc_type_malloc(v14 + 1, 0x100004077774924uLL);
   v16 = v15;
   if (!v15)
@@ -95,7 +95,7 @@
     goto LABEL_9;
   }
 
-  v17 = strcpy(v15, v12);
+  v17 = strcpy(v15, fileSystemRepresentation);
   v18 = mkstemp(v17);
   if (v18 == -1)
   {
@@ -105,8 +105,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  *a4 = [v19 stringWithFileSystemRepresentation:v16 length:strlen(v16)];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  *filename = [defaultManager2 stringWithFileSystemRepresentation:v16 length:strlen(v16)];
 
   free(v16);
   v20 = [objc_alloc(MEMORY[0x277CCA9F8]) initWithFileDescriptor:v18];

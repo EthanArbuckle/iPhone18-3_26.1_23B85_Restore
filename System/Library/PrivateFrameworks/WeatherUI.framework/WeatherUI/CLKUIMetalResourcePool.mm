@@ -1,23 +1,23 @@
 @interface CLKUIMetalResourcePool
-+ (id)bufferPoolWithLength:(unint64_t)a3 andOptions:(unint64_t)a4 expectedCountPerFrame:(unint64_t)a5;
-+ (id)texturePoolWithDescriptor:(id)a3 expectedCountPerFrame:(unint64_t)a4;
-- (CLKUIMetalResourcePool)initWithCreationBlock:(id)a3 expectedCountPerFrame:(unint64_t)a4;
-- (id)dequeueReusableResourceForUseOnCommandBuffer:(id)a3;
-- (void)returnReusableResource:(id)a3;
++ (id)bufferPoolWithLength:(unint64_t)length andOptions:(unint64_t)options expectedCountPerFrame:(unint64_t)frame;
++ (id)texturePoolWithDescriptor:(id)descriptor expectedCountPerFrame:(unint64_t)frame;
+- (CLKUIMetalResourcePool)initWithCreationBlock:(id)block expectedCountPerFrame:(unint64_t)frame;
+- (id)dequeueReusableResourceForUseOnCommandBuffer:(id)buffer;
+- (void)returnReusableResource:(id)resource;
 @end
 
 @implementation CLKUIMetalResourcePool
 
-+ (id)bufferPoolWithLength:(unint64_t)a3 andOptions:(unint64_t)a4 expectedCountPerFrame:(unint64_t)a5
++ (id)bufferPoolWithLength:(unint64_t)length andOptions:(unint64_t)options expectedCountPerFrame:(unint64_t)frame
 {
   v8 = [CLKUIMetalResourcePool alloc];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__CLKUIMetalResourcePool_bufferPoolWithLength_andOptions_expectedCountPerFrame___block_invoke;
   v11[3] = &__block_descriptor_48_e5__8__0l;
-  v11[4] = a3;
-  v11[5] = a4;
-  v9 = [(CLKUIMetalResourcePool *)v8 initWithCreationBlock:v11 expectedCountPerFrame:a5];
+  v11[4] = length;
+  v11[5] = options;
+  v9 = [(CLKUIMetalResourcePool *)v8 initWithCreationBlock:v11 expectedCountPerFrame:frame];
 
   return v9;
 }
@@ -30,17 +30,17 @@ id __80__CLKUIMetalResourcePool_bufferPoolWithLength_andOptions_expectedCountPer
   return v3;
 }
 
-+ (id)texturePoolWithDescriptor:(id)a3 expectedCountPerFrame:(unint64_t)a4
++ (id)texturePoolWithDescriptor:(id)descriptor expectedCountPerFrame:(unint64_t)frame
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = [CLKUIMetalResourcePool alloc];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__CLKUIMetalResourcePool_texturePoolWithDescriptor_expectedCountPerFrame___block_invoke;
   v10[3] = &unk_1E7FF8F88;
-  v11 = v5;
-  v7 = v5;
-  v8 = [(CLKUIMetalResourcePool *)v6 initWithCreationBlock:v10 expectedCountPerFrame:a4];
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = [(CLKUIMetalResourcePool *)v6 initWithCreationBlock:v10 expectedCountPerFrame:frame];
 
   return v8;
 }
@@ -53,15 +53,15 @@ id __74__CLKUIMetalResourcePool_texturePoolWithDescriptor_expectedCountPerFrame_
   return v3;
 }
 
-- (CLKUIMetalResourcePool)initWithCreationBlock:(id)a3 expectedCountPerFrame:(unint64_t)a4
+- (CLKUIMetalResourcePool)initWithCreationBlock:(id)block expectedCountPerFrame:(unint64_t)frame
 {
-  v6 = a3;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = CLKUIMetalResourcePool;
   v7 = [(CLKUIMetalResourcePool *)&v15 init];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     creationBlock = v7->_creationBlock;
     v7->_creationBlock = v8;
 
@@ -73,15 +73,15 @@ id __74__CLKUIMetalResourcePool_texturePoolWithDescriptor_expectedCountPerFrame_
     resourcePool = v7->_resourcePool;
     v7->_resourcePool = v12;
 
-    v7->_expectedCountPerFrame = a4;
+    v7->_expectedCountPerFrame = frame;
   }
 
   return v7;
 }
 
-- (id)dequeueReusableResourceForUseOnCommandBuffer:(id)a3
+- (id)dequeueReusableResourceForUseOnCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -109,7 +109,7 @@ id __74__CLKUIMetalResourcePool_texturePoolWithDescriptor_expectedCountPerFrame_
   v10[3] = &unk_1E7FF8FD8;
   v10[4] = self;
   v10[5] = &v12;
-  [v4 addCompletedHandler:v10];
+  [bufferCopy addCompletedHandler:v10];
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -134,17 +134,17 @@ uint64_t __71__CLKUIMetalResourcePool_dequeueReusableResourceForUseOnCommandBuff
   return result;
 }
 
-- (void)returnReusableResource:(id)a3
+- (void)returnReusableResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   buffersQueue = self->_buffersQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CLKUIMetalResourcePool_returnReusableResource___block_invoke;
   v7[3] = &unk_1E7FF89D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resourceCopy;
+  v6 = resourceCopy;
   dispatch_async(buffersQueue, v7);
 }
 

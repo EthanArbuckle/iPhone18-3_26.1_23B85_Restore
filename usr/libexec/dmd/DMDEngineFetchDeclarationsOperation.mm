@@ -1,18 +1,18 @@
 @interface DMDEngineFetchDeclarationsOperation
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineFetchDeclarationsOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = [(DMDEngineFetchDeclarationsOperation *)self request];
-  v5 = [v4 payloadIdentifiers];
+  request = [(DMDEngineFetchDeclarationsOperation *)self request];
+  payloadIdentifiers = [request payloadIdentifiers];
 
-  if (v5)
+  if (payloadIdentifiers)
   {
-    v6 = [v4 payloadIdentifiers];
-    v7 = [NSPredicate predicateWithFormat:@"identifier IN %@", v6];
+    payloadIdentifiers2 = [request payloadIdentifiers];
+    v7 = [NSPredicate predicateWithFormat:@"identifier IN %@", payloadIdentifiers2];
   }
 
   else
@@ -20,8 +20,8 @@
     v7 = 0;
   }
 
-  v8 = [v4 organizationIdentifier];
-  v9 = [DMDPayloadMetadata fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:v8 matchingPredicate:v7];
+  organizationIdentifier = [request organizationIdentifier];
+  v9 = [DMDPayloadMetadata fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:organizationIdentifier matchingPredicate:v7];
 
   v64 = 0;
   v10 = [v9 execute:&v64];
@@ -32,7 +32,7 @@
     v41 = v11;
     v42 = v9;
     v43 = v7;
-    v44 = self;
+    selfCopy = self;
     v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
     v60 = 0u;
     v61 = 0u;
@@ -51,7 +51,7 @@
       v45 = DMFDeclarationPayloadDataKey;
       v46 = DMFDeclarationPayloadTypeKey;
       v49 = v13;
-      v50 = v4;
+      v50 = request;
       v47 = DMFDeclarationPayloadIdentifierKey;
       v48 = *v61;
       do
@@ -68,32 +68,32 @@
           v54 = v19;
           v20 = *(*(&v60 + 1) + 8 * v19);
           v21 = objc_opt_new();
-          v22 = [v20 identifier];
-          [v21 setObject:v22 forKeyedSubscript:v17];
+          identifier = [v20 identifier];
+          [v21 setObject:identifier forKeyedSubscript:v17];
 
-          v23 = [v20 type];
-          [v21 setObject:v23 forKeyedSubscript:v18];
+          type = [v20 type];
+          [v21 setObject:type forKeyedSubscript:v18];
 
-          v24 = [v20 stateDictionary];
+          stateDictionary = [v20 stateDictionary];
           v55 = v21;
-          [v21 setObject:v24 forKeyedSubscript:v53];
+          [v21 setObject:stateDictionary forKeyedSubscript:v53];
 
-          if ([v4 includePayloadContents])
+          if ([request includePayloadContents])
           {
-            v25 = [v20 payload];
-            v26 = [v25 payloadDictionary];
-            [v55 setObject:v26 forKeyedSubscript:v45];
+            payload = [v20 payload];
+            payloadDictionary = [payload payloadDictionary];
+            [v55 setObject:payloadDictionary forKeyedSubscript:v45];
           }
 
-          if ([v4 includeInternalState])
+          if ([request includeInternalState])
           {
             v27 = objc_opt_new();
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v28 = [v20 descriptiveProperties];
-            v29 = [v28 countByEnumeratingWithState:&v56 objects:v65 count:16];
+            descriptiveProperties = [v20 descriptiveProperties];
+            v29 = [descriptiveProperties countByEnumeratingWithState:&v56 objects:v65 count:16];
             if (v29)
             {
               v30 = v29;
@@ -104,7 +104,7 @@
                 {
                   if (*v57 != v31)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(descriptiveProperties);
                   }
 
                   v33 = *(*(&v56 + 1) + 8 * i);
@@ -121,7 +121,7 @@
                   }
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v56 objects:v65 count:16];
+                v30 = [descriptiveProperties countByEnumeratingWithState:&v56 objects:v65 count:16];
               }
 
               while (v30);
@@ -129,7 +129,7 @@
 
             [v55 setObject:v27 forKeyedSubscript:@"Debug"];
             v13 = v49;
-            v4 = v50;
+            request = v50;
             v17 = v47;
             v16 = v48;
             v15 = v51;
@@ -149,15 +149,15 @@
     }
 
     [v13 sortUsingComparator:&stru_1000CEF98];
-    v36 = [(DMDEngineFetchDeclarationsOperation *)v44 completionHandler];
+    completionHandler = [(DMDEngineFetchDeclarationsOperation *)selfCopy completionHandler];
 
-    if (v36)
+    if (completionHandler)
     {
-      v37 = [(DMDEngineFetchDeclarationsOperation *)v44 completionHandler];
-      (v37)[2](v37, v13, 0);
+      completionHandler2 = [(DMDEngineFetchDeclarationsOperation *)selfCopy completionHandler];
+      (completionHandler2)[2](completionHandler2, v13, 0);
     }
 
-    [(DMDEngineFetchDeclarationsOperation *)v44 setResultObject:0];
+    [(DMDEngineFetchDeclarationsOperation *)selfCopy setResultObject:0];
 
     v9 = v42;
     v7 = v43;
@@ -167,12 +167,12 @@
 
   else
   {
-    v38 = [(DMDEngineFetchDeclarationsOperation *)self completionHandler];
+    completionHandler3 = [(DMDEngineFetchDeclarationsOperation *)self completionHandler];
 
-    if (v38)
+    if (completionHandler3)
     {
-      v39 = [(DMDEngineFetchDeclarationsOperation *)self completionHandler];
-      (v39)[2](v39, 0, v12);
+      completionHandler4 = [(DMDEngineFetchDeclarationsOperation *)self completionHandler];
+      (completionHandler4)[2](completionHandler4, 0, v12);
     }
 
     [(DMDEngineFetchDeclarationsOperation *)self setError:v12];

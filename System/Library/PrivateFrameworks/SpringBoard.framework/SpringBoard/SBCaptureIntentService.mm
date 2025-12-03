@@ -2,8 +2,8 @@
 - (SBCaptureIntentService)init;
 - (id)_captureApplication;
 - (id)captureIntentContext;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setCaptureIntentContext:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setCaptureIntentContext:(id)context;
 @end
 
 @implementation SBCaptureIntentService
@@ -54,15 +54,15 @@ void __30__SBCaptureIntentService_init__block_invoke(uint64_t a1, void *a2)
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "SBCaptureIntentService: received connection: %{public}@", buf, 0xCu);
   }
 
@@ -78,15 +78,15 @@ void __30__SBCaptureIntentService_init__block_invoke(uint64_t a1, void *a2)
 
   if (LCSFeatureEnabled() & 1) != 0 || (v8)
   {
-    v10 = [(SBCaptureIntentService *)self queue];
+    queue = [(SBCaptureIntentService *)self queue];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __68__SBCaptureIntentService_listener_didReceiveConnection_withContext___block_invoke;
     v15 = &unk_2783A92D8;
-    v11 = v6;
+    v11 = connectionCopy;
     v16 = v11;
-    v17 = self;
-    dispatch_sync(v10, &v12);
+    selfCopy = self;
+    dispatch_sync(queue, &v12);
 
     [v11 activate];
   }
@@ -96,10 +96,10 @@ void __30__SBCaptureIntentService_init__block_invoke(uint64_t a1, void *a2)
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [SBCaptureIntentService listener:v6 didReceiveConnection:v9 withContext:?];
+      [SBCaptureIntentService listener:connectionCopy didReceiveConnection:v9 withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -169,14 +169,14 @@ void __68__SBCaptureIntentService_listener_didReceiveConnection_withContext___bl
 
 - (id)_captureApplication
 {
-  v3 = [MEMORY[0x277CF3280] currentContext];
-  v4 = [v3 remoteProcess];
-  v5 = [v4 bundleIdentifier];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
 
-  v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForBundleIdentifier:v5];
+  v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForBundleIdentifier:bundleIdentifier];
   if (!v6)
   {
-    v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForExtensionIdentifier:v5];
+    v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForExtensionIdentifier:bundleIdentifier];
   }
 
   return v6;
@@ -184,11 +184,11 @@ void __68__SBCaptureIntentService_listener_didReceiveConnection_withContext___bl
 
 - (id)captureIntentContext
 {
-  v2 = [(SBCaptureIntentService *)self _captureApplication];
-  v3 = v2;
-  if (v2)
+  _captureApplication = [(SBCaptureIntentService *)self _captureApplication];
+  v3 = _captureApplication;
+  if (_captureApplication)
   {
-    v4 = [v2 captureIntentContext];
+    captureIntentContext = [_captureApplication captureIntentContext];
   }
 
   else
@@ -199,23 +199,23 @@ void __68__SBCaptureIntentService_listener_didReceiveConnection_withContext___bl
       [(SBCaptureIntentService *)v5 captureIntentContext];
     }
 
-    v4 = 0;
+    captureIntentContext = 0;
   }
 
-  return v4;
+  return captureIntentContext;
 }
 
-- (void)setCaptureIntentContext:(id)a3
+- (void)setCaptureIntentContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 length];
+  contextCopy = context;
+  v5 = [contextCopy length];
   if (v5 <= 0x1000)
   {
-    v8 = [(SBCaptureIntentService *)self _captureApplication];
-    v7 = v8;
-    if (v8)
+    _captureApplication = [(SBCaptureIntentService *)self _captureApplication];
+    v7 = _captureApplication;
+    if (_captureApplication)
     {
-      [v8 setCaptureIntentContext:v4];
+      [_captureApplication setCaptureIntentContext:contextCopy];
     }
 
     else

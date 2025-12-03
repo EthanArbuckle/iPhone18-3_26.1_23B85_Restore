@@ -1,21 +1,21 @@
 @interface MastheadNavigationBarCompressionAnimator
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4;
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed;
 - (BOOL)shouldCloseGapOnScroll;
 - (BOOL)shouldCompressAtTop;
-- (double)maximumBarHeightForTraitCollection:(id)a3;
-- (double)minimumBarHeightForTraitCollection:(id)a3;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
+- (double)minimumBarHeightForTraitCollection:(id)collection;
 - (double)topOffset;
 - (void)prepareForUpdates;
-- (void)reloadWithTraitCollection:(id)a3;
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4;
-- (void)updateWithPercentage:(double)a3;
+- (void)reloadWithTraitCollection:(id)collection;
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation MastheadNavigationBarCompressionAnimator
 
 - (BOOL)shouldCloseGapOnScroll
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MastheadNavigationBarCompressionAnimator.shouldCloseGapOnScroll.getter();
 
   return v3 & 1;
@@ -23,7 +23,7 @@
 
 - (BOOL)shouldCompressAtTop
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MastheadNavigationBarCompressionAnimator.shouldCompressAtTop.getter();
 
   return v3 & 1;
@@ -31,7 +31,7 @@
 
 - (double)topOffset
 {
-  v2 = self;
+  selfCopy = self;
   MastheadNavigationBarCompressionAnimator.topOffset.getter();
   v4 = v3;
 
@@ -40,58 +40,58 @@
 
 - (void)prepareForUpdates
 {
-  v2 = self;
+  selfCopy = self;
   MastheadNavigationBarCompressionAnimator.prepareForUpdates()();
 }
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v4 = self;
-  MastheadNavigationBarCompressionAnimator.update(withPercentage:)(a3);
+  selfCopy = self;
+  MastheadNavigationBarCompressionAnimator.update(withPercentage:)(percentage);
 }
 
-- (void)scrollViewIsAtTop:(BOOL)a3 offset:(double)a4
+- (void)scrollViewIsAtTop:(BOOL)top offset:(double)offset
 {
-  v5 = self;
-  MastheadNavigationBarCompressionAnimator.scrollViewIs(atTop:offset:)(a3);
+  selfCopy = self;
+  MastheadNavigationBarCompressionAnimator.scrollViewIs(atTop:offset:)(top);
 }
 
-- (BOOL)animationShouldBeginForScrollView:(id)a3 currentlyFullyCompressed:(BOOL)a4
+- (BOOL)animationShouldBeginForScrollView:(id)view currentlyFullyCompressed:(BOOL)compressed
 {
-  v6 = a3;
-  v7 = self;
-  v8 = MastheadNavigationBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = MastheadNavigationBarCompressionAnimator.animationShouldBegin(for:currentlyFullyCompressed:)(viewCopy, compressed);
 
   return v8;
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  MastheadNavigationBarCompressionAnimator.maximumBarHeight(for:)(a3);
+  collectionCopy = collection;
+  selfCopy = self;
+  MastheadNavigationBarCompressionAnimator.maximumBarHeight(for:)(collection);
   v8 = v7;
 
   return v8;
 }
 
-- (double)minimumBarHeightForTraitCollection:(id)a3
+- (double)minimumBarHeightForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  MastheadNavigationBarCompressionAnimator.minimumBarHeight(for:)(a3);
+  collectionCopy = collection;
+  selfCopy = self;
+  MastheadNavigationBarCompressionAnimator.minimumBarHeight(for:)(collection);
   v8 = v7;
 
   return v8;
 }
 
-- (void)reloadWithTraitCollection:(id)a3
+- (void)reloadWithTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  collectionCopy = collection;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = collection;
   MastheadNavigationBarCompressionAnimator.reload(with:)(v9);
 }
 

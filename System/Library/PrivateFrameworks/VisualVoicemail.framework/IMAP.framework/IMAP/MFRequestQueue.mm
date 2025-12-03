@@ -1,10 +1,10 @@
 @interface MFRequestQueue
 - (MFRequestQueue)init;
-- (void)_processRequests:(id)a3 consumers:(id)a4;
-- (void)addRequest:(id)a3 consumer:(id)a4;
-- (void)addRequests:(id)a3 consumers:(id)a4;
+- (void)_processRequests:(id)requests consumers:(id)consumers;
+- (void)addRequest:(id)request consumer:(id)consumer;
+- (void)addRequests:(id)requests consumers:(id)consumers;
 - (void)dealloc;
-- (void)processRequests:(id)a3 consumers:(id)a4;
+- (void)processRequests:(id)requests consumers:(id)consumers;
 @end
 
 @implementation MFRequestQueue
@@ -32,31 +32,31 @@
   return v2;
 }
 
-- (void)addRequest:(id)a3 consumer:(id)a4
+- (void)addRequest:(id)request consumer:(id)consumer
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v13[0] = a3;
+  v13[0] = request;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
+  consumerCopy = consumer;
+  requestCopy = request;
   v9 = [v6 arrayWithObjects:v13 count:1];
-  v12 = v7;
+  v12 = consumerCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
 
   [(MFRequestQueue *)self addRequests:v9 consumers:v10];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequests:(id)a3 consumers:(id)a4
+- (void)addRequests:(id)requests consumers:(id)consumers
 {
-  v6 = a4;
-  v7 = a3;
+  consumersCopy = consumers;
+  requestsCopy = requests;
   _MFLockGlobalLock();
   ++self->_waitingOutside;
-  [(MFRequestQueue *)self willAddRequests:v7 consumers:v6];
-  [(NSMutableArray *)self->_requests addObjectsFromArray:v7];
+  [(MFRequestQueue *)self willAddRequests:requestsCopy consumers:consumersCopy];
+  [(NSMutableArray *)self->_requests addObjectsFromArray:requestsCopy];
 
-  [(NSMutableArray *)self->_consumers addObjectsFromArray:v6];
+  [(NSMutableArray *)self->_consumers addObjectsFromArray:consumersCopy];
   _MFUnlockGlobalLock();
   [(NSConditionLock *)self->_condition lockWhenCondition:0];
   _MFLockGlobalLock();
@@ -96,29 +96,29 @@ LABEL_6:
   [(NSConditionLock *)self->_condition unlockWithCondition:v12];
 }
 
-- (void)_processRequests:(id)a3 consumers:(id)a4
+- (void)_processRequests:(id)requests consumers:(id)consumers
 {
   v9 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(MFRequestQueue *)self processRequests:v6 consumers:v7];
+  requestsCopy = requests;
+  consumersCopy = consumers;
+  [(MFRequestQueue *)self processRequests:requestsCopy consumers:consumersCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRequests:(id)a3 consumers:(id)a4
+- (void)processRequests:(id)requests consumers:(id)consumers
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
-  v8 = [v13 count];
+  requestsCopy = requests;
+  consumersCopy = consumers;
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requestsCopy, "count")}];
+  v8 = [requestsCopy count];
   if (v8)
   {
     v9 = v8;
     for (i = 0; i != v9; ++i)
     {
-      v11 = [v13 objectAtIndex:i];
-      v12 = [v6 objectAtIndex:i];
+      v11 = [requestsCopy objectAtIndex:i];
+      v12 = [consumersCopy objectAtIndex:i];
       [(MFRequestQueue *)self processRequest:v11 consumer:v12];
     }
   }

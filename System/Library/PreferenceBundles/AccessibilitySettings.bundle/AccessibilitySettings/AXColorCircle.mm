@@ -1,15 +1,15 @@
 @interface AXColorCircle
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation AXColorCircle
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = 1.0;
   v9 = 1.0;
   if (AXPreferredContentSizeCategoryIsAccessibilityCategory())
@@ -38,19 +38,19 @@
   AX_CGRectGetCenter();
   [v13 addArcWithCenter:1 radius:? startAngle:? endAngle:? clockwise:?];
   [v13 closePath];
-  v10 = [(AXColorCircle *)self fillCircle];
-  v11 = [(AXColorCircle *)self color];
-  v12 = v11;
-  if (v10)
+  fillCircle = [(AXColorCircle *)self fillCircle];
+  color = [(AXColorCircle *)self color];
+  v12 = color;
+  if (fillCircle)
   {
-    [v11 setFill];
+    [color setFill];
 
     [v13 fill];
   }
 
   else
   {
-    [v11 setStroke];
+    [color setStroke];
 
     [v13 stroke];
   }

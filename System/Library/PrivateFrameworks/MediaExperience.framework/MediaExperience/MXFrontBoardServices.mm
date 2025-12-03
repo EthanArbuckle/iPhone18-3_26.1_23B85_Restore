@@ -1,13 +1,13 @@
 @interface MXFrontBoardServices
 + (id)sharedInstance;
-- (BOOL)getLayoutRoleForDisplayID:(id)a3 layoutRole:(int64_t *)a4;
-- (BOOL)isAppInPiP:(id)a3;
-- (BOOL)isAppInSplitView:(id)a3;
+- (BOOL)getLayoutRoleForDisplayID:(id)d layoutRole:(int64_t *)role;
+- (BOOL)isAppInPiP:(id)p;
+- (BOOL)isAppInSplitView:(id)view;
 - (MXFrontBoardServices)init;
 - (id)copyPrimaryAppDisplayID;
 - (void)clearLayoutRoleCache;
-- (void)layoutChanged:(id)a3;
-- (void)updateLayoutRoleCache:(int64_t)a3 displayID:(id)a4;
+- (void)layoutChanged:(id)changed;
+- (void)updateLayoutRoleCache:(int64_t)cache displayID:(id)d;
 @end
 
 @implementation MXFrontBoardServices
@@ -94,8 +94,8 @@ id __28__MXFrontBoardServices_init__block_invoke(uint64_t a1)
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(FBSDisplayLayoutMonitor *)self->mFrontBoardServicesMonitor currentLayout];
-  if (v4 && (v5 = [v4 elements]) != 0)
+  currentLayout = [(FBSDisplayLayoutMonitor *)self->mFrontBoardServicesMonitor currentLayout];
+  if (currentLayout && (v5 = [currentLayout elements]) != 0)
   {
     v6 = v5;
     v18 = 0u;
@@ -119,10 +119,10 @@ id __28__MXFrontBoardServices_init__block_invoke(uint64_t a1)
           v11 = *(*(&v16 + 1) + 8 * i);
           if ([v11 layoutRole] == 1)
           {
-            v12 = [v11 bundleIdentifier];
-            if (v12)
+            bundleIdentifier = [v11 bundleIdentifier];
+            if (bundleIdentifier)
             {
-              v13 = v12;
+              v13 = bundleIdentifier;
               goto LABEL_15;
             }
           }
@@ -153,10 +153,10 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)isAppInSplitView:(id)a3
+- (BOOL)isAppInSplitView:(id)view
 {
   v5 = 0;
-  if ([(MXFrontBoardServices *)self getLayoutRoleForDisplayID:a3 layoutRole:&v5])
+  if ([(MXFrontBoardServices *)self getLayoutRoleForDisplayID:view layoutRole:&v5])
   {
     v3 = 0x686u >> v5;
     if (v5 > 0xA)
@@ -173,10 +173,10 @@ LABEL_15:
   return v3 & 1;
 }
 
-- (BOOL)isAppInPiP:(id)a3
+- (BOOL)isAppInPiP:(id)p
 {
   v4 = 0;
-  result = [(MXFrontBoardServices *)self getLayoutRoleForDisplayID:a3 layoutRole:&v4];
+  result = [(MXFrontBoardServices *)self getLayoutRoleForDisplayID:p layoutRole:&v4];
   if (v4 != 5)
   {
     return 0;
@@ -185,49 +185,49 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)getLayoutRoleForDisplayID:(id)a3 layoutRole:(int64_t *)a4
+- (BOOL)getLayoutRoleForDisplayID:(id)d layoutRole:(int64_t *)role
 {
   v4 = 0;
-  if (a3 && a4)
+  if (d && role)
   {
     [(NSLock *)self->mDisplayLayoutCacheLock lock];
-    v8 = [(NSMutableDictionary *)self->mDisplayLayoutCache objectForKey:a3];
+    v8 = [(NSMutableDictionary *)self->mDisplayLayoutCache objectForKey:d];
     [(NSLock *)self->mDisplayLayoutCacheLock unlock];
     v4 = v8 != 0;
     if (v8)
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v9 = 0;
+      integerValue = 0;
     }
 
-    *a4 = v9;
+    *role = integerValue;
   }
 
   return v4;
 }
 
-- (void)updateLayoutRoleCache:(int64_t)a3 displayID:(id)a4
+- (void)updateLayoutRoleCache:(int64_t)cache displayID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:cache];
     [(NSLock *)self->mDisplayLayoutCacheLock lock];
-    [(NSMutableDictionary *)self->mDisplayLayoutCache setObject:v6 forKey:a4];
+    [(NSMutableDictionary *)self->mDisplayLayoutCache setObject:v6 forKey:d];
     [(NSLock *)self->mDisplayLayoutCacheLock unlock];
   }
 }
 
-- (void)layoutChanged:(id)a3
+- (void)layoutChanged:(id)changed
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = [a3 elements];
-  if (v4)
+  elements = [changed elements];
+  if (elements)
   {
-    v5 = v4;
+    v5 = elements;
     [(MXFrontBoardServices *)self clearLayoutRoleCache];
     v21 = 0u;
     v22 = 0u;
@@ -259,16 +259,16 @@ LABEL_15:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 layoutRole];
-        v14 = [v12 bundleIdentifier];
-        if (v13 > 3)
+        layoutRole = [v12 layoutRole];
+        bundleIdentifier = [v12 bundleIdentifier];
+        if (layoutRole > 3)
         {
-          if (v13 == 4)
+          if (layoutRole == 4)
           {
             v18 = 1;
           }
 
-          else if (v13 == 7 && [v12 level] == 2)
+          else if (layoutRole == 7 && [v12 level] == 2)
           {
             v9 = 1;
           }
@@ -276,19 +276,19 @@ LABEL_15:
 
         else
         {
-          if (v13 == 1)
+          if (layoutRole == 1)
           {
-            -[MXFrontBoardServices updateLayoutRoleCache:displayID:](self, "updateLayoutRoleCache:displayID:", 1, v14, [v12 bundleIdentifier]);
+            -[MXFrontBoardServices updateLayoutRoleCache:displayID:](self, "updateLayoutRoleCache:displayID:", 1, bundleIdentifier, [v12 bundleIdentifier]);
             continue;
           }
 
-          if (v13 == 3)
+          if (layoutRole == 3)
           {
             v8 = 1;
           }
         }
 
-        [(MXFrontBoardServices *)self updateLayoutRoleCache:v13 displayID:v14, v17];
+        [(MXFrontBoardServices *)self updateLayoutRoleCache:layoutRole displayID:bundleIdentifier, v17];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];

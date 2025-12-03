@@ -1,29 +1,29 @@
 @interface SADSchemaSADAvailableAssetDailyStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SADSchemaSADAvailableAssetDailyStatus)initWithDictionary:(id)a3;
-- (SADSchemaSADAvailableAssetDailyStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SADSchemaSADAvailableAssetDailyStatus)initWithDictionary:(id)dictionary;
+- (SADSchemaSADAvailableAssetDailyStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAssetSetStatus:(id)a3;
-- (void)addNamespaceStatus:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetSetStatus:(id)status;
+- (void)addNamespaceStatus:(id)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SADSchemaSADAvailableAssetDailyStatus
 
-- (SADSchemaSADAvailableAssetDailyStatus)initWithDictionary:(id)a3
+- (SADSchemaSADAvailableAssetDailyStatus)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = SADSchemaSADAvailableAssetDailyStatus;
   v5 = [(SADSchemaSADAvailableAssetDailyStatus *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"namespaceStatus"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"namespaceStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"assetSetStatus"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"assetSetStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       v6 = v25;
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"statusReason"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"statusReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,30 +125,30 @@
   return v5;
 }
 
-- (SADSchemaSADAvailableAssetDailyStatus)initWithJSON:(id)a3
+- (SADSchemaSADAvailableAssetDailyStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SADSchemaSADAvailableAssetDailyStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SADSchemaSADAvailableAssetDailyStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SADSchemaSADAvailableAssetDailyStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,10 +162,10 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_assetSetStatus count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -185,16 +185,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -204,12 +204,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"assetSetStatus"];
+    [dictionary setObject:array forKeyedSubscript:@"assetSetStatus"];
   }
 
   if ([(NSArray *)self->_namespaceStatus count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -229,16 +229,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -248,7 +248,7 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"namespaceStatus"];
+    [dictionary setObject:array2 forKeyedSubscript:@"namespaceStatus"];
   }
 
   if (*&self->_has)
@@ -264,12 +264,12 @@
       v21 = off_1E78E2390[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:{@"statusReason", v23}];
+    [dictionary setObject:v21 forKeyedSubscript:{@"statusReason", v23}];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -289,28 +289,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
-  v6 = [v4 namespaceStatus];
-  if ((v5 != 0) == (v6 == 0))
+  namespaceStatus = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
+  namespaceStatus2 = [equalCopy namespaceStatus];
+  if ((namespaceStatus != 0) == (namespaceStatus2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
-  if (v7)
+  namespaceStatus3 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
+  if (namespaceStatus3)
   {
-    v8 = v7;
-    v9 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
-    v10 = [v4 namespaceStatus];
-    v11 = [v9 isEqual:v10];
+    v8 = namespaceStatus3;
+    namespaceStatus4 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus];
+    namespaceStatus5 = [equalCopy namespaceStatus];
+    v11 = [namespaceStatus4 isEqual:namespaceStatus5];
 
     if (!v11)
     {
@@ -322,22 +322,22 @@
   {
   }
 
-  v5 = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
-  v6 = [v4 assetSetStatus];
-  if ((v5 != 0) == (v6 == 0))
+  namespaceStatus = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
+  namespaceStatus2 = [equalCopy assetSetStatus];
+  if ((namespaceStatus != 0) == (namespaceStatus2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
-  if (v12)
+  assetSetStatus = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
+  if (assetSetStatus)
   {
-    v13 = v12;
-    v14 = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
-    v15 = [v4 assetSetStatus];
-    v16 = [v14 isEqual:v15];
+    v13 = assetSetStatus;
+    assetSetStatus2 = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
+    assetSetStatus3 = [equalCopy assetSetStatus];
+    v16 = [assetSetStatus2 isEqual:assetSetStatus3];
 
     if (!v16)
     {
@@ -349,9 +349,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (statusReason = self->_statusReason, statusReason == [v4 statusReason]))
+    if ((*&self->_has & 1) == 0 || (statusReason = self->_statusReason, statusReason == [equalCopy statusReason]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -365,10 +365,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -437,54 +437,54 @@ LABEL_13:
   }
 }
 
-- (void)addAssetSetStatus:(id)a3
+- (void)addAssetSetStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   assetSetStatus = self->_assetSetStatus;
-  v8 = v4;
+  v8 = statusCopy;
   if (!assetSetStatus)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assetSetStatus;
-    self->_assetSetStatus = v6;
+    self->_assetSetStatus = array;
 
-    v4 = v8;
+    statusCopy = v8;
     assetSetStatus = self->_assetSetStatus;
   }
 
-  [(NSArray *)assetSetStatus addObject:v4];
+  [(NSArray *)assetSetStatus addObject:statusCopy];
 }
 
-- (void)addNamespaceStatus:(id)a3
+- (void)addNamespaceStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   namespaceStatus = self->_namespaceStatus;
-  v8 = v4;
+  v8 = statusCopy;
   if (!namespaceStatus)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_namespaceStatus;
-    self->_namespaceStatus = v6;
+    self->_namespaceStatus = array;
 
-    v4 = v8;
+    statusCopy = v8;
     namespaceStatus = self->_namespaceStatus;
   }
 
-  [(NSArray *)namespaceStatus addObject:v4];
+  [(NSArray *)namespaceStatus addObject:statusCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = SADSchemaSADAvailableAssetDailyStatus;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SADSchemaSADAvailableAssetDailyStatus *)self namespaceStatus:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(SADSchemaSADAvailableAssetDailyStatus *)self setNamespaceStatus:v7];
 
-  v8 = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  assetSetStatus = [(SADSchemaSADAvailableAssetDailyStatus *)self assetSetStatus];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:assetSetStatus underConditions:policyCopy];
 
   [(SADSchemaSADAvailableAssetDailyStatus *)self setAssetSetStatus:v9];
 

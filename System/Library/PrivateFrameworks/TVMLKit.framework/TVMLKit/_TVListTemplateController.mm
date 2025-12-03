@@ -2,42 +2,42 @@
 - (BOOL)setNeedsFocusUpdateToList;
 - (CGSize)_backgroundImageProxySize;
 - (id)_backgroundImageProxy;
-- (id)impressionableElementsContainedInDocument:(id)a3;
+- (id)impressionableElementsContainedInDocument:(id)document;
 - (id)preferredFocusEnvironments;
 - (int64_t)_blurEffectStyle;
-- (void)_configureWithBgElement:(id)a3;
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4;
-- (void)_configureWithListElement:(id)a3;
+- (void)_configureWithBgElement:(id)element;
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage;
+- (void)_configureWithListElement:(id)element;
 - (void)_updateView;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)listViewController:(id)a3 didScrollWithScrollView:(id)a4;
-- (void)listViewController:(id)a3 updatePreviewViewController:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)listViewController:(id)controller didScrollWithScrollView:(id)view;
+- (void)listViewController:(id)controller updatePreviewViewController:(id)viewController;
 - (void)loadView;
-- (void)updateWithViewElement:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)updateWithViewElement:(id)element;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _TVListTemplateController
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  elementCopy = element;
   v19.receiver = self;
   v19.super_class = _TVListTemplateController;
-  [(_TVBgImageLoadingViewController *)&v19 updateWithViewElement:v5];
-  objc_storeStrong(&self->_templateElement, a3);
-  v6 = [v5 appDocument];
-  [v6 impressionThreshold];
+  [(_TVBgImageLoadingViewController *)&v19 updateWithViewElement:elementCopy];
+  objc_storeStrong(&self->_templateElement, element);
+  appDocument = [elementCopy appDocument];
+  [appDocument impressionThreshold];
   self->_impressionThreshold = v7;
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v5 children];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  children = [elementCopy children];
+  v9 = [children countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -48,12 +48,12 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 tv_elementType];
-        switch(v14)
+        tv_elementType = [v13 tv_elementType];
+        switch(tv_elementType)
         {
           case 22:
             [(_TVListTemplateController *)self _configureWithListElement:v13];
@@ -67,7 +67,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v10 = [children countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v10);
@@ -82,30 +82,30 @@
 - (BOOL)setNeedsFocusUpdateToList
 {
   [(_TVListTemplateController *)self setFocusedController:0];
-  v3 = [(_TVListTemplateController *)self listViewController];
-  [v3 setNeedsFocusUpdate];
+  listViewController = [(_TVListTemplateController *)self listViewController];
+  [listViewController setNeedsFocusUpdate];
 
   [(_TVListTemplateController *)self setNeedsFocusUpdate];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  v5 = [v4 focusedView];
-  v6 = [(_TVListTemplateController *)self view];
-  v7 = [v5 isDescendantOfView:v6];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
+  view = [(_TVListTemplateController *)self view];
+  v7 = [focusedView isDescendantOfView:view];
 
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = _TVListTemplateController;
-  [(_TVBgImageLoadingViewController *)&v3 viewWillAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = _TVListTemplateController;
-  [(_TVBgImageLoadingViewController *)&v3 viewDidAppear:a3];
+  [(_TVBgImageLoadingViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)loadView
@@ -115,44 +115,44 @@
   [(_TVListTemplateController *)self _updateView];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v19.receiver = self;
   v19.super_class = _TVListTemplateController;
-  v6 = a3;
-  [(_TVListTemplateController *)&v19 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  v8 = [v7 focusedView];
+  contextCopy = context;
+  [(_TVListTemplateController *)&v19 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  v9 = [(_TVListTemplateController *)self listViewController];
-  v10 = [v9 view];
-  v11 = [v8 isDescendantOfView:v10];
+  listViewController = [(_TVListTemplateController *)self listViewController];
+  view = [listViewController view];
+  v11 = [focusedView isDescendantOfView:view];
 
   if (v11)
   {
-    v12 = [(_TVListTemplateController *)self listViewController];
+    listViewController2 = [(_TVListTemplateController *)self listViewController];
 LABEL_5:
-    v16 = v12;
-    [(_TVListTemplateController *)self setFocusedController:v12];
+    v16 = listViewController2;
+    [(_TVListTemplateController *)self setFocusedController:listViewController2];
 
     goto LABEL_6;
   }
 
-  v13 = [(_TVListTemplateController *)self previewViewController];
-  v14 = [v13 view];
-  v15 = [v8 isDescendantOfView:v14];
+  previewViewController = [(_TVListTemplateController *)self previewViewController];
+  view2 = [previewViewController view];
+  v15 = [focusedView isDescendantOfView:view2];
 
   if (v15)
   {
-    v12 = [(_TVListTemplateController *)self previewViewController];
+    listViewController2 = [(_TVListTemplateController *)self previewViewController];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v17 = [(_TVListTemplateController *)self listViewController];
-  v18 = [v6 previouslyFocusedView];
+  listViewController3 = [(_TVListTemplateController *)self listViewController];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
 
-  [v17 templateControllerDidUpdateFocusFromView:v18];
+  [listViewController3 templateControllerDidUpdateFocusFromView:previouslyFocusedView];
 }
 
 - (id)preferredFocusEnvironments
@@ -174,24 +174,24 @@ LABEL_6:
 
   else
   {
-    v4 = [(_TVListTemplateController *)self view];
-    [v4 layoutIfNeeded];
+    view = [(_TVListTemplateController *)self view];
+    [view layoutIfNeeded];
 
     v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-    v5 = [(_TVListTemplateController *)self focusedController];
+    focusedController = [(_TVListTemplateController *)self focusedController];
 
-    if (v5)
+    if (focusedController)
     {
-      v6 = [(_TVListTemplateController *)self focusedController];
-      [v3 addObject:v6];
+      focusedController2 = [(_TVListTemplateController *)self focusedController];
+      [v3 addObject:focusedController2];
     }
 
-    v7 = [(_TVListTemplateController *)self listViewController];
+    listViewController = [(_TVListTemplateController *)self listViewController];
 
-    if (v7)
+    if (listViewController)
     {
-      v8 = [(_TVListTemplateController *)self listViewController];
-      [v3 addObject:v8];
+      listViewController2 = [(_TVListTemplateController *)self listViewController];
+      [v3 addObject:listViewController2];
     }
   }
 
@@ -200,70 +200,70 @@ LABEL_6:
 
 - (void)_updateView
 {
-  v29 = [(_TVListTemplateController *)self _listTemplateView];
-  [v29 setSemanticContentAttribute:{-[IKViewElement tv_semanticContentAttribute](self->_templateElement, "tv_semanticContentAttribute")}];
+  _listTemplateView = [(_TVListTemplateController *)self _listTemplateView];
+  [_listTemplateView setSemanticContentAttribute:{-[IKViewElement tv_semanticContentAttribute](self->_templateElement, "tv_semanticContentAttribute")}];
   v3 = +[TVInterfaceFactory sharedInterfaceFactory];
   bannerElement = self->_bannerElement;
-  v5 = [v29 bannerView];
-  v6 = [v3 _viewFromElement:bannerElement existingView:v5];
-  [v29 setBannerView:v6];
+  bannerView = [_listTemplateView bannerView];
+  v6 = [v3 _viewFromElement:bannerElement existingView:bannerView];
+  [_listTemplateView setBannerView:v6];
 
-  v7 = [(IKViewElement *)self->_bannerElement attributes];
-  v8 = [v7 objectForKeyedSubscript:@"floating"];
+  attributes = [(IKViewElement *)self->_bannerElement attributes];
+  v8 = [attributes objectForKeyedSubscript:@"floating"];
 
   if ([v8 length])
   {
-    [v29 setFloatingBanner:{objc_msgSend(v8, "BOOLValue")}];
+    [_listTemplateView setFloatingBanner:{objc_msgSend(v8, "BOOLValue")}];
   }
 
-  v9 = [(IKCollectionElement *)self->_listElement style];
-  v10 = [v9 tv_backgroundColor];
+  style = [(IKCollectionElement *)self->_listElement style];
+  tv_backgroundColor = [style tv_backgroundColor];
 
-  [v29 setBackdropEnabled:{objc_msgSend(v10, "colorType") == 2}];
-  v11 = [(IKViewElement *)self->_templateElement style];
-  v12 = [v11 tv_backgroundColor];
-  v13 = [v12 color];
+  [_listTemplateView setBackdropEnabled:{objc_msgSend(tv_backgroundColor, "colorType") == 2}];
+  style2 = [(IKViewElement *)self->_templateElement style];
+  tv_backgroundColor2 = [style2 tv_backgroundColor];
+  color = [tv_backgroundColor2 color];
 
-  if (v13)
+  if (color)
   {
-    v14 = [(IKViewElement *)self->_templateElement style];
-    v15 = [v14 tv_backgroundColor];
-    v16 = [v15 color];
-    [v29 setBackgroundColor:v16];
+    style3 = [(IKViewElement *)self->_templateElement style];
+    tv_backgroundColor3 = [style3 tv_backgroundColor];
+    color2 = [tv_backgroundColor3 color];
+    [_listTemplateView setBackgroundColor:color2];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [v29 setBackgroundColor:v14];
+    style3 = [MEMORY[0x277D75348] clearColor];
+    [_listTemplateView setBackgroundColor:style3];
   }
 
-  v17 = [(_TVListTemplateController *)self listViewController];
+  listViewController = [(_TVListTemplateController *)self listViewController];
   v18 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v19 = [v18 _viewControllerFromElement:self->_listElement existingController:v17];
+  v19 = [v18 _viewControllerFromElement:self->_listElement existingController:listViewController];
 
-  v20 = [(IKViewElement *)self->_templateElement elementName];
-  [v19 setAlwaysSoftFocusEnabled:{objc_msgSend(v20, "isEqualToString:", @"catalogTemplate"}];
+  elementName = [(IKViewElement *)self->_templateElement elementName];
+  [v19 setAlwaysSoftFocusEnabled:{objc_msgSend(elementName, "isEqualToString:", @"catalogTemplate"}];
 
-  if (v17 != v19)
+  if (listViewController != v19)
   {
-    [v17 willMoveToParentViewController:0];
+    [listViewController willMoveToParentViewController:0];
     if (v19)
     {
       [(_TVListTemplateController *)self addChildViewController:v19];
-      v21 = [v19 view];
-      [v29 setListView:v21];
+      view = [v19 view];
+      [_listTemplateView setListView:view];
     }
 
-    [v17 removeFromParentViewController];
+    [listViewController removeFromParentViewController];
     [v19 didMoveToParentViewController:self];
     [(_TVListTemplateController *)self setListViewController:v19];
     [v19 setDelegate:self];
   }
 
-  v22 = [(IKViewElement *)self->_templateElement isDisabled];
+  isDisabled = [(IKViewElement *)self->_templateElement isDisabled];
   disabledTemplateFocusCaptureView = self->_disabledTemplateFocusCaptureView;
-  if (v22)
+  if (isDisabled)
   {
     if (!disabledTemplateFocusCaptureView)
     {
@@ -272,92 +272,92 @@ LABEL_6:
       self->_disabledTemplateFocusCaptureView = v24;
 
       v26 = self->_disabledTemplateFocusCaptureView;
-      v27 = [MEMORY[0x277D75348] clearColor];
-      [(_TVFocusCaptureView *)v26 setBackgroundColor:v27];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(_TVFocusCaptureView *)v26 setBackgroundColor:clearColor];
     }
 
-    v28 = [(_TVListTemplateController *)self view];
-    [v28 addSubview:self->_disabledTemplateFocusCaptureView];
+    view2 = [(_TVListTemplateController *)self view];
+    [view2 addSubview:self->_disabledTemplateFocusCaptureView];
   }
 
   else
   {
     [(_TVFocusCaptureView *)disabledTemplateFocusCaptureView removeFromSuperview];
-    v28 = self->_disabledTemplateFocusCaptureView;
+    view2 = self->_disabledTemplateFocusCaptureView;
     self->_disabledTemplateFocusCaptureView = 0;
   }
 }
 
-- (void)listViewController:(id)a3 updatePreviewViewController:(id)a4
+- (void)listViewController:(id)controller updatePreviewViewController:(id)viewController
 {
-  v13 = a4;
-  v5 = [(_TVListTemplateController *)self previewViewController];
-  if (v5 != v13)
+  viewControllerCopy = viewController;
+  previewViewController = [(_TVListTemplateController *)self previewViewController];
+  if (previewViewController != viewControllerCopy)
   {
-    v6 = [(_TVListTemplateController *)self focusedController];
+    focusedController = [(_TVListTemplateController *)self focusedController];
 
-    if (v6 == v5)
+    if (focusedController == previewViewController)
     {
       [(_TVListTemplateController *)self setFocusedController:0];
     }
 
-    v7 = [(_TVListTemplateController *)self _listTemplateView];
-    [v5 willMoveToParentViewController:0];
-    v8 = v13;
-    if (v13)
+    _listTemplateView = [(_TVListTemplateController *)self _listTemplateView];
+    [previewViewController willMoveToParentViewController:0];
+    v8 = viewControllerCopy;
+    if (viewControllerCopy)
     {
-      [(_TVListTemplateController *)self addChildViewController:v13];
-      v8 = v13;
+      [(_TVListTemplateController *)self addChildViewController:viewControllerCopy];
+      v8 = viewControllerCopy;
     }
 
-    v9 = [v8 view];
-    [v7 setPreviewView:v9];
+    view = [v8 view];
+    [_listTemplateView setPreviewView:view];
 
-    [v5 removeFromParentViewController];
-    [v13 didMoveToParentViewController:self];
-    [(_TVListTemplateController *)self setPreviewViewController:v13];
+    [previewViewController removeFromParentViewController];
+    [viewControllerCopy didMoveToParentViewController:self];
+    [(_TVListTemplateController *)self setPreviewViewController:viewControllerCopy];
     if (self->_impressionThreshold > 0.0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 performSelector:sel__cancelImpressionsUpdate];
+      [previewViewController performSelector:sel__cancelImpressionsUpdate];
     }
 
-    v10 = [v13 tv_associatedIKViewElement];
-    v11 = [v10 tv_elementType] != 14;
+    tv_associatedIKViewElement = [viewControllerCopy tv_associatedIKViewElement];
+    v11 = [tv_associatedIKViewElement tv_elementType] != 14;
 
-    v12 = [(_TVListTemplateController *)self listViewController];
-    [v12 setIndexDisplayEnabled:v11];
+    listViewController = [(_TVListTemplateController *)self listViewController];
+    [listViewController setIndexDisplayEnabled:v11];
   }
 }
 
-- (void)listViewController:(id)a3 didScrollWithScrollView:(id)a4
+- (void)listViewController:(id)controller didScrollWithScrollView:(id)view
 {
-  v5 = a4;
-  v6 = [(_TVListTemplateController *)self _listTemplateView];
-  [v6 adjustScrollForListView:v5];
+  viewCopy = view;
+  _listTemplateView = [(_TVListTemplateController *)self _listTemplateView];
+  [_listTemplateView adjustScrollForListView:viewCopy];
 
   if (self->_impressionThreshold > 0.0)
   {
-    v7 = [(_TVListTemplateController *)self previewViewController];
+    previewViewController = [(_TVListTemplateController *)self previewViewController];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(_TVListTemplateController *)self previewViewController];
-      [v9 performSelector:sel__cancelImpressionsUpdate];
+      previewViewController2 = [(_TVListTemplateController *)self previewViewController];
+      [previewViewController2 performSelector:sel__cancelImpressionsUpdate];
     }
   }
 }
 
-- (void)_configureWithBgElement:(id)a3
+- (void)_configureWithBgElement:(id)element
 {
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v21 = a3;
-  v4 = [v21 children];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  elementCopy = element;
+  children = [elementCopy children];
+  v5 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v5)
   {
     v7 = 0;
@@ -376,7 +376,7 @@ LABEL_6:
     {
       if (*v25 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(children);
       }
 
       v10 = *(*(&v24 + 1) + 8 * v9);
@@ -397,10 +397,10 @@ LABEL_6:
             goto LABEL_21;
           }
 
-          v15 = v4;
+          v15 = children;
           v16 = v7;
           bgAudioElement = v10;
-          v17 = [(IKAudioElement *)bgAudioElement children];
+          children2 = [(IKAudioElement *)bgAudioElement children];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -412,10 +412,10 @@ LABEL_6:
             overlayView = 0;
           }
 
-          v7 = [TVMLViewFactory organizerViewWithElements:v17 existingView:overlayView];
+          v7 = [TVMLViewFactory organizerViewWithElements:children2 existingView:overlayView];
 
           [v7 setUserInteractionEnabled:0];
-          v4 = v15;
+          children = v15;
           v8 = v22;
           v6 = v23;
         }
@@ -433,7 +433,7 @@ LABEL_21:
     }
 
     while (v6 != v9);
-    v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v6 = [children countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v6);
@@ -443,30 +443,30 @@ LABEL_25:
   objc_storeStrong(&self->_overlayView, v7);
   if (v7)
   {
-    v19 = [(_TVListTemplateController *)self view];
-    [v19 addSubview:v7];
+    view = [(_TVListTemplateController *)self view];
+    [view addSubview:v7];
 
-    v20 = [(_TVListTemplateController *)self view];
-    [v20 bounds];
+    view2 = [(_TVListTemplateController *)self view];
+    [view2 bounds];
     [v7 setFrame:?];
   }
 }
 
-- (void)_configureWithListElement:(id)a3
+- (void)_configureWithListElement:(id)element
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_listElement, a3);
+  elementCopy = element;
+  objc_storeStrong(&self->_listElement, element);
   if (!self->_bgImageElement)
   {
-    v22 = self;
-    v23 = v5;
+    selfCopy = self;
+    v23 = elementCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [v5 children];
-    v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    children = [elementCopy children];
+    v7 = [children countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v7)
     {
       v8 = v7;
@@ -478,7 +478,7 @@ LABEL_25:
         {
           if (*v29 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(children);
           }
 
           v12 = *(*(&v28 + 1) + 8 * i);
@@ -488,11 +488,11 @@ LABEL_25:
             v27 = 0u;
             v24 = 0u;
             v25 = 0u;
-            v13 = [v12 children];
-            v14 = [v13 firstObject];
-            v15 = [v14 children];
+            children2 = [v12 children];
+            firstObject = [children2 firstObject];
+            children3 = [firstObject children];
 
-            v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v16 = [children3 countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v16)
             {
               v17 = v16;
@@ -503,7 +503,7 @@ LABEL_25:
                 {
                   if (*v25 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(children3);
                   }
 
                   v20 = *(*(&v24 + 1) + 8 * j);
@@ -516,7 +516,7 @@ LABEL_25:
                   }
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
+                v17 = [children3 countByEnumeratingWithState:&v24 objects:v32 count:16];
                 if (v17)
                 {
                   continue;
@@ -530,7 +530,7 @@ LABEL_19:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v8 = [children countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v8);
@@ -541,12 +541,12 @@ LABEL_19:
       v9 = 0;
     }
 
-    if (!v22->_heroImageElement)
+    if (!selfCopy->_heroImageElement)
     {
-      objc_storeStrong(&v22->_heroImageElement, v9);
+      objc_storeStrong(&selfCopy->_heroImageElement, v9);
     }
 
-    v5 = v23;
+    elementCopy = v23;
   }
 }
 
@@ -575,39 +575,39 @@ LABEL_19:
 
 - (id)_backgroundImageProxy
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 _graphicsQuality];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  _graphicsQuality = [currentDevice _graphicsQuality];
 
-  if (v4 == 10)
+  if (_graphicsQuality == 10)
   {
     goto LABEL_2;
   }
 
   if (self->_bgImageElement)
   {
-    v6 = [(IKViewElement *)self->_templateElement appDocument];
-    [v6 tv_adjustedWindowSize];
+    appDocument = [(IKViewElement *)self->_templateElement appDocument];
+    [appDocument tv_adjustedWindowSize];
     v8 = v7;
     v10 = v9;
 
     v11 = objc_opt_new();
     [v11 setImageSize:{v8, v10}];
     v12 = [TVImageLayout layoutWithLayout:v11 element:self->_bgImageElement];
-    v5 = [(IKImageElement *)self->_bgImageElement tv_imageProxyWithLayout:v11];
-    v13 = [(IKImageElement *)self->_bgImageElement style];
-    v14 = [v13 tv_imageTreatment];
-    v15 = [v14 isEqualToString:@"blur"];
+    tv_imageProxy = [(IKImageElement *)self->_bgImageElement tv_imageProxyWithLayout:v11];
+    style = [(IKImageElement *)self->_bgImageElement style];
+    tv_imageTreatment = [style tv_imageTreatment];
+    v15 = [tv_imageTreatment isEqualToString:@"blur"];
 
     if (v15)
     {
       v16 = objc_alloc_init(_TVUberBlurImageDecorator);
-      v17 = [(IKImageElement *)self->_bgImageElement style];
-      v18 = [v17 tv_tintColor];
-      v19 = [v18 color];
-      [(_TVUberBlurImageDecorator *)v16 setGradientColor:v19];
+      style2 = [(IKImageElement *)self->_bgImageElement style];
+      tv_tintColor = [style2 tv_tintColor];
+      color = [tv_tintColor color];
+      [(_TVUberBlurImageDecorator *)v16 setGradientColor:color];
 
       [(_TVUberBlurImageDecorator *)v16 setBlurType:2];
-      [v5 setDecorator:v16];
+      [tv_imageProxy setDecorator:v16];
     }
   }
 
@@ -617,16 +617,16 @@ LABEL_19:
     if (!heroImageElement)
     {
 LABEL_2:
-      v5 = 0;
+      tv_imageProxy = 0;
       goto LABEL_9;
     }
 
-    v5 = [(IKImageElement *)heroImageElement tv_imageProxy];
+    tv_imageProxy = [(IKImageElement *)heroImageElement tv_imageProxy];
   }
 
 LABEL_9:
 
-  return v5;
+  return tv_imageProxy;
 }
 
 - (int64_t)_blurEffectStyle
@@ -642,56 +642,56 @@ LABEL_9:
   }
 }
 
-- (void)_configureWithBgImage:(id)a3 backdropImage:(id)a4
+- (void)_configureWithBgImage:(id)image backdropImage:(id)backdropImage
 {
-  v12 = a3;
-  v5 = [(_TVListTemplateController *)self view];
-  if (v12)
+  imageCopy = image;
+  view = [(_TVListTemplateController *)self view];
+  if (imageCopy)
   {
-    v6 = [v5 bgImageView];
+    bgImageView = [view bgImageView];
 
-    if (!v6)
+    if (!bgImageView)
     {
-      v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
-      [v5 setBgImageView:v7];
-      v8 = [(IKImageElement *)self->_bgImageElement style];
-      v9 = [v8 tv_imageTreatment];
-      v10 = [v9 isEqualToString:@"blurOverlay"];
+      v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
+      [view setBgImageView:v7];
+      style = [(IKImageElement *)self->_bgImageElement style];
+      tv_imageTreatment = [style tv_imageTreatment];
+      v10 = [tv_imageTreatment isEqualToString:@"blurOverlay"];
 
       if (v10)
       {
-        v11 = [(IKImageElement *)self->_bgImageElement style];
-        [v11 tv_padding];
-        [v5 setOverlayBlurOffset:?];
+        style2 = [(IKImageElement *)self->_bgImageElement style];
+        [style2 tv_padding];
+        [view setOverlayBlurOffset:?];
       }
     }
   }
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(IKViewElement *)self->_templateElement appDocument];
-  v6 = [v5 isEqual:v4];
+  documentCopy = document;
+  appDocument = [(IKViewElement *)self->_templateElement appDocument];
+  v6 = [appDocument isEqual:documentCopy];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [(_TVListTemplateController *)self listViewController];
-    v9 = [v8 tv_impressionableElementsForDocument:v4];
-    [v7 addObjectsFromArray:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    listViewController = [(_TVListTemplateController *)self listViewController];
+    v9 = [listViewController tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v9];
 
-    v10 = [(_TVListTemplateController *)self _listTemplateView];
-    v11 = [v10 tv_impressionableElementsForDocument:v4];
-    [v7 addObjectsFromArray:v11];
+    _listTemplateView = [(_TVListTemplateController *)self _listTemplateView];
+    v11 = [_listTemplateView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v11];
 
-    v12 = [(_TVListTemplateController *)self previewViewController];
-    v13 = [v12 tv_impressionableElementsForDocument:v4];
-    [v7 addObjectsFromArray:v13];
+    previewViewController = [(_TVListTemplateController *)self previewViewController];
+    v13 = [previewViewController tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v13];
 
-    if ([v7 count])
+    if ([array count])
     {
-      v14 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
+      v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else

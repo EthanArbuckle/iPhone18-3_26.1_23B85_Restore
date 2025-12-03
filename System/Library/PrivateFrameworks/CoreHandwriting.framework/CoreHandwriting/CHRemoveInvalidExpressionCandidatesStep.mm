@@ -1,20 +1,20 @@
 @interface CHRemoveInvalidExpressionCandidatesStep
-- (BOOL)isTranscriptionValidExpression:(id)a3 transcriptionPath:(id)a4 limitToCurrentLocale:(BOOL)a5;
-- (CHRemoveInvalidExpressionCandidatesStep)initWithCodemap:(id)a3;
-- (id)process:(id)a3 options:(id)a4;
+- (BOOL)isTranscriptionValidExpression:(id)expression transcriptionPath:(id)path limitToCurrentLocale:(BOOL)locale;
+- (CHRemoveInvalidExpressionCandidatesStep)initWithCodemap:(id)codemap;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHRemoveInvalidExpressionCandidatesStep
 
-- (CHRemoveInvalidExpressionCandidatesStep)initWithCodemap:(id)a3
+- (CHRemoveInvalidExpressionCandidatesStep)initWithCodemap:(id)codemap
 {
-  v4 = a3;
+  codemapCopy = codemap;
   v14.receiver = self;
   v14.super_class = CHRemoveInvalidExpressionCandidatesStep;
   v9 = [(CHRemoveInvalidExpressionCandidatesStep *)&v14 init];
   if (v9)
   {
-    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, v4, v6, v7, v8);
+    objc_msgSend_createLatexHelperFromMathCodemap_(CHMathPostProcessingManager, v5, codemapCopy, v6, v7, v8);
     ptr = v9->_latexSyntaxHelper.__ptr_;
     v9->_latexSyntaxHelper.__ptr_ = v13;
     if (ptr)
@@ -27,11 +27,11 @@
   return v9;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v167 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v148 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -44,11 +44,11 @@
     _os_log_impl(&dword_18366B000, v7, OS_LOG_TYPE_DEBUG, "CHRemoveInvalidExpressionCandidatesStep is running", buf, 2u);
   }
 
-  v16 = objc_msgSend_objectForKeyedSubscript_(v148, v8, qword_1EA84BB58, v9, v10, v11);
-  v153 = v6;
+  v16 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v8, qword_1EA84BB58, v9, v10, v11);
+  v153 = processCopy;
   if (v16)
   {
-    v17 = objc_msgSend_objectForKeyedSubscript_(v148, v12, qword_1EA84BB58, v13, v14, v15);
+    v17 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v12, qword_1EA84BB58, v13, v14, v15);
     v23 = objc_msgSend_BOOLValue(v17, v18, v19, v20, v21, v22);
   }
 
@@ -58,7 +58,7 @@
   }
 
   v24 = MEMORY[0x1E695DF70];
-  v30 = objc_msgSend_result(v6, v25, v26, v27, v28, v29);
+  v30 = objc_msgSend_result(processCopy, v25, v26, v27, v28, v29);
   v36 = objc_msgSend_transcriptionPaths(v30, v31, v32, v33, v34, v35);
   v42 = objc_msgSend_count(v36, v37, v38, v39, v40, v41);
   v150 = objc_msgSend_arrayWithCapacity_(v24, v43, v42, v44, v45, v46);
@@ -67,7 +67,7 @@
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v52 = objc_msgSend_result(v6, v47, v48, v49, v50, v51);
+  v52 = objc_msgSend_result(processCopy, v47, v48, v49, v50, v51);
   v58 = objc_msgSend_transcriptionPaths(v52, v53, v54, v55, v56, v57);
 
   v66 = objc_msgSend_countByEnumeratingWithState_objects_count_(v58, v59, &v160, v166, 16, v60);
@@ -84,7 +84,7 @@
         }
 
         v69 = *(*(&v160 + 1) + 8 * i);
-        v70 = objc_msgSend_result(v6, v61, v62, v63, v64, v65, v148);
+        v70 = objc_msgSend_result(processCopy, v61, v62, v63, v64, v65, optionsCopy);
         isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale = objc_msgSend_isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale_(self, v71, v70, v69, v23, v72);
 
         if (isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale)
@@ -101,13 +101,13 @@
 
   if (!objc_msgSend_count(v150, v74, v75, v76, v77, v78))
   {
-    v84 = objc_msgSend_result(v6, v79, v80, v81, v82, v83);
+    v84 = objc_msgSend_result(processCopy, v79, v80, v81, v82, v83);
     v90 = objc_msgSend_transcriptionPaths(v84, v85, v86, v87, v88, v89);
     v96 = objc_msgSend_firstObject(v90, v91, v92, v93, v94, v95);
     objc_msgSend_addObject_(v150, v97, v96, v98, v99, v100);
   }
 
-  v152 = objc_msgSend_array(MEMORY[0x1E695DF70], v79, v80, v81, v82, v83, v148);
+  v152 = objc_msgSend_array(MEMORY[0x1E695DF70], v79, v80, v81, v82, v83, optionsCopy);
   v158 = 0u;
   v159 = 0u;
   v156 = 0u;
@@ -139,7 +139,7 @@
         v155 = v131;
         objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v118, v132, v111, 0, v130, v154);
 
-        v6 = v153;
+        processCopy = v153;
         objc_msgSend_addObject_(v152, v133, v131, v134, v135, v136);
       }
 
@@ -151,18 +151,18 @@
 
   v137 = [CHTokenizedMathResult alloc];
   v142 = objc_msgSend_initWithBestPathTokens_(v137, v138, v152, v139, v140, v141);
-  objc_msgSend_setResult_(v6, v143, v142, v144, v145, v146);
+  objc_msgSend_setResult_(processCopy, v143, v142, v144, v145, v146);
 
-  return v6;
+  return processCopy;
 }
 
-- (BOOL)isTranscriptionValidExpression:(id)a3 transcriptionPath:(id)a4 limitToCurrentLocale:(BOOL)a5
+- (BOOL)isTranscriptionValidExpression:(id)expression transcriptionPath:(id)path limitToCurrentLocale:(BOOL)locale
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v15 = objc_msgSend_tokenColumnCount(v8, v10, v11, v12, v13, v14);
-  v18 = objc_msgSend_transcriptionWithPath_columnRange_(v8, v16, v9, 0, v15, v17);
+  localeCopy = locale;
+  expressionCopy = expression;
+  pathCopy = path;
+  v15 = objc_msgSend_tokenColumnCount(expressionCopy, v10, v11, v12, v13, v14);
+  v18 = objc_msgSend_transcriptionWithPath_columnRange_(expressionCopy, v16, pathCopy, 0, v15, v17);
   ptr = self->_latexSyntaxHelper.__ptr_;
   v20 = v18;
   v26 = objc_msgSend_UTF8String(v20, v21, v22, v23, v24, v25);
@@ -228,7 +228,7 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale_requireDeclaredVariables = objc_msgSend_isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale_requireDeclaredVariables_(CHTokenizedMathResult, v29, v8, v9, v5, 0);
+  isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale_requireDeclaredVariables = objc_msgSend_isTranscriptionValidExpression_transcriptionPath_limitToCurrentLocale_requireDeclaredVariables_(CHTokenizedMathResult, v29, expressionCopy, pathCopy, localeCopy, 0);
 LABEL_20:
   sub_18368A374(&v36, v37);
 

@@ -1,15 +1,15 @@
 @interface TSCEWrappedCellRef
 + (id)invalidCellRef;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (NSUUID)tableID;
 - (TSCEWrappedCellRef)init;
-- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)a3 tableID:(id)a4;
-- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)a3 tableUID:(TSKUIDStruct)a4;
-- (TSCEWrappedCellRef)initWithCellRef:(const TSCECellRef *)a3;
+- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)coord tableID:(id)d;
+- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)coord tableUID:(TSKUIDStruct)d;
+- (TSCEWrappedCellRef)initWithCellRef:(const TSCECellRef *)ref;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCEWrappedCellRef
@@ -29,32 +29,32 @@
   return objc_msgSend_initWithCellRef_(self, a2, v5, v2, v3);
 }
 
-- (TSCEWrappedCellRef)initWithCellRef:(const TSCECellRef *)a3
+- (TSCEWrappedCellRef)initWithCellRef:(const TSCECellRef *)ref
 {
   v6.receiver = self;
   v6.super_class = TSCEWrappedCellRef;
   result = [(TSCEWrappedCellRef *)&v6 init];
   if (result)
   {
-    v5 = *&a3->coordinate.row;
-    result->_cellRef._tableUID._upper = a3->_tableUID._upper;
+    v5 = *&ref->coordinate.row;
+    result->_cellRef._tableUID._upper = ref->_tableUID._upper;
     *&result->_cellRef.coordinate.row = v5;
   }
 
   return result;
 }
 
-- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)a3 tableUID:(TSKUIDStruct)a4
+- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)coord tableUID:(TSKUIDStruct)d
 {
-  v5 = a3;
-  v6 = a4;
-  return objc_msgSend_initWithCellRef_(self, a2, &v5, a4._lower, a4._upper);
+  coordCopy = coord;
+  dCopy = d;
+  return objc_msgSend_initWithCellRef_(self, a2, &coordCopy, d._lower, d._upper);
 }
 
-- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)a3 tableID:(id)a4
+- (TSCEWrappedCellRef)initWithCellCoord:(TSUCellCoord)coord tableID:(id)d
 {
-  v6 = a4;
-  v12[0] = a3;
+  dCopy = d;
+  v12[0] = coord;
   v12[1] = TSKMakeUIDStructFromNSUUID();
   v12[2] = v7;
   v10 = objc_msgSend_initWithCellRef_(self, v7, v12, v8, v9);
@@ -62,7 +62,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -96,11 +96,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v9 = v4;
-  v11 = v4 && (objc_msgSend_cellRef(v4, v5, v6, v7, v8), coordinate = self->_cellRef.coordinate, coordinate.row == v13) && ((v13 ^ *&coordinate) & 0x101FFFF00000000) == 0 && self->_cellRef._tableUID._lower == v14 && self->_cellRef._tableUID._upper == v15;
+  equalCopy = equal;
+  v9 = equalCopy;
+  v11 = equalCopy && (objc_msgSend_cellRef(equalCopy, v5, v6, v7, v8), coordinate = self->_cellRef.coordinate, coordinate.row == v13) && ((v13 ^ *&coordinate) & 0x101FFFF00000000) == 0 && self->_cellRef._tableUID._lower == v14 && self->_cellRef._tableUID._upper == v15;
 
   return v11;
 }

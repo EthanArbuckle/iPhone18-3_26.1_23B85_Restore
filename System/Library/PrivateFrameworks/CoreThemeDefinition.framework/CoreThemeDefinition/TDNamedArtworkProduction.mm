@@ -1,15 +1,15 @@
 @interface TDNamedArtworkProduction
-- (void)setDateOfLastChange:(id)a3;
+- (void)setDateOfLastChange:(id)change;
 @end
 
 @implementation TDNamedArtworkProduction
 
-- (void)setDateOfLastChange:(id)a3
+- (void)setDateOfLastChange:(id)change
 {
   if (![(TDNamedArtworkProduction *)self hasCustomDateOfLastChange])
   {
 
-    [(TDNamedArtworkProduction *)self setPrimitiveValue:a3 forKey:@"dateOfLastChange"];
+    [(TDNamedArtworkProduction *)self setPrimitiveValue:change forKey:@"dateOfLastChange"];
   }
 }
 

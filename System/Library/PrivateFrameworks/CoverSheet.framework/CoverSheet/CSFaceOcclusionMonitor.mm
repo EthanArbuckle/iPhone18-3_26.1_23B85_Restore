@@ -1,14 +1,14 @@
 @interface CSFaceOcclusionMonitor
-- (BOOL)_handleBiometricEvent:(unint64_t)a3;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)_handleBiometricEvent:(unint64_t)event;
+- (BOOL)handleEvent:(id)event;
 - (CSFaceOcclusionMonitorDelegate)delegate;
 @end
 
 @implementation CSFaceOcclusionMonitor
 
-- (BOOL)_handleBiometricEvent:(unint64_t)a3
+- (BOOL)_handleBiometricEvent:(unint64_t)event
 {
-  if (a3 == 28)
+  if (event == 28)
   {
     v4 = SBLogDashBoard();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -22,7 +22,7 @@
 
   else
   {
-    if (a3 != 21)
+    if (event != 21)
     {
       return 0;
     }
@@ -45,22 +45,22 @@
   return 1;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == 25)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type == 25)
   {
     self->_faceOcclusionsSinceScreenOn = 0;
 LABEL_6:
-    v8 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
     goto LABEL_7;
   }
 
-  if (v5 == 15)
+  if (type == 15)
   {
-    v6 = [v4 value];
-    v7 = -[CSFaceOcclusionMonitor _handleBiometricEvent:](self, "_handleBiometricEvent:", [v6 unsignedIntegerValue]);
+    value = [eventCopy value];
+    v7 = -[CSFaceOcclusionMonitor _handleBiometricEvent:](self, "_handleBiometricEvent:", [value unsignedIntegerValue]);
 
     if (v7)
     {
@@ -68,10 +68,10 @@ LABEL_6:
     }
   }
 
-  v8 = 0;
+  isConsumable = 0;
 LABEL_7:
 
-  return v8;
+  return isConsumable;
 }
 
 - (CSFaceOcclusionMonitorDelegate)delegate

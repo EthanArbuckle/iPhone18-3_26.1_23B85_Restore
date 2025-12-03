@@ -1,5 +1,5 @@
 @interface _ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation
-- (_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation)initWithBase:(id)a3;
+- (_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation)initWithBase:(id)base;
 - (double)getExpirationDuration;
 @end
 
@@ -16,16 +16,16 @@
   return result;
 }
 
-- (_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation)initWithBase:(id)a3
+- (_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation;
   v6 = [(_ADAudioSessionCoordinationMessageKeepAudioSessionAliveRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

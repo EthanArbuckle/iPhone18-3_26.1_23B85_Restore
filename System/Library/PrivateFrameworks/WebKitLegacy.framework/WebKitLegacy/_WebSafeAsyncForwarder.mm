@@ -1,15 +1,15 @@
 @interface _WebSafeAsyncForwarder
-- (_WebSafeAsyncForwarder)initWithForwarder:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_WebSafeAsyncForwarder)initWithForwarder:(id)forwarder;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (uint64_t)forwardInvocation:(WTF *)this;
-- (uint64_t)forwardInvocation:(uint64_t)a1;
-- (void)forwardInvocation:(id)a3;
-- (void)forwardInvocation:(void *)a1;
+- (uint64_t)forwardInvocation:(uint64_t)invocation;
+- (void)forwardInvocation:(id)invocation;
+- (void)forwardInvocation:(void *)invocation;
 @end
 
 @implementation _WebSafeAsyncForwarder
 
-- (_WebSafeAsyncForwarder)initWithForwarder:(id)a3
+- (_WebSafeAsyncForwarder)initWithForwarder:(id)forwarder
 {
   v6.receiver = self;
   v6.super_class = _WebSafeAsyncForwarder;
@@ -17,18 +17,18 @@
   if (result)
   {
     v5 = result;
-    objc_storeWeak(&result->_forwarder, a3);
+    objc_storeWeak(&result->_forwarder, forwarder);
     return v5;
   }
 
   return result;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (WebThreadIsCurrent())
   {
-    WTF::RunLoop::mainSingleton([a3 retainArguments]);
+    WTF::RunLoop::mainSingleton([invocation retainArguments]);
     Weak = objc_loadWeak(&self->_forwarder);
     v6 = Weak;
     if (Weak)
@@ -36,15 +36,15 @@
       v7 = Weak;
     }
 
-    if (a3)
+    if (invocation)
     {
-      v8 = a3;
+      invocationCopy = invocation;
     }
 
     v9 = WTF::fastMalloc(0x18);
     *v9 = &unk_1F472C3D8;
     v9[1] = v6;
-    v9[2] = a3;
+    v9[2] = invocation;
     v11 = v9;
     WTF::RunLoop::dispatch();
     if (v11)
@@ -57,50 +57,50 @@
   {
     v10 = objc_loadWeak(&self->_forwarder);
 
-    [v10 forwardInvocation:a3];
+    [v10 forwardInvocation:invocation];
   }
 }
 
-- (uint64_t)forwardInvocation:(uint64_t)a1
+- (uint64_t)forwardInvocation:(uint64_t)invocation
 {
-  v2 = *(a1 + 8);
-  *(a1 + 8) = 0;
+  v2 = *(invocation + 8);
+  *(invocation + 8) = 0;
   if (v2)
   {
   }
 
-  v3 = *a1;
-  *a1 = 0;
+  v3 = *invocation;
+  *invocation = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return invocation;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   Weak = objc_loadWeak(&self->_forwarder);
 
-  return [Weak methodSignatureForSelector:a3];
+  return [Weak methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(void *)a1
+- (void)forwardInvocation:(void *)invocation
 {
-  *a1 = &unk_1F472C3D8;
-  v2 = a1[2];
-  a1[2] = 0;
+  *invocation = &unk_1F472C3D8;
+  v2 = invocation[2];
+  invocation[2] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = invocation[1];
+  invocation[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return invocation;
 }
 
 - (uint64_t)forwardInvocation:(WTF *)this

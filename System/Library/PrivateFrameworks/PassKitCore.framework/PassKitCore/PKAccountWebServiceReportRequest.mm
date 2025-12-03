@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceReportRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceReportRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -29,7 +29,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v7 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -91,8 +91,8 @@ LABEL_19:
   [v8 setHTTPMethod:@"POST"];
   [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [(PKAccountReport *)self->_report dictionaryRepresentation];
-  [v9 addEntriesFromDictionary:v10];
+  dictionaryRepresentation = [(PKAccountReport *)self->_report dictionaryRepresentation];
+  [v9 addEntriesFromDictionary:dictionaryRepresentation];
 
   trigger = self->_trigger;
   v12 = @"unknown";

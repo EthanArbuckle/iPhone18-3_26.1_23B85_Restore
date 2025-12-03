@@ -9,30 +9,30 @@
 
 - (void)is_didLayoutPlayerViews
 {
-  v1 = [a1 is_vitalityController];
-  [v1 didLayoutPlayerViews];
+  is_vitalityController = [self is_vitalityController];
+  [is_vitalityController didLayoutPlayerViews];
 }
 
 - (void)setCanDriveVitality:()ISScrollViewVitalityController
 {
-  if ([a1 canDriveVitality] != a3)
+  if ([self canDriveVitality] != a3)
   {
     v5 = ISScrollViewCanDriveVitalityAssociationKey;
     v6 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-    objc_setAssociatedObject(a1, v5, v6, 1);
+    objc_setAssociatedObject(self, v5, v6, 1);
 
     if ((a3 & 1) == 0)
     {
       v7 = ISScrollViewVitalityControllerAssociationKey;
 
-      objc_setAssociatedObject(a1, v7, 0, 1);
+      objc_setAssociatedObject(self, v7, 0, 1);
     }
   }
 }
 
 - (uint64_t)canDriveVitality
 {
-  v1 = objc_getAssociatedObject(a1, ISScrollViewCanDriveVitalityAssociationKey);
+  v1 = objc_getAssociatedObject(self, ISScrollViewCanDriveVitalityAssociationKey);
   v2 = v1;
   v3 = MEMORY[0x277CBEC38];
   if (v1)
@@ -42,13 +42,13 @@
 
   v4 = v3;
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 - (ISUIScrollViewVitalityController)is_vitalityControllerCreateIfNeeded:()ISScrollViewVitalityController
 {
-  v5 = objc_getAssociatedObject(a1, ISScrollViewVitalityControllerAssociationKey);
+  v5 = objc_getAssociatedObject(self, ISScrollViewVitalityControllerAssociationKey);
   if (v5)
   {
     v6 = 1;
@@ -61,11 +61,11 @@
 
   if (!v6)
   {
-    if ([a1 canDriveVitality])
+    if ([self canDriveVitality])
     {
       v5 = objc_alloc_init(ISUIScrollViewVitalityController);
-      [(ISUIScrollViewVitalityController *)v5 _setScrollView:a1];
-      objc_setAssociatedObject(a1, ISScrollViewVitalityControllerAssociationKey, v5, 1);
+      [(ISUIScrollViewVitalityController *)v5 _setScrollView:self];
+      objc_setAssociatedObject(self, ISScrollViewVitalityControllerAssociationKey, v5, 1);
     }
 
     else

@@ -1,16 +1,16 @@
 @interface CSMagSafeAccessoryView
-- (CSMagSafeAccessoryView)initWithFrame:(CGRect)a3;
+- (CSMagSafeAccessoryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLegibilitySettings:(id)a3;
+- (void)setLegibilitySettings:(id)settings;
 @end
 
 @implementation CSMagSafeAccessoryView
 
-- (CSMagSafeAccessoryView)initWithFrame:(CGRect)a3
+- (CSMagSafeAccessoryView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CSMagSafeAccessoryView;
-  v3 = [(CSMagSafeAccessoryView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSMagSafeAccessoryView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CSMagSafeAccessoryConfiguration defaultConfiguration];
@@ -25,8 +25,8 @@
   v12.receiver = self;
   v12.super_class = CSMagSafeAccessoryView;
   [(CSMagSafeAccessoryView *)&v12 layoutSubviews];
-  v3 = [(CSMagSafeAccessoryView *)self superview];
-  [v3 bounds];
+  superview = [(CSMagSafeAccessoryView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -35,12 +35,12 @@
   [(CSMagSafeAccessoryView *)self setFrame:v5, v7, v9, v11];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
   }
 }
 

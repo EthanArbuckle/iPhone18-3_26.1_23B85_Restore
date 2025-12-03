@@ -1,18 +1,18 @@
 @interface PDFImportExtension
-- (BOOL)document_has_spaces:(CGPDFDocument *)a3;
-- (BOOL)new_updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5;
-- (id)getPDFText:(CGPDFDocument *)a3;
-- (id)getStringFromPDFDictioanry:(CGPDFDictionary *)a3 forKey:(id)a4;
-- (id)new_getPDFText:(id)a3;
-- (void)getPageText:(id)a3 page:(CGPDFPage *)a4 gap:(float)a5 lastPage:(BOOL)a6;
+- (BOOL)document_has_spaces:(CGPDFDocument *)document_has_spaces;
+- (BOOL)new_updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error;
+- (id)getPDFText:(CGPDFDocument *)text;
+- (id)getStringFromPDFDictioanry:(CGPDFDictionary *)dictioanry forKey:(id)key;
+- (id)new_getPDFText:(id)text;
+- (void)getPageText:(id)text page:(CGPDFPage *)page gap:(float)gap lastPage:(BOOL)lastPage;
 @end
 
 @implementation PDFImportExtension
 
-- (id)getStringFromPDFDictioanry:(CGPDFDictionary *)a3 forKey:(id)a4
+- (id)getStringFromPDFDictioanry:(CGPDFDictionary *)dictioanry forKey:(id)key
 {
   value = 0;
-  String = CGPDFDictionaryGetString(a3, [a4 UTF8String], &value);
+  String = CGPDFDictionaryGetString(dictioanry, [key UTF8String], &value);
   v5 = 0;
   if (String)
   {
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (void)getPageText:(id)a3 page:(CGPDFPage *)a4 gap:(float)a5 lastPage:(BOOL)a6
+- (void)getPageText:(id)text page:(CGPDFPage *)page gap:(float)gap lastPage:(BOOL)lastPage
 {
-  v9 = a3;
+  textCopy = text;
   bzero(&v64, 0x810uLL);
   if (!CGPDFPageCopyTextString())
   {
@@ -38,13 +38,13 @@
     goto LABEL_53;
   }
 
-  objc_storeStrong(&v66, a3);
+  objc_storeStrong(&v66, text);
   v64 = 0;
-  v54 = v9;
+  v54 = textCopy;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v14 = CGPDFPageGetRotationAngle(a4) % 360;
+  v14 = CGPDFPageGetRotationAngle(page) % 360;
   v15 = v14 + (v14 < 0 ? 0x168 : 0);
   if (v15)
   {
@@ -58,7 +58,7 @@
 
   v17 = v16;
   v55 = v17;
-  v18 = a5 + 1.0;
+  v18 = gap + 1.0;
   v19 = 0.0;
   v20 = 0.0;
   do
@@ -195,9 +195,9 @@ LABEL_35:
 
   while (Length != v11);
   CGPDFTextStringRelease();
-  v9 = v54;
+  textCopy = v54;
   v52 = v64;
-  if (v45 != 32 && !a6)
+  if (v45 != 32 && !lastPage)
   {
     v65[v64] = 32;
     v64 = ++v52;
@@ -218,29 +218,29 @@ LABEL_52:
 LABEL_53:
 }
 
-- (id)new_getPDFText:(id)a3
+- (id)new_getPDFText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[NSMutableString string];
-  v5 = [v3 pageCount];
-  if (v5)
+  pageCount = [textCopy pageCount];
+  if (pageCount)
   {
-    v6 = v5;
+    v6 = pageCount;
     for (i = 0; v6 != i; ++i)
     {
-      v8 = [v3 sync_pageAtIndex:i];
+      v8 = [textCopy sync_pageAtIndex:i];
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 pageText];
-        if (v10)
+        pageText = [v8 pageText];
+        if (pageText)
         {
           if (i)
           {
             [v4 appendString:@"\n"];
           }
 
-          [v4 appendString:v10];
+          [v4 appendString:pageText];
           if ([v4 length] >> 20 > 4)
           {
 
@@ -254,14 +254,14 @@ LABEL_53:
   return v4;
 }
 
-- (BOOL)new_updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)new_updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  attributesCopy = attributes;
+  lCopy = l;
   v10 = +[NSFileManager defaultManager];
-  v11 = [v9 path];
+  path = [lCopy path];
   v58 = 0;
-  v12 = [v10 attributesOfItemAtPath:v11 error:&v58];
+  v12 = [v10 attributesOfItemAtPath:path error:&v58];
   v13 = v58;
 
   if (v12)
@@ -269,12 +269,12 @@ LABEL_53:
     v14 = [v12 objectForKeyedSubscript:NSFileProtectionKey];
     if ([v14 isEqualToString:NSFileProtectionComplete])
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(isUnlocked) = 0;
     }
 
     else
     {
-      v17 = [NSData dataWithContentsOfURL:v9 options:1 error:0];
+      v17 = [NSData dataWithContentsOfURL:lCopy options:1 error:0];
       if (v17)
       {
         v18 = +[CGRemotePDFServiceProxy sharedInstance];
@@ -282,23 +282,23 @@ LABEL_53:
 
         if (v19)
         {
-          v51 = self;
+          selfCopy = self;
           v57 = 0;
-          v20 = [v9 getResourceValue:&v57 forKey:NSURLLocalizedNameKey error:0];
+          v20 = [lCopy getResourceValue:&v57 forKey:NSURLLocalizedNameKey error:0];
           v21 = v57;
           if (v20)
           {
-            [v8 setDisplayName:v21];
+            [attributesCopy setDisplayName:v21];
           }
 
           else
           {
-            v22 = [v9 lastPathComponent];
+            lastPathComponent = [lCopy lastPathComponent];
 
-            if (v22)
+            if (lastPathComponent)
             {
-              [v8 setDisplayName:v22];
-              v21 = v22;
+              [attributesCopy setDisplayName:lastPathComponent];
+              v21 = lastPathComponent;
             }
 
             else
@@ -311,13 +311,13 @@ LABEL_53:
           v56 = 0;
           [v19 getVersionMajor:&v56 andMinor:&v55];
           v23 = [NSString stringWithFormat:@"%ld.%ld", v56, v55];
-          [v8 setVersion:v23];
+          [attributesCopy setVersion:v23];
 
-          v24 = [v19 pageCount];
-          if (v24)
+          pageCount = [v19 pageCount];
+          if (pageCount)
           {
-            v25 = [NSNumber numberWithUnsignedLong:v24];
-            [v8 setPageCount:v25];
+            v25 = [NSNumber numberWithUnsignedLong:pageCount];
+            [attributesCopy setPageCount:v25];
           }
 
           v54 = v21;
@@ -328,10 +328,10 @@ LABEL_53:
             [v26 rectForBox:1];
             v29 = v28;
             v31 = [NSNumber numberWithDouble:v30];
-            [v8 setPageWidth:v31];
+            [attributesCopy setPageWidth:v31];
 
             v32 = [NSNumber numberWithDouble:v29];
-            [v8 setPageHeight:v32];
+            [attributesCopy setPageHeight:v32];
           }
 
           v53 = v27;
@@ -345,107 +345,107 @@ LABEL_53:
             v33 = @"None";
           }
 
-          [v8 setSecurityMethod:v33];
-          v15 = [v19 isUnlocked];
-          if (v15)
+          [attributesCopy setSecurityMethod:v33];
+          isUnlocked = [v19 isUnlocked];
+          if (isUnlocked)
           {
-            v52 = [v19 infoDictionary];
-            if (v52)
+            infoDictionary = [v19 infoDictionary];
+            if (infoDictionary)
             {
-              v34 = v52;
-              v35 = [v52 objectForKeyedSubscript:kCGPDFDocumentTitle];
+              v34 = infoDictionary;
+              v35 = [infoDictionary objectForKeyedSubscript:kCGPDFDocumentTitle];
               v50 = v35;
               if (v35 && (v36 = v35, [v35 length]))
               {
-                [v8 setTitle:v36];
+                [attributesCopy setTitle:v36];
               }
 
               else
               {
-                v37 = [v52 objectForKeyedSubscript:kCGPDFDocumentSubject];
+                v37 = [infoDictionary objectForKeyedSubscript:kCGPDFDocumentSubject];
                 v38 = v37;
                 if (v37 && [v37 length])
                 {
-                  [v8 setTitle:v38];
+                  [attributesCopy setTitle:v38];
                 }
               }
 
-              v39 = [v52 objectForKeyedSubscript:kCGPDFDocumentAuthor];
+              v39 = [infoDictionary objectForKeyedSubscript:kCGPDFDocumentAuthor];
               v40 = v39;
               if (v39)
               {
                 v60 = v39;
                 v41 = [NSArray arrayWithObjects:&v60 count:1];
-                [v8 setAuthorNames:v41];
+                [attributesCopy setAuthorNames:v41];
 
-                v34 = v52;
+                v34 = infoDictionary;
               }
 
               v49 = v40;
               v42 = [v34 objectForKeyedSubscript:kCGPDFDocumentCreator];
               if (v42)
               {
-                [v8 setCreator:v42];
+                [attributesCopy setCreator:v42];
                 v59 = v42;
                 v43 = [NSArray arrayWithObjects:&v59 count:1];
-                [v8 setAuthorNames:v43];
+                [attributesCopy setAuthorNames:v43];
 
-                v34 = v52;
+                v34 = infoDictionary;
               }
 
               v48 = v42;
               v44 = [v34 objectForKeyedSubscript:kCGPDFDocumentProducer];
               if (v44)
               {
-                [v8 setProducer:v44];
+                [attributesCopy setProducer:v44];
               }
 
               v45 = [v34 objectForKeyedSubscript:kCGPDFDocumentKeywords];
               if (v45)
               {
-                [v8 setKeywords:v45];
+                [attributesCopy setKeywords:v45];
               }
             }
 
-            v46 = [(PDFImportExtension *)v51 new_getPDFText:v19];
+            v46 = [(PDFImportExtension *)selfCopy new_getPDFText:v19];
             if (v46)
             {
-              [v8 setTextContent:v46];
+              [attributesCopy setTextContent:v46];
             }
           }
         }
 
         else
         {
-          LOBYTE(v15) = 0;
+          LOBYTE(isUnlocked) = 0;
         }
       }
 
       else
       {
-        LOBYTE(v15) = 0;
+        LOBYTE(isUnlocked) = 0;
       }
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = v13;
-    LOBYTE(v15) = 0;
-    *a5 = v13;
+    LOBYTE(isUnlocked) = 0;
+    *error = v13;
   }
 
   else
   {
-    LOBYTE(v15) = 0;
+    LOBYTE(isUnlocked) = 0;
   }
 
-  return v15;
+  return isUnlocked;
 }
 
-- (BOOL)document_has_spaces:(CGPDFDocument *)a3
+- (BOOL)document_has_spaces:(CGPDFDocument *)document_has_spaces
 {
-  if (!CGPDFDocumentGetPage(a3, 1uLL) || !CGPDFPageCopyTextString())
+  if (!CGPDFDocumentGetPage(document_has_spaces, 1uLL) || !CGPDFPageCopyTextString())
   {
     return 0;
   }
@@ -497,9 +497,9 @@ LABEL_53:
   return v5;
 }
 
-- (id)getPDFText:(CGPDFDocument *)a3
+- (id)getPDFText:(CGPDFDocument *)text
 {
-  NumberOfPages = CGPDFDocumentGetNumberOfPages(a3);
+  NumberOfPages = CGPDFDocumentGetNumberOfPages(text);
   if (!NumberOfPages)
   {
     goto LABEL_13;
@@ -507,7 +507,7 @@ LABEL_53:
 
   v6 = NumberOfPages;
   v7 = +[NSMutableString string];
-  if ([(PDFImportExtension *)self document_has_spaces:a3])
+  if ([(PDFImportExtension *)self document_has_spaces:text])
   {
     v8 = 1.0;
   }
@@ -520,7 +520,7 @@ LABEL_53:
   v9 = 1;
   do
   {
-    Page = CGPDFDocumentGetPage(a3, v9);
+    Page = CGPDFDocumentGetPage(text, v9);
     *&v11 = v8;
     [(PDFImportExtension *)self getPageText:v7 page:Page gap:v6 == v9++ lastPage:v11];
   }

@@ -1,10 +1,10 @@
 @interface VSAutoAuthenticationAppDocumentController
-- (BOOL)_updateAutoAuthenticationViewModel:(id)a3 error:(id *)a4;
-- (BOOL)_updateAutoAuthenticationViewModel:(id)a3 withTemplate:(id)a4;
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
-- (id)_autoAuthenticationViewModelWithViewModel:(id)a3;
+- (BOOL)_updateAutoAuthenticationViewModel:(id)model error:(id *)error;
+- (BOOL)_updateAutoAuthenticationViewModel:(id)model withTemplate:(id)template;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
+- (id)_autoAuthenticationViewModelWithViewModel:(id)model;
 - (id)_newViewModel;
-- (void)autoAuthenticationViewModelDidManualSignInButton:(id)a3;
+- (void)autoAuthenticationViewModelDidManualSignInButton:(id)button;
 @end
 
 @implementation VSAutoAuthenticationAppDocumentController
@@ -16,28 +16,28 @@
   return v3;
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
   v14.receiver = self;
   v14.super_class = VSAutoAuthenticationAppDocumentController;
-  [(VSAppDocumentController *)&v14 _updateViewModel:v6 error:a4];
-  v7 = [(VSAppDocumentController *)self appDocument];
-  v8 = [v7 error];
+  [(VSAppDocumentController *)&v14 _updateViewModel:modelCopy error:error];
+  appDocument = [(VSAppDocumentController *)self appDocument];
+  error = [appDocument error];
 
-  if (!v8)
+  if (!error)
   {
-    v12 = [(VSAutoAuthenticationAppDocumentController *)self _autoAuthenticationViewModelWithViewModel:v6];
+    v12 = [(VSAutoAuthenticationAppDocumentController *)self _autoAuthenticationViewModelWithViewModel:modelCopy];
     v13 = 0;
     v9 = [(VSAutoAuthenticationAppDocumentController *)self _updateAutoAuthenticationViewModel:v12 error:&v13];
-    v8 = v13;
+    error = v13;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -46,11 +46,11 @@
   }
 
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    v10 = v8;
-    *a4 = v8;
+    v10 = error;
+    *error = error;
   }
 
 LABEL_6:
@@ -58,21 +58,21 @@ LABEL_6:
   return v9;
 }
 
-- (void)autoAuthenticationViewModelDidManualSignInButton:(id)a3
+- (void)autoAuthenticationViewModelDidManualSignInButton:(id)button
 {
-  if (!a3)
+  if (!button)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The autoAuthenticationViewModel parameter must not be nil."];
   }
 
-  v4 = [(VSAutoAuthenticationAppDocumentController *)self buttonLockupElement];
-  [v4 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  buttonLockupElement = [(VSAutoAuthenticationAppDocumentController *)self buttonLockupElement];
+  [buttonLockupElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (id)_autoAuthenticationViewModelWithViewModel:(id)a3
+- (id)_autoAuthenticationViewModelWithViewModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
@@ -87,23 +87,23 @@ LABEL_6:
     [v4 raise:v5 format:{@"Unexpectedly, viewModel was %@, instead of VSAutoAuthenticationViewModel.", v7}];
   }
 
-  return v3;
+  return modelCopy;
 }
 
-- (BOOL)_updateAutoAuthenticationViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateAutoAuthenticationViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
-  v7 = [(VSAppDocumentController *)self templateElement];
-  if ([v7 vs_elementType] == 162)
+  templateElement = [(VSAppDocumentController *)self templateElement];
+  if ([templateElement vs_elementType] == 162)
   {
-    v8 = [(VSAutoAuthenticationAppDocumentController *)self _updateAutoAuthenticationViewModel:v6 withTemplate:v7];
+    v8 = [(VSAutoAuthenticationAppDocumentController *)self _updateAutoAuthenticationViewModel:modelCopy withTemplate:templateElement];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -113,11 +113,11 @@ LABEL_6:
 
   v9 = VSPrivateError();
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:
@@ -125,16 +125,16 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_updateAutoAuthenticationViewModel:(id)a3 withTemplate:(id)a4
+- (BOOL)_updateAutoAuthenticationViewModel:(id)model withTemplate:(id)template
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  modelCopy = model;
+  templateCopy = template;
+  v7 = templateCopy;
   v8 = MEMORY[0x277CBE660];
-  if (v5)
+  if (modelCopy)
   {
-    if (v6)
+    if (templateCopy)
     {
       goto LABEL_3;
     }
@@ -156,8 +156,8 @@ LABEL_3:
   v45 = 0u;
   v46 = 0u;
   v41 = v7;
-  v9 = [v7 children];
-  v10 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  children = [v7 children];
+  v10 = [children countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v10)
   {
     v11 = v10;
@@ -169,12 +169,12 @@ LABEL_3:
       {
         if (*v46 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v15 vs_elementType];
-        if (v16 == 138)
+        vs_elementType = [v15 vs_elementType];
+        if (vs_elementType == 138)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -186,30 +186,30 @@ LABEL_3:
           }
 
           v24 = v15;
-          v25 = [v24 text];
-          v20 = [v25 string];
+          text = [v24 text];
+          string = [text string];
 
-          v26 = [v24 elementName];
+          elementName = [v24 elementName];
 
-          if ([v26 isEqualToString:@"title"])
+          if ([elementName isEqualToString:@"title"])
           {
-            [v5 setMessageTitle:v20];
+            [modelCopy setMessageTitle:string];
           }
 
-          else if ([v26 isEqualToString:@"accountName"])
+          else if ([elementName isEqualToString:@"accountName"])
           {
-            [v5 setAccountName:v20];
+            [modelCopy setAccountName:string];
           }
 
-          else if ([v26 isEqualToString:@"description"])
+          else if ([elementName isEqualToString:@"description"])
           {
-            [v5 setMessage:v20];
+            [modelCopy setMessage:string];
           }
         }
 
         else
         {
-          if (v16 != 49)
+          if (vs_elementType != 49)
           {
             continue;
           }
@@ -223,20 +223,20 @@ LABEL_3:
             [v17 raise:v13 format:{@"Unexpectedly, childElement was %@, instead of IKImageElement.", v19}];
           }
 
-          v20 = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v15];
-          [v5 setLogoProvider:v20];
+          string = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v15];
+          [modelCopy setLogoProvider:string];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v11 = [children countByEnumeratingWithState:&v45 objects:v51 count:16];
     }
 
     while (v11);
   }
 
-  v27 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v28 = [v27 firstObject];
-  [(VSAutoAuthenticationAppDocumentController *)self setButtonLockupElement:v28];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  firstObject = [filteredButtonLockupElements firstObject];
+  [(VSAutoAuthenticationAppDocumentController *)self setButtonLockupElement:firstObject];
 
   v29 = objc_opt_class();
   v30 = NSStringFromClass(v29);
@@ -245,7 +245,7 @@ LABEL_3:
   v44.receiver = self;
   v44.super_class = VSAutoAuthenticationAppDocumentController;
   v32 = [(VSAppDocumentController *)&v44 _getSupportedButtonTextsforTemplate:v30 andElementKeys:v31 supportedCount:1];
-  v33 = [v32 firstObject];
+  firstObject2 = [v32 firstObject];
 
   v34 = objc_opt_class();
   v35 = NSStringFromClass(v34);
@@ -254,10 +254,10 @@ LABEL_3:
   v43.receiver = self;
   v43.super_class = VSAutoAuthenticationAppDocumentController;
   v37 = [(VSAppDocumentController *)&v43 _getSupportedButtonTextsforTemplate:v35 andElementKeys:v36 supportedCount:1];
-  v38 = [v37 firstObject];
+  firstObject3 = [v37 firstObject];
 
-  [v5 setManualSignInTitle:v33];
-  [v5 setManualSignInButtonText:v38];
+  [modelCopy setManualSignInTitle:firstObject2];
+  [modelCopy setManualSignInButtonText:firstObject3];
 
   v39 = *MEMORY[0x277D85DE8];
   return 1;

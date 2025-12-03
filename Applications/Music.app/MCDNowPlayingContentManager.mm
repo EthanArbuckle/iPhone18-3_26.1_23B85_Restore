@@ -1,72 +1,72 @@
 @interface MCDNowPlayingContentManager
-- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)a3;
-- (BOOL)_allowsTasteActionsForGenericObject:(id)a3;
+- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)controller;
+- (BOOL)_allowsTasteActionsForGenericObject:(id)object;
 - (BOOL)_itemCanCreateRadioStation;
 - (BOOL)_nowPlayingViewControllerIsFuseSubscriber;
 - (BOOL)_showAddToLibraryOptions;
 - (BOOL)_showStopForCenterTransportCommand;
-- (BOOL)currentPlayingSongFoundIn:(id)a3;
-- (BOOL)isAutoplaySectionAtIndex:(int64_t)a3;
-- (BOOL)nowPlayingViewController:(id)a3 buttonShouldBeActive:(int64_t)a4;
-- (BOOL)nowPlayingViewController:(id)a3 shouldDisplayButton:(int64_t)a4 withImage:(id *)a5 existingIdentifier:(id)a6 tinted:(BOOL *)a7;
-- (BOOL)nowPlayingViewControllerCanRepeat:(id)a3;
-- (BOOL)nowPlayingViewControllerCanShowAddToLibrary:(id)a3;
-- (BOOL)nowPlayingViewControllerCanShowAlbumLink:(id)a3;
-- (BOOL)nowPlayingViewControllerCanShowMore:(id)a3;
-- (BOOL)nowPlayingViewControllerCanShuffle:(id)a3;
-- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)a3;
+- (BOOL)currentPlayingSongFoundIn:(id)in;
+- (BOOL)isAutoplaySectionAtIndex:(int64_t)index;
+- (BOOL)nowPlayingViewController:(id)controller buttonShouldBeActive:(int64_t)active;
+- (BOOL)nowPlayingViewController:(id)controller shouldDisplayButton:(int64_t)button withImage:(id *)image existingIdentifier:(id)identifier tinted:(BOOL *)tinted;
+- (BOOL)nowPlayingViewControllerCanRepeat:(id)repeat;
+- (BOOL)nowPlayingViewControllerCanShowAddToLibrary:(id)library;
+- (BOOL)nowPlayingViewControllerCanShowAlbumLink:(id)link;
+- (BOOL)nowPlayingViewControllerCanShowMore:(id)more;
+- (BOOL)nowPlayingViewControllerCanShuffle:(id)shuffle;
+- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)drive;
 - (BOOL)prefersCatalogContainerNavigationForPlayingSong;
-- (MCDNowPlayingContentManager)initWithDelegate:(id)a3 dataSource:(id)a4 bundleID:(id)a5;
+- (MCDNowPlayingContentManager)initWithDelegate:(id)delegate dataSource:(id)source bundleID:(id)d;
 - (MCDNowPlayingContentManagerDelegate)contentManagerDelegate;
 - (NSString)nowPlayingBundleID;
-- (double)preferredJumpIntervalForDirection:(int64_t)a3;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_radioCommandRequestWithCurrentPlayingSongWithViewController:(id)a3;
-- (id)attributionTitleForNowPlayingViewController:(id)a3;
-- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)a3;
+- (double)preferredJumpIntervalForDirection:(int64_t)direction;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_radioCommandRequestWithCurrentPlayingSongWithViewController:(id)controller;
+- (id)attributionTitleForNowPlayingViewController:(id)controller;
+- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)controller;
 - (id)delegate;
-- (id)sectionTypeAtIndex:(int64_t)a3;
-- (id)skipIntervalButtonImageForInterval:(double)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)placeholderTypeForNowPlayingViewController:(id)a3;
-- (int64_t)repeatTypeForNowPlayingViewController:(id)a3;
-- (int64_t)shuffleTypeForNowPlayingViewController:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)videoPlaybackStateForNowPlayingController:(id)a3;
+- (id)sectionTypeAtIndex:(int64_t)index;
+- (id)skipIntervalButtonImageForInterval:(double)interval;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)placeholderTypeForNowPlayingViewController:(id)controller;
+- (int64_t)repeatTypeForNowPlayingViewController:(id)controller;
+- (int64_t)shuffleTypeForNowPlayingViewController:(id)controller;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)videoPlaybackStateForNowPlayingController:(id)controller;
 - (void)_addItemsToLibrary;
-- (void)_processResponse:(id)a3 error:(id)a4;
-- (void)_subscriptionCapabilitiesChanged:(id)a3;
-- (void)contentManager:(id)a3 bufferingItem:(BOOL)a4;
-- (void)contentManager:(id)a3 displayItemIndex:(int64_t)a4 totalItemCount:(int64_t)a5;
-- (void)contentManager:(id)a3 itemDidChange:(id)a4 response:(id)a5;
-- (void)contentManager:(id)a3 presentViewController:(id)a4;
-- (void)contentManager:(id)a3 processResponse:(id)a4 error:(id)a5;
-- (void)contentManager:(id)a3 sectionName:(id)a4;
-- (void)contentManager:(id)a3 shouldShowPlaybackQueue:(BOOL)a4;
-- (void)contentManagerCompletedAllPlayback:(id)a3;
-- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)a3;
-- (void)contentManagerReloadData:(id)a3;
+- (void)_processResponse:(id)response error:(id)error;
+- (void)_subscriptionCapabilitiesChanged:(id)changed;
+- (void)contentManager:(id)manager bufferingItem:(BOOL)item;
+- (void)contentManager:(id)manager displayItemIndex:(int64_t)index totalItemCount:(int64_t)count;
+- (void)contentManager:(id)manager itemDidChange:(id)change response:(id)response;
+- (void)contentManager:(id)manager presentViewController:(id)controller;
+- (void)contentManager:(id)manager processResponse:(id)response error:(id)error;
+- (void)contentManager:(id)manager sectionName:(id)name;
+- (void)contentManager:(id)manager shouldShowPlaybackQueue:(BOOL)queue;
+- (void)contentManagerCompletedAllPlayback:(id)playback;
+- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)queue;
+- (void)contentManagerReloadData:(id)data;
 - (void)dealloc;
-- (void)nowPlayingViewController:(id)a3 didSelectButton:(id)a4;
-- (void)nowPlayingViewController:(id)a3 didSendAction:(int64_t)a4 state:(int64_t)a5;
-- (void)nowPlayingViewControllerAddToLibrary:(id)a3;
-- (void)nowPlayingViewControllerAlbumArtistButtonTapped:(id)a3;
-- (void)nowPlayingViewControllerAttributionButtonTapped:(id)a3;
-- (void)nowPlayingViewControllerMore:(id)a3;
-- (void)nowPlayingViewControllerToggleRepeat:(id)a3;
-- (void)nowPlayingViewControllerToggleShuffle:(id)a3;
-- (void)performFavoriteChangeRequestFor:(id)a3 action:(int64_t)a4;
-- (void)playbackManager:(id)a3 shouldShowError:(id)a4;
+- (void)nowPlayingViewController:(id)controller didSelectButton:(id)button;
+- (void)nowPlayingViewController:(id)controller didSendAction:(int64_t)action state:(int64_t)state;
+- (void)nowPlayingViewControllerAddToLibrary:(id)library;
+- (void)nowPlayingViewControllerAlbumArtistButtonTapped:(id)tapped;
+- (void)nowPlayingViewControllerAttributionButtonTapped:(id)tapped;
+- (void)nowPlayingViewControllerMore:(id)more;
+- (void)nowPlayingViewControllerToggleRepeat:(id)repeat;
+- (void)nowPlayingViewControllerToggleShuffle:(id)shuffle;
+- (void)performFavoriteChangeRequestFor:(id)for action:(int64_t)action;
+- (void)playbackManager:(id)manager shouldShowError:(id)error;
 - (void)reloadData;
 - (void)requestAndUpdateLibraryResponseForCurrentPlayingSongAlbum;
-- (void)setCurrentAttributionCatalog:(id)a3;
-- (void)setCurrentAttributionMetadata:(id)a3;
-- (void)setTableView:(id)a3;
+- (void)setCurrentAttributionCatalog:(id)catalog;
+- (void)setCurrentAttributionMetadata:(id)metadata;
+- (void)setTableView:(id)view;
 - (void)sharePlayTogetherButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateBarButtonItems;
 - (void)updateNoContentView;
 - (void)updateNoContentViewFrameIfNeeded;
@@ -80,9 +80,9 @@
   v3 = +[UIApplication sharePlayTogetherObjCViewModel];
   if (v3)
   {
-    v4 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    sharePlayTogetherButton = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
 
-    if (!v4)
+    if (!sharePlayTogetherButton)
     {
       v5 = [UIButton buttonWithType:0];
       [v5 setFrame:{0.0, 0.0, 48.0, 26.0}];
@@ -96,14 +96,14 @@
       [(MCDNowPlayingContentManager *)self setSharePlayTogetherButton:v5];
     }
 
-    v6 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
-    [v6 setNeedsUpdateConfiguration];
+    sharePlayTogetherButton2 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    [sharePlayTogetherButton2 setNeedsUpdateConfiguration];
 
-    v7 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
-    [v7 sizeToFit];
+    sharePlayTogetherButton3 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    [sharePlayTogetherButton3 sizeToFit];
 
-    v8 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
-    [v8 sizeThatFits:{INFINITY, 26.0}];
+    sharePlayTogetherButton4 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    [sharePlayTogetherButton4 sizeThatFits:{INFINITY, 26.0}];
     v10 = v9;
     v12 = v11;
 
@@ -112,8 +112,8 @@
       v10 = 48.0;
     }
 
-    v13 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
-    [v13 setFrame:{0.0, 0.0, v10, v12}];
+    sharePlayTogetherButton5 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    [sharePlayTogetherButton5 setFrame:{0.0, 0.0, v10, v12}];
 
     if ([v3 pendingParticipantsCount] < 1)
     {
@@ -122,14 +122,14 @@
 
     else
     {
-      v14 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
+      sharePlayTogetherPendingParticipantsView = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
 
-      if (!v14)
+      if (!sharePlayTogetherPendingParticipantsView)
       {
         v15 = objc_opt_new();
         v16 = [[UIView alloc] initWithFrame:{0.0, 10.5, 5.0, 5.0}];
-        v17 = [v16 layer];
-        [v17 setCornerRadius:2.5];
+        layer = [v16 layer];
+        [layer setCornerRadius:2.5];
 
         v18 = +[UIColor systemCyanColor];
         [v16 setBackgroundColor:v18];
@@ -147,37 +147,37 @@
       v21 = MCDCarDisplayBundle();
       v22 = [v21 localizedStringForKey:@"%ld Pending" value:&stru_101107168 table:@"MusicCarDisplayUI"];
       v23 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v22, [v3 pendingParticipantsCount]);
-      v24 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v24 setText:v23];
+      sharePlayTogetherPendingParticipantsLabel = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel setText:v23];
 
-      v25 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v25 sizeToFit];
+      sharePlayTogetherPendingParticipantsLabel2 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel2 sizeToFit];
 
-      v26 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v26 frame];
+      sharePlayTogetherPendingParticipantsLabel3 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel3 frame];
       MinX = CGRectGetMinX(v48);
-      v28 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v28 frame];
+      sharePlayTogetherPendingParticipantsLabel4 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel4 frame];
       v29 = (26.0 - CGRectGetHeight(v49)) * 0.5;
-      v30 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v30 frame];
+      sharePlayTogetherPendingParticipantsLabel5 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel5 frame];
       Width = CGRectGetWidth(v50);
-      v32 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v32 frame];
+      sharePlayTogetherPendingParticipantsLabel6 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel6 frame];
       Height = CGRectGetHeight(v51);
-      v34 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v34 setFrame:{MinX, v29, Width, Height}];
+      sharePlayTogetherPendingParticipantsLabel7 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel7 setFrame:{MinX, v29, Width, Height}];
 
-      v35 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
-      [v35 frame];
+      sharePlayTogetherPendingParticipantsLabel8 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsLabel];
+      [sharePlayTogetherPendingParticipantsLabel8 frame];
       MaxX = CGRectGetMaxX(v52);
-      v37 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
-      [v37 setFrame:{0.0, 0.0, MaxX, 26.0}];
+      sharePlayTogetherPendingParticipantsView2 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
+      [sharePlayTogetherPendingParticipantsView2 setFrame:{0.0, 0.0, MaxX, 26.0}];
     }
 
     [(MCDNowPlayingContentManager *)self updateBarButtonItems];
-    v38 = [(MCDNowPlayingContentManager *)self tableView];
-    [v38 reloadData];
+    tableView = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView reloadData];
   }
 
   else
@@ -185,20 +185,20 @@
     [(MCDNowPlayingContentManager *)self setSharePlayTogetherButton:0];
     [(MCDNowPlayingContentManager *)self setSharePlayTogetherPendingParticipantsView:0];
     [(MCDNowPlayingContentManager *)self updateBarButtonItems];
-    v38 = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
-    [v38 contentManagerReloadData:self->_impl];
+    tableView = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
+    [tableView contentManagerReloadData:self->_impl];
   }
 
-  v39 = [(MCDNowPlayingContentManager *)self tracklist];
-  v40 = [v39 playingItemIndexPath];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  playingItemIndexPath = [tracklist playingItemIndexPath];
 
-  if (v40)
+  if (playingItemIndexPath)
   {
-    v41 = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
-    v42 = [(MCDNowPlayingContentManager *)self tracklist];
-    v43 = [v42 items];
-    v44 = [v43 itemAtIndexPath:v40];
-    v45 = [v41 attributionMetadataFor:v44];
+    lastReceivedResponse = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
+    tracklist2 = [(MCDNowPlayingContentManager *)self tracklist];
+    items = [tracklist2 items];
+    v44 = [items itemAtIndexPath:playingItemIndexPath];
+    v45 = [lastReceivedResponse attributionMetadataFor:v44];
     [(MCDNowPlayingContentManager *)self setCurrentAttributionMetadata:v45];
   }
 
@@ -211,30 +211,30 @@
 - (void)updateBarButtonItems
 {
   v12 = objc_opt_new();
-  v3 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+  sharePlayTogetherButton = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
 
-  if (v3)
+  if (sharePlayTogetherButton)
   {
     v4 = [UIBarButtonItem alloc];
-    v5 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
-    v6 = [v4 initWithCustomView:v5];
+    sharePlayTogetherButton2 = [(MCDNowPlayingContentManager *)self sharePlayTogetherButton];
+    v6 = [v4 initWithCustomView:sharePlayTogetherButton2];
 
     [v12 addObject:v6];
   }
 
-  v7 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
+  sharePlayTogetherPendingParticipantsView = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
 
-  if (v7)
+  if (sharePlayTogetherPendingParticipantsView)
   {
     v8 = [UIBarButtonItem alloc];
-    v9 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
-    v10 = [v8 initWithCustomView:v9];
+    sharePlayTogetherPendingParticipantsView2 = [(MCDNowPlayingContentManager *)self sharePlayTogetherPendingParticipantsView];
+    v10 = [v8 initWithCustomView:sharePlayTogetherPendingParticipantsView2];
 
     [v12 addObject:v10];
   }
 
-  v11 = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
-  [v11 contentManager:self->_impl setAdditionalBarButtonItems:v12];
+  contentManagerDelegate = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
+  [contentManagerDelegate contentManager:self->_impl setAdditionalBarButtonItems:v12];
 }
 
 - (MCDNowPlayingContentManagerDelegate)contentManagerDelegate
@@ -251,19 +251,19 @@
   return WeakRetained;
 }
 
-- (MCDNowPlayingContentManager)initWithDelegate:(id)a3 dataSource:(id)a4 bundleID:(id)a5
+- (MCDNowPlayingContentManager)initWithDelegate:(id)delegate dataSource:(id)source bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = MCDNowPlayingContentManager;
   v11 = [(MCDNowPlayingContentManager *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_contentManagerDelegate, v8);
-    v13 = [[_MCDNowPlayingContentManager alloc] initWithDelegate:v12 dataSource:v9 bundleID:v10];
+    objc_storeWeak(&v11->_contentManagerDelegate, delegateCopy);
+    v13 = [[_MCDNowPlayingContentManager alloc] initWithDelegate:v12 dataSource:sourceCopy bundleID:dCopy];
     impl = v12->_impl;
     v12->_impl = v13;
 
@@ -271,9 +271,9 @@
     libraryAddObserver = v12->_libraryAddObserver;
     v12->_libraryAddObserver = v15;
 
-    v17 = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
+    initAndWaitUntilSessionUpdated = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
     carSessionStatus = v12->_carSessionStatus;
-    v12->_carSessionStatus = v17;
+    v12->_carSessionStatus = initAndWaitUntilSessionUpdated;
 
     [(MCDNowPlayingContentManager *)v12 setTableCellClass:objc_opt_class()];
     v19 = [[SiriDirectActionSource alloc] initWithDelegate:0];
@@ -308,25 +308,25 @@
 
 - (void)dealloc
 {
-  v3 = [(MCDNowPlayingContentManager *)self siriDirectActionSource];
-  [v3 invalidate];
+  siriDirectActionSource = [(MCDNowPlayingContentManager *)self siriDirectActionSource];
+  [siriDirectActionSource invalidate];
 
   v4.receiver = self;
   v4.super_class = MCDNowPlayingContentManager;
   [(MCDNowPlayingContentManager *)&v4 dealloc];
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v5 = a3;
-  if (self->_tableView != v5)
+  viewCopy = view;
+  if (self->_tableView != viewCopy)
   {
-    v8 = v5;
-    [(_MCDNowPlayingContentManager *)self->_impl setTableView:v5];
-    objc_storeStrong(&self->_tableView, a3);
-    v6 = [(MCDNowPlayingContentManager *)self tableCellClass];
+    v8 = viewCopy;
+    [(_MCDNowPlayingContentManager *)self->_impl setTableView:viewCopy];
+    objc_storeStrong(&self->_tableView, view);
+    tableCellClass = [(MCDNowPlayingContentManager *)self tableCellClass];
     v7 = NSStringFromClass([(MCDNowPlayingContentManager *)self tableCellClass]);
-    [(UITableView *)v8 registerClass:v6 forCellReuseIdentifier:v7];
+    [(UITableView *)v8 registerClass:tableCellClass forCellReuseIdentifier:v7];
 
     [(UITableView *)v8 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"autoplay"];
     [(UITableView *)v8 setDelegate:self];
@@ -336,7 +336,7 @@
     [(UITableView *)v8 _setHeaderAndFooterViewsFloat:0];
     [(UITableView *)v8 reloadData];
     [(MCDNowPlayingContentManager *)self updateNoContentView];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
@@ -352,53 +352,53 @@
   }
 }
 
-- (void)_processResponse:(id)a3 error:(id)a4
+- (void)_processResponse:(id)response error:(id)error
 {
-  v5 = a3;
-  v6 = [v5 tracklist];
-  [(MCDNowPlayingContentManager *)self setTracklist:v6];
+  responseCopy = response;
+  tracklist = [responseCopy tracklist];
+  [(MCDNowPlayingContentManager *)self setTracklist:tracklist];
 
-  v7 = [(MCDNowPlayingContentManager *)self tracklist];
-  v8 = [v7 displayItems];
+  tracklist2 = [(MCDNowPlayingContentManager *)self tracklist];
+  displayItems = [tracklist2 displayItems];
   v43[0] = MPCPlayerResponseTracklistDisplaySectionUpNextItems;
   v43[1] = MPCPlayerResponseTracklistDisplaySectionNextItems;
   v43[2] = MPCPlayerResponseTracklistDisplaySectionAutoPlayItems;
   v9 = [NSArray arrayWithObjects:v43 count:3];
-  v10 = [v8 filteredWithSections:v9];
+  v10 = [displayItems filteredWithSections:v9];
   [(MCDNowPlayingContentManager *)self setFilteredItems:v10];
 
   [(MCDNowPlayingContentManager *)self requestAndUpdateLibraryResponseForCurrentPlayingSongAlbum];
-  v11 = [(MCDNowPlayingContentManager *)self libraryAddObserver];
-  v12 = [(MCDNowPlayingContentManager *)self tracklist];
-  [v11 updateRequestForTracklist:v12];
+  libraryAddObserver = [(MCDNowPlayingContentManager *)self libraryAddObserver];
+  tracklist3 = [(MCDNowPlayingContentManager *)self tracklist];
+  [libraryAddObserver updateRequestForTracklist:tracklist3];
 
-  v13 = [(MCDNowPlayingContentManager *)self tracklist];
-  v14 = [v13 playingItemIndexPath];
+  tracklist4 = [(MCDNowPlayingContentManager *)self tracklist];
+  playingItemIndexPath = [tracklist4 playingItemIndexPath];
 
-  if (v14)
+  if (playingItemIndexPath)
   {
-    v15 = [(MCDNowPlayingContentManager *)self tracklist];
-    v16 = [v15 items];
-    v17 = [v16 itemAtIndexPath:v14];
-    v18 = [v5 attributionMetadataFor:v17];
+    tracklist5 = [(MCDNowPlayingContentManager *)self tracklist];
+    items = [tracklist5 items];
+    v17 = [items itemAtIndexPath:playingItemIndexPath];
+    v18 = [responseCopy attributionMetadataFor:v17];
     [(MCDNowPlayingContentManager *)self setCurrentAttributionMetadata:v18];
 
-    v19 = [(MCDNowPlayingContentManager *)self tracklist];
-    v20 = [v19 items];
-    v21 = [v20 sectionAtIndex:{objc_msgSend(v14, "section")}];
+    tracklist6 = [(MCDNowPlayingContentManager *)self tracklist];
+    items2 = [tracklist6 items];
+    v21 = [items2 sectionAtIndex:{objc_msgSend(playingItemIndexPath, "section")}];
 
-    v22 = [v21 metadataObject];
-    if ([v22 type] == 13)
+    metadataObject = [v21 metadataObject];
+    if ([metadataObject type] == 13)
     {
-      v23 = [v22 radioStation];
-      v24 = [v23 name];
-      v25 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-      v26 = [v25 title];
-      v27 = [v24 isEqualToString:v26];
+      radioStation = [metadataObject radioStation];
+      name = [radioStation name];
+      currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+      title = [currentPlayingSong title];
+      v27 = [name isEqualToString:title];
 
       if ((v27 & 1) == 0)
       {
-        v28 = [(MCDNowPlayingContentManager *)self delegate];
+        delegate = [(MCDNowPlayingContentManager *)self delegate];
         v29 = objc_opt_respondsToSelector();
 
         if (v29)
@@ -406,18 +406,18 @@
           v30 = MCDMusicGeneralLogging();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
-            v31 = [v22 radioStation];
-            v32 = [v31 name];
+            radioStation2 = [metadataObject radioStation];
+            name2 = [radioStation2 name];
             v41 = 138543362;
-            v42 = v32;
+            v42 = name2;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Setting radio station: %{public}@", &v41, 0xCu);
           }
 
-          v33 = [(MCDNowPlayingContentManager *)self delegate];
+          delegate2 = [(MCDNowPlayingContentManager *)self delegate];
           impl = self->_impl;
-          v35 = [v22 radioStation];
-          v36 = [v35 name];
-          [v33 contentManager:impl sectionName:v36];
+          radioStation3 = [metadataObject radioStation];
+          name3 = [radioStation3 name];
+          [delegate2 contentManager:impl sectionName:name3];
         }
       }
     }
@@ -429,20 +429,20 @@
   }
 
   [(MCDNowPlayingContentManager *)self updateBarButtonItems];
-  v37 = [v5 state];
-  if (v37 != [(MCDNowPlayingContentManager *)self playerState])
+  state = [responseCopy state];
+  if (state != [(MCDNowPlayingContentManager *)self playerState])
   {
-    self->_playerState = v37;
+    self->_playerState = state;
     v38 = +[NSNotificationCenter defaultCenter];
     [v38 postNotificationName:MCDPlaybackStateChangedNotification object:0];
   }
 
-  v39 = [(MCDNowPlayingContentManager *)self tableView];
+  tableView = [(MCDNowPlayingContentManager *)self tableView];
 
-  if (v39)
+  if (tableView)
   {
-    v40 = [(MCDNowPlayingContentManager *)self tableView];
-    [v40 reloadData];
+    tableView2 = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView2 reloadData];
 
     [(MCDNowPlayingContentManager *)self updateNoContentView];
   }
@@ -455,126 +455,126 @@
     return;
   }
 
-  v3 = [(MCDNowPlayingContentManager *)self filteredItems];
-  if ([v3 totalItemCount])
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  if ([filteredItems totalItemCount])
   {
 
 LABEL_5:
-    v5 = [(MCDNowPlayingContentManager *)self tableView];
-    [v5 setBackgroundView:0];
+    tableView = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView setBackgroundView:0];
 
     [(MCDNowPlayingContentManager *)self setNoContentView:0];
     return;
   }
 
-  v4 = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
+  currentPlayingRadioStation = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
 
-  if (v4)
+  if (currentPlayingRadioStation)
   {
     goto LABEL_5;
   }
 
-  v6 = [(MCDNowPlayingContentManager *)self noContentView];
+  noContentView = [(MCDNowPlayingContentManager *)self noContentView];
 
-  if (!v6)
+  if (!noContentView)
   {
     v32 = objc_opt_new();
     [v32 setAutoresizingMask:18];
-    v7 = [(MCDNowPlayingContentManager *)self tableView];
-    [v7 frame];
+    tableView2 = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView2 frame];
     [v32 setFrame:?];
 
-    v8 = [(MCDNowPlayingContentManager *)self tableView];
-    [v8 setBackgroundView:v32];
+    tableView3 = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView3 setBackgroundView:v32];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"There’s no music in the queue." value:&stru_101107168 table:0];
     v11 = [_TtC5Music22CarPlayInformationView noContentWithTitle:v10 subtitle:0 buttonText:0 buttonAction:0 isCentered:1];
     [(MCDNowPlayingContentManager *)self setNoContentView:v11];
 
-    v12 = [(MCDNowPlayingContentManager *)self noContentView];
-    [v12 setAutoresizingMask:18];
+    noContentView2 = [(MCDNowPlayingContentManager *)self noContentView];
+    [noContentView2 setAutoresizingMask:18];
 
     [v32 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(MCDNowPlayingContentManager *)self tableView];
-    [v21 safeAreaInsets];
+    tableView4 = [(MCDNowPlayingContentManager *)self tableView];
+    [tableView4 safeAreaInsets];
     v23 = v14 + v22;
     v25 = v16 + v24;
     v27 = v18 - (v22 + v26);
     v29 = v20 - (v24 + v28);
-    v30 = [(MCDNowPlayingContentManager *)self noContentView];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    noContentView3 = [(MCDNowPlayingContentManager *)self noContentView];
+    [noContentView3 setFrame:{v23, v25, v27, v29}];
 
-    v31 = [(MCDNowPlayingContentManager *)self noContentView];
-    [v32 addSubview:v31];
+    noContentView4 = [(MCDNowPlayingContentManager *)self noContentView];
+    [v32 addSubview:noContentView4];
   }
 }
 
 - (void)updateNoContentViewFrameIfNeeded
 {
-  v22 = [(MCDNowPlayingContentManager *)self tableView];
-  v3 = [v22 backgroundView];
-  [v3 bounds];
+  tableView = [(MCDNowPlayingContentManager *)self tableView];
+  backgroundView = [tableView backgroundView];
+  [backgroundView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MCDNowPlayingContentManager *)self tableView];
-  [v12 safeAreaInsets];
+  tableView2 = [(MCDNowPlayingContentManager *)self tableView];
+  [tableView2 safeAreaInsets];
   v14 = v5 + v13;
   v16 = v7 + v15;
   v18 = v9 - (v13 + v17);
   v20 = v11 - (v15 + v19);
-  v21 = [(MCDNowPlayingContentManager *)self noContentView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  noContentView = [(MCDNowPlayingContentManager *)self noContentView];
+  [noContentView setFrame:{v14, v16, v18, v20}];
 }
 
-- (void)setCurrentAttributionMetadata:(id)a3
+- (void)setCurrentAttributionMetadata:(id)metadata
 {
-  v9 = a3;
-  objc_storeStrong(&self->_currentAttributionMetadata, a3);
-  v5 = [v9 artworkCatalog];
-  if (v5)
+  metadataCopy = metadata;
+  objc_storeStrong(&self->_currentAttributionMetadata, metadata);
+  artworkCatalog = [metadataCopy artworkCatalog];
+  if (artworkCatalog)
   {
-    [(MCDNowPlayingContentManager *)self setCurrentAttributionCatalog:v5];
+    [(MCDNowPlayingContentManager *)self setCurrentAttributionCatalog:artworkCatalog];
   }
 
   else
   {
-    v6 = [v9 placeholderArtworkCatalog];
-    [(MCDNowPlayingContentManager *)self setCurrentAttributionCatalog:v6];
+    placeholderArtworkCatalog = [metadataCopy placeholderArtworkCatalog];
+    [(MCDNowPlayingContentManager *)self setCurrentAttributionCatalog:placeholderArtworkCatalog];
   }
 
-  v7 = [(MCDNowPlayingContentManager *)self delegate];
-  v8 = [(MCDNowPlayingContentManager *)self impl];
-  [v7 contentManagerReloadData:v8];
+  delegate = [(MCDNowPlayingContentManager *)self delegate];
+  impl = [(MCDNowPlayingContentManager *)self impl];
+  [delegate contentManagerReloadData:impl];
 }
 
-- (void)setCurrentAttributionCatalog:(id)a3
+- (void)setCurrentAttributionCatalog:(id)catalog
 {
-  v5 = a3;
-  if (([v5 isArtworkVisuallyIdenticalToCatalog:self->_currentAttributionCatalog] & 1) == 0)
+  catalogCopy = catalog;
+  if (([catalogCopy isArtworkVisuallyIdenticalToCatalog:self->_currentAttributionCatalog] & 1) == 0)
   {
-    objc_storeStrong(&self->_currentAttributionCatalog, a3);
+    objc_storeStrong(&self->_currentAttributionCatalog, catalog);
     [(MCDNowPlayingContentManager *)self setCurrentAttributionImage:0];
     v6 = +[UITraitCollection currentTraitCollection];
     [v6 displayScale];
-    [v5 setDestinationScale:?];
+    [catalogCopy setDestinationScale:?];
 
-    [v5 setFittingSize:{30.0, 30.0}];
+    [catalogCopy setFittingSize:{30.0, 30.0}];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 setCacheIdentifier:v8 forCacheReference:self];
+    [catalogCopy setCacheIdentifier:v8 forCacheReference:self];
 
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v5);
-    v9 = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
-    v10 = [v9 placeholderArtworkCatalog];
-    v11 = [v5 isArtworkVisuallyIdenticalToCatalog:v10];
+    objc_initWeak(&from, catalogCopy);
+    currentAttributionMetadata = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
+    placeholderArtworkCatalog = [currentAttributionMetadata placeholderArtworkCatalog];
+    v11 = [catalogCopy isArtworkVisuallyIdenticalToCatalog:placeholderArtworkCatalog];
 
     if ((v11 & 1) == 0)
     {
@@ -595,7 +595,7 @@ LABEL_5:
     v13[3] = &unk_101098360;
     objc_copyWeak(&v14, &location);
     objc_copyWeak(&v15, &from);
-    [v5 setDestination:self configurationBlock:v13];
+    [catalogCopy setDestination:self configurationBlock:v13];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v14);
     objc_destroyWeak(&from);
@@ -603,82 +603,82 @@ LABEL_5:
   }
 }
 
-- (void)_subscriptionCapabilitiesChanged:(id)a3
+- (void)_subscriptionCapabilitiesChanged:(id)changed
 {
-  v4 = [(MCDNowPlayingContentManager *)self delegate];
-  [v4 contentManagerReloadData:self->_impl];
+  delegate = [(MCDNowPlayingContentManager *)self delegate];
+  [delegate contentManagerReloadData:self->_impl];
 }
 
-- (BOOL)isAutoplaySectionAtIndex:(int64_t)a3
+- (BOOL)isAutoplaySectionAtIndex:(int64_t)index
 {
-  v5 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v6 = [v5 numberOfSections];
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  numberOfSections = [filteredItems numberOfSections];
 
-  if (v6 <= a3)
+  if (numberOfSections <= index)
   {
     return 0;
   }
 
-  v7 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v8 = [v7 sectionAtIndex:a3];
+  filteredItems2 = [(MCDNowPlayingContentManager *)self filteredItems];
+  v8 = [filteredItems2 sectionAtIndex:index];
   v9 = [v8 isEqualToString:MPCPlayerResponseTracklistDisplaySectionAutoPlayItems];
 
   return v9;
 }
 
-- (id)sectionTypeAtIndex:(int64_t)a3
+- (id)sectionTypeAtIndex:(int64_t)index
 {
-  v5 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v6 = [v5 numberOfSections];
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  numberOfSections = [filteredItems numberOfSections];
 
-  if (v6 <= a3)
+  if (numberOfSections <= index)
   {
     v8 = MPCPlayerResponseTracklistDisplaySectionNextItems;
   }
 
   else
   {
-    v7 = [(MCDNowPlayingContentManager *)self filteredItems];
-    v8 = [v7 sectionAtIndex:a3];
+    filteredItems2 = [(MCDNowPlayingContentManager *)self filteredItems];
+    v8 = [filteredItems2 sectionAtIndex:index];
   }
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(MCDNowPlayingContentManager *)self limitedUI])
   {
     return 1;
   }
 
-  v5 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v6 = [v5 numberOfSections];
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  numberOfSections = [filteredItems numberOfSections];
 
-  return v6;
+  return numberOfSections;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v7 = [v6 numberOfSections];
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  numberOfSections = [filteredItems numberOfSections];
 
-  if (v7 <= a4)
+  if (numberOfSections <= section)
   {
     return 0;
   }
 
-  v8 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v9 = [v8 numberOfItemsInSection:a4];
+  filteredItems2 = [(MCDNowPlayingContentManager *)self filteredItems];
+  v9 = [filteredItems2 numberOfItemsInSection:section];
 
-  v10 = [(MCDNowPlayingContentManager *)self limitedUI];
+  limitedUI = [(MCDNowPlayingContentManager *)self limitedUI];
   v11 = 12;
   if (v9 < 12)
   {
     v11 = v9;
   }
 
-  if (v10)
+  if (limitedUI)
   {
     return v11;
   }
@@ -689,36 +689,36 @@ LABEL_5:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(objc_class *)[(MCDNowPlayingContentManager *)self tableCellClass] cellForTableView:v6 indexPath:v7];
-  v9 = [(MCDNowPlayingContentManager *)self filteredItems];
-  v10 = [v9 itemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(objc_class *)[(MCDNowPlayingContentManager *)self tableCellClass] cellForTableView:viewCopy indexPath:pathCopy];
+  filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+  v10 = [filteredItems itemAtIndexPath:pathCopy];
 
-  v11 = [(MCDNowPlayingContentManager *)self tableCellConfigurationBlock];
+  tableCellConfigurationBlock = [(MCDNowPlayingContentManager *)self tableCellConfigurationBlock];
 
-  if (v11)
+  if (tableCellConfigurationBlock)
   {
-    v12 = [(MCDNowPlayingContentManager *)self tableCellConfigurationBlock];
-    v13 = [v10 metadataObject];
-    v14 = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
-    v15 = [v14 attributionMetadataFor:v10];
-    (v12)[2](v12, v8, v13, v6, v15);
+    tableCellConfigurationBlock2 = [(MCDNowPlayingContentManager *)self tableCellConfigurationBlock];
+    metadataObject = [v10 metadataObject];
+    lastReceivedResponse = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
+    v15 = [lastReceivedResponse attributionMetadataFor:v10];
+    (tableCellConfigurationBlock2)[2](tableCellConfigurationBlock2, v8, metadataObject, viewCopy, v15);
   }
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   if (_os_feature_enabled_impl())
   {
     return UITableViewAutomaticDimension;
   }
 
-  v7 = [(MCDNowPlayingContentManager *)self isAutoplaySectionAtIndex:a4];
+  v7 = [(MCDNowPlayingContentManager *)self isAutoplaySectionAtIndex:section];
   result = UITableViewAutomaticDimension;
   if (!v7)
   {
@@ -728,10 +728,10 @@ LABEL_5:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(MCDNowPlayingContentManager *)self tableView:v6 titleForHeaderInSection:a4];
+  viewCopy = view;
+  v7 = [(MCDNowPlayingContentManager *)self tableView:viewCopy titleForHeaderInSection:section];
   if (v7)
   {
     v8 = [NSAttributedString alloc];
@@ -744,7 +744,7 @@ LABEL_5:
     v11 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
     v12 = [v8 initWithString:v7 attributes:v11];
 
-    v13 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"autoplay"];
+    v13 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"autoplay"];
     v14 = +[UIListContentConfiguration plainHeaderConfiguration];
     [v14 setAttributedText:v12];
     [v13 setContentConfiguration:v14];
@@ -763,11 +763,11 @@ LABEL_5:
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (_os_feature_enabled_impl())
   {
-    v6 = [(MCDNowPlayingContentManager *)self sectionTypeAtIndex:a4];
+    v6 = [(MCDNowPlayingContentManager *)self sectionTypeAtIndex:section];
     if ([v6 isEqualToString:MPCPlayerResponseTracklistDisplaySectionNextItems])
     {
       v7 = +[NSBundle mainBundle];
@@ -792,7 +792,7 @@ LABEL_5:
 
       v7 = +[NSBundle mainBundle];
       v8 = v7;
-      if (a4)
+      if (section)
       {
         v9 = @"AutoPlaying";
       }
@@ -809,7 +809,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if ([(MCDNowPlayingContentManager *)self isAutoplaySectionAtIndex:a4])
+  if ([(MCDNowPlayingContentManager *)self isAutoplaySectionAtIndex:section])
   {
     v6 = MCDCarDisplayBundle();
     v10 = [v6 localizedStringForKey:@"AUTOPLAY_SECTION_TITLE" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -822,28 +822,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v5 = [(MCDNowPlayingContentManager *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v14];
+  pathCopy = path;
+  tableView = [(MCDNowPlayingContentManager *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   if (([v6 isContentUnavailable] & 1) == 0)
   {
-    v7 = [(MCDNowPlayingContentManager *)self playbackManager];
-    v8 = [(MCDNowPlayingContentManager *)self tracklist];
-    v9 = [v8 changeItemCommand];
-    v10 = [(MCDNowPlayingContentManager *)self filteredItems];
-    v11 = [v10 itemAtIndexPath:v14];
-    v12 = [v9 changeToItem:v11];
-    [v7 performPlaybackRequestWithCommand:v12];
+    playbackManager = [(MCDNowPlayingContentManager *)self playbackManager];
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    changeItemCommand = [tracklist changeItemCommand];
+    filteredItems = [(MCDNowPlayingContentManager *)self filteredItems];
+    v11 = [filteredItems itemAtIndexPath:pathCopy];
+    v12 = [changeItemCommand changeToItem:v11];
+    [playbackManager performPlaybackRequestWithCommand:v12];
   }
 
-  v13 = [(MCDNowPlayingContentManager *)self tableView];
-  [v13 deselectRowAtIndexPath:v14 animated:1];
+  tableView2 = [(MCDNowPlayingContentManager *)self tableView];
+  [tableView2 deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)playbackManager:(id)a3 shouldShowError:(id)a4
+- (void)playbackManager:(id)manager shouldShowError:(id)error
 {
   v5 = MCDCarDisplayBundle();
   v6 = [v5 localizedStringForKey:@"ADD_STATION_FAILED_ALERT_TITLE" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -856,35 +856,35 @@ LABEL_11:
   v11 = [UIAlertAction actionWithTitle:v10 style:1 handler:0];
 
   [v14 addAction:v11];
-  v12 = [(MCDNowPlayingContentManager *)self delegate];
+  delegate = [(MCDNowPlayingContentManager *)self delegate];
   LOBYTE(v9) = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v13 = [(MCDNowPlayingContentManager *)self delegate];
-    [v13 contentManager:self->_impl presentViewController:v14];
+    delegate2 = [(MCDNowPlayingContentManager *)self delegate];
+    [delegate2 contentManager:self->_impl presentViewController:v14];
   }
 }
 
-- (double)preferredJumpIntervalForDirection:(int64_t)a3
+- (double)preferredJumpIntervalForDirection:(int64_t)direction
 {
-  if ((a3 - 1) < 2)
+  if ((direction - 1) < 2)
   {
-    v3 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-    v4 = [v3 seekCommand];
-    v5 = [v4 preferredForwardJumpIntervals];
+    nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+    seekCommand = [nowPlayingItem seekCommand];
+    preferredForwardJumpIntervals = [seekCommand preferredForwardJumpIntervals];
     goto LABEL_5;
   }
 
-  if ((a3 + 2) <= 1)
+  if ((direction + 2) <= 1)
   {
-    v3 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-    v4 = [v3 seekCommand];
-    v5 = [v4 preferredBackwardJumpIntervals];
+    nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+    seekCommand = [nowPlayingItem seekCommand];
+    preferredForwardJumpIntervals = [seekCommand preferredBackwardJumpIntervals];
 LABEL_5:
-    v6 = v5;
-    v7 = [v5 firstObject];
-    [v7 doubleValue];
+    v6 = preferredForwardJumpIntervals;
+    firstObject = [preferredForwardJumpIntervals firstObject];
+    [firstObject doubleValue];
     v9 = v8;
 
     return v9;
@@ -893,16 +893,16 @@ LABEL_5:
   return 0.0;
 }
 
-- (id)skipIntervalButtonImageForInterval:(double)a3
+- (id)skipIntervalButtonImageForInterval:(double)interval
 {
   v4 = @"gobackward";
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
     v4 = @"goforward";
   }
 
   v5 = v4;
-  v6 = [NSNumber numberWithDouble:fabs(a3)];
+  v6 = [NSNumber numberWithDouble:fabs(interval)];
   v7 = [NSString stringWithFormat:@"%@.%@", v5, v6];
 
   v8 = [UIImage systemImageNamed:v7];
@@ -922,13 +922,13 @@ LABEL_5:
   return v11;
 }
 
-- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)a3
+- (id)customPlaybackControlButtonsForNowPlayingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MCDNowPlayingContentManager *)self favoriteButton];
+  controllerCopy = controller;
+  favoriteButton = [(MCDNowPlayingContentManager *)self favoriteButton];
 
   v6 = &_s8MusicKit5GenreVSeAAMc_ptr;
-  if (!v5)
+  if (!favoriteButton)
   {
     v7 = objc_opt_new();
     [(MCDNowPlayingContentManager *)self setFavoriteButton:v7];
@@ -937,43 +937,43 @@ LABEL_5:
     v9 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:16.0];
     v10 = [v8 imageWithSymbolConfiguration:v9];
 
-    v11 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    [v11 setImage:v10 forState:0];
+    favoriteButton2 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    [favoriteButton2 setImage:v10 forState:0];
 
-    v12 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    favoriteButton3 = [(MCDNowPlayingContentManager *)self favoriteButton];
     v13 = +[UIColor labelColor];
     v14 = [v13 colorWithAlphaComponent:0.2];
     v15 = [v10 imageWithTintColor:v14];
-    [v12 setImage:v15 forState:1];
+    [favoriteButton3 setImage:v15 forState:1];
 
-    v16 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    favoriteButton4 = [(MCDNowPlayingContentManager *)self favoriteButton];
     v17 = +[UIColor labelColor];
     v18 = [v17 colorWithAlphaComponent:0.2];
     v19 = [v10 imageWithTintColor:v18];
-    [v16 setImage:v19 forState:8];
+    [favoriteButton4 setImage:v19 forState:8];
 
     v20 = [UIImage _systemImageNamed:@"star.fill"];
     v21 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:16.0];
     v22 = [v20 imageWithSymbolConfiguration:v21];
 
-    v23 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    [v23 setImage:v22 forState:4];
+    favoriteButton5 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    [favoriteButton5 setImage:v22 forState:4];
 
-    v24 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    favoriteButton6 = [(MCDNowPlayingContentManager *)self favoriteButton];
     v25 = +[UIColor labelColor];
     v26 = [v25 colorWithAlphaComponent:0.2];
     v27 = [v22 imageWithTintColor:v26];
-    [v24 setImage:v27 forState:5];
+    [favoriteButton6 setImage:v27 forState:5];
 
-    v28 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    favoriteButton7 = [(MCDNowPlayingContentManager *)self favoriteButton];
     v29 = +[UIColor labelColor];
     v30 = [v29 colorWithAlphaComponent:0.2];
     v31 = [v22 imageWithTintColor:v30];
-    [v28 setImage:v31 forState:12];
+    [favoriteButton7 setImage:v31 forState:12];
 
-    v32 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    v33 = [v32 imageView];
-    [v33 setContentMode:1];
+    favoriteButton8 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    imageView = [favoriteButton8 imageView];
+    [imageView setContentMode:1];
 
     v34 = MCDCarDisplayBundle();
     v35 = [v34 localizedStringForKey:@"ACCESSIBILITY_FAVORITE" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -982,78 +982,78 @@ LABEL_5:
     v37 = [v36 localizedStringForKey:@"ACCESSIBILITY_STAR" value:&stru_101107168 table:@"MusicCarDisplayUI"];
     v55[1] = v37;
     v38 = [NSArray arrayWithObjects:v55 count:2];
-    v39 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    [v39 setAccessibilityUserInputLabels:v38];
+    favoriteButton9 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    [favoriteButton9 setAccessibilityUserInputLabels:v38];
 
     v6 = &_s8MusicKit5GenreVSeAAMc_ptr;
   }
 
-  v40 = [(MCDNowPlayingContentManager *)self tracklist];
-  v41 = [v40 playingItem];
-  v42 = [v41 likeCommand];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  playingItem = [tracklist playingItem];
+  likeCommand = [playingItem likeCommand];
 
-  LODWORD(v41) = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
-  v43 = [(MCDNowPlayingContentManager *)self favoriteButton];
-  v44 = v43;
-  if (v41 && v42)
+  LODWORD(playingItem) = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
+  favoriteButton10 = [(MCDNowPlayingContentManager *)self favoriteButton];
+  favoriteButton11 = favoriteButton10;
+  if (playingItem && likeCommand)
   {
-    [v43 setHidden:0];
+    [favoriteButton10 setHidden:0];
 
-    v44 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    [v44 setSelected:{objc_msgSend(v42, "value")}];
+    favoriteButton11 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    [favoriteButton11 setSelected:{objc_msgSend(likeCommand, "value")}];
   }
 
   else
   {
-    [v43 setHidden:1];
+    [favoriteButton10 setHidden:1];
   }
 
-  v45 = [v4 playModeControlView];
-  v46 = [v45 shuffleButton];
-  v54[0] = v46;
-  v47 = [v4 playModeControlView];
-  v48 = [v47 repeatButton];
-  v54[1] = v48;
-  v49 = [(MCDNowPlayingContentManager *)self favoriteButton];
-  v54[2] = v49;
-  v50 = [v4 playModeControlView];
+  playModeControlView = [controllerCopy playModeControlView];
+  shuffleButton = [playModeControlView shuffleButton];
+  v54[0] = shuffleButton;
+  playModeControlView2 = [controllerCopy playModeControlView];
+  repeatButton = [playModeControlView2 repeatButton];
+  v54[1] = repeatButton;
+  favoriteButton12 = [(MCDNowPlayingContentManager *)self favoriteButton];
+  v54[2] = favoriteButton12;
+  playModeControlView3 = [controllerCopy playModeControlView];
 
-  v51 = [v50 moreButton];
-  v54[3] = v51;
+  moreButton = [playModeControlView3 moreButton];
+  v54[3] = moreButton;
   v52 = [v6[287] arrayWithObjects:v54 count:4];
 
   return v52;
 }
 
-- (void)nowPlayingViewController:(id)a3 didSelectButton:(id)a4
+- (void)nowPlayingViewController:(id)controller didSelectButton:(id)button
 {
-  v5 = a4;
-  v6 = [(MCDNowPlayingContentManager *)self favoriteButton];
+  buttonCopy = button;
+  favoriteButton = [(MCDNowPlayingContentManager *)self favoriteButton];
 
-  if (v6 == v5)
+  if (favoriteButton == buttonCopy)
   {
-    v7 = [(MCDNowPlayingContentManager *)self tracklist];
-    v8 = [v7 playingItem];
-    v11 = [v8 likeCommand];
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    playingItem = [tracklist playingItem];
+    likeCommand = [playingItem likeCommand];
 
-    v9 = [v11 changeValue:{objc_msgSend(v11, "value") ^ 1}];
+    v9 = [likeCommand changeValue:{objc_msgSend(likeCommand, "value") ^ 1}];
     [MPCPlayerChangeRequest performRequest:v9 options:0x10000 completion:0];
-    v10 = [(MCDNowPlayingContentManager *)self favoriteButton];
-    [v10 setSelected:{objc_msgSend(v11, "value") ^ 1}];
+    favoriteButton2 = [(MCDNowPlayingContentManager *)self favoriteButton];
+    [favoriteButton2 setSelected:{objc_msgSend(likeCommand, "value") ^ 1}];
   }
 }
 
 - (BOOL)_showStopForCenterTransportCommand
 {
-  v3 = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
-  v4 = [v3 stop];
-  if (v4)
+  lastReceivedResponse = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
+  stop = [lastReceivedResponse stop];
+  if (stop)
   {
-    v5 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-    v6 = v5;
-    if (v5)
+    nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+    v6 = nowPlayingItem;
+    if (nowPlayingItem)
     {
-      [v5 duration];
+      [nowPlayingItem duration];
       v7 = v9;
     }
 
@@ -1071,27 +1071,27 @@ LABEL_5:
   return v7 & 1;
 }
 
-- (BOOL)nowPlayingViewController:(id)a3 buttonShouldBeActive:(int64_t)a4
+- (BOOL)nowPlayingViewController:(id)controller buttonShouldBeActive:(int64_t)active
 {
-  v6 = [(MCDNowPlayingContentManager *)self tracklist];
-  v7 = [v6 changeItemCommand];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  changeItemCommand = [tracklist changeItemCommand];
 
-  v8 = [(MCDNowPlayingContentManager *)self tracklist];
-  v9 = [v8 playingItem];
-  v10 = [v9 seekCommand];
+  tracklist2 = [(MCDNowPlayingContentManager *)self tracklist];
+  playingItem = [tracklist2 playingItem];
+  seekCommand = [playingItem seekCommand];
 
-  if (a4 == 1)
+  if (active == 1)
   {
-    v11 = [v7 nextItem];
-    if (!v11)
+    nextItem = [changeItemCommand nextItem];
+    if (!nextItem)
     {
-      v12 = [v7 nextChapter];
-      if (!v12)
+      nextChapter = [changeItemCommand nextChapter];
+      if (!nextChapter)
       {
-        v13 = [v7 nextSection];
-        if (!v13)
+        nextSection = [changeItemCommand nextSection];
+        if (!nextSection)
         {
-          v14 = [v10 preferredForwardJumpIntervals];
+          preferredForwardJumpIntervals = [seekCommand preferredForwardJumpIntervals];
           goto LABEL_15;
         }
 
@@ -1116,21 +1116,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!a4)
+  if (!active)
   {
-    v11 = [v7 previousItem];
-    if (!v11)
+    nextItem = [changeItemCommand previousItem];
+    if (!nextItem)
     {
-      v12 = [v7 previousChapter];
-      if (!v12)
+      nextChapter = [changeItemCommand previousChapter];
+      if (!nextChapter)
       {
-        v13 = [v7 previousSection];
-        if (!v13)
+        nextSection = [changeItemCommand previousSection];
+        if (!nextSection)
         {
-          v14 = [v10 preferredBackwardJumpIntervals];
+          preferredForwardJumpIntervals = [seekCommand preferredBackwardJumpIntervals];
 LABEL_15:
-          v16 = v14;
-          v15 = [v14 count] != 0;
+          v16 = preferredForwardJumpIntervals;
+          v15 = [preferredForwardJumpIntervals count] != 0;
 
           goto LABEL_16;
         }
@@ -1150,22 +1150,22 @@ LABEL_19:
   return v15;
 }
 
-- (BOOL)nowPlayingViewController:(id)a3 shouldDisplayButton:(int64_t)a4 withImage:(id *)a5 existingIdentifier:(id)a6 tinted:(BOOL *)a7
+- (BOOL)nowPlayingViewController:(id)controller shouldDisplayButton:(int64_t)button withImage:(id *)image existingIdentifier:(id)identifier tinted:(BOOL *)tinted
 {
-  v11 = a3;
-  v12 = a6;
-  if (a4)
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if (button)
   {
-    if (a4 != 1)
+    if (button != 1)
     {
-      if (a4 == 2)
+      if (button == 2)
       {
-        if ([(_MCDNowPlayingContentManager *)self->_impl nowPlayingViewControllerIsPlaying:v11])
+        if ([(_MCDNowPlayingContentManager *)self->_impl nowPlayingViewControllerIsPlaying:controllerCopy])
         {
-          v13 = [(MCDNowPlayingContentManager *)self _showStopForCenterTransportCommand];
+          _showStopForCenterTransportCommand = [(MCDNowPlayingContentManager *)self _showStopForCenterTransportCommand];
           v14 = MCDMusicGeneralLogging();
           v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-          if (v13)
+          if (_showStopForCenterTransportCommand)
           {
             if (v15)
             {
@@ -1173,8 +1173,8 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Showing stop button", v30, 2u);
             }
 
-            v16 = [v11 transportControlView];
-            [v16 setPauseButtonImageName:@"square.fill"];
+            transportControlView = [controllerCopy transportControlView];
+            [transportControlView setPauseButtonImageName:@"square.fill"];
 
             v17 = MCDCarDisplayBundle();
             v18 = [v17 localizedStringForKey:@"ACCESSIBILITY_STOP" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -1190,8 +1190,8 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Showing pause button", v30, 2u);
             }
 
-            v25 = [v11 transportControlView];
-            [v25 setPauseButtonImageName:@"pause.fill"];
+            transportControlView2 = [controllerCopy transportControlView];
+            [transportControlView2 setPauseButtonImageName:@"pause.fill"];
 
             v17 = MCDCarDisplayBundle();
             v18 = [v17 localizedStringForKey:@"ACCESSIBILITY_PAUSE" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -1209,8 +1209,8 @@ LABEL_19:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Showing play button", v30, 2u);
           }
 
-          v24 = [v11 transportControlView];
-          [v24 setPlayButtonImageName:@"play.fill"];
+          transportControlView3 = [controllerCopy transportControlView];
+          [transportControlView3 setPlayButtonImageName:@"play.fill"];
 
           v17 = MCDCarDisplayBundle();
           v18 = [v17 localizedStringForKey:@"ACCESSIBILITY_PLAY" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -1219,28 +1219,28 @@ LABEL_19:
         }
 
         v26 = [NSArray arrayWithObjects:v19 count:1];
-        v27 = [v11 transportControlView];
-        v28 = [v27 playPauseButton];
-        [v28 setAccessibilityUserInputLabels:v26];
+        transportControlView4 = [controllerCopy transportControlView];
+        playPauseButton = [transportControlView4 playPauseButton];
+        [playPauseButton setAccessibilityUserInputLabels:v26];
       }
 
       goto LABEL_20;
     }
 
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2;
   }
 
   else
   {
-    v20 = self;
+    selfCopy2 = self;
     v21 = -2;
   }
 
-  [(MCDNowPlayingContentManager *)v20 preferredJumpIntervalForDirection:v21];
+  [(MCDNowPlayingContentManager *)selfCopy2 preferredJumpIntervalForDirection:v21];
   if (v22 != 0.0)
   {
-    *a5 = [(MCDNowPlayingContentManager *)self skipIntervalButtonImageForInterval:?];
+    *image = [(MCDNowPlayingContentManager *)self skipIntervalButtonImageForInterval:?];
   }
 
 LABEL_20:
@@ -1248,17 +1248,17 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)nowPlayingViewControllerCanShowAddToLibrary:(id)a3
+- (BOOL)nowPlayingViewControllerCanShowAddToLibrary:(id)library
 {
   v4 = +[MusicCarPlayApplicationCapabilitiesController sharedController];
-  v5 = [v4 subscriptionCapabilities];
+  subscriptionCapabilities = [v4 subscriptionCapabilities];
 
-  if ((v5 & 0x200) != 0)
+  if ((subscriptionCapabilities & 0x200) != 0)
   {
-    v8 = [(MCDNowPlayingContentManager *)self libraryAddObserver];
-    v9 = [v8 isSongAddable];
+    libraryAddObserver = [(MCDNowPlayingContentManager *)self libraryAddObserver];
+    isSongAddable = [libraryAddObserver isSongAddable];
 
-    return v9;
+    return isSongAddable;
   }
 
   else
@@ -1274,28 +1274,28 @@ LABEL_20:
   }
 }
 
-- (void)nowPlayingViewControllerAddToLibrary:(id)a3
+- (void)nowPlayingViewControllerAddToLibrary:(id)library
 {
-  v3 = [(MCDNowPlayingContentManager *)self libraryAddObserver];
-  [v3 addSongToLibrary];
+  libraryAddObserver = [(MCDNowPlayingContentManager *)self libraryAddObserver];
+  [libraryAddObserver addSongToLibrary];
 }
 
-- (BOOL)nowPlayingViewControllerCanShowMore:(id)a3
+- (BOOL)nowPlayingViewControllerCanShowMore:(id)more
 {
-  v4 = [(MCDNowPlayingContentManager *)self _itemCanCreateRadioStation];
-  v5 = [(MCDNowPlayingContentManager *)self _showAddToLibraryOptions];
+  _itemCanCreateRadioStation = [(MCDNowPlayingContentManager *)self _itemCanCreateRadioStation];
+  _showAddToLibraryOptions = [(MCDNowPlayingContentManager *)self _showAddToLibraryOptions];
   if ([(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong])
   {
-    v6 = [(MCDNowPlayingContentManager *)self tracklist];
-    v7 = [v6 playingItem];
-    v8 = [v7 dislikeCommand];
-    if (v8)
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    playingItem = [tracklist playingItem];
+    dislikeCommand = [playingItem dislikeCommand];
+    if (dislikeCommand)
     {
-      v9 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-      v10 = [v9 metadataObject];
-      v11 = [v10 flattenedGenericObject];
-      v12 = [v11 song];
-      v13 = [v12 isFavorite] ^ 1;
+      nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+      metadataObject = [nowPlayingItem metadataObject];
+      flattenedGenericObject = [metadataObject flattenedGenericObject];
+      song = [flattenedGenericObject song];
+      v13 = [song isFavorite] ^ 1;
     }
 
     else
@@ -1313,59 +1313,59 @@ LABEL_20:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v16[0] = 67109632;
-    v16[1] = v4;
+    v16[1] = _itemCanCreateRadioStation;
     v17 = 1024;
-    v18 = v5;
+    v18 = _showAddToLibraryOptions;
     v19 = 1024;
     v20 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Show CTA: Create Station: %d, Add to Library: %d, allowsTasteActions: %d", v16, 0x14u);
   }
 
-  return (v4 | v5 | v13) & 1;
+  return (_itemCanCreateRadioStation | _showAddToLibraryOptions | v13) & 1;
 }
 
-- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)a3
+- (BOOL)nowPlayingViewControllerIsRightHandDrive:(id)drive
 {
-  v3 = [(MCDNowPlayingContentManager *)self carSessionStatus];
-  v4 = [v3 currentSession];
-  v5 = [v4 configuration];
-  v6 = [v5 rightHandDrive];
+  carSessionStatus = [(MCDNowPlayingContentManager *)self carSessionStatus];
+  currentSession = [carSessionStatus currentSession];
+  configuration = [currentSession configuration];
+  rightHandDrive = [configuration rightHandDrive];
 
-  return v6;
+  return rightHandDrive;
 }
 
-- (BOOL)nowPlayingViewControllerCanShowAlbumLink:(id)a3
+- (BOOL)nowPlayingViewControllerCanShowAlbumLink:(id)link
 {
-  v3 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v4 = [v3 album];
-  v5 = v4 != 0;
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  album = [currentPlayingSong album];
+  v5 = album != 0;
 
   return v5;
 }
 
 - (BOOL)prefersCatalogContainerNavigationForPlayingSong
 {
-  v3 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v4 = [v3 album];
-  v5 = [v4 identifiers];
-  v6 = [v5 universalStore];
-  v7 = [v6 adamID];
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  album = [currentPlayingSong album];
+  identifiers = [album identifiers];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  if (v7 || ([v5 universalStore], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "subscriptionAdamID"), v8, v9))
+  if (adamID || ([identifiers universalStore], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "subscriptionAdamID"), v8, v9))
   {
     v10 = 0;
   }
 
   else
   {
-    v15 = [v5 universalStore];
-    v16 = [v15 purchasedAdamID];
+    universalStore2 = [identifiers universalStore];
+    purchasedAdamID = [universalStore2 purchasedAdamID];
 
-    v10 = v16 == 0;
+    v10 = purchasedAdamID == 0;
   }
 
   v11 = +[MusicCarPlayApplicationCapabilitiesController sharedController];
-  v12 = [v11 subscriptionCapabilities];
+  subscriptionCapabilities = [v11 subscriptionCapabilities];
 
   if (v10)
   {
@@ -1374,23 +1374,23 @@ LABEL_20:
 
   else
   {
-    v13 = ![(MCDLibraryAddObserver *)self->_libraryAddObserver isAlbumAdded]& v12;
+    v13 = ![(MCDLibraryAddObserver *)self->_libraryAddObserver isAlbumAdded]& subscriptionCapabilities;
   }
 
   return v13;
 }
 
-- (void)nowPlayingViewControllerAlbumArtistButtonTapped:(id)a3
+- (void)nowPlayingViewControllerAlbumArtistButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v6 = [v5 album];
+  tappedCopy = tapped;
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  album = [currentPlayingSong album];
 
   LODWORD(self) = [(MCDNowPlayingContentManager *)self prefersCatalogContainerNavigationForPlayingSong];
   v7 = [_TtC5Music27MCDItemDetailViewController alloc];
   if (self)
   {
-    v8 = [(MCDItemDetailViewController *)v7 initWithAlbum:v6 onlyDownloaded:0 preferCatalog:1];
+    v8 = [(MCDItemDetailViewController *)v7 initWithAlbum:album onlyDownloaded:0 preferCatalog:1];
     v9 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1404,7 +1404,7 @@ LABEL_6:
 
   else
   {
-    v8 = [(MCDItemDetailViewController *)v7 initWithAlbum:v6 onlyDownloaded:0 preferCatalog:0];
+    v8 = [(MCDItemDetailViewController *)v7 initWithAlbum:album onlyDownloaded:0 preferCatalog:0];
     v9 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1415,10 +1415,10 @@ LABEL_6:
     }
   }
 
-  [(MCDItemDetailViewController *)v8 setPlayActivityFeatureNameSourceViewController:v4];
-  v12 = [v4 navigationController];
+  [(MCDItemDetailViewController *)v8 setPlayActivityFeatureNameSourceViewController:tappedCopy];
+  navigationController = [tappedCopy navigationController];
 
-  [v12 pushViewController:v8 animated:1];
+  [navigationController pushViewController:v8 animated:1];
 }
 
 - (BOOL)_itemCanCreateRadioStation
@@ -1434,18 +1434,18 @@ LABEL_6:
       v7 = [v5 DSIDForUserIdentity:v6 outError:0];
       if ([v7 unsignedLongLongValue])
       {
-        v8 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-        if ([v8 hasVideo])
+        currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+        if ([currentPlayingSong hasVideo])
         {
           v9 = 0;
         }
 
         else
         {
-          v10 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-          v11 = [v10 identifiers];
-          v12 = [v11 universalStore];
-          if ([v12 adamID])
+          currentPlayingSong2 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+          identifiers = [currentPlayingSong2 identifiers];
+          universalStore = [identifiers universalStore];
+          if ([universalStore adamID])
           {
             v13 = [(MCDNowPlayingContentManager *)self _radioCommandRequestWithCurrentPlayingSongWithViewController:0];
             v9 = v13 != 0;
@@ -1478,34 +1478,34 @@ LABEL_6:
   return v9;
 }
 
-- (id)_radioCommandRequestWithCurrentPlayingSongWithViewController:(id)a3
+- (id)_radioCommandRequestWithCurrentPlayingSongWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v6 = [MPCPlaybackIntent radioPlaybackIntentFromSong:v5];
+  controllerCopy = controller;
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  v6 = [MPCPlaybackIntent radioPlaybackIntentFromSong:currentPlayingSong];
 
-  v7 = [v4 combinedPlayActivityFeatureName];
+  combinedPlayActivityFeatureName = [controllerCopy combinedPlayActivityFeatureName];
 
-  [v6 setPlayActivityFeatureName:v7];
-  v8 = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
-  v9 = [v8 type];
+  [v6 setPlayActivityFeatureName:combinedPlayActivityFeatureName];
+  currentPlayingRadioStation = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
+  type = [currentPlayingRadioStation type];
 
-  if (v9 != 4)
+  if (type != 4)
   {
-    v12 = [(MCDNowPlayingContentManager *)self tracklist];
-    v13 = [v12 insertCommand];
-    v14 = [v13 insertAfterPlayingItemWithPlaybackIntent:v6];
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    insertCommand = [tracklist insertCommand];
+    v14 = [insertCommand insertAfterPlayingItemWithPlaybackIntent:v6];
     goto LABEL_5;
   }
 
-  v10 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v11 = [v10 isLibraryAddEligible];
+  currentPlayingSong2 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  isLibraryAddEligible = [currentPlayingSong2 isLibraryAddEligible];
 
-  if (v11)
+  if (isLibraryAddEligible)
   {
-    v12 = [(MCDNowPlayingContentManager *)self tracklist];
-    v13 = [v12 resetCommand];
-    v14 = [v13 replaceWithPlaybackIntent:v6];
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    insertCommand = [tracklist resetCommand];
+    v14 = [insertCommand replaceWithPlaybackIntent:v6];
 LABEL_5:
     v15 = v14;
 
@@ -1609,13 +1609,13 @@ LABEL_7:
   v18 = [UIAlertAction actionWithTitle:v17 style:1 handler:0];
   [v3 addAction:v18];
 
-  v19 = [(MCDNowPlayingContentManager *)self delegate];
+  delegate = [(MCDNowPlayingContentManager *)self delegate];
   LOBYTE(v17) = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v20 = [(MCDNowPlayingContentManager *)self delegate];
-    [v20 contentManager:self->_impl presentViewController:v3];
+    delegate2 = [(MCDNowPlayingContentManager *)self delegate];
+    [delegate2 contentManager:self->_impl presentViewController:v3];
   }
 
   objc_destroyWeak(&location);
@@ -1624,25 +1624,25 @@ LABEL_7:
 - (BOOL)_showAddToLibraryOptions
 {
   v3 = +[MusicCarPlayApplicationCapabilitiesController sharedController];
-  v4 = [v3 subscriptionCapabilities];
+  subscriptionCapabilities = [v3 subscriptionCapabilities];
 
-  if ((v4 & 0x200) != 0)
+  if ((subscriptionCapabilities & 0x200) != 0)
   {
-    v7 = [(MCDLibraryAddObserver *)self->_libraryAddObserver isSongAddable];
-    v8 = [(MCDLibraryAddObserver *)self->_libraryAddObserver isAlbumAddable];
-    v9 = [(MCDLibraryAddObserver *)self->_libraryAddObserver isPlaylistAddable];
-    v6 = v7 | v8 | v9;
+    isSongAddable = [(MCDLibraryAddObserver *)self->_libraryAddObserver isSongAddable];
+    isAlbumAddable = [(MCDLibraryAddObserver *)self->_libraryAddObserver isAlbumAddable];
+    isPlaylistAddable = [(MCDLibraryAddObserver *)self->_libraryAddObserver isPlaylistAddable];
+    v6 = isSongAddable | isAlbumAddable | isPlaylistAddable;
     v5 = MCDMusicGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109888;
       v11[1] = v6 & 1;
       v12 = 1024;
-      v13 = v7;
+      v13 = isSongAddable;
       v14 = 1024;
-      v15 = v8 & 1;
+      v15 = isAlbumAddable & 1;
       v16 = 1024;
-      v17 = v9 & 1;
+      v17 = isPlaylistAddable & 1;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_showAddToLibraryOptions returning %d (derived from isSongAddable=%d || isAlbumAddable=%d || isPlaylistAddable=%d)", v11, 0x1Au);
     }
   }
@@ -1661,49 +1661,49 @@ LABEL_7:
   return v6 & 1;
 }
 
-- (BOOL)_allowsTasteActionsForGenericObject:(id)a3
+- (BOOL)_allowsTasteActionsForGenericObject:(id)object
 {
-  v4 = a3;
-  if ([v4 type] == 1)
+  objectCopy = object;
+  if ([objectCopy type] == 1)
   {
-    v5 = [v4 anyObject];
-    v6 = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
-    v7 = [v6 type];
+    anyObject = [objectCopy anyObject];
+    currentPlayingRadioStation = [(MCDNowPlayingContentManager *)self currentPlayingRadioStation];
+    type = [currentPlayingRadioStation type];
 
-    if (v7 == 4 && ![v5 isLibraryAddEligible])
+    if (type == 4 && ![anyObject isLibraryAddEligible])
     {
-      v8 = 0;
+      shouldShowFavoriteSong = 0;
     }
 
     else if ([(MCDNowPlayingContentManager *)self _showAddToLibraryOptions]|| [(MCDNowPlayingContentManager *)self _itemCanCreateRadioStation])
     {
-      v8 = 1;
+      shouldShowFavoriteSong = 1;
     }
 
     else
     {
-      v8 = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
+      shouldShowFavoriteSong = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
     }
   }
 
   else
   {
-    v8 = 0;
+    shouldShowFavoriteSong = 0;
   }
 
-  return v8;
+  return shouldShowFavoriteSong;
 }
 
-- (void)nowPlayingViewControllerMore:(id)a3
+- (void)nowPlayingViewControllerMore:(id)more
 {
-  v4 = a3;
+  moreCopy = more;
   v5 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:0];
   [v5 setOverrideUserInterfaceStyle:2];
   objc_initWeak(location, self);
-  v6 = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
-  if (v6)
+  currentAttributionMetadata = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
+  if (currentAttributionMetadata)
   {
-    v7 = [(MCDNowPlayingContentManager *)self nowPlayingViewControllerCanShowAlbumLink:v4];
+    v7 = [(MCDNowPlayingContentManager *)self nowPlayingViewControllerCanShowAlbumLink:moreCopy];
 
     if (v7)
     {
@@ -1715,7 +1715,7 @@ LABEL_7:
       v53[2] = sub_1000F8790;
       v53[3] = &unk_1010983B0;
       objc_copyWeak(&v55, location);
-      v54 = v4;
+      v54 = moreCopy;
       v11 = [UIAlertAction actionWithTitle:v10 image:v8 handler:v53];
 
       [v5 addAction:v11];
@@ -1741,7 +1741,7 @@ LABEL_7:
 
   if ([(MCDNowPlayingContentManager *)self _itemCanCreateRadioStation])
   {
-    v16 = [(MCDNowPlayingContentManager *)self _radioCommandRequestWithCurrentPlayingSongWithViewController:v4];
+    v16 = [(MCDNowPlayingContentManager *)self _radioCommandRequestWithCurrentPlayingSongWithViewController:moreCopy];
     v17 = [[MCDPlaybackManager alloc] initWithDelegate:self];
     v18 = [UIImage systemImageNamed:@"badge.plus.radiowaves.right"];
     v19 = +[NSBundle mainBundle];
@@ -1759,19 +1759,19 @@ LABEL_7:
     [v5 addAction:v23];
   }
 
-  v24 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-  v25 = [v24 metadataObject];
-  v26 = [v25 flattenedGenericObject];
+  nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+  metadataObject = [nowPlayingItem metadataObject];
+  flattenedGenericObject = [metadataObject flattenedGenericObject];
 
-  v27 = [v26 song];
-  v28 = [(MCDNowPlayingContentManager *)self tracklist];
-  v29 = [v28 playingItem];
-  v30 = [v29 dislikeCommand];
+  song = [flattenedGenericObject song];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  playingItem = [tracklist playingItem];
+  dislikeCommand = [playingItem dislikeCommand];
 
-  v31 = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
-  if (v30)
+  shouldShowFavoriteSong = [(MCDLibraryAddObserver *)self->_libraryAddObserver shouldShowFavoriteSong];
+  if (dislikeCommand)
   {
-    v32 = v31;
+    v32 = shouldShowFavoriteSong;
   }
 
   else
@@ -1779,9 +1779,9 @@ LABEL_7:
     v32 = 0;
   }
 
-  if (v32 == 1 && ([v27 isFavorite] & 1) == 0)
+  if (v32 == 1 && ([song isFavorite] & 1) == 0)
   {
-    if ([v27 isDisliked])
+    if ([song isDisliked])
     {
       v33 = [UIImage systemImageNamed:@"hand.thumbsdown.slash"];
       v34 = +[NSBundle mainBundle];
@@ -1791,7 +1791,7 @@ LABEL_7:
       v47[2] = sub_1000F882C;
       v47[3] = &unk_1010983D8;
       v47[4] = self;
-      v47[5] = v27;
+      v47[5] = song;
       v36 = [UIAlertAction actionWithTitle:v35 image:v33 handler:v47];
 
       [v5 addAction:v36];
@@ -1808,7 +1808,7 @@ LABEL_7:
       v46[2] = sub_1000F883C;
       v46[3] = &unk_1010983D8;
       v46[4] = self;
-      v46[5] = v27;
+      v46[5] = song;
       v36 = [UIAlertAction actionWithTitle:v39 image:v33 handler:v46];
 
       [v5 addAction:v36];
@@ -1823,50 +1823,50 @@ LABEL_7:
   v43 = [UIAlertAction actionWithTitle:v42 style:1 handler:0];
   [v5 addAction:v43];
 
-  v44 = [(MCDNowPlayingContentManager *)self delegate];
+  delegate = [(MCDNowPlayingContentManager *)self delegate];
   LOBYTE(v42) = objc_opt_respondsToSelector();
 
   if (v42)
   {
-    v45 = [(MCDNowPlayingContentManager *)self delegate];
-    [v45 contentManager:self->_impl presentViewController:v5];
+    delegate2 = [(MCDNowPlayingContentManager *)self delegate];
+    [delegate2 contentManager:self->_impl presentViewController:v5];
   }
 
   objc_destroyWeak(location);
 }
 
-- (BOOL)nowPlayingViewControllerCanRepeat:(id)a3
+- (BOOL)nowPlayingViewControllerCanRepeat:(id)repeat
 {
-  v3 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v3 repeatCommand];
-  v5 = v4 != 0;
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  repeatCommand = [tracklist repeatCommand];
+  v5 = repeatCommand != 0;
 
   return v5;
 }
 
-- (void)nowPlayingViewControllerToggleRepeat:(id)a3
+- (void)nowPlayingViewControllerToggleRepeat:(id)repeat
 {
-  v6 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v6 repeatCommand];
-  v5 = [v4 advance];
-  [(MCDNowPlayingContentManager *)self _performChangeRequest:v5];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  repeatCommand = [tracklist repeatCommand];
+  advance = [repeatCommand advance];
+  [(MCDNowPlayingContentManager *)self _performChangeRequest:advance];
 }
 
-- (BOOL)nowPlayingViewControllerCanShuffle:(id)a3
+- (BOOL)nowPlayingViewControllerCanShuffle:(id)shuffle
 {
-  v3 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v3 shuffleCommand];
-  v5 = v4 != 0;
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  shuffleCommand = [tracklist shuffleCommand];
+  v5 = shuffleCommand != 0;
 
   return v5;
 }
 
-- (void)nowPlayingViewControllerToggleShuffle:(id)a3
+- (void)nowPlayingViewControllerToggleShuffle:(id)shuffle
 {
-  v6 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v6 shuffleCommand];
-  v5 = [v4 advance];
-  [(MCDNowPlayingContentManager *)self _performChangeRequest:v5];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  shuffleCommand = [tracklist shuffleCommand];
+  advance = [shuffleCommand advance];
+  [(MCDNowPlayingContentManager *)self _performChangeRequest:advance];
 }
 
 - (BOOL)_nowPlayingViewControllerIsFuseSubscriber
@@ -1877,13 +1877,13 @@ LABEL_7:
   return v3;
 }
 
-- (void)nowPlayingViewController:(id)a3 didSendAction:(int64_t)a4 state:(int64_t)a5
+- (void)nowPlayingViewController:(id)controller didSendAction:(int64_t)action state:(int64_t)state
 {
-  v8 = a3;
-  v32 = v8;
-  if (!a4)
+  controllerCopy = controller;
+  v32 = controllerCopy;
+  if (!action)
   {
-    if (a5 == 2)
+    if (state == 2)
     {
       if ([(MCDNowPlayingContentManager *)self seeking])
       {
@@ -1891,22 +1891,22 @@ LABEL_7:
       }
     }
 
-    else if (a5 == 1)
+    else if (state == 1)
     {
-      v13 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-      v14 = [v13 seekCommand];
-      v15 = v14;
+      nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+      seekCommand = [nowPlayingItem seekCommand];
+      v15 = seekCommand;
       v16 = -1;
       goto LABEL_14;
     }
 
     [(MCDNowPlayingContentManager *)self preferredJumpIntervalForDirection:-2];
-    v20 = self;
+    selfCopy4 = self;
     if (v27 == 0.0)
     {
-      v11 = [(MCDNowPlayingContentManager *)self tracklist];
-      v30 = [v11 changeItemCommand];
-      v31 = [v30 previousItem];
+      tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+      changeItemCommand = [tracklist changeItemCommand];
+      previousItem = [changeItemCommand previousItem];
       goto LABEL_30;
     }
 
@@ -1914,34 +1914,34 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  if (a4 != 1)
+  if (action != 1)
   {
-    if (a4 == 2)
+    if (action == 2)
     {
-      if ([(_MCDNowPlayingContentManager *)self->_impl nowPlayingViewControllerIsPlaying:v8])
+      if ([(_MCDNowPlayingContentManager *)self->_impl nowPlayingViewControllerIsPlaying:controllerCopy])
       {
-        v9 = [(MCDNowPlayingContentManager *)self _showStopForCenterTransportCommand];
-        v10 = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
-        v11 = v10;
-        if (v9)
+        _showStopForCenterTransportCommand = [(MCDNowPlayingContentManager *)self _showStopForCenterTransportCommand];
+        lastReceivedResponse = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
+        tracklist = lastReceivedResponse;
+        if (_showStopForCenterTransportCommand)
         {
-          [v10 stop];
+          [lastReceivedResponse stop];
         }
 
         else
         {
-          [v10 pause];
+          [lastReceivedResponse pause];
         }
-        v12 = ;
+        play = ;
       }
 
       else
       {
-        v11 = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
-        v12 = [v11 play];
+        tracklist = [(MCDNowPlayingContentManager *)self lastReceivedResponse];
+        play = [tracklist play];
       }
 
-      v26 = v12;
+      v26 = play;
       goto LABEL_31;
     }
 
@@ -1950,22 +1950,22 @@ LABEL_22:
     goto LABEL_32;
   }
 
-  if (a5 != 2)
+  if (state != 2)
   {
-    if (a5 == 1)
+    if (state == 1)
     {
-      v13 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-      v14 = [v13 seekCommand];
-      v15 = v14;
+      nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+      seekCommand = [nowPlayingItem seekCommand];
+      v15 = seekCommand;
       v16 = 1;
 LABEL_14:
-      v17 = [v14 beginSeekWithDirection:v16];
+      v17 = [seekCommand beginSeekWithDirection:v16];
       [(MCDNowPlayingContentManager *)self _performChangeRequest:v17];
 
-      v18 = self;
+      selfCopy3 = self;
       v19 = 1;
 LABEL_21:
-      [(MCDNowPlayingContentManager *)v18 setSeeking:v19];
+      [(MCDNowPlayingContentManager *)selfCopy3 setSeeking:v19];
       goto LABEL_22;
     }
 
@@ -1975,76 +1975,76 @@ LABEL_21:
   if ([(MCDNowPlayingContentManager *)self seeking])
   {
 LABEL_20:
-    v23 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-    v24 = [v23 seekCommand];
-    v25 = [v24 endSeek];
-    [(MCDNowPlayingContentManager *)self _performChangeRequest:v25];
+    nowPlayingItem2 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+    seekCommand2 = [nowPlayingItem2 seekCommand];
+    endSeek = [seekCommand2 endSeek];
+    [(MCDNowPlayingContentManager *)self _performChangeRequest:endSeek];
 
-    v18 = self;
+    selfCopy3 = self;
     v19 = 0;
     goto LABEL_21;
   }
 
 LABEL_17:
   [(MCDNowPlayingContentManager *)self preferredJumpIntervalForDirection:2];
-  v20 = self;
+  selfCopy4 = self;
   if (v21 == 0.0)
   {
-    v11 = [(MCDNowPlayingContentManager *)self tracklist];
-    v30 = [v11 changeItemCommand];
-    v31 = [v30 nextItem];
+    tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+    changeItemCommand = [tracklist changeItemCommand];
+    previousItem = [changeItemCommand nextItem];
     goto LABEL_30;
   }
 
   v22 = 2;
 LABEL_25:
-  [(MCDNowPlayingContentManager *)v20 preferredJumpIntervalForDirection:v22];
+  [(MCDNowPlayingContentManager *)selfCopy4 preferredJumpIntervalForDirection:v22];
   v29 = v28;
-  v11 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-  v30 = [v11 seekCommand];
-  v31 = [v30 jumpByInterval:v29];
+  tracklist = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+  changeItemCommand = [tracklist seekCommand];
+  previousItem = [changeItemCommand jumpByInterval:v29];
 LABEL_30:
-  v26 = v31;
+  v26 = previousItem;
 
 LABEL_31:
 LABEL_32:
   [(MCDNowPlayingContentManager *)self _performChangeRequest:v26];
 }
 
-- (void)nowPlayingViewControllerAttributionButtonTapped:(id)a3
+- (void)nowPlayingViewControllerAttributionButtonTapped:(id)tapped
 {
   v4 = +[UIApplication sharePlayTogetherObjCViewModel];
-  v5 = [v4 isActive];
+  isActive = [v4 isActive];
 
-  if (v5)
+  if (isActive)
   {
     v6 = [_TtC5Music41MCDSharePlayTogetherSessionViewController alloc];
-    v7 = +[UIApplication sharePlayTogetherObjCViewModel];
-    v8 = [(MCDSharePlayTogetherSessionViewController *)v6 initWithViewModel:v7];
+    currentPlayingPlaylist = +[UIApplication sharePlayTogetherObjCViewModel];
+    v8 = [(MCDSharePlayTogetherSessionViewController *)v6 initWithViewModel:currentPlayingPlaylist];
   }
 
   else
   {
     v9 = [MCDPlaylistTracksTableViewController alloc];
-    v7 = [(MCDNowPlayingContentManager *)self currentPlayingPlaylist];
-    v8 = [(MCDPlaylistTracksTableViewController *)v9 initWithPlaylist:v7 showLocalContent:0];
+    currentPlayingPlaylist = [(MCDNowPlayingContentManager *)self currentPlayingPlaylist];
+    v8 = [(MCDPlaylistTracksTableViewController *)v9 initWithPlaylist:currentPlayingPlaylist showLocalContent:0];
   }
 
   v11 = v8;
 
-  v10 = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
-  [v10 contentManager:self->_impl pushViewController:v11];
+  contentManagerDelegate = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
+  [contentManagerDelegate contentManager:self->_impl pushViewController:v11];
 }
 
 - (NSString)nowPlayingBundleID
 {
-  v2 = [(_MCDNowPlayingContentManager *)self->_impl nowPlayingBundleID];
-  v3 = [v2 copy];
+  nowPlayingBundleID = [(_MCDNowPlayingContentManager *)self->_impl nowPlayingBundleID];
+  v3 = [nowPlayingBundleID copy];
 
   return v3;
 }
 
-- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)a3
+- ($04B05C73ED6AEEF31C5815932084562D)durationSnapshotForNowPlayingViewController:(SEL)controller
 {
   result = self->_impl;
   if (result)
@@ -2059,29 +2059,29 @@ LABEL_32:
   return result;
 }
 
-- (int64_t)shuffleTypeForNowPlayingViewController:(id)a3
+- (int64_t)shuffleTypeForNowPlayingViewController:(id)controller
 {
-  v3 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v3 shuffleType];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  shuffleType = [tracklist shuffleType];
 
-  return v4;
+  return shuffleType;
 }
 
-- (int64_t)repeatTypeForNowPlayingViewController:(id)a3
+- (int64_t)repeatTypeForNowPlayingViewController:(id)controller
 {
-  v3 = [(MCDNowPlayingContentManager *)self tracklist];
-  v4 = [v3 repeatType];
+  tracklist = [(MCDNowPlayingContentManager *)self tracklist];
+  repeatType = [tracklist repeatType];
 
-  return v4;
+  return repeatType;
 }
 
-- (int64_t)placeholderTypeForNowPlayingViewController:(id)a3
+- (int64_t)placeholderTypeForNowPlayingViewController:(id)controller
 {
-  v3 = [(MCDNowPlayingContentManager *)self nowPlayingItem];
-  v4 = v3;
-  if (v3)
+  nowPlayingItem = [(MCDNowPlayingContentManager *)self nowPlayingItem];
+  v4 = nowPlayingItem;
+  if (nowPlayingItem)
   {
-    [v3 duration];
+    [nowPlayingItem duration];
     if (v7)
     {
       v5 = 4;
@@ -2101,18 +2101,18 @@ LABEL_32:
   return v5;
 }
 
-- (id)attributionTitleForNowPlayingViewController:(id)a3
+- (id)attributionTitleForNowPlayingViewController:(id)controller
 {
-  v3 = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
-  v4 = [v3 displayName];
+  currentAttributionMetadata = [(MCDNowPlayingContentManager *)self currentAttributionMetadata];
+  displayName = [currentAttributionMetadata displayName];
 
-  return v4;
+  return displayName;
 }
 
-- (int64_t)videoPlaybackStateForNowPlayingController:(id)a3
+- (int64_t)videoPlaybackStateForNowPlayingController:(id)controller
 {
-  v3 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  if ([v3 hasVideo])
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  if ([currentPlayingSong hasVideo])
   {
     v4 = 3;
   }
@@ -2125,149 +2125,149 @@ LABEL_32:
   return v4;
 }
 
-- (void)contentManager:(id)a3 processResponse:(id)a4 error:(id)a5
+- (void)contentManager:(id)manager processResponse:(id)response error:(id)error
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  responseCopy = response;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v12 contentManager:v13 processResponse:v8 error:v9];
+    [v12 contentManager:managerCopy processResponse:responseCopy error:errorCopy];
   }
 
-  [(MCDNowPlayingContentManager *)self _processResponse:v8 error:v9];
+  [(MCDNowPlayingContentManager *)self _processResponse:responseCopy error:errorCopy];
 }
 
-- (void)contentManager:(id)a3 shouldShowPlaybackQueue:(BOOL)a4
+- (void)contentManager:(id)manager shouldShowPlaybackQueue:(BOOL)queue
 {
-  v4 = a4;
-  v9 = a3;
+  queueCopy = queue;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v8 contentManager:v9 shouldShowPlaybackQueue:v4];
+    [v8 contentManager:managerCopy shouldShowPlaybackQueue:queueCopy];
   }
 }
 
-- (void)contentManagerReloadData:(id)a3
+- (void)contentManagerReloadData:(id)data
 {
-  v7 = a3;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v6 contentManagerReloadData:v7];
+    [v6 contentManagerReloadData:dataCopy];
   }
 }
 
-- (void)contentManager:(id)a3 presentViewController:(id)a4
+- (void)contentManager:(id)manager presentViewController:(id)controller
 {
-  v10 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v9 contentManager:v10 presentViewController:v6];
+    [v9 contentManager:managerCopy presentViewController:controllerCopy];
   }
 }
 
-- (void)contentManager:(id)a3 bufferingItem:(BOOL)a4
+- (void)contentManager:(id)manager bufferingItem:(BOOL)item
 {
-  v4 = a4;
-  v9 = a3;
+  itemCopy = item;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v8 contentManager:v9 bufferingItem:v4];
+    [v8 contentManager:managerCopy bufferingItem:itemCopy];
   }
 }
 
-- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)a3
+- (void)contentManagerInitiatedPlaybackFromPlaybackQueue:(id)queue
 {
-  v7 = a3;
+  queueCopy = queue;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v6 contentManagerInitiatedPlaybackFromPlaybackQueue:v7];
+    [v6 contentManagerInitiatedPlaybackFromPlaybackQueue:queueCopy];
   }
 }
 
-- (void)contentManager:(id)a3 displayItemIndex:(int64_t)a4 totalItemCount:(int64_t)a5
+- (void)contentManager:(id)manager displayItemIndex:(int64_t)index totalItemCount:(int64_t)count
 {
-  v11 = a3;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v10 contentManager:v11 displayItemIndex:a4 totalItemCount:a5];
+    [v10 contentManager:managerCopy displayItemIndex:index totalItemCount:count];
   }
 }
 
-- (void)contentManagerCompletedAllPlayback:(id)a3
+- (void)contentManagerCompletedAllPlayback:(id)playback
 {
-  v7 = a3;
+  playbackCopy = playback;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v6 contentManagerCompletedAllPlayback:v7];
+    [v6 contentManagerCompletedAllPlayback:playbackCopy];
   }
 }
 
-- (void)contentManager:(id)a3 sectionName:(id)a4
+- (void)contentManager:(id)manager sectionName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v9 contentManager:v10 sectionName:v6];
+    [v9 contentManager:managerCopy sectionName:nameCopy];
   }
 }
 
-- (void)contentManager:(id)a3 itemDidChange:(id)a4 response:(id)a5
+- (void)contentManager:(id)manager itemDidChange:(id)change response:(id)response
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  changeCopy = change;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_contentManagerDelegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_contentManagerDelegate);
-    [v12 contentManager:v13 itemDidChange:v8 response:v9];
+    [v12 contentManager:managerCopy itemDidChange:changeCopy response:responseCopy];
   }
 }
 
-- (BOOL)currentPlayingSongFoundIn:(id)a3
+- (BOOL)currentPlayingSongFoundIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -2278,7 +2278,7 @@ LABEL_32:
   v6[3] = &unk_101098400;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateItemIdentifiersUsingBlock:v6];
+  [inCopy enumerateItemIdentifiersUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -2287,21 +2287,21 @@ LABEL_32:
 
 - (void)requestAndUpdateLibraryResponseForCurrentPlayingSongAlbum
 {
-  v3 = [(MCDNowPlayingContentManager *)self currentPlayingSong];
-  v4 = [v3 album];
-  v5 = [(MCDNowPlayingContentManager *)self currentPlayingAlbum];
-  v6 = [v5 identifiers];
-  v7 = [v4 identifiers];
-  v8 = [v6 intersectsSet:v7];
+  currentPlayingSong = [(MCDNowPlayingContentManager *)self currentPlayingSong];
+  album = [currentPlayingSong album];
+  currentPlayingAlbum = [(MCDNowPlayingContentManager *)self currentPlayingAlbum];
+  identifiers = [currentPlayingAlbum identifiers];
+  identifiers2 = [album identifiers];
+  v8 = [identifiers intersectsSet:identifiers2];
 
   if ((v8 & 1) == 0)
   {
-    [(MCDNowPlayingContentManager *)self setCurrentPlayingAlbum:v4];
-    if (v3)
+    [(MCDNowPlayingContentManager *)self setCurrentPlayingAlbum:album];
+    if (currentPlayingSong)
     {
-      if (v4)
+      if (album)
       {
-        v9 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:v4 storeContent:0];
+        v9 = [[MCDAlbumTracksDataSource alloc] initWithAlbum:album storeContent:0];
         v10 = [(_MCDContentManager *)[MCDLibraryContentManager alloc] initWithDataSource:v9 delegate:0];
         objc_initWeak(&location, self);
         v11[0] = _NSConcreteStackBlock;
@@ -2310,7 +2310,7 @@ LABEL_32:
         v11[3] = &unk_101098428;
         objc_copyWeak(&v13, &location);
         v11[4] = self;
-        v12 = v4;
+        v12 = album;
         [(_MCDContentManager *)v10 performRequest:v11];
 
         objc_destroyWeak(&v13);
@@ -2320,13 +2320,13 @@ LABEL_32:
   }
 }
 
-- (void)performFavoriteChangeRequestFor:(id)a3 action:(int64_t)a4
+- (void)performFavoriteChangeRequestFor:(id)for action:(int64_t)action
 {
-  v5 = a3;
+  forCopy = for;
   v6 = objc_alloc_init(MPModelLibraryFavoriteEntityChangeRequest);
-  [v6 setModelObject:v5];
+  [v6 setModelObject:forCopy];
 
-  v7 = [[MPModelLibraryFavoriteEntityRequestAction alloc] initWithChangeAction:a4];
+  v7 = [[MPModelLibraryFavoriteEntityRequestAction alloc] initWithChangeAction:action];
   [v6 setRequestAction:v7];
 
   v8 = +[MPModelLibraryTransientStateController sharedDeviceLibraryController];
@@ -2334,7 +2334,7 @@ LABEL_32:
   v9[1] = 3221225472;
   v9[2] = sub_1000F9B10;
   v9[3] = &unk_101098448;
-  v9[4] = a4;
+  v9[4] = action;
   [v8 performFavoriteStateChangeRequest:v6 withRelatedModelObjects:0 completion:v9];
 }
 
@@ -2344,8 +2344,8 @@ LABEL_32:
   v4 = +[UIApplication sharePlayTogetherObjCViewModel];
   v6 = [(MCDSharePlayTogetherSessionViewController *)v3 initWithViewModel:v4];
 
-  v5 = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
-  [v5 contentManager:self->_impl pushViewController:v6];
+  contentManagerDelegate = [(MCDNowPlayingContentManager *)self contentManagerDelegate];
+  [contentManagerDelegate contentManager:self->_impl pushViewController:v6];
 }
 
 @end

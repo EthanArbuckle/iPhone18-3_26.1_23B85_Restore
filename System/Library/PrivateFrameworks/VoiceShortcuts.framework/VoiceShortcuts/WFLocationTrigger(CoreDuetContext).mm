@@ -6,22 +6,22 @@
 
 - (uint64_t)shouldFireTriggerWithEventInfo:()CoreDuetContext error:
 {
-  v2 = [a1 startTime];
-  if (!v2)
+  startTime = [self startTime];
+  if (!startTime)
   {
     return 1;
   }
 
-  v3 = v2;
-  v4 = [a1 endTime];
+  v3 = startTime;
+  endTime = [self endTime];
 
-  if (!v4)
+  if (!endTime)
   {
     return 1;
   }
 
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [a1 isDateWithinTimeRange:v5];
+  v6 = [self isDateWithinTimeRange:v5];
 
   return v6;
 }

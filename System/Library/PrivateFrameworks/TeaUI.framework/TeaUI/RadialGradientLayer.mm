@@ -1,11 +1,11 @@
 @interface RadialGradientLayer
-- (_TtC5TeaUI19RadialGradientLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC5TeaUI19RadialGradientLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation RadialGradientLayer
 
-- (_TtC5TeaUI19RadialGradientLayer)initWithLayer:(id)a3
+- (_TtC5TeaUI19RadialGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1D8191F34();
@@ -13,11 +13,11 @@
   return RadialGradientLayer.init(layer:)(v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  RadialGradientLayer.draw(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  RadialGradientLayer.draw(in:)(contextCopy);
 }
 
 @end

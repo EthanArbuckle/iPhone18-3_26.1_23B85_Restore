@@ -3,7 +3,7 @@
 - (void)_handleCancelTapped;
 - (void)_terminateFlow;
 - (void)_withdrawApplicationTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -15,30 +15,30 @@
   v15.super_class = PKApplyActionExplanationViewController;
   [(PKApplyExplanationViewController *)&v15 viewDidLoad];
   objc_initWeak(&location, self);
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 featureApplication];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  controller2 = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller2 featureApplication];
 
-  if ([v5 feature] == 2 || objc_msgSend(v3, "featureIdentifier") == 2)
+  if ([featureApplication feature] == 2 || objc_msgSend(controller, "featureIdentifier") == 2)
   {
-    v6 = [v3 featureApplication];
-    v7 = [v6 applicationState];
+    featureApplication2 = [controller featureApplication];
+    applicationState = [featureApplication2 applicationState];
 
-    if (v7 == 7)
+    if (applicationState == 7)
     {
       [(PKApplyActionExplanationViewController *)self _configureAppleCardIcon];
-      v8 = [(PKExplanationViewController *)self explanationView];
-      [v8 setBodyButtonNumberOfLines:2];
+      explanationView = [(PKExplanationViewController *)self explanationView];
+      [explanationView setBodyButtonNumberOfLines:2];
     }
 
-    else if ([v3 applicationType] == 2)
+    else if ([controller applicationType] == 2)
     {
       [(PKApplyActionExplanationViewController *)self _configureAppleCardIcon];
     }
   }
 
-  v9 = [(PKExplanationViewController *)self explanationView];
-  [v9 setBodyButtonUsesLearnMoreStyle:1];
+  explanationView2 = [(PKExplanationViewController *)self explanationView];
+  [explanationView2 setBodyButtonUsesLearnMoreStyle:1];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -104,30 +104,30 @@ uint64_t __53__PKApplyActionExplanationViewController_viewDidLoad__block_invoke_
   return 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKApplyActionExplanationViewController;
-  [(PKApplyExplanationViewController *)&v8 viewDidAppear:a3];
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 featureApplication];
-  v6 = [v5 declineDetails];
-  v7 = [v6 declinedTermsIdentifier];
+  [(PKApplyExplanationViewController *)&v8 viewDidAppear:appear];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
+  declineDetails = [featureApplication declineDetails];
+  declinedTermsIdentifier = [declineDetails declinedTermsIdentifier];
 
-  if ([v5 applicationState] == 7 && objc_msgSend(v7, "length"))
+  if ([featureApplication applicationState] == 7 && objc_msgSend(declinedTermsIdentifier, "length"))
   {
-    [v4 termsShownWithIdentifier:v7];
+    [controller termsShownWithIdentifier:declinedTermsIdentifier];
   }
 }
 
 - (void)_configureAppleCardIcon
 {
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v5 = PKFeatureApplicationHeaderImageWithImage([v3 featureIdentifier], 0);
+  controller = [(PKApplyExplanationViewController *)self controller];
+  v5 = PKFeatureApplicationHeaderImageWithImage([controller featureIdentifier], 0);
 
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setImage:v5];
-  [v4 setTopMargin:30.0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setImage:v5];
+  [explanationView setTopMargin:30.0];
 }
 
 - (void)_handleCancelTapped
@@ -138,13 +138,13 @@ uint64_t __53__PKApplyActionExplanationViewController_viewDidLoad__block_invoke_
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 cancelAlertWithContinueAction:v3];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  v5 = [controller cancelAlertWithContinueAction:v3];
 
   if (v5)
   {
-    v6 = [(PKApplyActionExplanationViewController *)self navigationController];
-    [v6 presentViewController:v5 animated:1 completion:0];
+    navigationController = [(PKApplyActionExplanationViewController *)self navigationController];
+    [navigationController presentViewController:v5 animated:1 completion:0];
   }
 
   else
@@ -175,13 +175,13 @@ uint64_t __61__PKApplyActionExplanationViewController__handleCancelTapped__block
 {
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
   objc_initWeak(&location, self);
-  v3 = [(PKApplyExplanationViewController *)self controller];
+  controller = [(PKApplyExplanationViewController *)self controller];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__PKApplyActionExplanationViewController__withdrawApplicationTapped__block_invoke;
   v4[3] = &unk_1E80162F0;
   objc_copyWeak(&v5, &location);
-  [v3 withdrawApplicationWithCompletion:v4];
+  [controller withdrawApplicationWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -242,17 +242,17 @@ uint64_t __68__PKApplyActionExplanationViewController__withdrawApplicationTapped
 
 - (void)_terminateFlow
 {
-  v3 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKApplyActionExplanationViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyActionExplanationViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

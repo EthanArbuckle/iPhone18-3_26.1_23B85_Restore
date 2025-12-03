@@ -1,18 +1,18 @@
 @interface Internal_ADS_Management_Kernel
-+ (BOOL)IsDeviceWithAOIDConnected:(unsigned int)a3;
-+ (unsigned)ConnectDevice:(id)a3 error:(id *)a4;
++ (BOOL)IsDeviceWithAOIDConnected:(unsigned int)connected;
++ (unsigned)ConnectDevice:(id)device error:(id *)error;
 + (void)DisconnectAllDevices;
-+ (void)DisconnectDeviceByAudioObjectID:(unsigned int)a3 error:(id *)a4;
-+ (void)DisconnectDeviceByUID:(id)a3 error:(id *)a4;
-+ (void)SetPropertyDataPrivileged:(unsigned int)a3 address:(AudioObjectPropertyAddress *)a4 dataSize:(unsigned int)a5 data:(const void *)a6 error:(id *)a7;
-+ (void)SetPropertyDataPrivileged_TypeRef:(unsigned int)a3 address:(AudioObjectPropertyAddress *)a4 data:(void *)a5 error:(id *)a6;
++ (void)DisconnectDeviceByAudioObjectID:(unsigned int)d error:(id *)error;
++ (void)DisconnectDeviceByUID:(id)d error:(id *)error;
++ (void)SetPropertyDataPrivileged:(unsigned int)privileged address:(AudioObjectPropertyAddress *)address dataSize:(unsigned int)size data:(const void *)data error:(id *)error;
++ (void)SetPropertyDataPrivileged_TypeRef:(unsigned int)ref address:(AudioObjectPropertyAddress *)address data:(void *)data error:(id *)error;
 @end
 
 @implementation Internal_ADS_Management_Kernel
 
-+ (void)SetPropertyDataPrivileged_TypeRef:(unsigned int)a3 address:(AudioObjectPropertyAddress *)a4 data:(void *)a5 error:(id *)a6
++ (void)SetPropertyDataPrivileged_TypeRef:(unsigned int)ref address:(AudioObjectPropertyAddress *)address data:(void *)data error:(id *)error
 {
-  cf = a5;
+  cf = data;
   if (cf)
   {
     CFRelease(cf);
@@ -20,23 +20,23 @@
 
   if (v10)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v10 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v10 userInfo:0];
   }
 }
 
-+ (void)SetPropertyDataPrivileged:(unsigned int)a3 address:(AudioObjectPropertyAddress *)a4 dataSize:(unsigned int)a5 data:(const void *)a6 error:(id *)a7
++ (void)SetPropertyDataPrivileged:(unsigned int)privileged address:(AudioObjectPropertyAddress *)address dataSize:(unsigned int)size data:(const void *)data error:(id *)error
 {
   if (v12)
   {
-    *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v12 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v12 userInfo:0];
   }
 }
 
-+ (void)DisconnectDeviceByUID:(id)a3 error:(id *)a4
++ (void)DisconnectDeviceByUID:(id)d error:(id *)error
 {
-  v5 = a3;
-  v6 = [(_anonymous_namespace_ *)v5 UTF8String];
-  v7 = strlen(v6);
+  dCopy = d;
+  uTF8String = [(_anonymous_namespace_ *)dCopy UTF8String];
+  v7 = strlen(uTF8String);
   if (v7 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -51,7 +51,7 @@
   v12 = v7;
   if (v7)
   {
-    memmove(&__dst, v6, v7);
+    memmove(&__dst, uTF8String, v7);
   }
 
   *(&__dst + v8) = 0;
@@ -70,24 +70,24 @@
   if (v10)
   {
 LABEL_11:
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v10 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v10 userInfo:0];
   }
 
 LABEL_12:
 }
 
-+ (void)DisconnectDeviceByAudioObjectID:(unsigned int)a3 error:(id *)a4
++ (void)DisconnectDeviceByAudioObjectID:(unsigned int)d error:(id *)error
 {
   if (v6)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v6 userInfo:0];
   }
 }
 
-+ (unsigned)ConnectDevice:(id)a3 error:(id *)a4
++ (unsigned)ConnectDevice:(id)device error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
+  deviceCopy = device;
+  v6 = deviceCopy;
   v7 = v6;
   if (v6)
   {
@@ -116,7 +116,7 @@ LABEL_12:
   if (v10)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"InCider" code:v10 userInfo:0];
-    *a4 = LODWORD(v13) = 0;
+    *error = LODWORD(v13) = 0;
   }
 
   else
@@ -136,7 +136,7 @@ LABEL_12:
 {
 }
 
-+ (BOOL)IsDeviceWithAOIDConnected:(unsigned int)a3
++ (BOOL)IsDeviceWithAOIDConnected:(unsigned int)connected
 {
 }
 

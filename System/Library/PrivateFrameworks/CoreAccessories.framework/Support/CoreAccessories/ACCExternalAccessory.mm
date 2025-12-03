@@ -1,19 +1,19 @@
 @interface ACCExternalAccessory
-+ (id)accessoryDictionaryForLogging:(id)a3;
++ (id)accessoryDictionaryForLogging:(id)logging;
 + (unsigned)_generateLegacyIAPConnectionID;
-- (ACCExternalAccessory)initWithEndpointUUIDs:(id)a3 primaryEndpointUUID:(id)a4;
-- (id)_nativeUSBEndpointUUIDForProtocolIdentifier:(id)a3 iAP2Endpoint:(id *)a4;
+- (ACCExternalAccessory)initWithEndpointUUIDs:(id)ds primaryEndpointUUID:(id)d;
+- (id)_nativeUSBEndpointUUIDForProtocolIdentifier:(id)identifier iAP2Endpoint:(id *)endpoint;
 - (id)copyExternalAccessoryProtocols;
-- (id)externalAccessoryProtocolInformationForProtocolName:(id)a3;
-- (void)_addAccessoryInfo:(ACCEndpoint_s *)a3;
-- (void)_addEAProtocolPrimaryEndpointInfo:(ACCEndpoint_s *)a3;
-- (void)_addEAProtocolsForEAEndpoints:(id)a3;
-- (void)_addGenericMFiEAProtocols:(id *)a3;
-- (void)_addiAP2AuthInfo:(id *)a3;
-- (void)_addiAP2EAProtocols:(id *)a3;
-- (void)_addiAP2IdentificationInfo:(id *)a3;
-- (void)_addiAP2VehicleInfo:(id *)a3;
-- (void)_constructEADictionary:(id)a3;
+- (id)externalAccessoryProtocolInformationForProtocolName:(id)name;
+- (void)_addAccessoryInfo:(ACCEndpoint_s *)info;
+- (void)_addEAProtocolPrimaryEndpointInfo:(ACCEndpoint_s *)info;
+- (void)_addEAProtocolsForEAEndpoints:(id)endpoints;
+- (void)_addGenericMFiEAProtocols:(id *)protocols;
+- (void)_addiAP2AuthInfo:(id *)info;
+- (void)_addiAP2EAProtocols:(id *)protocols;
+- (void)_addiAP2IdentificationInfo:(id *)info;
+- (void)_addiAP2VehicleInfo:(id *)info;
+- (void)_constructEADictionary:(id)dictionary;
 - (void)copyExternalAccessoryProtocols;
 - (void)updateAccessoryInfo;
 @end
@@ -22,21 +22,21 @@
 
 - (void)updateAccessoryInfo
 {
-  v1 = [a1 EAAccessoryDictionary];
+  eAAccessoryDictionary = [self EAAccessoryDictionary];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
 }
 
-- (id)externalAccessoryProtocolInformationForProtocolName:(id)a3
+- (id)externalAccessoryProtocolInformationForProtocolName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ACCExternalAccessory *)self EAProtocols];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  eAProtocols = [(ACCExternalAccessory *)self EAProtocols];
+  v6 = [eAProtocols countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -47,14 +47,14 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eAProtocols);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if (![v10 caseInsensitiveCompare:v4])
+        if (![v10 caseInsensitiveCompare:nameCopy])
         {
-          v12 = [(ACCExternalAccessory *)self EAProtocols];
-          v11 = [v12 objectForKey:v10];
+          eAProtocols2 = [(ACCExternalAccessory *)self EAProtocols];
+          v11 = [eAProtocols2 objectForKey:v10];
 
           if (gLogObjects && gNumLogObjects >= 10)
           {
@@ -81,7 +81,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [eAProtocols countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -99,9 +99,9 @@ LABEL_19:
 
 - (id)copyExternalAccessoryProtocols
 {
-  v3 = [(ACCExternalAccessory *)self EAProtocols];
-  v4 = [v3 allKeys];
-  v5 = [v4 copy];
+  eAProtocols = [(ACCExternalAccessory *)self EAProtocols];
+  allKeys = [eAProtocols allKeys];
+  v5 = [allKeys copy];
 
   if (gLogObjects)
   {
@@ -137,12 +137,12 @@ LABEL_19:
   return v5;
 }
 
-- (void)_addiAP2AuthInfo:(id *)a3
+- (void)_addiAP2AuthInfo:(id *)info
 {
-  if (iap2_feature_getFeature(a3, 0))
+  if (iap2_feature_getFeature(info, 0))
   {
-    v5 = iap2_accAuthentication_copyCertificate(a3);
-    v6 = iap2_accAuthentication_copyCertificateSerial(a3);
+    v5 = iap2_accAuthentication_copyCertificate(info);
+    v6 = iap2_accAuthentication_copyCertificateSerial(info);
     if (v6)
     {
       v7 = v6;
@@ -168,10 +168,10 @@ LABEL_19:
   self->_EACertSerial = v7;
 }
 
-- (void)_addiAP2EAProtocols:(id *)a3
+- (void)_addiAP2EAProtocols:(id *)protocols
 {
-  v3 = a3;
-  Feature = iap2_feature_getFeature(a3, 0xAu);
+  protocolsCopy = protocols;
+  Feature = iap2_feature_getFeature(protocols, 0xAu);
   if (!Feature)
   {
     return;
@@ -200,7 +200,7 @@ LABEL_19:
   }
 
   v44 = v10;
-  v45 = self;
+  selfCopy = self;
   v46 = 0;
   v12 = 0;
   v50 = kACCExternalAccessoryProtocolIndexKey;
@@ -210,7 +210,7 @@ LABEL_19:
   v47 = kACCExternalAccessoryProtocolEndpointUUIDKey;
   *&v11 = 134218240;
   v43 = v11;
-  v54 = v3;
+  v54 = protocolsCopy;
   v51 = v6;
   do
   {
@@ -224,15 +224,15 @@ LABEL_19:
     [v13 setObject:v17 forKey:v56];
     v18 = [v7[190] stringWithString:*(ValueAtIndex + 1)];
     [obj setObject:v13 forKey:v18];
-    if (v3->var0->var3 != 8)
+    if (protocolsCopy->var0->var3 != 8)
     {
-      var1 = v3->var1;
+      var1 = protocolsCopy->var1;
 LABEL_32:
       v24 = [(__CFString *)var1 copy];
       goto LABEL_33;
     }
 
-    v19 = [(ACCExternalAccessory *)v45 _nativeUSBEndpointUUIDForProtocolIdentifier:v18 iAP2Endpoint:v3];
+    v19 = [(ACCExternalAccessory *)selfCopy _nativeUSBEndpointUUIDForProtocolIdentifier:v18 iAP2Endpoint:protocolsCopy];
     v20 = gLogObjects;
     v21 = gNumLogObjects;
     if (gLogObjects)
@@ -371,13 +371,13 @@ LABEL_46:
 
     ++v12;
     v6 = v51;
-    v3 = v54;
+    protocolsCopy = v54;
     v7 = &kACCExternalAccessoryProtocolFirmwareVersionPendingKey_ptr;
   }
 
   while (Count != v12);
   v10 = v44;
-  self = v45;
+  self = selfCopy;
   if (v46)
   {
     if (gLogObjects && gNumLogObjects >= 10)
@@ -402,7 +402,7 @@ LABEL_46:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "accessory supports public iAP", buf, 2u);
     }
 
-    v45->_eaAccessoryCapabilities |= 1uLL;
+    selfCopy->_eaAccessoryCapabilities |= 1uLL;
     goto LABEL_66;
   }
 
@@ -437,9 +437,9 @@ LABEL_66:
   }
 }
 
-- (void)_addiAP2VehicleInfo:(id *)a3
+- (void)_addiAP2VehicleInfo:(id *)info
 {
-  Feature = iap2_feature_getFeature(a3, 0x14u);
+  Feature = iap2_feature_getFeature(info, 0x14u);
   if (Feature)
   {
     v5 = Feature;
@@ -631,10 +631,10 @@ LABEL_66:
   }
 }
 
-- (id)_nativeUSBEndpointUUIDForProtocolIdentifier:(id)a3 iAP2Endpoint:(id *)a4
+- (id)_nativeUSBEndpointUUIDForProtocolIdentifier:(id)identifier iAP2Endpoint:(id *)endpoint
 {
-  v5 = a3;
-  v6 = acc_manager_copyConnectionUUIDForEndpointUUID(a4->var1);
+  identifierCopy = identifier;
+  v6 = acc_manager_copyConnectionUUIDForEndpointUUID(endpoint->var1);
   ConnectionWithUUID = acc_manager_getConnectionWithUUID(v6);
   v8 = acc_connection_copyEndpointUUIDs(ConnectionWithUUID);
   Count = CFSetGetCount(v8);
@@ -735,7 +735,7 @@ LABEL_66:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Found EANative endpointUUID %@, identifier %@", buf, 0x16u);
       }
 
-      if (![v25 caseInsensitiveCompare:v5])
+      if (![v25 caseInsensitiveCompare:identifierCopy])
       {
         break;
       }
@@ -798,9 +798,9 @@ LABEL_44:
   return v21;
 }
 
-- (void)_addEAProtocolPrimaryEndpointInfo:(ACCEndpoint_s *)a3
+- (void)_addEAProtocolPrimaryEndpointInfo:(ACCEndpoint_s *)info
 {
-  AccessoryInfo = acc_endpoint_getAccessoryInfo(a3);
+  AccessoryInfo = acc_endpoint_getAccessoryInfo(info);
   v6 = AccessoryInfo;
   if (AccessoryInfo && *AccessoryInfo)
   {
@@ -966,9 +966,9 @@ LABEL_21:
   self->_EADockType = &stru_10022D360;
 
   self->_eaAccessoryCapabilities |= 1uLL;
-  if (a3->var0)
+  if (info->var0)
   {
-    v40 = acc_connection_copyProperty(a3->var0, kCFACCProperties_Connection_HideFromUI);
+    v40 = acc_connection_copyProperty(info->var0, kCFACCProperties_Connection_HideFromUI);
   }
 
   else
@@ -986,15 +986,15 @@ LABEL_21:
   }
 }
 
-- (void)_addEAProtocolsForEAEndpoints:(id)a3
+- (void)_addEAProtocolsForEAEndpoints:(id)endpoints
 {
-  v3 = a3;
+  endpointsCopy = endpoints;
   v29 = objc_alloc_init(NSMutableDictionary);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v3;
+  obj = endpointsCopy;
   v4 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v4)
   {
@@ -1066,14 +1066,14 @@ LABEL_21:
   self->_EAProtocols = v29;
 }
 
-- (void)_constructEADictionary:(id)a3
+- (void)_constructEADictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(ACCExternalAccessory *)self EAName];
-  if (v6)
+  eAName = [(ACCExternalAccessory *)self EAName];
+  if (eAName)
   {
-    [v5 setObject:v6 forKey:kACCExternalAccessoryNameKey];
+    [v5 setObject:eAName forKey:kACCExternalAccessoryNameKey];
   }
 
   else
@@ -1082,10 +1082,10 @@ LABEL_21:
     [v5 setObject:v7 forKey:kACCExternalAccessoryNameKey];
   }
 
-  v8 = [(ACCExternalAccessory *)self EAManufacturer];
-  if (v8)
+  eAManufacturer = [(ACCExternalAccessory *)self EAManufacturer];
+  if (eAManufacturer)
   {
-    [v5 setObject:v8 forKey:kACCExternalAccessoryManufacturerKey];
+    [v5 setObject:eAManufacturer forKey:kACCExternalAccessoryManufacturerKey];
   }
 
   else
@@ -1094,10 +1094,10 @@ LABEL_21:
     [v5 setObject:v9 forKey:kACCExternalAccessoryManufacturerKey];
   }
 
-  v10 = [(ACCExternalAccessory *)self EAModelNumber];
-  if (v10)
+  eAModelNumber = [(ACCExternalAccessory *)self EAModelNumber];
+  if (eAModelNumber)
   {
-    [v5 setObject:v10 forKey:kACCExternalAccessoryModelNumberKey];
+    [v5 setObject:eAModelNumber forKey:kACCExternalAccessoryModelNumberKey];
   }
 
   else
@@ -1106,10 +1106,10 @@ LABEL_21:
     [v5 setObject:v11 forKey:kACCExternalAccessoryModelNumberKey];
   }
 
-  v12 = [(ACCExternalAccessory *)self EASerialNumber];
-  if (v12)
+  eASerialNumber = [(ACCExternalAccessory *)self EASerialNumber];
+  if (eASerialNumber)
   {
-    [v5 setObject:v12 forKey:kACCExternalAccessorySerialNumberKey];
+    [v5 setObject:eASerialNumber forKey:kACCExternalAccessorySerialNumberKey];
   }
 
   else
@@ -1118,10 +1118,10 @@ LABEL_21:
     [v5 setObject:v13 forKey:kACCExternalAccessorySerialNumberKey];
   }
 
-  v14 = [(ACCExternalAccessory *)self EAFirmwareRevisionActive];
-  if (v14)
+  eAFirmwareRevisionActive = [(ACCExternalAccessory *)self EAFirmwareRevisionActive];
+  if (eAFirmwareRevisionActive)
   {
-    [v5 setObject:v14 forKey:kACCExternalAccessoryFirmwareRevisionActiveKey];
+    [v5 setObject:eAFirmwareRevisionActive forKey:kACCExternalAccessoryFirmwareRevisionActiveKey];
   }
 
   else
@@ -1130,10 +1130,10 @@ LABEL_21:
     [v5 setObject:v15 forKey:kACCExternalAccessoryFirmwareRevisionActiveKey];
   }
 
-  v16 = [(ACCExternalAccessory *)self EAFirmwareRevisionPending];
-  if (v16)
+  eAFirmwareRevisionPending = [(ACCExternalAccessory *)self EAFirmwareRevisionPending];
+  if (eAFirmwareRevisionPending)
   {
-    [v5 setObject:v16 forKey:kACCExternalAccessoryFirmwareRevisionPendingKey];
+    [v5 setObject:eAFirmwareRevisionPending forKey:kACCExternalAccessoryFirmwareRevisionPendingKey];
   }
 
   else
@@ -1142,10 +1142,10 @@ LABEL_21:
     [v5 setObject:v17 forKey:kACCExternalAccessoryFirmwareRevisionPendingKey];
   }
 
-  v18 = [(ACCExternalAccessory *)self EAHardwareRevision];
-  if (v18)
+  eAHardwareRevision = [(ACCExternalAccessory *)self EAHardwareRevision];
+  if (eAHardwareRevision)
   {
-    [v5 setObject:v18 forKey:kACCExternalAccessoryHardwareRevisionKey];
+    [v5 setObject:eAHardwareRevision forKey:kACCExternalAccessoryHardwareRevisionKey];
   }
 
   else
@@ -1154,10 +1154,10 @@ LABEL_21:
     [v5 setObject:v19 forKey:kACCExternalAccessoryHardwareRevisionKey];
   }
 
-  v20 = [(ACCExternalAccessory *)self EAPPID];
-  if (v20)
+  eAPPID = [(ACCExternalAccessory *)self EAPPID];
+  if (eAPPID)
   {
-    [v5 setObject:v20 forKey:kACCExternalAccessoryPPIDKey];
+    [v5 setObject:eAPPID forKey:kACCExternalAccessoryPPIDKey];
   }
 
   else
@@ -1166,10 +1166,10 @@ LABEL_21:
     [v5 setObject:v21 forKey:kACCExternalAccessoryPPIDKey];
   }
 
-  v22 = [(ACCExternalAccessory *)self EARegionCode];
-  if (v22)
+  eARegionCode = [(ACCExternalAccessory *)self EARegionCode];
+  if (eARegionCode)
   {
-    [v5 setObject:v22 forKey:kACCExternalAccessoryRegionCodeKey];
+    [v5 setObject:eARegionCode forKey:kACCExternalAccessoryRegionCodeKey];
   }
 
   else
@@ -1178,10 +1178,10 @@ LABEL_21:
     [v5 setObject:v23 forKey:kACCExternalAccessoryRegionCodeKey];
   }
 
-  v24 = [(ACCExternalAccessory *)self EAVendorID];
-  if (v24)
+  eAVendorID = [(ACCExternalAccessory *)self EAVendorID];
+  if (eAVendorID)
   {
-    [v5 setObject:v24 forKey:kACCExternalAccessoryVendorIDKey];
+    [v5 setObject:eAVendorID forKey:kACCExternalAccessoryVendorIDKey];
   }
 
   else
@@ -1190,10 +1190,10 @@ LABEL_21:
     [v5 setObject:v25 forKey:kACCExternalAccessoryVendorIDKey];
   }
 
-  v26 = [(ACCExternalAccessory *)self EAProductID];
-  if (v26)
+  eAProductID = [(ACCExternalAccessory *)self EAProductID];
+  if (eAProductID)
   {
-    [v5 setObject:v26 forKey:kACCExternalAccessoryProductIDKey];
+    [v5 setObject:eAProductID forKey:kACCExternalAccessoryProductIDKey];
   }
 
   else
@@ -1202,10 +1202,10 @@ LABEL_21:
     [v5 setObject:v27 forKey:kACCExternalAccessoryProductIDKey];
   }
 
-  v28 = [(ACCExternalAccessory *)self EADockType];
-  if (v28)
+  eADockType = [(ACCExternalAccessory *)self EADockType];
+  if (eADockType)
   {
-    [v5 setObject:v28 forKey:kACCExternalAccessoryDockTypeKey];
+    [v5 setObject:eADockType forKey:kACCExternalAccessoryDockTypeKey];
   }
 
   else
@@ -1214,10 +1214,10 @@ LABEL_21:
     [v5 setObject:v29 forKey:kACCExternalAccessoryDockTypeKey];
   }
 
-  v30 = [(ACCExternalAccessory *)self EATransportType];
-  if (v30)
+  eATransportType = [(ACCExternalAccessory *)self EATransportType];
+  if (eATransportType)
   {
-    [v5 setObject:v30 forKey:kACCExternalAccessoryTransportType];
+    [v5 setObject:eATransportType forKey:kACCExternalAccessoryTransportType];
   }
 
   else
@@ -1226,10 +1226,10 @@ LABEL_21:
     [v5 setObject:v31 forKey:kACCExternalAccessoryTransportType];
   }
 
-  v32 = [(ACCExternalAccessory *)self primaryEndpointUUID];
-  if (v32)
+  primaryEndpointUUID = [(ACCExternalAccessory *)self primaryEndpointUUID];
+  if (primaryEndpointUUID)
   {
-    [v5 setObject:v32 forKey:kACCExternalAccessoryPrimaryUUID];
+    [v5 setObject:primaryEndpointUUID forKey:kACCExternalAccessoryPrimaryUUID];
   }
 
   else
@@ -1241,20 +1241,20 @@ LABEL_21:
   v34 = [NSNumber numberWithUnsignedLongLong:self->_eaAccessoryCapabilities];
   [v5 setObject:v34 forKey:kACCExternalAccessoryCapabilitiesKey];
 
-  v35 = [(ACCExternalAccessory *)self EACertSerial];
+  eACertSerial = [(ACCExternalAccessory *)self EACertSerial];
 
-  if (v35)
+  if (eACertSerial)
   {
-    v36 = [(ACCExternalAccessory *)self EACertSerial];
-    [v5 setObject:v36 forKey:kACCExternalAccessoryCertSerialNumberKey];
+    eACertSerial2 = [(ACCExternalAccessory *)self EACertSerial];
+    [v5 setObject:eACertSerial2 forKey:kACCExternalAccessoryCertSerialNumberKey];
   }
 
-  v37 = [(ACCExternalAccessory *)self EACertData];
+  eACertData = [(ACCExternalAccessory *)self EACertData];
 
-  if (v37)
+  if (eACertData)
   {
-    v38 = [(ACCExternalAccessory *)self EACertData];
-    [v5 setObject:v38 forKey:kACCExternalAccessoryCertDataKey];
+    eACertData2 = [(ACCExternalAccessory *)self EACertData];
+    [v5 setObject:eACertData2 forKey:kACCExternalAccessoryCertDataKey];
   }
 
   if ([(ACCExternalAccessory *)self isMFiCharger])
@@ -1265,8 +1265,8 @@ LABEL_21:
 
   if (self->_EAMACAddress)
   {
-    v40 = [(ACCExternalAccessory *)self EAMACAddress];
-    [v5 setObject:v40 forKey:kACCExternalAccessoryMacAddressKey];
+    eAMACAddress = [(ACCExternalAccessory *)self EAMACAddress];
+    [v5 setObject:eAMACAddress forKey:kACCExternalAccessoryMacAddressKey];
   }
 
   eaAccessoryCapabilities = self->_eaAccessoryCapabilities;
@@ -1307,7 +1307,7 @@ LABEL_21:
       v46 = &_os_log_default;
     }
 
-    v73 = v4;
+    v73 = dictionaryCopy;
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
       [ACCExternalAccessory _constructEADictionary:?];
@@ -1318,8 +1318,8 @@ LABEL_21:
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v48 = [(ACCExternalAccessory *)self EAProtocols];
-    v49 = [v48 countByEnumeratingWithState:&v75 objects:v79 count:16];
+    eAProtocols = [(ACCExternalAccessory *)self EAProtocols];
+    v49 = [eAProtocols countByEnumeratingWithState:&v75 objects:v79 count:16];
     if (v49)
     {
       v50 = v49;
@@ -1331,7 +1331,7 @@ LABEL_21:
         {
           if (*v76 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(eAProtocols);
           }
 
           v54 = *(*(&v75 + 1) + 8 * i);
@@ -1346,7 +1346,7 @@ LABEL_21:
           [v47 setObject:v57 forKey:v54];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v75 objects:v79 count:16];
+        v50 = [eAProtocols countByEnumeratingWithState:&v75 objects:v79 count:16];
       }
 
       while (v50);
@@ -1368,7 +1368,7 @@ LABEL_21:
       v60 = &_os_log_default;
     }
 
-    v4 = v73;
+    dictionaryCopy = v73;
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
     {
       [ACCExternalAccessory _constructEADictionary:];
@@ -1402,8 +1402,8 @@ LABEL_21:
 
   if (self->_EAPreferredApp)
   {
-    v63 = [(ACCExternalAccessory *)self EAPreferredApp];
-    v64 = [v63 copy];
+    eAPreferredApp = [(ACCExternalAccessory *)self EAPreferredApp];
+    v64 = [eAPreferredApp copy];
     [v5 setObject:v64 forKey:kACCExternalAccessoryPreferredAppKey];
   }
 
@@ -1417,8 +1417,8 @@ LABEL_21:
   EAConnectionID = self->_EAConnectionID;
   self->_EAConnectionID = v66;
 
-  v68 = [(ACCExternalAccessory *)self EAConnectionID];
-  v69 = [v68 copy];
+  eAConnectionID = [(ACCExternalAccessory *)self EAConnectionID];
+  v69 = [eAConnectionID copy];
   [v5 setObject:v69 forKey:kACCExternalAccessoryLegacyConnectionIDKey];
 
   objc_storeStrong(&self->_EAAccessoryDictionary, v5);
@@ -1466,9 +1466,9 @@ LABEL_21:
   return result;
 }
 
-+ (id)accessoryDictionaryForLogging:(id)a3
++ (id)accessoryDictionaryForLogging:(id)logging
 {
-  v3 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:logging];
   v4 = kACCExternalAccessoryCertDataKey;
   v5 = [v3 objectForKey:kACCExternalAccessoryCertDataKey];
 
@@ -1496,30 +1496,30 @@ LABEL_21:
   return v3;
 }
 
-- (ACCExternalAccessory)initWithEndpointUUIDs:(id)a3 primaryEndpointUUID:(id)a4
+- (ACCExternalAccessory)initWithEndpointUUIDs:(id)ds primaryEndpointUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  dCopy = d;
   v35.receiver = self;
   v35.super_class = ACCExternalAccessory;
   v8 = [(ACCExternalAccessory *)&v35 init];
   if (v8)
   {
-    v9 = [v6 count];
-    if (v7 || v9)
+    v9 = [dsCopy count];
+    if (dCopy || v9)
     {
-      v10 = [v6 copy];
+      v10 = [dsCopy copy];
       v11 = *(v8 + 4);
       *(v8 + 4) = v10;
 
-      if (v7)
+      if (dCopy)
       {
-        v12 = v7;
+        v12 = dCopy;
       }
 
       else
       {
-        v12 = [v6 objectAtIndex:0];
+        v12 = [dsCopy objectAtIndex:0];
       }
 
       v13 = *(v8 + 3);
@@ -1636,11 +1636,11 @@ LABEL_21:
   return v8;
 }
 
-- (void)_addAccessoryInfo:(ACCEndpoint_s *)a3
+- (void)_addAccessoryInfo:(ACCEndpoint_s *)info
 {
-  if (a3)
+  if (info)
   {
-    AccessoryInfo = acc_endpoint_getAccessoryInfo(a3);
+    AccessoryInfo = acc_endpoint_getAccessoryInfo(info);
     v6 = AccessoryInfo;
     if (AccessoryInfo && *AccessoryInfo)
     {
@@ -1692,7 +1692,7 @@ LABEL_20:
               v16 = 0;
 LABEL_22:
               v17 = v16;
-              v18 = acc_endpoint_copyProperties(a3);
+              v18 = acc_endpoint_copyProperties(info);
               if (v18)
               {
                 v19 = v18;
@@ -1784,9 +1784,9 @@ LABEL_22:
               EADockType = self->_EADockType;
               self->_EADockType = v41;
 
-              if (a3->var0)
+              if (info->var0)
               {
-                v43 = acc_connection_copyProperty(a3->var0, kCFACCProperties_Connection_HideFromUI);
+                v43 = acc_connection_copyProperty(info->var0, kCFACCProperties_Connection_HideFromUI);
               }
 
               else
@@ -1931,9 +1931,9 @@ LABEL_8:
   }
 }
 
-- (void)_addiAP2IdentificationInfo:(id *)a3
+- (void)_addiAP2IdentificationInfo:(id *)info
 {
-  if (!a3)
+  if (!info)
   {
     return;
   }
@@ -1975,32 +1975,32 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Adding iAP2 identification info...", v21, 2u);
   }
 
-  if ((iap2_identification_isIdentifiedForFeature(a3) & 1) != 0 || iap2_identification_isIdentifiedForFeature(a3))
+  if ((iap2_identification_isIdentifiedForFeature(info) & 1) != 0 || iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 2uLL;
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 0x20000uLL;
   }
 
-  if (iap2_identification_isIdentifiedForCarPlay(a3))
+  if (iap2_identification_isIdentifiedForCarPlay(info))
   {
     self->_eaAccessoryCapabilities |= 0x400uLL;
   }
 
-  if (iap2_identification_isIdentifiedForWirelessCarPlay(a3))
+  if (iap2_identification_isIdentifiedForWirelessCarPlay(info))
   {
     self->_eaAccessoryCapabilities |= 0x1000uLL;
   }
 
-  if (iap2_identification_isIdentifiedForUSBCarPlay(a3))
+  if (iap2_identification_isIdentifiedForUSBCarPlay(info))
   {
     self->_eaAccessoryCapabilities |= 0x4000uLL;
   }
 
-  isIdentifiedForIncomingMessageID = iap2_identification_isIdentifiedForIncomingMessageID(a3, 59907);
+  isIdentifiedForIncomingMessageID = iap2_identification_isIdentifiedForIncomingMessageID(info, 59907);
   eaAccessoryCapabilities = self->_eaAccessoryCapabilities;
   if (isIdentifiedForIncomingMessageID)
   {
@@ -2016,7 +2016,7 @@ LABEL_26:
   }
 
 LABEL_27:
-  isIdentifiedForThemeAssets = iap2_identification_isIdentifiedForThemeAssets(a3);
+  isIdentifiedForThemeAssets = iap2_identification_isIdentifiedForThemeAssets(info);
   v18 = self->_eaAccessoryCapabilities;
   if (isIdentifiedForThemeAssets)
   {
@@ -2030,17 +2030,17 @@ LABEL_27:
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.carkit.carplay-attached", 0, 0, 1u);
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 8uLL;
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 0x2000uLL;
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     v20 = self->_eaAccessoryCapabilities;
     if ((v20 & 0x400) != 0)
@@ -2049,25 +2049,25 @@ LABEL_27:
     }
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 0x80000uLL;
   }
 
-  if (iap2_identification_isIdentifiedForFeature(a3))
+  if (iap2_identification_isIdentifiedForFeature(info))
   {
     self->_eaAccessoryCapabilities |= 0x100000uLL;
   }
 
-  [(ACCExternalAccessory *)self _addiAP2VehicleInfo:a3];
+  [(ACCExternalAccessory *)self _addiAP2VehicleInfo:info];
 }
 
-- (void)_addGenericMFiEAProtocols:(id *)a3
+- (void)_addGenericMFiEAProtocols:(id *)protocols
 {
-  if (a3)
+  if (protocols)
   {
-    var0 = a3->var0;
-    if (a3->var0)
+    var0 = protocols->var0;
+    if (protocols->var0)
     {
       if (*var0)
       {
@@ -2078,7 +2078,7 @@ LABEL_27:
           v12 = logObjectForModule_27();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            var1 = a3->var1;
+            var1 = protocols->var1;
             *buf = 136315906;
             v53 = "[ACCExternalAccessory _addGenericMFiEAProtocols:]";
             v54 = 1024;
@@ -2093,12 +2093,12 @@ LABEL_27:
           goto LABEL_47;
         }
 
-        var8 = a3->var8;
+        var8 = protocols->var8;
         if (var8)
         {
           if (CFArrayGetCount(var8))
           {
-            ValueAtIndex = CFArrayGetValueAtIndex(a3->var8, 0);
+            ValueAtIndex = CFArrayGetValueAtIndex(protocols->var8, 0);
             if (ValueAtIndex)
             {
               Copy = CFStringCreateCopy(kCFAllocatorDefault, ValueAtIndex);
@@ -2108,7 +2108,7 @@ LABEL_27:
           }
         }
 
-        var9 = a3->var9;
+        var9 = protocols->var9;
         if (var9)
         {
           if (CFArrayGetCount(var9))
@@ -2116,7 +2116,7 @@ LABEL_27:
             v12 = +[NSMutableDictionary dictionary];
             v45 = objc_alloc_init(NSMutableDictionary);
             v13 = +[NSMutableArray array];
-            v14 = CFArrayCreateCopy(kCFAllocatorDefault, a3->var9);
+            v14 = CFArrayCreateCopy(kCFAllocatorDefault, protocols->var9);
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
@@ -2132,7 +2132,7 @@ LABEL_27:
             v17 = v16;
             v37 = v13;
             obj = v15;
-            v36 = self;
+            selfCopy = self;
             LODWORD(v18) = 0;
             v39 = 0;
             v44 = *v48;
@@ -2156,21 +2156,21 @@ LABEL_27:
                 [v12 setObject:v21 forKey:v43];
                 v22 = [NSNumber numberWithUnsignedInteger:v18];
                 [v12 setObject:v22 forKey:v42];
-                v23 = [(__CFString *)a3->var1 copy];
+                v23 = [(__CFString *)protocols->var1 copy];
                 [v12 setObject:v23 forKey:v41];
                 v24 = [NSNumber numberWithUnsignedInt:3];
                 [v12 setObject:v24 forKey:v40];
                 v25 = [v20 objectForKey:@"ProtocolString"];
                 [v45 setObject:v12 forKey:v25];
-                v26 = [v21 intValue];
-                if (v26 == 3)
+                intValue = [v21 intValue];
+                if (intValue == 3)
                 {
                   goto LABEL_20;
                 }
 
-                if (v26 != 2)
+                if (intValue != 2)
                 {
-                  if (v26 != 1)
+                  if (intValue != 1)
                   {
                     goto LABEL_22;
                   }
@@ -2192,7 +2192,7 @@ LABEL_22:
               {
                 v15 = obj;
 
-                self = v36;
+                self = selfCopy;
                 v13 = v37;
                 if (v39)
                 {
@@ -2219,7 +2219,7 @@ LABEL_22:
                     OUTLINED_FUNCTION_7_19(&_mh_execute_header, v33, v34, "accessory supports public iAP");
                   }
 
-                  v36->_eaAccessoryCapabilities |= 1uLL;
+                  selfCopy->_eaAccessoryCapabilities |= 1uLL;
                   goto LABEL_44;
                 }
 
@@ -2275,7 +2275,7 @@ LABEL_47:
 
 - (void)copyExternalAccessoryProtocols
 {
-  v1 = [a1 EAName];
+  eAName = [self EAName];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);

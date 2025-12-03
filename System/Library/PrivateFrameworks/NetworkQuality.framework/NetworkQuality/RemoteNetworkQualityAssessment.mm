@@ -1,16 +1,16 @@
 @interface RemoteNetworkQualityAssessment
-- (RemoteNetworkQualityAssessment)initWithConfiguration:(id)a3;
-- (void)getAvailableServersForDevice:(id)a3 withCompletionHandler:(id)a4;
-- (void)rapportDiscoveryCompletionWithClient:(id)a3 deviceName:(id)a4;
-- (void)rapportDiscoveryCompletionWithClient:(id)a3 deviceName:(id)a4 completionHandler:(id)a5;
-- (void)rapportInvokeCompletionWithClient:(id)a3 deviceIdentifier:(id)a4;
-- (void)rapportQueryCompletionWithClient:(id)a3 deviceIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)runAgainst:(id)a3 withCompletionHandler:(id)a4;
+- (RemoteNetworkQualityAssessment)initWithConfiguration:(id)configuration;
+- (void)getAvailableServersForDevice:(id)device withCompletionHandler:(id)handler;
+- (void)rapportDiscoveryCompletionWithClient:(id)client deviceName:(id)name;
+- (void)rapportDiscoveryCompletionWithClient:(id)client deviceName:(id)name completionHandler:(id)handler;
+- (void)rapportInvokeCompletionWithClient:(id)client deviceIdentifier:(id)identifier;
+- (void)rapportQueryCompletionWithClient:(id)client deviceIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)runAgainst:(id)against withCompletionHandler:(id)handler;
 @end
 
 @implementation RemoteNetworkQualityAssessment
 
-- (RemoteNetworkQualityAssessment)initWithConfiguration:(id)a3
+- (RemoteNetworkQualityAssessment)initWithConfiguration:(id)configuration
 {
   if (objc_opt_class())
   {
@@ -19,7 +19,7 @@
     v5 = [(RemoteNetworkQualityAssessment *)&v12 init];
     if (v5)
     {
-      if (a3)
+      if (configuration)
       {
         v6 = objc_alloc_init(NetworkQualityConfiguration);
       }
@@ -38,27 +38,27 @@
     }
 
     self = v5;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)rapportDiscoveryCompletionWithClient:(id)a3 deviceName:(id)a4
+- (void)rapportDiscoveryCompletionWithClient:(id)client deviceName:(id)name
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [a3 activeDevices];
-  v8 = [v7 countByEnumeratingWithState:&v32 objects:v48 count:16];
+  activeDevices = [client activeDevices];
+  v8 = [activeDevices countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v8)
   {
     v9 = v8;
@@ -69,12 +69,12 @@
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(activeDevices);
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v6];
+        name = [v12 name];
+        v14 = [name isEqualToString:nameCopy];
 
         if (v14)
         {
@@ -83,22 +83,22 @@
           if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
           {
             log = v19;
-            v20 = [v12 identifier];
-            v21 = [v20 UTF8String];
-            v22 = [v12 name];
-            v23 = [v22 UTF8String];
-            v24 = [v12 model];
-            v25 = [v24 UTF8String];
+            identifier = [v12 identifier];
+            uTF8String = [identifier UTF8String];
+            name2 = [v12 name];
+            uTF8String2 = [name2 UTF8String];
+            model = [v12 model];
+            uTF8String3 = [model UTF8String];
             *buf = 136316162;
             v39 = "[RemoteNetworkQualityAssessment rapportDiscoveryCompletionWithClient:deviceName:]";
             v40 = 1024;
             v41 = 51;
             v42 = 2080;
-            v43 = v21;
+            v43 = uTF8String;
             v44 = 2080;
-            v45 = v23;
+            v45 = uTF8String2;
             v46 = 2080;
-            v47 = v25;
+            v47 = uTF8String3;
             _os_log_impl(&dword_25B962000, log, OS_LOG_TYPE_DEFAULT, "%s:%u - Found ID=%s name=%s model=%s\n", buf, 0x30u);
           }
 
@@ -120,7 +120,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v32 objects:v48 count:16];
+      v9 = [activeDevices countByEnumeratingWithState:&v32 objects:v48 count:16];
       if (v9)
       {
         continue;
@@ -130,7 +130,7 @@
     }
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to find the device %@", v6];
+  activeDevices = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to find the device %@", nameCopy];
   netqual_log_init();
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
   {
@@ -140,7 +140,7 @@
   completionHandler = self->completionHandler;
   v16 = MEMORY[0x277CCA9B8];
   v36 = *MEMORY[0x277CCA450];
-  v37 = v7;
+  v37 = activeDevices;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v18 = [v16 errorWithDomain:@"NetworkQualityErrorDomain" code:1009 userInfo:v17];
   completionHandler[2](completionHandler, 0, v18);
@@ -167,11 +167,11 @@ void __82__RemoteNetworkQualityAssessment_rapportDiscoveryCompletionWithClient_d
   }
 }
 
-- (void)rapportInvokeCompletionWithClient:(id)a3 deviceIdentifier:(id)a4
+- (void)rapportInvokeCompletionWithClient:(id)client deviceIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   config = self->config;
   v14 = 0;
   v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:config requiringSecureCoding:1 error:&v14];
@@ -191,7 +191,7 @@ void __82__RemoteNetworkQualityAssessment_rapportDiscoveryCompletionWithClient_d
     v13[2] = __85__RemoteNetworkQualityAssessment_rapportInvokeCompletionWithClient_deviceIdentifier___block_invoke;
     v13[3] = &unk_2799698D0;
     v13[4] = self;
-    [v6 sendRequestID:@"com.apple.networkquality.invoke" request:v11 destinationID:v7 options:0 responseHandler:v13];
+    [clientCopy sendRequestID:@"com.apple.networkquality.invoke" request:v11 destinationID:identifierCopy options:0 responseHandler:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -284,10 +284,10 @@ void __85__RemoteNetworkQualityAssessment_rapportInvokeCompletionWithClient_devi
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAgainst:(id)a3 withCompletionHandler:(id)a4
+- (void)runAgainst:(id)against withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x25F873620](a4);
+  againstCopy = against;
+  v7 = MEMORY[0x25F873620](handler);
   completionHandler = self->completionHandler;
   self->completionHandler = v7;
 
@@ -300,8 +300,8 @@ void __85__RemoteNetworkQualityAssessment_rapportInvokeCompletionWithClient_devi
   v12[3] = &unk_2799698A8;
   v12[4] = self;
   v13 = v9;
-  v14 = v6;
-  v10 = v6;
+  v14 = againstCopy;
+  v10 = againstCopy;
   v11 = v9;
   [v11 activateWithCompletion:v12];
 }
@@ -320,16 +320,16 @@ uint64_t __67__RemoteNetworkQualityAssessment_runAgainst_withCompletionHandler__
   }
 }
 
-- (void)rapportQueryCompletionWithClient:(id)a3 deviceIdentifier:(id)a4 completionHandler:(id)a5
+- (void)rapportQueryCompletionWithClient:(id)client deviceIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_deviceIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_2799698F8;
-  v10 = v7;
-  v8 = v7;
-  [a3 sendRequestID:@"com.apple.networkquality.query" request:MEMORY[0x277CBEC10] destinationID:a4 options:0 responseHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [client sendRequestID:@"com.apple.networkquality.query" request:MEMORY[0x277CBEC10] destinationID:identifier options:0 responseHandler:v9];
 }
 
 void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_deviceIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -371,17 +371,17 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rapportDiscoveryCompletionWithClient:(id)a3 deviceName:(id)a4 completionHandler:(id)a5
+- (void)rapportDiscoveryCompletionWithClient:(id)client deviceName:(id)name completionHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  handlerCopy = handler;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = [a3 activeDevices];
-  v11 = [v10 countByEnumeratingWithState:&v37 objects:v53 count:16];
+  activeDevices = [client activeDevices];
+  v11 = [activeDevices countByEnumeratingWithState:&v37 objects:v53 count:16];
   if (v11)
   {
     v12 = v11;
@@ -392,12 +392,12 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
       {
         if (*v38 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeDevices);
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 name];
-        v17 = [v16 isEqualToString:v8];
+        name = [v15 name];
+        v17 = [name isEqualToString:nameCopy];
 
         if (v17)
         {
@@ -406,26 +406,26 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
           if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
           {
             log = v21;
-            v22 = [v15 identifier];
-            v23 = [v22 UTF8String];
-            v24 = [v15 name];
-            v25 = v9;
-            v26 = self;
-            v27 = [v24 UTF8String];
-            v28 = [v15 model];
-            v29 = [v28 UTF8String];
+            identifier = [v15 identifier];
+            uTF8String = [identifier UTF8String];
+            name2 = [v15 name];
+            v25 = handlerCopy;
+            selfCopy = self;
+            uTF8String2 = [name2 UTF8String];
+            model = [v15 model];
+            uTF8String3 = [model UTF8String];
             *buf = 136316162;
             v44 = "[RemoteNetworkQualityAssessment rapportDiscoveryCompletionWithClient:deviceName:completionHandler:]";
             v45 = 1024;
             v46 = 198;
             v47 = 2080;
-            v48 = v23;
+            v48 = uTF8String;
             v49 = 2080;
-            v50 = v27;
-            self = v26;
-            v9 = v25;
+            v50 = uTF8String2;
+            self = selfCopy;
+            handlerCopy = v25;
             v51 = 2080;
-            v52 = v29;
+            v52 = uTF8String3;
             _os_log_impl(&dword_25B962000, log, OS_LOG_TYPE_DEFAULT, "%s:%u - Found ID=%s name=%s model=%s\n", buf, 0x30u);
           }
 
@@ -440,7 +440,7 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
           v33[4] = self;
           v34 = v30;
           v35 = v15;
-          v36 = v9;
+          v36 = handlerCopy;
           v19 = v30;
           [v19 activateWithCompletion:v33];
 
@@ -449,7 +449,7 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v37 objects:v53 count:16];
+      v12 = [activeDevices countByEnumeratingWithState:&v37 objects:v53 count:16];
       if (v12)
       {
         continue;
@@ -459,7 +459,7 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
     }
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to find the device %@", v8];
+  activeDevices = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to find the device %@", nameCopy];
   netqual_log_init();
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
   {
@@ -468,10 +468,10 @@ void __102__RemoteNetworkQualityAssessment_rapportQueryCompletionWithClient_devi
 
   v18 = MEMORY[0x277CCA9B8];
   v41 = *MEMORY[0x277CCA450];
-  v42 = v10;
+  v42 = activeDevices;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
   v20 = [v18 errorWithDomain:@"NetworkQualityErrorDomain" code:1009 userInfo:v19];
-  (*(v9 + 2))(v9, 0, v20);
+  (*(handlerCopy + 2))(handlerCopy, 0, v20);
 LABEL_15:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -496,10 +496,10 @@ void __100__RemoteNetworkQualityAssessment_rapportDiscoveryCompletionWithClient_
   }
 }
 
-- (void)getAvailableServersForDevice:(id)a3 withCompletionHandler:(id)a4
+- (void)getAvailableServersForDevice:(id)device withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277D44158]);
   [v8 setDispatchQueue:self->dispatchQueue];
   [v8 setServiceType:@"com.apple.networkquality.query"];
@@ -509,11 +509,11 @@ void __100__RemoteNetworkQualityAssessment_rapportDiscoveryCompletionWithClient_
   v12[3] = &unk_279969920;
   v12[4] = self;
   v13 = v8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v6;
+  v14 = deviceCopy;
+  v15 = handlerCopy;
+  v9 = deviceCopy;
   v10 = v8;
-  v11 = v7;
+  v11 = handlerCopy;
   [v10 activateWithCompletion:v12];
 }
 

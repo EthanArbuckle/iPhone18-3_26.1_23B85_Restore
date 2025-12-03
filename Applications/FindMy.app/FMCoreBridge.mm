@@ -1,14 +1,14 @@
 @interface FMCoreBridge
-+ (id)displayNameFor:(id)a3;
++ (id)displayNameFor:(id)for;
 - (_TtC6FindMy12FMCoreBridge)init;
 @end
 
 @implementation FMCoreBridge
 
-+ (id)displayNameFor:(id)a3
++ (id)displayNameFor:(id)for
 {
   type metadata accessor for FMFCoreHelper();
-  v4 = a3;
+  forCopy = for;
   static FMFCoreHelper.displayName(for:)();
 
   v5 = String._bridgeToObjectiveC()();

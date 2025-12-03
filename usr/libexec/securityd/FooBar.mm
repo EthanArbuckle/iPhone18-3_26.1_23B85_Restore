@@ -1,6 +1,6 @@
 @interface FooBar
 - (FooBar)init;
-- (FooBar)initWithFoo:(id)a3 withBar:(id)a4;
+- (FooBar)initWithFoo:(id)foo withBar:(id)bar;
 - (void)printFooBar;
 @end
 
@@ -13,18 +13,18 @@
   NSLog(@"Foo: %@ Bar: %@", v4, v3);
 }
 
-- (FooBar)initWithFoo:(id)a3 withBar:(id)a4
+- (FooBar)initWithFoo:(id)foo withBar:(id)bar
 {
-  v6 = a3;
-  v7 = a4;
+  fooCopy = foo;
+  barCopy = bar;
   v11.receiver = self;
   v11.super_class = FooBar;
   v8 = [(FooBar *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(FooBar *)v8 setFoo:v6];
-    [(FooBar *)v9 setBar:v7];
+    [(FooBar *)v8 setFoo:fooCopy];
+    [(FooBar *)v9 setBar:barCopy];
   }
 
   else

@@ -4,9 +4,9 @@
 - (id)credentials;
 - (id)nextCredentialToProvision;
 - (unint64_t)remaining;
-- (void)removeCredential:(id)a3;
-- (void)setCredentialsToProvision:(id)a3;
-- (void)setCurrentCredential:(id)a3;
+- (void)removeCredential:(id)credential;
+- (void)setCredentialsToProvision:(id)provision;
+- (void)setCurrentCredential:(id)credential;
 @end
 
 @implementation PKPaymentProvisioningControllerCredentialQueue
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (void)setCredentialsToProvision:(id)a3
+- (void)setCredentialsToProvision:(id)provision
 {
   self->_currentIndex = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = [a3 mutableCopy];
+  v4 = [provision mutableCopy];
   credentials = self->_credentials;
   self->_credentials = v4;
 
@@ -40,20 +40,20 @@
   [(NSMutableArray *)completedCredentials removeAllObjects];
 }
 
-- (void)removeCredential:(id)a3
+- (void)removeCredential:(id)credential
 {
-  v4 = a3;
-  if (v4)
+  credentialCopy = credential;
+  if (credentialCopy)
   {
-    v11 = v4;
-    v5 = [(NSMutableArray *)self->_credentials indexOfObject:v4];
-    v4 = v11;
+    v11 = credentialCopy;
+    v5 = [(NSMutableArray *)self->_credentials indexOfObject:credentialCopy];
+    credentialCopy = v11;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
       [(NSMutableArray *)self->_completedCredentials addObject:v11];
       [(NSMutableArray *)self->_credentials removeObjectAtIndex:v6];
-      v4 = v11;
+      credentialCopy = v11;
       currentIndex = self->_currentIndex;
       if (currentIndex != 0x7FFFFFFFFFFFFFFFLL && v6 <= currentIndex)
       {
@@ -95,9 +95,9 @@
   return v6;
 }
 
-- (void)setCurrentCredential:(id)a3
+- (void)setCurrentCredential:(id)credential
 {
-  if (a3)
+  if (credential)
   {
     v4 = [(NSMutableArray *)self->_credentials indexOfObject:?];
   }

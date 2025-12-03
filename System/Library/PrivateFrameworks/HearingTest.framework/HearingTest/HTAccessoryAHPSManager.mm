@@ -1,63 +1,63 @@
 @interface HTAccessoryAHPSManager
 - (_TtC11HearingTest22HTAccessoryAHPSManager)init;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation HTAccessoryAHPSManager
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_252101440(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_252101440(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_25210BC8C(v7);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_25210BC8C(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_25210CEC4(v9);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25210CEC4(peripheralCopy);
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_25210D89C(v8, v9);
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25210D89C(peripheralCopy, characteristicCopy);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_25210F044(v6);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  servicesCopy = services;
+  sub_25210F044(peripheralCopy);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_25210F6BC(v8, v9);
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  selfCopy = self;
+  errorCopy = error;
+  sub_25210F6BC(peripheralCopy, serviceCopy);
 }
 
 - (_TtC11HearingTest22HTAccessoryAHPSManager)init

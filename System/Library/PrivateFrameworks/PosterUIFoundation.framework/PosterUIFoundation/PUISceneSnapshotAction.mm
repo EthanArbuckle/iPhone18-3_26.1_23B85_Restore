@@ -1,33 +1,33 @@
 @interface PUISceneSnapshotAction
 - (PUIPosterSnapshotDescriptor)snapshotDescriptor;
 - (PUIPosterSnapshotDestinationFinalizer)destinationFinalizer;
-- (PUISceneSnapshotAction)initWithInfo:(id)a3 responder:(id)a4;
-- (PUISceneSnapshotAction)initWithSnapshotDescriptor:(id)a3 destination:(id)a4 responder:(id)a5;
-- (id)respondWithSnapshotBundle:(id)a3;
-- (void)respondWithError:(id)a3;
+- (PUISceneSnapshotAction)initWithInfo:(id)info responder:(id)responder;
+- (PUISceneSnapshotAction)initWithSnapshotDescriptor:(id)descriptor destination:(id)destination responder:(id)responder;
+- (id)respondWithSnapshotBundle:(id)bundle;
+- (void)respondWithError:(id)error;
 @end
 
 @implementation PUISceneSnapshotAction
 
-- (PUISceneSnapshotAction)initWithSnapshotDescriptor:(id)a3 destination:(id)a4 responder:(id)a5
+- (PUISceneSnapshotAction)initWithSnapshotDescriptor:(id)descriptor destination:(id)destination responder:(id)responder
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  descriptorCopy = descriptor;
+  destinationCopy = destination;
+  responderCopy = responder;
+  if (!destinationCopy)
   {
     [PUISceneSnapshotAction initWithSnapshotDescriptor:a2 destination:self responder:?];
   }
 
-  v12 = v11;
+  v12 = responderCopy;
   v13 = objc_opt_new();
   v14 = v13;
-  if (v9)
+  if (descriptorCopy)
   {
-    [v13 setObject:v9 forSetting:1];
+    [v13 setObject:descriptorCopy forSetting:1];
   }
 
-  v15 = [[PUIPosterSnapshotDestinationFinalizer alloc] initWithDestination:v10];
+  v15 = [[PUIPosterSnapshotDestinationFinalizer alloc] initWithDestination:destinationCopy];
   [v14 setObject:v15 forSetting:2];
 
   v19.receiver = self;
@@ -36,42 +36,42 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_destination, a4);
+    objc_storeStrong(&v16->_destination, destination);
   }
 
   return v17;
 }
 
-- (PUISceneSnapshotAction)initWithInfo:(id)a3 responder:(id)a4
+- (PUISceneSnapshotAction)initWithInfo:(id)info responder:(id)responder
 {
-  [(PUISceneSnapshotAction *)self doesNotRecognizeSelector:a2, a4];
+  [(PUISceneSnapshotAction *)self doesNotRecognizeSelector:a2, responder];
 
   return 0;
 }
 
 - (PUIPosterSnapshotDescriptor)snapshotDescriptor
 {
-  v2 = [(PUISceneSnapshotAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(PUISceneSnapshotAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
 - (PUIPosterSnapshotDestinationFinalizer)destinationFinalizer
 {
-  v2 = [(PUISceneSnapshotAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(PUISceneSnapshotAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
-- (id)respondWithSnapshotBundle:(id)a3
+- (id)respondWithSnapshotBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   if (([(PUISceneSnapshotAction *)self canSendResponse]& 1) != 0)
   {
-    v5 = [(PUISceneSnapshotAction *)self destinationFinalizer];
-    v6 = [v5 finalizeSnapshotBundle:v4];
+    destinationFinalizer = [(PUISceneSnapshotAction *)self destinationFinalizer];
+    v6 = [destinationFinalizer finalizeSnapshotBundle:bundleCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__PUISceneSnapshotAction_respondWithSnapshotBundle___block_invoke;
@@ -82,8 +82,8 @@
     v12[2] = __52__PUISceneSnapshotAction_respondWithSnapshotBundle___block_invoke_2;
     v12[3] = &unk_1E7854AC0;
     v12[4] = self;
-    v7 = [MEMORY[0x1E69C5268] globalAsyncScheduler];
-    [v6 addSuccessBlock:v13 andFailureBlock:v12 scheduler:v7];
+    globalAsyncScheduler = [MEMORY[0x1E69C5268] globalAsyncScheduler];
+    [v6 addSuccessBlock:v13 andFailureBlock:v12 scheduler:globalAsyncScheduler];
   }
 
   else
@@ -134,9 +134,9 @@ void __52__PUISceneSnapshotAction_respondWithSnapshotBundle___block_invoke_2(uin
   [v2 sendResponse:v3];
 }
 
-- (void)respondWithError:(id)a3
+- (void)respondWithError:(id)error
 {
-  v4 = [MEMORY[0x1E698E600] responseForError:a3];
+  v4 = [MEMORY[0x1E698E600] responseForError:error];
   [(PUISceneSnapshotAction *)self sendResponse:v4];
 }
 

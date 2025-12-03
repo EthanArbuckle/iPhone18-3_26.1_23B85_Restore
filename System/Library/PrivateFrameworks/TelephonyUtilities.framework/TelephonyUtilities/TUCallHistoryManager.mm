@@ -1,9 +1,9 @@
 @interface TUCallHistoryManager
 - (TUCallHistoryManager)init;
-- (TUCallHistoryManager)initWithDataSource:(id)a3;
+- (TUCallHistoryManager)initWithDataSource:(id)source;
 - (void)dealloc;
-- (void)reportRecentCallForConversation:(id)a3 withStartDate:(id)a4 avMode:(unint64_t)a5;
-- (void)updateOutgoingLocalParticipantUUID:(id)a3 forCallsWithOutgoingLocalParticipantUUID:(id)a4;
+- (void)reportRecentCallForConversation:(id)conversation withStartDate:(id)date avMode:(unint64_t)mode;
+- (void)updateOutgoingLocalParticipantUUID:(id)d forCallsWithOutgoingLocalParticipantUUID:(id)iD;
 @end
 
 @implementation TUCallHistoryManager
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (TUCallHistoryManager)initWithDataSource:(id)a3
+- (TUCallHistoryManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = TUCallHistoryManager;
   v6 = [(TUCallHistoryManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -39,20 +39,20 @@
   [(TUCallHistoryManager *)&v3 dealloc];
 }
 
-- (void)updateOutgoingLocalParticipantUUID:(id)a3 forCallsWithOutgoingLocalParticipantUUID:(id)a4
+- (void)updateOutgoingLocalParticipantUUID:(id)d forCallsWithOutgoingLocalParticipantUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUCallHistoryManager *)self dataSource];
-  [v8 updateOutgoingLocalParticipantUUID:v7 forCallsWithOutgoingLocalParticipantUUID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  dataSource = [(TUCallHistoryManager *)self dataSource];
+  [dataSource updateOutgoingLocalParticipantUUID:dCopy forCallsWithOutgoingLocalParticipantUUID:iDCopy];
 }
 
-- (void)reportRecentCallForConversation:(id)a3 withStartDate:(id)a4 avMode:(unint64_t)a5
+- (void)reportRecentCallForConversation:(id)conversation withStartDate:(id)date avMode:(unint64_t)mode
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TUCallHistoryManager *)self dataSource];
-  [v10 reportRecentCallForConversation:v9 withStartDate:v8 avMode:a5];
+  dateCopy = date;
+  conversationCopy = conversation;
+  dataSource = [(TUCallHistoryManager *)self dataSource];
+  [dataSource reportRecentCallForConversation:conversationCopy withStartDate:dateCopy avMode:mode];
 }
 
 @end

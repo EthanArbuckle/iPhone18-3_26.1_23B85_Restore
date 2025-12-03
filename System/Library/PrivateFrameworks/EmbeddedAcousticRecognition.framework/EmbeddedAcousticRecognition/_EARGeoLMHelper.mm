@@ -1,18 +1,18 @@
 @interface _EARGeoLMHelper
-- (_EARGeoLMHelper)initWithConfiguration:(id)a3;
-- (_EARGeoLMHelper)initWithLocale:(id)a3 config:(id)a4;
-- (id)regionIdForLatitude:(double)a3 longitude:(double)a4;
-- (id)regionIdForLocale:(id)a3 latitude:(double)a4 longitude:(double)a5;
+- (_EARGeoLMHelper)initWithConfiguration:(id)configuration;
+- (_EARGeoLMHelper)initWithLocale:(id)locale config:(id)config;
+- (id)regionIdForLatitude:(double)latitude longitude:(double)longitude;
+- (id)regionIdForLocale:(id)locale latitude:(double)latitude longitude:(double)longitude;
 @end
 
 @implementation _EARGeoLMHelper
 
-- (_EARGeoLMHelper)initWithLocale:(id)a3 config:(id)a4
+- (_EARGeoLMHelper)initWithLocale:(id)locale config:(id)config
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([(__CFString *)v7 length]&& [(__CFString *)v8 length])
+  localeCopy = locale;
+  configCopy = config;
+  if ([(__CFString *)localeCopy length]&& [(__CFString *)configCopy length])
   {
     v19.receiver = self;
     v19.super_class = _EARGeoLMHelper;
@@ -25,13 +25,13 @@
         [_EARGeoLMHelper initWithLocale:config:];
       }
 
-      objc_storeStrong(&v9->_locale, a3);
+      objc_storeStrong(&v9->_locale, locale);
       v18 = &unk_1F2D13EE8;
       operator new();
     }
 
     self = 0;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,12 +39,12 @@
     v11 = EarGeoLMHelperLogger();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(__CFString *)v7 length];
-      v15 = [(__CFString *)v8 length];
+      v14 = [(__CFString *)localeCopy length];
+      v15 = [(__CFString *)configCopy length];
       v16 = @"(none)";
       if (v14)
       {
-        v17 = v7;
+        v17 = localeCopy;
       }
 
       else
@@ -54,7 +54,7 @@
 
       if (v15)
       {
-        v16 = v8;
+        v16 = configCopy;
       }
 
       __p = 138412546;
@@ -64,20 +64,20 @@
       _os_log_error_impl(&dword_1B501D000, v11, OS_LOG_TYPE_ERROR, "GeoLM: Cannot initialize helper with locale: %@, config: %@", &__p, 0x16u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)regionIdForLocale:(id)a3 latitude:(double)a4 longitude:(double)a5
+- (id)regionIdForLocale:(id)locale latitude:(double)latitude longitude:(double)longitude
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(__CFString *)v8 isEqualToString:self->_locale];
+  localeCopy = locale;
+  v9 = [(__CFString *)localeCopy isEqualToString:self->_locale];
   if (v9)
   {
-    quasar::Location::makeAny(v9, a4, a5);
+    quasar::Location::makeAny(v9, latitude, longitude);
     __p[5] = v10;
     __p[6] = v11;
     memset(buf, 0, sizeof(buf));
@@ -89,11 +89,11 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     locale = self->_locale;
-    v15 = [(__CFString *)v8 length];
+    v15 = [(__CFString *)localeCopy length];
     v16 = @"(none)";
     if (v15)
     {
-      v16 = v8;
+      v16 = localeCopy;
     }
 
     *buf = 138412546;
@@ -106,11 +106,11 @@
   return 0;
 }
 
-- (_EARGeoLMHelper)initWithConfiguration:(id)a3
+- (_EARGeoLMHelper)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy && [configurationCopy length])
   {
     v10.receiver = self;
     v10.super_class = _EARGeoLMHelper;
@@ -127,21 +127,21 @@
     }
 
     self = 0;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)regionIdForLatitude:(double)a3 longitude:(double)a4
+- (id)regionIdForLatitude:(double)latitude longitude:(double)longitude
 {
   v13 = *MEMORY[0x1E69E9840];
-  quasar::Location::makeAny(self, a3, a4);
+  quasar::Location::makeAny(self, latitude, longitude);
   v11 = v4;
   v12 = v5;
   v8 = 0;

@@ -104,7 +104,7 @@
 
 - (id)outputImage
 {
-  v2 = self;
+  selfCopy = self;
   result = self->super.super.inputImage;
   if (!result)
   {
@@ -116,19 +116,19 @@
   v219 = v4;
   v225 = v6;
   v217 = v7;
-  v237.receiver = v2;
+  v237.receiver = selfCopy;
   v237.super_class = CIPortraitEffectStudioV2;
   v8 = [(CIPortraitEffectLightV2 *)&v237 getDraftMode:&off_7A8C0];
-  [(NSNumber *)v2->super.super.inputRenderProxy floatValue];
+  [(NSNumber *)selfCopy->super.super.inputRenderProxy floatValue];
   v10 = v9;
   if ([v8 intValue] > 0 || v10 > 0.0)
   {
-    inputImage = v2->super.super.inputImage;
+    inputImage = selfCopy->super.super.inputImage;
   }
 
   else
   {
-    v236.receiver = v2;
+    v236.receiver = selfCopy;
     v236.super_class = CIPortraitEffectStudioV2;
     inputImage = [(CIPortraitEffectLightV2 *)&v236 outputImage];
   }
@@ -136,12 +136,12 @@
   v226 = [objc_msgSend(objc_msgSend(inputImage imageByApplyingFilter:@"CISmartToneFilter" withInputParameters:{&off_7DB58), "imageByApplyingFilter:withInputParameters:", @"CIHighKey", &off_7DB80), "imageByApplyingFilter:withInputParameters:", @"CIVibrance", &off_7DBA8}];
   v12 = [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
   v13 = [CIImage imageWithColor:v12];
-  [(CIImage *)v2->super.super.inputImage extent];
+  [(CIImage *)selfCopy->super.super.inputImage extent];
   v228 = [(CIImage *)v13 imageByCroppingToRect:?];
   v14 = [CIImage imageWithColor:v12];
-  [(CIImage *)v2->super.super.inputImage extent];
+  [(CIImage *)selfCopy->super.super.inputImage extent];
   v227 = [(CIImage *)v14 imageByCroppingToRect:?];
-  inputFaceLandmarkArray = v2->super.super.inputFaceLandmarkArray;
+  inputFaceLandmarkArray = selfCopy->super.super.inputFaceLandmarkArray;
   if (inputFaceLandmarkArray)
   {
     v234 = 0u;
@@ -154,7 +154,7 @@
       v17 = v16;
       v224 = *v233;
       v215 = inputFaceLandmarkArray;
-      v216 = v2;
+      v216 = selfCopy;
       do
       {
         v18 = 0;
@@ -202,15 +202,15 @@
 
           if (v21 && v23 && v25)
           {
-            v26 = [[LightingFacePoints alloc] initWithFaceLandmarkDictionary:v19 forImageRect:v219, v218, v225, v217];
+            v217 = [[LightingFacePoints alloc] initWithFaceLandmarkDictionary:v19 forImageRect:v219, v218, v225, v217];
             v27 = [v19 objectForKeyedSubscript:@"orientation"];
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v29 = v28;
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v31 = v30;
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v33 = v32 * 0.4;
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v35 = v34 * 0.3;
             v230 = v27;
             v223 = v18;
@@ -237,23 +237,23 @@
             v44 = sin(v229 + v229);
             v45 = [CIVector vectorWithX:v42 / ((v35 + v35) * v35) + v43 / ((v38 + v38) * v38) Y:v44 / (v38 * 4.0 * v38) - v44 / (v35 * 4.0 * v35) Z:v43 / ((v35 + v35) * v35) + v42 / ((v38 + v38) * v38) W:0.7];
             v46 = [CIVector vectorWithX:v222 Y:v221];
-            v47 = [(CIPortraitEffectStudioV2 *)v2 _faceVignetteStudio];
-            [(CIImage *)v2->super.super.inputImage extent];
+            _faceVignetteStudio = [(CIPortraitEffectStudioV2 *)selfCopy _faceVignetteStudio];
+            [(CIImage *)selfCopy->super.super.inputImage extent];
             v261[0] = v228;
             v261[1] = v46;
             v261[2] = v45;
-            v228 = [v47 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v261, 3), v48, v49, v50, v51}];
-            [(LightingFacePoints *)v26 faceWidth];
+            v228 = [_faceVignetteStudio applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v261, 3), v48, v49, v50, v51}];
+            [(LightingFacePoints *)v217 faceWidth];
             v53 = v52 / v225;
             v54 = v53;
             v55 = fmin(v53 * 1.05, 1.0);
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v57 = v56;
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v59 = v58;
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v61 = v60 * 0.35;
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v63 = v62 * 3.5 * v55;
             v64 = (v61 + v61) * v61;
             v65 = v63;
@@ -263,24 +263,24 @@
             v69 = LODWORD(v229);
             v70 = [CIVector vectorWithX:v67 Y:v44 / (v65 * 4.0 * v65) - v44 / (v61 * 4.0 * v61) Z:v68 + v42 / v66 W:0.7];
             v71 = [CIVector vectorWithX:v57 Y:v59];
-            [(CIImage *)v2->super.super.inputImage extent];
+            [(CIImage *)selfCopy->super.super.inputImage extent];
             v260[0] = v227;
             v260[1] = v71;
             v260[2] = v70;
-            v227 = [v47 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v260, 3), v72, v73, v74, v75}];
-            v76 = [(LightingFacePoints *)v26 leftKickLights];
-            v77 = [CIVector vectorWithCGPoint:*v76, v76[1]];
-            v78 = [(LightingFacePoints *)v26 leftKickLights];
-            v79 = [CIVector vectorWithCGPoint:v78[1].x, v78[1].y];
-            v80 = [(LightingFacePoints *)v26 leftKickLights];
-            v81 = [CIVector vectorWithCGPoint:v80[2].x, v80[2].y];
-            v82 = [(LightingFacePoints *)v26 rightKickLights];
-            v83 = [CIVector vectorWithCGPoint:*v82, v82[1]];
-            v84 = [(LightingFacePoints *)v26 rightKickLights];
-            v85 = [CIVector vectorWithCGPoint:v84[1].x, v84[1].y];
-            v86 = v2;
-            v87 = [(LightingFacePoints *)v26 rightKickLights];
-            v88 = [CIVector vectorWithCGPoint:v87[2].x, v87[2].y];
+            v227 = [_faceVignetteStudio applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v260, 3), v72, v73, v74, v75}];
+            leftKickLights = [(LightingFacePoints *)v217 leftKickLights];
+            v77 = [CIVector vectorWithCGPoint:*leftKickLights, leftKickLights[1]];
+            leftKickLights2 = [(LightingFacePoints *)v217 leftKickLights];
+            v79 = [CIVector vectorWithCGPoint:leftKickLights2[1].x, leftKickLights2[1].y];
+            leftKickLights3 = [(LightingFacePoints *)v217 leftKickLights];
+            v81 = [CIVector vectorWithCGPoint:leftKickLights3[2].x, leftKickLights3[2].y];
+            rightKickLights = [(LightingFacePoints *)v217 rightKickLights];
+            v83 = [CIVector vectorWithCGPoint:*rightKickLights, rightKickLights[1]];
+            rightKickLights2 = [(LightingFacePoints *)v217 rightKickLights];
+            v85 = [CIVector vectorWithCGPoint:rightKickLights2[1].x, rightKickLights2[1].y];
+            v86 = selfCopy;
+            rightKickLights3 = [(LightingFacePoints *)v217 rightKickLights];
+            v88 = [CIVector vectorWithCGPoint:rightKickLights3[2].x, rightKickLights3[2].y];
             [(NSNumber *)v86->super.super.inputScale floatValue];
             v258[0] = @"inputImage";
             v258[1] = @"inputPt1";
@@ -307,11 +307,11 @@
             v259[9] = v230;
             v259[10] = inputKickLight;
             v92 = [v226 imageByApplyingFilter:@"CIPortraitLightingSide" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v259, v258, 11)}];
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v93 = [CIVector vectorWithCGPoint:?];
-            [(LightingFacePoints *)v26 bottomShadow];
+            [(LightingFacePoints *)v217 bottomShadow];
             v94 = [CIVector vectorWithCGPoint:?];
-            [(LightingFacePoints *)v26 bottomShadow];
+            [(LightingFacePoints *)v217 bottomShadow];
             v95 = [CIVector vectorWithCGPoint:?];
             v256[0] = @"inputImage";
             v256[1] = @"inputCenter1";
@@ -322,16 +322,16 @@
             v257[2] = v94;
             v257[3] = v95;
             v256[4] = @"inputHeight1";
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v257[4] = [NSNumber numberWithDouble:v96 * 0.75];
             v256[5] = @"inputWidth1";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v257[5] = [NSNumber numberWithDouble:v97 * 0.45];
             v256[6] = @"inputHeight2";
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v257[6] = [NSNumber numberWithDouble:v98 * 0.55];
             v256[7] = @"inputWidth2";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v257[7] = [NSNumber numberWithDouble:v99 * 0.55];
             v257[8] = &off_7A1F0;
             v256[8] = @"inputRotate2";
@@ -348,13 +348,13 @@
               v69 = 1070141403;
             }
 
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v103 = v102;
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v105 = v104;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v107 = v106;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v109 = [CIVector vectorWithX:v103 Y:v105 Z:v107 W:v108];
             v254[0] = @"inputImage";
             v254[1] = @"inputCenter";
@@ -366,24 +366,24 @@
             LODWORD(v110) = v69;
             v255[3] = [NSNumber numberWithFloat:v110];
             v254[4] = @"inputWidth";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v255[4] = [NSNumber numberWithDouble:v111 * 0.275];
             v254[5] = @"inputHeight";
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v255[5] = [NSNumber numberWithDouble:v112 * 0.45];
             v113 = [v101 imageByApplyingFilter:@"CIPortraitLightingSpot" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v255, v254, 6)}];
-            v114 = [(LightingFacePoints *)v26 leftNose];
-            v115 = [CIVector vectorWithCGPoint:*v114, v114[1]];
-            v116 = [(LightingFacePoints *)v26 leftNose];
-            v117 = [CIVector vectorWithCGPoint:v116[1].x, v116[1].y];
-            v118 = [(LightingFacePoints *)v26 leftNose];
-            v119 = [CIVector vectorWithCGPoint:v118[2].x, v118[2].y];
-            v120 = [(LightingFacePoints *)v26 rightNose];
-            v121 = [CIVector vectorWithCGPoint:*v120, v120[1]];
-            v122 = [(LightingFacePoints *)v26 rightNose];
-            v123 = [CIVector vectorWithCGPoint:v122[1].x, v122[1].y];
-            v124 = [(LightingFacePoints *)v26 rightNose];
-            v125 = [CIVector vectorWithCGPoint:v124[2].x, v124[2].y];
+            leftNose = [(LightingFacePoints *)v217 leftNose];
+            v115 = [CIVector vectorWithCGPoint:*leftNose, leftNose[1]];
+            leftNose2 = [(LightingFacePoints *)v217 leftNose];
+            v117 = [CIVector vectorWithCGPoint:leftNose2[1].x, leftNose2[1].y];
+            leftNose3 = [(LightingFacePoints *)v217 leftNose];
+            v119 = [CIVector vectorWithCGPoint:leftNose3[2].x, leftNose3[2].y];
+            rightNose = [(LightingFacePoints *)v217 rightNose];
+            v121 = [CIVector vectorWithCGPoint:*rightNose, rightNose[1]];
+            rightNose2 = [(LightingFacePoints *)v217 rightNose];
+            v123 = [CIVector vectorWithCGPoint:rightNose2[1].x, rightNose2[1].y];
+            rightNose3 = [(LightingFacePoints *)v217 rightNose];
+            v125 = [CIVector vectorWithCGPoint:rightNose3[2].x, rightNose3[2].y];
             v252[0] = @"inputImage";
             v252[1] = @"inputPt1";
             v253[0] = v113;
@@ -408,13 +408,13 @@
             v253[9] = v230;
             v253[10] = &off_7A210;
             v127 = [v113 imageByApplyingFilter:@"CIPortraitLightingSide" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v253, v252, 11)}];
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v129 = v128;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v131 = v130;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v133 = v132;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v135 = [CIVector vectorWithX:v129 Y:v131 Z:v133 W:v134];
             v250[0] = @"inputImage";
             v250[1] = @"inputCenter";
@@ -428,16 +428,16 @@
             v251[4] = &off_7A110;
             v250[4] = @"inputDarken";
             v250[5] = @"inputWidth";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v251[5] = [NSNumber numberWithDouble:v137 * 0.035];
             v250[6] = @"inputHeight";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v251[6] = [NSNumber numberWithDouble:v138 * 0.035];
             v139 = [v127 imageByApplyingFilter:@"CIPortraitLightingSpot" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v251, v250, 7)}];
-            v140 = [(LightingFacePoints *)v26 noseStrobe];
-            v141 = [CIVector vectorWithCGPoint:*v140, v140[1]];
-            v142 = [(LightingFacePoints *)v26 noseStrobe];
-            v143 = [CIVector vectorWithCGPoint:v142[1].x, v142[1].y];
+            noseStrobe = [(LightingFacePoints *)v217 noseStrobe];
+            v141 = [CIVector vectorWithCGPoint:*noseStrobe, noseStrobe[1]];
+            noseStrobe2 = [(LightingFacePoints *)v217 noseStrobe];
+            v143 = [CIVector vectorWithCGPoint:noseStrobe2[1].x, noseStrobe2[1].y];
             v248[0] = @"inputImage";
             v248[1] = @"inputCenter1";
             v249[0] = v139;
@@ -455,21 +455,21 @@
             [(NSNumber *)[(CIPortraitEffectV2 *)v216 inputStrength] floatValue];
             v249[6] = [NSNumber numberWithDouble:v145 * 1.2];
             v146 = [v139 imageByApplyingFilter:@"CIPortraitLightingStrobeV2" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v249, v248, 7)}];
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v148 = v147;
-            [(LightingFacePoints *)v26 centerNose];
+            [(LightingFacePoints *)v217 centerNose];
             v150 = v149;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v152 = v151;
-            [(LightingFacePoints *)v26 centerChin];
+            [(LightingFacePoints *)v217 centerChin];
             v154 = [CIVector vectorWithX:v148 Y:v150 Z:v152 W:v153];
-            [(LightingFacePoints *)v26 leftEye];
+            [(LightingFacePoints *)v217 leftEye];
             v156 = v155;
-            [(LightingFacePoints *)v26 leftEye];
+            [(LightingFacePoints *)v217 leftEye];
             v158 = v157;
-            [(LightingFacePoints *)v26 rightEye];
+            [(LightingFacePoints *)v217 rightEye];
             v160 = v159;
-            [(LightingFacePoints *)v26 rightEye];
+            [(LightingFacePoints *)v217 rightEye];
             v162 = [CIVector vectorWithX:v156 Y:v158 Z:v160 W:v161];
             v246[0] = @"inputImage";
             v246[1] = @"inputCenter";
@@ -480,17 +480,17 @@
             v247[2] = v162;
             v247[3] = &off_79D40;
             v246[4] = @"inputRotate";
-            v2 = v216;
+            selfCopy = v216;
             LODWORD(v163) = v69;
             v247[4] = [NSNumber numberWithFloat:v163];
             v246[5] = @"inputScale";
             *&v164 = v90;
             v247[5] = [NSNumber numberWithFloat:v164];
             v246[6] = @"inputWidth";
-            [(LightingFacePoints *)v26 faceWidth];
+            [(LightingFacePoints *)v217 faceWidth];
             v247[6] = [NSNumber numberWithDouble:v165 * 0.4];
             v246[7] = @"inputHeight";
-            [(LightingFacePoints *)v26 faceHeight];
+            [(LightingFacePoints *)v217 faceHeight];
             v247[7] = [NSNumber numberWithDouble:v166 * 0.35];
             v226 = [v146 imageByApplyingFilter:@"CIPortraitLightingStudio" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v247, v246, 8)}];
 
@@ -510,36 +510,36 @@
     }
   }
 
-  v167 = [(CIPortraitEffectStudioV2 *)v2 _applyFaceProtectStudio];
+  _applyFaceProtectStudio = [(CIPortraitEffectStudioV2 *)selfCopy _applyFaceProtectStudio];
   v168 = [objc_msgSend(objc_msgSend(v226 imageByApplyingFilter:@"CIHighKey" withInputParameters:{&off_7DBD0), "imageByApplyingFilter:withInputParameters:", @"CIExposureAdjust", &off_7DBF8), "imageByApplyingFilter:withInputParameters:", @"CISmartToneFilter", &off_7DC20}];
-  [(CIImage *)v2->super.super.inputImage extent];
+  [(CIImage *)selfCopy->super.super.inputImage extent];
   v245[0] = v226;
   v245[1] = v168;
   v245[2] = v228;
   v245[3] = v227;
-  v173 = [objc_msgSend(v167 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v245, 4), v169, v170, v171, v172), "imageByApplyingFilter:withInputParameters:", @"CIVibrance", &off_7DC48}];
-  inputMatte = v2->super.super.inputMatte;
+  v173 = [objc_msgSend(_applyFaceProtectStudio applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v245, 4), v169, v170, v171, v172), "imageByApplyingFilter:withInputParameters:", @"CIVibrance", &off_7DC48}];
+  inputMatte = selfCopy->super.super.inputMatte;
   if (inputMatte)
   {
-    [(CIImage *)v2->super.super.inputMatte extent];
+    [(CIImage *)selfCopy->super.super.inputMatte extent];
     v176 = v175;
-    [(CIImage *)v2->super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.inputImage extent];
     if (v176 != v177)
     {
-      [(CIImage *)v2->super.super.inputImage extent];
+      [(CIImage *)selfCopy->super.super.inputImage extent];
       v179 = v178;
-      [(CIImage *)v2->super.super.inputMatte extent];
+      [(CIImage *)selfCopy->super.super.inputMatte extent];
       v181 = v180;
       v182 = v179 / v181;
-      [(CIImage *)v2->super.super.inputImage extent];
+      [(CIImage *)selfCopy->super.super.inputImage extent];
       v184 = v183;
-      [(CIImage *)v2->super.super.inputMatte extent];
+      [(CIImage *)selfCopy->super.super.inputMatte extent];
       v186 = v185;
       CGAffineTransformMakeScale(&v231, v182, (v184 / v186));
       inputMatte = [(CIImage *)inputMatte imageByApplyingTransform:&v231];
     }
 
-    v187 = v2->super.super.inputImage;
+    v187 = selfCopy->super.super.inputImage;
     v243[0] = @"inputBackgroundImage";
     v243[1] = @"inputMaskImage";
     v244[0] = v187;
@@ -550,37 +550,37 @@
 
   else
   {
-    inputBlurMap = v2->super.super.inputBlurMap;
+    inputBlurMap = selfCopy->super.super.inputBlurMap;
     if (!inputBlurMap)
     {
       goto LABEL_42;
     }
 
-    [(CIImage *)v2->super.super.inputBlurMap extent];
+    [(CIImage *)selfCopy->super.super.inputBlurMap extent];
     v192 = v191;
-    [(CIImage *)v2->super.super.inputImage extent];
+    [(CIImage *)selfCopy->super.super.inputImage extent];
     if (v192 != v193)
     {
-      [(CIImage *)v2->super.super.inputImage extent];
+      [(CIImage *)selfCopy->super.super.inputImage extent];
       v195 = v194;
-      [(CIImage *)v2->super.super.inputBlurMap extent];
+      [(CIImage *)selfCopy->super.super.inputBlurMap extent];
       v197 = v196;
       v198 = v195 / v197;
-      [(CIImage *)v2->super.super.inputImage extent];
+      [(CIImage *)selfCopy->super.super.inputImage extent];
       v200 = v199;
-      [(CIImage *)v2->super.super.inputBlurMap extent];
+      [(CIImage *)selfCopy->super.super.inputBlurMap extent];
       v202 = v201;
       CGAffineTransformMakeScale(&v231, v198, (v200 / v202));
       inputBlurMap = [(CIImage *)inputBlurMap imageByApplyingTransform:&v231];
     }
 
-    v203 = [(CIPortraitEffectStudioV2 *)v2 _prepareDepth];
-    [(CIImage *)v2->super.super.inputImage extent];
-    inputDepthThreshold = v2->inputDepthThreshold;
+    _prepareDepth = [(CIPortraitEffectStudioV2 *)selfCopy _prepareDepth];
+    [(CIImage *)selfCopy->super.super.inputImage extent];
+    inputDepthThreshold = selfCopy->inputDepthThreshold;
     v242[0] = inputBlurMap;
     v242[1] = inputDepthThreshold;
-    v209 = [v203 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v242, 2), v205, v206, v207, v208}];
-    v210 = v2->super.super.inputImage;
+    v209 = [_prepareDepth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v242, 2), v205, v206, v207, v208}];
+    v210 = selfCopy->super.super.inputImage;
     v240[0] = @"inputBackgroundImage";
     v240[1] = @"inputMaskImage";
     v241[0] = v173;
@@ -591,12 +591,12 @@
 
   v173 = [(CIImage *)v189 imageByApplyingFilter:@"CIBlendWithMask" withInputParameters:v188];
 LABEL_42:
-  [(NSNumber *)v2->super.super.inputStrength floatValue];
+  [(NSNumber *)selfCopy->super.super.inputStrength floatValue];
   if (v211 < 1.0)
   {
-    [(NSNumber *)v2->super.super.inputStrength floatValue];
+    [(NSNumber *)selfCopy->super.super.inputStrength floatValue];
     *&v213 = powf(v212, 0.75);
-    v214 = v2->super.super.inputImage;
+    v214 = selfCopy->super.super.inputImage;
     v238[0] = @"inputBackgroundImage";
     v238[1] = @"inputAmount";
     v239[0] = v214;

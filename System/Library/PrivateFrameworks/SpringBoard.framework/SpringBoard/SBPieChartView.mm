@@ -1,26 +1,26 @@
 @interface SBPieChartView
-- (SBPieChartView)initWithFrame:(CGRect)a3;
-- (void)_drawSlice:(id)a3 atValue:(double)a4;
+- (SBPieChartView)initWithFrame:(CGRect)frame;
+- (void)_drawSlice:(id)slice atValue:(double)value;
 - (void)_rotateContext;
 - (void)_updateMetrics;
-- (void)drawRect:(CGRect)a3;
-- (void)setSlices:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSlices:(id)slices;
 @end
 
 @implementation SBPieChartView
 
-- (SBPieChartView)initWithFrame:(CGRect)a3
+- (SBPieChartView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBPieChartView;
-  v3 = [(SBPieChartView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBPieChartView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_defaultRotation = -1.57079633;
     [(SBPieChartView *)v3 setClearsContextBeforeDrawing:1];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(SBPieChartView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBPieChartView *)v4 setBackgroundColor:clearColor];
 
     v6 = v4;
   }
@@ -28,10 +28,10 @@
   return v4;
 }
 
-- (void)setSlices:(id)a3
+- (void)setSlices:(id)slices
 {
-  objc_storeStrong(&self->_slices, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_slices, slices);
+  slicesCopy = slices;
   v6 = [(NSArray *)self->_slices valueForKeyPath:@"@sum.value"];
 
   [v6 floatValue];
@@ -40,10 +40,10 @@
   [(SBPieChartView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v17 = *MEMORY[0x277D85DE8];
-  [(SBPieChartView *)self _updateMetrics:a3.origin.x];
+  [(SBPieChartView *)self _updateMetrics:rect.origin.x];
   [(SBPieChartView *)self _rotateContext];
   v14 = 0u;
   v15 = 0u;
@@ -97,25 +97,25 @@
   CGContextTranslateCTM(CurrentContext, v4, v4);
 }
 
-- (void)_drawSlice:(id)a3 atValue:(double)a4
+- (void)_drawSlice:(id)slice atValue:(double)value
 {
   v6 = MEMORY[0x277D75208];
-  v7 = a3;
-  v15 = [v6 bezierPath];
-  v8 = (a4 / self->_valueTotal + a4 / self->_valueTotal) * 3.14159265;
+  sliceCopy = slice;
+  bezierPath = [v6 bezierPath];
+  v8 = (value / self->_valueTotal + value / self->_valueTotal) * 3.14159265;
   radius = self->_radius;
   v10 = v8;
   v11 = __sincosf_stret(v10);
-  [v7 value];
-  v13 = ((v12 + a4) / self->_valueTotal + (v12 + a4) / self->_valueTotal) * 3.14159265;
-  [v15 moveToPoint:{self->_center.x, self->_center.y}];
-  [v15 addLineToPoint:{radius + radius * v11.__cosval, radius + radius * v11.__sinval}];
-  [v15 addArcWithCenter:1 radius:self->_center.x startAngle:self->_center.y endAngle:self->_radius clockwise:{v8, v13}];
-  [v15 closePath];
-  v14 = [v7 fillColor];
+  [sliceCopy value];
+  v13 = ((v12 + value) / self->_valueTotal + (v12 + value) / self->_valueTotal) * 3.14159265;
+  [bezierPath moveToPoint:{self->_center.x, self->_center.y}];
+  [bezierPath addLineToPoint:{radius + radius * v11.__cosval, radius + radius * v11.__sinval}];
+  [bezierPath addArcWithCenter:1 radius:self->_center.x startAngle:self->_center.y endAngle:self->_radius clockwise:{v8, v13}];
+  [bezierPath closePath];
+  fillColor = [sliceCopy fillColor];
 
-  [v14 setFill];
-  [v15 fill];
+  [fillColor setFill];
+  [bezierPath fill];
 }
 
 @end

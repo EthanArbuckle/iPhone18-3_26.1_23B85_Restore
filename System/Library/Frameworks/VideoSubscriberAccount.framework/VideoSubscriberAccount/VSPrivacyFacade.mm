@@ -1,34 +1,34 @@
 @interface VSPrivacyFacade
-- (BOOL)isAccessGrantedForBundle:(__CFBundle *)a3;
-- (BOOL)isAccessGrantedForBundleID:(id)a3;
+- (BOOL)isAccessGrantedForBundle:(__CFBundle *)bundle;
+- (BOOL)isAccessGrantedForBundleID:(id)d;
 - (BOOL)reset;
-- (BOOL)setAccessGranted:(BOOL)a3 forBundle:(__CFBundle *)a4;
-- (BOOL)setAccessGranted:(BOOL)a3 forBundleID:(id)a4;
+- (BOOL)setAccessGranted:(BOOL)granted forBundle:(__CFBundle *)bundle;
+- (BOOL)setAccessGranted:(BOOL)granted forBundleID:(id)d;
 - (NSArray)knownAppBundles;
 - (VSPrivacyFacade)init;
-- (VSPrivacyFacade)initWithService:(id)a3 voucherLockbox:(id)a4;
-- (id)_voucherForProcess:(int)a3 providerID:(id)a4;
-- (void)_promptForAccessUsingAuditToken:(id *)a3 processIdentifier:(int)a4 identityProviderDisplayName:(id)a5 providerIsSupported:(BOOL)a6 completionHandler:(id)a7;
-- (void)preflightCheckForProcessIdentifier:(int)a3 withCompletionHandler:(id)a4;
-- (void)requestAccessForAuditToken:(id *)a3 processIdentifier:(int)a4 identityProviderDisplayName:(id)a5 providerIsSupported:(BOOL)a6 identityProviderID:(id)a7 allowUI:(BOOL)a8 completionHandler:(id)a9;
+- (VSPrivacyFacade)initWithService:(id)service voucherLockbox:(id)lockbox;
+- (id)_voucherForProcess:(int)process providerID:(id)d;
+- (void)_promptForAccessUsingAuditToken:(id *)token processIdentifier:(int)identifier identityProviderDisplayName:(id)name providerIsSupported:(BOOL)supported completionHandler:(id)handler;
+- (void)preflightCheckForProcessIdentifier:(int)identifier withCompletionHandler:(id)handler;
+- (void)requestAccessForAuditToken:(id *)token processIdentifier:(int)identifier identityProviderDisplayName:(id)name providerIsSupported:(BOOL)supported identityProviderID:(id)d allowUI:(BOOL)i completionHandler:(id)handler;
 @end
 
 @implementation VSPrivacyFacade
 
-- (VSPrivacyFacade)initWithService:(id)a3 voucherLockbox:(id)a4
+- (VSPrivacyFacade)initWithService:(id)service voucherLockbox:(id)lockbox
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  lockboxCopy = lockbox;
   v14.receiver = self;
   v14.super_class = VSPrivacyFacade;
   v8 = [(VSPrivacyFacade *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [serviceCopy copy];
     service = v8->_service;
     v8->_service = v9;
 
-    objc_storeStrong(&v8->_voucherLockbox, a4);
+    objc_storeStrong(&v8->_voucherLockbox, lockbox);
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
     privateQueue = v8->_privateQueue;
     v8->_privateQueue = v11;
@@ -50,10 +50,10 @@
   return 0;
 }
 
-- (void)preflightCheckForProcessIdentifier:(int)a3 withCompletionHandler:(id)a4
+- (void)preflightCheckForProcessIdentifier:(int)identifier withCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,7 +61,7 @@
     _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Will preflight for pid.", &v27, 2u);
   }
 
-  v8 = VSBundleURLForProcessIdentifier(a3);
+  v8 = VSBundleURLForProcessIdentifier(identifier);
   if (!v8)
   {
     v18 = VSErrorLogObject();
@@ -184,30 +184,30 @@ LABEL_35:
     _os_log_impl(&dword_23AB8E000, v25, OS_LOG_TYPE_DEFAULT, "Will call preflight completion handler with result %@", &v27, 0xCu);
   }
 
-  v6[2](v6, v17);
+  handlerCopy[2](handlerCopy, v17);
 }
 
-- (id)_voucherForProcess:(int)a3 providerID:(id)a4
+- (id)_voucherForProcess:(int)process providerID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = VSBundleURLForProcessIdentifier(a3);
+  dCopy = d;
+  v7 = VSBundleURLForProcessIdentifier(process);
   if (v7)
   {
     v8 = [MEMORY[0x277CC1E70] vs_applicationRecordWithBundleURL:v7];
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v8 iTunesMetadata];
-    v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(v10, "storeItemIdentifier")}];
+    iTunesMetadata = [v8 iTunesMetadata];
+    v11 = [v9 numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "storeItemIdentifier")}];
 
-    v12 = [v11 stringValue];
+    stringValue = [v11 stringValue];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = [(VSPrivacyFacade *)self voucherLockbox];
-    v14 = [v13 unredeemedVouchers];
+    voucherLockbox = [(VSPrivacyFacade *)self voucherLockbox];
+    unredeemedVouchers = [voucherLockbox unredeemedVouchers];
 
-    v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v15 = [unredeemedVouchers countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v15)
     {
       v23 = v11;
@@ -220,15 +220,15 @@ LABEL_35:
         {
           if (*v27 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(unredeemedVouchers);
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 appAdamID];
-          if ([v19 isEqual:v12])
+          appAdamID = [v18 appAdamID];
+          if ([appAdamID isEqual:stringValue])
           {
-            v20 = [v18 providerID];
-            v21 = [v20 isEqual:v6];
+            providerID = [v18 providerID];
+            v21 = [providerID isEqual:dCopy];
 
             if (v21)
             {
@@ -242,7 +242,7 @@ LABEL_35:
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v15 = [unredeemedVouchers countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v15);
@@ -261,20 +261,20 @@ LABEL_15:
   return v15;
 }
 
-- (void)requestAccessForAuditToken:(id *)a3 processIdentifier:(int)a4 identityProviderDisplayName:(id)a5 providerIsSupported:(BOOL)a6 identityProviderID:(id)a7 allowUI:(BOOL)a8 completionHandler:(id)a9
+- (void)requestAccessForAuditToken:(id *)token processIdentifier:(int)identifier identityProviderDisplayName:(id)name providerIsSupported:(BOOL)supported identityProviderID:(id)d allowUI:(BOOL)i completionHandler:(id)handler
 {
-  v9 = a8;
-  v11 = a6;
-  v12 = *&a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a9;
-  if (!v17)
+  iCopy = i;
+  supportedCopy = supported;
+  v12 = *&identifier;
+  nameCopy = name;
+  dCopy = d;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
 
-  v18 = [(VSPrivacyFacade *)self _voucherForProcess:v12 providerID:v16];
+  v18 = [(VSPrivacyFacade *)self _voucherForProcess:v12 providerID:dCopy];
   v19 = VSDefaultLogObject();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
   if (v18)
@@ -285,15 +285,15 @@ LABEL_15:
       _os_log_impl(&dword_23AB8E000, v19, OS_LOG_TYPE_DEFAULT, "Found a voucher for process.", &v26, 2u);
     }
 
-    v21 = [(VSPrivacyFacade *)self voucherLockbox];
-    [v21 redeemVoucher:v18];
+    voucherLockbox = [(VSPrivacyFacade *)self voucherLockbox];
+    [voucherLockbox redeemVoucher:v18];
 
-    v22 = *&a3->var0[4];
-    v26 = *a3->var0;
+    v22 = *&token->var0[4];
+    v26 = *token->var0;
     v27 = v22;
     [(VSPrivacyFacade *)self setAccessGranted:1 forAuditToken:&v26];
     v23 = objc_alloc_init(VSOptional);
-    v17[2](v17, 1, v23);
+    handlerCopy[2](handlerCopy, 1, v23);
     goto LABEL_12;
   }
 
@@ -303,32 +303,32 @@ LABEL_15:
     _os_log_impl(&dword_23AB8E000, v19, OS_LOG_TYPE_DEFAULT, "No voucher found for process.", &v26, 2u);
   }
 
-  if (!v9)
+  if (!iCopy)
   {
     v23 = VSPrivateError(-12, 0);
     v25 = [VSOptional optionalWithObject:v23];
-    v17[2](v17, 0, v25);
+    handlerCopy[2](handlerCopy, 0, v25);
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v24 = *&a3->var0[4];
-  v26 = *a3->var0;
+  v24 = *&token->var0[4];
+  v26 = *token->var0;
   v27 = v24;
-  [(VSPrivacyFacade *)self _promptForAccessUsingAuditToken:&v26 processIdentifier:v12 identityProviderDisplayName:v15 providerIsSupported:v11 completionHandler:v17];
+  [(VSPrivacyFacade *)self _promptForAccessUsingAuditToken:&v26 processIdentifier:v12 identityProviderDisplayName:nameCopy providerIsSupported:supportedCopy completionHandler:handlerCopy];
 LABEL_13:
 }
 
-- (void)_promptForAccessUsingAuditToken:(id *)a3 processIdentifier:(int)a4 identityProviderDisplayName:(id)a5 providerIsSupported:(BOOL)a6 completionHandler:(id)a7
+- (void)_promptForAccessUsingAuditToken:(id *)token processIdentifier:(int)identifier identityProviderDisplayName:(id)name providerIsSupported:(BOOL)supported completionHandler:(id)handler
 {
-  v8 = *&a4;
-  v10 = a5;
-  v47 = a7;
+  v8 = *&identifier;
+  nameCopy = name;
+  handlerCopy = handler;
   v11 = objc_alloc_init(VSUserNotificationOperation);
   v12 = [MEMORY[0x277CCA8D8] vs_bundleForProcessIdentifier:v8];
-  v13 = [v12 bundleIdentifier];
-  v14 = [VSOptional optionalWithObject:v13];
+  bundleIdentifier = [v12 bundleIdentifier];
+  v14 = [VSOptional optionalWithObject:bundleIdentifier];
 
   v60 = 0;
   v61 = &v60;
@@ -342,17 +342,17 @@ LABEL_13:
   v59[3] = &unk_278B74240;
   v59[4] = &v60;
   [v14 conditionallyUnwrapObject:v59];
-  v15 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  if (v10)
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  if (nameCopy)
   {
-    v16 = [v15 localizedStringForKey:@"PRIVACY_TITLE_FORMAT" value:0 table:0];
+    v16 = [vs_frameworkBundle localizedStringForKey:@"PRIVACY_TITLE_FORMAT" value:0 table:0];
 
-    [MEMORY[0x277CCACA8] stringWithFormat:v16, v61[5], v10];
+    [MEMORY[0x277CCACA8] stringWithFormat:v16, v61[5], nameCopy];
   }
 
   else
   {
-    v16 = [v15 localizedStringForKey:@"PRIVACY_TITLE_FORMAT_GENERIC" value:0 table:0];
+    v16 = [vs_frameworkBundle localizedStringForKey:@"PRIVACY_TITLE_FORMAT_GENERIC" value:0 table:0];
 
     [MEMORY[0x277CCACA8] stringWithFormat:v16, v61[5]];
   }
@@ -365,7 +365,7 @@ LABEL_13:
   v46 = v14;
   if (v18)
   {
-    v42 = self;
+    selfCopy = self;
     v20 = v18;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -380,10 +380,10 @@ LABEL_13:
       }
 
       v24 = v20;
-      if (!a6)
+      if (!supported)
       {
-        v25 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-        v26 = [v25 localizedStringForKey:@"UNSUPPORTED_PROVIDER_MESSAGE_FORMAT" value:0 table:0];
+        vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+        v26 = [vs_frameworkBundle2 localizedStringForKey:@"UNSUPPORTED_PROVIDER_MESSAGE_FORMAT" value:0 table:0];
 
         v27 = [MEMORY[0x277CCACA8] stringWithFormat:v26, v61[5]];
 
@@ -391,14 +391,14 @@ LABEL_13:
       }
 
       [(VSUserNotificationOperation *)v11 setMessage:v24];
-      v28 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v29 = [v28 localizedStringForKey:@"PRIVACY_ALLOW_ACCESS_BUTTON_TITLE" value:0 table:0];
+      vs_frameworkBundle3 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v29 = [vs_frameworkBundle3 localizedStringForKey:@"PRIVACY_ALLOW_ACCESS_BUTTON_TITLE" value:0 table:0];
       [(VSUserNotificationOperation *)v11 setDefaultButtonTitle:v29];
 
-      v30 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v31 = [v30 localizedStringForKey:@"PRIVACY_DENY_ACCESS_BUTTON_TITLE" value:0 table:0];
+      vs_frameworkBundle4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v31 = [vs_frameworkBundle4 localizedStringForKey:@"PRIVACY_DENY_ACCESS_BUTTON_TITLE" value:0 table:0];
       [(VSUserNotificationOperation *)v11 setAlternateButtonTitle:v31];
-      v32 = v10;
+      v32 = nameCopy;
 
       v33 = MEMORY[0x277CCA8C8];
       v54[0] = MEMORY[0x277D85DD0];
@@ -407,49 +407,49 @@ LABEL_13:
       v54[3] = &unk_278B74290;
       v34 = v11;
       v55[0] = v34;
-      v55[1] = v42;
-      v35 = *&a3->var0[4];
-      v57 = *a3->var0;
+      v55[1] = selfCopy;
+      v35 = *&token->var0[4];
+      v57 = *token->var0;
       v58 = v35;
-      v56 = v47;
+      v56 = handlerCopy;
       v36 = [v33 blockOperationWithBlock:v54];
       [v36 addDependency:v34];
-      v37 = [(VSPrivacyFacade *)v42 privateQueue];
-      [v37 addOperation:v34];
-      [v37 addOperation:v36];
+      privateQueue = [(VSPrivacyFacade *)selfCopy privateQueue];
+      [privateQueue addOperation:v34];
+      [privateQueue addOperation:v36];
       v38 = v55;
 
-      v39 = v47;
+      v39 = handlerCopy;
     }
 
     else
     {
-      v32 = v10;
+      v32 = nameCopy;
       VSPrivateAccessUsageDescriptionMissing();
-      v41 = v39 = v47;
+      v41 = v39 = handlerCopy;
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __135__VSPrivacyFacade__promptForAccessUsingAuditToken_processIdentifier_identityProviderDisplayName_providerIsSupported_completionHandler___block_invoke_2_48;
       v51[3] = &unk_278B737F8;
-      v53 = v47;
+      v53 = handlerCopy;
       v24 = v41;
       v52 = v24;
       VSPerformCompletionHandler(v51);
       v38 = &v53;
     }
 
-    v10 = v32;
+    nameCopy = v32;
   }
 
   else
   {
     VSPrivateAccessUsageDescriptionMissing();
-    v40 = v39 = v47;
+    v40 = v39 = handlerCopy;
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __135__VSPrivacyFacade__promptForAccessUsingAuditToken_processIdentifier_identityProviderDisplayName_providerIsSupported_completionHandler___block_invoke_3;
     v48[3] = &unk_278B737F8;
-    v50 = v47;
+    v50 = handlerCopy;
     v20 = v40;
     v49 = v20;
     VSPerformCompletionHandler(v48);
@@ -598,14 +598,14 @@ void __135__VSPrivacyFacade__promptForAccessUsingAuditToken_processIdentifier_id
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)isAccessGrantedForBundle:(__CFBundle *)a3
+- (BOOL)isAccessGrantedForBundle:(__CFBundle *)bundle
 {
-  Identifier = CFBundleGetIdentifier(a3);
+  Identifier = CFBundleGetIdentifier(bundle);
 
   return [(VSPrivacyFacade *)self isAccessGrantedForBundleID:Identifier];
 }
 
-- (BOOL)isAccessGrantedForBundleID:(id)a3
+- (BOOL)isAccessGrantedForBundleID:(id)d
 {
   v4 = TCCAccessCopyInformationForBundleId();
   if (!v4)
@@ -649,17 +649,17 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)setAccessGranted:(BOOL)a3 forBundle:(__CFBundle *)a4
+- (BOOL)setAccessGranted:(BOOL)granted forBundle:(__CFBundle *)bundle
 {
-  v4 = a3;
-  Identifier = CFBundleGetIdentifier(a4);
+  grantedCopy = granted;
+  Identifier = CFBundleGetIdentifier(bundle);
 
-  return [(VSPrivacyFacade *)self setAccessGranted:v4 forBundleID:Identifier];
+  return [(VSPrivacyFacade *)self setAccessGranted:grantedCopy forBundleID:Identifier];
 }
 
-- (BOOL)setAccessGranted:(BOOL)a3 forBundleID:(id)a4
+- (BOOL)setAccessGranted:(BOOL)granted forBundleID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   [(VSPrivacyFacade *)self service];
   v6 = TCCAccessSetForBundleId();
 
@@ -701,7 +701,7 @@ LABEL_6:
     CFRelease(v6);
   }
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -725,7 +725,7 @@ LABEL_6:
         v20 = VSDisplayNameForBundleWithIdentifier(v19);
         if (v20)
         {
-          [v13 setObject:v20 forKeyedSubscript:v19];
+          [dictionary setObject:v20 forKeyedSubscript:v19];
         }
       }
 
@@ -739,7 +739,7 @@ LABEL_6:
   v35[1] = 3221225472;
   v35[2] = __34__VSPrivacyFacade_knownAppBundles__block_invoke;
   v35[3] = &unk_278B742B8;
-  v30 = v13;
+  v30 = dictionary;
   v36 = v30;
   [v14 sortUsingComparator:v35];
   v33 = 0u;
@@ -811,8 +811,8 @@ uint64_t __34__VSPrivacyFacade_knownAppBundles__block_invoke(uint64_t a1, uint64
 
 - (BOOL)reset
 {
-  v3 = [(VSPrivacyFacade *)self voucherLockbox];
-  [v3 removeAllVouchers];
+  voucherLockbox = [(VSPrivacyFacade *)self voucherLockbox];
+  [voucherLockbox removeAllVouchers];
 
   [(VSPrivacyFacade *)self service];
   return TCCAccessReset() != 0;

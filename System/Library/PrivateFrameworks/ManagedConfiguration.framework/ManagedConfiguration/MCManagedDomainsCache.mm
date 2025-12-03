@@ -1,6 +1,6 @@
 @interface MCManagedDomainsCache
 + (id)sharedCache;
-- (BOOL)isURLManaged:(id)a3;
+- (BOOL)isURLManaged:(id)managed;
 - (MCManagedDomainsCache)init;
 - (void)memberQueueRereadCache;
 - (void)rereadCache;
@@ -43,13 +43,13 @@ uint64_t __36__MCManagedDomainsCache_sharedCache__block_invoke()
     v2->_memberQueueCache = v5;
 
     objc_initWeak(&location, v2);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __29__MCManagedDomainsCache_init__block_invoke;
     v13[3] = &unk_1E77D1E38;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:0 usingBlock:v13];
+    v8 = [defaultCenter addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:0 usingBlock:v13];
 
     v9 = v2->_memberQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -72,24 +72,24 @@ void __29__MCManagedDomainsCache_init__block_invoke(uint64_t a1)
   [WeakRetained rereadCache];
 }
 
-- (BOOL)isURLManaged:(id)a3
+- (BOOL)isURLManaged:(id)managed
 {
-  v4 = a3;
-  if (v4)
+  managedCopy = managed;
+  if (managedCopy)
   {
     *buf = 0;
     v13 = buf;
     v14 = 0x2020000000;
     v15 = 0;
-    v5 = [(MCManagedDomainsCache *)self memberQueue];
+    memberQueue = [(MCManagedDomainsCache *)self memberQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__MCManagedDomainsCache_isURLManaged___block_invoke;
     block[3] = &unk_1E77D1FE8;
     block[4] = self;
-    v10 = v4;
+    v10 = managedCopy;
     v11 = buf;
-    dispatch_sync(v5, block);
+    dispatch_sync(memberQueue, block);
 
     v6 = v13[24];
     _Block_object_dispose(buf, 8);
@@ -156,20 +156,20 @@ LABEL_11:
 
 - (void)rereadCache
 {
-  v3 = [(MCManagedDomainsCache *)self memberQueue];
+  memberQueue = [(MCManagedDomainsCache *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__MCManagedDomainsCache_rereadCache__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(memberQueue, block);
 }
 
 - (void)memberQueueRereadCache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MCManagedDomainsCache *)self memberQueueCache];
-  [v3 removeAllObjects];
+  memberQueueCache = [(MCManagedDomainsCache *)self memberQueueCache];
+  [memberQueueCache removeAllObjects];
 
   v4 = +[MCRestrictionManager sharedManager];
   v5 = [v4 effectiveUnionValuesForSetting:@"managedWebDomains"];
@@ -195,8 +195,8 @@ LABEL_11:
         }
 
         v11 = [[MCDomainsCacheEntry alloc] initWithPattern:*(*(&v14 + 1) + 8 * v10)];
-        v12 = [(MCManagedDomainsCache *)self memberQueueCache];
-        [v12 addObject:v11];
+        memberQueueCache2 = [(MCManagedDomainsCache *)self memberQueueCache];
+        [memberQueueCache2 addObject:v11];
 
         ++v10;
       }

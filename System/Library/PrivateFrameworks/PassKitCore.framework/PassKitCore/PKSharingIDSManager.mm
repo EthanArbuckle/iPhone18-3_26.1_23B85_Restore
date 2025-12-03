@@ -1,42 +1,42 @@
 @interface PKSharingIDSManager
-- (BOOL)_canPerformIDSMessageForSharingGroup:(unint64_t)a3 handleUserDetails:(id)a4 currentUserDetails:(id)a5 error:(id *)a6;
+- (BOOL)_canPerformIDSMessageForSharingGroup:(unint64_t)group handleUserDetails:(id)details currentUserDetails:(id)userDetails error:(id *)error;
 - (NSArray)delegates;
 - (PKSharingIDSManager)init;
-- (PKSharingIDSManager)initWithIDSService:(id)a3;
-- (PKSharingIDSManager)initWithTargetQueue:(id)a3;
+- (PKSharingIDSManager)initWithIDSService:(id)service;
+- (PKSharingIDSManager)initWithTargetQueue:(id)queue;
 - (PKSharingIDSManagerDataSource)dataSource;
-- (id)_handlerConfigurationForInvitation:(id)a3 forHandle:(id)a4;
-- (id)_idsIDForHandle:(id)a3;
-- (id)_primaryAppleIDSharingDestination:(id)a3;
-- (id)_sanitizedHande:(id)a3;
-- (id)_sanitizedHandleWithFromID:(id)a3;
-- (id)_timeoutErrorForIdentifier:(id)a3;
-- (void)_cloudStoreZoneShareInvitationRequestInvitationData:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_cloudStoreZoneShareInvitationRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_cloudStoreZoneShareInvitationRequestRemoved:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_cloudStoreZoneShareInvitationResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_deviceSharingCapabilitiesRequestResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_deviceSharingCapabiltiesRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_queue_callCompletionHandlerForIdentifier:(id)a3 withError:(id)a4;
+- (id)_handlerConfigurationForInvitation:(id)invitation forHandle:(id)handle;
+- (id)_idsIDForHandle:(id)handle;
+- (id)_primaryAppleIDSharingDestination:(id)destination;
+- (id)_sanitizedHande:(id)hande;
+- (id)_sanitizedHandleWithFromID:(id)d;
+- (id)_timeoutErrorForIdentifier:(id)identifier;
+- (void)_cloudStoreZoneShareInvitationRequestInvitationData:(id)data service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_cloudStoreZoneShareInvitationRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_cloudStoreZoneShareInvitationRequestRemoved:(id)removed service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_cloudStoreZoneShareInvitationResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_deviceSharingCapabilitiesRequestResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_deviceSharingCapabiltiesRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_queue_callCompletionHandlerForIdentifier:(id)identifier withError:(id)error;
 - (void)_registerListeners;
-- (void)_remoteRegistrationRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_remoteRegistrationRequestResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_sendCloudStoreInvitationRequest:(id)a3 handleUserDetails:(id)a4 currentUserDetails:(id)a5 type:(unsigned __int16)a6 completion:(id)a7;
-- (void)_sendMessageWithProtobuf:(id)a3 destination:(id)a4 handleUserDetails:(id)a5 currentUserDetails:(id)a6 completion:(id)a7;
-- (void)_sharingDestinationForHandles:(id)a3 completion:(id)a4;
-- (void)addDelegate:(id)a3;
+- (void)_remoteRegistrationRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_remoteRegistrationRequestResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_sendCloudStoreInvitationRequest:(id)request handleUserDetails:(id)details currentUserDetails:(id)userDetails type:(unsigned __int16)type completion:(id)completion;
+- (void)_sendMessageWithProtobuf:(id)protobuf destination:(id)destination handleUserDetails:(id)details currentUserDetails:(id)userDetails completion:(id)completion;
+- (void)_sharingDestinationForHandles:(id)handles completion:(id)completion;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeCloudStoreZoneInvitation:(id)a3 forHandle:(id)a4 completion:(id)a5;
-- (void)removeDelegate:(id)a3;
-- (void)requestCloudStoreZoneInvitationData:(id)a3 forHandle:(id)a4 completion:(id)a5;
-- (void)sendCloudStoreZoneInvitation:(id)a3 forHandle:(id)a4 invitationError:(id)a5 completion:(id)a6;
-- (void)sendCloudStoreZoneInvitationResponse:(id)a3 completion:(id)a4;
-- (void)sendDeviceSharingCapabilitiesRequestForHandle:(id)a3 completion:(id)a4;
-- (void)sendRemoteRegistrationRequest:(id)a3 forHandle:(id)a4 completion:(id)a5;
-- (void)sendRemoteRegistrationRequestResult:(unint64_t)a3 forHandle:(id)a4 completion:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)removeCloudStoreZoneInvitation:(id)invitation forHandle:(id)handle completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)requestCloudStoreZoneInvitationData:(id)data forHandle:(id)handle completion:(id)completion;
+- (void)sendCloudStoreZoneInvitation:(id)invitation forHandle:(id)handle invitationError:(id)error completion:(id)completion;
+- (void)sendCloudStoreZoneInvitationResponse:(id)response completion:(id)completion;
+- (void)sendDeviceSharingCapabilitiesRequestForHandle:(id)handle completion:(id)completion;
+- (void)sendRemoteRegistrationRequest:(id)request forHandle:(id)handle completion:(id)completion;
+- (void)sendRemoteRegistrationRequestResult:(unint64_t)result forHandle:(id)handle completion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
 @end
 
 @implementation PKSharingIDSManager
@@ -58,23 +58,23 @@
   return v4;
 }
 
-- (PKSharingIDSManager)initWithTargetQueue:(id)a3
+- (PKSharingIDSManager)initWithTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [(PKSharingIDSManager *)self init];
   v6 = v5;
   if (v5)
   {
-    dispatch_set_target_queue(v5->_internalQueue, v4);
-    dispatch_set_target_queue(v6->_callbackQueue, v4);
+    dispatch_set_target_queue(v5->_internalQueue, queueCopy);
+    dispatch_set_target_queue(v6->_callbackQueue, queueCopy);
   }
 
   return v6;
 }
 
-- (PKSharingIDSManager)initWithIDSService:(id)a3
+- (PKSharingIDSManager)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v18.receiver = self;
   v18.super_class = PKSharingIDSManager;
   v6 = [(PKSharingIDSManager *)&v18 init];
@@ -88,7 +88,7 @@
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v9;
 
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
     v6->_delegatesLock._os_unfair_lock_opaque = 0;
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     completionHandlers = v6->_completionHandlers;
@@ -118,26 +118,26 @@
   [(PKSharingIDSManager *)&v3 dealloc];
 }
 
-- (void)sendCloudStoreZoneInvitation:(id)a3 forHandle:(id)a4 invitationError:(id)a5 completion:(id)a6
+- (void)sendCloudStoreZoneInvitation:(id)invitation forHandle:(id)handle invitationError:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  handleCopy = handle;
+  errorCopy = error;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PKSharingIDSManager_sendCloudStoreZoneInvitation_forHandle_invitationError_completion___block_invoke;
   block[3] = &unk_1E79CBD70;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = invitationCopy;
+  v22 = errorCopy;
+  v23 = completionCopy;
+  v21 = handleCopy;
+  v15 = errorCopy;
+  v16 = completionCopy;
+  v17 = handleCopy;
+  v18 = invitationCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -322,23 +322,23 @@ void __89__PKSharingIDSManager_sendCloudStoreZoneInvitation_forHandle_invitation
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)removeCloudStoreZoneInvitation:(id)a3 forHandle:(id)a4 completion:(id)a5
+- (void)removeCloudStoreZoneInvitation:(id)invitation forHandle:(id)handle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationCopy = invitation;
+  handleCopy = handle;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKSharingIDSManager_removeCloudStoreZoneInvitation_forHandle_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = invitationCopy;
+  v17 = handleCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = handleCopy;
+  v14 = invitationCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -515,37 +515,37 @@ void __75__PKSharingIDSManager_removeCloudStoreZoneInvitation_forHandle_completi
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)sendCloudStoreZoneInvitationResponse:(id)a3 completion:(id)a4
+- (void)sendCloudStoreZoneInvitationResponse:(id)response completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 protobuf];
+  completionCopy = completion;
+  responseCopy = response;
+  protobuf = [responseCopy protobuf];
   v9 = objc_alloc(MEMORY[0x1E69A5388]);
-  v10 = [v8 data];
-  v11 = [v9 initWithProtobufData:v10 type:10 isResponse:1];
+  data = [protobuf data];
+  v11 = [v9 initWithProtobufData:data type:10 isResponse:1];
 
-  v12 = [v7 destination];
-  v13 = [v12 idsDestination];
-  v14 = [v13 name];
+  destination = [responseCopy destination];
+  idsDestination = [destination idsDestination];
+  name = [idsDestination name];
 
-  v15 = [v7 invitation];
+  invitation = [responseCopy invitation];
 
-  v16 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:v15 forHandle:v14];
+  v16 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:invitation forHandle:name];
 
-  v17 = [v16 sharingGroup];
+  sharingGroup = [v16 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __71__PKSharingIDSManager_sendCloudStoreZoneInvitationResponse_completion___block_invoke;
   v22[3] = &unk_1E79CBDC0;
-  v25 = v6;
-  v26 = v17;
+  v25 = completionCopy;
+  v26 = sharingGroup;
   v22[4] = self;
   v23 = v11;
-  v24 = v12;
-  v19 = v12;
+  v24 = destination;
+  v19 = destination;
   v20 = v11;
-  v21 = v6;
+  v21 = completionCopy;
   [WeakRetained handlerDetailsForConfiguration:v16 completion:v22];
 }
 
@@ -600,23 +600,23 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)requestCloudStoreZoneInvitationData:(id)a3 forHandle:(id)a4 completion:(id)a5
+- (void)requestCloudStoreZoneInvitationData:(id)data forHandle:(id)handle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  handleCopy = handle;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__PKSharingIDSManager_requestCloudStoreZoneInvitationData_forHandle_completion___block_invoke;
   v15[3] = &unk_1E79C4EF0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dataCopy;
+  v17 = handleCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = handleCopy;
+  v14 = dataCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -793,40 +793,40 @@ void __80__PKSharingIDSManager_requestCloudStoreZoneInvitationData_forHandle_com
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)_sendCloudStoreInvitationRequest:(id)a3 handleUserDetails:(id)a4 currentUserDetails:(id)a5 type:(unsigned __int16)a6 completion:(id)a7
+- (void)_sendCloudStoreInvitationRequest:(id)request handleUserDetails:(id)details currentUserDetails:(id)userDetails type:(unsigned __int16)type completion:(id)completion
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v20 = [v15 protobuf];
+  typeCopy = type;
+  completionCopy = completion;
+  userDetailsCopy = userDetails;
+  detailsCopy = details;
+  requestCopy = request;
+  protobuf = [requestCopy protobuf];
   v16 = objc_alloc(MEMORY[0x1E69A5388]);
-  v17 = [v20 data];
-  v18 = [v16 initWithProtobufData:v17 type:v7 isResponse:0];
+  data = [protobuf data];
+  v18 = [v16 initWithProtobufData:data type:typeCopy isResponse:0];
 
-  v19 = [v15 destination];
+  destination = [requestCopy destination];
 
-  [(PKSharingIDSManager *)self _sendMessageWithProtobuf:v18 destination:v19 handleUserDetails:v14 currentUserDetails:v13 completion:v12];
+  [(PKSharingIDSManager *)self _sendMessageWithProtobuf:v18 destination:destination handleUserDetails:detailsCopy currentUserDetails:userDetailsCopy completion:completionCopy];
 }
 
-- (void)sendRemoteRegistrationRequest:(id)a3 forHandle:(id)a4 completion:(id)a5
+- (void)sendRemoteRegistrationRequest:(id)request forHandle:(id)handle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handleCopy = handle;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__PKSharingIDSManager_sendRemoteRegistrationRequest_forHandle_completion___block_invoke;
   v15[3] = &unk_1E79CB4E8;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = handleCopy;
+  selfCopy = self;
+  v18 = requestCopy;
+  v19 = completionCopy;
+  v12 = requestCopy;
+  v13 = completionCopy;
+  v14 = handleCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -1006,21 +1006,21 @@ void __74__PKSharingIDSManager_sendRemoteRegistrationRequest_forHandle_completio
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)sendRemoteRegistrationRequestResult:(unint64_t)a3 forHandle:(id)a4 completion:(id)a5
+- (void)sendRemoteRegistrationRequestResult:(unint64_t)result forHandle:(id)handle completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__PKSharingIDSManager_sendRemoteRegistrationRequestResult_forHandle_completion___block_invoke;
   v13[3] = &unk_1E79C4D88;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = handleCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  resultCopy = result;
+  v11 = completionCopy;
+  v12 = handleCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -1151,27 +1151,27 @@ void __80__PKSharingIDSManager_sendRemoteRegistrationRequestResult_forHandle_com
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)sendDeviceSharingCapabilitiesRequestForHandle:(id)a3 completion:(id)a4
+- (void)sendDeviceSharingCapabilitiesRequestForHandle:(id)handle completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  handleCopy = handle;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6)
+    if (handleCopy)
     {
       v8 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:1];
-      [(PKSharingIDSManagerHandlerConfiguration *)v8 setHandle:v6];
-      v9 = [(PKSharingIDSManagerHandlerConfiguration *)v8 sharingGroup];
+      [(PKSharingIDSManagerHandlerConfiguration *)v8 setHandle:handleCopy];
+      sharingGroup = [(PKSharingIDSManagerHandlerConfiguration *)v8 sharingGroup];
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __80__PKSharingIDSManager_sendDeviceSharingCapabilitiesRequestForHandle_completion___block_invoke;
       v12[3] = &unk_1E79CBED8;
       v12[4] = self;
-      v15 = v9;
-      v14 = v7;
-      v13 = v6;
+      v15 = sharingGroup;
+      v14 = completionCopy;
+      v13 = handleCopy;
       [WeakRetained handlerDetailsForConfiguration:v8 completion:v12];
     }
 
@@ -1185,7 +1185,7 @@ void __80__PKSharingIDSManager_sendRemoteRegistrationRequestResult_forHandle_com
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Error: cannot check apple cash capability for a nil receipient handle %s", buf, 0xCu);
       }
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -1370,22 +1370,22 @@ void __80__PKSharingIDSManager_sendDeviceSharingCapabilitiesRequestForHandle_com
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_cloudStoreZoneShareInvitationRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_cloudStoreZoneShareInvitationRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  receivedCopy = received;
   v11 = [PKProtobufCloudStoreZoneInvitationRequest alloc];
-  v12 = [v10 data];
+  data = [receivedCopy data];
 
-  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:v12];
-  v14 = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
-  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:v14];
+  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:data];
+  invitation = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
+  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:invitation];
 
   v16 = [PKCloudStoreZoneInvitationRequest invitationErrorWithProtobuf:v13];
-  v17 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v17 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
   v18 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:v15 forHandle:v17];
-  v19 = [v18 sharingGroup];
+  sharingGroup = [v18 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -1394,7 +1394,7 @@ void __80__PKSharingIDSManager_sendDeviceSharingCapabilitiesRequestForHandle_com
   v23[4] = self;
   v24 = v15;
   v25 = v16;
-  v26 = v19;
+  v26 = sharingGroup;
   v21 = v16;
   v22 = v15;
   [WeakRetained handlerDetailsForConfiguration:v18 completion:v23];
@@ -1513,28 +1513,28 @@ uint64_t __100__PKSharingIDSManager__cloudStoreZoneShareInvitationRequestReceive
   return result;
 }
 
-- (void)_cloudStoreZoneShareInvitationRequestRemoved:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_cloudStoreZoneShareInvitationRequestRemoved:(id)removed service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  removedCopy = removed;
   v11 = [PKProtobufCloudStoreZoneInvitationRequest alloc];
-  v12 = [v10 data];
+  data = [removedCopy data];
 
-  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:v12];
-  v14 = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
-  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:v14];
+  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:data];
+  invitation = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
+  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:invitation];
 
-  v16 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v16 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
   v17 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:v15 forHandle:v16];
-  v18 = [v17 sharingGroup];
+  sharingGroup = [v17 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __99__PKSharingIDSManager__cloudStoreZoneShareInvitationRequestRemoved_service_account_fromID_context___block_invoke;
   v21[3] = &unk_1E79CBF28;
   v22 = v15;
-  v23 = v18;
+  v23 = sharingGroup;
   v21[4] = self;
   v20 = v15;
   [WeakRetained handlerDetailsForConfiguration:v17 completion:v21];
@@ -1647,28 +1647,28 @@ uint64_t __99__PKSharingIDSManager__cloudStoreZoneShareInvitationRequestRemoved_
   return result;
 }
 
-- (void)_cloudStoreZoneShareInvitationResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_cloudStoreZoneShareInvitationResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  receivedCopy = received;
   v11 = [PKProtobufCloudStoreZoneInvitationResponse alloc];
-  v12 = [v10 data];
+  data = [receivedCopy data];
 
-  v13 = [(PKProtobufCloudStoreZoneInvitationResponse *)v11 initWithData:v12];
+  v13 = [(PKProtobufCloudStoreZoneInvitationResponse *)v11 initWithData:data];
   v14 = [PKCloudStoreZoneInvitationResponse cloudStoreZoneInvitationResponseWithProtobuf:v13];
-  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
-  v16 = [v14 invitation];
-  v17 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:v16 forHandle:v15];
+  invitation = [v14 invitation];
+  v17 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:invitation forHandle:v15];
 
-  v18 = [v17 sharingGroup];
+  sharingGroup = [v17 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __101__PKSharingIDSManager__cloudStoreZoneShareInvitationResponseReceived_service_account_fromID_context___block_invoke;
   v21[3] = &unk_1E79CBF28;
   v22 = v14;
-  v23 = v18;
+  v23 = sharingGroup;
   v21[4] = self;
   v20 = v14;
   [WeakRetained handlerDetailsForConfiguration:v17 completion:v21];
@@ -1777,28 +1777,28 @@ void __101__PKSharingIDSManager__cloudStoreZoneShareInvitationResponseReceived_s
   }
 }
 
-- (void)_cloudStoreZoneShareInvitationRequestInvitationData:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_cloudStoreZoneShareInvitationRequestInvitationData:(id)data service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  dataCopy = data;
   v11 = [PKProtobufCloudStoreZoneInvitationRequest alloc];
-  v12 = [v10 data];
+  data = [dataCopy data];
 
-  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:v12];
-  v14 = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
-  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:v14];
+  v13 = [(PKProtobufCloudStoreZoneInvitationRequest *)v11 initWithData:data];
+  invitation = [(PKProtobufCloudStoreZoneInvitationRequest *)v13 invitation];
+  v15 = [PKCloudStoreZoneInvitation cloudStoreZoneInvitationWithProtobuf:invitation];
 
-  v16 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v16 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
   v17 = [(PKSharingIDSManager *)self _handlerConfigurationForInvitation:v15 forHandle:v16];
-  v18 = [v17 sharingGroup];
+  sharingGroup = [v17 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __106__PKSharingIDSManager__cloudStoreZoneShareInvitationRequestInvitationData_service_account_fromID_context___block_invoke;
   v21[3] = &unk_1E79CBF28;
   v22 = v15;
-  v23 = v18;
+  v23 = sharingGroup;
   v21[4] = self;
   v20 = v15;
   [WeakRetained handlerDetailsForConfiguration:v17 completion:v21];
@@ -1911,27 +1911,27 @@ uint64_t __106__PKSharingIDSManager__cloudStoreZoneShareInvitationRequestInvitat
   return result;
 }
 
-- (void)_remoteRegistrationRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_remoteRegistrationRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  receivedCopy = received;
   v11 = [PKProtobufRemoteRegistrationRequest alloc];
-  v12 = [v10 data];
+  data = [receivedCopy data];
 
-  v13 = [(PKProtobufRemoteRegistrationRequest *)v11 initWithData:v12];
+  v13 = [(PKProtobufRemoteRegistrationRequest *)v11 initWithData:data];
   v14 = [PKRemoteRegistrationRequest remoteRegistrationRequestWithProtobuf:v13];
-  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
   v16 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:1];
   [(PKSharingIDSManagerHandlerConfiguration *)v16 setHandle:v15];
-  v17 = [(PKSharingIDSManagerHandlerConfiguration *)v16 sharingGroup];
+  sharingGroup = [(PKSharingIDSManagerHandlerConfiguration *)v16 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __89__PKSharingIDSManager__remoteRegistrationRequestReceived_service_account_fromID_context___block_invoke;
   v20[3] = &unk_1E79CBF28;
   v21 = v14;
-  v22 = v17;
+  v22 = sharingGroup;
   v20[4] = self;
   v19 = v14;
   [WeakRetained handlerDetailsForConfiguration:v16 completion:v20];
@@ -2044,28 +2044,28 @@ uint64_t __89__PKSharingIDSManager__remoteRegistrationRequestReceived_service_ac
   return result;
 }
 
-- (void)_remoteRegistrationRequestResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_remoteRegistrationRequestResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
+  dCopy = d;
+  receivedCopy = received;
   v11 = [PKProtobufRemoteRegistrationRequestResult alloc];
-  v12 = [v10 data];
+  data = [receivedCopy data];
 
-  v13 = [(PKProtobufRemoteRegistrationRequestResult *)v11 initWithData:v12];
-  v14 = [(PKProtobufRemoteRegistrationRequestResult *)v13 result];
-  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v13 = [(PKProtobufRemoteRegistrationRequestResult *)v11 initWithData:data];
+  result = [(PKProtobufRemoteRegistrationRequestResult *)v13 result];
+  v15 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
 
   v16 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:1];
   [(PKSharingIDSManagerHandlerConfiguration *)v16 setHandle:v15];
-  v17 = [(PKSharingIDSManagerHandlerConfiguration *)v16 sharingGroup];
+  sharingGroup = [(PKSharingIDSManagerHandlerConfiguration *)v16 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __95__PKSharingIDSManager__remoteRegistrationRequestResultReceived_service_account_fromID_context___block_invoke;
   v19[3] = &unk_1E79CBF78;
   v19[4] = self;
-  v19[5] = v17;
-  v19[6] = v14;
+  v19[5] = sharingGroup;
+  v19[6] = result;
   [WeakRetained handlerDetailsForConfiguration:v16 completion:v19];
 }
 
@@ -2179,19 +2179,19 @@ uint64_t __95__PKSharingIDSManager__remoteRegistrationRequestResultReceived_serv
   return result;
 }
 
-- (void)_deviceSharingCapabiltiesRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_deviceSharingCapabiltiesRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v8 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:a6, a4, a5];
+  account = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:d, service, account];
   v9 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:1];
-  [(PKSharingIDSManagerHandlerConfiguration *)v9 setHandle:v8];
-  v10 = [(PKSharingIDSManagerHandlerConfiguration *)v9 sharingGroup];
+  [(PKSharingIDSManagerHandlerConfiguration *)v9 setHandle:account];
+  sharingGroup = [(PKSharingIDSManagerHandlerConfiguration *)v9 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__PKSharingIDSManager__deviceSharingCapabiltiesRequestReceived_service_account_fromID_context___block_invoke;
   v12[3] = &unk_1E79CBFC8;
   v12[4] = self;
-  v12[5] = v10;
+  v12[5] = sharingGroup;
   [WeakRetained handlerDetailsForConfiguration:v9 completion:v12];
 }
 
@@ -2297,13 +2297,13 @@ void __95__PKSharingIDSManager__deviceSharingCapabiltiesRequestReceived_service_
   [*(a1 + 40) _sendMessageWithProtobuf:v4 destination:*(a1 + 48) handleUserDetails:*(a1 + 56) currentUserDetails:*(a1 + 64) completion:0];
 }
 
-- (void)_deviceSharingCapabilitiesRequestResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_deviceSharingCapabilitiesRequestResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = [a3 data];
-  if (v10)
+  dCopy = d;
+  data = [received data];
+  if (data)
   {
-    v11 = [[PKProtobufDeviceSharingCapabilities alloc] initWithData:v10];
+    v11 = [[PKProtobufDeviceSharingCapabilities alloc] initWithData:data];
     v12 = [PKDeviceSharingCapabilities deviceSharingCapbilitesRequestWithProtobuf:v11];
   }
 
@@ -2312,10 +2312,10 @@ void __95__PKSharingIDSManager__deviceSharingCapabiltiesRequestReceived_service_
     v12 = 0;
   }
 
-  v13 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:v9];
+  v13 = [(PKSharingIDSManager *)self _sanitizedHandleWithFromID:dCopy];
   v14 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:1];
   [(PKSharingIDSManagerHandlerConfiguration *)v14 setHandle:v13];
-  v15 = [(PKSharingIDSManagerHandlerConfiguration *)v14 sharingGroup];
+  sharingGroup = [(PKSharingIDSManagerHandlerConfiguration *)v14 sharingGroup];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -2324,7 +2324,7 @@ void __95__PKSharingIDSManager__deviceSharingCapabiltiesRequestReceived_service_
   v19[4] = self;
   v20 = v12;
   v21 = v13;
-  v22 = v15;
+  v22 = sharingGroup;
   v17 = v13;
   v18 = v12;
   [WeakRetained handlerDetailsForConfiguration:v14 completion:v19];
@@ -2441,53 +2441,53 @@ uint64_t __102__PKSharingIDSManager__deviceSharingCapabilitiesRequestResultRecei
 - (NSArray)delegates
 {
   os_unfair_lock_lock(&self->_delegatesLock);
-  v3 = [(NSHashTable *)self->_delegates allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v4 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_delegatesLock);
 
   return v4;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
   delegates = self->_delegates;
   if (!delegates)
   {
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     v6 = self->_delegates;
-    self->_delegates = v5;
+    self->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
     delegates = self->_delegates;
   }
 
-  [(NSHashTable *)delegates addObject:v7];
+  [(NSHashTable *)delegates addObject:delegateCopy];
   os_unfair_lock_unlock(&self->_delegatesLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
   os_unfair_lock_unlock(&self->_delegatesLock);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
   v10 = PKLogFacilityTypeGetObject(0xAuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v8;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = contextCopy;
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "IDS Service has delivered message: %@, context: %@", buf, 0x16u);
   }
 
@@ -2497,12 +2497,12 @@ uint64_t __102__PKSharingIDSManager__deviceSharingCapabilitiesRequestResultRecei
   v13[2] = __78__PKSharingIDSManager_service_account_identifier_hasBeenDeliveredWithContext___block_invoke;
   v13[3] = &unk_1E79C4DD8;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
+  v14 = identifierCopy;
+  v12 = identifierCopy;
   dispatch_async(internalQueue, v13);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
   v12 = PKLogFacilityTypeGetObject(0xAuLL);
@@ -2511,51 +2511,51 @@ uint64_t __102__PKSharingIDSManager__deviceSharingCapabilitiesRequestResultRecei
     v13 = 136316418;
     v14 = "[PKSharingIDSManager service:account:incomingUnhandledProtobuf:fromID:context:]";
     v15 = 2112;
-    v16 = a3;
+    serviceCopy = service;
     v17 = 2112;
-    v18 = a4;
+    accountCopy = account;
     v19 = 2112;
-    v20 = a5;
+    protobufCopy = protobuf;
     v21 = 2112;
-    v22 = a6;
+    dCopy = d;
     v23 = 2112;
-    v24 = a7;
+    contextCopy = context;
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "%s %@ %@ %@ %@ %@", &v13, 0x3Eu);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = PKLogFacilityTypeGetObject(0xAuLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316418;
     v22 = "[PKSharingIDSManager service:account:identifier:didSendWithSuccess:error:]";
     v23 = 2112;
-    v24 = v12;
+    v24 = serviceCopy;
     v25 = 2112;
-    v26 = v13;
+    v26 = accountCopy;
     v27 = 2112;
-    v28 = v14;
+    v28 = identifierCopy;
     v29 = 1024;
-    v30 = v8;
+    v30 = successCopy;
     v31 = 2112;
-    v32 = v15;
+    v32 = errorCopy;
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "%s %@ %@ %@ %d %@", buf, 0x3Au);
   }
 
-  if (!v8)
+  if (!successCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v14;
+      v22 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Failed to send with success: %@", buf, 0xCu);
     }
 
@@ -2565,20 +2565,20 @@ uint64_t __102__PKSharingIDSManager__deviceSharingCapabilitiesRequestResultRecei
     block[2] = __75__PKSharingIDSManager_service_account_identifier_didSendWithSuccess_error___block_invoke;
     block[3] = &unk_1E79C4E00;
     block[4] = self;
-    v19 = v14;
-    v20 = v15;
+    v19 = identifierCopy;
+    v20 = errorCopy;
     dispatch_async(internalQueue, block);
   }
 }
 
-- (id)_handlerConfigurationForInvitation:(id)a3 forHandle:(id)a4
+- (id)_handlerConfigurationForInvitation:(id)invitation forHandle:(id)handle
 {
   v16 = 0;
-  v5 = a4;
-  v6 = [a3 zoneName];
+  handleCopy = handle;
+  zoneName = [invitation zoneName];
   v14 = 0;
   v15 = 0;
-  [PKCloudStoreZone zoneValueForZoneName:v6 outZoneType:&v16 outAccountIdentifier:&v15 altDSID:&v14];
+  [PKCloudStoreZone zoneValueForZoneName:zoneName outZoneType:&v16 outAccountIdentifier:&v15 altDSID:&v14];
   v7 = v15;
   v8 = v14;
 
@@ -2594,37 +2594,37 @@ uint64_t __102__PKSharingIDSManager__deviceSharingCapabilitiesRequestResultRecei
   v12 = [[PKSharingIDSManagerHandlerConfiguration alloc] initWithSharingGroup:v10];
   [(PKSharingIDSManagerHandlerConfiguration *)v12 setAccountIdentifier:v7];
 
-  [(PKSharingIDSManagerHandlerConfiguration *)v12 setHandle:v5];
+  [(PKSharingIDSManagerHandlerConfiguration *)v12 setHandle:handleCopy];
   [(PKSharingIDSManagerHandlerConfiguration *)v12 setAccessLevel:v9];
 
   return v12;
 }
 
-- (BOOL)_canPerformIDSMessageForSharingGroup:(unint64_t)a3 handleUserDetails:(id)a4 currentUserDetails:(id)a5 error:(id *)a6
+- (BOOL)_canPerformIDSMessageForSharingGroup:(unint64_t)group handleUserDetails:(id)details currentUserDetails:(id)userDetails error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  if (!a3)
+  detailsCopy = details;
+  userDetailsCopy = userDetails;
+  if (!group)
   {
     v17 = MEMORY[0x1E696AEC0];
     v18 = @"Error: cannot send IDS message because for an unknown account type";
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (group == 2)
   {
-    v13 = [v9 accountUser];
+    accountUser = [detailsCopy accountUser];
 
-    if (!v13)
+    if (!accountUser)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because %@ does not have an account user defined", v9];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because %@ does not have an account user defined", detailsCopy];
       goto LABEL_16;
     }
 
-    v14 = [v10 accountUser];
+    accountUser2 = [userDetailsCopy accountUser];
 
-    if (v14)
+    if (accountUser2)
     {
 LABEL_9:
       v15 = 0;
@@ -2633,46 +2633,46 @@ LABEL_9:
     }
 
     v17 = MEMORY[0x1E696AEC0];
-    v23 = v10;
+    v23 = userDetailsCopy;
     v18 = @"Error: cannot send IDS message because the current user %@ does not have an account user defined";
 LABEL_15:
     [v17 stringWithFormat:v18, v23];
     goto LABEL_16;
   }
 
-  if (a3 != 1)
+  if (group != 1)
   {
     v16 = 0;
     v15 = 0;
     goto LABEL_19;
   }
 
-  v11 = [v9 familyMember];
+  familyMember = [detailsCopy familyMember];
 
-  if (!v11)
+  if (!familyMember)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because %@ is not in the family circle", v9];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because %@ is not in the family circle", detailsCopy];
     goto LABEL_16;
   }
 
-  v12 = [v10 familyMember];
+  familyMember2 = [userDetailsCopy familyMember];
 
-  if (v12)
+  if (familyMember2)
   {
     goto LABEL_9;
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because the current user %@ is not in the family circle", v10];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot send IDS message because the current user %@ is not in the family circle", userDetailsCopy];
   v19 = LABEL_16:;
   v15 = v19;
   v16 = 0;
-  if (a6 && v19)
+  if (error && v19)
   {
     v20 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A578];
     v25[0] = v19;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    *a6 = [v20 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v21];
+    *error = [v20 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v21];
 
     v16 = 0;
   }
@@ -2682,23 +2682,23 @@ LABEL_19:
   return v16;
 }
 
-- (void)_sendMessageWithProtobuf:(id)a3 destination:(id)a4 handleUserDetails:(id)a5 currentUserDetails:(id)a6 completion:(id)a7
+- (void)_sendMessageWithProtobuf:(id)protobuf destination:(id)destination handleUserDetails:(id)details currentUserDetails:(id)userDetails completion:(id)completion
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(PKIDSService *)self->_service underlyingService];
-  v15 = [v14 iCloudAccount];
+  protobufCopy = protobuf;
+  destinationCopy = destination;
+  userDetailsCopy = userDetails;
+  completionCopy = completion;
+  underlyingService = [(PKIDSService *)self->_service underlyingService];
+  iCloudAccount = [underlyingService iCloudAccount];
 
-  if ([v15 isActive])
+  if ([iCloudAccount isActive])
   {
-    v43 = v13;
-    v16 = v11;
+    v43 = completionCopy;
+    v16 = destinationCopy;
     v17 = MEMORY[0x1E695DFD8];
-    v18 = [v15 registeredURIs];
-    v19 = [v17 setWithArray:v18];
+    registeredURIs = [iCloudAccount registeredURIs];
+    v19 = [v17 setWithArray:registeredURIs];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __108__PKSharingIDSManager__sendMessageWithProtobuf_destination_handleUserDetails_currentUserDetails_completion___block_invoke;
@@ -2706,18 +2706,18 @@ LABEL_19:
     v48[4] = self;
     v20 = [v19 pk_setByApplyingBlock:v48];
 
-    v21 = [v12 primaryAppleID];
-    v40 = v21;
-    if ([v20 count] && !objc_msgSend(v20, "containsObject:", v21) || (v22 = v21) == 0)
+    primaryAppleID = [userDetailsCopy primaryAppleID];
+    v40 = primaryAppleID;
+    if ([v20 count] && !objc_msgSend(v20, "containsObject:", primaryAppleID) || (anyObject = primaryAppleID) == 0)
     {
-      v23 = [v12 aliases];
-      v24 = [v23 mutableCopy];
+      aliases = [userDetailsCopy aliases];
+      v24 = [aliases mutableCopy];
       [v24 intersectSet:v20];
       v25 = PKLogFacilityTypeGetObject(0xAuLL);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v52 = v23;
+        v52 = aliases;
         v53 = 2112;
         v54 = v20;
         v55 = 2112;
@@ -2725,14 +2725,14 @@ LABEL_19:
         _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "The family member appleID is not in the list of registeredURIs with IDS. Checking the family members aliases %@ against the IDS registeredURIs %@. The overlapping appleIDs are %@", buf, 0x20u);
       }
 
-      v22 = [v24 anyObject];
+      anyObject = [v24 anyObject];
     }
 
-    v44 = v12;
-    v26 = [(PKSharingIDSManager *)self _idsIDForHandle:v22];
+    v44 = userDetailsCopy;
+    v26 = [(PKSharingIDSManager *)self _idsIDForHandle:anyObject];
     v27 = v26;
     v41 = v20;
-    v42 = v15;
+    v42 = iCloudAccount;
     if (v26)
     {
       v49 = *MEMORY[0x1E69A47B0];
@@ -2744,28 +2744,28 @@ LABEL_19:
         *buf = 138412546;
         v52 = v27;
         v53 = 2112;
-        v30 = v45;
-        v54 = v45;
+        v30 = protobufCopy;
+        v54 = protobufCopy;
         _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Using IDS fromID as %@ for request protobuf %@", buf, 0x16u);
 LABEL_20:
 
-        v35 = [(PKIDSService *)self->_service underlyingService];
+        underlyingService2 = [(PKIDSService *)self->_service underlyingService];
         v36 = MEMORY[0x1E695DFD8];
         v37 = v16;
-        v38 = [v16 idsDestination];
-        v39 = [v36 setWithObject:v38];
+        idsDestination = [v16 idsDestination];
+        v39 = [v36 setWithObject:idsDestination];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __108__PKSharingIDSManager__sendMessageWithProtobuf_destination_handleUserDetails_currentUserDetails_completion___block_invoke_118;
         v46[3] = &unk_1E79C5508;
-        v13 = v43;
+        completionCopy = v43;
         v46[4] = self;
         v47 = v43;
-        PKProtobufSendWithOptions(v35, v30, v39, 300, 0, 0, 1, v46, v28);
+        PKProtobufSendWithOptions(underlyingService2, v30, v39, 300, 0, 0, 1, v46, v28);
 
-        v11 = v37;
-        v12 = v44;
-        v15 = v42;
+        destinationCopy = v37;
+        userDetailsCopy = v44;
+        iCloudAccount = v42;
         goto LABEL_21;
       }
     }
@@ -2778,8 +2778,8 @@ LABEL_20:
         *buf = 138412546;
         v52 = 0;
         v53 = 2112;
-        v30 = v45;
-        v54 = v45;
+        v30 = protobufCopy;
+        v54 = protobufCopy;
         _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Not defining IDS fromID as %@ for request protobuf %@", buf, 0x16u);
         v28 = 0;
         goto LABEL_20;
@@ -2788,30 +2788,30 @@ LABEL_20:
       v28 = 0;
     }
 
-    v30 = v45;
+    v30 = protobufCopy;
     goto LABEL_20;
   }
 
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot sent IDS message since the Apple Account is not active %@", v15];
+  anyObject = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: cannot sent IDS message since the Apple Account is not active %@", iCloudAccount];
   v31 = PKLogFacilityTypeGetObject(0xAuLL);
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v52 = v22;
+    v52 = anyObject;
     _os_log_impl(&dword_1AD337000, v31, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v32 = MEMORY[0x1E696ABC0];
     v57 = *MEMORY[0x1E696A578];
-    v58[0] = v22;
+    v58[0] = anyObject;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
     v34 = [v32 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v33];
-    (*(v13 + 2))(v13, v34);
+    (*(completionCopy + 2))(completionCopy, v34);
   }
 
-  v30 = v45;
+  v30 = protobufCopy;
 LABEL_21:
 }
 
@@ -2895,42 +2895,42 @@ void __108__PKSharingIDSManager__sendMessageWithProtobuf_destination_handleUserD
   [v5 _queue_callCompletionHandlerForIdentifier:v4 withError:v7];
 }
 
-- (void)_queue_callCompletionHandlerForIdentifier:(id)a3 withError:(id)a4
+- (void)_queue_callCompletionHandlerForIdentifier:(id)identifier withError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (identifierCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xAuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = 2112;
-      v20 = v7;
+      v20 = errorCopy;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Requesting to call completion block for %@ with error %@", buf, 0x16u);
     }
 
-    v9 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:v6];
-    v10 = [(NSMutableDictionary *)self->_completionTimers objectForKey:v6];
+    v9 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:identifierCopy];
+    v10 = [(NSMutableDictionary *)self->_completionTimers objectForKey:identifierCopy];
     v11 = v10;
     if (v10)
     {
       dispatch_source_cancel(v10);
-      [(NSMutableDictionary *)self->_completionTimers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_completionTimers removeObjectForKey:identifierCopy];
     }
 
     if (v9)
     {
-      [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:identifierCopy];
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__PKSharingIDSManager__queue_callCompletionHandlerForIdentifier_withError___block_invoke;
       block[3] = &unk_1E79C4D60;
-      v14 = v6;
-      v15 = v7;
+      v14 = identifierCopy;
+      v15 = errorCopy;
       v16 = v9;
       dispatch_async(callbackQueue, block);
     }
@@ -2955,11 +2955,11 @@ uint64_t __75__PKSharingIDSManager__queue_callCompletionHandlerForIdentifier_wit
   return (*(a1[6] + 16))();
 }
 
-- (id)_timeoutErrorForIdentifier:(id)a3
+- (id)_timeoutErrorForIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696ABC0];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IDS request timed out for identifier %@", a3, *MEMORY[0x1E696A578]];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IDS request timed out for identifier %@", identifier, *MEMORY[0x1E696A578]];
   v9[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v6 = [v3 errorWithDomain:@"PKPassKitErrorDomain" code:-8000 userInfo:v5];
@@ -2982,7 +2982,7 @@ uint64_t __75__PKSharingIDSManager__queue_callCompletionHandlerForIdentifier_wit
   [(PKIDSService *)service setProtobufAction:sel__deviceSharingCapabilitiesRequestResultReceived_service_account_fromID_context_ target:self forIncomingResponsesOfType:14 queue:internalQueue];
 }
 
-- (id)_sanitizedHandleWithFromID:(id)a3
+- (id)_sanitizedHandleWithFromID:(id)d
 {
   v4 = IDSCopyAddressDestinationForDestination();
   v5 = [(PKSharingIDSManager *)self _sanitizedHande:v4];
@@ -2990,25 +2990,25 @@ uint64_t __75__PKSharingIDSManager__queue_callCompletionHandlerForIdentifier_wit
   return v5;
 }
 
-- (id)_sanitizedHande:(id)a3
+- (id)_sanitizedHande:(id)hande
 {
-  v3 = a3;
+  handeCopy = hande;
   v4 = @"mailto:";
-  if (([v3 hasPrefix:@"mailto:"] & 1) != 0 || (v4 = @"tel:", objc_msgSend(v3, "hasPrefix:", @"tel:")))
+  if (([handeCopy hasPrefix:@"mailto:"] & 1) != 0 || (v4 = @"tel:", objc_msgSend(handeCopy, "hasPrefix:", @"tel:")))
   {
-    v5 = [v3 rangeOfString:v4];
-    v7 = [v3 stringByReplacingOccurrencesOfString:v4 withString:&stru_1F227FD28 options:0 range:{v5, v6}];
+    v5 = [handeCopy rangeOfString:v4];
+    v7 = [handeCopy stringByReplacingOccurrencesOfString:v4 withString:&stru_1F227FD28 options:0 range:{v5, v6}];
 
-    v3 = v7;
+    handeCopy = v7;
   }
 
-  return v3;
+  return handeCopy;
 }
 
-- (id)_idsIDForHandle:(id)a3
+- (id)_idsIDForHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 _appearsToBeEmail])
+  handleCopy = handle;
+  if ([handleCopy _appearsToBeEmail])
   {
     v4 = _IDSCopyIDForEmailAddress();
 LABEL_5:
@@ -3016,7 +3016,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 _appearsToBePhoneNumber])
+  if ([handleCopy _appearsToBePhoneNumber])
   {
     v4 = _IDSCopyIDForPhoneNumberWithOptions();
     goto LABEL_5;
@@ -3028,12 +3028,12 @@ LABEL_7:
   return v5;
 }
 
-- (id)_primaryAppleIDSharingDestination:(id)a3
+- (id)_primaryAppleIDSharingDestination:(id)destination
 {
-  v4 = [a3 primaryAppleID];
-  if (v4)
+  primaryAppleID = [destination primaryAppleID];
+  if (primaryAppleID)
   {
-    v5 = [(PKSharingIDSManager *)self _idsIDForHandle:v4];
+    v5 = [(PKSharingIDSManager *)self _idsIDForHandle:primaryAppleID];
     if (v5)
     {
       v6 = [[PKSharingDestination alloc] initWithDestinationIdentifier:v5];
@@ -3053,20 +3053,20 @@ LABEL_7:
   return v6;
 }
 
-- (void)_sharingDestinationForHandles:(id)a3 completion:(id)a4
+- (void)_sharingDestinationForHandles:(id)handles completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PKSharingIDSManager__sharingDestinationForHandles_completion___block_invoke;
   block[3] = &unk_1E79C44F0;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = handlesCopy;
+  v9 = handlesCopy;
+  v10 = completionCopy;
   dispatch_async(internalQueue, block);
 }
 

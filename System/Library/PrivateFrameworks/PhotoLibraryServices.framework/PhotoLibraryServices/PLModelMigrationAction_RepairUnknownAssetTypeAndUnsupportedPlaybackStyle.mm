@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RepairUnknownAssetTypeAndUnsupportedPlaybackStyle
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RepairUnknownAssetTypeAndUnsupportedPlaybackStyle
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v113[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v72 = 0;
   v73 = &v72;
   v74 = 0x2020000000;
@@ -29,7 +29,7 @@
   [v7 setFetchBatchSize:100];
   v10 = v67 + 5;
   obj = v67[5];
-  v11 = [v6 executeFetchRequest:v7 error:&obj];
+  v11 = [contextCopy executeFetchRequest:v7 error:&obj];
   objc_storeStrong(v10, obj);
   if ([v11 count])
   {
@@ -58,7 +58,7 @@
     v52 = &v72;
     v13 = v12;
     v47 = v13;
-    v14 = [v6 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v46];
+    v14 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v46];
     if (v14 && !v67[5])
     {
       objc_storeStrong(v67 + 5, v14);
@@ -72,8 +72,8 @@
 
       if (v16)
       {
-        v17 = [(PLModelMigrationActionCore *)self logger];
-        v18 = v17 == 0;
+        logger = [(PLModelMigrationActionCore *)self logger];
+        v18 = logger == 0;
 
         if (!v18)
         {
@@ -154,8 +154,8 @@ LABEL_21:
 
       if (v26)
       {
-        v27 = [(PLModelMigrationActionCore *)self logger];
-        v28 = v27 == 0;
+        logger2 = [(PLModelMigrationActionCore *)self logger];
+        v28 = logger2 == 0;
 
         if (!v28)
         {
@@ -248,10 +248,10 @@ LABEL_23:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v41 = v73[3];
   v42 = v67[5];
-  if (v41 != 1 && a4)
+  if (v41 != 1 && error)
   {
     v42 = v42;
-    *a4 = v42;
+    *error = v42;
   }
 
   v43 = v73[3];

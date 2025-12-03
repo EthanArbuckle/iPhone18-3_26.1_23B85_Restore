@@ -7,7 +7,7 @@
 - (void)play;
 - (void)recycle;
 - (void)reset;
-- (void)setNodeRef:(__C3DNode *)a3;
+- (void)setNodeRef:(__C3DNode *)ref;
 @end
 
 @implementation SCNAudioPlayer
@@ -75,20 +75,20 @@
 {
   if (gAudioPlayers && [gAudioPlayers count])
   {
-    v4 = [gAudioPlayers anyObject];
-    v5 = v4;
-    [gAudioPlayers removeObject:v4];
+    anyObject = [gAudioPlayers anyObject];
+    v5 = anyObject;
+    [gAudioPlayers removeObject:anyObject];
     v6 = source;
-    v4[3] = v6;
-    [v4[2] setRenderingAlgorithm:{-[SCNAudioSource renderingAlgorithm](v6, "renderingAlgorithm")}];
-    [v4[3] rate];
-    [v4[2] setRate:?];
-    [v4[3] volume];
-    [v4[2] setVolume:?];
-    [v4[3] reverbBlend];
-    [v4[2] setReverbBlend:?];
+    anyObject[3] = v6;
+    [anyObject[2] setRenderingAlgorithm:{-[SCNAudioSource renderingAlgorithm](v6, "renderingAlgorithm")}];
+    [anyObject[3] rate];
+    [anyObject[2] setRate:?];
+    [anyObject[3] volume];
+    [anyObject[2] setVolume:?];
+    [anyObject[3] reverbBlend];
+    [anyObject[2] setReverbBlend:?];
 
-    return v4;
+    return anyObject;
   }
 
   else
@@ -107,12 +107,12 @@
   [(SCNAudioPlayer *)&v3 dealloc];
 }
 
-- (void)setNodeRef:(__C3DNode *)a3
+- (void)setNodeRef:(__C3DNode *)ref
 {
-  self->_nodeRef = a3;
-  if (a3)
+  self->_nodeRef = ref;
+  if (ref)
   {
-    self->_scene = C3DGetScene(a3);
+    self->_scene = C3DGetScene(ref);
   }
 }
 
@@ -125,14 +125,14 @@
   }
 
   audioPlayer = self->_audioPlayer;
-  v5 = [(SCNAudioSource *)audioSource audioBuffer];
+  audioBuffer = [(SCNAudioSource *)audioSource audioBuffer];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __22__SCNAudioPlayer_play__block_invoke;
   block[3] = &unk_2782FB608;
   block[4] = self;
   [(SCNAudioPlayer *)self setCompleted:0];
-  v6 = [(SCNAudioSource *)self->_audioSource shouldStream];
+  shouldStream = [(SCNAudioSource *)self->_audioSource shouldStream];
   nodeRef = self->_nodeRef;
   if (nodeRef)
   {
@@ -147,17 +147,17 @@
   v13[7] = nodeRef;
   v13[4] = self;
   v13[5] = audioPlayer;
-  if (v5)
+  if (audioBuffer)
   {
-    [(AVAudioPlayerNode *)audioPlayer scheduleBuffer:v5 atTime:0 options:[(SCNAudioSource *)self->_audioSource loops] completionHandler:v13];
+    [(AVAudioPlayerNode *)audioPlayer scheduleBuffer:audioBuffer atTime:0 options:[(SCNAudioSource *)self->_audioSource loops] completionHandler:v13];
 LABEL_9:
     v9 = 1;
     goto LABEL_10;
   }
 
-  if (v6)
+  if (shouldStream)
   {
-    v8 = [(SCNAudioSource *)self->_audioSource audioFile];
+    audioFile = [(SCNAudioSource *)self->_audioSource audioFile];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __22__SCNAudioPlayer_play__block_invoke_4;
@@ -166,7 +166,7 @@ LABEL_9:
     v12[5] = audioPlayer;
     v12[6] = v13;
     v12[7] = nodeRef;
-    [(AVAudioPlayerNode *)audioPlayer scheduleFile:v8 atTime:0 completionHandler:v12];
+    [(AVAudioPlayerNode *)audioPlayer scheduleFile:audioFile atTime:0 completionHandler:v12];
     goto LABEL_9;
   }
 

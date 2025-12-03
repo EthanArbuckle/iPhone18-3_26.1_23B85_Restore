@@ -1,28 +1,28 @@
 @interface NEKCalendarID
-+ (id)calendarInStore:(id)a3 withNEKCalendarID:(id)a4;
-+ (id)listInStore:(id)a3 withNEKCalendarID:(id)a4;
++ (id)calendarInStore:(id)store withNEKCalendarID:(id)d;
++ (id)listInStore:(id)store withNEKCalendarID:(id)d;
 + (void)resetLocalCalendarCache;
-- (BOOL)isEqual:(id)a3;
-- (NEKCalendarID)initWithCalendar:(id)a3;
-- (NEKCalendarID)initWithList:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEKCalendarID)initWithCalendar:(id)calendar;
+- (NEKCalendarID)initWithList:(id)list;
 - (id)description;
-- (id)initUniquelyWithKey:(id)a3 localFlag:(BOOL)a4;
+- (id)initUniquelyWithKey:(id)key localFlag:(BOOL)flag;
 - (unint64_t)hash;
 @end
 
 @implementation NEKCalendarID
 
-- (id)initUniquelyWithKey:(id)a3 localFlag:(BOOL)a4
+- (id)initUniquelyWithKey:(id)key localFlag:(BOOL)flag
 {
-  v7 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = NEKCalendarID;
   v8 = [(NEKCalendarID *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_isDefaultLocalCalendar = a4;
+    objc_storeStrong(&v8->_identifier, key);
+    v9->_isDefaultLocalCalendar = flag;
   }
 
   return v9;
@@ -37,8 +37,8 @@
 
   else
   {
-    v4 = [(NEKCalendarID *)self identifier];
-    v3 = [NSString stringWithFormat:@"UUID: %@", v4];
+    identifier = [(NEKCalendarID *)self identifier];
+    v3 = [NSString stringWithFormat:@"UUID: %@", identifier];
   }
 
   v5 = objc_opt_class();
@@ -55,16 +55,16 @@
     return 1;
   }
 
-  v4 = [(NEKCalendarID *)self identifier];
-  v5 = [v4 hash];
+  identifier = [(NEKCalendarID *)self identifier];
+  v5 = [identifier hash];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -73,11 +73,11 @@
       goto LABEL_8;
     }
 
-    if (![(NEKCalendarID *)self isDefaultLocalCalendar]|| ![(NEKCalendarID *)v4 isDefaultLocalCalendar])
+    if (![(NEKCalendarID *)self isDefaultLocalCalendar]|| ![(NEKCalendarID *)equalCopy isDefaultLocalCalendar])
     {
-      v6 = [(NEKCalendarID *)self identifier];
-      v7 = [(NEKCalendarID *)v4 identifier];
-      v5 = [v6 isEqualToString:v7];
+      identifier = [(NEKCalendarID *)self identifier];
+      identifier2 = [(NEKCalendarID *)equalCopy identifier];
+      v5 = [identifier isEqualToString:identifier2];
 
       goto LABEL_8;
     }
@@ -89,16 +89,16 @@ LABEL_8:
   return v5;
 }
 
-- (NEKCalendarID)initWithCalendar:(id)a3
+- (NEKCalendarID)initWithCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [v4 eventStore];
-  v6 = v5;
-  v7 = 0;
-  if (v4 && v5)
+  calendarCopy = calendar;
+  eventStore = [calendarCopy eventStore];
+  v6 = eventStore;
+  selfCopy = 0;
+  if (calendarCopy && eventStore)
   {
-    v8 = [v4 objectID];
-    v9 = [v8 isEqual:qword_1000D1830];
+    objectID = [calendarCopy objectID];
+    v9 = [objectID isEqual:qword_1000D1830];
     if (v9)
     {
       v10 = 0;
@@ -106,34 +106,34 @@ LABEL_8:
 
     else
     {
-      v11 = [v4 calendarIdentifier];
-      v10 = [v11 copy];
+      calendarIdentifier = [calendarCopy calendarIdentifier];
+      v10 = [calendarIdentifier copy];
     }
 
     self = [(NEKCalendarID *)self initWithIdentifier:v10 isDefaultLocalCalendar:v9];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)calendarInStore:(id)a3 withNEKCalendarID:(id)a4
++ (id)calendarInStore:(id)store withNEKCalendarID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isDefaultLocalCalendar])
+  storeCopy = store;
+  dCopy = d;
+  if ([dCopy isDefaultLocalCalendar])
   {
-    v7 = [v5 defaultLocalCalendar];
+    defaultLocalCalendar = [storeCopy defaultLocalCalendar];
   }
 
   else
   {
-    v8 = [v6 identifier];
-    v7 = [v5 calendarWithIdentifier:v8];
+    identifier = [dCopy identifier];
+    defaultLocalCalendar = [storeCopy calendarWithIdentifier:identifier];
   }
 
-  return v7;
+  return defaultLocalCalendar;
 }
 
 + (void)resetLocalCalendarCache
@@ -141,46 +141,46 @@ LABEL_8:
   v2 = NSStringFromSelector(a2);
   v6 = [EKEventStore eks_eventOnlyStoreFor:v2];
 
-  v3 = [v6 defaultLocalCalendar];
-  v4 = [v3 objectID];
+  defaultLocalCalendar = [v6 defaultLocalCalendar];
+  objectID = [defaultLocalCalendar objectID];
   v5 = qword_1000D1830;
-  qword_1000D1830 = v4;
+  qword_1000D1830 = objectID;
 }
 
-- (NEKCalendarID)initWithList:(id)a3
+- (NEKCalendarID)initWithList:(id)list
 {
-  v4 = a3;
-  v5 = [v4 store];
-  v6 = v5;
-  v7 = 0;
-  if (v4 && v5)
+  listCopy = list;
+  store = [listCopy store];
+  v6 = store;
+  selfCopy = 0;
+  if (listCopy && store)
   {
-    v8 = [v4 objectID];
-    v9 = [v8 isEqual:0];
-    v10 = 0;
+    objectID = [listCopy objectID];
+    v9 = [objectID isEqual:0];
+    uUIDString = 0;
     if ((v9 & 1) == 0)
     {
-      v11 = [v4 objectID];
-      v12 = [v11 uuid];
-      v10 = [v12 UUIDString];
+      objectID2 = [listCopy objectID];
+      uuid = [objectID2 uuid];
+      uUIDString = [uuid UUIDString];
     }
 
-    self = [(NEKCalendarID *)self initWithIdentifier:v10 isDefaultLocalCalendar:v9];
+    self = [(NEKCalendarID *)self initWithIdentifier:uUIDString isDefaultLocalCalendar:v9];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)listInStore:(id)a3 withNEKCalendarID:(id)a4
++ (id)listInStore:(id)store withNEKCalendarID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isDefaultLocalCalendar])
+  storeCopy = store;
+  dCopy = d;
+  if ([dCopy isDefaultLocalCalendar])
   {
-    v7 = [v5 eks_defaultLocalList];
-    if (!v7)
+    eks_defaultLocalList = [storeCopy eks_defaultLocalList];
+    if (!eks_defaultLocalList)
     {
       v8 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -188,38 +188,38 @@ LABEL_8:
         sub_100073B6C(v8);
       }
 
-      v7 = 0;
+      eks_defaultLocalList = 0;
     }
   }
 
   else
   {
-    v9 = [v6 identifier];
-    v10 = [[NSUUID alloc] initWithUUIDString:v9];
+    identifier = [dCopy identifier];
+    v10 = [[NSUUID alloc] initWithUUIDString:identifier];
     if (!v10)
     {
       v11 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
-        sub_100073A38(v9, v11);
+        sub_100073A38(identifier, v11);
       }
     }
 
     v12 = [REMList objectIDWithUUID:v10];
     v16 = 0;
-    v7 = [v5 fetchListWithObjectID:v12 error:&v16];
+    eks_defaultLocalList = [storeCopy fetchListWithObjectID:v12 error:&v16];
     v13 = v16;
-    if (!v7)
+    if (!eks_defaultLocalList)
     {
       v14 = *(qword_1000D18A8 + 8);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_100073AC4(v14, v6);
+        sub_100073AC4(v14, dCopy);
       }
     }
   }
 
-  return v7;
+  return eks_defaultLocalList;
 }
 
 @end

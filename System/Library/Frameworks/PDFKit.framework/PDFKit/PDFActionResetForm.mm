@@ -1,12 +1,12 @@
 @interface PDFActionResetForm
 - (PDFActionResetForm)init;
-- (PDFActionResetForm)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFActionResetForm)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toolTip;
-- (void)addFieldsToDictionaryRef:(__CFDictionary *)a3;
-- (void)addFlagsToDictionaryRef:(__CFDictionary *)a3;
+- (void)addFieldsToDictionaryRef:(__CFDictionary *)ref;
+- (void)addFlagsToDictionaryRef:(__CFDictionary *)ref;
 - (void)commonInit;
 - (void)setFields:(NSArray *)fields;
 @end
@@ -28,7 +28,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = PDFActionResetForm;
@@ -39,7 +39,7 @@
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(NSArray *)self->_private2->fields copyWithZone:a3];
+    v8 = [(NSArray *)self->_private2->fields copyWithZone:zone];
     v9 = v5[2];
     v10 = *(v9 + 8);
     *(v9 + 8) = v8;
@@ -63,21 +63,21 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(PDFActionResetForm *)self toolTip];
-  v4 = [v2 stringWithFormat:@"ResetForm Action - %@", v3];
+  toolTip = [(PDFActionResetForm *)self toolTip];
+  v4 = [v2 stringWithFormat:@"ResetForm Action - %@", toolTip];
 
   return v4;
 }
 
-- (PDFActionResetForm)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFActionResetForm)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
   v20.receiver = self;
   v20.super_class = PDFActionResetForm;
   value = 0;
-  v6 = [(PDFAction *)&v20 initWithActionDictionary:a3 forDocument:a4 forPage:a5];
+  v6 = [(PDFAction *)&v20 initWithActionDictionary:dictionary forDocument:document forPage:page];
   if (v6)
   {
-    if (CGPDFDictionaryGetArray(a3, "Fields", &value))
+    if (CGPDFDictionaryGetArray(dictionary, "Fields", &value))
     {
       v19 = 0;
       Count = CGPDFArrayGetCount(value);
@@ -110,7 +110,7 @@
       fields = private2->fields;
       private2->fields = v11;
 
-      if (CGPDFDictionaryGetInteger(a3, "Flags", &v19) && (v19 & 1) != 0)
+      if (CGPDFDictionaryGetInteger(dictionary, "Flags", &v19) && (v19 & 1) != 0)
       {
         v6->_private2->included = 0;
       }
@@ -152,14 +152,14 @@
   return Mutable;
 }
 
-- (void)addFieldsToDictionaryRef:(__CFDictionary *)a3
+- (void)addFieldsToDictionaryRef:(__CFDictionary *)ref
 {
-  v4 = [(PDFActionResetForm *)self fields];
-  if (v4)
+  fields = [(PDFActionResetForm *)self fields];
+  if (fields)
   {
-    v8 = v4;
-    v5 = [v4 count];
-    v4 = v8;
+    v8 = fields;
+    v5 = [fields count];
+    fields = v8;
     if (v5)
     {
       Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], v5, MEMORY[0x1E695E9C0]);
@@ -168,18 +168,18 @@
         CFArrayAppendValue(Mutable, [v8 objectAtIndex:i]);
       }
 
-      CFDictionarySetValue(a3, @"/Fields", Mutable);
-      v4 = v8;
+      CFDictionarySetValue(ref, @"/Fields", Mutable);
+      fields = v8;
       if (Mutable)
       {
         CFRelease(Mutable);
-        v4 = v8;
+        fields = v8;
       }
     }
   }
 }
 
-- (void)addFlagsToDictionaryRef:(__CFDictionary *)a3
+- (void)addFlagsToDictionaryRef:(__CFDictionary *)ref
 {
   valuePtr = 1;
   if (![(PDFActionResetForm *)self fieldsIncludedAreCleared])
@@ -188,7 +188,7 @@
     if (v4)
     {
       v5 = v4;
-      CFDictionarySetValue(a3, @"/Flags", v4);
+      CFDictionarySetValue(ref, @"/Flags", v4);
       CFRelease(v5);
     }
   }

@@ -1,5 +1,5 @@
 @interface CAFAppLinksManager
-- (CAFAppLinksManager)initWithChangeBlock:(id)a3;
+- (CAFAppLinksManager)initWithChangeBlock:(id)block;
 - (void)_connectionActivated;
 - (void)_connectionInterrupted;
 - (void)_fetchSnapshot;
@@ -10,9 +10,9 @@
 
 @implementation CAFAppLinksManager
 
-- (CAFAppLinksManager)initWithChangeBlock:(id)a3
+- (CAFAppLinksManager)initWithChangeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = CAFAppLinksManager;
   v5 = [(CAFAppLinksManager *)&v15 init];
@@ -26,12 +26,12 @@
     }
 
     v7 = +[CAFAppLinksServiceSpecification identifier];
-    v8 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v9 = BSDispatchQueueCreate();
     workQueue = v5->_workQueue;
     v5->_workQueue = v9;
 
-    v11 = MEMORY[0x231933C60](v4);
+    v11 = MEMORY[0x231933C60](blockCopy);
     snapshotChangeBlock = v5->_snapshotChangeBlock;
     v5->_snapshotChangeBlock = v11;
 
@@ -47,7 +47,7 @@
   v2 = +[CAFAppLinksServiceSpecification identifier];
   v4 = 138412290;
   v5 = v2;
-  _os_log_error_impl(&dword_231618000, a1, OS_LOG_TYPE_ERROR, "Failed to create appLinks endpoint! This process can't look up the machport. (%@)", &v4, 0xCu);
+  _os_log_error_impl(&dword_231618000, self, OS_LOG_TYPE_ERROR, "Failed to create appLinks endpoint! This process can't look up the machport. (%@)", &v4, 0xCu);
 
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -147,13 +147,13 @@ void __38__CAFAppLinksManager__setupConnection__block_invoke_4()
     _os_log_impl(&dword_231618000, v3, OS_LOG_TYPE_DEFAULT, "Fetching latest appLinks snapshot", buf, 2u);
   }
 
-  v4 = [(BSServiceConnection *)self->_connection remoteTarget];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__CAFAppLinksManager__fetchSnapshot__block_invoke;
   v5[3] = &unk_27890F398;
   v5[4] = self;
-  [v4 fetchAppLinksSnapshotWithReply:v5];
+  [remoteTarget fetchAppLinksSnapshotWithReply:v5];
 }
 
 void __36__CAFAppLinksManager__fetchSnapshot__block_invoke(uint64_t a1, void *a2, void *a3)

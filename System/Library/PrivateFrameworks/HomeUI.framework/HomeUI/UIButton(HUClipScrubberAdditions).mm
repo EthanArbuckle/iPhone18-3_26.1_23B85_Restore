@@ -10,14 +10,14 @@
 {
   v20[2] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D75220] buttonWithType:1];
-  v3 = [MEMORY[0x277D75348] systemOrangeColor];
-  [v2 setBackgroundColor:v3];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [v2 setBackgroundColor:systemOrangeColor];
 
-  v4 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v2 setTintColor:v4];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v2 setTintColor:systemWhiteColor];
 
-  v5 = [v2 titleLabel];
-  [v5 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
   v6 = _HULocalizedStringWithDefaultValue(@"HUCameraLive", @"HUCameraLive", 1);
   v7 = objc_alloc_init(MEMORY[0x277D74240]);
@@ -38,15 +38,15 @@
   if (v14 > 54.0)
   {
     v15 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
-    v16 = [v13 string];
-    [v13 addAttribute:v10 value:v15 range:{0, objc_msgSend(v16, "length")}];
+    string = [v13 string];
+    [v13 addAttribute:v10 value:v15 range:{0, objc_msgSend(string, "length")}];
 
-    [v7 setMaximumLineHeight:a1];
+    [v7 setMaximumLineHeight:self];
   }
 
   [v2 setAttributedTitle:v13 forState:0];
-  v17 = [v2 titleLabel];
-  [v17 setNumberOfLines:3];
+  titleLabel2 = [v2 titleLabel];
+  [titleLabel2 setNumberOfLines:3];
 
   return v2;
 }
@@ -56,8 +56,8 @@
   v0 = [MEMORY[0x277D75220] buttonWithType:1];
   v1 = [MEMORY[0x277D755B8] systemImageNamed:@"square.grid.2x2.fill"];
   [v0 setImage:v1 forState:0];
-  v2 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v0 setTintColor:v2];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [v0 setTintColor:systemWhiteColor];
 
   return v0;
 }
@@ -66,8 +66,8 @@
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v7 = a3;
-  v8 = [MEMORY[0x277D75348] systemYellowColor];
-  [v7 setBackgroundColor:v8];
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  [v7 setBackgroundColor:systemYellowColor];
 
   v9 = [MEMORY[0x277D755B8] hu_microphoneGlyphForTalkingState:a4 usingStandardSymbolConfiguration:a5];
   if (v9)
@@ -75,8 +75,8 @@
     [v7 setImage:v9 forState:0];
   }
 
-  v10 = [MEMORY[0x277D75348] systemBlackColor];
-  [v7 setTintColor:v10];
+  systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+  [v7 setTintColor:systemBlackColor];
 
   [v7 setContentEdgeInsets:{0.0, 18.0, 0.0, 18.0}];
   v11 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v7, "semanticContentAttribute")}];

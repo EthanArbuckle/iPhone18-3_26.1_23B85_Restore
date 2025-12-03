@@ -1,15 +1,15 @@
 @interface ICTableColumnRowButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)touchRect;
 - (id)accessibilityContainer;
-- (id)initAsColumn:(BOOL)a3 isLeftToRight:(BOOL)a4;
+- (id)initAsColumn:(BOOL)column isLeftToRight:(BOOL)right;
 - (void)dealloc;
 - (void)updateConfiguration;
 @end
 
 @implementation ICTableColumnRowButton
 
-- (id)initAsColumn:(BOOL)a3 isLeftToRight:(BOOL)a4
+- (id)initAsColumn:(BOOL)column isLeftToRight:(BOOL)right
 {
   v10.receiver = self;
   v10.super_class = ICTableColumnRowButton;
@@ -17,10 +17,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_isColumn = a3;
-    v6->_isLTR = a4;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel_accessibilityDarkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
+    v6->_isColumn = column;
+    v6->_isLTR = right;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_accessibilityDarkerSystemColorsStatusDidChange_ name:*MEMORY[0x277D76460] object:0];
 
     [(ICTableColumnRowButton *)v7 updateConfiguration];
   }
@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICTableColumnRowButton;
@@ -45,10 +45,10 @@
   v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
   v5 = [v3 configurationWithFont:v4 scale:3];
 
-  v6 = [MEMORY[0x277D75230] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
   if (([(ICTableColumnRowButton *)self isSelected]& 1) != 0)
   {
-    [v6 setBaseBackgroundColor:0];
+    [plainButtonConfiguration setBaseBackgroundColor:0];
   }
 
   else
@@ -63,7 +63,7 @@
       [MEMORY[0x277D75348] ICTintColor];
     }
     v7 = ;
-    [v6 setBaseBackgroundColor:v7];
+    [plainButtonConfiguration setBaseBackgroundColor:v7];
   }
 
   if (([(ICTableColumnRowButton *)self isSelected]& 1) != 0)
@@ -76,19 +76,19 @@
     [MEMORY[0x277D75348] systemGrayColor];
   }
   v8 = ;
-  [v6 setBaseForegroundColor:v8];
+  [plainButtonConfiguration setBaseForegroundColor:v8];
 
-  v9 = [MEMORY[0x277D75348] clearColor];
-  v10 = [v6 background];
-  [v10 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  v11 = [v6 background];
-  [v11 setCornerRadius:0.0];
+  background2 = [plainButtonConfiguration background];
+  [background2 setCornerRadius:0.0];
 
   if ([(ICTableColumnRowButton *)self isSelected])
   {
-    v12 = [(ICTableColumnRowButton *)self isColumn];
-    if (v12)
+    isColumn = [(ICTableColumnRowButton *)self isColumn];
+    if (isColumn)
     {
       v13 = @"attachment_table_column_header";
     }
@@ -99,28 +99,28 @@
     }
 
     v15 = [MEMORY[0x277D755B8] imageNamed:v13 inBundle:v19 withConfiguration:0];
-    v14 = !v12;
+    v14 = !isColumn;
   }
 
   else
   {
-    v12 = 0;
+    isColumn = 0;
     v14 = 0;
     v15 = 0;
   }
 
-  v16 = [v6 background];
-  [v16 setImage:v15];
+  background3 = [plainButtonConfiguration background];
+  [background3 setImage:v15];
 
   if (v14)
   {
   }
 
-  if (v12)
+  if (isColumn)
   {
   }
 
-  [v6 setCornerStyle:-1];
+  [plainButtonConfiguration setCornerStyle:-1];
   if ([(ICTableColumnRowButton *)self isColumn])
   {
     [MEMORY[0x277D755B8] systemImageNamed:@"ellipsis" withConfiguration:v5];
@@ -131,9 +131,9 @@
     [MEMORY[0x277D755B8] imageNamed:@"ellipsis.vertical" inBundle:v19 withConfiguration:v5];
   }
   v17 = ;
-  [v6 setImage:v17];
+  [plainButtonConfiguration setImage:v17];
 
-  v18 = [v6 updatedConfigurationForButton:self];
+  v18 = [plainButtonConfiguration updatedConfigurationForButton:self];
   [(ICTableColumnRowButton *)self setConfiguration:v18];
 
   [(ICTableColumnRowButton *)self setPointerInteractionEnabled:[(ICTableColumnRowButton *)self isSelected]^ 1];
@@ -164,10 +164,10 @@ id __45__ICTableColumnRowButton_updateConfiguration__block_invoke(uint64_t a1, v
   return v14;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(ICTableColumnRowButton *)self touchRect];
   v10 = x;
   v11 = y;
@@ -222,17 +222,17 @@ id __45__ICTableColumnRowButton_updateConfiguration__block_invoke(uint64_t a1, v
 {
   v7.receiver = self;
   v7.super_class = ICTableColumnRowButton;
-  v2 = [(ICTableColumnRowButton *)&v7 accessibilityContainer];
-  v3 = v2;
-  if (v2)
+  accessibilityContainer = [(ICTableColumnRowButton *)&v7 accessibilityContainer];
+  v3 = accessibilityContainer;
+  if (accessibilityContainer)
   {
-    v4 = v2;
+    v4 = accessibilityContainer;
     while (![v4 conformsToProtocol:&unk_28282EDC0])
     {
-      v5 = [v4 accessibilityContainer];
+      accessibilityContainer2 = [v4 accessibilityContainer];
 
-      v4 = v5;
-      if (!v5)
+      v4 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_8;
       }

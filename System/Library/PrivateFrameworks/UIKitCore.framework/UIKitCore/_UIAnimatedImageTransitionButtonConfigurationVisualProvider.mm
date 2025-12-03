@@ -1,6 +1,6 @@
 @interface _UIAnimatedImageTransitionButtonConfigurationVisualProvider
-- (BOOL)_updateImageViewWithConfiguration:(id)a3;
-- (id)_transitioningImageViewForConfiguration:(id)a3;
+- (BOOL)_updateImageViewWithConfiguration:(id)configuration;
+- (id)_transitioningImageViewForConfiguration:(id)configuration;
 - (id)imageEffectContainerView;
 @end
 
@@ -8,19 +8,19 @@
 
 - (id)imageEffectContainerView
 {
-  v3 = [(UIButtonConfigurationVisualProvider *)self button];
+  button = [(UIButtonConfigurationVisualProvider *)self button];
   contentAnimationContainerView = self->_contentAnimationContainerView;
   if (!contentAnimationContainerView)
   {
     v5 = [UIView alloc];
-    [v3 bounds];
+    [button bounds];
     v6 = [(UIView *)v5 initWithFrame:?];
     v7 = self->_contentAnimationContainerView;
     self->_contentAnimationContainerView = v6;
 
     [(UIView *)self->_contentAnimationContainerView setAutoresizingMask:18];
     [(UIView *)self->_contentAnimationContainerView setUserInteractionEnabled:0];
-    [v3 addSubview:self->_contentAnimationContainerView];
+    [button addSubview:self->_contentAnimationContainerView];
     contentAnimationContainerView = self->_contentAnimationContainerView;
   }
 
@@ -29,9 +29,9 @@
   return contentAnimationContainerView;
 }
 
-- (id)_transitioningImageViewForConfiguration:(id)a3
+- (id)_transitioningImageViewForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   imageViewsByConfiguration = self->_imageViewsByConfiguration;
   if (!imageViewsByConfiguration)
   {
@@ -42,20 +42,20 @@
     imageViewsByConfiguration = self->_imageViewsByConfiguration;
   }
 
-  v8 = [(NSMutableDictionary *)imageViewsByConfiguration objectForKey:v4];
+  v8 = [(NSMutableDictionary *)imageViewsByConfiguration objectForKey:configurationCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(UIImageView);
     [(UIImageView *)v8 setContentMode:[(UIView *)self->super._imageView contentMode]];
-    v9 = [v4 _resolvedImage];
-    v10 = [v4 _resolvedSymbolConfiguration];
-    [(UIImageView *)v8 setPreferredSymbolConfiguration:v10];
+    _resolvedImage = [configurationCopy _resolvedImage];
+    _resolvedSymbolConfiguration = [configurationCopy _resolvedSymbolConfiguration];
+    [(UIImageView *)v8 setPreferredSymbolConfiguration:_resolvedSymbolConfiguration];
 
-    v11 = [v4 _resolvedImageColor];
-    [(UIView *)v8 setTintColor:v11];
+    _resolvedImageColor = [configurationCopy _resolvedImageColor];
+    [(UIView *)v8 setTintColor:_resolvedImageColor];
 
-    [(UIImageView *)v8 setImage:v9];
-    [(NSMutableDictionary *)self->_imageViewsByConfiguration setObject:v8 forKey:v4];
+    [(UIImageView *)v8 setImage:_resolvedImage];
+    [(NSMutableDictionary *)self->_imageViewsByConfiguration setObject:v8 forKey:configurationCopy];
   }
 
   v12 = self->super._imageView;
@@ -74,7 +74,7 @@
   v38 = 0u;
   v39 = 0u;
   [(UIButtonConfigurationVisualProvider *)self _layoutBounds];
-  [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:v4 forConfiguration:?];
+  [(UIButtonConfigurationVisualProvider *)self _layoutDataInBounds:configurationCopy forConfiguration:?];
   imageView = self->super._imageView;
   self->super._imageView = v12;
   v14 = v12;
@@ -108,19 +108,19 @@
   return v18;
 }
 
-- (BOOL)_updateImageViewWithConfiguration:(id)a3
+- (BOOL)_updateImageViewWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(_UIButtonConfigurationShim *)self->_fromConfiguration copy];
-  v6 = [v4 background];
-  v7 = [v6 visualEffect];
-  v8 = [v5 background];
-  [v8 setVisualEffect:v7];
+  background = [configurationCopy background];
+  visualEffect = [background visualEffect];
+  background2 = [v5 background];
+  [background2 setVisualEffect:visualEffect];
 
-  if (self->_inViewHierarchy && self->_fromConfiguration && ([v4 isEqual:?] & 1) == 0)
+  if (self->_inViewHierarchy && self->_fromConfiguration && ([configurationCopy isEqual:?] & 1) == 0)
   {
     v10 = [(_UIAnimatedImageTransitionButtonConfigurationVisualProvider *)self _transitioningImageViewForConfiguration:self->_fromConfiguration];
-    v11 = [(_UIAnimatedImageTransitionButtonConfigurationVisualProvider *)self _transitioningImageViewForConfiguration:v4];
+    v11 = [(_UIAnimatedImageTransitionButtonConfigurationVisualProvider *)self _transitioningImageViewForConfiguration:configurationCopy];
     v9 = 1;
   }
 
@@ -133,7 +133,7 @@
 
   v28.receiver = self;
   v28.super_class = _UIAnimatedImageTransitionButtonConfigurationVisualProvider;
-  v12 = [(UIButtonConfigurationVisualProvider *)&v28 _updateImageViewWithConfiguration:v4];
+  v12 = [(UIButtonConfigurationVisualProvider *)&v28 _updateImageViewWithConfiguration:configurationCopy];
   if (v9)
   {
     [(UIImageView *)self->super._imageView setHidden:1];
@@ -153,11 +153,11 @@
     v19 = __97___UIAnimatedImageTransitionButtonConfigurationVisualProvider__updateImageViewWithConfiguration___block_invoke_2;
     v20 = &unk_1E70F4000;
     v21 = v24;
-    v22 = self;
+    selfCopy = self;
     [UIView _animateUsingSpringBehavior:v13 tracking:0 animations:v23 completion:&v17];
   }
 
-  v14 = [v4 copy];
+  v14 = [configurationCopy copy];
   fromConfiguration = self->_fromConfiguration;
   self->_fromConfiguration = v14;
 

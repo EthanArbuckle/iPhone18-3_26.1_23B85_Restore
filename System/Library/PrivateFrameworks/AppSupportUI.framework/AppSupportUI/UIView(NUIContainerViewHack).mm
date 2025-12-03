@@ -9,9 +9,9 @@
   result = [a3 invalidatingIntrinsicContentSizeAlsoInvalidatesSuperview];
   if (result)
   {
-    [a1 invalidateIntrinsicContentSize];
+    [self invalidateIntrinsicContentSize];
 
-    return [a1 setNeedsLayout];
+    return [self setNeedsLayout];
   }
 
   return result;

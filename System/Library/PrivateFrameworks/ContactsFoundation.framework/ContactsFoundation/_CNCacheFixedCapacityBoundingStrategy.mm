@@ -1,12 +1,12 @@
 @interface _CNCacheFixedCapacityBoundingStrategy
 - (NSString)description;
-- (_CNCacheFixedCapacityBoundingStrategy)initWithCapacity:(unint64_t)a3;
-- (void)willUpdateCacheBy:(unint64_t)a3 forKey:(id)a4 keysToEvict:(id *)a5;
+- (_CNCacheFixedCapacityBoundingStrategy)initWithCapacity:(unint64_t)capacity;
+- (void)willUpdateCacheBy:(unint64_t)by forKey:(id)key keysToEvict:(id *)evict;
 @end
 
 @implementation _CNCacheFixedCapacityBoundingStrategy
 
-- (_CNCacheFixedCapacityBoundingStrategy)initWithCapacity:(unint64_t)a3
+- (_CNCacheFixedCapacityBoundingStrategy)initWithCapacity:(unint64_t)capacity
 {
   v9.receiver = self;
   v9.super_class = _CNCacheFixedCapacityBoundingStrategy;
@@ -17,7 +17,7 @@
     keys = v4->_keys;
     v4->_keys = v5;
 
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     v7 = v4;
   }
 
@@ -28,41 +28,41 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"capacity" unsignedInteger:self->_capacity];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)willUpdateCacheBy:(unint64_t)a3 forKey:(id)a4 keysToEvict:(id *)a5
+- (void)willUpdateCacheBy:(unint64_t)by forKey:(id)key keysToEvict:(id *)evict
 {
-  v16 = a4;
-  v8 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
-  [v8 dequeueObject:v16];
+  keyCopy = key;
+  keys = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
+  [keys dequeueObject:keyCopy];
 
-  if (a3 == 1)
+  if (by == 1)
   {
-    v9 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
-    [v9 enqueue:v16];
+    keys2 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
+    [keys2 enqueue:keyCopy];
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while (1)
   {
-    v11 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
-    v12 = [v11 count];
-    v13 = [(_CNCacheFixedCapacityBoundingStrategy *)self capacity];
+    keys3 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
+    v12 = [keys3 count];
+    capacity = [(_CNCacheFixedCapacityBoundingStrategy *)self capacity];
 
-    if (v12 <= v13)
+    if (v12 <= capacity)
     {
       break;
     }
 
-    v14 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
-    v15 = [v14 dequeue];
-    [v10 addObject:v15];
+    keys4 = [(_CNCacheFixedCapacityBoundingStrategy *)self keys];
+    dequeue = [keys4 dequeue];
+    [v10 addObject:dequeue];
   }
 
-  *a5 = [v10 copy];
+  *evict = [v10 copy];
 }
 
 @end

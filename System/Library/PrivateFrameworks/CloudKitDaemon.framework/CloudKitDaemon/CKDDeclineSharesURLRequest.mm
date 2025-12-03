@@ -1,26 +1,26 @@
 @interface CKDDeclineSharesURLRequest
-- (CKDDeclineSharesURLRequest)initWithOperation:(id)a3 shareMetadatasToDecline:(id)a4;
+- (CKDDeclineSharesURLRequest)initWithOperation:(id)operation shareMetadatasToDecline:(id)decline;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDDeclineSharesURLRequest
 
-- (CKDDeclineSharesURLRequest)initWithOperation:(id)a3 shareMetadatasToDecline:(id)a4
+- (CKDDeclineSharesURLRequest)initWithOperation:(id)operation shareMetadatasToDecline:(id)decline
 {
-  v7 = a4;
+  declineCopy = decline;
   v13.receiver = self;
   v13.super_class = CKDDeclineSharesURLRequest;
-  v8 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shareMetadatasToDecline, a4);
+    objc_storeStrong(&v8->_shareMetadatasToDecline, decline);
     v10 = objc_opt_new();
     shareMetadataByRequestID = v9->_shareMetadataByRequestID;
     v9->_shareMetadataByRequestID = v10;
@@ -74,30 +74,30 @@
   return v21;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDDeclineSharesURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_shareMetadatasToDecline(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"shareMetadatas");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"shareMetadatas");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_shareMetadatasToDecline(self, v5, v6);
   v9 = objc_msgSend_CKMap_(v7, v8, &unk_28385E620);
 
-  objc_msgSend_setModifyRecordIDs_(v4, v10, v9);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v10, v9);
   v11.receiver = self;
   v11.super_class = CKDDeclineSharesURLRequest;
-  [(CKDURLRequest *)&v11 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v11 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)requestOperationClasses
@@ -170,11 +170,11 @@
   return v46;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_shareMetadataByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -184,18 +184,18 @@
   {
     v21 = objc_msgSend_shareDeclinedBlock(self, v19, v20);
     v24 = objc_msgSend_shareURL(v15, v22, v23);
-    v27 = objc_msgSend_result(v4, v25, v26);
+    v27 = objc_msgSend_result(objectCopy, v25, v26);
     (v21)[2](v21, v24, v27);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v27 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_shareMetadataByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v27, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -205,7 +205,7 @@
   {
     v20 = objc_msgSend_shareDeclinedBlock(self, v18, v19);
     v23 = objc_msgSend_shareURL(v14, v21, v22);
-    v26 = objc_msgSend_result(v27, v24, v25);
+    v26 = objc_msgSend_result(failureCopy, v24, v25);
     (v20)[2](v20, v23, v26);
   }
 }

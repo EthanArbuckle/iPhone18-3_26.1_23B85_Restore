@@ -1,28 +1,28 @@
 @interface _CPSessionMissingResultsFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPSessionMissingResultsFeedback)init;
-- (void)addResults:(id)a3;
-- (void)setResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addResults:(id)results;
+- (void)setResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSessionMissingResultsFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPSessionMissingResultsFeedback *)self results];
-      v7 = [v4 results];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      results = [(_CPSessionMissingResultsFeedback *)self results];
+      results2 = [equalCopy results];
+      v8 = results2;
+      if ((results != 0) != (results2 == 0))
       {
-        v9 = [(_CPSessionMissingResultsFeedback *)self results];
-        if (!v9)
+        results3 = [(_CPSessionMissingResultsFeedback *)self results];
+        if (!results3)
         {
 
 LABEL_11:
@@ -30,10 +30,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPSessionMissingResultsFeedback *)self results];
-        v12 = [v4 results];
-        v13 = [v11 isEqual:v12];
+        v10 = results3;
+        results4 = [(_CPSessionMissingResultsFeedback *)self results];
+        results5 = [equalCopy results];
+        v13 = [results4 isEqual:results5];
 
         if (v13)
         {
@@ -53,10 +53,10 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPSessionMissingResultsFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -98,27 +98,27 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   results = self->_results;
   self->_results = v4;
 

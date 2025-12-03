@@ -6,25 +6,25 @@
 
 - (double)infoview_computedHeight
 {
-  [a1 textContainerInset];
+  [self textContainerInset];
   v3 = v2;
   v5 = v4;
-  [a1 contentInset];
+  [self contentInset];
   v7 = v6;
   v9 = v8;
-  [a1 frame];
+  [self frame];
   v10 = CGRectGetWidth(v21) - v3 - v5;
-  v11 = [a1 textContainer];
-  [v11 lineFragmentPadding];
+  textContainer = [self textContainer];
+  [textContainer lineFragmentPadding];
   v13 = v10 + v12 * -2.0 - v7 - v9;
 
-  v14 = [a1 attributedText];
-  [v14 boundingRectWithSize:3 options:0 context:{v13, 1.79769313e308}];
+  attributedText = [self attributedText];
+  [attributedText boundingRectWithSize:3 options:0 context:{v13, 1.79769313e308}];
   v16 = v15;
 
-  [a1 textContainerInset];
+  [self textContainerInset];
   v18 = v16 + v17;
-  [a1 textContainerInset];
+  [self textContainerInset];
   return ceil(v18 + v19);
 }
 

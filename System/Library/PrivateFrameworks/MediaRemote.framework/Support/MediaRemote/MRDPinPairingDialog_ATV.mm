@@ -2,7 +2,7 @@
 - (MRDPinPairingDialog_ATV)init;
 - (void)closeAll;
 - (void)dealloc;
-- (void)showWithPin:(id)a3 forClient:(id)a4;
+- (void)showWithPin:(id)pin forClient:(id)client;
 @end
 
 @implementation MRDPinPairingDialog_ATV
@@ -30,9 +30,9 @@
   [(MRDPinPairingDialog_ATV *)&v3 dealloc];
 }
 
-- (void)showWithPin:(id)a3 forClient:(id)a4
+- (void)showWithPin:(id)pin forClient:(id)client
 {
-  v16 = a3;
+  pinCopy = pin;
   if (!self->_titleKey)
   {
     v5 = MSVWeakLinkStringConstant();
@@ -56,7 +56,7 @@
   v14 = MRLocalizedString();
   [v13 setObject:v14 forKey:self->_titleKey];
 
-  [v13 setObject:v16 forKey:self->_pinKey];
+  [v13 setObject:pinCopy forKey:self->_pinKey];
   v15 = MRLocalizedString();
   [v13 setObject:v15 forKey:self->_messageKey];
 

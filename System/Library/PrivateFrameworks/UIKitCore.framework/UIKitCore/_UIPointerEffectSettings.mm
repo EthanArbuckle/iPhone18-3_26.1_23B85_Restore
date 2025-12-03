@@ -23,11 +23,11 @@
   [(_UIPointerEffectSettings *)self setDampedAnimationDampingRatio:1.0];
   [(_UIPointerEffectSettings *)self setLiftForceFloor:0.1];
   [(_UIPointerEffectSettings *)self setLiftForceExponent:0.2];
-  v3 = [(_UIPointerEffectSettings *)self liftProgress];
-  [v3 setDampingRatio:1.0];
+  liftProgress = [(_UIPointerEffectSettings *)self liftProgress];
+  [liftProgress setDampingRatio:1.0];
 
-  v4 = [(_UIPointerEffectSettings *)self liftProgress];
-  [v4 setResponse:0.5];
+  liftProgress2 = [(_UIPointerEffectSettings *)self liftProgress];
+  [liftProgress2 setResponse:0.5];
 
   [(_UIPointerEffectSettings *)self setPlasmaRubberbandFactor:0.2, 0.2];
   [(_UIPointerEffectSettings *)self setPlasmaParallaxFactor:0.5];
@@ -45,7 +45,7 @@
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:1];
   v61 = [v3 sectionWithRows:v7 title:@"Pointer Appearance"];
 
-  v8 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(a1, "pointerSlipMatchesContentSlip") ^ 1}];
+  v8 = [MEMORY[0x1E696AE18] predicateWithValue:{objc_msgSend(self, "pointerSlipMatchesContentSlip") ^ 1}];
   v58 = MEMORY[0x1E69C6638];
   v60 = v8;
   v56 = [MEMORY[0x1E69C6618] rowWithTitle:@"Slip X" valueKeyPath:@"slipFactorX"];

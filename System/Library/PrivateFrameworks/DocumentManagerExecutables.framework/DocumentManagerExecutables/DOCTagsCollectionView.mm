@@ -1,25 +1,25 @@
 @interface DOCTagsCollectionView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)intrinsicContentSize;
 - (CGSize)lastIntrinsicContentSize;
 - (CGSize)systemLayoutSizeFittingSize:(CGSize)result;
 - (DOCTagsCollectionView)init;
 - (DOCTagsCollectionViewDelegate)delegate;
-- (id)_cellMenuTargetForIndexPath:(id)a3;
-- (id)_indexPathOfTag:(id)a3;
-- (id)cellForIndexPath:(id)a3 dequeueCell:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
+- (id)_cellMenuTargetForIndexPath:(id)path;
+- (id)_indexPathOfTag:(id)tag;
+- (id)cellForIndexPath:(id)path dequeueCell:(id)cell;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
 - (void)_reloadData;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
 - (void)doc_commonInit;
 - (void)layoutSubviews;
-- (void)setShowsAddTagButton:(BOOL)a3;
-- (void)setupCells:(id)a3 registerClasses:(BOOL)a4;
-- (void)tagsCollectionItem:(id)a3 didDeleteTag:(id)a4;
+- (void)setShowsAddTagButton:(BOOL)button;
+- (void)setupCells:(id)cells registerClasses:(BOOL)classes;
+- (void)tagsCollectionItem:(id)item didDeleteTag:(id)tag;
 - (void)updateForChangedTraitsAffectingFonts;
 @end
 
@@ -61,9 +61,9 @@
   [v7 horizontalTagSpacing];
   [v3 setMinimumInteritemSpacing:?];
 
-  v8 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   nodes = self->_nodes;
-  self->_nodes = v8;
+  self->_nodes = array;
 
   self->_showsAddTagButton = 1;
   v10 = objc_alloc(MEMORY[0x277D752A0]);
@@ -90,8 +90,8 @@
 
   [(DOCTagsCollectionViewData *)self->_tagsData setDelegate:self];
   [(DOCTagsCollectionView *)self updateForChangedTraitsAffectingFonts];
-  v16 = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
-  v17 = [(DOCTagsCollectionView *)self registerForTraitChanges:v16 withAction:sel_updateForChangedTraitsAffectingFonts];
+  doc_traitsAffectingFonts = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
+  v17 = [(DOCTagsCollectionView *)self registerForTraitChanges:doc_traitsAffectingFonts withAction:sel_updateForChangedTraitsAffectingFonts];
 
   [(DOCTagsCollectionView *)self addSubview:self->_collectionView];
 }
@@ -101,8 +101,8 @@
   v20.receiver = self;
   v20.super_class = DOCTagsCollectionView;
   [(DOCTagsCollectionView *)&v20 layoutSubviews];
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v3 collectionViewContentSize];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v5 = v4;
   v7 = v6;
   p_lastIntrinsicContentSize = &self->_lastIntrinsicContentSize;
@@ -111,8 +111,8 @@
 
   if (v5 != width || v7 != height)
   {
-    v12 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-    [v12 collectionViewContentSize];
+    collectionViewLayout2 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout2 collectionViewContentSize];
     p_lastIntrinsicContentSize->width = v13;
     self->_lastIntrinsicContentSize.height = v14;
 
@@ -128,11 +128,11 @@
   }
 }
 
-- (void)setShowsAddTagButton:(BOOL)a3
+- (void)setShowsAddTagButton:(BOOL)button
 {
-  if (self->_showsAddTagButton != a3)
+  if (self->_showsAddTagButton != button)
   {
-    self->_showsAddTagButton = a3;
+    self->_showsAddTagButton = button;
     [(DOCTagsCollectionView *)self _reloadData];
   }
 }
@@ -160,17 +160,17 @@
   [(DOCTagsCollectionView *)self setNeedsLayout];
 }
 
-- (void)setupCells:(id)a3 registerClasses:(BOOL)a4
+- (void)setupCells:(id)cells registerClasses:(BOOL)classes
 {
-  v4 = a4;
+  classesCopy = classes;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  cellsCopy = cells;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(cellsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = cellsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -189,7 +189,7 @@
         v14 = [v8 objectForKeyedSubscript:{v13, v17}];
         v15 = objc_alloc_init(v14);
         [(NSDictionary *)v7 setObject:v15 forKeyedSubscript:v13];
-        if (v4)
+        if (classesCopy)
         {
           [(UICollectionView *)self->_collectionView registerClass:v14 forCellWithReuseIdentifier:v13];
         }
@@ -205,31 +205,31 @@
   self->_sizingCells = v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __63__DOCTagsCollectionView_collectionView_cellForItemAtIndexPath___block_invoke;
   v12[3] = &unk_278FA2448;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = viewCopy;
+  v14 = pathCopy;
+  v8 = pathCopy;
+  v9 = viewCopy;
   v10 = [(DOCTagsCollectionView *)self cellForIndexPath:v8 dequeueCell:v12];
 
   return v10;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___block_invoke;
   v12[3] = &unk_278FA2470;
   v12[4] = self;
-  v5 = [(DOCTagsCollectionView *)self cellForIndexPath:a5 dequeueCell:v12];
+  v5 = [(DOCTagsCollectionView *)self cellForIndexPath:path dequeueCell:v12];
   [v5 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v7 = v6;
   v9 = v8;
@@ -251,45 +251,45 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 item];
-  if (v7 == [(DOCTagsCollectionViewData *)self->_tagsData countOfTags])
+  viewCopy = view;
+  pathCopy = path;
+  item = [pathCopy item];
+  if (item == [(DOCTagsCollectionViewData *)self->_tagsData countOfTags])
   {
-    v8 = [(DOCTagsCollectionView *)self delegate];
-    v9 = [v10 cellForItemAtIndexPath:v6];
-    [v8 tagsCollectionView:self didSelectAddTagButton:v9];
+    delegate = [(DOCTagsCollectionView *)self delegate];
+    v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
+    [delegate tagsCollectionView:self didSelectAddTagButton:v9];
   }
 }
 
-- (id)cellForIndexPath:(id)a3 dequeueCell:(id)a4
+- (id)cellForIndexPath:(id)path dequeueCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item];
-  v9 = [(DOCTagsCollectionViewData *)self->_tagsData countOfTags];
-  v10 = v7[2];
-  if (v8 == v9)
+  pathCopy = path;
+  cellCopy = cell;
+  item = [pathCopy item];
+  countOfTags = [(DOCTagsCollectionViewData *)self->_tagsData countOfTags];
+  v10 = cellCopy[2];
+  if (item == countOfTags)
   {
-    v11 = v10(v7, @"AddTagCellIdentifier");
+    v11 = v10(cellCopy, @"AddTagCellIdentifier");
   }
 
   else
   {
-    v11 = v10(v7, @"TagCellIdentifier");
+    v11 = v10(cellCopy, @"TagCellIdentifier");
 
-    v7 = -[DOCTagsCollectionViewData tagAtIndex:](self->_tagsData, "tagAtIndex:", [v6 item]);
-    v12 = [v11 tagView];
-    [v12 setDelegate:self];
+    cellCopy = -[DOCTagsCollectionViewData tagAtIndex:](self->_tagsData, "tagAtIndex:", [pathCopy item]);
+    tagView = [v11 tagView];
+    [tagView setDelegate:self];
 
-    v13 = [v11 tagView];
-    [v13 setTagValue:v7];
+    tagView2 = [v11 tagView];
+    [tagView2 setTagValue:cellCopy];
 
-    v14 = [(DOCTagsCollectionViewData *)self->_tagsData presenceOf:v7]== 1;
-    v15 = [v11 tagView];
-    [v15 setIsMixed:v14];
+    v14 = [(DOCTagsCollectionViewData *)self->_tagsData presenceOf:cellCopy]== 1;
+    tagView3 = [v11 tagView];
+    [tagView3 setIsMixed:v14];
   }
 
   return v11;
@@ -307,43 +307,43 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
 
   self->_lastIntrinsicContentSize.width = 0.0;
   self->_lastIntrinsicContentSize.height = 0.0;
-  v4 = [(DOCTagsCollectionView *)self _layout];
+  _layout = [(DOCTagsCollectionView *)self _layout];
   v5 = +[DOCTagAppearance infoCollection];
   [v5 horizontalTagSpacing];
-  [v4 setMinimumInteritemSpacing:?];
+  [_layout setMinimumInteritemSpacing:?];
 
-  [v4 invalidateLayout];
+  [_layout invalidateLayout];
   [(DOCTagsCollectionView *)self invalidateIntrinsicContentSize];
   [(DOCTagsCollectionView *)self setNeedsLayout];
 }
 
-- (void)tagsCollectionItem:(id)a3 didDeleteTag:(id)a4
+- (void)tagsCollectionItem:(id)item didDeleteTag:(id)tag
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DOCTagsCollectionView *)self _indexPathOfTag:v7];
+  itemCopy = item;
+  tagCopy = tag;
+  v8 = [(DOCTagsCollectionView *)self _indexPathOfTag:tagCopy];
   if (v8)
   {
     v9 = objc_opt_new();
-    v15[0] = v7;
+    v15[0] = tagCopy;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     [v9 setDeletions:v10];
 
     [(DOCTagsCollectionViewData *)self->_tagsData applyPendingExternalChange:v9 timeout:1.0];
-    v11 = [(DOCTagsCollectionView *)self collectionView];
+    collectionView = [(DOCTagsCollectionView *)self collectionView];
     v14 = v8;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
-    [v11 deleteItemsAtIndexPaths:v12];
+    [collectionView deleteItemsAtIndexPaths:v12];
 
-    v13 = [(DOCTagsCollectionView *)self delegate];
-    [v13 tagsCollectionItem:v6 didDeleteTag:v7];
+    delegate = [(DOCTagsCollectionView *)self delegate];
+    [delegate tagsCollectionItem:itemCopy didDeleteTag:tagCopy];
   }
 }
 
-- (id)_indexPathOfTag:(id)a3
+- (id)_indexPathOfTag:(id)tag
 {
-  v3 = [(DOCTagsCollectionViewData *)self->_tagsData indexOfTag:a3];
+  v3 = [(DOCTagsCollectionViewData *)self->_tagsData indexOfTag:tag];
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
@@ -357,26 +357,26 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
   return v4;
 }
 
-- (id)_cellMenuTargetForIndexPath:(id)a3
+- (id)_cellMenuTargetForIndexPath:(id)path
 {
-  v3 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:a3];
-  v4 = [v3 doc_tagsCollectionCellMenuTarget];
+  v3 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:path];
+  doc_tagsCollectionCellMenuTarget = [v3 doc_tagsCollectionCellMenuTarget];
 
-  return v4;
+  return doc_tagsCollectionCellMenuTarget;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
-  v7 = [v6 firstObject];
-  v8 = [v6 count];
+  pathsCopy = paths;
+  firstObject = [pathsCopy firstObject];
+  v8 = [pathsCopy count];
 
   if (v8 == 1)
   {
-    v9 = [(DOCTagsCollectionView *)self _cellMenuTargetForIndexPath:v7];
-    v10 = [v9 menuForContextMenuPresentation];
-    v11 = v10;
-    if (v10 && ([v10 children], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
+    v9 = [(DOCTagsCollectionView *)self _cellMenuTargetForIndexPath:firstObject];
+    menuForContextMenuPresentation = [v9 menuForContextMenuPresentation];
+    v11 = menuForContextMenuPresentation;
+    if (menuForContextMenuPresentation && ([menuForContextMenuPresentation children], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
     {
       v14 = MEMORY[0x277D753B0];
       v17[0] = MEMORY[0x277D85DD0];
@@ -401,13 +401,13 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
   return v15;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:{a5, a4}];
+  v5 = [view cellForItemAtIndexPath:{path, configuration}];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 tagView];
-    [v6 cornerRadius];
+    tagView = [v5 tagView];
+    [tagView cornerRadius];
 
     v7 = objc_alloc_init(MEMORY[0x277D758D8]);
     v8 = MEMORY[0x277D75208];
@@ -426,9 +426,9 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
   return v10;
 }
 
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = +[DOCTagAppearance infoCollection];
   [v7 dimmingAlphaDuringMenuPresentation];
   v9 = v8;
@@ -441,13 +441,13 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
     v10[3] = &unk_278FA2128;
     v10[4] = self;
     *&v10[5] = v9;
-    [v6 addAnimations:v10];
+    [animatorCopy addAnimations:v10];
   }
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v7 = +[DOCTagAppearance infoCollection];
   [v7 dimmingAlphaDuringMenuPresentation];
   v9 = v8;
@@ -459,7 +459,7 @@ id __70__DOCTagsCollectionView_collectionView_layout_sizeForItemAtIndexPath___bl
     v10[2] = __96__DOCTagsCollectionView_collectionView_willEndContextMenuInteractionWithConfiguration_animator___block_invoke;
     v10[3] = &unk_278FA1C30;
     v10[4] = self;
-    [v6 addAnimations:v10];
+    [animatorCopy addAnimations:v10];
   }
 }
 

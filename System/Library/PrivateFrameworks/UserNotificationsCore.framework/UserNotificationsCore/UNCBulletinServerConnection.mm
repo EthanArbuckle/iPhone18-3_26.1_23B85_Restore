@@ -2,7 +2,7 @@
 + (id)clientInterface;
 + (id)serverInterface;
 - (UNCBulletinServerConnection)init;
-- (UNCBulletinServerConnection)initWithQueue:(id)a3;
+- (UNCBulletinServerConnection)initWithQueue:(id)queue;
 - (id)_ensureBBServerSettingsConnection;
 - (id)activeSectionIDs;
 - (id)asyncServerProxyObject;
@@ -12,7 +12,7 @@
 - (void)refreshAnnounceSettings;
 - (void)refreshGlobalSettings;
 - (void)refreshSectionInfo;
-- (void)refreshSectionInfoForID:(id)a3;
+- (void)refreshSectionInfoForID:(id)d;
 @end
 
 @implementation UNCBulletinServerConnection
@@ -74,16 +74,16 @@ void __46__UNCBulletinServerConnection_serverInterface__block_invoke()
   return v4;
 }
 
-- (UNCBulletinServerConnection)initWithQueue:(id)a3
+- (UNCBulletinServerConnection)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = UNCBulletinServerConnection;
   v6 = [(UNCBulletinServerConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
@@ -108,12 +108,12 @@ void __46__UNCBulletinServerConnection_serverInterface__block_invoke()
     self->_bbServerConnection = v4;
 
     v6 = self->_bbServerConnection;
-    v7 = [objc_opt_class() serverInterface];
-    [(NSXPCConnection *)v6 setRemoteObjectInterface:v7];
+    serverInterface = [objc_opt_class() serverInterface];
+    [(NSXPCConnection *)v6 setRemoteObjectInterface:serverInterface];
 
     v8 = self->_bbServerConnection;
-    v9 = [objc_opt_class() clientInterface];
-    [(NSXPCConnection *)v8 setExportedInterface:v9];
+    clientInterface = [objc_opt_class() clientInterface];
+    [(NSXPCConnection *)v8 setExportedInterface:clientInterface];
 
     [(NSXPCConnection *)self->_bbServerConnection setExportedObject:self];
     [(NSXPCConnection *)self->_bbServerConnection setInterruptionHandler:&__block_literal_global_23_0];
@@ -180,8 +180,8 @@ void __64__UNCBulletinServerConnection__ensureBBServerSettingsConnection__block_
 
 - (id)serverProxyObject
 {
-  v2 = [(UNCBulletinServerConnection *)self _ensureBBServerSettingsConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+  _ensureBBServerSettingsConnection = [(UNCBulletinServerConnection *)self _ensureBBServerSettingsConnection];
+  v3 = [_ensureBBServerSettingsConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
 
   return v3;
 }
@@ -198,8 +198,8 @@ void __48__UNCBulletinServerConnection_serverProxyObject__block_invoke(uint64_t 
 
 - (id)asyncServerProxyObject
 {
-  v2 = [(UNCBulletinServerConnection *)self _ensureBBServerSettingsConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_29_0];
+  _ensureBBServerSettingsConnection = [(UNCBulletinServerConnection *)self _ensureBBServerSettingsConnection];
+  v3 = [_ensureBBServerSettingsConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_29_0];
 
   return v3;
 }
@@ -222,13 +222,13 @@ void __53__UNCBulletinServerConnection_asyncServerProxyObject__block_invoke(uint
   v9 = __Block_byref_object_copy__15;
   v10 = __Block_byref_object_dispose__15;
   v11 = 0;
-  v2 = [(UNCBulletinServerConnection *)self serverProxyObject];
+  serverProxyObject = [(UNCBulletinServerConnection *)self serverProxyObject];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__UNCBulletinServerConnection_activeSectionIDs__block_invoke;
   v5[3] = &unk_1E85D7F78;
   v5[4] = &v6;
-  [v2 getActiveSectionIDsWithHandler:v5];
+  [serverProxyObject getActiveSectionIDsWithHandler:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -253,27 +253,27 @@ void __47__UNCBulletinServerConnection_activeSectionIDs__block_invoke(uint64_t a
 
 - (void)refreshAnnounceSettings
 {
-  v2 = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
-  [v2 refreshAnnounceSettings];
+  asyncServerProxyObject = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
+  [asyncServerProxyObject refreshAnnounceSettings];
 }
 
 - (void)refreshGlobalSettings
 {
-  v2 = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
-  [v2 refreshGlobalSettings];
+  asyncServerProxyObject = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
+  [asyncServerProxyObject refreshGlobalSettings];
 }
 
 - (void)refreshSectionInfo
 {
-  v2 = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
-  [v2 refreshSectionInfo];
+  asyncServerProxyObject = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
+  [asyncServerProxyObject refreshSectionInfo];
 }
 
-- (void)refreshSectionInfoForID:(id)a3
+- (void)refreshSectionInfoForID:(id)d
 {
-  v4 = a3;
-  v5 = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
-  [v5 refreshSectionInfoForID:v4];
+  dCopy = d;
+  asyncServerProxyObject = [(UNCBulletinServerConnection *)self asyncServerProxyObject];
+  [asyncServerProxyObject refreshSectionInfoForID:dCopy];
 }
 
 void __48__UNCBulletinServerConnection_serverProxyObject__block_invoke_cold_1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

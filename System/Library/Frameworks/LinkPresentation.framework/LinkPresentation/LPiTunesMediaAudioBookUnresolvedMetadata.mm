@@ -14,8 +14,8 @@
   [(LPiTunesMediaAudioBookMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaAudioBookMetadata *)v3 setNarrator:self->_narrator];
   [(LPiTunesMediaAudioBookMetadata *)v3 setAuthor:self->_author];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaAudioBookMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaAudioBookMetadata *)v3 setArtworkMetadata:metadata];
 
   v16 = 0u;
   v17 = 0u;
@@ -36,13 +36,13 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 previewURL];
-        v11 = v10 == 0;
+        previewURL = [v9 previewURL];
+        v11 = previewURL == 0;
 
         if (!v11)
         {
-          v12 = [v9 previewURL];
-          [(LPiTunesMediaAudioBookMetadata *)v3 setPreviewURL:v12];
+          previewURL2 = [v9 previewURL];
+          [(LPiTunesMediaAudioBookMetadata *)v3 setPreviewURL:previewURL2];
 
           goto LABEL_11;
         }

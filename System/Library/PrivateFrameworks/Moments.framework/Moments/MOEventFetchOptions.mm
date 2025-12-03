@@ -1,114 +1,114 @@
 @interface MOEventFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (MOEventFetchOptions)initWithCoder:(id)a3;
-- (MOEventFetchOptions)initWithDateInterval:(id)a3 ascending:(BOOL)a4 categories:(id)a5 limit:(id)a6;
-- (MOEventFetchOptions)initWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (MOEventFetchOptions)initWithCoder:(id)coder;
+- (MOEventFetchOptions)initWithDateInterval:(id)interval ascending:(BOOL)ascending categories:(id)categories limit:(id)limit;
+- (MOEventFetchOptions)initWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventFetchOptions
 
-- (MOEventFetchOptions)initWithDateInterval:(id)a3 ascending:(BOOL)a4 limit:(id)a5
+- (MOEventFetchOptions)initWithDateInterval:(id)interval ascending:(BOOL)ascending limit:(id)limit
 {
-  v9 = a3;
-  v10 = a5;
+  intervalCopy = interval;
+  limitCopy = limit;
   v14.receiver = self;
   v14.super_class = MOEventFetchOptions;
   v11 = [(MOEventFetchOptions *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_ascending = a4;
-    objc_storeStrong(&v11->_dateInterval, a3);
-    objc_storeStrong(&v12->_limit, a5);
+    v11->_ascending = ascending;
+    objc_storeStrong(&v11->_dateInterval, interval);
+    objc_storeStrong(&v12->_limit, limit);
   }
 
   return v12;
 }
 
-- (MOEventFetchOptions)initWithDateInterval:(id)a3 ascending:(BOOL)a4 categories:(id)a5 limit:(id)a6
+- (MOEventFetchOptions)initWithDateInterval:(id)interval ascending:(BOOL)ascending categories:(id)categories limit:(id)limit
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  intervalCopy = interval;
+  categoriesCopy = categories;
+  limitCopy = limit;
   v17.receiver = self;
   v17.super_class = MOEventFetchOptions;
   v14 = [(MOEventFetchOptions *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_ascending = a4;
-    objc_storeStrong(&v14->_categories, a5);
-    objc_storeStrong(&v15->_dateInterval, a3);
-    objc_storeStrong(&v15->_limit, a6);
+    v14->_ascending = ascending;
+    objc_storeStrong(&v14->_categories, categories);
+    objc_storeStrong(&v15->_dateInterval, interval);
+    objc_storeStrong(&v15->_limit, limit);
   }
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   ascending = self->_ascending;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:ascending];
-  [v7 encodeObject:v6 forKey:@"ascending"];
+  [coderCopy encodeObject:v6 forKey:@"ascending"];
 
-  [v7 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v7 encodeObject:self->_limit forKey:@"limit"];
-  [v7 encodeObject:self->_categories forKey:@"categories"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_categories forKey:@"categories"];
 }
 
-- (MOEventFetchOptions)initWithCoder:(id)a3
+- (MOEventFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
   v9 = MEMORY[0x277CBEB98];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"categories"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"categories"];
 
-  v13 = [(MOEventFetchOptions *)self initWithDateInterval:v7 ascending:v6 categories:v12 limit:v8];
+  v13 = [(MOEventFetchOptions *)self initWithDateInterval:v7 ascending:bOOLValue categories:v12 limit:v8];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MOEventFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MOEventFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   ascending = self->_ascending;
-  v7 = [v5 ascending];
+  ascending = [optionsCopy ascending];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
     goto LABEL_2;
   }
 
-  v3 = [v5 dateInterval];
-  if (!v3)
+  dateInterval = [optionsCopy dateInterval];
+  if (!dateInterval)
   {
     v13 = 1;
     goto LABEL_11;
@@ -117,13 +117,13 @@
   if (self->_dateInterval)
   {
 LABEL_2:
-    v9 = [v5 dateInterval];
-    if (v9)
+    dateInterval2 = [optionsCopy dateInterval];
+    if (dateInterval2)
     {
-      v10 = v9;
+      v10 = dateInterval2;
       v11 = self->_dateInterval;
-      v12 = [v5 dateInterval];
-      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:v12];
+      dateInterval3 = [optionsCopy dateInterval];
+      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:dateInterval3];
 
       if (dateInterval)
       {
@@ -151,20 +151,20 @@ LABEL_11:
 LABEL_12:
   if (self->_limit)
   {
-    v14 = [v5 limit];
-    if (v14)
+    limit = [optionsCopy limit];
+    if (limit)
     {
       v15 = 1;
     }
 
     else if (self->_limit)
     {
-      v16 = [v5 limit];
-      if (v16)
+      limit2 = [optionsCopy limit];
+      if (limit2)
       {
         limit = self->_limit;
-        v18 = [v5 limit];
-        v15 = [(NSNumber *)limit isEqualToNumber:v18];
+        limit3 = [optionsCopy limit];
+        v15 = [(NSNumber *)limit isEqualToNumber:limit3];
       }
 
       else
@@ -185,9 +185,9 @@ LABEL_12:
   }
 
   categories = self->_categories;
-  v20 = [v5 categories];
+  categories = [optionsCopy categories];
 
-  if (categories == v20)
+  if (categories == categories)
   {
     v21 = v15;
   }
@@ -197,7 +197,7 @@ LABEL_12:
     v21 = 0;
   }
 
-  if (((ascending == v7) & v13) == 1)
+  if (((ascending == ascending) & v13) == 1)
   {
     v22 = v21;
   }
@@ -234,11 +234,11 @@ LABEL_12:
     v4 = @"NO";
   }
 
-  v5 = [(NSDateInterval *)self->_dateInterval startDate];
-  v6 = [v5 stringFromDate];
-  v7 = [(NSDateInterval *)self->_dateInterval endDate];
-  v8 = [v7 stringFromDate];
-  v9 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, categories, %@, limit, %@", v4, v6, v8, self->_categories, self->_limit];
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v9 = [v3 stringWithFormat:@"ascending, %@, startDate, %@, endDate, %@, categories, %@, limit, %@", v4, stringFromDate, stringFromDate2, self->_categories, self->_limit];
 
   return v9;
 }

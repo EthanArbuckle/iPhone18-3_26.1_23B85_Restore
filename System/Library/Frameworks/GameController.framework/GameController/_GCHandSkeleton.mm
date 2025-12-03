@@ -1,32 +1,32 @@
 @interface _GCHandSkeleton
-- (BOOL)fingerPositionsChangedForCurlAmts:(id *)a3;
-- (_GCHandSkeleton)initWithBoneData:(const void *)a3 profile:(void *)a4 handedness:(int64_t)a5;
-- (float)getFingerCurlAmt:(id *)a3 boneType:(int64_t)a4;
-- (void)_boneDataWithMotionRange:(void *)a3@<X8> curlAmts:;
-- (void)_boneDataWithMotionRangeDq:(void *)a3@<X8> curlAmts:;
-- (void)_convertToModelSpaceUsingDQs:(uint64_t)a1@<X2>;
-- (void)_convertToModelSpaceUsingMatrices:(uint64_t)a1@<X2>;
-- (void)boneDataWithTransformSpace:(uint64_t)a3@<X3> motionRange:(void *)a4@<X8>;
-- (void)boneDataWithTransformSpace:(uint64_t)a3@<X3> referencePose:(void *)a4@<X8>;
+- (BOOL)fingerPositionsChangedForCurlAmts:(id *)amts;
+- (_GCHandSkeleton)initWithBoneData:(const void *)data profile:(void *)profile handedness:(int64_t)handedness;
+- (float)getFingerCurlAmt:(id *)amt boneType:(int64_t)type;
+- (void)_boneDataWithMotionRange:(void *)range@<X8> curlAmts:;
+- (void)_boneDataWithMotionRangeDq:(void *)dq@<X8> curlAmts:;
+- (void)_convertToModelSpaceUsingDQs:(uint64_t)qs@<X2>;
+- (void)_convertToModelSpaceUsingMatrices:(uint64_t)matrices@<X2>;
+- (void)boneDataWithTransformSpace:(uint64_t)space@<X3> motionRange:(void *)range@<X8>;
+- (void)boneDataWithTransformSpace:(uint64_t)space@<X3> referencePose:(void *)pose@<X8>;
 @end
 
 @implementation _GCHandSkeleton
 
-- (_GCHandSkeleton)initWithBoneData:(const void *)a3 profile:(void *)a4 handedness:(int64_t)a5
+- (_GCHandSkeleton)initWithBoneData:(const void *)data profile:(void *)profile handedness:(int64_t)handedness
 {
-  v8 = a4;
-  v20.receiver = a1;
+  profileCopy = profile;
+  v20.receiver = self;
   v20.super_class = _GCHandSkeleton;
   v9 = [(_GCHandSkeleton *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_physicalInput, v8);
-    memcpy(&v10->_boneData, a3, 0x3E0uLL);
+    objc_storeWeak(&v9->_physicalInput, profileCopy);
+    memcpy(&v10->_boneData, data, 0x3E0uLL);
     v11 = 0;
-    v10->_handedness = a5;
+    v10->_handedness = handedness;
     v12 = &kRightSkeletons;
-    if (a5 == 1)
+    if (handedness == 1)
     {
       v12 = &kLeftSkeletons;
     }
@@ -55,117 +55,117 @@
   return v10;
 }
 
-- (void)boneDataWithTransformSpace:(uint64_t)a3@<X3> motionRange:(void *)a4@<X8>
+- (void)boneDataWithTransformSpace:(uint64_t)space@<X3> motionRange:(void *)range@<X8>
 {
-  memcpy(a4, (a1 + 32), 0x3E0uLL);
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  memcpy(range, (self + 32), 0x3E0uLL);
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v5 = [WeakRetained objectForKeyedSubscript:@"XRPropertyButtonFingerThumb"];
   [v5 value];
   v25[0] = v6;
-  v7 = objc_loadWeakRetained((a1 + 8));
+  v7 = objc_loadWeakRetained((self + 8));
   v8 = [v7 objectForKeyedSubscript:@"XRPropertyButtonFingerIndex"];
   [v8 value];
   v25[1] = v9;
-  v10 = objc_loadWeakRetained((a1 + 8));
+  v10 = objc_loadWeakRetained((self + 8));
   v11 = [v10 objectForKeyedSubscript:@"XRPropertyButtonFingerMiddle"];
   [v11 value];
   v25[2] = v12;
-  v13 = objc_loadWeakRetained((a1 + 8));
+  v13 = objc_loadWeakRetained((self + 8));
   v14 = [v13 objectForKeyedSubscript:@"XRPropertyButtonFingerRing"];
   [v14 value];
   v25[3] = v15;
-  v16 = objc_loadWeakRetained((a1 + 8));
+  v16 = objc_loadWeakRetained((self + 8));
   v17 = [v16 objectForKeyedSubscript:@"XRPropertyButtonFingerLittle"];
   [v17 value];
   v25[4] = v18;
 
-  result = [a1 fingerPositionsChangedForCurlAmts:v25];
+  result = [self fingerPositionsChangedForCurlAmts:v25];
   if (result)
   {
-    if (*(a1 + 5008))
+    if (*(self + 5008))
     {
-      result = [a1 _boneDataWithMotionRangeDq:a3 curlAmts:v25];
+      result = [self _boneDataWithMotionRangeDq:space curlAmts:v25];
     }
 
     else
     {
-      result = [a1 _boneDataWithMotionRange:a3 curlAmts:v25];
+      result = [self _boneDataWithMotionRange:space curlAmts:v25];
     }
   }
 
   if (!a2)
   {
-    [a1 _convertToModelSpaceUsingDQs:a1 + 32];
-    return memcpy(a4, __src, 0x3E0uLL);
+    [self _convertToModelSpaceUsingDQs:self + 32];
+    return memcpy(range, __src, 0x3E0uLL);
   }
 
   return result;
 }
 
-- (BOOL)fingerPositionsChangedForCurlAmts:(id *)a3
+- (BOOL)fingerPositionsChangedForCurlAmts:(id *)amts
 {
-  if (a3->var0 == self->_lastFingerPositions[0] && a3->var1 == self->_lastFingerPositions[1] && a3->var2 == self->_lastFingerPositions[2] && a3->var3 == self->_lastFingerPositions[3] && a3->var4 == self->_lastFingerPositions[4])
+  if (amts->var0 == self->_lastFingerPositions[0] && amts->var1 == self->_lastFingerPositions[1] && amts->var2 == self->_lastFingerPositions[2] && amts->var3 == self->_lastFingerPositions[3] && amts->var4 == self->_lastFingerPositions[4])
   {
     return 0;
   }
 
-  *self->_lastFingerPositions = *a3;
+  *self->_lastFingerPositions = *amts;
   return 1;
 }
 
-- (float)getFingerCurlAmt:(id *)a3 boneType:(int64_t)a4
+- (float)getFingerCurlAmt:(id *)amt boneType:(int64_t)type
 {
   result = 0.0;
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         return result;
       }
 
-      a3 = (a3 + 4);
+      amt = (amt + 4);
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 3:
-        a3 = (a3 + 8);
+        amt = (amt + 8);
         break;
       case 4:
-        a3 = (a3 + 12);
+        amt = (amt + 12);
         break;
       case 5:
-        a3 = (a3 + 16);
+        amt = (amt + 16);
         break;
       default:
         return result;
     }
   }
 
-  return a3->var0;
+  return amt->var0;
 }
 
-- (void)_boneDataWithMotionRange:(void *)a3@<X8> curlAmts:
+- (void)_boneDataWithMotionRange:(void *)range@<X8> curlAmts:
 {
-  memcpy(a3, a1 + 4, 0x3E0uLL);
+  memcpy(range, self + 4, 0x3E0uLL);
   v5 = 0x1FFFFFFFFFFFFF84;
   v6 = &kBoneTypes;
   v44 = xmmword_1D2DEE4B0;
   do
   {
     v7 = *v6++;
-    v8 = a1[128];
+    v8 = self[128];
     v9 = (*v8 + v5 * 8);
     v10 = v8[2];
-    [a1 getFingerCurlAmt:a2 boneType:{v7, v44}];
+    [self getFingerCurlAmt:a2 boneType:{v7, v44}];
     if (v11 <= 0.0)
     {
-      v43 = &a1[v5];
+      v43 = &self[v5];
       v43[64] = v9[62];
       v43[65] = v9[63];
     }
@@ -173,7 +173,7 @@
     else
     {
       v12 = v11;
-      *&a1[v5 + 128] = vmlaq_n_f32(v9[62], vsubq_f32(*(v10 + v5 * 8 + 992), v9[62]), v11);
+      *&self[v5 + 128] = vmlaq_n_f32(v9[62], vsubq_f32(*(v10 + v5 * 8 + 992), v9[62]), v11);
       v13 = v9[63];
       v14 = *(v10 + v5 * 8 + 1008);
       v15 = vmulq_f32(v13, v14);
@@ -237,7 +237,7 @@
         v39 = vmulq_n_f32(v36, vmul_f32(v42, vrsqrts_f32(v40, vmul_f32(v42, v42))).f32[0]);
       }
 
-      *&a1[v5 + 130] = v39;
+      *&self[v5 + 130] = v39;
     }
 
     v5 += 4;
@@ -246,31 +246,31 @@
   while (v5 * 8);
 }
 
-- (void)_boneDataWithMotionRangeDq:(void *)a3@<X8> curlAmts:
+- (void)_boneDataWithMotionRangeDq:(void *)dq@<X8> curlAmts:
 {
-  memcpy(a3, (a1 + 32), 0x3E0uLL);
+  memcpy(dq, (self + 32), 0x3E0uLL);
   v5 = -992;
   v6 = &kBoneTypes;
   do
   {
     v7 = *v6++;
-    [a1 getFingerCurlAmt:a2 boneType:{v7, *&v19, *&v20}];
+    [self getFingerCurlAmt:a2 boneType:{v7, *&v19, *&v20}];
     if (v8 <= 0.0)
     {
-      v16 = a1 + v5;
-      *(v16 + 1024) = *(**(a1 + 1024) + v5 + 992);
-      *(v16 + 1040) = *(**(a1 + 1024) + v5 + 1008);
+      v16 = self + v5;
+      *(v16 + 1024) = *(**(self + 1024) + v5 + 992);
+      *(v16 + 1040) = *(**(self + 1024) + v5 + 1008);
     }
 
     else
     {
       v9 = v8;
       dqIdentity();
-      v10 = *(a1 + v5 + 2032);
-      v11 = *(a1 + v5 + 2048);
-      v12 = *(a1 + v5 + 4016);
-      v13 = *(a1 + v5 + 4032);
-      if (*(a1 + 5008) == 1)
+      v10 = *(self + v5 + 2032);
+      v11 = *(self + v5 + 2048);
+      v12 = *(self + v5 + 4016);
+      v13 = *(self + v5 + 4032);
+      if (*(self + 5008) == 1)
       {
         *v14.i64 = dqDLB(v10, *v11.i64, v12, *v13.i64, v9);
       }
@@ -283,9 +283,9 @@
       v19 = v15;
       v20 = v14;
       *&v17 = dqGetTranslation(v14, v15);
-      *(a1 + v5 + 1024) = v17;
+      *(self + v5 + 1024) = v17;
       *&v18 = dqGetRotation(v20, v19);
-      *(a1 + v5 + 1040) = v18;
+      *(self + v5 + 1040) = v18;
     }
 
     v5 += 32;
@@ -294,13 +294,13 @@
   while (v5);
 }
 
-- (void)boneDataWithTransformSpace:(uint64_t)a3@<X3> referencePose:(void *)a4@<X8>
+- (void)boneDataWithTransformSpace:(uint64_t)space@<X3> referencePose:(void *)pose@<X8>
 {
-  if (a3 <= 1)
+  if (space <= 1)
   {
-    if (a3 <= 1)
+    if (space <= 1)
     {
-      v5 = (*(a1 + 1024) + 8 * (a2 == 0));
+      v5 = (*(self + 1024) + 8 * (a2 == 0));
       goto LABEL_8;
     }
 
@@ -308,12 +308,12 @@ LABEL_11:
     [_GCHandSkeleton boneDataWithTransformSpace:referencePose:];
   }
 
-  if (a3 != 2 && a3 != 3)
+  if (space != 2 && space != 3)
   {
     goto LABEL_11;
   }
 
-  v6 = *(a1 + 1024);
+  v6 = *(self + 1024);
   v7 = (v6 + 16);
   v5 = (v6 + 24);
   if (a2)
@@ -324,10 +324,10 @@ LABEL_11:
 LABEL_8:
   v8 = *v5;
 
-  return memcpy(a4, v8, 0x3E0uLL);
+  return memcpy(pose, v8, 0x3E0uLL);
 }
 
-- (void)_convertToModelSpaceUsingMatrices:(uint64_t)a1@<X2>
+- (void)_convertToModelSpaceUsingMatrices:(uint64_t)matrices@<X2>
 {
   v2 = 0;
   v78 = *MEMORY[0x1E69E9840];
@@ -371,7 +371,7 @@ LABEL_8:
     if (v2)
     {
       v8 = 0;
-      v9 = (a1 + 32 * v2);
+      v9 = (matrices + 32 * v2);
       v10 = *v9;
       _Q5 = v9[1];
       _S6 = HIDWORD(v9[1].i64[0]);
@@ -525,7 +525,7 @@ LABEL_8:
   v68 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_convertToModelSpaceUsingDQs:(uint64_t)a1@<X2>
+- (void)_convertToModelSpaceUsingDQs:(uint64_t)qs@<X2>
 {
   v4 = 0;
   v22 = *MEMORY[0x1E69E9840];
@@ -566,8 +566,8 @@ LABEL_8:
   {
     v7 = *v5++;
     v6 = v7;
-    v8 = *(a1 + v4 * 16);
-    DualQuaternion = dqMakeDualQuaternion(*(a1 + v4 * 16 + 16));
+    v8 = *(qs + v4 * 16);
+    DualQuaternion = dqMakeDualQuaternion(*(qs + v4 * 16 + 16));
     if (v4 * 16)
     {
       v11 = &v21[v4];

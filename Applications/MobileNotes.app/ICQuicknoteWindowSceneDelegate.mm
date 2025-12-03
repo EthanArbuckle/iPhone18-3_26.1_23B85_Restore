@@ -1,24 +1,24 @@
 @interface ICQuicknoteWindowSceneDelegate
 - (ICViewControllerManager)viewControllerManager;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setupQuickNoteWithWindowScene:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setupQuickNoteWithWindowScene:(id)scene;
 @end
 
 @implementation ICQuicknoteWindowSceneDelegate
 
 - (ICViewControllerManager)viewControllerManager
 {
-  v2 = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
-  v3 = [v2 viewControllerManager];
+  icWindow = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
+  viewControllerManager = [icWindow viewControllerManager];
 
-  return v3;
+  return viewControllerManager;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
+  sceneCopy = scene;
   v7 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,11 +32,11 @@
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  v9 = [v8 screen];
-  v10 = [v9 displayIdentity];
-  v11 = [v10 expectsSecureRendering];
+  screen = [v8 screen];
+  displayIdentity = [screen displayIdentity];
+  expectsSecureRendering = [displayIdentity expectsSecureRendering];
 
-  if (v11)
+  if (expectsSecureRendering)
   {
     [(ICQuicknoteWindowSceneDelegate *)self setupQuickNoteWithWindowScene:v8];
   }
@@ -47,9 +47,9 @@
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -65,10 +65,10 @@
   *&buf[16] = 0x2020000000;
   v17 = 0;
   v6 = +[ICNoteContext sharedContext];
-  v7 = [v6 managedObjectContext];
+  managedObjectContext = [v6 managedObjectContext];
 
   [UIView setAnimationsEnabled:0];
-  v8 = [ICAccount accountsWithAccountType:1 context:v7];
+  v8 = [ICAccount accountsWithAccountType:1 context:managedObjectContext];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100148990;
@@ -81,7 +81,7 @@
     goto LABEL_7;
   }
 
-  v9 = [ICAccount accountsWithAccountType:3 context:v7];
+  v9 = [ICAccount accountsWithAccountType:3 context:managedObjectContext];
   v10 = [v9 count];
   if (v10)
   {
@@ -93,23 +93,23 @@
   if (*(*&buf[8] + 24))
   {
 LABEL_7:
-    v11 = [(ICQuicknoteWindowSceneDelegate *)self viewControllerManager];
-    [v11 dismissAnyPresentedViewControllerAnimated:0 completion:0];
+    viewControllerManager = [(ICQuicknoteWindowSceneDelegate *)self viewControllerManager];
+    [viewControllerManager dismissAnyPresentedViewControllerAnimated:0 completion:0];
 
     v12 = +[ICQuickNoteSessionManager sharedManager];
     [v12 setSecureScreenShowing:1];
   }
 
-  v13 = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
-  [v13 setHidden:0];
+  icWindow = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
+  [icWindow setHidden:0];
 
-  v14 = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
-  [v14 makeKeyWindow];
+  icWindow2 = [(ICQuicknoteWindowSceneDelegate *)self icWindow];
+  [icWindow2 makeKeyWindow];
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -119,9 +119,9 @@ LABEL_7:
   [UIView performWithoutAnimation:v3];
 }
 
-- (void)setupQuickNoteWithWindowScene:(id)a3
+- (void)setupQuickNoteWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = os_log_create("com.apple.notes", "QuickNote");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,13 +133,13 @@ LABEL_7:
   }
 
   v6 = +[ICNoteContext sharedContext];
-  v7 = [v6 managedObjectContext];
+  managedObjectContext = [v6 managedObjectContext];
 
   v8 = +[ICQuickNoteSessionManager sharedManager];
   [v8 setHasClearedInitialSelectedTextIfSecure:0];
   [v8 setHasClearedInitialSearchTextIfSecure:0];
   [v8 setHasClearedInitialReplaceTextIfSecure:0];
-  v9 = [[ICSecureWindow alloc] initWithWindowScene:v4 behavior:0];
+  v9 = [[ICSecureWindow alloc] initWithWindowScene:sceneCopy behavior:0];
 
   v10 = objc_alloc_init(ICViewControllerManager);
   [v9 setViewControllerManager:v10];
@@ -157,23 +157,23 @@ LABEL_7:
   }
   v14 = ;
 
-  [ICQuickNoteSessionManager requirePasscodeInContext:v7 stateArchive:v14];
+  [ICQuickNoteSessionManager requirePasscodeInContext:managedObjectContext stateArchive:v14];
   [(ICViewControllerManager *)v10 setupWithWindow:v9 stateRestoreArchive:0 completion:0];
   [(ICQuicknoteWindowSceneDelegate *)self setIcWindow:v9];
   v15 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
   [v15 setEnableMultiscreenHack:1];
 
-  v16 = [(ICViewControllerManager *)v10 noteEditorViewController];
+  noteEditorViewController = [(ICViewControllerManager *)v10 noteEditorViewController];
   [v8 saveSession];
   v22 = v8;
-  v23 = v7;
+  v23 = managedObjectContext;
   v24 = v14;
   v25 = v10;
   v17 = v10;
   v18 = v14;
-  v19 = v7;
+  v19 = managedObjectContext;
   v20 = v8;
-  v21 = v16;
+  v21 = noteEditorViewController;
   dispatchMainAfterDelay();
 }
 

@@ -1,7 +1,7 @@
 @interface AXSDCustomDetectionController
 + (id)sharedInstance;
 - (AXSDCustomDetectionController)init;
-- (BOOL)containsCustomDetector:(id)a3;
+- (BOOL)containsCustomDetector:(id)detector;
 @end
 
 @implementation AXSDCustomDetectionController
@@ -47,15 +47,15 @@ uint64_t __47__AXSDCustomDetectionController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)containsCustomDetector:(id)a3
+- (BOOL)containsCustomDetector:(id)detector
 {
   controller = self->_controller;
-  v4 = a3;
-  v5 = [(AXSDKShotControllerImplementation *)controller currentDetectionTypes];
-  v6 = [v4 identifier];
+  detectorCopy = detector;
+  currentDetectionTypes = [(AXSDKShotControllerImplementation *)controller currentDetectionTypes];
+  identifier = [detectorCopy identifier];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(detectorCopy) = [currentDetectionTypes containsObject:identifier];
+  return detectorCopy;
 }
 
 @end

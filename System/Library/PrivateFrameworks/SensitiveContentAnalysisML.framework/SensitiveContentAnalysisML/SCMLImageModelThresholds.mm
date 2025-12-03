@@ -1,14 +1,14 @@
 @interface SCMLImageModelThresholds
-+ (id)_createThresholdDictionaryWithError:(id *)a3;
-+ (id)_validateScoreThresholdsJson:(id)a3 error:(id *)a4;
++ (id)_createThresholdDictionaryWithError:(id *)error;
++ (id)_validateScoreThresholdsJson:(id)json error:(id *)error;
 + (id)instance;
 - (SCMLImageModelThresholds)init;
-- (double)thresholdForLabel:(id)a3 classificationMode:(unint64_t)a4 modelVersion:(id)a5 error:(id *)a6;
+- (double)thresholdForLabel:(id)label classificationMode:(unint64_t)mode modelVersion:(id)version error:(id *)error;
 @end
 
 @implementation SCMLImageModelThresholds
 
-+ (id)_validateScoreThresholdsJson:(id)a3 error:(id *)a4
++ (id)_validateScoreThresholdsJson:(id)json error:(id *)error
 {
   v5 = v46[14] = *MEMORY[0x1E69E9840];
   if (!v5)
@@ -181,13 +181,13 @@ LABEL_39:
   return v19;
 }
 
-+ (id)_createThresholdDictionaryWithError:(id *)a3
++ (id)_createThresholdDictionaryWithError:(id *)error
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [v5 resourcePath];
-  v24[0] = v7;
+  resourcePath = [v5 resourcePath];
+  v24[0] = resourcePath;
   v24[1] = @"Models/ImageModel/operating_thresholds_versioned.json";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v9 = [v6 fileURLWithPathComponents:v8];
@@ -198,7 +198,7 @@ LABEL_39:
   v12 = v23;
   if (v11)
   {
-    v13 = [a1 _validateScoreThresholdsJson:v11 error:a3];
+    v13 = [self _validateScoreThresholdsJson:v11 error:error];
   }
 
   else
@@ -223,7 +223,7 @@ LABEL_39:
   block[1] = 3221225472;
   block[2] = __36__SCMLImageModelThresholds_instance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[SCMLImageModelThresholds instance]::onceToken != -1)
   {
     dispatch_once(&+[SCMLImageModelThresholds instance]::onceToken, block);
@@ -268,35 +268,35 @@ uint64_t __36__SCMLImageModelThresholds_instance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (double)thresholdForLabel:(id)a3 classificationMode:(unint64_t)a4 modelVersion:(id)a5 error:(id *)a6
+- (double)thresholdForLabel:(id)label classificationMode:(unint64_t)mode modelVersion:(id)version error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(SCMLImageModelThresholds *)self _loadError];
+  labelCopy = label;
+  versionCopy = version;
+  _loadError = [(SCMLImageModelThresholds *)self _loadError];
 
-  if (!v12)
+  if (!_loadError)
   {
-    if ([v10 hasPrefix:@"otgx_"])
+    if ([labelCopy hasPrefix:@"otgx_"])
     {
       v15 = +[SCMLImageLabelCoder instance];
-      v16 = [v15 decodeFromP1:v10];
+      v16 = [v15 decodeFromP1:labelCopy];
 
-      v10 = v16;
+      labelCopy = v16;
     }
 
-    v17 = [(SCMLImageModelThresholds *)self _thresholdDict];
-    v14 = [v17 objectForKey:v11];
+    _thresholdDict = [(SCMLImageModelThresholds *)self _thresholdDict];
+    _loadError2 = [_thresholdDict objectForKey:versionCopy];
 
-    if (v14)
+    if (_loadError2)
     {
       v18 = +[SCMLImageLabelCoder instance];
-      v19 = [v18 encodeToHex:v10];
+      v19 = [v18 encodeToHex:labelCopy];
 
-      v20 = [v14 objectForKey:v19];
+      v20 = [_loadError2 objectForKey:v19];
       v21 = v20;
       if (v20)
         v22 = {;
-        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+        v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
         v24 = [v22 objectForKeyedSubscript:v23];
 
         v25 = [(_anonymous_namespace_ *)v21 objectForKey:v24];
@@ -312,7 +312,7 @@ uint64_t __36__SCMLImageModelThresholds_instance__block_invoke(uint64_t a1)
           v40 = +[SCMLLog handler];
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
-            [SCMLImageModelThresholds thresholdForLabel:a4 classificationMode:v40 modelVersion:? error:?];
+            [SCMLImageModelThresholds thresholdForLabel:mode classificationMode:v40 modelVersion:? error:?];
           }
 
           v13 = 1.1;
@@ -325,7 +325,7 @@ uint64_t __36__SCMLImageModelThresholds_instance__block_invoke(uint64_t a1)
         v13 = 1.1;
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          [(SCMLImageModelThresholds *)v10 thresholdForLabel:v24 classificationMode:v34 modelVersion:v35 error:v36, v37, v38, v39];
+          [(SCMLImageModelThresholds *)labelCopy thresholdForLabel:v24 classificationMode:v34 modelVersion:v35 error:v36, v37, v38, v39];
         }
       }
     }
@@ -336,7 +336,7 @@ uint64_t __36__SCMLImageModelThresholds_instance__block_invoke(uint64_t a1)
       v13 = 1.1;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [(SCMLImageModelThresholds *)v11 thresholdForLabel:v19 classificationMode:v28 modelVersion:v29 error:v30, v31, v32, v33];
+        [(SCMLImageModelThresholds *)versionCopy thresholdForLabel:v19 classificationMode:v28 modelVersion:v29 error:v30, v31, v32, v33];
       }
     }
 
@@ -344,10 +344,10 @@ uint64_t __36__SCMLImageModelThresholds_instance__block_invoke(uint64_t a1)
   }
 
   v13 = 1.1;
-  if (a6)
+  if (error)
   {
-    v14 = [(SCMLImageModelThresholds *)self _loadError];
-    *a6 = [v14 copy];
+    _loadError2 = [(SCMLImageModelThresholds *)self _loadError];
+    *error = [_loadError2 copy];
 LABEL_20:
   }
 

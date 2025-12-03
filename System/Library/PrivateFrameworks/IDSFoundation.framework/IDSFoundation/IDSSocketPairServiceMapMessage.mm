@@ -1,19 +1,19 @@
 @interface IDSSocketPairServiceMapMessage
-- (IDSSocketPairServiceMapMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4;
-- (IDSSocketPairServiceMapMessage)initWithReason:(unsigned __int8)a3 mappedStreamID:(unsigned __int16)a4 serviceName:(id)a5;
+- (IDSSocketPairServiceMapMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data;
+- (IDSSocketPairServiceMapMessage)initWithReason:(unsigned __int8)reason mappedStreamID:(unsigned __int16)d serviceName:(id)name;
 - (id)_nonHeaderData;
 @end
 
 @implementation IDSSocketPairServiceMapMessage
 
-- (IDSSocketPairServiceMapMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4
+- (IDSSocketPairServiceMapMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data
 {
-  v4 = a3;
+  commandCopy = command;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = IDSSocketPairServiceMapMessage;
-  v7 = [(IDSSocketPairMessage *)&v21 initWithCommand:v4 underlyingData:v6];
+  v7 = [(IDSSocketPairMessage *)&v21 initWithCommand:commandCopy underlyingData:dataCopy];
   if (v7)
   {
     v20 = -86;
@@ -24,8 +24,8 @@
     *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v16[0] = v8;
     v16[1] = v8;
-    v9 = v6;
-    IDSByteBufferInitForRead(v16, [v6 bytes], objc_msgSend(v6, "length"));
+    v9 = dataCopy;
+    IDSByteBufferInitForRead(v16, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     while (IDSByteBufferReadField(v16, &v20, &v19, &v18))
     {
       switch(v20)
@@ -88,18 +88,18 @@
   return v7;
 }
 
-- (IDSSocketPairServiceMapMessage)initWithReason:(unsigned __int8)a3 mappedStreamID:(unsigned __int16)a4 serviceName:(id)a5
+- (IDSSocketPairServiceMapMessage)initWithReason:(unsigned __int8)reason mappedStreamID:(unsigned __int16)d serviceName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = IDSSocketPairServiceMapMessage;
   v9 = [(IDSSocketPairServiceMapMessage *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    *(&v9->super._wasWrittenToConnection + 1) = a3;
-    *(&v9->super._wasWrittenToConnection + 1) = a4;
-    v11 = [v8 copy];
+    *(&v9->super._wasWrittenToConnection + 1) = reason;
+    *(&v9->super._wasWrittenToConnection + 1) = d;
+    v11 = [nameCopy copy];
     v12 = *&v10->_reason;
     *&v10->_reason = v11;
   }

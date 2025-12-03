@@ -1,14 +1,14 @@
 @interface _DPBAACertificateChain
 - (_DPBAACertificateChain)init;
-- (_DPBAACertificateChain)initWithIntermediateCertificate:(id)a3 leafCertificate:(id)a4;
+- (_DPBAACertificateChain)initWithIntermediateCertificate:(id)certificate leafCertificate:(id)leafCertificate;
 @end
 
 @implementation _DPBAACertificateChain
 
-- (_DPBAACertificateChain)initWithIntermediateCertificate:(id)a3 leafCertificate:(id)a4
+- (_DPBAACertificateChain)initWithIntermediateCertificate:(id)certificate leafCertificate:(id)leafCertificate
 {
-  v6 = a3;
-  v7 = a4;
+  certificateCopy = certificate;
+  leafCertificateCopy = leafCertificate;
   v8 = sub_100050300();
   v10 = v9;
 

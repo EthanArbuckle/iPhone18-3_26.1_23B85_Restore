@@ -1,25 +1,25 @@
 @interface VIAnalytics
-+ (void)logEvent:(id)a3;
-- (VIAnalytics)initWithFeedbackSubmitter:(id)a3;
++ (void)logEvent:(id)event;
+- (VIAnalytics)initWithFeedbackSubmitter:(id)submitter;
 - (VIAnalyticsTestingDelegate)testingDelegate;
-- (void)_logEvent:(id)a3;
-- (void)_performLogEvent:(id)a3;
-- (void)setTestingDelegate:(id)a3;
+- (void)_logEvent:(id)event;
+- (void)_performLogEvent:(id)event;
+- (void)setTestingDelegate:(id)delegate;
 @end
 
 @implementation VIAnalytics
 
-- (VIAnalytics)initWithFeedbackSubmitter:(id)a3
+- (VIAnalytics)initWithFeedbackSubmitter:(id)submitter
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  submitterCopy = submitter;
   v38.receiver = self;
   v38.super_class = VIAnalytics;
   v6 = [(VIAnalytics *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedbackSubmitter, a3);
+    objc_storeStrong(&v6->_feedbackSubmitter, submitter);
     v8 = dispatch_queue_create("com.apple.argos.analytics", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -28,9 +28,9 @@
     eventCache = v7->_eventCache;
     v7->_eventCache = v10;
 
-    v12 = [[VIAEntryPointLogger alloc] initWithQueue:v7->_serialQueue feedbackSubmitter:v5 eventCache:v7->_eventCache];
-    v33 = v5;
-    v30 = [[VIACacheHitLogger alloc] initWithQueue:v7->_serialQueue feedbackSubmitter:v5];
+    v12 = [[VIAEntryPointLogger alloc] initWithQueue:v7->_serialQueue feedbackSubmitter:submitterCopy eventCache:v7->_eventCache];
+    v33 = submitterCopy;
+    v30 = [[VIACacheHitLogger alloc] initWithQueue:v7->_serialQueue feedbackSubmitter:submitterCopy];
     v31 = v12;
     v48[0] = v12;
     v48[1] = v30;
@@ -62,12 +62,12 @@
 
           v37 = v17;
           v18 = *(*(&v44 + 1) + 8 * v17);
-          v19 = [objc_opt_class() feedbackNamesToLog];
+          feedbackNamesToLog = [objc_opt_class() feedbackNamesToLog];
           v40 = 0u;
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v20 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
+          v20 = [feedbackNamesToLog countByEnumeratingWithState:&v40 objects:v49 count:16];
           if (v20)
           {
             v21 = v20;
@@ -78,7 +78,7 @@
               {
                 if (*v41 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(feedbackNamesToLog);
                 }
 
                 v24 = *(*(&v40 + 1) + 8 * i);
@@ -103,7 +103,7 @@
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
+              v21 = [feedbackNamesToLog countByEnumeratingWithState:&v40 objects:v49 count:16];
             }
 
             while (v21);
@@ -124,26 +124,26 @@
     feedbackNameToLoggerMap = v32->_feedbackNameToLoggerMap;
     v32->_feedbackNameToLoggerMap = v27;
 
-    v5 = v33;
+    submitterCopy = v33;
   }
 
   return v7;
 }
 
-+ (void)logEvent:(id)a3
++ (void)logEvent:(id)event
 {
-  v5 = a3;
-  v3 = [v5 feedback];
-  if (v3)
+  eventCopy = event;
+  feedback = [eventCopy feedback];
+  if (feedback)
   {
     v4 = _VISharedAnalytics();
-    [v4 _logEvent:v5];
+    [v4 _logEvent:eventCopy];
   }
 }
 
-- (void)_logEvent:(id)a3
+- (void)_logEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -151,8 +151,8 @@
   block[2] = __25__VIAnalytics__logEvent___block_invoke;
   block[3] = &unk_1E858A9D8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
@@ -165,10 +165,10 @@ void __25__VIAnalytics__logEvent___block_invoke(uint64_t a1)
   [WeakRetained _performLogEvent:*(a1 + 32)];
 }
 
-- (void)_performLogEvent:(id)a3
+- (void)_performLogEvent:(id)event
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_serialQueue);
   v20 = 0u;
   v21 = 0u;
@@ -190,7 +190,7 @@ void __25__VIAnalytics__logEvent___block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v18 + 1) + 8 * v9++) didObserveEvent:{v4, v18}];
+        [*(*(&v18 + 1) + 8 * v9++) didObserveEvent:{eventCopy, v18}];
       }
 
       while (v7 != v9);
@@ -200,31 +200,31 @@ void __25__VIAnalytics__logEvent___block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v10 = [v4 feedback];
+  feedback = [eventCopy feedback];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
 
   v13 = [(NSDictionary *)self->_feedbackNameToLoggerMap objectForKeyedSubscript:v12];
-  if (v13 && (v14 = v13, v15 = [v4 shouldReportDirectly], v14, (v15 & 1) == 0))
+  if (v13 && (v14 = v13, v15 = [eventCopy shouldReportDirectly], v14, (v15 & 1) == 0))
   {
-    v17 = [(NSDictionary *)self->_feedbackNameToLoggerMap objectForKeyedSubscript:v12];
-    [v17 logEvent:v4];
+    feedback2 = [(NSDictionary *)self->_feedbackNameToLoggerMap objectForKeyedSubscript:v12];
+    [feedback2 logEvent:eventCopy];
   }
 
   else
   {
     feedbackSubmitter = self->_feedbackSubmitter;
-    v17 = [v4 feedback];
-    -[VIAFeedbackSubmitter reportFeedback:queryId:](feedbackSubmitter, "reportFeedback:queryId:", v17, [v4 queryID]);
+    feedback2 = [eventCopy feedback];
+    -[VIAFeedbackSubmitter reportFeedback:queryId:](feedbackSubmitter, "reportFeedback:queryId:", feedback2, [eventCopy queryID]);
   }
 }
 
-- (void)setTestingDelegate:(id)a3
+- (void)setTestingDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_testingDelegate, v4);
-  [(VIAEventCache *)self->_eventCache setTestingDelegate:v4];
-  [(VIAFeedbackSubmitter *)self->_feedbackSubmitter setTestingDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_testingDelegate, delegateCopy);
+  [(VIAEventCache *)self->_eventCache setTestingDelegate:delegateCopy];
+  [(VIAFeedbackSubmitter *)self->_feedbackSubmitter setTestingDelegate:delegateCopy];
 }
 
 - (VIAnalyticsTestingDelegate)testingDelegate

@@ -1,7 +1,7 @@
 @interface UIViewInvertColorsAccessibility
 - (BOOL)_ancestorHasInvertFilterApplied;
 - (BOOL)accessibilityIgnoresInvertColors;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation UIViewInvertColorsAccessibility
@@ -10,7 +10,7 @@
 {
   if ([(UIViewInvertColorsAccessibility *)self accessibilityIgnoreInvertIfDarkBackgroundColor])
   {
-    v3 = [(UIViewInvertColorsAccessibility *)self backgroundColor];
+    backgroundColor = [(UIViewInvertColorsAccessibility *)self backgroundColor];
     AXColorGetLuma();
     v5 = v4 < 0.5;
   }
@@ -27,15 +27,15 @@
 
 - (BOOL)_ancestorHasInvertFilterApplied
 {
-  v2 = [(UIViewInvertColorsAccessibility *)self superview];
-  if (v2)
+  superview = [(UIViewInvertColorsAccessibility *)self superview];
+  if (superview)
   {
-    v3 = v2;
+    v3 = superview;
     while (1)
     {
       if ([v3 accessibilityInvertColorsIsolatedTree])
       {
-        LOBYTE(v4) = 0;
+        LOBYTE(superview2) = 0;
         goto LABEL_10;
       }
 
@@ -44,32 +44,32 @@
         break;
       }
 
-      v4 = [v3 superview];
+      superview2 = [v3 superview];
 
-      v3 = v4;
-      if (!v4)
+      v3 = superview2;
+      if (!superview2)
       {
         goto LABEL_10;
       }
     }
 
-    LOBYTE(v4) = 1;
+    LOBYTE(superview2) = 1;
 LABEL_10:
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(superview2) = 0;
   }
 
-  return v4;
+  return superview2;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = UIViewInvertColorsAccessibility;
-  [(UIViewInvertColorsAccessibility *)&v4 setBackgroundColor:a3];
+  [(UIViewInvertColorsAccessibility *)&v4 setBackgroundColor:color];
   [AXInvertColorsAppHelper toggleInvertColors:self];
 }
 

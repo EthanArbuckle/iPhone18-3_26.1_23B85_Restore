@@ -10,7 +10,7 @@
   columns = self->_columns;
   if (!columns)
   {
-    v95 = self;
+    selfCopy = self;
     v94 = [ML3DatabaseColumn columnWithName:@"container_pid" datatype:2 constraints:1 defaultValue:0];
     v96[0] = v94;
     v93 = [ML3DatabaseColumn columnWithName:@"distinguished_kind" datatype:2 constraints:16 defaultValue:&unk_2840C8C00];
@@ -188,10 +188,10 @@
     v13 = [ML3DatabaseColumn columnWithName:@"edit_session_id" datatype:4 constraints:16 defaultValue:&stru_28408B690];
     v96[87] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v96 count:88];
-    v15 = v95->_columns;
-    v95->_columns = v14;
+    v15 = selfCopy->_columns;
+    selfCopy->_columns = v14;
 
-    columns = v95->_columns;
+    columns = selfCopy->_columns;
   }
 
   return columns;

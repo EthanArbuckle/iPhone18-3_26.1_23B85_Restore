@@ -1,8 +1,8 @@
 @interface CaptureMTLFunctionHandle
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 captureFunction:(id)a5;
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureFunction:(id)a5;
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 captureFunction:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureComputePipelineState:(id)state captureFunction:(id)function;
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureDevice:(id)device captureFunction:(id)function;
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureRenderPipelineState:(id)state captureFunction:(id)function;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -37,10 +37,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLFunctionHandle *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLFunctionHandle *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -59,13 +59,13 @@
   [(CaptureMTLFunctionHandle *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLFunctionHandleSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLFunctionHandleSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -120,78 +120,78 @@
   }
 }
 
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureDevice:(id)a4 captureFunction:(id)a5
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureDevice:(id)device captureFunction:(id)function
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  functionCopy = function;
   v17.receiver = self;
   v17.super_class = CaptureMTLFunctionHandle;
   v12 = [(CaptureMTLFunctionHandle *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
-    objc_storeStrong(&v13->_captureFunction, a5);
-    v14 = [v10 traceContext];
-    v13->_traceContext = v14;
-    v15 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v14, v15, v13);
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
+    objc_storeStrong(&v13->_captureFunction, function);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v15 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v15, v13);
   }
 
   return v13;
 }
 
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureRenderPipelineState:(id)a4 captureFunction:(id)a5
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureRenderPipelineState:(id)state captureFunction:(id)function
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  functionCopy = function;
   v19.receiver = self;
   v19.super_class = CaptureMTLFunctionHandle;
   v12 = [(CaptureMTLFunctionHandle *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_renderPipelineState, a4);
-    v14 = [(CaptureMTLRenderPipelineState *)v13->_renderPipelineState device];
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_renderPipelineState, state);
+    device = [(CaptureMTLRenderPipelineState *)v13->_renderPipelineState device];
     captureDevice = v13->_captureDevice;
-    v13->_captureDevice = v14;
+    v13->_captureDevice = device;
 
-    objc_storeStrong(&v13->_captureFunction, a5);
-    v16 = [(CaptureMTLRenderPipelineState *)v13->_renderPipelineState traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    objc_storeStrong(&v13->_captureFunction, function);
+    traceContext = [(CaptureMTLRenderPipelineState *)v13->_renderPipelineState traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
   }
 
   return v13;
 }
 
-- (CaptureMTLFunctionHandle)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 captureFunction:(id)a5
+- (CaptureMTLFunctionHandle)initWithBaseObject:(id)object captureComputePipelineState:(id)state captureFunction:(id)function
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  functionCopy = function;
   v19.receiver = self;
   v19.super_class = CaptureMTLFunctionHandle;
   v12 = [(CaptureMTLFunctionHandle *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_computePipelineState, a4);
-    v14 = [(CaptureMTLComputePipelineState *)v13->_computePipelineState device];
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_computePipelineState, state);
+    device = [(CaptureMTLComputePipelineState *)v13->_computePipelineState device];
     captureDevice = v13->_captureDevice;
-    v13->_captureDevice = v14;
+    v13->_captureDevice = device;
 
-    objc_storeStrong(&v13->_captureFunction, a5);
-    v16 = [(CaptureMTLComputePipelineState *)v13->_computePipelineState traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    objc_storeStrong(&v13->_captureFunction, function);
+    traceContext = [(CaptureMTLComputePipelineState *)v13->_computePipelineState traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
   }
 
   return v13;

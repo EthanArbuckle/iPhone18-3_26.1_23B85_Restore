@@ -5,20 +5,20 @@
 - (void)_accessoryDiscoveryEnsureStarted;
 - (void)_accessoryDiscoveryEnsureStopped;
 - (void)_activate;
-- (void)_activateSecureSensorGATTServiceForPeripheral:(id)a3;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
+- (void)_activateSecureSensorGATTServiceForPeripheral:(id)peripheral;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
 - (void)_ensureOSTransaction;
 - (void)_invalidate;
-- (void)_invalidateSecureSensorGATTServiceForPeripheral:(id)a3;
-- (void)_modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)_peripheralPerformActionsOnConnection:(id)a3;
+- (void)_invalidateSecureSensorGATTServiceForPeripheral:(id)peripheral;
+- (void)_modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)_peripheralPerformActionsOnConnection:(id)connection;
 - (void)_releaseOSTransaction;
-- (void)_writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6;
+- (void)_writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion;
 - (void)activate;
 - (void)invalidate;
-- (void)modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6;
+- (void)modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation ASMPeripheralControl
@@ -126,83 +126,83 @@
   return v3 != 0;
 }
 
-- (void)modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100004A8C;
   v15[3] = &unk_100014450;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = configurationCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (dword_10001A398 <= 30 && (dword_10001A398 != -1 || _LogCategory_Initialize()))
   {
-    v12 = v14;
-    v13 = v8;
+    v12 = configurationCopy;
+    v13 = identifierCopy;
     LogPrintF();
   }
 
-  v10 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:v8, v12, v13];
+  v10 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:identifierCopy, v12, v13];
   if (!v10)
   {
     v11 = NSErrorF();
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 }
 
-- (void)writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6
+- (void)writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100004CCC;
   block[3] = &unk_100014530;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dataCopy;
+  v21 = characteristicCopy;
+  v22 = identifierCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = characteristicCopy;
+  v18 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6
+- (void)_writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:v12];
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v14 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:identifierCopy];
   if (v14)
   {
-    v15 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:v12];
-    v16 = [v15 gattConnectionManager];
+    v15 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:identifierCopy];
+    gattConnectionManager = [v15 gattConnectionManager];
 
     if (dword_10001A398 <= 30 && (dword_10001A398 != -1 || _LogCategory_Initialize()))
     {
@@ -213,24 +213,24 @@
     v17[1] = 3221225472;
     v17[2] = sub_100004E90;
     v17[3] = &unk_100014558;
-    v18 = v12;
-    v19 = v13;
-    [v16 writeWithData:v10 characteristic:v11 completion:v17];
+    v18 = identifierCopy;
+    v19 = completionCopy;
+    [gattConnectionManager writeWithData:dataCopy characteristic:characteristicCopy completion:v17];
   }
 
   else
   {
-    v16 = NSErrorF();
-    if (v13)
+    gattConnectionManager = NSErrorF();
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, v16);
+      (*(completionCopy + 2))(completionCopy, gattConnectionManager);
     }
   }
 }
 
-- (void)_peripheralPerformActionsOnConnection:(id)a3
+- (void)_peripheralPerformActionsOnConnection:(id)connection
 {
-  [(ASMPeripheralControl *)self _activateSecureSensorGATTServiceForPeripheral:a3];
+  [(ASMPeripheralControl *)self _activateSecureSensorGATTServiceForPeripheral:connection];
 
   [(ASMPeripheralControl *)self _startASMExclaveDaemon];
 }
@@ -291,18 +291,18 @@
   }
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v10 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v10 identifier];
-  if (v4)
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:identifier];
     if (v5)
     {
       v6 = v5;
-      [(ASMPeripheral *)v5 updateWithAADevice:v10];
+      [(ASMPeripheral *)v5 updateWithAADevice:foundCopy];
     }
 
     else
@@ -324,8 +324,8 @@
         peripheralMap = self->_peripheralMap;
       }
 
-      [(NSMutableDictionary *)peripheralMap setObject:v6 forKeyedSubscript:v4];
-      [(ASMPeripheral *)v6 updateWithAADevice:v10];
+      [(NSMutableDictionary *)peripheralMap setObject:v6 forKeyedSubscript:identifier];
+      [(ASMPeripheral *)v6 updateWithAADevice:foundCopy];
       [(ASMPeripheralControl *)self _peripheralPerformActionsOnConnection:v6];
     }
   }
@@ -336,14 +336,14 @@
   }
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v6 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v6 identifier];
-  if (v4)
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_peripheralMap objectForKeyedSubscript:identifier];
     if (v5)
     {
       if (dword_10001A398 <= 30 && (dword_10001A398 != -1 || _LogCategory_Initialize()))
@@ -352,7 +352,7 @@
       }
 
       [(ASMPeripheralControl *)self _peripheralPerformActionsOnDisconnection:v5];
-      [(NSMutableDictionary *)self->_peripheralMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_peripheralMap setObject:0 forKeyedSubscript:identifier];
       if (![(NSMutableDictionary *)self->_peripheralMap count])
       {
         [(ASMPeripheralControl *)self _releaseOSTransaction];
@@ -366,16 +366,16 @@
   }
 }
 
-- (void)_activateSecureSensorGATTServiceForPeripheral:(id)a3
+- (void)_activateSecureSensorGATTServiceForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = [v4 bluetoothUUID];
-  if (v5)
+  peripheralCopy = peripheral;
+  bluetoothUUID = [peripheralCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    v6 = [v4 gattConnectionManager];
-    if (v6)
+    gattConnectionManager = [peripheralCopy gattConnectionManager];
+    if (gattConnectionManager)
     {
-      sub_1000091EC(v5, v6, &v11);
+      sub_1000091EC(bluetoothUUID, gattConnectionManager, &v11);
       v8 = v11;
     }
 
@@ -383,15 +383,15 @@
     {
       v7 = [[ASMGATTConnectionManager alloc] initWithQueue:self->_dispatchQueue];
       [(ASMGATTConnectionManager *)v7 setRouteUpdateHandler:&stru_100014608];
-      [v4 setGattConnectionManager:v7];
+      [peripheralCopy setGattConnectionManager:v7];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100005780;
       v9[3] = &unk_1000145C8;
-      v9[4] = v5;
+      v9[4] = bluetoothUUID;
       v8 = v7;
       v10 = v8;
-      [(ASMGATTConnectionManager *)v8 activateWithPeripheral:v4 completion:v9];
+      [(ASMGATTConnectionManager *)v8 activateWithPeripheral:peripheralCopy completion:v9];
     }
   }
 
@@ -401,15 +401,15 @@
   }
 }
 
-- (void)_invalidateSecureSensorGATTServiceForPeripheral:(id)a3
+- (void)_invalidateSecureSensorGATTServiceForPeripheral:(id)peripheral
 {
-  v5 = a3;
-  v3 = [v5 gattConnectionManager];
-  v4 = v3;
-  if (v3)
+  peripheralCopy = peripheral;
+  gattConnectionManager = [peripheralCopy gattConnectionManager];
+  v4 = gattConnectionManager;
+  if (gattConnectionManager)
   {
-    [v3 invalidate];
-    [v5 setGattConnectionManager:0];
+    [gattConnectionManager invalidate];
+    [peripheralCopy setGattConnectionManager:0];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface PKPaymentTransactionDetailHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionDetailHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionDetailHeaderView)initWithFrame:(CGRect)frame;
 - (void)_updateImageViewDynamicColors;
 - (void)layoutSubviews;
-- (void)setAmountText:(id)a3;
-- (void)setMerchantIcon:(id)a3;
-- (void)setSecondarySubtitleText:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTertiarySubtitleText:(id)a3;
+- (void)setAmountText:(id)text;
+- (void)setMerchantIcon:(id)icon;
+- (void)setSecondarySubtitleText:(id)text;
+- (void)setSubtitleText:(id)text;
+- (void)setTertiarySubtitleText:(id)text;
 @end
 
 @implementation PKPaymentTransactionDetailHeaderView
 
-- (PKPaymentTransactionDetailHeaderView)initWithFrame:(CGRect)a3
+- (PKPaymentTransactionDetailHeaderView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PKPaymentTransactionDetailHeaderView;
-  v3 = [(PKPaymentTransactionDetailHeaderView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaymentTransactionDetailHeaderView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -31,23 +31,23 @@
     [(UILabel *)v3->_amountLabel setTextAlignment:1];
     [(UILabel *)v3->_amountLabel setNumberOfLines:1];
     [(UILabel *)v3->_amountLabel setAdjustsFontSizeToFitWidth:1];
-    v8 = [(PKPaymentTransactionDetailHeaderView *)v3 contentView];
-    [v8 addSubview:v3->_amountLabel];
+    contentView = [(PKPaymentTransactionDetailHeaderView *)v3 contentView];
+    [contentView addSubview:v3->_amountLabel];
 
     [(UILabel *)v3->_amountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     v3->_useStroke = 1;
-    v9 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v10 = [(PKPaymentTransactionDetailHeaderView *)v3 registerForTraitChanges:v9 withHandler:&__block_literal_global_57];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v10 = [(PKPaymentTransactionDetailHeaderView *)v3 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:&__block_literal_global_57];
   }
 
   return v3;
 }
 
-- (void)setAmountText:(id)a3
+- (void)setAmountText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_amountText;
-  v6 = v4;
+  v6 = textCopy;
   v13 = v6;
   if (v5 == v6)
   {
@@ -95,11 +95,11 @@ LABEL_8:
 LABEL_13:
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_subtitleText;
-  v6 = v4;
+  v6 = textCopy;
   v23 = v6;
   if (v5 == v6)
   {
@@ -177,8 +177,8 @@ LABEL_8:
         [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
         [(UILabel *)self->_subtitleLabel setTextAlignment:1];
         [(UILabel *)self->_subtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-        v22 = [(PKPaymentTransactionDetailHeaderView *)self contentView];
-        [v22 addSubview:self->_subtitleLabel];
+        contentView = [(PKPaymentTransactionDetailHeaderView *)self contentView];
+        [contentView addSubview:self->_subtitleLabel];
 
         subtitleLabel = self->_subtitleLabel;
         v11 = self->_subtitleText;
@@ -201,11 +201,11 @@ LABEL_8:
 LABEL_22:
 }
 
-- (void)setSecondarySubtitleText:(id)a3
+- (void)setSecondarySubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_secondarySubtitleText;
-  v6 = v4;
+  v6 = textCopy;
   v21 = v6;
   if (v5 == v6)
   {
@@ -262,8 +262,8 @@ LABEL_8:
         [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
         [(UILabel *)self->_secondaryLabel setTextAlignment:1];
         [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9BE0]];
-        v20 = [(PKPaymentTransactionDetailHeaderView *)self contentView];
-        [v20 addSubview:self->_secondaryLabel];
+        contentView = [(PKPaymentTransactionDetailHeaderView *)self contentView];
+        [contentView addSubview:self->_secondaryLabel];
 
         secondaryLabel = self->_secondaryLabel;
         v11 = self->_secondarySubtitleText;
@@ -286,11 +286,11 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)setTertiarySubtitleText:(id)a3
+- (void)setTertiarySubtitleText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_tertiarySubtitleText;
-  v6 = v4;
+  v6 = textCopy;
   v21 = v6;
   if (v5 == v6)
   {
@@ -347,8 +347,8 @@ LABEL_8:
         [(UILabel *)self->_tertiaryLabel setNumberOfLines:0];
         [(UILabel *)self->_tertiaryLabel setTextAlignment:1];
         [(UILabel *)self->_tertiaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D10]];
-        v20 = [(PKPaymentTransactionDetailHeaderView *)self contentView];
-        [v20 addSubview:self->_tertiaryLabel];
+        contentView = [(PKPaymentTransactionDetailHeaderView *)self contentView];
+        [contentView addSubview:self->_tertiaryLabel];
 
         tertiaryLabel = self->_tertiaryLabel;
         v11 = self->_tertiarySubtitleText;
@@ -371,13 +371,13 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)setMerchantIcon:(id)a3
+- (void)setMerchantIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_merchantIcon != v5)
+  iconCopy = icon;
+  if (self->_merchantIcon != iconCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_merchantIcon, a3);
+    v13 = iconCopy;
+    objc_storeStrong(&self->_merchantIcon, icon);
     merchantIcon = self->_merchantIcon;
     merchantIconImageView = self->_merchantIconImageView;
     if (merchantIcon)
@@ -393,12 +393,12 @@ LABEL_18:
         [(UIImageView *)self->_merchantIconImageView _setContinuousCornerRadius:8.0];
         if (self->_useStroke)
         {
-          v10 = [(UIImageView *)self->_merchantIconImageView layer];
-          [v10 setBorderWidth:PKUIPixelLength()];
+          layer = [(UIImageView *)self->_merchantIconImageView layer];
+          [layer setBorderWidth:PKUIPixelLength()];
         }
 
-        v11 = [(PKPaymentTransactionDetailHeaderView *)self contentView];
-        [v11 addSubview:self->_merchantIconImageView];
+        contentView = [(PKPaymentTransactionDetailHeaderView *)self contentView];
+        [contentView addSubview:self->_merchantIconImageView];
 
         merchantIconImageView = self->_merchantIconImageView;
         merchantIcon = self->_merchantIcon;
@@ -416,7 +416,7 @@ LABEL_18:
     }
 
     [(PKPaymentTransactionDetailHeaderView *)self setNeedsLayout];
-    v5 = v13;
+    iconCopy = v13;
   }
 }
 
@@ -425,32 +425,32 @@ LABEL_18:
   v4.receiver = self;
   v4.super_class = PKPaymentTransactionDetailHeaderView;
   [(PKPaymentTransactionDetailHeaderView *)&v4 layoutSubviews];
-  v3 = [(PKPaymentTransactionDetailHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentTransactionDetailHeaderView *)self contentView];
+  [contentView bounds];
   [(PKPaymentTransactionDetailHeaderView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKPaymentTransactionDetailHeaderView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPaymentTransactionDetailHeaderView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a3.origin.x + 16.0;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = bounds.origin.x + 16.0;
   v9 = 0.0;
-  v10 = a3.origin.y + 0.0;
-  v11 = a3.size.width + -32.0;
-  v12 = a3.size.height + -22.0;
+  v10 = bounds.origin.y + 0.0;
+  v11 = bounds.size.width + -32.0;
+  v12 = bounds.size.height + -22.0;
   remainder.origin.x = v8;
   remainder.origin.y = v10;
   remainder.size.width = v11;
@@ -551,13 +551,13 @@ LABEL_18:
 
 - (void)_updateImageViewDynamicColors
 {
-  v3 = [(PKPaymentTransactionDetailHeaderView *)self traitCollection];
+  traitCollection = [(PKPaymentTransactionDetailHeaderView *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__PKPaymentTransactionDetailHeaderView__updateImageViewDynamicColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __69__PKPaymentTransactionDetailHeaderView__updateImageViewDynamicColors__block_invoke(uint64_t a1)

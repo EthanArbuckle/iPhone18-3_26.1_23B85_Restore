@@ -1,23 +1,23 @@
 @interface FMTimeSeriesContextState
-- (FMTimeSeriesContextState)initWithStartTime:(id)a3 contextUUID:(id)a4 subscriptionID:(id)a5 homePLMN:(id)a6;
+- (FMTimeSeriesContextState)initWithStartTime:(id)time contextUUID:(id)d subscriptionID:(id)iD homePLMN:(id)n;
 @end
 
 @implementation FMTimeSeriesContextState
 
-- (FMTimeSeriesContextState)initWithStartTime:(id)a3 contextUUID:(id)a4 subscriptionID:(id)a5 homePLMN:(id)a6
+- (FMTimeSeriesContextState)initWithStartTime:(id)time contextUUID:(id)d subscriptionID:(id)iD homePLMN:(id)n
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  nCopy = n;
   v29.receiver = self;
   v29.super_class = FMTimeSeriesContextState;
-  v14 = [(FMContextState *)&v29 initWithStartTime:a3];
+  v14 = [(FMContextState *)&v29 initWithStartTime:time];
   if (v14)
   {
     v15 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    objc_storeStrong(&v14->_contextUUID, a4);
-    objc_storeStrong(&v14->_subscriptionID, a5);
-    objc_storeStrong(&v14->_homePLMN, a6);
+    objc_storeStrong(&v14->_contextUUID, d);
+    objc_storeStrong(&v14->_subscriptionID, iD);
+    objc_storeStrong(&v14->_homePLMN, n);
     v16 = objc_alloc_init(NSMutableArray);
     events = v14->_events;
     v14->_events = v16;

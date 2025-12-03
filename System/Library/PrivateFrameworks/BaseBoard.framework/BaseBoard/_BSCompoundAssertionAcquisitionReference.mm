@@ -17,12 +17,12 @@
   record = self->_record;
   if (!record)
   {
-    v27 = self;
+    selfCopy = self;
     goto LABEL_31;
   }
 
   WeakRetained = objc_loadWeakRetained(&record->_assertion);
-  v4 = self;
+  selfCopy2 = self;
   if (!WeakRetained)
   {
 LABEL_31:
@@ -30,7 +30,7 @@ LABEL_31:
     goto LABEL_24;
   }
 
-  v5 = v4;
+  v5 = selfCopy2;
   os_unfair_lock_assert_not_owner(WeakRetained + 4);
   os_unfair_lock_lock(WeakRetained + 4);
   v6 = v5;
@@ -74,8 +74,8 @@ LABEL_31:
 
       v25 = v24;
 
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:sel__syncLock_acquisitionDidInvalidate_ object:WeakRetained file:v25 lineNumber:433 description:@"acquisition invalidated twice"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__syncLock_acquisitionDidInvalidate_ object:WeakRetained file:v25 lineNumber:433 description:@"acquisition invalidated twice"];
     }
 
     v12 = self->_record;
@@ -103,17 +103,17 @@ LABEL_31:
     {
       if (v16)
       {
-        v18 = [(BSCompoundAssertion *)WeakRetained _dataLock_context];
-        v19 = [v18 containsObject:v16];
+        _dataLock_context = [(BSCompoundAssertion *)WeakRetained _dataLock_context];
+        v19 = [_dataLock_context containsObject:v16];
 
         if ((v19 & 1) == 0)
         {
           v17 = *(WeakRetained + 3);
 LABEL_20:
           v20 = MEMORY[0x193AE5AC0](v17);
-          v21 = [(BSCompoundAssertion *)WeakRetained _dataLock_copyState];
+          _dataLock_copyState = [(BSCompoundAssertion *)WeakRetained _dataLock_copyState];
           os_unfair_lock_unlock(WeakRetained + 8);
-          (v20)[2](v20, v21);
+          (v20)[2](v20, _dataLock_copyState);
 LABEL_22:
 
           goto LABEL_23;
@@ -127,7 +127,7 @@ LABEL_22:
     }
 
     os_unfair_lock_unlock(WeakRetained + 8);
-    v21 = 0;
+    _dataLock_copyState = 0;
     v20 = 0;
     goto LABEL_22;
   }
@@ -145,9 +145,9 @@ LABEL_24:
   if ((atomic_exchange(&self->_invalid._Value, 1u) & 1) == 0)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(_BSCompoundAssertionAcquisitionRecord *)&self->_record->super.isa assertion];
-    v6 = [(BSCompoundAssertion *)v5 _identifier];
-    v7 = [v4 stringWithFormat:@"client bug: someone forgot to invoke -invalidate on acquisition %@ (assertion: %@)", self, v6];
+    assertion = [(_BSCompoundAssertionAcquisitionRecord *)&self->_record->super.isa assertion];
+    _identifier = [(BSCompoundAssertion *)assertion _identifier];
+    v7 = [v4 stringWithFormat:@"client bug: someone forgot to invoke -invalidate on acquisition %@ (assertion: %@)", self, _identifier];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -159,7 +159,7 @@ LABEL_24:
       v15 = 2114;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSCompoundAssertion.m";
       v21 = 1024;
@@ -188,9 +188,9 @@ LABEL_24:
     record = record->_reason;
   }
 
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<CAcq %p:%@>", self, record];
+  record = [MEMORY[0x1E696AEC0] stringWithFormat:@"<CAcq %p:%@>", self, record];
 
-  return v3;
+  return record;
 }
 
 @end

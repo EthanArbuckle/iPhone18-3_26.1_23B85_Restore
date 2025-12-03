@@ -1,6 +1,6 @@
 @interface WRMClientInterface
 - (WRMClientInterface)init;
-- (void)registerClient:(int)a3 queue:(id)a4 notificationHandler:(id)a5;
+- (void)registerClient:(int)client queue:(id)queue notificationHandler:(id)handler;
 - (void)unregisterClient;
 - (void)unregisterClientWithNotificationBlockRelease;
 @end
@@ -31,13 +31,13 @@
   return v3;
 }
 
-- (void)registerClient:(int)a3 queue:(id)a4 notificationHandler:(id)a5
+- (void)registerClient:(int)client queue:(id)queue notificationHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (queueCopy)
   {
-    v10 = v8;
+    v10 = queueCopy;
     mQueue = self->mQueue;
     self->mQueue = v10;
   }
@@ -50,16 +50,16 @@
     self->mQueue = v12;
   }
 
-  self->mProcessId = a3;
+  self->mProcessId = client;
   v14 = self->mQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__WRMClientInterface_registerClient_queue_notificationHandler___block_invoke;
   block[3] = &unk_279ED5E80;
   block[4] = self;
-  v17 = v9;
-  v18 = a3;
-  v15 = v9;
+  v17 = handlerCopy;
+  clientCopy = client;
+  v15 = handlerCopy;
   dispatch_async(v14, block);
 }
 

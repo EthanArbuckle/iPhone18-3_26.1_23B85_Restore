@@ -2,11 +2,11 @@
 + (id)dateFormatter;
 - (AMSMetrics)metricsController;
 - (BOOL)shouldRecordEvent;
-- (BOOL)uuidNeedsRegeneration:(id)a3;
+- (BOOL)uuidNeedsRegeneration:(id)regeneration;
 - (NSDictionary)baseValues;
 - (PDAnalytics)init;
-- (id)generateRotatingUUID:(id)a3;
-- (id)temporaryUserUUID:(id)a3;
+- (id)generateRotatingUUID:(id)d;
+- (id)temporaryUserUUID:(id)d;
 - (void)setupDnUStatusOniOS;
 @end
 
@@ -45,8 +45,8 @@
   {
     v13[0] = @"app";
     v4 = +[NSBundle mainBundle];
-    v5 = [v4 bundleIdentifier];
-    v14[0] = v5;
+    bundleIdentifier = [v4 bundleIdentifier];
+    v14[0] = bundleIdentifier;
     v13[1] = @"appVersion";
     v6 = +[NSBundle mainBundle];
     v7 = [v6 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -87,7 +87,7 @@
     }
 
     v9 = v8;
-    v10 = [v9 profile];
+    profile = [v9 profile];
     v11 = sub_10004116C();
     v12 = v11;
     if (v11)
@@ -101,7 +101,7 @@
     }
 
     v14 = v13;
-    v15 = [v5 initWithContainerID:v10 bag:v14];
+    v15 = [v5 initWithContainerID:profile bag:v14];
     v16 = self->_metricsController;
     self->_metricsController = v15;
 
@@ -133,9 +133,9 @@
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(PDAnalytics *)self optInToDnUiOS];
+    optInToDnUiOS = [(PDAnalytics *)self optInToDnUiOS];
     v6 = @"DISABLED";
-    if (v5)
+    if (optInToDnUiOS)
     {
       v6 = @"ENABLED";
     }
@@ -146,13 +146,13 @@
   }
 }
 
-- (id)temporaryUserUUID:(id)a3
+- (id)temporaryUserUUID:(id)d
 {
-  v4 = a3;
-  v5 = sub_10016A49C(v4, @"PDRotatingAnalyticsUserID");
+  dCopy = d;
+  v5 = sub_10016A49C(dCopy, @"PDRotatingAnalyticsUserID");
   if (!v5 || [(PDAnalytics *)self uuidNeedsRegeneration:v5])
   {
-    v6 = [(PDAnalytics *)self generateRotatingUUID:v4];
+    v6 = [(PDAnalytics *)self generateRotatingUUID:dCopy];
 
     v5 = v6;
   }
@@ -160,25 +160,25 @@
   return v5;
 }
 
-- (id)generateRotatingUUID:(id)a3
+- (id)generateRotatingUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[PDAnalytics dateFormatter];
   v5 = +[NSDate now];
   v6 = [v4 stringFromDate:v5];
 
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  v9 = [NSString stringWithFormat:@"%@*%@", v6, v8];
+  uUIDString = [v7 UUIDString];
+  v9 = [NSString stringWithFormat:@"%@*%@", v6, uUIDString];
 
-  sub_10016A3F0(v3, v9, @"PDRotatingAnalyticsUserID");
+  sub_10016A3F0(dCopy, v9, @"PDRotatingAnalyticsUserID");
 
   return v9;
 }
 
-- (BOOL)uuidNeedsRegeneration:(id)a3
+- (BOOL)uuidNeedsRegeneration:(id)regeneration
 {
-  v3 = [a3 componentsSeparatedByString:@"*"];
+  v3 = [regeneration componentsSeparatedByString:@"*"];
   v4 = [v3 objectAtIndex:0];
 
   v5 = +[PDAnalytics dateFormatter];

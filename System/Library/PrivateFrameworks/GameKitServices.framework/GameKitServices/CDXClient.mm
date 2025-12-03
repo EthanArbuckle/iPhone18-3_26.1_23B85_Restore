@@ -1,26 +1,26 @@
 @interface CDXClient
 + (id)sharedClient;
 - (BOOL)handleHolePunchEvent;
-- (BOOL)sendRaw:(id)a3;
-- (CDXClient)initWithOptions:(id)a3 delegate:(id)a4;
+- (BOOL)sendRaw:(id)raw;
+- (CDXClient)initWithOptions:(id)options delegate:(id)delegate;
 - (NSData)preblob;
 - (NSError)error;
 - (const)currentSockAddr;
-- (id)createSessionWithTicket:(id)a3 sessionKey:(id)a4;
+- (id)createSessionWithTicket:(id)ticket sessionKey:(id)key;
 - (uint64_t)start;
 - (uint64_t)startListeningOnSockets;
 - (unsigned)currentSockAddrLen;
 - (void)dealloc;
 - (void)handleFDEvent;
 - (void)invalidate;
-- (void)invalidateSession:(id)a3;
-- (void)mapIPv4AddrToIPv6:(sockaddr_in *)a3;
+- (void)invalidateSession:(id)session;
+- (void)mapIPv4AddrToIPv6:(sockaddr_in *)pv6;
 - (void)networkDidChange;
 - (void)resetHolepunchTimer;
 - (void)restart;
 - (void)sendHolePunch;
-- (void)setError:(id)a3;
-- (void)setPreblob:(id)a3;
+- (void)setError:(id)error;
+- (void)setPreblob:(id)preblob;
 - (void)start;
 - (void)startListeningOnSockets;
 - (void)stopHolePunchTimer;
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __25__CDXClient_sharedClient__block_invoke;
   block[3] = &unk_279682BA8;
-  block[4] = a1;
+  block[4] = self;
   if (sharedClient_onceToken != -1)
   {
     dispatch_once(&sharedClient_onceToken, block);
@@ -67,17 +67,17 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   error = self->error_;
-  self->error_ = [a3 copyWithZone:{-[CDXClient zone](self, "zone")}];
-  v6 = error;
+  self->error_ = [error copyWithZone:{-[CDXClient zone](self, "zone")}];
+  errorCopy = error;
   objc_sync_exit(self);
-  if (a3)
+  if (error)
   {
-    if (![objc_msgSend(a3 "domain")] || (v7 = objc_msgSend(a3, "code"), v7 != -[NSError code](error, "code")))
+    if (![objc_msgSend(error "domain")] || (v7 = objc_msgSend(error, "code"), v7 != -[NSError code](error, "code")))
     {
       if (objc_opt_class() == self)
       {
@@ -118,9 +118,9 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
             v24 = 2112;
             v25 = v8;
             v26 = 2048;
-            v27 = self;
+            selfCopy = self;
             v28 = 2080;
-            v29 = [objc_msgSend(a3 "description")];
+            v29 = [objc_msgSend(error "description")];
             _os_log_error_impl(&dword_24E50C000, v10, OS_LOG_TYPE_ERROR, "CDXClient [%s] %s:%d %@(%p) err = %s", &v18, 0x3Au);
           }
         }
@@ -128,8 +128,8 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
 
       if (self->scDynamicStore_)
       {
-        v11 = [a3 domain];
-        if ([v11 isEqualToString:*MEMORY[0x277CCA5B8]])
+        domain = [error domain];
+        if ([domain isEqualToString:*MEMORY[0x277CCA5B8]])
         {
           restartCount = self->restartCount_;
           self->restartCount_ = restartCount + 1;
@@ -154,7 +154,7 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
               v24 = 2080;
               v25 = v16;
               v26 = 2048;
-              v27 = *&v13;
+              selfCopy = *&v13;
               _os_log_impl(&dword_24E50C000, v15, OS_LOG_TYPE_DEFAULT, "CDXClient [%s] %s:%d %s: Will restart in %f seconds due to POSIX error.", &v18, 0x30u);
             }
           }
@@ -164,7 +164,7 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
       }
     }
 
-    [(CDXClientDelegate *)self->delegate_ CDXClient:self error:a3];
+    [(CDXClientDelegate *)self->delegate_ CDXClient:self error:error];
     [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
   }
 
@@ -179,11 +179,11 @@ uint64_t __25__CDXClient_sharedClient__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setPreblob:(id)a3
+- (void)setPreblob:(id)preblob
 {
   objc_sync_enter(self);
 
-  v5 = [a3 copyWithZone:{-[CDXClient zone](self, "zone")}];
+  v5 = [preblob copyWithZone:{-[CDXClient zone](self, "zone")}];
   self->preblob_ = v5;
   [(CDXClientDelegate *)self->delegate_ CDXClient:self preblob:v5];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
@@ -441,7 +441,7 @@ LABEL_13:
   }
 }
 
-- (CDXClient)initWithOptions:(id)a3 delegate:(id)a4
+- (CDXClient)initWithOptions:(id)options delegate:(id)delegate
 {
   v64 = *MEMORY[0x277D85DE8];
   v49.receiver = self;
@@ -453,7 +453,7 @@ LABEL_13:
     goto LABEL_63;
   }
 
-  v6->delegate_ = a4;
+  v6->delegate_ = delegate;
   if (IsGarbageCollectionEnabled_cachedValue == -1)
   {
     IsGarbageCollectionEnabled_cachedValue = [objc_msgSend(-[objc_class performSelector:](NSClassFromString(&cfstr_Nsgarbagecolle.isa) performSelector:{sel_defaultCollector), "valueForKey:", @"isEnabled", "BOOLValue"}];
@@ -488,12 +488,12 @@ LABEL_7:
         server = v7->server_;
         if (server)
         {
-          v15 = [[(NSString *)server description] UTF8String];
+          uTF8String = [[(NSString *)server description] UTF8String];
         }
 
         else
         {
-          v15 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136316162;
@@ -505,7 +505,7 @@ LABEL_7:
         *&buf[28] = 2080;
         *&buf[30] = v13;
         *&buf[38] = 2080;
-        *&buf[40] = v15;
+        *&buf[40] = uTF8String;
         _os_log_impl(&dword_24E50C000, v12, OS_LOG_TYPE_DEFAULT, "CDXClient [%s] %s:%d %s: Using CDXOverrideServer: %s", buf, 0x30u);
       }
     }
@@ -577,12 +577,12 @@ LABEL_7:
         v31 = v7->server_;
         if (v31)
         {
-          v32 = [[(NSString *)v31 description] UTF8String];
+          uTF8String2 = [[(NSString *)v31 description] UTF8String];
         }
 
         else
         {
-          v32 = "<nil>";
+          uTF8String2 = "<nil>";
         }
 
         *buf = 136316162;
@@ -594,7 +594,7 @@ LABEL_7:
         *&buf[28] = 2080;
         *&buf[30] = v30;
         *&buf[38] = 2080;
-        *&buf[40] = v32;
+        *&buf[40] = uTF8String2;
         _os_log_impl(&dword_24E50C000, v29, OS_LOG_TYPE_DEFAULT, "CDXClient [%s] %s:%d %s: Using CDXIP(deprecated, please use CDXOverrideServer instead): %s", buf, 0x30u);
       }
     }
@@ -629,17 +629,17 @@ LABEL_7:
 
   if (![*p_server length])
   {
-    v7->server_ = [objc_msgSend(a3 objectForKeyedSubscript:{@"server", "copyWithZone:", -[CDXClient zone](v7, "zone")}];
+    v7->server_ = [objc_msgSend(options objectForKeyedSubscript:{@"server", "copyWithZone:", -[CDXClient zone](v7, "zone")}];
   }
 
   if (!*p_port)
   {
-    *p_port = [objc_msgSend(a3 objectForKeyedSubscript:{@"port", "integerValue"}];
+    *p_port = [objc_msgSend(options objectForKeyedSubscript:{@"port", "integerValue"}];
   }
 
   if (v7->holePunchInterval_ == 0.0)
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"holePunchInterval", "doubleValue"}];
+    [objc_msgSend(options objectForKeyedSubscript:{@"holePunchInterval", "doubleValue"}];
     v7->holePunchInterval_ = v38;
   }
 
@@ -721,7 +721,7 @@ LABEL_7:
     }
   }
 
-  v45 = [objc_msgSend(a3 objectForKeyedSubscript:{@"queue", v42), "pointerValue"}];
+  v45 = [objc_msgSend(options objectForKeyedSubscript:{@"queue", v42), "pointerValue"}];
   v7->queue_ = v45;
   if (v45)
   {
@@ -769,7 +769,7 @@ LABEL_63:
   return v3;
 }
 
-- (void)mapIPv4AddrToIPv6:(sockaddr_in *)a3
+- (void)mapIPv4AddrToIPv6:(sockaddr_in *)pv6
 {
   v17 = *MEMORY[0x277D85DE8];
   p_cdxMappedIPv4Addr = &self->cdxMappedIPv4Addr;
@@ -782,7 +782,7 @@ LABEL_63:
 
   *v15 = 0;
   v16 = 0;
-  v7 = inet_ntop(2, &a3->sin_addr, v15, 0x10u);
+  v7 = inet_ntop(2, &pv6->sin_addr, v15, 0x10u);
   memset(&v12, 0, sizeof(v12));
   v12.ai_socktype = 2;
   v12.ai_flags = 1536;
@@ -1008,11 +1008,11 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendRaw:(id)a3
+- (BOOL)sendRaw:(id)raw
 {
   v20 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v5 = sendto(self->fd_, [a3 bytes], objc_msgSend(a3, "length"), 0, -[CDXClient currentSockAddr](self, "currentSockAddr"), -[CDXClient currentSockAddrLen](self, "currentSockAddrLen"));
+  v5 = sendto(self->fd_, [raw bytes], objc_msgSend(raw, "length"), 0, -[CDXClient currentSockAddr](self, "currentSockAddr"), -[CDXClient currentSockAddrLen](self, "currentSockAddrLen"));
   objc_sync_exit(self);
   if (*__error() == 12)
   {
@@ -1030,9 +1030,9 @@ LABEL_19:
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          if (a3)
+          if (raw)
           {
-            v10 = [objc_msgSend(a3 "description")];
+            v10 = [objc_msgSend(raw "description")];
           }
 
           else
@@ -1058,23 +1058,23 @@ LABEL_19:
       }
     }
 
-    result = v5 == [a3 length];
+    result = v5 == [raw length];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)invalidateSession:(id)a3
+- (void)invalidateSession:(id)session
 {
-  v5 = [(CDXClient *)self queue];
+  queue = [(CDXClient *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__CDXClient_invalidateSession___block_invoke;
   v6[3] = &unk_279682BF0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = session;
+  dispatch_async(queue, v6);
 }
 
 uint64_t __31__CDXClient_invalidateSession___block_invoke(uint64_t a1)
@@ -1094,7 +1094,7 @@ uint64_t __48__CDXClient_createSessionWithTicket_sessionKey___block_invoke(uint6
   return [v2 setObject:v1 forKeyedSubscript:v3];
 }
 
-- (id)createSessionWithTicket:(id)a3 sessionKey:(id)a4
+- (id)createSessionWithTicket:(id)ticket sessionKey:(id)key
 {
   OUTLINED_FUNCTION_15();
   if (![v7 CDXTicketWellFormed])
@@ -1102,8 +1102,8 @@ uint64_t __48__CDXClient_createSessionWithTicket_sessionKey___block_invoke(uint6
     return 0;
   }
 
-  v8 = -[CDXClientSession initWithCDXClient:ticket:sessionKey:](+[CDXClientSession allocWithZone:](CDXClientSession, "allocWithZone:", [v5 zone]), "initWithCDXClient:ticket:sessionKey:", v5, v4, a4);
-  v9 = [v5 queue];
+  v8 = -[CDXClientSession initWithCDXClient:ticket:sessionKey:](+[CDXClientSession allocWithZone:](CDXClientSession, "allocWithZone:", [v5 zone]), "initWithCDXClient:ticket:sessionKey:", v5, v4, key);
+  queue = [v5 queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__CDXClient_createSessionWithTicket_sessionKey___block_invoke;
@@ -1111,7 +1111,7 @@ uint64_t __48__CDXClient_createSessionWithTicket_sessionKey___block_invoke(uint6
   block[4] = v5;
   block[5] = v4;
   block[6] = v8;
-  dispatch_async(v9, block);
+  dispatch_async(queue, block);
   return v8;
 }
 
@@ -1151,10 +1151,10 @@ uint64_t __48__CDXClient_createSessionWithTicket_sessionKey___block_invoke(uint6
 - (uint64_t)start
 {
   v2 = MEMORY[0x277CCA9B8];
-  v3 = a1;
+  selfCopy = self;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Call to gethostbyname2() failed for hostname %@. Error %d.", *a2, a1];
-  [v2 errorWithDomain:@"h_errno" code:v3 userInfo:{objc_msgSend(v4, "dictionaryWithObjectsAndKeys:", v5, *MEMORY[0x277CCA470], 0)}];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Call to gethostbyname2() failed for hostname %@. Error %d.", *a2, self];
+  [v2 errorWithDomain:@"h_errno" code:selfCopy userInfo:{objc_msgSend(v4, "dictionaryWithObjectsAndKeys:", v5, *MEMORY[0x277CCA470], 0)}];
   v6 = OUTLINED_FUNCTION_20();
 
   return [v6 setError:?];

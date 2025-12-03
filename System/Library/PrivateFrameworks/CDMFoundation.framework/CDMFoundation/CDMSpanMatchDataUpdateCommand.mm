@@ -22,9 +22,9 @@
       _os_log_impl(&dword_1DC287000, v3, OS_LOG_TYPE_INFO, "%s [insights-cdm-%@]:\nSiriVocabularyProtoSpanMatcher initialized", buf, 0x16u);
     }
 
-    v4 = [MEMORY[0x1E69CE410] indexMatcher];
+    indexMatcher = [MEMORY[0x1E69CE410] indexMatcher];
     semSpanMatcher = v2->_semSpanMatcher;
-    v2->_semSpanMatcher = v4;
+    v2->_semSpanMatcher = indexMatcher;
   }
 
   v6 = *MEMORY[0x1E69E9840];

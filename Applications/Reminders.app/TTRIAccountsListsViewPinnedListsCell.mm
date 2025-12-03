@@ -3,8 +3,8 @@
 + (Class)layerClass;
 - (NSArray)preferredFocusEnvironments;
 - (UIColor)separatorColor;
-- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithCoder:(id)a3;
-- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithCoder:(id)coder;
+- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutMarginsDidChange;
 - (void)prepareForReuse;
 @end
@@ -18,11 +18,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -31,10 +31,10 @@
     v6 = 0;
   }
 
-  return sub_10032A290(a3, a4, v6);
+  return sub_10032A290(style, identifier, v6);
 }
 
-- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithCoder:(id)a3
+- (_TtC9Reminders36TTRIAccountsListsViewPinnedListsCell)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC9Reminders36TTRIAccountsListsViewPinnedListsCell_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -60,9 +60,9 @@
 
 - (UIColor)separatorColor
 {
-  v2 = [objc_opt_self() clearColor];
+  clearColor = [objc_opt_self() clearColor];
 
-  return v2;
+  return clearColor;
 }
 
 - (void)layoutMarginsDidChange
@@ -76,7 +76,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_10032A858();
 
   sub_100058000(&qword_100780A40);

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneUtilMathUtil
-+ (double)acoshWithDouble:(double)a3;
++ (double)acoshWithDouble:(double)double;
 @end
 
 @implementation OrgApacheLuceneUtilMathUtil
 
-+ (double)acoshWithDouble:(double)a3
++ (double)acoshWithDouble:(double)double
 {
-  v3 = JavaLangMath_sqrtWithDouble_(a3 * a3 + -1.0) + a3;
+  v3 = JavaLangMath_sqrtWithDouble_(double * double + -1.0) + double;
 
   return JavaLangMath_logWithDouble_(v3);
 }

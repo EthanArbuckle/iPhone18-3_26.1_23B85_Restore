@@ -1,16 +1,16 @@
 @interface NFVASResponse
-+ (BOOL)validateDictionary:(id)a3;
-- (NFVASResponse)initWithDictionary:(id)a3;
++ (BOOL)validateDictionary:(id)dictionary;
+- (NFVASResponse)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
 @end
 
 @implementation NFVASResponse
 
-+ (BOOL)validateDictionary:(id)a3
++ (BOOL)validateDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"Token"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"Token"];
   if (v4)
   {
     objc_opt_class();
@@ -20,7 +20,7 @@
     }
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"PassData"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"PassData"];
 
   if (v5)
   {
@@ -31,7 +31,7 @@
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"StatusCode"];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"StatusCode"];
 
   if (v4)
   {
@@ -42,7 +42,7 @@
     }
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"MobileCapabilities"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"MobileCapabilities"];
 
   if (v5)
   {
@@ -56,7 +56,7 @@ LABEL_14:
     }
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"Request"];
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"Request"];
 
   if (v4)
   {
@@ -75,31 +75,31 @@ LABEL_15:
   return v6;
 }
 
-- (NFVASResponse)initWithDictionary:(id)a3
+- (NFVASResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = NFVASResponse;
   v5 = [(NFVASResponse *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Token"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Token"];
     token = v5->_token;
     v5->_token = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"PassData"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"PassData"];
     vasData = v5->_vasData;
     v5->_vasData = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"StatusCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"StatusCode"];
     statusCode = v5->_statusCode;
     v5->_statusCode = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"MobileCapabilities"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"MobileCapabilities"];
     mobileCapabilities = v5->_mobileCapabilities;
     v5->_mobileCapabilities = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"Request"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"Request"];
     if (v14)
     {
       v15 = [[NFVASRequest alloc] initWithDictionary:v14];
@@ -142,8 +142,8 @@ LABEL_15:
   request = self->_request;
   if (request)
   {
-    v10 = [(NFVASRequest *)request asDictionary];
-    [v4 setObject:v10 forKeyedSubscript:@"Request"];
+    asDictionary = [(NFVASRequest *)request asDictionary];
+    [v4 setObject:asDictionary forKeyedSubscript:@"Request"];
   }
 
   return v4;
@@ -155,9 +155,9 @@ LABEL_15:
   v9.receiver = self;
   v9.super_class = NFVASResponse;
   v4 = [(NFVASResponse *)&v9 description];
-  v5 = [(NSNumber *)self->_statusCode unsignedIntValue];
+  unsignedIntValue = [(NSNumber *)self->_statusCode unsignedIntValue];
   mobileCapabilities = self->_mobileCapabilities;
-  v7 = [v3 initWithFormat:@"%@ status=0x%04x data=%@ token=%@ mobileCapabilities=%@ request=%@", v4, v5, self->_vasData, self->_token, mobileCapabilities, self->_request];
+  v7 = [v3 initWithFormat:@"%@ status=0x%04x data=%@ token=%@ mobileCapabilities=%@ request=%@", v4, unsignedIntValue, self->_vasData, self->_token, mobileCapabilities, self->_request];
 
   return v7;
 }

@@ -1,36 +1,36 @@
 @interface GKContiguousContainerView
-+ (id)containerForViewsFontsLeadings:(id)a3 options:(int64_t)a4;
-+ (id)containerViewForViews:(id)a3 overlap:(double)a4 vertical:(BOOL)a5 applyOrthogonalConstraints:(BOOL)a6;
++ (id)containerForViewsFontsLeadings:(id)leadings options:(int64_t)options;
++ (id)containerViewForViews:(id)views overlap:(double)overlap vertical:(BOOL)vertical applyOrthogonalConstraints:(BOOL)constraints;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)insets;
 - (id)viewForBaselineLayout;
-- (void)_addContiguousSubviews:(id)a3;
-- (void)replaceSubviews:(id)a3;
-- (void)setInsets:(UIEdgeInsets)a3;
-- (void)setOverlap:(double)a3;
+- (void)_addContiguousSubviews:(id)subviews;
+- (void)replaceSubviews:(id)subviews;
+- (void)setInsets:(UIEdgeInsets)insets;
+- (void)setOverlap:(double)overlap;
 @end
 
 @implementation GKContiguousContainerView
 
-+ (id)containerViewForViews:(id)a3 overlap:(double)a4 vertical:(BOOL)a5 applyOrthogonalConstraints:(BOOL)a6
++ (id)containerViewForViews:(id)views overlap:(double)overlap vertical:(BOOL)vertical applyOrthogonalConstraints:(BOOL)constraints
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = objc_alloc_init(a1);
+  constraintsCopy = constraints;
+  verticalCopy = vertical;
+  viewsCopy = views;
+  v11 = objc_alloc_init(self);
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v11 setApplyOrthogonalConstraints:v6];
-  [v11 setVertical:v7];
-  [v11 setOverlap:a4];
-  [v11 _addContiguousSubviews:v10];
+  [v11 setApplyOrthogonalConstraints:constraintsCopy];
+  [v11 setVertical:verticalCopy];
+  [v11 setOverlap:overlap];
+  [v11 _addContiguousSubviews:viewsCopy];
 
   return v11;
 }
 
-+ (id)containerForViewsFontsLeadings:(id)a3 options:(int64_t)a4
++ (id)containerForViewsFontsLeadings:(id)leadings options:(int64_t)options
 {
-  v5 = a3;
+  leadingsCopy = leadings;
   v6 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   v11[0] = MEMORY[0x277D85DD0];
@@ -39,8 +39,8 @@
   v11[3] = &unk_27966ADA0;
   v7 = v6;
   v12 = v7;
-  [v5 enumerateObjectsUsingBlock:v11];
-  v8 = [MEMORY[0x277CCAAD0] _gkBaselineConstraintsForViewsFontsLeadings:v5 superview:v7 options:a4];
+  [leadingsCopy enumerateObjectsUsingBlock:v11];
+  v8 = [MEMORY[0x277CCAAD0] _gkBaselineConstraintsForViewsFontsLeadings:leadingsCopy superview:v7 options:options];
 
   [v7 addConstraints:v8];
   v9 = v7;
@@ -58,20 +58,20 @@ void __68__GKContiguousContainerView_containerForViewsFontsLeadings_options___bl
   }
 }
 
-- (void)setOverlap:(double)a3
+- (void)setOverlap:(double)overlap
 {
-  if (self->_overlap != a3)
+  if (self->_overlap != overlap)
   {
-    v5 = [(GKContiguousContainerView *)self vertical];
+    vertical = [(GKContiguousContainerView *)self vertical];
     replaceableConstraints = self->_replaceableConstraints;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __40__GKContiguousContainerView_setOverlap___block_invoke;
     v7[3] = &__block_descriptor_41_e35_v32__0__NSLayoutConstraint_8Q16_B24l;
-    v8 = v5;
-    *&v7[4] = a3;
+    v8 = vertical;
+    *&v7[4] = overlap;
     [(NSArray *)replaceableConstraints enumerateObjectsUsingBlock:v7];
-    self->_overlap = a3;
+    self->_overlap = overlap;
   }
 }
 
@@ -93,26 +93,26 @@ void __40__GKContiguousContainerView_setOverlap___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setInsets:(UIEdgeInsets)a3
+- (void)setInsets:(UIEdgeInsets)insets
 {
   p_insets = &self->_insets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insets.top, v4), vceqq_f64(*&self->_insets.bottom, v5)))) & 1) == 0)
   {
-    bottom = a3.bottom;
-    right = a3.right;
-    top = a3.top;
-    left = a3.left;
-    v7 = [(GKContiguousContainerView *)self vertical];
+    bottom = insets.bottom;
+    right = insets.right;
+    top = insets.top;
+    left = insets.left;
+    vertical = [(GKContiguousContainerView *)self vertical];
     replaceableConstraints = self->_replaceableConstraints;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __39__GKContiguousContainerView_setInsets___block_invoke;
     v13[3] = &__block_descriptor_65_e35_v32__0__NSLayoutConstraint_8Q16_B24l;
-    v14 = v7;
+    v14 = vertical;
     *&v13[4] = top;
     *&v13[5] = left;
     *&v13[6] = bottom;
@@ -193,16 +193,16 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_addContiguousSubviews:(id)a3
+- (void)_addContiguousSubviews:(id)subviews
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__GKContiguousContainerView__addContiguousSubviews___block_invoke;
   v6[3] = &unk_27966CF00;
   v6[4] = self;
-  v4 = a3;
-  [v4 enumerateObjectsUsingBlock:v6];
-  v5 = [MEMORY[0x277CCAAD0] _gkConstraintsForViews:v4 contiguouslyLaidOutVertically:self->_vertical overlap:self withinView:self->_applyOrthogonalConstraints insets:self->_overlap applyOrthogonalConstraints:{self->_insets.top, self->_insets.left, self->_insets.bottom, self->_insets.right}];
+  subviewsCopy = subviews;
+  [subviewsCopy enumerateObjectsUsingBlock:v6];
+  v5 = [MEMORY[0x277CCAAD0] _gkConstraintsForViews:subviewsCopy contiguouslyLaidOutVertically:self->_vertical overlap:self withinView:self->_applyOrthogonalConstraints insets:self->_overlap applyOrthogonalConstraints:{self->_insets.top, self->_insets.left, self->_insets.bottom, self->_insets.right}];
 
   [(GKContiguousContainerView *)self setReplaceableConstraints:v5];
   if ([v5 count])
@@ -211,20 +211,20 @@ LABEL_21:
   }
 }
 
-- (void)replaceSubviews:(id)a3
+- (void)replaceSubviews:(id)subviews
 {
-  v4 = a3;
-  v7 = [(GKContiguousContainerView *)self replaceableConstraints];
-  if (v7)
+  subviewsCopy = subviews;
+  replaceableConstraints = [(GKContiguousContainerView *)self replaceableConstraints];
+  if (replaceableConstraints)
   {
-    [(GKContiguousContainerView *)self removeConstraints:v7];
+    [(GKContiguousContainerView *)self removeConstraints:replaceableConstraints];
   }
 
-  v5 = [(GKContiguousContainerView *)self subviews];
-  v6 = [v5 copy];
+  subviews = [(GKContiguousContainerView *)self subviews];
+  v6 = [subviews copy];
 
   [v6 enumerateObjectsUsingBlock:&__block_literal_global_43];
-  [(GKContiguousContainerView *)self _addContiguousSubviews:v4];
+  [(GKContiguousContainerView *)self _addContiguousSubviews:subviewsCopy];
 }
 
 - (CGSize)intrinsicContentSize
@@ -235,10 +235,10 @@ LABEL_21:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -247,7 +247,7 @@ LABEL_21:
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v6 = [(GKContiguousContainerView *)self subviews];
+  subviews = [(GKContiguousContainerView *)self subviews];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__GKContiguousContainerView_sizeThatFits___block_invoke;
@@ -257,7 +257,7 @@ LABEL_21:
   v12[4] = self;
   v12[5] = &v13;
   v12[6] = &v17;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [subviews enumerateObjectsUsingBlock:v12];
   *&v7.f64[0] = v18[3];
   *&v7.f64[1] = v14[3];
   v8 = vsubq_f64(v7, vaddq_f64(*&self->_insets.top, *&self->_insets.bottom));
@@ -320,30 +320,30 @@ double __42__GKContiguousContainerView_sizeThatFits___block_invoke(uint64_t a1, 
   baselineView = self->_baselineView;
   if (baselineView)
   {
-    v4 = [(UIView *)baselineView superview];
+    superview = [(UIView *)baselineView superview];
 
-    if (v4 != self)
+    if (superview != self)
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Baseline view MUST be a subview of the container view."];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/NSLayoutConstraint+GKAdditions.m"];
-      v8 = [v7 lastPathComponent];
-      v9 = [v5 stringWithFormat:@"%@ ([_baselineView superview] == self)\n[%s (%s:%d)]", v6, "-[GKContiguousContainerView viewForBaselineLayout]", objc_msgSend(v8, "UTF8String"), 487];
+      lastPathComponent = [v7 lastPathComponent];
+      v9 = [v5 stringWithFormat:@"%@ ([_baselineView superview] == self)\n[%s (%s:%d)]", v6, "-[GKContiguousContainerView viewForBaselineLayout]", objc_msgSend(lastPathComponent, "UTF8String"), 487];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
     }
 
-    v10 = self->_baselineView;
+    viewForBaselineLayout = self->_baselineView;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = GKContiguousContainerView;
-    v10 = [(GKContiguousContainerView *)&v12 viewForBaselineLayout];
+    viewForBaselineLayout = [(GKContiguousContainerView *)&v12 viewForBaselineLayout];
   }
 
-  return v10;
+  return viewForBaselineLayout;
 }
 
 - (UIEdgeInsets)insets

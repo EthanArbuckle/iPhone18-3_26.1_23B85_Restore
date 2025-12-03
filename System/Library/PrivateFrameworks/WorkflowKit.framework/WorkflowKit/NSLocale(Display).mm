@@ -7,15 +7,15 @@
 
 - (id)wf_subname
 {
-  v2 = [a1 languageCode];
-  if ([v2 length])
+  languageCode = [self languageCode];
+  if ([languageCode length])
   {
   }
 
   else
   {
-    v3 = [a1 countryCode];
-    v4 = [v3 length];
+    countryCode = [self countryCode];
+    v4 = [countryCode length];
 
     if (!v4)
     {
@@ -24,9 +24,9 @@
     }
   }
 
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [a1 languageCode];
-  v7 = [&unk_1F4A9B6F8 containsObject:v6];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode2 = [self languageCode];
+  v7 = [&unk_1F4A9B6F8 containsObject:languageCode2];
 
   if (!v7)
   {
@@ -34,16 +34,16 @@
     goto LABEL_13;
   }
 
-  v8 = [a1 countryCode];
-  v9 = [v5 localizedStringForRegion:v8 context:3 short:1];
+  countryCode2 = [self countryCode];
+  v9 = [currentLocale localizedStringForRegion:countryCode2 context:3 short:1];
 
-  v10 = [a1 languageIdentifier];
-  if (([v10 hasPrefix:@"zh-Hant"] & 1) != 0 || objc_msgSend(v10, "hasPrefix:", @"zh-TW"))
+  languageIdentifier = [self languageIdentifier];
+  if (([languageIdentifier hasPrefix:@"zh-Hant"] & 1) != 0 || objc_msgSend(languageIdentifier, "hasPrefix:", @"zh-TW"))
   {
-    v11 = [MEMORY[0x1E69E0A90] currentDevice];
-    v12 = [v11 isChineseRegionDevice];
+    currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+    isChineseRegionDevice = [currentDevice isChineseRegionDevice];
 
-    if (v12)
+    if (isChineseRegionDevice)
     {
       v13 = @"Mandarin - Taiwan (China)";
     }
@@ -56,7 +56,7 @@
 
   else
   {
-    if (([v10 hasPrefix:@"zh-Hans"] & 1) == 0 && !objc_msgSend(v10, "hasPrefix:", @"zh-CN"))
+    if (([languageIdentifier hasPrefix:@"zh-Hans"] & 1) == 0 && !objc_msgSend(languageIdentifier, "hasPrefix:", @"zh-CN"))
     {
       goto LABEL_11;
     }
@@ -70,13 +70,13 @@
 LABEL_11:
 
 LABEL_13:
-  v15 = [a1 languageCode];
-  v16 = [&unk_1F4A9B710 containsObject:v15];
+  languageCode3 = [self languageCode];
+  v16 = [&unk_1F4A9B710 containsObject:languageCode3];
 
   if (v16)
   {
-    v17 = [a1 countryCode];
-    v18 = [v5 localizedStringForRegion:v17 context:3 short:0];
+    countryCode3 = [self countryCode];
+    v18 = [currentLocale localizedStringForRegion:countryCode3 context:3 short:0];
 
     v9 = v18;
   }
@@ -88,33 +88,33 @@ LABEL_16:
 
 - (id)wf_displayName
 {
-  v2 = [a1 languageCode];
-  v3 = [v2 length];
+  languageCode = [self languageCode];
+  capitalizedString = [languageCode length];
 
-  if (!v3)
+  if (!capitalizedString)
   {
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
-  v5 = [a1 languageCode];
-  v6 = [v4 localizedStringForLanguageCode:v5];
-  v3 = [v6 capitalizedString];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode2 = [self languageCode];
+  v6 = [currentLocale localizedStringForLanguageCode:languageCode2];
+  capitalizedString = [v6 capitalizedString];
 
-  v7 = [a1 wf_subname];
-  v8 = [a1 languageIdentifier];
-  if ([v8 hasPrefix:@"zh-Hans"])
+  wf_subname = [self wf_subname];
+  languageIdentifier = [self languageIdentifier];
+  if ([languageIdentifier hasPrefix:@"zh-Hans"])
   {
 
 LABEL_5:
     v11 = WFLocalizedString(@"Chinese");
 
-    v3 = v11;
+    capitalizedString = v11;
     goto LABEL_6;
   }
 
-  v9 = [a1 languageIdentifier];
-  v10 = [v9 hasPrefix:@"zh-Hant"];
+  languageIdentifier2 = [self languageIdentifier];
+  v10 = [languageIdentifier2 hasPrefix:@"zh-Hant"];
 
   if (v10)
   {
@@ -122,16 +122,16 @@ LABEL_5:
   }
 
 LABEL_6:
-  if ([v7 length])
+  if ([wf_subname length])
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v3, v7];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", capitalizedString, wf_subname];
 
-    v3 = v12;
+    capitalizedString = v12;
   }
 
 LABEL_9:
 
-  return v3;
+  return capitalizedString;
 }
 
 @end

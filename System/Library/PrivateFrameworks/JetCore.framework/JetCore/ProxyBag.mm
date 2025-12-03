@@ -1,14 +1,14 @@
 @interface ProxyBag
 - (NSDate)expirationDate;
 - (_TtC7JetCore8ProxyBag)init;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation ProxyBag
@@ -22,11 +22,11 @@
   MEMORY[0x1EEE9AC00](v7);
   v9 = &v20 - v8;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag);
-  v11 = self;
-  v12 = [v10 expirationDate];
-  if (v12)
+  selfCopy = self;
+  expirationDate = [v10 expirationDate];
+  if (expirationDate)
   {
-    v13 = v12;
+    v13 = expirationDate;
     sub_1DB509DB0();
 
     v14 = sub_1DB509DD0();
@@ -55,23 +55,23 @@
   return v17;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) arrayForKey_];
+  arrayForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) arrayForKey_];
 
-  return v3;
+  return arrayForKey_;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) BOOLForKey_];
+  bOOLForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) BOOLForKey_];
 
-  return v3;
+  return bOOLForKey_;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag);
@@ -82,7 +82,7 @@
   v9[2] = sub_1DB46E918;
   v9[3] = &block_descriptor_16;
   v7 = _Block_copy(v9);
-  v8 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
   [v6 createSnapshotWithCompletion_];
@@ -91,39 +91,39 @@
   swift_unknownObjectRelease();
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) doubleForKey_];
+  doubleForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) doubleForKey_];
 
-  return v3;
+  return doubleForKey_;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) integerForKey_];
+  integerForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) integerForKey_];
 
-  return v3;
+  return integerForKey_;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) stringForKey_];
+  stringForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) stringForKey_];
 
-  return v3;
+  return stringForKey_;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) URLForKey_];
+  uRLForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) URLForKey_];
 
-  return v3;
+  return uRLForKey_;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) dictionaryForKey_];
+  dictionaryForKey_ = [*(&self->super.isa + OBJC_IVAR____TtC7JetCore8ProxyBag_bag) dictionaryForKey_];
 
-  return v3;
+  return dictionaryForKey_;
 }
 
 - (_TtC7JetCore8ProxyBag)init

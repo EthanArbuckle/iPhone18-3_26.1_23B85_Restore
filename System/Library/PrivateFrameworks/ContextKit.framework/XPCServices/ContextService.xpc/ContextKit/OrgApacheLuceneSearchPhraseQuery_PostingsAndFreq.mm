@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneSearchPhraseQuery_PostingsAndFreq
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchPhraseQuery_PostingsAndFreq
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     goto LABEL_17;
   }
@@ -21,12 +21,12 @@
   }
 
   position = self->position_;
-  v6 = *(a3 + 4);
+  v6 = *(id + 4);
   result = position - v6;
   if (position == v6)
   {
     nTerms = self->nTerms_;
-    v9 = *(a3 + 8);
+    v9 = *(id + 8);
     result = nTerms - v9;
     if (nTerms == v9)
     {
@@ -47,7 +47,7 @@
             goto LABEL_17;
           }
 
-          v13 = *(a3 + 3);
+          v13 = *(id + 3);
           v14 = *(v13 + 8);
           if (v11 >= v14)
           {
@@ -116,20 +116,20 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v5 = [(OrgApacheLuceneSearchPhraseQuery_PostingsAndFreq *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneSearchPhraseQuery_PostingsAndFreq *)self getClass];
+  if (getClass != [equal getClass])
   {
     return 0;
   }
@@ -140,13 +140,13 @@ LABEL_10:
     JreThrowClassCastException();
   }
 
-  if (self->position_ != *(a3 + 4))
+  if (self->position_ != *(equal + 4))
   {
     return 0;
   }
 
   terms = self->terms_;
-  v7 = *(a3 + 3);
+  v7 = *(equal + 3);
   if (!terms)
   {
     return v7 == 0;

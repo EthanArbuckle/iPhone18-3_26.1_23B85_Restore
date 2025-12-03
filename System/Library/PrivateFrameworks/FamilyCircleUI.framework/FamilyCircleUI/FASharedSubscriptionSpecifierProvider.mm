@@ -1,46 +1,46 @@
 @interface FASharedSubscriptionSpecifierProvider
-- (BOOL)_launchWithResourceDictionary:(id)a3;
-- (BOOL)handleURL:(id)a3;
-- (FASharedSubscriptionSpecifierProvider)initWithAppleAccount:(id)a3 presenter:(id)a4;
+- (BOOL)_launchWithResourceDictionary:(id)dictionary;
+- (BOOL)handleURL:(id)l;
+- (FASharedSubscriptionSpecifierProvider)initWithAppleAccount:(id)account presenter:(id)presenter;
 - (FASharedSubscriptionSpecifierProviderSelectionHandler)selectionHandler;
 - (NSArray)specifiers;
 - (NSArray)subscriptionSpecifiers;
 - (NSArray)subscriptionsFamilyViewSpecifier;
-- (id)_iconURLStringForService:(id)a3;
-- (id)_serviceSpecifiersFromArray:(id)a3;
-- (id)_specifierNamed:(id)a3;
-- (id)_valueForServiceSpecifier:(id)a3;
-- (void)_addSharedSubscriptionsButtonWasTapped:(id)a3;
+- (id)_iconURLStringForService:(id)service;
+- (id)_serviceSpecifiersFromArray:(id)array;
+- (id)_specifierNamed:(id)named;
+- (id)_valueForServiceSpecifier:(id)specifier;
+- (void)_addSharedSubscriptionsButtonWasTapped:(id)tapped;
 - (void)_delayedLoadIfNeeded;
-- (void)_handleSubscriptionListResponse:(id)a3;
+- (void)_handleSubscriptionListResponse:(id)response;
 - (void)_loadSubscriptionServices;
-- (void)_serviceSpecifierWasTapped:(id)a3;
+- (void)_serviceSpecifierWasTapped:(id)tapped;
 - (void)reloadSpecifiers;
 @end
 
 @implementation FASharedSubscriptionSpecifierProvider
 
-- (FASharedSubscriptionSpecifierProvider)initWithAppleAccount:(id)a3 presenter:(id)a4
+- (FASharedSubscriptionSpecifierProvider)initWithAppleAccount:(id)account presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  presenterCopy = presenter;
   v16.receiver = self;
   v16.super_class = FASharedSubscriptionSpecifierProvider;
   v9 = [(FASharedSubscriptionSpecifierProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presenter, a4);
+    objc_storeStrong(&v9->_presenter, presenter);
     v10->_updateSubsriptionSpecifiers = 1;
-    objc_storeStrong(&v10->_appleAccount, a3);
+    objc_storeStrong(&v10->_appleAccount, account);
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkActivityQueue = v10->_networkActivityQueue;
     v10->_networkActivityQueue = v11;
 
     [(NSOperationQueue *)v10->_networkActivityQueue setQualityOfService:33];
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     subscribers = v10->_subscribers;
-    v10->_subscribers = v13;
+    v10->_subscribers = weakObjectsHashTable;
 
     v10->_numberOfGroups = 0;
   }
@@ -54,33 +54,33 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (self->_updateSubsriptionSpecifiers || self->_isLoadingSpecifiers)
   {
-    v4 = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
-    [v3 addObject:v4];
+    _sharedSubscriptionGroupSpecifier = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
+    [v3 addObject:_sharedSubscriptionGroupSpecifier];
 
     self->_updateSubsriptionSpecifiers = 0;
     self->_specifierState = 1;
     [(FASharedSubscriptionSpecifierProvider *)self _loadSubscriptionServices];
-    v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
+    services3 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
 LABEL_4:
-    [v3 addObject:v5];
+    [v3 addObject:services3];
     goto LABEL_5;
   }
 
-  v15 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
-  v16 = [v15 count];
+  services = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
+  v16 = [services count];
 
   if (!v16)
   {
-    v31 = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
-    [v3 addObject:v31];
+    _sharedSubscriptionGroupSpecifier2 = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
+    [v3 addObject:_sharedSubscriptionGroupSpecifier2];
 
     self->_specifierState = 2;
     v32 = MEMORY[0x277D3FAD8];
     v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v34 = [v33 localizedStringForKey:@"FAILED_TO_LOAD_SERVICES" value:&stru_282D9AA68 table:@"Localizable"];
-    v5 = [v32 preferenceSpecifierNamed:v34 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
+    services3 = [v32 preferenceSpecifierNamed:v34 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
 
-    [v5 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    [services3 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     goto LABEL_4;
   }
 
@@ -89,8 +89,8 @@ LABEL_4:
   if (!specifiers || ![(NSArray *)specifiers count]|| self->_specifierState != 3)
   {
     self->_specifierState = 3;
-    v18 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse serviceGroups];
-    v19 = [v18 count];
+    serviceGroups = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse serviceGroups];
+    v19 = [serviceGroups count];
 
     if (v19)
     {
@@ -115,14 +115,14 @@ LABEL_4:
 
             v24 = *(*(&v40 + 1) + 8 * i);
             v25 = MEMORY[0x277D3FAD8];
-            v26 = [v24 headerText];
-            v27 = [v24 footerText];
-            v28 = [v25 groupSpecifierWithHeader:v26 footer:v27];
+            headerText = [v24 headerText];
+            footerText = [v24 footerText];
+            v28 = [v25 groupSpecifierWithHeader:headerText footer:footerText];
             [v3 addObject:v28];
 
             ++self->_numberOfGroups;
-            v29 = [v24 services];
-            v30 = [(FASharedSubscriptionSpecifierProvider *)self _serviceSpecifiersFromArray:v29];
+            services2 = [v24 services];
+            v30 = [(FASharedSubscriptionSpecifierProvider *)self _serviceSpecifiersFromArray:services2];
             [v3 addObjectsFromArray:v30];
           }
 
@@ -142,11 +142,11 @@ LABEL_4:
       _os_log_impl(&dword_21BB35000, v35, OS_LOG_TYPE_DEFAULT, "No groups, kickin it old school.", buf, 2u);
     }
 
-    v36 = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
-    [v3 addObject:v36];
+    _sharedSubscriptionGroupSpecifier3 = [(FASharedSubscriptionSpecifierProvider *)self _sharedSubscriptionGroupSpecifier];
+    [v3 addObject:_sharedSubscriptionGroupSpecifier3];
 
-    v5 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
-    v37 = [(FASharedSubscriptionSpecifierProvider *)self _serviceSpecifiersFromArray:v5];
+    services3 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
+    v37 = [(FASharedSubscriptionSpecifierProvider *)self _serviceSpecifiersFromArray:services3];
     [v3 addObjectsFromArray:v37];
 
 LABEL_5:
@@ -176,14 +176,14 @@ LABEL_7:
   return v11;
 }
 
-- (id)_serviceSpecifiersFromArray:(id)a3
+- (id)_serviceSpecifiersFromArray:(id)array
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __69__FASharedSubscriptionSpecifierProvider__serviceSpecifiersFromArray___block_invoke;
   v5[3] = &unk_2782F3890;
   v5[4] = self;
-  v3 = [a3 fa_map:v5];
+  v3 = [array fa_map:v5];
 
   return v3;
 }
@@ -219,32 +219,32 @@ id __69__FASharedSubscriptionSpecifierProvider__serviceSpecifiersFromArray___blo
   return v6;
 }
 
-- (id)_iconURLStringForService:(id)a3
+- (id)_iconURLStringForService:(id)service
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSListController *)self->_presenter view];
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  [v7 scale];
+  serviceCopy = service;
+  view = [(PSListController *)self->_presenter view];
+  window = [view window];
+  screen = [window screen];
+  [screen scale];
   v9 = v8;
 
   switch(v9)
   {
     case 3:
-      v10 = [v4 iconURLStringx3];
+      iconURLStringx3 = [serviceCopy iconURLStringx3];
       goto LABEL_7;
     case 2:
-      v10 = [v4 iconURLStringx2];
+      iconURLStringx3 = [serviceCopy iconURLStringx2];
       goto LABEL_7;
     case 1:
-      v10 = [v4 iconURLString];
+      iconURLStringx3 = [serviceCopy iconURLString];
 LABEL_7:
-      v11 = v10;
+      iconURLStringx32 = iconURLStringx3;
       goto LABEL_11;
   }
 
-  v11 = [v4 iconURLStringx3];
+  iconURLStringx32 = [serviceCopy iconURLStringx3];
   v12 = _FALogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
@@ -262,29 +262,29 @@ LABEL_11:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return iconURLStringx32;
 }
 
-- (void)_serviceSpecifierWasTapped:(id)a3
+- (void)_serviceSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_selectionHandler);
-  [WeakRetained didSelectSpecifier:v4];
+  [WeakRetained didSelectSpecifier:tappedCopy];
 }
 
-- (id)_valueForServiceSpecifier:(id)a3
+- (id)_valueForServiceSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
+  specifierCopy = specifier;
+  userInfo = [specifierCopy userInfo];
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [FASharedSubscriptionSpecifierProvider _valueForServiceSpecifier:];
   }
 
-  v6 = [v4 detailLabel];
+  detailLabel = [userInfo detailLabel];
 
-  return v6;
+  return detailLabel;
 }
 
 - (void)_loadSubscriptionServices
@@ -424,7 +424,7 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
   p_subscriptionSpecifiers = &self->_subscriptionSpecifiers;
   if (![(NSArray *)self->_subscriptionSpecifiers count])
   {
-    v4 = [(FASharedSubscriptionSpecifierProvider *)self specifiers];
+    specifiers = [(FASharedSubscriptionSpecifierProvider *)self specifiers];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v6 = v5;
     if (!self->_isLoadingSpecifiers)
@@ -435,8 +435,8 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v19 = v4;
-      v7 = v4;
+      v19 = specifiers;
+      v7 = specifiers;
       v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v8)
       {
@@ -452,15 +452,15 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
             }
 
             v12 = *(*(&v22 + 1) + 8 * i);
-            v13 = [v12 identifier];
-            if ([v13 isEqual:@"ICLOUD_STORAGE"])
+            identifier = [v12 identifier];
+            if ([identifier isEqual:@"ICLOUD_STORAGE"])
             {
             }
 
             else
             {
-              v14 = [v12 identifier];
-              v15 = [v14 isEqual:@"SHARE_MY_LOCATION"];
+              identifier2 = [v12 identifier];
+              v15 = [identifier2 isEqual:@"SHARE_MY_LOCATION"];
 
               if ((v15 & 1) == 0)
               {
@@ -478,7 +478,7 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
       p_subscriptionSpecifiers = v20;
       v6 = v21;
       objc_storeStrong(v20, v21);
-      v4 = v19;
+      specifiers = v19;
     }
   }
 
@@ -490,17 +490,17 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
 
 - (NSArray)subscriptionsFamilyViewSpecifier
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
   subscriptionsFamilyViewSpecifier = self->_subscriptionsFamilyViewSpecifier;
   if (!subscriptionsFamilyViewSpecifier || ![(NSArray *)subscriptionsFamilyViewSpecifier count])
   {
-    v4 = [(FASharedSubscriptionSpecifierProvider *)v2 specifiers];
-    v5 = v4;
-    if (!v2->_isLoadingSpecifiers)
+    specifiers = [(FASharedSubscriptionSpecifierProvider *)selfCopy specifiers];
+    v5 = specifiers;
+    if (!selfCopy->_isLoadingSpecifiers)
     {
-      v24 = v2;
-      v6 = [v4 count] - v2->_numberOfGroups;
+      v24 = selfCopy;
+      v6 = [specifiers count] - selfCopy->_numberOfGroups;
       v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v26 = 0u;
@@ -524,8 +524,8 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
             }
 
             v12 = *(*(&v26 + 1) + 8 * i);
-            v13 = [v12 identifier];
-            v14 = [v13 isEqual:@"ICLOUD_STORAGE"];
+            identifier = [v12 identifier];
+            v14 = [identifier isEqual:@"ICLOUD_STORAGE"];
 
             if (v14)
             {
@@ -533,8 +533,8 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
               [v7 addObject:v12];
             }
 
-            v15 = [v12 identifier];
-            v16 = [v15 isEqual:@"SHARE_MY_LOCATION"];
+            identifier2 = [v12 identifier];
+            v16 = [identifier2 isEqual:@"SHARE_MY_LOCATION"];
 
             if (v16)
             {
@@ -549,7 +549,7 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
         while (v9);
       }
 
-      v2 = v24;
+      selfCopy = v24;
       v17 = [(FASharedSubscriptionSpecifierProvider *)v24 _sharedSubscriptionSpecifierCell:v6];
       [(NSArray *)v22 addObjectsFromArray:v17];
 
@@ -561,25 +561,25 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
     }
   }
 
-  v19 = v2->_subscriptionsFamilyViewSpecifier;
+  v19 = selfCopy->_subscriptionsFamilyViewSpecifier;
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (void)_handleSubscriptionListResponse:(id)a3
+- (void)_handleSubscriptionListResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   self->_isLoadingSpecifiers = 0;
-  if ([v5 statusCode] != 200)
+  if ([responseCopy statusCode] != 200)
   {
     v6 = _FALogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 error];
+      error = [responseCopy error];
       *buf = 138412290;
-      v29 = v7;
+      v29 = error;
       _os_log_impl(&dword_21BB35000, v6, OS_LOG_TYPE_DEFAULT, "Failed to get subscription services %@", buf, 0xCu);
     }
   }
@@ -587,24 +587,24 @@ void __66__FASharedSubscriptionSpecifierProvider__loadSubscriptionServices__bloc
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 responseDictionary];
+    responseDictionary = [responseCopy responseDictionary];
     *buf = 138412546;
-    v29 = v5;
+    v29 = responseCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = responseDictionary;
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "Received shared services response %@ - resourceDictionary: %@", buf, 0x16u);
   }
 
-  v10 = [v5 services];
-  if (!v10)
+  services = [responseCopy services];
+  if (!services)
   {
     goto LABEL_11;
   }
 
-  v11 = v10;
-  v12 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
-  v13 = [v5 services];
-  v14 = [v12 isEqual:v13];
+  v11 = services;
+  services2 = [(FASharedServicesResponse *)self->_sharedSubscriptionResponse services];
+  services3 = [responseCopy services];
+  v14 = [services2 isEqual:services3];
 
   if (v14)
   {
@@ -626,7 +626,7 @@ LABEL_11:
       _os_log_impl(&dword_21BB35000, v16, OS_LOG_TYPE_DEFAULT, "Response indicates changes to subscription services; reloading specifiers", buf, 2u);
     }
 
-    objc_storeStrong(&self->_sharedSubscriptionResponse, a3);
+    objc_storeStrong(&self->_sharedSubscriptionResponse, response);
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -669,10 +669,10 @@ LABEL_11:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v5 = a3;
-  v6 = [(FASharedSubscriptionSpecifierProvider *)self _launchWithResourceDictionary:v5];
+  lCopy = l;
+  v6 = [(FASharedSubscriptionSpecifierProvider *)self _launchWithResourceDictionary:lCopy];
   if (!v6)
   {
     v7 = _FALogSystem();
@@ -682,16 +682,16 @@ LABEL_11:
       _os_log_impl(&dword_21BB35000, v7, OS_LOG_TYPE_DEFAULT, "FASharedSubscriptionSpecifierProvider doesn't have the specifier, will try again upon response.", v9, 2u);
     }
 
-    objc_storeStrong(&self->_cachedResourceDictionary, a3);
+    objc_storeStrong(&self->_cachedResourceDictionary, l);
   }
 
   return v6;
 }
 
-- (BOOL)_launchWithResourceDictionary:(id)a3
+- (BOOL)_launchWithResourceDictionary:(id)dictionary
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D08130]];
+  v4 = [dictionary objectForKeyedSubscript:*MEMORY[0x277D08130]];
   if (v4)
   {
     v5 = [(FASharedSubscriptionSpecifierProvider *)self _specifierNamed:v4];
@@ -766,10 +766,10 @@ LABEL_11:
   }
 }
 
-- (id)_specifierNamed:(id)a3
+- (id)_specifierNamed:(id)named
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namedCopy = named;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -789,8 +789,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:namedCopy];
 
         if (v11)
         {
@@ -838,11 +838,11 @@ LABEL_11:
   [(FASharedSubscriptionSpecifierProvider *)self _loadSubscriptionServices];
 }
 
-- (void)_addSharedSubscriptionsButtonWasTapped:(id)a3
+- (void)_addSharedSubscriptionsButtonWasTapped:(id)tapped
 {
   v5 = [[FASharedSubscriptionsViewController alloc] initWithAppleAccount:self->_appleAccount sharedSubscriptionSpecifierProvider:self];
-  v4 = [(PSListController *)self->_presenter navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(PSListController *)self->_presenter navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
 - (FASharedSubscriptionSpecifierProviderSelectionHandler)selectionHandler

@@ -1,5 +1,5 @@
 @interface LoupeView
-- (_TtC7Preview9LoupeView)initWithFrame:(CGRect)a3;
+- (_TtC7Preview9LoupeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -18,12 +18,12 @@
 
   v5.receiver = self;
   v5.super_class = ObjectType;
-  v4 = self;
+  selfCopy = self;
   [(LoupeView *)&v5 layoutSubviews];
   sub_10009F518();
 }
 
-- (_TtC7Preview9LoupeView)initWithFrame:(CGRect)a3
+- (_TtC7Preview9LoupeView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

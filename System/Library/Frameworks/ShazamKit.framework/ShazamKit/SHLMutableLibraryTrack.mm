@@ -1,23 +1,23 @@
 @interface SHLMutableLibraryTrack
 - (CLLocation)location;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setLocation:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setLocation:(id)location;
 @end
 
 @implementation SHLMutableLibraryTrack
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SHLLibraryTrack allocWithZone:a3];
+  v4 = [SHLLibraryTrack allocWithZone:zone];
 
   return [(SHLLibraryTrack *)v4 initWithLibraryTrack:self];
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  objc_storeStrong(&self->_location, a3);
-  v5 = a3;
-  [SHLLocationTransformer coordinateFromLocation:v5];
+  objc_storeStrong(&self->_location, location);
+  locationCopy = location;
+  [SHLLocationTransformer coordinateFromLocation:locationCopy];
   v7 = v6;
   v9 = v8;
 

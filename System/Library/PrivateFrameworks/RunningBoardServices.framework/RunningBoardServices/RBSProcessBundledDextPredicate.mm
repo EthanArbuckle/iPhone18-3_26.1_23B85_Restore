@@ -1,18 +1,18 @@
 @interface RBSProcessBundledDextPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessBundledDextPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(RBSProcessStringPredicate *)self identifier];
-  v6 = [v4 identity];
+  processCopy = process;
+  identifier = [(RBSProcessStringPredicate *)self identifier];
+  identity = [processCopy identity];
 
-  v7 = [v6 dextContainingAppBundleID];
-  v8 = v7;
-  if (v5 == v7)
+  dextContainingAppBundleID = [identity dextContainingAppBundleID];
+  v8 = dextContainingAppBundleID;
+  if (identifier == dextContainingAppBundleID)
   {
     v9 = 1;
   }
@@ -20,9 +20,9 @@
   else
   {
     v9 = 0;
-    if (v5 && v7)
+    if (identifier && dextContainingAppBundleID)
     {
-      v9 = [v5 isEqual:v7];
+      v9 = [identifier isEqual:dextContainingAppBundleID];
     }
   }
 

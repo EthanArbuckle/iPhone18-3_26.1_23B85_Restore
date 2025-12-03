@@ -1,30 +1,30 @@
 @interface HUTextViewController
-- (HUTextViewController)initWithTextTitle:(id)a3;
+- (HUTextViewController)initWithTextTitle:(id)title;
 - (id)_textContentWithDefaultAttributes;
 - (id)hu_preloadContent;
-- (void)_fulfillProgressIndicatorState:(BOOL)a3;
-- (void)_shareLog:(id)a3;
-- (void)loadTextFromFuture:(id)a3 textTitle:(id)a4;
-- (void)setShowProgressIndicatorView:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTextContent:(id)a3;
+- (void)_fulfillProgressIndicatorState:(BOOL)state;
+- (void)_shareLog:(id)log;
+- (void)loadTextFromFuture:(id)future textTitle:(id)title;
+- (void)setShowProgressIndicatorView:(BOOL)view animated:(BOOL)animated;
+- (void)setTextContent:(id)content;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUTextViewController
 
-- (HUTextViewController)initWithTextTitle:(id)a3
+- (HUTextViewController)initWithTextTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v10.receiver = self;
   v10.super_class = HUTextViewController;
   v6 = [(HUTextViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_titleText, a3);
-    v8 = [(HUActivityLoadingView *)v7->_loadingView textLabel];
-    [v8 setText:v5];
+    objc_storeStrong(&v6->_titleText, title);
+    textLabel = [(HUActivityLoadingView *)v7->_loadingView textLabel];
+    [textLabel setText:titleCopy];
 
     v7->_showProgressIndicatorView = 1;
   }
@@ -48,48 +48,48 @@
   loadingView = self->_loadingView;
   self->_loadingView = v6;
 
-  v8 = [(HUActivityLoadingView *)self->_loadingView textLabel];
-  [v8 setLineBreakMode:4];
+  textLabel = [(HUActivityLoadingView *)self->_loadingView textLabel];
+  [textLabel setLineBreakMode:4];
 
   v9 = objc_opt_new();
   curtainView = self->_curtainView;
   self->_curtainView = v9;
 
-  v11 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  [(UIView *)self->_curtainView setBackgroundColor:v11];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  [(UIView *)self->_curtainView setBackgroundColor:systemGroupedBackgroundColor];
 
   [(UIView *)self->_curtainView setAlpha:0.0];
   [(UIView *)self->_curtainView setUserInteractionEnabled:0];
   [(UIView *)self->_curtainView addSubview:self->_loadingView];
-  v12 = [(HUTextViewController *)self textContent];
+  textContent = [(HUTextViewController *)self textContent];
 
-  if (v12)
+  if (textContent)
   {
-    v13 = [(HUTextViewController *)self _textContentWithDefaultAttributes];
-    v14 = [(HUTextViewController *)self textView];
-    [v14 setAttributedText:v13];
+    _textContentWithDefaultAttributes = [(HUTextViewController *)self _textContentWithDefaultAttributes];
+    textView = [(HUTextViewController *)self textView];
+    [textView setAttributedText:_textContentWithDefaultAttributes];
   }
 
-  v15 = [(HUTextViewController *)self titleText];
+  titleText = [(HUTextViewController *)self titleText];
 
-  if (v15)
+  if (titleText)
   {
-    v16 = [(HUTextViewController *)self titleText];
-    v17 = [(HUTextViewController *)self loadingView];
-    v18 = [v17 textLabel];
-    [v18 setText:v16];
+    titleText2 = [(HUTextViewController *)self titleText];
+    loadingView = [(HUTextViewController *)self loadingView];
+    textLabel2 = [loadingView textLabel];
+    [textLabel2 setText:titleText2];
   }
 
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v19 = [(HUTextViewController *)self textView];
-  v102[0] = v19;
-  v20 = [(HUTextViewController *)self curtainView];
-  v102[1] = v20;
-  v21 = [(HUTextViewController *)self loadingView];
-  v102[2] = v21;
+  textView2 = [(HUTextViewController *)self textView];
+  v102[0] = textView2;
+  curtainView = [(HUTextViewController *)self curtainView];
+  v102[1] = curtainView;
+  loadingView2 = [(HUTextViewController *)self loadingView];
+  v102[2] = loadingView2;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v102 count:3];
 
   v23 = [v22 countByEnumeratingWithState:&v96 objects:v103 count:16];
@@ -108,8 +108,8 @@
 
         v27 = *(*(&v96 + 1) + 8 * i);
         [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v28 = [(HUTextViewController *)self view];
-        [v28 addSubview:v27];
+        view = [(HUTextViewController *)self view];
+        [view addSubview:v27];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v96 objects:v103 count:16];
@@ -119,96 +119,96 @@
   }
 
   v29 = objc_opt_new();
-  v30 = [(HUTextViewController *)self view];
-  [v30 addLayoutGuide:v29];
+  view2 = [(HUTextViewController *)self view];
+  [view2 addLayoutGuide:v29];
 
-  v31 = [v29 heightAnchor];
-  v32 = [(HUTextViewController *)self view];
-  v33 = [v32 heightAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33 multiplier:0.3];
+  heightAnchor = [v29 heightAnchor];
+  view3 = [(HUTextViewController *)self view];
+  heightAnchor2 = [view3 heightAnchor];
+  v34 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.3];
   [v34 setActive:1];
 
   v74 = v29;
-  v35 = [v29 topAnchor];
-  v36 = [(HUTextViewController *)self view];
-  v37 = [v36 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  topAnchor = [v29 topAnchor];
+  view4 = [(HUTextViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v38 setActive:1];
 
-  v95 = [(HUTextViewController *)self textView];
-  v93 = [v95 topAnchor];
-  v94 = [(HUTextViewController *)self view];
-  v92 = [v94 topAnchor];
-  v91 = [v93 constraintEqualToAnchor:v92];
+  textView3 = [(HUTextViewController *)self textView];
+  topAnchor3 = [textView3 topAnchor];
+  view5 = [(HUTextViewController *)self view];
+  topAnchor4 = [view5 topAnchor];
+  v91 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v101[0] = v91;
-  v90 = [(HUTextViewController *)self textView];
-  v88 = [v90 bottomAnchor];
-  v89 = [(HUTextViewController *)self view];
-  v87 = [v89 bottomAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  textView4 = [(HUTextViewController *)self textView];
+  bottomAnchor = [textView4 bottomAnchor];
+  view6 = [(HUTextViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v86 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v101[1] = v86;
-  v85 = [(HUTextViewController *)self textView];
-  v83 = [v85 leadingAnchor];
-  v84 = [(HUTextViewController *)self view];
-  v82 = [v84 leadingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  textView5 = [(HUTextViewController *)self textView];
+  leadingAnchor = [textView5 leadingAnchor];
+  view7 = [(HUTextViewController *)self view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v81 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v101[2] = v81;
-  v80 = [(HUTextViewController *)self textView];
-  v78 = [v80 trailingAnchor];
-  v79 = [(HUTextViewController *)self view];
-  v77 = [v79 trailingAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  textView6 = [(HUTextViewController *)self textView];
+  trailingAnchor = [textView6 trailingAnchor];
+  view8 = [(HUTextViewController *)self view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v76 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v101[3] = v76;
-  v75 = [(HUTextViewController *)self curtainView];
-  v72 = [v75 topAnchor];
-  v73 = [(HUTextViewController *)self view];
-  v71 = [v73 topAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  curtainView2 = [(HUTextViewController *)self curtainView];
+  topAnchor5 = [curtainView2 topAnchor];
+  view9 = [(HUTextViewController *)self view];
+  topAnchor6 = [view9 topAnchor];
+  v70 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v101[4] = v70;
-  v69 = [(HUTextViewController *)self curtainView];
-  v67 = [v69 bottomAnchor];
-  v68 = [(HUTextViewController *)self view];
-  v66 = [v68 bottomAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  curtainView3 = [(HUTextViewController *)self curtainView];
+  bottomAnchor3 = [curtainView3 bottomAnchor];
+  view10 = [(HUTextViewController *)self view];
+  bottomAnchor4 = [view10 bottomAnchor];
+  v65 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v101[5] = v65;
-  v64 = [(HUTextViewController *)self curtainView];
-  v61 = [v64 leadingAnchor];
-  v62 = [(HUTextViewController *)self view];
-  v60 = [v62 leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  curtainView4 = [(HUTextViewController *)self curtainView];
+  leadingAnchor3 = [curtainView4 leadingAnchor];
+  view11 = [(HUTextViewController *)self view];
+  leadingAnchor4 = [view11 leadingAnchor];
+  v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v101[6] = v59;
-  v58 = [(HUTextViewController *)self curtainView];
-  v56 = [v58 trailingAnchor];
-  v57 = [(HUTextViewController *)self view];
-  v55 = [v57 trailingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  curtainView5 = [(HUTextViewController *)self curtainView];
+  trailingAnchor3 = [curtainView5 trailingAnchor];
+  view12 = [(HUTextViewController *)self view];
+  trailingAnchor4 = [view12 trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v101[7] = v54;
-  v53 = [(HUTextViewController *)self loadingView];
-  v52 = [v53 centerYAnchor];
-  v51 = [v29 bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  loadingView3 = [(HUTextViewController *)self loadingView];
+  centerYAnchor = [loadingView3 centerYAnchor];
+  bottomAnchor5 = [v29 bottomAnchor];
+  v50 = [centerYAnchor constraintEqualToAnchor:bottomAnchor5];
   v101[8] = v50;
-  v49 = [(HUTextViewController *)self loadingView];
-  v39 = [v49 centerXAnchor];
-  v40 = [(HUTextViewController *)self curtainView];
-  v41 = [v40 centerXAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  loadingView4 = [(HUTextViewController *)self loadingView];
+  centerXAnchor = [loadingView4 centerXAnchor];
+  curtainView6 = [(HUTextViewController *)self curtainView];
+  centerXAnchor2 = [curtainView6 centerXAnchor];
+  v42 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v101[9] = v42;
-  v43 = [(HUTextViewController *)self loadingView];
-  v44 = [v43 widthAnchor];
-  v45 = [(HUTextViewController *)self view];
-  v46 = [v45 layoutMarginsGuide];
-  v47 = [v46 widthAnchor];
-  v48 = [v44 constraintLessThanOrEqualToAnchor:v47];
+  loadingView5 = [(HUTextViewController *)self loadingView];
+  widthAnchor = [loadingView5 widthAnchor];
+  view13 = [(HUTextViewController *)self view];
+  layoutMarginsGuide = [view13 layoutMarginsGuide];
+  widthAnchor2 = [layoutMarginsGuide widthAnchor];
+  v48 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v101[10] = v48;
   v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v101 count:11];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v63];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v12.receiver = self;
   v12.super_class = HUTextViewController;
   [(HUTextViewController *)&v12 viewWillAppear:?];
@@ -218,23 +218,23 @@
     shareButton = self->_shareButton;
     self->_shareButton = v5;
 
-    v7 = [(HUTextViewController *)self shareButton];
-    v8 = [(HUTextViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    shareButton = [(HUTextViewController *)self shareButton];
+    navigationItem = [(HUTextViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:shareButton];
   }
 
-  [(HUTextViewController *)self _fulfillProgressIndicatorState:v3];
+  [(HUTextViewController *)self _fulfillProgressIndicatorState:appearCopy];
   v9 = *MEMORY[0x277CBF348];
   v10 = *(MEMORY[0x277CBF348] + 8);
-  v11 = [(HUTextViewController *)self textView];
-  [v11 setContentOffset:{v9, v10}];
+  textView = [(HUTextViewController *)self textView];
+  [textView setContentOffset:{v9, v10}];
 }
 
 - (id)hu_preloadContent
 {
-  v3 = [(HUTextViewController *)self loadingFuture];
+  loadingFuture = [(HUTextViewController *)self loadingFuture];
 
-  if (v3)
+  if (loadingFuture)
   {
     [(HUTextViewController *)self loadingFuture];
   }
@@ -248,57 +248,57 @@
   return v4;
 }
 
-- (void)setTextContent:(id)a3
+- (void)setTextContent:(id)content
 {
-  v8 = a3;
+  contentCopy = content;
   if (([(NSAttributedString *)self->_textContent isEqual:?]& 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [contentCopy copy];
     textContent = self->_textContent;
     self->_textContent = v4;
 
-    v6 = [(HUTextViewController *)self _textContentWithDefaultAttributes];
-    v7 = [(HUTextViewController *)self textView];
-    [v7 setAttributedText:v6];
+    _textContentWithDefaultAttributes = [(HUTextViewController *)self _textContentWithDefaultAttributes];
+    textView = [(HUTextViewController *)self textView];
+    [textView setAttributedText:_textContentWithDefaultAttributes];
   }
 }
 
-- (void)setShowProgressIndicatorView:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowProgressIndicatorView:(BOOL)view animated:(BOOL)animated
 {
-  if (self->_showProgressIndicatorView != a3)
+  if (self->_showProgressIndicatorView != view)
   {
-    v4 = a4;
-    self->_showProgressIndicatorView = a3;
+    animatedCopy = animated;
+    self->_showProgressIndicatorView = view;
     if ([(HUTextViewController *)self isViewLoaded])
     {
 
-      [(HUTextViewController *)self _fulfillProgressIndicatorState:v4];
+      [(HUTextViewController *)self _fulfillProgressIndicatorState:animatedCopy];
     }
   }
 }
 
-- (void)loadTextFromFuture:(id)a3 textTitle:(id)a4
+- (void)loadTextFromFuture:(id)future textTitle:(id)title
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  futureCopy = future;
+  titleCopy = title;
+  if (!futureCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HUTextViewController.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"loadFuture"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTextViewController.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"loadFuture"}];
   }
 
-  [(HUTextViewController *)self setTitleText:v8];
-  v9 = [(HUTextViewController *)self loadingView];
-  v10 = [v9 textLabel];
-  [v10 setText:v8];
+  [(HUTextViewController *)self setTitleText:titleCopy];
+  loadingView = [(HUTextViewController *)self loadingView];
+  textLabel = [loadingView textLabel];
+  [textLabel setText:titleCopy];
 
-  v11 = [(HUTextViewController *)self loadingView];
-  [v11 sizeToFit];
+  loadingView2 = [(HUTextViewController *)self loadingView];
+  [loadingView2 sizeToFit];
 
-  v12 = [(HUTextViewController *)self view];
-  [v12 setNeedsLayout];
+  view = [(HUTextViewController *)self view];
+  [view setNeedsLayout];
 
-  if (([v7 isFinished] & 1) == 0)
+  if (([futureCopy isFinished] & 1) == 0)
   {
     [(HUTextViewController *)self setShowProgressIndicatorView:1 animated:[(HUTextViewController *)self isViewLoaded]^ 1];
   }
@@ -309,7 +309,7 @@
   v15[2] = __53__HUTextViewController_loadTextFromFuture_textTitle___block_invoke;
   v15[3] = &unk_277DB8460;
   objc_copyWeak(&v16, &location);
-  v13 = [v7 addCompletionBlock:v15];
+  v13 = [futureCopy addCompletionBlock:v15];
   [(HUTextViewController *)self setLoadingFuture:v13];
 
   objc_destroyWeak(&v16);
@@ -355,18 +355,18 @@ void __53__HUTextViewController_loadTextFromFuture_textTitle___block_invoke_2(ui
   v9[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  v5 = [(HUTextViewController *)self textContent];
-  v6 = [v5 hf_attributedStringWithDefaultAttributes:v4];
+  textContent = [(HUTextViewController *)self textContent];
+  v6 = [textContent hf_attributedStringWithDefaultAttributes:v4];
 
   return v6;
 }
 
-- (void)_shareLog:(id)a3
+- (void)_shareLog:(id)log
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUTextViewController *)self textContent];
+  textContent = [(HUTextViewController *)self textContent];
   v5 = objc_alloc(MEMORY[0x277D546D8]);
-  v15[0] = v4;
+  v15[0] = textContent;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v7 = [v5 initWithActivityItems:v6 applicationActivities:0];
 
@@ -383,24 +383,24 @@ void __53__HUTextViewController_loadTextFromFuture_textTitle___block_invoke_2(ui
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:7];
   [v7 setExcludedActivityTypes:v10];
 
-  v11 = [(HUTextViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  v13 = [v7 popoverPresentationController];
-  [v13 setBarButtonItem:v12];
+  navigationItem = [(HUTextViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:rightBarButtonItem];
 
   [(HUTextViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_fulfillProgressIndicatorState:(BOOL)a3
+- (void)_fulfillProgressIndicatorState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__HUTextViewController__fulfillProgressIndicatorState___block_invoke;
   aBlock[3] = &unk_277DB8488;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  if (v3)
+  if (stateCopy)
   {
     v6 = objc_alloc(MEMORY[0x277D75D40]);
     if ([(HUTextViewController *)self showProgressIndicatorView])

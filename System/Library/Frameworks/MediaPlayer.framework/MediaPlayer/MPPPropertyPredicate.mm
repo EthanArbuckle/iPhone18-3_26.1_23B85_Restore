@@ -1,12 +1,12 @@
 @interface MPPPropertyPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPPropertyPredicate
@@ -28,16 +28,16 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   property = self->_property;
-  if (property | *(v4 + 2))
+  if (property | *(equalCopy + 2))
   {
     if (![(NSString *)property isEqual:?])
     {
@@ -46,7 +46,7 @@
   }
 
   value = self->_value;
-  if (value | *(v4 + 3))
+  if (value | *(equalCopy + 3))
   {
     if (![(MPPMediaPredicateValue *)value isEqual:?])
     {
@@ -54,10 +54,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_comparisonType == *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_comparisonType == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_11;
@@ -72,14 +72,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_property copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_property copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(MPPMediaPredicateValue *)self->_value copyWithZone:a3];
+  v8 = [(MPPMediaPredicateValue *)self->_value copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -92,43 +92,43 @@ LABEL_11:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(MPPPropertyPredicate *)self hasProperty])
   {
-    v4 = [(MPPPropertyPredicate *)self property];
-    [v6 setProperty:v4];
+    property = [(MPPPropertyPredicate *)self property];
+    [toCopy setProperty:property];
   }
 
   if ([(MPPPropertyPredicate *)self hasValue])
   {
-    v5 = [(MPPPropertyPredicate *)self value];
-    [v6 setValue:v5];
+    value = [(MPPPropertyPredicate *)self value];
+    [toCopy setValue:value];
   }
 
   if ([(MPPPropertyPredicate *)self hasComparisonType])
   {
-    [v6 setComparisonType:{-[MPPPropertyPredicate comparisonType](self, "comparisonType")}];
+    [toCopy setComparisonType:{-[MPPPropertyPredicate comparisonType](self, "comparisonType")}];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   property = self->_property;
-  v8 = v4;
+  v8 = toCopy;
   if (property)
   {
-    [v4 writeString:property forTag:1];
+    [toCopy writeString:property forTag:1];
   }
 
   if (self->_value)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C65C0]);
     [(MPPMediaPredicateValue *)self->_value writeTo:v6];
-    v7 = [v6 data];
-    [v8 writeData:v7 forTag:2];
+    data = [v6 data];
+    [v8 writeData:data forTag:2];
   }
 
   if (*&self->_has)
@@ -139,19 +139,19 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   property = self->_property;
   if (property)
   {
-    [v3 setObject:property forKey:@"property"];
+    [dictionary setObject:property forKey:@"property"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(MPPMediaPredicateValue *)value dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation = [(MPPMediaPredicateValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   if (*&self->_has)
@@ -169,8 +169,8 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = MPPPropertyPredicate;
   v4 = [(MPPPropertyPredicate *)&v8 description];
-  v5 = [(MPPPropertyPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPPropertyPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -15,45 +15,45 @@
   v36 = a6;
   v37 = a7;
   v35 = v12;
-  v13 = [v12 managedObjectContext];
+  managedObjectContext = [v12 managedObjectContext];
   v14 = MEMORY[0x1E69B7760];
-  v15 = [MEMORY[0x1E69B7800] sharedContext];
-  v16 = [v15 managedObjectContext];
-  v17 = [v14 defaultFolderInContext:v16];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext2 = [mEMORY[0x1E69B7800] managedObjectContext];
+  v17 = [v14 defaultFolderInContext:managedObjectContext2];
 
   v38 = [MEMORY[0x1E69B77F0] newEmptyNoteInFolder:v17];
   objc_opt_class();
-  v18 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"Note" inManagedObjectContext:v13];
+  v18 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"Note" inManagedObjectContext:managedObjectContext];
   v19 = ICCheckedDynamicCast();
 
   objc_opt_class();
-  v20 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"NoteBody" inManagedObjectContext:v13];
+  v20 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"NoteBody" inManagedObjectContext:managedObjectContext];
   v21 = ICCheckedDynamicCast();
 
   [v19 setBody:v21];
-  v22 = [MEMORY[0x1E69B7140] generateGUID];
-  [v19 setGuid:v22];
+  generateGUID = [MEMORY[0x1E69B7140] generateGUID];
+  [v19 setGuid:generateGUID];
 
   v23 = objc_alloc_init(MEMORY[0x1E695DF00]);
   [v38 setCreationDate:v23];
   [v38 setModificationDate:v23];
-  [a1 importLegacyNoteFromWebArchive:v33 withContent:v34 intoLegacyNote:v19 context:v35];
+  [self importLegacyNoteFromWebArchive:v33 withContent:v34 intoLegacyNote:v19 context:v35];
   [ICLegacyNoteUtilities copyValuesFromLegacyNote:v19 toNote:v38 styler:v36 attachmentPreviewGenerator:v37];
-  v24 = [v19 folder];
+  folder = [v19 folder];
 
-  if (v24)
+  if (folder)
   {
     v25 = MEMORY[0x1E69B7A38];
-    v26 = [v19 identifier];
-    [v25 handleFailedAssertWithCondition:"!legacyNote.folder" functionName:"+[NoteObject(AirDropDocumentUI) noteByImportingLegacyNoteFromWebArchive:withContent:context:styler:attachmentPreviewGenerator:]" simulateCrash:1 showAlert:0 format:{@"Temporary legacyNote should not have a folder %@", v26}];
+    identifier = [v19 identifier];
+    [v25 handleFailedAssertWithCondition:"!legacyNote.folder" functionName:"+[NoteObject(AirDropDocumentUI) noteByImportingLegacyNoteFromWebArchive:withContent:context:styler:attachmentPreviewGenerator:]" simulateCrash:1 showAlert:0 format:{@"Temporary legacyNote should not have a folder %@", identifier}];
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v27 = [v19 attachments];
-  v28 = [v27 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  attachments = [v19 attachments];
+  v28 = [attachments countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v28)
   {
     v29 = *v40;
@@ -63,25 +63,25 @@
       {
         if (*v40 != v29)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(attachments);
         }
 
         objc_opt_class();
         v31 = ICCheckedDynamicCast();
         if (v31)
         {
-          [v13 deleteObject:v31];
+          [managedObjectContext deleteObject:v31];
         }
       }
 
-      v28 = [v27 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v28 = [attachments countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v28);
   }
 
-  [v13 deleteObject:v19];
-  [v13 deleteObject:v21];
+  [managedObjectContext deleteObject:v19];
+  [managedObjectContext deleteObject:v21];
 
   return v38;
 }
@@ -99,8 +99,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v19 subresources];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  subresources = [v19 subresources];
+  v13 = [subresources countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = *v21;
@@ -110,7 +110,7 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subresources);
         }
 
         v16 = [MEMORY[0x1E69B77B8] createAttachmentFromWebResource:*(*(&v20 + 1) + 8 * i) inContext:v10];
@@ -125,7 +125,7 @@
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [subresources countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
@@ -143,30 +143,30 @@
   v13 = a6;
   objc_opt_class();
   v14 = ICCheckedDynamicCast();
-  v15 = [v10 webArchiveFromLegacyNoteDocument];
-  if (v15)
+  webArchiveFromLegacyNoteDocument = [v10 webArchiveFromLegacyNoteDocument];
+  if (webArchiveFromLegacyNoteDocument)
   {
     v21 = v13;
-    v16 = [MEMORY[0x1E69B77B8] contentStringFromWebArchive:v15];
+    v16 = [MEMORY[0x1E69B77B8] contentStringFromWebArchive:webArchiveFromLegacyNoteDocument];
     if (v16)
     {
-      v17 = [v14 defaultStoreForNewNote];
-      v18 = [v17 account];
-      if ([MEMORY[0x1E69B7668] canAirDropImportIntoAccount:v18 context:v14])
+      defaultStoreForNewNote = [v14 defaultStoreForNewNote];
+      account = [defaultStoreForNewNote account];
+      if ([MEMORY[0x1E69B7668] canAirDropImportIntoAccount:account context:v14])
       {
-        v19 = [v14 newlyCreatedNoteFromDefaultStore];
-        [a1 importLegacyNoteFromWebArchive:v15 withContent:v16 intoLegacyNote:v19 context:v14];
+        newlyCreatedNoteFromDefaultStore = [v14 newlyCreatedNoteFromDefaultStore];
+        [self importLegacyNoteFromWebArchive:webArchiveFromLegacyNoteDocument withContent:v16 intoLegacyNote:newlyCreatedNoteFromDefaultStore context:v14];
       }
 
       else
       {
-        v19 = [a1 noteByImportingLegacyNoteFromWebArchive:v15 withContent:v16 context:v14 styler:v12 attachmentPreviewGenerator:v21];
+        newlyCreatedNoteFromDefaultStore = [self noteByImportingLegacyNoteFromWebArchive:webArchiveFromLegacyNoteDocument withContent:v16 context:v14 styler:v12 attachmentPreviewGenerator:v21];
       }
     }
 
     else
     {
-      v19 = 0;
+      newlyCreatedNoteFromDefaultStore = 0;
     }
 
     v13 = v21;
@@ -175,10 +175,10 @@
   else
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"webArchive" functionName:"+[NoteObject(AirDropDocumentUI) newNoteForAirDropDocument:context:styler:attachmentPreviewGenerator:]" simulateCrash:1 showAlert:0 format:{@"Failed to get webArchive from AirDrop document %@", v10}];
-    v19 = 0;
+    newlyCreatedNoteFromDefaultStore = 0;
   }
 
-  return v19;
+  return newlyCreatedNoteFromDefaultStore;
 }
 
 @end

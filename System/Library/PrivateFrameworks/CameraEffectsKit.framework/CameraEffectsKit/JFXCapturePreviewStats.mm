@@ -1,6 +1,6 @@
 @interface JFXCapturePreviewStats
 - (JFXCapturePreviewStats)init;
-- (id)add:(id)a3;
+- (id)add:(id)add;
 - (id)runningAverage;
 - (void)_print_NoLock;
 - (void)clear;
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (id)add:(id)a3
+- (id)add:(id)add
 {
-  v4 = a3;
-  if (v4)
+  addCopy = add;
+  if (addCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -50,7 +50,7 @@
     block[2] = __30__JFXCapturePreviewStats_add___block_invoke;
     block[3] = &unk_278D7A430;
     block[4] = self;
-    v9 = v4;
+    v9 = addCopy;
     v10 = &v11;
     dispatch_sync(q, block);
     v6 = v12[5];
@@ -146,7 +146,7 @@ uint64_t __40__JFXCapturePreviewStats_runningAverage__block_invoke(uint64_t a1)
 
 - (void)_print_NoLock
 {
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1_0(&dword_242A3B000, v2, v3, "------------ Jetty Frame Stats END [%@] -----------", v4, v5, v6, v7, 2u);
 }
 

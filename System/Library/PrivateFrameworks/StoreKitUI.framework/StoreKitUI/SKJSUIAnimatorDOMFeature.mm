@@ -1,14 +1,14 @@
 @interface SKJSUIAnimatorDOMFeature
-- (SKJSUIAnimatorDOMFeature)initWithAppContext:(id)a3 DOMFeature:(id)a4;
-- (void)animate:(id)a3 :(id)a4;
+- (SKJSUIAnimatorDOMFeature)initWithAppContext:(id)context DOMFeature:(id)feature;
+- (void)animate:(id)animate :(id)a4;
 @end
 
 @implementation SKJSUIAnimatorDOMFeature
 
-- (SKJSUIAnimatorDOMFeature)initWithAppContext:(id)a3 DOMFeature:(id)a4
+- (SKJSUIAnimatorDOMFeature)initWithAppContext:(id)context DOMFeature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  featureCopy = feature;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,29 +23,29 @@
 
   v19.receiver = self;
   v19.super_class = SKJSUIAnimatorDOMFeature;
-  v16 = [(IKJSObject *)&v19 initWithAppContext:v6];
+  v16 = [(IKJSObject *)&v19 initWithAppContext:contextCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_feature, v7);
+    objc_storeWeak(&v16->_feature, featureCopy);
   }
 
   return v17;
 }
 
-- (void)animate:(id)a3 :(id)a4
+- (void)animate:(id)animate :(id)a4
 {
-  v6 = a3;
+  animateCopy = animate;
   v7 = a4;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__SKJSUIAnimatorDOMFeature_animate::__block_invoke;
   block[3] = &unk_2781F8680;
   block[4] = self;
-  v11 = v6;
+  v11 = animateCopy;
   v12 = v7;
   v8 = v7;
-  v9 = v6;
+  v9 = animateCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

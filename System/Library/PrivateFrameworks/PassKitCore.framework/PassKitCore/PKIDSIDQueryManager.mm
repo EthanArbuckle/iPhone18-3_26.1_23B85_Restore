@@ -1,32 +1,32 @@
 @interface PKIDSIDQueryManager
-- (PKIDSIDQueryManager)initWithQueue:(id)a3;
-- (void)checkDeviceSupportForDestinations:(id)a3 service:(id)a4 listenerID:(id)a5 capability:(id)a6 completion:(id)a7;
-- (void)checkIDSStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5 completion:(id)a6;
-- (void)reachableDestinationsForDestination:(id)a3 service:(id)a4 completion:(id)a5;
+- (PKIDSIDQueryManager)initWithQueue:(id)queue;
+- (void)checkDeviceSupportForDestinations:(id)destinations service:(id)service listenerID:(id)d capability:(id)capability completion:(id)completion;
+- (void)checkIDSStatusForDestination:(id)destination service:(id)service listenerID:(id)d completion:(id)completion;
+- (void)reachableDestinationsForDestination:(id)destination service:(id)service completion:(id)completion;
 @end
 
 @implementation PKIDSIDQueryManager
 
-- (PKIDSIDQueryManager)initWithQueue:(id)a3
+- (PKIDSIDQueryManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = PKIDSIDQueryManager;
   v6 = [(PKIDSIDQueryManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)reachableDestinationsForDestination:(id)a3 service:(id)a4 completion:(id)a5
+- (void)reachableDestinationsForDestination:(id)destination service:(id)service completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
+  destinationCopy = destination;
   v11 = objc_alloc_init(PKIDSBatchIDQueryControllerWrapper);
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -34,11 +34,11 @@
   v15[2] = __78__PKIDSIDQueryManager_reachableDestinationsForDestination_service_completion___block_invoke;
   v15[3] = &unk_1E79D5958;
   v16 = v11;
-  v17 = v8;
+  v17 = completionCopy;
   v15[4] = self;
   v13 = v11;
-  v14 = v8;
-  [(PKIDSBatchIDQueryControllerWrapper *)v13 reachableDestinationsForDestination:v10 service:v9 queue:queue completion:v15];
+  v14 = completionCopy;
+  [(PKIDSBatchIDQueryControllerWrapper *)v13 reachableDestinationsForDestination:destinationCopy service:serviceCopy queue:queue completion:v15];
 }
 
 void __78__PKIDSIDQueryManager_reachableDestinationsForDestination_service_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -59,15 +59,15 @@ void __78__PKIDSIDQueryManager_reachableDestinationsForDestination_service_compl
   dispatch_async(v7, block);
 }
 
-- (void)checkIDSStatusForDestination:(id)a3 service:(id)a4 listenerID:(id)a5 completion:(id)a6
+- (void)checkIDSStatusForDestination:(id)destination service:(id)service listenerID:(id)d completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69A4878];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 sharedInstance];
-  v16 = PKIDSNormalizedAddress(v14);
+  dCopy = d;
+  serviceCopy = service;
+  destinationCopy = destination;
+  sharedInstance = [v11 sharedInstance];
+  v16 = PKIDSNormalizedAddress(destinationCopy);
 
   queue = self->_queue;
   v19[0] = MEMORY[0x1E69E9820];
@@ -75,9 +75,9 @@ void __78__PKIDSIDQueryManager_reachableDestinationsForDestination_service_compl
   v19[2] = __82__PKIDSIDQueryManager_checkIDSStatusForDestination_service_listenerID_completion___block_invoke;
   v19[3] = &unk_1E79CA9E0;
   v19[4] = self;
-  v20 = v10;
-  v18 = v10;
-  [v15 refreshIDStatusForDestination:v16 service:v13 listenerID:v12 queue:queue completionBlock:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [sharedInstance refreshIDStatusForDestination:v16 service:serviceCopy listenerID:dCopy queue:queue completionBlock:v19];
 }
 
 void __82__PKIDSIDQueryManager_checkIDSStatusForDestination_service_listenerID_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -93,27 +93,27 @@ void __82__PKIDSIDQueryManager_checkIDSStatusForDestination_service_listenerID_c
   dispatch_async(v3, v4);
 }
 
-- (void)checkDeviceSupportForDestinations:(id)a3 service:(id)a4 listenerID:(id)a5 capability:(id)a6 completion:(id)a7
+- (void)checkDeviceSupportForDestinations:(id)destinations service:(id)service listenerID:(id)d capability:(id)capability completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 pk_arrayByApplyingBlock:&__block_literal_global_90];
-  v17 = [MEMORY[0x1E69A4878] sharedInstance];
+  capabilityCopy = capability;
+  completionCopy = completion;
+  dCopy = d;
+  serviceCopy = service;
+  v16 = [destinations pk_arrayByApplyingBlock:&__block_literal_global_90];
+  mEMORY[0x1E69A4878] = [MEMORY[0x1E69A4878] sharedInstance];
   queue = self->_queue;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __98__PKIDSIDQueryManager_checkDeviceSupportForDestinations_service_listenerID_capability_completion___block_invoke_2;
   v22[3] = &unk_1E79D59D0;
   v23 = v16;
-  v24 = v12;
-  v25 = self;
-  v26 = v13;
-  v19 = v13;
-  v20 = v12;
+  v24 = capabilityCopy;
+  selfCopy = self;
+  v26 = completionCopy;
+  v19 = completionCopy;
+  v20 = capabilityCopy;
   v21 = v16;
-  [v17 currentRemoteDevicesForDestinations:v21 service:v15 listenerID:v14 queue:queue completionBlock:v22];
+  [mEMORY[0x1E69A4878] currentRemoteDevicesForDestinations:v21 service:serviceCopy listenerID:dCopy queue:queue completionBlock:v22];
 }
 
 void __98__PKIDSIDQueryManager_checkDeviceSupportForDestinations_service_listenerID_capability_completion___block_invoke_2(uint64_t a1, void *a2)

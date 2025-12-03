@@ -2,7 +2,7 @@
 - (NSNumber)frameRateLimit;
 - (OS_xpc_object)endpoint;
 - (SBSHomeScreenIconStyleConfiguration)iconStyleConfiguration;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)mapStyle;
 - (unint64_t)widgetStyle;
 @end
@@ -11,54 +11,54 @@
 
 - (unint64_t)widgetStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2883987264];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2883987264];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (OS_xpc_object)endpoint
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2883987265];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2883987265];
 
   return v3;
 }
 
 - (NSNumber)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 - (SBSHomeScreenIconStyleConfiguration)iconStyleConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422723];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  defaultStyleConfiguration = [otherSettings objectForSetting:3152422723];
 
-  if (!v3)
+  if (!defaultStyleConfiguration)
   {
-    v3 = [MEMORY[0x277D66AB0] defaultStyleConfiguration];
+    defaultStyleConfiguration = [MEMORY[0x277D66AB0] defaultStyleConfiguration];
   }
 
-  return v3;
+  return defaultStyleConfiguration;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIMutableDashboardWidgetSceneSettings allocWithZone:a3];
+  v4 = [CRSUIMutableDashboardWidgetSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }

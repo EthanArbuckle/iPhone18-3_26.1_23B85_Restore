@@ -8,7 +8,7 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11 = 0;
-  v1 = [a1 decompressedDataUsingAlgorithm:3 error:&v11];
+  v1 = [self decompressedDataUsingAlgorithm:3 error:&v11];
   v2 = v11;
   v3 = MEMORY[0x277CBEB98];
   v12[0] = objc_opt_class();

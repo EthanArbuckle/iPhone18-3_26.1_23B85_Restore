@@ -1,81 +1,81 @@
 @interface NWCSimpleHourEntryModel
-- (NWCSimpleHourEntryModel)initWithCoder:(id)a3;
-- (NWCSimpleHourEntryModel)initWithTopString:(id)a3 middleString:(id)a4 bottomString:(id)a5 isDay:(BOOL)a6 timeZone:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (NWCSimpleHourEntryModel)initWithCoder:(id)coder;
+- (NWCSimpleHourEntryModel)initWithTopString:(id)string middleString:(id)middleString bottomString:(id)bottomString isDay:(BOOL)day timeZone:(id)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWCSimpleHourEntryModel
 
-- (NWCSimpleHourEntryModel)initWithTopString:(id)a3 middleString:(id)a4 bottomString:(id)a5 isDay:(BOOL)a6 timeZone:(id)a7
+- (NWCSimpleHourEntryModel)initWithTopString:(id)string middleString:(id)middleString bottomString:(id)bottomString isDay:(BOOL)day timeZone:(id)zone
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  stringCopy = string;
+  middleStringCopy = middleString;
+  bottomStringCopy = bottomString;
+  zoneCopy = zone;
   v20.receiver = self;
   v20.super_class = NWCSimpleHourEntryModel;
   v17 = [(NWCSimpleHourEntryModel *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_topString, a3);
-    objc_storeStrong(&v18->_middleString, a4);
-    objc_storeStrong(&v18->_bottomString, a5);
-    v18->_isDay = a6;
-    objc_storeStrong(&v18->_timeZone, a7);
+    objc_storeStrong(&v17->_topString, string);
+    objc_storeStrong(&v18->_middleString, middleString);
+    objc_storeStrong(&v18->_bottomString, bottomString);
+    v18->_isDay = day;
+    objc_storeStrong(&v18->_timeZone, zone);
   }
 
   return v18;
 }
 
-- (NWCSimpleHourEntryModel)initWithCoder:(id)a3
+- (NWCSimpleHourEntryModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_topString);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_middleString);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_bottomString);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = NSStringFromSelector(sel_isDay);
-  v15 = [v4 decodeBoolForKey:v14];
+  v15 = [coderCopy decodeBoolForKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_timeZone);
-  v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = [[NWCSimpleHourEntryModel alloc] initWithTopString:v7 middleString:v10 bottomString:v13 isDay:v15 timeZone:v18];
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NWCSimpleHourEntryModel *)self topString];
+  coderCopy = coder;
+  topString = [(NWCSimpleHourEntryModel *)self topString];
   v6 = NSStringFromSelector(sel_topString);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:topString forKey:v6];
 
-  v7 = [(NWCSimpleHourEntryModel *)self middleString];
+  middleString = [(NWCSimpleHourEntryModel *)self middleString];
   v8 = NSStringFromSelector(sel_middleString);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:middleString forKey:v8];
 
-  v9 = [(NWCSimpleHourEntryModel *)self bottomString];
+  bottomString = [(NWCSimpleHourEntryModel *)self bottomString];
   v10 = NSStringFromSelector(sel_bottomString);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:bottomString forKey:v10];
 
-  v11 = [(NWCSimpleHourEntryModel *)self isDay];
+  isDay = [(NWCSimpleHourEntryModel *)self isDay];
   v12 = NSStringFromSelector(sel_bottomString);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isDay forKey:v12];
 
-  v14 = [(NWCSimpleHourEntryModel *)self timeZone];
+  timeZone = [(NWCSimpleHourEntryModel *)self timeZone];
   v13 = NSStringFromSelector(sel_timeZone);
-  [v4 encodeObject:v14 forKey:v13];
+  [coderCopy encodeObject:timeZone forKey:v13];
 }
 
 @end

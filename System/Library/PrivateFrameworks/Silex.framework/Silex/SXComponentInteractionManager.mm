@@ -1,41 +1,41 @@
 @interface SXComponentInteractionManager
-- (BOOL)accessibilityShouldHandleInteractionForComponentView:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)hasInteractionForLocation:(CGPoint)a3;
+- (BOOL)accessibilityShouldHandleInteractionForComponentView:(id)view;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)hasInteractionForLocation:(CGPoint)location;
 - (CGPoint)longPressStartLocation;
-- (SXComponentInteractionManager)initWithInteractionHandlerManager:(id)a3 viewport:(id)a4;
-- (id)previewViewControllerForLocation:(CGPoint)a3;
-- (void)animateHighlight:(BOOL)a3 forComponentView:(id)a4;
-- (void)cancelInteractionForComponentView:(id)a3;
-- (void)commitViewController:(id)a3;
-- (void)handleInteraction:(id)a3 withType:(unint64_t)a4;
-- (void)handleLongPressGesture:(id)a3;
-- (void)handleTapGesture:(id)a3;
-- (void)toggleHighlightForComponentView:(id)a3;
+- (SXComponentInteractionManager)initWithInteractionHandlerManager:(id)manager viewport:(id)viewport;
+- (id)previewViewControllerForLocation:(CGPoint)location;
+- (void)animateHighlight:(BOOL)highlight forComponentView:(id)view;
+- (void)cancelInteractionForComponentView:(id)view;
+- (void)commitViewController:(id)controller;
+- (void)handleInteraction:(id)interaction withType:(unint64_t)type;
+- (void)handleLongPressGesture:(id)gesture;
+- (void)handleTapGesture:(id)gesture;
+- (void)toggleHighlightForComponentView:(id)view;
 @end
 
 @implementation SXComponentInteractionManager
 
-- (SXComponentInteractionManager)initWithInteractionHandlerManager:(id)a3 viewport:(id)a4
+- (SXComponentInteractionManager)initWithInteractionHandlerManager:(id)manager viewport:(id)viewport
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  viewportCopy = viewport;
   v18.receiver = self;
   v18.super_class = SXComponentInteractionManager;
   v9 = [(SXComponentInteractionManager *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_interactionHandlerManager, a3);
-    objc_storeStrong(&v10->_viewport, a4);
+    objc_storeStrong(&v9->_interactionHandlerManager, manager);
+    objc_storeStrong(&v10->_viewport, viewport);
     v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v10 action:sel_handleTapGesture_];
     tapGestureRecognizer = v10->_tapGestureRecognizer;
     v10->_tapGestureRecognizer = v11;
 
     [(UITapGestureRecognizer *)v10->_tapGestureRecognizer setCancelsTouchesInView:0];
-    v13 = [v8 view];
-    [v13 addGestureRecognizer:v10->_tapGestureRecognizer];
+    view = [viewportCopy view];
+    [view addGestureRecognizer:v10->_tapGestureRecognizer];
 
     v14 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v10 action:sel_handleLongPressGesture_];
     longPressGestureRecognizer = v10->_longPressGestureRecognizer;
@@ -44,8 +44,8 @@
     [(UILongPressGestureRecognizer *)v10->_longPressGestureRecognizer setCancelsTouchesInView:0];
     [(UILongPressGestureRecognizer *)v10->_longPressGestureRecognizer setMinimumPressDuration:0.07];
     [(UILongPressGestureRecognizer *)v10->_longPressGestureRecognizer setDelegate:v10];
-    v16 = [v8 view];
-    [v16 addGestureRecognizer:v10->_longPressGestureRecognizer];
+    view2 = [viewportCopy view];
+    [view2 addGestureRecognizer:v10->_longPressGestureRecognizer];
 
     [(UITapGestureRecognizer *)v10->_tapGestureRecognizer requireGestureRecognizerToFail:v10->_longPressGestureRecognizer];
   }
@@ -53,24 +53,24 @@
   return v10;
 }
 
-- (BOOL)hasInteractionForLocation:(CGPoint)a3
+- (BOOL)hasInteractionForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v6 = [v5 componentViewForLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  interactionHandlerManager = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v6 = [interactionHandlerManager componentViewForLocation:{x, y}];
   v7 = v6 != 0;
 
   return v7;
 }
 
-- (id)previewViewControllerForLocation:(CGPoint)a3
+- (id)previewViewControllerForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v7 = [v6 componentViewForLocation:{x, y}];
+  interactionHandlerManager = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v7 = [interactionHandlerManager componentViewForLocation:{x, y}];
 
   [(SXComponentInteractionManager *)self cancelInteractionForComponentView:v7];
   [(SXComponentInteractionManager *)self animateHighlight:0 forComponentView:v7];
@@ -78,8 +78,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v9 = [v8 interactionsForComponentView:v7];
+  interactionHandlerManager2 = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v9 = [interactionHandlerManager2 interactionsForComponentView:v7];
 
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
@@ -114,16 +114,16 @@
 
 LABEL_11:
 
-  v14 = [v10 handler];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v14 previewViewController], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  handler = [v10 handler];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([handler previewViewController], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v16 = v15;
     v17 = [[SXComponentInteractionPreview alloc] initWithInteraction:v10 viewController:v15];
     [(SXComponentInteractionManager *)self setCurrentPreview:v17];
 
     v18 = [SXComponentInteractionPreviewContext alloc];
-    v19 = [v10 componentView];
-    [v19 absoluteFrame];
+    componentView = [v10 componentView];
+    [componentView absoluteFrame];
     v20 = [(SXComponentInteractionPreviewContext *)v18 initWithViewController:v16 sourceRect:?];
   }
 
@@ -135,27 +135,27 @@ LABEL_11:
   return v20;
 }
 
-- (void)commitViewController:(id)a3
+- (void)commitViewController:(id)controller
 {
-  v11 = a3;
-  if (v11)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v4 = [(SXComponentInteractionManager *)self currentPreview];
-    if (v4)
+    currentPreview = [(SXComponentInteractionManager *)self currentPreview];
+    if (currentPreview)
     {
-      v5 = v4;
-      v6 = [(SXComponentInteractionManager *)self currentPreview];
-      v7 = [(SXComponentInteractionPreview *)v6 viewController];
+      v5 = currentPreview;
+      currentPreview2 = [(SXComponentInteractionManager *)self currentPreview];
+      viewController = [(SXComponentInteractionPreview *)currentPreview2 viewController];
 
-      if (v7 == v11)
+      if (viewController == controllerCopy)
       {
-        v8 = [(SXComponentInteractionManager *)self currentPreview];
-        v9 = [(SXFullscreenCaption *)v8 text];
-        v10 = [v9 handler];
+        currentPreview3 = [(SXComponentInteractionManager *)self currentPreview];
+        text = [(SXFullscreenCaption *)currentPreview3 text];
+        handler = [text handler];
 
         if (objc_opt_respondsToSelector())
         {
-          [v10 commitViewController:v11];
+          [handler commitViewController:controllerCopy];
         }
 
         [(SXComponentInteractionManager *)self setCurrentPreview:0];
@@ -164,107 +164,107 @@ LABEL_11:
   }
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v24 = a3;
-  v4 = [v24 state] == 3;
-  v5 = v24;
+  gestureCopy = gesture;
+  v4 = [gestureCopy state] == 3;
+  v5 = gestureCopy;
   if (v4)
   {
-    v6 = [v24 view];
-    v7 = [v6 superview];
-    [v24 locationInView:v7];
+    view = [gestureCopy view];
+    superview = [view superview];
+    [gestureCopy locationInView:superview];
     v9 = v8;
     v11 = v10;
 
-    v12 = [v24 view];
-    v13 = [v12 superview];
-    v14 = [v24 view];
-    [v13 convertPoint:v14 toView:{v9, v11}];
+    view2 = [gestureCopy view];
+    superview2 = [view2 superview];
+    view3 = [gestureCopy view];
+    [superview2 convertPoint:view3 toView:{v9, v11}];
     v16 = v15;
     v18 = v17;
 
-    v19 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-    v20 = [v19 componentViewForLocation:{v16, v18}];
+    interactionHandlerManager = [(SXComponentInteractionManager *)self interactionHandlerManager];
+    v20 = [interactionHandlerManager componentViewForLocation:{v16, v18}];
 
-    v21 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-    v22 = [v21 interactionsForComponentView:v20 type:2];
+    interactionHandlerManager2 = [(SXComponentInteractionManager *)self interactionHandlerManager];
+    v22 = [interactionHandlerManager2 interactionsForComponentView:v20 type:2];
 
-    v23 = [v22 firstObject];
-    if (v23)
+    firstObject = [v22 firstObject];
+    if (firstObject)
     {
-      [(SXComponentInteractionManager *)self handleInteraction:v23 withType:2];
+      [(SXComponentInteractionManager *)self handleInteraction:firstObject withType:2];
       [(SXComponentInteractionManager *)self toggleHighlightForComponentView:v20];
     }
 
-    v5 = v24;
+    v5 = gestureCopy;
   }
 }
 
-- (BOOL)accessibilityShouldHandleInteractionForComponentView:(id)a3
+- (BOOL)accessibilityShouldHandleInteractionForComponentView:(id)view
 {
-  v4 = a3;
-  v5 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v6 = [v5 interactionsForComponentView:v4 type:2];
-  v7 = [v6 firstObject];
+  viewCopy = view;
+  interactionHandlerManager = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v6 = [interactionHandlerManager interactionsForComponentView:viewCopy type:2];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    [(SXComponentInteractionManager *)self handleInteraction:v7 withType:2];
-    [(SXComponentInteractionManager *)self animateHighlight:0 forComponentView:v4];
+    [(SXComponentInteractionManager *)self handleInteraction:firstObject withType:2];
+    [(SXComponentInteractionManager *)self animateHighlight:0 forComponentView:viewCopy];
   }
 
-  return v7 != 0;
+  return firstObject != 0;
 }
 
-- (void)handleLongPressGesture:(id)a3
+- (void)handleLongPressGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SXComponentInteractionManager *)self tapGestureRecognizer];
-  [v5 cancel];
+  gestureCopy = gesture;
+  tapGestureRecognizer = [(SXComponentInteractionManager *)self tapGestureRecognizer];
+  [tapGestureRecognizer cancel];
 
-  v6 = [v4 view];
-  v7 = [v6 superview];
-  [v4 locationInView:v7];
+  view = [gestureCopy view];
+  superview = [view superview];
+  [gestureCopy locationInView:superview];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v4 view];
-  v13 = [v12 superview];
-  v14 = [v4 view];
-  [v13 convertPoint:v14 toView:{v9, v11}];
+  view2 = [gestureCopy view];
+  superview2 = [view2 superview];
+  view3 = [gestureCopy view];
+  [superview2 convertPoint:view3 toView:{v9, v11}];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v20 = [v19 componentViewForLocation:{v16, v18}];
+  interactionHandlerManager = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v20 = [interactionHandlerManager componentViewForLocation:{v16, v18}];
 
-  v21 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v22 = [v21 interactionsForComponentView:v20 type:4];
-  v23 = [v22 firstObject];
+  interactionHandlerManager2 = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v22 = [interactionHandlerManager2 interactionsForComponentView:v20 type:4];
+  firstObject = [v22 firstObject];
 
-  v24 = [(SXComponentInteractionManager *)self interactionHandlerManager];
-  v25 = [v24 interactionsForComponentView:v20 type:2];
-  v26 = [v25 firstObject];
+  interactionHandlerManager3 = [(SXComponentInteractionManager *)self interactionHandlerManager];
+  v25 = [interactionHandlerManager3 interactionsForComponentView:v20 type:2];
+  firstObject2 = [v25 firstObject];
 
-  if (!v20 || !(v23 | v26))
+  if (!v20 || !(firstObject | firstObject2))
   {
-    [v4 cancel];
+    [gestureCopy cancel];
     goto LABEL_31;
   }
 
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
     [(SXComponentInteractionManager *)self setCurrentComponentView:v20];
     [(SXComponentInteractionManager *)self animateHighlight:1 forComponentView:v20];
     [(SXComponentInteractionManager *)self setLongPressStartLocation:v9, v11];
   }
 
-  else if ([v4 state] == 2 || objc_msgSend(v4, "state") == 3)
+  else if ([gestureCopy state] == 2 || objc_msgSend(gestureCopy, "state") == 3)
   {
-    v27 = [(SXComponentInteractionManager *)self currentComponentView];
+    currentComponentView = [(SXComponentInteractionManager *)self currentComponentView];
 
-    if (v27 != v20)
+    if (currentComponentView != v20)
     {
       [(SXComponentInteractionManager *)self cancelInteractionForComponentView:v20];
       [(SXComponentInteractionManager *)self animateHighlight:0 forComponentView:v20];
@@ -272,16 +272,16 @@ LABEL_11:
     }
   }
 
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
-    if (v23)
+    if (firstObject)
     {
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __56__SXComponentInteractionManager_handleLongPressGesture___block_invoke;
       v34[3] = &unk_1E84FECA0;
       v34[4] = self;
-      v35 = v23;
+      v35 = firstObject;
       v36 = v20;
       v28 = [SXDelayed execute:v34 delay:1.0];
       [(SXComponentInteractionManager *)self setLongPressDelay:v28];
@@ -290,7 +290,7 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  if ([v4 state] == 2)
+  if ([gestureCopy state] == 2)
   {
     [(SXComponentInteractionManager *)self longPressStartLocation];
     v30 = v29 - v9;
@@ -318,15 +318,15 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  if ([v4 state] == 3)
+  if ([gestureCopy state] == 3)
   {
-    [(SXComponentInteractionManager *)self handleInteraction:v26 withType:2];
+    [(SXComponentInteractionManager *)self handleInteraction:firstObject2 withType:2];
 LABEL_26:
     [(SXComponentInteractionManager *)self animateHighlight:0 forComponentView:v20];
     goto LABEL_27;
   }
 
-  if ([v4 state] == 4 || objc_msgSend(v4, "state") == 5)
+  if ([gestureCopy state] == 4 || objc_msgSend(gestureCopy, "state") == 5)
   {
 LABEL_25:
     [(SXComponentInteractionManager *)self cancelInteractionForComponentView:v20];
@@ -334,7 +334,7 @@ LABEL_25:
   }
 
 LABEL_27:
-  if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5)
+  if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4 || objc_msgSend(gestureCopy, "state") == 5)
   {
     [(SXComponentInteractionManager *)self setLongPressStartLocation:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   }
@@ -351,79 +351,79 @@ uint64_t __56__SXComponentInteractionManager_handleLongPressGesture___block_invo
   return [v2 animateHighlight:0 forComponentView:v3];
 }
 
-- (void)handleInteraction:(id)a3 withType:(unint64_t)a4
+- (void)handleInteraction:(id)interaction withType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 handler];
-  v8 = [v6 componentView];
-  v9 = [v6 componentView];
-  [v9 contentFrame];
-  [v7 handleInteractionType:a4 sourceView:v8 sourceRect:?];
+  interactionCopy = interaction;
+  handler = [interactionCopy handler];
+  componentView = [interactionCopy componentView];
+  componentView2 = [interactionCopy componentView];
+  [componentView2 contentFrame];
+  [handler handleInteractionType:type sourceView:componentView sourceRect:?];
 
-  v10 = [v6 componentView];
+  componentView3 = [interactionCopy componentView];
 
-  [(SXComponentInteractionManager *)self cancelInteractionForComponentView:v10];
+  [(SXComponentInteractionManager *)self cancelInteractionForComponentView:componentView3];
 }
 
-- (void)cancelInteractionForComponentView:(id)a3
+- (void)cancelInteractionForComponentView:(id)view
 {
-  v4 = a3;
-  v5 = [(SXComponentInteractionManager *)self currentComponentView];
+  viewCopy = view;
+  currentComponentView = [(SXComponentInteractionManager *)self currentComponentView];
 
-  if (v5 == v4)
+  if (currentComponentView == viewCopy)
   {
-    v6 = [(SXComponentInteractionManager *)self longPressDelay];
-    [v6 cancel];
+    longPressDelay = [(SXComponentInteractionManager *)self longPressDelay];
+    [longPressDelay cancel];
 
-    v7 = [(SXComponentInteractionManager *)self tapGestureRecognizer];
-    [v7 cancel];
+    tapGestureRecognizer = [(SXComponentInteractionManager *)self tapGestureRecognizer];
+    [tapGestureRecognizer cancel];
 
-    v8 = [(SXComponentInteractionManager *)self longPressGestureRecognizer];
-    [v8 cancel];
+    longPressGestureRecognizer = [(SXComponentInteractionManager *)self longPressGestureRecognizer];
+    [longPressGestureRecognizer cancel];
   }
 
   [(SXComponentInteractionManager *)self setCurrentComponentView:0];
 }
 
-- (void)animateHighlight:(BOOL)a3 forComponentView:(id)a4
+- (void)animateHighlight:(BOOL)highlight forComponentView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   v7 = MEMORY[0x1E69DD250];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__SXComponentInteractionManager_animateHighlight_forComponentView___block_invoke;
   v9[3] = &unk_1E8501178;
-  v11 = a3;
+  highlightCopy = highlight;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = viewCopy;
+  v8 = viewCopy;
   [v7 animateWithDuration:2 delay:v9 options:0 animations:0.1 completion:0.0];
 }
 
-- (void)toggleHighlightForComponentView:(id)a3
+- (void)toggleHighlightForComponentView:(id)view
 {
-  v4 = a3;
-  [(SXComponentInteractionManager *)self animateHighlight:1 forComponentView:v4];
+  viewCopy = view;
+  [(SXComponentInteractionManager *)self animateHighlight:1 forComponentView:viewCopy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__SXComponentInteractionManager_toggleHighlightForComponentView___block_invoke;
   v7[3] = &unk_1E84FEC78;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = viewCopy;
+  v5 = viewCopy;
   v6 = [SXDelayed execute:v7 delay:0.2];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = [a3 view];
-  [v6 locationInView:v7];
+  touchCopy = touch;
+  view = [recognizer view];
+  [touchCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SXComponentInteractionManager *)self viewport];
-  [v12 dynamicBounds];
+  viewport = [(SXComponentInteractionManager *)self viewport];
+  [viewport dynamicBounds];
   v14.x = v9;
   v14.y = v11;
   LOBYTE(self) = CGRectContainsPoint(v15, v14);
@@ -431,22 +431,22 @@ uint64_t __56__SXComponentInteractionManager_handleLongPressGesture___block_invo
   return self;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [(SXComponentInteractionManager *)self viewport];
-  v5 = [v4 view];
-  v6 = [v5 panGestureRecognizer];
-  if ([v6 state] == 1)
+  viewport = [(SXComponentInteractionManager *)self viewport];
+  view = [viewport view];
+  panGestureRecognizer = [view panGestureRecognizer];
+  if ([panGestureRecognizer state] == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(SXComponentInteractionManager *)self viewport];
-    v9 = [v8 view];
-    v10 = [v9 panGestureRecognizer];
-    v7 = [v10 state] != 2;
+    viewport2 = [(SXComponentInteractionManager *)self viewport];
+    view2 = [viewport2 view];
+    panGestureRecognizer2 = [view2 panGestureRecognizer];
+    v7 = [panGestureRecognizer2 state] != 2;
   }
 
   return v7;

@@ -1,8 +1,8 @@
 @interface MTRMetricData
 - (MTRMetricData)init;
-- (MTRMetricData)initWithMetricEvent:(const MetricEvent *)a3;
+- (MTRMetricData)initWithMetricEvent:(const MetricEvent *)event;
 - (id)description;
-- (void)setDurationFromMetricData:(id)a3;
+- (void)setDurationFromMetricData:(id)data;
 @end
 
 @implementation MTRMetricData
@@ -15,7 +15,7 @@
   return [(MTRMetricData *)self initWithMetricEvent:&v3];
 }
 
-- (MTRMetricData)initWithMetricEvent:(const MetricEvent *)a3
+- (MTRMetricData)initWithMetricEvent:(const MetricEvent *)event
 {
   v14.receiver = self;
   v14.super_class = MTRMetricData;
@@ -23,8 +23,8 @@
   v5 = v4;
   if (v4)
   {
-    var0 = a3->var0;
-    v4->_type = a3->var0;
+    var0 = event->var0;
+    v4->_type = event->var0;
     if (var0 >= 2)
     {
       if (var0 != 2)
@@ -42,10 +42,10 @@
 
     v5->_timePoint.__rep_ = v7;
 LABEL_7:
-    v8 = *(&a3->var2 + 4);
+    v8 = *(&event->var2 + 4);
     if (v8 == 3)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sub_2393ABB38(a3)];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sub_2393ABB38(event)];
       v10 = 32;
     }
 
@@ -53,7 +53,7 @@ LABEL_7:
     {
       if (v8 == 2)
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sub_2393ABB14(a3)];
+        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:sub_2393ABB14(event)];
       }
 
       else
@@ -65,7 +65,7 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v9 = [MEMORY[0x277CCABB0] numberWithInteger:sub_2393ABAF0(a3)];
+        v9 = [MEMORY[0x277CCABB0] numberWithInteger:sub_2393ABAF0(event)];
       }
 
       v10 = 24;
@@ -82,10 +82,10 @@ LABEL_16:
   return v5;
 }
 
-- (void)setDurationFromMetricData:(id)a3
+- (void)setDurationFromMetricData:(id)data
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:(self->_timePoint.__rep_ - v6[1]) / 1000000.0];
+  dataCopy = data;
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:(self->_timePoint.__rep_ - dataCopy[1]) / 1000000.0];
   duration = self->_duration;
   self->_duration = v4;
 }
@@ -94,10 +94,10 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   type = self->_type;
-  v5 = [(MTRMetricData *)self value];
-  v6 = [(MTRMetricData *)self errorCode];
-  v7 = [(MTRMetricData *)self duration];
-  v8 = [v3 stringWithFormat:@"<MTRMetricData: Type %d, Value = %@, Error Code = %@, Duration = %@ us>", type, v5, v6, v7];
+  value = [(MTRMetricData *)self value];
+  errorCode = [(MTRMetricData *)self errorCode];
+  duration = [(MTRMetricData *)self duration];
+  v8 = [v3 stringWithFormat:@"<MTRMetricData: Type %d, Value = %@, Error Code = %@, Duration = %@ us>", type, value, errorCode, duration];
 
   return v8;
 }

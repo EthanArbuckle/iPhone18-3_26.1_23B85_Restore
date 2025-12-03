@@ -1,41 +1,41 @@
 @interface SWWeakURLSchemeHandler
-- (SWWeakURLSchemeHandler)initWithURLSchemeHandler:(id)a3;
+- (SWWeakURLSchemeHandler)initWithURLSchemeHandler:(id)handler;
 - (WKURLSchemeHandler)URLSchemeHandler;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation SWWeakURLSchemeHandler
 
-- (SWWeakURLSchemeHandler)initWithURLSchemeHandler:(id)a3
+- (SWWeakURLSchemeHandler)initWithURLSchemeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8.receiver = self;
   v8.super_class = SWWeakURLSchemeHandler;
   v5 = [(SWWeakURLSchemeHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_URLSchemeHandler, v4);
+    objc_storeWeak(&v5->_URLSchemeHandler, handlerCopy);
   }
 
   return v6;
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWWeakURLSchemeHandler *)self URLSchemeHandler];
-  [v8 webView:v7 startURLSchemeTask:v6];
+  taskCopy = task;
+  viewCopy = view;
+  uRLSchemeHandler = [(SWWeakURLSchemeHandler *)self URLSchemeHandler];
+  [uRLSchemeHandler webView:viewCopy startURLSchemeTask:taskCopy];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWWeakURLSchemeHandler *)self URLSchemeHandler];
-  [v8 webView:v7 stopURLSchemeTask:v6];
+  taskCopy = task;
+  viewCopy = view;
+  uRLSchemeHandler = [(SWWeakURLSchemeHandler *)self URLSchemeHandler];
+  [uRLSchemeHandler webView:viewCopy stopURLSchemeTask:taskCopy];
 }
 
 - (WKURLSchemeHandler)URLSchemeHandler

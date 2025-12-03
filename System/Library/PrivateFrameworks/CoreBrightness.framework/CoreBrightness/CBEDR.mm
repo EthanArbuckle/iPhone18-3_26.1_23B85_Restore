@@ -1,6 +1,6 @@
 @interface CBEDR
-+ (float)animatedHeadroomForOrigin:(float)a3 target:(float)a4 andProgress:(float)a5;
-- (CBEDR)initWithRampPolicy:(unint64_t)a3 potentialHeadroom:(float)a4 andReferenceHeadroom:(float)a5;
++ (float)animatedHeadroomForOrigin:(float)origin target:(float)target andProgress:(float)progress;
+- (CBEDR)initWithRampPolicy:(unint64_t)policy potentialHeadroom:(float)headroom andReferenceHeadroom:(float)referenceHeadroom;
 - (float)availableHeadroom;
 - (id)copyStatusInfo;
 - (id)description;
@@ -76,14 +76,14 @@
   return result;
 }
 
-+ (float)animatedHeadroomForOrigin:(float)a3 target:(float)a4 andProgress:(float)a5
++ (float)animatedHeadroomForOrigin:(float)origin target:(float)target andProgress:(float)progress
 {
-  v22 = a1;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = a4;
-  v18 = a5;
-  if (a4 == 0.0)
+  originCopy = origin;
+  targetCopy = target;
+  progressCopy = progress;
+  if (target == 0.0)
   {
     if (_COREBRIGHTNESS_LOG_DEFAULT)
     {
@@ -108,16 +108,16 @@
     return 1.0;
   }
 
-  else if (v18 <= 1.0 && v18 >= 0.0)
+  else if (progressCopy <= 1.0 && progressCopy >= 0.0)
   {
-    if (v18 == 1.0)
+    if (progressCopy == 1.0)
     {
-      return v19;
+      return targetCopy;
     }
 
     else
     {
-      return v20 * powf(fabsf(v20 / v19), -v18);
+      return originCopy * powf(fabsf(originCopy / targetCopy), -progressCopy);
     }
   }
 
@@ -147,44 +147,44 @@
   }
 }
 
-- (CBEDR)initWithRampPolicy:(unint64_t)a3 potentialHeadroom:(float)a4 andReferenceHeadroom:(float)a5
+- (CBEDR)initWithRampPolicy:(unint64_t)policy potentialHeadroom:(float)headroom andReferenceHeadroom:(float)referenceHeadroom
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
-  v7 = a5;
+  policyCopy = policy;
+  headroomCopy = headroom;
+  referenceHeadroomCopy = referenceHeadroom;
   v6.receiver = self;
   v6.super_class = CBEDR;
-  v11 = [(CBEDR *)&v6 init];
-  if (v11)
+  selfCopy = [(CBEDR *)&v6 init];
+  if (selfCopy)
   {
-    v11->_rampPolicy = v9;
-    v11->_minHeadroom = 1.0;
-    v11->_maxHeadroom = v8;
-    v11->_referenceHeadroom = v7;
-    v11->_currentHeadroom = 1.0;
-    v11->_requestedHeadroom = 1.0;
-    v11->_secondsPerStop = 1.0;
-    v11->_secondsPerStopExit = 1.0;
+    selfCopy->_rampPolicy = policyCopy;
+    selfCopy->_minHeadroom = 1.0;
+    selfCopy->_maxHeadroom = headroomCopy;
+    selfCopy->_referenceHeadroom = referenceHeadroomCopy;
+    selfCopy->_currentHeadroom = 1.0;
+    selfCopy->_requestedHeadroom = 1.0;
+    selfCopy->_secondsPerStop = 1.0;
+    selfCopy->_secondsPerStopExit = 1.0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_headroomModulator).n128_u64[0];
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBEDR;
   [(CBEDR *)&v3 dealloc];
 }
 
 - (id)description
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: r.policy: %lu | h.max: %f | h.ref=%f | h.req: %f | SDR: %f | cap: %f | p.max: %f | sec.per.stop: %f | sec.per.stop.exit: %f", "CBEDR", self->_rampPolicy, self->_maxHeadroom, self->_referenceHeadroom, self->_requestedHeadroom, self->_sdrBrightness, self->_brightnessCap, self->_panelMax, self->_secondsPerStop, self->_secondsPerStopExit, a2, self];
 }

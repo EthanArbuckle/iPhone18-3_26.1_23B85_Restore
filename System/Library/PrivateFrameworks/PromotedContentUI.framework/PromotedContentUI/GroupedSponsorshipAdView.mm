@@ -1,13 +1,13 @@
 @interface GroupedSponsorshipAdView
 - (CGSize)intrinsicContentSize;
-- (_TtC17PromotedContentUI24GroupedSponsorshipAdView)initWithFrame:(CGRect)a3;
+- (_TtC17PromotedContentUI24GroupedSponsorshipAdView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GroupedSponsorshipAdView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C19C00EC();
   v5 = v4;
 
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC17PromotedContentUI24GroupedSponsorshipAdView)initWithFrame:(CGRect)a3
+- (_TtC17PromotedContentUI24GroupedSponsorshipAdView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

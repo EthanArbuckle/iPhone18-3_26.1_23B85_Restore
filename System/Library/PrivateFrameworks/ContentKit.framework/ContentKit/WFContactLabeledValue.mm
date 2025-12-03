@@ -1,7 +1,7 @@
 @interface WFContactLabeledValue
-+ (WFContactLabeledValue)labeledValueWithLabel:(id)a3 value:(id)a4;
-+ (id)localizedStringForLabel:(id)a3;
-- (WFContactLabeledValue)initWithLabel:(id)a3 value:(id)a4;
++ (WFContactLabeledValue)labeledValueWithLabel:(id)label value:(id)value;
++ (id)localizedStringForLabel:(id)label;
+- (WFContactLabeledValue)initWithLabel:(id)label value:(id)value;
 - (id)description;
 @end
 
@@ -13,39 +13,39 @@
   v9.receiver = self;
   v9.super_class = WFContactLabeledValue;
   v4 = [(WFContactLabeledValue *)&v9 description];
-  v5 = [(WFContactLabeledValue *)self label];
-  v6 = [(WFContactLabeledValue *)self value];
-  v7 = [v3 stringWithFormat:@"%@: label=%@, value=%@", v4, v5, v6];
+  label = [(WFContactLabeledValue *)self label];
+  value = [(WFContactLabeledValue *)self value];
+  v7 = [v3 stringWithFormat:@"%@: label=%@, value=%@", v4, label, value];
 
   return v7;
 }
 
-- (WFContactLabeledValue)initWithLabel:(id)a3 value:(id)a4
+- (WFContactLabeledValue)initWithLabel:(id)label value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (v12.receiver = self, v12.super_class = WFContactLabeledValue, (self = [(WFContactLabeledValue *)&v12 init]) != 0))
+  labelCopy = label;
+  valueCopy = value;
+  if (valueCopy && (v12.receiver = self, v12.super_class = WFContactLabeledValue, (self = [(WFContactLabeledValue *)&v12 init]) != 0))
   {
-    v8 = [v6 copy];
+    v8 = [labelCopy copy];
     label = self->_label;
     self->_label = v8;
 
-    objc_storeStrong(&self->_value, a4);
+    objc_storeStrong(&self->_value, value);
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)localizedStringForLabel:(id)a3
++ (id)localizedStringForLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -64,16 +64,16 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 localizedStringForLabel:v3];
+  v6 = [v4 localizedStringForLabel:labelCopy];
 
   return v6;
 }
 
-+ (WFContactLabeledValue)labeledValueWithLabel:(id)a3 value:(id)a4
++ (WFContactLabeledValue)labeledValueWithLabel:(id)label value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithLabel:v7 value:v6];
+  valueCopy = value;
+  labelCopy = label;
+  v8 = [[self alloc] initWithLabel:labelCopy value:valueCopy];
 
   return v8;
 }

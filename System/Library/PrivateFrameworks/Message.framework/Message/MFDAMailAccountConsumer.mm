@@ -1,15 +1,15 @@
 @interface MFDAMailAccountConsumer
 - (BOOL)shouldRetryRequest;
-- (BOOL)waitUntilDoneBeforeDate:(id)a3;
-- (MFDAMailAccountConsumer)initWithAlwaysReportFailures:(BOOL)a3;
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
-- (void)setDone:(BOOL)a3;
+- (BOOL)waitUntilDoneBeforeDate:(id)date;
+- (MFDAMailAccountConsumer)initWithAlwaysReportFailures:(BOOL)failures;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
+- (void)setDone:(BOOL)done;
 - (void)waitUntilDone;
 @end
 
 @implementation MFDAMailAccountConsumer
 
-- (MFDAMailAccountConsumer)initWithAlwaysReportFailures:(BOOL)a3
+- (MFDAMailAccountConsumer)initWithAlwaysReportFailures:(BOOL)failures
 {
   v8.receiver = self;
   v8.super_class = MFDAMailAccountConsumer;
@@ -20,26 +20,26 @@
     doneCondition = v4->_doneCondition;
     v4->_doneCondition = v5;
 
-    v4->_alwaysReportFailures = a3;
+    v4->_alwaysReportFailures = failures;
   }
 
   return v4;
 }
 
-- (void)setDone:(BOOL)a3
+- (void)setDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   [(NSConditionLock *)self->_doneCondition lock];
   doneCondition = self->_doneCondition;
 
-  [(NSConditionLock *)doneCondition unlockWithCondition:v3];
+  [(NSConditionLock *)doneCondition unlockWithCondition:doneCopy];
 }
 
-- (BOOL)waitUntilDoneBeforeDate:(id)a3
+- (BOOL)waitUntilDoneBeforeDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   ECAssertNetworkActivityAllowed();
-  v5 = [(NSConditionLock *)self->_doneCondition lockWhenCondition:1 beforeDate:v4];
+  v5 = [(NSConditionLock *)self->_doneCondition lockWhenCondition:1 beforeDate:dateCopy];
   if (v5)
   {
     [(NSConditionLock *)self->_doneCondition unlock];
@@ -57,20 +57,20 @@
   [(NSConditionLock *)doneCondition unlock];
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
-  v12 = v8;
-  MFWalkUpDAErrorChain(&v12, &v13);
+  failedCopy = failed;
+  taskCopy = task;
+  errorCopy = error;
+  v12 = errorCopy;
+  MFWalkUpDAErrorChain(&v12, &failedCopy);
   v9 = v12;
 
-  v10 = v13;
-  v11 = (v13 + 1) > 8 || ((1 << (v13 + 1)) & 0x103) == 0;
+  v10 = failedCopy;
+  v11 = (failedCopy + 1) > 8 || ((1 << (failedCopy + 1)) & 0x103) == 0;
   if (v11 || ([(NSConditionLock *)self->_doneCondition lock], self->_shouldRetryRequest = 1, [(NSConditionLock *)self->_doneCondition unlock], self->_alwaysReportFailures))
   {
-    [(MFDAMailAccountConsumer *)self taskFailed:v7 statusCode:v10 error:v9];
+    [(MFDAMailAccountConsumer *)self taskFailed:taskCopy statusCode:v10 error:v9];
   }
 
   [(MFDAMailAccountConsumer *)self setDone:1];

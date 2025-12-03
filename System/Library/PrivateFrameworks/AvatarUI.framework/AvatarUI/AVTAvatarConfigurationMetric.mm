@@ -1,12 +1,12 @@
 @interface AVTAvatarConfigurationMetric
 + (id)defaultMetric;
-+ (int64_t)gapFromDistance:(unint64_t)a3;
-+ (int64_t)impactForSettingKind:(id)a3;
-+ (unint64_t)distanceFromConfiguration:(id)a3 toConfiguration:(id)a4;
-+ (void)enumerateDifferencesFromConfiguration:(id)a3 toConfiguration:(id)a4 withHandler:(id)a5;
-- (int64_t)gapFromDistance:(unint64_t)a3;
-- (unint64_t)differenceCountFromDistance:(unint64_t)a3;
-- (unint64_t)distanceFromConfiguration:(id)a3 toConfiguration:(id)a4;
++ (int64_t)gapFromDistance:(unint64_t)distance;
++ (int64_t)impactForSettingKind:(id)kind;
++ (unint64_t)distanceFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration;
++ (void)enumerateDifferencesFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration withHandler:(id)handler;
+- (int64_t)gapFromDistance:(unint64_t)distance;
+- (unint64_t)differenceCountFromDistance:(unint64_t)distance;
+- (unint64_t)distanceFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration;
 @end
 
 @implementation AVTAvatarConfigurationMetric
@@ -32,10 +32,10 @@ uint64_t __45__AVTAvatarConfigurationMetric_defaultMetric__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (unint64_t)distanceFromConfiguration:(id)a3 toConfiguration:(id)a4
++ (unint64_t)distanceFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  toConfigurationCopy = toConfiguration;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -45,8 +45,8 @@ uint64_t __45__AVTAvatarConfigurationMetric_defaultMetric__block_invoke()
   v10[2] = __74__AVTAvatarConfigurationMetric_distanceFromConfiguration_toConfiguration___block_invoke;
   v10[3] = &unk_1E7F3C630;
   v10[4] = &v11;
-  v10[5] = a1;
-  [a1 enumerateDifferencesFromConfiguration:v6 toConfiguration:v7 withHandler:v10];
+  v10[5] = self;
+  [self enumerateDifferencesFromConfiguration:configurationCopy toConfiguration:toConfigurationCopy withHandler:v10];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
 
@@ -60,9 +60,9 @@ uint64_t __74__AVTAvatarConfigurationMetric_distanceFromConfiguration_toConfigur
   return result;
 }
 
-+ (int64_t)gapFromDistance:(unint64_t)a3
++ (int64_t)gapFromDistance:(unint64_t)distance
 {
-  if ((a3 & 7) != 0)
+  if ((distance & 7) != 0)
   {
     v3 = 0;
   }
@@ -72,17 +72,17 @@ uint64_t __74__AVTAvatarConfigurationMetric_distanceFromConfiguration_toConfigur
     v3 = -1;
   }
 
-  if ((a3 & 0x1C0) != 0)
+  if ((distance & 0x1C0) != 0)
   {
     v3 = 1;
   }
 
-  if ((a3 & 0x7000) != 0)
+  if ((distance & 0x7000) != 0)
   {
     v3 = 2;
   }
 
-  if ((a3 & 0x1C0000) != 0)
+  if ((distance & 0x1C0000) != 0)
   {
     return 3;
   }
@@ -93,7 +93,7 @@ uint64_t __74__AVTAvatarConfigurationMetric_distanceFromConfiguration_toConfigur
   }
 }
 
-+ (int64_t)impactForSettingKind:(id)a3
++ (int64_t)impactForSettingKind:(id)kind
 {
   v43[11] = *MEMORY[0x1E69E9840];
   v3 = AVTPresetSettingKind();
@@ -142,40 +142,40 @@ uint64_t __74__AVTAvatarConfigurationMetric_distanceFromConfiguration_toConfigur
   v43[10] = &unk_1F39A5C20;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:11];
 
-  v33 = [AVTAvatarSettingKindValue valueWithSettingKind:a3.var0, a3.var1];
+  v33 = [AVTAvatarSettingKindValue valueWithSettingKind:kind.var0, kind.var1];
   v34 = [v32 objectForKeyedSubscript:v33];
 
   if (v34)
   {
-    v35 = [v34 integerValue];
+    integerValue = [v34 integerValue];
   }
 
   else
   {
-    v35 = 0;
+    integerValue = 0;
   }
 
-  return v35;
+  return integerValue;
 }
 
-+ (void)enumerateDifferencesFromConfiguration:(id)a3 toConfiguration:(id)a4 withHandler:(id)a5
++ (void)enumerateDifferencesFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration withHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E695DFA8];
-  v9 = a4;
-  v10 = a3;
+  toConfigurationCopy = toConfiguration;
+  configurationCopy = configuration;
   v11 = [v8 set];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__AVTAvatarConfigurationMetric_enumerateDifferencesFromConfiguration_toConfiguration_withHandler___block_invoke;
   v15[3] = &unk_1E7F3C658;
   v16 = v11;
-  v17 = v7;
-  v12 = v7;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v11;
   v14 = MEMORY[0x1BFB0DE80](v15);
-  (v14)[2](v14, v10, v9);
-  (v14)[2](v14, v9, v10);
+  (v14)[2](v14, configurationCopy, toConfigurationCopy);
+  (v14)[2](v14, toConfigurationCopy, configurationCopy);
 }
 
 void __98__AVTAvatarConfigurationMetric_enumerateDifferencesFromConfiguration_toConfiguration_withHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -243,27 +243,27 @@ void __98__AVTAvatarConfigurationMetric_enumerateDifferencesFromConfiguration_to
   }
 }
 
-- (unint64_t)distanceFromConfiguration:(id)a3 toConfiguration:(id)a4
+- (unint64_t)distanceFromConfiguration:(id)configuration toConfiguration:(id)toConfiguration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() distanceFromConfiguration:v6 toConfiguration:v5];
+  toConfigurationCopy = toConfiguration;
+  configurationCopy = configuration;
+  v7 = [objc_opt_class() distanceFromConfiguration:configurationCopy toConfiguration:toConfigurationCopy];
 
   return v7;
 }
 
-- (unint64_t)differenceCountFromDistance:(unint64_t)a3
+- (unint64_t)differenceCountFromDistance:(unint64_t)distance
 {
   v4 = objc_opt_class();
 
-  return [v4 differenceCountFromDistance:a3];
+  return [v4 differenceCountFromDistance:distance];
 }
 
-- (int64_t)gapFromDistance:(unint64_t)a3
+- (int64_t)gapFromDistance:(unint64_t)distance
 {
   v4 = objc_opt_class();
 
-  return [v4 gapFromDistance:a3];
+  return [v4 gapFromDistance:distance];
 }
 
 @end

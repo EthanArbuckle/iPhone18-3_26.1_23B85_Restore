@@ -6,7 +6,7 @@
 
 - (double)pose
 {
-  [a1 transform];
+  [self transform];
 
   return RenderPoseToVisionPose(v1);
 }

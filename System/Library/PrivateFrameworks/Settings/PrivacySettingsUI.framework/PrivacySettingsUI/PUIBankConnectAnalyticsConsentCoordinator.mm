@@ -1,8 +1,8 @@
 @interface PUIBankConnectAnalyticsConsentCoordinator
 - (PUIBankConnectAnalyticsConsentCoordinator)init;
 - (void)dealloc;
-- (void)fetchStateWithCompletion:(id)a3;
-- (void)registerForUpdatesWithHandler:(id)a3;
+- (void)fetchStateWithCompletion:(id)completion;
+- (void)registerForUpdatesWithHandler:(id)handler;
 @end
 
 @implementation PUIBankConnectAnalyticsConsentCoordinator
@@ -36,19 +36,19 @@
     offlineLabConsentCoordinator = v2->_offlineLabConsentCoordinator;
     v2->_offlineLabConsentCoordinator = v5;
 
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_shouldShare = [v7 BOOLForKey:@"shouldShareBankConnectData"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_shouldShare = [standardUserDefaults BOOLForKey:@"shouldShareBankConnectData"];
 
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v2->_showPreference = [v8 BOOLForKey:@"showBankConnectPreference"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v2->_showPreference = [standardUserDefaults2 BOOLForKey:@"showBankConnectPreference"];
   }
 
   return v2;
 }
 
-- (void)fetchStateWithCompletion:(id)a3
+- (void)fetchStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   offlineLabConsentCoordinator = self->_offlineLabConsentCoordinator;
   v7[0] = MEMORY[0x277D85DD0];
@@ -56,7 +56,7 @@
   v7[2] = __70__PUIBankConnectAnalyticsConsentCoordinator_fetchStateWithCompletion___block_invoke;
   v7[3] = &unk_279BA0E78;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [offlineLabConsentCoordinator loadOfflineLabSharingPreferenceWithCompletion:v7];
 
@@ -104,10 +104,10 @@ LABEL_5:
   return v5();
 }
 
-- (void)registerForUpdatesWithHandler:(id)a3
+- (void)registerForUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
-  [(PUIBankConnectAnalyticsConsentCoordinator *)self setUpdateHandler:v4];
+  handlerCopy = handler;
+  [(PUIBankConnectAnalyticsConsentCoordinator *)self setUpdateHandler:handlerCopy];
   objc_initWeak(&location, self);
   offlineLabConsentCoordinator = self->_offlineLabConsentCoordinator;
   v12[0] = MEMORY[0x277D85DD0];

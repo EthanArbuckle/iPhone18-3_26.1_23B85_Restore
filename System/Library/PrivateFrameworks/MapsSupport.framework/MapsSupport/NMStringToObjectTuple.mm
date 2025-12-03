@@ -1,21 +1,21 @@
 @interface NMStringToObjectTuple
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasIntValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasIntValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMStringToObjectTuple
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIntValue:(BOOL)a3
+- (void)setHasIntValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = NMStringToObjectTuple;
   v3 = [(NMStringToObjectTuple *)&v7 description];
-  v4 = [(NMStringToObjectTuple *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMStringToObjectTuple *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -115,26 +115,26 @@ LABEL_11:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -142,7 +142,7 @@ LABEL_11:
   {
     BOOLValue = self->_BOOLValue;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -163,45 +163,45 @@ LABEL_9:
 
   intValue = self->_intValue;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_10:
     doubleValue = self->_doubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_stringValue)
   {
     [v6 setStringValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dataValue)
   {
     [v6 setDataValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 48) = self->_BOOLValue;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 48) = self->_BOOLValue;
+    *(toCopy + 52) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -220,30 +220,30 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 2) = self->_intValue;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 2) = self->_intValue;
+  *(toCopy + 52) |= 2u;
   if (*&self->_has)
   {
 LABEL_10:
-    *(v4 + 1) = *&self->_doubleValue;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = *&self->_doubleValue;
+    *(toCopy + 52) |= 1u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v10 = [(NSData *)self->_dataValue copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -285,16 +285,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   key = self->_key;
-  if (key | *(v4 + 4))
+  if (key | *(equalCopy + 4))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -303,7 +303,7 @@ LABEL_4:
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 5))
+  if (stringValue | *(equalCopy + 5))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -312,7 +312,7 @@ LABEL_4:
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 3))
+  if (dataValue | *(equalCopy + 3))
   {
     if (![(NSData *)dataValue isEqual:?])
     {
@@ -322,7 +322,7 @@ LABEL_4:
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_10;
     }
@@ -332,21 +332,21 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if ((*(v4 + 52) & 4) == 0)
+  if ((*(equalCopy + 52) & 4) == 0)
   {
     goto LABEL_24;
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (self->_BOOLValue)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_24;
   }
@@ -354,21 +354,21 @@ LABEL_24:
 LABEL_10:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_intValue != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_intValue != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_24;
   }
 
-  v9 = (*(v4 + 52) & 1) == 0;
+  v9 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
@@ -448,34 +448,34 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v8 ^ v9 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(NMStringToObjectTuple *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NMStringToObjectTuple *)self setStringValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NMStringToObjectTuple *)self setDataValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) != 0)
   {
-    self->_BOOLValue = *(v4 + 48);
+    self->_BOOLValue = *(fromCopy + 48);
     *&self->_has |= 4u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -488,17 +488,17 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_intValue = *(v4 + 2);
+  self->_intValue = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
 LABEL_10:
-    self->_doubleValue = *(v4 + 1);
+    self->_doubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

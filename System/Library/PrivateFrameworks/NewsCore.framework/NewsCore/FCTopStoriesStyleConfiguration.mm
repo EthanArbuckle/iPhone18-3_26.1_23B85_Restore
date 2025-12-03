@@ -1,35 +1,35 @@
 @interface FCTopStoriesStyleConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FCTopStoriesStyleConfiguration)initWithConfigDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCTopStoriesStyleConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCTopStoriesStyleConfiguration
 
-- (FCTopStoriesStyleConfiguration)initWithConfigDictionary:(id)a3
+- (FCTopStoriesStyleConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = FCTopStoriesStyleConfiguration;
   v6 = [(FCTopStoriesStyleConfiguration *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configDict, a3);
-    v8 = FCAppConfigurationStringValue(v5, @"type", 0);
+    objc_storeStrong(&v6->_configDict, dictionary);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"type", 0);
     stringType = v7->_stringType;
     v7->_stringType = v8;
 
     v7->_storyType = FCArticleStoryTypeForStoryTypeString(v7->_stringType);
-    v10 = FCAppConfigurationStringValue(v5, @"label", 0);
+    v10 = FCAppConfigurationStringValue(dictionaryCopy, @"label", 0);
     label = v7->_label;
     v7->_label = v10;
 
-    v12 = FCAppConfigurationStringValue(v5, @"foregroundColor", 0);
+    v12 = FCAppConfigurationStringValue(dictionaryCopy, @"foregroundColor", 0);
     v13 = [FCColor nullableColorWithHexString:v12];
     foreground_color = v7->_foreground_color;
     v7->_foreground_color = v13;
 
-    v15 = FCAppConfigurationStringValue(v5, @"alternateForegroundColor", 0);
+    v15 = FCAppConfigurationStringValue(dictionaryCopy, @"alternateForegroundColor", 0);
     v16 = [FCColor nullableColorWithHexString:v15];
     dark_style_foreground_color = v7->_dark_style_foreground_color;
     v7->_dark_style_foreground_color = v16;
@@ -38,15 +38,15 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

@@ -21,7 +21,7 @@
     }
 
     v7 = 113;
-    v8 = self;
+    selfCopy = self;
     v5 = "";
     v6 = "[NRLinkDirectorRequest dealloc]";
     _NRLogWithArgs();

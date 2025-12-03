@@ -1,28 +1,28 @@
 @interface HKHearingLevelSummary
 + (HKHearingLevelSummary)emptySummary;
-+ (id)_roundWithPositiveZeroForSensitivity:(uint64_t)a1;
-+ (id)summaryForAudiogramSample:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKHearingLevelSummary)initWithLeftEarMetrics:(id)a3 rightEarMetrics:(id)a4;
++ (id)_roundWithPositiveZeroForSensitivity:(uint64_t)sensitivity;
++ (id)summaryForAudiogramSample:(id)sample;
+- (BOOL)isEqual:(id)equal;
+- (HKHearingLevelSummary)initWithLeftEarMetrics:(id)metrics rightEarMetrics:(id)earMetrics;
 - (id)description;
-- (uint64_t)isEqualToHearingLevelSummary:(void *)a1;
+- (uint64_t)isEqualToHearingLevelSummary:(void *)summary;
 @end
 
 @implementation HKHearingLevelSummary
 
-- (HKHearingLevelSummary)initWithLeftEarMetrics:(id)a3 rightEarMetrics:(id)a4
+- (HKHearingLevelSummary)initWithLeftEarMetrics:(id)metrics rightEarMetrics:(id)earMetrics
 {
-  v7 = a3;
-  v8 = a4;
+  metricsCopy = metrics;
+  earMetricsCopy = earMetrics;
   v14.receiver = self;
   v14.super_class = HKHearingLevelSummary;
   v9 = [(HKHearingLevelSummary *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_leftEarMetrics, a3);
-    objc_storeStrong(&v10->_rightEarMetrics, a4);
-    v11 = [HKHearingLevelMetrics _overallMetricsFromLeftEarMetrics:v7 rightEarMetrics:v8];
+    objc_storeStrong(&v9->_leftEarMetrics, metrics);
+    objc_storeStrong(&v10->_rightEarMetrics, earMetrics);
+    v11 = [HKHearingLevelMetrics _overallMetricsFromLeftEarMetrics:metricsCopy rightEarMetrics:earMetricsCopy];
     overallMetrics = v10->_overallMetrics;
     v10->_overallMetrics = v11;
   }
@@ -38,16 +38,16 @@
   return v0;
 }
 
-+ (id)summaryForAudiogramSample:(id)a3
++ (id)summaryForAudiogramSample:(id)sample
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 sensitivityPoints];
-  v6 = [v5 count];
+  sampleCopy = sample;
+  sensitivityPoints = [sampleCopy sensitivityPoints];
+  v6 = [sensitivityPoints count];
 
   if (v6)
   {
-    v55 = a1;
+    selfCopy = self;
     v7 = +[HKUnit decibelHearingLevelUnit];
     v8 = [HKQuantity quantityWithUnit:v7 doubleValue:1.79769313e308];
 
@@ -64,8 +64,8 @@
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v56 = v4;
-    obj = [v4 sensitivityPoints];
+    v56 = sampleCopy;
+    obj = [sampleCopy sensitivityPoints];
     v65 = v14;
     v15 = v13;
     v57 = v14;
@@ -87,34 +87,34 @@
 
           v17 = *(*(&v67 + 1) + 8 * i);
           v18 = MEMORY[0x1E696AD98];
-          v19 = [v17 frequency];
+          frequency = [v17 frequency];
           v20 = +[HKUnit hertzUnit];
-          [v19 doubleValueForUnit:v20];
+          [frequency doubleValueForUnit:v20];
           v66 = [v18 numberWithDouble:?];
 
-          v21 = [v17 tests];
-          v22 = [v21 hk_filter:&__block_literal_global_22];
+          tests = [v17 tests];
+          v22 = [tests hk_filter:&__block_literal_global_22];
 
-          v23 = [v17 tests];
-          v24 = [v23 hk_filter:&__block_literal_global_67];
+          tests2 = [v17 tests];
+          v24 = [tests2 hk_filter:&__block_literal_global_67];
 
           if ([v22 count])
           {
-            v25 = [v22 firstObject];
-            v26 = [v25 clampedSensitivity];
-            v27 = v26;
-            if (v26)
+            firstObject = [v22 firstObject];
+            clampedSensitivity = [firstObject clampedSensitivity];
+            v27 = clampedSensitivity;
+            if (clampedSensitivity)
             {
-              v28 = v26;
+              sensitivity = clampedSensitivity;
             }
 
             else
             {
-              v29 = [v22 firstObject];
-              v28 = [v29 sensitivity];
+              firstObject2 = [v22 firstObject];
+              sensitivity = [firstObject2 sensitivity];
             }
 
-            v30 = [HKHearingLevelSummary _roundWithPositiveZeroForSensitivity:v28];
+            v30 = [HKHearingLevelSummary _roundWithPositiveZeroForSensitivity:sensitivity];
             v31 = HKQuantityMin(v13, v30);
 
             v32 = HKQuantityMax(v14, v30);
@@ -134,22 +134,22 @@
           if ([v24 count])
           {
             v64 = v13;
-            v35 = [v24 firstObject];
-            v36 = [v35 clampedSensitivity];
-            v37 = v36;
+            firstObject3 = [v24 firstObject];
+            clampedSensitivity2 = [firstObject3 clampedSensitivity];
+            v37 = clampedSensitivity2;
             v38 = v14;
-            if (v36)
+            if (clampedSensitivity2)
             {
-              v39 = v36;
+              sensitivity2 = clampedSensitivity2;
             }
 
             else
             {
-              v40 = [v24 firstObject];
-              v39 = [v40 sensitivity];
+              firstObject4 = [v24 firstObject];
+              sensitivity2 = [firstObject4 sensitivity];
             }
 
-            v41 = [HKHearingLevelSummary _roundWithPositiveZeroForSensitivity:v39];
+            v41 = [HKHearingLevelSummary _roundWithPositiveZeroForSensitivity:sensitivity2];
             v42 = HKQuantityMin(v15, v41);
 
             v43 = HKQuantityMax(v65, v41);
@@ -177,15 +177,15 @@
 
     v46 = HKPureToneAverageFromPureToneSensitivityPoints(v60);
     v47 = HKPureToneAverageFromPureToneSensitivityPoints(v59);
-    v48 = [(HKHearingLevelSummary *)v55 _roundWithPositiveZeroForSensitivity:v46];
+    v48 = [(HKHearingLevelSummary *)selfCopy _roundWithPositiveZeroForSensitivity:v46];
 
-    v49 = [(HKHearingLevelSummary *)v55 _roundWithPositiveZeroForSensitivity:v47];
+    v49 = [(HKHearingLevelSummary *)selfCopy _roundWithPositiveZeroForSensitivity:v47];
 
     v50 = [[HKHearingLevelMetrics alloc] initWithAverageSensitivity:v48 minimumSensitivity:v13 maximumSensitivity:v14];
     v51 = [[HKHearingLevelMetrics alloc] initWithAverageSensitivity:v49 minimumSensitivity:v15 maximumSensitivity:v65];
     v52 = [[HKHearingLevelSummary alloc] initWithLeftEarMetrics:v50 rightEarMetrics:v51];
 
-    v4 = v56;
+    sampleCopy = v56;
   }
 
   else
@@ -230,7 +230,7 @@ BOOL __51__HKHearingLevelSummary_summaryForAudiogramSample___block_invoke_2(uint
   return v3;
 }
 
-+ (id)_roundWithPositiveZeroForSensitivity:(uint64_t)a1
++ (id)_roundWithPositiveZeroForSensitivity:(uint64_t)sensitivity
 {
   v2 = a2;
   objc_opt_self();
@@ -248,8 +248,8 @@ BOOL __51__HKHearingLevelSummary_summaryForAudiogramSample___block_invoke_2(uint
       }
     }
 
-    v7 = [v2 _unit];
-    v8 = [HKQuantity quantityWithUnit:v7 doubleValue:v4];
+    _unit = [v2 _unit];
+    v8 = [HKQuantity quantityWithUnit:_unit doubleValue:v4];
   }
 
   else
@@ -260,13 +260,13 @@ BOOL __51__HKHearingLevelSummary_summaryForAudiogramSample___block_invoke_2(uint
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v6 = 1;
       goto LABEL_6;
@@ -291,26 +291,26 @@ LABEL_6:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKHearingLevelSummary *)self overallMetrics];
-  v7 = [(HKHearingLevelSummary *)self leftEarMetrics];
-  v8 = [(HKHearingLevelSummary *)self rightEarMetrics];
-  v9 = [v3 stringWithFormat:@"<%@:%p overall = %@, left ear = %@, right ear = %@>", v5, self, v6, v7, v8];
+  overallMetrics = [(HKHearingLevelSummary *)self overallMetrics];
+  leftEarMetrics = [(HKHearingLevelSummary *)self leftEarMetrics];
+  rightEarMetrics = [(HKHearingLevelSummary *)self rightEarMetrics];
+  v9 = [v3 stringWithFormat:@"<%@:%p overall = %@, left ear = %@, right ear = %@>", v5, self, overallMetrics, leftEarMetrics, rightEarMetrics];
 
   return v9;
 }
 
-- (uint64_t)isEqualToHearingLevelSummary:(void *)a1
+- (uint64_t)isEqualToHearingLevelSummary:(void *)summary
 {
   v5 = a2;
-  if (!a1)
+  if (!summary)
   {
     v14 = 0;
     goto LABEL_28;
   }
 
-  v6 = [a1 leftEarMetrics];
-  v7 = [v5 leftEarMetrics];
-  if (v6 != v7)
+  leftEarMetrics = [summary leftEarMetrics];
+  leftEarMetrics2 = [v5 leftEarMetrics];
+  if (leftEarMetrics != leftEarMetrics2)
   {
     [v5 leftEarMetrics];
     if (!objc_claimAutoreleasedReturnValue())
@@ -321,8 +321,8 @@ LABEL_6:
 
     [OUTLINED_FUNCTION_1_4() leftEarMetrics];
     objc_claimAutoreleasedReturnValue();
-    v8 = [OUTLINED_FUNCTION_0_9() leftEarMetrics];
-    if (![v2 isEqual:v8])
+    leftEarMetrics3 = [OUTLINED_FUNCTION_0_9() leftEarMetrics];
+    if (![v2 isEqual:leftEarMetrics3])
     {
       v14 = 0;
 LABEL_26:
@@ -330,24 +330,24 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v26 = v8;
+    v26 = leftEarMetrics3;
     v27 = v2;
   }
 
-  v9 = [a1 rightEarMetrics];
-  v10 = [v5 rightEarMetrics];
-  if (v9 != v10)
+  rightEarMetrics = [summary rightEarMetrics];
+  rightEarMetrics2 = [v5 rightEarMetrics];
+  if (rightEarMetrics != rightEarMetrics2)
   {
-    v11 = [v5 rightEarMetrics];
-    if (v11)
+    rightEarMetrics3 = [v5 rightEarMetrics];
+    if (rightEarMetrics3)
     {
-      v2 = v11;
-      v12 = [a1 rightEarMetrics];
-      v13 = [v5 rightEarMetrics];
-      if ([v12 isEqual:v13])
+      v2 = rightEarMetrics3;
+      rightEarMetrics4 = [summary rightEarMetrics];
+      rightEarMetrics5 = [v5 rightEarMetrics];
+      if ([rightEarMetrics4 isEqual:rightEarMetrics5])
       {
-        v22 = v13;
-        v23 = v12;
+        v22 = rightEarMetrics5;
+        v23 = rightEarMetrics4;
         v24 = v2;
         goto LABEL_11;
       }
@@ -355,48 +355,48 @@ LABEL_26:
 
     v14 = 0;
 LABEL_24:
-    v20 = v6 == v7;
+    v20 = leftEarMetrics == leftEarMetrics2;
     goto LABEL_25;
   }
 
 LABEL_11:
-  [a1 overallMetrics];
+  [summary overallMetrics];
   objc_claimAutoreleasedReturnValue();
-  v15 = [OUTLINED_FUNCTION_0_9() overallMetrics];
-  v16 = v15;
-  v14 = v2 == v15;
-  if (v2 == v15)
+  overallMetrics = [OUTLINED_FUNCTION_0_9() overallMetrics];
+  v16 = overallMetrics;
+  v14 = v2 == overallMetrics;
+  if (v2 == overallMetrics)
   {
 
 LABEL_21:
-    if (v9 != v10)
+    if (rightEarMetrics != rightEarMetrics2)
     {
     }
 
     goto LABEL_24;
   }
 
-  v25 = v9;
-  v17 = [v5 overallMetrics];
-  if (!v17)
+  v25 = rightEarMetrics;
+  overallMetrics2 = [v5 overallMetrics];
+  if (!overallMetrics2)
   {
 
     goto LABEL_21;
   }
 
-  v18 = v17;
-  v19 = [a1 overallMetrics];
+  v18 = overallMetrics2;
+  overallMetrics3 = [summary overallMetrics];
   [v5 overallMetrics];
   objc_claimAutoreleasedReturnValue();
   v14 = [OUTLINED_FUNCTION_1_4() isEqual:v3];
 
-  if (v25 != v10)
+  if (v25 != rightEarMetrics2)
   {
   }
 
-  v20 = v6 == v7;
+  v20 = leftEarMetrics == leftEarMetrics2;
 LABEL_25:
-  v8 = v26;
+  leftEarMetrics3 = v26;
   v2 = v27;
   if (!v20)
   {

@@ -7,8 +7,8 @@
 - (void)refreshAvailability
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCD4D8] isHealthDataAvailable];
-  if (v3)
+  isHealthDataAvailable = [MEMORY[0x277CCD4D8] isHealthDataAvailable];
+  if (isHealthDataAvailable)
   {
     v4 = 0;
   }
@@ -27,7 +27,7 @@
     v4 = [v5 errorWithDomain:v6 code:0 userInfo:v9];
   }
 
-  [(WFResource *)self updateAvailability:v3 withError:v4];
+  [(WFResource *)self updateAvailability:isHealthDataAvailable withError:v4];
 
   v10 = *MEMORY[0x277D85DE8];
 }

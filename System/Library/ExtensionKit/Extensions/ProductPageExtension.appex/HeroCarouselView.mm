@@ -1,45 +1,45 @@
 @interface HeroCarouselView
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (void)layoutSubviews;
 - (void)pageControlDidChange;
-- (void)setAccessibilityTraits:(unint64_t)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
 @end
 
 @implementation HeroCarouselView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065DC0C();
 }
 
 - (void)pageControlDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10065E718();
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for HeroCarouselView();
-  [(HeroCarouselView *)&v4 setAccessibilityTraits:a3];
+  [(HeroCarouselView *)&v4 setAccessibilityTraits:traits];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 1)
+  if (scroll == 1)
   {
     v4 = 0;
     goto LABEL_5;
   }
 
   v3 = 0;
-  if (a3 == 2)
+  if (scroll == 2)
   {
     v4 = 1;
 LABEL_5:
-    v5 = self;
+    selfCopy = self;
     sub_10034A1E4(v4);
 
     return 1;

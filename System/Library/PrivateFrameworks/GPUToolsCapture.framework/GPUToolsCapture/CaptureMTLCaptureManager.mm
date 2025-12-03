@@ -1,35 +1,35 @@
 @interface CaptureMTLCaptureManager
 + (id)toolsCaptureManager;
-- (BOOL)startCaptureWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)supportsDestination:(int64_t)a3;
-- (CaptureMTLCaptureManager)initWithCaptureContext:(GTTraceContext *)a3 andIsToolsManager:(BOOL)a4;
-- (id)newCaptureScopeWithCommandQueue:(id)a3;
-- (id)newCaptureScopeWithDevice:(id)a3;
+- (BOOL)startCaptureWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)supportsDestination:(int64_t)destination;
+- (CaptureMTLCaptureManager)initWithCaptureContext:(GTTraceContext *)context andIsToolsManager:(BOOL)manager;
+- (id)newCaptureScopeWithCommandQueue:(id)queue;
+- (id)newCaptureScopeWithDevice:(id)device;
 - (void)dealloc;
-- (void)setDefaultCaptureScope:(id)a3;
-- (void)startCaptureWithCommandQueue:(id)a3;
-- (void)startCaptureWithDevice:(id)a3;
-- (void)startCaptureWithScope:(id)a3;
+- (void)setDefaultCaptureScope:(id)scope;
+- (void)startCaptureWithCommandQueue:(id)queue;
+- (void)startCaptureWithDevice:(id)device;
+- (void)startCaptureWithScope:(id)scope;
 - (void)stopCapture;
 @end
 
 @implementation CaptureMTLCaptureManager
 
-- (void)setDefaultCaptureScope:(id)a3
+- (void)setDefaultCaptureScope:(id)scope
 {
   v3.receiver = self;
   v3.super_class = CaptureMTLCaptureManager;
-  [(CaptureMTLCaptureManager *)&v3 setDefaultCaptureScope:a3];
+  [(CaptureMTLCaptureManager *)&v3 setDefaultCaptureScope:scope];
   +[GTMTLCaptureScopeInfo updateAll];
 }
 
-- (id)newCaptureScopeWithCommandQueue:(id)a3
+- (id)newCaptureScopeWithCommandQueue:(id)queue
 {
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  queueCopy = queue;
   v26 = traceContext;
   *&v27 = 0;
   *(&v27 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -43,8 +43,8 @@
   *(&v28 + 11) = 0;
   HIBYTE(v28) = 0;
   v10 = [CaptureMTLCaptureScope alloc];
-  v11 = [v5 device];
-  v12 = [(CaptureMTLCaptureScope *)v10 initWithDevice:v11 commandQueue:v5 captureContext:self->_traceContext];
+  device = [queueCopy device];
+  v12 = [(CaptureMTLCaptureScope *)v10 initWithDevice:device commandQueue:queueCopy captureContext:self->_traceContext];
 
   GTTraceEncoder_setStream(&v26, [(CaptureMTLCaptureScope *)v12 traceStream]);
   v13 = v27;
@@ -66,10 +66,10 @@
   }
 
   *(v13 + 13) = v14;
-  v18 = [(CaptureMTLCaptureManager *)self traceStream];
-  if (v18)
+  traceStream = [(CaptureMTLCaptureManager *)self traceStream];
+  if (traceStream)
   {
-    var0 = v18->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -77,10 +77,10 @@
     var0 = 0;
   }
 
-  v20 = [(CaptureMTLCaptureScope *)v12 traceStream];
-  if (v20)
+  traceStream2 = [(CaptureMTLCaptureScope *)v12 traceStream];
+  if (traceStream2)
   {
-    v21 = v20->var0;
+    v21 = traceStream2->var0;
   }
 
   else
@@ -88,11 +88,11 @@
     v21 = 0;
   }
 
-  v22 = [v5 traceStream];
+  traceStream3 = [queueCopy traceStream];
 
-  if (v22)
+  if (traceStream3)
   {
-    v23 = *v22;
+    v23 = *traceStream3;
   }
 
   else
@@ -110,13 +110,13 @@
   return v12;
 }
 
-- (id)newCaptureScopeWithDevice:(id)a3
+- (id)newCaptureScopeWithDevice:(id)device
 {
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  deviceCopy = device;
   v24 = traceContext;
   *&v25 = 0;
   *(&v25 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -129,7 +129,7 @@
   *(&v26 + 9) = 16400;
   *(&v26 + 11) = 0;
   HIBYTE(v26) = 0;
-  v10 = [[CaptureMTLCaptureScope alloc] initWithDevice:v5 commandQueue:0 captureContext:self->_traceContext];
+  v10 = [[CaptureMTLCaptureScope alloc] initWithDevice:deviceCopy commandQueue:0 captureContext:self->_traceContext];
   GTTraceEncoder_setStream(&v24, [(CaptureMTLCaptureScope *)v10 traceStream]);
   v11 = v25;
   *(v25 + 8) = -15734;
@@ -150,10 +150,10 @@
   }
 
   *(v11 + 13) = v12;
-  v16 = [(CaptureMTLCaptureManager *)self traceStream];
-  if (v16)
+  traceStream = [(CaptureMTLCaptureManager *)self traceStream];
+  if (traceStream)
   {
-    var0 = v16->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -161,10 +161,10 @@
     var0 = 0;
   }
 
-  v18 = [(CaptureMTLCaptureScope *)v10 traceStream];
-  if (v18)
+  traceStream2 = [(CaptureMTLCaptureScope *)v10 traceStream];
+  if (traceStream2)
   {
-    v19 = v18->var0;
+    v19 = traceStream2->var0;
   }
 
   else
@@ -172,11 +172,11 @@
     v19 = 0;
   }
 
-  v20 = [v5 traceStream];
+  traceStream3 = [deviceCopy traceStream];
 
-  if (v20)
+  if (traceStream3)
   {
-    v21 = *v20;
+    v21 = *traceStream3;
   }
 
   else
@@ -220,10 +220,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLCaptureManager *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLCaptureManager *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -237,10 +237,10 @@
   *(v11 + 8) = BYTE8(v25);
   *(v24 + 15) |= 8u;
   isToolManager = self->_isToolManager;
-  v14 = [(CaptureMTLCaptureManager *)self traceStream];
-  if (v14)
+  traceStream2 = [(CaptureMTLCaptureManager *)self traceStream];
+  if (traceStream2)
   {
-    v15 = v14->var0;
+    v15 = traceStream2->var0;
   }
 
   else
@@ -268,9 +268,9 @@
   GTCaptureBoundaryTracker_handleTrigger(&v17);
 }
 
-- (void)startCaptureWithScope:(id)a3
+- (void)startCaptureWithScope:(id)scope
 {
-  v4 = a3;
+  scopeCopy = scope;
   v5 = objc_opt_new();
   [v5 setApiTriggeredCapture:1];
   [v5 setSuspendAfterCapture:1];
@@ -278,40 +278,40 @@
   [v5 setTriggerHitsToStart:1];
   [v5 setTriggerHitsToEnd:1];
   [v5 setDestination:1];
-  [v5 setCaptureObject:v4];
+  [v5 setCaptureObject:scopeCopy];
 
   [(CaptureMTLCaptureManager *)self startCaptureWithDescriptor:v5 error:0];
 }
 
-- (void)startCaptureWithCommandQueue:(id)a3
+- (void)startCaptureWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_opt_new();
   [v5 setApiTriggeredCapture:1];
   [v5 setSuspendAfterCapture:1];
   [v5 setCaptureMode:2];
   [v5 setDestination:1];
-  [v5 setCaptureObject:v4];
+  [v5 setCaptureObject:queueCopy];
 
   [(CaptureMTLCaptureManager *)self startCaptureWithDescriptor:v5 error:0];
 }
 
-- (void)startCaptureWithDevice:(id)a3
+- (void)startCaptureWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   [v5 setApiTriggeredCapture:1];
   [v5 setSuspendAfterCapture:1];
   [v5 setCaptureMode:0];
   [v5 setDestination:1];
-  [v5 setCaptureObject:v4];
+  [v5 setCaptureObject:deviceCopy];
 
   [(CaptureMTLCaptureManager *)self startCaptureWithDescriptor:v5 error:0];
 }
 
-- (BOOL)startCaptureWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)startCaptureWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   if (!*(boundaryTrackerInstance + 20))
   {
     os_unfair_lock_lock((g_guestAppClientMTL + 24));
@@ -320,9 +320,9 @@
     if (v8)
     {
       v9 = GTMTLGuestAppClient_getUnsupportedFenumInfo();
-      v10 = [v9 asError];
-      v11 = [v10 userInfo];
-      ReportError(a4, MTLCaptureErrorDomain, 1, v11);
+      asError = [v9 asError];
+      userInfo = [asError userInfo];
+      ReportError(error, MTLCaptureErrorDomain, 1, userInfo);
 
       goto LABEL_5;
     }
@@ -334,11 +334,11 @@
     v127 = 0u;
     v125 = 0u;
     isToolManager = self->_isToolManager;
-    v15 = v6;
-    v117 = [v15 captureObject];
+    v15 = descriptorCopy;
+    captureObject = [v15 captureObject];
     if ((objc_opt_respondsToSelector() & 1) == 0 || (v16 = [v15 captureMode], v17 = v16, v16 == &dword_4 + 3))
     {
-      v18 = v117;
+      v18 = captureObject;
       v19 = v18;
       if (v18)
       {
@@ -348,8 +348,8 @@
 LABEL_20:
 
 LABEL_21:
-          v111 = 0;
-          v23 = 0;
+          triggerHitsToEnd = 0;
+          triggerHitsToStart2 = 0;
           goto LABEL_22;
         }
 
@@ -364,51 +364,51 @@ LABEL_21:
 
           if (objc_opt_respondsToSelector())
           {
-            v33 = [v15 triggerHitsToStart];
+            triggerHitsToStart = [v15 triggerHitsToStart];
           }
 
           else
           {
-            v33 = &dword_0 + 1;
+            triggerHitsToStart = &dword_0 + 1;
           }
 
-          v23 = v33;
-          *(&v127 + 1) = v33;
+          triggerHitsToStart2 = triggerHitsToStart;
+          *(&v127 + 1) = triggerHitsToStart;
           if ((objc_opt_respondsToSelector() & 1) == 0)
           {
-            v111 = &dword_0 + 1;
+            triggerHitsToEnd = &dword_0 + 1;
             *&v128 = 1;
             v17 = 4;
             goto LABEL_22;
           }
 
-          v111 = [v15 triggerHitsToEnd];
+          triggerHitsToEnd = [v15 triggerHitsToEnd];
           v17 = 4;
 LABEL_90:
-          *&v128 = v111;
-          if (!v111)
+          *&v128 = triggerHitsToEnd;
+          if (!triggerHitsToEnd)
           {
             v152 = NSLocalizedDescriptionKey;
             v153 = NSLocalizedRecoverySuggestionErrorKey;
             v155 = @"The value of triggerHitsToEnd cannot be 0.";
             v156 = @"Set triggerHitsToEnd to the amount of times the end condition needs to be met to end the capture.";
             v52 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v152 count:2];
-            ReportError(a4, MTLCaptureErrorDomain, 3, v52);
+            ReportError(error, MTLCaptureErrorDomain, 3, v52);
 
             goto LABEL_141;
           }
 
 LABEL_22:
-          v110 = v23;
+          v110 = triggerHitsToStart2;
           if (v17 <= 3)
           {
             if (v17 < 2)
             {
-              v115 = v117;
-              v31 = [v115 traceStream];
-              if (v31)
+              device = captureObject;
+              traceStream = [device traceStream];
+              if (traceStream)
               {
-                v32 = *v31;
+                v32 = *traceStream;
               }
 
               else
@@ -417,7 +417,7 @@ LABEL_22:
               }
 
               v113 = 0;
-              v114 = 0;
+              commandQueue = 0;
               v116 = 0;
               v28 = 0;
               v109 = v32;
@@ -426,13 +426,13 @@ LABEL_22:
 
             if ((v17 - 2) < 2)
             {
-              v24 = [v117 conformsToProtocol:&OBJC_PROTOCOL___MTL4CommandQueue];
-              v25 = v117;
-              v115 = [v25 device];
-              v26 = [v25 traceStream];
-              if (v26)
+              v24 = [captureObject conformsToProtocol:&OBJC_PROTOCOL___MTL4CommandQueue];
+              v25 = captureObject;
+              device = [v25 device];
+              traceStream2 = [v25 traceStream];
+              if (traceStream2)
               {
-                v27 = *v26;
+                v27 = *traceStream2;
               }
 
               else
@@ -461,13 +461,13 @@ LABEL_22:
               }
 
               v113 = v38;
-              v114 = v37;
+              commandQueue = v37;
               v109 = v27;
               *(&v125 + 1) = v27;
-              v39 = [v115 traceStream];
-              if (v39)
+              traceStream3 = [device traceStream];
+              if (traceStream3)
               {
-                v32 = *v39;
+                v32 = *traceStream3;
               }
 
               else
@@ -488,13 +488,13 @@ LABEL_64:
           switch(v17)
           {
             case 4:
-              v116 = v117;
-              v115 = [v116 device];
-              v114 = [v116 commandQueue];
-              v34 = [v116 traceStream];
-              if (v34)
+              v116 = captureObject;
+              device = [v116 device];
+              commandQueue = [v116 commandQueue];
+              traceStream4 = [v116 traceStream];
+              if (traceStream4)
               {
-                v35 = *v34;
+                v35 = *traceStream4;
               }
 
               else
@@ -503,10 +503,10 @@ LABEL_64:
               }
 
               *&v126 = v35;
-              v46 = [v115 traceStream];
-              if (v46)
+              traceStream5 = [device traceStream];
+              if (traceStream5)
               {
-                v47 = *v46;
+                v47 = *traceStream5;
               }
 
               else
@@ -515,12 +515,12 @@ LABEL_64:
               }
 
               *&v125 = v47;
-              if (v114)
+              if (commandQueue)
               {
-                v48 = [v114 traceStream];
-                if (v48)
+                traceStream6 = [commandQueue traceStream];
+                if (traceStream6)
                 {
-                  v49 = *v48;
+                  v49 = *traceStream6;
                 }
 
                 else
@@ -531,8 +531,8 @@ LABEL_64:
                 *(&v125 + 1) = v49;
               }
 
-              v50 = [v116 traceStream];
-              if (!v50)
+              traceStream7 = [v116 traceStream];
+              if (!traceStream7)
               {
                 v109 = 0;
                 v113 = 0;
@@ -545,32 +545,32 @@ LABEL_64:
             case 5:
 LABEL_49:
               v109 = 0;
-              v114 = 0;
-              v115 = 0;
+              commandQueue = 0;
+              device = 0;
               v113 = 0;
               v116 = 0;
 LABEL_50:
               v28 = 0;
               goto LABEL_99;
             case 6:
-              v28 = v117;
-              v115 = [v28 device];
+              v28 = captureObject;
+              device = [v28 device];
               if (objc_opt_respondsToSelector())
               {
-                v29 = [v28 streamReference];
+                streamReference = [v28 streamReference];
               }
 
               else
               {
-                v29 = 0;
+                streamReference = 0;
               }
 
-              *(&v126 + 1) = v29;
-              v42 = [v28 device];
-              v43 = [v42 traceStream];
-              if (v43)
+              *(&v126 + 1) = streamReference;
+              device2 = [v28 device];
+              traceStream8 = [device2 traceStream];
+              if (traceStream8)
               {
-                v44 = *v43;
+                v44 = *traceStream8;
               }
 
               else
@@ -580,18 +580,18 @@ LABEL_50:
 
               *&v125 = v44;
 
-              v50 = [v28 traceStream];
-              if (!v50)
+              traceStream7 = [v28 traceStream];
+              if (!traceStream7)
               {
                 v109 = 0;
                 v113 = 0;
-                v114 = 0;
+                commandQueue = 0;
                 v116 = 0;
                 goto LABEL_99;
               }
 
               v113 = 0;
-              v114 = 0;
+              commandQueue = 0;
               v116 = 0;
               break;
             default:
@@ -599,61 +599,61 @@ LABEL_48:
               v150 = NSLocalizedDescriptionKey;
               v151 = @"Internal error: unrecognized capture mode.";
               v36 = [NSDictionary dictionaryWithObjects:&v151 forKeys:&v150 count:1];
-              ReportError(a4, MTLCaptureErrorDomain, 3, v36);
+              ReportError(error, MTLCaptureErrorDomain, 3, v36);
 
               goto LABEL_49;
           }
 
-          v109 = *v50;
+          v109 = *traceStream7;
 LABEL_99:
           BYTE8(v129) = v17;
           if (objc_opt_respondsToSelector())
           {
-            v53 = [v15 sessionID];
+            sessionID = [v15 sessionID];
           }
 
           else
           {
-            v53 = 0;
+            sessionID = 0;
           }
 
-          *&v127 = v53;
+          *&v127 = sessionID;
           if (objc_opt_respondsToSelector())
           {
-            v54 = [v15 apiTriggeredCapture];
+            apiTriggeredCapture = [v15 apiTriggeredCapture];
           }
 
           else
           {
-            v54 = 1;
+            apiTriggeredCapture = 1;
           }
 
-          BYTE11(v129) = v54;
+          BYTE11(v129) = apiTriggeredCapture;
           BYTE12(v129) = isToolManager;
           if (objc_opt_respondsToSelector())
           {
-            v55 = [v15 includeBacktrace];
+            includeBacktrace = [v15 includeBacktrace];
           }
 
           else
           {
-            v55 = 1;
+            includeBacktrace = 1;
           }
 
-          BYTE14(v129) = v55;
+          BYTE14(v129) = includeBacktrace;
           if (objc_opt_respondsToSelector())
           {
-            v56 = [v15 ignoreUnusedResources];
+            ignoreUnusedResources = [v15 ignoreUnusedResources];
           }
 
           else
           {
-            v56 = 0;
+            ignoreUnusedResources = 0;
           }
 
-          v108 = v56;
-          BYTE13(v129) = v56;
-          v107 = v53;
+          v108 = ignoreUnusedResources;
+          BYTE13(v129) = ignoreUnusedResources;
+          v107 = sessionID;
           if ((objc_opt_respondsToSelector() & 1) == 0 || ([v15 completionHandler], v57 = objc_claimAutoreleasedReturnValue(), v58 = v57 == 0, v57, v58))
           {
             v59 = &v131;
@@ -661,8 +661,8 @@ LABEL_99:
             *(&v131 + 1) = 3221225472;
             *&v132 = __FillGTMTLCaptureDescriptor_block_invoke_2;
             *(&v132 + 1) = &unk_2F2680;
-            *&v133 = v115;
-            *(&v133 + 1) = v114;
+            *&v133 = device;
+            *(&v133 + 1) = commandQueue;
             v134 = v113;
             v135[0] = v116;
             v135[1] = v28;
@@ -684,8 +684,8 @@ LABEL_99:
             *(&v118 + 1) = 3221225472;
             v119 = __FillGTMTLCaptureDescriptor_block_invoke;
             *&v120 = &unk_2F2658;
-            *(&v120 + 1) = v115;
-            *&v121 = v114;
+            *(&v120 + 1) = device;
+            *&v121 = commandQueue;
             *(&v121 + 1) = v113;
             *&v122 = v116;
             *(&v122 + 1) = v28;
@@ -700,9 +700,9 @@ LABEL_99:
             v66 = v123;
           }
 
-          v69 = [v15 destination];
-          v70 = [v15 outputURL];
-          if (v69 == &dword_0 + 2)
+          destination = [v15 destination];
+          outputURL = [v15 outputURL];
+          if (destination == &dword_0 + 2)
           {
             if (![(CaptureMTLCaptureManager *)self supportsDestination:2])
             {
@@ -713,11 +713,11 @@ LABEL_99:
               v143[1] = @"Capture to another destination.";
               v85 = [NSDictionary dictionaryWithObjects:v143 forKeys:v142 count:2];
 
-              ReportError(a4, MTLCaptureErrorDomain, 3, v85);
+              ReportError(error, MTLCaptureErrorDomain, 3, v85);
               goto LABEL_136;
             }
 
-            if (!v70)
+            if (!outputURL)
             {
               v140[0] = NSLocalizedDescriptionKey;
               v86 = [NSString stringWithFormat:@"Capture Destination ‘%@’ must write to a file.", @"GPU Trace Document"];
@@ -726,37 +726,37 @@ LABEL_99:
               v141[1] = @"Specify a valid output file path.";
               v87 = [NSDictionary dictionaryWithObjects:v141 forKeys:v140 count:2];
 
-              ReportError(a4, MTLCaptureErrorDomain, 3, v87);
+              ReportError(error, MTLCaptureErrorDomain, 3, v87);
               goto LABEL_136;
             }
 
-            v73 = [v70 pathExtension];
-            v74 = [v73 isEqualToString:@"gputrace"];
+            pathExtension = [outputURL pathExtension];
+            v74 = [pathExtension isEqualToString:@"gputrace"];
 
             if ((v74 & 1) == 0)
             {
               v138[0] = NSLocalizedDescriptionKey;
-              v88 = [v70 lastPathComponent];
-              v89 = [NSString stringWithFormat:@"‘%@’ could not be used because the file name is invalid.", v88];
+              lastPathComponent = [outputURL lastPathComponent];
+              v89 = [NSString stringWithFormat:@"‘%@’ could not be used because the file name is invalid.", lastPathComponent];
               v138[1] = NSLocalizedRecoverySuggestionErrorKey;
               v139[0] = v89;
               v139[1] = @"Use ‘.gputrace’ as file name extension.";
               v90 = [NSDictionary dictionaryWithObjects:v139 forKeys:v138 count:2];
 
-              ReportError(a4, NSCocoaErrorDomain, 514, v90);
+              ReportError(error, NSCocoaErrorDomain, 514, v90);
               goto LABEL_136;
             }
 
             v75 = +[NSFileManager defaultManager];
-            v76 = [v70 URLByDeletingLastPathComponent];
-            if (v76 && ([v75 createDirectoryAtURL:v76 withIntermediateDirectories:1 attributes:0 error:a4] & 1) == 0 || !objc_msgSend(v75, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v70, 0, 0, a4))
+            uRLByDeletingLastPathComponent = [outputURL URLByDeletingLastPathComponent];
+            if (uRLByDeletingLastPathComponent && ([v75 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error] & 1) == 0 || !objc_msgSend(v75, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", outputURL, 0, 0, error))
             {
 
               goto LABEL_136;
             }
 
-            v77 = v70;
-            v78 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v70 fileSystemRepresentation]);
+            v77 = outputURL;
+            v78 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [outputURL fileSystemRepresentation]);
             gputracePath = self->_gputracePath;
             self->_gputracePath = v78;
 
@@ -764,15 +764,15 @@ LABEL_99:
             *&v129 = "";
             if (objc_opt_respondsToSelector())
             {
-              v80 = [v15 suspendAfterCapture];
+              suspendAfterCapture = [v15 suspendAfterCapture];
             }
 
             else
             {
-              v80 = 0;
+              suspendAfterCapture = 0;
             }
 
-            BYTE9(v129) = v80;
+            BYTE9(v129) = suspendAfterCapture;
 
             v132 = 0u;
             v133 = 0u;
@@ -780,10 +780,10 @@ LABEL_99:
             traceStream = self->_traceStream;
             GTTraceContext_pushEncoderWithStream(self->_traceContext, &v131);
             Arguments = GTTraceEncoder_allocateArguments(&v131, -15736, 24);
-            v97 = [(CaptureMTLCaptureManager *)self traceStream];
-            if (v97)
+            traceStream9 = [(CaptureMTLCaptureManager *)self traceStream];
+            if (traceStream9)
             {
-              var0 = v97->var0;
+              var0 = traceStream9->var0;
             }
 
             else
@@ -791,14 +791,14 @@ LABEL_99:
               var0 = 0;
             }
 
-            if (a4)
+            if (error)
             {
-              a4 = *a4;
+              error = *error;
             }
 
             v99 = SaveMTLCaptureDescriptor(&v131, &v125);
             *Arguments = var0;
-            *(Arguments + 1) = a4;
+            *(Arguments + 1) = error;
             Arguments[16] = v99;
             *(Arguments + 17) = 0;
             *(Arguments + 5) = 0;
@@ -808,8 +808,8 @@ LABEL_99:
             *(v132 + 15) |= 8u;
             v102 = [[GTCaptureDescriptor alloc] initWithRequestID:v107];
             [v102 setTriggerHitsToStart:v110];
-            [v102 setTriggerHitsToEnd:v111];
-            [v102 setSuspendAfterCapture:v80];
+            [v102 setTriggerHitsToEnd:triggerHitsToEnd];
+            [v102 setSuspendAfterCapture:suspendAfterCapture];
             [v102 setIgnoreUnusedResources:v108];
             [v102 setStreamRef:v109];
             v103 = objc_opt_new();
@@ -827,10 +827,10 @@ LABEL_99:
               v104 = 5;
             }
 
-            v105 = [(CaptureMTLCaptureManager *)self traceStream];
-            if (v105)
+            traceStream10 = [(CaptureMTLCaptureManager *)self traceStream];
+            if (traceStream10)
             {
-              v106 = v105->var0;
+              v106 = traceStream10->var0;
             }
 
             else
@@ -861,14 +861,14 @@ LABEL_99:
 
           else
           {
-            if (v69 != &dword_0 + 1)
+            if (destination != &dword_0 + 1)
             {
               v136[0] = NSLocalizedDescriptionKey;
               v136[1] = NSLocalizedRecoverySuggestionErrorKey;
               v137[0] = @"Capture Destination is not valid.";
               v137[1] = @"Capturing to a valid destination.";
               v81 = [NSDictionary dictionaryWithObjects:v137 forKeys:v136 count:2];
-              ReportError(a4, MTLCaptureErrorDomain, 3, v81);
+              ReportError(error, MTLCaptureErrorDomain, 3, v81);
 
               goto LABEL_136;
             }
@@ -882,11 +882,11 @@ LABEL_99:
               v147[1] = @"Capture to another destination.";
               v83 = [NSDictionary dictionaryWithObjects:v147 forKeys:v146 count:2];
 
-              ReportError(a4, MTLCaptureErrorDomain, 3, v83);
+              ReportError(error, MTLCaptureErrorDomain, 3, v83);
               goto LABEL_136;
             }
 
-            if (v70)
+            if (outputURL)
             {
               v144[0] = NSLocalizedDescriptionKey;
               v71 = [NSString stringWithFormat:@"Capture Destination ‘%@’ cannot write to a file.", @"Developer Tools"];
@@ -895,7 +895,7 @@ LABEL_99:
               v145[1] = @"Don't specify an output file path.";
               v72 = [NSDictionary dictionaryWithObjects:v145 forKeys:v144 count:2];
 
-              ReportError(a4, MTLCaptureErrorDomain, 3, v72);
+              ReportError(error, MTLCaptureErrorDomain, 3, v72);
 LABEL_136:
               v12 = 0;
 LABEL_137:
@@ -922,12 +922,12 @@ LABEL_142:
         v156 = @"Specify an object to be captured like MTLDevice.";
         v41 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v152 count:2];
 
-        ReportError(a4, MTLCaptureErrorDomain, 3, v41);
+        ReportError(error, MTLCaptureErrorDomain, 3, v41);
       }
 
       else
       {
-        FillMissingCaptureObjectError(a4);
+        FillMissingCaptureObjectError(error);
       }
 
 LABEL_141:
@@ -937,11 +937,11 @@ LABEL_141:
     }
 
     v20 = v16;
-    v21 = v117;
+    v21 = captureObject;
     v22 = v21;
     if (!v21 && v20 != 5)
     {
-      FillMissingCaptureObjectError(a4);
+      FillMissingCaptureObjectError(error);
 LABEL_140:
 
       goto LABEL_141;
@@ -972,7 +972,7 @@ LABEL_140:
         {
           v30 = @"an MTLCaptureScope";
 LABEL_139:
-          FillCaptureObjectTypeError(a4, v30);
+          FillCaptureObjectTypeError(error, v30);
           goto LABEL_140;
         }
       }
@@ -988,9 +988,9 @@ LABEL_139:
         if (objc_opt_respondsToSelector())
         {
 
-          v23 = [v45 triggerHitsToStart];
-          *(&v127 + 1) = v23;
-          v111 = [v45 triggerHitsToEnd];
+          triggerHitsToStart2 = [v45 triggerHitsToStart];
+          *(&v127 + 1) = triggerHitsToStart2;
+          triggerHitsToEnd = [v45 triggerHitsToEnd];
           goto LABEL_90;
         }
 
@@ -1012,7 +1012,7 @@ LABEL_139:
       v157 = @"Ensure that your capture descriptor implements the MTLCaptureManager(InternalSPI) category.";
       v94 = [NSDictionary dictionaryWithObjects:&v155 forKeys:&v152 count:3];
 
-      ReportError(a4, MTLCaptureErrorDomain, 3, v94);
+      ReportError(error, MTLCaptureErrorDomain, 3, v94);
       goto LABEL_141;
     }
 
@@ -1025,7 +1025,7 @@ LABEL_139:
   v149[0] = @"Already capturing.";
   v149[1] = @"Stop running capture before starting a new one.";
   v7 = [NSDictionary dictionaryWithObjects:v149 forKeys:v148 count:2];
-  ReportError(a4, MTLCaptureErrorDomain, 2, v7);
+  ReportError(error, MTLCaptureErrorDomain, 2, v7);
 
 LABEL_5:
   v12 = 0;
@@ -1034,14 +1034,14 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)supportsDestination:(int64_t)a3
+- (BOOL)supportsDestination:(int64_t)destination
 {
-  if (a3 == 2)
+  if (destination == 2)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (destination == 1)
   {
     if ((dword_31F7C8 & 0x800) == 0)
     {
@@ -1062,15 +1062,15 @@ LABEL_6:
   [(CaptureMTLCaptureManager *)&v3 dealloc];
 }
 
-- (CaptureMTLCaptureManager)initWithCaptureContext:(GTTraceContext *)a3 andIsToolsManager:(BOOL)a4
+- (CaptureMTLCaptureManager)initWithCaptureContext:(GTTraceContext *)context andIsToolsManager:(BOOL)manager
 {
   v6 = [(CaptureMTLCaptureManager *)self init];
   v7 = v6;
   if (v6)
   {
-    v6->_traceContext = a3;
+    v6->_traceContext = context;
     v8 = DEVICEOBJECT(v6);
-    *(v7 + 16) = GTTraceContext_openStream(a3, v8, v7);
+    *(v7 + 16) = GTTraceContext_openStream(context, v8, v7);
 
     v25 = 0u;
     v26 = 0u;
@@ -1096,10 +1096,10 @@ LABEL_6:
     }
 
     *(v10 + 13) = v11;
-    v15 = [v7 traceStream];
-    if (v15)
+    traceStream = [v7 traceStream];
+    if (traceStream)
     {
-      v16 = *v15;
+      v16 = *traceStream;
     }
 
     else
@@ -1107,10 +1107,10 @@ LABEL_6:
       v16 = 0;
     }
 
-    v17 = [v7 traceStream];
-    if (v17)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v18 = *v17;
+      v18 = *traceStream2;
     }
 
     else
@@ -1124,7 +1124,7 @@ LABEL_6:
     *v19 = v20;
     *(v19 + 8) = BYTE8(v26);
     *(v25 + 15) |= 8u;
-    *(v7 + 32) = a4;
+    *(v7 + 32) = manager;
     v21 = dispatch_semaphore_create(0);
     v22 = *(v7 + 40);
     *(v7 + 40) = v21;

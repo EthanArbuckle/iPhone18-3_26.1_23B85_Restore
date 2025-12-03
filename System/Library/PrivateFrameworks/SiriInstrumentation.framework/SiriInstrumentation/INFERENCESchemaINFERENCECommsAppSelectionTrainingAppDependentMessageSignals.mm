@@ -1,30 +1,30 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppAffinityScoreForMessagesReceived:(BOOL)a3;
-- (void)setHasAppAffinityScoreForMessagesUsingSiri:(BOOL)a3;
-- (void)setHasAppFreqForMessages:(BOOL)a3;
-- (void)setHasAppFreqForMessagesForCountryCode:(BOOL)a3;
-- (void)setHasAppFreqForMessagesUsingSiri:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppAffinityScoreForMessagesReceived:(BOOL)received;
+- (void)setHasAppAffinityScoreForMessagesUsingSiri:(BOOL)siri;
+- (void)setHasAppFreqForMessages:(BOOL)messages;
+- (void)setHasAppFreqForMessagesForCountryCode:(BOOL)code;
+- (void)setHasAppFreqForMessagesUsingSiri:(BOOL)siri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appAffinityScoreForMessages"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForMessages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)v5 setAppAffinityScoreForMessages:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"appAffinityScoreForMessagesUsingSiri"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForMessagesUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)v5 setAppAffinityScoreForMessagesUsingSiri:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"appAffinityScoreForMessagesReceived"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"appAffinityScoreForMessagesReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)v5 setAppAffinityScoreForMessagesReceived:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appFreqForMessages"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForMessages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals setAppFreqForMessages:](v5, "setAppFreqForMessages:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appFreqForMessagesUsingSiri"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForMessagesUsingSiri"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals setAppFreqForMessagesUsingSiri:](v5, "setAppFreqForMessagesUsingSiri:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appFreqForMessagesForCountryCode"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appFreqForMessagesForCountryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,30 +75,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -111,14 +111,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self appAffinityScoreForMessages];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"appAffinityScoreForMessages"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appAffinityScoreForMessages"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -141,7 +141,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self appAffinityScoreForMessagesReceived];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"appAffinityScoreForMessagesReceived"];
+  [dictionary setObject:v10 forKeyedSubscript:@"appAffinityScoreForMessagesReceived"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -159,7 +159,7 @@ LABEL_13:
   v11 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals *)self appAffinityScoreForMessagesUsingSiri];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"appAffinityScoreForMessagesUsingSiri"];
+  [dictionary setObject:v12 forKeyedSubscript:@"appAffinityScoreForMessagesUsingSiri"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -175,7 +175,7 @@ LABEL_5:
 
 LABEL_14:
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals appFreqForMessages](self, "appFreqForMessages")}];
-  [v3 setObject:v13 forKeyedSubscript:@"appFreqForMessages"];
+  [dictionary setObject:v13 forKeyedSubscript:@"appFreqForMessages"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -191,19 +191,19 @@ LABEL_6:
 
 LABEL_15:
   v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals appFreqForMessagesForCountryCode](self, "appFreqForMessagesForCountryCode")}];
-  [v3 setObject:v14 forKeyedSubscript:@"appFreqForMessagesForCountryCode"];
+  [dictionary setObject:v14 forKeyedSubscript:@"appFreqForMessagesForCountryCode"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommsAppSelectionTrainingAppDependentMessageSignals appFreqForMessagesUsingSiri](self, "appFreqForMessagesUsingSiri")}];
-    [v3 setObject:v5 forKeyedSubscript:@"appFreqForMessagesUsingSiri"];
+    [dictionary setObject:v5 forKeyedSubscript:@"appFreqForMessagesUsingSiri"];
   }
 
 LABEL_8:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -362,16 +362,16 @@ LABEL_31:
   return v9 ^ v4 ^ v14 ^ v19 ^ v20 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -380,14 +380,14 @@ LABEL_31:
   if (*&has)
   {
     appAffinityScoreForMessages = self->_appAffinityScoreForMessages;
-    [v4 appAffinityScoreForMessages];
+    [equalCopy appAffinityScoreForMessages];
     if (appAffinityScoreForMessages != v8)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -399,14 +399,14 @@ LABEL_31:
   if (v9)
   {
     appAffinityScoreForMessagesUsingSiri = self->_appAffinityScoreForMessagesUsingSiri;
-    [v4 appAffinityScoreForMessagesUsingSiri];
+    [equalCopy appAffinityScoreForMessagesUsingSiri];
     if (appAffinityScoreForMessagesUsingSiri != v11)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -418,14 +418,14 @@ LABEL_31:
   if (v12)
   {
     appAffinityScoreForMessagesReceived = self->_appAffinityScoreForMessagesReceived;
-    [v4 appAffinityScoreForMessagesReceived];
+    [equalCopy appAffinityScoreForMessagesReceived];
     if (appAffinityScoreForMessagesReceived != v14)
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v15 = (*&has >> 3) & 1;
@@ -437,13 +437,13 @@ LABEL_31:
   if (v15)
   {
     appFreqForMessages = self->_appFreqForMessages;
-    if (appFreqForMessages != [v4 appFreqForMessages])
+    if (appFreqForMessages != [equalCopy appFreqForMessages])
     {
       goto LABEL_26;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v17 = (*&has >> 4) & 1;
@@ -455,10 +455,10 @@ LABEL_31:
   if (v17)
   {
     appFreqForMessagesUsingSiri = self->_appFreqForMessagesUsingSiri;
-    if (appFreqForMessagesUsingSiri == [v4 appFreqForMessagesUsingSiri])
+    if (appFreqForMessagesUsingSiri == [equalCopy appFreqForMessagesUsingSiri])
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_22;
     }
 
@@ -477,7 +477,7 @@ LABEL_22:
   if (v19)
   {
     appFreqForMessagesForCountryCode = self->_appFreqForMessagesForCountryCode;
-    if (appFreqForMessagesForCountryCode != [v4 appFreqForMessagesForCountryCode])
+    if (appFreqForMessagesForCountryCode != [equalCopy appFreqForMessagesForCountryCode])
     {
       goto LABEL_26;
     }
@@ -489,9 +489,9 @@ LABEL_27:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -566,9 +566,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasAppFreqForMessagesForCountryCode:(BOOL)a3
+- (void)setHasAppFreqForMessagesForCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 32;
   }
@@ -581,9 +581,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasAppFreqForMessagesUsingSiri:(BOOL)a3
+- (void)setHasAppFreqForMessagesUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 16;
   }
@@ -596,9 +596,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppFreqForMessages:(BOOL)a3
+- (void)setHasAppFreqForMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v3 = 8;
   }
@@ -611,9 +611,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAppAffinityScoreForMessagesReceived:(BOOL)a3
+- (void)setHasAppAffinityScoreForMessagesReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 4;
   }
@@ -626,9 +626,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAppAffinityScoreForMessagesUsingSiri:(BOOL)a3
+- (void)setHasAppAffinityScoreForMessagesUsingSiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 2;
   }

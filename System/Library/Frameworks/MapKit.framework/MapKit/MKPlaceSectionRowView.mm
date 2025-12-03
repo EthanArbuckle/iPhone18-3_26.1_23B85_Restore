@@ -1,29 +1,29 @@
 @interface MKPlaceSectionRowView
-- (void)_updateBackgroundColor:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateBackgroundColor:(BOOL)color;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation MKPlaceSectionRowView
 
-- (void)_updateBackgroundColor:(BOOL)a3
+- (void)_updateBackgroundColor:(BOOL)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (*(&self->super._fullWidthHairline + 1) || *(&self->super._fullWidthHairline + 2))
   {
-    v5 = [(UIView *)self mk_theme];
-    v6 = [v5 selectedRowColor];
+    mk_theme = [(UIView *)self mk_theme];
+    selectedRowColor = [mk_theme selectedRowColor];
   }
 
   else
   {
-    v5 = [(UIView *)self mk_theme];
-    v6 = [v5 rowColor];
+    mk_theme = [(UIView *)self mk_theme];
+    selectedRowColor = [mk_theme rowColor];
   }
 
-  v7 = v6;
+  v7 = selectedRowColor;
 
-  if (v3)
+  if (colorCopy)
   {
     v8 = MEMORY[0x1E69DD250];
     v9[0] = MEMORY[0x1E69E9820];
@@ -41,21 +41,21 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (*(&self->super._fullWidthHairline + 2) != a3)
+  if (*(&self->super._fullWidthHairline + 2) != highlighted)
   {
-    *(&self->super._fullWidthHairline + 2) = a3;
-    [(MKPlaceSectionRowView *)self _updateBackgroundColor:a4];
+    *(&self->super._fullWidthHairline + 2) = highlighted;
+    [(MKPlaceSectionRowView *)self _updateBackgroundColor:animated];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  if (*(&self->super._fullWidthHairline + 1) != a3)
+  if (*(&self->super._fullWidthHairline + 1) != selected)
   {
-    *(&self->super._fullWidthHairline + 1) = a3;
-    [(MKPlaceSectionRowView *)self _updateBackgroundColor:a4];
+    *(&self->super._fullWidthHairline + 1) = selected;
+    [(MKPlaceSectionRowView *)self _updateBackgroundColor:animated];
   }
 }
 

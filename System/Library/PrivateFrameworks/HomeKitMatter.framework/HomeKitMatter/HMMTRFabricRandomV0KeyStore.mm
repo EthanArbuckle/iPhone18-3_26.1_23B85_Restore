@@ -12,13 +12,13 @@
   v2 = [(HMMTRFabricRandomV0KeyStore *)&v8 init];
   if (v2)
   {
-    v3 = [[HMMTRMatterKeypair alloc] initUnassociated];
+    initUnassociated = [[HMMTRMatterKeypair alloc] initUnassociated];
     nocSigner = v2->_nocSigner;
-    v2->_nocSigner = v3;
+    v2->_nocSigner = initUnassociated;
 
-    v5 = [[HMMTRMatterKeypair alloc] initUnassociated];
+    initUnassociated2 = [[HMMTRMatterKeypair alloc] initUnassociated];
     ownerSharedOperationalKeyPair = v2->_ownerSharedOperationalKeyPair;
-    v2->_ownerSharedOperationalKeyPair = v5;
+    v2->_ownerSharedOperationalKeyPair = initUnassociated2;
   }
 
   return v2;

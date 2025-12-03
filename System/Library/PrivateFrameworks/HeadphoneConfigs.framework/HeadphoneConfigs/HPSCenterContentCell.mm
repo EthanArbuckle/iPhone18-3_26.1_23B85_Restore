@@ -1,30 +1,30 @@
 @interface HPSCenterContentCell
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithCoder:(id)a3;
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)addSubview:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithCoder:(id)coder;
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)addSubview:(id)subview;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPSCenterContentCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_2511ED34C();
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for HPSCenterContentCell();
-  [(HPSCenterContentCell *)&v4 addSubview:a3];
+  [(HPSCenterContentCell *)&v4 addSubview:subview];
 }
 
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_25121179C();
     v9 = v8;
@@ -36,13 +36,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_2511E9ACC(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_2511E9ACC(style, v7, v9, specifier);
 }
 
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_25121179C();
     v7 = v6;
@@ -68,20 +68,20 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for HPSCenterContentCell();
-  v10 = [(PSTableCell *)&v12 initWithStyle:a3 reuseIdentifier:v9];
+  v10 = [(PSTableCell *)&v12 initWithStyle:style reuseIdentifier:v9];
 
   return v10;
 }
 
-- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithCoder:(id)a3
+- (_TtC16HeadphoneConfigs20HPSCenterContentCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16HeadphoneConfigs20HPSCenterContentCell_label;
-  v5 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.super.isa + v4) = sub_2511E98F4();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC16HeadphoneConfigs20HPSCenterContentCell_headphoneDevice) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HPSCenterContentCell();
-  v6 = [(HPSCenterContentCell *)&v8 initWithCoder:v5];
+  v6 = [(HPSCenterContentCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

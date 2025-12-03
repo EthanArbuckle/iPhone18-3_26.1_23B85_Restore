@@ -1,23 +1,23 @@
 @interface VTUIPagedLabel
-- (VTUIPagedLabel)initWithFrame:(CGRect)a3 isProximity:(BOOL)a4 forEnrollmentStyle:(int64_t)a5 withIntelligentLight:(BOOL)a6;
+- (VTUIPagedLabel)initWithFrame:(CGRect)frame isProximity:(BOOL)proximity forEnrollmentStyle:(int64_t)style withIntelligentLight:(BOOL)light;
 - (void)clear;
 - (void)setupViews;
-- (void)slideInText:(id)a3 afterDelay:(double)a4 completion:(id)a5;
+- (void)slideInText:(id)text afterDelay:(double)delay completion:(id)completion;
 @end
 
 @implementation VTUIPagedLabel
 
-- (VTUIPagedLabel)initWithFrame:(CGRect)a3 isProximity:(BOOL)a4 forEnrollmentStyle:(int64_t)a5 withIntelligentLight:(BOOL)a6
+- (VTUIPagedLabel)initWithFrame:(CGRect)frame isProximity:(BOOL)proximity forEnrollmentStyle:(int64_t)style withIntelligentLight:(BOOL)light
 {
   v12.receiver = self;
   v12.super_class = VTUIPagedLabel;
-  v9 = [(VTUIPagedLabel *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(VTUIPagedLabel *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
-    v9->_isProximity = a4;
-    v9->_enrollmentStyle = a5;
-    v9->_hasIntelligentLight = a6;
+    v9->_isProximity = proximity;
+    v9->_enrollmentStyle = style;
+    v9->_hasIntelligentLight = light;
     [(VTUIPagedLabel *)v9 setupViews];
   }
 
@@ -71,12 +71,12 @@
   if (self->_hasIntelligentLight)
   {
     v15 = self->_instructionLabelLeft;
-    v16 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v15 setTextColor:v16];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)v15 setTextColor:systemWhiteColor];
 
     v17 = self->_instructionLabelRight;
-    v18 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v17 setTextColor:v18];
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)v17 setTextColor:systemWhiteColor2];
   }
 
   if (self->_isProximity)
@@ -84,16 +84,16 @@
     v19 = self->_instructionLabelLeft;
     if (self->_enrollmentStyle == 1)
     {
-      v20 = [v89 PRXheaderFont];
-      [(UILabel *)v19 setFont:v20];
+      pRXheaderFont = [v89 PRXheaderFont];
+      [(UILabel *)v19 setFont:pRXheaderFont];
 
       v21 = self->_instructionLabelLeft;
-      v22 = [v89 PRXheaderColor];
-      [(UILabel *)v21 setTextColor:v22];
+      pRXheaderColor = [v89 PRXheaderColor];
+      [(UILabel *)v21 setTextColor:pRXheaderColor];
 
       v23 = self->_instructionLabelRight;
-      v24 = [v89 PRXheaderFont];
-      [(UILabel *)v23 setFont:v24];
+      pRXheaderFont2 = [v89 PRXheaderFont];
+      [(UILabel *)v23 setFont:pRXheaderFont2];
 
       v25 = self->_instructionLabelRight;
       [v89 PRXheaderColor];
@@ -101,33 +101,33 @@
 
     else
     {
-      v30 = [v89 proxInstructionFont];
-      [(UILabel *)v19 setFont:v30];
+      proxInstructionFont = [v89 proxInstructionFont];
+      [(UILabel *)v19 setFont:proxInstructionFont];
 
       v31 = self->_instructionLabelLeft;
-      v32 = [v89 proxInstructionColor];
-      [(UILabel *)v31 setTextColor:v32];
+      proxInstructionColor = [v89 proxInstructionColor];
+      [(UILabel *)v31 setTextColor:proxInstructionColor];
 
       v33 = self->_instructionLabelRight;
-      v34 = [v89 proxInstructionFont];
-      [(UILabel *)v33 setFont:v34];
+      proxInstructionFont2 = [v89 proxInstructionFont];
+      [(UILabel *)v33 setFont:proxInstructionFont2];
 
       v25 = self->_instructionLabelRight;
       [v89 proxInstructionColor];
     }
-    v29 = ;
-    [(UILabel *)v25 setTextColor:v29];
+    instructionLabelFont2 = ;
+    [(UILabel *)v25 setTextColor:instructionLabelFont2];
   }
 
   else
   {
     v26 = self->_instructionLabelLeft;
-    v27 = [v89 instructionLabelFont];
-    [(UILabel *)v26 setFont:v27];
+    instructionLabelFont = [v89 instructionLabelFont];
+    [(UILabel *)v26 setFont:instructionLabelFont];
 
     v28 = self->_instructionLabelRight;
-    v29 = [v89 instructionLabelFont];
-    [(UILabel *)v28 setFont:v29];
+    instructionLabelFont2 = [v89 instructionLabelFont];
+    [(UILabel *)v28 setFont:instructionLabelFont2];
   }
 
   [(UIView *)self->_instructionContainerLeft addSubview:self->_instructionLabelLeft];
@@ -232,13 +232,13 @@
   [(UIView *)v85 addConstraints:v88];
 }
 
-- (void)slideInText:(id)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)slideInText:(id)text afterDelay:(double)delay completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VTUIPagedLabel *)self _shouldReverseLayoutDirection];
-  if (v10)
+  textCopy = text;
+  completionCopy = completion;
+  _shouldReverseLayoutDirection = [(VTUIPagedLabel *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     [(UIView *)self->_instructionContainerLeft frame];
   }
@@ -260,9 +260,9 @@
   v33 = *MEMORY[0x277D74118];
   v34[0] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-  if (v8)
+  if (textCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8 attributes:v15];
+    v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy attributes:v15];
   }
 
   else
@@ -274,7 +274,7 @@
   [(UILabel *)self->_instructionLabelLeft setAlpha:1.0];
   [(UIScrollView *)self->_scrollView setNeedsLayout];
   [(UIScrollView *)self->_scrollView layoutIfNeeded];
-  if (v10)
+  if (_shouldReverseLayoutDirection)
   {
     v17 = *MEMORY[0x277CBF348];
     v18 = *(MEMORY[0x277CBF348] + 8);
@@ -306,10 +306,10 @@
   v28 = v16;
   v30 = v19;
   v31 = v20;
-  v29 = v9;
-  v24 = v9;
+  v29 = completionCopy;
+  v24 = completionCopy;
   v25 = v16;
-  [v23 animateWithDuration:0 delay:v32 options:v27 animations:0.3 completion:a4];
+  [v23 animateWithDuration:0 delay:v32 options:v27 animations:0.3 completion:delay];
 
   v26 = *MEMORY[0x277D85DE8];
 }
@@ -356,8 +356,8 @@ uint64_t __52__VTUIPagedLabel_slideInText_afterDelay_completion___block_invoke_2
   }
 
   [(UIScrollView *)self->_scrollView setHidden:1];
-  v7 = [(UIScrollView *)self->_scrollView layer];
-  [v7 removeAllAnimations];
+  layer = [(UIScrollView *)self->_scrollView layer];
+  [layer removeAllAnimations];
 
   [(UIScrollView *)self->_scrollView setContentOffset:v4, v6];
   [(UIView *)self->_instructionContainerLeft setAlpha:1.0];

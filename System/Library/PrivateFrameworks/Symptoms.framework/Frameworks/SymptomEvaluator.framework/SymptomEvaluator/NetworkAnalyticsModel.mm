@@ -1,92 +1,92 @@
 @interface NetworkAnalyticsModel
-+ (id)getDaysWithSimilarPatternForInterfaceType:(int64_t)a3;
++ (id)getDaysWithSimilarPatternForInterfaceType:(int64_t)type;
 + (id)modelGeneratedAt;
 + (unint64_t)modelResolution;
 + (void)purgeAllJournalRecords;
 + (void)resetModel;
-- ($340E233F617FB3D5D9EFCE5A6F22D754)_parseTimeIntoWeekdayAndSlotId:(SEL)a3 withReferenceDate:(int64_t)a4;
-- ($8CE0ECD3AB9986DA167C077002E61EF1)_calculateStatisticsFromNetworkStateTable:(SEL)a3 usingPredicate:(id)a4;
-- (BOOL)_insertInternalNetworkStateRecordTo:(id)a3 networkId:(id)a4 networkLQM:(int64_t)a5 age:(int64_t)a6 dayOfWeek:(int64_t)a7 slotId:(int64_t)a8 numberOfSlots:(int64_t)a9 stateDuration:(int64_t)a10;
+- ($340E233F617FB3D5D9EFCE5A6F22D754)_parseTimeIntoWeekdayAndSlotId:(SEL)id withReferenceDate:(int64_t)date;
+- ($8CE0ECD3AB9986DA167C077002E61EF1)_calculateStatisticsFromNetworkStateTable:(SEL)table usingPredicate:(id)predicate;
+- (BOOL)_insertInternalNetworkStateRecordTo:(id)to networkId:(id)id networkLQM:(int64_t)m age:(int64_t)age dayOfWeek:(int64_t)week slotId:(int64_t)slotId numberOfSlots:(int64_t)slots stateDuration:(int64_t)self0;
 - (BOOL)_isValidTimezoneToReturnPredictions;
 - (BOOL)_isValidTimezoneToTrain;
-- (BOOL)_savePredictionToJournalForInterface:(int64_t)a3;
+- (BOOL)_savePredictionToJournalForInterface:(int64_t)interface;
 - (BOOL)_shouldCreateIpsFile;
 - (NSDate)debugTrainingTime;
 - (NSDate)lastModelRunTime;
-- (NetworkAnalyticsModel)initWithJournalName:(id)a3 workspace:(id)a4 queue:(id)a5;
-- (double)_clusterUsingKMeansOn:(id)a3 into:(int)a4 iterations:(int)a5 saveCentroidsTo:(id)a6;
-- (double)_evaluateErrorOfLQMPredictions:(id)a3 againstObservedLQMTable:(id)a4;
-- (double)_fetchPredictionErrorForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7;
-- (double)_fetchTrainingProgressForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7;
-- (id)_clusterEventsInWeekUsingKMeansOn:(id)a3;
-- (id)_clusterEventsUsingKMeansForSetOfDays:(id)a3 networkStateTable:(id)a4 saveCentroidsTo:(id)a5;
-- (id)_extractImpairmentEventsFromNetworkStateTable:(id)a3 setOfDays:(id)a4;
-- (id)_fetchPredictionsForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7 error:(id *)a8;
-- (id)_getComplementaryPredictionNameForInterface:(int64_t)a3;
-- (id)_getDaysWithSimilarPatternForInterfaceType:(int64_t)a3;
-- (id)_getPredictionJournalNameWithPrefix:(id)a3 forInterface:(int64_t)a4 slotSizeMinutes:(unint64_t)a5;
-- (id)_getSavedPredictionHeaderNameForInterface:(int64_t)a3;
-- (id)_learnDisconnectionPatternForSetOfDays:(id)a3 impairmentEvents:(id)a4;
-- (id)_loadSavedPredictionBasedOnHeaderData:(id)a3 interface:(int64_t)a4;
-- (id)_purgeAndReturnValidJournalWithPrefix:(id)a3 olderThan:(unint64_t)a4;
+- (NetworkAnalyticsModel)initWithJournalName:(id)name workspace:(id)workspace queue:(id)queue;
+- (double)_clusterUsingKMeansOn:(id)on into:(int)into iterations:(int)iterations saveCentroidsTo:(id)to;
+- (double)_evaluateErrorOfLQMPredictions:(id)predictions againstObservedLQMTable:(id)table;
+- (double)_fetchPredictionErrorForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature;
+- (double)_fetchTrainingProgressForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature;
+- (id)_clusterEventsInWeekUsingKMeansOn:(id)on;
+- (id)_clusterEventsUsingKMeansForSetOfDays:(id)days networkStateTable:(id)table saveCentroidsTo:(id)to;
+- (id)_extractImpairmentEventsFromNetworkStateTable:(id)table setOfDays:(id)days;
+- (id)_fetchPredictionsForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature error:(id *)error;
+- (id)_getComplementaryPredictionNameForInterface:(int64_t)interface;
+- (id)_getDaysWithSimilarPatternForInterfaceType:(int64_t)type;
+- (id)_getPredictionJournalNameWithPrefix:(id)prefix forInterface:(int64_t)interface slotSizeMinutes:(unint64_t)minutes;
+- (id)_getSavedPredictionHeaderNameForInterface:(int64_t)interface;
+- (id)_learnDisconnectionPatternForSetOfDays:(id)days impairmentEvents:(id)events;
+- (id)_loadSavedPredictionBasedOnHeaderData:(id)data interface:(int64_t)interface;
+- (id)_purgeAndReturnValidJournalWithPrefix:(id)prefix olderThan:(unint64_t)than;
 - (id)_readJournalEntries;
 - (id)_readJournalEntriesUsingImpoExpoService;
 - (id)_readJournalEntriesUsingIpsfile;
 - (id)_readJournalEntriesUsingSimulatedfile;
-- (int)_elbowOfList:(id)a3;
-- (int64_t)_getCellInstantQualityBasedOnLQM:(char)a3;
+- (int)_elbowOfList:(id)list;
+- (int64_t)_getCellInstantQualityBasedOnLQM:(char)m;
 - (int64_t)_getCurrentLocationTimezoneOffsetWithoutDST;
-- (int64_t)_getDominantLQMInSlotWithTimeSpentInBest:(int64_t)a3 inFair:(int64_t)a4 inMinimallyViable:(int64_t)a5 inNone:(int64_t)a6;
-- (int64_t)_getWifiInstantQualityBasedOnLQM:(char)a3;
-- (int64_t)_predictNetworkQualityBasedOnAverageNWInstantQuality:(double)a3;
+- (int64_t)_getDominantLQMInSlotWithTimeSpentInBest:(int64_t)best inFair:(int64_t)fair inMinimallyViable:(int64_t)viable inNone:(int64_t)none;
+- (int64_t)_getWifiInstantQualityBasedOnLQM:(char)m;
+- (int64_t)_predictNetworkQualityBasedOnAverageNWInstantQuality:(double)quality;
 - (unint64_t)_getTotalWeightForCompletedHistory;
-- (unint64_t)_getWeightForAge:(int64_t)a3;
-- (unint64_t)_sanitizeInternalLQMStateEventFrom:(id)a3 toTable:(id)a4;
-- (void)_actUponSystemSettingsAirplaneChanged:(BOOL)a3 wifiChanged:(BOOL)a4 cellDataChanged:(BOOL)a5;
-- (void)_clusterImpairmentEventsUsingKMeansOn:(id)a3 saveCentroidsTo:(id)a4;
+- (unint64_t)_getWeightForAge:(int64_t)age;
+- (unint64_t)_sanitizeInternalLQMStateEventFrom:(id)from toTable:(id)table;
+- (void)_actUponSystemSettingsAirplaneChanged:(BOOL)changed wifiChanged:(BOOL)wifiChanged cellDataChanged:(BOOL)dataChanged;
+- (void)_clusterImpairmentEventsUsingKMeansOn:(id)on saveCentroidsTo:(id)to;
 - (void)_fetchHomeTimezoneOffsetFromJournal;
-- (void)_finishedReadingLowInternetModeRecords:(id)a3;
-- (void)_generatePredictionForDays:(id)a3 fromClusteredEvents:(id)a4 clusterCentroids:(id)a5 interfaceType:(int64_t)a6 basedOnWeekClusters:(int64_t)a7 savePredictionsTo:(id)a8;
-- (void)_handleNetworkNotificationFrom:(int64_t)a3 notification:(id)a4;
+- (void)_finishedReadingLowInternetModeRecords:(id)records;
+- (void)_generatePredictionForDays:(id)days fromClusteredEvents:(id)events clusterCentroids:(id)centroids interfaceType:(int64_t)type basedOnWeekClusters:(int64_t)clusters savePredictionsTo:(id)to;
+- (void)_handleNetworkNotificationFrom:(int64_t)from notification:(id)notification;
 - (void)_handleTimezoneChanged;
-- (void)_loadLatestPredictionFromJournalWithInterfaceType:(int64_t)a3;
-- (void)_printInternalStateSet:(id)a3;
-- (void)_processJournalData:(id)a3 startFrom:(int64_t)a4 endAt:(int64_t)a5 rawWifiStateSet:(id)a6 rawCellStateSet:(id)a7;
-- (void)_processLowInternetModeRecord:(id)a3 addTo:(id)a4;
-- (void)_processNetworkState:(id *)a3 toStateSet:(id)a4 stateStartTimeInfo:(id *)a5 stateEndTimeInfo:(id *)a6 effectiveNetworkId:(id)a7;
+- (void)_loadLatestPredictionFromJournalWithInterfaceType:(int64_t)type;
+- (void)_printInternalStateSet:(id)set;
+- (void)_processJournalData:(id)data startFrom:(int64_t)from endAt:(int64_t)at rawWifiStateSet:(id)set rawCellStateSet:(id)stateSet;
+- (void)_processLowInternetModeRecord:(id)record addTo:(id)to;
+- (void)_processNetworkState:(id *)state toStateSet:(id)set stateStartTimeInfo:(id *)info stateEndTimeInfo:(id *)timeInfo effectiveNetworkId:(id)id;
 - (void)_purgeAllJournalRecords;
-- (void)_purgeSavedPredictionsOlderThan:(unint64_t)a3;
-- (void)_removePrimarykeyAndLocationInJournalRecordInfo:(id)a3;
+- (void)_purgeSavedPredictionsOlderThan:(unint64_t)than;
+- (void)_removePrimarykeyAndLocationInJournalRecordInfo:(id)info;
 - (void)_resetModel;
-- (void)_shuffleArray:(id)a3;
-- (void)_trainModelAt:(id)a3;
-- (void)_trainModelForInterfaceType:(int64_t)a3 sanitizedLQMTable:(id)a4;
+- (void)_shuffleArray:(id)array;
+- (void)_trainModelAt:(id)at;
+- (void)_trainModelForInterfaceType:(int64_t)type sanitizedLQMTable:(id)table;
 - (void)_updateHomeTimezoneOffsetIfNeeded;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)processProxyTrain;
-- (void)setDebugTrainingTime:(id)a3;
-- (void)setLastModelRunTime:(id)a3;
+- (void)setDebugTrainingTime:(id)time;
+- (void)setLastModelRunTime:(id)time;
 - (void)trainModel;
 @end
 
 @implementation NetworkAnalyticsModel
 
-- (NetworkAnalyticsModel)initWithJournalName:(id)a3 workspace:(id)a4 queue:(id)a5
+- (NetworkAnalyticsModel)initWithJournalName:(id)name workspace:(id)workspace queue:(id)queue
 {
   v80 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  workspaceCopy = workspace;
+  queueCopy = queue;
   v77.receiver = self;
   v77.super_class = NetworkAnalyticsModel;
   v12 = [(NetworkAnalyticsModel *)&v77 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->journalName, a3);
-    objc_storeStrong(&v13->workspace, a4);
-    objc_storeStrong(&v13->queue, a5);
+    objc_storeStrong(&v12->journalName, name);
+    objc_storeStrong(&v13->workspace, workspace);
+    objc_storeStrong(&v13->queue, queue);
     v14 = [ImpoExpoService impoExpoServiceInWorkspace:v13->workspace andQueue:v13->queue];
     ieService = v13->ieService;
     v13->ieService = v14;
@@ -139,9 +139,9 @@
     debugTrainingTime = v13->_debugTrainingTime;
     v13->_debugTrainingTime = 0;
 
-    v34 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v13->_calendar;
-    v13->_calendar = v34;
+    v13->_calendar = autoupdatingCurrentCalendar;
 
     v13->limMinSamples = 10;
     v13->limRatio = 0.800000012;
@@ -184,17 +184,17 @@
     block[3] = &unk_27898A0C8;
     v42 = v13;
     v70 = v42;
-    dispatch_async(v11, block);
-    v43 = [MEMORY[0x277CCAB98] defaultCenter];
+    dispatch_async(queueCopy, block);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __61__NetworkAnalyticsModel_initWithJournalName_workspace_queue___block_invoke_2;
     v66[3] = &unk_27898BD50;
-    v44 = v11;
+    v44 = queueCopy;
     v67 = v44;
     v45 = v42;
     v68 = v45;
-    v46 = [v43 addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v66];
+    v46 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v66];
     cellEpochObserver = v45->_cellEpochObserver;
     v45->_cellEpochObserver = v46;
 
@@ -206,7 +206,7 @@
     v64 = v48;
     v49 = v45;
     v65 = v49;
-    v50 = [v43 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v63];
+    v50 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v63];
     wifiEpochObserver = v49->_wifiEpochObserver;
     v49->_wifiEpochObserver = v50;
 
@@ -218,7 +218,7 @@
     v61 = v48;
     v53 = v49;
     v62 = v53;
-    v54 = [v43 addObserverForName:v52 object:0 queue:0 usingBlock:v60];
+    v54 = [defaultCenter addObserverForName:v52 object:0 queue:0 usingBlock:v60];
     timezoneChangedObserver = v53->_timezoneChangedObserver;
     v53->_timezoneChangedObserver = v54;
 
@@ -479,10 +479,10 @@ void __61__NetworkAnalyticsModel_initWithJournalName_workspace_queue___block_inv
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_cellEpochObserver];
-  [v3 removeObserver:self->_wifiEpochObserver];
-  [v3 removeObserver:self->_timezoneChangedObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_cellEpochObserver];
+  [defaultCenter removeObserver:self->_wifiEpochObserver];
+  [defaultCenter removeObserver:self->_timezoneChangedObserver];
 
   v4.receiver = self;
   v4.super_class = NetworkAnalyticsModel;
@@ -547,10 +547,10 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
 
 - (int64_t)_getCurrentLocationTimezoneOffsetWithoutDST
 {
-  v2 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v3 = [v2 secondsFromGMT];
-  [v2 daylightSavingTimeOffset];
-  v5 = (v3 - v4);
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  secondsFromGMT = [localTimeZone secondsFromGMT];
+  [localTimeZone daylightSavingTimeOffset];
+  v5 = (secondsFromGMT - v4);
 
   return v5;
 }
@@ -558,16 +558,16 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
 - (BOOL)_isValidTimezoneToReturnPredictions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
-  v4 = v3;
+  _getCurrentLocationTimezoneOffsetWithoutDST = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
+  v4 = _getCurrentLocationTimezoneOffsetWithoutDST;
   if (self->homeTimezoneOffsetKnownCoreRoutine)
   {
-    v5 = v3 == self->homeTimezoneOffsetFromUtcNoDaylight && v3 == self->timezoneOffsetFromUtcNoDaylight;
+    v5 = _getCurrentLocationTimezoneOffsetWithoutDST == self->homeTimezoneOffsetFromUtcNoDaylight && _getCurrentLocationTimezoneOffsetWithoutDST == self->timezoneOffsetFromUtcNoDaylight;
   }
 
   else
   {
-    v5 = v3 == self->timezoneOffsetFromUtcNoDaylight;
+    v5 = _getCurrentLocationTimezoneOffsetWithoutDST == self->timezoneOffsetFromUtcNoDaylight;
   }
 
   v6 = scoringLogHandle;
@@ -596,16 +596,16 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
 - (BOOL)_isValidTimezoneToTrain
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
-  v4 = v3;
+  _getCurrentLocationTimezoneOffsetWithoutDST = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
+  v4 = _getCurrentLocationTimezoneOffsetWithoutDST;
   if (self->homeTimezoneOffsetKnownCoreRoutine)
   {
-    v5 = v3 == self->homeTimezoneOffsetFromUtcNoDaylight;
+    v5 = _getCurrentLocationTimezoneOffsetWithoutDST == self->homeTimezoneOffsetFromUtcNoDaylight;
   }
 
   else
   {
-    self->homeTimezoneOffsetFromUtcNoDaylight = v3;
+    self->homeTimezoneOffsetFromUtcNoDaylight = _getCurrentLocationTimezoneOffsetWithoutDST;
     v5 = 1;
   }
 
@@ -629,14 +629,14 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
   return v5;
 }
 
-- (int)_elbowOfList:(id)a3
+- (int)_elbowOfList:(id)list
 {
-  v3 = a3;
-  if ([v3 count])
+  listCopy = list;
+  if ([listCopy count])
   {
-    if ([v3 count] > 3)
+    if ([listCopy count] > 3)
     {
-      v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v3 copyItems:1];
+      v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:listCopy copyItems:1];
       v6 = objc_alloc(MEMORY[0x277CCABB0]);
       v7 = [v5 objectAtIndex:1];
       [v7 doubleValue];
@@ -712,7 +712,7 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
 
     else
     {
-      v4 = [v3 count] - 1;
+      v4 = [listCopy count] - 1;
     }
   }
 
@@ -724,10 +724,10 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
   return v4;
 }
 
-- (void)_shuffleArray:(id)a3
+- (void)_shuffleArray:(id)array
 {
-  v5 = a3;
-  v3 = [v5 count];
+  arrayCopy = array;
+  v3 = [arrayCopy count];
   if (v3 >= 2)
   {
       ;
@@ -735,14 +735,14 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
   }
 }
 
-- (int64_t)_getWifiInstantQualityBasedOnLQM:(char)a3
+- (int64_t)_getWifiInstantQualityBasedOnLQM:(char)m
 {
-  v3 = a3;
+  mCopy = m;
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 <= 49)
+  if (m <= 49)
   {
     result = 0;
-    if (a3 >= 0xFFFFFFFE || a3 == 10)
+    if (m >= 0xFFFFFFFE || m == 10)
     {
       goto LABEL_16;
     }
@@ -750,20 +750,20 @@ uint64_t __60__NetworkAnalyticsModel__fetchHomeTimezoneOffsetFromJournal__block_
     goto LABEL_13;
   }
 
-  if (a3 == 100)
+  if (m == 100)
   {
     result = 100;
     goto LABEL_16;
   }
 
-  if (a3 != 50)
+  if (m != 50)
   {
 LABEL_13:
     v7 = scoringLogHandle;
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_ERROR))
     {
       v9[0] = 67109120;
-      v9[1] = v3;
+      v9[1] = mCopy;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "Invalid Wi-Fi LQM: %d", v9, 8u);
     }
 
@@ -793,12 +793,12 @@ LABEL_16:
   return result;
 }
 
-- (int64_t)_getCellInstantQualityBasedOnLQM:(char)a3
+- (int64_t)_getCellInstantQualityBasedOnLQM:(char)m
 {
-  v3 = a3;
+  mCopy = m;
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3 + 2;
-  if ((a3 + 2) > 0x34)
+  v4 = m + 2;
+  if ((m + 2) > 0x34)
   {
     goto LABEL_10;
   }
@@ -813,7 +813,7 @@ LABEL_3:
   if (((1 << v4) & 0x10000000400000) == 0)
   {
 LABEL_10:
-    if (a3 == 100)
+    if (m == 100)
     {
       result = 100;
       goto LABEL_12;
@@ -823,7 +823,7 @@ LABEL_10:
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10[0] = 67109120;
-      v10[1] = v3;
+      v10[1] = mCopy;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_ERROR, "Invalid cellular LQM: %d", v10, 8u);
     }
 
@@ -852,10 +852,10 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)_predictNetworkQualityBasedOnAverageNWInstantQuality:(double)a3
+- (int64_t)_predictNetworkQualityBasedOnAverageNWInstantQuality:(double)quality
 {
-  v3 = vabdd_f64(100.0, a3);
-  v4 = vabdd_f64(50.0, a3);
+  v3 = vabdd_f64(100.0, quality);
+  v4 = vabdd_f64(50.0, quality);
   v5 = 50;
   if (v4 <= v3)
   {
@@ -867,7 +867,7 @@ LABEL_12:
     v5 = 100;
   }
 
-  if (vabdd_f64(0.0, a3) <= v3)
+  if (vabdd_f64(0.0, quality) <= v3)
   {
     return 0;
   }
@@ -878,54 +878,54 @@ LABEL_12:
   }
 }
 
-- ($340E233F617FB3D5D9EFCE5A6F22D754)_parseTimeIntoWeekdayAndSlotId:(SEL)a3 withReferenceDate:(int64_t)a4
+- ($340E233F617FB3D5D9EFCE5A6F22D754)_parseTimeIntoWeekdayAndSlotId:(SEL)id withReferenceDate:(int64_t)date
 {
   v17 = a5;
   context = objc_autoreleasePoolPush();
-  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:a4];
+  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:date];
   v9 = [(NSCalendar *)self->_calendar components:736 fromDate:v8];
-  v10 = [v9 weekday];
-  v11 = [v9 hour];
-  v12 = [v9 minute];
-  v13 = [v9 second];
+  weekday = [v9 weekday];
+  hour = [v9 hour];
+  minute = [v9 minute];
+  second = [v9 second];
   v14 = [(NSCalendar *)self->_calendar components:16 fromDate:v8 toDate:v17 options:0];
-  retstr->var0 = v10;
-  retstr->var1 = (v12 + 60 * v11) / 15;
+  retstr->var0 = weekday;
+  retstr->var1 = (minute + 60 * hour) / 15;
   retstr->var2 = [v14 day];
-  retstr->var3 = v13 + 60 * (v12 % 15);
+  retstr->var3 = second + 60 * (minute % 15);
 
   objc_autoreleasePoolPop(context);
 
   return result;
 }
 
-- (id)_purgeAndReturnValidJournalWithPrefix:(id)a3 olderThan:(unint64_t)a4
+- (id)_purgeAndReturnValidJournalWithPrefix:(id)prefix olderThan:(unint64_t)than
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  prefixCopy = prefix;
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
   context = objc_autoreleasePoolPush();
   v7 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v34 = v6;
+    v34 = prefixCopy;
     v35 = 2048;
-    v36 = a4;
+    thanCopy = than;
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Purging journals with prefix %@ older than %lu days from now", buf, 0x16u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v8 setDay:-a4];
+  [v8 setDay:-than];
   calendar = self->_calendar;
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v24 = v8;
-  v11 = [(NSCalendar *)calendar dateByAddingComponents:v8 toDate:v10 options:0];
+  v11 = [(NSCalendar *)calendar dateByAddingComponents:v8 toDate:date options:0];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v25 = self;
+  selfCopy = self;
   v23 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"identifier" ascending:1];
-  v13 = [(ImpoExpoService *)self->ieService listItemsNameWithPrefix:v6 sortDescriptor:?];
+  v13 = [(ImpoExpoService *)self->ieService listItemsNameWithPrefix:prefixCopy sortDescriptor:?];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -977,7 +977,7 @@ LABEL_12:
     while (v15);
   }
 
-  [(ImpoExpoService *)v25->ieService deleteItemsWithNames:v12];
+  [(ImpoExpoService *)selfCopy->ieService deleteItemsWithNames:v12];
 
   objc_autoreleasePoolPop(context);
   v21 = *MEMORY[0x277D85DE8];
@@ -1090,12 +1090,12 @@ void __48__NetworkAnalyticsModel__purgeAllJournalRecords__block_invoke(uint64_t 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_insertInternalNetworkStateRecordTo:(id)a3 networkId:(id)a4 networkLQM:(int64_t)a5 age:(int64_t)a6 dayOfWeek:(int64_t)a7 slotId:(int64_t)a8 numberOfSlots:(int64_t)a9 stateDuration:(int64_t)a10
+- (BOOL)_insertInternalNetworkStateRecordTo:(id)to networkId:(id)id networkLQM:(int64_t)m age:(int64_t)age dayOfWeek:(int64_t)week slotId:(int64_t)slotId numberOfSlots:(int64_t)slots stateDuration:(int64_t)self0
 {
-  v15 = a3;
-  if (v15)
+  toCopy = to;
+  if (toCopy)
   {
-    v16 = a5 == -3;
+    v16 = m == -3;
   }
 
   else
@@ -1106,10 +1106,10 @@ void __48__NetworkAnalyticsModel__purgeAllJournalRecords__block_invoke(uint64_t 
   v17 = !v16;
   if (!v16)
   {
-    v18 = a4;
-    v19 = [[InternalNetworkStateRecord alloc] initWithAge:a6 dayOfWeek:a7 slotId:a8 networkId:v18 networkLQM:a5 stateDurationSeconds:a10 stateSlotLength:a9];
+    idCopy = id;
+    v19 = [[InternalNetworkStateRecord alloc] initWithAge:age dayOfWeek:week slotId:slotId networkId:idCopy networkLQM:m stateDurationSeconds:duration stateSlotLength:slots];
 
-    v20 = [v15 member:v19];
+    v20 = [toCopy member:v19];
     v21 = v20;
     if (v20)
     {
@@ -1118,38 +1118,38 @@ void __48__NetworkAnalyticsModel__purgeAllJournalRecords__block_invoke(uint64_t 
 
     else
     {
-      [v15 addObject:v19];
+      [toCopy addObject:v19];
     }
   }
 
   return v17;
 }
 
-- (int64_t)_getDominantLQMInSlotWithTimeSpentInBest:(int64_t)a3 inFair:(int64_t)a4 inMinimallyViable:(int64_t)a5 inNone:(int64_t)a6
+- (int64_t)_getDominantLQMInSlotWithTimeSpentInBest:(int64_t)best inFair:(int64_t)fair inMinimallyViable:(int64_t)viable inNone:(int64_t)none
 {
   v6 = 100;
-  if (a4 <= a3)
+  if (fair <= best)
   {
-    v7 = a3;
+    viableCopy = best;
   }
 
   else
   {
     v6 = 50;
-    v7 = a4;
+    viableCopy = fair;
   }
 
-  if (v7 < a5)
+  if (viableCopy < viable)
   {
     v6 = 20;
   }
 
-  if (v7 <= a5)
+  if (viableCopy <= viable)
   {
-    v7 = a5;
+    viableCopy = viable;
   }
 
-  if (v7 >= a6)
+  if (viableCopy >= none)
   {
     return v6;
   }
@@ -1160,9 +1160,9 @@ void __48__NetworkAnalyticsModel__purgeAllJournalRecords__block_invoke(uint64_t 
   }
 }
 
-- (unint64_t)_sanitizeInternalLQMStateEventFrom:(id)a3 toTable:(id)a4
+- (unint64_t)_sanitizeInternalLQMStateEventFrom:(id)from toTable:(id)table
 {
-  v4 = MEMORY[0x28223BE20](self, a2, a3, a4);
+  v4 = MEMORY[0x28223BE20](self, a2, from, table);
   v6 = v5;
   v7 = v4;
   v71[484] = *MEMORY[0x277D85DE8];
@@ -1219,59 +1219,59 @@ void __48__NetworkAnalyticsModel__purgeAllJournalRecords__block_invoke(uint64_t 
               }
 
               v17 = *(*(&v63 + 1) + 8 * j);
-              v61 = [v17 stateDayOfWeek];
+              stateDayOfWeek = [v17 stateDayOfWeek];
               if ([v17 stateDurationSeconds] <= 900)
               {
-                v18 = [v17 stateDurationSeconds];
+                stateDurationSeconds = [v17 stateDurationSeconds];
               }
 
               else
               {
-                v18 = 900;
+                stateDurationSeconds = 900;
               }
 
-              v19 = [v17 stateSlotId];
-              v20 = [v17 stateSlotLength];
-              if (v19 < v20 + v19)
+              stateSlotId = [v17 stateSlotId];
+              stateSlotLength = [v17 stateSlotLength];
+              if (stateSlotId < stateSlotLength + stateSlotId)
               {
-                v21 = v20;
-                v22 = &v71[v19 + 387];
-                v23 = &v68[8 * v19];
-                v24 = &v71[v19 + 290];
-                v25 = &v71[v19 + 193];
-                v26 = &v71[v19 + 96];
+                v21 = stateSlotLength;
+                v22 = &v71[stateSlotId + 387];
+                v23 = &v68[8 * stateSlotId];
+                v24 = &v71[stateSlotId + 290];
+                v25 = &v71[stateSlotId + 193];
+                v26 = &v71[stateSlotId + 96];
                 do
                 {
-                  v27 = [v17 stateNetworkId];
-                  v28 = [v17 stateNetworkLQM];
-                  if (v28 > 49)
+                  stateNetworkId = [v17 stateNetworkId];
+                  stateNetworkLQM = [v17 stateNetworkLQM];
+                  if (stateNetworkLQM > 49)
                   {
-                    if (v28 == 50)
+                    if (stateNetworkLQM == 50)
                     {
-                      *v25 += v18;
+                      *v25 += stateDurationSeconds;
                       goto LABEL_26;
                     }
 
-                    if (v28 == 100)
+                    if (stateNetworkLQM == 100)
                     {
-                      *v26 += v18;
+                      *v26 += stateDurationSeconds;
                       goto LABEL_26;
                     }
                   }
 
-                  else if (v28)
+                  else if (stateNetworkLQM)
                   {
-                    if (v28 == 20)
+                    if (stateNetworkLQM == 20)
                     {
-                      *v24 += v18;
+                      *v24 += stateDurationSeconds;
 LABEL_26:
-                      objc_storeStrong(v23, v27);
+                      objc_storeStrong(v23, stateNetworkId);
                     }
                   }
 
                   else
                   {
-                    *v22 += v18;
+                    *v22 += stateDurationSeconds;
                   }
 
                   ++v22;
@@ -1291,7 +1291,7 @@ LABEL_26:
             {
               v10 = v57;
               v7 = v51;
-              v29 = v61;
+              v29 = stateDayOfWeek;
               goto LABEL_33;
             }
           }
@@ -1402,11 +1402,11 @@ LABEL_33:
   return v53;
 }
 
-- (void)_printInternalStateSet:(id)a3
+- (void)_printInternalStateSet:(id)set
 {
   v30[5] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  setCopy = set;
+  if (setCopy)
   {
     v4 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"stateAge" ascending:0];
     v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"stateDayOfWeek" ascending:1];
@@ -1422,8 +1422,8 @@ LABEL_33:
     v19 = v30[3] = v7;
     v30[4] = v19;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:5];
-    v9 = [v3 allObjects];
-    v10 = [v9 sortedArrayUsingDescriptors:v8];
+    allObjects = [setCopy allObjects];
+    v10 = [allObjects sortedArrayUsingDescriptors:v8];
 
     v25 = 0u;
     v26 = 0u;
@@ -1464,17 +1464,17 @@ LABEL_33:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removePrimarykeyAndLocationInJournalRecordInfo:(id)a3
+- (void)_removePrimarykeyAndLocationInJournalRecordInfo:(id)info
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 journalName];
-  LODWORD(self) = [(NetworkAnalyticsModel *)self _isLegacyJournal:v5];
+  infoCopy = info;
+  journalName = [infoCopy journalName];
+  LODWORD(self) = [(NetworkAnalyticsModel *)self _isLegacyJournal:journalName];
 
   if (self)
   {
-    v6 = [v4 journalData];
-    v7 = [v6 length];
+    journalData = [infoCopy journalData];
+    v7 = [journalData length];
     v8 = v7 / 0x50;
 
     v32 = 0u;
@@ -1496,11 +1496,11 @@ LABEL_33:
       v10 = 73;
       do
       {
-        v11 = [v4 journalData];
-        [v11 replaceBytesInRange:v10 - 65 withBytes:{64, &v30}];
+        journalData2 = [infoCopy journalData];
+        [journalData2 replaceBytesInRange:v10 - 65 withBytes:{64, &v30}];
 
-        v12 = [v4 journalData];
-        [v12 replaceBytesInRange:v10 withBytes:1 length:{buf, 1}];
+        journalData3 = [infoCopy journalData];
+        [journalData3 replaceBytesInRange:v10 withBytes:1 length:{buf, 1}];
 
         v10 += 80;
         --v8;
@@ -1514,8 +1514,8 @@ LABEL_33:
   {
     v25[0] = 0;
     v25[1] = 0;
-    v13 = [v4 journalData];
-    v14 = [v13 length];
+    journalData4 = [infoCopy journalData];
+    v14 = [journalData4 length];
     v15 = v14;
     *(&v16 + 1) = 0;
     v32 = 0u;
@@ -1539,7 +1539,7 @@ LABEL_33:
       v24 = v16;
       do
       {
-        [v13 getBytes:v25 range:{v18, 16, v24}];
+        [journalData4 getBytes:v25 range:{v18, 16, v24}];
         v20 = LOBYTE(v25[0]);
         if (LOBYTE(v25[0]) == 2)
         {
@@ -1558,7 +1558,7 @@ LABEL_33:
             _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "Clearing primary key from lqmJournalRecord from %lu to %lu", buf, 0x16u);
           }
 
-          [v13 replaceBytesInRange:v19 withBytes:{64, &v30}];
+          [journalData4 replaceBytesInRange:v19 withBytes:{64, &v30}];
           v19 = v18 + 88;
         }
 
@@ -1587,9 +1587,9 @@ LABEL_33:
 - (BOOL)_shouldCreateIpsFile
 {
   v2 = +[SystemProperties sharedInstance];
-  v3 = [v2 internalBuild];
+  internalBuild = [v2 internalBuild];
 
-  return v3;
+  return internalBuild;
 }
 
 - (id)_readJournalEntriesUsingIpsfile
@@ -1755,8 +1755,8 @@ LABEL_7:
   {
     v6 = MEMORY[0x277CBEB18];
     v7 = [JournalRecordInfo alloc];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(JournalRecordInfo *)v7 initWithJournalName:@"simulated-journal" lastUpdate:v8 journalData:v5];
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = [(JournalRecordInfo *)v7 initWithJournalName:@"simulated-journal" lastUpdate:date journalData:v5];
     v10 = [v6 arrayWithObject:v9];
   }
 
@@ -1781,12 +1781,12 @@ LABEL_7:
   }
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v32 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = objc_autoreleasePoolPush();
   v5 = +[SystemProperties sharedInstance];
-  v6 = [v5 internalBuild];
+  internalBuild = [v5 internalBuild];
 
-  if (v6)
+  if (internalBuild)
   {
     v7 = 35;
   }
@@ -1843,8 +1843,8 @@ LABEL_7:
 
         if (v11)
         {
-          v19 = [(NSCalendar *)self->_calendar components:16 fromDate:v11 toDate:v32 options:1];
-          v20 = [[JournalRecordInfo alloc] initWithJournalName:v14 lastUpdate:v32 journalData:v17];
+          v19 = [(NSCalendar *)self->_calendar components:16 fromDate:v11 toDate:date options:1];
+          v20 = [[JournalRecordInfo alloc] initWithJournalName:v14 lastUpdate:date journalData:v17];
           if ([v19 day] >= 14)
           {
             v21 = scoringLogHandle;
@@ -1857,8 +1857,8 @@ LABEL_7:
 
             [(NetworkAnalyticsModel *)self _removePrimarykeyAndLocationInJournalRecordInfo:v20];
             v22 = self->ieService;
-            v23 = [(JournalRecordInfo *)v20 journalData];
-            LOBYTE(v22) = [(ImpoExpoService *)v22 importItemUnderName:v14 item:v23];
+            journalData = [(JournalRecordInfo *)v20 journalData];
+            LOBYTE(v22) = [(ImpoExpoService *)v22 importItemUnderName:v14 item:journalData];
 
             if ((v22 & 1) == 0)
             {
@@ -1967,51 +1967,51 @@ uint64_t __64__NetworkAnalyticsModel__readJournalEntriesUsingImpoExpoService__bl
 - (id)_readJournalEntries
 {
   v3 = +[SystemProperties sharedInstance];
-  v4 = [v3 internalBuild];
+  internalBuild = [v3 internalBuild];
 
-  if (!v4 || ([(NetworkAnalyticsModel *)self _readJournalEntriesUsingIpsfile], (v5 = objc_claimAutoreleasedReturnValue()) == 0) && ([(NetworkAnalyticsModel *)self _readJournalEntriesUsingSimulatedfile], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!internalBuild || ([(NetworkAnalyticsModel *)self _readJournalEntriesUsingIpsfile], (_readJournalEntriesUsingImpoExpoService = objc_claimAutoreleasedReturnValue()) == 0) && ([(NetworkAnalyticsModel *)self _readJournalEntriesUsingSimulatedfile], (_readJournalEntriesUsingImpoExpoService = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(NetworkAnalyticsModel *)self _readJournalEntriesUsingImpoExpoService];
+    _readJournalEntriesUsingImpoExpoService = [(NetworkAnalyticsModel *)self _readJournalEntriesUsingImpoExpoService];
   }
 
-  v6 = v5;
+  v6 = _readJournalEntriesUsingImpoExpoService;
 
   return v6;
 }
 
-- (void)_processNetworkState:(id *)a3 toStateSet:(id)a4 stateStartTimeInfo:(id *)a5 stateEndTimeInfo:(id *)a6 effectiveNetworkId:(id)a7
+- (void)_processNetworkState:(id *)state toStateSet:(id)set stateStartTimeInfo:(id *)info stateEndTimeInfo:(id *)timeInfo effectiveNetworkId:(id)id
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
-  var0 = a5->var0;
-  var2 = a5->var2;
-  v16 = a6->var2;
-  if (a5->var0 == a6->var0 && var2 == v16)
+  setCopy = set;
+  idCopy = id;
+  var0 = info->var0;
+  var2 = info->var2;
+  v16 = timeInfo->var2;
+  if (info->var0 == timeInfo->var0 && var2 == v16)
   {
-    var1 = a5->var1;
-    if (var1 == a6->var1)
+    var1 = info->var1;
+    if (var1 == timeInfo->var1)
     {
-      var5 = a3->var5;
-      var3_low = LODWORD(a6->var3) - LODWORD(a5->var3);
+      var5 = state->var5;
+      var3_low = LODWORD(timeInfo->var3) - LODWORD(info->var3);
     }
 
     else
     {
-      [NetworkAnalyticsModel _insertInternalNetworkStateRecordTo:"_insertInternalNetworkStateRecordTo:networkId:networkLQM:age:dayOfWeek:slotId:numberOfSlots:stateDuration:" networkId:v12 networkLQM:v13 age:a3->var5 dayOfWeek:1 slotId:900 - LODWORD(a5->var3) numberOfSlots:? stateDuration:?];
-      var1 = a6->var1;
-      v31 = a5->var1;
+      [NetworkAnalyticsModel _insertInternalNetworkStateRecordTo:"_insertInternalNetworkStateRecordTo:networkId:networkLQM:age:dayOfWeek:slotId:numberOfSlots:stateDuration:" networkId:setCopy networkLQM:idCopy age:state->var5 dayOfWeek:1 slotId:900 - LODWORD(info->var3) numberOfSlots:? stateDuration:?];
+      var1 = timeInfo->var1;
+      v31 = info->var1;
       v32 = var1 + ~v31;
       if (v32 >= 1)
       {
-        [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v12 networkId:v13 networkLQM:a3->var5 age:a5->var2 dayOfWeek:a5->var0 slotId:v31 + 1 numberOfSlots:v32 & 0x7FFFFFFF stateDuration:(900 * v32)];
-        var1 = a6->var1;
+        [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:setCopy networkId:idCopy networkLQM:state->var5 age:info->var2 dayOfWeek:info->var0 slotId:v31 + 1 numberOfSlots:v32 & 0x7FFFFFFF stateDuration:(900 * v32)];
+        var1 = timeInfo->var1;
       }
 
-      var3_low = SLODWORD(a6->var3);
-      var5 = a3->var5;
-      var2 = a5->var2;
-      var0 = a5->var0;
+      var3_low = SLODWORD(timeInfo->var3);
+      var5 = state->var5;
+      var2 = info->var2;
+      var0 = info->var0;
     }
 
     goto LABEL_24;
@@ -2019,32 +2019,32 @@ uint64_t __64__NetworkAnalyticsModel__readJournalEntriesUsingImpoExpoService__bl
 
   if (var2 > v16)
   {
-    v18 = a5->var1;
-    [NetworkAnalyticsModel _insertInternalNetworkStateRecordTo:"_insertInternalNetworkStateRecordTo:networkId:networkLQM:age:dayOfWeek:slotId:numberOfSlots:stateDuration:" networkId:v12 networkLQM:v13 age:a3->var5 dayOfWeek:1 slotId:900 - LODWORD(a5->var3) numberOfSlots:? stateDuration:?];
-    v19 = a5->var1;
+    v18 = info->var1;
+    [NetworkAnalyticsModel _insertInternalNetworkStateRecordTo:"_insertInternalNetworkStateRecordTo:networkId:networkLQM:age:dayOfWeek:slotId:numberOfSlots:stateDuration:" networkId:setCopy networkLQM:idCopy age:state->var5 dayOfWeek:1 slotId:900 - LODWORD(info->var3) numberOfSlots:? stateDuration:?];
+    v19 = info->var1;
     if (95 - v19 >= 1)
     {
-      [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v12 networkId:v13 networkLQM:a3->var5 age:a5->var2 dayOfWeek:a5->var0 slotId:v19 + 1 numberOfSlots:(95 - v19) stateDuration:(900 * (95 - v19))];
+      [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:setCopy networkId:idCopy networkLQM:state->var5 age:info->var2 dayOfWeek:info->var0 slotId:v19 + 1 numberOfSlots:(95 - v19) stateDuration:(900 * (95 - v19))];
     }
 
-    var2 = a6->var2;
-    v35 = a5->var2 + ~var2;
+    var2 = timeInfo->var2;
+    v35 = info->var2 + ~var2;
     if (v35 >= 1)
     {
-      v34 = a6;
+      timeInfoCopy = timeInfo;
       v20 = 0;
       v21 = -1;
       do
       {
-        v22 = v12;
-        v23 = v21 + a5->var2;
-        v24 = (v20 + a5->var0) % 7 + 1;
+        v22 = setCopy;
+        v23 = v21 + info->var2;
+        v24 = (v20 + info->var0) % 7 + 1;
         v25 = scoringLogHandle;
         if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
         {
-          v26 = a3->var5;
+          v26 = state->var5;
           *buf = 138413826;
-          v37 = v13;
+          v37 = idCopy;
           v38 = 1024;
           v39 = v26;
           v40 = 2048;
@@ -2060,30 +2060,30 @@ uint64_t __64__NetworkAnalyticsModel__readJournalEntriesUsingImpoExpoService__bl
           _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_DEBUG, "Inserting an event for a day in between as the two consecutive events are separated by more than one day: ID=%@, state=%d, age=%ld, weekday=%ld, slot=%d, length=%u, timespent=%d", buf, 0x38u);
         }
 
-        v12 = v22;
-        [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v22 networkId:v13 networkLQM:a3->var5 age:v23 dayOfWeek:v24 slotId:0 numberOfSlots:96 stateDuration:86400];
+        setCopy = v22;
+        [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v22 networkId:idCopy networkLQM:state->var5 age:v23 dayOfWeek:v24 slotId:0 numberOfSlots:96 stateDuration:86400];
         ++v20;
         --v21;
       }
 
       while (v35 > v20);
-      a6 = v34;
-      var2 = v34->var2;
+      timeInfo = timeInfoCopy;
+      var2 = timeInfoCopy->var2;
     }
 
-    var1 = a6->var1;
+    var1 = timeInfo->var1;
     if (var1 > 0)
     {
-      [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v12 networkId:v13 networkLQM:a3->var5 age:var2 dayOfWeek:a6->var0 slotId:0 numberOfSlots:a6->var1 & 0x7FFFFFFF stateDuration:900 * a6->var1];
-      var1 = a6->var1;
-      var2 = a6->var2;
+      [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:setCopy networkId:idCopy networkLQM:state->var5 age:var2 dayOfWeek:timeInfo->var0 slotId:0 numberOfSlots:timeInfo->var1 & 0x7FFFFFFF stateDuration:900 * timeInfo->var1];
+      var1 = timeInfo->var1;
+      var2 = timeInfo->var2;
     }
 
-    var3_low = SLODWORD(a6->var3);
-    var5 = a3->var5;
-    var0 = a6->var0;
+    var3_low = SLODWORD(timeInfo->var3);
+    var5 = state->var5;
+    var0 = timeInfo->var0;
 LABEL_24:
-    [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:v12 networkId:v13 networkLQM:var5 age:var2 dayOfWeek:var0 slotId:var1 numberOfSlots:1 stateDuration:var3_low];
+    [(NetworkAnalyticsModel *)self _insertInternalNetworkStateRecordTo:setCopy networkId:idCopy networkLQM:var5 age:var2 dayOfWeek:var0 slotId:var1 numberOfSlots:1 stateDuration:var3_low];
     goto LABEL_25;
   }
 
@@ -2099,13 +2099,13 @@ LABEL_25:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processJournalData:(id)a3 startFrom:(int64_t)a4 endAt:(int64_t)a5 rawWifiStateSet:(id)a6 rawCellStateSet:(id)a7
+- (void)_processJournalData:(id)data startFrom:(int64_t)from endAt:(int64_t)at rawWifiStateSet:(id)set rawCellStateSet:(id)stateSet
 {
   v132 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v81 = a6;
-  v80 = a7;
-  v71 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:a5];
+  dataCopy = data;
+  setCopy = set;
+  stateSetCopy = stateSet;
+  v71 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:at];
   v72 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v131 = 0u;
   memset(v130, 0, sizeof(v130));
@@ -2114,9 +2114,9 @@ LABEL_25:
   v129 = 0;
   memset(v128, 0, sizeof(v128));
   v127 = 0u;
-  v85 = a5;
-  v74 = a5 - a4;
-  v75 = a4;
+  atCopy = at;
+  v74 = at - from;
+  fromCopy = from;
   *&v13 = -1;
   *(&v13 + 1) = -1;
   *&self->lastEventTimeStampWifi = v13;
@@ -2138,7 +2138,7 @@ LABEL_25:
   v102 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v12;
+  obj = dataCopy;
   v70 = [obj countByEnumeratingWithState:&v99 objects:v126 count:16];
   v14 = 0;
   if (v70)
@@ -2149,7 +2149,7 @@ LABEL_25:
     v69 = *v100;
     v83 = @"Invalid/unknown network identification";
     v84 = @"Invalid/unknown network identification";
-    v86 = self;
+    selfCopy = self;
     while (1)
     {
       v15 = 0;
@@ -2162,21 +2162,21 @@ LABEL_25:
 
         v73 = v15;
         v16 = *(*(&v99 + 1) + 8 * v15);
-        v90 = [v16 journalName];
-        v17 = [v16 journalData];
-        v89 = [v17 length];
+        journalName = [v16 journalName];
+        journalData = [v16 journalData];
+        v89 = [journalData length];
         if (v89 >= 0x11)
         {
           v18 = 0;
           v19 = 16;
-          v88 = v17;
+          v88 = journalData;
           while (1)
           {
             v20 = objc_autoreleasePoolPush();
-            if ([(NetworkAnalyticsModel *)self _isLegacyJournal:v90])
+            if ([(NetworkAnalyticsModel *)self _isLegacyJournal:journalName])
             {
               v91 = v20;
-              v21 = self;
+              selfCopy3 = self;
               v22 = scoringLogHandle;
               if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
               {
@@ -2187,7 +2187,7 @@ LABEL_25:
                 _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEBUG, "Reading legacy journalRecord at %lu with length %lu", buf, 0x16u);
               }
 
-              [v17 getBytes:v130 range:{v18, 80}];
+              [journalData getBytes:v130 range:{v18, 80}];
               v23 = *&v130[0];
               v24 = BYTE10(v131);
               v25 = SWORD4(v131) >> 8;
@@ -2198,7 +2198,7 @@ LABEL_25:
 
             else
             {
-              [v17 getBytes:&v109 range:{v18, 16}];
+              [journalData getBytes:&v109 range:{v18, 16}];
               v29 = v109;
               if (v109 == 2)
               {
@@ -2212,7 +2212,7 @@ LABEL_25:
                   _os_log_impl(&dword_23255B000, v54, OS_LOG_TYPE_DEBUG, "Reading limJournalRecord at %lu with length %lu", buf, 0x16u);
                 }
 
-                v55 = [v17 subdataWithRange:{v18, 112}];
+                v55 = [journalData subdataWithRange:{v18, 112}];
                 [(NetworkAnalyticsModel *)self _processLowInternetModeRecord:v55 addTo:v72];
 
                 v19 = v18 + 112;
@@ -2241,7 +2241,7 @@ LABEL_44:
               }
 
               v91 = v20;
-              v21 = self;
+              selfCopy3 = self;
               v23 = v110;
               v30 = scoringLogHandle;
               if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -2253,7 +2253,7 @@ LABEL_44:
                 _os_log_impl(&dword_23255B000, v30, OS_LOG_TYPE_DEBUG, "Reading lqmJournalRecord at %lu with length %lu", buf, 0x16u);
               }
 
-              [v17 getBytes:&v127 range:{v18, 88}];
+              [journalData getBytes:&v127 range:{v18, 88}];
               v24 = BYTE1(v129);
               v25 = v129;
               v27 = 88;
@@ -2279,7 +2279,7 @@ LABEL_44:
             v34 = v98;
 
             v14 = v34;
-            v21 = v86;
+            selfCopy3 = selfCopy;
             if (!v33)
             {
 LABEL_21:
@@ -2307,7 +2307,7 @@ LABEL_21:
             if (v24 == 1)
             {
               v36 = v106;
-              v37 = v81;
+              v37 = setCopy;
               v38 = v84;
               v84 = v14;
               v40 = p_lastEventTimeStampWifi;
@@ -2330,7 +2330,7 @@ LABEL_21:
               }
 
               v36 = v103;
-              v37 = v80;
+              v37 = stateSetCopy;
               v38 = v83;
               v83 = v14;
               v40 = p_lastEventTimeStampCell;
@@ -2341,16 +2341,16 @@ LABEL_21:
             v41 = v37;
             v14 = v14;
 
-            if (range1.location > v85 && v105.location > v85)
+            if (range1.location > atCopy && v105.location > atCopy)
             {
 
               objc_autoreleasePoolPop(v91);
-              self = v21;
-              v17 = v88;
+              self = selfCopy3;
+              journalData = v88;
               goto LABEL_61;
             }
 
-            v42 = [(NetworkAnalyticsModel *)v21 _getNWInstantQualityForNetwork:v24 basedOnLQM:v26];
+            v42 = [(NetworkAnalyticsModel *)selfCopy3 _getNWInstantQualityForNetwork:v24 basedOnLQM:v26];
             v43.location = v36[4];
             if (v23 < v43.location)
             {
@@ -2369,7 +2369,7 @@ LABEL_21:
             }
 
             v43.length = v23 - v43.location + 1;
-            v133.location = v75;
+            v133.location = fromCopy;
             v133.length = v74 + 1;
             v47 = NSIntersectionRange(v43, v133);
             if (v47.length)
@@ -2383,8 +2383,8 @@ LABEL_55:
 LABEL_56:
 
 LABEL_57:
-            self = v21;
-            v17 = v88;
+            self = selfCopy3;
+            journalData = v88;
             v20 = v91;
 LABEL_58:
             v18 = v19;
@@ -2399,11 +2399,11 @@ LABEL_58:
           context = objc_autoreleasePoolPush();
           v96 = 0u;
           v97 = 0u;
-          [(NetworkAnalyticsModel *)v21 _parseTimeIntoWeekdayAndSlotId:v47.location withReferenceDate:v71];
+          [(NetworkAnalyticsModel *)selfCopy3 _parseTimeIntoWeekdayAndSlotId:v47.location withReferenceDate:v71];
           v94 = 0u;
           v95 = 0u;
           v48 = v47.length + v47.location - 1;
-          [(NetworkAnalyticsModel *)v21 _parseTimeIntoWeekdayAndSlotId:v48 withReferenceDate:v71];
+          [(NetworkAnalyticsModel *)selfCopy3 _parseTimeIntoWeekdayAndSlotId:v48 withReferenceDate:v71];
           v49 = scoringLogHandle;
           v50 = os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG);
           if (v24 == 1)
@@ -2490,8 +2490,8 @@ LABEL_48:
           *&buf[16] = v97;
           v92 = v94;
           v93 = v95;
-          v21 = v86;
-          [(NetworkAnalyticsModel *)v86 _processNetworkState:v36 toStateSet:v41 stateStartTimeInfo:buf stateEndTimeInfo:&v92 effectiveNetworkId:v59];
+          selfCopy3 = selfCopy;
+          [(NetworkAnalyticsModel *)selfCopy _processNetworkState:v36 toStateSet:v41 stateStartTimeInfo:buf stateEndTimeInfo:&v92 effectiveNetworkId:v59];
           objc_autoreleasePoolPop(context);
           goto LABEL_55;
         }
@@ -2515,14 +2515,14 @@ LABEL_61:
 LABEL_65:
 
   v60.location = range1.location;
-  v61 = v85;
-  if (range1.location >= 1 && range1.location < v85)
+  v61 = atCopy;
+  if (range1.location >= 1 && range1.location < atCopy)
   {
-    v60.length = v85 - range1.location + 1;
-    v134.location = v75;
+    v60.length = atCopy - range1.location + 1;
+    v134.location = fromCopy;
     v134.length = v74 + 1;
     v62 = NSIntersectionRange(v60, v134);
-    v61 = v85;
+    v61 = atCopy;
     if (v62.length)
     {
       memset(buf, 0, 32);
@@ -2544,8 +2544,8 @@ LABEL_65:
       v95 = *&buf[16];
       v92 = v96;
       v93 = v97;
-      [(NetworkAnalyticsModel *)self _processNetworkState:v106 toStateSet:v81 stateStartTimeInfo:&v94 stateEndTimeInfo:&v92 effectiveNetworkId:v63];
-      v61 = v85;
+      [(NetworkAnalyticsModel *)self _processNetworkState:v106 toStateSet:setCopy stateStartTimeInfo:&v94 stateEndTimeInfo:&v92 effectiveNetworkId:v63];
+      v61 = atCopy;
     }
   }
 
@@ -2553,7 +2553,7 @@ LABEL_65:
   if (v105.location >= 1 && v105.location < v61)
   {
     v64.length = v61 - v105.location + 1;
-    v135.location = v75;
+    v135.location = fromCopy;
     v135.length = v74 + 1;
     v65 = NSIntersectionRange(v64, v135);
     if (v65.length)
@@ -2577,7 +2577,7 @@ LABEL_65:
       v95 = *&buf[16];
       v92 = v96;
       v93 = v97;
-      [(NetworkAnalyticsModel *)self _processNetworkState:v103 toStateSet:v80 stateStartTimeInfo:&v94 stateEndTimeInfo:&v92 effectiveNetworkId:v66];
+      [(NetworkAnalyticsModel *)self _processNetworkState:v103 toStateSet:stateSetCopy stateStartTimeInfo:&v94 stateEndTimeInfo:&v92 effectiveNetworkId:v66];
     }
   }
 
@@ -2586,23 +2586,23 @@ LABEL_65:
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getPredictionJournalNameWithPrefix:(id)a3 forInterface:(int64_t)a4 slotSizeMinutes:(unint64_t)a5
+- (id)_getPredictionJournalNameWithPrefix:(id)prefix forInterface:(int64_t)interface slotSizeMinutes:(unint64_t)minutes
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = [a3 mutableCopy];
+  v7 = [prefix mutableCopy];
   v8 = v7;
-  if (a4 == 1)
+  if (interface == 1)
   {
     v9 = @"-WiFi";
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (interface == 2)
   {
     v9 = @"-Cellular";
 LABEL_5:
     [v7 appendString:v9];
-    [v8 appendFormat:@"-%lu", a5];
+    [v8 appendFormat:@"-%lu", minutes];
     v10 = v8;
     goto LABEL_9;
   }
@@ -2611,7 +2611,7 @@ LABEL_5:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v15 = a4;
+    interfaceCopy = interface;
     _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
   }
 
@@ -2623,16 +2623,16 @@ LABEL_9:
   return v10;
 }
 
-- (id)_getSavedPredictionHeaderNameForInterface:(int64_t)a3
+- (id)_getSavedPredictionHeaderNameForInterface:(int64_t)interface
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (interface == 2)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-Cellular", @"SymptomsPredictionHeader"];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (interface == 1)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-Wifi", @"SymptomsPredictionHeader"];
     v4 = LABEL_5:;
@@ -2643,7 +2643,7 @@ LABEL_9:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v9 = a3;
+    interfaceCopy = interface;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
   }
 
@@ -2654,16 +2654,16 @@ LABEL_9:
   return v4;
 }
 
-- (id)_getComplementaryPredictionNameForInterface:(int64_t)a3
+- (id)_getComplementaryPredictionNameForInterface:(int64_t)interface
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (interface == 2)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-Cellular", @"SymptomsComplementaryPrediction"];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (interface == 1)
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@-Wifi", @"SymptomsComplementaryPrediction"];
     v4 = LABEL_5:;
@@ -2674,7 +2674,7 @@ LABEL_9:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v9 = a3;
+    interfaceCopy = interface;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
   }
 
@@ -2685,11 +2685,11 @@ LABEL_9:
   return v4;
 }
 
-- (id)_loadSavedPredictionBasedOnHeaderData:(id)a3 interface:(int64_t)a4
+- (id)_loadSavedPredictionBasedOnHeaderData:(id)data interface:(int64_t)interface
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (interface == 1)
   {
     v7 = 192;
     v8 = 120;
@@ -2697,12 +2697,12 @@ LABEL_9:
     v9 = 88;
 LABEL_5:
     v63 = v9;
-    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:0];
+    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:0];
     v11 = scoringLogHandle;
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v68 = v10;
+      interfaceCopy = v10;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "JSON Auxiliary information: %@", buf, 0xCu);
     }
 
@@ -2713,9 +2713,9 @@ LABEL_5:
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v26 = v25;
-        v27 = [v12 unsignedIntegerValue];
+        unsignedIntegerValue = [v12 unsignedIntegerValue];
         *buf = 134218240;
-        v68 = v27;
+        interfaceCopy = unsignedIntegerValue;
         v69 = 2048;
         v70 = 900;
         _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "The predictions were saved using different slot sizes (saved=%ld, current=%ld)", buf, 0x16u);
@@ -2736,9 +2736,9 @@ LABEL_5:
           if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
           {
             v29 = v28;
-            v30 = [v13 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v13 unsignedIntegerValue];
             *buf = 134218240;
-            v68 = v30;
+            interfaceCopy = unsignedIntegerValue2;
             v69 = 2048;
             v70 = 4;
             _os_log_impl(&dword_23255B000, v29, OS_LOG_TYPE_DEBUG, "The predictions were saved using different history lengths (saved=%ld, current=%ld)", buf, 0x16u);
@@ -2763,7 +2763,7 @@ LABEL_5:
             if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v68 = v13;
+              interfaceCopy = v13;
               _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEBUG, "Saved prediction header points to %@", buf, 0xCu);
             }
 
@@ -2781,7 +2781,7 @@ LABEL_5:
               }
 
               *buf = 138412546;
-              v68 = v13;
+              interfaceCopy = v13;
               v69 = 2112;
               v70 = v18;
               v21 = "Loaded prediction %@, last updated %@";
@@ -2797,7 +2797,7 @@ LABEL_5:
               }
 
               *buf = 138412290;
-              v68 = v13;
+              interfaceCopy = v13;
               v21 = "Failed to load prediction %@";
               v22 = v19;
               v23 = 12;
@@ -2813,8 +2813,8 @@ LABEL_42:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v38 = [v37 integerValue];
-                v39 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v38];
+                integerValue = [v37 integerValue];
+                v39 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:integerValue];
                 [(NetworkAnalyticsModel *)self setLastModelRunTime:v39];
               }
             }
@@ -2882,15 +2882,15 @@ LABEL_42:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v46 = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
+                _isValidTimezoneToReturnPredictions = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
                 v47 = v13;
                 v12 = v47;
-                if (a4 != 1)
+                if (interface != 1)
                 {
                   defaultArrayOfDaysGroupCell = self->defaultArrayOfDaysGroupCell;
                   self->defaultArrayOfDaysGroupCell = v47;
 
-                  if (v46)
+                  if (_isValidTimezoneToReturnPredictions)
                   {
                     objc_storeStrong(&self->currentArrayOfDaysGroupCell, self->defaultArrayOfDaysGroupCell);
                   }
@@ -2901,7 +2901,7 @@ LABEL_42:
                 defaultArrayOfDaysGroupWifi = self->defaultArrayOfDaysGroupWifi;
                 self->defaultArrayOfDaysGroupWifi = v47;
 
-                if (v46)
+                if (_isValidTimezoneToReturnPredictions)
                 {
                   objc_storeStrong(&self->currentArrayOfDaysGroupWifi, self->defaultArrayOfDaysGroupWifi);
                 }
@@ -2942,7 +2942,7 @@ LABEL_66:
                   {
                     v57 = self->disconnectionPatternsWifi;
                     *buf = 138412290;
-                    v68 = v57;
+                    interfaceCopy = v57;
                     v58 = "Loaded complementary predictions to %@";
                     v59 = v55;
                     v60 = 12;
@@ -2965,7 +2965,7 @@ LABEL_79:
               }
             }
 
-            if (a4 == 1)
+            if (interface == 1)
             {
               goto LABEL_66;
             }
@@ -2987,10 +2987,10 @@ LABEL_35:
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v32 = v31;
-        v33 = [v12 integerValue];
+        integerValue2 = [v12 integerValue];
         v34 = self->weightStrategy;
         *buf = 134218240;
-        v68 = v33;
+        interfaceCopy = integerValue2;
         v69 = 1024;
         LODWORD(v70) = v34;
         _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_DEBUG, "The predictions were saved using different weighing strategies (saved=%ld, current=%u)", buf, 0x12u);
@@ -3001,7 +3001,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (a4 == 2)
+  if (interface == 2)
   {
     v7 = 200;
     v8 = 128;
@@ -3014,7 +3014,7 @@ LABEL_35:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v68 = a4;
+    interfaceCopy = interface;
     _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
   }
 
@@ -3069,19 +3069,19 @@ void __73__NetworkAnalyticsModel__loadSavedPredictionBasedOnHeaderData_interface
   }
 }
 
-- (BOOL)_savePredictionToJournalForInterface:(int64_t)a3
+- (BOOL)_savePredictionToJournalForInterface:(int64_t)interface
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (interface == 2)
   {
     v5 = self->defaultLQMPredictionsCell;
     v6 = 0;
 LABEL_5:
-    v7 = [(NetworkAnalyticsModel *)self _getPredictionJournalNameWithPrefix:@"SymptomsPrediction" forInterface:a3 slotSizeMinutes:15];
+    v7 = [(NetworkAnalyticsModel *)self _getPredictionJournalNameWithPrefix:@"SymptomsPrediction" forInterface:interface slotSizeMinutes:15];
     if (v7)
     {
-      v8 = [(NetworkAnalyticsModel *)self lastModelRunTime];
-      [v8 timeIntervalSince1970];
+      lastModelRunTime = [(NetworkAnalyticsModel *)self lastModelRunTime];
+      [lastModelRunTime timeIntervalSince1970];
       v10 = v9;
 
       [v7 appendFormat:@"-%lld", v10];
@@ -3089,9 +3089,9 @@ LABEL_5:
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v12 = v11;
-        v13 = [(NetworkAnalyticsModel *)self lastModelRunTime];
+        lastModelRunTime2 = [(NetworkAnalyticsModel *)self lastModelRunTime];
         *buf = 138412546;
-        v29 = v13;
+        interfaceCopy = lastModelRunTime2;
         v30 = 2112;
         v31 = v7;
         _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "Saving predictions made at %@ to the journal name %@", buf, 0x16u);
@@ -3105,21 +3105,21 @@ LABEL_5:
         if (v16)
         {
           *buf = 138412290;
-          v29 = v7;
+          interfaceCopy = v7;
           _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEBUG, "Prediction named %@ saved", buf, 0xCu);
         }
 
-        v17 = [(NetworkAnalyticsModel *)self _createHeaderDataForSavedPredictionsName:v7 hasComplementaryPrediction:v6 interfaceType:a3];
+        v17 = [(NetworkAnalyticsModel *)self _createHeaderDataForSavedPredictionsName:v7 hasComplementaryPrediction:v6 interfaceType:interface];
         if (v6)
         {
-          v18 = [(NetworkAnalyticsModel *)self _getComplementaryPredictionNameForInterface:a3];
+          v18 = [(NetworkAnalyticsModel *)self _getComplementaryPredictionNameForInterface:interface];
           if (v18)
           {
             [(ImpoExpoService *)self->ieService archiveAndImportItemUnderName:v18 item:self->disconnectionPatternsWifi];
           }
         }
 
-        v19 = [(NetworkAnalyticsModel *)self _getSavedPredictionHeaderNameForInterface:a3];
+        v19 = [(NetworkAnalyticsModel *)self _getSavedPredictionHeaderNameForInterface:interface];
         [(ImpoExpoService *)self->ieService importItemUnderName:v19 item:v17];
 
         v20 = 1;
@@ -3129,7 +3129,7 @@ LABEL_5:
       if (v16)
       {
         *buf = 138412290;
-        v29 = v7;
+        interfaceCopy = v7;
         v23 = "Prediction named %@ not saved";
         v24 = v15;
         v25 = 12;
@@ -3157,7 +3157,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3 == 1)
+  if (interface == 1)
   {
     v5 = self->defaultLQMPredictionsWifi;
     v6 = [(NSArray *)self->disconnectionPatternsWifi count]!= 0;
@@ -3168,7 +3168,7 @@ LABEL_25:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v29 = a3;
+    interfaceCopy = interface;
     _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
   }
 
@@ -3178,7 +3178,7 @@ LABEL_26:
   return v20;
 }
 
-- (void)_purgeSavedPredictionsOlderThan:(unint64_t)a3
+- (void)_purgeSavedPredictionsOlderThan:(unint64_t)than
 {
   v42 = *MEMORY[0x277D85DE8];
   v5 = scoringLogHandle;
@@ -3187,7 +3187,7 @@ LABEL_26:
     *buf = 138412546;
     v39 = @"SymptomsPrediction";
     v40 = 2048;
-    v41 = a3;
+    thanCopy = than;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Purging saved predictions with prefix %@ older than %lu days from now", buf, 0x16u);
   }
 
@@ -3196,9 +3196,9 @@ LABEL_26:
   if ([v7 count])
   {
     v28 = v6;
-    v29 = self;
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [v8 timeIntervalSince1970];
+    selfCopy = self;
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = v9;
 
     v31 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -3215,7 +3215,7 @@ LABEL_26:
     }
 
     v12 = v11;
-    v30 = v10 - 86400 * a3;
+    v30 = v10 - 86400 * than;
     v13 = *v34;
     while (1)
     {
@@ -3261,9 +3261,9 @@ LABEL_22:
         }
 
         v19 = [v18 objectAtIndex:3];
-        v20 = [v19 longLongValue];
+        longLongValue = [v19 longLongValue];
 
-        if (v20 <= v30 || v20 > v10)
+        if (longLongValue <= v30 || longLongValue > v10)
         {
           v22 = scoringLogHandle;
           if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3288,7 +3288,7 @@ LABEL_23:
       {
 LABEL_25:
 
-        [(ImpoExpoService *)v29->ieService deleteItemsWithNames:v31];
+        [(ImpoExpoService *)selfCopy->ieService deleteItemsWithNames:v31];
         v7 = v27;
         v6 = v28;
         break;
@@ -3300,16 +3300,16 @@ LABEL_25:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadLatestPredictionFromJournalWithInterfaceType:(int64_t)a3
+- (void)_loadLatestPredictionFromJournalWithInterfaceType:(int64_t)type
 {
-  v3 = a3;
-  v4 = self;
+  typeCopy = type;
+  selfCopy = self;
   v75 = *MEMORY[0x277D85DE8];
-  v5 = [(NetworkAnalyticsModel *)self _getPredictionJournalNameWithPrefix:@"SymptomsPrediction" forInterface:a3 slotSizeMinutes:15];
+  v5 = [(NetworkAnalyticsModel *)self _getPredictionJournalNameWithPrefix:@"SymptomsPrediction" forInterface:type slotSizeMinutes:15];
   if (v5)
   {
-    v6 = [(NetworkAnalyticsModel *)v4 _getSavedPredictionHeaderNameForInterface:v3];
-    ieService = v4->ieService;
+    v6 = [(NetworkAnalyticsModel *)selfCopy _getSavedPredictionHeaderNameForInterface:typeCopy];
+    ieService = selfCopy->ieService;
     v69 = 0;
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
@@ -3319,17 +3319,17 @@ LABEL_25:
     v68 = v8;
     v9 = [(ImpoExpoService *)ieService exportItemUnderName:v8 lastUpdated:&v69 verificationBlock:v67];
     v10 = v69;
-    if (v9 && ([(NetworkAnalyticsModel *)v4 _loadSavedPredictionBasedOnHeaderData:v9 interface:v3], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v9 && ([(NetworkAnalyticsModel *)selfCopy _loadSavedPredictionBasedOnHeaderData:v9 interface:typeCopy], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      v13 = [(NetworkAnalyticsModel *)v4 _isValidTimezoneToReturnPredictions];
+      _isValidTimezoneToReturnPredictions = [(NetworkAnalyticsModel *)selfCopy _isValidTimezoneToReturnPredictions];
       v14 = 0;
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = [(ImpoExpoService *)v4->ieService listItemsNameWithPrefix:v5 sortDescriptor:0];
+      v16 = [(ImpoExpoService *)selfCopy->ieService listItemsNameWithPrefix:v5 sortDescriptor:0];
       v17 = [v16 count];
       v18 = scoringLogHandle;
       v19 = os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG);
@@ -3360,12 +3360,12 @@ LABEL_25:
       v64 = 0u;
       obj = v16;
       v20 = [obj countByEnumeratingWithState:&v63 objects:v74 count:16];
-      v58 = v3;
+      v58 = typeCopy;
       v59 = v10;
       if (v20)
       {
         v21 = v20;
-        v53 = v4;
+        v53 = selfCopy;
         v54 = v9;
         v55 = v8;
         v56 = v5;
@@ -3395,13 +3395,13 @@ LABEL_25:
             if ([v28 count] == 4)
             {
               v29 = [v28 objectAtIndex:3];
-              v30 = [v29 longLongValue];
+              longLongValue = [v29 longLongValue];
 
-              if (v30 > v22)
+              if (longLongValue > v22)
               {
                 v31 = v25;
 
-                v22 = v30;
+                v22 = longLongValue;
                 v60 = v31;
               }
             }
@@ -3427,9 +3427,9 @@ LABEL_25:
         v33 = v22;
         v8 = v55;
         v5 = v56;
-        v3 = v58;
+        typeCopy = v58;
         v10 = v59;
-        v4 = v53;
+        selfCopy = v53;
         v9 = v54;
         v14 = v60;
       }
@@ -3440,21 +3440,21 @@ LABEL_25:
         v33 = 0.0;
       }
 
-      v35 = v4->ieService;
+      v35 = selfCopy->ieService;
       v62 = 0;
       v12 = [(ImpoExpoService *)v35 exportAndUnarchiveItemUnderName:v14 lastUpdated:&v62 verificationBlock:&__block_literal_global_435];
       v36 = v62;
       v37 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:v33];
-      [(NetworkAnalyticsModel *)v4 setLastModelRunTime:v37];
+      [(NetworkAnalyticsModel *)selfCopy setLastModelRunTime:v37];
 
-      v4->timezoneOffsetFromUtcNoDaylight = [(NetworkAnalyticsModel *)v4 _getCurrentLocationTimezoneOffsetWithoutDST];
+      selfCopy->timezoneOffsetFromUtcNoDaylight = [(NetworkAnalyticsModel *)selfCopy _getCurrentLocationTimezoneOffsetWithoutDST];
       v38 = scoringLogHandle;
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v39 = MEMORY[0x277CBEAF8];
         v40 = v38;
-        v41 = [v39 currentLocale];
-        [v36 descriptionWithLocale:v41];
+        currentLocale = [v39 currentLocale];
+        [v36 descriptionWithLocale:currentLocale];
         v43 = v42 = v14;
         *buf = 138412546;
         v71 = v42;
@@ -3462,7 +3462,7 @@ LABEL_25:
         v73 = v43;
         _os_log_impl(&dword_23255B000, v40, OS_LOG_TYPE_DEBUG, "Loaded the most recent saved predictions: %@ (saved at %@)", buf, 0x16u);
 
-        v3 = v58;
+        typeCopy = v58;
         v14 = v42;
         v10 = v59;
       }
@@ -3475,49 +3475,49 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v13 = 1;
+      _isValidTimezoneToReturnPredictions = 1;
     }
 
-    v44 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %f", @"confidence", 0x3FE0000000000000];
-    if (v3 == 2)
+    0x3FE0000000000000 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %f", @"confidence", 0x3FE0000000000000];
+    if (typeCopy == 2)
     {
-      objc_storeStrong(&v4->defaultLQMPredictionsCell, v12);
-      v49 = [(NSArray *)v4->defaultLQMPredictionsCell filteredArrayUsingPredicate:v44];
-      defaultLQMPredictionsCell = v4->defaultLQMPredictionsCell;
-      v4->defaultLQMPredictionsCell = v49;
+      objc_storeStrong(&selfCopy->defaultLQMPredictionsCell, v12);
+      v49 = [(NSArray *)selfCopy->defaultLQMPredictionsCell filteredArrayUsingPredicate:0x3FE0000000000000];
+      defaultLQMPredictionsCell = selfCopy->defaultLQMPredictionsCell;
+      selfCopy->defaultLQMPredictionsCell = v49;
 
-      if (v13)
+      if (_isValidTimezoneToReturnPredictions)
       {
-        v47 = v4->defaultLQMPredictionsCell;
-        p_currentLQMPredictionsCell = &v4->currentLQMPredictionsCell;
+        v47 = selfCopy->defaultLQMPredictionsCell;
+        p_currentLQMPredictionsCell = &selfCopy->currentLQMPredictionsCell;
         goto LABEL_40;
       }
     }
 
     else
     {
-      if (v3 != 1)
+      if (typeCopy != 1)
       {
         v51 = scoringLogHandle;
         if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134217984;
-          v71 = v3;
+          v71 = typeCopy;
           _os_log_impl(&dword_23255B000, v51, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
         }
 
         goto LABEL_43;
       }
 
-      objc_storeStrong(&v4->defaultLQMPredictionsWifi, v12);
-      v45 = [(NSArray *)v4->defaultLQMPredictionsWifi filteredArrayUsingPredicate:v44];
-      defaultLQMPredictionsWifi = v4->defaultLQMPredictionsWifi;
-      v4->defaultLQMPredictionsWifi = v45;
+      objc_storeStrong(&selfCopy->defaultLQMPredictionsWifi, v12);
+      v45 = [(NSArray *)selfCopy->defaultLQMPredictionsWifi filteredArrayUsingPredicate:0x3FE0000000000000];
+      defaultLQMPredictionsWifi = selfCopy->defaultLQMPredictionsWifi;
+      selfCopy->defaultLQMPredictionsWifi = v45;
 
-      if (v13)
+      if (_isValidTimezoneToReturnPredictions)
       {
-        v47 = v4->defaultLQMPredictionsWifi;
-        p_currentLQMPredictionsCell = &v4->currentLQMPredictionsWifi;
+        v47 = selfCopy->defaultLQMPredictionsWifi;
+        p_currentLQMPredictionsCell = &selfCopy->currentLQMPredictionsWifi;
 LABEL_40:
         objc_storeStrong(p_currentLQMPredictionsCell, v47);
       }
@@ -3631,9 +3631,9 @@ void __75__NetworkAnalyticsModel__loadLatestPredictionFromJournalWithInterfaceTy
 - (void)_updateHomeTimezoneOffsetIfNeeded
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
-  v4 = v3;
-  if (!self->homeTimezoneOffsetKnownCoreRoutine || v3 != self->homeTimezoneOffsetFromUtcNoDaylight)
+  _getCurrentLocationTimezoneOffsetWithoutDST = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
+  v4 = _getCurrentLocationTimezoneOffsetWithoutDST;
+  if (!self->homeTimezoneOffsetKnownCoreRoutine || _getCurrentLocationTimezoneOffsetWithoutDST != self->homeTimezoneOffsetFromUtcNoDaylight)
   {
     v5 = scoringLogHandle;
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3676,16 +3676,16 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_extractImpairmentEventsFromNetworkStateTable:(id)a3 setOfDays:(id)a4
+- (id)_extractImpairmentEventsFromNetworkStateTable:(id)table setOfDays:(id)days
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  tableCopy = table;
+  daysCopy = days;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v6)
+  if (daysCopy)
   {
-    v8 = [v6 count] == 0;
-    if (!v5)
+    v8 = [daysCopy count] == 0;
+    if (!tableCopy)
     {
       goto LABEL_19;
     }
@@ -3694,7 +3694,7 @@ LABEL_10:
   else
   {
     v8 = 1;
-    if (!v5)
+    if (!tableCopy)
     {
       goto LABEL_19;
     }
@@ -3704,8 +3704,8 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v20 = v5;
-  v9 = v5;
+  v20 = tableCopy;
+  v9 = tableCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v10)
   {
@@ -3723,7 +3723,7 @@ LABEL_10:
         v14 = *(*(&v21 + 1) + 8 * i);
         if ([v14 stateType] <= 99)
         {
-          if (v8 || (v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLong:{objc_msgSend(v14, "stateDayOfWeek")}], v16 = objc_msgSend(v6, "containsObject:", v15), v15, v16))
+          if (v8 || (v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLong:{objc_msgSend(v14, "stateDayOfWeek")}], v16 = objc_msgSend(daysCopy, "containsObject:", v15), v15, v16))
           {
             v17 = scoringLogHandle;
             if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3744,7 +3744,7 @@ LABEL_10:
     while (v11);
   }
 
-  v5 = v20;
+  tableCopy = v20;
 LABEL_19:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -3752,13 +3752,13 @@ LABEL_19:
   return v7;
 }
 
-- (double)_clusterUsingKMeansOn:(id)a3 into:(int)a4 iterations:(int)a5 saveCentroidsTo:(id)a6
+- (double)_clusterUsingKMeansOn:(id)on into:(int)into iterations:(int)iterations saveCentroidsTo:(id)to
 {
-  v42 = a4;
-  v41 = self;
-  v8 = a3;
-  v9 = a6;
-  v10 = [v8 count];
+  intoCopy = into;
+  selfCopy = self;
+  onCopy = on;
+  toCopy = to;
+  v10 = [onCopy count];
   v11 = malloc_type_calloc(3uLL, 8uLL, 0x8DEE4012uLL);
   if (!v11)
   {
@@ -3789,7 +3789,7 @@ LABEL_19:
   }
 
   v37 = &v36;
-  if (a5 < 1)
+  if (iterations < 1)
   {
     v18 = 1.79769313e308;
   }
@@ -3798,9 +3798,9 @@ LABEL_19:
   {
     v15 = 0;
     v16 = v10 & 0x7FFFFFFF;
-    v17 = 24 * v42;
+    v17 = 24 * intoCopy;
     v18 = 1.79769313e308;
-    v38 = a5;
+    iterationsCopy = iterations;
     do
     {
       if (count >= 1)
@@ -3808,7 +3808,7 @@ LABEL_19:
         v19 = 0;
         do
         {
-          v20 = [v8 objectAtIndex:v19];
+          v20 = [onCopy objectAtIndex:v19];
           *(*v12 + 8 * v19) = [v20 stateSlotId];
           *(v12[1] + 8 * v19) = [v20 stateLength];
           *(v12[2] + 8 * v19) = [v20 stateType];
@@ -3819,7 +3819,7 @@ LABEL_19:
         while (v16 != v19);
       }
 
-      v21 = gCPMLCreateKMEANSAnalysisFunc(3, count, v12, v42, 20, 0, 0, 0.01);
+      v21 = gCPMLCreateKMEANSAnalysisFunc(3, count, v12, intoCopy, 20, 0, 0, 0.01);
       if (!v21)
       {
         v22 = scoringLogHandle;
@@ -3839,7 +3839,7 @@ LABEL_19:
       else
       {
         v18 = v23;
-        v24 = v9 == 0;
+        v24 = toCopy == 0;
       }
 
       if (!v24)
@@ -3853,7 +3853,7 @@ LABEL_19:
           v26 = 0;
           do
           {
-            v27 = [v8 objectAtIndex:v26];
+            v27 = [onCopy objectAtIndex:v26];
             [v27 assignLabel:*(*buf + 4 * v26)];
 
             ++v26;
@@ -3862,11 +3862,11 @@ LABEL_19:
           while (v16 != v26);
         }
 
-        [v9 removeAllObjects];
+        [toCopy removeAllObjects];
         v44 = 0;
         v39 = v21;
         gCPMLCentersKMeansAnalysisFunc(v21, &v44);
-        if (v42 >= 1)
+        if (intoCopy >= 1)
         {
           v28 = 0;
           do
@@ -3876,7 +3876,7 @@ LABEL_19:
             v31 = *(v44 + v28 + 8);
             v36 = *(v44 + v28 + 16);
             v32 = [(NetworkStateRecord *)v29 initWithAge:-1 dayOfWeek:-1 slotId:v30 stateLength:v31 beginningNetworkId:@"Invalid/unknown network identification" endingNetworkId:@"Invalid/unknown network identification" stateType:v36 label:-1, v37];
-            [v9 addObject:v32];
+            [toCopy addObject:v32];
 
             v28 += 24;
           }
@@ -3885,17 +3885,17 @@ LABEL_19:
         }
 
         v18 = v25;
-        a5 = v38;
+        iterations = iterationsCopy;
         v15 = v40;
         v21 = v39;
       }
 
       gCPMLDestroyKMEANSAnalysisFunc(v21);
-      [(NetworkAnalyticsModel *)v41 _shuffleArray:v8];
+      [(NetworkAnalyticsModel *)selfCopy _shuffleArray:onCopy];
       ++v15;
     }
 
-    while (v15 != a5);
+    while (v15 != iterations);
   }
 
   for (j = 0; j != 3; ++j)
@@ -3913,13 +3913,13 @@ LABEL_19:
   return v18;
 }
 
-- (void)_clusterImpairmentEventsUsingKMeansOn:(id)a3 saveCentroidsTo:(id)a4
+- (void)_clusterImpairmentEventsUsingKMeansOn:(id)on saveCentroidsTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 count];
+  onCopy = on;
+  toCopy = to;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [onCopy count];
   if (v9)
   {
     if (v9 >= 1)
@@ -3937,7 +3937,7 @@ LABEL_19:
       v11 = 1;
       do
       {
-        [(NetworkAnalyticsModel *)self _clusterUsingKMeansOn:v6 into:v11 iterations:50 saveCentroidsTo:0];
+        [(NetworkAnalyticsModel *)self _clusterUsingKMeansOn:onCopy into:v11 iterations:50 saveCentroidsTo:0];
         v13 = v12;
         v14 = scoringLogHandle;
         if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -3950,7 +3950,7 @@ LABEL_19:
         }
 
         v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:v13];
-        [v8 addObject:v15];
+        [array addObject:v15];
 
         v11 = (v11 + 1);
         --v10;
@@ -3959,7 +3959,7 @@ LABEL_19:
       while (v10);
     }
 
-    v16 = [(NetworkAnalyticsModel *)self _elbowOfList:v8];
+    v16 = [(NetworkAnalyticsModel *)self _elbowOfList:array];
     if ((v16 & 0x80000000) == 0)
     {
       v17 = (v16 + 1);
@@ -3971,26 +3971,26 @@ LABEL_19:
         _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEBUG, "The optimal number of clusters is %d", buf, 8u);
       }
 
-      [(NetworkAnalyticsModel *)self _clusterUsingKMeansOn:v6 into:v17 iterations:50 saveCentroidsTo:v7];
+      [(NetworkAnalyticsModel *)self _clusterUsingKMeansOn:onCopy into:v17 iterations:50 saveCentroidsTo:toCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clusterEventsUsingKMeansForSetOfDays:(id)a3 networkStateTable:(id)a4 saveCentroidsTo:(id)a5
+- (id)_clusterEventsUsingKMeansForSetOfDays:(id)days networkStateTable:(id)table saveCentroidsTo:(id)to
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v28 = a5;
-  v9 = [(NetworkAnalyticsModel *)self _extractImpairmentEventsFromNetworkStateTable:a4 setOfDays:v8];
+  daysCopy = days;
+  toCopy = to;
+  v9 = [(NetworkAnalyticsModel *)self _extractImpairmentEventsFromNetworkStateTable:table setOfDays:daysCopy];
   v10 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v11 = v10;
     v12 = [v9 count];
-    v13 = [v8 allObjects];
-    v14 = [v13 componentsJoinedByString:{@", "}];
+    allObjects = [daysCopy allObjects];
+    v14 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 134218242;
     v35 = v12;
     v36 = 2112;
@@ -4021,8 +4021,8 @@ LABEL_19:
         }
 
         v21 = *(*(&v29 + 1) + 8 * i);
-        v22 = [v8 allObjects];
-        v23 = [v22 objectAtIndex:0];
+        allObjects2 = [daysCopy allObjects];
+        v23 = [allObjects2 objectAtIndex:0];
         [v21 assignDayOfWeek:{objc_msgSend(v23, "longValue")}];
 
         v24 = scoringLogHandle;
@@ -4040,18 +4040,18 @@ LABEL_19:
     while (v18);
   }
 
-  [v28 addObjectsFromArray:v16];
+  [toCopy addObjectsFromArray:v16];
   v25 = *MEMORY[0x277D85DE8];
 
   return v27;
 }
 
-- (id)_clusterEventsInWeekUsingKMeansOn:(id)a3
+- (id)_clusterEventsInWeekUsingKMeansOn:(id)on
 {
   *&v53[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  onCopy = on;
   v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = v4;
+  v5 = onCopy;
   v6 = [v5 count];
   v7 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -4087,7 +4087,7 @@ LABEL_19:
     for (i = 0; i != v6; ++i)
     {
       v14 = [v5 objectAtIndex:i];
-      v15 = [v14 stateDayOfWeek];
+      stateDayOfWeek = [v14 stateDayOfWeek];
 
       v16 = scoringLogHandle;
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -4100,10 +4100,10 @@ LABEL_19:
       }
 
       v19 = [v5 objectAtIndex:i];
-      v20 = [v19 stateLabelAssigned];
+      stateLabelAssigned = [v19 stateLabelAssigned];
 
-      v21 = [v9 objectAtIndex:v15 - 1];
-      v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:v20];
+      v21 = [v9 objectAtIndex:stateDayOfWeek - 1];
+      v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:stateLabelAssigned];
       [v21 addObject:v22];
     }
   }
@@ -4120,8 +4120,8 @@ LABEL_19:
         v25 = v23 + 1;
         v26 = v24;
         v27 = [v9 objectAtIndex:v23];
-        v28 = [v27 allObjects];
-        v29 = [v28 componentsJoinedByString:{@", "}];
+        allObjects = [v27 allObjects];
+        v29 = [allObjects componentsJoinedByString:{@", "}];
         *buf = 67109378;
         v53[0] = v25;
         LOWORD(v53[1]) = 2112;
@@ -4253,7 +4253,7 @@ LABEL_19:
   return result;
 }
 
-- (unint64_t)_getWeightForAge:(int64_t)a3
+- (unint64_t)_getWeightForAge:(int64_t)age
 {
   v10 = *MEMORY[0x277D85DE8];
   weightStrategy = self->weightStrategy;
@@ -4266,7 +4266,7 @@ LABEL_8:
 
   if (weightStrategy == 2)
   {
-    result = 1 << (a3 / -7 + 3);
+    result = 1 << (age / -7 + 3);
     goto LABEL_9;
   }
 
@@ -4284,38 +4284,38 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  result = a3 / -7 + 4;
+  result = age / -7 + 4;
 LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)_generatePredictionForDays:(id)a3 fromClusteredEvents:(id)a4 clusterCentroids:(id)a5 interfaceType:(int64_t)a6 basedOnWeekClusters:(int64_t)a7 savePredictionsTo:(id)a8
+- (void)_generatePredictionForDays:(id)days fromClusteredEvents:(id)events clusterCentroids:(id)centroids interfaceType:(int64_t)type basedOnWeekClusters:(int64_t)clusters savePredictionsTo:(id)to
 {
   buf[97] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v76 = a4;
-  v74 = a5;
-  v83 = a8;
+  daysCopy = days;
+  eventsCopy = events;
+  centroidsCopy = centroids;
+  toCopy = to;
   v12 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = v12;
-    v14 = [v11 allObjects];
-    v15 = [v14 componentsJoinedByString:{@", "}];
+    allObjects = [daysCopy allObjects];
+    v15 = [allObjects componentsJoinedByString:{@", "}];
     LODWORD(buf[0]) = 138412290;
     *(buf + 4) = v15;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "Generating prediction for the following days: {%@}", buf, 0xCu);
   }
 
-  v73 = v11;
-  v72 = [v11 count];
-  v71 = [(NetworkAnalyticsModel *)self _getTotalWeightForCompletedHistory];
+  v73 = daysCopy;
+  v72 = [daysCopy count];
+  _getTotalWeightForCompletedHistory = [(NetworkAnalyticsModel *)self _getTotalWeightForCompletedHistory];
   bzero(buf, 0x300uLL);
   bzero(v113, 0x300uLL);
   buf[96] = -1;
   v113[96] = -1;
-  if (a7 < 1)
+  if (clusters < 1)
   {
     v37 = 0;
     v36 = 0;
@@ -4328,12 +4328,12 @@ LABEL_9:
     {
       v17 = objc_autoreleasePoolPush();
       v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"stateLabelAssigned", v16];
-      v19 = [v76 filteredArrayUsingPredicate:v18];
+      v19 = [eventsCopy filteredArrayUsingPredicate:v18];
       if ([v19 count])
       {
         v79 = v18;
         v80 = v17;
-        v20 = [v74 objectAtIndex:v16];
+        v20 = [centroidsCopy objectAtIndex:v16];
         v21 = -[NetworkAnalyticsModel _predictNetworkQualityBasedOnAverageNWInstantQuality:](self, "_predictNetworkQualityBasedOnAverageNWInstantQuality:", [v20 stateType]);
         v22 = scoringLogHandle;
         if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -4369,8 +4369,8 @@ LABEL_9:
               }
 
               v24 = *(*(&v94 + 1) + 8 * i);
-              v25 = [v24 stateSlotId];
-              v26 = [v24 stateLength];
+              stateSlotId = [v24 stateSlotId];
+              stateLength = [v24 stateLength];
               v27 = -[NetworkAnalyticsModel _getWeightForAge:](self, "_getWeightForAge:", [v24 stateAge]);
               v28 = scoringLogHandle;
               if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
@@ -4382,10 +4382,10 @@ LABEL_9:
                 _os_log_impl(&dword_23255B000, v28, OS_LOG_TYPE_DEBUG, "%@ (weight=%ld)", v107, 0x16u);
               }
 
-              if (v26 >= 1)
+              if (stateLength >= 1)
               {
-                v29 = v26 + v25;
-                v30 = v25;
+                v29 = stateLength + stateSlotId;
+                v30 = stateSlotId;
                 v31 = v29;
                 do
                 {
@@ -4481,7 +4481,7 @@ LABEL_9:
       ++v16;
     }
 
-    while (v16 != a7);
+    while (v16 != clusters);
     v36 = buf[0];
     v37 = v113[0];
   }
@@ -4512,8 +4512,8 @@ LABEL_9:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v43 = v41;
-    v44 = [v73 allObjects];
-    v45 = [v44 componentsJoinedByString:{@", "}];
+    allObjects2 = [v73 allObjects];
+    v45 = [allObjects2 componentsJoinedByString:{@", "}];
     *v107 = 138412290;
     *&v107[4] = v45;
     _os_log_impl(&dword_23255B000, v43, OS_LOG_TYPE_DEBUG, "Predictions for days {%@}", v107, 0xCu);
@@ -4528,7 +4528,7 @@ LABEL_9:
 
   v47 = 0;
   v48 = 0;
-  v49 = (v72 * v71);
+  v49 = (v72 * _getTotalWeightForCompletedHistory);
   do
   {
     v50 = v113[v47];
@@ -4614,7 +4614,7 @@ LABEL_9:
             v67 = v63 + 96 * [*(*(&v90 + 1) + 8 * j) intValue];
             v68 = objc_autoreleasePoolPush();
             v69 = [[LQMPredictionInternalRecord alloc] initWithOffset:v67 length:v64 level:v40 confidence:v65];
-            [v83 addObject:v69];
+            [toCopy addObject:v69];
 
             objc_autoreleasePoolPop(v68);
           }
@@ -4642,13 +4642,13 @@ LABEL_9:
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_learnDisconnectionPatternForSetOfDays:(id)a3 impairmentEvents:(id)a4
+- (id)_learnDisconnectionPatternForSetOfDays:(id)days impairmentEvents:(id)events
 {
   v64 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v38 = a4;
+  daysCopy = days;
+  eventsCopy = events;
   v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v41 = self;
+  selfCopy = self;
   periodPerDay = self->periodPerDay;
   if (periodPerDay)
   {
@@ -4656,7 +4656,7 @@ LABEL_9:
     do
     {
       v39 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %ld && %K >= %ld && %K < %ld && %K != %@ && %K != %@ && %K != %K", @"stateType", 0, @"stateSlotId", 96 * v7 / periodPerDay, @"stateSlotId", (96 * v7 + 96) / periodPerDay, @"stateBeginningNetworkId", @"Invalid/unknown network identification", @"stateEndingNetworkId", @"Invalid/unknown network identification", @"stateBeginningNetworkId", @"stateEndingNetworkId"];
-      v8 = [v38 filteredArrayUsingPredicate:?];
+      v8 = [eventsCopy filteredArrayUsingPredicate:?];
       v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v45 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v57 = 0u;
@@ -4680,9 +4680,9 @@ LABEL_9:
 
             v12 = *(*(&v57 + 1) + 8 * i);
             v13 = objc_autoreleasePoolPush();
-            v14 = [[DisconnectionStateStatistics alloc] initWithDaysOfWeek:v47 periodId:v7 forNetworkStateRecord:v12];
-            v15 = [v12 stateBeginningNetworkId];
-            [v45 addObject:v15];
+            v14 = [[DisconnectionStateStatistics alloc] initWithDaysOfWeek:daysCopy periodId:v7 forNetworkStateRecord:v12];
+            stateBeginningNetworkId = [v12 stateBeginningNetworkId];
+            [v45 addObject:stateBeginningNetworkId];
 
             v55 = 0u;
             v56 = 0u;
@@ -4763,10 +4763,10 @@ LABEL_18:
             {
               v30 = v7;
               v31 = [v29 objectAtIndex:0];
-              v32 = [v31 networkStateRecords];
-              v33 = [v32 count];
-              minimumEventsToConsiderPattern = v41->minimumEventsToConsiderPattern;
-              v35 = [v47 count] * minimumEventsToConsiderPattern;
+              networkStateRecords = [v31 networkStateRecords];
+              v33 = [networkStateRecords count];
+              minimumEventsToConsiderPattern = selfCopy->minimumEventsToConsiderPattern;
+              v35 = [daysCopy count] * minimumEventsToConsiderPattern;
 
               if (v33 >= v35)
               {
@@ -4791,7 +4791,7 @@ LABEL_18:
 
       ++v7;
 
-      periodPerDay = v41->periodPerDay;
+      periodPerDay = selfCopy->periodPerDay;
     }
 
     while (v7 < periodPerDay);
@@ -4802,32 +4802,32 @@ LABEL_18:
   return v40;
 }
 
-- (void)_handleNetworkNotificationFrom:(int64_t)a3 notification:(id)a4
+- (void)_handleNetworkNotificationFrom:(int64_t)from notification:(id)notification
 {
   v86 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  notificationCopy = notification;
   v6 = scoringLogHandle;
   v7 = os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG);
-  if (a3 == 2)
+  if (from == 2)
   {
     if (v7)
     {
       v22 = v6;
-      v23 = [v5 userInfo];
+      userInfo = [notificationCopy userInfo];
       *buf = 138477827;
-      *&buf[4] = v23;
+      *&buf[4] = userInfo;
       _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEBUG, "Received Cellular notification: %{private}@", buf, 0xCu);
     }
 
     goto LABEL_60;
   }
 
-  if (a3 != 1)
+  if (from != 1)
   {
     if (v7)
     {
       *buf = 134217984;
-      *&buf[4] = a3;
+      *&buf[4] = from;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", buf, 0xCu);
     }
 
@@ -4837,22 +4837,22 @@ LABEL_18:
   if (v7)
   {
     v8 = v6;
-    v9 = [v5 userInfo];
+    userInfo2 = [notificationCopy userInfo];
     *buf = 138477827;
-    *&buf[4] = v9;
+    *&buf[4] = userInfo2;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "Received Wi-Fi notification: %{private}@", buf, 0xCu);
   }
 
   v10 = self->disconnectionPatternsWifi;
   v11 = self->defaultLQMPredictionsWifi;
-  v12 = [v5 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"State"];
-  v14 = [v13 BOOLValue];
+  userInfo3 = [notificationCopy userInfo];
+  v13 = [userInfo3 objectForKeyedSubscript:@"State"];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
-    v15 = [v5 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"HashedPrimaryKey"];
+    userInfo4 = [notificationCopy userInfo];
+    v16 = [userInfo4 objectForKeyedSubscript:@"HashedPrimaryKey"];
 
     v17 = [v16 length];
     while (v17 >= 1)
@@ -4901,12 +4901,12 @@ LABEL_18:
   }
 
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   *buf = 0u;
   v85 = 0u;
-  [v28 timeIntervalSince1970];
-  v67 = v28;
-  [(NetworkAnalyticsModel *)self _parseTimeIntoWeekdayAndSlotId:v29 withReferenceDate:v28];
+  [date timeIntervalSince1970];
+  v67 = date;
+  [(NetworkAnalyticsModel *)self _parseTimeIntoWeekdayAndSlotId:v29 withReferenceDate:date];
   v31 = *buf;
   v30 = *&buf[8];
   periodPerDay = self->periodPerDay;
@@ -4926,7 +4926,7 @@ LABEL_55:
   }
 
   v34 = v33;
-  v65 = v5;
+  v65 = notificationCopy;
   v66 = v11;
   v63 = v30 + 96 * v31 + 4294967200;
   v64 = v10;
@@ -4943,15 +4943,15 @@ LABEL_24:
     }
 
     v38 = *(*(&v76 + 1) + 8 * v37);
-    v39 = [v38 disconnectedFromNetworkId];
-    if (![v39 isEqualToString:self->currentlyConnectedWifiSsid])
+    disconnectedFromNetworkId = [v38 disconnectedFromNetworkId];
+    if (![disconnectedFromNetworkId isEqualToString:self->currentlyConnectedWifiSsid])
     {
       goto LABEL_33;
     }
 
-    v40 = [v38 daysOfWeek];
+    daysOfWeek = [v38 daysOfWeek];
     v41 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInteger:v31];
-    if ([v40 containsObject:v41])
+    if ([daysOfWeek containsObject:v41])
     {
       break;
     }
@@ -4971,9 +4971,9 @@ LABEL_34:
     }
   }
 
-  v42 = [v38 periodId];
+  periodId = [v38 periodId];
 
-  v43 = v42 == v68;
+  v43 = periodId == v68;
   v36 = obj;
   if (!v43)
   {
@@ -5012,11 +5012,11 @@ LABEL_34:
           }
 
           v50 = *(*(&v72 + 1) + 8 * i);
-          v51 = [v50 offset];
+          offset = [v50 offset];
           v88.length = [v50 length];
           v87.location = v63;
           v87.length = obja;
-          v88.location = v51;
+          v88.location = offset;
           if (!NSIntersectionRange(v87, v88).length)
           {
             [v27 addObject:v50];
@@ -5046,22 +5046,22 @@ LABEL_34:
     currentLQMPredictionsWifi = self->currentLQMPredictionsWifi;
     self->currentLQMPredictionsWifi = v57;
 
-    v59 = [MEMORY[0x277CBEAA8] date];
-    [(NetworkAnalyticsModel *)self setLastModelRunTime:v59];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(NetworkAnalyticsModel *)self setLastModelRunTime:date2];
 
-    v60 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v60 postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
 
     v36 = v55;
 LABEL_53:
     v10 = v64;
-    v5 = v65;
+    notificationCopy = v65;
     v11 = v66;
     goto LABEL_55;
   }
 
   v10 = v64;
-  v5 = v65;
+  notificationCopy = v65;
   v11 = v66;
 LABEL_57:
 
@@ -5083,32 +5083,32 @@ LABEL_60:
   {
     v4 = MEMORY[0x277CBEBB0];
     v5 = v3;
-    v6 = [v4 localTimeZone];
+    localTimeZone = [v4 localTimeZone];
     v25 = 138412290;
-    v26 = v6;
+    v26 = localTimeZone;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEBUG, "Timezone changed to %@", &v25, 0xCu);
   }
 
-  v7 = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
+  _getCurrentLocationTimezoneOffsetWithoutDST = [(NetworkAnalyticsModel *)self _getCurrentLocationTimezoneOffsetWithoutDST];
   v8 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = MEMORY[0x277CBEBB0];
     v10 = v8;
-    v11 = [v9 localTimeZone];
+    localTimeZone2 = [v9 localTimeZone];
     timezoneOffsetFromUtcNoDaylight = self->timezoneOffsetFromUtcNoDaylight;
     v25 = 138412802;
-    v26 = v11;
+    v26 = localTimeZone2;
     v27 = 2048;
     v28 = timezoneOffsetFromUtcNoDaylight;
     v29 = 2048;
-    v30 = v7;
+    v30 = _getCurrentLocationTimezoneOffsetWithoutDST;
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "Timezone changed to %@; model generated at %ld, now at %ld", &v25, 0x20u);
   }
 
-  v13 = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
+  _isValidTimezoneToReturnPredictions = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
   currentLQMPredictionsCell = self->currentLQMPredictionsCell;
-  if (v13)
+  if (_isValidTimezoneToReturnPredictions)
   {
     defaultLQMPredictionsCell = self->defaultLQMPredictionsCell;
     v16 = currentLQMPredictionsCell != defaultLQMPredictionsCell;
@@ -5128,11 +5128,11 @@ LABEL_60:
 LABEL_14:
 
 LABEL_16:
-      v22 = [MEMORY[0x277CBEAA8] date];
-      [(NetworkAnalyticsModel *)self setLastModelRunTime:v22];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(NetworkAnalyticsModel *)self setLastModelRunTime:date];
 
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v23 postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
 
       goto LABEL_17;
     }
@@ -5169,18 +5169,18 @@ LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_actUponSystemSettingsAirplaneChanged:(BOOL)a3 wifiChanged:(BOOL)a4 cellDataChanged:(BOOL)a5
+- (void)_actUponSystemSettingsAirplaneChanged:(BOOL)changed wifiChanged:(BOOL)wifiChanged cellDataChanged:(BOOL)dataChanged
 {
-  v7 = a3;
-  v9 = [(SystemSettingsRelay *)self->systemSettingsRelay airplaneModeSwitchEnabled];
-  v10 = [(SystemSettingsRelay *)self->systemSettingsRelay wifiEnabled];
-  v11 = [(SystemSettingsRelay *)self->systemSettingsRelay cellDataSwitchEnabled];
-  v12 = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
+  changedCopy = changed;
+  airplaneModeSwitchEnabled = [(SystemSettingsRelay *)self->systemSettingsRelay airplaneModeSwitchEnabled];
+  wifiEnabled = [(SystemSettingsRelay *)self->systemSettingsRelay wifiEnabled];
+  cellDataSwitchEnabled = [(SystemSettingsRelay *)self->systemSettingsRelay cellDataSwitchEnabled];
+  _isValidTimezoneToReturnPredictions = [(NetworkAnalyticsModel *)self _isValidTimezoneToReturnPredictions];
   v13 = 0;
-  if (v7)
+  if (changedCopy)
   {
     v14 = 0;
-    if (v9)
+    if (airplaneModeSwitchEnabled)
     {
       currentLQMPredictionsWifi = self->currentLQMPredictionsWifi;
       v14 = currentLQMPredictionsWifi != 0;
@@ -5215,7 +5215,7 @@ LABEL_17:
     v14 = 0;
   }
 
-  if (!v10 && a4)
+  if (!wifiEnabled && wifiChanged)
   {
     v19 = self->currentLQMPredictionsWifi;
     if (v19)
@@ -5229,7 +5229,7 @@ LABEL_17:
     }
   }
 
-  if (!v11 && a5)
+  if (!cellDataSwitchEnabled && dataChanged)
   {
     v21 = self->currentLQMPredictionsCell;
     if (v21)
@@ -5243,17 +5243,17 @@ LABEL_17:
     }
   }
 
-  if (v9 || !v12)
+  if (airplaneModeSwitchEnabled || !_isValidTimezoneToReturnPredictions)
   {
     goto LABEL_22;
   }
 
-  if (v10 && !self->currentLQMPredictionsWifi)
+  if (wifiEnabled && !self->currentLQMPredictionsWifi)
   {
     objc_storeStrong(&self->currentLQMPredictionsWifi, self->defaultLQMPredictionsWifi);
     objc_storeStrong(&self->currentArrayOfDaysGroupWifi, self->defaultArrayOfDaysGroupWifi);
     v14 = 1;
-    if (v11)
+    if (cellDataSwitchEnabled)
     {
       goto LABEL_19;
     }
@@ -5267,7 +5267,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v11)
+  if (!cellDataSwitchEnabled)
   {
     goto LABEL_22;
   }
@@ -5281,27 +5281,27 @@ LABEL_19:
   objc_storeStrong(&self->currentLQMPredictionsCell, self->defaultLQMPredictionsCell);
   objc_storeStrong(&self->currentArrayOfDaysGroupCell, self->defaultArrayOfDaysGroupCell);
 LABEL_23:
-  v23 = [MEMORY[0x277CBEAA8] date];
-  [(NetworkAnalyticsModel *)self setLastModelRunTime:v23];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NetworkAnalyticsModel *)self setLastModelRunTime:date];
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  changeCopy = change;
   queue = self->queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_27898A328;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
+  v14 = pathCopy;
+  v15 = changeCopy;
+  selfCopy = self;
+  v11 = changeCopy;
+  v12 = pathCopy;
   dispatch_async(queue, block);
 }
 
@@ -5373,20 +5373,20 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
   return result;
 }
 
-- (void)_trainModelForInterfaceType:(int64_t)a3 sanitizedLQMTable:(id)a4
+- (void)_trainModelForInterfaceType:(int64_t)type sanitizedLQMTable:(id)table
 {
   v89 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  tableCopy = table;
   v6 = scoringLogHandle;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = type;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Training new model for interface %lu", buf, 0xCu);
   }
 
-  v63 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = 1;
   do
   {
@@ -5394,14 +5394,14 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
     v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v8];
     v11 = [v9 initWithObjects:{v10, 0}];
 
-    v12 = [(NetworkAnalyticsModel *)self _clusterEventsUsingKMeansForSetOfDays:v11 networkStateTable:v5 saveCentroidsTo:v7];
+    v12 = [(NetworkAnalyticsModel *)self _clusterEventsUsingKMeansForSetOfDays:v11 networkStateTable:tableCopy saveCentroidsTo:array];
     v8 = (v8 + 1);
   }
 
   while (v8 != 8);
-  v13 = [(NetworkAnalyticsModel *)self _clusterEventsInWeekUsingKMeansOn:v7];
-  v62 = v7;
-  [v7 removeAllObjects];
+  v13 = [(NetworkAnalyticsModel *)self _clusterEventsInWeekUsingKMeansOn:array];
+  v62 = array;
+  [array removeAllObjects];
   v60 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v54 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v88 = 0;
@@ -5414,14 +5414,14 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
   v76 = 0u;
   v77 = 0u;
   obj = v13;
-  v14 = a3;
-  v15 = self;
+  typeCopy4 = type;
+  selfCopy4 = self;
   v61 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
   if (v61)
   {
     v59 = *v75;
     v16 = 1;
-    v58 = v5;
+    v58 = tableCopy;
     do
     {
       for (i = 0; i != v61; ++i)
@@ -5437,20 +5437,20 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
         if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
         {
           v20 = v19;
-          v21 = [v18 allObjects];
-          v22 = [v21 componentsJoinedByString:{@", "}];
+          allObjects = [v18 allObjects];
+          v22 = [allObjects componentsJoinedByString:{@", "}];
           *v80 = 134218242;
-          v81 = v14;
+          v81 = typeCopy4;
           v82 = 2112;
           v83 = v22;
           _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEBUG, "The following days are exhibiting similar pattern on interface %lu: {%@}", v80, 0x16u);
 
-          v15 = self;
+          selfCopy4 = self;
         }
 
         v23 = v62;
         [v62 removeAllObjects];
-        v24 = [(NetworkAnalyticsModel *)v15 _clusterEventsUsingKMeansForSetOfDays:v18 networkStateTable:v5 saveCentroidsTo:v62];
+        v24 = [(NetworkAnalyticsModel *)selfCopy4 _clusterEventsUsingKMeansForSetOfDays:v18 networkStateTable:tableCopy saveCentroidsTo:v62];
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
@@ -5460,7 +5460,7 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
         {
           v26 = v25;
           v27 = *v71;
-          v28 = -1;
+          stateLabelAssigned = -1;
           do
           {
             for (j = 0; j != v26; ++j)
@@ -5471,9 +5471,9 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
               }
 
               v30 = *(*(&v70 + 1) + 8 * j);
-              if ([v30 stateLabelAssigned] > v28)
+              if ([v30 stateLabelAssigned] > stateLabelAssigned)
               {
-                v28 = [v30 stateLabelAssigned];
+                stateLabelAssigned = [v30 stateLabelAssigned];
               }
             }
 
@@ -5481,11 +5481,11 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
           }
 
           while (v26);
-          v31 = v28 + 1;
-          v5 = v58;
+          v31 = stateLabelAssigned + 1;
+          tableCopy = v58;
           v23 = v62;
-          v14 = a3;
-          v15 = self;
+          typeCopy4 = type;
+          selfCopy4 = self;
         }
 
         else
@@ -5493,7 +5493,7 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
           v31 = 0;
         }
 
-        [(NetworkAnalyticsModel *)v15 _generatePredictionForDays:v18 fromClusteredEvents:v24 clusterCentroids:v23 interfaceType:v14 basedOnWeekClusters:v31 savePredictionsTo:v60];
+        [(NetworkAnalyticsModel *)selfCopy4 _generatePredictionForDays:v18 fromClusteredEvents:v24 clusterCentroids:v23 interfaceType:typeCopy4 basedOnWeekClusters:v31 savePredictionsTo:v60];
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
@@ -5514,10 +5514,10 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
               }
 
               v37 = *(*(&v66 + 1) + 8 * k);
-              v38 = [v37 intValue];
-              if ((v38 - 8) <= 0xFFFFFFF8)
+              intValue = [v37 intValue];
+              if ((intValue - 8) <= 0xFFFFFFF8)
               {
-                [(NetworkAnalyticsModel *)v38 _trainModelForInterfaceType:a2 sanitizedLQMTable:self];
+                [(NetworkAnalyticsModel *)intValue _trainModelForInterfaceType:a2 sanitizedLQMTable:self];
               }
 
               *&buf[8 * [v37 intValue] - 8] = v16;
@@ -5529,9 +5529,9 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
           while (v34);
         }
 
-        v14 = a3;
-        v15 = self;
-        if (a3 == 1)
+        typeCopy4 = type;
+        selfCopy4 = self;
+        if (type == 1)
         {
           v39 = [(NetworkAnalyticsModel *)self _learnDisconnectionPatternForSetOfDays:v32 impairmentEvents:v24];
           [(NSArray *)v56 addObjectsFromArray:v39];
@@ -5557,16 +5557,16 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
   [v62 removeAllObjects];
   v42 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"offset" ascending:1];
   v43 = [MEMORY[0x277CBEA60] arrayWithObject:v42];
-  if (v63 == 1)
+  if (typeCopy == 1)
   {
     v44 = v60;
     v49 = [v60 sortedArrayUsingDescriptors:v43];
-    defaultLQMPredictionsWifi = v15->defaultLQMPredictionsWifi;
-    v15->defaultLQMPredictionsWifi = v49;
+    defaultLQMPredictionsWifi = selfCopy4->defaultLQMPredictionsWifi;
+    selfCopy4->defaultLQMPredictionsWifi = v49;
 
-    objc_storeStrong(&v15->currentLQMPredictionsWifi, v15->defaultLQMPredictionsWifi);
-    objc_storeStrong(&v15->defaultArrayOfDaysGroupWifi, v54);
-    objc_storeStrong(&v15->currentArrayOfDaysGroupWifi, v15->defaultArrayOfDaysGroupWifi);
+    objc_storeStrong(&selfCopy4->currentLQMPredictionsWifi, selfCopy4->defaultLQMPredictionsWifi);
+    objc_storeStrong(&selfCopy4->defaultArrayOfDaysGroupWifi, v54);
+    objc_storeStrong(&selfCopy4->currentArrayOfDaysGroupWifi, selfCopy4->defaultArrayOfDaysGroupWifi);
     v51 = scoringLogHandle;
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -5581,21 +5581,21 @@ uint64_t __72__NetworkAnalyticsModel_observeValueForKeyPath_ofObject_change_cont
   }
 
   v44 = v60;
-  if (v63 == 2)
+  if (typeCopy == 2)
   {
     v45 = [v60 sortedArrayUsingDescriptors:v43];
-    defaultLQMPredictionsCell = v15->defaultLQMPredictionsCell;
-    v15->defaultLQMPredictionsCell = v45;
+    defaultLQMPredictionsCell = selfCopy4->defaultLQMPredictionsCell;
+    selfCopy4->defaultLQMPredictionsCell = v45;
 
-    objc_storeStrong(&v15->currentLQMPredictionsCell, v15->defaultLQMPredictionsCell);
-    objc_storeStrong(&v15->defaultArrayOfDaysGroupCell, v54);
-    defaultArrayOfDaysGroupCell = v15->defaultArrayOfDaysGroupCell;
+    objc_storeStrong(&selfCopy4->currentLQMPredictionsCell, selfCopy4->defaultLQMPredictionsCell);
+    objc_storeStrong(&selfCopy4->defaultArrayOfDaysGroupCell, v54);
+    defaultArrayOfDaysGroupCell = selfCopy4->defaultArrayOfDaysGroupCell;
     v48 = 160;
 LABEL_47:
-    objc_storeStrong((&v15->super.isa + v48), defaultArrayOfDaysGroupCell);
+    objc_storeStrong((&selfCopy4->super.isa + v48), defaultArrayOfDaysGroupCell);
     if ([v44 count])
     {
-      [(NetworkAnalyticsModel *)v15 _savePredictionToJournalForInterface:v63];
+      [(NetworkAnalyticsModel *)selfCopy4 _savePredictionToJournalForInterface:typeCopy];
     }
 
     goto LABEL_49;
@@ -5605,7 +5605,7 @@ LABEL_47:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *v80 = 134217984;
-    v81 = v63;
+    v81 = typeCopy;
     _os_log_impl(&dword_23255B000, v52, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", v80, 0xCu);
   }
 
@@ -5614,17 +5614,17 @@ LABEL_49:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trainModelAt:(id)a3
+- (void)_trainModelAt:(id)at
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  atCopy = at;
   context = objc_autoreleasePoolPush();
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = +[SystemProperties sharedInstance];
-  v7 = [v6 basebandCapability];
+  basebandCapability = [v6 basebandCapability];
 
-  if (v7)
+  if (basebandCapability)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -5646,15 +5646,15 @@ LABEL_49:
     *buf = 138412546;
     v55 = journalName;
     v56 = 2112;
-    v57 = v4;
+    v57 = atCopy;
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEBUG, "Training model for journal: %@ at %@", buf, 0x16u);
   }
 
-  v42 = [(NetworkAnalyticsModel *)self _shouldCreateIpsFile];
+  _shouldCreateIpsFile = [(NetworkAnalyticsModel *)self _shouldCreateIpsFile];
   [(NetworkAnalyticsModel *)self _readJournalEntries];
-  v48 = v47 = v4;
+  v48 = v47 = atCopy;
   calendar = self->_calendar;
-  v13 = [(NSCalendar *)calendar components:28 fromDate:v4];
+  v13 = [(NSCalendar *)calendar components:28 fromDate:atCopy];
   v14 = [(NSCalendar *)calendar dateFromComponents:v13];
 
   v15 = objc_alloc_init(MEMORY[0x277CBEAB8]);
@@ -5688,9 +5688,9 @@ LABEL_49:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v26 = v25;
-    v27 = [(NetworkAnalyticsModel *)self lastModelRunTime];
-    v28 = [MEMORY[0x277CBEAF8] currentLocale];
-    v29 = [v27 descriptionWithLocale:v28];
+    lastModelRunTime = [(NetworkAnalyticsModel *)self lastModelRunTime];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v29 = [lastModelRunTime descriptionWithLocale:currentLocale];
     *buf = 138412290;
     v55 = v29;
     _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_DEBUG, "Evaluate prediction error against prediction modeled at %@", buf, 0xCu);
@@ -5715,7 +5715,7 @@ LABEL_49:
       gCorePredictionDyLibHandle = 0;
     }
 
-    if (v42)
+    if (_shouldCreateIpsFile)
     {
       v51 = 0u;
       v52 = 0u;
@@ -5754,13 +5754,13 @@ LABEL_49:
 
     if (!self->_isHelper && ([(NSArray *)self->defaultLQMPredictionsWifi count]|| [(NSArray *)self->defaultLQMPredictionsCell count]))
     {
-      v38 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v38 postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
     }
 
-    v39 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     v40 = self->_calendar;
-    self->_calendar = v39;
+    self->_calendar = autoupdatingCurrentCalendar;
   }
 
   objc_autoreleasePoolPop(context);
@@ -5774,22 +5774,22 @@ LABEL_49:
   {
     if ([(NetworkAnalyticsModel *)self _isValidTimezoneToTrain])
     {
-      v3 = [(NetworkAnalyticsModel *)self debugTrainingTime];
+      debugTrainingTime = [(NetworkAnalyticsModel *)self debugTrainingTime];
 
       v4 = scoringLogHandle;
       v5 = os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG);
-      if (v3)
+      if (debugTrainingTime)
       {
         if (v5)
         {
           v6 = v4;
-          v7 = [(NetworkAnalyticsModel *)self debugTrainingTime];
+          debugTrainingTime2 = [(NetworkAnalyticsModel *)self debugTrainingTime];
           v12 = 138412290;
-          v13 = v7;
+          v13 = debugTrainingTime2;
           _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Using specific time at %@ to train model", &v12, 0xCu);
         }
 
-        v8 = [(NetworkAnalyticsModel *)self debugTrainingTime];
+        debugTrainingTime3 = [(NetworkAnalyticsModel *)self debugTrainingTime];
       }
 
       else
@@ -5800,11 +5800,11 @@ LABEL_49:
           _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEBUG, "Using current time to train model", &v12, 2u);
         }
 
-        v8 = [MEMORY[0x277CBEAA8] date];
+        debugTrainingTime3 = [MEMORY[0x277CBEAA8] date];
       }
 
-      v10 = v8;
-      [(NetworkAnalyticsModel *)self _trainModelAt:v8];
+      v10 = debugTrainingTime3;
+      [(NetworkAnalyticsModel *)self _trainModelAt:debugTrainingTime3];
     }
   }
 
@@ -5827,24 +5827,24 @@ LABEL_49:
   [(NetworkAnalyticsModel *)self _loadLatestPredictionFromJournalWithInterfaceType:2];
   if ([(NSArray *)self->defaultLQMPredictionsWifi count]|| [(NSArray *)self->defaultLQMPredictionsCell count])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"notificationNewModelGenerated" object:self userInfo:0];
   }
 }
 
-- ($8CE0ECD3AB9986DA167C077002E61EF1)_calculateStatisticsFromNetworkStateTable:(SEL)a3 usingPredicate:(id)a4
+- ($8CE0ECD3AB9986DA167C077002E61EF1)_calculateStatisticsFromNetworkStateTable:(SEL)table usingPredicate:(id)predicate
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  predicateCopy = predicate;
   v8 = a5;
   if (v8)
   {
-    v9 = [v7 filteredArrayUsingPredicate:v8];
+    v9 = [predicateCopy filteredArrayUsingPredicate:v8];
   }
 
   else
   {
-    v9 = v7;
+    v9 = predicateCopy;
   }
 
   retstr->var12 = 0.0;
@@ -5864,11 +5864,11 @@ LABEL_49:
   {
     v32 = retstr;
     v33 = v8;
-    v34 = v7;
+    v34 = predicateCopy;
     v11 = 0;
     v12 = 0;
-    v41 = 0;
-    v42 = 0;
+    stateLength5 = 0;
+    stateSlotId5 = 0;
     v47 = 0;
     v48 = 0;
     v13 = 0;
@@ -5877,8 +5877,8 @@ LABEL_49:
     v16 = 0;
     obj = v10;
     v37 = *v50;
-    v39 = 96;
-    v40 = 96;
+    stateLength4 = 96;
+    stateSlotId4 = 96;
     v17 = 96;
     do
     {
@@ -5891,51 +5891,51 @@ LABEL_49:
         }
 
         v19 = *(*(&v49 + 1) + 8 * i);
-        v44 = [v19 stateLength];
-        v43 = [v19 stateLength];
-        v20 = [v19 stateLength];
-        if ([v19 stateLength] < v39)
+        stateLength = [v19 stateLength];
+        stateLength2 = [v19 stateLength];
+        stateLength3 = [v19 stateLength];
+        if ([v19 stateLength] < stateLength4)
         {
-          v39 = [v19 stateLength];
+          stateLength4 = [v19 stateLength];
         }
 
         v45 = v13;
         v46 = v14;
-        if ([v19 stateLength] > v41)
+        if ([v19 stateLength] > stateLength5)
         {
-          v41 = [v19 stateLength];
+          stateLength5 = [v19 stateLength];
         }
 
-        v21 = [v19 stateSlotId];
-        v22 = [v19 stateSlotId];
-        v23 = [v19 stateSlotId];
-        if ([v19 stateSlotId] < v40)
+        stateSlotId = [v19 stateSlotId];
+        stateSlotId2 = [v19 stateSlotId];
+        stateSlotId3 = [v19 stateSlotId];
+        if ([v19 stateSlotId] < stateSlotId4)
         {
-          v40 = [v19 stateSlotId];
+          stateSlotId4 = [v19 stateSlotId];
         }
 
-        if ([v19 stateSlotId] > v42)
+        if ([v19 stateSlotId] > stateSlotId5)
         {
-          v42 = [v19 stateSlotId];
+          stateSlotId5 = [v19 stateSlotId];
         }
 
-        v11 += v44;
-        v12 += v20 * v43;
-        v47 += v21;
-        v48 += v23 * v22;
-        v24 = [v19 stateSlotId];
-        v25 = [v19 stateLength];
-        v26 = v24 + v25 - 1;
+        v11 += stateLength;
+        v12 += stateLength3 * stateLength2;
+        v47 += stateSlotId;
+        v48 += stateSlotId3 * stateSlotId2;
+        stateSlotId6 = [v19 stateSlotId];
+        stateLength6 = [v19 stateLength];
+        v26 = stateSlotId6 + stateLength6 - 1;
         v13 = v26 + v45;
         v14 = v46 + v26 * v26;
         if (v26 < v17)
         {
-          v17 = v24 + v25 - 1;
+          v17 = stateSlotId6 + stateLength6 - 1;
         }
 
         if (v26 > v15)
         {
-          v15 = v24 + v25 - 1;
+          v15 = stateSlotId6 + stateLength6 - 1;
         }
       }
 
@@ -5947,17 +5947,17 @@ LABEL_49:
     v10 = obj;
 
     v8 = v33;
-    v7 = v34;
+    predicateCopy = v34;
     if (v16)
     {
       v32->var0 = v16;
-      v32->var1 = v39;
-      v32->var2 = v41;
+      v32->var1 = stateLength4;
+      v32->var2 = stateLength5;
       v27 = v11 / v16;
       v32->var3 = v27;
       v32->var4 = sqrt(v12 / v16 - v27 * v27);
-      v32->var5 = v40;
-      v32->var6 = v42;
+      v32->var5 = stateSlotId4;
+      v32->var6 = stateSlotId5;
       v28 = v47 / v16;
       v32->var7 = v28;
       v32->var8 = sqrt(v48 / v16 - v28 * v28);
@@ -5977,12 +5977,12 @@ LABEL_49:
   return result;
 }
 
-- (double)_evaluateErrorOfLQMPredictions:(id)a3 againstObservedLQMTable:(id)a4
+- (double)_evaluateErrorOfLQMPredictions:(id)predictions againstObservedLQMTable:(id)table
 {
   __b[97] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 count])
+  predictionsCopy = predictions;
+  tableCopy = table;
+  if (![tableCopy count])
   {
     v21 = scoringLogHandle;
     v22 = 1.0;
@@ -5998,7 +5998,7 @@ LABEL_21:
     goto LABEL_75;
   }
 
-  if (![v6 count])
+  if (![predictionsCopy count])
   {
     v21 = scoringLogHandle;
     v22 = 1.0;
@@ -6020,14 +6020,14 @@ LABEL_21:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v69 = v7;
-  v8 = v7;
+  v69 = tableCopy;
+  v8 = tableCopy;
   v9 = [v8 countByEnumeratingWithState:&v76 objects:v94 count:16];
-  v70 = v6;
+  v70 = predictionsCopy;
   if (v9)
   {
     v10 = v9;
-    v11 = 0;
+    stateDayOfWeek = 0;
     v12 = *v77;
     do
     {
@@ -6041,7 +6041,7 @@ LABEL_21:
         v14 = *(*(&v76 + 1) + 8 * i);
         if (![v14 stateAge])
         {
-          v11 = [v14 stateDayOfWeek];
+          stateDayOfWeek = [v14 stateDayOfWeek];
           v15 = scoringLogHandle;
           if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
           {
@@ -6072,8 +6072,8 @@ LABEL_21:
     }
 
     while (v10);
-    v20 = 96 * v11 - 96;
-    v6 = v70;
+    v20 = 96 * stateDayOfWeek - 96;
+    predictionsCopy = v70;
   }
 
   else
@@ -6085,7 +6085,7 @@ LABEL_21:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v6;
+  obj = predictionsCopy;
   v24 = [obj countByEnumeratingWithState:&v72 objects:v93 count:16];
   if (v24)
   {
@@ -6101,9 +6101,9 @@ LABEL_21:
         }
 
         v28 = *(*(&v72 + 1) + 8 * j);
-        v29 = [v28 offset];
+        offset = [v28 offset];
         v99.length = [v28 length];
-        v99.location = v29;
+        v99.location = offset;
         v100.location = v20;
         v100.length = 96;
         v30 = NSIntersectionRange(v99, v100);
@@ -6321,8 +6321,8 @@ LABEL_54:
   }
 
   v66 = scoringLogHandle;
-  v7 = v69;
-  v6 = v70;
+  tableCopy = v69;
+  predictionsCopy = v70;
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
@@ -6337,18 +6337,18 @@ LABEL_75:
   return v22;
 }
 
-- (id)_fetchPredictionsForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7 error:(id *)a8
+- (id)_fetchPredictionsForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature error:(id *)error
 {
-  v9 = a4;
+  anyCopy = any;
   v37 = *MEMORY[0x277D85DE8];
   v12 = *MEMORY[0x277CCA5B8];
-  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:{0, a6, a7}];
-  if (!v9)
+  v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:{0, i, signature}];
+  if (!anyCopy)
   {
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     if ([(NSArray *)self->currentLQMPredictionsCell count])
     {
@@ -6356,9 +6356,9 @@ LABEL_75:
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v19 = v18;
-        v20 = [(NetworkAnalyticsModel *)self lastModelRunTime];
+        lastModelRunTime = [(NetworkAnalyticsModel *)self lastModelRunTime];
         v35 = 138412290;
-        v36 = v20;
+        typeCopy = lastModelRunTime;
         _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEBUG, "Returning predictions for Cellular from memory (modeled at %@)", &v35, 0xCu);
       }
 
@@ -6393,7 +6393,7 @@ LABEL_34:
 
 LABEL_25:
     v21 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -6401,7 +6401,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     if ([(NSArray *)self->currentLQMPredictionsWifi count])
     {
@@ -6409,9 +6409,9 @@ LABEL_25:
       if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v15 = v14;
-        v16 = [(NetworkAnalyticsModel *)self lastModelRunTime];
+        lastModelRunTime2 = [(NetworkAnalyticsModel *)self lastModelRunTime];
         v35 = 138412290;
-        v36 = v16;
+        typeCopy = lastModelRunTime2;
         _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEBUG, "Returning predictions for Wi-Fi from memory (modeled at %@)", &v35, 0xCu);
       }
 
@@ -6436,14 +6436,14 @@ LABEL_12:
       v21 = 0;
 LABEL_13:
       v13 = 0;
-      if (!a8)
+      if (!error)
       {
         goto LABEL_27;
       }
 
 LABEL_26:
       v29 = v13;
-      *a8 = v13;
+      *error = v13;
       goto LABEL_27;
     }
 
@@ -6461,7 +6461,7 @@ LABEL_26:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v35 = 134217984;
-    v36 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", &v35, 0xCu);
   }
 
@@ -6471,7 +6471,7 @@ LABEL_36:
 
   v21 = 0;
   v13 = v34;
-  if (a8)
+  if (error)
   {
     goto LABEL_26;
   }
@@ -6484,16 +6484,16 @@ LABEL_27:
   return v30;
 }
 
-- (id)_getDaysWithSimilarPatternForInterfaceType:(int64_t)a3
+- (id)_getDaysWithSimilarPatternForInterfaceType:(int64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (type == 2)
   {
     currentArrayOfDaysGroupCell = self->currentArrayOfDaysGroupCell;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     currentArrayOfDaysGroupCell = self->currentArrayOfDaysGroupWifi;
 LABEL_5:
@@ -6505,7 +6505,7 @@ LABEL_5:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134217984;
-    v10 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", &v9, 0xCu);
   }
 
@@ -6516,16 +6516,16 @@ LABEL_9:
   return v5;
 }
 
-- (double)_fetchPredictionErrorForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7
+- (double)_fetchPredictionErrorForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature
 {
   v16 = *MEMORY[0x277D85DE8];
-  v9 = a7;
-  if (a3 == 2)
+  signatureCopy = signature;
+  if (type == 2)
   {
     cellPredictionError = self->cellPredictionError;
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     cellPredictionError = self->wifiPredictionError;
   }
@@ -6537,7 +6537,7 @@ LABEL_9:
     if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v14 = 134217984;
-      v15 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", &v14, 0xCu);
     }
   }
@@ -6546,17 +6546,17 @@ LABEL_9:
   return cellPredictionError;
 }
 
-- (double)_fetchTrainingProgressForInterfaceType:(int64_t)a3 isAny:(BOOL)a4 isBuiltin:(BOOL)a5 scopedToLOI:(int64_t)a6 hasCustomSignature:(id)a7
+- (double)_fetchTrainingProgressForInterfaceType:(int64_t)type isAny:(BOOL)any isBuiltin:(BOOL)builtin scopedToLOI:(int64_t)i hasCustomSignature:(id)signature
 {
   v17 = *MEMORY[0x277D85DE8];
-  v9 = a7;
-  if (a3 == 2)
+  signatureCopy = signature;
+  if (type == 2)
   {
     numberOfDaysWithCellEvents = self->numberOfDaysWithCellEvents;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     numberOfDaysWithCellEvents = self->numberOfDaysWithWifiEvents;
 LABEL_5:
@@ -6569,7 +6569,7 @@ LABEL_5:
   if (os_log_type_enabled(scoringLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v15 = 134217984;
-    v16 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEBUG, "Invalid interface type %ld", &v15, 0xCu);
   }
 
@@ -6581,58 +6581,58 @@ LABEL_6:
 
 - (NSDate)lastModelRunTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastModelRunTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastModelRunTime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLastModelRunTime:(id)a3
+- (void)setLastModelRunTime:(id)time
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_lastModelRunTime != v6)
+  timeCopy = time;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_lastModelRunTime != timeCopy)
   {
-    objc_storeStrong(&v5->_lastModelRunTime, a3);
+    objc_storeStrong(&selfCopy->_lastModelRunTime, time);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDate)debugTrainingTime
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_debugTrainingTime;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_debugTrainingTime;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setDebugTrainingTime:(id)a3
+- (void)setDebugTrainingTime:(id)time
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_debugTrainingTime != v6)
+  timeCopy = time;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_debugTrainingTime != timeCopy)
   {
-    objc_storeStrong(&v5->_debugTrainingTime, a3);
+    objc_storeStrong(&selfCopy->_debugTrainingTime, time);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_processLowInternetModeRecord:(id)a3 addTo:(id)a4
+- (void)_processLowInternetModeRecord:(id)record addTo:(id)to
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  recordCopy = record;
+  toCopy = to;
+  v7 = toCopy;
+  if (recordCopy)
   {
-    [v6 addObject:v5];
+    [toCopy addObject:recordCopy];
   }
 
   else
@@ -6646,10 +6646,10 @@ LABEL_6:
   }
 }
 
-- (void)_finishedReadingLowInternetModeRecords:(id)a3
+- (void)_finishedReadingLowInternetModeRecords:(id)records
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v70 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -6666,7 +6666,7 @@ LABEL_6:
   {
     v12 = v11;
     *buf = 134217984;
-    *&buf[4] = [v4 count];
+    *&buf[4] = [recordsCopy count];
     _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEBUG, "Finished reading all LIM records, found: %lu", buf, 0xCu);
   }
 
@@ -6674,7 +6674,7 @@ LABEL_6:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v4;
+  obj = recordsCopy;
   v13 = v70;
   v68 = [obj countByEnumeratingWithState:&v76 objects:v87 count:16];
   if (v68)
@@ -6865,16 +6865,16 @@ LABEL_6:
 
         v38 = *(*(&v72 + 1) + 8 * j);
         v39 = [v36 objectForKeyedSubscript:v38];
-        v40 = [v39 integerValue];
+        integerValue = [v39 integerValue];
 
         v41 = [v6 objectForKeyedSubscript:v38];
 
-        v42 = 0.0;
-        v43 = 0.0;
+        integerValue3 = 0.0;
+        integerValue2 = 0.0;
         if (v41)
         {
           v44 = [v6 objectForKeyedSubscript:v38];
-          v43 = [v44 integerValue];
+          integerValue2 = [v44 integerValue];
         }
 
         v13 = v70;
@@ -6883,11 +6883,11 @@ LABEL_6:
         if (v45)
         {
           v46 = [v70 objectForKeyedSubscript:v38];
-          v42 = [v46 integerValue];
+          integerValue3 = [v46 integerValue];
         }
 
-        v47 = v40;
-        if (v40 >= self->limMinSamples && self->limRatio <= (v43 / v47))
+        v47 = integerValue;
+        if (integerValue >= self->limMinSamples && self->limRatio <= (integerValue2 / v47))
         {
           [lowInternetModeScoresDL addObject:v38];
           v53 = scoringLogHandle;
@@ -6898,7 +6898,7 @@ LABEL_6:
             *buf = 138413314;
             *&buf[4] = v38;
             *&buf[12] = 2048;
-            *&buf[14] = v43;
+            *&buf[14] = integerValue2;
             *&buf[22] = 2048;
             *&buf[24] = v47;
             *&buf[32] = 2048;
@@ -6921,7 +6921,7 @@ LABEL_6:
             *buf = 138413314;
             *&buf[4] = v38;
             *&buf[12] = 2048;
-            *&buf[14] = v43;
+            *&buf[14] = integerValue2;
             *&buf[22] = 2048;
             *&buf[24] = v47;
             *&buf[32] = 2048;
@@ -6935,7 +6935,7 @@ LABEL_58:
           }
         }
 
-        if (v47 >= self->limMinSamples && self->limRatio <= (v42 / v47))
+        if (v47 >= self->limMinSamples && self->limRatio <= (integerValue3 / v47))
         {
           [lowInternetModeScoresUL addObject:v38];
           v61 = scoringLogHandle;
@@ -6949,7 +6949,7 @@ LABEL_58:
           *buf = 138413314;
           *&buf[4] = v38;
           *&buf[12] = 2048;
-          *&buf[14] = v42;
+          *&buf[14] = integerValue3;
           *&buf[22] = 2048;
           *&buf[24] = v47;
           *&buf[32] = 2048;
@@ -6973,7 +6973,7 @@ LABEL_58:
           *buf = 138413314;
           *&buf[4] = v38;
           *&buf[12] = 2048;
-          *&buf[14] = v42;
+          *&buf[14] = integerValue3;
           *&buf[22] = 2048;
           *&buf[24] = v47;
           *&buf[32] = 2048;
@@ -7009,22 +7009,22 @@ LABEL_58:
 
 + (id)modelGeneratedAt
 {
-  v3 = sharedInstance_7;
+  lastModelRunTime = sharedInstance_7;
   if (sharedInstance_7)
   {
-    v3 = [sharedInstance_7 lastModelRunTime];
+    lastModelRunTime = [sharedInstance_7 lastModelRunTime];
     v2 = vars8;
   }
 
-  return v3;
+  return lastModelRunTime;
 }
 
-+ (id)getDaysWithSimilarPatternForInterfaceType:(int64_t)a3
++ (id)getDaysWithSimilarPatternForInterfaceType:(int64_t)type
 {
   v4 = sharedInstance_7;
   if (sharedInstance_7)
   {
-    v4 = [sharedInstance_7 _getDaysWithSimilarPatternForInterfaceType:a3];
+    v4 = [sharedInstance_7 _getDaysWithSimilarPatternForInterfaceType:type];
     v3 = vars8;
   }
 

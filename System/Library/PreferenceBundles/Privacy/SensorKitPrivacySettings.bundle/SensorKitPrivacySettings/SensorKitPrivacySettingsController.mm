@@ -3,7 +3,7 @@
 - (SensorKitPrivacySettingsController)init;
 - (id)appsAndStudiesWhenFirstRunCompleteGroup;
 - (id)appsSpecifierGroup;
-- (id)authGroupSpecifierForAuthGroup:(id)a3;
+- (id)authGroupSpecifierForAuthGroup:(id)group;
 - (id)collectedDataSpecifiers;
 - (id)dataAndAppsSpecifiers;
 - (id)dataOptionsSpecifiers;
@@ -13,17 +13,17 @@
 - (id)legacyAppsInstalled;
 - (id)legacyAppsSpecifiers;
 - (id)pendingAppSpecifiers;
-- (id)selectSpecifier:(id)a3;
-- (id)specifierForID:(id)a3;
+- (id)selectSpecifier:(id)specifier;
+- (id)specifierForID:(id)d;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)authorizationStore:(id)a3 didUpdateAuthorizationsForBundleId:(id)a4 sensors:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)authorizationStore:(id)store didUpdateAuthorizationsForBundleId:(id)id sensors:(id)sensors;
 - (void)dealloc;
-- (void)enableSensorKit:(id)a3;
+- (void)enableSensorKit:(id)kit;
 - (void)fetchPendingApp;
-- (void)profileSettingsChanged:(id)a3;
-- (void)setGlobalSwitch:(id)a3;
-- (void)showActionSheet:(id)a3;
+- (void)profileSettingsChanged:(id)changed;
+- (void)setGlobalSwitch:(id)switch;
+- (void)showActionSheet:(id)sheet;
 - (void)showSensorKitPrivacyPage;
 @end
 
@@ -31,7 +31,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10FF0 = os_log_create("com.apple.SensorKit", "PrivacySettingsController");
   }
@@ -94,14 +94,14 @@
 - (id)legacyAppsInstalled
 {
   v2 = +[NSSet setWithArray:](NSSet, "setWithArray:", [+[SRAuthorizationClient legacyResearchStudyBundleIDs] sharedInstance];
-  v3 = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient legacyResearchStudyEntitlement];
+  legacyResearchStudyEntitlement = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient legacyResearchStudyEntitlement];
   v4 = [LSApplicationRecord enumeratorWithOptions:0];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1728;
   v6[3] = &unk_C330;
   v6[4] = v2;
-  v6[5] = v3;
+  v6[5] = legacyResearchStudyEntitlement;
   [v4 setFilter:v6];
   return v4;
 }
@@ -135,10 +135,10 @@
   v13 = &unk_C358;
   v14 = v5;
   v15 = v4;
-  v16 = self;
+  selfCopy = self;
   sub_1B48(v11, [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] readerAuthorizationBundleIdValues]);
-  v6 = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
-  v12(v11, v6);
+  writerAuthorizationValues = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
+  v12(v11, writerAuthorizationValues);
   v7 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [v4 allValues]);
   v8 = +[NSMutableArray arrayWithArray:](NSMutableArray, "arrayWithArray:", [v5 allValues]);
   [(NSMutableArray *)v7 sortUsingFunction:sub_1EC4 context:0];
@@ -166,8 +166,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(SensorKitPrivacySettingsController *)self legacyAppsInstalled];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  legacyAppsInstalled = [(SensorKitPrivacySettingsController *)self legacyAppsInstalled];
+  v5 = [legacyAppsInstalled countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (!v5)
   {
     goto LABEL_17;
@@ -184,7 +184,7 @@
     {
       if (*v27 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(legacyAppsInstalled);
       }
 
       v10 = *(*(&v26 + 1) + 8 * v9);
@@ -197,9 +197,9 @@
           goto LABEL_12;
         }
 
-        v15 = [v10 applicationIdentifier];
+        applicationIdentifier = [v10 applicationIdentifier];
         *buf = 138543362;
-        v31 = v15;
+        v31 = applicationIdentifier;
         v16 = v14;
         v17 = "Error getting bundle URL for %{public}@";
         v18 = 12;
@@ -217,9 +217,9 @@
       v19 = qword_10FF0;
       if (os_log_type_enabled(qword_10FF0, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v10 applicationIdentifier];
+        applicationIdentifier2 = [v10 applicationIdentifier];
         *buf = v25;
-        v31 = v20;
+        v31 = applicationIdentifier2;
         v32 = 2114;
         v33 = v12;
         v16 = v19;
@@ -234,7 +234,7 @@ LABEL_12:
     }
 
     while (v7 != v9);
-    v21 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    v21 = [legacyAppsInstalled countByEnumeratingWithState:&v26 objects:v34 count:16];
     v7 = v21;
   }
 
@@ -303,9 +303,9 @@ LABEL_17:
   if (!result)
   {
     v5 = +[NSMutableArray array];
-    v6 = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient firstRunOnboardingCompleted];
+    firstRunOnboardingCompleted = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient firstRunOnboardingCompleted];
     v7 = [-[SensorKitPrivacySettingsController isGlobalSwitchOn](self "isGlobalSwitchOn")];
-    if (v6)
+    if (firstRunOnboardingCompleted)
     {
       v8 = v7;
       [v5 addObjectsFromArray:{-[SensorKitPrivacySettingsController globalSwitchSpecifierGroupSpecifiers](self, "globalSwitchSpecifierGroupSpecifiers")}];
@@ -313,9 +313,9 @@ LABEL_17:
       {
         [v5 addObjectsFromArray:{-[SensorKitPrivacySettingsController dataAndAppsSpecifiers](self, "dataAndAppsSpecifiers")}];
         [v5 addObjectsFromArray:{-[SensorKitPrivacySettingsController legacyAppsSpecifiers](self, "legacyAppsSpecifiers")}];
-        v9 = [(SensorKitPrivacySettingsController *)self dataOptionsSpecifiers];
+        dataOptionsSpecifiers = [(SensorKitPrivacySettingsController *)self dataOptionsSpecifiers];
 LABEL_10:
-        [v5 addObjectsFromArray:v9];
+        [v5 addObjectsFromArray:dataOptionsSpecifiers];
         result = [NSArray arrayWithArray:v5];
         *&self->PSListController_opaque[v3] = result;
         return result;
@@ -331,7 +331,7 @@ LABEL_10:
       [v5 addObject:v10];
     }
 
-    v9 = [(SensorKitPrivacySettingsController *)self legacyAppsSpecifiers];
+    dataOptionsSpecifiers = [(SensorKitPrivacySettingsController *)self legacyAppsSpecifiers];
     goto LABEL_10;
   }
 
@@ -349,10 +349,10 @@ LABEL_10:
   return [NSArray arrayWithArray:v3];
 }
 
-- (void)profileSettingsChanged:(id)a3
+- (void)profileSettingsChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [objc_msgSend(v4 objectForKey:{MCSetParametersForSettingsByTypeParamSenderPID), "intValue"}];
+  userInfo = [changed userInfo];
+  v5 = [objc_msgSend(userInfo objectForKey:{MCSetParametersForSettingsByTypeParamSenderPID), "intValue"}];
   if (v5 != getpid())
   {
 
@@ -368,21 +368,21 @@ LABEL_10:
   [v3 present];
 }
 
-- (void)setGlobalSwitch:(id)a3
+- (void)setGlobalSwitch:(id)switch
 {
-  if ([a3 BOOLValue])
+  if ([switch BOOLValue])
   {
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
 LABEL_13:
 
-    [(SensorKitPrivacySettingsController *)v4 updateDataCollection:v5];
+    [(SensorKitPrivacySettingsController *)selfCopy2 updateDataCollection:v5];
     return;
   }
 
   if (![(NSMutableSet *)self->_appsAndStudiesSpecifiers count])
   {
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
     goto LABEL_13;
   }
@@ -442,9 +442,9 @@ LABEL_13:
 
 - (id)isGlobalSwitchOn
 {
-  v2 = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient dataCollectionEnabled];
+  dataCollectionEnabled = [+[SRAuthorizationClient sharedInstance](SRAuthorizationClient dataCollectionEnabled];
 
-  return [NSNumber numberWithBool:v2];
+  return [NSNumber numberWithBool:dataCollectionEnabled];
 }
 
 - (id)collectedDataSpecifiers
@@ -460,10 +460,10 @@ LABEL_13:
   v11 = &unk_C3D0;
   v12 = +[NSMutableSet set];
   v13 = v5;
-  v14 = self;
+  selfCopy = self;
   sub_2FB4(v9, [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] readerAuthorizationBundleIdValues], &stru_C410);
-  v6 = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
-  v10(v9, v6, &stru_C430);
+  writerAuthorizationValues = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
+  v10(v9, writerAuthorizationValues, &stru_C430);
   [v5 sortUsingFunction:sub_1EC4 context:0];
   if ([v5 count])
   {
@@ -479,19 +479,19 @@ LABEL_13:
   return [NSArray arrayWithArray:v3];
 }
 
-- (id)authGroupSpecifierForAuthGroup:(id)a3
+- (id)authGroupSpecifierForAuthGroup:(id)group
 {
-  v4 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [a3 localizedDisplayName], self, 0, 0, 0, 2, 0);
-  [v4 setUserInfo:a3];
+  v4 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [group localizedDisplayName], self, 0, 0, 0, 2, 0);
+  [v4 setUserInfo:group];
   if (qword_11000 != -1)
   {
     dispatch_once(&qword_11000, &stru_C590);
   }
 
-  v5 = [a3 platforms];
-  if ([v5 count] <= 1)
+  platforms = [group platforms];
+  if ([platforms count] <= 1)
   {
-    v6 = [objc_msgSend(v5 "firstObject")];
+    v6 = [objc_msgSend(platforms "firstObject")];
   }
 
   else
@@ -504,9 +504,9 @@ LABEL_13:
   return v4;
 }
 
-- (id)specifierForID:(id)a3
+- (id)specifierForID:(id)d
 {
-  if ([a3 isEqualToString:@"OPEN_ENABLE_SENSORKIT"])
+  if ([d isEqualToString:@"OPEN_ENABLE_SENSORKIT"])
   {
     [(SensorKitPrivacySettingsController *)self enableSensorKit:0];
     return 0;
@@ -516,34 +516,34 @@ LABEL_13:
   {
     v6.receiver = self;
     v6.super_class = SensorKitPrivacySettingsController;
-    return [(SensorKitPrivacySettingsController *)&v6 specifierForID:a3];
+    return [(SensorKitPrivacySettingsController *)&v6 specifierForID:d];
   }
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   if ([(NSMutableSet *)self->_appsAndStudiesSpecifiers containsObject:?])
   {
     v5 = [[SRAuthorizationCategoryGroupViewController alloc] initWithStyle:1];
-    [v5 setAppBundle:{+[NSBundle bundleWithIdentifier:](NSBundle, "bundleWithIdentifier:", objc_msgSend(a3, "userInfo"))}];
-    [v5 setTitle:{objc_msgSend(a3, "name")}];
+    [v5 setAppBundle:{+[NSBundle bundleWithIdentifier:](NSBundle, "bundleWithIdentifier:", objc_msgSend(specifier, "userInfo"))}];
+    [v5 setTitle:{objc_msgSend(specifier, "name")}];
     [v5 setAuthStore:{-[SensorKitPrivacySettingsController authStore](self, "authStore")}];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v12 = sub_3660;
     v13 = &unk_C458;
-    v14 = a3;
+    specifierCopy = specifier;
     [v5 setReaderAuthState:{sub_3660(v11, -[SRAuthorizationStore readerAuthorizationBundleIdValues](-[SensorKitPrivacySettingsController authStore](self, "authStore"), "readerAuthorizationBundleIdValues"), &stru_C478)}];
-    v6 = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
-    [v5 setWriterAuthState:{v12(v11, v6, &stru_C498)}];
+    writerAuthorizationValues = [(SRAuthorizationStore *)[(SensorKitPrivacySettingsController *)self authStore] writerAuthorizationValues];
+    [v5 setWriterAuthState:{v12(v11, writerAuthorizationValues, &stru_C498)}];
     return v5;
   }
 
-  else if ([a3 cellType] == &dword_0 + 2)
+  else if ([specifier cellType] == &dword_0 + 2)
   {
     v8 = [[SRResearchDataPerCategoryViewController alloc] initWithStyle:1];
-    [v8 setAuthGroup:{objc_msgSend(a3, "userInfo")}];
-    [v8 setTitle:{objc_msgSend(a3, "name")}];
+    [v8 setAuthGroup:{objc_msgSend(specifier, "userInfo")}];
+    [v8 setTitle:{objc_msgSend(specifier, "name")}];
     [v8 setAuthStore:{-[SensorKitPrivacySettingsController authStore](self, "authStore")}];
 
     return v8;
@@ -551,7 +551,7 @@ LABEL_13:
 
   else
   {
-    if ([objc_msgSend(a3 "identifier")])
+    if ([objc_msgSend(specifier "identifier")])
     {
       v9 = [NSBundle bundleWithPath:[(SensorKitPrivacySettingsController *)self followUpBundlePath]];
       if (v9)
@@ -567,7 +567,7 @@ LABEL_13:
         if (os_log_type_enabled(qword_10FF0, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v16 = [0 bundlePath];
+          bundlePath = [0 bundlePath];
           _os_log_error_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Unable to find bundle %{public}@ to launch", buf, 0xCu);
         }
       }
@@ -587,9 +587,9 @@ LABEL_13:
     if (v5)
     {
       v6 = v5;
-      v7 = [(NSBundle *)v5 sr_normalizedBundleIdentifier];
+      sr_normalizedBundleIdentifier = [(NSBundle *)v5 sr_normalizedBundleIdentifier];
       v12 = 0;
-      if ([objc_msgSend(+[LSApplicationRecord sr_applicationRecordWithIdentifier:error:](LSApplicationRecord sr_applicationRecordWithIdentifier:v7 error:{&v12), "applicationState"), "isInstalled"}])
+      if ([objc_msgSend(+[LSApplicationRecord sr_applicationRecordWithIdentifier:error:](LSApplicationRecord sr_applicationRecordWithIdentifier:sr_normalizedBundleIdentifier error:{&v12), "applicationState"), "isInstalled"}])
       {
         v8 = +[NSMutableArray array];
         [v8 addObject:{+[PSSpecifier groupSpecifierWithName:](PSSpecifier, "groupSpecifierWithName:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"PENDING_SENSORKIT_REQUESTS", &stru_C650, 0))}];
@@ -603,7 +603,7 @@ LABEL_13:
       if (os_log_type_enabled(qword_10FF0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v14 = v7;
+        v14 = sr_normalizedBundleIdentifier;
         v15 = 2114;
         v16 = v12;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ no longer installed %{public}@. Removing the pending app review group", buf, 0x16u);
@@ -642,7 +642,7 @@ LABEL_13:
   return [NSArray arrayWithArray:v3];
 }
 
-- (void)showActionSheet:(id)a3
+- (void)showActionSheet:(id)sheet
 {
   objc_initWeak(&location, self);
   v4 = [UIAlertController alertControllerWithTitle:[NSString srui_localizedStringForCode:22] message:0 preferredStyle:0];
@@ -660,7 +660,7 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)enableSensorKit:(id)a3
+- (void)enableSensorKit:(id)kit
 {
   if (![(SensorKitPrivacySettingsController *)self presentingEnableSensorKit])
   {
@@ -680,12 +680,12 @@ LABEL_13:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = SensorKitPrivacySettingsController;
-  v6 = [(SensorKitPrivacySettingsController *)&v9 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(SensorKitPrivacySettingsController *)self specifierAtIndexPath:a4];
+  v6 = [(SensorKitPrivacySettingsController *)&v9 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(SensorKitPrivacySettingsController *)self specifierAtIndexPath:path];
   if ([(SensorKitPrivacySettingsController *)self specifierForID:@"PENDING_APP_SPECIFIER"]== v7)
   {
     [objc_msgSend(v6 "detailTextLabel")];
@@ -702,7 +702,7 @@ LABEL_13:
   return v6;
 }
 
-- (void)authorizationStore:(id)a3 didUpdateAuthorizationsForBundleId:(id)a4 sensors:(id)a5
+- (void)authorizationStore:(id)store didUpdateAuthorizationsForBundleId:(id)id sensors:(id)sensors
 {
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;

@@ -1,9 +1,9 @@
 @interface SecXPCHelper
-+ (id)cleanDictionaryForXPC:(id)a3;
-+ (id)cleanObjectForXPC:(id)a3;
-+ (id)cleanseErrorForXPC:(id)a3;
-+ (id)encodedDataFromError:(id)a3;
-+ (id)errorFromEncodedData:(id)a3;
++ (id)cleanDictionaryForXPC:(id)c;
++ (id)cleanObjectForXPC:(id)c;
++ (id)cleanseErrorForXPC:(id)c;
++ (id)encodedDataFromError:(id)error;
++ (id)errorFromEncodedData:(id)data;
 + (id)safeCKErrorPrimitiveClasses;
 + (id)safeErrorClasses;
 + (id)safeErrorCollectionClasses;
@@ -250,23 +250,23 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
   return result;
 }
 
-+ (id)encodedDataFromError:(id)a3
++ (id)encodedDataFromError:(id)error
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  errorCopy = error;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v5 encodeObject:v4 forKey:@"error"];
+  [v5 encodeObject:errorCopy forKey:@"error"];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-+ (id)errorFromEncodedData:(id)a3
++ (id)errorFromEncodedData:(id)data
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:0];
+  dataCopy = data;
+  v5 = [[v3 alloc] initForReadingFromData:dataCopy error:0];
 
   if (v5)
   {
@@ -281,19 +281,19 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
   return v6;
 }
 
-+ (id)cleanseErrorForXPC:(id)a3
++ (id)cleanseErrorForXPC:(id)c
 {
-  if (a3)
+  if (c)
   {
-    v3 = a3;
-    v4 = [v3 userInfo];
-    v5 = [SecXPCHelper cleanDictionaryForXPC:v4];
+    cCopy = c;
+    userInfo = [cCopy userInfo];
+    v5 = [SecXPCHelper cleanDictionaryForXPC:userInfo];
 
     v6 = MEMORY[0x1E696ABC0];
-    v7 = [v3 domain];
-    v8 = [v3 code];
+    domain = [cCopy domain];
+    code = [cCopy code];
 
-    v9 = [v6 errorWithDomain:v7 code:v8 userInfo:v5];
+    v9 = [v6 errorWithDomain:domain code:code userInfo:v5];
   }
 
   else
@@ -304,11 +304,11 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
   return v9;
 }
 
-+ (id)cleanObjectForXPC:(id)a3
++ (id)cleanObjectForXPC:(id)c
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  cCopy = c;
+  if (!cCopy)
   {
     v16 = 0;
     goto LABEL_53;
@@ -336,7 +336,7 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
         v9 = *(*(&v61 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          v16 = v3;
+          v16 = cCopy;
 
           goto LABEL_53;
         }
@@ -377,13 +377,13 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
         if (objc_opt_isKindOfClass())
         {
           v17 = MEMORY[0x1E696ABC0];
-          v18 = v3;
-          v19 = [v18 domain];
-          v20 = [v18 code];
-          v21 = [v18 userInfo];
+          v18 = cCopy;
+          domain = [v18 domain];
+          code = [v18 code];
+          userInfo = [v18 userInfo];
 
-          v22 = [SecXPCHelper cleanDictionaryForXPC:v21];
-          v16 = [v17 errorWithDomain:v19 code:v20 userInfo:v22];
+          v22 = [SecXPCHelper cleanDictionaryForXPC:userInfo];
+          v16 = [v17 errorWithDomain:domain code:code userInfo:v22];
         }
 
         else
@@ -391,7 +391,7 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [SecXPCHelper cleanDictionaryForXPC:v3];
+            v16 = [SecXPCHelper cleanDictionaryForXPC:cCopy];
           }
 
           else
@@ -399,7 +399,7 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v23 = v3;
+              v23 = cCopy;
               v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v23, "count")}];
               v53 = 0u;
               v54 = 0u;
@@ -436,7 +436,7 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v30 = v3;
+                v30 = cCopy;
                 v16 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v30, "count")}];
                 v49 = 0u;
                 v50 = 0u;
@@ -476,7 +476,7 @@ Class __42__SecXPCHelper_safeErrorCollectionClasses__block_invoke()
                   continue;
                 }
 
-                v36 = v3;
+                v36 = cCopy;
                 v16 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(v36, "count")}];
                 v45 = 0u;
                 v46 = 0u;
@@ -535,19 +535,19 @@ LABEL_53:
   return v16;
 }
 
-+ (id)cleanDictionaryForXPC:(id)a3
++ (id)cleanDictionaryForXPC:(id)c
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  cCopy = c;
+  if (cCopy)
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [v4 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [cCopy allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -558,21 +558,21 @@ LABEL_53:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v4 objectForKeyedSubscript:v10];
+          v11 = [cCopy objectForKeyedSubscript:v10];
           v12 = [SecXPCHelper cleanObjectForXPC:v11];
 
-          v13 = [a1 cleanObjectForXPC:v10];
+          v13 = [self cleanObjectForXPC:v10];
           if (v13)
           {
-            [v16 setObject:v12 forKeyedSubscript:v13];
+            [dictionary setObject:v12 forKeyedSubscript:v13];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
@@ -581,12 +581,12 @@ LABEL_53:
 
   else
   {
-    v16 = 0;
+    dictionary = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return dictionary;
 }
 
 @end

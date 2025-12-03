@@ -1,47 +1,47 @@
 @interface MTPlaybackIdentifierUtil
-+ (id)__queryStringToQueryDictionary:(id)a3;
-+ (id)__stringByRemovingPercentEscapes:(id)a3;
-+ (id)__stringWithPercentEscape:(id)a3;
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3;
-- (BOOL)isSubscribeCommandURLString:(id)a3;
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5;
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11;
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5;
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3;
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4;
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3;
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4;
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4;
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7;
-- (int64_t)_episodeContextFromString:(id)a3;
-- (int64_t)_episodeContextSortFromString:(id)a3;
-- (int64_t)_episodeOrderFromString:(id)a3;
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3;
-- (unint64_t)_playReasonFromString:(id)a3;
++ (id)__queryStringToQueryDictionary:(id)dictionary;
++ (id)__stringByRemovingPercentEscapes:(id)escapes;
++ (id)__stringWithPercentEscape:(id)escape;
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string;
+- (BOOL)isSubscribeCommandURLString:(id)string;
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value;
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1;
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url;
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string;
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string;
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url;
+- (int64_t)_episodeContextFromString:(id)string;
+- (int64_t)_episodeContextSortFromString:(id)string;
+- (int64_t)_episodeOrderFromString:(id)string;
+- (unint64_t)_playQueueTypeForRequestURL:(id)l;
+- (unint64_t)_playReasonFromString:(id)string;
 @end
 
 @implementation MTPlaybackIdentifierUtil
 
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string
 {
-  v4 = [NSURL URLWithString:a4];
+  v4 = [NSURL URLWithString:string];
   v5 = objc_opt_class();
-  v6 = [v4 query];
-  v7 = [v5 __queryStringToQueryDictionary:v6];
+  query = [v4 query];
+  v7 = [v5 __queryStringToQueryDictionary:query];
 
   v8 = NSPersistentStringForMTPlayReason();
   [v7 setObject:v8 forKey:@"playReason"];
 
   v9 = objc_alloc_init(NSURLComponents);
-  v10 = [v4 scheme];
-  [v9 setScheme:v10];
+  scheme = [v4 scheme];
+  [v9 setScheme:scheme];
 
-  v11 = [v4 host];
-  [v9 setHost:v11];
+  host = [v4 host];
+  [v9 setHost:host];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -52,33 +52,33 @@
   v13 = [v12 mt_compactMap:v16];
   [v9 setQueryItems:v13];
 
-  v14 = [v9 string];
+  string = [v9 string];
 
-  return v14;
+  return string;
 }
 
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string
 {
-  v5 = a3;
-  v6 = [NSURL URLWithString:a4];
+  dCopy = d;
+  v6 = [NSURL URLWithString:string];
   v7 = objc_opt_class();
-  v8 = [v6 query];
-  v9 = [v7 __queryStringToQueryDictionary:v8];
+  query = [v6 query];
+  v9 = [v7 __queryStringToQueryDictionary:query];
 
-  v10 = [v5 stringValue];
+  stringValue = [dCopy stringValue];
 
-  if (v10)
+  if (stringValue)
   {
-    v11 = [v5 stringValue];
-    [v9 setObject:v11 forKey:@"enqueuerDSID"];
+    stringValue2 = [dCopy stringValue];
+    [v9 setObject:stringValue2 forKey:@"enqueuerDSID"];
   }
 
   v12 = objc_alloc_init(NSURLComponents);
-  v13 = [v6 scheme];
-  [v12 setScheme:v13];
+  scheme = [v6 scheme];
+  [v12 setScheme:scheme];
 
-  v14 = [v6 host];
-  [v12 setHost:v14];
+  host = [v6 host];
+  [v12 setHost:host];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -89,23 +89,23 @@
   v16 = [v15 mt_compactMap:v19];
   [v12 setQueryItems:v16];
 
-  v17 = [v12 string];
+  string = [v12 string];
 
-  return v17;
+  return string;
 }
 
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string
 {
-  v3 = [NSURL URLWithString:a3];
-  v4 = [v3 host];
-  if ([v4 length])
+  v3 = [NSURL URLWithString:string];
+  host = [v3 host];
+  if ([host length])
   {
     if (qword_100012518 != -1)
     {
       sub_100006554();
     }
 
-    v5 = [qword_100012510 containsObject:v4];
+    v5 = [qword_100012510 containsObject:host];
   }
 
   else
@@ -116,45 +116,45 @@
   return v5;
 }
 
-- (BOOL)isSubscribeCommandURLString:(id)a3
+- (BOOL)isSubscribeCommandURLString:(id)string
 {
-  v3 = [NSURL URLWithString:a3];
-  v4 = [v3 host];
-  v5 = [v4 isEqualToString:@"subscribe"];
+  v3 = [NSURL URLWithString:string];
+  host = [v3 host];
+  v5 = [host isEqualToString:@"subscribe"];
 
   return v5;
 }
 
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string
 {
-  v3 = [NSURL URLWithString:a3];
-  v4 = [v3 host];
-  v5 = [v4 isEqualToString:@"playItem"];
+  v3 = [NSURL URLWithString:string];
+  host = [v3 host];
+  v5 = [host isEqualToString:@"playItem"];
 
   return v5;
 }
 
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order
 {
-  v4 = a3;
-  if (!v4)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v4 = SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue;
+    orderCopy = SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue;
   }
 
-  v5 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcasts" queryKey:@"playbackOrder" value:v4];
+  v5 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcasts" queryKey:@"playbackOrder" value:orderCopy];
 
   return v5;
 }
 
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] || objc_msgSend(v9, "length"))
+  uuidCopy = uuid;
+  episodeUuidCopy = episodeUuid;
+  orderCopy = order;
+  if ([uuidCopy length] || objc_msgSend(episodeUuidCopy, "length"))
   {
-    v11 = [(MTPlaybackIdentifierUtil *)self universalPlaybackQueueIdentifierForPodcastUuid:v8 podcastFeedUrl:0 podcastStoreId:0 episodeUuid:v9 episodeGuid:0 episodeStoreId:0 sampPlaybackOrder:v10];
+    v11 = [(MTPlaybackIdentifierUtil *)self universalPlaybackQueueIdentifierForPodcastUuid:uuidCopy podcastFeedUrl:0 podcastStoreId:0 episodeUuid:episodeUuidCopy episodeGuid:0 episodeStoreId:0 sampPlaybackOrder:orderCopy];
   }
 
   else
@@ -165,56 +165,56 @@
   return v11;
 }
 
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
-  if (![v20 length])
+  uuidCopy = uuid;
+  urlCopy = url;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  orderCopy = order;
+  if (![orderCopy length])
   {
     v21 = SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue;
 
-    v20 = v21;
+    orderCopy = v21;
   }
 
-  v22 = [v18 length];
-  v23 = [v16 length];
+  v22 = [episodeUuidCopy length];
+  v23 = [uuidCopy length];
   v24 = +[NSMutableDictionary dictionary];
-  [v24 setObject:v20 forKey:@"playbackOrder"];
+  [v24 setObject:orderCopy forKey:@"playbackOrder"];
   if (v23)
   {
-    [v24 setObject:v16 forKey:@"uuid"];
+    [v24 setObject:uuidCopy forKey:@"uuid"];
   }
 
   if (v22)
   {
-    [v24 setObject:v18 forKey:@"episodeUuid"];
+    [v24 setObject:episodeUuidCopy forKey:@"episodeUuid"];
   }
 
-  if ([v17 length])
+  if ([urlCopy length])
   {
-    v25 = [objc_opt_class() __stringWithPercentEscape:v17];
+    v25 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
     [v24 setObject:v25 forKey:@"podcastFeedUrl"];
   }
 
-  if ([v19 length])
+  if ([guidCopy length])
   {
-    [v24 setObject:v19 forKey:@"episodeGuid"];
+    [v24 setObject:guidCopy forKey:@"episodeGuid"];
   }
 
   v26 = kMTSerpentAdamIdOffset;
-  if (a5 && kMTSerpentAdamIdOffset != a5)
+  if (id && kMTSerpentAdamIdOffset != id)
   {
-    v27 = [NSString stringWithFormat:@"%llu", a5];
+    v27 = [NSString stringWithFormat:@"%llu", id];
     [v24 setObject:v27 forKey:@"storeCollectionId"];
   }
 
-  if (a8 && v26 != a8)
+  if (storeId && v26 != storeId)
   {
-    v28 = [NSString stringWithFormat:@"%llu", a8];
-    [v24 setObject:v28 forKey:@"storeTrackId"];
+    storeId = [NSString stringWithFormat:@"%llu", storeId];
+    [v24 setObject:storeId forKey:@"storeTrackId"];
   }
 
   v29 = NSPersistentStringForMTEpisodeContext();
@@ -228,57 +228,57 @@
   return v31;
 }
 
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order
 {
-  v6 = a4;
-  if (!v6)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v6 = SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue;
+    orderCopy = SAMPEpisodePlaybackOrderAPPLICATION_DEFAULTValue;
   }
 
   v11[0] = @"storeCollectionId";
   v11[1] = @"playbackOrder";
-  v12[0] = a3;
-  v12[1] = v6;
-  v7 = a3;
+  v12[0] = id;
+  v12[1] = orderCopy;
+  idCopy = id;
   v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcast" queryComponents:v8];
 
   return v9;
 }
 
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url
 {
-  v4 = a3;
-  v5 = [objc_opt_class() __stringWithPercentEscape:v4];
+  urlCopy = url;
+  v5 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
 
   v6 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"subscribe" queryKey:@"podcastFeedUrl" value:v5];
 
   return v6;
 }
 
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a3;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  urlCopy = url;
+  uuidCopy = uuid;
   v15 = [NSMutableDictionary dictionaryWithCapacity:5];
-  [v15 setObject:v14 forKey:@"uuid"];
+  [v15 setObject:uuidCopy forKey:@"uuid"];
 
-  if ([v11 length])
+  if ([episodeUuidCopy length])
   {
-    [v15 setObject:v11 forKey:@"episodeUuid"];
+    [v15 setObject:episodeUuidCopy forKey:@"episodeUuid"];
   }
 
-  if ([v12 length])
+  if ([guidCopy length])
   {
-    [v15 setObject:v12 forKey:@"episodeGuid"];
+    [v15 setObject:guidCopy forKey:@"episodeGuid"];
   }
 
-  if ([v13 length])
+  if ([urlCopy length])
   {
-    v16 = [objc_opt_class() __stringWithPercentEscape:v13];
+    v16 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
     [v15 setObject:v16 forKey:@"podcastFeedUrl"];
   }
 
@@ -287,27 +287,27 @@
   return v17;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[MTAccountController sharedInstance];
-  v6 = [v5 activeDsid];
-  v7 = [(MTPlaybackIdentifierUtil *)self playbackQueueWithDsid:v6 forIdentifiers:v4];
+  activeDsid = [v5 activeDsid];
+  v7 = [(MTPlaybackIdentifierUtil *)self playbackQueueWithDsid:activeDsid forIdentifiers:identifiersCopy];
 
   return v7;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   v6 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetGenericTrackIdentifiers();
 
-  if (a3)
+  if (dsid)
   {
-    v9 = a3;
+    dsidCopy = dsid;
     keys = @"enqueuerDSID";
-    v7 = CFDictionaryCreate(0, &keys, &v9, 1, 0, &kCFTypeDictionaryValueCallBacks);
+    v7 = CFDictionaryCreate(0, &keys, &dsidCopy, 1, 0, &kCFTypeDictionaryValueCallBacks);
     MRSystemAppPlaybackQueueSetUserInfo();
     CFRelease(v7);
   }
@@ -315,19 +315,19 @@
   return v6;
 }
 
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3
+- (unint64_t)_playQueueTypeForRequestURL:(id)l
 {
   v3 = qword_100012520;
-  v4 = a3;
+  lCopy = l;
   if (v3 != -1)
   {
     sub_100006568();
   }
 
   v5 = qword_100012528;
-  v6 = [v4 host];
+  host = [lCopy host];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:host];
   v8 = v7;
   v9 = &off_10000CC18;
   if (v7)
@@ -337,38 +337,38 @@
 
   v10 = v9;
 
-  v11 = [v10 unsignedIntegerValue];
-  return v11;
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value
 {
-  v14 = a4;
-  v15 = a5;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+  keyCopy = key;
+  valueCopy = value;
+  valueCopy2 = value;
+  keyCopy2 = key;
+  hostCopy = host;
+  v11 = [NSDictionary dictionaryWithObjects:&valueCopy forKeys:&keyCopy count:1];
 
-  v12 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:v10 queryComponents:v11];
+  v12 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:hostCopy queryComponents:v11];
 
   return v12;
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components
 {
-  v5 = a3;
-  v6 = a4;
+  hostCopy = host;
+  componentsCopy = components;
   v7 = objc_alloc_init(NSURLComponents);
   [v7 setScheme:@"podcasts"];
-  v20 = v5;
-  [v7 setHost:v5];
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  v20 = hostCopy;
+  [v7 setHost:hostCopy];
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [componentsCopy count]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = componentsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -398,20 +398,20 @@
   }
 
   [v7 setQueryItems:v8];
-  v18 = [v7 string];
+  string = [v7 string];
 
-  return v18;
+  return string;
 }
 
-- (int64_t)_episodeOrderFromString:(id)a3
+- (int64_t)_episodeOrderFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAMPEpisodePlaybackOrderNEWEST_FIRSTValue])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:SAMPEpisodePlaybackOrderNEWEST_FIRSTValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAMPEpisodePlaybackOrderOLDEST_FIRSTValue])
+  else if ([stringCopy isEqualToString:SAMPEpisodePlaybackOrderOLDEST_FIRSTValue])
   {
     v4 = 2;
   }
@@ -424,10 +424,10 @@
   return v4;
 }
 
-- (unint64_t)_playReasonFromString:(id)a3
+- (unint64_t)_playReasonFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTPlayReasonFromPersistentString();
   }
@@ -440,10 +440,10 @@
   return v4;
 }
 
-- (int64_t)_episodeContextFromString:(id)a3
+- (int64_t)_episodeContextFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTEpisodeContextFromPersistentString();
   }
@@ -456,10 +456,10 @@
   return v4;
 }
 
-- (int64_t)_episodeContextSortFromString:(id)a3
+- (int64_t)_episodeContextSortFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTEpisodeContextSortTypeFromPersistentString();
   }
@@ -472,23 +472,23 @@
   return v4;
 }
 
-+ (id)__stringWithPercentEscape:(id)a3
++ (id)__stringWithPercentEscape:(id)escape
 {
-  v3 = CFURLCreateStringByAddingPercentEscapes(0, a3, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
+  v3 = CFURLCreateStringByAddingPercentEscapes(0, escape, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
 
   return v3;
 }
 
-+ (id)__stringByRemovingPercentEscapes:(id)a3
++ (id)__stringByRemovingPercentEscapes:(id)escapes
 {
-  v3 = CFURLCreateStringByReplacingPercentEscapes(kCFAllocatorDefault, a3, &stru_10000CAB0);
+  v3 = CFURLCreateStringByReplacingPercentEscapes(kCFAllocatorDefault, escapes, &stru_10000CAB0);
 
   return v3;
 }
 
-+ (id)__queryStringToQueryDictionary:(id)a3
++ (id)__queryStringToQueryDictionary:(id)dictionary
 {
-  v3 = [a3 componentsSeparatedByString:@"&"];
+  v3 = [dictionary componentsSeparatedByString:@"&"];
   v4 = objc_alloc_init(NSMutableDictionary);
   v15 = 0u;
   v16 = 0u;

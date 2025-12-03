@@ -1,65 +1,65 @@
 @interface ICHashtagSuggestionItem
-+ (id)sortedItems:(id)a3 context:(id)a4;
-+ (id)sortedSuggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)a3 context:(id)a4;
-+ (id)suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (int64_t)compare:(id)a3;
++ (id)sortedItems:(id)items context:(id)context;
++ (id)sortedSuggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)apps context:(id)context;
++ (id)suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)apps;
+- (BOOL)isEqual:(id)equal;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation ICHashtagSuggestionItem
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICHashtagSuggestionItem *)self lastUsedDate];
-  if (!v5 || (v6 = v5, [v4 lastUsedDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  compareCopy = compare;
+  lastUsedDate = [(ICHashtagSuggestionItem *)self lastUsedDate];
+  if (!lastUsedDate || (v6 = lastUsedDate, [compareCopy lastUsedDate], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    v12 = [(ICHashtagSuggestionItem *)self lastUsedDate];
-    if (v12)
+    lastUsedDate2 = [(ICHashtagSuggestionItem *)self lastUsedDate];
+    if (lastUsedDate2)
     {
     }
 
     else
     {
-      v13 = [v4 lastUsedDate];
+      lastUsedDate3 = [compareCopy lastUsedDate];
 
-      if (!v13)
+      if (!lastUsedDate3)
       {
-        v16 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-        if (v16)
+        tokenContentIdentifier = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+        if (tokenContentIdentifier)
         {
-          v17 = v16;
-          v18 = [v4 tokenContentIdentifier];
+          v17 = tokenContentIdentifier;
+          tokenContentIdentifier2 = [compareCopy tokenContentIdentifier];
 
-          if (v18)
+          if (tokenContentIdentifier2)
           {
-            v8 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-            v9 = [v4 tokenContentIdentifier];
+            tokenContentIdentifier3 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+            tokenContentIdentifier4 = [compareCopy tokenContentIdentifier];
             goto LABEL_4;
           }
         }
 
-        v19 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-        if (v19)
+        tokenContentIdentifier5 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+        if (tokenContentIdentifier5)
         {
         }
 
         else
         {
-          v20 = [v4 tokenContentIdentifier];
+          tokenContentIdentifier6 = [compareCopy tokenContentIdentifier];
 
-          if (!v20)
+          if (!tokenContentIdentifier6)
           {
             v11 = 0;
             goto LABEL_13;
           }
         }
 
-        v14 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+        tokenContentIdentifier7 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
 LABEL_9:
-        v8 = v14;
-        if (v14)
+        tokenContentIdentifier3 = tokenContentIdentifier7;
+        if (tokenContentIdentifier7)
         {
           v11 = -1;
         }
@@ -73,15 +73,15 @@ LABEL_9:
       }
     }
 
-    v14 = [(ICHashtagSuggestionItem *)self lastUsedDate];
+    tokenContentIdentifier7 = [(ICHashtagSuggestionItem *)self lastUsedDate];
     goto LABEL_9;
   }
 
-  v8 = [v4 lastUsedDate];
-  v9 = [(ICHashtagSuggestionItem *)self lastUsedDate];
+  tokenContentIdentifier3 = [compareCopy lastUsedDate];
+  tokenContentIdentifier4 = [(ICHashtagSuggestionItem *)self lastUsedDate];
 LABEL_4:
-  v10 = v9;
-  v11 = [v8 compare:v9];
+  v10 = tokenContentIdentifier4;
+  v11 = [tokenContentIdentifier3 compare:tokenContentIdentifier4];
 
 LABEL_12:
 LABEL_13:
@@ -89,17 +89,17 @@ LABEL_13:
   return v11;
 }
 
-+ (id)sortedItems:(id)a3 context:(id)a4
++ (id)sortedItems:(id)items context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  contextCopy = context;
   v7 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -114,8 +114,8 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v30 + 1) + 8 * i) tokenContentIdentifier];
-        [v7 ic_addNonNilObject:v13];
+        tokenContentIdentifier = [*(*(&v30 + 1) + 8 * i) tokenContentIdentifier];
+        [v7 ic_addNonNilObject:tokenContentIdentifier];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -124,8 +124,8 @@ LABEL_13:
     while (v10);
   }
 
-  v14 = [v7 allObjects];
-  v15 = [ICInlineAttachment recentlyUsedDatesForHashtagsStandardizedContents:v14 context:v6];
+  allObjects = [v7 allObjects];
+  v15 = [ICInlineAttachment recentlyUsedDatesForHashtagsStandardizedContents:allObjects context:contextCopy];
 
   v28 = 0u;
   v29 = 0u;
@@ -147,8 +147,8 @@ LABEL_13:
         }
 
         v21 = *(*(&v26 + 1) + 8 * j);
-        v22 = [v21 tokenContentIdentifier];
-        v23 = [v15 objectForKeyedSubscript:v22];
+        tokenContentIdentifier2 = [v21 tokenContentIdentifier];
+        v23 = [v15 objectForKeyedSubscript:tokenContentIdentifier2];
         [v21 setLastUsedDate:v23];
       }
 
@@ -163,26 +163,26 @@ LABEL_13:
   return v24;
 }
 
-+ (id)sortedSuggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)a3 context:(id)a4
++ (id)sortedSuggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)apps context:(id)context
 {
-  v6 = a4;
-  v7 = [a1 suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:a3];
-  v8 = [a1 sortedItems:v7 context:v6];
+  contextCopy = context;
+  v7 = [self suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:apps];
+  v8 = [self sortedItems:v7 context:contextCopy];
 
   return v8;
 }
 
-+ (id)suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)a3
++ (id)suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:(id)apps
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appsCopy = apps;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v3;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
@@ -199,15 +199,15 @@ LABEL_13:
 
         v11 = *(*(&v31 + 1) + 8 * i);
         v12 = objc_alloc_init(ICHashtagSuggestionItem);
-        v13 = [v11 standardizedContent];
-        [(ICHashtagSuggestionItem *)v12 setTokenContentIdentifier:v13];
+        standardizedContent = [v11 standardizedContent];
+        [(ICHashtagSuggestionItem *)v12 setTokenContentIdentifier:standardizedContent];
 
-        v14 = [v11 displayText];
-        [(ICHashtagSuggestionItem *)v12 setDisplayText:v14];
+        displayText = [v11 displayText];
+        [(ICHashtagSuggestionItem *)v12 setDisplayText:displayText];
 
         [v5 addObject:v12];
-        v15 = [(ICHashtagSuggestionItem *)v12 displayText];
-        [v4 ic_addNonNilObject:v15];
+        displayText2 = [(ICHashtagSuggestionItem *)v12 displayText];
+        [v4 ic_addNonNilObject:displayText2];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -263,16 +263,16 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-  v3 = [v2 hash];
+  tokenContentIdentifier = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+  v3 = [tokenContentIdentifier hash];
   v11 = ICHashWithHashKeys(v3, v4, v5, v6, v7, v8, v9, v10, 0);
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
   if (!v5)
@@ -282,19 +282,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-  if (!v6 || (v7 = v6, [v5 tokenContentIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  tokenContentIdentifier = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+  if (!tokenContentIdentifier || (v7 = tokenContentIdentifier, [v5 tokenContentIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    v12 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-    if (v12)
+    tokenContentIdentifier2 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+    if (tokenContentIdentifier2)
     {
     }
 
     else
     {
-      v13 = [v5 tokenContentIdentifier];
+      tokenContentIdentifier3 = [v5 tokenContentIdentifier];
 
-      if (!v13)
+      if (!tokenContentIdentifier3)
       {
         v11 = 1;
         goto LABEL_9;
@@ -304,9 +304,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
-  v10 = [v5 tokenContentIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  tokenContentIdentifier4 = [(ICHashtagSuggestionItem *)self tokenContentIdentifier];
+  tokenContentIdentifier5 = [v5 tokenContentIdentifier];
+  v11 = [tokenContentIdentifier4 isEqualToString:tokenContentIdentifier5];
 
 LABEL_9:
   return v11;

@@ -1,22 +1,22 @@
 @interface PPXPCServerHelper
-+ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)a3 connection:(id)a4 serviceName:(id)a5;
-+ (BOOL)hasTrueBooleanEntitlement:(id)a3 connection:(id)a4;
-+ (BOOL)shouldAcceptConnection:(id)a3 serviceName:(id)a4 allowedServerInterface:(id)a5 allowedClientInterface:(id)a6 requestHandler:(id)a7 validateConnection:(id)a8 setupClientProxy:(id)a9 interruptionHandler:(id)a10 invalidationHandler:(id)a11;
++ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)entitlement connection:(id)connection serviceName:(id)name;
++ (BOOL)hasTrueBooleanEntitlement:(id)entitlement connection:(id)connection;
++ (BOOL)shouldAcceptConnection:(id)connection serviceName:(id)name allowedServerInterface:(id)interface allowedClientInterface:(id)clientInterface requestHandler:(id)handler validateConnection:(id)validateConnection setupClientProxy:(id)proxy interruptionHandler:(id)self0 invalidationHandler:(id)self1;
 @end
 
 @implementation PPXPCServerHelper
 
-+ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)a3 connection:(id)a4 serviceName:(id)a5
++ (BOOL)checkForAndLogTrueBooleanEntitlement:(id)entitlement connection:(id)connection serviceName:(id)name
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PPXPCServerHelper hasTrueBooleanEntitlement:v7 connection:v8];
+  entitlementCopy = entitlement;
+  connectionCopy = connection;
+  nameCopy = name;
+  v10 = [PPXPCServerHelper hasTrueBooleanEntitlement:entitlementCopy connection:connectionCopy];
   if (!v10)
   {
     __errnum = 0;
-    v11 = procNameForPid([v8 processIdentifier], &__errnum);
+    v11 = procNameForPid([connectionCopy processIdentifier], &__errnum);
     if ([v11 length] && (objc_msgSend(v11, "isEqualToString:", @"xctest") & 1) == 0)
     {
       v13 = pp_default_log_handle();
@@ -25,9 +25,9 @@
         *buf = 138412802;
         *v25 = v11;
         *&v25[8] = 2112;
-        *&v25[10] = v9;
+        *&v25[10] = nameCopy;
         *&v25[18] = 2112;
-        *&v25[20] = v7;
+        *&v25[20] = entitlementCopy;
         _os_log_fault_impl(&dword_23224A000, v13, OS_LOG_TYPE_FAULT, "Connection from %@ to %@ is missing entitlement: %@", buf, 0x20u);
       }
 
@@ -41,12 +41,12 @@
     {
       if (v14)
       {
-        v15 = [v8 processIdentifier];
+        processIdentifier = [connectionCopy processIdentifier];
         v16 = strerror(__errnum);
         *buf = 67109634;
-        *v25 = v15;
+        *v25 = processIdentifier;
         *&v25[4] = 2112;
-        *&v25[6] = v9;
+        *&v25[6] = nameCopy;
         *&v25[14] = 2080;
         *&v25[16] = v16;
         v17 = "Connection from %d to %@ failed entitlement check (proc_name error: %s).";
@@ -59,11 +59,11 @@ LABEL_13:
 
     else if (v14)
     {
-      v22 = [v8 processIdentifier];
+      processIdentifier2 = [connectionCopy processIdentifier];
       *buf = 67109378;
-      *v25 = v22;
+      *v25 = processIdentifier2;
       *&v25[4] = 2112;
-      *&v25[6] = v9;
+      *&v25[6] = nameCopy;
       v17 = "Connection from %d to %@ failed entitlement check.";
       v18 = v13;
       v19 = 18;
@@ -77,13 +77,13 @@ LABEL_10:
   return v10;
 }
 
-+ (BOOL)hasTrueBooleanEntitlement:(id)a3 connection:(id)a4
++ (BOOL)hasTrueBooleanEntitlement:(id)entitlement connection:(id)connection
 {
-  v5 = a3;
+  entitlementCopy = entitlement;
   v6 = MEMORY[0x277D425B0];
-  if (a4)
+  if (connection)
   {
-    [a4 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -92,25 +92,25 @@ LABEL_10:
   }
 
   v7 = pp_xpc_server_log_handle();
-  v8 = [v6 taskWithAuditToken:v10 hasTrueBooleanEntitlement:v5 logHandle:v7];
+  v8 = [v6 taskWithAuditToken:v10 hasTrueBooleanEntitlement:entitlementCopy logHandle:v7];
 
   return v8;
 }
 
-+ (BOOL)shouldAcceptConnection:(id)a3 serviceName:(id)a4 allowedServerInterface:(id)a5 allowedClientInterface:(id)a6 requestHandler:(id)a7 validateConnection:(id)a8 setupClientProxy:(id)a9 interruptionHandler:(id)a10 invalidationHandler:(id)a11
++ (BOOL)shouldAcceptConnection:(id)connection serviceName:(id)name allowedServerInterface:(id)interface allowedClientInterface:(id)clientInterface requestHandler:(id)handler validateConnection:(id)validateConnection setupClientProxy:(id)proxy interruptionHandler:(id)self0 invalidationHandler:(id)self1
 {
   v61 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v43 = a4;
-  v39 = a5;
-  v38 = a6;
-  v40 = a7;
-  v17 = a8;
-  v18 = a9;
-  v42 = a10;
-  v41 = a11;
+  connectionCopy = connection;
+  nameCopy = name;
+  interfaceCopy = interface;
+  clientInterfaceCopy = clientInterface;
+  handlerCopy = handler;
+  validateConnectionCopy = validateConnection;
+  proxyCopy = proxy;
+  interruptionHandlerCopy = interruptionHandler;
+  invalidationHandlerCopy = invalidationHandler;
   v54 = 0;
-  v19 = procNameForPid([v16 processIdentifier], &v54);
+  v19 = procNameForPid([connectionCopy processIdentifier], &v54);
   if ([v19 length])
   {
     v20 = pp_xpc_server_log_handle();
@@ -119,13 +119,13 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    v21 = [v16 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     *buf = 138412802;
-    v56 = v43;
+    v56 = nameCopy;
     v57 = 2112;
     v58 = v19;
     v59 = 2048;
-    v60 = v21;
+    v60 = processIdentifier;
     v22 = "New connection to %@ from %@ (%lu).";
 LABEL_7:
     v27 = v20;
@@ -145,12 +145,12 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v25 = [v16 processIdentifier];
+    processIdentifier2 = [connectionCopy processIdentifier];
     v26 = strerror(v54);
     *buf = 138412802;
-    v56 = v43;
+    v56 = nameCopy;
     v57 = 2048;
-    v58 = v25;
+    v58 = processIdentifier2;
     v59 = 2080;
     v60 = v26;
     v22 = "New connection to %@ from unknown process (%lu) (proc_name error: %s).";
@@ -159,11 +159,11 @@ LABEL_8:
 
   if (v24)
   {
-    v35 = [v16 processIdentifier];
+    processIdentifier3 = [connectionCopy processIdentifier];
     *buf = 138412546;
-    v56 = v43;
+    v56 = nameCopy;
     v57 = 2048;
-    v58 = v35;
+    v58 = processIdentifier3;
     v22 = "New connection to %@ from unknown process (%lu).";
     v27 = v20;
     v28 = 22;
@@ -172,29 +172,29 @@ LABEL_8:
 
 LABEL_9:
 
-  v29 = v17[2](v17, v16, v19);
+  v29 = validateConnectionCopy[2](validateConnectionCopy, connectionCopy, v19);
   if (v29)
   {
-    [v16 setExportedInterface:v39];
-    [v16 setExportedObject:v40];
-    if (v38)
+    [connectionCopy setExportedInterface:interfaceCopy];
+    [connectionCopy setExportedObject:handlerCopy];
+    if (clientInterfaceCopy)
     {
-      [v16 setRemoteObjectInterface:?];
-      if (!v18)
+      [connectionCopy setRemoteObjectInterface:?];
+      if (!proxyCopy)
       {
 LABEL_15:
-        objc_initWeak(buf, v16);
+        objc_initWeak(buf, connectionCopy);
         v49[0] = MEMORY[0x277D85DD0];
         v49[1] = 3221225472;
         v49[2] = __193__PPXPCServerHelper_shouldAcceptConnection_serviceName_allowedServerInterface_allowedClientInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler___block_invoke;
         v49[3] = &unk_2789755A0;
         objc_copyWeak(&v53, buf);
-        v31 = v43;
+        v31 = nameCopy;
         v50 = v31;
         v32 = v19;
         v51 = v32;
-        v52 = v42;
-        [v16 setInterruptionHandler:v49];
+        v52 = interruptionHandlerCopy;
+        [connectionCopy setInterruptionHandler:v49];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __193__PPXPCServerHelper_shouldAcceptConnection_serviceName_allowedServerInterface_allowedClientInterface_requestHandler_validateConnection_setupClientProxy_interruptionHandler_invalidationHandler___block_invoke_17;
@@ -202,9 +202,9 @@ LABEL_15:
         objc_copyWeak(&v48, buf);
         v45 = v31;
         v46 = v32;
-        v47 = v41;
-        [v16 setInvalidationHandler:v44];
-        [v16 resume];
+        v47 = invalidationHandlerCopy;
+        [connectionCopy setInvalidationHandler:v44];
+        [connectionCopy resume];
 
         objc_destroyWeak(&v48);
         objc_destroyWeak(&v53);
@@ -212,19 +212,19 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v30 = [v16 remoteObjectProxy];
-      v18[2](v18, v30);
+      remoteObjectProxy = [connectionCopy remoteObjectProxy];
+      proxyCopy[2](proxyCopy, remoteObjectProxy);
     }
 
     else
     {
-      if (!v18)
+      if (!proxyCopy)
       {
         goto LABEL_15;
       }
 
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      [v30 handleFailureInMethod:a2 object:a1 file:@"PPXPCServerSupport.m" lineNumber:74 description:@"setupClientProxy shall be nil if allowedClientInterface is nil"];
+      remoteObjectProxy = [MEMORY[0x277CCA890] currentHandler];
+      [remoteObjectProxy handleFailureInMethod:a2 object:self file:@"PPXPCServerSupport.m" lineNumber:74 description:@"setupClientProxy shall be nil if allowedClientInterface is nil"];
     }
 
     goto LABEL_15;

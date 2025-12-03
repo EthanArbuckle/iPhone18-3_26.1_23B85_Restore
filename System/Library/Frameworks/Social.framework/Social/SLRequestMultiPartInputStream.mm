@@ -1,23 +1,23 @@
 @interface SLRequestMultiPartInputStream
-- (SLRequestMultiPartInputStream)initWithMultiPart:(id)a3;
-- (int64_t)currentStateRead:(char *)a3 maxLength:(unint64_t)a4;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
-- (unint64_t)readStateSourceData:(id)a3 toBuffer:(char *)a4 offset:(unint64_t)a5 maxLength:(unint64_t)a6;
+- (SLRequestMultiPartInputStream)initWithMultiPart:(id)part;
+- (int64_t)currentStateRead:(char *)read maxLength:(unint64_t)length;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
+- (unint64_t)readStateSourceData:(id)data toBuffer:(char *)buffer offset:(unint64_t)offset maxLength:(unint64_t)length;
 - (void)transitionState;
 @end
 
 @implementation SLRequestMultiPartInputStream
 
-- (SLRequestMultiPartInputStream)initWithMultiPart:(id)a3
+- (SLRequestMultiPartInputStream)initWithMultiPart:(id)part
 {
-  v5 = a3;
+  partCopy = part;
   v9.receiver = self;
   v9.super_class = SLRequestMultiPartInputStream;
   v6 = [(SLRequestMultiPartInputStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_multiPart, a3);
+    objc_storeStrong(&v6->_multiPart, part);
     v7->_streamStatus = 0;
     [(SLRequestMultiPartInputStream *)v7 transitionState];
   }
@@ -28,7 +28,7 @@
 - (void)transitionState
 {
   self->_bytesReadInState = 0;
-  v12 = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
+  uniqueIdentifier = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
   currentState = self->_currentState;
   _SLLog(v2, 6, @"MultipartStream %@ transitioning from state %d");
 
@@ -37,7 +37,7 @@
   {
     if (v4 == 2)
     {
-      v10 = [(SLRequestMultiPart *)self->_multiPart payloadEpilogue:v12];
+      v10 = [(SLRequestMultiPart *)self->_multiPart payloadEpilogue:uniqueIdentifier];
       srcData = self->_srcData;
       self->_srcData = v10;
 
@@ -52,17 +52,17 @@
     }
 
 LABEL_8:
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"MultipartInputStream in unexpected state", v12, currentState}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"MultipartInputStream in unexpected state", uniqueIdentifier, currentState}];
     goto LABEL_12;
   }
 
   if (!v4)
   {
-    v8 = [(SLRequestMultiPart *)self->_multiPart payloadPreamble:v12];
+    v8 = [(SLRequestMultiPart *)self->_multiPart payloadPreamble:uniqueIdentifier];
     v9 = self->_srcData;
     self->_srcData = v8;
 
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_srcData encoding:4];
+    uniqueIdentifier = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_srcData encoding:4];
     _SLLog(v2, 6, @"Preamble for stream %@");
 
     v7 = 1;
@@ -74,7 +74,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = [(SLRequestMultiPart *)self->_multiPart payload:v12];
+  v5 = [(SLRequestMultiPart *)self->_multiPart payload:uniqueIdentifier];
   v6 = self->_srcData;
   self->_srcData = v5;
 
@@ -82,39 +82,39 @@ LABEL_8:
 LABEL_11:
   self->_currentState = v7;
 LABEL_12:
-  v13 = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
+  uniqueIdentifier2 = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
   _SLLog(v2, 6, @"MultipartStream %@ transitioned to state %d");
 }
 
-- (unint64_t)readStateSourceData:(id)a3 toBuffer:(char *)a4 offset:(unint64_t)a5 maxLength:(unint64_t)a6
+- (unint64_t)readStateSourceData:(id)data toBuffer:(char *)buffer offset:(unint64_t)offset maxLength:(unint64_t)length
 {
-  v10 = a3;
-  v11 = self->_bytesReadInState + a6;
-  if (v11 <= [v10 length])
+  dataCopy = data;
+  v11 = self->_bytesReadInState + length;
+  if (v11 <= [dataCopy length])
   {
     bytesReadInState = self->_bytesReadInState;
   }
 
   else
   {
-    v12 = [v10 length];
+    v12 = [dataCopy length];
     bytesReadInState = self->_bytesReadInState;
-    a6 = v12 - bytesReadInState;
+    length = v12 - bytesReadInState;
   }
 
-  [v10 getBytes:a4 range:{bytesReadInState, a6}];
-  v14 = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
+  [dataCopy getBytes:buffer range:{bytesReadInState, length}];
+  uniqueIdentifier = [(SLRequestMultiPart *)self->_multiPart uniqueIdentifier];
   v17.location = self->_bytesReadInState;
-  v17.length = a6;
+  v17.length = length;
   v16 = NSStringFromRange(v17);
   _SLLog(v6, 6, @"MultipartStream %@ read %u bytes in range %@ in state %d");
 
-  return a6;
+  return length;
 }
 
-- (int64_t)currentStateRead:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)currentStateRead:(char *)read maxLength:(unint64_t)length
 {
-  v5 = [(SLRequestMultiPartInputStream *)self readStateSourceData:self->_srcData toBuffer:a3 offset:self->_bytesReadInState maxLength:a4];
+  v5 = [(SLRequestMultiPartInputStream *)self readStateSourceData:self->_srcData toBuffer:read offset:self->_bytesReadInState maxLength:length];
   v6 = self->_bytesReadInState + v5;
   self->_bytesReadInState = v6;
   if (v6 == [(NSData *)self->_srcData length])
@@ -125,7 +125,7 @@ LABEL_12:
   return v5;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   if (self->_currentState == 4)
   {
@@ -134,7 +134,7 @@ LABEL_12:
 
   else
   {
-    return [(SLRequestMultiPartInputStream *)self currentStateRead:a3 maxLength:a4];
+    return [(SLRequestMultiPartInputStream *)self currentStateRead:read maxLength:length];
   }
 }
 

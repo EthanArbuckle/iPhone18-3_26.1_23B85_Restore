@@ -1,69 +1,69 @@
 @interface _UILumaTrackingBackdropView
 - ($F24F406B2B787EFB06265DBA3D28CBD5)transitionBoundaries;
-- (_UILumaTrackingBackdropView)initWithTransitionBoundaries:(id)a3 delegate:(id)a4 frame:(CGRect)a5;
+- (_UILumaTrackingBackdropView)initWithTransitionBoundaries:(id)boundaries delegate:(id)delegate frame:(CGRect)frame;
 - (_UILumaTrackingBackdropViewDelegate)delegate;
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4;
-- (void)setPaused:(BOOL)a3;
-- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)a3;
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma;
+- (void)setPaused:(BOOL)paused;
+- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)level;
 @end
 
 @implementation _UILumaTrackingBackdropView
 
-- (_UILumaTrackingBackdropView)initWithTransitionBoundaries:(id)a3 delegate:(id)a4 frame:(CGRect)a5
+- (_UILumaTrackingBackdropView)initWithTransitionBoundaries:(id)boundaries delegate:(id)delegate frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  var1 = boundaries.var1;
+  var0 = boundaries.var0;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = _UILumaTrackingBackdropView;
-  v13 = [(UIView *)&v19 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(UIView *)&v19 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(UIView *)v13 setUserInteractionEnabled:0];
+    [(UIView *)height setUserInteractionEnabled:0];
     v14->_backgroundLuminanceLevel = 0;
     v14->_transitionBoundaries.minimum = var0;
     v14->_transitionBoundaries.maximum = var1;
-    objc_storeWeak(&v14->_delegate, v12);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v14->_paused = 1;
-    v15 = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
-    [v15 setCaptureOnly:1];
+    _backdropLayer = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
+    [_backdropLayer setCaptureOnly:1];
 
-    v16 = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
-    [v16 setScale:0.5];
+    _backdropLayer2 = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
+    [_backdropLayer2 setScale:0.5];
 
-    v17 = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
-    [v17 setHidden:1];
+    _backdropLayer3 = [(_UILumaTrackingBackdropView *)v14 _backdropLayer];
+    [_backdropLayer3 setHidden:1];
   }
 
   return v14;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v4 = a3;
-    self->_paused = a3;
-    v6 = [(_UILumaTrackingBackdropView *)self _backdropLayer];
-    [v6 setHidden:v4];
+    pausedCopy = paused;
+    self->_paused = paused;
+    _backdropLayer = [(_UILumaTrackingBackdropView *)self _backdropLayer];
+    [_backdropLayer setHidden:pausedCopy];
 
-    v7 = [(_UILumaTrackingBackdropView *)self _backdropLayer];
-    [v7 setTracksLuma:v4 ^ 1];
+    _backdropLayer2 = [(_UILumaTrackingBackdropView *)self _backdropLayer];
+    [_backdropLayer2 setTracksLuma:pausedCopy ^ 1];
   }
 }
 
-- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)a3
+- (void)unpauseAfterSeedingWithLumaLevel:(unint64_t)level
 {
   if (self->_paused)
   {
-    if (a3 && self->_backgroundLuminanceLevel != a3)
+    if (level && self->_backgroundLuminanceLevel != level)
     {
-      self->_backgroundLuminanceLevel = a3;
+      self->_backgroundLuminanceLevel = level;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained backgroundLumaView:self didTransitionToLevel:self->_backgroundLuminanceLevel];
     }
@@ -72,7 +72,7 @@
   }
 }
 
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma
 {
   if (!self)
   {
@@ -114,7 +114,7 @@ LABEL_7:
   if (WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_groupDelegate);
-    [v10 backgroundLumaView:self didChangeLuma:a4];
+    [v10 backgroundLumaView:self didChangeLuma:luma];
   }
 
   else

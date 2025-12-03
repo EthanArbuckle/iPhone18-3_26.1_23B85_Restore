@@ -1,43 +1,43 @@
 @interface ASDTPMEnabler
-- (ASDTPMEnabler)initWithConfig:(id)a3 forSequencer:(id)a4;
-- (BOOL)asdtHandlesPowerTransition:(int)a3;
-- (int)asdtPowerStateChange:(int)a3;
+- (ASDTPMEnabler)initWithConfig:(id)config forSequencer:(id)sequencer;
+- (BOOL)asdtHandlesPowerTransition:(int)transition;
+- (int)asdtPowerStateChange:(int)change;
 @end
 
 @implementation ASDTPMEnabler
 
-- (ASDTPMEnabler)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMEnabler)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v6 = a3;
+  configCopy = config;
   v10.receiver = self;
   v10.super_class = ASDTPMEnabler;
-  v7 = [(ASDTPMDevice *)&v10 initWithConfig:v6 forSequencer:a4];
+  v7 = [(ASDTPMDevice *)&v10 initWithConfig:configCopy forSequencer:sequencer];
   v8 = v7;
   if (v7)
   {
     [(ASDTPMDevice *)v7 setPmNoStateChangeOnFailure:1];
-    -[ASDTPMEnabler setEnableTransition:](v8, "setEnableTransition:", [v6 asdtPMEnablerEnableTransition]);
-    -[ASDTPMEnabler setDisableTransition:](v8, "setDisableTransition:", [v6 asdtPMEnablerDisableTransition]);
+    -[ASDTPMEnabler setEnableTransition:](v8, "setEnableTransition:", [configCopy asdtPMEnablerEnableTransition]);
+    -[ASDTPMEnabler setDisableTransition:](v8, "setDisableTransition:", [configCopy asdtPMEnablerDisableTransition]);
   }
 
   return v8;
 }
 
-- (int)asdtPowerStateChange:(int)a3
+- (int)asdtPowerStateChange:(int)change
 {
-  if (a3 == 1768843636)
+  if (change == 1768843636)
   {
     v4 = asdtPowerTransitionUpwards([(ASDTPMEnabler *)self disableTransition]);
   }
 
-  else if ([(ASDTPMEnabler *)self enableTransition]== a3)
+  else if ([(ASDTPMEnabler *)self enableTransition]== change)
   {
     v4 = 1;
   }
 
   else
   {
-    if ([(ASDTPMEnabler *)self disableTransition]!= a3)
+    if ([(ASDTPMEnabler *)self disableTransition]!= change)
     {
       return 0;
     }
@@ -48,19 +48,19 @@
   return [(ASDTPMEnabler *)self enable:v4];
 }
 
-- (BOOL)asdtHandlesPowerTransition:(int)a3
+- (BOOL)asdtHandlesPowerTransition:(int)transition
 {
-  if (a3 == 1768843636)
+  if (transition == 1768843636)
   {
     return 1;
   }
 
-  if ([(ASDTPMEnabler *)self enableTransition]== a3)
+  if ([(ASDTPMEnabler *)self enableTransition]== transition)
   {
     return 1;
   }
 
-  return [(ASDTPMEnabler *)self disableTransition]== a3;
+  return [(ASDTPMEnabler *)self disableTransition]== transition;
 }
 
 @end

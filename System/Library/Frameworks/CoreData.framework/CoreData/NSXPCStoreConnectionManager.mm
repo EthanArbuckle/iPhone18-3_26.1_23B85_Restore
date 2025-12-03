@@ -1,15 +1,15 @@
 @interface NSXPCStoreConnectionManager
-- (id)initForStore:(id)a3;
+- (id)initForStore:(id)store;
 - (intptr_t)_checkinConnection:(intptr_t)result;
-- (uint64_t)_checkoutConnection:(uint64_t)a1;
+- (uint64_t)_checkoutConnection:(uint64_t)connection;
 - (void)dealloc;
-- (void)disconnectAllConnections:(uint64_t)a1;
-- (void)sendMessageWithContext:(uint64_t)a1;
+- (void)disconnectAllConnections:(uint64_t)connections;
+- (void)sendMessageWithContext:(uint64_t)context;
 @end
 
 @implementation NSXPCStoreConnectionManager
 
-- (id)initForStore:(id)a3
+- (id)initForStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -17,9 +17,9 @@
   v4 = [(NSXPCStoreConnectionManager *)&v20 init];
   if (v4)
   {
-    v5 = [objc_msgSend(a3 "URL")];
-    objc_initWeak(&location, a3);
-    v6 = [objc_msgSend(a3 "options")];
+    v5 = [objc_msgSend(store "URL")];
+    objc_initWeak(&location, store);
+    v6 = [objc_msgSend(store "options")];
     v7 = +[_PFTask getPhysicalMemory];
     v8 = 2;
     if (v7 >= 0x80000001)
@@ -29,15 +29,15 @@
 
     if (v6)
     {
-      v9 = [v6 integerValue];
-      if (v9 <= 1)
+      integerValue = [v6 integerValue];
+      if (integerValue <= 1)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = v9;
+        v8 = integerValue;
       }
     }
 
@@ -49,7 +49,7 @@
       v11 = 0;
       do
       {
-        v12 = [[NSXPCStoreConnection alloc] initForStore:a3];
+        v12 = [[NSXPCStoreConnection alloc] initForStore:store];
         if (v12)
         {
           [(NSMutableArray *)v4->_allConnections addObject:v12];
@@ -64,7 +64,7 @@
 
     if (![(NSMutableArray *)allConnections count])
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSXPCStoreConnection failed to initialize any connections for store at %@", objc_msgSend(a3, "URL")];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSXPCStoreConnection failed to initialize any connections for store at %@", objc_msgSend(store, "URL")];
       v18 = [_NSCoreDataException exceptionWithName:4224 code:v17 reason:0 userInfo:?];
       objc_exception_throw(v18);
     }
@@ -73,7 +73,7 @@
     v4->_availableConnections = v13;
     v4->_connectionLock._os_unfair_lock_opaque = 0;
     v4->_poolCounter = dispatch_semaphore_create([(NSMutableArray *)v13 count]);
-    v14 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"XPCConnectionManager:%p", a3), "UTF8String"];
+    v14 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"XPCConnectionManager:%p", store), "UTF8String"];
     v4->_processingQueue = dispatch_queue_create(v14, MEMORY[0x1E69E96A8]);
 
     objc_destroyWeak(&location);
@@ -160,15 +160,15 @@ void __38__NSXPCStoreConnectionManager_dealloc__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_checkoutConnection:(uint64_t)a1
+- (uint64_t)_checkoutConnection:(uint64_t)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!connection)
   {
     goto LABEL_11;
   }
 
-  v4 = *(a1 + 32);
+  v4 = *(connection + 32);
   v5 = dispatch_time(0, 120000000000);
   v6 = dispatch_semaphore_wait(v4, v5);
   if (v6)
@@ -207,13 +207,13 @@ LABEL_11:
   }
 
   os_unfair_lock_lock_with_options();
-  v11 = [*(a1 + 8) lastObject];
-  v12 = v11;
-  if (v11)
+  lastObject = [*(connection + 8) lastObject];
+  v12 = lastObject;
+  if (lastObject)
   {
-    v13 = v11;
+    v13 = lastObject;
     v14 = v12;
-    [*(a1 + 8) removeObject:v12];
+    [*(connection + 8) removeObject:v12];
   }
 
   else
@@ -221,7 +221,7 @@ LABEL_11:
     v14 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 40));
+  os_unfair_lock_unlock((connection + 40));
   if (a2)
   {
     [(NSXPCStoreConnection *)v14 reconnect];
@@ -249,18 +249,18 @@ LABEL_15:
   return result;
 }
 
-- (void)sendMessageWithContext:(uint64_t)a1
+- (void)sendMessageWithContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     if (a2)
     {
-      v2 = *(a1 + 48);
+      v2 = *(context + 48);
       v3[0] = MEMORY[0x1E69E9820];
       v3[1] = 3221225472;
       v3[2] = __54__NSXPCStoreConnectionManager_sendMessageWithContext___block_invoke;
       v3[3] = &unk_1E6EC1600;
-      v3[4] = a1;
+      v3[4] = context;
       v3[5] = a2;
       dispatch_sync(v2, v3);
     }
@@ -335,9 +335,9 @@ LABEL_16:
   return result;
 }
 
-- (void)disconnectAllConnections:(uint64_t)a1
+- (void)disconnectAllConnections:(uint64_t)connections
 {
-  if (a1)
+  if (connections)
   {
     v6 = 0;
     v7 = &v6;
@@ -345,13 +345,13 @@ LABEL_16:
     v9 = __Block_byref_object_copy__38;
     v10 = __Block_byref_object_dispose__38;
     v11 = 0;
-    v2 = *(a1 + 48);
+    v2 = *(connections + 48);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__NSXPCStoreConnectionManager_disconnectAllConnections___block_invoke;
     block[3] = &unk_1E6EC4868;
     v5 = a2;
-    block[4] = a1;
+    block[4] = connections;
     block[5] = &v6;
     dispatch_barrier_sync(v2, block);
     v3 = v7[5];

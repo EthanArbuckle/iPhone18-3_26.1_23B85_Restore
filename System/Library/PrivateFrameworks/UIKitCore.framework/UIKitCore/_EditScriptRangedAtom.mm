@@ -1,17 +1,17 @@
 @interface _EditScriptRangedAtom
-+ (_EditScriptRangedAtom)atomWithEditRange:(_NSRange)a3 replacementText:(id)a4;
-- (_EditScriptRangedAtom)initWithEditRange:(_NSRange)a3 replacementText:(id)a4;
++ (_EditScriptRangedAtom)atomWithEditRange:(_NSRange)range replacementText:(id)text;
+- (_EditScriptRangedAtom)initWithEditRange:(_NSRange)range replacementText:(id)text;
 - (_NSRange)editRange;
 - (id)description;
 @end
 
 @implementation _EditScriptRangedAtom
 
-- (_EditScriptRangedAtom)initWithEditRange:(_NSRange)a3 replacementText:(id)a4
+- (_EditScriptRangedAtom)initWithEditRange:(_NSRange)range replacementText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = _EditScriptRangedAtom;
   v8 = [(_EditScriptRangedAtom *)&v11 init];
@@ -19,7 +19,7 @@
   if (v8)
   {
     [(_EditScriptRangedAtom *)v8 setEditRange:location, length];
-    [(_EditScriptRangedAtom *)v9 setReplacementText:v7];
+    [(_EditScriptRangedAtom *)v9 setReplacementText:textCopy];
   }
 
   return v9;
@@ -45,19 +45,19 @@
 
   p_isa = &v4->isa;
 LABEL_6:
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%lu, %lu):%@\n", self->_editRange.location, self->_editRange.length, p_isa];
+  p_isa = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%lu, %lu):%@\n", self->_editRange.location, self->_editRange.length, p_isa];
 
-  return v5;
+  return p_isa;
 }
 
-+ (_EditScriptRangedAtom)atomWithEditRange:(_NSRange)a3 replacementText:(id)a4
++ (_EditScriptRangedAtom)atomWithEditRange:(_NSRange)range replacementText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = [[_EditScriptRangedAtom alloc] initWithEditRange:location replacementText:length, v6];
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  textCopy = [[_EditScriptRangedAtom alloc] initWithEditRange:location replacementText:length, textCopy];
 
-  return v7;
+  return textCopy;
 }
 
 - (_NSRange)editRange

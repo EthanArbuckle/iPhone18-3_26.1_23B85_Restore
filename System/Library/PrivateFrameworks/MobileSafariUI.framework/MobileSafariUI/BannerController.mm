@@ -4,13 +4,13 @@
 - (NSArray)topBannersSeparableFromStatusBar;
 - (UIView)bannerBackdrop;
 - (void)_updateTopBanners;
-- (void)setAppBanner:(id)a3 animated:(BOOL)a4;
-- (void)setCrashBanner:(id)a3 animated:(BOOL)a4;
-- (void)setPrivateBrowsingPrivacyProtectionsBanner:(id)a3 animated:(BOOL)a4;
-- (void)setRemotelyEnabledExtensionBanner:(id)a3 animated:(BOOL)a4;
-- (void)setTabGroupBanner:(id)a3 animated:(BOOL)a4;
-- (void)setWebExtensionBanner:(id)a3 animated:(BOOL)a4;
-- (void)setWebExtensionPermissionGrantedBanner:(id)a3 animated:(BOOL)a4;
+- (void)setAppBanner:(id)banner animated:(BOOL)animated;
+- (void)setCrashBanner:(id)banner animated:(BOOL)animated;
+- (void)setPrivateBrowsingPrivacyProtectionsBanner:(id)banner animated:(BOOL)animated;
+- (void)setRemotelyEnabledExtensionBanner:(id)banner animated:(BOOL)animated;
+- (void)setTabGroupBanner:(id)banner animated:(BOOL)animated;
+- (void)setWebExtensionBanner:(id)banner animated:(BOOL)animated;
+- (void)setWebExtensionPermissionGrantedBanner:(id)banner animated:(BOOL)animated;
 @end
 
 @implementation BannerController
@@ -31,8 +31,8 @@
     v5 = self->_bannerBackdrop;
     self->_bannerBackdrop = v4;
 
-    v6 = [(UIView *)self->_bannerBackdrop layer];
-    [v6 setName:@"Banner backdrop"];
+    layer = [(UIView *)self->_bannerBackdrop layer];
+    [layer setName:@"Banner backdrop"];
 
     bannerBackdrop = self->_bannerBackdrop;
   }
@@ -42,17 +42,17 @@
 
 - (NSArray)topBannersAnchoredToStatusBar
 {
-  v3 = [(BannerController *)self indexOfFirstBannerSeparableFromStatusBar];
-  if (v3)
+  indexOfFirstBannerSeparableFromStatusBar = [(BannerController *)self indexOfFirstBannerSeparableFromStatusBar];
+  if (indexOfFirstBannerSeparableFromStatusBar)
   {
-    if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (indexOfFirstBannerSeparableFromStatusBar == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = self->_topBanners;
     }
 
     else
     {
-      v4 = [(NSArray *)self->_topBanners subarrayWithRange:0, v3];
+      v4 = [(NSArray *)self->_topBanners subarrayWithRange:0, indexOfFirstBannerSeparableFromStatusBar];
     }
   }
 
@@ -64,114 +64,114 @@
   return v4;
 }
 
-- (void)setAppBanner:(id)a3 animated:(BOOL)a4
+- (void)setAppBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_appBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_appBanner, a3);
+    objc_storeStrong(&self->_appBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetAppBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetAppBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setCrashBanner:(id)a3 animated:(BOOL)a4
+- (void)setCrashBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_crashBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_crashBanner, a3);
+    objc_storeStrong(&self->_crashBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetCrashBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetCrashBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setWebExtensionBanner:(id)a3 animated:(BOOL)a4
+- (void)setWebExtensionBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_webExtensionBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_webExtensionBanner, a3);
+    objc_storeStrong(&self->_webExtensionBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetWebExtensionBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetWebExtensionBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setWebExtensionPermissionGrantedBanner:(id)a3 animated:(BOOL)a4
+- (void)setWebExtensionPermissionGrantedBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_webExtensionPermissionGrantedBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_webExtensionPermissionGrantedBanner, a3);
+    objc_storeStrong(&self->_webExtensionPermissionGrantedBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetWebExtensionPermissionGrantedBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetWebExtensionPermissionGrantedBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setRemotelyEnabledExtensionBanner:(id)a3 animated:(BOOL)a4
+- (void)setRemotelyEnabledExtensionBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_remotelyEnabledExtensionBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_remotelyEnabledExtensionBanner, a3);
+    objc_storeStrong(&self->_remotelyEnabledExtensionBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetRemotelyEnabledExtensionBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetRemotelyEnabledExtensionBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setPrivateBrowsingPrivacyProtectionsBanner:(id)a3 animated:(BOOL)a4
+- (void)setPrivateBrowsingPrivacyProtectionsBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_privateBrowsingPrivacyProtectionsBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_privateBrowsingPrivacyProtectionsBanner, a3);
+    objc_storeStrong(&self->_privateBrowsingPrivacyProtectionsBanner, banner);
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetPrivateBrowsingPrivacyProtectionsBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetPrivateBrowsingPrivacyProtectionsBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
-- (void)setTabGroupBanner:(id)a3 animated:(BOOL)a4
+- (void)setTabGroupBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  bannerCopy = banner;
   v7 = self->_tabGroupBanner;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_tabGroupBanner, a3);
+    objc_storeStrong(&self->_tabGroupBanner, banner);
     [(SFPinnableBanner *)self->_tabGroupBanner setAccessibilityIdentifier:@"TabGroupBanner"];
     [(BannerController *)self _updateTopBanners];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bannerController:self didSetTabGroupBanner:v9 previousBanner:v7 animated:v4];
+    [WeakRetained bannerController:self didSetTabGroupBanner:bannerCopy previousBanner:v7 animated:animatedCopy];
   }
 }
 
 - (void)_updateTopBanners
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __37__BannerController__updateTopBanners__block_invoke;
   aBlock[3] = &unk_2781D8D10;
-  v9 = v3;
-  v4 = v3;
+  v9 = array;
+  v4 = array;
   v5 = _Block_copy(aBlock);
   v5[2](v5, self->_tabGroupBanner);
   v5[2](v5, self->_crashBanner);
@@ -240,15 +240,15 @@ LABEL_9:
 
 - (NSArray)topBannersSeparableFromStatusBar
 {
-  v3 = [(BannerController *)self indexOfFirstBannerSeparableFromStatusBar];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  indexOfFirstBannerSeparableFromStatusBar = [(BannerController *)self indexOfFirstBannerSeparableFromStatusBar];
+  if (indexOfFirstBannerSeparableFromStatusBar == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v5 = v3;
+    v5 = indexOfFirstBannerSeparableFromStatusBar;
     v6 = self->_topBanners;
     v4 = [(NSArray *)v6 subarrayWithRange:v5, [(NSArray *)v6 count]- v5];
   }

@@ -6,15 +6,15 @@
 
 - (id)localizedName
 {
-  v2 = [(DDOpenURLAction *)self appLink];
-  v3 = [v2 targetApplicationRecord];
-  v4 = [v3 localizedName];
+  appLink = [(DDOpenURLAction *)self appLink];
+  targetApplicationRecord = [appLink targetApplicationRecord];
+  localizedName = [targetApplicationRecord localizedName];
 
-  if (dd_isLSTrusted() && [v4 length])
+  if (dd_isLSTrusted() && [localizedName length])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = DDLocalizedString(@"Get Help in %@");
-    [v5 localizedStringWithFormat:v6, v4];
+    [v5 localizedStringWithFormat:v6, localizedName];
   }
 
   else

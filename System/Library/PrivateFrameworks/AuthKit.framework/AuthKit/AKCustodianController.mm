@@ -1,17 +1,17 @@
 @interface AKCustodianController
 - (AKCustodianController)init;
-- (AKCustodianController)initWithDaemonXPCEndpoint:(id)a3;
+- (AKCustodianController)initWithDaemonXPCEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)fetchCustodianDataRecoveryKeyWithContext:(id)a3 completion:(id)a4;
-- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)a3;
-- (void)fetchCustodianRecoveryTokenWithContext:(id)a3 completion:(id)a4;
-- (void)finalizeCustodianSetupWithContext:(id)a3 completion:(id)a4;
-- (void)initiateCustodianSetupWithContext:(id)a3 completion:(id)a4;
-- (void)revokeCustodianWithContext:(id)a3 completion:(id)a4;
-- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)a3 urlKey:(id)a4 completion:(id)a5;
-- (void)startCustodianRecoveryRequestWithContext:(id)a3 completion:(id)a4;
-- (void)startCustodianRecoveryTransactionWithContext:(id)a3 completion:(id)a4;
-- (void)updateCustodianRecoveryKeyWithContext:(id)a3 completion:(id)a4;
+- (void)fetchCustodianDataRecoveryKeyWithContext:(id)context completion:(id)completion;
+- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)completion;
+- (void)fetchCustodianRecoveryTokenWithContext:(id)context completion:(id)completion;
+- (void)finalizeCustodianSetupWithContext:(id)context completion:(id)completion;
+- (void)initiateCustodianSetupWithContext:(id)context completion:(id)completion;
+- (void)revokeCustodianWithContext:(id)context completion:(id)completion;
+- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)context urlKey:(id)key completion:(id)completion;
+- (void)startCustodianRecoveryRequestWithContext:(id)context completion:(id)completion;
+- (void)startCustodianRecoveryTransactionWithContext:(id)context completion:(id)completion;
+- (void)updateCustodianRecoveryKeyWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKCustodianController
@@ -25,49 +25,49 @@
   return v3;
 }
 
-- (AKCustodianController)initWithDaemonXPCEndpoint:(id)a3
+- (AKCustodianController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, endpoint);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKCustodianController;
-  v11 = [(AKCustodianController *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKCustodianController *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [AKCustodianDaemonConnection alloc];
     v5 = [(AKCustodianDaemonConnection *)v4 initWithListenerEndpoint:location[0]];
-    daemonConnection = v11->_daemonConnection;
-    v11->_daemonConnection = v5;
+    daemonConnection = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v5;
     MEMORY[0x1E69E5920](daemonConnection);
   }
 
-  v8 = MEMORY[0x1E69E5928](v11);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)initiateCustodianSetupWithContext:(id)a3 completion:(id)a4
+- (void)initiateCustodianSetupWithContext:(id)context completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v54 = 0;
-  objc_storeStrong(&v54, a4);
+  objc_storeStrong(&v54, completion);
   v48[0] = 0;
   v48[1] = v48;
   v49 = 838860800;
   v50 = 48;
   v51 = __Block_byref_object_copy__16;
   v52 = __Block_byref_object_dispose__16;
-  v53 = MEMORY[0x1E69E5928](v56);
+  v53 = MEMORY[0x1E69E5928](selfCopy);
   v46 = _os_activity_create(&dword_193225000, "custodian-authkit/initiate-custodian", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v47 = v46;
   state.opaque[0] = 0;
@@ -111,7 +111,7 @@
   v34[1] = v48;
   v34[0] = MEMORY[0x1E69E5928](v54);
   v36 = MEMORY[0x193B165F0](&v29);
-  daemonConnection = v56->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v22 = MEMORY[0x1E69E9820];
   v23 = -1073741824;
   v24 = 0;
@@ -243,22 +243,22 @@ void __70__AKCustodianController_initiateCustodianSetupWithContext_completion___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)finalizeCustodianSetupWithContext:(id)a3 completion:(id)a4
+- (void)finalizeCustodianSetupWithContext:(id)context completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v54 = 0;
-  objc_storeStrong(&v54, a4);
+  objc_storeStrong(&v54, completion);
   v48[0] = 0;
   v48[1] = v48;
   v49 = 838860800;
   v50 = 48;
   v51 = __Block_byref_object_copy__16;
   v52 = __Block_byref_object_dispose__16;
-  v53 = MEMORY[0x1E69E5928](v56);
+  v53 = MEMORY[0x1E69E5928](selfCopy);
   v46 = _os_activity_create(&dword_193225000, "authkit/custodian-finalize-custodian", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v47 = v46;
   state.opaque[0] = 0;
@@ -302,7 +302,7 @@ void __70__AKCustodianController_initiateCustodianSetupWithContext_completion___
   v34[1] = v48;
   v34[0] = MEMORY[0x1E69E5928](v54);
   v36 = MEMORY[0x193B165F0](&v29);
-  daemonConnection = v56->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v22 = MEMORY[0x1E69E9820];
   v23 = -1073741824;
   v24 = 0;
@@ -441,22 +441,22 @@ void __70__AKCustodianController_finalizeCustodianSetupWithContext_completion___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)revokeCustodianWithContext:(id)a3 completion:(id)a4
+- (void)revokeCustodianWithContext:(id)context completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, completion);
   v33[0] = 0;
   v33[1] = v33;
   v34 = 838860800;
   v35 = 48;
   v36 = __Block_byref_object_copy__16;
   v37 = __Block_byref_object_dispose__16;
-  v38 = MEMORY[0x1E69E5928](v41);
+  v38 = MEMORY[0x1E69E5928](selfCopy);
   v31 = _os_activity_create(&dword_193225000, "authkit/custodian-revoke-custodian", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v32 = v31;
   state.opaque[0] = 0;
@@ -470,7 +470,7 @@ void __70__AKCustodianController_finalizeCustodianSetupWithContext_completion___
   v28[1] = v33;
   v28[0] = MEMORY[0x1E69E5928](v39);
   v29 = MEMORY[0x193B165F0](&v23);
-  daemonConnection = v41->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v16 = MEMORY[0x1E69E9820];
   v17 = -1073741824;
   v18 = 0;
@@ -584,22 +584,22 @@ void __63__AKCustodianController_revokeCustodianWithContext_completion___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCustodianRecoveryKeyWithContext:(id)a3 completion:(id)a4
+- (void)updateCustodianRecoveryKeyWithContext:(id)context completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, completion);
   v33[0] = 0;
   v33[1] = v33;
   v34 = 838860800;
   v35 = 48;
   v36 = __Block_byref_object_copy__16;
   v37 = __Block_byref_object_dispose__16;
-  v38 = MEMORY[0x1E69E5928](v41);
+  v38 = MEMORY[0x1E69E5928](selfCopy);
   v31 = _os_activity_create(&dword_193225000, "authkit/custodian-update-key", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v32 = v31;
   state.opaque[0] = 0;
@@ -613,7 +613,7 @@ void __63__AKCustodianController_revokeCustodianWithContext_completion___block_i
   v28[1] = v33;
   v28[0] = MEMORY[0x1E69E5928](v39);
   v29 = MEMORY[0x193B165F0](&v23);
-  daemonConnection = v41->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v16 = MEMORY[0x1E69E9820];
   v17 = -1073741824;
   v18 = 0;
@@ -727,15 +727,15 @@ void __74__AKCustodianController_updateCustodianRecoveryKeyWithContext_completio
   *MEMORY[0x1E69E9840];
 }
 
-- (void)startCustodianRecoveryRequestWithContext:(id)a3 completion:(id)a4
+- (void)startCustodianRecoveryRequestWithContext:(id)context completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "custodian-authkit/start-custodian-recovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -775,7 +775,7 @@ void __74__AKCustodianController_updateCustodianRecoveryKeyWithContext_completio
   v28 = 48;
   v29 = __Block_byref_object_copy__16;
   v30 = __Block_byref_object_dispose__16;
-  v31 = MEMORY[0x1E69E5928](v45);
+  v31 = MEMORY[0x1E69E5928](selfCopy);
   v18 = MEMORY[0x1E69E9820];
   v19 = -1073741824;
   v20 = 0;
@@ -785,7 +785,7 @@ void __74__AKCustodianController_updateCustodianRecoveryKeyWithContext_completio
   v23[1] = v26;
   v23[0] = MEMORY[0x1E69E5928](v43);
   v25 = MEMORY[0x193B165F0](&v18);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -880,12 +880,12 @@ void __77__AKCustodianController_startCustodianRecoveryRequestWithContext_comple
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)a3
+- (void)fetchCustodianRecoveryCodeConfigurationWithCompletion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v25 = _os_activity_create(&dword_193225000, "custodian-authkit/fetch-code-config", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v26 = v25;
   state.opaque[0] = 0;
@@ -897,7 +897,7 @@ void __77__AKCustodianController_startCustodianRecoveryRequestWithContext_comple
   v20 = 48;
   v21 = __Block_byref_object_copy__16;
   v22 = __Block_byref_object_dispose__16;
-  v23 = MEMORY[0x1E69E5928](v28);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -906,7 +906,7 @@ void __77__AKCustodianController_startCustodianRecoveryRequestWithContext_comple
   v16[1] = v18;
   v16[0] = MEMORY[0x1E69E5928](location[0]);
   v17 = MEMORY[0x193B165F0](&v11);
-  daemonConnection = v28->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
@@ -976,15 +976,15 @@ void __79__AKCustodianController_fetchCustodianRecoveryCodeConfigurationWithComp
   objc_storeStrong(location, 0);
 }
 
-- (void)startCustodianRecoveryTransactionWithContext:(id)a3 completion:(id)a4
+- (void)startCustodianRecoveryTransactionWithContext:(id)context completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "custodian-authkit/custodian-recovery-circle", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -1001,10 +1001,10 @@ void __79__AKCustodianController_fetchCustodianRecoveryCodeConfigurationWithComp
   v35 = v10;
   if (v10 && v35 != -1 && os_signpost_enabled(v37))
   {
-    v8 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_1_8_66(v47, v8);
+    recoverySessionID = [location[0] recoverySessionID];
+    __os_log_helper_16_2_1_8_66(v47, recoverySessionID);
     _os_signpost_emit_with_name_impl(&dword_193225000, v37, v36, v35, "CustodianRecoveryMessage", " RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v47, 0xCu);
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](recoverySessionID);
   }
 
   objc_storeStrong(&v37, 0);
@@ -1013,10 +1013,10 @@ void __79__AKCustodianController_fetchCustodianRecoveryCodeConfigurationWithComp
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v38;
-    v6 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_2_8_0_8_66(v46, v7, v6);
+    recoverySessionID2 = [location[0] recoverySessionID];
+    __os_log_helper_16_2_2_8_0_8_66(v46, v7, recoverySessionID2);
     _os_log_impl(&dword_193225000, v34, v33, "BEGIN [%lld]: CustodianRecoveryMessage  RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v46, 0x16u);
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](recoverySessionID2);
   }
 
   objc_storeStrong(&v34, 0);
@@ -1027,7 +1027,7 @@ void __79__AKCustodianController_fetchCustodianRecoveryCodeConfigurationWithComp
   v29 = 48;
   v30 = __Block_byref_object_copy__16;
   v31 = __Block_byref_object_dispose__16;
-  v32 = MEMORY[0x1E69E5928](v45);
+  v32 = MEMORY[0x1E69E5928](selfCopy);
   v19 = MEMORY[0x1E69E9820];
   v20 = -1073741824;
   v21 = 0;
@@ -1037,7 +1037,7 @@ void __79__AKCustodianController_fetchCustodianRecoveryCodeConfigurationWithComp
   v24[1] = v27;
   v24[0] = MEMORY[0x1E69E5928](v43);
   v26 = MEMORY[0x193B165F0](&v19);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1143,15 +1143,15 @@ void __81__AKCustodianController_startCustodianRecoveryTransactionWithContext_co
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCustodianRecoveryTokenWithContext:(id)a3 completion:(id)a4
+- (void)fetchCustodianRecoveryTokenWithContext:(id)context completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "custodian-authkit/fetch-recovery-token", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -1168,10 +1168,10 @@ void __81__AKCustodianController_startCustodianRecoveryTransactionWithContext_co
   v35 = v10;
   if (v10 && v35 != -1 && os_signpost_enabled(v37))
   {
-    v8 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_1_8_66(v47, v8);
+    recoverySessionID = [location[0] recoverySessionID];
+    __os_log_helper_16_2_1_8_66(v47, recoverySessionID);
     _os_signpost_emit_with_name_impl(&dword_193225000, v37, v36, v35, "CustodianRecoveryToken", " RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v47, 0xCu);
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](recoverySessionID);
   }
 
   objc_storeStrong(&v37, 0);
@@ -1180,10 +1180,10 @@ void __81__AKCustodianController_startCustodianRecoveryTransactionWithContext_co
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v38;
-    v6 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_2_8_0_8_66(v46, v7, v6);
+    recoverySessionID2 = [location[0] recoverySessionID];
+    __os_log_helper_16_2_2_8_0_8_66(v46, v7, recoverySessionID2);
     _os_log_impl(&dword_193225000, v34, v33, "BEGIN [%lld]: CustodianRecoveryToken  RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v46, 0x16u);
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](recoverySessionID2);
   }
 
   objc_storeStrong(&v34, 0);
@@ -1194,7 +1194,7 @@ void __81__AKCustodianController_startCustodianRecoveryTransactionWithContext_co
   v29 = 48;
   v30 = __Block_byref_object_copy__16;
   v31 = __Block_byref_object_dispose__16;
-  v32 = MEMORY[0x1E69E5928](v45);
+  v32 = MEMORY[0x1E69E5928](selfCopy);
   v19 = MEMORY[0x1E69E9820];
   v20 = -1073741824;
   v21 = 0;
@@ -1204,7 +1204,7 @@ void __81__AKCustodianController_startCustodianRecoveryTransactionWithContext_co
   v24[1] = v27;
   v24[0] = MEMORY[0x1E69E5928](v43);
   v26 = MEMORY[0x193B165F0](&v19);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1310,15 +1310,15 @@ void __75__AKCustodianController_fetchCustodianRecoveryTokenWithContext_completi
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCustodianDataRecoveryKeyWithContext:(id)a3 completion:(id)a4
+- (void)fetchCustodianDataRecoveryKeyWithContext:(id)context completion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
+  objc_storeStrong(&v43, completion);
   v41 = _os_activity_create(&dword_193225000, "custodian-authkit/fetch-wrap-rkc", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v42 = v41;
   state.opaque[0] = 0;
@@ -1335,10 +1335,10 @@ void __75__AKCustodianController_fetchCustodianRecoveryTokenWithContext_completi
   v35 = v10;
   if (v10 && v35 != -1 && os_signpost_enabled(v37))
   {
-    v8 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_1_8_66(v47, v8);
+    recoverySessionID = [location[0] recoverySessionID];
+    __os_log_helper_16_2_1_8_66(v47, recoverySessionID);
     _os_signpost_emit_with_name_impl(&dword_193225000, v37, v36, v35, "CustodianDataRecoveryKey", " RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v47, 0xCu);
-    MEMORY[0x1E69E5920](v8);
+    MEMORY[0x1E69E5920](recoverySessionID);
   }
 
   objc_storeStrong(&v37, 0);
@@ -1347,10 +1347,10 @@ void __75__AKCustodianController_fetchCustodianRecoveryTokenWithContext_completi
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v38;
-    v6 = [location[0] recoverySessionID];
-    __os_log_helper_16_2_2_8_0_8_66(v46, v7, v6);
+    recoverySessionID2 = [location[0] recoverySessionID];
+    __os_log_helper_16_2_2_8_0_8_66(v46, v7, recoverySessionID2);
     _os_log_impl(&dword_193225000, v34, v33, "BEGIN [%lld]: CustodianDataRecoveryKey  RecoverySessionID=%{public,signpost.telemetry:string1,name=RecoverySessionID}@  enableTelemetry=YES ", v46, 0x16u);
-    MEMORY[0x1E69E5920](v6);
+    MEMORY[0x1E69E5920](recoverySessionID2);
   }
 
   objc_storeStrong(&v34, 0);
@@ -1361,7 +1361,7 @@ void __75__AKCustodianController_fetchCustodianRecoveryTokenWithContext_completi
   v29 = 48;
   v30 = __Block_byref_object_copy__16;
   v31 = __Block_byref_object_dispose__16;
-  v32 = MEMORY[0x1E69E5928](v45);
+  v32 = MEMORY[0x1E69E5928](selfCopy);
   v19 = MEMORY[0x1E69E9820];
   v20 = -1073741824;
   v21 = 0;
@@ -1371,7 +1371,7 @@ void __75__AKCustodianController_fetchCustodianRecoveryTokenWithContext_completi
   v24[1] = v27;
   v24[0] = MEMORY[0x1E69E5928](v43);
   v26 = MEMORY[0x193B165F0](&v19);
-  daemonConnection = v45->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1477,17 +1477,17 @@ void __77__AKCustodianController_fetchCustodianDataRecoveryKeyWithContext_comple
   *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)a3 urlKey:(id)a4 completion:(id)a5
+- (void)sendEmbargoEndNotificationFeedbackWithContext:(id)context urlKey:(id)key completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
+  objc_storeStrong(&v35, key);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, completion);
   v32 = _os_activity_create(&dword_193225000, "custodian-authkit/embargo-feedback", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v33 = v32;
   state.opaque[0] = 0;
@@ -1508,7 +1508,7 @@ void __77__AKCustodianController_fetchCustodianDataRecoveryKeyWithContext_comple
   v25 = 48;
   v26 = __Block_byref_object_copy__16;
   v27 = __Block_byref_object_dispose__16;
-  v28 = MEMORY[0x1E69E5928](v37);
+  v28 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
@@ -1518,7 +1518,7 @@ void __77__AKCustodianController_fetchCustodianDataRecoveryKeyWithContext_comple
   v21[1] = v23;
   v21[0] = MEMORY[0x1E69E5928](v34);
   v22 = MEMORY[0x193B165F0](&v15);
-  daemonConnection = v37->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
@@ -1605,23 +1605,23 @@ void __89__AKCustodianController_sendEmbargoEndNotificationFeedbackWithContext_u
 - (void)dealloc
 {
   v7 = *MEMORY[0x1E69E9840];
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_64(v6, v5);
+    __os_log_helper_16_2_1_8_64(v6, selfCopy);
     _os_log_debug_impl(&dword_193225000, oslog[0], type, "%@ deallocated", v6, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  if (v5->_daemonConnection)
+  if (selfCopy->_daemonConnection)
   {
-    objc_storeStrong(&v5->_daemonConnection, 0);
+    objc_storeStrong(&selfCopy->_daemonConnection, 0);
   }
 
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKCustodianController;
   [(AKCustodianController *)&v2 dealloc];
   *MEMORY[0x1E69E9840];

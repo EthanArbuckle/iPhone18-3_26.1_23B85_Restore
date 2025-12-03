@@ -1,18 +1,18 @@
 @interface AccessoryUwbSessionTracking
-- (AccessoryUwbSessionTracking)initWithServiceRequest:(const void *)a3 startOptions:(const void *)a4 shareableConfigData:(id)a5 processName:(id)a6 accessoryConfigData:(const void *)a7 persistWhileDetached:(BOOL)a8;
+- (AccessoryUwbSessionTracking)initWithServiceRequest:(const void *)request startOptions:(const void *)options shareableConfigData:(id)data processName:(id)name accessoryConfigData:(const void *)configData persistWhileDetached:(BOOL)detached;
 - (id).cxx_construct;
 - (void)serviceRequest;
-- (void)setRangingSession:(void *)a3;
+- (void)setRangingSession:(void *)session;
 - (void)startOptions;
 - (void)stopRanging;
 @end
 
 @implementation AccessoryUwbSessionTracking
 
-- (AccessoryUwbSessionTracking)initWithServiceRequest:(const void *)a3 startOptions:(const void *)a4 shareableConfigData:(id)a5 processName:(id)a6 accessoryConfigData:(const void *)a7 persistWhileDetached:(BOOL)a8
+- (AccessoryUwbSessionTracking)initWithServiceRequest:(const void *)request startOptions:(const void *)options shareableConfigData:(id)data processName:(id)name accessoryConfigData:(const void *)configData persistWhileDetached:(BOOL)detached
 {
-  v15 = a5;
-  v16 = a6;
+  dataCopy = data;
+  nameCopy = name;
   v33.receiver = self;
   v33.super_class = AccessoryUwbSessionTracking;
   v17 = [(AccessoryUwbSessionTracking *)&v33 init];
@@ -20,26 +20,26 @@
   v19 = v17;
   if (v17)
   {
-    v32 = a8;
-    v20 = v16;
-    v21 = v15;
+    detachedCopy = detached;
+    v20 = nameCopy;
+    v21 = dataCopy;
     engaged = v17->_serviceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_;
-    memcpy(&v17->_serviceRequest, a3, 0x240uLL);
+    memcpy(&v17->_serviceRequest, request, 0x240uLL);
     if (!engaged)
     {
       v19->_serviceRequest.var0.__val_.range_enable_params.nbamms.mms_pkt_type.__engaged_ = 1;
     }
 
     scheduling_interval_usec = v19->_startOptions.var0.__val_.scheduling_interval_usec;
-    v25 = *(a4 + 1);
-    v24 = *(a4 + 2);
-    *&v19->_serviceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *a4;
+    v25 = *(options + 1);
+    v24 = *(options + 2);
+    *&v19->_serviceRequest.var0.__val_.range_enable_params.nbamms.mms_bch.var0.__null_state_ = *options;
     *v19->_serviceRequest.var0.__val_.range_enable_params.nbamms.irk = v25;
     *&v19->_serviceRequest.var0.__val_.range_enable_params.nbamms.antenna_diversity_mask.var0.__null_state_ = v24;
-    v26 = *(a4 + 6);
-    v28 = *(a4 + 3);
-    v27 = *(a4 + 4);
-    *&v19->_startOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(a4 + 5);
+    v26 = *(options + 6);
+    v28 = *(options + 3);
+    v27 = *(options + 4);
+    *&v19->_startOptions.var0.__val_.peer.var0.__val_.bt_adv_address.var0.__val_.__elems_[2] = *(options + 5);
     *&v19->_startOptions.var0.__val_.start_time_or_offset_usec = v26;
     *&v19->_startOptions.var0.__null_state_ = v28;
     *(&v19->_startOptions.var0.__val_.peer.var0.__val_.uuid.var0 + 12) = v27;
@@ -48,12 +48,12 @@
       LOBYTE(v19->_startOptions.var0.__val_.scheduling_interval_usec) = 1;
     }
 
-    objc_storeStrong(&v18->_startOptions.var0.__val_.secondary_scheduling_interval_usec, a5);
-    objc_storeStrong(&v18->_startOptions.var0.__val_.secondary_duty_cycle, a6);
-    v15 = v21;
-    v16 = v20;
-    sub_1002FC9E0(&v18->_shareableConfigData, a7);
-    v19->_startOptions.var0.__val_.secondary_scheduling_delay_usec.var0.__null_state_ = v32;
+    objc_storeStrong(&v18->_startOptions.var0.__val_.secondary_scheduling_interval_usec, data);
+    objc_storeStrong(&v18->_startOptions.var0.__val_.secondary_duty_cycle, name);
+    dataCopy = v21;
+    nameCopy = v20;
+    sub_1002FC9E0(&v18->_shareableConfigData, configData);
+    v19->_startOptions.var0.__val_.secondary_scheduling_delay_usec.var0.__null_state_ = detachedCopy;
     v29 = objc_opt_new();
     ptr = v19->_rangingSession.__ptr_;
     v19->_rangingSession.__ptr_ = v29;
@@ -92,10 +92,10 @@
   }
 }
 
-- (void)setRangingSession:(void *)a3
+- (void)setRangingSession:(void *)session
 {
-  v5 = *a3;
-  v4 = *(a3 + 1);
+  v5 = *session;
+  v4 = *(session + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);

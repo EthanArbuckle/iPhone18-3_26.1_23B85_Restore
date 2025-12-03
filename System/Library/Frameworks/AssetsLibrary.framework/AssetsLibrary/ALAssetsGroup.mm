@@ -1,5 +1,5 @@
 @interface ALAssetsGroup
-- (ALAssetsGroup)initWithPhotoAlbum:(id)a3 library:(id)a4 type:(unint64_t)a5;
+- (ALAssetsGroup)initWithPhotoAlbum:(id)album library:(id)library type:(unint64_t)type;
 - (BOOL)addAsset:(ALAsset *)asset;
 - (BOOL)isEditable;
 - (BOOL)isValid;
@@ -8,7 +8,7 @@
 - (id)_typeAsString;
 - (id)_uuid;
 - (id)valueForProperty:(NSString *)property;
-- (void)_enumerateAssetsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
+- (void)_enumerateAssetsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block;
 - (void)dealloc;
 - (void)setAssetsFilter:(ALAssetsFilter *)filter;
 @end
@@ -28,7 +28,7 @@
     v10[1] = v10;
     v10[2] = 0x2020000000;
     v11 = 0;
-    v6 = [MEMORY[0x277D3B240] sharedInstance];
+    mEMORY[0x277D3B240] = [MEMORY[0x277D3B240] sharedInstance];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __26__ALAssetsGroup_addAsset___block_invoke;
@@ -38,7 +38,7 @@
     v9[7] = v10;
     v9[8] = &v12;
     v9[6] = v5;
-    [v6 checkPhotosAccessAllowedWithScope:4 handler:v9];
+    [mEMORY[0x277D3B240] checkPhotosAccessAllowedWithScope:4 handler:v9];
     dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v5);
     v7 = *(v13 + 24);
@@ -86,13 +86,13 @@ intptr_t __26__ALAssetsGroup_addAsset___block_invoke(uint64_t a1)
   v10 = 0;
   if ([(ALAssetsGroup *)self isValid])
   {
-    v3 = [(ALAssetsGroup *)self internal];
+    internal = [(ALAssetsGroup *)self internal];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __27__ALAssetsGroup_isEditable__block_invoke;
     v6[3] = &unk_278A076E0;
     v6[4] = &v7;
-    [(ALAssetsGroupPrivate *)v3 _performBlockAndWait:v6];
+    [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v6];
   }
 
   v4 = *(v8 + 24);
@@ -116,20 +116,20 @@ uint64_t __27__ALAssetsGroup_isEditable__block_invoke(uint64_t a1, uint64_t a2, 
   return result;
 }
 
-- (void)_enumerateAssetsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateAssetsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block
 {
-  v8 = [a5 copy];
+  v8 = [block copy];
   objc_sync_enter(self);
   if ([(ALAssetsGroup *)self isValid]&& v8)
   {
     [(ALAssetsGroupPrivate *)[(ALAssetsGroup *)self internal] populateAssets];
-    v9 = [(ALAssetsGroup *)self internal];
+    internal = [(ALAssetsGroup *)self internal];
     v34 = 0;
     v35 = &v34;
     v36 = 0x3052000000;
     v37 = __Block_byref_object_copy__86;
     v38 = __Block_byref_object_dispose__87;
-    v39 = a3;
+    indexesCopy = indexes;
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
@@ -154,7 +154,7 @@ uint64_t __27__ALAssetsGroup_isEditable__block_invoke(uint64_t a1, uint64_t a2, 
     v17[5] = &v18;
     v17[6] = &v30;
     v17[7] = &v24;
-    [(ALAssetsGroupPrivate *)v9 _performBlockAndWait:v17];
+    [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v17];
     v10 = v35[5];
     v11 = v25[5];
     if (v19[5])
@@ -164,19 +164,19 @@ uint64_t __27__ALAssetsGroup_isEditable__block_invoke(uint64_t a1, uint64_t a2, 
     }
 
     v12 = malloc_type_malloc(8 * v31[3], 0x100004000313F17uLL);
-    v13 = [v35[5] lastIndex];
+    lastIndex = [v35[5] lastIndex];
     v16[0] = 0;
-    v16[1] = v13 + 1;
+    v16[1] = lastIndex + 1;
     [v35[5] getIndexes:v12 maxCount:v31[3] inIndexRange:v16];
     v14 = v25[5];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __62__ALAssetsGroup__enumerateAssetsAtIndexes_options_usingBlock___block_invoke_3;
     v15[3] = &unk_278A077A8;
-    v15[4] = v9;
+    v15[4] = internal;
     v15[5] = v8;
     v15[6] = v12;
-    [v14 enumerateObjectsWithOptions:a4 usingBlock:v15];
+    [v14 enumerateObjectsWithOptions:options usingBlock:v15];
     free(v12);
     _Block_object_dispose(&v18, 8);
     _Block_object_dispose(&v24, 8);
@@ -273,13 +273,13 @@ uint64_t __62__ALAssetsGroup__enumerateAssetsAtIndexes_options_usingBlock___bloc
   if ([(ALAssetsGroup *)self isValid])
   {
     [(ALAssetsGroupPrivate *)[(ALAssetsGroup *)self internal] populateAssets];
-    v3 = [(ALAssetsGroup *)self internal];
+    internal = [(ALAssetsGroup *)self internal];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __31__ALAssetsGroup_numberOfAssets__block_invoke;
     v6[3] = &unk_278A076E0;
     v6[4] = &v7;
-    [(ALAssetsGroupPrivate *)v3 _performBlockAndWait:v6];
+    [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v6];
   }
 
   v4 = v8[3];
@@ -298,9 +298,9 @@ uint64_t __31__ALAssetsGroup_numberOfAssets__block_invoke(uint64_t a1, uint64_t 
 {
   if ([(ALAssetsGroup *)self isValid])
   {
-    v5 = [(ALAssetsGroup *)self internal];
+    internal = [(ALAssetsGroup *)self internal];
 
-    [(ALAssetsGroupPrivate *)v5 setAssetsFilter:filter];
+    [(ALAssetsGroupPrivate *)internal setAssetsFilter:filter];
   }
 }
 
@@ -312,8 +312,8 @@ uint64_t __31__ALAssetsGroup_numberOfAssets__block_invoke(uint64_t a1, uint64_t 
     return 0;
   }
 
-  v4 = [(ALAssetsGroup *)self internal];
-  [(ALAssetsGroupPrivate *)v4 populateAssets];
+  internal = [(ALAssetsGroup *)self internal];
+  [(ALAssetsGroupPrivate *)internal populateAssets];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3052000000;
@@ -326,21 +326,21 @@ uint64_t __31__ALAssetsGroup_numberOfAssets__block_invoke(uint64_t a1, uint64_t 
   v9[3] = &unk_278A07730;
   v10 = v3 == 0;
   v9[4] = &v11;
-  [(ALAssetsGroupPrivate *)v4 _performBlockAndWait:v9];
+  [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v9];
   v5 = v12[5];
   if (v5)
   {
-    v6 = [v5 CGImage];
+    cGImage = [v5 CGImage];
     v7 = v12[5];
   }
 
   else
   {
-    v6 = 0;
+    cGImage = 0;
   }
 
   _Block_object_dispose(&v11, 8);
-  return v6;
+  return cGImage;
 }
 
 id __28__ALAssetsGroup_posterImage__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -378,7 +378,7 @@ id __28__ALAssetsGroup_posterImage__block_invoke(uint64_t a1, uint64_t a2, void 
 
       else
       {
-        v8 = [(ALAssetsGroup *)self internal];
+        internal = [(ALAssetsGroup *)self internal];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __34__ALAssetsGroup_valueForProperty___block_invoke;
@@ -386,24 +386,24 @@ id __28__ALAssetsGroup_posterImage__block_invoke(uint64_t a1, uint64_t a2, void 
         v15[5] = self;
         v15[6] = &v16;
         v15[4] = property;
-        [(ALAssetsGroupPrivate *)v8 _performBlockAndWait:v15];
+        [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v15];
       }
 
-      v9 = [(ALAssetsGroup *)self internal];
-      v10 = v17[5];
-      if (!v10)
+      internal2 = [(ALAssetsGroup *)self internal];
+      null = v17[5];
+      if (!null)
       {
-        v10 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      [(ALAssetsGroupPrivate *)v9 setValue:v10 forProperty:property];
+      [(ALAssetsGroupPrivate *)internal2 setValue:null forProperty:property];
       v11 = v17[5];
       v5 = v17[5];
     }
 
-    v12 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
     v7 = v17;
-    if (v5 == v12)
+    if (v5 == null2)
     {
       v17[5] = 0;
     }
@@ -470,9 +470,9 @@ LABEL_8:
 
 - (BOOL)isValid
 {
-  v2 = [(ALAssetsGroup *)self internal];
+  internal = [(ALAssetsGroup *)self internal];
 
-  return [(ALAssetsGroupPrivate *)v2 isValid];
+  return [(ALAssetsGroupPrivate *)internal isValid];
 }
 
 - (id)_uuid
@@ -483,13 +483,13 @@ LABEL_8:
   v9 = __Block_byref_object_copy__86;
   v10 = __Block_byref_object_dispose__87;
   v11 = 0;
-  v2 = [(ALAssetsGroup *)self internal];
+  internal = [(ALAssetsGroup *)self internal];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __22__ALAssetsGroup__uuid__block_invoke;
   v5[3] = &unk_278A076E0;
   v5[4] = &v6;
-  [(ALAssetsGroupPrivate *)v2 _performBlockAndWait:v5];
+  [(ALAssetsGroupPrivate *)internal _performBlockAndWait:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -504,17 +504,17 @@ uint64_t __22__ALAssetsGroup__uuid__block_invoke(uint64_t a1, uint64_t a2, void 
 
 - (id)_typeAsString
 {
-  v2 = [(ALAssetsGroupPrivate *)[(ALAssetsGroup *)self internal] groupType];
-  if (v2 > 15)
+  groupType = [(ALAssetsGroupPrivate *)[(ALAssetsGroup *)self internal] groupType];
+  if (groupType > 15)
   {
-    if (v2 > 63)
+    if (groupType > 63)
     {
-      if (v2 == 64)
+      if (groupType == 64)
       {
         return @"Collection";
       }
 
-      if (v2 == 128)
+      if (groupType == 128)
       {
         return @"Moment";
       }
@@ -522,26 +522,26 @@ uint64_t __22__ALAssetsGroup__uuid__block_invoke(uint64_t a1, uint64_t a2, void 
 
     else
     {
-      if (v2 == 16)
+      if (groupType == 16)
       {
         return @"Saved Photos";
       }
 
-      if (v2 == 32)
+      if (groupType == 32)
       {
         return @"Photo Stream";
       }
     }
   }
 
-  else if (v2 > 3)
+  else if (groupType > 3)
   {
-    if (v2 == 4)
+    if (groupType == 4)
     {
       return @"Event";
     }
 
-    if (v2 == 8)
+    if (groupType == 8)
     {
       return @"Faces";
     }
@@ -549,12 +549,12 @@ uint64_t __22__ALAssetsGroup__uuid__block_invoke(uint64_t a1, uint64_t a2, void 
 
   else
   {
-    if (v2 == 1)
+    if (groupType == 1)
     {
       return @"Library";
     }
 
-    if (v2 == 2)
+    if (groupType == 2)
     {
       return @"Album";
     }
@@ -571,18 +571,18 @@ uint64_t __22__ALAssetsGroup__uuid__block_invoke(uint64_t a1, uint64_t a2, void 
   [(ALAssetsGroup *)&v3 dealloc];
 }
 
-- (ALAssetsGroup)initWithPhotoAlbum:(id)a3 library:(id)a4 type:(unint64_t)a5
+- (ALAssetsGroup)initWithPhotoAlbum:(id)album library:(id)library type:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = ALAssetsGroup;
   v8 = [(ALAssetsGroup *)&v11 init];
   if (v8)
   {
-    v9 = [[ALAssetsGroupPrivate alloc] initWithAlbum:a3 library:a4];
-    [(ALAssetsGroupPrivate *)v9 setGroupType:a5];
+    v9 = [[ALAssetsGroupPrivate alloc] initWithAlbum:album library:library];
+    [(ALAssetsGroupPrivate *)v9 setGroupType:type];
     [(ALAssetsGroup *)v8 setInternal:v9];
 
-    [a4 registerAlbum:a3 assetGroupPrivate:{-[ALAssetsGroup internal](v8, "internal")}];
+    [library registerAlbum:album assetGroupPrivate:{-[ALAssetsGroup internal](v8, "internal")}];
   }
 
   return v8;

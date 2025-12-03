@@ -8,8 +8,8 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 dictionaryRepresentation];
-  v6 = [v5 mutableArrayValueForKey:@"sequence"];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  v6 = [dictionaryRepresentation mutableArrayValueForKey:@"sequence"];
 
   v7 = [v6 indexOfObject:v4];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -31,7 +31,7 @@
         v18 = 138543874;
         v19 = v12;
         v20 = 2048;
-        v21 = a1;
+        selfCopy2 = self;
         v22 = 2114;
         v23 = v4;
         _os_log_impl(&dword_23D3AE000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to find index for pass: %{public}@!", &v18, 0x20u);
@@ -45,7 +45,7 @@
       v18 = 138543874;
       v19 = v17;
       v20 = 2048;
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v4;
       _os_log_impl(&dword_23D3AE000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to find index for pass: %{public}@!", &v18, 0x20u);
@@ -54,7 +54,7 @@
     __assert_rtn("[SCNTechnique(SCNTechniqueCompositorAdditions) passForName:]", "ARSCNCompositor.mm", 77, "index != NSNotFound");
   }
 
-  v13 = [a1 passAtIndex:v7];
+  v13 = [self passAtIndex:v7];
 
   v14 = *MEMORY[0x277D85DE8];
 

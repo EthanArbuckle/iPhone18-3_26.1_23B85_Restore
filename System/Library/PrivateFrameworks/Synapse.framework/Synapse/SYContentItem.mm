@@ -1,51 +1,51 @@
 @interface SYContentItem
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)representsSameContentAsItem:(id)a3;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)representsSameContentAsItem:(id)item;
 - (NSData)linkPreviewMetadata;
 - (NSString)description;
 - (NSString)webpageDisplayDomain;
-- (SYContentItem)initWithData:(id)a3 error:(id *)a4;
-- (SYContentItem)initWithDisplayTitle:(id)a3 sourceIdentifier:(id)a4 sourceName:(id)a5 itemURL:(id)a6 identifier:(id)a7;
-- (SYContentItem)initWithItemIdentifier:(id)a3 displayTitle:(id)a4 sourceIdentifier:(id)a5 sourceName:(id)a6 itemURL:(id)a7 activityType:(id)a8 activityCanonicalURL:(id)a9 activityTargetContentIdentifier:(id)a10 activityPersistentIdentifier:(id)a11 userActivity:(id)a12;
-- (SYContentItem)initWithUserActivity:(id)a3 sourceAppID:(id)a4 sourceAppName:(id)a5 identifier:(id)a6;
-- (id)dataRepresentationWithError:(id *)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
+- (SYContentItem)initWithData:(id)data error:(id *)error;
+- (SYContentItem)initWithDisplayTitle:(id)title sourceIdentifier:(id)identifier sourceName:(id)name itemURL:(id)l identifier:(id)a7;
+- (SYContentItem)initWithItemIdentifier:(id)identifier displayTitle:(id)title sourceIdentifier:(id)sourceIdentifier sourceName:(id)name itemURL:(id)l activityType:(id)type activityCanonicalURL:(id)rL activityTargetContentIdentifier:(id)self0 activityPersistentIdentifier:(id)self1 userActivity:(id)self2;
+- (SYContentItem)initWithUserActivity:(id)activity sourceAppID:(id)d sourceAppName:(id)name identifier:(id)identifier;
+- (id)dataRepresentationWithError:(id *)error;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
 - (unint64_t)hash;
-- (void)loadFullPreviewIfNeededWithCompletion:(id)a3;
-- (void)setLinkPreviewMetadata:(id)a3 loadLevel:(int64_t)a4;
+- (void)loadFullPreviewIfNeededWithCompletion:(id)completion;
+- (void)setLinkPreviewMetadata:(id)metadata loadLevel:(int64_t)level;
 @end
 
 @implementation SYContentItem
 
-- (SYContentItem)initWithItemIdentifier:(id)a3 displayTitle:(id)a4 sourceIdentifier:(id)a5 sourceName:(id)a6 itemURL:(id)a7 activityType:(id)a8 activityCanonicalURL:(id)a9 activityTargetContentIdentifier:(id)a10 activityPersistentIdentifier:(id)a11 userActivity:(id)a12
+- (SYContentItem)initWithItemIdentifier:(id)identifier displayTitle:(id)title sourceIdentifier:(id)sourceIdentifier sourceName:(id)name itemURL:(id)l activityType:(id)type activityCanonicalURL:(id)rL activityTargetContentIdentifier:(id)self0 activityPersistentIdentifier:(id)self1 userActivity:(id)self2
 {
-  v17 = a3;
-  v50 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = v17;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
+  identifierCopy = identifier;
+  titleCopy = title;
+  sourceIdentifierCopy = sourceIdentifier;
+  nameCopy = name;
+  lCopy = l;
+  typeCopy = type;
+  v22 = identifierCopy;
+  rLCopy = rL;
+  contentIdentifierCopy = contentIdentifier;
+  persistentIdentifierCopy = persistentIdentifier;
+  activityCopy = activity;
   v49 = v22;
   if (!v22)
   {
     [SYContentItem initWithItemIdentifier:displayTitle:sourceIdentifier:sourceName:itemURL:activityType:activityCanonicalURL:activityTargetContentIdentifier:activityPersistentIdentifier:userActivity:];
   }
 
-  if (!(v20 | v26))
+  if (!(lCopy | activityCopy))
   {
     [SYContentItem initWithItemIdentifier:displayTitle:sourceIdentifier:sourceName:itemURL:activityType:activityCanonicalURL:activityTargetContentIdentifier:activityPersistentIdentifier:userActivity:];
   }
 
-  v27 = v23;
-  if (!v18)
+  v27 = rLCopy;
+  if (!sourceIdentifierCopy)
   {
     [SYContentItem initWithItemIdentifier:displayTitle:sourceIdentifier:sourceName:itemURL:activityType:activityCanonicalURL:activityTargetContentIdentifier:activityPersistentIdentifier:userActivity:];
   }
@@ -56,20 +56,20 @@
   v29 = v28;
   if (v28)
   {
-    objc_storeStrong(&v28->_itemIdentifier, a3);
-    v30 = [v50 copy];
+    objc_storeStrong(&v28->_itemIdentifier, identifier);
+    v30 = [titleCopy copy];
     displayTitle = v29->_displayTitle;
     v29->_displayTitle = v30;
 
-    v32 = [v18 copy];
+    v32 = [sourceIdentifierCopy copy];
     sourceIdentifier = v29->_sourceIdentifier;
     v29->_sourceIdentifier = v32;
 
-    v34 = [v19 copy];
+    v34 = [nameCopy copy];
     sourceLastKnownName = v29->_sourceLastKnownName;
     v29->_sourceLastKnownName = v34;
 
-    v36 = [v20 copy];
+    v36 = [lCopy copy];
     itemURL = v29->_itemURL;
     v29->_itemURL = v36;
 
@@ -77,35 +77,35 @@
     activityCanonicalURL = v29->_activityCanonicalURL;
     v29->_activityCanonicalURL = v38;
 
-    v40 = [v21 copy];
+    v40 = [typeCopy copy];
     activityType = v29->_activityType;
     v29->_activityType = v40;
 
-    v42 = [v24 copy];
+    v42 = [contentIdentifierCopy copy];
     activityTargetContentIdentifier = v29->_activityTargetContentIdentifier;
     v29->_activityTargetContentIdentifier = v42;
 
-    v44 = [v25 copy];
+    v44 = [persistentIdentifierCopy copy];
     activityPersistentIdentifier = v29->_activityPersistentIdentifier;
     v29->_activityPersistentIdentifier = v44;
 
-    objc_storeStrong(&v29->_userActivity, a12);
+    objc_storeStrong(&v29->_userActivity, activity);
   }
 
   return v29;
 }
 
-- (SYContentItem)initWithUserActivity:(id)a3 sourceAppID:(id)a4 sourceAppName:(id)a5 identifier:(id)a6
+- (SYContentItem)initWithUserActivity:(id)activity sourceAppID:(id)d sourceAppName:(id)name identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v27 = a5;
-  v12 = a6;
-  v13 = self;
-  v14 = v12;
-  if (v10)
+  activityCopy = activity;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
+  selfCopy = self;
+  v14 = identifierCopy;
+  if (activityCopy)
   {
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -114,7 +114,7 @@
   else
   {
     [SYContentItem initWithUserActivity:sourceAppID:sourceAppName:identifier:];
-    if (v11)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -125,37 +125,37 @@ LABEL_3:
   v26 = v14;
   if (v14)
   {
-    v15 = v14;
+    uUID = v14;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v16 = v15;
-  v17 = [v10 activityType];
-  v18 = [v10 targetContentIdentifier];
-  v19 = [v10 persistentIdentifier];
-  v20 = [v10 webpageURL];
-  v21 = [v10 canonicalURL];
-  v22 = [v10 title];
-  v25 = v11;
-  v23 = [(SYContentItem *)v13 initWithItemIdentifier:v16 displayTitle:v22 sourceIdentifier:v11 sourceName:v27 itemURL:v20 activityType:v17 activityCanonicalURL:v21 activityTargetContentIdentifier:v18 activityPersistentIdentifier:v19 userActivity:v10];
+  v16 = uUID;
+  activityType = [activityCopy activityType];
+  targetContentIdentifier = [activityCopy targetContentIdentifier];
+  persistentIdentifier = [activityCopy persistentIdentifier];
+  webpageURL = [activityCopy webpageURL];
+  canonicalURL = [activityCopy canonicalURL];
+  title = [activityCopy title];
+  v25 = dCopy;
+  v23 = [(SYContentItem *)selfCopy initWithItemIdentifier:v16 displayTitle:title sourceIdentifier:dCopy sourceName:nameCopy itemURL:webpageURL activityType:activityType activityCanonicalURL:canonicalURL activityTargetContentIdentifier:targetContentIdentifier activityPersistentIdentifier:persistentIdentifier userActivity:activityCopy];
 
   return v23;
 }
 
-- (SYContentItem)initWithDisplayTitle:(id)a3 sourceIdentifier:(id)a4 sourceName:(id)a5 itemURL:(id)a6 identifier:(id)a7
+- (SYContentItem)initWithDisplayTitle:(id)title sourceIdentifier:(id)identifier sourceName:(id)name itemURL:(id)l identifier:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  nameCopy = name;
+  lCopy = l;
   v16 = a7;
-  if (v13)
+  if (identifierCopy)
   {
-    if (v15)
+    if (lCopy)
     {
       goto LABEL_3;
     }
@@ -168,12 +168,12 @@ LABEL_6:
     }
 
 LABEL_7:
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     goto LABEL_8;
   }
 
   [SYContentItem initWithDisplayTitle:sourceIdentifier:sourceName:itemURL:identifier:];
-  if (!v15)
+  if (!lCopy)
   {
     goto LABEL_6;
   }
@@ -185,22 +185,22 @@ LABEL_3:
   }
 
 LABEL_4:
-  v17 = v16;
+  uUID = v16;
 LABEL_8:
-  v18 = v17;
-  v19 = [(SYContentItem *)self initWithItemIdentifier:v17 displayTitle:v12 sourceIdentifier:v13 sourceName:v14 itemURL:v15 activityType:0 activityCanonicalURL:0 activityTargetContentIdentifier:0 activityPersistentIdentifier:0 userActivity:0];
+  v18 = uUID;
+  v19 = [(SYContentItem *)self initWithItemIdentifier:uUID displayTitle:titleCopy sourceIdentifier:identifierCopy sourceName:nameCopy itemURL:lCopy activityType:0 activityCanonicalURL:0 activityTargetContentIdentifier:0 activityPersistentIdentifier:0 userActivity:0];
 
   return v19;
 }
 
 - (NSString)description
 {
-  v3 = [(SYContentItem *)self displayTitle];
-  if (v3)
+  displayTitle = [(SYContentItem *)self displayTitle];
+  if (displayTitle)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(SYContentItem *)self displayTitle];
-    v21 = [v4 stringWithFormat:@"'%@'", v5];
+    displayTitle2 = [(SYContentItem *)self displayTitle];
+    v21 = [v4 stringWithFormat:@"'%@'", displayTitle2];
   }
 
   else
@@ -208,22 +208,22 @@ LABEL_8:
     v21 = @"(null)";
   }
 
-  v6 = [(SYContentItem *)self itemIdentifier];
-  v7 = [v6 UUIDString];
-  v20 = [v7 substringWithRange:{0, 8}];
+  itemIdentifier = [(SYContentItem *)self itemIdentifier];
+  uUIDString = [itemIdentifier UUIDString];
+  v20 = [uUIDString substringWithRange:{0, 8}];
 
   v24.receiver = self;
   v24.super_class = SYContentItem;
   v19 = [(SYContentItem *)&v24 description];
-  v23 = [(SYContentItem *)self sourceLastKnownName];
-  v22 = [(SYContentItem *)self sourceIdentifier];
-  v8 = [(SYContentItem *)self itemURL];
-  v9 = [(SYContentItem *)self activityCanonicalURL];
-  v10 = [(SYContentItem *)self activityType];
-  v11 = [(SYContentItem *)self activityTargetContentIdentifier];
-  v12 = [(SYContentItem *)self activityPersistentIdentifier];
-  v13 = [(SYContentItem *)self userActivity];
-  if (v13)
+  sourceLastKnownName = [(SYContentItem *)self sourceLastKnownName];
+  sourceIdentifier = [(SYContentItem *)self sourceIdentifier];
+  itemURL = [(SYContentItem *)self itemURL];
+  activityCanonicalURL = [(SYContentItem *)self activityCanonicalURL];
+  activityType = [(SYContentItem *)self activityType];
+  activityTargetContentIdentifier = [(SYContentItem *)self activityTargetContentIdentifier];
+  activityPersistentIdentifier = [(SYContentItem *)self activityPersistentIdentifier];
+  userActivity = [(SYContentItem *)self userActivity];
+  if (userActivity)
   {
     v14 = @"Yes";
   }
@@ -233,8 +233,8 @@ LABEL_8:
     v14 = @"No";
   }
 
-  v15 = [(SYContentItem *)self linkPreviewMetadata];
-  if (v15)
+  linkPreviewMetadata = [(SYContentItem *)self linkPreviewMetadata];
+  if (linkPreviewMetadata)
   {
     v16 = @"Yes";
   }
@@ -244,74 +244,74 @@ LABEL_8:
     v16 = @"No";
   }
 
-  v18 = [v19 stringByAppendingFormat:@" itemID: %@…, title: %@, source: %@ (%@), itemURL: %@, canonicalURL: %@, activityType: %@, targetContentID: %@, persistentID: %@, hasUserActivity: %@, hasLinkPreview: %@", v20, v21, v23, v22, v8, v9, v10, v11, v12, v14, v16];
+  v18 = [v19 stringByAppendingFormat:@" itemID: %@…, title: %@, source: %@ (%@), itemURL: %@, canonicalURL: %@, activityType: %@, targetContentID: %@, persistentID: %@, hasUserActivity: %@, hasLinkPreview: %@", v20, v21, sourceLastKnownName, sourceIdentifier, itemURL, activityCanonicalURL, activityType, activityTargetContentIdentifier, activityPersistentIdentifier, v14, v16];
 
   return v18;
 }
 
 - (NSString)webpageDisplayDomain
 {
-  v3 = [(SYContentItem *)self itemURL];
-  if (v3)
+  itemURL = [(SYContentItem *)self itemURL];
+  if (itemURL)
   {
-    v4 = [(SYContentItem *)self userActivity];
-    v5 = [v4 activityType];
+    userActivity = [(SYContentItem *)self userActivity];
+    activityType = [userActivity activityType];
 
-    if (v5)
+    if (activityType)
     {
-      v6 = [v5 isEqualToString:*MEMORY[0x277CCA850]];
+      v6 = [activityType isEqualToString:*MEMORY[0x277CCA850]];
 
       if (v6)
       {
 LABEL_4:
-        v7 = [v3 _lp_highLevelDomain];
+        _lp_highLevelDomain = [itemURL _lp_highLevelDomain];
         goto LABEL_7;
       }
     }
 
-    else if ([v3 _lp_isHTTPFamilyURL])
+    else if ([itemURL _lp_isHTTPFamilyURL])
     {
       goto LABEL_4;
     }
   }
 
-  v7 = 0;
+  _lp_highLevelDomain = 0;
 LABEL_7:
 
-  return v7;
+  return _lp_highLevelDomain;
 }
 
 - (NSData)linkPreviewMetadata
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_linkPreviewMetadata;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_linkPreviewMetadata;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLinkPreviewMetadata:(id)a3 loadLevel:(int64_t)a4
+- (void)setLinkPreviewMetadata:(id)metadata loadLevel:(int64_t)level
 {
-  v6 = a3;
+  metadataCopy = metadata;
   obj = self;
   objc_sync_enter(obj);
   linkPreviewMetadata = obj->_linkPreviewMetadata;
-  obj->_linkPreviewMetadata = v6;
+  obj->_linkPreviewMetadata = metadataCopy;
 
-  obj->_previewLoadLevel = a4;
+  obj->_previewLoadLevel = level;
   objc_sync_exit(obj);
 }
 
-- (void)loadFullPreviewIfNeededWithCompletion:(id)a3
+- (void)loadFullPreviewIfNeededWithCompletion:(id)completion
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(SYContentItem *)self previewLoadLevel]> 1)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -323,7 +323,7 @@ LABEL_7:
     v7[1] = 3221225472;
     v7[2] = __55__SYContentItem_loadFullPreviewIfNeededWithCompletion___block_invoke;
     v7[3] = &unk_27856C318;
-    v8 = v4;
+    v8 = completionCopy;
     [SYContentItemPreviewManager loadPreviewDataForItems:v5 fullDetail:1 didFinishLoadingPreviewHandler:v7];
   }
 
@@ -341,53 +341,53 @@ uint64_t __55__SYContentItem_loadFullPreviewIfNeededWithCompletion___block_invok
   return result;
 }
 
-- (BOOL)representsSameContentAsItem:(id)a3
+- (BOOL)representsSameContentAsItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SYContentItem *)self userActivity];
-  if (v5)
+  itemCopy = item;
+  userActivity = [(SYContentItem *)self userActivity];
+  if (userActivity)
   {
-    v6 = v5;
-    v7 = [v4 userActivity];
+    v6 = userActivity;
+    userActivity2 = [itemCopy userActivity];
 
-    if (v7)
+    if (userActivity2)
     {
-      v8 = [(SYContentItem *)self userActivity];
-      v9 = [v4 userActivity];
-      v10 = SYEquivalentUserActivities(v8, v9);
+      userActivity3 = [(SYContentItem *)self userActivity];
+      userActivity4 = [itemCopy userActivity];
+      v10 = SYEquivalentUserActivities(userActivity3, userActivity4);
 LABEL_7:
-      LOBYTE(v11) = v10;
+      LOBYTE(itemURL) = v10;
 
       goto LABEL_8;
     }
   }
 
-  v11 = [(SYContentItem *)self itemURL];
-  if (v11)
+  itemURL = [(SYContentItem *)self itemURL];
+  if (itemURL)
   {
-    v12 = [v4 itemURL];
+    itemURL2 = [itemCopy itemURL];
 
-    if (!v12)
+    if (!itemURL2)
     {
-      LOBYTE(v11) = 0;
+      LOBYTE(itemURL) = 0;
       goto LABEL_8;
     }
 
-    v8 = [(SYContentItem *)self itemURL];
-    v9 = [v4 itemURL];
-    v10 = SYEquivalentURLs(v8, v9);
+    userActivity3 = [(SYContentItem *)self itemURL];
+    userActivity4 = [itemCopy itemURL];
+    v10 = SYEquivalentURLs(userActivity3, userActivity4);
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  return v11;
+  return itemURL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -397,9 +397,9 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SYContentItem *)v4 itemIdentifier];
-      v6 = [(SYContentItem *)self itemIdentifier];
-      v7 = [v5 isEqual:v6];
+      itemIdentifier = [(SYContentItem *)equalCopy itemIdentifier];
+      itemIdentifier2 = [(SYContentItem *)self itemIdentifier];
+      v7 = [itemIdentifier isEqual:itemIdentifier2];
     }
 
     else
@@ -413,17 +413,17 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v2 = [(SYContentItem *)self itemIdentifier];
-  v3 = [v2 hash];
+  itemIdentifier = [(SYContentItem *)self itemIdentifier];
+  v3 = [itemIdentifier hash];
 
   return v3;
 }
 
-- (SYContentItem)initWithData:(id)a3 error:(id *)a4
+- (SYContentItem)initWithData:(id)data error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [SYContentItem initWithData:error:];
   }
@@ -431,7 +431,7 @@ LABEL_8:
   v56 = 0;
   v54 = 0;
   v55 = 0;
-  v7 = [SYSerializationSupport itemDataFromArchiveData:v6 majorVersion:&v56 minorVersion:&v55 error:&v54];
+  v7 = [SYSerializationSupport itemDataFromArchiveData:dataCopy majorVersion:&v56 minorVersion:&v55 error:&v54];
   v8 = v54;
   if (v7)
   {
@@ -440,19 +440,19 @@ LABEL_8:
     {
       v10 = v9;
       v46 = v7;
-      v11 = [(SYPBContentItem *)v9 displayTitle];
-      v51 = [(SYPBContentItem *)v10 sourceIdentifier];
-      v49 = [(SYPBContentItem *)v10 sourceLastKnownName];
-      v12 = [(SYPBContentItem *)v10 itemIdentifierData];
-      v13 = [v12 length];
+      displayTitle = [(SYPBContentItem *)v9 displayTitle];
+      sourceIdentifier = [(SYPBContentItem *)v10 sourceIdentifier];
+      sourceLastKnownName = [(SYPBContentItem *)v10 sourceLastKnownName];
+      itemIdentifierData = [(SYPBContentItem *)v10 itemIdentifierData];
+      v13 = [itemIdentifierData length];
 
       if (v13)
       {
         v14 = MEMORY[0x277CCAAC8];
         v15 = objc_opt_class();
-        v16 = [(SYPBContentItem *)v10 itemIdentifierData];
+        itemIdentifierData2 = [(SYPBContentItem *)v10 itemIdentifierData];
         v53 = 0;
-        v52 = [v14 unarchivedObjectOfClass:v15 fromData:v16 error:&v53];
+        v52 = [v14 unarchivedObjectOfClass:v15 fromData:itemIdentifierData2 error:&v53];
         v50 = v53;
       }
 
@@ -462,14 +462,14 @@ LABEL_8:
         v50 = 0;
       }
 
-      v20 = [(SYPBContentItem *)v10 itemURL];
-      v21 = [v20 length];
+      itemURL = [(SYPBContentItem *)v10 itemURL];
+      v21 = [itemURL length];
 
       if (v21)
       {
         v22 = MEMORY[0x277CBEBC0];
-        v23 = [(SYPBContentItem *)v10 itemURL];
-        v24 = [v22 URLWithString:v23];
+        itemURL2 = [(SYPBContentItem *)v10 itemURL];
+        v24 = [v22 URLWithString:itemURL2];
       }
 
       else
@@ -477,33 +477,33 @@ LABEL_8:
         v24 = 0;
       }
 
-      v25 = [(SYPBContentItem *)v10 userActivityData];
-      v26 = v25;
-      if (v25)
+      userActivityData = [(SYPBContentItem *)v10 userActivityData];
+      v26 = userActivityData;
+      if (userActivityData)
       {
-        v27 = [objc_alloc(MEMORY[0x277CC1EF0]) _initWithUserActivityData:v25];
-        v28 = [v27 activityType];
-        v48 = [v27 canonicalURL];
-        v47 = [v27 targetContentIdentifier];
-        v25 = [v27 persistentIdentifier];
+        v27 = [objc_alloc(MEMORY[0x277CC1EF0]) _initWithUserActivityData:userActivityData];
+        activityType = [v27 activityType];
+        canonicalURL = [v27 canonicalURL];
+        targetContentIdentifier = [v27 targetContentIdentifier];
+        userActivityData = [v27 persistentIdentifier];
       }
 
       else
       {
         v27 = 0;
-        v28 = 0;
-        v47 = 0;
-        v48 = 0;
+        activityType = 0;
+        targetContentIdentifier = 0;
+        canonicalURL = 0;
       }
 
-      v44 = v25;
-      v45 = v11;
-      if (v52 && v51 && v24 | v27)
+      v44 = userActivityData;
+      v45 = displayTitle;
+      if (v52 && sourceIdentifier && v24 | v27)
       {
-        self = [(SYContentItem *)self initWithItemIdentifier:v52 displayTitle:v11 sourceIdentifier:v51 sourceName:v49 itemURL:v24 activityType:v28 activityCanonicalURL:v48 activityTargetContentIdentifier:v47 activityPersistentIdentifier:v25 userActivity:v27];
-        v29 = [(SYPBContentItem *)v10 linkPreviewMetadata];
+        self = [(SYContentItem *)self initWithItemIdentifier:v52 displayTitle:displayTitle sourceIdentifier:sourceIdentifier sourceName:sourceLastKnownName itemURL:v24 activityType:activityType activityCanonicalURL:canonicalURL activityTargetContentIdentifier:targetContentIdentifier activityPersistentIdentifier:userActivityData userActivity:v27];
+        linkPreviewMetadata = [(SYPBContentItem *)v10 linkPreviewMetadata];
         linkPreviewMetadata = self->_linkPreviewMetadata;
-        self->_linkPreviewMetadata = v29;
+        self->_linkPreviewMetadata = linkPreviewMetadata;
 
         self->_previewLoadLevel = [(SYPBContentItem *)v10 previewLoadLevel];
         v31 = 1;
@@ -511,11 +511,11 @@ LABEL_8:
 
       else
       {
-        v43 = v6;
+        v43 = dataCopy;
         v32 = v26;
-        v33 = v28;
+        v33 = activityType;
         v34 = v24;
-        v35 = a4;
+        errorCopy = error;
         v36 = [MEMORY[0x277CBEB38] dictionaryWithObject:@"Data for serialized item is incomplete or corrupted." forKey:*MEMORY[0x277CCA450]];
         v37 = v36;
         if (v50)
@@ -527,18 +527,18 @@ LABEL_8:
 
         v31 = 0;
         v8 = v38;
-        a4 = v35;
+        error = errorCopy;
         v24 = v34;
-        v28 = v33;
+        activityType = v33;
         v26 = v32;
-        v6 = v43;
+        dataCopy = v43;
       }
 
       if (v31)
       {
         v39 = 0;
         v7 = v46;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_30;
         }
@@ -569,10 +569,10 @@ LABEL_8:
 
   self = 0;
   v39 = v8;
-  if (a4)
+  if (error)
   {
 LABEL_29:
-    *a4 = v39;
+    *error = v39;
   }
 
 LABEL_30:
@@ -581,50 +581,50 @@ LABEL_30:
   return self;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
-  v5 = [(SYContentItem *)self userActivity];
+  userActivity = [(SYContentItem *)self userActivity];
 
-  if (!v5)
+  if (!userActivity)
   {
     v7 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(SYContentItem *)self userActivity];
+  userActivity2 = [(SYContentItem *)self userActivity];
   v22 = 0;
-  v7 = [v6 _createUserActivityDataWithSaving:0 options:0 error:&v22];
-  v5 = v22;
+  v7 = [userActivity2 _createUserActivityDataWithSaving:0 options:0 error:&v22];
+  userActivity = v22;
 
   if (v7)
   {
 LABEL_7:
     v11 = MEMORY[0x277CCAAB0];
-    v12 = [(SYContentItem *)self itemIdentifier];
-    v10 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+    itemIdentifier = [(SYContentItem *)self itemIdentifier];
+    v10 = [v11 archivedDataWithRootObject:itemIdentifier requiringSecureCoding:1 error:0];
 
     v8 = objc_alloc_init(SYPBContentItem);
     [(SYPBContentItem *)v8 setItemIdentifierData:v10];
-    v13 = [(SYContentItem *)self displayTitle];
-    [(SYPBContentItem *)v8 setDisplayTitle:v13];
+    displayTitle = [(SYContentItem *)self displayTitle];
+    [(SYPBContentItem *)v8 setDisplayTitle:displayTitle];
 
-    v14 = [(SYContentItem *)self sourceIdentifier];
-    [(SYPBContentItem *)v8 setSourceIdentifier:v14];
+    sourceIdentifier = [(SYContentItem *)self sourceIdentifier];
+    [(SYPBContentItem *)v8 setSourceIdentifier:sourceIdentifier];
 
-    v15 = [(SYContentItem *)self sourceLastKnownName];
-    [(SYPBContentItem *)v8 setSourceLastKnownName:v15];
+    sourceLastKnownName = [(SYContentItem *)self sourceLastKnownName];
+    [(SYPBContentItem *)v8 setSourceLastKnownName:sourceLastKnownName];
 
-    v16 = [(SYContentItem *)self itemURL];
-    v17 = [v16 absoluteString];
-    [(SYPBContentItem *)v8 setItemURL:v17];
+    itemURL = [(SYContentItem *)self itemURL];
+    absoluteString = [itemURL absoluteString];
+    [(SYPBContentItem *)v8 setItemURL:absoluteString];
 
     [(SYPBContentItem *)v8 setUserActivityData:v7];
-    v18 = [(SYContentItem *)self linkPreviewMetadata];
-    [(SYPBContentItem *)v8 setLinkPreviewMetadata:v18];
+    linkPreviewMetadata = [(SYContentItem *)self linkPreviewMetadata];
+    [(SYPBContentItem *)v8 setLinkPreviewMetadata:linkPreviewMetadata];
 
     [(SYPBContentItem *)v8 setPreviewLoadLevel:[(SYContentItem *)self previewLoadLevel]];
-    v19 = [(SYPBContentItem *)v8 data];
-    v9 = [SYSerializationSupport archiveDataFromItemData:v19];
+    data = [(SYPBContentItem *)v8 data];
+    v9 = [SYSerializationSupport archiveDataFromItemData:data];
 
     goto LABEL_8;
   }
@@ -632,7 +632,7 @@ LABEL_7:
   v8 = os_log_create("com.apple.synapse", "ContentItemManager");
   if (os_log_type_enabled(&v8->super.super, OS_LOG_TYPE_ERROR))
   {
-    [(SYContentItem *)self dataRepresentationWithError:v5, &v8->super.super];
+    [(SYContentItem *)self dataRepresentationWithError:userActivity, &v8->super.super];
   }
 
   v7 = 0;
@@ -640,10 +640,10 @@ LABEL_7:
   v10 = v8;
 LABEL_8:
 
-  if (a3)
+  if (error)
   {
-    v20 = v5;
-    *a3 = v5;
+    v20 = userActivity;
+    *error = userActivity;
   }
 
   return v9;
@@ -659,12 +659,12 @@ LABEL_8:
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
-  if ([a4 isEqualToString:@"com.apple.synapse.item"])
+  dataCopy = data;
+  if ([identifier isEqualToString:@"com.apple.synapse.item"])
   {
-    v8 = [[SYContentItem alloc] initWithData:v7 error:a5];
+    v8 = [[SYContentItem alloc] initWithData:dataCopy error:error];
   }
 
   else
@@ -685,10 +685,10 @@ LABEL_8:
   return v2;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.synapse.item"])
+  handlerCopy = handler;
+  if ([identifier isEqualToString:@"com.apple.synapse.item"])
   {
     v10 = 0;
     v7 = [(SYContentItem *)self dataRepresentationWithError:&v10];
@@ -701,7 +701,7 @@ LABEL_8:
     v7 = 0;
   }
 
-  v6[2](v6, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 
   return 0;
 }

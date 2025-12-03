@@ -1,38 +1,38 @@
 @interface BMContextualUnderstandingSoundAnalysisClassification
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingSoundAnalysisClassification)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMContextualUnderstandingSoundAnalysisClassification)initWithSoundName:(id)a3 confidence:(id)a4 startOffsetInSecs:(id)a5 durationInSecs:(id)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingSoundAnalysisClassification)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMContextualUnderstandingSoundAnalysisClassification)initWithSoundName:(id)name confidence:(id)confidence startOffsetInSecs:(id)secs durationInSecs:(id)inSecs;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingSoundAnalysisClassification
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
-    v7 = [v5 soundName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    soundName = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
+    soundName2 = [v5 soundName];
+    v8 = soundName2;
+    if (soundName == soundName2)
     {
     }
 
     else
     {
-      v9 = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
-      v10 = [v5 soundName];
-      v11 = [v9 isEqual:v10];
+      soundName3 = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
+      soundName4 = [v5 soundName];
+      v11 = [soundName3 isEqual:soundName4];
 
       if (!v11)
       {
@@ -52,8 +52,8 @@
 
         if (-[BMContextualUnderstandingSoundAnalysisClassification hasDurationInSecs](self, "hasDurationInSecs") && [v5 hasDurationInSecs])
         {
-          v17 = [(BMContextualUnderstandingSoundAnalysisClassification *)self durationInSecs];
-          v12 = v17 == [v5 durationInSecs];
+          durationInSecs = [(BMContextualUnderstandingSoundAnalysisClassification *)self durationInSecs];
+          v12 = durationInSecs == [v5 durationInSecs];
 LABEL_23:
 
           goto LABEL_24;
@@ -75,7 +75,7 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
+  soundName = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
   if (![(BMContextualUnderstandingSoundAnalysisClassification *)self hasConfidence]|| ([(BMContextualUnderstandingSoundAnalysisClassification *)self confidence], fabs(v4) == INFINITY))
   {
     v6 = 0;
@@ -110,37 +110,37 @@ LABEL_24:
   }
 
   v16[0] = @"soundName";
-  v9 = v3;
-  if (!v3)
+  null = soundName;
+  if (!soundName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[0] = v9;
+  v17[0] = null;
   v16[1] = @"confidence";
-  v10 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[1] = v10;
+  v17[1] = null2;
   v16[2] = @"startOffsetInSecs";
-  v11 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[2] = v11;
+  v17[2] = null3;
   v16[3] = @"durationInSecs";
-  v12 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17[3] = v12;
+  v17[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
   if (v8)
   {
@@ -163,7 +163,7 @@ LABEL_21:
 
 LABEL_28:
 
-      if (v3)
+      if (soundName)
       {
         goto LABEL_23;
       }
@@ -178,7 +178,7 @@ LABEL_28:
   }
 
 LABEL_22:
-  if (v3)
+  if (soundName)
   {
     goto LABEL_23;
   }
@@ -191,38 +191,38 @@ LABEL_23:
   return v13;
 }
 
-- (BMContextualUnderstandingSoundAnalysisClassification)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingSoundAnalysisClassification)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"soundName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"soundName"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"confidence"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"confidence"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_34;
         }
 
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v33 = a4;
+        errorCopy = error;
         v20 = *MEMORY[0x1E698F240];
         v38 = *MEMORY[0x1E696A578];
         v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"confidence"];
         v39 = v12;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v33 = v21;
+        *errorCopy = v21;
         goto LABEL_33;
       }
 
@@ -234,22 +234,22 @@ LABEL_4:
       v32 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"startOffsetInSecs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"startOffsetInSecs"];
     v31 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v32;
+          error = v32;
           goto LABEL_33;
         }
 
-        v11 = self;
+        selfCopy3 = self;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
         v36 = *MEMORY[0x1E696A578];
@@ -259,31 +259,31 @@ LABEL_4:
         v23 = [v29 initWithDomain:v22 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        *a4 = v23;
+        *error = v23;
         goto LABEL_31;
       }
 
-      v11 = self;
+      selfCopy3 = self;
       v12 = v10;
     }
 
     else
     {
-      v11 = self;
+      selfCopy3 = self;
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"durationInSecs"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"durationInSecs"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
 LABEL_13:
-      a4 = v32;
-      v15 = [(BMContextualUnderstandingSoundAnalysisClassification *)v11 initWithSoundName:v8 confidence:v32 startOffsetInSecs:v12 durationInSecs:v14];
-      v11 = v15;
+      error = v32;
+      v15 = [(BMContextualUnderstandingSoundAnalysisClassification *)selfCopy3 initWithSoundName:v8 confidence:v32 startOffsetInSecs:v12 durationInSecs:v14];
+      selfCopy3 = v15;
 LABEL_32:
 
-      self = v11;
+      self = selfCopy3;
       v7 = v31;
 LABEL_33:
 
@@ -297,7 +297,7 @@ LABEL_33:
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
@@ -305,13 +305,13 @@ LABEL_33:
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"durationInSecs"];
       v35 = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *a4 = [v30 initWithDomain:v28 code:2 userInfo:v25];
+      *error = [v30 initWithDomain:v28 code:2 userInfo:v25];
     }
 
     v14 = 0;
     v15 = 0;
 LABEL_31:
-    a4 = v32;
+    error = v32;
     goto LABEL_32;
   }
 
@@ -322,7 +322,7 @@ LABEL_31:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -337,8 +337,8 @@ LABEL_31:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
   v8 = 0;
   v15 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
-  a4 = v18;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  error = v18;
 LABEL_34:
 
 LABEL_35:
@@ -350,46 +350,46 @@ LABEL_35:
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingSoundAnalysisClassification *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_soundName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasConfidence)
   {
     confidence = self->_confidence;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasStartOffsetInSecs)
   {
     startOffsetInSecs = self->_startOffsetInSecs;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasDurationInSecs)
   {
     durationInSecs = self->_durationInSecs;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v38.receiver = self;
   v38.super_class = BMContextualUnderstandingSoundAnalysisClassification;
   v5 = [(BMEventBase *)&v38 init];
@@ -398,12 +398,12 @@ LABEL_35:
     goto LABEL_61;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -414,18 +414,18 @@ LABEL_35:
       while (1)
       {
         LOBYTE(v39) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v39 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v39) & 0x7F) << v7;
@@ -443,9 +443,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -462,18 +462,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v39) = 0;
-            v30 = [v4 position] + 1;
-            if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+            v30 = [fromCopy position] + 1;
+            if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
             {
-              v32 = [v4 data];
-              [v32 getBytes:&v39 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v29 |= (LOBYTE(v39) & 0x7F) << v27;
@@ -491,7 +491,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -525,18 +525,18 @@ LABEL_35:
           while (1)
           {
             LOBYTE(v39) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v39 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v39) & 0x7F) << v18;
@@ -554,7 +554,7 @@ LABEL_35:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v24 = 0;
           }
@@ -587,31 +587,31 @@ LABEL_50:
 
         v5->_hasConfidence = 1;
         v39 = 0.0;
-        v16 = [v4 position] + 8;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 8;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v34 = [v4 data];
-          [v34 getBytes:&v39 range:{objc_msgSend(v4, "position"), 8}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v39 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_confidence = v39;
       }
 
 LABEL_58:
-      v35 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v35 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_60:
     v36 = 0;
@@ -629,34 +629,34 @@ LABEL_61:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
+  soundName = [(BMContextualUnderstandingSoundAnalysisClassification *)self soundName];
   v5 = MEMORY[0x1E696AD98];
   [(BMContextualUnderstandingSoundAnalysisClassification *)self confidence];
   v6 = [v5 numberWithDouble:?];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingSoundAnalysisClassification startOffsetInSecs](self, "startOffsetInSecs")}];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingSoundAnalysisClassification durationInSecs](self, "durationInSecs")}];
-  v9 = [v3 initWithFormat:@"BMContextualUnderstandingSoundAnalysisClassification with soundName: %@, confidence: %@, startOffsetInSecs: %@, durationInSecs: %@", v4, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMContextualUnderstandingSoundAnalysisClassification with soundName: %@, confidence: %@, startOffsetInSecs: %@, durationInSecs: %@", soundName, v6, v7, v8];
 
   return v9;
 }
 
-- (BMContextualUnderstandingSoundAnalysisClassification)initWithSoundName:(id)a3 confidence:(id)a4 startOffsetInSecs:(id)a5 durationInSecs:(id)a6
+- (BMContextualUnderstandingSoundAnalysisClassification)initWithSoundName:(id)name confidence:(id)confidence startOffsetInSecs:(id)secs durationInSecs:(id)inSecs
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  confidenceCopy = confidence;
+  secsCopy = secs;
+  inSecsCopy = inSecs;
   v20.receiver = self;
   v20.super_class = BMContextualUnderstandingSoundAnalysisClassification;
   v15 = [(BMEventBase *)&v20 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_soundName, a3);
-    if (v12)
+    objc_storeStrong(&v15->_soundName, name);
+    if (confidenceCopy)
     {
       v15->_hasConfidence = 1;
-      [v12 doubleValue];
+      [confidenceCopy doubleValue];
     }
 
     else
@@ -666,32 +666,32 @@ LABEL_61:
     }
 
     v15->_confidence = v16;
-    if (v13)
+    if (secsCopy)
     {
       v15->_hasStartOffsetInSecs = 1;
-      v17 = [v13 unsignedIntValue];
+      unsignedIntValue = [secsCopy unsignedIntValue];
     }
 
     else
     {
-      v17 = 0;
+      unsignedIntValue = 0;
       v15->_hasStartOffsetInSecs = 0;
     }
 
-    v15->_startOffsetInSecs = v17;
-    if (v14)
+    v15->_startOffsetInSecs = unsignedIntValue;
+    if (inSecsCopy)
     {
       v15->_hasDurationInSecs = 1;
-      v18 = [v14 unsignedIntValue];
+      unsignedIntValue2 = [inSecsCopy unsignedIntValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntValue2 = 0;
       v15->_hasDurationInSecs = 0;
     }
 
-    v15->_durationInSecs = v18;
+    v15->_durationInSecs = unsignedIntValue2;
   }
 
   return v15;
@@ -733,9 +733,9 @@ LABEL_61:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -743,8 +743,8 @@ LABEL_61:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingSoundAnalysisClassification alloc] initByReadFrom:v7];
     v4 = v8;

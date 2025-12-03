@@ -1,34 +1,34 @@
 @interface ClientServiceManager
 + (void)initialize;
-- (ClientServiceManager)initWithPeripheral:(id)a3;
-- (id)clientServiceForUUID:(id)a3;
-- (void)analyzeError:(id)a3;
-- (void)clientService:(id)a3 desiresConnectionParameters:(id)a4;
-- (void)clientServiceDidStart:(id)a3;
+- (ClientServiceManager)initWithPeripheral:(id)peripheral;
+- (id)clientServiceForUUID:(id)d;
+- (void)analyzeError:(id)error;
+- (void)clientService:(id)service desiresConnectionParameters:(id)parameters;
+- (void)clientServiceDidStart:(id)start;
 - (void)dealloc;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didModifyServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didModifyServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)startClientServices;
 @end
 
 @implementation ClientServiceManager
 
-- (ClientServiceManager)initWithPeripheral:(id)a3
+- (ClientServiceManager)initWithPeripheral:(id)peripheral
 {
-  v5 = a3;
+  peripheralCopy = peripheral;
   v13.receiver = self;
   v13.super_class = ClientServiceManager;
   v6 = [(ClientServiceManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peripheral, a3);
+    objc_storeStrong(&v6->_peripheral, peripheral);
     v8 = +[NSMapTable strongToStrongObjectsMapTable];
     clientServiceMap = v7->_clientServiceMap;
     v7->_clientServiceMap = v8;
@@ -44,24 +44,24 @@
   return v7;
 }
 
-- (id)clientServiceForUUID:(id)a3
+- (id)clientServiceForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10003C8A8;
   v16 = sub_10003C8B8;
   v17 = 0;
-  v5 = [(ClientServiceManager *)self clientServiceMap];
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003C8C0;
   v9[3] = &unk_1000BDEA8;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [clientServiceMap enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -69,29 +69,29 @@
   return v7;
 }
 
-- (void)clientServiceDidStart:(id)a3
+- (void)clientServiceDidStart:(id)start
 {
-  v4 = a3;
-  v5 = [(ClientServiceManager *)self startingClientServices];
-  [v5 removeObject:v4];
+  startCopy = start;
+  startingClientServices = [(ClientServiceManager *)self startingClientServices];
+  [startingClientServices removeObject:startCopy];
 
   [(ClientServiceManager *)self startClientServices];
 }
 
-- (void)clientService:(id)a3 desiresConnectionParameters:(id)a4
+- (void)clientService:(id)service desiresConnectionParameters:(id)parameters
 {
-  if (a4)
+  if (parameters)
   {
-    v5 = a4;
+    parametersCopy = parameters;
     v7 = +[BTLEXpcServer instance];
-    v6 = [(ClientServiceManager *)self peripheral];
-    [v7 sendSetConnectionParametersMsg:v5 forPeer:v6];
+    peripheral = [(ClientServiceManager *)self peripheral];
+    [v7 sendSetConnectionParametersMsg:parametersCopy forPeer:peripheral];
   }
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = qword_1000DDAE8;
     qword_1000DDAE8 = &off_1000C4120;
@@ -100,8 +100,8 @@
 
 - (void)dealloc
 {
-  v3 = [(ClientServiceManager *)self clientServiceMap];
-  [v3 enumerateKeysAndObjectsUsingBlock:&stru_1000BDEE8];
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  [clientServiceMap enumerateKeysAndObjectsUsingBlock:&stru_1000BDEE8];
 
   v4.receiver = self;
   v4.super_class = ClientServiceManager;
@@ -110,8 +110,8 @@
 
 - (void)startClientServices
 {
-  v3 = [(ClientServiceManager *)self startingClientServices];
-  v4 = [v3 count];
+  startingClientServices = [(ClientServiceManager *)self startingClientServices];
+  v4 = [startingClientServices count];
 
   if (!v4)
   {
@@ -121,14 +121,14 @@
       v10 = &v9;
       v11 = 0x2020000000;
       v12 = 0;
-      v5 = [(ClientServiceManager *)self clientServiceMap];
+      clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10003CC7C;
       v8[3] = &unk_1000BDEA8;
       v8[4] = self;
       v8[5] = &v9;
-      [v5 enumerateKeysAndObjectsUsingBlock:v8];
+      [clientServiceMap enumerateKeysAndObjectsUsingBlock:v8];
 
       if (*(v10 + 24) != 1)
       {
@@ -137,8 +137,8 @@
 
       [(ClientServiceManager *)self setStartPriority:[(ClientServiceManager *)self startPriority]+ 1];
       _Block_object_dispose(&v9, 8);
-      v6 = [(ClientServiceManager *)self startingClientServices];
-      v7 = [v6 count];
+      startingClientServices2 = [(ClientServiceManager *)self startingClientServices];
+      v7 = [startingClientServices2 count];
 
       if (v7)
       {
@@ -150,28 +150,28 @@
   }
 }
 
-- (void)analyzeError:(id)a3
+- (void)analyzeError:(id)error
 {
-  v8 = a3;
-  v4 = [v8 domain];
-  v5 = [v4 isEqualToString:CBATTErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:CBATTErrorDomain];
 
-  if (v5 && [v8 code] == 15)
+  if (v5 && [errorCopy code] == 15)
   {
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(ClientServiceManager *)self peripheral];
-    [v6 postNotificationName:@"PeripheralPairingDidFailNotification" object:v7];
+    peripheral = [(ClientServiceManager *)self peripheral];
+    [v6 postNotificationName:@"PeripheralPairingDidFailNotification" object:peripheral];
   }
 }
 
-- (void)peripheral:(id)a3 didModifyServices:(id)a4
+- (void)peripheral:(id)peripheral didModifyServices:(id)services
 {
-  v27 = a3;
+  peripheralCopy = peripheral;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = a4;
+  obj = services;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v6)
   {
@@ -190,8 +190,8 @@
         }
 
         v11 = *(*(&v29 + 1) + 8 * v10);
-        v12 = [(ClientServiceManager *)self clientServiceMap];
-        v13 = [v12 objectForKey:v11];
+        clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+        v13 = [clientServiceMap objectForKey:v11];
 
         if (v13)
         {
@@ -199,39 +199,39 @@
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
           {
             v15 = v14;
-            v16 = [v27 name];
-            v17 = [v11 UUID];
+            name = [peripheralCopy name];
+            uUID = [v11 UUID];
             *buf = v26;
-            v34 = v16;
+            v34 = name;
             v35 = 2112;
-            v36 = v17;
+            v36 = uUID;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Peripheral %@ invalidated service %@", buf, 0x16u);
           }
 
-          v18 = [v11 UUID];
+          uUID2 = [v11 UUID];
           v19 = [CBUUID UUIDWithString:@"8341F2B4-C013-4F04-8197-C4CDB42E26DC"];
-          v20 = [v18 isEqual:v19];
+          v20 = [uUID2 isEqual:v19];
 
           if (v20)
           {
-            v21 = [(ClientServiceManager *)self clientServiceMap];
-            [v21 enumerateKeysAndObjectsUsingBlock:&stru_1000BDF08];
+            clientServiceMap2 = [(ClientServiceManager *)self clientServiceMap];
+            [clientServiceMap2 enumerateKeysAndObjectsUsingBlock:&stru_1000BDF08];
 
-            v22 = [(ClientServiceManager *)self startingClientServices];
-            [v22 removeAllObjects];
+            startingClientServices = [(ClientServiceManager *)self startingClientServices];
+            [startingClientServices removeAllObjects];
 
-            v23 = [(ClientServiceManager *)self clientServiceMap];
-            [v23 removeAllObjects];
+            clientServiceMap3 = [(ClientServiceManager *)self clientServiceMap];
+            [clientServiceMap3 removeAllObjects];
           }
 
           else
           {
             [v13 stop];
-            v24 = [(ClientServiceManager *)self startingClientServices];
-            [v24 removeObject:v13];
+            startingClientServices2 = [(ClientServiceManager *)self startingClientServices];
+            [startingClientServices2 removeObject:v13];
 
-            v23 = [(ClientServiceManager *)self clientServiceMap];
-            [v23 removeObjectForKey:v11];
+            clientServiceMap3 = [(ClientServiceManager *)self clientServiceMap];
+            [clientServiceMap3 removeObjectForKey:v11];
           }
         }
 
@@ -245,36 +245,36 @@
     while (v8);
   }
 
-  v25 = [(ClientServiceManager *)self peripheral];
-  [v25 discoverServices:0];
+  peripheral = [(ClientServiceManager *)self peripheral];
+  [peripheral discoverServices:0];
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v39 = a3;
-  v34 = a4;
+  peripheralCopy = peripheral;
+  servicesCopy = services;
   v6 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v39 name];
-    v9 = [v39 services];
+    name = [peripheralCopy name];
+    services = [peripheralCopy services];
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = name;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = services;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "didDiscoverServices for %@, %@...", buf, 0x16u);
   }
 
-  if (v34)
+  if (servicesCopy)
   {
     v10 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_100075DE0(v10, v39, v34);
+      sub_100075DE0(v10, peripheralCopy, servicesCopy);
     }
 
-    [(ClientServiceManager *)self analyzeError:v34];
+    [(ClientServiceManager *)self analyzeError:servicesCopy];
   }
 
   else
@@ -283,7 +283,7 @@
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = [v39 services];
+    obj = [peripheralCopy services];
     v37 = [obj countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v37)
     {
@@ -302,8 +302,8 @@
 
           v38 = v11;
           v13 = *(*(&v45 + 1) + 8 * v11);
-          v14 = [(ClientServiceManager *)self clientServiceMap];
-          v15 = [v14 objectForKey:v13];
+          clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+          v15 = [clientServiceMap objectForKey:v13];
           v16 = v15 == 0;
 
           if (v16)
@@ -329,28 +329,28 @@
                   v21 = NSClassFromString(*(*(&v41 + 1) + 8 * i));
                   if (v21)
                   {
-                    v22 = [v13 UUID];
-                    v23 = [(objc_class *)v21 UUID];
-                    v24 = [v22 isEqual:v23];
+                    uUID = [v13 UUID];
+                    uUID2 = [(objc_class *)v21 UUID];
+                    v24 = [uUID isEqual:uUID2];
 
                     if (v24)
                     {
-                      v25 = [[v21 alloc] initWithManager:self peripheral:v39 service:v13];
+                      v25 = [[v21 alloc] initWithManager:self peripheral:peripheralCopy service:v13];
                       v26 = qword_1000DDBC8;
                       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
                       {
                         v27 = v26;
-                        v28 = [v39 name];
-                        v29 = [v13 UUID];
+                        name2 = [peripheralCopy name];
+                        uUID3 = [v13 UUID];
                         *buf = 138412546;
-                        *&buf[4] = v28;
+                        *&buf[4] = name2;
                         *&buf[12] = 2114;
-                        *&buf[14] = v29;
+                        *&buf[14] = uUID3;
                         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Peripheral %@ supports service %{public}@", buf, 0x16u);
                       }
 
-                      v30 = [(ClientServiceManager *)self clientServiceMap];
-                      [v30 setObject:v25 forKey:v13];
+                      clientServiceMap2 = [(ClientServiceManager *)self clientServiceMap];
+                      [clientServiceMap2 setObject:v25 forKey:v13];
                     }
                   }
                 }
@@ -376,13 +376,13 @@
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v52 = 0;
-    v31 = [(ClientServiceManager *)self clientServiceMap];
+    clientServiceMap3 = [(ClientServiceManager *)self clientServiceMap];
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_10003D700;
     v40[3] = &unk_1000BDF30;
     v40[4] = buf;
-    [v31 enumerateKeysAndObjectsUsingBlock:v40];
+    [clientServiceMap3 enumerateKeysAndObjectsUsingBlock:v40];
 
     if (*(*&buf[8] + 24) == 1)
     {
@@ -395,9 +395,9 @@
       v32 = qword_1000DDBC8;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [v39 name];
+        name3 = [peripheralCopy name];
         *v49 = 138412290;
-        v50 = v33;
+        v50 = name3;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Didn't find any primary service on peripheral %@", v49, 0xCu);
       }
     }
@@ -406,230 +406,230 @@
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v11 objectForKey:v9];
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  v12 = [clientServiceMap objectForKey:serviceCopy];
 
   if (v12)
   {
-    if (v10)
+    if (errorCopy)
     {
       v13 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [v9 UUID];
-        v16 = [v8 name];
+        uUID = [serviceCopy UUID];
+        name = [peripheralCopy name];
         v17 = 138412802;
-        v18 = v15;
+        v18 = uUID;
         v19 = 2112;
-        v20 = v16;
+        v20 = name;
         v21 = 2112;
-        v22 = v10;
+        v22 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Error discovering characteristics for service %@ on peripheral %@: %@", &v17, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v12 peripheral:v8 didDiscoverCharacteristicsForService:v9 error:v10];
+      [v12 peripheral:peripheralCopy didDiscoverCharacteristicsForService:serviceCopy error:errorCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v9 service];
-  v13 = [v11 objectForKey:v12];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  service = [characteristicCopy service];
+  v13 = [clientServiceMap objectForKey:service];
 
   if (v13)
   {
-    if (v10)
+    if (errorCopy)
     {
       v14 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [v9 UUID];
-        v17 = [v8 name];
+        uUID = [characteristicCopy UUID];
+        name = [peripheralCopy name];
         v18 = 138412802;
-        v19 = v16;
+        v19 = uUID;
         v20 = 2112;
-        v21 = v17;
+        v21 = name;
         v22 = 2112;
-        v23 = v10;
+        v23 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error updating value for characteristic %@ on peripheral %@: %@", &v18, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 peripheral:v8 didUpdateValueForCharacteristic:v9 error:v10];
+      [v13 peripheral:peripheralCopy didUpdateValueForCharacteristic:characteristicCopy error:errorCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v9 service];
-  v13 = [v11 objectForKey:v12];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  service = [characteristicCopy service];
+  v13 = [clientServiceMap objectForKey:service];
 
   if (v13)
   {
-    if (v10)
+    if (errorCopy)
     {
       v14 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [v9 UUID];
-        v17 = [v8 name];
+        uUID = [characteristicCopy UUID];
+        name = [peripheralCopy name];
         v18 = 138412802;
-        v19 = v16;
+        v19 = uUID;
         v20 = 2112;
-        v21 = v17;
+        v21 = name;
         v22 = 2112;
-        v23 = v10;
+        v23 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error writing value for characteristic %@ on peripheral %@: %@", &v18, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 peripheral:v8 didWriteValueForCharacteristic:v9 error:v10];
+      [v13 peripheral:peripheralCopy didWriteValueForCharacteristic:characteristicCopy error:errorCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v9 service];
-  v13 = [v11 objectForKey:v12];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  service = [characteristicCopy service];
+  v13 = [clientServiceMap objectForKey:service];
 
   if (v13)
   {
-    if (v10)
+    if (errorCopy)
     {
       v14 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [v9 UUID];
-        v17 = [v8 name];
+        uUID = [characteristicCopy UUID];
+        name = [peripheralCopy name];
         v18 = 138412802;
-        v19 = v16;
+        v19 = uUID;
         v20 = 2112;
-        v21 = v17;
+        v21 = name;
         v22 = 2112;
-        v23 = v10;
+        v23 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error updating notifications for characteristic %@ on peripheral %@: %@", &v18, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 peripheral:v8 didUpdateNotificationStateForCharacteristic:v9 error:v10];
+      [v13 peripheral:peripheralCopy didUpdateNotificationStateForCharacteristic:characteristicCopy error:errorCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v9 service];
-  v13 = [v11 objectForKey:v12];
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  service = [characteristicCopy service];
+  v13 = [clientServiceMap objectForKey:service];
 
   if (v13)
   {
-    if (v10)
+    if (errorCopy)
     {
       v14 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v15 = v14;
-        v16 = [v9 UUID];
-        v17 = [v8 name];
+        uUID = [characteristicCopy UUID];
+        name = [peripheralCopy name];
         v18 = 138412802;
-        v19 = v16;
+        v19 = uUID;
         v20 = 2112;
-        v21 = v17;
+        v21 = name;
         v22 = 2112;
-        v23 = v10;
+        v23 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error discovering descriptors for characteristic %@ on peripheral %@: %@", &v18, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v13 peripheral:v8 didDiscoverDescriptorsForCharacteristic:v9 error:v10];
+      [v13 peripheral:peripheralCopy didDiscoverDescriptorsForCharacteristic:characteristicCopy error:errorCopy];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ClientServiceManager *)self clientServiceMap];
-  v12 = [v9 characteristic];
-  v13 = [v12 service];
-  v14 = [v11 objectForKey:v13];
+  peripheralCopy = peripheral;
+  descriptorCopy = descriptor;
+  errorCopy = error;
+  clientServiceMap = [(ClientServiceManager *)self clientServiceMap];
+  characteristic = [descriptorCopy characteristic];
+  service = [characteristic service];
+  v14 = [clientServiceMap objectForKey:service];
 
   if (v14)
   {
-    if (v10)
+    if (errorCopy)
     {
       v15 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         v16 = v15;
-        v17 = [v9 UUID];
-        v18 = [v8 name];
+        uUID = [descriptorCopy UUID];
+        name = [peripheralCopy name];
         v19 = 138412802;
-        v20 = v17;
+        v20 = uUID;
         v21 = 2112;
-        v22 = v18;
+        v22 = name;
         v23 = 2112;
-        v24 = v10;
+        v24 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Error updating value for descriptor %@ on peripheral %@: %@", &v19, 0x20u);
       }
 
-      [(ClientServiceManager *)self analyzeError:v10];
+      [(ClientServiceManager *)self analyzeError:errorCopy];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v14 peripheral:v8 didUpdateValueForDescriptor:v9 error:v10];
+      [v14 peripheral:peripheralCopy didUpdateValueForDescriptor:descriptorCopy error:errorCopy];
     }
   }
 }

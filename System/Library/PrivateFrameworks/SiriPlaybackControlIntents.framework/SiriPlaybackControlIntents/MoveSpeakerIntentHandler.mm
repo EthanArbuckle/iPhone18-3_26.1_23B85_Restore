@@ -1,16 +1,16 @@
 @interface MoveSpeakerIntentHandler
-- (void)confirmMoveSpeaker:(id)a3 completion:(id)a4;
+- (void)confirmMoveSpeaker:(id)speaker completion:(id)completion;
 @end
 
 @implementation MoveSpeakerIntentHandler
 
-- (void)confirmMoveSpeaker:(id)a3 completion:(id)a4
+- (void)confirmMoveSpeaker:(id)speaker completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_268AA7F14(v7, v8, v6);
+  speakerCopy = speaker;
+  selfCopy = self;
+  sub_268AA7F14(speakerCopy, selfCopy, v6);
   _Block_release(v6);
 }
 

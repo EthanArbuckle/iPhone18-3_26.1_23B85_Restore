@@ -52,24 +52,24 @@
     goto LABEL_10;
   }
 
-  v4 = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
+  docID = [(OrgApacheLuceneSearchScorer *)reqScorer docID];
   [(OrgApacheLuceneSearchScorer *)self->reqScorer_ score];
   v6 = v5;
   optScorer = self->optScorer_;
   if (optScorer)
   {
-    v8 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
-    if (v8 < v4)
+    docID2 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
+    if (docID2 < docID)
     {
-      v8 = [(OrgApacheLuceneSearchScorer *)self->optScorer_ advanceWithInt:v4];
-      if (v8 == 0x7FFFFFFF)
+      docID2 = [(OrgApacheLuceneSearchScorer *)self->optScorer_ advanceWithInt:docID];
+      if (docID2 == 0x7FFFFFFF)
       {
         JreStrongAssign(&self->optScorer_, 0);
         return v6;
       }
     }
 
-    if (v8 != v4)
+    if (docID2 != docID)
     {
       return v6;
     }
@@ -97,14 +97,14 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(OrgApacheLuceneSearchScorer *)optScorer docID];
+  docID = [(OrgApacheLuceneSearchScorer *)optScorer docID];
   reqScorer = self->reqScorer_;
   if (!reqScorer)
   {
     JreThrowNullPointerException();
   }
 
-  if (v4 == [(OrgApacheLuceneSearchScorer *)reqScorer docID])
+  if (docID == [(OrgApacheLuceneSearchScorer *)reqScorer docID])
   {
     return 2;
   }

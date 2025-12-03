@@ -1,19 +1,19 @@
 @interface NRLoggingXPCProxy
-- (id)initWithBlahBlahBlahProxy:(id *)a1;
+- (id)initWithBlahBlahBlahProxy:(id *)proxy;
 @end
 
 @implementation NRLoggingXPCProxy
 
-- (id)initWithBlahBlahBlahProxy:(id *)a1
+- (id)initWithBlahBlahBlahProxy:(id *)proxy
 {
   v4 = a2;
-  if (a1)
+  if (proxy)
   {
-    objc_storeStrong(a1 + 1, a2);
-    v5 = a1;
+    objc_storeStrong(proxy + 1, a2);
+    proxyCopy = proxy;
   }
 
-  return a1;
+  return proxy;
 }
 
 @end

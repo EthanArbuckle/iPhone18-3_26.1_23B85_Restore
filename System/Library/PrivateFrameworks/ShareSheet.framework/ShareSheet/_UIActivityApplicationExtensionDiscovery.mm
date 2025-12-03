@@ -1,27 +1,27 @@
 @interface _UIActivityApplicationExtensionDiscovery
-+ (id)extensionMatchingDictionariesForExtensionItems:(id)a3;
++ (id)extensionMatchingDictionariesForExtensionItems:(id)items;
 + (void)registerContinuousExtensionsDiscoveryOnLaunch;
 - (_UIActivityApplicationExtensionDiscovery)init;
-- (_UIActivityApplicationExtensionDiscovery)initWithExtensionPointIdentifiers:(id)a3;
-- (id)_extensionsForMatchingContext:(id)a3 error:(id *)a4;
-- (id)activitiesForMatchingContext:(id)a3 error:(id *)a4;
+- (_UIActivityApplicationExtensionDiscovery)initWithExtensionPointIdentifiers:(id)identifiers;
+- (id)_extensionsForMatchingContext:(id)context error:(id *)error;
+- (id)activitiesForMatchingContext:(id)context error:(id *)error;
 - (id)reportExtensionsCacheResult;
 - (void)dealloc;
-- (void)primeWithDiscoveryContext:(id)a3;
+- (void)primeWithDiscoveryContext:(id)context;
 @end
 
 @implementation _UIActivityApplicationExtensionDiscovery
 
-+ (id)extensionMatchingDictionariesForExtensionItems:(id)a3
++ (id)extensionMatchingDictionariesForExtensionItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -36,9 +36,9 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) _matchingDictionaryRepresentation];
-        v11 = [v10 sh_removingUnsupportedTypes];
-        [v4 addObject:v11];
+        _matchingDictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) _matchingDictionaryRepresentation];
+        sh_removingUnsupportedTypes = [_matchingDictionaryRepresentation sh_removingUnsupportedTypes];
+        [array addObject:sh_removingUnsupportedTypes];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,26 +47,26 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-- (_UIActivityApplicationExtensionDiscovery)initWithExtensionPointIdentifiers:(id)a3
+- (_UIActivityApplicationExtensionDiscovery)initWithExtensionPointIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9.receiver = self;
   v9.super_class = _UIActivityApplicationExtensionDiscovery;
   v5 = [(_UIActivityApplicationExtensionDiscovery *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (identifiersCopy)
     {
-      v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
-      v7 = [v6 allObjects];
+      v6 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
+      allObjects = [v6 allObjects];
 
-      v4 = v7;
+      identifiersCopy = allObjects;
     }
 
-    [(_UIActivityApplicationExtensionDiscovery *)v5 setExtensionPointIdentifiers:v4];
+    [(_UIActivityApplicationExtensionDiscovery *)v5 setExtensionPointIdentifiers:identifiersCopy];
   }
 
   return v5;
@@ -96,7 +96,7 @@
 {
   if (_os_feature_enabled_impl())
   {
-    v2 = [MEMORY[0x1E69CDE20] shared];
+    mEMORY[0x1E69CDE20] = [MEMORY[0x1E69CDE20] shared];
   }
 
   else
@@ -105,15 +105,15 @@
   }
 }
 
-- (void)primeWithDiscoveryContext:(id)a3
+- (void)primeWithDiscoveryContext:(id)context
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = [a3 activityItemValueExtensionMatchingDictionaries];
-  v6 = _UIApplicationExtensionDiscoveryGetAttributesForExtensionMatchingDictionaries(v5, 0);
+  activityItemValueExtensionMatchingDictionaries = [context activityItemValueExtensionMatchingDictionaries];
+  v6 = _UIApplicationExtensionDiscoveryGetAttributesForExtensionMatchingDictionaries(activityItemValueExtensionMatchingDictionaries, 0);
   v9 = [v4 dictionaryWithDictionary:v6];
 
-  v7 = [(_UIActivityApplicationExtensionDiscovery *)self extensionPointIdentifiers];
-  [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A2F8]];
+  extensionPointIdentifiers = [(_UIActivityApplicationExtensionDiscovery *)self extensionPointIdentifiers];
+  [v9 setObject:extensionPointIdentifiers forKeyedSubscript:*MEMORY[0x1E696A2F8]];
 
   if (_os_feature_enabled_impl())
   {
@@ -128,46 +128,46 @@
   [v8 primeExtensionsResultWithMatchingAttributes:v9];
 }
 
-- (id)_extensionsForMatchingContext:(id)a3 error:(id *)a4
+- (id)_extensionsForMatchingContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 activityItemValueExtensionMatchingDictionaries];
-  v8 = [v7 count];
+  contextCopy = context;
+  activityItemValueExtensionMatchingDictionaries = [contextCopy activityItemValueExtensionMatchingDictionaries];
+  v8 = [activityItemValueExtensionMatchingDictionaries count];
 
   v9 = MEMORY[0x1E695E0F0];
   if (v8)
   {
-    v44 = a4;
+    errorCopy = error;
     v10 = MEMORY[0x1E695DF90];
-    v11 = [v6 activityItemValueExtensionMatchingDictionaries];
-    v12 = _UIApplicationExtensionDiscoveryGetAttributesForExtensionMatchingDictionaries(v11, [v6 shouldMatchOnlyUserElectedExtensions]);
+    activityItemValueExtensionMatchingDictionaries2 = [contextCopy activityItemValueExtensionMatchingDictionaries];
+    v12 = _UIApplicationExtensionDiscoveryGetAttributesForExtensionMatchingDictionaries(activityItemValueExtensionMatchingDictionaries2, [contextCopy shouldMatchOnlyUserElectedExtensions]);
     v13 = [v10 dictionaryWithDictionary:v12];
 
-    v14 = [(_UIActivityApplicationExtensionDiscovery *)self extensionPointIdentifiers];
-    [v13 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696A2F8]];
+    extensionPointIdentifiers = [(_UIActivityApplicationExtensionDiscovery *)self extensionPointIdentifiers];
+    [v13 setObject:extensionPointIdentifiers forKeyedSubscript:*MEMORY[0x1E696A2F8]];
 
     if (_os_feature_enabled_impl())
     {
-      v15 = [MEMORY[0x1E69CDE20] shared];
-      v16 = [v6 testingReferenceSnapshot];
-      v17 = [v15 extensionsResultWithMatchingAttributes:v13 testingReferenceSnapshot:v16];
+      mEMORY[0x1E69CDE20] = [MEMORY[0x1E69CDE20] shared];
+      testingReferenceSnapshot = [contextCopy testingReferenceSnapshot];
+      extensions = [mEMORY[0x1E69CDE20] extensionsResultWithMatchingAttributes:v13 testingReferenceSnapshot:testingReferenceSnapshot];
 
-      v18 = 0;
+      error = 0;
     }
 
     else
     {
       v19 = +[_UIActivityApplicationExtensionsCache sharedExtensionsCache];
-      v15 = [v19 extensionsResultWithMatchingAttributes:v13];
+      mEMORY[0x1E69CDE20] = [v19 extensionsResultWithMatchingAttributes:v13];
 
-      v17 = [v15 extensions];
-      v18 = [v15 error];
+      extensions = [mEMORY[0x1E69CDE20] extensions];
+      error = [mEMORY[0x1E69CDE20] error];
     }
 
-    v20 = v6;
-    if (v17)
+    v20 = contextCopy;
+    if (extensions)
     {
-      v21 = v17;
+      v21 = extensions;
     }
 
     else
@@ -178,15 +178,15 @@
     v22 = v20;
     v23 = MEMORY[0x1E695DF70];
     v24 = v21;
-    v43 = v17;
+    v43 = extensions;
     v25 = [v23 arrayWithArray:v24];
     v26 = [v25 valueForKeyPath:@"identifier"];
-    v27 = [(objc_class *)getMCProfileConnectionClass_2() sharedConnection];
-    if ([v27 isOpenInRestrictionInEffect])
+    sharedConnection = [(objc_class *)getMCProfileConnectionClass_2() sharedConnection];
+    if ([sharedConnection isOpenInRestrictionInEffect])
     {
-      v28 = [v22 isContentManaged];
-      v29 = [v22 sourceApplicationIdentifier];
-      v30 = [v27 allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:v26 originatingAppBundleID:v29 originatingAccountIsManaged:v28];
+      isContentManaged = [v22 isContentManaged];
+      sourceApplicationIdentifier = [v22 sourceApplicationIdentifier];
+      v30 = [sharedConnection allowedOpenInAppBundleIDsAfterApplyingFilterToAppBundleIDs:v26 originatingAppBundleID:sourceApplicationIdentifier originatingAccountIsManaged:isContentManaged];
 
       if (([v22 shouldExcludeiCloudAddToDriveActivity] & 1) == 0)
       {
@@ -248,31 +248,31 @@
     v9 = [MEMORY[0x1E695DF70] arrayWithArray:v25];
     [v9 sortUsingComparator:&__block_literal_global_27];
 
-    if (v44)
+    if (errorCopy)
     {
-      v41 = v18;
-      *v44 = v18;
+      v41 = error;
+      *errorCopy = error;
     }
   }
 
   return v9;
 }
 
-- (id)activitiesForMatchingContext:(id)a3 error:(id *)a4
+- (id)activitiesForMatchingContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 activityItemValueExtensionMatchingDictionaries];
-  v8 = [v7 count];
+  contextCopy = context;
+  activityItemValueExtensionMatchingDictionaries = [contextCopy activityItemValueExtensionMatchingDictionaries];
+  v8 = [activityItemValueExtensionMatchingDictionaries count];
 
   if (v8)
   {
-    v9 = [(_UIActivityApplicationExtensionDiscovery *)self _extensionsForMatchingContext:v6 error:a4];
-    v10 = [(_UIActivityApplicationExtensionDiscovery *)self fetchShortcutsBlock];
-    if (v10)
+    v9 = [(_UIActivityApplicationExtensionDiscovery *)self _extensionsForMatchingContext:contextCopy error:error];
+    fetchShortcutsBlock = [(_UIActivityApplicationExtensionDiscovery *)self fetchShortcutsBlock];
+    if (fetchShortcutsBlock)
     {
-      v11 = [v6 activityItemValueExtensionMatchingDictionaries];
-      v12 = [v6 sourceApplicationIdentifier];
-      v13 = (v10)[2](v10, v11, v12);
+      activityItemValueExtensionMatchingDictionaries2 = [contextCopy activityItemValueExtensionMatchingDictionaries];
+      sourceApplicationIdentifier = [contextCopy sourceApplicationIdentifier];
+      v13 = (fetchShortcutsBlock)[2](fetchShortcutsBlock, activityItemValueExtensionMatchingDictionaries2, sourceApplicationIdentifier);
     }
 
     else
@@ -324,9 +324,9 @@
     +[_UIActivityApplicationExtensionsCache sharedExtensionsCache];
   }
   v2 = ;
-  v3 = [v2 reportExtensionsCacheResult];
+  reportExtensionsCacheResult = [v2 reportExtensionsCacheResult];
 
-  return v3;
+  return reportExtensionsCacheResult;
 }
 
 @end

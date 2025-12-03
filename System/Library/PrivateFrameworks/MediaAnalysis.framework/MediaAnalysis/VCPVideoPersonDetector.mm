@@ -1,7 +1,7 @@
 @interface VCPVideoPersonDetector
 - (VCPVideoPersonDetector)init;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)detectPersons:(__CVBuffer *)a3 persons:(id)a4;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)detectPersons:(__CVBuffer *)persons persons:(id)a4;
 @end
 
 @implementation VCPVideoPersonDetector
@@ -13,25 +13,25 @@
   v2 = [(VCPVideoPersonDetector *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     persons = v2->_persons;
-    v2->_persons = v3;
+    v2->_persons = array;
   }
 
   return v2;
 }
 
-- (int)detectPersons:(__CVBuffer *)a3 persons:(id)a4
+- (int)detectPersons:(__CVBuffer *)persons persons:(id)a4
 {
   v52[1] = *MEMORY[0x1E69E9840];
   v5 = a4;
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
+  CVPixelBufferGetWidth(persons);
+  CVPixelBufferGetHeight(persons);
   v6 = objc_autoreleasePoolPush();
-  v40 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc(MEMORY[0x1E69845B8]);
-  v9 = [v8 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v9 = [v8 initWithCVPixelBuffer:persons options:MEMORY[0x1E695E0F8]];
   v10 = VCPSignPostLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -74,8 +74,8 @@
 
       else
       {
-        v21 = [v16 results];
-        [v38 setInputDetectedObjectObservations:v21];
+        results = [v16 results];
+        [v38 setInputDetectedObjectObservations:results];
 
         v51 = v38;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
@@ -93,13 +93,13 @@
             _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_END, v11, "VCPVideoPersonDetectorHumanDetection", "", buf, 2u);
           }
 
-          v26 = [v38 results];
-          v27 = v26 == 0;
+          results2 = [v38 results];
+          v27 = results2 == 0;
 
           if (!v27)
           {
-            v28 = [v38 results];
-            [v40 addObjectsFromArray:v28];
+            results3 = [v38 results];
+            [array addObjectsFromArray:results3];
           }
 
           v14 = 0;
@@ -130,7 +130,7 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v29 = v40;
+    v29 = array;
     v30 = [v29 countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v30)
     {
@@ -150,8 +150,8 @@
           [(VCPHuman *)v34 setBounds:?];
           [v33 confidence];
           [(VCPHuman *)v34 setConfidence:?];
-          v35 = [v33 torsoprint];
-          [(VCPHuman *)v34 setTorsoprint:v35];
+          torsoprint = [v33 torsoprint];
+          [(VCPHuman *)v34 setTorsoprint:torsoprint];
 
           [v5 addObject:v34];
         }
@@ -167,14 +167,14 @@
   return v14;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_persons removeAllObjects:a3];
+  frameCopy = frame;
+  [(NSMutableArray *)self->_persons removeAllObjects:frame];
   v8 = objc_autoreleasePoolPush();
-  LODWORD(v6) = [(VCPVideoPersonDetector *)self detectPersons:v6 persons:self->_persons];
+  LODWORD(frameCopy) = [(VCPVideoPersonDetector *)self detectPersons:frameCopy persons:self->_persons];
   objc_autoreleasePoolPop(v8);
-  return v6;
+  return frameCopy;
 }
 
 @end

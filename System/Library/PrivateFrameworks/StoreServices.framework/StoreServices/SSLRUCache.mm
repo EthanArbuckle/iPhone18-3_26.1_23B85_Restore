@@ -1,27 +1,27 @@
 @interface SSLRUCache
-- (SSLRUCache)initWithMaxSize:(unint64_t)a3;
+- (SSLRUCache)initWithMaxSize:(unint64_t)size;
 - (id)allObjectsAndKeys;
 - (id)description;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)_count;
 - (unint64_t)count;
-- (void)_addObject:(id)a3 forKey:(id)a4;
-- (void)_removeObjectForKey:(id)a3;
+- (void)_addObject:(id)object forKey:(id)key;
+- (void)_removeObjectForKey:(id)key;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation SSLRUCache
 
 - (unint64_t)_count
 {
-  v2 = [(SSLRUCache *)self backingDictionary];
-  v3 = [v2 count];
+  backingDictionary = [(SSLRUCache *)self backingDictionary];
+  v3 = [backingDictionary count];
 
   return v3;
 }
 
-- (SSLRUCache)initWithMaxSize:(unint64_t)a3
+- (SSLRUCache)initWithMaxSize:(unint64_t)size
 {
   v16.receiver = self;
   v16.super_class = SSLRUCache;
@@ -41,7 +41,7 @@
     backingList = v4->_backingList;
     v4->_backingList = v10;
 
-    v4->_maxSize = a3;
+    v4->_maxSize = size;
     v12 = objc_alloc_init(SSMutableLogConfig);
     [(SSLogConfig *)v12 setCategory:@"SSLRUCache"];
     [(SSLogConfig *)v12 setSubsystem:@"com.apple.StoreServices"];
@@ -60,14 +60,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __19__SSLRUCache_count__block_invoke;
   v6[3] = &unk_1E84ABF40;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -84,7 +84,7 @@ uint64_t __19__SSLRUCache_count__block_invoke(uint64_t a1)
 - (id)allObjectsAndKeys
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __31__SSLRUCache_allObjectsAndKeys__block_invoke;
@@ -92,7 +92,7 @@ uint64_t __19__SSLRUCache_count__block_invoke(uint64_t a1)
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_sync(v4, v9);
+  dispatch_sync(accessQueue, v9);
 
   v6 = v10;
   v7 = v5;
@@ -125,51 +125,51 @@ void __31__SSLRUCache_allObjectsAndKeys__block_invoke_2(uint64_t a1, void *a2, v
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__50;
   v33 = __Block_byref_object_dispose__50;
   v34 = 0;
-  v5 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__SSLRUCache_objectForKey___block_invoke;
   block[3] = &unk_1E84ABF90;
   v28 = &v29;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v27 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(accessQueue, block);
 
-  v7 = [v30[5] object];
-  if (!v7)
+  object = [v30[5] object];
+  if (!object)
   {
-    v8 = [(SSLRUCache *)self logConfig];
-    if (!v8)
+    logConfig = [(SSLRUCache *)self logConfig];
+    if (!logConfig)
     {
-      v8 = +[SSLogConfig sharedConfig];
+      logConfig = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
-    v10 = [v8 shouldLogToDisk];
-    v11 = [v8 OSLogObject];
-    v12 = v11;
-    if (v10)
+    shouldLog = [logConfig shouldLog];
+    shouldLogToDisk = [logConfig shouldLogToDisk];
+    oSLogObject = [logConfig OSLogObject];
+    v12 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v9 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
-      v9 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v9)
+    if (shouldLog)
     {
       v13 = objc_opt_class();
       v35 = 138412546;
@@ -190,18 +190,18 @@ LABEL_12:
 
       v12 = [MEMORY[0x1E696AEC0] stringWithCString:v15 encoding:{4, &v35, v25}];
       free(v15);
-      SSFileLog(v8, @"%@", v16, v17, v18, v19, v20, v21, v12);
+      SSFileLog(logConfig, @"%@", v16, v17, v18, v19, v20, v21, v12);
     }
 
     goto LABEL_12;
   }
 
 LABEL_13:
-  v22 = [v7 object];
+  v7Object = [object object];
 
   _Block_object_dispose(&v29, 8);
 
-  return v22;
+  return v7Object;
 }
 
 void __27__SSLRUCache_objectForKey___block_invoke(uint64_t a1)
@@ -225,13 +225,13 @@ void __27__SSLRUCache_objectForKey___block_invoke(uint64_t a1)
 - (void)removeAllObjects
 {
   objc_initWeak(&location, self);
-  v3 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __30__SSLRUCache_removeAllObjects__block_invoke;
   v4[3] = &unk_1E84AD820;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(accessQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -247,22 +247,22 @@ void __30__SSLRUCache_removeAllObjects__block_invoke(uint64_t a1)
   [v2 removeAllNodes];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __31__SSLRUCache_setObject_forKey___block_invoke;
   v11[3] = &unk_1E84AE328;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
+  dispatch_async(accessQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -294,17 +294,17 @@ void __31__SSLRUCache_setObject_forKey___block_invoke(uint64_t a1)
   [v3 appendString:v4];
 
   [v3 appendString:@" {"];
-  v5 = [(SSLRUCache *)self accessQueue];
+  accessQueue = [(SSLRUCache *)self accessQueue];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __25__SSLRUCache_description__block_invoke;
   v13 = &unk_1E84AC028;
-  v14 = self;
+  selfCopy = self;
   v6 = v3;
   v15 = v6;
-  dispatch_sync(v5, &v10);
+  dispatch_sync(accessQueue, &v10);
 
-  [v6 appendString:{@"\n}", v10, v11, v12, v13, v14}];
+  [v6 appendString:{@"\n}", v10, v11, v12, v13, selfCopy}];
   v7 = v15;
   v8 = v6;
 
@@ -357,55 +357,55 @@ void __25__SSLRUCache_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_addObject:(id)a3 forKey:(id)a4
+- (void)_addObject:(id)object forKey:(id)key
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = a3;
-    v8 = [(SSLRUCache *)self backingDictionary];
-    v9 = [v8 objectForKey:v6];
+    objectCopy = object;
+    backingDictionary = [(SSLRUCache *)self backingDictionary];
+    v9 = [backingDictionary objectForKey:keyCopy];
 
     if (v9)
     {
-      v10 = [(SSLRUCache *)self backingList];
-      [v10 removeNode:v9];
+      backingList = [(SSLRUCache *)self backingList];
+      [backingList removeNode:v9];
     }
 
-    v11 = [[SSLRUCacheItem alloc] initWithKey:v6 object:v7];
+    v11 = [[SSLRUCacheItem alloc] initWithKey:keyCopy object:objectCopy];
 
-    v12 = [(SSLRUCache *)self backingList];
-    v13 = [v12 insertObject:v11];
+    backingList2 = [(SSLRUCache *)self backingList];
+    v13 = [backingList2 insertObject:v11];
 
-    v14 = [(SSLRUCache *)self backingDictionary];
-    [v14 setObject:v13 forKey:v6];
+    backingDictionary2 = [(SSLRUCache *)self backingDictionary];
+    [backingDictionary2 setObject:v13 forKey:keyCopy];
 
-    v15 = [(SSLRUCache *)self _count];
-    if (v15 <= [(SSLRUCache *)self maxSize])
+    _count = [(SSLRUCache *)self _count];
+    if (_count <= [(SSLRUCache *)self maxSize])
     {
       goto LABEL_17;
     }
 
-    v16 = [(SSLRUCache *)self logConfig];
-    if (!v16)
+    logConfig = [(SSLRUCache *)self logConfig];
+    if (!logConfig)
     {
-      v16 = +[SSLogConfig sharedConfig];
+      logConfig = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
-    if ([v16 shouldLogToDisk])
+    shouldLog = [logConfig shouldLog];
+    if ([logConfig shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [logConfig OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -422,20 +422,20 @@ void __25__SSLRUCache_description__block_invoke(uint64_t a1)
       {
 LABEL_16:
 
-        v28 = [(SSLRUCache *)self backingList];
-        v29 = [v28 tail];
+        backingList3 = [(SSLRUCache *)self backingList];
+        tail = [backingList3 tail];
 
-        v30 = [v29 object];
-        v31 = [v30 key];
+        object = [tail object];
+        v31 = [object key];
         [(SSLRUCache *)self _removeObjectForKey:v31];
 
 LABEL_17:
         goto LABEL_18;
       }
 
-      v19 = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v33, v32, v33}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v33, v32, v33}];
       free(v21);
-      SSFileLog(v16, @"%@", v22, v23, v24, v25, v26, v27, v19);
+      SSFileLog(logConfig, @"%@", v22, v23, v24, v25, v26, v27, oSLogObject);
     }
 
     goto LABEL_16;
@@ -444,19 +444,19 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_removeObjectForKey:(id)a3
+- (void)_removeObjectForKey:(id)key
 {
-  v8 = a3;
-  v4 = [(SSLRUCache *)self backingDictionary];
-  v5 = [v4 objectForKey:v8];
+  keyCopy = key;
+  backingDictionary = [(SSLRUCache *)self backingDictionary];
+  v5 = [backingDictionary objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [(SSLRUCache *)self backingList];
-    [v6 removeNode:v5];
+    backingList = [(SSLRUCache *)self backingList];
+    [backingList removeNode:v5];
 
-    v7 = [(SSLRUCache *)self backingDictionary];
-    [v7 removeObjectForKey:v8];
+    backingDictionary2 = [(SSLRUCache *)self backingDictionary];
+    [backingDictionary2 removeObjectForKey:keyCopy];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface NSAttributedString
-- (id)_ui_fontsInRange:(uint64_t)a3 usingDefaultFont:(void *)a4;
-- (id)_ui_synthesizeAttributedSubstringFromRange:(uint64_t)a3 usingDefaultAttributes:(void *)a4;
+- (id)_ui_fontsInRange:(uint64_t)range usingDefaultFont:(void *)font;
+- (id)_ui_synthesizeAttributedSubstringFromRange:(uint64_t)range usingDefaultAttributes:(void *)attributes;
 @end
 
 @implementation NSAttributedString
@@ -104,18 +104,18 @@ LABEL_12:
   }
 }
 
-- (id)_ui_fontsInRange:(uint64_t)a3 usingDefaultFont:(void *)a4
+- (id)_ui_fontsInRange:(uint64_t)range usingDefaultFont:(void *)font
 {
-  v7 = a4;
-  if (a1)
+  fontCopy = font;
+  if (self)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v15 = 0;
     v16 = 0;
-    v9 = [a1 length];
-    if (v9 >= a2 + a3)
+    v9 = [self length];
+    if (v9 >= a2 + range)
     {
-      v10 = a2 + a3;
+      v10 = a2 + range;
     }
 
     else
@@ -129,10 +129,10 @@ LABEL_12:
       v12 = *off_1E70EC918;
       do
       {
-        v13 = [a1 attribute:v12 atIndex:v11 effectiveRange:&v15];
+        v13 = [self attribute:v12 atIndex:v11 effectiveRange:&v15];
         if (!v13)
         {
-          v13 = v7;
+          v13 = fontCopy;
         }
 
         [v8 addObject:v13];
@@ -154,15 +154,15 @@ LABEL_12:
   return v8;
 }
 
-- (id)_ui_synthesizeAttributedSubstringFromRange:(uint64_t)a3 usingDefaultAttributes:(void *)a4
+- (id)_ui_synthesizeAttributedSubstringFromRange:(uint64_t)range usingDefaultAttributes:(void *)attributes
 {
-  if (a1)
+  if (self)
   {
     v7 = MEMORY[0x1E696AD40];
-    v8 = a4;
+    attributesCopy = attributes;
     v9 = [v7 alloc];
-    v10 = [a1 string];
-    v11 = [v9 initWithString:v10 attributes:v8];
+    string = [self string];
+    v11 = [v9 initWithString:string attributes:attributesCopy];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -170,7 +170,7 @@ LABEL_12:
     v14[3] = &unk_1E70F30C8;
     v12 = v11;
     v15 = v12;
-    [a1 enumerateAttributesInRange:a2 options:a3 usingBlock:{0, v14}];
+    [self enumerateAttributesInRange:a2 options:range usingBlock:{0, v14}];
   }
 
   else

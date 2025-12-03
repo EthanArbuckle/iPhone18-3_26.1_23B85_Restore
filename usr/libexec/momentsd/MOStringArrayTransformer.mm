@@ -1,14 +1,14 @@
 @interface MOStringArrayTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation MOStringArrayTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_8;
   }
@@ -30,7 +30,7 @@
   if (objc_opt_isKindOfClass())
   {
     v8 = objc_opt_new();
-    v9 = [v5 componentsJoinedByString:&stru_100343BF0];
+    v9 = [valueCopy componentsJoinedByString:&stru_100343BF0];
     v10 = [v9 dataUsingEncoding:4];
     [v8 appendData:v10];
 
@@ -46,10 +46,10 @@ LABEL_8:
   return v11;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v5 = a3;
-  if (!v5)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_9;
   }
@@ -70,7 +70,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [[NSString alloc] initWithData:v5 encoding:4];
+    v8 = [[NSString alloc] initWithData:valueCopy encoding:4];
     if ([v8 length])
     {
       v9 = [v8 componentsSeparatedByString:&stru_100343BF0];

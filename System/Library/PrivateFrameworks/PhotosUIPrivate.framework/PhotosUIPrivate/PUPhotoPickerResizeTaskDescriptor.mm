@@ -4,13 +4,13 @@
 + (id)defaultMediumDescriptor;
 + (id)defaultSmallDescriptor;
 + (id)orderedDefaultDescriptors;
-- (BOOL)appliesToAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)appliesToAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)targetSize;
-- (PUPhotoPickerResizeTaskDescriptor)initWithLocalizedDescription:(id)a3 targetSize:(CGSize)a4;
-- (id)formattedSizeForAssets:(id)a3;
-- (id)localizedDescriptionForAssets:(id)a3;
-- (unint64_t)estimatedSizeForAssets:(id)a3;
+- (PUPhotoPickerResizeTaskDescriptor)initWithLocalizedDescription:(id)description targetSize:(CGSize)size;
+- (id)formattedSizeForAssets:(id)assets;
+- (id)localizedDescriptionForAssets:(id)assets;
+- (unint64_t)estimatedSizeForAssets:(id)assets;
 @end
 
 @implementation PUPhotoPickerResizeTaskDescriptor
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -35,31 +35,31 @@
   else
   {
     objc_opt_class();
-    v6 = (objc_opt_isKindOfClass() & 1) != 0 && (self->_targetSize.width == v4->_targetSize.width ? (v5 = self->_targetSize.height == v4->_targetSize.height) : (v5 = 0), v5) && [(NSString *)self->_localizedDescription isEqualToString:v4->_localizedDescription];
+    v6 = (objc_opt_isKindOfClass() & 1) != 0 && (self->_targetSize.width == equalCopy->_targetSize.width ? (v5 = self->_targetSize.height == equalCopy->_targetSize.height) : (v5 = 0), v5) && [(NSString *)self->_localizedDescription isEqualToString:equalCopy->_localizedDescription];
   }
 
   return v6;
 }
 
-- (BOOL)appliesToAsset:(id)a3
+- (BOOL)appliesToAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [[PUPhotoPickerScaledFileSizeEstimator alloc] initWithAsset:v4];
+  assetCopy = asset;
+  v5 = [[PUPhotoPickerScaledFileSizeEstimator alloc] initWithAsset:assetCopy];
 
   LOBYTE(self) = [(PUPhotoPickerScaledFileSizeEstimator *)v5 wouldResizeAssetUsingResizeDescriptor:self];
   return self;
 }
 
-- (unint64_t)estimatedSizeForAssets:(id)a3
+- (unint64_t)estimatedSizeForAssets:(id)assets
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = [MEMORY[0x1E696AB50] set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v7)
   {
@@ -74,8 +74,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v25 + 1) + 8 * i) localIdentifier];
-        [v5 addObject:v11];
+        localIdentifier = [*(*(&v25 + 1) + 8 * i) localIdentifier];
+        [v5 addObject:localIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -130,34 +130,34 @@
   return cachedSizeEstimate;
 }
 
-- (id)formattedSizeForAssets:(id)a3
+- (id)formattedSizeForAssets:(id)assets
 {
-  v3 = [(PUPhotoPickerResizeTaskDescriptor *)self estimatedSizeForAssets:a3];
+  v3 = [(PUPhotoPickerResizeTaskDescriptor *)self estimatedSizeForAssets:assets];
   v4 = MEMORY[0x1E696AAF0];
 
   return [v4 stringFromByteCount:v3 countStyle:0];
 }
 
-- (id)localizedDescriptionForAssets:(id)a3
+- (id)localizedDescriptionForAssets:(id)assets
 {
-  v3 = [(PUPhotoPickerResizeTaskDescriptor *)self formattedSizeForAssets:a3];
+  v3 = [(PUPhotoPickerResizeTaskDescriptor *)self formattedSizeForAssets:assets];
   v4 = PULocalizedString(@"SIZE_PICKER_SIZE_(BYTES)");
   v5 = PUStringWithValidatedFormat();
 
   return v5;
 }
 
-- (PUPhotoPickerResizeTaskDescriptor)initWithLocalizedDescription:(id)a3 targetSize:(CGSize)a4
+- (PUPhotoPickerResizeTaskDescriptor)initWithLocalizedDescription:(id)description targetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  descriptionCopy = description;
   v12.receiver = self;
   v12.super_class = PUPhotoPickerResizeTaskDescriptor;
   v8 = [(PUPhotoPickerResizeTaskDescriptor *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [descriptionCopy copy];
     localizedDescription = v8->_localizedDescription;
     v8->_localizedDescription = v9;
 
@@ -198,7 +198,7 @@ void __62__PUPhotoPickerResizeTaskDescriptor_orderedDefaultDescriptors__block_in
 
 + (id)defaultActualSizeDescriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = PULocalizedString(@"SIZE_PICKER_SIZE_ACTUAL");
   v4 = [v2 initWithLocalizedDescription:v3 targetSize:{*MEMORY[0x1E6978E30], *(MEMORY[0x1E6978E30] + 8)}];
 
@@ -207,7 +207,7 @@ void __62__PUPhotoPickerResizeTaskDescriptor_orderedDefaultDescriptors__block_in
 
 + (id)defaultSmallDescriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = PULocalizedString(@"SIZE_PICKER_SIZE_SMALL");
   v4 = [v2 initWithLocalizedDescription:v3 targetSize:{320.0, 240.0}];
 
@@ -216,7 +216,7 @@ void __62__PUPhotoPickerResizeTaskDescriptor_orderedDefaultDescriptors__block_in
 
 + (id)defaultMediumDescriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = PULocalizedString(@"SIZE_PICKER_SIZE_MEDIUM");
   v4 = [v2 initWithLocalizedDescription:v3 targetSize:{640.0, 480.0}];
 
@@ -225,7 +225,7 @@ void __62__PUPhotoPickerResizeTaskDescriptor_orderedDefaultDescriptors__block_in
 
 + (id)defaultLargeDescriptor
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = PULocalizedString(@"SIZE_PICKER_SIZE_LARGE");
   v4 = [v2 initWithLocalizedDescription:v3 targetSize:{1280.0, 960.0}];
 

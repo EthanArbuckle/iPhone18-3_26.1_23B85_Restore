@@ -1,7 +1,7 @@
 @interface CKSQLiteTOCImageInfoTable
 + (id)dbProperties;
 - (id)addEntriesForCurrentProcess;
-- (id)enumerateImagesWithBlock:(id)a3;
+- (id)enumerateImagesWithBlock:(id)block;
 - (id)resetImageInfo;
 - (id)updateForCurrentProcess;
 @end
@@ -46,16 +46,16 @@
   return v5;
 }
 
-- (id)enumerateImagesWithBlock:(id)a3
+- (id)enumerateImagesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_188691238;
   v9[3] = &unk_1E70C12F0;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = blockCopy;
+  v5 = blockCopy;
   v7 = objc_msgSend_performTransaction_(self, v6, v9);
 
   return v7;

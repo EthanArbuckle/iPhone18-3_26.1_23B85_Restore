@@ -1,9 +1,9 @@
 @interface NUChoicePattern
-- (BOOL)isEqualToChoicePattern:(id)a3;
-- (BOOL)isEqualToPattern:(id)a3;
+- (BOOL)isEqualToChoicePattern:(id)pattern;
+- (BOOL)isEqualToPattern:(id)pattern;
 - (BOOL)isFixedOrder;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
-- (NUChoicePattern)initWithChoices:(id)a3;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
+- (NUChoicePattern)initWithChoices:(id)choices;
 - (id)optimizedPattern;
 - (id)shortestMatch;
 - (id)stringRepresentation;
@@ -12,10 +12,10 @@
 
 @implementation NUChoicePattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  matchCopy = match;
   if ([(NSArray *)self->_choices count])
   {
     v18 = 0u;
@@ -37,7 +37,7 @@
             objc_enumerationMutation(v9);
           }
 
-          if ([*(*(&v16 + 1) + 8 * i) match:v8 location:a4 count:{a5, v16}])
+          if ([*(*(&v16 + 1) + 8 * i) match:matchCopy location:location count:{count, v16}])
           {
             v14 = 1;
             goto LABEL_12;
@@ -60,28 +60,28 @@ LABEL_12:
 
   else
   {
-    *a5 = 0;
+    *count = 0;
     v14 = 1;
   }
 
   return v14;
 }
 
-- (BOOL)isEqualToChoicePattern:(id)a3
+- (BOOL)isEqualToChoicePattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(NUChoicePattern *)self choices];
-  v6 = [v4 choices];
+  patternCopy = pattern;
+  choices = [(NUChoicePattern *)self choices];
+  choices2 = [patternCopy choices];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(patternCopy) = [choices isEqualToArray:choices2];
+  return patternCopy;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChoicePattern *)self isEqualToChoicePattern:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUChoicePattern *)self isEqualToChoicePattern:patternCopy];
 
   return v5;
 }
@@ -109,8 +109,8 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
-        [v3 addObject:v9];
+        stringRepresentation = [*(*(&v14 + 1) + 8 * i) stringRepresentation];
+        [v3 addObject:stringRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -149,10 +149,10 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
-        if (([v9 isEmpty] & 1) == 0)
+        optimizedPattern = [*(*(&v13 + 1) + 8 * i) optimizedPattern];
+        if (([optimizedPattern isEmpty] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [v3 addObject:optimizedPattern];
         }
       }
 
@@ -192,21 +192,21 @@ LABEL_12:
     if ([(NSArray *)self->_choices count]== 1)
     {
       v3 = [(NSArray *)self->_choices objectAtIndexedSubscript:0];
-      v4 = [v3 shortestMatch];
+      shortestMatch = [v3 shortestMatch];
     }
 
     else
     {
-      v4 = 0;
+      shortestMatch = 0;
     }
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    shortestMatch = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return shortestMatch;
 }
 
 - (BOOL)isFixedOrder
@@ -222,9 +222,9 @@ LABEL_12:
   }
 
   v3 = [(NSArray *)self->_choices objectAtIndexedSubscript:0];
-  v4 = [v3 isFixedOrder];
+  isFixedOrder = [v3 isFixedOrder];
 
-  return v4;
+  return isFixedOrder;
 }
 
 - (id)tokens
@@ -250,8 +250,8 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) tokens];
-        [v3 unionSet:v9];
+        tokens = [*(*(&v11 + 1) + 8 * i) tokens];
+        [v3 unionSet:tokens];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -263,11 +263,11 @@ LABEL_12:
   return v3;
 }
 
-- (NUChoicePattern)initWithChoices:(id)a3
+- (NUChoicePattern)initWithChoices:(id)choices
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  choicesCopy = choices;
+  if (!choicesCopy)
   {
     v10 = NUAssertLogger_5128();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -288,8 +288,8 @@ LABEL_12:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -300,8 +300,8 @@ LABEL_12:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -310,7 +310,7 @@ LABEL_12:
     _NUAssertFailHandler("[NUChoicePattern initWithChoices:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 608, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "choices != nil");
   }
 
-  v5 = v4;
+  v5 = choicesCopy;
   v26.receiver = self;
   v26.super_class = NUChoicePattern;
   v6 = [(NUChoicePattern *)&v26 init];

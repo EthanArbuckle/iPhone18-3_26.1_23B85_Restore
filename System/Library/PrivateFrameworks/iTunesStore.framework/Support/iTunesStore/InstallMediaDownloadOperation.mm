@@ -1,8 +1,8 @@
 @interface InstallMediaDownloadOperation
 - (BOOL)_areSourceAndDestinationEqual;
-- (BOOL)_installExternalDownload:(id *)a3;
+- (BOOL)_installExternalDownload:(id *)download;
 - (BOOL)_isDaemonOwned;
-- (id)_installDaemonOwnedDownload:(id *)a3;
+- (id)_installDaemonOwnedDownload:(id *)download;
 - (id)_newIPodLibraryItem;
 - (void)_updateRentalsPlist;
 - (void)run;
@@ -14,14 +14,14 @@
 {
   v3 = objc_alloc_init(FinishDownloadResponse);
   [(FinishDownloadResponse *)v3 setResult:4];
-  v4 = [(FinishDownloadStepOperation *)self download];
-  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [v4 databaseID]);
-  v5 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [v4 transactionID], objc_msgSend(v4, "databaseID"));
+  download = [(FinishDownloadStepOperation *)self download];
+  -[FinishDownloadResponse setDownloadIdentifier:](v3, "setDownloadIdentifier:", [download databaseID]);
+  v5 = -[DownloadHandle initWithTransactionIdentifier:downloadIdentifier:]([DownloadHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:", [download transactionID], objc_msgSend(download, "databaseID"));
   [(FinishDownloadResponse *)v3 setDownloadHandle:v5];
-  v6 = [v4 mediaAsset];
-  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [v6 databaseID]);
-  v7 = [v4 secondaryAssetForType:SSDownloadAssetTypeArtwork];
-  v8 = [v4 secondaryAssetForType:SSDownloadAssetTypeXMLFeed];
+  mediaAsset = [download mediaAsset];
+  -[FinishDownloadResponse setMediaAssetIdentifier:](v3, "setMediaAssetIdentifier:", [mediaAsset databaseID]);
+  v7 = [download secondaryAssetForType:SSDownloadAssetTypeArtwork];
+  v8 = [download secondaryAssetForType:SSDownloadAssetTypeXMLFeed];
   if (v7)
   {
     v34 = 0;
@@ -29,8 +29,8 @@
     v10 = v34;
     if ((v9 & 1) == 0)
     {
-      v11 = [v4 isPodcastDownload];
-      if (!v11)
+      isPodcastDownload = [download isPodcastDownload];
+      if (!isPodcastDownload)
       {
         goto LABEL_9;
       }
@@ -44,7 +44,7 @@
     v10 = 0;
   }
 
-  v11 = 1;
+  isPodcastDownload = 1;
 LABEL_7:
   if (v8)
   {
@@ -52,10 +52,10 @@ LABEL_7:
   }
 
 LABEL_9:
-  v12 = [(InstallMediaDownloadOperation *)self _areSourceAndDestinationEqual];
-  if (!v11 || (v12 & 1) != 0)
+  _areSourceAndDestinationEqual = [(InstallMediaDownloadOperation *)self _areSourceAndDestinationEqual];
+  if (!isPodcastDownload || (_areSourceAndDestinationEqual & 1) != 0)
   {
-    if (!v11)
+    if (!isPodcastDownload)
     {
       goto LABEL_19;
     }
@@ -64,7 +64,7 @@ LABEL_9:
   else
   {
     v33 = v10;
-    v13 = [(FinishDownloadStepOperation *)self installAsset:v6 error:&v33];
+    v13 = [(FinishDownloadStepOperation *)self installAsset:mediaAsset error:&v33];
     v14 = v33;
 
     v10 = v14;
@@ -95,9 +95,9 @@ LABEL_21:
         [(FinishDownloadStepOperation *)self rollbackAsset:v8 error:0];
       }
 
-      if (v6)
+      if (mediaAsset)
       {
-        [(FinishDownloadStepOperation *)self rollbackAsset:v6 error:0];
+        [(FinishDownloadStepOperation *)self rollbackAsset:mediaAsset error:0];
       }
 
       [(FinishDownloadResponse *)v3 setError:v10];
@@ -126,27 +126,27 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v4 isRentalDownload])
+  if ([download isRentalDownload])
   {
     [(InstallMediaDownloadOperation *)self _updateRentalsPlist];
     v17 = +[NSFileManager defaultManager];
-    [v4 ITunesMetadataDestinationPath];
+    [download ITunesMetadataDestinationPath];
     v18 = v29 = v15;
     [v17 removeItemAtPath:v18 error:0];
 
     v15 = v29;
   }
 
-  else if ([v6 mediaLibraryProtectionType] == 2 || (objc_msgSend(v4, "isHLS") & 1) != 0)
+  else if ([mediaAsset mediaLibraryProtectionType] == 2 || (objc_msgSend(download, "isHLS") & 1) != 0)
   {
     v30 = v15;
     if (v7)
     {
-      v20 = [v4 destinationDirectoryPathForAsset:v7];
-      v21 = [v7 destinationFileName];
+      v20 = [download destinationDirectoryPathForAsset:v7];
+      destinationFileName = [v7 destinationFileName];
       v28 = v20;
       v22 = v20;
-      v23 = v21;
+      v23 = destinationFileName;
       if ([v22 length] && objc_msgSend(v23, "length"))
       {
         v27 = +[NSFileManager defaultManager];
@@ -156,8 +156,8 @@ LABEL_20:
     }
 
     v25 = +[NSFileManager defaultManager];
-    v26 = [v4 ITunesMetadataDestinationPath];
-    [v25 removeItemAtPath:v26 error:0];
+    iTunesMetadataDestinationPath = [download ITunesMetadataDestinationPath];
+    [v25 removeItemAtPath:iTunesMetadataDestinationPath error:0];
 
     v15 = v30;
   }
@@ -173,26 +173,26 @@ LABEL_26:
 
 - (BOOL)_areSourceAndDestinationEqual
 {
-  v2 = [(FinishDownloadStepOperation *)self download];
-  v3 = [v2 mediaAsset];
-  v4 = [v3 localPath];
-  v5 = [v2 destinationDirectoryPathForAsset:v3];
-  v6 = [v3 destinationFileName];
-  v7 = v6;
+  download = [(FinishDownloadStepOperation *)self download];
+  mediaAsset = [download mediaAsset];
+  localPath = [mediaAsset localPath];
+  v5 = [download destinationDirectoryPathForAsset:mediaAsset];
+  destinationFileName = [mediaAsset destinationFileName];
+  v7 = destinationFileName;
   v8 = 0;
   v9 = 0;
   if (v5)
   {
-    if (v6)
+    if (destinationFileName)
     {
-      v10 = [v5 stringByAppendingPathComponent:v6];
+      v10 = [v5 stringByAppendingPathComponent:destinationFileName];
       v9 = v10;
       v8 = 0;
-      if (v4)
+      if (localPath)
       {
         if (v10)
         {
-          v8 = [v4 isEqualToString:v10];
+          v8 = [localPath isEqualToString:v10];
         }
       }
     }
@@ -201,60 +201,60 @@ LABEL_26:
   return v8;
 }
 
-- (id)_installDaemonOwnedDownload:(id *)a3
+- (id)_installDaemonOwnedDownload:(id *)download
 {
-  v5 = [(FinishDownloadStepOperation *)self download];
-  v6 = [(InstallMediaDownloadOperation *)self _newIPodLibraryItem];
-  v7 = [(FinishDownloadStepOperation *)self download];
-  v8 = [v7 storeMetadata];
-  [v6 setItemMetadata:v8];
+  download = [(FinishDownloadStepOperation *)self download];
+  _newIPodLibraryItem = [(InstallMediaDownloadOperation *)self _newIPodLibraryItem];
+  download2 = [(FinishDownloadStepOperation *)self download];
+  storeMetadata = [download2 storeMetadata];
+  [_newIPodLibraryItem setItemMetadata:storeMetadata];
 
-  v9 = [[AddItemToIPodLibraryOperation alloc] initWithIPodLibraryItem:v6];
+  v9 = [[AddItemToIPodLibraryOperation alloc] initWithIPodLibraryItem:_newIPodLibraryItem];
   v28 = 0;
   v10 = [(InstallMediaDownloadOperation *)self runSubOperation:v9 returningError:&v28];
   v11 = v28;
   if (v10)
   {
-    v12 = [(AddItemToIPodLibraryOperation *)v9 IPodLibraryItem];
-    v13 = [v12 itemMetadata];
-    [v5 setStoreMetadata:v13];
+    iPodLibraryItem = [(AddItemToIPodLibraryOperation *)v9 IPodLibraryItem];
+    itemMetadata = [iPodLibraryItem itemMetadata];
+    [download setStoreMetadata:itemMetadata];
 
-    v14 = [v5 newITunesMetadataDictionary];
+    newITunesMetadataDictionary = [download newITunesMetadataDictionary];
     v15 = SSDownloadMetadataKeyAdditionalInfo;
-    v16 = [v14 objectForKey:SSDownloadMetadataKeyAdditionalInfo];
-    if (!v16)
+    oSLogObject = [newITunesMetadataDictionary objectForKey:SSDownloadMetadataKeyAdditionalInfo];
+    if (!oSLogObject)
     {
-      v16 = objc_alloc_init(NSMutableDictionary);
-      [v14 setObject:v16 forKey:v15];
+      oSLogObject = objc_alloc_init(NSMutableDictionary);
+      [newITunesMetadataDictionary setObject:oSLogObject forKey:v15];
     }
 
-    v17 = [(AddItemToIPodLibraryOperation *)v9 insertedItemPersistentIdentifier];
-    [v16 setObject:v17 forKey:SSDownloadMetadataKeyTrackPersistentID];
-    v18 = [v5 ITunesMetadataDestinationPath];
-    [(FinishDownloadStepOperation *)self writeBinaryPropertyList:v14 toPath:v18 error:0];
+    insertedItemPersistentIdentifier = [(AddItemToIPodLibraryOperation *)v9 insertedItemPersistentIdentifier];
+    [oSLogObject setObject:insertedItemPersistentIdentifier forKey:SSDownloadMetadataKeyTrackPersistentID];
+    iTunesMetadataDestinationPath = [download ITunesMetadataDestinationPath];
+    [(FinishDownloadStepOperation *)self writeBinaryPropertyList:newITunesMetadataDictionary toPath:iTunesMetadataDestinationPath error:0];
   }
 
   else
   {
-    v14 = +[SSLogConfig sharedDaemonConfig];
-    if (!v14)
+    newITunesMetadataDictionary = +[SSLogConfig sharedDaemonConfig];
+    if (!newITunesMetadataDictionary)
     {
-      v14 = +[SSLogConfig sharedConfig];
+      newITunesMetadataDictionary = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog = [newITunesMetadataDictionary shouldLog];
+    if ([newITunesMetadataDictionary shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v16 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [newITunesMetadataDictionary OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 &= 2u;
     }
@@ -263,11 +263,11 @@ LABEL_26:
     {
       v21 = objc_opt_class();
       v22 = v21;
-      v23 = [v5 databaseID];
+      databaseID = [download databaseID];
       v29 = 138412802;
       v30 = v21;
       v31 = 2048;
-      v32 = v23;
+      v32 = databaseID;
       v33 = 2112;
       v34 = v11;
       LODWORD(v27) = 32;
@@ -275,56 +275,56 @@ LABEL_26:
 
       if (!v24)
       {
-        v17 = 0;
+        insertedItemPersistentIdentifier = 0;
         goto LABEL_17;
       }
 
-      v16 = [NSString stringWithCString:v24 encoding:4, &v29, v27];
+      oSLogObject = [NSString stringWithCString:v24 encoding:4, &v29, v27];
       free(v24);
       SSFileLog();
     }
 
-    v17 = 0;
+    insertedItemPersistentIdentifier = 0;
   }
 
 LABEL_17:
-  if (a3 && !v17)
+  if (download && !insertedItemPersistentIdentifier)
   {
     v25 = v11;
-    *a3 = v11;
+    *download = v11;
   }
 
-  return v17;
+  return insertedItemPersistentIdentifier;
 }
 
-- (BOOL)_installExternalDownload:(id *)a3
+- (BOOL)_installExternalDownload:(id *)download
 {
-  v4 = self;
-  v5 = [(FinishDownloadStepOperation *)self download];
-  v6 = [v5 libraryItemIdentifier];
-  if (v6)
+  selfCopy = self;
+  download = [(FinishDownloadStepOperation *)self download];
+  libraryItemIdentifier = [download libraryItemIdentifier];
+  if (libraryItemIdentifier)
   {
     v7 = objc_alloc_init(IPodLibraryItem);
-    -[IPodLibraryItem setLibraryPersistentIdentifier:](v7, "setLibraryPersistentIdentifier:", [v6 longLongValue]);
+    -[IPodLibraryItem setLibraryPersistentIdentifier:](v7, "setLibraryPersistentIdentifier:", [libraryItemIdentifier longLongValue]);
     [(IPodLibraryItem *)v7 setUpdateType:1];
-    if ([v5 isRestoreDownload])
+    if ([download isRestoreDownload])
     {
       [(IPodLibraryItem *)v7 setDownloadType:1];
     }
 
-    v25 = a3;
-    v8 = [v5 isHLS];
-    v9 = [v5 mediaAsset];
-    v10 = [v9 localPath];
-    [(IPodLibraryItem *)v7 setItemMediaPath:v10];
-    -[IPodLibraryItem setProtectionType:](v7, "setProtectionType:", [v9 mediaLibraryProtectionType]);
-    [(IPodLibraryItem *)v7 loadPropertiesFromMediaPath:v10 includeTracks:v8 ^ 1];
-    v11 = [v5 secondaryAssetForType:SSDownloadAssetTypeArtwork];
-    v12 = [v11 localPath];
+    downloadCopy = download;
+    isHLS = [download isHLS];
+    mediaAsset = [download mediaAsset];
+    localPath = [mediaAsset localPath];
+    [(IPodLibraryItem *)v7 setItemMediaPath:localPath];
+    -[IPodLibraryItem setProtectionType:](v7, "setProtectionType:", [mediaAsset mediaLibraryProtectionType]);
+    [(IPodLibraryItem *)v7 loadPropertiesFromMediaPath:localPath includeTracks:isHLS ^ 1];
+    v11 = [download secondaryAssetForType:SSDownloadAssetTypeArtwork];
+    localPath2 = [v11 localPath];
 
-    if (v12)
+    if (localPath2)
     {
-      v13 = [[NSData alloc] initWithContentsOfFile:v12];
+      v13 = [[NSData alloc] initWithContentsOfFile:localPath2];
     }
 
     else
@@ -335,10 +335,10 @@ LABEL_17:
     [(IPodLibraryItem *)v7 setItemArtworkData:v13];
     v21 = [[AddItemToIPodLibraryOperation alloc] initWithIPodLibraryItem:v7];
     v26 = 0;
-    LOBYTE(v4) = [v4 runSubOperation:v21 returningError:&v26];
+    LOBYTE(selfCopy) = [selfCopy runSubOperation:v21 returningError:&v26];
     v20 = v26;
 
-    a3 = v25;
+    download = downloadCopy;
   }
 
   else
@@ -349,19 +349,19 @@ LABEL_17:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [(IPodLibraryItem *)v7 shouldLog];
+    shouldLog = [(IPodLibraryItem *)v7 shouldLog];
     if ([(IPodLibraryItem *)v7 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [(IPodLibraryItem *)v7 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [(IPodLibraryItem *)v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = v15;
     }
@@ -378,54 +378,54 @@ LABEL_17:
       v27 = 138412546;
       v28 = v18;
       v29 = 2048;
-      v30 = [v5 databaseID];
+      databaseID = [download databaseID];
       LODWORD(v24) = 22;
-      v4 = _os_log_send_and_compose_impl();
+      selfCopy = _os_log_send_and_compose_impl();
 
-      if (!v4)
+      if (!selfCopy)
       {
         v20 = 0;
         goto LABEL_20;
       }
 
-      v16 = [NSString stringWithCString:v4 encoding:4, &v27, v24];
-      free(v4);
+      oSLogObject = [NSString stringWithCString:selfCopy encoding:4, &v27, v24];
+      free(selfCopy);
       SSFileLog();
     }
 
     v20 = 0;
-    LOBYTE(v4) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_20:
 
-  if (a3 && (v4 & 1) == 0)
+  if (download && (selfCopy & 1) == 0)
   {
     v22 = v20;
-    *a3 = v20;
+    *download = v20;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (BOOL)_isDaemonOwned
 {
-  v2 = [(FinishDownloadStepOperation *)self download];
-  if ([v2 isStoreDownload])
+  download = [(FinishDownloadStepOperation *)self download];
+  if ([download isStoreDownload])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [v2 databaseID];
-    v5 = [v2 downloadKind];
-    v6 = [ScratchManager directoryPathForDownloadID:v4 kind:v5 createIfNeeded:1];
+    databaseID = [download databaseID];
+    downloadKind = [download downloadKind];
+    v6 = [ScratchManager directoryPathForDownloadID:databaseID kind:downloadKind createIfNeeded:1];
 
-    v7 = [v2 mediaAsset];
-    v8 = [v7 localPath];
+    mediaAsset = [download mediaAsset];
+    localPath = [mediaAsset localPath];
 
-    v3 = [v8 hasPrefix:v6];
+    v3 = [localPath hasPrefix:v6];
   }
 
   return v3;
@@ -434,46 +434,46 @@ LABEL_20:
 - (id)_newIPodLibraryItem
 {
   v3 = objc_alloc_init(IPodLibraryItem);
-  v4 = [(FinishDownloadStepOperation *)self download];
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v4 databaseID]);
+  download = [(FinishDownloadStepOperation *)self download];
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [download databaseID]);
   [(IPodLibraryItem *)v3 setItemDownloadIdentifier:v5];
 
-  v6 = [v4 storeAccountIdentifier];
-  [(IPodLibraryItem *)v3 setValue:v6 forAdditionalEntityProperty:ML3TrackPropertyStoreAccountID];
+  storeAccountIdentifier = [download storeAccountIdentifier];
+  [(IPodLibraryItem *)v3 setValue:storeAccountIdentifier forAdditionalEntityProperty:ML3TrackPropertyStoreAccountID];
 
-  v7 = [v4 libraryItemIdentifier];
-  v8 = v7;
-  if (v7)
+  libraryItemIdentifier = [download libraryItemIdentifier];
+  v8 = libraryItemIdentifier;
+  if (libraryItemIdentifier)
   {
-    -[IPodLibraryItem setLibraryPersistentIdentifier:](v3, "setLibraryPersistentIdentifier:", [v7 longLongValue]);
+    -[IPodLibraryItem setLibraryPersistentIdentifier:](v3, "setLibraryPersistentIdentifier:", [libraryItemIdentifier longLongValue]);
   }
 
-  if ([v4 isRestoreDownload])
+  if ([download isRestoreDownload])
   {
     [(IPodLibraryItem *)v3 setDownloadType:1];
   }
 
-  v9 = [v4 mediaAsset];
-  -[IPodLibraryItem setProtectionType:](v3, "setProtectionType:", [v9 mediaLibraryProtectionType]);
-  v10 = [v4 isHLS];
-  v11 = [v4 downloadKind];
-  v12 = sub_10020F36C(v11);
+  mediaAsset = [download mediaAsset];
+  -[IPodLibraryItem setProtectionType:](v3, "setProtectionType:", [mediaAsset mediaLibraryProtectionType]);
+  isHLS = [download isHLS];
+  downloadKind = [download downloadKind];
+  v12 = sub_10020F36C(downloadKind);
 
-  v13 = [v9 destinationFileName];
-  if (v13)
+  destinationFileName = [mediaAsset destinationFileName];
+  if (destinationFileName)
   {
-    v14 = [v12 stringByAppendingPathComponent:v13];
+    v14 = [v12 stringByAppendingPathComponent:destinationFileName];
     [(IPodLibraryItem *)v3 setItemMediaPath:v14];
-    [(IPodLibraryItem *)v3 loadPropertiesFromMediaPath:v14 includeTracks:v10 ^ 1];
+    [(IPodLibraryItem *)v3 loadPropertiesFromMediaPath:v14 includeTracks:isHLS ^ 1];
   }
 
-  v15 = [v4 secondaryAssetForType:SSDownloadAssetTypeArtwork];
-  v16 = [v15 destinationFileName];
+  v15 = [download secondaryAssetForType:SSDownloadAssetTypeArtwork];
+  destinationFileName2 = [v15 destinationFileName];
 
-  if (v16)
+  if (destinationFileName2)
   {
     v17 = [NSData alloc];
-    v18 = [v12 stringByAppendingPathComponent:v16];
+    v18 = [v12 stringByAppendingPathComponent:destinationFileName2];
     v19 = [v17 initWithContentsOfFile:v18];
 
     [(IPodLibraryItem *)v3 setItemArtworkData:v19];
@@ -492,25 +492,25 @@ LABEL_20:
   {
     v7 = v6;
     v30 = v4;
-    v8 = [(FinishDownloadStepOperation *)self download];
+    download = [(FinishDownloadStepOperation *)self download];
     v9 = objc_alloc_init(NSMutableDictionary);
-    v10 = [v8 title];
-    if (v10)
+    title = [download title];
+    if (title)
     {
-      [v9 setObject:v10 forKey:@"Name"];
+      [v9 setObject:title forKey:@"Name"];
     }
 
-    v31 = v10;
-    v11 = [v8 downloadKind];
-    if (v11)
+    v31 = title;
+    downloadKind = [download downloadKind];
+    if (downloadKind)
     {
-      [v9 setObject:v11 forKey:@"Kind"];
+      [v9 setObject:downloadKind forKey:@"Kind"];
     }
 
-    v12 = sub_10020F36C(v11);
-    v13 = [v8 mediaAsset];
-    v14 = [v13 destinationFileName];
-    v15 = [v12 stringByAppendingPathComponent:v14];
+    v12 = sub_10020F36C(downloadKind);
+    mediaAsset = [download mediaAsset];
+    destinationFileName = [mediaAsset destinationFileName];
+    v15 = [v12 stringByAppendingPathComponent:destinationFileName];
 
     if (v15)
     {
@@ -544,19 +544,19 @@ LABEL_20:
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
+    shouldLog = [v20 shouldLog];
     if ([v20 shouldLogToDisk])
     {
-      v21 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v22 = [v20 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
+    oSLogObject = [v20 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v21 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v21)
+    if (shouldLog)
     {
       v32 = 138412546;
       v33 = objc_opt_class();
@@ -580,7 +580,7 @@ LABEL_24:
         goto LABEL_27;
       }
 
-      v22 = [NSString stringWithCString:v24 encoding:4, &v32, v28];
+      oSLogObject = [NSString stringWithCString:v24 encoding:4, &v32, v28];
       free(v24);
       SSFileLog();
     }

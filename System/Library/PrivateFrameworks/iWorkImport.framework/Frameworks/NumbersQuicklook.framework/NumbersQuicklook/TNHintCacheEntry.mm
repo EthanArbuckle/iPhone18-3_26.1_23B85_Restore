@@ -1,22 +1,22 @@
 @interface TNHintCacheEntry
 - (CGPoint)origin;
-- (TNHintCacheEntry)initWithHint:(id)a3 origin:(CGPoint)a4;
+- (TNHintCacheEntry)initWithHint:(id)hint origin:(CGPoint)origin;
 - (void)dealloc;
 @end
 
 @implementation TNHintCacheEntry
 
-- (TNHintCacheEntry)initWithHint:(id)a3 origin:(CGPoint)a4
+- (TNHintCacheEntry)initWithHint:(id)hint origin:(CGPoint)origin
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v13.receiver = self;
   v13.super_class = TNHintCacheEntry;
   v7 = [(TNHintCacheEntry *)&v13 init];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_setHint_(v7, v8, a3);
+    objc_msgSend_setHint_(v7, v8, hint);
     objc_msgSend_setOrigin_(v9, v10, v11, x, y);
   }
 

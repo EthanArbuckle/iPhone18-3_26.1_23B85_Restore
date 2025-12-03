@@ -1,24 +1,24 @@
 @interface WFAccount
 - (WFAccount)init;
-- (void)invalidateWithCompletionHandler:(id)a3;
-- (void)refreshWithCompletionHandler:(id)a3;
+- (void)invalidateWithCompletionHandler:(id)handler;
+- (void)refreshWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFAccount
 
-- (void)invalidateWithCompletionHandler:(id)a3
+- (void)invalidateWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)refreshWithCompletionHandler:(id)a3
+- (void)refreshWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
@@ -29,18 +29,18 @@
   v2 = [(MTLModel *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     accountID = v2->_accountID;
-    v2->_accountID = v4;
+    v2->_accountID = uUIDString;
 
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     createdAt = v2->_createdAt;
-    v2->_createdAt = v6;
+    v2->_createdAt = date;
 
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     updatedAt = v2->_updatedAt;
-    v2->_updatedAt = v8;
+    v2->_updatedAt = date2;
 
     v10 = v2;
   }

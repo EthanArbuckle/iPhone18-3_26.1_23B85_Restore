@@ -1,16 +1,16 @@
 @interface CAMLivePhotoBadge
-- (CAMLivePhotoBadge)initWithFrame:(CGRect)a3;
+- (CAMLivePhotoBadge)initWithFrame:(CGRect)frame;
 - (void)_updateTextAndColors;
-- (void)setIrisMode:(int64_t)a3;
+- (void)setIrisMode:(int64_t)mode;
 @end
 
 @implementation CAMLivePhotoBadge
 
-- (CAMLivePhotoBadge)initWithFrame:(CGRect)a3
+- (CAMLivePhotoBadge)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMLivePhotoBadge;
-  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKBadgeTextView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,31 +21,31 @@
   return v4;
 }
 
-- (void)setIrisMode:(int64_t)a3
+- (void)setIrisMode:(int64_t)mode
 {
-  if (self->_irisMode != a3)
+  if (self->_irisMode != mode)
   {
-    self->_irisMode = a3;
+    self->_irisMode = mode;
     [(CAMLivePhotoBadge *)self _updateTextAndColors];
   }
 }
 
 - (void)_updateTextAndColors
 {
-  v3 = [(CAMLivePhotoBadge *)self irisMode];
-  if ((v3 - 1) < 2)
+  irisMode = [(CAMLivePhotoBadge *)self irisMode];
+  if ((irisMode - 1) < 2)
   {
     v6 = CAMLocalizedFrameworkString(@"LIVE", @"Text shown to the user when a Live Photo is being captured or has been enabled");
-    v4 = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
 LABEL_5:
-    v5 = v4;
+    v5 = systemYellowColor;
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!irisMode)
   {
     v6 = CAMLocalizedFrameworkString(@"LIVE_OFF", @"Text shown to the user when Live Photo recording has been disabled");
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_5;
   }
 

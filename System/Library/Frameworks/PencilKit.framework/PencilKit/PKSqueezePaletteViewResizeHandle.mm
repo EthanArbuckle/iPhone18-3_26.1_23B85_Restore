@@ -1,20 +1,20 @@
 @interface PKSqueezePaletteViewResizeHandle
-- (id)initWithStrokeStartPresentationValue:(double)a3 strokeEndPresentationValue:;
-- (void)_performAnimated:(void *)a3 animations:(void *)a4 completion:;
-- (void)resizeToStrokeStart:(void *)a3 strokeEnd:(void *)a4 animated:(double)a5 resizeHandler:(double)a6 completion:;
+- (id)initWithStrokeStartPresentationValue:(double)value strokeEndPresentationValue:;
+- (void)_performAnimated:(void *)animated animations:(void *)animations completion:;
+- (void)resizeToStrokeStart:(void *)start strokeEnd:(void *)end animated:(double)animated resizeHandler:(double)handler completion:;
 @end
 
 @implementation PKSqueezePaletteViewResizeHandle
 
-- (id)initWithStrokeStartPresentationValue:(double)a3 strokeEndPresentationValue:
+- (id)initWithStrokeStartPresentationValue:(double)value strokeEndPresentationValue:
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = PKSqueezePaletteViewResizeHandle;
   v5 = objc_msgSendSuper2(&v17, sel_init);
   if (v5)
@@ -28,7 +28,7 @@
     v5[2] = v8;
 
     [v5[1] setValue:a2];
-    [v5[2] setValue:a3];
+    [v5[2] setValue:value];
     objc_initWeak(&location, v5);
     v10 = MEMORY[0x1E69DD250];
     v11 = v5[2];
@@ -65,38 +65,38 @@ void __100__PKSqueezePaletteViewResizeHandle_initWithStrokeStartPresentationValu
   }
 }
 
-- (void)resizeToStrokeStart:(void *)a3 strokeEnd:(void *)a4 animated:(double)a5 resizeHandler:(double)a6 completion:
+- (void)resizeToStrokeStart:(void *)start strokeEnd:(void *)end animated:(double)animated resizeHandler:(double)handler completion:
 {
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  startCopy = start;
+  endCopy = end;
+  if (self)
   {
-    v13 = [v11 copy];
-    v14 = a1[3];
-    a1[3] = v13;
+    v13 = [startCopy copy];
+    v14 = self[3];
+    self[3] = v13;
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __100__PKSqueezePaletteViewResizeHandle_resizeToStrokeStart_strokeEnd_animated_resizeHandler_completion___block_invoke;
     aBlock[3] = &unk_1E82D6F70;
-    v24 = v12;
+    v24 = endCopy;
     v15 = _Block_copy(aBlock);
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __100__PKSqueezePaletteViewResizeHandle_resizeToStrokeStart_strokeEnd_animated_resizeHandler_completion___block_invoke_2;
     v19[3] = &unk_1E82DADC0;
     objc_copyWeak(v21, &location);
     v20 = v15;
-    v21[1] = *&a5;
-    v21[2] = *&a6;
+    v21[1] = *&animated;
+    v21[2] = *&handler;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __100__PKSqueezePaletteViewResizeHandle_resizeToStrokeStart_strokeEnd_animated_resizeHandler_completion___block_invoke_3;
     v17[3] = &unk_1E82D9FE0;
     v16 = v20;
     v18 = v16;
-    [(PKSqueezePaletteViewResizeHandle *)a1 _performAnimated:a2 animations:v19 completion:v17];
+    [(PKSqueezePaletteViewResizeHandle *)self _performAnimated:a2 animations:v19 completion:v17];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -130,20 +130,20 @@ void __100__PKSqueezePaletteViewResizeHandle_resizeToStrokeStart_strokeEnd_anima
   }
 }
 
-- (void)_performAnimated:(void *)a3 animations:(void *)a4 completion:
+- (void)_performAnimated:(void *)animated animations:(void *)animations completion:
 {
-  v8 = a3;
-  v7 = a4;
-  if (a1)
+  animatedCopy = animated;
+  animationsCopy = animations;
+  if (self)
   {
     if (a2)
     {
-      [MEMORY[0x1E69DD250] _animateUsingSpringWithDampingRatio:0 response:v8 tracking:v7 initialDampingRatio:*&PKSqueezePaletteViewResizeDampingRatio initialResponse:*&PKSqueezePaletteViewResizeResponse dampingRatioSmoothing:0.0 responseSmoothing:0.0 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
+      [MEMORY[0x1E69DD250] _animateUsingSpringWithDampingRatio:0 response:animatedCopy tracking:animationsCopy initialDampingRatio:*&PKSqueezePaletteViewResizeDampingRatio initialResponse:*&PKSqueezePaletteViewResizeResponse dampingRatioSmoothing:0.0 responseSmoothing:0.0 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
     }
 
     else
     {
-      [MEMORY[0x1E69DD250] _performWithoutRetargetingAnimations:v8];
+      [MEMORY[0x1E69DD250] _performWithoutRetargetingAnimations:animatedCopy];
     }
   }
 }

@@ -1,9 +1,9 @@
 @interface RETaggedFeatureValueCountedSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RETaggedFeatureValueCountedSet)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)enumerateFeatureValuesUsingBlock:(id)a3;
+- (void)enumerateFeatureValuesUsingBlock:(id)block;
 @end
 
 @implementation RETaggedFeatureValueCountedSet
@@ -29,10 +29,10 @@
   [(RETaggedFeatureValueCountedSet *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -40,16 +40,16 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && CFEqual(self->_bag, v4->_bag) != 0;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && CFEqual(self->_bag, equalCopy->_bag) != 0;
   }
 
   return v5;
 }
 
-- (void)enumerateFeatureValuesUsingBlock:(id)a3
+- (void)enumerateFeatureValuesUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = objc_alloc_init(RETaggedFeatureValueCountedSet);
     v11 = 0;
@@ -59,7 +59,7 @@
     v7[3] = &unk_2785FC248;
     v6 = v5;
     v8 = v6;
-    v9 = v4;
+    v9 = blockCopy;
     context = MEMORY[0x22AABC5E0](v7);
     LOBYTE(v11) = 0;
     CFBagApplyFunction(self->_bag, kTaggedFeatureCFApplier, &context);
@@ -80,7 +80,7 @@ uint64_t __67__RETaggedFeatureValueCountedSet_enumerateFeatureValuesUsingBlock__
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   CFRelease(v4[1]);

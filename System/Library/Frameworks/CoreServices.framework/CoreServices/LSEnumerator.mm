@@ -1,23 +1,23 @@
 @interface LSEnumerator
-+ (id)enumeratorForApplicationProxiesWithOptions:(unint64_t)a3;
-+ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)a3 options:(unint64_t)a4;
-+ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)a3 options:(unint64_t)a4 filter:(id)a5;
++ (id)enumeratorForApplicationProxiesWithOptions:(unint64_t)options;
++ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)point options:(unint64_t)options;
++ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)point options:(unint64_t)options filter:(id)filter;
 + (void)initialize;
 - (NSPredicate)predicate;
-- (id)_initWithContext:(LSContext *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithContext:(LSContext *)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)filter;
-- (id)swift_firstWhere:(id)a3;
-- (void)setFilter:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)swift_forEach:(id)a3;
+- (id)swift_firstWhere:(id)where;
+- (void)setFilter:(id)filter;
+- (void)setPredicate:(id)predicate;
+- (void)swift_forEach:(id)each;
 @end
 
 @implementation LSEnumerator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.launchservices", "enumeration");
     v3 = _LSEnumeratorLog;
@@ -25,31 +25,31 @@
   }
 }
 
-+ (id)enumeratorForApplicationProxiesWithOptions:(unint64_t)a3
++ (id)enumeratorForApplicationProxiesWithOptions:(unint64_t)options
 {
-  v3 = [(_LSApplicationRecordEnumerator *)[_LSApplicationProxyEnumerator alloc] initWithContext:0 volumeURL:0 options:a3];
+  v3 = [(_LSApplicationRecordEnumerator *)[_LSApplicationProxyEnumerator alloc] initWithContext:0 volumeURL:0 options:options];
 
   return v3;
 }
 
-+ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)a3 options:(unint64_t)a4
++ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)point options:(unint64_t)options
 {
-  if (!a3)
+  if (!point)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"LSEnumerator.mm" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"extensionPointID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSEnumerator.mm" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"extensionPointID != nil"}];
   }
 
-  v6 = [(_LSApplicationExtensionRecordEnumerator *)[_LSPlugInProxyEnumerator alloc] initWithExtensionPointIdentifier:a3 options:a4];
+  v6 = [(_LSApplicationExtensionRecordEnumerator *)[_LSPlugInProxyEnumerator alloc] initWithExtensionPointIdentifier:point options:options];
 
   return v6;
 }
 
-+ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)a3 options:(unint64_t)a4 filter:(id)a5
++ (id)enumeratorForPlugInKitProxiesWithExtensionPoint:(id)point options:(unint64_t)options filter:(id)filter
 {
-  if (a3)
+  if (point)
   {
-    if (a5)
+    if (filter)
     {
       goto LABEL_3;
     }
@@ -57,20 +57,20 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"LSEnumerator.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"extensionPointID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSEnumerator.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"extensionPointID != nil"}];
 
-    if (a5)
+    if (filter)
     {
       goto LABEL_3;
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:a1 file:@"LSEnumerator.mm" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LSEnumerator.mm" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
 
 LABEL_3:
-  v10 = [(_LSApplicationExtensionRecordEnumerator *)[_LSPlugInProxyEnumerator alloc] initWithExtensionPointIdentifier:a3 options:a4 filter:a5];
+  v10 = [(_LSApplicationExtensionRecordEnumerator *)[_LSPlugInProxyEnumerator alloc] initWithExtensionPointIdentifier:point options:options filter:filter];
 
   return v10;
 }
@@ -98,13 +98,13 @@ LABEL_3:
   return v5;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__LSEnumerator_setPredicate___block_invoke;
   v6[3] = &unk_1E6A1CC28;
-  v6[4] = a3;
+  v6[4] = predicate;
   v4 = MEMORY[0x1865D71B0](v6, a2);
   filter = self->_filter;
   self->_filter = v4;
@@ -127,22 +127,22 @@ LABEL_3:
   return v3;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = [a3 copy];
+  v4 = [filter copy];
   filter = self->_filter;
   self->_filter = v4;
 }
 
-- (void)swift_forEach:(id)a3
+- (void)swift_forEach:(id)each
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = self;
-  v5 = [(LSEnumerator *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  selfCopy = self;
+  v5 = [(LSEnumerator *)selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -153,14 +153,14 @@ LABEL_3:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
-        (*(a3 + 2))(a3, *(*(&v9 + 1) + 8 * v7++));
+        (*(each + 2))(each, *(*(&v9 + 1) + 8 * v7++));
       }
 
       while (v5 != v7);
-      v5 = [(LSEnumerator *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [(LSEnumerator *)selfCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -169,15 +169,15 @@ LABEL_3:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)swift_firstWhere:(id)a3
+- (id)swift_firstWhere:(id)where
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = self;
-  v5 = [(LSEnumerator *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v5 = [(LSEnumerator *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -187,18 +187,18 @@ LABEL_3:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        if ((*(a3 + 2))(a3, v8))
+        if ((*(where + 2))(where, v8))
         {
           v9 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [(LSEnumerator *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [(LSEnumerator *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -216,9 +216,9 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [[(objc_class *)object_getClass(self) allocWithZone:a3] _initWithContext:0];
+  v4 = [[(objc_class *)object_getClass(self) allocWithZone:zone] _initWithContext:0];
   if (v4)
   {
     v5 = [self->_filter copy];
@@ -236,7 +236,7 @@ LABEL_11:
   return v4;
 }
 
-- (id)_initWithContext:(LSContext *)a3
+- (id)_initWithContext:(LSContext *)context
 {
   v4.receiver = self;
   v4.super_class = LSEnumerator;

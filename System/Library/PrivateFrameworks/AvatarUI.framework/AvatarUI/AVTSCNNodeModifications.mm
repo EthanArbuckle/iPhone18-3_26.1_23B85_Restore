@@ -1,61 +1,61 @@
 @interface AVTSCNNodeModifications
-- (AVTSCNNodeModifications)initWithCoder:(id)a3;
-- (AVTSCNNodeModifications)initWithProjectionDirection:(double)a3 fieldOfView:(double)a4 verticalLensShift:(float)a5 framingMode:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (AVTSCNNodeModifications)initWithCoder:(id)coder;
+- (AVTSCNNodeModifications)initWithProjectionDirection:(double)direction fieldOfView:(double)view verticalLensShift:(float)shift framingMode:(id)mode;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTSCNNodeModifications
 
-- (AVTSCNNodeModifications)initWithProjectionDirection:(double)a3 fieldOfView:(double)a4 verticalLensShift:(float)a5 framingMode:(id)a6
+- (AVTSCNNodeModifications)initWithProjectionDirection:(double)direction fieldOfView:(double)view verticalLensShift:(float)shift framingMode:(id)mode
 {
-  v11 = a6;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = AVTSCNNodeModifications;
   v12 = [(AVTSCNNodeModifications *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_projectionDirection = a3;
-    v12->_fieldOfView = a4;
-    v12->_verticalLensShift = a5;
-    objc_storeStrong(&v12->_framingMode, a6);
+    v12->_projectionDirection = direction;
+    v12->_fieldOfView = view;
+    v12->_verticalLensShift = shift;
+    objc_storeStrong(&v12->_framingMode, mode);
   }
 
   return v13;
 }
 
-- (AVTSCNNodeModifications)initWithCoder:(id)a3
+- (AVTSCNNodeModifications)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"projectionDirection"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fieldOfView"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"projectionDirection"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fieldOfView"];
   [v6 doubleValue];
   v8 = v7;
 
-  [v4 decodeFloatForKey:@"lensShift"];
+  [coderCopy decodeFloatForKey:@"lensShift"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"framingMode"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"framingMode"];
 
   v12 = [(AVTSCNNodeModifications *)self initWithProjectionDirection:v11 fieldOfView:v5 verticalLensShift:v8 framingMode:v10];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   projectionDirection_low = LODWORD(self->_projectionDirection);
-  v10 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInt:projectionDirection_low];
-  [v10 encodeObject:v6 forKey:@"projectionDirection"];
+  [coderCopy encodeObject:v6 forKey:@"projectionDirection"];
 
   fieldOfView = self->_fieldOfView;
   *&fieldOfView = fieldOfView;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:fieldOfView];
-  [v10 encodeObject:v8 forKey:@"fieldOfView"];
+  [coderCopy encodeObject:v8 forKey:@"fieldOfView"];
 
   *&v9 = self->_verticalLensShift;
-  [v10 encodeFloat:@"lensShift" forKey:v9];
-  [v10 encodeObject:self->_framingMode forKey:@"framingMode"];
+  [coderCopy encodeFloat:@"lensShift" forKey:v9];
+  [coderCopy encodeObject:self->_framingMode forKey:@"framingMode"];
 }
 
 @end

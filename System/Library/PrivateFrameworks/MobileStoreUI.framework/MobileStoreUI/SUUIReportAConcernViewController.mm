@@ -1,13 +1,13 @@
 @interface SUUIReportAConcernViewController
-- (SUUIReportAConcernViewController)initWithConfiguration:(id)a3;
+- (SUUIReportAConcernViewController)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SUUIReportAConcernViewController
 
-- (SUUIReportAConcernViewController)initWithConfiguration:(id)a3
+- (SUUIReportAConcernViewController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[SUUIReportAConcernReasonViewController alloc] initWithConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[SUUIReportAConcernReasonViewController alloc] initWithConfiguration:configurationCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

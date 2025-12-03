@@ -1,14 +1,14 @@
 @interface UIKitIndexView.Coordinator
-- (void)valueChanged:(id)a3;
+- (void)valueChanged:(id)changed;
 @end
 
 @implementation UIKitIndexView.Coordinator
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BA42008(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_23BA42008(changedCopy);
 }
 
 @end

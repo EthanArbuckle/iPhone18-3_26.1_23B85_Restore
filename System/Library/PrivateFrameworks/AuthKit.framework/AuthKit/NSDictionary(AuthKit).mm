@@ -11,7 +11,7 @@
 
 - (id)_ak_shortenServiceIdentifier:()AuthKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -34,7 +34,7 @@
 
 - (id)_ak_truncateTokenString:()AuthKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -71,14 +71,14 @@
 
 - (id)_ak_truncateTokenDict:()AuthKit
 {
-  v11 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
   v9 = [v4 initWithCapacity:{objc_msgSend(location[0], "count")}];
   v5 = location[0];
-  v7 = MEMORY[0x1E69E5928](v11);
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   v8 = MEMORY[0x1E69E5928](v9);
   [v5 enumerateKeysAndObjectsUsingBlock:?];
   v6 = [v9 copy];
@@ -92,10 +92,10 @@
 
 - (id)ak_redactedCopy
 {
-  v5[2] = a1;
+  v5[2] = self;
   v5[1] = a2;
-  v5[0] = MEMORY[0x1E69E5928](a1);
-  v4 = [a1 aaf_map:?];
+  v5[0] = MEMORY[0x1E69E5928](self);
+  v4 = [self aaf_map:?];
   objc_storeStrong(v5, 0);
 
   return v4;
@@ -104,11 +104,11 @@
 - (id)ak_dictionaryWithKeysFromArray:()AuthKit
 {
   v18 = *MEMORY[0x1E69E9840];
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   memset(__b, 0, sizeof(__b));
   obja = MEMORY[0x1E69E5928](location[0]);
   v10 = [obja countByEnumeratingWithState:__b objects:v17 count:16];
@@ -126,10 +126,10 @@
       }
 
       v13 = *(__b[1] + 8 * v7);
-      v11 = [v16 objectForKeyedSubscript:v13];
+      v11 = [selfCopy objectForKeyedSubscript:v13];
       if (v11)
       {
-        [v14 setObject:v11 forKeyedSubscript:v13];
+        [dictionary setObject:v11 forKeyedSubscript:v13];
       }
 
       objc_storeStrong(&v11, 0);
@@ -147,8 +147,8 @@
   }
 
   MEMORY[0x1E69E5920](obja);
-  v4 = [v14 copy];
-  objc_storeStrong(&v14, 0);
+  v4 = [dictionary copy];
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
 
@@ -158,13 +158,13 @@
 - (uint64_t)hasValueAtKey:()AuthKit ofType:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v17 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v15 = 0;
   objc_storeStrong(&v15, a4);
-  v14 = [v17 objectForKeyedSubscript:location[0]];
+  v14 = [selfCopy objectForKeyedSubscript:location[0]];
   if (v14)
   {
     v4 = objc_opt_class();

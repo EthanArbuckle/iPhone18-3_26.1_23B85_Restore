@@ -1,23 +1,23 @@
 @interface Ace3SoCRestoreInfoHelperBackDeploy
-- (Ace3SoCRestoreInfoHelperBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (void)logInternal:(id)a3 arguments:(char *)a4;
-- (void)verboseLog:(id)a3;
+- (Ace3SoCRestoreInfoHelperBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (void)logInternal:(id)internal arguments:(char *)arguments;
+- (void)verboseLog:(id)log;
 @end
 
 @implementation Ace3SoCRestoreInfoHelperBackDeploy
 
-- (Ace3SoCRestoreInfoHelperBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (Ace3SoCRestoreInfoHelperBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = Ace3SoCRestoreInfoHelperBackDeploy;
   v9 = [(Ace3SoCRestoreInfoHelperBackDeploy *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    v9->_logFunction = a4;
-    v9->_logContext = a5;
-    v11 = [v8 objectForKeyedSubscript:@"Options"];
+    v9->_logFunction = function;
+    v9->_logContext = context;
+    v11 = [optionsCopy objectForKeyedSubscript:@"Options"];
     v12 = [v11 objectForKeyedSubscript:@"Verbose"];
 
     if (v12)
@@ -27,16 +27,16 @@
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [(Ace3SoCRestoreInfoHelperBackDeploy *)v10 verboseLog:@"%@: options = %@", v14, v8];
+    [(Ace3SoCRestoreInfoHelperBackDeploy *)v10 verboseLog:@"%@: options = %@", v14, optionsCopy];
   }
 
   return v10;
 }
 
-- (void)logInternal:(id)a3 arguments:(char *)a4
+- (void)logInternal:(id)internal arguments:(char *)arguments
 {
-  v6 = a3;
-  v10 = [[NSMutableString alloc] initWithFormat:v6 arguments:a4];
+  internalCopy = internal;
+  v10 = [[NSMutableString alloc] initWithFormat:internalCopy arguments:arguments];
 
   [v10 appendString:@"\n"];
   logFunction = self->_logFunction;
@@ -45,11 +45,11 @@
   logFunction(logContext, [v10 UTF8String]);
 }
 
-- (void)verboseLog:(id)a3
+- (void)verboseLog:(id)log
 {
   if (self->_verbose)
   {
-    [(Ace3SoCRestoreInfoHelperBackDeploy *)self logInternal:a3 arguments:&v3];
+    [(Ace3SoCRestoreInfoHelperBackDeploy *)self logInternal:log arguments:&v3];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface NSLayoutConstraint
-- (id)withPriority:(float)a3;
+- (id)withPriority:(float)priority;
 @end
 
 @implementation NSLayoutConstraint
 
-- (id)withPriority:(float)a3
+- (id)withPriority:(float)priority
 {
-  v4 = self;
-  *&v5 = a3;
-  [(NSLayoutConstraint *)v4 setPriority:v5];
+  selfCopy = self;
+  *&v5 = priority;
+  [(NSLayoutConstraint *)selfCopy setPriority:v5];
 
-  return v4;
+  return selfCopy;
 }
 
 @end

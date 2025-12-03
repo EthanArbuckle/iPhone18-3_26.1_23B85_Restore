@@ -1,12 +1,12 @@
 @interface PXMemoriesRelatedSettings
-+ (BOOL)isAssetCountAcceptableForMemoryLensPlayback:(int64_t)a3;
-+ (BOOL)isAssetCountAcceptableForMemoryPlayback:(int64_t)a3;
-+ (id)schedulerOptionsFromTimelineSchedulerMode:(unint64_t)a3;
++ (BOOL)isAssetCountAcceptableForMemoryLensPlayback:(int64_t)playback;
++ (BOOL)isAssetCountAcceptableForMemoryPlayback:(int64_t)playback;
++ (id)schedulerOptionsFromTimelineSchedulerMode:(unint64_t)mode;
 + (id)settingsControllerModule;
 + (id)sharedInstance;
-+ (void)_generateQuestionsWithOptions:(int64_t)a3 count:(unint64_t)a4 inModuleController:(id)a5;
-+ (void)_presentAlertForMemoriesGenerationResult:(id)a3 error:(id)a4 inModuleController:(id)a5;
-+ (void)_presentAlertWithTitle:(id)a3 andMessage:(id)a4 inModuleController:(id)a5;
++ (void)_generateQuestionsWithOptions:(int64_t)options count:(unint64_t)count inModuleController:(id)controller;
++ (void)_presentAlertForMemoriesGenerationResult:(id)result error:(id)error inModuleController:(id)controller;
++ (void)_presentAlertWithTitle:(id)title andMessage:(id)message inModuleController:(id)controller;
 - (void)performPostSaveActions;
 - (void)setDefaultValues;
 @end
@@ -28,44 +28,44 @@
   [(PXMemoriesRelatedSettings *)self setWidgetRefreshTimeInterval:900.0];
   if (HasInternalUI)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 persistentDomainForName:*MEMORY[0x1E696A400]];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
     v6 = [v5 mutableCopy];
 
     v7 = [v6 valueForKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
     v9 = [v6 valueForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
-    v10 = [v9 integerValue];
+    integerValue2 = [v9 integerValue];
 
-    [(PXMemoriesRelatedSettings *)self setMinimumNumberOfCuratedAssetsForMemories:v8];
-    [(PXMemoriesRelatedSettings *)self setMinimumNumberOfCuratedAssetsForInterestingMoments:v10];
+    [(PXMemoriesRelatedSettings *)self setMinimumNumberOfCuratedAssetsForMemories:integerValue];
+    [(PXMemoriesRelatedSettings *)self setMinimumNumberOfCuratedAssetsForInterestingMoments:integerValue2];
     v11 = [v6 valueForKey:@"PXMemoriesLivingOnFeedbackUIEnabled"];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v13 = 1;
+      bOOLValue = 1;
     }
 
-    [(PXMemoriesRelatedSettings *)self setEnableMemoriesLivingOnFeedback:v13];
+    [(PXMemoriesRelatedSettings *)self setEnableMemoriesLivingOnFeedback:bOOLValue];
     v14 = [v6 valueForKey:@"PXTimelineSchedulerMode"];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    [(PXMemoriesRelatedSettings *)self setTimelineSchedulerMode:v16];
+    [(PXMemoriesRelatedSettings *)self setTimelineSchedulerMode:unsignedIntegerValue];
   }
 
   [(PXMemoriesRelatedSettings *)self setTimelineContentMode:0];
@@ -85,66 +85,66 @@
   [(PXSettings *)&v21 performPostSaveActions];
   if (PFOSVariantHasInternalUI())
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 synchronize];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults synchronize];
     v4 = *MEMORY[0x1E696A400];
-    v5 = [v3 persistentDomainForName:*MEMORY[0x1E696A400]];
-    v6 = [v5 mutableCopy];
+    v5 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
+    dictionary = [v5 mutableCopy];
 
-    if (!v6)
+    if (!dictionary)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v7 = [(PXMemoriesRelatedSettings *)self minimumNumberOfCuratedAssetsForMemories];
-    v8 = [(PXMemoriesRelatedSettings *)self minimumNumberOfCuratedAssetsForInterestingMoments];
-    v9 = [v6 valueForKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
-    v10 = [v9 integerValue];
+    minimumNumberOfCuratedAssetsForMemories = [(PXMemoriesRelatedSettings *)self minimumNumberOfCuratedAssetsForMemories];
+    minimumNumberOfCuratedAssetsForInterestingMoments = [(PXMemoriesRelatedSettings *)self minimumNumberOfCuratedAssetsForInterestingMoments];
+    v9 = [dictionary valueForKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
+    integerValue = [v9 integerValue];
 
-    v11 = v7 == v10;
-    v12 = v7 != v10;
+    v11 = minimumNumberOfCuratedAssetsForMemories == integerValue;
+    v12 = minimumNumberOfCuratedAssetsForMemories != integerValue;
     if (!v11)
     {
-      if (v7)
+      if (minimumNumberOfCuratedAssetsForMemories)
       {
-        v13 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
-        [v6 setObject:v13 forKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
+        v13 = [MEMORY[0x1E696AD98] numberWithInteger:minimumNumberOfCuratedAssetsForMemories];
+        [dictionary setObject:v13 forKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
       }
 
       else
       {
-        [v6 removeObjectForKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
+        [dictionary removeObjectForKey:@"PGMinimumNumberOfCuratedAssetsForMemories"];
       }
     }
 
-    v14 = [v6 valueForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
-    v15 = [v14 integerValue];
+    v14 = [dictionary valueForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
+    integerValue2 = [v14 integerValue];
 
-    if (v8 != v15)
+    if (minimumNumberOfCuratedAssetsForInterestingMoments != integerValue2)
     {
-      if (v8)
+      if (minimumNumberOfCuratedAssetsForInterestingMoments)
       {
-        v16 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-        [v6 setObject:v16 forKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
+        v16 = [MEMORY[0x1E696AD98] numberWithInteger:minimumNumberOfCuratedAssetsForInterestingMoments];
+        [dictionary setObject:v16 forKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
       }
 
       else
       {
-        [v6 removeObjectForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
+        [dictionary removeObjectForKey:@"PGMinimumNumberOfCuratedAssetsForInterestingMoments"];
       }
 
       v12 = 1;
     }
 
-    v17 = [(PXMemoriesRelatedSettings *)self timelineSchedulerMode];
-    v18 = [v6 valueForKey:@"PXTimelineSchedulerMode"];
+    timelineSchedulerMode = [(PXMemoriesRelatedSettings *)self timelineSchedulerMode];
+    v18 = [dictionary valueForKey:@"PXTimelineSchedulerMode"];
     v19 = v18;
-    if (v17)
+    if (timelineSchedulerMode)
     {
-      if (v17 != [v18 unsignedIntegerValue])
+      if (timelineSchedulerMode != [v18 unsignedIntegerValue])
       {
-        v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
-        [v6 setObject:v20 forKey:@"PXTimelineSchedulerMode"];
+        v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:timelineSchedulerMode];
+        [dictionary setObject:v20 forKey:@"PXTimelineSchedulerMode"];
 
         goto LABEL_19;
       }
@@ -152,7 +152,7 @@
 
     else if (v18)
     {
-      [v6 removeObjectForKey:@"PXTimelineSchedulerMode"];
+      [dictionary removeObjectForKey:@"PXTimelineSchedulerMode"];
       goto LABEL_19;
     }
 
@@ -164,18 +164,18 @@ LABEL_20:
     }
 
 LABEL_19:
-    [v3 setPersistentDomain:v6 forName:v4];
+    [standardUserDefaults setPersistentDomain:dictionary forName:v4];
     goto LABEL_20;
   }
 }
 
-+ (BOOL)isAssetCountAcceptableForMemoryLensPlayback:(int64_t)a3
++ (BOOL)isAssetCountAcceptableForMemoryLensPlayback:(int64_t)playback
 {
   v4 = +[PXLemonadeSettings sharedInstance];
-  if ([v4 minimumNumberOfAssetsForPlaybackAsMemory] <= a3)
+  if ([v4 minimumNumberOfAssetsForPlaybackAsMemory] <= playback)
   {
     v6 = +[PXLemonadeSettings sharedInstance];
-    v5 = [v6 maximumNumberOfAssetsForPlaybackAsMemory] >= a3;
+    v5 = [v6 maximumNumberOfAssetsForPlaybackAsMemory] >= playback;
   }
 
   else
@@ -186,21 +186,21 @@ LABEL_19:
   return v5;
 }
 
-+ (BOOL)isAssetCountAcceptableForMemoryPlayback:(int64_t)a3
++ (BOOL)isAssetCountAcceptableForMemoryPlayback:(int64_t)playback
 {
   v4 = +[PXMemoriesRelatedSettings sharedInstance];
-  v6 = [v4 minimumNumberOfCuratedAssetsForMovieHeader] <= a3 && *MEMORY[0x1E6978FE8] >= a3;
+  v6 = [v4 minimumNumberOfCuratedAssetsForMovieHeader] <= playback && *MEMORY[0x1E6978FE8] >= playback;
 
   return v6;
 }
 
-+ (id)schedulerOptionsFromTimelineSchedulerMode:(unint64_t)a3
++ (id)schedulerOptionsFromTimelineSchedulerMode:(unint64_t)mode
 {
   v4 = objc_alloc_init(PXTimelineSchedulerOptions);
   v5 = v4;
-  if (a3 > 1)
+  if (mode > 1)
   {
-    switch(a3)
+    switch(mode)
     {
       case 2uLL:
         [(PXTimelineSchedulerOptions *)v4 setTimelineEntryDuration:86400.0];
@@ -226,9 +226,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (mode)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
       goto LABEL_14;
     }
@@ -269,29 +269,29 @@ void __43__PXMemoriesRelatedSettings_sharedInstance__block_invoke()
   sharedInstance_sharedInstance_49897 = v0;
 }
 
-+ (void)_presentAlertWithTitle:(id)a3 andMessage:(id)a4 inModuleController:(id)a5
++ (void)_presentAlertWithTitle:(id)title andMessage:(id)message inModuleController:(id)controller
 {
   v7 = MEMORY[0x1E69DC650];
-  v8 = a5;
-  v10 = [v7 alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  controllerCopy = controller;
+  v10 = [v7 alertControllerWithTitle:title message:message preferredStyle:1];
   v9 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:1 handler:0];
   [v10 addAction:v9];
 
-  [v8 presentViewController:v10 animated:1 completion:0];
+  [controllerCopy presentViewController:v10 animated:1 completion:0];
 }
 
-+ (void)_presentAlertForMemoriesGenerationResult:(id)a3 error:(id)a4 inModuleController:(id)a5
++ (void)_presentAlertForMemoriesGenerationResult:(id)result error:(id)error inModuleController:(id)controller
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = a3;
-  [v8 dismissViewControllerAnimated:0 completion:0];
-  v10 = [v9 objectForKeyedSubscript:@"PHMemoryIdentifiersKey"];
+  errorCopy = error;
+  controllerCopy = controller;
+  resultCopy = result;
+  [controllerCopy dismissViewControllerAnimated:0 completion:0];
+  v10 = [resultCopy objectForKeyedSubscript:@"PHMemoryIdentifiersKey"];
 
   v11 = [v10 count];
-  if (v15)
+  if (errorCopy)
   {
-    v12 = [v15 description];
+    v12 = [errorCopy description];
     v13 = @"Error while generating memories";
   }
 
@@ -307,22 +307,22 @@ void __43__PXMemoriesRelatedSettings_sharedInstance__block_invoke()
     v12 = 0;
   }
 
-  [a1 _presentAlertWithTitle:v13 andMessage:v12 inModuleController:v8];
+  [self _presentAlertWithTitle:v13 andMessage:v12 inModuleController:controllerCopy];
 }
 
-+ (void)_generateQuestionsWithOptions:(int64_t)a3 count:(unint64_t)a4 inModuleController:(id)a5
++ (void)_generateQuestionsWithOptions:(int64_t)options count:(unint64_t)count inModuleController:(id)controller
 {
-  v8 = a5;
+  controllerCopy = controller;
   v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Generating New Questions..." message:0 preferredStyle:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inModuleController___block_invoke;
   v11[3] = &unk_1E7749770;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
-  v15 = a1;
-  v10 = v8;
+  v12 = controllerCopy;
+  optionsCopy = options;
+  countCopy = count;
+  selfCopy = self;
+  v10 = controllerCopy;
   [v10 presentViewController:v9 animated:1 completion:v11];
 }
 
@@ -402,7 +402,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v199[1] = 3221225472;
   v199[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke;
   v199[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v199[4] = a1;
+  v199[4] = self;
   v4 = [MEMORY[0x1E69C6658] actionWithHandler:v199];
   v177 = [v3 rowWithTitle:@"Graph Service Status" action:v4];
 
@@ -411,7 +411,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v198[1] = 3221225472;
   v198[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_2;
   v198[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v198[4] = a1;
+  v198[4] = self;
   v6 = [MEMORY[0x1E69C6658] actionWithHandler:v198];
   v176 = [v5 rowWithTitle:@"Invalidate Transient Caches" action:v6];
 
@@ -420,7 +420,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v197[1] = 3221225472;
   v197[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_3;
   v197[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v197[4] = a1;
+  v197[4] = self;
   v8 = [MEMORY[0x1E69C6658] actionWithHandler:v197];
   v175 = [v7 rowWithTitle:@"Invalidate Persistent Caches" action:v8];
 
@@ -433,7 +433,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v196[1] = 3221225472;
   v196[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_6;
   v196[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v196[4] = a1;
+  v196[4] = self;
   v12 = [MEMORY[0x1E69C6658] actionWithHandler:v196];
   v173 = [v11 rowWithTitle:@"Launch Highlights Enrichment" action:v12];
 
@@ -442,14 +442,14 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v195[1] = 3221225472;
   v195[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_9;
   v195[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v195[4] = a1;
+  v195[4] = self;
   v14 = [MEMORY[0x1E69C6658] actionWithHandler:v195];
   v172 = [v13 rowWithTitle:@"Launch Month / Year Enrichment" action:v14];
 
   v171 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Statistics" output:&__block_literal_global_243];
   v170 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Library Estimates" action:&__block_literal_global_249];
   v169 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Export Graph" action:&__block_literal_global_255_64663];
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v191 = 0u;
   v192 = 0u;
   v193 = 0u;
@@ -472,12 +472,12 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
         if ([v20 integerValue])
         {
           v21 = [v20 description];
-          [v15 addObject:v21];
+          [array addObject:v21];
         }
 
         else
         {
-          [v15 addObject:@"Default"];
+          [array addObject:@"Default"];
         }
       }
 
@@ -523,7 +523,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v190[1] = 3221225472;
   v190[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_12_450;
   v190[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v190[4] = a1;
+  v190[4] = self;
   v29 = [MEMORY[0x1E69C6658] actionWithHandler:v190];
   v157 = [v28 rowWithTitle:@"Create Contextual Memory" action:v29];
 
@@ -532,7 +532,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v189[1] = 3221225472;
   v189[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_16;
   v189[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v189[4] = a1;
+  v189[4] = self;
   v31 = [MEMORY[0x1E69C6658] actionWithHandler:v189];
   v156 = [v30 rowWithTitle:@"Statistics" action:v31];
 
@@ -541,7 +541,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v188[1] = 3221225472;
   v188[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_19;
   v188[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v188[4] = a1;
+  v188[4] = self;
   v33 = [MEMORY[0x1E69C6658] actionWithHandler:v188];
   v34 = [v32 rowWithTitle:@"Generate Questions" action:v33];
 
@@ -550,7 +550,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v187[1] = 3221225472;
   v187[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_20;
   v187[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v187[4] = a1;
+  v187[4] = self;
   v36 = [MEMORY[0x1E69C6658] actionWithHandler:v187];
   v37 = [v35 rowWithTitle:@"Clear Unanswered Questions" action:v36];
 
@@ -559,7 +559,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v186[1] = 3221225472;
   v186[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_23;
   v186[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v186[4] = a1;
+  v186[4] = self;
   v39 = [MEMORY[0x1E69C6658] actionWithHandler:v186];
   v40 = [v38 rowWithTitle:@"🔮 Generate Music Quality Questions" action:v39];
 
@@ -568,7 +568,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v185[1] = 3221225472;
   v185[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_24;
   v185[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v185[4] = a1;
+  v185[4] = self;
   v42 = [MEMORY[0x1E69C6658] actionWithHandler:v185];
   v43 = [v41 rowWithTitle:@"🔮 Generate Social Group Questions" action:v42];
 
@@ -590,7 +590,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v184[1] = 3221225472;
   v184[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_25;
   v184[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v184[4] = a1;
+  v184[4] = self;
   v47 = [MEMORY[0x1E69C6658] actionWithHandler:v184];
   v48 = [v46 rowWithTitle:@"Music Curation Cache Status" action:v47];
 
@@ -599,7 +599,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v183[1] = 3221225472;
   v183[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_2_525;
   v183[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v183[4] = a1;
+  v183[4] = self;
   v50 = [MEMORY[0x1E69C6658] actionWithHandler:v183];
   v51 = [v49 rowWithTitle:@"Music Curation Clear Cache" action:v50];
 
@@ -658,7 +658,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v182[1] = 3221225472;
   v182[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_6_597;
   v182[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v182[4] = a1;
+  v182[4] = self;
   v70 = [MEMORY[0x1E69C6658] actionWithHandler:v182];
   v150 = [v69 rowWithTitle:@"Remove All Memories" action:v70];
 
@@ -667,7 +667,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v181[1] = 3221225472;
   v181[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_9_611;
   v181[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v181[4] = a1;
+  v181[4] = self;
   v72 = [MEMORY[0x1E69C6658] actionWithHandler:v181];
   v149 = [v71 rowWithTitle:@"Create New Memories" action:v72];
 
@@ -680,7 +680,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v180[1] = 3221225472;
   v180[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_636;
   v180[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v180[4] = a1;
+  v180[4] = self;
   v77 = [MEMORY[0x1E69C6658] actionWithHandler:v180];
   v78 = [v76 rowWithTitle:@"Create Memories Notification" action:v77];
 
@@ -689,7 +689,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v179[1] = 3221225472;
   v179[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_4_650;
   v179[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v179[4] = a1;
+  v179[4] = self;
   v80 = [MEMORY[0x1E69C6658] actionWithHandler:v179];
   v81 = [v79 rowWithTitle:@"Simulate Memories Notification" action:v80];
 
@@ -698,7 +698,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v178[1] = 3221225472;
   v178[2] = __57__PXMemoriesRelatedSettings_UI__settingsControllerModule__block_invoke_6_664;
   v178[3] = &__block_descriptor_40_e40_B24__0__PTRow_8__PTUIModuleController_16l;
-  v178[4] = a1;
+  v178[4] = self;
   v83 = [MEMORY[0x1E69C6658] actionWithHandler:v178];
   v84 = [v82 rowWithTitle:@"Reset Memories Notification State" action:v83];
 
@@ -720,13 +720,13 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v133 = [MEMORY[0x1E69C66A8] rowWithTitle:@"Memories Living On Feedback" valueKeyPath:@"enableMemoriesLivingOnFeedback"];
   v204[0] = v133;
   v131 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Min # for Memories" valueKeyPath:@"minimumNumberOfCuratedAssetsForMemories"];
-  v127 = [v131 possibleValues:&unk_1F1910330 titles:v15];
+  v127 = [v131 possibleValues:&unk_1F1910330 titles:array];
   v204[1] = v127;
   v125 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Min # for Interesting Moments" valueKeyPath:@"minimumNumberOfCuratedAssetsForInterestingMoments"];
-  v123 = [v125 possibleValues:&unk_1F1910330 titles:v15];
+  v123 = [v125 possibleValues:&unk_1F1910330 titles:array];
   v204[2] = v123;
   v121 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Min # for Movie Header" valueKeyPath:@"minimumNumberOfCuratedAssetsForMovieHeader"];
-  v87 = [v121 possibleValues:&unk_1F1910330 titles:v15];
+  v87 = [v121 possibleValues:&unk_1F1910330 titles:array];
   v204[3] = v87;
   v88 = [MEMORY[0x1E69C65F8] rowWithTitle:@"Delete Behavior" valueKeyPath:@"deleteBehavior"];
   v89 = [v88 possibleValues:&unk_1F1910348 titles:&unk_1F1910360];
@@ -782,7 +782,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v114 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v201 count:1];
   v115 = [v113 sectionWithRows:v114 title:@"Debug"];
 
-  v116 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v117 = objc_alloc(MEMORY[0x1E695DF70]);
   v200[0] = v168;
   v200[1] = v155;
@@ -795,7 +795,7 @@ void __88__PXMemoriesRelatedSettings_UI___generateQuestionsWithOptions_count_inM
   v200[8] = v130;
   v200[9] = v111;
   v200[10] = v115;
-  v200[11] = v116;
+  v200[11] = px_restoreDefaultsSection;
   v118 = [MEMORY[0x1E695DEC8] arrayWithObjects:v200 count:12];
   v119 = [v117 initWithArray:v118];
 

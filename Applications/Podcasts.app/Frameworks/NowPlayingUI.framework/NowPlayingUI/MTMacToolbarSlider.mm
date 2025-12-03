@@ -1,20 +1,20 @@
 @interface MTMacToolbarSlider
-- (void)_installVisualElement:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_installVisualElement:(id)element;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MTMacToolbarSlider
 
-- (void)_installVisualElement:(id)a3
+- (void)_installVisualElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v20.receiver = self;
   v20.super_class = MTMacToolbarSlider;
   if ([(MTMacToolbarSlider *)&v20 respondsToSelector:a2])
   {
     v19.receiver = self;
     v19.super_class = MTMacToolbarSlider;
-    [(MTMacToolbarSlider *)&v19 _installVisualElement:v5];
+    [(MTMacToolbarSlider *)&v19 _installVisualElement:elementCopy];
     NSClassFromString(@"_UISliderMacVisualElement");
     if (objc_opt_isKindOfClass())
     {
@@ -22,8 +22,8 @@
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = [v5 subviews];
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      subviews = [elementCopy subviews];
+      v7 = [subviews countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v7)
       {
         v8 = v7;
@@ -34,7 +34,7 @@ LABEL_5:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
@@ -46,7 +46,7 @@ LABEL_5:
 
           if (v8 == ++v10)
           {
-            v8 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+            v8 = [subviews countByEnumeratingWithState:&v15 objects:v21 count:16];
             if (v8)
             {
               goto LABEL_5;
@@ -62,16 +62,16 @@ LABEL_5:
         {
           if (objc_opt_respondsToSelector())
           {
-            v13 = [v12 contentNSView];
+            contentNSView = [v12 contentNSView];
             NSClassFromString(@"NSSlider");
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v6 = [v12 contentNSView];
-              [v6 setControlSize:2];
-              [v6 _setSemanticContext:4];
-              [(MTMacToolbarSlider *)self set_internalNSSlider:v6];
+              subviews = [v12 contentNSView];
+              [subviews setControlSize:2];
+              [subviews _setSemanticContext:4];
+              [(MTMacToolbarSlider *)self set_internalNSSlider:subviews];
               goto LABEL_12;
             }
           }
@@ -88,28 +88,28 @@ LABEL_12:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = MTMacToolbarSlider;
-  [(MTMacToolbarSlider *)&v11 traitCollectionDidChange:a3];
-  v4 = [(MTMacToolbarSlider *)self _internalNSSlider];
+  [(MTMacToolbarSlider *)&v11 traitCollectionDidChange:change];
+  _internalNSSlider = [(MTMacToolbarSlider *)self _internalNSSlider];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MTMacToolbarSlider *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection = [(MTMacToolbarSlider *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v8 = @"plusD";
-    if (v7 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v8 = @"plusL";
     }
 
     v9 = v8;
 
-    v10 = [(MTMacToolbarSlider *)self _internalNSSlider];
-    [v10 setCompositingFilter:v9];
+    _internalNSSlider2 = [(MTMacToolbarSlider *)self _internalNSSlider];
+    [_internalNSSlider2 setCompositingFilter:v9];
   }
 }
 

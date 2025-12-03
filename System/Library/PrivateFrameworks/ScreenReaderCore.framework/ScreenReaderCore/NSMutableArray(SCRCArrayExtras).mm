@@ -14,7 +14,7 @@
     do
     {
       v8 = [v9 objectAtIndex:v7];
-      [a1 insertObject:v8 atIndex:a4];
+      [self insertObject:v8 atIndex:a4];
 
       --v7;
     }

@@ -1,39 +1,39 @@
 @interface MPCPlayerPath
-+ (MPCPlayerPath)pathWithCustomOrigin:(void *)a3 bundleID:(id)a4 playerID:(id)a5;
-+ (MPCPlayerPath)pathWithDeviceUID:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6;
-+ (MPCPlayerPath)pathWithDeviceUIDs:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6;
-+ (MPCPlayerPath)pathWithRoute:(id)a3 bundleID:(id)a4 playerID:(id)a5;
-+ (MPCPlayerPath)pathWithRoute:(id)a3 mediaRemotePlayerPath:(void *)a4 isResolved:(BOOL)a5;
++ (MPCPlayerPath)pathWithCustomOrigin:(void *)origin bundleID:(id)d playerID:(id)iD;
++ (MPCPlayerPath)pathWithDeviceUID:(id)d bundleID:(id)iD pid:(int)pid playerID:(id)playerID;
++ (MPCPlayerPath)pathWithDeviceUIDs:(id)ds bundleID:(id)d pid:(int)pid playerID:(id)iD;
++ (MPCPlayerPath)pathWithRoute:(id)route bundleID:(id)d playerID:(id)iD;
++ (MPCPlayerPath)pathWithRoute:(id)route mediaRemotePlayerPath:(void *)path isResolved:(BOOL)resolved;
 + (id)deviceActivePlayerPath;
-+ (id)systemMusicPathWithRoute:(id)a3 playerID:(id)a4;
-+ (id)systemPodcastsPathWithRoute:(id)a3 playerID:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)systemMusicPathWithRoute:(id)route playerID:(id)d;
++ (id)systemPodcastsPathWithRoute:(id)route playerID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullyResolved;
 - (BOOL)isInProcess;
 - (BOOL)isLocal;
 - (BOOL)isLocalDevice;
 - (BOOL)isSystemMusicPath;
-- (MPCPlayerPath)initWithCoder:(id)a3;
-- (MPCPlayerPath)initWithDeviceUID:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6;
-- (MPCPlayerPath)initWithRoute:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6;
+- (MPCPlayerPath)initWithCoder:(id)coder;
+- (MPCPlayerPath)initWithDeviceUID:(id)d bundleID:(id)iD pid:(int)pid playerID:(id)playerID;
+- (MPCPlayerPath)initWithRoute:(id)route bundleID:(id)d pid:(int)pid playerID:(id)iD;
 - (MRPlayerPath)mrPlayerPath;
 - (NSString)representedBundleDisplayName;
 - (NSString)representedBundleID;
 - (id)description;
-- (id)pathByAppendingPlayerIDSuffix:(id)a3;
+- (id)pathByAppendingPlayerIDSuffix:(id)suffix;
 - (int64_t)resolvedPlaybackIntentDestination;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getPlaybackIntentDestinationWithCompletion:(id)a3;
-- (void)resolveWithRouteResolvedHandler:(id)a3 completion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getPlaybackIntentDestinationWithCompletion:(id)completion;
+- (void)resolveWithRouteResolvedHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation MPCPlayerPath
 
 + (id)deviceActivePlayerPath
 {
-  v2 = [[a1 alloc] initWithRoute:0 bundleID:0 playerID:0];
+  v2 = [[self alloc] initWithRoute:0 bundleID:0 playerID:0];
 
   return v2;
 }
@@ -254,7 +254,7 @@ LABEL_20:
     v5 = MRNowPlayingClientGetParentAppBundleIdentifier();
     if ([v4 count])
     {
-      v6 = [v4 lastObject];
+      lastObject = [v4 lastObject];
     }
 
     else
@@ -266,10 +266,10 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v6 = v5;
+      lastObject = v5;
     }
 
-    v7 = v6;
+    v7 = lastObject;
 
     v3 = v7;
     goto LABEL_7;
@@ -288,16 +288,16 @@ LABEL_8:
   }
 
   MRNowPlayingPlayerPathGetClient();
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   BundleIdentifier = MRNowPlayingClientGetBundleIdentifier();
-  if (v3 == BundleIdentifier)
+  if (bundleIdentifier == BundleIdentifier)
   {
   }
 
   else
   {
-    v5 = [v3 isEqual:BundleIdentifier];
+    v5 = [bundleIdentifier isEqual:BundleIdentifier];
 
     if ((v5 & 1) == 0)
     {
@@ -310,10 +310,10 @@ LABEL_8:
 
 - (BOOL)isSystemMusicPath
 {
-  v2 = [(MPCPlayerPath *)self representedBundleID];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E69B12F0]];
+  representedBundleID = [(MPCPlayerPath *)self representedBundleID];
+  v3 = [representedBundleID isEqualToString:*MEMORY[0x1E69B12F0]];
   IsSystemMediaApplication = v3;
-  if (v2 && (v3 & 1) == 0)
+  if (representedBundleID && (v3 & 1) == 0)
   {
     IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication();
   }
@@ -341,15 +341,15 @@ LABEL_8:
   return 3;
 }
 
-- (void)getPlaybackIntentDestinationWithCompletion:(id)a3
+- (void)getPlaybackIntentDestinationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDestinationWithCompletion___block_invoke;
   v6[3] = &unk_1E8237F30;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(MPCPlayerPath *)self resolveWithCompletion:v6];
 }
 
@@ -385,15 +385,15 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
   return mediaRemotePlayerPath;
 }
 
-- (id)pathByAppendingPlayerIDSuffix:(id)a3
+- (id)pathByAppendingPlayerIDSuffix:(id)suffix
 {
   if (self->_mediaRemotePlayerPath)
   {
-    v4 = a3;
+    suffixCopy = suffix;
     v5 = MRNowPlayingPlayerPathCopy();
     MRNowPlayingPlayerPathGetPlayer();
     v6 = MRNowPlayingPlayerGetIdentifier();
-    v7 = [v6 stringByAppendingString:v4];
+    v7 = [v6 stringByAppendingString:suffixCopy];
 
     MRNowPlayingPlayerSetIdentifier();
     v8 = [MPCPlayerPath pathWithRoute:self->_route mediaRemotePlayerPath:v5 isResolved:self->_resolved];
@@ -403,8 +403,8 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
   else
   {
     playerID = self->_playerID;
-    v10 = a3;
-    v7 = [(NSString *)playerID stringByAppendingString:v10];
+    suffixCopy2 = suffix;
+    v7 = [(NSString *)playerID stringByAppendingString:suffixCopy2];
 
     v8 = [[MPCPlayerPath alloc] initWithRoute:self->_route bundleID:self->_bundleID pid:self->_pid playerID:v7];
   }
@@ -412,11 +412,11 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
   return v8;
 }
 
-- (void)resolveWithRouteResolvedHandler:(id)a3 completion:(id)a4
+- (void)resolveWithRouteResolvedHandler:(id)handler completion:(id)completion
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionCopy = completion;
   if (![(MPCPlayerPath *)self isResolved])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -424,7 +424,7 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
     aBlock[2] = __60__MPCPlayerPath_resolveWithRouteResolvedHandler_completion___block_invoke;
     aBlock[3] = &unk_1E8238DD0;
     aBlock[4] = self;
-    v8 = v6;
+    v8 = handlerCopy;
     v44 = v8;
     v9 = _Block_copy(aBlock);
     Origin = MRNowPlayingPlayerPathGetOrigin();
@@ -437,27 +437,27 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
         v40[2] = __60__MPCPlayerPath_resolveWithRouteResolvedHandler_completion___block_invoke_3;
         v40[3] = &unk_1E8238E20;
         v40[4] = self;
-        v41 = v7;
+        v41 = completionCopy;
         v42 = v8;
         v11 = _Block_copy(v40);
         deviceUID = self->_deviceUID;
-        v13 = [MEMORY[0x1E69B09A8] localDeviceUID];
-        LODWORD(deviceUID) = [(NSString *)deviceUID isEqualToString:v13];
+        localDeviceUID = [MEMORY[0x1E69B09A8] localDeviceUID];
+        LODWORD(deviceUID) = [(NSString *)deviceUID isEqualToString:localDeviceUID];
 
         if (deviceUID)
         {
-          v14 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-          v48[0] = v14;
+          mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+          v48[0] = mEMORY[0x1E69B09A0];
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
           v11[2](v11, v15, 0);
         }
 
         else
         {
-          v14 = objc_opt_new();
+          mEMORY[0x1E69B09A0] = objc_opt_new();
           v47 = self->_deviceUID;
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-          [v14 discoverRemoteControlEndpointsMatchingUIDs:v15 completion:v11];
+          [mEMORY[0x1E69B09A0] discoverRemoteControlEndpointsMatchingUIDs:v15 completion:v11];
         }
 
         v27 = v41;
@@ -465,39 +465,39 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
 
       else
       {
-        v16 = [(MPCPlayerPath *)self route];
+        route = [(MPCPlayerPath *)self route];
 
-        if (v16)
+        if (route)
         {
-          v17 = [(MPCPlayerPath *)self route];
-          v18 = [v17 connection];
+          route2 = [(MPCPlayerPath *)self route];
+          connection = [route2 connection];
 
-          if (v18)
+          if (connection)
           {
-            v19 = [(MPCPlayerPath *)self route];
-            v20 = [v19 connection];
+            route3 = [(MPCPlayerPath *)self route];
+            connection2 = [route3 connection];
 
-            [v20 reset];
+            [connection2 reset];
             v45 = *MEMORY[0x1E696F858];
             v46 = @"MPCPlayerPath";
-            v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
+            route4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
             v30[0] = MEMORY[0x1E69E9820];
             v30[1] = 3221225472;
             v30[2] = __60__MPCPlayerPath_resolveWithRouteResolvedHandler_completion___block_invoke_6;
             v30[3] = &unk_1E8238E70;
-            v31 = v20;
+            v31 = connection2;
             v32 = v9;
-            v33 = v7;
-            v22 = v20;
-            [v22 connectWithUserInfo:v21 completion:v30];
+            v33 = completionCopy;
+            v22 = connection2;
+            [v22 connectWithUserInfo:route4 completion:v30];
           }
 
           else
           {
             v28 = MEMORY[0x1E696ABC0];
-            v21 = [(MPCPlayerPath *)self route];
-            v22 = [v28 msv_errorWithDomain:@"MPCPlayerRequestError" code:5000 debugDescription:{@"%@ did not have connection", v21}];
-            (*(v7 + 2))(v7, 0, v22);
+            route4 = [(MPCPlayerPath *)self route];
+            v22 = [v28 msv_errorWithDomain:@"MPCPlayerRequestError" code:5000 debugDescription:{@"%@ did not have connection", route4}];
+            (*(completionCopy + 2))(completionCopy, 0, v22);
           }
 
           goto LABEL_23;
@@ -505,7 +505,7 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
 
         if (Origin)
         {
-          (*(v9 + 2))(v9, Origin, v7);
+          (*(v9 + 2))(v9, Origin, completionCopy);
           goto LABEL_23;
         }
 
@@ -515,7 +515,7 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
         v36 = __60__MPCPlayerPath_resolveWithRouteResolvedHandler_completion___block_invoke_5;
         v37 = &unk_1E8238E48;
         v38 = v9;
-        v39 = v7;
+        v39 = completionCopy;
         MRMediaRemoteGetActiveOrigin();
 
         v27 = v38;
@@ -525,7 +525,7 @@ uint64_t __90__MPCPlayerPath_MPCPlaybackIntentDestination__getPlaybackIntentDest
     else
     {
       LocalOrigin = MRMediaRemoteGetLocalOrigin();
-      (*(v9 + 2))(v9, LocalOrigin, v7);
+      (*(v9 + 2))(v9, LocalOrigin, completionCopy);
     }
 
 LABEL_23:
@@ -533,7 +533,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  (*(v7 + 2))(v7, self, 0);
+  (*(completionCopy + 2))(completionCopy, self, 0);
 LABEL_24:
 }
 
@@ -742,8 +742,8 @@ LABEL_5:
   {
     MRNowPlayingPlayerPathGetClient();
     v2 = MRNowPlayingClientGetBundleIdentifier();
-    v3 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v4 = [v3 localizedStringForKey:v2 value:&stru_1F454A698 table:@"PlayerPathDisplayName"];
+    mediaPlaybackCoreBundle = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v4 = [mediaPlaybackCoreBundle localizedStringForKey:v2 value:&stru_1F454A698 table:@"PlayerPathDisplayName"];
 
     if ([v4 isEqualToString:v2])
     {
@@ -810,36 +810,36 @@ LABEL_5:
   return mediaRemotePlayerPath;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_route forKey:@"route"];
-  [v4 encodeObject:self->_bundleID forKey:@"bundleID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_route forKey:@"route"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"bundleID"];
   if (self->_mediaRemotePlayerPath)
   {
     MRNowPlayingPlayerPathGetClient();
-    [v4 encodeInt32:MRNowPlayingClientGetProcessIdentifier() forKey:@"pid"];
+    [coderCopy encodeInt32:MRNowPlayingClientGetProcessIdentifier() forKey:@"pid"];
   }
 
-  [v4 encodeObject:self->_playerID forKey:@"playerID"];
+  [coderCopy encodeObject:self->_playerID forKey:@"playerID"];
 }
 
-- (MPCPlayerPath)initWithCoder:(id)a3
+- (MPCPlayerPath)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"route"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
-  v8 = [v4 decodeInt32ForKey:@"pid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"route"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
+  v8 = [coderCopy decodeInt32ForKey:@"pid"];
 
   v9 = [(MPCPlayerPath *)self initWithRoute:v5 bundleID:v6 pid:v8 playerID:v7];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -849,43 +849,43 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       route = self->_route;
-      v7 = [(MPCPlayerPath *)v5 route];
-      if (route == v7)
+      route = [(MPCPlayerPath *)v5 route];
+      if (route == route)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = [(MPAVRoute *)route isEqual:v7]^ 1;
+        v8 = [(MPAVRoute *)route isEqual:route]^ 1;
       }
 
       bundleID = self->_bundleID;
-      v11 = [(MPCPlayerPath *)v5 bundleID];
-      if (bundleID == v11)
+      bundleID = [(MPCPlayerPath *)v5 bundleID];
+      if (bundleID == bundleID)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = [(NSString *)bundleID isEqual:v11]^ 1;
+        v12 = [(NSString *)bundleID isEqual:bundleID]^ 1;
       }
 
       pid = self->_pid;
       v14 = v5->_pid;
       playerID = self->_playerID;
-      v16 = [(MPCPlayerPath *)v5 playerID];
-      if (playerID == v16)
+      playerID = [(MPCPlayerPath *)v5 playerID];
+      if (playerID == playerID)
       {
         v17 = 0;
       }
 
       else
       {
-        v17 = [(NSString *)playerID isEqual:v16]^ 1;
+        v17 = [(NSString *)playerID isEqual:playerID]^ 1;
       }
 
       if (self->_mediaRemotePlayerPath == v5->_mediaRemotePlayerPath)
@@ -933,46 +933,46 @@ LABEL_5:
   return v9;
 }
 
-- (MPCPlayerPath)initWithDeviceUID:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6
+- (MPCPlayerPath)initWithDeviceUID:(id)d bundleID:(id)iD pid:(int)pid playerID:(id)playerID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  playerIDCopy = playerID;
   v21.receiver = self;
   v21.super_class = MPCPlayerPath;
   v13 = [(MPCPlayerPath *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     deviceUID = v13->_deviceUID;
     v13->_deviceUID = v14;
 
-    v16 = [v11 copy];
+    v16 = [iDCopy copy];
     bundleID = v13->_bundleID;
     v13->_bundleID = v16;
 
-    v18 = [v12 copy];
+    v18 = [playerIDCopy copy];
     playerID = v13->_playerID;
     v13->_playerID = v18;
 
-    v13->_pid = a5;
+    v13->_pid = pid;
   }
 
   return v13;
 }
 
-- (MPCPlayerPath)initWithRoute:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6
+- (MPCPlayerPath)initWithRoute:(id)route bundleID:(id)d pid:(int)pid playerID:(id)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (v12)
+  routeCopy = route;
+  dCopy = d;
+  iDCopy = iD;
+  if (routeCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"MPCPlayerPath.m" lineNumber:85 description:{@"Unsupported route type %@", objc_opt_class()}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlayerPath.m" lineNumber:85 description:{@"Unsupported route type %@", objc_opt_class()}];
     }
   }
 
@@ -982,29 +982,29 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_route, a3);
-    v17 = [v13 copy];
+    objc_storeStrong(&v15->_route, route);
+    v17 = [dCopy copy];
     bundleID = v16->_bundleID;
     v16->_bundleID = v17;
 
-    v19 = [v14 copy];
+    v19 = [iDCopy copy];
     playerID = v16->_playerID;
     v16->_playerID = v19;
 
-    v16->_pid = a5;
+    v16->_pid = pid;
   }
 
   return v16;
 }
 
-+ (MPCPlayerPath)pathWithCustomOrigin:(void *)a3 bundleID:(id)a4 playerID:(id)a5
++ (MPCPlayerPath)pathWithCustomOrigin:(void *)origin bundleID:(id)d playerID:(id)iD
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   if (MROriginIsLocalOrigin())
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"MPCPlayerPath.m" lineNumber:68 description:{@"%s is only for use with custom origins.", "+[MPCPlayerPath pathWithCustomOrigin:bundleID:playerID:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCPlayerPath.m" lineNumber:68 description:{@"%s is only for use with custom origins.", "+[MPCPlayerPath pathWithCustomOrigin:bundleID:playerID:]"}];
   }
 
   v10 = MRNowPlayingClientCreate();
@@ -1013,83 +1013,83 @@ LABEL_5:
   v12 = MRNowPlayingPlayerPathCreate();
   CFRelease(v11);
   CFRelease(v10);
-  v13 = [a1 pathWithRoute:0 mediaRemotePlayerPath:v12 isResolved:0];
+  v13 = [self pathWithRoute:0 mediaRemotePlayerPath:v12 isResolved:0];
   CFRelease(v12);
 
   return v13;
 }
 
-+ (MPCPlayerPath)pathWithRoute:(id)a3 mediaRemotePlayerPath:(void *)a4 isResolved:(BOOL)a5
++ (MPCPlayerPath)pathWithRoute:(id)route mediaRemotePlayerPath:(void *)path isResolved:(BOOL)resolved
 {
-  v7 = a3;
+  routeCopy = route;
   MRNowPlayingPlayerPathGetClient();
   v8 = MRNowPlayingClientGetBundleIdentifier();
   MRNowPlayingPlayerPathGetPlayer();
   v9 = MRNowPlayingPlayerGetIdentifier();
-  v10 = [a1 pathWithRoute:v7 bundleID:v8 playerID:v9];
+  v10 = [self pathWithRoute:routeCopy bundleID:v8 playerID:v9];
 
   *(v10 + 32) = MRNowPlayingPlayerPathCopy();
   *(v10 + 8) = MRNowPlayingClientGetProcessIdentifier();
-  *(v10 + 12) = a5;
+  *(v10 + 12) = resolved;
 
   return v10;
 }
 
-+ (MPCPlayerPath)pathWithDeviceUID:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6
++ (MPCPlayerPath)pathWithDeviceUID:(id)d bundleID:(id)iD pid:(int)pid playerID:(id)playerID
 {
-  v6 = *&a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithDeviceUID:v12 bundleID:v11 pid:v6 playerID:v10];
+  v6 = *&pid;
+  playerIDCopy = playerID;
+  iDCopy = iD;
+  dCopy = d;
+  v13 = [[self alloc] initWithDeviceUID:dCopy bundleID:iDCopy pid:v6 playerID:playerIDCopy];
 
   return v13;
 }
 
-+ (MPCPlayerPath)pathWithDeviceUIDs:(id)a3 bundleID:(id)a4 pid:(int)a5 playerID:(id)a6
++ (MPCPlayerPath)pathWithDeviceUIDs:(id)ds bundleID:(id)d pid:(int)pid playerID:(id)iD
 {
-  v6 = *&a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 alloc];
-  v14 = [v12 firstObject];
+  v6 = *&pid;
+  iDCopy = iD;
+  dCopy = d;
+  dsCopy = ds;
+  v13 = [self alloc];
+  firstObject = [dsCopy firstObject];
 
-  v15 = [v13 initWithDeviceUID:v14 bundleID:v11 pid:v6 playerID:v10];
+  v15 = [v13 initWithDeviceUID:firstObject bundleID:dCopy pid:v6 playerID:iDCopy];
 
   return v15;
 }
 
-+ (MPCPlayerPath)pathWithRoute:(id)a3 bundleID:(id)a4 playerID:(id)a5
++ (MPCPlayerPath)pathWithRoute:(id)route bundleID:(id)d playerID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithRoute:v10 bundleID:v9 playerID:v8];
+  iDCopy = iD;
+  dCopy = d;
+  routeCopy = route;
+  v11 = [[self alloc] initWithRoute:routeCopy bundleID:dCopy playerID:iDCopy];
 
   return v11;
 }
 
-+ (id)systemPodcastsPathWithRoute:(id)a3 playerID:(id)a4
++ (id)systemPodcastsPathWithRoute:(id)route playerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [v8 initWithRoute:v7 bundleID:*MEMORY[0x1E69B12F8] playerID:v6];
+  dCopy = d;
+  routeCopy = route;
+  v8 = [self alloc];
+  v9 = [v8 initWithRoute:routeCopy bundleID:*MEMORY[0x1E69B12F8] playerID:dCopy];
 
   return v9;
 }
 
-+ (id)systemMusicPathWithRoute:(id)a3 playerID:(id)a4
++ (id)systemMusicPathWithRoute:(id)route playerID:(id)d
 {
   v6 = MEMORY[0x1E69708A8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 standardUserDefaults];
-  v10 = [v9 sonicHijack];
+  dCopy = d;
+  routeCopy = route;
+  standardUserDefaults = [v6 standardUserDefaults];
+  sonicHijack = [standardUserDefaults sonicHijack];
 
-  v11 = [a1 alloc];
-  if (v10)
+  v11 = [self alloc];
+  if (sonicHijack)
   {
     v12 = @"com.apple.Sonic";
   }
@@ -1099,7 +1099,7 @@ LABEL_5:
     v12 = *MEMORY[0x1E69B12F0];
   }
 
-  v13 = [v11 initWithRoute:v8 bundleID:v12 playerID:v7];
+  v13 = [v11 initWithRoute:routeCopy bundleID:v12 playerID:dCopy];
 
   return v13;
 }

@@ -1,33 +1,33 @@
 @interface NHSSPartialWidgetDescriptor
-- (BOOL)isEqual:(id)a3;
-- (NHSSPartialWidgetDescriptor)initWithCoder:(id)a3;
-- (NHSSPartialWidgetDescriptor)initWithContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 kind:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NHSSPartialWidgetDescriptor)initWithCoder:(id)coder;
+- (NHSSPartialWidgetDescriptor)initWithContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier kind:(id)kind;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NHSSPartialWidgetDescriptor
 
-- (NHSSPartialWidgetDescriptor)initWithContainerBundleIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 kind:(id)a5
+- (NHSSPartialWidgetDescriptor)initWithContainerBundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier kind:(id)kind
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
   v19.receiver = self;
   v19.super_class = NHSSPartialWidgetDescriptor;
   v11 = [(NHSSPartialWidgetDescriptor *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     containerBundleIdentifier = v11->_containerBundleIdentifier;
     v11->_containerBundleIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v11->_extensionBundleIdentifier;
     v11->_extensionBundleIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [kindCopy copy];
     kind = v11->_kind;
     v11->_kind = v16;
   }
@@ -35,16 +35,16 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   containerBundleIdentifier = self->_containerBundleIdentifier;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __39__NHSSPartialWidgetDescriptor_isEqual___block_invoke;
   v20[3] = &unk_279932DD8;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendString:containerBundleIdentifier counterpart:v20];
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
@@ -70,16 +70,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_containerBundleIdentifier];
-  v5 = [v3 appendObject:self->_extensionBundleIdentifier];
-  v6 = [v3 appendObject:self->_kind];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_containerBundleIdentifier];
+  v5 = [builder appendObject:self->_extensionBundleIdentifier];
+  v6 = [builder appendObject:self->_kind];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong(v4 + 1, self->_containerBundleIdentifier);
@@ -88,32 +88,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   containerBundleIdentifier = self->_containerBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
-  [v5 encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
-  [v5 encodeObject:self->_kind forKey:@"kind"];
+  coderCopy = coder;
+  [coderCopy encodeObject:containerBundleIdentifier forKey:@"containerBundleIdentifier"];
+  [coderCopy encodeObject:self->_extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
 }
 
-- (NHSSPartialWidgetDescriptor)initWithCoder:(id)a3
+- (NHSSPartialWidgetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NHSSPartialWidgetDescriptor;
   v5 = [(NHSSPartialWidgetDescriptor *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerBundleIdentifier"];
     containerBundleIdentifier = v5->_containerBundleIdentifier;
     v5->_containerBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
     extensionBundleIdentifier = v5->_extensionBundleIdentifier;
     v5->_extensionBundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     kind = v5->_kind;
     v5->_kind = v10;
   }

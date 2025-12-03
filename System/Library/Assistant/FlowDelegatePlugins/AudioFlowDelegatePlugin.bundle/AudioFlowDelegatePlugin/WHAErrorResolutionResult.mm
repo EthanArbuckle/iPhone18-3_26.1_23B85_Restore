@@ -1,36 +1,36 @@
 @interface WHAErrorResolutionResult
-+ (id)confirmationRequiredWithWHAErrorToConfirm:(int64_t)a3;
-+ (id)successWithResolvedWHAError:(int64_t)a3;
-- (WHAErrorResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithWHAErrorToConfirm:(int64_t)confirm;
++ (id)successWithResolvedWHAError:(int64_t)error;
+- (WHAErrorResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation WHAErrorResolutionResult
 
-+ (id)successWithResolvedWHAError:(int64_t)a3
++ (id)successWithResolvedWHAError:(int64_t)error
 {
   swift_getObjCClassMetadata();
-  v4 = static QueueLocationResolutionResult.success(with:)(a3);
+  v4 = static QueueLocationResolutionResult.success(with:)(error);
 
   return v4;
 }
 
-+ (id)confirmationRequiredWithWHAErrorToConfirm:(int64_t)a3
++ (id)confirmationRequiredWithWHAErrorToConfirm:(int64_t)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = static QueueLocationResolutionResult.confirmationRequired(with:)(a3);
+  v4 = static QueueLocationResolutionResult.confirmationRequired(with:)(confirm);
 
   return v4;
 }
 
-- (WHAErrorResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (WHAErrorResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_2CE200();
-  v6 = a4;
+  intentCopy = intent;
   isa = sub_2CE1F0().super.isa;
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for WHAErrorResolutionResult();
-  v8 = [(WHAErrorResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:v6];
+  v8 = [(WHAErrorResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:intentCopy];
 
   if (v8)
   {

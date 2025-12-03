@@ -1,26 +1,26 @@
 @interface AVCustomStackLayout
-- (AVCustomStackLayout)initWithLayoutRowHeads:(id)a3;
-- (double)_heightForRow:(unint64_t)a3 startingFrom:(id)a4 inBoundingSize:(CGSize)a5;
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3;
-- (id)_flexibleWidthMapForLayoutItemsBeginningWithLayoutItem:(id)a3 endingWithItem:(id)a4 withAvailableSize:(CGSize)a5;
-- (id)_lastVisibleLayoutItemAttributesFrom:(id)a3;
-- (id)itemsThatFitSize:(CGSize)a3;
-- (id)layoutFramesInBoundingSize:(CGSize)a3;
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3;
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4;
+- (AVCustomStackLayout)initWithLayoutRowHeads:(id)heads;
+- (double)_heightForRow:(unint64_t)row startingFrom:(id)from inBoundingSize:(CGSize)size;
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row;
+- (id)_flexibleWidthMapForLayoutItemsBeginningWithLayoutItem:(id)item endingWithItem:(id)withItem withAvailableSize:(CGSize)size;
+- (id)_lastVisibleLayoutItemAttributesFrom:(id)from;
+- (id)itemsThatFitSize:(CGSize)size;
+- (id)layoutFramesInBoundingSize:(CGSize)size;
+- (id)prioritizedSizeThatFitsSize:(CGSize)size;
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row;
 @end
 
 @implementation AVCustomStackLayout
 
-- (double)_heightForRow:(unint64_t)a3 startingFrom:(id)a4 inBoundingSize:(CGSize)a5
+- (double)_heightForRow:(unint64_t)row startingFrom:(id)from inBoundingSize:(CGSize)size
 {
-  height = a5.height;
-  v8 = a4;
-  v9 = v8;
+  height = size.height;
+  fromCopy = from;
+  v9 = fromCopy;
   v10 = 0.0;
-  if (v8)
+  if (fromCopy)
   {
-    v11 = v8;
+    v11 = fromCopy;
     do
     {
       if (([v11 isCollapsedOrExcluded] & 1) == 0)
@@ -47,18 +47,18 @@
         }
       }
 
-      v14 = [v11 nextAttributesInLayoutOrder];
+      nextAttributesInLayoutOrder = [v11 nextAttributesInLayoutOrder];
 
-      v11 = v14;
+      v11 = nextAttributesInLayoutOrder;
     }
 
-    while (v14);
+    while (nextAttributesInLayoutOrder);
   }
 
-  v15 = [(AVCustomStackLayout *)self rowHeads];
-  v16 = [v15 count] - 1;
+  rowHeads = [(AVCustomStackLayout *)self rowHeads];
+  v16 = [rowHeads count] - 1;
 
-  if (v16 != a3)
+  if (v16 != row)
   {
     height = v10;
   }
@@ -66,14 +66,14 @@
   return height;
 }
 
-- (id)_lastVisibleLayoutItemAttributesFrom:(id)a3
+- (id)_lastVisibleLayoutItemAttributesFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
+  fromCopy = from;
+  v4 = fromCopy;
   v5 = 0;
-  if (v3)
+  if (fromCopy)
   {
-    v6 = v3;
+    v6 = fromCopy;
     do
     {
       if (([v6 isCollapsedOrExcluded] & 1) == 0)
@@ -83,25 +83,25 @@
         v5 = v7;
       }
 
-      v8 = [v6 nextAttributesInLayoutOrder];
+      nextAttributesInLayoutOrder = [v6 nextAttributesInLayoutOrder];
 
-      v6 = v8;
+      v6 = nextAttributesInLayoutOrder;
     }
 
-    while (v8);
+    while (nextAttributesInLayoutOrder);
   }
 
   return v5;
 }
 
-- (id)_flexibleWidthMapForLayoutItemsBeginningWithLayoutItem:(id)a3 endingWithItem:(id)a4 withAvailableSize:(CGSize)a5
+- (id)_flexibleWidthMapForLayoutItemsBeginningWithLayoutItem:(id)item endingWithItem:(id)withItem withAvailableSize:(CGSize)size
 {
-  width = a5.width;
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = v7;
+  width = size.width;
+  itemCopy = item;
+  withItemCopy = withItem;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  v11 = itemCopy;
   v12 = v11;
   if (v11)
   {
@@ -110,11 +110,11 @@
     v15 = v11;
     do
     {
-      if (![v15 hasFlexibleContentSize] || objc_msgSend(v10, "count") || (objc_msgSend(v15, "isCollapsedOrExcluded") & 1) != 0)
+      if (![v15 hasFlexibleContentSize] || objc_msgSend(array, "count") || (objc_msgSend(v15, "isCollapsedOrExcluded") & 1) != 0)
       {
-        if ([v15 hasFlexibleContentSize] && objc_msgSend(v10, "count") && (objc_msgSend(v15, "isCollapsedOrExcluded") & 1) == 0)
+        if ([v15 hasFlexibleContentSize] && objc_msgSend(array, "count") && (objc_msgSend(v15, "isCollapsedOrExcluded") & 1) == 0)
         {
-          if (v15 != v8)
+          if (v15 != withItemCopy)
           {
             [v15 trailingInterItemSpace];
             width = width - v18;
@@ -128,7 +128,7 @@
         {
           [v15 minimumSize];
           v13 = v13 + v16;
-          if (v15 != v8)
+          if (v15 != withItemCopy)
           {
             [v15 trailingInterItemSpace];
             v13 = v13 + v17;
@@ -138,8 +138,8 @@
 
       else
       {
-        v19 = [v15 nextAttributesInLayoutOrder];
-        if (v19)
+        nextAttributesInLayoutOrder = [v15 nextAttributesInLayoutOrder];
+        if (nextAttributesInLayoutOrder)
         {
           [v15 trailingInterItemSpace];
           v21 = v20;
@@ -156,15 +156,15 @@
 
       if ([v15 hasFlexibleContentSize] && (objc_msgSend(v15, "isCollapsedOrExcluded") & 1) == 0)
       {
-        [v10 addObject:v15];
+        [array addObject:v15];
       }
 
-      v22 = [v15 nextAttributesInLayoutOrder];
+      nextAttributesInLayoutOrder2 = [v15 nextAttributesInLayoutOrder];
 
-      v15 = v22;
+      v15 = nextAttributesInLayoutOrder2;
     }
 
-    while (v22);
+    while (nextAttributesInLayoutOrder2);
   }
 
   else
@@ -173,27 +173,27 @@
     v13 = 0.0;
   }
 
-  if ([v10 count] < 2)
+  if ([array count] < 2)
   {
     v23 = width - v13;
   }
 
   else
   {
-    v23 = width / [v10 count];
+    v23 = width / [array count];
   }
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __111__AVCustomStackLayout__flexibleWidthMapForLayoutItemsBeginningWithLayoutItem_endingWithItem_withAvailableSize___block_invoke;
   v29[3] = &unk_1E7208FF0;
-  v24 = v9;
+  v24 = dictionary;
   v32 = v23;
   v33 = v14;
   v30 = v24;
-  v31 = v10;
+  v31 = array;
   v34 = v13;
-  v25 = v10;
+  v25 = array;
   [v25 enumerateObjectsUsingBlock:v29];
   v26 = v31;
   v27 = v24;
@@ -230,21 +230,21 @@ LABEL_6:
   [*(a1 + 32) setObject:v9 forKeyedSubscript:v10];
 }
 
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(AVCustomStackLayout *)self rowHeads];
+  rowHeads = [(AVCustomStackLayout *)self rowHeads];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__AVCustomStackLayout_layoutHeightThatFitsRowsStartingWithRow___block_invoke;
   v8[3] = &unk_1E7208FC8;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = row;
   v8[4] = self;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [rowHeads enumerateObjectsUsingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -292,20 +292,20 @@ void __63__AVCustomStackLayout_layoutHeightThatFitsRowsStartingWithRow___block_i
   }
 }
 
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row
 {
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(AVCustomStackLayout *)self rowSpacing];
-  [v6 setObject:v7 atIndexedSubscript:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:spacing];
+  rowSpacing = [(AVCustomStackLayout *)self rowSpacing];
+  [rowSpacing setObject:v7 atIndexedSubscript:row];
 }
 
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3
+- (id)prioritizedSizeThatFitsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [(AVCustomStackLayout *)self itemsThatFitSize:?];
   v7 = objc_alloc_init(AVPrioritizedSize);
-  v8 = [(AVCustomStackLayout *)self rowHeads];
+  rowHeads = [(AVCustomStackLayout *)self rowHeads];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__AVCustomStackLayout_prioritizedSizeThatFitsSize___block_invoke;
@@ -317,7 +317,7 @@ void __63__AVCustomStackLayout_layoutHeightThatFitsRowsStartingWithRow___block_i
   v9 = v7;
   v16 = v9;
   v10 = v6;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [rowHeads enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -386,25 +386,25 @@ void __51__AVCustomStackLayout_prioritizedSizeThatFitsSize___block_invoke(uint64
   }
 }
 
-- (id)itemsThatFitSize:(CGSize)a3
+- (id)itemsThatFitSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E695DFA0] orderedSet];
-  v7 = [(AVCustomStackLayout *)self rowHeads];
+  height = size.height;
+  width = size.width;
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  rowHeads = [(AVCustomStackLayout *)self rowHeads];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__AVCustomStackLayout_itemsThatFitSize___block_invoke;
   v11[3] = &unk_1E7208F78;
   v13 = width;
   v14 = height;
-  v12 = v6;
-  v8 = v6;
-  [v7 enumerateObjectsUsingBlock:v11];
+  v12 = orderedSet;
+  v8 = orderedSet;
+  [rowHeads enumerateObjectsUsingBlock:v11];
 
-  v9 = [v8 array];
+  array = [v8 array];
 
-  return v9;
+  return array;
 }
 
 void __40__AVCustomStackLayout_itemsThatFitSize___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -557,10 +557,10 @@ LABEL_30:
   }
 }
 
-- (id)layoutFramesInBoundingSize:(CGSize)a3
+- (id)layoutFramesInBoundingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -569,11 +569,11 @@ LABEL_30:
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v21[3] = 0;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(AVCustomStackLayout *)self rowHeads];
-  v8 = [v7 count];
+  array = [MEMORY[0x1E695DF70] array];
+  rowHeads = [(AVCustomStackLayout *)self rowHeads];
+  v8 = [rowHeads count];
 
-  v9 = [(AVCustomStackLayout *)self rowHeads];
+  rowHeads2 = [(AVCustomStackLayout *)self rowHeads];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__AVCustomStackLayout_layoutFramesInBoundingSize___block_invoke;
@@ -584,9 +584,9 @@ LABEL_30:
   v16 = v21;
   v20 = v8;
   v17 = v22;
-  v10 = v6;
+  v10 = array;
   v15 = v10;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [rowHeads2 enumerateObjectsUsingBlock:v14];
 
   v11 = v15;
   v12 = v10;
@@ -690,19 +690,19 @@ void __50__AVCustomStackLayout_layoutFramesInBoundingSize___block_invoke(uint64_
   *(*(*(a1 + 56) + 8) + 24) = v7 + v37 + *(*(*(a1 + 56) + 8) + 24);
 }
 
-- (AVCustomStackLayout)initWithLayoutRowHeads:(id)a3
+- (AVCustomStackLayout)initWithLayoutRowHeads:(id)heads
 {
-  v4 = a3;
+  headsCopy = heads;
   v12.receiver = self;
   v12.super_class = AVCustomStackLayout;
   v5 = [(AVCustomStackLayout *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [headsCopy copy];
     rowHeads = v5->_rowHeads;
     v5->_rowHeads = v6;
 
-    v8 = [v4 count];
+    v8 = [headsCopy count];
     v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
     rowSpacing = v5->_rowSpacing;
     v5->_rowSpacing = v9;

@@ -8,11 +8,11 @@
 {
   v6 = a3;
   v7 = a4;
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &off_2876CD710;
   if (objc_msgSendSuper2(&v10, sel_handleForCardViewController_cardViewControllerDelegate_, v6, v7) && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v7 performPunchoutCommand:a1 forCardViewController:v6];
+    v8 = [v7 performPunchoutCommand:self forCardViewController:v6];
   }
 
   else

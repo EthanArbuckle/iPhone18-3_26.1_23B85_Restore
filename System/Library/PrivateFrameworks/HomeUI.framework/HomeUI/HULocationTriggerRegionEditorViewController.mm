@@ -1,87 +1,87 @@
 @interface HULocationTriggerRegionEditorViewController
 - (BOOL)_hasLocation;
 - (GEOLocationShifter)locationShifter;
-- (HULocationTriggerRegionEditorViewController)initWithCoder:(id)a3;
-- (HULocationTriggerRegionEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (HULocationTriggerRegionEditorViewController)initWithRegion:(id)a3 home:(id)a4 delegate:(id)a5;
+- (HULocationTriggerRegionEditorViewController)initWithCoder:(id)coder;
+- (HULocationTriggerRegionEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (HULocationTriggerRegionEditorViewController)initWithRegion:(id)region home:(id)home delegate:(id)delegate;
 - (HULocationTriggerRegionEditorViewControllerDelegate)delegate;
-- (id)_locationForRecentMetadataDictionary:(id)a3;
-- (id)_shiftLocationIfNeeded:(id)a3 isRetry:(BOOL)a4;
+- (id)_locationForRecentMetadataDictionary:(id)dictionary;
+- (id)_shiftLocationIfNeeded:(id)needed isRetry:(BOOL)retry;
 - (id)showLocationRegionInvalidAlert;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_firstLocalSearchResultRowIndex;
 - (int64_t)_firstRecentRowIndex;
 - (int64_t)_lastRecentRowIndex;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)_proximityType;
-- (void)_cancel:(id)a3;
-- (void)_displayLocation:(id)a3;
-- (void)_done:(id)a3;
+- (void)_cancel:(id)_cancel;
+- (void)_displayLocation:(id)location;
+- (void)_done:(id)_done;
 - (void)_reloadData;
 - (void)_resetSearchResults;
 - (void)_setupMap;
-- (void)_showMapRegionForCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 animated:(BOOL)a5;
-- (void)_updateRecentsWithSearchText:(id)a3;
+- (void)_showMapRegionForCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius animated:(BOOL)animated;
+- (void)_updateRecentsWithSearchText:(id)text;
 - (void)_updateUI;
-- (void)_updateUIWithRegion:(id)a3;
+- (void)_updateUIWithRegion:(id)region;
 - (void)loadView;
-- (void)mapRadiusView:(id)a3 radiusDidChange:(double)a4 radiusInPoints:(double)a5;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)setRegion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)mapRadiusView:(id)view radiusDidChange:(double)change radiusInPoints:(double)points;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)setRegion:(id)region;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HULocationTriggerRegionEditorViewController
 
-- (HULocationTriggerRegionEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HULocationTriggerRegionEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithRegion_home_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HULocationTriggerRegionEditorViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerRegionEditorViewController initWithNibName:bundle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationTriggerRegionEditorViewController.m" lineNumber:62 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerRegionEditorViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (HULocationTriggerRegionEditorViewController)initWithCoder:(id)a3
+- (HULocationTriggerRegionEditorViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithRegion_home_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HULocationTriggerRegionEditorViewController.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerRegionEditorViewController initWithCoder:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationTriggerRegionEditorViewController.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HULocationTriggerRegionEditorViewController initWithCoder:]", v6}];
 
   return 0;
 }
 
-- (HULocationTriggerRegionEditorViewController)initWithRegion:(id)a3 home:(id)a4 delegate:(id)a5
+- (HULocationTriggerRegionEditorViewController)initWithRegion:(id)region home:(id)home delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  regionCopy = region;
+  homeCopy = home;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HULocationTriggerRegionEditorViewController;
   v12 = [(HULocationTriggerRegionEditorViewController *)&v20 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_region, a3);
-    objc_storeStrong(&v13->_home, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_region, region);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     [(HULocationTriggerRegionEditorViewController *)v13 _updateRecentsWithSearchText:0];
     v14 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerRegionEditorTitle", @"HULocationTriggerRegionEditorTitle", 1);
     [(HULocationTriggerRegionEditorViewController *)v13 setTitle:v14];
 
     v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v13 action:sel__cancel_];
-    v16 = [(HULocationTriggerRegionEditorViewController *)v13 navigationItem];
-    [v16 setLeftBarButtonItem:v15];
+    navigationItem = [(HULocationTriggerRegionEditorViewController *)v13 navigationItem];
+    [navigationItem setLeftBarButtonItem:v15];
 
     v17 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v13 action:sel__done_];
-    v18 = [(HULocationTriggerRegionEditorViewController *)v13 navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem2 = [(HULocationTriggerRegionEditorViewController *)v13 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v17];
   }
 
   return v13;
@@ -95,78 +95,78 @@
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
   v33 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], v5, v6, v7}];
-  v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v33 setBackgroundColor:v8];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v33 setBackgroundColor:systemBackgroundColor];
 
   v9 = [objc_alloc(MEMORY[0x277D759E8]) initWithFrame:{v4, v5, v6, v7}];
   [(HULocationTriggerRegionEditorViewController *)self setSearchBar:v9];
 
-  v10 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  searchBar = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v11 setAutocorrectionType:1];
+  searchBar2 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar2 setAutocorrectionType:1];
 
   v12 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerEditorSearchFieldPlaceholder", @"HULocationTriggerEditorSearchFieldPlaceholder", 1);
-  v13 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v13 setPlaceholder:v12];
+  searchBar3 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar3 setPlaceholder:v12];
 
-  v14 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v14 setDelegate:self];
+  searchBar4 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar4 setDelegate:self];
 
   [v33 addSubview:self->_searchBar];
   v15 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
   [(HULocationTriggerRegionEditorViewController *)self setDividerView:v15];
 
   v16 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
-  v17 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-  [v17 setBackgroundColor:v16];
+  dividerView = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+  [dividerView setBackgroundColor:v16];
 
-  v18 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  dividerView2 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+  [dividerView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v19 = [objc_alloc(MEMORY[0x277D75B40]) initWithFrame:0 style:{v4, v5, v6, v7}];
   [(HULocationTriggerRegionEditorViewController *)self setTableView:v19];
 
-  v20 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v20 setDataSource:self];
+  tableView = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v21 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v21 setDelegate:self];
+  tableView2 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v22 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v22 setKeyboardDismissMode:1];
+  tableView3 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView3 setKeyboardDismissMode:1];
 
   v23 = *MEMORY[0x277D76F30];
-  v24 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v24 setRowHeight:v23];
+  tableView4 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView4 setRowHeight:v23];
 
   v25 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v25 _scaledValueForValue:44.0];
   v27 = v26;
-  v28 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v28 setEstimatedRowHeight:v27];
+  tableView5 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView5 setEstimatedRowHeight:v27];
 
-  v29 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView6 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  v31 = [(UITableView *)self->_tableView indexPathForSelectedRow];
-  [v30 deselectRowAtIndexPath:v31 animated:0];
+  tableView7 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  indexPathForSelectedRow = [(UITableView *)self->_tableView indexPathForSelectedRow];
+  [tableView7 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
   [(HULocationTriggerRegionEditorViewController *)self _reloadData];
-  v32 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v33 addSubview:v32];
+  tableView8 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [v33 addSubview:tableView8];
 
   [(HULocationTriggerRegionEditorViewController *)self setView:v33];
   [(HULocationTriggerRegionEditorViewController *)self _updateUI];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = HULocationTriggerRegionEditorViewController;
-  [(HULocationTriggerRegionEditorViewController *)&v11 viewWillAppear:a3];
+  [(HULocationTriggerRegionEditorViewController *)&v11 viewWillAppear:appear];
   if (-[HULocationTriggerRegionEditorViewController _hasLocation](self, "_hasLocation") && (-[HULocationTriggerRegionEditorViewController region](self, "region"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 regionType], v4, v5))
   {
     [(HULocationTriggerRegionEditorViewController *)self setSelectedIndexPath:0];
@@ -177,49 +177,49 @@
     v6 = [MEMORY[0x277CCAA70] indexPathForRow:-[HULocationTriggerRegionEditorViewController _homeRowIndex](self inSection:{"_homeRowIndex"), 0}];
     [(HULocationTriggerRegionEditorViewController *)self setSelectedIndexPath:v6];
 
-    v7 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-    v8 = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
-    [v7 selectRowAtIndexPath:v8 animated:1 scrollPosition:1];
+    tableView = [(HULocationTriggerRegionEditorViewController *)self tableView];
+    selectedIndexPath = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
+    [tableView selectRowAtIndexPath:selectedIndexPath animated:1 scrollPosition:1];
 
-    v9 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-    v10 = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
-    [(HULocationTriggerRegionEditorViewController *)self tableView:v9 didSelectRowAtIndexPath:v10];
+    tableView2 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+    selectedIndexPath2 = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
+    [(HULocationTriggerRegionEditorViewController *)self tableView:tableView2 didSelectRowAtIndexPath:selectedIndexPath2];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HULocationTriggerRegionEditorViewController;
-  [(HULocationTriggerRegionEditorViewController *)&v6 viewDidAppear:a3];
-  v4 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-  v5 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  [v5 setDelegate:v4];
+  [(HULocationTriggerRegionEditorViewController *)&v6 viewDidAppear:appear];
+  dragView = [(HULocationTriggerRegionEditorViewController *)self dragView];
+  mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  [mapView setDelegate:dragView];
 
   [(HULocationTriggerRegionEditorViewController *)self _setupMap];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11.receiver = self;
   v11.super_class = HULocationTriggerRegionEditorViewController;
-  [(HULocationTriggerRegionEditorViewController *)&v11 viewWillDisappear:a3];
-  v4 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  v5 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  v6 = [v5 annotations];
-  [v4 removeAnnotations:v6];
+  [(HULocationTriggerRegionEditorViewController *)&v11 viewWillDisappear:disappear];
+  mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  mapView2 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  annotations = [mapView2 annotations];
+  [mapView removeAnnotations:annotations];
 
-  v7 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  [v7 setDelegate:0];
+  mapView3 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  [mapView3 setDelegate:0];
 
-  v8 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-  [v8 removeFromSuperview];
+  dragView = [(HULocationTriggerRegionEditorViewController *)self dragView];
+  [dragView removeFromSuperview];
 
-  v9 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-  [v9 setDelegate:0];
+  dragView2 = [(HULocationTriggerRegionEditorViewController *)self dragView];
+  [dragView2 setDelegate:0];
 
-  v10 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v10 resignFirstResponder];
+  searchBar = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar resignFirstResponder];
 }
 
 - (void)viewDidLayoutSubviews
@@ -228,168 +228,168 @@
   v4.super_class = HULocationTriggerRegionEditorViewController;
   [(HULocationTriggerRegionEditorViewController *)&v4 viewDidLayoutSubviews];
   [(HULocationTriggerRegionEditorViewController *)self _setupMap];
-  v3 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v3 scrollToNearestSelectedRowAtScrollPosition:0 animated:0];
+  tableView = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView scrollToNearestSelectedRowAtScrollPosition:0 animated:0];
 }
 
 - (void)updateViewConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HULocationTriggerRegionEditorViewController *)self view];
-  v7 = [v6 safeAreaLayoutGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v5 constraintEqualToAnchor:v8];
-  [v3 addObject:v9];
+  array = [MEMORY[0x277CBEB18] array];
+  searchBar = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  leadingAnchor = [searchBar leadingAnchor];
+  view = [(HULocationTriggerRegionEditorViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v9];
 
-  v10 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HULocationTriggerRegionEditorViewController *)self view];
-  v13 = [v12 safeAreaLayoutGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
-  [v3 addObject:v15];
+  searchBar2 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  trailingAnchor = [searchBar2 trailingAnchor];
+  view2 = [(HULocationTriggerRegionEditorViewController *)self view];
+  safeAreaLayoutGuide2 = [view2 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v15];
 
-  v16 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  v17 = [v16 topAnchor];
-  v18 = [(HULocationTriggerRegionEditorViewController *)self view];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
-  [v3 addObject:v21];
+  searchBar3 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  topAnchor = [searchBar3 topAnchor];
+  view3 = [(HULocationTriggerRegionEditorViewController *)self view];
+  safeAreaLayoutGuide3 = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v21];
 
-  v22 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  v23 = [v22 heightAnchor];
-  v24 = [v23 constraintEqualToConstant:44.0];
-  [v3 addObject:v24];
+  searchBar4 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  heightAnchor = [searchBar4 heightAnchor];
+  v24 = [heightAnchor constraintEqualToConstant:44.0];
+  [array addObject:v24];
 
-  v25 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  v26 = [v25 leadingAnchor];
-  v27 = [(HULocationTriggerRegionEditorViewController *)self view];
-  v28 = [v27 safeAreaLayoutGuide];
-  v29 = [v28 leadingAnchor];
-  v30 = [v26 constraintEqualToAnchor:v29];
-  [v3 addObject:v30];
+  tableView = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  leadingAnchor3 = [tableView leadingAnchor];
+  view4 = [(HULocationTriggerRegionEditorViewController *)self view];
+  safeAreaLayoutGuide4 = [view4 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide4 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v30];
 
-  v31 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  v32 = [v31 trailingAnchor];
-  v33 = [(HULocationTriggerRegionEditorViewController *)self view];
-  v34 = [v33 safeAreaLayoutGuide];
-  v35 = [v34 trailingAnchor];
-  v36 = [v32 constraintEqualToAnchor:v35];
-  [v3 addObject:v36];
+  tableView2 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  trailingAnchor3 = [tableView2 trailingAnchor];
+  view5 = [(HULocationTriggerRegionEditorViewController *)self view];
+  safeAreaLayoutGuide5 = [view5 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide5 trailingAnchor];
+  v36 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
+  [array addObject:v36];
 
-  v37 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  v38 = [v37 topAnchor];
-  v39 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
-  [v3 addObject:v41];
+  tableView3 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  topAnchor3 = [tableView3 topAnchor];
+  searchBar5 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  bottomAnchor = [searchBar5 bottomAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
+  [array addObject:v41];
 
-  v42 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-  v43 = [v42 superview];
+  dividerView = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+  superview = [dividerView superview];
 
-  v44 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  v45 = [v44 bottomAnchor];
-  if (v43)
+  tableView4 = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  bottomAnchor2 = [tableView4 bottomAnchor];
+  if (superview)
   {
-    v46 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    [v46 topAnchor];
+    dividerView2 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    [dividerView2 topAnchor];
   }
 
   else
   {
-    v46 = [(HULocationTriggerRegionEditorViewController *)self view];
-    [v46 bottomAnchor];
+    dividerView2 = [(HULocationTriggerRegionEditorViewController *)self view];
+    [dividerView2 bottomAnchor];
   }
   v47 = ;
-  v48 = [v45 constraintEqualToAnchor:v47];
-  [v3 addObject:v48];
+  v48 = [bottomAnchor2 constraintEqualToAnchor:v47];
+  [array addObject:v48];
 
-  v49 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-  v50 = [v49 superview];
+  dividerView3 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+  superview2 = [dividerView3 superview];
 
-  if (v50)
+  if (superview2)
   {
-    v51 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    v52 = [v51 leadingAnchor];
-    v53 = [(HULocationTriggerRegionEditorViewController *)self view];
-    v54 = [v53 safeAreaLayoutGuide];
-    v55 = [v54 leadingAnchor];
-    v56 = [v52 constraintEqualToAnchor:v55];
-    [v3 addObject:v56];
+    dividerView4 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    leadingAnchor5 = [dividerView4 leadingAnchor];
+    view6 = [(HULocationTriggerRegionEditorViewController *)self view];
+    safeAreaLayoutGuide6 = [view6 safeAreaLayoutGuide];
+    leadingAnchor6 = [safeAreaLayoutGuide6 leadingAnchor];
+    v56 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+    [array addObject:v56];
 
-    v57 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    v58 = [v57 trailingAnchor];
-    v59 = [(HULocationTriggerRegionEditorViewController *)self view];
-    v60 = [v59 safeAreaLayoutGuide];
-    v61 = [v60 trailingAnchor];
-    v62 = [v58 constraintEqualToAnchor:v61];
-    [v3 addObject:v62];
+    dividerView5 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    trailingAnchor5 = [dividerView5 trailingAnchor];
+    view7 = [(HULocationTriggerRegionEditorViewController *)self view];
+    safeAreaLayoutGuide7 = [view7 safeAreaLayoutGuide];
+    trailingAnchor6 = [safeAreaLayoutGuide7 trailingAnchor];
+    v62 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+    [array addObject:v62];
 
-    v63 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    v64 = [v63 heightAnchor];
-    v65 = [MEMORY[0x277D759A0] mainScreen];
-    [v65 scale];
-    v67 = [v64 constraintEqualToConstant:1.0 / v66];
-    [v3 addObject:v67];
+    dividerView6 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    heightAnchor2 = [dividerView6 heightAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    v67 = [heightAnchor2 constraintEqualToConstant:1.0 / v66];
+    [array addObject:v67];
   }
 
-  v68 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  v69 = [v68 superview];
+  mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  superview3 = [mapView superview];
 
-  if (v69)
+  if (superview3)
   {
-    v70 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v71 = [v70 topAnchor];
-    v72 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    v73 = [v72 bottomAnchor];
-    v74 = [v71 constraintEqualToAnchor:v73];
-    [v3 addObject:v74];
+    mapView2 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    topAnchor4 = [mapView2 topAnchor];
+    dividerView7 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    bottomAnchor3 = [dividerView7 bottomAnchor];
+    v74 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3];
+    [array addObject:v74];
 
-    v75 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v76 = [v75 leadingAnchor];
-    v77 = [(HULocationTriggerRegionEditorViewController *)self view];
-    v78 = [v77 safeAreaLayoutGuide];
-    v79 = [v78 leadingAnchor];
-    v80 = [v76 constraintEqualToAnchor:v79];
-    [v3 addObject:v80];
+    mapView3 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    leadingAnchor7 = [mapView3 leadingAnchor];
+    view8 = [(HULocationTriggerRegionEditorViewController *)self view];
+    safeAreaLayoutGuide8 = [view8 safeAreaLayoutGuide];
+    leadingAnchor8 = [safeAreaLayoutGuide8 leadingAnchor];
+    v80 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
+    [array addObject:v80];
 
-    v81 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v82 = [v81 trailingAnchor];
-    v83 = [(HULocationTriggerRegionEditorViewController *)self view];
-    v84 = [v83 safeAreaLayoutGuide];
-    v85 = [v84 trailingAnchor];
-    v86 = [v82 constraintEqualToAnchor:v85];
-    [v3 addObject:v86];
+    mapView4 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    trailingAnchor7 = [mapView4 trailingAnchor];
+    view9 = [(HULocationTriggerRegionEditorViewController *)self view];
+    safeAreaLayoutGuide9 = [view9 safeAreaLayoutGuide];
+    trailingAnchor8 = [safeAreaLayoutGuide9 trailingAnchor];
+    v86 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
+    [array addObject:v86];
 
-    v87 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v88 = [v87 bottomAnchor];
-    v89 = [(HULocationTriggerRegionEditorViewController *)self view];
-    v90 = [v89 bottomAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90];
-    [v3 addObject:v91];
+    mapView5 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    bottomAnchor4 = [mapView5 bottomAnchor];
+    view10 = [(HULocationTriggerRegionEditorViewController *)self view];
+    bottomAnchor5 = [view10 bottomAnchor];
+    v91 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+    [array addObject:v91];
 
-    v92 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v93 = [v92 heightAnchor];
-    v94 = [v93 constraintEqualToConstant:300.0];
-    [v3 addObject:v94];
+    mapView6 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    heightAnchor3 = [mapView6 heightAnchor];
+    v94 = [heightAnchor3 constraintEqualToConstant:300.0];
+    [array addObject:v94];
   }
 
-  v95 = [(HULocationTriggerRegionEditorViewController *)self constraints];
-  v96 = [v3 isEqual:v95];
+  constraints = [(HULocationTriggerRegionEditorViewController *)self constraints];
+  v96 = [array isEqual:constraints];
 
   if ((v96 & 1) == 0)
   {
     v97 = MEMORY[0x277CCAAD0];
-    v98 = [(HULocationTriggerRegionEditorViewController *)self constraints];
-    [v97 deactivateConstraints:v98];
+    constraints2 = [(HULocationTriggerRegionEditorViewController *)self constraints];
+    [v97 deactivateConstraints:constraints2];
 
-    [(HULocationTriggerRegionEditorViewController *)self setConstraints:v3];
+    [(HULocationTriggerRegionEditorViewController *)self setConstraints:array];
     v99 = MEMORY[0x277CCAAD0];
-    v100 = [(HULocationTriggerRegionEditorViewController *)self constraints];
-    [v99 activateConstraints:v100];
+    constraints3 = [(HULocationTriggerRegionEditorViewController *)self constraints];
+    [v99 activateConstraints:constraints3];
   }
 
   v101.receiver = self;
@@ -400,9 +400,9 @@
 - (id)showLocationRegionInvalidAlert
 {
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HULocationTriggerRegionEditorViewController *)self home];
-  v5 = [v4 name];
-  v12 = HULocalizedStringWithFormat(@"HUPresenceEventUnsupportedCustomLocationAlertMessageResetUsersFormat", @"%@", v6, v7, v8, v9, v10, v11, v5);
+  home = [(HULocationTriggerRegionEditorViewController *)self home];
+  name = [home name];
+  v12 = HULocalizedStringWithFormat(@"HUPresenceEventUnsupportedCustomLocationAlertMessageResetUsersFormat", @"%@", v6, v7, v8, v9, v10, v11, name);
 
   v13 = MEMORY[0x277D75110];
   v14 = _HULocalizedStringWithDefaultValue(@"HUPresenceEventUnsupportedCustomLocationAlertTitleResetUsers", @"HUPresenceEventUnsupportedCustomLocationAlertTitleResetUsers", 1);
@@ -439,27 +439,27 @@
 
 - (void)_updateUI
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self region];
-  [(HULocationTriggerRegionEditorViewController *)self _updateUIWithRegion:v3];
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  [(HULocationTriggerRegionEditorViewController *)self _updateUIWithRegion:region];
 }
 
-- (void)_updateUIWithRegion:(id)a3
+- (void)_updateUIWithRegion:(id)region
 {
-  v35 = a3;
+  regionCopy = region;
   [(HULocationTriggerRegionEditorViewController *)self loadViewIfNeeded];
-  v4 = [(HULocationTriggerRegionEditorViewController *)self _hasLocation];
-  v5 = [v35 identifier];
-  v6 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-  [v6 setText:v5];
+  _hasLocation = [(HULocationTriggerRegionEditorViewController *)self _hasLocation];
+  identifier = [regionCopy identifier];
+  searchBar = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+  [searchBar setText:identifier];
 
-  if (v4)
+  if (_hasLocation)
   {
-    v7 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-    [v7 resignFirstResponder];
+    searchBar2 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+    [searchBar2 resignFirstResponder];
 
-    v8 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
 
-    if (!v8)
+    if (!mapView)
     {
       v9 = objc_alloc(MEMORY[0x277CD4EC8]);
       v10 = *MEMORY[0x277CBF3A0];
@@ -469,82 +469,82 @@
       v14 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], v11, v12, v13}];
       [(HULocationTriggerRegionEditorViewController *)self setMapView:v14];
 
-      v15 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      [v15 setDelegate:self];
+      mapView2 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      [mapView2 setDelegate:self];
 
-      v16 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      mapView3 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      [mapView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v17 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      [v17 setPitchEnabled:0];
+      mapView4 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      [mapView4 setPitchEnabled:0];
 
-      v18 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      [v18 setRotateEnabled:0];
+      mapView5 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      [mapView5 setRotateEnabled:0];
 
-      v19 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      [v19 setShowsUserLocation:1];
+      mapView6 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      [mapView6 setShowsUserLocation:1];
 
       v20 = [HULocationTriggerEditorMapDragRadiusView alloc];
-      v21 = [v35 circularRegion];
-      [v21 radius];
+      circularRegion = [regionCopy circularRegion];
+      [circularRegion radius];
       v23 = [(HULocationTriggerEditorMapDragRadiusView *)v20 initWithFrame:self radiusInMeters:v10 delegate:v11, v12, v13, v22];
       [(HULocationTriggerRegionEditorViewController *)self setDragView:v23];
 
-      v24 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-      [v24 setAutoresizingMask:18];
+      dragView = [(HULocationTriggerRegionEditorViewController *)self dragView];
+      [dragView setAutoresizingMask:18];
 
-      v25 = [MEMORY[0x277D75348] clearColor];
-      v26 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-      [v26 setBackgroundColor:v25];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      dragView2 = [(HULocationTriggerRegionEditorViewController *)self dragView];
+      [dragView2 setBackgroundColor:clearColor];
 
-      v27 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-      v28 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-      [v28 setMapView:v27];
+      mapView7 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+      dragView3 = [(HULocationTriggerRegionEditorViewController *)self dragView];
+      [dragView3 setMapView:mapView7];
 
-      v29 = [(HULocationTriggerRegionEditorViewController *)self _proximityType];
-      v30 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-      [v30 setProximity:v29];
+      _proximityType = [(HULocationTriggerRegionEditorViewController *)self _proximityType];
+      dragView4 = [(HULocationTriggerRegionEditorViewController *)self dragView];
+      [dragView4 setProximity:_proximityType];
 
       [(MKMapView *)self->_mapView addSubview:self->_dragView];
     }
 
-    v31 = [(HULocationTriggerRegionEditorViewController *)self view];
-    [v31 addSubview:self->_mapView];
+    view = [(HULocationTriggerRegionEditorViewController *)self view];
+    [view addSubview:self->_mapView];
 
-    v32 = [(HULocationTriggerRegionEditorViewController *)self view];
-    [v32 addSubview:self->_dividerView];
+    view2 = [(HULocationTriggerRegionEditorViewController *)self view];
+    [view2 addSubview:self->_dividerView];
   }
 
   else
   {
-    v33 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    [v33 removeFromSuperview];
+    mapView8 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    [mapView8 removeFromSuperview];
 
-    v32 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
-    [v32 removeFromSuperview];
+    view2 = [(HULocationTriggerRegionEditorViewController *)self dividerView];
+    [view2 removeFromSuperview];
   }
 
-  v34 = [(HULocationTriggerRegionEditorViewController *)self view];
-  [v34 setNeedsUpdateConstraints];
+  view3 = [(HULocationTriggerRegionEditorViewController *)self view];
+  [view3 setNeedsUpdateConstraints];
 }
 
-- (void)_updateRecentsWithSearchText:(id)a3
+- (void)_updateRecentsWithSearchText:(id)text
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x277D00F30];
     v5 = *MEMORY[0x277D00EF8];
     v22 = *MEMORY[0x277D00ED8];
     v6 = MEMORY[0x277CBEA60];
-    v7 = a3;
+    textCopy = text;
     v8 = [v6 arrayWithObjects:&v22 count:1];
     v9 = [v4 predicateForKey:v5 inCollection:v8];
     v23[0] = v9;
     v10 = MEMORY[0x277D00F30];
-    v11 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EF0] matchingText:v7 comparison:1];
+    v11 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EF0] matchingText:textCopy comparison:1];
     v21[0] = v11;
-    v12 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EE8] matchingText:v7 comparison:1];
+    v12 = [MEMORY[0x277D00F30] predicateForKey:*MEMORY[0x277D00EE8] matchingText:textCopy comparison:1];
 
     v21[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
@@ -562,16 +562,16 @@
   v17 = objc_alloc_init(MEMORY[0x277D00F38]);
   [v17 setSearchPredicate:v16];
   [v17 setDomains:&unk_282492840];
-  v18 = [MEMORY[0x277D00F38] frecencyComparator];
-  [v17 setComparator:v18];
+  frecencyComparator = [MEMORY[0x277D00F38] frecencyComparator];
+  [v17 setComparator:frecencyComparator];
 
-  v19 = [MEMORY[0x277D00F28] defaultInstance];
+  defaultInstance = [MEMORY[0x277D00F28] defaultInstance];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchText___block_invoke;
   v20[3] = &unk_277DB7628;
   v20[4] = self;
-  [v19 performRecentsSearch:v17 queue:MEMORY[0x277D85CD0] completion:v20];
+  [defaultInstance performRecentsSearch:v17 queue:MEMORY[0x277D85CD0] completion:v20];
 }
 
 void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchText___block_invoke(uint64_t a1, uint64_t a2)
@@ -597,21 +597,21 @@ void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchT
 
 - (int64_t)_firstRecentRowIndex
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self recents];
-  v4 = [v3 count];
+  recents = [(HULocationTriggerRegionEditorViewController *)self recents];
+  v4 = [recents count];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
-    v6 = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    _homeRowIndex = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex];
+    if (_homeRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v6 + 1;
+      return _homeRowIndex + 1;
     }
   }
 
@@ -620,13 +620,13 @@ void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchT
 
 - (int64_t)_lastRecentRowIndex
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
+  _firstRecentRowIndex = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (_firstRecentRowIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
-    v6 = [(HULocationTriggerRegionEditorViewController *)self recents];
-    v4 = v5 + [v6 count] - 1;
+    v5 = _firstRecentRowIndex;
+    recents = [(HULocationTriggerRegionEditorViewController *)self recents];
+    v4 = v5 + [recents count] - 1;
   }
 
   return v4;
@@ -634,26 +634,26 @@ void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchT
 
 - (int64_t)_firstLocalSearchResultRowIndex
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
-  v4 = [v3 count];
+  localSearchResults = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
+  v4 = [localSearchResults count];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
-    v6 = [(HULocationTriggerRegionEditorViewController *)self _lastRecentRowIndex];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    _lastRecentRowIndex = [(HULocationTriggerRegionEditorViewController *)self _lastRecentRowIndex];
+    if (_lastRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex];
+      _lastRecentRowIndex = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex];
     }
 
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (_lastRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v6 + 1;
+      return _lastRecentRowIndex + 1;
     }
   }
 
@@ -662,47 +662,47 @@ void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchT
 
 - (void)_reloadData
 {
-  v2 = [(HULocationTriggerRegionEditorViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(HULocationTriggerRegionEditorViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_setupMap
 {
   if ([(HULocationTriggerRegionEditorViewController *)self _hasLocation])
   {
-    v3 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    v4 = [v3 superview];
+    mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    superview = [mapView superview];
 
-    if (v4)
+    if (superview)
     {
-      v6 = [(HULocationTriggerRegionEditorViewController *)self region];
-      v5 = [v6 location];
-      [(HULocationTriggerRegionEditorViewController *)self _displayLocation:v5];
+      region = [(HULocationTriggerRegionEditorViewController *)self region];
+      location = [region location];
+      [(HULocationTriggerRegionEditorViewController *)self _displayLocation:location];
     }
   }
 }
 
 - (BOOL)_hasLocation
 {
-  v2 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v3 = v2 != 0;
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  v3 = region != 0;
 
   return v3;
 }
 
 - (unint64_t)_proximityType
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v4 = [v3 regionType];
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  regionType = [region regionType];
 
-  if (v4 != 1)
+  if (regionType != 1)
   {
     return 0;
   }
 
-  v5 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v6 = [v5 circularRegion];
-  if ([v6 notifyOnExit])
+  region2 = [(HULocationTriggerRegionEditorViewController *)self region];
+  circularRegion = [region2 circularRegion];
+  if ([circularRegion notifyOnExit])
   {
     v7 = 2;
   }
@@ -715,18 +715,18 @@ void __76__HULocationTriggerRegionEditorViewController__updateRecentsWithSearchT
   return v7;
 }
 
-- (void)_displayLocation:(id)a3
+- (void)_displayLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v6 = [v5 regionType];
+  locationCopy = location;
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  regionType = [region regionType];
 
-  if (v6 != 1 || (-[HULocationTriggerRegionEditorViewController region](self, "region"), v7 = objc_claimAutoreleasedReturnValue(), [v7 circularRegion], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "radius"), v10 = v9, v8, v7, v10 < 100.0))
+  if (regionType != 1 || (-[HULocationTriggerRegionEditorViewController region](self, "region"), v7 = objc_claimAutoreleasedReturnValue(), [v7 circularRegion], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "radius"), v10 = v9, v8, v7, v10 < 100.0))
   {
     v10 = 100.0;
   }
 
-  v11 = [(HULocationTriggerRegionEditorViewController *)self _shiftLocationIfNeeded:v4];
+  v11 = [(HULocationTriggerRegionEditorViewController *)self _shiftLocationIfNeeded:locationCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__HULocationTriggerRegionEditorViewController__displayLocation___block_invoke;
@@ -780,53 +780,53 @@ void __64__HULocationTriggerRegionEditorViewController__displayLocation___block_
   [v18 selectAnnotation:v19 animated:1];
 }
 
-- (id)_locationForRecentMetadataDictionary:(id)a3
+- (id)_locationForRecentMetadataDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"latitude"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"latitude"];
   [v4 doubleValue];
   v6 = v5;
-  v7 = [v3 objectForKey:@"longitude"];
+  v7 = [dictionaryCopy objectForKey:@"longitude"];
   [v7 doubleValue];
   v9 = CLLocationCoordinate2DMake(v6, v8);
 
   v10 = objc_alloc(MEMORY[0x277CE41F8]);
-  v11 = [v3 objectForKey:@"hAccuracy"];
+  v11 = [dictionaryCopy objectForKey:@"hAccuracy"];
   [v11 doubleValue];
   v13 = v12;
-  v14 = [v3 objectForKey:@"vAccuracy"];
+  v14 = [dictionaryCopy objectForKey:@"vAccuracy"];
   [v14 doubleValue];
   v16 = v15;
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v18 = [v3 objectForKey:@"referenceFrame"];
+  date = [MEMORY[0x277CBEAA8] date];
+  v18 = [dictionaryCopy objectForKey:@"referenceFrame"];
 
-  v19 = [v10 initWithCoordinate:v17 altitude:objc_msgSend(v18 horizontalAccuracy:"integerValue") verticalAccuracy:v9.latitude timestamp:v9.longitude referenceFrame:{0.0, v13, v16}];
+  v19 = [v10 initWithCoordinate:date altitude:objc_msgSend(v18 horizontalAccuracy:"integerValue") verticalAccuracy:v9.latitude timestamp:v9.longitude referenceFrame:{0.0, v13, v16}];
 
   return v19;
 }
 
-- (void)_showMapRegionForCoordinate:(CLLocationCoordinate2D)a3 radius:(double)a4 animated:(BOOL)a5
+- (void)_showMapRegionForCoordinate:(CLLocationCoordinate2D)coordinate radius:(double)radius animated:(BOOL)animated
 {
-  v5 = a5;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  animatedCopy = animated;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   [(HULocationTriggerRegionEditorViewController *)self radiusInPoints];
   v10 = 3.5;
   if (v11 > 1.0)
   {
-    v12 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    [v12 bounds];
+    mapView = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    [mapView bounds];
     v14 = v13;
     [(HULocationTriggerRegionEditorViewController *)self radiusInPoints];
     v10 = v14 / v15;
   }
 
-  v16 = MEMORY[0x20F31EB00](latitude, longitude, 0.0, v10 * a4);
+  v16 = MEMORY[0x20F31EB00](latitude, longitude, 0.0, v10 * radius);
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-  [v23 regionThatFits:{v16, v18, v20, v22}];
+  mapView2 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+  [mapView2 regionThatFits:{v16, v18, v20, v22}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -834,44 +834,44 @@ void __64__HULocationTriggerRegionEditorViewController__displayLocation___block_
 
   if (fabs(v27) <= 180.0 && fabs(v25) <= 90.0 && v29 >= 0.0 && v29 <= 180.0 && v31 >= 0.0 && v31 <= 360.0)
   {
-    v32 = [(HULocationTriggerRegionEditorViewController *)self mapView];
-    [v32 setRegion:v5 animated:{v25, v27, v29, v31}];
+    mapView3 = [(HULocationTriggerRegionEditorViewController *)self mapView];
+    [mapView3 setRegion:animatedCopy animated:{v25, v27, v29, v31}];
   }
 }
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  v5 = a3;
-  if (self->_region != v5)
+  regionCopy = region;
+  if (self->_region != regionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_region, a3);
-    v6 = [(HULocationTriggerRegionEditorViewController *)self _proximityType];
-    v7 = [(HULocationTriggerRegionEditorViewController *)self dragView];
-    [v7 setProximity:v6];
+    v8 = regionCopy;
+    objc_storeStrong(&self->_region, region);
+    _proximityType = [(HULocationTriggerRegionEditorViewController *)self _proximityType];
+    dragView = [(HULocationTriggerRegionEditorViewController *)self dragView];
+    [dragView setProximity:_proximityType];
 
-    v5 = v8;
+    regionCopy = v8;
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HULocationTriggerRegionEditorViewController *)self delegate];
-  [v4 regionEditorDidCancel:self];
+  delegate = [(HULocationTriggerRegionEditorViewController *)self delegate];
+  [delegate regionEditorDidCancel:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v5 = [(HULocationTriggerRegionEditorViewController *)self delegate];
-  v4 = [(HULocationTriggerRegionEditorViewController *)self region];
-  [v5 regionEditor:self didFinishWithRegion:v4];
+  delegate = [(HULocationTriggerRegionEditorViewController *)self delegate];
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  [delegate regionEditor:self didFinishWithRegion:region];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex:a3];
-  v6 = [(HULocationTriggerRegionEditorViewController *)self recents];
-  v7 = [v6 count];
+  v5 = [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex:view];
+  recents = [(HULocationTriggerRegionEditorViewController *)self recents];
+  v7 = [recents count];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
@@ -882,91 +882,91 @@ void __64__HULocationTriggerRegionEditorViewController__displayLocation___block_
     v8 = v7 + 1;
   }
 
-  v9 = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
-  v10 = [v9 count];
+  localSearchResults = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
+  v10 = [localSearchResults count];
 
   return v8 + v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  [v5 setOpaque:0];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v6];
+  cellCopy = cell;
+  [cellCopy setOpaque:0];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [cellCopy setBackgroundColor:clearColor];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"locationCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"locationCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:@"locationCell"];
   }
 
   v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v9 = [v7 textLabel];
-  [v9 setFont:v8];
+  textLabel = [v7 textLabel];
+  [textLabel setFont:v8];
 
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
-  v11 = [v7 detailTextLabel];
-  [v11 setFont:v10];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setFont:v10];
 
-  v12 = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
-  v13 = [(HULocationTriggerRegionEditorViewController *)self _firstLocalSearchResultRowIndex];
-  v14 = [v6 row];
+  _firstRecentRowIndex = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
+  _firstLocalSearchResultRowIndex = [(HULocationTriggerRegionEditorViewController *)self _firstLocalSearchResultRowIndex];
+  v14 = [pathCopy row];
   if (v14 == [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex])
   {
-    v15 = _HULocalizedStringWithDefaultValue(@"HULocationTriggerEditorOptionHome", @"HULocationTriggerEditorOptionHome", 1);
-    v16 = [objc_opt_class() _homeImage];
+    name = _HULocalizedStringWithDefaultValue(@"HULocationTriggerEditorOptionHome", @"HULocationTriggerEditorOptionHome", 1);
+    _homeImage = [objc_opt_class() _homeImage];
     v17 = 0;
     goto LABEL_14;
   }
 
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL || [v6 row] < v12 || (v18 = objc_msgSend(v6, "row"), v18 > -[HULocationTriggerRegionEditorViewController _lastRecentRowIndex](self, "_lastRecentRowIndex")))
+  if (_firstRecentRowIndex == 0x7FFFFFFFFFFFFFFFLL || [pathCopy row] < _firstRecentRowIndex || (v18 = objc_msgSend(pathCopy, "row"), v18 > -[HULocationTriggerRegionEditorViewController _lastRecentRowIndex](self, "_lastRecentRowIndex")))
   {
-    if (v13 == 0x7FFFFFFFFFFFFFFFLL || [v6 row] < v13)
+    if (_firstLocalSearchResultRowIndex == 0x7FFFFFFFFFFFFFFFLL || [pathCopy row] < _firstLocalSearchResultRowIndex)
     {
-      v16 = 0;
+      _homeImage = 0;
       v17 = 0;
-      v15 = 0;
+      name = 0;
       goto LABEL_14;
     }
 
-    v19 = [v6 row] - v13;
-    v20 = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
-    v21 = [v20 objectAtIndexedSubscript:v19];
+    v19 = [pathCopy row] - _firstLocalSearchResultRowIndex;
+    localSearchResults = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
+    v21 = [localSearchResults objectAtIndexedSubscript:v19];
 
-    v15 = [v21 name];
-    v22 = [v21 _shortAddress];
+    name = [v21 name];
+    _shortAddress = [v21 _shortAddress];
   }
 
   else
   {
-    v23 = [v6 row] - v12;
-    v24 = [(HULocationTriggerRegionEditorViewController *)self recents];
-    v21 = [v24 objectAtIndexedSubscript:v23];
+    v23 = [pathCopy row] - _firstRecentRowIndex;
+    recents = [(HULocationTriggerRegionEditorViewController *)self recents];
+    v21 = [recents objectAtIndexedSubscript:v23];
 
-    v15 = [v21 displayName];
-    v22 = [v21 address];
+    name = [v21 displayName];
+    _shortAddress = [v21 address];
   }
 
-  v17 = v22;
-  v16 = [objc_opt_class() _pinImage];
+  v17 = _shortAddress;
+  _homeImage = [objc_opt_class() _pinImage];
 
 LABEL_14:
-  v25 = [v7 textLabel];
-  [v25 setText:v15];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setText:name];
 
-  v26 = [v7 detailTextLabel];
-  [v26 setText:v17];
+  detailTextLabel2 = [v7 detailTextLabel];
+  [detailTextLabel2 setText:v17];
 
-  v27 = [v7 imageView];
-  [v27 setImage:v16];
+  imageView = [v7 imageView];
+  [imageView setImage:_homeImage];
 
-  v28 = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
-  if ([v6 isEqual:v28])
+  selectedIndexPath = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
+  if ([pathCopy isEqual:selectedIndexPath])
   {
     if ([(HULocationTriggerRegionEditorViewController *)self _hasLocation])
     {
@@ -989,83 +989,83 @@ LABEL_14:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v32 = a4;
-  v6 = a3;
-  [v6 deselectRowAtIndexPath:v32 animated:1];
-  v7 = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  selectedIndexPath = [(HULocationTriggerRegionEditorViewController *)self selectedIndexPath];
+  v8 = [viewCopy cellForRowAtIndexPath:selectedIndexPath];
   [v8 setAccessoryType:0];
 
-  v9 = [v6 cellForRowAtIndexPath:v32];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
-  [(HULocationTriggerRegionEditorViewController *)self setSelectedIndexPath:v32];
-  v10 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v11 = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
-  v12 = [(HULocationTriggerRegionEditorViewController *)self _firstLocalSearchResultRowIndex];
-  v13 = [v32 row];
+  [(HULocationTriggerRegionEditorViewController *)self setSelectedIndexPath:pathCopy];
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  _firstRecentRowIndex = [(HULocationTriggerRegionEditorViewController *)self _firstRecentRowIndex];
+  _firstLocalSearchResultRowIndex = [(HULocationTriggerRegionEditorViewController *)self _firstLocalSearchResultRowIndex];
+  v13 = [pathCopy row];
   if (v13 == [(HULocationTriggerRegionEditorViewController *)self _homeRowIndex])
   {
-    v14 = [(HULocationTriggerRegionEditorViewController *)self home];
-    v15 = [(HULocationTriggerRegionEditorViewController *)self region];
-    v16 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", v14, [v15 eventType]);
+    home = [(HULocationTriggerRegionEditorViewController *)self home];
+    region2 = [(HULocationTriggerRegionEditorViewController *)self region];
+    v16 = +[HULocationTriggerRegion homeRegionWithHome:eventType:](HULocationTriggerRegion, "homeRegionWithHome:eventType:", home, [region2 eventType]);
     goto LABEL_15;
   }
 
-  if (v11 != 0x7FFFFFFFFFFFFFFFLL && [v32 row] >= v11)
+  if (_firstRecentRowIndex != 0x7FFFFFFFFFFFFFFFLL && [pathCopy row] >= _firstRecentRowIndex)
   {
-    v17 = [v32 row];
+    v17 = [pathCopy row];
     if (v17 <= [(HULocationTriggerRegionEditorViewController *)self _lastRecentRowIndex])
     {
-      v23 = [v32 row] - v11;
-      v24 = [(HULocationTriggerRegionEditorViewController *)self recents];
-      v20 = [v24 objectAtIndexedSubscript:v23];
+      v23 = [pathCopy row] - _firstRecentRowIndex;
+      recents = [(HULocationTriggerRegionEditorViewController *)self recents];
+      v20 = [recents objectAtIndexedSubscript:v23];
 
-      v25 = [v20 metadata];
-      v14 = [(HULocationTriggerRegionEditorViewController *)self _locationForRecentMetadataDictionary:v25];
+      metadata = [v20 metadata];
+      home = [(HULocationTriggerRegionEditorViewController *)self _locationForRecentMetadataDictionary:metadata];
 
-      v22 = [v20 address];
+      address = [v20 address];
       goto LABEL_11;
     }
   }
 
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL && [v32 row] >= v12)
+  if (_firstLocalSearchResultRowIndex != 0x7FFFFFFFFFFFFFFFLL && [pathCopy row] >= _firstLocalSearchResultRowIndex)
   {
-    v18 = [v32 row] - v12;
-    v19 = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
-    v20 = [v19 objectAtIndexedSubscript:v18];
+    v18 = [pathCopy row] - _firstLocalSearchResultRowIndex;
+    localSearchResults = [(HULocationTriggerRegionEditorViewController *)self localSearchResults];
+    v20 = [localSearchResults objectAtIndexedSubscript:v18];
 
-    v21 = [v20 placemark];
-    v14 = [v21 location];
+    placemark = [v20 placemark];
+    home = [placemark location];
 
-    v22 = [v20 name];
+    address = [v20 name];
 LABEL_11:
-    v15 = v22;
+    region2 = address;
 
     goto LABEL_12;
   }
 
-  v15 = 0;
-  v14 = 0;
+  region2 = 0;
+  home = 0;
 LABEL_12:
-  v26 = [v10 circularRegion];
-  if (v26)
+  circularRegion = [region circularRegion];
+  if (circularRegion)
   {
-    v27 = [v10 circularRegion];
-    [v27 radius];
+    circularRegion2 = [region circularRegion];
+    [circularRegion2 radius];
   }
 
   v28 = objc_alloc(MEMORY[0x277CBFBC8]);
-  [v14 coordinate];
-  v29 = [v28 initWithCenter:v15 radius:? identifier:?];
-  [v29 setReferenceFrame:{objc_msgSend(v14, "referenceFrame")}];
-  v30 = [(HULocationTriggerRegionEditorViewController *)self region];
-  [v29 setNotifyOnEntry:{objc_msgSend(v30, "eventType") == 1}];
+  [home coordinate];
+  v29 = [v28 initWithCenter:region2 radius:? identifier:?];
+  [v29 setReferenceFrame:{objc_msgSend(home, "referenceFrame")}];
+  region3 = [(HULocationTriggerRegionEditorViewController *)self region];
+  [v29 setNotifyOnEntry:{objc_msgSend(region3, "eventType") == 1}];
 
-  v31 = [(HULocationTriggerRegionEditorViewController *)self region];
-  [v29 setNotifyOnExit:{objc_msgSend(v31, "eventType") == 2}];
+  region4 = [(HULocationTriggerRegionEditorViewController *)self region];
+  [v29 setNotifyOnExit:{objc_msgSend(region4, "eventType") == 2}];
 
   v16 = [HULocationTriggerRegion customRegionWithCircularRegion:v29];
 
@@ -1074,39 +1074,39 @@ LABEL_15:
   [(HULocationTriggerRegionEditorViewController *)self _updateUI];
 }
 
-- (void)mapRadiusView:(id)a3 radiusDidChange:(double)a4 radiusInPoints:(double)a5
+- (void)mapRadiusView:(id)view radiusDidChange:(double)change radiusInPoints:(double)points
 {
-  [(HULocationTriggerRegionEditorViewController *)self setRadiusInPoints:a3, a5];
-  v7 = [(HULocationTriggerRegionEditorViewController *)self region];
-  v8 = [v7 regionType];
+  [(HULocationTriggerRegionEditorViewController *)self setRadiusInPoints:view, points];
+  region = [(HULocationTriggerRegionEditorViewController *)self region];
+  regionType = [region regionType];
 
-  if (v8 == 1)
+  if (regionType == 1)
   {
-    v9 = [(HULocationTriggerRegionEditorViewController *)self region];
-    v10 = [v9 circularRegion];
+    region2 = [(HULocationTriggerRegionEditorViewController *)self region];
+    circularRegion = [region2 circularRegion];
 
     v11 = objc_alloc(MEMORY[0x277CBFBC8]);
-    [v10 center];
+    [circularRegion center];
     v13 = v12;
     v15 = v14;
-    v16 = [v10 identifier];
-    v17 = [v11 initWithCenter:v16 radius:v13 identifier:{v15, a4}];
+    identifier = [circularRegion identifier];
+    v17 = [v11 initWithCenter:identifier radius:v13 identifier:{v15, change}];
 
-    [v17 setNotifyOnEntry:{objc_msgSend(v10, "notifyOnEntry")}];
-    [v17 setNotifyOnExit:{objc_msgSend(v10, "notifyOnExit")}];
-    [v17 setReferenceFrame:{objc_msgSend(v10, "referenceFrame")}];
+    [v17 setNotifyOnEntry:{objc_msgSend(circularRegion, "notifyOnEntry")}];
+    [v17 setNotifyOnExit:{objc_msgSend(circularRegion, "notifyOnExit")}];
+    [v17 setReferenceFrame:{objc_msgSend(circularRegion, "referenceFrame")}];
     v18 = [HULocationTriggerRegion customRegionWithCircularRegion:v17];
     [(HULocationTriggerRegionEditorViewController *)self setRegion:v18];
 
-    v19 = [(HULocationTriggerRegionEditorViewController *)self region];
-    v20 = [v19 location];
-    v21 = [(HULocationTriggerRegionEditorViewController *)self _shiftLocationIfNeeded:v20];
+    region3 = [(HULocationTriggerRegionEditorViewController *)self region];
+    location = [region3 location];
+    v21 = [(HULocationTriggerRegionEditorViewController *)self _shiftLocationIfNeeded:location];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __92__HULocationTriggerRegionEditorViewController_mapRadiusView_radiusDidChange_radiusInPoints___block_invoke;
     v23[3] = &unk_277DB7650;
     v23[4] = self;
-    *&v23[5] = a4;
+    *&v23[5] = change;
     v22 = [v21 addSuccessBlock:v23];
   }
 }
@@ -1121,12 +1121,12 @@ uint64_t __92__HULocationTriggerRegionEditorViewController_mapRadiusView_radiusD
 
 - (void)_resetSearchResults
 {
-  v3 = [(HULocationTriggerRegionEditorViewController *)self localSearch];
+  localSearch = [(HULocationTriggerRegionEditorViewController *)self localSearch];
 
-  if (v3)
+  if (localSearch)
   {
-    v4 = [(HULocationTriggerRegionEditorViewController *)self localSearch];
-    [v4 cancel];
+    localSearch2 = [(HULocationTriggerRegionEditorViewController *)self localSearch];
+    [localSearch2 cancel];
 
     [(HULocationTriggerRegionEditorViewController *)self setLocalSearch:0];
   }
@@ -1134,31 +1134,31 @@ uint64_t __92__HULocationTriggerRegionEditorViewController_mapRadiusView_radiusD
   [(HULocationTriggerRegionEditorViewController *)self setLocalSearchResults:0];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   [(HULocationTriggerRegionEditorViewController *)self _resetSearchResults];
-  if (v5 && ![v5 isEqualToString:&stru_2823E0EE8])
+  if (changeCopy && ![changeCopy isEqualToString:&stru_2823E0EE8])
   {
-    v6 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-    v7 = [v6 text];
-    [(HULocationTriggerRegionEditorViewController *)self _updateRecentsWithSearchText:v7];
+    searchBar = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+    text = [searchBar text];
+    [(HULocationTriggerRegionEditorViewController *)self _updateRecentsWithSearchText:text];
 
     v8 = objc_alloc_init(MEMORY[0x277CD4E38]);
-    v9 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
-    v10 = [v9 text];
-    [v8 setNaturalLanguageQuery:v10];
+    searchBar2 = [(HULocationTriggerRegionEditorViewController *)self searchBar];
+    text2 = [searchBar2 text];
+    [v8 setNaturalLanguageQuery:text2];
 
     v11 = [objc_alloc(MEMORY[0x277CD4E20]) initWithRequest:v8];
     [(HULocationTriggerRegionEditorViewController *)self setLocalSearch:v11];
 
-    v12 = [(HULocationTriggerRegionEditorViewController *)self localSearch];
+    localSearch = [(HULocationTriggerRegionEditorViewController *)self localSearch];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __71__HULocationTriggerRegionEditorViewController_searchBar_textDidChange___block_invoke;
     v13[3] = &unk_277DB7678;
     v13[4] = self;
-    [v12 startWithCompletionHandler:v13];
+    [localSearch startWithCompletionHandler:v13];
   }
 
   else
@@ -1179,23 +1179,23 @@ uint64_t __71__HULocationTriggerRegionEditorViewController_searchBar_textDidChan
   return [v4 _reloadData];
 }
 
-- (id)_shiftLocationIfNeeded:(id)a3 isRetry:(BOOL)a4
+- (id)_shiftLocationIfNeeded:(id)needed isRetry:(BOOL)retry
 {
-  v6 = a3;
+  neededCopy = needed;
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
-  [v6 horizontalAccuracy];
+  [neededCopy horizontalAccuracy];
   v9 = v8;
-  [v6 coordinate];
+  [neededCopy coordinate];
   v11 = v10;
-  [v6 coordinate];
+  [neededCopy coordinate];
   v13 = v12;
-  v14 = [v6 referenceFrame];
+  referenceFrame = [neededCopy referenceFrame];
   v15 = [MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:{v11, v13}];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__HULocationTriggerRegionEditorViewController__shiftLocationIfNeeded_isRetry___block_invoke;
   aBlock[3] = &unk_277DB76A0;
-  v16 = v6;
+  v16 = neededCopy;
   v34 = v16;
   v17 = v7;
   v35 = v17;
@@ -1205,24 +1205,24 @@ uint64_t __71__HULocationTriggerRegionEditorViewController_searchBar_textDidChan
   v27[1] = 3221225472;
   v27[2] = __78__HULocationTriggerRegionEditorViewController__shiftLocationIfNeeded_isRetry___block_invoke_2;
   v27[3] = &unk_277DB76F0;
-  v31 = a4;
+  retryCopy = retry;
   objc_copyWeak(&v30, &location);
   v19 = v16;
   v28 = v19;
   v20 = v17;
   v29 = v20;
   v21 = _Block_copy(v27);
-  if (v14 == 2 || !v15)
+  if (referenceFrame == 2 || !v15)
   {
     [v20 finishWithResult:v19];
   }
 
   else
   {
-    v22 = [(HULocationTriggerRegionEditorViewController *)self locationShifter];
+    locationShifter = [(HULocationTriggerRegionEditorViewController *)self locationShifter];
     v23 = MEMORY[0x277D85CD0];
     v24 = MEMORY[0x277D85CD0];
-    [v22 shiftCoordinate:v18 accuracy:0 withCompletionHandler:v21 mustGoToNetworkCallback:v23 errorHandler:v11 callbackQueue:{v13, v9}];
+    [locationShifter shiftCoordinate:v18 accuracy:0 withCompletionHandler:v21 mustGoToNetworkCallback:v23 errorHandler:v11 callbackQueue:{v13, v9}];
   }
 
   v25 = v20;

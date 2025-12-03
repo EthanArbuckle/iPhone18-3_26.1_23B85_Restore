@@ -1,27 +1,27 @@
 @interface MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)dictionary;
+- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAudioDurationInNs:(BOOL)a3;
-- (void)setHasThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAudioDurationInNs:(BOOL)ns;
+- (void)setHasThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated
 
-- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated;
   v5 = [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"score"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)v5 setScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioDurationInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated setAudioDurationInNs:](v5, "setAudioDurationInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"threshold"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"threshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithJSON:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,12 +86,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated audioDurationInNs](self, "audioDurationInNs")}];
-    [v3 setObject:v8 forKeyedSubscript:@"audioDurationInNs"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioDurationInNs"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -114,7 +114,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)self score];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"score"];
+  [dictionary setObject:v10 forKeyedSubscript:@"score"];
 
   if ((*&self->_has & 4) != 0)
   {
@@ -122,13 +122,13 @@ LABEL_4:
     v5 = MEMORY[0x1E696AD98];
     [(MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated *)self threshold];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"threshold"];
+    [dictionary setObject:v6 forKeyedSubscript:@"threshold"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -225,16 +225,16 @@ LABEL_12:
   return v9 ^ v4 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_13;
@@ -243,14 +243,14 @@ LABEL_12:
   if (*&has)
   {
     score = self->_score;
-    [v4 score];
+    [equalCopy score];
     if (score != v8)
     {
       goto LABEL_13;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -259,19 +259,19 @@ LABEL_12:
     if (v9)
     {
       audioDurationInNs = self->_audioDurationInNs;
-      if (audioDurationInNs != [v4 audioDurationInNs])
+      if (audioDurationInNs != [equalCopy audioDurationInNs])
       {
         goto LABEL_13;
       }
 
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
     }
 
     v11 = (*&has >> 2) & 1;
     if (v11 == ((v6 >> 2) & 1))
     {
-      if (!v11 || (threshold = self->_threshold, [v4 threshold], threshold == v13))
+      if (!v11 || (threshold = self->_threshold, [equalCopy threshold], threshold == v13))
       {
         v14 = 1;
         goto LABEL_14;
@@ -286,15 +286,15 @@ LABEL_14:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -314,20 +314,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasThreshold:(BOOL)a3
+- (void)setHasThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4;
   }
@@ -340,9 +340,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioDurationInNs:(BOOL)a3
+- (void)setHasAudioDurationInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

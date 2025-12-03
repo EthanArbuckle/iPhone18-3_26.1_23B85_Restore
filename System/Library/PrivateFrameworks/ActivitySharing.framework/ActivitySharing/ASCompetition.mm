@@ -1,24 +1,24 @@
 @interface ASCompetition
-+ (id)codableDatabaseCompetitionsFromCompetitions:(id)a3 withFriendWithUUID:(id)a4 withType:(int64_t)a5;
-+ (id)competitionWithCodableCompetition:(id)a3;
++ (id)codableDatabaseCompetitionsFromCompetitions:(id)competitions withFriendWithUUID:(id)d withType:(int64_t)type;
++ (id)competitionWithCodableCompetition:(id)competition;
 - (ASCompetition)init;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCompetition:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCompetition:(id)competition;
 - (BOOL)isFirstDayOfCompetition;
 - (BOOL)isLastDayOfCompetition;
-- (BOOL)isParticipantWinning:(int64_t)a3;
+- (BOOL)isParticipantWinning:(int64_t)winning;
 - (NSDate)endDate;
 - (NSDate)lastDayOfCompetition;
 - (NSDate)startDate;
-- (id)_scoresForParticipant:(int64_t)a3;
+- (id)_scoresForParticipant:(int64_t)participant;
 - (id)codableCompetition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)currentDate;
-- (id)daysWonByParticipant:(int64_t)a3;
+- (id)daysWonByParticipant:(int64_t)participant;
 - (id)description;
 - (int64_t)endDateCacheIndex;
 - (int64_t)stage;
-- (unint64_t)dailyScoreForParticipant:(int64_t)a3 onDate:(id)a4;
+- (unint64_t)dailyScoreForParticipant:(int64_t)participant onDate:(id)date;
 - (unint64_t)myDailyAverageScore;
 - (unint64_t)myTotalScore;
 - (unint64_t)numberOfDaysRemaining;
@@ -31,18 +31,18 @@
 
 - (NSDate)endDate
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   durationDateComponents = self->_durationDateComponents;
-  v5 = [(ASCompetition *)self startDate];
-  v6 = [v3 dateByAddingComponents:durationDateComponents toDate:v5 options:0];
+  startDate = [(ASCompetition *)self startDate];
+  v6 = [hk_gregorianCalendar dateByAddingComponents:durationDateComponents toDate:startDate options:0];
 
   return v6;
 }
 
 - (NSDate)startDate
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [v3 dateFromComponents:self->_startDateComponents];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v4 = [hk_gregorianCalendar dateFromComponents:self->_startDateComponents];
 
   return v4;
 }
@@ -73,19 +73,19 @@
 {
   UUID = self->_UUID;
   v18 = MEMORY[0x277CCACA8];
-  v16 = [(NSDateComponents *)self->_startDateComponents month];
+  month = [(NSDateComponents *)self->_startDateComponents month];
   v15 = [(NSDateComponents *)self->_startDateComponents day];
-  v3 = [(NSDateComponents *)self->_startDateComponents year];
+  year = [(NSDateComponents *)self->_startDateComponents year];
   v4 = [(NSDateComponents *)self->_durationDateComponents day];
   currentCacheIndex = self->_currentCacheIndex;
   lastPushedCacheIndex = self->_lastPushedCacheIndex;
   v7 = ASFormattedSequence(self->_scores);
-  v8 = [(ASCompetition *)self myTotalScore];
+  myTotalScore = [(ASCompetition *)self myTotalScore];
   v9 = ASFormattedSequence(self->_opponentScores);
-  v10 = [(ASCompetition *)self opponentTotalScore];
+  opponentTotalScore = [(ASCompetition *)self opponentTotalScore];
   maximumNumberOfPointsPerDay = self->_maximumNumberOfPointsPerDay;
   v12 = ASFormattedVictoryBadgeStyles(self->_preferredVictoryBadgeStyles);
-  v13 = [v18 stringWithFormat:@"Competition uuid=%@ start=%ld/%ld/%ld duration=%ld days currentCacheIndex=%ld lastPushedCacheIndex=%ld scores=%@(=%ld) opponentScores=%@(=%ld)  maximumNumberOfPointsPerDay=%lu points preferredVictoryBadgeStyles=%@", UUID, v16, v15, v3, v4, currentCacheIndex, lastPushedCacheIndex, v7, v8, v9, v10, maximumNumberOfPointsPerDay, v12];
+  v13 = [v18 stringWithFormat:@"Competition uuid=%@ start=%ld/%ld/%ld duration=%ld days currentCacheIndex=%ld lastPushedCacheIndex=%ld scores=%@(=%ld) opponentScores=%@(=%ld)  maximumNumberOfPointsPerDay=%lu points preferredVictoryBadgeStyles=%@", UUID, month, v15, year, v4, currentCacheIndex, lastPushedCacheIndex, v7, myTotalScore, v9, opponentTotalScore, maximumNumberOfPointsPerDay, v12];
 
   return v13;
 }
@@ -110,17 +110,17 @@
 {
   v42 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(ASCodableCloudKitCompetition);
-  v4 = [(ASCompetition *)self UUID];
-  v5 = [v4 hk_dataForUUIDBytes];
-  [(ASCodableCloudKitCompetition *)v3 setUuid:v5];
+  uUID = [(ASCompetition *)self UUID];
+  hk_dataForUUIDBytes = [uUID hk_dataForUUIDBytes];
+  [(ASCodableCloudKitCompetition *)v3 setUuid:hk_dataForUUIDBytes];
 
   [(ASCodableCloudKitCompetition *)v3 setCurrentCacheIndex:[(ASCompetition *)self currentCacheIndex]];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [(ASCompetition *)self scores];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  scores = [(ASCompetition *)self scores];
+  v7 = [scores countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -131,13 +131,13 @@
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(scores);
         }
 
         -[ASCodableCloudKitCompetition addScores:](v3, "addScores:", [*(*(&v35 + 1) + 8 * i) integerValue]);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v8 = [scores countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v8);
@@ -147,8 +147,8 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [(ASCompetition *)self opponentScores];
-  v12 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  opponentScores = [(ASCompetition *)self opponentScores];
+  v12 = [opponentScores countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v12)
   {
     v13 = v12;
@@ -159,32 +159,32 @@
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(opponentScores);
         }
 
         -[ASCodableCloudKitCompetition addOpponentScores:](v3, "addOpponentScores:", [*(*(&v31 + 1) + 8 * j) integerValue]);
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v13 = [opponentScores countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v13);
   }
 
-  v16 = [(ASCompetition *)self startDateComponents];
-  v17 = [v16 as_codableDateComponents];
-  [(ASCodableCloudKitCompetition *)v3 setStartDateComponents:v17];
+  startDateComponents = [(ASCompetition *)self startDateComponents];
+  as_codableDateComponents = [startDateComponents as_codableDateComponents];
+  [(ASCodableCloudKitCompetition *)v3 setStartDateComponents:as_codableDateComponents];
 
-  v18 = [(ASCompetition *)self durationDateComponents];
-  v19 = [v18 as_codableDateComponents];
-  [(ASCodableCloudKitCompetition *)v3 setDurationDateComponents:v19];
+  durationDateComponents = [(ASCompetition *)self durationDateComponents];
+  as_codableDateComponents2 = [durationDateComponents as_codableDateComponents];
+  [(ASCodableCloudKitCompetition *)v3 setDurationDateComponents:as_codableDateComponents2];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = [(ASCompetition *)self preferredVictoryBadgeStyles];
-  v21 = [v20 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  preferredVictoryBadgeStyles = [(ASCompetition *)self preferredVictoryBadgeStyles];
+  v21 = [preferredVictoryBadgeStyles countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v21)
   {
     v22 = v21;
@@ -195,13 +195,13 @@
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(preferredVictoryBadgeStyles);
         }
 
         -[ASCodableCloudKitCompetition addPreferredVictoryBadgeStyles:](v3, "addPreferredVictoryBadgeStyles:", [*(*(&v27 + 1) + 8 * k) unsignedIntValue]);
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v22 = [preferredVictoryBadgeStyles countByEnumeratingWithState:&v27 objects:v39 count:16];
     }
 
     while (v22);
@@ -213,84 +213,84 @@
   return v3;
 }
 
-+ (id)competitionWithCodableCompetition:(id)a3
++ (id)competitionWithCodableCompetition:(id)competition
 {
-  v3 = a3;
+  competitionCopy = competition;
   v4 = objc_alloc_init(ASCompetition);
   v5 = MEMORY[0x277CCAD78];
-  v6 = [v3 uuid];
-  v7 = [v5 hk_UUIDWithData:v6];
+  uuid = [competitionCopy uuid];
+  v7 = [v5 hk_UUIDWithData:uuid];
   [(ASCompetition *)v4 setUUID:v7];
 
-  -[ASCompetition setCurrentCacheIndex:](v4, "setCurrentCacheIndex:", [v3 currentCacheIndex]);
-  -[ASCompetition setLastPushedCacheIndex:](v4, "setLastPushedCacheIndex:", [v3 currentCacheIndex]);
-  if ([v3 scoresCount])
+  -[ASCompetition setCurrentCacheIndex:](v4, "setCurrentCacheIndex:", [competitionCopy currentCacheIndex]);
+  -[ASCompetition setLastPushedCacheIndex:](v4, "setLastPushedCacheIndex:", [competitionCopy currentCacheIndex]);
+  if ([competitionCopy scoresCount])
   {
     v8 = 0;
     do
     {
-      v9 = [(ASCompetition *)v4 scores];
-      v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "scoresAtIndex:", v8)}];
-      v11 = [v9 arrayByAddingObject:v10];
+      scores = [(ASCompetition *)v4 scores];
+      v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(competitionCopy, "scoresAtIndex:", v8)}];
+      v11 = [scores arrayByAddingObject:v10];
       [(ASCompetition *)v4 setScores:v11];
 
       ++v8;
     }
 
-    while (v8 < [v3 scoresCount]);
+    while (v8 < [competitionCopy scoresCount]);
   }
 
-  if ([v3 opponentScoresCount])
+  if ([competitionCopy opponentScoresCount])
   {
     v12 = 0;
     do
     {
-      v13 = [(ASCompetition *)v4 opponentScores];
-      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v3, "opponentScoresAtIndex:", v12)}];
-      v15 = [v13 arrayByAddingObject:v14];
+      opponentScores = [(ASCompetition *)v4 opponentScores];
+      v14 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(competitionCopy, "opponentScoresAtIndex:", v12)}];
+      v15 = [opponentScores arrayByAddingObject:v14];
       [(ASCompetition *)v4 setOpponentScores:v15];
 
       ++v12;
     }
 
-    while (v12 < [v3 opponentScoresCount]);
+    while (v12 < [competitionCopy opponentScoresCount]);
   }
 
   v16 = MEMORY[0x277CBEAB8];
-  v17 = [v3 startDateComponents];
-  v18 = [v16 as_dateComponentsWithCodable:v17];
+  startDateComponents = [competitionCopy startDateComponents];
+  v18 = [v16 as_dateComponentsWithCodable:startDateComponents];
   [(ASCompetition *)v4 setStartDateComponents:v18];
 
   v19 = MEMORY[0x277CBEAB8];
-  v20 = [v3 durationDateComponents];
-  v21 = [v19 as_dateComponentsWithCodable:v20];
+  durationDateComponents = [competitionCopy durationDateComponents];
+  v21 = [v19 as_dateComponentsWithCodable:durationDateComponents];
   [(ASCompetition *)v4 setDurationDateComponents:v21];
 
-  if ([v3 preferredVictoryBadgeStylesCount])
+  if ([competitionCopy preferredVictoryBadgeStylesCount])
   {
     v22 = 0;
     do
     {
-      v23 = [(ASCompetition *)v4 preferredVictoryBadgeStyles];
-      v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v3, "preferredVictoryBadgeStylesAtIndex:", v22)}];
-      v25 = [v23 arrayByAddingObject:v24];
+      preferredVictoryBadgeStyles = [(ASCompetition *)v4 preferredVictoryBadgeStyles];
+      v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(competitionCopy, "preferredVictoryBadgeStylesAtIndex:", v22)}];
+      v25 = [preferredVictoryBadgeStyles arrayByAddingObject:v24];
       [(ASCompetition *)v4 setPreferredVictoryBadgeStyles:v25];
 
       ++v22;
     }
 
-    while (v22 < [v3 preferredVictoryBadgeStylesCount]);
+    while (v22 < [competitionCopy preferredVictoryBadgeStylesCount]);
   }
 
-  -[ASCompetition setMaximumNumberOfPointsPerDay:](v4, "setMaximumNumberOfPointsPerDay:", [v3 maximumNumberOfPointsPerDay]);
+  -[ASCompetition setMaximumNumberOfPointsPerDay:](v4, "setMaximumNumberOfPointsPerDay:", [competitionCopy maximumNumberOfPointsPerDay]);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -298,31 +298,31 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASCompetition *)self isEqualToCompetition:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ASCompetition *)self isEqualToCompetition:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setUUID:self->_UUID];
   [v5 setCurrentCacheIndex:self->_currentCacheIndex];
   [v5 setLastPushedCacheIndex:self->_lastPushedCacheIndex];
-  v6 = [(NSArray *)self->_scores copyWithZone:a3];
+  v6 = [(NSArray *)self->_scores copyWithZone:zone];
   [v5 setScores:v6];
 
-  v7 = [(NSArray *)self->_opponentScores copyWithZone:a3];
+  v7 = [(NSArray *)self->_opponentScores copyWithZone:zone];
   [v5 setOpponentScores:v7];
 
-  v8 = [(NSDateComponents *)self->_startDateComponents copyWithZone:a3];
+  v8 = [(NSDateComponents *)self->_startDateComponents copyWithZone:zone];
   [v5 setStartDateComponents:v8];
 
-  v9 = [(NSDateComponents *)self->_durationDateComponents copyWithZone:a3];
+  v9 = [(NSDateComponents *)self->_durationDateComponents copyWithZone:zone];
   [v5 setDurationDateComponents:v9];
 
-  v10 = [(NSArray *)self->_preferredVictoryBadgeStyles copyWithZone:a3];
+  v10 = [(NSArray *)self->_preferredVictoryBadgeStyles copyWithZone:zone];
   [v5 setPreferredVictoryBadgeStyles:v10];
 
   [v5 setMaximumNumberOfPointsPerDay:self->_maximumNumberOfPointsPerDay];
@@ -331,47 +331,47 @@
 
 - (unsigned)victoryBadgeStyle
 {
-  v2 = [(NSArray *)self->_preferredVictoryBadgeStyles firstObject];
-  v3 = [v2 unsignedIntValue];
+  firstObject = [(NSArray *)self->_preferredVictoryBadgeStyles firstObject];
+  unsignedIntValue = [firstObject unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (NSDate)lastDayOfCompetition
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [(ASCompetition *)self endDate];
-  v5 = [v3 dateByAddingUnit:16 value:-1 toDate:v4 options:0];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  endDate = [(ASCompetition *)self endDate];
+  v5 = [hk_gregorianCalendar dateByAddingUnit:16 value:-1 toDate:endDate options:0];
 
   return v5;
 }
 
 - (BOOL)isFirstDayOfCompetition
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [(ASCompetition *)self startDate];
-  v5 = [(ASCompetition *)self currentDate];
-  v6 = [v3 isDate:v4 inSameDayAsDate:v5];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  startDate = [(ASCompetition *)self startDate];
+  currentDate = [(ASCompetition *)self currentDate];
+  v6 = [hk_gregorianCalendar isDate:startDate inSameDayAsDate:currentDate];
 
   return v6;
 }
 
 - (BOOL)isLastDayOfCompetition
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [(ASCompetition *)self lastDayOfCompetition];
-  v5 = [(ASCompetition *)self currentDate];
-  v6 = [v3 isDate:v4 inSameDayAsDate:v5];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  lastDayOfCompetition = [(ASCompetition *)self lastDayOfCompetition];
+  currentDate = [(ASCompetition *)self currentDate];
+  v6 = [hk_gregorianCalendar isDate:lastDayOfCompetition inSameDayAsDate:currentDate];
 
   return v6;
 }
 
 - (int64_t)endDateCacheIndex
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v4 = *MEMORY[0x277CCE1D0];
-  v5 = [(ASCompetition *)self endDate];
-  v6 = [v3 components:v4 fromDate:v5];
+  endDate = [(ASCompetition *)self endDate];
+  v6 = [hk_gregorianCalendar components:v4 fromDate:endDate];
 
   v7 = _HKCacheIndexFromDateComponents();
   return v7;
@@ -379,10 +379,10 @@
 
 - (unint64_t)numberOfDaysRemaining
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [(ASCompetition *)self currentDate];
-  v5 = [(ASCompetition *)self endDate];
-  v6 = [v3 components:16 fromDate:v4 toDate:v5 options:0];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  currentDate = [(ASCompetition *)self currentDate];
+  endDate = [(ASCompetition *)self endDate];
+  v6 = [hk_gregorianCalendar components:16 fromDate:currentDate toDate:endDate options:0];
 
   v7 = [v6 day];
   if (v7 < 0)
@@ -400,12 +400,12 @@
 
 - (int64_t)stage
 {
-  v3 = [(ASCompetition *)self currentDate];
-  [v3 timeIntervalSinceReferenceDate];
+  currentDate = [(ASCompetition *)self currentDate];
+  [currentDate timeIntervalSinceReferenceDate];
   v5 = v4;
 
-  v6 = [(ASCompetition *)self startDate];
-  [v6 timeIntervalSinceReferenceDate];
+  startDate = [(ASCompetition *)self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v8 = v7;
 
   if (v5 < v8)
@@ -413,8 +413,8 @@
     return 0;
   }
 
-  v10 = [(ASCompetition *)self endDate];
-  [v10 timeIntervalSinceReferenceDate];
+  endDate = [(ASCompetition *)self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v12 = v11;
 
   if (v5 <= v12)
@@ -444,28 +444,28 @@
   return v3;
 }
 
-- (unint64_t)dailyScoreForParticipant:(int64_t)a3 onDate:(id)a4
+- (unint64_t)dailyScoreForParticipant:(int64_t)participant onDate:(id)date
 {
-  ASCacheIndexForLocalDate(a4);
+  ASCacheIndexForLocalDate(date);
 
-  return ASCompetitionDailyScoreForParticipantWithCacheIndex(self, a3);
+  return ASCompetitionDailyScoreForParticipantWithCacheIndex(self, participant);
 }
 
-- (id)daysWonByParticipant:(int64_t)a3
+- (id)daysWonByParticipant:(int64_t)participant
 {
-  if (a3)
+  if (participant)
   {
-    v4 = [(ASCompetition *)self opponentScores];
+    opponentScores = [(ASCompetition *)self opponentScores];
     [(ASCompetition *)self scores];
   }
 
   else
   {
-    v4 = [(ASCompetition *)self scores];
+    opponentScores = [(ASCompetition *)self scores];
     [(ASCompetition *)self opponentScores];
   }
   v5 = ;
-  v6 = [v4 count];
+  v6 = [opponentScores count];
   v7 = [v5 count];
   if (v6 >= v7)
   {
@@ -488,17 +488,17 @@
     v10 = MEMORY[0x277CBEBF8];
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v9];
-      v12 = [v11 integerValue];
+      v11 = [opponentScores objectAtIndexedSubscript:v9];
+      integerValue = [v11 integerValue];
 
       v13 = [v5 objectAtIndexedSubscript:v9];
-      v14 = [v13 integerValue];
+      integerValue2 = [v13 integerValue];
 
-      if (v12 > v14)
+      if (integerValue > integerValue2)
       {
-        v15 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-        v16 = [(ASCompetition *)self startDate];
-        v17 = [v15 dateByAddingUnit:16 value:v9 toDate:v16 options:0];
+        hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+        startDate = [(ASCompetition *)self startDate];
+        v17 = [hk_gregorianCalendar dateByAddingUnit:16 value:v9 toDate:startDate options:0];
 
         v18 = [v10 arrayByAddingObject:v17];
 
@@ -516,55 +516,55 @@
   return v10;
 }
 
-- (BOOL)isParticipantWinning:(int64_t)a3
+- (BOOL)isParticipantWinning:(int64_t)winning
 {
-  if (a3)
+  if (winning)
   {
-    v4 = [(ASCompetition *)self opponentTotalScore];
-    v5 = [(ASCompetition *)self myTotalScore];
+    opponentTotalScore = [(ASCompetition *)self opponentTotalScore];
+    myTotalScore = [(ASCompetition *)self myTotalScore];
   }
 
   else
   {
-    v4 = [(ASCompetition *)self myTotalScore];
-    v5 = [(ASCompetition *)self opponentTotalScore];
+    opponentTotalScore = [(ASCompetition *)self myTotalScore];
+    myTotalScore = [(ASCompetition *)self opponentTotalScore];
   }
 
-  return v4 >= v5;
+  return opponentTotalScore >= myTotalScore;
 }
 
-- (BOOL)isEqualToCompetition:(id)a3
+- (BOOL)isEqualToCompetition:(id)competition
 {
-  v4 = a3;
+  competitionCopy = competition;
   currentCacheIndex = self->_currentCacheIndex;
-  if (currentCacheIndex == [v4 currentCacheIndex] && (lastPushedCacheIndex = self->_lastPushedCacheIndex, lastPushedCacheIndex == objc_msgSend(v4, "lastPushedCacheIndex")))
+  if (currentCacheIndex == [competitionCopy currentCacheIndex] && (lastPushedCacheIndex = self->_lastPushedCacheIndex, lastPushedCacheIndex == objc_msgSend(competitionCopy, "lastPushedCacheIndex")))
   {
     scores = self->_scores;
-    v8 = [v4 scores];
-    if (ASObjectsAreEqual(scores, v8))
+    scores = [competitionCopy scores];
+    if (ASObjectsAreEqual(scores, scores))
     {
       opponentScores = self->_opponentScores;
-      v10 = [v4 opponentScores];
-      if (ASObjectsAreEqual(opponentScores, v10))
+      opponentScores = [competitionCopy opponentScores];
+      if (ASObjectsAreEqual(opponentScores, opponentScores))
       {
         durationDateComponents = self->_durationDateComponents;
-        v12 = [v4 durationDateComponents];
-        if (ASObjectsAreEqual(durationDateComponents, v12))
+        durationDateComponents = [competitionCopy durationDateComponents];
+        if (ASObjectsAreEqual(durationDateComponents, durationDateComponents))
         {
           UUID = self->_UUID;
-          v14 = [v4 UUID];
-          if (ASObjectsAreEqual(UUID, v14))
+          uUID = [competitionCopy UUID];
+          if (ASObjectsAreEqual(UUID, uUID))
           {
             startDateComponents = self->_startDateComponents;
-            v16 = [v4 startDateComponents];
-            if (ASObjectsAreEqual(startDateComponents, v16))
+            startDateComponents = [competitionCopy startDateComponents];
+            if (ASObjectsAreEqual(startDateComponents, startDateComponents))
             {
               preferredVictoryBadgeStyles = self->_preferredVictoryBadgeStyles;
-              v18 = [v4 preferredVictoryBadgeStyles];
-              if (ASObjectsAreEqual(preferredVictoryBadgeStyles, v18))
+              preferredVictoryBadgeStyles = [competitionCopy preferredVictoryBadgeStyles];
+              if (ASObjectsAreEqual(preferredVictoryBadgeStyles, preferredVictoryBadgeStyles))
               {
                 maximumNumberOfPointsPerDay = self->_maximumNumberOfPointsPerDay;
-                v20 = maximumNumberOfPointsPerDay == [v4 maximumNumberOfPointsPerDay];
+                v20 = maximumNumberOfPointsPerDay == [competitionCopy maximumNumberOfPointsPerDay];
               }
 
               else
@@ -613,8 +613,8 @@
 
 - (id)currentDate
 {
-  v3 = [(ASCompetition *)self currentDateOverride];
-  if (v3)
+  currentDateOverride = [(ASCompetition *)self currentDateOverride];
+  if (currentDateOverride)
   {
     [(ASCompetition *)self currentDateOverride];
   }
@@ -628,10 +628,10 @@
   return v4;
 }
 
-- (id)_scoresForParticipant:(int64_t)a3
+- (id)_scoresForParticipant:(int64_t)participant
 {
   v3 = 40;
-  if (!a3)
+  if (!participant)
   {
     v3 = 32;
   }
@@ -639,17 +639,17 @@
   return *(&self->super.isa + v3);
 }
 
-+ (id)codableDatabaseCompetitionsFromCompetitions:(id)a3 withFriendWithUUID:(id)a4 withType:(int64_t)a5
++ (id)codableDatabaseCompetitionsFromCompetitions:(id)competitions withFriendWithUUID:(id)d withType:(int64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  competitionsCopy = competitions;
+  dCopy = d;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v7;
-  v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  obj = competitionsCopy;
+  v9 = [competitionsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -668,12 +668,12 @@
 
         v15 = *(*(&v22 + 1) + 8 * v13);
         v16 = objc_alloc_init(ASCodableDatabaseCompetition);
-        v17 = [v8 hk_dataForUUIDBytes];
-        [(ASCodableDatabaseCompetition *)v16 setFriendUUID:v17];
+        hk_dataForUUIDBytes = [dCopy hk_dataForUUIDBytes];
+        [(ASCodableDatabaseCompetition *)v16 setFriendUUID:hk_dataForUUIDBytes];
 
-        [(ASCodableDatabaseCompetition *)v16 setType:a5];
-        v18 = [v15 codableCompetition];
-        [(ASCodableDatabaseCompetition *)v16 setCompetition:v18];
+        [(ASCodableDatabaseCompetition *)v16 setType:type];
+        codableCompetition = [v15 codableCompetition];
+        [(ASCodableDatabaseCompetition *)v16 setCompetition:codableCompetition];
 
         v12 = [v14 arrayByAddingObject:v16];
 

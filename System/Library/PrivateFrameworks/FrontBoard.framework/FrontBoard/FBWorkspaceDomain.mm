@@ -5,13 +5,13 @@
 + (id)startWorkspaceDomainListener;
 - (FBWorkspaceDomain)init;
 - (NSString)description;
-- (_BYTE)selfAssertionAttributesForWorkspaceState:(_BYTE *)a1;
+- (_BYTE)selfAssertionAttributesForWorkspaceState:(_BYTE *)state;
 - (id)_listenerEndpoint;
-- (id)assertionAttributesForLaunchIntent:(uint64_t)a3 outWorkspaceState:(void *)a4 outProcessVisibility:;
-- (id)assertionAttributesForWorkspaceState:(uint64_t)a1;
-- (id)endpointInjectorTargetingProcess:(uint64_t)a1;
+- (id)assertionAttributesForLaunchIntent:(uint64_t)intent outWorkspaceState:(void *)state outProcessVisibility:;
+- (id)assertionAttributesForWorkspaceState:(uint64_t)state;
+- (id)endpointInjectorTargetingProcess:(uint64_t)process;
 - (os_unfair_lock)_lock_listener;
-- (uint64_t)_initWithCoupler:(void *)a3 specification:;
+- (uint64_t)_initWithCoupler:(void *)coupler specification:;
 - (uint64_t)defaultSceneInterruptionPolicy;
 - (uint64_t)defaultWorkspace;
 - (uint64_t)endpointPromise;
@@ -24,8 +24,8 @@
 - (void)_listenerEndpoint;
 - (void)dealloc;
 - (void)injectEndpointToFBSWorkspace;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setIndirectConnectionDelegate:(uint64_t)a1;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setIndirectConnectionDelegate:(uint64_t)delegate;
 @end
 
 @implementation FBWorkspaceDomain
@@ -65,36 +65,36 @@
 
 - (id)_listenerEndpoint
 {
-  if (!a1)
+  if (!self)
   {
-    v2 = 0;
+    endpoint = 0;
     goto LABEL_5;
   }
 
-  os_unfair_lock_lock((a1 + 88));
-  if (*(a1 + 103))
+  os_unfair_lock_lock((self + 88));
+  if (*(self + 103))
   {
-    v2 = 0;
+    endpoint = 0;
 LABEL_4:
-    os_unfair_lock_unlock((a1 + 88));
-    os_unfair_lock_assert_not_owner((a1 + 88));
+    os_unfair_lock_unlock((self + 88));
+    os_unfair_lock_assert_not_owner((self + 88));
 LABEL_5:
 
-    return v2;
+    return endpoint;
   }
 
-  os_unfair_lock_lock((a1 + 92));
-  v4 = *(a1 + 56);
-  os_unfair_lock_unlock((a1 + 92));
+  os_unfair_lock_lock((self + 92));
+  v4 = *(self + 56);
+  os_unfair_lock_unlock((self + 92));
   if (v4)
   {
-    v5 = [(FBWorkspaceDomain *)a1 _lock_listener];
-    v2 = [v5 endpoint];
+    _lock_listener = [(FBWorkspaceDomain *)self _lock_listener];
+    endpoint = [_lock_listener endpoint];
 
     goto LABEL_4;
   }
 
-  os_unfair_lock_unlock((a1 + 88));
+  os_unfair_lock_unlock((self + 88));
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"asked for the listenerEndpoint before the processConnectionDelegate is registered"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -110,23 +110,23 @@ LABEL_5:
 - (os_unfair_lock)_lock_listener
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    os_unfair_lock_assert_owner(a1 + 22);
-    if ((v1[25]._os_unfair_lock_opaque & 0x1000000) == 0 && !*&v1[10]._os_unfair_lock_opaque)
+    selfCopy = self;
+    os_unfair_lock_assert_owner(self + 22);
+    if ((selfCopy[25]._os_unfair_lock_opaque & 0x1000000) == 0 && !*&selfCopy[10]._os_unfair_lock_opaque)
     {
-      v2 = [(FBWorkspaceEndpointPromise *)*&v1[6]._os_unfair_lock_opaque _domainIdentifier];
-      v3 = v2;
-      if (!*&v1[4]._os_unfair_lock_opaque)
+      _domainIdentifier = [(FBWorkspaceEndpointPromise *)*&selfCopy[6]._os_unfair_lock_opaque _domainIdentifier];
+      v3 = _domainIdentifier;
+      if (!*&selfCopy[4]._os_unfair_lock_opaque)
       {
         v4 = MEMORY[0x1E698F508];
-        v26 = v2;
+        v26 = _domainIdentifier;
         v24[0] = @"Start";
         v24[1] = @"Services";
         v25[0] = @"ManualSession";
-        v5 = [MEMORY[0x1E699FCF0] identifier];
-        v22 = v5;
+        identifier = [MEMORY[0x1E699FCF0] identifier];
+        v22 = identifier;
         v23 = MEMORY[0x1E695E0F8];
         v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
         v25[1] = v6;
@@ -134,8 +134,8 @@ LABEL_5:
         v27[0] = v7;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
         v9 = [v4 registerDynamicDomainsFromPlist:v8];
-        v10 = *&v1[8]._os_unfair_lock_opaque;
-        *&v1[8]._os_unfair_lock_opaque = v9;
+        v10 = *&selfCopy[8]._os_unfair_lock_opaque;
+        *&selfCopy[8]._os_unfair_lock_opaque = v9;
       }
 
       v11 = MEMORY[0x1E698F4B8];
@@ -145,33 +145,33 @@ LABEL_5:
       v19[3] = &unk_1E783BEB8;
       v12 = v3;
       v20 = v12;
-      v21 = v1;
+      v21 = selfCopy;
       v13 = [v11 listenerWithConfigurator:v19];
-      v14 = *&v1[10]._os_unfair_lock_opaque;
-      *&v1[10]._os_unfair_lock_opaque = v13;
+      v14 = *&selfCopy[10]._os_unfair_lock_opaque;
+      *&selfCopy[10]._os_unfair_lock_opaque = v13;
 
-      [*&v1[10]._os_unfair_lock_opaque activate];
-      if (!*&v1[4]._os_unfair_lock_opaque)
+      [*&selfCopy[10]._os_unfair_lock_opaque activate];
+      if (!*&selfCopy[4]._os_unfair_lock_opaque)
       {
         v15 = [MEMORY[0x1E698F508] activateManualDomain:v12];
-        v16 = *&v1[12]._os_unfair_lock_opaque;
-        *&v1[12]._os_unfair_lock_opaque = v15;
+        v16 = *&selfCopy[12]._os_unfair_lock_opaque;
+        *&selfCopy[12]._os_unfair_lock_opaque = v15;
       }
     }
 
-    a1 = *&v1[10]._os_unfair_lock_opaque;
+    self = *&selfCopy[10]._os_unfair_lock_opaque;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)monitorAllSuspendableProcesses
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 100);
+    v1 = *(self + 100);
   }
 
   else
@@ -195,11 +195,11 @@ LABEL_5:
 + (id)startWorkspaceDomainListener
 {
   v2 = +[FBProcessManager sharedInstance];
-  v3 = [v2 eventDispatcher];
-  v4 = [(FBWorkspaceEventDispatcher *)v3 domain];
-  v5 = [(FBWorkspaceDomain *)v4 specification];
+  eventDispatcher = [v2 eventDispatcher];
+  domain = [(FBWorkspaceEventDispatcher *)eventDispatcher domain];
+  specification = [(FBWorkspaceDomain *)domain specification];
 
-  return v5;
+  return specification;
 }
 
 - (uint64_t)reconnectShmemIdentifier
@@ -290,7 +290,7 @@ void __35__FBWorkspaceDomain__lock_listener__block_invoke(uint64_t a1, void *a2)
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBWorkspaceDomain.m";
     v17 = 1024;
@@ -306,57 +306,57 @@ void __35__FBWorkspaceDomain__lock_listener__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (uint64_t)_initWithCoupler:(void *)a3 specification:
+- (uint64_t)_initWithCoupler:(void *)coupler specification:
 {
   v101 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (!a1)
+  couplerCopy = coupler;
+  if (!self)
   {
     goto LABEL_80;
   }
 
-  v94.receiver = a1;
+  v94.receiver = self;
   v94.super_class = FBWorkspaceDomain;
   v8 = objc_msgSendSuper2(&v94, sel_init);
-  a1 = v8;
+  self = v8;
   if (!v8)
   {
     goto LABEL_80;
   }
 
   objc_storeStrong(v8 + 1, a2);
-  *(a1 + 88) = 0;
+  *(self + 88) = 0;
   v9 = [MEMORY[0x1E695DFA8] set];
-  v10 = *(a1 + 64);
-  *(a1 + 64) = v9;
+  v10 = *(self + 64);
+  *(self + 64) = v9;
 
-  if (!v7)
+  if (!couplerCopy)
   {
-    [FBWorkspaceDomain _initWithCoupler:a1 specification:?];
+    [FBWorkspaceDomain _initWithCoupler:self specification:?];
     goto LABEL_80;
   }
 
-  v11 = [MEMORY[0x1E699FCF0] identifier];
-  v12 = [v7 serviceForIdentifier:v11];
+  identifier = [MEMORY[0x1E699FCF0] identifier];
+  v12 = [couplerCopy serviceForIdentifier:identifier];
 
   if (!v12)
   {
     [FBWorkspaceDomain _initWithCoupler:? specification:?];
   }
 
-  v13 = [v7 machName];
-  v14 = [MEMORY[0x1E698E6D0] environmentAliases];
-  v15 = [MEMORY[0x1E698F498] defaultShellMachName];
-  v16 = [v14 resolveMachService:v15];
+  machName = [couplerCopy machName];
+  environmentAliases = [MEMORY[0x1E698E6D0] environmentAliases];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
+  v16 = [environmentAliases resolveMachService:defaultShellMachName];
 
-  objc_storeStrong((a1 + 16), a3);
-  *(a1 + 97) = [v13 isEqualToString:v16];
+  objc_storeStrong((self + 16), coupler);
+  *(self + 97) = [machName isEqualToString:v16];
   v17 = [FBWorkspaceEndpointPromise alloc];
-  v18 = [v7 identifier];
+  identifier2 = [couplerCopy identifier];
   if (v17)
   {
-    v19 = [(FBWorkspaceEndpointPromise *)&v17->super.isa _initWithDomain:a1 identifier:v18 endpoint:0];
+    v19 = [(FBWorkspaceEndpointPromise *)&v17->super.isa _initWithDomain:self identifier:identifier2 endpoint:0];
   }
 
   else
@@ -364,36 +364,36 @@ void __35__FBWorkspaceDomain__lock_listener__block_invoke(uint64_t a1, void *a2)
     v19 = 0;
   }
 
-  v20 = *(a1 + 24);
-  *(a1 + 24) = v19;
+  v20 = *(self + 24);
+  *(self + 24) = v19;
 
   v21 = [v12 optionForKey:@"InjectEndpoint"];
   if (objc_opt_respondsToSelector())
   {
-    v22 = [v21 BOOLValue];
+    bOOLValue = [v21 BOOLValue];
   }
 
   else
   {
-    v22 = 1;
+    bOOLValue = 1;
   }
 
-  *(a1 + 98) = v22;
+  *(self + 98) = bOOLValue;
   v23 = [v12 optionForKey:@"AssertVisibility"];
   v85 = v21;
   if (objc_opt_respondsToSelector())
   {
-    *(a1 + 99) = [v23 BOOLValue];
+    *(self + 99) = [v23 BOOLValue];
   }
 
   else
   {
-    v24 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-    *(a1 + 99) = [v24 hasEntitlement:@"com.apple.runningboard.primitiveattribute"];
+    tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+    *(self + 99) = [tokenForCurrentProcess hasEntitlement:@"com.apple.runningboard.primitiveattribute"];
   }
 
   v84 = v23;
-  *(a1 + 96) &= 0xFCu;
+  *(self + 96) &= 0xFCu;
   v25 = [v12 optionForKey:@"SelfAssertRuntime"];
   v83 = v25;
   if (objc_opt_respondsToSelector())
@@ -408,10 +408,10 @@ void __35__FBWorkspaceDomain__lock_listener__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v27 = [MEMORY[0x1E69C75D0] currentProcess];
-    v28 = [v27 fb_canTaskSuspend];
+    currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+    fb_canTaskSuspend = [currentProcess fb_canTaskSuspend];
 
-    if (!v28)
+    if (!fb_canTaskSuspend)
     {
       goto LABEL_19;
     }
@@ -419,13 +419,13 @@ void __35__FBWorkspaceDomain__lock_listener__block_invoke(uint64_t a1, void *a2)
     v26 = 1;
   }
 
-  *(a1 + 96) = *(a1 + 96) & 0xFC | v26;
+  *(self + 96) = *(self + 96) & 0xFC | v26;
 LABEL_19:
-  *(a1 + 100) = *(a1 + 97);
-  v29 = [v7 launchIdentifiers];
-  v30 = [v29 containsObject:*MEMORY[0x1E699F9C0]];
+  *(self + 100) = *(self + 97);
+  launchIdentifiers = [couplerCopy launchIdentifiers];
+  v30 = [launchIdentifiers containsObject:*MEMORY[0x1E699F9C0]];
 
-  *(a1 + 101) = v30;
+  *(self + 101) = v30;
   v31 = [v12 optionForKey:@"DefaultWorkspace"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -442,9 +442,9 @@ LABEL_19:
     v32 = 0;
   }
 
-  v33 = *(a1 + 80);
-  v80 = (a1 + 80);
-  *(a1 + 80) = v32;
+  v33 = *(self + 80);
+  v80 = (self + 80);
+  *(self + 80) = v32;
 
   v34 = [v12 optionForKey:@"RegisterWorkspaces"];
   v81 = v16;
@@ -454,19 +454,19 @@ LABEL_19:
     v34 = [v12 optionForKey:@"ReconnectWorkspaces"];
     if (!v34)
     {
-      if (*(a1 + 97) == 1)
+      if (*(self + 97) == 1)
       {
         v35 = [FBWorkspaceRegistration registrationWithIdentifier:0 options:?];
         v61 = [MEMORY[0x1E695DF20] dictionaryWithObject:v35 forKey:@"FBSceneManager"];
-        v62 = *(a1 + 72);
-        *(a1 + 72) = v61;
+        v62 = *(self + 72);
+        *(self + 72) = v61;
       }
 
       else
       {
-        v64 = [MEMORY[0x1E695DF20] dictionary];
-        v35 = *(a1 + 72);
-        *(a1 + 72) = v64;
+        dictionary = [MEMORY[0x1E695DF20] dictionary];
+        v35 = *(self + 72);
+        *(self + 72) = dictionary;
       }
 
       goto LABEL_51;
@@ -474,13 +474,13 @@ LABEL_19:
   }
 
   v35 = v34;
-  v36 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v76 = v13;
+    v76 = machName;
     v77 = v12;
-    v78 = v7;
+    v78 = couplerCopy;
     v79 = v6;
     v92 = 0u;
     v93 = 0u;
@@ -505,7 +505,7 @@ LABEL_19:
           v43 = v42;
           if (v42)
           {
-            [v36 setObject:v42 forKey:*(v42 + 16)];
+            [dictionary2 setObject:v42 forKey:*(v42 + 16)];
           }
         }
 
@@ -524,9 +524,9 @@ LABEL_19:
       goto LABEL_47;
     }
 
-    v76 = v13;
+    v76 = machName;
     v77 = v12;
-    v78 = v7;
+    v78 = couplerCopy;
     v79 = v6;
     v88 = 0u;
     v89 = 0u;
@@ -553,7 +553,7 @@ LABEL_19:
           v52 = v51;
           if (v51)
           {
-            [v36 setObject:v51 forKey:*(v51 + 16)];
+            [dictionary2 setObject:v51 forKey:*(v51 + 16)];
           }
         }
 
@@ -564,39 +564,39 @@ LABEL_19:
     }
   }
 
-  v7 = v78;
+  couplerCopy = v78;
   v6 = v79;
-  v13 = v76;
+  machName = v76;
   v12 = v77;
 LABEL_47:
   if (*v80)
   {
-    v53 = [v36 objectForKey:?];
+    v53 = [dictionary2 objectForKey:?];
 
     if (!v53)
     {
-      [FBWorkspaceDomain _initWithCoupler:v80 specification:v36];
+      [FBWorkspaceDomain _initWithCoupler:v80 specification:dictionary2];
     }
   }
 
-  v54 = [v36 copy];
-  v55 = *(a1 + 72);
-  *(a1 + 72) = v54;
+  v54 = [dictionary2 copy];
+  v55 = *(self + 72);
+  *(self + 72) = v54;
 
   v16 = v81;
 LABEL_51:
 
-  if (v13)
+  if (machName)
   {
-    v56 = [MEMORY[0x1E69C75D0] currentProcess];
-    v57 = [v56 hasConsistentLaunchdJob];
+    currentProcess2 = [MEMORY[0x1E69C75D0] currentProcess];
+    hasConsistentLaunchdJob = [currentProcess2 hasConsistentLaunchdJob];
 
-    if (v57)
+    if (hasConsistentLaunchdJob)
     {
       v58 = [v12 optionForKey:@"ReconnectShmemIdentifier"];
       if (!v58)
       {
-        v63 = [FBWorkspaceConnectionsStateStore identifierForName:v13];
+        v63 = [FBWorkspaceConnectionsStateStore identifierForName:machName];
         if ([FBWorkspaceConnectionsStateStore hasSandboxAccessForIdentifier:v63])
         {
           v60 = v63;
@@ -608,7 +608,7 @@ LABEL_51:
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v96 = a1;
+            selfCopy2 = self;
             v97 = 2112;
             v98 = v63;
             _os_log_impl(&dword_1A89DD000, v65, OS_LOG_TYPE_DEFAULT, "FBWorkspaceDomain:%p no access to defaultShmemIdentifier %@ - disabling reconnection support", buf, 0x16u);
@@ -629,8 +629,8 @@ LABEL_56:
         v60 = v59;
 LABEL_75:
         v67 = [v60 copy];
-        v68 = *(a1 + 104);
-        *(a1 + 104) = v67;
+        v68 = *(self + 104);
+        *(self + 104) = v67;
 
         goto LABEL_76;
       }
@@ -639,7 +639,7 @@ LABEL_75:
       {
         if ([v58 BOOLValue])
         {
-          v59 = [FBWorkspaceConnectionsStateStore identifierForName:v13];
+          v59 = [FBWorkspaceConnectionsStateStore identifierForName:machName];
           goto LABEL_56;
         }
       }
@@ -650,7 +650,7 @@ LABEL_75:
         if (os_log_type_enabled(v66, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v96 = a1;
+          selfCopy2 = self;
           v97 = 2112;
           v98 = v58;
           _os_log_impl(&dword_1A89DD000, v66, OS_LOG_TYPE_DEFAULT, "FBWorkspaceDomain:%p unrecognized ReconnectShmemIdentifier %@ - disabling reconnection support", buf, 0x16u);
@@ -662,29 +662,29 @@ LABEL_75:
     }
   }
 
-  v60 = *(a1 + 104);
-  *(a1 + 104) = 0;
+  v60 = *(self + 104);
+  *(self + 104) = 0;
 LABEL_76:
 
   v69 = MEMORY[0x1E695DFD8];
-  if (*(a1 + 104))
+  if (*(self + 104))
   {
-    v70 = [*(a1 + 72) allKeys];
-    v71 = [v69 setWithArray:v70];
-    v72 = *(a1 + 112);
-    *(a1 + 112) = v71;
+    allKeys = [*(self + 72) allKeys];
+    v71 = [v69 setWithArray:allKeys];
+    v72 = *(self + 112);
+    *(self + 112) = v71;
   }
 
   else
   {
     v73 = [MEMORY[0x1E695DFD8] set];
-    v70 = *(a1 + 112);
-    *(a1 + 112) = v73;
+    allKeys = *(self + 112);
+    *(self + 112) = v73;
   }
 
 LABEL_80:
   v74 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -692,7 +692,7 @@ LABEL_80:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalidate must be called before deallocing"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -706,16 +706,16 @@ LABEL_80:
   __break(0);
 }
 
-- (void)setIndirectConnectionDelegate:(uint64_t)a1
+- (void)setIndirectConnectionDelegate:(uint64_t)delegate
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  if (a1)
+  if (delegate)
   {
-    os_unfair_lock_lock((a1 + 88));
-    if (*(a1 + 103) == 1)
+    os_unfair_lock_lock((delegate + 88));
+    if (*(delegate + 103) == 1)
     {
-      os_unfair_lock_unlock((a1 + 88));
+      os_unfair_lock_unlock((delegate + 88));
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"attempt to set an indirectConnectionDelegate after invalidation : new=%@", v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -728,13 +728,13 @@ LABEL_80:
       JUMPOUT(0x1A8A02874);
     }
 
-    os_unfair_lock_lock((a1 + 92));
-    v5 = *(a1 + 56);
+    os_unfair_lock_lock((delegate + 92));
+    v5 = *(delegate + 56);
     if (v5)
     {
       v17 = v5;
-      os_unfair_lock_unlock((a1 + 92));
-      os_unfair_lock_unlock((a1 + 88));
+      os_unfair_lock_unlock((delegate + 92));
+      os_unfair_lock_unlock((delegate + 88));
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"already have an indirectConnectionDelegate : existing=%@ new=%@", v17, v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -747,22 +747,22 @@ LABEL_80:
       JUMPOUT(0x1A8A028E8);
     }
 
-    objc_storeStrong((a1 + 56), a2);
-    v6 = [*(a1 + 16) machName];
+    objc_storeStrong((delegate + 56), a2);
+    machName = [*(delegate + 16) machName];
 
-    if (v6)
+    if (machName)
     {
-      os_unfair_lock_unlock((a1 + 92));
-      v15 = [(FBWorkspaceDomain *)a1 _lock_listener];
-      os_unfair_lock_lock((a1 + 92));
+      os_unfair_lock_unlock((delegate + 92));
+      _lock_listener = [(FBWorkspaceDomain *)delegate _lock_listener];
+      os_unfair_lock_lock((delegate + 92));
     }
 
-    v7 = *(a1 + 64);
-    v8 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v7 = *(delegate + 64);
+    v8 = *(delegate + 64);
+    *(delegate + 64) = 0;
 
-    os_unfair_lock_unlock((a1 + 92));
-    os_unfair_lock_unlock((a1 + 88));
+    os_unfair_lock_unlock((delegate + 92));
+    os_unfair_lock_unlock((delegate + 88));
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -791,8 +791,8 @@ LABEL_80:
       while (v11);
     }
 
-    os_unfair_lock_assert_not_owner((a1 + 92));
-    os_unfair_lock_assert_not_owner((a1 + 88));
+    os_unfair_lock_assert_not_owner((delegate + 92));
+    os_unfair_lock_assert_not_owner((delegate + 88));
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -847,11 +847,11 @@ void __54__FBWorkspaceDomain_endpointInjectorTargetingProcess___block_invoke_109
   [v6 addEndpoint:*(a1 + 32)];
 }
 
-- (_BYTE)selfAssertionAttributesForWorkspaceState:(_BYTE *)a1
+- (_BYTE)selfAssertionAttributesForWorkspaceState:(_BYTE *)state
 {
-  v2 = a1;
+  stateCopy = state;
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (state)
   {
     if (!a2)
     {
@@ -860,36 +860,36 @@ void __54__FBWorkspaceDomain_endpointInjectorTargetingProcess___block_invoke_109
 
     if (FBWorkspaceStateEqual(*a2, 0))
     {
-      v2 = 0;
+      stateCopy = 0;
     }
 
-    else if ((v2[96] & 3) == 2)
+    else if ((stateCopy[96] & 3) == 2)
     {
       v4 = FBWorkspaceStateGetActivity(*a2) > 1;
       v9 = 0;
       v5 = +[FBWorkspaceAssertionAttributes sharedAttributes];
-      v2 = [(FBWorkspaceAssertionAttributes *)v5 selfAssertionAttributesWithForeground:v4 outWorkspaceState:&v9];
+      stateCopy = [(FBWorkspaceAssertionAttributes *)v5 selfAssertionAttributesWithForeground:v4 outWorkspaceState:&v9];
       *a2 = v9;
     }
 
-    else if ((v2[96] & 3) != 0)
+    else if ((stateCopy[96] & 3) != 0)
     {
       *a2 = FBWorkspaceStateCreate(1, 1, 40);
       v6 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.common" name:@"FinishTaskInterruptable"];
       v10[0] = v6;
-      v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+      stateCopy = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     }
 
     else
     {
-      v2 = 0;
+      stateCopy = 0;
       *a2 = 0;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return stateCopy;
 }
 
 - (NSString)description
@@ -898,49 +898,49 @@ void __54__FBWorkspaceDomain_endpointInjectorTargetingProcess___block_invoke_109
   v3 = self->_lock_listener;
   os_unfair_lock_unlock(&self->_lock);
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(FBWorkspaceEndpointPromise *)&self->_endpointPromise->super.isa _domainIdentifier];
-  [v4 appendString:v5 withName:@"identifier"];
+  _domainIdentifier = [(FBWorkspaceEndpointPromise *)&self->_endpointPromise->super.isa _domainIdentifier];
+  [v4 appendString:_domainIdentifier withName:@"identifier"];
 
-  v6 = [(BSServiceDomainSpecification *)self->_specification machName];
-  [v4 appendString:v6 withName:@"machName" skipIfEmpty:1];
+  machName = [(BSServiceDomainSpecification *)self->_specification machName];
+  [v4 appendString:machName withName:@"machName" skipIfEmpty:1];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __32__FBWorkspaceDomain_description__block_invoke;
   v11[3] = &unk_1E783B300;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v7 = v3;
   v8 = v4;
   [v8 appendBodySectionWithName:0 multilinePrefix:0 block:v11];
-  v9 = [v8 build];
+  build = [v8 build];
 
-  return v9;
+  return build;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 remoteToken];
-  v10 = v9;
-  if (!v9 || [v9 isInvalid])
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteToken = [connectionCopy remoteToken];
+  v10 = remoteToken;
+  if (!remoteToken || [remoteToken isInvalid])
   {
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [FBWorkspaceDomain listener:v7 didReceiveConnection:v11 withContext:?];
+      [FBWorkspaceDomain listener:connectionCopy didReceiveConnection:v11 withContext:?];
     }
 
 LABEL_5:
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_6;
   }
 
-  if ([v8 decodeBoolForKey:@"targetsClientEndpoint"])
+  if ([contextCopy decodeBoolForKey:@"targetsClientEndpoint"])
   {
     if (!self->_allowsDirectConnections)
     {
@@ -961,7 +961,7 @@ LABEL_5:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v34 = v7;
+      v34 = connectionCopy;
       v35 = 2114;
       v36 = v10;
       _os_log_impl(&dword_1A89DD000, v14, OS_LOG_TYPE_INFO, "FBWorkspaceDomain: Enqueuing new direct workspace connection %p with remoteToken=%{public}@", buf, 0x16u);
@@ -972,7 +972,7 @@ LABEL_5:
     v30[1] = 3221225472;
     v30[2] = __63__FBWorkspaceDomain_listener_didReceiveConnection_withContext___block_invoke;
     v30[3] = &unk_1E783BEE0;
-    v31 = v7;
+    v31 = connectionCopy;
     v32 = v10;
     [(FBSWorkspaceCoupler *)coupler _enqueueClientConnectionBlock:v30];
   }
@@ -986,9 +986,9 @@ LABEL_5:
       v23 = 3221225472;
       v24 = __63__FBWorkspaceDomain_listener_didReceiveConnection_withContext___block_invoke_171;
       v25 = &unk_1E783BF08;
-      v26 = self;
-      v27 = v7;
-      v28 = v8;
+      selfCopy = self;
+      v27 = connectionCopy;
+      v28 = contextCopy;
       v29 = v10;
       v16 = MEMORY[0x1AC572E40](&v22);
       icdLock_pendingIndirectConnectionBlocks = self->_icdLock_pendingIndirectConnectionBlocks;
@@ -1005,7 +1005,7 @@ LABEL_5:
       os_unfair_lock_unlock(&self->_icdLock);
       if (v20)
       {
-        [(FBWorkspaceDomainConnectionDelegate *)v20 domain:self didReceiveConnection:v7 withContext:v8];
+        [(FBWorkspaceDomainConnectionDelegate *)v20 domain:self didReceiveConnection:connectionCopy withContext:contextCopy];
       }
 
       else
@@ -1014,13 +1014,13 @@ LABEL_5:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           *buf = 134218242;
-          v34 = v7;
+          v34 = connectionCopy;
           v35 = 2114;
           v36 = v10;
           _os_log_impl(&dword_1A89DD000, v21, OS_LOG_TYPE_INFO, "FBWorkspaceDomain: Invalidating defunct indirect connection %p with remoteToken=%{public}@", buf, 0x16u);
         }
 
-        [v7 invalidate];
+        [connectionCopy invalidate];
       }
     }
 
@@ -1098,38 +1098,38 @@ uint64_t __63__FBWorkspaceDomain_listener_didReceiveConnection_withContext___blo
 + (id)debugDescription
 {
   v2 = +[FBProcessManager sharedInstance];
-  v3 = [v2 eventDispatcher];
-  v4 = [(FBWorkspaceEventDispatcher *)v3 domain];
-  v5 = [v4 debugDescription];
+  eventDispatcher = [v2 eventDispatcher];
+  domain = [(FBWorkspaceEventDispatcher *)eventDispatcher domain];
+  v5 = [domain debugDescription];
 
   return v5;
 }
 
-- (id)endpointInjectorTargetingProcess:(uint64_t)a1
+- (id)endpointInjectorTargetingProcess:(uint64_t)process
 {
   v34 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1 || (v5 = [v3 pid], v5 < 1))
+  if (!process || (v5 = [v3 pid], v5 < 1))
   {
     v15 = 0;
     goto LABEL_26;
   }
 
   v6 = v5;
-  v7 = [(FBWorkspaceDomain *)a1 _listenerEndpoint];
-  v8 = *(a1 + 98);
-  if (v7)
+  _listenerEndpoint = [(FBWorkspaceDomain *)process _listenerEndpoint];
+  v8 = *(process + 98);
+  if (_listenerEndpoint)
   {
-    if (*(a1 + 98))
+    if (*(process + 98))
     {
-      if ([*(a1 + 8) _isSharedInstance])
+      if ([*(process + 8) _isSharedInstance])
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __54__FBWorkspaceDomain_endpointInjectorTargetingProcess___block_invoke;
         block[3] = &unk_1E783B580;
-        v29 = v7;
+        v29 = _listenerEndpoint;
         if (endpointInjectorTargetingProcess__onceToken != -1)
         {
           dispatch_once(&endpointInjectorTargetingProcess__onceToken, block);
@@ -1179,7 +1179,7 @@ uint64_t __63__FBWorkspaceDomain_listener_didReceiveConnection_withContext___blo
         v24[3] = &unk_1E783BE90;
         v26 = v6;
         v14 = &v25;
-        v25 = v7;
+        v25 = _listenerEndpoint;
         v15 = [v21 injectorWithConfigurator:v24];
       }
 
@@ -1190,7 +1190,7 @@ LABEL_24:
     }
   }
 
-  else if (*(a1 + 98))
+  else if (*(process + 98))
   {
     v20 = FBLogProcessWorkspace();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1213,14 +1213,14 @@ LABEL_26:
   return v15;
 }
 
-- (id)assertionAttributesForLaunchIntent:(uint64_t)a3 outWorkspaceState:(void *)a4 outProcessVisibility:
+- (id)assertionAttributesForLaunchIntent:(uint64_t)intent outWorkspaceState:(void *)state outProcessVisibility:
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_8_0();
     v8 = v7;
     v9 = +[FBWorkspaceAssertionAttributes sharedAttributes];
-    v10 = [(FBWorkspaceAssertionAttributes *)v9 assertionAttributesForLaunchIntent:v5 assertsVisibility:*(v8 + 99) outWorkspaceState:v4 outProcessVisibility:a4];
+    v10 = [(FBWorkspaceAssertionAttributes *)v9 assertionAttributesForLaunchIntent:v5 assertsVisibility:*(v8 + 99) outWorkspaceState:v4 outProcessVisibility:state];
   }
 
   else
@@ -1231,12 +1231,12 @@ LABEL_26:
   return v10;
 }
 
-- (id)assertionAttributesForWorkspaceState:(uint64_t)a1
+- (id)assertionAttributesForWorkspaceState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
     v4 = +[FBWorkspaceAssertionAttributes sharedAttributes];
-    v5 = [(FBWorkspaceAssertionAttributes *)v4 assertionAttributesForWorkspaceState:a2 assertsVisibility:*(a1 + 99) isBootstrapping:0];
+    v5 = [(FBWorkspaceAssertionAttributes *)v4 assertionAttributesForWorkspaceState:a2 assertsVisibility:*(state + 99) isBootstrapping:0];
   }
 
   else

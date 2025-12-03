@@ -2,29 +2,29 @@
 - (TMBackgroundNtpSource)init;
 - (void)dealloc;
 - (void)fetchTime;
-- (void)setFetchingTime:(BOOL)a3;
-- (void)setWantedTime:(double)a3;
+- (void)setFetchingTime:(BOOL)time;
+- (void)setWantedTime:(double)time;
 @end
 
 @implementation TMBackgroundNtpSource
 
-- (void)setFetchingTime:(BOOL)a3
+- (void)setFetchingTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   fetchingTime = self->_fetchingTime;
-  if (fetchingTime == a3)
+  if (fetchingTime == time)
   {
     v6 = qword_100033218;
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_ERROR))
     {
-      sub_1000184B0(fetchingTime, v3, v6);
+      sub_1000184B0(fetchingTime, timeCopy, v6);
     }
   }
 
   else
   {
 
-    if (v3)
+    if (timeCopy)
     {
       v7 = os_transaction_create();
     }
@@ -37,7 +37,7 @@
     self->_fetchingTransaction = v7;
   }
 
-  self->_fetchingTime = v3;
+  self->_fetchingTime = timeCopy;
 }
 
 - (void)fetchTime
@@ -94,7 +94,7 @@
   [(TMBackgroundNtpSource *)&v4 dealloc];
 }
 
-- (void)setWantedTime:(double)a3
+- (void)setWantedTime:(double)time
 {
   Current = CFAbsoluteTimeGetCurrent();
   v6 = sub_100003ACC(self);
@@ -102,13 +102,13 @@
   if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v16 = (a3 - Current) / 60.0;
+    v16 = (time - Current) / 60.0;
     v17 = 2048;
     v18 = v6 / 60.0;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Want active time in %.2fmin. Remaining retry interval: %fmin.", buf, 0x16u);
   }
 
-  if (Current >= a3 && v6 == 0.0)
+  if (Current >= time && v6 == 0.0)
   {
     ntpQueue = self->_ntpQueue;
     block[0] = _NSConcreteStackBlock;
@@ -121,9 +121,9 @@
 
   else
   {
-    if (Current + v6 > a3)
+    if (Current + v6 > time)
     {
-      a3 = Current + v6;
+      time = Current + v6;
     }
 
     v9 = qword_100033218;
@@ -134,7 +134,7 @@
     }
 
     dispatch_source_set_timer(self->_fetchAttemptTimer, 0xFFFFFFFFFFFFFFFFLL, 0, 0);
-    v10 = a3 - Current;
+    v10 = time - Current;
     v11 = qword_100033218;
     v12 = os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT);
     if (v10 >= 9.22337204e18)

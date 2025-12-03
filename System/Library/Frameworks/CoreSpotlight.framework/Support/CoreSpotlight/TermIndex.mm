@@ -1,14 +1,14 @@
 @interface TermIndex
 - (TermIndex)init;
-- (TermIndex)initWithIndex:(__SI *)a3 cindex:(int64_t)a4 atPath:(const char *)a5 coreSpotlight:(BOOL)a6;
-- (unint64_t)oidForDocID:(unsigned int)a3;
-- (unint64_t)postingCount:(unint64_t)a3;
-- (unsigned)groupForDocID:(unsigned int)a3;
+- (TermIndex)initWithIndex:(__SI *)index cindex:(int64_t)cindex atPath:(const char *)path coreSpotlight:(BOOL)spotlight;
+- (unint64_t)oidForDocID:(unsigned int)d;
+- (unint64_t)postingCount:(unint64_t)count;
+- (unsigned)groupForDocID:(unsigned int)d;
 - (void)dealloc;
-- (void)directoryStoreIterate:(id)a3;
-- (void)docIDsIterate:(id)a3;
-- (void)getPostings:(unint64_t)a3 block:(id)a4;
-- (void)getTerms:(id)a3;
+- (void)directoryStoreIterate:(id)iterate;
+- (void)docIDsIterate:(id)iterate;
+- (void)getPostings:(unint64_t)postings block:(id)block;
+- (void)getTerms:(id)terms;
 @end
 
 @implementation TermIndex
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (TermIndex)initWithIndex:(__SI *)a3 cindex:(int64_t)a4 atPath:(const char *)a5 coreSpotlight:(BOOL)a6
+- (TermIndex)initWithIndex:(__SI *)index cindex:(int64_t)cindex atPath:(const char *)path coreSpotlight:(BOOL)spotlight
 {
   v10 = [(TermIndex *)self init];
   v11 = v10;
   if (v10)
   {
-    v10->_index = a3;
-    v10->_cindex = a4;
-    v12 = sub_10001C5BC(a3, a4);
+    v10->_index = index;
+    v10->_cindex = cindex;
+    v12 = sub_10001C5BC(index, cindex);
     v13 = "";
     if (v12)
     {
@@ -45,12 +45,12 @@
     }
 
     v11->_name = v13;
-    v11->_flags = sub_10001C660(a3, a4);
-    v11->_base = sub_10001C640(a3, a4);
-    v11->_coreSpotlight = a6;
+    v11->_flags = sub_10001C660(index, cindex);
+    v11->_base = sub_10001C640(index, cindex);
+    v11->_coreSpotlight = spotlight;
     bzero(__str, 0x400uLL);
     memset(&v28, 0, sizeof(v28));
-    snprintf(__str, 0x400uLL, "%s/%sindexPostings", a5, v11->_name);
+    snprintf(__str, 0x400uLL, "%s/%sindexPostings", path, v11->_name);
     v14 = open(__str, 0);
     v11->_postings_fd = v14;
     if (sub_10001BA2C(v14, &v28) != -1)
@@ -58,7 +58,7 @@
       v11->_postings_size = v28.st_size;
     }
 
-    snprintf(__str, 0x400uLL, "%s/%sindexTermIds", a5, v11->_name);
+    snprintf(__str, 0x400uLL, "%s/%sindexTermIds", path, v11->_name);
     v15 = open(__str, 0);
     if (v15 != -1)
     {
@@ -78,7 +78,7 @@
       close(v16);
     }
 
-    snprintf(__str, 0x400uLL, "%s/%sindexIds", a5, v11->_name);
+    snprintf(__str, 0x400uLL, "%s/%sindexIds", path, v11->_name);
     v19 = open(__str, 0);
     if (v19 != -1)
     {
@@ -98,7 +98,7 @@
       close(v20);
     }
 
-    snprintf(__str, 0x400uLL, "%s/%sindexGroups", a5, v11->_name);
+    snprintf(__str, 0x400uLL, "%s/%sindexGroups", path, v11->_name);
     v23 = open(__str, 0);
     if (v23 != -1)
     {
@@ -145,11 +145,11 @@
   [(TermIndex *)&v3 dealloc];
 }
 
-- (unint64_t)oidForDocID:(unsigned int)a3
+- (unint64_t)oidForDocID:(unsigned int)d
 {
-  if (a3 && self->_doc_ids_limit > a3)
+  if (d && self->_doc_ids_limit > d)
   {
-    return self->_doc_ids[a3];
+    return self->_doc_ids[d];
   }
 
   else
@@ -158,7 +158,7 @@
   }
 }
 
-- (unsigned)groupForDocID:(unsigned int)a3
+- (unsigned)groupForDocID:(unsigned int)d
 {
   groups = self->_groups;
   if (!groups)
@@ -168,9 +168,9 @@
 
   if (!self->_coreSpotlight)
   {
-    if (self->_groups_map_size > (4 * a3 + 4) / 5uLL)
+    if (self->_groups_map_size > (4 * d + 4) / 5uLL)
     {
-      return (groups[a3 / 5uLL] >> (6 * (a3 % 5))) & 0x3F;
+      return (groups[d / 5uLL] >> (6 * (d % 5))) & 0x3F;
     }
 
 LABEL_7:
@@ -178,30 +178,30 @@ LABEL_7:
     return v4;
   }
 
-  if (self->_groups_map_size <= a3)
+  if (self->_groups_map_size <= d)
   {
     goto LABEL_7;
   }
 
-  LOBYTE(v4) = *(groups + a3);
+  LOBYTE(v4) = *(groups + d);
   return v4;
 }
 
-- (void)directoryStoreIterate:(id)a3
+- (void)directoryStoreIterate:(id)iterate
 {
-  v4 = a3;
+  iterateCopy = iterate;
   [(TermIndex *)self term_ids];
   [(TermIndex *)self term_ids_limit];
   [(TermIndex *)self term_ids_map_size];
   [(TermIndex *)self compact];
   index = self->_index;
   cindex = self->_cindex;
-  v8 = v4;
-  v7 = v4;
+  v8 = iterateCopy;
+  v7 = iterateCopy;
   _SIDirectoryStoreIterate();
 }
 
-- (unint64_t)postingCount:(unint64_t)a3
+- (unint64_t)postingCount:(unint64_t)count
 {
   v6 = 0;
   v7 = &v6;
@@ -212,15 +212,15 @@ LABEL_7:
   v5[2] = sub_10000A270;
   v5[3] = &unk_100034FD0;
   v5[4] = &v6;
-  [(TermIndex *)self getPostings:a3 block:v5];
+  [(TermIndex *)self getPostings:count block:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)getPostings:(unint64_t)a3 block:(id)a4
+- (void)getPostings:(unint64_t)postings block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
@@ -230,13 +230,13 @@ LABEL_7:
   v12[2] = sub_10000A414;
   v12[3] = &unk_100034FF8;
   v12[4] = v14;
-  v13 = [(TermIndex *)self compact];
+  compact = [(TermIndex *)self compact];
   v6 = objc_retainBlock(v12);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000A48C;
   v10[3] = &unk_100035020;
-  v7 = v5;
+  v7 = blockCopy;
   v11 = v7;
   v8 = objc_retainBlock(v10);
   v9 = sub_10001AB3C([(TermIndex *)self postings_fd], [(TermIndex *)self base], v6, v8);
@@ -246,19 +246,19 @@ LABEL_7:
   _Block_object_dispose(v14, 8);
 }
 
-- (void)getTerms:(id)a3
+- (void)getTerms:(id)terms
 {
-  v4 = a3;
+  termsCopy = terms;
   index = self->_index;
   cindex = self->_cindex;
-  v8 = v4;
-  v7 = v4;
+  v8 = termsCopy;
+  v7 = termsCopy;
   _SITermIndexIterate();
 }
 
-- (void)docIDsIterate:(id)a3
+- (void)docIDsIterate:(id)iterate
 {
-  v4 = a3;
+  iterateCopy = iterate;
   v8 = 0;
   doc_ids_limit = self->_doc_ids_limit;
   if (doc_ids_limit >= 2)
@@ -268,7 +268,7 @@ LABEL_7:
       v7 = self->_doc_ids[i];
       if (v7)
       {
-        v4[2](v4, i, v7, [(TermIndex *)self groupForDocID:i], &v8);
+        iterateCopy[2](iterateCopy, i, v7, [(TermIndex *)self groupForDocID:i], &v8);
         doc_ids_limit = self->_doc_ids_limit;
       }
     }

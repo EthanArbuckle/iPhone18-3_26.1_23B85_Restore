@@ -7,9 +7,9 @@
 - (id)preference
 {
   v2 = +[_SFPageZoomPreferenceManager sharedManager];
-  v3 = [v2 pageZoomPreference];
+  pageZoomPreference = [v2 pageZoomPreference];
 
-  return v3;
+  return pageZoomPreference;
 }
 
 @end

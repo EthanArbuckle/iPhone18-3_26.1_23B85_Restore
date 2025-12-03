@@ -1,5 +1,5 @@
 @interface MonthViewContainerViewController
-- (Class)childViewControllerClassForTraits:(id)a3;
+- (Class)childViewControllerClassForTraits:(id)traits;
 - (LargeMonthViewController)standardRegularController;
 - (LargeTextLargeMonthViewController)largeTextRegularController;
 - (id)childViewControllerForCompactWidthRegularHeight;
@@ -7,9 +7,9 @@
 - (id)childViewControllerForRegularWidthRegularHeight;
 - (id)currentChildViewController;
 - (id)nextLevelWeekViewController;
-- (id)pushedNextLevelMainViewControllerContainerAnimated:(BOOL)a3;
+- (id)pushedNextLevelMainViewControllerContainerAnimated:(BOOL)animated;
 - (void)childViewControllerChangedForCurrentTraits;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MonthViewContainerViewController
@@ -19,13 +19,13 @@
   v3 = *(&self->super._animatingViewTransition + 1);
   if (!v3)
   {
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 selectedDate];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
 
     v6 = [CompactWidthMonthViewController alloc];
-    v7 = [(MainViewController *)self model];
-    v8 = [(MainViewController *)self window];
-    v9 = [(CompactWidthMonthViewController *)v6 initWithCalendarDate:v5 model:v7 window:v8];
+    model2 = [(MainViewController *)self model];
+    window = [(MainViewController *)self window];
+    v9 = [(CompactWidthMonthViewController *)v6 initWithCalendarDate:selectedDate model:model2 window:window];
     v10 = *(&self->super._animatingViewTransition + 1);
     *(&self->super._animatingViewTransition + 1) = v9;
 
@@ -37,12 +37,12 @@
 
 - (void)childViewControllerChangedForCurrentTraits
 {
-  v4 = [(MonthViewContainerViewController *)self traitCollection];
-  if ([v4 horizontalSizeClass] == 2)
+  traitCollection = [(MonthViewContainerViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2)
   {
-    v3 = [(MonthViewContainerViewController *)self isViewLoaded];
+    isViewLoaded = [(MonthViewContainerViewController *)self isViewLoaded];
 
-    if (v3)
+    if (isViewLoaded)
     {
 
       [(MainViewControllerContainer *)self setupForViewAppearance];
@@ -58,24 +58,24 @@
 {
   v4.receiver = self;
   v4.super_class = MonthViewContainerViewController;
-  v2 = [(MainViewControllerContainer *)&v4 currentChildViewController];
+  currentChildViewController = [(MainViewControllerContainer *)&v4 currentChildViewController];
 
-  return v2;
+  return currentChildViewController;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MonthViewContainerViewController *)self traitCollection];
-  v9 = [(MonthViewContainerViewController *)self currentChildViewController];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  traitCollection = [(MonthViewContainerViewController *)self traitCollection];
+  currentChildViewController = [(MonthViewContainerViewController *)self currentChildViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(MonthViewContainerViewController *)self currentChildViewController];
-    v11 = [v10 dividedListMode];
+    currentChildViewController2 = [(MonthViewContainerViewController *)self currentChildViewController];
+    dividedListMode = [currentChildViewController2 dividedListMode];
 
-    v12 = v11 ^ 1;
+    v12 = dividedListMode ^ 1;
   }
 
   else
@@ -83,19 +83,19 @@
     v12 = 1;
   }
 
-  if ([v8 horizontalSizeClass] == 1)
+  if ([traitCollection horizontalSizeClass] == 1)
   {
-    v13 = [(MonthViewContainerViewController *)self navigationController];
-    v14 = [v13 topViewController];
-    v15 = (v14 == self) & v12;
+    navigationController = [(MonthViewContainerViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    v15 = (topViewController == self) & v12;
 
     if (v15 == 1)
     {
-      v16 = [(MainViewControllerContainer *)self bestDateForNewEvent];
-      if (v16)
+      bestDateForNewEvent = [(MainViewControllerContainer *)self bestDateForNewEvent];
+      if (bestDateForNewEvent)
       {
-        v17 = [(MainViewController *)self model];
-        [v17 setSelectedDate:v16];
+        model = [(MainViewController *)self model];
+        [model setSelectedDate:bestDateForNewEvent];
       }
 
       else
@@ -104,7 +104,7 @@
         if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v21 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@ was unable to find bestDateForNewEvent!", buf, 0xCu);
         }
       }
@@ -113,16 +113,16 @@
 
   v19.receiver = self;
   v19.super_class = MonthViewContainerViewController;
-  [(MainViewController *)&v19 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+  [(MainViewController *)&v19 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 }
 
-- (id)pushedNextLevelMainViewControllerContainerAnimated:(BOOL)a3
+- (id)pushedNextLevelMainViewControllerContainerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MainViewController *)self model];
-  v6 = [v5 selectedDate];
+  animatedCopy = animated;
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  v7 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController = [(MonthViewContainerViewController *)self currentChildViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -133,46 +133,46 @@
 
   else
   {
-    v10 = [(MonthViewContainerViewController *)self currentChildViewController];
+    currentChildViewController2 = [(MonthViewContainerViewController *)self currentChildViewController];
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
   }
 
-  v11 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController3 = [(MonthViewContainerViewController *)self currentChildViewController];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 
-  v13 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController4 = [(MonthViewContainerViewController *)self currentChildViewController];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
   if (v9)
   {
-    v15 = [(MainViewController *)self model];
-    v16 = [v15 showDayAsList];
+    model2 = [(MainViewController *)self model];
+    showDayAsList = [model2 showDayAsList];
 
-    if (v16)
+    if (showDayAsList)
     {
-      v17 = [(MonthViewContainerViewController *)self currentChildViewController];
-      v18 = [v17 pushedListViewControllerWithDate:v6 animated:v3];
+      currentChildViewController5 = [(MonthViewContainerViewController *)self currentChildViewController];
+      v18 = [currentChildViewController5 pushedListViewControllerWithDate:selectedDate animated:animatedCopy];
     }
 
     else
     {
       v19 = (_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl();
-      v21 = [(MainViewController *)self model];
-      v22 = [v21 numDaysToShow];
+      model3 = [(MainViewController *)self model];
+      numDaysToShow = [model3 numDaysToShow];
 
-      v23 = [(MonthViewContainerViewController *)self currentChildViewController];
-      v17 = v23;
-      if (v19 && v22 == 2)
+      currentChildViewController6 = [(MonthViewContainerViewController *)self currentChildViewController];
+      currentChildViewController5 = currentChildViewController6;
+      if (v19 && numDaysToShow == 2)
       {
-        v18 = [v23 pushedMultiDayViewControllerWithDate:v6 animated:v3];
+        v18 = [currentChildViewController6 pushedMultiDayViewControllerWithDate:selectedDate animated:animatedCopy];
       }
 
       else
       {
-        v18 = [v23 pushedDayViewControllerWithDate:v6 animated:v3];
+        v18 = [currentChildViewController6 pushedDayViewControllerWithDate:selectedDate animated:animatedCopy];
       }
     }
   }
@@ -185,8 +185,8 @@
       goto LABEL_21;
     }
 
-    v17 = [(MonthViewContainerViewController *)self currentChildViewController];
-    v18 = [v17 pushedWeekViewControllerWithDate:v6 animated:0];
+    currentChildViewController5 = [(MonthViewContainerViewController *)self currentChildViewController];
+    v18 = [currentChildViewController5 pushedWeekViewControllerWithDate:selectedDate animated:0];
   }
 
   v20 = v18;
@@ -198,14 +198,14 @@ LABEL_21:
 
 - (id)nextLevelWeekViewController
 {
-  v3 = [(MainViewController *)self model];
-  v4 = [v3 selectedDate];
+  model = [(MainViewController *)self model];
+  selectedDate = [model selectedDate];
 
-  v5 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController = [(MonthViewContainerViewController *)self currentChildViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController2 = [(MonthViewContainerViewController *)self currentChildViewController];
   if (isKindOfClass)
   {
     goto LABEL_5;
@@ -214,7 +214,7 @@ LABEL_21:
   objc_opt_class();
   v8 = objc_opt_isKindOfClass();
 
-  v7 = [(MonthViewContainerViewController *)self currentChildViewController];
+  currentChildViewController2 = [(MonthViewContainerViewController *)self currentChildViewController];
   if (v8)
   {
     goto LABEL_5;
@@ -225,9 +225,9 @@ LABEL_21:
 
   if (v9)
   {
-    v7 = [(MonthViewContainerViewController *)self currentChildViewController];
+    currentChildViewController2 = [(MonthViewContainerViewController *)self currentChildViewController];
 LABEL_5:
-    v10 = [v7 nextLevelWeekViewControllerWithDate:v4];
+    v10 = [currentChildViewController2 nextLevelWeekViewControllerWithDate:selectedDate];
 
     goto LABEL_6;
   }
@@ -243,13 +243,13 @@ LABEL_6:
   v3 = *(&self->_compactWidthController + 1);
   if (!v3)
   {
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 selectedDate];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
 
     v6 = [MultiColumnMonthViewController alloc];
-    v7 = [(MainViewController *)self model];
-    v8 = [(MainViewController *)self window];
-    v9 = [(MultiColumnMonthViewController *)v6 initWithCalendarDate:v5 model:v7 window:v8];
+    model2 = [(MainViewController *)self model];
+    window = [(MainViewController *)self window];
+    v9 = [(MultiColumnMonthViewController *)v6 initWithCalendarDate:selectedDate model:model2 window:window];
     v10 = *(&self->_compactWidthController + 1);
     *(&self->_compactWidthController + 1) = v9;
 
@@ -264,13 +264,13 @@ LABEL_6:
   v3 = *(&self->_compactHeightController + 1);
   if (!v3)
   {
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 selectedDate];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
 
     v6 = [LargeMonthViewController alloc];
-    v7 = [(MainViewController *)self model];
-    v8 = [(MainViewController *)self window];
-    v9 = [(LargeMonthViewController *)v6 initWithCalendarDate:v5 model:v7 window:v8];
+    model2 = [(MainViewController *)self model];
+    window = [(MainViewController *)self window];
+    v9 = [(LargeMonthViewController *)v6 initWithCalendarDate:selectedDate model:model2 window:window];
     v10 = *(&self->_compactHeightController + 1);
     *(&self->_compactHeightController + 1) = v9;
 
@@ -285,13 +285,13 @@ LABEL_6:
   v3 = *(&self->_standardRegularController + 1);
   if (!v3)
   {
-    v4 = [(MainViewController *)self model];
-    v5 = [v4 selectedDate];
+    model = [(MainViewController *)self model];
+    selectedDate = [model selectedDate];
 
     v6 = [LargeTextLargeMonthViewController alloc];
-    v7 = [(MainViewController *)self model];
-    v8 = [(MainViewController *)self window];
-    v9 = [(CompactWidthMonthViewController *)v6 initWithCalendarDate:v5 model:v7 window:v8];
+    model2 = [(MainViewController *)self model];
+    window = [(MainViewController *)self window];
+    v9 = [(CompactWidthMonthViewController *)v6 initWithCalendarDate:selectedDate model:model2 window:window];
     v10 = *(&self->_standardRegularController + 1);
     *(&self->_standardRegularController + 1) = v9;
 
@@ -303,7 +303,7 @@ LABEL_6:
 
 - (id)childViewControllerForRegularWidthRegularHeight
 {
-  v3 = [(MonthViewContainerViewController *)self traitCollection];
+  traitCollection = [(MonthViewContainerViewController *)self traitCollection];
   v4 = EKUIUsesLargeTextLayout();
 
   if (v4)
@@ -320,12 +320,12 @@ LABEL_6:
   return v5;
 }
 
-- (Class)childViewControllerClassForTraits:(id)a3
+- (Class)childViewControllerClassForTraits:(id)traits
 {
-  v4 = a3;
-  if ([v4 horizontalSizeClass] == 2 && objc_msgSend(v4, "verticalSizeClass") != 1)
+  traitsCopy = traits;
+  if ([traitsCopy horizontalSizeClass] == 2 && objc_msgSend(traitsCopy, "verticalSizeClass") != 1)
   {
-    v5 = [(MonthViewContainerViewController *)self traitCollection];
+    traitCollection = [(MonthViewContainerViewController *)self traitCollection];
     EKUIUsesLargeTextLayout();
   }
 

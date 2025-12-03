@@ -1,6 +1,6 @@
 @interface MTRApplicationBasicClusterApplicationStruct
 - (MTRApplicationBasicClusterApplicationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRApplicationBasicClusterApplicationStruct);
-  v5 = [(MTRApplicationBasicClusterApplicationStruct *)self catalogVendorID];
-  [(MTRApplicationBasicClusterApplicationStruct *)v4 setCatalogVendorID:v5];
+  catalogVendorID = [(MTRApplicationBasicClusterApplicationStruct *)self catalogVendorID];
+  [(MTRApplicationBasicClusterApplicationStruct *)v4 setCatalogVendorID:catalogVendorID];
 
-  v6 = [(MTRApplicationBasicClusterApplicationStruct *)self applicationID];
-  [(MTRApplicationBasicClusterApplicationStruct *)v4 setApplicationID:v6];
+  applicationID = [(MTRApplicationBasicClusterApplicationStruct *)self applicationID];
+  [(MTRApplicationBasicClusterApplicationStruct *)v4 setApplicationID:applicationID];
 
   return v4;
 }

@@ -1,50 +1,50 @@
 @interface GDFeatureView
-- (GDFeatureView)initWithAccessAssertion:(id)a3 database:(id)a4;
-- (id)expectedFeatureKeysWithError:(id *)a3;
-- (id)featureForKey:(id)a3 error:(id *)a4;
-- (id)featureKeysWithError:(id *)a3;
+- (GDFeatureView)initWithAccessAssertion:(id)assertion database:(id)database;
+- (id)expectedFeatureKeysWithError:(id *)error;
+- (id)featureForKey:(id)key error:(id *)error;
+- (id)featureKeysWithError:(id *)error;
 @end
 
 @implementation GDFeatureView
 
-- (id)expectedFeatureKeysWithError:(id *)a3
+- (id)expectedFeatureKeysWithError:(id *)error
 {
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A18D8];
   v4 = objc_opt_new();
-  v5 = [v4 featureKeysWithError:a3];
+  v5 = [v4 featureKeysWithError:error];
 
   return v5;
 }
 
-- (id)featureKeysWithError:(id *)a3
+- (id)featureKeysWithError:(id *)error
 {
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F20A18B8];
   featureRetriever = self->_featureRetriever;
 
-  return [(GDSQLFeatureRetriever *)featureRetriever featureKeysWithError:a3];
+  return [(GDSQLFeatureRetriever *)featureRetriever featureKeysWithError:error];
 }
 
-- (id)featureForKey:(id)a3 error:(id *)a4
+- (id)featureForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   [GDAnalytics sendEventForProductionLazyWithEventName:@"ViewEngine.Serving.Query" eventPayloadBuilder:&unk_1F2076530];
-  v7 = [(GDSQLFeatureRetriever *)self->_featureRetriever featureForKey:v6 error:a4];
+  v7 = [(GDSQLFeatureRetriever *)self->_featureRetriever featureForKey:keyCopy error:error];
 
   return v7;
 }
 
-- (GDFeatureView)initWithAccessAssertion:(id)a3 database:(id)a4
+- (GDFeatureView)initWithAccessAssertion:(id)assertion database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  databaseCopy = database;
   v14.receiver = self;
   v14.super_class = GDFeatureView;
   v9 = [(GDFeatureView *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessAssertion, a3);
-    objc_storeStrong(&v10->_db, a4);
+    objc_storeStrong(&v9->_accessAssertion, assertion);
+    objc_storeStrong(&v10->_db, database);
     v11 = [[GDSQLFeatureRetriever alloc] initWithDatabase:v10->_db];
     featureRetriever = v10->_featureRetriever;
     v10->_featureRetriever = v11;

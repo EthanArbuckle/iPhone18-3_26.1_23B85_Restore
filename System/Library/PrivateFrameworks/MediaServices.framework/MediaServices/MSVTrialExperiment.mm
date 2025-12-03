@@ -1,10 +1,10 @@
 @interface MSVTrialExperiment
-- (MSVTrialExperiment)initWithProjectID:(int64_t)a3 namespaceName:(id)a4;
+- (MSVTrialExperiment)initWithProjectID:(int64_t)d namespaceName:(id)name;
 @end
 
 @implementation MSVTrialExperiment
 
-- (MSVTrialExperiment)initWithProjectID:(int64_t)a3 namespaceName:(id)a4
+- (MSVTrialExperiment)initWithProjectID:(int64_t)d namespaceName:(id)name
 {
   v5 = os_log_create("com.apple.amp.MediaServices", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))

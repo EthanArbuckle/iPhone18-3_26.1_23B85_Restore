@@ -1,36 +1,36 @@
 @interface VCPWatchFaceAnalyzer
-- (VCPWatchFaceAnalyzer)initWithOptions:(id)a3;
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5;
+- (VCPWatchFaceAnalyzer)initWithOptions:(id)options;
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results;
 @end
 
 @implementation VCPWatchFaceAnalyzer
 
-- (VCPWatchFaceAnalyzer)initWithOptions:(id)a3
+- (VCPWatchFaceAnalyzer)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = VCPWatchFaceAnalyzer;
   v6 = [(VCPWatchFaceAnalyzer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (int)analyzeAsset:(id)a3 cancel:(id)a4 results:(id *)a5
+- (int)analyzeAsset:(id)asset cancel:(id)cancel results:(id *)results
 {
   v75 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8 || ((v8[2])(v8) & 1) == 0)
+  assetCopy = asset;
+  cancelCopy = cancel;
+  v9 = cancelCopy;
+  if (!cancelCopy || ((cancelCopy[2])(cancelCopy) & 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v42 fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:@"/tmp/com.apple.mediaanalysisd/"])
     {
       v41 = 0;
     }
@@ -38,7 +38,7 @@
     else
     {
       v56 = 0;
-      v11 = [v42 createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v56];
+      v11 = [defaultManager createDirectoryAtPath:@"/tmp/com.apple.mediaanalysisd/" withIntermediateDirectories:1 attributes:0 error:&v56];
       v41 = v56;
       if ((v11 & 1) == 0)
       {
@@ -56,14 +56,14 @@
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
-    v40 = [v12 stringWithFormat:@"%@wf-%@", @"/tmp/com.apple.mediaanalysisd/", v14];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v40 = [v12 stringWithFormat:@"%@wf-%@", @"/tmp/com.apple.mediaanalysisd/", uUIDString];
 
     v43 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v40 isDirectory:1];
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v55 = 0;
-    [v15 createDirectoryAtURL:v43 withIntermediateDirectories:1 attributes:0 error:&v55];
+    [defaultManager2 createDirectoryAtURL:v43 withIntermediateDirectories:1 attributes:0 error:&v55];
     v16 = v55;
 
     if (v16)
@@ -79,7 +79,7 @@
       goto LABEL_38;
     }
 
-    v17 = a5;
+    resultsCopy = results;
     *&buf = 0;
     *(&buf + 1) = &buf;
     v67 = 0x3032000000;
@@ -102,7 +102,7 @@
     v48 = &v49;
     v20 = v18;
     v46 = v20;
-    v21 = v44;
+    v21 = assetCopy;
     v22 = v43;
     v23 = options;
     v24 = v45;
@@ -159,7 +159,7 @@ LABEL_19:
             v63 = v33;
             v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
             v65 = v34;
-            *v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
+            *resultsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
 
             v10 = 0;
 LABEL_37:

@@ -1,14 +1,14 @@
 @interface OADTabStop
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation OADTabStop
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->mAlign == *(v4 + 8) && self->mPosition == v4[3];
+  v6 = v5 == objc_opt_class() && self->mAlign == *(equalCopy + 8) && self->mPosition == equalCopy[3];
 
   return v6;
 }

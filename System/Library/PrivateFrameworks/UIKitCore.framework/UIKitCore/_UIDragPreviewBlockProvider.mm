@@ -1,5 +1,5 @@
 @interface _UIDragPreviewBlockProvider
-+ (id)previewProviderWithBlock:(id)a3;
++ (id)previewProviderWithBlock:(id)block;
 - (UIDragPreview)preview;
 - (id)_createImageComponent;
 - (id)_duiPreview;
@@ -8,18 +8,18 @@
 
 @implementation _UIDragPreviewBlockProvider
 
-+ (id)previewProviderWithBlock:(id)a3
++ (id)previewProviderWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UIDragPreview.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"previewProviderBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragPreview.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"previewProviderBlock"}];
   }
 
   objc_opt_class();
   v6 = objc_opt_new();
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(blockCopy);
   v8 = v6[1];
   v6[1] = v7;
 
@@ -50,10 +50,10 @@
 
 - (id)_duiPreview
 {
-  v2 = [(_UIDragPreviewBlockProvider *)self preview];
-  v3 = [v2 _duiPreview];
+  preview = [(_UIDragPreviewBlockProvider *)self preview];
+  _duiPreview = [preview _duiPreview];
 
-  return v3;
+  return _duiPreview;
 }
 
 - (id)imageComponent
@@ -61,9 +61,9 @@
   imageComponent = self->_imageComponent;
   if (!imageComponent)
   {
-    v4 = [(_UIDragPreviewBlockProvider *)self _createImageComponent];
+    _createImageComponent = [(_UIDragPreviewBlockProvider *)self _createImageComponent];
     v5 = self->_imageComponent;
-    self->_imageComponent = v4;
+    self->_imageComponent = _createImageComponent;
 
     imageComponent = self->_imageComponent;
   }
@@ -73,28 +73,28 @@
 
 - (id)_createImageComponent
 {
-  v3 = [(_UIDragPreviewBlockProvider *)self preview];
+  preview = [(_UIDragPreviewBlockProvider *)self preview];
 
-  if (!v3)
+  if (!preview)
   {
-    v8 = [[_UIDraggingImageComponent alloc] initHidingDragImage];
+    initHidingDragImage = [[_UIDraggingImageComponent alloc] initHidingDragImage];
     goto LABEL_18;
   }
 
-  v4 = [(_UIDragPreviewBlockProvider *)self preview];
+  preview2 = [(_UIDragPreviewBlockProvider *)self preview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if ((isKindOfClass & 1) == 0 || (-[_UIDragPreviewBlockProvider preview](self, "preview"), v6 = objc_claimAutoreleasedReturnValue(), [v6 _dragPreviewProvider], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "imageComponent"), v8 = objc_claimAutoreleasedReturnValue(), v7, v6, !v8))
+  if ((isKindOfClass & 1) == 0 || (-[_UIDragPreviewBlockProvider preview](self, "preview"), v6 = objc_claimAutoreleasedReturnValue(), [v6 _dragPreviewProvider], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "imageComponent"), initHidingDragImage = objc_claimAutoreleasedReturnValue(), v7, v6, !initHidingDragImage))
   {
-    v9 = [(_UIDragPreviewBlockProvider *)self preview];
-    v10 = [v9 view];
-    v11 = [v9 parameters];
-    v12 = [v11 _previewMode];
+    preview3 = [(_UIDragPreviewBlockProvider *)self preview];
+    view = [preview3 view];
+    parameters = [preview3 parameters];
+    _previewMode = [parameters _previewMode];
 
-    if ((v12 - 3) <= 1)
+    if ((_previewMode - 3) <= 1)
     {
-      v8 = [[_UIDraggingImageComponent alloc] initWithView:v10];
+      initHidingDragImage = [[_UIDraggingImageComponent alloc] initWithView:view];
 LABEL_17:
 
       goto LABEL_18;
@@ -107,12 +107,12 @@ LABEL_17:
 
     else
     {
-      v13 = [v9 _preventAfterScreenUpdatesSnapshot] ^ 1;
+      v13 = [preview3 _preventAfterScreenUpdatesSnapshot] ^ 1;
     }
 
-    CanBeRenderedAfterCommit = _UIViewCanBeRenderedAfterCommit(v10, v13);
-    v15 = [v10 accessibilityIgnoresInvertColors];
-    [v10 bounds];
+    CanBeRenderedAfterCommit = _UIViewCanBeRenderedAfterCommit(view, v13);
+    accessibilityIgnoresInvertColors = [view accessibilityIgnoresInvertColors];
+    [view bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -124,16 +124,16 @@ LABEL_17:
 
     if (v13)
     {
-      v24 = [(UIView *)v10 _internalTraitOverrides];
-      [v24 _setNSIntegerValue:0 forTraitToken:0x1EFE325A8];
+      _internalTraitOverrides = [(UIView *)view _internalTraitOverrides];
+      [_internalTraitOverrides _setNSIntegerValue:0 forTraitToken:0x1EFE325A8];
 
-      [(UIView *)v10 _addChildTraitCollectionTransformWithIdentifier:&__block_literal_global_717 transform:?];
-      [v10 updateTraitsIfNeeded];
-      v25 = _UIRenderViewImageAfterCommit(v10, 0, 1);
-      v26 = [(UIView *)v10 _internalTraitOverrides];
-      [(_UITraitOverrides *)v26 _removeTraitToken:?];
+      [(UIView *)view _addChildTraitCollectionTransformWithIdentifier:&__block_literal_global_717 transform:?];
+      [view updateTraitsIfNeeded];
+      v25 = _UIRenderViewImageAfterCommit(view, 0, 1);
+      _internalTraitOverrides2 = [(UIView *)view _internalTraitOverrides];
+      [(_UITraitOverrides *)_internalTraitOverrides2 _removeTraitToken:?];
 
-      [(UIView *)v10 _removeChildTraitCollectionTransformWithIdentifier:?];
+      [(UIView *)view _removeChildTraitCollectionTransformWithIdentifier:?];
       if (!v25)
       {
         goto LABEL_15;
@@ -142,7 +142,7 @@ LABEL_17:
 
     else
     {
-      v25 = _UIRenderViewImageAfterCommit(v10, 0, 0);
+      v25 = _UIRenderViewImageAfterCommit(view, 0, 0);
       if (!v25)
       {
 LABEL_15:
@@ -155,19 +155,19 @@ LABEL_15:
         v32 = v19;
         v33 = v21;
         v34 = v23;
-        v30 = v10;
+        v30 = view;
         v25 = [(UIGraphicsImageRenderer *)v27 imageWithActions:v29];
       }
     }
 
-    v8 = [[_UIDraggingImageComponent alloc] initWithImage:v25 frame:v15 ignoreAccessibilityFilters:v17, v19, v21, v23];
+    initHidingDragImage = [[_UIDraggingImageComponent alloc] initWithImage:v25 frame:accessibilityIgnoresInvertColors ignoreAccessibilityFilters:v17, v19, v21, v23];
 
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  return v8;
+  return initHidingDragImage;
 }
 
 @end

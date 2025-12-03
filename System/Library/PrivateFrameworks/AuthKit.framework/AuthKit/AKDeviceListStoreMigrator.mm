@@ -1,8 +1,8 @@
 @interface AKDeviceListStoreMigrator
 - (AKDeviceListStoreMigrator)init;
-- (AKDeviceListStoreMigrator)initWithExecutor:(id)a3;
+- (AKDeviceListStoreMigrator)initWithExecutor:(id)executor;
 - (id)storeName;
-- (void)migrateSchemaFromVersion:(unint64_t)a3;
+- (void)migrateSchemaFromVersion:(unint64_t)version;
 @end
 
 @implementation AKDeviceListStoreMigrator
@@ -14,17 +14,17 @@
   return v2;
 }
 
-- (void)migrateSchemaFromVersion:(unint64_t)a3
+- (void)migrateSchemaFromVersion:(unint64_t)version
 {
-  v4 = self;
-  sub_100248158(a3);
+  selfCopy = self;
+  sub_100248158(version);
 }
 
-- (AKDeviceListStoreMigrator)initWithExecutor:(id)a3
+- (AKDeviceListStoreMigrator)initWithExecutor:(id)executor
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for DeviceListStoreMigrator();
-  return [(AKStoreMigrator *)&v5 initWithExecutor:a3];
+  return [(AKStoreMigrator *)&v5 initWithExecutor:executor];
 }
 
 - (AKDeviceListStoreMigrator)init

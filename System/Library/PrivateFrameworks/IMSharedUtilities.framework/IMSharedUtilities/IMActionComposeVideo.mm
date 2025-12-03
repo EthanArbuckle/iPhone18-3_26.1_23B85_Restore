@@ -1,6 +1,6 @@
 @interface IMActionComposeVideo
 - (IMActionComposeVideo)init;
-- (IMActionComposeVideo)initWithPhoneNumber:(id)a3;
+- (IMActionComposeVideo)initWithPhoneNumber:(id)number;
 - (NSString)phoneNumber;
 - (id)dictionaryRepresentation;
 @end
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (IMActionComposeVideo)initWithPhoneNumber:(id)a3
+- (IMActionComposeVideo)initWithPhoneNumber:(id)number
 {
   v4 = sub_1A88C82E8();
   v5 = (self + OBJC_IVAR___IMActionComposeVideo_phoneNumber);
@@ -33,8 +33,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 0x6D754E656E6F6870;
   *(inited + 40) = 0xEB00000000726562;
-  v4 = self;
-  v5 = [(IMActionComposeVideo *)v4 phoneNumber];
+  selfCopy = self;
+  phoneNumber = [(IMActionComposeVideo *)selfCopy phoneNumber];
   v6 = sub_1A88C82E8();
   v8 = v7;
 

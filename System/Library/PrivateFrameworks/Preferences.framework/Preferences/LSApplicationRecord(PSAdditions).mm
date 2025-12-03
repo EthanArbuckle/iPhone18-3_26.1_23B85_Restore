@@ -29,9 +29,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [a1 bundleIdentifier];
-  v6 = [v4 isJournalingSuggestionsAvailableForBundleIdentifier:v5];
+  sharedInstance = [v2 sharedInstance];
+  bundleIdentifier = [self bundleIdentifier];
+  v6 = [sharedInstance isJournalingSuggestionsAvailableForBundleIdentifier:bundleIdentifier];
 
   return v6;
 }

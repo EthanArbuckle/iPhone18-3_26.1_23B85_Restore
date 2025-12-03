@@ -1,14 +1,14 @@
 @interface CachedPersonalizationBookMetadataAuthor
-- (CachedPersonalizationBookMetadataAuthor)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (CachedPersonalizationBookMetadataAuthor)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation CachedPersonalizationBookMetadataAuthor
 
-- (CachedPersonalizationBookMetadataAuthor)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (CachedPersonalizationBookMetadataAuthor)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CachedPersonalizationBookMetadataAuthor();
-  return [(CachedPersonalizationBookMetadataAuthor *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(CachedPersonalizationBookMetadataAuthor *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface IconChangeAlertOperationXPCInvokerProxy
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC17CSUIAUpcallBundle39IconChangeAlertOperationXPCInvokerProxy)init;
-- (void)checkinRemoteAlertRoot:(id)a3;
+- (void)checkinRemoteAlertRoot:(id)root;
 @end
 
 @implementation IconChangeAlertOperationXPCInvokerProxy
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_B298(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_B298(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)checkinRemoteAlertRoot:(id)a3
+- (void)checkinRemoteAlertRoot:(id)root
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_4F88(a3);
+  selfCopy = self;
+  sub_4F88(root);
   swift_unknownObjectRelease();
 }
 

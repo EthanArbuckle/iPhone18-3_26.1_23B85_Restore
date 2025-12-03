@@ -1,10 +1,10 @@
 @interface NTKExactitudesDialView
-- (NTKExactitudesDialView)initWithCoder:(id)a3;
-- (NTKExactitudesDialView)initWithFrame:(CGRect)a3;
+- (NTKExactitudesDialView)initWithCoder:(id)coder;
+- (NTKExactitudesDialView)initWithFrame:(CGRect)frame;
 - (int64_t)state;
 - (void)hideOffscreenSlices;
 - (void)layoutSubviews;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation NTKExactitudesDialView
@@ -19,7 +19,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_9DE8();
 }
 
@@ -38,7 +38,7 @@
   return v3;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   sub_216EC();
   sub_216DC();
@@ -49,12 +49,12 @@
   }
 
   v5 = *(&self->super.super.super.isa + OBJC_IVAR___NTKExactitudesDialView__state);
-  *(&self->super.super.super.isa + OBJC_IVAR___NTKExactitudesDialView__state) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___NTKExactitudesDialView__state) = state;
+  selfCopy = self;
   sub_F1A0(v5);
 }
 
-- (NTKExactitudesDialView)initWithCoder:(id)a3
+- (NTKExactitudesDialView)initWithCoder:(id)coder
 {
   sub_216EC();
   sub_216DC();
@@ -64,7 +64,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_115D0();
 }
 
@@ -84,7 +84,7 @@
   [(NTKExactitudesDialView *)&v4 layoutSubviews];
 }
 
-- (NTKExactitudesDialView)initWithFrame:(CGRect)a3
+- (NTKExactitudesDialView)initWithFrame:(CGRect)frame
 {
   sub_216EC();
   sub_216DC();

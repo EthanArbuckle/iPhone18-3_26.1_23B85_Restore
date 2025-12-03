@@ -2,10 +2,10 @@
 + (id)sharedManager;
 - (MapsXPCConnectionsManager)init;
 - (void)_fetchListenerEndpoints;
-- (void)_handleInvalidatedConnection:(id)a3;
+- (void)_handleInvalidatedConnection:(id)connection;
 - (void)_initializeBrokerConnectionIfNeeded;
 - (void)dealloc;
-- (void)listenerEndpointDidChange:(id)a3 forIdentifier:(id)a4;
+- (void)listenerEndpointDidChange:(id)change forIdentifier:(id)identifier;
 @end
 
 @implementation MapsXPCConnectionsManager
@@ -123,23 +123,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)listenerEndpointDidChange:(id)a3 forIdentifier:(id)a4
+- (void)listenerEndpointDidChange:(id)change forIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  changeCopy = change;
+  identifierCopy = identifier;
   v7 = sub_100E9E6E8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v14 = "[MapsXPCConnectionsManager listenerEndpointDidChange:forIdentifier:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = changeCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "MapsXPCConnectionsManager %s %@ %@", buf, 0x20u);
   }
 
-  if ([v6 isEqualToString:@"kSiriPluginXPCEndpointIdentifier"])
+  if ([identifierCopy isEqualToString:@"kSiriPluginXPCEndpointIdentifier"])
   {
     v8 = v12;
     v12[0] = _NSConcreteStackBlock;
@@ -148,13 +148,13 @@
 LABEL_9:
     v8[2] = v9;
     v8[3] = &unk_101661B18;
-    v8[4] = v5;
+    v8[4] = changeCopy;
     dispatch_async(&_dispatch_main_q, v8);
 
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"kCompanionDaemonXPCEndpointIdentifier"])
+  if ([identifierCopy isEqualToString:@"kCompanionDaemonXPCEndpointIdentifier"])
   {
     v8 = v11;
     v11[0] = _NSConcreteStackBlock;
@@ -163,7 +163,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"kPushDaemonXPCEndpointIdentifier"])
+  if ([identifierCopy isEqualToString:@"kPushDaemonXPCEndpointIdentifier"])
   {
     v8 = v10;
     v10[0] = _NSConcreteStackBlock;
@@ -175,16 +175,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_handleInvalidatedConnection:(id)a3
+- (void)_handleInvalidatedConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100DAA0C4;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = connectionCopy;
   v10 = v5;
   v6 = objc_retainBlock(v9);
   if (+[NSThread isMainThread])

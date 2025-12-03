@@ -1,36 +1,36 @@
 @interface INFindEventsIntent
 - (CLPlacemark)location;
 - (INDateComponentsRange)dateTimeRange;
-- (INFindEventsIntent)initWithSearchQuery:(id)a3 dateTimeRange:(id)a4 participants:(id)a5 location:(id)a6 requestedEventAttribute:(int64_t)a7;
+- (INFindEventsIntent)initWithSearchQuery:(id)query dateTimeRange:(id)range participants:(id)participants location:(id)location requestedEventAttribute:(int64_t)attribute;
 - (NSArray)participants;
 - (NSString)searchQuery;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)requestedEventAttribute;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDateTimeRange:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setRequestedEventAttribute:(int64_t)a3;
-- (void)setSearchQuery:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDateTimeRange:(id)range;
+- (void)setLocation:(id)location;
+- (void)setParticipants:(id)participants;
+- (void)setRequestedEventAttribute:(int64_t)attribute;
+- (void)setSearchQuery:(id)query;
 @end
 
 @implementation INFindEventsIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INFindEventsIntent *)self _typedBackingStore];
-  v13 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 participants];
-  v10 = INIntentSlotValueRedactedContactsFromContacts(v9, a3, v13);
+  idCopy = id;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  v13 = idCopy;
+  v8 = [_typedBackingStore copy];
+  participants = [_typedBackingStore participants];
+  v10 = INIntentSlotValueRedactedContactsFromContacts(participants, options, v13);
 
   [v8 setParticipants:v10];
-  v11 = [v7 location];
-  v12 = INIntentSlotValueRedactedLocationFromLocation(v11, a3, v13);
+  location = [_typedBackingStore location];
+  v12 = INIntentSlotValueRedactedLocationFromLocation(location, options, v13);
 
   [v8 setLocation:v12];
   [(INIntent *)self setBackingStore:v8];
@@ -40,70 +40,70 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"searchQuery";
-  v3 = [(INFindEventsIntent *)self searchQuery];
-  v4 = v3;
-  if (!v3)
+  searchQuery = [(INFindEventsIntent *)self searchQuery];
+  null = searchQuery;
+  if (!searchQuery)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"dateTimeRange";
-  v5 = [(INFindEventsIntent *)self dateTimeRange];
-  v6 = v5;
-  if (!v5)
+  dateTimeRange = [(INFindEventsIntent *)self dateTimeRange];
+  null2 = dateTimeRange;
+  if (!dateTimeRange)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null2;
   v17[2] = @"participants";
-  v7 = [(INFindEventsIntent *)self participants];
-  v8 = v7;
-  if (!v7)
+  participants = [(INFindEventsIntent *)self participants];
+  null3 = participants;
+  if (!participants)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null3;
   v17[3] = @"location";
-  v9 = [(INFindEventsIntent *)self location];
-  v10 = v9;
-  if (!v9)
+  location = [(INFindEventsIntent *)self location];
+  null4 = location;
+  if (!location)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v10;
+  v18[3] = null4;
   v17[4] = @"requestedEventAttribute";
-  v11 = [(INFindEventsIntent *)self requestedEventAttribute];
-  if ((v11 - 1) > 2)
+  requestedEventAttribute = [(INFindEventsIntent *)self requestedEventAttribute];
+  if ((requestedEventAttribute - 1) > 2)
   {
     v12 = @"unknown";
   }
 
   else
   {
-    v12 = *(&off_1E7286080 + v11 - 1);
+    v12 = *(&off_1E7286080 + requestedEventAttribute - 1);
   }
 
   v13 = v12;
   v18[4] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
 
-  if (!v9)
+  if (!location)
   {
   }
 
-  if (!v7)
+  if (!participants)
   {
   }
 
-  if (!v5)
+  if (!dateTimeRange)
   {
   }
 
-  if (!v3)
+  if (!searchQuery)
   {
   }
 
@@ -112,31 +112,31 @@
   return v14;
 }
 
-- (void)setRequestedEventAttribute:(int64_t)a3
+- (void)setRequestedEventAttribute:(int64_t)attribute
 {
-  v3 = a3 - 1;
-  v4 = [(INFindEventsIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = attribute - 1;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 2)
   {
-    [v4 setHasRequestedEventAttribute:0];
+    [_typedBackingStore setHasRequestedEventAttribute:0];
   }
 
   else
   {
-    [v4 setRequestedEventAttribute:?];
+    [_typedBackingStore setRequestedEventAttribute:?];
   }
 }
 
 - (int64_t)requestedEventAttribute
 {
-  v3 = [(INFindEventsIntent *)self _typedBackingStore];
-  v4 = [v3 hasRequestedEventAttribute];
-  v5 = [(INFindEventsIntent *)self _typedBackingStore];
-  v6 = [v5 requestedEventAttribute];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  hasRequestedEventAttribute = [_typedBackingStore hasRequestedEventAttribute];
+  _typedBackingStore2 = [(INFindEventsIntent *)self _typedBackingStore];
+  requestedEventAttribute = [_typedBackingStore2 requestedEventAttribute];
+  if (((requestedEventAttribute - 1 < 3) & hasRequestedEventAttribute) != 0)
   {
-    v7 = v6;
+    v7 = requestedEventAttribute;
   }
 
   else
@@ -147,120 +147,120 @@
   return v7;
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
-  v6 = [(INFindEventsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToLocation(v4);
+  locationCopy = location;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToLocation(locationCopy);
 
-  [v6 setLocation:v5];
+  [_typedBackingStore setLocation:v5];
 }
 
 - (CLPlacemark)location
 {
-  v2 = [(INFindEventsIntent *)self _typedBackingStore];
-  v3 = [v2 location];
-  v4 = INIntentSlotValueTransformFromLocation(v3);
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  location = [_typedBackingStore location];
+  v4 = INIntentSlotValueTransformFromLocation(location);
 
   return v4;
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = a3;
-  v6 = [(INFindEventsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToContacts(v4);
+  participantsCopy = participants;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToContacts(participantsCopy);
 
-  [v6 setParticipants:v5];
+  [_typedBackingStore setParticipants:v5];
 }
 
 - (NSArray)participants
 {
-  v2 = [(INFindEventsIntent *)self _typedBackingStore];
-  v3 = [v2 participants];
-  v4 = INIntentSlotValueTransformFromContacts(v3);
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  participants = [_typedBackingStore participants];
+  v4 = INIntentSlotValueTransformFromContacts(participants);
 
   return v4;
 }
 
-- (void)setDateTimeRange:(id)a3
+- (void)setDateTimeRange:(id)range
 {
-  v4 = a3;
-  v6 = [(INFindEventsIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRangeValue(v4);
+  rangeCopy = range;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRangeValue(rangeCopy);
 
-  [v6 setDateTimeRange:v5];
+  [_typedBackingStore setDateTimeRange:v5];
 }
 
 - (INDateComponentsRange)dateTimeRange
 {
-  v2 = [(INFindEventsIntent *)self _typedBackingStore];
-  v3 = [v2 dateTimeRange];
-  v4 = INIntentSlotValueTransformFromDateTimeRangeValue(v3);
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  dateTimeRange = [_typedBackingStore dateTimeRange];
+  v4 = INIntentSlotValueTransformFromDateTimeRangeValue(dateTimeRange);
 
   return v4;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(INFindEventsIntent *)self _typedBackingStore];
-  [v5 setSearchQuery:v4];
+  queryCopy = query;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  [_typedBackingStore setSearchQuery:queryCopy];
 }
 
 - (NSString)searchQuery
 {
-  v2 = [(INFindEventsIntent *)self _typedBackingStore];
-  v3 = [v2 searchQuery];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  searchQuery = [_typedBackingStore searchQuery];
+  v4 = [searchQuery copy];
 
   return v4;
 }
 
-- (INFindEventsIntent)initWithSearchQuery:(id)a3 dateTimeRange:(id)a4 participants:(id)a5 location:(id)a6 requestedEventAttribute:(int64_t)a7
+- (INFindEventsIntent)initWithSearchQuery:(id)query dateTimeRange:(id)range participants:(id)participants location:(id)location requestedEventAttribute:(int64_t)attribute
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  queryCopy = query;
+  rangeCopy = range;
+  participantsCopy = participants;
+  locationCopy = location;
   v19.receiver = self;
   v19.super_class = INFindEventsIntent;
   v16 = [(INIntent *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(INFindEventsIntent *)v16 setSearchQuery:v12];
-    [(INFindEventsIntent *)v17 setDateTimeRange:v13];
-    [(INFindEventsIntent *)v17 setParticipants:v14];
-    [(INFindEventsIntent *)v17 setLocation:v15];
-    [(INFindEventsIntent *)v17 setRequestedEventAttribute:a7];
+    [(INFindEventsIntent *)v16 setSearchQuery:queryCopy];
+    [(INFindEventsIntent *)v17 setDateTimeRange:rangeCopy];
+    [(INFindEventsIntent *)v17 setParticipants:participantsCopy];
+    [(INFindEventsIntent *)v17 setLocation:locationCopy];
+    [(INFindEventsIntent *)v17 setRequestedEventAttribute:attribute];
   }
 
   return v17;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INFindEventsIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INFindEventsIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INFindEventsIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

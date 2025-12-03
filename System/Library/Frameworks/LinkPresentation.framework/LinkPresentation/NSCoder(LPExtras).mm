@@ -34,7 +34,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -45,7 +45,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -56,7 +56,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -67,7 +67,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, NSClassFromString(&cfstr_Lparassetattac.isa), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -78,7 +78,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, NSClassFromString(&cfstr_Lparassetattac.isa), 0}];
-  v8 = [a1 _lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -89,7 +89,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, NSClassFromString(&cfstr_Lpimageattachm.isa), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -100,7 +100,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, NSClassFromString(&cfstr_Lpimageattachm.isa), 0}];
-  v8 = [a1 _lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeArrayOfObjectsOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -111,7 +111,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, NSClassFromString(&cfstr_Lpvideoattachm.isa), 0}];
-  v8 = [a1 _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
+  v8 = [self _lp_strictlyDecodeObjectOfClasses:v7 forKey:v4];
 
   return v8;
 }
@@ -120,7 +120,7 @@
 {
   v6 = a4;
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{a3, objc_opt_class(), 0}];
-  v8 = [a1 decodeObjectOfClasses:v7 forKey:v6];
+  v8 = [self decodeObjectOfClasses:v7 forKey:v6];
 
   if (objc_opt_isKindOfClass())
   {
@@ -141,7 +141,7 @@
   v6 = a3;
   v7 = a4;
   v8 = [v6 setByAddingObject:objc_opt_class()];
-  v9 = [a1 decodeObjectOfClasses:v8 forKey:v7];
+  v9 = [self decodeObjectOfClasses:v8 forKey:v7];
 
   v18 = 0u;
   v19 = 0u;
@@ -188,7 +188,7 @@ LABEL_11:
 {
   v8 = a4;
   v9 = [MEMORY[0x1E695DFD8] setWithObjects:{a3, objc_opt_class(), 0}];
-  v10 = [a1 decodeTopLevelObjectOfClasses:v9 forKey:v8 error:a5];
+  v10 = [self decodeTopLevelObjectOfClasses:v9 forKey:v8 error:a5];
 
   if (objc_opt_isKindOfClass())
   {
@@ -209,7 +209,7 @@ LABEL_11:
   v8 = a3;
   v9 = a4;
   v10 = [v8 setByAddingObject:objc_opt_class()];
-  v11 = [a1 decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
+  v11 = [self decodeTopLevelObjectOfClasses:v10 forKey:v9 error:a5];
 
   v20 = 0u;
   v21 = 0u;
@@ -260,7 +260,7 @@ LABEL_11:
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{a3, v8, v9, objc_opt_class(), 0}];
-  v11 = [a1 decodeObjectOfClasses:v10 forKey:v6];
+  v11 = [self decodeObjectOfClasses:v10 forKey:v6];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
@@ -322,7 +322,7 @@ LABEL_13:
   v9 = objc_opt_class();
   v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
   v11 = [v10 setByAddingObjectsFromSet:v6];
-  v12 = [a1 decodeObjectOfClasses:v11 forKey:v23];
+  v12 = [self decodeObjectOfClasses:v11 forKey:v23];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 count])
@@ -417,7 +417,7 @@ LABEL_22:
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{a3, a4, v10, v11, objc_opt_class(), 0}];
-  v13 = [a1 decodeObjectOfClasses:v12 forKey:v8];
+  v13 = [self decodeObjectOfClasses:v12 forKey:v8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -461,7 +461,7 @@ LABEL_22:
   v6 = a4;
   if (v7)
   {
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -479,7 +479,7 @@ LABEL_22:
       v8 = v7;
     }
 
-    [a1 encodeObject:v8 forKey:v6];
+    [self encodeObject:v8 forKey:v6];
   }
 
   else
@@ -494,7 +494,7 @@ LABEL_22:
   v6 = a4;
   if ([v7 count])
   {
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -502,10 +502,10 @@ LABEL_22:
 {
   v8 = a3;
   v6 = a4;
-  if (v8 && (![v8 isFileURL] || objc_msgSend(a1, "_lp_coderType") == 1))
+  if (v8 && (![v8 isFileURL] || objc_msgSend(self, "_lp_coderType") == 1))
   {
     v7 = urlByRemovingTrackingInformation(v8);
-    [a1 encodeObject:v7 forKey:v6];
+    [self encodeObject:v7 forKey:v6];
   }
 }
 
@@ -521,22 +521,22 @@ LABEL_22:
     v17 = 0.0;
     if ([v6 getRed:&v19 green:&v18 blue:&v17 alpha:&v16])
     {
-      [a1 encodeBool:1 forKey:v7];
+      [self encodeBool:1 forKey:v7];
       v8 = v19;
       v9 = [v7 stringByAppendingString:@".red"];
-      [a1 encodeDouble:v9 forKey:v8];
+      [self encodeDouble:v9 forKey:v8];
 
       v10 = v18;
       v11 = [v7 stringByAppendingString:@".green"];
-      [a1 encodeDouble:v11 forKey:v10];
+      [self encodeDouble:v11 forKey:v10];
 
       v12 = v17;
       v13 = [v7 stringByAppendingString:@".blue"];
-      [a1 encodeDouble:v13 forKey:v12];
+      [self encodeDouble:v13 forKey:v12];
 
       v14 = v16;
       v15 = [v7 stringByAppendingString:@".alpha"];
-      [a1 encodeDouble:v15 forKey:v14];
+      [self encodeDouble:v15 forKey:v14];
     }
   }
 }
@@ -544,22 +544,22 @@ LABEL_22:
 - (id)_lp_strictlyDecodeColorForKey:()LPExtras
 {
   v4 = a3;
-  if ([a1 decodeBoolForKey:v4])
+  if ([self decodeBoolForKey:v4])
   {
     v5 = [v4 stringByAppendingString:@".red"];
-    [a1 decodeDoubleForKey:v5];
+    [self decodeDoubleForKey:v5];
     v7 = v6;
 
     v8 = [v4 stringByAppendingString:@".green"];
-    [a1 decodeDoubleForKey:v8];
+    [self decodeDoubleForKey:v8];
     v10 = v9;
 
     v11 = [v4 stringByAppendingString:@".blue"];
-    [a1 decodeDoubleForKey:v11];
+    [self decodeDoubleForKey:v11];
     v13 = v12;
 
     v14 = [v4 stringByAppendingString:@".alpha"];
-    [a1 decodeDoubleForKey:v14];
+    [self decodeDoubleForKey:v14];
     v16 = v15;
 
     v17 = [MEMORY[0x1E69DC888] colorWithRed:v7 green:v10 blue:v13 alpha:v16];
@@ -575,48 +575,48 @@ LABEL_22:
 
 - (uint64_t)_lp_coderType
 {
-  v2 = objc_getAssociatedObject(a1, a2);
+  v2 = objc_getAssociatedObject(self, a2);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)_lp_setCoderType:()LPExtras
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel__lp_coderType, v2, 1);
+  objc_setAssociatedObject(self, sel__lp_coderType, v2, 1);
 }
 
 - (uint64_t)_lp_coderOptions
 {
-  v2 = objc_getAssociatedObject(a1, a2);
+  v2 = objc_getAssociatedObject(self, a2);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)_lp_setCoderOptions:()LPExtras
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel__lp_coderOptions, v2, 1);
+  objc_setAssociatedObject(self, sel__lp_coderOptions, v2, 1);
 }
 
 @end

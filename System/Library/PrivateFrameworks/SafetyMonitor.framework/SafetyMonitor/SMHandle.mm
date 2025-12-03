@@ -1,24 +1,24 @@
 @interface SMHandle
-+ (int64_t)getSMHandleTypeWithHandle:(id)a3;
-- (BOOL)hasEqualPrimaryHandle:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SMHandle)initWithCoder:(id)a3;
-- (SMHandle)initWithDictionary:(id)a3;
-- (SMHandle)initWithPrimaryHandle:(id)a3 secondaryHandles:(id)a4;
++ (int64_t)getSMHandleTypeWithHandle:(id)handle;
+- (BOOL)hasEqualPrimaryHandle:(id)handle;
+- (BOOL)isEqual:(id)equal;
+- (SMHandle)initWithCoder:(id)coder;
+- (SMHandle)initWithDictionary:(id)dictionary;
+- (SMHandle)initWithPrimaryHandle:(id)handle secondaryHandles:(id)handles;
 - (id)canonicalizedHandle;
 - (id)description;
 - (id)descriptionDictionary;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMHandle
 
-- (SMHandle)initWithPrimaryHandle:(id)a3 secondaryHandles:(id)a4
+- (SMHandle)initWithPrimaryHandle:(id)handle secondaryHandles:(id)handles
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  handlesCopy = handles;
   v13.receiver = self;
   v13.super_class = SMHandle;
   v9 = [(SMHandle *)&v13 init];
@@ -29,10 +29,10 @@
   }
 
   v11 = 0;
-  if (v7 && v8)
+  if (handleCopy && handlesCopy)
   {
-    objc_storeStrong(&v9->_primaryHandle, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_primaryHandle, handle);
+    objc_storeStrong(p_isa + 2, handles);
 LABEL_5:
     v11 = p_isa;
   }
@@ -40,41 +40,41 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)hasEqualPrimaryHandle:(id)a3
+- (BOOL)hasEqualPrimaryHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(SMHandle *)self primaryHandle];
-  v6 = [v4 primaryHandle];
+  handleCopy = handle;
+  primaryHandle = [(SMHandle *)self primaryHandle];
+  primaryHandle2 = [handleCopy primaryHandle];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(handleCopy) = [primaryHandle isEqualToString:primaryHandle2];
+  return handleCopy;
 }
 
 - (id)canonicalizedHandle
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(SMHandle *)self primaryHandle];
-  v4 = [SMHandleFormatting canonicalIDSAddressForAddress:v3];
+  primaryHandle = [(SMHandle *)self primaryHandle];
+  v4 = [SMHandleFormatting canonicalIDSAddressForAddress:primaryHandle];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    primaryHandle2 = v4;
   }
 
   else
   {
-    v6 = [(SMHandle *)self primaryHandle];
+    primaryHandle2 = [(SMHandle *)self primaryHandle];
   }
 
-  v7 = v6;
+  v7 = primaryHandle2;
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(SMHandle *)self secondaryHandles];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  secondaryHandles = [(SMHandle *)self secondaryHandles];
+  v10 = [secondaryHandles countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -85,7 +85,7 @@ LABEL_5:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(secondaryHandles);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
@@ -109,7 +109,7 @@ LABEL_5:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [secondaryHandles countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -121,11 +121,11 @@ LABEL_5:
   return v19;
 }
 
-+ (int64_t)getSMHandleTypeWithHandle:(id)a3
++ (int64_t)getSMHandleTypeWithHandle:(id)handle
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_5:
     }
   }
 
-  if (MEMORY[0x26673CBB0](v3))
+  if (MEMORY[0x26673CBB0](handleCopy))
   {
     v5 = 1;
   }
@@ -161,8 +161,8 @@ LABEL_5:
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"__kSMPrimaryHandleKey";
-  v2 = [(SMHandle *)self primaryHandle];
-  v7[0] = v2;
+  primaryHandle = [(SMHandle *)self primaryHandle];
+  v7[0] = primaryHandle;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -173,39 +173,39 @@ LABEL_5:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SMHandle *)self descriptionDictionary];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  descriptionDictionary = [(SMHandle *)self descriptionDictionary];
+  v4 = [v2 stringWithFormat:@"%@", descriptionDictionary];
 
   return v4;
 }
 
-- (SMHandle)initWithCoder:(id)a3
+- (SMHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMPrimaryHandleKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMPrimaryHandleKey"];
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"__kSMSecondaryHandlesKey"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"__kSMSecondaryHandlesKey"];
 
   v10 = [(SMHandle *)self initWithPrimaryHandle:v5 secondaryHandles:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primaryHandle = self->_primaryHandle;
-  v5 = a3;
-  [v5 encodeObject:primaryHandle forKey:@"__kSMPrimaryHandleKey"];
-  [v5 encodeObject:self->_secondaryHandles forKey:@"__kSMSecondaryHandlesKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryHandle forKey:@"__kSMPrimaryHandleKey"];
+  [coderCopy encodeObject:self->_secondaryHandles forKey:@"__kSMSecondaryHandlesKey"];
 }
 
-- (SMHandle)initWithDictionary:(id)a3
+- (SMHandle)initWithDictionary:(id)dictionary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 valueForKey:@"__kSMPrimaryHandleKey"];
-  v6 = [v4 valueForKey:@"__kSMSecondaryHandlesKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy valueForKey:@"__kSMPrimaryHandleKey"];
+  v6 = [dictionaryCopy valueForKey:@"__kSMSecondaryHandlesKey"];
 
   if ([v5 length])
   {
@@ -232,29 +232,29 @@ LABEL_5:
 - (id)outputToDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(SMHandle *)self primaryHandle];
-  [v3 setObject:v4 forKey:@"__kSMPrimaryHandleKey"];
+  primaryHandle = [(SMHandle *)self primaryHandle];
+  [v3 setObject:primaryHandle forKey:@"__kSMPrimaryHandleKey"];
 
-  v5 = [(SMHandle *)self secondaryHandles];
-  [v3 setObject:v5 forKey:@"__kSMSecondaryHandlesKey"];
+  secondaryHandles = [(SMHandle *)self secondaryHandles];
+  [v3 setObject:secondaryHandles forKey:@"__kSMSecondaryHandlesKey"];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SMHandle *)self primaryHandle];
-  v4 = [v3 hash];
-  v5 = [(SMHandle *)self secondaryHandles];
-  v6 = [v5 hash];
+  primaryHandle = [(SMHandle *)self primaryHandle];
+  v4 = [primaryHandle hash];
+  secondaryHandles = [(SMHandle *)self secondaryHandles];
+  v6 = [secondaryHandles hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -264,14 +264,14 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(SMHandle *)self primaryHandle];
-      v8 = [(SMHandle *)v6 primaryHandle];
-      if (v7 != v8)
+      v6 = equalCopy;
+      primaryHandle = [(SMHandle *)self primaryHandle];
+      primaryHandle2 = [(SMHandle *)v6 primaryHandle];
+      if (primaryHandle != primaryHandle2)
       {
-        v9 = [(SMHandle *)self primaryHandle];
-        v3 = [(SMHandle *)v6 primaryHandle];
-        if (![v9 isEqual:v3])
+        primaryHandle3 = [(SMHandle *)self primaryHandle];
+        primaryHandle4 = [(SMHandle *)v6 primaryHandle];
+        if (![primaryHandle3 isEqual:primaryHandle4])
         {
           v10 = 0;
 LABEL_13:
@@ -280,25 +280,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = primaryHandle3;
       }
 
-      v11 = [(SMHandle *)self secondaryHandles];
-      v12 = [(SMHandle *)v6 secondaryHandles];
-      if (v11 == v12)
+      secondaryHandles = [(SMHandle *)self secondaryHandles];
+      secondaryHandles2 = [(SMHandle *)v6 secondaryHandles];
+      if (secondaryHandles == secondaryHandles2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(SMHandle *)self secondaryHandles];
-        v14 = [(SMHandle *)v6 secondaryHandles];
-        v10 = [v13 isEqual:v14];
+        secondaryHandles3 = [(SMHandle *)self secondaryHandles];
+        secondaryHandles4 = [(SMHandle *)v6 secondaryHandles];
+        v10 = [secondaryHandles3 isEqual:secondaryHandles4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      primaryHandle3 = v16;
+      if (primaryHandle == primaryHandle2)
       {
         goto LABEL_14;
       }

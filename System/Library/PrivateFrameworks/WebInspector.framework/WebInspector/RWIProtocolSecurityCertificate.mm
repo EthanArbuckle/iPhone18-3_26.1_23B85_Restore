@@ -4,20 +4,20 @@
 - (NSString)subject;
 - (double)validFrom;
 - (double)validUntil;
-- (void)setDnsNames:(id)a3;
-- (void)setIpAddresses:(id)a3;
-- (void)setSubject:(id)a3;
-- (void)setValidFrom:(double)a3;
-- (void)setValidUntil:(double)a3;
+- (void)setDnsNames:(id)names;
+- (void)setIpAddresses:(id)addresses;
+- (void)setSubject:(id)subject;
+- (void)setValidFrom:(double)from;
+- (void)setValidUntil:(double)until;
 @end
 
 @implementation RWIProtocolSecurityCertificate
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolSecurityCertificate;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"subject"];
+  [(RWIProtocolJSONObject *)&v3 setString:subject forKey:@"subject"];
 }
 
 - (NSString)subject
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)setValidFrom:(double)a3
+- (void)setValidFrom:(double)from
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolSecurityCertificate;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"validFrom" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"validFrom" forKey:from];
 }
 
 - (double)validFrom
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (void)setValidUntil:(double)a3
+- (void)setValidUntil:(double)until
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolSecurityCertificate;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"validUntil" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"validUntil" forKey:until];
 }
 
 - (double)validUntil
@@ -59,9 +59,9 @@
   return result;
 }
 
-- (void)setDnsNames:(id)a3
+- (void)setDnsNames:(id)names
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(names, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolSecurityCertificate;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"dnsNames"];
@@ -91,9 +91,9 @@
   return v2;
 }
 
-- (void)setIpAddresses:(id)a3
+- (void)setIpAddresses:(id)addresses
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(addresses, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolSecurityCertificate;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"ipAddresses"];

@@ -1,54 +1,54 @@
 @interface CLSLocationCache
-+ (BOOL)cachedRegion:(id)a3 isMatchingOtherRegion:(id)a4;
-- (BOOL)hasCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4;
-- (BOOL)hasRegion:(id)a3;
-- (CLSLocationCache)initWithURL:(id)a3 dataModelName:(id)a4;
-- (id)_insertManagedPlacemarkForLitePlacemark:(id)a3 inContext:(id)a4;
-- (id)_insertManagedPlacemarksForLitePlacemarks:(id)a3 inContext:(id)a4;
-- (id)_litePlacemarkFromManagedPlacemark:(id)a3;
-- (id)_litePlacemarksFromManagedPlacemarks:(id)a3;
-- (id)_stringifyAddressDictionaryValues:(id)a3;
-- (id)_stringifyCircularRegionValue:(id)a3;
-- (id)_stringifyPostalAddress:(id)a3;
-- (id)fetchPlacemarkForLocation:(id)a3 withQueryAccuracy:(double)a4;
-- (id)nearestEntryForCoordinate:(CLLocationCoordinate2D)a3 entries:(id)a4;
-- (id)placemarkForMUID:(unint64_t)a3;
-- (id)placemarksForAddressDictionary:(id)a3;
-- (id)placemarksForLocation:(id)a3 withQueryAccuracy:(double)a4;
-- (id)placemarksForLocationAddress:(id)a3;
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4 queryAccuracy:(double)a5;
-- (id)placemarksForPostalAddress:(id)a3;
-- (id)predicateForCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4 queryAccuracy:(double)a5;
-- (void)_setPlacemarks:(id)a3 forEntryWithPredicate:(id)a4 entrySetupBlock:(id)a5;
-- (void)insertBatchesOfPlacemarks:(id)a3 forLocations:(id)a4;
-- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)a3;
-- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4;
-- (void)invalidateCacheForMUID:(unint64_t)a3;
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3;
-- (void)setPlacemark:(id)a3 forMUID:(unint64_t)a4;
-- (void)setPlacemarks:(id)a3 forAddressDictionary:(id)a4;
-- (void)setPlacemarks:(id)a3 forCLLocation:(id)a4;
-- (void)setPlacemarks:(id)a3 forLocation:(id)a4;
-- (void)setPlacemarks:(id)a3 forLocationAddress:(id)a4;
-- (void)setPlacemarks:(id)a3 forLocationCoordinate:(CLLocationCoordinate2D)a4 withHorizontalAccuracy:(double)a5;
-- (void)setPlacemarks:(id)a3 forPostalAddress:(id)a4;
++ (BOOL)cachedRegion:(id)region isMatchingOtherRegion:(id)otherRegion;
+- (BOOL)hasCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy;
+- (BOOL)hasRegion:(id)region;
+- (CLSLocationCache)initWithURL:(id)l dataModelName:(id)name;
+- (id)_insertManagedPlacemarkForLitePlacemark:(id)placemark inContext:(id)context;
+- (id)_insertManagedPlacemarksForLitePlacemarks:(id)placemarks inContext:(id)context;
+- (id)_litePlacemarkFromManagedPlacemark:(id)placemark;
+- (id)_litePlacemarksFromManagedPlacemarks:(id)placemarks;
+- (id)_stringifyAddressDictionaryValues:(id)values;
+- (id)_stringifyCircularRegionValue:(id)value;
+- (id)_stringifyPostalAddress:(id)address;
+- (id)fetchPlacemarkForLocation:(id)location withQueryAccuracy:(double)accuracy;
+- (id)nearestEntryForCoordinate:(CLLocationCoordinate2D)coordinate entries:(id)entries;
+- (id)placemarkForMUID:(unint64_t)d;
+- (id)placemarksForAddressDictionary:(id)dictionary;
+- (id)placemarksForLocation:(id)location withQueryAccuracy:(double)accuracy;
+- (id)placemarksForLocationAddress:(id)address;
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy queryAccuracy:(double)queryAccuracy;
+- (id)placemarksForPostalAddress:(id)address;
+- (id)predicateForCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy queryAccuracy:(double)queryAccuracy;
+- (void)_setPlacemarks:(id)placemarks forEntryWithPredicate:(id)predicate entrySetupBlock:(id)block;
+- (void)insertBatchesOfPlacemarks:(id)placemarks forLocations:(id)locations;
+- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)provider;
+- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy;
+- (void)invalidateCacheForMUID:(unint64_t)d;
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp;
+- (void)setPlacemark:(id)placemark forMUID:(unint64_t)d;
+- (void)setPlacemarks:(id)placemarks forAddressDictionary:(id)dictionary;
+- (void)setPlacemarks:(id)placemarks forCLLocation:(id)location;
+- (void)setPlacemarks:(id)placemarks forLocation:(id)location;
+- (void)setPlacemarks:(id)placemarks forLocationAddress:(id)address;
+- (void)setPlacemarks:(id)placemarks forLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy;
+- (void)setPlacemarks:(id)placemarks forPostalAddress:(id)address;
 @end
 
 @implementation CLSLocationCache
 
-- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)a3
+- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  providerCopy = provider;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider___block_invoke;
   v8[3] = &unk_2788A8900;
-  v9 = v4;
-  v10 = v5;
-  v11 = self;
-  v6 = v5;
-  v7 = v4;
+  v9 = providerCopy;
+  v10 = managedObjectContext;
+  selfCopy = self;
+  v6 = managedObjectContext;
+  v7 = providerCopy;
   [v6 performBlockAndWait:v8];
 }
 
@@ -205,14 +205,14 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   }
 }
 
-- (id)_litePlacemarkFromManagedPlacemark:(id)a3
+- (id)_litePlacemarkFromManagedPlacemark:(id)placemark
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  placemarkCopy = placemark;
   v4 = objc_alloc_init(CLSLitePlacemark);
-  [v3 latitude];
+  [placemarkCopy latitude];
   v6 = v5;
-  [v3 longitude];
+  [placemarkCopy longitude];
   v65 = CLLocationCoordinate2DMake(v6, v7);
   latitude = v65.latitude;
   longitude = v65.longitude;
@@ -227,59 +227,59 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
     [(CLSLitePlacemark *)v4 setLocation:0];
   }
 
-  [v3 regionLatitude];
+  [placemarkCopy regionLatitude];
   v12 = v11;
-  [v3 regionLongitude];
+  [placemarkCopy regionLongitude];
   v66 = CLLocationCoordinate2DMake(v12, v13);
   v14 = v66.latitude;
   v15 = v66.longitude;
   if (CLLocationCoordinate2DIsValid(v66))
   {
     v16 = objc_alloc(MEMORY[0x277CBFBC8]);
-    [v3 regionRadius];
+    [placemarkCopy regionRadius];
     v18 = v17;
-    v19 = [v3 regionIdentifier];
-    v20 = [v16 initWithCenter:v19 radius:v14 identifier:{v15, v18}];
+    regionIdentifier = [placemarkCopy regionIdentifier];
+    v20 = [v16 initWithCenter:regionIdentifier radius:v14 identifier:{v15, v18}];
 
     [(CLSLitePlacemark *)v4 setRegion:v20];
   }
 
-  v21 = [v3 thoroughfare];
-  [(CLSLitePlacemark *)v4 setThoroughfare:v21];
+  thoroughfare = [placemarkCopy thoroughfare];
+  [(CLSLitePlacemark *)v4 setThoroughfare:thoroughfare];
 
-  v22 = [v3 subThoroughfare];
-  [(CLSLitePlacemark *)v4 setSubThoroughfare:v22];
+  subThoroughfare = [placemarkCopy subThoroughfare];
+  [(CLSLitePlacemark *)v4 setSubThoroughfare:subThoroughfare];
 
-  v23 = [v3 locality];
-  [(CLSLitePlacemark *)v4 setLocality:v23];
+  locality = [placemarkCopy locality];
+  [(CLSLitePlacemark *)v4 setLocality:locality];
 
-  v24 = [v3 subLocality];
-  [(CLSLitePlacemark *)v4 setSubLocality:v24];
+  subLocality = [placemarkCopy subLocality];
+  [(CLSLitePlacemark *)v4 setSubLocality:subLocality];
 
-  v25 = [v3 administrativeArea];
-  [(CLSLitePlacemark *)v4 setAdministrativeArea:v25];
+  administrativeArea = [placemarkCopy administrativeArea];
+  [(CLSLitePlacemark *)v4 setAdministrativeArea:administrativeArea];
 
-  v26 = [v3 administrativeAreaCode];
-  [(CLSLitePlacemark *)v4 setAdministrativeAreaCode:v26];
+  administrativeAreaCode = [placemarkCopy administrativeAreaCode];
+  [(CLSLitePlacemark *)v4 setAdministrativeAreaCode:administrativeAreaCode];
 
-  v27 = [v3 subAdministrativeArea];
-  [(CLSLitePlacemark *)v4 setSubAdministrativeArea:v27];
+  subAdministrativeArea = [placemarkCopy subAdministrativeArea];
+  [(CLSLitePlacemark *)v4 setSubAdministrativeArea:subAdministrativeArea];
 
-  v28 = [v3 isoCountryCode];
-  [(CLSLitePlacemark *)v4 setISOcountryCode:v28];
+  isoCountryCode = [placemarkCopy isoCountryCode];
+  [(CLSLitePlacemark *)v4 setISOcountryCode:isoCountryCode];
 
-  v29 = [v3 inlandWater];
-  [(CLSLitePlacemark *)v4 setInlandWater:v29];
+  inlandWater = [placemarkCopy inlandWater];
+  [(CLSLitePlacemark *)v4 setInlandWater:inlandWater];
 
-  v30 = [v3 ocean];
-  [(CLSLitePlacemark *)v4 setOcean:v30];
+  ocean = [placemarkCopy ocean];
+  [(CLSLitePlacemark *)v4 setOcean:ocean];
 
-  -[CLSLitePlacemark setIsIsland:](v4, "setIsIsland:", [v3 isIsland]);
-  v31 = [v3 areasOfInterest];
-  v32 = v31;
-  if (v31)
+  -[CLSLitePlacemark setIsIsland:](v4, "setIsIsland:", [placemarkCopy isIsland]);
+  areasOfInterest = [placemarkCopy areasOfInterest];
+  v32 = areasOfInterest;
+  if (areasOfInterest)
   {
-    v33 = [v31 componentsSeparatedByString:@"_#_"];
+    v33 = [areasOfInterest componentsSeparatedByString:@"_#_"];
   }
 
   else
@@ -289,18 +289,18 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
 
   [(CLSLitePlacemark *)v4 setAreasOfInterest:v33];
 
-  v34 = [v3 revGeoLocationData];
-  [(CLSLitePlacemark *)v4 setRevGeoLocationData:v34];
+  revGeoLocationData = [placemarkCopy revGeoLocationData];
+  [(CLSLitePlacemark *)v4 setRevGeoLocationData:revGeoLocationData];
 
-  v35 = [v3 geoServiceProvider];
-  [(CLSLitePlacemark *)v4 setGeoServiceProvider:v35];
+  geoServiceProvider = [placemarkCopy geoServiceProvider];
+  [(CLSLitePlacemark *)v4 setGeoServiceProvider:geoServiceProvider];
 
-  v36 = [v3 popularityScoresOrderedByAOI];
-  v37 = v36;
-  if (v36)
+  popularityScoresOrderedByAOI = [placemarkCopy popularityScoresOrderedByAOI];
+  v37 = popularityScoresOrderedByAOI;
+  if (popularityScoresOrderedByAOI)
   {
     v55 = v4;
-    v38 = [v36 componentsSeparatedByString:@"_#_"];
+    v38 = [popularityScoresOrderedByAOI componentsSeparatedByString:@"_#_"];
     v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v56 = 0u;
     v57 = 0u;
@@ -357,15 +357,15 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   }
 
   [(CLSLitePlacemark *)v4 setPopularityScoresOrderedByAOI:v39];
-  v50 = [(CLSLitePlacemark *)v4 areasOfInterest];
-  if (v50)
+  areasOfInterest2 = [(CLSLitePlacemark *)v4 areasOfInterest];
+  if (areasOfInterest2)
   {
-    v51 = [(CLSLitePlacemark *)v4 popularityScoresOrderedByAOI];
+    popularityScoresOrderedByAOI2 = [(CLSLitePlacemark *)v4 popularityScoresOrderedByAOI];
 
-    if (!v51)
+    if (!popularityScoresOrderedByAOI2)
     {
       v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if ([v50 count])
+      if ([areasOfInterest2 count])
       {
         v53 = 0;
         do
@@ -373,7 +373,7 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
           [v52 setObject:&unk_28449B7D0 atIndexedSubscript:v53++];
         }
 
-        while (v53 < [v50 count]);
+        while (v53 < [areasOfInterest2 count]);
       }
 
       [(CLSLitePlacemark *)v4 setPopularityScoresOrderedByAOI:v52];
@@ -383,19 +383,19 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   return v4;
 }
 
-- (id)_insertManagedPlacemarkForLitePlacemark:(id)a3 inContext:(id)a4
+- (id)_insertManagedPlacemarkForLitePlacemark:(id)placemark inContext:(id)context
 {
-  v5 = a3;
+  placemarkCopy = placemark;
   v6 = MEMORY[0x277CBE408];
-  v7 = a4;
+  contextCopy = context;
   v8 = +[CLSManagedPlacemark entityName];
-  v9 = [v6 insertNewObjectForEntityForName:v8 inManagedObjectContext:v7];
+  v9 = [v6 insertNewObjectForEntityForName:v8 inManagedObjectContext:contextCopy];
 
-  v10 = [v5 location];
-  v11 = v10;
-  if (v10)
+  location = [placemarkCopy location];
+  v11 = location;
+  if (location)
   {
-    [v10 coordinate];
+    [location coordinate];
     v14 = v13;
   }
 
@@ -407,11 +407,11 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
 
   [v9 setLatitude:v12];
   [v9 setLongitude:v14];
-  v15 = [v5 region];
-  v16 = v15;
-  if (v15)
+  region = [placemarkCopy region];
+  v16 = region;
+  if (region)
   {
-    [v15 center];
+    [region center];
     v19 = v18;
   }
 
@@ -425,44 +425,44 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   [v9 setRegionLongitude:v19];
   [v16 radius];
   [v9 setRegionRadius:?];
-  v20 = [v16 identifier];
-  [v9 setRegionIdentifier:v20];
+  identifier = [v16 identifier];
+  [v9 setRegionIdentifier:identifier];
 
-  v21 = [v5 thoroughfare];
-  [v9 setThoroughfare:v21];
+  thoroughfare = [placemarkCopy thoroughfare];
+  [v9 setThoroughfare:thoroughfare];
 
-  v22 = [v5 subThoroughfare];
-  [v9 setSubThoroughfare:v22];
+  subThoroughfare = [placemarkCopy subThoroughfare];
+  [v9 setSubThoroughfare:subThoroughfare];
 
-  v23 = [v5 locality];
-  [v9 setLocality:v23];
+  locality = [placemarkCopy locality];
+  [v9 setLocality:locality];
 
-  v24 = [v5 subLocality];
-  [v9 setSubLocality:v24];
+  subLocality = [placemarkCopy subLocality];
+  [v9 setSubLocality:subLocality];
 
-  v25 = [v5 administrativeArea];
-  [v9 setAdministrativeArea:v25];
+  administrativeArea = [placemarkCopy administrativeArea];
+  [v9 setAdministrativeArea:administrativeArea];
 
-  v26 = [v5 administrativeAreaCode];
-  [v9 setAdministrativeAreaCode:v26];
+  administrativeAreaCode = [placemarkCopy administrativeAreaCode];
+  [v9 setAdministrativeAreaCode:administrativeAreaCode];
 
-  v27 = [v5 subAdministrativeArea];
-  [v9 setSubAdministrativeArea:v27];
+  subAdministrativeArea = [placemarkCopy subAdministrativeArea];
+  [v9 setSubAdministrativeArea:subAdministrativeArea];
 
-  v28 = [v5 ISOcountryCode];
-  [v9 setIsoCountryCode:v28];
+  iSOcountryCode = [placemarkCopy ISOcountryCode];
+  [v9 setIsoCountryCode:iSOcountryCode];
 
-  v29 = [v5 inlandWater];
-  [v9 setInlandWater:v29];
+  inlandWater = [placemarkCopy inlandWater];
+  [v9 setInlandWater:inlandWater];
 
-  v30 = [v5 ocean];
-  [v9 setOcean:v30];
+  ocean = [placemarkCopy ocean];
+  [v9 setOcean:ocean];
 
-  [v9 setIsIsland:{objc_msgSend(v5, "isIsland")}];
-  v31 = [v5 areasOfInterest];
-  if ([v31 count])
+  [v9 setIsIsland:{objc_msgSend(placemarkCopy, "isIsland")}];
+  areasOfInterest = [placemarkCopy areasOfInterest];
+  if ([areasOfInterest count])
   {
-    v32 = [v31 componentsJoinedByString:@"_#_"];
+    v32 = [areasOfInterest componentsJoinedByString:@"_#_"];
   }
 
   else
@@ -472,16 +472,16 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
 
   [v9 setAreasOfInterest:v32];
 
-  v33 = [v5 revGeoLocationData];
-  [v9 setRevGeoLocationData:v33];
+  revGeoLocationData = [placemarkCopy revGeoLocationData];
+  [v9 setRevGeoLocationData:revGeoLocationData];
 
-  v34 = [v5 geoServiceProvider];
-  [v9 setGeoServiceProvider:v34];
+  geoServiceProvider = [placemarkCopy geoServiceProvider];
+  [v9 setGeoServiceProvider:geoServiceProvider];
 
-  v35 = [v5 popularityScoresOrderedByAOI];
-  if ([v35 count])
+  popularityScoresOrderedByAOI = [placemarkCopy popularityScoresOrderedByAOI];
+  if ([popularityScoresOrderedByAOI count])
   {
-    v36 = [v35 componentsJoinedByString:@"_#_"];
+    v36 = [popularityScoresOrderedByAOI componentsJoinedByString:@"_#_"];
   }
 
   else
@@ -494,17 +494,17 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   return v9;
 }
 
-- (id)_insertManagedPlacemarksForLitePlacemarks:(id)a3 inContext:(id)a4
+- (id)_insertManagedPlacemarksForLitePlacemarks:(id)placemarks inContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  placemarksCopy = placemarks;
+  contextCopy = context;
+  v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(placemarksCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = placemarksCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -519,7 +519,7 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(CLSLocationCache *)self _insertManagedPlacemarkForLitePlacemark:*(*(&v16 + 1) + 8 * i) inContext:v7, v16];
+        v14 = [(CLSLocationCache *)self _insertManagedPlacemarkForLitePlacemark:*(*(&v16 + 1) + 8 * i) inContext:contextCopy, v16];
         [v8 addObject:v14];
       }
 
@@ -532,18 +532,18 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   return v8;
 }
 
-- (id)_litePlacemarksFromManagedPlacemarks:(id)a3
+- (id)_litePlacemarksFromManagedPlacemarks:(id)placemarks
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  placemarksCopy = placemarks;
+  if (placemarksCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(placemarksCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = placemarksCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -577,24 +577,24 @@ void __73__CLSLocationCache_invalidateCacheForGeoServiceProviderChangeToProvider
   return v5;
 }
 
-- (void)_setPlacemarks:(id)a3 forEntryWithPredicate:(id)a4 entrySetupBlock:(id)a5
+- (void)_setPlacemarks:(id)placemarks forEntryWithPredicate:(id)predicate entrySetupBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count])
+  placemarksCopy = placemarks;
+  predicateCopy = predicate;
+  blockCopy = block;
+  if (placemarksCopy && [placemarksCopy count])
   {
-    v11 = [(CLSDBCache *)self managedObjectContext];
+    managedObjectContext = [(CLSDBCache *)self managedObjectContext];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__CLSLocationCache__setPlacemarks_forEntryWithPredicate_entrySetupBlock___block_invoke;
     v13[3] = &unk_2788A6F78;
-    v14 = v9;
-    v15 = v11;
-    v18 = v10;
-    v16 = self;
-    v17 = v8;
-    v12 = v11;
+    v14 = predicateCopy;
+    v15 = managedObjectContext;
+    v18 = blockCopy;
+    selfCopy = self;
+    v17 = placemarksCopy;
+    v12 = managedObjectContext;
     [v12 performBlockAndWait:v13];
   }
 }
@@ -665,61 +665,61 @@ void __73__CLSLocationCache__setPlacemarks_forEntryWithPredicate_entrySetupBlock
   [*(a1 + 48) _save];
 }
 
-- (id)fetchPlacemarkForLocation:(id)a3 withQueryAccuracy:(double)a4
+- (id)fetchPlacemarkForLocation:(id)location withQueryAccuracy:(double)accuracy
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CLSLocationCache *)self placemarksForLocation:v6 withQueryAccuracy:a4];
-  v8 = [v7 firstObject];
+  locationCopy = location;
+  v7 = [(CLSLocationCache *)self placemarksForLocation:locationCopy withQueryAccuracy:accuracy];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
-    v9 = [CLSCachedGeocoderOperation operationForceGeocoderWithLocation:v6];
+    v9 = [CLSCachedGeocoderOperation operationForceGeocoderWithLocation:locationCopy];
     v20 = 0;
     v10 = [v9 performSynchronouslyWithLocationCache:self error:&v20];
     v11 = v20;
     if (v10)
     {
-      [v6 coordinate];
+      [locationCopy coordinate];
       v13 = v12;
       v15 = v14;
-      [v6 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       [(CLSLocationCache *)self setPlacemarks:v10 forLocationCoordinate:v13 withHorizontalAccuracy:v15, v16];
-      v8 = [v10 firstObject];
+      firstObject = [v10 firstObject];
     }
 
     else
     {
       v17 = +[CLSLogging sharedLogging];
-      v18 = [v17 loggingConnection];
+      loggingConnection = [v17 loggingConnection];
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315394;
         v22 = "[CLSLocationCache fetchPlacemarkForLocation:withQueryAccuracy:]";
         v23 = 2112;
         v24 = v11;
-        _os_log_error_impl(&dword_22F907000, v18, OS_LOG_TYPE_ERROR, "%s - %@", buf, 0x16u);
+        _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "%s - %@", buf, 0x16u);
       }
 
-      v8 = 0;
+      firstObject = 0;
     }
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp
 {
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__CLSLocationCache_invalidateCacheItemsBeforeDateWithTimestamp___block_invoke;
   v7[3] = &unk_2788A8860;
-  v10 = a3;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  timestampCopy = timestamp;
+  v8 = managedObjectContext;
+  selfCopy = self;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
@@ -793,17 +793,17 @@ void __64__CLSLocationCache_invalidateCacheItemsBeforeDateWithTimestamp___block_
   }
 }
 
-- (void)invalidateCacheForMUID:(unint64_t)a3
+- (void)invalidateCacheForMUID:(unint64_t)d
 {
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__CLSLocationCache_invalidateCacheForMUID___block_invoke;
   v7[3] = &unk_2788A8860;
-  v8 = v5;
-  v9 = a3;
+  v8 = managedObjectContext;
+  dCopy = d;
   v7[4] = self;
-  v6 = v5;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
@@ -835,7 +835,7 @@ void __43__CLSLocationCache_invalidateCacheForMUID___block_invoke(uint64_t a1)
   }
 }
 
-- (id)placemarkForMUID:(unint64_t)a3
+- (id)placemarkForMUID:(unint64_t)d
 {
   v13 = 0;
   v14 = &v13;
@@ -843,14 +843,14 @@ void __43__CLSLocationCache_invalidateCacheForMUID___block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__731;
   v17 = __Block_byref_object_dispose__732;
   v18 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__CLSLocationCache_placemarkForMUID___block_invoke;
   v9[3] = &unk_2788A73A0;
   v9[4] = self;
-  v12 = a3;
-  v6 = v5;
+  dCopy = d;
+  v6 = managedObjectContext;
   v10 = v6;
   v11 = &v13;
   [v6 performBlockAndWait:v9];
@@ -901,18 +901,18 @@ void __37__CLSLocationCache_placemarkForMUID___block_invoke(void *a1)
   }
 }
 
-- (void)setPlacemark:(id)a3 forMUID:(unint64_t)a4
+- (void)setPlacemark:(id)placemark forMUID:(unint64_t)d
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (placemark)
   {
-    v16[0] = a3;
+    v16[0] = placemark;
     v6 = MEMORY[0x277CBEA60];
-    v7 = a3;
+    placemarkCopy = placemark;
     v8 = [v6 arrayWithObjects:v16 count:1];
     entryPredicateWithMUID = self->_entryPredicateWithMUID;
     v14 = @"muid";
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
     v15 = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v12 = [(NSPredicate *)entryPredicateWithMUID predicateWithSubstitutionVariables:v11];
@@ -921,14 +921,14 @@ void __37__CLSLocationCache_placemarkForMUID___block_invoke(void *a1)
     v13[1] = 3221225472;
     v13[2] = __41__CLSLocationCache_setPlacemark_forMUID___block_invoke;
     v13[3] = &__block_descriptor_40_e31_v16__0__CLSLocationCacheEntry_8l;
-    v13[4] = a4;
+    v13[4] = d;
     [(CLSLocationCache *)self _setPlacemarks:v8 forEntryWithPredicate:v12 entrySetupBlock:v13];
   }
 }
 
-- (id)_stringifyPostalAddress:(id)a3
+- (id)_stringifyPostalAddress:(id)address
 {
-  v3 = [MEMORY[0x277CBDB80] stringFromPostalAddress:a3 style:0];
+  v3 = [MEMORY[0x277CBDB80] stringFromPostalAddress:address style:0];
   v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"\n" withString:@"_"];
@@ -936,29 +936,29 @@ void __37__CLSLocationCache_placemarkForMUID___block_invoke(void *a1)
   return v5;
 }
 
-- (id)_stringifyCircularRegionValue:(id)a3
+- (id)_stringifyCircularRegionValue:(id)value
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  [v4 center];
+  valueCopy = value;
+  identifier = [valueCopy identifier];
+  [valueCopy center];
   v7 = v6;
-  [v4 center];
+  [valueCopy center];
   v9 = v8;
-  [v4 radius];
+  [valueCopy radius];
   v11 = v10;
 
-  v12 = [v3 stringWithFormat:@"%@_%.5lf_%.5lf_%.2lf", v5, v7, v9, v11];
+  v12 = [v3 stringWithFormat:@"%@_%.5lf_%.5lf_%.2lf", identifier, v7, v9, v11];
 
   return v12;
 }
 
-- (id)_stringifyAddressDictionaryValues:(id)a3
+- (id)_stringifyAddressDictionaryValues:(id)values
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  valuesCopy = values;
+  allKeys = [valuesCopy allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v6 = objc_opt_new();
   v15 = 0u;
@@ -980,7 +980,7 @@ LABEL_3:
         objc_enumerationMutation(v7);
       }
 
-      v12 = [v3 objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v11)];
+      v12 = [valuesCopy objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v11)];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1010,14 +1010,14 @@ LABEL_3:
   return v6;
 }
 
-- (id)placemarksForLocation:(id)a3 withQueryAccuracy:(double)a4
+- (id)placemarksForLocation:(id)location withQueryAccuracy:(double)accuracy
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = locationCopy;
     [v7 coordinate];
     v9 = v8;
     v11 = v10;
@@ -1025,16 +1025,16 @@ LABEL_3:
 LABEL_5:
     v15 = v12;
 
-    v16 = [(CLSLocationCache *)self placemarksForLocationCoordinate:v9 withHorizontalAccuracy:v11 queryAccuracy:v15, a4];
+    accuracy = [(CLSLocationCache *)self placemarksForLocationCoordinate:v9 withHorizontalAccuracy:v11 queryAccuracy:v15, accuracy];
 LABEL_6:
-    v17 = v16;
+    v17 = accuracy;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = locationCopy;
     [v7 center];
     v9 = v13;
     v11 = v14;
@@ -1045,14 +1045,14 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(CLSLocationCache *)self placemarksForAddressDictionary:v6];
+    accuracy = [(CLSLocationCache *)self placemarksForAddressDictionary:locationCopy];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(CLSLocationCache *)self placemarksForLocationAddress:v6];
+    accuracy = [(CLSLocationCache *)self placemarksForLocationAddress:locationCopy];
     goto LABEL_6;
   }
 
@@ -1060,24 +1060,24 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v19 = *MEMORY[0x277CE4208];
-    if (*MEMORY[0x277CE4208] == a4)
+    if (*MEMORY[0x277CE4208] == accuracy)
     {
-      v20 = [[CLSLitePlacemark alloc] initWithCLPlacemark:v6];
-      v28[0] = v20;
-      v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
+      location = [[CLSLitePlacemark alloc] initWithCLPlacemark:locationCopy];
+      v28[0] = location;
+      accuracy2 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
 LABEL_21:
-      v17 = v21;
+      v17 = accuracy2;
 
       goto LABEL_7;
     }
 
 LABEL_20:
-    v20 = [v6 location];
-    [(CLSLitePlacemark *)v20 coordinate];
+    location = [locationCopy location];
+    [(CLSLitePlacemark *)location coordinate];
     v23 = v22;
     v25 = v24;
-    [(CLSLitePlacemark *)v20 horizontalAccuracy];
-    v21 = [(CLSLocationCache *)self placemarksForLocationCoordinate:v23 withHorizontalAccuracy:v25 queryAccuracy:v26, a4];
+    [(CLSLitePlacemark *)location horizontalAccuracy];
+    accuracy2 = [(CLSLocationCache *)self placemarksForLocationCoordinate:v23 withHorizontalAccuracy:v25 queryAccuracy:v26, accuracy];
     goto LABEL_21;
   }
 
@@ -1085,10 +1085,10 @@ LABEL_20:
   if (objc_opt_isKindOfClass())
   {
     v19 = *MEMORY[0x277CE4208];
-    if (*MEMORY[0x277CE4208] == a4)
+    if (*MEMORY[0x277CE4208] == accuracy)
     {
-      v27 = v6;
-      v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:{1, v19}];
+      v27 = locationCopy;
+      accuracy = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:{1, v19}];
       goto LABEL_6;
     }
 
@@ -1098,7 +1098,7 @@ LABEL_20:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(CLSLocationCache *)self placemarksForPostalAddress:v6];
+    accuracy = [(CLSLocationCache *)self placemarksForPostalAddress:locationCopy];
     goto LABEL_6;
   }
 
@@ -1108,24 +1108,24 @@ LABEL_7:
   return v17;
 }
 
-- (id)placemarksForPostalAddress:(id)a3
+- (id)placemarksForPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__731;
   v18 = __Block_byref_object_dispose__732;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__CLSLocationCache_placemarksForPostalAddress___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -1177,11 +1177,11 @@ void __47__CLSLocationCache_placemarksForPostalAddress___block_invoke(uint64_t a
   }
 }
 
-- (void)setPlacemarks:(id)a3 forPostalAddress:(id)a4
+- (void)setPlacemarks:(id)placemarks forPostalAddress:(id)address
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CLSLocationCache *)self _stringifyPostalAddress:a4];
+  placemarksCopy = placemarks;
+  v7 = [(CLSLocationCache *)self _stringifyPostalAddress:address];
   entryPredicateWithContactsPostalAddressTemplate = self->_entryPredicateWithContactsPostalAddressTemplate;
   v16 = @"postalAddress";
   v17[0] = v7;
@@ -1192,10 +1192,10 @@ void __47__CLSLocationCache_placemarksForPostalAddress___block_invoke(uint64_t a
   v13[1] = 3221225472;
   v13[2] = __51__CLSLocationCache_setPlacemarks_forPostalAddress___block_invoke;
   v13[3] = &unk_2788A6F30;
-  v14 = v6;
+  v14 = placemarksCopy;
   v15 = v7;
   v11 = v7;
-  v12 = v6;
+  v12 = placemarksCopy;
   [(CLSLocationCache *)self _setPlacemarks:v12 forEntryWithPredicate:v10 entrySetupBlock:v13];
 }
 
@@ -1217,24 +1217,24 @@ void __51__CLSLocationCache_setPlacemarks_forPostalAddress___block_invoke(uint64
   [v7 setPostalAddress:*(a1 + 40)];
 }
 
-- (id)placemarksForAddressDictionary:(id)a3
+- (id)placemarksForAddressDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__731;
   v18 = __Block_byref_object_dispose__732;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__CLSLocationCache_placemarksForAddressDictionary___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = dictionaryCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -1286,11 +1286,11 @@ void __51__CLSLocationCache_placemarksForAddressDictionary___block_invoke(uint64
   }
 }
 
-- (void)setPlacemarks:(id)a3 forAddressDictionary:(id)a4
+- (void)setPlacemarks:(id)placemarks forAddressDictionary:(id)dictionary
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CLSLocationCache *)self _stringifyAddressDictionaryValues:a4];
+  placemarksCopy = placemarks;
+  v7 = [(CLSLocationCache *)self _stringifyAddressDictionaryValues:dictionary];
   entryPredicateWithAddressBookDictionaryTemplate = self->_entryPredicateWithAddressBookDictionaryTemplate;
   v16 = @"addressDictionaryString";
   v17[0] = v7;
@@ -1301,10 +1301,10 @@ void __51__CLSLocationCache_placemarksForAddressDictionary___block_invoke(uint64
   v13[1] = 3221225472;
   v13[2] = __55__CLSLocationCache_setPlacemarks_forAddressDictionary___block_invoke;
   v13[3] = &unk_2788A6F30;
-  v14 = v6;
+  v14 = placemarksCopy;
   v15 = v7;
   v11 = v7;
-  v12 = v6;
+  v12 = placemarksCopy;
   [(CLSLocationCache *)self _setPlacemarks:v12 forEntryWithPredicate:v10 entrySetupBlock:v13];
 }
 
@@ -1326,24 +1326,24 @@ void __55__CLSLocationCache_setPlacemarks_forAddressDictionary___block_invoke(ui
   [v7 setAddressDictionaryString:*(a1 + 40)];
 }
 
-- (id)placemarksForLocationAddress:(id)a3
+- (id)placemarksForLocationAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__731;
   v18 = __Block_byref_object_dispose__732;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__CLSLocationCache_placemarksForLocationAddress___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -1393,14 +1393,14 @@ void __49__CLSLocationCache_placemarksForLocationAddress___block_invoke(void *a1
   }
 }
 
-- (void)setPlacemarks:(id)a3 forLocationAddress:(id)a4
+- (void)setPlacemarks:(id)placemarks forLocationAddress:(id)address
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  placemarksCopy = placemarks;
+  addressCopy = address;
   entryPredicateWithAddressTemplate = self->_entryPredicateWithAddressTemplate;
   v16 = @"address";
-  v17[0] = v7;
+  v17[0] = addressCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v10 = [(NSPredicate *)entryPredicateWithAddressTemplate predicateWithSubstitutionVariables:v9];
 
@@ -1408,10 +1408,10 @@ void __49__CLSLocationCache_placemarksForLocationAddress___block_invoke(void *a1
   v13[1] = 3221225472;
   v13[2] = __53__CLSLocationCache_setPlacemarks_forLocationAddress___block_invoke;
   v13[3] = &unk_2788A6F30;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = placemarksCopy;
+  v15 = addressCopy;
+  v11 = addressCopy;
+  v12 = placemarksCopy;
   [(CLSLocationCache *)self _setPlacemarks:v12 forEntryWithPredicate:v10 entrySetupBlock:v13];
 }
 
@@ -1433,17 +1433,17 @@ void __53__CLSLocationCache_setPlacemarks_forLocationAddress___block_invoke(uint
   [v7 setAddress:*(a1 + 40)];
 }
 
-- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4 queryAccuracy:(double)a5
+- (id)placemarksForLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy queryAccuracy:(double)queryAccuracy
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__731;
   v25 = __Block_byref_object_dispose__732;
   v26 = 0;
-  v10 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __89__CLSLocationCache_placemarksForLocationCoordinate_withHorizontalAccuracy_queryAccuracy___block_invoke;
@@ -1451,9 +1451,9 @@ void __53__CLSLocationCache_setPlacemarks_forLocationAddress___block_invoke(uint
   v14[4] = self;
   v17 = latitude;
   v18 = longitude;
-  v19 = a4;
-  v20 = a5;
-  v11 = v10;
+  accuracyCopy = accuracy;
+  queryAccuracyCopy = queryAccuracy;
+  v11 = managedObjectContext;
   v15 = v11;
   v16 = &v21;
   [v11 performBlockAndWait:v14];
@@ -1488,17 +1488,17 @@ void __89__CLSLocationCache_placemarksForLocationCoordinate_withHorizontalAccura
   }
 }
 
-- (void)setPlacemarks:(id)a3 forLocationCoordinate:(CLLocationCoordinate2D)a4 withHorizontalAccuracy:(double)a5
+- (void)setPlacemarks:(id)placemarks forLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v20[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  placemarksCopy = placemarks;
   v21.latitude = latitude;
   v21.longitude = longitude;
   if (CLLocationCoordinate2DIsValid(v21))
   {
-    v10 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:a5];
+    v10 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:accuracy];
     entryPredicateWithCoordinateTemplate = self->_entryPredicateWithCoordinateTemplate;
     v19[0] = @"latitude";
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:latitude];
@@ -1519,7 +1519,7 @@ void __89__CLSLocationCache_placemarksForLocationCoordinate_withHorizontalAccura
     *&v17[4] = latitude;
     *&v17[5] = longitude;
     v18 = v10;
-    [(CLSLocationCache *)self _setPlacemarks:v9 forEntryWithPredicate:v16 entrySetupBlock:v17];
+    [(CLSLocationCache *)self _setPlacemarks:placemarksCopy forEntryWithPredicate:v16 entrySetupBlock:v17];
   }
 }
 
@@ -1532,35 +1532,35 @@ void __79__CLSLocationCache_setPlacemarks_forLocationCoordinate_withHorizontalAc
   [v4 setCoarse:*(a1 + 48)];
 }
 
-- (void)setPlacemarks:(id)a3 forCLLocation:(id)a4
+- (void)setPlacemarks:(id)placemarks forCLLocation:(id)location
 {
-  v6 = a4;
-  v13 = a3;
-  [v6 coordinate];
+  locationCopy = location;
+  placemarksCopy = placemarks;
+  [locationCopy coordinate];
   v8 = v7;
   v10 = v9;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v12 = v11;
 
-  [(CLSLocationCache *)self setPlacemarks:v13 forLocationCoordinate:v8 withHorizontalAccuracy:v10, v12];
+  [(CLSLocationCache *)self setPlacemarks:placemarksCopy forLocationCoordinate:v8 withHorizontalAccuracy:v10, v12];
 }
 
-- (void)insertBatchesOfPlacemarks:(id)a3 forLocations:(id)a4
+- (void)insertBatchesOfPlacemarks:(id)placemarks forLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CLSDBCache *)self managedObjectContext];
+  placemarksCopy = placemarks;
+  locationsCopy = locations;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_invoke;
   v12[3] = &unk_2788A7350;
-  v13 = v6;
-  v14 = v7;
-  v15 = v8;
-  v16 = self;
-  v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v13 = placemarksCopy;
+  v14 = locationsCopy;
+  v15 = managedObjectContext;
+  selfCopy = self;
+  v9 = managedObjectContext;
+  v10 = locationsCopy;
+  v11 = placemarksCopy;
   [v9 performBlockAndWait:v12];
 }
 
@@ -1633,14 +1633,14 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
   return [*(a1 + 56) _save];
 }
 
-- (void)setPlacemarks:(id)a3 forLocation:(id)a4
+- (void)setPlacemarks:(id)placemarks forLocation:(id)location
 {
-  v15 = a3;
-  v6 = a4;
+  placemarksCopy = placemarks;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CLSLocationCache *)self setPlacemarks:v15 forCLLocation:v6];
+    [(CLSLocationCache *)self setPlacemarks:placemarksCopy forCLLocation:locationCopy];
   }
 
   else
@@ -1648,14 +1648,14 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = locationCopy;
       [v7 center];
       v9 = v8;
       v11 = v10;
       [v7 clsHorizontalAccuracy];
       v13 = v12;
 
-      [(CLSLocationCache *)self setPlacemarks:v15 forLocationCoordinate:v9 withHorizontalAccuracy:v11, v13];
+      [(CLSLocationCache *)self setPlacemarks:placemarksCopy forLocationCoordinate:v9 withHorizontalAccuracy:v11, v13];
     }
 
     else
@@ -1663,7 +1663,7 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(CLSLocationCache *)self setPlacemarks:v15 forAddressDictionary:v6];
+        [(CLSLocationCache *)self setPlacemarks:placemarksCopy forAddressDictionary:locationCopy];
       }
 
       else
@@ -1671,7 +1671,7 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(CLSLocationCache *)self setPlacemarks:v15 forLocationAddress:v6];
+          [(CLSLocationCache *)self setPlacemarks:placemarksCopy forLocationAddress:locationCopy];
         }
 
         else
@@ -1679,8 +1679,8 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v14 = [v6 location];
-            [(CLSLocationCache *)self setPlacemarks:v15 forCLLocation:v14];
+            location = [locationCopy location];
+            [(CLSLocationCache *)self setPlacemarks:placemarksCopy forCLLocation:location];
           }
 
           else
@@ -1688,7 +1688,7 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(CLSLocationCache *)self setPlacemarks:v15 forPostalAddress:v6];
+              [(CLSLocationCache *)self setPlacemarks:placemarksCopy forPostalAddress:locationCopy];
             }
           }
         }
@@ -1697,15 +1697,15 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
   }
 }
 
-- (BOOL)hasCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4
+- (BOOL)hasCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke;
@@ -1713,8 +1713,8 @@ uint64_t __59__CLSLocationCache_insertBatchesOfPlacemarks_forLocations___block_i
   v12[4] = self;
   v15 = latitude;
   v16 = longitude;
-  v17 = a4;
-  v9 = v8;
+  accuracyCopy = accuracy;
+  v9 = managedObjectContext;
   v13 = v9;
   v14 = &v18;
   [v9 performBlockAndWait:v12];
@@ -1742,28 +1742,28 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
   }
 }
 
-- (BOOL)hasRegion:(id)a3
+- (BOOL)hasRegion:(id)region
 {
-  v4 = a3;
-  [v4 center];
+  regionCopy = region;
+  [regionCopy center];
   v6 = v5;
   v8 = v7;
-  [v4 clsHorizontalAccuracy];
+  [regionCopy clsHorizontalAccuracy];
   v10 = v9;
 
   return [(CLSLocationCache *)self hasCoordinate:v6 withHorizontalAccuracy:v8, v10];
 }
 
-- (id)nearestEntryForCoordinate:(CLLocationCoordinate2D)a3 entries:(id)a4
+- (id)nearestEntryForCoordinate:(CLLocationCoordinate2D)coordinate entries:(id)entries
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v4 = a4;
+  coordinateCopy = coordinate;
+  entriesCopy = entries;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1776,7 +1776,7 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -1795,7 +1795,7 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:{16, *&v15.latitude, *&v15.longitude}];
+      v6 = [entriesCopy countByEnumeratingWithState:&v20 objects:v25 count:{16, *&v15.latitude, *&v15.longitude}];
     }
 
     while (v6);
@@ -1809,13 +1809,13 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
   return v7;
 }
 
-- (id)predicateForCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4 queryAccuracy:(double)a5
+- (id)predicateForCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy queryAccuracy:(double)queryAccuracy
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a3.latitude * 0.0174532925;
-  v7 = a3.longitude * 0.0174532925;
-  v8 = a5 / 6378137.0;
-  v9 = (v6 + a5 / 6378137.0) * 57.2957795;
+  v6 = coordinate.latitude * 0.0174532925;
+  v7 = coordinate.longitude * 0.0174532925;
+  v8 = queryAccuracy / 6378137.0;
+  v9 = (v6 + queryAccuracy / 6378137.0) * 57.2957795;
   v10 = (v7 - v8) * 57.2957795;
   v11 = (v6 - v8) * 57.2957795;
   v12 = (v7 + v8) * 57.2957795;
@@ -1850,7 +1850,7 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
   }
 
   v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%f <= latitude && latitude <= %f && %f <= longitude && longitude <= %f", *&v13, *&v11, *&v14, *&v12];
-  v16 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:a4];
+  v16 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:accuracy];
   v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"coarse == %d", v16];
   v18 = MEMORY[0x277CCA920];
   v22[0] = v15;
@@ -1861,12 +1861,12 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
   return v20;
 }
 
-- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)a3 withHorizontalAccuracy:(double)a4
+- (void)invalidateCacheForLocationCoordinate:(CLLocationCoordinate2D)coordinate withHorizontalAccuracy:(double)accuracy
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v7 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:a4];
-  v8 = [(CLSDBCache *)self managedObjectContext];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  v7 = [MEMORY[0x277D3ACD0] horizontalAccuracyIsCoarse:accuracy];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__CLSLocationCache_invalidateCacheForLocationCoordinate_withHorizontalAccuracy___block_invoke;
@@ -1875,8 +1875,8 @@ void __57__CLSLocationCache_hasCoordinate_withHorizontalAccuracy___block_invoke(
   v13 = longitude;
   v14 = v7;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = managedObjectContext;
+  v9 = managedObjectContext;
   [v9 performBlockAndWait:v10];
 }
 
@@ -1916,11 +1916,11 @@ void __80__CLSLocationCache_invalidateCacheForLocationCoordinate_withHorizontalA
   }
 }
 
-- (CLSLocationCache)initWithURL:(id)a3 dataModelName:(id)a4
+- (CLSLocationCache)initWithURL:(id)l dataModelName:(id)name
 {
   v16.receiver = self;
   v16.super_class = CLSLocationCache;
-  v4 = [(CLSDBCache *)&v16 initWithURL:a3 dataModelName:a4];
+  v4 = [(CLSDBCache *)&v16 initWithURL:l dataModelName:name];
   if (v4)
   {
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(postalAddress = $postalAddress)"];
@@ -1947,22 +1947,22 @@ void __80__CLSLocationCache_invalidateCacheForLocationCoordinate_withHorizontalA
   return v4;
 }
 
-+ (BOOL)cachedRegion:(id)a3 isMatchingOtherRegion:(id)a4
++ (BOOL)cachedRegion:(id)region isMatchingOtherRegion:(id)otherRegion
 {
-  v5 = a3;
-  v6 = a4;
+  regionCopy = region;
+  otherRegionCopy = otherRegion;
   v7 = MEMORY[0x277D3ACD0];
-  [v5 clsHorizontalAccuracy];
+  [regionCopy clsHorizontalAccuracy];
   LODWORD(v7) = [v7 horizontalAccuracyIsCoarse:?];
   v8 = MEMORY[0x277D3ACD0];
-  [v6 clsHorizontalAccuracy];
+  [otherRegionCopy clsHorizontalAccuracy];
   if (v7 == [v8 horizontalAccuracyIsCoarse:?])
   {
     v10 = *MEMORY[0x277CE4208];
-    [v5 center];
+    [regionCopy center];
     v12 = v11;
     v14 = v13;
-    [v6 center];
+    [otherRegionCopy center];
     v17 = (v12 * 0.0174532925 + v10 / 6378137.0) * 57.2957795;
     v18 = (v14 * 0.0174532925 - v10 / 6378137.0) * 57.2957795;
     v19 = (v12 * 0.0174532925 - v10 / 6378137.0) * 57.2957795;

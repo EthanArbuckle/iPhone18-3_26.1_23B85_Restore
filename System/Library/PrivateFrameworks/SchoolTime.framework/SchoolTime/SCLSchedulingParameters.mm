@@ -1,20 +1,20 @@
 @interface SCLSchedulingParameters
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SCLSchedulingParameters
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SCLSchedulingParameters);
-  v5 = [(SCLSchedulingParameters *)self calendar];
-  [(SCLSchedulingParameters *)v4 setCalendar:v5];
+  calendar = [(SCLSchedulingParameters *)self calendar];
+  [(SCLSchedulingParameters *)v4 setCalendar:calendar];
 
-  v6 = [(SCLSchedulingParameters *)self evaluationDate];
-  [(SCLSchedulingParameters *)v4 setEvaluationDate:v6];
+  evaluationDate = [(SCLSchedulingParameters *)self evaluationDate];
+  [(SCLSchedulingParameters *)v4 setEvaluationDate:evaluationDate];
 
-  v7 = [(SCLSchedulingParameters *)self scheduleSettings];
-  [(SCLSchedulingParameters *)v4 setScheduleSettings:v7];
+  scheduleSettings = [(SCLSchedulingParameters *)self scheduleSettings];
+  [(SCLSchedulingParameters *)v4 setScheduleSettings:scheduleSettings];
 
   [(SCLSchedulingParameters *)v4 setActivationSetting:[(SCLSchedulingParameters *)self activationSetting]];
   [(SCLSchedulingParameters *)v4 setSuppressed:[(SCLSchedulingParameters *)self isSuppressed]];

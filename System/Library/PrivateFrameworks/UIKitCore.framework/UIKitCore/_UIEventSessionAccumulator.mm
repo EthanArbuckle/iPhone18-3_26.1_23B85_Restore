@@ -1,37 +1,37 @@
 @interface _UIEventSessionAccumulator
-+ (id)accumulatorWithName:(id)a3 depthRange:(_NSRange)a4 block:(id)a5 allowedActionSourceTypes:(id)a6;
-- (BOOL)isActionAllowed:(id)a3;
++ (id)accumulatorWithName:(id)name depthRange:(_NSRange)range block:(id)block allowedActionSourceTypes:(id)types;
+- (BOOL)isActionAllowed:(id)allowed;
 - (_NSRange)depthRange;
-- (void)enumerateAnalytics:(id)a3;
+- (void)enumerateAnalytics:(id)analytics;
 - (void)flushAccumulator;
-- (void)increaseWithAction:(id)a3;
-- (void)performIncreaseWithActions:(id)a3;
+- (void)increaseWithAction:(id)action;
+- (void)performIncreaseWithActions:(id)actions;
 - (void)reset;
 @end
 
 @implementation _UIEventSessionAccumulator
 
-+ (id)accumulatorWithName:(id)a3 depthRange:(_NSRange)a4 block:(id)a5 allowedActionSourceTypes:(id)a6
++ (id)accumulatorWithName:(id)name depthRange:(_NSRange)range block:(id)block allowedActionSourceTypes:(id)types
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  typesCopy = types;
+  blockCopy = block;
+  nameCopy = name;
   v13 = objc_alloc_init(objc_opt_class());
-  v14 = [v12 copy];
+  v14 = [nameCopy copy];
 
   v15 = v13[2];
   v13[2] = v14;
 
   v13[6] = location;
   v13[7] = length;
-  v16 = [v11 copy];
+  v16 = [blockCopy copy];
 
   v17 = v13[3];
   v13[3] = v16;
 
-  v18 = [v10 copy];
+  v18 = [typesCopy copy];
   v19 = v13[4];
   v13[4] = v18;
 
@@ -53,41 +53,41 @@
   return v13;
 }
 
-- (void)performIncreaseWithActions:(id)a3
+- (void)performIncreaseWithActions:(id)actions
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIEventSessionAccumulator.m" lineNumber:45 description:@"_UIEventSessionAccumulator: performIncreaseWithActions() called! Please implement this method or use a child class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIEventSessionAccumulator.m" lineNumber:45 description:@"_UIEventSessionAccumulator: performIncreaseWithActions() called! Please implement this method or use a child class."];
 }
 
-- (BOOL)isActionAllowed:(id)a3
+- (BOOL)isActionAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = [(NSDictionary *)self->_allowedActionSourceTypes objectForKeyedSubscript:objc_opt_class()];
   if (v5)
   {
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "source")}];
-    v7 = [v6 BOOLValue];
+    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(allowedCopy, "source")}];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)increaseWithAction:(id)a3
+- (void)increaseWithAction:(id)action
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(_UIEventSessionAccumulator *)self isActionAllowed:v4])
+  actionCopy = action;
+  if ([(_UIEventSessionAccumulator *)self isActionAllowed:actionCopy])
   {
-    v5 = [(NSMutableOrderedSet *)self->_recentActions firstObject];
-    v7 = v5;
-    if (v5)
+    firstObject = [(NSMutableOrderedSet *)self->_recentActions firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      if ([v5 mergeActionIfPossible:v4])
+      if ([firstObject mergeActionIfPossible:actionCopy])
       {
 LABEL_9:
 
@@ -104,7 +104,7 @@ LABEL_9:
       }
     }
 
-    [v4 setSequenceNumber:{self->_sequenceNumber, v6}];
+    [actionCopy setSequenceNumber:{self->_sequenceNumber, v6}];
     sequenceNumber = self->_sequenceNumber;
     if (sequenceNumber >= 999)
     {
@@ -113,7 +113,7 @@ LABEL_9:
 
     self->_sequenceNumber = sequenceNumber + 1;
     recentActions = self->_recentActions;
-    v12 = [v4 copy];
+    v12 = [actionCopy copy];
     [(NSMutableOrderedSet *)recentActions insertObject:v12 atIndex:0];
 
     goto LABEL_9;
@@ -167,10 +167,10 @@ LABEL_11:
   }
 }
 
-- (void)enumerateAnalytics:(id)a3
+- (void)enumerateAnalytics:(id)analytics
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIEventSessionAccumulator.m" lineNumber:138 description:@"_UIEventSessionAccumulator: enumerateAnalytics() called! Please implement this method or use a child class."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIEventSessionAccumulator.m" lineNumber:138 description:@"_UIEventSessionAccumulator: enumerateAnalytics() called! Please implement this method or use a child class."];
 }
 
 - (_NSRange)depthRange

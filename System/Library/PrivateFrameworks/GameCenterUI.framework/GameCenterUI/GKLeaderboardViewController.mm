@@ -15,9 +15,9 @@
   if (v2)
   {
     [(GKGameCenterViewController *)v2 setViewState:0];
-    v4 = [MEMORY[0x277D0C048] currentGame];
-    v5 = [v4 defaultCategory];
-    [(GKGameCenterViewController *)v3 setLeaderboardIdentifier:v5];
+    currentGame = [MEMORY[0x277D0C048] currentGame];
+    defaultCategory = [currentGame defaultCategory];
+    [(GKGameCenterViewController *)v3 setLeaderboardIdentifier:defaultCategory];
   }
 
   return v3;
@@ -26,7 +26,7 @@
 - (void)notifyDelegateOnWillFinish
 {
   WeakRetained = objc_loadWeakRetained(&self->_leaderboardDelegate);
-  v4 = [(GKGameCenterViewController *)self gameCenterDelegate];
+  gameCenterDelegate = [(GKGameCenterViewController *)self gameCenterDelegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = WeakRetained;
@@ -48,7 +48,7 @@
       goto LABEL_9;
     }
 
-    v5 = v4;
+    v5 = gameCenterDelegate;
   }
 
   [v5 leaderboardViewControllerDidFinish:self];

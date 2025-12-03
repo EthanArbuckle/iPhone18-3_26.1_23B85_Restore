@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitAutoEnhanceActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (BOOL)enabled;
 - (void)performUserInteractionTask;
 @end
@@ -8,24 +8,24 @@
 
 - (BOOL)enabled
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1318 description:{@"Method %s is a responsibility of subclass %@", "-[PUPXPhotoKitAutoEnhanceActionPerformer enabled]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:1318 description:{@"Method %s is a responsibility of subclass %@", "-[PUPXPhotoKitAutoEnhanceActionPerformer enabled]", v6}];
 
   abort();
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v4 = PFFilter();
   if ([v4 count])
   {
     [(PUPXPhotoKitAutoEnhanceActionPerformer *)self enabled];
     v5 = [PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:objc_opt_class() assets:v4 prepareAction:0];
-    v6 = [(PXActionPerformer *)self undoManager];
-    [v5 executeWithUndoManager:v6 completionHandler:&__block_literal_global_610];
+    undoManager = [(PXActionPerformer *)self undoManager];
+    [v5 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_610];
 
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
   }
@@ -59,13 +59,13 @@ uint64_t __68__PUPXPhotoKitAutoEnhanceActionPerformer_performUserInteractionTask
   return v3;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 selectedIndexPaths];
-  v12 = [v11 count];
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v12 = [selectedIndexPaths count];
 
   if (v12)
   {
@@ -78,8 +78,8 @@ uint64_t __68__PUPXPhotoKitAutoEnhanceActionPerformer_performUserInteractionTask
     v15[2] = __93__PUPXPhotoKitAutoEnhanceActionPerformer_canPerformWithSelectionSnapshot_person_socialGroup___block_invoke;
     v15[3] = &unk_1E7B7A828;
     v15[4] = &v16;
-    v15[5] = a1;
-    [v8 enumerateSelectedObjectsUsingBlock:v15];
+    v15[5] = self;
+    [snapshotCopy enumerateSelectedObjectsUsingBlock:v15];
     v13 = *(v17 + 24);
     _Block_object_dispose(&v16, 8);
   }

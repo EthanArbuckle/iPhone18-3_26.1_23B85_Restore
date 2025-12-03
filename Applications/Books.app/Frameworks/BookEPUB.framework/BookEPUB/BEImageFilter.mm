@@ -1,13 +1,13 @@
 @interface BEImageFilter
-+ (BOOL)imageIsFilteringCandidate:(CGImage *)a3;
-+ (id)invertedImage:(CGImage *)a3;
-+ (id)pngDataForCIImage:(id)a3;
-+ (int64_t)imageColorType:(CGImage *)a3;
++ (BOOL)imageIsFilteringCandidate:(CGImage *)candidate;
++ (id)invertedImage:(CGImage *)image;
++ (id)pngDataForCIImage:(id)image;
++ (int64_t)imageColorType:(CGImage *)type;
 @end
 
 @implementation BEImageFilter
 
-+ (BOOL)imageIsFilteringCandidate:(CGImage *)a3
++ (BOOL)imageIsFilteringCandidate:(CGImage *)candidate
 {
   v4 = [BEImageFilter imageColorType:?];
   if (v4 == 2)
@@ -17,13 +17,13 @@
 
   if (v4 == 1)
   {
-    return CGImageGetHeight(a3) < 0x100;
+    return CGImageGetHeight(candidate) < 0x100;
   }
 
   return 0;
 }
 
-+ (int64_t)imageColorType:(CGImage *)a3
++ (int64_t)imageColorType:(CGImage *)type
 {
   v4 = malloc_type_calloc(1uLL, 0x9C40uLL, 0x100004077774924uLL);
   if (!v4)
@@ -42,7 +42,7 @@
     v22.origin.x = 0.0;
     v22.origin.y = 0.0;
     v22.size.height = 100.0;
-    CGContextDrawImage(v7, v22, a3);
+    CGContextDrawImage(v7, v22, type);
     v8 = 0;
     v9 = 0;
     v10 = 0;
@@ -136,24 +136,24 @@ LABEL_19:
   return v7;
 }
 
-+ (id)invertedImage:(CGImage *)a3
++ (id)invertedImage:(CGImage *)image
 {
   v4 = [CIFilter filterWithName:@"CIColorInvert"];
   [v4 setDefaults];
-  v5 = [CIImage imageWithCGImage:a3];
+  v5 = [CIImage imageWithCGImage:image];
   [v4 setValue:v5 forKey:@"inputImage"];
 
-  v6 = [v4 outputImage];
+  outputImage = [v4 outputImage];
 
-  return v6;
+  return outputImage;
 }
 
-+ (id)pngDataForCIImage:(id)a3
++ (id)pngDataForCIImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = +[CIContext context];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  v6 = [v4 PNGRepresentationOfImage:v3 format:kCIFormatRGBA8 colorSpace:DeviceRGB options:&__NSDictionary0__struct];
+  v6 = [v4 PNGRepresentationOfImage:imageCopy format:kCIFormatRGBA8 colorSpace:DeviceRGB options:&__NSDictionary0__struct];
 
   CGColorSpaceRelease(DeviceRGB);
 

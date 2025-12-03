@@ -1,6 +1,6 @@
 @interface OADToPointPathElement
 - (OADAdjustPoint)toPoint;
-- (OADToPointPathElement)initWithToPoint:(OADAdjustPoint)a3;
+- (OADToPointPathElement)initWithToPoint:(OADAdjustPoint)point;
 @end
 
 @implementation OADToPointPathElement
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (OADToPointPathElement)initWithToPoint:(OADAdjustPoint)a3
+- (OADToPointPathElement)initWithToPoint:(OADAdjustPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6.receiver = self;
   v6.super_class = OADToPointPathElement;
   result = [(OADToPointPathElement *)&v6 init];

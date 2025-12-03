@@ -1,16 +1,16 @@
 @interface PXStoryTransformedTimeline
 - (CGAffineTransform)transform;
-- (CGRect)_untransformRect:(CGRect)a3;
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3;
-- (CGRect)transformedRectForOriginalClipInfo:(id *)a3 originalRect:(CGRect)a4;
+- (CGRect)_untransformRect:(CGRect)rect;
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier;
+- (CGRect)transformedRectForOriginalClipInfo:(id *)info originalRect:(CGRect)rect;
 - (CGSize)originalSize;
 - (CGSize)size;
-- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)a3;
-- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)a3 transform:(CGAffineTransform *)a4;
-- (id)clipWithIdentifier:(int64_t)a3;
+- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)timeline;
+- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)timeline transform:(CGAffineTransform *)transform;
+- (id)clipWithIdentifier:(int64_t)identifier;
 - (id)description;
-- (void)_transformRects:(const CGRect *)a3 clipInfos:(id *)a4 count:(int64_t)a5 resultHandler:(id)a6;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
+- (void)_transformRects:(const CGRect *)rects clipInfos:(id *)infos count:(int64_t)count resultHandler:(id)handler;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
 @end
 
 @implementation PXStoryTransformedTimeline
@@ -26,8 +26,8 @@
 
 - (CGSize)originalSize
 {
-  v2 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v2 originalSize];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline originalSize];
   v4 = v3;
   v6 = v5;
 
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier
 {
-  v5 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v5 frameForSegmentWithIdentifier:a3];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline frameForSegmentWithIdentifier:identifier];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -68,11 +68,11 @@
   return result;
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
   v49.receiver = self;
   v49.super_class = PXStoryTransformedTimeline;
-  v4 = [(PXStoryDerivedTimeline *)&v49 clipWithIdentifier:a3];
+  v4 = [(PXStoryDerivedTimeline *)&v49 clipWithIdentifier:identifier];
   v5 = v4;
   memset(v48, 0, 512);
   if (v4)
@@ -137,14 +137,14 @@
   return v7;
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = [(PXStoryDerivedTimeline *)self originalTimeline];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
   [(PXStoryTransformedTimeline *)self _untransformRect:x, y, width, height];
   v14 = v13;
   v16 = v15;
@@ -155,13 +155,13 @@
   v24[2] = __72__PXStoryTransformedTimeline_enumerateClipsInTimeRange_rect_usingBlock___block_invoke;
   v24[3] = &unk_1E77380E8;
   v24[4] = self;
-  v25 = v11;
-  v21 = *&a3->var0.var3;
-  v23[0] = *&a3->var0.var0;
+  v25 = blockCopy;
+  v21 = *&range->var0.var3;
+  v23[0] = *&range->var0.var0;
   v23[1] = v21;
-  v23[2] = *&a3->var1.var1;
-  v22 = v11;
-  [v12 enumerateClipsInTimeRange:v23 rect:v24 usingBlock:{v14, v16, v18, v20}];
+  v23[2] = *&range->var1.var1;
+  v22 = blockCopy;
+  [originalTimeline enumerateClipsInTimeRange:v23 rect:v24 usingBlock:{v14, v16, v18, v20}];
 }
 
 void __72__PXStoryTransformedTimeline_enumerateClipsInTimeRange_rect_usingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)
@@ -180,8 +180,8 @@ void __72__PXStoryTransformedTimeline_enumerateClipsInTimeRange_rect_usingBlock_
 
 - (CGSize)size
 {
-  v3 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v3 size];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline size];
   v9 = v5;
   v10 = v4;
   [(PXStoryTransformedTimeline *)self transform];
@@ -194,21 +194,21 @@ void __72__PXStoryTransformedTimeline_enumerateClipsInTimeRange_rect_usingBlock_
   return result;
 }
 
-- (void)_transformRects:(const CGRect *)a3 clipInfos:(id *)a4 count:(int64_t)a5 resultHandler:(id)a6
+- (void)_transformRects:(const CGRect *)rects clipInfos:(id *)infos count:(int64_t)count resultHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(PXStoryTransformedTimeline *)self transformedRectsStore];
+  handlerCopy = handler;
+  transformedRectsStore = [(PXStoryTransformedTimeline *)self transformedRectsStore];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_resultHandler___block_invoke;
   v13[3] = &unk_1E7738098;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  countCopy = count;
+  infosCopy = infos;
+  rectsCopy = rects;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [v11 accessArrayWithElementsCount:a5 accessBlock:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [transformedRectsStore accessArrayWithElementsCount:count accessBlock:v13];
 }
 
 void __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_resultHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -286,12 +286,12 @@ uint64_t __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_result
   return (*(*(a1 + 40) + 16))();
 }
 
-- (CGRect)transformedRectForOriginalClipInfo:(id *)a3 originalRect:(CGRect)a4
+- (CGRect)transformedRectForOriginalClipInfo:(id *)info originalRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXStoryTransformedTimeline *)self transform];
   v9.origin.x = x;
   v9.origin.y = y;
@@ -300,12 +300,12 @@ uint64_t __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_result
   return CGRectApplyAffineTransform(v9, &v8);
 }
 
-- (CGRect)_untransformRect:(CGRect)a3
+- (CGRect)_untransformRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXStoryTransformedTimeline *)self transform];
   CGAffineTransformInvert(&v8, &v7);
   v9.origin.x = x;
@@ -317,29 +317,29 @@ uint64_t __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_result
 
 - (id)description
 {
-  v3 = [(PXStoryDerivedTimeline *)self originalTimeline];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
   [(PXStoryTransformedTimeline *)self transform];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 size];
+  [originalTimeline size];
   v9 = NSStringFromCGSize(vmlaq_n_f64(vmulq_n_f64(0, v7), 0, v8));
-  v10 = [v4 initWithFormat:@"<%@ %p; Transform: [%g %g %g %g %g %g]; Size: %@; Original Timeline:\n\t%@>", v6, self, 0, 0, 0, 0, 0, 0, v9, v3];
+  v10 = [v4 initWithFormat:@"<%@ %p; Transform: [%g %g %g %g %g %g]; Size: %@; Original Timeline:\n\t%@>", v6, self, 0, 0, 0, 0, 0, 0, v9, originalTimeline];
 
   return v10;
 }
 
-- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)a3 transform:(CGAffineTransform *)a4
+- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)timeline transform:(CGAffineTransform *)transform
 {
   v14.receiver = self;
   v14.super_class = PXStoryTransformedTimeline;
-  v5 = [(PXStoryDerivedTimeline *)&v14 initWithOriginalTimeline:a3];
+  v5 = [(PXStoryDerivedTimeline *)&v14 initWithOriginalTimeline:timeline];
   v6 = v5;
   if (v5)
   {
-    v8 = *&a4->c;
-    v7 = *&a4->tx;
-    *&v5->_transform.a = *&a4->a;
+    v8 = *&transform->c;
+    v7 = *&transform->tx;
+    *&v5->_transform.a = *&transform->a;
     *&v5->_transform.c = v8;
     *&v5->_transform.tx = v7;
     v9 = [[off_1E7721500 alloc] initWithElementSize:32];
@@ -354,13 +354,13 @@ uint64_t __76__PXStoryTransformedTimeline__transformRects_clipInfos_count_result
   return v6;
 }
 
-- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)a3
+- (PXStoryTransformedTimeline)initWithOriginalTimeline:(id)timeline
 {
   v3 = *(MEMORY[0x1E695EFD0] + 16);
   v5[0] = *MEMORY[0x1E695EFD0];
   v5[1] = v3;
   v5[2] = *(MEMORY[0x1E695EFD0] + 32);
-  return [(PXStoryTransformedTimeline *)self initWithOriginalTimeline:a3 transform:v5];
+  return [(PXStoryTransformedTimeline *)self initWithOriginalTimeline:timeline transform:v5];
 }
 
 @end

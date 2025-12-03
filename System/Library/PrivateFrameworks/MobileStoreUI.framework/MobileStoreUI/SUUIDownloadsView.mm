@@ -1,31 +1,31 @@
 @interface SUUIDownloadsView
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setOverlayView:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setOverlayView:(id)view;
 @end
 
 @implementation SUUIDownloadsView
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_contentView removeFromSuperview];
   contentView = self->_contentView;
-  self->_contentView = v4;
-  v6 = v4;
+  self->_contentView = viewCopy;
+  v6 = viewCopy;
 
   [(SUUIDownloadsView *)self insertSubview:self->_contentView atIndex:0];
 
   [(SUUIDownloadsView *)self setNeedsLayout];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_overlayView removeFromSuperview];
   overlayView = self->_overlayView;
-  self->_overlayView = v4;
-  v6 = v4;
+  self->_overlayView = viewCopy;
+  v6 = viewCopy;
 
   [(SUUIDownloadsView *)self addSubview:self->_overlayView];
 

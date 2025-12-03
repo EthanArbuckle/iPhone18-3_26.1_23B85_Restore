@@ -1,30 +1,30 @@
 @interface AALowBatteryDevice
-+ (id)trackerKeyForIdentifier:(id)a3 andType:(unsigned __int8)a4;
-- (AALowBatteryDevice)initWithDictFromPrefs:(id)a3;
++ (id)trackerKeyForIdentifier:(id)identifier andType:(unsigned __int8)type;
+- (AALowBatteryDevice)initWithDictFromPrefs:(id)prefs;
 - (NSString)trackerKey;
 - (id)toPrefsDict;
 @end
 
 @implementation AALowBatteryDevice
 
-+ (id)trackerKeyForIdentifier:(id)a3 andType:(unsigned __int8)a4
++ (id)trackerKeyForIdentifier:(id)identifier andType:(unsigned __int8)type
 {
-  if (a4 > 2u)
+  if (type > 2u)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = off_1002B7BE8[a4];
+    v6 = off_1002B7BE8[type];
   }
 
-  return [NSString stringWithFormat:@"%@--%s", a3, v6, v4, v5];
+  return [NSString stringWithFormat:@"%@--%s", identifier, v6, v4, v5];
 }
 
-- (AALowBatteryDevice)initWithDictFromPrefs:(id)a3
+- (AALowBatteryDevice)initWithDictFromPrefs:(id)prefs
 {
-  v4 = a3;
+  prefsCopy = prefs;
   v17.receiver = self;
   v17.super_class = AALowBatteryDevice;
   v5 = [(AALowBatteryDevice *)&v17 init];
@@ -67,19 +67,19 @@
   v4 = [NSNumber numberWithUnsignedChar:[(AALowBatteryDevice *)self color]];
   [v3 setObject:v4 forKeyedSubscript:@"color"];
 
-  v5 = [(AALowBatteryDevice *)self deviceAddress];
-  if (v5)
+  deviceAddress = [(AALowBatteryDevice *)self deviceAddress];
+  if (deviceAddress)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"deviceAddress"];
+    [v3 setObject:deviceAddress forKeyedSubscript:@"deviceAddress"];
   }
 
-  v6 = [(AALowBatteryDevice *)self identifier];
-  [v3 setObject:v6 forKeyedSubscript:@"id"];
+  identifier = [(AALowBatteryDevice *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"id"];
 
-  v7 = [(AALowBatteryDevice *)self name];
-  if (v7)
+  name = [(AALowBatteryDevice *)self name];
+  if (name)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"name"];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   [(AALowBatteryDevice *)self lastBatteryLevel];
@@ -108,8 +108,8 @@
 
 - (NSString)trackerKey
 {
-  v3 = [(AALowBatteryDevice *)self identifier];
-  v4 = [AALowBatteryDevice trackerKeyForIdentifier:v3 andType:[(AALowBatteryDevice *)self type]];
+  identifier = [(AALowBatteryDevice *)self identifier];
+  v4 = [AALowBatteryDevice trackerKeyForIdentifier:identifier andType:[(AALowBatteryDevice *)self type]];
 
   return v4;
 }

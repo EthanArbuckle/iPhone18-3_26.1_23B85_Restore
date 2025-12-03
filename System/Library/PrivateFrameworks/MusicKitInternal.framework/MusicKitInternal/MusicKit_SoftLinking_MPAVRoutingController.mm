@@ -1,7 +1,7 @@
 @interface MusicKit_SoftLinking_MPAVRoutingController
 - (MusicKit_SoftLinking_MPAVRoutingController)init;
-- (void)_handleRoutesDidChange:(id)a3;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
+- (void)_handleRoutesDidChange:(id)change;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
 @end
 
 @implementation MusicKit_SoftLinking_MPAVRoutingController
@@ -60,23 +60,23 @@
   return v2;
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __88__MusicKit_SoftLinking_MPAVRoutingController_routingControllerAvailableRoutesDidChange___block_invoke;
   v5[3] = &unk_1E84C3CB8;
   objc_copyWeak(&v6, &location);
-  [v4 fetchAvailableRoutesWithCompletionHandler:v5];
+  [changeCopy fetchAvailableRoutesWithCompletionHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleRoutesDidChange:(id)a3
+- (void)_handleRoutesDidChange:(id)change
 {
-  a3;
+  change;
   routesDidUpdate = self->_routesDidUpdate;
   if (routesDidUpdate)
   {

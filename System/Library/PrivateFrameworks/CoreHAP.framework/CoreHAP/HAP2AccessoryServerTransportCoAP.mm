@@ -1,60 +1,60 @@
 @interface HAP2AccessoryServerTransportCoAP
-+ (id)stringFromCoAPAddress:(uint64_t)a1;
-- (BOOL)mergeWithNewTransport:(id)a3;
-- (HAP2AccessoryServerTransportCoAP)initWithAccessoryInfo:(id)a3 discovery:(id)a4 operationQueue:(id)a5;
-- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)a3 delegateQueue:(id)a4;
-- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 serviceName:(id)a5 serviceType:(id)a6 serviceDomain:(id)a7 addressResolutionTimeout:(double)a8 discovery:(id)a9 accessoryInfo:(id)a10 coapClient:(id)a11 coapClientFactory:(id)a12;
++ (id)stringFromCoAPAddress:(uint64_t)address;
+- (BOOL)mergeWithNewTransport:(id)transport;
+- (HAP2AccessoryServerTransportCoAP)initWithAccessoryInfo:(id)info discovery:(id)discovery operationQueue:(id)queue;
+- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue;
+- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue serviceName:(id)name serviceType:(id)type serviceDomain:(id)domain addressResolutionTimeout:(double)timeout discovery:(id)discovery accessoryInfo:(id)self0 coapClient:(id)self1 coapClientFactory:(id)self2;
 - (id)coapClient;
 - (id)discovery;
-- (id)initWithServiceName:(void *)a3 type:(void *)a4 domain:(void *)a5 operationQueue:(void *)a6 discovery:(void *)a7 accessoryInfo:;
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3;
-- (id)wellKnownEndpoint:(unint64_t)a3;
-- (unint64_t)protocolFeaturesForVersion:(id)a3;
-- (void)_handleResolve:(uint64_t)a1;
-- (void)_openClientWithActivity:(void *)a1;
-- (void)client:(id)a3 didReceiveEvent:(id)a4;
-- (void)clientDidDisconnect:(id)a3 error:(id)a4;
-- (void)doCloseWithError:(id)a3 completion:(id)a4;
-- (void)doOpenWithCompletion:(id)a3;
-- (void)doSendRequest:(id)a3 completion:(id)a4;
-- (void)doUpdateMaxRequestTimeout:(double)a3;
+- (id)initWithServiceName:(void *)name type:(void *)type domain:(void *)domain operationQueue:(void *)queue discovery:(void *)discovery accessoryInfo:;
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint;
+- (id)wellKnownEndpoint:(unint64_t)endpoint;
+- (unint64_t)protocolFeaturesForVersion:(id)version;
+- (void)_handleResolve:(uint64_t)resolve;
+- (void)_openClientWithActivity:(void *)activity;
+- (void)client:(id)client didReceiveEvent:(id)event;
+- (void)clientDidDisconnect:(id)disconnect error:(id)error;
+- (void)doCloseWithError:(id)error completion:(id)completion;
+- (void)doOpenWithCompletion:(id)completion;
+- (void)doSendRequest:(id)request completion:(id)completion;
+- (void)doUpdateMaxRequestTimeout:(double)timeout;
 - (void)numOfAddresses;
 - (void)numOfAddressesTried;
-- (void)setCoapClient:(id *)a1;
-- (void)setSendRequestCompletion:(void *)a1;
-- (void)setStateChangeCompletion:(void *)a1;
+- (void)setCoapClient:(id *)client;
+- (void)setSendRequestCompletion:(void *)completion;
+- (void)setStateChangeCompletion:(void *)completion;
 - (void)stateChangeCompletion;
 @end
 
 @implementation HAP2AccessoryServerTransportCoAP
 
-- (void)client:(id)a3 didReceiveEvent:(id)a4
+- (void)client:(id)client didReceiveEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(HAP2AccessoryServerTransportBase *)self state];
+  eventCopy = event;
+  state = [(HAP2AccessoryServerTransportBase *)self state];
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
   }
 
   v7 = hap2Log_accessory;
-  if (v6 == 2)
+  if (state == 2)
   {
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
-      v14 = v5;
+      state2 = eventCopy;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%@ Received event: %@", &v11, 0x16u);
     }
 
-    v8 = [(HAP2AccessoryServerTransportBaseWithDelegate *)self delegate];
-    v9 = v8;
-    if (v8)
+    delegate = [(HAP2AccessoryServerTransportBaseWithDelegate *)self delegate];
+    v9 = delegate;
+    if (delegate)
     {
-      [v8 transport:self didReceiveEvent:v5];
+      [delegate transport:self didReceiveEvent:eventCopy];
     }
   }
 
@@ -67,11 +67,11 @@
 
     v9 = v7;
     v11 = 138412802;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2048;
-    v14 = [(HAP2AccessoryServerTransportBase *)self state];
+    state2 = [(HAP2AccessoryServerTransportBase *)self state];
     v15 = 2112;
-    v16 = v5;
+    v16 = eventCopy;
     _os_log_error_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "%@ Received event in bad state %lu: %@", &v11, 0x20u);
   }
 
@@ -79,29 +79,29 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientDidDisconnect:(id)a3 error:(id)a4
+- (void)clientDidDisconnect:(id)disconnect error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   if (hap2LogInitialize_onceToken != -1)
   {
     dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
   }
 
   v6 = hap2Log_accessory;
-  if (v5)
+  if (errorCopy)
   {
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 2112;
-      v14 = v5;
+      v14 = errorCopy;
       _os_log_error_impl(&dword_22AADC000, v6, OS_LOG_TYPE_ERROR, "%@ Disconnected with error: %@", &v11, 0x16u);
     }
 
-    v7 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa discovery];
-    if (v7)
+    discovery = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa discovery];
+    if (discovery)
     {
       if (hap2LogInitialize_onceToken != -1)
       {
@@ -112,7 +112,7 @@ LABEL_10:
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%@ Requesting discovery reconfirm after disconnect", &v11, 0xCu);
       }
 
@@ -126,16 +126,16 @@ LABEL_10:
         accessoryInfo = 0;
       }
 
-      [v7 reconfirmAccessory:accessoryInfo];
+      [discovery reconfirmAccessory:accessoryInfo];
     }
 
-    [(HAP2AccessoryServerTransportBase *)self didDisconnectWithError:v5];
+    [(HAP2AccessoryServerTransportBase *)self didDisconnectWithError:errorCopy];
   }
 
   else if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_DEFAULT, "%@ Disconnected", &v11, 0xCu);
   }
 
@@ -153,24 +153,24 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (void)doUpdateMaxRequestTimeout:(double)a3
+- (void)doUpdateMaxRequestTimeout:(double)timeout
 {
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = 5.0;
-  if (a3 >= 5.0)
+  timeoutCopy = 5.0;
+  if (timeout >= 5.0)
   {
-    v6 = a3;
+    timeoutCopy = timeout;
   }
 
   v7 = 4;
-  if (v6 < 15.0)
+  if (timeoutCopy < 15.0)
   {
     v7 = 3;
   }
 
-  if (v6 >= 30.0)
+  if (timeoutCopy >= 30.0)
   {
     v8 = 5;
   }
@@ -180,58 +180,58 @@ LABEL_10:
     v8 = v7;
   }
 
-  v9 = v6 / ~(-1 << v8);
+  v9 = timeoutCopy / ~(-1 << v8);
   if (self)
   {
-    v10 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-    [v10 assertCurrentQueue];
+    operationQueue2 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+    [operationQueue2 assertCurrentQueue];
 
     self->_maxTransmitAttempts = v8;
-    v11 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-    [v11 assertCurrentQueue];
+    operationQueue3 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+    [operationQueue3 assertCurrentQueue];
 
     self->_initialACKTimeout = v9;
   }
 
-  v12 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
+  coapClient = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
 
-  if (v12)
+  if (coapClient)
   {
-    v13 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
-    [v13 alterMaxTransmitAttempts:v8 initialACKTimeout:v9];
+    coapClient2 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
+    [coapClient2 alterMaxTransmitAttempts:v8 initialACKTimeout:v9];
   }
 }
 
 - (id)coapClient
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 operationQueue];
-    [v3 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    a1 = v2[12];
+    self = selfCopy[12];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)doCloseWithError:(id)a3 completion:(id)a4
+- (void)doCloseWithError:(id)error completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  completionCopy = completion;
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  [(HAP2AccessoryServerTransportCoAP *)self setStateChangeCompletion:v6];
-  v11 = v7;
+  [(HAP2AccessoryServerTransportCoAP *)self setStateChangeCompletion:completionCopy];
+  v11 = errorCopy;
   if (self)
   {
-    v9 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-    [v9 assertCurrentQueue];
+    operationQueue2 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+    [operationQueue2 assertCurrentQueue];
 
-    v10 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
+    coapClient = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
     [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa setCoapClient:?];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -239,31 +239,31 @@ LABEL_10:
     v12[3] = &unk_2786D6A98;
     v12[4] = self;
     v13 = v11;
-    [v10 closeWithError:v13 completion:v12];
+    [coapClient closeWithError:v13 completion:v12];
   }
 }
 
-- (void)setStateChangeCompletion:(void *)a1
+- (void)setStateChangeCompletion:(void *)completion
 {
-  if (a1)
+  if (completion)
   {
     v3 = a2;
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [completion operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v5 = MEMORY[0x231885210](v3);
-    v6 = a1[9];
-    a1[9] = v5;
+    v6 = completion[9];
+    completion[9] = v5;
   }
 }
 
-- (void)setCoapClient:(id *)a1
+- (void)setCoapClient:(id *)client
 {
   v5 = a2;
-  v4 = [a1 operationQueue];
-  [v4 assertCurrentQueue];
+  operationQueue = [client operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  objc_storeStrong(a1 + 12, a2);
+  objc_storeStrong(client + 12, a2);
 }
 
 void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke(uint64_t a1, void *a2)
@@ -409,20 +409,20 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
 
 - (void)stateChangeCompletion
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [a1 operationQueue];
-    [v3 assertCurrentQueue];
+    selfCopy = self;
+    operationQueue = [self operationQueue];
+    [operationQueue assertCurrentQueue];
 
-    a1 = MEMORY[0x231885210](v2[9]);
+    self = MEMORY[0x231885210](selfCopy[9]);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)stringFromCoAPAddress:(uint64_t)a1
++ (id)stringFromCoAPAddress:(uint64_t)address
 {
   v13 = *MEMORY[0x277D85DE8];
   objc_opt_self();
@@ -461,8 +461,8 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
   if (result)
   {
     v1 = result;
-    v2 = [result operationQueue];
-    [v2 assertCurrentQueue];
+    operationQueue = [result operationQueue];
+    [operationQueue assertCurrentQueue];
 
     return v1[16];
   }
@@ -475,8 +475,8 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
   if (result)
   {
     v1 = result;
-    v2 = [result operationQueue];
-    [v2 assertCurrentQueue];
+    operationQueue = [result operationQueue];
+    [operationQueue assertCurrentQueue];
 
     return v1[17];
   }
@@ -484,29 +484,29 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
   return result;
 }
 
-- (void)doSendRequest:(id)a3 completion:(id)a4
+- (void)doSendRequest:(id)request completion:(id)completion
 {
   v40[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v8 assertCurrentQueue];
+  requestCopy = request;
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v9 = [v6 endpoint];
+  endpoint = [requestCopy endpoint];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v6 endpoint];
+    endpoint2 = [requestCopy endpoint];
 
-    if (v10)
+    if (endpoint2)
     {
-      [(HAP2AccessoryServerTransportCoAP *)self setSendRequestCompletion:v7];
-      v11 = v6;
-      v12 = v10;
+      [(HAP2AccessoryServerTransportCoAP *)self setSendRequestCompletion:completionCopy];
+      v11 = requestCopy;
+      v12 = endpoint2;
       if (self)
       {
-        v13 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-        [v13 assertCurrentQueue];
+        operationQueue2 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+        [operationQueue2 assertCurrentQueue];
 
         if (hap2LogInitialize_onceToken != -1)
         {
@@ -517,7 +517,7 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
         if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
         {
           v15 = v14;
-          v16 = [v11 data];
+          data = [v11 data];
           *buf = 138413058;
           *&buf[4] = self;
           *&buf[12] = 2112;
@@ -525,23 +525,23 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
           *&buf[22] = 2112;
           v36 = v12;
           LOWORD(v37) = 2112;
-          *(&v37 + 2) = v16;
+          *(&v37 + 2) = data;
           _os_log_impl(&dword_22AADC000, v15, OS_LOG_TYPE_INFO, "%@ Sending %@ to '%@': %@", buf, 0x2Au);
         }
 
-        v17 = [MEMORY[0x277D0F770] currentActivity];
-        v18 = v17;
-        if (v17)
+        currentActivity = [MEMORY[0x277D0F770] currentActivity];
+        v18 = currentActivity;
+        if (currentActivity)
         {
           v40[0] = v12;
           v39[0] = @"path";
           v39[1] = @"method";
-          v34 = v17;
+          v34 = currentActivity;
           v19 = @"POST";
           v40[1] = @"POST";
           v39[2] = @"serializationType";
-          v20 = [v11 mimeType];
-          v40[2] = v20;
+          mimeType = [v11 mimeType];
+          v40[2] = mimeType;
           v39[3] = @"reading";
           [v11 isForReading];
           v21 = HMFBooleanToString();
@@ -564,17 +564,17 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
         if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
         {
           v32 = v24;
-          v33 = [v11 dscpPriority];
+          dscpPriority = [v11 dscpPriority];
           *buf = 138412546;
           *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = v33;
+          *&buf[14] = dscpPriority;
           _os_log_debug_impl(&dword_22AADC000, v32, OS_LOG_TYPE_DEBUG, "%@ Sending request with priority %ld", buf, 0x16u);
         }
 
-        v25 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
-        v26 = [v11 data];
-        v27 = [v11 dscpPriority];
+        coapClient = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
+        data2 = [v11 data];
+        dscpPriority2 = [v11 dscpPriority];
         *buf = MEMORY[0x277D85DD0];
         *&buf[8] = 3221225472;
         *&buf[16] = __54__HAP2AccessoryServerTransportCoAP__sendRequest_path___block_invoke;
@@ -582,7 +582,7 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
         *&v37 = self;
         *(&v37 + 1) = v11;
         v38 = v12;
-        [v25 sendRequestWithMethod:2 path:v38 payload:v26 dscpPriority:v27 completion:buf];
+        [coapClient sendRequestWithMethod:2 path:v38 payload:data2 dscpPriority:dscpPriority2 completion:buf];
       }
 
       goto LABEL_22;
@@ -602,32 +602,32 @@ void __52__HAP2AccessoryServerTransportCoAP__closeWithError___block_invoke_2(voi
   if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
   {
     v30 = v28;
-    v31 = [v6 endpoint];
+    endpoint3 = [requestCopy endpoint];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v31;
+    *&buf[14] = endpoint3;
     _os_log_error_impl(&dword_22AADC000, v30, OS_LOG_TYPE_ERROR, "%@ Invalid endpoint: %@", buf, 0x16u);
   }
 
   v12 = [MEMORY[0x277CCA9B8] hapErrorWithCode:9];
-  (*(v7 + 2))(v7, 0, v12);
+  (*(completionCopy + 2))(completionCopy, 0, v12);
 LABEL_22:
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSendRequestCompletion:(void *)a1
+- (void)setSendRequestCompletion:(void *)completion
 {
-  if (a1)
+  if (completion)
   {
     v3 = a2;
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [completion operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v5 = MEMORY[0x231885210](v3);
-    v6 = a1[10];
-    a1[10] = v5;
+    v6 = completion[10];
+    completion[10] = v5;
   }
 }
 
@@ -774,22 +774,22 @@ LABEL_13:
   v12[2](v12, *(a1 + 48), v5);
 }
 
-- (void)doOpenWithCompletion:(id)a3
+- (void)doOpenWithCompletion:(id)completion
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  [(HAP2AccessoryServerTransportCoAP *)self setStateChangeCompletion:v4];
-  v6 = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
+  [(HAP2AccessoryServerTransportCoAP *)self setStateChangeCompletion:completionCopy];
+  coapClient = [(HAP2AccessoryServerTransportCoAP *)&self->super.super.super.super.isa coapClient];
 
-  if (v6)
+  if (coapClient)
   {
     if (self)
     {
-      v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-      [v7 assertCurrentQueue];
+      operationQueue2 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+      [operationQueue2 assertCurrentQueue];
 
       v8 = MEMORY[0x277CCACA8];
       v9 = objc_opt_class();
@@ -804,8 +804,8 @@ LABEL_13:
 
   else if (self)
   {
-    v12 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-    [v12 assertCurrentQueue];
+    operationQueue3 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+    [operationQueue3 assertCurrentQueue];
 
     v13 = MEMORY[0x277CCACA8];
     v14 = objc_opt_class();
@@ -821,8 +821,8 @@ LABEL_13:
       v44 = &unk_2786D6CA0;
       *v45 = self;
       v17 = MEMORY[0x231885210](block);
-      v18 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-      [v18 addConcurrentBlock:v17];
+      operationQueue4 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+      [operationQueue4 addConcurrentBlock:v17];
     }
 
     else
@@ -862,26 +862,26 @@ LABEL_13:
       nw_parameters_prohibit_interface(secure_udp, v21);
 
       v22 = self->_serviceName;
-      v23 = [(NSString *)v22 UTF8String];
+      uTF8String = [(NSString *)v22 UTF8String];
       v24 = self->_serviceType;
-      v25 = [(NSString *)v24 UTF8String];
+      uTF8String2 = [(NSString *)v24 UTF8String];
       v26 = self->_serviceDomain;
-      bonjour_service = nw_endpoint_create_bonjour_service(v23, v25, [(NSString *)v26 UTF8String]);
+      bonjour_service = nw_endpoint_create_bonjour_service(uTF8String, uTF8String2, [(NSString *)v26 UTF8String]);
       v28 = nw_connection_create(bonjour_service, secure_udp);
       objc_storeStrong(&self->_nwConnection, v28);
 
       v29 = self->_nwConnection;
-      v30 = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
-      nw_connection_set_queue(v29, v30);
+      delegateQueue = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
+      nw_connection_set_queue(v29, delegateQueue);
 
       v31 = dispatch_time(0, (self->_addressResolutionTimeout * 1000000000.0));
-      v32 = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
+      delegateQueue2 = [(HAP2AccessoryServerTransportBase *)self delegateQueue];
       *block = MEMORY[0x277D85DD0];
       *&block[8] = 3221225472;
       *&block[16] = __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2;
       v44 = &unk_2786D6CA0;
       *v45 = self;
-      dispatch_after(v31, v32, block);
+      dispatch_after(v31, delegateQueue2, block);
 
       nwConnection = self->_nwConnection;
       handler[0] = MEMORY[0x277D85DD0];
@@ -1542,13 +1542,13 @@ void __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2_59(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResolve:(uint64_t)a1
+- (void)_handleResolve:(uint64_t)resolve
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (resolve)
   {
-    v4 = [a1 operationQueue];
-    [v4 assertCurrentQueue];
+    operationQueue = [resolve operationQueue];
+    [operationQueue assertCurrentQueue];
 
     v5 = MEMORY[0x277CCACA8];
     v6 = objc_opt_class();
@@ -1566,20 +1566,20 @@ void __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2_59(u
       v9 = hap2Log_accessory;
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = *(a1 + 144);
-        v11 = [(HAP2AccessoryServerTransportCoAP *)a1 numOfAddresses];
-        v12 = [(HAP2AccessoryServerTransportCoAP *)a1 numOfAddressesTried];
-        v13 = *(a1 + 200);
+        v10 = *(resolve + 144);
+        numOfAddresses = [(HAP2AccessoryServerTransportCoAP *)resolve numOfAddresses];
+        numOfAddressesTried = [(HAP2AccessoryServerTransportCoAP *)resolve numOfAddressesTried];
+        v13 = *(resolve + 200);
         *buf = 138413571;
-        *v31 = a1;
+        *v31 = resolve;
         *&v31[8] = 2113;
         *&v31[10] = v10;
         *&v31[18] = 2081;
         *&v31[20] = __dst;
         v32 = 2048;
-        v33 = v11;
+        v33 = numOfAddresses;
         v34 = 2048;
-        v35 = v12;
+        v35 = numOfAddressesTried;
         v36 = 2048;
         v37 = [v13 count];
         _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%@ Resolved '%{private}@' to %{private}s (discovered %lu, tried %lu with %lu names)", buf, 0x3Eu);
@@ -1596,9 +1596,9 @@ void __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2_59(u
       v14 = hap2Log_accessory;
       if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
       {
-        v27 = *(a1 + 144);
+        v27 = *(resolve + 144);
         *buf = 138412547;
-        *v31 = a1;
+        *v31 = resolve;
         *&v31[8] = 2113;
         *&v31[10] = v27;
         v28 = v14;
@@ -1606,52 +1606,52 @@ void __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2_59(u
       }
     }
 
-    *(a1 + 232) = 0u;
-    *(a1 + 248) = 0u;
+    *(resolve + 232) = 0u;
+    *(resolve + 248) = 0u;
     v15 = *a2;
-    *(a1 + 232) = v15;
+    *(resolve + 232) = v15;
     v16 = *(a2 + 5);
     if (v16 == 2)
     {
-      *(a1 + 236) = *(a2 + 1);
+      *(resolve + 236) = *(a2 + 1);
     }
 
     else if (v16 == 30)
     {
-      *(a1 + 237) = 30;
-      *(a1 + 244) = *(a2 + 3);
-      *(a1 + 238) = *(a2 + 3);
-      *(a1 + 260) = a2[7];
+      *(resolve + 237) = 30;
+      *(resolve + 244) = *(a2 + 3);
+      *(resolve + 238) = *(a2 + 3);
+      *(resolve + 260) = a2[7];
     }
 
     else
     {
-      memcpy((a1 + 236), a2 + 1, v15);
+      memcpy((resolve + 236), a2 + 1, v15);
     }
 
     memset(v31, 0, sizeof(v31));
-    v17 = *(a1 + 232);
-    *buf = *(a1 + 232);
-    v18 = *(a1 + 237);
+    v17 = *(resolve + 232);
+    *buf = *(resolve + 232);
+    v18 = *(resolve + 237);
     if (v18 == 2)
     {
-      *v31 = *(a1 + 236);
+      *v31 = *(resolve + 236);
     }
 
     else if (v18 == 30)
     {
       v31[1] = 30;
-      *&v31[8] = *(a1 + 244);
-      *&v31[2] = *(a1 + 238);
-      *&v31[24] = *(a1 + 260);
+      *&v31[8] = *(resolve + 244);
+      *&v31[2] = *(resolve + 238);
+      *&v31[24] = *(resolve + 260);
     }
 
     else
     {
-      memcpy(v31, (a1 + 236), v17);
+      memcpy(v31, (resolve + 236), v17);
     }
 
-    v19 = *(a1 + 192);
+    v19 = *(resolve + 192);
     if (v19)
     {
       v20 = [v19 createWithSocketAddress:v31];
@@ -1660,42 +1660,42 @@ void __51__HAP2AccessoryServerTransportCoAP__resolveAddress__block_invoke_2_59(u
     else
     {
       v21 = [HAP2CoAPClient alloc];
-      v22 = *(a1 + 144);
-      v23 = [a1 operationQueue];
-      [v23 assertCurrentQueue];
+      v22 = *(resolve + 144);
+      operationQueue2 = [resolve operationQueue];
+      [operationQueue2 assertCurrentQueue];
 
-      v24 = *(a1 + 104);
-      v25 = [a1 operationQueue];
-      [v25 assertCurrentQueue];
+      v24 = *(resolve + 104);
+      operationQueue3 = [resolve operationQueue];
+      [operationQueue3 assertCurrentQueue];
 
-      v20 = [(HAP2CoAPClient *)v21 initWithSocketAddress:v31 withAccessoryName:v22 maxTransmitAttempts:v24 initialACKTimeout:*(a1 + 112)];
+      v20 = [(HAP2CoAPClient *)v21 initWithSocketAddress:v31 withAccessoryName:v22 maxTransmitAttempts:v24 initialACKTimeout:*(resolve + 112)];
     }
 
-    [(HAP2CoAPClient *)v20 setDelegate:a1];
-    [(HAP2AccessoryServerTransportCoAP *)a1 setCoapClient:v20];
+    [(HAP2CoAPClient *)v20 setDelegate:resolve];
+    [(HAP2AccessoryServerTransportCoAP *)resolve setCoapClient:v20];
 
-    [(HAP2AccessoryServerTransportCoAP *)a1 _openClientWithActivity:v29];
+    [(HAP2AccessoryServerTransportCoAP *)resolve _openClientWithActivity:v29];
     __HMFActivityScopeLeave();
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_openClientWithActivity:(void *)a1
+- (void)_openClientWithActivity:(void *)activity
 {
   v3 = a2;
-  v4 = [a1 operationQueue];
-  [v4 assertCurrentQueue];
+  operationQueue = [activity operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v5 = [(HAP2AccessoryServerTransportCoAP *)a1 coapClient];
+  coapClient = [(HAP2AccessoryServerTransportCoAP *)activity coapClient];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HAP2AccessoryServerTransportCoAP__openClientWithActivity___block_invoke;
   v7[3] = &unk_2786D6A98;
-  v7[4] = a1;
+  v7[4] = activity;
   v6 = v3;
   v8 = v6;
-  [v5 openWithCompletion:v7];
+  [coapClient openWithCompletion:v7];
 }
 
 void __60__HAP2AccessoryServerTransportCoAP__openClientWithActivity___block_invoke(uint64_t a1, void *a2)
@@ -1884,14 +1884,14 @@ void __60__HAP2AccessoryServerTransportCoAP__openClientWithActivity___block_invo
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)mergeWithNewTransport:(id)a3
+- (BOOL)mergeWithNewTransport:(id)transport
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  transportCopy = transport;
+  v5 = transportCopy;
+  if (transportCopy)
   {
-    v6 = v4;
+    v6 = transportCopy;
     while (1)
     {
       objc_opt_class();
@@ -1903,10 +1903,10 @@ void __60__HAP2AccessoryServerTransportCoAP__openClientWithActivity___block_invo
         break;
       }
 
-      v10 = [v6 underlyingTransport];
+      underlyingTransport = [v6 underlyingTransport];
 
-      v6 = v10;
-      if (!v10)
+      v6 = underlyingTransport;
+      if (!underlyingTransport)
       {
         goto LABEL_8;
       }
@@ -1919,7 +1919,7 @@ void __60__HAP2AccessoryServerTransportCoAP__openClientWithActivity___block_invo
     v24 = 3221225472;
     v25 = __58__HAP2AccessoryServerTransportCoAP_mergeWithNewTransport___block_invoke;
     v26 = &unk_2786D6A08;
-    v27 = self;
+    selfCopy = self;
     v28 = v13;
     v29 = v14;
     v30 = v15;
@@ -1945,7 +1945,7 @@ LABEL_8:
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2112;
       v34 = v5;
       _os_log_impl(&dword_22AADC000, v11, OS_LOG_TYPE_INFO, "%@ Cannot merge with non-CoAP transport, replacing with %@", buf, 0x16u);
@@ -2092,45 +2092,45 @@ LABEL_30:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mimeTypeForWellKnownEndpoint:(unint64_t)a3
+- (id)mimeTypeForWellKnownEndpoint:(unint64_t)endpoint
 {
-  if (a3 - 1 > 4)
+  if (endpoint - 1 > 4)
   {
     return @"application/octet-stream";
   }
 
   else
   {
-    return off_2786D6B18[a3 - 1];
+    return off_2786D6B18[endpoint - 1];
   }
 }
 
-- (id)wellKnownEndpoint:(unint64_t)a3
+- (id)wellKnownEndpoint:(unint64_t)endpoint
 {
-  if (a3 - 1 > 5)
+  if (endpoint - 1 > 5)
   {
     return &stru_283E79C60;
   }
 
   else
   {
-    return off_2786D6AE8[a3 - 1];
+    return off_2786D6AE8[endpoint - 1];
   }
 }
 
-- (unint64_t)protocolFeaturesForVersion:(id)a3
+- (unint64_t)protocolFeaturesForVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 majorVersion] == 1)
+  versionCopy = version;
+  if ([versionCopy majorVersion] == 1)
   {
-    v4 = [v3 minorVersion];
+    minorVersion = [versionCopy minorVersion];
     v5 = 47;
-    if (!v4)
+    if (!minorVersion)
     {
       v5 = 15;
     }
 
-    if (v4 == 1)
+    if (minorVersion == 1)
     {
       v6 = 25;
     }
@@ -2149,71 +2149,71 @@ LABEL_30:
   return v6;
 }
 
-- (id)initWithServiceName:(void *)a3 type:(void *)a4 domain:(void *)a5 operationQueue:(void *)a6 discovery:(void *)a7 accessoryInfo:
+- (id)initWithServiceName:(void *)name type:(void *)type domain:(void *)domain operationQueue:(void *)queue discovery:(void *)discovery accessoryInfo:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  discoveryCopy = discovery;
+  queueCopy = queue;
+  domainCopy = domain;
+  typeCopy = type;
+  nameCopy = name;
   v18 = a2;
-  v19 = HAPDispatchQueueName(a1, @"delegateQueue");
+  v19 = HAPDispatchQueueName(self, @"delegateQueue");
   v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v21 = dispatch_get_global_queue(17, 0);
   v22 = dispatch_queue_create_with_target_V2(v19, v20, v21);
 
-  v23 = [a1 initWithOperationQueue:v15 delegateQueue:v22 serviceName:v18 serviceType:v17 serviceDomain:v16 addressResolutionTimeout:v14 discovery:3.0 accessoryInfo:v13 coapClient:0 coapClientFactory:0];
+  v23 = [self initWithOperationQueue:domainCopy delegateQueue:v22 serviceName:v18 serviceType:nameCopy serviceDomain:typeCopy addressResolutionTimeout:queueCopy discovery:3.0 accessoryInfo:discoveryCopy coapClient:0 coapClientFactory:0];
   v24 = v23;
 
   return v24;
 }
 
-- (HAP2AccessoryServerTransportCoAP)initWithAccessoryInfo:(id)a3 discovery:(id)a4 operationQueue:(id)a5
+- (HAP2AccessoryServerTransportCoAP)initWithAccessoryInfo:(id)info discovery:(id)discovery operationQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 rawDiscoveryInfo];
-  v12 = [v11 objectForKeyedSubscript:@"bonjourServiceName"];
-  v13 = [v11 objectForKeyedSubscript:@"bonjourServiceType"];
-  v14 = [v11 objectForKeyedSubscript:@"bonjourServiceDomain"];
-  v15 = [(HAP2AccessoryServerTransportCoAP *)self initWithServiceName:v12 type:v13 domain:v14 operationQueue:v8 discovery:v9 accessoryInfo:v10];
+  queueCopy = queue;
+  discoveryCopy = discovery;
+  infoCopy = info;
+  rawDiscoveryInfo = [infoCopy rawDiscoveryInfo];
+  v12 = [rawDiscoveryInfo objectForKeyedSubscript:@"bonjourServiceName"];
+  v13 = [rawDiscoveryInfo objectForKeyedSubscript:@"bonjourServiceType"];
+  v14 = [rawDiscoveryInfo objectForKeyedSubscript:@"bonjourServiceDomain"];
+  v15 = [(HAP2AccessoryServerTransportCoAP *)self initWithServiceName:v12 type:v13 domain:v14 operationQueue:queueCopy discovery:discoveryCopy accessoryInfo:infoCopy];
 
   return v15;
 }
 
-- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)a3 delegateQueue:(id)a4 serviceName:(id)a5 serviceType:(id)a6 serviceDomain:(id)a7 addressResolutionTimeout:(double)a8 discovery:(id)a9 accessoryInfo:(id)a10 coapClient:(id)a11 coapClientFactory:(id)a12
+- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue serviceName:(id)name serviceType:(id)type serviceDomain:(id)domain addressResolutionTimeout:(double)timeout discovery:(id)discovery accessoryInfo:(id)self0 coapClient:(id)self1 coapClientFactory:(id)self2
 {
   v64 = *MEMORY[0x277D85DE8];
-  v18 = a5;
-  v19 = a6;
-  obj = a7;
-  v20 = a7;
-  v21 = a9;
-  v58 = a10;
-  v22 = a11;
-  v23 = v18;
-  v24 = a12;
+  nameCopy = name;
+  typeCopy = type;
+  obj = domain;
+  domainCopy = domain;
+  discoveryCopy = discovery;
+  infoCopy = info;
+  clientCopy = client;
+  v23 = nameCopy;
+  factoryCopy = factory;
   v59.receiver = self;
   v59.super_class = HAP2AccessoryServerTransportCoAP;
-  v25 = v20;
-  v26 = [(HAP2AccessoryServerTransportBase *)&v59 initWithOperationQueue:a3 delegateQueue:a4];
+  v25 = domainCopy;
+  v26 = [(HAP2AccessoryServerTransportBase *)&v59 initWithOperationQueue:queue delegateQueue:delegateQueue];
   v27 = v26;
   if (v26)
   {
-    v57 = v24;
-    objc_storeStrong(&v26->_serviceName, a5);
-    objc_storeStrong(&v27->_serviceType, a6);
+    v57 = factoryCopy;
+    objc_storeStrong(&v26->_serviceName, name);
+    objc_storeStrong(&v27->_serviceType, type);
     objc_storeStrong(&v27->_serviceDomain, obj);
-    v27->_addressResolutionTimeout = a8;
-    v28 = v21;
-    objc_storeWeak(&v27->_discovery, v21);
-    objc_storeStrong(&v27->_accessoryInfo, a10);
+    v27->_addressResolutionTimeout = timeout;
+    v28 = discoveryCopy;
+    objc_storeWeak(&v27->_discovery, discoveryCopy);
+    objc_storeStrong(&v27->_accessoryInfo, info);
     v27->_maxTransmitAttempts = 0;
     v27->_initialACKTimeout = 0.0;
     v29 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
@@ -2229,8 +2229,8 @@ LABEL_30:
 
     v33 = v27->_bonjourNames;
     v53 = v25;
-    v55 = v19;
-    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v23, v19, v25];
+    v55 = typeCopy;
+    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", v23, typeCopy, v25];
     [(NSMutableArray *)v33 insertObject:v34 atIndex:0];
 
     *&v27->_ipAddress.addr.sa.sa_len = 0;
@@ -2238,13 +2238,13 @@ LABEL_30:
     *v27->_ipAddress.addr.sin6.sin6_addr.__u6_addr8 = 0;
     v27->_ipAddress.addr.sin6.sin6_scope_id = 0;
     v27->_ipAddress.size = 28;
-    v35 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v36 = [v35 preferenceForKey:@"AccessoryMaximumIPAddressesTracked"];
-    v37 = [v36 numberValue];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v36 = [mEMORY[0x277D0F8D0] preferenceForKey:@"AccessoryMaximumIPAddressesTracked"];
+    numberValue = [v36 numberValue];
 
-    if ([v37 intValue] >= 1 && objc_msgSend(v37, "intValue") < 0x15)
+    if ([numberValue intValue] >= 1 && objc_msgSend(numberValue, "intValue") < 0x15)
     {
-      v39 = [v37 unsignedIntValue];
+      unsignedIntValue = [numberValue unsignedIntValue];
     }
 
     else
@@ -2260,25 +2260,25 @@ LABEL_30:
         *buf = 138412546;
         v61 = v27;
         v62 = 2048;
-        v39 = 10;
+        unsignedIntValue = 10;
         v63 = 10;
         _os_log_error_impl(&dword_22AADC000, v38, OS_LOG_TYPE_ERROR, "%@ Preference 'AccessoryMaximumIPAddressesTracked' setting beyond bounds - using default %lu", buf, 0x16u);
       }
 
       else
       {
-        v39 = 10;
+        unsignedIntValue = 10;
       }
     }
 
-    v27->_maxAddressesAllowed = v39;
-    v40 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v41 = [v40 preferenceForKey:@"AccessoryMaximumBonjourNamesTracked"];
-    v42 = [v41 numberValue];
+    v27->_maxAddressesAllowed = unsignedIntValue;
+    mEMORY[0x277D0F8D0]2 = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v41 = [mEMORY[0x277D0F8D0]2 preferenceForKey:@"AccessoryMaximumBonjourNamesTracked"];
+    numberValue2 = [v41 numberValue];
 
-    if ([v42 intValue] >= 1 && objc_msgSend(v42, "intValue") < 0xB)
+    if ([numberValue2 intValue] >= 1 && objc_msgSend(numberValue2, "intValue") < 0xB)
     {
-      v44 = [v42 unsignedIntValue];
+      unsignedIntValue2 = [numberValue2 unsignedIntValue];
     }
 
     else
@@ -2294,23 +2294,23 @@ LABEL_30:
         *buf = 138412546;
         v61 = v27;
         v62 = 2048;
-        v44 = 5;
+        unsignedIntValue2 = 5;
         v63 = 5;
         _os_log_error_impl(&dword_22AADC000, v43, OS_LOG_TYPE_ERROR, "%@ Preference 'AccessoryMaximumBonjourNamesTracked' setting beyond bounds - using default %lu", buf, 0x16u);
       }
 
       else
       {
-        v44 = 5;
+        unsignedIntValue2 = 5;
       }
     }
 
-    v27->_maxBonjourNamesAllowed = v44;
-    if (v22)
+    v27->_maxBonjourNamesAllowed = unsignedIntValue2;
+    if (clientCopy)
     {
-      [v22 setDelegate:v27];
+      [clientCopy setDelegate:v27];
       v45 = &OBJC_IVAR___HAP2AccessoryServerTransportCoAP__coapClient;
-      v46 = v22;
+      v46 = clientCopy;
     }
 
     else
@@ -2320,24 +2320,24 @@ LABEL_30:
     }
 
     v25 = v53;
-    v19 = v55;
+    typeCopy = v55;
     v47 = *v45;
     v48 = v46;
     v49 = *(&v27->super.super.super.super.isa + v47);
     *(&v27->super.super.super.super.isa + v47) = v48;
 
-    v24 = v57;
-    v21 = v28;
+    factoryCopy = v57;
+    discoveryCopy = v28;
   }
 
   v50 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)a3 delegateQueue:(id)a4
+- (HAP2AccessoryServerTransportCoAP)initWithOperationQueue:(id)queue delegateQueue:(id)delegateQueue
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  delegateQueueCopy = delegateQueue;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];

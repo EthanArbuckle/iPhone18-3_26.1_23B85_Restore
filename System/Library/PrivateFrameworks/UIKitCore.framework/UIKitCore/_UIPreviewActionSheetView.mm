@@ -1,34 +1,34 @@
 @interface _UIPreviewActionSheetView
 - (UIEdgeInsets)contentInsets;
-- (_UIPreviewActionSheetView)initWithCoder:(id)a3;
-- (_UIPreviewActionSheetView)initWithFrame:(CGRect)a3 title:(id)a4 items:(id)a5 contentInsets:(UIEdgeInsets)a6;
+- (_UIPreviewActionSheetView)initWithCoder:(id)coder;
+- (_UIPreviewActionSheetView)initWithFrame:(CGRect)frame title:(id)title items:(id)items contentInsets:(UIEdgeInsets)insets;
 - (_UIPreviewActionSheetViewDelegate)delegate;
-- (void)_performActionForPreviewAction:(id)a3 interfaceAction:(id)a4;
+- (void)_performActionForPreviewAction:(id)action interfaceAction:(id)interfaceAction;
 - (void)_setupViewHierarchy;
 @end
 
 @implementation _UIPreviewActionSheetView
 
-- (_UIPreviewActionSheetView)initWithFrame:(CGRect)a3 title:(id)a4 items:(id)a5 contentInsets:(UIEdgeInsets)a6
+- (_UIPreviewActionSheetView)initWithFrame:(CGRect)frame title:(id)title items:(id)items contentInsets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a5;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
+  itemsCopy = items;
   v22.receiver = self;
   v22.super_class = _UIPreviewActionSheetView;
-  v19 = [(UIView *)&v22 initWithFrame:x, y, width, height];
-  v20 = v19;
-  if (v19)
+  height = [(UIView *)&v22 initWithFrame:x, y, width, height];
+  v20 = height;
+  if (height)
   {
-    objc_storeStrong(&v19->_actions, a5);
-    objc_storeStrong(&v20->_title, a4);
+    objc_storeStrong(&height->_actions, items);
+    objc_storeStrong(&v20->_title, title);
     v20->_contentInsets.top = top;
     v20->_contentInsets.left = left;
     v20->_contentInsets.bottom = bottom;
@@ -39,33 +39,33 @@
   return v20;
 }
 
-- (_UIPreviewActionSheetView)initWithCoder:(id)a3
+- (_UIPreviewActionSheetView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIPreviewActionSheetView;
-  return [(UIView *)&v4 initWithCoder:a3];
+  return [(UIView *)&v4 initWithCoder:coder];
 }
 
 - (void)_setupViewHierarchy
 {
   v67 = *MEMORY[0x1E69E9840];
-  v2 = [(_UIPreviewActionSheetView *)self actions];
-  v3 = [v2 count];
+  actions = [(_UIPreviewActionSheetView *)self actions];
+  v3 = [actions count];
 
   if (v3)
   {
     [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
     objc_initWeak(&location, self);
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(_UIPreviewActionSheetView *)self actions];
-    v54 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    actions2 = [(_UIPreviewActionSheetView *)self actions];
+    v54 = [v4 arrayWithCapacity:{objc_msgSend(actions2, "count")}];
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v6 = [(_UIPreviewActionSheetView *)self actions];
-    v7 = [v6 countByEnumeratingWithState:&v57 objects:v66 count:16];
+    actions3 = [(_UIPreviewActionSheetView *)self actions];
+    v7 = [actions3 countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v7)
     {
       v8 = *v58;
@@ -75,19 +75,19 @@
         {
           if (*v58 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(actions3);
           }
 
           v10 = *(*(&v57 + 1) + 8 * i);
-          v11 = [v10 style];
-          v12 = [v10 title];
+          style = [v10 style];
+          title = [v10 title];
           v55[0] = MEMORY[0x1E69E9820];
           v55[1] = 3221225472;
           v55[2] = __48___UIPreviewActionSheetView__setupViewHierarchy__block_invoke;
           v55[3] = &unk_1E711AD50;
           objc_copyWeak(&v56, &location);
           v55[4] = v10;
-          v13 = [UIInterfaceAction actionWithTitle:v12 type:2 * (v11 == 2) handler:v55];
+          v13 = [UIInterfaceAction actionWithTitle:title type:2 * (style == 2) handler:v55];
 
           if ([v10 style] == 1)
           {
@@ -100,17 +100,17 @@
           }
           v14 = ;
           [v13 setTrailingImage:v14];
-          v15 = [v10 _color];
-          [v13 _setTitleTextColor:v15];
+          _color = [v10 _color];
+          [v13 _setTitleTextColor:_color];
 
-          v16 = [v10 _color];
-          [v13 _setImageTintColor:v16];
+          _color2 = [v10 _color];
+          [v13 _setImageTintColor:_color2];
 
           [v54 addObject:v13];
           objc_destroyWeak(&v56);
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v57 objects:v66 count:16];
+        v7 = [actions3 countByEnumeratingWithState:&v57 objects:v66 count:16];
       }
 
       while (v7);
@@ -188,18 +188,18 @@
   }
 }
 
-- (void)_performActionForPreviewAction:(id)a3 interfaceAction:(id)a4
+- (void)_performActionForPreviewAction:(id)action interfaceAction:(id)interfaceAction
 {
-  v8 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) == 0 || [WeakRetained previewActionSheetCanSelectItem:self])
   {
-    v6 = [(_UIPreviewActionSheetView *)self completionHandler];
+    completionHandler = [(_UIPreviewActionSheetView *)self completionHandler];
 
-    if (v6)
+    if (completionHandler)
     {
-      v7 = [(_UIPreviewActionSheetView *)self completionHandler];
-      (v7)[2](v7, v8);
+      completionHandler2 = [(_UIPreviewActionSheetView *)self completionHandler];
+      (completionHandler2)[2](completionHandler2, actionCopy);
     }
   }
 }

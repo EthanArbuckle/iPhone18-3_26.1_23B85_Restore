@@ -1,12 +1,12 @@
 @interface NRDevicePairingManagerInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NRDevicePairingManagerInfo)init;
-- (NRDevicePairingManagerInfo)initWithCoder:(id)a3;
+- (NRDevicePairingManagerInfo)initWithCoder:(id)coder;
 - (NSString)fullDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDevicePairingManagerInfo
@@ -50,8 +50,8 @@ LABEL_7:
   }
 
   v3 = v2;
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  [(NRDevicePairingManagerInfo *)v3 setUuid:v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(NRDevicePairingManagerInfo *)v3 setUuid:uUID];
 
   v5 = *MEMORY[0x277D85DE8];
   return v3;
@@ -62,24 +62,24 @@ LABEL_7:
   v3 = [(NRDevicePairingManagerInfo *)self description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(NRDevicePairingManagerInfo *)self identifier];
+  identifier = [(NRDevicePairingManagerInfo *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
-    v6 = [(NRDevicePairingManagerInfo *)self identifier];
-    [v4 appendFormat:@" Identifier %@", v6];
+    identifier2 = [(NRDevicePairingManagerInfo *)self identifier];
+    [v4 appendFormat:@" Identifier %@", identifier2];
   }
 
-  v7 = [(NRDevicePairingManagerInfo *)self metadata];
+  metadata = [(NRDevicePairingManagerInfo *)self metadata];
 
-  if (v7)
+  if (metadata)
   {
-    v8 = [(NRDevicePairingManagerInfo *)self metadata];
-    [v4 appendFormat:@" Metadata %@", v8];
+    metadata2 = [(NRDevicePairingManagerInfo *)self metadata];
+    [v4 appendFormat:@" Metadata %@", metadata2];
   }
 
-  v9 = [(NRDevicePairingManagerInfo *)self pairingCriteria];
-  [v4 appendFormat:@" Pairing Criteria %@", v9];
+  pairingCriteria = [(NRDevicePairingManagerInfo *)self pairingCriteria];
+  [v4 appendFormat:@" Pairing Criteria %@", pairingCriteria];
 
   return v4;
 }
@@ -87,22 +87,22 @@ LABEL_7:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(NRDevicePairingManagerInfo *)self uuid];
-  v5 = [v3 initWithFormat:@"NRDevicePairingManager[%@]", v4];
+  uuid = [(NRDevicePairingManagerInfo *)self uuid];
+  v5 = [v3 initWithFormat:@"NRDevicePairingManager[%@]", uuid];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(NRDevicePairingManagerInfo *)self uuid];
-    v7 = [v5 uuid];
+    v5 = equalCopy;
+    uuid = [(NRDevicePairingManagerInfo *)self uuid];
+    uuid2 = [v5 uuid];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [uuid isEqual:uuid2];
   }
 
   else
@@ -115,32 +115,32 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v2 = [(NRDevicePairingManagerInfo *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(NRDevicePairingManagerInfo *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NRDevicePairingManagerInfo *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(NRDevicePairingManagerInfo *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v6 = [(NRDevicePairingManagerInfo *)self identifier];
-  [v4 encodeObject:v6 forKey:@"identifier"];
+  identifier = [(NRDevicePairingManagerInfo *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v7 = [(NRDevicePairingManagerInfo *)self pairingCriteria];
-  [v4 encodeObject:v7 forKey:@"pairingCriteria"];
+  pairingCriteria = [(NRDevicePairingManagerInfo *)self pairingCriteria];
+  [coderCopy encodeObject:pairingCriteria forKey:@"pairingCriteria"];
 
-  v8 = [(NRDevicePairingManagerInfo *)self metadata];
-  [v4 encodeObject:v8 forKey:@"metadata"];
+  metadata = [(NRDevicePairingManagerInfo *)self metadata];
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
 }
 
-- (NRDevicePairingManagerInfo)initWithCoder:(id)a3
+- (NRDevicePairingManagerInfo)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = NRDevicePairingManagerInfo;
   v5 = [(NRDevicePairingManagerInfo *)&v27 init];
@@ -177,38 +177,38 @@ LABEL_7:
   }
 
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   [(NRDevicePairingManagerInfo *)v6 setUuid:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   [(NRDevicePairingManagerInfo *)v6 setIdentifier:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingCriteria"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingCriteria"];
   [(NRDevicePairingManagerInfo *)v6 setPairingCriteria:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
   [(NRDevicePairingManagerInfo *)v6 setMetadata:v10];
 
   v11 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NRDevicePairingManagerInfo *)self uuid];
-  [v4 setUuid:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uuid = [(NRDevicePairingManagerInfo *)self uuid];
+  [v4 setUuid:uuid];
 
-  v6 = [(NRDevicePairingManagerInfo *)self identifier];
-  v7 = [v6 copy];
+  identifier = [(NRDevicePairingManagerInfo *)self identifier];
+  v7 = [identifier copy];
   [v4 setIdentifier:v7];
 
-  v8 = [(NRDevicePairingManagerInfo *)self pairingCriteria];
-  v9 = [v8 copy];
+  pairingCriteria = [(NRDevicePairingManagerInfo *)self pairingCriteria];
+  v9 = [pairingCriteria copy];
   [v4 setPairingCriteria:v9];
 
-  v10 = [(NRDevicePairingManagerInfo *)self metadata];
-  v11 = [v10 copy];
+  metadata = [(NRDevicePairingManagerInfo *)self metadata];
+  v11 = [metadata copy];
   [v4 setMetadata:v11];
 
   return v4;

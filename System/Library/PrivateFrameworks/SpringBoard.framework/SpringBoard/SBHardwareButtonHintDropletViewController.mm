@@ -1,24 +1,24 @@
 @interface SBHardwareButtonHintDropletViewController
 - (SBHardwareButtonHintDropletViewController)init;
 - (SBHardwareButtonHintDropletViewControllerDelegate)delegate;
-- (id)_configurationForButton:(int64_t)a3 stage:(unint64_t)a4;
-- (id)_existingOrNewDropletStateForButton:(int64_t)a3;
-- (id)activateHintDropletForButton:(int64_t)a3;
-- (id)associateHintView:(id)a3 withButton:(int64_t)a4;
-- (id)setDropletLayoutCallback:(id)a3 forButton:(int64_t)a4;
-- (void)_activateButtonAssertionDidInvalidate:(id)a3 forButton:(int64_t)a4;
-- (void)_applyButtonState:(id)a3 animated:(BOOL)a4 checkForIdle:(BOOL)a5;
-- (void)_applyStateForExistingButton:(int64_t)a3 animated:(BOOL)a4 checkForIdle:(BOOL)a5;
-- (void)_associateHintViewAssertionDidInvalidate:(id)a3 forView:(id)a4 forButton:(int64_t)a5;
-- (void)_displayLinkCallback:(id)a3;
-- (void)_dropletLayoutCallbackAssertionDidInvalidate:(id)a3 forCallback:(id)a4 forButton:(int64_t)a5;
+- (id)_configurationForButton:(int64_t)button stage:(unint64_t)stage;
+- (id)_existingOrNewDropletStateForButton:(int64_t)button;
+- (id)activateHintDropletForButton:(int64_t)button;
+- (id)associateHintView:(id)view withButton:(int64_t)button;
+- (id)setDropletLayoutCallback:(id)callback forButton:(int64_t)button;
+- (void)_activateButtonAssertionDidInvalidate:(id)invalidate forButton:(int64_t)button;
+- (void)_applyButtonState:(id)state animated:(BOOL)animated checkForIdle:(BOOL)idle;
+- (void)_applyStateForExistingButton:(int64_t)button animated:(BOOL)animated checkForIdle:(BOOL)idle;
+- (void)_associateHintViewAssertionDidInvalidate:(id)invalidate forView:(id)view forButton:(int64_t)button;
+- (void)_displayLinkCallback:(id)callback;
+- (void)_dropletLayoutCallbackAssertionDidInvalidate:(id)invalidate forCallback:(id)callback forButton:(int64_t)button;
 - (void)_startIdleTimer;
 - (void)_updateDisplayLink;
 - (void)_updateSnapshotVisibility;
 - (void)dealloc;
 - (void)loadView;
-- (void)setKeylineStyle:(unint64_t)a3;
-- (void)updateHintContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5;
+- (void)setKeylineStyle:(unint64_t)style;
+- (void)updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings;
 - (void)viewDidLoad;
 @end
 
@@ -42,9 +42,9 @@
   v2 = [(SBHardwareButtonHintDropletViewController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     buttonStates = v2->_buttonStates;
-    v2->_buttonStates = v3;
+    v2->_buttonStates = dictionary;
 
     v5 = +[SBButtonBezelGeometryInfo buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel];
     buttonGeometryInfo = v2->_buttonGeometryInfo;
@@ -69,8 +69,8 @@
   v19.receiver = self;
   v19.super_class = SBHardwareButtonHintDropletViewController;
   [(SBHardwareButtonHintDropletViewController *)&v19 viewDidLoad];
-  v3 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v3 bounds];
+  view = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -80,25 +80,25 @@
   dropletContextView = self->_dropletContextView;
   self->_dropletContextView = v12;
 
-  v14 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v14 addSubview:self->_dropletContextView];
+  view2 = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view2 addSubview:self->_dropletContextView];
 
   [(DRPDropletContextView *)self->_dropletContextView setAutoresizingMask:18];
   v15 = objc_alloc_init(MEMORY[0x277D069E8]);
   animator = self->_animator;
   self->_animator = v15;
 
-  v17 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v17 setNeedsLayout];
+  view3 = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view3 setNeedsLayout];
 
-  v18 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v18 layoutIfNeeded];
+  view4 = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view4 layoutIfNeeded];
 }
 
-- (id)activateHintDropletForButton:(int64_t)a3
+- (id)activateHintDropletForButton:(int64_t)button
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 == 10)
+  if (button == 10)
   {
     v3 = 0;
   }
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v25 = a3;
+      buttonCopy = button;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Hint Droplet Activating: %ld", buf, 0xCu);
     }
 
@@ -118,7 +118,7 @@
     self->_idleTimer = 0;
 
     buttonStates = self->_buttonStates;
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:button];
     v12 = [(NSMutableDictionary *)buttonStates objectForKey:v11];
 
     if (v12)
@@ -127,27 +127,27 @@
       v14 = v13;
       if (v13 && [v13 isValid])
       {
-        [(SBHardwareButtonHintDropletViewController *)a3 activateHintDropletForButton:a2, self];
+        [(SBHardwareButtonHintDropletViewController *)button activateHintDropletForButton:a2, self];
       }
     }
 
     else
     {
-      v12 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:a3];
+      v12 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:button];
     }
 
     objc_initWeak(buf, self);
     v15 = objc_alloc(MEMORY[0x277CF0CE8]);
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v18 = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __74__SBHardwareButtonHintDropletViewController_activateHintDropletForButton___block_invoke;
     v22 = &unk_2783A90C0;
     objc_copyWeak(v23, buf);
-    v23[1] = a3;
-    v3 = [v15 initWithIdentifier:v17 forReason:@"activatedButton" queue:MEMORY[0x277D85CD0] invalidationBlock:&v19];
+    v23[1] = button;
+    v3 = [v15 initWithIdentifier:uUIDString forReason:@"activatedButton" queue:MEMORY[0x277D85CD0] invalidationBlock:&v19];
 
     [(SBCameraHardwareButton *)v12 setForegroundCameraShutterButtonPIDs:v3];
     [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:v12 animated:1, v19, v20, v21, v22];
@@ -165,10 +165,10 @@ void __74__SBHardwareButtonHintDropletViewController_activateHintDropletForButto
   [WeakRetained _activateButtonAssertionDidInvalidate:v3 forButton:*(a1 + 40)];
 }
 
-- (id)associateHintView:(id)a3 withButton:(int64_t)a4
+- (id)associateHintView:(id)view withButton:(int64_t)button
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   [(NSTimer *)self->_idleTimer invalidate];
   idleTimer = self->_idleTimer;
   self->_idleTimer = 0;
@@ -177,36 +177,36 @@ void __74__SBHardwareButtonHintDropletViewController_activateHintDropletForButto
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v38 = a4;
+    buttonCopy = button;
     v39 = 2112;
-    v40 = v6;
+    v40 = viewCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Hint Droplet: %ld Associating Hint View: %@", buf, 0x16u);
   }
 
-  v9 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:a4];
-  [(SBCameraHardwareButton *)v9 setAllCameraShutterButtonPIDs:v6];
-  v10 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v10 addSubview:v6];
-  v11 = [(SBButtonBezelGeometryInfo *)self->_buttonGeometryInfo buttonScreenEdgeForButton:a4];
+  v9 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:button];
+  [(SBCameraHardwareButton *)v9 setAllCameraShutterButtonPIDs:viewCopy];
+  view = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view addSubview:viewCopy];
+  v11 = [(SBButtonBezelGeometryInfo *)self->_buttonGeometryInfo buttonScreenEdgeForButton:button];
   buttonGeometryInfo = self->_buttonGeometryInfo;
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 _referenceBounds];
-  [(SBButtonBezelGeometryInfo *)buttonGeometryInfo buttonHWRectForButton:a4 onEmbeddedDisplayBounds:?];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
+  [(SBButtonBezelGeometryInfo *)buttonGeometryInfo buttonHWRectForButton:button onEmbeddedDisplayBounds:?];
   v15 = v14;
   v17 = v16;
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [v6 centerYAnchor];
-  v19 = [v10 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:v15 + v17 * 0.5];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  centerYAnchor = [viewCopy centerYAnchor];
+  topAnchor = [view topAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:topAnchor constant:v15 + v17 * 0.5];
   [v20 setActive:1];
 
   if (v11 == 8)
   {
-    v21 = [v6 leftAnchor];
-    v22 = [v10 rightAnchor];
-    [v6 bounds];
-    v24 = [v21 constraintEqualToAnchor:v22 constant:-v25];
+    leftAnchor = [viewCopy leftAnchor];
+    rightAnchor = [view rightAnchor];
+    [viewCopy bounds];
+    v24 = [leftAnchor constraintEqualToAnchor:rightAnchor constant:-v25];
   }
 
   else
@@ -216,10 +216,10 @@ void __74__SBHardwareButtonHintDropletViewController_activateHintDropletForButto
       goto LABEL_8;
     }
 
-    v21 = [v6 rightAnchor];
-    v22 = [v10 leftAnchor];
-    [v6 bounds];
-    v24 = [v21 constraintEqualToAnchor:v22 constant:v23];
+    leftAnchor = [viewCopy rightAnchor];
+    rightAnchor = [view leftAnchor];
+    [viewCopy bounds];
+    v24 = [leftAnchor constraintEqualToAnchor:rightAnchor constant:v23];
   }
 
   v26 = v24;
@@ -228,18 +228,18 @@ void __74__SBHardwareButtonHintDropletViewController_activateHintDropletForButto
 LABEL_8:
   objc_initWeak(buf, self);
   v27 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v28 = [MEMORY[0x277CCAD78] UUID];
-  v29 = [v28 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v30 = MEMORY[0x277D85CD0];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __74__SBHardwareButtonHintDropletViewController_associateHintView_withButton___block_invoke;
   v34[3] = &unk_2783C06D0;
   objc_copyWeak(v36, buf);
-  v31 = v6;
+  v31 = viewCopy;
   v35 = v31;
-  v36[1] = a4;
-  v32 = [v27 initWithIdentifier:v29 forReason:@"associatedHintView" queue:MEMORY[0x277D85CD0] invalidationBlock:v34];
+  v36[1] = button;
+  v32 = [v27 initWithIdentifier:uUIDString forReason:@"associatedHintView" queue:MEMORY[0x277D85CD0] invalidationBlock:v34];
 
   [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:v9 animated:1];
   objc_destroyWeak(v36);
@@ -255,11 +255,11 @@ void __74__SBHardwareButtonHintDropletViewController_associateHintView_withButto
   [WeakRetained _associateHintViewAssertionDidInvalidate:v3 forView:*(a1 + 32) forButton:*(a1 + 48)];
 }
 
-- (void)updateHintContentVisibility:(int64_t)a3 forButton:(int64_t)a4 animationSettings:(id)a5
+- (void)updateHintContentVisibility:(int64_t)visibility forButton:(int64_t)button animationSettings:(id)settings
 {
   v19 = *MEMORY[0x277D85DE8];
   buttonStates = self->_buttonStates;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:button];
   v10 = [(NSMutableDictionary *)buttonStates objectForKey:v9];
 
   if (v10)
@@ -274,7 +274,7 @@ void __74__SBHardwareButtonHintDropletViewController_associateHintView_withButto
     if (*(v10 + 40))
     {
 LABEL_5:
-      if (a3 == 1)
+      if (visibility == 1)
       {
         v12 = 2;
       }
@@ -290,7 +290,7 @@ LABEL_5:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 134218240;
-          v16 = a4;
+          buttonCopy = button;
           v17 = 2048;
           v18 = v12;
           _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Hint Droplet: %ld Updated hint presented stage: %ld", &v15, 0x16u);
@@ -307,7 +307,7 @@ LABEL_5:
   v14 = SBLogButtonHintingUI();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [SBHardwareButtonHintDropletViewController updateHintContentVisibility:a4 forButton:v14 animationSettings:?];
+    [SBHardwareButtonHintDropletViewController updateHintContentVisibility:button forButton:v14 animationSettings:?];
   }
 
 LABEL_15:
@@ -320,7 +320,7 @@ void __80__SBHardwareButtonHintDropletViewController_setDropletLayoutCallback_fo
   [WeakRetained _dropletLayoutCallbackAssertionDidInvalidate:v3 forCallback:*(a1 + 32) forButton:*(a1 + 48)];
 }
 
-- (id)_existingOrNewDropletStateForButton:(int64_t)a3
+- (id)_existingOrNewDropletStateForButton:(int64_t)button
 {
   buttonStates = self->_buttonStates;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -333,7 +333,7 @@ void __80__SBHardwareButtonHintDropletViewController_setDropletLayoutCallback_fo
 
   else
   {
-    if ((a3 - 3) > 1)
+    if ((button - 3) > 1)
     {
       v10 = 0;
     }
@@ -344,10 +344,10 @@ void __80__SBHardwareButtonHintDropletViewController_setDropletLayoutCallback_fo
     }
 
     v11 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v12 = [[_SBHardwareButtonHintDropletState alloc] initWithButton:a3 dropletContextView:self->_dropletContextView contentView:v11 groupState:v10];
+    v12 = [[_SBHardwareButtonHintDropletState alloc] initWithButton:button dropletContextView:self->_dropletContextView contentView:v11 groupState:v10];
     [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:v12 animated:0 checkForIdle:0];
     v13 = self->_buttonStates;
-    v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v14 = [MEMORY[0x277CCABB0] numberWithInteger:button];
     [(NSMutableDictionary *)v13 setObject:v12 forKey:v14];
 
     v8 = v12;
@@ -356,18 +356,18 @@ void __80__SBHardwareButtonHintDropletViewController_setDropletLayoutCallback_fo
   return v8;
 }
 
-- (void)_applyStateForExistingButton:(int64_t)a3 animated:(BOOL)a4 checkForIdle:(BOOL)a5
+- (void)_applyStateForExistingButton:(int64_t)button animated:(BOOL)animated checkForIdle:(BOOL)idle
 {
-  v5 = a5;
-  v6 = a4;
+  idleCopy = idle;
+  animatedCopy = animated;
   buttonStates = self->_buttonStates;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:button];
   v11 = [(NSMutableDictionary *)buttonStates objectForKey:v9];
 
   v10 = v11;
   if (v11)
   {
-    [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:v11 animated:v6 checkForIdle:v5];
+    [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:v11 animated:animatedCopy checkForIdle:idleCopy];
     v10 = v11;
   }
 }
@@ -411,8 +411,8 @@ void __60__SBHardwareButtonHintDropletViewController__startIdleTimer__block_invo
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -424,7 +424,7 @@ void __60__SBHardwareButtonHintDropletViewController__startIdleTimer__block_invo
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
@@ -452,8 +452,8 @@ LABEL_18:
             self->_displayLink = v14;
 
             v16 = self->_displayLink;
-            v12 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [(CADisplayLink *)v16 addToRunLoop:v12 forMode:*MEMORY[0x277CBE738]];
+            mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+            [(CADisplayLink *)v16 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
             goto LABEL_22;
           }
 
@@ -467,7 +467,7 @@ LABEL_18:
       }
 
       while (v5 != v7);
-      v10 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
       v5 = v10;
       if (v10)
       {
@@ -488,33 +488,33 @@ LABEL_18:
     }
 
     [(CADisplayLink *)self->_displayLink invalidate];
-    v12 = self->_displayLink;
+    mainRunLoop = self->_displayLink;
     self->_displayLink = 0;
 LABEL_22:
   }
 }
 
-- (void)_displayLinkCallback:(id)a3
+- (void)_displayLinkCallback:(id)callback
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_displayLink == v4)
+  callbackCopy = callback;
+  if (self->_displayLink == callbackCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v25 = v4;
-    v5 = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v25 = callbackCopy;
+    objectEnumerator = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (!v6)
     {
-      v8 = 0;
+      window = 0;
       goto LABEL_29;
     }
 
     v7 = v6;
-    v8 = 0;
+    window = 0;
     v9 = *v31;
     while (1)
     {
@@ -524,7 +524,7 @@ LABEL_22:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
@@ -549,16 +549,16 @@ LABEL_22:
           goto LABEL_20;
         }
 
-        if (!v8)
+        if (!window)
         {
           [(SBHardwareButtonHintDropletViewController *)self view];
           v16 = v9;
-          v17 = self;
-          v19 = v18 = v5;
-          v8 = [v19 window];
+          selfCopy = self;
+          v19 = v18 = objectEnumerator;
+          window = [v19 window];
 
-          v5 = v18;
-          self = v17;
+          objectEnumerator = v18;
+          self = selfCopy;
           v9 = v16;
           v7 = v26;
         }
@@ -576,7 +576,7 @@ LABEL_22:
             v21 = 0;
           }
 
-          v22 = _offsetOfDropletView(v21, v8, v20);
+          v22 = _offsetOfDropletView(v21, window, v20);
           if (!v13)
           {
             goto LABEL_17;
@@ -587,7 +587,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        [(SBHardwareButtonHintDropletViewController *)&self->_buttonStates _displayLinkCallback:v8, v20, &v34];
+        [(SBHardwareButtonHintDropletViewController *)&self->_buttonStates _displayLinkCallback:window, v20, &v34];
         v22 = v34;
         if (v13)
         {
@@ -613,13 +613,13 @@ LABEL_20:
       }
 
       while (v7 != v10);
-      v24 = [v5 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v24 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v35 count:16];
       v7 = v24;
       if (!v24)
       {
 LABEL_29:
 
-        v4 = v25;
+        callbackCopy = v25;
         break;
       }
     }
@@ -633,18 +633,18 @@ uint64_t __66__SBHardwareButtonHintDropletViewController__displayLinkCallback___
   return [v1 setTransform:&v3];
 }
 
-- (void)setKeylineStyle:(unint64_t)a3
+- (void)setKeylineStyle:(unint64_t)style
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_keylineStyle != a3)
+  if (self->_keylineStyle != style)
   {
-    self->_keylineStyle = a3;
+    self->_keylineStyle = style;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
+    v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -656,14 +656,14 @@ uint64_t __66__SBHardwareButtonHintDropletViewController__displayLinkCallback___
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [(SBHardwareButtonHintDropletViewController *)self _applyButtonState:*(*(&v9 + 1) + 8 * v8++) animated:1];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -671,43 +671,43 @@ uint64_t __66__SBHardwareButtonHintDropletViewController__displayLinkCallback___
   }
 }
 
-- (id)_configurationForButton:(int64_t)a3 stage:(unint64_t)a4
+- (id)_configurationForButton:(int64_t)button stage:(unint64_t)stage
 {
   v7 = [(SBButtonBezelGeometryInfo *)self->_buttonGeometryInfo buttonScreenEdgeForButton:?];
   buttonGeometryInfo = self->_buttonGeometryInfo;
-  v9 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v9 bounds];
-  [(SBButtonBezelGeometryInfo *)buttonGeometryInfo buttonHWRectForButton:a3 onEmbeddedDisplayBounds:?];
+  view = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view bounds];
+  [(SBButtonBezelGeometryInfo *)buttonGeometryInfo buttonHWRectForButton:button onEmbeddedDisplayBounds:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(SBHardwareButtonHintDropletViewController *)self view];
-  [v18 bounds];
+  view2 = [(SBHardwareButtonHintDropletViewController *)self view];
+  [view2 bounds];
   v20 = v19;
   v22 = v21;
 
   keylineStyle = self->_keylineStyle;
   v24 = MEMORY[0x277D069F8];
 
-  return [v24 hardwareButtonHintForButton:a3 stage:a4 keylineStyle:keylineStyle rectEdge:v7 buttonRect:v11 canvasSize:{v13, v15, v17, v20, v22}];
+  return [v24 hardwareButtonHintForButton:button stage:stage keylineStyle:keylineStyle rectEdge:v7 buttonRect:v11 canvasSize:{v13, v15, v17, v20, v22}];
 }
 
 - (void)_updateSnapshotVisibility
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"SBHardwareButtonHintDropletsAlwaysVisibleInSnapshots"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"SBHardwareButtonHintDropletsAlwaysVisibleInSnapshots"];
 
   v5 = (v4 & 1) == 0 && self->_displayLink == 0;
-  v6 = [(SBHardwareButtonHintDropletViewController *)self view];
-  v7 = [v6 layer];
+  view = [(SBHardwareButtonHintDropletViewController *)self view];
+  layer = [view layer];
 
-  v8 = [v7 disableUpdateMask];
+  disableUpdateMask = [layer disableUpdateMask];
   if (v5)
   {
-    v9 = v8 | 2u;
-    if (v8 != v9)
+    v9 = disableUpdateMask | 2u;
+    if (disableUpdateMask != v9)
     {
       v10 = SBLogButtonHintingUI();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -726,8 +726,8 @@ LABEL_11:
 
   else
   {
-    v9 = v8 & 0xFFFFFFFD;
-    if (v8 != v9)
+    v9 = disableUpdateMask & 0xFFFFFFFD;
+    if (disableUpdateMask != v9)
     {
       v10 = SBLogButtonHintingUI();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -740,7 +740,7 @@ LABEL_11:
 
 LABEL_12:
 
-      [v7 setDisableUpdateMask:v9];
+      [layer setDisableUpdateMask:v9];
     }
   }
 }
@@ -752,12 +752,12 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)_activateButtonAssertionDidInvalidate:(id)a3 forButton:(int64_t)a4
+- (void)_activateButtonAssertionDidInvalidate:(id)invalidate forButton:(int64_t)button
 {
   buttonStates = self->_buttonStates;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
+  invalidateCopy = invalidate;
+  v8 = [v6 numberWithInteger:button];
   v9 = [(NSMutableDictionary *)buttonStates objectForKey:v8];
 
   if (v9)
@@ -770,7 +770,7 @@ LABEL_12:
     v10 = 0;
   }
 
-  if (v10 && v10 == v7)
+  if (v10 && v10 == invalidateCopy)
   {
     v11 = SBLogButtonHintingUI();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -783,12 +783,12 @@ LABEL_12:
   }
 }
 
-- (void)_associateHintViewAssertionDidInvalidate:(id)a3 forView:(id)a4 forButton:(int64_t)a5
+- (void)_associateHintViewAssertionDidInvalidate:(id)invalidate forView:(id)view forButton:(int64_t)button
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  viewCopy = view;
   buttonStates = self->_buttonStates;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:button];
   v10 = [(NSMutableDictionary *)buttonStates objectForKey:v9];
 
   if (v10)
@@ -803,19 +803,19 @@ LABEL_12:
 
   v12 = v11;
   v13 = v12;
-  if (v12 && v12 == v7)
+  if (v12 && v12 == viewCopy)
   {
     v14 = SBLogButtonHintingUI();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218242;
-      v16 = a5;
+      buttonCopy = button;
       v17 = 2112;
-      v18 = v7;
+      v18 = viewCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Hint Droplet: %ld Disassociating Hint View: %@", &v15, 0x16u);
     }
 
-    [v7 removeFromSuperview];
+    [viewCopy removeFromSuperview];
     [(SBCameraHardwareButton *)v10 setAllCameraShutterButtonPIDs:?];
     if (v10)
     {
@@ -826,10 +826,10 @@ LABEL_12:
   }
 }
 
-- (id)setDropletLayoutCallback:(id)a3 forButton:(int64_t)a4
+- (id)setDropletLayoutCallback:(id)callback forButton:(int64_t)button
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  callbackCopy = callback;
   [(NSTimer *)self->_idleTimer invalidate];
   idleTimer = self->_idleTimer;
   self->_idleTimer = 0;
@@ -838,31 +838,31 @@ LABEL_12:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v23 = a4;
+    buttonCopy = button;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Hint Droplet Setting Layout Callback: %ld", buf, 0xCu);
   }
 
-  v9 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:a4];
+  v9 = [(SBHardwareButtonHintDropletViewController *)self _existingOrNewDropletStateForButton:button];
   v11 = v9;
   if (v9)
   {
-    objc_setProperty_nonatomic_copy(v9, v10, v6, 40);
+    objc_setProperty_nonatomic_copy(v9, v10, callbackCopy, 40);
   }
 
   objc_initWeak(buf, self);
   v12 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v15 = MEMORY[0x277D85CD0];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __80__SBHardwareButtonHintDropletViewController_setDropletLayoutCallback_forButton___block_invoke;
   v19[3] = &unk_2783C06F8;
   objc_copyWeak(v21, buf);
-  v16 = v6;
+  v16 = callbackCopy;
   v20 = v16;
-  v21[1] = a4;
-  v17 = [v12 initWithIdentifier:v14 forReason:@"setLayoutCallback" queue:MEMORY[0x277D85CD0] invalidationBlock:v19];
+  v21[1] = button;
+  v17 = [v12 initWithIdentifier:uUIDString forReason:@"setLayoutCallback" queue:MEMORY[0x277D85CD0] invalidationBlock:v19];
 
   OUTLINED_FUNCTION_0_49();
   objc_destroyWeak(v21);
@@ -871,12 +871,12 @@ LABEL_12:
   return v17;
 }
 
-- (void)_dropletLayoutCallbackAssertionDidInvalidate:(id)a3 forCallback:(id)a4 forButton:(int64_t)a5
+- (void)_dropletLayoutCallbackAssertionDidInvalidate:(id)invalidate forCallback:(id)callback forButton:(int64_t)button
 {
   buttonStates = self->_buttonStates;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = [v7 numberWithInteger:a5];
+  callbackCopy = callback;
+  v9 = [v7 numberWithInteger:button];
   v10 = [(NSMutableDictionary *)buttonStates objectForKey:v9];
 
   if (v10)
@@ -889,7 +889,7 @@ LABEL_12:
     v11 = 0;
   }
 
-  if (v11 && v11 == v8)
+  if (v11 && v11 == callbackCopy)
   {
     v12 = SBLogButtonHintingUI();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -907,20 +907,20 @@ LABEL_12:
   }
 }
 
-- (void)_applyButtonState:(id)a3 animated:(BOOL)a4 checkForIdle:(BOOL)a5
+- (void)_applyButtonState:(id)state animated:(BOOL)animated checkForIdle:(BOOL)idle
 {
-  v5 = a5;
-  v6 = a4;
+  idleCopy = idle;
+  animatedCopy = animated;
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  stateCopy = state;
+  v9 = stateCopy;
+  if (stateCopy)
   {
-    v10 = v8[1];
+    v10 = stateCopy[1];
     if (v10 == 10)
     {
-      [(SBHardwareButtonHintDropletViewController *)self _applyStateForExistingButton:3 animated:v6 checkForIdle:0];
-      [(SBHardwareButtonHintDropletViewController *)self _applyStateForExistingButton:4 animated:v6 checkForIdle:0];
+      [(SBHardwareButtonHintDropletViewController *)self _applyStateForExistingButton:3 animated:animatedCopy checkForIdle:0];
+      [(SBHardwareButtonHintDropletViewController *)self _applyStateForExistingButton:4 animated:animatedCopy checkForIdle:0];
     }
   }
 
@@ -929,8 +929,8 @@ LABEL_12:
     v10 = 0;
   }
 
-  v11 = [(_SBHardwareButtonHintDropletState *)v9 stage];
-  v12 = [(SBHardwareButtonHintDropletViewController *)self _configurationForButton:v10 stage:v11];
+  stage = [(_SBHardwareButtonHintDropletState *)v9 stage];
+  v12 = [(SBHardwareButtonHintDropletViewController *)self _configurationForButton:v10 stage:stage];
   if (v9)
   {
     v13 = v9[3];
@@ -949,7 +949,7 @@ LABEL_12:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v26 = NSStringFromSBSHardwareButtonKind();
-      v23 = NSStringFromSBHardwareButtonHintDropletStage(v11);
+      v23 = NSStringFromSBHardwareButtonHintDropletStage(stage);
       v24 = NSStringFromSBHardwareButtonHintDropletKeylineStyle(self->_keylineStyle);
       [v12 debugDescription];
       *buf = 138413314;
@@ -959,23 +959,23 @@ LABEL_12:
       v36 = 2112;
       v37 = v24;
       v38 = 1024;
-      v39 = v6;
+      v39 = animatedCopy;
       v41 = v40 = 2112;
       v25 = v41;
       _os_log_debug_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEBUG, "applying button state for button: %@; stage: %@; keylineStyle: %@; animated:s %{BOOL}u;\nconfiguration: %@", buf, 0x30u);
     }
 
-    [(DRPDropletAnimationCoordinator *)self->_animator applyViewConfiguration:v12 animated:v6 tracking:0 containerView:v15 contextView:self->_dropletContextView];
+    [(DRPDropletAnimationCoordinator *)self->_animator applyViewConfiguration:v12 animated:animatedCopy tracking:0 containerView:v15 contextView:self->_dropletContextView];
   }
 
-  if (v9 && v5 && !v9[7] && !v9[6] && !v9[5])
+  if (v9 && idleCopy && !v9[7] && !v9[6] && !v9[5])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
-    v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_buttonStates objectEnumerator];
+    v18 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v18)
     {
       v19 = v18;
@@ -986,7 +986,7 @@ LABEL_12:
         {
           if (*v28 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v22 = *(*(&v27 + 1) + 8 * i);
@@ -997,7 +997,7 @@ LABEL_12:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v19 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v19)
         {
           continue;

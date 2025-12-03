@@ -1,16 +1,16 @@
 @interface FormatLabelLinkHandler
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (_TtC8NewsFeed22FormatLabelLinkHandler)init;
-- (void)didTap:(id)a3;
+- (void)didTap:(id)tap;
 @end
 
 @implementation FormatLabelLinkHandler
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6CABB78(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_1D6CABB78(tapCopy);
 }
 
 - (_TtC8NewsFeed22FormatLabelLinkHandler)init
@@ -27,11 +27,11 @@
   return [(FormatLabelLinkHandler *)&v6 init];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1D6CABF14(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1D6CABF14(beginCopy);
 
   return self & 1;
 }

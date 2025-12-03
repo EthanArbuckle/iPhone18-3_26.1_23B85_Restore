@@ -1,29 +1,29 @@
 @interface AVHapticPlayerChannel
 - (AVHapticClient)client;
-- (AVHapticPlayerChannel)initWithChannelID:(id)a3 client:(id)a4;
-- (BOOL)clearEvents:(double)a3 error:(id *)a4;
+- (AVHapticPlayerChannel)initWithChannelID:(id)d client:(id)client;
+- (BOOL)clearEvents:(double)events error:(id *)error;
 - (BOOL)invalidated;
-- (BOOL)resetAtTime:(double)a3 error:(id *)a4;
-- (BOOL)scheduleParameterCurve:(unint64_t)a3 curve:(id)a4 atTime:(double)a5 error:(id *)a6;
-- (BOOL)sendEvents:(id)a3 atTime:(double)a4 error:(id *)a5;
-- (BOOL)sendEvents:(id)a3 withImmediateParameters:(id)a4 atTime:(double)a5 error:(id *)a6;
-- (BOOL)setParameter:(unint64_t)a3 value:(float)a4 atTime:(double)a5 error:(id *)a6;
-- (void)setEventBehavior:(unint64_t)a3;
+- (BOOL)resetAtTime:(double)time error:(id *)error;
+- (BOOL)scheduleParameterCurve:(unint64_t)curve curve:(id)a4 atTime:(double)time error:(id *)error;
+- (BOOL)sendEvents:(id)events atTime:(double)time error:(id *)error;
+- (BOOL)sendEvents:(id)events withImmediateParameters:(id)parameters atTime:(double)time error:(id *)error;
+- (BOOL)setParameter:(unint64_t)parameter value:(float)value atTime:(double)time error:(id *)error;
+- (void)setEventBehavior:(unint64_t)behavior;
 @end
 
 @implementation AVHapticPlayerChannel
 
-- (AVHapticPlayerChannel)initWithChannelID:(id)a3 client:(id)a4
+- (AVHapticPlayerChannel)initWithChannelID:(id)d client:(id)client
 {
-  v6 = a4;
-  self->_chanID = [a3 unsignedIntegerValue];
-  objc_storeWeak(&self->_client, v6);
+  clientCopy = client;
+  self->_chanID = [d unsignedIntegerValue];
+  objc_storeWeak(&self->_client, clientCopy);
   self->_behavior = 0;
 
   return self;
 }
 
-- (void)setEventBehavior:(unint64_t)a3
+- (void)setEventBehavior:(unint64_t)behavior
 {
   v26 = *MEMORY[0x277D85DE8];
   if (kAVHCScope)
@@ -44,7 +44,7 @@
   v7 = v5;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v14 = 136316418;
     v15 = "AVHapticPlayer.mm";
     v16 = 1024;
@@ -52,18 +52,18 @@
     v18 = 2080;
     v19 = "[AVHapticPlayerChannel setEventBehavior:]";
     v20 = 2048;
-    v21 = [v8 clientID];
+    clientID = [client clientID];
     v22 = 1024;
-    v23 = [(AVHapticPlayerChannel *)self chanID];
+    chanID = [(AVHapticPlayerChannel *)self chanID];
     v24 = 1024;
-    v25 = a3;
+    behaviorCopy = behavior;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: clientID: 0x%lx channelID: %u behavior: %u", &v14, 0x32u);
   }
 
 LABEL_8:
-  if (self->_behavior != a3)
+  if (self->_behavior != behavior)
   {
-    if (a3 >= 8)
+    if (behavior >= 8)
     {
       if (kAVHCScope)
       {
@@ -89,19 +89,19 @@ LABEL_8:
         v18 = 2080;
         v19 = "[AVHapticPlayerChannel setEventBehavior:]";
         v20 = 1024;
-        LODWORD(v21) = a3;
+        LODWORD(clientID) = behavior;
         _os_log_impl(&dword_21569A000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Illegal event behavior: %u", &v14, 0x22u);
       }
     }
 
     else
     {
-      v9 = [(AVHapticPlayerChannel *)self client];
-      v10 = [v9 setChannelEventBehavior:a3 channel:{-[AVHapticPlayerChannel chanID](self, "chanID")}];
+      client2 = [(AVHapticPlayerChannel *)self client];
+      v10 = [client2 setChannelEventBehavior:behavior channel:{-[AVHapticPlayerChannel chanID](self, "chanID")}];
 
       if (v10)
       {
-        self->_behavior = a3;
+        self->_behavior = behavior;
       }
     }
   }
@@ -110,10 +110,10 @@ LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendEvents:(id)a3 atTime:(double)a4 error:(id *)a5
+- (BOOL)sendEvents:(id)events atTime:(double)time error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  eventsCopy = events;
   if (kAVHCScope)
   {
     v9 = *kAVHCScope;
@@ -132,7 +132,7 @@ LABEL_19:
   v11 = v9;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v27 = 136316162;
     v28 = "AVHapticPlayer.mm";
     v29 = 1024;
@@ -140,15 +140,15 @@ LABEL_19:
     v31 = 2080;
     v32 = "[AVHapticPlayerChannel sendEvents:atTime:error:]";
     v33 = 2048;
-    v34 = [v12 clientID];
+    clientID = [client clientID];
     v35 = 2048;
-    v36 = a4;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: sending event array: clientID: 0x%lx atTime: %.3f", &v27, 0x30u);
   }
 
 LABEL_8:
-  v13 = [(AVHapticPlayerChannel *)self client];
-  v14 = v13 == 0;
+  client2 = [(AVHapticPlayerChannel *)self client];
+  v14 = client2 == 0;
 
   if (v14)
   {
@@ -156,13 +156,13 @@ LABEL_8:
     v23 = "self.client != nil";
     v24 = 92;
 LABEL_17:
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v24, "[AVHapticPlayerChannel sendEvents:atTime:error:]", v23, v22, a5);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v24, "[AVHapticPlayerChannel sendEvents:atTime:error:]", v23, v22, error);
     v21 = 0;
     goto LABEL_18;
   }
 
-  v15 = [(AVHapticPlayerChannel *)self client];
-  v16 = [v15 clientID] == -1;
+  client3 = [(AVHapticPlayerChannel *)self client];
+  v16 = [client3 clientID] == -1;
 
   if (v16)
   {
@@ -172,10 +172,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v17 = [(AVHapticPlayerChannel *)self client];
-  v18 = [v17 running];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  running = [client4 running];
 
-  if ((v18 & 1) == 0)
+  if ((running & 1) == 0)
   {
     v22 = -4805;
     v23 = "self.client.running";
@@ -183,8 +183,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v19 = [(AVHapticPlayerChannel *)self client];
-  v20 = [v19 sendEvents:v8 withImmediateParameters:0 atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") outToken:0 error:{a5, a4}];
+  client5 = [(AVHapticPlayerChannel *)self client];
+  v20 = [client5 sendEvents:eventsCopy withImmediateParameters:0 atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") outToken:0 error:{error, time}];
 
   if ((v20 & 1) == 0)
   {
@@ -201,11 +201,11 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)sendEvents:(id)a3 withImmediateParameters:(id)a4 atTime:(double)a5 error:(id *)a6
+- (BOOL)sendEvents:(id)events withImmediateParameters:(id)parameters atTime:(double)time error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  eventsCopy = events;
+  parametersCopy = parameters;
   if (kAVHCScope)
   {
     v12 = *kAVHCScope;
@@ -224,7 +224,7 @@ LABEL_18:
   v14 = v12;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v30 = 136316162;
     v31 = "AVHapticPlayer.mm";
     v32 = 1024;
@@ -232,15 +232,15 @@ LABEL_18:
     v34 = 2080;
     v35 = "[AVHapticPlayerChannel sendEvents:withImmediateParameters:atTime:error:]";
     v36 = 2048;
-    v37 = [v15 clientID];
+    clientID = [client clientID];
     v38 = 2048;
-    v39 = a5;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: sending event array: clientID: 0x%lx atTime: %.3f", &v30, 0x30u);
   }
 
 LABEL_8:
-  v16 = [(AVHapticPlayerChannel *)self client];
-  v17 = v16 == 0;
+  client2 = [(AVHapticPlayerChannel *)self client];
+  v17 = client2 == 0;
 
   if (v17)
   {
@@ -248,13 +248,13 @@ LABEL_8:
     v26 = "self.client != nil";
     v27 = 104;
 LABEL_17:
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v27, "[AVHapticPlayerChannel sendEvents:withImmediateParameters:atTime:error:]", v26, v25, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v27, "[AVHapticPlayerChannel sendEvents:withImmediateParameters:atTime:error:]", v26, v25, error);
     v24 = 0;
     goto LABEL_18;
   }
 
-  v18 = [(AVHapticPlayerChannel *)self client];
-  v19 = [v18 clientID] == -1;
+  client3 = [(AVHapticPlayerChannel *)self client];
+  v19 = [client3 clientID] == -1;
 
   if (v19)
   {
@@ -264,10 +264,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v20 = [(AVHapticPlayerChannel *)self client];
-  v21 = [v20 running];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  running = [client4 running];
 
-  if ((v21 & 1) == 0)
+  if ((running & 1) == 0)
   {
     v25 = -4805;
     v26 = "self.client.running";
@@ -275,8 +275,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v22 = [(AVHapticPlayerChannel *)self client];
-  v23 = [v22 sendEvents:v10 withImmediateParameters:v11 atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") outToken:0 error:{a6, a5}];
+  client5 = [(AVHapticPlayerChannel *)self client];
+  v23 = [client5 sendEvents:eventsCopy withImmediateParameters:parametersCopy atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") outToken:0 error:{error, time}];
 
   if ((v23 & 1) == 0)
   {
@@ -293,7 +293,7 @@ LABEL_18:
   return v24;
 }
 
-- (BOOL)clearEvents:(double)a3 error:(id *)a4
+- (BOOL)clearEvents:(double)events error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   if (kAVHCScope)
@@ -314,7 +314,7 @@ LABEL_18:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v21 = 136316162;
     v22 = "AVHapticPlayer.mm";
     v23 = 1024;
@@ -322,48 +322,48 @@ LABEL_18:
     v25 = 2080;
     v26 = "[AVHapticPlayerChannel clearEvents:error:]";
     v27 = 2048;
-    v28 = [v10 clientID];
+    clientID = [client clientID];
     v29 = 2048;
-    v30 = a3;
+    eventsCopy = events;
     _os_log_impl(&dword_21569A000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: clearing events: clientID: 0x%lx fromTime: %.3f", &v21, 0x30u);
   }
 
 LABEL_8:
-  v11 = [(AVHapticPlayerChannel *)self client];
-  v12 = v11 == 0;
+  client2 = [(AVHapticPlayerChannel *)self client];
+  v12 = client2 == 0;
 
   if (v12)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 116, "[AVHapticPlayerChannel clearEvents:error:]", "self.client != nil", -4804, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 116, "[AVHapticPlayerChannel clearEvents:error:]", "self.client != nil", -4804, error);
 LABEL_17:
     result = 0;
     goto LABEL_18;
   }
 
-  v13 = [(AVHapticPlayerChannel *)self client];
-  v14 = [v13 clientID] == -1;
+  client3 = [(AVHapticPlayerChannel *)self client];
+  v14 = [client3 clientID] == -1;
 
   if (v14)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 117, "[AVHapticPlayerChannel clearEvents:error:]", "self.client.clientID != kInvalidClientID", -4812, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 117, "[AVHapticPlayerChannel clearEvents:error:]", "self.client.clientID != kInvalidClientID", -4812, error);
     goto LABEL_17;
   }
 
-  v15 = [(AVHapticPlayerChannel *)self client];
-  v16 = [v15 running];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  running = [client4 running];
 
-  if ((v16 & 1) == 0)
+  if ((running & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 118, "[AVHapticPlayerChannel clearEvents:error:]", "self.client.running", -4805, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 118, "[AVHapticPlayerChannel clearEvents:error:]", "self.client.running", -4805, error);
     goto LABEL_17;
   }
 
-  v17 = [(AVHapticPlayerChannel *)self client];
-  v18 = [v17 clearEventsFromTime:-[AVHapticPlayerChannel chanID](self channel:{"chanID"), a3}];
+  client5 = [(AVHapticPlayerChannel *)self client];
+  v18 = [client5 clearEventsFromTime:-[AVHapticPlayerChannel chanID](self channel:{"chanID"), events}];
 
   if ((v18 & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 121, "[AVHapticPlayerChannel clearEvents:error:]", "[self.client clearEventsFromTime:fromTime channel:self.chanID]", -4899, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 121, "[AVHapticPlayerChannel clearEvents:error:]", "[self.client clearEventsFromTime:fromTime channel:self.chanID]", -4899, error);
     goto LABEL_17;
   }
 
@@ -373,7 +373,7 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)setParameter:(unint64_t)a3 value:(float)a4 atTime:(double)a5 error:(id *)a6
+- (BOOL)setParameter:(unint64_t)parameter value:(float)value atTime:(double)time error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   if (kAVHCScope)
@@ -394,7 +394,7 @@ LABEL_18:
   v13 = v11;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v27 = 136316674;
     v28 = "AVHapticPlayer.mm";
     v29 = 1024;
@@ -402,54 +402,54 @@ LABEL_18:
     v31 = 2080;
     v32 = "[AVHapticPlayerChannel setParameter:value:atTime:error:]";
     v33 = 2048;
-    v34 = [v14 clientID];
+    clientID = [client clientID];
     v35 = 1024;
-    v36 = a3;
+    parameterCopy = parameter;
     v37 = 2048;
-    v38 = a4;
+    valueCopy = value;
     v39 = 2048;
-    v40 = a5;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: setting param: clientID: 0x%lx type: %u value: %.2f atTime: %.3f", &v27, 0x40u);
   }
 
 LABEL_8:
-  v15 = [(AVHapticPlayerChannel *)self client];
-  v16 = v15 == 0;
+  client2 = [(AVHapticPlayerChannel *)self client];
+  v16 = client2 == 0;
 
   if (v16)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 128, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client != nil", -4804, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 128, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client != nil", -4804, error);
 LABEL_17:
     result = 0;
     goto LABEL_18;
   }
 
-  v17 = [(AVHapticPlayerChannel *)self client];
-  v18 = [v17 clientID] == -1;
+  client3 = [(AVHapticPlayerChannel *)self client];
+  v18 = [client3 clientID] == -1;
 
   if (v18)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 129, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client.clientID != kInvalidClientID", -4812, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 129, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client.clientID != kInvalidClientID", -4812, error);
     goto LABEL_17;
   }
 
-  v19 = [(AVHapticPlayerChannel *)self client];
-  v20 = [v19 running];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  running = [client4 running];
 
-  if ((v20 & 1) == 0)
+  if ((running & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 130, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client.running", -4805, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 130, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "self.client.running", -4805, error);
     goto LABEL_17;
   }
 
-  v21 = [(AVHapticPlayerChannel *)self client];
-  v22 = [(AVHapticPlayerChannel *)self chanID];
-  *&v23 = a4;
-  v24 = [v21 setParameter:a3 atTime:v22 value:a5 channel:v23];
+  client5 = [(AVHapticPlayerChannel *)self client];
+  chanID = [(AVHapticPlayerChannel *)self chanID];
+  *&v23 = value;
+  v24 = [client5 setParameter:parameter atTime:chanID value:time channel:v23];
 
   if ((v24 & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 133, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "[self.client setParameter:type atTime:time value:value channel:self.chanID]", -4899, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 133, "[AVHapticPlayerChannel setParameter:value:atTime:error:]", "[self.client setParameter:type atTime:time value:value channel:self.chanID]", -4899, error);
     goto LABEL_17;
   }
 
@@ -459,26 +459,26 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)scheduleParameterCurve:(unint64_t)a3 curve:(id)a4 atTime:(double)a5 error:(id *)a6
+- (BOOL)scheduleParameterCurve:(unint64_t)curve curve:(id)a4 atTime:(double)time error:(id *)error
 {
   v10 = a4;
-  v11 = [(AVHapticPlayerChannel *)self client];
+  client = [(AVHapticPlayerChannel *)self client];
 
-  if (!v11)
+  if (!client)
   {
     v19 = -4804;
     v20 = "self.client != nil";
     v21 = 139;
 LABEL_10:
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v21, "[AVHapticPlayerChannel scheduleParameterCurve:curve:atTime:error:]", v20, v19, a6);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", v21, "[AVHapticPlayerChannel scheduleParameterCurve:curve:atTime:error:]", v20, v19, error);
     v18 = 0;
     goto LABEL_11;
   }
 
-  v12 = [(AVHapticPlayerChannel *)self client];
-  v13 = [v12 clientID];
+  client2 = [(AVHapticPlayerChannel *)self client];
+  clientID = [client2 clientID];
 
-  if (v13 == -1)
+  if (clientID == -1)
   {
     v19 = -4812;
     v20 = "self.client.clientID != kInvalidClientID";
@@ -486,10 +486,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v14 = [(AVHapticPlayerChannel *)self client];
-  v15 = [v14 running];
+  client3 = [(AVHapticPlayerChannel *)self client];
+  running = [client3 running];
 
-  if ((v15 & 1) == 0)
+  if ((running & 1) == 0)
   {
     v19 = -4805;
     v20 = "self.client.running";
@@ -497,8 +497,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = [(AVHapticPlayerChannel *)self client];
-  v17 = [v16 scheduleParameterCurve:a3 curve:v10 atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") error:{a6, a5}];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  v17 = [client4 scheduleParameterCurve:curve curve:v10 atTime:-[AVHapticPlayerChannel chanID](self channel:"chanID") error:{error, time}];
 
   if ((v17 & 1) == 0)
   {
@@ -514,7 +514,7 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)resetAtTime:(double)a3 error:(id *)a4
+- (BOOL)resetAtTime:(double)time error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   if (kAVHCScope)
@@ -535,7 +535,7 @@ LABEL_11:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(AVHapticPlayerChannel *)self client];
+    client = [(AVHapticPlayerChannel *)self client];
     v21 = 136316162;
     v22 = "AVHapticPlayer.mm";
     v23 = 1024;
@@ -543,48 +543,48 @@ LABEL_11:
     v25 = 2080;
     v26 = "[AVHapticPlayerChannel resetAtTime:error:]";
     v27 = 2048;
-    v28 = [v10 clientID];
+    clientID = [client clientID];
     v29 = 2048;
-    v30 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s: sending reset event: clientID: 0x%lx time: %.3f", &v21, 0x30u);
   }
 
 LABEL_8:
-  v11 = [(AVHapticPlayerChannel *)self client];
-  v12 = v11 == 0;
+  client2 = [(AVHapticPlayerChannel *)self client];
+  v12 = client2 == 0;
 
   if (v12)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 151, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client != nil", -4804, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 151, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client != nil", -4804, error);
 LABEL_17:
     result = 0;
     goto LABEL_18;
   }
 
-  v13 = [(AVHapticPlayerChannel *)self client];
-  v14 = [v13 clientID] == -1;
+  client3 = [(AVHapticPlayerChannel *)self client];
+  v14 = [client3 clientID] == -1;
 
   if (v14)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 152, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client.clientID != kInvalidClientID", -4812, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 152, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client.clientID != kInvalidClientID", -4812, error);
     goto LABEL_17;
   }
 
-  v15 = [(AVHapticPlayerChannel *)self client];
-  v16 = [v15 running];
+  client4 = [(AVHapticPlayerChannel *)self client];
+  running = [client4 running];
 
-  if ((v16 & 1) == 0)
+  if ((running & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 153, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client.running", -4805, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 153, "[AVHapticPlayerChannel resetAtTime:error:]", "self.client.running", -4805, error);
     goto LABEL_17;
   }
 
-  v17 = [(AVHapticPlayerChannel *)self client];
-  v18 = [v17 resetChannel:-[AVHapticPlayerChannel chanID](self atTime:{"chanID"), a3}];
+  client5 = [(AVHapticPlayerChannel *)self client];
+  v18 = [client5 resetChannel:-[AVHapticPlayerChannel chanID](self atTime:{"chanID"), time}];
 
   if ((v18 & 1) == 0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 154, "[AVHapticPlayerChannel resetAtTime:error:]", "[self.client resetChannel:self.chanID atTime:time]", -4899, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/AVHapticPlayer.mm", 154, "[AVHapticPlayerChannel resetAtTime:error:]", "[self.client resetChannel:self.chanID atTime:time]", -4899, error);
     goto LABEL_17;
   }
 
@@ -596,11 +596,11 @@ LABEL_18:
 
 - (BOOL)invalidated
 {
-  v3 = [(AVHapticPlayerChannel *)self client];
-  if (v3)
+  client = [(AVHapticPlayerChannel *)self client];
+  if (client)
   {
-    v4 = [(AVHapticPlayerChannel *)self client];
-    v5 = [v4 clientID] == -1;
+    client2 = [(AVHapticPlayerChannel *)self client];
+    v5 = [client2 clientID] == -1;
   }
 
   else

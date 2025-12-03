@@ -1,13 +1,13 @@
 @interface IMSeenAsOffGridProcessingPipelineComponent
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMSeenAsOffGridProcessingPipelineComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -18,7 +18,7 @@
     }
   }
 
-  if (([v3 seenAsOffGrid] & 1) == 0)
+  if (([inputCopy seenAsOffGrid] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -33,8 +33,8 @@
     goto LABEL_29;
   }
 
-  v5 = [v3 lastPublisherOfOffGridStatus];
-  v6 = v5 == 0;
+  lastPublisherOfOffGridStatus = [inputCopy lastPublisherOfOffGridStatus];
+  v6 = lastPublisherOfOffGridStatus == 0;
 
   if (v6)
   {
@@ -49,43 +49,43 @@
     }
 
 LABEL_29:
-    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_41;
   }
 
-  v7 = [MEMORY[0x277D18A00] sharedInstance];
-  v8 = [v7 pushToken];
+  mEMORY[0x277D18A00] = [MEMORY[0x277D18A00] sharedInstance];
+  pushToken = [mEMORY[0x277D18A00] pushToken];
 
-  v9 = [v8 __imHexString];
-  v10 = [v3 lastPublisherOfOffGridStatus];
+  __imHexString = [pushToken __imHexString];
+  lastPublisherOfOffGridStatus2 = [inputCopy lastPublisherOfOffGridStatus];
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v9 isEqualToString:v10];
+      v12 = [__imHexString isEqualToString:lastPublisherOfOffGridStatus2];
       v13 = @"NO";
       *v25 = 138412802;
-      *&v25[4] = v8;
+      *&v25[4] = pushToken;
       *&v25[12] = 2112;
       if (v12)
       {
         v13 = @"YES";
       }
 
-      *&v25[14] = v10;
+      *&v25[14] = lastPublisherOfOffGridStatus2;
       v26 = 2112;
       v27 = v13;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "<IMSeenAsOffGridProcessingPipelineComponent> Our token %@, token of last publisher %@, same? %@", v25, 0x20u);
     }
   }
 
-  if ([v9 isEqualToString:{v10, *v25}])
+  if ([__imHexString isEqualToString:{lastPublisherOfOffGridStatus2, *v25}])
   {
     v14 = +[IMDAccountController sharedInstance];
     v15 = [v14 anySessionForServiceName:*MEMORY[0x277D1A628]];
 
-    LODWORD(v14) = [v3 seenAsOffGrid];
+    LODWORD(v14) = [inputCopy seenAsOffGrid];
     v16 = IMOSLoggingEnabled();
     if (v14)
     {
@@ -112,7 +112,7 @@ LABEL_29:
       }
     }
 
-    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   else
@@ -127,7 +127,7 @@ LABEL_29:
       }
     }
 
-    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+    v20 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
 LABEL_41:

@@ -1,7 +1,7 @@
 @interface PKDrawingPaletteStatisticsEventLogger
 - (void)recordHandwritingToolSelected;
-- (void)recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:(double)a3;
-- (void)recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:(double)a3;
+- (void)recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:(double)timestamp;
+- (void)recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:(double)timestamp;
 @end
 
 @implementation PKDrawingPaletteStatisticsEventLogger
@@ -12,23 +12,23 @@
   AnalyticsSendEventLazy();
 }
 
-- (void)recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:(double)a3
+- (void)recordHandwritingToolUsedOverDrawingAttachmentWithTimestamp:(double)timestamp
 {
   [(PKDrawingPaletteStatisticsEventLogger *)self lastHandwritingToolUsedOverDrawingAttachmentTimestamp];
-  if (v5 != a3 && vabdd_f64(v5, a3) >= fabs(a3 * 1.0e-10))
+  if (v5 != timestamp && vabdd_f64(v5, timestamp) >= fabs(timestamp * 1.0e-10))
   {
-    [(PKDrawingPaletteStatisticsEventLogger *)self setLastHandwritingToolUsedOverDrawingAttachmentTimestamp:a3];
+    [(PKDrawingPaletteStatisticsEventLogger *)self setLastHandwritingToolUsedOverDrawingAttachmentTimestamp:timestamp];
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"handwritingtool.usedOverDrawingAttachment"];
     AnalyticsSendEventLazy();
   }
 }
 
-- (void)recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:(double)a3
+- (void)recordInkingToolUsedOverNonDrawingAttachmentWithTimestamp:(double)timestamp
 {
   [(PKDrawingPaletteStatisticsEventLogger *)self lastInkingToolUsedOverNonDrawingAttachmentTimestamp];
-  if (v5 != a3 && vabdd_f64(v5, a3) >= fabs(a3 * 1.0e-10))
+  if (v5 != timestamp && vabdd_f64(v5, timestamp) >= fabs(timestamp * 1.0e-10))
   {
-    [(PKDrawingPaletteStatisticsEventLogger *)self setLastInkingToolUsedOverNonDrawingAttachmentTimestamp:a3];
+    [(PKDrawingPaletteStatisticsEventLogger *)self setLastInkingToolUsedOverNonDrawingAttachmentTimestamp:timestamp];
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.pencilkit.%@", @"inkingtool.usedOverNonDrawingAttachment"];
     AnalyticsSendEventLazy();
   }

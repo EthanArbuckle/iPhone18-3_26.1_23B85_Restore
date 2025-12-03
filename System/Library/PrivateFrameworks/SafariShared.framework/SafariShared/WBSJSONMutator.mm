@@ -1,71 +1,71 @@
 @interface WBSJSONMutator
-- (WBSJSONMutator)initWithSource:(id)a3 protectedFields:(id)a4;
-- (id)_mutatedArrayField:(id)a3 shouldProtectRootObject:(BOOL)a4;
-- (id)_mutatedCollectionField:(id)a3;
-- (id)_mutatedDictionaryField:(id)a3 shouldProtectRootObject:(BOOL)a4;
+- (WBSJSONMutator)initWithSource:(id)source protectedFields:(id)fields;
+- (id)_mutatedArrayField:(id)field shouldProtectRootObject:(BOOL)object;
+- (id)_mutatedCollectionField:(id)field;
+- (id)_mutatedDictionaryField:(id)field shouldProtectRootObject:(BOOL)object;
 - (id)_randomDateGenerator;
 - (id)_randomFieldTypeChanger;
 - (id)_randomIntegerGenerator;
 - (id)_randomNumberGenerator;
 - (id)_randomStringGenerator;
-- (id)_randomValueForField:(id)a3;
-- (id)mutatedJSONProtectingRootObject:(BOOL)a3;
-- (int64_t)_actionToPerformOnFieldOfType:(int64_t)a3;
+- (id)_randomValueForField:(id)field;
+- (id)mutatedJSONProtectingRootObject:(BOOL)object;
+- (int64_t)_actionToPerformOnFieldOfType:(int64_t)type;
 @end
 
 @implementation WBSJSONMutator
 
-- (WBSJSONMutator)initWithSource:(id)a3 protectedFields:(id)a4
+- (WBSJSONMutator)initWithSource:(id)source protectedFields:(id)fields
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  fieldsCopy = fields;
   v13.receiver = self;
   v13.super_class = WBSJSONMutator;
   v9 = [(WBSJSONMutator *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalJSONSource, a3);
+    objc_storeStrong(&v9->_originalJSONSource, source);
     *&v10->_fieldDeletionProbability = xmmword_1BB94FDF0;
     *&v10->_fieldTypeChangeProbability = xmmword_1BB94FE00;
-    objc_storeStrong(&v10->_protectedFields, a4);
+    objc_storeStrong(&v10->_protectedFields, fields);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)mutatedJSONProtectingRootObject:(BOOL)a3
+- (id)mutatedJSONProtectingRootObject:(BOOL)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   originalJSONSource = self->_originalJSONSource;
   if (isKindOfClass)
   {
-    [(WBSJSONMutator *)self _mutatedDictionaryField:originalJSONSource shouldProtectRootObject:v3];
+    [(WBSJSONMutator *)self _mutatedDictionaryField:originalJSONSource shouldProtectRootObject:objectCopy];
   }
 
   else
   {
-    [(WBSJSONMutator *)self _mutatedArrayField:originalJSONSource shouldProtectRootObject:v3];
+    [(WBSJSONMutator *)self _mutatedArrayField:originalJSONSource shouldProtectRootObject:objectCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)_mutatedArrayField:(id)a3 shouldProtectRootObject:(BOOL)a4
+- (id)_mutatedArrayField:(id)field shouldProtectRootObject:(BOOL)object
 {
-  v6 = a3;
-  if (a4 || [(WBSJSONMutator *)self _actionToPerformOnFieldOfType:0])
+  fieldCopy = field;
+  if (object || [(WBSJSONMutator *)self _actionToPerformOnFieldOfType:0])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __61__WBSJSONMutator__mutatedArrayField_shouldProtectRootObject___block_invoke;
     v9[3] = &unk_1E7FC8558;
     v9[4] = self;
-    v7 = [v6 safari_mapAndFilterObjectsUsingBlock:v9];
+    v7 = [fieldCopy safari_mapAndFilterObjectsUsingBlock:v9];
   }
 
   else
@@ -76,17 +76,17 @@
   return v7;
 }
 
-- (id)_mutatedDictionaryField:(id)a3 shouldProtectRootObject:(BOOL)a4
+- (id)_mutatedDictionaryField:(id)field shouldProtectRootObject:(BOOL)object
 {
-  v6 = a3;
-  if (a4 || [(WBSJSONMutator *)self _actionToPerformOnFieldOfType:0])
+  fieldCopy = field;
+  if (object || [(WBSJSONMutator *)self _actionToPerformOnFieldOfType:0])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__WBSJSONMutator__mutatedDictionaryField_shouldProtectRootObject___block_invoke;
     v9[3] = &unk_1E7FC8580;
     v9[4] = self;
-    v7 = [v6 safari_mapAndFilterKeysAndObjectsUsingBlock:v9];
+    v7 = [fieldCopy safari_mapAndFilterKeysAndObjectsUsingBlock:v9];
   }
 
   else
@@ -115,22 +115,22 @@ id __66__WBSJSONMutator__mutatedDictionaryField_shouldProtectRootObject___block_
   return v7;
 }
 
-- (id)_mutatedCollectionField:(id)a3
+- (id)_mutatedCollectionField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WBSJSONMutator *)self _mutatedArrayField:v4 shouldProtectRootObject:0];
+    _randomFieldTypeChanger = [(WBSJSONMutator *)self _mutatedArrayField:fieldCopy shouldProtectRootObject:0];
 LABEL_5:
-    v6 = v5;
+    v6 = _randomFieldTypeChanger;
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WBSJSONMutator *)self _mutatedDictionaryField:v4 shouldProtectRootObject:0];
+    _randomFieldTypeChanger = [(WBSJSONMutator *)self _mutatedDictionaryField:fieldCopy shouldProtectRootObject:0];
     goto LABEL_5;
   }
 
@@ -139,17 +139,17 @@ LABEL_5:
   {
     if (v8 == 2)
     {
-      v5 = [(WBSJSONMutator *)self _randomFieldTypeChanger];
+      _randomFieldTypeChanger = [(WBSJSONMutator *)self _randomFieldTypeChanger];
     }
 
     else if (v8 == 1)
     {
-      v5 = [(WBSJSONMutator *)self _randomValueForField:v4];
+      _randomFieldTypeChanger = [(WBSJSONMutator *)self _randomValueForField:fieldCopy];
     }
 
     else
     {
-      v5 = v4;
+      _randomFieldTypeChanger = fieldCopy;
     }
 
     goto LABEL_5;
@@ -161,10 +161,10 @@ LABEL_6:
   return v6;
 }
 
-- (int64_t)_actionToPerformOnFieldOfType:(int64_t)a3
+- (int64_t)_actionToPerformOnFieldOfType:(int64_t)type
 {
   collectionFieldSkewFactorToDecreaseProbabilityOfInvalidResults = 1.0;
-  if (!a3)
+  if (!type)
   {
     collectionFieldSkewFactorToDecreaseProbabilityOfInvalidResults = self->_collectionFieldSkewFactorToDecreaseProbabilityOfInvalidResults;
   }
@@ -187,33 +187,33 @@ LABEL_6:
   return 3;
 }
 
-- (id)_randomValueForField:(id)a3
+- (id)_randomValueForField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 doubleValue];
+    [fieldCopy doubleValue];
     if (v5 == 1.0 || v5 == 0.0)
     {
       v7 = objc_alloc(MEMORY[0x1E696AD98]);
-      v8 = [v4 intValue];
-      if (v8 - 1 < 0)
+      intValue = [fieldCopy intValue];
+      if (intValue - 1 < 0)
       {
-        v9 = (1 - v8);
+        v9 = (1 - intValue);
       }
 
       else
       {
-        v9 = (v8 - 1);
+        v9 = (intValue - 1);
       }
 
-      v6 = [v7 initWithInt:v9];
+      _randomStringGenerator = [v7 initWithInt:v9];
     }
 
     else
     {
-      if (*[v4 objCType] == 105)
+      if (*[fieldCopy objCType] == 105)
       {
         [(WBSJSONMutator *)self _randomIntegerGenerator];
       }
@@ -222,7 +222,7 @@ LABEL_6:
       {
         [(WBSJSONMutator *)self _randomNumberGenerator];
       }
-      v6 = ;
+      _randomStringGenerator = ;
     }
   }
 
@@ -231,7 +231,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(WBSJSONMutator *)self _randomStringGenerator];
+      _randomStringGenerator = [(WBSJSONMutator *)self _randomStringGenerator];
     }
 
     else
@@ -243,11 +243,11 @@ LABEL_6:
         goto LABEL_18;
       }
 
-      v6 = [(WBSJSONMutator *)self _randomDateGenerator];
+      _randomStringGenerator = [(WBSJSONMutator *)self _randomDateGenerator];
     }
   }
 
-  v10 = v6;
+  v10 = _randomStringGenerator;
 LABEL_18:
 
   return v10;
@@ -258,12 +258,12 @@ LABEL_18:
   v3 = arc4random_uniform(3u);
   if (v3 == 2)
   {
-    v4 = [(WBSJSONMutator *)self _randomStringGenerator];
+    _randomStringGenerator = [(WBSJSONMutator *)self _randomStringGenerator];
   }
 
   else if (v3 == 1)
   {
-    v4 = [(WBSJSONMutator *)self _randomNumberGenerator];
+    _randomStringGenerator = [(WBSJSONMutator *)self _randomNumberGenerator];
   }
 
   else
@@ -277,10 +277,10 @@ LABEL_18:
     {
       [(WBSJSONMutator *)self _randomIntegerGenerator];
     }
-    v4 = ;
+    _randomStringGenerator = ;
   }
 
-  return v4;
+  return _randomStringGenerator;
 }
 
 - (id)_randomIntegerGenerator

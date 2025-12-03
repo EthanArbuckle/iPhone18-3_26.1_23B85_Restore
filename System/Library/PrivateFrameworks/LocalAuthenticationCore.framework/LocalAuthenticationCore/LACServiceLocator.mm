@@ -11,9 +11,9 @@
   v2 = [(LACServiceLocator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     services = v2->_services;
-    v2->_services = v3;
+    v2->_services = strongToWeakObjectsMapTable;
   }
 
   return v2;

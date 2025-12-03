@@ -1,5 +1,5 @@
 @interface PXGRoundedCornerMaskLayout
-- (PXGRoundedCornerMaskLayout)initWithCornerRadius:(double)a3 continuousCorners:(BOOL)a4 maskColor:(id)a5;
+- (PXGRoundedCornerMaskLayout)initWithCornerRadius:(double)radius continuousCorners:(BOOL)corners maskColor:(id)color;
 - (UIEdgeInsets)insets;
 - (void)_invalidateContent;
 - (void)_invalidatePath;
@@ -8,14 +8,14 @@
 - (void)contentSizeDidChange;
 - (void)displayScaleDidChange;
 - (void)referenceSizeDidChange;
-- (void)setContinuousCorners:(BOOL)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setInsets:(UIEdgeInsets)a3;
-- (void)setLeftMaskWidth:(double)a3;
-- (void)setMaskColor:(id)a3;
-- (void)setMaskScale:(double)a3;
-- (void)setRightMaskWidth:(double)a3;
-- (void)setTopLeftPath:(id)a3;
+- (void)setContinuousCorners:(BOOL)corners;
+- (void)setCornerRadius:(double)radius;
+- (void)setInsets:(UIEdgeInsets)insets;
+- (void)setLeftMaskWidth:(double)width;
+- (void)setMaskColor:(id)color;
+- (void)setMaskScale:(double)scale;
+- (void)setRightMaskWidth:(double)width;
+- (void)setTopLeftPath:(id)path;
 - (void)update;
 @end
 
@@ -47,8 +47,8 @@
   [(PXGRoundedCornerMaskLayout *)self maskScale];
   v24 = v9;
   [(PXGLayout *)self displayScale];
-  v10 = [(PXGRoundedCornerMaskLayout *)self topLeftPath];
-  [v10 bounds];
+  topLeftPath = [(PXGRoundedCornerMaskLayout *)self topLeftPath];
+  [topLeftPath bounds];
   v12 = v11;
   v14 = v13;
 
@@ -57,12 +57,12 @@
   v18 = v17;
   [(PXGLayout *)self referenceDepth];
   v20 = -v19;
-  v21 = [(PXGLayout *)self userInterfaceDirection];
+  userInterfaceDirection = [(PXGLayout *)self userInterfaceDirection];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __44__PXGRoundedCornerMaskLayout__updateContent__block_invoke;
   v26[3] = &unk_2782AA2F0;
-  v27 = v21 == 1;
+  v27 = userInterfaceDirection == 1;
   v26[5] = v16;
   v26[6] = v18;
   v26[7] = v4;
@@ -247,9 +247,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGRoundedCornerMaskLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:180 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:180 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -276,11 +276,11 @@ LABEL_5:
   v10 = +[PXGCornerMaskPathLibrary sharedLibrary];
   [(PXGRoundedCornerMaskLayout *)self cornerRadius];
   v4 = v3;
-  v5 = [(PXGRoundedCornerMaskLayout *)self continuousCorners];
+  continuousCorners = [(PXGRoundedCornerMaskLayout *)self continuousCorners];
   [(PXGLayout *)self displayScale];
   v7 = v6;
-  v8 = [(PXGRoundedCornerMaskLayout *)self maskColor];
-  v9 = [v10 pathForCornerRadius:v5 continuousCorners:v8 screenScale:v4 maskColor:v7];
+  maskColor = [(PXGRoundedCornerMaskLayout *)self maskColor];
+  v9 = [v10 pathForCornerRadius:continuousCorners continuousCorners:maskColor screenScale:v4 maskColor:v7];
   [(PXGRoundedCornerMaskLayout *)self setTopLeftPath:v9];
 }
 
@@ -300,9 +300,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGRoundedCornerMaskLayout _invalidatePath]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:172 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:172 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -333,9 +333,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGRoundedCornerMaskLayout update]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -348,9 +348,9 @@ LABEL_5:
       [(PXGRoundedCornerMaskLayout *)self _updatePath];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGRoundedCornerMaskLayout update]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v9 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -366,9 +366,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGRoundedCornerMaskLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:167 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v11 file:@"PXGRoundedCornerMaskLayout.m" lineNumber:167 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -403,24 +403,24 @@ LABEL_5:
   [(PXGLayout *)self setContentSize:?];
 }
 
-- (void)setContinuousCorners:(BOOL)a3
+- (void)setContinuousCorners:(BOOL)corners
 {
-  if (self->_continuousCorners != a3)
+  if (self->_continuousCorners != corners)
   {
-    self->_continuousCorners = a3;
+    self->_continuousCorners = corners;
     ++self->_mediaVersion;
     [(PXGRoundedCornerMaskLayout *)self _invalidatePath];
   }
 }
 
-- (void)setTopLeftPath:(id)a3
+- (void)setTopLeftPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_topLeftPath != v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (self->_topLeftPath != pathCopy)
   {
-    v9 = v4;
-    v6 = [(PXGPath *)v4 isEqual:?];
+    v9 = pathCopy;
+    v6 = [(PXGPath *)pathCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -434,36 +434,36 @@ LABEL_5:
   }
 }
 
-- (void)setRightMaskWidth:(double)a3
+- (void)setRightMaskWidth:(double)width
 {
-  if (self->_rightMaskWidth != a3)
+  if (self->_rightMaskWidth != width)
   {
-    self->_rightMaskWidth = a3;
+    self->_rightMaskWidth = width;
     [(PXGRoundedCornerMaskLayout *)self _invalidateContent];
   }
 }
 
-- (void)setLeftMaskWidth:(double)a3
+- (void)setLeftMaskWidth:(double)width
 {
-  if (self->_leftMaskWidth != a3)
+  if (self->_leftMaskWidth != width)
   {
-    self->_leftMaskWidth = a3;
+    self->_leftMaskWidth = width;
     [(PXGRoundedCornerMaskLayout *)self _invalidateContent];
   }
 }
 
-- (void)setMaskColor:(id)a3
+- (void)setMaskColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_maskColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_maskColor != colorCopy)
   {
-    v8 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_maskColor, a3);
+      objc_storeStrong(&self->_maskColor, color);
       ++self->_mediaVersion;
       [(PXGRoundedCornerMaskLayout *)self _invalidatePath];
       v6 = v8;
@@ -471,21 +471,21 @@ LABEL_5:
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius == a3)
+  if (self->_cornerRadius == radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXGRoundedCornerMaskLayout *)self _invalidatePath];
   }
 }
 
-- (void)setInsets:(UIEdgeInsets)a3
+- (void)setInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_insets = &self->_insets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -498,28 +498,28 @@ LABEL_5:
   }
 }
 
-- (void)setMaskScale:(double)a3
+- (void)setMaskScale:(double)scale
 {
-  if (self->_maskScale != a3)
+  if (self->_maskScale != scale)
   {
-    self->_maskScale = a3;
+    self->_maskScale = scale;
     [(PXGRoundedCornerMaskLayout *)self _invalidateContent];
   }
 }
 
-- (PXGRoundedCornerMaskLayout)initWithCornerRadius:(double)a3 continuousCorners:(BOOL)a4 maskColor:(id)a5
+- (PXGRoundedCornerMaskLayout)initWithCornerRadius:(double)radius continuousCorners:(BOOL)corners maskColor:(id)color
 {
-  v9 = a5;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PXGRoundedCornerMaskLayout;
   v10 = [(PXGLayout *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_cornerRadius = a3;
-    objc_storeStrong(&v10->_maskColor, a5);
+    v10->_cornerRadius = radius;
+    objc_storeStrong(&v10->_maskColor, color);
     v11->_maskScale = 1.0;
-    v11->_continuousCorners = a4;
+    v11->_continuousCorners = corners;
     v12 = *(MEMORY[0x277D3CF90] + 16);
     *&v11->_insets.top = *MEMORY[0x277D3CF90];
     *&v11->_insets.bottom = v12;

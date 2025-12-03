@@ -3,53 +3,53 @@
 - (BOOL)_isSiriEndpointActive;
 - (BOOL)_shouldAllowCellSelection;
 - (CGSize)_calculatePreferredContentSize;
-- (HUMobileTimerObjectTableViewController)initWithMediaProfileContainer:(id)a3;
+- (HUMobileTimerObjectTableViewController)initWithMediaProfileContainer:(id)container;
 - (HUPresentationDelegate)presentationDelegate;
 - (HUQuickControlContentHelper)quickControlContentHelper;
 - (id)_baseMobileTimerObjectsFuture;
 - (id)_canManagerControlAccessory;
 - (id)_checkAndFetchTimerObjects;
-- (id)_findTimerObjectForID:(id)a3;
-- (id)_newCellForHeaderTitle:(id)a3;
-- (id)_newCellForMTTimerObjectUUID:(id)a3;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)_findTimerObjectForID:(id)d;
+- (id)_newCellForHeaderTitle:(id)title;
+- (id)_newCellForMTTimerObjectUUID:(id)d;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (unint64_t)numberOfMobileTimerObjects;
-- (void)_accessoryActivationTimerFinished:(id)a3;
+- (void)_accessoryActivationTimerFinished:(id)finished;
 - (void)_checkAccessFetchDataAndReloadTable;
 - (void)_checkAndAddTimerObject;
-- (void)_configureNoItemsViewAnimated:(BOOL)a3;
-- (void)_quickDeleteMobileTimerObjectFromTable:(id)a3;
+- (void)_configureNoItemsViewAnimated:(BOOL)animated;
+- (void)_quickDeleteMobileTimerObjectFromTable:(id)table;
 - (void)_reloadTableViewWithExistingData;
-- (void)_removeTimerObjectAtIndexPath:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_removeTimerObjectAtIndexPath:(id)path;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)dealloc;
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4;
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings;
 - (void)presentAddMobileTimerObjectViewControllerOnMainThread;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUMobileTimerObjectTableViewController
 
-- (HUMobileTimerObjectTableViewController)initWithMediaProfileContainer:(id)a3
+- (HUMobileTimerObjectTableViewController)initWithMediaProfileContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v17.receiver = self;
   v17.super_class = HUMobileTimerObjectTableViewController;
   v6 = [(HUMobileTimerObjectTableViewController *)&v17 initWithStyle:2];
   if (v6)
   {
-    v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v8 = [v7 accessorySettingsDataSource];
-    [v8 addObserver:v6];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v6];
 
-    objc_storeStrong(&v6->_mediaProfileContainer, a3);
+    objc_storeStrong(&v6->_mediaProfileContainer, container);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mobileTimerObjects = v6->_mobileTimerObjects;
     v6->_mobileTimerObjects = v9;
 
-    v11 = [v5 accessories];
-    v12 = [v11 na_firstObjectPassingTest:&__block_literal_global_123];
+    accessories = [containerCopy accessories];
+    v12 = [accessories na_firstObjectPassingTest:&__block_literal_global_123];
     accessory = v6->_accessory;
     v6->_accessory = v12;
 
@@ -80,8 +80,8 @@ uint64_t __72__HUMobileTimerObjectTableViewController_initWithMediaProfileContai
 
 - (unint64_t)numberOfMobileTimerObjects
 {
-  v2 = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
-  v3 = [v2 count];
+  mobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self mobileTimerObjects];
+  v3 = [mobileTimerObjects count];
 
   return v3;
 }
@@ -91,67 +91,67 @@ uint64_t __72__HUMobileTimerObjectTableViewController_initWithMediaProfileContai
   v32.receiver = self;
   v32.super_class = HUMobileTimerObjectTableViewController;
   [(HUMobileTimerObjectTableViewController *)&v32 viewDidLoad];
-  v3 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v4 _setSectionContentInsetFollowsLayoutMargins:0];
+  tableView2 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView2 _setSectionContentInsetFollowsLayoutMargins:0];
 
-  v5 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v5 setAllowsSelectionDuringEditing:1];
+  tableView3 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView3 setAllowsSelectionDuringEditing:1];
 
-  v6 = [(HUMobileTimerObjectTableViewController *)self _shouldAllowCellSelection];
-  v7 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v7 setAllowsSelection:v6];
+  _shouldAllowCellSelection = [(HUMobileTimerObjectTableViewController *)self _shouldAllowCellSelection];
+  tableView4 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView4 setAllowsSelection:_shouldAllowCellSelection];
 
-  v8 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v8 _setMarginWidth:1.0];
+  tableView5 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView5 _setMarginWidth:1.0];
 
-  v9 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v9 setLayoutMarginsFollowReadableWidth:1];
+  tableView6 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView6 setLayoutMarginsFollowReadableWidth:1];
 
-  v10 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v10 setEstimatedRowHeight:88.0];
+  tableView7 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView7 setEstimatedRowHeight:88.0];
 
   v11 = *MEMORY[0x277D76F30];
-  v12 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v12 setRowHeight:v11];
+  tableView8 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView8 setRowHeight:v11];
 
-  v13 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v13 setSectionHeaderHeight:0.0];
+  tableView9 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView9 setSectionHeaderHeight:0.0];
 
-  v14 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v14 setSectionFooterHeight:10.0];
+  tableView10 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView10 setSectionFooterHeight:10.0];
 
-  v15 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v15 setSeparatorStyle:0];
+  tableView11 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView11 setSeparatorStyle:0];
 
-  v16 = [MEMORY[0x277D75348] clearColor];
-  v17 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v17 setBackgroundColor:v16];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView12 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView12 setBackgroundColor:clearColor];
 
-  v18 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v18 _setTopPadding:0.0];
+  tableView13 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView13 _setTopPadding:0.0];
 
-  v19 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  [v19 _setBottomPadding:0.0];
+  tableView14 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  [tableView14 _setBottomPadding:0.0];
 
-  v20 = [(HUMobileTimerObjectTableViewController *)self view];
-  [v20 setClipsToBounds:1];
+  view = [(HUMobileTimerObjectTableViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v21 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  v22 = [v21 layer];
-  [v22 setCornerRadius:8.0];
+  tableView15 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  layer = [tableView15 layer];
+  [layer setCornerRadius:8.0];
 
   objc_initWeak(&location, self);
   v23 = objc_alloc(MEMORY[0x277D75B60]);
-  v24 = [(HUMobileTimerObjectTableViewController *)self tableView];
+  tableView16 = [(HUMobileTimerObjectTableViewController *)self tableView];
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke;
   v29 = &unk_277DBD920;
   objc_copyWeak(&v30, &location);
-  v25 = [v23 initWithTableView:v24 cellProvider:&v26];
+  v25 = [v23 initWithTableView:tableView16 cellProvider:&v26];
   [(HUMobileTimerObjectTableViewController *)self setTableViewDataSource:v25, v26, v27, v28, v29];
 
   objc_destroyWeak(&v30);
@@ -179,17 +179,17 @@ id __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke(uint64
   return v10;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = HUMobileTimerObjectTableViewController;
-  [(HUMobileTimerObjectTableViewController *)&v6 viewWillAppear:a3];
+  [(HUMobileTimerObjectTableViewController *)&v6 viewWillAppear:appear];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy2 = self;
     v9 = 2080;
     v10 = "[HUMobileTimerObjectTableViewController viewWillAppear:]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%@)%s: Starting initial load of table view with no MTObjects", buf, 0x16u);
@@ -200,7 +200,7 @@ id __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke(uint64
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy2 = self;
     v9 = 2080;
     v10 = "[HUMobileTimerObjectTableViewController viewWillAppear:]";
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%@)%s: beginning full check, fetch & reload sequence", buf, 0x16u);
@@ -211,8 +211,8 @@ id __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke(uint64
 
 - (void)dealloc
 {
-  v3 = [(HUMobileTimerObjectTableViewController *)self accessoryActivationTimer];
-  [v3 invalidate];
+  accessoryActivationTimer = [(HUMobileTimerObjectTableViewController *)self accessoryActivationTimer];
+  [accessoryActivationTimer invalidate];
 
   [(HUMobileTimerObjectTableViewController *)self setAccessoryActivationTimer:0];
   v4.receiver = self;
@@ -223,26 +223,26 @@ id __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke(uint64
 - (void)_checkAccessFetchDataAndReloadTable
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
-  if (v3)
+  checkAccessAndFetchDataFuture = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
+  if (checkAccessAndFetchDataFuture)
   {
-    v4 = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
-    v5 = [v4 isFinished];
+    checkAccessAndFetchDataFuture2 = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
+    isFinished = [checkAccessAndFetchDataFuture2 isFinished];
 
-    if ((v5 & 1) == 0)
+    if ((isFinished & 1) == 0)
     {
       v6 = HFLogForCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2080;
         v16 = "[HUMobileTimerObjectTableViewController _checkAccessFetchDataAndReloadTable]";
         _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "(%@)%s: Called with existing check+fetch future - cancelling existing future", buf, 0x16u);
       }
 
-      v7 = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
-      [v7 cancel];
+      checkAccessAndFetchDataFuture3 = [(HUMobileTimerObjectTableViewController *)self checkAccessAndFetchDataFuture];
+      [checkAccessAndFetchDataFuture3 cancel];
     }
   }
 
@@ -250,20 +250,20 @@ id __53__HUMobileTimerObjectTableViewController_viewDidLoad__block_invoke(uint64
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2080;
     v16 = "[HUMobileTimerObjectTableViewController _checkAccessFetchDataAndReloadTable]";
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "(%@)%s: Kicking off check+fetch future - will reload if successful", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(HUMobileTimerObjectTableViewController *)self _checkAndFetchTimerObjects];
+  _checkAndFetchTimerObjects = [(HUMobileTimerObjectTableViewController *)self _checkAndFetchTimerObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__HUMobileTimerObjectTableViewController__checkAccessFetchDataAndReloadTable__block_invoke;
   v11[3] = &unk_277DBD948;
   objc_copyWeak(&v12, buf);
-  v10 = [v9 flatMap:v11];
+  v10 = [_checkAndFetchTimerObjects flatMap:v11];
   [(HUMobileTimerObjectTableViewController *)self setCheckAccessAndFetchDataFuture:v10];
 
   objc_destroyWeak(&v12);
@@ -293,13 +293,13 @@ id __77__HUMobileTimerObjectTableViewController__checkAccessFetchDataAndReloadTa
 - (id)_checkAndFetchTimerObjects
 {
   objc_initWeak(&location, self);
-  v3 = [(HUMobileTimerObjectTableViewController *)self _canManagerControlAccessory];
+  _canManagerControlAccessory = [(HUMobileTimerObjectTableViewController *)self _canManagerControlAccessory];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__HUMobileTimerObjectTableViewController__checkAndFetchTimerObjects__block_invoke;
   v8[3] = &unk_277DB9238;
   objc_copyWeak(&v9, &location);
-  v4 = [v3 flatMap:v8];
+  v4 = [_canManagerControlAccessory flatMap:v8];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HUMobileTimerObjectTableViewController__checkAndFetchTimerObjects__block_invoke_2_33;
@@ -501,13 +501,13 @@ id __68__HUMobileTimerObjectTableViewController__checkAndFetchTimerObjects__bloc
 - (void)_reloadTableViewWithExistingData
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __74__HUMobileTimerObjectTableViewController__reloadTableViewWithExistingData__block_invoke;
   v3[3] = &unk_277DB8770;
   objc_copyWeak(&v4, &location);
-  [v2 performBlock:v3];
+  [mainThreadScheduler performBlock:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -686,27 +686,27 @@ uint64_t __74__HUMobileTimerObjectTableViewController__reloadTableViewWithExisti
 
 - (CGSize)_calculatePreferredContentSize
 {
-  v3 = [(HUMobileTimerObjectTableViewController *)self numberOfMobileTimerObjects];
-  v4 = [(HUMobileTimerObjectTableViewController *)self tableView];
-  v5 = v4;
-  if (v3)
+  numberOfMobileTimerObjects = [(HUMobileTimerObjectTableViewController *)self numberOfMobileTimerObjects];
+  tableView = [(HUMobileTimerObjectTableViewController *)self tableView];
+  v5 = tableView;
+  if (numberOfMobileTimerObjects)
   {
-    [v4 contentSize];
+    [tableView contentSize];
     v7 = v6;
     v9 = v8;
     v10 = *MEMORY[0x277CBF3A8];
     v11 = *(MEMORY[0x277CBF3A8] + 8);
 
-    v12 = [(HUMobileTimerObjectTableViewController *)self tableView];
-    v5 = v12;
+    tableView2 = [(HUMobileTimerObjectTableViewController *)self tableView];
+    v5 = tableView2;
     if (v7 == v10 && v9 == v11)
     {
-      [v12 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
+      [tableView2 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C80], *(MEMORY[0x277D76C80] + 8)}];
     }
 
     else
     {
-      [v12 contentSize];
+      [tableView2 contentSize];
     }
 
     v17 = v14;
@@ -715,7 +715,7 @@ uint64_t __74__HUMobileTimerObjectTableViewController__reloadTableViewWithExisti
 
   else
   {
-    [v4 bounds];
+    [tableView bounds];
     v17 = v16;
     *&v18 = 140.0;
   }
@@ -727,19 +727,19 @@ uint64_t __74__HUMobileTimerObjectTableViewController__reloadTableViewWithExisti
   return result;
 }
 
-- (void)_quickDeleteMobileTimerObjectFromTable:(id)a3
+- (void)_quickDeleteMobileTimerObjectFromTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__HUMobileTimerObjectTableViewController__quickDeleteMobileTimerObjectFromTable___block_invoke;
   v7[3] = &unk_277DBA860;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = tableCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [mainThreadScheduler performBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -760,16 +760,16 @@ void __81__HUMobileTimerObjectTableViewController__quickDeleteMobileTimerObjectF
   [v6 applySnapshot:v4 animatingDifferences:1];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUMobileTimerObjectTableViewController *)self tableViewDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  tableViewDataSource = [(HUMobileTimerObjectTableViewController *)self tableViewDataSource];
+  v9 = [tableViewDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v10 = [(HUMobileTimerObjectTableViewController *)self headerUUID];
-  v11 = [v9 hmf_isEqualToUUID:v10];
+  headerUUID = [(HUMobileTimerObjectTableViewController *)self headerUUID];
+  v11 = [v9 hmf_isEqualToUUID:headerUUID];
 
   if (v11)
   {
@@ -786,7 +786,7 @@ void __81__HUMobileTimerObjectTableViewController__quickDeleteMobileTimerObjectF
     v23 = __103__HUMobileTimerObjectTableViewController_tableView_trailingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
     v24 = &unk_277DBD9F8;
     objc_copyWeak(&v26, &location);
-    v15 = v7;
+    v15 = pathCopy;
     v25 = v15;
     v16 = [v13 contextualActionWithStyle:1 title:v14 handler:&v21];
 
@@ -794,7 +794,7 @@ void __81__HUMobileTimerObjectTableViewController__quickDeleteMobileTimerObjectF
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = self;
+      selfCopy = self;
       v31 = 2112;
       v32 = v15;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@: User swiped for trailing actions on indexPath: %@", buf, 0x16u);
@@ -820,60 +820,60 @@ void __103__HUMobileTimerObjectTableViewController_tableView_trailingSwipeAction
   v5[2](v5, 1);
 }
 
-- (void)_configureNoItemsViewAnimated:(BOOL)a3
+- (void)_configureNoItemsViewAnimated:(BOOL)animated
 {
-  v5 = [(HUMobileTimerObjectTableViewController *)self accessoryAccessState];
-  v6 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+  accessoryAccessState = [(HUMobileTimerObjectTableViewController *)self accessoryAccessState];
+  noItemsView = [(HUMobileTimerObjectTableViewController *)self noItemsView];
 
-  if (v6)
+  if (noItemsView)
   {
-    v7 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-    [v7 removeFromSuperview];
+    noItemsView2 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+    [noItemsView2 removeFromSuperview];
 
     [(HUMobileTimerObjectTableViewController *)self setNoItemsView:0];
   }
 
-  if (v5 != 1 && [(HUMobileTimerObjectTableViewController *)self isViewLoaded])
+  if (accessoryAccessState != 1 && [(HUMobileTimerObjectTableViewController *)self isViewLoaded])
   {
     v8 = objc_alloc_init(HUMobileTimerContentUnavailableView);
     [(HUMobileTimerObjectTableViewController *)self setNoItemsView:v8];
 
     if ([(HUMobileTimerObjectTableViewController *)self accessoryAccessState]== 2)
     {
-      v9 = [(HUMobileTimerObjectTableViewController *)self unavailableTitle];
-      v10 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-      [v10 setTitle:v9];
+      unavailableTitle = [(HUMobileTimerObjectTableViewController *)self unavailableTitle];
+      noItemsView3 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+      [noItemsView3 setTitle:unavailableTitle];
 
-      v11 = [(HUMobileTimerObjectTableViewController *)self unavailableText];
-      v12 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-      [v12 setMessage:v11];
+      unavailableText = [(HUMobileTimerObjectTableViewController *)self unavailableText];
+      noItemsView4 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+      [noItemsView4 setMessage:unavailableText];
     }
 
     else
     {
-      v11 = [(HUMobileTimerObjectTableViewController *)self loadingItemsTitle];
-      v12 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-      [v12 setTitle:v11];
+      unavailableText = [(HUMobileTimerObjectTableViewController *)self loadingItemsTitle];
+      noItemsView4 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+      [noItemsView4 setTitle:unavailableText];
     }
 
-    v13 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-    [v13 setVibrantOptions:0];
+    noItemsView5 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+    [noItemsView5 setVibrantOptions:0];
 
-    v14 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-    [v14 setUserInteractionEnabled:0];
+    noItemsView6 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+    [noItemsView6 setUserInteractionEnabled:0];
 
-    v15 = [(HUMobileTimerObjectTableViewController *)self tableView];
-    [v15 bounds];
+    tableView = [(HUMobileTimerObjectTableViewController *)self tableView];
+    [tableView bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-    [v24 setFrame:{v17, v19, v21, v23}];
+    noItemsView7 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+    [noItemsView7 setFrame:{v17, v19, v21, v23}];
 
-    v25 = [(HUMobileTimerObjectTableViewController *)self tableView];
-    v26 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
-    [v25 addSubview:v26];
+    tableView2 = [(HUMobileTimerObjectTableViewController *)self tableView];
+    noItemsView8 = [(HUMobileTimerObjectTableViewController *)self noItemsView];
+    [tableView2 addSubview:noItemsView8];
   }
 
   v27 = 0.2;
@@ -881,13 +881,13 @@ void __103__HUMobileTimerObjectTableViewController_tableView_trailingSwipeAction
   v28[0] = MEMORY[0x277D85DD0];
   v28[2] = __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated___block_invoke;
   v28[3] = &unk_277DB7EE0;
-  if (v5 == 1 || !a3)
+  if (accessoryAccessState == 1 || !animated)
   {
     v27 = 0.0;
   }
 
   v28[4] = self;
-  v29 = v5 == 1;
+  v29 = accessoryAccessState == 1;
   [MEMORY[0x277D75D18] animateWithDuration:v28 animations:v27];
 }
 
@@ -907,14 +907,14 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
   [v2 setAlpha:v1];
 }
 
-- (id)_newCellForHeaderTitle:(id)a3
+- (id)_newCellForHeaderTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = objc_alloc_init(MEMORY[0x277D75B48]);
-  v6 = [MEMORY[0x277D756E0] cellConfiguration];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
   if (![(HUMobileTimerObjectTableViewController *)self itemShouldDisplaySpinner])
   {
-    [v6 setText:v4];
+    [cellConfiguration setText:titleCopy];
   }
 
   if ([MEMORY[0x277D14CE8] shouldUseProxHandOffMaterials])
@@ -927,59 +927,59 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
     [MEMORY[0x277D75348] hf_keyColor];
   }
   v7 = ;
-  v8 = [v6 textProperties];
-  [v8 setColor:v7];
+  textProperties = [cellConfiguration textProperties];
+  [textProperties setColor:v7];
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:cellConfiguration];
   if ([(HUMobileTimerObjectTableViewController *)self itemShouldDisplaySpinner])
   {
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [v5 contentView];
-    [v10 addSubview:v9];
+    contentView = [v5 contentView];
+    [contentView addSubview:v9];
 
-    v11 = [v9 centerXAnchor];
-    v12 = [v5 contentView];
-    v13 = [v12 centerXAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    centerXAnchor = [v9 centerXAnchor];
+    contentView2 = [v5 contentView];
+    centerXAnchor2 = [contentView2 centerXAnchor];
+    v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v14 setActive:1];
 
-    v15 = [v9 centerYAnchor];
-    v16 = [v5 contentView];
-    v17 = [v16 centerYAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    centerYAnchor = [v9 centerYAnchor];
+    contentView3 = [v5 contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v18 setActive:1];
 
     [v9 startAnimating];
   }
 
-  v19 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
-  [v19 setBackgroundColorTransformer:&__block_literal_global_63];
-  [v19 setCornerRadius:8.0];
+  listGroupedCellConfiguration = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
+  [listGroupedCellConfiguration setBackgroundColorTransformer:&__block_literal_global_63];
+  [listGroupedCellConfiguration setCornerRadius:8.0];
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
-    v20 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
-    [v19 setCustomView:v20];
+    controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+    [listGroupedCellConfiguration setCustomView:controlCenterTertiaryMaterial];
   }
 
-  [v5 setBackgroundConfiguration:v19];
+  [v5 setBackgroundConfiguration:listGroupedCellConfiguration];
 
   return v5;
 }
 
 - (BOOL)_shouldAllowCellSelection
 {
-  v2 = [MEMORY[0x277D14670] sharedInstance];
-  if ([v2 hostProcess] == 100)
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  if ([mEMORY[0x277D14670] hostProcess] == 100)
   {
   }
 
   else
   {
-    v3 = [MEMORY[0x277D14670] sharedInstance];
-    v4 = [v3 hostProcess];
+    mEMORY[0x277D14670]2 = [MEMORY[0x277D14670] sharedInstance];
+    hostProcess = [mEMORY[0x277D14670]2 hostProcess];
 
-    if (v4 != 3)
+    if (hostProcess != 3)
     {
       return 1;
     }
@@ -990,9 +990,9 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
   return [v5 isDeviceUnlocked];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  [(HUMobileTimerObjectTableViewController *)self setItemShouldDisplaySpinner:a3];
+  [(HUMobileTimerObjectTableViewController *)self setItemShouldDisplaySpinner:spinner];
 
   [(HUMobileTimerObjectTableViewController *)self setRedrawSpinnerCell:1];
 }
@@ -1000,27 +1000,27 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
 - (BOOL)_activateAccessoryForMobileTimerCreation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HUMobileTimerObjectTableViewController *)self accessory];
-  v4 = [v3 hf_siriEndpointProfile];
+  accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
+  hf_siriEndpointProfile = [accessory hf_siriEndpointProfile];
 
-  if (v4)
+  if (hf_siriEndpointProfile)
   {
-    v5 = [(HUMobileTimerObjectTableViewController *)self accessory];
-    v6 = [v5 hf_needsOnboarding];
+    accessory2 = [(HUMobileTimerObjectTableViewController *)self accessory];
+    hf_needsOnboarding = [accessory2 hf_needsOnboarding];
 
-    if (v6)
+    if (hf_needsOnboarding)
     {
       [(HUMobileTimerObjectTableViewController *)self _showSpinner:1];
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(HUMobileTimerObjectTableViewController *)self accessory];
+        accessory3 = [(HUMobileTimerObjectTableViewController *)self accessory];
         *buf = 138412802;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2080;
         v18 = "[HUMobileTimerObjectTableViewController _activateAccessoryForMobileTimerCreation]";
         v19 = 2112;
-        v20 = v8;
+        v20 = accessory3;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(%@)%s: Siri endpoint accessory %@ needs onboarding: kicking off Implicit Onboarding", buf, 0x20u);
       }
 
@@ -1031,27 +1031,27 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
       v13[2] = __82__HUMobileTimerObjectTableViewController__activateAccessoryForMobileTimerCreation__block_invoke;
       v13[3] = &unk_277DBDA40;
       objc_copyWeak(&v14, buf);
-      [v4 applyOnboardingSelections:v9 completionHandler:v13];
+      [hf_siriEndpointProfile applyOnboardingSelections:v9 completionHandler:v13];
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
-      LOBYTE(v10) = 0;
+      LOBYTE(_isSiriEndpointActive) = 0;
     }
 
     else
     {
-      v10 = [(HUMobileTimerObjectTableViewController *)self _isSiriEndpointActive];
+      _isSiriEndpointActive = [(HUMobileTimerObjectTableViewController *)self _isSiriEndpointActive];
       v9 = HFLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(HUMobileTimerObjectTableViewController *)self accessory];
+        accessory4 = [(HUMobileTimerObjectTableViewController *)self accessory];
         *buf = 138413058;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2080;
         v18 = "[HUMobileTimerObjectTableViewController _activateAccessoryForMobileTimerCreation]";
         v19 = 2112;
-        v20 = v11;
+        v20 = accessory4;
         v21 = 1024;
-        v22 = v10;
+        v22 = _isSiriEndpointActive;
         _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(%@)%s: Siri endpoint accessory %@ is onboarded & active = %{BOOL}d", buf, 0x26u);
       }
     }
@@ -1059,10 +1059,10 @@ void __72__HUMobileTimerObjectTableViewController__configureNoItemsViewAnimated_
 
   else
   {
-    LOBYTE(v10) = 1;
+    LOBYTE(_isSiriEndpointActive) = 1;
   }
 
-  return v10;
+  return _isSiriEndpointActive;
 }
 
 void __82__HUMobileTimerObjectTableViewController__activateAccessoryForMobileTimerCreation__block_invoke(uint64_t a1, void *a2)
@@ -1146,31 +1146,31 @@ void __82__HUMobileTimerObjectTableViewController__activateAccessoryForMobileTim
 - (BOOL)_isSiriEndpointActive
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HUMobileTimerObjectTableViewController *)self accessory];
-  v4 = [v3 hf_siriEndpointProfile];
-  v5 = [v4 sessionState];
+  accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
+  hf_siriEndpointProfile = [accessory hf_siriEndpointProfile];
+  sessionState = [hf_siriEndpointProfile sessionState];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUMobileTimerObjectTableViewController *)self accessory];
+    accessory2 = [(HUMobileTimerObjectTableViewController *)self accessory];
     v9 = 138413314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[HUMobileTimerObjectTableViewController _isSiriEndpointActive]";
     v13 = 2112;
-    v14 = v7;
+    v14 = accessory2;
     v15 = 1024;
-    v16 = v5 == 1;
+    v16 = sessionState == 1;
     v17 = 2048;
-    v18 = v5;
+    v18 = sessionState;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "(%@)%s: Siri endpoint accessory %@ isActive = %{BOOL}d state: %ld", &v9, 0x30u);
   }
 
-  return v5 == 1;
+  return sessionState == 1;
 }
 
-- (void)_accessoryActivationTimerFinished:(id)a3
+- (void)_accessoryActivationTimerFinished:(id)finished
 {
   v15 = *MEMORY[0x277D85DE8];
   if (![(HUMobileTimerObjectTableViewController *)self createNewMTObjectPendingSidekickActivation])
@@ -1179,7 +1179,7 @@ void __82__HUMobileTimerObjectTableViewController__activateAccessoryForMobileTim
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2080;
       v12 = "[HUMobileTimerObjectTableViewController _accessoryActivationTimerFinished:]";
       _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "(%@)%s: We shouldn't get here", &v9, 0x16u);
@@ -1190,20 +1190,20 @@ void __82__HUMobileTimerObjectTableViewController__activateAccessoryForMobileTim
 
   [(HUMobileTimerObjectTableViewController *)self _showSpinner:0];
   [(HUMobileTimerObjectTableViewController *)self _reloadTableViewWithExistingData];
-  v4 = [(HUMobileTimerObjectTableViewController *)self _isSiriEndpointActive];
+  _isSiriEndpointActive = [(HUMobileTimerObjectTableViewController *)self _isSiriEndpointActive];
   v5 = HFLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (!v4)
+  if (!_isSiriEndpointActive)
   {
     if (v6)
     {
-      v8 = [(HUMobileTimerObjectTableViewController *)self accessory];
+      accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
       v9 = 138412802;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2080;
       v12 = "[HUMobileTimerObjectTableViewController _accessoryActivationTimerFinished:]";
       v13 = 2112;
-      v14 = v8;
+      v14 = accessory;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%@)%s: Siri endpoint accessory %@ activation timer fired & is NOT activated - refreshing view to display unavailable text", &v9, 0x20u);
     }
 
@@ -1214,13 +1214,13 @@ LABEL_10:
 
   if (v6)
   {
-    v7 = [(HUMobileTimerObjectTableViewController *)self accessory];
+    accessory2 = [(HUMobileTimerObjectTableViewController *)self accessory];
     v9 = 138412802;
-    v10 = self;
+    selfCopy3 = self;
     v11 = 2080;
     v12 = "[HUMobileTimerObjectTableViewController _accessoryActivationTimerFinished:]";
     v13 = 2112;
-    v14 = v7;
+    v14 = accessory2;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%@)%s: Siri endpoint accessory %@ activation timer fired & is activated - presenting add view controller...", &v9, 0x20u);
   }
 
@@ -1230,15 +1230,15 @@ LABEL_10:
 - (void)_checkAndAddTimerObject
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(HUMobileTimerObjectTableViewController *)self _activateAccessoryForMobileTimerCreation];
+  _activateAccessoryForMobileTimerCreation = [(HUMobileTimerObjectTableViewController *)self _activateAccessoryForMobileTimerCreation];
   v4 = HFLogForCategory();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_activateAccessoryForMobileTimerCreation)
   {
     if (v5)
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 2080;
       v9 = "[HUMobileTimerObjectTableViewController _checkAndAddTimerObject]";
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%@)%s: accessory active, kicking off New Mobile Timer object creation", &v6, 0x16u);
@@ -1252,7 +1252,7 @@ LABEL_10:
     if (v5)
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy2 = self;
       v8 = 2080;
       v9 = "[HUMobileTimerObjectTableViewController _checkAndAddTimerObject]";
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%@)%s: accessory NOT active, kicking off reload", &v6, 0x16u);
@@ -1262,64 +1262,64 @@ LABEL_10:
   }
 }
 
-- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)a3 settings:(id)a4
+- (void)didReceiveSettingsUpdatesForAccessoryWithIdentifier:(id)identifier settings:(id)settings
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   if (![(HUMobileTimerObjectTableViewController *)self createNewMTObjectPendingSidekickActivation])
   {
-    v9 = HFLogForCategory();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    uniqueIdentifier = HFLogForCategory();
+    if (!os_log_type_enabled(uniqueIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_10;
     }
 
-    v13 = [(HUMobileTimerObjectTableViewController *)self accessory];
+    accessory = [(HUMobileTimerObjectTableViewController *)self accessory];
     v15 = 138413058;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2080;
     v18 = "[HUMobileTimerObjectTableViewController didReceiveSettingsUpdatesForAccessoryWithIdentifier:settings:]";
     v19 = 2112;
-    v20 = v13;
+    v20 = accessory;
     v21 = 2112;
-    v22 = v7;
-    _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "(%@)%s: ignoring for Accessory %@ because there are no pending attempts to create a MTObject (settings = %@)", &v15, 0x2Au);
+    v22 = settingsCopy;
+    _os_log_impl(&dword_20CEB6000, uniqueIdentifier, OS_LOG_TYPE_DEFAULT, "(%@)%s: ignoring for Accessory %@ because there are no pending attempts to create a MTObject (settings = %@)", &v15, 0x2Au);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v8 = [(HUMobileTimerObjectTableViewController *)self accessory];
-  v9 = [v8 uniqueIdentifier];
+  accessory2 = [(HUMobileTimerObjectTableViewController *)self accessory];
+  uniqueIdentifier = [accessory2 uniqueIdentifier];
 
-  if (![v6 isEqual:v9])
+  if (![identifierCopy isEqual:uniqueIdentifier])
   {
     goto LABEL_10;
   }
 
   if (![(HUMobileTimerObjectTableViewController *)self _isSiriEndpointActive])
   {
-    v13 = HFLogForCategory();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    accessory = HFLogForCategory();
+    if (os_log_type_enabled(accessory, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(HUMobileTimerObjectTableViewController *)self accessory];
+      accessory3 = [(HUMobileTimerObjectTableViewController *)self accessory];
       v15 = 138413058;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2080;
       v18 = "[HUMobileTimerObjectTableViewController didReceiveSettingsUpdatesForAccessoryWithIdentifier:settings:]";
       v19 = 2112;
-      v20 = v14;
+      v20 = accessory3;
       v21 = 2112;
-      v22 = v7;
-      _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "(%@)%s: Accessory %@ is still NOT activated (settings = %@)", &v15, 0x2Au);
+      v22 = settingsCopy;
+      _os_log_impl(&dword_20CEB6000, accessory, OS_LOG_TYPE_DEFAULT, "(%@)%s: Accessory %@ is still NOT activated (settings = %@)", &v15, 0x2Au);
     }
 
     goto LABEL_9;
   }
 
-  v10 = [(HUMobileTimerObjectTableViewController *)self accessoryActivationTimer];
-  [v10 invalidate];
+  accessoryActivationTimer = [(HUMobileTimerObjectTableViewController *)self accessoryActivationTimer];
+  [accessoryActivationTimer invalidate];
 
   [(HUMobileTimerObjectTableViewController *)self setAccessoryActivationTimer:0];
   [(HUMobileTimerObjectTableViewController *)self setCreateNewMTObjectPendingSidekickActivation:0];
@@ -1328,15 +1328,15 @@ LABEL_9:
   v11 = HFLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(HUMobileTimerObjectTableViewController *)self accessory];
+    accessory4 = [(HUMobileTimerObjectTableViewController *)self accessory];
     v15 = 138413058;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2080;
     v18 = "[HUMobileTimerObjectTableViewController didReceiveSettingsUpdatesForAccessoryWithIdentifier:settings:]";
     v19 = 2112;
-    v20 = v12;
+    v20 = accessory4;
     v21 = 2112;
-    v22 = v7;
+    v22 = settingsCopy;
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "(%@)%s: Accessory %@ is now ACTIVATED (settings = %@)", &v15, 0x2Au);
   }
 
@@ -1346,24 +1346,24 @@ LABEL_10:
 
 - (id)_baseMobileTimerObjectsFuture
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:759 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _baseMobileTimerObjectsFuture]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:759 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _baseMobileTimerObjectsFuture]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)_newCellForMTTimerObjectUUID:(id)a3
+- (id)_newCellForMTTimerObjectUUID:(id)d
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:765 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _newCellForMTTimerObjectUUID:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:765 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _newCellForMTTimerObjectUUID:]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)_canManagerControlAccessory
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:771 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _canManagerControlAccessory]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:771 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _canManagerControlAccessory]", objc_opt_class()}];
 
   v5 = MEMORY[0x277D2C900];
   v6 = MEMORY[0x277CBEC28];
@@ -1371,24 +1371,24 @@ LABEL_10:
   return [v5 futureWithResult:v6];
 }
 
-- (id)_findTimerObjectForID:(id)a3
+- (id)_findTimerObjectForID:(id)d
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:777 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _findTimerObjectForID:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:777 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _findTimerObjectForID:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)_removeTimerObjectAtIndexPath:(id)a3
+- (void)_removeTimerObjectAtIndexPath:(id)path
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:783 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _removeTimerObjectAtIndexPath:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:783 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController _removeTimerObjectAtIndexPath:]", objc_opt_class()}];
 }
 
 - (void)presentAddMobileTimerObjectViewControllerOnMainThread
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:788 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController presentAddMobileTimerObjectViewControllerOnMainThread]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMobileTimerObjectTableViewController.m" lineNumber:788 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUMobileTimerObjectTableViewController presentAddMobileTimerObjectViewControllerOnMainThread]", objc_opt_class()}];
 }
 
 - (HUPresentationDelegate)presentationDelegate

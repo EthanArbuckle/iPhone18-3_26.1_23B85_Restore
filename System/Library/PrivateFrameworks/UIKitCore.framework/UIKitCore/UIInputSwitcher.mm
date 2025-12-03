@@ -1,18 +1,18 @@
 @interface UIInputSwitcher
 + (id)sharedInstance;
 - (BOOL)handleEmojiPicker;
-- (BOOL)handleGlobeKeyEvent:(id)a3 switcherIsVisible:(BOOL)a4;
-- (BOOL)handleModifiersChangedEvent:(id)a3;
-- (BOOL)handleNavigationEvent:(id)a3;
-- (BOOL)handleSwitchCommand:(BOOL)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
-- (BOOL)handleSwitchingKeyEvent:(id)a3;
+- (BOOL)handleGlobeKeyEvent:(id)event switcherIsVisible:(BOOL)visible;
+- (BOOL)handleModifiersChangedEvent:(id)event;
+- (BOOL)handleNavigationEvent:(id)event;
+- (BOOL)handleSwitchCommand:(BOOL)command withHUD:(BOOL)d withDelay:(BOOL)delay;
+- (BOOL)handleSwitchingKeyEvent:(id)event;
 - (BOOL)isVisibleOrHiding;
 - (BOOL)needsFullHUD;
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5 fromCapsLock:(BOOL)a6;
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay;
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay fromCapsLock:(BOOL)lock;
 - (UIInputSwitcher)init;
 - (id)availableInputModes;
-- (id)inputModeIdentifierWithNextFlag:(BOOL)a3;
+- (id)inputModeIdentifierWithNextFlag:(BOOL)flag;
 - (id)nextInputMode;
 - (id)previousInputMode;
 - (id)selectedInputMode;
@@ -22,15 +22,15 @@
 - (void)clearHideSwitcherTimer;
 - (void)clearShowSwitcherTimer;
 - (void)dealloc;
-- (void)dismissSwitcher:(BOOL)a3;
-- (void)dismissSwitcherWithDelay:(double)a3;
+- (void)dismissSwitcher:(BOOL)switcher;
+- (void)dismissSwitcherWithDelay:(double)delay;
 - (void)hideSwitcher;
 - (void)hideSwitcherIfNeeded;
 - (void)reloadInputModes;
-- (void)setSelectedInputMode:(id)a3;
-- (void)setShowingCapsLockSwitcher:(BOOL)a3;
-- (void)showSwitcherShouldAutoHide:(BOOL)a3;
-- (void)showsLanguageIndicator:(id)a3;
+- (void)setSelectedInputMode:(id)mode;
+- (void)setShowingCapsLockSwitcher:(BOOL)switcher;
+- (void)showSwitcherShouldAutoHide:(BOOL)hide;
+- (void)showsLanguageIndicator:(id)indicator;
 - (void)touchHideSwitcherTimer;
 - (void)touchShowSwitcherTimer;
 - (void)updateHardwareLayout;
@@ -93,8 +93,8 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
 
   [(UIInputSwitcher *)self setLoadedIdentifier:0];
   [(UIInputSwitcher *)self clearShowSwitcherTimer];
@@ -108,21 +108,21 @@ LABEL_7:
 {
   [(UIInputSwitcher *)self cancelHideSwitcherTimer];
   [(UIInputSwitcher *)self cancelShowSwitcherTimer];
-  v11 = [(UIInputSwitcher *)self selectedInputMode];
-  if (!v11)
+  selectedInputMode = [(UIInputSwitcher *)self selectedInputMode];
+  if (!selectedInputMode)
   {
     goto LABEL_9;
   }
 
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 inputViews];
-  if ([v4 isCustomInputView])
+  inputViews = [v3 inputViews];
+  if ([inputViews isCustomInputView])
   {
     v5 = +[UIKeyboardInputModeController sharedInputModeController];
-    v6 = [v5 inputModeWithIdentifier:v11];
-    v7 = [v6 hardwareLayout];
+    v6 = [v5 inputModeWithIdentifier:selectedInputMode];
+    hardwareLayout = [v6 hardwareLayout];
 
-    if (!v7)
+    if (!hardwareLayout)
     {
       goto LABEL_9;
     }
@@ -133,12 +133,12 @@ LABEL_7:
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  [v8 setInputMode:v11 userInitiated:1];
+  [v8 setInputMode:selectedInputMode userInitiated:1];
 
   v9 = +[UIKeyboardImpl activeInstance];
-  v10 = [v9 isInHardwareKeyboardMode];
+  isInHardwareKeyboardMode = [v9 isInHardwareKeyboardMode];
 
-  if (v10 && ([v11 containsString:@"emoji"] & 1) != 0)
+  if (isInHardwareKeyboardMode && ([selectedInputMode containsString:@"emoji"] & 1) != 0)
   {
     [(UIInputSwitcher *)self dismissSwitcher:1];
     goto LABEL_10;
@@ -152,8 +152,8 @@ LABEL_10:
 
 - (void)cleanUpAfterHide
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   self->m_state = 0;
 
@@ -204,22 +204,22 @@ LABEL_10:
   self->m_hideSwitcherDelay = 0;
 }
 
-- (void)showSwitcherShouldAutoHide:(BOOL)a3
+- (void)showSwitcherShouldAutoHide:(BOOL)hide
 {
-  v3 = a3;
-  v5 = [(UIInputSwitcher *)self loadedIdentifier];
-  [(UIInputSwitcher *)self setSelectedInputMode:v5];
+  hideCopy = hide;
+  loadedIdentifier = [(UIInputSwitcher *)self loadedIdentifier];
+  [(UIInputSwitcher *)self setSelectedInputMode:loadedIdentifier];
 
   self->m_state = 2;
-  if (v3)
+  if (hideCopy)
   {
     [(UIInputSwitcher *)self touchHideSwitcherTimer];
   }
 
   if ((UIKeyboardAutomaticIsOnScreen() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel_handleRotate_ name:@"UIWindowWillRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleRotate_ name:@"UIWindowWillRotateNotification" object:0];
   }
 }
 
@@ -228,9 +228,9 @@ LABEL_10:
   m_showSwitcherDelay = self->m_showSwitcherDelay;
   if (m_showSwitcherDelay)
   {
-    v4 = [(UIInputSwitcher *)self isVisibleOrHiding];
+    isVisibleOrHiding = [(UIInputSwitcher *)self isVisibleOrHiding];
     v5 = 0.1;
-    if (v4)
+    if (isVisibleOrHiding)
     {
       v5 = 0.0;
     }
@@ -262,12 +262,12 @@ LABEL_10:
   self->m_showSwitcherDelay = 0;
 }
 
-- (id)inputModeIdentifierWithNextFlag:(BOOL)a3
+- (id)inputModeIdentifierWithNextFlag:(BOOL)flag
 {
-  if (!a3)
+  if (!flag)
   {
-    v12 = [(UIInputSwitcher *)self previousInputMode];
-    if (v12)
+    previousInputMode = [(UIInputSwitcher *)self previousInputMode];
+    if (previousInputMode)
     {
       goto LABEL_10;
     }
@@ -277,31 +277,31 @@ LABEL_10:
 
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 textInputTraits];
-  v7 = [v4 nextInputModeToUseForTraits:v6];
+  textInputTraits = [v5 textInputTraits];
+  v7 = [v4 nextInputModeToUseForTraits:textInputTraits];
 
-  v8 = [v7 identifier];
-  if (v8 && (-[UIInputSwitcher availableInputModes](self, "availableInputModes"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:v8], v9, v10))
+  identifier = [v7 identifier];
+  if (identifier && (-[UIInputSwitcher availableInputModes](self, "availableInputModes"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 containsObject:identifier], v9, v10))
   {
-    v11 = v8;
+    nextInputMode = identifier;
   }
 
   else
   {
-    v11 = [(UIInputSwitcher *)self nextInputMode];
+    nextInputMode = [(UIInputSwitcher *)self nextInputMode];
   }
 
-  v12 = v11;
+  previousInputMode = nextInputMode;
 
-  if (!v12)
+  if (!previousInputMode)
   {
 LABEL_9:
-    v12 = UIKeyboardGetCurrentInputMode();
+    previousInputMode = UIKeyboardGetCurrentInputMode();
   }
 
 LABEL_10:
 
-  return v12;
+  return previousInputMode;
 }
 
 - (void)hideSwitcherIfNeeded
@@ -312,58 +312,58 @@ LABEL_10:
   }
 }
 
-- (BOOL)handleSwitchCommand:(BOOL)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)handleSwitchCommand:(BOOL)command withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  delayCopy = delay;
+  dCopy = d;
+  commandCopy = command;
   [(UIInputSwitcher *)self reloadInputModes];
-  v9 = [(UIInputSwitcher *)self availableInputModes];
-  v10 = [v9 count];
+  availableInputModes = [(UIInputSwitcher *)self availableInputModes];
+  v10 = [availableInputModes count];
 
   if (!v10)
   {
     return 0;
   }
 
-  v11 = [(UIInputSwitcher *)self inputModeIdentifierWithNextFlag:!v7];
-  if (v6)
+  v11 = [(UIInputSwitcher *)self inputModeIdentifierWithNextFlag:!commandCopy];
+  if (dCopy)
   {
     [(UIInputSwitcher *)self touchHideSwitcherTimer];
   }
 
-  v12 = [(UIInputSwitcher *)self switchMode:v11 withHUD:v6 withDelay:v5];
+  v12 = [(UIInputSwitcher *)self switchMode:v11 withHUD:dCopy withDelay:delayCopy];
 
   return v12;
 }
 
-- (void)showsLanguageIndicator:(id)a3
+- (void)showsLanguageIndicator:(id)indicator
 {
-  v6 = a3;
-  v4 = [(UIInputSwitcher *)self availableInputModes];
-  v5 = [v4 count];
+  indicatorCopy = indicator;
+  availableInputModes = [(UIInputSwitcher *)self availableInputModes];
+  v5 = [availableInputModes count];
 
   if (v5 >= 2)
   {
     [(UIInputSwitcher *)self setShowsLanguageIndicatorOnly:1];
-    [(UIInputSwitcher *)self switchMode:v6 withHUD:1 withDelay:1];
+    [(UIInputSwitcher *)self switchMode:indicatorCopy withHUD:1 withDelay:1];
     [(UIInputSwitcher *)self setShowsLanguageIndicatorOnly:0];
   }
 }
 
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5 fromCapsLock:(BOOL)a6
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay fromCapsLock:(BOOL)lock
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  [(UIInputSwitcher *)self setUsingCapsLockLanguageSwitch:v6];
-  if (v6)
+  lockCopy = lock;
+  delayCopy = delay;
+  dCopy = d;
+  modeCopy = mode;
+  [(UIInputSwitcher *)self setUsingCapsLockLanguageSwitch:lockCopy];
+  if (lockCopy)
   {
     [(UIInputSwitcher *)self handleEmojiPicker];
   }
 
-  v11 = [(UIInputSwitcher *)self switchMode:v10 withHUD:v8 withDelay:v7];
+  v11 = [(UIInputSwitcher *)self switchMode:modeCopy withHUD:dCopy withDelay:delayCopy];
 
   return v11;
 }
@@ -371,26 +371,26 @@ LABEL_10:
 - (void)updateHardwareLayout
 {
   v3 = +[UIKeyboardInputModeController sharedInputModeController];
-  v4 = [(UIInputSwitcher *)self loadedIdentifier];
-  v8 = [v3 inputModeWithIdentifier:v4];
+  loadedIdentifier = [(UIInputSwitcher *)self loadedIdentifier];
+  v8 = [v3 inputModeWithIdentifier:loadedIdentifier];
 
-  v5 = [v8 automaticHardwareLayout];
+  automaticHardwareLayout = [v8 automaticHardwareLayout];
 
-  if (v5)
+  if (automaticHardwareLayout)
   {
     v6 = UIApp;
-    v7 = [v8 automaticHardwareLayout];
-    [v6 setHardwareKeyboardLayoutName:v7];
+    automaticHardwareLayout2 = [v8 automaticHardwareLayout];
+    [v6 setHardwareKeyboardLayoutName:automaticHardwareLayout2];
   }
 }
 
-- (BOOL)handleSwitchingKeyEvent:(id)a3
+- (BOOL)handleSwitchingKeyEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIInputSwitcher *)self isVisibleOrHiding];
-  if ([v4 _isGlobeKey])
+  eventCopy = event;
+  isVisibleOrHiding = [(UIInputSwitcher *)self isVisibleOrHiding];
+  if ([eventCopy _isGlobeKey])
   {
-    v6 = [v4 _isKeyDown] ^ 1;
+    v6 = [eventCopy _isKeyDown] ^ 1;
   }
 
   else
@@ -398,11 +398,11 @@ LABEL_10:
     v6 = 0;
   }
 
-  v7 = [(UIInputSwitcher *)self usingCapsLockLanguageSwitch]&& v5;
-  if ([v4 _modifierFlags] == 0x40000)
+  v7 = [(UIInputSwitcher *)self usingCapsLockLanguageSwitch]&& isVisibleOrHiding;
+  if ([eventCopy _modifierFlags] == 0x40000)
   {
-    v8 = [v4 _unmodifiedInput];
-    v9 = [v8 isEqualToString:@" "];
+    _unmodifiedInput = [eventCopy _unmodifiedInput];
+    v9 = [_unmodifiedInput isEqualToString:@" "];
 
     if (v9)
     {
@@ -427,7 +427,7 @@ LABEL_11:
       }
 
 LABEL_19:
-      v12 = 0;
+      useHardwareGlobeKeyAsEmojiKey = 0;
       goto LABEL_20;
     }
   }
@@ -445,69 +445,69 @@ LABEL_19:
 
 LABEL_12:
   [(UIInputSwitcher *)self reloadInputModes];
-  v10 = [(UIInputSwitcher *)self availableInputModes];
-  v11 = [v10 count];
+  availableInputModes = [(UIInputSwitcher *)self availableInputModes];
+  v11 = [availableInputModes count];
 
   if ([(UIInputSwitcher *)self handleEmojiPicker])
   {
-    v12 = 1;
+    useHardwareGlobeKeyAsEmojiKey = 1;
     goto LABEL_25;
   }
 
   v13 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v14 = [v13 preferencesActions];
-  v12 = [v14 useHardwareGlobeKeyAsEmojiKey];
+  preferencesActions = [v13 preferencesActions];
+  useHardwareGlobeKeyAsEmojiKey = [preferencesActions useHardwareGlobeKeyAsEmojiKey];
 
-  if (v11 >= 2 && (v12 & 1) == 0)
+  if (v11 >= 2 && (useHardwareGlobeKeyAsEmojiKey & 1) == 0)
   {
-    v12 = [(UIInputSwitcher *)self handleGlobeKeyEvent:v4 switcherIsVisible:v5];
+    useHardwareGlobeKeyAsEmojiKey = [(UIInputSwitcher *)self handleGlobeKeyEvent:eventCopy switcherIsVisible:isVisibleOrHiding];
   }
 
 LABEL_20:
-  if ((v12 & 1) == 0 && v5)
+  if ((useHardwareGlobeKeyAsEmojiKey & 1) == 0 && isVisibleOrHiding)
   {
-    if ([v4 _isKeyDown])
+    if ([eventCopy _isKeyDown])
     {
-      v12 = [(UIInputSwitcher *)self handleNavigationEvent:v4];
+      useHardwareGlobeKeyAsEmojiKey = [(UIInputSwitcher *)self handleNavigationEvent:eventCopy];
     }
 
     else
     {
-      v12 = 0;
+      useHardwareGlobeKeyAsEmojiKey = 0;
     }
   }
 
 LABEL_25:
 
-  return v12;
+  return useHardwareGlobeKeyAsEmojiKey;
 }
 
-- (BOOL)handleGlobeKeyEvent:(id)a3 switcherIsVisible:(BOOL)a4
+- (BOOL)handleGlobeKeyEvent:(id)event switcherIsVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIInputSwitcher *)self needsFullHUD];
+  visibleCopy = visible;
+  eventCopy = event;
+  needsFullHUD = [(UIInputSwitcher *)self needsFullHUD];
   Current = CFAbsoluteTimeGetCurrent();
-  v9 = -[UIInputSwitcher inputModeIdentifierWithNextFlag:](self, "inputModeIdentifierWithNextFlag:", [v6 _modifierFlags] != 0x20000);
+  v9 = -[UIInputSwitcher inputModeIdentifierWithNextFlag:](self, "inputModeIdentifierWithNextFlag:", [eventCopy _modifierFlags] != 0x20000);
   if ([(UIInputSwitcher *)self dismissingEmojiPopover])
   {
     v10 = +[UIKeyboardInputModeController sharedInputModeController];
-    v11 = [v10 currentLinguisticInputMode];
-    v12 = [v11 identifier];
+    currentLinguisticInputMode = [v10 currentLinguisticInputMode];
+    identifier = [currentLinguisticInputMode identifier];
 
     [(UIInputSwitcher *)self setDismissingEmojiPopover:0];
-    v9 = v12;
+    v9 = identifier;
   }
 
-  [(UIInputSwitcher *)self switchMode:v9 withHUD:v7 withDelay:0];
-  if (v4)
+  [(UIInputSwitcher *)self switchMode:v9 withHUD:needsFullHUD withDelay:0];
+  if (visibleCopy)
   {
     [(UIInputSwitcher *)self cancelShowSwitcherTimer];
   }
 
   [(UIInputSwitcher *)self touchHideSwitcherTimer];
   self->m_lastGlobeKeyUpTime = Current;
-  if ([v6 _modifierFlags] != 0x20000)
+  if ([eventCopy _modifierFlags] != 0x20000)
   {
     [(UIInputSwitcher *)self updateHardwareLayout];
   }
@@ -515,16 +515,16 @@ LABEL_25:
   return 1;
 }
 
-- (BOOL)handleNavigationEvent:(id)a3
+- (BOOL)handleNavigationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 _unmodifiedInput];
-  [v5 length];
+  eventCopy = event;
+  _unmodifiedInput = [eventCopy _unmodifiedInput];
+  [_unmodifiedInput length];
 
   if (+[UIKeyboard isLanguageIndicatorEnabled])
   {
-    v6 = [(UIInputSwitcher *)self availableInputModes];
-    v7 = [v6 count] == 1;
+    availableInputModes = [(UIInputSwitcher *)self availableInputModes];
+    v7 = [availableInputModes count] == 1;
   }
 
   else
@@ -545,15 +545,15 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  v10 = [v4 _unmodifiedInput];
-  v11 = [v10 isEqualToString:@"UIKeyInputDownArrow"];
+  _unmodifiedInput2 = [eventCopy _unmodifiedInput];
+  v11 = [_unmodifiedInput2 isEqualToString:@"UIKeyInputDownArrow"];
   if (v11)
   {
     goto LABEL_7;
   }
 
-  v12 = [v4 _unmodifiedInput];
-  v13 = [v12 isEqualToString:@"UIKeyInputPageDown"];
+  _unmodifiedInput3 = [eventCopy _unmodifiedInput];
+  v13 = [_unmodifiedInput3 isEqualToString:@"UIKeyInputPageDown"];
 
   if (v13)
   {
@@ -562,36 +562,36 @@ LABEL_25:
 
   else
   {
-    v10 = [v4 _unmodifiedInput];
-    if ([v10 isEqualToString:@"UIKeyInputUpArrow"])
+    _unmodifiedInput2 = [eventCopy _unmodifiedInput];
+    if ([_unmodifiedInput2 isEqualToString:@"UIKeyInputUpArrow"])
     {
 LABEL_7:
 
       goto LABEL_10;
     }
 
-    v17 = [v4 _unmodifiedInput];
-    v18 = [v17 isEqualToString:@"UIKeyInputPageUp"];
+    _unmodifiedInput4 = [eventCopy _unmodifiedInput];
+    v18 = [_unmodifiedInput4 isEqualToString:@"UIKeyInputPageUp"];
 
     if ((v18 & 1) == 0)
     {
-      v19 = [v4 _unmodifiedInput];
-      if ([v19 isEqualToString:@"\r"])
+      _unmodifiedInput5 = [eventCopy _unmodifiedInput];
+      if ([_unmodifiedInput5 isEqualToString:@"\r"])
       {
       }
 
       else
       {
-        v20 = [v4 _unmodifiedInput];
-        if (([v20 isEqualToString:@" "] & 1) == 0)
+        _unmodifiedInput6 = [eventCopy _unmodifiedInput];
+        if (([_unmodifiedInput6 isEqualToString:@" "] & 1) == 0)
         {
 
           goto LABEL_22;
         }
 
-        v21 = [v4 _modifierFlags];
+        _modifierFlags = [eventCopy _modifierFlags];
 
-        if ((v21 & 0x40000) != 0)
+        if ((_modifierFlags & 0x40000) != 0)
         {
           goto LABEL_22;
         }
@@ -627,9 +627,9 @@ LABEL_23:
 - (BOOL)handleEmojiPicker
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 isEmojiPopoverVisibleOrDismissing];
+  isEmojiPopoverVisibleOrDismissing = [v3 isEmojiPopoverVisibleOrDismissing];
 
-  if (!v4)
+  if (!isEmojiPopoverVisibleOrDismissing)
   {
     if (![(UIInputSwitcher *)self usingCapsLockLanguageSwitch]&& ![(UIInputSwitcher *)self needsFullHUD])
     {
@@ -679,22 +679,22 @@ uint64_t __36__UIInputSwitcher_handleEmojiPicker__block_invoke(uint64_t a1)
 
 - (BOOL)needsFullHUD
 {
-  v3 = [(UIInputSwitcher *)self availableInputModes];
-  if ([v3 count] >= 2)
+  availableInputModes = [(UIInputSwitcher *)self availableInputModes];
+  if ([availableInputModes count] >= 2)
   {
     v4 = +[UIKeyboardImpl activeInstance];
-    v5 = [v4 canPresentEmojiPopover];
-    if (v5 & 1) != 0 || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v2 = objc_claimAutoreleasedReturnValue(), ([v2 isEmojiPopoverVisibleOrDismissing]))
+    canPresentEmojiPopover = [v4 canPresentEmojiPopover];
+    if (canPresentEmojiPopover & 1) != 0 || (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v2 = objc_claimAutoreleasedReturnValue(), ([v2 isEmojiPopoverVisibleOrDismissing]))
     {
       v6 = +[UIKeyboardPreferencesController sharedPreferencesController];
-      v7 = [v6 preferencesActions];
-      v8 = [v7 useHardwareGlobeKeyAsEmojiKey];
+      preferencesActions = [v6 preferencesActions];
+      useHardwareGlobeKeyAsEmojiKey = [preferencesActions useHardwareGlobeKeyAsEmojiKey];
 
-      if ((v5 & 1) == 0)
+      if ((canPresentEmojiPopover & 1) == 0)
       {
       }
 
-      if (v8)
+      if (useHardwareGlobeKeyAsEmojiKey)
       {
         goto LABEL_7;
       }
@@ -715,15 +715,15 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)handleModifiersChangedEvent:(id)a3
+- (BOOL)handleModifiersChangedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 _gsModifierFlags];
-  v6 = [v4 _inputFlags];
+  eventCopy = event;
+  _gsModifierFlags = [eventCopy _gsModifierFlags];
+  _inputFlags = [eventCopy _inputFlags];
 
-  if ((v6 & 0x20) != 0)
+  if ((_inputFlags & 0x20) != 0)
   {
-    if ((v5 & 0x220000) != 0 || handleModifiersChangedEvent__lastMods & 0x220000 | v5 & 0x900000)
+    if ((_gsModifierFlags & 0x220000) != 0 || handleModifiersChangedEvent__lastMods & 0x220000 | _gsModifierFlags & 0x900000)
     {
       goto LABEL_10;
     }
@@ -732,16 +732,16 @@ LABEL_10:
     if (m_state == 1)
     {
       [(UIInputSwitcher *)self cancelShowSwitcherTimer];
-      v8 = [(UIInputSwitcher *)self loadedIdentifier];
+      loadedIdentifier = [(UIInputSwitcher *)self loadedIdentifier];
 
-      if (v8)
+      if (loadedIdentifier)
       {
         v9 = +[UIKeyboardImpl activeInstance];
-        v10 = [(UIInputSwitcher *)self loadedIdentifier];
-        [v9 setInputMode:v10 userInitiated:1];
+        loadedIdentifier2 = [(UIInputSwitcher *)self loadedIdentifier];
+        [v9 setInputMode:loadedIdentifier2 userInitiated:1];
 
-        v11 = [(UIInputSwitcher *)self loadedIdentifier];
-        [(UIInputSwitcher *)self setSelectedInputMode:v11];
+        loadedIdentifier3 = [(UIInputSwitcher *)self loadedIdentifier];
+        [(UIInputSwitcher *)self setSelectedInputMode:loadedIdentifier3];
 
         [(UIInputSwitcher *)self dismissSwitcherWithDelay:1.5];
       }
@@ -752,8 +752,8 @@ LABEL_10:
       if (m_state != 2)
       {
 LABEL_10:
-        handleModifiersChangedEvent__lastMods = v5;
-        return (v6 >> 5) & 1;
+        handleModifiersChangedEvent__lastMods = _gsModifierFlags;
+        return (_inputFlags >> 5) & 1;
       }
 
       [(UIInputSwitcher *)self hideSwitcher];
@@ -763,85 +763,85 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  return (v6 >> 5) & 1;
+  return (_inputFlags >> 5) & 1;
 }
 
 - (void)reloadInputModes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:600 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:600 description:@"Subclass must implement"];
 }
 
 - (id)availableInputModes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:604 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:604 description:@"Subclass must implement"];
 
   return MEMORY[0x1E695E0F0];
 }
 
 - (id)selectedInputMode
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:609 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:609 description:@"Subclass must implement"];
 
   return &stru_1EFB14550;
 }
 
-- (void)setSelectedInputMode:(id)a3
+- (void)setSelectedInputMode:(id)mode
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:614 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:614 description:@"Subclass must implement"];
 }
 
 - (id)nextInputMode
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:618 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:618 description:@"Subclass must implement"];
 
   return 0;
 }
 
 - (id)previousInputMode
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:623 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:623 description:@"Subclass must implement"];
 
   return 0;
 }
 
-- (void)setShowingCapsLockSwitcher:(BOOL)a3
+- (void)setShowingCapsLockSwitcher:(BOOL)switcher
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:629 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:629 description:@"Subclass must implement"];
 }
 
 - (BOOL)isVisibleOrHiding
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:634 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:634 description:@"Subclass must implement"];
 
   return 0;
 }
 
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:640 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:640 description:@"Subclass must implement"];
 
   return 0;
 }
 
-- (void)dismissSwitcherWithDelay:(double)a3
+- (void)dismissSwitcherWithDelay:(double)delay
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:645 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:645 description:@"Subclass must implement"];
 }
 
-- (void)dismissSwitcher:(BOOL)a3
+- (void)dismissSwitcher:(BOOL)switcher
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:649 description:@"Subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIInputSwitcher.m" lineNumber:649 description:@"Subclass must implement"];
 }
 
 @end

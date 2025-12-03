@@ -1,7 +1,7 @@
 @interface AVExternalStorageDevice
 + (AVAuthorizationStatus)authorizationStatus;
 + (void)requestAccessWithCompletionHandler:(void *)handler;
-- (AVExternalStorageDevice)initWithExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)a3 figExternalStorageDeviceUUID:(__CFString *)a4;
+- (AVExternalStorageDevice)initWithExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)manager figExternalStorageDeviceUUID:(__CFString *)d;
 - (BOOL)isConnected;
 - (BOOL)isNotRecommendedForCaptureUse;
 - (NSArray)nextAvailableURLsWithPathExtensions:(NSArray *)extensionArray error:(NSError *)outError;
@@ -13,21 +13,21 @@
 - (id)baseURL;
 - (id)figExternalStorageDeviceUUID;
 - (void)dealloc;
-- (void)updateExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)a3 andFigExternalStorageDeviceUUID:(id)a4;
+- (void)updateExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)manager andFigExternalStorageDeviceUUID:(id)d;
 @end
 
 @implementation AVExternalStorageDevice
 
-- (AVExternalStorageDevice)initWithExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)a3 figExternalStorageDeviceUUID:(__CFString *)a4
+- (AVExternalStorageDevice)initWithExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)manager figExternalStorageDeviceUUID:(__CFString *)d
 {
   v10.receiver = self;
   v10.super_class = AVExternalStorageDevice;
   v6 = [(AVExternalStorageDevice *)&v10 init];
   if (v6)
   {
-    if (a3)
+    if (manager)
     {
-      v7 = CFRetain(a3);
+      v7 = CFRetain(manager);
     }
 
     else
@@ -36,9 +36,9 @@
     }
 
     v6->_externalStorageDeviceManager = v7;
-    if (a4)
+    if (d)
     {
-      v8 = CFRetain(a4);
+      v8 = CFRetain(d);
     }
 
     else
@@ -242,7 +242,7 @@ LABEL_15:
   return [(__CFArray *)self->_nextAvailableURLArray copy:v21];
 }
 
-- (void)updateExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)a3 andFigExternalStorageDeviceUUID:(id)a4
+- (void)updateExternalStorageDeviceManager:(OpaqueFigExternalStorageDeviceManager *)manager andFigExternalStorageDeviceUUID:(id)d
 {
   externalStorageDeviceManager = self->_externalStorageDeviceManager;
   if (externalStorageDeviceManager)
@@ -251,9 +251,9 @@ LABEL_15:
     self->_externalStorageDeviceManager = 0;
   }
 
-  if (a3)
+  if (manager)
   {
-    v8 = CFRetain(a3);
+    v8 = CFRetain(manager);
   }
 
   else
@@ -269,9 +269,9 @@ LABEL_15:
     self->_figExternalStorageDeviceUUID = 0;
   }
 
-  if (a4)
+  if (d)
   {
-    v10 = CFRetain(a4);
+    v10 = CFRetain(d);
   }
 
   else
@@ -284,15 +284,15 @@ LABEL_15:
 
 + (AVAuthorizationStatus)authorizationStatus
 {
-  v2 = [+[AVExternalStorageDeviceDiscoverySession sharedSession](AVExternalStorageDeviceDiscoverySession _checkAuthorizationStatus];
-  if (v2 == 2)
+  _checkAuthorizationStatus = [+[AVExternalStorageDeviceDiscoverySession sharedSession](AVExternalStorageDeviceDiscoverySession _checkAuthorizationStatus];
+  if (_checkAuthorizationStatus == 2)
   {
     return 3;
   }
 
   else
   {
-    return 2 * (v2 == 1);
+    return 2 * (_checkAuthorizationStatus == 1);
   }
 }
 

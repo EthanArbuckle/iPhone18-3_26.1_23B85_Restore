@@ -1,18 +1,18 @@
 @interface TTRIQuickBarQuickPickItemView
 - (BOOL)accessibilityActivate;
 - (UIImage)largeContentImage;
-- (_TtC15RemindersUICore29TTRIQuickBarQuickPickItemView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore29TTRIQuickBarQuickPickItemView)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation TTRIQuickBarQuickPickItemView
 
-- (_TtC15RemindersUICore29TTRIQuickBarQuickPickItemView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore29TTRIQuickBarQuickPickItemView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC15RemindersUICore29TTRIQuickBarQuickPickItemView_itemID;
   *v9 = 0u;
@@ -22,15 +22,15 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore29TTRIQuickBarQuickPickItemView_label) = 0;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(TTRIQuickBarQuickPickItemView *)&v12 initWithFrame:x, y, width, height];
+  height = [(TTRIQuickBarQuickPickItemView *)&v12 initWithFrame:x, y, width, height];
   sub_21D499074();
 
-  return v10;
+  return height;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21D4997FC();
 
   return v3;

@@ -1,6 +1,6 @@
 @interface AKGlobalConfig
 + (id)sharedInstance;
-- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)a3 completion:(id)a4;
+- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)policy completion:(id)completion;
 @end
 
 @implementation AKGlobalConfig
@@ -29,16 +29,16 @@ uint64_t __32__AKGlobalConfig_sharedInstance__block_invoke()
   return MEMORY[0x1E69E5920](v1);
 }
 
-- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)a3 completion:(id)a4
+- (void)fetchGlobalConfigUsingCachePolicy:(unint64_t)policy completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  policyCopy = policy;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v12 = objc_alloc_init(AKAppleIDAuthenticationController);
   v5 = v12;
-  v4 = v14;
+  v4 = policyCopy;
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;

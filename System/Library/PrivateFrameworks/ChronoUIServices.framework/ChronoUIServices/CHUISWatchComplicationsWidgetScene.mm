@@ -11,24 +11,24 @@
 
 - (int64_t)cornerPosition
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
-  v3 = [v2 cornerPosition];
+  _sceneSettings = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
+  cornerPosition = [_sceneSettings cornerPosition];
 
-  return v3;
+  return cornerPosition;
 }
 
 - (CHSWatchComplicationsCurvedLabelMetrics)curvedLabelMetrics
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
-  v3 = [v2 curvedLabelMetrics];
+  _sceneSettings = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
+  curvedLabelMetrics = [_sceneSettings curvedLabelMetrics];
 
-  return v3;
+  return curvedLabelMetrics;
 }
 
 - (CGPoint)bezelContentCenter
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
-  [v2 bezelContentCenter];
+  _sceneSettings = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
+  [_sceneSettings bezelContentCenter];
   v4 = v3;
   v6 = v5;
 
@@ -41,26 +41,26 @@
 
 - (BOOL)includeAccessoryViews
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
-  v3 = [v2 includeAccessoryViews];
+  _sceneSettings = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
+  includeAccessoryViews = [_sceneSettings includeAccessoryViews];
 
-  return v3;
+  return includeAccessoryViews;
 }
 
 - (BOOL)generateSnapshotMetadata
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
-  v3 = [v2 generateSnapshotMetadata];
+  _sceneSettings = [(CHUISWatchComplicationsWidgetScene *)self _sceneSettings];
+  generateSnapshotMetadata = [_sceneSettings generateSnapshotMetadata];
 
-  return v3;
+  return generateSnapshotMetadata;
 }
 
 - (id)_sceneSettings
 {
-  v2 = [(CHUISWatchComplicationsWidgetScene *)self _FBSScene];
-  v3 = [v2 settings];
+  _FBSScene = [(CHUISWatchComplicationsWidgetScene *)self _FBSScene];
+  settings = [_FBSScene settings];
 
-  return v3;
+  return settings;
 }
 
 @end

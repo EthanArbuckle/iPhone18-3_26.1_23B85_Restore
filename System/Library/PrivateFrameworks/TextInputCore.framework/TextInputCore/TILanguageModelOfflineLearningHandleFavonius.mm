@@ -1,13 +1,13 @@
 @interface TILanguageModelOfflineLearningHandleFavonius
 - (RefPtr<KB::DictionaryContainer>)dictionaries;
-- (TILanguageModelOfflineLearningHandleFavonius)initWithInputMode:(id)a3;
+- (TILanguageModelOfflineLearningHandleFavonius)initWithInputMode:(id)mode;
 - (id).cxx_construct;
 - (shared_ptr<KB::LanguageModel>)currentModel;
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5;
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type;
 - (void)didFinishLearning;
 - (void)load;
-- (void)setCurrentModel:(shared_ptr<KB::LanguageModel>)a3;
-- (void)updateAdaptationContext:(id)a3;
+- (void)setCurrentModel:(shared_ptr<KB::LanguageModel>)model;
+- (void)updateAdaptationContext:(id)context;
 @end
 
 @implementation TILanguageModelOfflineLearningHandleFavonius
@@ -32,11 +32,11 @@
   return self;
 }
 
-- (void)setCurrentModel:(shared_ptr<KB::LanguageModel>)a3
+- (void)setCurrentModel:(shared_ptr<KB::LanguageModel>)model
 {
   p_currentModel = &self->_currentModel;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *model.__ptr_;
+  v4 = *(model.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -93,10 +93,10 @@ void __65__TILanguageModelOfflineLearningHandleFavonius_didFinishLearning__block
   }
 }
 
-- (void)adaptToParagraph:(id)a3 timeStamp:(double)a4 adaptationType:(int)a5
+- (void)adaptToParagraph:(id)paragraph timeStamp:(double)stamp adaptationType:(int)type
 {
-  v6 = a3;
-  v5 = v6;
+  paragraphCopy = paragraph;
+  v5 = paragraphCopy;
   TIDispatchSync();
 }
 
@@ -156,8 +156,8 @@ LABEL_6:
 {
   v78 = *MEMORY[0x277D85DE8];
   v3 = +[TIAssetManager sharedAssetManager];
-  v4 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-  v5 = [v3 ddsAssetContentItemsWithContentType:@"Lexicon" inputMode:v4 filteredWithRegion:0];
+  inputMode = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+  v5 = [v3 ddsAssetContentItemsWithContentType:@"Lexicon" inputMode:inputMode filteredWithRegion:0];
 
   v52 = 0u;
   v50 = 0u;
@@ -165,7 +165,7 @@ LABEL_6:
   v49 = 0u;
   v6 = v5;
   v7 = [v6 countByEnumeratingWithState:&v49 objects:v77 count:16];
-  v44 = self;
+  selfCopy = self;
   if (v7)
   {
     v8 = v7;
@@ -179,13 +179,13 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v49 + 1) + 8 * i) path];
-        v12 = [v11 path];
+        path = [*(*(&v49 + 1) + 8 * i) path];
+        v11Path = [path path];
 
-        if ([v12 hasSuffix:@".dat"])
+        if ([v11Path hasSuffix:@".dat"])
         {
-          v13 = [MEMORY[0x277CCAA00] defaultManager];
-          v14 = [v13 fileExistsAtPath:v12];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v14 = [defaultManager fileExistsAtPath:v11Path];
 
           if (v14)
           {
@@ -198,14 +198,14 @@ LABEL_6:
     }
 
     while (v8);
-    v12 = 0;
+    v11Path = 0;
 LABEL_11:
-    self = v44;
+    self = selfCopy;
   }
 
   else
   {
-    v12 = 0;
+    v11Path = 0;
   }
 
   p_cache = TICoreAnalyticsEventDispatcher.cache;
@@ -217,22 +217,22 @@ LABEL_11:
   v16 = TIOSLogFacility();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s DDS found static dict path: %@", "-[TILanguageModelOfflineLearningHandleFavonius load]", v12];
+    v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s DDS found static dict path: %@", "-[TILanguageModelOfflineLearningHandleFavonius load]", v11Path];
     *buf = 138412290;
     v61 = v42;
     _os_log_debug_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  if (!v12)
+  if (!v11Path)
   {
-    v17 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-    v18 = [v17 languageWithRegion];
-    v12 = UIKeyboardStaticUnigramsFile(v18);
+    inputMode2 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+    languageWithRegion = [inputMode2 languageWithRegion];
+    v11Path = UIKeyboardStaticUnigramsFile(languageWithRegion);
   }
 
   v19 = +[TIAssetManager sharedAssetManager];
-  v20 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-  v21 = [v19 ddsAssetContentItemsWithContentType:@"LexiconDelta" inputMode:v20 filteredWithRegion:0];
+  inputMode3 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+  v21 = [v19 ddsAssetContentItemsWithContentType:@"LexiconDelta" inputMode:inputMode3 filteredWithRegion:0];
 
   v47 = 0u;
   v48 = 0u;
@@ -253,13 +253,13 @@ LABEL_11:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v45 + 1) + 8 * j) path];
-        v28 = [v27 path];
+        path2 = [*(*(&v45 + 1) + 8 * j) path];
+        v27Path = [path2 path];
 
-        if ([v28 hasSuffix:@".dat"])
+        if ([v27Path hasSuffix:@".dat"])
         {
-          v29 = [MEMORY[0x277CCAA00] defaultManager];
-          v30 = [v29 fileExistsAtPath:v28];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v30 = [defaultManager2 fileExistsAtPath:v27Path];
 
           if (v30)
           {
@@ -272,15 +272,15 @@ LABEL_11:
     }
 
     while (v24);
-    v28 = 0;
+    v27Path = 0;
 LABEL_29:
-    self = v44;
+    self = selfCopy;
     p_cache = (TICoreAnalyticsEventDispatcher + 16);
   }
 
   else
   {
-    v28 = 0;
+    v27Path = 0;
   }
 
   if (p_cache[367] != -1)
@@ -291,40 +291,40 @@ LABEL_29:
   v31 = TIOSLogFacility();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
-    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s DDS found delta dict path: %@", "-[TILanguageModelOfflineLearningHandleFavonius load]", v28];
+    v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s DDS found delta dict path: %@", "-[TILanguageModelOfflineLearningHandleFavonius load]", v27Path];
     *buf = 138412290;
     v61 = v43;
     _os_log_debug_impl(&dword_22CA55000, v31, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
-  if (!v28)
+  if (!v27Path)
   {
-    v32 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-    v33 = [v32 languageWithRegion];
-    v34 = [TIInputMode inputModeWithIdentifier:v33];
-    v28 = UIKeyboardDeltaLexiconPathForInputMode(v34);
+    inputMode4 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+    languageWithRegion2 = [inputMode4 languageWithRegion];
+    v34 = [TIInputMode inputModeWithIdentifier:languageWithRegion2];
+    v27Path = UIKeyboardDeltaLexiconPathForInputMode(v34);
   }
 
-  v35 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-  v36 = [v35 locale];
-  v37 = [v36 localeIdentifier];
+  inputMode5 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+  locale = [inputMode5 locale];
+  localeIdentifier = [locale localeIdentifier];
 
-  v38 = TILexiconIDForLocaleIdentifier([v37 UTF8String]);
-  v39 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-  if ([v39 wantsMultilingualUnionOVS])
+  v38 = TILexiconIDForLocaleIdentifier([localeIdentifier UTF8String]);
+  inputMode6 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+  if ([inputMode6 wantsMultilingualUnionOVS])
   {
-    v40 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
-    v41 = [v40 wantsMultilingualUnionOVS];
+    inputMode7 = [(TILanguageModelOfflineLearningHandle *)self inputMode];
+    wantsMultilingualUnionOVS = [inputMode7 wantsMultilingualUnionOVS];
   }
 
   else
   {
-    v41 = 0;
+    wantsMultilingualUnionOVS = 0;
   }
 
-  KB::utf8_string(v37, buf);
-  KB::utf8_string(v12, v62);
-  KB::utf8_string(v28, v63);
+  KB::utf8_string(localeIdentifier, buf);
+  KB::utf8_string(v11Path, v62);
+  KB::utf8_string(v27Path, v63);
   v64 = 0x100000;
   v65 = 0;
   v66 = 0;
@@ -336,7 +336,7 @@ LABEL_29:
   v72 = 0;
   v73 = 0;
   LODWORD(v74) = v38;
-  BYTE4(v74) = v41;
+  BYTE4(v74) = wantsMultilingualUnionOVS;
   v75 = 1065353216;
   KB::String::String(&v53, buf);
   KB::String::String(&v54, v62);
@@ -348,9 +348,9 @@ LABEL_29:
   operator new();
 }
 
-- (void)updateAdaptationContext:(id)a3
+- (void)updateAdaptationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x4012000000;
@@ -363,9 +363,9 @@ LABEL_29:
   v12 = 3221225472;
   v13 = __72__TILanguageModelOfflineLearningHandleFavonius_updateAdaptationContext___block_invoke;
   v14 = &unk_2787337C0;
-  v15 = self;
+  selfCopy = self;
   v17 = &v18;
-  v5 = v4;
+  v5 = contextCopy;
   v16 = v5;
   TIDispatchSync();
   (*(*v19[6] + 96))(v19[6]);
@@ -384,9 +384,9 @@ LABEL_29:
   }
 
   [(TILanguageModelOfflineLearningHandle *)self setCurrentAdaptationContext:v5];
-  v7 = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
+  lastAdaptationDate = [(TILanguageModelOfflineLearningHandle *)self lastAdaptationDate];
 
-  if (!v7)
+  if (!lastAdaptationDate)
   {
     v8 = MEMORY[0x277D85CD0];
     TIDispatchSync();
@@ -479,29 +479,29 @@ void __72__TILanguageModelOfflineLearningHandleFavonius_updateAdaptationContext_
   [*(a1 + 32) setLastAdaptationDate:v5];
 }
 
-- (TILanguageModelOfflineLearningHandleFavonius)initWithInputMode:(id)a3
+- (TILanguageModelOfflineLearningHandleFavonius)initWithInputMode:(id)mode
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v11.receiver = self;
   v11.super_class = TILanguageModelOfflineLearningHandleFavonius;
-  if ([(TILanguageModelOfflineLearningHandle *)&v11 initWithInputMode:v4])
+  if ([(TILanguageModelOfflineLearningHandle *)&v11 initWithInputMode:modeCopy])
   {
-    v5 = [v4 locale];
-    v6 = [v5 localeIdentifier];
+    locale = [modeCopy locale];
+    localeIdentifier = [locale localeIdentifier];
 
-    v7 = TILexiconIDForLocaleIdentifier([v6 UTF8String]);
-    if ([v4 wantsMultilingualUnionOVS])
+    v7 = TILexiconIDForLocaleIdentifier([localeIdentifier UTF8String]);
+    if ([modeCopy wantsMultilingualUnionOVS])
     {
-      v8 = [v4 wantsMultilingualUnionOVS];
+      wantsMultilingualUnionOVS = [modeCopy wantsMultilingualUnionOVS];
     }
 
     else
     {
-      v8 = 0;
+      wantsMultilingualUnionOVS = 0;
     }
 
-    KB::utf8_string(v6, v19);
+    KB::utf8_string(localeIdentifier, v19);
     v20 = 0x100000;
     v21 = 0;
     v22 = 0;
@@ -523,7 +523,7 @@ void __72__TILanguageModelOfflineLearningHandleFavonius_updateAdaptationContext_
     v38 = 0;
     v39 = 0;
     LODWORD(v40) = v7;
-    BYTE4(v40) = v8;
+    BYTE4(v40) = wantsMultilingualUnionOVS;
     v41 = 1065353216;
     KB::String::String(&v12, v19);
     KB::String::String(&v13, &v20);

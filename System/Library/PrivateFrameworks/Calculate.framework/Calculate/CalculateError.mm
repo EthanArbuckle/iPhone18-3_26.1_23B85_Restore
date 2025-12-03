@@ -1,26 +1,26 @@
 @interface CalculateError
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4;
-- (CalculateError)initWithCode:(int64_t)a3 userInfo:(id)a4;
-- (id)initInvalidFlipArgument:(id)a3;
-- (id)initInvalidNegativeArgument:(id)a3;
-- (id)initUnbalancedSymbol:(id)a3;
-- (id)initUnexpectedPunctuation:(id)a3;
-- (id)initUnexpectedSymbol:(id)a3;
-- (id)initUnknownVariable:(id)a3;
++ (id)errorWithCode:(int64_t)code userInfo:(id)info;
+- (CalculateError)initWithCode:(int64_t)code userInfo:(id)info;
+- (id)initInvalidFlipArgument:(id)argument;
+- (id)initInvalidNegativeArgument:(id)argument;
+- (id)initUnbalancedSymbol:(id)symbol;
+- (id)initUnexpectedPunctuation:(id)punctuation;
+- (id)initUnexpectedSymbol:(id)symbol;
+- (id)initUnknownVariable:(id)variable;
 @end
 
 @implementation CalculateError
 
-- (id)initInvalidFlipArgument:(id)a3
+- (id)initInvalidFlipArgument:(id)argument
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696A588];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  argumentCopy = argument;
   v6 = +[Localize systemLocale];
   v7 = [Localize localizationForLocale:v6];
   v8 = [Localize localizedStringForKey:@"-1005.desc.flip" value:0 table:@"LocalizableErrors" localization:v7];
-  v9 = [v4 stringWithFormat:v8, v5, v14];
+  v9 = [v4 stringWithFormat:v8, argumentCopy, v14];
 
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -30,16 +30,16 @@
   return v11;
 }
 
-- (id)initInvalidNegativeArgument:(id)a3
+- (id)initInvalidNegativeArgument:(id)argument
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696A588];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  argumentCopy = argument;
   v6 = +[Localize systemLocale];
   v7 = [Localize localizationForLocale:v6];
   v8 = [Localize localizedStringForKey:@"-1005.desc.negative" value:0 table:@"LocalizableErrors" localization:v7];
-  v9 = [v4 stringWithFormat:v8, v5, v14];
+  v9 = [v4 stringWithFormat:v8, argumentCopy, v14];
 
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -49,17 +49,17 @@
   return v11;
 }
 
-- (id)initUnbalancedSymbol:(id)a3
+- (id)initUnbalancedSymbol:(id)symbol
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v4 = initUnbalancedSymbol__onceToken;
-  v5 = a3;
+  symbolCopy = symbol;
   if (v4 != -1)
   {
     dispatch_once(&initUnbalancedSymbol__onceToken, &__block_literal_global_98);
   }
 
-  v6 = [initUnbalancedSymbol__normalizeMap objectForKeyedSubscript:v5];
+  v6 = [initUnbalancedSymbol__normalizeMap objectForKeyedSubscript:symbolCopy];
   v7 = v6;
   if (v6)
   {
@@ -68,7 +68,7 @@
 
   else
   {
-    v8 = v5;
+    v8 = symbolCopy;
   }
 
   v9 = v8;
@@ -102,16 +102,16 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
   initUnbalancedSymbol__normalizeMap = &unk_1F419A708;
 }
 
-- (id)initUnexpectedSymbol:(id)a3
+- (id)initUnexpectedSymbol:(id)symbol
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696A578];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  symbolCopy = symbol;
   v6 = +[Localize systemLocale];
   v7 = [Localize localizationForLocale:v6];
   v8 = [Localize localizedStringForKey:@"-1012" value:0 table:@"LocalizableErrors" localization:v7];
-  v9 = [v4 stringWithFormat:v8, v5, v14];
+  v9 = [v4 stringWithFormat:v8, symbolCopy, v14];
 
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -121,16 +121,16 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
   return v11;
 }
 
-- (id)initUnexpectedPunctuation:(id)a3
+- (id)initUnexpectedPunctuation:(id)punctuation
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14 = *MEMORY[0x1E696A578];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  punctuationCopy = punctuation;
   v6 = +[Localize systemLocale];
   v7 = [Localize localizationForLocale:v6];
   v8 = [Localize localizedStringForKey:@"-1011" value:0 table:@"LocalizableErrors" localization:v7];
-  v9 = [v4 stringWithFormat:v8, v5, v14];
+  v9 = [v4 stringWithFormat:v8, punctuationCopy, v14];
 
   v15[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
@@ -140,13 +140,13 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
   return v11;
 }
 
-- (id)initUnknownVariable:(id)a3
+- (id)initUnknownVariable:(id)variable
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = @"CalculateErrorKeySuggestions";
-  v11[0] = a3;
+  v11[0] = variable;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  variableCopy = variable;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [(CalculateError *)self initWithCode:-1003 userInfo:v6];
@@ -154,9 +154,9 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
   return v7;
 }
 
-- (CalculateError)initWithCode:(int64_t)a3 userInfo:(id)a4
+- (CalculateError)initWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = [a4 mutableCopy];
+  v6 = [info mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -178,8 +178,8 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
 
   if (!v13)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", a3];
-    v15 = [Localize localizedStringForKey:v14 value:0 table:@"LocalizableErrors" localization:v11];
+    code = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", code];
+    v15 = [Localize localizedStringForKey:code value:0 table:@"LocalizableErrors" localization:v11];
     [v9 setObject:v15 forKeyedSubscript:v12];
   }
 
@@ -188,8 +188,8 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
 
   if (!v17)
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d.desc", a3];
-    v19 = [Localize localizedStringForKey:v18 value:@"NOT_FOUND" table:@"LocalizableErrors" localization:v11];
+    code2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d.desc", code];
+    v19 = [Localize localizedStringForKey:code2 value:@"NOT_FOUND" table:@"LocalizableErrors" localization:v11];
 
     if (([v19 isEqualToString:@"NOT_FOUND"] & 1) == 0)
     {
@@ -199,15 +199,15 @@ void __39__CalculateError_initUnbalancedSymbol___block_invoke()
 
   v22.receiver = self;
   v22.super_class = CalculateError;
-  v20 = [(CalculateError *)&v22 initWithDomain:CalculateErrorDomain code:a3 userInfo:v9];
+  v20 = [(CalculateError *)&v22 initWithDomain:CalculateErrorDomain code:code userInfo:v9];
 
   return v20;
 }
 
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [[CalculateError alloc] initWithCode:a3 userInfo:v5];
+  infoCopy = info;
+  v6 = [[CalculateError alloc] initWithCode:code userInfo:infoCopy];
 
   return v6;
 }

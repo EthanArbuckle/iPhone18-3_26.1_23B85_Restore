@@ -1,28 +1,28 @@
 @interface NTKMagmaFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryDescriptionForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryDescriptionForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKMagmaFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKMagmaFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKMagmaFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryDescriptionForDevice:(id)a3
+- (id)galleryDescriptionForDevice:(id)device
 {
-  if ([a3 supportsVictoryFaces])
+  if ([device supportsVictoryFaces])
   {
     [NTKMagmaFaceBundle localizedStringForKey:@"FACE_STYLE_MAGMA_DESCRIPTION_LIGHTHOUSE" tableSuffix:@"Lighthouse" comment:@"lighthouse description"];
   }
@@ -36,7 +36,7 @@
   return v3;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_15020;
   v6 = &off_15038;
@@ -45,21 +45,21 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v8.receiver = self;
     v8.super_class = NTKMagmaFaceBundle;
-    v5 = [(NTKMagmaFaceBundle *)&v8 galleryFacesForDevice:v4];
+    v5 = [(NTKMagmaFaceBundle *)&v8 galleryFacesForDevice:deviceCopy];
 
     [v5 enumerateObjectsUsingBlock:&stru_146B8];
   }
 
   else
   {
-    v6 = [(NTKMagmaFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKMagmaFaceBundle *)self defaultFaceForDevice:deviceCopy];
 
     v9 = v6;
     v5 = [NSArray arrayWithObjects:&v9 count:1];
@@ -68,9 +68,9 @@
   return v5;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &off_15050;
     v6 = &off_15110;
@@ -85,9 +85,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v7[0] = ntk_victory_purePlatinum;
     v7[1] = ntk_victory_volt;
@@ -108,17 +108,17 @@
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(v4, "supportsPDRCapability:", 4094027452))
+  deviceCopy = device;
+  if (([deviceCopy supportsPDRCapability:360081074] & 1) != 0 || !objc_msgSend(deviceCopy, "supportsPDRCapability:", 4094027452))
   {
     v9 = &__NSArray0__struct;
   }
 
   else
   {
-    if ([v4 deviceCategory] == &dword_0 + 3)
+    if ([deviceCopy deviceCategory] == &dword_0 + 3)
     {
       v5 = 500;
     }
@@ -128,7 +128,7 @@
       v5 = 300;
     }
 
-    v6 = [(NTKMagmaFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKMagmaFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:v5];
     v8 = v7;
     if (v7)

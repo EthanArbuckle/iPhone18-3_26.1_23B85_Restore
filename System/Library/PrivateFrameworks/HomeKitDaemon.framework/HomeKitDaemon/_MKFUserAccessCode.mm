@@ -21,10 +21,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFUserAccessCode *)self user];
-  v3 = [v2 home];
+  user = [(_MKFUserAccessCode *)self user];
+  home = [user home];
 
-  return v3;
+  return home;
 }
 
 - (MKFUserAccessCodeDatabaseID)databaseID
@@ -43,15 +43,15 @@
     if (v4 || ([(NSManagedObject *)self hmd_lastKnownValueForKey:@"guest"], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v5 = v4;
-      v6 = [v4 hmd_modelID];
+      hmd_modelID = [v4 hmd_modelID];
     }
 
     else
     {
-      v6 = 0;
+      hmd_modelID = 0;
     }
 
-    return v6;
+    return hmd_modelID;
   }
 
   else

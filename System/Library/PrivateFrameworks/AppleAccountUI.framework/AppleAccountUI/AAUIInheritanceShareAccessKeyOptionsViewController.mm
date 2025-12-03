@@ -1,29 +1,29 @@
 @interface AAUIInheritanceShareAccessKeyOptionsViewController
 - (AAUIInheritanceSetupFlowDelegate)flowDelegate;
-- (AAUIInheritanceShareAccessKeyOptionsViewController)initWithBeneficiaryName:(id)a3 handle:(id)a4;
-- (id)_configurationForShareType:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (AAUIInheritanceShareAccessKeyOptionsViewController)initWithBeneficiaryName:(id)name handle:(id)handle;
+- (id)_configurationForShareType:(unint64_t)type;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_dismiss;
 - (void)_setupCancelButtonIfNeeded;
 - (void)_setupTableView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation AAUIInheritanceShareAccessKeyOptionsViewController
 
-- (AAUIInheritanceShareAccessKeyOptionsViewController)initWithBeneficiaryName:(id)a3 handle:(id)a4
+- (AAUIInheritanceShareAccessKeyOptionsViewController)initWithBeneficiaryName:(id)name handle:(id)handle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AAUIOBInheritanceShareAccessKeyOptionsViewModel alloc] initWithBeneficiaryName:v7 handle:v6];
+  handleCopy = handle;
+  nameCopy = name;
+  v8 = [[AAUIOBInheritanceShareAccessKeyOptionsViewModel alloc] initWithBeneficiaryName:nameCopy handle:handleCopy];
 
   viewModel = self->_viewModel;
   self->_viewModel = v8;
 
-  v10 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel defaultSharingOptions];
+  defaultSharingOptions = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel defaultSharingOptions];
   options = self->_options;
-  self->_options = v10;
+  self->_options = defaultSharingOptions;
 
   v12 = self->_viewModel;
   v14.receiver = self;
@@ -102,56 +102,56 @@ void __62__AAUIInheritanceShareAccessKeyOptionsViewController__dismiss__block_in
 
 - (void)_setupTableView
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 setDelegate:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDelegate:self];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 setDataSource:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDataSource:self];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"InheritanceShareOptionCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"InheritanceShareOptionCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"InheritanceShareOptionCell"];
   }
 
-  v8 = -[NSArray objectAtIndex:](self->_options, "objectAtIndex:", [v6 section]);
-  v9 = [v8 intValue];
+  v8 = -[NSArray objectAtIndex:](self->_options, "objectAtIndex:", [pathCopy section]);
+  intValue = [v8 intValue];
 
-  v10 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self _configurationForShareType:v9];
+  v10 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self _configurationForShareType:intValue];
   [v7 setContentConfiguration:v10];
   [v7 setAccessoryType:1];
-  v11 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v7 setBackgroundColor:v11];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [v7 setBackgroundColor:secondarySystemBackgroundColor];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  [a3 deselectRowAtIndexPath:? animated:?];
-  v6 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self flowDelegate];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:? animated:?];
+  flowDelegate = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self flowDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self flowDelegate];
-    v9 = -[NSArray objectAtIndex:](self->_options, "objectAtIndex:", [v10 section]);
-    [v8 inheritanceDidSelectSharingOption:{objc_msgSend(v9, "integerValue")}];
+    flowDelegate2 = [(AAUIInheritanceShareAccessKeyOptionsViewController *)self flowDelegate];
+    v9 = -[NSArray objectAtIndex:](self->_options, "objectAtIndex:", [pathCopy section]);
+    [flowDelegate2 inheritanceDidSelectSharingOption:{objc_msgSend(v9, "integerValue")}];
   }
 }
 
-- (id)_configurationForShareType:(unint64_t)a3
+- (id)_configurationForShareType:(unint64_t)type
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   v6 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] weight:*MEMORY[0x1E69DB958]];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v8 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel titleForShareAccessKeyType:a3];
+  v8 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel titleForShareAccessKeyType:type];
   v24 = *MEMORY[0x1E69DB648];
   v9 = v24;
   v25[0] = v6;
@@ -159,27 +159,27 @@ void __62__AAUIInheritanceShareAccessKeyOptionsViewController__dismiss__block_in
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v11 = [v7 initWithString:v8 attributes:v10];
 
-  [v5 setAttributedText:v11];
+  [cellConfiguration setAttributedText:v11];
   v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v14 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel detailTextForShareAccessKeyType:a3];
+  v14 = [(AAOBInheritanceShareAccessKeyOptionsModel *)self->_viewModel detailTextForShareAccessKeyType:type];
   v22[0] = *MEMORY[0x1E69DB650];
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   v22[1] = v9;
-  v23[0] = v15;
+  v23[0] = secondaryLabelColor;
   v23[1] = v12;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v17 = [v13 initWithString:v14 attributes:v16];
 
-  [v5 setSecondaryAttributedText:v17];
-  if (a3 == 1)
+  [cellConfiguration setSecondaryAttributedText:v17];
+  if (type == 1)
   {
     v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"printer.fill.and.paper.fill"];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
@@ -188,11 +188,11 @@ void __62__AAUIInheritanceShareAccessKeyOptionsViewController__dismiss__block_in
   }
 
   v19 = v18;
-  [v5 setImage:v18];
+  [cellConfiguration setImage:v18];
 
 LABEL_6:
 
-  return v5;
+  return cellConfiguration;
 }
 
 - (AAUIInheritanceSetupFlowDelegate)flowDelegate

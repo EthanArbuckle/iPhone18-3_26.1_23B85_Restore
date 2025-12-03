@@ -1,32 +1,32 @@
 @interface WFCustomIntentOutputContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (INCustomObject)customObject;
-- (WFCustomIntentOutputContentItem)initWithCoder:(id)a3;
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFCustomIntentOutputContentItem)initWithCoder:(id)coder;
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFCustomIntentOutputContentItem
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()])
+  instanceCopy = instance;
+  if ([instanceCopy isEqualToClass:objc_opt_class()])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFCustomIntentOutputContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
@@ -34,13 +34,13 @@
 
 + (id)propertyBuilders
 {
-  v2 = [a1 codableDescription];
-  v3 = [v2 displayOrderedAttributes];
-  v4 = [v3 array];
+  codableDescription = [self codableDescription];
+  displayOrderedAttributes = [codableDescription displayOrderedAttributes];
+  array = [displayOrderedAttributes array];
 
-  if (v4)
+  if (array)
   {
-    v5 = [v4 if_compactMap:&__block_literal_global_71081];
+    v5 = [array if_compactMap:&__block_literal_global_71081];
   }
 
   else
@@ -204,13 +204,13 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 codableDescription];
-  v6 = [v4 stringLocalizer];
+  contextCopy = context;
+  codableDescription = [self codableDescription];
+  stringLocalizer = [contextCopy stringLocalizer];
 
-  v7 = [v5 wf_outputDisplayNameWithLocalizer:v6];
+  v7 = [codableDescription wf_outputDisplayNameWithLocalizer:stringLocalizer];
 
   return v7;
 }
@@ -233,40 +233,40 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(WFCustomIntentOutputContentItem *)self customObject];
-  v5 = [v4 codableDescription];
+  coderCopy = coder;
+  customObject = [(WFCustomIntentOutputContentItem *)self customObject];
+  codableDescription = [customObject codableDescription];
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 performSelector:sel_mainBundleIdentifier];
-    [v12 encodeObject:v6 forKey:@"bundleIdentifier"];
+    v6 = [codableDescription performSelector:sel_mainBundleIdentifier];
+    [coderCopy encodeObject:v6 forKey:@"bundleIdentifier"];
   }
 
-  v7 = [v5 typeName];
-  [v12 encodeObject:v7 forKey:@"codableDescriptionTypeName"];
+  typeName = [codableDescription typeName];
+  [coderCopy encodeObject:typeName forKey:@"codableDescriptionTypeName"];
 
-  v8 = [v5 intentDefinitionNamespace];
-  [v12 encodeObject:v8 forKey:@"intentDefinitionNamespace"];
+  intentDefinitionNamespace = [codableDescription intentDefinitionNamespace];
+  [coderCopy encodeObject:intentDefinitionNamespace forKey:@"intentDefinitionNamespace"];
 
   v9 = objc_alloc_init(MEMORY[0x1E696E8D0]);
-  v10 = [(WFCustomIntentOutputContentItem *)self customObject];
-  v11 = [v9 encodeObject:v10 withCodableDescription:v5];
+  customObject2 = [(WFCustomIntentOutputContentItem *)self customObject];
+  v11 = [v9 encodeObject:customObject2 withCodableDescription:codableDescription];
 
-  [v12 encodeObject:v11 forKey:@"customObject"];
+  [coderCopy encodeObject:v11 forKey:@"customObject"];
 }
 
-- (WFCustomIntentOutputContentItem)initWithCoder:(id)a3
+- (WFCustomIntentOutputContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = WFCustomIntentOutputContentItem;
   v5 = [(WFCustomIntentOutputContentItem *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     v7 = [(__CFString *)v6 isEqualToString:@"com.apple.Bridge"];
     v8 = @"com.apple.PBBridgeSupport.BridgeIntents";
     if (!v7)
@@ -284,7 +284,7 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
       v38 = __Block_byref_object_copy__71147;
       v39 = __Block_byref_object_dispose__71148;
       v40 = 0;
-      v10 = [MEMORY[0x1E696E878] sharedConnection];
+      mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
       v11 = [MEMORY[0x1E695DFD8] setWithObject:v9];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -292,15 +292,15 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
       v32[3] = &unk_1E837F898;
       v33 = v9;
       v34 = &v35;
-      [v10 wf_accessBundleContentForBundleIdentifiers:v11 withBlock:v32];
+      [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v11 withBlock:v32];
 
       if (v36[5])
       {
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableDescriptionTypeName"];
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intentDefinitionNamespace"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableDescriptionTypeName"];
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intentDefinitionNamespace"];
         v31 = INIntentDefinitionNamespacedName();
-        v14 = [v36[5] _types];
-        v15 = [v14 objectForKey:v31];
+        _types = [v36[5] _types];
+        v15 = [_types objectForKey:v31];
 
         if (v15)
         {
@@ -313,7 +313,7 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
           v19 = objc_opt_class();
           v20 = objc_opt_class();
           v21 = [v30 setWithObjects:{v16, v17, v18, v19, v20, objc_opt_class(), 0}];
-          v22 = [v4 decodeObjectOfClasses:v21 forKey:@"customObject"];
+          v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"customObject"];
 
           v23 = objc_alloc_init(MEMORY[0x1E696E8C8]);
           v24 = [objc_alloc(MEMORY[0x1E696E7F0]) initWithObject:0 codableDescription:v15];
@@ -326,7 +326,7 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
         else
         {
           v22 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFCustomIntentOutputContentItemErrorDomain" code:1 userInfo:0];
-          [v4 failWithError:v22];
+          [coderCopy failWithError:v22];
           v25 = 0;
         }
       }
@@ -334,7 +334,7 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
       else
       {
         v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFCustomIntentOutputContentItemErrorDomain" code:0 userInfo:0];
-        [v4 failWithError:v12];
+        [coderCopy failWithError:v12];
         v25 = 0;
       }
 
@@ -344,7 +344,7 @@ void __51__WFCustomIntentOutputContentItem_propertyBuilders__block_invoke_2(uint
     else
     {
       v26 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WFCustomIntentOutputContentItemErrorDomain" code:2 userInfo:0];
-      [v4 failWithError:v26];
+      [coderCopy failWithError:v26];
 
       v25 = 0;
     }
@@ -378,15 +378,15 @@ void __49__WFCustomIntentOutputContentItem_initWithCoder___block_invoke(uint64_t
   *(v5 + 40) = v3;
 }
 
-- (id)generateObjectRepresentationsForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationsForClass:(Class)class options:(id)options error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     v7 = MEMORY[0x1E6996EC8];
-    v8 = [(WFCustomIntentOutputContentItem *)self customObject];
-    v9 = [v8 displayString];
-    v10 = [v7 object:v9];
+    customObject = [(WFCustomIntentOutputContentItem *)self customObject];
+    displayString = [customObject displayString];
+    v10 = [v7 object:displayString];
     v13[0] = v10;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
@@ -408,33 +408,33 @@ void __49__WFCustomIntentOutputContentItem_initWithCoder___block_invoke(uint64_t
   return [(WFCustomIntentOutputContentItem *)self objectForClass:v3];
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = [(WFCustomIntentOutputContentItem *)self customObject];
+  thumbnailCopy = thumbnail;
+  customObject = [(WFCustomIntentOutputContentItem *)self customObject];
   v7 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
-  v8 = [v6 _intents_displayImageWithLocalizer:v7];
+  v8 = [customObject _intents_displayImageWithLocalizer:v7];
 
-  v9 = [v8 wf_image];
-  v10 = v9;
-  if (v5 && v9)
+  wf_image = [v8 wf_image];
+  v10 = wf_image;
+  if (thumbnailCopy && wf_image)
   {
-    v5[2](v5, v9, 0);
+    thumbnailCopy[2](thumbnailCopy, wf_image, 0);
   }
 
   return v10 != 0;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFCustomIntentOutputContentItem *)self customObject];
+  subtitleCopy = subtitle;
+  customObject = [(WFCustomIntentOutputContentItem *)self customObject];
   v6 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
-  v7 = [v5 _intents_readableSubtitleWithLocalizer:v6];
+  v7 = [customObject _intents_readableSubtitleWithLocalizer:v6];
 
-  if (v4 && v7)
+  if (subtitleCopy && v7)
   {
-    v4[2](v4, v7);
+    subtitleCopy[2](subtitleCopy, v7);
   }
 
   return v7 != 0;

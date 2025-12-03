@@ -1,54 +1,54 @@
 @interface CLSInvestigationPhotoKitFeeder
-+ (id)feederForAssetCollection:(id)a3 options:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6;
-+ (id)feederForAssetCollection:(id)a3 options:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6 sharedLibraryEnabled:(BOOL)a7;
++ (id)feederForAssetCollection:(id)collection options:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context;
++ (id)feederForAssetCollection:(id)collection options:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context sharedLibraryEnabled:(BOOL)enabled;
 - (BOOL)_shouldPrefetchCurationInformation;
 - (BOOL)hasBestScoringAssets;
 - (BOOL)hasFavoritedAssets;
 - (BOOL)hasNonJunkAssets;
 - (BOOL)hasPeople;
-- (CLSInvestigationPhotoKitFeeder)initWithAssetCollection:(id)a3 assetFetchOptions:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6;
-- (CLSInvestigationPhotoKitFeeder)initWithAssetFetchResult:(id)a3 curationContext:(id)a4;
+- (CLSInvestigationPhotoKitFeeder)initWithAssetCollection:(id)collection assetFetchOptions:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context;
+- (CLSInvestigationPhotoKitFeeder)initWithAssetFetchResult:(id)result curationContext:(id)context;
 - (id)allItems;
 - (id)approximateLocation;
-- (id)itemAtIndex:(unint64_t)a3;
+- (id)itemAtIndex:(unint64_t)index;
 - (id)privateItems;
 - (id)sharedItems;
 - (unint64_t)numberOfAllPeople;
 - (unint64_t)numberOfItems;
 - (void)_prefetchShareParticipants;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)enumerateItemsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)enumerateItemsWithOptions:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation CLSInvestigationPhotoKitFeeder
 
 - (void)_prefetchShareParticipants
 {
-  v3 = [(PHFetchResult *)self->_fetchResult photoLibrary];
-  v9 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [(PHFetchResult *)self->_fetchResult photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v4 = [MEMORY[0x277CD99C8] fetchContributorsForAssets:self->_fetchResult options:v9];
+  v4 = [MEMORY[0x277CD99C8] fetchContributorsForAssets:self->_fetchResult options:librarySpecificFetchOptions];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 fetchedObjects];
-  v7 = [v5 setWithArray:v6];
+  fetchedObjects = [v4 fetchedObjects];
+  v7 = [v5 setWithArray:fetchedObjects];
   shareParticipants = self->_shareParticipants;
   self->_shareParticipants = v7;
 }
 
-- (void)enumerateItemsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateItemsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = self->_fetchResult;
   objc_sync_enter(v7);
   if (self->_assetPrefetchOptions)
   {
-    v8 = [(CLSInvestigationPhotoKitFeeder *)self allItems];
+    allItems = [(CLSInvestigationPhotoKitFeeder *)self allItems];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __71__CLSInvestigationPhotoKitFeeder_enumerateItemsWithOptions_usingBlock___block_invoke_2;
     v10[3] = &unk_2788A7C80;
-    v11 = v6;
-    [v8 enumerateObjectsWithOptions:a3 usingBlock:v10];
+    v11 = blockCopy;
+    [allItems enumerateObjectsWithOptions:options usingBlock:v10];
   }
 
   else
@@ -58,33 +58,33 @@
     v12[1] = 3221225472;
     v12[2] = __71__CLSInvestigationPhotoKitFeeder_enumerateItemsWithOptions_usingBlock___block_invoke;
     v12[3] = &unk_2788A7C80;
-    v13 = v6;
-    [(PHFetchResult *)fetchResult enumerateObjectsWithOptions:a3 usingBlock:v12];
-    v8 = v13;
+    v13 = blockCopy;
+    [(PHFetchResult *)fetchResult enumerateObjectsWithOptions:options usingBlock:v12];
+    allItems = v13;
   }
 
   objc_sync_exit(v7);
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   [(CLSInvestigationPhotoKitFeeder *)self enumerateItemsWithOptions:0 usingBlock:v4];
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
   v5 = self->_fetchResult;
   objc_sync_enter(v5);
   if (self->_assetPrefetchOptions)
   {
-    v6 = [(CLSInvestigationPhotoKitFeeder *)self allItems];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    allItems = [(CLSInvestigationPhotoKitFeeder *)self allItems];
+    v7 = [allItems objectAtIndexedSubscript:index];
   }
 
   else
   {
-    v7 = [(PHFetchResult *)self->_fetchResult objectAtIndex:a3];
+    v7 = [(PHFetchResult *)self->_fetchResult objectAtIndex:index];
   }
 
   objc_sync_exit(v5);
@@ -94,18 +94,18 @@
 
 - (id)sharedItems
 {
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self allItems];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self allItems];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clsIsInSharedLibrary == YES"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allItems filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (id)privateItems
 {
-  v2 = [(CLSInvestigationPhotoKitFeeder *)self allItems];
+  allItems = [(CLSInvestigationPhotoKitFeeder *)self allItems];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clsIsInSharedLibrary == NO"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allItems filteredArrayUsingPredicate:v3];
 
   return v4;
 }
@@ -123,15 +123,15 @@
     if (assetPrefetchOptions)
     {
       v7 = [MEMORY[0x277CD97A8] clsAllAssetsFromFetchResult:self->_fetchResult prefetchOptions:assetPrefetchOptions curationContext:self->_curationContext];
-      v8 = self->_allItems;
+      fetchedObjects = self->_allItems;
       self->_allItems = v7;
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x277CBEA60]);
-      v8 = [(PHFetchResult *)self->_fetchResult fetchedObjects];
-      v10 = [v9 initWithArray:v8 copyItems:0];
+      fetchedObjects = [(PHFetchResult *)self->_fetchResult fetchedObjects];
+      v10 = [v9 initWithArray:fetchedObjects copyItems:0];
       v11 = self->_allItems;
       self->_allItems = v10;
     }
@@ -150,32 +150,32 @@
 {
   v3 = self->_fetchResult;
   objc_sync_enter(v3);
-  v4 = [(PHAssetCollection *)self->_assetCollection approximateLocation];
+  approximateLocation = [(PHAssetCollection *)self->_assetCollection approximateLocation];
   objc_sync_exit(v3);
 
-  return v4;
+  return approximateLocation;
 }
 
 - (unint64_t)numberOfAllPeople
 {
-  v2 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x277D85DE8];
   result = self->_numberOfAllPeople;
   if (result == -1)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = v4;
-    if ((v2->_assetPrefetchOptions & 8) != 0)
+    if ((selfCopy->_assetPrefetchOptions & 8) != 0)
     {
       v23 = v4;
       v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v10 = [(CLSCurationContext *)v2->_curationContext nonPetFacedPersonLocalIdentifiers];
+      nonPetFacedPersonLocalIdentifiers = [(CLSCurationContext *)selfCopy->_curationContext nonPetFacedPersonLocalIdentifiers];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v24 = v2;
-      obj = [(CLSInvestigationPhotoKitFeeder *)v2 allItems];
+      v24 = selfCopy;
+      obj = [(CLSInvestigationPhotoKitFeeder *)selfCopy allItems];
       v11 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v11)
       {
@@ -195,10 +195,10 @@
             v27 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v16 = [v15 clsFaceInformationSummary];
-            v17 = [v16 faceInformationByPersonLocalIdentifier];
+            clsFaceInformationSummary = [v15 clsFaceInformationSummary];
+            faceInformationByPersonLocalIdentifier = [clsFaceInformationSummary faceInformationByPersonLocalIdentifier];
 
-            v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v18 = [faceInformationByPersonLocalIdentifier countByEnumeratingWithState:&v26 objects:v34 count:16];
             if (v18)
             {
               v19 = v18;
@@ -209,17 +209,17 @@
                 {
                   if (*v27 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(faceInformationByPersonLocalIdentifier);
                   }
 
                   v22 = *(*(&v26 + 1) + 8 * j);
-                  if ([v10 containsObject:v22])
+                  if ([nonPetFacedPersonLocalIdentifiers containsObject:v22])
                   {
                     [v9 addObject:v22];
                   }
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
+                v19 = [faceInformationByPersonLocalIdentifier countByEnumeratingWithState:&v26 objects:v34 count:16];
               }
 
               while (v19);
@@ -232,7 +232,7 @@
         while (v12);
       }
 
-      v2 = v24;
+      selfCopy = v24;
       v24->_numberOfAllPeople = [v9 count];
 
       v5 = v23;
@@ -240,18 +240,18 @@
 
     else
     {
-      v6 = [(PHAssetCollection *)v2->_assetCollection photoLibrary];
-      v7 = [v6 librarySpecificFetchOptions];
+      photoLibrary = [(PHAssetCollection *)selfCopy->_assetCollection photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v7 setShouldPrefetchCount:1];
-      [v7 setPersonContext:1];
-      [v7 setIncludedDetectionTypes:&unk_28449B400];
-      v8 = [MEMORY[0x277CD9938] fetchPersonsForAssetCollection:v2->_assetCollection options:v7];
-      v2->_numberOfAllPeople = [v8 count];
+      [librarySpecificFetchOptions setShouldPrefetchCount:1];
+      [librarySpecificFetchOptions setPersonContext:1];
+      [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_28449B400];
+      v8 = [MEMORY[0x277CD9938] fetchPersonsForAssetCollection:selfCopy->_assetCollection options:librarySpecificFetchOptions];
+      selfCopy->_numberOfAllPeople = [v8 count];
     }
 
     objc_autoreleasePoolPop(v5);
-    return v2->_numberOfAllPeople;
+    return selfCopy->_numberOfAllPeople;
   }
 
   return result;
@@ -452,48 +452,48 @@ LABEL_11:
 
 - (BOOL)_shouldPrefetchCurationInformation
 {
-  v2 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x277D85DE8];
   if ([(PHAssetCollection *)self->_assetCollection assetCollectionType]== PHAssetCollectionTypeMoment)
   {
-    v3 = [(PHFetchResult *)v2->_fetchResult firstObject];
-    [v3 curationScore];
-    LOBYTE(v2) = v4 == 0.0;
+    firstObject = [(PHFetchResult *)selfCopy->_fetchResult firstObject];
+    [firstObject curationScore];
+    LOBYTE(selfCopy) = v4 == 0.0;
   }
 
   else
   {
-    v3 = [(PHFetchOptions *)v2->_assetFetchOptions predicate];
-    if (v3)
+    firstObject = [(PHFetchOptions *)selfCopy->_assetFetchOptions predicate];
+    if (firstObject)
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v5 = v2->_fetchResult;
-      v2 = [(PHFetchResult *)v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
-      if (v2)
+      librarySpecificFetchOptions = selfCopy->_fetchResult;
+      selfCopy = [(PHFetchResult *)librarySpecificFetchOptions countByEnumeratingWithState:&v18 objects:v23 count:16];
+      if (selfCopy)
       {
         v6 = *v19;
         while (2)
         {
-          for (i = 0; i != v2; i = (i + 1))
+          for (i = 0; i != selfCopy; i = (i + 1))
           {
             if (*v19 != v6)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(librarySpecificFetchOptions);
             }
 
             [*(*(&v18 + 1) + 8 * i) curationScore];
             if (v8 == 0.0)
             {
-              LOBYTE(v2) = 1;
+              LOBYTE(selfCopy) = 1;
               goto LABEL_17;
             }
           }
 
-          v2 = [(PHFetchResult *)v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
-          if (v2)
+          selfCopy = [(PHFetchResult *)librarySpecificFetchOptions countByEnumeratingWithState:&v18 objects:v23 count:16];
+          if (selfCopy)
           {
             continue;
           }
@@ -505,57 +505,57 @@ LABEL_11:
 
     else
     {
-      v9 = [(PHAssetCollection *)v2->_assetCollection photoLibrary];
-      v5 = [v9 librarySpecificFetchOptions];
+      photoLibrary = [(PHAssetCollection *)selfCopy->_assetCollection photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [(PHFetchResult *)v5 setShouldPrefetchCount:1];
-      [(PHFetchResult *)v5 setIncludeGuestAssets:1];
-      [(PHFetchResult *)v5 setFetchLimit:1];
+      [(PHFetchResult *)librarySpecificFetchOptions setShouldPrefetchCount:1];
+      [(PHFetchResult *)librarySpecificFetchOptions setIncludeGuestAssets:1];
+      [(PHFetchResult *)librarySpecificFetchOptions setFetchLimit:1];
       v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"noindex:(curationScore) == 0"];
-      v11 = [(PHFetchOptions *)v2->_assetFetchOptions internalPredicate];
-      v12 = v11;
-      if (v11)
+      internalPredicate = [(PHFetchOptions *)selfCopy->_assetFetchOptions internalPredicate];
+      v12 = internalPredicate;
+      if (internalPredicate)
       {
         v13 = MEMORY[0x277CCA920];
         v22[0] = v10;
-        v22[1] = v11;
+        v22[1] = internalPredicate;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
         v15 = [v13 andPredicateWithSubpredicates:v14];
 
         v10 = v15;
       }
 
-      [(PHFetchResult *)v5 setInternalPredicate:v10];
-      v16 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v2->_assetCollection options:v5];
-      LOBYTE(v2) = [v16 count] != 0;
+      [(PHFetchResult *)librarySpecificFetchOptions setInternalPredicate:v10];
+      v16 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:selfCopy->_assetCollection options:librarySpecificFetchOptions];
+      LOBYTE(selfCopy) = [v16 count] != 0;
     }
 
 LABEL_17:
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (CLSInvestigationPhotoKitFeeder)initWithAssetFetchResult:(id)a3 curationContext:(id)a4
+- (CLSInvestigationPhotoKitFeeder)initWithAssetFetchResult:(id)result curationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = CLSInvestigationPhotoKitFeeder;
   v9 = [(CLSInvestigationFeeder *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fetchResult, a3);
-    v11 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssetFetchResult:v7 title:0];
+    objc_storeStrong(&v9->_fetchResult, result);
+    v11 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssetFetchResult:resultCopy title:0];
     assetCollection = v10->_assetCollection;
     v10->_assetCollection = v11;
 
-    v13 = [v7 fetchOptions];
+    fetchOptions = [resultCopy fetchOptions];
     assetFetchOptions = v10->_assetFetchOptions;
-    v10->_assetFetchOptions = v13;
+    v10->_assetFetchOptions = fetchOptions;
 
-    objc_storeStrong(&v10->_curationContext, a4);
+    objc_storeStrong(&v10->_curationContext, context);
     v15 = [MEMORY[0x277CBEB98] set];
     shareParticipants = v10->_shareParticipants;
     v10->_shareParticipants = v15;
@@ -564,13 +564,13 @@ LABEL_17:
   return v10;
 }
 
-- (CLSInvestigationPhotoKitFeeder)initWithAssetCollection:(id)a3 assetFetchOptions:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6
+- (CLSInvestigationPhotoKitFeeder)initWithAssetCollection:(id)collection assetFetchOptions:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  collectionCopy = collection;
+  optionsCopy = options;
+  prefetchOptionsCopy = prefetchOptions;
+  contextCopy = context;
   v38.receiver = self;
   v38.super_class = CLSInvestigationPhotoKitFeeder;
   v16 = [(CLSInvestigationFeeder *)&v38 init];
@@ -579,35 +579,35 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  v17 = [v13 copy];
-  v18 = v17;
+  v17 = [optionsCopy copy];
+  librarySpecificFetchOptions = v17;
   if (!v17)
   {
-    v6 = [v12 photoLibrary];
-    v18 = [v6 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   }
 
-  objc_storeStrong(&v16->_assetFetchOptions, v18);
+  objc_storeStrong(&v16->_assetFetchOptions, librarySpecificFetchOptions);
   if (!v17)
   {
   }
 
   [(PHFetchOptions *)v16->_assetFetchOptions setChunkSizeForFetch:10000];
   [(PHFetchOptions *)v16->_assetFetchOptions setIncludeGuestAssets:1];
-  objc_storeStrong(&v16->_assetCollection, a3);
+  objc_storeStrong(&v16->_assetCollection, collection);
   v16->_numberOfAllPeople = -1;
-  v19 = [(PHFetchOptions *)v16->_assetFetchOptions sortDescriptors];
-  if (v19)
+  sortDescriptors = [(PHFetchOptions *)v16->_assetFetchOptions sortDescriptors];
+  if (sortDescriptors)
   {
     goto LABEL_7;
   }
 
-  v20 = [(PHFetchOptions *)v16->_assetFetchOptions internalSortDescriptors];
+  internalSortDescriptors = [(PHFetchOptions *)v16->_assetFetchOptions internalSortDescriptors];
 
-  if (!v20)
+  if (!internalSortDescriptors)
   {
-    v19 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
-    v40[0] = v19;
+    sortDescriptors = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
+    v40[0] = sortDescriptors;
     v36 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
     v40[1] = v36;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
@@ -616,9 +616,9 @@ LABEL_17:
 LABEL_7:
   }
 
-  if (v14)
+  if (prefetchOptionsCopy)
   {
-    v21 = v14;
+    v21 = prefetchOptionsCopy;
   }
 
   else
@@ -645,11 +645,11 @@ LABEL_7:
   v16->_assetPrefetchOptions |= v23;
   if ([(CLSFeederPrefetchOptions *)v22 personsPrefetchMode]== 1 || [(CLSFeederPrefetchOptions *)v22 scenesPrefetchMode]== 1 || [(CLSFeederPrefetchOptions *)v22 faceInformationPrefetchMode]== 1)
   {
-    v24 = [(CLSInvestigationPhotoKitFeeder *)v16 _shouldPrefetchCurationInformation];
-    v25 = [(CLSFeederPrefetchOptions *)v22 personCountPrefetchMode];
-    if (v24)
+    _shouldPrefetchCurationInformation = [(CLSInvestigationPhotoKitFeeder *)v16 _shouldPrefetchCurationInformation];
+    personCountPrefetchMode = [(CLSFeederPrefetchOptions *)v22 personCountPrefetchMode];
+    if (_shouldPrefetchCurationInformation)
     {
-      v16->_assetPrefetchOptions |= v25 == 1;
+      v16->_assetPrefetchOptions |= personCountPrefetchMode == 1;
       v16->_assetPrefetchOptions |= 2 * ([(CLSFeederPrefetchOptions *)v22 personsPrefetchMode]== 1);
       v16->_assetPrefetchOptions |= 4 * ([(CLSFeederPrefetchOptions *)v22 scenesPrefetchMode]== 1);
       v26 = v16->_assetPrefetchOptions | (8 * ([(CLSFeederPrefetchOptions *)v22 faceInformationPrefetchMode]== 1));
@@ -657,7 +657,7 @@ LABEL_7:
 
     else
     {
-      if (v25 != 1)
+      if (personCountPrefetchMode != 1)
       {
         goto LABEL_23;
       }
@@ -669,7 +669,7 @@ LABEL_7:
   }
 
 LABEL_23:
-  if (!v13)
+  if (!optionsCopy)
   {
     if (v16->_assetPrefetchOptions)
     {
@@ -682,8 +682,8 @@ LABEL_23:
 
       if ((v16->_assetPrefetchOptions & 8) != 0)
       {
-        v34 = [(PHFetchOptions *)v16->_assetFetchOptions fetchPropertySets];
-        v35 = [v34 arrayByAddingObject:*MEMORY[0x277CD9A90]];
+        fetchPropertySets = [(PHFetchOptions *)v16->_assetFetchOptions fetchPropertySets];
+        v35 = [fetchPropertySets arrayByAddingObject:*MEMORY[0x277CD9A90]];
         [(PHFetchOptions *)v16->_assetFetchOptions setFetchPropertySets:v35];
       }
     }
@@ -694,7 +694,7 @@ LABEL_23:
   v16->_fetchResult = v27;
 
   [(CLSInvestigationFeeder *)v16 setAllowsInterview:1];
-  objc_storeStrong(&v16->_curationContext, a6);
+  objc_storeStrong(&v16->_curationContext, context);
   v29 = [MEMORY[0x277CBEB98] set];
   shareParticipants = v16->_shareParticipants;
   v16->_shareParticipants = v29;
@@ -703,12 +703,12 @@ LABEL_25:
   return v16;
 }
 
-+ (id)feederForAssetCollection:(id)a3 options:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6 sharedLibraryEnabled:(BOOL)a7
++ (id)feederForAssetCollection:(id)collection options:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context sharedLibraryEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  v8 = [CLSInvestigationPhotoKitFeeder feederForAssetCollection:a3 options:a4 feederPrefetchOptions:a5 curationContext:a6];
+  enabledCopy = enabled;
+  v8 = [CLSInvestigationPhotoKitFeeder feederForAssetCollection:collection options:options feederPrefetchOptions:prefetchOptions curationContext:context];
   v9 = v8;
-  if (v7)
+  if (enabledCopy)
   {
     [v8 _prefetchShareParticipants];
   }
@@ -716,13 +716,13 @@ LABEL_25:
   return v9;
 }
 
-+ (id)feederForAssetCollection:(id)a3 options:(id)a4 feederPrefetchOptions:(id)a5 curationContext:(id)a6
++ (id)feederForAssetCollection:(id)collection options:(id)options feederPrefetchOptions:(id)prefetchOptions curationContext:(id)context
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[CLSInvestigationPhotoKitFeeder alloc] initWithAssetCollection:v12 assetFetchOptions:v11 feederPrefetchOptions:v10 curationContext:v9];
+  contextCopy = context;
+  prefetchOptionsCopy = prefetchOptions;
+  optionsCopy = options;
+  collectionCopy = collection;
+  v13 = [[CLSInvestigationPhotoKitFeeder alloc] initWithAssetCollection:collectionCopy assetFetchOptions:optionsCopy feederPrefetchOptions:prefetchOptionsCopy curationContext:contextCopy];
 
   return v13;
 }

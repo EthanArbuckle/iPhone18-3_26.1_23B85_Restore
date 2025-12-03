@@ -1,23 +1,23 @@
 @interface BlurDarkeningBackgroundView
-- (BlurDarkeningBackgroundView)initWithFrame:(CGRect)a3;
-- (id)_roundedCornersResizableImageWithColor:(id)a3;
+- (BlurDarkeningBackgroundView)initWithFrame:(CGRect)frame;
+- (id)_roundedCornersResizableImageWithColor:(id)color;
 - (void)_applyAppearance;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAppearance:(int64_t)a3;
-- (void)setRoundedCornersStyle:(int64_t)a3;
+- (void)setAppearance:(int64_t)appearance;
+- (void)setRoundedCornersStyle:(int64_t)style;
 @end
 
 @implementation BlurDarkeningBackgroundView
 
-- (id)_roundedCornersResizableImageWithColor:(id)a3
+- (id)_roundedCornersResizableImageWithColor:(id)color
 {
   scale = self->_scale;
-  v4 = a3;
+  colorCopy = color;
   v10.width = 13.0;
   v10.height = 13.0;
   UIGraphicsBeginImageContextWithOptions(v10, 0, scale);
-  [v4 setFill];
+  [colorCopy setFill];
 
   v5 = [UIBezierPath bezierPathWithRoundedRect:CGPointZero.x cornerRadius:CGPointZero.y, 13.0, 13.0, 5.0];
   [v5 fill];
@@ -57,14 +57,14 @@
   [(BlurDarkeningBackgroundView *)self _applyAppearance];
 }
 
-- (void)setAppearance:(int64_t)a3
+- (void)setAppearance:(int64_t)appearance
 {
-  if (self->_appearance != a3)
+  if (self->_appearance != appearance)
   {
-    self->_appearance = a3;
-    v4 = [(BlurDarkeningBackgroundView *)self window];
+    self->_appearance = appearance;
+    window = [(BlurDarkeningBackgroundView *)self window];
 
-    if (v4)
+    if (window)
     {
 
       [(BlurDarkeningBackgroundView *)self _applyAppearance];
@@ -72,14 +72,14 @@
   }
 }
 
-- (void)setRoundedCornersStyle:(int64_t)a3
+- (void)setRoundedCornersStyle:(int64_t)style
 {
-  if (self->_roundedCornersStyle != a3)
+  if (self->_roundedCornersStyle != style)
   {
-    self->_roundedCornersStyle = a3;
-    v4 = [(BlurDarkeningBackgroundView *)self window];
+    self->_roundedCornersStyle = style;
+    window = [(BlurDarkeningBackgroundView *)self window];
 
-    if (v4)
+    if (window)
     {
 
       [(BlurDarkeningBackgroundView *)self _maps_setNeedsUpdateWithSelector:"_applyAppearance"];
@@ -101,11 +101,11 @@
   }
 }
 
-- (BlurDarkeningBackgroundView)initWithFrame:(CGRect)a3
+- (BlurDarkeningBackgroundView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = BlurDarkeningBackgroundView;
-  v3 = [(BlurDarkeningBackgroundView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BlurDarkeningBackgroundView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -130,12 +130,12 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v13 = [(BlurDarkeningBackgroundView *)v4 layer];
-    v28[0] = v13;
-    v14 = [(UIImageView *)v4->_bottomFilterView layer];
-    v28[1] = v14;
-    v15 = [(UIImageView *)v4->_topFilterView layer];
-    v28[2] = v15;
+    layer = [(BlurDarkeningBackgroundView *)v4 layer];
+    v28[0] = layer;
+    layer2 = [(UIImageView *)v4->_bottomFilterView layer];
+    v28[1] = layer2;
+    layer3 = [(UIImageView *)v4->_topFilterView layer];
+    v28[2] = layer3;
     v16 = [NSArray arrayWithObjects:v28 count:3];
 
     v17 = [v16 countByEnumeratingWithState:&v23 objects:v29 count:16];

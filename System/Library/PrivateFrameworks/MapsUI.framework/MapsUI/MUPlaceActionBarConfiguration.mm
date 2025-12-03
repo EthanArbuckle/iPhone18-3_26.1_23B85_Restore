@@ -16,7 +16,7 @@
   v9 = type metadata accessor for PlaceActionBarLayoutItem(0);
   if ((*(*(v9 - 8) + 48))(v7, 1, v9) == 1)
   {
-    v10 = self;
+    selfCopy = self;
     sub_1C570461C(v7);
     v11 = *(*&v8[*(type metadata accessor for PlaceActionBarLayout(0) + 20)] + 16);
 

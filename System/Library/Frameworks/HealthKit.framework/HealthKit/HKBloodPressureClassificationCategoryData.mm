@@ -1,17 +1,17 @@
 @interface HKBloodPressureClassificationCategoryData
 - (HKBloodPressureClassificationCategoryData)init;
-- (HKBloodPressureClassificationCategoryData)initWithClassificationGuidelines:(int64_t)a3 identifier:(id)a4 systolicRange:(id)a5 diastolicRange:(id)a6 rangeRelationship:(int64_t)a7;
+- (HKBloodPressureClassificationCategoryData)initWithClassificationGuidelines:(int64_t)guidelines identifier:(id)identifier systolicRange:(id)range diastolicRange:(id)diastolicRange rangeRelationship:(int64_t)relationship;
 - (NSString)description;
 @end
 
 @implementation HKBloodPressureClassificationCategoryData
 
-- (HKBloodPressureClassificationCategoryData)initWithClassificationGuidelines:(int64_t)a3 identifier:(id)a4 systolicRange:(id)a5 diastolicRange:(id)a6 rangeRelationship:(int64_t)a7
+- (HKBloodPressureClassificationCategoryData)initWithClassificationGuidelines:(int64_t)guidelines identifier:(id)identifier systolicRange:(id)range diastolicRange:(id)diastolicRange rangeRelationship:(int64_t)relationship
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = sub_191BF7828(a3, v11, v12, v13, a7);
+  identifierCopy = identifier;
+  rangeCopy = range;
+  diastolicRangeCopy = diastolicRange;
+  v14 = sub_191BF7828(guidelines, identifierCopy, rangeCopy, diastolicRangeCopy, relationship);
 
   return v14;
 }
@@ -25,7 +25,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HKBloodPressureClassificationCategoryData.description.getter();
 
   v3 = sub_191CC6778();

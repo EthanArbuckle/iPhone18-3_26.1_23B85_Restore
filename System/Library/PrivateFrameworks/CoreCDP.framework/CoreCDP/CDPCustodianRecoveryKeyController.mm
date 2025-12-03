@@ -1,24 +1,24 @@
 @interface CDPCustodianRecoveryKeyController
-- (BOOL)_isInSOSCircleWithContext:(id)a3;
-- (BOOL)verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:(id)a3 error:(id *)a4;
-- (id)_initializeRecoveryKeyWithInfo:(id)a3 error:(id *)a4;
-- (void)checkCustodianRecoveryKey:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)createRecoveryKeyWithContext:(id)a3 forUUID:(id)a4 completion:(id)a5;
-- (void)deleteRecoveryKeyWithContext:(id)a3 forUUID:(id)a4 completion:(id)a5;
-- (void)recoverOctagonUsingCustodianInfo:(id)a3 withContext:(id)a4 completion:(id)a5;
-- (void)validateRecoveryKey:(id)a3 withContext:(id)a4 completion:(id)a5;
+- (BOOL)_isInSOSCircleWithContext:(id)context;
+- (BOOL)verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:(id)context error:(id *)error;
+- (id)_initializeRecoveryKeyWithInfo:(id)info error:(id *)error;
+- (void)checkCustodianRecoveryKey:(id)key withContext:(id)context completion:(id)completion;
+- (void)createRecoveryKeyWithContext:(id)context forUUID:(id)d completion:(id)completion;
+- (void)deleteRecoveryKeyWithContext:(id)context forUUID:(id)d completion:(id)completion;
+- (void)recoverOctagonUsingCustodianInfo:(id)info withContext:(id)context completion:(id)completion;
+- (void)validateRecoveryKey:(id)key withContext:(id)context completion:(id)completion;
 @end
 
 @implementation CDPCustodianRecoveryKeyController
 
-- (void)createRecoveryKeyWithContext:(id)a3 forUUID:(id)a4 completion:(id)a5
+- (void)createRecoveryKeyWithContext:(id)context forUUID:(id)d completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 dsid];
-  if (v10)
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_4:
@@ -26,7 +26,7 @@ LABEL_4:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138739971;
-      v30 = v8;
+      v30 = dCopy;
       _os_log_impl(&dword_1DED99000, v12, OS_LOG_TYPE_DEFAULT, "Asking security to create custodian recovery key for %{sensitive}@", buf, 0xCu);
     }
 
@@ -50,7 +50,7 @@ LABEL_4:
       _os_log_impl(&dword_1DED99000, v19, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: CustodianCreateRecoveryKey  enableTelemetry=YES ", buf, 0xCu);
     }
 
-    v20 = [v7 cliqueConfiguration];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
     v21 = MEMORY[0x1E697AA80];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -58,16 +58,16 @@ LABEL_4:
     v24[3] = &unk_1E869D650;
     v27 = v14;
     v28 = v16;
-    v26 = v9;
-    v25 = v8;
-    [v21 createCustodianRecoveryKey:v20 uuid:v25 reply:v24];
+    v26 = completionCopy;
+    v25 = dCopy;
+    [v21 createCustodianRecoveryKey:cliqueConfiguration uuid:v25 reply:v24];
 
     goto LABEL_12;
   }
 
-  v11 = [v7 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v11)
+  if (altDSID)
   {
     goto LABEL_4;
   }
@@ -78,8 +78,8 @@ LABEL_4:
     [CDPCustodianRecoveryKeyController createRecoveryKeyWithContext:forUUID:completion:];
   }
 
-  v20 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v9 + 2))(v9, 0, v20);
+  cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+  (*(completionCopy + 2))(completionCopy, 0, cliqueConfiguration);
 LABEL_12:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -175,14 +175,14 @@ void __85__CDPCustodianRecoveryKeyController_createRecoveryKeyWithContext_forUUI
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteRecoveryKeyWithContext:(id)a3 forUUID:(id)a4 completion:(id)a5
+- (void)deleteRecoveryKeyWithContext:(id)context forUUID:(id)d completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 dsid];
-  if (v10)
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_4:
@@ -190,7 +190,7 @@ LABEL_4:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138739971;
-      v30 = v8;
+      v30 = dCopy;
       _os_log_impl(&dword_1DED99000, v12, OS_LOG_TYPE_DEFAULT, "Asking security to delete custodian recovery key for %{sensitive}@", buf, 0xCu);
     }
 
@@ -214,7 +214,7 @@ LABEL_4:
       _os_log_impl(&dword_1DED99000, v19, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: CustodianDeleteRecoveryKey  enableTelemetry=YES ", buf, 0xCu);
     }
 
-    v20 = [v7 cliqueConfiguration];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
     v21 = MEMORY[0x1E697AA80];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -222,16 +222,16 @@ LABEL_4:
     v24[3] = &unk_1E869D678;
     v27 = v14;
     v28 = v16;
-    v26 = v9;
-    v25 = v8;
-    [v21 removeCustodianRecoveryKey:v20 custodianRecoveryKeyUUID:v25 reply:v24];
+    v26 = completionCopy;
+    v25 = dCopy;
+    [v21 removeCustodianRecoveryKey:cliqueConfiguration custodianRecoveryKeyUUID:v25 reply:v24];
 
     goto LABEL_12;
   }
 
-  v11 = [v7 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v11)
+  if (altDSID)
   {
     goto LABEL_4;
   }
@@ -242,8 +242,8 @@ LABEL_4:
     [CDPCustodianRecoveryKeyController createRecoveryKeyWithContext:forUUID:completion:];
   }
 
-  v20 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v9 + 2))(v9, v20);
+  cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+  (*(completionCopy + 2))(completionCopy, cliqueConfiguration);
 LABEL_12:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -298,38 +298,38 @@ void __85__CDPCustodianRecoveryKeyController_deleteRecoveryKeyWithContext_forUUI
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)validateRecoveryKey:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)validateRecoveryKey:(id)key withContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 dsid];
-  if (v10)
+  keyCopy = key;
+  contextCopy = context;
+  completionCopy = completion;
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_4:
-    v12 = [v8 cliqueConfiguration];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
     v13 = objc_alloc(MEMORY[0x1E69B7CD0]);
-    v14 = [v7 wrappedRKC];
-    v15 = [v7 wrappingKey];
-    v16 = [v7 custodianUUID];
-    v17 = [v13 initWithWrappedKey:v14 wrappingKey:v15 uuid:v16 error:0];
+    wrappedRKC = [keyCopy wrappedRKC];
+    wrappingKey = [keyCopy wrappingKey];
+    custodianUUID = [keyCopy custodianUUID];
+    v17 = [v13 initWithWrappedKey:wrappedRKC wrappingKey:wrappingKey uuid:custodianUUID error:0];
 
     v18 = MEMORY[0x1E697AA80];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __80__CDPCustodianRecoveryKeyController_validateRecoveryKey_withContext_completion___block_invoke;
     v20[3] = &unk_1E869D6A0;
-    v22 = v9;
-    v21 = v7;
-    [v18 preflightRecoverOctagonUsingCustodianRecoveryKey:v12 custodianRecoveryKey:v17 reply:v20];
+    v22 = completionCopy;
+    v21 = keyCopy;
+    [v18 preflightRecoverOctagonUsingCustodianRecoveryKey:cliqueConfiguration custodianRecoveryKey:v17 reply:v20];
 
     goto LABEL_5;
   }
 
-  v11 = [v8 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v11)
+  if (altDSID)
   {
     goto LABEL_4;
   }
@@ -340,8 +340,8 @@ LABEL_4:
     [CDPCustodianRecoveryKeyController validateRecoveryKey:withContext:completion:];
   }
 
-  v12 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v9 + 2))(v9, v12);
+  cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+  (*(completionCopy + 2))(completionCopy, cliqueConfiguration);
 LABEL_5:
 }
 
@@ -366,13 +366,13 @@ void __80__CDPCustodianRecoveryKeyController_validateRecoveryKey_withContext_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)recoverOctagonUsingCustodianInfo:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)recoverOctagonUsingCustodianInfo:(id)info withContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 dsid];
-  if (v11)
+  infoCopy = info;
+  contextCopy = context;
+  completionCopy = completion;
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_4:
@@ -380,10 +380,10 @@ LABEL_4:
     v24[1] = 3221225472;
     v24[2] = __93__CDPCustodianRecoveryKeyController_recoverOctagonUsingCustodianInfo_withContext_completion___block_invoke;
     v24[3] = &unk_1E869D588;
-    v25 = v10;
+    v25 = completionCopy;
     v13 = MEMORY[0x1E12CA380](v24);
     v23 = 0;
-    v14 = [(CDPCustodianRecoveryKeyController *)self _initializeRecoveryKeyWithInfo:v8 error:&v23];
+    v14 = [(CDPCustodianRecoveryKeyController *)self _initializeRecoveryKeyWithInfo:infoCopy error:&v23];
     v15 = v23;
     v16 = _CDPLogSystem();
     v17 = v16;
@@ -406,17 +406,17 @@ LABEL_4:
       }
 
       v18 = MEMORY[0x1E697AA80];
-      v19 = [v9 cliqueConfiguration];
-      [v18 recoverOctagonUsingCustodianRecoveryKey:v19 custodianRecoveryKey:v14 reply:v13];
+      cliqueConfiguration = [contextCopy cliqueConfiguration];
+      [v18 recoverOctagonUsingCustodianRecoveryKey:cliqueConfiguration custodianRecoveryKey:v14 reply:v13];
     }
 
     v20 = v25;
     goto LABEL_12;
   }
 
-  v12 = [v9 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v12)
+  if (altDSID)
   {
     goto LABEL_4;
   }
@@ -428,7 +428,7 @@ LABEL_4:
   }
 
   v20 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v10 + 2))(v10, v20);
+  (*(completionCopy + 2))(completionCopy, v20);
 LABEL_12:
 }
 
@@ -460,33 +460,33 @@ LABEL_6:
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)_initializeRecoveryKeyWithInfo:(id)a3 error:(id *)a4
+- (id)_initializeRecoveryKeyWithInfo:(id)info error:(id *)error
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [CDPCustodianRecoveryKeyController _initializeRecoveryKeyWithInfo:v5 error:?];
+    [CDPCustodianRecoveryKeyController _initializeRecoveryKeyWithInfo:infoCopy error:?];
   }
 
   v7 = objc_alloc(MEMORY[0x1E69B7CD0]);
-  v8 = [v5 wrappedRKC];
-  v9 = [v5 wrappingKey];
-  v10 = [v5 custodianUUID];
-  v11 = [v7 initWithWrappedKey:v8 wrappingKey:v9 uuid:v10 error:a4];
+  wrappedRKC = [infoCopy wrappedRKC];
+  wrappingKey = [infoCopy wrappingKey];
+  custodianUUID = [infoCopy custodianUUID];
+  v11 = [v7 initWithWrappedKey:wrappedRKC wrappingKey:wrappingKey uuid:custodianUUID error:error];
 
   return v11;
 }
 
-- (BOOL)verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:(id)a3 error:(id *)a4
+- (BOOL)verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[CDPRecoveryKeyStatusProvider alloc] initWithContext:v6];
+  contextCopy = context;
+  v7 = [[CDPRecoveryKeyStatusProvider alloc] initWithContext:contextCopy];
   if ([(CDPRecoveryKeyStatusProvider *)v7 idmsHasRK])
   {
-    v8 = [v6 cliqueConfiguration];
-    if (v8)
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
+    if (cliqueConfiguration)
     {
       v27 = 0;
       v9 = [(CDPRecoveryKeyStatusProvider *)v7 isRecoveryKeySetInOctagonWithError:&v27];
@@ -499,11 +499,11 @@ LABEL_6:
           [CDPCustodianRecoveryKeyController verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:error:];
         }
 
-        if (a4)
+        if (error)
         {
           v12 = v10;
           LOBYTE(v9) = 0;
-          *a4 = v10;
+          *error = v10;
 LABEL_40:
 
           goto LABEL_41;
@@ -516,9 +516,9 @@ LABEL_39:
 
       if ([(CDPCustodianRecoveryKeyController *)self _isSOSTrustAndSyncingEnabled])
       {
-        if ([v6 isSOSCompatibilityOptInNeeded])
+        if ([contextCopy isSOSCompatibilityOptInNeeded])
         {
-          if ([(CDPCustodianRecoveryKeyController *)self _isInSOSCircleWithContext:v6])
+          if ([(CDPCustodianRecoveryKeyController *)self _isInSOSCircleWithContext:contextCopy])
           {
             v26 = 0;
             v14 = [(CDPRecoveryKeyStatusProvider *)v7 isRecoveryKeySetInSOSWithError:&v26];
@@ -532,7 +532,7 @@ LABEL_39:
                 [CDPCustodianRecoveryKeyController verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:error:];
               }
 
-              if (!a4)
+              if (!error)
               {
                 LOBYTE(v9) = 0;
                 goto LABEL_49;
@@ -549,7 +549,7 @@ LABEL_39:
               }
 
               LOBYTE(v9) = v9 & v14;
-              if (!a4 || (v9 & 1) != 0)
+              if (!error || (v9 & 1) != 0)
               {
                 goto LABEL_49;
               }
@@ -558,7 +558,7 @@ LABEL_39:
             }
 
             LOBYTE(v9) = 0;
-            *a4 = v18;
+            *error = v18;
 LABEL_49:
 
             goto LABEL_40;
@@ -571,7 +571,7 @@ LABEL_49:
             _os_log_impl(&dword_1DED99000, v23, OS_LOG_TYPE_DEFAULT, "SOS Opt In is needed. First Resolve SOS Compat CFU", buf, 2u);
           }
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_39;
           }
@@ -579,7 +579,7 @@ LABEL_49:
           v22 = -5318;
 LABEL_34:
           _CDPStateError(v22, 0);
-          *a4 = LOBYTE(v9) = 0;
+          *error = LOBYTE(v9) = 0;
           goto LABEL_40;
         }
 
@@ -610,7 +610,7 @@ LABEL_28:
         }
       }
 
-      if (a4)
+      if (error)
       {
         v21 = v9;
       }
@@ -635,10 +635,10 @@ LABEL_28:
       [CDPCustodianRecoveryKeyController verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:error:];
     }
 
-    if (a4)
+    if (error)
     {
-      [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5217 underlyingError:*a4];
-      *a4 = LOBYTE(v9) = 0;
+      [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5217 underlyingError:*error];
+      *error = LOBYTE(v9) = 0;
     }
 
     else
@@ -649,8 +649,8 @@ LABEL_28:
 
   else
   {
-    v8 = _CDPLogSystem();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    cliqueConfiguration = _CDPLogSystem();
+    if (os_log_type_enabled(cliqueConfiguration, OS_LOG_TYPE_DEBUG))
     {
       [CDPCustodianRecoveryKeyController verifyRecoveryKeyObservingSystemsHaveMatchingStateWithContext:error:];
     }
@@ -664,35 +664,35 @@ LABEL_41:
   return v9;
 }
 
-- (BOOL)_isInSOSCircleWithContext:(id)a3
+- (BOOL)_isInSOSCircleWithContext:(id)context
 {
-  v3 = [a3 altDSID];
-  v4 = [CDPSOSCircleProxyImpl syncingStatusForAltDSID:v3]== 1;
+  altDSID = [context altDSID];
+  v4 = [CDPSOSCircleProxyImpl syncingStatusForAltDSID:altDSID]== 1;
 
   return v4;
 }
 
-- (void)checkCustodianRecoveryKey:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)checkCustodianRecoveryKey:(id)key withContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [CDPCustodianRecoveryKeyController checkCustodianRecoveryKey:withContext:completion:];
   }
 
-  v11 = [v8 dsid];
-  if (v11)
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
   }
 
   else
   {
-    v12 = [v8 altDSID];
+    altDSID = [contextCopy altDSID];
 
-    if (!v12)
+    if (!altDSID)
     {
       v16 = _CDPLogSystem();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -700,22 +700,22 @@ LABEL_41:
         [CDPCustodianRecoveryKeyController checkCustodianRecoveryKey:withContext:completion:];
       }
 
-      v13 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-      v9[2](v9, 0, v13);
+      cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+      completionCopy[2](completionCopy, 0, cliqueConfiguration);
       goto LABEL_14;
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v8 cliqueConfiguration];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
     v14 = MEMORY[0x1E697AA80];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __86__CDPCustodianRecoveryKeyController_checkCustodianRecoveryKey_withContext_completion___block_invoke;
     v17[3] = &unk_1E869D6C8;
-    v18 = v9;
-    [v14 checkCustodianRecoveryKey:v13 custodianRecoveryKeyUUID:v7 reply:v17];
+    v18 = completionCopy;
+    [v14 checkCustodianRecoveryKey:cliqueConfiguration custodianRecoveryKeyUUID:keyCopy reply:v17];
 
 LABEL_14:
     goto LABEL_15;
@@ -727,7 +727,7 @@ LABEL_14:
     [CDPCustodianRecoveryKeyController checkCustodianRecoveryKey:withContext:completion:];
   }
 
-  v9[2](v9, 0, 0);
+  completionCopy[2](completionCopy, 0, 0);
 LABEL_15:
 }
 

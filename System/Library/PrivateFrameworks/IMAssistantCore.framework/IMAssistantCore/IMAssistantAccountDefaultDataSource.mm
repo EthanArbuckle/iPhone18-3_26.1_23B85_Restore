@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BOOL)hasMessagingAccount;
 - (id)countryCode;
-- (id)imHandleWithID:(id)a3;
+- (id)imHandleWithID:(id)d;
 @end
 
 @implementation IMAssistantAccountDefaultDataSource
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_2547BAF70;
   block[3] = &unk_279786A78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_28118F648 != -1)
   {
     dispatch_once(&qword_28118F648, block);
@@ -26,33 +26,33 @@
 
 - (BOOL)hasMessagingAccount
 {
-  v2 = [MEMORY[0x277D18D28] sharedInstance];
-  v3 = [v2 __im_assistant_bestMessagingAccount];
-  v4 = v3 != 0;
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  __im_assistant_bestMessagingAccount = [mEMORY[0x277D18D28] __im_assistant_bestMessagingAccount];
+  v4 = __im_assistant_bestMessagingAccount != 0;
 
   return v4;
 }
 
-- (id)imHandleWithID:(id)a3
+- (id)imHandleWithID:(id)d
 {
   v3 = MEMORY[0x277D18D28];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 __im_assistant_bestMessagingAccount];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  __im_assistant_bestMessagingAccount = [sharedInstance __im_assistant_bestMessagingAccount];
 
-  v7 = [v6 imHandleWithID:v4];
+  v7 = [__im_assistant_bestMessagingAccount imHandleWithID:dCopy];
 
   return v7;
 }
 
 - (id)countryCode
 {
-  v2 = [MEMORY[0x277D18D28] sharedInstance];
-  v3 = [v2 __im_assistant_bestMessagingAccount];
+  mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+  __im_assistant_bestMessagingAccount = [mEMORY[0x277D18D28] __im_assistant_bestMessagingAccount];
 
-  v4 = [v3 countryCode];
+  countryCode = [__im_assistant_bestMessagingAccount countryCode];
 
-  return v4;
+  return countryCode;
 }
 
 @end

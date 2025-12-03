@@ -1,15 +1,15 @@
 @interface _DASTaskDependencyGraph
 - (id)allTasks;
-- (id)constructTaskDependencyGraphForTask:(id)a3 dependencyDataMap:(id)a4;
+- (id)constructTaskDependencyGraphForTask:(id)task dependencyDataMap:(id)map;
 - (id)description;
-- (id)getEdgesForNode:(id)a3;
+- (id)getEdgesForNode:(id)node;
 - (id)initTaskGraph;
-- (id)nodeForTaskIdentifier:(id)a3;
-- (id)unionGraphWith:(id)a3;
-- (void)addDependencyEdgeFrom:(id)a3 to:(id)a4;
-- (void)addTaskNodeToGraph:(id)a3;
-- (void)markRootTaskIdentifier:(id)a3;
-- (void)traverseGraphForTask:(id)a3 updatingNodesWith:(id)a4;
+- (id)nodeForTaskIdentifier:(id)identifier;
+- (id)unionGraphWith:(id)with;
+- (void)addDependencyEdgeFrom:(id)from to:(id)to;
+- (void)addTaskNodeToGraph:(id)graph;
+- (void)markRootTaskIdentifier:(id)identifier;
+- (void)traverseGraphForTask:(id)task updatingNodesWith:(id)with;
 @end
 
 @implementation _DASTaskDependencyGraph
@@ -43,26 +43,26 @@
   return v2;
 }
 
-- (void)addTaskNodeToGraph:(id)a3
+- (void)addTaskNodeToGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A09E4;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = graphCopy;
+  v6 = graphCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addDependencyEdgeFrom:(id)a3 to:(id)a4
+- (void)addDependencyEdgeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  fromCopy = from;
+  toCopy = to;
+  v8 = toCopy;
+  if (fromCopy && toCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -70,23 +70,23 @@
     block[2] = sub_1000A0BB0;
     block[3] = &unk_1001B56B8;
     block[4] = self;
-    v11 = v6;
+    v11 = fromCopy;
     v12 = v8;
     dispatch_sync(queue, block);
   }
 }
 
-- (id)nodeForTaskIdentifier:(id)a3
+- (id)nodeForTaskIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
+  identifierCopy = identifier;
+  v5 = identifierCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1000A0E4C;
   v17 = sub_1000A0E5C;
   v18 = 0;
-  if (v4)
+  if (identifierCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -95,7 +95,7 @@
     block[3] = &unk_1001B5D98;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = identifierCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -112,31 +112,31 @@
   return v8;
 }
 
-- (void)markRootTaskIdentifier:(id)a3
+- (void)markRootTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A0F4C;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)getEdgesForNode:(id)a3
+- (id)getEdgesForNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
+  nodeCopy = node;
+  v5 = nodeCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1000A0E4C;
   v16 = sub_1000A0E5C;
   v17 = 0;
-  if (v4)
+  if (nodeCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -145,7 +145,7 @@
     block[3] = &unk_1001B5D98;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = nodeCopy;
     dispatch_sync(queue, block);
     v7 = v13[5];
   }
@@ -160,16 +160,16 @@
   return v7;
 }
 
-- (id)constructTaskDependencyGraphForTask:(id)a3 dependencyDataMap:(id)a4
+- (id)constructTaskDependencyGraphForTask:(id)task dependencyDataMap:(id)map
 {
-  v43 = a3;
-  v5 = a4;
+  taskCopy = task;
+  mapCopy = map;
   v52 = +[NSMutableDictionary dictionary];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v6 = v5;
+  v6 = mapCopy;
   v45 = v6;
   v50 = [v6 countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v50)
@@ -186,13 +186,13 @@
 
         v8 = *(*(&v65 + 1) + 8 * i);
         v9 = [v6 objectForKeyedSubscript:v8];
-        v10 = [v9 producedResultIdentifiers];
+        producedResultIdentifiers = [v9 producedResultIdentifiers];
 
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v11 = v10;
+        v11 = producedResultIdentifiers;
         v12 = [v11 countByEnumeratingWithState:&v61 objects:v71 count:16];
         if (v12)
         {
@@ -238,27 +238,27 @@
     while (v50);
   }
 
-  v20 = [(_DASTaskDependencyGraph *)self initTaskGraph];
-  v21 = [[_DASTaskDependencyGraphNode alloc] initWithIdentifier:v43];
-  [v20 markRootTaskIdentifier:v43];
+  initTaskGraph = [(_DASTaskDependencyGraph *)self initTaskGraph];
+  v21 = [[_DASTaskDependencyGraphNode alloc] initWithIdentifier:taskCopy];
+  [initTaskGraph markRootTaskIdentifier:taskCopy];
   v22 = [NSMutableSet setWithObject:v21];
   v42 = v21;
   v23 = [NSMutableArray arrayWithObject:v21];
   v24 = v52;
   while ([v23 count])
   {
-    v25 = [v23 firstObject];
+    firstObject = [v23 firstObject];
     [v23 removeObjectAtIndex:0];
-    [v20 addTaskNodeToGraph:v25];
-    v26 = [v25 taskIdentifier];
-    v27 = [v6 objectForKeyedSubscript:v26];
-    v28 = [v27 dependencyIdentifiers];
+    [initTaskGraph addTaskNodeToGraph:firstObject];
+    taskIdentifier = [firstObject taskIdentifier];
+    v27 = [v6 objectForKeyedSubscript:taskIdentifier];
+    dependencyIdentifiers = [v27 dependencyIdentifiers];
 
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v29 = v28;
+    v29 = dependencyIdentifiers;
     v49 = [v29 countByEnumeratingWithState:&v57 objects:v70 count:16];
     if (!v49)
     {
@@ -283,13 +283,13 @@
 
         if (v32)
         {
-          v33 = [v20 nodeForTaskIdentifier:v31];
+          v33 = [initTaskGraph nodeForTaskIdentifier:v31];
           if (!v33)
           {
             v33 = [[_DASTaskDependencyGraphNode alloc] initWithIdentifier:v31];
           }
 
-          [v20 addDependencyEdgeFrom:v25 to:v33];
+          [initTaskGraph addDependencyEdgeFrom:firstObject to:v33];
           if (([v22 containsObject:v33] & 1) == 0)
           {
             [v22 addObject:v33];
@@ -326,13 +326,13 @@
                 }
 
                 v39 = *(*(&v53 + 1) + 8 * k);
-                v40 = [v20 nodeForTaskIdentifier:v39];
+                v40 = [initTaskGraph nodeForTaskIdentifier:v39];
                 if (!v40)
                 {
                   v40 = [[_DASTaskDependencyGraphNode alloc] initWithIdentifier:v39];
                 }
 
-                [v20 addDependencyEdgeFrom:v25 to:v40];
+                [initTaskGraph addDependencyEdgeFrom:firstObject to:v40];
                 if (([v22 containsObject:v40] & 1) == 0)
                 {
                   [v22 addObject:v40];
@@ -362,14 +362,14 @@ LABEL_44:
 LABEL_46:
   }
 
-  return v20;
+  return initTaskGraph;
 }
 
-- (void)traverseGraphForTask:(id)a3 updatingNodesWith:(id)a4
+- (void)traverseGraphForTask:(id)task updatingNodesWith:(id)with
 {
-  v6 = a4;
-  v18 = self;
-  v7 = [(_DASTaskDependencyGraph *)self nodeForTaskIdentifier:a3];
+  withCopy = with;
+  selfCopy = self;
+  v7 = [(_DASTaskDependencyGraph *)self nodeForTaskIdentifier:task];
   if (v7)
   {
     v8 = [NSMutableSet setWithObject:v7];
@@ -377,9 +377,9 @@ LABEL_46:
     v9 = [NSMutableArray arrayWithObject:v7];
     while ([v9 count])
     {
-      v10 = [v9 firstObject];
-      v6[2](v6, v10);
-      v11 = [(NSMapTable *)v18->_graph objectForKey:v10];
+      firstObject = [v9 firstObject];
+      withCopy[2](withCopy, firstObject);
+      v11 = [(NSMapTable *)selfCopy->_graph objectForKey:firstObject];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -419,13 +419,13 @@ LABEL_46:
   }
 }
 
-- (id)unionGraphWith:(id)a3
+- (id)unionGraphWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 rootTaskIdentifier];
-  v22 = v4;
-  v7 = [v4 nodeForTaskIdentifier:v6];
+  withCopy = with;
+  selfCopy = self;
+  rootTaskIdentifier = [withCopy rootTaskIdentifier];
+  v22 = withCopy;
+  v7 = [withCopy nodeForTaskIdentifier:rootTaskIdentifier];
 
   v8 = [NSMutableSet setWithObject:v7];
   v21 = v7;
@@ -435,10 +435,10 @@ LABEL_46:
     v23 = v9;
     do
     {
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
       [v9 removeObjectAtIndex:0];
-      [(_DASTaskDependencyGraph *)v5 addTaskNodeToGraph:v10];
-      v11 = [v22 getEdgesForNode:v10];
+      [(_DASTaskDependencyGraph *)selfCopy addTaskNodeToGraph:firstObject];
+      v11 = [v22 getEdgesForNode:firstObject];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -467,19 +467,19 @@ LABEL_46:
             [v23 addObject:v13];
           }
 
-          v14 = [(_DASTaskDependencyGraph *)v5 graph];
-          v15 = [v14 objectForKey:v10];
+          graph = [(_DASTaskDependencyGraph *)selfCopy graph];
+          v15 = [graph objectForKey:firstObject];
           if (!v15)
           {
 
 LABEL_14:
-            [(_DASTaskDependencyGraph *)v5 addDependencyEdgeFrom:v10 to:v13];
+            [(_DASTaskDependencyGraph *)selfCopy addDependencyEdgeFrom:firstObject to:v13];
             continue;
           }
 
           v16 = v15;
-          v17 = [(_DASTaskDependencyGraph *)v5 graph];
-          v18 = [v17 objectForKey:v10];
+          graph2 = [(_DASTaskDependencyGraph *)selfCopy graph];
+          v18 = [graph2 objectForKey:firstObject];
           v19 = [v18 containsObject:v13];
 
           if ((v19 & 1) == 0)
@@ -500,7 +500,7 @@ LABEL_17:
     while ([v23 count]);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)allTasks

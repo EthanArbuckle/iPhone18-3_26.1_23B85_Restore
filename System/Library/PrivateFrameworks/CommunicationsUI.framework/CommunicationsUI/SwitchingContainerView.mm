@@ -1,15 +1,15 @@
 @interface SwitchingContainerView
-- (_TtC16CommunicationsUI22SwitchingContainerView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI22SwitchingContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SwitchingContainerView
 
-- (_TtC16CommunicationsUI22SwitchingContainerView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI22SwitchingContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI22SwitchingContainerView_views) = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI22SwitchingContainerView_viewsConstraints) = v7;

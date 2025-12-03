@@ -1,11 +1,11 @@
 @interface AGXGPURawCounterSource
-- (AGXGPURawCounterSource)initWithSourceGroup:(id)a3 impl:(Source *)a4;
-- (BOOL)requestCounter:(id)a3;
-- (BOOL)requestCounters:(id)a3 firstErrorIndex:(unint64_t *)a4;
-- (BOOL)requestTriggers:(id)a3 firstErrorIndex:(unint64_t *)a4;
+- (AGXGPURawCounterSource)initWithSourceGroup:(id)group impl:(Source *)impl;
+- (BOOL)requestCounter:(id)counter;
+- (BOOL)requestCounters:(id)counters firstErrorIndex:(unint64_t *)index;
+- (BOOL)requestTriggers:(id)triggers firstErrorIndex:(unint64_t *)index;
 - (void)dealloc;
 - (void)resetRawDataPostProcessor;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation AGXGPURawCounterSource
@@ -47,22 +47,22 @@
   v8 = *MEMORY[0x29EDCA608];
 }
 
-- (BOOL)requestCounters:(id)a3 firstErrorIndex:(unint64_t *)a4
+- (BOOL)requestCounters:(id)counters firstErrorIndex:(unint64_t *)index
 {
   (*(self->_impl->var0 + 7))(self->_impl, a2);
 
   self->_selectedCounterList = 0;
-  if (![a3 count])
+  if (![counters count])
   {
     goto LABEL_9;
   }
 
   v7 = 0;
   v8 = 0;
-  while (-[AGXGPURawCounterSource requestCounter:](self, "requestCounter:", [a3 objectAtIndexedSubscript:v7]))
+  while (-[AGXGPURawCounterSource requestCounter:](self, "requestCounter:", [counters objectAtIndexedSubscript:v7]))
   {
     v7 = ++v8;
-    if ([a3 count] <= v8)
+    if ([counters count] <= v8)
     {
       goto LABEL_9;
     }
@@ -71,27 +71,27 @@
   if (v8 == -1)
   {
 LABEL_9:
-    self->_selectedCounterList = [a3 copy];
+    self->_selectedCounterList = [counters copy];
     return 1;
   }
 
   else
   {
     result = 0;
-    if (a4)
+    if (index)
     {
-      *a4 = v8;
+      *index = v8;
     }
   }
 
   return result;
 }
 
-- (BOOL)requestCounter:(id)a3
+- (BOOL)requestCounter:(id)counter
 {
-  if ([objc_msgSend(a3 "options")])
+  if ([objc_msgSend(counter "options")])
   {
-    v5 = [objc_msgSend(objc_msgSend(a3 "options")];
+    v5 = [objc_msgSend(objc_msgSend(counter "options")];
   }
 
   else
@@ -99,9 +99,9 @@ LABEL_9:
     v5 = 32;
   }
 
-  if ([objc_msgSend(a3 "options")])
+  if ([objc_msgSend(counter "options")])
   {
-    v6 = [objc_msgSend(objc_msgSend(a3 "options")];
+    v6 = [objc_msgSend(objc_msgSend(counter "options")];
   }
 
   else
@@ -109,9 +109,9 @@ LABEL_9:
     v6 = 0xFFFFFFFFLL;
   }
 
-  if ([objc_msgSend(a3 "options")])
+  if ([objc_msgSend(counter "options")])
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "options")];
+    v7 = [objc_msgSend(objc_msgSend(counter "options")];
   }
 
   else
@@ -128,22 +128,22 @@ LABEL_9:
 
   impl = self->_impl;
   v11 = v7;
-  v12 = [objc_msgSend(a3 "name")];
+  v12 = [objc_msgSend(counter "name")];
   v13 = *(impl->var0 + 8);
 
   return v13(impl, v12, v5, v6, v11);
 }
 
-- (BOOL)requestTriggers:(id)a3 firstErrorIndex:(unint64_t *)a4
+- (BOOL)requestTriggers:(id)triggers firstErrorIndex:(unint64_t *)index
 {
   self->_selectedTriggerList = 0;
   (*(self->_impl->var0 + 10))(self->_impl);
-  if (![a3 count])
+  if (![triggers count])
   {
     return 1;
   }
 
-  if (![a3 count])
+  if (![triggers count])
   {
     goto LABEL_17;
   }
@@ -152,27 +152,27 @@ LABEL_9:
   v8 = 0;
   while (1)
   {
-    v9 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"TimerNClock"}];
+    v9 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"TimerNClock"}];
     v10 = &sSourceTriggerNameToTypeMap;
     if ((v9 & 1) == 0)
     {
-      v11 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"TimerFixed"}];
+      v11 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"TimerFixed"}];
       v10 = &off_29F3404B0;
       if ((v11 & 1) == 0)
       {
-        v12 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickBoundary"}];
+        v12 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickBoundary"}];
         v10 = &off_29F3404C0;
         if ((v12 & 1) == 0)
         {
-          v13 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"CPMS"}];
+          v13 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"CPMS"}];
           v10 = &off_29F3404D0;
           if ((v13 & 1) == 0)
           {
-            v14 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickTracing"}];
+            v14 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickTracing"}];
             v10 = &off_29F3404E0;
             if ((v14 & 1) == 0)
             {
-              v15 = [objc_msgSend(objc_msgSend(a3 objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickAndStateTracing"}];
+              v15 = [objc_msgSend(objc_msgSend(triggers objectAtIndexedSubscript:{v7), "name"), "isEqualToString:", @"KickAndStateTracing"}];
               v10 = &off_29F3404F0;
               if (!v15)
               {
@@ -184,13 +184,13 @@ LABEL_9:
       }
     }
 
-    if (!(*(self->_impl->var0 + 11))(self->_impl, *(v10 + 2), [objc_msgSend(a3 objectAtIndexedSubscript:{v7), "options"}]))
+    if (!(*(self->_impl->var0 + 11))(self->_impl, *(v10 + 2), [objc_msgSend(triggers objectAtIndexedSubscript:{v7), "options"}]))
     {
       break;
     }
 
     v7 = ++v8;
-    if ([a3 count] <= v8)
+    if ([triggers count] <= v8)
     {
       goto LABEL_17;
     }
@@ -199,24 +199,24 @@ LABEL_9:
   if (v8 == -1)
   {
 LABEL_17:
-    self->_selectedTriggerList = [a3 copy];
+    self->_selectedTriggerList = [triggers copy];
     return 1;
   }
 
-  if (a4)
+  if (index)
   {
-    *a4 = v8;
+    *index = v8;
   }
 
   (*(self->_impl->var0 + 10))(self->_impl);
   return 0;
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v4.receiver = self;
   v4.super_class = AGXGPURawCounterSource;
-  [(_GPURawCounterSource *)&v4 setOptions:a3];
+  [(_GPURawCounterSource *)&v4 setOptions:options];
   (*(self->_impl->var0 + 13))(self->_impl, *(&self->super.super.isa + *MEMORY[0x29EDC11E8]));
 }
 
@@ -227,18 +227,18 @@ LABEL_17:
   [(_GPURawCounterSource *)&v3 dealloc];
 }
 
-- (AGXGPURawCounterSource)initWithSourceGroup:(id)a3 impl:(Source *)a4
+- (AGXGPURawCounterSource)initWithSourceGroup:(id)group impl:(Source *)impl
 {
-  v7 = (*(a4->var0 + 3))(a4, a2);
+  v7 = (*(impl->var0 + 3))(impl, a2);
   v8 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v7];
   free(v7);
   v27.receiver = self;
   v27.super_class = AGXGPURawCounterSource;
-  v9 = [(_GPURawCounterSource *)&v27 initWithSourceGroup:a3 name:v8];
+  v9 = [(_GPURawCounterSource *)&v27 initWithSourceGroup:group name:v8];
   v10 = v9;
   if (v9)
   {
-    v9->_impl = a4;
+    v9->_impl = impl;
     v11 = objc_autoreleasePoolPush();
     v26 = 0;
     v12 = (*(v10->_impl->var0 + 4))(v10->_impl, &v26);

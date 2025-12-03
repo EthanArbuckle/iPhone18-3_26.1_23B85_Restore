@@ -1,92 +1,92 @@
 @interface HUMediaServiceAccountView
-- (HUMediaServiceAccountView)initWithFrame:(CGRect)a3;
+- (HUMediaServiceAccountView)initWithFrame:(CGRect)frame;
 - (void)_loadServiceIconImage;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUMediaServiceAccountView
 
-- (HUMediaServiceAccountView)initWithFrame:(CGRect)a3
+- (HUMediaServiceAccountView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = HUMediaServiceAccountView;
-  v3 = [(HUMediaServiceAccountView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUMediaServiceAccountView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
     [(HUMediaServiceAccountView *)v3 setIconView:v4];
 
-    v5 = [(HUMediaServiceAccountView *)v3 iconView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    iconView = [(HUMediaServiceAccountView *)v3 iconView];
+    [iconView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(HUMediaServiceAccountView *)v3 iconView];
+    iconView2 = [(HUMediaServiceAccountView *)v3 iconView];
     LODWORD(v7) = 1148846080;
-    [v6 setContentHuggingPriority:1 forAxis:v7];
+    [iconView2 setContentHuggingPriority:1 forAxis:v7];
 
-    v8 = [(HUMediaServiceAccountView *)v3 iconView];
+    iconView3 = [(HUMediaServiceAccountView *)v3 iconView];
     LODWORD(v9) = 1148846080;
-    [v8 setContentHuggingPriority:0 forAxis:v9];
+    [iconView3 setContentHuggingPriority:0 forAxis:v9];
 
-    v10 = [(HUMediaServiceAccountView *)v3 iconView];
-    v11 = [v10 layer];
-    [v11 setCornerRadius:15.0];
+    iconView4 = [(HUMediaServiceAccountView *)v3 iconView];
+    layer = [iconView4 layer];
+    [layer setCornerRadius:15.0];
 
-    v12 = [(HUMediaServiceAccountView *)v3 iconView];
-    [v12 setClipsToBounds:1];
+    iconView5 = [(HUMediaServiceAccountView *)v3 iconView];
+    [iconView5 setClipsToBounds:1];
 
-    v13 = [(HUMediaServiceAccountView *)v3 iconView];
-    [(HUMediaServiceAccountView *)v3 addSubview:v13];
+    iconView6 = [(HUMediaServiceAccountView *)v3 iconView];
+    [(HUMediaServiceAccountView *)v3 addSubview:iconView6];
 
     v14 = objc_opt_new();
     [(HUMediaServiceAccountView *)v3 setServiceNameLabel:v14];
 
     v15 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
-    v16 = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
-    [v16 setFont:v15];
+    serviceNameLabel = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
+    [serviceNameLabel setFont:v15];
 
-    v17 = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    serviceNameLabel2 = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
+    [serviceNameLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v18 = objc_opt_new();
     [(HUMediaServiceAccountView *)v3 setAccountHandleLabel:v18];
 
     v19 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-    v20 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
-    [v20 setFont:v19];
+    accountHandleLabel = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
+    [accountHandleLabel setFont:v19];
 
-    v21 = [MEMORY[0x277D75348] systemGrayColor];
-    v22 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
-    [v22 setTextColor:v21];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    accountHandleLabel2 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
+    [accountHandleLabel2 setTextColor:systemGrayColor];
 
-    v23 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    accountHandleLabel3 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
+    [accountHandleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v24 = objc_opt_new();
     [(HUMediaServiceAccountView *)v3 setLabelStackView:v24];
 
-    v25 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    [v25 setAxis:1];
+    labelStackView = [(HUMediaServiceAccountView *)v3 labelStackView];
+    [labelStackView setAxis:1];
 
-    v26 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    [v26 setAlignment:1];
+    labelStackView2 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    [labelStackView2 setAlignment:1];
 
-    v27 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    [v27 setSpacing:4.0];
+    labelStackView3 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    [labelStackView3 setSpacing:4.0];
 
-    v28 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    labelStackView4 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    [labelStackView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v29 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    v30 = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
-    [v29 addArrangedSubview:v30];
+    labelStackView5 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    serviceNameLabel3 = [(HUMediaServiceAccountView *)v3 serviceNameLabel];
+    [labelStackView5 addArrangedSubview:serviceNameLabel3];
 
-    v31 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    v32 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
-    [v31 addArrangedSubview:v32];
+    labelStackView6 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    accountHandleLabel4 = [(HUMediaServiceAccountView *)v3 accountHandleLabel];
+    [labelStackView6 addArrangedSubview:accountHandleLabel4];
 
-    v33 = [(HUMediaServiceAccountView *)v3 labelStackView];
-    [(HUMediaServiceAccountView *)v3 addSubview:v33];
+    labelStackView7 = [(HUMediaServiceAccountView *)v3 labelStackView];
+    [(HUMediaServiceAccountView *)v3 addSubview:labelStackView7];
 
     [(HUMediaServiceAccountView *)v3 setNeedsUpdateConstraints];
   }
@@ -97,71 +97,71 @@
 - (void)updateConstraints
 {
   v3 = objc_opt_new();
-  v4 = [(HUMediaServiceAccountView *)self iconView];
-  v5 = [v4 topAnchor];
-  v6 = [(HUMediaServiceAccountView *)self topAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  iconView = [(HUMediaServiceAccountView *)self iconView];
+  topAnchor = [iconView topAnchor];
+  topAnchor2 = [(HUMediaServiceAccountView *)self topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v3 addObject:v7];
 
-  v8 = [(HUMediaServiceAccountView *)self iconView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(HUMediaServiceAccountView *)self leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:8.0];
+  iconView2 = [(HUMediaServiceAccountView *)self iconView];
+  leadingAnchor = [iconView2 leadingAnchor];
+  leadingAnchor2 = [(HUMediaServiceAccountView *)self leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   [v3 addObject:v11];
 
-  v12 = [(HUMediaServiceAccountView *)self iconView];
-  v13 = [v12 centerYAnchor];
-  v14 = [(HUMediaServiceAccountView *)self centerYAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  iconView3 = [(HUMediaServiceAccountView *)self iconView];
+  centerYAnchor = [iconView3 centerYAnchor];
+  centerYAnchor2 = [(HUMediaServiceAccountView *)self centerYAnchor];
+  v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v3 addObject:v15];
 
-  v16 = [(HUMediaServiceAccountView *)self iconView];
-  v17 = [v16 heightAnchor];
-  v18 = [v17 constraintEqualToConstant:56.0];
+  iconView4 = [(HUMediaServiceAccountView *)self iconView];
+  heightAnchor = [iconView4 heightAnchor];
+  v18 = [heightAnchor constraintEqualToConstant:56.0];
   [v3 addObject:v18];
 
-  v19 = [(HUMediaServiceAccountView *)self iconView];
-  v20 = [v19 widthAnchor];
-  v21 = [v20 constraintEqualToConstant:56.0];
+  iconView5 = [(HUMediaServiceAccountView *)self iconView];
+  widthAnchor = [iconView5 widthAnchor];
+  v21 = [widthAnchor constraintEqualToConstant:56.0];
   [v3 addObject:v21];
 
-  v22 = [(HUMediaServiceAccountView *)self labelStackView];
-  v23 = [v22 centerYAnchor];
-  v24 = [(HUMediaServiceAccountView *)self iconView];
-  v25 = [v24 centerYAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  labelStackView = [(HUMediaServiceAccountView *)self labelStackView];
+  centerYAnchor3 = [labelStackView centerYAnchor];
+  iconView6 = [(HUMediaServiceAccountView *)self iconView];
+  centerYAnchor4 = [iconView6 centerYAnchor];
+  v26 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v3 addObject:v26];
 
-  v27 = [(HUMediaServiceAccountView *)self labelStackView];
-  v28 = [v27 leadingAnchor];
-  v29 = [(HUMediaServiceAccountView *)self iconView];
-  v30 = [v29 trailingAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30 constant:15.0];
+  labelStackView2 = [(HUMediaServiceAccountView *)self labelStackView];
+  leadingAnchor3 = [labelStackView2 leadingAnchor];
+  iconView7 = [(HUMediaServiceAccountView *)self iconView];
+  trailingAnchor = [iconView7 trailingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:15.0];
   [v3 addObject:v31];
 
   v32 = MEMORY[0x277CCAAD0];
-  v33 = [(HUMediaServiceAccountView *)self currentConstraints];
-  [v32 deactivateConstraints:v33];
+  currentConstraints = [(HUMediaServiceAccountView *)self currentConstraints];
+  [v32 deactivateConstraints:currentConstraints];
 
   [(HUMediaServiceAccountView *)self setCurrentConstraints:v3];
   v34 = MEMORY[0x277CCAAD0];
-  v35 = [(HUMediaServiceAccountView *)self currentConstraints];
-  [v34 activateConstraints:v35];
+  currentConstraints2 = [(HUMediaServiceAccountView *)self currentConstraints];
+  [v34 activateConstraints:currentConstraints2];
 
   v36.receiver = self;
   v36.super_class = HUMediaServiceAccountView;
   [(HUMediaServiceAccountView *)&v36 updateConstraints];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v4 = objc_opt_class();
-  v5 = [(HUMediaServiceAccountView *)self item];
-  if (v5)
+  item = [(HUMediaServiceAccountView *)self item];
+  if (item)
   {
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = item;
     }
 
     else
@@ -170,30 +170,30 @@
     }
 
     v7 = v6;
-    v8 = v5;
+    v8 = item;
     if (v7)
     {
       goto LABEL_8;
     }
 
-    v9 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v9 handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v10 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v4, objc_opt_class()}];
   }
 
   v8 = 0;
 LABEL_8:
   v17 = v8;
 
-  v11 = [v17 mediaService];
-  v12 = [v11 serviceName];
-  v13 = [(HUMediaServiceAccountView *)self serviceNameLabel];
-  [v13 setText:v12];
+  mediaService = [v17 mediaService];
+  serviceName = [mediaService serviceName];
+  serviceNameLabel = [(HUMediaServiceAccountView *)self serviceNameLabel];
+  [serviceNameLabel setText:serviceName];
 
-  v14 = [v17 mediaService];
-  v15 = [v14 accountName];
-  v16 = [(HUMediaServiceAccountView *)self accountHandleLabel];
-  [v16 setText:v15];
+  mediaService2 = [v17 mediaService];
+  accountName = [mediaService2 accountName];
+  accountHandleLabel = [(HUMediaServiceAccountView *)self accountHandleLabel];
+  [accountHandleLabel setText:accountName];
 
   [(HUMediaServiceAccountView *)self _loadServiceIconImage];
   [(HUMediaServiceAccountView *)self setNeedsUpdateConstraints];
@@ -205,12 +205,12 @@ LABEL_8:
   {
     [(HUMediaServiceAccountView *)self setIconImageLoadingInProgress:1];
     v3 = objc_opt_class();
-    v4 = [(HUMediaServiceAccountView *)self item];
-    if (v4)
+    item = [(HUMediaServiceAccountView *)self item];
+    if (item)
     {
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = item;
       }
 
       else
@@ -218,24 +218,24 @@ LABEL_8:
         v5 = 0;
       }
 
-      v6 = v4;
+      v6 = item;
       if (v5)
       {
         goto LABEL_9;
       }
 
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
     }
 
     v6 = 0;
 LABEL_9:
 
-    v9 = [v6 mediaService];
-    v10 = [v9 iconImageURL];
+    mediaService = [v6 mediaService];
+    iconImageURL = [mediaService iconImageURL];
 
-    v11 = [MEMORY[0x277D755B8] hf_fetchImageFromURL:v10];
+    v11 = [MEMORY[0x277D755B8] hf_fetchImageFromURL:iconImageURL];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__HUMediaServiceAccountView__loadServiceIconImage__block_invoke;

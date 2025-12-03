@@ -1,45 +1,45 @@
 @interface PKTransactionAuthenticationContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransactionAuthenticationContext:(id)a3;
-- (PKTransactionAuthenticationContext)initWithCoder:(id)a3;
-- (PKTransactionAuthenticationContext)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransactionAuthenticationContext:(id)context;
+- (PKTransactionAuthenticationContext)initWithCoder:(id)coder;
+- (PKTransactionAuthenticationContext)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionAuthenticationContext
 
-- (PKTransactionAuthenticationContext)initWithDictionary:(id)a3
+- (PKTransactionAuthenticationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v19.receiver = self;
     v19.super_class = PKTransactionAuthenticationContext;
     self = [(PKTransactionAuthenticationContext *)&v19 init];
     if (self)
     {
-      v5 = [v4 PKStringForKey:@"PINFormat"];
+      v5 = [dictionaryCopy PKStringForKey:@"PINFormat"];
       self->_paymentPINFormat = PKTransactionAuthenticationPINFormatFromString(v5);
 
-      v6 = [v4 PKArrayForKey:@"authenticationMechanisms"];
+      v6 = [dictionaryCopy PKArrayForKey:@"authenticationMechanisms"];
       self->_requestedAuthenticationMechanisms = PKTransactionAuthenticationMechanismFromStrings(v6);
 
-      v7 = [v4 PKArrayForKey:@"processedAuthenticationMechanisms"];
+      v7 = [dictionaryCopy PKArrayForKey:@"processedAuthenticationMechanisms"];
       self->_processedAuthenticationMechanisms = PKTransactionAuthenticationMechanismFromStrings(v7);
 
-      v8 = [v4 PKArrayForKey:@"dataCollectedAuthenticationMechanisms"];
+      v8 = [dictionaryCopy PKArrayForKey:@"dataCollectedAuthenticationMechanisms"];
       self->_dataCollectedAuthenticationMechanisms = PKTransactionAuthenticationMechanismFromStrings(v8);
 
-      self->_complete = [v4 PKBoolForKey:@"complete"];
-      v9 = [v4 PKStringForKey:@"nonce"];
-      v10 = [v9 pk_decodeHexadecimal];
+      self->_complete = [dictionaryCopy PKBoolForKey:@"complete"];
+      v9 = [dictionaryCopy PKStringForKey:@"nonce"];
+      pk_decodeHexadecimal = [v9 pk_decodeHexadecimal];
       nonce = self->_nonce;
-      self->_nonce = v10;
+      self->_nonce = pk_decodeHexadecimal;
 
-      v12 = [v4 PKStringForKey:@"signingKeyMaterial"];
+      v12 = [dictionaryCopy PKStringForKey:@"signingKeyMaterial"];
       if ([v12 length])
       {
         v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v12 options:0];
@@ -47,7 +47,7 @@
         self->_signingKeyMaterial = v13;
       }
 
-      v15 = [v4 PKStringForKey:@"partialTransactionDetailsSignature"];
+      v15 = [dictionaryCopy PKStringForKey:@"partialTransactionDetailsSignature"];
       if ([v15 length])
       {
         v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v15 options:0];
@@ -94,8 +94,8 @@
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_complete];
   [v4 setObject:v11 forKeyedSubscript:@"complete"];
 
-  v12 = [(NSData *)self->_nonce hexEncoding];
-  [v4 setObject:v12 forKeyedSubscript:@"nonce"];
+  hexEncoding = [(NSData *)self->_nonce hexEncoding];
+  [v4 setObject:hexEncoding forKeyedSubscript:@"nonce"];
 
   v13 = [(NSData *)self->_signingKeyMaterial base64EncodedStringWithOptions:0];
   [v4 setObject:v13 forKeyedSubscript:@"signingKeyMaterial"];
@@ -117,47 +117,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   paymentPINFormat = self->_paymentPINFormat;
-  v5 = a3;
-  [v5 encodeInteger:paymentPINFormat forKey:@"PINFormat"];
-  [v5 encodeInteger:self->_requestedAuthenticationMechanisms forKey:@"authenticationMechanisms"];
-  [v5 encodeInteger:self->_processedAuthenticationMechanisms forKey:@"processedAuthenticationMechanisms"];
-  [v5 encodeInteger:self->_dataCollectedAuthenticationMechanisms forKey:@"dataCollectedAuthenticationMechanisms"];
-  [v5 encodeBool:self->_complete forKey:@"complete"];
-  [v5 encodeObject:self->_nonce forKey:@"nonce"];
-  [v5 encodeObject:self->_signingKeyMaterial forKey:@"signingKeyMaterial"];
-  [v5 encodeObject:self->_partialSignature forKey:@"partialTransactionDetailsSignature"];
-  [v5 encodeInteger:self->_authenticationFailure forKey:@"authenticationError"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:paymentPINFormat forKey:@"PINFormat"];
+  [coderCopy encodeInteger:self->_requestedAuthenticationMechanisms forKey:@"authenticationMechanisms"];
+  [coderCopy encodeInteger:self->_processedAuthenticationMechanisms forKey:@"processedAuthenticationMechanisms"];
+  [coderCopy encodeInteger:self->_dataCollectedAuthenticationMechanisms forKey:@"dataCollectedAuthenticationMechanisms"];
+  [coderCopy encodeBool:self->_complete forKey:@"complete"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_signingKeyMaterial forKey:@"signingKeyMaterial"];
+  [coderCopy encodeObject:self->_partialSignature forKey:@"partialTransactionDetailsSignature"];
+  [coderCopy encodeInteger:self->_authenticationFailure forKey:@"authenticationError"];
 }
 
-- (PKTransactionAuthenticationContext)initWithCoder:(id)a3
+- (PKTransactionAuthenticationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKTransactionAuthenticationContext;
   v5 = [(PKTransactionAuthenticationContext *)&v13 init];
   if (v5)
   {
-    v5->_paymentPINFormat = [v4 decodeIntegerForKey:@"PINFormat"];
-    v5->_requestedAuthenticationMechanisms = [v4 decodeIntegerForKey:@"authenticationMechanisms"];
-    v5->_processedAuthenticationMechanisms = [v4 decodeIntegerForKey:@"processedAuthenticationMechanisms"];
-    v5->_dataCollectedAuthenticationMechanisms = [v4 decodeIntegerForKey:@"dataCollectedAuthenticationMechanisms"];
-    v5->_complete = [v4 decodeBoolForKey:@"complete"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v5->_paymentPINFormat = [coderCopy decodeIntegerForKey:@"PINFormat"];
+    v5->_requestedAuthenticationMechanisms = [coderCopy decodeIntegerForKey:@"authenticationMechanisms"];
+    v5->_processedAuthenticationMechanisms = [coderCopy decodeIntegerForKey:@"processedAuthenticationMechanisms"];
+    v5->_dataCollectedAuthenticationMechanisms = [coderCopy decodeIntegerForKey:@"dataCollectedAuthenticationMechanisms"];
+    v5->_complete = [coderCopy decodeBoolForKey:@"complete"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signingKeyMaterial"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signingKeyMaterial"];
     signingKeyMaterial = v5->_signingKeyMaterial;
     v5->_signingKeyMaterial = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partialTransactionDetailsSignature"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partialTransactionDetailsSignature"];
     partialSignature = v5->_partialSignature;
     v5->_partialSignature = v10;
 
-    v5->_authenticationFailure = [v4 decodeIntegerForKey:@"authenticationError"];
+    v5->_authenticationFailure = [coderCopy decodeIntegerForKey:@"authenticationError"];
   }
 
   return v5;
@@ -181,28 +181,28 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionAuthenticationContext *)self isEqualToTransactionAuthenticationContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionAuthenticationContext *)self isEqualToTransactionAuthenticationContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTransactionAuthenticationContext:(id)a3
+- (BOOL)isEqualToTransactionAuthenticationContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_paymentPINFormat != v4[5] || self->_requestedAuthenticationMechanisms != v4[2] || self->_processedAuthenticationMechanisms != v4[3] || self->_dataCollectedAuthenticationMechanisms != v4[4] || self->_complete != *(v4 + 8) || self->_authenticationFailure != v4[9])
+  contextCopy = context;
+  v5 = contextCopy;
+  if (self->_paymentPINFormat != contextCopy[5] || self->_requestedAuthenticationMechanisms != contextCopy[2] || self->_processedAuthenticationMechanisms != contextCopy[3] || self->_dataCollectedAuthenticationMechanisms != contextCopy[4] || self->_complete != *(contextCopy + 8) || self->_authenticationFailure != contextCopy[9])
   {
     goto LABEL_19;
   }

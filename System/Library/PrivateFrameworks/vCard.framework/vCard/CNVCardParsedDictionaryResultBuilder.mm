@@ -1,10 +1,10 @@
 @interface CNVCardParsedDictionaryResultBuilder
 + (id)factory;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValues:(id)a3 labels:(id)a4 isPrimaries:(id)a5 forProperty:(id)a6;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValues:(id)values labels:(id)labels isPrimaries:(id)primaries forProperty:(id)property;
 - (CNVCardParsedDictionaryResultBuilder)init;
 - (id)build;
-- (void)setUnknownProperties:(id)a3;
+- (void)setUnknownProperties:(id)properties;
 @end
 
 @implementation CNVCardParsedDictionaryResultBuilder
@@ -15,7 +15,7 @@
   v4[1] = 3221225472;
   v4[2] = __47__CNVCardParsedDictionaryResultBuilder_factory__block_invoke;
   v4[3] = &__block_descriptor_40_e35____CNVCardParsedResultBuilder__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [CNVCardParsedResultBuilderFactory factoryWithBlock:v4];
 
   return v2;
@@ -52,35 +52,35 @@ id __47__CNVCardParsedDictionaryResultBuilder_factory__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)self->_dictionaryRep setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self->_dictionaryRep setObject:value forKey:property];
   }
 
-  return a3 != 0;
+  return value != 0;
 }
 
-- (BOOL)setValues:(id)a3 labels:(id)a4 isPrimaries:(id)a5 forProperty:(id)a6
+- (BOOL)setValues:(id)values labels:(id)labels isPrimaries:(id)primaries forProperty:(id)property
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count])
+  valuesCopy = values;
+  labelsCopy = labels;
+  primariesCopy = primaries;
+  propertyCopy = property;
+  if ([valuesCopy count])
   {
-    v22 = self;
-    v14 = [MEMORY[0x277CBEB18] array];
-    if ([v10 count])
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
+    if ([valuesCopy count])
     {
       v15 = 0;
       do
       {
-        v16 = [v10 objectAtIndex:v15];
-        v17 = [v11 objectAtIndex:v15];
-        v18 = [v12 objectAtIndex:v15];
+        v16 = [valuesCopy objectAtIndex:v15];
+        v17 = [labelsCopy objectAtIndex:v15];
+        v18 = [primariesCopy objectAtIndex:v15];
         v23[0] = @"value";
         v23[1] = @"label";
         v24[0] = v16;
@@ -88,25 +88,25 @@ id __47__CNVCardParsedDictionaryResultBuilder_factory__block_invoke(uint64_t a1)
         v23[2] = @"isPrimary";
         v24[2] = v18;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
-        [v14 addObject:v19];
+        [array addObject:v19];
 
         ++v15;
       }
 
-      while (v15 < [v10 count]);
+      while (v15 < [valuesCopy count]);
     }
 
-    [(NSMutableDictionary *)v22->_dictionaryRep setObject:v14 forKey:v13];
+    [(NSMutableDictionary *)selfCopy->_dictionaryRep setObject:array forKey:propertyCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)setUnknownProperties:(id)a3
+- (void)setUnknownProperties:(id)properties
 {
   dictionaryRep = self->_dictionaryRep;
-  v4 = [MEMORY[0x277CBEA60] arrayWithArray:a3];
+  v4 = [MEMORY[0x277CBEA60] arrayWithArray:properties];
   [(NSMutableDictionary *)dictionaryRep setObject:v4 forKey:@"_unknownProperties"];
 }
 

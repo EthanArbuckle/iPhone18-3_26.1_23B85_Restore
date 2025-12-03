@@ -1,11 +1,11 @@
 @interface AVEventManager
-- (AVEventManager)initWithOwner:(id)a3;
-- (void)_addActionIfPossible:(id)a3;
+- (AVEventManager)initWithOwner:(id)owner;
+- (void)_addActionIfPossible:(id)possible;
 - (void)_ensureActionStorage;
-- (void)addAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5;
-- (void)addAction:(id)a3 forEvent:(id)a4;
-- (void)removeAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5;
-- (void)sendActionsForEvent:(id)a3;
+- (void)addAction:(SEL)action withTarget:(id)target forEvent:(id)event;
+- (void)addAction:(id)action forEvent:(id)event;
+- (void)removeAction:(SEL)action withTarget:(id)target forEvent:(id)event;
+- (void)sendActionsForEvent:(id)event;
 @end
 
 @implementation AVEventManager
@@ -22,20 +22,20 @@
   }
 }
 
-- (void)_addActionIfPossible:(id)a3
+- (void)_addActionIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   [(AVEventManager *)self _ensureActionStorage];
-  if (([(NSMutableArray *)self->_actionStorage containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)self->_actionStorage containsObject:possibleCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_actionStorage addObject:v4];
+    [(NSMutableArray *)self->_actionStorage addObject:possibleCopy];
   }
 }
 
-- (void)sendActionsForEvent:(id)a3
+- (void)sendActionsForEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
   if (WeakRetained)
   {
@@ -59,7 +59,7 @@
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
-          if ([v11 hasMatchingEvent:{v4, v12}])
+          if ([v11 hasMatchingEvent:{eventCopy, v12}])
           {
             [v11 sendAction:WeakRetained];
           }
@@ -73,11 +73,11 @@
   }
 }
 
-- (void)removeAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5
+- (void)removeAction:(SEL)action withTarget:(id)target forEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  targetCopy = target;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -98,7 +98,7 @@
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        if ([v15 hasMatchingTarget:v8 withSelector:a3 forEvent:v9])
+        if ([v15 hasMatchingTarget:targetCopy withSelector:action forEvent:eventCopy])
         {
           [(NSMutableArray *)self->_actionStorage removeObject:v15];
         }
@@ -111,28 +111,28 @@
   }
 }
 
-- (void)addAction:(SEL)a3 withTarget:(id)a4 forEvent:(id)a5
+- (void)addAction:(SEL)action withTarget:(id)target forEvent:(id)event
 {
-  v6 = [AVEventManagerAction actionWithTarget:a4 selector:a3 event:a5];
+  v6 = [AVEventManagerAction actionWithTarget:target selector:action event:event];
   [(AVEventManager *)self _addActionIfPossible:v6];
 }
 
-- (void)addAction:(id)a3 forEvent:(id)a4
+- (void)addAction:(id)action forEvent:(id)event
 {
-  v5 = [AVEventManagerAction actionWithBlock:a3 event:a4];
+  v5 = [AVEventManagerAction actionWithBlock:action event:event];
   [(AVEventManager *)self _addActionIfPossible:v5];
 }
 
-- (AVEventManager)initWithOwner:(id)a3
+- (AVEventManager)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = AVEventManager;
   v5 = [(AVEventManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
   }
 
   return v6;

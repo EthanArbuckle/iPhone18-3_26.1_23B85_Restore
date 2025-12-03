@@ -1,10 +1,10 @@
 @interface DataLinkHealthKitHostConnection
 - (_TtC11WorkoutCore31DataLinkHealthKitHostConnection)init;
 - (void)dealloc;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
-- (void)workoutSession:(id)a3 didDisconnectFromRemoteDeviceWithError:(id)a4;
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4;
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteWorkoutSession:(id)a4;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
+- (void)workoutSession:(id)session didDisconnectFromRemoteDeviceWithError:(id)error;
+- (void)workoutSession:(id)session didFailWithError:(id)error;
+- (void)workoutSession:(id)session didReceiveDataFromRemoteWorkoutSession:(id)workoutSession;
 @end
 
 @implementation DataLinkHealthKitHostConnection
@@ -13,14 +13,14 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC11WorkoutCore31DataLinkHealthKitHostConnection_recorder))
   {
-    v3 = self;
+    selfCopy = self;
 
     DataLinkRecorder.stopSession()();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
@@ -47,22 +47,22 @@
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4
+- (void)workoutSession:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  specialized DataLinkHealthKitHostConnection.workoutSession(_:didFailWithError:)(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  specialized DataLinkHealthKitHostConnection.workoutSession(_:didFailWithError:)(errorCopy);
 }
 
-- (void)workoutSession:(id)a3 didReceiveDataFromRemoteWorkoutSession:(id)a4
+- (void)workoutSession:(id)session didReceiveDataFromRemoteWorkoutSession:(id)workoutSession
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = *(v5 + 16);
   if (v6)
   {
-    v7 = a3;
-    v8 = self;
+    sessionCopy = session;
+    selfCopy = self;
     v9 = (v5 + 40);
     do
     {
@@ -80,16 +80,16 @@
 
   else
   {
-    v12 = a3;
+    sessionCopy2 = session;
   }
 }
 
-- (void)workoutSession:(id)a3 didDisconnectFromRemoteDeviceWithError:(id)a4
+- (void)workoutSession:(id)session didDisconnectFromRemoteDeviceWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  specialized DataLinkHealthKitHostConnection.workoutSession(_:didDisconnectFromRemoteDeviceWithError:)(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  errorCopy = error;
+  specialized DataLinkHealthKitHostConnection.workoutSession(_:didDisconnectFromRemoteDeviceWithError:)(error);
 }
 
 @end

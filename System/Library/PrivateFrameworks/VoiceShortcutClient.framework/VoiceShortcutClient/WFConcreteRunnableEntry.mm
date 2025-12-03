@@ -1,58 +1,58 @@
 @interface WFConcreteRunnableEntry
-- (WFConcreteRunnableEntry)initWithCoder:(id)a3;
-- (WFConcreteRunnableEntry)initWithIdentifier:(id)a3 name:(id)a4 entryIcon:(id)a5 accessoryIcon:(id)a6 serializedParameterState:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (WFConcreteRunnableEntry)initWithCoder:(id)coder;
+- (WFConcreteRunnableEntry)initWithIdentifier:(id)identifier name:(id)name entryIcon:(id)icon accessoryIcon:(id)accessoryIcon serializedParameterState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConcreteRunnableEntry
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFConcreteRunnableEntry *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFConcreteRunnableEntry *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFConcreteRunnableEntry *)self uniqueIdentifier];
-  [v4 encodeObject:v6 forKey:@"uniqueIdentifier"];
+  uniqueIdentifier = [(WFConcreteRunnableEntry *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
 
-  v7 = [(WFConcreteRunnableEntry *)self name];
-  [v4 encodeObject:v7 forKey:@"name"];
+  name = [(WFConcreteRunnableEntry *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v8 = [(WFConcreteRunnableEntry *)self entryIcon];
-  [v4 encodeObject:v8 forKey:@"entryIcon"];
+  entryIcon = [(WFConcreteRunnableEntry *)self entryIcon];
+  [coderCopy encodeObject:entryIcon forKey:@"entryIcon"];
 
-  v9 = [(WFConcreteRunnableEntry *)self accessoryIcon];
-  [v4 encodeObject:v9 forKey:@"accessoryIcon"];
+  accessoryIcon = [(WFConcreteRunnableEntry *)self accessoryIcon];
+  [coderCopy encodeObject:accessoryIcon forKey:@"accessoryIcon"];
 
-  v10 = [(WFConcreteRunnableEntry *)self serializedParameterState];
-  [v4 encodeObject:v10 forKey:@"serializedParameterState"];
+  serializedParameterState = [(WFConcreteRunnableEntry *)self serializedParameterState];
+  [coderCopy encodeObject:serializedParameterState forKey:@"serializedParameterState"];
 }
 
-- (WFConcreteRunnableEntry)initWithCoder:(id)a3
+- (WFConcreteRunnableEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = WFConcreteRunnableEntry;
   v5 = [(WFConcreteRunnableEntry *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryIcon"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryIcon"];
     entryIcon = v5->_entryIcon;
     v5->_entryIcon = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIcon"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryIcon"];
     accessoryIcon = v5->_accessoryIcon;
     v5->_accessoryIcon = v14;
 
@@ -63,7 +63,7 @@
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v16 setWithObjects:{v17, v18, v19, v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"serializedParameterState"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"serializedParameterState"];
     serializedParameterState = v5->_serializedParameterState;
     v5->_serializedParameterState = v23;
 
@@ -73,34 +73,34 @@
   return v5;
 }
 
-- (WFConcreteRunnableEntry)initWithIdentifier:(id)a3 name:(id)a4 entryIcon:(id)a5 accessoryIcon:(id)a6 serializedParameterState:(id)a7
+- (WFConcreteRunnableEntry)initWithIdentifier:(id)identifier name:(id)name entryIcon:(id)icon accessoryIcon:(id)accessoryIcon serializedParameterState:(id)state
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  iconCopy = icon;
+  accessoryIconCopy = accessoryIcon;
+  stateCopy = state;
   v27.receiver = self;
   v27.super_class = WFConcreteRunnableEntry;
   v17 = [(WFConcreteRunnableEntry *)&v27 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v18;
 
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v20 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueIdentifier = v17->_uniqueIdentifier;
-    v17->_uniqueIdentifier = v21;
+    v17->_uniqueIdentifier = uUIDString;
 
-    v23 = [v13 copy];
+    v23 = [nameCopy copy];
     name = v17->_name;
     v17->_name = v23;
 
-    objc_storeStrong(&v17->_entryIcon, a5);
-    objc_storeStrong(&v17->_accessoryIcon, a6);
-    objc_storeStrong(&v17->_serializedParameterState, a7);
+    objc_storeStrong(&v17->_entryIcon, icon);
+    objc_storeStrong(&v17->_accessoryIcon, accessoryIcon);
+    objc_storeStrong(&v17->_serializedParameterState, state);
     v25 = v17;
   }
 

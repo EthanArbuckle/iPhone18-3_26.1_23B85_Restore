@@ -1,16 +1,16 @@
 @interface AppStoreService
-- (void)startOperation:(id)a3 toFetchAppStoreIconsForAppBundleIDs:(id)a4 desiredSizeToScale:(CGSize)a5 completionHandler:(id)a6;
+- (void)startOperation:(id)operation toFetchAppStoreIconsForAppBundleIDs:(id)ds desiredSizeToScale:(CGSize)scale completionHandler:(id)handler;
 @end
 
 @implementation AppStoreService
 
-- (void)startOperation:(id)a3 toFetchAppStoreIconsForAppBundleIDs:(id)a4 desiredSizeToScale:(CGSize)a5 completionHandler:(id)a6
+- (void)startOperation:(id)operation toFetchAppStoreIconsForAppBundleIDs:(id)ds desiredSizeToScale:(CGSize)scale completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v42 = a4;
-  v40 = a6;
+  height = scale.height;
+  width = scale.width;
+  operationCopy = operation;
+  dsCopy = ds;
+  handlerCopy = handler;
   v64[0] = 0;
   v64[1] = v64;
   v64[2] = 0x3032000000;
@@ -22,8 +22,8 @@
   v63[2] = sub_100001548;
   v63[3] = &unk_100004200;
   v63[4] = v64;
-  v38 = v10;
-  v44 = [v10 remoteObjectProxyWithErrorHandler:v63];
+  v38 = operationCopy;
+  v44 = [operationCopy remoteObjectProxyWithErrorHandler:v63];
   v11 = objc_autoreleasePoolPush();
   v12 = [AMSBag bagForProfile:@"fileproviderd" profileVersion:@"1"];
   v13 = [[AMSMediaTask alloc] initWithType:0 clientIdentifier:@"com.apple.FileProvider" clientVersion:@"1" bag:v12];
@@ -33,34 +33,34 @@
   v14 = [NSArray arrayWithObjects:v77 count:3];
   [v13 setAdditionalPlatforms:v14];
 
-  [v13 setBundleIdentifiers:v42];
+  [v13 setBundleIdentifiers:dsCopy];
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [v42 componentsJoinedByString:{@", "}];
+    v16 = [dsCopy componentsJoinedByString:{@", "}];
     sub_1000018A0(v16, v76, v15);
   }
 
-  v17 = [v13 perform];
+  perform = [v13 perform];
   v62 = 0;
-  v18 = [v17 resultWithTimeout:&v62 error:30.0];
+  v18 = [perform resultWithTimeout:&v62 error:30.0];
   v19 = v62;
   if (v19)
   {
     v20 = fp_current_or_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v19 fp_prettyDescription];
-      sub_1000018F8(v21, v75, v20);
+      fp_prettyDescription = [v19 fp_prettyDescription];
+      sub_1000018F8(fp_prettyDescription, v75, v20);
     }
 
-    v40[2]();
-    v39 = 0;
+    handlerCopy[2]();
+    responseDataItems = 0;
   }
 
   else
   {
-    v39 = [v18 responseDataItems];
+    responseDataItems = [v18 responseDataItems];
   }
 
   objc_autoreleasePoolPop(v11);
@@ -71,7 +71,7 @@
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    obj = v39;
+    obj = responseDataItems;
     v23 = [obj countByEnumeratingWithState:&v58 objects:v74 count:16];
     group = v22;
     if (v23)
@@ -166,7 +166,7 @@
     block[1] = 3221225472;
     block[2] = sub_100001814;
     block[3] = &unk_100004278;
-    v52 = v40;
+    v52 = handlerCopy;
     dispatch_group_notify(group, v37, block);
   }
 

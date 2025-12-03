@@ -1,6 +1,6 @@
 @interface AMSUIWebJSTelephony
 + (BOOL)_hasRequiredTelephonyEntitlement;
-- (AMSUIWebJSTelephony)initWithDelegate:(id)a3;
+- (AMSUIWebJSTelephony)initWithDelegate:(id)delegate;
 - (AMSUIWebJSTelephonyDelegate)delegate;
 - (NSString)countryCode;
 - (NSString)networkCode;
@@ -8,19 +8,19 @@
 - (NSString)providerName;
 - (NSString)radioTechnology;
 - (NSString)radioType;
-- (id)formattedPhoneNumber:(id)a3;
+- (id)formattedPhoneNumber:(id)number;
 - (void)dealloc;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)phoneNumberAvailable:(id)a3;
-- (void)phoneNumberChanged:(id)a3;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)phoneNumberAvailable:(id)available;
+- (void)phoneNumberChanged:(id)changed;
 @end
 
 @implementation AMSUIWebJSTelephony
 
-- (AMSUIWebJSTelephony)initWithDelegate:(id)a3
+- (AMSUIWebJSTelephony)initWithDelegate:(id)delegate
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = AMSUIWebJSTelephony;
   v5 = [(AMSUIWebJSTelephony *)&v28 init];
@@ -31,14 +31,14 @@
 
   if (!+[AMSUIWebJSTelephony _hasCellularTelephonyCapability])
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_23;
     }
@@ -48,7 +48,7 @@
     v30 = v18;
     v19 = "%{public}@ Not capable for telephony";
 LABEL_22:
-    _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_ERROR, v19, buf, 0xCu);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, v19, buf, 0xCu);
 LABEL_23:
 
     v17 = 0;
@@ -57,14 +57,14 @@ LABEL_23:
 
   if (!+[AMSUIWebJSTelephony _hasRequiredTelephonyEntitlement])
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_23;
     }
@@ -76,7 +76,7 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
   v6 = dispatch_queue_create("com.apple.AppleMediaServicesUI.webTelephony", 0);
   telephonyQueue = v5->_telephonyQueue;
   v5->_telephonyQueue = v6;
@@ -89,14 +89,14 @@ LABEL_23:
   v10 = v5->_telephonyClient;
   if (!v10)
   {
-    v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v12)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v12 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_23;
     }
@@ -109,38 +109,38 @@ LABEL_23:
   }
 
   v27 = 0;
-  v11 = [(CoreTelephonyClient *)v10 getActiveContexts:&v27];
-  v12 = v27;
-  v13 = [v11 voicePreferred];
-  if (v13)
+  oSLogObject = [(CoreTelephonyClient *)v10 getActiveContexts:&v27];
+  mEMORY[0x1E698C968] = v27;
+  voicePreferred = [oSLogObject voicePreferred];
+  if (voicePreferred)
   {
-    v14 = [v11 findForUuid:v13];
-    v15 = [v14 context];
+    v14 = [oSLogObject findForUuid:voicePreferred];
+    context = [v14 context];
     telephonyContext = v5->_telephonyContext;
-    v5->_telephonyContext = v15;
+    v5->_telephonyContext = context;
   }
 
   if (!v5->_telephonyContext)
   {
-    v24 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v24)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v24 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v26 = objc_opt_class();
       *buf = 138544130;
       v30 = v26;
       v31 = 1024;
-      v32 = v13 != 0;
+      v32 = voicePreferred != 0;
       v33 = 1024;
-      v34 = v11 != 0;
+      v34 = oSLogObject != 0;
       v35 = 2114;
-      v36 = v12;
-      _os_log_impl(&dword_1BB036000, v25, OS_LOG_TYPE_ERROR, "%{public}@ Failed to initialize telephony context. (hasUUID: %d hasContexts: %d) %{public}@", buf, 0x22u);
+      v36 = mEMORY[0x1E698C968];
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@ Failed to initialize telephony context. (hasUUID: %d hasContexts: %d) %{public}@", buf, 0x22u);
     }
 
     goto LABEL_23;
@@ -209,14 +209,14 @@ void __55__AMSUIWebJSTelephony__hasRequiredTelephonyEntitlement__block_invoke()
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(AMSUIWebJSTelephony *)self telephonyQueue];
+  telephonyQueue = [(AMSUIWebJSTelephony *)self telephonyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__AMSUIWebJSTelephony_countryCode__block_invoke;
   v6[3] = &unk_1E7F26710;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(telephonyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -269,14 +269,14 @@ void __34__AMSUIWebJSTelephony_countryCode__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(AMSUIWebJSTelephony *)self telephonyQueue];
+  telephonyQueue = [(AMSUIWebJSTelephony *)self telephonyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__AMSUIWebJSTelephony_networkCode__block_invoke;
   v6[3] = &unk_1E7F26710;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(telephonyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -329,14 +329,14 @@ void __34__AMSUIWebJSTelephony_networkCode__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(AMSUIWebJSTelephony *)self telephonyQueue];
+  telephonyQueue = [(AMSUIWebJSTelephony *)self telephonyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__AMSUIWebJSTelephony_phoneNumber__block_invoke;
   v6[3] = &unk_1E7F24460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(telephonyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -401,14 +401,14 @@ void __34__AMSUIWebJSTelephony_phoneNumber__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(AMSUIWebJSTelephony *)self telephonyQueue];
+  telephonyQueue = [(AMSUIWebJSTelephony *)self telephonyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__AMSUIWebJSTelephony_providerName__block_invoke;
   v6[3] = &unk_1E7F24460;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(telephonyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -465,43 +465,43 @@ void __35__AMSUIWebJSTelephony_providerName__block_invoke(uint64_t a1)
 
 - (NSString)radioTechnology
 {
-  v2 = [MEMORY[0x1E698CA68] lastConnectionReport];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E698C700]];
+  lastConnectionReport = [MEMORY[0x1E698CA68] lastConnectionReport];
+  v3 = [lastConnectionReport objectForKeyedSubscript:*MEMORY[0x1E698C700]];
 
   return v3;
 }
 
 - (NSString)radioType
 {
-  v2 = [MEMORY[0x1E698CA68] lastConnectionReport];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E698C6F8]];
+  lastConnectionReport = [MEMORY[0x1E698CA68] lastConnectionReport];
+  v3 = [lastConnectionReport objectForKeyedSubscript:*MEMORY[0x1E698C6F8]];
 
   return v3;
 }
 
-- (id)formattedPhoneNumber:(id)a3
+- (id)formattedPhoneNumber:(id)number
 {
   v3 = CPPhoneNumberCopyFormattedStringForTextMessage();
 
   return v3;
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
-  v5 = [(AMSUIWebJSTelephony *)self delegate:a3];
+  v5 = [(AMSUIWebJSTelephony *)self delegate:changed];
   [v5 telephonyDidChange:self];
 }
 
-- (void)phoneNumberAvailable:(id)a3
+- (void)phoneNumberAvailable:(id)available
 {
-  v4 = [(AMSUIWebJSTelephony *)self delegate];
-  [v4 telephonyDidChange:self];
+  delegate = [(AMSUIWebJSTelephony *)self delegate];
+  [delegate telephonyDidChange:self];
 }
 
-- (void)phoneNumberChanged:(id)a3
+- (void)phoneNumberChanged:(id)changed
 {
-  v4 = [(AMSUIWebJSTelephony *)self delegate];
-  [v4 telephonyDidChange:self];
+  delegate = [(AMSUIWebJSTelephony *)self delegate];
+  [delegate telephonyDidChange:self];
 }
 
 - (AMSUIWebJSTelephonyDelegate)delegate

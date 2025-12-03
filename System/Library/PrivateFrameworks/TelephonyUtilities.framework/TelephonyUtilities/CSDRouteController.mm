@@ -7,20 +7,20 @@
 - (void)clearState;
 - (void)didUpdateRouteRecommendations;
 - (void)handleCallStatusChanged;
-- (void)handleUpdatedPairedHostDeviceRoutes:(id)a3;
-- (void)pickRouteWithUniqueIdentifier:(id)a3 shouldWaitUntilAvailable:(BOOL)a4;
-- (void)setPickedRouteDidChangeHandler:(id)a3;
-- (void)setRouteWasPickedHandler:(id)a3;
-- (void)setRoutesDidChangeHandler:(id)a3;
-- (void)setTimedOutPickingRouteHandler:(id)a3;
-- (void)updateStateWithCalls:(id)a3;
+- (void)handleUpdatedPairedHostDeviceRoutes:(id)routes;
+- (void)pickRouteWithUniqueIdentifier:(id)identifier shouldWaitUntilAvailable:(BOOL)available;
+- (void)setPickedRouteDidChangeHandler:(id)handler;
+- (void)setRouteWasPickedHandler:(id)handler;
+- (void)setRoutesDidChangeHandler:(id)handler;
+- (void)setTimedOutPickingRouteHandler:(id)handler;
+- (void)updateStateWithCalls:(id)calls;
 @end
 
 @implementation CSDRouteController
 
 - (NSDictionary)routesByUniqueIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001917C();
 
   sub_100006AF0(0, &qword_1006A2C28, TURoute_ptr);
@@ -29,35 +29,35 @@
   return v3.super.isa;
 }
 
-- (void)updateStateWithCalls:(id)a3
+- (void)updateStateWithCalls:(id)calls
 {
   sub_100006AF0(0, &qword_1006A3AB0, TUCall_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_10002CD00();
 }
 
 - (void)handleCallStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002EB7C();
 }
 
 - (void)didUpdateRouteRecommendations
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033FFC();
 }
 
 - (void)clearState
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033FFC();
 }
 
 - (NSArray)topOfListRoutesUniqueIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000118A4();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)setRoutesDidChangeHandler:(id)a3
+- (void)setRoutesDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -102,13 +102,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1003B70CC(v4, v5);
 }
 
-- (void)setPickedRouteDidChangeHandler:(id)a3
+- (void)setPickedRouteDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -121,13 +121,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1003B71C8(v4, v5);
 }
 
-- (void)setRouteWasPickedHandler:(id)a3
+- (void)setRouteWasPickedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -140,13 +140,13 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1003B72C4(v4, v5);
 }
 
-- (void)setTimedOutPickingRouteHandler:(id)a3
+- (void)setTimedOutPickingRouteHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -159,7 +159,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1003B744C(v4, v5);
 }
 
@@ -179,18 +179,18 @@
   return v2;
 }
 
-- (void)pickRouteWithUniqueIdentifier:(id)a3 shouldWaitUntilAvailable:(BOOL)a4
+- (void)pickRouteWithUniqueIdentifier:(id)identifier shouldWaitUntilAvailable:(BOOL)available
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1003B7E2C();
 }
 
-- (void)handleUpdatedPairedHostDeviceRoutes:(id)a3
+- (void)handleUpdatedPairedHostDeviceRoutes:(id)routes
 {
   sub_100006AF0(0, &qword_1006A2C28, TURoute_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_10002CD00();
 }
 

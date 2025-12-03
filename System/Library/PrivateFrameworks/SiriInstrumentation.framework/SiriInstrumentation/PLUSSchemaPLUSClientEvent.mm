@@ -1,9 +1,9 @@
 @interface PLUSSchemaPLUSClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSClientEvent)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSClientEvent)initWithJSON:(id)a3;
+- (PLUSSchemaPLUSClientEvent)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSClientEvent)initWithJSON:(id)n;
 - (PLUSSchemaPLUSContactGroundTruthGenerated)contactGroundTruthGenerated;
 - (PLUSSchemaPLUSContactSuggesterQueryContext)contactSuggesterQueryContext;
 - (PLUSSchemaPLUSContactSuggesterRequestMetadataReported)contactSuggesterRequestMetadataReported;
@@ -28,7 +28,7 @@
 - (PLUSSchemaPLUSTMDCGroundTruthGenerated)tmdcGroundTruthGenerated;
 - (PLUSSchemaPLUSUSOGraphTier1)usoGraphTier1;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -59,43 +59,43 @@
 - (void)deleteSuggestionOutcomeReported;
 - (void)deleteTmdcGroundTruthGenerated;
 - (void)deleteUsoGraphTier1;
-- (void)setContactGroundTruthGenerated:(id)a3;
-- (void)setContactSuggesterQueryContext:(id)a3;
-- (void)setContactSuggesterRequestMetadataReported:(id)a3;
-- (void)setContactSuggesterSuggestionMetadataReported:(id)a3;
-- (void)setContactSuggestionAccuracySignalReported:(id)a3;
-- (void)setContactSuggestionGenerated:(id)a3;
-- (void)setContactSuggestionHeartbeatReported:(id)a3;
-- (void)setContactSuggestionOutcomeReported:(id)a3;
-- (void)setContactSuggestionRemoved:(id)a3;
-- (void)setInferencePluginInvocationContext:(id)a3;
-- (void)setMediaEvaluationSummaryReported:(id)a3;
-- (void)setMediaGroundTruthGenerated:(id)a3;
-- (void)setPatternSequenceGenerated:(id)a3;
-- (void)setPhoneCallMetadataExtracted:(id)a3;
-- (void)setPlusSuggesterMetadataReported:(id)a3;
-- (void)setPlusSuggesterQueried:(id)a3;
-- (void)setPlusSuggesterSuggestionMetadataReported:(id)a3;
-- (void)setPlusSuggesterSuggestionRedundancyReported:(id)a3;
-- (void)setSendMessageMetadataExtracted:(id)a3;
-- (void)setSuggestionGenerated:(id)a3;
-- (void)setSuggestionOutcomeReported:(id)a3;
-- (void)setTmdcGroundTruthGenerated:(id)a3;
-- (void)setUsoGraphTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setContactGroundTruthGenerated:(id)generated;
+- (void)setContactSuggesterQueryContext:(id)context;
+- (void)setContactSuggesterRequestMetadataReported:(id)reported;
+- (void)setContactSuggesterSuggestionMetadataReported:(id)reported;
+- (void)setContactSuggestionAccuracySignalReported:(id)reported;
+- (void)setContactSuggestionGenerated:(id)generated;
+- (void)setContactSuggestionHeartbeatReported:(id)reported;
+- (void)setContactSuggestionOutcomeReported:(id)reported;
+- (void)setContactSuggestionRemoved:(id)removed;
+- (void)setInferencePluginInvocationContext:(id)context;
+- (void)setMediaEvaluationSummaryReported:(id)reported;
+- (void)setMediaGroundTruthGenerated:(id)generated;
+- (void)setPatternSequenceGenerated:(id)generated;
+- (void)setPhoneCallMetadataExtracted:(id)extracted;
+- (void)setPlusSuggesterMetadataReported:(id)reported;
+- (void)setPlusSuggesterQueried:(id)queried;
+- (void)setPlusSuggesterSuggestionMetadataReported:(id)reported;
+- (void)setPlusSuggesterSuggestionRedundancyReported:(id)reported;
+- (void)setSendMessageMetadataExtracted:(id)extracted;
+- (void)setSuggestionGenerated:(id)generated;
+- (void)setSuggestionOutcomeReported:(id)reported;
+- (void)setTmdcGroundTruthGenerated:(id)generated;
+- (void)setUsoGraphTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSClientEvent
 
-- (PLUSSchemaPLUSClientEvent)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v74.receiver = self;
   v74.super_class = PLUSSchemaPLUSClientEvent;
   v5 = [(PLUSSchemaPLUSClientEvent *)&v74 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contactSuggesterQueryContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggesterQueryContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggesterQueryContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contactSuggestionOutcomeReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionOutcomeReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggestionOutcomeReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggesterRequestMetadataReported:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,7 +135,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggesterSuggestionMetadataReported:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"usoGraphTier1"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"usoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,7 +143,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setUsoGraphTier1:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"inferencePluginInvocationContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"inferencePluginInvocationContext"];
     objc_opt_class();
     v73 = v18;
     if (objc_opt_isKindOfClass())
@@ -152,7 +152,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setInferencePluginInvocationContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"contactGroundTruthGenerated"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"contactGroundTruthGenerated"];
     objc_opt_class();
     v72 = v20;
     if (objc_opt_isKindOfClass())
@@ -161,7 +161,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactGroundTruthGenerated:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"contactSuggestionGenerated"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionGenerated"];
     objc_opt_class();
     v71 = v22;
     if (objc_opt_isKindOfClass())
@@ -170,7 +170,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggestionGenerated:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"phoneCallMetadataExtracted"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"phoneCallMetadataExtracted"];
     objc_opt_class();
     v70 = v24;
     if (objc_opt_isKindOfClass())
@@ -179,7 +179,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setPhoneCallMetadataExtracted:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"tmdcGroundTruthGenerated"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"tmdcGroundTruthGenerated"];
     objc_opt_class();
     v69 = v26;
     if (objc_opt_isKindOfClass())
@@ -188,7 +188,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setTmdcGroundTruthGenerated:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"patternSequenceGenerated"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"patternSequenceGenerated"];
     objc_opt_class();
     v68 = v28;
     if (objc_opt_isKindOfClass())
@@ -197,7 +197,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setPatternSequenceGenerated:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"sendMessageMetadataExtracted"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"sendMessageMetadataExtracted"];
     objc_opt_class();
     v67 = v30;
     if (objc_opt_isKindOfClass())
@@ -206,7 +206,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setSendMessageMetadataExtracted:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"contactSuggestionHeartbeatReported"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionHeartbeatReported"];
     objc_opt_class();
     v66 = v32;
     if (objc_opt_isKindOfClass())
@@ -215,7 +215,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setContactSuggestionHeartbeatReported:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"contactSuggestionRemoved"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionRemoved"];
     objc_opt_class();
     v65 = v34;
     if (objc_opt_isKindOfClass())
@@ -225,7 +225,7 @@
     }
 
     v64 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
 
     v58 = v36;
     v63 = v8;
-    v38 = [v4 objectForKeyedSubscript:@"mediaGroundTruthGenerated"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"mediaGroundTruthGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
     }
 
     v62 = v10;
-    v40 = [v4 objectForKeyedSubscript:@"mediaEvaluationSummaryReported"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"mediaEvaluationSummaryReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -253,7 +253,7 @@
     }
 
     v61 = v12;
-    v42 = [v4 objectForKeyedSubscript:@"plusSuggesterQueried"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"plusSuggesterQueried"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
     }
 
     v60 = v14;
-    v44 = [v4 objectForKeyedSubscript:@"plusSuggesterMetadataReported"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"plusSuggesterMetadataReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -271,7 +271,7 @@
     }
 
     v59 = v16;
-    v46 = [v4 objectForKeyedSubscript:{@"plusSuggesterSuggestionMetadataReported", v40}];
+    v46 = [dictionaryCopy objectForKeyedSubscript:{@"plusSuggesterSuggestionMetadataReported", v40}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -280,7 +280,7 @@
     }
 
     v48 = v38;
-    v49 = [v4 objectForKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -288,7 +288,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setPlusSuggesterSuggestionRedundancyReported:v50];
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"suggestionGenerated"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"suggestionGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -296,7 +296,7 @@
       [(PLUSSchemaPLUSClientEvent *)v5 setSuggestionGenerated:v52];
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"suggestionOutcomeReported"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"suggestionOutcomeReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -310,30 +310,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSClientEvent)initWithJSON:(id)a3
+- (PLUSSchemaPLUSClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -346,395 +346,395 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactGroundTruthGenerated)
   {
-    v4 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contactGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+    dictionaryRepresentation = [contactGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contactGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactGroundTruthGenerated"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contactGroundTruthGenerated"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contactGroundTruthGenerated"];
     }
   }
 
   if (self->_contactSuggesterQueryContext)
   {
-    v7 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    contactSuggesterQueryContext = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+    dictionaryRepresentation2 = [contactSuggesterQueryContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"contactSuggesterQueryContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contactSuggesterQueryContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"contactSuggesterQueryContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contactSuggesterQueryContext"];
     }
   }
 
   if (self->_contactSuggesterRequestMetadataReported)
   {
-    v10 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    contactSuggesterRequestMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+    dictionaryRepresentation3 = [contactSuggesterRequestMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"contactSuggesterRequestMetadataReported"];
     }
   }
 
   if (self->_contactSuggesterSuggestionMetadataReported)
   {
-    v13 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    contactSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+    dictionaryRepresentation4 = [contactSuggesterSuggestionMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"contactSuggesterSuggestionMetadataReported"];
     }
   }
 
   if (self->_contactSuggestionAccuracySignalReported)
   {
-    v16 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    contactSuggestionAccuracySignalReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+    dictionaryRepresentation5 = [contactSuggestionAccuracySignalReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"contactSuggestionAccuracySignalReported"];
     }
   }
 
   if (self->_contactSuggestionGenerated)
   {
-    v19 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    contactSuggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+    dictionaryRepresentation6 = [contactSuggestionGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"contactSuggestionGenerated"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"contactSuggestionGenerated"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"contactSuggestionGenerated"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"contactSuggestionGenerated"];
     }
   }
 
   if (self->_contactSuggestionHeartbeatReported)
   {
-    v22 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    contactSuggestionHeartbeatReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+    dictionaryRepresentation7 = [contactSuggestionHeartbeatReported dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"contactSuggestionHeartbeatReported"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"contactSuggestionHeartbeatReported"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"contactSuggestionHeartbeatReported"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"contactSuggestionHeartbeatReported"];
     }
   }
 
   if (self->_contactSuggestionOutcomeReported)
   {
-    v25 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    contactSuggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+    dictionaryRepresentation8 = [contactSuggestionOutcomeReported dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"contactSuggestionOutcomeReported"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"contactSuggestionOutcomeReported"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"contactSuggestionOutcomeReported"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"contactSuggestionOutcomeReported"];
     }
   }
 
   if (self->_contactSuggestionRemoved)
   {
-    v28 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    contactSuggestionRemoved = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+    dictionaryRepresentation9 = [contactSuggestionRemoved dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"contactSuggestionRemoved"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"contactSuggestionRemoved"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"contactSuggestionRemoved"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"contactSuggestionRemoved"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v31 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+    dictionaryRepresentation10 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"eventMetadata"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_inferencePluginInvocationContext)
   {
-    v34 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    inferencePluginInvocationContext = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+    dictionaryRepresentation11 = [inferencePluginInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"inferencePluginInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"inferencePluginInvocationContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"inferencePluginInvocationContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"inferencePluginInvocationContext"];
     }
   }
 
   if (self->_mediaEvaluationSummaryReported)
   {
-    v37 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    mediaEvaluationSummaryReported = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+    dictionaryRepresentation12 = [mediaEvaluationSummaryReported dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"mediaEvaluationSummaryReported"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"mediaEvaluationSummaryReported"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"mediaEvaluationSummaryReported"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"mediaEvaluationSummaryReported"];
     }
   }
 
   if (self->_mediaGroundTruthGenerated)
   {
-    v40 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    mediaGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+    dictionaryRepresentation13 = [mediaGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"mediaGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"mediaGroundTruthGenerated"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"mediaGroundTruthGenerated"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"mediaGroundTruthGenerated"];
     }
   }
 
   if (self->_patternSequenceGenerated)
   {
-    v43 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    patternSequenceGenerated = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+    dictionaryRepresentation14 = [patternSequenceGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"patternSequenceGenerated"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"patternSequenceGenerated"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"patternSequenceGenerated"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"patternSequenceGenerated"];
     }
   }
 
   if (self->_phoneCallMetadataExtracted)
   {
-    v46 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    phoneCallMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+    dictionaryRepresentation15 = [phoneCallMetadataExtracted dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"phoneCallMetadataExtracted"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"phoneCallMetadataExtracted"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"phoneCallMetadataExtracted"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"phoneCallMetadataExtracted"];
     }
   }
 
   if (self->_plusSuggesterMetadataReported)
   {
-    v49 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    plusSuggesterMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+    dictionaryRepresentation16 = [plusSuggesterMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"plusSuggesterMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"plusSuggesterMetadataReported"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"plusSuggesterMetadataReported"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"plusSuggesterMetadataReported"];
     }
   }
 
   if (self->_plusSuggesterQueried)
   {
-    v52 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    plusSuggesterQueried = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+    dictionaryRepresentation17 = [plusSuggesterQueried dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"plusSuggesterQueried"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"plusSuggesterQueried"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"plusSuggesterQueried"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"plusSuggesterQueried"];
     }
   }
 
   if (self->_plusSuggesterSuggestionMetadataReported)
   {
-    v55 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    plusSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+    dictionaryRepresentation18 = [plusSuggesterSuggestionMetadataReported dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"plusSuggesterSuggestionMetadataReported"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"plusSuggesterSuggestionMetadataReported"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"plusSuggesterSuggestionMetadataReported"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"plusSuggesterSuggestionMetadataReported"];
     }
   }
 
   if (self->_plusSuggesterSuggestionRedundancyReported)
   {
-    v58 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    plusSuggesterSuggestionRedundancyReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+    dictionaryRepresentation19 = [plusSuggesterSuggestionRedundancyReported dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"plusSuggesterSuggestionRedundancyReported"];
     }
   }
 
   if (self->_sendMessageMetadataExtracted)
   {
-    v61 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    sendMessageMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+    dictionaryRepresentation20 = [sendMessageMetadataExtracted dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"sendMessageMetadataExtracted"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"sendMessageMetadataExtracted"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"sendMessageMetadataExtracted"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"sendMessageMetadataExtracted"];
     }
   }
 
   if (self->_suggestionGenerated)
   {
-    v64 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    suggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+    dictionaryRepresentation21 = [suggestionGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"suggestionGenerated"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"suggestionGenerated"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"suggestionGenerated"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"suggestionGenerated"];
     }
   }
 
   if (self->_suggestionOutcomeReported)
   {
-    v67 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    suggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+    dictionaryRepresentation22 = [suggestionOutcomeReported dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"suggestionOutcomeReported"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"suggestionOutcomeReported"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"suggestionOutcomeReported"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"suggestionOutcomeReported"];
     }
   }
 
   if (self->_tmdcGroundTruthGenerated)
   {
-    v70 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    tmdcGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+    dictionaryRepresentation23 = [tmdcGroundTruthGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"tmdcGroundTruthGenerated"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"tmdcGroundTruthGenerated"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"tmdcGroundTruthGenerated"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"tmdcGroundTruthGenerated"];
     }
   }
 
   if (self->_usoGraphTier1)
   {
-    v73 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    usoGraphTier1 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+    dictionaryRepresentation24 = [usoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"usoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"usoGraphTier1"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"usoGraphTier1"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"usoGraphTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v76 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v76 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -765,34 +765,34 @@
   return v24 ^ v25 ^ [(PLUSSchemaPLUSSuggestionOutcomeReported *)self->_suggestionOutcomeReported hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_123;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_123;
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v8 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -804,20 +804,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
-  v7 = [v4 contactSuggesterQueryContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+  eventMetadata2 = [equalCopy contactSuggesterQueryContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v13 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
-  if (v13)
+  contactSuggesterQueryContext = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+  if (contactSuggesterQueryContext)
   {
-    v14 = v13;
-    v15 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
-    v16 = [v4 contactSuggesterQueryContext];
-    v17 = [v15 isEqual:v16];
+    v14 = contactSuggesterQueryContext;
+    contactSuggesterQueryContext2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+    contactSuggesterQueryContext3 = [equalCopy contactSuggesterQueryContext];
+    v17 = [contactSuggesterQueryContext2 isEqual:contactSuggesterQueryContext3];
 
     if (!v17)
     {
@@ -829,20 +829,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
-  v7 = [v4 contactSuggestionOutcomeReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+  eventMetadata2 = [equalCopy contactSuggestionOutcomeReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v18 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
-  if (v18)
+  contactSuggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+  if (contactSuggestionOutcomeReported)
   {
-    v19 = v18;
-    v20 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
-    v21 = [v4 contactSuggestionOutcomeReported];
-    v22 = [v20 isEqual:v21];
+    v19 = contactSuggestionOutcomeReported;
+    contactSuggestionOutcomeReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+    contactSuggestionOutcomeReported3 = [equalCopy contactSuggestionOutcomeReported];
+    v22 = [contactSuggestionOutcomeReported2 isEqual:contactSuggestionOutcomeReported3];
 
     if (!v22)
     {
@@ -854,20 +854,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
-  v7 = [v4 contactSuggesterRequestMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+  eventMetadata2 = [equalCopy contactSuggesterRequestMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v23 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
-  if (v23)
+  contactSuggesterRequestMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+  if (contactSuggesterRequestMetadataReported)
   {
-    v24 = v23;
-    v25 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
-    v26 = [v4 contactSuggesterRequestMetadataReported];
-    v27 = [v25 isEqual:v26];
+    v24 = contactSuggesterRequestMetadataReported;
+    contactSuggesterRequestMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+    contactSuggesterRequestMetadataReported3 = [equalCopy contactSuggesterRequestMetadataReported];
+    v27 = [contactSuggesterRequestMetadataReported2 isEqual:contactSuggesterRequestMetadataReported3];
 
     if (!v27)
     {
@@ -879,20 +879,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
-  v7 = [v4 contactSuggesterSuggestionMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+  eventMetadata2 = [equalCopy contactSuggesterSuggestionMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v28 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
-  if (v28)
+  contactSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+  if (contactSuggesterSuggestionMetadataReported)
   {
-    v29 = v28;
-    v30 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
-    v31 = [v4 contactSuggesterSuggestionMetadataReported];
-    v32 = [v30 isEqual:v31];
+    v29 = contactSuggesterSuggestionMetadataReported;
+    contactSuggesterSuggestionMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+    contactSuggesterSuggestionMetadataReported3 = [equalCopy contactSuggesterSuggestionMetadataReported];
+    v32 = [contactSuggesterSuggestionMetadataReported2 isEqual:contactSuggesterSuggestionMetadataReported3];
 
     if (!v32)
     {
@@ -904,20 +904,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
-  v7 = [v4 usoGraphTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+  eventMetadata2 = [equalCopy usoGraphTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v33 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
-  if (v33)
+  usoGraphTier1 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+  if (usoGraphTier1)
   {
-    v34 = v33;
-    v35 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
-    v36 = [v4 usoGraphTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = usoGraphTier1;
+    usoGraphTier12 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+    usoGraphTier13 = [equalCopy usoGraphTier1];
+    v37 = [usoGraphTier12 isEqual:usoGraphTier13];
 
     if (!v37)
     {
@@ -929,20 +929,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
-  v7 = [v4 inferencePluginInvocationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+  eventMetadata2 = [equalCopy inferencePluginInvocationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v38 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
-  if (v38)
+  inferencePluginInvocationContext = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+  if (inferencePluginInvocationContext)
   {
-    v39 = v38;
-    v40 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
-    v41 = [v4 inferencePluginInvocationContext];
-    v42 = [v40 isEqual:v41];
+    v39 = inferencePluginInvocationContext;
+    inferencePluginInvocationContext2 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+    inferencePluginInvocationContext3 = [equalCopy inferencePluginInvocationContext];
+    v42 = [inferencePluginInvocationContext2 isEqual:inferencePluginInvocationContext3];
 
     if (!v42)
     {
@@ -954,20 +954,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
-  v7 = [v4 contactGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+  eventMetadata2 = [equalCopy contactGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v43 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
-  if (v43)
+  contactGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+  if (contactGroundTruthGenerated)
   {
-    v44 = v43;
-    v45 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
-    v46 = [v4 contactGroundTruthGenerated];
-    v47 = [v45 isEqual:v46];
+    v44 = contactGroundTruthGenerated;
+    contactGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+    contactGroundTruthGenerated3 = [equalCopy contactGroundTruthGenerated];
+    v47 = [contactGroundTruthGenerated2 isEqual:contactGroundTruthGenerated3];
 
     if (!v47)
     {
@@ -979,20 +979,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
-  v7 = [v4 contactSuggestionGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+  eventMetadata2 = [equalCopy contactSuggestionGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v48 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
-  if (v48)
+  contactSuggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+  if (contactSuggestionGenerated)
   {
-    v49 = v48;
-    v50 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
-    v51 = [v4 contactSuggestionGenerated];
-    v52 = [v50 isEqual:v51];
+    v49 = contactSuggestionGenerated;
+    contactSuggestionGenerated2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+    contactSuggestionGenerated3 = [equalCopy contactSuggestionGenerated];
+    v52 = [contactSuggestionGenerated2 isEqual:contactSuggestionGenerated3];
 
     if (!v52)
     {
@@ -1004,20 +1004,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
-  v7 = [v4 phoneCallMetadataExtracted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+  eventMetadata2 = [equalCopy phoneCallMetadataExtracted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v53 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
-  if (v53)
+  phoneCallMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+  if (phoneCallMetadataExtracted)
   {
-    v54 = v53;
-    v55 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
-    v56 = [v4 phoneCallMetadataExtracted];
-    v57 = [v55 isEqual:v56];
+    v54 = phoneCallMetadataExtracted;
+    phoneCallMetadataExtracted2 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+    phoneCallMetadataExtracted3 = [equalCopy phoneCallMetadataExtracted];
+    v57 = [phoneCallMetadataExtracted2 isEqual:phoneCallMetadataExtracted3];
 
     if (!v57)
     {
@@ -1029,20 +1029,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
-  v7 = [v4 tmdcGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+  eventMetadata2 = [equalCopy tmdcGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v58 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
-  if (v58)
+  tmdcGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+  if (tmdcGroundTruthGenerated)
   {
-    v59 = v58;
-    v60 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
-    v61 = [v4 tmdcGroundTruthGenerated];
-    v62 = [v60 isEqual:v61];
+    v59 = tmdcGroundTruthGenerated;
+    tmdcGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+    tmdcGroundTruthGenerated3 = [equalCopy tmdcGroundTruthGenerated];
+    v62 = [tmdcGroundTruthGenerated2 isEqual:tmdcGroundTruthGenerated3];
 
     if (!v62)
     {
@@ -1054,20 +1054,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
-  v7 = [v4 patternSequenceGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+  eventMetadata2 = [equalCopy patternSequenceGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v63 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
-  if (v63)
+  patternSequenceGenerated = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+  if (patternSequenceGenerated)
   {
-    v64 = v63;
-    v65 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
-    v66 = [v4 patternSequenceGenerated];
-    v67 = [v65 isEqual:v66];
+    v64 = patternSequenceGenerated;
+    patternSequenceGenerated2 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+    patternSequenceGenerated3 = [equalCopy patternSequenceGenerated];
+    v67 = [patternSequenceGenerated2 isEqual:patternSequenceGenerated3];
 
     if (!v67)
     {
@@ -1079,20 +1079,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
-  v7 = [v4 sendMessageMetadataExtracted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+  eventMetadata2 = [equalCopy sendMessageMetadataExtracted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v68 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
-  if (v68)
+  sendMessageMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+  if (sendMessageMetadataExtracted)
   {
-    v69 = v68;
-    v70 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
-    v71 = [v4 sendMessageMetadataExtracted];
-    v72 = [v70 isEqual:v71];
+    v69 = sendMessageMetadataExtracted;
+    sendMessageMetadataExtracted2 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+    sendMessageMetadataExtracted3 = [equalCopy sendMessageMetadataExtracted];
+    v72 = [sendMessageMetadataExtracted2 isEqual:sendMessageMetadataExtracted3];
 
     if (!v72)
     {
@@ -1104,20 +1104,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
-  v7 = [v4 contactSuggestionHeartbeatReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+  eventMetadata2 = [equalCopy contactSuggestionHeartbeatReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v73 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
-  if (v73)
+  contactSuggestionHeartbeatReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+  if (contactSuggestionHeartbeatReported)
   {
-    v74 = v73;
-    v75 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
-    v76 = [v4 contactSuggestionHeartbeatReported];
-    v77 = [v75 isEqual:v76];
+    v74 = contactSuggestionHeartbeatReported;
+    contactSuggestionHeartbeatReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+    contactSuggestionHeartbeatReported3 = [equalCopy contactSuggestionHeartbeatReported];
+    v77 = [contactSuggestionHeartbeatReported2 isEqual:contactSuggestionHeartbeatReported3];
 
     if (!v77)
     {
@@ -1129,20 +1129,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
-  v7 = [v4 contactSuggestionRemoved];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+  eventMetadata2 = [equalCopy contactSuggestionRemoved];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v78 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
-  if (v78)
+  contactSuggestionRemoved = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+  if (contactSuggestionRemoved)
   {
-    v79 = v78;
-    v80 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
-    v81 = [v4 contactSuggestionRemoved];
-    v82 = [v80 isEqual:v81];
+    v79 = contactSuggestionRemoved;
+    contactSuggestionRemoved2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+    contactSuggestionRemoved3 = [equalCopy contactSuggestionRemoved];
+    v82 = [contactSuggestionRemoved2 isEqual:contactSuggestionRemoved3];
 
     if (!v82)
     {
@@ -1154,20 +1154,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
-  v7 = [v4 contactSuggestionAccuracySignalReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+  eventMetadata2 = [equalCopy contactSuggestionAccuracySignalReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v83 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
-  if (v83)
+  contactSuggestionAccuracySignalReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+  if (contactSuggestionAccuracySignalReported)
   {
-    v84 = v83;
-    v85 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
-    v86 = [v4 contactSuggestionAccuracySignalReported];
-    v87 = [v85 isEqual:v86];
+    v84 = contactSuggestionAccuracySignalReported;
+    contactSuggestionAccuracySignalReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+    contactSuggestionAccuracySignalReported3 = [equalCopy contactSuggestionAccuracySignalReported];
+    v87 = [contactSuggestionAccuracySignalReported2 isEqual:contactSuggestionAccuracySignalReported3];
 
     if (!v87)
     {
@@ -1179,20 +1179,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
-  v7 = [v4 mediaGroundTruthGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+  eventMetadata2 = [equalCopy mediaGroundTruthGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v88 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
-  if (v88)
+  mediaGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+  if (mediaGroundTruthGenerated)
   {
-    v89 = v88;
-    v90 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
-    v91 = [v4 mediaGroundTruthGenerated];
-    v92 = [v90 isEqual:v91];
+    v89 = mediaGroundTruthGenerated;
+    mediaGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+    mediaGroundTruthGenerated3 = [equalCopy mediaGroundTruthGenerated];
+    v92 = [mediaGroundTruthGenerated2 isEqual:mediaGroundTruthGenerated3];
 
     if (!v92)
     {
@@ -1204,20 +1204,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
-  v7 = [v4 mediaEvaluationSummaryReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+  eventMetadata2 = [equalCopy mediaEvaluationSummaryReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v93 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
-  if (v93)
+  mediaEvaluationSummaryReported = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+  if (mediaEvaluationSummaryReported)
   {
-    v94 = v93;
-    v95 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
-    v96 = [v4 mediaEvaluationSummaryReported];
-    v97 = [v95 isEqual:v96];
+    v94 = mediaEvaluationSummaryReported;
+    mediaEvaluationSummaryReported2 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+    mediaEvaluationSummaryReported3 = [equalCopy mediaEvaluationSummaryReported];
+    v97 = [mediaEvaluationSummaryReported2 isEqual:mediaEvaluationSummaryReported3];
 
     if (!v97)
     {
@@ -1229,20 +1229,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
-  v7 = [v4 plusSuggesterQueried];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+  eventMetadata2 = [equalCopy plusSuggesterQueried];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v98 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
-  if (v98)
+  plusSuggesterQueried = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+  if (plusSuggesterQueried)
   {
-    v99 = v98;
-    v100 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
-    v101 = [v4 plusSuggesterQueried];
-    v102 = [v100 isEqual:v101];
+    v99 = plusSuggesterQueried;
+    plusSuggesterQueried2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+    plusSuggesterQueried3 = [equalCopy plusSuggesterQueried];
+    v102 = [plusSuggesterQueried2 isEqual:plusSuggesterQueried3];
 
     if (!v102)
     {
@@ -1254,20 +1254,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
-  v7 = [v4 plusSuggesterMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+  eventMetadata2 = [equalCopy plusSuggesterMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v103 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
-  if (v103)
+  plusSuggesterMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+  if (plusSuggesterMetadataReported)
   {
-    v104 = v103;
-    v105 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
-    v106 = [v4 plusSuggesterMetadataReported];
-    v107 = [v105 isEqual:v106];
+    v104 = plusSuggesterMetadataReported;
+    plusSuggesterMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+    plusSuggesterMetadataReported3 = [equalCopy plusSuggesterMetadataReported];
+    v107 = [plusSuggesterMetadataReported2 isEqual:plusSuggesterMetadataReported3];
 
     if (!v107)
     {
@@ -1279,20 +1279,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
-  v7 = [v4 plusSuggesterSuggestionMetadataReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+  eventMetadata2 = [equalCopy plusSuggesterSuggestionMetadataReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v108 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
-  if (v108)
+  plusSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+  if (plusSuggesterSuggestionMetadataReported)
   {
-    v109 = v108;
-    v110 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
-    v111 = [v4 plusSuggesterSuggestionMetadataReported];
-    v112 = [v110 isEqual:v111];
+    v109 = plusSuggesterSuggestionMetadataReported;
+    plusSuggesterSuggestionMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+    plusSuggesterSuggestionMetadataReported3 = [equalCopy plusSuggesterSuggestionMetadataReported];
+    v112 = [plusSuggesterSuggestionMetadataReported2 isEqual:plusSuggesterSuggestionMetadataReported3];
 
     if (!v112)
     {
@@ -1304,20 +1304,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
-  v7 = [v4 plusSuggesterSuggestionRedundancyReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+  eventMetadata2 = [equalCopy plusSuggesterSuggestionRedundancyReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v113 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
-  if (v113)
+  plusSuggesterSuggestionRedundancyReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+  if (plusSuggesterSuggestionRedundancyReported)
   {
-    v114 = v113;
-    v115 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
-    v116 = [v4 plusSuggesterSuggestionRedundancyReported];
-    v117 = [v115 isEqual:v116];
+    v114 = plusSuggesterSuggestionRedundancyReported;
+    plusSuggesterSuggestionRedundancyReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+    plusSuggesterSuggestionRedundancyReported3 = [equalCopy plusSuggesterSuggestionRedundancyReported];
+    v117 = [plusSuggesterSuggestionRedundancyReported2 isEqual:plusSuggesterSuggestionRedundancyReported3];
 
     if (!v117)
     {
@@ -1329,20 +1329,20 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
-  v7 = [v4 suggestionGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+  eventMetadata2 = [equalCopy suggestionGenerated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_122;
   }
 
-  v118 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
-  if (v118)
+  suggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+  if (suggestionGenerated)
   {
-    v119 = v118;
-    v120 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
-    v121 = [v4 suggestionGenerated];
-    v122 = [v120 isEqual:v121];
+    v119 = suggestionGenerated;
+    suggestionGenerated2 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+    suggestionGenerated3 = [equalCopy suggestionGenerated];
+    v122 = [suggestionGenerated2 isEqual:suggestionGenerated3];
 
     if (!v122)
     {
@@ -1354,12 +1354,12 @@
   {
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
-  v7 = [v4 suggestionOutcomeReported];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+  eventMetadata2 = [equalCopy suggestionOutcomeReported];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v123 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
-    if (!v123)
+    suggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+    if (!suggestionOutcomeReported)
     {
 
 LABEL_126:
@@ -1367,10 +1367,10 @@ LABEL_126:
       goto LABEL_124;
     }
 
-    v124 = v123;
-    v125 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
-    v126 = [v4 suggestionOutcomeReported];
-    v127 = [v125 isEqual:v126];
+    v124 = suggestionOutcomeReported;
+    suggestionOutcomeReported2 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+    suggestionOutcomeReported3 = [equalCopy suggestionOutcomeReported];
+    v127 = [suggestionOutcomeReported2 isEqual:suggestionOutcomeReported3];
 
     if (v127)
     {
@@ -1390,202 +1390,202 @@ LABEL_124:
   return v128;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v53 = a3;
-  v4 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+    eventMetadata2 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+  contactSuggesterQueryContext = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
 
-  if (v6)
+  if (contactSuggesterQueryContext)
   {
-    v7 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+    contactSuggesterQueryContext2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+  contactSuggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
 
-  if (v8)
+  if (contactSuggestionOutcomeReported)
   {
-    v9 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+    contactSuggestionOutcomeReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+  contactSuggesterRequestMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
 
-  if (v10)
+  if (contactSuggesterRequestMetadataReported)
   {
-    v11 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+    contactSuggesterRequestMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+  contactSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
 
-  if (v12)
+  if (contactSuggesterSuggestionMetadataReported)
   {
-    v13 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+    contactSuggesterSuggestionMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+  usoGraphTier1 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
 
-  if (v14)
+  if (usoGraphTier1)
   {
-    v15 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+    usoGraphTier12 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+  inferencePluginInvocationContext = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
 
-  if (v16)
+  if (inferencePluginInvocationContext)
   {
-    v17 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+    inferencePluginInvocationContext2 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+  contactGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
 
-  if (v18)
+  if (contactGroundTruthGenerated)
   {
-    v19 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+    contactGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+  contactSuggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
 
-  if (v20)
+  if (contactSuggestionGenerated)
   {
-    v21 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+    contactSuggestionGenerated2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+  phoneCallMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
 
-  if (v22)
+  if (phoneCallMetadataExtracted)
   {
-    v23 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+    phoneCallMetadataExtracted2 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+  tmdcGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
 
-  if (v24)
+  if (tmdcGroundTruthGenerated)
   {
-    v25 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+    tmdcGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+  patternSequenceGenerated = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
 
-  if (v26)
+  if (patternSequenceGenerated)
   {
-    v27 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+    patternSequenceGenerated2 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+  sendMessageMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
 
-  if (v28)
+  if (sendMessageMetadataExtracted)
   {
-    v29 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+    sendMessageMetadataExtracted2 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+  contactSuggestionHeartbeatReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
 
-  if (v30)
+  if (contactSuggestionHeartbeatReported)
   {
-    v31 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+    contactSuggestionHeartbeatReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+  contactSuggestionRemoved = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
 
-  if (v32)
+  if (contactSuggestionRemoved)
   {
-    v33 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+    contactSuggestionRemoved2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+  contactSuggestionAccuracySignalReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
 
-  if (v34)
+  if (contactSuggestionAccuracySignalReported)
   {
-    v35 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+    contactSuggestionAccuracySignalReported2 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+  mediaGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
 
-  if (v36)
+  if (mediaGroundTruthGenerated)
   {
-    v37 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+    mediaGroundTruthGenerated2 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+  mediaEvaluationSummaryReported = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
 
-  if (v38)
+  if (mediaEvaluationSummaryReported)
   {
-    v39 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+    mediaEvaluationSummaryReported2 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+  plusSuggesterQueried = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
 
-  if (v40)
+  if (plusSuggesterQueried)
   {
-    v41 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+    plusSuggesterQueried2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+  plusSuggesterMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
 
-  if (v42)
+  if (plusSuggesterMetadataReported)
   {
-    v43 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+    plusSuggesterMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+  plusSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
 
-  if (v44)
+  if (plusSuggesterSuggestionMetadataReported)
   {
-    v45 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+    plusSuggesterSuggestionMetadataReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+  plusSuggesterSuggestionRedundancyReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
 
-  if (v46)
+  if (plusSuggesterSuggestionRedundancyReported)
   {
-    v47 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+    plusSuggesterSuggestionRedundancyReported2 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+  suggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
 
-  if (v48)
+  if (suggestionGenerated)
   {
-    v49 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+    suggestionGenerated2 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+  suggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
 
-  v51 = v53;
-  if (v50)
+  v51 = toCopy;
+  if (suggestionOutcomeReported)
   {
-    v52 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+    suggestionOutcomeReported2 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
     PBDataWriterWriteSubmessage();
 
-    v51 = v53;
+    v51 = toCopy;
   }
 }
 
@@ -1614,9 +1614,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setSuggestionOutcomeReported:(id)a3
+- (void)setSuggestionOutcomeReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -1684,14 +1684,14 @@ LABEL_124:
   self->_suggestionGenerated = 0;
 
   v27 = 123;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   suggestionOutcomeReported = self->_suggestionOutcomeReported;
-  self->_suggestionOutcomeReported = v4;
+  self->_suggestionOutcomeReported = reportedCopy;
 }
 
 - (void)deleteSuggestionGenerated
@@ -1719,9 +1719,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setSuggestionGenerated:(id)a3
+- (void)setSuggestionGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -1789,14 +1789,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 122;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   suggestionGenerated = self->_suggestionGenerated;
-  self->_suggestionGenerated = v4;
+  self->_suggestionGenerated = generatedCopy;
 }
 
 - (void)deletePlusSuggesterSuggestionRedundancyReported
@@ -1824,9 +1824,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPlusSuggesterSuggestionRedundancyReported:(id)a3
+- (void)setPlusSuggesterSuggestionRedundancyReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -1894,14 +1894,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 121;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   plusSuggesterSuggestionRedundancyReported = self->_plusSuggesterSuggestionRedundancyReported;
-  self->_plusSuggesterSuggestionRedundancyReported = v4;
+  self->_plusSuggesterSuggestionRedundancyReported = reportedCopy;
 }
 
 - (void)deletePlusSuggesterSuggestionMetadataReported
@@ -1929,9 +1929,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPlusSuggesterSuggestionMetadataReported:(id)a3
+- (void)setPlusSuggesterSuggestionMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -1999,14 +1999,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 120;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   plusSuggesterSuggestionMetadataReported = self->_plusSuggesterSuggestionMetadataReported;
-  self->_plusSuggesterSuggestionMetadataReported = v4;
+  self->_plusSuggesterSuggestionMetadataReported = reportedCopy;
 }
 
 - (void)deletePlusSuggesterMetadataReported
@@ -2034,9 +2034,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPlusSuggesterMetadataReported:(id)a3
+- (void)setPlusSuggesterMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2104,14 +2104,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 119;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   plusSuggesterMetadataReported = self->_plusSuggesterMetadataReported;
-  self->_plusSuggesterMetadataReported = v4;
+  self->_plusSuggesterMetadataReported = reportedCopy;
 }
 
 - (void)deletePlusSuggesterQueried
@@ -2139,9 +2139,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPlusSuggesterQueried:(id)a3
+- (void)setPlusSuggesterQueried:(id)queried
 {
-  v4 = a3;
+  queriedCopy = queried;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2209,14 +2209,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 118;
-  if (!v4)
+  if (!queriedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   plusSuggesterQueried = self->_plusSuggesterQueried;
-  self->_plusSuggesterQueried = v4;
+  self->_plusSuggesterQueried = queriedCopy;
 }
 
 - (void)deleteMediaEvaluationSummaryReported
@@ -2244,9 +2244,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setMediaEvaluationSummaryReported:(id)a3
+- (void)setMediaEvaluationSummaryReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2314,14 +2314,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 117;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   mediaEvaluationSummaryReported = self->_mediaEvaluationSummaryReported;
-  self->_mediaEvaluationSummaryReported = v4;
+  self->_mediaEvaluationSummaryReported = reportedCopy;
 }
 
 - (void)deleteMediaGroundTruthGenerated
@@ -2349,9 +2349,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setMediaGroundTruthGenerated:(id)a3
+- (void)setMediaGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2419,14 +2419,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 116;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   mediaGroundTruthGenerated = self->_mediaGroundTruthGenerated;
-  self->_mediaGroundTruthGenerated = v4;
+  self->_mediaGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteContactSuggestionAccuracySignalReported
@@ -2454,9 +2454,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggestionAccuracySignalReported:(id)a3
+- (void)setContactSuggestionAccuracySignalReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2524,14 +2524,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 115;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggestionAccuracySignalReported = self->_contactSuggestionAccuracySignalReported;
-  self->_contactSuggestionAccuracySignalReported = v4;
+  self->_contactSuggestionAccuracySignalReported = reportedCopy;
 }
 
 - (void)deleteContactSuggestionRemoved
@@ -2559,9 +2559,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggestionRemoved:(id)a3
+- (void)setContactSuggestionRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2629,14 +2629,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 114;
-  if (!v4)
+  if (!removedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggestionRemoved = self->_contactSuggestionRemoved;
-  self->_contactSuggestionRemoved = v4;
+  self->_contactSuggestionRemoved = removedCopy;
 }
 
 - (void)deleteContactSuggestionHeartbeatReported
@@ -2664,9 +2664,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggestionHeartbeatReported:(id)a3
+- (void)setContactSuggestionHeartbeatReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2734,14 +2734,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 113;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggestionHeartbeatReported = self->_contactSuggestionHeartbeatReported;
-  self->_contactSuggestionHeartbeatReported = v4;
+  self->_contactSuggestionHeartbeatReported = reportedCopy;
 }
 
 - (void)deleteSendMessageMetadataExtracted
@@ -2769,9 +2769,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setSendMessageMetadataExtracted:(id)a3
+- (void)setSendMessageMetadataExtracted:(id)extracted
 {
-  v4 = a3;
+  extractedCopy = extracted;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2839,14 +2839,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 112;
-  if (!v4)
+  if (!extractedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   sendMessageMetadataExtracted = self->_sendMessageMetadataExtracted;
-  self->_sendMessageMetadataExtracted = v4;
+  self->_sendMessageMetadataExtracted = extractedCopy;
 }
 
 - (void)deletePatternSequenceGenerated
@@ -2874,9 +2874,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPatternSequenceGenerated:(id)a3
+- (void)setPatternSequenceGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -2944,14 +2944,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 111;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   patternSequenceGenerated = self->_patternSequenceGenerated;
-  self->_patternSequenceGenerated = v4;
+  self->_patternSequenceGenerated = generatedCopy;
 }
 
 - (void)deleteTmdcGroundTruthGenerated
@@ -2979,9 +2979,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setTmdcGroundTruthGenerated:(id)a3
+- (void)setTmdcGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3049,14 +3049,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 110;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   tmdcGroundTruthGenerated = self->_tmdcGroundTruthGenerated;
-  self->_tmdcGroundTruthGenerated = v4;
+  self->_tmdcGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deletePhoneCallMetadataExtracted
@@ -3084,9 +3084,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setPhoneCallMetadataExtracted:(id)a3
+- (void)setPhoneCallMetadataExtracted:(id)extracted
 {
-  v4 = a3;
+  extractedCopy = extracted;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3154,14 +3154,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 109;
-  if (!v4)
+  if (!extractedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   phoneCallMetadataExtracted = self->_phoneCallMetadataExtracted;
-  self->_phoneCallMetadataExtracted = v4;
+  self->_phoneCallMetadataExtracted = extractedCopy;
 }
 
 - (void)deleteContactSuggestionGenerated
@@ -3189,9 +3189,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggestionGenerated:(id)a3
+- (void)setContactSuggestionGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3259,14 +3259,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 108;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggestionGenerated = self->_contactSuggestionGenerated;
-  self->_contactSuggestionGenerated = v4;
+  self->_contactSuggestionGenerated = generatedCopy;
 }
 
 - (void)deleteContactGroundTruthGenerated
@@ -3294,9 +3294,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactGroundTruthGenerated:(id)a3
+- (void)setContactGroundTruthGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3364,14 +3364,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 107;
-  if (!v4)
+  if (!generatedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactGroundTruthGenerated = self->_contactGroundTruthGenerated;
-  self->_contactGroundTruthGenerated = v4;
+  self->_contactGroundTruthGenerated = generatedCopy;
 }
 
 - (void)deleteInferencePluginInvocationContext
@@ -3399,9 +3399,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setInferencePluginInvocationContext:(id)a3
+- (void)setInferencePluginInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3469,14 +3469,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   inferencePluginInvocationContext = self->_inferencePluginInvocationContext;
-  self->_inferencePluginInvocationContext = v4;
+  self->_inferencePluginInvocationContext = contextCopy;
 }
 
 - (void)deleteUsoGraphTier1
@@ -3504,9 +3504,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setUsoGraphTier1:(id)a3
+- (void)setUsoGraphTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3574,14 +3574,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 105;
-  if (!v4)
+  if (!tier1Copy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   usoGraphTier1 = self->_usoGraphTier1;
-  self->_usoGraphTier1 = v4;
+  self->_usoGraphTier1 = tier1Copy;
 }
 
 - (void)deleteContactSuggesterSuggestionMetadataReported
@@ -3609,9 +3609,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggesterSuggestionMetadataReported:(id)a3
+- (void)setContactSuggesterSuggestionMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3679,14 +3679,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 104;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggesterSuggestionMetadataReported = self->_contactSuggesterSuggestionMetadataReported;
-  self->_contactSuggesterSuggestionMetadataReported = v4;
+  self->_contactSuggesterSuggestionMetadataReported = reportedCopy;
 }
 
 - (void)deleteContactSuggesterRequestMetadataReported
@@ -3714,9 +3714,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggesterRequestMetadataReported:(id)a3
+- (void)setContactSuggesterRequestMetadataReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3784,14 +3784,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 103;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggesterRequestMetadataReported = self->_contactSuggesterRequestMetadataReported;
-  self->_contactSuggesterRequestMetadataReported = v4;
+  self->_contactSuggesterRequestMetadataReported = reportedCopy;
 }
 
 - (void)deleteContactSuggestionOutcomeReported
@@ -3819,9 +3819,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggestionOutcomeReported:(id)a3
+- (void)setContactSuggestionOutcomeReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
   self->_contactSuggesterQueryContext = 0;
 
@@ -3889,14 +3889,14 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 102;
-  if (!v4)
+  if (!reportedCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggestionOutcomeReported = self->_contactSuggestionOutcomeReported;
-  self->_contactSuggestionOutcomeReported = v4;
+  self->_contactSuggestionOutcomeReported = reportedCopy;
 }
 
 - (void)deleteContactSuggesterQueryContext
@@ -3924,9 +3924,9 @@ LABEL_124:
   return v3;
 }
 
-- (void)setContactSuggesterQueryContext:(id)a3
+- (void)setContactSuggesterQueryContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   contactSuggestionOutcomeReported = self->_contactSuggestionOutcomeReported;
   self->_contactSuggestionOutcomeReported = 0;
 
@@ -3994,283 +3994,283 @@ LABEL_124:
   self->_suggestionOutcomeReported = 0;
 
   v27 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v27 = 0;
   }
 
   self->_whichEvent_Type = v27;
   contactSuggesterQueryContext = self->_contactSuggesterQueryContext;
-  self->_contactSuggesterQueryContext = v4;
+  self->_contactSuggesterQueryContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x16)
+  whichEvent_Type = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x16)
   {
     return @"com.apple.aiml.siri.plus.PLUSClientEvent";
   }
 
   else
   {
-    return off_1E78E0410[v2 - 101];
+    return off_1E78E0410[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v79.receiver = self;
   v79.super_class = PLUSSchemaPLUSClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v79 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v79 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  v6 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  contactSuggesterQueryContext = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterQueryContext];
+  v10 = [contactSuggesterQueryContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggesterQueryContext];
   }
 
-  v12 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  contactSuggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionOutcomeReported];
+  v13 = [contactSuggestionOutcomeReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggestionOutcomeReported];
   }
 
-  v15 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  contactSuggesterRequestMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterRequestMetadataReported];
+  v16 = [contactSuggesterRequestMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggesterRequestMetadataReported];
   }
 
-  v18 = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  contactSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggesterSuggestionMetadataReported];
+  v19 = [contactSuggesterSuggestionMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggesterSuggestionMetadataReported];
   }
 
-  v21 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  usoGraphTier1 = [(PLUSSchemaPLUSClientEvent *)self usoGraphTier1];
+  v22 = [usoGraphTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteUsoGraphTier1];
   }
 
-  v24 = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  inferencePluginInvocationContext = [(PLUSSchemaPLUSClientEvent *)self inferencePluginInvocationContext];
+  v25 = [inferencePluginInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteInferencePluginInvocationContext];
   }
 
-  v27 = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  contactGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self contactGroundTruthGenerated];
+  v28 = [contactGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactGroundTruthGenerated];
   }
 
-  v30 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  contactSuggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionGenerated];
+  v31 = [contactSuggestionGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggestionGenerated];
   }
 
-  v33 = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  phoneCallMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self phoneCallMetadataExtracted];
+  v34 = [phoneCallMetadataExtracted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePhoneCallMetadataExtracted];
   }
 
-  v36 = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  tmdcGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self tmdcGroundTruthGenerated];
+  v37 = [tmdcGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteTmdcGroundTruthGenerated];
   }
 
-  v39 = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  patternSequenceGenerated = [(PLUSSchemaPLUSClientEvent *)self patternSequenceGenerated];
+  v40 = [patternSequenceGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePatternSequenceGenerated];
   }
 
-  v42 = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  sendMessageMetadataExtracted = [(PLUSSchemaPLUSClientEvent *)self sendMessageMetadataExtracted];
+  v43 = [sendMessageMetadataExtracted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteSendMessageMetadataExtracted];
   }
 
-  v45 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  contactSuggestionHeartbeatReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionHeartbeatReported];
+  v46 = [contactSuggestionHeartbeatReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggestionHeartbeatReported];
   }
 
-  v48 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  contactSuggestionRemoved = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionRemoved];
+  v49 = [contactSuggestionRemoved applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggestionRemoved];
   }
 
-  v51 = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  contactSuggestionAccuracySignalReported = [(PLUSSchemaPLUSClientEvent *)self contactSuggestionAccuracySignalReported];
+  v52 = [contactSuggestionAccuracySignalReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteContactSuggestionAccuracySignalReported];
   }
 
-  v54 = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  mediaGroundTruthGenerated = [(PLUSSchemaPLUSClientEvent *)self mediaGroundTruthGenerated];
+  v55 = [mediaGroundTruthGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaGroundTruthGenerated];
   }
 
-  v57 = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  mediaEvaluationSummaryReported = [(PLUSSchemaPLUSClientEvent *)self mediaEvaluationSummaryReported];
+  v58 = [mediaEvaluationSummaryReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteMediaEvaluationSummaryReported];
   }
 
-  v60 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  plusSuggesterQueried = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterQueried];
+  v61 = [plusSuggesterQueried applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePlusSuggesterQueried];
   }
 
-  v63 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  plusSuggesterMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterMetadataReported];
+  v64 = [plusSuggesterMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePlusSuggesterMetadataReported];
   }
 
-  v66 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  plusSuggesterSuggestionMetadataReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionMetadataReported];
+  v67 = [plusSuggesterSuggestionMetadataReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePlusSuggesterSuggestionMetadataReported];
   }
 
-  v69 = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  plusSuggesterSuggestionRedundancyReported = [(PLUSSchemaPLUSClientEvent *)self plusSuggesterSuggestionRedundancyReported];
+  v70 = [plusSuggesterSuggestionRedundancyReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(PLUSSchemaPLUSClientEvent *)self deletePlusSuggesterSuggestionRedundancyReported];
   }
 
-  v72 = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  suggestionGenerated = [(PLUSSchemaPLUSClientEvent *)self suggestionGenerated];
+  v73 = [suggestionGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteSuggestionGenerated];
   }
 
-  v75 = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  suggestionOutcomeReported = [(PLUSSchemaPLUSClientEvent *)self suggestionOutcomeReported];
+  v76 = [suggestionOutcomeReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(PLUSSchemaPLUSClientEvent *)self deleteSuggestionOutcomeReported];
   }
@@ -4288,112 +4288,112 @@ LABEL_124:
 
 - (int)componentName
 {
-  v2 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-  v3 = [v2 plusId];
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  plusId = [eventMetadata plusId];
 
-  if (v3)
+  if (plusId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [plusId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [plusId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 19;
+        LODWORD(value) = 19;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
-  v3 = [v2 plusId];
+  eventMetadata = [(PLUSSchemaPLUSClientEvent *)self eventMetadata];
+  plusId = [eventMetadata plusId];
 
-  if (!v3)
+  if (!plusId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [plusId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [plusId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = plusId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x16)
+  whichEvent_Type = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x16)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA9D8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA9D8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x16)
+  if (tag - 101 > 0x16)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAA90[a3 - 101];
+    return off_1E78EAA90[tag - 101];
   }
 }
 
 - (int)clockIsolationLevel
 {
-  v2 = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
-  if (v2 - 106 > 0x11)
+  whichEvent_Type = [(PLUSSchemaPLUSClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 106 > 0x11)
   {
     return 1;
   }
 
   else
   {
-    return dword_1AA738CE4[v2 - 106];
+    return dword_1AA738CE4[whichEvent_Type - 106];
   }
 }
 

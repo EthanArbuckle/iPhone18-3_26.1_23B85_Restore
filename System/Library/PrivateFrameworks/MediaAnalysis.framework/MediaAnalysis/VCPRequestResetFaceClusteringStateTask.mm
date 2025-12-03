@@ -1,25 +1,25 @@
 @interface VCPRequestResetFaceClusteringStateTask
-+ (id)taskWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5;
++ (id)taskWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestResetFaceClusteringStateTask)initWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5;
+- (VCPRequestResetFaceClusteringStateTask)initWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestResetFaceClusteringStateTask
 
-- (VCPRequestResetFaceClusteringStateTask)initWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5
+- (VCPRequestResetFaceClusteringStateTask)initWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  replyCopy = reply;
   v15.receiver = self;
   v15.super_class = VCPRequestResetFaceClusteringStateTask;
   v10 = [(VCPRequestResetFaceClusteringStateTask *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibraryURL, a3);
-    v12 = objc_retainBlock(v9);
+    objc_storeStrong(&v10->_photoLibraryURL, l);
+    v12 = objc_retainBlock(replyCopy);
     reply = v11->_reply;
     v11->_reply = v12;
   }
@@ -27,12 +27,12 @@
   return v11;
 }
 
-+ (id)taskWithPhotoLibraryURL:(id)a3 andProgressHandler:(id)a4 andReply:(id)a5
++ (id)taskWithPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:v7 andProgressHandler:v8 andReply:v9];
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v10 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v10;
 }
@@ -92,17 +92,17 @@
   {
     reply = self->_reply;
     v26 = NSLocalizedDescriptionKey;
-    v5 = [NSString stringWithFormat:@"Failed to find client specified Photos Library (%@)", self->_photoLibraryURL];
-    v27 = v5;
+    mad_allFacesFetchOptions = [NSString stringWithFormat:@"Failed to find client specified Photos Library (%@)", self->_photoLibraryURL];
+    v27 = mad_allFacesFetchOptions;
     v6 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v9 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 userInfo:v6];
     reply[2](reply, 0, v9);
-    v10 = -50;
+    code = -50;
     goto LABEL_10;
   }
 
-  v5 = [v4 mad_allFacesFetchOptions];
-  v6 = [PHFace fetchFacesWithOptions:v5];
+  mad_allFacesFetchOptions = [v4 mad_allFacesFetchOptions];
+  v6 = [PHFace fetchFacesWithOptions:mad_allFacesFetchOptions];
   if ([v6 count])
   {
     v21[0] = _NSConcreteStackBlock;
@@ -111,7 +111,7 @@
     v21[3] = &unk_100282BC8;
     v7 = v6;
     v22 = v7;
-    v23 = self;
+    selfCopy = self;
     v20 = 0;
     v8 = [v4 performChangesAndWait:v21 error:&v20];
     v9 = v20;
@@ -119,7 +119,7 @@
     if ((v8 & 1) == 0)
     {
       (*(self->_reply + 2))();
-      v10 = [v9 code];
+      code = [v9 code];
       v6 = v7;
       goto LABEL_10;
     }
@@ -139,24 +139,24 @@
     v19[3] = &unk_100287DB0;
     v19[4] = v24;
     v12 = objc_retainBlock(v19);
-    v13 = [v4 vcp_visionCacheStorageDirectoryURL];
-    v14 = [v13 URLByAppendingPathComponent:@"VUIndex.sqlite"];
+    vcp_visionCacheStorageDirectoryURL = [v4 vcp_visionCacheStorageDirectoryURL];
+    v14 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:@"VUIndex.sqlite"];
     (v12[2])(v12, v14);
 
-    v15 = [v13 URLByAppendingPathComponent:@"VUIndex.sqlite-shm"];
+    v15 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:@"VUIndex.sqlite-shm"];
     (v12[2])(v12, v15);
 
-    v16 = [v13 URLByAppendingPathComponent:@"VUIndex.sqlite-wal"];
+    v16 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:@"VUIndex.sqlite-wal"];
     (v12[2])(v12, v16);
   }
 
   v17 = *(self->_reply + 2);
-  v10 = 1;
+  code = 1;
   v17();
 LABEL_10:
 
   _Block_object_dispose(v24, 8);
-  return v10;
+  return code;
 }
 
 @end

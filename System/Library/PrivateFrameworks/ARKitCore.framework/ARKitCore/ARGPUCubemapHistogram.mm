@@ -1,6 +1,6 @@
 @interface ARGPUCubemapHistogram
 - (ARGPUCubemapHistogram)init;
-- (ARLabHistogram)colorHistogramForCubemap:(SEL)a3;
+- (ARLabHistogram)colorHistogramForCubemap:(SEL)cubemap;
 @end
 
 @implementation ARGPUCubemapHistogram
@@ -12,13 +12,13 @@
   v28.super_class = ARGPUCubemapHistogram;
   v2 = [(ARGPUCubemapHistogram *)&v28 init];
   v3 = +[ARSharedGPUDevice sharedInstance];
-  v4 = [v3 device];
+  device = [v3 device];
   device = v2->_device;
-  v2->_device = v4;
+  v2->_device = device;
 
-  v6 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v6;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.cubemaphistogram.queue"];
   v2->_gpuFamilyAtleast4 = [(MTLDevice *)v2->_device supportsFamily:1004];
@@ -94,26 +94,26 @@ LABEL_12:
   return v2;
 }
 
-- (ARLabHistogram)colorHistogramForCubemap:(SEL)a3
+- (ARLabHistogram)colorHistogramForCubemap:(SEL)cubemap
 {
   v36 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   v8 = self->_cubemapHistogramPipelineState;
-  v9 = [v7 computeCommandEncoder];
-  [v9 setLabel:@"com.apple.arkit.gpucubemaphistogram.cubemapcolorhistogram"];
-  [v9 setComputePipelineState:v8];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"com.apple.arkit.gpucubemaphistogram.cubemapcolorhistogram"];
+  [computeCommandEncoder setComputePipelineState:v8];
   bzero(v35, 0x400uLL);
   v10 = [(MTLDevice *)self->_device newBufferWithBytes:v35 length:1024 options:0];
   [v10 setLabel:@"com.apple.arkit.cubemaphistogram.histogrambuffer"];
-  [v9 setBuffer:v10 offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:v10 offset:0 atIndex:0];
   v31 = 0;
   v11 = [(MTLDevice *)self->_device newBufferWithBytes:&v31 length:4 options:0];
   [v11 setLabel:@"com.apple.arkit.cubemaphistogram.countbuffer"];
-  [v9 setBuffer:v11 offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:v11 offset:0 atIndex:1];
   if (self->_gpuFamilyAtleast4)
   {
-    [v9 setTexture:v6 atIndex:0];
+    [computeCommandEncoder setTexture:v6 atIndex:0];
   }
 
   else
@@ -132,41 +132,41 @@ LABEL_12:
     }
 
     while (v12 != 6);
-    [v9 setTextures:&v32 withRange:{1, 6}];
+    [computeCommandEncoder setTextures:&v32 withRange:{1, 6}];
     for (i = 40; i != -8; i -= 8)
     {
     }
   }
 
-  v16 = [(MTLComputePipelineState *)v8 threadExecutionWidth];
-  v17 = [v6 width];
-  if (v16 >= v17)
+  threadExecutionWidth = [(MTLComputePipelineState *)v8 threadExecutionWidth];
+  width = [v6 width];
+  if (threadExecutionWidth >= width)
   {
-    v16 = v17;
+    threadExecutionWidth = width;
   }
 
-  v18 = [(MTLComputePipelineState *)v8 maxTotalThreadsPerThreadgroup];
-  v19 = v16;
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v8 maxTotalThreadsPerThreadgroup];
+  v19 = threadExecutionWidth;
   do
   {
     v20 = v19;
-    v21 = v19 * v16;
+    v21 = v19 * threadExecutionWidth;
     v19 >>= 1;
   }
 
-  while (v21 > v18);
-  v22 = (v16 + [v6 width] - 1) / v16;
-  v23 = [v6 height];
+  while (v21 > maxTotalThreadsPerThreadgroup);
+  v22 = (threadExecutionWidth + [v6 width] - 1) / threadExecutionWidth;
+  height = [v6 height];
   *&v32 = v22;
-  *(&v32 + 1) = (v20 + v23 - 1) / v20;
+  *(&v32 + 1) = (v20 + height - 1) / v20;
   *&v33 = 6;
-  v30[0] = v16;
+  v30[0] = threadExecutionWidth;
   v30[1] = v20;
   v30[2] = 1;
-  [v9 dispatchThreadgroups:&v32 threadsPerThreadgroup:v30];
-  [v9 endEncoding];
-  [v7 commit];
-  [v7 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:&v32 threadsPerThreadgroup:v30];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   [v11 contents];
   [v11 length];
   __memcpy_chk();
@@ -220,9 +220,9 @@ LABEL_12:
     while (v25 != 256);
   }
 
-  v27 = [v6 width];
-  v28 = [v6 height];
-  retstr->var0 = v31 / ((v28 * v27) * 6.0);
+  width2 = [v6 width];
+  height2 = [v6 height];
+  retstr->var0 = v31 / ((height2 * width2) * 6.0);
 
   return result;
 }

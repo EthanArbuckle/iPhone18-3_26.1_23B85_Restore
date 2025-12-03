@@ -1,5 +1,5 @@
 @interface SKUILoadItemResourceOperation
-- (SKUILoadItemResourceOperation)initWithResourceRequest:(id)a3;
+- (SKUILoadItemResourceOperation)initWithResourceRequest:(id)request;
 - (SSVPlatformRequestOperation)underlyingOperation;
 - (void)cancel;
 - (void)main;
@@ -7,9 +7,9 @@
 
 @implementation SKUILoadItemResourceOperation
 
-- (SKUILoadItemResourceOperation)initWithResourceRequest:(id)a3
+- (SKUILoadItemResourceOperation)initWithResourceRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadItemResourceOperation initWithResourceRequest:];
@@ -17,39 +17,39 @@
 
   v7.receiver = self;
   v7.super_class = SKUILoadItemResourceOperation;
-  v5 = [(SKUILoadResourceOperation *)&v7 initWithResourceRequest:v4];
+  v5 = [(SKUILoadResourceOperation *)&v7 initWithResourceRequest:requestCopy];
 
   return v5;
 }
 
 - (void)main
 {
-  v3 = [(SKUILoadResourceOperation *)self clientContext];
+  clientContext = [(SKUILoadResourceOperation *)self clientContext];
   v4 = objc_alloc(MEMORY[0x277D69CF0]);
-  v5 = [v3 platformContext];
-  v6 = [v4 initWithPlatformContext:v5];
+  platformContext = [clientContext platformContext];
+  v6 = [v4 initWithPlatformContext:platformContext];
 
-  v7 = [(SKUILoadResourceOperation *)self resourceRequest];
-  v8 = [v7 imageProfile];
-  [v6 setImageProfile:v8];
+  resourceRequest = [(SKUILoadResourceOperation *)self resourceRequest];
+  imageProfile = [resourceRequest imageProfile];
+  [v6 setImageProfile:imageProfile];
 
-  v9 = [v7 keyProfile];
-  [v6 setKeyProfile:v9];
+  keyProfile = [resourceRequest keyProfile];
+  [v6 setKeyProfile:keyProfile];
 
-  v10 = [v3 valueForConfigurationKey:@"sfsuffix"];
+  v10 = [clientContext valueForConfigurationKey:@"sfsuffix"];
   [v6 setStoreFrontSuffix:v10];
 
-  v11 = [v7 itemIdentifiers];
-  [v6 setItemIdentifiers:v11];
-  v12 = [(SKUILoadResourceOperation *)self outputBlock];
+  itemIdentifiers = [resourceRequest itemIdentifiers];
+  [v6 setItemIdentifiers:itemIdentifiers];
+  outputBlock = [(SKUILoadResourceOperation *)self outputBlock];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __37__SKUILoadItemResourceOperation_main__block_invoke;
   v18 = &unk_2781FE310;
-  v19 = v11;
-  v20 = v12;
-  v13 = v11;
-  v14 = v12;
+  v19 = itemIdentifiers;
+  v20 = outputBlock;
+  v13 = itemIdentifiers;
+  v14 = outputBlock;
   [v6 setResponseBlock:&v15];
   [(SKUILoadItemResourceOperation *)self setUnderlyingOperation:v6, v15, v16, v17, v18];
   [v6 main];
@@ -132,8 +132,8 @@ void __37__SKUILoadItemResourceOperation_main__block_invoke(uint64_t a1, void *a
   v4.receiver = self;
   v4.super_class = SKUILoadItemResourceOperation;
   [(SKUILoadResourceOperation *)&v4 cancel];
-  v3 = [(SKUILoadItemResourceOperation *)self underlyingOperation];
-  [v3 cancel];
+  underlyingOperation = [(SKUILoadItemResourceOperation *)self underlyingOperation];
+  [underlyingOperation cancel];
 }
 
 - (SSVPlatformRequestOperation)underlyingOperation

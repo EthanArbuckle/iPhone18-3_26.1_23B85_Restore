@@ -1,18 +1,18 @@
 @interface CNDSIMCardMonitor
-+ (id)continuousPhoneNumberObservableWithCoreTelephonyClient:(id)a3 services:(id)a4 serverConnection:(__CTServerConnection *)a5;
-+ (id)infoWithCompletion:(id)a3;
++ (id)continuousPhoneNumberObservableWithCoreTelephonyClient:(id)client services:(id)services serverConnection:(__CTServerConnection *)connection;
++ (id)infoWithCompletion:(id)completion;
 + (id)os_log;
-+ (id)phoneNumberChangedObservableWithCoreTelephonyServices:(id)a3 serverConnection:(__CTServerConnection *)a4;
-+ (id)phoneNumberObservableWithCoreTelephonyClient:(id)a3;
-+ (void)infoWithClient:(id)a3 completion:(id)a4;
++ (id)phoneNumberChangedObservableWithCoreTelephonyServices:(id)services serverConnection:(__CTServerConnection *)connection;
++ (id)phoneNumberObservableWithCoreTelephonyClient:(id)client;
++ (void)infoWithClient:(id)client completion:(id)completion;
 - (CNDSIMCardMonitor)init;
-- (CNDSIMCardMonitor)initWithCoreTelephonyClient:(id)a3 services:(id)a4;
-- (id)addInfoChangeHandler:(id)a3;
+- (CNDSIMCardMonitor)initWithCoreTelephonyClient:(id)client services:(id)services;
+- (id)addInfoChangeHandler:(id)handler;
 - (void)configureStateIfNecessary;
 - (void)dealloc;
 - (void)nts_configureConnectionIfNecessary;
 - (void)nts_configureSubjectIfNecessary;
-- (void)setServerConnection:(__CTServerConnection *)a3;
+- (void)setServerConnection:(__CTServerConnection *)connection;
 @end
 
 @implementation CNDSIMCardMonitor
@@ -45,11 +45,11 @@ uint64_t __27__CNDSIMCardMonitor_os_log__block_invoke()
   return v5;
 }
 
-- (CNDSIMCardMonitor)initWithCoreTelephonyClient:(id)a3 services:(id)a4
+- (CNDSIMCardMonitor)initWithCoreTelephonyClient:(id)client services:(id)services
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  clientCopy = client;
+  servicesCopy = services;
+  if (clientCopy)
   {
     goto LABEL_5;
   }
@@ -63,7 +63,7 @@ uint64_t __27__CNDSIMCardMonitor_os_log__block_invoke()
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_0, OS_LOG_TYPE_FAULT))
   {
     [CNDSIMCardMonitor initWithCoreTelephonyClient:v9 services:?];
-    if (v8)
+    if (servicesCopy)
     {
       goto LABEL_10;
     }
@@ -72,7 +72,7 @@ uint64_t __27__CNDSIMCardMonitor_os_log__block_invoke()
   else
   {
 LABEL_5:
-    if (v8)
+    if (servicesCopy)
     {
       goto LABEL_10;
     }
@@ -96,11 +96,11 @@ LABEL_10:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_coreTelephonyClient, a3);
-    objc_storeStrong(&v12->_coreTelephonyServices, a4);
+    objc_storeStrong(&v11->_coreTelephonyClient, client);
+    objc_storeStrong(&v12->_coreTelephonyServices, services);
     v13 = objc_alloc(MEMORY[0x277CFBE98]);
-    v14 = [MEMORY[0x277CFBEB0] defaultProvider];
-    v15 = [v13 initWithCapacity:1 schedulerProvider:v14];
+    defaultProvider = [MEMORY[0x277CFBEB0] defaultProvider];
+    v15 = [v13 initWithCapacity:1 schedulerProvider:defaultProvider];
     subject = v12->_subject;
     v12->_subject = v15;
 
@@ -124,13 +124,13 @@ LABEL_10:
   [(CNDSIMCardMonitor *)&v4 dealloc];
 }
 
-- (void)setServerConnection:(__CTServerConnection *)a3
+- (void)setServerConnection:(__CTServerConnection *)connection
 {
-  if (self->_serverConnection != a3)
+  if (self->_serverConnection != connection)
   {
-    if (a3)
+    if (connection)
     {
-      v4 = CFRetain(a3);
+      v4 = CFRetain(connection);
     }
 
     else
@@ -142,14 +142,14 @@ LABEL_10:
   }
 }
 
-- (id)addInfoChangeHandler:(id)a3
+- (id)addInfoChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(CNDSIMCardMonitor *)self configureStateIfNecessary];
-  v5 = [(CNDSIMCardMonitor *)self subject];
-  v6 = [MEMORY[0x277CFBE68] observerWithResultBlock:v4];
+  subject = [(CNDSIMCardMonitor *)self subject];
+  v6 = [MEMORY[0x277CFBE68] observerWithResultBlock:handlerCopy];
 
-  v7 = [v5 subscribe:v6];
+  v7 = [subject subscribe:v6];
 
   return v7;
 }
@@ -170,58 +170,58 @@ LABEL_10:
     v4 = dispatch_queue_create("com.apple.contacts.ContactsDonation.CNDSIMCardMonitor", 0);
     [(CNDSIMCardMonitor *)self setServerConnectionQueue:v4];
 
-    v7 = [(CNDSIMCardMonitor *)self coreTelephonyServices];
+    coreTelephonyServices = [(CNDSIMCardMonitor *)self coreTelephonyServices];
     v5 = *MEMORY[0x277CBECE8];
-    v6 = [(CNDSIMCardMonitor *)self serverConnectionQueue];
-    -[CNDSIMCardMonitor setServerConnection:](self, "setServerConnection:", [v7 _CTServerConnectionCreateOnTargetQueue:v5 :@"com.apple.contacts.ContactsDonation.CNDSIMCardMonitor" :v6 :0]);
+    serverConnectionQueue = [(CNDSIMCardMonitor *)self serverConnectionQueue];
+    -[CNDSIMCardMonitor setServerConnection:](self, "setServerConnection:", [coreTelephonyServices _CTServerConnectionCreateOnTargetQueue:v5 :@"com.apple.contacts.ContactsDonation.CNDSIMCardMonitor" :serverConnectionQueue :0]);
   }
 }
 
 - (void)nts_configureSubjectIfNecessary
 {
-  v3 = [(CNDSIMCardMonitor *)self subjectToken];
+  subjectToken = [(CNDSIMCardMonitor *)self subjectToken];
 
-  if (!v3)
+  if (!subjectToken)
   {
     v4 = objc_opt_class();
-    v5 = [(CNDSIMCardMonitor *)self coreTelephonyClient];
-    v6 = [(CNDSIMCardMonitor *)self coreTelephonyServices];
-    v9 = [v4 continuousPhoneNumberObservableWithCoreTelephonyClient:v5 services:v6 serverConnection:{-[CNDSIMCardMonitor serverConnection](self, "serverConnection")}];
+    coreTelephonyClient = [(CNDSIMCardMonitor *)self coreTelephonyClient];
+    coreTelephonyServices = [(CNDSIMCardMonitor *)self coreTelephonyServices];
+    v9 = [v4 continuousPhoneNumberObservableWithCoreTelephonyClient:coreTelephonyClient services:coreTelephonyServices serverConnection:{-[CNDSIMCardMonitor serverConnection](self, "serverConnection")}];
 
-    v7 = [(CNDSIMCardMonitor *)self subject];
-    v8 = [v9 subscribe:v7];
+    subject = [(CNDSIMCardMonitor *)self subject];
+    v8 = [v9 subscribe:subject];
     [(CNDSIMCardMonitor *)self setSubjectToken:v8];
   }
 }
 
-+ (id)continuousPhoneNumberObservableWithCoreTelephonyClient:(id)a3 services:(id)a4 serverConnection:(__CTServerConnection *)a5
++ (id)continuousPhoneNumberObservableWithCoreTelephonyClient:(id)client services:(id)services serverConnection:(__CTServerConnection *)connection
 {
-  v8 = a3;
-  v9 = [a1 phoneNumberChangedObservableWithCoreTelephonyServices:a4 serverConnection:a5];
+  clientCopy = client;
+  v9 = [self phoneNumberChangedObservableWithCoreTelephonyServices:services serverConnection:connection];
   v10 = [v9 startWith:&unk_2838DF3C0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __102__CNDSIMCardMonitor_continuousPhoneNumberObservableWithCoreTelephonyClient_services_serverConnection___block_invoke;
   v14[3] = &unk_278569948;
-  v15 = v8;
-  v16 = a1;
-  v11 = v8;
+  v15 = clientCopy;
+  selfCopy = self;
+  v11 = clientCopy;
   v12 = [v10 concatMap:v14];
 
   return v12;
 }
 
-+ (id)phoneNumberChangedObservableWithCoreTelephonyServices:(id)a3 serverConnection:(__CTServerConnection *)a4
++ (id)phoneNumberChangedObservableWithCoreTelephonyServices:(id)services serverConnection:(__CTServerConnection *)connection
 {
-  v5 = a3;
+  servicesCopy = services;
   v6 = MEMORY[0x277CFBE60];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__CNDSIMCardMonitor_phoneNumberChangedObservableWithCoreTelephonyServices_serverConnection___block_invoke;
   v10[3] = &unk_2785699C0;
-  v11 = v5;
-  v12 = a4;
-  v7 = v5;
+  v11 = servicesCopy;
+  connectionCopy = connection;
+  v7 = servicesCopy;
   v8 = [v6 observableWithBlock:v10];
 
   return v8;
@@ -254,17 +254,17 @@ id __92__CNDSIMCardMonitor_phoneNumberChangedObservableWithCoreTelephonyServices
   return v11;
 }
 
-+ (id)phoneNumberObservableWithCoreTelephonyClient:(id)a3
++ (id)phoneNumberObservableWithCoreTelephonyClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = MEMORY[0x277CFBE60];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__CNDSIMCardMonitor_phoneNumberObservableWithCoreTelephonyClient___block_invoke;
   v9[3] = &unk_2785699C0;
-  v10 = v4;
-  v11 = a1;
-  v6 = v4;
+  v10 = clientCopy;
+  selfCopy = self;
+  v6 = clientCopy;
   v7 = [v5 observableWithBlock:v9];
 
   return v7;
@@ -309,9 +309,9 @@ void __66__CNDSIMCardMonitor_phoneNumberObservableWithCoreTelephonyClient___bloc
   [v7 performBlock:v10];
 }
 
-+ (id)infoWithCompletion:(id)a3
++ (id)infoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CC37B0]);
   v6 = objc_alloc_init(MEMORY[0x277CFBDC8]);
   v12[0] = MEMORY[0x277D85DD0];
@@ -320,9 +320,9 @@ void __66__CNDSIMCardMonitor_phoneNumberObservableWithCoreTelephonyClient___bloc
   v12[3] = &unk_278569A60;
   v7 = v6;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
-  [a1 infoWithClient:v5 completion:v12];
+  v14 = completionCopy;
+  v8 = completionCopy;
+  [self infoWithClient:v5 completion:v12];
   v9 = v14;
   v10 = v7;
 
@@ -347,19 +347,19 @@ void __40__CNDSIMCardMonitor_infoWithCompletion___block_invoke(uint64_t a1, void
   [v7 performBlock:v11];
 }
 
-+ (void)infoWithClient:(id)a3 completion:(id)a4
++ (void)infoWithClient:(id)client completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__CNDSIMCardMonitor_infoWithClient_completion___block_invoke;
   v10[3] = &unk_278569AB0;
-  v12 = v7;
-  v13 = a1;
-  v11 = v6;
-  v8 = v6;
-  v9 = v7;
+  v12 = completionCopy;
+  selfCopy = self;
+  v11 = clientCopy;
+  v8 = clientCopy;
+  v9 = completionCopy;
   [v8 getSubscriptionInfo:v10];
 }
 

@@ -1,18 +1,18 @@
 @interface HKChartableCodedQuantitySet
-+ (id)setWithChartableQuantity:(id)a3 date:(id)a4;
-+ (id)setWithMedicalCodings:(id)a3 quantities:(id)a4 date:(id)a5 error:(id *)a6;
-- (BOOL)isCompatibleWithUnit:(id)a3;
++ (id)setWithChartableQuantity:(id)quantity date:(id)date;
++ (id)setWithMedicalCodings:(id)codings quantities:(id)quantities date:(id)date error:(id *)error;
+- (BOOL)isCompatibleWithUnit:(id)unit;
 - (HKChartableCodedQuantitySet)init;
 - (HKUnit)compatibleUnit;
-- (double)maxValueForUnit:(id)a3;
-- (double)maxValueIncludingReferenceRangeForUnit:(id)a3;
-- (double)minValueForUnit:(id)a3;
-- (double)minValueIncludingReferenceRangeForUnit:(id)a3;
-- (id)_initWithMedicalCodings:(id)a3 date:(id)a4 quantities:(id)a5;
-- (id)chartableCodedQuantitySetByChangingDate:(id)a3;
-- (id)chartableCodedQuantitySetConvertedToUnit:(id)a3 error:(id *)a4;
+- (double)maxValueForUnit:(id)unit;
+- (double)maxValueIncludingReferenceRangeForUnit:(id)unit;
+- (double)minValueForUnit:(id)unit;
+- (double)minValueIncludingReferenceRangeForUnit:(id)unit;
+- (id)_initWithMedicalCodings:(id)codings date:(id)date quantities:(id)quantities;
+- (id)chartableCodedQuantitySetByChangingDate:(id)date;
+- (id)chartableCodedQuantitySetConvertedToUnit:(id)unit error:(id *)error;
 - (id)description;
-- (void)addChartableCodedQuantities:(id)a3;
+- (void)addChartableCodedQuantities:(id)quantities;
 @end
 
 @implementation HKChartableCodedQuantitySet
@@ -27,25 +27,25 @@
   return 0;
 }
 
-- (id)_initWithMedicalCodings:(id)a3 date:(id)a4 quantities:(id)a5
+- (id)_initWithMedicalCodings:(id)codings date:(id)date quantities:(id)quantities
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codingsCopy = codings;
+  dateCopy = date;
+  quantitiesCopy = quantities;
   v19.receiver = self;
   v19.super_class = HKChartableCodedQuantitySet;
   v11 = [(HKChartableCodedQuantitySet *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [codingsCopy copy];
     codings = v11->_codings;
     v11->_codings = v12;
 
-    v14 = [v9 copy];
+    v14 = [dateCopy copy];
     date = v11->_date;
     v11->_date = v14;
 
-    v16 = [v10 copy];
+    v16 = [quantitiesCopy copy];
     quantities = v11->_quantities;
     v11->_quantities = v16;
   }
@@ -53,33 +53,33 @@
   return v11;
 }
 
-+ (id)setWithMedicalCodings:(id)a3 quantities:(id)a4 date:(id)a5 error:(id *)a6
++ (id)setWithMedicalCodings:(id)codings quantities:(id)quantities date:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v11 count])
+  codingsCopy = codings;
+  quantitiesCopy = quantities;
+  dateCopy = date;
+  if ([quantitiesCopy count])
   {
-    v13 = [v11 firstObject];
-    v14 = [v13 quantity];
-    v15 = [v14 _unit];
+    firstObject = [quantitiesCopy firstObject];
+    quantity = [firstObject quantity];
+    _unit = [quantity _unit];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __75__HKChartableCodedQuantitySet_setWithMedicalCodings_quantities_date_error___block_invoke;
     v20[3] = &unk_1E7380ED0;
-    v16 = v15;
+    v16 = _unit;
     v21 = v16;
-    v17 = [v11 hk_filter:v20];
+    v17 = [quantitiesCopy hk_filter:v20];
     if ([v17 count])
     {
-      [MEMORY[0x1E696ABC0] hk_assignError:a6 code:3 format:{@"Some quantities are incompatible with unit %@: %@", v16, v17}];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Some quantities are incompatible with unit %@: %@", v16, v17}];
       v18 = 0;
     }
 
     else
     {
-      v18 = [[a1 alloc] _initWithMedicalCodings:v10 date:v12 quantities:v11];
+      v18 = [[self alloc] _initWithMedicalCodings:codingsCopy date:dateCopy quantities:quantitiesCopy];
     }
   }
 
@@ -91,47 +91,47 @@
   return v18;
 }
 
-+ (id)setWithChartableQuantity:(id)a3 date:(id)a4
++ (id)setWithChartableQuantity:(id)quantity date:(id)date
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  quantityCopy = quantity;
+  dateCopy = date;
+  if (!quantityCopy)
   {
-    [HKChartableCodedQuantitySet setWithChartableQuantity:a2 date:a1];
+    [HKChartableCodedQuantitySet setWithChartableQuantity:a2 date:self];
   }
 
-  v9 = [a1 alloc];
-  v10 = [v7 codings];
-  v15[0] = v7;
+  v9 = [self alloc];
+  codings = [quantityCopy codings];
+  v15[0] = quantityCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [v9 _initWithMedicalCodings:v10 date:v8 quantities:v11];
+  v12 = [v9 _initWithMedicalCodings:codings date:dateCopy quantities:v11];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (id)chartableCodedQuantitySetByChangingDate:(id)a3
+- (id)chartableCodedQuantitySetByChangingDate:(id)date
 {
-  v4 = a3;
-  v5 = [[HKChartableCodedQuantitySet alloc] _initWithMedicalCodings:self->_codings date:v4 quantities:self->_quantities];
+  dateCopy = date;
+  v5 = [[HKChartableCodedQuantitySet alloc] _initWithMedicalCodings:self->_codings date:dateCopy quantities:self->_quantities];
 
   return v5;
 }
 
-- (void)addChartableCodedQuantities:(id)a3
+- (void)addChartableCodedQuantities:(id)quantities
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = self;
-  v5 = [(HKChartableCodedQuantitySet *)self compatibleUnit];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  quantitiesCopy = quantities;
+  selfCopy = self;
+  compatibleUnit = [(HKChartableCodedQuantitySet *)self compatibleUnit];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(quantitiesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v4;
+  v7 = quantitiesCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v8)
   {
@@ -149,7 +149,7 @@
 
         v12 = *(*(&v23 + 1) + 8 * v11);
         v22 = 0;
-        v13 = [v12 chartableCodedQuantityInUnit:v5 error:&v22];
+        v13 = [v12 chartableCodedQuantityInUnit:compatibleUnit error:&v22];
         v14 = v22;
         if (v13)
         {
@@ -182,17 +182,17 @@
     while (v9);
   }
 
-  v18 = [(NSArray *)v21->_quantities arrayByAddingObjectsFromArray:v6];
-  quantities = v21->_quantities;
-  v21->_quantities = v18;
+  v18 = [(NSArray *)selfCopy->_quantities arrayByAddingObjectsFromArray:v6];
+  quantities = selfCopy->_quantities;
+  selfCopy->_quantities = v18;
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)chartableCodedQuantitySetConvertedToUnit:(id)a3 error:(id *)a4
+- (id)chartableCodedQuantitySetConvertedToUnit:(id)unit error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  unitCopy = unit;
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_quantities, "count")}];
   v18 = 0u;
   v19 = 0u;
@@ -213,7 +213,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) chartableCodedQuantityInUnit:v6 error:{a4, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * i) chartableCodedQuantityInUnit:unitCopy error:{error, v18}];
         if (!v13)
         {
 
@@ -245,25 +245,25 @@ LABEL_11:
 
 - (HKUnit)compatibleUnit
 {
-  v2 = [(NSArray *)self->_quantities firstObject];
-  v3 = [v2 quantity];
-  v4 = [v3 _unit];
+  firstObject = [(NSArray *)self->_quantities firstObject];
+  quantity = [firstObject quantity];
+  _unit = [quantity _unit];
 
-  return v4;
+  return _unit;
 }
 
-- (BOOL)isCompatibleWithUnit:(id)a3
+- (BOOL)isCompatibleWithUnit:(id)unit
 {
   quantities = self->_quantities;
-  v4 = a3;
-  v5 = [(NSArray *)quantities firstObject];
-  v6 = [v5 quantity];
-  v7 = [v6 isCompatibleWithUnit:v4];
+  unitCopy = unit;
+  firstObject = [(NSArray *)quantities firstObject];
+  quantity = [firstObject quantity];
+  v7 = [quantity isCompatibleWithUnit:unitCopy];
 
   return v7;
 }
 
-- (double)minValueForUnit:(id)a3
+- (double)minValueForUnit:(id)unit
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -308,7 +308,7 @@ LABEL_11:
   return v7;
 }
 
-- (double)maxValueForUnit:(id)a3
+- (double)maxValueForUnit:(id)unit
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -353,7 +353,7 @@ LABEL_11:
   return v7;
 }
 
-- (double)minValueIncludingReferenceRangeForUnit:(id)a3
+- (double)minValueIncludingReferenceRangeForUnit:(id)unit
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
@@ -377,13 +377,13 @@ LABEL_11:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 rangeLow];
+        rangeLow = [v9 rangeLow];
         [v9 doubleValue];
         v12 = v11;
-        if (v10)
+        if (rangeLow)
         {
-          v13 = [v9 rangeLow];
-          [v13 doubleValue];
+          rangeLow2 = [v9 rangeLow];
+          [rangeLow2 doubleValue];
           v15 = v14;
 
           if (v12 >= v15)
@@ -413,7 +413,7 @@ LABEL_11:
   return v7;
 }
 
-- (double)maxValueIncludingReferenceRangeForUnit:(id)a3
+- (double)maxValueIncludingReferenceRangeForUnit:(id)unit
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
@@ -437,13 +437,13 @@ LABEL_11:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 rangeHigh];
+        rangeHigh = [v9 rangeHigh];
         [v9 doubleValue];
         v12 = v11;
-        if (v10)
+        if (rangeHigh)
         {
-          v13 = [v9 rangeHigh];
-          [v13 doubleValue];
+          rangeHigh2 = [v9 rangeHigh];
+          [rangeHigh2 doubleValue];
           v15 = v14;
 
           if (v12 < v15)
@@ -481,8 +481,8 @@ LABEL_11:
   v6 = [(NSArray *)self->_codings componentsJoinedByString:@" "];;
   date = self->_date;
   v8 = [(NSArray *)self->_quantities count];
-  v9 = [(HKChartableCodedQuantitySet *)self compatibleUnit];
-  v10 = [v3 stringWithFormat:@"<%@ %p> codings: %@, date: %@, %lu quantities in unit %@", v5, self, v6, date, v8, v9];
+  compatibleUnit = [(HKChartableCodedQuantitySet *)self compatibleUnit];
+  v10 = [v3 stringWithFormat:@"<%@ %p> codings: %@, date: %@, %lu quantities in unit %@", v5, self, v6, date, v8, compatibleUnit];
 
   return v10;
 }

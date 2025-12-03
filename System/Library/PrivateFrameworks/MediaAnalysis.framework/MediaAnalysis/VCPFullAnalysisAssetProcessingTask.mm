@@ -1,8 +1,8 @@
 @interface VCPFullAnalysisAssetProcessingTask
-+ (id)taskWithAsset:(id)a3 andAnalysisTypes:(unint64_t)a4 andOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (VCPFullAnalysisAssetProcessingTask)initWithAssets:(id)a3 analysisTypes:(unint64_t)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (id)analyzeOndemand:(id)a3 forAnalysisTypes:(unint64_t)a4 withExistingAnalysis:(id)a5 error:(id *)a6;
-- (id)requestAnalysis:(unint64_t)a3 forAsset:(id)a4 andDatabase:(id)a5 error:(id *)a6;
++ (id)taskWithAsset:(id)asset andAnalysisTypes:(unint64_t)types andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (VCPFullAnalysisAssetProcessingTask)initWithAssets:(id)assets analysisTypes:(unint64_t)types options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (id)analyzeOndemand:(id)ondemand forAnalysisTypes:(unint64_t)types withExistingAnalysis:(id)analysis error:(id *)error;
+- (id)requestAnalysis:(unint64_t)analysis forAsset:(id)asset andDatabase:(id)database error:(id *)error;
 - (int)main;
 - (int)run;
 - (void)dealloc;
@@ -10,19 +10,19 @@
 
 @implementation VCPFullAnalysisAssetProcessingTask
 
-- (VCPFullAnalysisAssetProcessingTask)initWithAssets:(id)a3 analysisTypes:(unint64_t)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (VCPFullAnalysisAssetProcessingTask)initWithAssets:(id)assets analysisTypes:(unint64_t)types options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  assetsCopy = assets;
+  optionsCopy = options;
+  completionHandlerCopy = completionHandler;
   v28.receiver = self;
   v28.super_class = VCPFullAnalysisAssetProcessingTask;
   v15 = [(VCPFullAnalysisAssetProcessingTask *)&v28 init];
   if (v15)
   {
-    if (v14)
+    if (completionHandlerCopy)
     {
-      v16 = v14;
+      v16 = completionHandlerCopy;
     }
 
     else
@@ -34,31 +34,31 @@
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v17;
 
-    if (![v12 count])
+    if (![assetsCopy count])
     {
       v26 = 0;
       goto LABEL_9;
     }
 
     atomic_store(0, &v15->_cancel);
-    objc_storeStrong(&v15->_assets, a3);
+    objc_storeStrong(&v15->_assets, assets);
     v19 = [(NSArray *)v15->_assets objectAtIndexedSubscript:0];
-    v20 = [v19 photoLibrary];
+    photoLibrary = [v19 photoLibrary];
     photoLibrary = v15->_photoLibrary;
-    v15->_photoLibrary = v20;
+    v15->_photoLibrary = photoLibrary;
 
     v22 = [VCPDatabaseReader databaseForPhotoLibrary:v15->_photoLibrary];
     database = v15->_database;
     v15->_database = v22;
 
-    v24 = [v13 objectForKeyedSubscript:@"AllowOnDemand"];
+    v24 = [optionsCopy objectForKeyedSubscript:@"AllowOnDemand"];
     v15->_allowOnDemand = [v24 BOOLValue];
 
-    v25 = [v13 objectForKeyedSubscript:@"AllowStreaming"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"AllowStreaming"];
     v15->_allowStreaming = [v25 BOOLValue];
 
-    v15->_analysisTypes = a4;
-    objc_storeStrong(&v15->_options, a5);
+    v15->_analysisTypes = types;
+    objc_storeStrong(&v15->_options, options);
   }
 
   v26 = v15;
@@ -67,13 +67,13 @@ LABEL_9:
   return v26;
 }
 
-+ (id)taskWithAsset:(id)a3 andAnalysisTypes:(unint64_t)a4 andOptions:(id)a5 andProgressHandler:(id)a6 andCompletionHandler:(id)a7
++ (id)taskWithAsset:(id)asset andAnalysisTypes:(unint64_t)types andOptions:(id)options andProgressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [objc_alloc(objc_opt_class()) initWithAssets:v11 analysisTypes:a4 options:v12 progressHandler:v13 andCompletionHandler:v14];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v15 = [objc_alloc(objc_opt_class()) initWithAssets:assetCopy analysisTypes:types options:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v15;
 }
@@ -102,25 +102,25 @@ LABEL_9:
   [(VCPFullAnalysisAssetProcessingTask *)&v9 dealloc];
 }
 
-- (id)requestAnalysis:(unint64_t)a3 forAsset:(id)a4 andDatabase:(id)a5 error:(id *)a6
+- (id)requestAnalysis:(unint64_t)analysis forAsset:(id)asset andDatabase:(id)database error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v54 = a5;
-  v55 = [v10 localIdentifier];
-  v11 = a6;
-  v12 = MediaAnalysisResultsTypesForAnalysisTypes(a3);
+  assetCopy = asset;
+  databaseCopy = database;
+  localIdentifier = [assetCopy localIdentifier];
+  errorCopy = error;
+  v12 = MediaAnalysisResultsTypesForAnalysisTypes(analysis);
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v13 = [v10 photoLibrary];
-    v14 = [v13 mad_fetchRequest];
+    photoLibrary = [assetCopy photoLibrary];
+    mad_fetchRequest = [photoLibrary mad_fetchRequest];
 
-    v15 = [v10 localIdentifier];
-    v16 = [v14 fetchAnalysisWithLocalIdentifier:v15 predicate:0 resultTypes:v12];
+    localIdentifier2 = [assetCopy localIdentifier];
+    v16 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier2 predicate:0 resultTypes:v12];
 
     v64 = 0;
     v63 = 0;
-    if ([v10 vcp_isLongMovie])
+    if ([assetCopy vcp_isLongMovie])
     {
       v17 = _os_feature_enabled_impl();
     }
@@ -131,7 +131,7 @@ LABEL_9:
     }
 
     v62 = 0;
-    v19 = [v10 localIdentifier];
+    localIdentifier3 = [assetCopy localIdentifier];
     if (v17)
     {
       v20 = 254;
@@ -142,7 +142,7 @@ LABEL_9:
       v20 = 1;
     }
 
-    [v14 fetchProcessingStatus:&v64 attempts:&v63 lastAttemptDate:0 nextAttemptDate:&v62 localIdentifier:v19 taskID:v20];
+    [mad_fetchRequest fetchProcessingStatus:&v64 attempts:&v63 lastAttemptDate:0 nextAttemptDate:&v62 localIdentifier:localIdentifier3 taskID:v20];
     v21 = v62;
 
     if (v64)
@@ -155,7 +155,7 @@ LABEL_9:
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v66 = v55;
+          v66 = localIdentifier;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Analysis requested for failed asset", buf, 0xCu);
         }
 
@@ -166,18 +166,18 @@ LABEL_9:
 
   else
   {
-    v18 = [v10 localIdentifier];
-    v16 = [v54 queryAnalysisForAsset:v18 withTypes:v12];
+    localIdentifier4 = [assetCopy localIdentifier];
+    v16 = [databaseCopy queryAnalysisForAsset:localIdentifier4 withTypes:v12];
 
     v61 = 0;
-    LODWORD(v18) = [v54 isAssetBlacklisted:v55 blacklistDate:&v61];
-    v14 = v61;
-    if (v18)
+    LODWORD(localIdentifier4) = [databaseCopy isAssetBlacklisted:localIdentifier blacklistDate:&v61];
+    mad_fetchRequest = v61;
+    if (localIdentifier4)
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v66 = v55;
+        v66 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Analysis requested for blacklisted asset", buf, 0xCu);
       }
 
@@ -188,8 +188,8 @@ LABEL_9:
   if (!v16)
   {
 LABEL_34:
-    v29 = a3;
-    if (a3)
+    analysisCopy = analysis;
+    if (analysis)
     {
       goto LABEL_35;
     }
@@ -208,41 +208,41 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v24 = [v16 vcp_dateModified];
-  v25 = [v10 vcp_modificationDate];
-  v26 = [v24 isEqualToDate:v25];
+  vcp_dateModified = [v16 vcp_dateModified];
+  vcp_modificationDate = [assetCopy vcp_modificationDate];
+  v26 = [vcp_dateModified isEqualToDate:vcp_modificationDate];
 
   if ((v26 & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v66 = v55;
+      v66 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis based on old modification", buf, 0xCu);
     }
 
     goto LABEL_33;
   }
 
-  if (!a3)
+  if (!analysis)
   {
     goto LABEL_57;
   }
 
   if (self->_allowOnDemand)
   {
-    v27 = MediaAnalysisStripOutdatedAnalysis(v10, v16);
+    v27 = MediaAnalysisStripOutdatedAnalysis(assetCopy, v16);
 
     v16 = v27;
   }
 
-  if ((a3 & ~[v16 vcp_types]) == 0)
+  if ((analysis & ~[v16 vcp_types]) == 0)
   {
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
       v28 = MediaAnalysisTypeDescription([v16 vcp_types]);
       *buf = 138412546;
-      v66 = v55;
+      v66 = localIdentifier;
       v67 = 2112;
       v68 = v28;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis satisfies request (%@)", buf, 0x16u);
@@ -255,14 +255,14 @@ LABEL_33:
   {
     v50 = MediaAnalysisTypeDescription([v16 vcp_types]);
     *buf = 138412546;
-    v66 = v55;
+    v66 = localIdentifier;
     v67 = 2112;
     v68 = v50;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MediaAnalysis][%@] Existing analysis doesn't satisfy request (%@)", buf, 0x16u);
   }
 
-  v29 = a3 & ~[v16 vcp_types];
-  if (!v29)
+  analysisCopy = analysis & ~[v16 vcp_types];
+  if (!analysisCopy)
   {
     goto LABEL_57;
   }
@@ -275,15 +275,15 @@ LABEL_35:
 
   if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    v30 = MediaAnalysisTypeDescription(v29);
+    v30 = MediaAnalysisTypeDescription(analysisCopy);
     *buf = 138412546;
-    v66 = v55;
+    v66 = localIdentifier;
     v67 = 2112;
     v68 = v30;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis][%@] Generating analysis on-demand: %@", buf, 0x16u);
   }
 
-  v31 = [(VCPFullAnalysisAssetProcessingTask *)self analyzeOndemand:v10 forAnalysisTypes:v29 withExistingAnalysis:v16 error:v11];
+  v31 = [(VCPFullAnalysisAssetProcessingTask *)self analyzeOndemand:assetCopy forAnalysisTypes:analysisCopy withExistingAnalysis:v16 error:errorCopy];
   if (v31)
   {
     v32 = MediaAnalysisMergeAnalysis(v16, v31);
@@ -295,15 +295,15 @@ LABEL_35:
   }
 
   v33 = [objc_opt_class() AllowPersistSettlingEffectScore] ^ 1;
-  if ((a3 & 0x40000) == 0)
+  if ((analysis & 0x40000) == 0)
   {
     LOBYTE(v33) = 1;
   }
 
   if ((v33 & 1) == 0)
   {
-    v34 = [v32 vcp_results];
-    v35 = [v34 objectForKeyedSubscript:@"SettlingEffectsGatingResults"];
+    vcp_results = [v32 vcp_results];
+    v35 = [vcp_results objectForKeyedSubscript:@"SettlingEffectsGatingResults"];
 
     if ([v35 count])
     {
@@ -319,9 +319,9 @@ LABEL_35:
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v44 = [v10 localIdentifier];
+        localIdentifier5 = [assetCopy localIdentifier];
         *buf = 138412290;
-        v66 = v44;
+        v66 = localIdentifier5;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "   [%@] Publishing settling effect score to PHAssetPropertySetMediaAnalysis", buf, 0xCu);
       }
 
@@ -330,7 +330,7 @@ LABEL_35:
       v57[1] = 3221225472;
       v57[2] = __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDatabase_error___block_invoke;
       v57[3] = &unk_1E834C440;
-      v47 = v10;
+      v47 = assetCopy;
       v58 = v47;
       v45 = v38;
       v59 = v45;
@@ -342,18 +342,18 @@ LABEL_35:
       {
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
         {
-          v49 = [v47 localIdentifier];
+          localIdentifier6 = [v47 localIdentifier];
           *buf = 138412290;
-          v66 = v49;
+          v66 = localIdentifier6;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "   [%@] Successfully published settling effect score to PHAssetPropertySetMediaAnalysis", buf, 0xCu);
         }
       }
 
       else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v52 = [v47 localIdentifier];
+        localIdentifier7 = [v47 localIdentifier];
         *buf = 138412546;
-        v66 = v52;
+        v66 = localIdentifier7;
         v67 = 2112;
         v68 = v48;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "   [%@] Error publishing settling effect score to PHAssetPropertySetMediaAnalysis, error: %@", buf, 0x16u);
@@ -380,24 +380,24 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
   [v5 setActivityScore:v4];
 }
 
-- (id)analyzeOndemand:(id)a3 forAnalysisTypes:(unint64_t)a4 withExistingAnalysis:(id)a5 error:(id *)a6
+- (id)analyzeOndemand:(id)ondemand forAnalysisTypes:(unint64_t)types withExistingAnalysis:(id)analysis error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v39 = a5;
-  v38 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v9];
-  v10 = [v9 vcp_fullAnalysisTypesForResources:?] & a4;
-  if (!self->_allowStreaming || v10 == a4)
+  ondemandCopy = ondemand;
+  analysisCopy = analysis;
+  v38 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:ondemandCopy];
+  v10 = [ondemandCopy vcp_fullAnalysisTypesForResources:?] & types;
+  if (!self->_allowStreaming || v10 == types)
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = [v9 photoLibrary];
-    if ([v13 vcp_allowsCloudLibraryResourceDownload])
+    photoLibrary = [ondemandCopy photoLibrary];
+    if ([photoLibrary vcp_allowsCloudLibraryResourceDownload])
     {
-      v12 = [v9 vcp_eligibleForVideoDownload:v38];
+      v12 = [ondemandCopy vcp_eligibleForVideoDownload:v38];
     }
 
     else
@@ -406,31 +406,31 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
     }
   }
 
-  v15 = (a4 >> 49) & 1 | [v9 isPhoto];
+  v15 = (types >> 49) & 1 | [ondemandCopy isPhoto];
   if (v15 == 1)
   {
-    v16 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:v9 withExistingAnalysis:v39 forAnalysisTypes:a4 & 0x261D900060000];
-    [(VCPPhotoAnalyzer *)v16 setAllowStreaming:v12];
-    [(VCPPhotoAnalyzer *)v16 setRequiresOnDemandDownload:1];
+    0x261D900060000 = [[VCPPhotoAnalyzer alloc] initWithPHAsset:ondemandCopy withExistingAnalysis:analysisCopy forAnalysisTypes:types & 0x261D900060000];
+    [(VCPPhotoAnalyzer *)0x261D900060000 setAllowStreaming:v12];
+    [(VCPPhotoAnalyzer *)0x261D900060000 setRequiresOnDemandDownload:1];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __98__VCPFullAnalysisAssetProcessingTask_analyzeOndemand_forAnalysisTypes_withExistingAnalysis_error___block_invoke;
     v41[3] = &unk_1E834C078;
     v41[4] = self;
-    v17 = [(VCPPhotoAnalyzer *)v16 analyzeAsset:v41 withOptions:self->_options];
-    v18 = [(VCPPhotoAnalyzer *)v16 status];
+    v17 = [(VCPPhotoAnalyzer *)0x261D900060000 analyzeAsset:v41 withOptions:self->_options];
+    status = [(VCPPhotoAnalyzer *)0x261D900060000 status];
   }
 
   else
   {
-    v18 = 0;
+    status = 0;
     v17 = 0;
   }
 
-  v19 = [v9 isVideo];
-  if (v19)
+  isVideo = [ondemandCopy isVideo];
+  if (isVideo)
   {
-    v20 = [[VCPMovieAnalyzer alloc] initWithPHAsset:v9 withExistingAnalysis:v39 forAnalysisTypes:a4];
+    v20 = [[VCPMovieAnalyzer alloc] initWithPHAsset:ondemandCopy withExistingAnalysis:analysisCopy forAnalysisTypes:types];
     [(VCPMovieAnalyzer *)v20 setAllowStreaming:v12];
     [(VCPMovieAnalyzer *)v20 setRequiresOnDemandDownload:1];
     v40[0] = MEMORY[0x1E69E9820];
@@ -439,18 +439,18 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
     v40[3] = &unk_1E834C078;
     v40[4] = self;
     v21 = [(VCPMovieAnalyzer *)v20 analyzeAsset:v40 streamed:0];
-    v22 = [(VCPMovieAnalyzer *)v20 status];
+    status2 = [(VCPMovieAnalyzer *)v20 status];
   }
 
   else
   {
-    v22 = 0;
+    status2 = 0;
     v21 = 0;
   }
 
   v23 = MediaAnalysisMergeAnalysis(v21, v17);
   v24 = v23;
-  if (v18 == 2)
+  if (status == 2)
   {
     v25 = 0;
   }
@@ -460,25 +460,25 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
     v25 = v15;
   }
 
-  if (v22 == 2)
+  if (status2 == 2)
   {
     v26 = 0;
   }
 
   else
   {
-    v26 = v19;
+    v26 = isVideo;
   }
 
   if (v25 & 1) != 0 || (v26)
   {
-    if (v18 == 4 || v22 == 4)
+    if (status == 4 || status2 == 4)
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v9 localIdentifier];
+        localIdentifier = [ondemandCopy localIdentifier];
         *buf = 138412290;
-        v45 = v31;
+        v45 = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "  [%@] Analysis cancelled", buf, 0xCu);
       }
 
@@ -489,25 +489,25 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
     {
       if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v9 localIdentifier];
+        localIdentifier2 = [ondemandCopy localIdentifier];
         *buf = 138412290;
-        v45 = v29;
+        v45 = localIdentifier2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "  [%@] Analysis failed to complete", buf, 0xCu);
       }
 
       v30 = -18;
     }
 
-    if (a6)
+    if (error)
     {
       v32 = MEMORY[0x1E696ABC0];
       v42 = *MEMORY[0x1E696A578];
       v33 = MEMORY[0x1E696AEC0];
-      v27 = [v9 localIdentifier];
-      v34 = [v33 stringWithFormat:@"[%@] Failed to analyze on-demand", v27];
+      localIdentifier3 = [ondemandCopy localIdentifier];
+      v34 = [v33 stringWithFormat:@"[%@] Failed to analyze on-demand", localIdentifier3];
       v43 = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      *a6 = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:v30 userInfo:v35];
+      *error = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:v30 userInfo:v35];
 
       v28 = 0;
       goto LABEL_39;
@@ -516,9 +516,9 @@ void __81__VCPFullAnalysisAssetProcessingTask_requestAnalysis_forAsset_andDataba
 
   else if (v23)
   {
-    v27 = MediaAnalysisStripKeyframeResourceResultsFromAnalysis(v23);
+    localIdentifier3 = MediaAnalysisStripKeyframeResourceResultsFromAnalysis(v23);
 
-    v28 = MediaAnalysisStripVideoThumbnailResourceResultsFromAnalysis(v27);
+    v28 = MediaAnalysisStripVideoThumbnailResourceResultsFromAnalysis(localIdentifier3);
 LABEL_39:
 
     goto LABEL_41;
@@ -538,7 +538,7 @@ LABEL_41:
     return -50;
   }
 
-  v22 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -563,7 +563,7 @@ LABEL_4:
       if (v8)
       {
         v9 = 0;
-        v2 = -128;
+        code = -128;
       }
 
       else
@@ -581,10 +581,10 @@ LABEL_4:
 
         else
         {
-          v11 = [v6 isVideo];
+          isVideo = [v6 isVideo];
           if ((self->_analysisTypes & 0xFFFDDFFEFFFFFFFFLL) != 0)
           {
-            v12 = v11;
+            v12 = isVideo;
           }
 
           else
@@ -600,7 +600,7 @@ LABEL_4:
             v9 = v15 == 0;
             if (v15)
             {
-              v2 = [v15 code];
+              code = [v15 code];
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 v17 = [v16 description];
@@ -612,9 +612,9 @@ LABEL_4:
 
             else if (v14)
             {
-              v21 = [v14 vcp_results];
-              v18 = [v6 localIdentifier];
-              [v22 setObject:v21 forKeyedSubscript:v18];
+              vcp_results = [v14 vcp_results];
+              localIdentifier = [v6 localIdentifier];
+              [dictionary setObject:vcp_results forKeyedSubscript:localIdentifier];
             }
 
             goto LABEL_29;
@@ -630,7 +630,7 @@ LABEL_4:
         }
 
         v9 = 0;
-        v2 = -18;
+        code = -18;
       }
 
 LABEL_29:
@@ -654,9 +654,9 @@ LABEL_29:
     }
   }
 
-  if ([v22 count])
+  if ([dictionary count])
   {
-    v19 = v22;
+    v19 = dictionary;
   }
 
   else
@@ -665,12 +665,12 @@ LABEL_29:
     v19 = 0;
   }
 
-  v22 = v19;
+  dictionary = v19;
   (*(self->_completionHandler + 2))();
-  v2 = 0;
+  code = 0;
 LABEL_38:
 
-  return v2;
+  return code;
 }
 
 - (int)run
@@ -688,7 +688,7 @@ LABEL_38:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "VCPFullAnalysisAssetProcessingTask", "", v16, 2u);
   }
 
-  v7 = [(VCPFullAnalysisAssetProcessingTask *)self main];
+  main = [(VCPFullAnalysisAssetProcessingTask *)self main];
   v8 = VCPSignPostLog();
   v9 = v8;
   if (v4 - 1 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v8))
@@ -697,7 +697,7 @@ LABEL_38:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v9, OS_SIGNPOST_INTERVAL_END, v4, "VCPFullAnalysisAssetProcessingTask", "", v16, 2u);
   }
 
-  if (v7)
+  if (main)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -711,11 +711,11 @@ LABEL_38:
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPFullAnalysisAssetProcessingTask processing failed"];
     v18[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:v7 userInfo:v13];
+    v14 = [v11 errorWithDomain:*MEMORY[0x1E696A768] code:main userInfo:v13];
     completionHandler[2](completionHandler, 0, v14);
   }
 
-  return v7;
+  return main;
 }
 
 @end

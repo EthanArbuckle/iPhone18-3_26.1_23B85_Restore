@@ -1,22 +1,22 @@
 @interface SUGetOffTestingAlertItem
-- (SUGetOffTestingAlertItem)initWithHandler:(id)a3;
+- (SUGetOffTestingAlertItem)initWithHandler:(id)handler;
 - (id)_noButton;
 - (id)_yesButton;
 - (id)buttons;
-- (void)alertWasDismissed:(unint64_t)a3;
+- (void)alertWasDismissed:(unint64_t)dismissed;
 @end
 
 @implementation SUGetOffTestingAlertItem
 
-- (SUGetOffTestingAlertItem)initWithHandler:(id)a3
+- (SUGetOffTestingAlertItem)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = SUGetOffTestingAlertItem;
   v5 = [(SUBaseAlertItem *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x26D668B30](v4);
+    v6 = MEMORY[0x26D668B30](handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }
@@ -24,12 +24,12 @@
   return v5;
 }
 
-- (void)alertWasDismissed:(unint64_t)a3
+- (void)alertWasDismissed:(unint64_t)dismissed
 {
   v6.receiver = self;
   v6.super_class = SUGetOffTestingAlertItem;
   [(SUBaseAlertItem *)&v6 alertWasDismissed:?];
-  if (a3 != 1)
+  if (dismissed != 1)
   {
     handler = self->_handler;
     if (handler)
@@ -41,14 +41,14 @@
 
 - (id)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SUGetOffTestingAlertItem *)self _yesButton];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  _yesButton = [(SUGetOffTestingAlertItem *)self _yesButton];
+  [array addObject:_yesButton];
 
-  v5 = [(SUGetOffTestingAlertItem *)self _noButton];
-  [v3 addObject:v5];
+  _noButton = [(SUGetOffTestingAlertItem *)self _noButton];
+  [array addObject:_noButton];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }

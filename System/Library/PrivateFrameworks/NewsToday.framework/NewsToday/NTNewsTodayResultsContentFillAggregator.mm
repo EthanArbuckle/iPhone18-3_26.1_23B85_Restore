@@ -1,9 +1,9 @@
 @interface NTNewsTodayResultsContentFillAggregator
 - (NTNewsTodayResultsContentFillAggregator)init;
-- (NTNewsTodayResultsContentFillAggregator)initWithAggregator:(id)a3 minHeadlineScale:(double)a4 maxHeadlineScale:(double)a5;
-- (id)_aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6 scale:(double)a7;
-- (id)_bestResultOfResults:(id)a3 withBudgetInfo:(id)a4;
-- (id)aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6;
+- (NTNewsTodayResultsContentFillAggregator)initWithAggregator:(id)aggregator minHeadlineScale:(double)scale maxHeadlineScale:(double)headlineScale;
+- (id)_aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data scale:(double)scale;
+- (id)_bestResultOfResults:(id)results withBudgetInfo:(id)info;
+- (id)aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data;
 @end
 
 @implementation NTNewsTodayResultsContentFillAggregator
@@ -34,38 +34,38 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsTodayResultsContentFillAggregator)initWithAggregator:(id)a3 minHeadlineScale:(double)a4 maxHeadlineScale:(double)a5
+- (NTNewsTodayResultsContentFillAggregator)initWithAggregator:(id)aggregator minHeadlineScale:(double)scale maxHeadlineScale:(double)headlineScale
 {
-  v7 = a3;
-  if (!v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  aggregatorCopy = aggregator;
+  if (!aggregatorCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsContentFillAggregator initWithAggregator:minHeadlineScale:maxHeadlineScale:];
   }
 
-  v8 = a4;
-  if (a4 < 0.0)
+  scaleCopy5 = scale;
+  if (scale < 0.0)
   {
     v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-    v8 = a4;
+    scaleCopy5 = scale;
     if (v9)
     {
       [NTNewsTodayResultsContentFillAggregator initWithAggregator:minHeadlineScale:maxHeadlineScale:];
-      v8 = a4;
+      scaleCopy5 = scale;
     }
   }
 
-  if (a5 < 0.0)
+  if (headlineScale < 0.0)
   {
     v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
-    v8 = a4;
+    scaleCopy5 = scale;
     if (v10)
     {
       [NTNewsTodayResultsContentFillAggregator initWithAggregator:minHeadlineScale:maxHeadlineScale:];
-      v8 = a4;
+      scaleCopy5 = scale;
     }
   }
 
-  if (v8 > a5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (scaleCopy5 > headlineScale && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsContentFillAggregator initWithAggregator:minHeadlineScale:maxHeadlineScale:];
   }
@@ -76,8 +76,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_aggregator, a3);
-    v13.f64[0] = a4;
+    objc_storeStrong(&v11->_aggregator, aggregator);
+    v13.f64[0] = scale;
     v13.f64[1] = v21;
     __asm { FMOV            V1.2D, #1.0 }
 
@@ -87,32 +87,32 @@
   return v12;
 }
 
-- (id)aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6
+- (id)aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sectionsCopy = sections;
+  descriptorCopy = descriptor;
+  infoCopy = info;
+  dataCopy = data;
   [(NTNewsTodayResultsContentFillAggregator *)self minHeadlineScale];
   v15 = v14;
   [(NTNewsTodayResultsContentFillAggregator *)self maxHeadlineScale];
   v17 = v16;
-  v18 = [v12 sectionSlotCostInfo];
-  [v18 headlineSlotCost];
+  sectionSlotCostInfo = [infoCopy sectionSlotCostInfo];
+  [sectionSlotCostInfo headlineSlotCost];
   v20 = v19;
-  v21 = [v12 sectionSlotCostInfo];
-  [v21 sectionTitleSlotCost];
+  sectionSlotCostInfo2 = [infoCopy sectionSlotCostInfo];
+  [sectionSlotCostInfo2 sectionTitleSlotCost];
   v23 = v22;
-  v24 = [v12 sectionSlotCostInfo];
-  [v24 sectionFooterSlotCost];
+  sectionSlotCostInfo3 = [infoCopy sectionSlotCostInfo];
+  [sectionSlotCostInfo3 sectionFooterSlotCost];
   v26 = v25;
-  [v12 slotsLimit];
+  [infoCopy slotsLimit];
   v28 = v27;
 
-  v29 = [v12 sectionSlotCostInfo];
-  [v29 sectionTitleSlotCost];
+  sectionSlotCostInfo4 = [infoCopy sectionSlotCostInfo];
+  [sectionSlotCostInfo4 sectionTitleSlotCost];
   v31 = v30;
-  [v12 slotsLimit];
+  [infoCopy slotsLimit];
   v33 = v31 / v32;
 
   v34 = objc_opt_new();
@@ -120,14 +120,14 @@
   v57 = 3221225472;
   v58 = __107__NTNewsTodayResultsContentFillAggregator_aggregateSections_itemsBySectionDescriptor_budgetInfo_todayData___block_invoke;
   v59 = &unk_2799834F8;
-  v60 = self;
-  v35 = v10;
+  selfCopy = self;
+  v35 = sectionsCopy;
   v61 = v35;
-  v36 = v11;
+  v36 = descriptorCopy;
   v62 = v36;
-  v37 = v12;
+  v37 = infoCopy;
   v63 = v37;
-  v38 = v13;
+  v38 = dataCopy;
   v64 = v38;
   v39 = v34;
   v65 = v39;
@@ -159,8 +159,8 @@
   v40[2](v40, 1.0);
   if (![v39 count])
   {
-    v44 = [(NTNewsTodayResultsContentFillAggregator *)self aggregator];
-    v45 = [v44 aggregateSections:v35 itemsBySectionDescriptor:v36 budgetInfo:v37 todayData:v38];
+    aggregator = [(NTNewsTodayResultsContentFillAggregator *)self aggregator];
+    v45 = [aggregator aggregateSections:v35 itemsBySectionDescriptor:v36 budgetInfo:v37 todayData:v38];
 
     [(NTNewsTodayResultsContentFillAggregator *)self maxHeadlineScale];
     v46 = [v45 copyWithHeadlineScale:?];
@@ -214,22 +214,22 @@ uint64_t __107__NTNewsTodayResultsContentFillAggregator_aggregateSections_itemsB
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (id)_aggregateSections:(id)a3 itemsBySectionDescriptor:(id)a4 budgetInfo:(id)a5 todayData:(id)a6 scale:(double)a7
+- (id)_aggregateSections:(id)sections itemsBySectionDescriptor:(id)descriptor budgetInfo:(id)info todayData:(id)data scale:(double)scale
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  sectionsCopy = sections;
+  descriptorCopy = descriptor;
+  infoCopy = info;
+  dataCopy = data;
+  if (!sectionsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsContentFillAggregator _aggregateSections:itemsBySectionDescriptor:budgetInfo:todayData:scale:];
-    if (v13)
+    if (descriptorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v13)
+  else if (descriptorCopy)
   {
     goto LABEL_6;
   }
@@ -240,32 +240,32 @@ uint64_t __107__NTNewsTodayResultsContentFillAggregator_aggregateSections_itemsB
   }
 
 LABEL_6:
-  if (!v14 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infoCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsContentFillAggregator _aggregateSections:itemsBySectionDescriptor:budgetInfo:todayData:scale:];
   }
 
-  if (a7 <= 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (scale <= 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsContentFillAggregator _aggregateSections:itemsBySectionDescriptor:budgetInfo:todayData:scale:];
   }
 
-  v16 = [v14 copy];
-  v17 = [v16 sectionSlotCostInfo];
-  [v17 headlineSlotCost];
-  [v17 setHeadlineSlotCost:v18 * a7];
+  v16 = [infoCopy copy];
+  sectionSlotCostInfo = [v16 sectionSlotCostInfo];
+  [sectionSlotCostInfo headlineSlotCost];
+  [sectionSlotCostInfo setHeadlineSlotCost:v18 * scale];
 
-  v19 = [(NTNewsTodayResultsContentFillAggregator *)self aggregator];
-  v20 = [v19 aggregateSections:v12 itemsBySectionDescriptor:v13 budgetInfo:v16 todayData:v15];
+  aggregator = [(NTNewsTodayResultsContentFillAggregator *)self aggregator];
+  v20 = [aggregator aggregateSections:sectionsCopy itemsBySectionDescriptor:descriptorCopy budgetInfo:v16 todayData:dataCopy];
 
-  [v20 sectionOverheadSlotCostWithInfo:v14];
+  [v20 sectionOverheadSlotCostWithInfo:infoCopy];
   v22 = v21;
-  v23 = [v14 sectionSlotCostInfo];
-  [v23 headlineSlotCost];
+  sectionSlotCostInfo2 = [infoCopy sectionSlotCostInfo];
+  [sectionSlotCostInfo2 headlineSlotCost];
   [v20 headlineSlotCostWithSlotCost:?];
   v25 = v24;
 
-  [v14 slotsLimit];
+  [infoCopy slotsLimit];
   v27 = (v26 - v22) / v25;
   [(NTNewsTodayResultsContentFillAggregator *)self minHeadlineScale];
   if (v28 <= v27 && ([(NTNewsTodayResultsContentFillAggregator *)self maxHeadlineScale], v27 <= v29))
@@ -281,18 +281,18 @@ LABEL_6:
   return v30;
 }
 
-- (id)_bestResultOfResults:(id)a3 withBudgetInfo:(id)a4
+- (id)_bestResultOfResults:(id)results withBudgetInfo:(id)info
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  infoCopy = info;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__NTNewsTodayResultsContentFillAggregator__bestResultOfResults_withBudgetInfo___block_invoke;
   v17[3] = &unk_279983520;
-  v7 = v6;
+  v7 = infoCopy;
   v18 = v7;
-  v8 = [v5 fc_arrayOfObjectsPassingTest:v17];
+  v8 = [resultsCopy fc_arrayOfObjectsPassingTest:v17];
   if ([v8 count])
   {
     v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"itemCount" ascending:0];
@@ -301,19 +301,19 @@ LABEL_6:
     v19[1] = v9;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v12 = [v8 sortedArrayUsingDescriptors:v11];
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v16 = v5;
-    v13 = [v16 firstObject];
+    v16 = resultsCopy;
+    firstObject = [v16 firstObject];
     v9 = v16;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return firstObject;
 }
 
 BOOL __79__NTNewsTodayResultsContentFillAggregator__bestResultOfResults_withBudgetInfo___block_invoke(uint64_t a1, void *a2)

@@ -8,25 +8,25 @@
 - (BOOL)registeredForMicrophoneActive;
 - (CAFBoolCharacteristic)cameraActiveCharacteristic;
 - (CAFBoolCharacteristic)microphoneActiveCharacteristic;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFActivityIndicator
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFActivityIndicator;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -39,12 +39,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -60,13 +60,13 @@
 - (CAFBoolCharacteristic)cameraActiveCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036100004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036100004"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036100004"];
@@ -85,16 +85,16 @@
 
 - (BOOL)cameraActive
 {
-  v2 = [(CAFActivityIndicator *)self cameraActiveCharacteristic];
-  v3 = [v2 BOOLValue];
+  cameraActiveCharacteristic = [(CAFActivityIndicator *)self cameraActiveCharacteristic];
+  bOOLValue = [cameraActiveCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasCameraActive
 {
-  v2 = [(CAFActivityIndicator *)self cameraActiveCharacteristic];
-  v3 = v2 != 0;
+  cameraActiveCharacteristic = [(CAFActivityIndicator *)self cameraActiveCharacteristic];
+  v3 = cameraActiveCharacteristic != 0;
 
   return v3;
 }
@@ -102,13 +102,13 @@
 - (CAFBoolCharacteristic)microphoneActiveCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036100005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036100005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036100005"];
@@ -127,16 +127,16 @@
 
 - (BOOL)microphoneActive
 {
-  v2 = [(CAFActivityIndicator *)self microphoneActiveCharacteristic];
-  v3 = [v2 BOOLValue];
+  microphoneActiveCharacteristic = [(CAFActivityIndicator *)self microphoneActiveCharacteristic];
+  bOOLValue = [microphoneActiveCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasMicrophoneActive
 {
-  v2 = [(CAFActivityIndicator *)self microphoneActiveCharacteristic];
-  v3 = v2 != 0;
+  microphoneActiveCharacteristic = [(CAFActivityIndicator *)self microphoneActiveCharacteristic];
+  v3 = microphoneActiveCharacteristic != 0;
 
   return v3;
 }
@@ -144,13 +144,13 @@
 - (BOOL)registeredForCameraActive
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036100004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036100004"];
 
   return v10;
 }
@@ -158,13 +158,13 @@
 - (BOOL)registeredForMicrophoneActive
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036100005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036100005"];
 
   return v10;
 }

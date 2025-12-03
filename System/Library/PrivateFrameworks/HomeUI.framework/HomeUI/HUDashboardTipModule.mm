@@ -1,22 +1,22 @@
 @interface HUDashboardTipModule
-- (HUDashboardTipModule)initWithContext:(id)a3 itemUpdater:(id)a4;
-- (HUDashboardTipModule)initWithItemUpdater:(id)a3;
-- (HUDashboardTipModule)initWithItemUpdater:(id)a3 descriptionText:(id)a4;
+- (HUDashboardTipModule)initWithContext:(id)context itemUpdater:(id)updater;
+- (HUDashboardTipModule)initWithItemUpdater:(id)updater;
+- (HUDashboardTipModule)initWithItemUpdater:(id)updater descriptionText:(id)text;
 - (NSSet)itemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (void)setupTipsObserver;
 @end
 
 @implementation HUDashboardTipModule
 
-- (HUDashboardTipModule)initWithContext:(id)a3 itemUpdater:(id)a4
+- (HUDashboardTipModule)initWithContext:(id)context itemUpdater:(id)updater
 {
-  v5 = a3;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  return DashboardTipModule.init(context:itemUpdater:)(v5, a4);
+  return DashboardTipModule.init(context:itemUpdater:)(contextCopy, updater);
 }
 
-- (HUDashboardTipModule)initWithItemUpdater:(id)a3 descriptionText:(id)a4
+- (HUDashboardTipModule)initWithItemUpdater:(id)updater descriptionText:(id)text
 {
   *(&self->super.super.isa + OBJC_IVAR___HUDashboardTipModule_dashboardTipItemProvider) = 0;
   *(&self->super.super.isa + OBJC_IVAR___HUDashboardTipModule_tipObservationTask) = 0;
@@ -30,7 +30,7 @@
 
 - (NSSet)itemProviders
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D024734();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81AF70);
@@ -40,12 +40,12 @@
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   sub_20CECF940(0, &qword_281120AC0);
   sub_20CEF99B4();
   sub_20D567D08();
-  v4 = self;
+  selfCopy = self;
   sub_20D024830();
 
   sub_20CECF940(0, &unk_28111FFD0);
@@ -54,7 +54,7 @@
   return v5;
 }
 
-- (HUDashboardTipModule)initWithItemUpdater:(id)a3
+- (HUDashboardTipModule)initWithItemUpdater:(id)updater
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -63,7 +63,7 @@
 
 - (void)setupTipsObserver
 {
-  v2 = self;
+  selfCopy = self;
   sub_20D024C8C();
 }
 

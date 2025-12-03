@@ -1,45 +1,45 @@
 @interface PGControlsContainerView
 - (BOOL)_controlsShouldAutoHide;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (PGCommandHandler)commandHandler;
-- (PGControlsContainerView)initWithFrame:(CGRect)a3 viewModel:(id)a4;
-- (id)_acquirePreventAutoHideOfControlsAssertionWithReason:(id)a3;
-- (id)_performVisibilityTransitionAnimated:(BOOL)a3 existingAnimator:(id)a4 animations:(id)a5 success:(id)a6;
-- (id)_updateVisibilityOfView:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5 existingAnimator:(id)a6;
-- (void)_handleDoubleDoubleTapGestureRecognizer:(id)a3;
-- (void)_handleHoverGestureRecognizer:(id)a3;
-- (void)_handleSingleTapGestureRecognizer:(id)a3;
+- (PGControlsContainerView)initWithFrame:(CGRect)frame viewModel:(id)model;
+- (id)_acquirePreventAutoHideOfControlsAssertionWithReason:(id)reason;
+- (id)_performVisibilityTransitionAnimated:(BOOL)animated existingAnimator:(id)animator animations:(id)animations success:(id)success;
+- (id)_updateVisibilityOfView:(id)view hidden:(BOOL)hidden animated:(BOOL)animated existingAnimator:(id)animator;
+- (void)_handleDoubleDoubleTapGestureRecognizer:(id)recognizer;
+- (void)_handleHoverGestureRecognizer:(id)recognizer;
+- (void)_handleSingleTapGestureRecognizer:(id)recognizer;
 - (void)_invalidateTimer;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setPrefersControlsHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setPrefersControlsHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)_setupSubviews;
 - (void)_updateHideControlsAfterDelayTimer;
-- (void)controlsViewModel:(id)a3 didIssueCommand:(id)a4;
-- (void)controlsViewModel:(id)a3 valuesChangedFromOldValue:(id)a4;
+- (void)controlsViewModel:(id)model didIssueCommand:(id)command;
+- (void)controlsViewModel:(id)model valuesChangedFromOldValue:(id)value;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setControlsContainerHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setInteractivelyResizing:(BOOL)a3;
+- (void)setControlsContainerHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setInteractivelyResizing:(BOOL)resizing;
 @end
 
 @implementation PGControlsContainerView
 
-- (PGControlsContainerView)initWithFrame:(CGRect)a3 viewModel:(id)a4
+- (PGControlsContainerView)initWithFrame:(CGRect)frame viewModel:(id)model
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PGControlsContainerView;
-  v11 = [(PGControlsContainerView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PGControlsContainerView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_viewModel, a4);
-    [v10 setDelegate:v12];
+    objc_storeStrong(&height->_viewModel, model);
+    [modelCopy setDelegate:v12];
   }
 
   return v12;
@@ -47,8 +47,8 @@
 
 - (void)_setupSubviews
 {
-  v3 = [(PGControlsViewModel *)self->_viewModel values];
-  if ([v3 controlsViewWantsGlassBackground])
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  if ([values controlsViewWantsGlassBackground])
   {
     v4 = 0;
   }
@@ -60,8 +60,8 @@
 
   [(PGControlsContainerView *)self setOverrideUserInterfaceStyle:v4];
 
-  v5 = [(PGControlsContainerView *)self layer];
-  [v5 setHitTestsAsOpaque:1];
+  layer = [(PGControlsContainerView *)self layer];
+  [layer setHitTestsAsOpaque:1];
 
   v6 = [PGControlsView alloc];
   [(PGControlsContainerView *)self bounds];
@@ -109,12 +109,12 @@
   v6.receiver = self;
   v6.super_class = PGControlsContainerView;
   [(PGControlsContainerView *)&v6 didMoveToWindow];
-  v3 = [(PGControlsContainerView *)self layer];
-  [v3 setBorderWidth:1.0];
+  layer = [(PGControlsContainerView *)self layer];
+  [layer setBorderWidth:1.0];
 
-  v4 = [(PGControlsContainerView *)self layer];
+  layer2 = [(PGControlsContainerView *)self layer];
   v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.15];
-  [v4 setBorderColor:{objc_msgSend(v5, "CGColor")}];
+  [layer2 setBorderColor:{objc_msgSend(v5, "CGColor")}];
 }
 
 - (void)layoutSubviews
@@ -130,21 +130,21 @@
   [(UIView *)interruptionDimmingView setFrame:?];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = PGControlsContainerView;
   [(PGControlsContainerView *)&v5 _setContinuousCornerRadius:?];
-  [(PGControlsView *)self->_controlsView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_interruptionDimmingView _setContinuousCornerRadius:a3];
+  [(PGControlsView *)self->_controlsView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_interruptionDimmingView _setContinuousCornerRadius:radius];
 }
 
-- (void)setInteractivelyResizing:(BOOL)a3
+- (void)setInteractivelyResizing:(BOOL)resizing
 {
-  if (self->_interactivelyResizing != a3)
+  if (self->_interactivelyResizing != resizing)
   {
-    self->_interactivelyResizing = a3;
-    v4 = !a3;
+    self->_interactivelyResizing = resizing;
+    v4 = !resizing;
     [PGControlsContainerView _setPrefersControlsHidden:"_setPrefersControlsHidden:animated:" animated:?];
     if (!v4)
     {
@@ -154,87 +154,87 @@
   }
 }
 
-- (void)setControlsContainerHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setControlsContainerHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewVisibilityAnimator);
-  v7 = [(PGControlsContainerView *)self _updateVisibilityOfView:self hidden:v5 animated:v4 existingAnimator:WeakRetained];
+  v7 = [(PGControlsContainerView *)self _updateVisibilityOfView:self hidden:hiddenCopy animated:animatedCopy existingAnimator:WeakRetained];
   objc_storeWeak(&self->_containerViewVisibilityAnimator, v7);
 }
 
-- (void)controlsViewModel:(id)a3 didIssueCommand:(id)a4
+- (void)controlsViewModel:(id)model didIssueCommand:(id)command
 {
-  v8 = a4;
-  if ([v8 systemAction] == 4)
+  commandCopy = command;
+  if ([commandCopy systemAction] == 4)
   {
     if ([(PGControlsView *)self->_controlsView prefersControlsHidden])
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 0;
     }
 
     else
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 1;
     }
 
-    [(PGControlsContainerView *)v5 _setPrefersControlsHidden:v6 animated:1];
+    [(PGControlsContainerView *)selfCopy2 _setPrefersControlsHidden:v6 animated:1];
   }
 
   else
   {
-    v7 = [(PGControlsContainerView *)self commandHandler];
-    [v7 handleCommand:v8];
+    commandHandler = [(PGControlsContainerView *)self commandHandler];
+    [commandHandler handleCommand:commandCopy];
   }
 }
 
-- (void)controlsViewModel:(id)a3 valuesChangedFromOldValue:(id)a4
+- (void)controlsViewModel:(id)model valuesChangedFromOldValue:(id)value
 {
-  v29 = a3;
-  v6 = a4;
-  v7 = [v29 values];
-  v8 = [v6 contentType];
-  if (v8 != [v7 contentType] && !objc_msgSend(v6, "contentType"))
+  modelCopy = model;
+  valueCopy = value;
+  values = [modelCopy values];
+  contentType = [valueCopy contentType];
+  if (contentType != [values contentType] && !objc_msgSend(valueCopy, "contentType"))
   {
     [(PGControlsContainerView *)self _setupSubviews];
     [(PGControlsContainerView *)self setNeedsLayout];
     [(PGControlsContainerView *)self layoutIfNeeded];
   }
 
-  -[UITapGestureRecognizer setEnabled:](self->_singleTapGestureRecognizer, "setEnabled:", [v7 includesSingleTapGestureRecognizer]);
-  -[UITapGestureRecognizer setEnabled:](self->_doubleTapGestureRecognizer, "setEnabled:", [v7 includesDoubleTapGestureRecognizer]);
-  -[UITapGestureRecognizer setEnabled:](self->_doubleDoubleTapGestureRecognizer, "setEnabled:", [v7 includesDoubleDoubleTapGestureRecognizer]);
-  [(PGControlsView *)self->_controlsView viewModelDidUpdateValuesFromOldValues:v6];
+  -[UITapGestureRecognizer setEnabled:](self->_singleTapGestureRecognizer, "setEnabled:", [values includesSingleTapGestureRecognizer]);
+  -[UITapGestureRecognizer setEnabled:](self->_doubleTapGestureRecognizer, "setEnabled:", [values includesDoubleTapGestureRecognizer]);
+  -[UITapGestureRecognizer setEnabled:](self->_doubleDoubleTapGestureRecognizer, "setEnabled:", [values includesDoubleDoubleTapGestureRecognizer]);
+  [(PGControlsView *)self->_controlsView viewModelDidUpdateValuesFromOldValues:valueCopy];
   [(PGControlsContainerView *)self _updateHideControlsAfterDelayTimer];
-  v9 = [v29 playbackState];
-  v10 = [v9 contentType];
+  playbackState = [modelCopy playbackState];
+  contentType2 = [playbackState contentType];
 
-  if ((v10 - 1) > 1)
+  if ((contentType2 - 1) > 1)
   {
     goto LABEL_28;
   }
 
-  v11 = [v29 playbackState];
-  [v11 normalizedProgress];
+  playbackState2 = [modelCopy playbackState];
+  [playbackState2 normalizedProgress];
   v13 = v12;
 
-  v14 = [v29 values];
-  v15 = [v14 controlsShouldAutoHide];
+  values2 = [modelCopy values];
+  controlsShouldAutoHide = [values2 controlsShouldAutoHide];
 
-  v16 = [v29 values];
-  if ([v16 includesContentLoadingIndicator] && !objc_msgSend(v6, "includesContentLoadingIndicator"))
+  values3 = [modelCopy values];
+  if ([values3 includesContentLoadingIndicator] && !objc_msgSend(valueCopy, "includesContentLoadingIndicator"))
   {
     v18 = 1;
   }
 
   else
   {
-    v17 = [v29 values];
-    if ([v17 includesWaitingToPlayIndicator])
+    values4 = [modelCopy values];
+    if ([values4 includesWaitingToPlayIndicator])
     {
-      v18 = [v6 includesWaitingToPlayIndicator] ^ 1;
+      v18 = [valueCopy includesWaitingToPlayIndicator] ^ 1;
     }
 
     else
@@ -243,27 +243,27 @@
     }
   }
 
-  v19 = [v29 values];
-  if (([v19 includesContentLoadingIndicator] & 1) != 0 || (objc_msgSend(v6, "includesContentLoadingIndicator") & 1) == 0)
+  values5 = [modelCopy values];
+  if (([values5 includesContentLoadingIndicator] & 1) != 0 || (objc_msgSend(valueCopy, "includesContentLoadingIndicator") & 1) == 0)
   {
-    v21 = [v29 values];
-    if ([v21 includesWaitingToPlayIndicator])
+    values6 = [modelCopy values];
+    if ([values6 includesWaitingToPlayIndicator])
     {
-      v20 = 0;
+      includesWaitingToPlayIndicator = 0;
     }
 
     else
     {
-      v20 = [v6 includesWaitingToPlayIndicator];
+      includesWaitingToPlayIndicator = [valueCopy includesWaitingToPlayIndicator];
     }
   }
 
   else
   {
-    v20 = 1;
+    includesWaitingToPlayIndicator = 1;
   }
 
-  if (!((v13 < 1.0) | v15 & 1) && [v6 controlsShouldAutoHide] || v18)
+  if (!((v13 < 1.0) | controlsShouldAutoHide & 1) && [valueCopy controlsShouldAutoHide] || v18)
   {
     [(PGControlsContainerView *)self _setPrefersControlsHidden:0 animated:1];
 LABEL_28:
@@ -274,13 +274,13 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v20)
+  if (includesWaitingToPlayIndicator)
   {
     [(PGControlsContainerView *)self _updateHideControlsAfterDelayTimer];
     goto LABEL_28;
   }
 
-  if (![v29 isInterrupted])
+  if (![modelCopy isInterrupted])
   {
     goto LABEL_28;
   }
@@ -309,24 +309,24 @@ LABEL_28:
 LABEL_29:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(UIGestureRecognizer *)v4 delegate];
+  beginCopy = begin;
+  delegate = [(UIGestureRecognizer *)beginCopy delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
-    if (self->_hoverGestureRecognizer == v4 && (-[PGControlsViewModel values](self->_viewModel, "values"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 includesRestoreButton], v6, !v7))
+    if (self->_hoverGestureRecognizer == beginCopy && (-[PGControlsViewModel values](self->_viewModel, "values"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 includesRestoreButton], v6, !v7))
     {
       LOBYTE(self) = 0;
     }
 
     else
     {
-      v8 = [(UIGestureRecognizer *)v4 view];
-      v9 = [(UIGestureRecognizer *)v4 view];
-      [(UIGestureRecognizer *)v4 locationInView:v9];
-      v10 = [v8 hitTest:0 withEvent:?];
+      view = [(UIGestureRecognizer *)beginCopy view];
+      view2 = [(UIGestureRecognizer *)beginCopy view];
+      [(UIGestureRecognizer *)beginCopy locationInView:view2];
+      v10 = [view hitTest:0 withEvent:?];
 
       LODWORD(self) = [v10 isDescendantOfView:self->_controlsView] ^ 1;
     }
@@ -336,21 +336,21 @@ LABEL_29:
   {
     v12.receiver = self;
     v12.super_class = PGControlsContainerView;
-    LOBYTE(self) = [(PGControlsContainerView *)&v12 gestureRecognizerShouldBegin:v4];
+    LOBYTE(self) = [(PGControlsContainerView *)&v12 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   v9 = 0;
-  if (self->_singleTapGestureRecognizer == v6)
+  if (self->_singleTapGestureRecognizer == recognizerCopy)
   {
-    if (self->_doubleTapGestureRecognizer == v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (self->_doubleTapGestureRecognizer == gestureRecognizerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = 1;
     }
@@ -359,7 +359,7 @@ LABEL_29:
   return v9;
 }
 
-- (void)_handleSingleTapGestureRecognizer:(id)a3
+- (void)_handleSingleTapGestureRecognizer:(id)recognizer
 {
   if ([(UIGestureRecognizer *)self->_hoverGestureRecognizer state]== UIGestureRecognizerStatePossible)
   {
@@ -369,7 +369,7 @@ LABEL_29:
   }
 }
 
-- (void)_handleDoubleDoubleTapGestureRecognizer:(id)a3
+- (void)_handleDoubleDoubleTapGestureRecognizer:(id)recognizer
 {
   if (!self->_interactivelyResizing)
   {
@@ -377,10 +377,10 @@ LABEL_29:
   }
 }
 
-- (void)_handleHoverGestureRecognizer:(id)a3
+- (void)_handleHoverGestureRecognizer:(id)recognizer
 {
-  v6 = a3;
-  if ([v6 state] == 1)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 1)
   {
     if ([(PGControlsContainerView *)self isShowingControlsForHoverActive])
     {
@@ -396,14 +396,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v4 = [v6 state];
-  if ([(PGControlsContainerView *)self isShowingControlsForHoverActive]== (v4 == 2))
+  state = [recognizerCopy state];
+  if ([(PGControlsContainerView *)self isShowingControlsForHoverActive]== (state == 2))
   {
     goto LABEL_8;
   }
 
-  [(PGControlsContainerView *)self setShowingControlsForHoverActive:v4 == 2];
-  if (v4 == 2)
+  [(PGControlsContainerView *)self setShowingControlsForHoverActive:state == 2];
+  if (state == 2)
   {
     goto LABEL_6;
   }
@@ -417,11 +417,11 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_acquirePreventAutoHideOfControlsAssertionWithReason:(id)a3
+- (id)_acquirePreventAutoHideOfControlsAssertionWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  reasonCopy = reason;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   preventAutoHideOfControlsAssertionIdentifiers = self->_preventAutoHideOfControlsAssertionIdentifiers;
   if (!preventAutoHideOfControlsAssertionIdentifiers)
@@ -433,13 +433,13 @@ LABEL_8:
     preventAutoHideOfControlsAssertionIdentifiers = self->_preventAutoHideOfControlsAssertionIdentifiers;
   }
 
-  [(NSMutableSet *)preventAutoHideOfControlsAssertionIdentifiers addObject:v6];
+  [(NSMutableSet *)preventAutoHideOfControlsAssertionIdentifiers addObject:uUIDString];
   [(PGControlsContainerView *)self _updateHideControlsAfterDelayTimer];
   objc_initWeak(&location, self);
   v10 = objc_alloc(MEMORY[0x1E698E778]);
-  if (v4)
+  if (reasonCopy)
   {
-    v11 = v4;
+    v11 = reasonCopy;
   }
 
   else
@@ -452,7 +452,7 @@ LABEL_8:
   v15[2] = __80__PGControlsContainerView__acquirePreventAutoHideOfControlsAssertionWithReason___block_invoke;
   v15[3] = &unk_1E7F328C8;
   objc_copyWeak(&v17, &location);
-  v12 = v6;
+  v12 = uUIDString;
   v16 = v12;
   v13 = [v10 initWithIdentifier:v12 forReason:v11 invalidationBlock:v15];
 
@@ -474,13 +474,13 @@ void __80__PGControlsContainerView__acquirePreventAutoHideOfControlsAssertionWit
   }
 }
 
-- (void)_setPrefersControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPrefersControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [(PGControlsContainerView *)self _updateHideControlsAfterDelayTimer];
-  [(PGControlsView *)self->_controlsView setPrefersControlsHidden:v5];
-  if (v5)
+  [(PGControlsView *)self->_controlsView setPrefersControlsHidden:hiddenCopy];
+  if (hiddenCopy)
   {
     [(PGControlsContainerView *)self setShowingControlsForHoverActive:0];
   }
@@ -502,7 +502,7 @@ void __80__PGControlsContainerView__acquirePreventAutoHideOfControlsAssertionWit
   v9[1] = 3221225472;
   v9[2] = __62__PGControlsContainerView__setPrefersControlsHidden_animated___block_invoke_3;
   v9[3] = &unk_1E7F32530;
-  v8 = [(PGControlsContainerView *)self _performVisibilityTransitionAnimated:v4 existingAnimator:WeakRetained animations:v10 success:v9];
+  v8 = [(PGControlsContainerView *)self _performVisibilityTransitionAnimated:animatedCopy existingAnimator:WeakRetained animations:v10 success:v9];
   objc_storeWeak(&self->_hidableControlsVisibilityAnimator, v8);
 
   [(PGControlsContainerView *)self _updateHideControlsAfterDelayTimer];
@@ -528,31 +528,31 @@ uint64_t __62__PGControlsContainerView__setPrefersControlsHidden_animated___bloc
   return [v2 _updateHideControlsAfterDelayTimer];
 }
 
-- (id)_updateVisibilityOfView:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5 existingAnimator:(id)a6
+- (id)_updateVisibilityOfView:(id)view hidden:(BOOL)hidden animated:(BOOL)animated existingAnimator:(id)animator
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  if (!a4)
+  animatedCopy = animated;
+  viewCopy = view;
+  animatorCopy = animator;
+  if (!hidden)
   {
-    [v10 setHidden:0];
+    [viewCopy setHidden:0];
   }
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __84__PGControlsContainerView__updateVisibilityOfView_hidden_animated_existingAnimator___block_invoke;
   v19[3] = &unk_1E7F328F0;
-  v20 = v10;
-  v21 = a4;
+  v20 = viewCopy;
+  hiddenCopy = hidden;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__PGControlsContainerView__updateVisibilityOfView_hidden_animated_existingAnimator___block_invoke_2;
   v15[3] = &unk_1E7F32918;
-  v18 = a4;
+  hiddenCopy2 = hidden;
   v16 = v20;
-  v17 = self;
+  selfCopy = self;
   v12 = v20;
-  v13 = [(PGControlsContainerView *)self _performVisibilityTransitionAnimated:v7 existingAnimator:v11 animations:v19 success:v15];
+  v13 = [(PGControlsContainerView *)self _performVisibilityTransitionAnimated:animatedCopy existingAnimator:animatorCopy animations:v19 success:v15];
 
   return v13;
 }
@@ -581,32 +581,32 @@ void *__84__PGControlsContainerView__updateVisibilityOfView_hidden_animated_exis
   return result;
 }
 
-- (id)_performVisibilityTransitionAnimated:(BOOL)a3 existingAnimator:(id)a4 animations:(id)a5 success:(id)a6
+- (id)_performVisibilityTransitionAnimated:(BOOL)animated existingAnimator:(id)animator animations:(id)animations success:(id)success
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([v9 isRunning] && objc_msgSend(v9, "isInterruptible"))
+  animatedCopy = animated;
+  animatorCopy = animator;
+  animationsCopy = animations;
+  successCopy = success;
+  if ([animatorCopy isRunning] && objc_msgSend(animatorCopy, "isInterruptible"))
   {
-    [v9 stopAnimation:0];
-    [v9 finishAnimationAtPosition:2];
+    [animatorCopy stopAnimation:0];
+    [animatorCopy finishAnimationAtPosition:2];
   }
 
-  if (v8)
+  if (animatedCopy)
   {
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x3032000000;
     v21[3] = __Block_byref_object_copy__0;
     v21[4] = __Block_byref_object_dispose__0;
-    v12 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:0 curve:v10 animations:0.2];
+    v12 = [objc_alloc(MEMORY[0x1E69DD278]) initWithDuration:0 curve:animationsCopy animations:0.2];
     v22 = v12;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __100__PGControlsContainerView__performVisibilityTransitionAnimated_existingAnimator_animations_success___block_invoke;
     v18[3] = &unk_1E7F32940;
-    v19 = v11;
+    v19 = successCopy;
     v20 = v21;
     [v12 addCompletion:v18];
     [v12 startAnimation];
@@ -621,8 +621,8 @@ void *__84__PGControlsContainerView__updateVisibilityOfView_hidden_animated_exis
     v15[1] = 3221225472;
     v15[2] = __100__PGControlsContainerView__performVisibilityTransitionAnimated_existingAnimator_animations_success___block_invoke_2;
     v15[3] = &unk_1E7F32968;
-    v16 = v10;
-    v17 = v11;
+    v16 = animationsCopy;
+    v17 = successCopy;
     [v13 performWithoutAnimation:v15];
 
     v12 = 0;
@@ -653,8 +653,8 @@ uint64_t __100__PGControlsContainerView__performVisibilityTransitionAnimated_exi
 
 - (BOOL)_controlsShouldAutoHide
 {
-  v3 = [(PGControlsViewModel *)self->_viewModel values];
-  if (![v3 controlsShouldAutoHide] || -[NSMutableSet count](self->_preventAutoHideOfControlsAssertionIdentifiers, "count") || -[PGControlsView prefersControlsHidden](self->_controlsView, "prefersControlsHidden"))
+  values = [(PGControlsViewModel *)self->_viewModel values];
+  if (![values controlsShouldAutoHide] || -[NSMutableSet count](self->_preventAutoHideOfControlsAssertionIdentifiers, "count") || -[PGControlsView prefersControlsHidden](self->_controlsView, "prefersControlsHidden"))
   {
     LOBYTE(v4) = 0;
   }

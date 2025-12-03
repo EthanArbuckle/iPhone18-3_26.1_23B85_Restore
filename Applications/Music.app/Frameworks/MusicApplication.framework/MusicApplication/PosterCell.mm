@@ -4,20 +4,20 @@
 - (UIImage)materialImage;
 - (void)layoutSubviews;
 - (void)setNeedsLayout;
-- (void)setOverlayTitleText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOverlayTitleText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PosterCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3758C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3758C(change);
 }
 
-- (void)setOverlayTitleText:(id)a3
+- (void)setOverlayTitleText:(id)text
 {
   v5 = sub_AB92A0();
   v6 = (self + OBJC_IVAR____TtC16MusicApplication10PosterCell_overlayTitleText);
@@ -25,8 +25,8 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication10PosterCell_overlayTitleText + 8);
   *v6 = v5;
   v6[1] = v9;
-  v10 = a3;
-  v11 = self;
+  textCopy = text;
+  selfCopy = self;
   sub_38048(v7, v8);
 }
 
@@ -34,20 +34,20 @@
 {
   if (*(self + OBJC_IVAR____TtC16MusicApplication10PosterCell_displayStyle) == 2)
   {
-    v4 = [*(*(self + OBJC_IVAR____TtC16MusicApplication32VerticalLockupCollectionViewCell_artworkComponent) + 112) image];
+    image = [*(*(self + OBJC_IVAR____TtC16MusicApplication32VerticalLockupCollectionViewCell_artworkComponent) + 112) image];
   }
 
   else
   {
-    v4 = 0;
+    image = 0;
   }
 
-  return v4;
+  return image;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3A5A8();
 }
 
@@ -56,13 +56,13 @@
   sub_13C80(0, &qword_DE8ED0);
   v3 = swift_allocObject();
   *(v3 + 16) = self;
-  v4 = self;
+  selfCopy = self;
   static OS_dispatch_queue.asyncOnMainIfNeeded(_:)(sub_3F970, v3);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_3BF18();
 
   v3 = sub_AB9260();

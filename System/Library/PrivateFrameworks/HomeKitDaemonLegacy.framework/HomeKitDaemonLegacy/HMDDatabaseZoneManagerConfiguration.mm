@@ -1,59 +1,59 @@
 @interface HMDDatabaseZoneManagerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDDatabaseZoneManagerConfiguration)init;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HMDDatabaseZoneManagerConfiguration
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(HMDDatabaseZoneManagerConfiguration *)[HMDMutableDatabaseZoneManagerConfiguration allocWithZone:?]];
   [(HMDDatabaseZoneManagerConfiguration *)v4 setZoneOwner:[(HMDDatabaseZoneManagerConfiguration *)self isZoneOwner]];
   [(HMDDatabaseZoneManagerConfiguration *)v4 setShouldCreateZone:[(HMDDatabaseZoneManagerConfiguration *)self shouldCreateZone]];
-  v5 = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
-  [(HMDDatabaseZoneManagerConfiguration *)v4 setExternalRecordTypesForSubscriptions:v5];
+  externalRecordTypesForSubscriptions = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
+  [(HMDDatabaseZoneManagerConfiguration *)v4 setExternalRecordTypesForSubscriptions:externalRecordTypesForSubscriptions];
 
-  v6 = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
-  [(HMDDatabaseZoneManagerConfiguration *)v4 setMinimumHomeKitVersion:v6];
+  minimumHomeKitVersion = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
+  [(HMDDatabaseZoneManagerConfiguration *)v4 setMinimumHomeKitVersion:minimumHomeKitVersion];
 
-  v7 = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
-  [(HMDDatabaseZoneManagerConfiguration *)v4 setRequiredSupportedFeatures:v7];
+  requiredSupportedFeatures = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
+  [(HMDDatabaseZoneManagerConfiguration *)v4 setRequiredSupportedFeatures:requiredSupportedFeatures];
 
-  v8 = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
-  [(HMDDatabaseZoneManagerConfiguration *)v4 setCloudZoneConfiguration:v8];
+  cloudZoneConfiguration = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
+  [(HMDDatabaseZoneManagerConfiguration *)v4 setCloudZoneConfiguration:cloudZoneConfiguration];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMDDatabaseZoneManagerConfiguration *)self isZoneOwner];
-  v4 = v3 ^ [(HMDDatabaseZoneManagerConfiguration *)self shouldCreateZone];
-  v5 = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
-  v6 = [v5 hash];
+  isZoneOwner = [(HMDDatabaseZoneManagerConfiguration *)self isZoneOwner];
+  v4 = isZoneOwner ^ [(HMDDatabaseZoneManagerConfiguration *)self shouldCreateZone];
+  externalRecordTypesForSubscriptions = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
+  v6 = [externalRecordTypesForSubscriptions hash];
 
-  v7 = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
-  v8 = v6 ^ [v7 hash];
+  minimumHomeKitVersion = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
+  v8 = v6 ^ [minimumHomeKitVersion hash];
 
-  v9 = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
-  v10 = v8 ^ [v9 hash] ^ v4;
+  requiredSupportedFeatures = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
+  v10 = v8 ^ [requiredSupportedFeatures hash] ^ v4;
 
-  v11 = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
-  v12 = [v11 hash];
+  cloudZoneConfiguration = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
+  v12 = [cloudZoneConfiguration hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -64,21 +64,21 @@
   v6 = v5;
   if (v6 && (v7 = -[HMDDatabaseZoneManagerConfiguration isZoneOwner](self, "isZoneOwner"), v7 == [v6 isZoneOwner]) && (v8 = -[HMDDatabaseZoneManagerConfiguration shouldCreateZone](self, "shouldCreateZone"), v8 == objc_msgSend(v6, "shouldCreateZone")))
   {
-    v11 = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
-    v12 = [v6 externalRecordTypesForSubscriptions];
-    if ([v11 isEqualToSet:v12])
+    externalRecordTypesForSubscriptions = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
+    externalRecordTypesForSubscriptions2 = [v6 externalRecordTypesForSubscriptions];
+    if ([externalRecordTypesForSubscriptions isEqualToSet:externalRecordTypesForSubscriptions2])
     {
-      v13 = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
-      v14 = [v6 minimumHomeKitVersion];
-      if ([v13 isEqualToVersion:v14])
+      minimumHomeKitVersion = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
+      minimumHomeKitVersion2 = [v6 minimumHomeKitVersion];
+      if ([minimumHomeKitVersion isEqualToVersion:minimumHomeKitVersion2])
       {
-        v15 = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
-        v16 = [v6 requiredSupportedFeatures];
-        if ([v15 isEqualToSet:v16])
+        requiredSupportedFeatures = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
+        requiredSupportedFeatures2 = [v6 requiredSupportedFeatures];
+        if ([requiredSupportedFeatures isEqualToSet:requiredSupportedFeatures2])
         {
-          v18 = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
-          v17 = [v6 cloudZoneConfiguration];
-          v9 = [v18 isEqual:v17];
+          cloudZoneConfiguration = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
+          cloudZoneConfiguration2 = [v6 cloudZoneConfiguration];
+          v9 = [cloudZoneConfiguration isEqual:cloudZoneConfiguration2];
         }
 
         else
@@ -119,22 +119,22 @@
   v22 = [v4 initWithName:@"Should Create Zone" value:v23];
   v26[1] = v22;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
-  v6 = [v5 initWithName:@"External Record Types" value:v21];
+  externalRecordTypesForSubscriptions = [(HMDDatabaseZoneManagerConfiguration *)self externalRecordTypesForSubscriptions];
+  v6 = [v5 initWithName:@"External Record Types" value:externalRecordTypesForSubscriptions];
   v26[2] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
-  v9 = [v7 initWithName:@"Minumum HomeKit Version" value:v8];
+  minimumHomeKitVersion = [(HMDDatabaseZoneManagerConfiguration *)self minimumHomeKitVersion];
+  v9 = [v7 initWithName:@"Minumum HomeKit Version" value:minimumHomeKitVersion];
   v26[3] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
-  v12 = [v11 allObjects];
-  v13 = [v12 componentsJoinedByString:{@", "}];
+  requiredSupportedFeatures = [(HMDDatabaseZoneManagerConfiguration *)self requiredSupportedFeatures];
+  allObjects = [requiredSupportedFeatures allObjects];
+  v13 = [allObjects componentsJoinedByString:{@", "}];
   v14 = [v10 initWithName:@"Required Supported Features" value:v13];
   v26[4] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
-  v17 = [v15 initWithName:@"Cloud Zone Configuration" value:v16];
+  cloudZoneConfiguration = [(HMDDatabaseZoneManagerConfiguration *)self cloudZoneConfiguration];
+  v17 = [v15 initWithName:@"Cloud Zone Configuration" value:cloudZoneConfiguration];
   v26[5] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:6];
 

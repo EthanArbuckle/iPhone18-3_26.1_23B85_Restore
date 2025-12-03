@@ -1,32 +1,32 @@
 @interface MIOBufferAttachmentsOutput
-- (MIOBufferAttachmentsOutput)initWithMetadataTrack:(id)a3 assetReader:(id)a4 error:(id *)a5;
-- (id)decodeData:(id)a3 error:(id *)a4;
-- (id)nextAttachmentsTimeRange:(id *)a3 error:(id *)a4;
+- (MIOBufferAttachmentsOutput)initWithMetadataTrack:(id)track assetReader:(id)reader error:(id *)error;
+- (id)decodeData:(id)data error:(id *)error;
+- (id)nextAttachmentsTimeRange:(id *)range error:(id *)error;
 - (void)finish;
 @end
 
 @implementation MIOBufferAttachmentsOutput
 
-- (MIOBufferAttachmentsOutput)initWithMetadataTrack:(id)a3 assetReader:(id)a4 error:(id *)a5
+- (MIOBufferAttachmentsOutput)initWithMetadataTrack:(id)track assetReader:(id)reader error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  trackCopy = track;
+  readerCopy = reader;
   v16.receiver = self;
   v16.super_class = MIOBufferAttachmentsOutput;
   v10 = [(MIOBufferAttachmentsOutput *)&v16 init];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:v8 outputSettings:0];
-    if (![v9 canAddOutput:v11])
+    v11 = [objc_alloc(MEMORY[0x277CE6430]) initWithTrack:trackCopy outputSettings:0];
+    if (![readerCopy canAddOutput:v11])
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add metadata track (%@) to the AVAssetReader.", v8];
-      [MEMORY[0x277CCA9B8] populateReaderError:a5 message:v14 code:1];
+      trackCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't add metadata track (%@) to the AVAssetReader.", trackCopy];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:trackCopy code:1];
 
       v13 = 0;
       goto LABEL_6;
     }
 
-    [v9 addOutput:v11];
+    [readerCopy addOutput:v11];
     v12 = [objc_alloc(MEMORY[0x277CE6420]) initWithAssetReaderTrackOutput:v11];
     [(MIOBufferAttachmentsOutput *)v10 setAttachmentsAdaptor:v12];
   }
@@ -42,49 +42,49 @@ LABEL_6:
   do
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [(MIOBufferAttachmentsOutput *)self attachmentsAdaptor];
-    v5 = [v4 nextTimedMetadataGroup];
+    attachmentsAdaptor = [(MIOBufferAttachmentsOutput *)self attachmentsAdaptor];
+    nextTimedMetadataGroup = [attachmentsAdaptor nextTimedMetadataGroup];
 
     objc_autoreleasePoolPop(v3);
   }
 
-  while (v5);
+  while (nextTimedMetadataGroup);
 }
 
-- (id)nextAttachmentsTimeRange:(id *)a3 error:(id *)a4
+- (id)nextAttachmentsTimeRange:(id *)range error:(id *)error
 {
-  v7 = [(MIOBufferAttachmentsOutput *)self attachmentsAdaptor];
-  v8 = [v7 nextTimedMetadataGroup];
+  attachmentsAdaptor = [(MIOBufferAttachmentsOutput *)self attachmentsAdaptor];
+  nextTimedMetadataGroup = [attachmentsAdaptor nextTimedMetadataGroup];
 
-  if (v8)
+  if (nextTimedMetadataGroup)
   {
-    v9 = [v8 items];
-    v10 = [v9 count];
+    items = [nextTimedMetadataGroup items];
+    v10 = [items count];
 
     if (v10)
     {
-      if (a3)
+      if (range)
       {
-        [v8 timeRange];
-        *&a3->var0.var0 = v17;
-        *&a3->var0.var3 = v18;
-        *&a3->var1.var1 = v19;
+        [nextTimedMetadataGroup timeRange];
+        *&range->var0.var0 = v17;
+        *&range->var0.var3 = v18;
+        *&range->var1.var1 = v19;
       }
 
-      v11 = [v8 items];
-      v12 = [v11 firstObject];
+      items2 = [nextTimedMetadataGroup items];
+      firstObject = [items2 firstObject];
 
-      v13 = [v12 value];
-      if (v13)
+      value = [firstObject value];
+      if (value)
       {
-        v14 = v13;
-        v15 = [(MIOBufferAttachmentsOutput *)self decodeData:v13 error:a4];
+        v14 = value;
+        v15 = [(MIOBufferAttachmentsOutput *)self decodeData:value error:error];
 
         goto LABEL_10;
       }
     }
 
-    [MEMORY[0x277CCA9B8] populateReaderError:a4 message:@"No attachments data found." code:30];
+    [MEMORY[0x277CCA9B8] populateReaderError:error message:@"No attachments data found." code:30];
   }
 
   v15 = 0;
@@ -93,10 +93,10 @@ LABEL_10:
   return v15;
 }
 
-- (id)decodeData:(id)a3 error:(id *)a4
+- (id)decodeData:(id)data error:(id *)error
 {
   v6 = 0;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:&v6 error:a4];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:&v6 error:error];
 
   return v4;
 }

@@ -10,7 +10,7 @@
 - (id)bandPreferenceSpec;
 - (id)dataUsageString;
 - (id)familyShareSpecifier;
-- (id)internetTethering:(id)a3;
+- (id)internetTethering:(id)tethering;
 - (id)passwordSpec;
 - (id)setupViewSpec;
 - (id)shareOption;
@@ -19,35 +19,35 @@
 - (id)stateFooterSpec;
 - (id)tetheringSwitchSpec;
 - (id)usageSpecifier;
-- (void)_btAuthenticationRequestHandler:(id)a3;
-- (void)_btDevicePairedHandler:(id)a3;
-- (void)_btPinRequestHandler:(id)a3;
-- (void)_btPowerChangedHandler:(id)a3;
-- (void)_btSSPConfirmationHandler:(id)a3;
-- (void)_btSSPNumericComparisonHandler:(id)a3;
-- (void)_btSSPPasskeyDisplayHandler:(id)a3;
-- (void)_managedConfigurationChangedHandler:(id)a3;
-- (void)_misStateChangedHandler:(id)a3;
+- (void)_btAuthenticationRequestHandler:(id)handler;
+- (void)_btDevicePairedHandler:(id)handler;
+- (void)_btPinRequestHandler:(id)handler;
+- (void)_btPowerChangedHandler:(id)handler;
+- (void)_btSSPConfirmationHandler:(id)handler;
+- (void)_btSSPNumericComparisonHandler:(id)handler;
+- (void)_btSSPPasskeyDisplayHandler:(id)handler;
+- (void)_managedConfigurationChangedHandler:(id)handler;
+- (void)_misStateChangedHandler:(id)handler;
 - (void)_registerAllNotificationObservers;
-- (void)_setMISDiscoveryStateEnabled:(BOOL)a3 effectiveImmediately:(BOOL)a4 forceBand:(BOOL)a5;
-- (void)_setWiFiPassword:(id)a3;
+- (void)_setMISDiscoveryStateEnabled:(BOOL)enabled effectiveImmediately:(BOOL)immediately forceBand:(BOOL)band;
+- (void)_setWiFiPassword:(id)password;
 - (void)_unregisterAllNotificationObservers;
 - (void)_updatePersonalHotspotModificationDisableState;
-- (void)_updateTetheringText:(BOOL)a3;
+- (void)_updateTetheringText:(BOOL)text;
 - (void)_wiFiPowerChangedHandler;
-- (void)allowWirelessConnections:(BOOL)a3;
+- (void)allowWirelessConnections:(BOOL)connections;
 - (void)cleanupPairing;
 - (void)dealloc;
-- (void)setBandPreference:(id)a3 specifier:(id)a4;
-- (void)setInternetTethering:(id)a3 specifier:(id)a4;
-- (void)setPersonalHotspotModificationDisableState:(BOOL)a3;
-- (void)setShareOption:(id)a3;
-- (void)terminateSearching:(BOOL)a3;
-- (void)updateInstructionsSection:(int)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setBandPreference:(id)preference specifier:(id)specifier;
+- (void)setInternetTethering:(id)tethering specifier:(id)specifier;
+- (void)setPersonalHotspotModificationDisableState:(BOOL)state;
+- (void)setShareOption:(id)option;
+- (void)terminateSearching:(BOOL)searching;
+- (void)updateInstructionsSection:(int)section;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation WirelessModemController
@@ -113,11 +113,11 @@
     }
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v11 = [v10 bundleIdentifier];
+    bundleIdentifier = [v10 bundleIdentifier];
 
-    CFPreferencesSynchronize(v11, *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
+    CFPreferencesSynchronize(bundleIdentifier, *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
     LOBYTE(location) = 0;
-    if (CFPreferencesGetAppBooleanValue(@"ShowBTPowerPrompt", v11, &location))
+    if (CFPreferencesGetAppBooleanValue(@"ShowBTPowerPrompt", bundleIdentifier, &location))
     {
       v12 = 1;
     }
@@ -138,18 +138,18 @@
   return v2;
 }
 
-- (void)terminateSearching:(BOOL)a3
+- (void)terminateSearching:(BOOL)searching
 {
   if (self->_wifiTetheringSupported)
   {
-    [(WirelessModemController *)self _setMISDiscoveryStateEnabled:0 effectiveImmediately:a3];
+    [(WirelessModemController *)self _setMISDiscoveryStateEnabled:0 effectiveImmediately:searching];
   }
 
-  v4 = [MEMORY[0x277CF3248] sharedInstance];
-  [v4 setDiscoverable:0];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  [mEMORY[0x277CF3248] setDiscoverable:0];
 
-  v5 = [MEMORY[0x277CF3248] sharedInstance];
-  [v5 setConnectable:0];
+  mEMORY[0x277CF3248]2 = [MEMORY[0x277CF3248] sharedInstance];
+  [mEMORY[0x277CF3248]2 setConnectable:0];
 
   [(WirelessModemController *)self cleanupPairing];
 }
@@ -163,34 +163,34 @@
   WMSubmitUIEventMetric(v2);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = [(WirelessModemController *)self navigationController];
-  v5 = [v4 childViewControllers];
-  v6 = [v5 lastObject];
+  navigationController = [(WirelessModemController *)self navigationController];
+  childViewControllers = [navigationController childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!lastObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [(WirelessModemController *)self _unregisterAllNotificationObservers];
     [(WirelessModemController *)self terminateSearching:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = WirelessModemController;
-  [(WirelessModemController *)&v10 viewDidAppear:a3];
+  [(WirelessModemController *)&v10 viewDidAppear:appear];
   [(WirelessModemController *)self _registerAllNotificationObservers];
   [(WirelessModemController *)self allowWirelessConnections:1];
   if (_os_feature_enabled_impl())
   {
     v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.PersonalHotspot"];
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"Personal Hotspot" table:0 locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"Personal Hotspot" table:0 locale:currentLocale bundleURL:bundleURL];
 
     if (objc_opt_respondsToSelector())
     {
@@ -199,19 +199,19 @@
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = WirelessModemController;
   [(WirelessModemController *)&v8 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
-    v5 = [(WirelessModemController *)self parentViewController];
-    v6 = [v5 navigationItem];
-    [v6 setTitleView:0];
+    parentViewController = [(WirelessModemController *)self parentViewController];
+    navigationItem = [parentViewController navigationItem];
+    [navigationItem setTitleView:0];
 
-    v7 = [(WirelessModemController *)self navigationItem];
-    [v7 setTitleView:0];
+    navigationItem2 = [(WirelessModemController *)self navigationItem];
+    [navigationItem2 setTitleView:0];
   }
 }
 
@@ -245,16 +245,16 @@
   [(WirelessModemController *)&v5 dealloc];
 }
 
-- (void)_misStateChangedHandler:(id)a3
+- (void)_misStateChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__WirelessModemController__misStateChangedHandler___block_invoke;
   v6[3] = &unk_278BB50C8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = handlerCopy;
+  selfCopy = self;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -284,26 +284,26 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
   }
 }
 
-- (void)allowWirelessConnections:(BOOL)a3
+- (void)allowWirelessConnections:(BOOL)connections
 {
-  v3 = a3;
-  if (!a3 || (-[WirelessModemController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _isInAWindow], v5, v6))
+  connectionsCopy = connections;
+  if (!connections || (-[WirelessModemController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 _isInAWindow], v5, v6))
   {
-    v7 = [MEMORY[0x277CF3248] sharedInstance];
-    [v7 setDiscoverable:v3];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    [mEMORY[0x277CF3248] setDiscoverable:connectionsCopy];
 
-    v8 = [MEMORY[0x277CF3248] sharedInstance];
-    [v8 setConnectable:v3];
+    mEMORY[0x277CF3248]2 = [MEMORY[0x277CF3248] sharedInstance];
+    [mEMORY[0x277CF3248]2 setConnectable:connectionsCopy];
 
     if (self->_wifiTetheringSupported)
     {
 
-      [(WirelessModemController *)self _setMISDiscoveryStateEnabled:v3 effectiveImmediately:v3];
+      [(WirelessModemController *)self _setMISDiscoveryStateEnabled:connectionsCopy effectiveImmediately:connectionsCopy];
     }
   }
 }
 
-- (void)_managedConfigurationChangedHandler:(id)a3
+- (void)_managedConfigurationChangedHandler:(id)handler
 {
   v4 = dispatch_time(0, 500000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -326,9 +326,9 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
   [(WirelessModemController *)self setPersonalHotspotModificationDisableState:IsPersonalHotspotModificationDisabled != 0];
 }
 
-- (void)setPersonalHotspotModificationDisableState:(BOOL)a3
+- (void)setPersonalHotspotModificationDisableState:(BOOL)state
 {
-  if (self->_personalHotspotModificationDisabled == a3)
+  if (self->_personalHotspotModificationDisabled == state)
   {
     v3 = WMSLogComponent();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -339,9 +339,9 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
 
   else
   {
-    self->_personalHotspotModificationDisabled = a3;
+    self->_personalHotspotModificationDisabled = state;
     tetheringSwitchSpec = self->_tetheringSwitchSpec;
-    if (a3)
+    if (state)
     {
       v6 = MEMORY[0x277CBEC28];
     }
@@ -362,41 +362,41 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
 {
   if (!self->_didRegisteredNotificationObservers)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_applicationWillResign_ name:@"UIApplicationWillResignActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_applicationWillResign_ name:@"UIApplicationWillResignActiveNotification" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__misStateChangedHandler_ name:@"MISManagerStateChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__misStateChangedHandler_ name:@"MISManagerStateChangedNotification" object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel__btPowerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel__btPowerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel__btPowerChangedHandler_ name:*MEMORY[0x277CF3230] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:self selector:sel__btPowerChangedHandler_ name:*MEMORY[0x277CF3230] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3200] object:0];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3200] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__btDevicePairedHandler_ name:*MEMORY[0x277CF3208] object:0];
+    defaultCenter7 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter7 addObserver:self selector:sel__btDevicePairedHandler_ name:*MEMORY[0x277CF3208] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel__btDevicePairedHandler_ name:*MEMORY[0x277CF3210] object:0];
+    defaultCenter8 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter8 addObserver:self selector:sel__btDevicePairedHandler_ name:*MEMORY[0x277CF3210] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3220] object:0];
+    defaultCenter9 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter9 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3220] object:0];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3228] object:0];
+    defaultCenter10 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter10 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3228] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3218] object:0];
+    defaultCenter11 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter11 addObserver:self selector:sel__btAuthenticationRequestHandler_ name:*MEMORY[0x277CF3218] object:0];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel__managedConfigurationChangedHandler_ name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter12 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter12 addObserver:self selector:sel__managedConfigurationChangedHandler_ name:*MEMORY[0x277D25CA0] object:0];
 
     self->_didRegisteredNotificationObservers = 1;
   }
@@ -404,8 +404,8 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
 
 - (void)_unregisterAllNotificationObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_wifiDevice)
   {
@@ -415,27 +415,27 @@ void __51__WirelessModemController__misStateChangedHandler___block_invoke(uint64
   self->_didRegisteredNotificationObservers = 0;
 }
 
-- (void)_setMISDiscoveryStateEnabled:(BOOL)a3 effectiveImmediately:(BOOL)a4 forceBand:(BOOL)a5
+- (void)_setMISDiscoveryStateEnabled:(BOOL)enabled effectiveImmediately:(BOOL)immediately forceBand:(BOOL)band
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  bandCopy = band;
+  immediatelyCopy = immediately;
+  enabledCopy = enabled;
   v14[2] = *MEMORY[0x277D85DE8];
   v8 = WMSLogComponent();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [WirelessModemController _setMISDiscoveryStateEnabled:v7 effectiveImmediately:v6 forceBand:v8];
+    [WirelessModemController _setMISDiscoveryStateEnabled:enabledCopy effectiveImmediately:immediatelyCopy forceBand:v8];
   }
 
   v13[0] = @"SOFTAP_ENABLE";
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:enabledCopy];
   v13[1] = @"SOFTAP_IMMEDIATE_DISABLE";
   v14[0] = v9;
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:immediatelyCopy];
   v14[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  if (v5)
+  if (bandCopy)
   {
     v12 = [v11 mutableCopy];
     [v12 setObject:MEMORY[0x277CBEC38] forKey:@"SOFTAP_FORCE_2_4G_CHANNEL"];
@@ -513,15 +513,15 @@ void __51__WirelessModemController__wiFiPowerChangedHandler__block_invoke_2(uint
   return wifiDevice;
 }
 
-- (void)_setWiFiPassword:(id)a3
+- (void)_setWiFiPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   if (self->_wifiClient)
   {
-    v6 = v4;
-    v5 = v4;
+    v6 = passwordCopy;
+    v5 = passwordCopy;
     WiFiManagerClientSetMisPassword();
-    v4 = v6;
+    passwordCopy = v6;
   }
 }
 
@@ -560,11 +560,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)setBandPreference:(id)a3 specifier:(id)a4
+- (void)setBandPreference:(id)preference specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [v5 BOOLValue];
-  [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
+  preferenceCopy = preference;
+  bOOLValue = [preferenceCopy BOOLValue];
+  [MEMORY[0x277CCABB0] numberWithUnsignedInt:bOOLValue];
   WiFiManagerClientSetProperty();
   v7 = WMSLogComponent();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -572,10 +572,10 @@ LABEL_6:
     [WirelessModemController setBandPreference:specifier:];
   }
 
-  [(WirelessModemController *)self _setMISDiscoveryStateEnabled:1 effectiveImmediately:1 forceBand:v6];
-  v8 = [v5 BOOLValue];
+  [(WirelessModemController *)self _setMISDiscoveryStateEnabled:1 effectiveImmediately:1 forceBand:bOOLValue];
+  bOOLValue2 = [preferenceCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue2)
   {
     v9 = @"true";
   }
@@ -597,7 +597,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)_btPowerChangedHandler:(id)a3
+- (void)_btPowerChangedHandler:(id)handler
 {
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
@@ -651,14 +651,14 @@ void __50__WirelessModemController__btPowerChangedHandler___block_invoke(uint64_
   *(v8 + 1504) = 0;
 }
 
-- (void)_btAuthenticationRequestHandler:(id)a3
+- (void)_btAuthenticationRequestHandler:(id)handler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (self->_btPairControllerClass && self->_btPairSetupClass && self->_btSSPRequestClass)
   {
-    v6 = [(WirelessModemController *)self rootController];
-    v7 = [v6 visibleViewController];
+    rootController = [(WirelessModemController *)self rootController];
+    visibleViewController = [rootController visibleViewController];
     if ((objc_opt_isKindOfClass() & 1) != 0 || self->_btSSPAlert)
     {
 
@@ -670,8 +670,8 @@ void __50__WirelessModemController__btPowerChangedHandler___block_invoke(uint64_
     if (btAlert)
     {
 LABEL_7:
-      v8 = WMSLogComponent();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      object = WMSLogComponent();
+      if (os_log_type_enabled(object, OS_LOG_TYPE_ERROR))
       {
         [WirelessModemController _btAuthenticationRequestHandler:];
       }
@@ -683,44 +683,44 @@ LABEL_9:
 
     if (!self->_waitingOnBTPower && !self->_currentDeviceSpecifier)
     {
-      v10 = [v5 name];
+      name = [handlerCopy name];
       v11 = *MEMORY[0x277CF3228];
-      if ([v10 isEqualToString:*MEMORY[0x277CF3228]])
+      if ([name isEqualToString:*MEMORY[0x277CF3228]])
       {
       }
 
       else
       {
-        v12 = [v5 name];
-        v13 = [v12 isEqualToString:*MEMORY[0x277CF3218]];
+        name2 = [handlerCopy name];
+        v13 = [name2 isEqualToString:*MEMORY[0x277CF3218]];
 
         if (!v13)
         {
-          v8 = [v5 object];
+          object = [handlerCopy object];
           goto LABEL_19;
         }
       }
 
-      v14 = [v5 object];
-      v8 = [v14 objectForKeyedSubscript:@"device"];
+      object2 = [handlerCopy object];
+      object = [object2 objectForKeyedSubscript:@"device"];
 
 LABEL_19:
       v15 = WMSLogComponent();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v46 = NSStringFromSelector(a2);
-        v44 = [v5 name];
-        [v8 name];
+        name3 = [handlerCopy name];
+        [object name];
         *buf = 138412802;
         v48 = v46;
         v49 = 2112;
-        v50 = v44;
+        v50 = name3;
         v52 = v51 = 2112;
         v45 = v52;
         _os_log_error_impl(&dword_23C15F000, v15, OS_LOG_TYPE_ERROR, "%@ received %@ for device %@", buf, 0x20u);
       }
 
-      if (-[NSObject majorClass](v8, "majorClass") == 256 && ([v5 userInfo], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "valueForKey:", @"delayedPairingForNR"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
+      if (-[NSObject majorClass](object, "majorClass") == 256 && ([handlerCopy userInfo], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "valueForKey:", @"delayedPairingForNR"), v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
       {
         v36 = WMSLogComponent();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -729,25 +729,25 @@ LABEL_19:
         }
 
         v37 = MEMORY[0x277CBEB38];
-        v38 = [v5 userInfo];
-        v24 = [v37 dictionaryWithDictionary:v38];
+        userInfo = [handlerCopy userInfo];
+        dictionary = [v37 dictionaryWithDictionary:userInfo];
 
-        [v24 setObject:&stru_284EED640 forKeyedSubscript:@"delayedPairingForNR"];
+        [dictionary setObject:&stru_284EED640 forKeyedSubscript:@"delayedPairingForNR"];
         v39 = MEMORY[0x277CCAB88];
-        v28 = [v5 name];
-        v40 = [v5 object];
-        v41 = [v39 notificationWithName:v28 object:v40 userInfo:v24];
+        name4 = [handlerCopy name];
+        object3 = [handlerCopy object];
+        v41 = [v39 notificationWithName:name4 object:object3 userInfo:dictionary];
         [(WirelessModemController *)self performSelector:sel__btAuthenticationRequestHandler_ withObject:v41 afterDelay:1.0];
       }
 
       else
       {
-        v18 = [v8 name];
-        v19 = v18;
+        name5 = [object name];
+        v19 = name5;
         v20 = &stru_284EED640;
-        if (v18)
+        if (name5)
         {
-          v20 = v18;
+          v20 = name5;
         }
 
         v21 = v20;
@@ -756,62 +756,62 @@ LABEL_19:
         currentDeviceSpecifier = self->_currentDeviceSpecifier;
         self->_currentDeviceSpecifier = v22;
 
-        v24 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v25 = NSStringFromClass(self->_btPairSetupClass);
-        [v24 setObject:v25 forKeyedSubscript:*MEMORY[0x277D3FF08]];
+        [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x277D3FF08]];
 
         v26 = NSStringFromClass(self->_btPairControllerClass);
-        [v24 setObject:v26 forKeyedSubscript:*MEMORY[0x277D400B8]];
+        [dictionary setObject:v26 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
-        [v24 setObject:@"PSLinkCell" forKeyedSubscript:*MEMORY[0x277D40138]];
-        [v24 setObject:v21 forKeyedSubscript:*MEMORY[0x277D40170]];
+        [dictionary setObject:@"PSLinkCell" forKeyedSubscript:*MEMORY[0x277D40138]];
+        [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x277D40170]];
 
-        v27 = [v8 address];
-        [v24 setObject:v27 forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+        address = [object address];
+        [dictionary setObject:address forKeyedSubscript:*MEMORY[0x277D3FFB8]];
 
-        [(PSSpecifier *)self->_currentDeviceSpecifier setProperties:v24];
-        v28 = [MEMORY[0x277CBEB38] dictionary];
-        v29 = [(objc_class *)self->_btClassicDeviceClass deviceWithDevice:v8];
-        [v28 setObject:v29 forKeyedSubscript:@"bt-device"];
+        [(PSSpecifier *)self->_currentDeviceSpecifier setProperties:dictionary];
+        name4 = [MEMORY[0x277CBEB38] dictionary];
+        v29 = [(objc_class *)self->_btClassicDeviceClass deviceWithDevice:object];
+        [name4 setObject:v29 forKeyedSubscript:@"bt-device"];
 
-        [v28 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"reverse-pairing"];
-        [(PSSpecifier *)self->_currentDeviceSpecifier setUserInfo:v28];
-        v30 = [v5 name];
-        v31 = [v30 isEqualToString:*MEMORY[0x277CF3200]];
+        [name4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"reverse-pairing"];
+        [(PSSpecifier *)self->_currentDeviceSpecifier setUserInfo:name4];
+        name6 = [handlerCopy name];
+        v31 = [name6 isEqualToString:*MEMORY[0x277CF3200]];
 
         if (v31)
         {
-          [(WirelessModemController *)self _btPinRequestHandler:v5];
+          [(WirelessModemController *)self _btPinRequestHandler:handlerCopy];
         }
 
         else
         {
-          v32 = [v5 name];
-          v33 = [v32 isEqualToString:*MEMORY[0x277CF3220]];
+          name7 = [handlerCopy name];
+          v33 = [name7 isEqualToString:*MEMORY[0x277CF3220]];
 
           if (v33)
           {
-            [(WirelessModemController *)self _btSSPConfirmationHandler:v5];
+            [(WirelessModemController *)self _btSSPConfirmationHandler:handlerCopy];
           }
 
           else
           {
-            v34 = [v5 name];
-            v35 = [v34 isEqualToString:v11];
+            name8 = [handlerCopy name];
+            v35 = [name8 isEqualToString:v11];
 
             if (v35)
             {
-              [(WirelessModemController *)self _btSSPNumericComparisonHandler:v5];
+              [(WirelessModemController *)self _btSSPNumericComparisonHandler:handlerCopy];
             }
 
             else
             {
-              v42 = [v5 name];
-              v43 = [v42 isEqualToString:*MEMORY[0x277CF3218]];
+              name9 = [handlerCopy name];
+              v43 = [name9 isEqualToString:*MEMORY[0x277CF3218]];
 
               if (v43)
               {
-                [(WirelessModemController *)self _btSSPPasskeyDisplayHandler:v5];
+                [(WirelessModemController *)self _btSSPPasskeyDisplayHandler:handlerCopy];
               }
             }
           }
@@ -825,13 +825,13 @@ LABEL_19:
 LABEL_10:
 }
 
-- (void)_btPinRequestHandler:(id)a3
+- (void)_btPinRequestHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = WMSLogComponent();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(WirelessModemController *)a2 _btPinRequestHandler:v5, v6];
+    [(WirelessModemController *)a2 _btPinRequestHandler:handlerCopy, v6];
   }
 
   v7 = objc_alloc_init(self->_btPairSetupClass);
@@ -845,27 +845,27 @@ LABEL_10:
   [(WirelessModemController *)self showController:v7];
 }
 
-- (void)_btSSPConfirmationHandler:(id)a3
+- (void)_btSSPConfirmationHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   v7 = WMSLogComponent();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [v5 name];
-    v12 = [v6 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v13 = 138412802;
     v14 = v10;
     v15 = 2112;
-    v16 = v11;
+    v16 = name;
     v17 = 2112;
-    v18 = v12;
+    v18 = name2;
     _os_log_error_impl(&dword_23C15F000, v7, OS_LOG_TYPE_ERROR, "%@ received %@ for device %@", &v13, 0x20u);
   }
 
-  v8 = [objc_alloc(self->_btSSPRequestClass) initWithDevice:v6 andSpecifier:self->_currentDeviceSpecifier];
+  v8 = [objc_alloc(self->_btSSPRequestClass) initWithDevice:object andSpecifier:self->_currentDeviceSpecifier];
   btSSPAlert = self->_btSSPAlert;
   self->_btSSPAlert = v8;
 
@@ -874,25 +874,25 @@ LABEL_10:
   [self->_btSSPAlert show];
 }
 
-- (void)_btSSPNumericComparisonHandler:(id)a3
+- (void)_btSSPNumericComparisonHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [v6 objectForKeyedSubscript:@"device"];
-  v8 = [v6 objectForKeyedSubscript:@"value"];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  v7 = [object objectForKeyedSubscript:@"device"];
+  v8 = [object objectForKeyedSubscript:@"value"];
   v9 = WMSLogComponent();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v12 = NSStringFromSelector(a2);
-    v13 = [v5 name];
-    v14 = [v7 name];
+    name = [handlerCopy name];
+    name2 = [v7 name];
     v15 = 138412802;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = name;
     v19 = 2112;
-    v20 = v14;
+    v20 = name2;
     _os_log_error_impl(&dword_23C15F000, v9, OS_LOG_TYPE_ERROR, "%@ received %@ for device %@", &v15, 0x20u);
   }
 
@@ -905,25 +905,25 @@ LABEL_10:
   [self->_btSSPAlert show];
 }
 
-- (void)_btSSPPasskeyDisplayHandler:(id)a3
+- (void)_btSSPPasskeyDisplayHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 object];
-  v7 = [v6 objectForKeyedSubscript:@"device"];
-  v8 = [v6 objectForKeyedSubscript:@"value"];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  v7 = [object objectForKeyedSubscript:@"device"];
+  v8 = [object objectForKeyedSubscript:@"value"];
   v9 = WMSLogComponent();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v12 = NSStringFromSelector(a2);
-    v13 = [v5 name];
-    v14 = [v7 name];
+    name = [handlerCopy name];
+    name2 = [v7 name];
     v15 = 138412802;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = name;
     v19 = 2112;
-    v20 = v14;
+    v20 = name2;
     _os_log_error_impl(&dword_23C15F000, v9, OS_LOG_TYPE_ERROR, "%@ received %@ for device %@", &v15, 0x20u);
   }
 
@@ -936,30 +936,30 @@ LABEL_10:
   [self->_btSSPAlert show];
 }
 
-- (void)_btDevicePairedHandler:(id)a3
+- (void)_btDevicePairedHandler:(id)handler
 {
-  v24 = a3;
-  v4 = [v24 object];
-  v5 = [v4 address];
-  v6 = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
-  v7 = [v5 isEqualToString:v6];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  address = [object address];
+  identifier = [(PSSpecifier *)self->_currentDeviceSpecifier identifier];
+  v7 = [address isEqualToString:identifier];
 
   if (v7)
   {
-    v8 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
-    v9 = [v8 objectForKey:@"PIN-ended"];
+    userInfo = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
+    v9 = [userInfo objectForKey:@"PIN-ended"];
 
-    v10 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
-    [v10 removeObjectForKey:@"PIN-ended"];
+    userInfo2 = [(PSSpecifier *)self->_currentDeviceSpecifier userInfo];
+    [userInfo2 removeObjectForKey:@"PIN-ended"];
 
-    v11 = [v24 name];
-    v12 = [v11 isEqualToString:*MEMORY[0x277CF3208]];
+    name = [handlerCopy name];
+    v12 = [name isEqualToString:*MEMORY[0x277CF3208]];
 
     if (v12)
     {
       if (!self->_btAlert)
       {
-        v13 = [objc_alloc(self->_btAlertClass) initWithDevice:v4];
+        v13 = [objc_alloc(self->_btAlertClass) initWithDevice:object];
         btAlert = self->_btAlert;
         self->_btAlert = v13;
 
@@ -968,8 +968,8 @@ LABEL_10:
         {
           if (![v9 isEqualToString:@"entered"])
           {
-            v22 = [v24 userInfo];
-            v21 = [v22 objectForKeyedSubscript:*MEMORY[0x277CF31D8]];
+            userInfo3 = [handlerCopy userInfo];
+            v21 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CF31D8]];
 
             goto LABEL_15;
           }
@@ -1007,37 +1007,37 @@ LABEL_15:
   btSSPAlert = self->_btSSPAlert;
   self->_btSSPAlert = 0;
 
-  v4 = [(WirelessModemController *)self rootController];
-  v5 = [v4 visibleViewController];
+  rootController = [(WirelessModemController *)self rootController];
+  visibleViewController = [rootController visibleViewController];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [(WirelessModemController *)self rootController];
-    v7 = [v9 visibleViewController];
-    v8 = [v7 parentViewController];
-    [v8 performSelector:sel_dismiss];
+    rootController2 = [(WirelessModemController *)self rootController];
+    visibleViewController2 = [rootController2 visibleViewController];
+    parentViewController = [visibleViewController2 parentViewController];
+    [parentViewController performSelector:sel_dismiss];
   }
 }
 
-- (id)internetTethering:(id)a3
+- (id)internetTethering:(id)tethering
 {
   v6 = 0;
   v3 = +[MISManager sharedManager];
   [v3 getState:&v6 andReason:0];
 
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:v6 == 1023];
+  1023 = [MEMORY[0x277CCABB0] numberWithInt:v6 == 1023];
 
-  return v4;
+  return 1023;
 }
 
-- (void)setInternetTethering:(id)a3 specifier:(id)a4
+- (void)setInternetTethering:(id)tethering specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  tetheringCopy = tethering;
+  specifierCopy = specifier;
   v152[0] = 1022;
-  v8 = [v6 BOOLValue];
-  if (v8)
+  bOOLValue = [tetheringCopy BOOLValue];
+  if (bOOLValue)
   {
     v9 = 1023;
   }
@@ -1052,13 +1052,13 @@ LABEL_15:
 
   if (v152[0] != v9)
   {
-    if ((v152[0] == 1022) & v8) != 1 || (([MEMORY[0x277CF3248] sharedInstance], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "enabled"), v12, v14 = -[WirelessModemController _wiFiPower](self, "_wiFiPower"), v15 = v14, (v13) || !self->_showBTPowerPrompt) && (!self->_wifiTetheringSupported || self->_wifiDevice == 0 || v14))
+    if ((v152[0] == 1022) & bOOLValue) != 1 || (([MEMORY[0x277CF3248] sharedInstance], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "enabled"), v12, v14 = -[WirelessModemController _wiFiPower](self, "_wiFiPower"), v15 = v14, (v13) || !self->_showBTPowerPrompt) && (!self->_wifiTetheringSupported || self->_wifiDevice == 0 || v14))
     {
       [(WirelessModemController *)self updateInstructionsSection:v9];
       v16 = +[MISManager sharedManager];
       [v16 setState:v9];
 
-      if ([v6 BOOLValue])
+      if ([tetheringCopy BOOLValue])
       {
         v17 = @"true";
       }
@@ -1075,10 +1075,10 @@ LABEL_15:
     }
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v7 setProperty:v19 forKey:*MEMORY[0x277D3FEA8]];
+    [specifierCopy setProperty:v19 forKey:*MEMORY[0x277D3FEA8]];
 
-    [(WirelessModemController *)self reloadSpecifier:v7];
-    v132 = v7;
+    [(WirelessModemController *)self reloadSpecifier:specifierCopy];
+    v132 = specifierCopy;
     if (v13)
     {
       v125 = MEMORY[0x277D75110];
@@ -1100,7 +1100,7 @@ LABEL_15:
       }
 
       v120 = [v23 localizedStringForKey:v24 value:&stru_284EED640 table:@"WirelessModemSettings"];
-      v25 = [v20 stringWithFormat:v21, v120];
+      v120 = [v20 stringWithFormat:v21, v120];
       v26 = MEMORY[0x277CCACA8];
       v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v28 = [v27 localizedStringForKey:@"POWER_ALERT_WF_OFF_MESSAGE" value:&stru_284EED640 table:@"WirelessModemSettings"];
@@ -1119,7 +1119,7 @@ LABEL_15:
 
       v33 = [v30 localizedStringForKey:v32 value:&stru_284EED640 table:@"WirelessModemSettings"];
       v34 = [v26 stringWithFormat:v28, v33];
-      v35 = [v125 alertControllerWithTitle:v25 message:v34 preferredStyle:1];
+      v35 = [v125 alertControllerWithTitle:v120 message:v34 preferredStyle:1];
       powerAlert = self->_powerAlert;
       self->_powerAlert = v35;
 
@@ -1181,7 +1181,7 @@ LABEL_15:
 LABEL_52:
       objc_destroyWeak(v84 + 4);
       objc_destroyWeak(&location);
-      v7 = v132;
+      specifierCopy = v132;
       goto LABEL_53;
     }
 
@@ -1208,7 +1208,7 @@ LABEL_52:
         }
 
         v122 = [v88 localizedStringForKey:v89 value:&stru_284EED640 table:@"WirelessModemSettings"];
-        v90 = [v85 stringWithFormat:v86, v122];
+        v122 = [v85 stringWithFormat:v86, v122];
         v91 = MEMORY[0x277CCACA8];
         v92 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v93 = [v92 localizedStringForKey:@"POWER_ALERT_BOTH_OFF_MESSAGE" value:&stru_284EED640 table:@"WirelessModemSettings"];
@@ -1227,7 +1227,7 @@ LABEL_52:
 
         v98 = [v95 localizedStringForKey:v97 value:&stru_284EED640 table:@"WirelessModemSettings"];
         v99 = [v91 stringWithFormat:v93, v98];
-        v100 = [v134 alertControllerWithTitle:v90 message:v99 preferredStyle:1];
+        v100 = [v134 alertControllerWithTitle:v122 message:v99 preferredStyle:1];
         v101 = self->_powerAlert;
         self->_powerAlert = v100;
 
@@ -1258,14 +1258,14 @@ LABEL_52:
           [v109 localizedStringForKey:@"WIFI" value:&stru_284EED640 table:@"WirelessModemSettings"];
         }
         v117 = ;
-        v118 = [v106 stringWithFormat:v108, v117];
+        v117 = [v106 stringWithFormat:v108, v117];
         v147[0] = MEMORY[0x277D85DD0];
         v147[1] = 3221225472;
         v147[2] = __58__WirelessModemController_setInternetTethering_specifier___block_invoke_2;
         v147[3] = &unk_278BB5320;
         v147[4] = self;
         objc_copyWeak(&v148, &location);
-        v119 = [v105 actionWithTitle:v118 style:0 handler:v147];
+        v119 = [v105 actionWithTitle:v117 style:0 handler:v147];
 
         [(UIAlertController *)self->_powerAlert addAction:v131];
         [(UIAlertController *)self->_powerAlert addAction:v119];
@@ -1316,14 +1316,14 @@ LABEL_52:
         [v57 localizedStringForKey:@"WIFI" value:&stru_284EED640 table:@"WirelessModemSettings"];
       }
       v110 = ;
-      v111 = [v54 stringWithFormat:v56, v110];
+      v110 = [v54 stringWithFormat:v56, v110];
       v141[0] = MEMORY[0x277D85DD0];
       v141[1] = 3221225472;
       v141[2] = __58__WirelessModemController_setInternetTethering_specifier___block_invoke_5;
       v141[3] = &unk_278BB5320;
       v141[4] = self;
       objc_copyWeak(&v142, &location);
-      v112 = [v53 actionWithTitle:v111 style:1 handler:v141];
+      v112 = [v53 actionWithTitle:v110 style:1 handler:v141];
 
       v113 = MEMORY[0x277D750F8];
       v114 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1386,7 +1386,7 @@ LABEL_52:
 
     objc_destroyWeak(v73);
     objc_destroyWeak(&location);
-    v7 = v132;
+    specifierCopy = v132;
 LABEL_53:
     [(WirelessModemController *)self presentViewController:self->_powerAlert animated:1 completion:0];
     goto LABEL_54;
@@ -1395,7 +1395,7 @@ LABEL_53:
   v11 = WMSLogComponent();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [(WirelessModemController *)v152 setInternetTethering:v6 specifier:v11];
+    [(WirelessModemController *)v152 setInternetTethering:tetheringCopy specifier:v11];
   }
 
   [(WirelessModemController *)self updateInstructionsSection:v152[0]];
@@ -1490,14 +1490,14 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)updateInstructionsSection:(int)a3
+- (void)updateInstructionsSection:(int)section
 {
-  if (a3 == 1022)
+  if (section == 1022)
   {
     [(WirelessModemController *)self removeSpecifier:self->_setupViewSpec];
   }
 
-  else if (a3 == 1023)
+  else if (section == 1023)
   {
     v3 = 2;
     if (self->_familyHotspotEnabled)
@@ -1509,9 +1509,9 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   }
 }
 
-- (void)_updateTetheringText:(BOOL)a3
+- (void)_updateTetheringText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   v27 = 0;
   v5 = +[MISManager sharedManager];
   [v5 getState:&v27 + 4 andReason:&v27];
@@ -1535,27 +1535,27 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
 
   if (HIDWORD(v27) == 1023)
   {
-    v8 = [MEMORY[0x277CF3248] sharedInstance];
-    v9 = [v8 enabled];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    enabled = [mEMORY[0x277CF3248] enabled];
 
-    v10 = [(WirelessModemController *)self _wiFiPower];
-    if ((v9 & 1) != 0 || v10)
+    _wiFiPower = [(WirelessModemController *)self _wiFiPower];
+    if ((enabled & 1) != 0 || _wiFiPower)
     {
       v24 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v13 = [v11 localizedStringForKey:@"TETHERING_TEXT_DEFAULT" value:&stru_284EED640 table:@"WirelessModemSettings"];
-      v14 = WMSGetCurrentDeviceName();
-      v17 = [v24 stringWithFormat:v13, v14];
+      currentDevice = [v11 localizedStringForKey:@"TETHERING_TEXT_DEFAULT" value:&stru_284EED640 table:@"WirelessModemSettings"];
+      model = WMSGetCurrentDeviceName();
+      v17 = [v24 stringWithFormat:currentDevice, model];
     }
 
     else
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = MEMORY[0x277CCACA8];
-      v13 = [MEMORY[0x277D75418] currentDevice];
-      v14 = [v13 model];
-      v15 = [v14 uppercaseString];
-      v16 = [v12 stringWithFormat:@"%@_%@", @"TETHERING_TEXT_USB", v15];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      model = [currentDevice model];
+      uppercaseString = [model uppercaseString];
+      v16 = [v12 stringWithFormat:@"%@_%@", @"TETHERING_TEXT_USB", uppercaseString];
       v17 = [v11 localizedStringForKey:v16 value:&stru_284EED640 table:@"WirelessModemSettings"];
     }
   }
@@ -1575,7 +1575,7 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   }
 
   stateFooterSpec = self->_stateFooterSpec;
-  if (v3)
+  if (textCopy)
   {
     [(PSSpecifier *)stateFooterSpec setProperty:v17 forKey:@"TextFooterInitialText"];
   }
@@ -1603,10 +1603,10 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   }
 }
 
-- (void)setShareOption:(id)a3
+- (void)setShareOption:(id)option
 {
-  v3 = a3;
-  if (([v3 isEqual:&unk_284EEFB70] & 1) == 0 && (objc_msgSend(v3, "isEqual:", &unk_284EEFB88) & 1) == 0 && (objc_msgSend(v3, "isEqual:", &unk_284EEFB58) & 1) == 0)
+  optionCopy = option;
+  if (([optionCopy isEqual:&unk_284EEFB70] & 1) == 0 && (objc_msgSend(optionCopy, "isEqual:", &unk_284EEFB88) & 1) == 0 && (objc_msgSend(optionCopy, "isEqual:", &unk_284EEFB58) & 1) == 0)
   {
     v4 = WMSLogComponent();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1740,8 +1740,8 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
 
                 v4 = [v14 objectForKey:v27];
 
-                v17 = [v16 unsignedIntegerValue];
-                v5 += v17 + [v15 unsignedIntegerValue];
+                unsignedIntegerValue = [v16 unsignedIntegerValue];
+                v5 += unsignedIntegerValue + [v15 unsignedIntegerValue];
 
                 ++v11;
                 v12 = v3;
@@ -1807,10 +1807,10 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
 
 - (id)_groupPlacardSpec
 {
-  v2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v2 setIdentifier:@"PLACARD_GROUP"];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [emptyGroupSpecifier setIdentifier:@"PLACARD_GROUP"];
 
-  return v2;
+  return emptyGroupSpecifier;
 }
 
 - (id)_placardSpec
@@ -1884,30 +1884,30 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
 
 - (id)setupViewSpec
 {
-  v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  v4 = [v3 properties];
-  [v4 setValue:@"TetheringSetupView" forKey:*MEMORY[0x277D3FFA0]];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  properties = [emptyGroupSpecifier properties];
+  [properties setValue:@"TetheringSetupView" forKey:*MEMORY[0x277D3FFA0]];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_wifiTetheringSupported];
-  [v3 setProperty:v5 forKey:@"SupportsWifi"];
+  [emptyGroupSpecifier setProperty:v5 forKey:@"SupportsWifi"];
 
-  return v3;
+  return emptyGroupSpecifier;
 }
 
 - (id)stateFooterSpec
 {
-  v2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  v3 = [v2 properties];
-  [v3 setValue:@"TetheringSwitchFooterView" forKey:*MEMORY[0x277D3FFA0]];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  properties = [emptyGroupSpecifier properties];
+  [properties setValue:@"TetheringSwitchFooterView" forKey:*MEMORY[0x277D3FFA0]];
 
-  return v2;
+  return emptyGroupSpecifier;
 }
 
 - (id)bandPreferenceSpec
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = [(WirelessModemController *)self _bandPreferenceSpecLabel];
-  v5 = [v3 preferenceSpecifierNamed:v4 target:self set:sel_setBandPreference_specifier_ get:sel_bandPreference detail:0 cell:6 edit:0];
+  _bandPreferenceSpecLabel = [(WirelessModemController *)self _bandPreferenceSpecLabel];
+  v5 = [v3 preferenceSpecifierNamed:_bandPreferenceSpecLabel target:self set:sel_setBandPreference_specifier_ get:sel_bandPreference detail:0 cell:6 edit:0];
 
   return v5;
 }
@@ -1939,10 +1939,10 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v8 = v7 & 0xFFFFFFFFFFFFFFFBLL;
+  v8 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   v9 = MEMORY[0x277CCACA8];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = v10;
@@ -1994,8 +1994,8 @@ void __58__WirelessModemController_setInternetTethering_specifier___block_invoke
   {
     v65 = placardSpec;
 LABEL_17:
-    v23 = [(WirelessModemController *)self _groupPlacardSpec];
-    v69[0] = v23;
+    _groupPlacardSpec = [(WirelessModemController *)self _groupPlacardSpec];
+    v69[0] = _groupPlacardSpec;
     v69[1] = v65;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:2];
     [v5 addObjectsFromArray:v24];
@@ -2003,10 +2003,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v22 = [(WirelessModemController *)self _placardSpec];
-  objc_storeStrong(&self->_placardSpec, v22);
-  v65 = v22;
-  if (v22)
+  _placardSpec = [(WirelessModemController *)self _placardSpec];
+  objc_storeStrong(&self->_placardSpec, _placardSpec);
+  v65 = _placardSpec;
+  if (_placardSpec)
   {
     goto LABEL_17;
   }
@@ -2016,56 +2016,56 @@ LABEL_18:
   tetheringGroupSpec = self->_tetheringGroupSpec;
   if (tetheringGroupSpec)
   {
-    v64 = tetheringGroupSpec;
+    emptyGroupSpecifier = tetheringGroupSpec;
   }
 
   else
   {
-    v64 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    objc_storeStrong(&self->_tetheringGroupSpec, v64);
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    objc_storeStrong(&self->_tetheringGroupSpec, emptyGroupSpecifier);
   }
 
   tetheringSwitchSpec = self->_tetheringSwitchSpec;
   if (tetheringSwitchSpec)
   {
-    v63 = tetheringSwitchSpec;
+    tetheringSwitchSpec = tetheringSwitchSpec;
   }
 
   else
   {
-    v63 = [(WirelessModemController *)self tetheringSwitchSpec];
-    objc_storeStrong(&self->_tetheringSwitchSpec, v63);
+    tetheringSwitchSpec = [(WirelessModemController *)self tetheringSwitchSpec];
+    objc_storeStrong(&self->_tetheringSwitchSpec, tetheringSwitchSpec);
   }
 
   passwordSpec = self->_passwordSpec;
   if (passwordSpec)
   {
-    v28 = passwordSpec;
+    passwordSpec = passwordSpec;
   }
 
   else
   {
-    v28 = [(WirelessModemController *)self passwordSpec];
-    objc_storeStrong(&self->_passwordSpec, v28);
+    passwordSpec = [(WirelessModemController *)self passwordSpec];
+    objc_storeStrong(&self->_passwordSpec, passwordSpec);
   }
 
   stateFooterSpec = self->_stateFooterSpec;
   if (stateFooterSpec)
   {
-    v30 = stateFooterSpec;
+    stateFooterSpec = stateFooterSpec;
   }
 
   else
   {
-    v30 = [(WirelessModemController *)self stateFooterSpec];
-    objc_storeStrong(&self->_stateFooterSpec, v30);
+    stateFooterSpec = [(WirelessModemController *)self stateFooterSpec];
+    objc_storeStrong(&self->_stateFooterSpec, stateFooterSpec);
   }
 
-  v68[0] = v64;
-  v68[1] = v63;
-  v68[2] = v28;
-  v68[3] = v30;
-  v61 = v30;
+  v68[0] = emptyGroupSpecifier;
+  v68[1] = tetheringSwitchSpec;
+  v68[2] = passwordSpec;
+  v68[3] = stateFooterSpec;
+  v61 = stateFooterSpec;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v68 count:4];
   [v5 addObjectsFromArray:v31];
 
@@ -2073,7 +2073,7 @@ LABEL_18:
   {
     v32 = [MEMORY[0x277D3FAD8] groupSpecifierWithName:0];
     v59 = MEMORY[0x277CCACA8];
-    v60 = v28;
+    v60 = passwordSpec;
     v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v34 = [v33 localizedStringForKey:@"FAMILY_SHARING" value:&stru_284EED640 table:@"WirelessModemSettings"];
     v35 = v19;
@@ -2100,11 +2100,11 @@ LABEL_18:
     [v32 setProperty:v44 forKey:*MEMORY[0x277D3FF88]];
 
     v19 = v35;
-    v28 = v60;
+    passwordSpec = v60;
 
-    v45 = [(WirelessModemController *)self familyShareSpecifier];
+    familyShareSpecifier = [(WirelessModemController *)self familyShareSpecifier];
     v67[0] = v32;
-    v67[1] = v45;
+    v67[1] = familyShareSpecifier;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:2];
     [v5 addObjectsFromArray:v46];
   }
@@ -2114,23 +2114,23 @@ LABEL_18:
     bandPreferenceSpec = self->_bandPreferenceSpec;
     if (bandPreferenceSpec)
     {
-      v48 = bandPreferenceSpec;
+      bandPreferenceSpec = bandPreferenceSpec;
 LABEL_40:
-      v49 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      v50 = [(WirelessModemController *)self _bandPreferenceSpecFooterLabel];
-      [v49 setProperty:v50 forKey:*MEMORY[0x277D3FF88]];
+      emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      _bandPreferenceSpecFooterLabel = [(WirelessModemController *)self _bandPreferenceSpecFooterLabel];
+      [emptyGroupSpecifier2 setProperty:_bandPreferenceSpecFooterLabel forKey:*MEMORY[0x277D3FF88]];
 
-      v66[0] = v49;
-      v66[1] = v48;
+      v66[0] = emptyGroupSpecifier2;
+      v66[1] = bandPreferenceSpec;
       v51 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:2];
       [v5 addObjectsFromArray:v51];
 
       goto LABEL_41;
     }
 
-    v48 = [(WirelessModemController *)self bandPreferenceSpec];
-    objc_storeStrong(&self->_bandPreferenceSpec, v48);
-    if (v48)
+    bandPreferenceSpec = [(WirelessModemController *)self bandPreferenceSpec];
+    objc_storeStrong(&self->_bandPreferenceSpec, bandPreferenceSpec);
+    if (bandPreferenceSpec)
     {
       goto LABEL_40;
     }
@@ -2138,28 +2138,28 @@ LABEL_40:
 
   else
   {
-    v48 = 0;
+    bandPreferenceSpec = 0;
   }
 
 LABEL_41:
   setupViewSpec = self->_setupViewSpec;
   if (setupViewSpec)
   {
-    v53 = setupViewSpec;
+    setupViewSpec = setupViewSpec;
   }
 
   else
   {
-    v53 = [(WirelessModemController *)self setupViewSpec];
-    objc_storeStrong(&self->_setupViewSpec, v53);
+    setupViewSpec = [(WirelessModemController *)self setupViewSpec];
+    objc_storeStrong(&self->_setupViewSpec, setupViewSpec);
   }
 
   v54 = [(WirelessModemController *)self internetTethering:0];
-  v55 = [v54 BOOLValue];
+  bOOLValue = [v54 BOOLValue];
 
-  if (v55)
+  if (bOOLValue)
   {
-    [v5 addObject:v53];
+    [v5 addObject:setupViewSpec];
   }
 
   [(WirelessModemController *)self _updateTetheringText:1];

@@ -1,20 +1,20 @@
 @interface MIStagingLocation
-- (id)privilegedResolveWithError:(id *)a3;
+- (id)privilegedResolveWithError:(id *)error;
 @end
 
 @implementation MIStagingLocation
 
-- (id)privilegedResolveWithError:(id *)a3
+- (id)privilegedResolveWithError:(id *)error
 {
-  v5 = [(MIStagingLocation *)self stagingRoot];
-  v6 = [v5 privilegedResolveRootWithError:a3];
+  stagingRoot = [(MIStagingLocation *)self stagingRoot];
+  v6 = [stagingRoot privilegedResolveRootWithError:error];
 
   if (v6)
   {
-    v7 = [(MIStagingLocation *)self relativeStagingBaseDirectory];
-    if (v7)
+    relativeStagingBaseDirectory = [(MIStagingLocation *)self relativeStagingBaseDirectory];
+    if (relativeStagingBaseDirectory)
     {
-      v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+      v8 = [v6 URLByAppendingPathComponent:relativeStagingBaseDirectory isDirectory:1];
     }
 
     else

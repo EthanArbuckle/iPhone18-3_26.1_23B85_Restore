@@ -1,23 +1,23 @@
 @interface DSTextFile
-+ (id)textFileWithPath:(id)a3;
-- (BOOL)advanceToNextLine:(id *)a3;
-- (BOOL)searchForNextLineFromCurrentPosition:(id *)a3;
-- (DSTextFile)initWithFilePath:(id)a3 withBufferSize:(unint64_t)a4;
-- (id)extractLine:(unint64_t)a3;
-- (id)readDataOfLength:(unint64_t)a3;
++ (id)textFileWithPath:(id)path;
+- (BOOL)advanceToNextLine:(id *)line;
+- (BOOL)searchForNextLineFromCurrentPosition:(id *)position;
+- (DSTextFile)initWithFilePath:(id)path withBufferSize:(unint64_t)size;
+- (id)extractLine:(unint64_t)line;
+- (id)readDataOfLength:(unint64_t)length;
 - (unint64_t)currentOffset;
-- (unint64_t)getOffsetAtLineIndex:(unint64_t)a3;
-- (void)enumerateUsingBlock:(id)a3;
+- (unint64_t)getOffsetAtLineIndex:(unint64_t)index;
+- (void)enumerateUsingBlock:(id)block;
 - (void)resetEnumerator;
 - (void)seekToBeginning;
-- (void)seekToOffset:(unint64_t)a3;
+- (void)seekToOffset:(unint64_t)offset;
 @end
 
 @implementation DSTextFile
 
-- (DSTextFile)initWithFilePath:(id)a3 withBufferSize:(unint64_t)a4
+- (DSTextFile)initWithFilePath:(id)path withBufferSize:(unint64_t)size
 {
-  v6 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = DSTextFile;
   v7 = [(DSTextFile *)&v17 init];
@@ -26,13 +26,13 @@
     goto LABEL_4;
   }
 
-  v8 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:v6];
+  v8 = [MEMORY[0x277CCA9F8] fileHandleForReadingAtPath:pathCopy];
   fileHandle = v7->_fileHandle;
   v7->_fileHandle = v8;
 
   if (v7->_fileHandle)
   {
-    v7->_bufferSize = a4;
+    v7->_bufferSize = size;
     v10 = [MEMORY[0x277CBEB18] arrayWithObject:&unk_285B95AD8];
     linePositions = v7->_linePositions;
     v7->_linePositions = v10;
@@ -52,7 +52,7 @@ LABEL_4:
   v15 = DiagnosticLogHandleForCategory(0);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [DSTextFile initWithFilePath:v6 withBufferSize:v15];
+    [DSTextFile initWithFilePath:pathCopy withBufferSize:v15];
   }
 
   v14 = 0;
@@ -61,9 +61,9 @@ LABEL_8:
   return v14;
 }
 
-- (void)enumerateUsingBlock:(id)a3
+- (void)enumerateUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   [(DSTextFile *)self setIsEnumerating:1];
   do
@@ -84,7 +84,7 @@ LABEL_8:
 
       objc_autoreleasePoolPop(v6);
       v9 = objc_loadWeakRetained(&location);
-      v4[2](v4, v8, v9, [(DSTextFile *)self currentLineIndex]);
+      blockCopy[2](blockCopy, v8, v9, [(DSTextFile *)self currentLineIndex]);
     }
   }
 
@@ -93,40 +93,40 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-+ (id)textFileWithPath:(id)a3
++ (id)textFileWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFilePath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithFilePath:pathCopy];
 
   return v5;
 }
 
-- (id)readDataOfLength:(unint64_t)a3
+- (id)readDataOfLength:(unint64_t)length
 {
-  v4 = [(DSTextFile *)self fileHandle];
-  v5 = [v4 readDataOfLength:a3];
+  fileHandle = [(DSTextFile *)self fileHandle];
+  v5 = [fileHandle readDataOfLength:length];
 
   return v5;
 }
 
 - (unint64_t)currentOffset
 {
-  v2 = [(DSTextFile *)self fileHandle];
-  v3 = [v2 offsetInFile];
+  fileHandle = [(DSTextFile *)self fileHandle];
+  offsetInFile = [fileHandle offsetInFile];
 
-  return v3;
+  return offsetInFile;
 }
 
 - (void)seekToBeginning
 {
-  v2 = [(DSTextFile *)self fileHandle];
-  [v2 seekToFileOffset:0];
+  fileHandle = [(DSTextFile *)self fileHandle];
+  [fileHandle seekToFileOffset:0];
 }
 
-- (void)seekToOffset:(unint64_t)a3
+- (void)seekToOffset:(unint64_t)offset
 {
-  v4 = [(DSTextFile *)self fileHandle];
-  [v4 seekToFileOffset:a3];
+  fileHandle = [(DSTextFile *)self fileHandle];
+  [fileHandle seekToFileOffset:offset];
 }
 
 - (void)resetEnumerator
@@ -137,31 +137,31 @@ LABEL_8:
   [(DSTextFile *)self setCurrentLineIndex:0];
 }
 
-- (BOOL)advanceToNextLine:(id *)a3
+- (BOOL)advanceToNextLine:(id *)line
 {
-  v5 = [(DSTextFile *)self linePositions];
-  v6 = [v5 count];
-  v7 = [(DSTextFile *)self currentLineIndex];
+  linePositions = [(DSTextFile *)self linePositions];
+  v6 = [linePositions count];
+  currentLineIndex = [(DSTextFile *)self currentLineIndex];
 
-  if (v6 > v7)
+  if (v6 > currentLineIndex)
   {
     [(DSTextFile *)self seekToOffset:[(DSTextFile *)self getOffsetAtLineIndex:[(DSTextFile *)self currentLineIndex]]];
   }
 
-  v8 = [(DSTextFile *)self linePositions];
-  v9 = [v8 count];
+  linePositions2 = [(DSTextFile *)self linePositions];
+  v9 = [linePositions2 count];
   v10 = [(DSTextFile *)self currentLineIndex]+ 1;
 
   if (v9 <= v10)
   {
-    v11 = [(DSTextFile *)self searchForNextLineFromCurrentPosition:a3];
+    v11 = [(DSTextFile *)self searchForNextLineFromCurrentPosition:line];
   }
 
   else
   {
-    if (a3)
+    if (line)
     {
-      *a3 = [(DSTextFile *)self extractLine:[(DSTextFile *)self currentLineIndex]];
+      *line = [(DSTextFile *)self extractLine:[(DSTextFile *)self currentLineIndex]];
     }
 
     v11 = 1;
@@ -171,26 +171,26 @@ LABEL_8:
   return v11;
 }
 
-- (unint64_t)getOffsetAtLineIndex:(unint64_t)a3
+- (unint64_t)getOffsetAtLineIndex:(unint64_t)index
 {
-  v4 = [(DSTextFile *)self linePositions];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 unsignedLongLongValue];
+  linePositions = [(DSTextFile *)self linePositions];
+  v5 = [linePositions objectAtIndex:index];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
-- (id)extractLine:(unint64_t)a3
+- (id)extractLine:(unint64_t)line
 {
   v5 = [(DSTextFile *)self getOffsetAtLineIndex:?];
-  v6 = [(DSTextFile *)self getOffsetAtLineIndex:a3 + 1]+ ~v5;
+  v6 = [(DSTextFile *)self getOffsetAtLineIndex:line + 1]+ ~v5;
 
   return [(DSTextFile *)self readDataOfLength:v6];
 }
 
-- (BOOL)searchForNextLineFromCurrentPosition:(id *)a3
+- (BOOL)searchForNextLineFromCurrentPosition:(id *)position
 {
-  if (a3)
+  if (position)
   {
     v5 = [MEMORY[0x277CBEB28] dataWithCapacity:{-[DSTextFile bufferSize](self, "bufferSize")}];
   }
@@ -214,8 +214,8 @@ LABEL_8:
     }
 
     v10 = [v7 length];
-    v11 = [(DSTextFile *)self lineBreak];
-    v12 = [v7 rangeOfData:v11 options:0 range:{0, v10}];
+    lineBreak = [(DSTextFile *)self lineBreak];
+    v12 = [v7 rangeOfData:lineBreak options:0 range:{0, v10}];
 
     if (v5 && v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -224,17 +224,17 @@ LABEL_8:
 
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [(DSTextFile *)self currentOffset];
-      v14 = v12 + v13 - [v7 length];
-      if (a3 && v12)
+      currentOffset = [(DSTextFile *)self currentOffset];
+      v14 = v12 + currentOffset - [v7 length];
+      if (position && v12)
       {
         v15 = [v7 subdataWithRange:{0, v12}];
         [v5 appendData:v15];
       }
 
-      v16 = [(DSTextFile *)self linePositions];
+      linePositions = [(DSTextFile *)self linePositions];
       v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v14 + 1];
-      [v16 addObject:v17];
+      [linePositions addObject:v17];
 
       goto LABEL_17;
     }
@@ -248,10 +248,10 @@ LABEL_8:
 LABEL_17:
 
   objc_autoreleasePoolPop(v6);
-  if (a3)
+  if (position)
   {
     v18 = v5;
-    *a3 = v5;
+    *position = v5;
   }
 
   return v9 != 0;

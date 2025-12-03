@@ -1,25 +1,25 @@
 @interface _VUISBIconProgressWaitingLoadingStateTransition
-- (void)_updateView:(id)a3;
+- (void)_updateView:(id)view;
 @end
 
 @implementation _VUISBIconProgressWaitingLoadingStateTransition
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
   v6.receiver = self;
   v6.super_class = _VUISBIconProgressWaitingLoadingStateTransition;
   [(_VUISBInstallProgressStateTransition *)&v6 _updateView:?];
-  [a3 setBackgroundAlpha:1.0];
-  [a3 setForegroundAlpha:1.0];
+  [view setBackgroundAlpha:1.0];
+  [view setForegroundAlpha:1.0];
   fraction = self->super._fraction;
   if (self->super._fromState != 1)
   {
     fraction = 1.0 - fraction;
   }
 
-  [a3 setCircleRadiusFraction:fraction];
-  [a3 circleBoundingRect];
-  [a3 setNeedsDisplayInRect:?];
+  [view setCircleRadiusFraction:fraction];
+  [view circleBoundingRect];
+  [view setNeedsDisplayInRect:?];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface HVPowerBudget
 + (id)defaultBudget;
 - (HVPowerBudget)init;
-- (HVPowerBudget)initWithThrottleBudget:(id)a3;
+- (HVPowerBudget)initWithThrottleBudget:(id)budget;
 - (id)throttlingState;
-- (uint64_t)_canDoDiscretionaryWork:(uint64_t)a1;
+- (uint64_t)_canDoDiscretionaryWork:(uint64_t)work;
 - (uint64_t)_hasDuetBudgetRemaining;
 - (unsigned)canDoExtraDiscretionaryWork;
 - (void)dealloc;
 - (void)didConsumeAnExtraBudgetedOperation;
-- (void)doDiscretionaryWork:(id)a3 orElse:(id)a4;
+- (void)doDiscretionaryWork:(id)work orElse:(id)else;
 @end
 
 @implementation HVPowerBudget
@@ -28,14 +28,14 @@
 - (uint64_t)_hasDuetBudgetRemaining
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277D06A30] sharedInstance];
+    mEMORY[0x277D06A30] = [MEMORY[0x277D06A30] sharedInstance];
     v2 = *MEMORY[0x277D06AB8];
     v7 = *MEMORY[0x277D06AC8];
     v8[0] = MEMORY[0x277CBEC38];
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    v4 = [v1 allowsDiscretionaryWorkForTask:@"com.apple.proactive.ProactiveHarvesting" withPriority:v2 withParameters:v3];
+    v4 = [mEMORY[0x277D06A30] allowsDiscretionaryWorkForTask:@"com.apple.proactive.ProactiveHarvesting" withPriority:v2 withParameters:v3];
   }
 
   else
@@ -50,8 +50,8 @@
 - (id)throttlingState
 {
   v24[9] = *MEMORY[0x277D85DE8];
-  v3 = [(HVPowerBudgetThrottlingState *)self->_throttlingState state];
-  v21 = [v3 mutableCopy];
+  state = [(HVPowerBudgetThrottlingState *)self->_throttlingState state];
+  v21 = [state mutableCopy];
 
   v23[0] = @"isProcessing";
   v4 = MEMORY[0x277CCABB0];
@@ -127,11 +127,11 @@
   return [(HVPowerBudgetThrottlingState *)throttlingState canDoExtraDiscretionaryWork];
 }
 
-- (void)doDiscretionaryWork:(id)a3 orElse:(id)a4
+- (void)doDiscretionaryWork:(id)work orElse:(id)else
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  workCopy = work;
+  elseCopy = else;
   v42 = 0;
   v8 = [(HVPowerBudget *)self _canDoDiscretionaryWork:?];
   log = self->_log;
@@ -174,7 +174,7 @@
     }
 
 LABEL_10:
-    v7[2](v7);
+    elseCopy[2](elseCopy);
     goto LABEL_38;
   }
 
@@ -197,9 +197,9 @@ LABEL_10:
     v19 = objc_autoreleasePoolPush();
     scheduler = self->_scheduler;
     v50[0] = *v18;
-    v21 = [MEMORY[0x277CCAC38] processInfo];
-    v22 = [v21 processName];
-    v49 = v22;
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v49 = processName;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
     *buf = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v50 count:1];
@@ -210,12 +210,12 @@ LABEL_10:
   }
 
   [(HVPowerBudgetThrottlingState *)self->_throttlingState startWork];
-  v6[2](v6);
+  workCopy[2](workCopy);
   v25 = atomic_load(&self->_discretionaryWorkInProgress);
   if ((v25 & 1) == 0)
   {
-    v41 = [MEMORY[0x277CCA890] currentHandler];
-    [v41 handleFailureInMethod:sel__endWork object:self file:@"HVPowerBudget.m" lineNumber:318 description:@"Not doing discretionary work!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__endWork object:self file:@"HVPowerBudget.m" lineNumber:318 description:@"Not doing discretionary work!"];
   }
 
   v26 = self->_log;
@@ -231,9 +231,9 @@ LABEL_10:
     v27 = objc_autoreleasePoolPush();
     v28 = self->_scheduler;
     v49 = *v18;
-    v29 = [MEMORY[0x277CCAC38] processInfo];
-    v30 = [v29 processName];
-    v48 = v30;
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processName2 = [processInfo2 processName];
+    v48 = processName2;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
     v50[0] = v31;
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:&v49 count:1];
@@ -305,14 +305,14 @@ LABEL_38:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_canDoDiscretionaryWork:(uint64_t)a1
+- (uint64_t)_canDoDiscretionaryWork:(uint64_t)work
 {
-  if (!a1)
+  if (!work)
   {
     return 0;
   }
 
-  [*(a1 + 8) checkBatteryStateForRefill];
+  [*(work + 8) checkBatteryStateForRefill];
   v8 = 0;
   if (canDoWorkOverrideForTesting)
   {
@@ -338,17 +338,17 @@ LABEL_38:
 
   else
   {
-    v5 = [*(a1 + 8) canDoDiscretionaryWork:&v8];
+    v5 = [*(work + 8) canDoDiscretionaryWork:&v8];
     v4 = v8;
     if (v5)
     {
       if (!v8)
       {
-        v7 = [MEMORY[0x277CCA890] currentHandler];
-        [v7 handleFailureInMethod:sel__checkCanDoDiscretionaryWork_ object:a1 file:@"HVPowerBudget.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"*state != HVPowerBudgetStateNotSet"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel__checkCanDoDiscretionaryWork_ object:work file:@"HVPowerBudget.m" lineNumber:289 description:{@"Invalid parameter not satisfying: %@", @"*state != HVPowerBudgetStateNotSet"}];
       }
 
-      if (([(HVPowerBudget *)a1 _hasDuetBudgetRemaining]& 1) != 0)
+      if (([(HVPowerBudget *)work _hasDuetBudgetRemaining]& 1) != 0)
       {
         if (v5 >= 2)
         {
@@ -372,7 +372,7 @@ LABEL_38:
     }
   }
 
-  [*(a1 + 8) updateState:v4];
+  [*(work + 8) updateState:v4];
   if (a2)
   {
     *a2 = v8;
@@ -385,8 +385,8 @@ LABEL_38:
 {
   if (self->_batteryObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_batteryObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_batteryObserver];
   }
 
   v4.receiver = self;
@@ -403,9 +403,9 @@ LABEL_38:
   return v5;
 }
 
-- (HVPowerBudget)initWithThrottleBudget:(id)a3
+- (HVPowerBudget)initWithThrottleBudget:(id)budget
 {
-  v5 = a3;
+  budgetCopy = budget;
   v18.receiver = self;
   v18.super_class = HVPowerBudget;
   v6 = [(HVPowerBudget *)&v18 init];
@@ -415,19 +415,19 @@ LABEL_38:
     log = v6->_log;
     v6->_log = v7;
 
-    v9 = [MEMORY[0x277D06A28] sharedScheduler];
+    mEMORY[0x277D06A28] = [MEMORY[0x277D06A28] sharedScheduler];
     scheduler = v6->_scheduler;
-    v6->_scheduler = v9;
+    v6->_scheduler = mEMORY[0x277D06A28];
 
-    objc_storeStrong(&v6->_throttlingState, a3);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v6->_throttlingState, budget);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __40__HVPowerBudget_initWithThrottleBudget___block_invoke;
     v16[3] = &unk_278968B08;
     v12 = v6;
     v17 = v12;
-    v13 = [v11 addObserverForName:@"kHVBatteryStateChangedNotification" object:0 queue:0 usingBlock:v16];
+    v13 = [defaultCenter addObserverForName:@"kHVBatteryStateChangedNotification" object:0 queue:0 usingBlock:v16];
     batteryObserver = v12->_batteryObserver;
     v12->_batteryObserver = v13;
   }

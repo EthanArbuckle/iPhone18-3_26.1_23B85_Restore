@@ -1,52 +1,52 @@
 @interface VISSelectedOperatingPoint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISSelectedOperatingPoint)initWithDictionary:(id)a3;
-- (VISSelectedOperatingPoint)initWithJSON:(id)a3;
+- (VISSelectedOperatingPoint)initWithDictionary:(id)dictionary;
+- (VISSelectedOperatingPoint)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISSelectedOperatingPoint
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(VISSelectedOperatingPoint *)self selector];
-  if (v4)
+  toCopy = to;
+  selector = [(VISSelectedOperatingPoint *)self selector];
+  if (selector)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(VISSelectedOperatingPoint *)self selected];
-  if (v5)
+  selected = [(VISSelectedOperatingPoint *)self selected];
+  if (selected)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(VISSelectedOperatingPoint *)self selector];
-  v6 = [v4 selector];
-  if ((v5 != 0) == (v6 == 0))
+  selector = [(VISSelectedOperatingPoint *)self selector];
+  selector2 = [equalCopy selector];
+  if ((selector != 0) == (selector2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(VISSelectedOperatingPoint *)self selector];
-  if (v7)
+  selector3 = [(VISSelectedOperatingPoint *)self selector];
+  if (selector3)
   {
-    v8 = v7;
-    v9 = [(VISSelectedOperatingPoint *)self selector];
-    v10 = [v4 selector];
-    v11 = [v9 isEqual:v10];
+    v8 = selector3;
+    selector4 = [(VISSelectedOperatingPoint *)self selector];
+    selector5 = [equalCopy selector];
+    v11 = [selector4 isEqual:selector5];
 
     if (!v11)
     {
@@ -58,12 +58,12 @@
   {
   }
 
-  v5 = [(VISSelectedOperatingPoint *)self selected];
-  v6 = [v4 selected];
-  if ((v5 != 0) != (v6 == 0))
+  selector = [(VISSelectedOperatingPoint *)self selected];
+  selector2 = [equalCopy selected];
+  if ((selector != 0) != (selector2 == 0))
   {
-    v12 = [(VISSelectedOperatingPoint *)self selected];
-    if (!v12)
+    selected = [(VISSelectedOperatingPoint *)self selected];
+    if (!selected)
     {
 
 LABEL_15:
@@ -71,10 +71,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(VISSelectedOperatingPoint *)self selected];
-    v15 = [v4 selected];
-    v16 = [v14 isEqual:v15];
+    v13 = selected;
+    selected2 = [(VISSelectedOperatingPoint *)self selected];
+    selected3 = [equalCopy selected];
+    v16 = [selected2 isEqual:selected3];
 
     if (v16)
     {
@@ -96,48 +96,48 @@ LABEL_13:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_selected)
   {
-    v4 = [(VISSelectedOperatingPoint *)self selected];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    selected = [(VISSelectedOperatingPoint *)self selected];
+    dictionaryRepresentation = [selected dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"selected"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"selected"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"selected"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"selected"];
     }
   }
 
   if (self->_selector)
   {
-    v7 = [(VISSelectedOperatingPoint *)self selector];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    selector = [(VISSelectedOperatingPoint *)self selector];
+    dictionaryRepresentation2 = [selector dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"selector"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"selector"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"selector"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"selector"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISSelectedOperatingPoint *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISSelectedOperatingPoint *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -148,33 +148,33 @@ LABEL_13:
   return v3;
 }
 
-- (VISSelectedOperatingPoint)initWithJSON:(id)a3
+- (VISSelectedOperatingPoint)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISSelectedOperatingPoint *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISSelectedOperatingPoint)initWithDictionary:(id)a3
+- (VISSelectedOperatingPoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = VISSelectedOperatingPoint;
   v5 = [(VISSelectedOperatingPoint *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"selector"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"selector"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@ LABEL_13:
       [(VISSelectedOperatingPoint *)v5 setSelector:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selected"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

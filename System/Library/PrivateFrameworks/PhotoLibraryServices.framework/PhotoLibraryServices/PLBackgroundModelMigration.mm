@@ -1,41 +1,41 @@
 @interface PLBackgroundModelMigration
-+ (BOOL)hasCompletedBackgroundActionClass:(Class)a3 pathManager:(id)a4;
-+ (BOOL)isBackgroundMigrationRegistrationAfterRebuildRequiredWithLibrary:(id)a3;
-+ (BOOL)isCompletedBackgroundActionClass:(Class)a3 appPrivateData:(id)a4;
-+ (BOOL)resetBackgroundActionClass:(Class)a3 pathManager:(id)a4 error:(id *)a5;
-+ (int64_t)migrateBackgroundActionsWithPhotoLibraryBundle:(id)a3 logger:(id)a4 error:(id *)a5 reportProgressUsingBlock:(id)a6 continuationHandler:(id)a7;
-+ (void)validateBackgroundActionClass:(Class)a3;
-- (BOOL)isMigrationCancelledWithError:(id *)a3;
-- (id)initBackgroundMigrationWithPhotoLibraryBundle:(id)a3 logger:(id)a4 continuationHandler:(id)a5;
-- (int64_t)migrateBackgroundPostProcessingWithError:(id *)a3 reportProgressUsingBlock:(id)a4;
-- (int64_t)runBackgroundMigrationAction:(id)a3 error:(id *)a4;
-- (void)registerBackgroundActionClass:(Class)a3 onCondition:(BOOL)a4;
-- (void)setMarkerForBackgroundAction:(id)a3 marker:(int64_t)a4;
++ (BOOL)hasCompletedBackgroundActionClass:(Class)class pathManager:(id)manager;
++ (BOOL)isBackgroundMigrationRegistrationAfterRebuildRequiredWithLibrary:(id)library;
++ (BOOL)isCompletedBackgroundActionClass:(Class)class appPrivateData:(id)data;
++ (BOOL)resetBackgroundActionClass:(Class)class pathManager:(id)manager error:(id *)error;
++ (int64_t)migrateBackgroundActionsWithPhotoLibraryBundle:(id)bundle logger:(id)logger error:(id *)error reportProgressUsingBlock:(id)block continuationHandler:(id)handler;
++ (void)validateBackgroundActionClass:(Class)class;
+- (BOOL)isMigrationCancelledWithError:(id *)error;
+- (id)initBackgroundMigrationWithPhotoLibraryBundle:(id)bundle logger:(id)logger continuationHandler:(id)handler;
+- (int64_t)migrateBackgroundPostProcessingWithError:(id *)error reportProgressUsingBlock:(id)block;
+- (int64_t)runBackgroundMigrationAction:(id)action error:(id *)error;
+- (void)registerBackgroundActionClass:(Class)class onCondition:(BOOL)condition;
+- (void)setMarkerForBackgroundAction:(id)action marker:(int64_t)marker;
 @end
 
 @implementation PLBackgroundModelMigration
 
-- (BOOL)isMigrationCancelledWithError:(id *)a3
+- (BOOL)isMigrationCancelledWithError:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PLBackgroundModelMigration *)self continuationHandler];
+  continuationHandler = [(PLBackgroundModelMigration *)self continuationHandler];
 
-  if (v5)
+  if (continuationHandler)
   {
-    v6 = [(PLBackgroundModelMigration *)self continuationHandler];
-    v7 = v6[2]();
+    continuationHandler2 = [(PLBackgroundModelMigration *)self continuationHandler];
+    v7 = continuationHandler2[2]();
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(PLBackgroundModelMigration *)self progress];
-      [v8 cancel];
+      progress = [(PLBackgroundModelMigration *)self progress];
+      [progress cancel];
     }
   }
 
-  v9 = [(PLBackgroundModelMigration *)self progress];
-  v10 = [v9 isCancelled];
+  progress2 = [(PLBackgroundModelMigration *)self progress];
+  isCancelled = [progress2 isCancelled];
 
-  if (v10)
+  if (isCancelled)
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E69BFF48];
@@ -44,7 +44,7 @@
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = [v11 errorWithDomain:v12 code:46014 userInfo:v13];
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -53,25 +53,25 @@
   }
 
   v14 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_8:
     v15 = v14;
-    *a3 = v14;
+    *error = v14;
   }
 
 LABEL_9:
 
-  return v10;
+  return isCancelled;
 }
 
-- (void)setMarkerForBackgroundAction:(id)a3 marker:(int64_t)a4
+- (void)setMarkerForBackgroundAction:(id)action marker:(int64_t)marker
 {
   v77 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  actionCopy = action;
+  if (actionCopy)
   {
-    if (a4)
+    if (marker)
     {
       goto LABEL_3;
     }
@@ -79,21 +79,21 @@ LABEL_9:
 
   else
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (a4)
+    if (marker)
     {
       goto LABEL_3;
     }
   }
 
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v40 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"marker != PLModelMigrationActionBackgroundStatusNotStarted"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:355 description:{@"Invalid parameter not satisfying: %@", @"marker != PLModelMigrationActionBackgroundStatusNotStarted"}];
 
 LABEL_3:
-  v8 = [(PLBackgroundModelMigration *)self appPrivateData];
-  v9 = [v8 valueForKeyPath:@"MigrationAction.Background"];
+  appPrivateData = [(PLBackgroundModelMigration *)self appPrivateData];
+  v9 = [appPrivateData valueForKeyPath:@"MigrationAction.Background"];
   v10 = [v9 mutableCopy];
 
   if (!v10)
@@ -115,33 +115,33 @@ LABEL_3:
     [v14 setObject:v12 forKeyedSubscript:@"PLBackgroundMigrationStartDate"];
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:marker];
   [v14 setObject:v16 forKeyedSubscript:@"PLBackgroundMigrationStatus"];
 
   [v14 setObject:v12 forKeyedSubscript:@"PLBackgroundMigrationStatusDate"];
-  if (a4 == 1)
+  if (marker == 1)
   {
     v20 = [v14 objectForKeyedSubscript:@"PLBackgroundMigrationStatusAttempts"];
-    v21 = [v20 integerValue];
+    integerValue = [v20 integerValue];
 
-    v22 = [MEMORY[0x1E696AD98] numberWithInteger:v21 + 1];
+    v22 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
     [v14 setObject:v22 forKeyedSubscript:@"PLBackgroundMigrationStatusAttempts"];
 
-    v17 = [(PLBackgroundModelMigration *)self analyticsEventManager];
-    v23 = [MEMORY[0x1E696AD98] numberWithInteger:v21 + 1];
+    analyticsEventManager = [(PLBackgroundModelMigration *)self analyticsEventManager];
+    analyticsEventManager2 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
     v24 = *MEMORY[0x1E69BF620];
-    [v17 setPayloadValue:v23 forKey:*MEMORY[0x1E69BF628] onEventWithName:*MEMORY[0x1E69BF620]];
+    [analyticsEventManager setPayloadValue:analyticsEventManager2 forKey:*MEMORY[0x1E69BF628] onEventWithName:*MEMORY[0x1E69BF620]];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if (a4 == 2)
+  if (marker == 2)
   {
-    v17 = [v14 objectForKeyedSubscript:@"PLBackgroundMigrationStartDate"];
-    if (v17)
+    analyticsEventManager = [v14 objectForKeyedSubscript:@"PLBackgroundMigrationStartDate"];
+    if (analyticsEventManager)
     {
-      [v12 timeIntervalSinceDate:v17];
+      [v12 timeIntervalSinceDate:analyticsEventManager];
       v19 = v18;
     }
 
@@ -150,39 +150,39 @@ LABEL_15:
       v19 = -1.0;
     }
 
-    v23 = [(PLBackgroundModelMigration *)self analyticsEventManager];
+    analyticsEventManager2 = [(PLBackgroundModelMigration *)self analyticsEventManager];
     v25 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
     v24 = *MEMORY[0x1E69BF620];
-    [v23 setPayloadValue:v25 forKey:*MEMORY[0x1E69BF638] onEventWithName:*MEMORY[0x1E69BF620]];
+    [analyticsEventManager2 setPayloadValue:v25 forKey:*MEMORY[0x1E69BF638] onEventWithName:*MEMORY[0x1E69BF620]];
 
     goto LABEL_15;
   }
 
   v24 = *MEMORY[0x1E69BF620];
 LABEL_16:
-  v26 = [(PLBackgroundModelMigration *)self analyticsEventManager];
-  v27 = [objc_opt_class() shortenedMigrationActionClassName];
-  [v26 setPayloadValue:v27 forKey:*MEMORY[0x1E69BF630] onEventWithName:v24];
+  analyticsEventManager3 = [(PLBackgroundModelMigration *)self analyticsEventManager];
+  shortenedMigrationActionClassName = [objc_opt_class() shortenedMigrationActionClassName];
+  [analyticsEventManager3 setPayloadValue:shortenedMigrationActionClassName forKey:*MEMORY[0x1E69BF630] onEventWithName:v24];
 
-  v28 = [(PLBackgroundModelMigration *)self analyticsEventManager];
-  v29 = PLStringFromModelMigrationActionBackgroundStatusShort(a4);
-  [v28 setPayloadValue:v29 forKey:*MEMORY[0x1E69BF648] onEventWithName:v24];
+  analyticsEventManager4 = [(PLBackgroundModelMigration *)self analyticsEventManager];
+  v29 = PLStringFromModelMigrationActionBackgroundStatusShort(marker);
+  [analyticsEventManager4 setPayloadValue:v29 forKey:*MEMORY[0x1E69BF648] onEventWithName:v24];
 
-  v30 = [(PLBackgroundModelMigration *)self appPrivateData];
+  appPrivateData2 = [(PLBackgroundModelMigration *)self appPrivateData];
   v42 = 0;
-  LOBYTE(v28) = [v30 setValue:v10 forKeyPath:@"MigrationAction.Background" error:&v42];
+  LOBYTE(analyticsEventManager4) = [appPrivateData2 setValue:v10 forKeyPath:@"MigrationAction.Background" error:&v42];
   v31 = v42;
 
-  if ((v28 & 1) == 0)
+  if ((analyticsEventManager4 & 1) == 0)
   {
     v32 = PLMigrationGetLog();
     v33 = os_log_type_enabled(v32, OS_LOG_TYPE_ERROR);
 
     if (v33)
     {
-      v34 = [(PLBackgroundModelMigration *)self logger];
+      logger = [(PLBackgroundModelMigration *)self logger];
 
-      if (v34)
+      if (logger)
       {
         v75 = 0u;
         v76 = 0u;
@@ -246,9 +246,9 @@ LABEL_16:
   }
 }
 
-- (int64_t)runBackgroundMigrationAction:(id)a3 error:(id *)a4
+- (int64_t)runBackgroundMigrationAction:(id)action error:(id *)error
 {
-  v6 = a3;
+  actionCopy = action;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -259,26 +259,26 @@ LABEL_16:
   v23 = __Block_byref_object_copy__45089;
   v24 = __Block_byref_object_dispose__45090;
   v25 = 0;
-  v7 = [(PLBackgroundModelMigration *)self databaseContext];
+  databaseContext = [(PLBackgroundModelMigration *)self databaseContext];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 newShortLivedLibraryWithName:{objc_msgSend(v9, "UTF8String")}];
+  v10 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(v9, "UTF8String")}];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__PLBackgroundModelMigration_runBackgroundMigrationAction_error___block_invoke;
   v15[3] = &unk_1E75787D0;
   v15[4] = self;
-  v11 = v6;
+  v11 = actionCopy;
   v16 = v11;
   v18 = &v26;
   v12 = v10;
   v17 = v12;
   v19 = &v20;
   [v12 performBlockAndWait:v15];
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v13 = v27[3];
@@ -395,10 +395,10 @@ void __65__PLBackgroundModelMigration_runBackgroundMigrationAction_error___block
   [v22 publishEventWithName:v21];
 }
 
-- (int64_t)migrateBackgroundPostProcessingWithError:(id *)a3 reportProgressUsingBlock:(id)a4
+- (int64_t)migrateBackgroundPostProcessingWithError:(id *)error reportProgressUsingBlock:(id)block
 {
   v113 = *MEMORY[0x1E69E9840];
-  v50 = a4;
+  blockCopy = block;
   v71 = 0;
   v72 = &v71;
   v73 = 0x3032000000;
@@ -409,7 +409,7 @@ void __65__PLBackgroundModelMigration_runBackgroundMigrationAction_error___block
   v68 = &v67;
   v69 = 0x2020000000;
   obj = 0;
-  v51 = self;
+  selfCopy = self;
   LODWORD(self) = [(PLBackgroundModelMigration *)self isMigrationCancelledWithError:&obj];
   objc_storeStrong(&v76, obj);
   v5 = 1;
@@ -419,30 +419,30 @@ void __65__PLBackgroundModelMigration_runBackgroundMigrationAction_error___block
   }
 
   v70 = v5;
-  if ([(NSMutableArray *)v51->_actionsBackground count]&& v68[3] == 1)
+  if ([(NSMutableArray *)selfCopy->_actionsBackground count]&& v68[3] == 1)
   {
     v6 = [PLModelMigrationActionProcessor alloc];
-    v7 = [(PLBackgroundModelMigration *)v51 migrationUUID];
-    v8 = [(PLBackgroundModelMigration *)v51 pathManager];
-    v9 = [(PLBackgroundModelMigration *)v51 analyticsEventManager];
-    v10 = [(PLBackgroundModelMigration *)v51 logger];
-    v11 = [(PLModelMigrationActionProcessor *)v6 initWithUUID:v7 pathManager:v8 migrationActionType:6 analyticsEventManager:v9 logger:v10 progressUnitCount:v51->_actionProgressPortionBackground];
+    migrationUUID = [(PLBackgroundModelMigration *)selfCopy migrationUUID];
+    pathManager = [(PLBackgroundModelMigration *)selfCopy pathManager];
+    analyticsEventManager = [(PLBackgroundModelMigration *)selfCopy analyticsEventManager];
+    logger = [(PLBackgroundModelMigration *)selfCopy logger];
+    v11 = [(PLModelMigrationActionProcessor *)v6 initWithUUID:migrationUUID pathManager:pathManager migrationActionType:6 analyticsEventManager:analyticsEventManager logger:logger progressUnitCount:selfCopy->_actionProgressPortionBackground];
 
     [(PLModelMigrationActionProcessor *)v11 setIgnoreProgressUpdates:1];
-    v12 = [(PLModelMigrationActionProcessor *)v11 progress];
+    progress = [(PLModelMigrationActionProcessor *)v11 progress];
 
-    if (v12)
+    if (progress)
     {
-      v13 = [(PLBackgroundModelMigration *)v51 progress];
-      v14 = [(PLModelMigrationActionProcessor *)v11 progress];
-      [v13 addChild:v14 withPendingUnitCount:v51->_actionProgressPortionBackground];
+      progress2 = [(PLBackgroundModelMigration *)selfCopy progress];
+      progress3 = [(PLModelMigrationActionProcessor *)v11 progress];
+      [progress2 addChild:progress3 withPendingUnitCount:selfCopy->_actionProgressPortionBackground];
     }
 
     v64 = 0u;
     v65 = 0u;
     v63 = 0u;
     v62 = 0u;
-    v47 = v51->_actionsBackground;
+    v47 = selfCopy->_actionsBackground;
     v15 = [(NSMutableArray *)v47 countByEnumeratingWithState:&v62 objects:v112 count:16];
     if (v15)
     {
@@ -459,46 +459,46 @@ LABEL_9:
 
         v17 = *(*(&v62 + 1) + 8 * v16);
         v18 = objc_autoreleasePoolPush();
-        v19 = [v17 progress];
+        progress4 = [v17 progress];
         v58 = 0;
         v59 = &v58;
         v60 = 0x2020000000;
         v61 = 0;
-        v20 = [(PLModelMigrationActionProcessor *)v11 progress];
-        [v20 addChild:v19 withPendingUnitCount:{objc_msgSend(objc_opt_class(), "actionProgressWeight")}];
+        progress5 = [(PLModelMigrationActionProcessor *)v11 progress];
+        [progress5 addChild:progress4 withPendingUnitCount:{objc_msgSend(objc_opt_class(), "actionProgressWeight")}];
 
         v21 = MEMORY[0x1E696AEC0];
-        v22 = [objc_opt_class() actionDescription];
-        v23 = [v21 stringWithFormat:@"%@", v22];
+        actionDescription = [objc_opt_class() actionDescription];
+        v23 = [v21 stringWithFormat:@"%@", actionDescription];
 
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
         v53[2] = __96__PLBackgroundModelMigration_migrateBackgroundPostProcessingWithError_reportProgressUsingBlock___block_invoke;
         v53[3] = &unk_1E756CB18;
-        v53[4] = v51;
+        v53[4] = selfCopy;
         v53[5] = v17;
         v55 = &v67;
         v56 = &v71;
         v57 = &v58;
-        v24 = v19;
+        v24 = progress4;
         v54 = v24;
         [(PLModelMigrationActionProcessor *)v11 performActionWithName:v23 ifRequired:1 block:v53];
-        if (v50)
+        if (blockCopy)
         {
-          v25 = v59[3];
-          if (!v25)
+          completedUnitCount = v59[3];
+          if (!completedUnitCount)
           {
-            v25 = [v24 completedUnitCount];
+            completedUnitCount = [v24 completedUnitCount];
           }
 
-          v50[2](v50, v25, [v24 totalUnitCount], v23);
+          blockCopy[2](blockCopy, completedUnitCount, [v24 totalUnitCount], v23);
         }
 
         if ([(PLModelMigrationActionProcessor *)v11 isSuccess])
         {
           v26 = (v72 + 5);
           v52 = v72[5];
-          v27 = [(PLBackgroundModelMigration *)v51 isMigrationCancelledWithError:&v52];
+          v27 = [(PLBackgroundModelMigration *)selfCopy isMigrationCancelledWithError:&v52];
           objc_storeStrong(v26, v52);
           if (v27)
           {
@@ -519,8 +519,8 @@ LABEL_9:
 
           if (v30)
           {
-            v31 = [(PLBackgroundModelMigration *)v51 logger];
-            v32 = v31 == 0;
+            logger2 = [(PLBackgroundModelMigration *)selfCopy logger];
+            v32 = logger2 == 0;
 
             if (v32)
             {
@@ -583,7 +583,7 @@ LABEL_9:
               LODWORD(v45) = 22;
               v37 = _os_log_send_and_compose_impl();
 
-              v38 = [(PLBackgroundModelMigration *)v51 logger:&v77];
+              v38 = [(PLBackgroundModelMigration *)selfCopy logger:&v77];
               [v38 logWithMessage:v37 fromCodeLocation:"PLBackgroundModelMigration.m" type:{303, 16}];
 
               if (v37 != buf)
@@ -617,9 +617,9 @@ LABEL_9:
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v72[5];
+    *error = v72[5];
   }
 
   v43 = v68[3];
@@ -646,16 +646,16 @@ BOOL __96__PLBackgroundModelMigration_migrateBackgroundPostProcessingWithError_r
   return v6;
 }
 
-- (void)registerBackgroundActionClass:(Class)a3 onCondition:(BOOL)a4
+- (void)registerBackgroundActionClass:(Class)class onCondition:(BOOL)condition
 {
-  v4 = a4;
+  conditionCopy = condition;
   v84 = *MEMORY[0x1E69E9840];
   [PLBackgroundModelMigration validateBackgroundActionClass:?];
   v7 = objc_opt_class();
-  v8 = [(PLBackgroundModelMigration *)self appPrivateData];
-  v9 = [v7 isCompletedBackgroundActionClass:a3 appPrivateData:v8];
+  appPrivateData = [(PLBackgroundModelMigration *)self appPrivateData];
+  v9 = [v7 isCompletedBackgroundActionClass:class appPrivateData:appPrivateData];
 
-  if (v4)
+  if (conditionCopy)
   {
     if (v9)
     {
@@ -667,9 +667,9 @@ BOOL __96__PLBackgroundModelMigration_migrateBackgroundPostProcessingWithError_r
         return;
       }
 
-      v12 = [(PLBackgroundModelMigration *)self logger];
+      logger = [(PLBackgroundModelMigration *)self logger];
 
-      if (v12)
+      if (logger)
       {
         v82 = 0u;
         v83 = 0u;
@@ -705,7 +705,7 @@ BOOL __96__PLBackgroundModelMigration_migrateBackgroundPostProcessingWithError_r
         v53 = 0u;
         v13 = PLMigrationGetLog();
         os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-        v14 = NSStringFromClass(a3);
+        v14 = NSStringFromClass(class);
         v50 = 138543362;
         v51 = v14;
         LODWORD(v49) = 12;
@@ -721,7 +721,7 @@ BOOL __96__PLBackgroundModelMigration_migrateBackgroundPostProcessingWithError_r
       v45 = PLMigrationGetLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = NSStringFromClass(a3);
+        v46 = NSStringFromClass(class);
         *buf = 138543362;
         *&buf[4] = v46;
         v47 = "Skipping registering completed background action class: %{public}@";
@@ -734,16 +734,16 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v25 = [a3 alloc];
+    v25 = [class alloc];
     internalMigrationContext = self->_internalMigrationContext;
-    v27 = [(PLBackgroundModelMigration *)self logger];
-    v28 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](a3, "actionProgressWeight")}];
-    v29 = [(PLBackgroundModelMigration *)self continuationHandler];
-    v30 = [v25 initWithMigrationContext:internalMigrationContext logger:v27 progress:v28 continuationHandler:v29];
+    logger2 = [(PLBackgroundModelMigration *)self logger];
+    v28 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](class, "actionProgressWeight")}];
+    continuationHandler = [(PLBackgroundModelMigration *)self continuationHandler];
+    v30 = [v25 initWithMigrationContext:internalMigrationContext logger:logger2 progress:v28 continuationHandler:continuationHandler];
 
-    v31 = [(objc_class *)a3 actionProgressWeight];
+    actionProgressWeight = [(objc_class *)class actionProgressWeight];
     actionsBackground = self->_actionsBackground;
-    self->_actionProgressPortionBackground += v31;
+    self->_actionProgressPortionBackground += actionProgressWeight;
     [(NSMutableArray *)actionsBackground addObject:v30];
     v33 = PLMigrationGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -758,25 +758,25 @@ LABEL_25:
 
   if ((v9 & 1) == 0)
   {
-    v34 = [a3 alloc];
+    v34 = [class alloc];
     v35 = self->_internalMigrationContext;
-    v36 = [(PLBackgroundModelMigration *)self logger];
-    v37 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](a3, "actionProgressWeight")}];
-    v38 = [(PLBackgroundModelMigration *)self continuationHandler];
-    v30 = [v34 initWithMigrationContext:v35 logger:v36 progress:v37 continuationHandler:v38];
+    logger3 = [(PLBackgroundModelMigration *)self logger];
+    v37 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:{-[objc_class actionProgressWeight](class, "actionProgressWeight")}];
+    continuationHandler2 = [(PLBackgroundModelMigration *)self continuationHandler];
+    v30 = [v34 initWithMigrationContext:v35 logger:logger3 progress:v37 continuationHandler:continuationHandler2];
 
     [(PLBackgroundModelMigration *)self setMarkerForBackgroundAction:v30 marker:3];
     v39 = PLMigrationGetLog();
-    LODWORD(v36) = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
+    LODWORD(logger3) = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
 
-    if (!v36)
+    if (!logger3)
     {
       goto LABEL_19;
     }
 
-    v40 = [(PLBackgroundModelMigration *)self logger];
+    logger4 = [(PLBackgroundModelMigration *)self logger];
 
-    if (v40)
+    if (logger4)
     {
       v82 = 0u;
       v83 = 0u;
@@ -812,7 +812,7 @@ LABEL_25:
       v53 = 0u;
       v41 = PLMigrationGetLog();
       os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
-      v42 = NSStringFromClass(a3);
+      v42 = NSStringFromClass(class);
       v50 = 138543362;
       v51 = v42;
       LODWORD(v49) = 12;
@@ -832,7 +832,7 @@ LABEL_25:
     v33 = PLMigrationGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = NSStringFromClass(a3);
+      v48 = NSStringFromClass(class);
       *buf = 138543362;
       *&buf[4] = v48;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Skipping registering background action class: %{public}@", buf, 0xCu);
@@ -852,14 +852,14 @@ LABEL_19:
     return;
   }
 
-  v22 = [(PLBackgroundModelMigration *)self logger];
+  logger5 = [(PLBackgroundModelMigration *)self logger];
 
-  if (!v22)
+  if (!logger5)
   {
     v45 = PLMigrationGetLog();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = NSStringFromClass(a3);
+      v46 = NSStringFromClass(class);
       *buf = 138543362;
       *&buf[4] = v46;
       v47 = "Skipping registering skipped background action class: %{public}@";
@@ -905,7 +905,7 @@ LABEL_26:
   v53 = 0u;
   v23 = PLMigrationGetLog();
   os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-  v24 = NSStringFromClass(a3);
+  v24 = NSStringFromClass(class);
   v50 = 138543362;
   v51 = v24;
   LODWORD(v49) = 12;
@@ -924,15 +924,15 @@ LABEL_10:
   }
 }
 
-- (id)initBackgroundMigrationWithPhotoLibraryBundle:(id)a3 logger:(id)a4 continuationHandler:(id)a5
+- (id)initBackgroundMigrationWithPhotoLibraryBundle:(id)bundle logger:(id)logger continuationHandler:(id)handler
 {
-  v9 = a3;
-  v36 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  bundleCopy = bundle;
+  loggerCopy = logger;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (bundleCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -940,8 +940,8 @@ LABEL_10:
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"bundle", v36}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"bundle", loggerCopy}];
 
     if (v11)
     {
@@ -949,21 +949,21 @@ LABEL_10:
     }
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"continuationHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"continuationHandler"}];
 
 LABEL_3:
-  v12 = [[PLDatabaseContext alloc] initWithLibraryBundle:v9];
+  v12 = [[PLDatabaseContext alloc] initWithLibraryBundle:bundleCopy];
   v13 = objc_alloc_init(MEMORY[0x1E69BF1F0]);
   v14 = [PLBackgroundMigrationContext alloc];
-  v15 = [v9 pathManager];
-  v16 = [(PLBackgroundMigrationContext *)v14 initWithPathManager:v15 databaseContext:v12 analyticsEventManager:v13];
+  pathManager = [bundleCopy pathManager];
+  v16 = [(PLBackgroundMigrationContext *)v14 initWithPathManager:pathManager databaseContext:v12 analyticsEventManager:v13];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"[ctx isKindOfClass:PLBackgroundMigrationContext.class]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"[ctx isKindOfClass:PLBackgroundMigrationContext.class]"}];
   }
 
   v43.receiver = self;
@@ -972,16 +972,16 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_logger, a4);
+    objc_storeStrong(&v17->_logger, logger);
     v19 = _Block_copy(v11);
     continuationHandler = v18->_continuationHandler;
     v18->_continuationHandler = v19;
 
     objc_storeStrong(&v18->_internalMigrationContext, v16);
-    v21 = [MEMORY[0x1E696AFB0] UUID];
-    v22 = [v21 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     migrationUUID = v18->_migrationUUID;
-    v18->_migrationUUID = v22;
+    v18->_migrationUUID = uUIDString;
 
     v24 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
     progress = v18->_progress;
@@ -1114,11 +1114,11 @@ id __103__PLBackgroundModelMigration_initBackgroundMigrationWithPhotoLibraryBund
   return v6;
 }
 
-+ (BOOL)isBackgroundMigrationRegistrationAfterRebuildRequiredWithLibrary:(id)a3
++ (BOOL)isBackgroundMigrationRegistrationAfterRebuildRequiredWithLibrary:(id)library
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     objc_opt_class();
     v4 = PLModelMigrationSubclassesForClass();
@@ -1143,7 +1143,7 @@ id __103__PLBackgroundModelMigration_initBackgroundMigrationWithPhotoLibraryBund
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
-          if ([v11 isResetAfterRebuildRequiredWithLibrary:v3])
+          if ([v11 isResetAfterRebuildRequiredWithLibrary:libraryCopy])
           {
             [v5 addObject:v11];
           }
@@ -1176,15 +1176,15 @@ id __103__PLBackgroundModelMigration_initBackgroundMigrationWithPhotoLibraryBund
           }
 
           v17 = *(*(&v30 + 1) + 8 * j);
-          v18 = [v3 pathManager];
-          LODWORD(v17) = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v17 pathManager:v18];
+          pathManager = [libraryCopy pathManager];
+          LODWORD(v17) = [PLBackgroundModelMigration hasCompletedBackgroundActionClass:v17 pathManager:pathManager];
 
           if (v17)
           {
             v19 = objc_opt_class();
-            v20 = [v3 pathManager];
+            pathManager2 = [libraryCopy pathManager];
             v29 = 0;
-            v21 = [PLBackgroundModelMigration resetBackgroundActionClass:v19 pathManager:v20 error:&v29];
+            v21 = [PLBackgroundModelMigration resetBackgroundActionClass:v19 pathManager:pathManager2 error:&v29];
             v22 = v29;
 
             v23 = PLMigrationGetLog();
@@ -1239,14 +1239,14 @@ id __103__PLBackgroundModelMigration_initBackgroundMigrationWithPhotoLibraryBund
   return v26 & 1;
 }
 
-+ (BOOL)isCompletedBackgroundActionClass:(Class)a3 appPrivateData:(id)a4
++ (BOOL)isCompletedBackgroundActionClass:(Class)class appPrivateData:(id)data
 {
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!class)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundModelMigration.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"actionClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"actionClass"}];
 
     if (v8)
     {
@@ -1254,34 +1254,34 @@ id __103__PLBackgroundModelMigration_initBackgroundMigrationWithPhotoLibraryBund
     }
 
 LABEL_5:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundModelMigration.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"appPrivateData"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"appPrivateData"}];
 
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v9 = [v8 valueForKeyPath:@"MigrationAction.Background"];
-  v10 = NSStringFromClass(a3);
+  v10 = NSStringFromClass(class);
   v11 = [v9 objectForKeyedSubscript:v10];
 
   v12 = [v11 objectForKeyedSubscript:@"PLBackgroundMigrationStatus"];
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  return (v13 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  return (integerValue & 0xFFFFFFFFFFFFFFFELL) == 2;
 }
 
-+ (int64_t)migrateBackgroundActionsWithPhotoLibraryBundle:(id)a3 logger:(id)a4 error:(id *)a5 reportProgressUsingBlock:(id)a6 continuationHandler:(id)a7
++ (int64_t)migrateBackgroundActionsWithPhotoLibraryBundle:(id)bundle logger:(id)logger error:(id *)error reportProgressUsingBlock:(id)block continuationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  bundleCopy = bundle;
+  loggerCopy = logger;
+  blockCopy = block;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -1291,16 +1291,16 @@ LABEL_3:
   v22[1] = 3221225472;
   v22[2] = __135__PLBackgroundModelMigration_migrateBackgroundActionsWithPhotoLibraryBundle_logger_error_reportProgressUsingBlock_continuationHandler___block_invoke;
   v22[3] = &unk_1E7574DC0;
-  v23 = v11;
-  v24 = v12;
-  v25 = v14;
-  v26 = v13;
+  v23 = bundleCopy;
+  v24 = loggerCopy;
+  v25 = handlerCopy;
+  v26 = blockCopy;
   v27 = &v29;
-  v28 = a5;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
-  v19 = v11;
+  errorCopy = error;
+  v16 = blockCopy;
+  v17 = handlerCopy;
+  v18 = loggerCopy;
+  v19 = bundleCopy;
   dispatch_sync(v15, v22);
 
   v20 = v30[3];
@@ -1426,29 +1426,29 @@ LABEL_10:
   }
 }
 
-+ (void)validateBackgroundActionClass:(Class)a3
++ (void)validateBackgroundActionClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = NSStringFromClass(a3);
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PLBackgroundModelMigration.m" lineNumber:227 description:{@"Invalid background action class: %@", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v6 = NSStringFromClass(class);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundModelMigration.m" lineNumber:227 description:{@"Invalid background action class: %@", v6}];
   }
 }
 
-+ (BOOL)resetBackgroundActionClass:(Class)a3 pathManager:(id)a4 error:(id *)a5
++ (BOOL)resetBackgroundActionClass:(Class)class pathManager:(id)manager error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  [a1 validateBackgroundActionClass:a3];
+  managerCopy = manager;
+  [self validateBackgroundActionClass:class];
   v9 = MEMORY[0x1E69BF188];
-  v10 = [v8 libraryURL];
-  v11 = [v9 appPrivateDataForLibraryURL:v10];
+  libraryURL = [managerCopy libraryURL];
+  v11 = [v9 appPrivateDataForLibraryURL:libraryURL];
 
   v12 = [v11 valueForKeyPath:@"MigrationAction.Background"];
   v13 = [v12 mutableCopy];
 
-  v14 = NSStringFromClass(a3);
+  v14 = NSStringFromClass(class);
   [v13 removeObjectForKey:v14];
 
   v28 = 0;
@@ -1457,7 +1457,7 @@ LABEL_10:
   if (v15)
   {
     v27 = v16;
-    v17 = [PLModelMigrationActionBackground resetResumeMarkerForActionClass:a3 pathManager:v8 error:&v27];
+    v17 = [PLModelMigrationActionBackground resetResumeMarkerForActionClass:class pathManager:managerCopy error:&v27];
     v18 = v27;
 
     if (v17)
@@ -1470,7 +1470,7 @@ LABEL_10:
     v21 = PLMigrationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v26 = NSStringFromClass(a3);
+      v26 = NSStringFromClass(class);
       *buf = 138543618;
       v30 = v26;
       v31 = 2112;
@@ -1484,7 +1484,7 @@ LABEL_10:
     v21 = PLMigrationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = NSStringFromClass(a3);
+      v22 = NSStringFromClass(class);
       *buf = 138543618;
       v30 = v22;
       v31 = 2112;
@@ -1497,11 +1497,11 @@ LABEL_10:
 
   v23 = v18;
   v19 = v23;
-  if (a5)
+  if (error)
   {
     v24 = v23;
     v20 = 0;
-    *a5 = v19;
+    *error = v19;
   }
 
   else
@@ -1514,17 +1514,17 @@ LABEL_10:
   return v20;
 }
 
-+ (BOOL)hasCompletedBackgroundActionClass:(Class)a3 pathManager:(id)a4
++ (BOOL)hasCompletedBackgroundActionClass:(Class)class pathManager:(id)manager
 {
-  v6 = a4;
-  [a1 validateBackgroundActionClass:a3];
+  managerCopy = manager;
+  [self validateBackgroundActionClass:class];
   v7 = MEMORY[0x1E69BF188];
-  v8 = [v6 libraryURL];
+  libraryURL = [managerCopy libraryURL];
 
-  v9 = [v7 appPrivateDataForLibraryURL:v8];
+  v9 = [v7 appPrivateDataForLibraryURL:libraryURL];
 
-  LOBYTE(a3) = [a1 isCompletedBackgroundActionClass:a3 appPrivateData:v9];
-  return a3;
+  LOBYTE(class) = [self isCompletedBackgroundActionClass:class appPrivateData:v9];
+  return class;
 }
 
 @end

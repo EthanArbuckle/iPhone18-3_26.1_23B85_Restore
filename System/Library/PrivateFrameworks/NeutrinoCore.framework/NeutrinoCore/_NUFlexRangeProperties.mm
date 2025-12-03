@@ -1,7 +1,7 @@
 @interface _NUFlexRangeProperties
-+ (id)flexRangePropertiesWithGainMapMetadata:(CGImageMetadata *)a3;
++ (id)flexRangePropertiesWithGainMapMetadata:(CGImageMetadata *)metadata;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _NUFlexRangeProperties
@@ -10,7 +10,7 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUFlexRangeProperties *)self version];
+  version = [(_NUFlexRangeProperties *)self version];
   [(_NUFlexRangeProperties *)self baseHeadroom];
   v7 = v6;
   [(_NUFlexRangeProperties *)self baseHeadroom];
@@ -29,17 +29,17 @@
     v14 = @"alternate";
   }
 
-  v15 = [(_NUFlexRangeProperties *)self alternateColorSpace];
-  v16 = [(_NUFlexRangeProperties *)self channelInfo];
-  v17 = [(_NUFlexRangeProperties *)self compatibilityGainMapHeadroom];
-  v18 = [v3 stringWithFormat:@"<%@:%p version:%ld base:%0.2f(%0.2f) alt:%0.2f(%0.2f)color:%@ space:%@ channels:%@ compatibility:%@>", v4, self, v5, *&v7, *&v9, *&v11, *&v13, v14, v15, v16, v17];
+  alternateColorSpace = [(_NUFlexRangeProperties *)self alternateColorSpace];
+  channelInfo = [(_NUFlexRangeProperties *)self channelInfo];
+  compatibilityGainMapHeadroom = [(_NUFlexRangeProperties *)self compatibilityGainMapHeadroom];
+  v18 = [v3 stringWithFormat:@"<%@:%p version:%ld base:%0.2f(%0.2f) alt:%0.2f(%0.2f)color:%@ space:%@ channels:%@ compatibility:%@>", v4, self, version, *&v7, *&v9, *&v11, *&v13, v14, alternateColorSpace, channelInfo, compatibilityGainMapHeadroom];
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_NUFlexRangeProperties allocWithZone:a3];
+  v4 = [_NUFlexRangeProperties allocWithZone:zone];
   v4->_version = self->_version;
   v4->_baseHeadroom = self->_baseHeadroom;
   v4->_alternateHeadroom = self->_alternateHeadroom;
@@ -53,13 +53,13 @@
   return v4;
 }
 
-+ (id)flexRangePropertiesWithGainMapMetadata:(CGImageMetadata *)a3
++ (id)flexRangePropertiesWithGainMapMetadata:(CGImageMetadata *)metadata
 {
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __65___NUFlexRangeProperties_flexRangePropertiesWithGainMapMetadata___block_invoke;
   v31[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v31[4] = a3;
+  v31[4] = metadata;
   v3 = MEMORY[0x1C68D98A0](v31, a2);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -90,12 +90,12 @@
   v24 = v10;
   v11 = MEMORY[0x1C68D98A0](v23);
   v12 = (*(v8 + 2))(v8, @"Version");
-  v13 = [v12 integerValue];
+  integerValue = [v12 integerValue];
 
-  if (v13)
+  if (integerValue)
   {
     v14 = objc_alloc_init(_NUFlexRangeProperties);
-    [(_NUFlexRangeProperties *)v14 setVersion:v13];
+    [(_NUFlexRangeProperties *)v14 setVersion:integerValue];
     (*(v10 + 2))(v10, @"BaseHeadroom");
     [(_NUFlexRangeProperties *)v14 setBaseHeadroom:?];
     v21 = v10;

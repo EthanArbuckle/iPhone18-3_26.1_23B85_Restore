@@ -1,13 +1,13 @@
 @interface _IOSurfaceDebugDescription
 - (NSString)pixelFormatString;
-- (_IOSurfaceDebugDescription)initWithBasicInfo:(id *)a3 layoutInfo:(id *)a4 name:(id)a5;
+- (_IOSurfaceDebugDescription)initWithBasicInfo:(id *)info layoutInfo:(id *)layoutInfo name:(id)name;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation _IOSurfaceDebugDescription
 
-- (_IOSurfaceDebugDescription)initWithBasicInfo:(id *)a3 layoutInfo:(id *)a4 name:(id)a5
+- (_IOSurfaceDebugDescription)initWithBasicInfo:(id *)info layoutInfo:(id *)layoutInfo name:(id)name
 {
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -16,26 +16,26 @@
   v9 = v8;
   if (v8)
   {
-    v10 = *&a3->var10;
-    v12 = *&a3->var0;
-    v11 = *&a3->var3;
-    *(v8 + 40) = *&a3->var7;
+    v10 = *&info->var10;
+    v12 = *&info->var0;
+    v11 = *&info->var3;
+    *(v8 + 40) = *&info->var7;
     *(v8 + 56) = v10;
     *(v8 + 8) = v12;
     *(v8 + 24) = v11;
-    v14 = *&a3->var18;
-    v13 = *&a3->var20;
-    v15 = *&a3->var16;
-    *(v8 + 15) = a3->var22;
+    v14 = *&info->var18;
+    v13 = *&info->var20;
+    v15 = *&info->var16;
+    *(v8 + 15) = info->var22;
     *(v8 + 88) = v14;
     *(v8 + 104) = v13;
     *(v8 + 72) = v15;
-    v16 = *&a4->var4;
-    v17 = *&a4->var0;
-    *(v8 + 9) = *&a4->var2;
+    v16 = *&layoutInfo->var4;
+    v17 = *&layoutInfo->var0;
+    *(v8 + 9) = *&layoutInfo->var2;
     *(v8 + 10) = v16;
     *(v8 + 8) = v17;
-    *(v8 + 22) = [a5 copy];
+    *(v8 + 22) = [name copy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -86,14 +86,14 @@ LABEL_6:
   height = self->_layoutInfo.height;
   allocSize = p_basicInfo->allocSize;
   surfaceID = p_basicInfo->surfaceID;
-  v13 = [NSLocalizedFileSizeDescription() UTF8String];
+  uTF8String = [NSLocalizedFileSizeDescription() UTF8String];
   name = self->_name;
   if (!name)
   {
     name = &stru_1F25E13F8;
   }
 
-  result = [v6 stringWithFormat:@"sid: %08x traceID: %016llx virt: %016llx fmt: %s dims: %5d x %5d size: %7s name: %@", surfaceID, traceID, clientAddress, __str, width, height, v13, name];
+  result = [v6 stringWithFormat:@"sid: %08x traceID: %016llx virt: %016llx fmt: %s dims: %5d x %5d size: %7s name: %@", surfaceID, traceID, clientAddress, __str, width, height, uTF8String, name];
   v16 = *MEMORY[0x1E69E9840];
   return result;
 }

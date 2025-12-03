@@ -6,13 +6,13 @@
 - (VCCTServiceMonitor)init;
 - (id)getCurrentDataSubscriptionContext;
 - (void)connectionStatus;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
 - (void)getCurrentDataSubscriptionContext;
 - (void)init;
-- (void)internetConnectionStateChanged:(id)a3;
+- (void)internetConnectionStateChanged:(id)changed;
 - (void)signalStrength;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
 @end
 
 @implementation VCCTServiceMonitor
@@ -180,12 +180,12 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
   return supportsCellular;
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_statusLock);
   signalStrength = self->_signalStrength;
-  self->_signalStrength = a4;
+  self->_signalStrength = info;
 
   os_unfair_lock_unlock(&self->_statusLock);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -201,9 +201,9 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
       v15 = 1024;
       v16 = 162;
       v17 = 2112;
-      v18 = a3;
+      changedCopy = changed;
       v19 = 2112;
-      v20 = a4;
+      infoCopy = info;
       _os_log_impl(&dword_23D497000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Signal strength changed for context: %@, signal strength info: %@", &v11, 0x30u);
     }
   }
@@ -211,12 +211,12 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)internetConnectionStateChanged:(id)a3
+- (void)internetConnectionStateChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_statusLock);
   connectionStatus = self->_connectionStatus;
-  self->_connectionStatus = a3;
+  self->_connectionStatus = changed;
 
   os_unfair_lock_unlock(&self->_statusLock);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -232,7 +232,7 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
       v13 = 1024;
       v14 = 173;
       v15 = 2112;
-      v16 = a3;
+      changedCopy = changed;
       _os_log_impl(&dword_23D497000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Internet connection state changed: %@", &v9, 0x26u);
     }
   }
@@ -240,12 +240,12 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_statusLock);
   dataStatus = self->_dataStatus;
-  self->_dataStatus = a4;
+  self->_dataStatus = info;
 
   os_unfair_lock_unlock(&self->_statusLock);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -261,9 +261,9 @@ VCCTServiceMonitor *__36__VCCTServiceMonitor_sharedInstance__block_invoke()
       v15 = 1024;
       v16 = 182;
       v17 = 2112;
-      v18 = a3;
+      statusCopy = status;
       v19 = 2112;
-      v20 = a4;
+      infoCopy = info;
       _os_log_impl(&dword_23D497000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Data status changed for context: %@, dataStatus: %@", &v11, 0x30u);
     }
   }

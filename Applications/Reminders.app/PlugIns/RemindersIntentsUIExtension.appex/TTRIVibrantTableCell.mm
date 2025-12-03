@@ -1,5 +1,5 @@
 @interface TTRIVibrantTableCell
-- (_TtC27RemindersIntentsUIExtension20TTRIVibrantTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC27RemindersIntentsUIExtension20TTRIVibrantTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000124D4();
 }
 
-- (_TtC27RemindersIntentsUIExtension20TTRIVibrantTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC27RemindersIntentsUIExtension20TTRIVibrantTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_10001FA84();
     v6 = sub_10001FA54();
@@ -26,7 +26,7 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for TTRIVibrantTableCell();
-  v7 = [(TTRIVibrantTableCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(TTRIVibrantTableCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }

@@ -1,88 +1,88 @@
 @interface HFTargetRangeUtilities
-+ (id)targetRelativePercentValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetRelativePercentValue:(id)a5 minimumThresholdRelativePercentValue:(id)a6 maximumThresholdRelativePercentValue:(id)a7;
-+ (id)targetRelativePercentValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetResponse:(id)a5 minimumThresholdResponse:(id)a6 maximumThresholdResponse:(id)a7;
-+ (id)targetValueForService:(id)a3 valueProvider:(id)a4;
-+ (id)targetValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetResponse:(id)a5 minimumThresholdResponse:(id)a6 maximumThresholdResponse:(id)a7;
-+ (unint64_t)rangeModeForCurrentHeaterCoolerState:(int64_t)a3;
-+ (unint64_t)rangeModeForCurrentHumidifierDehumidifierState:(int64_t)a3;
-+ (unint64_t)rangeModeForHeatingCoolingMode:(int64_t)a3;
-+ (unint64_t)rangeModeForTargetHeaterCoolerState:(int64_t)a3;
-+ (unint64_t)rangeModeForTargetHumidifierDehumidifierState:(int64_t)a3;
++ (id)targetRelativePercentValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetRelativePercentValue:(id)value minimumThresholdRelativePercentValue:(id)percentValue maximumThresholdRelativePercentValue:(id)relativePercentValue;
++ (id)targetRelativePercentValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetResponse:(id)response minimumThresholdResponse:(id)thresholdResponse maximumThresholdResponse:(id)maximumThresholdResponse;
++ (id)targetValueForService:(id)service valueProvider:(id)provider;
++ (id)targetValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetResponse:(id)response minimumThresholdResponse:(id)thresholdResponse maximumThresholdResponse:(id)maximumThresholdResponse;
++ (unint64_t)rangeModeForCurrentHeaterCoolerState:(int64_t)state;
++ (unint64_t)rangeModeForCurrentHumidifierDehumidifierState:(int64_t)state;
++ (unint64_t)rangeModeForHeatingCoolingMode:(int64_t)mode;
++ (unint64_t)rangeModeForTargetHeaterCoolerState:(int64_t)state;
++ (unint64_t)rangeModeForTargetHumidifierDehumidifierState:(int64_t)state;
 @end
 
 @implementation HFTargetRangeUtilities
 
-+ (unint64_t)rangeModeForHeatingCoolingMode:(int64_t)a3
++ (unint64_t)rangeModeForHeatingCoolingMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 3)
+  if ((mode - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
-+ (unint64_t)rangeModeForTargetHeaterCoolerState:(int64_t)a3
++ (unint64_t)rangeModeForTargetHeaterCoolerState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_20DD975C0[a3];
+    return qword_20DD975C0[state];
   }
 }
 
-+ (unint64_t)rangeModeForCurrentHeaterCoolerState:(int64_t)a3
++ (unint64_t)rangeModeForCurrentHeaterCoolerState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return state == 2;
   }
 }
 
-+ (unint64_t)rangeModeForTargetHumidifierDehumidifierState:(int64_t)a3
++ (unint64_t)rangeModeForTargetHumidifierDehumidifierState:(int64_t)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_20DD975C0[a3];
+    return qword_20DD975C0[state];
   }
 }
 
-+ (unint64_t)rangeModeForCurrentHumidifierDehumidifierState:(int64_t)a3
++ (unint64_t)rangeModeForCurrentHumidifierDehumidifierState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return state == 2;
   }
 }
 
-+ (id)targetRelativePercentValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetRelativePercentValue:(id)a5 minimumThresholdRelativePercentValue:(id)a6 maximumThresholdRelativePercentValue:(id)a7
++ (id)targetRelativePercentValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetRelativePercentValue:(id)value minimumThresholdRelativePercentValue:(id)percentValue maximumThresholdRelativePercentValue:(id)relativePercentValue
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  if (a4 == 3)
+  valueCopy = value;
+  percentValueCopy = percentValue;
+  relativePercentValueCopy = relativePercentValue;
+  if (currentMode == 3)
   {
     NSLog(&cfstr_CurrentmodeSho.isa);
   }
@@ -91,14 +91,14 @@
   v20[1] = 3221225472;
   v20[2] = __183__HFTargetRangeUtilities_targetRelativePercentValueWithTargetMode_currentMode_rawTargetRelativePercentValue_minimumThresholdRelativePercentValue_maximumThresholdRelativePercentValue___block_invoke;
   v20[3] = &unk_277DFDE18;
-  v24 = a4;
-  v25 = a3;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  currentModeCopy = currentMode;
+  modeCopy = mode;
+  v21 = valueCopy;
+  v22 = percentValueCopy;
+  v23 = relativePercentValueCopy;
+  v14 = relativePercentValueCopy;
+  v15 = percentValueCopy;
+  v16 = valueCopy;
   v18 = __183__HFTargetRangeUtilities_targetRelativePercentValueWithTargetMode_currentMode_rawTargetRelativePercentValue_minimumThresholdRelativePercentValue_maximumThresholdRelativePercentValue___block_invoke(v20, v17);
 
   return v18;
@@ -232,67 +232,67 @@ LABEL_31:
   return a2;
 }
 
-+ (id)targetRelativePercentValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetResponse:(id)a5 minimumThresholdResponse:(id)a6 maximumThresholdResponse:(id)a7
++ (id)targetRelativePercentValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetResponse:(id)response minimumThresholdResponse:(id)thresholdResponse maximumThresholdResponse:(id)maximumThresholdResponse
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:v13];
+  maximumThresholdResponseCopy = maximumThresholdResponse;
+  thresholdResponseCopy = thresholdResponse;
+  responseCopy = response;
+  v14 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:responseCopy];
 
-  v15 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:v12];
-  v16 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:v11];
+  v15 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:thresholdResponseCopy];
+  v16 = [[HFRelativePercentValue alloc] initWithCharacteristicReadResponse:maximumThresholdResponseCopy];
 
-  v17 = [objc_opt_class() targetRelativePercentValueWithTargetMode:a3 currentMode:a4 rawTargetRelativePercentValue:v14 minimumThresholdRelativePercentValue:v15 maximumThresholdRelativePercentValue:v16];
+  v17 = [objc_opt_class() targetRelativePercentValueWithTargetMode:mode currentMode:currentMode rawTargetRelativePercentValue:v14 minimumThresholdRelativePercentValue:v15 maximumThresholdRelativePercentValue:v16];
 
   return v17;
 }
 
-+ (id)targetValueWithTargetMode:(unint64_t)a3 currentMode:(unint64_t)a4 rawTargetResponse:(id)a5 minimumThresholdResponse:(id)a6 maximumThresholdResponse:(id)a7
++ (id)targetValueWithTargetMode:(unint64_t)mode currentMode:(unint64_t)currentMode rawTargetResponse:(id)response minimumThresholdResponse:(id)thresholdResponse maximumThresholdResponse:(id)maximumThresholdResponse
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [objc_opt_class() targetRelativePercentValueWithTargetMode:a3 currentMode:a4 rawTargetResponse:v13 minimumThresholdResponse:v12 maximumThresholdResponse:v11];
+  maximumThresholdResponseCopy = maximumThresholdResponse;
+  thresholdResponseCopy = thresholdResponse;
+  responseCopy = response;
+  v14 = [objc_opt_class() targetRelativePercentValueWithTargetMode:mode currentMode:currentMode rawTargetResponse:responseCopy minimumThresholdResponse:thresholdResponseCopy maximumThresholdResponse:maximumThresholdResponseCopy];
 
   if (v14)
   {
-    v15 = [v14 value];
+    value = [v14 value];
   }
 
   else
   {
-    v15 = 0;
+    value = 0;
   }
 
-  return v15;
+  return value;
 }
 
-+ (id)targetValueForService:(id)a3 valueProvider:(id)a4
++ (id)targetValueForService:(id)service valueProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  serviceCopy = service;
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v44 = [MEMORY[0x277CCA890] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"HFTargetRangeUtilities.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"valueProvider != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFTargetRangeUtilities.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"valueProvider != nil"}];
   }
 
-  v9 = [v7 serviceType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CD0F30]];
+  serviceType = [serviceCopy serviceType];
+  v10 = [serviceType isEqualToString:*MEMORY[0x277CD0F30]];
 
   if (!v10)
   {
-    v16 = [v7 serviceType];
-    v17 = [v16 isEqualToString:*MEMORY[0x277CD0E60]];
+    serviceType2 = [serviceCopy serviceType];
+    v17 = [serviceType2 isEqualToString:*MEMORY[0x277CD0E60]];
 
     if (v17)
     {
-      v12 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF8C8]];
-      v46 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF7F0]];
-      v18 = [v7 hf_characteristicOfType:*MEMORY[0x277CCFB18]];
+      v12 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF8C8]];
+      v46 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF7F0]];
+      v18 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCFB18]];
       if (v18)
       {
-        v19 = v8[2](v8, v18);
+        v19 = providerCopy[2](providerCopy, v18);
         if (v19)
         {
           v15 = [objc_opt_class() rangeModeForTargetHeaterCoolerState:{objc_msgSend(v19, "integerValue")}];
@@ -309,10 +309,10 @@ LABEL_31:
         v15 = 0;
       }
 
-      v32 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF810]];
+      v32 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF810]];
       if (v32)
       {
-        v33 = v8[2](v8, v32);
+        v33 = providerCopy[2](providerCopy, v32);
         if (v33)
         {
           v34 = [objc_opt_class() rangeModeForCurrentHeaterCoolerState:{objc_msgSend(v33, "integerValue")}];
@@ -329,8 +329,8 @@ LABEL_43:
 
     else
     {
-      v20 = [v7 serviceType];
-      v21 = [v20 isEqualToString:*MEMORY[0x277CD0E68]];
+      serviceType3 = [serviceCopy serviceType];
+      v21 = [serviceType3 isEqualToString:*MEMORY[0x277CD0E68]];
 
       if (!v21)
       {
@@ -345,12 +345,12 @@ LABEL_43:
         goto LABEL_53;
       }
 
-      v12 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF8E0]];
-      v46 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF888]];
-      v18 = [v7 hf_characteristicOfType:*MEMORY[0x277CCFB30]];
+      v12 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF8E0]];
+      v46 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF888]];
+      v18 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCFB30]];
       if (v18)
       {
-        v22 = v8[2](v8, v18);
+        v22 = providerCopy[2](providerCopy, v18);
         if (v22)
         {
           v15 = [objc_opt_class() rangeModeForTargetHumidifierDehumidifierState:{objc_msgSend(v22, "integerValue")}];
@@ -367,10 +367,10 @@ LABEL_43:
         v15 = 0;
       }
 
-      v32 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF828]];
+      v32 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF828]];
       if (v32)
       {
-        v33 = v8[2](v8, v32);
+        v33 = providerCopy[2](providerCopy, v32);
         if (v33)
         {
           v34 = [objc_opt_class() rangeModeForCurrentHumidifierDehumidifierState:{objc_msgSend(v33, "integerValue")}];
@@ -391,13 +391,13 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v11 = [v7 hf_characteristicOfType:*MEMORY[0x277CCFB68]];
-  v12 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF8C8]];
-  v46 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF7F0]];
-  v13 = [v7 hf_characteristicOfType:*MEMORY[0x277CCFB20]];
+  v11 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCFB68]];
+  v12 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF8C8]];
+  v46 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF7F0]];
+  v13 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCFB20]];
   if (v13)
   {
-    v14 = v8[2](v8, v13);
+    v14 = providerCopy[2](providerCopy, v13);
     if (v14)
     {
       v15 = [objc_opt_class() rangeModeForHeatingCoolingMode:{objc_msgSend(v14, "integerValue")}];
@@ -414,10 +414,10 @@ LABEL_44:
     v15 = 0;
   }
 
-  v29 = [v7 hf_characteristicOfType:*MEMORY[0x277CCF818]];
+  v29 = [serviceCopy hf_characteristicOfType:*MEMORY[0x277CCF818]];
   if (v29)
   {
-    v30 = v8[2](v8, v29);
+    v30 = providerCopy[2](providerCopy, v29);
     if (v30)
     {
       v45 = [objc_opt_class() rangeModeForHeatingCoolingMode:{objc_msgSend(v30, "integerValue")}];
@@ -437,7 +437,7 @@ LABEL_44:
   if (v11)
   {
     v31 = [HFRelativePercentValue alloc];
-    v18 = v8[2](v8, v11);
+    v18 = providerCopy[2](providerCopy, v11);
     v24 = [(HFRelativePercentValue *)v31 initWithValue:v18 forCharacteristic:v11];
 LABEL_45:
 
@@ -451,7 +451,7 @@ LABEL_46:
   if (v12)
   {
     v35 = [HFRelativePercentValue alloc];
-    v36 = v8[2](v8, v12);
+    v36 = providerCopy[2](providerCopy, v12);
     v37 = v12;
     v23 = [(HFRelativePercentValue *)v35 initWithValue:v36 forCharacteristic:v12];
   }
@@ -464,7 +464,7 @@ LABEL_46:
   if (v46)
   {
     v38 = [HFRelativePercentValue alloc];
-    v39 = v8[2](v8, v46);
+    v39 = providerCopy[2](providerCopy, v46);
     v28 = [(HFRelativePercentValue *)v38 initWithValue:v39 forCharacteristic:v46];
   }
 
@@ -481,15 +481,15 @@ LABEL_53:
   v41 = v40;
   if (v40)
   {
-    v42 = [v40 value];
+    value = [v40 value];
   }
 
   else
   {
-    v42 = 0;
+    value = 0;
   }
 
-  return v42;
+  return value;
 }
 
 @end

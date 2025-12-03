@@ -2,9 +2,9 @@
 + (id)interface;
 + (id)sharedInstance;
 - (ASDIAPHistory)init;
-- (void)getAllIAPsForActiveAccountWithResultHandler:(id)a3;
-- (void)getIAPsForActiveAccountWithAdamIDs:(id)a3 withResultHandler:(id)a4;
-- (void)refreshIAPsForActiveAccountWithCompletionHandler:(id)a3;
+- (void)getAllIAPsForActiveAccountWithResultHandler:(id)handler;
+- (void)getIAPsForActiveAccountWithAdamIDs:(id)ds withResultHandler:(id)handler;
+- (void)refreshIAPsForActiveAccountWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASDIAPHistory
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = __31__ASDIAPHistory_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D5E0 != -1)
   {
     dispatch_once(&qword_1ED90D5E0, block);
@@ -98,16 +98,16 @@ uint64_t __31__ASDIAPHistory_sharedInstance__block_invoke(uint64_t a1)
   return self;
 }
 
-- (void)getAllIAPsForActiveAccountWithResultHandler:(id)a3
+- (void)getAllIAPsForActiveAccountWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__ASDIAPHistory_getAllIAPsForActiveAccountWithResultHandler___block_invoke;
   v7[3] = &unk_1E7CDC300;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v7];
 }
 
@@ -180,19 +180,19 @@ void __61__ASDIAPHistory_getAllIAPsForActiveAccountWithResultHandler___block_inv
   dispatch_async(v7, block);
 }
 
-- (void)getIAPsForActiveAccountWithAdamIDs:(id)a3 withResultHandler:(id)a4
+- (void)getIAPsForActiveAccountWithAdamIDs:(id)ds withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__ASDIAPHistory_getIAPsForActiveAccountWithAdamIDs_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDD238;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = dsCopy;
+  v10 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v11];
 }
 
@@ -266,16 +266,16 @@ void __70__ASDIAPHistory_getIAPsForActiveAccountWithAdamIDs_withResultHandler___
   dispatch_async(v7, block);
 }
 
-- (void)refreshIAPsForActiveAccountWithCompletionHandler:(id)a3
+- (void)refreshIAPsForActiveAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ASDIAPHistory_refreshIAPsForActiveAccountWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDC300;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v7];
 }
 

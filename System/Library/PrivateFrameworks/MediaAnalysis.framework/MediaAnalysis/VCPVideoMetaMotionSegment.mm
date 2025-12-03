@@ -1,14 +1,14 @@
 @interface VCPVideoMetaMotionSegment
-- (VCPVideoMetaMotionSegment)initWithAbsMotion:(float)a3 atTime:(id *)a4;
-- (void)finalizeAtTime:(id *)a3;
-- (void)mergeSegment:(id)a3;
-- (void)resetSegment:(float)a3 atTime:(id *)a4;
-- (void)updateSegment:(float)a3 atTime:(id *)a4;
+- (VCPVideoMetaMotionSegment)initWithAbsMotion:(float)motion atTime:(id *)time;
+- (void)finalizeAtTime:(id *)time;
+- (void)mergeSegment:(id)segment;
+- (void)resetSegment:(float)segment atTime:(id *)time;
+- (void)updateSegment:(float)segment atTime:(id *)time;
 @end
 
 @implementation VCPVideoMetaMotionSegment
 
-- (VCPVideoMetaMotionSegment)initWithAbsMotion:(float)a3 atTime:(id *)a4
+- (VCPVideoMetaMotionSegment)initWithAbsMotion:(float)motion atTime:(id *)time
 {
   v12.receiver = self;
   v12.super_class = VCPVideoMetaMotionSegment;
@@ -16,38 +16,38 @@
   v7 = v6;
   if (v6)
   {
-    v10 = *&a4->var0;
-    var3 = a4->var3;
-    [(VCPVideoMetaMotionSegment *)v6 resetSegment:&v10 atTime:COERCE_DOUBLE(__PAIR64__(DWORD1(v10), LODWORD(a3)))];
+    v10 = *&time->var0;
+    var3 = time->var3;
+    [(VCPVideoMetaMotionSegment *)v6 resetSegment:&v10 atTime:COERCE_DOUBLE(__PAIR64__(DWORD1(v10), LODWORD(motion)))];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)resetSegment:(float)a3 atTime:(id *)a4
+- (void)resetSegment:(float)segment atTime:(id *)time
 {
-  v7 = *a4;
+  v7 = *time;
   v6.receiver = self;
   v6.super_class = VCPVideoMetaMotionSegment;
   [(VCPMetaSegment *)&v6 resetSegment:&v7];
-  self->_absMotion = a3;
-  self->_stabilityScore = expf(a3 * -0.1);
+  self->_absMotion = segment;
+  self->_stabilityScore = expf(segment * -0.1);
 }
 
-- (void)updateSegment:(float)a3 atTime:(id *)a4
+- (void)updateSegment:(float)segment atTime:(id *)time
 {
-  v7 = *a4;
+  v7 = *time;
   v6.receiver = self;
   v6.super_class = VCPVideoMetaMotionSegment;
   [(VCPMetaSegment *)&v6 updateSegment:&v7];
-  self->_absMotion = self->_absMotion + a3;
-  self->_stabilityScore = expf(a3 * -0.1) + self->_stabilityScore;
+  self->_absMotion = self->_absMotion + segment;
+  self->_stabilityScore = expf(segment * -0.1) + self->_stabilityScore;
 }
 
-- (void)finalizeAtTime:(id *)a3
+- (void)finalizeAtTime:(id *)time
 {
-  v6 = *a3;
+  v6 = *time;
   v5.receiver = self;
   v5.super_class = VCPVideoMetaMotionSegment;
   [(VCPMetaSegment *)&v5 finalizeAtTime:&v6];
@@ -56,21 +56,21 @@
   self->_stabilityScore = expf(v4 * -0.1);
 }
 
-- (void)mergeSegment:(id)a3
+- (void)mergeSegment:(id)segment
 {
-  v4 = a3;
-  [v4 absMotion];
+  segmentCopy = segment;
+  [segmentCopy absMotion];
   v6 = v5;
-  v7 = [v4 numOfFrames];
+  numOfFrames = [segmentCopy numOfFrames];
   absMotion = self->_absMotion;
-  v9 = [(VCPMetaSegment *)self numOfFrames];
-  v10 = [v4 numOfFrames];
-  v11 = ((absMotion * v9) + (v6 * v7)) / ([(VCPMetaSegment *)self numOfFrames]+ v10);
+  numOfFrames2 = [(VCPMetaSegment *)self numOfFrames];
+  numOfFrames3 = [segmentCopy numOfFrames];
+  v11 = ((absMotion * numOfFrames2) + (v6 * numOfFrames)) / ([(VCPMetaSegment *)self numOfFrames]+ numOfFrames3);
   self->_absMotion = v11;
   self->_stabilityScore = expf(v11 * -0.1);
   v12.receiver = self;
   v12.super_class = VCPVideoMetaMotionSegment;
-  [(VCPMetaSegment *)&v12 mergeSegment:v4];
+  [(VCPMetaSegment *)&v12 mergeSegment:segmentCopy];
 }
 
 @end

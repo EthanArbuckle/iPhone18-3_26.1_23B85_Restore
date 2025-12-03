@@ -1,19 +1,19 @@
 @interface WFSystemIntentEnumerationParameter
-- (WFSystemIntentEnumerationParameter)initWithDefinition:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (WFSystemIntentEnumerationParameter)initWithDefinition:(id)definition;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStates;
 @end
 
 @implementation WFSystemIntentEnumerationParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = [a3 value];
-  v5 = [v4 number];
+  value = [state value];
+  number = [value number];
 
-  if (v5)
+  if (number)
   {
-    v6 = [(INIntentSlotDescription *)self->_slotDescription localizeValue:v5 forLanguage:0];
+    v6 = [(INIntentSlotDescription *)self->_slotDescription localizeValue:number forLanguage:0];
   }
 
   else
@@ -62,19 +62,19 @@ LABEL_7:
   return possibleStates;
 }
 
-- (WFSystemIntentEnumerationParameter)initWithDefinition:(id)a3
+- (WFSystemIntentEnumerationParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFSystemIntentEnumerationParameter;
-  v5 = [(WFEnumerationParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFEnumerationParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"IntentType"];
+    v6 = [definitionCopy objectForKey:@"IntentType"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
 
-    v9 = [v4 objectForKey:@"SlotName"];
+    v9 = [definitionCopy objectForKey:@"SlotName"];
     v10 = objc_opt_class();
     v11 = WFEnforceClass_1501(v9, v10);
 

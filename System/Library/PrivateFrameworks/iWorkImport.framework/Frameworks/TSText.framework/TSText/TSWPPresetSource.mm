@@ -1,30 +1,30 @@
 @interface TSWPPresetSource
 + (NSSet)presetKinds;
-+ (id)p_bootstrapStrokeInTheme:(id)a3 alternate:(unint64_t)a4 index:(unint64_t)a5;
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5;
-+ (void)i_bootstrapShapePresetsInTheme:(id)a3 alternate:(unint64_t)a4;
-+ (void)p_bootstrapLinePresetsInTheme:(id)a3 alternate:(unint64_t)a4;
-+ (void)p_bootstrapListPresetsInTheme:(id)a3 alternate:(unint64_t)a4;
-+ (void)p_bootstrapTextStylePresetsInTheme:(id)a3 alternate:(unint64_t)a4;
-+ (void)p_bootstrapTextboxPresetsInTheme:(id)a3 alternate:(unint64_t)a4;
++ (id)p_bootstrapStrokeInTheme:(id)theme alternate:(unint64_t)alternate index:(unint64_t)index;
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate;
++ (void)i_bootstrapShapePresetsInTheme:(id)theme alternate:(unint64_t)alternate;
++ (void)p_bootstrapLinePresetsInTheme:(id)theme alternate:(unint64_t)alternate;
++ (void)p_bootstrapListPresetsInTheme:(id)theme alternate:(unint64_t)alternate;
++ (void)p_bootstrapTextStylePresetsInTheme:(id)theme alternate:(unint64_t)alternate;
++ (void)p_bootstrapTextboxPresetsInTheme:(id)theme alternate:(unint64_t)alternate;
 @end
 
 @implementation TSWPPresetSource
 
-+ (id)p_bootstrapStrokeInTheme:(id)a3 alternate:(unint64_t)a4 index:(unint64_t)a5
++ (id)p_bootstrapStrokeInTheme:(id)theme alternate:(unint64_t)alternate index:(unint64_t)index
 {
-  if (a4 - 2 > 4)
+  if (alternate - 2 > 4)
   {
     v6 = &unk_276F9A200;
   }
 
   else
   {
-    v6 = *(&off_27A6F56C8 + a4 - 2);
+    v6 = *(&off_27A6F56C8 + alternate - 2);
   }
 
-  v7 = objc_msgSend_colors(a3, a2, a3);
-  v8 = &v6[96 * a5];
+  v7 = objc_msgSend_colors(theme, a2, theme);
+  v8 = &v6[96 * index];
   v27 = *v8;
   v28[0] = *(v8 + 1);
   v9 = *(v8 + 2);
@@ -54,9 +54,9 @@
   return v19;
 }
 
-+ (void)p_bootstrapLinePresetsInTheme:(id)a3 alternate:(unint64_t)a4
++ (void)p_bootstrapLinePresetsInTheme:(id)theme alternate:(unint64_t)alternate
 {
-  v34 = a3;
+  themeCopy = theme;
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
   v8 = objc_msgSend_initWithCapacity_(v6, v7, 6);
   v9 = 0;
@@ -65,15 +65,15 @@
   {
     v11 = TSWPShapeStyleIdentifierString(v10);
     v12 = [TSWPShapeStyle alloc];
-    v15 = objc_msgSend_context(v34, v13, v14);
+    v15 = objc_msgSend_context(themeCopy, v13, v14);
     v17 = objc_msgSend_initWithContext_(v12, v16, v15);
 
-    v19 = objc_msgSend_p_bootstrapStrokeInTheme_alternate_index_(a1, v18, v34, a4, v9);
+    v19 = objc_msgSend_p_bootstrapStrokeInTheme_alternate_index_(self, v18, themeCopy, alternate, v9);
     objc_msgSend_setValue_forProperty_(v17, v20, v19, 517);
     v23 = objc_msgSend_null(MEMORY[0x277CBEB68], v21, v22);
     objc_msgSend_setValue_forProperty_(v17, v24, v23, 516);
 
-    v27 = objc_msgSend_documentStylesheet(v34, v25, v26);
+    v27 = objc_msgSend_documentStylesheet(themeCopy, v25, v26);
     objc_msgSend_addStyle_withIdentifier_(v27, v28, v17, v11);
 
     objc_msgSend_addObject_(v8, v29, v17);
@@ -83,53 +83,53 @@
   while (v9 != 6);
   v30 = objc_alloc(MEMORY[0x277CBEA60]);
   v32 = objc_msgSend_initWithArray_(v30, v31, v8);
-  objc_msgSend_setPresets_ofKind_(v34, v33, v32, v10);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v33, v32, v10);
 }
 
-+ (void)p_bootstrapTextboxPresetsInTheme:(id)a3 alternate:(unint64_t)a4
++ (void)p_bootstrapTextboxPresetsInTheme:(id)theme alternate:(unint64_t)alternate
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
+  themeCopy = theme;
   v8 = [v6 alloc];
   v36 = objc_msgSend_initWithCapacity_(v8, v9, 1);
   v10 = *MEMORY[0x277D80BB8];
   v11 = TSWPShapeStyleIdentifierString(*MEMORY[0x277D80BB8]);
   v12 = [TSWPShapeStyle alloc];
-  v15 = objc_msgSend_context(v7, v13, v14);
+  v15 = objc_msgSend_context(themeCopy, v13, v14);
   v17 = objc_msgSend_initWithContext_(v12, v16, v15);
 
-  v19 = objc_msgSend_p_bootstrapStrokeInTheme_alternate_index_(a1, v18, v7, a4, 0);
+  v19 = objc_msgSend_p_bootstrapStrokeInTheme_alternate_index_(self, v18, themeCopy, alternate, 0);
   v22 = objc_msgSend_emptyStroke(MEMORY[0x277D803C0], v20, v21);
 
   objc_msgSend_setValue_forProperty_(v17, v23, v22, 517);
-  v25 = objc_msgSend_paragraphStyleWithContentTag_(v7, v24, @"Body 1");
+  v25 = objc_msgSend_paragraphStyleWithContentTag_(themeCopy, v24, @"Body 1");
   objc_msgSend_setDefaultParagraphStyle_(v17, v26, v25);
 
-  v29 = objc_msgSend_documentStylesheet(v7, v27, v28);
+  v29 = objc_msgSend_documentStylesheet(themeCopy, v27, v28);
   objc_msgSend_addStyle_withIdentifier_(v29, v30, v17, v11);
 
   objc_msgSend_addObject_(v36, v31, v17);
   v32 = objc_alloc(MEMORY[0x277CBEA60]);
   v34 = objc_msgSend_initWithArray_(v32, v33, v36);
-  objc_msgSend_setPresets_ofKind_(v7, v35, v34, v10);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v35, v34, v10);
 }
 
-+ (void)i_bootstrapShapePresetsInTheme:(id)a3 alternate:(unint64_t)a4
++ (void)i_bootstrapShapePresetsInTheme:(id)theme alternate:(unint64_t)alternate
 {
-  v59 = a3;
-  v56 = objc_msgSend_colors(v59, v5, v6);
-  v54 = objc_msgSend_presetsOfKind_(v59, v7, *MEMORY[0x277D80B28]);
-  v55 = objc_msgSend_presetsOfKind_(v59, v8, *MEMORY[0x277D80B80]);
+  themeCopy = theme;
+  v56 = objc_msgSend_colors(themeCopy, v5, v6);
+  v54 = objc_msgSend_presetsOfKind_(themeCopy, v7, *MEMORY[0x277D80B28]);
+  v55 = objc_msgSend_presetsOfKind_(themeCopy, v8, *MEMORY[0x277D80B80]);
   v9 = objc_alloc(MEMORY[0x277CBEB18]);
   v57 = objc_msgSend_initWithCapacity_(v9, v10, 6);
-  if (a4 - 2 > 4)
+  if (alternate - 2 > 4)
   {
     v11 = &qword_27A6F5188;
   }
 
   else
   {
-    v11 = *(&off_27A6F56F0 + a4 - 2);
+    v11 = *(&off_27A6F56F0 + alternate - 2);
   }
 
   v12 = 0;
@@ -139,7 +139,7 @@
   {
     v14 = TSWPShapeStyleIdentifierString(v58);
     v15 = [TSWPShapeStyle alloc];
-    v18 = objc_msgSend_context(v59, v16, v17);
+    v18 = objc_msgSend_context(themeCopy, v16, v17);
     v20 = objc_msgSend_initWithContext_(v15, v19, v18);
 
     v22 = *(v13 - 2);
@@ -189,13 +189,13 @@ LABEL_12:
       objc_msgSend_setValue_forProperty_(v20, v38, v37, 519);
     }
 
-    v39 = objc_msgSend_paragraphStyleWithContentTag_(v59, v25, v26);
+    v39 = objc_msgSend_paragraphStyleWithContentTag_(themeCopy, v25, v26);
     objc_msgSend_setDefaultParagraphStyle_(v20, v40, v39);
 
     v43 = objc_msgSend_emptyStroke(MEMORY[0x277D803C0], v41, v42);
     objc_msgSend_setValue_forProperty_(v20, v44, v43, 517);
 
-    v47 = objc_msgSend_documentStylesheet(v59, v45, v46);
+    v47 = objc_msgSend_documentStylesheet(themeCopy, v45, v46);
     objc_msgSend_addStyle_withIdentifier_(v47, v48, v20, v14);
 
     objc_msgSend_addObject_(v57, v49, v20);
@@ -206,7 +206,7 @@ LABEL_12:
   while (v12 != 6);
   v50 = objc_alloc(MEMORY[0x277CBEA60]);
   v52 = objc_msgSend_initWithArray_(v50, v51, v57);
-  objc_msgSend_setPresets_ofKind_(v59, v53, v52, v58);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v53, v52, v58);
 }
 
 + (NSSet)presetKinds
@@ -228,46 +228,46 @@ LABEL_12:
   return v8;
 }
 
-+ (void)bootstrapPresetsOfKind:(id)a3 inTheme:(id)a4 alternate:(unint64_t)a5
++ (void)bootstrapPresetsOfKind:(id)kind inTheme:(id)theme alternate:(unint64_t)alternate
 {
-  v16 = a3;
-  v8 = a4;
-  if (objc_msgSend_isEqual_(v16, v9, *MEMORY[0x277D80BB8]))
+  kindCopy = kind;
+  themeCopy = theme;
+  if (objc_msgSend_isEqual_(kindCopy, v9, *MEMORY[0x277D80BB8]))
   {
-    objc_msgSend_p_bootstrapTextboxPresetsInTheme_alternate_(a1, v10, v8, a5);
+    objc_msgSend_p_bootstrapTextboxPresetsInTheme_alternate_(self, v10, themeCopy, alternate);
   }
 
-  else if (objc_msgSend_isEqual_(v16, v10, *MEMORY[0x277D80B88]))
+  else if (objc_msgSend_isEqual_(kindCopy, v10, *MEMORY[0x277D80B88]))
   {
-    objc_msgSend_i_bootstrapShapePresetsInTheme_alternate_(a1, v11, v8, a5);
+    objc_msgSend_i_bootstrapShapePresetsInTheme_alternate_(self, v11, themeCopy, alternate);
   }
 
-  else if (objc_msgSend_isEqual_(v16, v11, *MEMORY[0x277D80B50]))
+  else if (objc_msgSend_isEqual_(kindCopy, v11, *MEMORY[0x277D80B50]))
   {
-    objc_msgSend_p_bootstrapLinePresetsInTheme_alternate_(a1, v12, v8, a5);
+    objc_msgSend_p_bootstrapLinePresetsInTheme_alternate_(self, v12, themeCopy, alternate);
   }
 
-  else if (objc_msgSend_isEqual_(v16, v12, *MEMORY[0x277D80B58]))
+  else if (objc_msgSend_isEqual_(kindCopy, v12, *MEMORY[0x277D80B58]))
   {
-    objc_msgSend_p_bootstrapListPresetsInTheme_alternate_(a1, v13, v8, a5);
+    objc_msgSend_p_bootstrapListPresetsInTheme_alternate_(self, v13, themeCopy, alternate);
   }
 
-  else if (objc_msgSend_isEqual_(v16, v13, *MEMORY[0x277D80B70]))
+  else if (objc_msgSend_isEqual_(kindCopy, v13, *MEMORY[0x277D80B70]))
   {
-    objc_msgSend_p_bootstrapTextStylePresetsInTheme_alternate_(a1, v14, v8, a5);
+    objc_msgSend_p_bootstrapTextStylePresetsInTheme_alternate_(self, v14, themeCopy, alternate);
   }
 
-  else if (objc_msgSend_isEqual_(v16, v14, *MEMORY[0x277D80B20]))
+  else if (objc_msgSend_isEqual_(kindCopy, v14, *MEMORY[0x277D80B20]))
   {
-    objc_msgSend_p_bootstrapDropCapStylePresetsInTheme_alternate_(a1, v15, v8, a5);
+    objc_msgSend_p_bootstrapDropCapStylePresetsInTheme_alternate_(self, v15, themeCopy, alternate);
   }
 }
 
-+ (void)p_bootstrapListPresetsInTheme:(id)a3 alternate:(unint64_t)a4
++ (void)p_bootstrapListPresetsInTheme:(id)theme alternate:(unint64_t)alternate
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_context(v4, v5, v6);
+  themeCopy = theme;
+  v7 = objc_msgSend_context(themeCopy, v5, v6);
   v10 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
   v12 = objc_msgSend_defaultStyleWithContext_type_(TSWPListStyle, v11, v7, 0);
   objc_msgSend_setName_(v12, v13, @"None");
@@ -314,7 +314,7 @@ LABEL_12:
         v39 = objc_msgSend_presetStyleDescriptor(TSWPListStyle, v37, v38);
         v40 = String();
 
-        v43 = objc_msgSend_documentStylesheet(v4, v41, v42);
+        v43 = objc_msgSend_documentStylesheet(themeCopy, v41, v42);
         objc_msgSend_addStyle_withIdentifier_(v43, v44, v35, v40);
 
         ++v33;
@@ -328,23 +328,23 @@ LABEL_12:
     while (v30);
   }
 
-  objc_msgSend_setPresets_ofKind_(v4, v46, v27, *MEMORY[0x277D80B58]);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v46, v27, *MEMORY[0x277D80B58]);
 }
 
-+ (void)p_bootstrapTextStylePresetsInTheme:(id)a3 alternate:(unint64_t)a4
++ (void)p_bootstrapTextStylePresetsInTheme:(id)theme alternate:(unint64_t)alternate
 {
-  v57 = a3;
+  themeCopy = theme;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
   v54 = objc_msgSend_initWithCapacity_(v5, v6, 6);
-  v55 = objc_msgSend_context(v57, v7, v8);
-  if (a4 - 2 > 4)
+  v55 = objc_msgSend_context(themeCopy, v7, v8);
+  if (alternate - 2 > 4)
   {
     v9 = off_27A6F5368;
   }
 
   else
   {
-    v9 = *(&off_27A6F5718 + a4 - 2);
+    v9 = *(&off_27A6F5718 + alternate - 2);
   }
 
   v10 = 0;
@@ -372,13 +372,13 @@ LABEL_12:
     objc_msgSend_setValue_forProperty_(isVariation, v32, v31, 48);
 
     objc_msgSend_setIntValue_forProperty_(isVariation, v33, v25, 86);
-    v35 = objc_msgSend_presetOfKind_index_(v57, v34, v53, v26);
+    v35 = objc_msgSend_presetOfKind_index_(themeCopy, v34, v53, v26);
     objc_msgSend_setInitialListStyle_(isVariation, v36, v35);
     objc_msgSend_setName_(isVariation, v37, v18);
     v40 = objc_msgSend_name(isVariation, v38, v39);
     v41 = String();
 
-    v44 = objc_msgSend_documentStylesheet(v57, v42, v43);
+    v44 = objc_msgSend_documentStylesheet(themeCopy, v42, v43);
     v45 = TSWPTextPackageStringForPreset();
     v48 = objc_msgSend_presetStyleDescriptor(TSWPParagraphStyle, v46, v47);
     v49 = String();
@@ -391,7 +391,7 @@ LABEL_12:
   }
 
   while (v10 != 6);
-  objc_msgSend_setPresets_ofKind_(v57, v52, v54, *MEMORY[0x277D80B70]);
+  objc_msgSend_setPresets_ofKind_(themeCopy, v52, v54, *MEMORY[0x277D80B70]);
 }
 
 @end

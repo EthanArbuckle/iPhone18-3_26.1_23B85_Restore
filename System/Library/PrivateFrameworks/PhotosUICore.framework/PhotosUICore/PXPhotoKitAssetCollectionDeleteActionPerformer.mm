@@ -1,21 +1,21 @@
 @interface PXPhotoKitAssetCollectionDeleteActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
-- (void)_confirmAndDeleteWithCompletionHandler:(id)a3;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
+- (void)_confirmAndDeleteWithCompletionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionDeleteActionPerformer
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = [a3 assetCollection];
+  assetCollection = [reference assetCollection];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v5 = @"trash";
-    if (![PXSharedAlbumsUtilities sharedAlbumIsOwned:v4])
+    if (![PXSharedAlbumsUtilities sharedAlbumIsOwned:assetCollection])
     {
       v5 = @"minus.circle";
     }
@@ -29,16 +29,16 @@
   return v5;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = a4;
+  referenceCopy = reference;
   v6 = PXLocalizedStringFromTable(@"PXAssetCollectionDeleteAlbumActionMenuTitle", @"PhotosUICore");
-  v7 = [v5 assetCollection];
+  assetCollection = [referenceCopy assetCollection];
 
-  if ([v7 px_isSharedAlbum])
+  if ([assetCollection px_isSharedAlbum])
   {
     v8 = @"PXAssetCollectionDeleteSharedAlbumActionMenuTitle";
-    if (([v7 px_isOwnedStreamSharedAlbum] & 1) == 0 && !objc_msgSend(v7, "px_isOwnedCloudKitSharedAlbum"))
+    if (([assetCollection px_isOwnedStreamSharedAlbum] & 1) == 0 && !objc_msgSend(assetCollection, "px_isOwnedCloudKitSharedAlbum"))
     {
       v8 = @"PXAssetCollectionUnsubscribeSharedAlbumActionMenuTitle";
     }
@@ -51,22 +51,22 @@
   return v6;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v6 = a3;
+  referenceCopy = reference;
   if (![off_1E7721428 destructiveActionsEnabled])
   {
     v8 = 0;
     goto LABEL_6;
   }
 
-  v7 = [v6 assetCollection];
-  if (!v7)
+  assetCollection = [referenceCopy assetCollection];
+  if (!assetCollection)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionDeleteActionPerformer.m" lineNumber:32 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionDeleteActionPerformer.m" lineNumber:32 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
 LABEL_9:
 
     goto LABEL_4;
@@ -75,31 +75,31 @@ LABEL_9:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionDeleteActionPerformer.m" lineNumber:32 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionDeleteActionPerformer.m" lineNumber:32 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_9;
   }
 
 LABEL_4:
-  v8 = [v7 canPerformEditOperation:6];
+  v8 = [assetCollection canPerformEditOperation:6];
 
 LABEL_6:
   return v8;
 }
 
-- (void)_confirmAndDeleteWithCompletionHandler:(id)a3
+- (void)_confirmAndDeleteWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self presentationEnvironment];
-  v6 = [v5 canPresentPopovers] ^ 1;
+  handlerCopy = handler;
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+  v6 = [presentationEnvironment canPresentPopovers] ^ 1;
 
-  v7 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v8 = [(PXActionPerformer *)self undoManager];
-  v9 = PXCollectionDeletionAlertControllerForCollection(v7, 0, v6, v8, v4);
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  undoManager = [(PXActionPerformer *)self undoManager];
+  v9 = PXCollectionDeletionAlertControllerForCollection(assetCollection, 0, v6, undoManager, handlerCopy);
 
   [(PXActionPerformer *)self presentViewController:v9];
 }

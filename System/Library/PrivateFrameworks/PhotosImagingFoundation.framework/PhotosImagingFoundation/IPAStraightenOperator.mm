@@ -1,7 +1,7 @@
 @interface IPAStraightenOperator
-+ (id)operatorWithIdentifier:(id)a3 angleZ:(double)a4;
++ (id)operatorWithIdentifier:(id)identifier angleZ:(double)z;
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPAStraightenOperator
@@ -16,12 +16,12 @@
   return v6;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28704C380])
+  geometryCopy = geometry;
+  if ([geometryCopy conformsToProtocol:&unk_28704C380])
   {
-    v5 = v4;
+    v5 = geometryCopy;
     v6 = v5;
     zAngle = self->_zAngle;
     if (zAngle == 0.0)
@@ -107,10 +107,10 @@
   return result;
 }
 
-+ (id)operatorWithIdentifier:(id)a3 angleZ:(double)a4
++ (id)operatorWithIdentifier:(id)identifier angleZ:(double)z
 {
-  v5 = a3;
-  v6 = fabs(a4);
+  identifierCopy = identifier;
+  v6 = fabs(z);
   if (v6 > 0.785398163)
   {
     result = _PFAssertFailHandler();
@@ -119,15 +119,15 @@
 
   else
   {
-    v7 = [(IPAGeometryOperator *)[IPAStraightenOperator alloc] initWithIdentifier:v5];
+    v7 = [(IPAGeometryOperator *)[IPAStraightenOperator alloc] initWithIdentifier:identifierCopy];
     v8 = v7;
-    v9 = 0.0;
+    zCopy = 0.0;
     if (v6 >= 0.0001)
     {
-      v9 = a4;
+      zCopy = z;
     }
 
-    v7->_zAngle = v9;
+    v7->_zAngle = zCopy;
 
     return v8;
   }

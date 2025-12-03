@@ -1,15 +1,15 @@
 @interface _INPBNote
-- (BOOL)isEqual:(id)a3;
-- (_INPBNote)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBNote)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContent:(id)content;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setContents:(id)contents;
+- (void)setIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBNote
@@ -17,17 +17,17 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accountIdentifier)
   {
-    v4 = [(_INPBNote *)self accountIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accountIdentifier"];
+    accountIdentifier = [(_INPBNote *)self accountIdentifier];
+    v5 = [accountIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accountIdentifier"];
   }
 
   if ([(NSArray *)self->_contents count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -47,8 +47,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -57,35 +57,35 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"content"];
+    [dictionary setObject:array forKeyedSubscript:@"content"];
   }
 
-  v13 = [(_INPBNote *)self createdDateTime];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"createdDateTime"];
+  createdDateTime = [(_INPBNote *)self createdDateTime];
+  dictionaryRepresentation2 = [createdDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"createdDateTime"];
 
-  v15 = [(_INPBNote *)self groupName];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"groupName"];
+  groupName = [(_INPBNote *)self groupName];
+  dictionaryRepresentation3 = [groupName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"groupName"];
 
   if (self->_identifier)
   {
-    v17 = [(_INPBNote *)self identifier];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBNote *)self identifier];
+    v18 = [identifier copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"identifier"];
   }
 
-  v19 = [(_INPBNote *)self modifiedDateTime];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"modifiedDateTime"];
+  modifiedDateTime = [(_INPBNote *)self modifiedDateTime];
+  dictionaryRepresentation4 = [modifiedDateTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"modifiedDateTime"];
 
-  v21 = [(_INPBNote *)self title];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"title"];
+  title = [(_INPBNote *)self title];
+  dictionaryRepresentation5 = [title dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"title"];
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -99,28 +99,28 @@
   return v6 ^ v8 ^ [(_INPBDataString *)self->_title hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(_INPBNote *)self accountIdentifier];
-  v6 = [v4 accountIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self accountIdentifier];
+  accountIdentifier2 = [equalCopy accountIdentifier];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(_INPBNote *)self accountIdentifier];
-  if (v7)
+  accountIdentifier3 = [(_INPBNote *)self accountIdentifier];
+  if (accountIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBNote *)self accountIdentifier];
-    v10 = [v4 accountIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = accountIdentifier3;
+    accountIdentifier4 = [(_INPBNote *)self accountIdentifier];
+    accountIdentifier5 = [equalCopy accountIdentifier];
+    v11 = [accountIdentifier4 isEqual:accountIdentifier5];
 
     if (!v11)
     {
@@ -132,20 +132,20 @@
   {
   }
 
-  v5 = [(_INPBNote *)self contents];
-  v6 = [v4 contents];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self contents];
+  accountIdentifier2 = [equalCopy contents];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(_INPBNote *)self contents];
-  if (v12)
+  contents = [(_INPBNote *)self contents];
+  if (contents)
   {
-    v13 = v12;
-    v14 = [(_INPBNote *)self contents];
-    v15 = [v4 contents];
-    v16 = [v14 isEqual:v15];
+    v13 = contents;
+    contents2 = [(_INPBNote *)self contents];
+    contents3 = [equalCopy contents];
+    v16 = [contents2 isEqual:contents3];
 
     if (!v16)
     {
@@ -157,20 +157,20 @@
   {
   }
 
-  v5 = [(_INPBNote *)self createdDateTime];
-  v6 = [v4 createdDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self createdDateTime];
+  accountIdentifier2 = [equalCopy createdDateTime];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(_INPBNote *)self createdDateTime];
-  if (v17)
+  createdDateTime = [(_INPBNote *)self createdDateTime];
+  if (createdDateTime)
   {
-    v18 = v17;
-    v19 = [(_INPBNote *)self createdDateTime];
-    v20 = [v4 createdDateTime];
-    v21 = [v19 isEqual:v20];
+    v18 = createdDateTime;
+    createdDateTime2 = [(_INPBNote *)self createdDateTime];
+    createdDateTime3 = [equalCopy createdDateTime];
+    v21 = [createdDateTime2 isEqual:createdDateTime3];
 
     if (!v21)
     {
@@ -182,20 +182,20 @@
   {
   }
 
-  v5 = [(_INPBNote *)self groupName];
-  v6 = [v4 groupName];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self groupName];
+  accountIdentifier2 = [equalCopy groupName];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(_INPBNote *)self groupName];
-  if (v22)
+  groupName = [(_INPBNote *)self groupName];
+  if (groupName)
   {
-    v23 = v22;
-    v24 = [(_INPBNote *)self groupName];
-    v25 = [v4 groupName];
-    v26 = [v24 isEqual:v25];
+    v23 = groupName;
+    groupName2 = [(_INPBNote *)self groupName];
+    groupName3 = [equalCopy groupName];
+    v26 = [groupName2 isEqual:groupName3];
 
     if (!v26)
     {
@@ -207,20 +207,20 @@
   {
   }
 
-  v5 = [(_INPBNote *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self identifier];
+  accountIdentifier2 = [equalCopy identifier];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(_INPBNote *)self identifier];
-  if (v27)
+  identifier = [(_INPBNote *)self identifier];
+  if (identifier)
   {
-    v28 = v27;
-    v29 = [(_INPBNote *)self identifier];
-    v30 = [v4 identifier];
-    v31 = [v29 isEqual:v30];
+    v28 = identifier;
+    identifier2 = [(_INPBNote *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v31 = [identifier2 isEqual:identifier3];
 
     if (!v31)
     {
@@ -232,20 +232,20 @@
   {
   }
 
-  v5 = [(_INPBNote *)self modifiedDateTime];
-  v6 = [v4 modifiedDateTime];
-  if ((v5 != 0) == (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self modifiedDateTime];
+  accountIdentifier2 = [equalCopy modifiedDateTime];
+  if ((accountIdentifier != 0) == (accountIdentifier2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(_INPBNote *)self modifiedDateTime];
-  if (v32)
+  modifiedDateTime = [(_INPBNote *)self modifiedDateTime];
+  if (modifiedDateTime)
   {
-    v33 = v32;
-    v34 = [(_INPBNote *)self modifiedDateTime];
-    v35 = [v4 modifiedDateTime];
-    v36 = [v34 isEqual:v35];
+    v33 = modifiedDateTime;
+    modifiedDateTime2 = [(_INPBNote *)self modifiedDateTime];
+    modifiedDateTime3 = [equalCopy modifiedDateTime];
+    v36 = [modifiedDateTime2 isEqual:modifiedDateTime3];
 
     if (!v36)
     {
@@ -257,12 +257,12 @@
   {
   }
 
-  v5 = [(_INPBNote *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) != (v6 == 0))
+  accountIdentifier = [(_INPBNote *)self title];
+  accountIdentifier2 = [equalCopy title];
+  if ((accountIdentifier != 0) != (accountIdentifier2 == 0))
   {
-    v37 = [(_INPBNote *)self title];
-    if (!v37)
+    title = [(_INPBNote *)self title];
+    if (!title)
     {
 
 LABEL_40:
@@ -270,10 +270,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(_INPBNote *)self title];
-    v40 = [v4 title];
-    v41 = [v39 isEqual:v40];
+    v38 = title;
+    title2 = [(_INPBNote *)self title];
+    title3 = [equalCopy title];
+    v41 = [title2 isEqual:title3];
 
     if (v41)
     {
@@ -293,64 +293,64 @@ LABEL_38:
   return v42;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBNote allocWithZone:](_INPBNote init];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   [(_INPBNote *)v5 setAccountIdentifier:v6];
 
-  v7 = [(NSArray *)self->_contents copyWithZone:a3];
+  v7 = [(NSArray *)self->_contents copyWithZone:zone];
   [(_INPBNote *)v5 setContents:v7];
 
-  v8 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:a3];
+  v8 = [(_INPBDateTime *)self->_createdDateTime copyWithZone:zone];
   [(_INPBNote *)v5 setCreatedDateTime:v8];
 
-  v9 = [(_INPBDataString *)self->_groupName copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_groupName copyWithZone:zone];
   [(_INPBNote *)v5 setGroupName:v9];
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBNote *)v5 setIdentifier:v10];
 
-  v11 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:a3];
+  v11 = [(_INPBDateTime *)self->_modifiedDateTime copyWithZone:zone];
   [(_INPBNote *)v5 setModifiedDateTime:v11];
 
-  v12 = [(_INPBDataString *)self->_title copyWithZone:a3];
+  v12 = [(_INPBDataString *)self->_title copyWithZone:zone];
   [(_INPBNote *)v5 setTitle:v12];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBNote *)self data];
+  coderCopy = coder;
+  data = [(_INPBNote *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBNote)initWithCoder:(id)a3
+- (_INPBNote)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBNote *)self initWithData:v6];
+    self = [(_INPBNote *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBNote *)self accountIdentifier];
+  toCopy = to;
+  accountIdentifier = [(_INPBNote *)self accountIdentifier];
 
-  if (v5)
+  if (accountIdentifier)
   {
     accountIdentifier = self->_accountIdentifier;
     PBDataWriterWriteStringField();
@@ -388,88 +388,88 @@ LABEL_38:
     while (v9);
   }
 
-  v13 = [(_INPBNote *)self createdDateTime];
+  createdDateTime = [(_INPBNote *)self createdDateTime];
 
-  if (v13)
+  if (createdDateTime)
   {
-    v14 = [(_INPBNote *)self createdDateTime];
+    createdDateTime2 = [(_INPBNote *)self createdDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBNote *)self groupName];
+  groupName = [(_INPBNote *)self groupName];
 
-  if (v15)
+  if (groupName)
   {
-    v16 = [(_INPBNote *)self groupName];
+    groupName2 = [(_INPBNote *)self groupName];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBNote *)self identifier];
+  identifier = [(_INPBNote *)self identifier];
 
-  if (v17)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBNote *)self modifiedDateTime];
+  modifiedDateTime = [(_INPBNote *)self modifiedDateTime];
 
-  if (v19)
+  if (modifiedDateTime)
   {
-    v20 = [(_INPBNote *)self modifiedDateTime];
+    modifiedDateTime2 = [(_INPBNote *)self modifiedDateTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_INPBNote *)self title];
+  title = [(_INPBNote *)self title];
 
-  if (v21)
+  if (title)
   {
-    v22 = [(_INPBNote *)self title];
+    title2 = [(_INPBNote *)self title];
     PBDataWriterWriteSubmessage();
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, identifier);
 }
 
-- (void)addContent:(id)a3
+- (void)addContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   contents = self->_contents;
-  v8 = v4;
+  v8 = contentCopy;
   if (!contents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contents;
-    self->_contents = v6;
+    self->_contents = array;
 
-    v4 = v8;
+    contentCopy = v8;
     contents = self->_contents;
   }
 
-  [(NSArray *)contents addObject:v4];
+  [(NSArray *)contents addObject:contentCopy];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v4 = [a3 mutableCopy];
+  v4 = [contents mutableCopy];
   contents = self->_contents;
   self->_contents = v4;
 
   MEMORY[0x1EEE66BB8](v4, contents);
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   accountIdentifier = self->_accountIdentifier;
   self->_accountIdentifier = v4;
 

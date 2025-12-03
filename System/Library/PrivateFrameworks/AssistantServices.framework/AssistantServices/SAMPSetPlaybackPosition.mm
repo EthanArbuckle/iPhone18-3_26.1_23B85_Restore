@@ -1,55 +1,55 @@
 @interface SAMPSetPlaybackPosition
-- (void)_ad_performPreviousItemWithTargetQueue:(id)a3 completion:(id)a4;
-- (void)_ad_performSeekToBeginningWithTargetQueue:(id)a3 completion:(id)a4;
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performPreviousItemWithTargetQueue:(id)queue completion:(id)completion;
+- (void)_ad_performSeekToBeginningWithTargetQueue:(id)queue completion:(id)completion;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SAMPSetPlaybackPosition
 
-- (void)_ad_performPreviousItemWithTargetQueue:(id)a3 completion:(id)a4
+- (void)_ad_performPreviousItemWithTargetQueue:(id)queue completion:(id)completion
 {
   v9 = kMRMediaRemoteOptionRequestDefermentToPlaybackQueuePosition;
   v10 = &__kCFBooleanTrue;
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  sub_1001B7630(5, self, v8, v7, v6);
+  sub_1001B7630(5, self, v8, queueCopy, completionCopy);
 }
 
-- (void)_ad_performSeekToBeginningWithTargetQueue:(id)a3 completion:(id)a4
+- (void)_ad_performSeekToBeginningWithTargetQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(0, 0);
-  v10 = v6;
-  v8 = v5;
-  v9 = v6;
+  v10 = completionCopy;
+  v8 = queueCopy;
+  v9 = completionCopy;
   AFGetNowPlayingInfoDictionary();
 }
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(SAMPSetPlaybackPosition *)self position];
-  v8 = [v6 targetQueue];
+  handlerCopy = handler;
+  serviceCopy = service;
+  position = [(SAMPSetPlaybackPosition *)self position];
+  targetQueue = [serviceCopy targetQueue];
 
-  switch(v7)
+  switch(position)
   {
     case 3u:
-      [(SAMPSetPlaybackPosition *)self _ad_performSeekToBeginningWithTargetQueue:v8 completion:v10];
+      [(SAMPSetPlaybackPosition *)self _ad_performSeekToBeginningWithTargetQueue:targetQueue completion:handlerCopy];
       break;
     case 2u:
-      [(SAMPSetPlaybackPosition *)self _ad_performPreviousItemWithTargetQueue:v8 completion:v10];
+      [(SAMPSetPlaybackPosition *)self _ad_performPreviousItemWithTargetQueue:targetQueue completion:handlerCopy];
       break;
     case 1u:
-      [(SAMPSetPlaybackPosition *)self _ad_performNextItemWithTargetQueue:v8 completion:v10];
+      [(SAMPSetPlaybackPosition *)self _ad_performNextItemWithTargetQueue:targetQueue completion:handlerCopy];
       break;
     default:
-      if (v10)
+      if (handlerCopy)
       {
         v9 = [[SACommandFailed alloc] initWithReason:@"Unsupported playback position request"];
-        v10[2](v10, v9, 0);
+        handlerCopy[2](handlerCopy, v9, 0);
       }
 
       break;

@@ -1,13 +1,13 @@
 @interface CNContactPickerExtensionContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)invalidateSelectionAnimated:(BOOL)a3;
+- (void)invalidateSelectionAnimated:(BOOL)animated;
 - (void)pickerDidCancel;
-- (void)pickerDidCompleteWithNewContact:(id)a3;
+- (void)pickerDidCompleteWithNewContact:(id)contact;
 - (void)pickerDidSelectAddNewContact;
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4;
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4;
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
+- (void)pickerDidSelectContact:(id)contact property:(id)property;
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties;
+- (void)setupWithOptions:(id)options readyBlock:(id)block;
 @end
 
 @implementation CNContactPickerExtensionContext
@@ -75,14 +75,14 @@ void __68__CNContactPickerExtensionContext__extensionAuxiliaryVendorProtocol__bl
 
 - (void)pickerDidCancel
 {
-  v4 = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
-  v7 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_128];
+  _auxiliaryConnection = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_128];
 
   v5 = v7;
   if (!v7)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:306 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:306 description:@"host object is nil!"];
 
     v5 = 0;
   }
@@ -96,19 +96,19 @@ void __50__CNContactPickerExtensionContext_pickerDidCancel__block_invoke(uint64_
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 304, 3, @"error calling host - %@", v2, v3, v4, v5, v6);
 }
 
-- (void)pickerDidCompleteWithNewContact:(id)a3
+- (void)pickerDidCompleteWithNewContact:(id)contact
 {
-  v8 = a3;
-  v5 = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_126];
+  contactCopy = contact;
+  _auxiliaryConnection = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_126];
 
   if (!v6)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:296 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:296 description:@"host object is nil!"];
   }
 
-  [v6 pickerDidCompleteWithNewContact:v8];
+  [v6 pickerDidCompleteWithNewContact:contactCopy];
 }
 
 void __67__CNContactPickerExtensionContext_pickerDidCompleteWithNewContact___block_invoke(uint64_t a1, void *a2)
@@ -117,20 +117,20 @@ void __67__CNContactPickerExtensionContext_pickerDidCompleteWithNewContact___blo
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 294, 3, @"error calling host - %@", v2, v3, v4, v5, v6);
 }
 
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_124];
+  contactsCopy = contacts;
+  propertiesCopy = properties;
+  _auxiliaryConnection = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
+  v9 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_124];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:286 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:286 description:@"host object is nil!"];
   }
 
-  [v9 pickerDidSelectContacts:v11 properties:v7];
+  [v9 pickerDidSelectContacts:contactsCopy properties:propertiesCopy];
 }
 
 void __70__CNContactPickerExtensionContext_pickerDidSelectContacts_properties___block_invoke(uint64_t a1, void *a2)
@@ -139,20 +139,20 @@ void __70__CNContactPickerExtensionContext_pickerDidSelectContacts_properties___
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 284, 3, @"error calling host - %@", v2, v3, v4, v5, v6);
 }
 
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4
+- (void)pickerDidSelectContact:(id)contact property:(id)property
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
+  contactCopy = contact;
+  propertyCopy = property;
+  _auxiliaryConnection = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
+  v9 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_122];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:276 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:276 description:@"host object is nil!"];
   }
 
-  [v9 pickerDidSelectContact:v11 property:v7];
+  [v9 pickerDidSelectContact:contactCopy property:propertyCopy];
 }
 
 void __67__CNContactPickerExtensionContext_pickerDidSelectContact_property___block_invoke(uint64_t a1, void *a2)
@@ -163,14 +163,14 @@ void __67__CNContactPickerExtensionContext_pickerDidSelectContact_property___blo
 
 - (void)pickerDidSelectAddNewContact
 {
-  v4 = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
-  v7 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_110];
+  _auxiliaryConnection = [(CNContactPickerExtensionContext *)self _auxiliaryConnection];
+  v7 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_110];
 
   v5 = v7;
   if (!v7)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:266 description:@"host object is nil!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactPickerServiceViewController.m" lineNumber:266 description:@"host object is nil!"];
 
     v5 = 0;
   }
@@ -184,14 +184,14 @@ void __63__CNContactPickerExtensionContext_pickerDidSelectAddNewContact__block_i
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerServiceViewController.m", 264, 3, @"error calling host - %@", v2, v3, v4, v5, v6);
 }
 
-- (void)invalidateSelectionAnimated:(BOOL)a3
+- (void)invalidateSelectionAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __63__CNContactPickerExtensionContext_invalidateSelectionAnimated___block_invoke;
   v3[3] = &unk_1E74E4768;
   v3[4] = self;
-  v4 = a3;
+  animatedCopy = animated;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -201,19 +201,19 @@ void __63__CNContactPickerExtensionContext_invalidateSelectionAnimated___block_i
   [v2 invalidateSelectionAnimated:*(a1 + 40)];
 }
 
-- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+- (void)setupWithOptions:(id)options readyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__CNContactPickerExtensionContext_setupWithOptions_readyBlock___block_invoke;
   block[3] = &unk_1E74E6650;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = optionsCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = optionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

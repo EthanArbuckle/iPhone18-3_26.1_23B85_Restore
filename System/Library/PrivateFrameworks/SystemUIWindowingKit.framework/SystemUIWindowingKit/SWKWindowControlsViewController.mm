@@ -3,22 +3,22 @@
 - (BOOL)supportsHoverInteractions;
 - (CGPoint)cornerOffset;
 - (CGPoint)cornerPoint;
-- (SWKWindowControlsViewController)initWithCoder:(id)a3;
-- (SWKWindowControlsViewController)initWithElements:(unint64_t)a3 delegate:(id)a4;
-- (SWKWindowControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SWKWindowControlsViewController)initWithCoder:(id)coder;
+- (SWKWindowControlsViewController)initWithElements:(unint64_t)elements delegate:(id)delegate;
+- (SWKWindowControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SWKWindowControlsViewControllerDelegate)delegate;
 - (UIView)contextMenuContainerView;
 - (_TtC20SystemUIWindowingKit18WindowControlsView)windowControlsView;
 - (unint64_t)elements;
 - (void)focus;
 - (void)loadView;
-- (void)setCornerOffset:(CGPoint)a3;
-- (void)setElements:(unint64_t)a3;
-- (void)setHighlightedIfNeeded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSupportsHoverInteractions:(BOOL)a3;
-- (void)setWindowControlsView:(id)a3;
+- (void)setCornerOffset:(CGPoint)offset;
+- (void)setElements:(unint64_t)elements;
+- (void)setHighlightedIfNeeded:(BOOL)needed animated:(BOOL)animated;
+- (void)setSupportsHoverInteractions:(BOOL)interactions;
+- (void)setWindowControlsView:(id)view;
 - (void)unfocus;
-- (void)updateAdaptiveStyle:(int64_t)a3 adaptive:(BOOL)a4;
+- (void)updateAdaptiveStyle:(int64_t)style adaptive:(BOOL)adaptive;
 @end
 
 @implementation SWKWindowControlsViewController
@@ -34,19 +34,19 @@
   return result;
 }
 
-- (void)setCornerOffset:(CGPoint)a3
+- (void)setCornerOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v6 = (self + OBJC_IVAR___SWKWindowControlsViewController_cornerOffset);
   swift_beginAccess();
   *v6 = x;
   v6[1] = y;
-  v7 = self;
-  v8 = [(SWKWindowControlsViewController *)v7 windowControlsView];
+  selfCopy = self;
+  windowControlsView = [(SWKWindowControlsViewController *)selfCopy windowControlsView];
   v9 = *v6;
 
-  *(&v8->super.super.super + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_cornerOffset) = v9;
+  *(&windowControlsView->super.super.super + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_cornerOffset) = v9;
 }
 
 - (CGPoint)cornerPoint
@@ -64,10 +64,10 @@
   return *(self + v3);
 }
 
-- (void)setElements:(unint64_t)a3
+- (void)setElements:(unint64_t)elements
 {
-  v4 = self;
-  SWKWindowControlsViewController.elements.setter(a3);
+  selfCopy = self;
+  SWKWindowControlsViewController.elements.setter(elements);
 }
 
 - (UIView)contextMenuContainerView
@@ -85,16 +85,16 @@
   return *(self + v3);
 }
 
-- (void)setSupportsHoverInteractions:(BOOL)a3
+- (void)setSupportsHoverInteractions:(BOOL)interactions
 {
   v5 = OBJC_IVAR___SWKWindowControlsViewController_supportsHoverInteractions;
   swift_beginAccess();
-  *(self + v5) = a3;
-  v6 = self;
-  v7 = [(SWKWindowControlsViewController *)v6 windowControlsView];
+  *(self + v5) = interactions;
+  selfCopy = self;
+  windowControlsView = [(SWKWindowControlsViewController *)selfCopy windowControlsView];
   LOBYTE(self) = *(self + v5);
 
-  *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_supportsHoverInteractions) = self;
+  *(&windowControlsView->super.super.super.super.isa + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_supportsHoverInteractions) = self;
 }
 
 - (SWKWindowControlsViewControllerDelegate)delegate
@@ -106,28 +106,28 @@
 
 - (_TtC20SystemUIWindowingKit18WindowControlsView)windowControlsView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21ED2A580();
 
   return v3;
 }
 
-- (void)setWindowControlsView:(id)a3
+- (void)setWindowControlsView:(id)view
 {
   v4 = *(self + OBJC_IVAR___SWKWindowControlsViewController____lazy_storage___windowControlsView);
-  *(self + OBJC_IVAR___SWKWindowControlsViewController____lazy_storage___windowControlsView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SWKWindowControlsViewController____lazy_storage___windowControlsView) = view;
+  viewCopy = view;
 }
 
-- (SWKWindowControlsViewController)initWithElements:(unint64_t)a3 delegate:(id)a4
+- (SWKWindowControlsViewController)initWithElements:(unint64_t)elements delegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = sub_21ED2B8B8(a3);
+  v5 = sub_21ED2B8B8(elements);
   swift_unknownObjectRelease();
   return v5;
 }
 
-- (SWKWindowControlsViewController)initWithCoder:(id)a3
+- (SWKWindowControlsViewController)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR___SWKWindowControlsViewController_cornerOffset);
   *v4 = 0;
@@ -143,38 +143,38 @@
 
 - (void)focus
 {
-  v2 = self;
+  selfCopy = self;
   sub_21ED2A924();
 }
 
 - (void)unfocus
 {
-  v2 = self;
+  selfCopy = self;
   sub_21ED2ABF8();
 }
 
 - (BOOL)isPresentingMenu
 {
-  v2 = [(SWKWindowControlsViewController *)self windowControlsView];
-  v3 = *(&v2->super.super.super.super.isa + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_interactionState);
+  windowControlsView = [(SWKWindowControlsViewController *)self windowControlsView];
+  v3 = *(&windowControlsView->super.super.super.super.isa + OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_interactionState);
 
   return v3 == 3;
 }
 
-- (void)setHighlightedIfNeeded:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlightedIfNeeded:(BOOL)needed animated:(BOOL)animated
 {
-  v5 = self;
-  sub_21ED2BA98(a3);
+  selfCopy = self;
+  sub_21ED2BA98(needed);
 }
 
-- (void)updateAdaptiveStyle:(int64_t)a3 adaptive:(BOOL)a4
+- (void)updateAdaptiveStyle:(int64_t)style adaptive:(BOOL)adaptive
 {
-  v4 = a4;
-  v6 = self;
-  sub_21ED2AF64(a3, v4);
+  adaptiveCopy = adaptive;
+  selfCopy = self;
+  sub_21ED2AF64(style, adaptiveCopy);
 }
 
-- (SWKWindowControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SWKWindowControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -183,9 +183,9 @@
 
 - (void)loadView
 {
-  v3 = self;
-  v2 = [(SWKWindowControlsViewController *)v3 windowControlsView];
-  [(SWKWindowControlsViewController *)v3 setView:v2];
+  selfCopy = self;
+  windowControlsView = [(SWKWindowControlsViewController *)selfCopy windowControlsView];
+  [(SWKWindowControlsViewController *)selfCopy setView:windowControlsView];
 }
 
 @end

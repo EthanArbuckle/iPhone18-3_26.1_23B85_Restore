@@ -1,11 +1,11 @@
 @interface CompletionProvider
 - (CompletionProvider)init;
 - (CompletionProviderDelegate)delegate;
-- (id)completionsForQuery:(id)a3 isCFSearch:(BOOL)a4;
+- (id)completionsForQuery:(id)query isCFSearch:(BOOL)search;
 - (void)_pruneCachedCompletions;
 - (void)clearCachedCompletions;
 - (void)fail;
-- (void)setCompletions:(id)a3 forString:(id)a4 isCFSearch:(BOOL)a5;
+- (void)setCompletions:(id)completions forString:(id)string isCFSearch:(BOOL)search;
 @end
 
 @implementation CompletionProvider
@@ -31,18 +31,18 @@
   return v2;
 }
 
-- (id)completionsForQuery:(id)a3 isCFSearch:(BOOL)a4
+- (id)completionsForQuery:(id)query isCFSearch:(BOOL)search
 {
-  v4 = a4;
+  searchCopy = search;
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 queryString];
-  v8 = v7;
-  if (v7)
+  queryCopy = query;
+  queryString = [queryCopy queryString];
+  v8 = queryString;
+  if (queryString)
   {
-    if ([v7 length])
+    if ([queryString length])
     {
-      v9 = [(CompletionProvider *)self findCompletionsForKey:v8 isCFSearch:v4];
+      v9 = [(CompletionProvider *)self findCompletionsForKey:v8 isCFSearch:searchCopy];
       v10 = v9;
       if (v9)
       {
@@ -60,9 +60,9 @@
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
         [Application postTestNotificationName:@"completionProviderDidStart" object:self userInfo:v14];
 
-        [(CompletionProvider *)self setQueryToComplete:v6];
+        [(CompletionProvider *)self setQueryToComplete:queryCopy];
         self->_inCompletionsForString = 0;
-        v11 = [(CompletionProvider *)self findCompletionsForKey:v8 isCFSearch:v4];
+        v11 = [(CompletionProvider *)self findCompletionsForKey:v8 isCFSearch:searchCopy];
       }
 
       v12 = v11;
@@ -84,10 +84,10 @@
 
 - (void)_pruneCachedCompletions
 {
-  v3 = [(CompletionProvider *)self maximumCachedCompletionCount];
+  maximumCachedCompletionCount = [(CompletionProvider *)self maximumCachedCompletionCount];
   v4 = [(NSMutableDictionary *)self->_completionsByString count];
-  v5 = v4 >= v3;
-  v6 = v4 - v3;
+  v5 = v4 >= maximumCachedCompletionCount;
+  v6 = v4 - maximumCachedCompletionCount;
   if (v5)
   {
     if (v6)
@@ -113,25 +113,25 @@
   [(NSMutableArray *)completedStringsInPruneOrder removeAllObjects];
 }
 
-- (void)setCompletions:(id)a3 forString:(id)a4 isCFSearch:(BOOL)a5
+- (void)setCompletions:(id)completions forString:(id)string isCFSearch:(BOOL)search
 {
-  v5 = a5;
+  searchCopy = search;
   v18[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 copy];
-  if (!v5)
+  completionsCopy = completions;
+  stringCopy = string;
+  v10 = [stringCopy copy];
+  if (!searchCopy)
   {
     v17[0] = @"time";
     v11 = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent()];
     v17[1] = @"query";
     v18[0] = v11;
-    v18[1] = v9;
+    v18[1] = stringCopy;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
     [Application postTestNotificationName:@"completionProviderDidFinish" object:self userInfo:v12];
   }
 
-  v13 = [(CompletionProvider *)self getKeyForQueryString:v10 isCFSearch:v5];
+  v13 = [(CompletionProvider *)self getKeyForQueryString:v10 isCFSearch:searchCopy];
   v14 = [(NSMutableDictionary *)self->_completionsByString objectForKeyedSubscript:v13];
 
   if (v14)
@@ -139,9 +139,9 @@
     [(NSMutableArray *)self->_completedStringsInPruneOrder removeObject:v13];
   }
 
-  if (v8)
+  if (completionsCopy)
   {
-    v15 = v8;
+    v15 = completionsCopy;
   }
 
   else
@@ -152,13 +152,13 @@
   [(NSMutableDictionary *)self->_completionsByString setObject:v15 forKeyedSubscript:v13];
   [(NSMutableArray *)self->_completedStringsInPruneOrder addObject:v13];
   [(CompletionProvider *)self _pruneCachedCompletions];
-  if (!v5)
+  if (!searchCopy)
   {
     self->_failing = 0;
     if (!self->_inCompletionsForString)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained completionProvider:self didFinishCompletingString:v9];
+      [WeakRetained completionProvider:self didFinishCompletingString:stringCopy];
     }
   }
 }

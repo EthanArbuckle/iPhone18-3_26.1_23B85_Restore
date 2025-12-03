@@ -7,20 +7,20 @@
 
 - (id)_fbsDisplayIdentity
 {
-  v1 = [a1 windowScene];
-  v2 = [v1 screen];
-  v3 = [v2 displayIdentity];
+  windowScene = [self windowScene];
+  screen = [windowScene screen];
+  displayIdentity = [screen displayIdentity];
 
-  return v3;
+  return displayIdentity;
 }
 
 - (id)_fbsDisplayConfiguration
 {
-  v1 = [a1 windowScene];
-  v2 = [v1 screen];
-  v3 = [v2 displayConfiguration];
+  windowScene = [self windowScene];
+  screen = [windowScene screen];
+  displayConfiguration = [screen displayConfiguration];
 
-  return v3;
+  return displayConfiguration;
 }
 
 @end

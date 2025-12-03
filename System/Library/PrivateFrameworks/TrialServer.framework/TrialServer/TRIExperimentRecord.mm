@@ -1,20 +1,20 @@
 @interface TRIExperimentRecord
-+ (TRIExperimentRecord)recordWithDeploymentEnvironment:(int)a3 experimentDeployment:(id)a4 treatmentId:(id)a5 factorPackSetId:(id)a6 type:(int)a7 status:(int64_t)a8 startDate:(id)a9 endDate:(id)a10 namespaces:(id)a11 isManuallyTargeted:(BOOL)a12 artifact:(id)a13 experimentType:(int)a14;
-- (BOOL)hasCounterfactualTreatmentReferencingFactorPackSetId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecord:(id)a3;
++ (TRIExperimentRecord)recordWithDeploymentEnvironment:(int)environment experimentDeployment:(id)deployment treatmentId:(id)id factorPackSetId:(id)setId type:(int)type status:(int64_t)status startDate:(id)date endDate:(id)self0 namespaces:(id)self1 isManuallyTargeted:(BOOL)self2 artifact:(id)self3 experimentType:(int)self4;
+- (BOOL)hasCounterfactualTreatmentReferencingFactorPackSetId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecord:(id)record;
 - (BOOL)isExpiredExperiment;
-- (TRIExperimentRecord)initWithDeploymentEnvironment:(int)a3 experimentDeployment:(id)a4 treatmentId:(id)a5 factorPackSetId:(id)a6 type:(int)a7 status:(int64_t)a8 startDate:(id)a9 endDate:(id)a10 namespaces:(id)a11 isManuallyTargeted:(BOOL)a12 artifact:(id)a13 experimentType:(int)a14;
-- (id)copyWithReplacementArtifact:(id)a3;
-- (id)copyWithReplacementEndDate:(id)a3;
-- (id)copyWithReplacementExperimentDeployment:(id)a3;
-- (id)copyWithReplacementExperimentType:(int)a3;
-- (id)copyWithReplacementFactorPackSetId:(id)a3;
-- (id)copyWithReplacementIsManuallyTargeted:(BOOL)a3;
-- (id)copyWithReplacementNamespaces:(id)a3;
-- (id)copyWithReplacementStartDate:(id)a3;
-- (id)copyWithReplacementStatus:(int64_t)a3;
-- (id)copyWithReplacementTreatmentId:(id)a3;
+- (TRIExperimentRecord)initWithDeploymentEnvironment:(int)environment experimentDeployment:(id)deployment treatmentId:(id)id factorPackSetId:(id)setId type:(int)type status:(int64_t)status startDate:(id)date endDate:(id)self0 namespaces:(id)self1 isManuallyTargeted:(BOOL)self2 artifact:(id)self3 experimentType:(int)self4;
+- (id)copyWithReplacementArtifact:(id)artifact;
+- (id)copyWithReplacementEndDate:(id)date;
+- (id)copyWithReplacementExperimentDeployment:(id)deployment;
+- (id)copyWithReplacementExperimentType:(int)type;
+- (id)copyWithReplacementFactorPackSetId:(id)id;
+- (id)copyWithReplacementIsManuallyTargeted:(BOOL)targeted;
+- (id)copyWithReplacementNamespaces:(id)namespaces;
+- (id)copyWithReplacementStartDate:(id)date;
+- (id)copyWithReplacementStatus:(int64_t)status;
+- (id)copyWithReplacementTreatmentId:(id)id;
 - (id)counterfactualsTreatmentsToFactorPackSetIds;
 - (id)description;
 - (id)versionedNamespaces;
@@ -25,8 +25,8 @@
 
 - (id)versionedNamespaces
 {
-  v2 = [(TRIExperimentRecord *)self namespaces];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_26];
+  namespaces = [(TRIExperimentRecord *)self namespaces];
+  v3 = [namespaces _pas_mappedArrayWithTransform:&__block_literal_global_26];
 
   return v3;
 }
@@ -46,58 +46,58 @@ id __63__TRIExperimentRecord_VersionedNamespaces__versionedNamespaces__block_inv
 
 - (id)counterfactualsTreatmentsToFactorPackSetIds
 {
-  v3 = [(TRIExperimentRecord *)self artifact];
-  v4 = [(TRIExperimentRecord *)self treatmentId];
-  v5 = [v3 counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:v4];
+  artifact = [(TRIExperimentRecord *)self artifact];
+  treatmentId = [(TRIExperimentRecord *)self treatmentId];
+  v5 = [artifact counterfactualsTreatmentsToFactorPackSetIdsWithActiveTreatmentId:treatmentId];
 
   return v5;
 }
 
-- (BOOL)hasCounterfactualTreatmentReferencingFactorPackSetId:(id)a3
+- (BOOL)hasCounterfactualTreatmentReferencingFactorPackSetId:(id)id
 {
-  v4 = a3;
-  v5 = [(TRIExperimentRecord *)self counterfactualsTreatmentsToFactorPackSetIds];
-  v6 = [v5 allValues];
-  v7 = [v6 containsObject:v4];
+  idCopy = id;
+  counterfactualsTreatmentsToFactorPackSetIds = [(TRIExperimentRecord *)self counterfactualsTreatmentsToFactorPackSetIds];
+  allValues = [counterfactualsTreatmentsToFactorPackSetIds allValues];
+  v7 = [allValues containsObject:idCopy];
 
   return v7;
 }
 
 - (BOOL)isExpiredExperiment
 {
-  v3 = [(TRIExperimentRecord *)self endDate];
-  v4 = [(TRIExperimentRecord *)self type];
+  endDate = [(TRIExperimentRecord *)self endDate];
+  type = [(TRIExperimentRecord *)self type];
   v5 = 0;
-  if (v4 == 1 && v3)
+  if (type == 1 && endDate)
   {
     v6 = objc_opt_new();
-    v5 = [v3 compare:v6] == -1;
+    v5 = [endDate compare:v6] == -1;
   }
 
   return v5;
 }
 
-- (TRIExperimentRecord)initWithDeploymentEnvironment:(int)a3 experimentDeployment:(id)a4 treatmentId:(id)a5 factorPackSetId:(id)a6 type:(int)a7 status:(int64_t)a8 startDate:(id)a9 endDate:(id)a10 namespaces:(id)a11 isManuallyTargeted:(BOOL)a12 artifact:(id)a13 experimentType:(int)a14
+- (TRIExperimentRecord)initWithDeploymentEnvironment:(int)environment experimentDeployment:(id)deployment treatmentId:(id)id factorPackSetId:(id)setId type:(int)type status:(int64_t)status startDate:(id)date endDate:(id)self0 namespaces:(id)self1 isManuallyTargeted:(BOOL)self2 artifact:(id)self3 experimentType:(int)self4
 {
-  v17 = a4;
-  v32 = a5;
-  v18 = a5;
-  v34 = a6;
-  v19 = a6;
-  v20 = a9;
-  v37 = a10;
-  v21 = a11;
-  v22 = a13;
-  if (!v17)
+  deploymentCopy = deployment;
+  idCopy = id;
+  idCopy2 = id;
+  setIdCopy = setId;
+  setIdCopy2 = setId;
+  dateCopy = date;
+  endDateCopy = endDate;
+  namespacesCopy = namespaces;
+  artifactCopy = artifact;
+  if (!deploymentCopy)
   {
-    v36 = [MEMORY[0x277CCA890] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3307 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3307 description:{@"Invalid parameter not satisfying: %@", @"experimentDeployment != nil"}];
   }
 
-  v35 = v21;
-  if (v21)
+  v35 = namespacesCopy;
+  if (namespacesCopy)
   {
-    if (v22)
+    if (artifactCopy)
     {
       goto LABEL_5;
     }
@@ -105,17 +105,17 @@ id __63__TRIExperimentRecord_VersionedNamespaces__versionedNamespaces__block_inv
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3308 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3308 description:{@"Invalid parameter not satisfying: %@", @"namespaces != nil"}];
 
-    if (v22)
+    if (artifactCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3309 description:{@"Invalid parameter not satisfying: %@", @"artifact != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:3309 description:{@"Invalid parameter not satisfying: %@", @"artifact != nil"}];
 
 LABEL_5:
   v38.receiver = self;
@@ -124,158 +124,158 @@ LABEL_5:
   v24 = v23;
   if (v23)
   {
-    v23->_deploymentEnvironment = a3;
-    objc_storeStrong(&v23->_experimentDeployment, a4);
-    objc_storeStrong(&v24->_treatmentId, v32);
-    objc_storeStrong(&v24->_factorPackSetId, v34);
-    v24->_type = a7;
-    v24->_status = a8;
-    objc_storeStrong(&v24->_startDate, a9);
-    objc_storeStrong(&v24->_endDate, a10);
-    objc_storeStrong(&v24->_namespaces, a11);
-    v24->_isManuallyTargeted = a12;
-    objc_storeStrong(&v24->_artifact, a13);
-    v24->_experimentType = a14;
+    v23->_deploymentEnvironment = environment;
+    objc_storeStrong(&v23->_experimentDeployment, deployment);
+    objc_storeStrong(&v24->_treatmentId, idCopy);
+    objc_storeStrong(&v24->_factorPackSetId, setIdCopy);
+    v24->_type = type;
+    v24->_status = status;
+    objc_storeStrong(&v24->_startDate, date);
+    objc_storeStrong(&v24->_endDate, endDate);
+    objc_storeStrong(&v24->_namespaces, namespaces);
+    v24->_isManuallyTargeted = targeted;
+    objc_storeStrong(&v24->_artifact, artifact);
+    v24->_experimentType = experimentType;
   }
 
   return v24;
 }
 
-+ (TRIExperimentRecord)recordWithDeploymentEnvironment:(int)a3 experimentDeployment:(id)a4 treatmentId:(id)a5 factorPackSetId:(id)a6 type:(int)a7 status:(int64_t)a8 startDate:(id)a9 endDate:(id)a10 namespaces:(id)a11 isManuallyTargeted:(BOOL)a12 artifact:(id)a13 experimentType:(int)a14
++ (TRIExperimentRecord)recordWithDeploymentEnvironment:(int)environment experimentDeployment:(id)deployment treatmentId:(id)id factorPackSetId:(id)setId type:(int)type status:(int64_t)status startDate:(id)date endDate:(id)self0 namespaces:(id)self1 isManuallyTargeted:(BOOL)self2 artifact:(id)self3 experimentType:(int)self4
 {
-  v18 = a13;
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  LODWORD(v28) = a14;
-  LOBYTE(v27) = a12;
-  v25 = [[a1 alloc] initWithDeploymentEnvironment:a3 experimentDeployment:v24 treatmentId:v23 factorPackSetId:v22 type:a7 status:a8 startDate:v21 endDate:v20 namespaces:v19 isManuallyTargeted:v27 artifact:v18 experimentType:v28];
+  artifactCopy = artifact;
+  namespacesCopy = namespaces;
+  endDateCopy = endDate;
+  dateCopy = date;
+  setIdCopy = setId;
+  idCopy = id;
+  deploymentCopy = deployment;
+  LODWORD(v28) = experimentType;
+  LOBYTE(v27) = targeted;
+  v25 = [[self alloc] initWithDeploymentEnvironment:environment experimentDeployment:deploymentCopy treatmentId:idCopy factorPackSetId:setIdCopy type:type status:status startDate:dateCopy endDate:endDateCopy namespaces:namespacesCopy isManuallyTargeted:v27 artifact:artifactCopy experimentType:v28];
 
   return v25;
 }
 
-- (id)copyWithReplacementExperimentDeployment:(id)a3
+- (id)copyWithReplacementExperimentDeployment:(id)deployment
 {
-  v4 = a3;
+  deploymentCopy = deployment;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:v4 treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:deploymentCopy treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementTreatmentId:(id)a3
+- (id)copyWithReplacementTreatmentId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:v4 factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:idCopy factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementFactorPackSetId:(id)a3
+- (id)copyWithReplacementFactorPackSetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:v4 type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:idCopy type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementStatus:(int64_t)a3
+- (id)copyWithReplacementStatus:(int64_t)status
 {
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v8) = self->_experimentType;
   LOBYTE(v7) = self->_isManuallyTargeted;
-  return [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:a3 startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v7 artifact:self->_artifact experimentType:v8];
+  return [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v7 artifact:self->_artifact experimentType:v8];
 }
 
-- (id)copyWithReplacementStartDate:(id)a3
+- (id)copyWithReplacementStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:v4 endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:dateCopy endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementEndDate:(id)a3
+- (id)copyWithReplacementEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:v4 namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:dateCopy namespaces:self->_namespaces isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementNamespaces:(id)a3
+- (id)copyWithReplacementNamespaces:(id)namespaces
 {
-  v4 = a3;
+  namespacesCopy = namespaces;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:v4 isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:namespacesCopy isManuallyTargeted:v8 artifact:self->_artifact experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementIsManuallyTargeted:(BOOL)a3
+- (id)copyWithReplacementIsManuallyTargeted:(BOOL)targeted
 {
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v8) = self->_experimentType;
-  LOBYTE(v7) = a3;
+  LOBYTE(v7) = targeted;
   return [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v7 artifact:self->_artifact experimentType:v8];
 }
 
-- (id)copyWithReplacementArtifact:(id)a3
+- (id)copyWithReplacementArtifact:(id)artifact
 {
-  v4 = a3;
+  artifactCopy = artifact;
   v5 = objc_alloc(objc_opt_class());
   LODWORD(v9) = self->_experimentType;
   LOBYTE(v8) = self->_isManuallyTargeted;
-  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:v4 experimentType:v9];
+  v6 = [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v8 artifact:artifactCopy experimentType:v9];
 
   return v6;
 }
 
-- (id)copyWithReplacementExperimentType:(int)a3
+- (id)copyWithReplacementExperimentType:(int)type
 {
   v5 = objc_alloc(objc_opt_class());
-  LODWORD(v8) = a3;
+  LODWORD(v8) = type;
   LOBYTE(v7) = self->_isManuallyTargeted;
   return [v5 initWithDeploymentEnvironment:self->_deploymentEnvironment experimentDeployment:self->_experimentDeployment treatmentId:self->_treatmentId factorPackSetId:self->_factorPackSetId type:self->_type status:self->_status startDate:self->_startDate endDate:self->_endDate namespaces:self->_namespaces isManuallyTargeted:v7 artifact:self->_artifact experimentType:v8];
 }
 
-- (BOOL)isEqualToRecord:(id)a3
+- (BOOL)isEqualToRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_28;
   }
 
   deploymentEnvironment = self->_deploymentEnvironment;
-  if (deploymentEnvironment != [v4 deploymentEnvironment])
+  if (deploymentEnvironment != [recordCopy deploymentEnvironment])
   {
     goto LABEL_28;
   }
 
   v7 = self->_experimentDeployment == 0;
-  v8 = [v5 experimentDeployment];
-  v9 = v8 != 0;
+  experimentDeployment = [v5 experimentDeployment];
+  v9 = experimentDeployment != 0;
 
   if (v7 == v9)
   {
@@ -285,8 +285,8 @@ LABEL_5:
   experimentDeployment = self->_experimentDeployment;
   if (experimentDeployment)
   {
-    v11 = [v5 experimentDeployment];
-    v12 = [(TRIExperimentDeployment *)experimentDeployment isEqual:v11];
+    experimentDeployment2 = [v5 experimentDeployment];
+    v12 = [(TRIExperimentDeployment *)experimentDeployment isEqual:experimentDeployment2];
 
     if (!v12)
     {
@@ -295,8 +295,8 @@ LABEL_5:
   }
 
   v13 = self->_treatmentId == 0;
-  v14 = [v5 treatmentId];
-  v15 = v14 != 0;
+  treatmentId = [v5 treatmentId];
+  v15 = treatmentId != 0;
 
   if (v13 == v15)
   {
@@ -306,8 +306,8 @@ LABEL_5:
   treatmentId = self->_treatmentId;
   if (treatmentId)
   {
-    v17 = [v5 treatmentId];
-    v18 = [(NSString *)treatmentId isEqual:v17];
+    treatmentId2 = [v5 treatmentId];
+    v18 = [(NSString *)treatmentId isEqual:treatmentId2];
 
     if (!v18)
     {
@@ -316,8 +316,8 @@ LABEL_5:
   }
 
   v19 = self->_factorPackSetId == 0;
-  v20 = [v5 factorPackSetId];
-  v21 = v20 != 0;
+  factorPackSetId = [v5 factorPackSetId];
+  v21 = factorPackSetId != 0;
 
   if (v19 == v21)
   {
@@ -327,8 +327,8 @@ LABEL_5:
   factorPackSetId = self->_factorPackSetId;
   if (factorPackSetId)
   {
-    v23 = [v5 factorPackSetId];
-    v24 = [(TRIFactorPackSetId *)factorPackSetId isEqual:v23];
+    factorPackSetId2 = [v5 factorPackSetId];
+    v24 = [(TRIFactorPackSetId *)factorPackSetId isEqual:factorPackSetId2];
 
     if (!v24)
     {
@@ -349,8 +349,8 @@ LABEL_5:
   }
 
   v27 = self->_startDate == 0;
-  v28 = [v5 startDate];
-  v29 = v28 != 0;
+  startDate = [v5 startDate];
+  v29 = startDate != 0;
 
   if (v27 == v29)
   {
@@ -360,8 +360,8 @@ LABEL_5:
   startDate = self->_startDate;
   if (startDate)
   {
-    v31 = [v5 startDate];
-    v32 = [(NSDate *)startDate isEqual:v31];
+    startDate2 = [v5 startDate];
+    v32 = [(NSDate *)startDate isEqual:startDate2];
 
     if (!v32)
     {
@@ -370,8 +370,8 @@ LABEL_5:
   }
 
   v33 = self->_endDate == 0;
-  v34 = [v5 endDate];
-  v35 = v34 != 0;
+  endDate = [v5 endDate];
+  v35 = endDate != 0;
 
   if (v33 == v35)
   {
@@ -381,8 +381,8 @@ LABEL_5:
   endDate = self->_endDate;
   if (endDate)
   {
-    v37 = [v5 endDate];
-    v38 = [(NSDate *)endDate isEqual:v37];
+    endDate2 = [v5 endDate];
+    v38 = [(NSDate *)endDate isEqual:endDate2];
 
     if (!v38)
     {
@@ -391,8 +391,8 @@ LABEL_5:
   }
 
   v39 = self->_namespaces == 0;
-  v40 = [v5 namespaces];
-  v41 = v40 != 0;
+  namespaces = [v5 namespaces];
+  v41 = namespaces != 0;
 
   if (v39 == v41)
   {
@@ -402,8 +402,8 @@ LABEL_5:
   namespaces = self->_namespaces;
   if (namespaces)
   {
-    v43 = [v5 namespaces];
-    v44 = [(NSArray *)namespaces isEqual:v43];
+    namespaces2 = [v5 namespaces];
+    v44 = [(NSArray *)namespaces isEqual:namespaces2];
 
     if (!v44)
     {
@@ -418,8 +418,8 @@ LABEL_5:
   }
 
   v46 = self->_artifact == 0;
-  v47 = [v5 artifact];
-  v48 = v47 != 0;
+  artifact = [v5 artifact];
+  v48 = artifact != 0;
 
   if (v46 == v48 || (artifact = self->_artifact) != 0 && ([v5 artifact], v50 = objc_claimAutoreleasedReturnValue(), v51 = -[TRIClientExperimentArtifact isEqual:](artifact, "isEqual:", v50), v50, !v51))
   {
@@ -436,18 +436,18 @@ LABEL_28:
   return v53;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentRecord *)self isEqualToRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentRecord *)self isEqualToRecord:v5];
   }
 
   return v6;

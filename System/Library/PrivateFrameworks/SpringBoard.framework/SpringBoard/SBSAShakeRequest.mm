@@ -1,27 +1,27 @@
 @interface SBSAShakeRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSAShakeRequest)initWithParticipantIdentifier:(id)a3 triggeredBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAShakeRequest)initWithParticipantIdentifier:(id)identifier triggeredBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAShakeRequest
 
-- (SBSAShakeRequest)initWithParticipantIdentifier:(id)a3 triggeredBlock:(id)a4
+- (SBSAShakeRequest)initWithParticipantIdentifier:(id)identifier triggeredBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SBSAShakeRequest;
   v8 = [(SBSAShakeRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     participantIdentifier = v8->_participantIdentifier;
     v8->_participantIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [blockCopy copy];
     triggeredBlock = v8->_triggeredBlock;
     v8->_triggeredBlock = v11;
   }
@@ -29,16 +29,16 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   participantIdentifier = self->_participantIdentifier;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __28__SBSAShakeRequest_isEqual___block_invoke;
   v19[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v20 = v7;
   v8 = [v5 appendObject:participantIdentifier counterpart:v19];
   v9 = MEMORY[0x223D6F7F0](self->_triggeredBlock);
@@ -56,8 +56,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_participantIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_participantIdentifier];
   v5 = MEMORY[0x223D6F7F0](self->_triggeredBlock);
   v6 = [v4 appendObject:v5];
   v7 = [v6 hash];
@@ -76,7 +76,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   participantIdentifier = self->_participantIdentifier;

@@ -1,13 +1,13 @@
 @interface MUPlaceItemShareItemSource
 - (MUPlaceItemShareItemSource)init;
-- (MUPlaceItemShareItemSource)initWithPlaceItem:(id)a3 applicationActivities:(id)a4;
+- (MUPlaceItemShareItemSource)initWithPlaceItem:(id)item applicationActivities:(id)activities;
 - (NSArray)activityProviders;
 - (NSArray)applicationActivities;
 - (NSArray)excludedActivityTypes;
 - (NSArray)includedActivityTypes;
-- (void)setActivityProviders:(id)a3;
-- (void)setApplicationActivities:(id)a3;
-- (void)setIncludedActivityTypes:(id)a3;
+- (void)setActivityProviders:(id)providers;
+- (void)setApplicationActivities:(id)activities;
+- (void)setIncludedActivityTypes:(id)types;
 @end
 
 @implementation MUPlaceItemShareItemSource
@@ -24,7 +24,7 @@
   return v5;
 }
 
-- (void)setApplicationActivities:(id)a3
+- (void)setApplicationActivities:(id)activities
 {
   sub_1C5634494();
   v4 = sub_1C584F770();
@@ -46,7 +46,7 @@
   return v5;
 }
 
-- (void)setActivityProviders:(id)a3
+- (void)setActivityProviders:(id)providers
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC16D9D0, &unk_1C5867960);
   v4 = sub_1C584F770();
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (void)setIncludedActivityTypes:(id)a3
+- (void)setIncludedActivityTypes:(id)types
 {
-  if (a3)
+  if (types)
   {
     v4 = sub_1C584F770();
   }
@@ -105,7 +105,7 @@
   *(self + v5) = v4;
 }
 
-- (MUPlaceItemShareItemSource)initWithPlaceItem:(id)a3 applicationActivities:(id)a4
+- (MUPlaceItemShareItemSource)initWithPlaceItem:(id)item applicationActivities:(id)activities
 {
   sub_1C5634494();
   v4 = sub_1C584F770();

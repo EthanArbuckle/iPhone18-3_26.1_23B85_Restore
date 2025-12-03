@@ -1,39 +1,39 @@
 @interface IMSimulatedChat
-- (BOOL)_handleIncomingItem:(id)a3;
-- (IMSimulatedChat)initWithIncomingIDs:(id)a3 messageIDOffset:(unint64_t)a4 account:(id)a5;
+- (BOOL)_handleIncomingItem:(id)item;
+- (IMSimulatedChat)initWithIncomingIDs:(id)ds messageIDOffset:(unint64_t)offset account:(id)account;
 - (IMSimulatedChatDelegate)delegate;
-- (id)_messageWithGUID:(id)a3;
-- (id)_messagesToProcessFromMessage:(id)a3;
+- (id)_messageWithGUID:(id)d;
+- (id)_messagesToProcessFromMessage:(id)message;
 - (id)chatIdentifier;
-- (void)_processMessage:(id)a3 receivingHandle:(id)a4 sendingHandle:(id)a5;
-- (void)receiveDemoMessage:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)simulateMessageDeliveryForGUID:(id)a3;
-- (void)simulatedChat:(id)a3 didSendMessage:(id)a4;
-- (void)simulatedDaemon:(id)a3 willSendBalloonPayload:(id)a4 attachments:(id)a5 messageGUID:(id)a6 bundleID:(id)a7;
+- (void)_processMessage:(id)message receivingHandle:(id)handle sendingHandle:(id)sendingHandle;
+- (void)receiveDemoMessage:(id)message;
+- (void)sendMessage:(id)message;
+- (void)setDisplayName:(id)name;
+- (void)simulateMessageDeliveryForGUID:(id)d;
+- (void)simulatedChat:(id)chat didSendMessage:(id)message;
+- (void)simulatedDaemon:(id)daemon willSendBalloonPayload:(id)payload attachments:(id)attachments messageGUID:(id)d bundleID:(id)iD;
 @end
 
 @implementation IMSimulatedChat
 
-- (IMSimulatedChat)initWithIncomingIDs:(id)a3 messageIDOffset:(unint64_t)a4 account:(id)a5
+- (IMSimulatedChat)initWithIncomingIDs:(id)ds messageIDOffset:(unint64_t)offset account:(id)account
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  accountCopy = account;
   if (qword_1EB2EA2E8 != -1)
   {
     sub_1A84E1078();
   }
 
   v10 = objc_alloc(MEMORY[0x1E695DF70]);
-  v13 = objc_msgSend_count(v8, v11, v12);
+  v13 = objc_msgSend_count(dsCopy, v11, v12);
   v15 = objc_msgSend_initWithCapacity_(v10, v14, v13);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v16 = v8;
+  v16 = dsCopy;
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v44, v48, 16);
   if (v18)
   {
@@ -48,7 +48,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v23 = objc_msgSend_imHandleWithID_alreadyCanonical_(v9, v19, *(*(&v44 + 1) + 8 * i), 0);
+        v23 = objc_msgSend_imHandleWithID_alreadyCanonical_(accountCopy, v19, *(*(&v44 + 1) + 8 * i), 0);
         objc_msgSend_addObject_(v15, v24, v23);
       }
 
@@ -65,20 +65,20 @@
   LOWORD(v42) = 0;
   if (objc_msgSend_count(v15, v28, v29) <= 1)
   {
-    v30 = [IMChat _initWithGUID:sel__initWithGUID_account_style_roomName_displayName_lastAddressedHandle_lastAddressedSIMID_items_participants_isFiltered_hasHadSuccessfulQuery_isRecovered_isDeletingIncomingMessages_ account:v27 style:v9 roomName:45 displayName:0 lastAddressedHandle:0 lastAddressedSIMID:0 items:0 participants:0 isFiltered:v15 hasHadSuccessfulQuery:1 isRecovered:v42 isDeletingIncomingMessages:?];
+    v30 = [IMChat _initWithGUID:sel__initWithGUID_account_style_roomName_displayName_lastAddressedHandle_lastAddressedSIMID_items_participants_isFiltered_hasHadSuccessfulQuery_isRecovered_isDeletingIncomingMessages_ account:v27 style:accountCopy roomName:45 displayName:0 lastAddressedHandle:0 lastAddressedSIMID:0 items:0 participants:0 isFiltered:v15 hasHadSuccessfulQuery:1 isRecovered:v42 isDeletingIncomingMessages:?];
   }
 
   else
   {
-    v30 = [IMChat _initWithGUID:sel__initWithGUID_account_style_roomName_displayName_lastAddressedHandle_lastAddressedSIMID_items_participants_isFiltered_hasHadSuccessfulQuery_isRecovered_isDeletingIncomingMessages_ account:v27 style:v9 roomName:43 displayName:0 lastAddressedHandle:0 lastAddressedSIMID:0 items:0 participants:0 isFiltered:v15 hasHadSuccessfulQuery:1 isRecovered:v42 isDeletingIncomingMessages:?];
+    v30 = [IMChat _initWithGUID:sel__initWithGUID_account_style_roomName_displayName_lastAddressedHandle_lastAddressedSIMID_items_participants_isFiltered_hasHadSuccessfulQuery_isRecovered_isDeletingIncomingMessages_ account:v27 style:accountCopy roomName:43 displayName:0 lastAddressedHandle:0 lastAddressedSIMID:0 items:0 participants:0 isFiltered:v15 hasHadSuccessfulQuery:1 isRecovered:v42 isDeletingIncomingMessages:?];
   }
 
   v31 = v30;
 
   if (v31)
   {
-    objc_storeStrong(&v31->_simulatedAccount, a5);
-    v31->_currentMessageID = a4;
+    objc_storeStrong(&v31->_simulatedAccount, account);
+    v31->_currentMessageID = offset;
     v34 = objc_msgSend_array(MEMORY[0x1E695DF70], v32, v33);
     simulatedAttachments = v31->_simulatedAttachments;
     v31->_simulatedAttachments = v34;
@@ -92,11 +92,11 @@
   return v31;
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v41 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  objc_msgSend__messagesToProcessFromMessage_(self, v4, v31);
+  messageCopy = message;
+  objc_msgSend__messagesToProcessFromMessage_(self, v4, messageCopy);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -123,7 +123,7 @@
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v14 = objc_msgSend_guid(v31, v12, v13);
+            v14 = objc_msgSend_guid(messageCopy, v12, v13);
             *buf = v30;
             v39 = v14;
             _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "sending demo message with messageGUID: %@", buf, 0xCu);
@@ -152,16 +152,16 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receiveDemoMessage:(id)a3
+- (void)receiveDemoMessage:(id)message
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v10 = objc_msgSend_guid(v4, v8, v9);
+      v10 = objc_msgSend_guid(messageCopy, v8, v9);
       v23 = 138412290;
       v24 = v10;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "receiving demo message with messageGUID: %@", &v23, 0xCu);
@@ -172,19 +172,19 @@
   v14 = objc_msgSend_loginHandle(v11, v12, v13);
   v17 = objc_msgSend_participants(self, v15, v16);
   v20 = objc_msgSend_firstObject(v17, v18, v19);
-  objc_msgSend__processMessage_receivingHandle_sendingHandle_(self, v21, v4, v14, v20);
+  objc_msgSend__processMessage_receivingHandle_sendingHandle_(self, v21, messageCopy, v14, v20);
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_processMessage:(id)a3 receivingHandle:(id)a4 sendingHandle:(id)a5
+- (void)_processMessage:(id)message receivingHandle:(id)handle sendingHandle:(id)sendingHandle
 {
   v96 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v75 = a4;
-  v77 = a5;
-  v72 = v8;
-  objc_msgSend__messagesToProcessFromMessage_(self, v9, v8);
+  messageCopy = message;
+  handleCopy = handle;
+  sendingHandleCopy = sendingHandle;
+  v72 = messageCopy;
+  objc_msgSend__messagesToProcessFromMessage_(self, v9, messageCopy);
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
@@ -240,7 +240,7 @@
 
         v38 = objc_msgSend_simulatedAccount(self, v36, v37);
         v41 = objc_msgSend_loginHandle(v38, v39, v40);
-        isEqual = objc_msgSend_isEqual_(v77, v42, v41);
+        isEqual = objc_msgSend_isEqual_(sendingHandleCopy, v42, v41);
 
         if (isEqual)
         {
@@ -254,7 +254,7 @@
 
         ++self->_currentMessageID;
         v47 = objc_msgSend_currentMessageID(self, v44, v45);
-        v48 = sub_1A8311880(v79, v46, v47, v77, v75, 0);
+        v48 = sub_1A8311880(v79, v46, v47, sendingHandleCopy, handleCopy, 0);
         guidToMessageItemNeedingAckMap = self->_guidToMessageItemNeedingAckMap;
         v52 = objc_msgSend_guid(v48, v50, v51);
         objc_msgSend_setObject_forKeyedSubscript_(guidToMessageItemNeedingAckMap, v53, v48, v52);
@@ -300,22 +300,22 @@
   v71 = *MEMORY[0x1E69E9840];
 }
 
-- (void)simulateMessageDeliveryForGUID:(id)a3
+- (void)simulateMessageDeliveryForGUID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "simulateMessageDeliveryForGUID: %@", &v19, 0xCu);
     }
   }
 
-  v8 = objc_msgSend_objectForKeyedSubscript_(self->_guidToMessageItemNeedingAckMap, v5, v4);
+  v8 = objc_msgSend_objectForKeyedSubscript_(self->_guidToMessageItemNeedingAckMap, v5, dCopy);
   if (v8)
   {
     objc_msgSend__handleIncomingItem_(self, v7, v8);
@@ -328,7 +328,7 @@
       objc_msgSend_simulatedChat_didHandleItem_(v15, v16, self, v8);
     }
 
-    objc_msgSend_removeObjectForKey_(self->_guidToMessageItemNeedingAckMap, v13, v4);
+    objc_msgSend_removeObjectForKey_(self->_guidToMessageItemNeedingAckMap, v13, dCopy);
   }
 
   else if (IMOSLoggingEnabled())
@@ -337,7 +337,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v19 = 138412290;
-      v20 = v4;
+      v20 = dCopy;
       _os_log_impl(&dword_1A823F000, v17, OS_LOG_TYPE_INFO, "Did not find messageItem for messageGUID: %@. Nothing to process", &v19, 0xCu);
     }
   }
@@ -345,13 +345,13 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_messagesToProcessFromMessage:(id)a3
+- (id)_messagesToProcessFromMessage:(id)message
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_hasDataDetectorResults(v4, v5, v6))
+  messageCopy = message;
+  if (objc_msgSend_hasDataDetectorResults(messageCopy, v5, v6))
   {
-    objc_msgSend_messagesBySeparatingRichLinks(v4, v7, v8);
+    objc_msgSend_messagesBySeparatingRichLinks(messageCopy, v7, v8);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -371,7 +371,7 @@
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
-          v18 = objc_msgSend_sender(v4, v12, v13, v31);
+          v18 = objc_msgSend_sender(messageCopy, v12, v13, v31);
           objc_msgSend__updateSender_(v17, v19, v18);
         }
 
@@ -384,14 +384,14 @@
 
   else
   {
-    if (objc_msgSend_isStewieChat(self, v7, v8) && (objc_msgSend_text(v4, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v22, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend_lengthOfBytesUsingEncoding_(v25, v26, 4), v25, v22, v27 >= 0xA1))
+    if (objc_msgSend_isStewieChat(self, v7, v8) && (objc_msgSend_text(messageCopy, v20, v21), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend_string(v22, v23, v24), v25 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend_lengthOfBytesUsingEncoding_(v25, v26, 4), v25, v22, v27 >= 0xA1))
     {
-      v28 = objc_msgSend_messagesSeparatedByByteLength_(v4, v20, 160);
+      v28 = objc_msgSend_messagesSeparatedByByteLength_(messageCopy, v20, 160);
     }
 
     else
     {
-      v35 = v4;
+      v35 = messageCopy;
       v28 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v20, &v35, 1);
     }
 
@@ -403,22 +403,22 @@
   return v9;
 }
 
-- (BOOL)_handleIncomingItem:(id)a3
+- (BOOL)_handleIncomingItem:(id)item
 {
   v112 = *MEMORY[0x1E69E9840];
-  v96 = a3;
+  itemCopy = item;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v111 = v96;
+      v111 = itemCopy;
       _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_INFO, "Handling item: %@", buf, 0xCu);
     }
   }
 
-  if (objc_msgSend_associatedMessageType(v96, v3, v4) == 2)
+  if (objc_msgSend_associatedMessageType(itemCopy, v3, v4) == 2)
   {
     v94 = objc_msgSend_array(MEMORY[0x1E695DF70], v6, v7);
     v95 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9);
@@ -448,7 +448,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = v96;
+          v18 = itemCopy;
           v19 = v16;
           if (objc_msgSend_messageID(v19, v20, v21))
           {
@@ -562,7 +562,7 @@ LABEL_32:
 
         if (objc_msgSend_count(v95, v88, v89))
         {
-          objc_msgSend_setConsumedSessionPayloads_(v96, v90, v95);
+          objc_msgSend_setConsumedSessionPayloads_(itemCopy, v90, v95);
         }
 
         break;
@@ -572,7 +572,7 @@ LABEL_32:
 
   v99.receiver = self;
   v99.super_class = IMSimulatedChat;
-  v91 = [(IMChat *)&v99 _handleIncomingItem:v96];
+  v91 = [(IMChat *)&v99 _handleIncomingItem:itemCopy];
 
   v92 = *MEMORY[0x1E69E9840];
   return v91;
@@ -603,14 +603,14 @@ LABEL_32:
   return objc_msgSend_simulatedChatIdentifier(self, v8, v9);
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   simulatedDisplayName = self->_simulatedDisplayName;
-  if (simulatedDisplayName != v4)
+  if (simulatedDisplayName != nameCopy)
   {
-    v13 = v4;
-    simulatedDisplayName = objc_msgSend_isEqualToString_(simulatedDisplayName, v4, v4);
+    v13 = nameCopy;
+    simulatedDisplayName = objc_msgSend_isEqualToString_(simulatedDisplayName, nameCopy, nameCopy);
     if ((simulatedDisplayName & 1) == 0)
     {
       v7 = objc_msgSend_copy(v13, v13, v6);
@@ -625,39 +625,39 @@ LABEL_32:
   MEMORY[0x1EEE66BB8](simulatedDisplayName);
 }
 
-- (void)simulatedChat:(id)a3 didSendMessage:(id)a4
+- (void)simulatedChat:(id)chat didSendMessage:(id)message
 {
   ++self->_currentMessageID;
-  v5 = a4;
+  messageCopy = message;
   v8 = objc_msgSend_currentMessageID(self, v6, v7);
   v11 = objc_msgSend_participants(self, v9, v10);
   v14 = objc_msgSend_firstObject(v11, v12, v13);
   v17 = objc_msgSend_simulatedAccount(self, v15, v16);
   v20 = objc_msgSend_loginHandle(v17, v18, v19);
-  v22 = sub_1A8311880(v5, 1, v8, v14, v20, 1);
+  v22 = sub_1A8311880(messageCopy, 1, v8, v14, v20, 1);
 
   objc_msgSend__handleIncomingItem_(self, v21, v22);
 }
 
-- (void)simulatedDaemon:(id)a3 willSendBalloonPayload:(id)a4 attachments:(id)a5 messageGUID:(id)a6 bundleID:(id)a7
+- (void)simulatedDaemon:(id)daemon willSendBalloonPayload:(id)payload attachments:(id)attachments messageGUID:(id)d bundleID:(id)iD
 {
   v61 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v13 = objc_msgSend__messageWithGUID_(self, v12, a6);
+  payloadCopy = payload;
+  attachmentsCopy = attachments;
+  v13 = objc_msgSend__messageWithGUID_(self, v12, d);
   v16 = v13;
   if (v13)
   {
     v51 = v13;
-    v52 = self;
-    v54 = v10;
+    selfCopy = self;
+    v54 = payloadCopy;
     v17 = objc_msgSend_array(MEMORY[0x1E695DF70], v14, v15);
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v53 = v11;
-    obj = v11;
+    v53 = attachmentsCopy;
+    obj = attachmentsCopy;
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v56, v60, 16);
     if (v19)
     {
@@ -696,23 +696,23 @@ LABEL_32:
     }
 
     v16 = v51;
-    v10 = v54;
+    payloadCopy = v54;
     objc_msgSend_setPayloadData_(v51, v43, v54);
     objc_msgSend_setFileTransferGUIDs_(v51, v44, v17);
-    objc_msgSend__handleIncomingItem_(v52, v45, v51);
-    v48 = objc_msgSend_delegate(v52, v46, v47);
-    objc_msgSend_simulatedChat_didSendMessage_(v48, v49, v52, v51);
+    objc_msgSend__handleIncomingItem_(selfCopy, v45, v51);
+    v48 = objc_msgSend_delegate(selfCopy, v46, v47);
+    objc_msgSend_simulatedChat_didSendMessage_(v48, v49, selfCopy, v51);
 
-    v11 = v53;
+    attachmentsCopy = v53;
   }
 
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_messageWithGUID:(id)a3
+- (id)_messageWithGUID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -733,7 +733,7 @@ LABEL_32:
 
         v14 = *(*(&v20 + 1) + 8 * i);
         v15 = objc_msgSend_guid(v14, v9, v10);
-        if (objc_msgSend_isEqualToString_(v15, v16, v4))
+        if (objc_msgSend_isEqualToString_(v15, v16, dCopy))
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();

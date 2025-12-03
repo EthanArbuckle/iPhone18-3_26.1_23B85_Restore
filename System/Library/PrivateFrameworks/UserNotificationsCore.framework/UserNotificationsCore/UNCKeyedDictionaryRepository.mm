@@ -1,43 +1,43 @@
 @interface UNCKeyedDictionaryRepository
-- (BOOL)_saveDictionary:(id)a3 atPath:(id)a4;
-- (UNCKeyedDictionaryRepository)initWithDirectory:(id)a3 fileName:(id)a4 pathExtension:(id)a5 librarian:(id)a6;
-- (id)_dataAtPath:(id)a3;
-- (id)_dictionaryAtPath:(id)a3;
-- (id)_directoryForKey:(id)a3;
-- (id)_pathForKey:(id)a3;
+- (BOOL)_saveDictionary:(id)dictionary atPath:(id)path;
+- (UNCKeyedDictionaryRepository)initWithDirectory:(id)directory fileName:(id)name pathExtension:(id)extension librarian:(id)librarian;
+- (id)_dataAtPath:(id)path;
+- (id)_dictionaryAtPath:(id)path;
+- (id)_directoryForKey:(id)key;
+- (id)_pathForKey:(id)key;
 - (id)allKeys;
-- (id)dictionaryForKey:(id)a3;
-- (void)_removeDictionaryAtPath:(id)a3;
-- (void)removeDictionaryForKey:(id)a3;
-- (void)setDictionary:(id)a3 forKey:(id)a4;
+- (id)dictionaryForKey:(id)key;
+- (void)_removeDictionaryAtPath:(id)path;
+- (void)removeDictionaryForKey:(id)key;
+- (void)setDictionary:(id)dictionary forKey:(id)key;
 @end
 
 @implementation UNCKeyedDictionaryRepository
 
-- (UNCKeyedDictionaryRepository)initWithDirectory:(id)a3 fileName:(id)a4 pathExtension:(id)a5 librarian:(id)a6
+- (UNCKeyedDictionaryRepository)initWithDirectory:(id)directory fileName:(id)name pathExtension:(id)extension librarian:(id)librarian
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  directoryCopy = directory;
+  nameCopy = name;
+  extensionCopy = extension;
+  librarianCopy = librarian;
   v22.receiver = self;
   v22.super_class = UNCKeyedDictionaryRepository;
   v14 = [(UNCKeyedDictionaryRepository *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [directoryCopy copy];
     directory = v14->_directory;
     v14->_directory = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     fileName = v14->_fileName;
     v14->_fileName = v17;
 
-    v19 = [v12 copy];
+    v19 = [extensionCopy copy];
     pathExtension = v14->_pathExtension;
     v14->_pathExtension = v19;
 
-    objc_storeStrong(&v14->_librarian, a6);
+    objc_storeStrong(&v14->_librarian, librarian);
   }
 
   return v14;
@@ -46,13 +46,13 @@
 - (id)allKeys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  array = [MEMORY[0x1E695DF70] array];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 enumeratorAtPath:self->_directory];
+  v4 = [defaultManager enumeratorAtPath:self->_directory];
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -72,12 +72,12 @@
         v11 = [v10 stringByAppendingPathComponent:self->_fileName];
         v12 = [v11 stringByAppendingPathExtension:self->_pathExtension];
 
-        if ([v3 fileExistsAtPath:v12])
+        if ([defaultManager fileExistsAtPath:v12])
         {
           v13 = [(UNCBundleLibrarian *)self->_librarian bundleIdentifierForUniqueIdentifier:v9];
           if (v13)
           {
-            [v16 addObject:v13];
+            [array addObject:v13];
           }
         }
       }
@@ -90,52 +90,52 @@
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return array;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = [(UNCKeyedDictionaryRepository *)self _pathForKey:a3];
+  v4 = [(UNCKeyedDictionaryRepository *)self _pathForKey:key];
   v5 = [(UNCKeyedDictionaryRepository *)self _dictionaryAtPath:v4];
 
   return v5;
 }
 
-- (void)setDictionary:(id)a3 forKey:(id)a4
+- (void)setDictionary:(id)dictionary forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(UNCKeyedDictionaryRepository *)self _pathForKey:a4];
-  [(UNCKeyedDictionaryRepository *)self _saveDictionary:v6 atPath:v7];
+  dictionaryCopy = dictionary;
+  v7 = [(UNCKeyedDictionaryRepository *)self _pathForKey:key];
+  [(UNCKeyedDictionaryRepository *)self _saveDictionary:dictionaryCopy atPath:v7];
 }
 
-- (void)removeDictionaryForKey:(id)a3
+- (void)removeDictionaryForKey:(id)key
 {
-  v4 = [(UNCKeyedDictionaryRepository *)self _pathForKey:a3];
+  v4 = [(UNCKeyedDictionaryRepository *)self _pathForKey:key];
   [(UNCKeyedDictionaryRepository *)self _removeDictionaryAtPath:v4];
 }
 
-- (id)_directoryForKey:(id)a3
+- (id)_directoryForKey:(id)key
 {
-  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:a3];
+  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:key];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F563BF08];
   v6 = [(NSString *)self->_directory stringByAppendingPathComponent:v5];
 
   return v6;
 }
 
-- (id)_pathForKey:(id)a3
+- (id)_pathForKey:(id)key
 {
-  v4 = [(UNCKeyedDictionaryRepository *)self _directoryForKey:a3];
+  v4 = [(UNCKeyedDictionaryRepository *)self _directoryForKey:key];
   v5 = [v4 stringByAppendingPathComponent:self->_fileName];
   v6 = [v5 stringByAppendingPathExtension:self->_pathExtension];
 
   return v6;
 }
 
-- (id)_dictionaryAtPath:(id)a3
+- (id)_dictionaryAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNCKeyedDictionaryRepository *)self _dataAtPath:v4];
+  pathCopy = path;
+  v5 = [(UNCKeyedDictionaryRepository *)self _dataAtPath:pathCopy];
   if (!v5)
   {
 LABEL_7:
@@ -167,7 +167,7 @@ LABEL_7:
       v16 = *MEMORY[0x1E6983368];
       if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
       {
-        [(UNCKeyedDictionaryRepository *)v16 _dictionaryAtPath:v15, v4];
+        [(UNCKeyedDictionaryRepository *)v16 _dictionaryAtPath:v15, pathCopy];
       }
 
       goto LABEL_7;
@@ -179,45 +179,45 @@ LABEL_8:
   return v15;
 }
 
-- (id)_dataAtPath:(id)a3
+- (id)_dataAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy];
   if (!v4)
   {
     v5 = *MEMORY[0x1E6983368];
     if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
     {
-      [(UNCKeyedDictionaryRepository *)v3 _dataAtPath:v5];
+      [(UNCKeyedDictionaryRepository *)pathCopy _dataAtPath:v5];
     }
   }
 
   return v4;
 }
 
-- (BOOL)_saveDictionary:(id)a3 atPath:(id)a4
+- (BOOL)_saveDictionary:(id)dictionary atPath:(id)path
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v7 = MEMORY[0x1E6983368];
   v8 = *MEMORY[0x1E6983368];
   if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 138543618;
-    v27 = v6;
+    v27 = pathCopy;
     v28 = 2048;
-    v29 = [v5 count];
+    v29 = [dictionaryCopy count];
     _os_log_impl(&dword_1DA7A9000, v9, OS_LOG_TYPE_DEFAULT, "Saving file at %{public}@ with %lu items", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v6 stringByDeletingLastPathComponent];
-  if (([v10 fileExistsAtPath:v11] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v25 = 0;
-    v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v25];
+    v12 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v13 = v25;
     if ((v12 & 1) == 0 && os_log_type_enabled(*v7, OS_LOG_TYPE_ERROR))
     {
@@ -226,13 +226,13 @@ LABEL_8:
   }
 
   v24 = 0;
-  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v24];
+  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionaryCopy requiringSecureCoding:1 error:&v24];
   v15 = v24;
   v16 = v15;
   if (v14)
   {
     v23 = v15;
-    v17 = [v14 writeToFile:v6 options:268435457 error:&v23];
+    v17 = [v14 writeToFile:pathCopy options:268435457 error:&v23];
     v18 = v23;
 
     if (v17)
@@ -268,14 +268,14 @@ LABEL_8:
   return v19;
 }
 
-- (void)_removeDictionaryAtPath:(id)a3
+- (void)_removeDictionaryAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
     v7 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v7];
+    v5 = [defaultManager removeItemAtPath:pathCopy error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0 && os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
     {

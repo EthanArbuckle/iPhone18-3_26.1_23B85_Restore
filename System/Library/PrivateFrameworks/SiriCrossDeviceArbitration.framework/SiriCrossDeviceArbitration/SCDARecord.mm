@@ -1,51 +1,51 @@
 @interface SCDARecord
 + (unsigned)_generateRandomHash;
-- (BOOL)hasEqualAdvertisementData:(id)a3;
-- (BOOL)isALateSuppressionTrumpFor:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasEqualAdvertisementData:(id)data;
+- (BOOL)isALateSuppressionTrumpFor:(id)for;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSane;
 - (BOOL)isValid;
-- (SCDARecord)initWithAlertFiringTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithCarPlayTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithContinuation:(id)a3;
-- (SCDARecord)initWithDeviceID:(id)a3 data:(id)a4 electionParticipantId:(id)a5;
-- (SCDARecord)initWithDirectTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithEmergency:(id)a3;
-- (SCDARecord)initWithEmergencyHandled:(id)a3;
-- (SCDARecord)initWithEmpty:(id)a3;
-- (SCDARecord)initWithInEarTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithInTaskTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithLateSuppression:(unsigned __int16)a3 device:(id)a4;
-- (SCDARecord)initWithOutgoing:(id)a3 device:(id)a4;
-- (SCDARecord)initWithOverrideTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithPHS:(id)a3;
-- (SCDARecord)initWithRTS:(id)a3;
-- (SCDARecord)initWithRealityTrigger:(id)a3 device:(id)a4;
-- (SCDARecord)initWithResponse:(unsigned __int16)a3 device:(id)a4;
-- (SCDARecord)initWithSlowdown:(unsigned __int16)a3 device:(id)a4;
-- (SCDARecord)initWithThreshold:(id)a3 isLoudnessMissing:(BOOL)a4 device:(id)a5;
-- (id)_initWithPerceptualAudioHash:(id)a3 type:(int64_t)a4 device:(id)a5;
-- (id)_initWithRecordType:(int64_t)a3 device:(id)a4;
-- (id)_initWithVoiceTriggerTime:(unint64_t)a3;
+- (SCDARecord)initWithAlertFiringTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithCarPlayTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithContinuation:(id)continuation;
+- (SCDARecord)initWithDeviceID:(id)d data:(id)data electionParticipantId:(id)id;
+- (SCDARecord)initWithDirectTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithEmergency:(id)emergency;
+- (SCDARecord)initWithEmergencyHandled:(id)handled;
+- (SCDARecord)initWithEmpty:(id)empty;
+- (SCDARecord)initWithInEarTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithInTaskTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithLateSuppression:(unsigned __int16)suppression device:(id)device;
+- (SCDARecord)initWithOutgoing:(id)outgoing device:(id)device;
+- (SCDARecord)initWithOverrideTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithPHS:(id)s;
+- (SCDARecord)initWithRTS:(id)s;
+- (SCDARecord)initWithRealityTrigger:(id)trigger device:(id)device;
+- (SCDARecord)initWithResponse:(unsigned __int16)response device:(id)device;
+- (SCDARecord)initWithSlowdown:(unsigned __int16)slowdown device:(id)device;
+- (SCDARecord)initWithThreshold:(id)threshold isLoudnessMissing:(BOOL)missing device:(id)device;
+- (id)_initWithPerceptualAudioHash:(id)hash type:(int64_t)type device:(id)device;
+- (id)_initWithRecordType:(int64_t)type device:(id)device;
+- (id)_initWithVoiceTriggerTime:(unint64_t)time;
 - (id)asAdvertisementData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)deviceName;
 - (id)winReason;
 - (int)slowdownDelay;
 - (unint64_t)hash;
-- (void)_assignDeviceDetails:(id)a3;
-- (void)_generateConfidenceWithinLowerBound:(unsigned __int8)a3 andUpperBound:(unsigned __int8)a4;
-- (void)adjustByAdding:(int)a3;
+- (void)_assignDeviceDetails:(id)details;
+- (void)_generateConfidenceWithinLowerBound:(unsigned __int8)bound andUpperBound:(unsigned __int8)upperBound;
+- (void)adjustByAdding:(int)adding;
 - (void)generateTiebreaker;
-- (void)setDeviceClass:(unsigned __int8)a3;
-- (void)setDeviceGroup:(unsigned __int8)a3;
-- (void)setPHash:(unsigned __int16)a3;
-- (void)setProductType:(unsigned __int8)a3;
-- (void)setRawAudioGoodnessScore:(unsigned __int8)a3 withBump:(unsigned __int8)a4;
-- (void)setTieBreaker:(unsigned __int8)a3;
-- (void)setUserConfidence:(unsigned __int8)a3;
-- (void)updateVoiceTriggerTime:(id)a3;
+- (void)setDeviceClass:(unsigned __int8)class;
+- (void)setDeviceGroup:(unsigned __int8)group;
+- (void)setPHash:(unsigned __int16)hash;
+- (void)setProductType:(unsigned __int8)type;
+- (void)setRawAudioGoodnessScore:(unsigned __int8)score withBump:(unsigned __int8)bump;
+- (void)setTieBreaker:(unsigned __int8)breaker;
+- (void)setUserConfidence:(unsigned __int8)confidence;
+- (void)updateVoiceTriggerTime:(id)time;
 @end
 
 @implementation SCDARecord
@@ -149,38 +149,38 @@
   return v7;
 }
 
-- (void)updateVoiceTriggerTime:(id)a3
+- (void)updateVoiceTriggerTime:(id)time
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  timeCopy = time;
+  if (!timeCopy)
   {
-    v4 = [[SCDAPerceptualAudioHash alloc] initWithData:0];
+    timeCopy = [[SCDAPerceptualAudioHash alloc] initWithData:0];
     v5 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
     {
       v7 = 136315394;
       v8 = "[SCDARecord updateVoiceTriggerTime:]";
       v9 = 2112;
-      v10 = v4;
+      v10 = timeCopy;
       _os_log_debug_impl(&dword_1DA758000, v5, OS_LOG_TYPE_DEBUG, "%s Perceptual audio hash was missing, trying to update from file with result: %@", &v7, 0x16u);
     }
   }
 
-  self->_voiceTriggerMachTime = [(SCDAPerceptualAudioHash *)v4 voiceTriggerTime];
+  self->_voiceTriggerMachTime = [(SCDAPerceptualAudioHash *)timeCopy voiceTriggerTime];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     deviceID = self->_deviceID;
-    v7 = [v5 deviceID];
-    if (![(NSUUID *)deviceID isEqual:v7])
+    deviceID = [v5 deviceID];
+    if (![(NSUUID *)deviceID isEqual:deviceID])
     {
       goto LABEL_16;
     }
@@ -228,14 +228,14 @@ LABEL_16:
 - (unint64_t)hash
 {
   v3 = [(NSUUID *)self->_deviceID hash];
-  v4 = [(SCDARecord *)self asAdvertisementData];
-  v5 = [v4 hash] ^ self->_isMe ^ v3;
+  asAdvertisementData = [(SCDARecord *)self asAdvertisementData];
+  v5 = [asAdvertisementData hash] ^ self->_isMe ^ v3;
   v6 = self->_isCollectedFromContextCollector ^ self->_rawAudioGoodnessScore ^ self->_bump;
 
   return v5 ^ v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SCDARecord allocWithZone:?], "_initWithVoiceTriggerTime:", self->_voiceTriggerMachTime];
   [v4 setDeviceID:self->_deviceID];
@@ -255,26 +255,26 @@ LABEL_16:
   return v4;
 }
 
-- (id)_initWithVoiceTriggerTime:(unint64_t)a3
+- (id)_initWithVoiceTriggerTime:(unint64_t)time
 {
   v5.receiver = self;
   v5.super_class = SCDARecord;
   result = [(SCDARecord *)&v5 init];
   if (result)
   {
-    *(result + 6) = a3;
+    *(result + 6) = time;
     *(result + 7) = 10;
   }
 
   return result;
 }
 
-- (BOOL)hasEqualAdvertisementData:(id)a3
+- (BOOL)hasEqualAdvertisementData:(id)data
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = dataCopy;
     pHash = self->_pHash;
     v13 = 0;
     if (pHash == [v5 pHash])
@@ -375,7 +375,7 @@ LABEL_16:
       v12 = 136315394;
       v13 = "[SCDARecord isSane]";
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_1DA758000, v9, OS_LOG_TYPE_ERROR, "%s SCDARecord %@ sanity: NO", &v12, 0x16u);
       deviceClass = self->_deviceClass;
     }
@@ -387,50 +387,50 @@ LABEL_16:
   return v6 && v8;
 }
 
-- (BOOL)isALateSuppressionTrumpFor:(id)a3
+- (BOOL)isALateSuppressionTrumpFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   pHash = self->_pHash;
-  v6 = pHash == [v4 pHash] && !-[SCDARecord isAContinuation](self, "isAContinuation") && !-[SCDARecord isATrump](self, "isATrump") && self->_goodness == 255 && objc_msgSend(v4, "goodness") != 255;
+  v6 = pHash == [forCopy pHash] && !-[SCDARecord isAContinuation](self, "isAContinuation") && !-[SCDARecord isATrump](self, "isATrump") && self->_goodness == 255 && objc_msgSend(forCopy, "goodness") != 255;
 
   return v6;
 }
 
-- (void)setTieBreaker:(unsigned __int8)a3
+- (void)setTieBreaker:(unsigned __int8)breaker
 {
-  if (self->_tieBreaker != a3)
+  if (self->_tieBreaker != breaker)
   {
-    self->_tieBreaker = a3;
+    self->_tieBreaker = breaker;
     self->_advertisementDataIsDirty = 1;
   }
 }
 
-- (void)setProductType:(unsigned __int8)a3
+- (void)setProductType:(unsigned __int8)type
 {
-  if (self->_productType != a3)
+  if (self->_productType != type)
   {
-    self->_productType = a3;
+    self->_productType = type;
     self->_advertisementDataIsDirty = 1;
   }
 }
 
-- (void)setDeviceClass:(unsigned __int8)a3
+- (void)setDeviceClass:(unsigned __int8)class
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_deviceClass != a3)
+  if (self->_deviceClass != class)
   {
-    v3 = a3;
-    self->_deviceClass = a3;
-    if (a3 >= 0x20u)
+    classCopy = class;
+    self->_deviceClass = class;
+    if (class >= 0x20u)
     {
-      v5 = a3 & 0x1F;
+      v5 = class & 0x1F;
       v6 = SCDALogContextCore;
       if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
       {
         v8 = 136315650;
         v9 = "[SCDARecord setDeviceClass:]";
         v10 = 1024;
-        v11 = v3;
+        v11 = classCopy;
         v12 = 1024;
         v13 = v5;
         _os_log_impl(&dword_1DA758000, v6, OS_LOG_TYPE_INFO, "%s #scda Error: Unexpected device class %du masked to: %du", &v8, 0x18u);
@@ -445,23 +445,23 @@ LABEL_16:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDeviceGroup:(unsigned __int8)a3
+- (void)setDeviceGroup:(unsigned __int8)group
 {
-  if (self->_deviceGroup != a3)
+  if (self->_deviceGroup != group)
   {
-    self->_deviceGroup = a3;
+    self->_deviceGroup = group;
     self->_advertisementDataIsDirty = 1;
   }
 }
 
-- (void)_generateConfidenceWithinLowerBound:(unsigned __int8)a3 andUpperBound:(unsigned __int8)a4
+- (void)_generateConfidenceWithinLowerBound:(unsigned __int8)bound andUpperBound:(unsigned __int8)upperBound
 {
-  v6 = a4 - a3;
-  v7 = arc4random_uniform(a4 - a3 + 1) + a3;
+  v6 = upperBound - bound;
+  v7 = arc4random_uniform(upperBound - bound + 1) + bound;
   self->_userConfidence = v7;
   while (_lastRandomConfidenceGenerated == v7)
   {
-    v7 = arc4random_uniform(v6 + 1) + a3;
+    v7 = arc4random_uniform(v6 + 1) + bound;
     self->_userConfidence = v7;
   }
 
@@ -469,20 +469,20 @@ LABEL_16:
   self->_advertisementDataIsDirty = 1;
 }
 
-- (void)setUserConfidence:(unsigned __int8)a3
+- (void)setUserConfidence:(unsigned __int8)confidence
 {
-  if (self->_userConfidence != a3)
+  if (self->_userConfidence != confidence)
   {
-    self->_userConfidence = a3;
+    self->_userConfidence = confidence;
     self->_advertisementDataIsDirty = 1;
   }
 }
 
-- (void)adjustByAdding:(int)a3
+- (void)adjustByAdding:(int)adding
 {
   v14 = *MEMORY[0x1E69E9840];
   goodness = self->_goodness;
-  v5 = goodness + a3;
+  v5 = goodness + adding;
   v6 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -533,25 +533,25 @@ LABEL_16:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setRawAudioGoodnessScore:(unsigned __int8)a3 withBump:(unsigned __int8)a4
+- (void)setRawAudioGoodnessScore:(unsigned __int8)score withBump:(unsigned __int8)bump
 {
   v22 = *MEMORY[0x1E69E9840];
-  self->_rawAudioGoodnessScore = a3;
-  self->_bump = a4;
-  v5 = a4 + a3;
-  if ((a4 + a3) >= 0x100)
+  self->_rawAudioGoodnessScore = score;
+  self->_bump = bump;
+  v5 = bump + score;
+  if ((bump + score) >= 0x100)
   {
-    v6 = a4;
-    v7 = a3;
+    bumpCopy = bump;
+    scoreCopy = score;
     v8 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_ERROR))
     {
       v14 = 136315650;
       v15 = "[SCDARecord setRawAudioGoodnessScore:withBump:]";
       v16 = 1024;
-      v17 = v7;
+      v17 = scoreCopy;
       v18 = 1024;
-      v19 = v6;
+      bumpCopy2 = bumpCopy;
       _os_log_error_impl(&dword_1DA758000, v8, OS_LOG_TYPE_ERROR, "%s [(rawAudioGoodnessScore + bump) overflow] rawAudioGoodnessScore: %d, bump: %d. Overwriting goodness score to 0xff", &v14, 0x18u);
     }
 
@@ -571,7 +571,7 @@ LABEL_16:
     v16 = 1024;
     v17 = rawAudioGoodnessScore;
     v18 = 1024;
-    v19 = bump;
+    bumpCopy2 = bump;
     v20 = 1024;
     v21 = goodness;
     _os_log_impl(&dword_1DA758000, v9, OS_LOG_TYPE_INFO, "%s rawAudioGoodnessScore: %d, bump: %d goodness: %d", &v14, 0x1Eu);
@@ -580,32 +580,32 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPHash:(unsigned __int16)a3
+- (void)setPHash:(unsigned __int16)hash
 {
-  if (self->_pHash != a3)
+  if (self->_pHash != hash)
   {
-    self->_pHash = a3;
+    self->_pHash = hash;
     self->_advertisementDataIsDirty = 1;
   }
 }
 
-- (void)_assignDeviceDetails:(id)a3
+- (void)_assignDeviceDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 designatedSelfID];
+  detailsCopy = details;
+  designatedSelfID = [detailsCopy designatedSelfID];
   deviceID = self->_deviceID;
-  self->_deviceID = v5;
+  self->_deviceID = designatedSelfID;
 
-  self->_deviceGroup = [v4 deviceGroup];
-  self->_deviceClass = [v4 deviceClass];
-  v7 = [v4 productType];
+  self->_deviceGroup = [detailsCopy deviceGroup];
+  self->_deviceClass = [detailsCopy deviceClass];
+  productType = [detailsCopy productType];
 
-  self->_productType = v7;
+  self->_productType = productType;
 }
 
-- (SCDARecord)initWithEmpty:(id)a3
+- (SCDARecord)initWithEmpty:(id)empty
 {
-  v4 = a3;
+  emptyCopy = empty;
   v10.receiver = self;
   v10.super_class = SCDARecord;
   v5 = [(SCDARecord *)&v10 init];
@@ -621,25 +621,25 @@ LABEL_16:
     v6->_electionParticipantId = v7;
 
     [(SCDARecord *)v6 generateRandomConfidence];
-    [(SCDARecord *)v6 _assignDeviceDetails:v4];
+    [(SCDARecord *)v6 _assignDeviceDetails:emptyCopy];
   }
 
   return v6;
 }
 
-- (SCDARecord)initWithSlowdown:(unsigned __int16)a3 device:(id)a4
+- (SCDARecord)initWithSlowdown:(unsigned __int16)slowdown device:(id)device
 {
-  v4 = a3;
-  v6 = a4;
+  slowdownCopy = slowdown;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = SCDARecord;
   v7 = [(SCDARecord *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v9 = v4 >> 3;
+    v9 = slowdownCopy >> 3;
     v7->_recordType = 16;
-    if (v4 >> 3 >= 0xFF)
+    if (slowdownCopy >> 3 >= 0xFF)
     {
       LOBYTE(v9) = -1;
     }
@@ -649,27 +649,27 @@ LABEL_16:
     v7->_isMe = 1;
     v7->_userConfidence = v9;
     [(SCDARecord *)v7 generateTiebreaker];
-    [(SCDARecord *)v8 _assignDeviceDetails:v6];
+    [(SCDARecord *)v8 _assignDeviceDetails:deviceCopy];
   }
 
   return v8;
 }
 
-- (SCDARecord)initWithResponse:(unsigned __int16)a3 device:(id)a4
+- (SCDARecord)initWithResponse:(unsigned __int16)response device:(id)device
 {
-  result = [(SCDARecord *)self _initWithRecordType:14 device:a4];
+  result = [(SCDARecord *)self _initWithRecordType:14 device:device];
   if (result)
   {
     result->_goodness = -1;
-    result->_pHash = a3;
+    result->_pHash = response;
   }
 
   return result;
 }
 
-- (SCDARecord)initWithEmergencyHandled:(id)a3
+- (SCDARecord)initWithEmergencyHandled:(id)handled
 {
-  result = [(SCDARecord *)self _initWithRecordType:6 device:a3];
+  result = [(SCDARecord *)self _initWithRecordType:6 device:handled];
   if (result)
   {
     result->_goodness = -32;
@@ -679,9 +679,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithEmergency:(id)a3
+- (SCDARecord)initWithEmergency:(id)emergency
 {
-  result = [(SCDARecord *)self _initWithRecordType:5 device:a3];
+  result = [(SCDARecord *)self _initWithRecordType:5 device:emergency];
   if (result)
   {
     result->_goodness = -17;
@@ -691,9 +691,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithContinuation:(id)a3
+- (SCDARecord)initWithContinuation:(id)continuation
 {
-  result = [(SCDARecord *)self _initWithRecordType:3 device:a3];
+  result = [(SCDARecord *)self _initWithRecordType:3 device:continuation];
   if (result)
   {
     result->_goodness = 0;
@@ -703,21 +703,21 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithLateSuppression:(unsigned __int16)a3 device:(id)a4
+- (SCDARecord)initWithLateSuppression:(unsigned __int16)suppression device:(id)device
 {
-  result = [(SCDARecord *)self _initWithRecordType:17 device:a4];
+  result = [(SCDARecord *)self _initWithRecordType:17 device:device];
   if (result)
   {
     *&result->_goodness = -513;
-    result->_pHash = a3;
+    result->_pHash = suppression;
   }
 
   return result;
 }
 
-- (SCDARecord)initWithRTS:(id)a3
+- (SCDARecord)initWithRTS:(id)s
 {
-  result = [(SCDARecord *)self _initWithRecordType:13 device:a3];
+  result = [(SCDARecord *)self _initWithRecordType:13 device:s];
   if (result)
   {
     result->_goodness = -14;
@@ -727,9 +727,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithOutgoing:(id)a3 device:(id)a4
+- (SCDARecord)initWithOutgoing:(id)outgoing device:(id)device
 {
-  result = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:11 device:a4];
+  result = [(SCDARecord *)self _initWithPerceptualAudioHash:outgoing type:11 device:device];
   if (result)
   {
     *&result->_goodness = -3841;
@@ -738,9 +738,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithInEarTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithInEarTrigger:(id)trigger device:(id)device
 {
-  result = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:7 device:a4];
+  result = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:7 device:device];
   if (result)
   {
     result->_goodness = -8;
@@ -749,9 +749,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithAlertFiringTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithAlertFiringTrigger:(id)trigger device:(id)device
 {
-  result = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:1 device:a4];
+  result = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:1 device:device];
   if (result)
   {
     *&result->_goodness = -1281;
@@ -760,9 +760,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithInTaskTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithInTaskTrigger:(id)trigger device:(id)device
 {
-  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:8 device:a4];
+  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:8 device:device];
   v5 = v4;
   if (v4)
   {
@@ -773,9 +773,9 @@ LABEL_16:
   return v5;
 }
 
-- (SCDARecord)initWithCarPlayTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithCarPlayTrigger:(id)trigger device:(id)device
 {
-  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:2 device:a4];
+  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:2 device:device];
   v5 = v4;
   if (v4)
   {
@@ -786,9 +786,9 @@ LABEL_16:
   return v5;
 }
 
-- (SCDARecord)initWithOverrideTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithOverrideTrigger:(id)trigger device:(id)device
 {
-  result = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:12 device:a4];
+  result = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:12 device:device];
   if (result)
   {
     *&result->_goodness = -769;
@@ -798,9 +798,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithRealityTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithRealityTrigger:(id)trigger device:(id)device
 {
-  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:4 device:a4];
+  v4 = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:4 device:device];
   v5 = v4;
   if (v4)
   {
@@ -812,9 +812,9 @@ LABEL_16:
   return v5;
 }
 
-- (SCDARecord)initWithDirectTrigger:(id)a3 device:(id)a4
+- (SCDARecord)initWithDirectTrigger:(id)trigger device:(id)device
 {
-  result = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:4 device:a4];
+  result = [(SCDARecord *)self _initWithPerceptualAudioHash:trigger type:4 device:device];
   if (result)
   {
     *&result->_goodness = -1;
@@ -824,9 +824,9 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithPHS:(id)a3
+- (SCDARecord)initWithPHS:(id)s
 {
-  result = [(SCDARecord *)self _initWithRecordType:15 device:a3];
+  result = [(SCDARecord *)self _initWithRecordType:15 device:s];
   if (result)
   {
     result->_goodness = -7;
@@ -836,15 +836,15 @@ LABEL_16:
   return result;
 }
 
-- (SCDARecord)initWithThreshold:(id)a3 isLoudnessMissing:(BOOL)a4 device:(id)a5
+- (SCDARecord)initWithThreshold:(id)threshold isLoudnessMissing:(BOOL)missing device:(id)device
 {
-  v5 = a4;
-  v6 = [(SCDARecord *)self _initWithPerceptualAudioHash:a3 type:18 device:a5];
+  missingCopy = missing;
+  v6 = [(SCDARecord *)self _initWithPerceptualAudioHash:threshold type:18 device:device];
   v7 = v6;
   if (v6)
   {
     v6->_goodness = -12;
-    if (v5)
+    if (missingCopy)
     {
       v6->_recordType = 19;
       v6->_userConfidence = -5;
@@ -859,56 +859,56 @@ LABEL_16:
   return v7;
 }
 
-- (id)_initWithRecordType:(int64_t)a3 device:(id)a4
+- (id)_initWithRecordType:(int64_t)type device:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = SCDARecord;
   v7 = [(SCDARecord *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_recordType = a3;
+    v7->_recordType = type;
     v7->_isMe = 1;
     [(SCDARecord *)v7 generateTiebreaker];
     [(SCDARecord *)v8 generateRandomConfidence];
-    [(SCDARecord *)v8 _assignDeviceDetails:v6];
+    [(SCDARecord *)v8 _assignDeviceDetails:deviceCopy];
   }
 
   return v8;
 }
 
-- (id)_initWithPerceptualAudioHash:(id)a3 type:(int64_t)a4 device:(id)a5
+- (id)_initWithPerceptualAudioHash:(id)hash type:(int64_t)type device:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  hashCopy = hash;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = SCDARecord;
   v10 = [(SCDARecord *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(SCDARecord *)v10 setRecordType:a4];
-    if (!v8)
+    [(SCDARecord *)v10 setRecordType:type];
+    if (!hashCopy)
     {
-      v8 = [[SCDAPerceptualAudioHash alloc] initWithData:0];
+      hashCopy = [[SCDAPerceptualAudioHash alloc] initWithData:0];
     }
 
     [(SCDARecord *)v11 setPHash:+[SCDARecord _generateRandomHash]];
-    [(SCDARecord *)v11 setUserConfidence:[(SCDAPerceptualAudioHash *)v8 userConfidence]];
-    v11->_voiceTriggerMachTime = [(SCDAPerceptualAudioHash *)v8 voiceTriggerTime];
-    [(SCDARecord *)v11 setTieBreaker:[(SCDAPerceptualAudioHash *)v8 frac]];
-    if (([(SCDAPerceptualAudioHash *)v8 scoreAudioIntensity]& 0x80) != 0)
+    [(SCDARecord *)v11 setUserConfidence:[(SCDAPerceptualAudioHash *)hashCopy userConfidence]];
+    v11->_voiceTriggerMachTime = [(SCDAPerceptualAudioHash *)hashCopy voiceTriggerTime];
+    [(SCDARecord *)v11 setTieBreaker:[(SCDAPerceptualAudioHash *)hashCopy frac]];
+    if (([(SCDAPerceptualAudioHash *)hashCopy scoreAudioIntensity]& 0x80) != 0)
     {
-      v12 = 127;
+      scoreAudioIntensity = 127;
     }
 
     else
     {
-      v12 = [(SCDAPerceptualAudioHash *)v8 scoreAudioIntensity];
+      scoreAudioIntensity = [(SCDAPerceptualAudioHash *)hashCopy scoreAudioIntensity];
     }
 
-    [(SCDARecord *)v11 setGoodness:v12];
+    [(SCDARecord *)v11 setGoodness:scoreAudioIntensity];
     [(SCDARecord *)v11 setRawAudioGoodnessScore:[(SCDARecord *)v11 goodness]];
     if (!v11->_tieBreaker)
     {
@@ -916,18 +916,18 @@ LABEL_16:
     }
 
     v11->_isMe = 1;
-    [(SCDARecord *)v11 _assignDeviceDetails:v9];
+    [(SCDARecord *)v11 _assignDeviceDetails:deviceCopy];
   }
 
   return v11;
 }
 
-- (SCDARecord)initWithDeviceID:(id)a3 data:(id)a4 electionParticipantId:(id)a5
+- (SCDARecord)initWithDeviceID:(id)d data:(id)data electionParticipantId:(id)id
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  dataCopy = data;
+  idCopy = id;
   v29.receiver = self;
   v29.super_class = SCDARecord;
   v12 = [(SCDARecord *)&v29 init];
@@ -938,24 +938,24 @@ LABEL_16:
     v12->_advertisementData = 0;
 
     v13->_productType = 0;
-    objc_storeStrong(&v13->_deviceID, a3);
-    v15 = [v10 length];
+    objc_storeStrong(&v13->_deviceID, d);
+    v15 = [dataCopy length];
     if (v15 < 7)
     {
-      if (v10)
+      if (dataCopy)
       {
         v20 = SCDALogContextCore;
         if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_ERROR))
         {
           v26 = MEMORY[0x1E696AD98];
           v27 = v20;
-          v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v10, "length")}];
+          v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
           *buf = 136315650;
           v31 = "[SCDARecord initWithDeviceID:data:electionParticipantId:]";
           v32 = 2112;
           *v33 = v28;
           *&v33[8] = 2112;
-          v34 = v10;
+          v34 = dataCopy;
           _os_log_error_impl(&dword_1DA758000, v27, OS_LOG_TYPE_ERROR, "%s Bad data of unexpected length %@ : %@", buf, 0x20u);
         }
       }
@@ -968,12 +968,12 @@ LABEL_16:
     else
     {
       v16 = v15;
-      [v10 getBytes:&v13->_pHash range:{0, 2}];
-      [v10 getBytes:&v13->_goodness range:{2, 1}];
-      [v10 getBytes:&v13->_userConfidence range:{3, 1}];
-      [v10 getBytes:&v13->_deviceGroup range:{4, 1}];
-      [v10 getBytes:&v13->_deviceClass range:{5, 1}];
-      [v10 getBytes:&v13->_tieBreaker range:{6, 1}];
+      [dataCopy getBytes:&v13->_pHash range:{0, 2}];
+      [dataCopy getBytes:&v13->_goodness range:{2, 1}];
+      [dataCopy getBytes:&v13->_userConfidence range:{3, 1}];
+      [dataCopy getBytes:&v13->_deviceGroup range:{4, 1}];
+      [dataCopy getBytes:&v13->_deviceClass range:{5, 1}];
+      [dataCopy getBytes:&v13->_tieBreaker range:{6, 1}];
       deviceClass = v13->_deviceClass;
       if (deviceClass >= 0x20)
       {
@@ -992,21 +992,21 @@ LABEL_16:
         v13->_deviceClass = deviceClass & 0x1F;
       }
 
-      if (v16 == 7 || ([v10 getBytes:&v13->_productType range:{7, 1}], v16 == 8))
+      if (v16 == 7 || ([dataCopy getBytes:&v13->_productType range:{7, 1}], v16 == 8))
       {
-        v19 = [v10 copy];
+        v19 = [dataCopy copy];
       }
 
       else
       {
-        v21 = v10;
+        v21 = dataCopy;
         v19 = [v21 initWithBytes:objc_msgSend(v21 length:{"bytes"), 8}];
       }
 
       v22 = v13->_advertisementData;
       v13->_advertisementData = v19;
 
-      objc_storeStrong(&v13->_electionParticipantId, a5);
+      objc_storeStrong(&v13->_electionParticipantId, id);
     }
 
     v23 = v13;

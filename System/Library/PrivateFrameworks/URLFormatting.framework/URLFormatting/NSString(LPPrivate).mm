@@ -12,31 +12,31 @@
 
 - (id)_lp_highLevelDomainFromHost
 {
-  if ([a1 length])
+  if ([self length])
   {
-    if ([a1 _web_looksLikeIPAddress])
+    if ([self _web_looksLikeIPAddress])
     {
-      v2 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = [a1 componentsSeparatedByString:@"."];
-      v2 = [a1 _lp_highLevelDomainFromComponents:v3 indexOfFirstHighLevelDomainComponent:0 indexOfFirstTopLevelDomainComponent:0];
+      v3 = [self componentsSeparatedByString:@"."];
+      selfCopy = [self _lp_highLevelDomainFromComponents:v3 indexOfFirstHighLevelDomainComponent:0 indexOfFirstTopLevelDomainComponent:0];
     }
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)_lp_stringByTrimmingWhitespace
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTrimWhitespace(v1);
 
   return v1;
@@ -44,38 +44,38 @@
 
 - (id)_lp_stringByDeletingUsernameAndPassword
 {
-  v2 = [MEMORY[0x277CCACE0] componentsWithString:a1];
+  v2 = [MEMORY[0x277CCACE0] componentsWithString:self];
   v3 = v2;
   if (v2)
   {
     [v2 setUser:0];
     [v3 setPassword:0];
-    v4 = [v3 string];
+    selfCopy = [v3 string];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
 
 - (id)_lp_stringByDeletingTrailingSlash
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_lp_hasCaseInsensitivePrefix:()LPPrivate
@@ -83,7 +83,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 rangeOfString:v4 options:9] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [self rangeOfString:v4 options:9] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -96,39 +96,39 @@
 
 - (id)_lp_hostByStrippingTopLevelDomain
 {
-  if ([a1 length])
+  if ([self length])
   {
-    if ([a1 _web_looksLikeIPAddress])
+    if ([self _web_looksLikeIPAddress])
     {
-      v2 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v3 = [a1 componentsSeparatedByString:@"."];
+      v3 = [self componentsSeparatedByString:@"."];
       v6 = 0;
-      v2 = [a1 _lp_highLevelDomainFromComponents:v3 indexOfFirstHighLevelDomainComponent:0 indexOfFirstTopLevelDomainComponent:&v6];
+      selfCopy = [self _lp_highLevelDomainFromComponents:v3 indexOfFirstHighLevelDomainComponent:0 indexOfFirstTopLevelDomainComponent:&v6];
 
-      if (v2)
+      if (selfCopy)
       {
         v4 = [v3 subarrayWithRange:{0, v6}];
-        v2 = [v4 componentsJoinedByString:@"."];
+        selfCopy = [v4 componentsJoinedByString:@"."];
       }
     }
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (float)_lp_similarityToString:()LPPrivate
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = [v4 length];
   if (v5 <= v6)
   {
@@ -137,7 +137,7 @@
 
   if (v5)
   {
-    v7 = (v5 - damerauLevenshteinDistance(a1, v4)) / v5;
+    v7 = (v5 - damerauLevenshteinDistance(self, v4)) / v5;
   }
 
   else

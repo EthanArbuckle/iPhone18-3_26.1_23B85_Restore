@@ -1,19 +1,19 @@
 @interface CWFXPCListener
-- (BOOL)__allowXPCConnection:(id)a3 serviceType:(int64_t)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)__allowXPCConnection:(id)connection serviceType:(int64_t)type;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CWFXPCListener)init;
-- (CWFXPCListener)initWithServiceType:(int64_t)a3;
+- (CWFXPCListener)initWithServiceType:(int64_t)type;
 - (id)XPCConnections;
 - (id)localXPCClient;
 - (id)registeredActivities;
 - (id)registeredEventIDs;
-- (void)XPCConnection:(id)a3 canceledXPCRequestsWithUUID:(id)a4;
-- (void)XPCConnection:(id)a3 completedXPCRequest:(id)a4;
-- (void)XPCConnection:(id)a3 receivedXPCRequest:(id)a4;
-- (void)XPCConnection:(id)a3 updatedProcessState:(id)a4;
-- (void)XPCConnection:(id)a3 updatedRegisteredEventIDs:(id)a4;
+- (void)XPCConnection:(id)connection canceledXPCRequestsWithUUID:(id)d;
+- (void)XPCConnection:(id)connection completedXPCRequest:(id)request;
+- (void)XPCConnection:(id)connection receivedXPCRequest:(id)request;
+- (void)XPCConnection:(id)connection updatedProcessState:(id)state;
+- (void)XPCConnection:(id)connection updatedRegisteredEventIDs:(id)ds;
 - (void)invalidate;
-- (void)sendXPCEvent:(id)a3 reply:(id)a4;
+- (void)sendXPCEvent:(id)event reply:(id)reply;
 @end
 
 @implementation CWFXPCListener
@@ -84,14 +84,14 @@
   return v3;
 }
 
-- (CWFXPCListener)initWithServiceType:(int64_t)a3
+- (CWFXPCListener)initWithServiceType:(int64_t)type
 {
   v24.receiver = self;
   v24.super_class = CWFXPCListener;
   v4 = [(CWFXPCListener *)&v24 init];
   v5 = v4;
   v6 = 0;
-  if ((a3 - 12) < 0xFFFFFFFFFFFFFFF5)
+  if ((type - 12) < 0xFFFFFFFFFFFFFFF5)
   {
     goto LABEL_9;
   }
@@ -101,17 +101,17 @@
     goto LABEL_9;
   }
 
-  v4->_serviceType = a3;
-  v6 = sub_1E0BC1A5C(a3);
+  v4->_serviceType = type;
+  v6 = sub_1E0BC1A5C(type);
   if (!v6)
   {
     goto LABEL_9;
   }
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.corewifi.XPC-listener-mutex.%@", v6];
-  v8 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v10 = dispatch_queue_create(v8, v9);
+  v10 = dispatch_queue_create(uTF8String, v9);
   mutexQueue = v5->_mutexQueue;
   v5->_mutexQueue = v10;
 
@@ -144,11 +144,11 @@
   }
 
   [(NSXPCListener *)v18 setDelegate:v5];
-  v19 = sub_1E0BC16BC(a3, 1);
+  v19 = sub_1E0BC16BC(type, 1);
   requestXPCInterface = v5->_requestXPCInterface;
   v5->_requestXPCInterface = v19;
 
-  if (!v5->_requestXPCInterface || (sub_1E0BC1840(a3), v21 = objc_claimAutoreleasedReturnValue(), eventXPCInterface = v5->_eventXPCInterface, v5->_eventXPCInterface = v21, eventXPCInterface, !v5->_eventXPCInterface))
+  if (!v5->_requestXPCInterface || (sub_1E0BC1840(type), v21 = objc_claimAutoreleasedReturnValue(), eventXPCInterface = v5->_eventXPCInterface, v5->_eventXPCInterface = v21, eventXPCInterface, !v5->_eventXPCInterface))
   {
 LABEL_9:
 
@@ -176,20 +176,20 @@ LABEL_9:
   dispatch_sync(mutexQueue, block);
 }
 
-- (void)sendXPCEvent:(id)a3 reply:(id)a4
+- (void)sendXPCEvent:(id)event reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  replyCopy = reply;
   mutexQueue = self->_mutexQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D0B8F0;
   block[3] = &unk_1E86E7228;
-  v12 = v6;
-  v13 = v7;
+  v12 = eventCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = eventCopy;
+  v10 = replyCopy;
   dispatch_async(mutexQueue, block);
 }
 
@@ -201,13 +201,13 @@ LABEL_9:
   {
     v4 = [CWFXPCClient alloc];
     serviceType = self->_serviceType;
-    v6 = [(CWFXPCConnection *)v3 localXPCProxyConnection];
-    v7 = [(CWFXPCClient *)v4 initWithServiceType:serviceType remoteXPCProxyConnection:v6];
+    localXPCProxyConnection = [(CWFXPCConnection *)v3 localXPCProxyConnection];
+    v7 = [(CWFXPCClient *)v4 initWithServiceType:serviceType remoteXPCProxyConnection:localXPCProxyConnection];
 
     if (v7)
     {
-      v8 = [(CWFXPCClient *)v7 localXPCProxyConnection];
-      [(CWFXPCConnection *)v3 setRemoteXPCProxyConnection:v8];
+      localXPCProxyConnection2 = [(CWFXPCClient *)v7 localXPCProxyConnection];
+      [(CWFXPCConnection *)v3 setRemoteXPCProxyConnection:localXPCProxyConnection2];
 
       [(CWFXPCConnection *)v3 setDelegate:self];
       objc_initWeak(&location, v3);
@@ -232,12 +232,12 @@ LABEL_9:
 
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v12 = [(CWFXPCConnection *)v3 processName];
-        v13 = [(CWFXPCConnection *)v3 UUID];
-        v14 = [v13 UUIDString];
-        v15 = [v14 substringToIndex:5];
+        processName = [(CWFXPCConnection *)v3 processName];
+        uUID = [(CWFXPCConnection *)v3 UUID];
+        uUIDString = [uUID UUIDString];
+        v15 = [uUIDString substringToIndex:5];
         v26 = 138543618;
-        v27 = v12;
+        v27 = processName;
         v28 = 2114;
         v29 = v15;
         _os_log_send_and_compose_impl();
@@ -256,8 +256,8 @@ LABEL_9:
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
-      v18 = [(CWFXPCListener *)self delegate];
-      [v18 XPCListener:self addedXPCConnection:v17];
+      delegate = [(CWFXPCListener *)self delegate];
+      [delegate XPCListener:self addedXPCConnection:v17];
     }
   }
 
@@ -271,14 +271,14 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)__allowXPCConnection:(id)a3 serviceType:(int64_t)a4
+- (BOOL)__allowXPCConnection:(id)connection serviceType:(int64_t)type
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  connectionCopy = connection;
   v51 = 0;
   if (![(NSArray *)self->_bootArgs containsObject:@"corewifi_api_enforcement_disable=1"])
   {
-    if (![v6 processIdentifier])
+    if (![connectionCopy processIdentifier])
     {
       v29 = CWFGetOSLog();
       if (v29)
@@ -307,7 +307,7 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v8 = sub_1E0BC8728(a4, &v51);
+    v8 = sub_1E0BC8728(type, &v51);
     if ([v8 count])
     {
       v49 = 0u;
@@ -329,10 +329,10 @@ LABEL_54:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [v6 valueForEntitlement:*(*(&v47 + 1) + 8 * i)];
-            v15 = [v14 BOOLValue];
+            v14 = [connectionCopy valueForEntitlement:*(*(&v47 + 1) + 8 * i)];
+            bOOLValue = [v14 BOOLValue];
 
-            if (v15)
+            if (bOOLValue)
             {
 LABEL_33:
               v28 = 1;
@@ -351,7 +351,7 @@ LABEL_33:
       }
     }
 
-    sub_1E0BEC9DC(a4, &v51);
+    sub_1E0BEC9DC(type, &v51);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -372,7 +372,7 @@ LABEL_33:
 
           v20 = *(*(&v43 + 1) + 8 * j);
           v21 = [v9 objectForKeyedSubscript:v20];
-          v22 = [v6 valueForEntitlement:v20];
+          v22 = [connectionCopy valueForEntitlement:v20];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 containsObject:v21])
           {
@@ -412,10 +412,10 @@ LABEL_33:
         goto LABEL_53;
       }
 
-      v32 = [v6 processIdentifier];
-      if (v6)
+      processIdentifier = [connectionCopy processIdentifier];
+      if (connectionCopy)
       {
-        [v6 auditToken];
+        [connectionCopy auditToken];
       }
 
       else
@@ -424,13 +424,13 @@ LABEL_33:
       }
 
       v34 = sub_1E0BC8664(v52);
-      v35 = [v34 lastPathComponent];
-      v36 = sub_1E0BC1A5C(a4);
+      lastPathComponent = [v34 lastPathComponent];
+      v36 = sub_1E0BC1A5C(type);
       v37 = [v8 componentsJoinedByString:@", "];
       *v52 = 67109890;
-      *&v52[4] = v32;
+      *&v52[4] = processIdentifier;
       *&v52[8] = 2114;
-      *&v52[10] = v35;
+      *&v52[10] = lastPathComponent;
       *&v52[18] = 2114;
       *&v52[20] = v36;
       *&v52[28] = 2114;
@@ -456,9 +456,9 @@ LABEL_33:
         goto LABEL_53;
       }
 
-      if (v6)
+      if (connectionCopy)
       {
-        [v6 auditToken];
+        [connectionCopy auditToken];
       }
 
       else
@@ -467,11 +467,11 @@ LABEL_33:
       }
 
       v38 = sub_1E0BC8664(v52);
-      v35 = [v38 lastPathComponent];
-      v36 = sub_1E0BC1A5C(a4);
+      lastPathComponent = [v38 lastPathComponent];
+      v36 = sub_1E0BC1A5C(type);
       v39 = [v8 componentsJoinedByString:@", "];
       *v52 = 138543874;
-      *&v52[4] = v35;
+      *&v52[4] = lastPathComponent;
       *&v52[12] = 2114;
       *&v52[14] = v36;
       *&v52[22] = 2114;
@@ -503,10 +503,10 @@ LABEL_37:
     goto LABEL_55;
   }
 
-  v27 = [v6 processIdentifier];
-  sub_1E0BC1A5C(a4);
+  processIdentifier2 = [connectionCopy processIdentifier];
+  sub_1E0BC1A5C(type);
   *v52 = 67109378;
-  *&v52[4] = v27;
+  *&v52[4] = processIdentifier2;
   *&v52[10] = *&v52[8] = 2114;
   v28 = 1;
   _os_log_send_and_compose_impl();
@@ -518,22 +518,22 @@ LABEL_55:
   return v28 & 1 | !v40;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(CWFXPCListener *)self __allowXPCConnection:v7 serviceType:self->_serviceType])
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if ([(CWFXPCListener *)self __allowXPCConnection:connectionCopy serviceType:self->_serviceType])
   {
-    v8 = [[CWFXPCConnection alloc] initWithServiceType:self->_serviceType XPCConnection:v7 bootArgs:self->_bootArgs];
+    v8 = [[CWFXPCConnection alloc] initWithServiceType:self->_serviceType XPCConnection:connectionCopy bootArgs:self->_bootArgs];
     v9 = v8;
     v10 = v8 != 0;
     if (v8)
     {
       [(CWFXPCConnection *)v8 setDelegate:self];
-      [v7 setExportedInterface:self->_requestXPCInterface];
-      [v7 setRemoteObjectInterface:self->_eventXPCInterface];
-      [v7 setExportedObject:v9];
+      [connectionCopy setExportedInterface:self->_requestXPCInterface];
+      [connectionCopy setRemoteObjectInterface:self->_eventXPCInterface];
+      [connectionCopy setExportedObject:v9];
       objc_initWeak(&location, v9);
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -557,27 +557,27 @@ LABEL_55:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v28 = v10;
-        v29 = v6;
-        v30 = [(CWFXPCConnection *)v9 processName];
-        v14 = [v7 processIdentifier];
-        v15 = [v7 effectiveUserIdentifier];
-        v16 = [v7 effectiveGroupIdentifier];
-        v17 = [(CWFXPCConnection *)v9 UUID];
-        v18 = [v17 UUIDString];
-        v19 = [v18 substringToIndex:5];
+        v29 = listenerCopy;
+        processName = [(CWFXPCConnection *)v9 processName];
+        processIdentifier = [connectionCopy processIdentifier];
+        effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
+        effectiveGroupIdentifier = [connectionCopy effectiveGroupIdentifier];
+        uUID = [(CWFXPCConnection *)v9 UUID];
+        uUIDString = [uUID UUIDString];
+        v19 = [uUIDString substringToIndex:5];
         v36 = 138544386;
-        v37 = v30;
+        v37 = processName;
         v38 = 1024;
-        v39 = v14;
+        v39 = processIdentifier;
         v40 = 1024;
-        v41 = v15;
+        v41 = effectiveUserIdentifier;
         v42 = 1024;
-        v43 = v16;
+        v43 = effectiveGroupIdentifier;
         v44 = 2114;
         v45 = v19;
         _os_log_send_and_compose_impl();
 
-        v6 = v29;
+        listenerCopy = v29;
         v10 = v28;
       }
 
@@ -591,8 +591,8 @@ LABEL_55:
       v21 = v9;
       v32 = v21;
       dispatch_async(mutexQueue, block);
-      v22 = [(CWFXPCListener *)self delegate];
-      [v22 XPCListener:self addedXPCConnection:v21];
+      delegate = [(CWFXPCListener *)self delegate];
+      [delegate XPCListener:self addedXPCConnection:v21];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(&location);
@@ -615,7 +615,7 @@ LABEL_55:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v36 = 67109120;
-        LODWORD(v37) = [v7 processIdentifier];
+        LODWORD(v37) = [connectionCopy processIdentifier];
         _os_log_send_and_compose_impl();
       }
     }
@@ -630,77 +630,77 @@ LABEL_55:
   return v10;
 }
 
-- (void)XPCConnection:(id)a3 receivedXPCRequest:(id)a4
+- (void)XPCConnection:(id)connection receivedXPCRequest:(id)request
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(CWFXPCListener *)self delegate];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  requestCopy = request;
+  delegate = [(CWFXPCListener *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 XPCListener:self XPCConnection:v14 receivedXPCRequest:v6];
+    [delegate XPCListener:self XPCConnection:connectionCopy receivedXPCRequest:requestCopy];
   }
 
   else
   {
-    v9 = [v6 response];
+    response = [requestCopy response];
 
-    if (v9)
+    if (response)
     {
-      v10 = [v6 response];
+      response2 = [requestCopy response];
       v11 = *MEMORY[0x1E696A798];
       v12 = CWFErrorDescription(*MEMORY[0x1E696A798], 0x2DuLL);
       v13 = CWFErrorWithDescription(v11, 45, v12);
-      (v10)[2](v10, v13, 0);
+      (response2)[2](response2, v13, 0);
     }
   }
 }
 
-- (void)XPCConnection:(id)a3 completedXPCRequest:(id)a4
+- (void)XPCConnection:(id)connection completedXPCRequest:(id)request
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CWFXPCListener *)self delegate];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  requestCopy = request;
+  delegate = [(CWFXPCListener *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 XPCListener:self XPCConnection:v9 completedXPCRequest:v6];
+    [delegate XPCListener:self XPCConnection:connectionCopy completedXPCRequest:requestCopy];
   }
 }
 
-- (void)XPCConnection:(id)a3 canceledXPCRequestsWithUUID:(id)a4
+- (void)XPCConnection:(id)connection canceledXPCRequestsWithUUID:(id)d
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CWFXPCListener *)self delegate];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  dCopy = d;
+  delegate = [(CWFXPCListener *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 XPCListener:self XPCConnection:v9 canceledXPCRequestsWithUUID:v6];
+    [delegate XPCListener:self XPCConnection:connectionCopy canceledXPCRequestsWithUUID:dCopy];
   }
 }
 
-- (void)XPCConnection:(id)a3 updatedRegisteredEventIDs:(id)a4
+- (void)XPCConnection:(id)connection updatedRegisteredEventIDs:(id)ds
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CWFXPCListener *)self delegate];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  dsCopy = ds;
+  delegate = [(CWFXPCListener *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 XPCListener:self XPCConnection:v9 updatedRegisteredEventIDs:v6];
+    [delegate XPCListener:self XPCConnection:connectionCopy updatedRegisteredEventIDs:dsCopy];
   }
 }
 
-- (void)XPCConnection:(id)a3 updatedProcessState:(id)a4
+- (void)XPCConnection:(id)connection updatedProcessState:(id)state
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CWFXPCListener *)self delegate];
-  v8 = v7;
-  if (v7)
+  connectionCopy = connection;
+  stateCopy = state;
+  delegate = [(CWFXPCListener *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 XPCListener:self XPCConnection:v9 updatedProcessState:v6];
+    [delegate XPCListener:self XPCConnection:connectionCopy updatedProcessState:stateCopy];
   }
 }
 

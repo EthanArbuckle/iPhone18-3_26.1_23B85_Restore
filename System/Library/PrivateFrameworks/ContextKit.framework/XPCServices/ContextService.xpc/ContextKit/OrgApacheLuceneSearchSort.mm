@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchSort
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsScores;
 - (OrgApacheLuceneSearchSort)init;
 - (id)description;
-- (id)rewriteWithOrgApacheLuceneSearchIndexSearcher:(id)a3;
+- (id)rewriteWithOrgApacheLuceneSearchIndexSearcher:(id)searcher;
 - (void)dealloc;
-- (void)setSortWithOrgApacheLuceneSearchSortField:(id)a3;
+- (void)setSortWithOrgApacheLuceneSearchSortField:(id)field;
 @end
 
 @implementation OrgApacheLuceneSearchSort
@@ -22,14 +22,14 @@
   return self;
 }
 
-- (void)setSortWithOrgApacheLuceneSearchSortField:(id)a3
+- (void)setSortWithOrgApacheLuceneSearchSortField:(id)field
 {
-  v5 = a3;
-  v4 = [IOSObjectArray newArrayWithObjects:&v5 count:1 type:OrgApacheLuceneSearchSortField_class_()];
+  fieldCopy = field;
+  v4 = [IOSObjectArray newArrayWithObjects:&fieldCopy count:1 type:OrgApacheLuceneSearchSortField_class_()];
   JreStrongAssignAndConsume(&self->fields_, v4);
 }
 
-- (id)rewriteWithOrgApacheLuceneSearchIndexSearcher:(id)a3
+- (id)rewriteWithOrgApacheLuceneSearchIndexSearcher:(id)searcher
 {
   fields = self->fields_;
   if (!fields)
@@ -56,7 +56,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    IOSObjectArray_Set(v8, v9, [(IOSClass *)v11 rewriteWithOrgApacheLuceneSearchIndexSearcher:a3]);
+    IOSObjectArray_Set(v8, v9, [(IOSClass *)v11 rewriteWithOrgApacheLuceneSearchIndexSearcher:searcher]);
     v12 = self->fields_;
     size = v12->super.size_;
     if (v9 >= size)
@@ -125,9 +125,9 @@ LABEL_8:
   return [(JavaLangStringBuilder *)v5 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -139,7 +139,7 @@ LABEL_8:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -150,7 +150,7 @@ LABEL_8:
   }
 
   fields = self->fields_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(fields, v6);
 }
@@ -196,7 +196,7 @@ LABEL_7:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_OrgApacheLuceneSearchSort_init();
     JreStrongAssignAndConsume(&OrgApacheLuceneSearchSort_RELEVANCE_, v2);

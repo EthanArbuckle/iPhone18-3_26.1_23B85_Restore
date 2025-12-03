@@ -1,30 +1,30 @@
 @interface UIUserNotificationActionSettings
-- (BOOL)isEqual:(id)a3;
-- (UIUserNotificationActionSettings)initWithCategory:(id)a3 actionsByContext:(id)a4;
-- (UIUserNotificationActionSettings)initWithCoder:(id)a3;
-- (id)actionsForContext:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIUserNotificationActionSettings)initWithCategory:(id)category actionsByContext:(id)context;
+- (UIUserNotificationActionSettings)initWithCoder:(id)coder;
+- (id)actionsForContext:(unint64_t)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)validatedSettings;
-- (unint64_t)_maximumActionsForContext:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)_maximumActionsForContext:(unint64_t)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIUserNotificationActionSettings
 
-- (UIUserNotificationActionSettings)initWithCategory:(id)a3 actionsByContext:(id)a4
+- (UIUserNotificationActionSettings)initWithCategory:(id)category actionsByContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = UIUserNotificationActionSettings;
   v8 = [(UIUserNotificationActionSettings *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [categoryCopy copy];
     category = v8->_category;
     v8->_category = v9;
 
-    v11 = [v7 copy];
+    v11 = [contextCopy copy];
     actionsByContext = v8->_actionsByContext;
     v8->_actionsByContext = v11;
   }
@@ -32,11 +32,11 @@
   return v8;
 }
 
-- (UIUserNotificationActionSettings)initWithCoder:(id)a3
+- (UIUserNotificationActionSettings)initWithCoder:(id)coder
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCategoryKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCategoryKey"];
   v6 = MEMORY[0x1E695DFD8];
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
@@ -44,21 +44,21 @@
   v12[3] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kActionsByContextKey"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kActionsByContextKey"];
 
   v10 = [(UIUserNotificationActionSettings *)self initWithCategory:v5 actionsByContext:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   category = self->_category;
-  v5 = a3;
-  [v5 encodeObject:category forKey:@"kCategoryKey"];
-  [v5 encodeObject:self->_actionsByContext forKey:@"kActionsByContextKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:category forKey:@"kCategoryKey"];
+  [coderCopy encodeObject:self->_actionsByContext forKey:@"kActionsByContextKey"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableUserNotificationActionSettings alloc];
   category = self->_category;
@@ -67,15 +67,15 @@
   return [(UIUserNotificationActionSettings *)v4 initWithCategory:category actionsByContext:actionsByContext];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     category = self->_category;
-    v7 = v4;
+    v7 = equalCopy;
     LODWORD(v5) = [v5 isEqualToString:category];
     v8 = v7[2];
 
@@ -90,10 +90,10 @@
   return v9;
 }
 
-- (id)actionsForContext:(unint64_t)a3
+- (id)actionsForContext:(unint64_t)context
 {
   actionsByContext = self->_actionsByContext;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:context];
   v5 = [(NSDictionary *)actionsByContext objectForKey:v4];
 
   return v5;
@@ -108,12 +108,12 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [(NSDictionary *)self->_actionsByContext allKeys];
-  v25 = [v3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  allKeys = [(NSDictionary *)self->_actionsByContext allKeys];
+  v25 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v25)
   {
     v4 = 0;
-    obj = v3;
+    obj = allKeys;
     v22 = *v31;
     do
     {
@@ -156,9 +156,9 @@
               }
 
               v16 = *(*(&v26 + 1) + 8 * j);
-              v17 = [v16 validatedAction];
-              v4 |= v17 != v16;
-              [v10 addObject:v17];
+              validatedAction = [v16 validatedAction];
+              v4 |= validatedAction != v16;
+              [v10 addObject:validatedAction];
             }
 
             v13 = [v11 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -193,9 +193,9 @@ LABEL_21:
   return v19;
 }
 
-- (unint64_t)_maximumActionsForContext:(unint64_t)a3
+- (unint64_t)_maximumActionsForContext:(unint64_t)context
 {
-  if (a3 == 1)
+  if (context == 1)
   {
     return 2;
   }

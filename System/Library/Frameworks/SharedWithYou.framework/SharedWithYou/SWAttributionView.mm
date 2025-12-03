@@ -9,7 +9,7 @@
 - (void)_updateSLAttributionViewHideMenuItemTitle;
 - (void)_updateSLAttributionViewSupplementalMenu;
 - (void)didMoveToWindow;
-- (void)setBlurEffectGroupName:(id)a3;
+- (void)setBlurEffectGroupName:(id)name;
 - (void)setDisplayContext:(SWAttributionViewDisplayContext)displayContext;
 - (void)setHighlight:(SWHighlight *)highlight;
 - (void)setMenuTitleForHideAction:(NSString *)menuTitleForHideAction;
@@ -33,9 +33,9 @@
   v4.receiver = self;
   v4.super_class = SWAttributionView;
   [(SWAttributionView *)&v4 didMoveToWindow];
-  v3 = [(SWAttributionView *)self window];
+  window = [(SWAttributionView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(SWAttributionView *)self _sendFeedbackForCurrentDisplayContext];
   }
@@ -47,110 +47,110 @@
   v54.receiver = self;
   v54.super_class = SWAttributionView;
   [(SWAttributionView *)&v54 updateConstraints];
-  v3 = [(SWAttributionView *)self constraints];
-  v4 = [v3 count];
+  constraints = [(SWAttributionView *)self constraints];
+  v4 = [constraints count];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(SWAttributionView *)self constraints];
-    [v5 deactivateConstraints:v6];
+    constraints2 = [(SWAttributionView *)self constraints];
+    [v5 deactivateConstraints:constraints2];
 
     [(SWAttributionView *)self setConstraints:0];
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(SWAttributionView *)self slAttributionView];
+  array = [MEMORY[0x1E695DF70] array];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
 
-  if (v8)
+  if (slAttributionView)
   {
     [(SWAttributionView *)self preferredMaxLayoutWidth];
     v10 = v9;
-    v11 = [(SWAttributionView *)self slAttributionView];
-    v12 = v11;
+    slAttributionView2 = [(SWAttributionView *)self slAttributionView];
+    v12 = slAttributionView2;
     if (v10 <= 0.0)
     {
-      v49 = [v11 topAnchor];
-      v47 = [(SWAttributionView *)self topAnchor];
-      v48 = [v49 constraintEqualToAnchor:v47];
+      topAnchor = [slAttributionView2 topAnchor];
+      topAnchor2 = [(SWAttributionView *)self topAnchor];
+      v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v55[0] = v48;
-      v45 = [(SWAttributionView *)self slAttributionView];
-      v46 = [v45 bottomAnchor];
-      v43 = [(SWAttributionView *)self bottomAnchor];
-      v53 = [v46 constraintEqualToAnchor:v43];
+      slAttributionView3 = [(SWAttributionView *)self slAttributionView];
+      bottomAnchor = [slAttributionView3 bottomAnchor];
+      bottomAnchor2 = [(SWAttributionView *)self bottomAnchor];
+      v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v55[1] = v53;
-      v52 = [(SWAttributionView *)self slAttributionView];
-      v40 = [v52 leadingAnchor];
-      v51 = [(SWAttributionView *)self leadingAnchor];
-      v50 = [v40 constraintEqualToAnchor:?];
+      slAttributionView4 = [(SWAttributionView *)self slAttributionView];
+      leadingAnchor = [slAttributionView4 leadingAnchor];
+      leadingAnchor2 = [(SWAttributionView *)self leadingAnchor];
+      v50 = [leadingAnchor constraintEqualToAnchor:?];
       v55[2] = v50;
-      v44 = [(SWAttributionView *)self slAttributionView];
-      v42 = [v44 trailingAnchor];
-      v41 = [(SWAttributionView *)self trailingAnchor];
-      v39 = [v42 constraintEqualToAnchor:v41];
+      slAttributionView5 = [(SWAttributionView *)self slAttributionView];
+      trailingAnchor = [slAttributionView5 trailingAnchor];
+      trailingAnchor2 = [(SWAttributionView *)self trailingAnchor];
+      v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v55[3] = v39;
-      v38 = [(SWAttributionView *)self slAttributionView];
-      v37 = [v38 widthAnchor];
-      v23 = [(SWAttributionView *)self widthAnchor];
-      v24 = [v37 constraintEqualToAnchor:v23];
+      slAttributionView6 = [(SWAttributionView *)self slAttributionView];
+      widthAnchor = [slAttributionView6 widthAnchor];
+      widthAnchor2 = [(SWAttributionView *)self widthAnchor];
+      v24 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v55[4] = v24;
-      v25 = [(SWAttributionView *)self slAttributionView];
-      v26 = [v25 heightAnchor];
+      slAttributionView7 = [(SWAttributionView *)self slAttributionView];
+      heightAnchor = [slAttributionView7 heightAnchor];
       [(SWAttributionView *)self heightAnchor];
       v28 = v27 = v12;
-      v29 = [v26 constraintEqualToAnchor:v28];
+      v29 = [heightAnchor constraintEqualToAnchor:v28];
       v55[5] = v29;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:6];
-      v31 = v30 = v7;
+      v31 = v30 = array;
       [v30 addObjectsFromArray:v31];
 
-      v7 = v30;
-      v18 = v43;
+      array = v30;
+      v18 = bottomAnchor2;
 
-      v16 = v45;
+      slAttributionView8 = slAttributionView3;
       v12 = v27;
-      v14 = v47;
+      v14 = topAnchor2;
 
-      v22 = v40;
-      v17 = v46;
+      v22 = leadingAnchor;
+      widthAnchor5 = bottomAnchor;
 
-      v13 = v49;
-      v15 = v48;
+      widthAnchor3 = topAnchor;
+      widthAnchor4 = v48;
     }
 
     else
     {
-      v13 = [v11 widthAnchor];
+      widthAnchor3 = [slAttributionView2 widthAnchor];
       [(SWAttributionView *)self preferredMaxLayoutWidth];
-      v14 = [v13 constraintEqualToConstant:?];
+      v14 = [widthAnchor3 constraintEqualToConstant:?];
       v56[0] = v14;
-      v15 = [(SWAttributionView *)self widthAnchor];
-      v16 = [(SWAttributionView *)self slAttributionView];
-      v17 = [v16 widthAnchor];
-      v18 = [v15 constraintEqualToAnchor:v17];
+      widthAnchor4 = [(SWAttributionView *)self widthAnchor];
+      slAttributionView8 = [(SWAttributionView *)self slAttributionView];
+      widthAnchor5 = [slAttributionView8 widthAnchor];
+      v18 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
       v56[1] = v18;
-      v19 = [(SWAttributionView *)self heightAnchor];
-      v52 = [(SWAttributionView *)self slAttributionView];
-      v20 = [v52 heightAnchor];
-      v53 = v19;
-      v21 = v19;
-      v22 = v20;
-      v51 = [v21 constraintEqualToAnchor:v20];
-      v56[2] = v51;
+      heightAnchor2 = [(SWAttributionView *)self heightAnchor];
+      slAttributionView4 = [(SWAttributionView *)self slAttributionView];
+      heightAnchor3 = [slAttributionView4 heightAnchor];
+      v53 = heightAnchor2;
+      v21 = heightAnchor2;
+      v22 = heightAnchor3;
+      leadingAnchor2 = [v21 constraintEqualToAnchor:heightAnchor3];
+      v56[2] = leadingAnchor2;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:3];
-      [v7 addObjectsFromArray:?];
+      [array addObjectsFromArray:?];
     }
   }
 
-  [(SWAttributionView *)self setConstraints:v7];
-  v32 = [(SWAttributionView *)self constraints];
-  v33 = [v32 count];
+  [(SWAttributionView *)self setConstraints:array];
+  constraints3 = [(SWAttributionView *)self constraints];
+  v33 = [constraints3 count];
 
   if (v33)
   {
     v34 = MEMORY[0x1E696ACD8];
-    v35 = [(SWAttributionView *)self constraints];
-    [v34 activateConstraints:v35];
+    constraints4 = [(SWAttributionView *)self constraints];
+    [v34 activateConstraints:constraints4];
   }
 
   v36 = *MEMORY[0x1E69E9840];
@@ -160,8 +160,8 @@
 {
   [(SWAttributionView *)self frame];
   v4 = v3;
-  v5 = [(SWAttributionView *)self slAttributionView];
-  [v5 intrinsicContentSize];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView intrinsicContentSize];
   v7 = v6;
 
   v8 = v4;
@@ -177,12 +177,12 @@
   if (self->_highlight != v5)
   {
     v13 = v5;
-    v6 = [(SWAttributionView *)self slAttributionView];
+    slAttributionView = [(SWAttributionView *)self slAttributionView];
 
-    if (v6)
+    if (slAttributionView)
     {
-      v7 = [(SWAttributionView *)self slAttributionView];
-      [v7 removeFromSuperview];
+      slAttributionView2 = [(SWAttributionView *)self slAttributionView];
+      [slAttributionView2 removeFromSuperview];
 
       [(SWAttributionView *)self setSlAttributionView:0];
     }
@@ -192,15 +192,15 @@
     if (v13)
     {
       v8 = objc_alloc(MEMORY[0x1E69D37B8]);
-      v9 = [(SWHighlight *)v13 slHighlight];
-      v10 = [v8 initWithHighlight:v9];
+      slHighlight = [(SWHighlight *)v13 slHighlight];
+      v10 = [v8 initWithHighlight:slHighlight];
       [(SWAttributionView *)self setSlAttributionView:v10];
 
-      v11 = [(SWAttributionView *)self slAttributionView];
-      [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+      slAttributionView3 = [(SWAttributionView *)self slAttributionView];
+      [slAttributionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v12 = [(SWAttributionView *)self slAttributionView];
-      [(SWAttributionView *)self addSubview:v12];
+      slAttributionView4 = [(SWAttributionView *)self slAttributionView];
+      [(SWAttributionView *)self addSubview:slAttributionView4];
 
       [(SWAttributionView *)self _updateSLAttributionViewAlignment];
       [(SWAttributionView *)self _updateSLAttributionViewBackgroundStyle];
@@ -218,9 +218,9 @@
   if (self->_displayContext != displayContext)
   {
     self->_displayContext = displayContext;
-    v4 = [(SWAttributionView *)self window];
+    window = [(SWAttributionView *)self window];
 
-    if (v4)
+    if (window)
     {
 
       [(SWAttributionView *)self _sendFeedbackForCurrentDisplayContext];
@@ -230,14 +230,14 @@
 
 - (void)_updateSLAttributionViewAlignment
 {
-  v3 = [(SWAttributionView *)self horizontalAlignment];
+  horizontalAlignment = [(SWAttributionView *)self horizontalAlignment];
   v4 = 1;
-  if (v3 != SWAttributionViewHorizontalAlignmentCenter)
+  if (horizontalAlignment != SWAttributionViewHorizontalAlignmentCenter)
   {
     v4 = -1;
   }
 
-  if (v3 == SWAttributionViewHorizontalAlignmentTrailing)
+  if (horizontalAlignment == SWAttributionViewHorizontalAlignmentTrailing)
   {
     v5 = 2;
   }
@@ -247,14 +247,14 @@
     v5 = v4;
   }
 
-  v6 = [(SWAttributionView *)self slAttributionView];
-  [v6 updateAlignment:v5];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView updateAlignment:v5];
 }
 
 - (void)_updateSLAttributionViewBackgroundStyle
 {
-  v3 = [(SWAttributionView *)self backgroundStyle];
-  if (v3 == SWAttributionViewBackgroundStyleColor)
+  backgroundStyle = [(SWAttributionView *)self backgroundStyle];
+  if (backgroundStyle == SWAttributionViewBackgroundStyleColor)
   {
     v4 = 0;
   }
@@ -264,7 +264,7 @@
     v4 = -1;
   }
 
-  if (v3 == SWAttributionViewBackgroundStyleMaterial)
+  if (backgroundStyle == SWAttributionViewBackgroundStyleMaterial)
   {
     v5 = 1;
   }
@@ -274,8 +274,8 @@
     v5 = v4;
   }
 
-  v6 = [(SWAttributionView *)self slAttributionView];
-  [v6 updateBackgroundStyle:v5];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView updateBackgroundStyle:v5];
 }
 
 - (void)setPreferredMaxLayoutWidth:(CGFloat)preferredMaxLayoutWidth
@@ -292,19 +292,19 @@
 
 - (UIMenu)highlightMenu
 {
-  v3 = [(SWAttributionView *)self slAttributionView];
-  v4 = [v3 contextMenuItems];
-  v5 = v4;
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  contextMenuItems = [slAttributionView contextMenuItems];
+  v5 = contextMenuItems;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (contextMenuItems)
   {
-    v6 = v4;
+    v6 = contextMenuItems;
   }
 
   v7 = v6;
 
-  v8 = [(UIMenu *)self->_highlightMenu children];
-  v9 = [v8 isEqualToArray:v7];
+  children = [(UIMenu *)self->_highlightMenu children];
+  v9 = [children isEqualToArray:v7];
 
   highlightMenu = self->_highlightMenu;
   if (!highlightMenu || (v9 & 1) == 0)
@@ -335,9 +335,9 @@
 
 - (void)_updateSLAttributionViewSupplementalMenu
 {
-  v4 = [(SWAttributionView *)self supplementalMenu];
-  v3 = [(SWAttributionView *)self slAttributionView];
-  [v3 setSupplementalMenu:v4];
+  supplementalMenu = [(SWAttributionView *)self supplementalMenu];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView setSupplementalMenu:supplementalMenu];
 }
 
 - (void)setMenuTitleForHideAction:(NSString *)menuTitleForHideAction
@@ -352,43 +352,43 @@
 
 - (void)_updateSLAttributionViewHideMenuItemTitle
 {
-  v4 = [(SWAttributionView *)self menuTitleForHideAction];
-  v3 = [(SWAttributionView *)self slAttributionView];
-  [v3 setHideMenuItemTitle:v4];
+  menuTitleForHideAction = [(SWAttributionView *)self menuTitleForHideAction];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView setHideMenuItemTitle:menuTitleForHideAction];
 }
 
 - (id)closeButton
 {
-  v2 = [(SWAttributionView *)self slAttributionView];
-  v3 = [v2 closeButton];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  closeButton = [slAttributionView closeButton];
 
-  return v3;
+  return closeButton;
 }
 
 - (void)useBannerLayout
 {
-  v2 = [(SWAttributionView *)self slAttributionView];
-  [v2 useBannerLayout];
+  slAttributionView = [(SWAttributionView *)self slAttributionView];
+  [slAttributionView useBannerLayout];
 }
 
-- (void)setBlurEffectGroupName:(id)a3
+- (void)setBlurEffectGroupName:(id)name
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_blurEffectGroupName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_blurEffectGroupName] & 1) == 0)
   {
-    objc_storeStrong(&self->_blurEffectGroupName, a3);
-    v5 = [(SWAttributionView *)self blurEffectGroupName];
-    v6 = [(SWAttributionView *)self slAttributionView];
-    [v6 setBlurEffectGroupName:v5];
+    objc_storeStrong(&self->_blurEffectGroupName, name);
+    blurEffectGroupName = [(SWAttributionView *)self blurEffectGroupName];
+    slAttributionView = [(SWAttributionView *)self slAttributionView];
+    [slAttributionView setBlurEffectGroupName:blurEffectGroupName];
   }
 }
 
 - (void)_sendFeedbackForCurrentDisplayContext
 {
-  v3 = [(SWAttributionView *)self displayContext];
-  v5 = [(SWAttributionView *)self highlight];
-  v4 = [v5 slHighlight];
-  if (v3 == SWAttributionViewDisplayContextDetail)
+  displayContext = [(SWAttributionView *)self displayContext];
+  highlight = [(SWAttributionView *)self highlight];
+  slHighlight = [highlight slHighlight];
+  if (displayContext == SWAttributionViewDisplayContextDetail)
   {
     SLSendPortraitFeedbackTypeUserInteractedWithHighlight();
   }

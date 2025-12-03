@@ -1,7 +1,7 @@
 @interface ULWiFiHistogramStore
 + (unsigned)maxEntriesInTable;
 - (BOOL)deleteOrphanRecords;
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4;
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d;
 - (__n128)insertDataObjects:atLoiUUID:;
 - (id)insertDataObjects:atLoiUUID:;
 - (optional<ULWiFiHistogramDO>)fetchMostRecentWifiHistogramAtLoiGroupId:(optional<ULWiFiHistogramDO> *__return_ptr)retstr beforeTime:(ULWiFiHistogramStore *)self;
@@ -13,48 +13,48 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULWiFiHistogramTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71CA0 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71CA0 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
-  if (*a3 == *(a3 + 1))
+  selfCopy = self;
+  if (*objects == *(objects + 1))
   {
     inserted = 1;
   }
 
   else
   {
-    v7 = [(ULStore *)self dbStore];
-    v8 = (*(v7->var0 + 8))(v7);
-    v9 = [(ULStore *)self managedObjectContext];
-    v15 = [v8 fetchLoiManagedObjectWithUUID:a4 withManagedObjectContext:v9];
+    dbStore = [(ULStore *)self dbStore];
+    v8 = (*(dbStore->var0 + 8))(dbStore);
+    managedObjectContext = [(ULStore *)self managedObjectContext];
+    v15 = [v8 fetchLoiManagedObjectWithUUID:d withManagedObjectContext:managedObjectContext];
 
     if (v15)
     {
       v17[0] = &unk_286A56E48;
       v17[1] = &v15;
-      v17[2] = &v16;
+      v17[2] = &selfCopy;
       v17[3] = v17;
-      inserted = ULDBUtils::insertDataObjects<ULWiFiHistogramDO,ULWiFiHistogramMO>(self, a3, v17);
+      inserted = ULDBUtils::insertDataObjects<ULWiFiHistogramDO,ULWiFiHistogramMO>(self, objects, v17);
       std::__function::__value_func<ULWiFiHistogramMO * ()(ULWiFiHistogramDO const&)>::~__value_func[abi:ne200100](v17);
     }
 
@@ -101,25 +101,25 @@
   v26 = 0;
   std::vector<ULWiFiHistogramDO>::reserve(&v25, 1uLL);
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v7];
-  v13 = [v12 UUIDString];
+  uUIDString = [v12 UUIDString];
 
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K = %@", @"loi", @"loiGroupId", v13];
-  [v11 addObject:v14];
+  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K = %@", @"loi", @"loiGroupId", uUIDString];
+  [array addObject:v14];
 
   if (v5)
   {
     v15 = MEMORY[0x277CCAC30];
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
     v17 = [v15 predicateWithFormat:@"%K <= %@", @"timestamp", v16];
-    [v11 addObject:v17];
+    [array addObject:v17];
   }
 
   v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:0];
   v28[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-  [(ULWiFiHistogramStore *)self _fetchWiFiHistogramByAndPredicates:v11 sortDescriptors:v19 andLimit:1];
+  [(ULWiFiHistogramStore *)self _fetchWiFiHistogramByAndPredicates:array sortDescriptors:v19 andLimit:1];
   std::vector<ULWiFiHistogramDO>::__vdeallocate(&v25);
   v25 = v23;
   v26 = v24;
@@ -150,13 +150,13 @@
 
 - (BOOL)deleteOrphanRecords
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = NIL", @"loi"];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:v3 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   return self;
 }
@@ -164,16 +164,16 @@
 - (__n128)insertDataObjects:atLoiUUID:
 {
   *a2 = &unk_286A56E48;
-  result = *(a1 + 8);
+  result = *(self + 8);
   *(a2 + 8) = result;
   return result;
 }
 
 - (id)insertDataObjects:atLoiUUID:
 {
-  v3 = **(a1 + 8);
-  v4 = [**(a1 + 16) managedObjectContext];
-  v5 = [ULWiFiHistogramMO createFromDO:a2 withLoiMO:v3 inManagedObjectContext:v4];
+  v3 = **(self + 8);
+  managedObjectContext = [**(self + 16) managedObjectContext];
+  v5 = [ULWiFiHistogramMO createFromDO:a2 withLoiMO:v3 inManagedObjectContext:managedObjectContext];
 
   return v5;
 }
@@ -181,7 +181,7 @@
 - (uint64_t)insertDataObjects:atLoiUUID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -1,39 +1,39 @@
 @interface INFERENCESchemaINFERENCEPromptContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INFERENCESchemaINFERENCEConfirmationPromptContext)confirmationPromptContext;
 - (INFERENCESchemaINFERENCEDisambiguationPromptContext)disambiguationPromptContext;
-- (INFERENCESchemaINFERENCEPromptContext)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEPromptContext)initWithJSON:(id)a3;
+- (INFERENCESchemaINFERENCEPromptContext)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEPromptContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteConfirmationPromptContext;
 - (void)deleteDisambiguationPromptContext;
-- (void)setConfirmationPromptContext:(id)a3;
-- (void)setDisambiguationPromptContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setConfirmationPromptContext:(id)context;
+- (void)setDisambiguationPromptContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEPromptContext
 
-- (INFERENCESchemaINFERENCEPromptContext)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEPromptContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCEPromptContext;
   v5 = [(INFERENCESchemaINFERENCEPromptContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"tag"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"tag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEPromptContext setTag:](v5, "setTag:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"confirmationPromptContext"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"confirmationPromptContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
       [(INFERENCESchemaINFERENCEPromptContext *)v5 setConfirmationPromptContext:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"disambiguationPromptContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationPromptContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,30 +55,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEPromptContext)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEPromptContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEPromptContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEPromptContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEPromptContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -91,36 +91,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_confirmationPromptContext)
   {
-    v4 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    confirmationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+    dictionaryRepresentation = [confirmationPromptContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"confirmationPromptContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"confirmationPromptContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"confirmationPromptContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"confirmationPromptContext"];
     }
   }
 
   if (self->_disambiguationPromptContext)
   {
-    v7 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    disambiguationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+    dictionaryRepresentation2 = [disambiguationPromptContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"disambiguationPromptContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"disambiguationPromptContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"disambiguationPromptContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"disambiguationPromptContext"];
     }
   }
 
@@ -137,12 +137,12 @@
       v11 = off_1E78D8A80[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"tag"];
+    [dictionary setObject:v11 forKeyedSubscript:@"tag"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -161,21 +161,21 @@
   return v4 ^ [(INFERENCESchemaINFERENCEDisambiguationPromptContext *)self->_disambiguationPromptContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   whichPromptcontext = self->_whichPromptcontext;
-  if (whichPromptcontext != [v4 whichPromptcontext])
+  if (whichPromptcontext != [equalCopy whichPromptcontext])
   {
     goto LABEL_16;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_16;
   }
@@ -183,26 +183,26 @@
   if (*&self->_has)
   {
     tag = self->_tag;
-    if (tag != [v4 tag])
+    if (tag != [equalCopy tag])
     {
       goto LABEL_16;
     }
   }
 
-  v7 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
-  v8 = [v4 confirmationPromptContext];
-  if ((v7 != 0) == (v8 == 0))
+  confirmationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+  confirmationPromptContext2 = [equalCopy confirmationPromptContext];
+  if ((confirmationPromptContext != 0) == (confirmationPromptContext2 == 0))
   {
     goto LABEL_15;
   }
 
-  v9 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
-  if (v9)
+  confirmationPromptContext3 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+  if (confirmationPromptContext3)
   {
-    v10 = v9;
-    v11 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
-    v12 = [v4 confirmationPromptContext];
-    v13 = [v11 isEqual:v12];
+    v10 = confirmationPromptContext3;
+    confirmationPromptContext4 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+    confirmationPromptContext5 = [equalCopy confirmationPromptContext];
+    v13 = [confirmationPromptContext4 isEqual:confirmationPromptContext5];
 
     if (!v13)
     {
@@ -214,12 +214,12 @@
   {
   }
 
-  v7 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
-  v8 = [v4 disambiguationPromptContext];
-  if ((v7 != 0) != (v8 == 0))
+  confirmationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+  confirmationPromptContext2 = [equalCopy disambiguationPromptContext];
+  if ((confirmationPromptContext != 0) != (confirmationPromptContext2 == 0))
   {
-    v14 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
-    if (!v14)
+    disambiguationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+    if (!disambiguationPromptContext)
     {
 
 LABEL_19:
@@ -227,10 +227,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
-    v17 = [v4 disambiguationPromptContext];
-    v18 = [v16 isEqual:v17];
+    v15 = disambiguationPromptContext;
+    disambiguationPromptContext2 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+    disambiguationPromptContext3 = [equalCopy disambiguationPromptContext];
+    v18 = [disambiguationPromptContext2 isEqual:disambiguationPromptContext3];
 
     if (v18)
     {
@@ -250,31 +250,31 @@ LABEL_17:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+  confirmationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
 
-  if (v4)
+  if (confirmationPromptContext)
   {
-    v5 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+    confirmationPromptContext2 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+  disambiguationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (disambiguationPromptContext)
   {
-    v8 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+    disambiguationPromptContext2 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
@@ -303,21 +303,21 @@ LABEL_17:
   return v3;
 }
 
-- (void)setDisambiguationPromptContext:(id)a3
+- (void)setDisambiguationPromptContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   confirmationPromptContext = self->_confirmationPromptContext;
   self->_confirmationPromptContext = 0;
 
   v6 = 3;
-  if (!v4)
+  if (!contextCopy)
   {
     v6 = 0;
   }
 
   self->_whichPromptcontext = v6;
   disambiguationPromptContext = self->_disambiguationPromptContext;
-  self->_disambiguationPromptContext = v4;
+  self->_disambiguationPromptContext = contextCopy;
 }
 
 - (void)deleteConfirmationPromptContext
@@ -345,37 +345,37 @@ LABEL_17:
   return v3;
 }
 
-- (void)setConfirmationPromptContext:(id)a3
+- (void)setConfirmationPromptContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   disambiguationPromptContext = self->_disambiguationPromptContext;
   self->_disambiguationPromptContext = 0;
 
-  self->_whichPromptcontext = 2 * (v4 != 0);
+  self->_whichPromptcontext = 2 * (contextCopy != 0);
   confirmationPromptContext = self->_confirmationPromptContext;
-  self->_confirmationPromptContext = v4;
+  self->_confirmationPromptContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCEPromptContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  confirmationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self confirmationPromptContext];
+  v7 = [confirmationPromptContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEPromptContext *)self deleteConfirmationPromptContext];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  disambiguationPromptContext = [(INFERENCESchemaINFERENCEPromptContext *)self disambiguationPromptContext];
+  v10 = [disambiguationPromptContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEPromptContext *)self deleteDisambiguationPromptContext];
   }

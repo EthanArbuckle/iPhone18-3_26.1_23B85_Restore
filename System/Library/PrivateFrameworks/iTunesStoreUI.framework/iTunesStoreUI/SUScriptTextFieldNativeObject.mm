@@ -1,18 +1,18 @@
 @interface SUScriptTextFieldNativeObject
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
 - (void)_sendScriptDidChange;
-- (void)_textDidChange:(id)a3;
-- (void)_textDidEndEditingOnExit:(id)a3;
+- (void)_textDidChange:(id)change;
+- (void)_textDidEndEditingOnExit:(id)exit;
 - (void)dealloc;
 - (void)destroyNativeObject;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
 - (void)setupNativeObject;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SUScriptTextFieldNativeObject
@@ -45,11 +45,11 @@
   [(SUScriptTextFieldDelegate *)self->_textFieldDelegate removeDelegate:self];
 
   self->_textFieldDelegate = 0;
-  v3 = [(SUScriptTextFieldNativeObject *)self _nativeObjectDelegate];
+  _nativeObjectDelegate = [(SUScriptTextFieldNativeObject *)self _nativeObjectDelegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = _nativeObjectDelegate;
   }
 
   else
@@ -65,74 +65,74 @@
   [(SUScriptNativeObject *)&v5 setupNativeObject];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v4 = [(SUScriptNativeObject *)self scriptObject:a3];
+  v4 = [(SUScriptNativeObject *)self scriptObject:bar];
 
   [(SUScriptObject *)v4 dispatchEvent:0 forName:@"change"];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"submit"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"submit"];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  return [(SUScriptObject *)v3 canBecomeFirstResponder];
+  return [(SUScriptObject *)scriptObject canBecomeFirstResponder];
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"focus"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"focus"];
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"blur"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"blur"];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"focus"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"focus"];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"blur"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"blur"];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  return [(SUScriptObject *)v3 canBecomeFirstResponder];
+  return [(SUScriptObject *)scriptObject canBecomeFirstResponder];
 }
 
-- (void)_textDidChange:(id)a3
+- (void)_textDidChange:(id)change
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"change"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"change"];
 }
 
-- (void)_textDidEndEditingOnExit:(id)a3
+- (void)_textDidEndEditingOnExit:(id)exit
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"submit"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"submit"];
 }
 
 - (void)_sendScriptDidChange
@@ -140,9 +140,9 @@
   if (objc_opt_respondsToSelector())
   {
     textFieldDelegate = self->_textFieldDelegate;
-    v4 = [(SUScriptNativeObject *)self object];
+    object = [(SUScriptNativeObject *)self object];
 
-    [(SUScriptTextFieldDelegate *)textFieldDelegate scriptDidChangeTextForField:v4];
+    [(SUScriptTextFieldDelegate *)textFieldDelegate scriptDidChangeTextForField:object];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface FSResource
-+ (id)dynamicCast:(id)a3;
-- (FSResource)initWithCoder:(id)a3;
++ (id)dynamicCast:(id)cast;
+- (FSResource)initWithCoder:(id)coder;
 - (NSURL)getProgressURLKey;
 - (id)initResource;
 - (id)makeProxy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FSResource
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -19,12 +19,12 @@
     objc_exception_throw(v4);
   }
 
-  [v5 encodeInt:self->_state forKey:@"FSResource.State"];
+  [coderCopy encodeInt:self->_state forKey:@"FSResource.State"];
 }
 
-- (FSResource)initWithCoder:(id)a3
+- (FSResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -34,7 +34,7 @@
 
   if (self)
   {
-    self->_state = [v4 decodeIntForKey:@"FSResource.State"];
+    self->_state = [coderCopy decodeIntForKey:@"FSResource.State"];
   }
 
   return self;
@@ -58,12 +58,12 @@
   return [(FSResource *)&v3 init];
 }
 
-+ (id)dynamicCast:(id)a3
++ (id)dynamicCast:(id)cast
 {
-  v3 = a3;
+  castCopy = cast;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = castCopy;
   }
 
   else
@@ -80,8 +80,8 @@
 {
   v2 = MEMORY[0x277CBEBC0];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FSResource *)self getResourceID];
-  v5 = [v3 stringWithFormat:@"/tmp/%@", v4];
+  getResourceID = [(FSResource *)self getResourceID];
+  v5 = [v3 stringWithFormat:@"/tmp/%@", getResourceID];
   v6 = [v2 fileURLWithPath:v5];
 
   return v6;

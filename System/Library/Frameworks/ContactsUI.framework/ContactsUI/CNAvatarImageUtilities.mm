@@ -1,30 +1,30 @@
 @interface CNAvatarImageUtilities
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4;
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 usingTransparencyInsets:(UIEdgeInsets)a4 widthMultiplier:(double)a5;
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 widthMultiplier:(double)a4;
-+ (id)paddedImage:(id)a3 withPadding:(double)a4;
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4;
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity;
++ (id)croppedAndCenteredAvatarImageForImage:(id)image usingTransparencyInsets:(UIEdgeInsets)insets widthMultiplier:(double)multiplier;
++ (id)croppedAndCenteredAvatarImageForImage:(id)image widthMultiplier:(double)multiplier;
++ (id)paddedImage:(id)image withPadding:(double)padding;
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity;
 @end
 
 @implementation CNAvatarImageUtilities
 
-+ (id)paddedImage:(id)a3 withPadding:(double)a4
++ (id)paddedImage:(id)image withPadding:(double)padding
 {
-  v5 = a3;
+  imageCopy = image;
   v6 = objc_alloc_init(MEMORY[0x1E69DCA80]);
   [v6 setOpaque:0];
-  [v5 scale];
+  [imageCopy scale];
   [v6 setScale:?];
-  [v5 size];
-  v8 = v7 + a4 * 2.0;
-  [v5 size];
-  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v6 format:{v8, v9 + a4 * 2.0}];
+  [imageCopy size];
+  v8 = v7 + padding * 2.0;
+  [imageCopy size];
+  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v6 format:{v8, v9 + padding * 2.0}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__CNAvatarImageUtilities_paddedImage_withPadding___block_invoke;
   v14[3] = &unk_1E74E2660;
-  v15 = v5;
-  v11 = v5;
+  v15 = imageCopy;
+  v11 = imageCopy;
   v12 = [v10 imageWithActions:v14];
 
   return v12;
@@ -47,20 +47,20 @@ void __50__CNAvatarImageUtilities_paddedImage_withPadding___block_invoke(uint64_
   [v3 drawAtPoint:{v7, MidY - v10 * 0.5}];
 }
 
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 usingTransparencyInsets:(UIEdgeInsets)a4 widthMultiplier:(double)a5
++ (id)croppedAndCenteredAvatarImageForImage:(id)image usingTransparencyInsets:(UIEdgeInsets)insets widthMultiplier:(double)multiplier
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = a3;
-  [v11 size];
-  v13 = v12 * a5;
-  [v11 size];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  imageCopy = image;
+  [imageCopy size];
+  v13 = v12 * multiplier;
+  [imageCopy size];
   v15 = v14;
   v16 = objc_alloc_init(MEMORY[0x1E69DCA80]);
   [v16 setOpaque:0];
-  [v11 scale];
+  [imageCopy scale];
   [v16 setScale:?];
   v17 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v16 format:{v13, v15}];
   v21[0] = MEMORY[0x1E69E9820];
@@ -71,13 +71,13 @@ void __50__CNAvatarImageUtilities_paddedImage_withPadding___block_invoke(uint64_
   v24 = left;
   v25 = bottom;
   v26 = right;
-  v22 = v11;
+  v22 = imageCopy;
   v28 = 0;
   v29 = 0;
-  v27 = a1;
+  selfCopy = self;
   v30 = v13;
   v31 = v15;
-  v18 = v11;
+  v18 = imageCopy;
   v19 = [v17 imageWithActions:v21];
 
   return v19;
@@ -104,45 +104,45 @@ void __104__CNAvatarImageUtilities_croppedAndCenteredAvatarImageForImage_usingTr
   [v8 drawAtPoint:{v5, MidY - v7 * 0.5}];
 }
 
-+ (id)croppedAndCenteredAvatarImageForImage:(id)a3 widthMultiplier:(double)a4
++ (id)croppedAndCenteredAvatarImageForImage:(id)image widthMultiplier:(double)multiplier
 {
-  v5 = a3;
-  [a1 transparencyInsetsForImage:v5 requiringFullOpacity:0];
-  v6 = [a1 croppedAndCenteredAvatarImageForImage:v5 usingTransparencyInsets:? widthMultiplier:?];
+  imageCopy = image;
+  [self transparencyInsetsForImage:imageCopy requiringFullOpacity:0];
+  v6 = [self croppedAndCenteredAvatarImageForImage:imageCopy usingTransparencyInsets:? widthMultiplier:?];
 
   return v6;
 }
 
-+ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (id)trimmedImageByTrimmingTransparentPixelsFromImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 size];
-  if (v7 >= 2.0 && ([v6 size], v8 >= 2.0))
+  opacityCopy = opacity;
+  imageCopy = image;
+  [imageCopy size];
+  if (v7 >= 2.0 && ([imageCopy size], v8 >= 2.0))
   {
-    [v6 size];
+    [imageCopy size];
     v12 = v11;
-    [v6 scale];
+    [imageCopy scale];
     v14 = v13;
-    [v6 size];
+    [imageCopy size];
     v16 = v15;
-    [v6 scale];
+    [imageCopy scale];
     v18 = v17;
-    [a1 transparencyInsetsForImage:v6 requiringFullOpacity:v4];
+    [self transparencyInsetsForImage:imageCopy requiringFullOpacity:opacityCopy];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = v6;
+    v27 = imageCopy;
     v9 = v27;
     if (v20 != 0.0 || v24 != 0.0 || v22 != 0.0 || v26 != 0.0)
     {
-      v28 = [v27 CGImage];
+      cGImage = [v27 CGImage];
       v34.origin.x = v22 + 0.0;
       v34.origin.y = v20 + 0.0;
       v34.size.width = v12 * v14 - (v22 + v26);
       v34.size.height = v16 * v18 - (v20 + v24);
-      v29 = CGImageCreateWithImageInRect(v28, v34);
+      v29 = CGImageCreateWithImageInRect(cGImage, v34);
       v30 = MEMORY[0x1E69DCAB8];
       [v9 scale];
       v32 = [v30 imageWithCGImage:v29 scale:objc_msgSend(v9 orientation:{"imageOrientation"), v31}];
@@ -154,27 +154,27 @@ void __104__CNAvatarImageUtilities_croppedAndCenteredAvatarImageForImage_usingTr
 
   else
   {
-    v9 = v6;
+    v9 = imageCopy;
   }
 
   return v9;
 }
 
-+ (UIEdgeInsets)transparencyInsetsForImage:(id)a3 requiringFullOpacity:(BOOL)a4
++ (UIEdgeInsets)transparencyInsetsForImage:(id)image requiringFullOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v5 = a3;
-  Width = CGImageGetWidth([v5 CGImage]);
+  opacityCopy = opacity;
+  imageCopy = image;
+  Width = CGImageGetWidth([imageCopy CGImage]);
   v7 = Width;
-  Height = CGImageGetHeight([v5 CGImage]);
+  Height = CGImageGetHeight([imageCopy CGImage]);
   v9 = malloc_type_calloc(Height * Width, 1uLL, 0x100004077774924uLL);
   v10 = CGBitmapContextCreate(v9, Width, Height, 8uLL, Width, 0, 7u);
-  v11 = [v5 CGImage];
+  cGImage = [imageCopy CGImage];
   v36.size.width = Width;
   v36.size.height = Height;
   v36.origin.x = 0.0;
   v36.origin.y = 0.0;
-  CGContextDrawImage(v10, v36, v11);
+  CGContextDrawImage(v10, v36, cGImage);
   v12 = malloc_type_calloc(Height, 2uLL, 0x1000040BDFB0063uLL);
   v13 = malloc_type_calloc(Width, 2uLL, 0x1000040BDFB0063uLL);
   v14 = v13;
@@ -201,7 +201,7 @@ void __104__CNAvatarImageUtilities_croppedAndCenteredAvatarImageForImage_usingTr
         {
           v21 = *v17++;
           v20 = v21;
-          if (v4)
+          if (opacityCopy)
           {
             break;
           }

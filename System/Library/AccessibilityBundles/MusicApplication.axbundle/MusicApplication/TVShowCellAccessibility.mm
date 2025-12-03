@@ -1,15 +1,15 @@
 @interface TVShowCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation TVShowCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.TVShowCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TVShowCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.TVShowCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TVShowCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

@@ -1,26 +1,26 @@
 @interface NETSchemaNETClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETClientEventMetadata)initWithDictionary:(id)a3;
-- (NETSchemaNETClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETClientEventMetadata)initWithDictionary:(id)dictionary;
+- (NETSchemaNETClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETClientEventMetadata
 
-- (NETSchemaNETClientEventMetadata)initWithDictionary:(id)a3
+- (NETSchemaNETClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = NETSchemaNETClientEventMetadata;
   v5 = [(NETSchemaNETClientEventMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"netId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"netId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(NETSchemaNETClientEventMetadata *)v5 setNetId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"networkConnectionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"networkConnectionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(NETSchemaNETClientEventMetadata *)v5 setNetworkConnectionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"provider"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (NETSchemaNETClientEventMetadata)initWithJSON:(id)a3
+- (NETSchemaNETClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,36 +85,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_netId)
   {
-    v4 = [(NETSchemaNETClientEventMetadata *)self netId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    netId = [(NETSchemaNETClientEventMetadata *)self netId];
+    dictionaryRepresentation = [netId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"netId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"netId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"netId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"netId"];
     }
   }
 
   if (self->_networkConnectionId)
   {
-    v7 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    networkConnectionId = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+    dictionaryRepresentation2 = [networkConnectionId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"networkConnectionId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"networkConnectionId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"networkConnectionId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"networkConnectionId"];
     }
   }
 
@@ -131,12 +131,12 @@
       v11 = off_1E78DB0A8[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"provider"];
+    [dictionary setObject:v11 forKeyedSubscript:@"provider"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NETSchemaNETClientEventMetadata *)self netId];
-  v6 = [v4 netId];
-  if ((v5 != 0) == (v6 == 0))
+  netId = [(NETSchemaNETClientEventMetadata *)self netId];
+  netId2 = [equalCopy netId];
+  if ((netId != 0) == (netId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NETSchemaNETClientEventMetadata *)self netId];
-  if (v7)
+  netId3 = [(NETSchemaNETClientEventMetadata *)self netId];
+  if (netId3)
   {
-    v8 = v7;
-    v9 = [(NETSchemaNETClientEventMetadata *)self netId];
-    v10 = [v4 netId];
-    v11 = [v9 isEqual:v10];
+    v8 = netId3;
+    netId4 = [(NETSchemaNETClientEventMetadata *)self netId];
+    netId5 = [equalCopy netId];
+    v11 = [netId4 isEqual:netId5];
 
     if (!v11)
     {
@@ -189,22 +189,22 @@
   {
   }
 
-  v5 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
-  v6 = [v4 networkConnectionId];
-  if ((v5 != 0) == (v6 == 0))
+  netId = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+  netId2 = [equalCopy networkConnectionId];
+  if ((netId != 0) == (netId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
-  if (v12)
+  networkConnectionId = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+  if (networkConnectionId)
   {
-    v13 = v12;
-    v14 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
-    v15 = [v4 networkConnectionId];
-    v16 = [v14 isEqual:v15];
+    v13 = networkConnectionId;
+    networkConnectionId2 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+    networkConnectionId3 = [equalCopy networkConnectionId];
+    v16 = [networkConnectionId2 isEqual:networkConnectionId3];
 
     if (!v16)
     {
@@ -216,9 +216,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (provider = self->_provider, provider == [v4 provider]))
+    if ((*&self->_has & 1) == 0 || (provider = self->_provider, provider == [equalCopy provider]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -232,22 +232,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(NETSchemaNETClientEventMetadata *)self netId];
+  toCopy = to;
+  netId = [(NETSchemaNETClientEventMetadata *)self netId];
 
-  if (v4)
+  if (netId)
   {
-    v5 = [(NETSchemaNETClientEventMetadata *)self netId];
+    netId2 = [(NETSchemaNETClientEventMetadata *)self netId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+  networkConnectionId = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
 
-  if (v6)
+  if (networkConnectionId)
   {
-    v7 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+    networkConnectionId2 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -257,26 +257,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = NETSchemaNETClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(NETSchemaNETClientEventMetadata *)self netId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  netId = [(NETSchemaNETClientEventMetadata *)self netId];
+  v7 = [netId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NETSchemaNETClientEventMetadata *)self deleteNetId];
   }
 
-  v9 = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  networkConnectionId = [(NETSchemaNETClientEventMetadata *)self networkConnectionId];
+  v10 = [networkConnectionId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NETSchemaNETClientEventMetadata *)self deleteNetworkConnectionId];
   }

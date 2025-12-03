@@ -1,49 +1,49 @@
 @interface SVXDeviceSetupContext
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXDeviceSetupContext)initWithCoder:(id)a3;
-- (SVXDeviceSetupContext)initWithTimestamp:(unint64_t)a3 options:(id)a4 flowScene:(id)a5 beginDate:(id)a6 endDate:(id)a7;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXDeviceSetupContext)initWithCoder:(id)coder;
+- (SVXDeviceSetupContext)initWithTimestamp:(unint64_t)timestamp options:(id)options flowScene:(id)scene beginDate:(id)date endDate:(id)endDate;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXDeviceSetupContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   timestamp = self->_timestamp;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:timestamp];
-  [v7 encodeObject:v6 forKey:@"SVXDeviceSetupContext::timestamp"];
+  [coderCopy encodeObject:v6 forKey:@"SVXDeviceSetupContext::timestamp"];
 
-  [v7 encodeObject:self->_options forKey:@"SVXDeviceSetupContext::options"];
-  [v7 encodeObject:self->_flowScene forKey:@"SVXDeviceSetupContext::flowScene"];
-  [v7 encodeObject:self->_beginDate forKey:@"SVXDeviceSetupContext::beginDate"];
-  [v7 encodeObject:self->_endDate forKey:@"SVXDeviceSetupContext::endDate"];
+  [coderCopy encodeObject:self->_options forKey:@"SVXDeviceSetupContext::options"];
+  [coderCopy encodeObject:self->_flowScene forKey:@"SVXDeviceSetupContext::flowScene"];
+  [coderCopy encodeObject:self->_beginDate forKey:@"SVXDeviceSetupContext::beginDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"SVXDeviceSetupContext::endDate"];
 }
 
-- (SVXDeviceSetupContext)initWithCoder:(id)a3
+- (SVXDeviceSetupContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::timestamp"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::timestamp"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::options"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::flowScene"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::beginDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::endDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::options"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::flowScene"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::beginDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXDeviceSetupContext::endDate"];
 
-  v11 = [(SVXDeviceSetupContext *)self initWithTimestamp:v6 options:v7 flowScene:v8 beginDate:v9 endDate:v10];
+  v11 = [(SVXDeviceSetupContext *)self initWithTimestamp:unsignedLongLongValue options:v7 flowScene:v8 beginDate:v9 endDate:v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timestamp = self->_timestamp;
       if (timestamp == [(SVXDeviceSetupContext *)v5 timestamp])
       {
-        v7 = [(SVXDeviceSetupContext *)v5 options];
+        options = [(SVXDeviceSetupContext *)v5 options];
         options = self->_options;
-        if (options == v7 || [(SVXDeviceSetupOptions *)options isEqual:v7])
+        if (options == options || [(SVXDeviceSetupOptions *)options isEqual:options])
         {
-          v9 = [(SVXDeviceSetupContext *)v5 flowScene];
+          flowScene = [(SVXDeviceSetupContext *)v5 flowScene];
           flowScene = self->_flowScene;
-          if (flowScene == v9 || [(SVXDeviceSetupFlowScene *)flowScene isEqual:v9])
+          if (flowScene == flowScene || [(SVXDeviceSetupFlowScene *)flowScene isEqual:flowScene])
           {
-            v11 = [(SVXDeviceSetupContext *)v5 beginDate];
+            beginDate = [(SVXDeviceSetupContext *)v5 beginDate];
             beginDate = self->_beginDate;
-            if (beginDate == v11 || [(NSDate *)beginDate isEqual:v11])
+            if (beginDate == beginDate || [(NSDate *)beginDate isEqual:beginDate])
             {
-              v13 = [(SVXDeviceSetupContext *)v5 endDate];
+              endDate = [(SVXDeviceSetupContext *)v5 endDate];
               endDate = self->_endDate;
-              v15 = endDate == v13 || [(NSDate *)endDate isEqual:v13];
+              v15 = endDate == endDate || [(NSDate *)endDate isEqual:endDate];
             }
 
             else
@@ -119,7 +119,7 @@
   return v7 ^ v8;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -130,32 +130,32 @@
   return v6;
 }
 
-- (SVXDeviceSetupContext)initWithTimestamp:(unint64_t)a3 options:(id)a4 flowScene:(id)a5 beginDate:(id)a6 endDate:(id)a7
+- (SVXDeviceSetupContext)initWithTimestamp:(unint64_t)timestamp options:(id)options flowScene:(id)scene beginDate:(id)date endDate:(id)endDate
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  optionsCopy = options;
+  sceneCopy = scene;
+  dateCopy = date;
+  endDateCopy = endDate;
   v27.receiver = self;
   v27.super_class = SVXDeviceSetupContext;
   v16 = [(SVXDeviceSetupContext *)&v27 init];
   v17 = v16;
   if (v16)
   {
-    v16->_timestamp = a3;
-    v18 = [v12 copy];
+    v16->_timestamp = timestamp;
+    v18 = [optionsCopy copy];
     options = v17->_options;
     v17->_options = v18;
 
-    v20 = [v13 copy];
+    v20 = [sceneCopy copy];
     flowScene = v17->_flowScene;
     v17->_flowScene = v20;
 
-    v22 = [v14 copy];
+    v22 = [dateCopy copy];
     beginDate = v17->_beginDate;
     v17->_beginDate = v22;
 
-    v24 = [v15 copy];
+    v24 = [endDateCopy copy];
     endDate = v17->_endDate;
     v17->_endDate = v24;
   }
@@ -163,36 +163,36 @@
   return v17;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXDeviceSetupContextMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXDeviceSetupContextMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXDeviceSetupContextMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXDeviceSetupContext *)self copy];
+    generate = [(SVXDeviceSetupContext *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXDeviceSetupContextMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXDeviceSetupContextMutation *)v4 generate];
+  generate = [(_SVXDeviceSetupContextMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

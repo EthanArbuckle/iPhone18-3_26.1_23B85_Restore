@@ -1,39 +1,39 @@
 @interface CMSuppressionManager
 + (BOOL)isAvailable;
-+ (BOOL)isSourceAvailable:(unint64_t)a3;
++ (BOOL)isSourceAvailable:(unint64_t)available;
 - (CMSuppressionEventStruct)currentSuppressionEvent;
 - (CMSuppressionManager)init;
-- (CMSuppressionManager)initWithClientType:(int64_t)a3;
-- (id)initPrivateWithClientType:(int64_t)a3;
+- (CMSuppressionManager)initWithClientType:(int64_t)type;
+- (id)initPrivateWithClientType:(int64_t)type;
 - (id)staticPoseBlocking;
 - (id)viewObstructedBlocking;
 - (void)connect;
 - (void)dealloc;
 - (void)deallocPrivate;
 - (void)didDetectSignificantUserInteraction;
-- (void)feedDevicePresenceEvent:(int64_t)a3 timestamp:(double)a4 force:(BOOL)a5;
-- (void)feedSmartPowerNapEvent:(int64_t)a3 timestamp:(double)a4 force:(BOOL)a5;
-- (void)feedViewObstructedEvent:(int64_t)a3 facedown:(unint64_t)a4 timeSinceLastFacedownStatic:(double)a5 timestamp:(double)a6 force:(BOOL)a7;
-- (void)handleSmartPowerNapState:(unsigned __int8)a3;
-- (void)managerDidDetectEvent:(unint64_t)a3;
-- (void)managerDidFindError:(unint64_t)a3;
-- (void)onCameraCapturePoseData:(const CameraCapturePose *)a3;
-- (void)onEclipseData:(const Suppress *)a3;
-- (void)onNotification:(id)a3;
-- (void)onViewObstructedStateData:(const ViewObstructedState *)a3;
+- (void)feedDevicePresenceEvent:(int64_t)event timestamp:(double)timestamp force:(BOOL)force;
+- (void)feedSmartPowerNapEvent:(int64_t)event timestamp:(double)timestamp force:(BOOL)force;
+- (void)feedViewObstructedEvent:(int64_t)event facedown:(unint64_t)facedown timeSinceLastFacedownStatic:(double)static timestamp:(double)timestamp force:(BOOL)force;
+- (void)handleSmartPowerNapState:(unsigned __int8)state;
+- (void)managerDidDetectEvent:(unint64_t)event;
+- (void)managerDidFindError:(unint64_t)error;
+- (void)onCameraCapturePoseData:(const CameraCapturePose *)data;
+- (void)onEclipseData:(const Suppress *)data;
+- (void)onNotification:(id)notification;
+- (void)onViewObstructedStateData:(const ViewObstructedState *)data;
 - (void)sendServiceRequestPrivate;
 - (void)sendSuppressionEventToClientPrivate;
 - (void)sendViewObstructedRequestPrivate;
-- (void)sendViewObstructedStateToClientPrivate:(float)a3;
+- (void)sendViewObstructedStateToClientPrivate:(float)private;
 - (void)simulateSignificantUserInteraction;
-- (void)startCameraCapturePoseUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startCameraCapturePoseUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startCameraCapturePoseUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startCameraCapturePoseUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)startService;
-- (void)startSuppressionUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startSuppressionUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)startSuppressionUpdatesToQueue:(id)a3 withOptions:(unint64_t)a4 withHandler:(id)a5;
-- (void)startViewObstructedStateUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startViewObstructedStateUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startSuppressionUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startSuppressionUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)startSuppressionUpdatesToQueue:(id)queue withOptions:(unint64_t)options withHandler:(id)handler;
+- (void)startViewObstructedStateUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startViewObstructedStateUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopCameraCapturePoseUpdates;
 - (void)stopCameraCapturePoseUpdatesPrivate;
 - (void)stopService;
@@ -41,7 +41,7 @@
 - (void)stopSuppressionUpdatesPrivate;
 - (void)stopViewObstructedStateUpdates;
 - (void)stopViewObstructedStateUpdatesPrivate;
-- (void)updateCurrentSuppressionEvent:(int64_t)a3 timestamp:(double)a4 reason:(unint64_t)a5 facedownState:(unint64_t)a6 timeSinceLastFacedownStatic:(double)a7;
+- (void)updateCurrentSuppressionEvent:(int64_t)event timestamp:(double)timestamp reason:(unint64_t)reason facedownState:(unint64_t)state timeSinceLastFacedownStatic:(double)static;
 - (void)updateSuppressionStateAndSendToClient;
 @end
 
@@ -444,14 +444,14 @@ LABEL_22:
   v30 = off_1EAFE2828;
   if (os_log_type_enabled(off_1EAFE2828, OS_LOG_TYPE_INFO))
   {
-    v33 = self;
+    selfCopy = self;
     v34 = objc_msgSend_suppressionClientType(self, v31, v32);
     v35 = *(internal + 43);
     v37 = objc_msgSend_stringForEventType_(CMSuppressionEvent, v36, v29);
     v39 = objc_msgSend_stringForEventReason_(CMSuppressionEvent, v38, v28);
     *buf = 134350082;
     v70 = v34;
-    self = v33;
+    self = selfCopy;
     v71 = 2114;
     v72 = v35;
     v73 = 2114;
@@ -542,11 +542,11 @@ LABEL_22:
   v64 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isSourceAvailable:(unint64_t)a3
++ (BOOL)isSourceAvailable:(unint64_t)available
 {
-  if (a3 <= 0x1F)
+  if (available <= 0x1F)
   {
-    if ((a3 & 0x19) == 0 || (isAvailable = objc_msgSend_isAvailable(CMSuppressionManager, a2, a3)) != 0)
+    if ((available & 0x19) == 0 || (isAvailable = objc_msgSend_isAvailable(CMSuppressionManager, a2, available)) != 0)
     {
       LOBYTE(isAvailable) = 1;
     }
@@ -581,7 +581,7 @@ LABEL_22:
   return v4;
 }
 
-- (CMSuppressionManager)initWithClientType:(int64_t)a3
+- (CMSuppressionManager)initWithClientType:(int64_t)type
 {
   v9 = 0;
   v10 = &v9;
@@ -596,14 +596,14 @@ LABEL_22:
   v8[3] = &unk_1E7535D48;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
+  v8[6] = type;
   sub_19B420C9C(v5, v8);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (id)initPrivateWithClientType:(int64_t)a3
+- (id)initPrivateWithClientType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = CMSuppressionManager;
@@ -613,7 +613,7 @@ LABEL_22:
     v4->_internal = objc_alloc_init(CMSuppressionManagerInternal);
     v4->_isCameraCapturePose = 1;
     v4->_cameraCapturePoseUIHint = 0;
-    v4->_suppressionClientType = a3;
+    v4->_suppressionClientType = type;
   }
 
   return v4;
@@ -673,7 +673,7 @@ LABEL_22:
   sub_19B421668(v3, v4);
 }
 
-- (void)startSuppressionUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startSuppressionUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -681,12 +681,12 @@ LABEL_22:
   v8[2] = sub_19B766CF0;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
-- (void)startSuppressionUpdatesToQueue:(id)a3 withOptions:(unint64_t)a4 withHandler:(id)a5
+- (void)startSuppressionUpdatesToQueue:(id)queue withOptions:(unint64_t)options withHandler:(id)handler
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
@@ -694,13 +694,13 @@ LABEL_22:
   v10[2] = sub_19B766D98;
   v10[3] = &unk_1E7533780;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a5;
-  v10[7] = a4;
+  v10[5] = queue;
+  v10[6] = handler;
+  v10[7] = options;
   sub_19B421668(v9, v10);
 }
 
-- (void)startCameraCapturePoseUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startCameraCapturePoseUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2800 != -1)
@@ -739,8 +739,8 @@ LABEL_22:
   v12[2] = sub_19B767264;
   v12[3] = &unk_1E7532C08;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = queue;
+  v12[6] = handler;
   sub_19B421668(v10, v12);
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1072,10 +1072,10 @@ LABEL_22:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onEclipseData:(const Suppress *)a3
+- (void)onEclipseData:(const Suppress *)data
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     if (qword_1EAFE2800 != -1)
     {
@@ -1086,8 +1086,8 @@ LABEL_22:
     if (os_log_type_enabled(off_1EAFE2828, OS_LOG_TYPE_INFO))
     {
       v8 = objc_msgSend_suppressionClientType(self, v6, v7);
-      fLux_low = LOBYTE(a3->fLux);
-      v10 = *&a3->fType;
+      fLux_low = LOBYTE(data->fLux);
+      v10 = *&data->fType;
       *buf = 134349568;
       v24 = v8;
       v25 = 1026;
@@ -1107,8 +1107,8 @@ LABEL_22:
       }
 
       objc_msgSend_suppressionClientType(self, v13, v14);
-      v21 = LOBYTE(a3->fLux);
-      v22 = *&a3->fType;
+      v21 = LOBYTE(data->fLux);
+      v22 = *&data->fType;
       v15 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMSuppressionManager onEclipseData:]", "CoreLocation: %s\n", v15);
       if (v15 != buf)
@@ -1117,7 +1117,7 @@ LABEL_22:
       }
     }
 
-    if (LOBYTE(a3->fLux))
+    if (LOBYTE(data->fLux))
     {
       v16 = 1;
     }
@@ -1127,14 +1127,14 @@ LABEL_22:
       v16 = 2;
     }
 
-    if (BYTE1(a3->fLux))
+    if (BYTE1(data->fLux))
     {
-      objc_msgSend_feedViewObstructedEvent_facedown_timeSinceLastFacedownStatic_timestamp_force_(self, v12, v16, 1, 0, *&a3->fFacedownStatic, *&a3->fType);
+      objc_msgSend_feedViewObstructedEvent_facedown_timeSinceLastFacedownStatic_timestamp_force_(self, v12, v16, 1, 0, *&data->fFacedownStatic, *&data->fType);
     }
 
     else
     {
-      objc_msgSend_feedViewObstructedEvent_facedown_timeSinceLastFacedownStatic_timestamp_force_(self, v12, v16, 2, 0, *&a3->fFacedownStatic, *&a3->fType);
+      objc_msgSend_feedViewObstructedEvent_facedown_timeSinceLastFacedownStatic_timestamp_force_(self, v12, v16, 2, 0, *&data->fFacedownStatic, *&data->fType);
     }
   }
 
@@ -1173,12 +1173,12 @@ LABEL_22:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onNotification:(id)a3
+- (void)onNotification:(id)notification
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_userInfo(a3, a2, a3);
+  v5 = objc_msgSend_userInfo(notification, a2, notification);
   v7 = objc_msgSend_objectForKeyedSubscript_(v5, v6, @"CMSuppressionEventTypeKey");
-  v10 = objc_msgSend_userInfo(a3, v8, v9);
+  v10 = objc_msgSend_userInfo(notification, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"CMSuppressionEventReasonKey");
   if (v7)
   {
@@ -1363,7 +1363,7 @@ LABEL_52:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCurrentSuppressionEvent:(int64_t)a3 timestamp:(double)a4 reason:(unint64_t)a5 facedownState:(unint64_t)a6 timeSinceLastFacedownStatic:(double)a7
+- (void)updateCurrentSuppressionEvent:(int64_t)event timestamp:(double)timestamp reason:(unint64_t)reason facedownState:(unint64_t)state timeSinceLastFacedownStatic:(double)static
 {
   v39 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
@@ -1384,11 +1384,11 @@ LABEL_52:
     v31 = 2114;
     v32 = v18;
     v33 = 2114;
-    v34 = objc_msgSend_stringForEventType_(CMSuppressionEvent, v19, a3);
+    v34 = objc_msgSend_stringForEventType_(CMSuppressionEvent, v19, event);
     v35 = 2114;
-    v36 = objc_msgSend_stringForEventReason_(CMSuppressionEvent, v20, a5);
+    v36 = objc_msgSend_stringForEventReason_(CMSuppressionEvent, v20, reason);
     v37 = 2050;
-    v38 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_19B41C000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}ld][%{public}@] ==== Updating current suppression event: %{public}@ (%{public}@) @ %{public}f", buf, 0x34u);
   }
 
@@ -1403,8 +1403,8 @@ LABEL_52:
 
     objc_msgSend_suppressionClientType(self, v22, v23);
     v28 = *(internal + 43);
-    objc_msgSend_stringForEventType_(CMSuppressionEvent, v24, a3);
-    objc_msgSend_stringForEventReason_(CMSuppressionEvent, v25, a5);
+    objc_msgSend_stringForEventType_(CMSuppressionEvent, v24, event);
+    objc_msgSend_stringForEventReason_(CMSuppressionEvent, v25, reason);
     v26 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMSuppressionManager updateCurrentSuppressionEvent:timestamp:reason:facedownState:timeSinceLastFacedownStatic:]", "CoreLocation: %s\n", v26);
     if (v26 != buf)
@@ -1413,11 +1413,11 @@ LABEL_52:
     }
   }
 
-  internal[1] = a4;
-  *(internal + 2) = a3;
-  *(internal + 3) = a5;
-  *(internal + 4) = a6;
-  internal[5] = a7;
+  internal[1] = timestamp;
+  *(internal + 2) = event;
+  *(internal + 3) = reason;
+  *(internal + 4) = state;
+  internal[5] = static;
   v27 = *MEMORY[0x1E69E9840];
 }
 
@@ -1449,51 +1449,51 @@ LABEL_52:
   return result;
 }
 
-- (void)feedViewObstructedEvent:(int64_t)a3 facedown:(unint64_t)a4 timeSinceLastFacedownStatic:(double)a5 timestamp:(double)a6 force:(BOOL)a7
+- (void)feedViewObstructedEvent:(int64_t)event facedown:(unint64_t)facedown timeSinceLastFacedownStatic:(double)static timestamp:(double)timestamp force:(BOOL)force
 {
   v13 = sub_19B420D84();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_19B768FB8;
   v14[3] = &unk_1E7535D90;
-  v15 = a7;
+  forceCopy = force;
   v14[4] = self;
-  v14[5] = a3;
-  *&v14[6] = a6;
-  v14[7] = a4;
-  *&v14[8] = a5;
+  v14[5] = event;
+  *&v14[6] = timestamp;
+  v14[7] = facedown;
+  *&v14[8] = static;
   sub_19B421668(v13, v14);
 }
 
-- (void)feedSmartPowerNapEvent:(int64_t)a3 timestamp:(double)a4 force:(BOOL)a5
+- (void)feedSmartPowerNapEvent:(int64_t)event timestamp:(double)timestamp force:(BOOL)force
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B76964C;
   v10[3] = &unk_1E75343F8;
-  v11 = a5;
+  forceCopy = force;
   v10[4] = self;
-  v10[5] = a3;
-  *&v10[6] = a4;
+  v10[5] = event;
+  *&v10[6] = timestamp;
   sub_19B421668(v9, v10);
 }
 
-- (void)feedDevicePresenceEvent:(int64_t)a3 timestamp:(double)a4 force:(BOOL)a5
+- (void)feedDevicePresenceEvent:(int64_t)event timestamp:(double)timestamp force:(BOOL)force
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_19B769EC8;
   v10[3] = &unk_1E75343F8;
-  v11 = a5;
+  forceCopy = force;
   v10[4] = self;
-  v10[5] = a3;
-  *&v10[6] = a4;
+  v10[5] = event;
+  *&v10[6] = timestamp;
   sub_19B421668(v9, v10);
 }
 
-- (void)startSuppressionUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startSuppressionUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
@@ -1502,17 +1502,17 @@ LABEL_52:
   if (objc_msgSend_isSourceAvailable_(CMSuppressionManager, v8, *(internal + 42)))
   {
     v10 = *(internal + 7);
-    if (v10 != a3)
+    if (v10 != queue)
     {
 
-      *(internal + 7) = a3;
+      *(internal + 7) = queue;
     }
 
     v11 = *(internal + 6);
-    if (v11 != a4)
+    if (v11 != handler)
     {
 
-      *(internal + 6) = objc_msgSend_copy(a4, v12, v13);
+      *(internal + 6) = objc_msgSend_copy(handler, v12, v13);
     }
 
     objc_msgSend_updateCurrentSuppressionEvent_timestamp_reason_facedownState_timeSinceLastFacedownStatic_(self, v9, 0, 0, 0, 0.0, 0.0);
@@ -1608,20 +1608,20 @@ LABEL_33:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onViewObstructedStateData:(const ViewObstructedState *)a3
+- (void)onViewObstructedStateData:(const ViewObstructedState *)data
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     internal = self->_internal;
-    v5 = *&a3->fSuppress.fTimeSinceLastFacedownStatic;
-    v6 = *&a3->fMeanProbabilities[3];
-    v7 = *&a3->fSuppress.fOrientation;
-    *(internal + 74) = LODWORD(a3->fMeanProbabilities[7]);
+    v5 = *&data->fSuppress.fTimeSinceLastFacedownStatic;
+    v6 = *&data->fMeanProbabilities[3];
+    v7 = *&data->fSuppress.fOrientation;
+    *(internal + 74) = LODWORD(data->fMeanProbabilities[7]);
     *(internal + 248) = v7;
     *(internal + 264) = v5;
     *(internal + 280) = v6;
-    v8 = *&a3->fType;
+    v8 = *&data->fType;
     v9 = sub_19B420D84();
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -1668,13 +1668,13 @@ LABEL_33:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onCameraCapturePoseData:(const CameraCapturePose *)a3
+- (void)onCameraCapturePoseData:(const CameraCapturePose *)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    var1 = a3->var1;
-    var2 = a3->var2;
+    var1 = data->var1;
+    var2 = data->var2;
     v6 = sub_19B420D84();
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -1722,7 +1722,7 @@ LABEL_33:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startViewObstructedStateUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startViewObstructedStateUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2800 != -1)
@@ -1761,8 +1761,8 @@ LABEL_33:
   v12[2] = sub_19B76B5DC;
   v12[3] = &unk_1E7532C08;
   v12[4] = self;
-  v12[5] = a3;
-  v12[6] = a4;
+  v12[5] = queue;
+  v12[6] = handler;
   sub_19B421668(v10, v12);
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1810,7 +1810,7 @@ LABEL_33:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendViewObstructedStateToClientPrivate:(float)a3
+- (void)sendViewObstructedStateToClientPrivate:(float)private
 {
   v81 = *MEMORY[0x1E69E9840];
   sub_19B420D84();
@@ -1855,7 +1855,7 @@ LABEL_33:
     }
 
     v24 = off_1EAFE2828;
-    v25 = a3;
+    privateCopy = private;
     if (os_log_type_enabled(off_1EAFE2828, OS_LOG_TYPE_INFO))
     {
       v26 = internal[250];
@@ -1865,7 +1865,7 @@ LABEL_33:
       v30 = *(internal + 255);
       v31 = *(internal + 259);
       *__p = 134350850;
-      *&__p[4] = v25;
+      *&__p[4] = privateCopy;
       v67 = 1026;
       v68 = v26;
       v69 = 1026;
@@ -1899,7 +1899,7 @@ LABEL_33:
       v37 = *(internal + 255);
       v38 = *(internal + 259);
       v50 = 134350850;
-      v51 = v25;
+      v51 = privateCopy;
       v52 = 1026;
       v53 = v33;
       v54 = 1026;
@@ -1942,7 +1942,7 @@ LABEL_33:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startViewObstructedStateUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startViewObstructedStateUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   sub_19B420D84();
   sub_19B44B9A0();
@@ -1950,17 +1950,17 @@ LABEL_33:
   if (objc_msgSend_isAvailable(CMSuppressionManager, v8, v9))
   {
     v10 = internal[7];
-    if (v10 != a3)
+    if (v10 != queue)
     {
 
-      internal[7] = a3;
+      internal[7] = queue;
     }
 
     v11 = internal[30];
-    if (v11 != a4)
+    if (v11 != handler)
     {
 
-      internal[30] = objc_msgSend_copy(a4, v12, v13);
+      internal[30] = objc_msgSend_copy(handler, v12, v13);
     }
 
     if (qword_1EAFE3A58 != -1)
@@ -2021,7 +2021,7 @@ LABEL_33:
   }
 }
 
-- (void)startCameraCapturePoseUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startCameraCapturePoseUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   sub_19B420D84();
   sub_19B44B9A0();
@@ -2029,17 +2029,17 @@ LABEL_33:
   if (objc_msgSend_isAvailable(CMSuppressionManager, v8, v9))
   {
     v10 = internal[39];
-    if (v10 != a3)
+    if (v10 != queue)
     {
 
-      internal[39] = a3;
+      internal[39] = queue;
     }
 
     v11 = internal[40];
-    if (v11 != a4)
+    if (v11 != handler)
     {
 
-      internal[40] = objc_msgSend_copy(a4, v12, v13);
+      internal[40] = objc_msgSend_copy(handler, v12, v13);
     }
   }
 }
@@ -2067,9 +2067,9 @@ LABEL_33:
   }
 }
 
-- (void)handleSmartPowerNapState:(unsigned __int8)a3
+- (void)handleSmartPowerNapState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2800 != -1)
   {
@@ -2082,7 +2082,7 @@ LABEL_33:
     *buf = 134349312;
     v18 = objc_msgSend_suppressionClientType(self, v6, v7);
     v19 = 1026;
-    v20 = v3;
+    v20 = stateCopy;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_INFO, "[%{public}ld] Incoming smart power nap event, %{public}u", buf, 0x12u);
   }
 
@@ -2104,13 +2104,13 @@ LABEL_33:
     }
   }
 
-  if (v3 == 1)
+  if (stateCopy == 1)
   {
     v12 = 1;
     goto LABEL_17;
   }
 
-  if (!v3)
+  if (!stateCopy)
   {
     v12 = 2;
 LABEL_17:
@@ -2122,7 +2122,7 @@ LABEL_17:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)managerDidDetectEvent:(unint64_t)a3
+- (void)managerDidDetectEvent:(unint64_t)event
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2800 != -1)
@@ -2136,7 +2136,7 @@ LABEL_17:
     *buf = 134349312;
     v18 = objc_msgSend_suppressionClientType(self, v6, v7);
     v19 = 2050;
-    v20 = a3;
+    eventCopy = event;
     _os_log_impl(&dword_19B41C000, v5, OS_LOG_TYPE_INFO, "[%{public}ld] Incoming device presence event, %{public}lu", buf, 0x16u);
   }
 
@@ -2158,13 +2158,13 @@ LABEL_17:
     }
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
     v12 = 2;
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v12 = 1;
 LABEL_17:
@@ -2176,7 +2176,7 @@ LABEL_17:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)managerDidFindError:(unint64_t)a3
+- (void)managerDidFindError:(unint64_t)error
 {
   v12 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2800 != -1)
@@ -2188,9 +2188,9 @@ LABEL_17:
   if (os_log_type_enabled(off_1EAFE2828, OS_LOG_TYPE_ERROR))
   {
     *buf = 136446466;
-    v9 = sub_19B76C480(a3);
+    v9 = sub_19B76C480(error);
     v10 = 2050;
-    v11 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_19B41C000, v4, OS_LOG_TYPE_ERROR, "Device presence error: %{public}s %{public}lu", buf, 0x16u);
   }
 
@@ -2203,7 +2203,7 @@ LABEL_17:
       dispatch_once(&qword_1EAFE2800, &unk_1F0E3B638);
     }
 
-    sub_19B76C480(a3);
+    sub_19B76C480(error);
     v6 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 0, "[CMSuppressionManager managerDidFindError:]", "CoreLocation: %s\n", v6);
     if (v6 != buf)

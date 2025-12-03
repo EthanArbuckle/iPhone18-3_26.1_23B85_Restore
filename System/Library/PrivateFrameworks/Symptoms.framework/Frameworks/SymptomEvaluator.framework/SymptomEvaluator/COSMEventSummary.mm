@@ -1,15 +1,15 @@
 @interface COSMEventSummary
 - (id)description;
 - (void)_bumpInstanceNumber;
-- (void)setArpFailureEvent:(BOOL)a3;
-- (void)setCaptivityIndeterminateEvent:(BOOL)a3;
-- (void)setDampeningTimerExpiryEvent:(BOOL)a3;
-- (void)setDataStallThresholdEvent:(BOOL)a3;
-- (void)setExcessCertificateErrorsEvent:(BOOL)a3;
-- (void)setImminentStallEvent:(BOOL)a3;
-- (void)setMediaPlaybackStallEvent:(BOOL)a3;
-- (void)setNd6FailureEvent:(BOOL)a3;
-- (void)setWifiChangedSSIDEvent:(BOOL)a3;
+- (void)setArpFailureEvent:(BOOL)event;
+- (void)setCaptivityIndeterminateEvent:(BOOL)event;
+- (void)setDampeningTimerExpiryEvent:(BOOL)event;
+- (void)setDataStallThresholdEvent:(BOOL)event;
+- (void)setExcessCertificateErrorsEvent:(BOOL)event;
+- (void)setImminentStallEvent:(BOOL)event;
+- (void)setMediaPlaybackStallEvent:(BOOL)event;
+- (void)setNd6FailureEvent:(BOOL)event;
+- (void)setWifiChangedSSIDEvent:(BOOL)event;
 @end
 
 @implementation COSMEventSummary
@@ -29,83 +29,83 @@
   [(COSMEventSummary *)self didChangeValueForKey:@"eventsInstanceNumber"];
 }
 
-- (void)setArpFailureEvent:(BOOL)a3
+- (void)setArpFailureEvent:(BOOL)event
 {
-  if (self->_arpFailureEvent != a3)
+  if (self->_arpFailureEvent != event)
   {
-    self->_arpFailureEvent = a3;
+    self->_arpFailureEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setCaptivityIndeterminateEvent:(BOOL)a3
+- (void)setCaptivityIndeterminateEvent:(BOOL)event
 {
-  if (self->_captivityIndeterminateEvent != a3)
+  if (self->_captivityIndeterminateEvent != event)
   {
-    self->_captivityIndeterminateEvent = a3;
+    self->_captivityIndeterminateEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setDampeningTimerExpiryEvent:(BOOL)a3
+- (void)setDampeningTimerExpiryEvent:(BOOL)event
 {
-  if (self->_dampeningTimerExpiryEvent != a3)
+  if (self->_dampeningTimerExpiryEvent != event)
   {
-    self->_dampeningTimerExpiryEvent = a3;
+    self->_dampeningTimerExpiryEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setDataStallThresholdEvent:(BOOL)a3
+- (void)setDataStallThresholdEvent:(BOOL)event
 {
-  if (self->_dataStallThresholdEvent != a3)
+  if (self->_dataStallThresholdEvent != event)
   {
-    self->_dataStallThresholdEvent = a3;
+    self->_dataStallThresholdEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setExcessCertificateErrorsEvent:(BOOL)a3
+- (void)setExcessCertificateErrorsEvent:(BOOL)event
 {
-  if (self->_excessCertificateErrorsEvent != a3)
+  if (self->_excessCertificateErrorsEvent != event)
   {
-    self->_excessCertificateErrorsEvent = a3;
+    self->_excessCertificateErrorsEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setImminentStallEvent:(BOOL)a3
+- (void)setImminentStallEvent:(BOOL)event
 {
-  if (self->_imminentStallEvent != a3)
+  if (self->_imminentStallEvent != event)
   {
-    self->_imminentStallEvent = a3;
+    self->_imminentStallEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setMediaPlaybackStallEvent:(BOOL)a3
+- (void)setMediaPlaybackStallEvent:(BOOL)event
 {
-  if (self->_mediaPlaybackStallEvent != a3)
+  if (self->_mediaPlaybackStallEvent != event)
   {
-    self->_mediaPlaybackStallEvent = a3;
+    self->_mediaPlaybackStallEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setNd6FailureEvent:(BOOL)a3
+- (void)setNd6FailureEvent:(BOOL)event
 {
-  if (self->_nd6FailureEvent != a3)
+  if (self->_nd6FailureEvent != event)
   {
-    self->_nd6FailureEvent = a3;
+    self->_nd6FailureEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }
 
-- (void)setWifiChangedSSIDEvent:(BOOL)a3
+- (void)setWifiChangedSSIDEvent:(BOOL)event
 {
-  if (self->_wifiChangedSSIDEvent != a3)
+  if (self->_wifiChangedSSIDEvent != event)
   {
-    self->_wifiChangedSSIDEvent = a3;
+    self->_wifiChangedSSIDEvent = event;
     [(COSMEventSummary *)self _bumpInstanceNumber];
   }
 }

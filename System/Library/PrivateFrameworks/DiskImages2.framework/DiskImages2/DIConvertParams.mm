@@ -1,63 +1,63 @@
 @interface DIConvertParams
-- (BOOL)onConvertCompletionWithInError:(id)a3 outError:(id *)a4;
-- (BOOL)openExistingImageWithError:(id *)a3;
-- (BOOL)prepareParamsForSquashWithError:(id *)a3;
-- (BOOL)prepareParamsWithError:(id *)a3;
-- (BOOL)setPassphrase:(const char *)a3 encryptionMethod:(unint64_t)a4 error:(id *)a5;
+- (BOOL)onConvertCompletionWithInError:(id)error outError:(id *)outError;
+- (BOOL)openExistingImageWithError:(id *)error;
+- (BOOL)prepareParamsForSquashWithError:(id *)error;
+- (BOOL)prepareParamsWithError:(id *)error;
+- (BOOL)setPassphrase:(const char *)passphrase encryptionMethod:(unint64_t)method error:(id *)error;
 - (BOOL)shouldPerformInplaceSquash;
 - (BOOL)shouldValidateShadows;
-- (BOOL)validateDeserializationWithError:(id *)a3;
-- (BOOL)validateFileWithURL:(id)a3 error:(id *)a4;
+- (BOOL)validateDeserializationWithError:(id *)error;
+- (BOOL)validateFileWithURL:(id)l error:(id *)error;
 - (BOOL)validateSquashFormats;
-- (DIConvertParams)initWithCoder:(id)a3;
-- (DIConvertParams)initWithInputURL:(id)a3 outputURL:(id)a4 error:(id *)a5;
-- (DIConvertParams)initWithInputURL:(id)a3 outputURL:(id)a4 shadowURLs:(id)a5 error:(id *)a6;
-- (id)convertWithCompletionBlock:(id)a3;
-- (id)copyUpdatedOutputURLWithError:(id *)a3;
-- (id)initForInplaceWithExistingParams:(id)a3 error:(id *)a4;
-- (id)initForInplaceWithURL:(id)a3 error:(id *)a4;
-- (id)prepareConvertWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DIConvertParams)initWithCoder:(id)coder;
+- (DIConvertParams)initWithInputURL:(id)l outputURL:(id)rL error:(id *)error;
+- (DIConvertParams)initWithInputURL:(id)l outputURL:(id)rL shadowURLs:(id)ls error:(id *)error;
+- (id)convertWithCompletionBlock:(id)block;
+- (id)copyUpdatedOutputURLWithError:(id *)error;
+- (id)initForInplaceWithExistingParams:(id)params error:(id *)error;
+- (id)initForInplaceWithURL:(id)l error:(id *)error;
+- (id)prepareConvertWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
 @implementation DIConvertParams
 
-- (BOOL)validateFileWithURL:(id)a3 error:(id *)a4
+- (BOOL)validateFileWithURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v7 = [v5 isFileURL] && (stat(objc_msgSend(v5, "fileSystemRepresentation"), &v9) || !FileDescriptor::get_device_type(&v9, v6)) || +[DIError failWithPOSIXCode:description:error:](DIError, "failWithPOSIXCode:description:error:", 22, @"Output of disk image conversion must be a file", a4);
+  lCopy = l;
+  v7 = [lCopy isFileURL] && (stat(objc_msgSend(lCopy, "fileSystemRepresentation"), &v9) || !FileDescriptor::get_device_type(&v9, v6)) || +[DIError failWithPOSIXCode:description:error:](DIError, "failWithPOSIXCode:description:error:", 22, @"Output of disk image conversion must be a file", error);
 
   return v7;
 }
 
-- (DIConvertParams)initWithInputURL:(id)a3 outputURL:(id)a4 error:(id *)a5
+- (DIConvertParams)initWithInputURL:(id)l outputURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEA60] array];
-  v11 = [(DIConvertParams *)self initWithInputURL:v8 outputURL:v9 shadowURLs:v10 error:a5];
+  lCopy = l;
+  rLCopy = rL;
+  array = [MEMORY[0x277CBEA60] array];
+  v11 = [(DIConvertParams *)self initWithInputURL:lCopy outputURL:rLCopy shadowURLs:array error:error];
 
   return v11;
 }
 
-- (DIConvertParams)initWithInputURL:(id)a3 outputURL:(id)a4 shadowURLs:(id)a5 error:(id *)a6
+- (DIConvertParams)initWithInputURL:(id)l outputURL:(id)rL shadowURLs:(id)ls error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(DIBaseParams *)self initWithURL:v10 error:a6];
+  lCopy = l;
+  rLCopy = rL;
+  lsCopy = ls;
+  v13 = [(DIBaseParams *)self initWithURL:lCopy error:error];
   v14 = v13;
   if (v13)
   {
-    if (![(DIConvertParams *)v13 validateFileWithURL:v11 error:a6])
+    if (![(DIConvertParams *)v13 validateFileWithURL:rLCopy error:error])
     {
       v17 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v14->_shadowURLs, a5);
-    v15 = [DIURL newDIURLWithNSURL:v11];
+    objc_storeStrong(&v14->_shadowURLs, ls);
+    v15 = [DIURL newDIURLWithNSURL:rLCopy];
     outputURL = v14->_outputURL;
     v14->_outputURL = v15;
 
@@ -70,14 +70,14 @@ LABEL_6:
   return v17;
 }
 
-- (id)initForInplaceWithURL:(id)a3 error:(id *)a4
+- (id)initForInplaceWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DIBaseParams *)self initWithURL:v6 error:a4];
+  lCopy = l;
+  v7 = [(DIBaseParams *)self initWithURL:lCopy error:error];
   v8 = v7;
   if (v7)
   {
-    if (![(DIConvertParams *)v7 validateFileWithURL:v6 error:a4])
+    if (![(DIConvertParams *)v7 validateFileWithURL:lCopy error:error])
     {
       v9 = 0;
       goto LABEL_6;
@@ -92,18 +92,18 @@ LABEL_6:
   return v9;
 }
 
-- (id)initForInplaceWithExistingParams:(id)a3 error:(id *)a4
+- (id)initForInplaceWithExistingParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 inputURL];
+  paramsCopy = params;
+  inputURL = [paramsCopy inputURL];
   v14.receiver = self;
   v14.super_class = DIConvertParams;
-  v8 = [(DIBaseParams *)&v14 initWithURL:v7 error:a4];
+  v8 = [(DIBaseParams *)&v14 initWithURL:inputURL error:error];
 
   if (v8)
   {
-    v9 = [v6 inputURL];
-    v10 = [(DIConvertParams *)v8 validateFileWithURL:v9 error:a4];
+    inputURL2 = [paramsCopy inputURL];
+    v10 = [(DIConvertParams *)v8 validateFileWithURL:inputURL2 error:error];
 
     if (!v10)
     {
@@ -111,8 +111,8 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v11 = [v6 diskImageParamsXPC];
-    [(DIBaseParams *)v8 setDiskImageParamsXPC:v11];
+    diskImageParamsXPC = [paramsCopy diskImageParamsXPC];
+    [(DIBaseParams *)v8 setDiskImageParamsXPC:diskImageParamsXPC];
 
     [(DIConvertParams *)v8 setConversionMethod:1];
   }
@@ -125,10 +125,10 @@ LABEL_6:
 
 - (BOOL)validateSquashFormats
 {
-  v3 = [(DIConvertParams *)self outputFormat];
-  if (v3 == 2 || v3 == 1)
+  outputFormat = [(DIConvertParams *)self outputFormat];
+  if (outputFormat == 2 || outputFormat == 1)
   {
-    v4 = [(DIBaseParams *)self diskImageParamsXPC];
+    diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -145,10 +145,10 @@ LABEL_6:
 {
   if ([(DIConvertParams *)self validateSquashFormats])
   {
-    v3 = [(DIConvertParams *)self outputURL];
-    v4 = [v3 URLByDeletingLastPathComponent];
+    outputURL = [(DIConvertParams *)self outputURL];
+    uRLByDeletingLastPathComponent = [outputURL URLByDeletingLastPathComponent];
 
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v4 fileSystemRepresentation]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [uRLByDeletingLastPathComponent fileSystemRepresentation]);
     v5 = FileDescriptorWrapper::open_file(&__p, 0);
     FileLocal::FileLocal(&v8, v5, 0);
   }
@@ -156,7 +156,7 @@ LABEL_6:
   return 0;
 }
 
-- (BOOL)prepareParamsForSquashWithError:(id *)a3
+- (BOOL)prepareParamsForSquashWithError:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
   v5 = *__error();
@@ -193,13 +193,13 @@ LABEL_6:
   }
 
   *__error() = v5;
-  v9 = [(DIConvertParams *)self copyUpdatedOutputURLWithError:a3];
+  v9 = [(DIConvertParams *)self copyUpdatedOutputURLWithError:error];
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  if (![DICreateParams eraseIfExistingWithURL:v9 error:a3])
+  if (![DICreateParams eraseIfExistingWithURL:v9 error:error])
   {
     v27 = *__error();
     if (!DIForwardLogs())
@@ -238,9 +238,9 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [(DIBaseParams *)self inputURL];
-  v12 = [v10 copyItemAtURL:v11 toURL:v9 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  inputURL = [(DIBaseParams *)self inputURL];
+  v12 = [defaultManager copyItemAtURL:inputURL toURL:v9 error:error];
 
   if ((v12 & 1) == 0)
   {
@@ -276,11 +276,11 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v13 = [[DIBaseParams alloc] initWithURL:v9 error:a3];
+  v13 = [[DIBaseParams alloc] initWithURL:v9 error:error];
   [(DIConvertParams *)self setOutputParams:v13];
 
-  v14 = [(DIConvertParams *)self outputParams];
-  v15 = [v14 openExistingImageWithFlags:2 error:a3];
+  outputParams = [(DIConvertParams *)self outputParams];
+  v15 = [outputParams openExistingImageWithFlags:2 error:error];
 
   if ((v15 & 1) == 0)
   {
@@ -293,35 +293,35 @@ LABEL_15:
   v17 = [DIURL newDIURLWithNSURL:v16];
   [(DIBaseParams *)self setInputURL:v17];
 
-  v18 = [(DIBaseParams *)self inputURL];
-  v19 = [v18 path];
-  if (!v19)
+  inputURL2 = [(DIBaseParams *)self inputURL];
+  path = [inputURL2 path];
+  if (!path)
   {
 
     goto LABEL_32;
   }
 
   v20 = MEMORY[0x277CCACE0];
-  v21 = [(DIBaseParams *)self inputURL];
-  v22 = [v20 componentsWithURL:v21 resolvingAgainstBaseURL:1];
+  inputURL3 = [(DIBaseParams *)self inputURL];
+  v22 = [v20 componentsWithURL:inputURL3 resolvingAgainstBaseURL:1];
   LODWORD(v20) = v22 == 0;
 
   if (v20)
   {
 LABEL_32:
-    v26 = [DIError failWithPOSIXCode:22 description:@"Malformed URL format" error:a3, v35, v36];
+    v26 = [DIError failWithPOSIXCode:22 description:@"Malformed URL format" error:error, v35, v36];
     goto LABEL_30;
   }
 
   v23 = [MEMORY[0x277CBEB18] arrayWithArray:self->_shadowURLs];
   [v23 removeObjectAtIndex:0];
-  v24 = [(DIBaseParams *)self shadowChain];
-  v25 = [v24 addShadowURLs:v23 error:a3];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  v25 = [shadowChain addShadowURLs:v23 error:error];
 
   if (v25)
   {
     [(DIBaseParams *)self setDiskImageParamsXPC:0];
-    v26 = [(DIBaseParams *)self openExistingImageWithFlags:0 error:a3];
+    v26 = [(DIBaseParams *)self openExistingImageWithFlags:0 error:error];
   }
 
   else
@@ -334,7 +334,7 @@ LABEL_30:
   return v26;
 }
 
-- (BOOL)prepareParamsWithError:(id *)a3
+- (BOOL)prepareParamsWithError:(id *)error
 {
   v5 = [(DIConvertParams *)self openExistingImageWithError:?];
   if (v5)
@@ -350,14 +350,14 @@ LABEL_3:
     {
       [(DIConvertParams *)self setConversionMethod:2];
 
-      LOBYTE(v5) = [(DIConvertParams *)self prepareParamsForSquashWithError:a3];
+      LOBYTE(v5) = [(DIConvertParams *)self prepareParamsForSquashWithError:error];
     }
 
     else
     {
       [(DIConvertParams *)self setConversionMethod:0];
-      v6 = [(DIBaseParams *)self shadowChain];
-      v7 = [v6 addShadowURLs:self->_shadowURLs error:a3];
+      shadowChain = [(DIBaseParams *)self shadowChain];
+      v7 = [shadowChain addShadowURLs:self->_shadowURLs error:error];
 
       if (v7)
       {
@@ -371,22 +371,22 @@ LABEL_3:
   return v5;
 }
 
-- (DIConvertParams)initWithCoder:(id)a3
+- (DIConvertParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DIConvertParams;
-  v5 = [(DIBaseParams *)&v9 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_conversionMethod = [v4 decodeIntegerForKey:@"conversionMethod"];
-    v5->_outputFormat = [v4 decodeIntegerForKey:@"outputFormat"];
-    v5->_maxRawUDIFRunSize = [v4 decodeIntegerForKey:@"maxRawUDIFRunSize"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"outputParams"];
+    v5->_conversionMethod = [coderCopy decodeIntegerForKey:@"conversionMethod"];
+    v5->_outputFormat = [coderCopy decodeIntegerForKey:@"outputFormat"];
+    v5->_maxRawUDIFRunSize = [coderCopy decodeIntegerForKey:@"maxRawUDIFRunSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"outputParams"];
     outputParams = v5->_outputParams;
     v5->_outputParams = v6;
 
-    v5->_useFormatMappingInfo = [v4 decodeBoolForKey:@"useFormatMappingInfo"];
+    v5->_useFormatMappingInfo = [coderCopy decodeBoolForKey:@"useFormatMappingInfo"];
   }
 
   return v5;
@@ -394,39 +394,39 @@ LABEL_3:
 
 - (BOOL)shouldValidateShadows
 {
-  v2 = [(DIBaseParams *)self shadowChain];
-  v3 = [v2 shouldValidate];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  shouldValidate = [shadowChain shouldValidate];
 
-  return v3;
+  return shouldValidate;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = DIConvertParams;
-  [(DIBaseParams *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[DIConvertParams conversionMethod](self forKey:{"conversionMethod"), @"conversionMethod"}];
-  [v4 encodeInteger:-[DIConvertParams outputFormat](self forKey:{"outputFormat"), @"outputFormat"}];
-  [v4 encodeInteger:-[DIConvertParams maxRawUDIFRunSize](self forKey:{"maxRawUDIFRunSize"), @"maxRawUDIFRunSize"}];
-  v5 = [(DIConvertParams *)self outputParams];
-  [v4 encodeObject:v5 forKey:@"outputParams"];
+  [(DIBaseParams *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[DIConvertParams conversionMethod](self forKey:{"conversionMethod"), @"conversionMethod"}];
+  [coderCopy encodeInteger:-[DIConvertParams outputFormat](self forKey:{"outputFormat"), @"outputFormat"}];
+  [coderCopy encodeInteger:-[DIConvertParams maxRawUDIFRunSize](self forKey:{"maxRawUDIFRunSize"), @"maxRawUDIFRunSize"}];
+  outputParams = [(DIConvertParams *)self outputParams];
+  [coderCopy encodeObject:outputParams forKey:@"outputParams"];
 
-  [v4 encodeBool:-[DIConvertParams useFormatMappingInfo](self forKey:{"useFormatMappingInfo"), @"useFormatMappingInfo"}];
+  [coderCopy encodeBool:-[DIConvertParams useFormatMappingInfo](self forKey:{"useFormatMappingInfo"), @"useFormatMappingInfo"}];
 }
 
-- (BOOL)validateDeserializationWithError:(id *)a3
+- (BOOL)validateDeserializationWithError:(id *)error
 {
   v10.receiver = self;
   v10.super_class = DIConvertParams;
   if ([(DIBaseParams *)&v10 validateDeserializationWithError:?])
   {
-    v5 = [(DIConvertParams *)self outputParams];
-    if (v5)
+    outputParams = [(DIConvertParams *)self outputParams];
+    if (outputParams)
     {
-      v6 = v5;
-      v7 = [(DIConvertParams *)self outputParams];
-      v8 = [v7 validateDeserializationWithError:a3];
+      v6 = outputParams;
+      outputParams2 = [(DIConvertParams *)self outputParams];
+      v8 = [outputParams2 validateDeserializationWithError:error];
     }
 
     else
@@ -443,20 +443,20 @@ LABEL_3:
   return v8 & 1;
 }
 
-- (id)copyUpdatedOutputURLWithError:(id *)a3
+- (id)copyUpdatedOutputURLWithError:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(DIBaseParams *)self inputURL];
-  if ([v4 isFileURL])
+  inputURL = [(DIBaseParams *)self inputURL];
+  if ([inputURL isFileURL])
   {
-    v5 = [(DIConvertParams *)self outputURL];
-    v6 = access([v5 fileSystemRepresentation], 0);
+    outputURL = [(DIConvertParams *)self outputURL];
+    v6 = access([outputURL fileSystemRepresentation], 0);
 
     if (!v6)
     {
       [(DIConvertParams *)self outputURL];
-      v7 = [objc_claimAutoreleasedReturnValue() fileSystemRepresentation];
-      v8 = std::string::basic_string[abi:ne200100]<0>(buf, v7);
+      fileSystemRepresentation = [objc_claimAutoreleasedReturnValue() fileSystemRepresentation];
+      v8 = std::string::basic_string[abi:ne200100]<0>(buf, fileSystemRepresentation);
       v9 = FileDescriptorWrapper::open_file(v8, 0);
       FileLocal::FileLocal(&v13, v9, 0);
     }
@@ -466,20 +466,20 @@ LABEL_3:
   {
   }
 
-  v10 = [(DIConvertParams *)self outputURL];
+  outputURL2 = [(DIConvertParams *)self outputURL];
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return outputURL2;
 }
 
-- (BOOL)onConvertCompletionWithInError:(id)a3 outError:(id *)a4
+- (BOOL)onConvertCompletionWithInError:(id)error outError:(id *)outError
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = [(DIConvertParams *)self outputParams];
+    outputParams = [(DIConvertParams *)self outputParams];
 
-    if (v7)
+    if (outputParams)
     {
       v8 = *__error();
       if (DIForwardLogs())
@@ -515,37 +515,37 @@ LABEL_3:
       }
 
       *__error() = v8;
-      v18 = [(DIConvertParams *)self outputParams];
+      outputParams2 = [(DIConvertParams *)self outputParams];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v20 = [(DIConvertParams *)self outputParams];
-        [v20 onErrorCleanup];
+        outputParams3 = [(DIConvertParams *)self outputParams];
+        [outputParams3 onErrorCleanup];
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v21 = [(DIConvertParams *)self outputURL];
-      v22 = [(DIConvertParams *)self outputParams];
-      v23 = [v22 inputURL];
-      v24 = [v21 isEqual:v23];
+      outputURL = [(DIConvertParams *)self outputURL];
+      outputParams4 = [(DIConvertParams *)self outputParams];
+      inputURL = [outputParams4 inputURL];
+      v24 = [outputURL isEqual:inputURL];
 
       if ((v24 & 1) == 0)
       {
-        v20 = [MEMORY[0x277CCAA00] defaultManager];
-        v25 = [(DIConvertParams *)self outputParams];
-        v26 = [v25 inputURL];
-        [v20 removeItemAtURL:v26 error:0];
+        outputParams3 = [MEMORY[0x277CCAA00] defaultManager];
+        outputParams5 = [(DIConvertParams *)self outputParams];
+        inputURL2 = [outputParams5 inputURL];
+        [outputParams3 removeItemAtURL:inputURL2 error:0];
 
         goto LABEL_17;
       }
     }
 
 LABEL_18:
-    v16 = [DIError failWithInError:v6 outError:a4, v49, v50];
+    v16 = [DIError failWithInError:errorCopy outError:outError, v49, v50];
     goto LABEL_19;
   }
 
@@ -554,17 +554,17 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v11 = [(DIConvertParams *)self outputParams];
+  outputParams6 = [(DIConvertParams *)self outputParams];
 
-  if (!v11)
+  if (!outputParams6)
   {
     goto LABEL_9;
   }
 
-  v12 = [(DIConvertParams *)self outputURL];
-  v13 = [(DIConvertParams *)self outputParams];
-  v14 = [v13 inputURL];
-  v15 = [v12 isEqual:v14];
+  outputURL2 = [(DIConvertParams *)self outputURL];
+  outputParams7 = [(DIConvertParams *)self outputParams];
+  inputURL3 = [outputParams7 inputURL];
+  v15 = [outputURL2 isEqual:inputURL3];
 
   if (v15)
   {
@@ -576,17 +576,17 @@ LABEL_18:
   {
     v29 = getDIOSLog();
     os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-    v30 = [(DIConvertParams *)self outputParams];
-    v31 = [v30 inputURL];
-    v32 = [v31 path];
-    v33 = [(DIConvertParams *)self outputURL];
-    [v33 path];
+    outputParams8 = [(DIConvertParams *)self outputParams];
+    inputURL4 = [outputParams8 inputURL];
+    path = [inputURL4 path];
+    outputURL3 = [(DIConvertParams *)self outputURL];
+    [outputURL3 path];
     *buf = 68158467;
     v53 = 59;
     v54 = 2080;
     v55 = "[DIConvertParams onConvertCompletionWithInError:outError:]";
     v56 = 2113;
-    v57 = v32;
+    v57 = path;
     v59 = v58 = 2113;
     v34 = _os_log_send_and_compose_impl();
 
@@ -602,38 +602,38 @@ LABEL_18:
     v35 = getDIOSLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(DIConvertParams *)self outputParams];
-      v37 = [v36 inputURL];
-      v38 = [v37 path];
-      v39 = [(DIConvertParams *)self outputURL];
-      v40 = [v39 path];
+      outputParams9 = [(DIConvertParams *)self outputParams];
+      inputURL5 = [outputParams9 inputURL];
+      path2 = [inputURL5 path];
+      outputURL4 = [(DIConvertParams *)self outputURL];
+      path3 = [outputURL4 path];
       *buf = 68158467;
       v53 = 59;
       v54 = 2080;
       v55 = "[DIConvertParams onConvertCompletionWithInError:outError:]";
       v56 = 2113;
-      v57 = v38;
+      v57 = path2;
       v58 = 2113;
-      v59 = v40;
+      v59 = path3;
       _os_log_impl(&dword_248DE0000, v35, OS_LOG_TYPE_DEFAULT, "%.*s: Moving %{private}@ to %{private}@", buf, 0x26u);
     }
   }
 
   *__error() = v51;
-  v41 = [MEMORY[0x277CCAA00] defaultManager];
-  v42 = [(DIConvertParams *)self outputURL];
-  v43 = [v41 removeItemAtURL:v42 error:a4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  outputURL5 = [(DIConvertParams *)self outputURL];
+  v43 = [defaultManager removeItemAtURL:outputURL5 error:outError];
 
   if ((v43 & 1) == 0)
   {
     goto LABEL_28;
   }
 
-  v44 = [MEMORY[0x277CCAA00] defaultManager];
-  v45 = [(DIConvertParams *)self outputParams];
-  v46 = [v45 inputURL];
-  v47 = [(DIConvertParams *)self outputURL];
-  v48 = [v44 moveItemAtURL:v46 toURL:v47 error:a4];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  outputParams10 = [(DIConvertParams *)self outputParams];
+  inputURL6 = [outputParams10 inputURL];
+  outputURL6 = [(DIConvertParams *)self outputURL];
+  v48 = [defaultManager2 moveItemAtURL:inputURL6 toURL:outputURL6 error:outError];
 
   if (v48)
   {
@@ -653,7 +653,7 @@ LABEL_19:
   return v16;
 }
 
-- (id)prepareConvertWithError:(id *)a3
+- (id)prepareConvertWithError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
   if (![(DIConvertParams *)self prepareParamsWithError:?])
@@ -666,7 +666,7 @@ LABEL_19:
   {
     v5 = @"Invalid output format argument";
 LABEL_5:
-    v6 = [DIError nilWithPOSIXCode:22 verboseInfo:v5 error:a3];
+    v6 = [DIError nilWithPOSIXCode:22 verboseInfo:v5 error:error];
     goto LABEL_7;
   }
 
@@ -693,7 +693,7 @@ LABEL_5:
     v30 = 2080;
     v31 = "[DIConvertParams prepareConvertWithError:]";
     v32 = 2114;
-    v33 = self;
+    selfCopy2 = self;
     LODWORD(v27) = 28;
     v26 = buf;
     v13 = _os_log_send_and_compose_impl();
@@ -715,25 +715,25 @@ LABEL_5:
       v30 = 2080;
       v31 = "[DIConvertParams prepareConvertWithError:]";
       v32 = 2114;
-      v33 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248DE0000, v14, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v11;
-  if (![(DIClient2Controller_XPCHandler *)v10 connectWithError:a3]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:a3])
+  if (![(DIClient2Controller_XPCHandler *)v10 connectWithError:error]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:error])
   {
     goto LABEL_30;
   }
 
   if (![(DIConvertParams *)self conversionMethod])
   {
-    v15 = [(DIConvertParams *)self copyUpdatedOutputURLWithError:a3];
+    v15 = [(DIConvertParams *)self copyUpdatedOutputURLWithError:error];
     if (v15)
     {
       if ([(DIConvertParams *)self outputFormat]== 9)
       {
-        v16 = [(DICreateParams *)[DICreateUDSBParams alloc] initWithURL:v15 error:a3];
+        v16 = [(DICreateParams *)[DICreateUDSBParams alloc] initWithURL:v15 error:error];
         if (!v16)
         {
           goto LABEL_42;
@@ -746,12 +746,12 @@ LABEL_5:
       {
         if ([(DIConvertParams *)self outputFormat]== 2)
         {
-          v17 = [(DICreateParams *)[DICreateASIFParams alloc] initWithURL:v15 error:a3];
+          v17 = [(DICreateParams *)[DICreateASIFParams alloc] initWithURL:v15 error:error];
         }
 
         else
         {
-          v17 = [(DICreateParams *)[DICreateRAWParams alloc] initWithURL:v15 error:a3];
+          v17 = [(DICreateParams *)[DICreateRAWParams alloc] initWithURL:v15 error:error];
         }
 
         v16 = v17;
@@ -763,31 +763,31 @@ LABEL_5:
 
       [(DICreateParams *)v16 setEncryptionMethod:[(DIConvertParams *)self encryptionMethod:v26]];
       [(DIBaseParams *)v16 setReadPassphraseFlags:[(DIBaseParams *)self readPassphraseFlags]];
-      v18 = [(DIConvertParams *)self shouldValidateShadows];
-      v19 = [(DIBaseParams *)v16 shadowChain];
-      [v19 setShouldValidate:v18];
+      shouldValidateShadows = [(DIConvertParams *)self shouldValidateShadows];
+      shadowChain = [(DIBaseParams *)v16 shadowChain];
+      [shadowChain setShouldValidate:shouldValidateShadows];
 
       [(DICreateParams *)v16 setPassphrase:[(DIConvertParams *)self passphrase]];
-      v20 = [(DIConvertParams *)self publicKey];
-      [(DICreateParams *)v16 setPublicKey:v20];
+      publicKey = [(DIConvertParams *)self publicKey];
+      [(DICreateParams *)v16 setPublicKey:publicKey];
 
-      v21 = [(DIConvertParams *)self certificate];
-      [(DICreateParams *)v16 setCertificate:v21];
+      certificate = [(DIConvertParams *)self certificate];
+      [(DICreateParams *)v16 setCertificate:certificate];
 
       [(DIBaseParams *)v16 setBlockSize:[(DIBaseParams *)self blockSize]];
-      v22 = [(DIConvertParams *)self temporaryPassphrase];
-      if (!v22 || (-[DIConvertParams temporaryPassphrase](self, "temporaryPassphrase"), v23 = objc_claimAutoreleasedReturnValue(), v24 = -[DICreateParams setPassphrase:encryptionMethod:error:](v16, "setPassphrase:encryptionMethod:error:", [v23 buf], -[DIConvertParams encryptionMethod](self, "encryptionMethod"), a3), v23, v22, v24))
+      temporaryPassphrase = [(DIConvertParams *)self temporaryPassphrase];
+      if (!temporaryPassphrase || (-[DIConvertParams temporaryPassphrase](self, "temporaryPassphrase"), v23 = objc_claimAutoreleasedReturnValue(), v24 = -[DICreateParams setPassphrase:encryptionMethod:error:](v16, "setPassphrase:encryptionMethod:error:", [v23 buf], -[DIConvertParams encryptionMethod](self, "encryptionMethod"), error), v23, temporaryPassphrase, v24))
       {
         temporaryPassphrase = self->_temporaryPassphrase;
         self->_temporaryPassphrase = 0;
 
         if (![(DICreateParams *)v16 validateBlockSizeSupport])
         {
-          v6 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Cannot create target image format with the block size of the source image" error:a3];
+          v6 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Cannot create target image format with the block size of the source image" error:error];
           goto LABEL_44;
         }
 
-        if ([(DICreateParams *)v16 createDiskImageParamsWithError:a3]&& [(DICreateParams *)v16 createEncryptionWithXPCHandler:v10 error:a3])
+        if ([(DICreateParams *)v16 createDiskImageParamsWithError:error]&& [(DICreateParams *)v16 createEncryptionWithXPCHandler:v10 error:error])
         {
           [(DIConvertParams *)self setOutputParams:v16];
 
@@ -820,16 +820,16 @@ LABEL_7:
   return v6;
 }
 
-- (id)convertWithCompletionBlock:(id)a3
+- (id)convertWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__DIConvertParams_convertWithCompletionBlock___block_invoke;
   v11[3] = &unk_278F80BB0;
   v11[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   v13 = v6;
   v7 = v5;
   v12 = v7;
@@ -913,35 +913,35 @@ void __46__DIConvertParams_convertWithCompletionBlock___block_invoke_58(uint64_t
   v5.receiver = self;
   v5.super_class = DIConvertParams;
   [(DIBaseParams *)&v5 invalidate];
-  v3 = [(DIConvertParams *)self outputParams];
+  outputParams = [(DIConvertParams *)self outputParams];
 
-  if (v3)
+  if (outputParams)
   {
-    v4 = [(DIConvertParams *)self outputParams];
-    [v4 invalidate];
+    outputParams2 = [(DIConvertParams *)self outputParams];
+    [outputParams2 invalidate];
   }
 }
 
-- (BOOL)setPassphrase:(const char *)a3 encryptionMethod:(unint64_t)a4 error:(id *)a5
+- (BOOL)setPassphrase:(const char *)passphrase encryptionMethod:(unint64_t)method error:(id *)error
 {
-  if (a3)
+  if (passphrase)
   {
-    v8 = [[DITemporaryPassphrase alloc] initWithPassphrase:a3];
+    v8 = [[DITemporaryPassphrase alloc] initWithPassphrase:passphrase];
     temporaryPassphrase = self->_temporaryPassphrase;
     self->_temporaryPassphrase = v8;
 
-    self->_encryptionMethod = a4;
+    self->_encryptionMethod = method;
     return 1;
   }
 
   else
   {
 
-    return [DIError failWithPOSIXCode:22 error:a5];
+    return [DIError failWithPOSIXCode:22 error:error];
   }
 }
 
-- (BOOL)openExistingImageWithError:(id *)a3
+- (BOOL)openExistingImageWithError:(id *)error
 {
   if ([(DIConvertParams *)self inPlaceConversion])
   {
@@ -953,7 +953,7 @@ void __46__DIConvertParams_convertWithCompletionBlock___block_invoke_58(uint64_t
     v5 = 0;
   }
 
-  return [(DIBaseParams *)self openExistingImageWithFlags:v5 error:a3];
+  return [(DIBaseParams *)self openExistingImageWithFlags:v5 error:error];
 }
 
 @end

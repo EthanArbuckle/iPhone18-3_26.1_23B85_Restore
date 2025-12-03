@@ -1,53 +1,53 @@
 @interface CHSDynamicColor
 + (CHSDynamicColorCache)instanceCacheIfExists;
-- (BOOL)_areColorsTheSame:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CHSDynamicColor)initWithCoder:(id)a3;
+- (BOOL)_areColorsTheSame:(id)same;
+- (BOOL)isEqual:(id)equal;
+- (CHSDynamicColor)initWithCoder:(id)coder;
 - (id)_effectiveColors;
-- (id)_initWithColors:(id)a3;
-- (id)_initWithSameColor:(id)a3;
-- (id)resolvedColorForColorScheme:(unint64_t)a3 displayGamut:(unint64_t)a4;
+- (id)_initWithColors:(id)colors;
+- (id)_initWithSameColor:(id)color;
+- (id)resolvedColorForColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSDynamicColor
 
-- (id)_initWithSameColor:(id)a3
+- (id)_initWithSameColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = CHSDynamicColor;
   v6 = [(CHSDynamicColor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sameColor, a3);
+    objc_storeStrong(&v6->_sameColor, color);
   }
 
   return v7;
 }
 
-- (id)_initWithColors:(id)a3
+- (id)_initWithColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   v12.receiver = self;
   v12.super_class = CHSDynamicColor;
   v5 = [(CHSDynamicColor *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    if ([(CHSDynamicColor *)v5 _areColorsTheSame:v4])
+    if ([(CHSDynamicColor *)v5 _areColorsTheSame:colorsCopy])
     {
-      colors = [v4 allValues];
-      v8 = [colors firstObject];
+      colors = [colorsCopy allValues];
+      firstObject = [colors firstObject];
       sameColor = v6->_sameColor;
-      v6->_sameColor = v8;
+      v6->_sameColor = firstObject;
     }
 
     else
     {
-      v10 = [v4 copy];
+      v10 = [colorsCopy copy];
       colors = v6->_colors;
       v6->_colors = v10;
     }
@@ -56,7 +56,7 @@
   return v6;
 }
 
-- (id)resolvedColorForColorScheme:(unint64_t)a3 displayGamut:(unint64_t)a4
+- (id)resolvedColorForColorScheme:(unint64_t)scheme displayGamut:(unint64_t)gamut
 {
   sameColor = self->_sameColor;
   if (sameColor)
@@ -66,7 +66,7 @@
 
   else
   {
-    v7 = [[_CHSDynamicColorKey alloc] initWithColorScheme:a3 displayGamut:a4];
+    v7 = [[_CHSDynamicColorKey alloc] initWithColorScheme:scheme displayGamut:gamut];
     v5 = [(NSDictionary *)self->_colors objectForKeyedSubscript:v7];
   }
 
@@ -79,13 +79,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 23;
-  v2 = [(CHSDynamicColor *)self _effectiveColors];
+  _effectiveColors = [(CHSDynamicColor *)self _effectiveColors];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __23__CHSDynamicColor_hash__block_invoke;
   v5[3] = &unk_1E7454600;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [_effectiveColors enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -98,10 +98,10 @@ void __23__CHSDynamicColor_hash__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 32) + 8) + 24) += [v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -111,9 +111,9 @@ void __23__CHSDynamicColor_hash__block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CHSDynamicColor *)self _effectiveColors];
-      v7 = [(CHSDynamicColor *)v5 _effectiveColors];
+      v5 = equalCopy;
+      _effectiveColors = [(CHSDynamicColor *)self _effectiveColors];
+      _effectiveColors2 = [(CHSDynamicColor *)v5 _effectiveColors];
       v8 = BSEqualObjects();
     }
 
@@ -128,9 +128,9 @@ void __23__CHSDynamicColor_hash__block_invoke(uint64_t a1, void *a2)
 
 + (CHSDynamicColorCache)instanceCacheIfExists
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"CHS_IN_UNIT_TESTS"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  environment = [processInfo environment];
+  v4 = [environment objectForKeyedSubscript:@"CHS_IN_UNIT_TESTS"];
 
   if (v4)
   {
@@ -145,9 +145,9 @@ void __23__CHSDynamicColor_hash__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sameColor = self->_sameColor;
   if (sameColor)
   {
@@ -163,7 +163,7 @@ void __23__CHSDynamicColor_hash__block_invoke(uint64_t a1, void *a2)
   if (sameColor)
   {
 LABEL_2:
-    [v4 encodeObject:sameColor forKey:@"sameColor"];
+    [coderCopy encodeObject:sameColor forKey:@"sameColor"];
   }
 
   else
@@ -172,9 +172,9 @@ LABEL_2:
     colors = self->_colors;
     if (v6)
     {
-      v8 = [(NSDictionary *)colors allValues];
-      v9 = [v8 firstObject];
-      [v4 encodeObject:v9 forKey:@"sameColor"];
+      allValues = [(NSDictionary *)colors allValues];
+      firstObject = [allValues firstObject];
+      [coderCopy encodeObject:firstObject forKey:@"sameColor"];
     }
 
     else
@@ -183,7 +183,7 @@ LABEL_2:
       v10[1] = 3221225472;
       v10[2] = __35__CHSDynamicColor_encodeWithCoder___block_invoke;
       v10[3] = &unk_1E7454628;
-      v11 = v4;
+      v11 = coderCopy;
       [(NSDictionary *)colors enumerateKeysAndObjectsUsingBlock:v10];
     }
   }
@@ -199,12 +199,12 @@ void __35__CHSDynamicColor_encodeWithCoder___block_invoke(uint64_t a1, void *a2,
   [v5 encodeObject:v7 forKey:v6];
 }
 
-- (CHSDynamicColor)initWithCoder:(id)a3
+- (CHSDynamicColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"sameColor"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"sameColor"])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sameColor"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sameColor"];
     v6 = [(CHSDynamicColor *)self _initWithSameColor:v5];
 
     v7 = v6;
@@ -243,7 +243,7 @@ LABEL_9:
   v16 = 3221225472;
   v17 = __33__CHSDynamicColor_initWithCoder___block_invoke_2;
   v18 = &unk_1E7454650;
-  v19 = v4;
+  v19 = coderCopy;
   v20 = &v21;
   [v8 enumerateObjectsUsingBlock:&v15];
   v9 = v22[5];
@@ -312,10 +312,10 @@ void __33__CHSDynamicColor_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)_areColorsTheSame:(id)a3
+- (BOOL)_areColorsTheSame:(id)same
 {
-  v3 = a3;
-  v4 = [v3 count];
+  sameCopy = same;
+  v4 = [sameCopy count];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -342,7 +342,7 @@ void __33__CHSDynamicColor_initWithCoder___block_invoke_2(uint64_t a1, void *a2)
   v8[3] = &unk_1E7454678;
   v8[4] = v9;
   v8[5] = &v11;
-  [v3 enumerateKeysAndObjectsUsingBlock:v8];
+  [sameCopy enumerateKeysAndObjectsUsingBlock:v8];
   v6 = *(v12 + 24);
   _Block_object_dispose(v9, 8);
 
@@ -386,17 +386,17 @@ void __37__CHSDynamicColor__areColorsTheSame___block_invoke(uint64_t a1, void *a
     {
       v5 = [(CHSDynamicColor *)self _areColorsTheSame:self->_colors];
       v6 = MEMORY[0x1E695DFD8];
-      v7 = [(NSDictionary *)self->_colors allValues];
-      v8 = v7;
+      allValues = [(NSDictionary *)self->_colors allValues];
+      v8 = allValues;
       if (v5)
       {
-        v9 = [v7 firstObject];
-        v3 = [v6 setWithObject:v9];
+        firstObject = [allValues firstObject];
+        v3 = [v6 setWithObject:firstObject];
       }
 
       else
       {
-        v3 = [v6 setWithArray:v7];
+        v3 = [v6 setWithArray:allValues];
       }
 
       goto LABEL_10;

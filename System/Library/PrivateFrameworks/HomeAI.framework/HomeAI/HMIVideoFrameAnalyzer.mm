@@ -1,20 +1,20 @@
 @interface HMIVideoFrameAnalyzer
-- (BOOL)handleSampleBuffer:(opaqueCMSampleBuffer *)a3 background:(opaqueCMSampleBuffer *)a4 motionDetections:(id)a5 tracks:(id)a6;
-- (HMIVideoFrameAnalyzer)initWithConfiguration:(id)a3 workQueue:(id)a4;
+- (BOOL)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks;
+- (HMIVideoFrameAnalyzer)initWithConfiguration:(id)configuration workQueue:(id)queue;
 - (HMIVideoFrameAnalyzerDelegate)delegate;
 - (void)flush;
 @end
 
 @implementation HMIVideoFrameAnalyzer
 
-- (HMIVideoFrameAnalyzer)initWithConfiguration:(id)a3 workQueue:(id)a4
+- (HMIVideoFrameAnalyzer)initWithConfiguration:(id)configuration workQueue:(id)queue
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = HMIVideoFrameAnalyzer;
-  v8 = [(HMIVideoAnalyzerProcessingNode *)&v29 initWithConfiguration:v6 workQueue:v7];
+  v8 = [(HMIVideoAnalyzerProcessingNode *)&v29 initWithConfiguration:configurationCopy workQueue:queueCopy];
   if (!v8)
   {
     goto LABEL_4;
@@ -28,14 +28,14 @@
   v12 = +[HMIVideoAnalyzerEvent eventConfidenceThresholdsMedium];
   v13 = +[HMIVideoAnalyzerEvent eventConfidenceThresholdsHigh];
   v28 = 0;
-  v14 = [(HMICameraVideoFrameAnalyzerSignificantActivity *)v11 initWithMediumConfidenceThresholds:v12 highConfidenceThresholds:v13 analyzerConfiguration:v6 error:&v28];
+  v14 = [(HMICameraVideoFrameAnalyzerSignificantActivity *)v11 initWithMediumConfidenceThresholds:v12 highConfidenceThresholds:v13 analyzerConfiguration:configurationCopy error:&v28];
   v15 = v28;
   cameraVideoFrameAnalyzer = v8->_cameraVideoFrameAnalyzer;
   v8->_cameraVideoFrameAnalyzer = v14;
 
-  v17 = [(HMIVideoFrameAnalyzer *)v8 cameraVideoFrameAnalyzer];
+  cameraVideoFrameAnalyzer = [(HMIVideoFrameAnalyzer *)v8 cameraVideoFrameAnalyzer];
 
-  if (v17)
+  if (cameraVideoFrameAnalyzer)
   {
     v18 = [HMIVideoFrameIntervalSampler alloc];
     CMTimeMake(&v30, 10, 1);
@@ -43,8 +43,8 @@
     frameSampler = v8->_frameSampler;
     v8->_frameSampler = v19;
 
-    v21 = [(HMIVideoFrameAnalyzer *)v8 frameSampler];
-    [v21 setDelegate:v8];
+    frameSampler = [(HMIVideoFrameAnalyzer *)v8 frameSampler];
+    [frameSampler setDelegate:v8];
 
 LABEL_4:
     v22 = v8;
@@ -71,34 +71,34 @@ LABEL_8:
   return v22;
 }
 
-- (BOOL)handleSampleBuffer:(opaqueCMSampleBuffer *)a3 background:(opaqueCMSampleBuffer *)a4 motionDetections:(id)a5 tracks:(id)a6
+- (BOOL)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer background:(opaqueCMSampleBuffer *)background motionDetections:(id)detections tracks:(id)tracks
 {
   v101 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  detectionsCopy = detections;
+  tracksCopy = tracks;
+  dynamicConfiguration = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
 
-  if (!v12)
+  if (!dynamicConfiguration)
   {
     [HMIVideoFrameAnalyzer handleSampleBuffer:background:motionDetections:tracks:];
   }
 
   v13 = 0x277CBE000uLL;
-  v14 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v95 = [MEMORY[0x277CBEB58] set];
   v94 = [MEMORY[0x277CBEB58] set];
-  v96 = [[HMIVideoFrame alloc] initWithSampleBuffer:a3];
-  v15 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
-  v16 = [v15 eventTriggers];
+  v96 = [[HMIVideoFrame alloc] initWithSampleBuffer:buffer];
+  dynamicConfiguration2 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  eventTriggers = [dynamicConfiguration2 eventTriggers];
 
-  v93 = v11;
-  if ((v16 & 0x1E) == 0)
+  v93 = tracksCopy;
+  if ((eventTriggers & 0x1E) == 0)
   {
     v23 = *MEMORY[0x277CBF398];
     v24 = *(MEMORY[0x277CBF398] + 8);
     v25 = *(MEMORY[0x277CBF398] + 16);
     v26 = *(MEMORY[0x277CBF398] + 24);
-    if ((v16 & 1) == 0)
+    if ((eventTriggers & 1) == 0)
     {
       goto LABEL_36;
     }
@@ -106,65 +106,65 @@ LABEL_8:
     goto LABEL_30;
   }
 
-  v92 = v14;
+  v92 = date;
   v98[0] = MEMORY[0x277D85DD0];
   v98[1] = 3221225472;
   v98[2] = __79__HMIVideoFrameAnalyzer_handleSampleBuffer_background_motionDetections_tracks___block_invoke;
   v98[3] = &unk_278753558;
   v17 = v96;
   v99 = v17;
-  v18 = [v11 na_map:v98];
-  v19 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-  v20 = [v19 packageClassifierMode];
+  v18 = [tracksCopy na_map:v98];
+  configuration = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+  packageClassifierMode = [configuration packageClassifierMode];
 
-  v91 = a4;
-  if (v20)
+  backgroundCopy = background;
+  if (packageClassifierMode)
   {
-    v21 = a3;
+    bufferCopy2 = buffer;
     v22 = v18;
   }
 
   else
   {
-    v21 = a3;
+    bufferCopy2 = buffer;
     [v95 unionSet:v18];
     v22 = [MEMORY[0x277CBEB98] set];
   }
 
-  v27 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+  cameraVideoFrameAnalyzer = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
   [(HMIVideoFrame *)v17 size];
-  v90 = v10;
-  [v27 regionOfInterestForMotionDetections:v10 foregroundEvents:v22 frameSize:?];
+  v90 = detectionsCopy;
+  [cameraVideoFrameAnalyzer regionOfInterestForMotionDetections:detectionsCopy foregroundEvents:v22 frameSize:?];
   v23 = v28;
   v24 = v29;
   v25 = v30;
   v26 = v31;
 
-  v32 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-  v33 = [v32 analyzeFrame:v17 regionOfInterest:{v23, v24, v25, v26}];
+  cameraVideoFrameAnalyzer2 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+  v33 = [cameraVideoFrameAnalyzer2 analyzeFrame:v17 regionOfInterest:{v23, v24, v25, v26}];
 
-  v34 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-  v35 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
-  v36 = [v35 recognizeFaces];
+  cameraVideoFrameAnalyzer3 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+  dynamicConfiguration3 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  recognizeFaces = [dynamicConfiguration3 recognizeFaces];
   v37 = +[HMIPreference sharedInstance];
-  v38 = [v34 getAnalyzerEvents:v33 eventTriggers:v16 & 0xFFFFFFFFFFFFFFEFLL enableFaceClassification:v36 enableTorsoRecognition:{objc_msgSend(v37, "shouldEnableTorsoRecognition")}];
+  v38 = [cameraVideoFrameAnalyzer3 getAnalyzerEvents:v33 eventTriggers:eventTriggers & 0xFFFFFFFFFFFFFFEFLL enableFaceClassification:recognizeFaces enableTorsoRecognition:{objc_msgSend(v37, "shouldEnableTorsoRecognition")}];
 
-  v39 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
-  if ([v39 recognizeFaces])
+  dynamicConfiguration4 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  if ([dynamicConfiguration4 recognizeFaces])
   {
-    v40 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-    v41 = [v40 homeUUID];
+    configuration2 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+    homeUUID = [configuration2 homeUUID];
 
-    if (v41)
+    if (homeUUID)
     {
-      v42 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-      v43 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-      v44 = [v43 homeUUID];
-      v45 = [v42 recognizeEvents:v38 frame:v17 regionOfInterest:v44 homeUUID:{v23, v24, v25, v26}];
+      cameraVideoFrameAnalyzer4 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+      configuration3 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+      homeUUID2 = [configuration3 homeUUID];
+      v45 = [cameraVideoFrameAnalyzer4 recognizeEvents:v38 frame:v17 regionOfInterest:homeUUID2 homeUUID:{v23, v24, v25, v26}];
 
       v38 = v45;
 LABEL_18:
-      v14 = v92;
+      date = v92;
       goto LABEL_19;
     }
   }
@@ -173,28 +173,28 @@ LABEL_18:
   {
   }
 
-  v46 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
-  if (([v46 recognizeFaces] & 1) == 0)
+  dynamicConfiguration5 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  if (([dynamicConfiguration5 recognizeFaces] & 1) == 0)
   {
 
     goto LABEL_18;
   }
 
-  v47 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-  v48 = [v47 homeUUID];
+  configuration4 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+  homeUUID3 = [configuration4 homeUUID];
 
-  v14 = v92;
-  if (v48)
+  date = v92;
+  if (homeUUID3)
   {
 LABEL_19:
-    a4 = v91;
+    background = backgroundCopy;
     goto LABEL_20;
   }
 
   v49 = objc_autoreleasePoolPush();
-  v50 = self;
+  selfCopy = self;
   v51 = HMFGetOSLogHandle();
-  a4 = v91;
+  background = backgroundCopy;
   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
   {
     HMFGetLogIdentifier();
@@ -207,20 +207,20 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v49);
-  v14 = v92;
+  date = v92;
 LABEL_20:
-  a3 = v21;
+  buffer = bufferCopy2;
   v13 = 0x277CBE000;
-  if ((v16 & 0x10) != 0)
+  if ((eventTriggers & 0x10) != 0)
   {
     v53 = [v22 count];
-    if (a4)
+    if (background)
     {
       if (v53)
       {
-        v54 = [[HMIVideoFrame alloc] initWithSampleBuffer:a4];
-        v55 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-        v89 = a3;
+        v54 = [[HMIVideoFrame alloc] initWithSampleBuffer:background];
+        cameraVideoFrameAnalyzer5 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+        bufferCopy3 = buffer;
         if (v54)
         {
           [(HMIVideoFrame *)v54 presentationTimeStamp];
@@ -231,33 +231,33 @@ LABEL_20:
           memset(&buf, 0, sizeof(buf));
         }
 
-        v56 = [v55 getPackageEvents:v33 foregroundEvents:v22 newBackgroundEvents:v94 backgroundTimeStamp:&buf];
+        v56 = [cameraVideoFrameAnalyzer5 getPackageEvents:v33 foregroundEvents:v22 newBackgroundEvents:v94 backgroundTimeStamp:&buf];
 
         if ([v56 count])
         {
-          v57 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-          v58 = [v57 analyzeBackgroundFrame:v54 packageEvents:v56 newBackgroundEvents:v94 regionOfInterest:{v23, v24, v25, v26}];
+          cameraVideoFrameAnalyzer6 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+          v58 = [cameraVideoFrameAnalyzer6 analyzeBackgroundFrame:v54 packageEvents:v56 newBackgroundEvents:v94 regionOfInterest:{v23, v24, v25, v26}];
 
           [v95 unionSet:v58];
           v56 = v58;
-          a4 = v91;
+          background = backgroundCopy;
         }
 
         v13 = 0x277CBE000uLL;
 
-        a3 = v89;
-        v14 = v92;
+        buffer = bufferCopy3;
+        date = v92;
       }
     }
   }
 
   [v95 unionSet:v38];
 
-  v10 = v90;
-  if (v16)
+  detectionsCopy = v90;
+  if (eventTriggers)
   {
 LABEL_30:
-    v59 = [HMIMotionDetection firstMotionDetectionInArray:v10 withMode:1];
+    v59 = [HMIMotionDetection firstMotionDetectionInArray:detectionsCopy withMode:1];
     v60 = v59;
     if (v59)
     {
@@ -297,26 +297,26 @@ LABEL_30:
 LABEL_36:
   analysisTime = self->_analysisTime;
   v77 = MEMORY[0x277CCABB0];
-  v78 = [*(v13 + 2728) date];
-  [v78 timeIntervalSinceDate:v14];
+  date2 = [*(v13 + 2728) date];
+  [date2 timeIntervalSinceDate:date];
   v79 = [v77 numberWithDouble:?];
   [(MovingAverage *)analysisTime addNumber:v79];
 
   v80 = objc_autoreleasePoolPush();
-  v81 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-  LODWORD(v78) = [v81 redactFrames];
+  configuration5 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+  LODWORD(date2) = [configuration5 redactFrames];
 
-  if (v78)
+  if (date2)
   {
-    v82 = [(HMIVideoFrame *)v96 redactedCopy];
+    redactedCopy = [(HMIVideoFrame *)v96 redactedCopy];
 
-    v96 = v82;
+    v96 = redactedCopy;
   }
 
   memset(&buf, 0, sizeof(buf));
-  if (a4)
+  if (background)
   {
-    CMSampleBufferGetPresentationTimeStamp(&buf, a4);
+    CMSampleBufferGetPresentationTimeStamp(&buf, background);
   }
 
   else
@@ -326,13 +326,13 @@ LABEL_36:
 
   v83 = [HMIVideoFrameAnalyzerResult alloc];
   v97 = buf;
-  v84 = [(HMIVideoFrameAnalyzerResult *)v83 initWithFrame:v96 events:v95 backgroundEvents:v94 backgroundTimeStamp:&v97 regionOfInterest:v10 motionDetections:v23, v24, v25, v26];
-  v85 = [(HMIVideoFrameAnalyzer *)self delegate];
-  [v85 frameAnalyzer:self didAnalyzeFrame:v84];
+  v84 = [(HMIVideoFrameAnalyzerResult *)v83 initWithFrame:v96 events:v95 backgroundEvents:v94 backgroundTimeStamp:&v97 regionOfInterest:detectionsCopy motionDetections:v23, v24, v25, v26];
+  delegate = [(HMIVideoFrameAnalyzer *)self delegate];
+  [delegate frameAnalyzer:self didAnalyzeFrame:v84];
 
   objc_autoreleasePoolPop(v80);
-  v86 = [(HMIVideoFrameAnalyzer *)self frameSampler];
-  [v86 handleSampleBuffer:a3];
+  frameSampler = [(HMIVideoFrameAnalyzer *)self frameSampler];
+  [frameSampler handleSampleBuffer:buffer];
 
   return 1;
 }
@@ -358,16 +358,16 @@ id __79__HMIVideoFrameAnalyzer_handleSampleBuffer_background_motionDetections_tr
 
 - (void)flush
 {
-  v3 = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
-  v4 = [(HMIVideoAnalyzerProcessingNode *)self configuration];
-  v5 = [v4 homeUUID];
-  v6 = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
-  v8 = [v3 flushAndGetAnalysisStateUpdateForHome:v5 enableFaceClassification:{objc_msgSend(v6, "recognizeFaces")}];
+  cameraVideoFrameAnalyzer = [(HMIVideoFrameAnalyzer *)self cameraVideoFrameAnalyzer];
+  configuration = [(HMIVideoAnalyzerProcessingNode *)self configuration];
+  homeUUID = [configuration homeUUID];
+  dynamicConfiguration = [(HMIVideoAnalyzerProcessingNode *)self dynamicConfiguration];
+  v8 = [cameraVideoFrameAnalyzer flushAndGetAnalysisStateUpdateForHome:homeUUID enableFaceClassification:{objc_msgSend(dynamicConfiguration, "recognizeFaces")}];
 
   if (v8)
   {
-    v7 = [(HMIVideoFrameAnalyzer *)self delegate];
-    [v7 frameAnalyzer:self didProduceAnalysisStateUpdate:v8];
+    delegate = [(HMIVideoFrameAnalyzer *)self delegate];
+    [delegate frameAnalyzer:self didProduceAnalysisStateUpdate:v8];
   }
 }
 

@@ -1,90 +1,90 @@
 @interface WTMainPopoverViewController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (CGRect)_offScreenFrame;
 - (CGRect)_onScreenFrame;
 - (CGRect)_startFrameForAnimation;
-- (CGRect)keyboardFrameInWindow:(id)a3;
+- (CGRect)keyboardFrameInWindow:(id)window;
 - (CGRect)onScreenFrameLastReportedToKeyboardTrackingCoordinator;
 - (CGRect)pendingWritingToolsKeyboardFrame;
 - (CGRect)writingToolsKeyboardFrame;
 - (UISheetPresentationController)sheetController;
 - (UIWTInputViewSetPlacementController_Staging)ivsPlacementController;
-- (WTMainPopoverViewController)initWithWritingToolsController:(id)a3 startupOptions:(id)a4;
+- (WTMainPopoverViewController)initWithWritingToolsController:(id)controller startupOptions:(id)options;
 - (WTWritingToolsController)writingToolsController;
 - (double)_currentDetentHeight;
 - (double)_smallDetentHeight;
-- (id)_screenForWindow:(id)a3;
+- (id)_screenForWindow:(id)window;
 - (id)_sourceResponderWindow;
-- (void)_dismissalTransitionDidEnd:(id)a3;
-- (void)_dismissalTransitionWillBegin:(id)a3;
+- (void)_dismissalTransitionDidEnd:(id)end;
+- (void)_dismissalTransitionWillBegin:(id)begin;
 - (void)_movePopoverBackToDefaultPosition;
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4;
-- (void)_sendKeyboardTrackingNotificationsForReason:(id)a3;
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController;
+- (void)_sendKeyboardTrackingNotificationsForReason:(id)reason;
 - (void)_setupSceneHosting;
 - (void)applicationDidResume;
 - (void)beginTextPlaceholder;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)copyText:(id)a3;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)didStartMontaraRefinementForSessionWithUUID:(id)a3;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)copyText:(id)text;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)didStartMontaraRefinementForSessionWithUUID:(id)d;
 - (void)dismissShareSheet;
-- (void)enableIntelligentEntryFieldView:(BOOL)a3;
-- (void)enableSmallDetent:(BOOL)a3;
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4;
+- (void)enableIntelligentEntryFieldView:(BOOL)view;
+- (void)enableSmallDetent:(BOOL)detent;
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion;
 - (void)endWritingTools;
-- (void)endWritingToolsWithError:(id)a3;
+- (void)endWritingToolsWithError:(id)error;
 - (void)enrollmentBegan;
-- (void)enrollmentDismissedWithCompletion:(id)a3;
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5;
+- (void)enrollmentDismissedWithCompletion:(id)completion;
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD;
 - (void)redo;
-- (void)replaceSelectionWithText:(id)a3;
-- (void)repositionWithKeyboardChangedInformation:(id)a3;
+- (void)replaceSelectionWithText:(id)text;
+- (void)repositionWithKeyboardChangedInformation:(id)information;
 - (void)resetPresentationSelectedDetent;
-- (void)setFeedbackHiddenDetentEnabled:(BOOL)a3;
-- (void)setRemainingRedoCount:(unint64_t)a3;
-- (void)setRemainingUndoCount:(unint64_t)a3;
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4;
-- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)a3;
-- (void)triggerShareSheetWithText:(id)a3;
+- (void)setFeedbackHiddenDetentEnabled:(BOOL)enabled;
+- (void)setRemainingRedoCount:(unint64_t)count;
+- (void)setRemainingUndoCount:(unint64_t)count;
+- (void)showContentWarningWithTitle:(id)title message:(id)message;
+- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)changed;
+- (void)triggerShareSheetWithText:(id)text;
 - (void)undo;
-- (void)updatePromptEntryState:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)windowingModeEnabledChanged:(BOOL)a3;
-- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)a3 preferredContentSizeChanging:(BOOL)a4;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)updatePromptEntryState:(int64_t)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)windowingModeEnabledChanged:(BOOL)changed;
+- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)position preferredContentSizeChanging:(BOOL)changing;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation WTMainPopoverViewController
 
-- (WTMainPopoverViewController)initWithWritingToolsController:(id)a3 startupOptions:(id)a4
+- (WTMainPopoverViewController)initWithWritingToolsController:(id)controller startupOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = WTMainPopoverViewController;
   v8 = [(WTMainPopoverViewController *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_writingToolsController, v6);
-    objc_storeStrong(&v9->_startupOptions, a4);
-    v10 = [v7 sessionUUID];
+    objc_storeWeak(&v8->_writingToolsController, controllerCopy);
+    objc_storeStrong(&v9->_startupOptions, options);
+    sessionUUID = [optionsCopy sessionUUID];
     sessionUUID = v9->_sessionUUID;
-    v9->_sessionUUID = v10;
+    v9->_sessionUUID = sessionUUID;
 
     [(WTMainPopoverViewController *)v9 setModalPresentationStyle:7];
-    v12 = [(WTMainPopoverViewController *)v9 presentationController];
-    [v12 setDelegate:v9];
+    presentationController = [(WTMainPopoverViewController *)v9 presentationController];
+    [presentationController setDelegate:v9];
 
     v13 = NSClassFromString(&cfstr_Uiwtinputviews.isa);
     if (v13)
@@ -94,11 +94,11 @@
       v9->_ivsPlacementController = v14;
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v9 selector:sel__dismissalTransitionWillBegin_ name:*MEMORY[0x1E69DE2D0] object:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__dismissalTransitionWillBegin_ name:*MEMORY[0x1E69DE2D0] object:v9];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v9 selector:sel__dismissalTransitionDidEnd_ name:*MEMORY[0x1E69DE2C8] object:v9];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__dismissalTransitionDidEnd_ name:*MEMORY[0x1E69DE2C8] object:v9];
 
     [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:1];
     v9->_smallDetentKeyboardHeight = v18;
@@ -114,37 +114,37 @@
   return v9;
 }
 
-- (void)repositionWithKeyboardChangedInformation:(id)a3
+- (void)repositionWithKeyboardChangedInformation:(id)information
 {
-  v33 = a3;
-  if ([v33 isFloating] || -[WTMainPopoverViewController presentedAsSheet](self, "presentedAsSheet") || (objc_msgSend(v33, "keyboardOnScreen") & 1) == 0)
+  informationCopy = information;
+  if ([informationCopy isFloating] || -[WTMainPopoverViewController presentedAsSheet](self, "presentedAsSheet") || (objc_msgSend(informationCopy, "keyboardOnScreen") & 1) == 0)
   {
     [(WTMainPopoverViewController *)self _movePopoverBackToDefaultPosition];
   }
 
   else
   {
-    v4 = [(WTMainPopoverViewController *)self presentationController];
-    v5 = [v4 containerView];
+    presentationController = [(WTMainPopoverViewController *)self presentationController];
+    containerView = [presentationController containerView];
 
-    [v33 keyboardPosition];
+    [informationCopy keyboardPosition];
     v7 = v6;
     v9 = v8;
-    v10 = [v5 window];
-    v11 = [v10 screen];
-    [v11 bounds];
+    window = [containerView window];
+    screen = [window screen];
+    [screen bounds];
     v13 = v12;
 
-    v14 = [v5 window];
-    v15 = [v14 screen];
-    v16 = [v15 coordinateSpace];
-    [v5 convertRect:v16 fromCoordinateSpace:{0.0, v13 - v9, v7, v9}];
+    window2 = [containerView window];
+    screen2 = [window2 screen];
+    coordinateSpace = [screen2 coordinateSpace];
+    [containerView convertRect:coordinateSpace fromCoordinateSpace:{0.0, v13 - v9, v7, v9}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
 
-    [v5 bounds];
+    [containerView bounds];
     v38.origin.x = v25;
     v38.origin.y = v26;
     v38.size.width = v27;
@@ -155,7 +155,7 @@
     v35.size.height = v24;
     if (CGRectIntersectsRect(v35, v38))
     {
-      [v5 bounds];
+      [containerView bounds];
       v39.origin.x = v29;
       v39.origin.y = v30;
       v39.size.width = v31;
@@ -165,53 +165,53 @@
       v36.size.width = v22;
       v36.size.height = v24;
       v37 = CGRectIntersection(v36, v39);
-      [v5 frame];
-      [v5 setFrame:?];
-      [v5 setNeedsLayout];
-      [v5 layoutIfNeeded];
+      [containerView frame];
+      [containerView setFrame:?];
+      [containerView setNeedsLayout];
+      [containerView layoutIfNeeded];
       [(WTMainPopoverViewController *)self setAdjustedPopoverContainerViewFrame:1];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WTMainPopoverViewController;
-  [(WTMainPopoverViewController *)&v4 viewDidAppear:a3];
+  [(WTMainPopoverViewController *)&v4 viewDidAppear:appear];
   [(WTMainPopoverViewController *)self setIsViewApparent:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(WTMainPopoverViewController *)self setIsViewApparent:0];
   v5.receiver = self;
   v5.super_class = WTMainPopoverViewController;
-  [(WTMainPopoverViewController *)&v5 viewWillDisappear:v3];
+  [(WTMainPopoverViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = WTMainPopoverViewController;
-  [(WTMainPopoverViewController *)&v10 viewDidDisappear:a3];
+  [(WTMainPopoverViewController *)&v10 viewDidDisappear:disappear];
   v4 = _WTVCLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(WTMainPopoverViewController *)self writingToolsController];
-    v7 = [v5 numberWithBool:{objc_msgSend(v6, "isPopoverTemporarilyDismissed")}];
+    writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+    v7 = [v5 numberWithBool:{objc_msgSend(writingToolsController, "isPopoverTemporarilyDismissed")}];
     *buf = 138412290;
     v12 = v7;
     _os_log_impl(&dword_1D451D000, v4, OS_LOG_TYPE_DEFAULT, "viewDidDisappear isPopoverTemporarilyDismissed: %@", buf, 0xCu);
   }
 
-  v8 = [(WTMainPopoverViewController *)self writingToolsController];
-  v9 = [v8 isPopoverTemporarilyDismissed];
+  writingToolsController2 = [(WTMainPopoverViewController *)self writingToolsController];
+  isPopoverTemporarilyDismissed = [writingToolsController2 isPopoverTemporarilyDismissed];
 
-  if ((v9 & 1) == 0)
+  if ((isPopoverTemporarilyDismissed & 1) == 0)
   {
     [(WTMainPopoverViewController *)self endWritingTools];
   }
@@ -222,15 +222,15 @@
   v4.receiver = self;
   v4.super_class = WTMainPopoverViewController;
   [(WTMainPopoverViewController *)&v4 applicationDidResume];
-  v3 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v3 updateKBSuppression];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController updateKBSuppression];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v17.receiver = self;
   v17.super_class = WTMainPopoverViewController;
-  [(WTMainPopoverViewController *)&v17 didRotateFromInterfaceOrientation:a3];
+  [(WTMainPopoverViewController *)&v17 didRotateFromInterfaceOrientation:orientation];
   [(WTMainPopoverViewController *)self onScreenFrameLastReportedToKeyboardTrackingCoordinator];
   v5 = v4;
   v7 = v6;
@@ -238,24 +238,24 @@
   v11 = v10;
   [(WTMainPopoverViewController *)self _onScreenFrame];
   [(WTMainPopoverViewController *)self setOnScreenFrameLastReportedToKeyboardTrackingCoordinator:?];
-  v12 = [(WTMainPopoverViewController *)self ivsPlacementController];
+  ivsPlacementController = [(WTMainPopoverViewController *)self ivsPlacementController];
   [(WTMainPopoverViewController *)self onScreenFrameLastReportedToKeyboardTrackingCoordinator];
-  [v12 animateTrackingElementsFromStart:1 toEnd:v5 forShow:{v7, v9, v11, v13, v14, v15, v16}];
+  [ivsPlacementController animateTrackingElementsFromStart:1 toEnd:v5 forShow:{v7, v9, v11, v13, v14, v15, v16}];
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = (a4 == 2) ^ [(WTMainPopoverViewController *)self presentedAsSheet];
+  v7 = (style == 2) ^ [(WTMainPopoverViewController *)self presentedAsSheet];
   if (v7 == 1)
   {
-    [(WTMainPopoverViewController *)self setPresentedAsSheet:a4 == 2];
+    [(WTMainPopoverViewController *)self setPresentedAsSheet:style == 2];
   }
 
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:style];
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[WTMainPopoverViewController presentedAsSheet](self, "presentedAsSheet")}];
     v22 = 138412546;
     v23 = v9;
@@ -264,23 +264,23 @@
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_DEFAULT, "presentationController:willPresentWithAdaptiveStyle: %@, presentingAsSheet: %@", &v22, 0x16u);
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v13 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-    [v13 setHideSystemInputAssistantViewForWritingTools:{-[WTMainPopoverViewController presentedAsSheet](self, "presentedAsSheet")}];
+    activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+    [activeKeyboardSceneDelegate setHideSystemInputAssistantViewForWritingTools:{-[WTMainPopoverViewController presentedAsSheet](self, "presentedAsSheet")}];
   }
 
-  v14 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v14 updateKBSuppression];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController updateKBSuppression];
 
-  v15 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v15 updateInputDashboardViewController];
+  writingToolsController2 = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController2 updateInputDashboardViewController];
 
-  v16 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v16 updateSourceView];
+  writingToolsController3 = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController3 updateSourceView];
 
   if (v7)
   {
@@ -295,8 +295,8 @@
     }
 
     v18 = [WTUIActionHostToClient actionForChangingPresentationStyle:v17];
-    v19 = [(WTMainPopoverViewController *)self hostingController];
-    [v19 sendAction:v18];
+    hostingController = [(WTMainPopoverViewController *)self hostingController];
+    [hostingController sendAction:v18];
   }
 
   [(WTMainPopoverViewController *)self preferredContentSize];
@@ -314,20 +314,20 @@
   }
 }
 
-- (void)_presentationController:(id)a3 prepareAdaptivePresentationController:(id)a4
+- (void)_presentationController:(id)controller prepareAdaptivePresentationController:(id)presentationController
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  presentationControllerCopy = presentationController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WTMainPopoverViewController *)self setSheetController:v7];
-    v8 = [(WTMainPopoverViewController *)self sheetController];
-    [v8 setPrefersEdgeAttachedInCompactHeight:1];
+    [(WTMainPopoverViewController *)self setSheetController:presentationControllerCopy];
+    sheetController = [(WTMainPopoverViewController *)self sheetController];
+    [sheetController setPrefersEdgeAttachedInCompactHeight:1];
 
-    v9 = [(WTMainPopoverViewController *)self sheetController];
-    [v9 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
+    sheetController2 = [(WTMainPopoverViewController *)self sheetController];
+    [sheetController2 setWidthFollowsPreferredContentSizeWhenEdgeAttached:1];
 
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69DCF58];
@@ -355,14 +355,14 @@
     v28[1] = v13;
     v28[2] = v11;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
-    v17 = [(WTMainPopoverViewController *)self sheetController];
-    [v17 setDetents:v16];
+    sheetController3 = [(WTMainPopoverViewController *)self sheetController];
+    [sheetController3 setDetents:v16];
 
-    v18 = [(WTMainPopoverViewController *)self sheetController];
-    [v18 setLargestUndimmedDetentIdentifier:@"WTFullSizedDetentIdentifier"];
+    sheetController4 = [(WTMainPopoverViewController *)self sheetController];
+    [sheetController4 setLargestUndimmedDetentIdentifier:@"WTFullSizedDetentIdentifier"];
 
-    v19 = [(WTMainPopoverViewController *)self sheetController];
-    [v19 setPrefersGrabberVisible:1];
+    sheetController5 = [(WTMainPopoverViewController *)self sheetController];
+    [sheetController5 setPrefersGrabberVisible:1];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&v24);
@@ -374,7 +374,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = v7;
+    v20 = presentationControllerCopy;
     [v20 _setBackgroundBlurDisabled:1];
     [v20 _setOverrideAllowsHitTestingOnBackgroundViews:0];
   }
@@ -425,22 +425,22 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
   return v3;
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v3 = [(WTMainPopoverViewController *)self writingToolsController];
-  v4 = [v3 _sessionSupportsPopoverAdjustment];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  _sessionSupportsPopoverAdjustment = [writingToolsController _sessionSupportsPopoverAdjustment];
 
-  return v4 ^ 1;
+  return _sessionSupportsPopoverAdjustment ^ 1;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   [(WTMainPopoverViewController *)self preferredContentSize];
   v6 = v5;
   v8 = v7;
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   v10 = v9;
   v12 = v11;
 
@@ -480,9 +480,9 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     _os_log_impl(&dword_1D451D000, v29, OS_LOG_TYPE_DEFAULT, "-preferredContentSizeDidChange (%.0f -> %.0f) keyboardPositionChange=%s", buf, 0x20u);
   }
 
-  v32 = [(WTMainPopoverViewController *)self sheetPresentationController];
-  v33 = [v32 selectedDetentIdentifier];
-  v34 = [v33 isEqualToString:@"WTKeyboardSizedDetentIdentifier"];
+  sheetPresentationController = [(WTMainPopoverViewController *)self sheetPresentationController];
+  selectedDetentIdentifier = [sheetPresentationController selectedDetentIdentifier];
+  v34 = [selectedDetentIdentifier isEqualToString:@"WTKeyboardSizedDetentIdentifier"];
 
   if ((v34 & 1) == 0)
   {
@@ -515,151 +515,151 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
   }
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v13 = 136315906;
     v14 = "[WTMainPopoverViewController willBeginWritingToolsSession:requestContexts:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v9;
+    v18 = uuid;
     v19 = 2048;
-    v20 = [v6 type];
+    type = [sessionCopy type];
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu)", &v13, 0x2Au);
   }
 
-  v10 = [(WTMainPopoverViewController *)self sessionUUID];
+  sessionUUID = [(WTMainPopoverViewController *)self sessionUUID];
 
-  if (!v10)
+  if (!sessionUUID)
   {
-    v11 = [v6 uuid];
-    [(WTMainPopoverViewController *)self setSessionUUID:v11];
+    uuid2 = [sessionCopy uuid];
+    [(WTMainPopoverViewController *)self setSessionUUID:uuid2];
   }
 
-  v12 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v12 willBeginWritingToolsSession:v6 requestContexts:v7];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController willBeginWritingToolsSession:sessionCopy requestContexts:contextsCopy];
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   v8 = _WTVCLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v11 = 136316162;
     v12 = "[WTMainPopoverViewController didBeginWritingToolsSession:contexts:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v9;
+    v16 = uuid;
     v17 = 2048;
-    v18 = [v6 type];
+    type = [sessionCopy type];
     v19 = 2048;
-    v20 = [v7 count];
+    v20 = [contextsCopy count];
     _os_log_impl(&dword_1D451D000, v8, OS_LOG_TYPE_INFO, "%s (%@, sessUUID: %@, sessType: %lu, #contexts: %lu)", &v11, 0x34u);
   }
 
-  v10 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v10 didBeginWritingToolsSession:v6 contexts:v7];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController didBeginWritingToolsSession:sessionCopy contexts:contextsCopy];
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 uuid];
+    uuid = [sessionCopy uuid];
     v10 = 136316162;
     v11 = "[WTMainPopoverViewController writingToolsSession:didReceiveAction:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = uuid;
     v16 = 2048;
-    v17 = [v6 type];
+    type = [sessionCopy type];
     v18 = 2048;
-    v19 = a4;
+    actionCopy = action;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, action: %lu)", &v10, 0x34u);
   }
 
-  v9 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v9 writingToolsSession:v6 didReceiveAction:a4];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController writingToolsSession:sessionCopy didReceiveAction:action];
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sessionCopy = session;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 uuid];
-    v9 = [v6 type];
+    uuid = [sessionCopy uuid];
+    type = [sessionCopy type];
     v12 = 136316162;
     v13 = "[WTMainPopoverViewController didEndWritingToolsSession:accepted:]";
     v10 = "no";
-    if (v4)
+    if (acceptedCopy)
     {
       v10 = "yes";
     }
 
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v8;
+    v17 = uuid;
     v18 = 2048;
-    v19 = v9;
+    v19 = type;
     v20 = 2080;
     v21 = v10;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, accepted: %s)", &v12, 0x34u);
   }
 
-  v11 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v11 didEndWritingToolsSession:v6 accepted:v4];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController didEndWritingToolsSession:sessionCopy accepted:acceptedCopy];
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  sessionCopy = session;
+  textCopy = text;
+  contextCopy = context;
   v16 = _WTVCLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v13 uuid];
-    v18 = [v13 type];
-    v19 = [v14 length];
+    uuid = [sessionCopy uuid];
+    type = [sessionCopy type];
+    v19 = [textCopy length];
     v22 = 136316930;
     v23 = "[WTMainPopoverViewController compositionSession:didReceiveText:replacementRange:inContext:finished:]";
     v20 = "no";
-    if (v7)
+    if (finishedCopy)
     {
       v20 = "yes";
     }
 
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
-    v27 = v17;
+    v27 = uuid;
     v28 = 2048;
-    v29 = v18;
+    v29 = type;
     v30 = 2048;
     v31 = v19;
     v32 = 2048;
@@ -671,44 +671,44 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     _os_log_impl(&dword_1D451D000, v16, OS_LOG_TYPE_INFO, "%s (%@, sessUUIS: %@, sessType: %lu, textLen: %lu, replaceRange: {%lu,%lu}, finished: %s)", &v22, 0x52u);
   }
 
-  v21 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v21 compositionSession:v13 didReceiveText:v14 replacementRange:location inContext:length finished:{v15, v7}];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController compositionSession:sessionCopy didReceiveText:textCopy replacementRange:location inContext:length finished:{contextCopy, finishedCopy}];
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v16 proofreadingSession:v15 didReceiveSuggestions:v14 processedRange:location inContext:length finished:{v13, v7}];
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  suggestionsCopy = suggestions;
+  sessionCopy = session;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController proofreadingSession:sessionCopy didReceiveSuggestions:suggestionsCopy processedRange:location inContext:length finished:{contextCopy, finishedCopy}];
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v13 proofreadingSession:v12 didUpdateState:a4 forSuggestionWithUUID:v11 inContext:v10];
+  contextCopy = context;
+  dCopy = d;
+  sessionCopy = session;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController proofreadingSession:sessionCopy didUpdateState:state forSuggestionWithUUID:dCopy inContext:contextCopy];
 }
 
-- (void)endWritingToolsWithError:(id)a3
+- (void)endWritingToolsWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "[WTMainPopoverViewController endWritingToolsWithError:]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = errorCopy;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, error: %@)", &v14, 0x20u);
   }
 
@@ -718,26 +718,26 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
   v9 = *(MEMORY[0x1E695F050] + 24);
   [(WTMainPopoverViewController *)self setPendingWritingToolsKeyboardFrame:*MEMORY[0x1E695F050], v7, v8, v9];
   [(WTMainPopoverViewController *)self setWritingToolsKeyboardFrame:v6, v7, v8, v9];
-  v10 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v10 endWritingToolsWithError:v4];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController endWritingToolsWithError:errorCopy];
 
   [(WTMainPopoverViewController *)self setPresentedAsSheet:0];
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v13 = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
-    [v13 setHideSystemInputAssistantViewForWritingTools:0];
+    activeKeyboardSceneDelegate = [MEMORY[0x1E69DCC08] activeKeyboardSceneDelegate];
+    [activeKeyboardSceneDelegate setHideSystemInputAssistantViewForWritingTools:0];
   }
 }
 
-- (void)showContentWarningWithTitle:(id)a3 message:(id)a4
+- (void)showContentWarningWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v8 showContentWarningWithTitle:v7 message:v6];
+  messageCopy = message;
+  titleCopy = title;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController showContentWarningWithTitle:titleCopy message:messageCopy];
 }
 
 - (void)endWritingTools
@@ -749,7 +749,7 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     v4 = 136315394;
     v5 = "[WTMainPopoverViewController endWritingTools]";
     v6 = 2112;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v4, 0x16u);
   }
 
@@ -765,12 +765,12 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     v5 = 136315394;
     v6 = "[WTMainPopoverViewController undo]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v4 undo];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController undo];
 }
 
 - (void)redo
@@ -782,52 +782,52 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     v5 = 136315394;
     v6 = "[WTMainPopoverViewController redo]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v4 redo];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController redo];
 }
 
-- (void)replaceSelectionWithText:(id)a3
+- (void)replaceSelectionWithText:(id)text
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[WTMainPopoverViewController replaceSelectionWithText:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = [v4 length];
+    v12 = [textCopy length];
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, textLen=%lu)", &v7, 0x20u);
   }
 
-  v6 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v6 replaceSelectionWithText:v4];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController replaceSelectionWithText:textCopy];
 }
 
-- (void)copyText:(id)a3
+- (void)copyText:(id)text
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 136315650;
     v8 = "[WTMainPopoverViewController copyText:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
-    v12 = [v4 length];
+    v12 = [textCopy length];
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_INFO, "%s (%@, textLen: %lu)", &v7, 0x20u);
   }
 
-  v6 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v6 copyText:v4];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController copyText:textCopy];
 }
 
 - (void)beginTextPlaceholder
@@ -839,52 +839,52 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
     v5 = 136315394;
     v6 = "[WTMainPopoverViewController beginTextPlaceholder]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D451D000, v3, OS_LOG_TYPE_INFO, "%s (%@)", &v5, 0x16u);
   }
 
-  v4 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v4 beginTextPlaceholder];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController beginTextPlaceholder];
 }
 
-- (void)endTextPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4
+- (void)endTextPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion
 {
-  v4 = a3;
+  textCopy = text;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = _WTVCLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = "no";
     v11 = "[WTMainPopoverViewController endTextPlaceholderAndWillInsertText:completion:]";
     v10 = 136315650;
-    if (v4)
+    if (textCopy)
     {
       v8 = "yes";
     }
 
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = v8;
     _os_log_impl(&dword_1D451D000, v7, OS_LOG_TYPE_INFO, "%s (%@, willInsertText: %s)", &v10, 0x20u);
   }
 
-  v9 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v9 endTextPlaceholderAndWillInsertText:v4 completion:v6];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController endTextPlaceholderAndWillInsertText:textCopy completion:completionCopy];
 }
 
-- (void)enableSmallDetent:(BOOL)a3
+- (void)enableSmallDetent:(BOOL)detent
 {
-  v3 = a3;
-  v5 = [(WTMainPopoverViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  detentCopy = detent;
+  traitCollection = [(WTMainPopoverViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v7 = [(WTMainPopoverViewController *)self enableSmallDetent];
-    [(WTMainPopoverViewController *)self setEnableSmallDetent:v3];
-    if (v7 != v3 && [(WTMainPopoverViewController *)self presentedAsSheet]&& v3)
+    enableSmallDetent = [(WTMainPopoverViewController *)self enableSmallDetent];
+    [(WTMainPopoverViewController *)self setEnableSmallDetent:detentCopy];
+    if (enableSmallDetent != detentCopy && [(WTMainPopoverViewController *)self presentedAsSheet]&& detentCopy)
     {
 
       [(WTMainPopoverViewController *)self _sendKeyboardTrackingNotificationsForReason:@"enableSmallDetent"];
@@ -892,19 +892,19 @@ double __93__WTMainPopoverViewController__presentationController_prepareAdaptive
   }
 }
 
-- (void)setFeedbackHiddenDetentEnabled:(BOOL)a3
+- (void)setFeedbackHiddenDetentEnabled:(BOOL)enabled
 {
-  if ([(WTMainPopoverViewController *)self isFeedbackHiddenDetentEnabled]!= a3)
+  if ([(WTMainPopoverViewController *)self isFeedbackHiddenDetentEnabled]!= enabled)
   {
-    self->_isFeedbackHiddenDetentEnabled = a3;
-    v5 = [(WTMainPopoverViewController *)self sheetController];
+    self->_isFeedbackHiddenDetentEnabled = enabled;
+    sheetController = [(WTMainPopoverViewController *)self sheetController];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_invoke;
     v6[3] = &unk_1E8480BD0;
-    v7 = a3;
+    enabledCopy = enabled;
     v6[4] = self;
-    [v5 animateChanges:v6];
+    [sheetController animateChanges:v6];
   }
 }
 
@@ -938,45 +938,45 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
   [v4 setSelectedDetentIdentifier:v5];
 }
 
-- (void)enableIntelligentEntryFieldView:(BOOL)a3
+- (void)enableIntelligentEntryFieldView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v10 = *MEMORY[0x1E69E9840];
   v5 = _WTVCLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:viewCopy];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_1D451D000, v5, OS_LOG_TYPE_DEFAULT, "EnableIntelligentEntryFieldView: %@", &v8, 0xCu);
   }
 
-  [(WTMainPopoverViewController *)self setIntelligentEntryFieldViewIsEnabled:v3];
-  [(WTMainPopoverViewController *)self setEnableSmallDetent:v3 ^ 1];
-  v7 = [(WTMainPopoverViewController *)self sheetController];
-  [v7 setPrefersGrabberVisible:v3 ^ 1];
+  [(WTMainPopoverViewController *)self setIntelligentEntryFieldViewIsEnabled:viewCopy];
+  [(WTMainPopoverViewController *)self setEnableSmallDetent:viewCopy ^ 1];
+  sheetController = [(WTMainPopoverViewController *)self sheetController];
+  [sheetController setPrefersGrabberVisible:viewCopy ^ 1];
 }
 
-- (void)updatePromptEntryState:(int64_t)a3
+- (void)updatePromptEntryState:(int64_t)state
 {
-  v4 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v4 updatePromptEntryState:a3];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController updatePromptEntryState:state];
 }
 
-- (void)didStartMontaraRefinementForSessionWithUUID:(id)a3
+- (void)didStartMontaraRefinementForSessionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v5 didStartMontaraRefinementForSessionWithUUID:v4];
+  dCopy = d;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController didStartMontaraRefinementForSessionWithUUID:dCopy];
 }
 
-- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)a3 preferredContentSizeChanging:(BOOL)a4
+- (void)writingToolsDidUpdateKeyboardPosition:(CGRect)position preferredContentSizeChanging:(BOOL)changing
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  changingCopy = changing;
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
   v18 = *MEMORY[0x1E69E9840];
   v10 = _WTVCLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -988,7 +988,7 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
     v11 = NSStringFromCGRect(v19);
     v12 = v11;
     v13 = "N";
-    if (v4)
+    if (changingCopy)
     {
       v13 = "Y";
     }
@@ -1000,7 +1000,7 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
     _os_log_impl(&dword_1D451D000, v10, OS_LOG_TYPE_DEFAULT, "-writingToolsDidUpdateKeyboardPosition:%@ preferredContentSizeChanging:%s", &v14, 0x16u);
   }
 
-  if (v4)
+  if (changingCopy)
   {
     [(WTMainPopoverViewController *)self setPendingWritingToolsKeyboardFrame:x, y, width, height];
   }
@@ -1017,47 +1017,47 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
   }
 }
 
-- (void)proofreadingSessionWithUUID:(id)a3 updateState:(int64_t)a4 forSuggestionWithUUID:(id)a5
+- (void)proofreadingSessionWithUUID:(id)d updateState:(int64_t)state forSuggestionWithUUID:(id)iD
 {
-  v7 = [WTUIActionHostToClient actionForProofreadingSessionWithUUID:a3 updateState:a4 forSuggestionWithUUID:a5];
-  v6 = [(WTMainPopoverViewController *)self hostingController];
-  [v6 sendAction:v7];
+  v7 = [WTUIActionHostToClient actionForProofreadingSessionWithUUID:d updateState:state forSuggestionWithUUID:iD];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
+  [hostingController sendAction:v7];
 }
 
-- (void)setRemainingUndoCount:(unint64_t)a3
+- (void)setRemainingUndoCount:(unint64_t)count
 {
-  v5 = [WTUIActionHostToClient actionForSetRemainingUndoCount:a3];
-  v4 = [(WTMainPopoverViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForSetRemainingUndoCount:count];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
-- (void)setRemainingRedoCount:(unint64_t)a3
+- (void)setRemainingRedoCount:(unint64_t)count
 {
-  v5 = [WTUIActionHostToClient actionForSetRemainingRedoCount:a3];
-  v4 = [(WTMainPopoverViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForSetRemainingRedoCount:count];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
-- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)a3
+- (void)sourceResponderHorizontalSizeClassChanged:(int64_t)changed
 {
-  v5 = [WTUIActionHostToClient actionForSourceResponderHorizontalSizeClassChanged:a3];
-  v4 = [(WTMainPopoverViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForSourceResponderHorizontalSizeClassChanged:changed];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
-- (void)windowingModeEnabledChanged:(BOOL)a3
+- (void)windowingModeEnabledChanged:(BOOL)changed
 {
-  v5 = [WTUIActionHostToClient actionForWindowingModeEnabledChanged:a3];
-  v4 = [(WTMainPopoverViewController *)self hostingController];
-  [v4 sendAction:v5];
+  v5 = [WTUIActionHostToClient actionForWindowingModeEnabledChanged:changed];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
+  [hostingController sendAction:v5];
 }
 
 - (void)_setupSceneHosting
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v3 = [(WTMainPopoverViewController *)self hostingController];
+  hostingController = [(WTMainPopoverViewController *)self hostingController];
 
-  if (!v3)
+  if (!hostingController)
   {
     [(WTMainPopoverViewController *)self _beginDelayingPresentation:&__block_literal_global_3 cancellationHandler:3.0];
     v32 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:@"com.apple.WritingToolsUIService"];
@@ -1066,12 +1066,12 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
     v6 = [v4 initWithProcessIdentity:v32 sceneSpecification:v5];
     [(WTMainPopoverViewController *)self setHostingController:v6];
 
-    v7 = [(WTMainPopoverViewController *)self hostingController];
-    v8 = [v7 _eventDeferringComponent];
-    [v8 setMaintainHostFirstResponderWhenClientWantsKeyboard:1];
+    hostingController2 = [(WTMainPopoverViewController *)self hostingController];
+    _eventDeferringComponent = [hostingController2 _eventDeferringComponent];
+    [_eventDeferringComponent setMaintainHostFirstResponderWhenClientWantsKeyboard:1];
 
-    v9 = [(WTMainPopoverViewController *)self startupOptions];
-    v31 = [v9 asBSActionAndReturnError:0];
+    startupOptions = [(WTMainPopoverViewController *)self startupOptions];
+    v31 = [startupOptions asBSActionAndReturnError:0];
 
     objc_initWeak(&location, self);
     v10 = [WTUISceneHostingActivationController alloc];
@@ -1081,41 +1081,41 @@ void __62__WTMainPopoverViewController_setFeedbackHiddenDetentEnabled___block_in
     v34[3] = &unk_1E8480B20;
     objc_copyWeak(&v35, &location);
     v11 = [(WTUISceneHostingActivationController *)v10 initWithStartupAction:v31 invalidationHandler:v34];
-    v12 = [(WTMainPopoverViewController *)self hostingController];
-    [v12 setActivationController:v11];
+    hostingController3 = [(WTMainPopoverViewController *)self hostingController];
+    [hostingController3 setActivationController:v11];
 
-    v13 = [(WTMainPopoverViewController *)self hostingController];
-    [v13 setDelegate:self];
+    hostingController4 = [(WTMainPopoverViewController *)self hostingController];
+    [hostingController4 setDelegate:self];
 
-    v14 = [(WTMainPopoverViewController *)self hostingController];
-    v33 = [v14 sceneViewController];
+    hostingController5 = [(WTMainPopoverViewController *)self hostingController];
+    sceneViewController = [hostingController5 sceneViewController];
 
-    [(WTMainPopoverViewController *)self addChildViewController:v33];
-    v15 = [v33 view];
-    v16 = [(WTMainPopoverViewController *)self view];
-    [v16 addSubview:v15];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(WTMainPopoverViewController *)self addChildViewController:sceneViewController];
+    view = [sceneViewController view];
+    view2 = [(WTMainPopoverViewController *)self view];
+    [view2 addSubview:view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v24 = MEMORY[0x1E696ACD8];
-    v30 = [v15 leadingAnchor];
-    v29 = [v16 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [view leadingAnchor];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[0] = v28;
-    v27 = [v15 trailingAnchor];
-    v26 = [v16 trailingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    trailingAnchor = [view trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[1] = v25;
-    v17 = [v15 topAnchor];
-    v18 = [v16 topAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    topAnchor = [view topAnchor];
+    topAnchor2 = [view2 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[2] = v19;
-    v20 = [v15 bottomAnchor];
-    v21 = [v16 bottomAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    bottomAnchor = [view bottomAnchor];
+    bottomAnchor2 = [view2 bottomAnchor];
+    v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     [v24 activateConstraints:v23];
 
-    [v33 didMoveToParentViewController:self];
+    [sceneViewController didMoveToParentViewController:self];
     objc_destroyWeak(&v35);
     objc_destroyWeak(&location);
   }
@@ -1128,55 +1128,55 @@ void __49__WTMainPopoverViewController__setupSceneHosting__block_invoke_2(uint64
   [v1 endWritingToolsWithError:0];
 }
 
-- (void)_dismissalTransitionWillBegin:(id)a3
+- (void)_dismissalTransitionWillBegin:(id)begin
 {
   if ([(WTMainPopoverViewController *)self presentedAsSheet])
   {
-    v4 = [(WTMainPopoverViewController *)self writingToolsController];
-    v5 = [v4 suppressingSheetForRemoteKeyboardOnScreen];
+    writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+    suppressingSheetForRemoteKeyboardOnScreen = [writingToolsController suppressingSheetForRemoteKeyboardOnScreen];
 
-    if ((v5 & 1) == 0)
+    if ((suppressingSheetForRemoteKeyboardOnScreen & 1) == 0)
     {
       if ([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode])
       {
         [(WTMainPopoverViewController *)self _offScreenFrame];
         [(WTMainPopoverViewController *)self setOnScreenFrameLastReportedToKeyboardTrackingCoordinator:?];
-        v18 = [(WTMainPopoverViewController *)self ivsPlacementController];
+        ivsPlacementController = [(WTMainPopoverViewController *)self ivsPlacementController];
         [(WTMainPopoverViewController *)self _onScreenFrame];
         v7 = v6;
         v9 = v8;
         v11 = v10;
         v13 = v12;
         [(WTMainPopoverViewController *)self onScreenFrameLastReportedToKeyboardTrackingCoordinator];
-        [v18 animateTrackingElementsFromStart:0 toEnd:v7 forShow:{v9, v11, v13, v14, v15, v16, v17}];
+        [ivsPlacementController animateTrackingElementsFromStart:0 toEnd:v7 forShow:{v9, v11, v13, v14, v15, v16, v17}];
       }
     }
   }
 }
 
-- (void)_dismissalTransitionDidEnd:(id)a3
+- (void)_dismissalTransitionDidEnd:(id)end
 {
-  v20 = a3;
+  endCopy = end;
   if ([(WTMainPopoverViewController *)self presentedAsSheet])
   {
-    v4 = [v20 userInfo];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
-    v6 = [v5 BOOLValue];
+    userInfo = [endCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE2C0]];
+    bOOLValue = [v5 BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       if ([MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode])
       {
         [(WTMainPopoverViewController *)self _onScreenFrame];
         [(WTMainPopoverViewController *)self setOnScreenFrameLastReportedToKeyboardTrackingCoordinator:?];
-        v7 = [(WTMainPopoverViewController *)self ivsPlacementController];
+        ivsPlacementController = [(WTMainPopoverViewController *)self ivsPlacementController];
         [(WTMainPopoverViewController *)self _offScreenFrame];
         v9 = v8;
         v11 = v10;
         v13 = v12;
         v15 = v14;
         [(WTMainPopoverViewController *)self onScreenFrameLastReportedToKeyboardTrackingCoordinator];
-        [v7 animateTrackingElementsFromStart:1 toEnd:v9 forShow:{v11, v13, v15, v16, v17, v18, v19}];
+        [ivsPlacementController animateTrackingElementsFromStart:1 toEnd:v9 forShow:{v11, v13, v15, v16, v17, v18, v19}];
       }
     }
   }
@@ -1184,10 +1184,10 @@ void __49__WTMainPopoverViewController__setupSceneHosting__block_invoke_2(uint64
 
 - (UIWTInputViewSetPlacementController_Staging)ivsPlacementController
 {
-  v3 = [(WTMainPopoverViewController *)self startupOptions];
-  v4 = [v3 editable];
+  startupOptions = [(WTMainPopoverViewController *)self startupOptions];
+  editable = [startupOptions editable];
 
-  if (v4)
+  if (editable)
   {
     v5 = self->_ivsPlacementController;
   }
@@ -1200,17 +1200,17 @@ void __49__WTMainPopoverViewController__setupSceneHosting__block_invoke_2(uint64
   return v5;
 }
 
-- (void)_sendKeyboardTrackingNotificationsForReason:(id)a3
+- (void)_sendKeyboardTrackingNotificationsForReason:(id)reason
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WTMainPopoverViewController *)self sheetController];
+  reasonCopy = reason;
+  sheetController = [(WTMainPopoverViewController *)self sheetController];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReason___block_invoke;
   v30[3] = &unk_1E8480BF8;
   v30[4] = self;
-  [v5 animateChanges:v30];
+  [sheetController animateChanges:v30];
 
   if ([(WTMainPopoverViewController *)self presenting]|| [(WTMainPopoverViewController *)self isViewApparent])
   {
@@ -1250,13 +1250,13 @@ void __49__WTMainPopoverViewController__setupSceneHosting__block_invoke_2(uint64
         v33 = 2112;
         v34 = v24;
         v35 = 2112;
-        v36 = v4;
+        v36 = reasonCopy;
         _os_log_impl(&dword_1D451D000, v22, OS_LOG_TYPE_DEFAULT, "Send keyboard tracking notification now (start:%@, end:%@, reason:%@)", buf, 0x20u);
       }
 
-      v25 = [(WTMainPopoverViewController *)self ivsPlacementController];
+      ivsPlacementController = [(WTMainPopoverViewController *)self ivsPlacementController];
       [(WTMainPopoverViewController *)self onScreenFrameLastReportedToKeyboardTrackingCoordinator];
-      [v25 animateTrackingElementsFromStart:1 toEnd:v7 forShow:{v9, v11, v13, v26, v27, v28, v29}];
+      [ivsPlacementController animateTrackingElementsFromStart:1 toEnd:v7 forShow:{v9, v11, v13, v26, v27, v28, v29}];
     }
   }
 }
@@ -1269,38 +1269,38 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
 
 - (id)_sourceResponderWindow
 {
-  v2 = [(WTMainPopoverViewController *)self writingToolsController];
-  v3 = [v2 sourceResponderViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  sourceResponderViewController = [writingToolsController sourceResponderViewController];
+  view = [sourceResponderViewController view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
-- (id)_screenForWindow:(id)a3
+- (id)_screenForWindow:(id)window
 {
-  v3 = a3;
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
-  v6 = v5;
-  if (v5)
+  windowCopy = window;
+  windowScene = [windowCopy windowScene];
+  screen = [windowScene screen];
+  v6 = screen;
+  if (screen)
   {
-    v7 = v5;
+    screen2 = screen;
   }
 
   else
   {
-    v7 = [v3 screen];
+    screen2 = [windowCopy screen];
   }
 
-  v8 = v7;
+  v8 = screen2;
 
   return v8;
 }
 
-- (CGRect)keyboardFrameInWindow:(id)a3
+- (CGRect)keyboardFrameInWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   [(WTMainPopoverViewController *)self writingToolsKeyboardFrame];
   x = v38.origin.x;
   y = v38.origin.y;
@@ -1319,7 +1319,7 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
     v39.size.height = height;
     if (!CGRectEqualToRect(v39, *MEMORY[0x1E695F058]))
     {
-      v14 = [(WTMainPopoverViewController *)self _screenForWindow:v4];
+      v14 = [(WTMainPopoverViewController *)self _screenForWindow:windowCopy];
       v40.origin.x = x;
       v40.origin.y = y;
       v40.size.width = width;
@@ -1331,22 +1331,22 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
       v17 = CGRectGetMaxY(v42) - v15;
       [v14 bounds];
       v18 = CGRectGetWidth(v43);
-      v19 = [v4 windowScene];
-      v20 = [v19 coordinateSpace];
+      windowScene = [windowCopy windowScene];
+      coordinateSpace = [windowScene coordinateSpace];
 
-      if (!v20)
+      if (!coordinateSpace)
       {
-        v20 = [v4 coordinateSpace];
+        coordinateSpace = [windowCopy coordinateSpace];
       }
 
-      v21 = [v14 coordinateSpace];
-      [v21 convertRect:v20 toCoordinateSpace:{MinX, v17, v18, v15}];
+      coordinateSpace2 = [v14 coordinateSpace];
+      [coordinateSpace2 convertRect:coordinateSpace toCoordinateSpace:{MinX, v17, v18, v15}];
       v23 = v22;
       v25 = v24;
       v27 = v26;
       v29 = v28;
 
-      [v4 bounds];
+      [windowCopy bounds];
       v47.origin.x = v30;
       v47.origin.y = v31;
       v47.size.width = v32;
@@ -1376,11 +1376,11 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
 
 - (CGRect)_onScreenFrame
 {
-  v3 = [(WTMainPopoverViewController *)self _sourceResponderWindow];
+  _sourceResponderWindow = [(WTMainPopoverViewController *)self _sourceResponderWindow];
   v4 = 0.0;
   if (+[WTWritingToolsController _isWritingToolsHandlingKeyboardTracking])
   {
-    [(WTMainPopoverViewController *)self keyboardFrameInWindow:v3];
+    [(WTMainPopoverViewController *)self keyboardFrameInWindow:_sourceResponderWindow];
     v4 = v5;
   }
 
@@ -1390,22 +1390,22 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
     v4 = v4 + v6;
   }
 
-  [v3 bounds];
+  [_sourceResponderWindow bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(WTMainPopoverViewController *)self _screenForWindow:v3];
-  v16 = [v3 windowScene];
-  v17 = [v16 coordinateSpace];
+  v15 = [(WTMainPopoverViewController *)self _screenForWindow:_sourceResponderWindow];
+  windowScene = [_sourceResponderWindow windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
 
-  if (!v17)
+  if (!coordinateSpace)
   {
-    v17 = [v3 coordinateSpace];
+    coordinateSpace = [_sourceResponderWindow coordinateSpace];
   }
 
-  v18 = [v15 coordinateSpace];
-  [v17 convertRect:v18 toCoordinateSpace:{v8, v10 + v14 - v4, v12, v4}];
+  coordinateSpace2 = [v15 coordinateSpace];
+  [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{v8, v10 + v14 - v4, v12, v4}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -1437,9 +1437,9 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
 {
   [(WTMainPopoverViewController *)self smallDetentKeyboardHeight];
   v4 = v3;
-  v5 = [(WTMainPopoverViewController *)self enableSmallDetent];
+  enableSmallDetent = [(WTMainPopoverViewController *)self enableSmallDetent];
   result = *MEMORY[0x1E69DE3C0];
-  if (v5)
+  if (enableSmallDetent)
   {
     return v4;
   }
@@ -1477,19 +1477,19 @@ void __75__WTMainPopoverViewController__sendKeyboardTrackingNotificationsForReas
 - (double)_currentDetentHeight
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(WTMainPopoverViewController *)self sheetController];
-  v4 = [v3 selectedDetentIdentifier];
+  sheetController = [(WTMainPopoverViewController *)self sheetController];
+  selectedDetentIdentifier = [sheetController selectedDetentIdentifier];
 
-  if (v4)
+  if (selectedDetentIdentifier)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v5 = [(WTMainPopoverViewController *)self sheetController];
-    v6 = [v5 detents];
+    sheetController2 = [(WTMainPopoverViewController *)self sheetController];
+    detents = [sheetController2 detents];
 
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v7 = [detents countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1500,12 +1500,12 @@ LABEL_4:
       {
         if (*v35 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(detents);
         }
 
         v11 = *(*(&v34 + 1) + 8 * v10);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqualToString:v4];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqualToString:selectedDetentIdentifier];
 
         if (v13)
         {
@@ -1514,7 +1514,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
+          v8 = [detents countByEnumeratingWithState:&v34 objects:v39 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -1544,10 +1544,10 @@ LABEL_10:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v17 = [(WTMainPopoverViewController *)self sheetController];
-  v18 = [v17 detents];
+  sheetController3 = [(WTMainPopoverViewController *)self sheetController];
+  detents2 = [sheetController3 detents];
 
-  v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  v19 = [detents2 countByEnumeratingWithState:&v30 objects:v38 count:16];
   v15 = 0.0;
   if (v19)
   {
@@ -1560,7 +1560,7 @@ LABEL_10:
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(detents2);
         }
 
         [*(*(&v30 + 1) + 8 * i) resolvedValueInContext:0];
@@ -1571,7 +1571,7 @@ LABEL_10:
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v20 = [detents2 countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v20)
       {
         continue;
@@ -1584,9 +1584,9 @@ LABEL_10:
 LABEL_22:
 
 LABEL_23:
-  v25 = [(WTMainPopoverViewController *)self presentingViewController];
-  v26 = [v25 view];
-  [v26 safeAreaInsets];
+  presentingViewController = [(WTMainPopoverViewController *)self presentingViewController];
+  view = [presentingViewController view];
+  [view safeAreaInsets];
   v28 = v27;
 
   return v15 + v28;
@@ -1597,56 +1597,56 @@ LABEL_23:
   if ([(WTMainPopoverViewController *)self adjustedPopoverContainerViewFrame])
   {
     [(WTMainPopoverViewController *)self setAdjustedPopoverContainerViewFrame:0];
-    v3 = [(WTMainPopoverViewController *)self presentationController];
-    v6 = [v3 containerView];
+    presentationController = [(WTMainPopoverViewController *)self presentationController];
+    containerView = [presentationController containerView];
 
-    v4 = [(WTMainPopoverViewController *)self presentationController];
-    v5 = [v6 superview];
-    [v4 _frameForTransitionViewInPresentationSuperview:v5];
-    [v6 setFrame:?];
+    presentationController2 = [(WTMainPopoverViewController *)self presentationController];
+    superview = [containerView superview];
+    [presentationController2 _frameForTransitionViewInPresentationSuperview:superview];
+    [containerView setFrame:?];
 
-    [v6 setNeedsLayout];
-    [v6 layoutIfNeeded];
+    [containerView setNeedsLayout];
+    [containerView layoutIfNeeded];
   }
 }
 
-- (void)handoffFromUCBFromTool:(int64_t)a3 withPrompt:(id)a4
+- (void)handoffFromUCBFromTool:(int64_t)tool withPrompt:(id)prompt
 {
-  v6 = a4;
-  v7 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v7 handoffFromUCBFromTool:a3 withPrompt:v6];
+  promptCopy = prompt;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController handoffFromUCBFromTool:tool withPrompt:promptCopy];
 }
 
 - (void)enrollmentBegan
 {
-  v2 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v2 enrollmentBegan];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController enrollmentBegan];
 }
 
-- (void)enrollmentDismissedWithCompletion:(id)a3
+- (void)enrollmentDismissedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v5 enrollmentDismissedWithCompletion:v4];
+  completionCopy = completion;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController enrollmentDismissedWithCompletion:completionCopy];
 }
 
-- (void)triggerShareSheetWithText:(id)a3
+- (void)triggerShareSheetWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v5 triggerShareSheetWithText:v4];
+  textCopy = text;
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController triggerShareSheetWithText:textCopy];
 }
 
 - (void)dismissShareSheet
 {
-  v2 = [(WTMainPopoverViewController *)self writingToolsController];
-  [v2 dismissShareSheet];
+  writingToolsController = [(WTMainPopoverViewController *)self writingToolsController];
+  [writingToolsController dismissShareSheet];
 }
 
 - (void)resetPresentationSelectedDetent
 {
-  v2 = [(WTMainPopoverViewController *)self sheetController];
-  [v2 setSelectedDetentIdentifier:0];
+  sheetController = [(WTMainPopoverViewController *)self sheetController];
+  [sheetController setSelectedDetentIdentifier:0];
 }
 
 - (WTWritingToolsController)writingToolsController

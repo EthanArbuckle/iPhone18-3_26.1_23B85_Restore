@@ -1,12 +1,12 @@
 @interface TableViewSelectableFooterView
-- (TableViewSelectableFooterView)initWithReuseIdentifier:(id)a3 options:(id)a4;
+- (TableViewSelectableFooterView)initWithReuseIdentifier:(id)identifier options:(id)options;
 - (double)bottomPadding;
 - (id)_initialConstraints;
 - (void)_createSubviews;
 - (void)contentSizeDidChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFooterLabelText:(id)a3;
+- (void)setFooterLabelText:(id)text;
 @end
 
 @implementation TableViewSelectableFooterView
@@ -16,8 +16,8 @@
   v4.receiver = self;
   v4.super_class = TableViewSelectableFooterView;
   [(TableViewSelectableFooterView *)&v4 prepareForReuse];
-  v3 = [(UIButton *)self->_footerButton titleLabel];
-  [v3 setText:0];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setText:0];
 
   [(UIButton *)self->_footerButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 }
@@ -29,12 +29,12 @@
   [(TableViewSelectableFooterView *)&v2 layoutSubviews];
 }
 
-- (void)setFooterLabelText:(id)a3
+- (void)setFooterLabelText:(id)text
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_footerLabelText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_footerLabelText] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     footerLabelText = self->_footerLabelText;
     self->_footerLabelText = v4;
   }
@@ -43,34 +43,34 @@
 - (id)_initialConstraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(UIButton *)self->_footerButton trailingAnchor];
-  v5 = [(TableViewSelectableFooterView *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintLessThanOrEqualToAnchor:v6 constant:-15.0];
+  trailingAnchor = [(UIButton *)self->_footerButton trailingAnchor];
+  contentView = [(TableViewSelectableFooterView *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v7 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-15.0];
 
   LODWORD(v8) = 1148829696;
   [v7 setPriority:v8];
-  v9 = [(UIButton *)self->_footerButton topAnchor];
-  v10 = [(TableViewSelectableFooterView *)self contentView];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:8.0];
+  topAnchor = [(UIButton *)self->_footerButton topAnchor];
+  contentView2 = [(TableViewSelectableFooterView *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
   topToFirstBaselineConstraint = self->_topToFirstBaselineConstraint;
   self->_topToFirstBaselineConstraint = v12;
 
-  v14 = [(UIButton *)self->_footerButton lastBaselineAnchor];
-  v15 = [(TableViewSelectableFooterView *)self contentView];
-  v16 = [v15 bottomAnchor];
+  lastBaselineAnchor = [(UIButton *)self->_footerButton lastBaselineAnchor];
+  contentView3 = [(TableViewSelectableFooterView *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
   v17 = +[RAPFontManager tableFooterViewFont];
   [v17 _mapkit_scaledValueForValue:-11.0];
-  v18 = [v14 constraintEqualToAnchor:v16 constant:?];
+  v18 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
   lastBaselineToBottomConstraint = self->_lastBaselineToBottomConstraint;
   self->_lastBaselineToBottomConstraint = v18;
 
   v27[0] = self->_topToFirstBaselineConstraint;
-  v20 = [(UIButton *)self->_footerButton leadingAnchor];
-  v21 = [(TableViewSelectableFooterView *)self contentView];
-  v22 = [v21 leadingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:15.0];
+  leadingAnchor = [(UIButton *)self->_footerButton leadingAnchor];
+  contentView4 = [(TableViewSelectableFooterView *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
   v24 = self->_lastBaselineToBottomConstraint;
   v27[1] = v23;
   v27[2] = v24;
@@ -97,8 +97,8 @@
   self->_footerButton = v3;
 
   [(UIButton *)self->_footerButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(UIButton *)self->_footerButton titleLabel];
-  [v5 setLineBreakMode:0];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setLineBreakMode:0];
 
   v17 = objc_alloc_init(NSMutableParagraphStyle);
   [v17 setLineBreakMode:0];
@@ -124,12 +124,12 @@
   v13 = [[NSMutableAttributedString alloc] initWithString:self->_footerLinkText attributes:v11];
   v14 = [NSMutableAttributedString localizedAttributedStringWithFormat:v12, v13];
   [(UIButton *)self->_footerButton setAttributedTitle:v14 forState:0];
-  v15 = [(UIButton *)self->_footerButton titleLabel];
-  [v15 setNumberOfLines:0];
+  titleLabel2 = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
   [(UIButton *)self->_footerButton setContentHorizontalAlignment:4];
-  v16 = [(TableViewSelectableFooterView *)self contentView];
-  [v16 addSubview:self->_footerButton];
+  contentView = [(TableViewSelectableFooterView *)self contentView];
+  [contentView addSubview:self->_footerButton];
 }
 
 - (void)contentSizeDidChange
@@ -145,25 +145,25 @@
   [(TableViewSelectableFooterView *)self setNeedsLayout];
 }
 
-- (TableViewSelectableFooterView)initWithReuseIdentifier:(id)a3 options:(id)a4
+- (TableViewSelectableFooterView)initWithReuseIdentifier:(id)identifier options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = TableViewSelectableFooterView;
-  v7 = [(TableViewSelectableFooterView *)&v15 initWithReuseIdentifier:a3];
+  v7 = [(TableViewSelectableFooterView *)&v15 initWithReuseIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 labelText];
+    labelText = [optionsCopy labelText];
     footerLabelText = v7->_footerLabelText;
-    v7->_footerLabelText = v8;
+    v7->_footerLabelText = labelText;
 
-    v10 = [v6 linkText];
+    linkText = [optionsCopy linkText];
     footerLinkText = v7->_footerLinkText;
-    v7->_footerLinkText = v10;
+    v7->_footerLinkText = linkText;
 
     [(TableViewSelectableFooterView *)v7 _createSubviews];
-    v12 = [(TableViewSelectableFooterView *)v7 _initialConstraints];
-    [NSLayoutConstraint activateConstraints:v12];
+    _initialConstraints = [(TableViewSelectableFooterView *)v7 _initialConstraints];
+    [NSLayoutConstraint activateConstraints:_initialConstraints];
 
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 addObserver:v7 selector:"contentSizeDidChange" name:UIContentSizeCategoryDidChangeNotification object:0];

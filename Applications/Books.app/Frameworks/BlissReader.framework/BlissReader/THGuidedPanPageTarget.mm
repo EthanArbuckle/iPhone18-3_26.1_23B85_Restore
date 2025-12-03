@@ -1,19 +1,19 @@
 @interface THGuidedPanPageTarget
-+ (id)guidedPanTargetForPageAtLocation:(id)a3 controller:(id)a4;
-+ (id)p_childPageLayoutAtCenterFromLayout:(id)a3 visibleUnscaledCenter:(CGPoint)a4;
++ (id)guidedPanTargetForPageAtLocation:(id)location controller:(id)controller;
++ (id)p_childPageLayoutAtCenterFromLayout:(id)layout visibleUnscaledCenter:(CGPoint)center;
 - (CGRect)guidedPanTargetUnscaledPageRect;
 - (CGRect)guidedPanTargetUnscaledRect;
 - (CGRect)unscaledFrame;
-- (THGuidedPanPageTarget)initWithLayout:(id)a3 targeted:(BOOL)a4;
-- (double)viewScaleWithController:(id)a3;
-- (id)guidedPanTargetUpdatedTargetForLocation:(id)a3 withController:(id)a4;
+- (THGuidedPanPageTarget)initWithLayout:(id)layout targeted:(BOOL)targeted;
+- (double)viewScaleWithController:(id)controller;
+- (id)guidedPanTargetUpdatedTargetForLocation:(id)location withController:(id)controller;
 - (void)dealloc;
-- (void)guidedPanTargetAddWellsToArray:(id)a3 withController:(id)a4;
+- (void)guidedPanTargetAddWellsToArray:(id)array withController:(id)controller;
 @end
 
 @implementation THGuidedPanPageTarget
 
-- (THGuidedPanPageTarget)initWithLayout:(id)a3 targeted:(BOOL)a4
+- (THGuidedPanPageTarget)initWithLayout:(id)layout targeted:(BOOL)targeted
 {
   v13.receiver = self;
   v13.super_class = THGuidedPanPageTarget;
@@ -21,13 +21,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->_targeted = a4;
-    [a3 frameInRoot];
+    v6->_targeted = targeted;
+    [layout frameInRoot];
     v7->_unscaledFrame.origin.x = v8;
     v7->_unscaledFrame.origin.y = v9;
     v7->_unscaledFrame.size.width = v10;
     v7->_unscaledFrame.size.height = v11;
-    v7->_layout = a3;
+    v7->_layout = layout;
   }
 
   return v7;
@@ -66,15 +66,15 @@
   return result;
 }
 
-- (double)viewScaleWithController:(id)a3
+- (double)viewScaleWithController:(id)controller
 {
-  v3 = [a3 delegate];
+  delegate = [controller delegate];
 
-  [v3 guidedPanZoomedOutViewScale];
+  [delegate guidedPanZoomedOutViewScale];
   return result;
 }
 
-- (void)guidedPanTargetAddWellsToArray:(id)a3 withController:(id)a4
+- (void)guidedPanTargetAddWellsToArray:(id)array withController:(id)controller
 {
   if (self->_targeted)
   {
@@ -112,14 +112,14 @@
       v37.size.height = height;
       v18 = [(THGuidedPanPageTarget *)self p_wellForTarget:v7 wellRect:1 blendDistance:v14 prev:v15, v16, v17, fmax(CGRectGetWidth(v37), 300.0)];
       [v18 setIdentifier:@"prev"];
-      [a3 addObject:v18];
+      [array addObject:v18];
     }
 
-    v19 = [(THPageLayout *)self->_layout firstChildTarget];
-    if (v19 || (v19 = [(THPageLayout *)self->_layout nextTargetFromLayout:self->_layout column:0]) != 0)
+    firstChildTarget = [(THPageLayout *)self->_layout firstChildTarget];
+    if (firstChildTarget || (firstChildTarget = [(THPageLayout *)self->_layout nextTargetFromLayout:self->_layout column:0]) != 0)
     {
-      v20 = v19;
-      [v19 guidedPanTargetUnscaledRect];
+      v20 = firstChildTarget;
+      [firstChildTarget guidedPanTargetUnscaledRect];
       v21 = v38.origin.x;
       v22 = v38.origin.y;
       v23 = v38.size.width;
@@ -150,21 +150,21 @@
       v31 = [(THGuidedPanPageTarget *)self p_wellForTarget:v20 wellRect:0 blendDistance:v27 prev:v28, v29, v30, fmax(CGRectGetWidth(v42), 300.0)];
       [v31 setIdentifier:@"next"];
 
-      [a3 addObject:v31];
+      [array addObject:v31];
     }
   }
 }
 
-+ (id)p_childPageLayoutAtCenterFromLayout:(id)a3 visibleUnscaledCenter:(CGPoint)a4
++ (id)p_childPageLayoutAtCenterFromLayout:(id)layout visibleUnscaledCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 children];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  children = [layout children];
+  v8 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v8)
   {
     return 0;
@@ -180,7 +180,7 @@
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(children);
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
@@ -188,7 +188,7 @@
       v15 = TSUDynamicCast();
       if (!v15)
       {
-        v15 = [a1 p_childPageLayoutAtCenterFromLayout:v14 visibleUnscaledCenter:{x, y}];
+        v15 = [self p_childPageLayoutAtCenterFromLayout:v14 visibleUnscaledCenter:{x, y}];
         if (!v15)
         {
           continue;
@@ -205,18 +205,18 @@
       }
     }
 
-    v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [children countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v9);
   return v10;
 }
 
-+ (id)guidedPanTargetForPageAtLocation:(id)a3 controller:(id)a4
++ (id)guidedPanTargetForPageAtLocation:(id)location controller:(id)controller
 {
-  v6 = [objc_msgSend(objc_msgSend(a4 "interactiveCanvasController")];
-  [a3 unscaledPoint];
-  result = [a1 p_childPageLayoutAtCenterFromLayout:v6 visibleUnscaledCenter:?];
+  v6 = [objc_msgSend(objc_msgSend(controller "interactiveCanvasController")];
+  [location unscaledPoint];
+  result = [self p_childPageLayoutAtCenterFromLayout:v6 visibleUnscaledCenter:?];
   if (result)
   {
     v8 = [[THGuidedPanPageTarget alloc] initWithLayout:result targeted:0];
@@ -227,11 +227,11 @@
   return result;
 }
 
-- (id)guidedPanTargetUpdatedTargetForLocation:(id)a3 withController:(id)a4
+- (id)guidedPanTargetUpdatedTargetForLocation:(id)location withController:(id)controller
 {
   v6 = objc_opt_class();
-  v7 = [objc_msgSend(objc_msgSend(a4 "interactiveCanvasController")];
-  [a3 unscaledPoint];
+  v7 = [objc_msgSend(objc_msgSend(controller "interactiveCanvasController")];
+  [location unscaledPoint];
   result = [v6 p_childPageLayoutAtCenterFromLayout:v7 visibleUnscaledCenter:?];
   if (result)
   {

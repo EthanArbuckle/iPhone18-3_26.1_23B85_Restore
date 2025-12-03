@@ -1,17 +1,17 @@
 @interface QOSAlertMessageInternal
 - (QOSAlertMessageInternal)init;
-- (QOSAlertMessageInternal)initWithTitle:(id)a3 body:(id)a4;
+- (QOSAlertMessageInternal)initWithTitle:(id)title body:(id)body;
 @end
 
 @implementation QOSAlertMessageInternal
 
-- (QOSAlertMessageInternal)initWithTitle:(id)a3 body:(id)a4
+- (QOSAlertMessageInternal)initWithTitle:(id)title body:(id)body
 {
-  if (!a3)
+  if (!title)
   {
     v6 = 0;
     v8 = 0;
-    if (a4)
+    if (body)
     {
       goto LABEL_3;
     }
@@ -24,7 +24,7 @@ LABEL_5:
 
   v6 = sub_261464930();
   v8 = v7;
-  if (!a4)
+  if (!body)
   {
     goto LABEL_5;
   }

@@ -1,19 +1,19 @@
 @interface CNAtomCenteredTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 @end
 
 @implementation CNAtomCenteredTextAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  [(CNAtomCenteredTextAttachment *)self height:a3];
+  [(CNAtomCenteredTextAttachment *)self height:container];
   v8 = v7;
-  v9 = [(CNAtomCenteredTextAttachment *)self image];
-  [v9 size];
+  image = [(CNAtomCenteredTextAttachment *)self image];
+  [image size];
   v11 = v10 * -0.5 + v8 * 0.5;
 
-  v12 = [(CNAtomCenteredTextAttachment *)self image];
-  [v12 size];
+  image2 = [(CNAtomCenteredTextAttachment *)self image];
+  [image2 size];
   v14 = v13;
   v16 = v15;
 

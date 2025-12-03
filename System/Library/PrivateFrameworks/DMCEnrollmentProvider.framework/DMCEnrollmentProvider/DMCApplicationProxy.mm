@@ -1,8 +1,8 @@
 @interface DMCApplicationProxy
 + (id)_allApplications;
-+ (id)_bundlePathsForApplications:(id)a3;
++ (id)_bundlePathsForApplications:(id)applications;
 + (id)blockedApplications;
-+ (id)bookIconForVariant:(unint64_t)a3;
++ (id)bookIconForVariant:(unint64_t)variant;
 + (id)userApplications;
 - (BOOL)_canNotBeHidden;
 - (BOOL)_canNotBeLocked;
@@ -23,30 +23,30 @@
 - (BOOL)_isUnableToUseRoamingCellData;
 - (BOOL)_isUninstalledOnMDMRemoval;
 - (BOOL)checkIsBlocked;
-- (DMCApplicationProxy)initWithBundleID:(id)a3 dataSource:(unint64_t)a4;
-- (DMCApplicationProxy)initWithCoder:(id)a3;
-- (DMCApplicationProxy)initWithLSApplicationProxy:(id)a3 dataSource:(unint64_t)a4;
-- (DMCApplicationProxy)initWithLSApplicationRecord:(id)a3 dataSource:(unint64_t)a4;
-- (id)_bridgeIconForVariant:(unint64_t)a3;
-- (id)_circularImageFromImage:(id)a3 variant:(int)a4;
-- (id)_lsIconDataForVariant:(unint64_t)a3 scale:(double)a4;
-- (id)_managedAppAttribute:(id)a3;
-- (id)iconForVariant:(unint64_t)a3;
+- (DMCApplicationProxy)initWithBundleID:(id)d dataSource:(unint64_t)source;
+- (DMCApplicationProxy)initWithCoder:(id)coder;
+- (DMCApplicationProxy)initWithLSApplicationProxy:(id)proxy dataSource:(unint64_t)source;
+- (DMCApplicationProxy)initWithLSApplicationRecord:(id)record dataSource:(unint64_t)source;
+- (id)_bridgeIconForVariant:(unint64_t)variant;
+- (id)_circularImageFromImage:(id)image variant:(int)variant;
+- (id)_lsIconDataForVariant:(unint64_t)variant scale:(double)scale;
+- (id)_managedAppAttribute:(id)attribute;
+- (id)iconForVariant:(unint64_t)variant;
 - (id)managedAppConfigurationInfo;
 - (id)misStateString;
-- (unint64_t)misStateIncludingPending:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBlockedInfo:(id)a3;
+- (unint64_t)misStateIncludingPending:(BOOL)pending;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBlockedInfo:(id)info;
 @end
 
 @implementation DMCApplicationProxy
 
-- (DMCApplicationProxy)initWithBundleID:(id)a3 dataSource:(unint64_t)a4
+- (DMCApplicationProxy)initWithBundleID:(id)d dataSource:(unint64_t)source
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v12 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:1 error:&v12];
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:1 error:&v12];
   v8 = v12;
   if (v8)
   {
@@ -54,81 +54,81 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v14 = v6;
+      v14 = dCopy;
       v15 = 2114;
       v16 = v8;
       _os_log_impl(&dword_247E7D000, v9, OS_LOG_TYPE_ERROR, "DMCApplicationProxy failed to create LSApplicationRecord for bundleID %{public}@ with error: %{public}@", buf, 0x16u);
     }
   }
 
-  v10 = [(DMCApplicationProxy *)self initWithLSApplicationRecord:v7 dataSource:a4];
+  v10 = [(DMCApplicationProxy *)self initWithLSApplicationRecord:v7 dataSource:source];
 
   return v10;
 }
 
-- (DMCApplicationProxy)initWithLSApplicationRecord:(id)a3 dataSource:(unint64_t)a4
+- (DMCApplicationProxy)initWithLSApplicationRecord:(id)record dataSource:(unint64_t)source
 {
-  v6 = [a3 compatibilityObject];
-  v7 = [(DMCApplicationProxy *)self initWithLSApplicationProxy:v6 dataSource:a4];
+  compatibilityObject = [record compatibilityObject];
+  v7 = [(DMCApplicationProxy *)self initWithLSApplicationProxy:compatibilityObject dataSource:source];
 
   return v7;
 }
 
-- (DMCApplicationProxy)initWithLSApplicationProxy:(id)a3 dataSource:(unint64_t)a4
+- (DMCApplicationProxy)initWithLSApplicationProxy:(id)proxy dataSource:(unint64_t)source
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  proxyCopy = proxy;
   v26.receiver = self;
   v26.super_class = DMCApplicationProxy;
   v8 = [(DMCApplicationProxy *)&v26 init];
   if (v8)
   {
-    v9 = [v7 localizedName];
+    localizedName = [proxyCopy localizedName];
     name = v8->_name;
-    v8->_name = v9;
+    v8->_name = localizedName;
 
-    v11 = [v7 bundleIdentifier];
+    bundleIdentifier = [proxyCopy bundleIdentifier];
     bundleID = v8->_bundleID;
-    v8->_bundleID = v11;
+    v8->_bundleID = bundleIdentifier;
 
-    v13 = [v7 bundleURL];
-    v14 = [v13 path];
+    bundleURL = [proxyCopy bundleURL];
+    path = [bundleURL path];
     bundlePath = v8->_bundlePath;
-    v8->_bundlePath = v14;
+    v8->_bundlePath = path;
 
-    v16 = [v7 signerIdentity];
+    signerIdentity = [proxyCopy signerIdentity];
     signerID = v8->_signerID;
-    v8->_signerID = v16;
+    v8->_signerID = signerIdentity;
 
-    v18 = [v7 entitlementValueForKey:@"application-identifier" ofClass:objc_opt_class()];
+    v18 = [proxyCopy entitlementValueForKey:@"application-identifier" ofClass:objc_opt_class()];
     appIDEntitlement = v8->_appIDEntitlement;
     v8->_appIDEntitlement = v18;
 
-    v20 = [v7 appState];
-    v8->_isInstalled = [v20 isInstalled];
+    appState = [proxyCopy appState];
+    v8->_isInstalled = [appState isInstalled];
 
-    v8->_isBetaApp = [v7 isBetaApp];
-    v21 = [v7 applicationType];
-    v8->_isUserApp = [v21 isEqualToString:@"User"];
+    v8->_isBetaApp = [proxyCopy isBetaApp];
+    applicationType = [proxyCopy applicationType];
+    v8->_isUserApp = [applicationType isEqualToString:@"User"];
 
-    objc_storeStrong(&v8->_lsApp, a3);
+    objc_storeStrong(&v8->_lsApp, proxy);
     if (!v8->_bundleID)
     {
       v22 = *DMCLogObjects();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v28 = v7;
+        v28 = proxyCopy;
         _os_log_impl(&dword_247E7D000, v22, OS_LOG_TYPE_ERROR, "DMCApplicationProxy encountered an LSApplicationProxy with no bundle ID: %{public}@", buf, 0xCu);
       }
     }
 
-    v8->_dataSource = a4;
-    if (a4 == 1)
+    v8->_dataSource = source;
+    if (source == 1)
     {
-      v23 = [(DMCApplicationProxy *)v8 managedAppConfigurationInfo];
+      managedAppConfigurationInfo = [(DMCApplicationProxy *)v8 managedAppConfigurationInfo];
       cachedManagedAppConfigurationInfo = v8->_cachedManagedAppConfigurationInfo;
-      v8->_cachedManagedAppConfigurationInfo = v23;
+      v8->_cachedManagedAppConfigurationInfo = managedAppConfigurationInfo;
     }
   }
 
@@ -171,16 +171,16 @@
   return v2;
 }
 
-+ (id)_bundlePathsForApplications:(id)a3
++ (id)_bundlePathsForApplications:(id)applications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  applicationsCopy = applications;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = applicationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -195,8 +195,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) bundlePath];
-        [v4 addObject:v10];
+        bundlePath = [*(*(&v12 + 1) + 8 * i) bundlePath];
+        [v4 addObject:bundlePath];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -211,12 +211,12 @@
 + (id)blockedApplications
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [a1 _allApplications];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
+  _allApplications = [self _allApplications];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v26 = 0;
-  v5 = [a1 _bundlePathsForApplications:v3];
+  v5 = [self _bundlePathsForApplications:_allApplications];
   v25 = 0;
-  v6 = [v4 getAreBundlesBlocked:&v26 bundlePaths:v5 outError:&v25];
+  v6 = [mEMORY[0x277D262A0] getAreBundlesBlocked:&v26 bundlePaths:v5 outError:&v25];
   v7 = v26;
   v8 = v25;
 
@@ -228,7 +228,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v3;
+    v10 = _allApplications;
     v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v11)
     {
@@ -244,8 +244,8 @@
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
-          v16 = [v15 bundlePath];
-          v17 = [v7 objectForKeyedSubscript:v16];
+          bundlePath = [v15 bundlePath];
+          v17 = [v7 objectForKeyedSubscript:bundlePath];
           [v15 setBlockedInfo:v17];
 
           if ([v15 isBlocked])
@@ -281,23 +281,23 @@
 
 + (id)userApplications
 {
-  v2 = [a1 _allApplications];
+  _allApplications = [self _allApplications];
   v3 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [_allApplications filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
-- (id)iconForVariant:(unint64_t)a3
+- (id)iconForVariant:(unint64_t)variant
 {
   if ([(DMCApplicationProxy *)self dataSource]== 1)
   {
-    v5 = [(DMCApplicationProxy *)self _bridgeIconForVariant:a3];
+    v5 = [(DMCApplicationProxy *)self _bridgeIconForVariant:variant];
     goto LABEL_10;
   }
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   if (v8 < 1.0)
@@ -310,7 +310,7 @@ LABEL_7:
   {
     while (1)
     {
-      v9 = [(DMCApplicationProxy *)self _lsIconDataForVariant:a3 scale:v8];
+      v9 = [(DMCApplicationProxy *)self _lsIconDataForVariant:variant scale:v8];
       v10 = v9;
       if (v9 || v8 <= 1.0)
       {
@@ -350,14 +350,14 @@ LABEL_10:
   return v5;
 }
 
-- (id)_lsIconDataForVariant:(unint64_t)a3 scale:(double)a4
+- (id)_lsIconDataForVariant:(unint64_t)variant scale:(double)scale
 {
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (a4 == 3.0)
+  if (scale == 3.0)
   {
-    v9 = a3 == 0;
+    v9 = variant == 0;
     v10 = 32;
     v11 = 34;
 LABEL_10:
@@ -371,15 +371,15 @@ LABEL_10:
       v12 = v10;
     }
 
-    v13 = [(DMCApplicationProxy *)self lsApp];
-    v14 = [v13 iconDataForVariant:v12];
+    lsApp = [(DMCApplicationProxy *)self lsApp];
+    v14 = [lsApp iconDataForVariant:v12];
 
     goto LABEL_14;
   }
 
-  if (a4 == 2.0)
+  if (scale == 2.0)
   {
-    if (v8 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v10 = 24;
     }
@@ -389,15 +389,15 @@ LABEL_10:
       v10 = 15;
     }
 
-    v9 = a3 == 0;
+    v9 = variant == 0;
     v11 = 17;
     goto LABEL_10;
   }
 
-  if (a4 == 1.0)
+  if (scale == 1.0)
   {
-    v10 = v8 == 1;
-    v9 = a3 == 0;
+    v10 = userInterfaceIdiom == 1;
+    v9 = variant == 0;
     v11 = 4;
     goto LABEL_10;
   }
@@ -408,22 +408,22 @@ LABEL_14:
   return v14;
 }
 
-+ (id)bookIconForVariant:(unint64_t)a3
++ (id)bookIconForVariant:(unint64_t)variant
 {
   v4 = [[DMCApplicationProxy alloc] initWithBundleID:@"com.apple.iBooks" dataSource:0];
-  v5 = [(DMCApplicationProxy *)v4 iconForVariant:a3];
+  v5 = [(DMCApplicationProxy *)v4 iconForVariant:variant];
 
   return v5;
 }
 
-- (id)_bridgeIconForVariant:(unint64_t)a3
+- (id)_bridgeIconForVariant:(unint64_t)variant
 {
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  v6 = [v5 traitCollection];
-  [v6 displayScale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
-  if (a3)
+  if (variant)
   {
     v9 = 42;
   }
@@ -433,7 +433,7 @@ LABEL_14:
     v9 = 48;
   }
 
-  if (a3)
+  if (variant)
   {
     v10 = 42;
   }
@@ -454,9 +454,9 @@ LABEL_14:
   }
 
   v19 = 0;
-  v12 = [MEMORY[0x277D2BD60] sharedInstance];
-  v13 = [(DMCApplicationProxy *)self bundleID];
-  [v12 getCachedIconForBundleID:v13 iconVariant:v11 outIconImage:&v19 updateBlock:0];
+  mEMORY[0x277D2BD60] = [MEMORY[0x277D2BD60] sharedInstance];
+  bundleID = [(DMCApplicationProxy *)self bundleID];
+  [mEMORY[0x277D2BD60] getCachedIconForBundleID:bundleID iconVariant:v11 outIconImage:&v19 updateBlock:0];
 
   if (v19)
   {
@@ -465,9 +465,9 @@ LABEL_14:
 
   else
   {
-    v15 = [(DMCApplicationProxy *)self bundleID];
+    bundleID2 = [(DMCApplicationProxy *)self bundleID];
     v16 = dispatch_get_global_queue(0, 0);
-    [v12 getIconForBundleID:v15 iconVariant:v11 queue:v16 block:&__block_literal_global_19 timeout:10.0];
+    [mEMORY[0x277D2BD60] getIconForBundleID:bundleID2 iconVariant:v11 queue:v16 block:&__block_literal_global_19 timeout:10.0];
 
     v17 = PSBlankIconImage();
     v14 = [(DMCApplicationProxy *)self _circularImageFromImage:v17 variant:v11];
@@ -485,10 +485,10 @@ void __45__DMCApplicationProxy__bridgeIconForVariant___block_invoke(uint64_t a1,
   }
 }
 
-- (id)_circularImageFromImage:(id)a3 variant:(int)a4
+- (id)_circularImageFromImage:(id)image variant:(int)variant
 {
-  v5 = a3;
-  if (a4 == 42)
+  imageCopy = image;
+  if (variant == 42)
   {
     v6 = 57.0;
   }
@@ -500,9 +500,9 @@ void __45__DMCApplicationProxy__bridgeIconForVariant___block_invoke(uint64_t a1,
 
   v7 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:{v6, v6}];
   v8 = MEMORY[0x277D755B8];
-  v9 = [v5 CGImage];
-  [v5 scale];
-  v10 = [v8 imageWithCGImage:v9 scale:0 orientation:?];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
+  v10 = [v8 imageWithCGImage:cGImage scale:0 orientation:?];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke;
@@ -516,12 +516,12 @@ void __45__DMCApplicationProxy__bridgeIconForVariant___block_invoke(uint64_t a1,
   if (!v12)
   {
     v14 = *DMCLogObjects();
-    v13 = v5;
+    v13 = imageCopy;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *v17 = 0;
       _os_log_impl(&dword_247E7D000, v14, OS_LOG_TYPE_ERROR, "DMCApplicationProxy failed to create circular Bridge app icon", v17, 2u);
-      v13 = v5;
+      v13 = imageCopy;
     }
   }
 
@@ -544,14 +544,14 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
   [*(a1 + 32) drawInRect:{v4, v5, v6, v7}];
 }
 
-- (void)setBlockedInfo:(id)a3
+- (void)setBlockedInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D26458]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D26458]];
     if (v6)
     {
       objc_opt_class();
@@ -629,17 +629,17 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
 - (BOOL)checkIsBlocked
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(DMCApplicationProxy *)self bundlePath];
+  bundlePath = [(DMCApplicationProxy *)self bundlePath];
 
-  if (v3)
+  if (bundlePath)
   {
     v20 = 0;
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [(DMCApplicationProxy *)self bundlePath];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    bundlePath2 = [(DMCApplicationProxy *)self bundlePath];
     v18 = 0;
     v19 = 0;
     v17 = 0;
-    v6 = [v4 getIsBundleBlocked:&v20 bundlePath:v5 outHash:&v19 outHashType:&v18 outError:&v17];
+    v6 = [mEMORY[0x277D262A0] getIsBundleBlocked:&v20 bundlePath:bundlePath2 outHash:&v19 outHashType:&v18 outError:&v17];
     v7 = v19;
     v8 = v19;
     v9 = v18;
@@ -659,9 +659,9 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = v13;
-        v15 = [(DMCApplicationProxy *)self bundlePath];
+        bundlePath3 = [(DMCApplicationProxy *)self bundlePath];
         *buf = 138543618;
-        v22 = v15;
+        v22 = bundlePath3;
         v23 = 2114;
         v24 = v11;
         _os_log_impl(&dword_247E7D000, v14, OS_LOG_TYPE_ERROR, "DMCApplicationProxy failed to check profiled if bundle path '%{public}@' is blocked by MIS with error: %{public}@", buf, 0x16u);
@@ -679,16 +679,16 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
   return v12;
 }
 
-- (unint64_t)misStateIncludingPending:(BOOL)a3
+- (unint64_t)misStateIncludingPending:(BOOL)pending
 {
-  v3 = a3;
+  pendingCopy = pending;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(DMCApplicationProxy *)self bundlePath];
+  bundlePath = [(DMCApplicationProxy *)self bundlePath];
 
-  if (v5)
+  if (bundlePath)
   {
-    v6 = [(DMCApplicationProxy *)self bundlePath];
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:{v3, *MEMORY[0x277D82AA0]}];
+    bundlePath2 = [(DMCApplicationProxy *)self bundlePath];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:{pendingCopy, *MEMORY[0x277D82AA0]}];
     v14 = v7;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v8 = MISAppApprovalState();
@@ -710,9 +710,9 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = v10;
-      v12 = [(DMCApplicationProxy *)self bundleID];
+      bundleID = [(DMCApplicationProxy *)self bundleID];
       *buf = 138543362;
-      v16 = v12;
+      v16 = bundleID;
       _os_log_impl(&dword_247E7D000, v11, OS_LOG_TYPE_ERROR, "DMCApplicationProxy MIS validator failed to find bundle for app: %{public}@", buf, 0xCu);
     }
 
@@ -740,19 +740,19 @@ void __55__DMCApplicationProxy__circularImageFromImage_variant___block_invoke(ui
 
 - (id)managedAppConfigurationInfo
 {
-  v3 = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
+  cachedManagedAppConfigurationInfo = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
 
-  if (v3)
+  if (cachedManagedAppConfigurationInfo)
   {
-    v4 = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
+    cachedManagedAppConfigurationInfo2 = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
 LABEL_40:
-    v23 = v4;
+    v23 = cachedManagedAppConfigurationInfo2;
     goto LABEL_41;
   }
 
   if (![(DMCApplicationProxy *)self _hasManagedRestrictions])
   {
-    v4 = DMCEnrollmentLocalizedString(@"DMC_MANAGED_APP_HAS_NO_RESTRICTIONS");
+    cachedManagedAppConfigurationInfo2 = DMCEnrollmentLocalizedString(@"DMC_MANAGED_APP_HAS_NO_RESTRICTIONS");
     goto LABEL_40;
   }
 
@@ -879,43 +879,43 @@ LABEL_41:
 - (BOOL)_isUninstalledOnMDMRemoval
 {
   v3 = [MEMORY[0x277D24678] managedAppIDsWithFlags:1];
-  v4 = [(DMCApplicationProxy *)self bundleID];
-  v5 = [v3 containsObject:v4];
+  bundleID = [(DMCApplicationProxy *)self bundleID];
+  v5 = [v3 containsObject:bundleID];
 
   return v5;
 }
 
 - (BOOL)_isExcludedFromBackup
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 doNotBackupAppIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  doNotBackupAppIDs = [mEMORY[0x277D262A0] doNotBackupAppIDs];
 
-  v5 = [(DMCApplicationProxy *)self bundleID];
-  LOBYTE(v3) = [v4 containsObject:v5];
+  bundleID = [(DMCApplicationProxy *)self bundleID];
+  LOBYTE(mEMORY[0x277D262A0]) = [doNotBackupAppIDs containsObject:bundleID];
 
-  return v3;
+  return mEMORY[0x277D262A0];
 }
 
 - (BOOL)_isExcludedFromCloudSync
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F68]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F68]] == 2;
 
   return v3;
 }
 
 - (BOOL)_isUnableToImportFromUnmanaged
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25FD0]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25FD0]] == 2;
 
   return v3;
 }
 
 - (BOOL)_isUnableToExportToUnmanaged
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25FC8]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25FC8]] == 2;
 
   return v3;
 }
@@ -927,8 +927,8 @@ LABEL_41:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [MEMORY[0x277CD92C0] copyAggregatePathRules];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  copyAggregatePathRules = [MEMORY[0x277CD92C0] copyAggregatePathRules];
+  v4 = [copyAggregatePathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -939,13 +939,13 @@ LABEL_41:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(copyAggregatePathRules);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 matchSigningIdentifier];
-        v10 = [(DMCApplicationProxy *)self bundleID];
-        v11 = [v9 isEqualToString:v10];
+        matchSigningIdentifier = [v8 matchSigningIdentifier];
+        bundleID = [(DMCApplicationProxy *)self bundleID];
+        v11 = [matchSigningIdentifier isEqualToString:bundleID];
 
         if (v11)
         {
@@ -954,7 +954,7 @@ LABEL_41:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [copyAggregatePathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -977,8 +977,8 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [MEMORY[0x277CD92C0] copyAggregatePathRules];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  copyAggregatePathRules = [MEMORY[0x277CD92C0] copyAggregatePathRules];
+  v4 = [copyAggregatePathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -989,13 +989,13 @@ LABEL_3:
     {
       if (*v15 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(copyAggregatePathRules);
       }
 
       v8 = *(*(&v14 + 1) + 8 * v7);
-      v9 = [v8 matchSigningIdentifier];
-      v10 = [(DMCApplicationProxy *)self bundleID];
-      v11 = [v9 isEqualToString:v10];
+      matchSigningIdentifier = [v8 matchSigningIdentifier];
+      bundleID = [(DMCApplicationProxy *)self bundleID];
+      v11 = [matchSigningIdentifier isEqualToString:bundleID];
 
       if (v11)
       {
@@ -1004,7 +1004,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [copyAggregatePathRules countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1028,16 +1028,16 @@ LABEL_13:
   return v12;
 }
 
-- (id)_managedAppAttribute:(id)a3
+- (id)_managedAppAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D24678] attributesByAppID];
-  v6 = [(DMCApplicationProxy *)self bundleID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  attributeCopy = attribute;
+  attributesByAppID = [MEMORY[0x277D24678] attributesByAppID];
+  bundleID = [(DMCApplicationProxy *)self bundleID];
+  v7 = [attributesByAppID objectForKeyedSubscript:bundleID];
 
   if (v7)
   {
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:attributeCopy];
   }
 
   else
@@ -1125,15 +1125,15 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_canNotBeHidden
@@ -1170,122 +1170,122 @@ LABEL_13:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  v4 = [(DMCApplicationProxy *)self name];
-  [v18 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(DMCApplicationProxy *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(DMCApplicationProxy *)self bundleID];
-  [v18 encodeObject:v5 forKey:@"bundleID"];
+  bundleID = [(DMCApplicationProxy *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v6 = [(DMCApplicationProxy *)self bundlePath];
-  [v18 encodeObject:v6 forKey:@"bundlePath"];
+  bundlePath = [(DMCApplicationProxy *)self bundlePath];
+  [coderCopy encodeObject:bundlePath forKey:@"bundlePath"];
 
-  v7 = [(DMCApplicationProxy *)self signerID];
-  [v18 encodeObject:v7 forKey:@"signerID"];
+  signerID = [(DMCApplicationProxy *)self signerID];
+  [coderCopy encodeObject:signerID forKey:@"signerID"];
 
-  v8 = [(DMCApplicationProxy *)self appIDEntitlement];
-  [v18 encodeObject:v8 forKey:@"appIDEntitlement"];
+  appIDEntitlement = [(DMCApplicationProxy *)self appIDEntitlement];
+  [coderCopy encodeObject:appIDEntitlement forKey:@"appIDEntitlement"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCApplicationProxy isInstalled](self, "isInstalled")}];
-  [v18 encodeObject:v9 forKey:@"isInstalled"];
+  [coderCopy encodeObject:v9 forKey:@"isInstalled"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCApplicationProxy isBetaApp](self, "isBetaApp")}];
-  [v18 encodeObject:v10 forKey:@"isBetaApp"];
+  [coderCopy encodeObject:v10 forKey:@"isBetaApp"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCApplicationProxy isUserApp](self, "isUserApp")}];
-  [v18 encodeObject:v11 forKey:@"isUserApp"];
+  [coderCopy encodeObject:v11 forKey:@"isUserApp"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[DMCApplicationProxy isBlocked](self, "isBlocked")}];
-  [v18 encodeObject:v12 forKey:@"isBlocked"];
+  [coderCopy encodeObject:v12 forKey:@"isBlocked"];
 
-  v13 = [(DMCApplicationProxy *)self misCDHash];
-  [v18 encodeObject:v13 forKey:@"misCDHash"];
+  misCDHash = [(DMCApplicationProxy *)self misCDHash];
+  [coderCopy encodeObject:misCDHash forKey:@"misCDHash"];
 
-  v14 = [(DMCApplicationProxy *)self misHashType];
-  [v18 encodeObject:v14 forKey:@"misHashType"];
+  misHashType = [(DMCApplicationProxy *)self misHashType];
+  [coderCopy encodeObject:misHashType forKey:@"misHashType"];
 
-  v15 = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
-  [v18 encodeObject:v15 forKey:@"cachedManagedAppConfigurationInfo"];
+  cachedManagedAppConfigurationInfo = [(DMCApplicationProxy *)self cachedManagedAppConfigurationInfo];
+  [coderCopy encodeObject:cachedManagedAppConfigurationInfo forKey:@"cachedManagedAppConfigurationInfo"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DMCApplicationProxy dataSource](self, "dataSource")}];
-  [v18 encodeObject:v16 forKey:@"dataSource"];
+  [coderCopy encodeObject:v16 forKey:@"dataSource"];
 
   if (self->_dataSource != 1)
   {
-    v17 = [(DMCApplicationProxy *)self lsApp];
-    [v18 encodeObject:v17 forKey:@"lsApp"];
+    lsApp = [(DMCApplicationProxy *)self lsApp];
+    [coderCopy encodeObject:lsApp forKey:@"lsApp"];
   }
 }
 
-- (DMCApplicationProxy)initWithCoder:(id)a3
+- (DMCApplicationProxy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = DMCApplicationProxy;
   v5 = [(DMCApplicationProxy *)&v39 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"bundleID"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"bundlePath"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"bundlePath"];
     bundlePath = v5->_bundlePath;
     v5->_bundlePath = v13;
 
     v15 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"signerID"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"signerID"];
     signerID = v5->_signerID;
     v5->_signerID = v16;
 
     v18 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"appIDEntitlement"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"appIDEntitlement"];
     appIDEntitlement = v5->_appIDEntitlement;
     v5->_appIDEntitlement = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isInstalled"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isInstalled"];
     v5->_isInstalled = [v21 BOOLValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBetaApp"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBetaApp"];
     v5->_isBetaApp = [v22 BOOLValue];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isUserApp"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isUserApp"];
     v5->_isUserApp = [v23 BOOLValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isBlocked"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isBlocked"];
     v5->_isBlocked = [v24 BOOLValue];
 
     v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"misCDHash"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"misCDHash"];
     misCDHash = v5->_misCDHash;
     v5->_misCDHash = v26;
 
     v28 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"misHashType"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"misHashType"];
     misHashType = v5->_misHashType;
     v5->_misHashType = v29;
 
     v31 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"cachedManagedAppConfigurationInfo"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"cachedManagedAppConfigurationInfo"];
     cachedManagedAppConfigurationInfo = v5->_cachedManagedAppConfigurationInfo;
     v5->_cachedManagedAppConfigurationInfo = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataSource"];
     v5->_dataSource = [v34 unsignedIntegerValue];
 
     if (v5->_dataSource != 1)
     {
       v35 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-      v36 = [v4 decodeObjectOfClasses:v35 forKey:@"lsApp"];
+      v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"lsApp"];
       lsApp = v5->_lsApp;
       v5->_lsApp = v36;
     }

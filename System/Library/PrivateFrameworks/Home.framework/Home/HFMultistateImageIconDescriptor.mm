@@ -1,31 +1,31 @@
 @interface HFMultistateImageIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)a3;
-- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)a3 defaultImageIdentifier:(id)a4;
-- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)a3 defaultPrimaryState:(int64_t)a4;
-- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)a3 defaultSymbolIconConfiguration:(id)a4;
-- (id)iconDescriptorForPrimaryState:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)state;
+- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)state defaultImageIdentifier:(id)identifier;
+- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)state defaultPrimaryState:(int64_t)primaryState;
+- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)state defaultSymbolIconConfiguration:(id)configuration;
+- (id)iconDescriptorForPrimaryState:(int64_t)state;
 - (unint64_t)hash;
 @end
 
 @implementation HFMultistateImageIconDescriptor
 
-- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)a3
+- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:&unk_2825232F8];
-  v6 = [(HFMultistateImageIconDescriptor *)self initWithImageIdentifiersKeyedByPrimaryState:v4 defaultImageIdentifier:v5];
+  stateCopy = state;
+  v5 = [stateCopy objectForKeyedSubscript:&unk_2825232F8];
+  v6 = [(HFMultistateImageIconDescriptor *)self initWithImageIdentifiersKeyedByPrimaryState:stateCopy defaultImageIdentifier:v5];
 
   return v6;
 }
 
-- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)a3 defaultImageIdentifier:(id)a4
+- (HFMultistateImageIconDescriptor)initWithImageIdentifiersKeyedByPrimaryState:(id)state defaultImageIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  stateCopy = state;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v9 = v8;
+    v9 = identifierCopy;
   }
 
   else
@@ -40,72 +40,72 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dictionaryKeyedByPrimaryState, a3);
+    objc_storeStrong(&v10->_dictionaryKeyedByPrimaryState, state);
   }
 
   return v11;
 }
 
-- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)a3 defaultPrimaryState:(int64_t)a4
+- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)state defaultPrimaryState:(int64_t)primaryState
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  stateCopy = state;
+  v8 = [v6 numberWithInteger:primaryState];
+  v9 = [stateCopy objectForKeyedSubscript:v8];
 
-  v10 = [(HFMultistateImageIconDescriptor *)self initWithSymbolIconConfigurationsKeyedByPrimaryState:v7 defaultSymbolIconConfiguration:v9];
+  v10 = [(HFMultistateImageIconDescriptor *)self initWithSymbolIconConfigurationsKeyedByPrimaryState:stateCopy defaultSymbolIconConfiguration:v9];
   return v10;
 }
 
-- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)a3 defaultSymbolIconConfiguration:(id)a4
+- (HFMultistateImageIconDescriptor)initWithSymbolIconConfigurationsKeyedByPrimaryState:(id)state defaultSymbolIconConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 systemImageName];
+  stateCopy = state;
+  configurationCopy = configuration;
+  systemImageName = [configurationCopy systemImageName];
 
-  if (!v9)
+  if (!systemImageName)
   {
     NSLog(&cfstr_NoDefaultSymbo.isa);
   }
 
   v13.receiver = self;
   v13.super_class = HFMultistateImageIconDescriptor;
-  v10 = [(HFImageIconDescriptor *)&v13 initWithSymbolIconConfiguration:v8];
+  v10 = [(HFImageIconDescriptor *)&v13 initWithSymbolIconConfiguration:configurationCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dictionaryKeyedByPrimaryState, a3);
+    objc_storeStrong(&v10->_dictionaryKeyedByPrimaryState, state);
   }
 
   return v11;
 }
 
-- (id)iconDescriptorForPrimaryState:(int64_t)a3
+- (id)iconDescriptorForPrimaryState:(int64_t)state
 {
-  v5 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dictionaryKeyedByPrimaryState = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+  imageIdentifier2 = [dictionaryKeyedByPrimaryState objectForKeyedSubscript:v6];
 
-  if (!v7)
+  if (!imageIdentifier2)
   {
     if ([(HFImageIconDescriptor *)self isSystemImage])
     {
       v8 = [HFSymbolIconConfiguration alloc];
-      v9 = [(HFImageIconDescriptor *)self imageIdentifier];
-      v10 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
-      v7 = [(HFSymbolIconConfiguration *)v8 initWithSystemImageName:v9 configuration:v10];
+      imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+      imageSymbolConfiguration = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
+      imageIdentifier2 = [(HFSymbolIconConfiguration *)v8 initWithSystemImageName:imageIdentifier configuration:imageSymbolConfiguration];
     }
 
     else
     {
-      v7 = [(HFImageIconDescriptor *)self imageIdentifier];
+      imageIdentifier2 = [(HFImageIconDescriptor *)self imageIdentifier];
     }
   }
 
   if ([(HFImageIconDescriptor *)self isSystemImage])
   {
     objc_opt_class();
-    v11 = v7;
+    v11 = imageIdentifier2;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -130,7 +130,7 @@ LABEL_16:
   else
   {
     objc_opt_class();
-    v11 = v7;
+    v11 = imageIdentifier2;
     if (objc_opt_isKindOfClass())
     {
       v15 = v11;
@@ -156,10 +156,10 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -169,19 +169,19 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HFMultistateImageIconDescriptor *)v5 dictionaryKeyedByPrimaryState];
-      v7 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
-      if (v6 == v7)
+      v5 = equalCopy;
+      dictionaryKeyedByPrimaryState = [(HFMultistateImageIconDescriptor *)v5 dictionaryKeyedByPrimaryState];
+      dictionaryKeyedByPrimaryState2 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
+      if (dictionaryKeyedByPrimaryState == dictionaryKeyedByPrimaryState2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HFMultistateImageIconDescriptor *)v5 dictionaryKeyedByPrimaryState];
-        v9 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
-        v10 = [v8 isEqualToDictionary:v9];
+        dictionaryKeyedByPrimaryState3 = [(HFMultistateImageIconDescriptor *)v5 dictionaryKeyedByPrimaryState];
+        dictionaryKeyedByPrimaryState4 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
+        v10 = [dictionaryKeyedByPrimaryState3 isEqualToDictionary:dictionaryKeyedByPrimaryState4];
       }
     }
 
@@ -196,8 +196,8 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v2 = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
-  v3 = [v2 hash];
+  dictionaryKeyedByPrimaryState = [(HFMultistateImageIconDescriptor *)self dictionaryKeyedByPrimaryState];
+  v3 = [dictionaryKeyedByPrimaryState hash];
 
   return v3;
 }

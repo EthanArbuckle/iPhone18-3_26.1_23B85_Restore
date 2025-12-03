@@ -1,31 +1,31 @@
 @interface VUIFeaturesConfiguration
-+ (BOOL)BOOLValueForKey:(id)a3 fromDictionary:(id)a4 defaultValue:(BOOL)a5;
-+ (id)defaultsNumberValueForKey:(id)a3;
-+ (id)defaultsStringValueForKey:(id)a3;
-+ (id)numberValueForKey:(id)a3 fromDictionary:(id)a4;
++ (BOOL)BOOLValueForKey:(id)key fromDictionary:(id)dictionary defaultValue:(BOOL)value;
++ (id)defaultsNumberValueForKey:(id)key;
++ (id)defaultsStringValueForKey:(id)key;
++ (id)numberValueForKey:(id)key fromDictionary:(id)dictionary;
 + (id)sharedInstance;
-+ (id)stringValueForKey:(id)a3 fromDictionary:(id)a4;
-- (BOOL)_populateConfigWithDictionary:(id)a3 isLaunching:(BOOL)a4;
++ (id)stringValueForKey:(id)key fromDictionary:(id)dictionary;
+- (BOOL)_populateConfigWithDictionary:(id)dictionary isLaunching:(BOOL)launching;
 - (BOOL)_updateFromCache;
 - (VUIFeaturesConfiguration)init;
 - (id)_cachePath;
-- (void)_cacheFeatureConfiguration:(id)a3;
-- (void)_populateAccountConfig:(id)a3;
-- (void)_populateAccountMessageConfig:(id)a3;
-- (void)_populateCanonicalConfig:(id)a3;
-- (void)_populateGDPRConfig:(id)a3;
-- (void)_populateLaunchConfig:(id)a3;
-- (void)_populateLibConfig:(id)a3;
-- (void)_populateLivePostPlayConfig:(id)a3;
-- (void)_populateMediaShowcaseConfig:(id)a3;
-- (void)_populateMultiviewConfig:(id)a3;
-- (void)_populateRootControllerConfig:(id)a3;
-- (void)_populateTabItemsUpdateConfig:(id)a3;
-- (void)_populateTimedMetadataConfig:(id)a3;
-- (void)_populateTipKitConfig:(id)a3;
-- (void)_updateTVSettingsIfNeeded:(BOOL)a3;
-- (void)parseUpNextConfig:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)_cacheFeatureConfiguration:(id)configuration;
+- (void)_populateAccountConfig:(id)config;
+- (void)_populateAccountMessageConfig:(id)config;
+- (void)_populateCanonicalConfig:(id)config;
+- (void)_populateGDPRConfig:(id)config;
+- (void)_populateLaunchConfig:(id)config;
+- (void)_populateLibConfig:(id)config;
+- (void)_populateLivePostPlayConfig:(id)config;
+- (void)_populateMediaShowcaseConfig:(id)config;
+- (void)_populateMultiviewConfig:(id)config;
+- (void)_populateRootControllerConfig:(id)config;
+- (void)_populateTabItemsUpdateConfig:(id)config;
+- (void)_populateTimedMetadataConfig:(id)config;
+- (void)_populateTipKitConfig:(id)config;
+- (void)_updateTVSettingsIfNeeded:(BOOL)needed;
+- (void)parseUpNextConfig:(id)config;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation VUIFeaturesConfiguration
@@ -165,7 +165,7 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
       _os_signpost_emit_with_name_impl(&dword_1E323F000, v47, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "FeaturesConfiguration.ReadCache", "", v51, 2u);
     }
 
-    v48 = [(VUIFeaturesConfiguration *)v2 _updateFromCache];
+    _updateFromCache = [(VUIFeaturesConfiguration *)v2 _updateFromCache];
     v49 = VUISignpostLogObject();
     if (os_signpost_enabled(v49))
     {
@@ -173,7 +173,7 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
       _os_signpost_emit_with_name_impl(&dword_1E323F000, v49, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "FeaturesConfiguration.ReadCache", "", v51, 2u);
     }
 
-    if (!v48)
+    if (!_updateFromCache)
     {
       [(VUIFeaturesConfiguration *)v2 _populateRootControllerConfig:0];
       [(VUIFeaturesConfiguration *)v2 _populateLaunchConfig:0];
@@ -186,10 +186,10 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
 - (BOOL)_updateFromCache
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIFeaturesConfiguration *)self _cachePath];
-  if (v3)
+  _cachePath = [(VUIFeaturesConfiguration *)self _cachePath];
+  if (_cachePath)
   {
-    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+    v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:_cachePath];
     if (v4)
     {
       v11 = 0;
@@ -245,11 +245,11 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
 - (id)_cachePath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    v4 = [v3 stringByAppendingPathComponent:@"features_config"];
+    v4 = [firstObject stringByAppendingPathComponent:@"features_config"];
   }
 
   else
@@ -267,17 +267,17 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(VUIFeaturesConfiguration *)self _populateConfigWithDictionary:v4 isLaunching:0];
+  dictionaryCopy = dictionary;
+  [(VUIFeaturesConfiguration *)self _populateConfigWithDictionary:dictionaryCopy isLaunching:0];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [dictionaryCopy count])
   {
-    v5 = [(VUIFeaturesConfiguration *)self cachedConfigDictionary];
+    cachedConfigDictionary = [(VUIFeaturesConfiguration *)self cachedConfigDictionary];
 
-    if (!v5)
+    if (!cachedConfigDictionary)
     {
       v6 = objc_opt_new();
       [(VUIFeaturesConfiguration *)self setCachedConfigDictionary:v6];
@@ -292,7 +292,7 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = v4;
+    v10 = dictionaryCopy;
     v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
@@ -322,8 +322,8 @@ void __42__VUIFeaturesConfiguration_sharedInstance__block_invoke()
     }
   }
 
-  v17 = [(VUIFeaturesConfiguration *)self cachedConfigDictionary];
-  v18 = [v17 copy];
+  cachedConfigDictionary2 = [(VUIFeaturesConfiguration *)self cachedConfigDictionary];
+  v18 = [cachedConfigDictionary2 copy];
 
   v19 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -355,24 +355,24 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
   }
 }
 
-- (BOOL)_populateConfigWithDictionary:(id)a3 isLaunching:(BOOL)a4
+- (BOOL)_populateConfigWithDictionary:(id)dictionary isLaunching:(BOOL)launching
 {
-  v4 = a4;
+  launchingCopy = launching;
   v159 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [dictionaryCopy count])
   {
-    v7 = [v6 vui_dictionaryForKey:@"postPlayUpsellConfig"];
+    v7 = [dictionaryCopy vui_dictionaryForKey:@"postPlayUpsellConfig"];
     v8 = +[VUIPostPlayUpsellConfig sharedInstance];
     v136 = v7;
     [v8 configureUsingDictionary:v7];
 
-    v9 = [v6 vui_dictionaryForKey:@"postPlayConfig"];
+    v9 = [dictionaryCopy vui_dictionaryForKey:@"postPlayConfig"];
     v10 = 0x1E695E000uLL;
     v135 = v9;
-    v140 = self;
-    v137 = v4;
+    selfCopy = self;
+    v137 = launchingCopy;
     if ([v9 count])
     {
       v11 = [v9 vui_numberForKey:@"bootStrapInterval"];
@@ -382,8 +382,8 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
         playbackUpNextConfig = self->_playbackUpNextConfig;
         [v11 doubleValue];
         [(VUIPlaybackUpNextConfig *)playbackUpNextConfig setBootstrapInterval:?];
-        v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v14 setObject:v12 forKey:@"bootStrapInterval"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults setObject:v12 forKey:@"bootStrapInterval"];
       }
 
       v15 = [v9 vui_numberForKey:@"documentUpdateOffsetInterval"];
@@ -395,8 +395,8 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
         [(VUIPlaybackUpNextConfig *)v17 setDocumentUpdateOffsetInterval:?];
       }
 
-      v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v19 = [v18 objectForKey:@"maximumAutoPlayableItemsQAOverride"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v19 = [standardUserDefaults2 objectForKey:@"maximumAutoPlayableItemsQAOverride"];
 
       if (!v19)
       {
@@ -405,8 +405,8 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
         if (v20)
         {
           -[VUIPlaybackUpNextConfig setMaximumAutoPlayableItems:](self->_playbackUpNextConfig, "setMaximumAutoPlayableItems:", [v20 unsignedIntegerValue]);
-          v22 = [MEMORY[0x1E695E000] standardUserDefaults];
-          [v22 setObject:v21 forKey:@"maximumAutoPlayableItems"];
+          standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+          [standardUserDefaults3 setObject:v21 forKey:@"maximumAutoPlayableItems"];
         }
       }
 
@@ -423,15 +423,15 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
       v27 = v26;
       if (v26)
       {
-        v28 = v140->_playbackUpNextConfig;
+        v28 = selfCopy->_playbackUpNextConfig;
         [v26 doubleValue];
         [(VUIPlaybackUpNextConfig *)v28 setAutoPlayTimerDuration:?];
-        v29 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v29 setObject:v27 forKey:@"autoPlayTimerDuration"];
+        standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults4 setObject:v27 forKey:@"autoPlayTimerDuration"];
       }
 
-      v30 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v31 = [v30 objectForKey:@"minAutoPlayStopTimeQAOverride"];
+      standardUserDefaults5 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v31 = [standardUserDefaults5 objectForKey:@"minAutoPlayStopTimeQAOverride"];
 
       if (!v31)
       {
@@ -439,11 +439,11 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
         v33 = v32;
         if (v32)
         {
-          v34 = v140->_playbackUpNextConfig;
+          v34 = selfCopy->_playbackUpNextConfig;
           [v32 doubleValue];
           [(VUIPlaybackUpNextConfig *)v34 setMinAutoPlayStopTime:?];
-          v35 = [MEMORY[0x1E695E000] standardUserDefaults];
-          [v35 setObject:v33 forKey:@"minAutoPlayStopTime"];
+          standardUserDefaults6 = [MEMORY[0x1E695E000] standardUserDefaults];
+          [standardUserDefaults6 setObject:v33 forKey:@"minAutoPlayStopTime"];
         }
       }
 
@@ -451,32 +451,32 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
       v37 = v36;
       if (v36)
       {
-        v38 = v140->_playbackUpNextConfig;
+        v38 = selfCopy->_playbackUpNextConfig;
         [v36 doubleValue];
         [(VUIPlaybackUpNextConfig *)v38 setMinTimeIntervalFromEndToDisplay:?];
-        v39 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v39 setObject:v37 forKey:@"minTimeIntervalFromEndToDisplay"];
+        standardUserDefaults7 = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults7 setObject:v37 forKey:@"minTimeIntervalFromEndToDisplay"];
       }
 
       v40 = [v9 vui_numberForKey:@"disablePostPlayTypeHLSQueryParam"];
       v41 = v40;
       if (v40)
       {
-        -[VUIPlaybackUpNextConfig setDisablePostPlayTypeHLSQueryParam:](v140->_playbackUpNextConfig, "setDisablePostPlayTypeHLSQueryParam:", [v40 BOOLValue]);
+        -[VUIPlaybackUpNextConfig setDisablePostPlayTypeHLSQueryParam:](selfCopy->_playbackUpNextConfig, "setDisablePostPlayTypeHLSQueryParam:", [v40 BOOLValue]);
       }
 
-      self = v140;
-      v4 = v137;
+      self = selfCopy;
+      launchingCopy = v137;
       v10 = 0x1E695E000;
     }
 
-    v42 = [v6 vui_dictionaryForKey:@"playerTabsConfig"];
+    v42 = [dictionaryCopy vui_dictionaryForKey:@"playerTabsConfig"];
     if ([v42 count])
     {
       -[VUIPlayerTabsConfig setInfoTabMustHaveImageToDisplay:](self->_playerTabsConfig, "setInfoTabMustHaveImageToDisplay:", [v42 vui_BOOLForKey:@"infoTabMustHaveImageToDisplay" defaultValue:0]);
     }
 
-    v139 = [v6 vui_dictionaryForKey:@"nowPlayingConfig"];
+    v139 = [dictionaryCopy vui_dictionaryForKey:@"nowPlayingConfig"];
     v134 = v42;
     if ([v139 count])
     {
@@ -510,7 +510,7 @@ void __49__VUIFeaturesConfiguration_updateWithDictionary___block_invoke(uint64_t
       v130 = v45;
       if ([v132 count])
       {
-        v126 = v6;
+        v126 = dictionaryCopy;
         v50 = objc_opt_new();
         v154 = 0u;
         v155 = 0u;
@@ -575,10 +575,10 @@ LABEL_42:
           {
 LABEL_48:
 
-            self = v140;
-            [(VUINowPlayingConfig *)v140->_nowPlayingConfig setMediaTypesExcludedFromReporting:obj];
+            self = selfCopy;
+            [(VUINowPlayingConfig *)selfCopy->_nowPlayingConfig setMediaTypesExcludedFromReporting:obj];
 
-            v6 = v126;
+            dictionaryCopy = v126;
             v43 = v139;
             break;
           }
@@ -658,11 +658,11 @@ LABEL_48:
 
       -[VUINowPlayingConfig setShowsLongLoadingAlert:](self->_nowPlayingConfig, "setShowsLongLoadingAlert:", [v43 vui_BOOLForKey:@"showsLongLoadingAlert" defaultValue:1]);
       v82 = [v43 vui_numberForKey:@"longLoadingTimeout"];
-      v83 = self;
+      selfCopy2 = self;
       v84 = v82;
       if (v82)
       {
-        v85 = v83->_nowPlayingConfig;
+        v85 = selfCopy2->_nowPlayingConfig;
         [v82 doubleValue];
         [(VUINowPlayingConfig *)v85 setLongLoadingTimeout:?];
       }
@@ -671,17 +671,17 @@ LABEL_48:
       v87 = v86;
       if (v86)
       {
-        v88 = v140->_nowPlayingConfig;
+        v88 = selfCopy->_nowPlayingConfig;
         [v86 doubleValue];
         [(VUINowPlayingConfig *)v88 setSmartHapticSyncOffset:?];
       }
 
-      self = v140;
-      v4 = v137;
+      self = selfCopy;
+      launchingCopy = v137;
       v10 = 0x1E695E000uLL;
     }
 
-    v89 = [v6 vui_dictionaryForKey:@"autoPlayConfig"];
+    v89 = [dictionaryCopy vui_dictionaryForKey:@"autoPlayConfig"];
     if ([v89 count])
     {
       v90 = [v89 vui_numberForKey:@"autoPlayDelayInterval"];
@@ -693,20 +693,20 @@ LABEL_48:
         [(VUIAutoPlayConfig *)autoPlayConfig setAutoPlayDelayInterval:?];
       }
 
-      v93 = [MEMORY[0x1E69DC938] currentDevice];
-      v94 = [v93 userInterfaceIdiom] == 2;
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      v94 = [currentDevice userInterfaceIdiom] == 2;
 
       [(VUIAutoPlayConfig *)self->_autoPlayConfig setAutoPlayVideoSound:[VUIFeaturesConfiguration BOOLValueForKey:@"autoPlayVideoSound" fromDictionary:v89 defaultValue:v94]];
     }
 
-    v95 = [v6 vui_dictionaryForKey:@"liveLinkConfig"];
+    v95 = [dictionaryCopy vui_dictionaryForKey:@"liveLinkConfig"];
     if ([v95 count])
     {
       -[VUILiveLinkConfig setIsEnabled:](self->_liveLinkConfig, "setIsEnabled:", [v95 vui_BOOLForKey:@"isEnabled" defaultValue:0]);
     }
 
     v148 = v95;
-    v96 = [v6 vui_dictionaryForKey:@"downloadConfig"];
+    v96 = [dictionaryCopy vui_dictionaryForKey:@"downloadConfig"];
     if ([v96 count])
     {
       v97 = [v96 vui_arrayForKey:@"blacklistedEarlyRenewalBrands"];
@@ -715,8 +715,8 @@ LABEL_48:
         [(VUIDownloadConfig *)self->_downloadConfig setBlacklistedEarlyRenewalBrands:v97];
       }
 
-      v98 = [*v10 standardUserDefaults];
-      v99 = [v98 objectForKey:@"allowEnhancedDownloads"];
+      standardUserDefaults8 = [*v10 standardUserDefaults];
+      v99 = [standardUserDefaults8 objectForKey:@"allowEnhancedDownloads"];
 
       if (!v99)
       {
@@ -736,7 +736,7 @@ LABEL_48:
       }
     }
 
-    v104 = [v6 vui_dictionaryForKey:@"syndicationConfig"];
+    v104 = [dictionaryCopy vui_dictionaryForKey:@"syndicationConfig"];
     if ([v104 count])
     {
       v105 = [v104 vui_numberForKey:@"highlightsFetchLimit"];
@@ -747,8 +747,8 @@ LABEL_48:
       }
     }
 
-    [(VUIFeaturesConfiguration *)self parseUpNextConfig:v6];
-    v107 = [v6 vui_dictionaryForKey:@"ageVerificationConfig"];
+    [(VUIFeaturesConfiguration *)self parseUpNextConfig:dictionaryCopy];
+    v107 = [dictionaryCopy vui_dictionaryForKey:@"ageVerificationConfig"];
     if ([v107 count])
     {
       v108 = +[VUIAgeVerification sharedInstance];
@@ -756,7 +756,7 @@ LABEL_48:
     }
 
     v143 = v104;
-    objb = [v6 vui_dictionaryForKey:@"dropOnTabConfig"];
+    objb = [dictionaryCopy vui_dictionaryForKey:@"dropOnTabConfig"];
     if ([objb count])
     {
       v109 = [objb vui_numberForKey:@"daysWithoutOpeningThreshold"];
@@ -783,43 +783,43 @@ LABEL_48:
 
     v142 = v107;
     v150 = v89;
-    v141 = [v6 vui_dictionaryForKey:@"mediaShowcaseConfig"];
+    v141 = [dictionaryCopy vui_dictionaryForKey:@"mediaShowcaseConfig"];
     [(VUIFeaturesConfiguration *)self _populateMediaShowcaseConfig:?];
-    v138 = [v6 vui_dictionaryForKey:@"canonicalConfig"];
+    v138 = [dictionaryCopy vui_dictionaryForKey:@"canonicalConfig"];
     [(VUIFeaturesConfiguration *)self _populateCanonicalConfig:?];
-    v133 = [v6 vui_dictionaryForKey:@"accountConfig"];
+    v133 = [dictionaryCopy vui_dictionaryForKey:@"accountConfig"];
     [(VUIFeaturesConfiguration *)self _populateAccountConfig:?];
-    v131 = [v6 vui_dictionaryForKey:@"accountMessageConfig"];
+    v131 = [dictionaryCopy vui_dictionaryForKey:@"accountMessageConfig"];
     [(VUIFeaturesConfiguration *)self _populateAccountMessageConfig:?];
-    v129 = [v6 vui_dictionaryForKey:@"rootControllerConfig"];
+    v129 = [dictionaryCopy vui_dictionaryForKey:@"rootControllerConfig"];
     [(VUIFeaturesConfiguration *)self _populateRootControllerConfig:?];
-    v127 = [v6 vui_dictionaryForKey:@"multiviewConfig"];
+    v127 = [dictionaryCopy vui_dictionaryForKey:@"multiviewConfig"];
     [(VUIFeaturesConfiguration *)self _populateMultiviewConfig:?];
-    v115 = [v6 vui_dictionaryForKey:@"arQLConfig"];
+    v115 = [dictionaryCopy vui_dictionaryForKey:@"arQLConfig"];
     if ([v115 count])
     {
       v116 = +[VUIARQLPreviewManager sharedInstance];
-      [v116 configureUsingDictionary:v6];
+      [v116 configureUsingDictionary:dictionaryCopy];
     }
 
     v145 = v96;
-    v117 = [v6 vui_dictionaryForKey:@"tabItemsUpdateConfig"];
+    v117 = [dictionaryCopy vui_dictionaryForKey:@"tabItemsUpdateConfig"];
     [(VUIFeaturesConfiguration *)self _populateTabItemsUpdateConfig:v117];
-    v118 = [v6 vui_dictionaryForKey:@"launchConfig"];
-    if (v4)
+    v118 = [dictionaryCopy vui_dictionaryForKey:@"launchConfig"];
+    if (launchingCopy)
     {
       [(VUIFeaturesConfiguration *)self _populateLaunchConfig:v118];
     }
 
-    v119 = [v6 vui_dictionaryForKey:@"libConfig"];
+    v119 = [dictionaryCopy vui_dictionaryForKey:@"libConfig"];
     [(VUIFeaturesConfiguration *)self _populateLibConfig:v119];
-    v120 = [v6 vui_dictionaryForKey:@"gdprConfig"];
+    v120 = [dictionaryCopy vui_dictionaryForKey:@"gdprConfig"];
     [(VUIFeaturesConfiguration *)self _populateGDPRConfig:v120];
-    v121 = [v6 vui_dictionaryForKey:@"timedMetadataConfig"];
+    v121 = [dictionaryCopy vui_dictionaryForKey:@"timedMetadataConfig"];
     [(VUIFeaturesConfiguration *)self _populateTimedMetadataConfig:v121];
-    v122 = [v6 vui_dictionaryForKey:@"livePostPlayConfig"];
+    v122 = [dictionaryCopy vui_dictionaryForKey:@"livePostPlayConfig"];
     [(VUIFeaturesConfiguration *)self _populateLivePostPlayConfig:v122];
-    v123 = [v6 vui_dictionaryForKey:@"tipKitConfig"];
+    v123 = [dictionaryCopy vui_dictionaryForKey:@"tipKitConfig"];
     [(VUIFeaturesConfiguration *)self _populateTipKitConfig:v123];
 
     v124 = 1;
@@ -833,11 +833,11 @@ LABEL_48:
   return v124;
 }
 
-- (void)_cacheFeatureConfiguration:(id)a3
+- (void)_cacheFeatureConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:&v11];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:configuration options:0 error:&v11];
   v5 = v11;
   if (v5)
   {
@@ -862,11 +862,11 @@ LABEL_48:
 
   else
   {
-    v8 = [(VUIFeaturesConfiguration *)self _cachePath];
-    v7 = v8;
-    if (v8)
+    _cachePath = [(VUIFeaturesConfiguration *)self _cachePath];
+    v7 = _cachePath;
+    if (_cachePath)
     {
-      v9 = [v4 writeToFile:v8 atomically:1];
+      v9 = [v4 writeToFile:_cachePath atomically:1];
       v10 = VUIDefaultLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -878,9 +878,9 @@ LABEL_48:
   }
 }
 
-- (void)parseUpNextConfig:(id)a3
+- (void)parseUpNextConfig:(id)config
 {
-  v12 = [a3 vui_dictionaryForKey:@"upNextConfig"];
+  v12 = [config vui_dictionaryForKey:@"upNextConfig"];
   v4 = [v12 count];
   v5 = v12;
   if (v4)
@@ -910,18 +910,18 @@ LABEL_48:
   }
 }
 
-+ (id)defaultsNumberValueForKey:(id)a3
++ (id)defaultsNumberValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   has_internal_content = os_variant_has_internal_content();
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = v5;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = standardUserDefaults;
   if (!has_internal_content)
   {
     goto LABEL_9;
   }
 
-  v7 = [v5 objectForKey:v3];
+  v7 = [standardUserDefaults objectForKey:keyCopy];
   if (!v7)
   {
 LABEL_8:
@@ -968,18 +968,18 @@ LABEL_11:
   return v10;
 }
 
-+ (id)defaultsStringValueForKey:(id)a3
++ (id)defaultsStringValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   has_internal_content = os_variant_has_internal_content();
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = v5;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = standardUserDefaults;
   if (!has_internal_content)
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 objectForKey:v3];
+  v7 = [standardUserDefaults objectForKey:keyCopy];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -1003,16 +1003,16 @@ LABEL_9:
   return v8;
 }
 
-+ (id)stringValueForKey:(id)a3 fromDictionary:(id)a4
++ (id)stringValueForKey:(id)key fromDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  if ([keyCopy length])
   {
-    v7 = [VUIFeaturesConfiguration defaultsStringValueForKey:v5];
+    v7 = [VUIFeaturesConfiguration defaultsStringValueForKey:keyCopy];
     if (!v7)
     {
-      v7 = [v6 vui_stringForKey:v5];
+      v7 = [dictionaryCopy vui_stringForKey:keyCopy];
     }
   }
 
@@ -1024,16 +1024,16 @@ LABEL_9:
   return v7;
 }
 
-+ (id)numberValueForKey:(id)a3 fromDictionary:(id)a4
++ (id)numberValueForKey:(id)key fromDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  if ([keyCopy length])
   {
-    v7 = [VUIFeaturesConfiguration defaultsNumberValueForKey:v5];
+    v7 = [VUIFeaturesConfiguration defaultsNumberValueForKey:keyCopy];
     if (!v7)
     {
-      v7 = [v6 vui_numberForKey:v5];
+      v7 = [dictionaryCopy vui_numberForKey:keyCopy];
     }
   }
 
@@ -1045,35 +1045,35 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)BOOLValueForKey:(id)a3 fromDictionary:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLValueForKey:(id)key fromDictionary:(id)dictionary defaultValue:(BOOL)value
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  valueCopy = value;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  if ([keyCopy length])
   {
-    v9 = [VUIFeaturesConfiguration defaultsNumberValueForKey:v7];
+    v9 = [VUIFeaturesConfiguration defaultsNumberValueForKey:keyCopy];
     if (v9)
     {
-      v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-      LOBYTE(v5) = [v10 BOOLForKey:v7];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      LOBYTE(valueCopy) = [standardUserDefaults BOOLForKey:keyCopy];
     }
 
     else
     {
-      LOBYTE(v5) = [v8 vui_BOOLForKey:v7 defaultValue:v5];
+      LOBYTE(valueCopy) = [dictionaryCopy vui_BOOLForKey:keyCopy defaultValue:valueCopy];
     }
   }
 
-  return v5;
+  return valueCopy;
 }
 
-- (void)_populateMediaShowcaseConfig:(id)a3
+- (void)_populateMediaShowcaseConfig:(id)config
 {
-  v123 = a3;
-  if ([v123 count])
+  configCopy = config;
+  if ([configCopy count])
   {
-    v4 = [VUIFeaturesConfiguration numberValueForKey:@"playbackDelayInterval" fromDictionary:v123];
+    v4 = [VUIFeaturesConfiguration numberValueForKey:@"playbackDelayInterval" fromDictionary:configCopy];
     v5 = v4;
     if (v4)
     {
@@ -1082,7 +1082,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)mediaShowcaseConfig setPlaybackDelayInterval:?];
     }
 
-    v7 = [VUIFeaturesConfiguration numberValueForKey:@"animationTransitionDuration" fromDictionary:v123];
+    v7 = [VUIFeaturesConfiguration numberValueForKey:@"animationTransitionDuration" fromDictionary:configCopy];
     v8 = v7;
     if (v7)
     {
@@ -1091,7 +1091,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v9 setAnimationTransitionDuration:?];
     }
 
-    v10 = [VUIFeaturesConfiguration numberValueForKey:@"backgroundVolume" fromDictionary:v123];
+    v10 = [VUIFeaturesConfiguration numberValueForKey:@"backgroundVolume" fromDictionary:configCopy];
     v11 = v10;
     if (v10)
     {
@@ -1100,7 +1100,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v12 setBackgroundVolume:?];
     }
 
-    v13 = [VUIFeaturesConfiguration numberValueForKey:@"foregroundVolume" fromDictionary:v123];
+    v13 = [VUIFeaturesConfiguration numberValueForKey:@"foregroundVolume" fromDictionary:configCopy];
     v14 = v13;
     if (v13)
     {
@@ -1109,8 +1109,8 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v15 setForegroundVolume:?];
     }
 
-    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setBackgroundMediaTransferEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"backgroundMediaTransferEnabled" fromDictionary:v123 defaultValue:1]];
-    v16 = [VUIFeaturesConfiguration numberValueForKey:@"backgroundMediaTransferAnimationDuration" fromDictionary:v123];
+    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setBackgroundMediaTransferEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"backgroundMediaTransferEnabled" fromDictionary:configCopy defaultValue:1]];
+    v16 = [VUIFeaturesConfiguration numberValueForKey:@"backgroundMediaTransferAnimationDuration" fromDictionary:configCopy];
     v17 = v16;
     if (v16)
     {
@@ -1119,7 +1119,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v18 setBackgroundMediaTransferAnimationDuration:?];
     }
 
-    v19 = [VUIFeaturesConfiguration numberValueForKey:@"fullscreenPlaybackTransitionDuration" fromDictionary:v123];
+    v19 = [VUIFeaturesConfiguration numberValueForKey:@"fullscreenPlaybackTransitionDuration" fromDictionary:configCopy];
     v20 = v19;
     if (v19)
     {
@@ -1128,7 +1128,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v21 setBackgroundMediaFullscreenTransitionDuration:v22];
     }
 
-    v23 = [VUIFeaturesConfiguration numberValueForKey:@"volumeTransitionAnimationDuration" fromDictionary:v123];
+    v23 = [VUIFeaturesConfiguration numberValueForKey:@"volumeTransitionAnimationDuration" fromDictionary:configCopy];
     v24 = v23;
     if (v23)
     {
@@ -1138,7 +1138,7 @@ LABEL_9:
     }
 
     v121 = v5;
-    v27 = [VUIFeaturesConfiguration numberValueForKey:@"numberOfVolumeIncrementsKey" fromDictionary:v123];
+    v27 = [VUIFeaturesConfiguration numberValueForKey:@"numberOfVolumeIncrementsKey" fromDictionary:configCopy];
     v122 = v27;
     if (v27)
     {
@@ -1149,8 +1149,8 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v29 setBackgroundVolume:?];
     }
 
-    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setRubberBandingEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"rubberBandingEnabled" fromDictionary:v123 defaultValue:1]];
-    v30 = [VUIFeaturesConfiguration numberValueForKey:@"swipingEndAnimationDuration" fromDictionary:v123];
+    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setRubberBandingEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"rubberBandingEnabled" fromDictionary:configCopy defaultValue:1]];
+    v30 = [VUIFeaturesConfiguration numberValueForKey:@"swipingEndAnimationDuration" fromDictionary:configCopy];
     v31 = v30;
     if (v30)
     {
@@ -1163,7 +1163,7 @@ LABEL_9:
 
     v120 = v8;
     v114 = v31;
-    v35 = [VUIFeaturesConfiguration numberValueForKey:@"autoSwipeAnimationDuration" fromDictionary:v123];
+    v35 = [VUIFeaturesConfiguration numberValueForKey:@"autoSwipeAnimationDuration" fromDictionary:configCopy];
     v36 = v35;
     if (v35)
     {
@@ -1175,8 +1175,8 @@ LABEL_9:
     }
 
     v118 = v14;
-    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setCarouselBehaviorEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"carouselBehaviorEnabled" fromDictionary:v123 defaultValue:1]];
-    v40 = [VUIFeaturesConfiguration numberValueForKey:@"titleViewTransitionDistance" fromDictionary:v123];
+    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setCarouselBehaviorEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"carouselBehaviorEnabled" fromDictionary:configCopy defaultValue:1]];
+    v40 = [VUIFeaturesConfiguration numberValueForKey:@"titleViewTransitionDistance" fromDictionary:configCopy];
     v41 = v40;
     if (v40)
     {
@@ -1190,7 +1190,7 @@ LABEL_9:
     v115 = v24;
     v44 = v11;
     v112 = v41;
-    v45 = [VUIFeaturesConfiguration numberValueForKey:@"navigationBarTransitionDistance" fromDictionary:v123];
+    v45 = [VUIFeaturesConfiguration numberValueForKey:@"navigationBarTransitionDistance" fromDictionary:configCopy];
     v46 = v45;
     if (v45)
     {
@@ -1202,8 +1202,8 @@ LABEL_9:
     }
 
     v49 = v20;
-    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setAutoAdvanceToNextPageEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"autoAdvanceToNextPageEnabled" fromDictionary:v123 defaultValue:1]];
-    v50 = [VUIFeaturesConfiguration numberValueForKey:@"advanceToNextPageDelayDuration" fromDictionary:v123];
+    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setAutoAdvanceToNextPageEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"autoAdvanceToNextPageEnabled" fromDictionary:configCopy defaultValue:1]];
+    v50 = [VUIFeaturesConfiguration numberValueForKey:@"advanceToNextPageDelayDuration" fromDictionary:configCopy];
     v51 = v50;
     if (v50)
     {
@@ -1216,7 +1216,7 @@ LABEL_9:
 
     v55 = v17;
     v110 = v51;
-    v56 = [VUIFeaturesConfiguration numberValueForKey:@"advanceToNextPageDelayDurationImageOnly" fromDictionary:v123];
+    v56 = [VUIFeaturesConfiguration numberValueForKey:@"advanceToNextPageDelayDurationImageOnly" fromDictionary:configCopy];
     v57 = v56;
     if (v56)
     {
@@ -1227,8 +1227,8 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v60 setAdvanceToNextPageDelayDurationImageOnly:v59];
     }
 
-    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setParallaxEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"parallaxEnabled" fromDictionary:v123 defaultValue:1]];
-    v61 = [VUIFeaturesConfiguration numberValueForKey:@"parallaxRatio" fromDictionary:v123];
+    [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setParallaxEnabled:[VUIFeaturesConfiguration BOOLValueForKey:@"parallaxEnabled" fromDictionary:configCopy defaultValue:1]];
+    v61 = [VUIFeaturesConfiguration numberValueForKey:@"parallaxRatio" fromDictionary:configCopy];
     v62 = v61;
     if (v61)
     {
@@ -1240,7 +1240,7 @@ LABEL_9:
     }
 
     v108 = v62;
-    v65 = [VUIFeaturesConfiguration numberValueForKey:@"mirrorSlideParallaxRatio" fromDictionary:v123];
+    v65 = [VUIFeaturesConfiguration numberValueForKey:@"mirrorSlideParallaxRatio" fromDictionary:configCopy];
     v66 = v65;
     if (v65)
     {
@@ -1252,7 +1252,7 @@ LABEL_9:
     }
 
     v107 = v66;
-    v69 = [VUIFeaturesConfiguration numberValueForKey:@"visibleVideoHeightPercentage" fromDictionary:v123];
+    v69 = [VUIFeaturesConfiguration numberValueForKey:@"visibleVideoHeightPercentage" fromDictionary:configCopy];
     v70 = v55;
     v71 = v69;
     if (v69)
@@ -1265,7 +1265,7 @@ LABEL_9:
     }
 
     v113 = v36;
-    v74 = [VUIFeaturesConfiguration numberValueForKey:@"metadataFadeOutSpeed" fromDictionary:v123];
+    v74 = [VUIFeaturesConfiguration numberValueForKey:@"metadataFadeOutSpeed" fromDictionary:configCopy];
     v75 = v74;
     if (v74)
     {
@@ -1278,7 +1278,7 @@ LABEL_9:
 
     v105 = v75;
     v111 = v46;
-    v78 = [VUIFeaturesConfiguration numberValueForKey:@"metadataFadeInSpeed" fromDictionary:v123];
+    v78 = [VUIFeaturesConfiguration numberValueForKey:@"metadataFadeInSpeed" fromDictionary:configCopy];
     v79 = v78;
     if (v78)
     {
@@ -1290,7 +1290,7 @@ LABEL_9:
     v104 = v79;
     v109 = v57;
     v119 = v44;
-    v81 = [VUIFeaturesConfiguration numberValueForKey:@"swipeCompletionSpeedFactor" fromDictionary:v123];
+    v81 = [VUIFeaturesConfiguration numberValueForKey:@"swipeCompletionSpeedFactor" fromDictionary:configCopy];
     v82 = v81;
     if (v81)
     {
@@ -1299,7 +1299,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v83 setSwipeCompletionSpeedFactor:?];
     }
 
-    v84 = [VUIFeaturesConfiguration numberValueForKey:@"itemHoverDelayDuration" fromDictionary:v123];
+    v84 = [VUIFeaturesConfiguration numberValueForKey:@"itemHoverDelayDuration" fromDictionary:configCopy];
     v85 = v84;
     if (v84)
     {
@@ -1309,7 +1309,7 @@ LABEL_9:
     }
 
     v117 = v70;
-    v87 = [VUIFeaturesConfiguration numberValueForKey:@"gradientUsesImageColor" fromDictionary:v123];
+    v87 = [VUIFeaturesConfiguration numberValueForKey:@"gradientUsesImageColor" fromDictionary:configCopy];
     v88 = v87;
     if (v87)
     {
@@ -1318,7 +1318,7 @@ LABEL_9:
 
     v106 = v71;
     v116 = v49;
-    v89 = [VUIFeaturesConfiguration numberValueForKey:@"hideMuteButtonDelayDuration" fromDictionary:v123];
+    v89 = [VUIFeaturesConfiguration numberValueForKey:@"hideMuteButtonDelayDuration" fromDictionary:configCopy];
     v90 = v89;
     if (v89)
     {
@@ -1327,7 +1327,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v91 setHideMuteButtonDelayDuration:?];
     }
 
-    v92 = [VUIFeaturesConfiguration numberValueForKey:@"hidePageIndicatorsDelayDuration" fromDictionary:v123];
+    v92 = [VUIFeaturesConfiguration numberValueForKey:@"hidePageIndicatorsDelayDuration" fromDictionary:configCopy];
     v93 = v92;
     if (v92)
     {
@@ -1336,19 +1336,19 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v94 setHidePageIndicatorsDelayDuration:?];
     }
 
-    v95 = [VUIFeaturesConfiguration numberValueForKey:@"preloadImageBatchSize" fromDictionary:v123];
+    v95 = [VUIFeaturesConfiguration numberValueForKey:@"preloadImageBatchSize" fromDictionary:configCopy];
     v96 = v95;
     if (v95)
     {
       -[VUIMediaShowcasingConfig setPreloadImageBatchSize:](self->_mediaShowcaseConfig, "setPreloadImageBatchSize:", [v95 integerValue]);
     }
 
-    if ([VUIFeaturesConfiguration BOOLValueForKey:@"mediaShowcasingAllowsFullscreenTransition" fromDictionary:v123 defaultValue:0])
+    if ([VUIFeaturesConfiguration BOOLValueForKey:@"mediaShowcasingAllowsFullscreenTransition" fromDictionary:configCopy defaultValue:0])
     {
       [(VUIMediaShowcasingConfig *)self->_mediaShowcaseConfig setAllowsFullscreenMediaTransition:1];
     }
 
-    v97 = [VUIFeaturesConfiguration numberValueForKey:@"sidebarOpenDuringAnimationThreshold" fromDictionary:v123];
+    v97 = [VUIFeaturesConfiguration numberValueForKey:@"sidebarOpenDuringAnimationThreshold" fromDictionary:configCopy];
     v98 = v97;
     if (v97)
     {
@@ -1358,7 +1358,7 @@ LABEL_9:
       [(VUIMediaShowcasingConfig *)v99 setSidebarOpenDuringAnimationThreshold:?];
     }
 
-    v100 = [VUIFeaturesConfiguration numberValueForKey:@"mediaShowcaseHeightThresholdForBottomPadding" fromDictionary:v123];
+    v100 = [VUIFeaturesConfiguration numberValueForKey:@"mediaShowcaseHeightThresholdForBottomPadding" fromDictionary:configCopy];
     v101 = v100;
     if (v100)
     {
@@ -1371,12 +1371,12 @@ LABEL_9:
   MEMORY[0x1EEE66C30]();
 }
 
-- (void)_populateCanonicalConfig:(id)a3
+- (void)_populateCanonicalConfig:(id)config
 {
-  v12 = a3;
-  if ([v12 count])
+  configCopy = config;
+  if ([configCopy count])
   {
-    v4 = [VUIFeaturesConfiguration numberValueForKey:@"videoViewOffscreenThresholdToStopPlayback" fromDictionary:v12];
+    v4 = [VUIFeaturesConfiguration numberValueForKey:@"videoViewOffscreenThresholdToStopPlayback" fromDictionary:configCopy];
     v5 = v4;
     if (v4)
     {
@@ -1385,7 +1385,7 @@ LABEL_9:
       [(VUICanonicalConfig *)canonicalConfig setVideoViewOffscreenThresholdToStopPlayback:?];
     }
 
-    v7 = [VUIFeaturesConfiguration numberValueForKey:@"playbackDelayInterval" fromDictionary:v12];
+    v7 = [VUIFeaturesConfiguration numberValueForKey:@"playbackDelayInterval" fromDictionary:configCopy];
     v8 = v7;
     if (v7)
     {
@@ -1394,13 +1394,13 @@ LABEL_9:
       [(VUICanonicalConfig *)v9 setPlaybackDelayInterval:?];
     }
 
-    v10 = [VUIFeaturesConfiguration stringValueForKey:@"storeTabIdentifer" fromDictionary:v12];
+    v10 = [VUIFeaturesConfiguration stringValueForKey:@"storeTabIdentifer" fromDictionary:configCopy];
     if (v10)
     {
       [(VUICanonicalConfig *)self->_canonicalConfig setStoreTabIdentifier:v10];
     }
 
-    v11 = [VUIFeaturesConfiguration stringValueForKey:@"tvShowsTabIdentifier" fromDictionary:v12];
+    v11 = [VUIFeaturesConfiguration stringValueForKey:@"tvShowsTabIdentifier" fromDictionary:configCopy];
     if (v11)
     {
       [(VUICanonicalConfig *)self->_canonicalConfig setTvShowsTabIdentifier:v11];
@@ -1410,11 +1410,11 @@ LABEL_9:
   MEMORY[0x1EEE66C30]();
 }
 
-- (void)_populateAccountConfig:(id)a3
+- (void)_populateAccountConfig:(id)config
 {
-  v4 = a3;
-  v6 = [VUIFeaturesConfiguration numberValueForKey:@"showAccountSettingButtonOnLibraryTab" fromDictionary:v4];
-  v5 = [VUIFeaturesConfiguration numberValueForKey:@"showAccountSettingOnSidebar" fromDictionary:v4];
+  configCopy = config;
+  v6 = [VUIFeaturesConfiguration numberValueForKey:@"showAccountSettingButtonOnLibraryTab" fromDictionary:configCopy];
+  v5 = [VUIFeaturesConfiguration numberValueForKey:@"showAccountSettingOnSidebar" fromDictionary:configCopy];
 
   if (v6)
   {
@@ -1427,14 +1427,14 @@ LABEL_9:
   }
 }
 
-- (void)_populateAccountMessageConfig:(id)a3
+- (void)_populateAccountMessageConfig:(id)config
 {
-  v4 = a3;
-  v10 = [v4 objectForKey:@"visibilityBehaviours"];
+  configCopy = config;
+  v10 = [configCopy objectForKey:@"visibilityBehaviours"];
   v5 = [VUIFeaturesConfiguration defaultsStringValueForKey:@"fallbackVisibilityType"];
-  v6 = [v4 objectForKey:@"fallbackVisibilityType"];
-  v7 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysForceOpenSidebarAnimated" fromDictionary:v4];
-  v8 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysForceOpenSidebarNonAnimated" fromDictionary:v4];
+  v6 = [configCopy objectForKey:@"fallbackVisibilityType"];
+  v7 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysForceOpenSidebarAnimated" fromDictionary:configCopy];
+  v8 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysForceOpenSidebarNonAnimated" fromDictionary:configCopy];
 
   if (v10)
   {
@@ -1458,43 +1458,43 @@ LABEL_9:
   }
 }
 
-- (void)_populateRootControllerConfig:(id)a3
+- (void)_populateRootControllerConfig:(id)config
 {
-  v35 = a3;
+  configCopy = config;
   v4 = [VUIFeaturesConfiguration numberValueForKey:@"normalControllerLimit" fromDictionary:?];
   if (v4)
   {
     [(VUIRootControllerConfig *)self->_rootControllerConfig setNormalControllerLimit:v4];
   }
 
-  v5 = [VUIFeaturesConfiguration numberValueForKey:@"warningControllerLimit" fromDictionary:v35];
+  v5 = [VUIFeaturesConfiguration numberValueForKey:@"warningControllerLimit" fromDictionary:configCopy];
   if (v5)
   {
     [(VUIRootControllerConfig *)self->_rootControllerConfig setWarningControllerLimit:v5];
   }
 
-  v6 = [VUIFeaturesConfiguration numberValueForKey:@"criticalControllerLimit" fromDictionary:v35];
+  v6 = [VUIFeaturesConfiguration numberValueForKey:@"criticalControllerLimit" fromDictionary:configCopy];
   if (v6)
   {
     [(VUIRootControllerConfig *)self->_rootControllerConfig setCriticalControllerLimit:v6];
   }
 
   v34 = v4;
-  v7 = [v35 vui_arrayForKey:@"doNotPurgeList"];
+  v7 = [configCopy vui_arrayForKey:@"doNotPurgeList"];
   if (v7)
   {
     [(VUIRootControllerConfig *)self->_rootControllerConfig setDoNotPurgeList:v7];
   }
 
   v31 = v7;
-  v8 = [VUIFeaturesConfiguration numberValueForKey:@"sidebarImagePrefetchBatchLimit" fromDictionary:v35];
+  v8 = [VUIFeaturesConfiguration numberValueForKey:@"sidebarImagePrefetchBatchLimit" fromDictionary:configCopy];
   v9 = v8;
   if (v8)
   {
     -[VUIRootControllerConfig setSidebarImagePrefetchBatchLimit:](self->_rootControllerConfig, "setSidebarImagePrefetchBatchLimit:", [v8 integerValue]);
   }
 
-  v10 = [VUIFeaturesConfiguration numberValueForKey:@"programmaticOpenSidebarTimeout" fromDictionary:v35];
+  v10 = [VUIFeaturesConfiguration numberValueForKey:@"programmaticOpenSidebarTimeout" fromDictionary:configCopy];
   v11 = v10;
   if (v10)
   {
@@ -1503,7 +1503,7 @@ LABEL_9:
     [(VUIRootControllerConfig *)rootControllerConfig setProgrammaticOpenSidebarTimeout:?];
   }
 
-  v13 = [VUIFeaturesConfiguration numberValueForKey:@"userDrivenSidebarTimeout" fromDictionary:v35];
+  v13 = [VUIFeaturesConfiguration numberValueForKey:@"userDrivenSidebarTimeout" fromDictionary:configCopy];
   v14 = v13;
   if (v13)
   {
@@ -1512,7 +1512,7 @@ LABEL_9:
     [(VUIRootControllerConfig *)v15 setUserDrivenSidebarTimeout:?];
   }
 
-  v16 = [VUIFeaturesConfiguration numberValueForKey:@"stackActiveDuration" fromDictionary:v35];
+  v16 = [VUIFeaturesConfiguration numberValueForKey:@"stackActiveDuration" fromDictionary:configCopy];
   v17 = v16;
   if (v16)
   {
@@ -1522,7 +1522,7 @@ LABEL_9:
   }
 
   v33 = v5;
-  v19 = [VUIFeaturesConfiguration numberValueForKey:@"numTeachableMomentsPerUser" fromDictionary:v35];
+  v19 = [VUIFeaturesConfiguration numberValueForKey:@"numTeachableMomentsPerUser" fromDictionary:configCopy];
   v20 = v19;
   if (v19)
   {
@@ -1530,7 +1530,7 @@ LABEL_9:
   }
 
   v32 = v6;
-  v21 = [VUIFeaturesConfiguration numberValueForKey:@"teachableMomentSidebarTimeout" fromDictionary:v35];
+  v21 = [VUIFeaturesConfiguration numberValueForKey:@"teachableMomentSidebarTimeout" fromDictionary:configCopy];
   v22 = v21;
   if (v21)
   {
@@ -1539,7 +1539,7 @@ LABEL_9:
     [(VUIRootControllerConfig *)v23 setTeachableMomentSidebarTimeout:?];
   }
 
-  v24 = [VUIFeaturesConfiguration numberValueForKey:@"teachableMomentPillUITimeout" fromDictionary:v35];
+  v24 = [VUIFeaturesConfiguration numberValueForKey:@"teachableMomentPillUITimeout" fromDictionary:configCopy];
   v25 = v24;
   if (v24)
   {
@@ -1548,7 +1548,7 @@ LABEL_9:
     [(VUIRootControllerConfig *)v26 setTeachableMomentPillUITimeout:?];
   }
 
-  v27 = [VUIFeaturesConfiguration numberValueForKey:@"teachableBackgroundReshowTime" fromDictionary:v35];
+  v27 = [VUIFeaturesConfiguration numberValueForKey:@"teachableBackgroundReshowTime" fromDictionary:configCopy];
   v28 = v27;
   if (v27)
   {
@@ -1557,20 +1557,20 @@ LABEL_9:
     [(VUIRootControllerConfig *)v29 setTeachableBackgroundReshowTime:?];
   }
 
-  v30 = [v35 vui_numberForKey:@"teachableMomentImpressionsDictionaryHash"];
+  v30 = [configCopy vui_numberForKey:@"teachableMomentImpressionsDictionaryHash"];
   if (v30)
   {
     [(VUIRootControllerConfig *)self->_rootControllerConfig setTeachableMomentImpressionsDictionaryHash:v30];
   }
 }
 
-- (void)_populateMultiviewConfig:(id)a3
+- (void)_populateMultiviewConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 vui_numberForKey:@"isEnabled"];
-  v6 = [v4 vui_numberForKey:@"useExperienceController"];
-  v7 = [v4 vui_numberForKey:@"maximumPlayerCount"];
+  configCopy = config;
+  v5 = [configCopy vui_numberForKey:@"isEnabled"];
+  v6 = [configCopy vui_numberForKey:@"useExperienceController"];
+  v7 = [configCopy vui_numberForKey:@"maximumPlayerCount"];
 
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1595,20 +1595,20 @@ LABEL_9:
   }
 }
 
-- (void)_updateTVSettingsIfNeeded:(BOOL)a3
+- (void)_updateTVSettingsIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v14 = *MEMORY[0x1E69E9840];
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v12 = 67109120;
-    v13 = v3;
+    v13 = neededCopy;
     _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_INFO, "FeaturesConfiguration:: _updateTVSettingsIfNeeded autoPlayVideoSound = %d", &v12, 8u);
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 valueForKey:@"AutoPlayBgVideoSoundUserHasChanged"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults valueForKey:@"AutoPlayBgVideoSoundUserHasChanged"];
   v7 = v6;
   if (v6 && [v6 BOOLValue])
   {
@@ -1622,36 +1622,36 @@ LABEL_9:
 
   else
   {
-    v9 = [v5 valueForKey:@"AutoPlayBgVideoSound"];
+    v9 = [standardUserDefaults valueForKey:@"AutoPlayBgVideoSound"];
     v8 = v9;
     if (v9)
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 1;
+      bOOLValue = 1;
     }
 
-    if (v10 != v3)
+    if (bOOLValue != neededCopy)
     {
       v11 = VUIDefaultLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = 67109120;
-        v13 = v3;
+        v13 = neededCopy;
         _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "FeaturesConfiguration:: Update AutoPlayBgVideoSound to %d", &v12, 8u);
       }
 
-      [v5 setBool:v3 forKey:@"AutoPlayBgVideoSound"];
+      [standardUserDefaults setBool:neededCopy forKey:@"AutoPlayBgVideoSound"];
     }
   }
 }
 
-- (void)_populateTabItemsUpdateConfig:(id)a3
+- (void)_populateTabItemsUpdateConfig:(id)config
 {
-  v4 = [a3 vui_dictionaryForKey:@"eventDescriptors"];
+  v4 = [config vui_dictionaryForKey:@"eventDescriptors"];
   if (v4)
   {
     v5 = v4;
@@ -1660,26 +1660,26 @@ LABEL_9:
   }
 }
 
-- (void)_populateLaunchConfig:(id)a3
+- (void)_populateLaunchConfig:(id)config
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v73 = [v4 count];
+    v73 = [configCopy count];
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "FeaturesConfiguration:: populateLaunchConfig itemCount: %lu", buf, 0xCu);
   }
 
-  v6 = [VUIFeaturesConfiguration numberValueForKey:@"useConfigCacheIgnoreExpiry" fromDictionary:v4];
+  v6 = [VUIFeaturesConfiguration numberValueForKey:@"useConfigCacheIgnoreExpiry" fromDictionary:configCopy];
   v7 = v6;
   if (v6)
   {
     -[VUILaunchConfig setUseConfigCacheIgnoreExpiry:](self->_launchConfig, "setUseConfigCacheIgnoreExpiry:", [v6 BOOLValue]);
   }
 
-  v8 = [VUIFeaturesConfiguration numberValueForKey:@"extendedCacheExpireDuration" fromDictionary:v4];
+  v8 = [VUIFeaturesConfiguration numberValueForKey:@"extendedCacheExpireDuration" fromDictionary:configCopy];
   v9 = v8;
   if (v8)
   {
@@ -1688,7 +1688,7 @@ LABEL_9:
     [(VUILaunchConfig *)launchConfig setExtendedCacheExpireDuration:?];
   }
 
-  v11 = [VUIFeaturesConfiguration numberValueForKey:@"useSharedURLSession" fromDictionary:v4];
+  v11 = [VUIFeaturesConfiguration numberValueForKey:@"useSharedURLSession" fromDictionary:configCopy];
   v12 = v11;
   if (v11)
   {
@@ -1696,14 +1696,14 @@ LABEL_9:
   }
 
   v69 = v12;
-  v13 = [VUIFeaturesConfiguration numberValueForKey:@"usePrepareImageForDisplay" fromDictionary:v4];
+  v13 = [VUIFeaturesConfiguration numberValueForKey:@"usePrepareImageForDisplay" fromDictionary:configCopy];
   v14 = v13;
   if (v13)
   {
     -[VUILaunchConfig setUsePrepareImageForDisplay:](self->_launchConfig, "setUsePrepareImageForDisplay:", [v13 BOOLValue]);
   }
 
-  v15 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmUTSConnection" fromDictionary:v4];
+  v15 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmUTSConnection" fromDictionary:configCopy];
   v16 = v15;
   if (v15)
   {
@@ -1711,14 +1711,14 @@ LABEL_9:
   }
 
   v64 = v14;
-  v17 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysPrefetchAppConfiguration" fromDictionary:v4];
+  v17 = [VUIFeaturesConfiguration numberValueForKey:@"alwaysPrefetchAppConfiguration" fromDictionary:configCopy];
   v18 = v17;
   if (v17)
   {
     -[VUILaunchConfig setAlwaysPrefetchAppConfiguration:](self->_launchConfig, "setAlwaysPrefetchAppConfiguration:", [v17 BOOLValue]);
   }
 
-  v19 = [VUIFeaturesConfiguration numberValueForKey:@"prefetchLastSelectedTab" fromDictionary:v4];
+  v19 = [VUIFeaturesConfiguration numberValueForKey:@"prefetchLastSelectedTab" fromDictionary:configCopy];
   v20 = v19;
   if (v19)
   {
@@ -1726,7 +1726,7 @@ LABEL_9:
   }
 
   v66 = v20;
-  v21 = [VUIFeaturesConfiguration numberValueForKey:@"prefetchedTabExpirationDuration" fromDictionary:v4];
+  v21 = [VUIFeaturesConfiguration numberValueForKey:@"prefetchedTabExpirationDuration" fromDictionary:configCopy];
   v22 = v21;
   if (v21)
   {
@@ -1736,7 +1736,7 @@ LABEL_9:
   }
 
   v59 = v22;
-  v24 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmImageConnection" fromDictionary:v4];
+  v24 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmImageConnection" fromDictionary:configCopy];
   v25 = v24;
   if (v24)
   {
@@ -1744,7 +1744,7 @@ LABEL_9:
   }
 
   v65 = v25;
-  v26 = [VUIFeaturesConfiguration numberValueForKey:@"minimalSessionImageLoading" fromDictionary:v4];
+  v26 = [VUIFeaturesConfiguration numberValueForKey:@"minimalSessionImageLoading" fromDictionary:configCopy];
   v27 = v26;
   if (v26)
   {
@@ -1752,13 +1752,13 @@ LABEL_9:
   }
 
   v28 = v9;
-  v29 = [VUIFeaturesConfiguration stringValueForKey:@"prewarmImageUrl" fromDictionary:v4];
+  v29 = [VUIFeaturesConfiguration stringValueForKey:@"prewarmImageUrl" fromDictionary:configCopy];
   if (v29)
   {
     [(VUILaunchConfig *)self->_launchConfig setPrewarmImageUrl:v29];
   }
 
-  v30 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmJetpackLoading" fromDictionary:v4];
+  v30 = [VUIFeaturesConfiguration numberValueForKey:@"prewarmJetpackLoading" fromDictionary:configCopy];
   v31 = v30;
   v62 = v29;
   if (v30)
@@ -1768,7 +1768,7 @@ LABEL_9:
 
   v61 = v31;
   v68 = v16;
-  v32 = [VUIFeaturesConfiguration numberValueForKey:@"layoutReuseIdleTimeToLive" fromDictionary:v4];
+  v32 = [VUIFeaturesConfiguration numberValueForKey:@"layoutReuseIdleTimeToLive" fromDictionary:configCopy];
   v33 = v32;
   if (v32)
   {
@@ -1776,7 +1776,7 @@ LABEL_9:
   }
 
   v60 = v33;
-  v34 = [VUIFeaturesConfiguration numberValueForKey:@"collectionUseIdForReuseIdEnabled" fromDictionary:v4];
+  v34 = [VUIFeaturesConfiguration numberValueForKey:@"collectionUseIdForReuseIdEnabled" fromDictionary:configCopy];
   v35 = v34;
   v36 = v28;
   if (v34)
@@ -1791,7 +1791,7 @@ LABEL_9:
     }
   }
 
-  v38 = [VUIFeaturesConfiguration numberValueForKey:@"gridViewUseItemIdAsReuseId" fromDictionary:v4];
+  v38 = [VUIFeaturesConfiguration numberValueForKey:@"gridViewUseItemIdAsReuseId" fromDictionary:configCopy];
   v39 = v38;
   if (v38)
   {
@@ -1806,7 +1806,7 @@ LABEL_9:
   }
 
   v67 = v18;
-  v41 = [VUIFeaturesConfiguration numberValueForKey:@"memoryImageCacheEnabled" fromDictionary:v4];
+  v41 = [VUIFeaturesConfiguration numberValueForKey:@"memoryImageCacheEnabled" fromDictionary:configCopy];
   v42 = v41;
   if (v41)
   {
@@ -1821,7 +1821,7 @@ LABEL_9:
   }
 
   v71 = v7;
-  v44 = [VUIFeaturesConfiguration numberValueForKey:@"imageInMemoryCacheSizeLimitInBytes" fromDictionary:v4];
+  v44 = [VUIFeaturesConfiguration numberValueForKey:@"imageInMemoryCacheSizeLimitInBytes" fromDictionary:configCopy];
   if (v35)
   {
     -[VUILaunchConfig setImageInMemoryCacheSizeLimitInBytes:](self->_launchConfig, "setImageInMemoryCacheSizeLimitInBytes:", [v35 integerValue]);
@@ -1835,7 +1835,7 @@ LABEL_9:
   }
 
   v70 = v36;
-  v46 = [VUIFeaturesConfiguration numberValueForKey:@"deferRichTextViewUpdate" fromDictionary:v4];
+  v46 = [VUIFeaturesConfiguration numberValueForKey:@"deferRichTextViewUpdate" fromDictionary:configCopy];
   v47 = v46;
   if (v46)
   {
@@ -1850,7 +1850,7 @@ LABEL_9:
   }
 
   v63 = v27;
-  v49 = [VUIFeaturesConfiguration numberValueForKey:@"checkRemoteServerReachability" fromDictionary:v4];
+  v49 = [VUIFeaturesConfiguration numberValueForKey:@"checkRemoteServerReachability" fromDictionary:configCopy];
   v50 = v49;
   if (v49)
   {
@@ -1866,7 +1866,7 @@ LABEL_9:
 
   v52 = v35;
   v53 = v39;
-  v54 = [VUIFeaturesConfiguration numberValueForKey:@"remoteServerReachabilityTimeoutDuration" fromDictionary:v4];
+  v54 = [VUIFeaturesConfiguration numberValueForKey:@"remoteServerReachabilityTimeoutDuration" fromDictionary:configCopy];
   v55 = v54;
   if (v54)
   {
@@ -1882,20 +1882,20 @@ LABEL_9:
     }
   }
 
-  v58 = [VUIFeaturesConfiguration stringValueForKey:@"prewarmUTSUrl" fromDictionary:v4];
+  v58 = [VUIFeaturesConfiguration stringValueForKey:@"prewarmUTSUrl" fromDictionary:configCopy];
   if (v58)
   {
     [(VUILaunchConfig *)self->_launchConfig setPrewarmUTSUrl:v58];
   }
 }
 
-- (void)_populateLibConfig:(id)a3
+- (void)_populateLibConfig:(id)config
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    v5 = [VUIFeaturesConfiguration numberValueForKey:@"collectionItemLimit" fromDictionary:v4];
+    v5 = [VUIFeaturesConfiguration numberValueForKey:@"collectionItemLimit" fromDictionary:configCopy];
     v6 = v5;
     if (v5)
     {
@@ -1912,7 +1912,7 @@ LABEL_9:
       }
     }
 
-    v8 = [VUIFeaturesConfiguration numberValueForKey:@"focusDebounceInterval" fromDictionary:v4];
+    v8 = [VUIFeaturesConfiguration numberValueForKey:@"focusDebounceInterval" fromDictionary:configCopy];
     v9 = v8;
     if (v8)
     {
@@ -1921,7 +1921,7 @@ LABEL_9:
       [(VUILibConfig *)libConfig setFocusDebounceInterval:v11];
     }
 
-    v12 = [VUIFeaturesConfiguration numberValueForKey:@"focusVelocityThreshold" fromDictionary:v4];
+    v12 = [VUIFeaturesConfiguration numberValueForKey:@"focusVelocityThreshold" fromDictionary:configCopy];
     v13 = v12;
     if (v12)
     {
@@ -1932,11 +1932,11 @@ LABEL_9:
   }
 }
 
-- (void)_populateGDPRConfig:(id)a3
+- (void)_populateGDPRConfig:(id)config
 {
-  if (a3)
+  if (config)
   {
-    v4 = [VUIFeaturesConfiguration numberValueForKey:@"popoverHeight" fromDictionary:a3];
+    v4 = [VUIFeaturesConfiguration numberValueForKey:@"popoverHeight" fromDictionary:config];
     if (v4)
     {
       gdprConfig = self->_gdprConfig;
@@ -1948,12 +1948,12 @@ LABEL_9:
   }
 }
 
-- (void)_populateTimedMetadataConfig:(id)a3
+- (void)_populateTimedMetadataConfig:(id)config
 {
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    v24 = v4;
+    v24 = configCopy;
     v5 = objc_opt_new();
     v6 = [v24 vui_dictionaryForKey:@"visualSmoothingConfig"];
     v7 = [VUIFeaturesConfiguration numberValueForKey:@"timeRangeProximityThreshold" fromDictionary:v6];
@@ -2001,17 +2001,17 @@ LABEL_9:
     [(VUITimedMetadataConfig *)self->_timedMetadataConfig setVisualSmoothingConfig:v5];
     [(VUITimedMetadataConfig *)self->_timedMetadataConfig setAudioSmoothingConfig:v20];
 
-    v4 = v24;
+    configCopy = v24;
   }
 }
 
-- (void)_populateLivePostPlayConfig:(id)a3
+- (void)_populateLivePostPlayConfig:(id)config
 {
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    v11 = v4;
-    v5 = [v4 vui_numberForKey:@"clockScorePollingInterval"];
+    v11 = configCopy;
+    v5 = [configCopy vui_numberForKey:@"clockScorePollingInterval"];
     v6 = v5;
     if (v5)
     {
@@ -2029,25 +2029,25 @@ LABEL_9:
       [(VUILivePostPlayConfig *)v10 setDismissPlaybackDelay:?];
     }
 
-    v4 = v11;
+    configCopy = v11;
   }
 }
 
-- (void)_populateTipKitConfig:(id)a3
+- (void)_populateTipKitConfig:(id)config
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (configCopy)
   {
-    v6 = [v4 vui_numberForKey:@"isEnabled"];
+    v6 = [configCopy vui_numberForKey:@"isEnabled"];
     v7 = v6;
     if (v6)
     {
       -[VUITipKitConfig setIsEnabled:](self->_tipKitConfig, "setIsEnabled:", [v6 BOOLValue]);
     }
 
-    v24 = self;
+    selfCopy = self;
     v25 = v7;
     v8 = [v5 objectForKey:@"tipConfig"];
     v9 = [v8 objectForKey:@"radioTip"];
@@ -2094,7 +2094,7 @@ LABEL_9:
     v22 = v21;
     if (v21)
     {
-      -[VUITipKitConfig setDisplayFrequency:](v24->_tipKitConfig, "setDisplayFrequency:", [v21 integerValue]);
+      -[VUITipKitConfig setDisplayFrequency:](selfCopy->_tipKitConfig, "setDisplayFrequency:", [v21 integerValue]);
     }
   }
 }

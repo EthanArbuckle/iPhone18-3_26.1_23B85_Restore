@@ -1,38 +1,38 @@
 @interface PHAWallpaperSuggestionUpgradeSession
-- (BOOL)beginUpgradeSessionAtURL:(id)a3;
-- (BOOL)endUpgradeSessionAtURL:(id)a3;
+- (BOOL)beginUpgradeSessionAtURL:(id)l;
+- (BOOL)endUpgradeSessionAtURL:(id)l;
 - (PHAWallpaperSuggestionUpgradeSession)init;
-- (id)upgradeSessionURLForPosterConfiguration:(id)a3;
-- (void)fetchPosterConfigurationWithAssetDirectory:(id)a3 completion:(id)a4;
-- (void)refreshPosterConfiguration:(id)a3 withSessionURL:(id)a4 completion:(id)a5;
-- (void)upgradePosterConfiguration:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)upgradePosterConfiguration:(id)a3 withSessionURL:(id)a4 localIdentifier:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)upgradePosterConfiguration:(id)a3 withSessionURL:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)upgradePosterConfigurationWithAssetDirectory:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)upgradeSessionURLForPosterConfiguration:(id)configuration;
+- (void)fetchPosterConfigurationWithAssetDirectory:(id)directory completion:(id)completion;
+- (void)refreshPosterConfiguration:(id)configuration withSessionURL:(id)l completion:(id)completion;
+- (void)upgradePosterConfiguration:(id)configuration options:(id)options completion:(id)completion;
+- (void)upgradePosterConfiguration:(id)configuration withSessionURL:(id)l localIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (void)upgradePosterConfiguration:(id)configuration withSessionURL:(id)l options:(id)options completion:(id)completion;
+- (void)upgradePosterConfigurationWithAssetDirectory:(id)directory options:(id)options completion:(id)completion;
 @end
 
 @implementation PHAWallpaperSuggestionUpgradeSession
 
-- (void)refreshPosterConfiguration:(id)a3 withSessionURL:(id)a4 completion:(id)a5
+- (void)refreshPosterConfiguration:(id)configuration withSessionURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v10 = MEMORY[0x277D3E9E8];
-  v11 = a4;
+  lCopy = l;
   v12 = objc_alloc_init(v10);
-  v13 = [v11 path];
+  path = [lCopy path];
 
-  [v12 setIdentifier:v13];
+  [v12 setIdentifier:path];
   posterService = self->_posterService;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __93__PHAWallpaperSuggestionUpgradeSession_refreshPosterConfiguration_withSessionURL_completion___block_invoke;
   v17[3] = &unk_2788B1A28;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
+  v18 = configurationCopy;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = configurationCopy;
   [(PRSService *)posterService refreshPosterConfiguration:v16 sessionInfo:v12 completion:v17];
 }
 
@@ -75,10 +75,10 @@ LABEL_6:
   (*(a1[6] + 16))();
 }
 
-- (BOOL)endUpgradeSessionAtURL:(id)a3
+- (BOOL)endUpgradeSessionAtURL:(id)l
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -89,15 +89,15 @@ LABEL_6:
   block[2] = __63__PHAWallpaperSuggestionUpgradeSession_endUpgradeSessionAtURL___block_invoke;
   block[3] = &unk_2788B1AC8;
   block[4] = self;
-  v6 = v4;
+  v6 = lCopy;
   v22 = v6;
   v23 = &v24;
   dispatch_sync(queue, block);
   if (*(v25 + 24) == 1)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v20 = 0;
-    v8 = [v7 removeItemAtURL:v6 error:&v20];
+    v8 = [defaultManager removeItemAtURL:v6 error:&v20];
     v9 = v20;
 
     v10 = self->_loggingConnection;
@@ -106,18 +106,18 @@ LABEL_6:
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v12 = [v6 path];
+        path = [v6 path];
         *buf = 138543362;
-        v29 = v12;
+        v29 = path;
         _os_log_impl(&dword_22FA28000, v11, OS_LOG_TYPE_INFO, "Successfully removed temporary poster configuration data at %{public}@", buf, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v6 path];
+      path2 = [v6 path];
       *buf = 138543362;
-      v29 = v19;
+      v29 = path2;
       _os_log_error_impl(&dword_22FA28000, v11, OS_LOG_TYPE_ERROR, "Failed to remove temporary poster configuration data at %{public}@", buf, 0xCu);
     }
   }
@@ -127,9 +127,9 @@ LABEL_6:
     v9 = self->_loggingConnection;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v6 path];
+      path3 = [v6 path];
       *buf = 138543362;
-      v29 = v13;
+      v29 = path3;
       _os_log_error_impl(&dword_22FA28000, v9, OS_LOG_TYPE_ERROR, "END upgrade called with unknown session at %{public}@", buf, 0xCu);
     }
   }
@@ -137,10 +137,10 @@ LABEL_6:
   v14 = self->_loggingConnection;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v6 path];
+    path4 = [v6 path];
     v16 = *(v25 + 24);
     *buf = 138543618;
-    v29 = v15;
+    v29 = path4;
     v30 = 1024;
     v31 = v16;
     _os_log_impl(&dword_22FA28000, v14, OS_LOG_TYPE_INFO, "END upgrade session at %{public}@ (success=%d)", buf, 0x12u);
@@ -168,10 +168,10 @@ void __63__PHAWallpaperSuggestionUpgradeSession_endUpgradeSessionAtURL___block_i
   }
 }
 
-- (BOOL)beginUpgradeSessionAtURL:(id)a3
+- (BOOL)beginUpgradeSessionAtURL:(id)l
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -182,21 +182,21 @@ void __63__PHAWallpaperSuggestionUpgradeSession_endUpgradeSessionAtURL___block_i
   block[2] = __65__PHAWallpaperSuggestionUpgradeSession_beginUpgradeSessionAtURL___block_invoke;
   block[3] = &unk_2788B1AC8;
   block[4] = self;
-  v6 = v4;
+  v6 = lCopy;
   v24 = v6;
   v25 = &v26;
   dispatch_sync(queue, block);
   if (*(v27 + 24) == 1)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager fileExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v22 = 0;
-      v11 = [v10 removeItemAtURL:v6 error:&v22];
+      v11 = [defaultManager2 removeItemAtURL:v6 error:&v22];
       v12 = v22;
 
       v13 = self->_loggingConnection;
@@ -205,18 +205,18 @@ void __63__PHAWallpaperSuggestionUpgradeSession_endUpgradeSessionAtURL___block_i
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v15 = [v6 path];
+          path2 = [v6 path];
           *buf = 138543362;
-          v31 = v15;
+          v31 = path2;
           _os_log_impl(&dword_22FA28000, v14, OS_LOG_TYPE_INFO, "Successfully removed temporary poster configuration data at %{public}@", buf, 0xCu);
         }
       }
 
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v6 path];
+        path3 = [v6 path];
         *buf = 138543362;
-        v31 = v21;
+        v31 = path3;
         _os_log_error_impl(&dword_22FA28000, v14, OS_LOG_TYPE_ERROR, "Failed to remove temporary poster configuration data at %{public}@", buf, 0xCu);
       }
     }
@@ -225,10 +225,10 @@ void __63__PHAWallpaperSuggestionUpgradeSession_endUpgradeSessionAtURL___block_i
   v16 = self->_loggingConnection;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v6 path];
+    path4 = [v6 path];
     v18 = *(v27 + 24);
     *buf = 138543618;
-    v31 = v17;
+    v31 = path4;
     v32 = 1024;
     v33 = v18;
     _os_log_impl(&dword_22FA28000, v16, OS_LOG_TYPE_INFO, "BEGIN upgrade session at %{public}@ (success=%d)", buf, 0x12u);
@@ -256,32 +256,32 @@ void __65__PHAWallpaperSuggestionUpgradeSession_beginUpgradeSessionAtURL___block
   }
 }
 
-- (id)upgradeSessionURLForPosterConfiguration:(id)a3
+- (id)upgradeSessionURLForPosterConfiguration:(id)configuration
 {
-  v3 = [a3 serverUUID];
-  v4 = [v3 UUIDString];
+  serverUUID = [configuration serverUUID];
+  uUIDString = [serverUUID UUIDString];
 
   v5 = MEMORY[0x277CBEBC0];
   v6 = NSTemporaryDirectory();
   v7 = [v5 fileURLWithPath:v6 isDirectory:1];
 
   v8 = [v7 URLByAppendingPathComponent:@"UpgradeSessions"];
-  v9 = [v8 URLByAppendingPathComponent:v4];
+  v9 = [v8 URLByAppendingPathComponent:uUIDString];
 
   return v9;
 }
 
-- (void)upgradePosterConfiguration:(id)a3 withSessionURL:(id)a4 localIdentifier:(id)a5 options:(id)a6 completion:(id)a7
+- (void)upgradePosterConfiguration:(id)configuration withSessionURL:(id)l localIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a4 URLByAppendingPathComponent:v13];
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
+  v16 = [l URLByAppendingPathComponent:identifierCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v40 = 0;
-  v18 = [v17 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v40];
+  v18 = [defaultManager createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v40];
   v19 = v40;
 
   if (v18)
@@ -289,47 +289,47 @@ void __65__PHAWallpaperSuggestionUpgradeSession_beginUpgradeSessionAtURL___block
     v34 = v19;
     v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v20 setObject:&unk_2844CC8D0 forKeyedSubscript:@"WallpaperUpgradeMode"];
-    v21 = [v14 objectForKeyedSubscript:@"LayoutConfiguration"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"LayoutConfiguration"];
     [v20 setObject:v21 forKeyedSubscript:@"LayoutConfiguration"];
 
-    v22 = [v14 objectForKeyedSubscript:@"LayerStackOptions"];
+    v22 = [optionsCopy objectForKeyedSubscript:@"LayerStackOptions"];
     [v20 setObject:v22 forKeyedSubscript:@"LayerStackOptions"];
 
-    v23 = [v14 objectForKeyedSubscript:@"AllowedLayoutStrategies"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"AllowedLayoutStrategies"];
     [v20 setObject:v23 forKeyedSubscript:@"AllowedLayoutStrategies"];
 
-    v24 = [v14 objectForKeyedSubscript:@"OverrideEditConfiguration"];
+    v24 = [optionsCopy objectForKeyedSubscript:@"OverrideEditConfiguration"];
     [v20 setObject:v24 forKeyedSubscript:@"OverrideEditConfiguration"];
 
     loggingConnection = self->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v26 = loggingConnection;
-      v27 = [v12 serverUUID];
-      v28 = [v16 path];
+      serverUUID = [configurationCopy serverUUID];
+      path = [v16 path];
       *buf = 138544130;
-      v42 = v27;
+      v42 = serverUUID;
       v43 = 2114;
-      v44 = v13;
+      v44 = identifierCopy;
       v45 = 2114;
-      v46 = v28;
+      v46 = path;
       v47 = 2114;
       v48 = v20;
       _os_log_impl(&dword_22FA28000, v26, OS_LOG_TYPE_DEFAULT, "Upgrading poster configuration %{public}@ with local identifier: %{public}@ to: %{public}@ with options: %{public}@", buf, 0x2Au);
     }
 
     mediaAnalysisService = self->_mediaAnalysisService;
-    v30 = [v12 assetDirectory];
+    assetDirectory = [configurationCopy assetDirectory];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __117__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_withSessionURL_localIdentifier_options_completion___block_invoke;
     v35[3] = &unk_2788B1AA0;
     v35[4] = self;
-    v36 = v12;
-    v37 = v13;
+    v36 = configurationCopy;
+    v37 = identifierCopy;
     v38 = v16;
-    v39 = v15;
-    [(VCPMediaAnalysisService *)mediaAnalysisService requestWallpaperUpgradeAtURL:v30 toDestinationURL:v38 withOptions:v20 andCompletionHandler:v35];
+    v39 = completionCopy;
+    [(VCPMediaAnalysisService *)mediaAnalysisService requestWallpaperUpgradeAtURL:assetDirectory toDestinationURL:v38 withOptions:v20 andCompletionHandler:v35];
 
     v19 = v34;
   }
@@ -340,15 +340,15 @@ void __65__PHAWallpaperSuggestionUpgradeSession_beginUpgradeSessionAtURL___block
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = v31;
-      v33 = [v16 path];
+      path2 = [v16 path];
       *buf = 138543618;
-      v42 = v33;
+      v42 = path2;
       v43 = 2114;
       v44 = v19;
       _os_log_error_impl(&dword_22FA28000, v32, OS_LOG_TYPE_ERROR, "Failed to create poster upgrade directory: %{public}@, error: %{public}@", buf, 0x16u);
     }
 
-    (*(v15 + 2))(v15, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
   }
 }
 
@@ -398,33 +398,33 @@ void __117__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_with
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)upgradePosterConfiguration:(id)a3 withSessionURL:(id)a4 options:(id)a5 completion:(id)a6
+- (void)upgradePosterConfiguration:(id)configuration withSessionURL:(id)l options:(id)options completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v22 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  lCopy = l;
+  optionsCopy = options;
+  completionCopy = completion;
   v13 = MEMORY[0x277D3B490];
-  v14 = [v10 assetDirectory];
+  assetDirectory = [configurationCopy assetDirectory];
   v29 = 0;
-  v15 = [v13 loadFromURL:v14 error:&v29];
+  v15 = [v13 loadFromURL:assetDirectory error:&v29];
   v16 = v29;
 
   if (v15)
   {
     objc_initWeak(location, self);
-    v17 = [v15 identifier];
+    identifier = [v15 identifier];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __101__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_withSessionURL_options_completion___block_invoke;
     v23[3] = &unk_2788B1A78;
     objc_copyWeak(&v28, location);
-    v24 = v10;
-    v25 = v11;
-    v26 = self;
-    v27 = v12;
-    [(PHAWallpaperSuggestionUpgradeSession *)self upgradePosterConfiguration:v24 withSessionURL:v25 localIdentifier:v17 options:v22 completion:v23];
+    v24 = configurationCopy;
+    v25 = lCopy;
+    selfCopy = self;
+    v27 = completionCopy;
+    [(PHAWallpaperSuggestionUpgradeSession *)self upgradePosterConfiguration:v24 withSessionURL:v25 localIdentifier:identifier options:optionsCopy completion:v23];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(location);
@@ -436,16 +436,16 @@ void __117__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_with
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v19 = loggingConnection;
-      v20 = [v10 assetDirectory];
-      v21 = [v20 path];
+      assetDirectory2 = [configurationCopy assetDirectory];
+      path = [assetDirectory2 path];
       *location = 138543618;
-      *&location[4] = v21;
+      *&location[4] = path;
       v31 = 2114;
       v32 = v16;
       _os_log_error_impl(&dword_22FA28000, v19, OS_LOG_TYPE_ERROR, "Failed to load poster configuration from asset directory: '%{public}@', error: %{public}@", location, 0x16u);
     }
 
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -603,13 +603,13 @@ void __101__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_with
   v12();
 }
 
-- (void)upgradePosterConfiguration:(id)a3 options:(id)a4 completion:(id)a5
+- (void)upgradePosterConfiguration:(id)configuration options:(id)options completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PHAWallpaperSuggestionUpgradeSession *)self upgradeSessionURLForPosterConfiguration:v8];
+  configurationCopy = configuration;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = [(PHAWallpaperSuggestionUpgradeSession *)self upgradeSessionURLForPosterConfiguration:configurationCopy];
   if ([(PHAWallpaperSuggestionUpgradeSession *)self beginUpgradeSessionAtURL:v11])
   {
     v16[0] = MEMORY[0x277D85DD0];
@@ -618,8 +618,8 @@ void __101__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_with
     v16[3] = &unk_2788B1C60;
     v16[4] = self;
     v17 = v11;
-    v18 = v10;
-    [(PHAWallpaperSuggestionUpgradeSession *)self upgradePosterConfiguration:v8 withSessionURL:v17 options:v9 completion:v16];
+    v18 = completionCopy;
+    [(PHAWallpaperSuggestionUpgradeSession *)self upgradePosterConfiguration:configurationCopy withSessionURL:v17 options:optionsCopy completion:v16];
   }
 
   else
@@ -628,14 +628,14 @@ void __101__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_with
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       v13 = loggingConnection;
-      v14 = [v11 path];
+      path = [v11 path];
       *buf = 138543362;
-      v20 = v14;
+      v20 = path;
       _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_DEFAULT, "Poster configuration upgrade session already in progress at %{public}@, aborting...", buf, 0xCu);
     }
 
     v15 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:14 localizedDescription:@"Poster configuration upgrade session already in progress"];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
@@ -648,18 +648,18 @@ void __86__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_optio
   (*(a1[6] + 16))();
 }
 
-- (void)fetchPosterConfigurationWithAssetDirectory:(id)a3 completion:(id)a4
+- (void)fetchPosterConfigurationWithAssetDirectory:(id)directory completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  completionCopy = completion;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     v9 = loggingConnection;
-    v10 = [v6 path];
+    path = [directoryCopy path];
     *buf = 138543362;
-    v18 = v10;
+    v18 = path;
     _os_log_impl(&dword_22FA28000, v9, OS_LOG_TYPE_DEFAULT, "Fetching poster configuration with asset directory: %{public}@", buf, 0xCu);
   }
 
@@ -669,10 +669,10 @@ void __86__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfiguration_optio
   v14[2] = __94__PHAWallpaperSuggestionUpgradeSession_fetchPosterConfigurationWithAssetDirectory_completion___block_invoke;
   v14[3] = &unk_2788B1A00;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = directoryCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = directoryCopy;
   [(PRSService *)posterService fetchPosterConfigurationsForExtension:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" completion:v14];
 }
 
@@ -825,19 +825,19 @@ uint64_t __94__PHAWallpaperSuggestionUpgradeSession_fetchPosterConfigurationWith
   return v8;
 }
 
-- (void)upgradePosterConfigurationWithAssetDirectory:(id)a3 options:(id)a4 completion:(id)a5
+- (void)upgradePosterConfigurationWithAssetDirectory:(id)directory options:(id)options completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  directoryCopy = directory;
+  optionsCopy = options;
+  completionCopy = completion;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v12 = loggingConnection;
-    v13 = [v8 path];
+    path = [directoryCopy path];
     *buf = 138543362;
-    v24 = v13;
+    v24 = path;
     _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_INFO, "Request to upgrade poster configuration at: %{public}@", buf, 0xCu);
   }
 
@@ -847,12 +847,12 @@ uint64_t __94__PHAWallpaperSuggestionUpgradeSession_fetchPosterConfigurationWith
   v17[2] = __104__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfigurationWithAssetDirectory_options_completion___block_invoke;
   v17[3] = &unk_2788B1988;
   objc_copyWeak(&v22, buf);
-  v14 = v9;
+  v14 = optionsCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v21 = v15;
-  v19 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = directoryCopy;
   v20 = v16;
   [(PHAWallpaperSuggestionUpgradeSession *)self fetchPosterConfigurationWithAssetDirectory:v16 completion:v17];
 
@@ -901,9 +901,9 @@ void __104__PHAWallpaperSuggestionUpgradeSession_upgradePosterConfigurationWithA
     posterService = v2->_posterService;
     v2->_posterService = v3;
 
-    v5 = [MEMORY[0x277D267E8] analysisService];
+    analysisService = [MEMORY[0x277D267E8] analysisService];
     mediaAnalysisService = v2->_mediaAnalysisService;
-    v2->_mediaAnalysisService = v5;
+    v2->_mediaAnalysisService = analysisService;
 
     v7 = os_log_create("com.apple.photoanalysisd", "PHAWallpaperSuggestionUpgradeSession");
     loggingConnection = v2->_loggingConnection;

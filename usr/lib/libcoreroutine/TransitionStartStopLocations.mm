@@ -1,21 +1,21 @@
 @interface TransitionStartStopLocations
-- (TransitionStartStopLocations)initWithStartLocation:(id)a3 stopLocation:(id)a4;
+- (TransitionStartStopLocations)initWithStartLocation:(id)location stopLocation:(id)stopLocation;
 @end
 
 @implementation TransitionStartStopLocations
 
-- (TransitionStartStopLocations)initWithStartLocation:(id)a3 stopLocation:(id)a4
+- (TransitionStartStopLocations)initWithStartLocation:(id)location stopLocation:(id)stopLocation
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  stopLocationCopy = stopLocation;
   v12.receiver = self;
   v12.super_class = TransitionStartStopLocations;
   v9 = [(TransitionStartStopLocations *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startLocation, a3);
-    objc_storeStrong(&v10->_stopLocation, a4);
+    objc_storeStrong(&v9->_startLocation, location);
+    objc_storeStrong(&v10->_stopLocation, stopLocation);
   }
 
   return v10;

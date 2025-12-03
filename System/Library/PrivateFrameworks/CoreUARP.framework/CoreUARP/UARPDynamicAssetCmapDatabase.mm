@@ -1,16 +1,16 @@
 @interface UARPDynamicAssetCmapDatabase
-- (BOOL)addCmapMapping:(id)a3;
+- (BOOL)addCmapMapping:(id)mapping;
 - (BOOL)cleanUpCmapDatabaseFiles;
 - (BOOL)cmapDatabaseFileExists;
 - (BOOL)createCmapDatabaseFile;
 - (BOOL)decomposeUARP;
 - (BOOL)flushToDisk;
 - (UARPDynamicAssetCmapDatabase)init;
-- (UARPDynamicAssetCmapDatabase)initWithCoder:(id)a3;
-- (id)expandCrshData:(id)a3 withAppleModelNumber:(id)a4;
+- (UARPDynamicAssetCmapDatabase)initWithCoder:(id)coder;
+- (id)expandCrshData:(id)data withAppleModelNumber:(id)number;
 - (id)findCmapDatabaseFileUrl;
-- (id)findCmapforAppleModel:(id)a3;
-- (id)initCmapDatabase:(id)a3;
+- (id)findCmapforAppleModel:(id)model;
+- (id)initCmapDatabase:(id)database;
 - (void)cleanUpCmapDatabaseFiles;
 - (void)createCmapDatabaseFile;
 - (void)flushToDisk;
@@ -25,9 +25,9 @@
   return 0;
 }
 
-- (id)initCmapDatabase:(id)a3
+- (id)initCmapDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v19.receiver = self;
   v19.super_class = UARPDynamicAssetCmapDatabase;
   v6 = [(UARPDynamicAssetCmapDatabase *)&v19 init];
@@ -45,9 +45,9 @@ LABEL_7:
       *(v6 + 3) = v14;
     }
 
-    if (v5)
+    if (databaseCopy)
     {
-      objc_storeStrong(v6 + 1, a3);
+      objc_storeStrong(v6 + 1, database);
     }
 
     v6 = v6;
@@ -55,11 +55,11 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v9 = [v6 findCmapDatabaseFileUrl];
-  if (v9)
+  findCmapDatabaseFileUrl = [v6 findCmapDatabaseFileUrl];
+  if (findCmapDatabaseFileUrl)
   {
-    v10 = v9;
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9];
+    v10 = findCmapDatabaseFileUrl;
+    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:findCmapDatabaseFileUrl];
     v18 = 0;
     v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v18];
     v13 = v18;
@@ -84,10 +84,10 @@ LABEL_12:
   return v16;
 }
 
-- (UARPDynamicAssetCmapDatabase)initWithCoder:(id)a3
+- (UARPDynamicAssetCmapDatabase)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = UARPDynamicAssetCmapDatabase;
   v5 = [(UARPDynamicAssetCmapDatabase *)&v16 init];
@@ -98,7 +98,7 @@ LABEL_12:
     v17[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"cmap"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"cmap"];
 
     v10 = [v9 mutableCopy];
     cmapDatabase = v5->_cmapDatabase;
@@ -115,8 +115,8 @@ LABEL_12:
 
 - (BOOL)flushToDisk
 {
-  v3 = [(UARPDynamicAssetCmapDatabase *)self findCmapDatabaseFileUrl];
-  if (v3)
+  findCmapDatabaseFileUrl = [(UARPDynamicAssetCmapDatabase *)self findCmapDatabaseFileUrl];
+  if (findCmapDatabaseFileUrl)
   {
     v8 = 0;
     v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v8];
@@ -126,7 +126,7 @@ LABEL_12:
       [UARPDynamicAssetCmapDatabase flushToDisk];
     }
 
-    v6 = [v4 writeToURL:v3 atomically:1];
+    v6 = [v4 writeToURL:findCmapDatabaseFileUrl atomically:1];
   }
 
   else
@@ -168,8 +168,8 @@ LABEL_12:
           }
 
           v10 = *(*(&v29 + 1) + 8 * i);
-          v11 = [v10 payloadTag];
-          v12 = [v11 tag];
+          payloadTag = [v10 payloadTag];
+          v12 = [payloadTag tag];
           v13 = [v5 tag];
 
           if (v12 == v13)
@@ -236,15 +236,15 @@ LABEL_20:
   return v23;
 }
 
-- (BOOL)addCmapMapping:(id)a3
+- (BOOL)addCmapMapping:(id)mapping
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  mappingCopy = mapping;
+  v5 = [mappingCopy objectForKeyedSubscript:@"AppleModelNumber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = [(UARPDynamicAssetCmapDatabase *)self findCmapforAppleModel:v5];
-    v7 = [v4 objectForKeyedSubscript:@"sections"];
+    v7 = [mappingCopy objectForKeyedSubscript:@"sections"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -301,10 +301,10 @@ LABEL_17:
   return v9;
 }
 
-- (id)findCmapforAppleModel:(id)a3
+- (id)findCmapforAppleModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -324,7 +324,7 @@ LABEL_17:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 isEqualAppleModel:{v4, v12}])
+        if ([v9 isEqualAppleModel:{modelCopy, v12}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -348,15 +348,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)expandCrshData:(id)a3 withAppleModelNumber:(id)a4
+- (id)expandCrshData:(id)data withAppleModelNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UARPDynamicAssetCmapDatabase *)self findCmapforAppleModel:v7];
+  dataCopy = data;
+  numberCopy = number;
+  v8 = [(UARPDynamicAssetCmapDatabase *)self findCmapforAppleModel:numberCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 expandCrshDictionary:v6];
+    v10 = [v8 expandCrshDictionary:dataCopy];
   }
 
   else
@@ -399,9 +399,9 @@ LABEL_11:
   v4 = UARPStringCmapDirectoryPath();
   UARPUtilsCreateTemporaryFolder(v4);
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = UARPStringCmapDatabaseFilePath();
-  v3 = [v5 createFileAtPath:v6 contents:0 attributes:0];
+  v3 = [defaultManager createFileAtPath:v6 contents:0 attributes:0];
 
   if ((v3 & 1) == 0)
   {
@@ -417,19 +417,19 @@ LABEL_11:
 
 - (BOOL)cmapDatabaseFileExists
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = UARPStringCmapDatabaseFilePath();
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   return v4;
 }
 
 - (BOOL)cleanUpCmapDatabaseFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = UARPStringCmapDirectoryPath();
   v9 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v9];
+  v5 = [defaultManager removeItemAtPath:v4 error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -499,11 +499,11 @@ LABEL_11:
 - (void)createCmapDatabaseFile
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = UARPStringCmapDatabaseFilePath();
   v4[0] = 136315394;
   OUTLINED_FUNCTION_2();
-  _os_log_error_impl(&dword_247AA7000, v1, OS_LOG_TYPE_ERROR, "%s: Unable to create file at %@", v4, 0x16u);
+  _os_log_error_impl(&dword_247AA7000, selfCopy, OS_LOG_TYPE_ERROR, "%s: Unable to create file at %@", v4, 0x16u);
 
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -511,13 +511,13 @@ LABEL_11:
 - (void)cleanUpCmapDatabaseFiles
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = UARPStringCmapDirectoryPath();
   v7[0] = 136315650;
   OUTLINED_FUNCTION_2();
   v8 = v5;
   v9 = a2;
-  _os_log_error_impl(&dword_247AA7000, v3, OS_LOG_TYPE_ERROR, "%s: Unable to remove files at %@ (%@)", v7, 0x20u);
+  _os_log_error_impl(&dword_247AA7000, selfCopy, OS_LOG_TYPE_ERROR, "%s: Unable to remove files at %@ (%@)", v7, 0x20u);
 
   v6 = *MEMORY[0x277D85DE8];
 }

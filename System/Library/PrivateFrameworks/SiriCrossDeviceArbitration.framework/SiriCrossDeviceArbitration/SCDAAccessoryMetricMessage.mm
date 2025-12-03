@@ -1,35 +1,35 @@
 @interface SCDAAccessoryMetricMessage
-- (BOOL)_decodeMetricDataPayload:(id)a3 decodedPayload:(MyriadMetricsDataV2 *)a4;
-- (BOOL)_decodeMetricDataPayload:(id)a3 into:(MyriadMetricsDataV2 *)a4 expectedPayloadSize:(unint64_t)a5;
-- (SCDAAccessoryMetricMessage)initWithDataPayload:(id)a3;
-- (SCDAAccessoryMetricMessage)initWithMetricData:(id)a3;
-- (id)_extractMetricDataFromDataPayload:(id)a3;
+- (BOOL)_decodeMetricDataPayload:(id)payload decodedPayload:(MyriadMetricsDataV2 *)decodedPayload;
+- (BOOL)_decodeMetricDataPayload:(id)payload into:(MyriadMetricsDataV2 *)into expectedPayloadSize:(unint64_t)size;
+- (SCDAAccessoryMetricMessage)initWithDataPayload:(id)payload;
+- (SCDAAccessoryMetricMessage)initWithMetricData:(id)data;
+- (id)_extractMetricDataFromDataPayload:(id)payload;
 - (id)messageAsData;
 @end
 
 @implementation SCDAAccessoryMetricMessage
 
-- (BOOL)_decodeMetricDataPayload:(id)a3 into:(MyriadMetricsDataV2 *)a4 expectedPayloadSize:(unint64_t)a5
+- (BOOL)_decodeMetricDataPayload:(id)payload into:(MyriadMetricsDataV2 *)into expectedPayloadSize:(unint64_t)size
 {
-  v7 = a3;
-  v8 = [v7 length];
-  if (v8 < a5)
+  payloadCopy = payload;
+  v8 = [payloadCopy length];
+  if (v8 < size)
   {
-    a5 = v8;
+    size = v8;
   }
 
-  v9 = [v7 bytes];
+  bytes = [payloadCopy bytes];
 
-  memcpy(a4, v9, a5);
+  memcpy(into, bytes, size);
   return 1;
 }
 
-- (BOOL)_decodeMetricDataPayload:(id)a3 decodedPayload:(MyriadMetricsDataV2 *)a4
+- (BOOL)_decodeMetricDataPayload:(id)payload decodedPayload:(MyriadMetricsDataV2 *)decodedPayload
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  payloadCopy = payload;
+  v7 = payloadCopy;
+  if (!payloadCopy || ![payloadCopy length])
   {
     v10 = SCDALogContextAnalytics;
     if (os_log_type_enabled(SCDALogContextAnalytics, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  bzero(a4, 0x428uLL);
+  bzero(decodedPayload, 0x428uLL);
   if (v8 == 1)
   {
     v9 = 232;
@@ -83,22 +83,22 @@ LABEL_14:
     v9 = 1064;
   }
 
-  v11 = [(SCDAAccessoryMetricMessage *)self _decodeMetricDataPayload:v7 into:a4 expectedPayloadSize:v9];
+  v11 = [(SCDAAccessoryMetricMessage *)self _decodeMetricDataPayload:v7 into:decodedPayload expectedPayloadSize:v9];
 LABEL_12:
 
   v16 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)_extractMetricDataFromDataPayload:(id)a3
+- (id)_extractMetricDataFromDataPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[SCDAMetrics sharedInstance];
-  v5 = [v4 isMyriadMetricsMessage:v3];
+  v5 = [v4 isMyriadMetricsMessage:payloadCopy];
 
   if (v5)
   {
-    v6 = [v3 objectForKeyedSubscript:scdaAccessoryMetricsMessageKey];
+    v6 = [payloadCopy objectForKeyedSubscript:scdaAccessoryMetricsMessageKey];
   }
 
   else
@@ -117,9 +117,9 @@ LABEL_12:
   return v3;
 }
 
-- (SCDAAccessoryMetricMessage)initWithDataPayload:(id)a3
+- (SCDAAccessoryMetricMessage)initWithDataPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v10.receiver = self;
   v10.super_class = SCDAAccessoryMetricMessage;
   v5 = [(SCDAAccessoryMetricMessage *)&v10 init];
@@ -131,7 +131,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [(SCDAAccessoryMetricMessage *)v5 _extractMetricDataFromDataPayload:v4];
+  v7 = [(SCDAAccessoryMetricMessage *)v5 _extractMetricDataFromDataPayload:payloadCopy];
   if (v7)
   {
     v8 = [(SCDAAccessoryMetricMessage *)v6 _decodeMetricDataPayload:v7 decodedPayload:&v6->_metric];
@@ -150,14 +150,14 @@ LABEL_6:
   return v7;
 }
 
-- (SCDAAccessoryMetricMessage)initWithMetricData:(id)a3
+- (SCDAAccessoryMetricMessage)initWithMetricData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = SCDAAccessoryMetricMessage;
   v5 = [(SCDAAccessoryMetricMessage *)&v9 init];
   v6 = v5;
-  if (v5 && ![(SCDAAccessoryMetricMessage *)v5 _decodeMetricDataPayload:v4 decodedPayload:&v5->_metric])
+  if (v5 && ![(SCDAAccessoryMetricMessage *)v5 _decodeMetricDataPayload:dataCopy decodedPayload:&v5->_metric])
   {
     v7 = 0;
   }

@@ -1,5 +1,5 @@
 @interface ICNavigationItemConfiguration
-- (BOOL)updateAnimated:(BOOL)a3;
+- (BOOL)updateAnimated:(BOOL)animated;
 - (ICNavigationItemConfiguration)init;
 @end
 
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (BOOL)updateAnimated:(BOOL)a3
+- (BOOL)updateAnimated:(BOOL)animated
 {
-  v4 = [(ICNavigationItemConfiguration *)self needsUpdate];
-  if (v4)
+  needsUpdate = [(ICNavigationItemConfiguration *)self needsUpdate];
+  if (needsUpdate)
   {
     [(ICNavigationItemConfiguration *)self setLastUpdateHash:[(ICNavigationItemConfiguration *)self hash]];
   }
 
-  return v4;
+  return needsUpdate;
 }
 
 @end

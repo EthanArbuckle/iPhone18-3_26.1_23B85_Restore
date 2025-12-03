@@ -1,25 +1,25 @@
 @interface PXPhotosGridFooterPresentation
 - (BOOL)_shouldAutoRevealFooterView;
 - (PXPhotosGridFooterPresentation)init;
-- (PXPhotosGridFooterPresentation)initWithViewModel:(id)a3 gridView:(id)a4 layout:(id)a5;
+- (PXPhotosGridFooterPresentation)initWithViewModel:(id)model gridView:(id)view layout:(id)layout;
 - (PXPhotosGridFooterPresentationDelegate)delegate;
 - (UIEdgeInsets)footerMaskPadding;
-- (double)_footerVisibleAmountIncludingSafeAreaInsets:(BOOL)a3;
+- (double)_footerVisibleAmountIncludingSafeAreaInsets:(BOOL)insets;
 - (void)_conditionallyAutoRevealFooterView;
-- (void)_conditionallyAutoRevealFooterViewWithLastUserScrollTime:(double)a3;
+- (void)_conditionallyAutoRevealFooterViewWithLastUserScrollTime:(double)time;
 - (void)_updateFooterAndMaskVisibility;
 - (void)_updateFooterMaskPadding;
 - (void)_updateFooterMaskViewFrame;
 - (void)_updateFooterMaskViewOrder;
 - (void)_updateFooterView;
 - (void)_updateWantsFooter;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4;
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3;
-- (void)photosGlobalFooterViewDidMoveToWindow:(id)a3;
-- (void)setFooterFullyMasked:(BOOL)a3;
-- (void)setShouldAutoReveal:(BOOL)a3;
-- (void)setWantsFooter:(BOOL)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller;
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height;
+- (void)photosGlobalFooterViewDidMoveToWindow:(id)window;
+- (void)setFooterFullyMasked:(BOOL)masked;
+- (void)setShouldAutoReveal:(BOOL)reveal;
+- (void)setWantsFooter:(BOOL)footer;
 - (void)viewDidAppear;
 - (void)viewDidScrollToInitialPosition;
 - (void)viewWillAppear;
@@ -47,42 +47,42 @@
   return WeakRetained;
 }
 
-- (void)photosGlobalFooterViewDidMoveToWindow:(id)a3
+- (void)photosGlobalFooterViewDidMoveToWindow:(id)window
 {
   [(PXPhotosGridFooterPresentation *)self _updateFooterMaskViewOrder];
 
   [(PXPhotosGridFooterPresentation *)self _updateFooterMaskViewFrame];
 }
 
-- (void)photosGlobalFooterViewDidChangeHeight:(id)a3
+- (void)photosGlobalFooterViewDidChangeHeight:(id)height
 {
-  v4 = [(PXPhotosLayout *)self->_layout createAnchorForVisibleArea];
-  v5 = [v4 autoInvalidate];
+  createAnchorForVisibleArea = [(PXPhotosLayout *)self->_layout createAnchorForVisibleArea];
+  autoInvalidate = [createAnchorForVisibleArea autoInvalidate];
 
   [(PXPhotosLayout *)self->_layout invalidateFooterSize];
 
   [(PXPhotosGridFooterPresentation *)self _updateFooterMaskViewFrame];
 }
 
-- (void)photosGlobalFooterView:(id)a3 presentViewController:(id)a4
+- (void)photosGlobalFooterView:(id)view presentViewController:(id)controller
 {
-  v7 = a4;
-  v5 = [(PXPhotosGridFooterPresentation *)self delegate];
-  v6 = v5;
-  if (v7)
+  controllerCopy = controller;
+  delegate = [(PXPhotosGridFooterPresentation *)self delegate];
+  v6 = delegate;
+  if (controllerCopy)
   {
-    [v5 footerPresentation:self presentViewController:v7];
+    [delegate footerPresentation:self presentViewController:controllerCopy];
   }
 
   else
   {
-    [v5 dismissPresentedViewControllerForFooterPresentation:self];
+    [delegate dismissPresentedViewControllerForFooterPresentation:self];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXPhotosViewModelObserverContext_219777 == a5)
+  if (PXPhotosViewModelObserverContext_219777 == context)
   {
     block[9] = v5;
     block[10] = v6;
@@ -96,17 +96,17 @@
       v9 = 0;
     }
 
-    if (((v9 | 0x41) & a4) != 0)
+    if (((v9 | 0x41) & change) != 0)
     {
       [(PXPhotosGridFooterPresentation *)self _updateWantsFooter];
     }
 
-    if (((v9 | 0xC0) & a4) != 0)
+    if (((v9 | 0xC0) & change) != 0)
     {
       [(PXPhotosGridFooterPresentation *)self _conditionallyAutoRevealFooterView];
     }
 
-    if (((v9 | 0x100000000000) & a4) != 0)
+    if (((v9 | 0x100000000000) & change) != 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -120,21 +120,21 @@
 
 - (void)_updateFooterAndMaskVisibility
 {
-  v3 = [(PXPhotosGridFooterPresentation *)self isFooterFullyMasked];
-  v4 = [(PXPhotosGridFooterPresentation *)self footerMaskView];
-  [v4 setHidden:v3];
+  isFooterFullyMasked = [(PXPhotosGridFooterPresentation *)self isFooterFullyMasked];
+  footerMaskView = [(PXPhotosGridFooterPresentation *)self footerMaskView];
+  [footerMaskView setHidden:isFooterFullyMasked];
 
-  v5 = [(PXPhotosLayout *)self->_layout footerView];
-  [v5 setHidden:v3];
+  footerView = [(PXPhotosLayout *)self->_layout footerView];
+  [footerView setHidden:isFooterFullyMasked];
 }
 
 - (void)_updateFooterMaskViewFrame
 {
-  v31 = [(PXPhotosGridFooterPresentation *)self footerMaskView];
-  if (v31)
+  footerMaskView = [(PXPhotosGridFooterPresentation *)self footerMaskView];
+  if (footerMaskView)
   {
-    v3 = [(PXGView *)self->_gridView scrollViewController];
-    [v3 visibleRect];
+    scrollViewController = [(PXGView *)self->_gridView scrollViewController];
+    [scrollViewController visibleRect];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -148,7 +148,7 @@
     v33.size.width = v9;
     v33.size.height = v11;
     MaxY = CGRectGetMaxY(v33);
-    [v3 contentInset];
+    [scrollViewController contentInset];
     v20 = v13 + MaxY - v19;
     v34.origin.x = v5;
     v34.origin.y = v7;
@@ -159,22 +159,22 @@
     v35.origin.y = v20;
     v35.size.width = v16;
     v35.size.height = v11;
-    [v31 setFrame:{v17, v20, v16, v21 - CGRectGetMinY(v35)}];
-    v22 = [(PXPhotosLayout *)self->_layout footerView];
-    [v22 convertPoint:v31 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    [footerMaskView setFrame:{v17, v20, v16, v21 - CGRectGetMinY(v35)}];
+    footerView = [(PXPhotosLayout *)self->_layout footerView];
+    [footerView convertPoint:footerMaskView toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
     v24 = v23;
-    v25 = [v22 window];
-    v26 = v25 == 0;
+    window = [footerView window];
+    v26 = window == 0;
 
     v27 = v24 + 1.0;
-    if (v24 + 1.0 >= 0.0 && ([v3 isManuallyChanging] & 1) == 0)
+    if (v24 + 1.0 >= 0.0 && ([scrollViewController isManuallyChanging] & 1) == 0)
     {
-      v28 = [v22 window];
-      v29 = [v31 window];
-      if (v28 == v29)
+      window2 = [footerView window];
+      window3 = [footerMaskView window];
+      if (window2 == window3)
       {
-        v30 = [v22 window];
-        v26 = v30 != 0;
+        window4 = [footerView window];
+        v26 = window4 != 0;
       }
 
       else
@@ -194,28 +194,28 @@
 
 - (void)_updateFooterMaskViewOrder
 {
-  v4 = [(PXPhotosGridFooterPresentation *)self footerMaskView];
-  v2 = [v4 window];
+  footerMaskView = [(PXPhotosGridFooterPresentation *)self footerMaskView];
+  window = [footerMaskView window];
 
-  if (v2)
+  if (window)
   {
-    v3 = [v4 superview];
-    [v3 bringSubviewToFront:v4];
+    superview = [footerMaskView superview];
+    [superview bringSubviewToFront:footerMaskView];
   }
 }
 
 - (void)_updateFooterMaskPadding
 {
-  v3 = [(PXPhotosGridFooterPresentation *)self delegate];
-  [v3 maskPaddingForFooterPresentation:self];
+  delegate = [(PXPhotosGridFooterPresentation *)self delegate];
+  [delegate maskPaddingForFooterPresentation:self];
   [(PXPhotosGridFooterPresentation *)self setFooterMaskPadding:?];
 }
 
 - (void)_updateFooterView
 {
-  v4 = [(PXPhotosLayout *)self->_layout footerView];
-  v5 = v4 == 0;
-  if (!v4)
+  footerView = [(PXPhotosLayout *)self->_layout footerView];
+  v5 = footerView == 0;
+  if (!footerView)
   {
     if (![(PXPhotosGridFooterPresentation *)self wantsFooter])
     {
@@ -233,8 +233,8 @@
     else
     {
       v7 = objc_alloc_init(PXPhotosGlobalFooterView);
-      v14 = [(PXPhotosViewModel *)self->_viewModel footerViewModel];
-      [(PXPhotosGlobalFooterView *)v7 setViewModel:v14];
+      footerViewModel = [(PXPhotosViewModel *)self->_viewModel footerViewModel];
+      [(PXPhotosGlobalFooterView *)v7 setViewModel:footerViewModel];
 
       [(PXPhotosGlobalFooterView *)v7 setDelegate:self];
     }
@@ -243,15 +243,15 @@
     goto LABEL_11;
   }
 
-  obj = v4;
+  obj = footerView;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = [obj px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:274 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_layout.footerView", v17, v18}];
+    px_descriptionForAssertionMessage = [obj px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:274 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_layout.footerView", v17, px_descriptionForAssertionMessage}];
   }
 
   if (![(PXPhotosGridFooterPresentation *)self wantsFooter])
@@ -265,32 +265,32 @@ LABEL_11:
 
   v5 = 1;
 LABEL_13:
-  v8 = [(PXPhotosGridFooterPresentation *)self footerMaskView];
-  v9 = [(PXPhotosGridFooterPresentation *)self wantsFooterMask];
-  if (v5 && v9)
+  footerMaskView = [(PXPhotosGridFooterPresentation *)self footerMaskView];
+  wantsFooterMask = [(PXPhotosGridFooterPresentation *)self wantsFooterMask];
+  if (v5 && wantsFooterMask)
   {
-    if (!v8)
+    if (!footerMaskView)
     {
       v10 = objc_alloc_init(_PXPhotosGridFooterMaskView);
       [(_PXPhotosGridFooterMaskView *)v10 setDelegate:self];
       gridView = self->_gridView;
-      v8 = v10;
-      v12 = [(PXGView *)gridView backgroundColor];
-      [(_PXPhotosGridFooterMaskView *)v8 setBackgroundColor:v12];
+      footerMaskView = v10;
+      backgroundColor = [(PXGView *)gridView backgroundColor];
+      [(_PXPhotosGridFooterMaskView *)footerMaskView setBackgroundColor:backgroundColor];
 
-      [(_PXPhotosGridFooterMaskView *)v8 setUserInteractionEnabled:0];
-      v13 = [(PXGView *)self->_gridView scrollViewController];
-      [v13 addSubview:v8];
+      [(_PXPhotosGridFooterMaskView *)footerMaskView setUserInteractionEnabled:0];
+      scrollViewController = [(PXGView *)self->_gridView scrollViewController];
+      [scrollViewController addSubview:footerMaskView];
     }
 
-    [(PXPhotosGridFooterPresentation *)self setFooterMaskView:v8];
+    [(PXPhotosGridFooterPresentation *)self setFooterMaskView:footerMaskView];
     [(PXPhotosGridFooterPresentation *)self _updateFooterMaskPadding];
     [(PXPhotosGridFooterPresentation *)self _updateFooterMaskViewFrame];
   }
 
   else
   {
-    [(_PXPhotosGridFooterMaskView *)v8 removeFromSuperview];
+    [(_PXPhotosGridFooterMaskView *)footerMaskView removeFromSuperview];
 
     [(PXPhotosGridFooterPresentation *)self setFooterMaskView:0];
   }
@@ -298,9 +298,9 @@ LABEL_13:
 
 - (void)_updateWantsFooter
 {
-  v3 = [(PXPhotosViewModel *)self->_viewModel wantsFooterVisibleImmediately];
-  v4 = v3;
-  if (self->_hasAppearedOnce || v3)
+  wantsFooterVisibleImmediately = [(PXPhotosViewModel *)self->_viewModel wantsFooterVisibleImmediately];
+  v4 = wantsFooterVisibleImmediately;
+  if (self->_hasAppearedOnce || wantsFooterVisibleImmediately)
   {
     if ([(PXPhotosViewModel *)self->_viewModel wantsFooterVisible]&& ((self->_hasReachedInitialPosition | v4) & 1) != 0 && (![(PXPhotosViewModel *)self->_viewModel isInSelectMode]|| ([(PXPhotosViewModel *)self->_viewModel hideFooterInSelectMode]& 1) == 0))
     {
@@ -311,8 +311,8 @@ LABEL_13:
 
       else
       {
-        v6 = [(PXPhotosViewModel *)self->_viewModel currentDataSource];
-        v5 = [v6 totalNumberOfItems] > 0;
+        currentDataSource = [(PXPhotosViewModel *)self->_viewModel currentDataSource];
+        v5 = [currentDataSource totalNumberOfItems] > 0;
       }
     }
 
@@ -361,12 +361,12 @@ void __68__PXPhotosGridFooterPresentation__conditionallyAutoRevealFooterView__bl
   [WeakRetained _conditionallyAutoRevealFooterViewWithLastUserScrollTime:*(a1 + 40)];
 }
 
-- (void)_conditionallyAutoRevealFooterViewWithLastUserScrollTime:(double)a3
+- (void)_conditionallyAutoRevealFooterViewWithLastUserScrollTime:(double)time
 {
   autoRevealMinimumIdleTimer = self->_autoRevealMinimumIdleTimer;
   self->_autoRevealMinimumIdleTimer = 0;
 
-  if (self->_lastUserScrollTime == a3)
+  if (self->_lastUserScrollTime == time)
   {
     if ([(PXPhotosGridFooterPresentation *)self _shouldAutoRevealFooterView])
     {
@@ -378,14 +378,14 @@ void __68__PXPhotosGridFooterPresentation__conditionallyAutoRevealFooterView__bl
         _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "[GZFooter] Performing auto-reveal", v10, 2u);
       }
 
-      v6 = [(PXGView *)self->_gridView scrollViewController];
-      [v6 scrollToEdge:3 animated:1];
+      scrollViewController = [(PXGView *)self->_gridView scrollViewController];
+      [scrollViewController scrollToEdge:3 animated:1];
     }
 
     else
     {
-      v6 = PLUserStatusUIGetLog();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+      scrollViewController = PLUserStatusUIGetLog();
+      if (os_log_type_enabled(scrollViewController, OS_LOG_TYPE_DEBUG))
       {
         *buf = 0;
         v7 = "[GZFooter] Suppressing auto-reveal: conditions changed";
@@ -397,14 +397,14 @@ void __68__PXPhotosGridFooterPresentation__conditionallyAutoRevealFooterView__bl
 
   else
   {
-    v6 = PLUserStatusUIGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    scrollViewController = PLUserStatusUIGetLog();
+    if (os_log_type_enabled(scrollViewController, OS_LOG_TYPE_DEBUG))
     {
       v12 = 0;
       v7 = "[GZFooter] Suppressing auto-reveal: user scrolled";
       v8 = &v12;
 LABEL_10:
-      _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, v7, v8, 2u);
+      _os_log_impl(&dword_1A3C1C000, scrollViewController, OS_LOG_TYPE_DEBUG, v7, v8, 2u);
     }
   }
 
@@ -414,9 +414,9 @@ LABEL_10:
 - (BOOL)_shouldAutoRevealFooterView
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PXGView *)self->_gridView window];
+  window = [(PXGView *)self->_gridView window];
 
-  if (v3)
+  if (window)
   {
     if (self->_autoRevealMinimumIdleTimer)
     {
@@ -434,10 +434,10 @@ LABEL_11:
     {
       if (([(PXPhotosViewModel *)self->_viewModel footerHasImportantInformation]& 1) != 0)
       {
-        v6 = [(PXGView *)self->_gridView scrollViewController];
-        v7 = [(PXPhotosLayout *)self->_layout footerView];
-        [v7 bounds];
-        [v6 isScrolledAtEdge:3 tolerance:v8 + 1.0];
+        scrollViewController = [(PXGView *)self->_gridView scrollViewController];
+        footerView = [(PXPhotosLayout *)self->_layout footerView];
+        [footerView bounds];
+        [scrollViewController isScrolledAtEdge:3 tolerance:v8 + 1.0];
 
         [(PXPhotosGridFooterPresentation *)self _footerVisibleAmountIncludingSafeAreaInsets:0];
         PXFloatEqualToFloatWithTolerance();
@@ -467,29 +467,29 @@ LABEL_11:
   return 0;
 }
 
-- (double)_footerVisibleAmountIncludingSafeAreaInsets:(BOOL)a3
+- (double)_footerVisibleAmountIncludingSafeAreaInsets:(BOOL)insets
 {
-  v6 = [(PXPhotosLayout *)self->_layout footerView];
-  if (v6)
+  footerView = [(PXPhotosLayout *)self->_layout footerView];
+  if (footerView)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
-      v39 = [v6 px_descriptionForAssertionMessage];
-      [v36 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:147 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_layout.footerView", v38, v39}];
+      px_descriptionForAssertionMessage = [footerView px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:147 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"_layout.footerView", v38, px_descriptionForAssertionMessage}];
     }
 
-    v7 = [(PXGView *)self->_gridView scrollViewController];
-    [v6 bounds];
+    scrollViewController = [(PXGView *)self->_gridView scrollViewController];
+    [footerView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v7 scrollView];
-    [v6 convertRect:v16 toView:{v9, v11, v13, v15}];
+    scrollView = [scrollViewController scrollView];
+    [footerView convertRect:scrollView toView:{v9, v11, v13, v15}];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -504,8 +504,8 @@ LABEL_11:
     if (Height > 0.0)
     {
       v40 = Height;
-      [v7 scrollViewVisibleRect];
-      if (!a3)
+      [scrollViewController scrollViewVisibleRect];
+      if (!insets)
       {
         [(PXGView *)self->_gridView safeAreaInsets];
         PXEdgeInsetsInsetRect();
@@ -539,29 +539,29 @@ LABEL_11:
   return v26;
 }
 
-- (void)setFooterFullyMasked:(BOOL)a3
+- (void)setFooterFullyMasked:(BOOL)masked
 {
-  if (self->_footerFullyMasked != a3)
+  if (self->_footerFullyMasked != masked)
   {
-    self->_footerFullyMasked = a3;
+    self->_footerFullyMasked = masked;
     [(PXPhotosGridFooterPresentation *)self _updateFooterAndMaskVisibility];
   }
 }
 
-- (void)setWantsFooter:(BOOL)a3
+- (void)setWantsFooter:(BOOL)footer
 {
-  if (self->_wantsFooter != a3)
+  if (self->_wantsFooter != footer)
   {
-    self->_wantsFooter = a3;
+    self->_wantsFooter = footer;
     [(PXPhotosGridFooterPresentation *)self _updateFooterView];
   }
 }
 
-- (void)setShouldAutoReveal:(BOOL)a3
+- (void)setShouldAutoReveal:(BOOL)reveal
 {
-  if (self->_shouldAutoReveal != a3)
+  if (self->_shouldAutoReveal != reveal)
   {
-    self->_shouldAutoReveal = a3;
+    self->_shouldAutoReveal = reveal;
     [(PXPhotosGridFooterPresentation *)self _updateWantsFooter];
   }
 }
@@ -589,23 +589,23 @@ LABEL_11:
   [(PXPhotosGridFooterPresentation *)self _updateFooterMaskViewFrame];
 }
 
-- (PXPhotosGridFooterPresentation)initWithViewModel:(id)a3 gridView:(id)a4 layout:(id)a5
+- (PXPhotosGridFooterPresentation)initWithViewModel:(id)model gridView:(id)view layout:(id)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  modelCopy = model;
+  viewCopy = view;
+  layoutCopy = layout;
+  if (modelCopy)
   {
-    if (v11)
+    if (viewCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"gridView"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"gridView"}];
 
-    if (v12)
+    if (layoutCopy)
     {
       goto LABEL_4;
     }
@@ -613,23 +613,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
 
-  if (!v11)
+  if (!viewCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (layoutCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"layout"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"layout"}];
 
 LABEL_4:
   v20.receiver = self;
@@ -638,11 +638,11 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_gridView, a4);
-    v15 = [(PXGView *)v14->_gridView scrollViewController];
-    [v15 registerObserver:v14];
-    objc_storeStrong(&v14->_layout, a5);
-    objc_storeStrong(&v14->_viewModel, a3);
+    objc_storeStrong(&v13->_gridView, view);
+    scrollViewController = [(PXGView *)v14->_gridView scrollViewController];
+    [scrollViewController registerObserver:v14];
+    objc_storeStrong(&v14->_layout, layout);
+    objc_storeStrong(&v14->_viewModel, model);
     [(PXPhotosViewModel *)v14->_viewModel registerChangeObserver:v14 context:PXPhotosViewModelObserverContext_219777];
   }
 
@@ -651,8 +651,8 @@ LABEL_4:
 
 - (PXPhotosGridFooterPresentation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:71 description:{@"%s is not available as initializer", "-[PXPhotosGridFooterPresentation init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridFooterPresentation.m" lineNumber:71 description:{@"%s is not available as initializer", "-[PXPhotosGridFooterPresentation init]"}];
 
   abort();
 }

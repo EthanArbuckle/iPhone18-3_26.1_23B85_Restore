@@ -1,6 +1,6 @@
 @interface CKDetailsChatOptionsCheckboxCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetailsChatOptionsCheckboxCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetailsChatOptionsCheckboxCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UISwitch)controlSwitch;
 - (void)_configureNewControlSwitch;
 - (void)layoutSubviews;
@@ -9,35 +9,35 @@
 
 @implementation CKDetailsChatOptionsCheckboxCell
 
-- (CKDetailsChatOptionsCheckboxCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsChatOptionsCheckboxCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = CKDetailsChatOptionsCheckboxCell;
-  v4 = [(CKTranscriptDetailsResizableCell *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKTranscriptDetailsResizableCell *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CKDetailsChatOptionsCheckboxCell *)v4 _configureNewControlSwitch];
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 theme];
-    v8 = [v7 detailsCellStaticTextColor];
-    v9 = [(CKDetailsChatOptionsCheckboxCell *)v5 controlSwitch];
-    [v9 setOnTintColor:v8];
+    theme = [v6 theme];
+    detailsCellStaticTextColor = [theme detailsCellStaticTextColor];
+    controlSwitch = [(CKDetailsChatOptionsCheckboxCell *)v5 controlSwitch];
+    [controlSwitch setOnTintColor:detailsCellStaticTextColor];
 
-    v10 = [(CKDetailsCell *)v5 topSeperator];
-    [v10 setHidden:1];
+    topSeperator = [(CKDetailsCell *)v5 topSeperator];
+    [topSeperator setHidden:1];
 
-    v11 = [(CKDetailsCell *)v5 bottomSeperator];
-    [v11 setHidden:1];
+    bottomSeperator = [(CKDetailsCell *)v5 bottomSeperator];
+    [bottomSeperator setHidden:1];
   }
 
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (CKIsRunningInMacCatalyst())
   {
     v6 = 44.0;
@@ -84,8 +84,8 @@
   self->_controlSwitch = v5;
 
   [(UISwitch *)self->_controlSwitch setSwitchStyle:1];
-  v7 = [(CKDetailsChatOptionsCheckboxCell *)self contentView];
-  [v7 addSubview:self->_controlSwitch];
+  contentView = [(CKDetailsChatOptionsCheckboxCell *)self contentView];
+  [contentView addSubview:self->_controlSwitch];
 }
 
 - (void)layoutSubviews
@@ -93,8 +93,8 @@
   v21.receiver = self;
   v21.super_class = CKDetailsChatOptionsCheckboxCell;
   [(CKDetailsCell *)&v21 layoutSubviews];
-  v3 = [(CKDetailsChatOptionsCheckboxCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKDetailsChatOptionsCheckboxCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -105,8 +105,8 @@
   v17 = v9 - (v12 + v16);
   v19 = v11 - (v14 + v18);
 
-  v20 = [(CKDetailsChatOptionsCheckboxCell *)self controlSwitch];
-  [v20 setFrame:{v13 + -2.0, v15, v17, v19}];
+  controlSwitch = [(CKDetailsChatOptionsCheckboxCell *)self controlSwitch];
+  [controlSwitch setFrame:{v13 + -2.0, v15, v17, v19}];
 }
 
 - (void)prepareForReuse

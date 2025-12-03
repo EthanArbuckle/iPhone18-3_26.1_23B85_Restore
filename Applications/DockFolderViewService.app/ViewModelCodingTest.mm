@@ -1,24 +1,24 @@
 @interface ViewModelCodingTest
 - (_TtC21DockFolderViewService19ViewModelCodingTest)init;
-- (_TtC21DockFolderViewService19ViewModelCodingTest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC21DockFolderViewService19ViewModelCodingTest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ViewModelCodingTest
 
-- (_TtC21DockFolderViewService19ViewModelCodingTest)initWithCoder:(id)a3
+- (_TtC21DockFolderViewService19ViewModelCodingTest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1000629DC(v3);
+  coderCopy = coder;
+  v4 = sub_1000629DC(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_100062320(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_100062320(coderCopy);
 }
 
 - (_TtC21DockFolderViewService19ViewModelCodingTest)init

@@ -1,29 +1,29 @@
 @interface FIUIAnimatingSpriteImageView
-+ (id)_createNewSpriteArray:(id)a3 currentFrame:(unint64_t)a4 arraySize:(unint64_t)a5 interrupted:(BOOL)a6;
-+ (unint64_t)_findSpriteIndex:(CGPoint)a3 centerPoints:(id)a4;
-+ (void)_pauseLayer:(id)a3;
-+ (void)_resetLayer:(id)a3;
-+ (void)_resumeLayer:(id)a3;
++ (id)_createNewSpriteArray:(id)array currentFrame:(unint64_t)frame arraySize:(unint64_t)size interrupted:(BOOL)interrupted;
++ (unint64_t)_findSpriteIndex:(CGPoint)index centerPoints:(id)points;
++ (void)_pauseLayer:(id)layer;
++ (void)_resetLayer:(id)layer;
++ (void)_resumeLayer:(id)layer;
 - (BOOL)isAnimating;
 - (CGSize)_spriteFrameSize;
-- (FIUIAnimatingSpriteImageView)initWithFrame:(CGRect)a3;
+- (FIUIAnimatingSpriteImageView)initWithFrame:(CGRect)frame;
 - (id)_centerPointValues;
-- (void)_addAnimation:(id)a3 forKey:(id)a4;
+- (void)_addAnimation:(id)animation forKey:(id)key;
 - (void)animateOnce;
 - (void)layoutSubviews;
 - (void)pauseAnimating;
 - (void)resumeAnimating;
-- (void)setSpriteImage:(id)a3;
+- (void)setSpriteImage:(id)image;
 - (void)startAnimating;
-- (void)stopAnimatingFinishingCycle:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)stopAnimatingFinishingCycle:(BOOL)cycle;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation FIUIAnimatingSpriteImageView
 
 - (void)startAnimating
 {
-  v5 = a1;
+  selfCopy = self;
   v13.x = a2;
   v13.y = a3;
   v6 = NSStringFromCGPoint(v13);
@@ -88,11 +88,11 @@
   return result;
 }
 
-- (FIUIAnimatingSpriteImageView)initWithFrame:(CGRect)a3
+- (FIUIAnimatingSpriteImageView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = FIUIAnimatingSpriteImageView;
-  v3 = [(FIUIAnimatingSpriteImageView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIAnimatingSpriteImageView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -102,8 +102,8 @@
     imageLayer = v4->_imageLayer;
     v4->_imageLayer = v5;
 
-    v7 = [(FIUIAnimatingSpriteImageView *)v4 layer];
-    [v7 addSublayer:v4->_imageLayer];
+    layer = [(FIUIAnimatingSpriteImageView *)v4 layer];
+    [layer addSublayer:v4->_imageLayer];
 
     v4->_shouldResumeAnimating = 0;
   }
@@ -111,9 +111,9 @@
   return v4;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3 && self->_shouldResumeAnimating)
+  if (window && self->_shouldResumeAnimating)
   {
     [(FIUIAnimatingSpriteImageView *)self resumeAnimating];
   }
@@ -124,13 +124,13 @@
   }
 }
 
-- (void)setSpriteImage:(id)a3
+- (void)setSpriteImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(FIUIAnimatingSpriteImageView *)self stopAnimatingFinishingCycle:0];
   spriteImage = self->_spriteImage;
-  self->_spriteImage = v4;
-  v6 = v4;
+  self->_spriteImage = imageCopy;
+  v6 = imageCopy;
 
   [(CALayer *)self->_imageLayer setContents:[(UIImage *)v6 CGImage]];
 
@@ -161,34 +161,34 @@
   return v3;
 }
 
-+ (unint64_t)_findSpriteIndex:(CGPoint)a3 centerPoints:(id)a4
++ (unint64_t)_findSpriteIndex:(CGPoint)index centerPoints:(id)points
 {
-  y = a3.y;
-  x = a3.x;
+  y = index.y;
+  x = index.x;
   v6 = MEMORY[0x1E696B098];
-  v7 = a4;
+  pointsCopy = points;
   v8 = [v6 valueWithCGPoint:{x, y}];
-  v9 = [v7 indexOfObject:v8];
+  v9 = [pointsCopy indexOfObject:v8];
 
   return v9;
 }
 
-+ (id)_createNewSpriteArray:(id)a3 currentFrame:(unint64_t)a4 arraySize:(unint64_t)a5 interrupted:(BOOL)a6
++ (id)_createNewSpriteArray:(id)array currentFrame:(unint64_t)frame arraySize:(unint64_t)size interrupted:(BOOL)interrupted
 {
-  v9 = a3;
-  v10 = v9;
-  if (a5 - 1 == a4)
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (size - 1 == frame)
   {
-    v11 = v9;
+    v11 = arrayCopy;
   }
 
   else
   {
-    v12 = [v9 subarrayWithRange:{a4 + 1, ~a4 + a5}];
+    v12 = [arrayCopy subarrayWithRange:{frame + 1, ~frame + size}];
     v13 = v12;
-    if (a6)
+    if (interrupted)
     {
-      v14 = [v10 subarrayWithRange:{0, a4 + 1}];
+      v14 = [v10 subarrayWithRange:{0, frame + 1}];
       v11 = [v13 arrayByAddingObjectsFromArray:v14];
     }
 
@@ -201,18 +201,18 @@
   return v11;
 }
 
-- (void)stopAnimatingFinishingCycle:(BOOL)a3
+- (void)stopAnimatingFinishingCycle:(BOOL)cycle
 {
   self->_shouldResumeAnimating = 0;
-  if (a3 && ([(CALayer *)self->_imageLayer presentationLayer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (cycle && ([(CALayer *)self->_imageLayer presentationLayer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(CALayer *)self->_imageLayer presentationLayer];
-    [v5 position];
+    presentationLayer = [(CALayer *)self->_imageLayer presentationLayer];
+    [presentationLayer position];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
-    v11 = [FIUIAnimatingSpriteImageView _findSpriteIndex:v10 centerPoints:v7, v9];
+    _centerPointValues = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
+    v11 = [FIUIAnimatingSpriteImageView _findSpriteIndex:_centerPointValues centerPoints:v7, v9];
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -226,14 +226,14 @@
 
     else
     {
-      v14 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
-      v15 = [v14 count];
+      _centerPointValues2 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
+      v15 = [_centerPointValues2 count];
 
       [(CALayer *)self->_imageLayer removeAnimationForKey:@"PositionKeyframeAnimation"];
       if (v11 != v15 - 1)
       {
-        v16 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
-        v18 = [FIUIAnimatingSpriteImageView _createNewSpriteArray:v16 currentFrame:v11 arraySize:v15 interrupted:0];
+        _centerPointValues3 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
+        v18 = [FIUIAnimatingSpriteImageView _createNewSpriteArray:_centerPointValues3 currentFrame:v11 arraySize:v15 interrupted:0];
 
         v17 = _PositionAnimation(v18, [v18 count] / self->_framesPerSecond, 0.0);
         [(FIUIAnimatingSpriteImageView *)self _addAnimation:v17 forKey:@"PositionKeyframeAnimation"];
@@ -256,14 +256,14 @@
     [(CALayer *)self->_imageLayer removeAnimationForKey:@"PositionKeyframeAnimation"];
   }
 
-  v5 = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
-  v3 = _PositionAnimation(v5, self->_spriteFrameCount / self->_framesPerSecond, 1.0);
+  _centerPointValues = [(FIUIAnimatingSpriteImageView *)self _centerPointValues];
+  v3 = _PositionAnimation(_centerPointValues, self->_spriteFrameCount / self->_framesPerSecond, 1.0);
   [(FIUIAnimatingSpriteImageView *)self _addAnimation:v3 forKey:@"PositionKeyframeAnimation"];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v4 = [v5 lastObject];
-  [v4 CGPointValue];
+  lastObject = [_centerPointValues lastObject];
+  [lastObject CGPointValue];
   [(CALayer *)self->_imageLayer setPosition:?];
 
   [MEMORY[0x1E6979518] commit];
@@ -295,44 +295,44 @@
   }
 }
 
-- (void)_addAnimation:(id)a3 forKey:(id)a4
+- (void)_addAnimation:(id)animation forKey:(id)key
 {
   imageLayer = self->_imageLayer;
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  animationCopy = animation;
   [FIUIAnimatingSpriteImageView _resetLayer:imageLayer];
-  [(CALayer *)self->_imageLayer addAnimation:v8 forKey:v7];
+  [(CALayer *)self->_imageLayer addAnimation:animationCopy forKey:keyCopy];
 }
 
-+ (void)_pauseLayer:(id)a3
++ (void)_pauseLayer:(id)layer
 {
-  v5 = a3;
-  [v5 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layerCopy = layer;
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
-  [v5 setSpeed:0.0];
-  [v5 setTimeOffset:v4];
+  [layerCopy setSpeed:0.0];
+  [layerCopy setTimeOffset:v4];
 }
 
-+ (void)_resumeLayer:(id)a3
++ (void)_resumeLayer:(id)layer
 {
-  v6 = a3;
-  [v6 timeOffset];
+  layerCopy = layer;
+  [layerCopy timeOffset];
   v4 = v3;
   LODWORD(v3) = 1.0;
-  [v6 setSpeed:v3];
-  [v6 setTimeOffset:0.0];
-  [v6 setBeginTime:0.0];
-  [v6 convertTime:0 fromLayer:CACurrentMediaTime()];
-  [v6 setBeginTime:v5 - v4];
+  [layerCopy setSpeed:v3];
+  [layerCopy setTimeOffset:0.0];
+  [layerCopy setBeginTime:0.0];
+  [layerCopy convertTime:0 fromLayer:CACurrentMediaTime()];
+  [layerCopy setBeginTime:v5 - v4];
 }
 
-+ (void)_resetLayer:(id)a3
++ (void)_resetLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   LODWORD(v3) = 1.0;
-  [v4 setSpeed:v3];
-  [v4 setTimeOffset:0.0];
-  [v4 setBeginTime:0.0];
+  [layerCopy setSpeed:v3];
+  [layerCopy setTimeOffset:0.0];
+  [layerCopy setBeginTime:0.0];
 }
 
 - (void)stopAnimatingFinishingCycle:(CGFloat)a3 .cold.1(void *a1, CGFloat a2, CGFloat a3)

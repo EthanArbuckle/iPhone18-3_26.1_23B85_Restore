@@ -1,40 +1,40 @@
 @interface SGReminderDissector
-+ (BOOL)isReminderDueDateComponentsInPast:(id)a3 givenReferenceDate:(id)a4 allDay:(BOOL)a5;
-+ (id)enrichedTaggedCharacterRangesFromEntity:(id)a3 forMessage:(id)a4;
-+ (id)enrichedTaggedCharacterRangesFromTaggedCharacterRanges:(id)a3 messageIsSent:(BOOL)a4;
-+ (id)getContactIdentifierForName:(id)a3 andEmail:(id)a4 ifMatchingPredicate:(id)a5;
++ (BOOL)isReminderDueDateComponentsInPast:(id)past givenReferenceDate:(id)date allDay:(BOOL)day;
++ (id)enrichedTaggedCharacterRangesFromEntity:(id)entity forMessage:(id)message;
++ (id)enrichedTaggedCharacterRangesFromTaggedCharacterRanges:(id)ranges messageIsSent:(BOOL)sent;
++ (id)getContactIdentifierForName:(id)name andEmail:(id)email ifMatchingPredicate:(id)predicate;
 + (id)sharedInstance;
-- (BOOL)_isTestMessage:(id)a3;
-- (BOOL)isAllDay:(id)a3;
-- (BOOL)isValidTextMessageForProcessing:(id)a3;
-- (BOOL)mailAddressIsAccountOwner:(id)a3;
+- (BOOL)_isTestMessage:(id)message;
+- (BOOL)isAllDay:(id)day;
+- (BOOL)isValidTextMessageForProcessing:(id)processing;
+- (BOOL)mailAddressIsAccountOwner:(id)owner;
 - (SGReminderDissector)init;
-- (SGReminderDissector)initWithConversations:(id)a3 rtRoutineManager:(id)a4;
-- (id)_detectedReminderEnrichmentFromReminderMessage:(id)a3 parentEntity:(id)a4 language:(id)a5 parentMessage:(id)a6 startTimeProcessing:(unint64_t)a7;
-- (id)_reminderEnrichmentWithTitle:(id)a3 dueDateComponents:(id)a4 dueLocationType:(unsigned __int8)a5 dueLocation:(id)a6 dueLocationTrigger:(unsigned __int8)a7 sourceURL:(id)a8 reminderStatus:(unsigned __int8)a9 parentEntity:(id)a10 parentMessage:(id)a11 allDay:(BOOL)a12;
-- (id)_reminderMessageForTextMessage:(id)a3 withEntity:(id)a4 extractionModel:(id)a5 processingLanguage:(id)a6 preprocessing:(BOOL)a7;
-- (id)_testReminder:(id)a3 entity:(id)a4;
-- (id)_validateDueDateComponents:(id)a3 dueLocation:(id)a4 forReminderMessages:(id)a5;
-- (id)defaultDueDateComponentsFromMessages:(id)a3;
-- (id)dueDateComponentsFromMessages:(id)a3;
-- (id)dueLocationFromMessages:(id)a3;
-- (id)extractReminderFromMailMessage:(id)a3 entity:(id)a4;
-- (id)extractReminderFromOwnedMailMessage:(id)a3 entity:(id)a4;
-- (id)extractReminderFromTextMessage:(id)a3 entity:(id)a4 store:(id)a5;
-- (id)fetchLocationOfInterestByType:(int64_t)a3 name:(id)a4;
-- (id)processingLanguageForContent:(id)a3;
-- (id)reminderTitleForContent:(id)a3;
-- (id)reminderTitleFromMessages:(id)a3 forLanguage:(id)a4;
-- (id)storageLocationFromDueLocation:(id)a3;
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5;
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5;
+- (SGReminderDissector)initWithConversations:(id)conversations rtRoutineManager:(id)manager;
+- (id)_detectedReminderEnrichmentFromReminderMessage:(id)message parentEntity:(id)entity language:(id)language parentMessage:(id)parentMessage startTimeProcessing:(unint64_t)processing;
+- (id)_reminderEnrichmentWithTitle:(id)title dueDateComponents:(id)components dueLocationType:(unsigned __int8)type dueLocation:(id)location dueLocationTrigger:(unsigned __int8)trigger sourceURL:(id)l reminderStatus:(unsigned __int8)status parentEntity:(id)self0 parentMessage:(id)self1 allDay:(BOOL)self2;
+- (id)_reminderMessageForTextMessage:(id)message withEntity:(id)entity extractionModel:(id)model processingLanguage:(id)language preprocessing:(BOOL)preprocessing;
+- (id)_testReminder:(id)reminder entity:(id)entity;
+- (id)_validateDueDateComponents:(id)components dueLocation:(id)location forReminderMessages:(id)messages;
+- (id)defaultDueDateComponentsFromMessages:(id)messages;
+- (id)dueDateComponentsFromMessages:(id)messages;
+- (id)dueLocationFromMessages:(id)messages;
+- (id)extractReminderFromMailMessage:(id)message entity:(id)entity;
+- (id)extractReminderFromOwnedMailMessage:(id)message entity:(id)entity;
+- (id)extractReminderFromTextMessage:(id)message entity:(id)entity store:(id)store;
+- (id)fetchLocationOfInterestByType:(int64_t)type name:(id)name;
+- (id)processingLanguageForContent:(id)content;
+- (id)reminderTitleForContent:(id)content;
+- (id)reminderTitleFromMessages:(id)messages forLanguage:(id)language;
+- (id)storageLocationFromDueLocation:(id)location;
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context;
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context;
 @end
 
 @implementation SGReminderDissector
 
-- (id)fetchLocationOfInterestByType:(int64_t)a3 name:(id)a4
+- (id)fetchLocationOfInterestByType:(int64_t)type name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = dispatch_semaphore_create(0);
   rtRoutineManager = self->_rtRoutineManager;
   if (rtRoutineManager)
@@ -49,34 +49,34 @@
     v32[1] = 3221225472;
     v32[2] = __58__SGReminderDissector_fetchLocationOfInterestByType_name___block_invoke;
     v32[3] = &unk_27894B308;
-    v36 = a3;
-    v33 = v6;
+    typeCopy = type;
+    v33 = nameCopy;
     v35 = buf;
     v9 = v7;
     v34 = v9;
-    [(RTRoutineManager *)rtRoutineManager fetchLocationsOfInterestOfType:a3 withHandler:v32];
+    [(RTRoutineManager *)rtRoutineManager fetchLocationsOfInterestOfType:type withHandler:v32];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v38 + 5))
     {
       v10 = [SGStorageLocation alloc];
-      v30 = [*(v38 + 5) preferredName];
-      v31 = [*(v38 + 5) mapItem];
-      v11 = [v31 location];
-      [v11 latitude];
+      preferredName = [*(v38 + 5) preferredName];
+      mapItem = [*(v38 + 5) mapItem];
+      location = [mapItem location];
+      [location latitude];
       v13 = v12;
-      v14 = [*(v38 + 5) mapItem];
-      v15 = [v14 location];
-      [v15 longitude];
+      mapItem2 = [*(v38 + 5) mapItem];
+      location2 = [mapItem2 location];
+      [location2 longitude];
       v17 = v16;
-      v18 = [*(v38 + 5) mapItem];
-      v19 = [v18 location];
-      [v19 horizontalUncertainty];
+      mapItem3 = [*(v38 + 5) mapItem];
+      location3 = [mapItem3 location];
+      [location3 horizontalUncertainty];
       v21 = v20;
       [*(v38 + 5) confidence];
       v23 = v22;
-      v24 = [*(v38 + 5) mapItem];
-      v25 = [v24 geoMapItemHandle];
-      v26 = [(SGStorageLocation *)v10 initWithType:1 label:v30 address:0 airportCode:0 latitude:v25 longitude:v13 accuracy:v17 quality:v21 handle:v23];
+      mapItem4 = [*(v38 + 5) mapItem];
+      geoMapItemHandle = [mapItem4 geoMapItemHandle];
+      v26 = [(SGStorageLocation *)v10 initWithType:1 label:preferredName address:0 airportCode:0 latitude:geoMapItemHandle longitude:v13 accuracy:v17 quality:v21 handle:v23];
     }
 
     else
@@ -236,21 +236,21 @@ LABEL_32:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)storageLocationFromDueLocation:(id)a3
+- (id)storageLocationFromDueLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 locationType];
-  v6 = 0;
-  if (v5 <= 1)
+  locationCopy = location;
+  locationType = [locationCopy locationType];
+  name = 0;
+  if (locationType <= 1)
   {
-    if (!v5)
+    if (!locationType)
     {
       goto LABEL_14;
     }
 
     v8 = 0;
     v7 = 0;
-    if (v5 == 1)
+    if (locationType == 1)
     {
       goto LABEL_12;
     }
@@ -258,10 +258,10 @@ LABEL_32:
 
   else
   {
-    if (v5 == 4)
+    if (locationType == 4)
     {
-      v6 = [v4 name];
-      if (!v6)
+      name = [locationCopy name];
+      if (!name)
       {
         v7 = 0;
         goto LABEL_13;
@@ -271,62 +271,62 @@ LABEL_32:
       goto LABEL_12;
     }
 
-    if (v5 == 3)
+    if (locationType == 3)
     {
-      v6 = 0;
+      name = 0;
       v8 = 2;
       goto LABEL_12;
     }
 
     v7 = 0;
-    if (v5 == 2)
+    if (locationType == 2)
     {
-      v6 = 0;
+      name = 0;
       v8 = 1;
 LABEL_12:
-      v7 = [(SGReminderDissector *)self fetchLocationOfInterestByType:v8 name:v6];
+      v7 = [(SGReminderDissector *)self fetchLocationOfInterestByType:v8 name:name];
     }
   }
 
 LABEL_13:
   v9 = v7;
 
-  v6 = v9;
+  name = v9;
 LABEL_14:
 
-  return v6;
+  return name;
 }
 
-- (id)_reminderEnrichmentWithTitle:(id)a3 dueDateComponents:(id)a4 dueLocationType:(unsigned __int8)a5 dueLocation:(id)a6 dueLocationTrigger:(unsigned __int8)a7 sourceURL:(id)a8 reminderStatus:(unsigned __int8)a9 parentEntity:(id)a10 parentMessage:(id)a11 allDay:(BOOL)a12
+- (id)_reminderEnrichmentWithTitle:(id)title dueDateComponents:(id)components dueLocationType:(unsigned __int8)type dueLocation:(id)location dueLocationTrigger:(unsigned __int8)trigger sourceURL:(id)l reminderStatus:(unsigned __int8)status parentEntity:(id)self0 parentMessage:(id)self1 allDay:(BOOL)self2
 {
-  v73 = a7;
-  v74 = a5;
+  triggerCopy = trigger;
+  typeCopy = type;
   v85 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  v19 = a10;
-  v20 = a11;
-  v75 = v20;
-  if (v16 | v17)
+  titleCopy = title;
+  componentsCopy = components;
+  locationCopy = location;
+  lCopy = l;
+  entityCopy = entity;
+  messageCopy = message;
+  v75 = messageCopy;
+  if (componentsCopy | locationCopy)
   {
-    v21 = v20;
-    v72 = v18;
-    if (v16)
+    v21 = messageCopy;
+    v72 = lCopy;
+    if (componentsCopy)
     {
-      v22 = [v20 date];
-      if (v22)
+      date = [messageCopy date];
+      if (date)
       {
-        v23 = v22;
+        v23 = date;
         v24 = objc_opt_class();
-        v25 = [v21 date];
-        if ([v24 isReminderDueDateComponentsInPast:v16 givenReferenceDate:v25 allDay:a12])
+        date2 = [v21 date];
+        if ([v24 isReminderDueDateComponentsInPast:componentsCopy givenReferenceDate:date2 allDay:day])
         {
-          v26 = [MEMORY[0x277D02098] showPastEvents];
+          showPastEvents = [MEMORY[0x277D02098] showPastEvents];
 
-          v18 = v72;
-          if ((v26 & 1) == 0)
+          lCopy = v72;
+          if ((showPastEvents & 1) == 0)
           {
             v27 = sgRemindersLogHandle();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -340,7 +340,7 @@ LABEL_14:
         else
         {
 
-          v18 = v72;
+          lCopy = v72;
         }
       }
     }
@@ -349,11 +349,11 @@ LABEL_14:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138740483;
-      v80 = v15;
+      v80 = titleCopy;
       v81 = 2117;
-      v82 = v16;
+      v82 = componentsCopy;
       v83 = 2117;
-      v84 = v17;
+      v84 = locationCopy;
       _os_log_debug_impl(&dword_231E60000, v30, OS_LOG_TYPE_DEBUG, "Creating enrichment for Reminder: %{sensitive}@, dueTime: %{sensitive}@, dueLocation: %{sensitive}@", buf, 0x20u);
     }
 
@@ -370,17 +370,17 @@ LABEL_14:
       v32 = v21;
       if ([v32 isSent])
       {
-        v33 = [v32 recipients];
-        v34 = [v33 firstObject];
-        v35 = [v34 contactIdentifier];
+        recipients = [v32 recipients];
+        firstObject = [recipients firstObject];
+        contactIdentifier = [firstObject contactIdentifier];
 
-        v18 = v72;
+        lCopy = v72;
       }
 
       else
       {
-        v33 = [v32 sender];
-        v35 = [v33 contactIdentifier];
+        recipients = [v32 sender];
+        contactIdentifier = [recipients contactIdentifier];
       }
     }
 
@@ -405,31 +405,31 @@ LABEL_29:
         }
 
         v28 = 0;
-        v35 = &stru_284703F00;
+        contactIdentifier = &stru_284703F00;
         goto LABEL_32;
       }
 
       v36 = v21;
-      v37 = [v36 from];
-      v38 = [v37 asCSPerson];
-      v35 = [v38 contactIdentifier];
+      from = [v36 from];
+      asCSPerson = [from asCSPerson];
+      contactIdentifier = [asCSPerson contactIdentifier];
 
-      if (v35)
+      if (contactIdentifier)
       {
-        v28 = v35;
-        v18 = v72;
+        v28 = contactIdentifier;
+        lCopy = v72;
 LABEL_32:
 
 LABEL_33:
-        v71 = v17;
-        v45 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@", v15];
-        if (!v45)
+        v71 = locationCopy;
+        titleCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@", titleCopy];
+        if (!titleCopy)
         {
           v57 = sgRemindersLogHandle();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v80 = v19;
+            v80 = entityCopy;
             _os_log_error_impl(&dword_231E60000, v57, OS_LOG_TYPE_ERROR, "No groupId found for entity %@", buf, 0xCu);
           }
 
@@ -437,60 +437,60 @@ LABEL_33:
           goto LABEL_48;
         }
 
-        [v19 creationTimestamp];
+        [entityCopy creationTimestamp];
         v47 = v46;
-        v48 = [v19 duplicateKey];
-        v49 = [SGDuplicateKey duplicateKeyForPseudoReminderWithGroupId:v45 withCreationTime:v48 parentKey:v47];
+        duplicateKey = [entityCopy duplicateKey];
+        v49 = [SGDuplicateKey duplicateKeyForPseudoReminderWithGroupId:titleCopy withCreationTime:duplicateKey parentKey:v47];
 
         v68 = v49;
-        v69 = v19;
-        v29 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v49 title:v15 parent:v19];
-        v70 = v15;
-        if (v16)
+        v69 = entityCopy;
+        v29 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v49 title:titleCopy parent:entityCopy];
+        v70 = titleCopy;
+        if (componentsCopy)
         {
           v50 = MEMORY[0x277D020E8];
-          v51 = [v16 date];
-          v52 = [v16 timeZone];
-          v53 = [v16 date];
-          v54 = [v16 timeZone];
-          v55 = [v50 rangeWithStartDate:v51 startTimeZone:v52 endDate:v53 endTimeZone:v54];
+          date3 = [componentsCopy date];
+          timeZone = [componentsCopy timeZone];
+          date4 = [componentsCopy date];
+          timeZone2 = [componentsCopy timeZone];
+          v55 = [v50 rangeWithStartDate:date3 startTimeZone:timeZone endDate:date4 endTimeZone:timeZone2];
           [(SGEntity *)v29 setTimeRange:v55];
 
-          v56 = v73;
+          v56 = triggerCopy;
         }
 
         else
         {
-          v56 = v73;
-          if (!v71 || !v73)
+          v56 = triggerCopy;
+          if (!v71 || !triggerCopy)
           {
             goto LABEL_43;
           }
 
           v58 = objc_alloc(MEMORY[0x277CBEB58]);
           v78 = v71;
-          v51 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
-          v52 = [v58 initWithArray:v51];
-          [(SGEntity *)v29 setLocations:v52];
+          date3 = [MEMORY[0x277CBEA60] arrayWithObjects:&v78 count:1];
+          timeZone = [v58 initWithArray:date3];
+          [(SGEntity *)v29 setLocations:timeZone];
         }
 
 LABEL_43:
         v59 = MEMORY[0x277D01FA0];
         v76[0] = *MEMORY[0x277D02438];
-        v60 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a9];
+        v60 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:status];
         v77[0] = v60;
         v76[1] = *MEMORY[0x277D02428];
         v61 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v56];
         v77[1] = v61;
         v76[2] = *MEMORY[0x277D02430];
-        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v74];
+        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:typeCopy];
         v76[3] = *MEMORY[0x277D02420];
         v77[2] = v62;
-        v77[3] = v35;
+        v77[3] = contactIdentifier;
         v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:4];
         v64 = [v59 reminderMetadata:v63];
 
-        v19 = v69;
+        entityCopy = v69;
         [v69 creationTimestamp];
         [(SGPipelineEnrichment *)v29 setCreationTimestamp:?];
         if (v64)
@@ -498,35 +498,35 @@ LABEL_43:
           [(SGEntity *)v29 addTag:v64];
         }
 
-        v18 = v72;
-        if (a12)
+        lCopy = v72;
+        if (day)
         {
-          v65 = [MEMORY[0x277D01FA0] allDay];
-          [(SGEntity *)v29 addTag:v65];
+          allDay = [MEMORY[0x277D01FA0] allDay];
+          [(SGEntity *)v29 addTag:allDay];
         }
 
-        v15 = v70;
+        titleCopy = v70;
         v57 = v68;
 LABEL_48:
 
-        v17 = v71;
+        locationCopy = v71;
         goto LABEL_49;
       }
 
       v40 = objc_opt_class();
-      v41 = [v36 from];
-      v42 = [v41 name];
-      v43 = [v36 from];
-      v44 = [v43 emailAddress];
-      v33 = [v40 getContactIdentifierForName:v42 andEmail:v44 ifMatchingPredicate:&__block_literal_global_120];
+      from2 = [v36 from];
+      name = [from2 name];
+      from3 = [v36 from];
+      emailAddress = [from3 emailAddress];
+      recipients = [v40 getContactIdentifierForName:name andEmail:emailAddress ifMatchingPredicate:&__block_literal_global_120];
 
-      v35 = [v33 identifier];
-      v18 = v72;
+      contactIdentifier = [recipients identifier];
+      lCopy = v72;
       v21 = v75;
     }
 
-    v28 = v35;
-    if (v35)
+    v28 = contactIdentifier;
+    if (contactIdentifier)
     {
       goto LABEL_33;
     }
@@ -549,38 +549,38 @@ LABEL_49:
   return v29;
 }
 
-- (id)_testReminder:(id)a3 entity:(id)a4
+- (id)_testReminder:(id)reminder entity:(id)entity
 {
   v6 = MEMORY[0x277CBEA80];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentCalendar];
-  v10 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  entityCopy = entity;
+  reminderCopy = reminder;
+  currentCalendar = [v6 currentCalendar];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
   v11 = objc_opt_new();
   v12 = [v11 dateByAddingTimeInterval:172800.0];
-  v13 = [v9 componentsInTimeZone:v10 fromDate:v12];
+  v13 = [currentCalendar componentsInTimeZone:defaultTimeZone fromDate:v12];
 
   v14 = [(SGReminderDissector *)self fetchLocationOfInterestByType:0 name:0];
   v15 = MEMORY[0x277D01F88];
-  v16 = [v8 uniqueIdentifier];
-  v17 = [v15 urlForEKEventFromTextMessageWithUniqueIdentifier:v16];
+  uniqueIdentifier = [reminderCopy uniqueIdentifier];
+  v17 = [v15 urlForEKEventFromTextMessageWithUniqueIdentifier:uniqueIdentifier];
   LOBYTE(v21) = 0;
   LOBYTE(v20) = 2;
-  v18 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:@"TEST REMINDER" dueDateComponents:v13 dueLocationType:1 dueLocation:v14 dueLocationTrigger:1 sourceURL:v17 reminderStatus:v20 parentEntity:v7 parentMessage:v8 allDay:v21];
+  v18 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:@"TEST REMINDER" dueDateComponents:v13 dueLocationType:1 dueLocation:v14 dueLocationTrigger:1 sourceURL:v17 reminderStatus:v20 parentEntity:entityCopy parentMessage:reminderCopy allDay:v21];
 
   return v18;
 }
 
-- (BOOL)_isTestMessage:(id)a3
+- (BOOL)_isTestMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 textContent];
-  v5 = [v4 length];
+  messageCopy = message;
+  textContent = [messageCopy textContent];
+  v5 = [textContent length];
 
   if (v5)
   {
-    v6 = [v3 textContent];
-    v7 = [v6 isEqualToString:@"SG_QA_REMINDER_TEST"];
+    textContent2 = [messageCopy textContent];
+    v7 = [textContent2 isEqualToString:@"SG_QA_REMINDER_TEST"];
   }
 
   else
@@ -591,14 +591,14 @@ LABEL_49:
   return v7;
 }
 
-- (id)_reminderMessageForTextMessage:(id)a3 withEntity:(id)a4 extractionModel:(id)a5 processingLanguage:(id)a6 preprocessing:(BOOL)a7
+- (id)_reminderMessageForTextMessage:(id)message withEntity:(id)entity extractionModel:(id)model processingLanguage:(id)language preprocessing:(BOOL)preprocessing
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (!v14)
+  messageCopy = message;
+  entityCopy = entity;
+  modelCopy = model;
+  languageCopy = language;
+  v16 = languageCopy;
+  if (!modelCopy)
   {
     v21 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -616,7 +616,7 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  if (!v15)
+  if (!languageCopy)
   {
     v21 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -639,21 +639,21 @@ LABEL_21:
   v28[1] = 3221225472;
   v28[2] = __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_extractionModel_processingLanguage_preprocessing___block_invoke;
   v28[3] = &unk_27894E068;
-  v17 = v13;
+  v17 = entityCopy;
   v29 = v17;
-  v18 = v12;
+  v18 = messageCopy;
   v30 = v18;
-  v32 = self;
+  selfCopy = self;
   v33 = buf;
   v31 = v16;
   [v17 runWithDissectorLock:v28];
   if ([*(v35 + 5) count])
   {
-    v19 = [v14 modelInferences:*(v35 + 5)];
-    if (v19 || a7)
+    conversationIdentifier = [modelCopy modelInferences:*(v35 + 5)];
+    if (conversationIdentifier || preprocessing)
     {
       v25 = [SGReminderMessage alloc];
-      v23 = [(SGReminderMessage *)v25 initWithMessage:v18 entity:v17 enrichedTaggedCharacterRanges:*(v35 + 5) modelOutput:v19];
+      v23 = [(SGReminderMessage *)v25 initWithMessage:v18 entity:v17 enrichedTaggedCharacterRanges:*(v35 + 5) modelOutput:conversationIdentifier];
       goto LABEL_16;
     }
 
@@ -664,14 +664,14 @@ LABEL_21:
       _os_log_error_impl(&dword_231E60000, v20, OS_LOG_TYPE_ERROR, "SGReminderDissector: No model output, bailing", v27, 2u);
     }
 
-    v19 = 0;
+    conversationIdentifier = 0;
   }
 
   else
   {
     conversations = self->_conversations;
-    v19 = [v18 conversationIdentifier];
-    [(NSMutableDictionary *)conversations removeObjectForKey:v19];
+    conversationIdentifier = [v18 conversationIdentifier];
+    [(NSMutableDictionary *)conversations removeObjectForKey:conversationIdentifier];
   }
 
   v23 = 0;
@@ -700,40 +700,40 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_validateDueDateComponents:(id)a3 dueLocation:(id)a4 forReminderMessages:(id)a5
+- (id)_validateDueDateComponents:(id)components dueLocation:(id)location forReminderMessages:(id)messages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!(v8 | v9))
+  componentsCopy = components;
+  locationCopy = location;
+  messagesCopy = messages;
+  if (!(componentsCopy | locationCopy))
   {
-    v8 = [(SGReminderDissector *)self defaultDueDateComponentsFromMessages:v10];
+    componentsCopy = [(SGReminderDissector *)self defaultDueDateComponentsFromMessages:messagesCopy];
     v11 = +[SGReminderTrialClientWrapper sharedInstance];
     v12 = v11;
-    if (!v8)
+    if (!componentsCopy)
     {
       if ([v11 triggerOptional])
       {
-        v13 = [MEMORY[0x277CBEAA8] date];
-        v8 = [(SGExtractionDocument *)SGReminderMessage allDayDateComponentsFromDate:v13];
+        date = [MEMORY[0x277CBEAA8] date];
+        componentsCopy = [(SGExtractionDocument *)SGReminderMessage allDayDateComponentsFromDate:date];
       }
 
       else
       {
-        v8 = 0;
+        componentsCopy = 0;
       }
     }
   }
 
-  if (v8)
+  if (componentsCopy)
   {
     v14 = objc_opt_class();
-    v15 = [MEMORY[0x277CBEAA8] date];
-    if ([v14 isReminderDueDateComponentsInPast:v8 givenReferenceDate:v15 allDay:{-[SGReminderDissector isAllDay:](self, "isAllDay:", v8)}])
+    date2 = [MEMORY[0x277CBEAA8] date];
+    if ([v14 isReminderDueDateComponentsInPast:componentsCopy givenReferenceDate:date2 allDay:{-[SGReminderDissector isAllDay:](self, "isAllDay:", componentsCopy)}])
     {
-      v16 = [MEMORY[0x277D02098] showPastEvents];
+      showPastEvents = [MEMORY[0x277D02098] showPastEvents];
 
-      if ((v16 & 1) == 0)
+      if ((showPastEvents & 1) == 0)
       {
         v17 = sgRemindersLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -742,7 +742,7 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
           _os_log_impl(&dword_231E60000, v17, OS_LOG_TYPE_DEFAULT, "SGReminderDissector: Date is in the past, skipping", v19, 2u);
         }
 
-        v8 = 0;
+        componentsCopy = 0;
       }
     }
 
@@ -751,27 +751,27 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
     }
   }
 
-  return v8;
+  return componentsCopy;
 }
 
-- (BOOL)isAllDay:(id)a3
+- (BOOL)isAllDay:(id)day
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 hour] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "minute") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "second") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "nanosecond") == 0x7FFFFFFFFFFFFFFFLL;
+  dayCopy = day;
+  v4 = dayCopy;
+  v5 = dayCopy && [dayCopy hour] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "minute") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "second") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v4, "nanosecond") == 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
 }
 
-- (id)defaultDueDateComponentsFromMessages:(id)a3
+- (id)defaultDueDateComponentsFromMessages:(id)messages
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  messagesCopy = messages;
+  v4 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = 0;
@@ -782,7 +782,7 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(messagesCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -795,7 +795,7 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
         v5 |= [v8 isTriggerOptional];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [messagesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -806,8 +806,8 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
 
     if (v5)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      v4 = [(SGExtractionDocument *)SGReminderMessage allDayDateComponentsFromDate:v9];
+      date = [MEMORY[0x277CBEAA8] date];
+      v4 = [(SGExtractionDocument *)SGReminderMessage allDayDateComponentsFromDate:date];
       goto LABEL_13;
     }
 
@@ -817,7 +817,7 @@ uint64_t __114__SGReminderDissector__reminderMessageForTextMessage_withEntity_ex
   else
   {
 LABEL_12:
-    v9 = v3;
+    date = messagesCopy;
 LABEL_13:
   }
 
@@ -826,16 +826,16 @@ LABEL_13:
   return v4;
 }
 
-- (id)dueLocationFromMessages:(id)a3
+- (id)dueLocationFromMessages:(id)messages
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -850,10 +850,10 @@ LABEL_13:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) dueLocation];
-        if (v10)
+        dueLocation = [*(*(&v15 + 1) + 8 * i) dueLocation];
+        if (dueLocation)
         {
-          [v4 addObject:v10];
+          [v4 addObject:dueLocation];
         }
       }
 
@@ -865,15 +865,15 @@ LABEL_13:
 
   if ([v4 count] == 1)
   {
-    v11 = [v4 anyObject];
+    anyObject = [v4 anyObject];
 LABEL_14:
-    v12 = v11;
+    v12 = anyObject;
     goto LABEL_16;
   }
 
   if ([v4 count] >= 2)
   {
-    v11 = [SGReminderDueLocation mergeDueLocations:v4];
+    anyObject = [SGReminderDueLocation mergeDueLocations:v4];
     goto LABEL_14;
   }
 
@@ -885,17 +885,17 @@ LABEL_16:
   return v12;
 }
 
-- (id)dueDateComponentsFromMessages:(id)a3
+- (id)dueDateComponentsFromMessages:(id)messages
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v3;
+  v6 = messagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
@@ -911,18 +911,18 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v31 + 1) + 8 * i) dueDateDataDetectorMatches];
-        v13 = [v12 first];
+        dueDateDataDetectorMatches = [*(*(&v31 + 1) + 8 * i) dueDateDataDetectorMatches];
+        first = [dueDateDataDetectorMatches first];
 
-        if (v13)
+        if (first)
         {
-          v14 = [v12 first];
-          [v5 addObjectsFromArray:v14];
+          first2 = [dueDateDataDetectorMatches first];
+          [v5 addObjectsFromArray:first2];
 
-          v15 = [v12 second];
-          v16 = [v15 BOOLValue];
+          second = [dueDateDataDetectorMatches second];
+          bOOLValue = [second BOOLValue];
 
-          v10 &= v16 ^ 1;
+          v10 &= bOOLValue ^ 1;
         }
       }
 
@@ -971,36 +971,36 @@ LABEL_16:
 
   if ([v4 count] == 1)
   {
-    v23 = [v4 anyObject];
+    anyObject = [v4 anyObject];
   }
 
   else if ([v4 count] < 2)
   {
-    v23 = 0;
+    anyObject = 0;
   }
 
   else
   {
-    v24 = [v4 allObjects];
-    v23 = [SGExtractionDocument mergeDetectedDateComponents:v24];
+    allObjects = [v4 allObjects];
+    anyObject = [SGExtractionDocument mergeDetectedDateComponents:allObjects];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return anyObject;
 }
 
-- (id)reminderTitleFromMessages:(id)a3 forLanguage:(id)a4
+- (id)reminderTitleFromMessages:(id)messages forLanguage:(id)language
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messagesCopy = messages;
+  languageCopy = language;
   v7 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = messagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -1015,7 +1015,7 @@ LABEL_16:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) detectedTitleForLanguage:{v6, v17}];
+        v13 = [*(*(&v17 + 1) + 8 * i) detectedTitleForLanguage:{languageCopy, v17}];
         if (v13)
         {
           [v7 addObject:v13];
@@ -1030,31 +1030,31 @@ LABEL_16:
 
   if ([v7 count] == 1)
   {
-    v14 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-- (BOOL)mailAddressIsAccountOwner:(id)a3
+- (BOOL)mailAddressIsAccountOwner:(id)owner
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ownerCopy = owner;
   v4 = +[SGContactStoreFactory contactStore];
   v5 = [SGCuratedContactMatcher fetchMeContactFromContactStore:v4];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 emailAddresses];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  emailAddresses = [v5 emailAddresses];
+  v7 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -1064,11 +1064,11 @@ LABEL_16:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 emailAddress];
+        emailAddress = [ownerCopy emailAddress];
         v12 = SGNormalizeEmailAddress();
         LOBYTE(v10) = [v10 isEqualToString:v12];
 
@@ -1079,7 +1079,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [emailAddresses countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -1095,14 +1095,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)processingLanguageForContent:(id)a3
+- (id)processingLanguageForContent:(id)content
 {
-  v3 = [MEMORY[0x277D02548] detectLanguageFromText:a3];
-  v4 = [MEMORY[0x277D02548] defaultLanguage];
-  v5 = [v3 isEqual:v4];
+  v3 = [MEMORY[0x277D02548] detectLanguageFromText:content];
+  defaultLanguage = [MEMORY[0x277D02548] defaultLanguage];
+  v5 = [v3 isEqual:defaultLanguage];
   if (v3)
   {
-    v6 = v4 == 0;
+    v6 = defaultLanguage == 0;
   }
 
   else
@@ -1123,17 +1123,17 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isValidTextMessageForProcessing:(id)a3
+- (BOOL)isValidTextMessageForProcessing:(id)processing
 {
-  v3 = a3;
-  v4 = [v3 textContent];
-  if (![v4 length])
+  processingCopy = processing;
+  textContent = [processingCopy textContent];
+  if (![textContent length])
   {
     goto LABEL_4;
   }
 
-  v5 = [v3 textContent];
-  if ([v5 length] >= 0x3E9)
+  textContent2 = [processingCopy textContent];
+  if ([textContent2 length] >= 0x3E9)
   {
 
 LABEL_4:
@@ -1152,15 +1152,15 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v9 = [v3 conversationIdentifier];
+  conversationIdentifier = [processingCopy conversationIdentifier];
 
-  if (!v9)
+  if (!conversationIdentifier)
   {
     goto LABEL_5;
   }
 
-  v10 = [v3 recipients];
-  v11 = [v10 count];
+  recipients = [processingCopy recipients];
+  v11 = [recipients count];
 
   if (v11 < 3)
   {
@@ -1185,12 +1185,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)extractReminderFromTextMessage:(id)a3 entity:(id)a4 store:(id)a5
+- (id)extractReminderFromTextMessage:(id)message entity:(id)entity store:(id)store
 {
   v143 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v120 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  storeCopy = store;
   v10 = sgRemindersLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1203,32 +1203,32 @@ LABEL_7:
   v133 = 0x2020000000;
   v134 = 0;
   conversations = self->_conversations;
-  v12 = [v8 conversationIdentifier];
-  v13 = [(NSMutableDictionary *)conversations objectForKeyedSubscript:v12];
+  conversationIdentifier = [messageCopy conversationIdentifier];
+  v13 = [(NSMutableDictionary *)conversations objectForKeyedSubscript:conversationIdentifier];
 
-  if ([(SGReminderDissector *)self _isTestMessage:v8])
+  if ([(SGReminderDissector *)self _isTestMessage:messageCopy])
   {
-    v14 = [(SGReminderDissector *)self _testReminder:v8 entity:v9];
+    v14 = [(SGReminderDissector *)self _testReminder:messageCopy entity:entityCopy];
     goto LABEL_69;
   }
 
-  v15 = [v9 duplicateKey];
-  v119 = [v15 entityKey];
+  duplicateKey = [entityCopy duplicateKey];
+  entityKey = [duplicateKey entityKey];
 
-  v16 = [v119 source];
-  v17 = [v16 isEqualToString:@"suggest_tool_preprocess"];
+  source = [entityKey source];
+  v17 = [source isEqualToString:@"suggest_tool_preprocess"];
 
   if (v17)
   {
-    v18 = [MEMORY[0x277D02548] defaultLanguage];
+    defaultLanguage = [MEMORY[0x277D02548] defaultLanguage];
     goto LABEL_7;
   }
 
-  if (![(SGReminderDissector *)self isValidTextMessageForProcessing:v8])
+  if (![(SGReminderDissector *)self isValidTextMessageForProcessing:messageCopy])
   {
-    v36 = [v8 conversationIdentifier];
+    conversationIdentifier2 = [messageCopy conversationIdentifier];
 
-    if (!v36)
+    if (!conversationIdentifier2)
     {
       goto LABEL_39;
     }
@@ -1236,56 +1236,56 @@ LABEL_7:
     goto LABEL_65;
   }
 
-  if (![v8 isSent])
+  if (![messageCopy isSent])
   {
     v42 = +[SGReminderExtractionModel sharedInstance];
-    v43 = [v8 textContent];
-    v44 = [v42 hasWhitelistedVerbInContent:v43];
+    textContent = [messageCopy textContent];
+    v44 = [v42 hasWhitelistedVerbInContent:textContent];
 
     if (v44)
     {
-      v45 = [[SGReminderMessage alloc] initWithMessage:v8 entity:v9 enrichedTaggedCharacterRanges:0 modelOutput:0];
+      v45 = [[SGReminderMessage alloc] initWithMessage:messageCopy entity:entityCopy enrichedTaggedCharacterRanges:0 modelOutput:0];
       v46 = self->_conversations;
-      v47 = [v8 conversationIdentifier];
-      [(NSMutableDictionary *)v46 setObject:v45 forKeyedSubscript:v47];
+      conversationIdentifier3 = [messageCopy conversationIdentifier];
+      [(NSMutableDictionary *)v46 setObject:v45 forKeyedSubscript:conversationIdentifier3];
 
-      v48 = [v8 textContent];
-      LODWORD(v45) = [SGReminderMessage isConfirmationOptionalForContent:v48];
+      textContent2 = [messageCopy textContent];
+      LODWORD(v45) = [SGReminderMessage isConfirmationOptionalForContent:textContent2];
 
       if (!v45)
       {
         goto LABEL_39;
       }
 
-      v39 = [v8 sender];
-      if ([v39 sg_isSignificantWithStore:v120])
+      sender = [messageCopy sender];
+      if ([sender sg_isSignificantWithStore:storeCopy])
       {
         v49 = mach_absolute_time();
-        v50 = [v8 textContent];
-        v117 = [(SGReminderDissector *)self processingLanguageForContent:v50];
+        textContent3 = [messageCopy textContent];
+        v117 = [(SGReminderDissector *)self processingLanguageForContent:textContent3];
 
         v51 = +[SGReminderExtractionModel sharedInstance];
-        v52 = [(SGReminderDissector *)self _reminderMessageForTextMessage:v8 withEntity:v9 extractionModel:v51 processingLanguage:v117 preprocessing:0];
+        v52 = [(SGReminderDissector *)self _reminderMessageForTextMessage:messageCopy withEntity:entityCopy extractionModel:v51 processingLanguage:v117 preprocessing:0];
 
         if (v52)
         {
           v53 = self->_conversations;
-          v54 = [v8 conversationIdentifier];
-          [(NSMutableDictionary *)v53 setObject:v52 forKeyedSubscript:v54];
+          conversationIdentifier4 = [messageCopy conversationIdentifier];
+          [(NSMutableDictionary *)v53 setObject:v52 forKeyedSubscript:conversationIdentifier4];
 
-          v14 = [(SGReminderDissector *)self _detectedReminderEnrichmentFromReminderMessage:v52 parentEntity:v9 language:v117 parentMessage:v8 startTimeProcessing:v49];
+          v14 = [(SGReminderDissector *)self _detectedReminderEnrichmentFromReminderMessage:v52 parentEntity:entityCopy language:v117 parentMessage:messageCopy startTimeProcessing:v49];
           if (v14)
           {
             v55 = self->_conversations;
-            v56 = [v8 conversationIdentifier];
-            v57 = [(NSMutableDictionary *)v55 objectForKeyedSubscript:v56];
-            v58 = [v14 duplicateKey];
-            [v57 setExtractedReminderDuplicateKey:v58];
+            conversationIdentifier5 = [messageCopy conversationIdentifier];
+            v57 = [(NSMutableDictionary *)v55 objectForKeyedSubscript:conversationIdentifier5];
+            duplicateKey2 = [v14 duplicateKey];
+            [v57 setExtractedReminderDuplicateKey:duplicateKey2];
 
             v59 = v14;
           }
 
-          v39 = v14;
+          sender = v14;
         }
 
         else
@@ -1303,53 +1303,53 @@ LABEL_66:
 
 LABEL_65:
     v75 = self->_conversations;
-    v39 = [v8 conversationIdentifier];
-    [(NSMutableDictionary *)v75 removeObjectForKey:v39];
+    sender = [messageCopy conversationIdentifier];
+    [(NSMutableDictionary *)v75 removeObjectForKey:sender];
     goto LABEL_66;
   }
 
   if (v13)
   {
     v30 = objc_alloc(MEMORY[0x277CCACA8]);
-    v31 = [v13 message];
-    v32 = [v31 textContent];
-    v33 = [v8 textContent];
-    v34 = [v30 initWithFormat:@"%@ %@", v32, v33];
+    message = [v13 message];
+    textContent4 = [message textContent];
+    textContent5 = [messageCopy textContent];
+    v34 = [v30 initWithFormat:@"%@ %@", textContent4, textContent5];
 
     v35 = [(SGReminderDissector *)self processingLanguageForContent:v34];
 
     if (v35)
     {
-      v18 = v35;
+      defaultLanguage = v35;
 LABEL_7:
       v19 = sgRemindersLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v18;
+        *(&buf + 4) = defaultLanguage;
         _os_log_debug_impl(&dword_231E60000, v19, OS_LOG_TYPE_DEBUG, "SGReminderDissector: ProcessingLanguage: %@", &buf, 0xCu);
       }
 
-      v117 = v18;
+      v117 = defaultLanguage;
 
       v130[2] = 0;
       v130[0] = @"ReminderDissector full extraction";
       v111 = mach_absolute_time();
       v130[1] = v111;
       v116 = +[SGReminderExtractionModel sharedInstance];
-      v20 = [SGReminderDissector _reminderMessageForTextMessage:"_reminderMessageForTextMessage:withEntity:extractionModel:processingLanguage:preprocessing:" withEntity:v8 extractionModel:v9 processingLanguage:? preprocessing:?];
+      v20 = [SGReminderDissector _reminderMessageForTextMessage:"_reminderMessageForTextMessage:withEntity:extractionModel:processingLanguage:preprocessing:" withEntity:messageCopy extractionModel:entityCopy processingLanguage:? preprocessing:?];
       v21 = v20;
       if (!v20)
       {
         v37 = self->_conversations;
-        v38 = [v8 conversationIdentifier];
-        [(NSMutableDictionary *)v37 removeObjectForKey:v38];
+        conversationIdentifier6 = [messageCopy conversationIdentifier];
+        [(NSMutableDictionary *)v37 removeObjectForKey:conversationIdentifier6];
 
-        v39 = 0;
+        sender = 0;
 LABEL_63:
 
         SGRecordMeasurementState(v130);
-        v14 = v39;
+        v14 = sender;
 LABEL_64:
 
 LABEL_67:
@@ -1373,28 +1373,28 @@ LABEL_67:
             _os_log_debug_impl(&dword_231E60000, v78, OS_LOG_TYPE_DEBUG, "SGReminderDissector: Message with confirmation found", v135, 2u);
           }
 
-          v79 = [v13 modelOutput];
-          v80 = v79 == 0;
+          modelOutput = [v13 modelOutput];
+          v80 = modelOutput == 0;
 
           if (v80)
           {
-            v81 = [v13 entity];
-            [v81 acquireDissectorLock];
+            entity = [v13 entity];
+            [entity acquireDissectorLock];
 
-            v113 = [v13 entity];
+            entity2 = [v13 entity];
             v115 = +[SGPOSTagger sharedInstance];
-            v82 = [v13 message];
-            v83 = [v82 textContent];
-            v84 = [v115 tokenizeTextContent:v83 languageHint:v117];
-            [v113 addTaggedCharacterRanges:v84];
+            message2 = [v13 message];
+            textContent6 = [message2 textContent];
+            v84 = [v115 tokenizeTextContent:textContent6 languageHint:v117];
+            [entity2 addTaggedCharacterRanges:v84];
 
             v85 = objc_opt_class();
-            v86 = [v13 entity];
-            v87 = [v13 message];
-            v114 = [v85 enrichedTaggedCharacterRangesFromEntity:v86 forMessage:v87];
+            entity3 = [v13 entity];
+            message3 = [v13 message];
+            v114 = [v85 enrichedTaggedCharacterRangesFromEntity:entity3 forMessage:message3];
 
-            v88 = [v13 entity];
-            [v88 releaseDissectorLock];
+            entity4 = [v13 entity];
+            [entity4 releaseDissectorLock];
 
             v89 = [v116 modelInferences:v114];
             if (!v89)
@@ -1406,7 +1406,7 @@ LABEL_67:
                 _os_log_error_impl(&dword_231E60000, v74, OS_LOG_TYPE_ERROR, "SGReminderDissector: No modelOutput for previousMessage", v135, 2u);
               }
 
-              v39 = 0;
+              sender = 0;
               goto LABEL_62;
             }
 
@@ -1459,15 +1459,15 @@ LABEL_67:
               if (v112 | v94)
               {
                 v95 = MEMORY[0x277D01F88];
-                v96 = [v13 message];
-                v97 = [v96 uniqueIdentifier];
-                v107 = [v95 urlForEKEventFromTextMessageWithUniqueIdentifier:v97];
+                message4 = [v13 message];
+                uniqueIdentifier = [message4 uniqueIdentifier];
+                v107 = [v95 urlForEKEventFromTextMessageWithUniqueIdentifier:uniqueIdentifier];
 
-                v98 = [v114 locationType];
-                v99 = [v114 trigger];
+                locationType = [v114 locationType];
+                trigger = [v114 trigger];
                 LOBYTE(v106) = [(SGReminderDissector *)self isAllDay:v112];
                 LOBYTE(v105) = 2;
-                v41 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:*&v110 dueDateComponents:v112 dueLocationType:v98 dueLocation:v108 dueLocationTrigger:v99 sourceURL:v107 reminderStatus:v105 parentEntity:v9 parentMessage:v8 allDay:v106];
+                v41 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:*&v110 dueDateComponents:v112 dueLocationType:locationType dueLocation:v108 dueLocationTrigger:trigger sourceURL:v107 reminderStatus:v105 parentEntity:entityCopy parentMessage:messageCopy allDay:v106];
                 *(v132 + 24) = 1;
               }
 
@@ -1498,14 +1498,14 @@ LABEL_67:
         {
           if ([v21 isRejection])
           {
-            v24 = [v13 extractedReminderDuplicateKey];
-            v25 = v24 == 0;
+            extractedReminderDuplicateKey = [v13 extractedReminderDuplicateKey];
+            v25 = extractedReminderDuplicateKey == 0;
 
             if (!v25)
             {
-              v26 = [v13 extractedReminderDuplicateKey];
+              extractedReminderDuplicateKey2 = [v13 extractedReminderDuplicateKey];
               v129 = 0;
-              v27 = [v120 rejectReminderByKey:v26 error:&v129];
+              v27 = [storeCopy rejectReminderByKey:extractedReminderDuplicateKey2 error:&v129];
               v28 = COERCE_DOUBLE(v129);
 
               if ((v27 & 1) == 0)
@@ -1536,23 +1536,23 @@ LABEL_42:
                 }
               }
 
-              v64 = [v119 source];
-              v65 = [v64 hasPrefix:@"suggest_tool"];
+              source2 = [entityKey source];
+              v65 = [source2 hasPrefix:@"suggest_tool"];
 
               if (v65)
               {
-                if (v17 && ([v8 isSent] & 1) == 0)
+                if (v17 && ([messageCopy isSent] & 1) == 0)
                 {
                   v66 = self->_conversations;
-                  v67 = [v8 conversationIdentifier];
-                  [(NSMutableDictionary *)v66 setObject:v21 forKeyedSubscript:v67];
+                  conversationIdentifier7 = [messageCopy conversationIdentifier];
+                  [(NSMutableDictionary *)v66 setObject:v21 forKeyedSubscript:conversationIdentifier7];
                 }
 
                 v121[0] = MEMORY[0x277D85DD0];
                 v121[1] = 3221225472;
                 v121[2] = __67__SGReminderDissector_extractReminderFromTextMessage_entity_store___block_invoke;
                 v121[3] = &unk_27894B2E0;
-                v122 = v9;
+                v122 = entityCopy;
                 v123 = v21;
                 p_buf = &buf;
                 v124 = v13;
@@ -1561,20 +1561,20 @@ LABEL_42:
                 v126 = v117;
                 [v122 runWithDissectorLock:v121];
 
-                v68 = v122;
+                conversationIdentifier8 = v122;
               }
 
               else
               {
-                if (([v8 isSent] & 1) == 0)
+                if (([messageCopy isSent] & 1) == 0)
                 {
-                  v104 = [MEMORY[0x277CCA890] currentHandler];
-                  [v104 handleFailureInMethod:a2 object:self file:@"SGReminderDissector.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"textMessage.isSent"}];
+                  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                  [currentHandler handleFailureInMethod:a2 object:self file:@"SGReminderDissector.m" lineNumber:648 description:{@"Invalid parameter not satisfying: %@", @"textMessage.isSent"}];
                 }
 
                 v69 = self->_conversations;
-                v68 = [v8 conversationIdentifier];
-                [(NSMutableDictionary *)v69 removeObjectForKey:v68];
+                conversationIdentifier8 = [messageCopy conversationIdentifier];
+                [(NSMutableDictionary *)v69 removeObjectForKey:conversationIdentifier8];
               }
 
               v70 = mach_absolute_time() - v111;
@@ -1587,7 +1587,7 @@ LABEL_42:
               if (v41 || *(*(&buf + 1) + 40))
               {
                 v72 = +[SGRTCLogging defaultLogger];
-                [v72 logReminderExtractionFromEntity:v9 interface:0 actionType:0 dueLocation:v114 dueDateComponents:v112 extractionStatus:*(v132 + 24) timingProcessing:v71];
+                [v72 logReminderExtractionFromEntity:entityCopy interface:0 actionType:0 dueLocation:v114 dueDateComponents:v112 extractionStatus:*(v132 + 24) timingProcessing:v71];
               }
 
               v73 = sgRemindersLogHandle();
@@ -1598,7 +1598,7 @@ LABEL_42:
                 _os_log_debug_impl(&dword_231E60000, v73, OS_LOG_TYPE_DEBUG, "SGReminderDissector: timing(ms): %f", v135, 0xCu);
               }
 
-              v39 = v41;
+              sender = v41;
               v74 = v112;
 LABEL_62:
 
@@ -1718,81 +1718,81 @@ void __67__SGReminderDissector_extractReminderFromTextMessage_entity_store___blo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_detectedReminderEnrichmentFromReminderMessage:(id)a3 parentEntity:(id)a4 language:(id)a5 parentMessage:(id)a6 startTimeProcessing:(unint64_t)a7
+- (id)_detectedReminderEnrichmentFromReminderMessage:(id)message parentEntity:(id)entity language:(id)language parentMessage:(id)parentMessage startTimeProcessing:(unint64_t)processing
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (!a5)
+  messageCopy = message;
+  entityCopy = entity;
+  parentMessageCopy = parentMessage;
+  if (!language)
   {
     v25 = 0;
     goto LABEL_31;
   }
 
-  v15 = [v12 detectedTitleForLanguage:a5];
+  v15 = [messageCopy detectedTitleForLanguage:language];
   v16 = +[SGReminderTrialClientWrapper sharedInstance];
   v49 = v16;
-  if ([v12 isProposal] && ((objc_msgSend(v12, "hasTrigger") & 1) != 0 || (objc_msgSend(v12, "isTriggerOptional") & 1) != 0 || objc_msgSend(v16, "triggerOptional")) && v15)
+  if ([messageCopy isProposal] && ((objc_msgSend(messageCopy, "hasTrigger") & 1) != 0 || (objc_msgSend(messageCopy, "isTriggerOptional") & 1) != 0 || objc_msgSend(v16, "triggerOptional")) && v15)
   {
-    v17 = [v12 detectedDueDateComponents];
-    v48 = v17;
-    if ([v17 count] == 1)
+    detectedDueDateComponents = [messageCopy detectedDueDateComponents];
+    v48 = detectedDueDateComponents;
+    if ([detectedDueDateComponents count] == 1)
     {
-      v18 = [v17 firstObject];
+      firstObject = [detectedDueDateComponents firstObject];
     }
 
     else
     {
-      if ([v17 count] < 2)
+      if ([detectedDueDateComponents count] < 2)
       {
         v26 = 0;
         goto LABEL_21;
       }
 
-      v18 = [SGExtractionDocument mergeDetectedDateComponents:v17];
+      firstObject = [SGExtractionDocument mergeDetectedDateComponents:detectedDueDateComponents];
     }
 
-    v26 = v18;
+    v26 = firstObject;
 LABEL_21:
-    v23 = [v12 dueLocation];
-    v27 = [(SGReminderDissector *)self storageLocationFromDueLocation:v23];
-    v50[0] = v12;
+    dueLocation = [messageCopy dueLocation];
+    v27 = [(SGReminderDissector *)self storageLocationFromDueLocation:dueLocation];
+    v50[0] = messageCopy;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
     v47 = v27;
     v20 = [(SGReminderDissector *)self _validateDueDateComponents:v26 dueLocation:v27 forReminderMessages:v28];
 
-    if (v20 | v23)
+    if (v20 | dueLocation)
     {
-      v29 = [v12 message];
+      message = [messageCopy message];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       v45 = MEMORY[0x277D01F88];
       if (isKindOfClass)
       {
-        v31 = [v12 message];
-        v32 = [v31 uniqueIdentifier];
-        v46 = [v45 urlForEKEventFromTextMessageWithUniqueIdentifier:v32];
+        message2 = [messageCopy message];
+        uniqueIdentifier = [message2 uniqueIdentifier];
+        v46 = [v45 urlForEKEventFromTextMessageWithUniqueIdentifier:uniqueIdentifier];
       }
 
       else
       {
-        v44 = [v13 duplicateKey];
-        v32 = [v44 emailKey];
-        v34 = [v32 messageId];
-        v46 = [v45 urlForMailMessageWithId:v34];
+        duplicateKey = [entityCopy duplicateKey];
+        uniqueIdentifier = [duplicateKey emailKey];
+        messageId = [uniqueIdentifier messageId];
+        v46 = [v45 urlForMailMessageWithId:messageId];
 
-        v31 = v44;
+        message2 = duplicateKey;
       }
 
-      v35 = [v23 locationType];
-      v36 = [v23 trigger];
+      locationType = [dueLocation locationType];
+      trigger = [dueLocation trigger];
       LOBYTE(v43) = [(SGReminderDissector *)self isAllDay:v20];
       LOBYTE(v42) = 2;
-      v37 = v35;
+      v37 = locationType;
       v33 = v47;
-      v24 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:v15 dueDateComponents:v20 dueLocationType:v37 dueLocation:v47 dueLocationTrigger:v36 sourceURL:v46 reminderStatus:v42 parentEntity:v13 parentMessage:v14 allDay:v43];
+      v24 = [(SGReminderDissector *)self _reminderEnrichmentWithTitle:v15 dueDateComponents:v20 dueLocationType:v37 dueLocation:v47 dueLocationTrigger:trigger sourceURL:v46 reminderStatus:v42 parentEntity:entityCopy parentMessage:parentMessageCopy allDay:v43];
 
       v22 = 1;
     }
@@ -1807,7 +1807,7 @@ LABEL_21:
     goto LABEL_28;
   }
 
-  v19 = [v12 isProposal];
+  isProposal = [messageCopy isProposal];
   v20 = 0;
   if (v15)
   {
@@ -1819,7 +1819,7 @@ LABEL_21:
     v21 = 5;
   }
 
-  if (v19)
+  if (isProposal)
   {
     v22 = v21;
   }
@@ -1829,17 +1829,17 @@ LABEL_21:
     v22 = 2;
   }
 
-  v23 = 0;
+  dueLocation = 0;
   v24 = 0;
 LABEL_28:
   v38 = +[SGRTCLogging defaultLogger];
-  v39 = mach_absolute_time() - a7;
+  v39 = mach_absolute_time() - processing;
   if (SGMachTimeToNanoseconds_onceToken != -1)
   {
     dispatch_once(&SGMachTimeToNanoseconds_onceToken, &__block_literal_global_16525);
   }
 
-  [v38 logReminderExtractionFromEntity:v13 interface:0 actionType:0 dueLocation:v23 dueDateComponents:v20 extractionStatus:v22 timingProcessing:(v39 * SGMachTimeToNanoseconds_machTimebaseInfo / *algn_280D9D734 / 0xF4240)];
+  [v38 logReminderExtractionFromEntity:entityCopy interface:0 actionType:0 dueLocation:dueLocation dueDateComponents:v20 extractionStatus:v22 timingProcessing:(v39 * SGMachTimeToNanoseconds_machTimebaseInfo / *algn_280D9D734 / 0xF4240)];
   v25 = v24;
 
 LABEL_31:
@@ -1848,10 +1848,10 @@ LABEL_31:
   return v25;
 }
 
-- (id)extractReminderFromOwnedMailMessage:(id)a3 entity:(id)a4
+- (id)extractReminderFromOwnedMailMessage:(id)message entity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  entityCopy = entity;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1860,23 +1860,23 @@ LABEL_31:
   v31 = 0;
   v8 = mach_absolute_time();
   v9 = +[SGReminderExtractionModel sharedInstance];
-  v10 = [v6 textContent];
-  v11 = [v9 whitelistedRangesInContent:v10];
+  textContent = [messageCopy textContent];
+  v11 = [v9 whitelistedRangesInContent:textContent];
 
-  v12 = [v6 textContent];
-  v13 = [(SGReminderDissector *)self processingLanguageForContent:v12];
+  textContent2 = [messageCopy textContent];
+  v13 = [(SGReminderDissector *)self processingLanguageForContent:textContent2];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__SGReminderDissector_extractReminderFromOwnedMailMessage_entity___block_invoke;
   v19[3] = &unk_27894B2B8;
-  v14 = v7;
+  v14 = entityCopy;
   v20 = v14;
-  v15 = v6;
+  v15 = messageCopy;
   v21 = v15;
   v16 = v13;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v24 = &v26;
   v25 = v8;
   [v11 enumerateRangesUsingBlock:v19];
@@ -2112,10 +2112,10 @@ LABEL_46:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (id)extractReminderFromMailMessage:(id)a3 entity:(id)a4
+- (id)extractReminderFromMailMessage:(id)message entity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  entityCopy = entity;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2128,9 +2128,9 @@ LABEL_46:
   v12[3] = &unk_278953EC0;
   v15 = &v16;
   v12[4] = self;
-  v8 = v6;
+  v8 = messageCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = entityCopy;
   v14 = v9;
   [v9 runWithDissectorLock:v12];
   v10 = v17[5];
@@ -2150,17 +2150,17 @@ uint64_t __61__SGReminderDissector_extractReminderFromMailMessage_entity___block
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)reminderTitleForContent:(id)a3
+- (id)reminderTitleForContent:(id)content
 {
-  v4 = a3;
-  v5 = [(SGReminderDissector *)self processingLanguageForContent:v4];
-  if (v4 && [v4 length] <= 0x3E8)
+  contentCopy = content;
+  v5 = [(SGReminderDissector *)self processingLanguageForContent:contentCopy];
+  if (contentCopy && [contentCopy length] <= 0x3E8)
   {
     v6 = 0;
-    if ([v4 length] && v5)
+    if ([contentCopy length] && v5)
     {
       v8 = +[SGPOSTagger sharedInstance];
-      v9 = [v8 tokenizeTextContent:v4 languageHint:v5];
+      v9 = [v8 tokenizeTextContent:contentCopy languageHint:v5];
 
       v10 = [objc_opt_class() enrichedTaggedCharacterRangesFromTaggedCharacterRanges:v9 messageIsSent:0];
       if ([v10 count])
@@ -2169,7 +2169,7 @@ uint64_t __61__SGReminderDissector_extractReminderFromMailMessage_entity___block
         v12 = [v11 modelInferences:v10];
         if (v12)
         {
-          v6 = [SGReminderMessage detectedTitleInModelOutput:v12 enrichedTaggedCharacterRanges:v10 textContent:v4 language:v5];
+          v6 = [SGReminderMessage detectedTitleInModelOutput:v12 enrichedTaggedCharacterRanges:v10 textContent:contentCopy language:v5];
         }
 
         else
@@ -2193,12 +2193,12 @@ uint64_t __61__SGReminderDissector_extractReminderFromMailMessage_entity___block
   return v6;
 }
 
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
   if (([MEMORY[0x277D02098] detectReminders] & 1) == 0)
   {
@@ -2216,7 +2216,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v9 hasEventEnrichment])
+  if ([entityCopy hasEventEnrichment])
   {
     v12 = sgRemindersLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2232,16 +2232,16 @@ LABEL_7:
   }
 
   v15 = +[SGAsset localeAsset];
-  v16 = [v15 assetVersion];
+  assetVersion = [v15 assetVersion];
 
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+  if (assetVersion == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = sgRemindersLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 loggingIdentifier];
+      loggingIdentifier = [entityCopy loggingIdentifier];
       v23 = 138543362;
-      v24 = v17;
+      v24 = loggingIdentifier;
       _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEFAULT, "SGReminderDissector: Not processing due to a missing localeAsset. [SGEntity (%{public}@)]", &v23, 0xCu);
     }
 
@@ -2249,33 +2249,33 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v11);
-  [v9 releaseDissectorLock];
-  v18 = self;
-  objc_sync_enter(v18);
+  [entityCopy releaseDissectorLock];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = objc_autoreleasePoolPush();
-  v20 = [v10 serviceContext];
-  v21 = [v20 store];
-  v22 = [(SGReminderDissector *)v18 extractReminderFromTextMessage:v8 entity:v9 store:v21];
+  serviceContext = [contextCopy serviceContext];
+  store = [serviceContext store];
+  v22 = [(SGReminderDissector *)selfCopy extractReminderFromTextMessage:messageCopy entity:entityCopy store:store];
 
   objc_autoreleasePoolPop(v19);
-  objc_sync_exit(v18);
+  objc_sync_exit(selfCopy);
 
-  [v9 acquireDissectorLock];
+  [entityCopy acquireDissectorLock];
   if (v22)
   {
-    [v9 addEnrichment:v22];
+    [entityCopy addEnrichment:v22];
   }
 
 LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   v11 = objc_autoreleasePoolPush();
   if (([MEMORY[0x277D02098] detectReminders] & 1) == 0)
   {
@@ -2308,23 +2308,23 @@ LABEL_11:
   }
 
   v12 = +[SGAsset localeAsset];
-  v13 = [v12 assetVersion];
+  assetVersion = [v12 assetVersion];
 
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+  if (assetVersion == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = sgRemindersLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 loggingIdentifier];
+      loggingIdentifier = [entityCopy loggingIdentifier];
       v33 = 138543362;
-      v34 = v15;
+      v34 = loggingIdentifier;
       _os_log_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEFAULT, "SGReminderDissector: Not processing due to a missing localeAsset. [SGEntity (%{public}@)]", &v33, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  if ([v9 hasEventEnrichment])
+  if ([entityCopy hasEventEnrichment])
   {
     v14 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2337,8 +2337,8 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v18 = [v8 allRecipients];
-  v19 = [v18 count];
+  allRecipients = [messageCopy allRecipients];
+  v19 = [allRecipients count];
 
   if (v19 >= 2)
   {
@@ -2353,7 +2353,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v9 isInhuman])
+  if ([entityCopy isInhuman])
   {
     v14 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2366,9 +2366,9 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v20 = [v8 mailingList];
+  mailingList = [messageCopy mailingList];
 
-  if (v20)
+  if (mailingList)
   {
     v14 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2381,7 +2381,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v8 isPartiallyDownloaded])
+  if ([messageCopy isPartiallyDownloaded])
   {
     v14 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2394,7 +2394,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if ([v8 isSent])
+  if ([messageCopy isSent])
   {
     v14 = sgRemindersLogHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2407,9 +2407,9 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v22 = [v8 date];
-  [v21 timeIntervalSinceDate:v22];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [messageCopy date];
+  [date timeIntervalSinceDate:date2];
   v24 = v23;
 
   if (v24 > 604800.0)
@@ -2425,11 +2425,11 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v25 = [v8 from];
-  v26 = [v25 asCSPerson];
-  v27 = [v10 serviceContext];
-  v28 = [v27 store];
-  v29 = [v26 sg_isSignificantWithStore:v28];
+  from = [messageCopy from];
+  asCSPerson = [from asCSPerson];
+  serviceContext = [contextCopy serviceContext];
+  store = [serviceContext store];
+  v29 = [asCSPerson sg_isSignificantWithStore:store];
 
   if ((v29 & 1) == 0)
   {
@@ -2445,36 +2445,36 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v11);
-  [v9 releaseDissectorLock];
-  v30 = self;
-  objc_sync_enter(v30);
+  [entityCopy releaseDissectorLock];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v31 = objc_autoreleasePoolPush();
-  v32 = [(SGReminderDissector *)v30 extractReminderFromMailMessage:v8 entity:v9];
+  v32 = [(SGReminderDissector *)selfCopy extractReminderFromMailMessage:messageCopy entity:entityCopy];
   objc_autoreleasePoolPop(v31);
-  objc_sync_exit(v30);
+  objc_sync_exit(selfCopy);
 
-  [v9 acquireDissectorLock];
+  [entityCopy acquireDissectorLock];
   if (v32)
   {
-    [v9 addEnrichment:v32];
+    [entityCopy addEnrichment:v32];
   }
 
 LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (SGReminderDissector)initWithConversations:(id)a3 rtRoutineManager:(id)a4
+- (SGReminderDissector)initWithConversations:(id)conversations rtRoutineManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  conversationsCopy = conversations;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SGReminderDissector;
   v9 = [(SGReminderDissector *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conversations, a3);
-    objc_storeStrong(&v10->_rtRoutineManager, a4);
+    objc_storeStrong(&v9->_conversations, conversations);
+    objc_storeStrong(&v10->_rtRoutineManager, manager);
   }
 
   return v10;
@@ -2524,12 +2524,12 @@ LABEL_12:
   return v9;
 }
 
-+ (id)getContactIdentifierForName:(id)a3 andEmail:(id)a4 ifMatchingPredicate:(id)a5
++ (id)getContactIdentifierForName:(id)name andEmail:(id)email ifMatchingPredicate:(id)predicate
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  emailCopy = email;
+  predicateCopy = predicate;
   v10 = objc_opt_new();
   v11 = +[SGContactStoreFactory contactStore];
   v12 = *MEMORY[0x277CBCFC0];
@@ -2541,23 +2541,23 @@ LABEL_12:
   v50[1] = 3221225472;
   v50[2] = __80__SGReminderDissector_getContactIdentifierForName_andEmail_ifMatchingPredicate___block_invoke;
   v50[3] = &unk_278951AD0;
-  v38 = v9;
+  v38 = predicateCopy;
   v52 = v38;
   v14 = v10;
   v51 = v14;
-  v41 = v7;
+  v41 = nameCopy;
   v39 = v11;
-  [SGContactsInterface enumerateContactsMatchingName:v7 withKeysToFetch:v13 usingContactStore:v11 error:&v53 usingBlock:v50];
+  [SGContactsInterface enumerateContactsMatchingName:nameCopy withKeysToFetch:v13 usingContactStore:v11 error:&v53 usingBlock:v50];
   v15 = v53;
 
-  v16 = [v14 array];
-  v40 = v8;
+  array = [v14 array];
+  v40 = emailCopy;
   v17 = SGNormalizeEmailAddress();
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v18 = v16;
+  v18 = array;
   v36 = [v18 countByEnumeratingWithState:&v46 objects:v55 count:16];
   if (v36)
   {
@@ -2580,8 +2580,8 @@ LABEL_12:
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v22 = [v21 emailAddresses];
-        v23 = [v22 countByEnumeratingWithState:&v42 objects:v54 count:16];
+        emailAddresses = [v21 emailAddresses];
+        v23 = [emailAddresses countByEnumeratingWithState:&v42 objects:v54 count:16];
         if (v23)
         {
           v24 = v23;
@@ -2592,10 +2592,10 @@ LABEL_12:
             {
               if (*v43 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(emailAddresses);
               }
 
-              v27 = [*(*(&v42 + 1) + 8 * j) value];
+              value = [*(*(&v42 + 1) + 8 * j) value];
               v28 = SGNormalizeEmailAddress();
               v29 = [v17 isEqualToString:v28];
 
@@ -2610,7 +2610,7 @@ LABEL_12:
               }
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v42 objects:v54 count:16];
+            v24 = [emailAddresses countByEnumeratingWithState:&v42 objects:v54 count:16];
             if (v24)
             {
               continue;
@@ -2654,55 +2654,55 @@ void __80__SGReminderDissector_getContactIdentifierForName_andEmail_ifMatchingPr
   }
 }
 
-+ (BOOL)isReminderDueDateComponentsInPast:(id)a3 givenReferenceDate:(id)a4 allDay:(BOOL)a5
++ (BOOL)isReminderDueDateComponentsInPast:(id)past givenReferenceDate:(id)date allDay:(BOOL)day
 {
-  v5 = a5;
-  v7 = a3;
-  [a4 timeIntervalSinceReferenceDate];
+  dayCopy = day;
+  pastCopy = past;
+  [date timeIntervalSinceReferenceDate];
   v9 = v8;
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 dateFromComponents:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar dateFromComponents:pastCopy];
   [v11 timeIntervalSinceReferenceDate];
   v13 = v12;
 
-  if (v5)
+  if (dayCopy)
   {
-    v14 = [v7 copy];
+    v14 = [pastCopy copy];
     [v14 setHour:23];
     [v14 setMinute:59];
     [v14 setSecond:59];
-    v15 = [v14 timeZone];
+    timeZone = [v14 timeZone];
 
-    if (!v15)
+    if (!timeZone)
     {
-      v16 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-      [v14 setTimeZone:v16];
+      defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+      [v14 setTimeZone:defaultTimeZone];
     }
 
-    v17 = [v14 date];
-    [v17 timeIntervalSinceReferenceDate];
+    date = [v14 date];
+    [date timeIntervalSinceReferenceDate];
     v13 = v18;
   }
 
   return v9 > v13;
 }
 
-+ (id)enrichedTaggedCharacterRangesFromEntity:(id)a3 forMessage:(id)a4
++ (id)enrichedTaggedCharacterRangesFromEntity:(id)entity forMessage:(id)message
 {
-  v6 = a4;
-  v7 = [a3 taggedCharacterRanges];
-  v8 = [v6 isSent];
+  messageCopy = message;
+  taggedCharacterRanges = [entity taggedCharacterRanges];
+  isSent = [messageCopy isSent];
 
-  v9 = [a1 enrichedTaggedCharacterRangesFromTaggedCharacterRanges:v7 messageIsSent:v8];
+  v9 = [self enrichedTaggedCharacterRangesFromTaggedCharacterRanges:taggedCharacterRanges messageIsSent:isSent];
 
   return v9;
 }
 
-+ (id)enrichedTaggedCharacterRangesFromTaggedCharacterRanges:(id)a3 messageIsSent:(BOOL)a4
++ (id)enrichedTaggedCharacterRangesFromTaggedCharacterRanges:(id)ranges messageIsSent:(BOOL)sent
 {
-  v4 = a4;
+  sentCopy = sent;
   v45 = *MEMORY[0x277D85DE8];
-  v5 = [a3 mutableCopy];
+  v5 = [ranges mutableCopy];
   v6 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
@@ -2737,11 +2737,11 @@ void __80__SGReminderDissector_getContactIdentifierForName_andEmail_ifMatchingPr
   }
 
   v13 = +[SGReminderExtractionModel sharedInstance];
-  v14 = [v13 enrichments];
+  enrichments = [v13 enrichments];
 
-  if (v14)
+  if (enrichments)
   {
-    v15 = [v14 objectForKeyedSubscript:@"polarityEmojisMapping"];
+    v15 = [enrichments objectForKeyedSubscript:@"polarityEmojisMapping"];
     v16 = v15;
     if (v15)
     {
@@ -2749,7 +2749,7 @@ void __80__SGReminderDissector_getContactIdentifierForName_andEmail_ifMatchingPr
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v43 count:1];
       v18 = [SGTaggedCharacterRange enrichAndFilterTaggedCharacterRanges:v6 usingMapping:v17 withAnnotationType:3];
 
-      v19 = [v14 objectForKeyedSubscript:@"verbsMapping"];
+      v19 = [enrichments objectForKeyedSubscript:@"verbsMapping"];
       v20 = v19;
       if (v19)
       {
@@ -2760,7 +2760,7 @@ void __80__SGReminderDissector_getContactIdentifierForName_andEmail_ifMatchingPr
         [v7 addObjectsFromArray:v18];
         [v7 addObjectsFromArray:v34];
         v22 = @"CONTACT";
-        if (v4)
+        if (sentCopy)
         {
           v22 = @"ACCOUNT_OWNER";
         }

@@ -29,15 +29,15 @@
 
 - (id)description
 {
-  v3 = [(PSGraphState_v2 *)self currentStride];
-  v4 = [(PSGraphState_v2 *)self targetStride];
-  v5 = [(PSGraphState_v2 *)self requestedStride];
-  v6 = [(PSGraphState_v2 *)self currentFrequency];
-  v7 = [(PSGraphState_v2 *)self targetFrequency];
-  v8 = [(PSGraphState_v2 *)self lowerBoundStride];
-  v9 = [(PSGraphState_v2 *)self upperBoundStride];
-  v10 = [(PSGraphState_v2 *)self domain];
-  v11 = [NSString stringWithFormat:@"Strides current:%@ target:%@ requested:%@ Frequency current:%@ target:%@ Bounds lower:%@ upper:%@ domain:%@", v3, v4, v5, v6, v7, v8, v9, v10];
+  currentStride = [(PSGraphState_v2 *)self currentStride];
+  targetStride = [(PSGraphState_v2 *)self targetStride];
+  requestedStride = [(PSGraphState_v2 *)self requestedStride];
+  currentFrequency = [(PSGraphState_v2 *)self currentFrequency];
+  targetFrequency = [(PSGraphState_v2 *)self targetFrequency];
+  lowerBoundStride = [(PSGraphState_v2 *)self lowerBoundStride];
+  upperBoundStride = [(PSGraphState_v2 *)self upperBoundStride];
+  domain = [(PSGraphState_v2 *)self domain];
+  v11 = [NSString stringWithFormat:@"Strides current:%@ target:%@ requested:%@ Frequency current:%@ target:%@ Bounds lower:%@ upper:%@ domain:%@", currentStride, targetStride, requestedStride, currentFrequency, targetFrequency, lowerBoundStride, upperBoundStride, domain];
 
   return v11;
 }

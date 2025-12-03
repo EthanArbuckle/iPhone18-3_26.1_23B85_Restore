@@ -1,14 +1,14 @@
 @interface CHSInlineTextParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)graphicMaxSize;
 - (CHSInlineTextParameters)init;
-- (CHSInlineTextParameters)initWithBSXPCCoder:(id)a3;
+- (CHSInlineTextParameters)initWithBSXPCCoder:(id)coder;
 - (NSString)description;
 - (id)_effectiveDateFormat;
-- (id)_initWithInlineTextProperties:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithInlineTextProperties:(id)properties;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHSInlineTextParameters
@@ -44,36 +44,36 @@
   return v3;
 }
 
-- (id)_initWithInlineTextProperties:(id)a3
+- (id)_initWithInlineTextProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [(CHSInlineTextParameters *)self init];
   if (v5)
   {
-    v6 = [*(v4 + 3) copy];
+    v6 = [*(propertiesCopy + 3) copy];
     fontSpecification = v5->_fontSpecification;
     v5->_fontSpecification = v6;
 
-    v8 = [*(v4 + 4) copy];
+    v8 = [*(propertiesCopy + 4) copy];
     foregroundColor = v5->_foregroundColor;
     v5->_foregroundColor = v8;
 
-    v10 = [*(v4 + 5) copy];
+    v10 = [*(propertiesCopy + 5) copy];
     foregroundDateColor = v5->_foregroundDateColor;
     v5->_foregroundDateColor = v10;
 
-    v5->_allowsNonSystemForegroundColors = v4[48];
-    v5->_showsDateAlongsideText = v4[8];
-    v12 = [*(v4 + 2) copy];
+    v5->_allowsNonSystemForegroundColors = propertiesCopy[48];
+    v5->_showsDateAlongsideText = propertiesCopy[8];
+    v12 = [*(propertiesCopy + 2) copy];
     dateFormat = v5->_dateFormat;
     v5->_dateFormat = v12;
 
-    v5->_horizontalAlignment = *(v4 + 7);
-    v5->_ignoresRTL = v4[64];
-    v5->_graphicAlignment = *(v4 + 9);
-    v5->_graphicMaxSize = *(v4 + 88);
-    v5->_symbolScale = *(v4 + 10);
-    v5->_forceUppercase = v4[65];
+    v5->_horizontalAlignment = *(propertiesCopy + 7);
+    v5->_ignoresRTL = propertiesCopy[64];
+    v5->_graphicAlignment = *(propertiesCopy + 9);
+    v5->_graphicMaxSize = *(propertiesCopy + 88);
+    v5->_symbolScale = *(propertiesCopy + 10);
+    v5->_forceUppercase = propertiesCopy[65];
   }
 
   return v5;
@@ -103,7 +103,7 @@
   v22 = &unk_1E7453000;
   v4 = v3;
   v23 = v4;
-  v24 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:&v19];
   v6 = [v4 appendObject:self->_fontSpecification withName:@"font" skipIfNil:{1, v19, v20, v21, v22}];
   v7 = [v4 appendObject:self->_foregroundColor withName:@"color" skipIfNil:1];
@@ -131,9 +131,9 @@
   v14 = [v4 appendSize:@"graphicMaxSize" withName:{self->_graphicMaxSize.width, self->_graphicMaxSize.height}];
   v15 = [v4 appendUInt64:self->_symbolScale withName:@"symbolScale"];
   v16 = [v4 appendBool:self->_forceUppercase withName:@"forceUppercase" ifEqualTo:1];
-  v17 = [v4 build];
+  build = [v4 build];
 
-  return v17;
+  return build;
 }
 
 uint64_t __38__CHSInlineTextParameters_description__block_invoke(uint64_t a1)
@@ -166,11 +166,11 @@ uint64_t __38__CHSInlineTextParameters_description__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -309,92 +309,92 @@ double __35__CHSInlineTextParameters_isEqual___block_invoke_10(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendBool:self->_showsDateAlongsideText];
-  v5 = [v3 appendString:self->_dateFormat];
-  v6 = [v3 appendObject:self->_foregroundColor];
-  v7 = [v3 appendObject:self->_foregroundDateColor];
-  v8 = [v3 appendBool:self->_allowsNonSystemForegroundColors];
-  v9 = [v3 appendObject:self->_fontSpecification];
-  v10 = [v3 appendUnsignedInteger:self->_horizontalAlignment];
-  v11 = [v3 appendBool:self->_ignoresRTL];
-  v12 = [v3 appendUnsignedInteger:self->_graphicAlignment];
-  v13 = [v3 appendCGSize:{self->_graphicMaxSize.width, self->_graphicMaxSize.height}];
-  v14 = [v3 appendUnsignedInteger:self->_symbolScale];
-  v15 = [v3 appendBool:self->_forceUppercase];
-  v16 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendBool:self->_showsDateAlongsideText];
+  v5 = [builder appendString:self->_dateFormat];
+  v6 = [builder appendObject:self->_foregroundColor];
+  v7 = [builder appendObject:self->_foregroundDateColor];
+  v8 = [builder appendBool:self->_allowsNonSystemForegroundColors];
+  v9 = [builder appendObject:self->_fontSpecification];
+  v10 = [builder appendUnsignedInteger:self->_horizontalAlignment];
+  v11 = [builder appendBool:self->_ignoresRTL];
+  v12 = [builder appendUnsignedInteger:self->_graphicAlignment];
+  v13 = [builder appendCGSize:{self->_graphicMaxSize.width, self->_graphicMaxSize.height}];
+  v14 = [builder appendUnsignedInteger:self->_symbolScale];
+  v15 = [builder appendBool:self->_forceUppercase];
+  v16 = [builder hash];
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSInlineTextParameters alloc];
 
   return [(CHSInlineTextParameters *)v4 _initWithInlineTextProperties:self];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_fontSpecification forKey:@"font"];
-  [v7 encodeObject:self->_foregroundColor forKey:@"fc"];
-  [v7 encodeObject:self->_foregroundDateColor forKey:@"fdc"];
-  [v7 encodeBool:self->_allowsNonSystemForegroundColors forKey:@"nsfc"];
-  [v7 encodeBool:self->_showsDateAlongsideText forKey:@"sdat"];
-  [v7 encodeObject:self->_dateFormat forKey:@"df"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_fontSpecification forKey:@"font"];
+  [coderCopy encodeObject:self->_foregroundColor forKey:@"fc"];
+  [coderCopy encodeObject:self->_foregroundDateColor forKey:@"fdc"];
+  [coderCopy encodeBool:self->_allowsNonSystemForegroundColors forKey:@"nsfc"];
+  [coderCopy encodeBool:self->_showsDateAlongsideText forKey:@"sdat"];
+  [coderCopy encodeObject:self->_dateFormat forKey:@"df"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_horizontalAlignment];
-  [v7 encodeObject:v4 forKey:@"ha"];
+  [coderCopy encodeObject:v4 forKey:@"ha"];
 
-  [v7 encodeBool:self->_ignoresRTL forKey:@"irtl"];
+  [coderCopy encodeBool:self->_ignoresRTL forKey:@"irtl"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_graphicAlignment];
-  [v7 encodeObject:v5 forKey:@"gp"];
+  [coderCopy encodeObject:v5 forKey:@"gp"];
 
-  [v7 encodeCGSize:@"gms" forKey:{self->_graphicMaxSize.width, self->_graphicMaxSize.height}];
+  [coderCopy encodeCGSize:@"gms" forKey:{self->_graphicMaxSize.width, self->_graphicMaxSize.height}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_symbolScale];
-  [v7 encodeObject:v6 forKey:@"ss"];
+  [coderCopy encodeObject:v6 forKey:@"ss"];
 
-  [v7 encodeBool:self->_forceUppercase forKey:@"fu"];
+  [coderCopy encodeBool:self->_forceUppercase forKey:@"fu"];
 }
 
-- (CHSInlineTextParameters)initWithBSXPCCoder:(id)a3
+- (CHSInlineTextParameters)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CHSInlineTextParameters *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"font"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"font"];
     fontSpecification = v5->_fontSpecification;
     v5->_fontSpecification = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fc"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fc"];
     foregroundColor = v5->_foregroundColor;
     v5->_foregroundColor = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fdc"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fdc"];
     foregroundDateColor = v5->_foregroundDateColor;
     v5->_foregroundDateColor = v10;
 
-    v5->_allowsNonSystemForegroundColors = [v4 decodeBoolForKey:@"nsfc"];
-    v5->_showsDateAlongsideText = [v4 decodeBoolForKey:@"sdat"];
-    v12 = [v4 decodeStringForKey:@"df"];
+    v5->_allowsNonSystemForegroundColors = [coderCopy decodeBoolForKey:@"nsfc"];
+    v5->_showsDateAlongsideText = [coderCopy decodeBoolForKey:@"sdat"];
+    v12 = [coderCopy decodeStringForKey:@"df"];
     dateFormat = v5->_dateFormat;
     v5->_dateFormat = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ha"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ha"];
     v5->_horizontalAlignment = [v14 unsignedIntegerValue];
 
-    v5->_ignoresRTL = [v4 decodeBoolForKey:@"irtl"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gp"];
+    v5->_ignoresRTL = [coderCopy decodeBoolForKey:@"irtl"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gp"];
     v5->_graphicAlignment = [v15 unsignedIntegerValue];
 
-    [v4 decodeCGSizeForKey:@"gms"];
+    [coderCopy decodeCGSizeForKey:@"gms"];
     v5->_graphicMaxSize.width = v16;
     v5->_graphicMaxSize.height = v17;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ss"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ss"];
     v5->_symbolScale = [v18 unsignedIntegerValue];
 
-    v5->_forceUppercase = [v4 decodeBoolForKey:@"fu"];
+    v5->_forceUppercase = [coderCopy decodeBoolForKey:@"fu"];
   }
 
   return v5;

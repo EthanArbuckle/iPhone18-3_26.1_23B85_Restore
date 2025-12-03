@@ -1,57 +1,57 @@
 @interface NUANFArticleDataProviderFactory
-- (NUANFArticleDataProviderFactory)initWithContentContext:(id)a3 fontRegistration:(id)a4 host:(id)a5 embedDataManager:(id)a6 linkedContentManagerFactory:(id)a7;
-- (id)createArticleDataProviderWithArticle:(id)a3;
+- (NUANFArticleDataProviderFactory)initWithContentContext:(id)context fontRegistration:(id)registration host:(id)host embedDataManager:(id)manager linkedContentManagerFactory:(id)factory;
+- (id)createArticleDataProviderWithArticle:(id)article;
 @end
 
 @implementation NUANFArticleDataProviderFactory
 
-- (NUANFArticleDataProviderFactory)initWithContentContext:(id)a3 fontRegistration:(id)a4 host:(id)a5 embedDataManager:(id)a6 linkedContentManagerFactory:(id)a7
+- (NUANFArticleDataProviderFactory)initWithContentContext:(id)context fontRegistration:(id)registration host:(id)host embedDataManager:(id)manager linkedContentManagerFactory:(id)factory
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  registrationCopy = registration;
+  hostCopy = host;
+  managerCopy = manager;
+  factoryCopy = factory;
   v21.receiver = self;
   v21.super_class = NUANFArticleDataProviderFactory;
   v17 = [(NUANFArticleDataProviderFactory *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contentContext, a3);
-    objc_storeStrong(&v18->_fontRegistration, a4);
-    objc_storeStrong(&v18->_host, a5);
-    objc_storeStrong(&v18->_embedDataManager, a6);
-    objc_storeStrong(&v18->_linkedContentManagerFactory, a7);
+    objc_storeStrong(&v17->_contentContext, context);
+    objc_storeStrong(&v18->_fontRegistration, registration);
+    objc_storeStrong(&v18->_host, host);
+    objc_storeStrong(&v18->_embedDataManager, manager);
+    objc_storeStrong(&v18->_linkedContentManagerFactory, factory);
   }
 
   return v18;
 }
 
-- (id)createArticleDataProviderWithArticle:(id)a3
+- (id)createArticleDataProviderWithArticle:(id)article
 {
-  v4 = a3;
-  v5 = [(NUANFArticleDataProviderFactory *)self linkedContentManagerFactory];
-  v6 = [v5 createLinkedContentManagerForArticle:v4];
+  articleCopy = article;
+  linkedContentManagerFactory = [(NUANFArticleDataProviderFactory *)self linkedContentManagerFactory];
+  v6 = [linkedContentManagerFactory createLinkedContentManagerForArticle:articleCopy];
 
-  v7 = [v4 headline];
-  v8 = [v7 isLocalDraft];
+  headline = [articleCopy headline];
+  isLocalDraft = [headline isLocalDraft];
 
-  if (v8)
+  if (isLocalDraft)
   {
     v9 = [NUBundledArticleDataProvider alloc];
-    v10 = [(NUANFArticleDataProviderFactory *)self embedDataManager];
-    v11 = [(NUBundledArticleDataProvider *)v9 initWithArticle:v4 embedDataManager:v10 linkedContentManager:v6];
+    embedDataManager = [(NUANFArticleDataProviderFactory *)self embedDataManager];
+    v11 = [(NUBundledArticleDataProvider *)v9 initWithArticle:articleCopy embedDataManager:embedDataManager linkedContentManager:v6];
   }
 
   else
   {
     v12 = [NUANFArticleDataProvider alloc];
-    v10 = [(NUANFArticleDataProviderFactory *)self contentContext];
-    v13 = [(NUANFArticleDataProviderFactory *)self fontRegistration];
-    v14 = [(NUANFArticleDataProviderFactory *)self host];
-    v15 = [(NUANFArticleDataProviderFactory *)self embedDataManager];
-    v11 = [(NUANFArticleDataProvider *)v12 initWithArticle:v4 contentContext:v10 fontRegistration:v13 host:v14 embedDataManager:v15 linkedContentManager:v6];
+    embedDataManager = [(NUANFArticleDataProviderFactory *)self contentContext];
+    fontRegistration = [(NUANFArticleDataProviderFactory *)self fontRegistration];
+    host = [(NUANFArticleDataProviderFactory *)self host];
+    embedDataManager2 = [(NUANFArticleDataProviderFactory *)self embedDataManager];
+    v11 = [(NUANFArticleDataProvider *)v12 initWithArticle:articleCopy contentContext:embedDataManager fontRegistration:fontRegistration host:host embedDataManager:embedDataManager2 linkedContentManager:v6];
   }
 
   return v11;

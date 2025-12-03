@@ -1,32 +1,32 @@
 @interface SUTermsAndConditionsView
-- (SUTermsAndConditionsView)initWithFrame:(CGRect)a3;
-- (double)_buttonHeightForStyle:(int64_t)a3;
+- (SUTermsAndConditionsView)initWithFrame:(CGRect)frame;
+- (double)_buttonHeightForStyle:(int64_t)style;
 - (id)_button;
 - (id)_termsAndConditionsControl;
-- (void)_buttonAction:(id)a3;
-- (void)_clearButtonSelection:(id)a3;
+- (void)_buttonAction:(id)action;
+- (void)_clearButtonSelection:(id)selection;
 - (void)_destroyButton;
-- (void)_termsAndConditionsAction:(id)a3;
+- (void)_termsAndConditionsAction:(id)action;
 - (void)_updateButton;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHideAccountButton:(BOOL)a3;
-- (void)setRightMargin:(double)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setHideAccountButton:(BOOL)button;
+- (void)setRightMargin:(double)margin;
+- (void)setStyle:(int64_t)style;
 - (void)sizeToFit;
 @end
 
 @implementation SUTermsAndConditionsView
 
-- (SUTermsAndConditionsView)initWithFrame:(CGRect)a3
+- (SUTermsAndConditionsView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUTermsAndConditionsView;
-  v3 = [(SUTermsAndConditionsView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUTermsAndConditionsView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__accountsChangedNotification_ name:*MEMORY[0x1E69D4A48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accountsChangedNotification_ name:*MEMORY[0x1E69D4A48] object:0];
   }
 
   return v3;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4A48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A48] object:0];
   [(SUTermsAndConditionsView *)self _destroyButton];
 
   [(SULinkControl *)self->_termsAndConditionsControl removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
@@ -45,31 +45,31 @@
   [(SUTermsAndConditionsView *)&v4 dealloc];
 }
 
-- (void)setHideAccountButton:(BOOL)a3
+- (void)setHideAccountButton:(BOOL)button
 {
-  if (self->_hideAccountButton != a3)
+  if (self->_hideAccountButton != button)
   {
-    self->_hideAccountButton = a3;
+    self->_hideAccountButton = button;
     [(SUTermsAndConditionsView *)self _destroyButton];
 
     [(SUTermsAndConditionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setRightMargin:(double)a3
+- (void)setRightMargin:(double)margin
 {
-  if (self->_rightMargin != a3)
+  if (self->_rightMargin != margin)
   {
-    self->_rightMargin = a3;
+    self->_rightMargin = margin;
     [(SUTermsAndConditionsView *)self setNeedsLayout];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(SUTermsAndConditionsView *)self _destroyButton];
     [(SULinkControl *)self->_termsAndConditionsControl setStyle:[(SUTermsAndConditionsView *)self _linkStyleForStyle:self->_style]];
 
@@ -83,13 +83,13 @@
   v4 = v3 - self->_rightMargin;
   if (!self->_hideAccountButton)
   {
-    v5 = [(SUTermsAndConditionsView *)self _button];
+    _button = [(SUTermsAndConditionsView *)self _button];
     [(SUTermsAndConditionsView *)self _buttonHeightForStyle:self->_style];
-    [v5 setFrame:{9.0, 8.0, v4 + -9.0 + -9.0, v6}];
+    [_button setFrame:{9.0, 8.0, v4 + -9.0 + -9.0, v6}];
   }
 
-  v7 = [(SUTermsAndConditionsView *)self _termsAndConditionsControl];
-  [v7 frame];
+  _termsAndConditionsControl = [(SUTermsAndConditionsView *)self _termsAndConditionsControl];
+  [_termsAndConditionsControl frame];
   v9 = ceil((v4 - v8) * 0.5);
   v10 = 91.0;
   if (self->_hideAccountButton)
@@ -97,7 +97,7 @@
     v10 = 26.0;
   }
 
-  [v7 setFrame:{v9, v10}];
+  [_termsAndConditionsControl setFrame:{v9, v10}];
 }
 
 - (void)sizeToFit
@@ -107,7 +107,7 @@
   [(SUTermsAndConditionsView *)self setFrame:?];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v5 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
   if ([v5 length])
@@ -134,7 +134,7 @@
     [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
   }
 
-  [(SUTermsAndConditionsView *)self performSelector:sel__clearButtonSelection_ withObject:a3 afterDelay:0.100000001];
+  [(SUTermsAndConditionsView *)self performSelector:sel__clearButtonSelection_ withObject:action afterDelay:0.100000001];
 }
 
 void __42__SUTermsAndConditionsView__buttonAction___block_invoke(uint64_t a1)
@@ -161,12 +161,12 @@ void __42__SUTermsAndConditionsView__buttonAction___block_invoke_3()
   [objc_msgSend(MEMORY[0x1E69E4798] "mainQueue")];
 }
 
-- (void)_termsAndConditionsAction:(id)a3
+- (void)_termsAndConditionsAction:(id)action
 {
-  v4 = [MEMORY[0x1E695DFF8] termsAndConditionsURL];
-  v5 = [(SUTermsAndConditionsView *)self clientInterface];
+  termsAndConditionsURL = [MEMORY[0x1E695DFF8] termsAndConditionsURL];
+  clientInterface = [(SUTermsAndConditionsView *)self clientInterface];
 
-  SUOpenExternalURL(v4, v5);
+  SUOpenExternalURL(termsAndConditionsURL, clientInterface);
 }
 
 - (id)_button
@@ -213,12 +213,12 @@ LABEL_8:
         [(SUSubtitledButton *)self->_button setTitleShadowColor:0 forState:4];
         [(SUSubtitledButton *)self->_button titleEdgeInsets];
         [(SUSubtitledButton *)self->_button setTitleEdgeInsets:v16 + 1.0];
-        v17 = [(SUSubtitledButton *)self->_button titleLabel];
-        [v17 setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 14.0)}];
-        [v17 setTextAlignment:1];
-        v18 = [(SUSubtitledButton *)self->_button subtitleLabel];
-        -[UILabel setFont:](v18, "setFont:", [MEMORY[0x1E69DB878] systemFontOfSize:13.0]);
-        [(UILabel *)v18 setTextAlignment:1];
+        titleLabel = [(SUSubtitledButton *)self->_button titleLabel];
+        [titleLabel setFont:{objc_msgSend(MEMORY[0x1E69DB878], "boldSystemFontOfSize:", 14.0)}];
+        [titleLabel setTextAlignment:1];
+        subtitleLabel = [(SUSubtitledButton *)self->_button subtitleLabel];
+        -[UILabel setFont:](subtitleLabel, "setFont:", [MEMORY[0x1E69DB878] systemFontOfSize:13.0]);
+        [(UILabel *)subtitleLabel setTextAlignment:1];
         [(SUTermsAndConditionsView *)self addSubview:self->_button];
         [(SUTermsAndConditionsView *)self _updateButton];
         return self->_button;
@@ -242,10 +242,10 @@ LABEL_8:
   return result;
 }
 
-- (double)_buttonHeightForStyle:(int64_t)a3
+- (double)_buttonHeightForStyle:(int64_t)style
 {
   result = 47.0;
-  if (!a3)
+  if (!style)
   {
     return 48.0;
   }
@@ -253,11 +253,11 @@ LABEL_8:
   return result;
 }
 
-- (void)_clearButtonSelection:(id)a3
+- (void)_clearButtonSelection:(id)selection
 {
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:a3];
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:selection];
 
-  [a3 setSelected:0];
+  [selection setSelected:0];
 }
 
 - (void)_destroyButton
@@ -292,15 +292,15 @@ LABEL_8:
 - (void)_updateButton
 {
   v3 = [objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
-  v4 = [v3 accountName];
-  if ([v4 length])
+  accountName = [v3 accountName];
+  if ([accountName length])
   {
-    v5 = [v3 creditsString];
-    v6 = [v5 length];
+    creditsString = [v3 creditsString];
+    v6 = [creditsString length];
     button = self->_button;
     if (v6)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ACCOUNT_BUTTON_CREDIT_FORMAT", &stru_1F41B3660, 0), v5];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ACCOUNT_BUTTON_CREDIT_FORMAT", &stru_1F41B3660, 0), creditsString];
     }
 
     else
@@ -310,7 +310,7 @@ LABEL_8:
 
     [(SUSubtitledButton *)button setSubtitle:v8 forState:0];
     v12 = self->_button;
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ACCOUNT_FORMAT", &stru_1F41B3660, 0), v4];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:objc_msgSend(objc_msgSend(MEMORY[0x1E696AAE8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"ACCOUNT_FORMAT", &stru_1F41B3660, 0), accountName];
     v11 = v12;
   }
 

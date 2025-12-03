@@ -1,90 +1,90 @@
 @interface ISOPBSubscriptiondPetMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDayOfWeek:(id)a3;
-- (int)StringAsIcloudNotificationActionLabel:(id)a3;
-- (int)StringAsOBSOLETETrafficType:(id)a3;
-- (int)StringAsTrafficType:(id)a3;
-- (int)StringAsUserTier:(id)a3;
+- (int)StringAsDayOfWeek:(id)week;
+- (int)StringAsIcloudNotificationActionLabel:(id)label;
+- (int)StringAsOBSOLETETrafficType:(id)type;
+- (int)StringAsTrafficType:(id)type;
+- (int)StringAsUserTier:(id)tier;
 - (int)dayOfWeek;
 - (int)icloudNotificationActionLabel;
 - (int)oBSOLETETrafficType;
 - (int)trafficType;
 - (int)userTier;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppLaunchCount2wMedian:(BOOL)a3;
-- (void)setHasAppLaunchCountSameSlot:(BOOL)a3;
-- (void)setHasAvgWeeklyScreenTimeSeconds2w:(BOOL)a3;
-- (void)setHasBuyLabel:(BOOL)a3;
-- (void)setHasCameraAppLaunchCount1w:(BOOL)a3;
-- (void)setHasCameraLaunchCountSameSlot:(BOOL)a3;
-- (void)setHasDaemonVersion:(BOOL)a3;
-- (void)setHasDailyScreenTimeSeconds:(BOOL)a3;
-- (void)setHasDayOfWeek:(BOOL)a3;
-- (void)setHasDiskStorageCapacityBytes:(BOOL)a3;
-- (void)setHasDropboxAppLaunchCount1w:(BOOL)a3;
-- (void)setHasFilesAppLaunchCount1w:(BOOL)a3;
-- (void)setHasFilesLaunchCountSameSlot:(BOOL)a3;
-- (void)setHasGoogleDriveAppLaunchCount1w:(BOOL)a3;
-- (void)setHasGooglePhotoAppLaunchCount1w:(BOOL)a3;
-- (void)setHasHourOfDay:(BOOL)a3;
-- (void)setHasIcloudNotificationActionLabel:(BOOL)a3;
-- (void)setHasIsDoNotDisturbOn:(BOOL)a3;
-- (void)setHasIsDoNotDisturbOnCount2w:(BOOL)a3;
-- (void)setHasIsDoNotDisturbOnSameSlot:(BOOL)a3;
-- (void)setHasIsDrivingModeOn:(BOOL)a3;
-- (void)setHasIsDrivingModeOnCount2w:(BOOL)a3;
-- (void)setHasIsDrivingModeOnSameSlot:(BOOL)a3;
-- (void)setHasIsSleepModeOn:(BOOL)a3;
-- (void)setHasIsSleepModeOnCount2w:(BOOL)a3;
-- (void)setHasIsSleepModeOnSameSlot:(BOOL)a3;
-- (void)setHasLastOpenedAppHour24h:(BOOL)a3;
-- (void)setHasMinsSinceLastCameraAppLaunch1w:(BOOL)a3;
-- (void)setHasMinsSinceLastFilesAppLaunch1w:(BOOL)a3;
-- (void)setHasMinsSinceLastPhotosAppLaunch1w:(BOOL)a3;
-- (void)setHasMinsUntilICloudBuy:(BOOL)a3;
-- (void)setHasMinsUntilICloudNotificationOpened:(BOOL)a3;
-- (void)setHasMinsUntilICloudOpenedSubStream:(BOOL)a3;
-- (void)setHasMlServerScore:(BOOL)a3;
-- (void)setHasNumNotificationsSameSlot:(BOOL)a3;
-- (void)setHasNumOpenedNotificationsSameSlot:(BOOL)a3;
-- (void)setHasOBSOLETETrafficType:(BOOL)a3;
-- (void)setHasOffsetMins:(BOOL)a3;
-- (void)setHasOpenLabelSubStream:(BOOL)a3;
-- (void)setHasOpenedICloudNotificationRatio1w:(BOOL)a3;
-- (void)setHasOpenedICloudNotificationRatio2w:(BOOL)a3;
-- (void)setHasOpenedNotificationCount2wMax:(BOOL)a3;
-- (void)setHasOpenedNotificationCount2wMedian:(BOOL)a3;
-- (void)setHasOpenedNotificationRatio1w:(BOOL)a3;
-- (void)setHasOpenedNotificationRatio24h:(BOOL)a3;
-- (void)setHasOsVersionMajorVersion:(BOOL)a3;
-- (void)setHasOsVersionMinorVersion:(BOOL)a3;
-- (void)setHasOsVersionPatchVersion:(BOOL)a3;
-- (void)setHasPhotosAppLaunchCount1w:(BOOL)a3;
-- (void)setHasPhotosLaunchCount2wMax:(BOOL)a3;
-- (void)setHasPhotosLaunchCount2wMedian:(BOOL)a3;
-- (void)setHasPhotosLaunchCountSameSlot:(BOOL)a3;
-- (void)setHasTimestampMillis:(BOOL)a3;
-- (void)setHasTotalNotificationCount1w:(BOOL)a3;
-- (void)setHasTotalNotificationCount2wMax:(BOOL)a3;
-- (void)setHasTotalNotificationCount2wMedian:(BOOL)a3;
-- (void)setHasTotalOpenedNotificationCount1w:(BOOL)a3;
-- (void)setHasTrafficType:(BOOL)a3;
-- (void)setHasUsedDiskCapacityBytes:(BOOL)a3;
-- (void)setHasUserTier:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppLaunchCount2wMedian:(BOOL)median;
+- (void)setHasAppLaunchCountSameSlot:(BOOL)slot;
+- (void)setHasAvgWeeklyScreenTimeSeconds2w:(BOOL)seconds2w;
+- (void)setHasBuyLabel:(BOOL)label;
+- (void)setHasCameraAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasCameraLaunchCountSameSlot:(BOOL)slot;
+- (void)setHasDaemonVersion:(BOOL)version;
+- (void)setHasDailyScreenTimeSeconds:(BOOL)seconds;
+- (void)setHasDayOfWeek:(BOOL)week;
+- (void)setHasDiskStorageCapacityBytes:(BOOL)bytes;
+- (void)setHasDropboxAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasFilesAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasFilesLaunchCountSameSlot:(BOOL)slot;
+- (void)setHasGoogleDriveAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasGooglePhotoAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasHourOfDay:(BOOL)day;
+- (void)setHasIcloudNotificationActionLabel:(BOOL)label;
+- (void)setHasIsDoNotDisturbOn:(BOOL)on;
+- (void)setHasIsDoNotDisturbOnCount2w:(BOOL)count2w;
+- (void)setHasIsDoNotDisturbOnSameSlot:(BOOL)slot;
+- (void)setHasIsDrivingModeOn:(BOOL)on;
+- (void)setHasIsDrivingModeOnCount2w:(BOOL)count2w;
+- (void)setHasIsDrivingModeOnSameSlot:(BOOL)slot;
+- (void)setHasIsSleepModeOn:(BOOL)on;
+- (void)setHasIsSleepModeOnCount2w:(BOOL)count2w;
+- (void)setHasIsSleepModeOnSameSlot:(BOOL)slot;
+- (void)setHasLastOpenedAppHour24h:(BOOL)hour24h;
+- (void)setHasMinsSinceLastCameraAppLaunch1w:(BOOL)launch1w;
+- (void)setHasMinsSinceLastFilesAppLaunch1w:(BOOL)launch1w;
+- (void)setHasMinsSinceLastPhotosAppLaunch1w:(BOOL)launch1w;
+- (void)setHasMinsUntilICloudBuy:(BOOL)buy;
+- (void)setHasMinsUntilICloudNotificationOpened:(BOOL)opened;
+- (void)setHasMinsUntilICloudOpenedSubStream:(BOOL)stream;
+- (void)setHasMlServerScore:(BOOL)score;
+- (void)setHasNumNotificationsSameSlot:(BOOL)slot;
+- (void)setHasNumOpenedNotificationsSameSlot:(BOOL)slot;
+- (void)setHasOBSOLETETrafficType:(BOOL)type;
+- (void)setHasOffsetMins:(BOOL)mins;
+- (void)setHasOpenLabelSubStream:(BOOL)stream;
+- (void)setHasOpenedICloudNotificationRatio1w:(BOOL)ratio1w;
+- (void)setHasOpenedICloudNotificationRatio2w:(BOOL)ratio2w;
+- (void)setHasOpenedNotificationCount2wMax:(BOOL)max;
+- (void)setHasOpenedNotificationCount2wMedian:(BOOL)median;
+- (void)setHasOpenedNotificationRatio1w:(BOOL)ratio1w;
+- (void)setHasOpenedNotificationRatio24h:(BOOL)ratio24h;
+- (void)setHasOsVersionMajorVersion:(BOOL)version;
+- (void)setHasOsVersionMinorVersion:(BOOL)version;
+- (void)setHasOsVersionPatchVersion:(BOOL)version;
+- (void)setHasPhotosAppLaunchCount1w:(BOOL)count1w;
+- (void)setHasPhotosLaunchCount2wMax:(BOOL)max;
+- (void)setHasPhotosLaunchCount2wMedian:(BOOL)median;
+- (void)setHasPhotosLaunchCountSameSlot:(BOOL)slot;
+- (void)setHasTimestampMillis:(BOOL)millis;
+- (void)setHasTotalNotificationCount1w:(BOOL)count1w;
+- (void)setHasTotalNotificationCount2wMax:(BOOL)max;
+- (void)setHasTotalNotificationCount2wMedian:(BOOL)median;
+- (void)setHasTotalOpenedNotificationCount1w:(BOOL)count1w;
+- (void)setHasTrafficType:(BOOL)type;
+- (void)setHasUsedDiskCapacityBytes:(BOOL)bytes;
+- (void)setHasUserTier:(BOOL)tier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ISOPBSubscriptiondPetMessage
 
-- (void)setHasTimestampMillis:(BOOL)a3
+- (void)setHasTimestampMillis:(BOOL)millis
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!millis)
   {
     v3 = 0;
   }
@@ -92,10 +92,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasHourOfDay:(BOOL)a3
+- (void)setHasHourOfDay:(BOOL)day
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!day)
   {
     v3 = 0;
   }
@@ -103,10 +103,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLastOpenedAppHour24h:(BOOL)a3
+- (void)setHasLastOpenedAppHour24h:(BOOL)hour24h
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!hour24h)
   {
     v3 = 0;
   }
@@ -114,10 +114,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasIsSleepModeOn:(BOOL)a3
+- (void)setHasIsSleepModeOn:(BOOL)on
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!on)
   {
     v3 = 0;
   }
@@ -125,10 +125,10 @@
   self->_has = (*&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDoNotDisturbOn:(BOOL)a3
+- (void)setHasIsDoNotDisturbOn:(BOOL)on
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!on)
   {
     v3 = 0;
   }
@@ -136,10 +136,10 @@
   self->_has = (*&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDrivingModeOn:(BOOL)a3
+- (void)setHasIsDrivingModeOn:(BOOL)on
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!on)
   {
     v3 = 0;
   }
@@ -147,10 +147,10 @@
   self->_has = (*&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedNotificationRatio24h:(BOOL)a3
+- (void)setHasOpenedNotificationRatio24h:(BOOL)ratio24h
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!ratio24h)
   {
     v3 = 0;
   }
@@ -158,10 +158,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasGoogleDriveAppLaunchCount1w:(BOOL)a3
+- (void)setHasGoogleDriveAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 4096;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -169,10 +169,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasGooglePhotoAppLaunchCount1w:(BOOL)a3
+- (void)setHasGooglePhotoAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -180,10 +180,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasDropboxAppLaunchCount1w:(BOOL)a3
+- (void)setHasDropboxAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 512;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -191,10 +191,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasCameraAppLaunchCount1w:(BOOL)a3
+- (void)setHasCameraAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 16;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -202,10 +202,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasPhotosAppLaunchCount1w:(BOOL)a3
+- (void)setHasPhotosAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -213,10 +213,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFilesAppLaunchCount1w:(BOOL)a3
+- (void)setHasFilesAppLaunchCount1w:(BOOL)count1w
 {
   v3 = 1024;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -224,10 +224,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasTotalNotificationCount1w:(BOOL)a3
+- (void)setHasTotalNotificationCount1w:(BOOL)count1w
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -235,10 +235,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalOpenedNotificationCount1w:(BOOL)a3
+- (void)setHasTotalOpenedNotificationCount1w:(BOOL)count1w
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!count1w)
   {
     v3 = 0;
   }
@@ -246,10 +246,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedNotificationRatio1w:(BOOL)a3
+- (void)setHasOpenedNotificationRatio1w:(BOOL)ratio1w
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!ratio1w)
   {
     v3 = 0;
   }
@@ -257,10 +257,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedICloudNotificationRatio1w:(BOOL)a3
+- (void)setHasOpenedICloudNotificationRatio1w:(BOOL)ratio1w
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!ratio1w)
   {
     v3 = 0;
   }
@@ -268,10 +268,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasMlServerScore:(BOOL)a3
+- (void)setHasMlServerScore:(BOOL)score
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -279,10 +279,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasDiskStorageCapacityBytes:(BOOL)a3
+- (void)setHasDiskStorageCapacityBytes:(BOOL)bytes
 {
   v3 = 256;
-  if (!a3)
+  if (!bytes)
   {
     v3 = 0;
   }
@@ -290,10 +290,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasUsedDiskCapacityBytes:(BOOL)a3
+- (void)setHasUsedDiskCapacityBytes:(BOOL)bytes
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!bytes)
   {
     v3 = 0;
   }
@@ -301,10 +301,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedICloudNotificationRatio2w:(BOOL)a3
+- (void)setHasOpenedICloudNotificationRatio2w:(BOOL)ratio2w
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!ratio2w)
   {
     v3 = 0;
   }
@@ -325,10 +325,10 @@
   }
 }
 
-- (void)setHasTrafficType:(BOOL)a3
+- (void)setHasTrafficType:(BOOL)type
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -336,20 +336,20 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsTrafficType:(id)a3
+- (int)StringAsTrafficType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"REAL"])
+  else if ([typeCopy isEqualToString:@"REAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYNTHESIZED"])
+  else if ([typeCopy isEqualToString:@"SYNTHESIZED"])
   {
     v4 = 2;
   }
@@ -362,10 +362,10 @@
   return v4;
 }
 
-- (void)setHasDailyScreenTimeSeconds:(BOOL)a3
+- (void)setHasDailyScreenTimeSeconds:(BOOL)seconds
 {
   v3 = 128;
-  if (!a3)
+  if (!seconds)
   {
     v3 = 0;
   }
@@ -373,10 +373,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasAvgWeeklyScreenTimeSeconds2w:(BOOL)a3
+- (void)setHasAvgWeeklyScreenTimeSeconds2w:(BOOL)seconds2w
 {
   v3 = 8;
-  if (!a3)
+  if (!seconds2w)
   {
     v3 = 0;
   }
@@ -384,10 +384,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasDaemonVersion:(BOOL)a3
+- (void)setHasDaemonVersion:(BOOL)version
 {
   v3 = 64;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -408,10 +408,10 @@
   }
 }
 
-- (void)setHasDayOfWeek:(BOOL)a3
+- (void)setHasDayOfWeek:(BOOL)week
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!week)
   {
     v3 = 0;
   }
@@ -419,45 +419,45 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsDayOfWeek:(id)a3
+- (int)StringAsDayOfWeek:(id)week
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNAVAILABLE"])
+  weekCopy = week;
+  if ([weekCopy isEqualToString:@"UNAVAILABLE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SUNDAY"])
+  else if ([weekCopy isEqualToString:@"SUNDAY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MONDAY"])
+  else if ([weekCopy isEqualToString:@"MONDAY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TUESDAY"])
+  else if ([weekCopy isEqualToString:@"TUESDAY"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WEDNESDAY"])
+  else if ([weekCopy isEqualToString:@"WEDNESDAY"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"THURSDAY"])
+  else if ([weekCopy isEqualToString:@"THURSDAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FRIDAY"])
+  else if ([weekCopy isEqualToString:@"FRIDAY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SATURDAY"])
+  else if ([weekCopy isEqualToString:@"SATURDAY"])
   {
     v4 = 7;
   }
@@ -470,10 +470,10 @@
   return v4;
 }
 
-- (void)setHasOsVersionMajorVersion:(BOOL)a3
+- (void)setHasOsVersionMajorVersion:(BOOL)version
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -481,10 +481,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasOsVersionMinorVersion:(BOOL)a3
+- (void)setHasOsVersionMinorVersion:(BOOL)version
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -492,10 +492,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasOsVersionPatchVersion:(BOOL)a3
+- (void)setHasOsVersionPatchVersion:(BOOL)version
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }
@@ -503,10 +503,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOffsetMins:(BOOL)a3
+- (void)setHasOffsetMins:(BOOL)mins
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!mins)
   {
     v3 = 0;
   }
@@ -527,10 +527,10 @@
   }
 }
 
-- (void)setHasIcloudNotificationActionLabel:(BOOL)a3
+- (void)setHasIcloudNotificationActionLabel:(BOOL)label
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!label)
   {
     v3 = 0;
   }
@@ -538,20 +538,20 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsIcloudNotificationActionLabel:(id)a3
+- (int)StringAsIcloudNotificationActionLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LABEL_UNKNOWN"])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:@"LABEL_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CLICK"])
+  else if ([labelCopy isEqualToString:@"CLICK"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CLEAR"])
+  else if ([labelCopy isEqualToString:@"CLEAR"])
   {
     v4 = 2;
   }
@@ -564,10 +564,10 @@
   return v4;
 }
 
-- (void)setHasMinsUntilICloudNotificationOpened:(BOOL)a3
+- (void)setHasMinsUntilICloudNotificationOpened:(BOOL)opened
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!opened)
   {
     v3 = 0;
   }
@@ -575,10 +575,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasAppLaunchCountSameSlot:(BOOL)a3
+- (void)setHasAppLaunchCountSameSlot:(BOOL)slot
 {
   v3 = 4;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -586,10 +586,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasCameraLaunchCountSameSlot:(BOOL)a3
+- (void)setHasCameraLaunchCountSameSlot:(BOOL)slot
 {
   v3 = 32;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -597,10 +597,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasPhotosLaunchCountSameSlot:(BOOL)a3
+- (void)setHasPhotosLaunchCountSameSlot:(BOOL)slot
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -608,10 +608,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasFilesLaunchCountSameSlot:(BOOL)a3
+- (void)setHasFilesLaunchCountSameSlot:(BOOL)slot
 {
   v3 = 2048;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -619,10 +619,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasIsSleepModeOnSameSlot:(BOOL)a3
+- (void)setHasIsSleepModeOnSameSlot:(BOOL)slot
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -630,10 +630,10 @@
   self->_has = (*&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDoNotDisturbOnSameSlot:(BOOL)a3
+- (void)setHasIsDoNotDisturbOnSameSlot:(BOOL)slot
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -641,10 +641,10 @@
   self->_has = (*&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsDrivingModeOnSameSlot:(BOOL)a3
+- (void)setHasIsDrivingModeOnSameSlot:(BOOL)slot
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -652,10 +652,10 @@
   self->_has = (*&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasNumNotificationsSameSlot:(BOOL)a3
+- (void)setHasNumNotificationsSameSlot:(BOOL)slot
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -663,10 +663,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasNumOpenedNotificationsSameSlot:(BOOL)a3
+- (void)setHasNumOpenedNotificationsSameSlot:(BOOL)slot
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!slot)
   {
     v3 = 0;
   }
@@ -674,10 +674,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasMinsSinceLastCameraAppLaunch1w:(BOOL)a3
+- (void)setHasMinsSinceLastCameraAppLaunch1w:(BOOL)launch1w
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!launch1w)
   {
     v3 = 0;
   }
@@ -685,10 +685,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasMinsSinceLastPhotosAppLaunch1w:(BOOL)a3
+- (void)setHasMinsSinceLastPhotosAppLaunch1w:(BOOL)launch1w
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!launch1w)
   {
     v3 = 0;
   }
@@ -696,10 +696,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasMinsSinceLastFilesAppLaunch1w:(BOOL)a3
+- (void)setHasMinsSinceLastFilesAppLaunch1w:(BOOL)launch1w
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!launch1w)
   {
     v3 = 0;
   }
@@ -707,10 +707,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasIsSleepModeOnCount2w:(BOOL)a3
+- (void)setHasIsSleepModeOnCount2w:(BOOL)count2w
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!count2w)
   {
     v3 = 0;
   }
@@ -718,10 +718,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasIsDoNotDisturbOnCount2w:(BOOL)a3
+- (void)setHasIsDoNotDisturbOnCount2w:(BOOL)count2w
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!count2w)
   {
     v3 = 0;
   }
@@ -729,10 +729,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasIsDrivingModeOnCount2w:(BOOL)a3
+- (void)setHasIsDrivingModeOnCount2w:(BOOL)count2w
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!count2w)
   {
     v3 = 0;
   }
@@ -740,10 +740,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasAppLaunchCount2wMedian:(BOOL)a3
+- (void)setHasAppLaunchCount2wMedian:(BOOL)median
 {
   v3 = 2;
-  if (!a3)
+  if (!median)
   {
     v3 = 0;
   }
@@ -751,10 +751,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasPhotosLaunchCount2wMedian:(BOOL)a3
+- (void)setHasPhotosLaunchCount2wMedian:(BOOL)median
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!median)
   {
     v3 = 0;
   }
@@ -762,10 +762,10 @@
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasPhotosLaunchCount2wMax:(BOOL)a3
+- (void)setHasPhotosLaunchCount2wMax:(BOOL)max
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!max)
   {
     v3 = 0;
   }
@@ -773,10 +773,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalNotificationCount2wMedian:(BOOL)a3
+- (void)setHasTotalNotificationCount2wMedian:(BOOL)median
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!median)
   {
     v3 = 0;
   }
@@ -784,10 +784,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTotalNotificationCount2wMax:(BOOL)a3
+- (void)setHasTotalNotificationCount2wMax:(BOOL)max
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!max)
   {
     v3 = 0;
   }
@@ -795,10 +795,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedNotificationCount2wMedian:(BOOL)a3
+- (void)setHasOpenedNotificationCount2wMedian:(BOOL)median
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!median)
   {
     v3 = 0;
   }
@@ -806,10 +806,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasOpenedNotificationCount2wMax:(BOOL)a3
+- (void)setHasOpenedNotificationCount2wMax:(BOOL)max
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!max)
   {
     v3 = 0;
   }
@@ -817,10 +817,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasBuyLabel:(BOOL)a3
+- (void)setHasBuyLabel:(BOOL)label
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!label)
   {
     v3 = 0;
   }
@@ -828,10 +828,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasMinsUntilICloudBuy:(BOOL)a3
+- (void)setHasMinsUntilICloudBuy:(BOOL)buy
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!buy)
   {
     v3 = 0;
   }
@@ -839,10 +839,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasOpenLabelSubStream:(BOOL)a3
+- (void)setHasOpenLabelSubStream:(BOOL)stream
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -850,10 +850,10 @@
   self->_has = (*&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasMinsUntilICloudOpenedSubStream:(BOOL)a3
+- (void)setHasMinsUntilICloudOpenedSubStream:(BOOL)stream
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!stream)
   {
     v3 = 0;
   }
@@ -874,10 +874,10 @@
   }
 }
 
-- (void)setHasUserTier:(BOOL)a3
+- (void)setHasUserTier:(BOOL)tier
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!tier)
   {
     v3 = 0;
   }
@@ -885,20 +885,20 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsUserTier:(id)a3
+- (int)StringAsUserTier:(id)tier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"USERTIER_UNKNOWN"])
+  tierCopy = tier;
+  if ([tierCopy isEqualToString:@"USERTIER_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FREE"])
+  else if ([tierCopy isEqualToString:@"FREE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PAID"])
+  else if ([tierCopy isEqualToString:@"PAID"])
   {
     v4 = 2;
   }
@@ -924,10 +924,10 @@
   }
 }
 
-- (void)setHasOBSOLETETrafficType:(BOOL)a3
+- (void)setHasOBSOLETETrafficType:(BOOL)type
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -935,20 +935,20 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsOBSOLETETrafficType:(id)a3
+- (int)StringAsOBSOLETETrafficType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"REAL"])
+  else if ([typeCopy isEqualToString:@"REAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYNTHESIZED"])
+  else if ([typeCopy isEqualToString:@"SYNTHESIZED"])
   {
     v4 = 2;
   }
@@ -967,20 +967,20 @@
   v8.receiver = self;
   v8.super_class = ISOPBSubscriptiondPetMessage;
   v4 = [(ISOPBSubscriptiondPetMessage *)&v8 description];
-  v5 = [(ISOPBSubscriptiondPetMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ISOPBSubscriptiondPetMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x20000000000) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_timestampMillis];
-    [v3 setObject:v5 forKey:@"timestampMillis"];
+    [dictionary setObject:v5 forKey:@"timestampMillis"];
 
     has = self->_has;
   }
@@ -988,20 +988,20 @@
   if ((*&has & 0x1000000000000) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_hourOfDay];
-    [v3 setObject:v6 forKey:@"hourOfDay"];
+    [dictionary setObject:v6 forKey:@"hourOfDay"];
   }
 
   lastOpenedAppId24h = self->_lastOpenedAppId24h;
   if (lastOpenedAppId24h)
   {
-    [v3 setObject:lastOpenedAppId24h forKey:@"lastOpenedAppId24h"];
+    [dictionary setObject:lastOpenedAppId24h forKey:@"lastOpenedAppId24h"];
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x20000) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_lastOpenedAppHour24h];
-    [v3 setObject:v24 forKey:@"lastOpenedAppHour24h"];
+    [dictionary setObject:v24 forKey:@"lastOpenedAppHour24h"];
 
     v8 = self->_has;
     if ((*&v8 & 0x400000000000000) == 0)
@@ -1022,7 +1022,7 @@ LABEL_9:
   }
 
   v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSleepModeOn];
-  [v3 setObject:v25 forKey:@"isSleepModeOn"];
+  [dictionary setObject:v25 forKey:@"isSleepModeOn"];
 
   v8 = self->_has;
   if ((*&v8 & 0x40000000000000) == 0)
@@ -1038,7 +1038,7 @@ LABEL_10:
 
 LABEL_90:
   v26 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDoNotDisturbOn];
-  [v3 setObject:v26 forKey:@"isDoNotDisturbOn"];
+  [dictionary setObject:v26 forKey:@"isDoNotDisturbOn"];
 
   v8 = self->_has;
   if ((*&v8 & 0x100000000000000) == 0)
@@ -1054,7 +1054,7 @@ LABEL_11:
 
 LABEL_91:
   v27 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDrivingModeOn];
-  [v3 setObject:v27 forKey:@"isDrivingModeOn"];
+  [dictionary setObject:v27 forKey:@"isDrivingModeOn"];
 
   v8 = self->_has;
   if ((*&v8 & 0x200000000) == 0)
@@ -1070,7 +1070,7 @@ LABEL_12:
 
 LABEL_92:
   v28 = [MEMORY[0x277CCABB0] numberWithDouble:self->_openedNotificationRatio24h];
-  [v3 setObject:v28 forKey:@"openedNotificationRatio24h"];
+  [dictionary setObject:v28 forKey:@"openedNotificationRatio24h"];
 
   v8 = self->_has;
   if ((*&v8 & 0x1000) == 0)
@@ -1086,7 +1086,7 @@ LABEL_13:
 
 LABEL_93:
   v29 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_googleDriveAppLaunchCount1w];
-  [v3 setObject:v29 forKey:@"googleDriveAppLaunchCount1w"];
+  [dictionary setObject:v29 forKey:@"googleDriveAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x2000) == 0)
@@ -1102,7 +1102,7 @@ LABEL_14:
 
 LABEL_94:
   v30 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_googlePhotoAppLaunchCount1w];
-  [v3 setObject:v30 forKey:@"googlePhotoAppLaunchCount1w"];
+  [dictionary setObject:v30 forKey:@"googlePhotoAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x200) == 0)
@@ -1118,7 +1118,7 @@ LABEL_15:
 
 LABEL_95:
   v31 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dropboxAppLaunchCount1w];
-  [v3 setObject:v31 forKey:@"dropboxAppLaunchCount1w"];
+  [dictionary setObject:v31 forKey:@"dropboxAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x10) == 0)
@@ -1134,7 +1134,7 @@ LABEL_16:
 
 LABEL_96:
   v32 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cameraAppLaunchCount1w];
-  [v3 setObject:v32 forKey:@"cameraAppLaunchCount1w"];
+  [dictionary setObject:v32 forKey:@"cameraAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x2000000000) == 0)
@@ -1150,7 +1150,7 @@ LABEL_17:
 
 LABEL_97:
   v33 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_photosAppLaunchCount1w];
-  [v3 setObject:v33 forKey:@"photosAppLaunchCount1w"];
+  [dictionary setObject:v33 forKey:@"photosAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x400) == 0)
@@ -1166,7 +1166,7 @@ LABEL_18:
 
 LABEL_98:
   v34 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_filesAppLaunchCount1w];
-  [v3 setObject:v34 forKey:@"filesAppLaunchCount1w"];
+  [dictionary setObject:v34 forKey:@"filesAppLaunchCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x40000000000) == 0)
@@ -1182,7 +1182,7 @@ LABEL_19:
 
 LABEL_99:
   v35 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_totalNotificationCount1w];
-  [v3 setObject:v35 forKey:@"totalNotificationCount1w"];
+  [dictionary setObject:v35 forKey:@"totalNotificationCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x200000000000) == 0)
@@ -1198,7 +1198,7 @@ LABEL_20:
 
 LABEL_100:
   v36 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_totalOpenedNotificationCount1w];
-  [v3 setObject:v36 forKey:@"totalOpenedNotificationCount1w"];
+  [dictionary setObject:v36 forKey:@"totalOpenedNotificationCount1w"];
 
   v8 = self->_has;
   if ((*&v8 & 0x100000000) == 0)
@@ -1214,70 +1214,70 @@ LABEL_21:
 
 LABEL_101:
   v37 = [MEMORY[0x277CCABB0] numberWithDouble:self->_openedNotificationRatio1w];
-  [v3 setObject:v37 forKey:@"openedNotificationRatio1w"];
+  [dictionary setObject:v37 forKey:@"openedNotificationRatio1w"];
 
   if ((*&self->_has & 0x10000000) != 0)
   {
 LABEL_22:
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_openedICloudNotificationRatio1w];
-    [v3 setObject:v9 forKey:@"openedICloudNotificationRatio1w"];
+    [dictionary setObject:v9 forKey:@"openedICloudNotificationRatio1w"];
   }
 
 LABEL_23:
   notificationUsageTypeTop1 = self->_notificationUsageTypeTop1;
   if (notificationUsageTypeTop1)
   {
-    [v3 setObject:notificationUsageTypeTop1 forKey:@"notificationUsageTypeTop1"];
+    [dictionary setObject:notificationUsageTypeTop1 forKey:@"notificationUsageTypeTop1"];
   }
 
   notificationUsageTypeTop2 = self->_notificationUsageTypeTop2;
   if (notificationUsageTypeTop2)
   {
-    [v3 setObject:notificationUsageTypeTop2 forKey:@"notificationUsageTypeTop2"];
+    [dictionary setObject:notificationUsageTypeTop2 forKey:@"notificationUsageTypeTop2"];
   }
 
   notificationUsageTypeTop3 = self->_notificationUsageTypeTop3;
   if (notificationUsageTypeTop3)
   {
-    [v3 setObject:notificationUsageTypeTop3 forKey:@"notificationUsageTypeTop3"];
+    [dictionary setObject:notificationUsageTypeTop3 forKey:@"notificationUsageTypeTop3"];
   }
 
   iCloudNotificationUsageTypeTop1 = self->_iCloudNotificationUsageTypeTop1;
   if (iCloudNotificationUsageTypeTop1)
   {
-    [v3 setObject:iCloudNotificationUsageTypeTop1 forKey:@"iCloudNotificationUsageTypeTop1"];
+    [dictionary setObject:iCloudNotificationUsageTypeTop1 forKey:@"iCloudNotificationUsageTypeTop1"];
   }
 
   iCloudNotificationUsageTypeTop2 = self->_iCloudNotificationUsageTypeTop2;
   if (iCloudNotificationUsageTypeTop2)
   {
-    [v3 setObject:iCloudNotificationUsageTypeTop2 forKey:@"iCloudNotificationUsageTypeTop2"];
+    [dictionary setObject:iCloudNotificationUsageTypeTop2 forKey:@"iCloudNotificationUsageTypeTop2"];
   }
 
   iCloudNotificationUsageTypeTop3 = self->_iCloudNotificationUsageTypeTop3;
   if (iCloudNotificationUsageTypeTop3)
   {
-    [v3 setObject:iCloudNotificationUsageTypeTop3 forKey:@"iCloudNotificationUsageTypeTop3"];
+    [dictionary setObject:iCloudNotificationUsageTypeTop3 forKey:@"iCloudNotificationUsageTypeTop3"];
   }
 
   if (*(&self->_has + 3))
   {
     v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mlServerScore];
-    [v3 setObject:v16 forKey:@"mlServerScore"];
+    [dictionary setObject:v16 forKey:@"mlServerScore"];
   }
 
   labelMessage = self->_labelMessage;
   if (labelMessage)
   {
-    v18 = [(ISOPBSubscriptionLabelMessage *)labelMessage dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"labelMessage"];
+    dictionaryRepresentation = [(ISOPBSubscriptionLabelMessage *)labelMessage dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"labelMessage"];
   }
 
   v19 = self->_has;
   if ((*&v19 & 0x100) != 0)
   {
     v38 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_diskStorageCapacityBytes];
-    [v3 setObject:v38 forKey:@"diskStorageCapacityBytes"];
+    [dictionary setObject:v38 forKey:@"diskStorageCapacityBytes"];
 
     v19 = self->_has;
     if ((*&v19 & 0x400000000000) == 0)
@@ -1298,7 +1298,7 @@ LABEL_41:
   }
 
   v39 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_usedDiskCapacityBytes];
-  [v3 setObject:v39 forKey:@"usedDiskCapacityBytes"];
+  [dictionary setObject:v39 forKey:@"usedDiskCapacityBytes"];
 
   v19 = self->_has;
   if ((*&v19 & 0x20000000) == 0)
@@ -1314,7 +1314,7 @@ LABEL_42:
 
 LABEL_105:
   v40 = [MEMORY[0x277CCABB0] numberWithDouble:self->_openedICloudNotificationRatio2w];
-  [v3 setObject:v40 forKey:@"openedICloudNotificationRatio2w"];
+  [dictionary setObject:v40 forKey:@"openedICloudNotificationRatio2w"];
 
   v19 = self->_has;
   if ((*&v19 & 0x8000000000000) == 0)
@@ -1340,7 +1340,7 @@ LABEL_106:
     v42 = off_27A66B1C8[trafficType];
   }
 
-  [v3 setObject:v42 forKey:@"trafficType"];
+  [dictionary setObject:v42 forKey:@"trafficType"];
 
   v19 = self->_has;
   if ((*&v19 & 0x80) == 0)
@@ -1356,7 +1356,7 @@ LABEL_44:
 
 LABEL_112:
   v45 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dailyScreenTimeSeconds];
-  [v3 setObject:v45 forKey:@"dailyScreenTimeSeconds"];
+  [dictionary setObject:v45 forKey:@"dailyScreenTimeSeconds"];
 
   v19 = self->_has;
   if ((*&v19 & 8) == 0)
@@ -1372,26 +1372,26 @@ LABEL_45:
 
 LABEL_113:
   v46 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_avgWeeklyScreenTimeSeconds2w];
-  [v3 setObject:v46 forKey:@"avgWeeklyScreenTimeSeconds2w"];
+  [dictionary setObject:v46 forKey:@"avgWeeklyScreenTimeSeconds2w"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_46:
     v20 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_daemonVersion];
-    [v3 setObject:v20 forKey:@"daemonVersion"];
+    [dictionary setObject:v20 forKey:@"daemonVersion"];
   }
 
 LABEL_47:
   oBSOLETEDayOfWeek = self->_oBSOLETEDayOfWeek;
   if (oBSOLETEDayOfWeek)
   {
-    [v3 setObject:oBSOLETEDayOfWeek forKey:@"OBSOLETE_dayOfWeek"];
+    [dictionary setObject:oBSOLETEDayOfWeek forKey:@"OBSOLETE_dayOfWeek"];
   }
 
   deviceModelName = self->_deviceModelName;
   if (deviceModelName)
   {
-    [v3 setObject:deviceModelName forKey:@"deviceModelName"];
+    [dictionary setObject:deviceModelName forKey:@"deviceModelName"];
   }
 
   v23 = self->_has;
@@ -1408,7 +1408,7 @@ LABEL_47:
       v44 = off_27A66B158[dayOfWeek];
     }
 
-    [v3 setObject:v44 forKey:@"dayOfWeek"];
+    [dictionary setObject:v44 forKey:@"dayOfWeek"];
 
     v23 = self->_has;
     if ((*&v23 & 0x400000000) == 0)
@@ -1429,7 +1429,7 @@ LABEL_53:
   }
 
   v47 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_osVersionMajorVersion];
-  [v3 setObject:v47 forKey:@"osVersionMajorVersion"];
+  [dictionary setObject:v47 forKey:@"osVersionMajorVersion"];
 
   v23 = self->_has;
   if ((*&v23 & 0x800000000) == 0)
@@ -1445,7 +1445,7 @@ LABEL_54:
 
 LABEL_118:
   v48 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_osVersionMinorVersion];
-  [v3 setObject:v48 forKey:@"osVersionMinorVersion"];
+  [dictionary setObject:v48 forKey:@"osVersionMinorVersion"];
 
   v23 = self->_has;
   if ((*&v23 & 0x1000000000) == 0)
@@ -1461,7 +1461,7 @@ LABEL_55:
 
 LABEL_119:
   v49 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_osVersionPatchVersion];
-  [v3 setObject:v49 forKey:@"osVersionPatchVersion"];
+  [dictionary setObject:v49 forKey:@"osVersionPatchVersion"];
 
   v23 = self->_has;
   if ((*&v23 & 0x8000000) == 0)
@@ -1477,7 +1477,7 @@ LABEL_56:
 
 LABEL_120:
   v50 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_offsetMins];
-  [v3 setObject:v50 forKey:@"offsetMins"];
+  [dictionary setObject:v50 forKey:@"offsetMins"];
 
   v23 = self->_has;
   if ((*&v23 & 0x2000000000000) == 0)
@@ -1503,7 +1503,7 @@ LABEL_121:
     v52 = off_27A66B198[icloudNotificationActionLabel];
   }
 
-  [v3 setObject:v52 forKey:@"icloudNotificationActionLabel"];
+  [dictionary setObject:v52 forKey:@"icloudNotificationActionLabel"];
 
   v23 = self->_has;
   if ((*&v23 & 0x400000) == 0)
@@ -1519,7 +1519,7 @@ LABEL_58:
 
 LABEL_125:
   v53 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsUntilICloudNotificationOpened];
-  [v3 setObject:v53 forKey:@"minsUntilICloudNotificationOpened"];
+  [dictionary setObject:v53 forKey:@"minsUntilICloudNotificationOpened"];
 
   v23 = self->_has;
   if ((*&v23 & 4) == 0)
@@ -1535,7 +1535,7 @@ LABEL_59:
 
 LABEL_126:
   v54 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_appLaunchCountSameSlot];
-  [v3 setObject:v54 forKey:@"appLaunchCountSameSlot"];
+  [dictionary setObject:v54 forKey:@"appLaunchCountSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x20) == 0)
@@ -1551,7 +1551,7 @@ LABEL_60:
 
 LABEL_127:
   v55 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cameraLaunchCountSameSlot];
-  [v3 setObject:v55 forKey:@"cameraLaunchCountSameSlot"];
+  [dictionary setObject:v55 forKey:@"cameraLaunchCountSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x10000000000) == 0)
@@ -1567,7 +1567,7 @@ LABEL_61:
 
 LABEL_128:
   v56 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_photosLaunchCountSameSlot];
-  [v3 setObject:v56 forKey:@"photosLaunchCountSameSlot"];
+  [dictionary setObject:v56 forKey:@"photosLaunchCountSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x800) == 0)
@@ -1583,7 +1583,7 @@ LABEL_62:
 
 LABEL_129:
   v57 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_filesLaunchCountSameSlot];
-  [v3 setObject:v57 forKey:@"filesLaunchCountSameSlot"];
+  [dictionary setObject:v57 forKey:@"filesLaunchCountSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x800000000000000) == 0)
@@ -1599,7 +1599,7 @@ LABEL_63:
 
 LABEL_130:
   v58 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSleepModeOnSameSlot];
-  [v3 setObject:v58 forKey:@"isSleepModeOnSameSlot"];
+  [dictionary setObject:v58 forKey:@"isSleepModeOnSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x80000000000000) == 0)
@@ -1615,7 +1615,7 @@ LABEL_64:
 
 LABEL_131:
   v59 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDoNotDisturbOnSameSlot];
-  [v3 setObject:v59 forKey:@"isDoNotDisturbOnSameSlot"];
+  [dictionary setObject:v59 forKey:@"isDoNotDisturbOnSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x200000000000000) == 0)
@@ -1631,7 +1631,7 @@ LABEL_65:
 
 LABEL_132:
   v60 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDrivingModeOnSameSlot];
-  [v3 setObject:v60 forKey:@"isDrivingModeOnSameSlot"];
+  [dictionary setObject:v60 forKey:@"isDrivingModeOnSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x2000000) == 0)
@@ -1647,7 +1647,7 @@ LABEL_66:
 
 LABEL_133:
   v61 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numNotificationsSameSlot];
-  [v3 setObject:v61 forKey:@"numNotificationsSameSlot"];
+  [dictionary setObject:v61 forKey:@"numNotificationsSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x4000000) == 0)
@@ -1663,7 +1663,7 @@ LABEL_67:
 
 LABEL_134:
   v62 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numOpenedNotificationsSameSlot];
-  [v3 setObject:v62 forKey:@"numOpenedNotificationsSameSlot"];
+  [dictionary setObject:v62 forKey:@"numOpenedNotificationsSameSlot"];
 
   v23 = self->_has;
   if ((*&v23 & 0x40000) == 0)
@@ -1679,7 +1679,7 @@ LABEL_68:
 
 LABEL_135:
   v63 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsSinceLastCameraAppLaunch1w];
-  [v3 setObject:v63 forKey:@"minsSinceLastCameraAppLaunch1w"];
+  [dictionary setObject:v63 forKey:@"minsSinceLastCameraAppLaunch1w"];
 
   v23 = self->_has;
   if ((*&v23 & 0x100000) == 0)
@@ -1695,7 +1695,7 @@ LABEL_69:
 
 LABEL_136:
   v64 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsSinceLastPhotosAppLaunch1w];
-  [v3 setObject:v64 forKey:@"minsSinceLastPhotosAppLaunch1w"];
+  [dictionary setObject:v64 forKey:@"minsSinceLastPhotosAppLaunch1w"];
 
   v23 = self->_has;
   if ((*&v23 & 0x80000) == 0)
@@ -1711,7 +1711,7 @@ LABEL_70:
 
 LABEL_137:
   v65 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsSinceLastFilesAppLaunch1w];
-  [v3 setObject:v65 forKey:@"minsSinceLastFilesAppLaunch1w"];
+  [dictionary setObject:v65 forKey:@"minsSinceLastFilesAppLaunch1w"];
 
   v23 = self->_has;
   if ((*&v23 & 0x10000) == 0)
@@ -1727,7 +1727,7 @@ LABEL_71:
 
 LABEL_138:
   v66 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_isSleepModeOnCount2w];
-  [v3 setObject:v66 forKey:@"isSleepModeOnCount2w"];
+  [dictionary setObject:v66 forKey:@"isSleepModeOnCount2w"];
 
   v23 = self->_has;
   if ((*&v23 & 0x4000) == 0)
@@ -1743,7 +1743,7 @@ LABEL_72:
 
 LABEL_139:
   v67 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_isDoNotDisturbOnCount2w];
-  [v3 setObject:v67 forKey:@"isDoNotDisturbOnCount2w"];
+  [dictionary setObject:v67 forKey:@"isDoNotDisturbOnCount2w"];
 
   v23 = self->_has;
   if ((*&v23 & 0x8000) == 0)
@@ -1759,7 +1759,7 @@ LABEL_73:
 
 LABEL_140:
   v68 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_isDrivingModeOnCount2w];
-  [v3 setObject:v68 forKey:@"isDrivingModeOnCount2w"];
+  [dictionary setObject:v68 forKey:@"isDrivingModeOnCount2w"];
 
   v23 = self->_has;
   if ((*&v23 & 2) == 0)
@@ -1775,7 +1775,7 @@ LABEL_74:
 
 LABEL_141:
   v69 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_appLaunchCount2wMedian];
-  [v3 setObject:v69 forKey:@"appLaunchCount2wMedian"];
+  [dictionary setObject:v69 forKey:@"appLaunchCount2wMedian"];
 
   v23 = self->_has;
   if ((*&v23 & 1) == 0)
@@ -1791,7 +1791,7 @@ LABEL_75:
 
 LABEL_142:
   v70 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_appLaunchCount2wMax];
-  [v3 setObject:v70 forKey:@"appLaunchCount2wMax"];
+  [dictionary setObject:v70 forKey:@"appLaunchCount2wMax"];
 
   v23 = self->_has;
   if ((*&v23 & 0x8000000000) == 0)
@@ -1807,7 +1807,7 @@ LABEL_76:
 
 LABEL_143:
   v71 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_photosLaunchCount2wMedian];
-  [v3 setObject:v71 forKey:@"photosLaunchCount2wMedian"];
+  [dictionary setObject:v71 forKey:@"photosLaunchCount2wMedian"];
 
   v23 = self->_has;
   if ((*&v23 & 0x4000000000) == 0)
@@ -1823,7 +1823,7 @@ LABEL_77:
 
 LABEL_144:
   v72 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_photosLaunchCount2wMax];
-  [v3 setObject:v72 forKey:@"photosLaunchCount2wMax"];
+  [dictionary setObject:v72 forKey:@"photosLaunchCount2wMax"];
 
   v23 = self->_has;
   if ((*&v23 & 0x100000000000) == 0)
@@ -1839,7 +1839,7 @@ LABEL_78:
 
 LABEL_145:
   v73 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_totalNotificationCount2wMedian];
-  [v3 setObject:v73 forKey:@"totalNotificationCount2wMedian"];
+  [dictionary setObject:v73 forKey:@"totalNotificationCount2wMedian"];
 
   v23 = self->_has;
   if ((*&v23 & 0x80000000000) == 0)
@@ -1855,7 +1855,7 @@ LABEL_79:
 
 LABEL_146:
   v74 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_totalNotificationCount2wMax];
-  [v3 setObject:v74 forKey:@"totalNotificationCount2wMax"];
+  [dictionary setObject:v74 forKey:@"totalNotificationCount2wMax"];
 
   v23 = self->_has;
   if ((*&v23 & 0x80000000) == 0)
@@ -1871,7 +1871,7 @@ LABEL_80:
 
 LABEL_147:
   v75 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_openedNotificationCount2wMedian];
-  [v3 setObject:v75 forKey:@"openedNotificationCount2wMedian"];
+  [dictionary setObject:v75 forKey:@"openedNotificationCount2wMedian"];
 
   v23 = self->_has;
   if ((*&v23 & 0x40000000) == 0)
@@ -1887,7 +1887,7 @@ LABEL_81:
 
 LABEL_148:
   v76 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_openedNotificationCount2wMax];
-  [v3 setObject:v76 forKey:@"openedNotificationCount2wMax"];
+  [dictionary setObject:v76 forKey:@"openedNotificationCount2wMax"];
 
   v23 = self->_has;
   if ((*&v23 & 0x20000000000000) == 0)
@@ -1903,7 +1903,7 @@ LABEL_82:
 
 LABEL_149:
   v77 = [MEMORY[0x277CCABB0] numberWithBool:self->_buyLabel];
-  [v3 setObject:v77 forKey:@"buyLabel"];
+  [dictionary setObject:v77 forKey:@"buyLabel"];
 
   v23 = self->_has;
   if ((*&v23 & 0x200000) == 0)
@@ -1919,7 +1919,7 @@ LABEL_83:
 
 LABEL_150:
   v78 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsUntilICloudBuy];
-  [v3 setObject:v78 forKey:@"minsUntilICloudBuy"];
+  [dictionary setObject:v78 forKey:@"minsUntilICloudBuy"];
 
   v23 = self->_has;
   if ((*&v23 & 0x1000000000000000) == 0)
@@ -1935,7 +1935,7 @@ LABEL_84:
 
 LABEL_151:
   v79 = [MEMORY[0x277CCABB0] numberWithBool:self->_openLabelSubStream];
-  [v3 setObject:v79 forKey:@"openLabelSubStream"];
+  [dictionary setObject:v79 forKey:@"openLabelSubStream"];
 
   v23 = self->_has;
   if ((*&v23 & 0x800000) == 0)
@@ -1951,7 +1951,7 @@ LABEL_85:
 
 LABEL_152:
   v80 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_minsUntilICloudOpenedSubStream];
-  [v3 setObject:v80 forKey:@"minsUntilICloudOpenedSubStream"];
+  [dictionary setObject:v80 forKey:@"minsUntilICloudOpenedSubStream"];
 
   v23 = self->_has;
   if ((*&v23 & 0x10000000000000) == 0)
@@ -1977,7 +1977,7 @@ LABEL_153:
     v82 = off_27A66B1B0[userTier];
   }
 
-  [v3 setObject:v82 forKey:@"userTier"];
+  [dictionary setObject:v82 forKey:@"userTier"];
 
   if ((*&self->_has & 0x4000000000000) != 0)
   {
@@ -1993,18 +1993,18 @@ LABEL_157:
       v84 = off_27A66B1C8[oBSOLETETrafficType];
     }
 
-    [v3 setObject:v84 forKey:@"OBSOLETE_trafficType"];
+    [dictionary setObject:v84 forKey:@"OBSOLETE_trafficType"];
   }
 
 LABEL_161:
-  v85 = v3;
+  v85 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v69 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x20000000000) != 0)
   {
@@ -2911,35 +2911,35 @@ LABEL_87:
 LABEL_88:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x20000000000) != 0)
   {
-    v4[42] = self->_timestampMillis;
-    *(v4 + 508) |= 0x20000000000uLL;
+    toCopy[42] = self->_timestampMillis;
+    *(toCopy + 508) |= 0x20000000000uLL;
     has = self->_has;
   }
 
   if ((*&has & 0x1000000000000) != 0)
   {
-    *(v4 + 100) = self->_hourOfDay;
-    *(v4 + 508) |= 0x1000000000000uLL;
+    *(toCopy + 100) = self->_hourOfDay;
+    *(toCopy + 508) |= 0x1000000000000uLL;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_lastOpenedAppId24h)
   {
-    [v4 setLastOpenedAppId24h:?];
-    v4 = v9;
+    [toCopy setLastOpenedAppId24h:?];
+    toCopy = v9;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x20000) != 0)
   {
-    v4[18] = self->_lastOpenedAppHour24h;
-    *(v4 + 508) |= 0x20000uLL;
+    toCopy[18] = self->_lastOpenedAppHour24h;
+    *(toCopy + 508) |= 0x20000uLL;
     v6 = self->_has;
     if ((*&v6 & 0x400000000000000) == 0)
     {
@@ -2958,8 +2958,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 505) = self->_isSleepModeOn;
-  *(v4 + 508) |= 0x400000000000000uLL;
+  *(toCopy + 505) = self->_isSleepModeOn;
+  *(toCopy + 508) |= 0x400000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000000000000) == 0)
   {
@@ -2973,8 +2973,8 @@ LABEL_10:
   }
 
 LABEL_93:
-  *(v4 + 501) = self->_isDoNotDisturbOn;
-  *(v4 + 508) |= 0x40000000000000uLL;
+  *(toCopy + 501) = self->_isDoNotDisturbOn;
+  *(toCopy + 508) |= 0x40000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000000000) == 0)
   {
@@ -2988,8 +2988,8 @@ LABEL_11:
   }
 
 LABEL_94:
-  *(v4 + 503) = self->_isDrivingModeOn;
-  *(v4 + 508) |= 0x100000000000000uLL;
+  *(toCopy + 503) = self->_isDrivingModeOn;
+  *(toCopy + 508) |= 0x100000000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200000000) == 0)
   {
@@ -3003,8 +3003,8 @@ LABEL_12:
   }
 
 LABEL_95:
-  v4[34] = *&self->_openedNotificationRatio24h;
-  *(v4 + 508) |= 0x200000000uLL;
+  toCopy[34] = *&self->_openedNotificationRatio24h;
+  *(toCopy + 508) |= 0x200000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -3018,8 +3018,8 @@ LABEL_13:
   }
 
 LABEL_96:
-  v4[13] = self->_googleDriveAppLaunchCount1w;
-  *(v4 + 508) |= 0x1000uLL;
+  toCopy[13] = self->_googleDriveAppLaunchCount1w;
+  *(toCopy + 508) |= 0x1000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -3033,8 +3033,8 @@ LABEL_14:
   }
 
 LABEL_97:
-  v4[14] = self->_googlePhotoAppLaunchCount1w;
-  *(v4 + 508) |= 0x2000uLL;
+  toCopy[14] = self->_googlePhotoAppLaunchCount1w;
+  *(toCopy + 508) |= 0x2000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200) == 0)
   {
@@ -3048,8 +3048,8 @@ LABEL_15:
   }
 
 LABEL_98:
-  v4[10] = self->_dropboxAppLaunchCount1w;
-  *(v4 + 508) |= 0x200uLL;
+  toCopy[10] = self->_dropboxAppLaunchCount1w;
+  *(toCopy + 508) |= 0x200uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10) == 0)
   {
@@ -3063,8 +3063,8 @@ LABEL_16:
   }
 
 LABEL_99:
-  v4[5] = self->_cameraAppLaunchCount1w;
-  *(v4 + 508) |= 0x10uLL;
+  toCopy[5] = self->_cameraAppLaunchCount1w;
+  *(toCopy + 508) |= 0x10uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000000000) == 0)
   {
@@ -3078,8 +3078,8 @@ LABEL_17:
   }
 
 LABEL_100:
-  v4[38] = self->_photosAppLaunchCount1w;
-  *(v4 + 508) |= 0x2000000000uLL;
+  toCopy[38] = self->_photosAppLaunchCount1w;
+  *(toCopy + 508) |= 0x2000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400) == 0)
   {
@@ -3093,8 +3093,8 @@ LABEL_18:
   }
 
 LABEL_101:
-  v4[11] = self->_filesAppLaunchCount1w;
-  *(v4 + 508) |= 0x400uLL;
+  toCopy[11] = self->_filesAppLaunchCount1w;
+  *(toCopy + 508) |= 0x400uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000000000) == 0)
   {
@@ -3108,8 +3108,8 @@ LABEL_19:
   }
 
 LABEL_102:
-  v4[43] = self->_totalNotificationCount1w;
-  *(v4 + 508) |= 0x40000000000uLL;
+  toCopy[43] = self->_totalNotificationCount1w;
+  *(toCopy + 508) |= 0x40000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x200000000000) == 0)
   {
@@ -3123,8 +3123,8 @@ LABEL_20:
   }
 
 LABEL_103:
-  v4[46] = self->_totalOpenedNotificationCount1w;
-  *(v4 + 508) |= 0x200000000000uLL;
+  toCopy[46] = self->_totalOpenedNotificationCount1w;
+  *(toCopy + 508) |= 0x200000000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000) == 0)
   {
@@ -3138,69 +3138,69 @@ LABEL_21:
   }
 
 LABEL_104:
-  v4[33] = *&self->_openedNotificationRatio1w;
-  *(v4 + 508) |= 0x100000000uLL;
+  toCopy[33] = *&self->_openedNotificationRatio1w;
+  *(toCopy + 508) |= 0x100000000uLL;
   if ((*&self->_has & 0x10000000) != 0)
   {
 LABEL_22:
-    v4[29] = *&self->_openedICloudNotificationRatio1w;
-    *(v4 + 508) |= 0x10000000uLL;
+    toCopy[29] = *&self->_openedICloudNotificationRatio1w;
+    *(toCopy + 508) |= 0x10000000uLL;
   }
 
 LABEL_23:
   if (self->_notificationUsageTypeTop1)
   {
     [v9 setNotificationUsageTypeTop1:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_notificationUsageTypeTop2)
   {
     [v9 setNotificationUsageTypeTop2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_notificationUsageTypeTop3)
   {
     [v9 setNotificationUsageTypeTop3:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_iCloudNotificationUsageTypeTop1)
   {
     [v9 setICloudNotificationUsageTypeTop1:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_iCloudNotificationUsageTypeTop2)
   {
     [v9 setICloudNotificationUsageTypeTop2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_iCloudNotificationUsageTypeTop3)
   {
     [v9 setICloudNotificationUsageTypeTop3:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*(&self->_has + 3))
   {
-    v4[25] = *&self->_mlServerScore;
-    *(v4 + 508) |= 0x1000000uLL;
+    toCopy[25] = *&self->_mlServerScore;
+    *(toCopy + 508) |= 0x1000000uLL;
   }
 
   if (self->_labelMessage)
   {
     [v9 setLabelMessage:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x100) != 0)
   {
-    v4[9] = self->_diskStorageCapacityBytes;
-    *(v4 + 508) |= 0x100uLL;
+    toCopy[9] = self->_diskStorageCapacityBytes;
+    *(toCopy + 508) |= 0x100uLL;
     v7 = self->_has;
     if ((*&v7 & 0x400000000000) == 0)
     {
@@ -3219,8 +3219,8 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v4[47] = self->_usedDiskCapacityBytes;
-  *(v4 + 508) |= 0x400000000000uLL;
+  toCopy[47] = self->_usedDiskCapacityBytes;
+  *(toCopy + 508) |= 0x400000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x20000000) == 0)
   {
@@ -3234,8 +3234,8 @@ LABEL_42:
   }
 
 LABEL_108:
-  v4[30] = *&self->_openedICloudNotificationRatio2w;
-  *(v4 + 508) |= 0x20000000uLL;
+  toCopy[30] = *&self->_openedICloudNotificationRatio2w;
+  *(toCopy + 508) |= 0x20000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x8000000000000) == 0)
   {
@@ -3249,8 +3249,8 @@ LABEL_43:
   }
 
 LABEL_109:
-  *(v4 + 123) = self->_trafficType;
-  *(v4 + 508) |= 0x8000000000000uLL;
+  *(toCopy + 123) = self->_trafficType;
+  *(toCopy + 508) |= 0x8000000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x80) == 0)
   {
@@ -3264,8 +3264,8 @@ LABEL_44:
   }
 
 LABEL_110:
-  v4[8] = self->_dailyScreenTimeSeconds;
-  *(v4 + 508) |= 0x80uLL;
+  toCopy[8] = self->_dailyScreenTimeSeconds;
+  *(toCopy + 508) |= 0x80uLL;
   v7 = self->_has;
   if ((*&v7 & 8) == 0)
   {
@@ -3279,33 +3279,33 @@ LABEL_45:
   }
 
 LABEL_111:
-  v4[4] = self->_avgWeeklyScreenTimeSeconds2w;
-  *(v4 + 508) |= 8uLL;
+  toCopy[4] = self->_avgWeeklyScreenTimeSeconds2w;
+  *(toCopy + 508) |= 8uLL;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_46:
-    v4[7] = self->_daemonVersion;
-    *(v4 + 508) |= 0x40uLL;
+    toCopy[7] = self->_daemonVersion;
+    *(toCopy + 508) |= 0x40uLL;
   }
 
 LABEL_47:
   if (self->_oBSOLETEDayOfWeek)
   {
     [v9 setOBSOLETEDayOfWeek:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_deviceModelName)
   {
     [v9 setDeviceModelName:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x800000000000) != 0)
   {
-    *(v4 + 96) = self->_dayOfWeek;
-    *(v4 + 508) |= 0x800000000000uLL;
+    *(toCopy + 96) = self->_dayOfWeek;
+    *(toCopy + 508) |= 0x800000000000uLL;
     v8 = self->_has;
     if ((*&v8 & 0x400000000) == 0)
     {
@@ -3324,8 +3324,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v4[35] = self->_osVersionMajorVersion;
-  *(v4 + 508) |= 0x400000000uLL;
+  toCopy[35] = self->_osVersionMajorVersion;
+  *(toCopy + 508) |= 0x400000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x800000000) == 0)
   {
@@ -3339,8 +3339,8 @@ LABEL_54:
   }
 
 LABEL_115:
-  v4[36] = self->_osVersionMinorVersion;
-  *(v4 + 508) |= 0x800000000uLL;
+  toCopy[36] = self->_osVersionMinorVersion;
+  *(toCopy + 508) |= 0x800000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x1000000000) == 0)
   {
@@ -3354,8 +3354,8 @@ LABEL_55:
   }
 
 LABEL_116:
-  v4[37] = self->_osVersionPatchVersion;
-  *(v4 + 508) |= 0x1000000000uLL;
+  toCopy[37] = self->_osVersionPatchVersion;
+  *(toCopy + 508) |= 0x1000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x8000000) == 0)
   {
@@ -3369,8 +3369,8 @@ LABEL_56:
   }
 
 LABEL_117:
-  v4[28] = self->_offsetMins;
-  *(v4 + 508) |= 0x8000000uLL;
+  toCopy[28] = self->_offsetMins;
+  *(toCopy + 508) |= 0x8000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x2000000000000) == 0)
   {
@@ -3384,8 +3384,8 @@ LABEL_57:
   }
 
 LABEL_118:
-  *(v4 + 108) = self->_icloudNotificationActionLabel;
-  *(v4 + 508) |= 0x2000000000000uLL;
+  *(toCopy + 108) = self->_icloudNotificationActionLabel;
+  *(toCopy + 508) |= 0x2000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x400000) == 0)
   {
@@ -3399,8 +3399,8 @@ LABEL_58:
   }
 
 LABEL_119:
-  v4[23] = self->_minsUntilICloudNotificationOpened;
-  *(v4 + 508) |= 0x400000uLL;
+  toCopy[23] = self->_minsUntilICloudNotificationOpened;
+  *(toCopy + 508) |= 0x400000uLL;
   v8 = self->_has;
   if ((*&v8 & 4) == 0)
   {
@@ -3414,8 +3414,8 @@ LABEL_59:
   }
 
 LABEL_120:
-  v4[3] = self->_appLaunchCountSameSlot;
-  *(v4 + 508) |= 4uLL;
+  toCopy[3] = self->_appLaunchCountSameSlot;
+  *(toCopy + 508) |= 4uLL;
   v8 = self->_has;
   if ((*&v8 & 0x20) == 0)
   {
@@ -3429,8 +3429,8 @@ LABEL_60:
   }
 
 LABEL_121:
-  v4[6] = self->_cameraLaunchCountSameSlot;
-  *(v4 + 508) |= 0x20uLL;
+  toCopy[6] = self->_cameraLaunchCountSameSlot;
+  *(toCopy + 508) |= 0x20uLL;
   v8 = self->_has;
   if ((*&v8 & 0x10000000000) == 0)
   {
@@ -3444,8 +3444,8 @@ LABEL_61:
   }
 
 LABEL_122:
-  v4[41] = self->_photosLaunchCountSameSlot;
-  *(v4 + 508) |= 0x10000000000uLL;
+  toCopy[41] = self->_photosLaunchCountSameSlot;
+  *(toCopy + 508) |= 0x10000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x800) == 0)
   {
@@ -3459,8 +3459,8 @@ LABEL_62:
   }
 
 LABEL_123:
-  v4[12] = self->_filesLaunchCountSameSlot;
-  *(v4 + 508) |= 0x800uLL;
+  toCopy[12] = self->_filesLaunchCountSameSlot;
+  *(toCopy + 508) |= 0x800uLL;
   v8 = self->_has;
   if ((*&v8 & 0x800000000000000) == 0)
   {
@@ -3474,8 +3474,8 @@ LABEL_63:
   }
 
 LABEL_124:
-  *(v4 + 506) = self->_isSleepModeOnSameSlot;
-  *(v4 + 508) |= 0x800000000000000uLL;
+  *(toCopy + 506) = self->_isSleepModeOnSameSlot;
+  *(toCopy + 508) |= 0x800000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80000000000000) == 0)
   {
@@ -3489,8 +3489,8 @@ LABEL_64:
   }
 
 LABEL_125:
-  *(v4 + 502) = self->_isDoNotDisturbOnSameSlot;
-  *(v4 + 508) |= 0x80000000000000uLL;
+  *(toCopy + 502) = self->_isDoNotDisturbOnSameSlot;
+  *(toCopy + 508) |= 0x80000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x200000000000000) == 0)
   {
@@ -3504,8 +3504,8 @@ LABEL_65:
   }
 
 LABEL_126:
-  *(v4 + 504) = self->_isDrivingModeOnSameSlot;
-  *(v4 + 508) |= 0x200000000000000uLL;
+  *(toCopy + 504) = self->_isDrivingModeOnSameSlot;
+  *(toCopy + 508) |= 0x200000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x2000000) == 0)
   {
@@ -3519,8 +3519,8 @@ LABEL_66:
   }
 
 LABEL_127:
-  v4[26] = self->_numNotificationsSameSlot;
-  *(v4 + 508) |= 0x2000000uLL;
+  toCopy[26] = self->_numNotificationsSameSlot;
+  *(toCopy + 508) |= 0x2000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x4000000) == 0)
   {
@@ -3534,8 +3534,8 @@ LABEL_67:
   }
 
 LABEL_128:
-  v4[27] = self->_numOpenedNotificationsSameSlot;
-  *(v4 + 508) |= 0x4000000uLL;
+  toCopy[27] = self->_numOpenedNotificationsSameSlot;
+  *(toCopy + 508) |= 0x4000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x40000) == 0)
   {
@@ -3549,8 +3549,8 @@ LABEL_68:
   }
 
 LABEL_129:
-  v4[19] = self->_minsSinceLastCameraAppLaunch1w;
-  *(v4 + 508) |= 0x40000uLL;
+  toCopy[19] = self->_minsSinceLastCameraAppLaunch1w;
+  *(toCopy + 508) |= 0x40000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x100000) == 0)
   {
@@ -3564,8 +3564,8 @@ LABEL_69:
   }
 
 LABEL_130:
-  v4[21] = self->_minsSinceLastPhotosAppLaunch1w;
-  *(v4 + 508) |= 0x100000uLL;
+  toCopy[21] = self->_minsSinceLastPhotosAppLaunch1w;
+  *(toCopy + 508) |= 0x100000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80000) == 0)
   {
@@ -3579,8 +3579,8 @@ LABEL_70:
   }
 
 LABEL_131:
-  v4[20] = self->_minsSinceLastFilesAppLaunch1w;
-  *(v4 + 508) |= 0x80000uLL;
+  toCopy[20] = self->_minsSinceLastFilesAppLaunch1w;
+  *(toCopy + 508) |= 0x80000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x10000) == 0)
   {
@@ -3594,8 +3594,8 @@ LABEL_71:
   }
 
 LABEL_132:
-  v4[17] = self->_isSleepModeOnCount2w;
-  *(v4 + 508) |= 0x10000uLL;
+  toCopy[17] = self->_isSleepModeOnCount2w;
+  *(toCopy + 508) |= 0x10000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x4000) == 0)
   {
@@ -3609,8 +3609,8 @@ LABEL_72:
   }
 
 LABEL_133:
-  v4[15] = self->_isDoNotDisturbOnCount2w;
-  *(v4 + 508) |= 0x4000uLL;
+  toCopy[15] = self->_isDoNotDisturbOnCount2w;
+  *(toCopy + 508) |= 0x4000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x8000) == 0)
   {
@@ -3624,8 +3624,8 @@ LABEL_73:
   }
 
 LABEL_134:
-  v4[16] = self->_isDrivingModeOnCount2w;
-  *(v4 + 508) |= 0x8000uLL;
+  toCopy[16] = self->_isDrivingModeOnCount2w;
+  *(toCopy + 508) |= 0x8000uLL;
   v8 = self->_has;
   if ((*&v8 & 2) == 0)
   {
@@ -3639,8 +3639,8 @@ LABEL_74:
   }
 
 LABEL_135:
-  v4[2] = self->_appLaunchCount2wMedian;
-  *(v4 + 508) |= 2uLL;
+  toCopy[2] = self->_appLaunchCount2wMedian;
+  *(toCopy + 508) |= 2uLL;
   v8 = self->_has;
   if ((*&v8 & 1) == 0)
   {
@@ -3654,8 +3654,8 @@ LABEL_75:
   }
 
 LABEL_136:
-  v4[1] = self->_appLaunchCount2wMax;
-  *(v4 + 508) |= 1uLL;
+  toCopy[1] = self->_appLaunchCount2wMax;
+  *(toCopy + 508) |= 1uLL;
   v8 = self->_has;
   if ((*&v8 & 0x8000000000) == 0)
   {
@@ -3669,8 +3669,8 @@ LABEL_76:
   }
 
 LABEL_137:
-  v4[40] = self->_photosLaunchCount2wMedian;
-  *(v4 + 508) |= 0x8000000000uLL;
+  toCopy[40] = self->_photosLaunchCount2wMedian;
+  *(toCopy + 508) |= 0x8000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x4000000000) == 0)
   {
@@ -3684,8 +3684,8 @@ LABEL_77:
   }
 
 LABEL_138:
-  v4[39] = self->_photosLaunchCount2wMax;
-  *(v4 + 508) |= 0x4000000000uLL;
+  toCopy[39] = self->_photosLaunchCount2wMax;
+  *(toCopy + 508) |= 0x4000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x100000000000) == 0)
   {
@@ -3699,8 +3699,8 @@ LABEL_78:
   }
 
 LABEL_139:
-  v4[45] = self->_totalNotificationCount2wMedian;
-  *(v4 + 508) |= 0x100000000000uLL;
+  toCopy[45] = self->_totalNotificationCount2wMedian;
+  *(toCopy + 508) |= 0x100000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80000000000) == 0)
   {
@@ -3714,8 +3714,8 @@ LABEL_79:
   }
 
 LABEL_140:
-  v4[44] = self->_totalNotificationCount2wMax;
-  *(v4 + 508) |= 0x80000000000uLL;
+  toCopy[44] = self->_totalNotificationCount2wMax;
+  *(toCopy + 508) |= 0x80000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80000000) == 0)
   {
@@ -3729,8 +3729,8 @@ LABEL_80:
   }
 
 LABEL_141:
-  v4[32] = self->_openedNotificationCount2wMedian;
-  *(v4 + 508) |= 0x80000000uLL;
+  toCopy[32] = self->_openedNotificationCount2wMedian;
+  *(toCopy + 508) |= 0x80000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x40000000) == 0)
   {
@@ -3744,8 +3744,8 @@ LABEL_81:
   }
 
 LABEL_142:
-  v4[31] = self->_openedNotificationCount2wMax;
-  *(v4 + 508) |= 0x40000000uLL;
+  toCopy[31] = self->_openedNotificationCount2wMax;
+  *(toCopy + 508) |= 0x40000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x20000000000000) == 0)
   {
@@ -3759,8 +3759,8 @@ LABEL_82:
   }
 
 LABEL_143:
-  *(v4 + 500) = self->_buyLabel;
-  *(v4 + 508) |= 0x20000000000000uLL;
+  *(toCopy + 500) = self->_buyLabel;
+  *(toCopy + 508) |= 0x20000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x200000) == 0)
   {
@@ -3774,8 +3774,8 @@ LABEL_83:
   }
 
 LABEL_144:
-  v4[22] = self->_minsUntilICloudBuy;
-  *(v4 + 508) |= 0x200000uLL;
+  toCopy[22] = self->_minsUntilICloudBuy;
+  *(toCopy + 508) |= 0x200000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x1000000000000000) == 0)
   {
@@ -3789,8 +3789,8 @@ LABEL_84:
   }
 
 LABEL_145:
-  *(v4 + 507) = self->_openLabelSubStream;
-  *(v4 + 508) |= 0x1000000000000000uLL;
+  *(toCopy + 507) = self->_openLabelSubStream;
+  *(toCopy + 508) |= 0x1000000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x800000) == 0)
   {
@@ -3804,8 +3804,8 @@ LABEL_85:
   }
 
 LABEL_146:
-  v4[24] = self->_minsUntilICloudOpenedSubStream;
-  *(v4 + 508) |= 0x800000uLL;
+  toCopy[24] = self->_minsUntilICloudOpenedSubStream;
+  *(toCopy + 508) |= 0x800000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x10000000000000) == 0)
   {
@@ -3819,21 +3819,21 @@ LABEL_86:
   }
 
 LABEL_147:
-  *(v4 + 124) = self->_userTier;
-  *(v4 + 508) |= 0x10000000000000uLL;
+  *(toCopy + 124) = self->_userTier;
+  *(toCopy + 508) |= 0x10000000000000uLL;
   if ((*&self->_has & 0x4000000000000) != 0)
   {
 LABEL_87:
-    *(v4 + 122) = self->_oBSOLETETrafficType;
-    *(v4 + 508) |= 0x4000000000000uLL;
+    *(toCopy + 122) = self->_oBSOLETETrafficType;
+    *(toCopy + 508) |= 0x4000000000000uLL;
   }
 
 LABEL_88:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x20000000000) != 0)
@@ -3849,7 +3849,7 @@ LABEL_88:
     *(v5 + 508) |= 0x1000000000000uLL;
   }
 
-  v8 = [(NSString *)self->_lastOpenedAppId24h copyWithZone:a3];
+  v8 = [(NSString *)self->_lastOpenedAppId24h copyWithZone:zone];
   v9 = *(v6 + 448);
   *(v6 + 448) = v8;
 
@@ -4066,27 +4066,27 @@ LABEL_20:
   }
 
 LABEL_21:
-  v11 = [(NSString *)self->_notificationUsageTypeTop1 copyWithZone:a3];
+  v11 = [(NSString *)self->_notificationUsageTypeTop1 copyWithZone:zone];
   v12 = *(v6 + 456);
   *(v6 + 456) = v11;
 
-  v13 = [(NSString *)self->_notificationUsageTypeTop2 copyWithZone:a3];
+  v13 = [(NSString *)self->_notificationUsageTypeTop2 copyWithZone:zone];
   v14 = *(v6 + 464);
   *(v6 + 464) = v13;
 
-  v15 = [(NSString *)self->_notificationUsageTypeTop3 copyWithZone:a3];
+  v15 = [(NSString *)self->_notificationUsageTypeTop3 copyWithZone:zone];
   v16 = *(v6 + 472);
   *(v6 + 472) = v15;
 
-  v17 = [(NSString *)self->_iCloudNotificationUsageTypeTop1 copyWithZone:a3];
+  v17 = [(NSString *)self->_iCloudNotificationUsageTypeTop1 copyWithZone:zone];
   v18 = *(v6 + 408);
   *(v6 + 408) = v17;
 
-  v19 = [(NSString *)self->_iCloudNotificationUsageTypeTop2 copyWithZone:a3];
+  v19 = [(NSString *)self->_iCloudNotificationUsageTypeTop2 copyWithZone:zone];
   v20 = *(v6 + 416);
   *(v6 + 416) = v19;
 
-  v21 = [(NSString *)self->_iCloudNotificationUsageTypeTop3 copyWithZone:a3];
+  v21 = [(NSString *)self->_iCloudNotificationUsageTypeTop3 copyWithZone:zone];
   v22 = *(v6 + 424);
   *(v6 + 424) = v21;
 
@@ -4096,7 +4096,7 @@ LABEL_21:
     *(v6 + 508) |= 0x1000000uLL;
   }
 
-  v23 = [(ISOPBSubscriptionLabelMessage *)self->_labelMessage copyWithZone:a3];
+  v23 = [(ISOPBSubscriptionLabelMessage *)self->_labelMessage copyWithZone:zone];
   v24 = *(v6 + 440);
   *(v6 + 440) = v23;
 
@@ -4193,11 +4193,11 @@ LABEL_30:
   }
 
 LABEL_31:
-  v26 = [(NSString *)self->_oBSOLETEDayOfWeek copyWithZone:a3];
+  v26 = [(NSString *)self->_oBSOLETEDayOfWeek copyWithZone:zone];
   v27 = *(v6 + 480);
   *(v6 + 480) = v26;
 
-  v28 = [(NSString *)self->_deviceModelName copyWithZone:a3];
+  v28 = [(NSString *)self->_deviceModelName copyWithZone:zone];
   v29 = *(v6 + 392);
   *(v6 + 392) = v28;
 
@@ -4734,19 +4734,19 @@ LABEL_68:
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_353;
   }
 
   has = self->_has;
-  v6 = *(v4 + 508);
+  v6 = *(equalCopy + 508);
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v6 & 0x20000000000) == 0 || self->_timestampMillis != *(v4 + 42))
+    if ((v6 & 0x20000000000) == 0 || self->_timestampMillis != *(equalCopy + 42))
     {
       goto LABEL_353;
     }
@@ -4759,7 +4759,7 @@ LABEL_68:
 
   if ((*&has & 0x1000000000000) != 0)
   {
-    if ((v6 & 0x1000000000000) == 0 || self->_hourOfDay != *(v4 + 100))
+    if ((v6 & 0x1000000000000) == 0 || self->_hourOfDay != *(equalCopy + 100))
     {
       goto LABEL_353;
     }
@@ -4771,7 +4771,7 @@ LABEL_68:
   }
 
   lastOpenedAppId24h = self->_lastOpenedAppId24h;
-  if (lastOpenedAppId24h | *(v4 + 56))
+  if (lastOpenedAppId24h | *(equalCopy + 56))
   {
     if (![(NSString *)lastOpenedAppId24h isEqual:?])
     {
@@ -4781,10 +4781,10 @@ LABEL_68:
     has = self->_has;
   }
 
-  v8 = *(v4 + 508);
+  v8 = *(equalCopy + 508);
   if ((*&has & 0x20000) != 0)
   {
-    if ((v8 & 0x20000) == 0 || self->_lastOpenedAppHour24h != *(v4 + 18))
+    if ((v8 & 0x20000) == 0 || self->_lastOpenedAppHour24h != *(equalCopy + 18))
     {
       goto LABEL_353;
     }
@@ -4802,16 +4802,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v9 = v4[505];
+    v9 = equalCopy[505];
     if (self->_isSleepModeOn)
     {
-      if ((v4[505] & 1) == 0)
+      if ((equalCopy[505] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[505])
+    else if (equalCopy[505])
     {
       goto LABEL_353;
     }
@@ -4829,16 +4829,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v10 = v4[501];
+    v10 = equalCopy[501];
     if (self->_isDoNotDisturbOn)
     {
-      if ((v4[501] & 1) == 0)
+      if ((equalCopy[501] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[501])
+    else if (equalCopy[501])
     {
       goto LABEL_353;
     }
@@ -4856,16 +4856,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v11 = v4[503];
+    v11 = equalCopy[503];
     if (self->_isDrivingModeOn)
     {
-      if ((v4[503] & 1) == 0)
+      if ((equalCopy[503] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[503])
+    else if (equalCopy[503])
     {
       goto LABEL_353;
     }
@@ -4878,7 +4878,7 @@ LABEL_68:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v8 & 0x200000000) == 0 || self->_openedNotificationRatio24h != *(v4 + 34))
+    if ((v8 & 0x200000000) == 0 || self->_openedNotificationRatio24h != *(equalCopy + 34))
     {
       goto LABEL_353;
     }
@@ -4891,7 +4891,7 @@ LABEL_68:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v8 & 0x1000) == 0 || self->_googleDriveAppLaunchCount1w != *(v4 + 13))
+    if ((v8 & 0x1000) == 0 || self->_googleDriveAppLaunchCount1w != *(equalCopy + 13))
     {
       goto LABEL_353;
     }
@@ -4904,7 +4904,7 @@ LABEL_68:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v8 & 0x2000) == 0 || self->_googlePhotoAppLaunchCount1w != *(v4 + 14))
+    if ((v8 & 0x2000) == 0 || self->_googlePhotoAppLaunchCount1w != *(equalCopy + 14))
     {
       goto LABEL_353;
     }
@@ -4917,7 +4917,7 @@ LABEL_68:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_dropboxAppLaunchCount1w != *(v4 + 10))
+    if ((v8 & 0x200) == 0 || self->_dropboxAppLaunchCount1w != *(equalCopy + 10))
     {
       goto LABEL_353;
     }
@@ -4930,7 +4930,7 @@ LABEL_68:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_cameraAppLaunchCount1w != *(v4 + 5))
+    if ((v8 & 0x10) == 0 || self->_cameraAppLaunchCount1w != *(equalCopy + 5))
     {
       goto LABEL_353;
     }
@@ -4943,7 +4943,7 @@ LABEL_68:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v8 & 0x2000000000) == 0 || self->_photosAppLaunchCount1w != *(v4 + 38))
+    if ((v8 & 0x2000000000) == 0 || self->_photosAppLaunchCount1w != *(equalCopy + 38))
     {
       goto LABEL_353;
     }
@@ -4956,7 +4956,7 @@ LABEL_68:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v8 & 0x400) == 0 || self->_filesAppLaunchCount1w != *(v4 + 11))
+    if ((v8 & 0x400) == 0 || self->_filesAppLaunchCount1w != *(equalCopy + 11))
     {
       goto LABEL_353;
     }
@@ -4969,7 +4969,7 @@ LABEL_68:
 
   if ((*&has & 0x40000000000) != 0)
   {
-    if ((v8 & 0x40000000000) == 0 || self->_totalNotificationCount1w != *(v4 + 43))
+    if ((v8 & 0x40000000000) == 0 || self->_totalNotificationCount1w != *(equalCopy + 43))
     {
       goto LABEL_353;
     }
@@ -4982,7 +4982,7 @@ LABEL_68:
 
   if ((*&has & 0x200000000000) != 0)
   {
-    if ((v8 & 0x200000000000) == 0 || self->_totalOpenedNotificationCount1w != *(v4 + 46))
+    if ((v8 & 0x200000000000) == 0 || self->_totalOpenedNotificationCount1w != *(equalCopy + 46))
     {
       goto LABEL_353;
     }
@@ -4995,7 +4995,7 @@ LABEL_68:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v8 & 0x100000000) == 0 || self->_openedNotificationRatio1w != *(v4 + 33))
+    if ((v8 & 0x100000000) == 0 || self->_openedNotificationRatio1w != *(equalCopy + 33))
     {
       goto LABEL_353;
     }
@@ -5008,7 +5008,7 @@ LABEL_68:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v8 & 0x10000000) == 0 || self->_openedICloudNotificationRatio1w != *(v4 + 29))
+    if ((v8 & 0x10000000) == 0 || self->_openedICloudNotificationRatio1w != *(equalCopy + 29))
     {
       goto LABEL_353;
     }
@@ -5020,13 +5020,13 @@ LABEL_68:
   }
 
   notificationUsageTypeTop1 = self->_notificationUsageTypeTop1;
-  if (notificationUsageTypeTop1 | *(v4 + 57) && ![(NSString *)notificationUsageTypeTop1 isEqual:?])
+  if (notificationUsageTypeTop1 | *(equalCopy + 57) && ![(NSString *)notificationUsageTypeTop1 isEqual:?])
   {
     goto LABEL_353;
   }
 
   notificationUsageTypeTop2 = self->_notificationUsageTypeTop2;
-  if (notificationUsageTypeTop2 | *(v4 + 58))
+  if (notificationUsageTypeTop2 | *(equalCopy + 58))
   {
     if (![(NSString *)notificationUsageTypeTop2 isEqual:?])
     {
@@ -5035,7 +5035,7 @@ LABEL_68:
   }
 
   notificationUsageTypeTop3 = self->_notificationUsageTypeTop3;
-  if (notificationUsageTypeTop3 | *(v4 + 59))
+  if (notificationUsageTypeTop3 | *(equalCopy + 59))
   {
     if (![(NSString *)notificationUsageTypeTop3 isEqual:?])
     {
@@ -5044,7 +5044,7 @@ LABEL_68:
   }
 
   iCloudNotificationUsageTypeTop1 = self->_iCloudNotificationUsageTypeTop1;
-  if (iCloudNotificationUsageTypeTop1 | *(v4 + 51))
+  if (iCloudNotificationUsageTypeTop1 | *(equalCopy + 51))
   {
     if (![(NSString *)iCloudNotificationUsageTypeTop1 isEqual:?])
     {
@@ -5053,7 +5053,7 @@ LABEL_68:
   }
 
   iCloudNotificationUsageTypeTop2 = self->_iCloudNotificationUsageTypeTop2;
-  if (iCloudNotificationUsageTypeTop2 | *(v4 + 52))
+  if (iCloudNotificationUsageTypeTop2 | *(equalCopy + 52))
   {
     if (![(NSString *)iCloudNotificationUsageTypeTop2 isEqual:?])
     {
@@ -5062,7 +5062,7 @@ LABEL_68:
   }
 
   iCloudNotificationUsageTypeTop3 = self->_iCloudNotificationUsageTypeTop3;
-  if (iCloudNotificationUsageTypeTop3 | *(v4 + 53))
+  if (iCloudNotificationUsageTypeTop3 | *(equalCopy + 53))
   {
     if (![(NSString *)iCloudNotificationUsageTypeTop3 isEqual:?])
     {
@@ -5071,10 +5071,10 @@ LABEL_68:
   }
 
   v18 = self->_has;
-  v19 = *(v4 + 508);
+  v19 = *(equalCopy + 508);
   if ((*&v18 & 0x1000000) != 0)
   {
-    if ((v19 & 0x1000000) == 0 || self->_mlServerScore != *(v4 + 25))
+    if ((v19 & 0x1000000) == 0 || self->_mlServerScore != *(equalCopy + 25))
     {
       goto LABEL_353;
     }
@@ -5086,7 +5086,7 @@ LABEL_68:
   }
 
   labelMessage = self->_labelMessage;
-  if (labelMessage | *(v4 + 55))
+  if (labelMessage | *(equalCopy + 55))
   {
     if (![(ISOPBSubscriptionLabelMessage *)labelMessage isEqual:?])
     {
@@ -5096,10 +5096,10 @@ LABEL_68:
     v18 = self->_has;
   }
 
-  v21 = *(v4 + 508);
+  v21 = *(equalCopy + 508);
   if ((*&v18 & 0x100) != 0)
   {
-    if ((v21 & 0x100) == 0 || self->_diskStorageCapacityBytes != *(v4 + 9))
+    if ((v21 & 0x100) == 0 || self->_diskStorageCapacityBytes != *(equalCopy + 9))
     {
       goto LABEL_353;
     }
@@ -5112,7 +5112,7 @@ LABEL_68:
 
   if ((*&v18 & 0x400000000000) != 0)
   {
-    if ((v21 & 0x400000000000) == 0 || self->_usedDiskCapacityBytes != *(v4 + 47))
+    if ((v21 & 0x400000000000) == 0 || self->_usedDiskCapacityBytes != *(equalCopy + 47))
     {
       goto LABEL_353;
     }
@@ -5125,7 +5125,7 @@ LABEL_68:
 
   if ((*&v18 & 0x20000000) != 0)
   {
-    if ((v21 & 0x20000000) == 0 || self->_openedICloudNotificationRatio2w != *(v4 + 30))
+    if ((v21 & 0x20000000) == 0 || self->_openedICloudNotificationRatio2w != *(equalCopy + 30))
     {
       goto LABEL_353;
     }
@@ -5138,7 +5138,7 @@ LABEL_68:
 
   if ((*&v18 & 0x8000000000000) != 0)
   {
-    if ((v21 & 0x8000000000000) == 0 || self->_trafficType != *(v4 + 123))
+    if ((v21 & 0x8000000000000) == 0 || self->_trafficType != *(equalCopy + 123))
     {
       goto LABEL_353;
     }
@@ -5151,7 +5151,7 @@ LABEL_68:
 
   if ((*&v18 & 0x80) != 0)
   {
-    if ((v21 & 0x80) == 0 || self->_dailyScreenTimeSeconds != *(v4 + 8))
+    if ((v21 & 0x80) == 0 || self->_dailyScreenTimeSeconds != *(equalCopy + 8))
     {
       goto LABEL_353;
     }
@@ -5164,7 +5164,7 @@ LABEL_68:
 
   if ((*&v18 & 8) != 0)
   {
-    if ((v21 & 8) == 0 || self->_avgWeeklyScreenTimeSeconds2w != *(v4 + 4))
+    if ((v21 & 8) == 0 || self->_avgWeeklyScreenTimeSeconds2w != *(equalCopy + 4))
     {
       goto LABEL_353;
     }
@@ -5177,7 +5177,7 @@ LABEL_68:
 
   if ((*&v18 & 0x40) != 0)
   {
-    if ((v21 & 0x40) == 0 || self->_daemonVersion != *(v4 + 7))
+    if ((v21 & 0x40) == 0 || self->_daemonVersion != *(equalCopy + 7))
     {
       goto LABEL_353;
     }
@@ -5189,13 +5189,13 @@ LABEL_68:
   }
 
   oBSOLETEDayOfWeek = self->_oBSOLETEDayOfWeek;
-  if (oBSOLETEDayOfWeek | *(v4 + 60) && ![(NSString *)oBSOLETEDayOfWeek isEqual:?])
+  if (oBSOLETEDayOfWeek | *(equalCopy + 60) && ![(NSString *)oBSOLETEDayOfWeek isEqual:?])
   {
     goto LABEL_353;
   }
 
   deviceModelName = self->_deviceModelName;
-  if (deviceModelName | *(v4 + 49))
+  if (deviceModelName | *(equalCopy + 49))
   {
     if (![(NSString *)deviceModelName isEqual:?])
     {
@@ -5204,10 +5204,10 @@ LABEL_68:
   }
 
   v24 = self->_has;
-  v25 = *(v4 + 508);
+  v25 = *(equalCopy + 508);
   if ((*&v24 & 0x800000000000) != 0)
   {
-    if ((v25 & 0x800000000000) == 0 || self->_dayOfWeek != *(v4 + 96))
+    if ((v25 & 0x800000000000) == 0 || self->_dayOfWeek != *(equalCopy + 96))
     {
       goto LABEL_353;
     }
@@ -5220,7 +5220,7 @@ LABEL_68:
 
   if ((*&v24 & 0x400000000) != 0)
   {
-    if ((v25 & 0x400000000) == 0 || self->_osVersionMajorVersion != *(v4 + 35))
+    if ((v25 & 0x400000000) == 0 || self->_osVersionMajorVersion != *(equalCopy + 35))
     {
       goto LABEL_353;
     }
@@ -5233,7 +5233,7 @@ LABEL_68:
 
   if ((*&v24 & 0x800000000) != 0)
   {
-    if ((v25 & 0x800000000) == 0 || self->_osVersionMinorVersion != *(v4 + 36))
+    if ((v25 & 0x800000000) == 0 || self->_osVersionMinorVersion != *(equalCopy + 36))
     {
       goto LABEL_353;
     }
@@ -5246,7 +5246,7 @@ LABEL_68:
 
   if ((*&v24 & 0x1000000000) != 0)
   {
-    if ((v25 & 0x1000000000) == 0 || self->_osVersionPatchVersion != *(v4 + 37))
+    if ((v25 & 0x1000000000) == 0 || self->_osVersionPatchVersion != *(equalCopy + 37))
     {
       goto LABEL_353;
     }
@@ -5259,7 +5259,7 @@ LABEL_68:
 
   if ((*&v24 & 0x8000000) != 0)
   {
-    if ((v25 & 0x8000000) == 0 || self->_offsetMins != *(v4 + 28))
+    if ((v25 & 0x8000000) == 0 || self->_offsetMins != *(equalCopy + 28))
     {
       goto LABEL_353;
     }
@@ -5272,7 +5272,7 @@ LABEL_68:
 
   if ((*&v24 & 0x2000000000000) != 0)
   {
-    if ((v25 & 0x2000000000000) == 0 || self->_icloudNotificationActionLabel != *(v4 + 108))
+    if ((v25 & 0x2000000000000) == 0 || self->_icloudNotificationActionLabel != *(equalCopy + 108))
     {
       goto LABEL_353;
     }
@@ -5285,7 +5285,7 @@ LABEL_68:
 
   if ((*&v24 & 0x400000) != 0)
   {
-    if ((v25 & 0x400000) == 0 || self->_minsUntilICloudNotificationOpened != *(v4 + 23))
+    if ((v25 & 0x400000) == 0 || self->_minsUntilICloudNotificationOpened != *(equalCopy + 23))
     {
       goto LABEL_353;
     }
@@ -5298,7 +5298,7 @@ LABEL_68:
 
   if ((*&v24 & 4) != 0)
   {
-    if ((v25 & 4) == 0 || self->_appLaunchCountSameSlot != *(v4 + 3))
+    if ((v25 & 4) == 0 || self->_appLaunchCountSameSlot != *(equalCopy + 3))
     {
       goto LABEL_353;
     }
@@ -5311,7 +5311,7 @@ LABEL_68:
 
   if ((*&v24 & 0x20) != 0)
   {
-    if ((v25 & 0x20) == 0 || self->_cameraLaunchCountSameSlot != *(v4 + 6))
+    if ((v25 & 0x20) == 0 || self->_cameraLaunchCountSameSlot != *(equalCopy + 6))
     {
       goto LABEL_353;
     }
@@ -5324,7 +5324,7 @@ LABEL_68:
 
   if ((*&v24 & 0x10000000000) != 0)
   {
-    if ((v25 & 0x10000000000) == 0 || self->_photosLaunchCountSameSlot != *(v4 + 41))
+    if ((v25 & 0x10000000000) == 0 || self->_photosLaunchCountSameSlot != *(equalCopy + 41))
     {
       goto LABEL_353;
     }
@@ -5337,7 +5337,7 @@ LABEL_68:
 
   if ((*&v24 & 0x800) != 0)
   {
-    if ((v25 & 0x800) == 0 || self->_filesLaunchCountSameSlot != *(v4 + 12))
+    if ((v25 & 0x800) == 0 || self->_filesLaunchCountSameSlot != *(equalCopy + 12))
     {
       goto LABEL_353;
     }
@@ -5355,16 +5355,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v26 = v4[506];
+    v26 = equalCopy[506];
     if (self->_isSleepModeOnSameSlot)
     {
-      if ((v4[506] & 1) == 0)
+      if ((equalCopy[506] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[506])
+    else if (equalCopy[506])
     {
       goto LABEL_353;
     }
@@ -5382,16 +5382,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v27 = v4[502];
+    v27 = equalCopy[502];
     if (self->_isDoNotDisturbOnSameSlot)
     {
-      if ((v4[502] & 1) == 0)
+      if ((equalCopy[502] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[502])
+    else if (equalCopy[502])
     {
       goto LABEL_353;
     }
@@ -5409,16 +5409,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v28 = v4[504];
+    v28 = equalCopy[504];
     if (self->_isDrivingModeOnSameSlot)
     {
-      if ((v4[504] & 1) == 0)
+      if ((equalCopy[504] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[504])
+    else if (equalCopy[504])
     {
       goto LABEL_353;
     }
@@ -5431,7 +5431,7 @@ LABEL_68:
 
   if ((*&v24 & 0x2000000) != 0)
   {
-    if ((v25 & 0x2000000) == 0 || self->_numNotificationsSameSlot != *(v4 + 26))
+    if ((v25 & 0x2000000) == 0 || self->_numNotificationsSameSlot != *(equalCopy + 26))
     {
       goto LABEL_353;
     }
@@ -5444,7 +5444,7 @@ LABEL_68:
 
   if ((*&v24 & 0x4000000) != 0)
   {
-    if ((v25 & 0x4000000) == 0 || self->_numOpenedNotificationsSameSlot != *(v4 + 27))
+    if ((v25 & 0x4000000) == 0 || self->_numOpenedNotificationsSameSlot != *(equalCopy + 27))
     {
       goto LABEL_353;
     }
@@ -5457,7 +5457,7 @@ LABEL_68:
 
   if ((*&v24 & 0x40000) != 0)
   {
-    if ((v25 & 0x40000) == 0 || self->_minsSinceLastCameraAppLaunch1w != *(v4 + 19))
+    if ((v25 & 0x40000) == 0 || self->_minsSinceLastCameraAppLaunch1w != *(equalCopy + 19))
     {
       goto LABEL_353;
     }
@@ -5470,7 +5470,7 @@ LABEL_68:
 
   if ((*&v24 & 0x100000) != 0)
   {
-    if ((v25 & 0x100000) == 0 || self->_minsSinceLastPhotosAppLaunch1w != *(v4 + 21))
+    if ((v25 & 0x100000) == 0 || self->_minsSinceLastPhotosAppLaunch1w != *(equalCopy + 21))
     {
       goto LABEL_353;
     }
@@ -5483,7 +5483,7 @@ LABEL_68:
 
   if ((*&v24 & 0x80000) != 0)
   {
-    if ((v25 & 0x80000) == 0 || self->_minsSinceLastFilesAppLaunch1w != *(v4 + 20))
+    if ((v25 & 0x80000) == 0 || self->_minsSinceLastFilesAppLaunch1w != *(equalCopy + 20))
     {
       goto LABEL_353;
     }
@@ -5496,7 +5496,7 @@ LABEL_68:
 
   if ((*&v24 & 0x10000) != 0)
   {
-    if ((v25 & 0x10000) == 0 || self->_isSleepModeOnCount2w != *(v4 + 17))
+    if ((v25 & 0x10000) == 0 || self->_isSleepModeOnCount2w != *(equalCopy + 17))
     {
       goto LABEL_353;
     }
@@ -5509,7 +5509,7 @@ LABEL_68:
 
   if ((*&v24 & 0x4000) != 0)
   {
-    if ((v25 & 0x4000) == 0 || self->_isDoNotDisturbOnCount2w != *(v4 + 15))
+    if ((v25 & 0x4000) == 0 || self->_isDoNotDisturbOnCount2w != *(equalCopy + 15))
     {
       goto LABEL_353;
     }
@@ -5522,7 +5522,7 @@ LABEL_68:
 
   if ((*&v24 & 0x8000) != 0)
   {
-    if ((v25 & 0x8000) == 0 || self->_isDrivingModeOnCount2w != *(v4 + 16))
+    if ((v25 & 0x8000) == 0 || self->_isDrivingModeOnCount2w != *(equalCopy + 16))
     {
       goto LABEL_353;
     }
@@ -5535,7 +5535,7 @@ LABEL_68:
 
   if ((*&v24 & 2) != 0)
   {
-    if ((v25 & 2) == 0 || self->_appLaunchCount2wMedian != *(v4 + 2))
+    if ((v25 & 2) == 0 || self->_appLaunchCount2wMedian != *(equalCopy + 2))
     {
       goto LABEL_353;
     }
@@ -5548,7 +5548,7 @@ LABEL_68:
 
   if (*&v24)
   {
-    if ((v25 & 1) == 0 || self->_appLaunchCount2wMax != *(v4 + 1))
+    if ((v25 & 1) == 0 || self->_appLaunchCount2wMax != *(equalCopy + 1))
     {
       goto LABEL_353;
     }
@@ -5561,7 +5561,7 @@ LABEL_68:
 
   if ((*&v24 & 0x8000000000) != 0)
   {
-    if ((v25 & 0x8000000000) == 0 || self->_photosLaunchCount2wMedian != *(v4 + 40))
+    if ((v25 & 0x8000000000) == 0 || self->_photosLaunchCount2wMedian != *(equalCopy + 40))
     {
       goto LABEL_353;
     }
@@ -5574,7 +5574,7 @@ LABEL_68:
 
   if ((*&v24 & 0x4000000000) != 0)
   {
-    if ((v25 & 0x4000000000) == 0 || self->_photosLaunchCount2wMax != *(v4 + 39))
+    if ((v25 & 0x4000000000) == 0 || self->_photosLaunchCount2wMax != *(equalCopy + 39))
     {
       goto LABEL_353;
     }
@@ -5587,7 +5587,7 @@ LABEL_68:
 
   if ((*&v24 & 0x100000000000) != 0)
   {
-    if ((v25 & 0x100000000000) == 0 || self->_totalNotificationCount2wMedian != *(v4 + 45))
+    if ((v25 & 0x100000000000) == 0 || self->_totalNotificationCount2wMedian != *(equalCopy + 45))
     {
       goto LABEL_353;
     }
@@ -5600,7 +5600,7 @@ LABEL_68:
 
   if ((*&v24 & 0x80000000000) != 0)
   {
-    if ((v25 & 0x80000000000) == 0 || self->_totalNotificationCount2wMax != *(v4 + 44))
+    if ((v25 & 0x80000000000) == 0 || self->_totalNotificationCount2wMax != *(equalCopy + 44))
     {
       goto LABEL_353;
     }
@@ -5613,7 +5613,7 @@ LABEL_68:
 
   if ((*&v24 & 0x80000000) != 0)
   {
-    if ((v25 & 0x80000000) == 0 || self->_openedNotificationCount2wMedian != *(v4 + 32))
+    if ((v25 & 0x80000000) == 0 || self->_openedNotificationCount2wMedian != *(equalCopy + 32))
     {
       goto LABEL_353;
     }
@@ -5626,7 +5626,7 @@ LABEL_68:
 
   if ((*&v24 & 0x40000000) != 0)
   {
-    if ((v25 & 0x40000000) == 0 || self->_openedNotificationCount2wMax != *(v4 + 31))
+    if ((v25 & 0x40000000) == 0 || self->_openedNotificationCount2wMax != *(equalCopy + 31))
     {
       goto LABEL_353;
     }
@@ -5644,16 +5644,16 @@ LABEL_68:
       goto LABEL_353;
     }
 
-    v29 = v4[500];
+    v29 = equalCopy[500];
     if (self->_buyLabel)
     {
-      if ((v4[500] & 1) == 0)
+      if ((equalCopy[500] & 1) == 0)
       {
         goto LABEL_353;
       }
     }
 
-    else if (v4[500])
+    else if (equalCopy[500])
     {
       goto LABEL_353;
     }
@@ -5666,7 +5666,7 @@ LABEL_68:
 
   if ((*&v24 & 0x200000) != 0)
   {
-    if ((v25 & 0x200000) == 0 || self->_minsUntilICloudBuy != *(v4 + 22))
+    if ((v25 & 0x200000) == 0 || self->_minsUntilICloudBuy != *(equalCopy + 22))
     {
       goto LABEL_353;
     }
@@ -5681,10 +5681,10 @@ LABEL_68:
   {
     if ((v25 & 0x1000000000000000) != 0)
     {
-      v30 = v4[507];
+      v30 = equalCopy[507];
       if (self->_openLabelSubStream)
       {
-        if ((v4[507] & 1) == 0)
+        if ((equalCopy[507] & 1) == 0)
         {
           goto LABEL_353;
         }
@@ -5692,7 +5692,7 @@ LABEL_68:
         goto LABEL_338;
       }
 
-      if ((v4[507] & 1) == 0)
+      if ((equalCopy[507] & 1) == 0)
       {
         goto LABEL_338;
       }
@@ -5711,7 +5711,7 @@ LABEL_353:
 LABEL_338:
   if ((*&v24 & 0x800000) != 0)
   {
-    if ((v25 & 0x800000) == 0 || self->_minsUntilICloudOpenedSubStream != *(v4 + 24))
+    if ((v25 & 0x800000) == 0 || self->_minsUntilICloudOpenedSubStream != *(equalCopy + 24))
     {
       goto LABEL_353;
     }
@@ -5724,7 +5724,7 @@ LABEL_338:
 
   if ((*&v24 & 0x10000000000000) != 0)
   {
-    if ((v25 & 0x10000000000000) == 0 || self->_userTier != *(v4 + 124))
+    if ((v25 & 0x10000000000000) == 0 || self->_userTier != *(equalCopy + 124))
     {
       goto LABEL_353;
     }
@@ -5737,7 +5737,7 @@ LABEL_338:
 
   if ((*&v24 & 0x4000000000000) != 0)
   {
-    if ((v25 & 0x4000000000000) == 0 || self->_oBSOLETETrafficType != *(v4 + 122))
+    if ((v25 & 0x4000000000000) == 0 || self->_oBSOLETETrafficType != *(equalCopy + 122))
     {
       goto LABEL_353;
     }
@@ -6704,26 +6704,26 @@ LABEL_118:
   return v103 ^ v104 ^ v101 ^ v100 ^ v99 ^ v98 ^ v97 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v102 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v33 ^ v34 ^ v35 ^ v36 ^ v37 ^ v38 ^ v39 ^ v40 ^ v41 ^ v42 ^ v43 ^ v44 ^ v45 ^ v46 ^ v47 ^ v48 ^ v49 ^ v50 ^ v51 ^ v52 ^ v53 ^ v54 ^ v55 ^ v56 ^ v57 ^ v58;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 508);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 508);
   if ((v6 & 0x20000000000) != 0)
   {
-    self->_timestampMillis = *(v4 + 42);
+    self->_timestampMillis = *(fromCopy + 42);
     *&self->_has |= 0x20000000000uLL;
-    v6 = *(v4 + 508);
+    v6 = *(fromCopy + 508);
   }
 
   if ((v6 & 0x1000000000000) != 0)
   {
-    self->_hourOfDay = *(v4 + 100);
+    self->_hourOfDay = *(fromCopy + 100);
     *&self->_has |= 0x1000000000000uLL;
   }
 
-  v12 = v4;
-  if (*(v4 + 56))
+  v12 = fromCopy;
+  if (*(fromCopy + 56))
   {
     [(ISOPBSubscriptiondPetMessage *)self setLastOpenedAppId24h:?];
     v5 = v12;

@@ -1,23 +1,23 @@
 @interface NSPersonNameComponentsFormatterPreferences
-+ (id)infoClassFromPreferencesSource:(unint64_t)a3;
-+ (id)mappedPreferencesForPreferences:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5;
++ (id)infoClassFromPreferencesSource:(unint64_t)source;
++ (id)mappedPreferencesForPreferences:(id)preferences from:(unint64_t)from to:(unint64_t)to;
 + (void)_postPreferencesChangedNotification;
-+ (void)_setPreference:(id)a3 toValue:(int64_t)a4 usingExistingGetter:(SEL)a5;
-+ (void)_syncronizeGizmoDefaultWithKey:(id)a3 value:(int64_t)a4;
++ (void)_setPreference:(id)preference toValue:(int64_t)value usingExistingGetter:(SEL)getter;
++ (void)_syncronizeGizmoDefaultWithKey:(id)key value:(int64_t)value;
 @end
 
 @implementation NSPersonNameComponentsFormatterPreferences
 
-+ (void)_setPreference:(id)a3 toValue:(int64_t)a4 usingExistingGetter:(SEL)a5
++ (void)_setPreference:(id)preference toValue:(int64_t)value usingExistingGetter:(SEL)getter
 {
-  key = a3;
-  v8 = [MEMORY[0x277CCAC08] performSelector:a5];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  key = preference;
+  v8 = [MEMORY[0x277CCAC08] performSelector:getter];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:value];
   CFPreferencesSetValue(key, v9, *MEMORY[0x277CBF008], *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-  if (v8 != a4)
+  if (v8 != value)
   {
-    [a1 _syncronizeGizmoDefaultWithKey:key value:a4];
-    [a1 _postPreferencesChangedNotification];
+    [self _syncronizeGizmoDefaultWithKey:key value:value];
+    [self _postPreferencesChangedNotification];
   }
 }
 
@@ -28,16 +28,16 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NSPersonNamePreferencesDidChangeNotification", 0, 0, 1u);
 }
 
-+ (void)_syncronizeGizmoDefaultWithKey:(id)a3 value:(int64_t)a4
++ (void)_syncronizeGizmoDefaultWithKey:(id)key value:(int64_t)value
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   if (getNRPairedDeviceRegistryClass() && getNPSManagerClass())
   {
-    v6 = [getNRPairedDeviceRegistryClass() sharedInstance];
-    v7 = [v6 getActivePairedDevice];
+    sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+    getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-    v8 = v7;
+    v8 = getActivePairedDevice;
     v31 = 0;
     v32 = &v31;
     v33 = 0x2020000000;
@@ -65,7 +65,7 @@
       v13 = objc_alloc_init(getNPSManagerClass());
       if (v12)
       {
-        v14 = [MEMORY[0x277CBEB98] setWithObject:v5];
+        v14 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
         [v13 synchronizeUserDefaultsDomain:@".GlobalPreferences" keys:v14];
         goto LABEL_13;
       }
@@ -99,8 +99,8 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v35 = v5;
-        v18 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+        v35 = keyCopy;
+        v18 = [MEMORY[0x277CCABB0] numberWithInteger:value];
         v36[0] = v18;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
         v14 = [NSPersonNameComponentsFormatterPreferences mappedPreferencesForPreferences:v19 from:0 to:2];
@@ -167,24 +167,24 @@ void __83__NSPersonNameComponentsFormatterPreferences__syncronizeGizmoDefaultWit
   [v12 synchronizeNanoDomain:v11 keys:v14];
 }
 
-+ (id)mappedPreferencesForPreferences:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5
++ (id)mappedPreferencesForPreferences:(id)preferences from:(unint64_t)from to:(unint64_t)to
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a3;
-  v10 = [v8 dictionary];
-  v11 = [a1 infoClassFromPreferencesSource:a4];
-  v12 = [a1 infoClassFromPreferencesSource:a5];
+  preferencesCopy = preferences;
+  dictionary = [v8 dictionary];
+  v11 = [self infoClassFromPreferencesSource:from];
+  v12 = [self infoClassFromPreferencesSource:to];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __86__NSPersonNameComponentsFormatterPreferences_mappedPreferencesForPreferences_from_to___block_invoke;
   v19[3] = &unk_2787A9130;
   v20 = v11;
   v21 = v12;
-  v13 = v10;
+  v13 = dictionary;
   v22 = v13;
   v14 = v12;
   v15 = v11;
-  [v9 enumerateKeysAndObjectsUsingBlock:v19];
+  [preferencesCopy enumerateKeysAndObjectsUsingBlock:v19];
 
   v16 = v22;
   v17 = v13;
@@ -215,16 +215,16 @@ void __86__NSPersonNameComponentsFormatterPreferences_mappedPreferencesForPrefer
   }
 }
 
-+ (id)infoClassFromPreferencesSource:(unint64_t)a3
++ (id)infoClassFromPreferencesSource:(unint64_t)source
 {
-  if (a3 > 2)
+  if (source > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2787A9198[a3];
+    v4 = *off_2787A9198[source];
     v5 = objc_opt_class();
   }
 

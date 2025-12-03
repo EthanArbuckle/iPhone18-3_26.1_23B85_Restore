@@ -4,12 +4,12 @@
 - (RERelevanceEngine)relevanceEngine;
 - (RETrainingContext)attributeContext;
 - (RETrainingContext)init;
-- (void)_configureForRelevanceEngine:(id)a3;
+- (void)_configureForRelevanceEngine:(id)engine;
 - (void)becomeCurrent;
 - (void)dealloc;
 - (void)flushTraining;
-- (void)setAttribute:(id)a3 forKey:(id)a4;
-- (void)setRemoteContext:(id)a3;
+- (void)setAttribute:(id)attribute forKey:(id)key;
+- (void)setRemoteContext:(id)context;
 @end
 
 @implementation RETrainingContext
@@ -48,76 +48,76 @@
 
 - (BOOL)isCurrent
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  v4 = [WeakRetained trainingManager];
-  v5 = [v4 currentTrainingContext];
-  LOBYTE(v2) = v5 == v2;
+  trainingManager = [WeakRetained trainingManager];
+  currentTrainingContext = [trainingManager currentTrainingContext];
+  LOBYTE(selfCopy) = currentTrainingContext == selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)becomeCurrent
 {
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  v3 = [WeakRetained trainingManager];
-  [v3 makeContextCurrent:self];
+  trainingManager = [WeakRetained trainingManager];
+  [trainingManager makeContextCurrent:self];
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4
+- (void)setAttribute:(id)attribute forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  [(REConcurrentDictionary *)self->_attributes setObject:v7 forKeyedSubscript:v6];
+  attributeCopy = attribute;
+  keyCopy = key;
+  [(REConcurrentDictionary *)self->_attributes setObject:attributeCopy forKeyedSubscript:keyCopy];
   [(RETrainingContext *)self setCachedAttributeContext:0];
   if ([(RETrainingContext *)self _wantsAutomaticRemoteContextForwarding])
   {
-    [(RERemoteTrainingContext *)self->_remoteContext setAttribute:v7 forKey:v6];
+    [(RERemoteTrainingContext *)self->_remoteContext setAttribute:attributeCopy forKey:keyCopy];
   }
 }
 
 - (RETrainingContext)attributeContext
 {
-  v3 = [(RETrainingContext *)self cachedAttributeContext];
-  if (!v3)
+  cachedAttributeContext = [(RETrainingContext *)self cachedAttributeContext];
+  if (!cachedAttributeContext)
   {
-    v3 = objc_alloc_init(RETrainingContext);
+    cachedAttributeContext = objc_alloc_init(RETrainingContext);
     WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-    objc_storeWeak(&v3->_relevanceEngine, WeakRetained);
+    objc_storeWeak(&cachedAttributeContext->_relevanceEngine, WeakRetained);
 
     v5 = [(REConcurrentDictionary *)self->_attributes copy];
-    attributes = v3->_attributes;
-    v3->_attributes = v5;
+    attributes = cachedAttributeContext->_attributes;
+    cachedAttributeContext->_attributes = v5;
 
-    [(RETrainingContext *)self setCachedAttributeContext:v3];
+    [(RETrainingContext *)self setCachedAttributeContext:cachedAttributeContext];
   }
 
-  return v3;
+  return cachedAttributeContext;
 }
 
-- (void)_configureForRelevanceEngine:(id)a3
+- (void)_configureForRelevanceEngine:(id)engine
 {
-  v7 = a3;
-  v4 = objc_storeWeak(&self->_relevanceEngine, v7);
+  engineCopy = engine;
+  v4 = objc_storeWeak(&self->_relevanceEngine, engineCopy);
   remoteContext = self->_remoteContext;
   v6 = v4;
-  [(RETrainingContext *)remoteContext _configureForRelevanceEngine:v7];
+  [(RETrainingContext *)remoteContext _configureForRelevanceEngine:engineCopy];
 }
 
 - (void)flushTraining
 {
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  v2 = [WeakRetained trainingManager];
-  [v2 flushTraining];
+  trainingManager = [WeakRetained trainingManager];
+  [trainingManager flushTraining];
 }
 
-- (void)setRemoteContext:(id)a3
+- (void)setRemoteContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(RETrainingContext *)self->_remoteContext _configureForRelevanceEngine:0];
   remoteContext = self->_remoteContext;
-  self->_remoteContext = v4;
-  v6 = v4;
+  self->_remoteContext = contextCopy;
+  v6 = contextCopy;
 
   v7 = self->_remoteContext;
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
@@ -127,9 +127,9 @@
 + (BOOL)isTrainingSimulationActive
 {
   v2 = +[(RESingleton *)RETrainingSimulationCoordinator];
-  v3 = [v2 isActivelyTraining];
+  isActivelyTraining = [v2 isActivelyTraining];
 
-  return v3;
+  return isActivelyTraining;
 }
 
 @end

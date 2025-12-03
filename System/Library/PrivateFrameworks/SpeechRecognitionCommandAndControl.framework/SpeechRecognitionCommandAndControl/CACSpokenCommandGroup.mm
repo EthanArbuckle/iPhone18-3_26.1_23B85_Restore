@@ -1,6 +1,6 @@
 @interface CACSpokenCommandGroup
-- (BOOL)isEqual:(id)a3;
-- (CACSpokenCommandGroup)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CACSpokenCommandGroup)initWithIdentifier:(id)identifier;
 - (NSMutableArray)commandsArray;
 - (NSString)displayString;
 - (id)cloneWithoutCommands;
@@ -9,16 +9,16 @@
 
 @implementation CACSpokenCommandGroup
 
-- (CACSpokenCommandGroup)initWithIdentifier:(id)a3
+- (CACSpokenCommandGroup)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CACSpokenCommandGroup;
   v6 = [(CACSpokenCommandGroup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_isCustom = [(NSString *)v7->_identifier hasPrefix:@"Custom"];
   }
 
@@ -37,11 +37,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   identifier = self->_identifier;
-  v4 = [a3 identifier];
-  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:v4];
+  identifier = [equal identifier];
+  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
   return identifier;
 }

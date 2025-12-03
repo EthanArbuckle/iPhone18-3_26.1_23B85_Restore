@@ -6,11 +6,11 @@
 - (uint64_t)prepareMasterReorderStatementForRelationship:(uint64_t)result;
 - (uint64_t)prepareMasterReorderStatementPart2ForRelationship:(uint64_t)result;
 - (uint64_t)prepareReorderStatementForRelationship:(uint64_t)result;
-- (uint64_t)prepareUpdateStatementWithRow:(uint64_t)a3 originalRow:(const __CFBitVector *)a4 withMask:;
+- (uint64_t)prepareUpdateStatementWithRow:(uint64_t)row originalRow:(const __CFBitVector *)originalRow withMask:;
 - (void)dealloc;
-- (void)initWithStatement:(uint64_t)a3 forAdapter:;
-- (void)prepareDeleteStatementWithRow:(uint64_t)a1;
-- (void)prepareInsertStatementWithRow:(int)a3 includeConstraints:(int)a4 includeOnConflict:(void *)a5 onConflictKeys:;
+- (void)initWithStatement:(uint64_t)statement forAdapter:;
+- (void)prepareDeleteStatementWithRow:(uint64_t)row;
+- (void)prepareInsertStatementWithRow:(int)row includeConstraints:(int)constraints includeOnConflict:(void *)conflict onConflictKeys:;
 @end
 
 @implementation _NSSQLGenerator
@@ -27,7 +27,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_opt_self();
 
@@ -35,21 +35,21 @@
   }
 }
 
-- (void)initWithStatement:(uint64_t)a3 forAdapter:
+- (void)initWithStatement:(uint64_t)statement forAdapter:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = _NSSQLGenerator;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = statement;
     v5[3] = objc_alloc_init(MEMORY[0x1E696AD60]);
     v6[4] = objc_alloc_init(MEMORY[0x1E696AD60]);
     v6[5] = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -58,27 +58,27 @@
   return v6;
 }
 
-- (void)prepareInsertStatementWithRow:(int)a3 includeConstraints:(int)a4 includeOnConflict:(void *)a5 onConflictKeys:
+- (void)prepareInsertStatementWithRow:(int)row includeConstraints:(int)constraints includeOnConflict:(void *)conflict onConflictKeys:
 {
   v101 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (!a2 || (*(a2 + 16) & 1) != 0)
     {
-      v10 = 0;
+      _storeInfo1 = 0;
     }
 
     else
     {
       v9 = atomic_load((a2 + 40));
-      v10 = [*(v9 + 16) _storeInfo1];
+      _storeInfo1 = [*(v9 + 16) _storeInfo1];
     }
 
-    v89 = v10;
-    v84 = [v10 foreignKeyColumns];
-    v11 = [v89 foreignEntityKeyColumns];
-    v12 = [v89 foreignOrderKeyColumns];
-    v85 = [v89 attributeColumns];
+    v89 = _storeInfo1;
+    foreignKeyColumns = [_storeInfo1 foreignKeyColumns];
+    foreignEntityKeyColumns = [v89 foreignEntityKeyColumns];
+    foreignOrderKeyColumns = [v89 foreignOrderKeyColumns];
+    attributeColumns = [v89 attributeColumns];
     if (v89)
     {
       v13 = v89[16];
@@ -94,13 +94,13 @@
       v79 = 0;
     }
 
-    v87 = [v85 count];
-    v15 = [v11 count];
-    v16 = [v84 count];
-    v81 = v12;
-    v82 = [v12 count];
-    v77 = a4;
-    if (a3 ^ 1 | a4)
+    v87 = [attributeColumns count];
+    v15 = [foreignEntityKeyColumns count];
+    v16 = [foreignKeyColumns count];
+    v81 = foreignOrderKeyColumns;
+    v82 = [foreignOrderKeyColumns count];
+    constraintsCopy = constraints;
+    if (row ^ 1 | constraints)
     {
       v17 = @"INSERT INTO ";
     }
@@ -110,24 +110,24 @@
       v17 = @"INSERT OR IGNORE INTO ";
     }
 
-    [*(a1 + 24) appendString:v17];
-    [*(a1 + 24) appendString:{objc_msgSend(v89, "tableName")}];
-    objc_msgSend(*(a1 + 24), "appendString:", @"(");
-    [*(a1 + 24) appendString:{objc_msgSend(v78, "columnName")}];
-    [*(a1 + 24) appendString:{@", "}];
+    [*(self + 24) appendString:v17];
+    [*(self + 24) appendString:{objc_msgSend(v89, "tableName")}];
+    objc_msgSend(*(self + 24), "appendString:", @"(");
+    [*(self + 24) appendString:{objc_msgSend(v78, "columnName")}];
+    [*(self + 24) appendString:{@", "}];
     v76 = v14;
-    [*(a1 + 24) appendString:{objc_msgSend(v14, "columnName")}];
-    [*(a1 + 24) appendString:{@", "}];
-    [*(a1 + 24) appendString:{objc_msgSend(v79, "columnName")}];
+    [*(self + 24) appendString:{objc_msgSend(v14, "columnName")}];
+    [*(self + 24) appendString:{@", "}];
+    [*(self + 24) appendString:{objc_msgSend(v79, "columnName")}];
     if (v16)
     {
       for (i = 0; i != v16; ++i)
       {
-        v19 = [v84 objectAtIndex:i];
-        if (![objc_msgSend(v19 "toOneRelationship")] || a3)
+        v19 = [foreignKeyColumns objectAtIndex:i];
+        if (![objc_msgSend(v19 "toOneRelationship")] || row)
         {
-          [*(a1 + 24) appendString:{@", "}];
-          [*(a1 + 24) appendString:{objc_msgSend(v19, "columnName")}];
+          [*(self + 24) appendString:{@", "}];
+          [*(self + 24) appendString:{objc_msgSend(v19, "columnName")}];
         }
       }
     }
@@ -136,9 +136,9 @@
     {
       for (j = 0; j != v15; ++j)
       {
-        v21 = [v11 objectAtIndex:j];
-        [*(a1 + 24) appendString:{@", "}];
-        [*(a1 + 24) appendString:{objc_msgSend(v21, "columnName")}];
+        v21 = [foreignEntityKeyColumns objectAtIndex:j];
+        [*(self + 24) appendString:{@", "}];
+        [*(self + 24) appendString:{objc_msgSend(v21, "columnName")}];
       }
     }
 
@@ -148,8 +148,8 @@
       for (k = 0; k != v82; ++k)
       {
         v23 = [v81 objectAtIndex:k];
-        [*(a1 + 24) appendString:{@", "}];
-        [*(a1 + 24) appendString:{objc_msgSend(v23, "columnName")}];
+        [*(self + 24) appendString:{@", "}];
+        [*(self + 24) appendString:{objc_msgSend(v23, "columnName")}];
       }
     }
 
@@ -157,30 +157,30 @@
     {
       for (m = 0; m != v87; ++m)
       {
-        v25 = [v85 objectAtIndex:m];
-        if (![v25 isConstrained] || a3)
+        v25 = [attributeColumns objectAtIndex:m];
+        if (![v25 isConstrained] || row)
         {
-          [*(a1 + 24) appendString:{@", "}];
-          [*(a1 + 24) appendString:{objc_msgSend(v25, "columnName")}];
+          [*(self + 24) appendString:{@", "}];
+          [*(self + 24) appendString:{objc_msgSend(v25, "columnName")}];
         }
       }
     }
 
-    [*(a1 + 24) appendString:{@" VALUES(?, ?, ?")}];
+    [*(self + 24) appendString:{@" VALUES(?, ?, ?")}];
     v26 = [NSSQLBindVariable alloc];
     if (a2)
     {
       v27 = atomic_load((a2 + 40));
-      v28 = [*(v27 + 16) _referenceData64];
+      _referenceData64 = [*(v27 + 16) _referenceData64];
     }
 
     else
     {
-      v28 = 0;
+      _referenceData64 = 0;
     }
 
-    v29 = -[NSSQLBindVariable initWithInt64:sqlType:](v26, "initWithInt64:sqlType:", v28, [v78 sqlType]);
-    [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v29];
+    v29 = -[NSSQLBindVariable initWithInt64:sqlType:](v26, "initWithInt64:sqlType:", _referenceData64, [v78 sqlType]);
+    [(NSSQLiteStatement *)*(self + 8) addBindVariable:v29];
 
     v30 = [NSSQLBindVariable alloc];
     if (a2 && (v31 = atomic_load((a2 + 40)), (v32 = [*(v31 + 16) _storeInfo1]) != 0))
@@ -194,7 +194,7 @@
     }
 
     v34 = -[NSSQLBindVariable initWithUnsignedInt:sqlType:](v30, "initWithUnsignedInt:sqlType:", v33, [v76 sqlType]);
-    [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v34];
+    [(NSSQLiteStatement *)*(self + 8) addBindVariable:v34];
 
     v35 = [NSSQLBindVariable alloc];
     if (a2)
@@ -209,20 +209,20 @@
     }
 
     v38 = -[NSSQLBindVariable initWithInt64:sqlType:](v35, "initWithInt64:sqlType:", v37, [v79 sqlType]);
-    [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v38];
+    [(NSSQLiteStatement *)*(self + 8) addBindVariable:v38];
 
     if (v16)
     {
       for (n = 0; n != v16; ++n)
       {
-        v40 = [v84 objectAtIndex:n];
-        if (![objc_msgSend(v40 "toOneRelationship")] || a3)
+        v40 = [foreignKeyColumns objectAtIndex:n];
+        if (![objc_msgSend(v40 "toOneRelationship")] || row)
         {
           v41 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", -[NSSQLRow foreignKeyForSlot:](a2, [v40 slot]), objc_msgSend(v40, "sqlType"));
-          [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v41];
+          [(NSSQLiteStatement *)*(self + 8) addBindVariable:v41];
 
-          [*(a1 + 24) appendString:{@", "}];
-          [*(a1 + 24) appendString:@"?"];
+          [*(self + 24) appendString:{@", "}];
+          [*(self + 24) appendString:@"?"];
         }
       }
     }
@@ -232,11 +232,11 @@
       v42 = 0;
       do
       {
-        v43 = [v11 objectAtIndex:v42];
-        v44 = [v43 slot];
+        v43 = [foreignEntityKeyColumns objectAtIndex:v42];
+        slot = [v43 slot];
         if (a2)
         {
-          v45 = *(a2 + _NSSQLRowInstanceSize + ((4 * *(a2 + 16)) & 0x1FFF8) + ((*(a2 + 16) >> 13) & 0xFFFC) + 2 * v44);
+          v45 = *(a2 + _NSSQLRowInstanceSize + ((4 * *(a2 + 16)) & 0x1FFF8) + ((*(a2 + 16) >> 13) & 0xFFFC) + 2 * slot);
         }
 
         else
@@ -245,10 +245,10 @@
         }
 
         v46 = -[NSSQLBindVariable initWithUnsignedInt:sqlType:]([NSSQLBindVariable alloc], "initWithUnsignedInt:sqlType:", v45, [v43 sqlType]);
-        [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v46];
+        [(NSSQLiteStatement *)*(self + 8) addBindVariable:v46];
 
-        [*(a1 + 24) appendString:{@", "}];
-        [*(a1 + 24) appendString:@"?"];
+        [*(self + 24) appendString:{@", "}];
+        [*(self + 24) appendString:@"?"];
         ++v42;
       }
 
@@ -260,10 +260,10 @@
       for (ii = 0; ii != v82; ++ii)
       {
         v48 = [v81 objectAtIndex:ii];
-        v49 = [v48 slot];
+        slot2 = [v48 slot];
         if (a2)
         {
-          v50 = *(a2 + _NSSQLRowInstanceSize + ((4 * *(a2 + 16)) & 0x1FFF8) + 4 * v49);
+          v50 = *(a2 + _NSSQLRowInstanceSize + ((4 * *(a2 + 16)) & 0x1FFF8) + 4 * slot2);
         }
 
         else
@@ -272,25 +272,25 @@
         }
 
         v51 = -[NSSQLBindVariable initWithUnsignedInt:sqlType:]([NSSQLBindVariable alloc], "initWithUnsignedInt:sqlType:", v50, [v48 sqlType]);
-        [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v51];
+        [(NSSQLiteStatement *)*(self + 8) addBindVariable:v51];
 
-        [*(a1 + 24) appendString:{@", "}];
-        [*(a1 + 24) appendString:@"?"];
+        [*(self + 24) appendString:{@", "}];
+        [*(self + 24) appendString:@"?"];
       }
     }
 
-    v52 = a3;
+    rowCopy2 = row;
     if (v87)
     {
       for (jj = 0; jj != v87; ++jj)
       {
-        v54 = [v85 objectAtIndex:jj];
-        if (![v54 isConstrained] || v52)
+        v54 = [attributeColumns objectAtIndex:jj];
+        if (![v54 isConstrained] || rowCopy2)
         {
-          v55 = [v54 attributeDescription];
-          if (v55)
+          attributeDescription = [v54 attributeDescription];
+          if (attributeDescription)
           {
-            v56 = [v55 superCompositeAttribute] != 0;
+            v56 = [attributeDescription superCompositeAttribute] != 0;
           }
 
           else
@@ -305,17 +305,17 @@
           }
 
           v58 = -[NSSQLBindVariable initWithValue:sqlType:propertyDescription:]([NSSQLBindVariable alloc], "initWithValue:sqlType:propertyDescription:", v57, [v54 sqlType], objc_msgSend(v54, "attributeDescription"));
-          [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v58];
+          [(NSSQLiteStatement *)*(self + 8) addBindVariable:v58];
 
-          [*(a1 + 24) appendString:{@", "}];
-          [*(a1 + 24) appendString:@"?"];
-          v52 = a3;
+          [*(self + 24) appendString:{@", "}];
+          [*(self + 24) appendString:@"?"];
+          rowCopy2 = row;
         }
       }
     }
 
-    [*(a1 + 24) appendString:@""]);
-    if (v77)
+    [*(self + 24) appendString:@""]);
+    if (constraintsCopy)
     {
       v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (v89)
@@ -361,9 +361,9 @@
 
       if ([v59 count])
       {
-        if (![a5 count])
+        if (![conflict count])
         {
-          a5 = [objc_msgSend(v89 "attributes")];
+          conflict = [objc_msgSend(v89 "attributes")];
         }
 
         v92 = 0u;
@@ -384,8 +384,8 @@
               }
 
               v67 = *(*(&v90 + 1) + 8 * mm);
-              [*(a1 + 24) appendString:@" ON CONFLICT"];
-              objc_msgSend(*(a1 + 24), "appendString:", @"(");
+              [*(self + 24) appendString:@" ON CONFLICT"];
+              objc_msgSend(*(self + 24), "appendString:", @"(");
               if ([v67 count])
               {
                 v68 = 0;
@@ -394,24 +394,24 @@
                   v69 = [v67 objectAtIndex:v68];
                   if (v68)
                   {
-                    [*(a1 + 24) appendString:{@", "}];
+                    [*(self + 24) appendString:{@", "}];
                   }
 
-                  [*(a1 + 24) appendString:{objc_msgSend(v69, "columnName")}];
+                  [*(self + 24) appendString:{objc_msgSend(v69, "columnName")}];
                   ++v68;
                 }
 
                 while ([v67 count] > v68);
               }
 
-              [*(a1 + 24) appendString:@""]);
-              [*(a1 + 24) appendString:@" DO UPDATE SET Z_OPT = Z_OPT+1"];
-              if ([a5 count])
+              [*(self + 24) appendString:@""]);
+              [*(self + 24) appendString:@" DO UPDATE SET Z_OPT = Z_OPT+1"];
+              if ([conflict count])
               {
                 v70 = 0;
                 do
                 {
-                  v71 = [a5 objectAtIndexedSubscript:v70];
+                  v71 = [conflict objectAtIndexedSubscript:v70];
                   if (v89)
                   {
                     v72 = v89[5];
@@ -425,21 +425,21 @@
                   v73 = [v72 objectForKey:v71];
                   if ([v73 propertyType] == 1)
                   {
-                    v74 = [v73 columnName];
+                    columnName = [v73 columnName];
                     if (([v67 containsObject:v73] & 1) == 0)
                     {
-                      [*(a1 + 24) appendString:{@", "}];
-                      [*(a1 + 24) appendString:v74];
-                      [*(a1 + 24) appendString:@" = "];
-                      [*(a1 + 24) appendString:@"excluded."];
-                      [*(a1 + 24) appendString:v74];
+                      [*(self + 24) appendString:{@", "}];
+                      [*(self + 24) appendString:columnName];
+                      [*(self + 24) appendString:@" = "];
+                      [*(self + 24) appendString:@"excluded."];
+                      [*(self + 24) appendString:columnName];
                     }
                   }
 
                   ++v70;
                 }
 
-                while ([a5 count] > v70);
+                while ([conflict count] > v70);
               }
             }
 
@@ -476,12 +476,12 @@
     [*(v3 + 24) appendString:{-[__CFString columnName](a2, "columnName")}];
     [*(v3 + 24) appendString:{@", "}];
     [*(v3 + 24) appendString:-[NSSQLManyToMany inverseColumnName](a2)];
-    v5 = [(NSSQLManyToMany *)a2 inverseOrderColumnName];
+    inverseOrderColumnName = [(NSSQLManyToMany *)a2 inverseOrderColumnName];
     v6 = *(v3 + 24);
-    if (v5)
+    if (inverseOrderColumnName)
     {
       [v6 appendString:{@", "}];
-      [*(v3 + 24) appendString:v5];
+      [*(v3 + 24) appendString:inverseOrderColumnName];
       v7 = *(v3 + 24);
       if (v4)
       {
@@ -636,20 +636,20 @@
     v3 = result;
     if (!a2 || (*(a2 + 16) & 1) != 0)
     {
-      v5 = 0;
+      _storeInfo1 = 0;
     }
 
     else
     {
       v4 = atomic_load((a2 + 40));
-      v5 = [*(v4 + 16) _storeInfo1];
+      _storeInfo1 = [*(v4 + 16) _storeInfo1];
     }
 
-    v6 = [v5 foreignKeyColumns];
-    obj = [v5 foreignEntityKeyColumns];
-    v38 = [v5 foreignOrderKeyColumns];
+    foreignKeyColumns = [_storeInfo1 foreignKeyColumns];
+    obj = [_storeInfo1 foreignEntityKeyColumns];
+    foreignOrderKeyColumns = [_storeInfo1 foreignOrderKeyColumns];
     [*(v3 + 24) appendString:@"UPDATE OR FAIL "];
-    [*(v3 + 24) appendString:{objc_msgSend(v5, "tableName")}];
+    [*(v3 + 24) appendString:{objc_msgSend(_storeInfo1, "tableName")}];
     [*(v3 + 24) appendString:@" SET "];
     if (a2)
     {
@@ -666,8 +666,8 @@
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
-    v39 = v5;
+    v7 = [foreignKeyColumns countByEnumeratingWithState:&v48 objects:v55 count:16];
+    v39 = _storeInfo1;
     if (v7)
     {
       v8 = v7;
@@ -681,7 +681,7 @@
         {
           if (*v49 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(foreignKeyColumns);
           }
 
           v14 = *(*(&v48 + 1) + 8 * i);
@@ -704,7 +704,7 @@
           ++v9;
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v48 objects:v55 count:16];
+        v8 = [foreignKeyColumns countByEnumeratingWithState:&v48 objects:v55 count:16];
       }
 
       while (v8);
@@ -717,7 +717,7 @@
     }
 
     v16 = [obj count];
-    v17 = [v38 count];
+    v17 = [foreignOrderKeyColumns count];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -743,10 +743,10 @@
           v24 = *(*(&v44 + 1) + 8 * v23);
           if (CFBitVectorGetBitAtIndex(v22, v20))
           {
-            v25 = [v24 attributeDescription];
-            if (v25)
+            attributeDescription = [v24 attributeDescription];
+            if (attributeDescription)
             {
-              v26 = [v25 superCompositeAttribute] != 0;
+              v26 = [attributeDescription superCompositeAttribute] != 0;
             }
 
             else
@@ -791,18 +791,18 @@
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v39 name];
+        name = [v39 name];
         *buf = 138412290;
-        v53 = v36;
+        v53 = name;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Updating a constrained entity generated an UPDATE statement with no columns on entity %@\n", buf, 0xCu);
       }
 
       v31 = _PFLogGetLogStream(17);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
-        v37 = [v39 name];
+        name2 = [v39 name];
         *buf = 138412290;
-        v53 = v37;
+        v53 = name2;
         _os_log_fault_impl(&dword_18565F000, v31, OS_LOG_TYPE_FAULT, "CoreData: Updating a constrained entity generated an UPDATE statement with no columns on entity %@", buf, 0xCu);
       }
     }
@@ -815,15 +815,15 @@
     if (v42)
     {
       v32 = atomic_load(v42 + 5);
-      v33 = [*(v32 + 16) _referenceData64];
+      _referenceData64 = [*(v32 + 16) _referenceData64];
     }
 
     else
     {
-      v33 = 0;
+      _referenceData64 = 0;
     }
 
-    v34 = [[NSSQLBindVariable alloc] initWithInt64:v33 sqlType:3];
+    v34 = [[NSSQLBindVariable alloc] initWithInt64:_referenceData64 sqlType:3];
     [(NSSQLiteStatement *)*(v3 + 8) addBindVariable:v34];
 
     result = [*(v3 + 24) appendString:@" WHERE Z_PK = ?"];
@@ -833,7 +833,7 @@
   return result;
 }
 
-- (uint64_t)prepareUpdateStatementWithRow:(uint64_t)a3 originalRow:(const __CFBitVector *)a4 withMask:
+- (uint64_t)prepareUpdateStatementWithRow:(uint64_t)row originalRow:(const __CFBitVector *)originalRow withMask:
 {
   v86 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -841,33 +841,33 @@
     goto LABEL_85;
   }
 
-  v4 = a2;
+  _referenceData64 = a2;
   v5 = result;
   if (!a2 || (*(a2 + 16) & 1) != 0)
   {
-    v7 = 0;
+    _storeInfo1 = 0;
   }
 
   else
   {
     v6 = atomic_load((a2 + 40));
-    v7 = [*(v6 + 16) _storeInfo1];
+    _storeInfo1 = [*(v6 + 16) _storeInfo1];
   }
 
-  v8 = [v7 foreignKeyColumns];
-  v61 = [v7 foreignEntityKeyColumns];
-  v63 = [v7 foreignOrderKeyColumns];
-  v62 = [v7 attributeColumns];
+  foreignKeyColumns = [_storeInfo1 foreignKeyColumns];
+  foreignEntityKeyColumns = [_storeInfo1 foreignEntityKeyColumns];
+  foreignOrderKeyColumns = [_storeInfo1 foreignOrderKeyColumns];
+  attributeColumns = [_storeInfo1 attributeColumns];
   [*(v5 + 24) appendString:@"UPDATE OR FAIL "];
-  v58 = v7;
-  [*(v5 + 24) appendString:{objc_msgSend(v7, "tableName")}];
+  v58 = _storeInfo1;
+  [*(v5 + 24) appendString:{objc_msgSend(_storeInfo1, "tableName")}];
   [*(v5 + 24) appendString:@" SET "];
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v78 objects:v85 count:16];
+  obj = foreignKeyColumns;
+  v9 = [foreignKeyColumns countByEnumeratingWithState:&v78 objects:v85 count:16];
   if (v9)
   {
     v10 = v9;
@@ -884,9 +884,9 @@
         }
 
         v15 = *(*(&v78 + 1) + 8 * i);
-        if (CFBitVectorGetBitAtIndex(a4, v11))
+        if (CFBitVectorGetBitAtIndex(originalRow, v11))
         {
-          v16 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", -[NSSQLRow foreignKeyForSlot:](v4, [v15 slot]), objc_msgSend(v15, "sqlType"));
+          v16 = -[NSSQLBindVariable initWithInt64:sqlType:]([NSSQLBindVariable alloc], "initWithInt64:sqlType:", -[NSSQLRow foreignKeyForSlot:](_referenceData64, [v15 slot]), objc_msgSend(v15, "sqlType"));
           [(NSSQLiteStatement *)*(v5 + 8) addBindVariable:v16];
 
           if ((v13 & 1) == 0)
@@ -918,7 +918,7 @@
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v17 = [v61 countByEnumeratingWithState:&v74 objects:v84 count:16];
+  v17 = [foreignEntityKeyColumns countByEnumeratingWithState:&v74 objects:v84 count:16];
   if (v17)
   {
     v18 = v17;
@@ -930,16 +930,16 @@
       {
         if (*v75 != v19)
         {
-          objc_enumerationMutation(v61);
+          objc_enumerationMutation(foreignEntityKeyColumns);
         }
 
         v21 = *(*(&v74 + 1) + 8 * v20);
-        if (CFBitVectorGetBitAtIndex(a4, v11))
+        if (CFBitVectorGetBitAtIndex(originalRow, v11))
         {
-          v22 = [v21 slot];
-          if (v4)
+          slot = [v21 slot];
+          if (_referenceData64)
           {
-            v23 = *(v4 + _NSSQLRowInstanceSize + ((4 * *(v4 + 16)) & 0x1FFF8) + ((*(v4 + 16) >> 13) & 0xFFFC) + 2 * v22);
+            v23 = *(_referenceData64 + _NSSQLRowInstanceSize + ((4 * *(_referenceData64 + 16)) & 0x1FFF8) + ((*(_referenceData64 + 16) >> 13) & 0xFFFC) + 2 * slot);
           }
 
           else
@@ -965,7 +965,7 @@
       }
 
       while (v18 != v20);
-      v25 = [v61 countByEnumeratingWithState:&v74 objects:v84 count:16];
+      v25 = [foreignEntityKeyColumns countByEnumeratingWithState:&v74 objects:v84 count:16];
       v18 = v25;
     }
 
@@ -976,7 +976,7 @@
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v26 = [v63 countByEnumeratingWithState:&v70 objects:v83 count:16];
+  v26 = [foreignOrderKeyColumns countByEnumeratingWithState:&v70 objects:v83 count:16];
   if (v26)
   {
     v27 = v26;
@@ -988,16 +988,16 @@
       {
         if (*v71 != v28)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(foreignOrderKeyColumns);
         }
 
         v30 = *(*(&v70 + 1) + 8 * v29);
-        if (CFBitVectorGetBitAtIndex(a4, v11))
+        if (CFBitVectorGetBitAtIndex(originalRow, v11))
         {
-          v31 = [v30 slot];
-          if (v4)
+          slot2 = [v30 slot];
+          if (_referenceData64)
           {
-            v32 = *(v4 + _NSSQLRowInstanceSize + ((4 * *(v4 + 16)) & 0x1FFF8) + 4 * v31);
+            v32 = *(_referenceData64 + _NSSQLRowInstanceSize + ((4 * *(_referenceData64 + 16)) & 0x1FFF8) + 4 * slot2);
           }
 
           else
@@ -1023,7 +1023,7 @@
       }
 
       while (v27 != v29);
-      v34 = [v63 countByEnumeratingWithState:&v70 objects:v83 count:16];
+      v34 = [foreignOrderKeyColumns countByEnumeratingWithState:&v70 objects:v83 count:16];
       v27 = v34;
     }
 
@@ -1034,7 +1034,7 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v35 = [v62 countByEnumeratingWithState:&v66 objects:v82 count:16];
+  v35 = [attributeColumns countByEnumeratingWithState:&v66 objects:v82 count:16];
   if (v35)
   {
     v36 = v35;
@@ -1046,11 +1046,11 @@
       {
         if (*v67 != v64)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(attributeColumns);
         }
 
         v38 = *(*(&v66 + 1) + 8 * v37);
-        if (CFBitVectorGetBitAtIndex(a4, v11))
+        if (CFBitVectorGetBitAtIndex(originalRow, v11))
         {
           if ([v38 isConstrained])
           {
@@ -1059,10 +1059,10 @@
 
           else
           {
-            v40 = [v38 attributeDescription];
-            if (v40)
+            attributeDescription = [v38 attributeDescription];
+            if (attributeDescription)
             {
-              v41 = [v40 superCompositeAttribute] != 0;
+              v41 = [attributeDescription superCompositeAttribute] != 0;
             }
 
             else
@@ -1070,7 +1070,7 @@
               v41 = 0;
             }
 
-            v39 = -[NSSQLRow attributeValueForSlot:](v4, [v38 slot]);
+            v39 = -[NSSQLRow attributeValueForSlot:](_referenceData64, [v38 slot]);
             if (v41)
             {
               v39 = [v39 valueForKeyPath:{-[NSPropertyDescription _elementPath](objc_msgSend(v38, "propertyDescription"))}];
@@ -1095,7 +1095,7 @@
       }
 
       while (v36 != v37);
-      v43 = [v62 countByEnumeratingWithState:&v66 objects:v82 count:16];
+      v43 = [attributeColumns countByEnumeratingWithState:&v66 objects:v82 count:16];
       v36 = v43;
     }
 
@@ -1112,9 +1112,9 @@
     v44 = 0;
   }
 
-  if (a3)
+  if (row)
   {
-    v45 = atomic_load((a3 + 40));
+    v45 = atomic_load((row + 40));
     v46 = *(v45 + 12) + 1;
   }
 
@@ -1123,11 +1123,11 @@
     v46 = 1;
   }
 
-  [v4 setOptLock:v46];
+  [_referenceData64 setOptLock:v46];
   v47 = [NSSQLBindVariable alloc];
-  if (v4)
+  if (_referenceData64)
   {
-    v48 = atomic_load((v4 + 40));
+    v48 = atomic_load((_referenceData64 + 40));
     v49 = *(v48 + 12);
   }
 
@@ -1147,10 +1147,10 @@
   [*(v5 + 24) appendString:{objc_msgSend(v44, "columnName")}];
   [*(v5 + 24) appendString:@" = ?"];
   [*(v5 + 24) appendString:@" "];
-  if (!a3)
+  if (!row)
   {
     v52 = 0;
-    if (!v4)
+    if (!_referenceData64)
     {
       goto LABEL_80;
     }
@@ -1158,13 +1158,13 @@
     goto LABEL_79;
   }
 
-  v51 = atomic_load((a3 + 40));
+  v51 = atomic_load((row + 40));
   v52 = *(v51 + 12);
-  if (v4)
+  if (_referenceData64)
   {
 LABEL_79:
-    v53 = atomic_load((v4 + 40));
-    v4 = [*(v53 + 16) _referenceData64];
+    v53 = atomic_load((_referenceData64 + 40));
+    _referenceData64 = [*(v53 + 16) _referenceData64];
   }
 
 LABEL_80:
@@ -1178,7 +1178,7 @@ LABEL_80:
     v54 = @" WHERE Z_PK = ? AND (Z_OPT = ? OR Z_OPT IS NULL)";
   }
 
-  v55 = [[NSSQLBindVariable alloc] initWithInt64:v4 sqlType:3];
+  v55 = [[NSSQLBindVariable alloc] initWithInt64:_referenceData64 sqlType:3];
   [(NSSQLiteStatement *)*(v5 + 8) addBindVariable:v55];
 
   v56 = [[NSSQLBindVariable alloc] initWithInt64:v52 sqlType:3];
@@ -1196,28 +1196,28 @@ LABEL_85:
   return result;
 }
 
-- (void)prepareDeleteStatementWithRow:(uint64_t)a1
+- (void)prepareDeleteStatementWithRow:(uint64_t)row
 {
-  if (a1)
+  if (row)
   {
     v2 = a2;
     if (!a2 || (*(a2 + 16) & 1) != 0)
     {
-      v5 = 0;
+      _storeInfo1 = 0;
     }
 
     else
     {
       v4 = atomic_load((a2 + 40));
-      v5 = [*(v4 + 16) _storeInfo1];
+      _storeInfo1 = [*(v4 + 16) _storeInfo1];
     }
 
-    [*(a1 + 24) appendString:@"DELETE FROM "];
-    [*(a1 + 24) appendString:{objc_msgSend(objc_msgSend(*(a1 + 8), "entity"), "tableName")}];
-    if (v5)
+    [*(row + 24) appendString:@"DELETE FROM "];
+    [*(row + 24) appendString:{objc_msgSend(objc_msgSend(*(row + 8), "entity"), "tableName")}];
+    if (_storeInfo1)
     {
-      v6 = v5[16];
-      v5 = v5[18];
+      v6 = _storeInfo1[16];
+      _storeInfo1 = _storeInfo1[18];
     }
 
     else
@@ -1225,21 +1225,21 @@ LABEL_85:
       v6 = 0;
     }
 
-    [*(a1 + 24) appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @" WHERE %@ = ? AND %@ = ?", objc_msgSend(v6, "columnName"), objc_msgSend(v5, "columnName"))}];
+    [*(row + 24) appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @" WHERE %@ = ? AND %@ = ?", objc_msgSend(v6, "columnName"), objc_msgSend(_storeInfo1, "columnName"))}];
     v7 = [NSSQLBindVariable alloc];
     if (v2)
     {
       v8 = atomic_load((v2 + 40));
-      v9 = [*(v8 + 16) _referenceData64];
+      _referenceData64 = [*(v8 + 16) _referenceData64];
     }
 
     else
     {
-      v9 = 0;
+      _referenceData64 = 0;
     }
 
-    v10 = -[NSSQLBindVariable initWithInt64:sqlType:](v7, "initWithInt64:sqlType:", v9, [v6 sqlType]);
-    [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v10];
+    v10 = -[NSSQLBindVariable initWithInt64:sqlType:](v7, "initWithInt64:sqlType:", _referenceData64, [v6 sqlType]);
+    [(NSSQLiteStatement *)*(row + 8) addBindVariable:v10];
 
     v11 = [NSSQLBindVariable alloc];
     if (v2)
@@ -1248,8 +1248,8 @@ LABEL_85:
       v2 = *(v12 + 12);
     }
 
-    v13 = -[NSSQLBindVariable initWithInt64:sqlType:](v11, "initWithInt64:sqlType:", v2, [v5 sqlType]);
-    [(NSSQLiteStatement *)*(a1 + 8) addBindVariable:v13];
+    v13 = -[NSSQLBindVariable initWithInt64:sqlType:](v11, "initWithInt64:sqlType:", v2, [_storeInfo1 sqlType]);
+    [(NSSQLiteStatement *)*(row + 8) addBindVariable:v13];
   }
 }
 

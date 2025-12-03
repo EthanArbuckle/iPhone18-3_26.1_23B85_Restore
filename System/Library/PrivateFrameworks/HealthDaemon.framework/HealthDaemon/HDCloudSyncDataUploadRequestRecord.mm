@@ -1,53 +1,53 @@
 @interface HDCloudSyncDataUploadRequestRecord
-+ (BOOL)isDataUploadRequestRecord:(id)a3;
-+ (HDCloudSyncDataUploadRequestRecord)recordWithCKRecord:(id)a3 error:(id *)a4;
-+ (id)recordForZoneID:(id)a3;
-+ (id)recordIDWithZoneID:(id)a3;
++ (BOOL)isDataUploadRequestRecord:(id)record;
++ (HDCloudSyncDataUploadRequestRecord)recordWithCKRecord:(id)record error:(id *)error;
++ (id)recordForZoneID:(id)d;
++ (id)recordIDWithZoneID:(id)d;
 - (id)description;
 @end
 
 @implementation HDCloudSyncDataUploadRequestRecord
 
-+ (id)recordIDWithZoneID:(id)a3
++ (id)recordIDWithZoneID:(id)d
 {
   v3 = MEMORY[0x277CBC5D0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncDataUploadRequest" zoneID:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncDataUploadRequest" zoneID:dCopy];
 
   return v5;
 }
 
-+ (BOOL)isDataUploadRequestRecord:(id)a3
++ (BOOL)isDataUploadRequestRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncDataUploadRequestRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncDataUploadRequestRecord"];
 
   return v4;
 }
 
-+ (id)recordForZoneID:(id)a3
++ (id)recordForZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() recordIDWithZoneID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() recordIDWithZoneID:dCopy];
 
   v6 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncDataUploadRequestRecord" recordID:v5];
-  v7 = [[a1 alloc] initWithCKRecord:v6 schemaVersion:1];
+  v7 = [[self alloc] initWithCKRecord:v6 schemaVersion:1];
 
   return v7;
 }
 
-+ (HDCloudSyncDataUploadRequestRecord)recordWithCKRecord:(id)a3 error:(id *)a4
++ (HDCloudSyncDataUploadRequestRecord)recordWithCKRecord:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 recordType];
-  v9 = [v8 isEqualToString:@"CloudSyncDataUploadRequestRecord"];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v9 = [recordType isEqualToString:@"CloudSyncDataUploadRequestRecord"];
 
   if (v9)
   {
-    v10 = [v7 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
-    if (v10)
+    recordType2 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
+    if (recordType2)
     {
-      v11 = [[a1 alloc] initWithCKRecord:v7 schemaVersion:{objc_msgSend(v10, "integerValue")}];
+      v11 = [[self alloc] initWithCKRecord:recordCopy schemaVersion:{objc_msgSend(recordType2, "integerValue")}];
       goto LABEL_10;
     }
   }
@@ -56,14 +56,14 @@
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = objc_opt_class();
-    v10 = [v7 recordType];
-    v14 = [v12 hk_errorForInvalidArgument:@"@" class:v13 selector:a2 format:{@"record has type (%@), but expected (%@)", v10, @"CloudSyncDataUploadRequestRecord"}];
+    recordType2 = [recordCopy recordType];
+    v14 = [v12 hk_errorForInvalidArgument:@"@" class:v13 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType2, @"CloudSyncDataUploadRequestRecord"}];
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v15 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -82,13 +82,13 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDCloudSyncRecord *)self record];
-  v5 = [v4 recordID];
-  v6 = [(HDCloudSyncRecord *)self record];
-  v7 = [v6 modificationDate];
-  v8 = [(HDCloudSyncRecord *)self record];
-  v9 = [v8 objectForKeyedSubscript:@"Version"];
-  v10 = [v3 stringWithFormat:@"DataUploadRequest %@\nLast Modified Date: %@\nSchema Version: %@\n", v5, v7, v9];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  record2 = [(HDCloudSyncRecord *)self record];
+  modificationDate = [record2 modificationDate];
+  record3 = [(HDCloudSyncRecord *)self record];
+  v9 = [record3 objectForKeyedSubscript:@"Version"];
+  v10 = [v3 stringWithFormat:@"DataUploadRequest %@\nLast Modified Date: %@\nSchema Version: %@\n", recordID, modificationDate, v9];
 
   return v10;
 }

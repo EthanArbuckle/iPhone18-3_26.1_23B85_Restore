@@ -1,6 +1,6 @@
 @interface FCReadingHistoryFeedDescriptor
-- (FCReadingHistoryFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5;
-- (FCReadingHistoryFeedDescriptor)initWithReadingHistory:(id)a3;
+- (FCReadingHistoryFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type;
+- (FCReadingHistoryFeedDescriptor)initWithReadingHistory:(id)history;
 - (id)backingHeadlineIDs;
 @end
 
@@ -8,17 +8,17 @@
 
 - (id)backingHeadlineIDs
 {
-  v2 = [(FCReadingHistoryFeedDescriptor *)self readingHistory];
-  v3 = [v2 sortedVisitedArticleIDs];
+  readingHistory = [(FCReadingHistoryFeedDescriptor *)self readingHistory];
+  sortedVisitedArticleIDs = [readingHistory sortedVisitedArticleIDs];
 
-  return v3;
+  return sortedVisitedArticleIDs;
 }
 
-- (FCReadingHistoryFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5
+- (FCReadingHistoryFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
@@ -42,11 +42,11 @@
   objc_exception_throw(v12);
 }
 
-- (FCReadingHistoryFeedDescriptor)initWithReadingHistory:(id)a3
+- (FCReadingHistoryFeedDescriptor)initWithReadingHistory:(id)history
 {
   v4.receiver = self;
   v4.super_class = FCReadingHistoryFeedDescriptor;
-  return [(FCPrivateZoneFeedDescriptor *)&v4 initWithPrivateDataController:a3 identifier:@"FCReading-History" feedType:3];
+  return [(FCPrivateZoneFeedDescriptor *)&v4 initWithPrivateDataController:history identifier:@"FCReading-History" feedType:3];
 }
 
 @end

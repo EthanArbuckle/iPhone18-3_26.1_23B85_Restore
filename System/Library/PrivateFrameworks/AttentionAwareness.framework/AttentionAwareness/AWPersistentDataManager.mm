@@ -1,14 +1,14 @@
 @interface AWPersistentDataManager
-+ (BOOL)AWPersistentDataExists:(int *)a3;
-+ (BOOL)truncateAWPersistentData:(int *)a3 error:(id *)a4;
-+ (BOOL)validateAWPersistentDataHeader:(id *)a3;
++ (BOOL)AWPersistentDataExists:(int *)exists;
++ (BOOL)truncateAWPersistentData:(int *)data error:(id *)error;
++ (BOOL)validateAWPersistentDataHeader:(id *)header;
 + (id)sharedManager;
-+ (void)initAWPersistentDataHeader:(id *)a3;
++ (void)initAWPersistentDataHeader:(id *)header;
 - (AWPersistentDataManager)init;
-- (BOOL)checkPreconditions:(id *)a3;
-- (BOOL)isValidIndexForConnection:(id)a3 index:(int)a4 error:(id *)a5;
+- (BOOL)checkPreconditions:(id *)preconditions;
+- (BOOL)isValidIndexForConnection:(id)connection index:(int)index error:(id *)error;
 - (int)nextFreeIndex;
-- (int)openWithConnection:(id)a3 error:(id *)a4;
+- (int)openWithConnection:(id)connection error:(id *)error;
 - (void)loadPersistentData;
 @end
 
@@ -60,30 +60,30 @@ LABEL_5:
   return v4;
 }
 
-- (int)openWithConnection:(id)a3 error:(id *)a4
+- (int)openWithConnection:(id)connection error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![(AWPersistentDataManager *)self checkPreconditions:a4])
+  connectionCopy = connection;
+  if (![(AWPersistentDataManager *)self checkPreconditions:error])
   {
 LABEL_7:
     v8 = -1;
     goto LABEL_29;
   }
 
-  v7 = [(AWPersistentDataManager *)self nextFreeIndex];
-  if (v7 == -1)
+  nextFreeIndex = [(AWPersistentDataManager *)self nextFreeIndex];
+  if (nextFreeIndex == -1)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:28 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:28 userInfo:0];
     }
 
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = self->_shm_obj + 88 * v7;
+  v8 = nextFreeIndex;
+  v9 = self->_shm_obj + 88 * nextFreeIndex;
   *(v9 + 2) = 0u;
   v10 = v9 + 32;
   *(v10 + 10) = 0;
@@ -92,10 +92,10 @@ LABEL_7:
   *(v10 + 1) = 0u;
   *(v10 + 2) = 0u;
   *(v10 + 9) = absTimeNS();
-  *(v10 + 20) = [v6 processIdentifier];
-  if (v6)
+  *(v10 + 20) = [connectionCopy processIdentifier];
+  if (connectionCopy)
   {
-    [v6 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -193,13 +193,13 @@ LABEL_29:
   return v8;
 }
 
-- (BOOL)isValidIndexForConnection:(id)a3 index:(int)a4 error:(id *)a5
+- (BOOL)isValidIndexForConnection:(id)connection index:(int)index error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 < 0 || a4 >= (*MEMORY[0x1E69E9AC8] - 32) / 0x58uLL)
+  connectionCopy = connection;
+  v9 = connectionCopy;
+  if (index < 0 || index >= (*MEMORY[0x1E69E9AC8] - 32) / 0x58uLL)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -209,11 +209,11 @@ LABEL_29:
 
   else
   {
-    v10 = self->_shm_obj + 88 * a4;
+    v10 = self->_shm_obj + 88 * index;
     if (*(v10 + 13))
     {
       v11 = *(v10 + 28);
-      if (v11 == [v8 processIdentifier])
+      if (v11 == [connectionCopy processIdentifier])
       {
         v12 = *(v10 + 29);
         if (v9)
@@ -233,7 +233,7 @@ LABEL_29:
         }
       }
 
-      if (a5)
+      if (error)
       {
         v13 = 1;
         goto LABEL_9;
@@ -244,7 +244,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -254,19 +254,19 @@ LABEL_17:
 
 LABEL_9:
   [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v13 userInfo:{0, *v16.val, *&v16.val[4]}];
-  *a5 = v14 = 0;
+  *error = v14 = 0;
 LABEL_18:
 
   return v14;
 }
 
-- (BOOL)checkPreconditions:(id *)a3
+- (BOOL)checkPreconditions:(id *)preconditions
 {
   dispatch_assert_queue_V2(self->_queue);
   shm_obj = self->_shm_obj;
-  if (a3 && !shm_obj)
+  if (preconditions && !shm_obj)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
+    *preconditions = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
   }
 
   return shm_obj != 0;
@@ -901,16 +901,16 @@ LABEL_47:
   return v2;
 }
 
-+ (BOOL)truncateAWPersistentData:(int *)a3 error:(id *)a4
++ (BOOL)truncateAWPersistentData:(int *)data error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
     __assert_rtn("+[AWPersistentDataManager truncateAWPersistentData:error:]", "PersistentDataManager.m", 134, "fildes");
   }
 
-  v5 = *a3;
-  if (*a3 == -1)
+  v5 = *data;
+  if (*data == -1)
   {
     __assert_rtn("+[AWPersistentDataManager truncateAWPersistentData:error:]", "PersistentDataManager.m", 135, "*fildes != -1");
   }
@@ -993,10 +993,10 @@ LABEL_47:
 
     else
     {
-      if (close(*a3) != -1)
+      if (close(*data) != -1)
       {
         v9 = shm_open("com.apple.AttentionAwareness", 514, 384);
-        *a3 = v9;
+        *data = v9;
         if (v9 != -1)
         {
           v8 = *v7;
@@ -1088,7 +1088,7 @@ LABEL_16:
     goto LABEL_35;
   }
 
-  v9 = *a3;
+  v9 = *data;
 LABEL_15:
   if (ftruncate(v9, v8) != -1)
   {
@@ -1132,12 +1132,12 @@ LABEL_12:
   }
 
 LABEL_32:
-  if (a4)
+  if (error)
   {
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
     v20 = v19;
     result = 0;
-    *a4 = v19;
+    *error = v19;
   }
 
   else
@@ -1150,15 +1150,15 @@ LABEL_35:
   return result;
 }
 
-+ (BOOL)validateAWPersistentDataHeader:(id *)a3
++ (BOOL)validateAWPersistentDataHeader:(id *)header
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!header)
   {
     __assert_rtn("+[AWPersistentDataManager validateAWPersistentDataHeader:]", "PersistentDataManager.m", 99, "hdr");
   }
 
-  if (a3->var0 != 1)
+  if (header->var0 != 1)
   {
     if (currentLogLevel >= 3)
     {
@@ -1176,7 +1176,7 @@ LABEL_35:
           v8 = v7 / 1000000000.0;
         }
 
-        var0 = a3->var0;
+        var0 = header->var0;
         v22 = 134218496;
         v23 = v8;
         v24 = 2048;
@@ -1193,7 +1193,7 @@ LABEL_35:
     goto LABEL_33;
   }
 
-  if (a3->var1 != 32)
+  if (header->var1 != 32)
   {
     if (currentLogLevel >= 3)
     {
@@ -1211,7 +1211,7 @@ LABEL_35:
           v10 = v9 / 1000000000.0;
         }
 
-        var1 = a3->var1;
+        var1 = header->var1;
         v22 = 134218496;
         v23 = v10;
         v24 = 2048;
@@ -1229,7 +1229,7 @@ LABEL_35:
   }
 
   v4 = MEMORY[0x1E69E9AC8];
-  if (a3->var2 != *MEMORY[0x1E69E9AC8])
+  if (header->var2 != *MEMORY[0x1E69E9AC8])
   {
     if (currentLogLevel >= 3)
     {
@@ -1247,7 +1247,7 @@ LABEL_35:
           v12 = v11 / 1000000000.0;
         }
 
-        var2 = a3->var2;
+        var2 = header->var2;
         v19 = *v4;
         v22 = 134218496;
         v23 = v12;
@@ -1267,7 +1267,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (a3->var3 != 88)
+  if (header->var3 != 88)
   {
     if (currentLogLevel >= 3)
     {
@@ -1285,7 +1285,7 @@ LABEL_33:
           v14 = v13 / 1000000000.0;
         }
 
-        var3 = a3->var3;
+        var3 = header->var3;
         v22 = 134218496;
         v23 = v14;
         v24 = 2048;
@@ -1310,27 +1310,27 @@ LABEL_34:
   return result;
 }
 
-+ (void)initAWPersistentDataHeader:(id *)a3
++ (void)initAWPersistentDataHeader:(id *)header
 {
-  if (!a3)
+  if (!header)
   {
     __assert_rtn("+[AWPersistentDataManager initAWPersistentDataHeader:]", "PersistentDataManager.m", 90, "hdr");
   }
 
-  *&a3->var0 = xmmword_1BB32B2B0;
-  a3->var2 = *MEMORY[0x1E69E9AC8];
-  a3->var3 = 88;
+  *&header->var0 = xmmword_1BB32B2B0;
+  header->var2 = *MEMORY[0x1E69E9AC8];
+  header->var3 = 88;
 }
 
-+ (BOOL)AWPersistentDataExists:(int *)a3
++ (BOOL)AWPersistentDataExists:(int *)exists
 {
-  if (!a3)
+  if (!exists)
   {
     __assert_rtn("+[AWPersistentDataManager AWPersistentDataExists:]", "PersistentDataManager.m", 77, "fildes");
   }
 
   v4 = shm_open("com.apple.AttentionAwareness", 2562, 384);
-  *a3 = v4;
+  *exists = v4;
   return v4 == -1 && *__error() == 17;
 }
 

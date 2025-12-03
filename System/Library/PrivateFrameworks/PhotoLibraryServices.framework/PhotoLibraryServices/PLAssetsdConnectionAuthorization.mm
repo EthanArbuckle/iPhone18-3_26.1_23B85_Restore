@@ -10,17 +10,17 @@
 - (BOOL)isClientInRestrictedMode;
 - (BOOL)isClientLimitedLibraryCapable;
 - (BOOL)isQuickCheckReadyForAnalysisClient;
-- (PLAssetsdConnectionAuthorization)initWithConnection:(id)a3 daemonServices:(id)a4;
+- (PLAssetsdConnectionAuthorization)initWithConnection:(id)connection daemonServices:(id)services;
 - (id)_captureSessionState;
-- (id)_captureSessionStateFromAuditToken:(id *)a3;
+- (id)_captureSessionStateFromAuditToken:(id *)token;
 - (id)_isPhotosAccessAllowed;
 - (id)_isPhotosAddAccessAllowed;
 - (id)_resourceUploadExtensionType;
 - (id)_trustedCallerContainingBundleRecord;
 - (id)_trustedCallerDisplayName;
 - (id)_trustedCallerPhotoLibraryUsageDescription;
-- (void)_setupAnalyticsCacheWithConnection:(id)a3;
-- (void)_setupSmartSharingCacheWithConnection:(id)a3;
+- (void)_setupAnalyticsCacheWithConnection:(id)connection;
+- (void)_setupSmartSharingCacheWithConnection:(id)connection;
 - (void)_trackCAConnectionEvent;
 - (void)invalidateClientAuthorizationCache;
 @end
@@ -48,22 +48,22 @@
 
 - (BOOL)isBackgroundResourceUploadExtensionClient
 {
-  v2 = [(PLLazyObject *)self->_lazyIsBackgroundResourceUploadExtensionClient objectValue];
-  v3 = [v2 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyIsBackgroundResourceUploadExtensionClient objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)_captureSessionStateFromAuditToken:(id *)a3
+- (id)_captureSessionStateFromAuditToken:(id *)token
 {
   v12 = *MEMORY[0x1E69E9840];
   if (PLIsCaptureSessionEnabled())
   {
     daemonServices = self->_daemonServices;
-    v6 = *&a3->var0[4];
-    *v11 = *a3->var0;
+    v6 = *&token->var0[4];
+    *v11 = *token->var0;
     *&v11[16] = v6;
-    v7 = [(PLDaemonServices *)daemonServices captureSessionStateFromAuditToken:v11];
+    none = [(PLDaemonServices *)daemonServices captureSessionStateFromAuditToken:v11];
     v8 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -71,17 +71,17 @@
       *v11 = 138543618;
       *&v11[4] = v9;
       *&v11[12] = 2114;
-      *&v11[14] = v7;
+      *&v11[14] = none;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Capture Session: [client %{public}@] Session state from audit token: %{public}@", v11, 0x16u);
     }
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69BF1C8] none];
+    none = [MEMORY[0x1E69BF1C8] none];
   }
 
-  return v7;
+  return none;
 }
 
 - (id)_captureSessionState
@@ -105,8 +105,8 @@
   v5 = v10;
   if (v4)
   {
-    v6 = [v4 infoDictionary];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69BFF30] ofClass:objc_opt_class()];
+    infoDictionary = [v4 infoDictionary];
+    v7 = [infoDictionary objectForKey:*MEMORY[0x1E69BFF30] ofClass:objc_opt_class()];
 
     if (v7)
     {
@@ -138,19 +138,19 @@ LABEL_8:
   v19 = *MEMORY[0x1E69E9840];
   if (MEMORY[0x19EAEE230](self, a2))
   {
-    v3 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
-    if ([v3 containsString:@"photosctl"])
+    trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+    if ([trustedCallerBundleID containsString:@"photosctl"])
     {
 
 LABEL_5:
-      v6 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
-      v7 = [v6 copy];
+      trustedCallerBundleID2 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+      v7 = [trustedCallerBundleID2 copy];
 
       goto LABEL_18;
     }
 
-    v4 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
-    v5 = [v4 containsString:@"jujubectl"];
+    trustedCallerBundleID3 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+    v5 = [trustedCallerBundleID3 containsString:@"jujubectl"];
 
     if (v5)
     {
@@ -164,25 +164,25 @@ LABEL_5:
   *&buf[16] = v8;
   v9 = [MEMORY[0x1E6963620] bundleRecordForAuditToken:buf error:&v17];
   v10 = v17;
-  v11 = [(PLAssetsdConnectionAuthorization *)self trustedCallerContainingBundleRecord];
+  trustedCallerContainingBundleRecord = [(PLAssetsdConnectionAuthorization *)self trustedCallerContainingBundleRecord];
 
-  if (v11)
+  if (trustedCallerContainingBundleRecord)
   {
-    v12 = [(PLAssetsdConnectionAuthorization *)self trustedCallerContainingBundleRecord];
+    trustedCallerContainingBundleRecord2 = [(PLAssetsdConnectionAuthorization *)self trustedCallerContainingBundleRecord];
 
-    v9 = v12;
+    v9 = trustedCallerContainingBundleRecord2;
   }
 
   if (!v9)
   {
-    v13 = PLBackendGetLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    localizedName = PLBackendGetLog();
+    if (os_log_type_enabled(localizedName, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 2112;
       *&buf[14] = v10;
-      _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "%@ failed to get bundle proxy with error %@", buf, 0x16u);
+      _os_log_impl(&dword_19BF1F000, localizedName, OS_LOG_TYPE_INFO, "%@ failed to get bundle proxy with error %@", buf, 0x16u);
     }
 
     v7 = 0;
@@ -192,15 +192,15 @@ LABEL_5:
   v7 = 0;
   if (![0 length])
   {
-    v13 = [v9 localizedName];
-    v7 = [v13 copy];
+    localizedName = [v9 localizedName];
+    v7 = [localizedName copy];
 LABEL_14:
   }
 
   if (![v7 length])
   {
-    v14 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
-    v15 = [v14 copy];
+    trustedCallerBundleID4 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+    v15 = [trustedCallerBundleID4 copy];
 
     v7 = v15;
   }
@@ -214,19 +214,19 @@ LABEL_18:
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69635D0]);
-  v4 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+  trustedCallerBundleID = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
   v13 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 error:&v13];
+  v5 = [v3 initWithBundleIdentifier:trustedCallerBundleID error:&v13];
   v6 = v13;
 
   if (v5)
   {
-    v7 = [v5 containingBundleRecord];
-    v8 = [v7 bundleIdentifier];
+    containingBundleRecord = [v5 containingBundleRecord];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v5 containingBundleRecord];
+      containingBundleRecord2 = [v5 containingBundleRecord];
       goto LABEL_8;
     }
   }
@@ -236,19 +236,19 @@ LABEL_18:
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
+      trustedCallerBundleID2 = [(PLAssetsdConnectionAuthorization *)self trustedCallerBundleID];
       *buf = 138412546;
-      v15 = v11;
+      v15 = trustedCallerBundleID2;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "Unable to get application record for bundleID: %@ with error: %@", buf, 0x16u);
     }
   }
 
-  v9 = 0;
+  containingBundleRecord2 = 0;
 LABEL_8:
 
-  return v9;
+  return containingBundleRecord2;
 }
 
 - (void)_trackCAConnectionEvent
@@ -256,9 +256,9 @@ LABEL_8:
   v29[1] = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_trustedCallerBundleID length])
   {
-    v3 = [(NSString *)self->_trustedCallerBundleID lowercaseString];
-    v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    lowercaseString = [(NSString *)self->_trustedCallerBundleID lowercaseString];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v5 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v6 = [v5 isEqualToString:@"null"];
 
     if (v6)
@@ -282,26 +282,26 @@ LABEL_8:
     v10 = [v7 dictionaryWithObjects:p_trustedCallerBundleID forKeys:v9 count:1];
     PLSendCoreAnalyticEvent();
 
-    v11 = [(PLAssetsdConnectionAuthorization *)self isClientInFullLibraryMode];
-    v12 = [(PLAssetsdConnectionAuthorization *)self isClientInLimitedLibraryMode];
-    v13 = [(PLAssetsdConnectionAuthorization *)self isClientAuthorizedForTCCServicePhotosAdd];
-    v14 = [(PLAssetsdConnectionAuthorization *)self isClientInRestrictedMode];
-    v15 = v11 || v12;
+    isClientInFullLibraryMode = [(PLAssetsdConnectionAuthorization *)self isClientInFullLibraryMode];
+    isClientInLimitedLibraryMode = [(PLAssetsdConnectionAuthorization *)self isClientInLimitedLibraryMode];
+    isClientAuthorizedForTCCServicePhotosAdd = [(PLAssetsdConnectionAuthorization *)self isClientAuthorizedForTCCServicePhotosAdd];
+    isClientInRestrictedMode = [(PLAssetsdConnectionAuthorization *)self isClientInRestrictedMode];
+    v15 = isClientInFullLibraryMode || isClientInLimitedLibraryMode;
     v16 = *MEMORY[0x1E69BFB78];
     v25[0] = self->_trustedCallerBundleID;
     v17 = *MEMORY[0x1E69BFB50];
     v24[0] = v16;
     v24[1] = v17;
-    v18 = [MEMORY[0x1E696AD98] numberWithBool:v11];
+    v18 = [MEMORY[0x1E696AD98] numberWithBool:isClientInFullLibraryMode];
     v25[1] = v18;
     v24[2] = *MEMORY[0x1E69BFB60];
-    v19 = [MEMORY[0x1E696AD98] numberWithBool:v12];
+    v19 = [MEMORY[0x1E696AD98] numberWithBool:isClientInLimitedLibraryMode];
     v25[2] = v19;
     v24[3] = *MEMORY[0x1E69BFB68];
-    v20 = [MEMORY[0x1E696AD98] numberWithBool:v13];
+    v20 = [MEMORY[0x1E696AD98] numberWithBool:isClientAuthorizedForTCCServicePhotosAdd];
     v25[3] = v20;
     v24[4] = *MEMORY[0x1E69BFB70];
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:v14];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:isClientInRestrictedMode];
     v25[4] = v21;
     v24[5] = *MEMORY[0x1E69BFB58];
     v22 = [MEMORY[0x1E696AD98] numberWithBool:!v15];
@@ -359,33 +359,33 @@ LABEL_8:
 
 - (BOOL)isClientInRestrictedMode
 {
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v4 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v4;
-  v5 = [v3 photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
+  v5 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
 
   return v5 == 3;
 }
 
 - (BOOL)isClientInFullLibraryMode
 {
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v4 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v4;
-  v5 = [v3 photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
+  v5 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
 
   return v5 == 0;
 }
 
 - (BOOL)isClientInLimitedLibraryMode
 {
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v4 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v4;
-  v5 = [v3 photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
+  v5 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
 
   return v5 == 4;
 }
@@ -400,11 +400,11 @@ LABEL_8:
 
 - (id)_isPhotosAddAccessAllowed
 {
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v4 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v4;
-  [v3 photosAccessAllowedWithScope:1 auditToken:v7 clientAuthorization:self];
+  [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:1 auditToken:v7 clientAuthorization:self];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:PLPhotosAccessAllowed()];
 
@@ -413,19 +413,19 @@ LABEL_8:
 
 - (BOOL)isClientAuthorizedForTCCServicePhotosAdd
 {
-  v2 = [(PLLazyObject *)self->_lazyPhotosAddAccessAllowed objectValue];
-  v3 = [v2 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyPhotosAddAccessAllowed objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_isPhotosAccessAllowed
 {
-  v3 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
   v4 = *&self->_auditToken.val[4];
   v7[0] = *self->_auditToken.val;
   v7[1] = v4;
-  [v3 photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
+  [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7 auditToken:v7 clientAuthorization:self];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:PLPhotosAccessAllowed()];
 
@@ -434,27 +434,27 @@ LABEL_8:
 
 - (BOOL)isClientAuthorizedForTCCServicePhotos
 {
-  v2 = [(PLLazyObject *)self->_lazyPhotosAccessAllowed objectValue];
-  v3 = [v2 BOOLValue];
+  objectValue = [(PLLazyObject *)self->_lazyPhotosAccessAllowed objectValue];
+  bOOLValue = [objectValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setupSmartSharingCacheWithConnection:(id)a3
+- (void)_setupSmartSharingCacheWithConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69BF2F0];
-  v5 = a3;
-  v6 = [v5 _xpcConnection];
-  self->_smartSharingCacheReadEntitled = [v4 connection:v6 hasEntitlement:*MEMORY[0x1E69C0088]];
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
+  self->_smartSharingCacheReadEntitled = [v4 connection:_xpcConnection hasEntitlement:*MEMORY[0x1E69C0088]];
 
   v7 = MEMORY[0x1E69BF2F0];
-  v8 = [v5 _xpcConnection];
+  _xpcConnection2 = [connectionCopy _xpcConnection];
 
   v9 = *MEMORY[0x1E69C0090];
-  LODWORD(v5) = [v7 connection:v8 hasEntitlement:*MEMORY[0x1E69C0090]];
+  LODWORD(connectionCopy) = [v7 connection:_xpcConnection2 hasEntitlement:*MEMORY[0x1E69C0090]];
 
-  if (v5)
+  if (connectionCopy)
   {
     if ([(NSString *)self->_trustedCallerBundleID isEqualToString:@"com.apple.photoanalysisd"]|| [(NSString *)self->_trustedCallerBundleID isEqualToString:@"com.apple.PhotoKitEntitledTests.xctrunner"])
     {
@@ -478,21 +478,21 @@ LABEL_8:
   }
 }
 
-- (void)_setupAnalyticsCacheWithConnection:(id)a3
+- (void)_setupAnalyticsCacheWithConnection:(id)connection
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69BF2F0];
-  v5 = a3;
-  v6 = [v5 _xpcConnection];
-  self->_analyticsCacheReadEntitled = [v4 connection:v6 hasEntitlement:*MEMORY[0x1E69C0060]];
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
+  self->_analyticsCacheReadEntitled = [v4 connection:_xpcConnection hasEntitlement:*MEMORY[0x1E69C0060]];
 
   v7 = MEMORY[0x1E69BF2F0];
-  v8 = [v5 _xpcConnection];
+  _xpcConnection2 = [connectionCopy _xpcConnection];
 
   v9 = *MEMORY[0x1E69C0068];
-  LODWORD(v5) = [v7 connection:v8 hasEntitlement:*MEMORY[0x1E69C0068]];
+  LODWORD(connectionCopy) = [v7 connection:_xpcConnection2 hasEntitlement:*MEMORY[0x1E69C0068]];
 
-  if (v5)
+  if (connectionCopy)
   {
     if ([(NSString *)self->_trustedCallerBundleID isEqualToString:@"com.apple.photoanalysisd"])
     {
@@ -516,22 +516,22 @@ LABEL_8:
   }
 }
 
-- (PLAssetsdConnectionAuthorization)initWithConnection:(id)a3 daemonServices:(id)a4
+- (PLAssetsdConnectionAuthorization)initWithConnection:(id)connection daemonServices:(id)services
 {
   v104 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  servicesCopy = services;
   v101.receiver = self;
   v101.super_class = PLAssetsdConnectionAuthorization;
   v8 = [(PLAssetsdConnectionAuthorization *)&v101 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_daemonServices, a4);
+    objc_storeStrong(&v8->_daemonServices, services);
     v9->_lock._os_unfair_lock_opaque = 0;
-    if (v6)
+    if (connectionCopy)
     {
-      [v6 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -542,9 +542,9 @@ LABEL_8:
     v10 = *&token.val[4];
     *v9->_auditToken.val = *token.val;
     *&v9->_auditToken.val[4] = v10;
-    v11 = [v6 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v12 = MEMORY[0x1E695E480];
-    v9->_clientProcessIdentifier = v11;
+    v9->_clientProcessIdentifier = processIdentifier;
     v13 = *v12;
     v14 = *&v9->_auditToken.val[4];
     *token.val = *v9->_auditToken.val;
@@ -561,35 +561,35 @@ LABEL_8:
     }
 
     v19 = MEMORY[0x1E69BF2F0];
-    v20 = [v6 _xpcConnection];
+    _xpcConnection = [connectionCopy _xpcConnection];
     v21 = *MEMORY[0x1E69C0058];
     v102[0] = *MEMORY[0x1E69C0050];
     v102[1] = v21;
     v102[2] = *MEMORY[0x1E69C0040];
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:3];
-    v23 = [v19 connection:v20 grantedEntitlements:v22];
+    v23 = [v19 connection:_xpcConnection grantedEntitlements:v22];
     photoKitEntitlements = v9->_photoKitEntitlements;
     v9->_photoKitEntitlements = v23;
 
     v9->_photoKitEntitled = [MEMORY[0x1E69BF2F0] containsPhotoKitEntitlement:v9->_photoKitEntitlements];
     v25 = MEMORY[0x1E69BF2F0];
-    v26 = [v6 _xpcConnection];
-    v9->_clientAuthorizedForLibraryUpgrade = [v25 connection:v26 hasEntitlement:*MEMORY[0x1E69C0048]];
+    _xpcConnection2 = [connectionCopy _xpcConnection];
+    v9->_clientAuthorizedForLibraryUpgrade = [v25 connection:_xpcConnection2 hasEntitlement:*MEMORY[0x1E69C0048]];
 
     v27 = MEMORY[0x1E69BF2F0];
-    v28 = [v6 _xpcConnection];
-    v9->_cloudInternalEntitled = [v27 connection:v28 hasEntitlement:*MEMORY[0x1E69BF3B0]];
+    _xpcConnection3 = [connectionCopy _xpcConnection];
+    v9->_cloudInternalEntitled = [v27 connection:_xpcConnection3 hasEntitlement:*MEMORY[0x1E69BF3B0]];
 
     v29 = MEMORY[0x1E69BF2F0];
-    v30 = [v6 _xpcConnection];
-    v9->_managedSpotlightIndexReadWriteEntitled = [v29 connection:v30 hasEntitlement:*MEMORY[0x1E69C0098]];
+    _xpcConnection4 = [connectionCopy _xpcConnection];
+    v9->_managedSpotlightIndexReadWriteEntitled = [v29 connection:_xpcConnection4 hasEntitlement:*MEMORY[0x1E69C0098]];
 
     v31 = MEMORY[0x1E69BF2F0];
-    v32 = [v6 _xpcConnection];
-    v9->_photosMessagesEntitled = [v31 connection:v32 hasEntitlement:*MEMORY[0x1E69C0080]];
+    _xpcConnection5 = [connectionCopy _xpcConnection];
+    v9->_photosMessagesEntitled = [v31 connection:_xpcConnection5 hasEntitlement:*MEMORY[0x1E69C0080]];
 
-    [(PLAssetsdConnectionAuthorization *)v9 _setupAnalyticsCacheWithConnection:v6];
-    [(PLAssetsdConnectionAuthorization *)v9 _setupSmartSharingCacheWithConnection:v6];
+    [(PLAssetsdConnectionAuthorization *)v9 _setupAnalyticsCacheWithConnection:connectionCopy];
+    [(PLAssetsdConnectionAuthorization *)v9 _setupSmartSharingCacheWithConnection:connectionCopy];
     v33 = *&v9->_auditToken.val[4];
     *token.val = *v9->_auditToken.val;
     *&token.val[4] = v33;
@@ -597,8 +597,8 @@ LABEL_8:
     v9->_clientEntitledForPhotoKitOrPrivatePhotosTCC = v34;
     v9->_directDatabaseAccessAuthorized = v34;
     v35 = MEMORY[0x1E69BF2F0];
-    v36 = [v6 _xpcConnection];
-    v9->_directDatabaseWriteAuthorized = [v35 connection:v36 hasEntitlement:*MEMORY[0x1E69C0070]];
+    _xpcConnection6 = [connectionCopy _xpcConnection];
+    v9->_directDatabaseWriteAuthorized = [v35 connection:_xpcConnection6 hasEntitlement:*MEMORY[0x1E69C0070]];
 
     v37 = *&v9->_auditToken.val[4];
     *token.val = *v9->_auditToken.val;
@@ -622,20 +622,20 @@ LABEL_8:
 
     v9->_clientIsSandboxed = v38 == 1;
     v43 = MEMORY[0x1E69BF2F0];
-    v44 = [v6 _xpcConnection];
-    v9->_photosDataVaultEntitled = [v43 connection:v44 hasEntitlement:@"com.apple.private.security.storage.PhotosLibraries"];
+    _xpcConnection7 = [connectionCopy _xpcConnection];
+    v9->_photosDataVaultEntitled = [v43 connection:_xpcConnection7 hasEntitlement:@"com.apple.private.security.storage.PhotosLibraries"];
 
     v45 = MEMORY[0x1E69BF2F0];
-    v46 = [v6 _xpcConnection];
-    v9->_internalDataReadWriteAuthorized = [v45 connection:v46 hasEntitlement:*MEMORY[0x1E69C0078]];
+    _xpcConnection8 = [connectionCopy _xpcConnection];
+    v9->_internalDataReadWriteAuthorized = [v45 connection:_xpcConnection8 hasEntitlement:*MEMORY[0x1E69C0078]];
 
     v47 = MEMORY[0x1E69BF2F0];
-    v48 = [v6 _xpcConnection];
-    v9->_coreSceneUnderstandingTaxonomyReadAuthorized = [v47 connection:v48 hasEntitlement:@"com.apple.private.photos.coresceneunderstanding.taxonomy.read-only"];
+    _xpcConnection9 = [connectionCopy _xpcConnection];
+    v9->_coreSceneUnderstandingTaxonomyReadAuthorized = [v47 connection:_xpcConnection9 hasEntitlement:@"com.apple.private.photos.coresceneunderstanding.taxonomy.read-only"];
 
     v49 = MEMORY[0x1E69BF2F0];
-    v50 = [v6 _xpcConnection];
-    v9->_coreSceneUnderstandingTaxonomyWriteAuthorized = [v49 connection:v50 hasEntitlement:@"com.apple.private.photos.coresceneunderstanding.taxonomy.read-write"];
+    _xpcConnection10 = [connectionCopy _xpcConnection];
+    v9->_coreSceneUnderstandingTaxonomyWriteAuthorized = [v49 connection:_xpcConnection10 hasEntitlement:@"com.apple.private.photos.coresceneunderstanding.taxonomy.read-write"];
 
     v51 = objc_initWeak(&token, v9);
     v52 = objc_alloc(MEMORY[0x1E69BF270]);

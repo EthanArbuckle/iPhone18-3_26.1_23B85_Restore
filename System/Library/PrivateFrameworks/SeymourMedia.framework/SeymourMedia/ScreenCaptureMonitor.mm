@@ -1,10 +1,10 @@
 @interface ScreenCaptureMonitor
-- (void)screenCaptureChanged:(id)a3;
+- (void)screenCaptureChanged:(id)changed;
 @end
 
 @implementation ScreenCaptureMonitor
 
-- (void)screenCaptureChanged:(id)a3
+- (void)screenCaptureChanged:(id)changed
 {
   v3 = sub_20C59D1DC();
   v4 = *(v3 - 8);

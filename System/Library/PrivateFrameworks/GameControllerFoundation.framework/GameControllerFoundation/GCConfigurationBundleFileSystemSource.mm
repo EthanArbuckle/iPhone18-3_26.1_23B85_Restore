@@ -1,6 +1,6 @@
 @interface GCConfigurationBundleFileSystemSource
 - (GCConfigurationBundleFileSystemSource)init;
-- (id)configurationBundleURLsForType:(id)a3;
+- (id)configurationBundleURLsForType:(id)type;
 @end
 
 @implementation GCConfigurationBundleFileSystemSource
@@ -17,17 +17,17 @@
   return v2;
 }
 
-- (id)configurationBundleURLsForType:(id)a3
+- (id)configurationBundleURLsForType:(id)type
 {
   v31 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v6 = [v21 resourceURL];
-  v7 = [v6 path];
-  v8 = [v7 stringByResolvingSymlinksInPath];
+  resourceURL = [v21 resourceURL];
+  path = [resourceURL path];
+  stringByResolvingSymlinksInPath = [path stringByResolvingSymlinksInPath];
 
-  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:stringByResolvingSymlinksInPath];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -40,8 +40,8 @@
   v27[2] = __72__GCConfigurationBundleFileSystemSource_configurationBundleURLsForType___block_invoke;
   v27[3] = &unk_1E8413C08;
   v27[4] = self;
-  v22 = v5;
-  v11 = [v5 enumeratorAtURL:v9 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:7 errorHandler:v27];
+  v22 = defaultManager;
+  v11 = [defaultManager enumeratorAtURL:v9 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:7 errorHandler:v27];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;

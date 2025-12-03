@@ -1,56 +1,56 @@
 @interface ICAppleMusicAPITokenRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShouldIgnoreUserTokenCache:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasShouldIgnoreUserTokenCache:(BOOL)cache;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICAppleMusicAPITokenRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(ICAppleMusicAPITokenRequest *)self setClientIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ICAppleMusicAPITokenRequest *)self setClientVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ICAppleMusicAPITokenRequest *)self setBagProfile:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ICAppleMusicAPITokenRequest *)self setBagProfileVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[44];
+  v5 = fromCopy[44];
   if ((v5 & 2) != 0)
   {
-    self->_shouldIgnoreUserTokenCache = v4[41];
+    self->_shouldIgnoreUserTokenCache = fromCopy[41];
     *&self->_has |= 2u;
-    v5 = v4[44];
+    v5 = fromCopy[44];
   }
 
   if (v5)
   {
-    self->_shouldIgnoreDeveloperTokenCache = v4[40];
+    self->_shouldIgnoreDeveloperTokenCache = fromCopy[40];
     *&self->_has |= 1u;
   }
 }
@@ -85,16 +85,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 3))
+  if (clientIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)clientIdentifier isEqual:?])
     {
@@ -103,7 +103,7 @@ LABEL_3:
   }
 
   clientVersion = self->_clientVersion;
-  if (clientVersion | *(v4 + 4))
+  if (clientVersion | *(equalCopy + 4))
   {
     if (![(NSString *)clientVersion isEqual:?])
     {
@@ -112,7 +112,7 @@ LABEL_3:
   }
 
   bagProfile = self->_bagProfile;
-  if (bagProfile | *(v4 + 1))
+  if (bagProfile | *(equalCopy + 1))
   {
     if (![(NSString *)bagProfile isEqual:?])
     {
@@ -121,7 +121,7 @@ LABEL_3:
   }
 
   bagProfileVersion = self->_bagProfileVersion;
-  if (bagProfileVersion | *(v4 + 2))
+  if (bagProfileVersion | *(equalCopy + 2))
   {
     if (![(NSString *)bagProfileVersion isEqual:?])
     {
@@ -131,7 +131,7 @@ LABEL_3:
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_12;
     }
@@ -141,40 +141,40 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 44) & 2) == 0)
+  if ((*(equalCopy + 44) & 2) == 0)
   {
     goto LABEL_18;
   }
 
-  v11 = *(v4 + 41);
+  v11 = *(equalCopy + 41);
   if (self->_shouldIgnoreUserTokenCache)
   {
-    if ((*(v4 + 41) & 1) == 0)
+    if ((*(equalCopy + 41) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 41))
+  else if (*(equalCopy + 41))
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  v9 = (*(v4 + 44) & 1) == 0;
+  v9 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 44))
+    if (*(equalCopy + 44))
     {
       if (self->_shouldIgnoreDeveloperTokenCache)
       {
-        if (*(v4 + 40))
+        if (*(equalCopy + 40))
         {
           goto LABEL_26;
         }
       }
 
-      else if (!*(v4 + 40))
+      else if (!*(equalCopy + 40))
       {
 LABEL_26:
         v9 = 1;
@@ -190,22 +190,22 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_clientVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_clientVersion copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_bagProfile copyWithZone:a3];
+  v10 = [(NSString *)self->_bagProfile copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_bagProfileVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_bagProfileVersion copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -226,32 +226,32 @@ LABEL_19:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_clientIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clientVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_bagProfile)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_bagProfileVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -259,7 +259,7 @@ LABEL_19:
   {
     shouldIgnoreUserTokenCache = self->_shouldIgnoreUserTokenCache;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -267,18 +267,18 @@ LABEL_19:
   {
     shouldIgnoreDeveloperTokenCache = self->_shouldIgnoreDeveloperTokenCache;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         goto LABEL_55;
       }
@@ -289,18 +289,18 @@ LABEL_19:
       while (1)
       {
         v35 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v35 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v35 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v35 & 0x7F) << v6;
@@ -318,9 +318,9 @@ LABEL_19:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         goto LABEL_55;
       }
@@ -349,18 +349,18 @@ LABEL_39:
           while (1)
           {
             v37 = 0;
-            v29 = [a3 position] + 1;
-            if (v29 >= [a3 position] && (v30 = objc_msgSend(a3, "position") + 1, v30 <= objc_msgSend(a3, "length")))
+            v29 = [from position] + 1;
+            if (v29 >= [from position] && (v30 = objc_msgSend(from, "position") + 1, v30 <= objc_msgSend(from, "length")))
             {
-              v31 = [a3 data];
-              [v31 getBytes:&v37 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v37 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v28 |= (v37 & 0x7F) << v26;
@@ -378,7 +378,7 @@ LABEL_39:
             }
           }
 
-          v23 = (v28 != 0) & ~[a3 hasError];
+          v23 = (v28 != 0) & ~[from hasError];
 LABEL_52:
           v32 = 41;
           break;
@@ -390,18 +390,18 @@ LABEL_52:
           while (1)
           {
             v36 = 0;
-            v20 = [a3 position] + 1;
-            if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+            v20 = [from position] + 1;
+            if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
             {
-              v22 = [a3 data];
-              [v22 getBytes:&v36 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v36 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v19 |= (v36 & 0x7F) << v17;
@@ -419,7 +419,7 @@ LABEL_52:
             }
           }
 
-          v23 = (v19 != 0) & ~[a3 hasError];
+          v23 = (v19 != 0) & ~[from hasError];
 LABEL_50:
           v32 = 40;
           break;
@@ -436,8 +436,8 @@ LABEL_36:
 
       self->PBRequest_opaque[v32] = v23;
 LABEL_54:
-      v33 = [a3 position];
-      if (v33 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
         goto LABEL_55;
       }
@@ -465,7 +465,7 @@ LABEL_54:
   }
 
 LABEL_55:
-  LOBYTE(v24) = [a3 hasError] ^ 1;
+  LOBYTE(v24) = [from hasError] ^ 1;
   return v24;
 }
 
@@ -520,15 +520,15 @@ LABEL_55:
   v7.receiver = self;
   v7.super_class = ICAppleMusicAPITokenRequest;
   v3 = [(ICAppleMusicAPITokenRequest *)&v7 description];
-  v4 = [(ICAppleMusicAPITokenRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ICAppleMusicAPITokenRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasShouldIgnoreUserTokenCache:(BOOL)a3
+- (void)setHasShouldIgnoreUserTokenCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v3 = 2;
   }

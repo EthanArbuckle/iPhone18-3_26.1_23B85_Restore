@@ -5,8 +5,8 @@
 - (CGRect)inputViewFrame;
 - (CGRect)platterViewFrame;
 - (UIEdgeInsets)platterInsets;
-- (void)setFinalInputViewTransform:(CGAffineTransform *)a3;
-- (void)setInitialInputViewTransform:(CGAffineTransform *)a3;
+- (void)setFinalInputViewTransform:(CGAffineTransform *)transform;
+- (void)setInitialInputViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation UIKeyboardFloatingTransitionState
@@ -68,11 +68,11 @@
   return self;
 }
 
-- (void)setInitialInputViewTransform:(CGAffineTransform *)a3
+- (void)setInitialInputViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_initialInputViewTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_initialInputViewTransform.tx = *&transform->tx;
   *&self->_initialInputViewTransform.c = v4;
   *&self->_initialInputViewTransform.a = v3;
 }
@@ -86,11 +86,11 @@
   return self;
 }
 
-- (void)setFinalInputViewTransform:(CGAffineTransform *)a3
+- (void)setFinalInputViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_finalInputViewTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_finalInputViewTransform.tx = *&transform->tx;
   *&self->_finalInputViewTransform.c = v4;
   *&self->_finalInputViewTransform.a = v3;
 }

@@ -1,28 +1,28 @@
 @interface NRBabelInterfaceFake
-- (NRBabelInterfaceFake)initWithInstance:(id)a3 link:(id)a4;
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5;
+- (NRBabelInterfaceFake)initWithInstance:(id)instance link:(id)link;
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr;
 @end
 
 @implementation NRBabelInterfaceFake
 
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr
 {
-  if (!a4)
+  if (!len)
   {
     goto LABEL_18;
   }
 
-  v8 = a4;
-  if (a4 > 8)
+  lenCopy = len;
+  if (len > 8)
   {
-    v11 = a4 & 7;
+    v11 = len & 7;
     if (!v11)
     {
       v11 = 8;
     }
 
-    v9 = a4 - v11;
-    p_iov_len = &a3[4].iov_len;
+    v9 = len - v11;
+    p_iov_len = &packet[4].iov_len;
     v13 = 0uLL;
     v14 = v9;
     v15 = 0uLL;
@@ -52,8 +52,8 @@
     LODWORD(v10) = 0;
   }
 
-  v24 = a4 - v9;
-  v25 = &a3[v9].iov_len;
+  v24 = len - v9;
+  v25 = &packet[v9].iov_len;
   do
   {
     v26 = *v25;
@@ -70,7 +70,7 @@
     {
       v28 = v27;
       v29 = 0;
-      v30 = &a3->iov_len;
+      v30 = &packet->iov_len;
       do
       {
         v31 = v29;
@@ -78,13 +78,13 @@
         v32 = *v30;
         v30 += 2;
         v29 = v32 + v31;
-        --v8;
+        --lenCopy;
       }
 
-      while (v8);
-      v33 = bswap64(*a5->__u6_addr8);
+      while (lenCopy);
+      v33 = bswap64(*addr->__u6_addr8);
       v34 = 0xFF02000000000000;
-      if (v33 == 0xFF02000000000000 && (v34 = 65542, v33 = bswap64(*&a5->__u6_addr32[2]), v33 == 65542))
+      if (v33 == 0xFF02000000000000 && (v34 = 65542, v33 = bswap64(*&addr->__u6_addr32[2]), v33 == 65542))
       {
         v35 = 0;
       }
@@ -104,9 +104,9 @@
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v57 = self;
-      v56 = [(NRBabelLinkFake *)self->_link fakeInterfaces];
-      v36 = [v56 countByEnumeratingWithState:&v67 objects:v71 count:16];
+      selfCopy = self;
+      fakeInterfaces = [(NRBabelLinkFake *)self->_link fakeInterfaces];
+      v36 = [fakeInterfaces countByEnumeratingWithState:&v67 objects:v71 count:16];
       if (v36)
       {
         v37 = v36;
@@ -119,29 +119,29 @@
             {
               if (*v68 != v38)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(fakeInterfaces);
               }
 
               v40 = *(*(&v67 + 1) + 8 * i);
-              v41 = [(NRBabelInterface *)v40 localAddress];
-              if (*v41->__u6_addr8 == *a5->__u6_addr8 && *&v41->__u6_addr32[2] == *&a5->__u6_addr32[2])
+              localAddress = [(NRBabelInterface *)v40 localAddress];
+              if (*localAddress->__u6_addr8 == *addr->__u6_addr8 && *&localAddress->__u6_addr32[2] == *&addr->__u6_addr32[2])
               {
-                v43 = [(NRBabelInterface *)v40 instance];
-                v44 = [v43 queue];
+                instance = [(NRBabelInterface *)v40 instance];
+                queue = [instance queue];
                 v58 = _NSConcreteStackBlock;
                 v59 = 3221225472;
                 v60 = sub_1000DBBDC;
                 v61 = &unk_1001FB6A8;
                 v62 = v55;
-                v63 = v57;
+                v63 = selfCopy;
                 v66 = v10;
                 v64 = v40;
-                v65 = a5;
-                dispatch_async(v44, &v58);
+                addrCopy2 = addr;
+                dispatch_async(queue, &v58);
               }
             }
 
-            v37 = [v56 countByEnumeratingWithState:&v67 objects:v71 count:16];
+            v37 = [fakeInterfaces countByEnumeratingWithState:&v67 objects:v71 count:16];
           }
 
           while (v37);
@@ -155,28 +155,28 @@
             {
               if (*v68 != v38)
               {
-                objc_enumerationMutation(v56);
+                objc_enumerationMutation(fakeInterfaces);
               }
 
               v46 = *(*(&v67 + 1) + 8 * j);
-              if (v46 != v57)
+              if (v46 != selfCopy)
               {
-                v47 = [*(*(&v67 + 1) + 8 * j) instance];
-                v48 = [v47 queue];
+                instance2 = [*(*(&v67 + 1) + 8 * j) instance];
+                queue2 = [instance2 queue];
                 v58 = _NSConcreteStackBlock;
                 v59 = 3221225472;
                 v60 = sub_1000DBBDC;
                 v61 = &unk_1001FB6A8;
                 v62 = v55;
-                v63 = v57;
+                v63 = selfCopy;
                 v66 = v10;
                 v64 = v46;
-                v65 = a5;
-                dispatch_async(v48, &v58);
+                addrCopy2 = addr;
+                dispatch_async(queue2, &v58);
               }
             }
 
-            v37 = [v56 countByEnumeratingWithState:&v67 objects:v71 count:16];
+            v37 = [fakeInterfaces countByEnumeratingWithState:&v67 objects:v71 count:16];
           }
 
           while (v37);
@@ -227,22 +227,22 @@ LABEL_18:
   }
 }
 
-- (NRBabelInterfaceFake)initWithInstance:(id)a3 link:(id)a4
+- (NRBabelInterfaceFake)initWithInstance:(id)instance link:(id)link
 {
-  v6 = a3;
-  v7 = a4;
+  instanceCopy = instance;
+  linkCopy = link;
   v30.receiver = self;
   v30.super_class = NRBabelInterfaceFake;
-  v8 = [(NRBabelInterface *)&v30 initWithInstance:v6];
+  v8 = [(NRBabelInterface *)&v30 initWithInstance:instanceCopy];
   v9 = v8;
   if (v8)
   {
-    [(NRBabelInterface *)v8 setInstance:v6];
-    objc_storeStrong(&v9->_link, a4);
+    [(NRBabelInterface *)v8 setInstance:instanceCopy];
+    objc_storeStrong(&v9->_link, link);
     v26 = 33022;
     v27 = 0;
-    v28 = __rev16([v7 fakeLinkIndex]);
-    v29 = [v6 routerID] >> 48;
+    v28 = __rev16([linkCopy fakeLinkIndex]);
+    v29 = [instanceCopy routerID] >> 48;
     [(NRBabelInterface *)v9 setLocalAddress:&v26];
     if (qword_100229100 != -1)
     {
@@ -258,25 +258,25 @@ LABEL_18:
 
       v10 = qword_1002290F8;
       IPv6AddrString = createIPv6AddrString();
-      [v7 name];
+      [linkCopy name];
       v21 = v20 = IPv6AddrString;
       v18 = 3909;
-      v19 = v6;
+      v19 = instanceCopy;
       v16 = "";
       v17 = "[NRBabelInterfaceFake initWithInstance:link:]";
       _NRLogWithArgs();
     }
 
-    v12 = [v6 queue];
+    queue = [instanceCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000DBF48;
     block[3] = &unk_1001FD088;
-    v23 = v6;
+    v23 = instanceCopy;
     v13 = v9;
     v24 = v13;
-    v25 = v7;
-    dispatch_async(v12, block);
+    v25 = linkCopy;
+    dispatch_async(queue, block);
 
     v14 = v13;
   }

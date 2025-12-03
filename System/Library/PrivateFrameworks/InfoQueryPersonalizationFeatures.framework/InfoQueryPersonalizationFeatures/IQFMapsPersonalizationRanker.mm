@@ -1,17 +1,17 @@
 @interface IQFMapsPersonalizationRanker
-- (BOOL)isResultCandidateForPromotion:(id)a3;
+- (BOOL)isResultCandidateForPromotion:(id)promotion;
 - (IQFMapsPersonalizationRanker)init;
-- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)a3 lastVisitDaysThreshold:(double)a4 visitCountGivenLocationThreshold:(double)a5 entityRelevanceThreshold:(double)a6;
-- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)a3 lastVisitDaysThreshold:(double)a4 visitCountGivenLocationThreshold:(double)a5 entityRelevanceThreshold:(double)a6 enableEntityRelevance:(BOOL)a7;
-- (double)_calendarEventScoreForResult:(id)a3;
-- (double)_routineFrecencyScoreForEntityRelevanceResult:(id)a3;
-- (double)_routineFrecencyScoreForLifeEvent:(id)a3;
-- (double)_scoreForResult:(id)a3;
-- (id)_sortedResults:(id)a3;
-- (id)rankedEventsForLocations:(id)a3;
-- (int64_t)_compareResult:(id)a3 toOtherResult:(id)a4;
-- (void)_updateCachedMUIDs:(id)a3 rankedResults:(id)a4;
-- (void)rankedEventsForLocations:(id)a3 completionHandler:(id)a4;
+- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)threshold lastVisitDaysThreshold:(double)daysThreshold visitCountGivenLocationThreshold:(double)locationThreshold entityRelevanceThreshold:(double)relevanceThreshold;
+- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)threshold lastVisitDaysThreshold:(double)daysThreshold visitCountGivenLocationThreshold:(double)locationThreshold entityRelevanceThreshold:(double)relevanceThreshold enableEntityRelevance:(BOOL)relevance;
+- (double)_calendarEventScoreForResult:(id)result;
+- (double)_routineFrecencyScoreForEntityRelevanceResult:(id)result;
+- (double)_routineFrecencyScoreForLifeEvent:(id)event;
+- (double)_scoreForResult:(id)result;
+- (id)_sortedResults:(id)results;
+- (id)rankedEventsForLocations:(id)locations;
+- (int64_t)_compareResult:(id)result toOtherResult:(id)otherResult;
+- (void)_updateCachedMUIDs:(id)ds rankedResults:(id)results;
+- (void)rankedEventsForLocations:(id)locations completionHandler:(id)handler;
 @end
 
 @implementation IQFMapsPersonalizationRanker
@@ -23,14 +23,14 @@
   return v3;
 }
 
-- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)a3 lastVisitDaysThreshold:(double)a4 visitCountGivenLocationThreshold:(double)a5 entityRelevanceThreshold:(double)a6
+- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)threshold lastVisitDaysThreshold:(double)daysThreshold visitCountGivenLocationThreshold:(double)locationThreshold entityRelevanceThreshold:(double)relevanceThreshold
 {
-  v7 = [[IQFMapsPersonalizationRanker alloc] initWithVisitCountThreshold:1 lastVisitDaysThreshold:a3 visitCountGivenLocationThreshold:a4 entityRelevanceThreshold:a5 enableEntityRelevance:a6];
+  v7 = [[IQFMapsPersonalizationRanker alloc] initWithVisitCountThreshold:1 lastVisitDaysThreshold:threshold visitCountGivenLocationThreshold:daysThreshold entityRelevanceThreshold:locationThreshold enableEntityRelevance:relevanceThreshold];
 
   return v7;
 }
 
-- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)a3 lastVisitDaysThreshold:(double)a4 visitCountGivenLocationThreshold:(double)a5 entityRelevanceThreshold:(double)a6 enableEntityRelevance:(BOOL)a7
+- (IQFMapsPersonalizationRanker)initWithVisitCountThreshold:(double)threshold lastVisitDaysThreshold:(double)daysThreshold visitCountGivenLocationThreshold:(double)locationThreshold entityRelevanceThreshold:(double)relevanceThreshold enableEntityRelevance:(BOOL)relevance
 {
   v21.receiver = self;
   v21.super_class = IQFMapsPersonalizationRanker;
@@ -45,11 +45,11 @@
     cachedRankedResults = v12->_cachedRankedResults;
     v12->_cachedRankedResults = v15;
 
-    v12->_visitCountThreshold = a3;
-    v12->_lastVisitDaysThreshold = a4;
-    v12->_visitCountGivenLocationThreshold = a5;
-    v12->_entityRelevanceThreshold = a6;
-    v12->_enableEntityRelevance = a7;
+    v12->_visitCountThreshold = threshold;
+    v12->_lastVisitDaysThreshold = daysThreshold;
+    v12->_visitCountGivenLocationThreshold = locationThreshold;
+    v12->_entityRelevanceThreshold = relevanceThreshold;
+    v12->_enableEntityRelevance = relevance;
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.infoQueryPersonalizationFeatures.geo", v17);
     caLoggingQueue = v12->_caLoggingQueue;
@@ -59,9 +59,9 @@
   return v12;
 }
 
-- (id)rankedEventsForLocations:(id)a3
+- (id)rankedEventsForLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   v5 = dispatch_semaphore_create(0);
   v12 = 0;
   v13 = &v12;
@@ -76,7 +76,7 @@
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [(IQFMapsPersonalizationRanker *)self rankedEventsForLocations:v4 completionHandler:v9];
+  [(IQFMapsPersonalizationRanker *)self rankedEventsForLocations:locationsCopy completionHandler:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -92,17 +92,17 @@ void __57__IQFMapsPersonalizationRanker_rankedEventsForLocations___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)rankedEventsForLocations:(id)a3 completionHandler:(id)a4
+- (void)rankedEventsForLocations:(id)locations completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = v6;
+  v9 = locationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -116,8 +116,8 @@ void __57__IQFMapsPersonalizationRanker_rankedEventsForLocations___block_invoke(
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v33 + 1) + 8 * i) muid];
-        [v8 addObject:v13];
+        muid = [*(*(&v33 + 1) + 8 * i) muid];
+        [v8 addObject:muid];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -136,7 +136,7 @@ void __57__IQFMapsPersonalizationRanker_rankedEventsForLocations___block_invoke(
       [IQFMapsPersonalizationRanker rankedEventsForLocations:completionHandler:];
     }
 
-    v7[2](v7, self->_cachedRankedResults, 0);
+    handlerCopy[2](handlerCopy, self->_cachedRankedResults, 0);
   }
 
   else
@@ -173,7 +173,7 @@ void __57__IQFMapsPersonalizationRanker_rankedEventsForLocations___block_invoke(
       v27 = v20;
       v31[1] = v18;
       objc_copyWeak(v31, buf);
-      v30 = v7;
+      v30 = handlerCopy;
       v28 = v8;
       v29 = v9;
       [v21 eventsAtLocations:v29 completionHandler:v26];
@@ -191,7 +191,7 @@ void __57__IQFMapsPersonalizationRanker_rankedEventsForLocations___block_invoke(
       }
 
       v23 = objc_opt_new();
-      v7[2](v7, v23, 0);
+      handlerCopy[2](handlerCopy, v23, 0);
     }
 
     objc_destroyWeak(buf);
@@ -245,50 +245,50 @@ void __75__IQFMapsPersonalizationRanker_rankedEventsForLocations_completionHandl
   }
 }
 
-- (id)_sortedResults:(id)a3
+- (id)_sortedResults:(id)results
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__IQFMapsPersonalizationRanker__sortedResults___block_invoke;
   v5[3] = &unk_2797ACE90;
   v5[4] = self;
-  v3 = [a3 sortedArrayWithOptions:16 usingComparator:v5];
+  v3 = [results sortedArrayWithOptions:16 usingComparator:v5];
 
   return v3;
 }
 
-- (void)_updateCachedMUIDs:(id)a3 rankedResults:(id)a4
+- (void)_updateCachedMUIDs:(id)ds rankedResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  resultsCopy = results;
   cachedMUIDs = self->_cachedMUIDs;
-  self->_cachedMUIDs = v6;
-  v10 = v6;
+  self->_cachedMUIDs = dsCopy;
+  v10 = dsCopy;
 
   cachedRankedResults = self->_cachedRankedResults;
-  self->_cachedRankedResults = v7;
+  self->_cachedRankedResults = resultsCopy;
 }
 
-- (BOOL)isResultCandidateForPromotion:(id)a3
+- (BOOL)isResultCandidateForPromotion:(id)promotion
 {
-  v4 = a3;
-  v5 = [v4 _isCandidateForPromotion];
+  promotionCopy = promotion;
+  _isCandidateForPromotion = [promotionCopy _isCandidateForPromotion];
 
-  if (!v5)
+  if (!_isCandidateForPromotion)
   {
-    v8 = [v4 resultType];
-    if (v8 > 0xA)
+    resultType = [promotionCopy resultType];
+    if (resultType > 0xA)
     {
       goto LABEL_17;
     }
 
-    if (((1 << v8) & 0x3D0) != 0)
+    if (((1 << resultType) & 0x3D0) != 0)
     {
-      v9 = [v4 startEventDate];
-      if ([v9 isDateInTodayOrFuture])
+      startEventDate = [promotionCopy startEventDate];
+      if ([startEventDate isDateInTodayOrFuture])
       {
-        v10 = [v4 startEventDate];
-        [v10 timeIntervalSinceNow];
+        startEventDate2 = [promotionCopy startEventDate];
+        [startEventDate2 timeIntervalSinceNow];
         v12 = 604800.0;
 LABEL_10:
         v7 = v11 < v12;
@@ -301,13 +301,13 @@ LABEL_30:
       goto LABEL_29;
     }
 
-    if (((1 << v8) & 0x2C) != 0)
+    if (((1 << resultType) & 0x2C) != 0)
     {
-      v9 = [v4 startEventDate];
-      if ([v9 isDateInTodayOrFuture])
+      startEventDate = [promotionCopy startEventDate];
+      if ([startEventDate isDateInTodayOrFuture])
       {
-        v10 = [v4 startEventDate];
-        [v10 timeIntervalSinceNow];
+        startEventDate2 = [promotionCopy startEventDate];
+        [startEventDate2 timeIntervalSinceNow];
         v12 = 2592000.0;
         goto LABEL_10;
       }
@@ -317,20 +317,20 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    if (v8 == 10)
+    if (resultType == 10)
     {
       if (self->_enableEntityRelevance)
       {
-        v9 = [v4 entityRelevanceScore];
-        [v9 doubleValue];
+        startEventDate = [promotionCopy entityRelevanceScore];
+        [startEventDate doubleValue];
         if (v13 >= self->_entityRelevanceThreshold)
         {
-          v10 = [v4 numberOfVisits];
-          [v10 doubleValue];
+          startEventDate2 = [promotionCopy numberOfVisits];
+          [startEventDate2 doubleValue];
           if (v14 >= self->_visitCountThreshold)
           {
-            v19 = [v4 dateOfLastVisit];
-            [v19 timeIntervalSinceNow];
+            dateOfLastVisit = [promotionCopy dateOfLastVisit];
+            [dateOfLastVisit timeIntervalSinceNow];
             v7 = v20 >= self->_lastVisitDaysThreshold * -86400.0;
           }
 
@@ -355,25 +355,25 @@ LABEL_29:
     else
     {
 LABEL_17:
-      if (v8)
+      if (resultType)
       {
-        if (v8 != 1)
+        if (resultType != 1)
         {
 LABEL_27:
           v7 = 0;
 LABEL_31:
-          [v4 setIsCandidateForPromotion:v7];
+          [promotionCopy setIsCandidateForPromotion:v7];
           goto LABEL_32;
         }
 
         if (!self->_enableEntityRelevance)
         {
-          v9 = [v4 numberOfVisits];
-          [v9 doubleValue];
+          startEventDate = [promotionCopy numberOfVisits];
+          [startEventDate doubleValue];
           if (v16 >= self->_visitCountThreshold)
           {
-            v10 = [v4 dateOfLastVisit];
-            [v10 timeIntervalSinceNow];
+            startEventDate2 = [promotionCopy dateOfLastVisit];
+            [startEventDate2 timeIntervalSinceNow];
             v7 = v18 >= self->_lastVisitDaysThreshold * -86400.0;
             goto LABEL_11;
           }
@@ -393,7 +393,7 @@ LABEL_31:
         v15 = IQFLogCategoryDefault();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          [IQFMapsPersonalizationRanker isResultCandidateForPromotion:v4];
+          [IQFMapsPersonalizationRanker isResultCandidateForPromotion:promotionCopy];
         }
       }
     }
@@ -401,92 +401,92 @@ LABEL_31:
     goto LABEL_27;
   }
 
-  v6 = [v4 _isCandidateForPromotion];
-  LOBYTE(v7) = [v6 BOOLValue];
+  _isCandidateForPromotion2 = [promotionCopy _isCandidateForPromotion];
+  LOBYTE(v7) = [_isCandidateForPromotion2 BOOLValue];
 
 LABEL_32:
   return v7;
 }
 
-- (double)_scoreForResult:(id)a3
+- (double)_scoreForResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 _score];
-  v6 = v5;
-  if (!v5)
+  resultCopy = result;
+  _score = [resultCopy _score];
+  v6 = _score;
+  if (!_score)
   {
-    v9 = [v4 resultType];
-    if ((v9 - 2) >= 8)
+    resultType = [resultCopy resultType];
+    if ((resultType - 2) >= 8)
     {
-      if (v9 == 1)
+      if (resultType == 1)
       {
-        [(IQFMapsPersonalizationRanker *)self _routineFrecencyScoreForLifeEvent:v4];
+        [(IQFMapsPersonalizationRanker *)self _routineFrecencyScoreForLifeEvent:resultCopy];
       }
 
       else
       {
         v8 = 0.0;
-        if (v9 != 10)
+        if (resultType != 10)
         {
           goto LABEL_6;
         }
 
-        [(IQFMapsPersonalizationRanker *)self _routineFrecencyScoreForEntityRelevanceResult:v4];
+        [(IQFMapsPersonalizationRanker *)self _routineFrecencyScoreForEntityRelevanceResult:resultCopy];
       }
     }
 
     else
     {
-      [(IQFMapsPersonalizationRanker *)self _calendarEventScoreForResult:v4];
+      [(IQFMapsPersonalizationRanker *)self _calendarEventScoreForResult:resultCopy];
     }
 
     v8 = v10;
 LABEL_6:
-    [v4 setScore:v8];
+    [resultCopy setScore:v8];
     goto LABEL_7;
   }
 
-  [v5 doubleValue];
+  [_score doubleValue];
   v8 = v7;
 LABEL_7:
 
   return v8;
 }
 
-- (double)_routineFrecencyScoreForLifeEvent:(id)a3
+- (double)_routineFrecencyScoreForLifeEvent:(id)event
 {
   v3 = 0.0;
   if (!self->_enableEntityRelevance)
   {
-    v4 = a3;
-    v5 = [v4 dateOfLastVisit];
-    [v5 timeIntervalSinceNow];
+    eventCopy = event;
+    dateOfLastVisit = [eventCopy dateOfLastVisit];
+    [dateOfLastVisit timeIntervalSinceNow];
     v7 = v6;
 
-    v8 = [v4 numberOfVisits];
+    numberOfVisits = [eventCopy numberOfVisits];
 
-    [v8 doubleValue];
+    [numberOfVisits doubleValue];
     v3 = exp2(v7 / 2592000.0) * v9;
   }
 
   return v3;
 }
 
-- (double)_routineFrecencyScoreForEntityRelevanceResult:(id)a3
+- (double)_routineFrecencyScoreForEntityRelevanceResult:(id)result
 {
-  v4 = a3;
-  v5 = v4;
+  resultCopy = result;
+  v5 = resultCopy;
   v6 = 0.0;
   if (self->_enableEntityRelevance)
   {
     if (self->_entityRelevanceThreshold <= 0.0)
     {
-      [v4 numberOfVisits];
+      [resultCopy numberOfVisits];
     }
 
     else
     {
-      [v4 entityRelevanceScore];
+      [resultCopy entityRelevanceScore];
     }
     v7 = ;
     [v7 doubleValue];
@@ -496,11 +496,11 @@ LABEL_7:
   return v6;
 }
 
-- (double)_calendarEventScoreForResult:(id)a3
+- (double)_calendarEventScoreForResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 startEventDate];
-  [v4 timeIntervalSinceNow];
+  resultCopy = result;
+  startEventDate = [resultCopy startEventDate];
+  [startEventDate timeIntervalSinceNow];
   v6 = v5;
 
   if (v6 >= 0.0)
@@ -508,9 +508,9 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [v3 startEventDate];
-  v9 = [v7 isDateInToday:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  startEventDate2 = [resultCopy startEventDate];
+  v9 = [currentCalendar isDateInToday:startEventDate2];
 
   v10 = 0.0;
   if (v9)
@@ -522,25 +522,25 @@ LABEL_3:
   return v10;
 }
 
-- (int64_t)_compareResult:(id)a3 toOtherResult:(id)a4
+- (int64_t)_compareResult:(id)result toOtherResult:(id)otherResult
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:v6];
-  if (v8 == [(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:v7])
+  resultCopy = result;
+  otherResultCopy = otherResult;
+  v8 = [(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:resultCopy];
+  if (v8 == [(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:otherResultCopy])
   {
-    if (isCalendarBasedPersonalizationResultType([v6 resultType]) || !isCalendarBasedPersonalizationResultType(objc_msgSend(v7, "resultType")))
+    if (isCalendarBasedPersonalizationResultType([resultCopy resultType]) || !isCalendarBasedPersonalizationResultType(objc_msgSend(otherResultCopy, "resultType")))
     {
-      if (isCalendarBasedPersonalizationResultType([v6 resultType]) && !isCalendarBasedPersonalizationResultType(objc_msgSend(v7, "resultType")))
+      if (isCalendarBasedPersonalizationResultType([resultCopy resultType]) && !isCalendarBasedPersonalizationResultType(objc_msgSend(otherResultCopy, "resultType")))
       {
         v9 = -1;
       }
 
       else
       {
-        [(IQFMapsPersonalizationRanker *)self _scoreForResult:v6];
+        [(IQFMapsPersonalizationRanker *)self _scoreForResult:resultCopy];
         v11 = v10;
-        [(IQFMapsPersonalizationRanker *)self _scoreForResult:v7];
+        [(IQFMapsPersonalizationRanker *)self _scoreForResult:otherResultCopy];
         v13 = -1;
         if (v11 <= v12)
         {
@@ -565,7 +565,7 @@ LABEL_3:
     }
   }
 
-  else if ([(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:v6])
+  else if ([(IQFMapsPersonalizationRanker *)self isResultCandidateForPromotion:resultCopy])
   {
     v9 = -1;
   }

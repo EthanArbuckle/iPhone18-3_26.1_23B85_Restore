@@ -1,8 +1,8 @@
 @interface MCObject
-+ (id)objectWithImprint:(id)a3 andMontage:(id)a4;
-- (MCObject)initWithImprint:(id)a3 andMontage:(id)a4;
-- (id)_initWithObjectID:(id)a3;
-- (id)initFromScratchWithMontage:(id)a3;
++ (id)objectWithImprint:(id)imprint andMontage:(id)montage;
+- (MCObject)initWithImprint:(id)imprint andMontage:(id)montage;
+- (id)_initWithObjectID:(id)d;
+- (id)initFromScratchWithMontage:(id)montage;
 - (id)initSnapshot;
 - (id)snapshot;
 - (void)dealloc;
@@ -10,12 +10,12 @@
 
 @implementation MCObject
 
-+ (id)objectWithImprint:(id)a3 andMontage:(id)a4
++ (id)objectWithImprint:(id)imprint andMontage:(id)montage
 {
-  result = NSClassFromString([a3 objectForKey:@"type"]);
+  result = NSClassFromString([imprint objectForKey:@"type"]);
   if (result)
   {
-    v7 = [[result alloc] initWithImprint:a3 andMontage:a4];
+    v7 = [[result alloc] initWithImprint:imprint andMontage:montage];
 
     return v7;
   }
@@ -23,38 +23,38 @@
   return result;
 }
 
-- (id)initFromScratchWithMontage:(id)a3
+- (id)initFromScratchWithMontage:(id)montage
 {
   v4 = [(MCObject *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->mMontage = a3;
+    v4->mMontage = montage;
     v6 = [NSString alloc];
     mMontage = v5->mMontage;
     if (mMontage)
     {
-      v8 = [(MCMontage *)mMontage uuidSeed];
+      uuidSeed = [(MCMontage *)mMontage uuidSeed];
     }
 
     else
     {
-      v8 = v5;
+      uuidSeed = v5;
     }
 
-    v5->mObjectID = [v6 initWithFormat:@"/%llu", v8];
+    v5->mObjectID = [v6 initWithFormat:@"/%llu", uuidSeed];
   }
 
   return v5;
 }
 
-- (MCObject)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCObject)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v6 = [MCObject initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v6->mObjectID = [a3 objectForKey:@"id"];
-    v6->mMontage = a4;
+    v6->mObjectID = [imprint objectForKey:@"id"];
+    v6->mMontage = montage;
   }
 
   return v6;
@@ -71,12 +71,12 @@
   return v2;
 }
 
-- (id)_initWithObjectID:(id)a3
+- (id)_initWithObjectID:(id)d
 {
   v4 = [(MCObject *)self init];
   if (v4)
   {
-    v4->mObjectID = a3;
+    v4->mObjectID = d;
   }
 
   return v4;
@@ -94,10 +94,10 @@
 
 - (id)snapshot
 {
-  v3 = [objc_alloc(objc_opt_class()) initSnapshot];
-  [(MCObjectBase *)self _copySelfToSnapshot:v3];
+  initSnapshot = [objc_alloc(objc_opt_class()) initSnapshot];
+  [(MCObjectBase *)self _copySelfToSnapshot:initSnapshot];
 
-  return v3;
+  return initSnapshot;
 }
 
 @end

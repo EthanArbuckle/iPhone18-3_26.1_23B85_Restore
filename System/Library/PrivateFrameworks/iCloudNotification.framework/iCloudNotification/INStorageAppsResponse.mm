@@ -1,14 +1,14 @@
 @interface INStorageAppsResponse
-- (INStorageAppsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (INStorageAppsResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation INStorageAppsResponse
 
-- (INStorageAppsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INStorageAppsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v11.receiver = self;
   v11.super_class = INStorageAppsResponse;
-  v4 = [(INStorageAppsResponse *)&v11 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(INStorageAppsResponse *)&v11 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4)
   {

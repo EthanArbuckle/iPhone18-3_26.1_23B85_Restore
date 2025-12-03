@@ -1,23 +1,23 @@
 @interface SMBClientManager
 + (id)newManager;
-- (id)addVolume:(id)a3 atServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6;
-- (id)forgetVolume:(id)a3;
-- (id)listenerForVolume:(id)a3 error:(id *)a4;
-- (id)sharesAtServer:(id)a3 credentialType:(int64_t)a4 credential:(id)a5 error:(id *)a6;
-- (id)volumes:(id *)a3;
-- (void)addSMBServerOrShare:(id)a3 completionHandler:(id)a4;
-- (void)addVolumes:(id)a3 atServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6 completionHandler:(id)a7;
-- (void)credentialTypesForServer:(id)a3 completionHandler:(id)a4;
-- (void)listenerForVolume:(id)a3 completionHandler:(id)a4;
-- (void)sharesAtServer:(id)a3 credentialType:(int64_t)a4 credential:(id)a5 completionHandler:(id)a6;
-- (void)volumesWithCompletionHandler:(id)a3;
+- (id)addVolume:(id)volume atServer:(id)server credentialType:(int64_t)type credential:(id)credential;
+- (id)forgetVolume:(id)volume;
+- (id)listenerForVolume:(id)volume error:(id *)error;
+- (id)sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential error:(id *)error;
+- (id)volumes:(id *)volumes;
+- (void)addSMBServerOrShare:(id)share completionHandler:(id)handler;
+- (void)addVolumes:(id)volumes atServer:(id)server credentialType:(int64_t)type credential:(id)credential completionHandler:(id)handler;
+- (void)credentialTypesForServer:(id)server completionHandler:(id)handler;
+- (void)listenerForVolume:(id)volume completionHandler:(id)handler;
+- (void)sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential completionHandler:(id)handler;
+- (void)volumesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SMBClientManager
 
 + (id)newManager
 {
-  v2 = [a1 newConnectionForService:@"machp://com.apple.filesystems.smbclientd"];
+  v2 = [self newConnectionForService:@"machp://com.apple.filesystems.smbclientd"];
   if (v2)
   {
     v3 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2875C1120];
@@ -27,24 +27,24 @@
   return v2;
 }
 
-- (id)volumes:(id *)a3
+- (id)volumes:(id *)volumes
 {
   v5.receiver = self;
   v5.super_class = SMBClientManager;
-  v3 = [(LiveFSClient *)&v5 volumes:a3];
+  v3 = [(LiveFSClient *)&v5 volumes:volumes];
 
   return v3;
 }
 
-- (void)volumesWithCompletionHandler:(id)a3
+- (void)volumesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__SMBClientManager_volumesWithCompletionHandler___block_invoke;
   v11[3] = &unk_279B50BA0;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
@@ -56,26 +56,26 @@
   [v7 listVolumes:v9];
 }
 
-- (id)listenerForVolume:(id)a3 error:(id *)a4
+- (id)listenerForVolume:(id)volume error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = SMBClientManager;
-  v4 = [(LiveFSClient *)&v6 listenerForVolume:a3 error:a4];
+  v4 = [(LiveFSClient *)&v6 listenerForVolume:volume error:error];
 
   return v4;
 }
 
-- (void)listenerForVolume:(id)a3 completionHandler:(id)a4
+- (void)listenerForVolume:(id)volume completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__SMBClientManager_listenerForVolume_completionHandler___block_invoke;
   v14[3] = &unk_279B50BA0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = a3;
+  volumeCopy = volume;
   v10 = [v7 remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -83,23 +83,23 @@
   v12[3] = &unk_279B50BF0;
   v13 = v8;
   v11 = v8;
-  [v10 listenerForVolume:v9 reply:v12];
+  [v10 listenerForVolume:volumeCopy reply:v12];
 }
 
-- (id)forgetVolume:(id)a3
+- (id)forgetVolume:(id)volume
 {
   v5.receiver = self;
   v5.super_class = SMBClientManager;
-  v3 = [(LiveFSClient *)&v5 forgetVolume:a3 withFlags:3];
+  v3 = [(LiveFSClient *)&v5 forgetVolume:volume withFlags:3];
 
   return v3;
 }
 
-- (id)addVolume:(id)a3 atServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6
+- (id)addVolume:(id)volume atServer:(id)server credentialType:(int64_t)type credential:(id)credential
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  volumeCopy = volume;
+  serverCopy = server;
+  credentialCopy = credential;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -123,35 +123,35 @@
   v17[2] = __65__SMBClientManager_addVolume_atServer_credentialType_credential___block_invoke_2;
   v17[3] = &unk_279B50C18;
   v17[4] = &v19;
-  [v14 addVolume:v10 atServer:v11 credentialType:a5 credential:v12 reply:v17];
+  [v14 addVolume:volumeCopy atServer:serverCopy credentialType:type credential:credentialCopy reply:v17];
   v15 = v20[5];
   _Block_object_dispose(&v19, 8);
 
   return v15;
 }
 
-- (void)addSMBServerOrShare:(id)a3 completionHandler:(id)a4
+- (void)addSMBServerOrShare:(id)share completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__SMBClientManager_addSMBServerOrShare_completionHandler___block_invoke;
   v11[3] = &unk_279B50BA0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  shareCopy = share;
   v10 = [v7 remoteObjectProxyWithErrorHandler:v11];
-  [v10 addSMBServerOrShare:v9 completionHandler:v8];
+  [v10 addSMBServerOrShare:shareCopy completionHandler:v8];
 }
 
-- (void)addVolumes:(id)a3 atServer:(id)a4 credentialType:(int64_t)a5 credential:(id)a6 completionHandler:(id)a7
+- (void)addVolumes:(id)volumes atServer:(id)server credentialType:(int64_t)type credential:(id)credential completionHandler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v32 = a4;
-  v33 = a6;
-  v12 = a7;
+  volumesCopy = volumes;
+  serverCopy = server;
+  credentialCopy = credential;
+  handlerCopy = handler;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -159,8 +159,8 @@
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
-  v29 = v11;
-  v65 = [v11 count];
+  v29 = volumesCopy;
+  v65 = [volumesCopy count];
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
@@ -172,8 +172,8 @@
   v52 = 0x3032000000;
   v53 = __Block_byref_object_copy__41;
   v54 = __Block_byref_object_dispose__42;
-  v27 = v12;
-  v55 = MEMORY[0x266734E60](v12);
+  v27 = handlerCopy;
+  v55 = MEMORY[0x266734E60](handlerCopy);
   v13 = objc_opt_new();
   v14 = objc_opt_new();
   v28 = objc_opt_new();
@@ -187,7 +187,7 @@
     [SMBClientManager addVolumes:atServer:credentialType:credential:completionHandler:];
   }
 
-  if ([v11 count] < 0)
+  if ([volumesCopy count] < 0)
   {
     v23 = v51[5];
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:34 userInfo:0];
@@ -216,7 +216,7 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v11;
+    obj = volumesCopy;
     v18 = [obj countByEnumeratingWithState:&v42 objects:v72 count:16];
     if (v18)
     {
@@ -265,7 +265,7 @@
           v36 = v14;
           v37 = v13;
           v41 = &v56;
-          [v17 addVolume:v22 atServer:v32 credentialType:a5 credential:v33 reply:v34];
+          [v17 addVolume:v22 atServer:serverCopy credentialType:type credential:credentialCopy reply:v34];
         }
 
         v18 = [obj countByEnumeratingWithState:&v42 objects:v72 count:16];
@@ -348,10 +348,10 @@ LABEL_4:
   [*(a1 + 40) unlock];
 }
 
-- (id)sharesAtServer:(id)a3 credentialType:(int64_t)a4 credential:(id)a5 error:(id *)a6
+- (id)sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  serverCopy = server;
+  credentialCopy = credential;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -387,10 +387,10 @@ LABEL_4:
   v16[3] = &unk_279B50C90;
   v16[4] = &v18;
   v16[5] = &v24;
-  [v13 sharesAtServer:v10 credentialType:a4 credential:v11 reply:v16];
-  if (a6)
+  [v13 sharesAtServer:serverCopy credentialType:type credential:credentialCopy reply:v16];
+  if (error)
   {
-    *a6 = v25[5];
+    *error = v25[5];
   }
 
   v14 = v19[5];
@@ -415,18 +415,18 @@ void __67__SMBClientManager_sharesAtServer_credentialType_credential_error___blo
   *(v9 + 40) = v6;
 }
 
-- (void)sharesAtServer:(id)a3 credentialType:(int64_t)a4 credential:(id)a5 completionHandler:(id)a6
+- (void)sharesAtServer:(id)server credentialType:(int64_t)type credential:(id)credential completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v11 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__SMBClientManager_sharesAtServer_credentialType_credential_completionHandler___block_invoke;
   v19[3] = &unk_279B50BA0;
-  v12 = v10;
+  v12 = handlerCopy;
   v20 = v12;
-  v13 = a5;
-  v14 = a3;
+  credentialCopy = credential;
+  serverCopy = server;
   v15 = [v11 remoteObjectProxyWithErrorHandler:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -434,22 +434,22 @@ void __67__SMBClientManager_sharesAtServer_credentialType_credential_error___blo
   v17[3] = &unk_279B50CB8;
   v18 = v12;
   v16 = v12;
-  [v15 sharesAtServer:v14 credentialType:a4 credential:v13 reply:v17];
+  [v15 sharesAtServer:serverCopy credentialType:type credential:credentialCopy reply:v17];
 }
 
-- (void)credentialTypesForServer:(id)a3 completionHandler:(id)a4
+- (void)credentialTypesForServer:(id)server completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = *(&self->super.super.isa + *MEMORY[0x277D23DC8]);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__SMBClientManager_credentialTypesForServer_completionHandler___block_invoke;
   v11[3] = &unk_279B50BA0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  serverCopy = server;
   v10 = [v7 remoteObjectProxyWithErrorHandler:v11];
-  [v10 SMBClientProtocolCredentialsForServer:v9 completionHandler:v8];
+  [v10 SMBClientProtocolCredentialsForServer:serverCopy completionHandler:v8];
 }
 
 - (void)addVolume:atServer:credentialType:credential:.cold.1()

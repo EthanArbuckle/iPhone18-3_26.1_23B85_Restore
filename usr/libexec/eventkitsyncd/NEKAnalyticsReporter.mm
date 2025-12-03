@@ -1,9 +1,9 @@
 @interface NEKAnalyticsReporter
 + (id)syncReportFilePath;
-+ (void)_reportDriftResultsToAnalytics:(id)a3;
-+ (void)_reportDuplicationResultsToAnalytics:(id)a3;
-+ (void)saveSyncReportForDrift:(id)a3 andDuplication:(id)a4;
-+ (void)sendAnalyticsForDrift:(id)a3 andDuplication:(id)a4;
++ (void)_reportDriftResultsToAnalytics:(id)analytics;
++ (void)_reportDuplicationResultsToAnalytics:(id)analytics;
++ (void)saveSyncReportForDrift:(id)drift andDuplication:(id)duplication;
++ (void)sendAnalyticsForDrift:(id)drift andDuplication:(id)duplication;
 @end
 
 @implementation NEKAnalyticsReporter
@@ -11,24 +11,24 @@
 + (id)syncReportFilePath
 {
   v2 = +[NEKEnvironment instance];
-  v3 = [v2 dbFileManager];
-  v4 = [v3 syncStateDBPathFor:@"syncReport.json"];
+  dbFileManager = [v2 dbFileManager];
+  v4 = [dbFileManager syncStateDBPathFor:@"syncReport.json"];
 
   return v4;
 }
 
-+ (void)saveSyncReportForDrift:(id)a3 andDuplication:(id)a4
++ (void)saveSyncReportForDrift:(id)drift andDuplication:(id)duplication
 {
-  v5 = a4;
-  v6 = a3;
+  duplicationCopy = duplication;
+  driftCopy = drift;
   v7 = +[NEKAnalyticsReporter syncReportFilePath];
   v8 = [[NSMutableDictionary alloc] initWithCapacity:10];
-  v9 = [v6 syncReport];
+  syncReport = [driftCopy syncReport];
 
-  [v8 setObject:v9 forKeyedSubscript:@"Drift"];
-  v10 = [v5 syncReport];
+  [v8 setObject:syncReport forKeyedSubscript:@"Drift"];
+  syncReport2 = [duplicationCopy syncReport];
 
-  [v8 setObject:v10 forKeyedSubscript:@"Duplicates"];
+  [v8 setObject:syncReport2 forKeyedSubscript:@"Duplicates"];
   v18 = 0;
   v11 = [NSJSONSerialization dataWithJSONObject:v8 options:11 error:&v18];
   v12 = v18;
@@ -71,20 +71,20 @@
   }
 }
 
-+ (void)sendAnalyticsForDrift:(id)a3 andDuplication:(id)a4
++ (void)sendAnalyticsForDrift:(id)drift andDuplication:(id)duplication
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 hasDrift];
+  driftCopy = drift;
+  duplicationCopy = duplication;
+  hasDrift = [driftCopy hasDrift];
   v8 = *(qword_1000D18A8 + 8);
-  if (v7)
+  if (hasDrift)
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
     {
-      sub_10006F634(v8, v5);
+      sub_10006F634(v8, driftCopy);
     }
 
-    [NEKAnalyticsReporter _reportDriftResultsToAnalytics:v5];
+    [NEKAnalyticsReporter _reportDriftResultsToAnalytics:driftCopy];
   }
 
   else if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_INFO))
@@ -93,16 +93,16 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "No drift detected on these devices", buf, 2u);
   }
 
-  v9 = [v6 hasDuplicates];
+  hasDuplicates = [duplicationCopy hasDuplicates];
   v10 = *(qword_1000D18A8 + 8);
-  if (v9)
+  if (hasDuplicates)
   {
     if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_ERROR))
     {
-      sub_10006F6F0(v10, v6);
+      sub_10006F6F0(v10, duplicationCopy);
     }
 
-    [NEKAnalyticsReporter _reportDuplicationResultsToAnalytics:v6];
+    [NEKAnalyticsReporter _reportDuplicationResultsToAnalytics:duplicationCopy];
   }
 
   else if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_INFO))
@@ -112,17 +112,17 @@
   }
 }
 
-+ (void)_reportDriftResultsToAnalytics:(id)a3
++ (void)_reportDriftResultsToAnalytics:(id)analytics
 {
-  v4 = a3;
-  v3 = v4;
+  analyticsCopy = analytics;
+  v3 = analyticsCopy;
   AnalyticsSendEventLazy();
 }
 
-+ (void)_reportDuplicationResultsToAnalytics:(id)a3
++ (void)_reportDuplicationResultsToAnalytics:(id)analytics
 {
-  v4 = a3;
-  v3 = v4;
+  analyticsCopy = analytics;
+  v3 = analyticsCopy;
   AnalyticsSendEventLazy();
 }
 

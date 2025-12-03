@@ -1,31 +1,31 @@
 @interface SBSystemShellEmbeddedDisplayController
-- (SBSystemShellEmbeddedDisplayController)initWithAppSwitcherDefaults:(id)a3 sceneManager:(id)a4 initialOrientation:(int64_t)a5;
-- (id)_createSystemShellSceneWithOrientation:(int64_t)a3;
-- (id)displayControllerInfoForConnectingDisplay:(id)a3 configuration:(id)a4;
+- (SBSystemShellEmbeddedDisplayController)initWithAppSwitcherDefaults:(id)defaults sceneManager:(id)manager initialOrientation:(int64_t)orientation;
+- (id)_createSystemShellSceneWithOrientation:(int64_t)orientation;
+- (id)displayControllerInfoForConnectingDisplay:(id)display configuration:(id)configuration;
 - (void)_updateDisplayAssertionPreferences;
 - (void)_updateSceneSettings;
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9;
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on;
 - (void)dealloc;
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4;
-- (void)displayAssertion:(id)a3 didReceiveNewDeactivationReasons:(unint64_t)a4;
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3;
-- (void)displayAssertionDidInvalidate:(id)a3;
-- (void)displayIdentityDidDisconnect:(id)a3;
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons;
+- (void)displayAssertion:(id)assertion didReceiveNewDeactivationReasons:(unint64_t)reasons;
+- (void)displayAssertionDidGainControlOfDisplay:(id)display;
+- (void)displayAssertionDidInvalidate:(id)invalidate;
+- (void)displayIdentityDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBSystemShellEmbeddedDisplayController
 
-- (SBSystemShellEmbeddedDisplayController)initWithAppSwitcherDefaults:(id)a3 sceneManager:(id)a4 initialOrientation:(int64_t)a5
+- (SBSystemShellEmbeddedDisplayController)initWithAppSwitcherDefaults:(id)defaults sceneManager:(id)manager initialOrientation:(int64_t)orientation
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  defaultsCopy = defaults;
+  managerCopy = manager;
+  if (!defaultsCopy)
   {
     [SBSystemShellEmbeddedDisplayController initWithAppSwitcherDefaults:sceneManager:initialOrientation:];
   }
 
-  if (!v10)
+  if (!managerCopy)
   {
     [SBSystemShellEmbeddedDisplayController initWithAppSwitcherDefaults:sceneManager:initialOrientation:];
   }
@@ -36,9 +36,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appSwitcherDefaults, a3);
-    objc_storeStrong(&v12->_sceneManager, a4);
-    v12->_initialOrientation = a5;
+    objc_storeStrong(&v11->_appSwitcherDefaults, defaults);
+    objc_storeStrong(&v12->_sceneManager, manager);
+    v12->_initialOrientation = orientation;
     objc_initWeak(&location, v12);
     appSwitcherDefaults = v12->_appSwitcherDefaults;
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"chamoisWindowingEnabled"];
@@ -81,9 +81,9 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   [(SBSystemShellEmbeddedDisplayController *)&v3 dealloc];
 }
 
-- (id)displayControllerInfoForConnectingDisplay:(id)a3 configuration:(id)a4
+- (id)displayControllerInfoForConnectingDisplay:(id)display configuration:(id)configuration
 {
-  if ([a3 isMainRootDisplay])
+  if ([display isMainRootDisplay])
   {
     v5 = [[SBDisplayControllerInfo alloc] initWithController:self windowingMode:1 priorityLevel:2 deactivationReasons:0];
   }
@@ -96,52 +96,52 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   return v5;
 }
 
-- (void)connectToDisplayIdentity:(id)a3 configuration:(id)a4 displayManager:(id)a5 sceneManager:(id)a6 caDisplayQueue:(id)a7 assertion:(id)a8 embeddedBacklightOn:(BOOL)a9
+- (void)connectToDisplayIdentity:(id)identity configuration:(id)configuration displayManager:(id)manager sceneManager:(id)sceneManager caDisplayQueue:(id)queue assertion:(id)assertion embeddedBacklightOn:(BOOL)on
 {
-  v30 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identityCopy = identity;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  sceneManagerCopy = sceneManager;
+  queueCopy = queue;
+  assertionCopy = assertion;
   if (self->_displayConfiguration)
   {
     [SBSystemShellEmbeddedDisplayController connectToDisplayIdentity:? configuration:? displayManager:? sceneManager:? caDisplayQueue:? assertion:? embeddedBacklightOn:?];
   }
 
-  if (([v15 isMainRootDisplay] & 1) == 0)
+  if (([configurationCopy isMainRootDisplay] & 1) == 0)
   {
     [SBSystemShellEmbeddedDisplayController connectToDisplayIdentity:configuration:displayManager:sceneManager:caDisplayQueue:assertion:embeddedBacklightOn:];
   }
 
   displayConfiguration = self->_displayConfiguration;
-  self->_displayConfiguration = v15;
-  v21 = v15;
+  self->_displayConfiguration = configurationCopy;
+  v21 = configurationCopy;
 
   displayAssertion = self->_displayAssertion;
-  self->_displayAssertion = v19;
-  v23 = v19;
+  self->_displayAssertion = assertionCopy;
+  v23 = assertionCopy;
 
   sbSceneManager = self->_sbSceneManager;
-  self->_sbSceneManager = v17;
-  v25 = v17;
+  self->_sbSceneManager = sceneManagerCopy;
+  v25 = sceneManagerCopy;
 
   v26 = +[SBSceneManagerCoordinator sharedInstance];
 
-  v27 = [v21 copyForSecureRendering];
-  v28 = [v27 identity];
-  v29 = [v26 sceneManagerForDisplayIdentity:v28];
+  copyForSecureRendering = [v21 copyForSecureRendering];
+  identity = [copyForSecureRendering identity];
+  v29 = [v26 sceneManagerForDisplayIdentity:identity];
 
   [(SBSystemShellEmbeddedDisplayController *)self _updateDisplayAssertionPreferences];
 }
 
-- (void)displayIdentityDidDisconnect:(id)a3
+- (void)displayIdentityDidDisconnect:(id)disconnect
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBSystemShellEmbeddedDisplayController.m" lineNumber:111 description:@"told the embedded display disconnected. whoa."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemShellEmbeddedDisplayController.m" lineNumber:111 description:@"told the embedded display disconnected. whoa."];
 }
 
-- (void)displayAssertionDidInvalidate:(id)a3
+- (void)displayAssertionDidInvalidate:(id)invalidate
 {
   if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay])
   {
@@ -149,9 +149,9 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   }
 }
 
-- (void)displayAssertionDidGainControlOfDisplay:(id)a3
+- (void)displayAssertionDidGainControlOfDisplay:(id)display
 {
-  v8 = a3;
+  displayCopy = display;
   if (self->_scene)
   {
     [SBSystemShellEmbeddedDisplayController displayAssertionDidGainControlOfDisplay:];
@@ -161,9 +161,9 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   scene = self->_scene;
   self->_scene = v4;
 
-  v6 = [(FBScene *)self->_scene systemShellHostingEnvironment];
+  systemShellHostingEnvironment = [(FBScene *)self->_scene systemShellHostingEnvironment];
   v7 = SBUISystemShellHostingSpaceIdentifierForDisplayConfiguration();
-  [v6 setSystemShellHostingSpaceIdentifier:v7];
+  [systemShellHostingEnvironment setSystemShellHostingSpaceIdentifier:v7];
 
   if (!self->_scene)
   {
@@ -171,23 +171,23 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   }
 }
 
-- (void)displayAssertion:(id)a3 didReceiveNewDeactivationReasons:(unint64_t)a4
+- (void)displayAssertion:(id)assertion didReceiveNewDeactivationReasons:(unint64_t)reasons
 {
-  if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay:a3])
+  if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay:assertion])
   {
     [SBSystemShellEmbeddedDisplayController displayAssertion:didReceiveNewDeactivationReasons:];
   }
 }
 
-- (void)displayAssertion:(id)a3 didLoseControlOfDisplayForDeactivationReasons:(unint64_t)a4
+- (void)displayAssertion:(id)assertion didLoseControlOfDisplayForDeactivationReasons:(unint64_t)reasons
 {
-  if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay:a3])
+  if (![(SBDisplayAssertion *)self->_displayAssertion hasControlOfDisplay:assertion])
   {
     [SBSystemShellEmbeddedDisplayController displayAssertion:didLoseControlOfDisplayForDeactivationReasons:];
   }
 }
 
-- (id)_createSystemShellSceneWithOrientation:(int64_t)a3
+- (id)_createSystemShellSceneWithOrientation:(int64_t)orientation
 {
   sceneManager = self->_sceneManager;
   v6[0] = MEMORY[0x277D85DD0];
@@ -195,7 +195,7 @@ void __102__SBSystemShellEmbeddedDisplayController_initWithAppSwitcherDefaults_s
   v6[2] = __81__SBSystemShellEmbeddedDisplayController__createSystemShellSceneWithOrientation___block_invoke;
   v6[3] = &unk_2783B4F58;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = orientation;
   v4 = [(FBSceneManager *)sceneManager createScene:v6];
   [v4 activate:0];
 
@@ -303,18 +303,18 @@ void __81__SBSystemShellEmbeddedDisplayController__createSystemShellSceneWithOri
 - (void)_updateDisplayAssertionPreferences
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 - (void)_updateSceneSettings
 {
-  v3 = [(SBAppSwitcherDefaults *)self->_appSwitcherDefaults chamoisWindowingEnabled];
-  v4 = [(SBAppSwitcherDefaults *)self->_appSwitcherDefaults medusaMultitaskingEnabled];
-  if (v4)
+  chamoisWindowingEnabled = [(SBAppSwitcherDefaults *)self->_appSwitcherDefaults chamoisWindowingEnabled];
+  medusaMultitaskingEnabled = [(SBAppSwitcherDefaults *)self->_appSwitcherDefaults medusaMultitaskingEnabled];
+  if (medusaMultitaskingEnabled)
   {
-    LOBYTE(v4) = SBFIsFlexibleWindowingUIAvailable();
+    LOBYTE(medusaMultitaskingEnabled) = SBFIsFlexibleWindowingUIAvailable();
   }
 
   scene = self->_scene;
@@ -322,8 +322,8 @@ void __81__SBSystemShellEmbeddedDisplayController__createSystemShellSceneWithOri
   v6[1] = 3221225472;
   v6[2] = __62__SBSystemShellEmbeddedDisplayController__updateSceneSettings__block_invoke;
   v6[3] = &__block_descriptor_34_e33_v16__0__FBSMutableSceneSettings_8l;
-  v7 = v3;
-  v8 = v4;
+  v7 = chamoisWindowingEnabled;
+  v8 = medusaMultitaskingEnabled;
   [(FBScene *)scene updateSettingsWithBlock:v6];
 }
 

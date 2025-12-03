@@ -1,33 +1,33 @@
 @interface ICQUpgradeCloudStorageFlowManager
-+ (BOOL)_canDoTokenPurchaseWithOffer:(id)a3;
-+ (BOOL)shouldSubclassShowForOffer:(id)a3;
++ (BOOL)_canDoTokenPurchaseWithOffer:(id)offer;
++ (BOOL)shouldSubclassShowForOffer:(id)offer;
 - (NSDictionary)storagePurchaseKeybag;
 - (id)_buyProductQueryDictionary;
 - (id)_buyProductQueryKeySet;
-- (id)_dummyRequestWithAccount:(id)a3 token:(id)a4;
+- (id)_dummyRequestWithAccount:(id)account token:(id)token;
 - (id)_storageContextHeaderDictionary;
 - (id)_storageContextJSONString;
-- (id)initSubclassWithOffer:(id)a3;
-- (void)_adoptRemoteUIWithPurchaseToken:(id)a3 buyParameters:(id)a4 requestHeaders:(id)a5;
-- (void)_buyProductShouldUseToken:(BOOL)a3 completionHandler:(id)a4;
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4;
+- (id)initSubclassWithOffer:(id)offer;
+- (void)_adoptRemoteUIWithPurchaseToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers;
+- (void)_buyProductShouldUseToken:(BOOL)token completionHandler:(id)handler;
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion;
 - (void)_performPurchase;
 - (void)_performPurchaseUsingSettingsUI;
 - (void)_performPurchaseUsingTouchID;
-- (void)manager:(id)a3 didCompleteWithError:(id)a4;
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4;
-- (void)manager:(id)a3 willPresentViewController:(id)a4;
-- (void)managerDidCancel:(id)a3;
+- (void)manager:(id)manager didCompleteWithError:(id)error;
+- (void)manager:(id)manager loadDidFailWithError:(id)error;
+- (void)manager:(id)manager willPresentViewController:(id)controller;
+- (void)managerDidCancel:(id)cancel;
 @end
 
 @implementation ICQUpgradeCloudStorageFlowManager
 
-+ (BOOL)shouldSubclassShowForOffer:(id)a3
++ (BOOL)shouldSubclassShowForOffer:(id)offer
 {
-  v4 = a3;
-  if ([v4 isBuddyOffer])
+  offerCopy = offer;
+  if ([offerCopy isBuddyOffer])
   {
-    v5 = [a1 _canDoTokenPurchaseWithOffer:v4];
+    v5 = [self _canDoTokenPurchaseWithOffer:offerCopy];
   }
 
   else
@@ -38,18 +38,18 @@
   return v5;
 }
 
-- (id)initSubclassWithOffer:(id)a3
+- (id)initSubclassWithOffer:(id)offer
 {
   v9.receiver = self;
   v9.super_class = ICQUpgradeCloudStorageFlowManager;
-  v3 = [(ICQUpgradeFlowManager *)&v9 initSubclassWithOffer:a3];
+  v3 = [(ICQUpgradeFlowManager *)&v9 initSubclassWithOffer:offer];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v5 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"ICQUpgradeFlowURLSession"];
-    [v4 set_appleIDContext:v5];
+    [defaultSessionConfiguration set_appleIDContext:v5];
 
-    v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4];
+    v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     v7 = v3[31];
     v3[31] = v6;
   }
@@ -57,21 +57,21 @@
   return v3;
 }
 
-- (void)_performPageButtonActionWithParameters:(id)a3 completion:(id)a4
+- (void)_performPageButtonActionWithParameters:(id)parameters completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  parametersCopy = parameters;
+  completionCopy = completion;
+  v8 = _Block_copy(completionCopy);
   purchaseCompletionHandler = self->_purchaseCompletionHandler;
   self->_purchaseCompletionHandler = v8;
 
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D7F270]];
+  v10 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x277D7F270]];
   storagePurchaseButtonId = self->_storagePurchaseButtonId;
   self->_storagePurchaseButtonId = v10;
 
-  v12 = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
-  [(ICQUpgradeFlowManager *)self setBindings:v12];
+  storagePurchaseKeybag = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
+  [(ICQUpgradeFlowManager *)self setBindings:storagePurchaseKeybag];
 
   if (!self->_storagePurchaseButtonId)
   {
@@ -79,13 +79,13 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412290;
-      v26 = v6;
+      v26 = parametersCopy;
       _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "Attempt to upgrade cloud storage without proper button ID (parameters: %@)", &v25, 0xCu);
     }
   }
 
-  v14 = [(ICQUpgradeFlowManager *)self bindings];
-  v15 = [v14 objectForKey:@"buyParams"];
+  bindings = [(ICQUpgradeFlowManager *)self bindings];
+  v15 = [bindings objectForKey:@"buyParams"];
   if (!v15)
   {
 
@@ -93,7 +93,7 @@
   }
 
   v16 = v15;
-  v17 = [v6 objectForKey:@"osloPurchase"];
+  v17 = [parametersCopy objectForKey:@"osloPurchase"];
 
   if (!v17)
   {
@@ -105,20 +105,20 @@ LABEL_11:
   v18 = _ICQGetLogSystem();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(ICQUpgradeFlowManager *)self bindings];
-    v20 = [v19 objectForKey:@"buyParams"];
+    bindings2 = [(ICQUpgradeFlowManager *)self bindings];
+    v20 = [bindings2 objectForKey:@"buyParams"];
     v25 = 138412290;
     v26 = v20;
     _os_log_impl(&dword_275623000, v18, OS_LOG_TYPE_DEFAULT, "Performing purchase using oslo with buyParams = %@", &v25, 0xCu);
   }
 
   v21 = [ICQUpgradeStorageHook alloc];
-  v22 = [(ICQUpgradeFlowManager *)self offer];
-  v23 = [(ICQUpgradeStorageHook *)v21 initWithOffer:v22 flowDelegate:self];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  v23 = [(ICQUpgradeStorageHook *)v21 initWithOffer:offer flowDelegate:self];
 
   [(ICQUpgradeStorageHook *)v23 setButtonId:self->_storagePurchaseButtonId];
   [(ICQUpgradeStorageHook *)v23 setFlowtype:@"native"];
-  v24 = [ICQPurchase clearCacheAndNotifyClientsWithCompletion:v7];
+  v24 = [ICQPurchase clearCacheAndNotifyClientsWithCompletion:completionCopy];
   [(ICQUpgradeStorageHook *)v23 setCompletionHandler:v24];
 
   [(ICQUpgradeStorageHook *)v23 beginOsloPurchaseFlow];
@@ -127,9 +127,9 @@ LABEL_12:
 
 - (NSDictionary)storagePurchaseKeybag
 {
-  v3 = [(ICQUpgradeFlowManager *)self offer];
-  v4 = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseButtonId];
-  v5 = [v3 storagePurchaseKeybagForButtonId:v4];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  storagePurchaseButtonId = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseButtonId];
+  v5 = [offer storagePurchaseKeybagForButtonId:storagePurchaseButtonId];
 
   return v5;
 }
@@ -157,13 +157,13 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
+  storagePurchaseKeybag = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryKeySet];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  _buyProductQueryKeySet = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryKeySet];
+  v6 = [_buyProductQueryKeySet countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -176,11 +176,11 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_buyProductQueryKeySet);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v4 objectForKey:{v11, v16}];
+        v12 = [storagePurchaseKeybag objectForKey:{v11, v16}];
         if (v12)
         {
           [v3 setObject:v12 forKey:v11];
@@ -198,7 +198,7 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [_buyProductQueryKeySet countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);
@@ -209,32 +209,32 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
   return v14;
 }
 
-- (id)_dummyRequestWithAccount:(id)a3 token:(id)a4
+- (id)_dummyRequestWithAccount:(id)account token:(id)token
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  tokenCopy = token;
   v7 = [MEMORY[0x277CBEBC0] URLWithString:@"https://www.apple.com/example"];
   v8 = [MEMORY[0x277CCAB70] requestWithURL:v7 cachePolicy:1 timeoutInterval:30.0];
-  [v8 aa_addBasicAuthorizationHeaderWithAccount:v5 preferUsingPassword:0];
+  [v8 aa_addBasicAuthorizationHeaderWithAccount:accountCopy preferUsingPassword:0];
   [v8 ak_addClientInfoHeader];
-  v9 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v10 = [v9 abbreviation];
-  [v8 setValue:v10 forHTTPHeaderField:@"X-MMe-Timezone"];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  abbreviation = [systemTimeZone abbreviation];
+  [v8 setValue:abbreviation forHTTPHeaderField:@"X-MMe-Timezone"];
 
   [v8 ak_addCountryHeader];
-  if (v6)
+  if (tokenCopy)
   {
     v11 = _ICQGetLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = tokenCopy;
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "adding storageBuyingToken: %@", &v15, 0xCu);
     }
 
-    v12 = [v5 aa_altDSID];
-    [v8 ak_addAuthorizationHeaderWithServiceToken:v6 forAltDSID:v12];
+    aa_altDSID = [accountCopy aa_altDSID];
+    [v8 ak_addAuthorizationHeaderWithServiceToken:tokenCopy forAltDSID:aa_altDSID];
   }
 
   v13 = [v8 copy];
@@ -245,17 +245,17 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
 - (id)_storageContextJSONString
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![v3 length])
+  if (![bundleIdentifier length])
   {
     v8 = 0;
     goto LABEL_11;
   }
 
   v15 = @"appName";
-  v16[0] = v3;
+  v16[0] = bundleIdentifier;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v10 = 0;
   v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:&v10];
@@ -266,7 +266,7 @@ void __59__ICQUpgradeCloudStorageFlowManager__buyProductQueryKeySet__block_invok
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v12 = v3;
+      v12 = bundleIdentifier;
       v13 = 2112;
       v14 = v6;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "Could not convert storage context for bundleID %@ to JSON. Error: %@", buf, 0x16u);
@@ -290,11 +290,11 @@ LABEL_11:
 - (id)_storageContextHeaderDictionary
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextJSONString];
-  if ([v2 length])
+  _storageContextJSONString = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextJSONString];
+  if ([_storageContextJSONString length])
   {
     v5 = @"X-Apple-Storage-Context";
-    v6[0] = v2;
+    v6[0] = _storageContextJSONString;
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
   }
 
@@ -306,21 +306,21 @@ LABEL_11:
   return v3;
 }
 
-- (void)_buyProductShouldUseToken:(BOOL)a3 completionHandler:(id)a4
+- (void)_buyProductShouldUseToken:(BOOL)token completionHandler:(id)handler
 {
-  v4 = a3;
+  tokenCopy = token;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CB8F48] defaultStore];
-  v8 = [v7 aa_primaryAppleAccount];
-  if (!v4)
+  handlerCopy = handler;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (!tokenCopy)
   {
-    v19 = 0;
+    token = 0;
 LABEL_10:
-    v9 = [(ICQUpgradeCloudStorageFlowManager *)self _dummyRequestWithAccount:v8 token:v19];
-    v20 = [(NSURLSession *)self->_buyProductSession configuration];
-    v21 = [v20 _appleIDContext];
-    v12 = [v21 appleIDHeadersForRequest:v9];
+    v9 = [(ICQUpgradeCloudStorageFlowManager *)self _dummyRequestWithAccount:aa_primaryAppleAccount token:token];
+    configuration = [(NSURLSession *)self->_buyProductSession configuration];
+    _appleIDContext = [configuration _appleIDContext];
+    v12 = [_appleIDContext appleIDHeadersForRequest:v9];
 
     v22 = _ICQGetLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -333,48 +333,48 @@ LABEL_10:
 
     if ([v12 count] < 2)
     {
-      v10 = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
-      v25 = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
-      v26 = self;
+      _buyProductQueryDictionary = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
+      _storageContextHeaderDictionary = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
+      selfCopy2 = self;
       v27 = 0;
-      v28 = v10;
-      v29 = v25;
+      v28 = _buyProductQueryDictionary;
+      v29 = _storageContextHeaderDictionary;
     }
 
     else
     {
-      v10 = [v12 mutableCopy];
-      v24 = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
-      [v10 addEntriesFromDictionary:v24];
+      _buyProductQueryDictionary = [v12 mutableCopy];
+      _storageContextHeaderDictionary2 = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
+      [_buyProductQueryDictionary addEntriesFromDictionary:_storageContextHeaderDictionary2];
 
-      v25 = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
-      v26 = self;
-      v27 = v19;
-      v28 = v25;
-      v29 = v10;
+      _storageContextHeaderDictionary = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
+      selfCopy2 = self;
+      v27 = token;
+      v28 = _storageContextHeaderDictionary;
+      v29 = _buyProductQueryDictionary;
     }
 
-    [(ICQUpgradeCloudStorageFlowManager *)v26 _adoptRemoteUIWithPurchaseToken:v27 buyParameters:v28 requestHeaders:v29];
+    [(ICQUpgradeCloudStorageFlowManager *)selfCopy2 _adoptRemoteUIWithPurchaseToken:v27 buyParameters:v28 requestHeaders:v29];
 
     goto LABEL_29;
   }
 
-  v9 = [v7 aa_grandSlamAccountForiCloudAccount:v8];
+  v9 = [defaultStore aa_grandSlamAccountForiCloudAccount:aa_primaryAppleAccount];
   v34 = 0;
-  v10 = [v7 credentialForAccount:v9 serviceID:@"com.apple.gs.icloud.storage.buy" error:&v34];
+  _buyProductQueryDictionary = [defaultStore credentialForAccount:v9 serviceID:@"com.apple.gs.icloud.storage.buy" error:&v34];
   v11 = v34;
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 userInfo];
-    v14 = [v13 objectForKey:*MEMORY[0x277CCA7E8]];
+    userInfo = [v11 userInfo];
+    v14 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
-    v15 = [v14 domain];
-    if ([v15 isEqualToString:@"com.apple.accounts.keychain"])
+    domain = [v14 domain];
+    if ([domain isEqualToString:@"com.apple.accounts.keychain"])
     {
-      v16 = [v14 code];
+      code = [v14 code];
 
-      if (v16 == -128)
+      if (code == -128)
       {
         v17 = _ICQGetLogSystem();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -383,18 +383,18 @@ LABEL_10:
           _os_log_impl(&dword_275623000, v17, OS_LOG_TYPE_DEFAULT, "user canceled", buf, 2u);
         }
 
-        if (!v6)
+        if (!handlerCopy)
         {
           goto LABEL_27;
         }
 
         v18 = 3;
 LABEL_26:
-        v6[2](v6, v18);
+        handlerCopy[2](handlerCopy, v18);
 LABEL_27:
 
 LABEL_28:
-        v19 = 0;
+        token = 0;
         goto LABEL_29;
       }
     }
@@ -411,7 +411,7 @@ LABEL_28:
       _os_log_impl(&dword_275623000, v32, OS_LOG_TYPE_DEFAULT, "storage buy get token error %@", buf, 0xCu);
     }
 
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_27;
     }
@@ -420,12 +420,12 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  v19 = [v10 token];
-  if (v10)
+  token = [_buyProductQueryDictionary token];
+  if (_buyProductQueryDictionary)
   {
     v30 = _ICQGetLogSystem();
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-    if (!v19)
+    if (!token)
     {
       if (v31)
       {
@@ -433,9 +433,9 @@ LABEL_28:
         _os_log_impl(&dword_275623000, v30, OS_LOG_TYPE_DEFAULT, "no storage buy token present", buf, 2u);
       }
 
-      if (v6)
+      if (handlerCopy)
       {
-        v6[2](v6, 2);
+        handlerCopy[2](handlerCopy, 2);
       }
 
       goto LABEL_28;
@@ -457,26 +457,26 @@ LABEL_28:
     _os_log_impl(&dword_275623000, v33, OS_LOG_TYPE_DEFAULT, "credential nil but no error reported", buf, 2u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 2);
+    handlerCopy[2](handlerCopy, 2);
   }
 
 LABEL_29:
 }
 
-- (void)_adoptRemoteUIWithPurchaseToken:(id)a3 buyParameters:(id)a4 requestHeaders:(id)a5
+- (void)_adoptRemoteUIWithPurchaseToken:(id)token buyParameters:(id)parameters requestHeaders:(id)headers
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICQUpgradeFlowManager *)self offer];
-  v12 = [v11 isBuddyOffer];
+  tokenCopy = token;
+  parametersCopy = parameters;
+  headersCopy = headers;
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  isBuddyOffer = [offer isBuddyOffer];
 
-  if (v10)
+  if (headersCopy)
   {
-    v13 = v9 == 0;
+    v13 = parametersCopy == 0;
   }
 
   else
@@ -484,8 +484,8 @@ LABEL_29:
     v13 = 1;
   }
 
-  v14 = v13 || v8 == 0;
-  if (!v14 || !v12)
+  v14 = v13 || tokenCopy == 0;
+  if (!v14 || !isBuddyOffer)
   {
     if (!self->_storageOffersManager)
     {
@@ -495,8 +495,8 @@ LABEL_29:
 
       [(ICQUICloudStorageOffersManager *)self->_storageOffersManager setSkipCompletionAlert:1];
       [(ICQUICloudStorageOffersManager *)self->_storageOffersManager setSupportsModernAlerts:1];
-      v22 = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
-      v23 = [v22 objectForKeyedSubscript:@"totalStorage"];
+      storagePurchaseKeybag = [(ICQUpgradeCloudStorageFlowManager *)self storagePurchaseKeybag];
+      v23 = [storagePurchaseKeybag objectForKeyedSubscript:@"totalStorage"];
 
       if (v23)
       {
@@ -511,8 +511,8 @@ LABEL_29:
       [(ICQUICloudStorageOffersManager *)self->_storageOffersManager setDelegate:self];
     }
 
-    v25 = [(ICQUpgradeFlowManager *)self offer];
-    -[ICQUICloudStorageOffersManager setSkipRetryWithoutToken:](self->_storageOffersManager, "setSkipRetryWithoutToken:", [v25 isBuddyOffer]);
+    offer2 = [(ICQUpgradeFlowManager *)self offer];
+    -[ICQUICloudStorageOffersManager setSkipRetryWithoutToken:](self->_storageOffersManager, "setSkipRetryWithoutToken:", [offer2 isBuddyOffer]);
 
     v26 = _ICQGetLogSystem();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -527,7 +527,7 @@ LABEL_29:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v29 = @"YES";
-      if (!v8)
+      if (!tokenCopy)
       {
         v29 = @"NO";
       }
@@ -535,13 +535,13 @@ LABEL_29:
       v31 = 138543618;
       v32 = v29;
       v33 = 2114;
-      v34 = v9;
+      v34 = parametersCopy;
       _os_log_impl(&dword_275623000, v28, OS_LOG_TYPE_DEFAULT, "Calling out to ICQUICloudStorageOffersManager with purchaseToken:%{public}@, buyParameters:%{public}@", &v31, 0x16u);
     }
 
     v30 = self->_storageOffersManager;
     purchaseCompletionHandler = [(ICQUpgradeFlowManager *)self hostingNavigationController];
-    [(ICQUICloudStorageOffersManager *)v30 beginFlowWithNavigationController:purchaseCompletionHandler purchaseToken:v8 buyParameters:v9 requestHeaders:v10 modally:0];
+    [(ICQUICloudStorageOffersManager *)v30 beginFlowWithNavigationController:purchaseCompletionHandler purchaseToken:tokenCopy buyParameters:parametersCopy requestHeaders:headersCopy modally:0];
     goto LABEL_26;
   }
 
@@ -552,13 +552,13 @@ LABEL_29:
     _os_log_impl(&dword_275623000, v15, OS_LOG_TYPE_DEFAULT, "Token not available and legacy flow cannot be used in Buddy; returning token missing failure", &v31, 2u);
   }
 
-  v16 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+  purchaseCompletionHandler = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
 
-  if (v16)
+  if (purchaseCompletionHandler)
   {
-    v17 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
-    v18 = [(ICQUpgradeCloudStorageFlowManager *)self secureTokenMissingError];
-    (v17)[2](v17, 0, v18);
+    purchaseCompletionHandler2 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+    secureTokenMissingError = [(ICQUpgradeCloudStorageFlowManager *)self secureTokenMissingError];
+    (purchaseCompletionHandler2)[2](purchaseCompletionHandler2, 0, secureTokenMissingError);
 
     purchaseCompletionHandler = self->_purchaseCompletionHandler;
     self->_purchaseCompletionHandler = 0;
@@ -575,9 +575,9 @@ LABEL_26:
     _os_log_impl(&dword_275623000, v3, OS_LOG_TYPE_DEFAULT, "Switch to purchase flow using settings UI", v6, 2u);
   }
 
-  v4 = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
-  v5 = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
-  [(ICQUpgradeCloudStorageFlowManager *)self _adoptRemoteUIWithPurchaseToken:0 buyParameters:v4 requestHeaders:v5];
+  _buyProductQueryDictionary = [(ICQUpgradeCloudStorageFlowManager *)self _buyProductQueryDictionary];
+  _storageContextHeaderDictionary = [(ICQUpgradeCloudStorageFlowManager *)self _storageContextHeaderDictionary];
+  [(ICQUpgradeCloudStorageFlowManager *)self _adoptRemoteUIWithPurchaseToken:0 buyParameters:_buyProductQueryDictionary requestHeaders:_storageContextHeaderDictionary];
 }
 
 - (void)_performPurchaseUsingTouchID
@@ -657,17 +657,17 @@ LABEL_7:
   }
 }
 
-+ (BOOL)_canDoTokenPurchaseWithOffer:(id)a3
++ (BOOL)_canDoTokenPurchaseWithOffer:(id)offer
 {
-  v3 = a3;
-  if ([v3 iTunesAccountExists])
+  offerCopy = offer;
+  if ([offerCopy iTunesAccountExists])
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 isPasscodeSet];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
     v6 = _ICQGetLogSystem();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (isPasscodeSet)
     {
       if (v7)
       {
@@ -752,8 +752,8 @@ LABEL_19:
 - (void)_performPurchase
 {
   v3 = objc_opt_class();
-  v4 = [(ICQUpgradeFlowManager *)self offer];
-  LODWORD(v3) = [v3 _canDoTokenPurchaseWithOffer:v4];
+  offer = [(ICQUpgradeFlowManager *)self offer];
+  LODWORD(v3) = [v3 _canDoTokenPurchaseWithOffer:offer];
 
   if (v3)
   {
@@ -774,47 +774,47 @@ LABEL_19:
   }
 }
 
-- (void)manager:(id)a3 willPresentViewController:(id)a4
+- (void)manager:(id)manager willPresentViewController:(id)controller
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = controllerCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "will present view controller %@", &v7, 0xCu);
   }
 
   [(ICQUpgradeFlowManager *)self _clearBusyOfferViewController];
 }
 
-- (void)manager:(id)a3 loadDidFailWithError:(id)a4
+- (void)manager:(id)manager loadDidFailWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v5;
+    v20 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "load failed with error %@", &v19, 0xCu);
   }
 
-  if (v5)
+  if (errorCopy)
   {
-    v7 = v5;
-    v8 = [v7 domain];
-    v9 = [v8 isEqualToString:@"com.apple.Preferences.cloud-storage-offers"];
+    v7 = errorCopy;
+    domain = [v7 domain];
+    v9 = [domain isEqualToString:@"com.apple.Preferences.cloud-storage-offers"];
 
     if (v9)
     {
-      v10 = [v7 code];
-      v11 = [v7 userInfo];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      code = [v7 code];
+      userInfo = [v7 userInfo];
+      v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
       v7 = v12;
-      if (v10 != 1)
+      if (code != 1)
       {
         goto LABEL_13;
       }
@@ -822,15 +822,15 @@ LABEL_19:
 
     else
     {
-      v13 = [v7 domain];
-      if ([v13 isEqualToString:*MEMORY[0x277D6A110]])
+      domain2 = [v7 domain];
+      if ([domain2 isEqualToString:*MEMORY[0x277D6A110]])
       {
       }
 
       else
       {
-        v14 = [v7 domain];
-        v15 = [v14 isEqualToString:*MEMORY[0x277D6A5A8]];
+        domain3 = [v7 domain];
+        v15 = [domain3 isEqualToString:*MEMORY[0x277D6A5A8]];
 
         if (!v15)
         {
@@ -841,12 +841,12 @@ LABEL_19:
       if ([v7 code] != 16 && objc_msgSend(v7, "code") != 140)
       {
 LABEL_13:
-        v16 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+        purchaseCompletionHandler = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
 
-        if (v16)
+        if (purchaseCompletionHandler)
         {
-          v17 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
-          (v17)[2](v17, 0, v7);
+          purchaseCompletionHandler2 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+          (purchaseCompletionHandler2)[2](purchaseCompletionHandler2, 0, v7);
 
           purchaseCompletionHandler = self->_purchaseCompletionHandler;
           self->_purchaseCompletionHandler = 0;
@@ -861,7 +861,7 @@ LABEL_15:
   }
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -873,34 +873,34 @@ LABEL_15:
   [(ICQUpgradeFlowManager *)self _cancelFlow];
 }
 
-- (void)manager:(id)a3 didCompleteWithError:(id)a4
+- (void)manager:(id)manager didCompleteWithError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Cloud storage offers manager did complete with error %@", &v16, 0xCu);
   }
 
-  v7 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+  purchaseCompletionHandler = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
 
-  if (v7)
+  if (purchaseCompletionHandler)
   {
-    v8 = [v5 userInfo];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v10 = v5 == 0;
-    v11 = [v5 domain];
-    v12 = [v11 isEqualToString:@"com.apple.Preferences.cloud-storage-offers"];
+    v10 = errorCopy == 0;
+    domain = [errorCopy domain];
+    v12 = [domain isEqualToString:@"com.apple.Preferences.cloud-storage-offers"];
 
     if (v12)
     {
-      if ([v5 code])
+      if ([errorCopy code])
       {
-        v10 = [v5 code] == 2;
+        v10 = [errorCopy code] == 2;
       }
 
       else
@@ -909,8 +909,8 @@ LABEL_15:
       }
     }
 
-    v14 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
-    (v14)[2](v14, v10, v9);
+    purchaseCompletionHandler2 = [(ICQUpgradeCloudStorageFlowManager *)self purchaseCompletionHandler];
+    (purchaseCompletionHandler2)[2](purchaseCompletionHandler2, v10, v9);
 
     purchaseCompletionHandler = self->_purchaseCompletionHandler;
     self->_purchaseCompletionHandler = 0;

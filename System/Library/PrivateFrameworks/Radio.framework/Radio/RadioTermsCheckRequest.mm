@@ -1,29 +1,29 @@
 @interface RadioTermsCheckRequest
-- (void)startWithCompletionHandler:(id)a3;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation RadioTermsCheckRequest
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RadioRequest *)self requestContext];
+  handlerCopy = handler;
+  requestContext = [(RadioRequest *)self requestContext];
   v6 = objc_alloc(MEMORY[0x277D7FC30]);
-  v7 = [MEMORY[0x277D7FCA0] activeAccount];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
   v8 = [objc_alloc(MEMORY[0x277D7FA48]) initWithSystemApplicationType:0];
-  v9 = [v6 initWithIdentity:v7 clientInfo:v8];
+  v9 = [v6 initWithIdentity:activeAccount clientInfo:v8];
 
-  v10 = [MEMORY[0x277D7FC68] sharedBagProvider];
+  mEMORY[0x277D7FC68] = [MEMORY[0x277D7FC68] sharedBagProvider];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__RadioTermsCheckRequest_startWithCompletionHandler___block_invoke;
   v13[3] = &unk_279AEAE10;
   v13[4] = self;
-  v14 = v5;
-  v15 = v4;
-  v11 = v4;
-  v12 = v5;
-  [v10 getBagForRequestContext:v9 withCompletionHandler:v13];
+  v14 = requestContext;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestContext;
+  [mEMORY[0x277D7FC68] getBagForRequestContext:v9 withCompletionHandler:v13];
 }
 
 void __53__RadioTermsCheckRequest_startWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

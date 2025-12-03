@@ -5,14 +5,14 @@
 - (CGRect)targetContentFrame;
 - (CGRect)targetContentFrameInMatchMoveViewSpace;
 - (SBHWidgetConfigurationFlipAnimator)init;
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4 inMode:(int64_t)a5 completion:(id)a6;
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5;
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context inMode:(int64_t)mode completion:(id)completion;
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4;
-- (void)iconViewDidBecomeWindowless:(id)a3;
-- (void)iconViewWasDiscarded:(id)a3;
-- (void)iconViewWasRecycled:(id)a3;
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4;
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context;
+- (void)iconViewDidBecomeWindowless:(id)windowless;
+- (void)iconViewWasDiscarded:(id)discarded;
+- (void)iconViewWasRecycled:(id)recycled;
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context;
 @end
 
 @implementation SBHWidgetConfigurationFlipAnimator
@@ -27,9 +27,9 @@
   {
     v2->_currentEndpoint = -1;
     v4 = +[SBHHomeScreenDomain rootSettings];
-    v5 = [v4 widgetSettings];
+    widgetSettings = [v4 widgetSettings];
     widgetSettings = v3->_widgetSettings;
-    v3->_widgetSettings = v5;
+    v3->_widgetSettings = widgetSettings;
   }
 
   return v3;
@@ -37,50 +37,50 @@
 
 - (void)dealloc
 {
-  v3 = [(SBHWidgetConfigurationFlipAnimator *)self flipAnimatableProperty];
-  [v3 invalidate];
+  flipAnimatableProperty = [(SBHWidgetConfigurationFlipAnimator *)self flipAnimatableProperty];
+  [flipAnimatableProperty invalidate];
 
   v4.receiver = self;
   v4.super_class = SBHWidgetConfigurationFlipAnimator;
   [(SBHWidgetConfigurationFlipAnimator *)&v4 dealloc];
 }
 
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context
 {
   v121[1] = *MEMORY[0x1E69E9840];
-  v78 = a4;
-  v5 = [v78 userInfo];
-  v93 = [v5 containerView];
-  val = [v5 sourceView];
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  containerView = [userInfo containerView];
+  val = [userInfo sourceView];
   [val iconContentScale];
   v80 = v6;
-  v91 = [v5 targetView];
-  [v5 sourceContentFrame];
+  targetView = [userInfo targetView];
+  [userInfo sourceContentFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   rect = v13;
   [(SBHWidgetConfigurationFlipAnimator *)self setSourceContentFrame:?];
-  v82 = [v5 homeScreenContentView];
-  [v82 bounds];
-  [v82 convertRect:v93 toView:?];
+  homeScreenContentView = [userInfo homeScreenContentView];
+  [homeScreenContentView bounds];
+  [homeScreenContentView convertRect:containerView toView:?];
   [(SBHWidgetConfigurationFlipAnimator *)self setHomeScreenContentFrame:?];
-  [v5 contentBoundingRect];
+  [userInfo contentBoundingRect];
   v18 = [[SBHTouchPassThroughView alloc] initWithFrame:v14, v15, v16, v17];
   [(SBHWidgetConfigurationFlipAnimator *)self setMatchMoveView:v18];
   v92 = v18;
-  [v93 addSubview:v18];
-  [v5 targetContentFrame];
+  [containerView addSubview:v18];
+  [userInfo targetContentFrame];
   v87 = v20;
   v88 = v19;
   v89 = v22;
   v90 = v21;
   [(SBHWidgetConfigurationFlipAnimator *)self setTargetContentFrame:?];
-  v23 = [v93 traitCollection];
-  [v23 displayScale];
+  traitCollection = [containerView traitCollection];
+  [traitCollection displayScale];
   v86 = v24;
 
-  [v93 convertRect:v18 toView:{*&v88, *&v87, *&v90, *&v89}];
+  [containerView convertRect:v18 toView:{*&v88, *&v87, *&v90, *&v89}];
   [(SBHWidgetConfigurationFlipAnimator *)self setTargetContentFrameInMatchMoveViewSpace:?];
   v122.origin.x = v8;
   v122.origin.y = v10;
@@ -102,8 +102,8 @@
     v27 = v26;
   }
 
-  v81 = [(SBHWidgetConfigurationFlipAnimator *)self widgetSettings];
-  [v93 convertRect:v18 toView:{v8, v10, rect, v12}];
+  widgetSettings = [(SBHWidgetConfigurationFlipAnimator *)self widgetSettings];
+  [containerView convertRect:v18 toView:{v8, v10, rect, v12}];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -111,21 +111,21 @@
   [(SBHWidgetConfigurationFlipAnimator *)self setSourceContentFrameInMatchMoveViewSpace:?];
   v94 = [[SBHWidgetConfigurationTransformView alloc] initWithFrame:v29, v31, v33, v35];
   [(SBHWidgetConfigurationFlipAnimator *)self setSourceContainerView:?];
-  if ([v81 configurationEqualizesMinCardToCameraDistance])
+  if ([widgetSettings configurationEqualizesMinCardToCameraDistance])
   {
-    [v81 configurationMinCardToCameraDistance];
+    [widgetSettings configurationMinCardToCameraDistance];
     v37 = v27 + v36;
     v38 = -1.0;
   }
 
   else
   {
-    [v81 configurationPerspectiveCameraDistance];
+    [widgetSettings configurationPerspectiveCameraDistance];
     v38 = 1.0;
   }
 
   v39 = v38 / v37;
-  v40 = [(SBHWidgetConfigurationTransformView *)v94 layer];
+  layer = [(SBHWidgetConfigurationTransformView *)v94 layer];
   v41 = *(MEMORY[0x1E69792E8] + 48);
   v113 = *(MEMORY[0x1E69792E8] + 32);
   v114 = v41;
@@ -138,7 +138,7 @@
   v43 = *(MEMORY[0x1E69792E8] + 112);
   v118 = *(MEMORY[0x1E69792E8] + 96);
   v119 = v43;
-  [v40 setSublayerTransform:location];
+  [layer setSublayerTransform:location];
 
   [(SBHWidgetConfigurationTransformView *)v94 addSubview:val];
   BSRectWithSize();
@@ -146,39 +146,39 @@
   [(SBHTouchPassThroughView *)v18 addSubview:v94];
   UICeilToScale();
   v45 = v44;
-  v46 = [(SBHWidgetConfigurationTransformView *)v94 layer];
-  [v46 setZPosition:v45 + 1.0];
+  layer2 = [(SBHWidgetConfigurationTransformView *)v94 layer];
+  [layer2 setZPosition:v45 + 1.0];
 
-  v47 = [v91 superview];
-  [(SBHWidgetConfigurationFlipAnimator *)self setTargetSuperview:v47];
+  superview = [targetView superview];
+  [(SBHWidgetConfigurationFlipAnimator *)self setTargetSuperview:superview];
 
-  [v91 frame];
+  [targetView frame];
   v49 = v48;
   v51 = v50;
   v52 = objc_alloc(MEMORY[0x1E69DD250]);
   BSRectWithSize();
   v83 = [v52 initWithFrame:?];
-  [v83 addSubview:v91];
-  [v91 setFrame:{-*&v88, -*&v87, v49, v51}];
+  [v83 addSubview:targetView];
+  [targetView setFrame:{-*&v88, -*&v87, v49, v51}];
   [val prepareToCrossfadeImageWithView:v83 options:5];
   [val setIconLabelAlpha:0.0];
-  recta = [v5 referenceView];
+  recta = [userInfo referenceView];
   [recta addObserver:self];
   [recta bounds];
-  [val convertRect:v93 toView:?];
+  [val convertRect:containerView toView:?];
   v54 = v53;
   v56 = v55;
   v58 = v57;
   v60 = v59;
-  v61 = [MEMORY[0x1E69793B8] animation];
-  v62 = [recta layer];
-  [v61 setSourceLayer:v62];
+  animation = [MEMORY[0x1E69793B8] animation];
+  layer3 = [recta layer];
+  [animation setSourceLayer:layer3];
 
-  [v61 setDuration:INFINITY];
-  [v61 setFillMode:*MEMORY[0x1E69797E0]];
-  [v61 setRemovedOnCompletion:0];
-  [v61 setAppliesY:1];
-  [v61 setAppliesX:1];
+  [animation setDuration:INFINITY];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  [animation setRemovedOnCompletion:0];
+  [animation setAppliesY:1];
+  [animation setAppliesX:1];
   UIRectGetCenter();
   UIPointRoundToScale();
   v64 = v63;
@@ -197,17 +197,17 @@
   v68 = [MEMORY[0x1E696B098] valueWithBytes:v110 objCType:"{CGPoint=dd}"];
   v121[0] = v68;
   v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:1];
-  [v61 setSourcePoints:v69];
+  [animation setSourcePoints:v69];
 
-  v70 = [(SBHTouchPassThroughView *)v92 layer];
-  v71 = [v70 animationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
+  layer4 = [(SBHTouchPassThroughView *)v92 layer];
+  v71 = [layer4 animationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
 
   if (v71)
   {
-    [v70 removeAnimationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
+    [layer4 removeAnimationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
   }
 
-  [v70 addAnimation:v61 forKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
+  [layer4 addAnimation:animation forKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
   v72 = objc_alloc_init(MEMORY[0x1E69DD268]);
   [(SBHWidgetConfigurationFlipAnimator *)self setFlipAnimatableProperty:v72];
   objc_initWeak(location, self);
@@ -252,8 +252,8 @@
   v96[4] = self;
   v76 = v72;
   v97 = v76;
-  v99 = a3;
-  v77 = v5;
+  endpointCopy = endpoint;
+  v77 = userInfo;
   v98 = v77;
   [v75 performWithoutAnimation:v96];
 
@@ -408,16 +408,16 @@ uint64_t __79__SBHWidgetConfigurationFlipAnimator_prepareToAnimateFromEndpoint_w
   return [v2 _configureForEndpoint:v3 context:v4 inMode:1 completion:0];
 }
 
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 userInfo];
-  v11 = [v9 wantsAnimation];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  wantsAnimation = [contextCopy wantsAnimation];
 
-  if (v11)
+  if (wantsAnimation)
   {
-    [(SBHWidgetConfigurationFlipAnimator *)self _configureForEndpoint:a3 context:v10 inMode:3 completion:v8];
+    [(SBHWidgetConfigurationFlipAnimator *)self _configureForEndpoint:endpoint context:userInfo inMode:3 completion:completionCopy];
   }
 
   else
@@ -428,22 +428,22 @@ uint64_t __79__SBHWidgetConfigurationFlipAnimator_prepareToAnimateFromEndpoint_w
     v13[2] = __79__SBHWidgetConfigurationFlipAnimator_animateToEndpoint_withContext_completion___block_invoke;
     v13[3] = &unk_1E808A8D0;
     v13[4] = self;
-    v16 = a3;
-    v14 = v10;
-    v15 = v8;
+    endpointCopy = endpoint;
+    v14 = userInfo;
+    v15 = completionCopy;
     [v12 performWithoutAnimation:v13];
   }
 }
 
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
-  v7 = [v6 sourceView];
-  v8 = [(SBHWidgetConfigurationFlipAnimator *)self flipAnimatableProperty];
-  [v8 invalidate];
+  userInfo = [context userInfo];
+  sourceView = [userInfo sourceView];
+  flipAnimatableProperty = [(SBHWidgetConfigurationFlipAnimator *)self flipAnimatableProperty];
+  [flipAnimatableProperty invalidate];
 
   [(SBHWidgetConfigurationFlipAnimator *)self setFlipAnimatableProperty:0];
-  [v7 cleanupAfterCrossfade];
+  [sourceView cleanupAfterCrossfade];
   v9 = *(MEMORY[0x1E69792E8] + 80);
   v18[4] = *(MEMORY[0x1E69792E8] + 64);
   v18[5] = v9;
@@ -456,65 +456,65 @@ uint64_t __79__SBHWidgetConfigurationFlipAnimator_prepareToAnimateFromEndpoint_w
   v12 = *(MEMORY[0x1E69792E8] + 48);
   v18[2] = *(MEMORY[0x1E69792E8] + 32);
   v18[3] = v12;
-  [v7 setTransform3D:v18];
-  if (!a3)
+  [sourceView setTransform3D:v18];
+  if (!endpoint)
   {
-    [v7 setIcon:0];
-    [v7 removeFromSuperview];
+    [sourceView setIcon:0];
+    [sourceView removeFromSuperview];
   }
 
-  v13 = [v6 targetView];
-  v14 = [(SBHWidgetConfigurationFlipAnimator *)self targetSuperview];
-  [v14 addSubview:v13];
+  targetView = [userInfo targetView];
+  targetSuperview = [(SBHWidgetConfigurationFlipAnimator *)self targetSuperview];
+  [targetSuperview addSubview:targetView];
 
-  [v13 frame];
+  [targetView frame];
   BSRectWithSize();
-  [v13 setFrame:?];
+  [targetView setFrame:?];
   [(SBHWidgetConfigurationFlipAnimator *)self setTargetSuperview:0];
-  v15 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
-  v16 = [v15 layer];
-  [v16 removeAnimationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
+  matchMoveView = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
+  layer = [matchMoveView layer];
+  [layer removeAnimationForKey:@"SBHWidgetConfigurationFlipMatchMoveAnimation"];
 
-  v17 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
-  [v17 removeFromSuperview];
+  matchMoveView2 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
+  [matchMoveView2 removeFromSuperview];
 
   [(SBHWidgetConfigurationFlipAnimator *)self setMatchMoveView:0];
 }
 
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4 inMode:(int64_t)a5 completion:(id)a6
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context inMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  if ([(SBHWidgetConfigurationFlipAnimator *)self currentEndpoint]== a3)
+  contextCopy = context;
+  completionCopy = completion;
+  if ([(SBHWidgetConfigurationFlipAnimator *)self currentEndpoint]== endpoint)
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    [(SBHWidgetConfigurationFlipAnimator *)self setCurrentEndpoint:a3];
-    v12 = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
-    [v12 setDampingRatio:1.0];
-    [v12 setResponse:0.55];
+    [(SBHWidgetConfigurationFlipAnimator *)self setCurrentEndpoint:endpoint];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
+    [initWithDefaultValues setDampingRatio:1.0];
+    [initWithDefaultValues setResponse:0.55];
     v20 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v12 setFrameRateRange:1114120 highFrameRateReason:{*&v20.minimum, *&v20.maximum, *&v20.preferred}];
+    [initWithDefaultValues setFrameRateRange:1114120 highFrameRateReason:{*&v20.minimum, *&v20.maximum, *&v20.preferred}];
     v13 = MEMORY[0x1E69DD250];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __86__SBHWidgetConfigurationFlipAnimator__configureForEndpoint_context_inMode_completion___block_invoke;
     v16[3] = &unk_1E808A090;
-    v19 = a3;
-    v17 = v10;
-    v18 = self;
+    endpointCopy = endpoint;
+    v17 = contextCopy;
+    selfCopy = self;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __86__SBHWidgetConfigurationFlipAnimator__configureForEndpoint_context_inMode_completion___block_invoke_2;
     v14[3] = &unk_1E808A998;
-    v15 = v11;
-    [v13 sb_animateWithSettings:v12 mode:a5 animations:v16 completion:v14];
+    v15 = completionCopy;
+    [v13 sb_animateWithSettings:initWithDefaultValues mode:mode animations:v16 completion:v14];
   }
 }
 
@@ -644,22 +644,22 @@ uint64_t __86__SBHWidgetConfigurationFlipAnimator__configureForEndpoint_context_
   return result;
 }
 
-- (void)iconViewWasRecycled:(id)a3
+- (void)iconViewWasRecycled:(id)recycled
 {
-  v3 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
-  [v3 setHidden:1];
+  matchMoveView = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
+  [matchMoveView setHidden:1];
 }
 
-- (void)iconViewDidBecomeWindowless:(id)a3
+- (void)iconViewDidBecomeWindowless:(id)windowless
 {
-  v3 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
-  [v3 setHidden:1];
+  matchMoveView = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
+  [matchMoveView setHidden:1];
 }
 
-- (void)iconViewWasDiscarded:(id)a3
+- (void)iconViewWasDiscarded:(id)discarded
 {
-  v3 = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
-  [v3 setHidden:1];
+  matchMoveView = [(SBHWidgetConfigurationFlipAnimator *)self matchMoveView];
+  [matchMoveView setHidden:1];
 }
 
 - (CGRect)sourceContentFrame

@@ -1,33 +1,33 @@
 @interface MFGeneratedSummaryCollectionItemID
-- (BOOL)isEqual:(id)a3;
-- (MFGeneratedSummaryCollectionItemID)initWithAnchorMessageItemID:(id)a3;
-- (MFGeneratedSummaryCollectionItemID)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MFGeneratedSummaryCollectionItemID)initWithAnchorMessageItemID:(id)d;
+- (MFGeneratedSummaryCollectionItemID)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFGeneratedSummaryCollectionItemID
 
-- (MFGeneratedSummaryCollectionItemID)initWithAnchorMessageItemID:(id)a3
+- (MFGeneratedSummaryCollectionItemID)initWithAnchorMessageItemID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = MFGeneratedSummaryCollectionItemID;
   v6 = [(MFGeneratedSummaryCollectionItemID *)&v9 initAsEphemeralID:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_anchorMessageItemID, a3);
+    objc_storeStrong(&v6->_anchorMessageItemID, d);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -37,7 +37,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (([(MFGeneratedSummaryCollectionItemID *)self isEphemeral]& 1) != 0 || [(MFGeneratedSummaryCollectionItemID *)v5 isEphemeral])
       {
         v10.receiver = self;
@@ -47,9 +47,9 @@
 
       else
       {
-        v7 = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
-        v8 = [(MFGeneratedSummaryCollectionItemID *)v5 anchorMessageItemID];
-        v6 = [v7 isEqual:v8];
+        anchorMessageItemID = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
+        anchorMessageItemID2 = [(MFGeneratedSummaryCollectionItemID *)v5 anchorMessageItemID];
+        v6 = [anchorMessageItemID isEqual:anchorMessageItemID2];
       }
     }
 
@@ -73,8 +73,8 @@
 
   else
   {
-    v4 = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
-    v3 = [v4 hash];
+    anchorMessageItemID = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
+    v3 = [anchorMessageItemID hash];
   }
 
   return v3;
@@ -84,27 +84,27 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  anchorMessageItemID = [(MFGeneratedSummaryCollectionItemID *)self anchorMessageItemID];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, anchorMessageItemID];
 
   return v6;
 }
 
-- (MFGeneratedSummaryCollectionItemID)initWithCoder:(id)a3
+- (MFGeneratedSummaryCollectionItemID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

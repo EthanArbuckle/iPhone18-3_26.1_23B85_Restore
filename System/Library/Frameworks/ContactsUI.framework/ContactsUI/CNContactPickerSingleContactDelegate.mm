@@ -1,8 +1,8 @@
 @interface CNContactPickerSingleContactDelegate
-- (CNContactPickerSingleContactDelegate)initWithTargetViewController:(id)a3;
+- (CNContactPickerSingleContactDelegate)initWithTargetViewController:(id)controller;
 - (CNLimitedAccessContactPickerViewController)targetViewController;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation CNContactPickerSingleContactDelegate
@@ -14,31 +14,31 @@
   return WeakRetained;
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   WeakRetained = objc_loadWeakRetained(&self->_targetViewController);
-  [WeakRetained contactPickerDidCancel:v4];
+  [WeakRetained contactPickerDidCancel:cancelCopy];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
+  contactCopy = contact;
+  pickerCopy = picker;
   WeakRetained = objc_loadWeakRetained(&self->_targetViewController);
-  [WeakRetained contactPicker:v7 didSelectContact:v6];
+  [WeakRetained contactPicker:pickerCopy didSelectContact:contactCopy];
 }
 
-- (CNContactPickerSingleContactDelegate)initWithTargetViewController:(id)a3
+- (CNContactPickerSingleContactDelegate)initWithTargetViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CNContactPickerSingleContactDelegate;
   v5 = [(CNContactPickerSingleContactDelegate *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_targetViewController, v4);
+    objc_storeWeak(&v5->_targetViewController, controllerCopy);
     v7 = v6;
   }
 

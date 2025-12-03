@@ -1,48 +1,48 @@
 @interface _SFPBPegasusDisplayFields
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPegasusDisplayFields)initWithDictionary:(id)a3;
-- (_SFPBPegasusDisplayFields)initWithFacade:(id)a3;
-- (_SFPBPegasusDisplayFields)initWithJSON:(id)a3;
+- (_SFPBPegasusDisplayFields)initWithDictionary:(id)dictionary;
+- (_SFPBPegasusDisplayFields)initWithFacade:(id)facade;
+- (_SFPBPegasusDisplayFields)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setDisplayStatus:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDisplayStatus:(id)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPegasusDisplayFields
 
-- (_SFPBPegasusDisplayFields)initWithFacade:(id)a3
+- (_SFPBPegasusDisplayFields)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPegasusDisplayFields *)self init];
   if (v5)
   {
-    v6 = [v4 displayStatus];
+    displayStatus = [facadeCopy displayStatus];
 
-    if (v6)
+    if (displayStatus)
     {
-      v7 = [v4 displayStatus];
-      [(_SFPBPegasusDisplayFields *)v5 setDisplayStatus:v7];
+      displayStatus2 = [facadeCopy displayStatus];
+      [(_SFPBPegasusDisplayFields *)v5 setDisplayStatus:displayStatus2];
     }
 
-    v8 = [v4 departureTime];
+    departureTime = [facadeCopy departureTime];
 
-    if (v8)
+    if (departureTime)
     {
       v9 = [_SFPBDate alloc];
-      v10 = [v4 departureTime];
-      v11 = [(_SFPBDate *)v9 initWithNSDate:v10];
+      departureTime2 = [facadeCopy departureTime];
+      v11 = [(_SFPBDate *)v9 initWithNSDate:departureTime2];
       [(_SFPBPegasusDisplayFields *)v5 setDepartureTime:v11];
     }
 
-    v12 = [v4 arrivalTime];
+    arrivalTime = [facadeCopy arrivalTime];
 
-    if (v12)
+    if (arrivalTime)
     {
       v13 = [_SFPBDate alloc];
-      v14 = [v4 arrivalTime];
-      v15 = [(_SFPBDate *)v13 initWithNSDate:v14];
+      arrivalTime2 = [facadeCopy arrivalTime];
+      v15 = [(_SFPBDate *)v13 initWithNSDate:arrivalTime2];
       [(_SFPBPegasusDisplayFields *)v5 setArrivalTime:v15];
     }
 
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (_SFPBPegasusDisplayFields)initWithDictionary:(id)a3
+- (_SFPBPegasusDisplayFields)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBPegasusDisplayFields;
   v5 = [(_SFPBPegasusDisplayFields *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"displayStatus"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"displayStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(_SFPBPegasusDisplayFields *)v5 setDisplayStatus:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"departureTime"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"departureTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(_SFPBPegasusDisplayFields *)v5 setDepartureTime:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"arrivalTime"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"arrivalTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (_SFPBPegasusDisplayFields)initWithJSON:(id)a3
+- (_SFPBPegasusDisplayFields)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPegasusDisplayFields *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPegasusDisplayFields *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPegasusDisplayFields *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,47 +126,47 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_arrivalTime)
   {
-    v4 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    arrivalTime = [(_SFPBPegasusDisplayFields *)self arrivalTime];
+    dictionaryRepresentation = [arrivalTime dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"arrivalTime"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"arrivalTime"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"arrivalTime"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"arrivalTime"];
     }
   }
 
   if (self->_departureTime)
   {
-    v7 = [(_SFPBPegasusDisplayFields *)self departureTime];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    departureTime = [(_SFPBPegasusDisplayFields *)self departureTime];
+    dictionaryRepresentation2 = [departureTime dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"departureTime"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"departureTime"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"departureTime"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"departureTime"];
     }
   }
 
   if (self->_displayStatus)
   {
-    v10 = [(_SFPBPegasusDisplayFields *)self displayStatus];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"displayStatus"];
+    displayStatus = [(_SFPBPegasusDisplayFields *)self displayStatus];
+    v11 = [displayStatus copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"displayStatus"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,28 +176,28 @@
   return v4 ^ [(_SFPBDate *)self->_arrivalTime hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBPegasusDisplayFields *)self displayStatus];
-  v6 = [v4 displayStatus];
-  if ((v5 != 0) == (v6 == 0))
+  displayStatus = [(_SFPBPegasusDisplayFields *)self displayStatus];
+  displayStatus2 = [equalCopy displayStatus];
+  if ((displayStatus != 0) == (displayStatus2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBPegasusDisplayFields *)self displayStatus];
-  if (v7)
+  displayStatus3 = [(_SFPBPegasusDisplayFields *)self displayStatus];
+  if (displayStatus3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPegasusDisplayFields *)self displayStatus];
-    v10 = [v4 displayStatus];
-    v11 = [v9 isEqual:v10];
+    v8 = displayStatus3;
+    displayStatus4 = [(_SFPBPegasusDisplayFields *)self displayStatus];
+    displayStatus5 = [equalCopy displayStatus];
+    v11 = [displayStatus4 isEqual:displayStatus5];
 
     if (!v11)
     {
@@ -209,20 +209,20 @@
   {
   }
 
-  v5 = [(_SFPBPegasusDisplayFields *)self departureTime];
-  v6 = [v4 departureTime];
-  if ((v5 != 0) == (v6 == 0))
+  displayStatus = [(_SFPBPegasusDisplayFields *)self departureTime];
+  displayStatus2 = [equalCopy departureTime];
+  if ((displayStatus != 0) == (displayStatus2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBPegasusDisplayFields *)self departureTime];
-  if (v12)
+  departureTime = [(_SFPBPegasusDisplayFields *)self departureTime];
+  if (departureTime)
   {
-    v13 = v12;
-    v14 = [(_SFPBPegasusDisplayFields *)self departureTime];
-    v15 = [v4 departureTime];
-    v16 = [v14 isEqual:v15];
+    v13 = departureTime;
+    departureTime2 = [(_SFPBPegasusDisplayFields *)self departureTime];
+    departureTime3 = [equalCopy departureTime];
+    v16 = [departureTime2 isEqual:departureTime3];
 
     if (!v16)
     {
@@ -234,12 +234,12 @@
   {
   }
 
-  v5 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
-  v6 = [v4 arrivalTime];
-  if ((v5 != 0) != (v6 == 0))
+  displayStatus = [(_SFPBPegasusDisplayFields *)self arrivalTime];
+  displayStatus2 = [equalCopy arrivalTime];
+  if ((displayStatus != 0) != (displayStatus2 == 0))
   {
-    v17 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
-    if (!v17)
+    arrivalTime = [(_SFPBPegasusDisplayFields *)self arrivalTime];
+    if (!arrivalTime)
     {
 
 LABEL_20:
@@ -247,10 +247,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
-    v20 = [v4 arrivalTime];
-    v21 = [v19 isEqual:v20];
+    v18 = arrivalTime;
+    arrivalTime2 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
+    arrivalTime3 = [equalCopy arrivalTime];
+    v21 = [arrivalTime2 isEqual:arrivalTime3];
 
     if (v21)
     {
@@ -270,31 +270,31 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBPegasusDisplayFields *)self displayStatus];
-  if (v4)
+  toCopy = to;
+  displayStatus = [(_SFPBPegasusDisplayFields *)self displayStatus];
+  if (displayStatus)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBPegasusDisplayFields *)self departureTime];
-  if (v5)
+  departureTime = [(_SFPBPegasusDisplayFields *)self departureTime];
+  if (departureTime)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBPegasusDisplayFields *)self arrivalTime];
-  if (v6)
+  arrivalTime = [(_SFPBPegasusDisplayFields *)self arrivalTime];
+  if (arrivalTime)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setDisplayStatus:(id)a3
+- (void)setDisplayStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   displayStatus = self->_displayStatus;
   self->_displayStatus = v4;
 

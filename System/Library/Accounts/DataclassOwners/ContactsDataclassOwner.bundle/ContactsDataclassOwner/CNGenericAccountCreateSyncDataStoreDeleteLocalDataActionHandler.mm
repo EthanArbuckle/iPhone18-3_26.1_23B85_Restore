@@ -6,32 +6,32 @@
 
 - (BOOL)perform
 {
-  v3 = [(CNDataclassActionHandler *)self implementation];
-  v4 = [v3 emptyLocalContainer];
+  implementation = [(CNDataclassActionHandler *)self implementation];
+  emptyLocalContainer = [implementation emptyLocalContainer];
 
-  v5 = [(CNDataclassActionHandler *)self account];
-  v6 = [(CNDataclassActionHandler *)self childAccounts];
-  v7 = v4 & [(CNDataclassActionHandler *)self createContactsAccountForACAccount:v5 withChildren:v6];
+  account = [(CNDataclassActionHandler *)self account];
+  childAccounts = [(CNDataclassActionHandler *)self childAccounts];
+  v7 = emptyLocalContainer & [(CNDataclassActionHandler *)self createContactsAccountForACAccount:account withChildren:childAccounts];
 
   if (v7 == 1)
   {
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CNDataclassActionHandler *)self account];
-      v10 = [v9 accountType];
-      v11 = [v10 description];
-      v12 = [(CNDataclassActionHandler *)self account];
-      v13 = [v12 username];
+      account2 = [(CNDataclassActionHandler *)self account];
+      accountType = [account2 accountType];
+      v11 = [accountType description];
+      account3 = [(CNDataclassActionHandler *)self account];
+      username = [account3 username];
       v16 = 138412546;
       v17 = v11;
       v18 = 2112;
-      v19 = v13;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Created a Contacts container for account %@ (%@) and now disabling the Contacts local container.", &v16, 0x16u);
+      v19 = username;
+      _os_log_impl(&dword_0, os_log, OS_LOG_TYPE_DEFAULT, "Created a Contacts container for account %@ (%@) and now disabling the Contacts local container.", &v16, 0x16u);
     }
 
-    v14 = [(CNDataclassActionHandler *)self account];
-    [(CNDataclassActionHandler *)self disableLocalSourceIfNeededAddingAccount:v14];
+    account4 = [(CNDataclassActionHandler *)self account];
+    [(CNDataclassActionHandler *)self disableLocalSourceIfNeededAddingAccount:account4];
   }
 
   return v7;

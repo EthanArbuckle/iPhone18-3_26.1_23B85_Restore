@@ -1,17 +1,17 @@
 @interface CRKASMCertificateCommonName
-+ (id)commonNameWithString:(id)a3;
-- (CRKASMCertificateCommonName)initWithPrefix:(id)a3 userIdentifier:(id)a4;
-- (CRKASMCertificateCommonName)initWithPrefix:(id)a3 userIdentifier:(id)a4 UUID:(id)a5;
++ (id)commonNameWithString:(id)string;
+- (CRKASMCertificateCommonName)initWithPrefix:(id)prefix userIdentifier:(id)identifier;
+- (CRKASMCertificateCommonName)initWithPrefix:(id)prefix userIdentifier:(id)identifier UUID:(id)d;
 - (NSString)stringValue;
 @end
 
 @implementation CRKASMCertificateCommonName
 
-+ (id)commonNameWithString:(id)a3
++ (id)commonNameWithString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 componentsSeparatedByString:@" "];
+    v4 = [string componentsSeparatedByString:@" "];
     if ([v4 count] >= 4)
     {
       v6 = MEMORY[0x277CCACA8];
@@ -26,11 +26,11 @@
         v11 = [v10 componentsJoinedByString:@" "];
         if ([v11 length])
         {
-          v12 = [v4 lastObject];
-          v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v12];
+          lastObject = [v4 lastObject];
+          v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:lastObject];
           if (v13)
           {
-            v5 = [[a1 alloc] initWithPrefix:v9 userIdentifier:v11 UUID:v13];
+            v5 = [[self alloc] initWithPrefix:v9 userIdentifier:v11 UUID:v13];
           }
 
           else
@@ -60,36 +60,36 @@
   return v5;
 }
 
-- (CRKASMCertificateCommonName)initWithPrefix:(id)a3 userIdentifier:(id)a4
+- (CRKASMCertificateCommonName)initWithPrefix:(id)prefix userIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [(CRKASMCertificateCommonName *)self initWithPrefix:v8 userIdentifier:v7 UUID:v9];
+  identifierCopy = identifier;
+  prefixCopy = prefix;
+  uUID = [v6 UUID];
+  v10 = [(CRKASMCertificateCommonName *)self initWithPrefix:prefixCopy userIdentifier:identifierCopy UUID:uUID];
 
   return v10;
 }
 
-- (CRKASMCertificateCommonName)initWithPrefix:(id)a3 userIdentifier:(id)a4 UUID:(id)a5
+- (CRKASMCertificateCommonName)initWithPrefix:(id)prefix userIdentifier:(id)identifier UUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = CRKASMCertificateCommonName;
   v11 = [(CRKASMCertificateCommonName *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [prefixCopy copy];
     prefix = v11->_prefix;
     v11->_prefix = v12;
 
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     userIdentifier = v11->_userIdentifier;
     v11->_userIdentifier = v14;
 
-    objc_storeStrong(&v11->_UUID, a5);
+    objc_storeStrong(&v11->_UUID, d);
   }
 
   return v11;
@@ -98,11 +98,11 @@
 - (NSString)stringValue
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CRKASMCertificateCommonName *)self prefix];
-  v5 = [(CRKASMCertificateCommonName *)self userIdentifier];
-  v6 = [(CRKASMCertificateCommonName *)self UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@ %@ %@", v4, v5, v7];
+  prefix = [(CRKASMCertificateCommonName *)self prefix];
+  userIdentifier = [(CRKASMCertificateCommonName *)self userIdentifier];
+  uUID = [(CRKASMCertificateCommonName *)self UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@", prefix, userIdentifier, uUIDString];
 
   return v8;
 }

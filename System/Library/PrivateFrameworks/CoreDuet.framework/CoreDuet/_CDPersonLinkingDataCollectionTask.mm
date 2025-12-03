@@ -1,39 +1,39 @@
 @interface _CDPersonLinkingDataCollectionTask
-- (_CDPersonLinkingDataCollectionTask)initWithFile:(id)a3 activity:(id)a4;
-- (id)eventFromDict:(id)a3;
-- (id)eventFromFile:(id)a3;
+- (_CDPersonLinkingDataCollectionTask)initWithFile:(id)file activity:(id)activity;
+- (id)eventFromDict:(id)dict;
+- (id)eventFromFile:(id)file;
 - (void)execute;
 @end
 
 @implementation _CDPersonLinkingDataCollectionTask
 
-- (_CDPersonLinkingDataCollectionTask)initWithFile:(id)a3 activity:(id)a4
+- (_CDPersonLinkingDataCollectionTask)initWithFile:(id)file activity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  activityCopy = activity;
   v14.receiver = self;
   v14.super_class = _CDPersonLinkingDataCollectionTask;
   v9 = [(_CDPersonLinkingDataCollectionTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_file, a3);
-    v11 = [(_CDPersonLinkingDataCollectionTask *)v10 eventFromFile:v7];
+    objc_storeStrong(&v9->_file, file);
+    v11 = [(_CDPersonLinkingDataCollectionTask *)v10 eventFromFile:fileCopy];
     event = v10->_event;
     v10->_event = v11;
 
-    objc_storeStrong(&v10->_activity, a4);
+    objc_storeStrong(&v10->_activity, activity);
   }
 
   return v10;
 }
 
-- (id)eventFromDict:(id)a3
+- (id)eventFromDict:(id)dict
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"userID"];
+  v5 = [dictCopy objectForKeyedSubscript:@"userID"];
   v25 = v4;
   [v4 setUserID:v5];
 
@@ -42,8 +42,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v24 = v3;
-  obj = [v3 objectForKeyedSubscript:@"pairs"];
+  v24 = dictCopy;
+  obj = [dictCopy objectForKeyedSubscript:@"pairs"];
   v29 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v29)
   {
@@ -106,31 +106,31 @@
 
 - (void)execute
 {
-  v3 = [getPETEventTracker2Class() sharedInstance];
+  sharedInstance = [getPETEventTracker2Class() sharedInstance];
   if (self->_event)
   {
-    v6 = v3;
-    [v3 logMessage:?];
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(_CDPersonLinkingDataCollectionTask *)self file];
-    [v4 removeItemAtPath:v5 error:0];
+    v6 = sharedInstance;
+    [sharedInstance logMessage:?];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    file = [(_CDPersonLinkingDataCollectionTask *)self file];
+    [defaultManager removeItemAtPath:file error:0];
 
-    v3 = v6;
+    sharedInstance = v6;
   }
 }
 
-- (id)eventFromFile:(id)a3
+- (id)eventFromFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v13 = 0;
-  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v4 options:2 error:&v13];
+  v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy options:2 error:&v13];
   v6 = v13;
   if (v6)
   {
     v7 = +[_CDLogging dataCollectionChannel];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(_CDPersonLinkingDataCollectionTask *)v4 eventFromFile:v6, v7];
+      [(_CDPersonLinkingDataCollectionTask *)fileCopy eventFromFile:v6, v7];
     }
 
     v8 = 0;

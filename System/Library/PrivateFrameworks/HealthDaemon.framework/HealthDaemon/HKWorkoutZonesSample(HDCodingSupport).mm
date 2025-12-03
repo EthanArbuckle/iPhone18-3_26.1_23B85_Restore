@@ -10,15 +10,15 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(HDCodableWorkoutZones);
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_283D45970;
   v3 = objc_msgSendSuper2(&v12, sel_codableRepresentationForSync);
   [(HDCodableWorkoutZones *)v2 setSample:v3];
 
   v4 = MEMORY[0x277CCAAB0];
-  v5 = [a1 zones];
+  zones = [self zones];
   v11 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v11];
+  v6 = [v4 archivedDataWithRootObject:zones requiringSecureCoding:1 error:&v11];
   v7 = v11;
 
   if (!v6)
@@ -43,13 +43,13 @@
 - (BOOL)addCodableRepresentationToCollection:()HDCodingSupport
 {
   v4 = a3;
-  v5 = [a1 codableRepresentationForSync];
-  if (v5)
+  codableRepresentationForSync = [self codableRepresentationForSync];
+  if (codableRepresentationForSync)
   {
-    [v4 addWorkoutZones:v5];
+    [v4 addWorkoutZones:codableRepresentationForSync];
   }
 
-  return v5 != 0;
+  return codableRepresentationForSync != 0;
 }
 
 + (id)createWithCodable:()HDCodingSupport
@@ -59,11 +59,11 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [[a1 alloc] _init];
-    if ([v5 applyToObject:v6])
+    _init = [[self alloc] _init];
+    if ([v5 applyToObject:_init])
     {
       v7 = HKDefaultObjectValidationConfigurationIgnoringAllOptions();
-      v9 = [v6 _validateWithConfiguration:{v7, v8}];
+      v9 = [_init _validateWithConfiguration:{v7, v8}];
       if (v9)
       {
         v10 = 0;
@@ -71,7 +71,7 @@
 
       else
       {
-        v10 = v6;
+        v10 = _init;
       }
 
       v11 = v10;

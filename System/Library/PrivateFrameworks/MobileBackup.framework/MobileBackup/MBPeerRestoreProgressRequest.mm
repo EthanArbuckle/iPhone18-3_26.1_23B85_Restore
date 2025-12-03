@@ -1,27 +1,27 @@
 @interface MBPeerRestoreProgressRequest
-- (MBPeerRestoreProgressRequest)initWithDictionary:(id)a3 error:(id *)a4;
-- (MBPeerRestoreProgressRequest)initWithPercentage:(unint64_t)a3;
+- (MBPeerRestoreProgressRequest)initWithDictionary:(id)dictionary error:(id *)error;
+- (MBPeerRestoreProgressRequest)initWithPercentage:(unint64_t)percentage;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation MBPeerRestoreProgressRequest
 
-- (MBPeerRestoreProgressRequest)initWithPercentage:(unint64_t)a3
+- (MBPeerRestoreProgressRequest)initWithPercentage:(unint64_t)percentage
 {
   v5.receiver = self;
   v5.super_class = MBPeerRestoreProgressRequest;
   result = [(MBPeerRestoreProgressRequest *)&v5 init];
   if (result)
   {
-    result->_percentage = a3;
+    result->_percentage = percentage;
   }
 
   return result;
 }
 
-- (MBPeerRestoreProgressRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerRestoreProgressRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MBPeerRestoreProgressRequest;
   v7 = [(MBPeerRestoreProgressRequest *)&v12 init];
@@ -30,7 +30,7 @@
     goto LABEL_4;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"MBPercentage"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"MBPercentage"];
   if (v8)
   {
     v9 = v8;
@@ -41,10 +41,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", v6];
-    *a4 = v10 = 0;
+    [MBError errorWithCode:11 format:@"Failed to decode request. Missing property in dictionary %@", dictionaryCopy];
+    *error = v10 = 0;
   }
 
   else

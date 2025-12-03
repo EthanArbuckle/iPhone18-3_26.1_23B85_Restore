@@ -1,9 +1,9 @@
 @interface BSUIScreenshotCollectionViewFlowLayout
 - (BSUIScreenshotCollectionViewFlowLayout)init;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
-- (void)_panGestureRecognized:(id)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
+- (void)_panGestureRecognized:(id)recognized;
 - (void)dealloc;
-- (void)prepareForTransitionToLayout:(id)a3;
+- (void)prepareForTransitionToLayout:(id)layout;
 - (void)prepareLayout;
 @end
 
@@ -28,44 +28,44 @@
   v7.receiver = self;
   v7.super_class = BSUIScreenshotCollectionViewFlowLayout;
   [(BSUIScreenshotCollectionViewFlowLayout *)&v7 prepareLayout];
-  v3 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  collectionView = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
-  v5 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-  v6 = [v5 panGestureRecognizer];
-  [v6 addTarget:self action:"_panGestureRecognized:"];
+  collectionView2 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+  panGestureRecognizer2 = [collectionView2 panGestureRecognizer];
+  [panGestureRecognizer2 addTarget:self action:"_panGestureRecognized:"];
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
   v6.receiver = self;
   v6.super_class = BSUIScreenshotCollectionViewFlowLayout;
-  [(BSUIScreenshotCollectionViewFlowLayout *)&v6 prepareForTransitionToLayout:a3];
-  v4 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-  v5 = [v4 panGestureRecognizer];
-  [v5 removeTarget:self action:0];
+  [(BSUIScreenshotCollectionViewFlowLayout *)&v6 prepareForTransitionToLayout:layout];
+  collectionView = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 }
 
 - (void)dealloc
 {
-  v3 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-  v4 = [v3 panGestureRecognizer];
-  [v4 removeTarget:self action:0];
+  collectionView = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
   v5.receiver = self;
   v5.super_class = BSUIScreenshotCollectionViewFlowLayout;
   [(BSUIScreenshotCollectionViewFlowLayout *)&v5 dealloc];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-  [v9 bounds];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
+  collectionView = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+  [collectionView bounds];
   v10 = [(BSUIScreenshotCollectionViewFlowLayout *)self layoutAttributesForElementsInRect:?];
 
   if ([v10 count])
@@ -74,8 +74,8 @@
     v52.super_class = BSUIScreenshotCollectionViewFlowLayout;
     [(BSUIScreenshotCollectionViewFlowLayout *)&v52 targetContentOffsetForProposedContentOffset:v7 withScrollingVelocity:v6, x, y];
     v12 = v11;
-    v13 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-    [v13 frame];
+    collectionView2 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+    [collectionView2 frame];
     v14 = v7 + CGRectGetWidth(v55);
     [(BSUIScreenshotCollectionViewFlowLayout *)self collectionViewContentSize];
     v16 = v15;
@@ -118,8 +118,8 @@ LABEL_10:
         {
           if (x > 0.0)
           {
-            v27 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-            v28 = [v27 numberOfItemsInSection:0] - 1;
+            collectionView3 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+            v28 = [collectionView3 numberOfItemsInSection:0] - 1;
 
             if (v28 >= (v17 + 1))
             {
@@ -157,8 +157,8 @@ LABEL_10:
       v34 = v33;
       v36 = v35;
       v38 = v37;
-      v39 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-      [v39 bounds];
+      collectionView4 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+      [collectionView4 bounds];
       v41 = v40;
       v43 = v42;
       v45 = v44;
@@ -195,17 +195,17 @@ LABEL_10:
   return result;
 }
 
-- (void)_panGestureRecognized:(id)a3
+- (void)_panGestureRecognized:(id)recognized
 {
-  if ([a3 state] == &dword_0 + 1)
+  if ([recognized state] == &dword_0 + 1)
   {
-    v9 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-    v4 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-    [v4 bounds];
+    collectionView = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+    collectionView2 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+    [collectionView2 bounds];
     MidX = CGRectGetMidX(v11);
-    v6 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
-    [v6 bounds];
-    v7 = [v9 indexPathForItemAtPoint:{MidX, CGRectGetMidY(v12)}];
+    collectionView3 = [(BSUIScreenshotCollectionViewFlowLayout *)self collectionView];
+    [collectionView3 bounds];
+    v7 = [collectionView indexPathForItemAtPoint:{MidX, CGRectGetMidY(v12)}];
     indexPathAtInitialScroll = self->_indexPathAtInitialScroll;
     self->_indexPathAtInitialScroll = v7;
   }

@@ -1,15 +1,15 @@
 @interface SEState
 - (_TtC9SEService7SEState)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SEState.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SEState.encode(with:)(coderCopy);
 }
 
 - (_TtC9SEService7SEState)init

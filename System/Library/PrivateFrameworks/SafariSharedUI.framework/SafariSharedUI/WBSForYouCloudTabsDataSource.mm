@@ -1,35 +1,35 @@
 @interface WBSForYouCloudTabsDataSource
-- (WBSForYouCloudTabsDataSource)initWithTabStore:(id)a3;
+- (WBSForYouCloudTabsDataSource)initWithTabStore:(id)store;
 - (void)_createInternalQueueIfNecessary;
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4;
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler;
 @end
 
 @implementation WBSForYouCloudTabsDataSource
 
-- (WBSForYouCloudTabsDataSource)initWithTabStore:(id)a3
+- (WBSForYouCloudTabsDataSource)initWithTabStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = WBSForYouCloudTabsDataSource;
   v6 = [(WBSForYouCloudTabsDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tabsStore, a3);
+    objc_storeStrong(&v6->_tabsStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = WBSForYouCloudTabsDataSource;
   [(WBSForYouRecommendationMediatorDataSource *)&v11 emitStartRetrievingRecommendationsPerformanceMarker];
-  if (v7)
+  if (handlerCopy)
   {
     [(WBSForYouCloudTabsDataSource *)self _createInternalQueueIfNecessary];
     block[0] = MEMORY[0x1E69E9820];
@@ -37,8 +37,8 @@
     block[2] = __91__WBSForYouCloudTabsDataSource_retrieveRecommendationsMatchingTopic_withCompletionHandler___block_invoke;
     block[3] = &unk_1E8283058;
     block[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = topicCopy;
+    v10 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

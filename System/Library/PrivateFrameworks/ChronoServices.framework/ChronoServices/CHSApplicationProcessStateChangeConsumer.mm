@@ -1,7 +1,7 @@
 @interface CHSApplicationProcessStateChangeConsumer
 - (CHSApplicationProcessStateChangeConsumer)init;
-- (CHSApplicationProcessStateChangeConsumer)initWithConnection:(id)a3;
-- (void)applicationWithBundleIdentifierEnteredForeground:(id)a3;
+- (CHSApplicationProcessStateChangeConsumer)initWithConnection:(id)connection;
+- (void)applicationWithBundleIdentifierEnteredForeground:(id)foreground;
 @end
 
 @implementation CHSApplicationProcessStateChangeConsumer
@@ -14,34 +14,34 @@
   return v4;
 }
 
-- (CHSApplicationProcessStateChangeConsumer)initWithConnection:(id)a3
+- (CHSApplicationProcessStateChangeConsumer)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = CHSApplicationProcessStateChangeConsumer;
   v6 = [(CHSApplicationProcessStateChangeConsumer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-- (void)applicationWithBundleIdentifierEnteredForeground:(id)a3
+- (void)applicationWithBundleIdentifierEnteredForeground:(id)foreground
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = CHSLogChronoServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = foregroundCopy;
     _os_log_impl(&dword_195EB2000, v5, OS_LOG_TYPE_DEFAULT, "noting foreground launch for %@ with widget extension; trigger metadata query", &v7, 0xCu);
   }
 
-  [(CHSChronoServicesConnection *)self->_connection reloadDescriptorsForContainerBundleIdentifier:v4 completion:&__block_literal_global_3];
+  [(CHSChronoServicesConnection *)self->_connection reloadDescriptorsForContainerBundleIdentifier:foregroundCopy completion:&__block_literal_global_3];
   v6 = *MEMORY[0x1E69E9840];
 }
 

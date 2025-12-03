@@ -1,7 +1,7 @@
 @interface HKBalanceDaySeries
 - (HKBalanceDaySeries)init;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation HKBalanceDaySeries
@@ -27,38 +27,38 @@
   return [(HKBalanceSeries *)&v14 init];
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  index = a4->index;
-  zoom = a4->zoom;
-  resolution = a4->resolution;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  sub_1C3C9DF08(v12, index, zoom, resolution, v13, v14);
+  index = path->index;
+  zoom = path->zoom;
+  resolution = path->resolution;
+  blockCopy = block;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  selfCopy = self;
+  sub_1C3C9DF08(blockCopy, index, zoom, resolution, axisCopy, yAxisCopy);
   v17 = v16;
 
   return v17;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = *&a6->c;
-  v24[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v18 = *&transform->c;
+  v24[0] = *&transform->a;
   v24[1] = v18;
-  v24[2] = *&a6->tx;
-  v19 = a3;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
+  v24[2] = *&transform->tx;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  contextCopy = context;
+  renderContextCopy = renderContext;
   swift_unknownObjectRetain();
-  v23 = self;
-  sub_1C3CA30EC(v19, x, y, width, height, v20, v24, v21, a9);
+  selfCopy = self;
+  sub_1C3CA30EC(coordinatesCopy, x, y, width, height, configurationCopy, v24, contextCopy, delegate);
 
   swift_unknownObjectRelease();
 }

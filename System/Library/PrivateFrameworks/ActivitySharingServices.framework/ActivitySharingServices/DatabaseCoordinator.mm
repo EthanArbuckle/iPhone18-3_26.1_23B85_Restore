@@ -1,6 +1,6 @@
 @interface DatabaseCoordinator
 - (_TtC23ActivitySharingServices19DatabaseCoordinator)init;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 @end
 
 @implementation DatabaseCoordinator
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_221F55970(a4);
+  selfCopy = self;
+  sub_221F55970(available);
   swift_unknownObjectRelease();
 }
 

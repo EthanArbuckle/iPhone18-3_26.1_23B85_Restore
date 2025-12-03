@@ -7,89 +7,89 @@
 
 - (id)launchOptions
 {
-  if (([a1 hasEnableTraffic] & 1) == 0 && (objc_msgSend(a1, "hasMapType") & 1) == 0 && (objc_msgSend(a1, "hasTransportType") & 1) == 0 && (objc_msgSend(a1, "hasCenterSpan") & 1) == 0 && (objc_msgSend(a1, "hasCamera") & 1) == 0 && !objc_msgSend(a1, "hasReferralIdentifier"))
+  if (([self hasEnableTraffic] & 1) == 0 && (objc_msgSend(self, "hasMapType") & 1) == 0 && (objc_msgSend(self, "hasTransportType") & 1) == 0 && (objc_msgSend(self, "hasCenterSpan") & 1) == 0 && (objc_msgSend(self, "hasCamera") & 1) == 0 && !objc_msgSend(self, "hasReferralIdentifier"))
   {
-    v2 = 0;
+    dictionary = 0;
     goto LABEL_38;
   }
 
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  if ([a1 hasMapType])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([self hasMapType])
   {
-    v3 = [a1 mapType];
-    if (v3 == 1)
+    mapType = [self mapType];
+    if (mapType == 1)
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = 2 * (v3 == 2);
+      v4 = 2 * (mapType == 2);
     }
 
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-    [v2 setObject:v5 forKey:@"MKLaunchOptionsMapType"];
+    [dictionary setObject:v5 forKey:@"MKLaunchOptionsMapType"];
   }
 
-  if ([a1 hasTransportType])
+  if ([self hasTransportType])
   {
-    v6 = [a1 transportType];
-    if (v6 > 3)
+    transportType = [self transportType];
+    if (transportType > 3)
     {
       v7 = &MKLaunchOptionsDirectionsModeDefault;
     }
 
     else
     {
-      v7 = off_1E76CCB40[v6];
+      v7 = off_1E76CCB40[transportType];
     }
 
-    [v2 setObject:*v7 forKey:@"MKLaunchOptionsDirectionsMode"];
+    [dictionary setObject:*v7 forKey:@"MKLaunchOptionsDirectionsMode"];
   }
 
-  if ([a1 hasCamera])
+  if ([self hasCamera])
   {
-    v8 = [a1 camera];
+    camera = [self camera];
     v9 = objc_alloc_init(MKMapCamera);
-    [v8 latitude];
+    [camera latitude];
     v11 = v10;
-    [v8 longitude];
+    [camera longitude];
     v13 = CLLocationCoordinate2DMake(v11, v12);
     [(MKMapCamera *)v9 setCenterCoordinate:v13.latitude, v13.longitude];
-    [v8 heading];
+    [camera heading];
     [(MKMapCamera *)v9 setHeading:?];
-    [v8 pitch];
+    [camera pitch];
     [(MKMapCamera *)v9 _setPrecisePitch:?];
-    [v8 altitude];
+    [camera altitude];
     [(MKMapCamera *)v9 setAltitude:?];
     v14 = &MKLaunchOptionsCameraKey;
 LABEL_19:
-    [v2 setObject:v9 forKey:*v14];
+    [dictionary setObject:v9 forKey:*v14];
 
     goto LABEL_20;
   }
 
-  if (![a1 hasCenterSpan])
+  if (![self hasCenterSpan])
   {
     goto LABEL_28;
   }
 
-  v8 = [a1 centerSpan];
-  if ([v8 hasLatitude] && objc_msgSend(v8, "hasLongitude"))
+  camera = [self centerSpan];
+  if ([camera hasLatitude] && objc_msgSend(camera, "hasLongitude"))
   {
-    [v8 latitude];
+    [camera latitude];
     v16 = v15;
-    [v8 longitude];
+    [camera longitude];
     v18 = CLLocationCoordinate2DMake(v16, v17);
     v19 = [MEMORY[0x1E696B098] valueWithMKCoordinate:{v18.latitude, v18.longitude}];
-    [v2 setObject:v19 forKey:@"MKLaunchOptionsMapCenter"];
+    [dictionary setObject:v19 forKey:@"MKLaunchOptionsMapCenter"];
   }
 
-  if ([v8 hasLatitudeDelta] && objc_msgSend(v8, "hasLongitudeDelta"))
+  if ([camera hasLatitudeDelta] && objc_msgSend(camera, "hasLongitudeDelta"))
   {
-    [v8 latitudeDelta];
+    [camera latitudeDelta];
     v21 = v20;
-    [v8 longitudeDelta];
+    [camera longitudeDelta];
     v9 = [MEMORY[0x1E696B098] valueWithMKCoordinateSpan:{v21, v22}];
     v14 = &MKLaunchOptionsMapSpanKey;
     goto LABEL_19;
@@ -98,45 +98,45 @@ LABEL_19:
 LABEL_20:
 
 LABEL_28:
-  if ([a1 hasEnableTraffic])
+  if ([self hasEnableTraffic])
   {
-    v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "enableTraffic")}];
-    [v2 setObject:v23 forKey:@"MKLaunchOptionsShowsTraffic"];
+    v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "enableTraffic")}];
+    [dictionary setObject:v23 forKey:@"MKLaunchOptionsShowsTraffic"];
   }
 
-  if ([a1 hasReferralIdentifier])
+  if ([self hasReferralIdentifier])
   {
-    v24 = [a1 referralIdentifier];
-    [v2 setObject:v24 forKey:@"MKLaunchOptionsReferralIdentifierKey"];
+    referralIdentifier = [self referralIdentifier];
+    [dictionary setObject:referralIdentifier forKey:@"MKLaunchOptionsReferralIdentifierKey"];
   }
 
-  if ([a1 hasRouteHandle])
+  if ([self hasRouteHandle])
   {
-    v25 = [a1 routeHandle];
-    [v2 setObject:v25 forKey:@"MKLaunchOptionsRouteHandle"];
+    routeHandle = [self routeHandle];
+    [dictionary setObject:routeHandle forKey:@"MKLaunchOptionsRouteHandle"];
   }
 
-  if ([a1 hasTimePoint])
+  if ([self hasTimePoint])
   {
-    v26 = [a1 timePoint];
-    [v2 setObject:v26 forKey:@"MKLaunchOptionsTimePointKey"];
+    timePoint = [self timePoint];
+    [dictionary setObject:timePoint forKey:@"MKLaunchOptionsTimePointKey"];
   }
 
-  if ([a1 hasConnectedToCar])
+  if ([self hasConnectedToCar])
   {
-    v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "connectedToCar")}];
-    [v2 setObject:v27 forKey:@"MKLaunchOptionsConnectedToCarKey"];
+    v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "connectedToCar")}];
+    [dictionary setObject:v27 forKey:@"MKLaunchOptionsConnectedToCarKey"];
   }
 
 LABEL_38:
 
-  return v2;
+  return dictionary;
 }
 
 - (id)initWithLaunchOptions:()MKURLSerializerExtras
 {
   v4 = a3;
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = &off_1F16CE150;
   v5 = objc_msgSendSuper2(&v32, sel_init);
   if (v5)

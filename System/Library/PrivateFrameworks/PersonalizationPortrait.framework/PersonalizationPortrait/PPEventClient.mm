@@ -1,14 +1,14 @@
 @interface PPEventClient
 + (id)sharedInstance;
-- (BOOL)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5 error:(id *)a6 handleBatch:(id)a7;
-- (BOOL)eventNameRecordsForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)interactionSummaryMetricsWithError:(id *)a3 handleBatch:(id)a4;
-- (BOOL)resolveEventNameRecordChanges:(id)a3 client:(id)a4 error:(id *)a5 handleBatch:(id)a6;
-- (BOOL)scoredEventsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)sendRTCLogsWithError:(id *)a3;
+- (BOOL)eventHighlightsFrom:(id)from to:(id)to options:(int)options error:(id *)error handleBatch:(id)batch;
+- (BOOL)eventNameRecordsForClient:(id)client error:(id *)error handleBatch:(id)batch;
+- (BOOL)interactionSummaryMetricsWithError:(id *)error handleBatch:(id)batch;
+- (BOOL)resolveEventNameRecordChanges:(id)changes client:(id)client error:(id *)error handleBatch:(id)batch;
+- (BOOL)scoredEventsWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
+- (BOOL)sendRTCLogsWithError:(id *)error;
 - (PPEventClient)init;
 - (void)_unblockPendingQueries;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPEventClient
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __31__PPEventClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken12 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken12, block);
@@ -114,15 +114,15 @@ void __31__PPEventClient_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPEventClient *)self _remoteObjectProxy];
-  [v8 registerFeedback:v7 completion:v6];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  _remoteObjectProxy = [(PPEventClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (BOOL)sendRTCLogsWithError:(id *)a3
+- (BOOL)sendRTCLogsWithError:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -158,7 +158,7 @@ void __31__PPEventClient_sharedInstance__block_invoke(uint64_t a1)
   v7 = v23[5];
   if (v7)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -166,11 +166,11 @@ void __31__PPEventClient_sharedInstance__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  if (a3)
+  if (error)
   {
     v7 = v12[5];
 LABEL_6:
-    *a3 = v7;
+    *error = v7;
   }
 
 LABEL_7:
@@ -196,9 +196,9 @@ void __38__PPEventClient_sendRTCLogsWithError___block_invoke_2(uint64_t a1, char
   }
 }
 
-- (BOOL)interactionSummaryMetricsWithError:(id *)a3 handleBatch:(id)a4
+- (BOOL)interactionSummaryMetricsWithError:(id *)error handleBatch:(id)batch
 {
-  v6 = a4;
+  batchCopy = batch;
   v7 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -217,11 +217,11 @@ void __38__PPEventClient_sendRTCLogsWithError___block_invoke_2(uint64_t a1, char
   v13[1] = 3221225472;
   v13[2] = __64__PPEventClient_interactionSummaryMetricsWithError_handleBatch___block_invoke_2;
   v13[3] = &unk_1E77F79C0;
-  v15 = v6;
+  v15 = batchCopy;
   v16 = v8;
   v14 = @"interactionSummaryMetrics";
-  v10 = v6;
-  v11 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"interactionSummaryMetrics" error:a3 queryInitializer:v17 handleBatch:v13];
+  v10 = batchCopy;
+  v11 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"interactionSummaryMetrics" error:error queryInitializer:v17 handleBatch:v13];
 
   return v11;
 }
@@ -241,10 +241,10 @@ void __64__PPEventClient_interactionSummaryMetricsWithError_handleBatch___block_
   (*(a1[5] + 16))();
 }
 
-- (BOOL)scoredEventsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)scoredEventsWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -259,17 +259,17 @@ void __64__PPEventClient_interactionSummaryMetricsWithError_handleBatch___block_
   v21[2] = __57__PPEventClient_scoredEventsWithQuery_error_handleBatch___block_invoke;
   v21[3] = &unk_1E77F7998;
   v21[4] = self;
-  v22 = v8;
+  v22 = queryCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __57__PPEventClient_scoredEventsWithQuery_error_handleBatch___block_invoke_2;
   v17[3] = &unk_1E77F79C0;
-  v19 = v9;
+  v19 = batchCopy;
   v20 = v11;
   v18 = @"scoredEvents";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"scoredEvents" error:a4 queryInitializer:v21 handleBatch:v17];
+  v13 = batchCopy;
+  v14 = queryCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"scoredEvents" error:error queryInitializer:v21 handleBatch:v17];
 
   return v15;
 }
@@ -289,11 +289,11 @@ void __57__PPEventClient_scoredEventsWithQuery_error_handleBatch___block_invoke_
   (*(a1[5] + 16))();
 }
 
-- (BOOL)eventHighlightsFrom:(id)a3 to:(id)a4 options:(int)a5 error:(id *)a6 handleBatch:(id)a7
+- (BOOL)eventHighlightsFrom:(id)from to:(id)to options:(int)options error:(id *)error handleBatch:(id)batch
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  fromCopy = from;
+  toCopy = to;
+  batchCopy = batch;
   v15 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -308,20 +308,20 @@ void __57__PPEventClient_scoredEventsWithQuery_error_handleBatch___block_invoke_
   v27[2] = __66__PPEventClient_eventHighlightsFrom_to_options_error_handleBatch___block_invoke;
   v27[3] = &unk_1E77F6078;
   v27[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = a5;
+  v28 = fromCopy;
+  v29 = toCopy;
+  optionsCopy = options;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __66__PPEventClient_eventHighlightsFrom_to_options_error_handleBatch___block_invoke_2;
   v23[3] = &unk_1E77F79C0;
-  v25 = v14;
+  v25 = batchCopy;
   v26 = v16;
   v24 = @"eventHighlights";
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventHighlights" error:a6 queryInitializer:v27 handleBatch:v23];
+  v18 = batchCopy;
+  v19 = toCopy;
+  v20 = fromCopy;
+  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventHighlights" error:error queryInitializer:v27 handleBatch:v23];
 
   return v21;
 }
@@ -341,17 +341,17 @@ void __66__PPEventClient_eventHighlightsFrom_to_options_error_handleBatch___bloc
   (*(a1[5] + 16))();
 }
 
-- (BOOL)resolveEventNameRecordChanges:(id)a3 client:(id)a4 error:(id *)a5 handleBatch:(id)a6
+- (BOOL)resolveEventNameRecordChanges:(id)changes client:(id)client error:(id *)error handleBatch:(id)batch
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  changesCopy = changes;
+  clientCopy = client;
+  batchCopy = batch;
   v13 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v30 = v11;
+    v30 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v13, OS_LOG_TYPE_DEBUG, "eventNameRecordChangesForClient:%@ called", buf, 0xCu);
   }
 
@@ -362,19 +362,19 @@ void __66__PPEventClient_eventHighlightsFrom_to_options_error_handleBatch___bloc
   v26[2] = __72__PPEventClient_resolveEventNameRecordChanges_client_error_handleBatch___block_invoke;
   v26[3] = &unk_1E77F7948;
   v26[4] = self;
-  v27 = v10;
-  v28 = v11;
+  v27 = changesCopy;
+  v28 = clientCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __72__PPEventClient_resolveEventNameRecordChanges_client_error_handleBatch___block_invoke_2;
   v22[3] = &unk_1E77F79C0;
-  v24 = v12;
+  v24 = batchCopy;
   v25 = v14;
   v23 = @"eventNameRecordChangesWithError";
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventNameRecordChangesWithError" error:a5 queryInitializer:v26 handleBatch:v22];
+  v16 = batchCopy;
+  v17 = clientCopy;
+  v18 = changesCopy;
+  v19 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventNameRecordChangesWithError" error:error queryInitializer:v26 handleBatch:v22];
 
   v20 = *MEMORY[0x1E69E9840];
   return v19;
@@ -395,16 +395,16 @@ void __72__PPEventClient_resolveEventNameRecordChanges_client_error_handleBatch_
   (*(a1[5] + 16))();
 }
 
-- (BOOL)eventNameRecordsForClient:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)eventNameRecordsForClient:(id)client error:(id *)error handleBatch:(id)batch
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clientCopy = client;
+  batchCopy = batch;
   v10 = pp_xpc_client_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v25 = v8;
+    v25 = clientCopy;
     _os_log_debug_impl(&dword_1A7FD3000, v10, OS_LOG_TYPE_DEBUG, "eventNameRecordsForClient:%@ called", buf, 0xCu);
   }
 
@@ -415,17 +415,17 @@ void __72__PPEventClient_resolveEventNameRecordChanges_client_error_handleBatch_
   v22[2] = __61__PPEventClient_eventNameRecordsForClient_error_handleBatch___block_invoke;
   v22[3] = &unk_1E77F7998;
   v22[4] = self;
-  v23 = v8;
+  v23 = clientCopy;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __61__PPEventClient_eventNameRecordsForClient_error_handleBatch___block_invoke_2;
   v18[3] = &unk_1E77F79C0;
-  v20 = v9;
+  v20 = batchCopy;
   v21 = v11;
   v19 = @"eventNameRecordsWithError";
-  v13 = v9;
-  v14 = v8;
-  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventNameRecordsWithError" error:a4 queryInitializer:v22 handleBatch:v18];
+  v13 = batchCopy;
+  v14 = clientCopy;
+  v15 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"eventNameRecordsWithError" error:error queryInitializer:v22 handleBatch:v18];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;

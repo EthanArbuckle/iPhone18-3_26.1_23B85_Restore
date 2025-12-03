@@ -2,37 +2,37 @@
 - ($873BFAB23BBB6E2F0B0288ED2F935688)boundingMapRect;
 - (CLLocationCoordinate2D)coordinate;
 - (RouteTileLoadingDebugOverlay)init;
-- (void)addCachedTileKey:(uint64_t)a3;
-- (void)addFailedKey:(uint64_t)a3;
-- (void)addLoadedTileKey:(uint64_t)a3;
+- (void)addCachedTileKey:(uint64_t)key;
+- (void)addFailedKey:(uint64_t)key;
+- (void)addLoadedTileKey:(uint64_t)key;
 @end
 
 @implementation RouteTileLoadingDebugOverlay
 
-- (void)addFailedKey:(uint64_t)a3
+- (void)addFailedKey:(uint64_t)key
 {
-  os_unfair_lock_lock((a1 + 32));
-  [*(a1 + 24) addKey:a3];
+  os_unfair_lock_lock((self + 32));
+  [*(self + 24) addKey:key];
 
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_unlock((self + 32));
 }
 
-- (void)addCachedTileKey:(uint64_t)a3
+- (void)addCachedTileKey:(uint64_t)key
 {
-  os_unfair_lock_lock((a1 + 32));
-  [*(a1 + 16) addKey:a3];
-  [*(a1 + 24) removeKey:a3];
+  os_unfair_lock_lock((self + 32));
+  [*(self + 16) addKey:key];
+  [*(self + 24) removeKey:key];
 
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_unlock((self + 32));
 }
 
-- (void)addLoadedTileKey:(uint64_t)a3
+- (void)addLoadedTileKey:(uint64_t)key
 {
-  os_unfair_lock_lock((a1 + 32));
-  [*(a1 + 8) addKey:a3];
-  [*(a1 + 24) removeKey:a3];
+  os_unfair_lock_lock((self + 32));
+  [*(self + 8) addKey:key];
+  [*(self + 24) removeKey:key];
 
-  os_unfair_lock_unlock((a1 + 32));
+  os_unfair_lock_unlock((self + 32));
 }
 
 - ($873BFAB23BBB6E2F0B0288ED2F935688)boundingMapRect

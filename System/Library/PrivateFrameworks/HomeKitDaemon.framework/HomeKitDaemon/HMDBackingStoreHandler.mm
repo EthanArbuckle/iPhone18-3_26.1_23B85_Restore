@@ -1,33 +1,33 @@
 @interface HMDBackingStoreHandler
 + (id)logCategory;
-- (HMDBackingStoreHandler)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (HMDBackingStoreHandler)initWithIdentifier:(id)identifier backingStore:(id)store;
 - (id)attributeDescriptions;
-- (id)backingStoreObjectsForVersion:(int64_t)a3;
+- (id)backingStoreObjectsForVersion:(int64_t)version;
 - (id)logIdentifier;
-- (void)runTransactionWithModel:(id)a3 options:(id)a4 reason:(id)a5 completion:(id)a6;
-- (void)runTransactionWithModel:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)runTransactionWithModels:(id)a3 options:(id)a4 reason:(id)a5 completion:(id)a6;
-- (void)runTransactionWithModels:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)runTransactionWithModel:(id)model options:(id)options reason:(id)reason completion:(id)completion;
+- (void)runTransactionWithModel:(id)model reason:(id)reason completion:(id)completion;
+- (void)runTransactionWithModels:(id)models options:(id)options reason:(id)reason completion:(id)completion;
+- (void)runTransactionWithModels:(id)models reason:(id)reason completion:(id)completion;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDBackingStoreHandler
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStoreHandler *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDBackingStoreHandler *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDBackingStoreHandler *)self identifier];
-  v5 = [v3 initWithName:@"identifier" value:v4];
+  identifier = [(HMDBackingStoreHandler *)self identifier];
+  v5 = [v3 initWithName:@"identifier" value:identifier];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -36,13 +36,13 @@
   return v6;
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -50,25 +50,25 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = removedCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to process removed object: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-  [v7 respondWithError:v12];
+  [messageCopy respondWithError:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
@@ -76,22 +76,22 @@
     v17 = 138543618;
     v18 = v14;
     v19 = 2112;
-    v20 = v9;
+    v20 = valuesCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to process udated changes for object: %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   v15 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-  [v10 respondWithError:v15];
+  [messageCopy respondWithError:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)backingStoreObjectsForVersion:(int64_t)a3
+- (id)backingStoreObjectsForVersion:(int64_t)version
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -106,15 +106,15 @@
   return MEMORY[0x277CBEBF8];
 }
 
-- (void)runTransactionWithModels:(id)a3 options:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)runTransactionWithModels:(id)models options:(id)options reason:(id)reason completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelsCopy = models;
+  optionsCopy = options;
+  reasonCopy = reason;
+  completionCopy = completion;
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -122,23 +122,23 @@
     *buf = 138543874;
     v39 = v17;
     v40 = 2112;
-    v41 = v10;
+    v41 = modelsCopy;
     v42 = 2112;
-    v43 = v11;
+    v43 = optionsCopy;
     _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Running transaction with models: %@ options: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v14);
-  if (v13)
+  if (completionCopy)
   {
-    v18 = [(HMDBackingStoreHandler *)v15 backingStore];
-    v30 = v12;
-    v19 = [v18 transaction:v12 options:v11];
+    backingStore = [(HMDBackingStoreHandler *)selfCopy backingStore];
+    v30 = reasonCopy;
+    v19 = [backingStore transaction:reasonCopy options:optionsCopy];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v20 = v10;
+    v20 = modelsCopy;
     v21 = [v20 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v21)
     {
@@ -168,17 +168,17 @@
     v31[1] = 3221225472;
     v31[2] = __77__HMDBackingStoreHandler_runTransactionWithModels_options_reason_completion___block_invoke;
     v31[3] = &unk_278689A68;
-    v31[4] = v15;
-    v32 = v13;
+    v31[4] = selfCopy;
+    v32 = completionCopy;
     [v19 run:v31];
 
-    v12 = v30;
+    reasonCopy = v30;
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = v15;
+    v26 = selfCopy;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
@@ -237,56 +237,56 @@ void __77__HMDBackingStoreHandler_runTransactionWithModels_options_reason_comple
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runTransactionWithModel:(id)a3 options:(id)a4 reason:(id)a5 completion:(id)a6
+- (void)runTransactionWithModel:(id)model options:(id)options reason:(id)reason completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  modelCopy = model;
   v10 = MEMORY[0x277CBEA60];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 arrayWithObjects:&v17 count:1];
+  completionCopy = completion;
+  reasonCopy = reason;
+  optionsCopy = options;
+  modelCopy2 = model;
+  v15 = [v10 arrayWithObjects:&modelCopy count:1];
 
-  [(HMDBackingStoreHandler *)self runTransactionWithModels:v15 options:v13 reason:v12 completion:v11, v17, v18];
+  [(HMDBackingStoreHandler *)self runTransactionWithModels:v15 options:optionsCopy reason:reasonCopy completion:completionCopy, modelCopy, v18];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runTransactionWithModels:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)runTransactionWithModels:(id)models reason:(id)reason completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  reasonCopy = reason;
+  modelsCopy = models;
   v11 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-  [(HMDBackingStoreHandler *)self runTransactionWithModels:v10 options:v11 reason:v9 completion:v8];
+  [(HMDBackingStoreHandler *)self runTransactionWithModels:modelsCopy options:v11 reason:reasonCopy completion:completionCopy];
 }
 
-- (void)runTransactionWithModel:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)runTransactionWithModel:(id)model reason:(id)reason completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  modelCopy = model;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v14 count:1];
+  completionCopy = completion;
+  reasonCopy = reason;
+  modelCopy2 = model;
+  v12 = [v8 arrayWithObjects:&modelCopy count:1];
 
-  [(HMDBackingStoreHandler *)self runTransactionWithModels:v12 reason:v10 completion:v9, v14, v15];
+  [(HMDBackingStoreHandler *)self runTransactionWithModels:v12 reason:reasonCopy completion:completionCopy, modelCopy, v15];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDBackingStoreHandler)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (HMDBackingStoreHandler)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HMDBackingStoreHandler;
   v9 = [(HMDBackingStoreHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_backingStore, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_backingStore, store);
   }
 
   return v10;

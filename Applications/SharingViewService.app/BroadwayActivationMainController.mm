@@ -1,13 +1,13 @@
 @interface BroadwayActivationMainController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
 - (void)presentAppropriateViewControllerIfReady;
 - (void)retryActivation;
-- (void)showCompletedUI:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)showCompletedUI:(int64_t)i;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation BroadwayActivationMainController
@@ -31,15 +31,15 @@
   sub_100127D6C(vcNav, vcStart, 0);
 }
 
-- (void)showCompletedUI:(int64_t)a3
+- (void)showCompletedUI:(int64_t)i
 {
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
-    if (a3 <= 3)
+    if (i <= 3)
     {
-      if (a3 > 1)
+      if (i > 1)
       {
-        if (a3 == 2)
+        if (i == 2)
         {
           v5 = "NoPhysicalCardError";
         }
@@ -52,13 +52,13 @@
         goto LABEL_25;
       }
 
-      if (!a3)
+      if (!i)
       {
         v5 = "Success";
         goto LABEL_25;
       }
 
-      if (a3 == 1)
+      if (i == 1)
       {
         v5 = "UnknownError";
         goto LABEL_25;
@@ -67,9 +67,9 @@
 
     else
     {
-      if (a3 <= 5)
+      if (i <= 5)
       {
-        if (a3 == 4)
+        if (i == 4)
         {
           v5 = "NoInternetConnectionError";
         }
@@ -82,7 +82,7 @@
         goto LABEL_25;
       }
 
-      switch(a3)
+      switch(i)
       {
         case 6:
           v5 = "AlreadyActivatedError";
@@ -104,7 +104,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  if (a3 == 4)
+  if (i == 4)
   {
     v6 = 64;
     vcFailedNoConnectivity = self->_vcFailedNoConnectivity;
@@ -120,7 +120,7 @@ LABEL_33:
     goto LABEL_37;
   }
 
-  if (!a3)
+  if (!i)
   {
     v6 = 48;
     vcFailedNoConnectivity = self->_vcDone;
@@ -152,7 +152,7 @@ LABEL_32:
     vcFailed = self->_vcFailed;
   }
 
-  [(BroadwayActivationFailedViewController *)vcFailed setFailureResult:a3, v16];
+  [(BroadwayActivationFailedViewController *)vcFailed setFailureResult:i, v16];
   vcNav = self->_vcNav;
   vcFailedNoConnectivity = self->_vcFailed;
 LABEL_37:
@@ -160,14 +160,14 @@ LABEL_37:
   sub_100127D6C(vcNav, vcFailedNoConnectivity, 0);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -178,7 +178,7 @@ LABEL_37:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * i) events] & 0x10) != 0)
@@ -192,22 +192,22 @@ LABEL_37:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
     self->_dismissed = 1;
-    v7 = [(BroadwayActivationMainController *)self _remoteViewControllerProxy];
-    v8 = v7;
+    _remoteViewControllerProxy = [(BroadwayActivationMainController *)self _remoteViewControllerProxy];
+    v8 = _remoteViewControllerProxy;
     vcNav = self->_vcNav;
     if (vcNav)
     {
@@ -215,25 +215,25 @@ LABEL_37:
       v10[1] = 3221225472;
       v10[2] = sub_100120034;
       v10[3] = &unk_1001959D0;
-      v11 = v7;
-      v12 = v6;
-      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:v4 completion:v10];
+      v11 = _remoteViewControllerProxy;
+      v12 = completionCopy;
+      [(SVSCommonNavController *)vcNav dismissViewControllerAnimated:animatedCopy completion:v10];
     }
 
     else
     {
-      [v7 dismiss];
-      if (v6)
+      [_remoteViewControllerProxy dismiss];
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -274,7 +274,7 @@ LABEL_37:
   self->_appeared = 0;
   v11.receiver = self;
   v11.super_class = BroadwayActivationMainController;
-  [(SVSBaseMainController *)&v11 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v11 viewDidDisappear:disappearCopy];
 }
 
 - (void)presentAppropriateViewControllerIfReady
@@ -288,16 +288,16 @@ LABEL_37:
   storyboard = self->_storyboard;
   self->_storyboard = v3;
 
-  v5 = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
+  instantiateInitialViewController = [(UIStoryboard *)self->_storyboard instantiateInitialViewController];
   vcNav = self->_vcNav;
-  self->_vcNav = v5;
+  self->_vcNav = instantiateInitialViewController;
 
   [(SVSCommonNavController *)self->_vcNav setDelegate:self];
   [(SVSCommonNavController *)self->_vcNav setModalPresentationStyle:4];
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SVSCommonNavController *)self->_vcNav setModalTransitionStyle:2];
   }
@@ -322,27 +322,27 @@ LABEL_14:
   if (v10)
   {
     v11 = [(NSDictionary *)self->super._userInfo objectForKeyedSubscript:@"physicalCard"];
-    v12 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v12 = [(PKPhysicalCard *)self->_physicalCard state];
+    unsignedIntegerValue = [(PKPhysicalCard *)self->_physicalCard state];
   }
 
-  if ((v12 - 2) < 3)
+  if ((unsignedIntegerValue - 2) < 3)
   {
     v13 = self->_storyboard;
     v14 = @"AlreadyActivated";
     goto LABEL_14;
   }
 
-  if (v12 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v19 = [(SVSCommonNavController *)self->_vcNav viewControllers];
-    v20 = [v19 firstObject];
+    viewControllers = [(SVSCommonNavController *)self->_vcNav viewControllers];
+    firstObject = [viewControllers firstObject];
     vcStart = self->_vcStart;
-    self->_vcStart = v20;
+    self->_vcStart = firstObject;
 
     v15 = self->_vcStart;
 LABEL_15:
@@ -368,9 +368,9 @@ LABEL_15:
   [(BroadwayActivationMainController *)self dismissAnimated:0 completion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_appeared = 1;
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
@@ -379,16 +379,16 @@ LABEL_15:
 
   v5.receiver = self;
   v5.super_class = BroadwayActivationMainController;
-  [(BroadwayActivationMainController *)&v5 viewDidAppear:v3];
+  [(BroadwayActivationMainController *)&v5 viewDidAppear:appearCopy];
   [(BroadwayActivationMainController *)self presentAppropriateViewControllerIfReady];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(BroadwayActivationMainController *)self view];
-  v3 = [v2 window];
+  view = [(BroadwayActivationMainController *)self view];
+  window = [view window];
 
-  if (v3)
+  if (window)
   {
     v4 = (1 << [UIApp activeInterfaceOrientation]);
   }
@@ -401,12 +401,12 @@ LABEL_15:
   return v4;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v7;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEFE8 <= 30 && (dword_1001BEFE8 != -1 || _LogCategory_Initialize()))
   {
@@ -419,13 +419,13 @@ LABEL_15:
   {
     self->_test = 0;
 LABEL_10:
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_12;
   }
 
@@ -449,7 +449,7 @@ LABEL_11:
     self->_forcedActivationResult = 999;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     goto LABEL_11;
   }
@@ -457,13 +457,13 @@ LABEL_11:
 LABEL_12:
   CFStringGetTypeID();
   v13 = CFDictionaryGetTypedValue();
-  v14 = [(objc_class *)off_1001BF058() sharedInstance];
+  sharedInstance = [(objc_class *)off_1001BF058() sharedInstance];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001208E4;
   v15[3] = &unk_1001955C0;
   v15[4] = self;
-  [v14 physicalCardForFeatureIdentifier:2 activationCode:v13 completion:v15];
+  [sharedInstance physicalCardForFeatureIdentifier:2 activationCode:v13 completion:v15];
 }
 
 @end

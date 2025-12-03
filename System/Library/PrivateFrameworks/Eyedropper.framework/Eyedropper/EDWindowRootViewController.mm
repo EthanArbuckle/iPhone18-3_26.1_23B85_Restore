@@ -1,16 +1,16 @@
 @interface EDWindowRootViewController
-- (EDWindowRootViewController)initWithScreenBounds:(CGRect)a3;
+- (EDWindowRootViewController)initWithScreenBounds:(CGRect)bounds;
 - (void)viewDidLoad;
 @end
 
 @implementation EDWindowRootViewController
 
-- (EDWindowRootViewController)initWithScreenBounds:(CGRect)a3
+- (EDWindowRootViewController)initWithScreenBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v14.receiver = self;
   v14.super_class = EDWindowRootViewController;
   v7 = [(EDWindowRootViewController *)&v14 initWithNibName:0 bundle:0];
@@ -30,8 +30,8 @@
   v7->_lensView = v10;
 
   [(EDLensView *)v7->_lensView setLastPosition:MidX, MidY];
-  v12 = [(EDWindowRootViewController *)v7 view];
-  [v12 addSubview:v7->_lensView];
+  view = [(EDWindowRootViewController *)v7 view];
+  [view addSubview:v7->_lensView];
 
   return v7;
 }
@@ -41,9 +41,9 @@
   v5.receiver = self;
   v5.super_class = EDWindowRootViewController;
   [(EDWindowRootViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(EDWindowRootViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view = [(EDWindowRootViewController *)self view];
+  [view setBackgroundColor:clearColor];
 }
 
 @end

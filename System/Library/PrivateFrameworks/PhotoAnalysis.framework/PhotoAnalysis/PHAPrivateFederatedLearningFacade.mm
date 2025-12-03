@@ -1,26 +1,26 @@
 @interface PHAPrivateFederatedLearningFacade
-- (PHAPrivateFederatedLearningFacade)initWithPhotosLibrary:(id)a3 graphManagerProgress:(id)a4;
-- (void)runPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5;
+- (PHAPrivateFederatedLearningFacade)initWithPhotosLibrary:(id)library graphManagerProgress:(id)progress;
+- (void)runPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block;
 @end
 
 @implementation PHAPrivateFederatedLearningFacade
 
-- (void)runPFLWithAttachments:(id)a3 recipeUserInfo:(id)a4 resultBlock:(id)a5
+- (void)runPFLWithAttachments:(id)attachments recipeUserInfo:(id)info resultBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PHAPrivateFederatedLearningFacade *)self systemPhotoLibrary];
-  v12 = [(PHAPrivateFederatedLearningFacade *)self graphManager];
+  blockCopy = block;
+  infoCopy = info;
+  attachmentsCopy = attachments;
+  systemPhotoLibrary = [(PHAPrivateFederatedLearningFacade *)self systemPhotoLibrary];
+  graphManager = [(PHAPrivateFederatedLearningFacade *)self graphManager];
   v25 = 0;
-  v13 = [PHAPrivateFederatedLearningRecipeDecoder decodeRecipeUserInfo:v9 attachmentURLs:v10 photoLibrary:v11 graphManager:v12 decodingError:&v25];
+  v13 = [PHAPrivateFederatedLearningRecipeDecoder decodeRecipeUserInfo:infoCopy attachmentURLs:attachmentsCopy photoLibrary:systemPhotoLibrary graphManager:graphManager decodingError:&v25];
 
   v14 = v25;
-  v15 = [v13 options];
-  v16 = [v15 learningFramework];
-  LODWORD(v9) = [v16 isEqualToString:@"coreML"];
+  options = [v13 options];
+  learningFramework = [options learningFramework];
+  LODWORD(infoCopy) = [learningFramework isEqualToString:@"coreML"];
 
-  if (v9)
+  if (infoCopy)
   {
     v24 = v14;
     v17 = &v24;
@@ -37,15 +37,15 @@
   v19 = v18;
   v20 = *v17;
 
-  v21 = [v19 dataPackage];
-  v22 = [v19 trainingMetrics];
-  v8[2](v8, v21, v22, v20);
+  dataPackage = [v19 dataPackage];
+  trainingMetrics = [v19 trainingMetrics];
+  blockCopy[2](blockCopy, dataPackage, trainingMetrics, v20);
 }
 
-- (PHAPrivateFederatedLearningFacade)initWithPhotosLibrary:(id)a3 graphManagerProgress:(id)a4
+- (PHAPrivateFederatedLearningFacade)initWithPhotosLibrary:(id)library graphManagerProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  progressCopy = progress;
   v16.receiver = self;
   v16.super_class = PHAPrivateFederatedLearningFacade;
   v8 = [(PHAPrivateFederatedLearningFacade *)&v16 init];
@@ -55,19 +55,19 @@
     [(PHAPrivateFederatedLearningFacade *)v8 setAnalytics:v9];
 
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v11 = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
-    [v11 setupWithConfigurationFilename:@"CPAnalyticsConfig-photoanalysisd" inBundle:v10];
+    analytics = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
+    [analytics setupWithConfigurationFilename:@"CPAnalyticsConfig-photoanalysisd" inBundle:v10];
 
-    v12 = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
-    [v12 setupSystemPropertyProvidersForLibrary:v6];
+    analytics2 = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
+    [analytics2 setupSystemPropertyProvidersForLibrary:libraryCopy];
 
-    v13 = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
-    [v13 activateEventQueue];
+    analytics3 = [(PHAPrivateFederatedLearningFacade *)v8 analytics];
+    [analytics3 activateEventQueue];
 
-    v14 = [objc_alloc(MEMORY[0x277D3BA40]) initWithPhotoLibrary:v6 analytics:v8->_analytics progressBlock:v7];
+    v14 = [objc_alloc(MEMORY[0x277D3BA40]) initWithPhotoLibrary:libraryCopy analytics:v8->_analytics progressBlock:progressCopy];
     [(PHAPrivateFederatedLearningFacade *)v8 setGraphManager:v14];
 
-    [(PHAPrivateFederatedLearningFacade *)v8 setSystemPhotoLibrary:v6];
+    [(PHAPrivateFederatedLearningFacade *)v8 setSystemPhotoLibrary:libraryCopy];
   }
 
   return v8;

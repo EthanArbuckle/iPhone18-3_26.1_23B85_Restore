@@ -1,110 +1,110 @@
 @interface SFCalendarEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCalendarEvent)initWithCoder:(id)a3;
-- (SFCalendarEvent)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCalendarEvent)initWithCoder:(id)coder;
+- (SFCalendarEvent)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCalendarEvent
 
-- (SFCalendarEvent)initWithProtobuf:(id)a3
+- (SFCalendarEvent)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v37.receiver = self;
   v37.super_class = SFCalendarEvent;
   v5 = [(SFCalendarEvent *)&v37 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(SFCalendarEvent *)v5 setTitle:v7];
+      title2 = [protobufCopy title];
+      [(SFCalendarEvent *)v5 setTitle:title2];
     }
 
-    v8 = [v4 startDate];
+    startDate = [protobufCopy startDate];
 
-    if (v8)
+    if (startDate)
     {
-      v9 = [v4 startDate];
+      startDate2 = [protobufCopy startDate];
       v10 = MEMORY[0x1E695DF00];
-      [v9 secondsSince1970];
+      [startDate2 secondsSince1970];
       v11 = [v10 dateWithTimeIntervalSince1970:?];
       [(SFCalendarEvent *)v5 setStartDate:v11];
     }
 
-    v12 = [v4 endDate];
+    endDate = [protobufCopy endDate];
 
-    if (v12)
+    if (endDate)
     {
-      v13 = [v4 endDate];
+      endDate2 = [protobufCopy endDate];
       v14 = MEMORY[0x1E695DF00];
-      [v13 secondsSince1970];
+      [endDate2 secondsSince1970];
       v15 = [v14 dateWithTimeIntervalSince1970:?];
       [(SFCalendarEvent *)v5 setEndDate:v15];
     }
 
-    if ([v4 isAllDay])
+    if ([protobufCopy isAllDay])
     {
-      -[SFCalendarEvent setIsAllDay:](v5, "setIsAllDay:", [v4 isAllDay]);
+      -[SFCalendarEvent setIsAllDay:](v5, "setIsAllDay:", [protobufCopy isAllDay]);
     }
 
-    v16 = [v4 location];
+    location = [protobufCopy location];
 
-    if (v16)
+    if (location)
     {
       v17 = [SFStructuredLocation alloc];
-      v18 = [v4 location];
-      v19 = [(SFStructuredLocation *)v17 initWithProtobuf:v18];
+      location2 = [protobufCopy location];
+      v19 = [(SFStructuredLocation *)v17 initWithProtobuf:location2];
       [(SFCalendarEvent *)v5 setLocation:v19];
     }
 
-    v20 = [v4 notes];
+    notes = [protobufCopy notes];
 
-    if (v20)
+    if (notes)
     {
-      v21 = [v4 notes];
-      [(SFCalendarEvent *)v5 setNotes:v21];
+      notes2 = [protobufCopy notes];
+      [(SFCalendarEvent *)v5 setNotes:notes2];
     }
 
-    v22 = [v4 startTimeZone];
+    startTimeZone = [protobufCopy startTimeZone];
 
-    if (v22)
+    if (startTimeZone)
     {
-      v23 = [v4 startTimeZone];
-      v24 = _SFPBTimeZoneHandwrittenTranslator(v23);
+      startTimeZone2 = [protobufCopy startTimeZone];
+      v24 = _SFPBTimeZoneHandwrittenTranslator(startTimeZone2);
       [(SFCalendarEvent *)v5 setStartTimeZone:v24];
     }
 
-    v25 = [v4 endTimeZone];
+    endTimeZone = [protobufCopy endTimeZone];
 
-    if (v25)
+    if (endTimeZone)
     {
-      v26 = [v4 endTimeZone];
-      v27 = _SFPBTimeZoneHandwrittenTranslator(v26);
+      endTimeZone2 = [protobufCopy endTimeZone];
+      v27 = _SFPBTimeZoneHandwrittenTranslator(endTimeZone2);
       [(SFCalendarEvent *)v5 setEndTimeZone:v27];
     }
 
-    v28 = [v4 endLocation];
+    endLocation = [protobufCopy endLocation];
 
-    if (v28)
+    if (endLocation)
     {
       v29 = [SFStructuredLocation alloc];
-      v30 = [v4 endLocation];
-      v31 = [(SFStructuredLocation *)v29 initWithProtobuf:v30];
+      endLocation2 = [protobufCopy endLocation];
+      v31 = [(SFStructuredLocation *)v29 initWithProtobuf:endLocation2];
       [(SFCalendarEvent *)v5 setEndLocation:v31];
     }
 
-    v32 = [v4 url];
+    v32 = [protobufCopy url];
 
     if (v32)
     {
-      v33 = [v4 url];
+      v33 = [protobufCopy url];
       v34 = _SFPBURLHandwrittenTranslator(v33);
       [(SFCalendarEvent *)v5 setUrl:v34];
     }
@@ -117,45 +117,45 @@
 
 - (unint64_t)hash
 {
-  v22 = [(SFCalendarEvent *)self title];
-  v3 = [v22 hash];
-  v4 = [(SFCalendarEvent *)self startDate];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(SFCalendarEvent *)self endDate];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFCalendarEvent *)self isAllDay];
-  v9 = [(SFCalendarEvent *)self location];
-  v10 = v7 ^ v8 ^ [v9 hash];
-  v11 = [(SFCalendarEvent *)self notes];
-  v12 = [v11 hash];
-  v13 = [(SFCalendarEvent *)self startTimeZone];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(SFCalendarEvent *)self endTimeZone];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SFCalendarEvent *)self endLocation];
-  v18 = v10 ^ v16 ^ [v17 hash];
+  title = [(SFCalendarEvent *)self title];
+  v3 = [title hash];
+  startDate = [(SFCalendarEvent *)self startDate];
+  v5 = [startDate hash] ^ v3;
+  endDate = [(SFCalendarEvent *)self endDate];
+  v7 = v5 ^ [endDate hash];
+  isAllDay = [(SFCalendarEvent *)self isAllDay];
+  location = [(SFCalendarEvent *)self location];
+  v10 = v7 ^ isAllDay ^ [location hash];
+  notes = [(SFCalendarEvent *)self notes];
+  v12 = [notes hash];
+  startTimeZone = [(SFCalendarEvent *)self startTimeZone];
+  v14 = v12 ^ [startTimeZone hash];
+  endTimeZone = [(SFCalendarEvent *)self endTimeZone];
+  v16 = v14 ^ [endTimeZone hash];
+  endLocation = [(SFCalendarEvent *)self endLocation];
+  v18 = v10 ^ v16 ^ [endLocation hash];
   v19 = [(SFCalendarEvent *)self url];
   v20 = [v19 hash];
 
   return v18 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCalendarEvent *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFCalendarEvent *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(SFCalendarEvent *)self title];
-      v7 = [(SFCalendarEvent *)v5 title];
-      if ((v6 != 0) == (v7 == 0))
+      v5 = equalCopy;
+      title = [(SFCalendarEvent *)self title];
+      title2 = [(SFCalendarEvent *)v5 title];
+      if ((title != 0) == (title2 == 0))
       {
         v11 = 0;
 LABEL_52:
@@ -163,12 +163,12 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v8 = [(SFCalendarEvent *)self title];
-      if (v8)
+      title3 = [(SFCalendarEvent *)self title];
+      if (title3)
       {
-        v9 = [(SFCalendarEvent *)self title];
-        v10 = [(SFCalendarEvent *)v5 title];
-        if (![v9 isEqual:v10])
+        title4 = [(SFCalendarEvent *)self title];
+        title5 = [(SFCalendarEvent *)v5 title];
+        if (![title4 isEqual:title5])
         {
           v11 = 0;
 LABEL_50:
@@ -176,24 +176,24 @@ LABEL_50:
           goto LABEL_51;
         }
 
-        v80 = v10;
-        v81 = v9;
+        v80 = title5;
+        v81 = title4;
       }
 
-      v12 = [(SFCalendarEvent *)self startDate];
-      v13 = [(SFCalendarEvent *)v5 startDate];
-      if ((v12 != 0) == (v13 == 0))
+      startDate = [(SFCalendarEvent *)self startDate];
+      startDate2 = [(SFCalendarEvent *)v5 startDate];
+      if ((startDate != 0) == (startDate2 == 0))
       {
         goto LABEL_48;
       }
 
-      v14 = [(SFCalendarEvent *)self startDate];
-      if (v14)
+      startDate3 = [(SFCalendarEvent *)self startDate];
+      if (startDate3)
       {
-        v15 = [(SFCalendarEvent *)self startDate];
-        v77 = [(SFCalendarEvent *)v5 startDate];
-        v78 = v15;
-        if (![v15 isEqual:v77])
+        startDate4 = [(SFCalendarEvent *)self startDate];
+        startDate5 = [(SFCalendarEvent *)v5 startDate];
+        v78 = startDate4;
+        if (![startDate4 isEqual:startDate5])
         {
 LABEL_46:
 
@@ -202,18 +202,18 @@ LABEL_47:
         }
       }
 
-      v79 = v14;
-      v16 = [(SFCalendarEvent *)self endDate];
-      v17 = [(SFCalendarEvent *)v5 endDate];
-      if ((v16 != 0) == (v17 == 0))
+      v79 = startDate3;
+      endDate = [(SFCalendarEvent *)self endDate];
+      endDate2 = [(SFCalendarEvent *)v5 endDate];
+      if ((endDate != 0) == (endDate2 == 0))
       {
 
-        if (!v14)
+        if (!startDate3)
         {
 LABEL_48:
 
           v11 = 0;
-          if (!v8)
+          if (!title3)
           {
 LABEL_51:
 
@@ -226,27 +226,27 @@ LABEL_51:
         goto LABEL_46;
       }
 
-      v74 = v16;
-      v75 = v17;
-      v76 = [(SFCalendarEvent *)self endDate];
-      if (v76)
+      v74 = endDate;
+      v75 = endDate2;
+      endDate3 = [(SFCalendarEvent *)self endDate];
+      if (endDate3)
       {
-        v18 = [(SFCalendarEvent *)self endDate];
-        v19 = [(SFCalendarEvent *)v5 endDate];
-        v73 = v18;
-        v20 = v18;
-        v16 = v19;
-        if (![v20 isEqual:v19])
+        endDate4 = [(SFCalendarEvent *)self endDate];
+        endDate5 = [(SFCalendarEvent *)v5 endDate];
+        v73 = endDate4;
+        v20 = endDate4;
+        endDate = endDate5;
+        if (![v20 isEqual:endDate5])
         {
           goto LABEL_23;
         }
       }
 
-      v21 = [(SFCalendarEvent *)self isAllDay];
-      if (v21 != [(SFCalendarEvent *)v5 isAllDay])
+      isAllDay = [(SFCalendarEvent *)self isAllDay];
+      if (isAllDay != [(SFCalendarEvent *)v5 isAllDay])
       {
-        v14 = v79;
-        if (!v76)
+        startDate3 = v79;
+        if (!endDate3)
         {
           goto LABEL_45;
         }
@@ -254,65 +254,65 @@ LABEL_51:
         goto LABEL_23;
       }
 
-      v72 = v16;
-      v22 = [(SFCalendarEvent *)self location];
-      v23 = [(SFCalendarEvent *)v5 location];
-      if ((v22 != 0) == (v23 == 0))
+      v72 = endDate;
+      location = [(SFCalendarEvent *)self location];
+      location2 = [(SFCalendarEvent *)v5 location];
+      if ((location != 0) == (location2 == 0))
       {
 
-        v14 = v79;
+        startDate3 = v79;
         goto LABEL_44;
       }
 
-      v69 = v23;
-      v70 = v22;
+      v69 = location2;
+      v70 = location;
       [(SFCalendarEvent *)self location];
-      v71 = v14 = v79;
+      v71 = startDate3 = v79;
       if (v71)
       {
-        v24 = [(SFCalendarEvent *)self location];
-        v67 = [(SFCalendarEvent *)v5 location];
-        v68 = v24;
-        if (![v24 isEqual:v67])
+        location3 = [(SFCalendarEvent *)self location];
+        location4 = [(SFCalendarEvent *)v5 location];
+        v68 = location3;
+        if (![location3 isEqual:location4])
         {
           goto LABEL_42;
         }
       }
 
-      v25 = [(SFCalendarEvent *)self notes];
-      v26 = [(SFCalendarEvent *)v5 notes];
-      if ((v25 != 0) == (v26 == 0))
+      notes = [(SFCalendarEvent *)self notes];
+      notes2 = [(SFCalendarEvent *)v5 notes];
+      if ((notes != 0) == (notes2 == 0))
       {
 
         goto LABEL_41;
       }
 
-      v65 = v25;
-      v66 = v26;
-      v27 = [(SFCalendarEvent *)self notes];
-      if (v27)
+      v65 = notes;
+      v66 = notes2;
+      notes3 = [(SFCalendarEvent *)self notes];
+      if (notes3)
       {
-        v28 = [(SFCalendarEvent *)self notes];
-        v62 = [(SFCalendarEvent *)v5 notes];
-        v63 = v28;
-        if (![v28 isEqual:?])
+        notes4 = [(SFCalendarEvent *)self notes];
+        notes5 = [(SFCalendarEvent *)v5 notes];
+        v63 = notes4;
+        if (![notes4 isEqual:?])
         {
 LABEL_39:
 
 LABEL_40:
 LABEL_41:
-          v14 = v79;
+          startDate3 = v79;
           if (!v71)
           {
 LABEL_43:
 
 LABEL_44:
-            v16 = v72;
-            if (!v76)
+            endDate = v72;
+            if (!endDate3)
             {
 LABEL_45:
 
-              if (!v14)
+              if (!startDate3)
               {
                 goto LABEL_48;
               }
@@ -331,13 +331,13 @@ LABEL_42:
         }
       }
 
-      v64 = v27;
-      v29 = [(SFCalendarEvent *)self startTimeZone];
-      v30 = [(SFCalendarEvent *)v5 startTimeZone];
-      if ((v29 != 0) == (v30 == 0))
+      v64 = notes3;
+      startTimeZone = [(SFCalendarEvent *)self startTimeZone];
+      startTimeZone2 = [(SFCalendarEvent *)v5 startTimeZone];
+      if ((startTimeZone != 0) == (startTimeZone2 == 0))
       {
 
-        v27 = v64;
+        notes3 = v64;
         if (!v64)
         {
           goto LABEL_40;
@@ -346,14 +346,14 @@ LABEL_42:
         goto LABEL_39;
       }
 
-      v60 = v30;
-      v61 = [(SFCalendarEvent *)self startTimeZone];
-      if (v61)
+      v60 = startTimeZone2;
+      startTimeZone3 = [(SFCalendarEvent *)self startTimeZone];
+      if (startTimeZone3)
       {
-        v31 = [(SFCalendarEvent *)self startTimeZone];
-        v57 = [(SFCalendarEvent *)v5 startTimeZone];
-        v58 = v31;
-        v32 = v31;
+        startTimeZone4 = [(SFCalendarEvent *)self startTimeZone];
+        startTimeZone5 = [(SFCalendarEvent *)v5 startTimeZone];
+        v58 = startTimeZone4;
+        v32 = startTimeZone4;
         v33 = v64;
         if (![v32 isEqual:?])
         {
@@ -361,15 +361,15 @@ LABEL_42:
         }
       }
 
-      v59 = v29;
-      v35 = [(SFCalendarEvent *)self endTimeZone];
-      v36 = [(SFCalendarEvent *)v5 endTimeZone];
-      if ((v35 != 0) == (v36 == 0))
+      v59 = startTimeZone;
+      endTimeZone = [(SFCalendarEvent *)self endTimeZone];
+      endTimeZone2 = [(SFCalendarEvent *)v5 endTimeZone];
+      if ((endTimeZone != 0) == (endTimeZone2 == 0))
       {
 
         v33 = v64;
-        v29 = v59;
-        if (!v61)
+        startTimeZone = v59;
+        if (!startTimeZone3)
         {
           v40 = v71;
 LABEL_61:
@@ -378,12 +378,12 @@ LABEL_61:
           {
           }
 
-          v14 = v79;
+          startDate3 = v79;
           if (v40)
           {
           }
 
-          if (v76)
+          if (endDate3)
           {
           }
 
@@ -401,19 +401,19 @@ LABEL_60:
         goto LABEL_61;
       }
 
-      v55 = v36;
-      v56 = v35;
-      v54 = [(SFCalendarEvent *)self endTimeZone];
-      if (v54)
+      v55 = endTimeZone2;
+      v56 = endTimeZone;
+      endTimeZone3 = [(SFCalendarEvent *)self endTimeZone];
+      if (endTimeZone3)
       {
-        v37 = [(SFCalendarEvent *)self endTimeZone];
-        v51 = [(SFCalendarEvent *)v5 endTimeZone];
-        v52 = v37;
-        if (![v37 isEqual:?])
+        endTimeZone4 = [(SFCalendarEvent *)self endTimeZone];
+        endTimeZone5 = [(SFCalendarEvent *)v5 endTimeZone];
+        v52 = endTimeZone4;
+        if (![endTimeZone4 isEqual:?])
         {
           v11 = 0;
-          v38 = v61;
-          v39 = v54;
+          v38 = startTimeZone3;
+          v39 = endTimeZone3;
 LABEL_84:
 
 LABEL_85:
@@ -429,7 +429,7 @@ LABEL_85:
           {
           }
 
-          if (v76)
+          if (endDate3)
           {
           }
 
@@ -437,29 +437,29 @@ LABEL_85:
           {
           }
 
-          if (!v8)
+          if (!title3)
           {
             goto LABEL_51;
           }
 
 LABEL_49:
-          v10 = v80;
-          v9 = v81;
+          title5 = v80;
+          title4 = v81;
           goto LABEL_50;
         }
       }
 
-      v41 = [(SFCalendarEvent *)self endLocation];
-      v53 = [(SFCalendarEvent *)v5 endLocation];
-      if ((v41 != 0) == (v53 == 0))
+      endLocation = [(SFCalendarEvent *)self endLocation];
+      endLocation2 = [(SFCalendarEvent *)v5 endLocation];
+      if ((endLocation != 0) == (endLocation2 == 0))
       {
 
         v11 = 0;
         goto LABEL_83;
       }
 
-      v50 = [(SFCalendarEvent *)self endLocation];
-      if (!v50 || (-[SFCalendarEvent endLocation](self, "endLocation"), v42 = objc_claimAutoreleasedReturnValue(), -[SFCalendarEvent endLocation](v5, "endLocation"), v46 = objc_claimAutoreleasedReturnValue(), v47 = v42, [v42 isEqual:?]))
+      endLocation3 = [(SFCalendarEvent *)self endLocation];
+      if (!endLocation3 || (-[SFCalendarEvent endLocation](self, "endLocation"), v42 = objc_claimAutoreleasedReturnValue(), -[SFCalendarEvent endLocation](v5, "endLocation"), v46 = objc_claimAutoreleasedReturnValue(), v47 = v42, [v42 isEqual:?]))
       {
         v49 = [(SFCalendarEvent *)self url];
         v48 = [(SFCalendarEvent *)v5 url];
@@ -486,7 +486,7 @@ LABEL_49:
           }
         }
 
-        if (!v50)
+        if (!endLocation3)
         {
           goto LABEL_82;
         }
@@ -499,9 +499,9 @@ LABEL_49:
 
 LABEL_82:
 LABEL_83:
-      v38 = v61;
-      v39 = v54;
-      if (!v54)
+      v38 = startTimeZone3;
+      v39 = endTimeZone3;
+      if (!endTimeZone3)
       {
         goto LABEL_85;
       }
@@ -517,40 +517,40 @@ LABEL_53:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCalendarEvent *)self title];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  title = [(SFCalendarEvent *)self title];
+  v6 = [title copy];
   [v4 setTitle:v6];
 
-  v7 = [(SFCalendarEvent *)self startDate];
-  v8 = [v7 copy];
+  startDate = [(SFCalendarEvent *)self startDate];
+  v8 = [startDate copy];
   [v4 setStartDate:v8];
 
-  v9 = [(SFCalendarEvent *)self endDate];
-  v10 = [v9 copy];
+  endDate = [(SFCalendarEvent *)self endDate];
+  v10 = [endDate copy];
   [v4 setEndDate:v10];
 
   [v4 setIsAllDay:{-[SFCalendarEvent isAllDay](self, "isAllDay")}];
-  v11 = [(SFCalendarEvent *)self location];
-  v12 = [v11 copy];
+  location = [(SFCalendarEvent *)self location];
+  v12 = [location copy];
   [v4 setLocation:v12];
 
-  v13 = [(SFCalendarEvent *)self notes];
-  v14 = [v13 copy];
+  notes = [(SFCalendarEvent *)self notes];
+  v14 = [notes copy];
   [v4 setNotes:v14];
 
-  v15 = [(SFCalendarEvent *)self startTimeZone];
-  v16 = [v15 copy];
+  startTimeZone = [(SFCalendarEvent *)self startTimeZone];
+  v16 = [startTimeZone copy];
   [v4 setStartTimeZone:v16];
 
-  v17 = [(SFCalendarEvent *)self endTimeZone];
-  v18 = [v17 copy];
+  endTimeZone = [(SFCalendarEvent *)self endTimeZone];
+  v18 = [endTimeZone copy];
   [v4 setEndTimeZone:v18];
 
-  v19 = [(SFCalendarEvent *)self endLocation];
-  v20 = [v19 copy];
+  endLocation = [(SFCalendarEvent *)self endLocation];
+  v20 = [endLocation copy];
   [v4 setEndLocation:v20];
 
   v21 = [(SFCalendarEvent *)self url];
@@ -563,31 +563,31 @@ LABEL_53:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCalendarEvent alloc] initWithFacade:self];
-  v3 = [(_SFPBCalendarEvent *)v2 jsonData];
+  jsonData = [(_SFPBCalendarEvent *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCalendarEvent alloc] initWithFacade:self];
-  v3 = [(_SFPBCalendarEvent *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCalendarEvent *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCalendarEvent alloc] initWithFacade:self];
-  v5 = [(_SFPBCalendarEvent *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCalendarEvent *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCalendarEvent)initWithCoder:(id)a3
+- (SFCalendarEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCalendarEvent alloc] initWithData:v5];
   v7 = [(SFCalendarEvent *)self initWithProtobuf:v6];

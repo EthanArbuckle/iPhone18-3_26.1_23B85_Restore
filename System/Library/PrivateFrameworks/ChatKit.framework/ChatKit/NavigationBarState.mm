@@ -1,12 +1,12 @@
 @interface NavigationBarState
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation NavigationBarState
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_190C6C0D8(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);

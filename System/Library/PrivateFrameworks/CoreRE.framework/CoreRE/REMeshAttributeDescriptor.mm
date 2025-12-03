@@ -1,22 +1,22 @@
 @interface REMeshAttributeDescriptor
-- (BOOL)validateWithPayloadSize:(unint64_t)a3 error:(id *)a4;
-- (REMeshAttributeDescriptor)initWithCoder:(id)a3;
-- (REMeshAttributeDescriptor)initWithMeshAssetBuffer:(const void *)a3 payloadBuilder:(void *)a4;
-- (REMeshAttributeDescriptor)initWithPayloadOffset:(unsigned int)a3 count:(unsigned int)a4 format:(unint64_t)a5 stepFunction:(unint64_t)a6 stride:(unsigned int)a7;
+- (BOOL)validateWithPayloadSize:(unint64_t)size error:(id *)error;
+- (REMeshAttributeDescriptor)initWithCoder:(id)coder;
+- (REMeshAttributeDescriptor)initWithMeshAssetBuffer:(const void *)buffer payloadBuilder:(void *)builder;
+- (REMeshAttributeDescriptor)initWithPayloadOffset:(unsigned int)offset count:(unsigned int)count format:(unint64_t)format stepFunction:(unint64_t)function stride:(unsigned int)stride;
 - (unint64_t)bufferSize;
 - (unint64_t)estimateContainerSize;
-- (void)addBufferToArray:(void *)a3 name:(const char *)a4 payloadBuffer:(const void *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)addBufferToArray:(void *)array name:(const char *)name payloadBuffer:(const void *)buffer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshAttributeDescriptor
 
-- (REMeshAttributeDescriptor)initWithMeshAssetBuffer:(const void *)a3 payloadBuilder:(void *)a4
+- (REMeshAttributeDescriptor)initWithMeshAssetBuffer:(const void *)buffer payloadBuilder:(void *)builder
 {
-  v7 = re::sizeFromVertexFormat(*(a3 + 72), a2);
+  v7 = re::sizeFromVertexFormat(*(buffer + 72), a2);
   v9 = v7;
   v10 = v7;
-  v11 = *(a3 + 6) / v7;
+  v11 = *(buffer + 6) / v7;
   if (HIDWORD(v11))
   {
     v12 = *re::assetTypesLogObjects(v7);
@@ -26,15 +26,15 @@
       _os_log_fault_impl(&dword_1E1C61000, v12, OS_LOG_TYPE_FAULT, "Vertex count overflow when initializing REMeshAttributeDescriptor", v24, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v14 = *(a3 + 2);
-    if ((*(a3 + 8) & 1) == 0)
+    v14 = *(buffer + 2);
+    if ((*(buffer + 8) & 1) == 0)
     {
-      v14 = a3 + 9;
+      v14 = buffer + 9;
     }
 
     if (v14)
@@ -90,23 +90,23 @@
       v22 = v10;
     }
 
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)addBufferToArray:(void *)a3 name:(const char *)a4 payloadBuffer:(const void *)a5
+- (void)addBufferToArray:(void *)array name:(const char *)name payloadBuffer:(const void *)buffer
 {
-  if (a4)
+  if (name)
   {
-    v9 = *a4;
-    if (*a4)
+    v9 = *name;
+    if (*name)
     {
-      v10 = a4[1];
+      v10 = name[1];
       if (v10)
       {
-        v11 = a4 + 2;
+        v11 = name + 2;
         do
         {
           v9 = 31 * v9 + v10;
@@ -125,7 +125,7 @@
   }
 
   v15 = 2 * v9;
-  v16 = a4;
+  nameCopy = name;
   v13 = re::bufferIdentifierForMeshAttribute(&v15, a2);
   v14 = v13;
   if (v15)
@@ -135,12 +135,12 @@
     }
   }
 
-  v17 = [(REMeshAttributeDescriptor *)self format];
-  v18 = [(REMeshAttributeDescriptor *)self stepFunction];
-  re::MeshPayloadBuffers::slice(a5, v14, [(REMeshAttributeDescriptor *)self payloadOffset], [(REMeshAttributeDescriptor *)self bufferSize]);
+  format = [(REMeshAttributeDescriptor *)self format];
+  stepFunction = [(REMeshAttributeDescriptor *)self stepFunction];
+  re::MeshPayloadBuffers::slice(buffer, v14, [(REMeshAttributeDescriptor *)self payloadOffset], [(REMeshAttributeDescriptor *)self bufferSize]);
   v21 = 0;
-  v22 = [(REMeshAttributeDescriptor *)self stride];
-  re::DynamicArray<re::NamedVertexBuffer>::add(a3, &v15);
+  stride = [(REMeshAttributeDescriptor *)self stride];
+  re::DynamicArray<re::NamedVertexBuffer>::add(array, &v15);
   if (v20 != -1)
   {
     (off_1F5CC8DB0[v20])(&v23, &v19);
@@ -149,38 +149,38 @@
   v20 = -1;
   if (v15)
   {
-    if (v16)
+    if (nameCopy)
     {
       (*(*v15 + 40))();
     }
   }
 }
 
-- (REMeshAttributeDescriptor)initWithPayloadOffset:(unsigned int)a3 count:(unsigned int)a4 format:(unint64_t)a5 stepFunction:(unint64_t)a6 stride:(unsigned int)a7
+- (REMeshAttributeDescriptor)initWithPayloadOffset:(unsigned int)offset count:(unsigned int)count format:(unint64_t)format stepFunction:(unint64_t)function stride:(unsigned int)stride
 {
   v13.receiver = self;
   v13.super_class = REMeshAttributeDescriptor;
   result = [(REMeshAttributeDescriptor *)&v13 init];
   if (result)
   {
-    result->_payloadOffset = a3;
-    result->_count = a4;
-    result->_format = a5;
-    result->_stepFunction = a6;
-    result->_stride = a7;
+    result->_payloadOffset = offset;
+    result->_count = count;
+    result->_format = format;
+    result->_stepFunction = function;
+    result->_stride = stride;
   }
 
   return result;
 }
 
-- (REMeshAttributeDescriptor)initWithCoder:(id)a3
+- (REMeshAttributeDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"payloadOffset"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"payloadOffset"];
   self->_payloadOffset = v5;
-  v6 = [v4 decodeIntegerForKey:@"count"];
+  v6 = [coderCopy decodeIntegerForKey:@"count"];
   self->_count = v6;
-  v7 = [v4 decodeIntegerForKey:@"format"];
+  v7 = [coderCopy decodeIntegerForKey:@"format"];
   v8 = v7;
   if ((atomic_load_explicit(&qword_1EE19BB90, memory_order_acquire) & 1) == 0)
   {
@@ -241,7 +241,7 @@ LABEL_10:
     v15 = 0;
   }
 
-  v17 = [v4 decodeIntegerForKey:@"stepFunction"];
+  v17 = [coderCopy decodeIntegerForKey:@"stepFunction"];
   v18 = v17;
   if ((atomic_load_explicit(&qword_1EE19BBA0, memory_order_acquire) & 1) == 0)
   {
@@ -297,44 +297,44 @@ LABEL_21:
     v25 = 0;
   }
 
-  v27 = [v4 decodeIntegerForKey:@"stride"];
+  v27 = [coderCopy decodeIntegerForKey:@"stride"];
   self->_stride = v27;
   if (HIDWORD(v27) || HIDWORD(v6) || HIDWORD(v5))
     v30 = {;
-    [v4 failWithError:v30];
+    [coderCopy failWithError:v30];
 LABEL_31:
 
-    v29 = 0;
+    selfCopy = 0;
     goto LABEL_32;
   }
 
   if ((v15 & v25 & 1) == 0)
     v30 = {;
-    [v4 failWithError:v30];
+    [coderCopy failWithError:v30];
     goto LABEL_31;
   }
 
-  v29 = self;
+  selfCopy = self;
 LABEL_32:
 
-  return v29;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_payloadOffset forKey:@"payloadOffset"];
-  [v4 encodeInteger:self->_count forKey:@"count"];
-  [v4 encodeInteger:self->_format forKey:@"format"];
-  [v4 encodeInteger:self->_stepFunction forKey:@"stepFunction"];
-  [v4 encodeInteger:self->_stride forKey:@"stride"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_payloadOffset forKey:@"payloadOffset"];
+  [coderCopy encodeInteger:self->_count forKey:@"count"];
+  [coderCopy encodeInteger:self->_format forKey:@"format"];
+  [coderCopy encodeInteger:self->_stepFunction forKey:@"stepFunction"];
+  [coderCopy encodeInteger:self->_stride forKey:@"stride"];
 }
 
-- (BOOL)validateWithPayloadSize:(unint64_t)a3 error:(id *)a4
+- (BOOL)validateWithPayloadSize:(unint64_t)size error:(id *)error
 {
   payloadOffset = self->_payloadOffset;
-  v7 = [(REMeshAttributeDescriptor *)self bufferSize];
-  if (v7 && !__CFADD__(payloadOffset, v7) && payloadOffset < a3 && payloadOffset + v7 <= a3)
+  bufferSize = [(REMeshAttributeDescriptor *)self bufferSize];
+  if (bufferSize && !__CFADD__(payloadOffset, bufferSize) && payloadOffset < size && payloadOffset + bufferSize <= size)
   {
     return 1;
   }

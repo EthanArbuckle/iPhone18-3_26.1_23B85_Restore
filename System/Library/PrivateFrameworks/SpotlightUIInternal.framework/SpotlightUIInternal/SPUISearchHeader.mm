@@ -1,8 +1,8 @@
 @interface SPUISearchHeader
-+ (id)tokenFromSearchEntity:(id)a3;
++ (id)tokenFromSearchEntity:(id)entity;
 + (unint64_t)committedSearchQueryKind;
-+ (void)logDismissalWithReason:(unint64_t)a3;
-+ (void)logInvokeWithReason:(unint64_t)a3;
++ (void)logDismissalWithReason:(unint64_t)reason;
++ (void)logInvokeWithReason:(unint64_t)reason;
 - (BOOL)cancelButtonIsVisible;
 - (BOOL)completionResultIsPotentiallyPunchout;
 - (BOOL)currentlyPresentingWebEntity;
@@ -18,16 +18,16 @@
 - (UISearchToken)lastSearchToken;
 - (double)bottomPadding;
 - (double)topPadding;
-- (id)_searchTextField:(id)a3 itemProviderForCopyingToken:(id)a4;
-- (id)currentQueryContextWithString:(id)a3;
+- (id)_searchTextField:(id)field itemProviderForCopyingToken:(id)token;
+- (id)currentQueryContextWithString:(id)string;
 - (id)markedTextArray;
-- (unint64_t)getClearTriggerEventForQueryContext:(id)a3;
+- (unint64_t)getClearTriggerEventForQueryContext:(id)context;
 - (unint64_t)queryId;
-- (void)_searchWithSearchEntity:(id)a3 fromSuggestion:(BOOL)a4;
-- (void)addInputMethodInformationToQueryContext:(id)a3;
+- (void)_searchWithSearchEntity:(id)entity fromSuggestion:(BOOL)suggestion;
+- (void)addInputMethodInformationToQueryContext:(id)context;
 - (void)backButtonPressed;
 - (void)beginDictation;
-- (void)cancelButtonClicked:(id)a3;
+- (void)cancelButtonClicked:(id)clicked;
 - (void)clearLastSearchedText;
 - (void)commitSearch;
 - (void)dictationButtonPressed;
@@ -35,29 +35,29 @@
 - (void)enableDictationIfRequired;
 - (void)escapeKeyPressed;
 - (void)highlightResultAfterUnmarkingText;
-- (void)performTestSearchWithQuery:(id)a3 event:(unint64_t)a4 queryKind:(unint64_t)a5;
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4;
+- (void)performTestSearchWithQuery:(id)query event:(unint64_t)event queryKind:(unint64_t)kind;
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed;
 - (void)resignKeyboardForProcessState;
-- (void)restoreSearchText:(id)a3 searchEntity:(id)a4;
+- (void)restoreSearchText:(id)text searchEntity:(id)entity;
 - (void)returnKeyPressed;
-- (void)searchForSuggestion:(id)a3 isBuildingQuery:(BOOL)a4;
-- (void)setActiveInterfaceOrientation:(int64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setQueryId:(unint64_t)a3;
-- (void)setResponderForKeyboardInput:(id)a3;
-- (void)setSearchEntity:(id)a3 fromSuggestion:(BOOL)a4;
-- (void)setUseClearTokens:(BOOL)a3;
+- (void)searchForSuggestion:(id)suggestion isBuildingQuery:(BOOL)query;
+- (void)setActiveInterfaceOrientation:(int64_t)orientation;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setQueryId:(unint64_t)id;
+- (void)setResponderForKeyboardInput:(id)input;
+- (void)setSearchEntity:(id)entity fromSuggestion:(BOOL)suggestion;
+- (void)setUseClearTokens:(BOOL)tokens;
 - (void)switchToSuggestions;
-- (void)textDidChange:(id)a3;
-- (void)textDidChange:(id)a3 whyQuery:(unint64_t)a4 allowZKW:(BOOL)a5 sourcePreference:(unint64_t)a6 searchEntities:(id)a7 queryKind:(unint64_t)a8;
+- (void)textDidChange:(id)change;
+- (void)textDidChange:(id)change whyQuery:(unint64_t)query allowZKW:(BOOL)w sourcePreference:(unint64_t)preference searchEntities:(id)entities queryKind:(unint64_t)kind;
 - (void)textFieldDidBeginEditing;
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)triggerSearchForUnlock;
 - (void)updateDictationButtonEnabledStatus;
 - (void)updateSearchFieldModel;
-- (void)updateWithCommand:(id)a3;
+- (void)updateWithCommand:(id)command;
 @end
 
 @implementation SPUISearchHeader
@@ -85,18 +85,18 @@
       v8 = objc_opt_new();
       [(SPUISearchHeader *)v3 setBlurView:v8];
 
-      v9 = [(SPUISearchHeader *)v3 blurView];
-      [v4 addSubview:v9];
-      v10 = [(SPUISearchHeader *)v3 blurView];
-      v11 = [v10 contentView];
-      [v11 addSubview:v5];
+      blurView = [(SPUISearchHeader *)v3 blurView];
+      [v4 addSubview:blurView];
+      blurView2 = [(SPUISearchHeader *)v3 blurView];
+      contentView = [blurView2 contentView];
+      [contentView addSubview:v5];
     }
 
     else
     {
-      v9 = objc_opt_new();
-      [v4 addSubview:v9];
-      [v9 addSubview:v5];
+      blurView = objc_opt_new();
+      [v4 addSubview:blurView];
+      [blurView addSubview:v5];
     }
 
     [MEMORY[0x277D4C828] constrainViewToContainer:v5];
@@ -118,10 +118,10 @@
     LODWORD(v20) = 1144750080;
     [v12 setContentHuggingPriority:0 forAxis:v20];
     [v4 addSubview:v12];
-    v21 = [v4 bottomAnchor];
-    v22 = [v9 bottomAnchor];
+    bottomAnchor = [v4 bottomAnchor];
+    bottomAnchor2 = [blurView bottomAnchor];
     [(SPUISearchHeader *)v3 bottomPadding];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:?];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
 
     LODWORD(v24) = 1132068864;
     [v23 setPriority:v24];
@@ -129,75 +129,75 @@
     v83 = v23;
     [(SPUISearchHeader *)v3 setBottomConstraint:v23];
     LODWORD(v25) = 1132068864;
-    v26 = [MEMORY[0x277D4C828] alignView:v9 toView:v4 withAttribute:3 priority:v25];
+    v26 = [MEMORY[0x277D4C828] alignView:blurView toView:v4 withAttribute:3 priority:v25];
     [(SPUISearchHeader *)v3 setTopConstraint:v26];
 
-    v27 = [MEMORY[0x277D4C828] alignView:v9 toView:v12 withAttribute:10];
-    v28 = [MEMORY[0x277D4C828] alignLeadingView:v4 toTrailingView:v9];
+    v27 = [MEMORY[0x277D4C828] alignView:blurView toView:v12 withAttribute:10];
+    v28 = [MEMORY[0x277D4C828] alignLeadingView:v4 toTrailingView:blurView];
     [(SPUISearchHeader *)v3 setLeadingConstraint:v28];
 
     [(SPUISearchHeader *)v3 searchBarLeadingPadding];
     v30 = v29;
-    v31 = [(SPUISearchHeader *)v3 leadingConstraint];
-    [v31 setConstant:v30];
+    leadingConstraint = [(SPUISearchHeader *)v3 leadingConstraint];
+    [leadingConstraint setConstant:v30];
 
-    v32 = [MEMORY[0x277D4C828] alignLeadingView:v9 toTrailingView:v12 spacing:11.0];
+    v32 = [MEMORY[0x277D4C828] alignLeadingView:blurView toTrailingView:v12 spacing:11.0];
     LODWORD(v33) = 1148829696;
     v34 = [MEMORY[0x277D4C828] alignLeadingView:v12 toTrailingView:v4 priority:v33];
     [(SPUISearchHeader *)v3 setCancelButtonTrailingConstraint:v34];
 
     LODWORD(v35) = 1148829696;
-    v36 = [MEMORY[0x277D4C828] alignLeadingView:v9 toTrailingView:v4 priority:v35];
+    v36 = [MEMORY[0x277D4C828] alignLeadingView:blurView toTrailingView:v4 priority:v35];
     [(SPUISearchHeader *)v3 setSearchFieldTrailingConstraint:v36];
 
     [(SPUISearchHeader *)v3 searchBarTrailingPadding];
     v38 = v37;
-    v39 = [(SPUISearchHeader *)v3 searchFieldTrailingConstraint];
-    [v39 setConstant:v38];
+    searchFieldTrailingConstraint = [(SPUISearchHeader *)v3 searchFieldTrailingConstraint];
+    [searchFieldTrailingConstraint setConstant:v38];
 
-    v40 = [(SPUISearchHeader *)v3 searchFieldTrailingConstraint];
-    [v40 setActive:0];
+    searchFieldTrailingConstraint2 = [(SPUISearchHeader *)v3 searchFieldTrailingConstraint];
+    [searchFieldTrailingConstraint2 setActive:0];
 
     [MEMORY[0x277D4C828] constrainViewHeightContainer:v4];
     v41 = [MEMORY[0x277D4C828] alignView:v4 toView:v3 withAttribute:9];
-    v42 = [v4 widthAnchor];
+    widthAnchor = [v4 widthAnchor];
     [MEMORY[0x277D4C818] idealPlatterWidth];
-    v43 = [v42 constraintLessThanOrEqualToConstant:?];
+    v43 = [widthAnchor constraintLessThanOrEqualToConstant:?];
 
     [v43 setActive:1];
     [(SPUISearchHeader *)v3 setWidthConstraint:v43];
-    v44 = [v4 widthAnchor];
-    v45 = [(SPUISearchHeader *)v3 widthAnchor];
-    v46 = [v44 constraintLessThanOrEqualToAnchor:v45 multiplier:1.0];
+    widthAnchor2 = [v4 widthAnchor];
+    widthAnchor3 = [(SPUISearchHeader *)v3 widthAnchor];
+    v46 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3 multiplier:1.0];
     [v46 setActive:1];
 
     [(SPUISearchHeader *)v3 setSearchField:v5];
     [(SPUISearchHeader *)v3 setCancelButton:v12];
     [(SPUISearchHeader *)v3 showCancelButton:0 animated:0];
-    v47 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v47 addObserver:v3 selector:sel_enableDictationIfRequired name:*MEMORY[0x277D77200] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_enableDictationIfRequired name:*MEMORY[0x277D77200] object:0];
 
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v48 addObserver:v3 selector:sel_enableDictationIfRequired name:*MEMORY[0x277D76B80] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_enableDictationIfRequired name:*MEMORY[0x277D76B80] object:0];
 
     [(SPUISearchHeader *)v3 enableDictationIfRequired];
-    v49 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v49 addObserver:v3 selector:sel_resignKeyboardForProcessState name:*MEMORY[0x277D76660] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v3 selector:sel_resignKeyboardForProcessState name:*MEMORY[0x277D76660] object:0];
 
-    v50 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v50 addObserver:v3 selector:sel_tlk_updateWithCurrentAppearance name:*MEMORY[0x277D764C8] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v3 selector:sel_tlk_updateWithCurrentAppearance name:*MEMORY[0x277D764C8] object:0];
 
-    v51 = [(SPUISearchHeader *)v3 searchField];
-    [v51 addTarget:v3 action:sel_textFieldShouldReturn forControlEvents:0x80000];
+    searchField = [(SPUISearchHeader *)v3 searchField];
+    [searchField addTarget:v3 action:sel_textFieldShouldReturn forControlEvents:0x80000];
 
-    v52 = [(SPUISearchHeader *)v3 searchField];
-    [v52 addTarget:v3 action:sel_textFieldDidBeginEditing forControlEvents:0x10000];
+    searchField2 = [(SPUISearchHeader *)v3 searchField];
+    [searchField2 addTarget:v3 action:sel_textFieldDidBeginEditing forControlEvents:0x10000];
 
-    v53 = [(SPUISearchHeader *)v3 searchField];
-    [v53 setAllowsCopyingTokens:1];
+    searchField3 = [(SPUISearchHeader *)v3 searchField];
+    [searchField3 setAllowsCopyingTokens:1];
 
-    v54 = [(SPUISearchHeader *)v3 searchField];
-    [v54 setPasteDelegate:v3];
+    searchField4 = [(SPUISearchHeader *)v3 searchField];
+    [searchField4 setPasteDelegate:v3];
 
     [(SPUISearchHeader *)v3 setAccessibilityIgnoresInvertColors:1];
     [(SPUISearchHeader *)v3 setOffersCompletions:1];
@@ -213,40 +213,40 @@
       v57 = objc_opt_new();
       [(SPUISearchHeader *)v3 setBlurView:v57];
 
-      v58 = [(SPUISearchHeader *)v3 blurView];
-      v59 = [(SPUISearchHeader *)v3 searchField];
-      [v4 insertSubview:v58 belowSubview:v59];
+      blurView3 = [(SPUISearchHeader *)v3 blurView];
+      searchField5 = [(SPUISearchHeader *)v3 searchField];
+      [v4 insertSubview:blurView3 belowSubview:searchField5];
 
-      v60 = [(SPUISearchHeader *)v3 blurView];
-      [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
+      blurView4 = [(SPUISearchHeader *)v3 blurView];
+      [blurView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v61 = [(SPUISearchHeader *)v3 blurView];
-      v62 = [v61 leadingAnchor];
-      v63 = [(SPUISearchHeader *)v3 searchField];
-      v64 = [v63 leadingAnchor];
-      [v62 constraintEqualToAnchor:v64];
+      blurView5 = [(SPUISearchHeader *)v3 blurView];
+      leadingAnchor = [blurView5 leadingAnchor];
+      searchField6 = [(SPUISearchHeader *)v3 searchField];
+      leadingAnchor2 = [searchField6 leadingAnchor];
+      [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v65 = v82 = v43;
       [v65 setActive:1];
 
-      v66 = [(SPUISearchHeader *)v3 blurView];
-      v67 = [v66 trailingAnchor];
-      v68 = [(SPUISearchHeader *)v3 searchField];
-      v69 = [v68 trailingAnchor];
-      v70 = [v67 constraintEqualToAnchor:v69];
+      blurView6 = [(SPUISearchHeader *)v3 blurView];
+      trailingAnchor = [blurView6 trailingAnchor];
+      searchField7 = [(SPUISearchHeader *)v3 searchField];
+      trailingAnchor2 = [searchField7 trailingAnchor];
+      v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v70 setActive:1];
 
-      v71 = [(SPUISearchHeader *)v3 blurView];
-      v72 = [v71 topAnchor];
-      v73 = [(SPUISearchHeader *)v3 searchField];
-      v74 = [v73 topAnchor];
-      v75 = [v72 constraintEqualToAnchor:v74];
+      blurView7 = [(SPUISearchHeader *)v3 blurView];
+      topAnchor = [blurView7 topAnchor];
+      searchField8 = [(SPUISearchHeader *)v3 searchField];
+      topAnchor2 = [searchField8 topAnchor];
+      v75 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v75 setActive:1];
 
-      v76 = [(SPUISearchHeader *)v3 blurView];
-      v77 = [v76 bottomAnchor];
-      v78 = [(SPUISearchHeader *)v3 searchField];
-      v79 = [v78 bottomAnchor];
-      v80 = [v77 constraintEqualToAnchor:v79];
+      blurView8 = [(SPUISearchHeader *)v3 blurView];
+      bottomAnchor3 = [blurView8 bottomAnchor];
+      searchField9 = [(SPUISearchHeader *)v3 searchField];
+      bottomAnchor4 = [searchField9 bottomAnchor];
+      v80 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       [v80 setActive:1];
 
       v43 = v82;
@@ -258,9 +258,9 @@
 
 - (double)bottomPadding
 {
-  v3 = [MEMORY[0x277D65D28] bottomSearchFieldEnabled];
+  bottomSearchFieldEnabled = [MEMORY[0x277D65D28] bottomSearchFieldEnabled];
   v4 = MEMORY[0x277D65D28];
-  if (v3)
+  if (bottomSearchFieldEnabled)
   {
 
     [v4 bottomPaddingToKeyboard];
@@ -271,8 +271,8 @@
     v6 = 0.0;
     if (([MEMORY[0x277D65D28] enableFloatingWindow] & 1) == 0)
     {
-      v7 = [(SPUISearchHeader *)self searchField];
-      if ([v7 needsLandscapeHeight])
+      searchField = [(SPUISearchHeader *)self searchField];
+      if ([searchField needsLandscapeHeight])
       {
         v6 = 7.0;
       }
@@ -291,21 +291,21 @@
 
 - (void)enableDictationIfRequired
 {
-  v3 = [MEMORY[0x277D75678] sharedInstance];
-  v4 = [MEMORY[0x277D75428] currentInputModeSupportsDictation];
-  v5 = [(SPUISearchHeader *)self searchField];
-  v6 = [v5 rightView];
-  [v6 setHidden:v4 ^ 1u];
+  mEMORY[0x277D75678] = [MEMORY[0x277D75678] sharedInstance];
+  currentInputModeSupportsDictation = [MEMORY[0x277D75428] currentInputModeSupportsDictation];
+  searchField = [(SPUISearchHeader *)self searchField];
+  rightView = [searchField rightView];
+  [rightView setHidden:currentInputModeSupportsDictation ^ 1u];
 
   [(SPUISearchHeader *)self updateDictationButtonEnabledStatus];
 }
 
 - (void)updateDictationButtonEnabledStatus
 {
-  v3 = [MEMORY[0x277D75688] dictationInputModeIsFunctional];
-  v5 = [(SPUISearchHeader *)self searchField];
-  v4 = [v5 rightView];
-  [v4 setEnabled:v3];
+  dictationInputModeIsFunctional = [MEMORY[0x277D75688] dictationInputModeIsFunctional];
+  searchField = [(SPUISearchHeader *)self searchField];
+  rightView = [searchField rightView];
+  [rightView setEnabled:dictationInputModeIsFunctional];
 }
 
 - (void)didMoveToWindow
@@ -318,9 +318,9 @@
 
 - (double)topPadding
 {
-  v3 = [MEMORY[0x277D65D28] enableFloatingWindow];
+  enableFloatingWindow = [MEMORY[0x277D65D28] enableFloatingWindow];
   result = 0.0;
-  if ((v3 & 1) == 0)
+  if ((enableFloatingWindow & 1) == 0)
   {
     if ([MEMORY[0x277D65D28] bottomSearchFieldEnabled])
     {
@@ -338,10 +338,10 @@
 
     else
     {
-      v7 = [(SPUISearchHeader *)self searchField];
-      v8 = [v7 needsLandscapeHeight];
+      searchField = [(SPUISearchHeader *)self searchField];
+      needsLandscapeHeight = [searchField needsLandscapeHeight];
 
-      v5 = v8 == 0;
+      v5 = needsLandscapeHeight == 0;
       result = 4.0;
       v6 = 7.0;
     }
@@ -359,14 +359,14 @@
 {
   if ([MEMORY[0x277D65D28] bottomSearchFieldEnabled])
   {
-    v3 = [(SPUISearchHeader *)self searchField];
-    v4 = [v3 tokenBackgroundColor];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    if ([v4 isEqual:v5])
+    searchField = [(SPUISearchHeader *)self searchField];
+    tokenBackgroundColor = [searchField tokenBackgroundColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    if ([tokenBackgroundColor isEqual:clearColor])
     {
-      v6 = [(SPUISearchHeader *)self searchField];
-      v7 = [v6 tokens];
-      v8 = [v7 count] != 0;
+      searchField2 = [(SPUISearchHeader *)self searchField];
+      tokens = [searchField2 tokens];
+      v8 = [tokens count] != 0;
     }
 
     else
@@ -377,9 +377,9 @@
 
   else
   {
-    v3 = [(SPUISearchHeader *)self searchEntity];
-    v4 = [SPUITextField webEntityStringForEntity:v3];
-    v8 = [v4 length] != 0;
+    searchField = [(SPUISearchHeader *)self searchEntity];
+    tokenBackgroundColor = [SPUITextField webEntityStringForEntity:searchField];
+    v8 = [tokenBackgroundColor length] != 0;
   }
 
   return v8;
@@ -387,31 +387,31 @@
 
 - (NSString)currentQuery
 {
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 searchText];
+  searchField = [(SPUISearchHeader *)self searchField];
+  searchText = [searchField searchText];
 
-  return v3;
+  return searchText;
 }
 
 - (id)markedTextArray
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 markedTextRange];
+  searchField = [(SPUISearchHeader *)self searchField];
+  markedTextRange = [searchField markedTextRange];
 
-  if (v3)
+  if (markedTextRange)
   {
-    v4 = [v2 markedTextRange];
-    v5 = [v2 textInRange:v4];
+    markedTextRange2 = [searchField markedTextRange];
+    v5 = [searchField textInRange:markedTextRange2];
 
     if ([v5 length])
     {
-      v6 = [v2 beginningOfDocument];
-      v7 = [v2 markedTextRange];
-      v8 = [v7 start];
-      v9 = [v2 textRangeFromPosition:v6 toPosition:v8];
+      beginningOfDocument = [searchField beginningOfDocument];
+      markedTextRange3 = [searchField markedTextRange];
+      start = [markedTextRange3 start];
+      v9 = [searchField textRangeFromPosition:beginningOfDocument toPosition:start];
 
-      v10 = [v2 textInRange:v9];
+      v10 = [searchField textInRange:v9];
       v11 = v10;
       v12 = &stru_287C49600;
       if (v10)
@@ -426,16 +426,16 @@
 
       v14 = v13;
 
-      v15 = [v2 markedTextRange];
-      v16 = [v15 end];
-      v17 = [v2 positionFromPosition:v16 offset:1];
+      markedTextRange4 = [searchField markedTextRange];
+      v16 = [markedTextRange4 end];
+      v17 = [searchField positionFromPosition:v16 offset:1];
 
       if (v17)
       {
-        v18 = [v2 endOfDocument];
-        v19 = [v2 textRangeFromPosition:v17 toPosition:v18];
+        endOfDocument = [searchField endOfDocument];
+        v19 = [searchField textRangeFromPosition:v17 toPosition:endOfDocument];
 
-        v20 = [v2 textInRange:v19];
+        v20 = [searchField textInRange:v19];
         v21 = v20;
         if (v20)
         {
@@ -482,25 +482,25 @@
 - (void)updateSearchFieldModel
 {
   v3 = [SPUICompletionStringModel alloc];
-  v12 = [(SPUISearchHeader *)self searchField];
-  v4 = [v12 text];
-  v5 = [(SPUISearchHeader *)self searchField];
-  v6 = [v5 tokens];
-  v7 = [v6 count] != 0;
-  v8 = [(SPUISearchHeader *)self previousQueryID];
-  v9 = [(SPUISearchHeader *)self searchField];
-  v10 = -[SPUICompletionStringModel initWithTypedString:hasTokens:queryId:hasMarkedText:](v3, "initWithTypedString:hasTokens:queryId:hasMarkedText:", v4, v7, v8, [v9 hasMarkedText]);
-  v11 = [(SPUISearchHeader *)self searchField];
-  [v11 setSearchFieldModel:v10];
+  searchField = [(SPUISearchHeader *)self searchField];
+  text = [searchField text];
+  searchField2 = [(SPUISearchHeader *)self searchField];
+  tokens = [searchField2 tokens];
+  v7 = [tokens count] != 0;
+  previousQueryID = [(SPUISearchHeader *)self previousQueryID];
+  searchField3 = [(SPUISearchHeader *)self searchField];
+  v10 = -[SPUICompletionStringModel initWithTypedString:hasTokens:queryId:hasMarkedText:](v3, "initWithTypedString:hasTokens:queryId:hasMarkedText:", text, v7, previousQueryID, [searchField3 hasMarkedText]);
+  searchField4 = [(SPUISearchHeader *)self searchField];
+  [searchField4 setSearchFieldModel:v10];
 }
 
 - (void)textFieldDidBeginEditing
 {
-  v3 = [(SPUISearchHeader *)self delegate];
-  [v3 didBeginEditing];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate didBeginEditing];
 
-  v4 = [(SPUISearchHeader *)self interactionDelegate];
-  [v4 didFocusHeader];
+  interactionDelegate = [(SPUISearchHeader *)self interactionDelegate];
+  [interactionDelegate didFocusHeader];
 }
 
 - (SPUIHeaderInteractionDelegate)interactionDelegate
@@ -512,10 +512,10 @@
 
 - (unint64_t)queryId
 {
-  v2 = [(SPUISearchHeader *)self delegate];
-  v3 = [v2 currentQueryId];
+  delegate = [(SPUISearchHeader *)self delegate];
+  currentQueryId = [delegate currentQueryId];
 
-  return v3;
+  return currentQueryId;
 }
 
 - (void)clearLastSearchedText
@@ -527,13 +527,13 @@
 
 - (UISearchToken)lastSearchToken
 {
-  v3 = [(SPUISearchHeader *)self searchEntity];
-  v4 = [v3 tokenText];
-  if (v4)
+  searchEntity = [(SPUISearchHeader *)self searchEntity];
+  tokenText = [searchEntity tokenText];
+  if (tokenText)
   {
     v5 = objc_opt_class();
-    v6 = [(SPUISearchHeader *)self searchEntity];
-    v7 = [v5 tokenFromSearchEntity:v6];
+    searchEntity2 = [(SPUISearchHeader *)self searchEntity];
+    v7 = [v5 tokenFromSearchEntity:searchEntity2];
   }
 
   else
@@ -544,19 +544,19 @@
   return v7;
 }
 
-- (void)setResponderForKeyboardInput:(id)a3
+- (void)setResponderForKeyboardInput:(id)input
 {
-  v4 = a3;
-  v5 = [(SPUISearchHeader *)self searchField];
-  [v5 setResponderForKeyboardInput:v4];
+  inputCopy = input;
+  searchField = [(SPUISearchHeader *)self searchField];
+  [searchField setResponderForKeyboardInput:inputCopy];
 }
 
 - (UIResponder)responderForKeyboardInput
 {
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 responderForKeyboardInput];
+  searchField = [(SPUISearchHeader *)self searchField];
+  responderForKeyboardInput = [searchField responderForKeyboardInput];
 
-  return v3;
+  return responderForKeyboardInput;
 }
 
 + (unint64_t)committedSearchQueryKind
@@ -575,18 +575,18 @@
 
 - (void)backButtonPressed
 {
-  v2 = [(SPUISearchHeader *)self delegate];
-  [v2 backButtonPressed];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate backButtonPressed];
 }
 
 - (void)returnKeyPressed
 {
-  v3 = [(SPUISearchHeader *)self searchField];
-  if ([v3 optOutOfGoButton])
+  searchField = [(SPUISearchHeader *)self searchField];
+  if ([searchField optOutOfGoButton])
   {
-    v4 = [(SPUISearchHeader *)self textFieldShouldReturn];
+    textFieldShouldReturn = [(SPUISearchHeader *)self textFieldShouldReturn];
 
-    if (v4)
+    if (textFieldShouldReturn)
     {
       v5 = MEMORY[0x277D65D40];
       v6 = *(MEMORY[0x277D65D40] + 8);
@@ -610,49 +610,49 @@
   {
   }
 
-  v7 = [(SPUISearchHeader *)self delegate];
-  [v7 returnKeyPressed];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate returnKeyPressed];
 }
 
 - (void)highlightResultAfterUnmarkingText
 {
-  v2 = [(SPUISearchHeader *)self delegate];
-  [v2 highlightResultAfterUnmarkingText];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate highlightResultAfterUnmarkingText];
 }
 
 - (BOOL)optOutOfGoButton
 {
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 optOutOfGoButton];
+  searchField = [(SPUISearchHeader *)self searchField];
+  optOutOfGoButton = [searchField optOutOfGoButton];
 
-  return v3;
+  return optOutOfGoButton;
 }
 
-- (void)setActiveInterfaceOrientation:(int64_t)a3
+- (void)setActiveInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_activeInterfaceOrientation != a3)
+  if (self->_activeInterfaceOrientation != orientation)
   {
-    self->_activeInterfaceOrientation = a3;
-    v6 = [(SPUISearchHeader *)self searchField];
-    [v6 setActiveInterfaceOrientation:a3];
+    self->_activeInterfaceOrientation = orientation;
+    searchField = [(SPUISearchHeader *)self searchField];
+    [searchField setActiveInterfaceOrientation:orientation];
 
-    [MEMORY[0x277D4C818] idealPlatterWidthForOrientation:a3];
+    [MEMORY[0x277D4C818] idealPlatterWidthForOrientation:orientation];
     v8 = v7;
-    v9 = [(SPUISearchHeader *)self widthConstraint];
-    [v9 setConstant:v8];
+    widthConstraint = [(SPUISearchHeader *)self widthConstraint];
+    [widthConstraint setConstant:v8];
 
     [(SPUISearchHeader *)self topPadding];
     v11 = v10;
-    v12 = [(SPUISearchHeader *)self topConstraint];
-    [v12 setConstant:v11];
+    topConstraint = [(SPUISearchHeader *)self topConstraint];
+    [topConstraint setConstant:v11];
 
     [(SPUISearchHeader *)self bottomPadding];
     v14 = v13;
-    v15 = [(SPUISearchHeader *)self bottomConstraint];
-    [v15 setConstant:v14];
+    bottomConstraint = [(SPUISearchHeader *)self bottomConstraint];
+    [bottomConstraint setConstant:v14];
 
-    v16 = [(SPUISearchHeader *)self searchField];
-    [v16 invalidateIntrinsicContentSize];
+    searchField2 = [(SPUISearchHeader *)self searchField];
+    [searchField2 invalidateIntrinsicContentSize];
 
     [(SPUISearchHeader *)self invalidateIntrinsicContentSize];
   }
@@ -660,46 +660,46 @@
 
 - (void)dictationButtonPressed
 {
-  v3 = [(SPUISearchHeader *)self delegate];
-  [v3 dictationButtonPressed];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate dictationButtonPressed];
 
-  v4 = [(SPUISearchHeader *)self interactionDelegate];
-  [v4 didFocusHeader];
+  interactionDelegate = [(SPUISearchHeader *)self interactionDelegate];
+  [interactionDelegate didFocusHeader];
 }
 
-- (void)addInputMethodInformationToQueryContext:(id)a3
+- (void)addInputMethodInformationToQueryContext:(id)context
 {
-  v13 = a3;
-  v4 = [(SPUISearchHeader *)self textInputMode];
+  contextCopy = context;
+  textInputMode = [(SPUISearchHeader *)self textInputMode];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 primaryLanguage];
-    [v13 setKeyboardPrimaryLanguage:v6];
+    v5 = textInputMode;
+    primaryLanguage = [v5 primaryLanguage];
+    [contextCopy setKeyboardPrimaryLanguage:primaryLanguage];
 
-    v7 = [v5 identifier];
-    if ([(__CFString *)v7 isEqualToString:@"dictation"])
+    identifier = [v5 identifier];
+    if ([(__CFString *)identifier isEqualToString:@"dictation"])
     {
-      v8 = v13;
-      v9 = v7;
+      v8 = contextCopy;
+      v9 = identifier;
     }
 
     else
     {
-      v10 = [v5 extension];
+      extension = [v5 extension];
 
-      if (!v10)
+      if (!extension)
       {
-        v11 = [v5 normalizedIdentifierLevels];
-        v12 = [v11 firstObject];
-        [v13 setKeyboardLanguage:v12];
+        normalizedIdentifierLevels = [v5 normalizedIdentifierLevels];
+        firstObject = [normalizedIdentifierLevels firstObject];
+        [contextCopy setKeyboardLanguage:firstObject];
 
         goto LABEL_7;
       }
 
       v9 = @"custom";
-      v8 = v13;
+      v8 = contextCopy;
     }
 
     [v8 setKeyboardLanguage:v9];
@@ -707,45 +707,45 @@ LABEL_7:
   }
 }
 
-- (void)setQueryId:(unint64_t)a3
+- (void)setQueryId:(unint64_t)id
 {
-  v5 = [(SPUISearchHeader *)self delegate];
-  v4 = [v5 currentQueryContext];
-  [v4 setQueryIdent:a3];
+  delegate = [(SPUISearchHeader *)self delegate];
+  currentQueryContext = [delegate currentQueryContext];
+  [currentQueryContext setQueryIdent:id];
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SPUISearchHeader *)self searchField];
-  if (([v5 ignoreTokensUpdate] & 1) == 0 && !-[SPUISearchHeader searchTextScheduledForProcessing](self, "searchTextScheduledForProcessing"))
+  changeCopy = change;
+  searchField = [(SPUISearchHeader *)self searchField];
+  if (([searchField ignoreTokensUpdate] & 1) == 0 && !-[SPUISearchHeader searchTextScheduledForProcessing](self, "searchTextScheduledForProcessing"))
   {
-    v6 = [v5 textIncludingTokens];
-    v7 = [v6 length];
+    textIncludingTokens = [searchField textIncludingTokens];
+    v7 = [textIncludingTokens length];
 
     if (v7 >= 0x3E9)
     {
-      v8 = [v5 textIncludingTokens];
-      v9 = [v8 length];
-      v10 = [v5 text];
-      v11 = v9 - [v10 length];
+      textIncludingTokens2 = [searchField textIncludingTokens];
+      v9 = [textIncludingTokens2 length];
+      text = [searchField text];
+      v11 = v9 - [text length];
 
-      v12 = [v5 textualRange];
+      textualRange = [searchField textualRange];
       if (v11 > 0x3E7)
       {
-        [v5 replaceRange:v12 withText:&stru_287C49600];
+        [searchField replaceRange:textualRange withText:&stru_287C49600];
       }
 
       else
       {
-        v13 = [v5 text];
-        v14 = [v13 substringToIndex:1000 - v11];
-        [v5 replaceRange:v12 withText:v14];
+        text2 = [searchField text];
+        v14 = [text2 substringToIndex:1000 - v11];
+        [searchField replaceRange:textualRange withText:v14];
       }
     }
 
-    v15 = [v5 searchText];
-    v16 = [SPUITextField removeDictationCharacterInString:v15];
+    searchText = [searchField searchText];
+    v16 = [SPUITextField removeDictationCharacterInString:searchText];
 
     if ([v16 length])
     {
@@ -757,9 +757,9 @@ LABEL_7:
     v18[2] = __34__SPUISearchHeader_textDidChange___block_invoke;
     v18[3] = &unk_279D06CA0;
     v19 = v16;
-    v20 = self;
-    v21 = v5;
-    v22 = v4;
+    selfCopy = self;
+    v21 = searchField;
+    v22 = changeCopy;
     v17 = v16;
     dispatch_async(MEMORY[0x277D85CD0], v18);
   }
@@ -892,27 +892,27 @@ LABEL_26:
   return result;
 }
 
-- (void)textDidChange:(id)a3 whyQuery:(unint64_t)a4 allowZKW:(BOOL)a5 sourcePreference:(unint64_t)a6 searchEntities:(id)a7 queryKind:(unint64_t)a8
+- (void)textDidChange:(id)change whyQuery:(unint64_t)query allowZKW:(BOOL)w sourcePreference:(unint64_t)preference searchEntities:(id)entities queryKind:(unint64_t)kind
 {
-  v26 = a5;
-  v13 = a7;
-  v14 = a3;
-  v15 = [(SPUISearchHeader *)self searchEntity];
-  v16 = [SPUITextField webEntityStringForEntity:v15];
+  wCopy = w;
+  entitiesCopy = entities;
+  changeCopy = change;
+  searchEntity = [(SPUISearchHeader *)self searchEntity];
+  v16 = [SPUITextField webEntityStringForEntity:searchEntity];
 
-  v27 = [SPUITextField removeDictationCharacterInString:v14];
+  v27 = [SPUITextField removeDictationCharacterInString:changeCopy];
 
-  v17 = [(SPUISearchHeader *)self searchField];
-  v18 = [v17 searchText];
-  if ([v18 length])
+  searchField = [(SPUISearchHeader *)self searchField];
+  searchText = [searchField searchText];
+  if ([searchText length])
   {
-    v19 = [(SPUISearchHeader *)self searchField];
-    v20 = [v19 searchText];
+    searchField2 = [(SPUISearchHeader *)self searchField];
+    searchText2 = [searchField2 searchText];
   }
 
   else
   {
-    v20 = v27;
+    searchText2 = v27;
   }
 
   if (v16)
@@ -922,62 +922,62 @@ LABEL_26:
 
   else
   {
-    v21 = v20;
+    v21 = searchText2;
   }
 
   v22 = [(SPUISearchHeader *)self currentQueryContextWithString:v21];
-  [v22 setSearchEntities:v13];
+  [v22 setSearchEntities:entitiesCopy];
 
-  [v22 setQueryKind:a8];
+  [v22 setQueryKind:kind];
   if ([v27 length])
   {
-    v23 = a4;
+    queryCopy = query;
   }
 
   else
   {
-    v23 = 9;
+    queryCopy = 9;
   }
 
-  [v22 setWhyQuery:v23];
-  v24 = [(SPUISearchHeader *)self currentQuery];
-  v25 = [v24 isEqualToString:v20];
+  [v22 setWhyQuery:queryCopy];
+  currentQuery = [(SPUISearchHeader *)self currentQuery];
+  v25 = [currentQuery isEqualToString:searchText2];
 
   if ((v25 & 1) == 0)
   {
-    [v22 setSearchString:v20];
+    [v22 setSearchString:searchText2];
   }
 
-  if (a6 - 1 <= 1)
+  if (preference - 1 <= 1)
   {
     [v22 setPromoteParsecResults:1];
   }
 
-  [(SPUISearchHeader *)self queryContextDidChange:v22 fromPreviousQueryId:[(SPUISearchHeader *)self previousQueryID] allowZKW:v26];
+  [(SPUISearchHeader *)self queryContextDidChange:v22 fromPreviousQueryId:[(SPUISearchHeader *)self previousQueryID] allowZKW:wCopy];
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
-  v3 = [(SPUISearchHeader *)self delegate];
-  [v3 cancelButtonPressed];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate cancelButtonPressed];
 }
 
 - (void)escapeKeyPressed
 {
-  v2 = [(SPUISearchHeader *)self delegate];
-  [v2 cancelButtonPressed];
+  delegate = [(SPUISearchHeader *)self delegate];
+  [delegate cancelButtonPressed];
 }
 
 - (BOOL)textFieldShouldReturn
 {
-  v3 = [(SPUISearchHeader *)self searchField];
-  v4 = [v3 returnKeyType];
+  searchField = [(SPUISearchHeader *)self searchField];
+  returnKeyType = [searchField returnKeyType];
 
-  if (v4 == 1)
+  if (returnKeyType == 1)
   {
     [(SPUISearchHeader *)self setIsReturnKeyPressedInGoMode:1];
-    v5 = [(SPUISearchHeader *)self delegate];
-    [v5 returnKeyPressed];
+    delegate = [(SPUISearchHeader *)self delegate];
+    [delegate returnKeyPressed];
 
     [(SPUISearchHeader *)self setIsReturnKeyPressedInGoMode:0];
   }
@@ -985,9 +985,9 @@ LABEL_26:
   else
   {
     v6 = objc_alloc(MEMORY[0x277D4C330]);
-    v7 = [(SPUISearchHeader *)self searchField];
-    v8 = [v7 text];
-    v9 = [v6 initWithInput:v8 endpoint:6];
+    searchField2 = [(SPUISearchHeader *)self searchField];
+    text = [searchField2 text];
+    v9 = [v6 initWithInput:text endpoint:6];
 
     v10 = +[SPUIFeedbackManager feedbackListener];
     [v10 reportFeedback:v9 queryId:{-[SPUISearchHeader queryId](self, "queryId")}];
@@ -1005,17 +1005,17 @@ LABEL_26:
 
 - (void)triggerSearchForUnlock
 {
-  v4 = [(SPUISearchHeader *)self searchField];
-  v3 = [v4 textIncludingTokens];
-  -[SPUISearchHeader textDidChange:whyQuery:allowZKW:queryKind:](self, "textDidChange:whyQuery:allowZKW:queryKind:", v3, 17, 1, [objc_opt_class() asYouTypeSearchQueryKind]);
+  searchField = [(SPUISearchHeader *)self searchField];
+  textIncludingTokens = [searchField textIncludingTokens];
+  -[SPUISearchHeader textDidChange:whyQuery:allowZKW:queryKind:](self, "textDidChange:whyQuery:allowZKW:queryKind:", textIncludingTokens, 17, 1, [objc_opt_class() asYouTypeSearchQueryKind]);
 }
 
 - (BOOL)lastQueryKindSupportsOptionKey
 {
-  v2 = [(SPUISearchHeader *)self delegate];
-  v3 = [v2 currentQueryContext];
-  v4 = [v3 queryKind];
-  v5 = v4 == [objc_opt_class() asYouTypeSearchQueryKind];
+  delegate = [(SPUISearchHeader *)self delegate];
+  currentQueryContext = [delegate currentQueryContext];
+  queryKind = [currentQueryContext queryKind];
+  v5 = queryKind == [objc_opt_class() asYouTypeSearchQueryKind];
 
   return v5;
 }
@@ -1024,43 +1024,43 @@ LABEL_26:
 {
   if (!self->_searchEntity)
   {
-    v5 = [(SPUISearchHeader *)self searchField];
-    v4 = [v5 textIncludingTokens];
-    -[SPUISearchHeader textDidChange:whyQuery:allowZKW:queryKind:](self, "textDidChange:whyQuery:allowZKW:queryKind:", v4, 23, 1, [objc_opt_class() committedSearchQueryKind]);
+    searchField = [(SPUISearchHeader *)self searchField];
+    textIncludingTokens = [searchField textIncludingTokens];
+    -[SPUISearchHeader textDidChange:whyQuery:allowZKW:queryKind:](self, "textDidChange:whyQuery:allowZKW:queryKind:", textIncludingTokens, 23, 1, [objc_opt_class() committedSearchQueryKind]);
   }
 }
 
 - (void)switchToSuggestions
 {
-  v3 = [objc_opt_class() asYouTypeSearchQueryKind];
+  asYouTypeSearchQueryKind = [objc_opt_class() asYouTypeSearchQueryKind];
   if (![(SPUISearchHeader *)self offersCompletions])
   {
-    v3 = 9;
+    asYouTypeSearchQueryKind = 9;
   }
 
   [(SPUISearchHeader *)self setSearchEntity:0];
-  v4 = [(SPUISearchHeader *)self searchField];
-  v5 = [v4 text];
-  [(SPUISearchHeader *)self textDidChange:v5 whyQuery:1 allowZKW:1 queryKind:v3];
+  searchField = [(SPUISearchHeader *)self searchField];
+  text = [searchField text];
+  [(SPUISearchHeader *)self textDidChange:text whyQuery:1 allowZKW:1 queryKind:asYouTypeSearchQueryKind];
 
   [(SPUISearchHeader *)self setLastSearchEntity:0];
-  v7 = [(SPUISearchHeader *)self searchField];
-  v6 = [v7 searchText];
-  [(SPUISearchHeader *)self setLastSearchText:v6];
+  searchField2 = [(SPUISearchHeader *)self searchField];
+  searchText = [searchField2 searchText];
+  [(SPUISearchHeader *)self setLastSearchText:searchText];
 }
 
-- (id)currentQueryContextWithString:(id)a3
+- (id)currentQueryContextWithString:(id)string
 {
   v4 = MEMORY[0x277D65898];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithSearchString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithSearchString:stringCopy];
   [v6 setDeviceAuthenticationState:{objc_msgSend(MEMORY[0x277D65D88], "deviceAuthenticationStateForView:", self)}];
-  v7 = [(SPUISearchHeader *)self markedTextArray];
-  [v6 setMarkedTextArray:v7];
+  markedTextArray = [(SPUISearchHeader *)self markedTextArray];
+  [v6 setMarkedTextArray:markedTextArray];
 
   v8 = MEMORY[0x277CC34D8];
-  v9 = [MEMORY[0x277CC34D8] emptySuggestion];
-  v10 = [v8 updatedSuggestionWithCurrentSuggestion:v9 userString:v5 tokens:MEMORY[0x277CBEBF8]];
+  emptySuggestion = [MEMORY[0x277CC34D8] emptySuggestion];
+  v10 = [v8 updatedSuggestionWithCurrentSuggestion:emptySuggestion userString:stringCopy tokens:MEMORY[0x277CBEBF8]];
 
   [v6 setBackingSearchModel:v10];
   [(SPUISearchHeader *)self addInputMethodInformationToQueryContext:v6];
@@ -1070,13 +1070,13 @@ LABEL_26:
   return v6;
 }
 
-+ (id)tokenFromSearchEntity:(id)a3
++ (id)tokenFromSearchEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 symbolName];
-  if (v4)
+  entityCopy = entity;
+  symbolName = [entityCopy symbolName];
+  if (symbolName)
   {
-    v5 = [MEMORY[0x277D4C890] uiImageWithSymbolName:v4];
+    v5 = [MEMORY[0x277D4C890] uiImageWithSymbolName:symbolName];
   }
 
   else
@@ -1085,80 +1085,80 @@ LABEL_26:
   }
 
   v6 = MEMORY[0x277D75A00];
-  v7 = [v3 tokenText];
-  v8 = [v6 tokenWithIcon:v5 text:v7];
+  tokenText = [entityCopy tokenText];
+  v8 = [v6 tokenWithIcon:v5 text:tokenText];
 
-  [v8 setRepresentedObject:v3];
+  [v8 setRepresentedObject:entityCopy];
 
   return v8;
 }
 
-- (void)restoreSearchText:(id)a3 searchEntity:(id)a4
+- (void)restoreSearchText:(id)text searchEntity:(id)entity
 {
-  v11 = a3;
-  v6 = a4;
-  [(SPUISearchHeader *)self setSearchEntity:v6];
-  [(SPUISearchHeader *)self setLastSearchText:v11];
-  v7 = [(SPUISearchHeader *)self searchField];
-  v8 = v7;
-  if (v6)
+  textCopy = text;
+  entityCopy = entity;
+  [(SPUISearchHeader *)self setSearchEntity:entityCopy];
+  [(SPUISearchHeader *)self setLastSearchText:textCopy];
+  searchField = [(SPUISearchHeader *)self searchField];
+  searchField2 = searchField;
+  if (entityCopy)
   {
-    v9 = [v6 searchString];
-    [v8 updateTextRange:v9];
+    searchString = [entityCopy searchString];
+    [searchField2 updateTextRange:searchString];
 
-    v8 = [(SPUISearchHeader *)self searchField];
-    v10 = [SPUISearchHeader tokenFromSearchEntity:v6];
-    [v8 updateToken:v10];
+    searchField2 = [(SPUISearchHeader *)self searchField];
+    v10 = [SPUISearchHeader tokenFromSearchEntity:entityCopy];
+    [searchField2 updateToken:v10];
   }
 
   else
   {
-    [v7 setText:v11];
+    [searchField setText:textCopy];
   }
 }
 
-- (void)setSearchEntity:(id)a3 fromSuggestion:(BOOL)a4
+- (void)setSearchEntity:(id)entity fromSuggestion:(BOOL)suggestion
 {
-  v6 = a3;
+  entityCopy = entity;
   searchEntity = self->_searchEntity;
-  if (searchEntity != v6)
+  if (searchEntity != entityCopy)
   {
-    v17 = v6;
-    if (([(SPSearchEntity *)searchEntity isEqual:v6]& 1) == 0)
+    v17 = entityCopy;
+    if (([(SPSearchEntity *)searchEntity isEqual:entityCopy]& 1) == 0)
     {
-      objc_storeStrong(&self->_searchEntity, a3);
+      objc_storeStrong(&self->_searchEntity, entity);
       if (v17)
       {
-        v8 = [(SPSearchEntity *)v17 tokenText];
-        if (!v8)
+        tokenText = [(SPSearchEntity *)v17 tokenText];
+        if (!tokenText)
         {
-          v11 = [(SPUISearchHeader *)self searchField];
-          v13 = [(SPSearchEntity *)v17 searchString];
-          [v11 updateTextRange:v13];
+          searchField = [(SPUISearchHeader *)self searchField];
+          searchString = [(SPSearchEntity *)v17 searchString];
+          [searchField updateTextRange:searchString];
 LABEL_10:
 
           goto LABEL_11;
         }
 
         [(SPUISearchHeader *)self setOffersCompletions:0];
-        v9 = [(SPUISearchHeader *)self searchField];
-        v10 = [v9 tokens];
-        v11 = [v10 firstObject];
+        searchField2 = [(SPUISearchHeader *)self searchField];
+        tokens = [searchField2 tokens];
+        searchField = [tokens firstObject];
 
-        v12 = [v11 representedObject];
-        LOBYTE(v10) = [v12 isEqual:v17];
+        representedObject = [searchField representedObject];
+        LOBYTE(tokens) = [representedObject isEqual:v17];
 
-        if ((v10 & 1) == 0)
+        if ((tokens & 1) == 0)
         {
-          v13 = [objc_opt_class() tokenFromSearchEntity:v17];
-          if (v13)
+          searchString = [objc_opt_class() tokenFromSearchEntity:v17];
+          if (searchString)
           {
-            v14 = [(SPUISearchHeader *)self searchField];
-            v15 = [(SPSearchEntity *)v17 searchString];
-            [v14 updateTextRange:v15];
+            searchField3 = [(SPUISearchHeader *)self searchField];
+            searchString2 = [(SPSearchEntity *)v17 searchString];
+            [searchField3 updateTextRange:searchString2];
 
-            v16 = [(SPUISearchHeader *)self searchField];
-            [v16 updateToken:v13];
+            searchField4 = [(SPUISearchHeader *)self searchField];
+            [searchField4 updateToken:searchString];
           }
 
           goto LABEL_10;
@@ -1167,9 +1167,9 @@ LABEL_10:
 
       else
       {
-        v8 = [(SPUISearchHeader *)self currentQuery];
-        v11 = [(SPUISearchHeader *)self searchField];
-        [v11 setText:v8];
+        tokenText = [(SPUISearchHeader *)self currentQuery];
+        searchField = [(SPUISearchHeader *)self searchField];
+        [searchField setText:tokenText];
       }
 
 LABEL_11:
@@ -1179,9 +1179,9 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_searchWithSearchEntity:(id)a3 fromSuggestion:(BOOL)a4
+- (void)_searchWithSearchEntity:(id)entity fromSuggestion:(BOOL)suggestion
 {
-  if (a4)
+  if (suggestion)
   {
     v5 = 8;
   }
@@ -1191,39 +1191,39 @@ LABEL_11:
     v5 = 1;
   }
 
-  v7 = [(SPUISearchHeader *)self searchField];
-  v6 = [v7 textIncludingTokens];
-  [(SPUISearchHeader *)self textDidChange:v6 whyQuery:v5 allowZKW:1 queryKind:9];
+  searchField = [(SPUISearchHeader *)self searchField];
+  textIncludingTokens = [searchField textIncludingTokens];
+  [(SPUISearchHeader *)self textDidChange:textIncludingTokens whyQuery:v5 allowZKW:1 queryKind:9];
 }
 
-- (id)_searchTextField:(id)a3 itemProviderForCopyingToken:(id)a4
+- (id)_searchTextField:(id)field itemProviderForCopyingToken:(id)token
 {
-  v4 = [a4 representedObject];
-  v5 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:v4 typeIdentifier:@"com.apple.spotlight.searchEntity"];
-  v6 = [v4 tokenText];
-  [v5 registerObject:v6 visibility:0];
+  representedObject = [token representedObject];
+  v5 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:representedObject typeIdentifier:@"com.apple.spotlight.searchEntity"];
+  tokenText = [representedObject tokenText];
+  [v5 registerObject:tokenText visibility:0];
 
   return v5;
 }
 
-- (void)textPasteConfigurationSupporting:(id)a3 transformPasteItem:(id)a4
+- (void)textPasteConfigurationSupporting:(id)supporting transformPasteItem:(id)item
 {
-  v5 = a4;
-  v6 = [v5 itemProvider];
-  if ([v6 hasItemConformingToTypeIdentifier:@"com.apple.spotlight.searchEntity"])
+  itemCopy = item;
+  itemProvider = [itemCopy itemProvider];
+  if ([itemProvider hasItemConformingToTypeIdentifier:@"com.apple.spotlight.searchEntity"])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __72__SPUISearchHeader_textPasteConfigurationSupporting_transformPasteItem___block_invoke;
     v8[3] = &unk_279D06CF0;
     v8[4] = self;
-    v9 = v5;
-    v7 = [v6 loadDataRepresentationForTypeIdentifier:@"com.apple.spotlight.searchEntity" completionHandler:v8];
+    v9 = itemCopy;
+    v7 = [itemProvider loadDataRepresentationForTypeIdentifier:@"com.apple.spotlight.searchEntity" completionHandler:v8];
   }
 
   else
   {
-    [v5 setDefaultResult];
+    [itemCopy setDefaultResult];
   }
 }
 
@@ -1261,13 +1261,13 @@ void __72__SPUISearchHeader_textPasteConfigurationSupporting_transformPasteItem_
 
 - (void)beginDictation
 {
-  v3 = [(SPUISearchHeader *)self searchField];
-  [v3 updateRightView];
+  searchField = [(SPUISearchHeader *)self searchField];
+  [searchField updateRightView];
 
-  v4 = [(SPUISearchHeader *)self searchField];
-  v5 = [v4 isFirstResponder];
+  searchField2 = [(SPUISearchHeader *)self searchField];
+  isFirstResponder = [searchField2 isFirstResponder];
 
-  if ((v5 & 1) == 0)
+  if ((isFirstResponder & 1) == 0)
   {
     v6 = MEMORY[0x277D65D40];
     v7 = *(MEMORY[0x277D65D40] + 32);
@@ -1286,15 +1286,15 @@ void __72__SPUISearchHeader_textPasteConfigurationSupporting_transformPasteItem_
     [(SPUISearchHeader *)self setInvokeReason:2];
   }
 
-  v8 = [MEMORY[0x277D75688] sharedInputModeController];
-  v9 = [(SPUISearchHeader *)self searchField];
+  mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+  searchField3 = [(SPUISearchHeader *)self searchField];
   v10 = [MEMORY[0x277D75430] dictationInputModeOptionsWithInvocationSource:@"UIDictationInputModeInvocationSourceMicButtonMicButtonInFirstResponderSearchBar"];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __34__SPUISearchHeader_beginDictation__block_invoke;
   v11[3] = &unk_279D06C78;
   v11[4] = self;
-  [v8 toggleDictationForResponder:v9 withOption:v10 firstResponderSetupCompletion:v11];
+  [mEMORY[0x277D75688] toggleDictationForResponder:searchField3 withOption:v10 firstResponderSetupCompletion:v11];
 }
 
 void __34__SPUISearchHeader_beginDictation__block_invoke(uint64_t a1)
@@ -1369,17 +1369,17 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
   [v4 _endDisablingAnimations];
 }
 
-+ (void)logInvokeWithReason:(unint64_t)a3
++ (void)logInvokeWithReason:(unint64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 > 5)
+  if (reason > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279D06D88[a3];
+    v3 = off_279D06D88[reason];
   }
 
   v4 = MEMORY[0x277D65D40];
@@ -1400,17 +1400,17 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logDismissalWithReason:(unint64_t)a3
++ (void)logDismissalWithReason:(unint64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 > 5)
+  if (reason > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279D06DB8[a3];
+    v3 = off_279D06DB8[reason];
   }
 
   v4 = MEMORY[0x277D65D40];
@@ -1433,10 +1433,10 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 isFirstResponder];
+  searchField = [(SPUISearchHeader *)self searchField];
+  isFirstResponder = [searchField isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (void)resignKeyboardForProcessState
@@ -1448,53 +1448,53 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
   }
 }
 
-- (void)updateWithCommand:(id)a3
+- (void)updateWithCommand:(id)command
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   [(SPUISearchHeader *)self setLastSearchText:0];
   [(SPUISearchHeader *)self setLastSearchEntity:0];
   [(SPUISearchHeader *)self setUseClearTokens:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [objc_opt_class() committedSearchQueryKind];
+    v5 = commandCopy;
+    committedSearchQueryKind = [objc_opt_class() committedSearchQueryKind];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 queryKind];
+      queryKind = [v5 queryKind];
       v8 = objc_opt_class();
-      if (v7 == 1)
+      if (queryKind == 1)
       {
-        v9 = [v8 asYouTypeSearchQueryKind];
+        asYouTypeSearchQueryKind = [v8 asYouTypeSearchQueryKind];
       }
 
       else
       {
-        v9 = [v8 committedSearchQueryKind];
+        asYouTypeSearchQueryKind = [v8 committedSearchQueryKind];
       }
 
-      v6 = v9;
+      committedSearchQueryKind = asYouTypeSearchQueryKind;
     }
 
-    v16 = [v5 searchString];
-    v17 = [v16 length];
+    searchString = [v5 searchString];
+    v17 = [searchString length];
 
     if (v17)
     {
-      v18 = [(SPUISearchHeader *)self searchField];
-      [v18 updateToken:0];
+      searchField = [(SPUISearchHeader *)self searchField];
+      [searchField updateToken:0];
 
-      v19 = [v5 searchString];
-      v20 = [(SPUISearchHeader *)self searchField];
-      [v20 setText:v19];
+      searchString2 = [v5 searchString];
+      searchField2 = [(SPUISearchHeader *)self searchField];
+      [searchField2 setText:searchString2];
 
-      v21 = [v5 searchString];
-      [(SPUISearchHeader *)self setLastSearchText:v21];
+      searchString3 = [v5 searchString];
+      [(SPUISearchHeader *)self setLastSearchText:searchString3];
 
-      v22 = [v5 searchString];
-      [(SPUISearchHeader *)self textDidChange:v22 whyQuery:8 allowZKW:1 sourcePreference:2 searchEntities:0 queryKind:v6];
+      searchString4 = [v5 searchString];
+      [(SPUISearchHeader *)self textDidChange:searchString4 whyQuery:8 allowZKW:1 sourcePreference:2 searchEntities:0 queryKind:committedSearchQueryKind];
     }
   }
 
@@ -1503,19 +1503,19 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v10 = [v5 person];
-      v11 = [v10 contactIdentifier];
+      v5 = commandCopy;
+      person = [v5 person];
+      contactIdentifier = [person contactIdentifier];
 
-      if (v11)
+      if (contactIdentifier)
       {
         v12 = MEMORY[0x277D65890];
-        v13 = [v10 contactIdentifier];
-        v11 = [v12 searchEntityWithContactIdentifier:v13 fromSuggestion:0];
+        contactIdentifier2 = [person contactIdentifier];
+        contactIdentifier = [v12 searchEntityWithContactIdentifier:contactIdentifier2 fromSuggestion:0];
       }
 
-      [(SPUISearchHeader *)self setSearchEntity:v11 fromSuggestion:1];
-      [(SPUISearchHeader *)self _searchWithSearchEntity:v11 fromSuggestion:1];
+      [(SPUISearchHeader *)self setSearchEntity:contactIdentifier fromSuggestion:1];
+      [(SPUISearchHeader *)self _searchWithSearchEntity:contactIdentifier fromSuggestion:1];
     }
 
     else
@@ -1527,7 +1527,7 @@ void __75__SPUISearchHeader_focusSearchFieldAndBeginDictation_selectAll_withReas
       }
 
       v14 = MEMORY[0x277D65D70];
-      v24[0] = v4;
+      v24[0] = commandCopy;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
       v5 = [v14 queryContextWithPerformEntityQueryCommands:v15 view:self];
 
@@ -1544,15 +1544,15 @@ LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)getClearTriggerEventForQueryContext:(id)a3
+- (unint64_t)getClearTriggerEventForQueryContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SPUISearchHeader *)self willClear];
+  contextCopy = context;
+  willClear = [(SPUISearchHeader *)self willClear];
   [(SPUISearchHeader *)self setWillClear:0];
-  v6 = [(SPUISearchHeader *)self textWasCut];
+  textWasCut = [(SPUISearchHeader *)self textWasCut];
   [(SPUISearchHeader *)self setTextWasCut:0];
-  v7 = [v4 searchEntities];
-  if (v7)
+  searchEntities = [contextCopy searchEntities];
+  if (searchEntities)
   {
 
     v8 = 0;
@@ -1560,13 +1560,13 @@ LABEL_16:
 
   else
   {
-    v9 = [v4 searchString];
-    v10 = [v9 length];
+    searchString = [contextCopy searchString];
+    v10 = [searchString length];
     v11 = v10 == 0;
     v12 = v10 != 0;
 
-    v13 = v12 || v5 || v6;
-    if (v12 || v5)
+    v13 = v12 || willClear || textWasCut;
+    if (v12 || willClear)
     {
       v8 = v11;
     }
@@ -1578,7 +1578,7 @@ LABEL_16:
 
     if (!v13)
     {
-      if ([v4 whyQuery] == 1)
+      if ([contextCopy whyQuery] == 1)
       {
         v8 = 3;
       }
@@ -1593,30 +1593,30 @@ LABEL_16:
   return v8;
 }
 
-- (void)setUseClearTokens:(BOOL)a3
+- (void)setUseClearTokens:(BOOL)tokens
 {
-  if (self->_useClearTokens != a3)
+  if (self->_useClearTokens != tokens)
   {
-    self->_useClearTokens = a3;
+    self->_useClearTokens = tokens;
     [(SPUISearchHeader *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
+  objc_storeStrong(&self->_legibilitySettings, settings);
 
   [(SPUISearchHeader *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SPUISearchHeader;
-  [(SPUISearchHeader *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SPUISearchHeader *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SPUISearchHeader *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SPUISearchHeader *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -1624,11 +1624,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SPUISearchHeader *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SPUISearchHeader *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -1636,29 +1636,29 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v29.receiver = self;
   v29.super_class = SPUISearchHeader;
-  [(SPUISearchHeader *)&v29 tlk_updateForAppearance:v4];
+  [(SPUISearchHeader *)&v29 tlk_updateForAppearance:appearanceCopy];
   v5 = _UISolariumEnabled();
-  v6 = [(SPUISearchHeader *)self searchField];
-  v7 = v6;
+  searchField = [(SPUISearchHeader *)self searchField];
+  v7 = searchField;
   if (v5)
   {
-    [v6 bounds];
+    [searchField bounds];
     v9 = v8 * 0.5;
   }
 
   else
   {
-    [v6 backgroundCornerRadius];
+    [searchField backgroundCornerRadius];
     v9 = v10;
   }
 
-  v11 = [(SPUISearchHeader *)self blurView];
-  [v11 _setContinuousCornerRadius:v9];
+  blurView = [(SPUISearchHeader *)self blurView];
+  [blurView _setContinuousCornerRadius:v9];
 
   if ([(SPUISearchHeader *)self useClearTokens])
   {
@@ -1667,55 +1667,55 @@ LABEL_5:
 
   else
   {
-    [v4 platterColor];
+    [appearanceCopy platterColor];
   }
   v12 = ;
-  v13 = [(SPUISearchHeader *)self searchField];
-  [v13 setTokenBackgroundColor:v12];
+  searchField2 = [(SPUISearchHeader *)self searchField];
+  [searchField2 setTokenBackgroundColor:v12];
 
-  v14 = [(SPUISearchHeader *)self useClearTokens];
-  if (v14)
+  useClearTokens = [(SPUISearchHeader *)self useClearTokens];
+  if (useClearTokens)
   {
-    v15 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v15 = 0;
+    labelColor = 0;
   }
 
-  v16 = [(SPUISearchHeader *)self searchField];
-  [v16 _setTokenForegroundColor:v15];
+  searchField3 = [(SPUISearchHeader *)self searchField];
+  [searchField3 _setTokenForegroundColor:labelColor];
 
-  if (v14)
+  if (useClearTokens)
   {
   }
 
-  v17 = [v4 isDark];
+  isDark = [appearanceCopy isDark];
   IsReduceTransparencyEnabled = UIAccessibilityIsReduceTransparencyEnabled();
-  v19 = [(SPUISearchHeader *)self searchField];
-  [v4 overrideAppearanceForView:v19];
+  searchField4 = [(SPUISearchHeader *)self searchField];
+  [appearanceCopy overrideAppearanceForView:searchField4];
 
   if (IsReduceTransparencyEnabled)
   {
-    v20 = [(SPUISearchHeader *)self legibilitySettings];
-    v21 = [v20 contentColor];
+    legibilitySettings = [(SPUISearchHeader *)self legibilitySettings];
+    contentColor = [legibilitySettings contentColor];
 
     v28 = 0.0;
-    [v21 getHue:0 saturation:0 brightness:&v28 alpha:0];
+    [contentColor getHue:0 saturation:0 brightness:&v28 alpha:0];
     v22 = [MEMORY[0x277D75348] colorWithWhite:dbl_26B867100[v28 > 0.4] alpha:0.3];
-    v23 = [(SPUISearchHeader *)self searchField];
-    v24 = [v23 tintView];
-    [v24 setBackgroundColor:v22];
+    searchField5 = [(SPUISearchHeader *)self searchField];
+    tintView = [searchField5 tintView];
+    [tintView setBackgroundColor:v22];
 
-    v25 = [(SPUISearchHeader *)self searchField];
-    v26 = [v25 tintView];
-    [v26 setAlpha:1.0];
+    searchField6 = [(SPUISearchHeader *)self searchField];
+    tintView2 = [searchField6 tintView];
+    [tintView2 setAlpha:1.0];
   }
 
   else
   {
-    if (v17)
+    if (isDark)
     {
       v27 = 0.1;
     }
@@ -1725,18 +1725,18 @@ LABEL_5:
       v27 = 0.04;
     }
 
-    v21 = [(SPUISearchHeader *)self searchField];
-    v25 = [v21 tintView];
-    [v25 setAlpha:v27];
+    contentColor = [(SPUISearchHeader *)self searchField];
+    searchField6 = [contentColor tintView];
+    [searchField6 setAlpha:v27];
   }
 }
 
 - (BOOL)cancelButtonIsVisible
 {
-  v2 = [(SPUISearchHeader *)self cancelButtonTrailingConstraint];
-  v3 = [v2 isActive];
+  cancelButtonTrailingConstraint = [(SPUISearchHeader *)self cancelButtonTrailingConstraint];
+  isActive = [cancelButtonTrailingConstraint isActive];
 
-  return v3;
+  return isActive;
 }
 
 uint64_t __46__SPUISearchHeader_showCancelButton_animated___block_invoke(uint64_t a1, double a2)
@@ -1751,11 +1751,11 @@ uint64_t __46__SPUISearchHeader_showCancelButton_animated___block_invoke(uint64_
   return [v5 layoutIfNeeded];
 }
 
-- (void)searchForSuggestion:(id)a3 isBuildingQuery:(BOOL)a4
+- (void)searchForSuggestion:(id)suggestion isBuildingQuery:(BOOL)query
 {
-  v4 = a4;
-  v20 = a3;
-  if ([v20 type] == 17)
+  queryCopy = query;
+  suggestionCopy = suggestion;
+  if ([suggestionCopy type] == 17)
   {
     v6 = 1;
   }
@@ -1765,7 +1765,7 @@ uint64_t __46__SPUISearchHeader_showCancelButton_animated___block_invoke(uint64_
     v6 = 2;
   }
 
-  if (v4)
+  if (queryCopy)
   {
     v7 = 25;
   }
@@ -1780,24 +1780,24 @@ uint64_t __46__SPUISearchHeader_showCancelButton_animated___block_invoke(uint64_
 
   if ((isKindOfClass & 1) == 0)
   {
-    v10 = 0;
-    if (!v4)
+    searchEntities = 0;
+    if (!queryCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_13:
-    v12 = [(SPUISearchHeader *)self searchField];
-    [v12 becomeFirstResponder];
+    searchField = [(SPUISearchHeader *)self searchField];
+    [searchField becomeFirstResponder];
 
     v11 = @" ";
     goto LABEL_14;
   }
 
-  v10 = [v20 searchEntities];
+  searchEntities = [suggestionCopy searchEntities];
   v6 = 0;
   v7 = 22;
-  if (v4)
+  if (queryCopy)
   {
     goto LABEL_13;
   }
@@ -1810,55 +1810,55 @@ LABEL_9:
 
   v11 = &stru_287C49600;
 LABEL_14:
-  v13 = [(SPUISearchHeader *)self searchField];
-  [v13 updateToken:0];
+  searchField2 = [(SPUISearchHeader *)self searchField];
+  [searchField2 updateToken:0];
 
-  v14 = [v20 title];
-  v15 = [v14 text];
-  v16 = [v15 stringByAppendingString:v11];
+  title = [suggestionCopy title];
+  text = [title text];
+  v16 = [text stringByAppendingString:v11];
 
-  v17 = [(SPUISearchHeader *)self searchField];
-  [v17 setText:v16];
+  searchField3 = [(SPUISearchHeader *)self searchField];
+  [searchField3 setText:v16];
 
   v18 = objc_opt_class();
-  if (v4)
+  if (queryCopy)
   {
-    v19 = [v18 asYouTypeSearchQueryKind];
+    asYouTypeSearchQueryKind = [v18 asYouTypeSearchQueryKind];
   }
 
   else
   {
-    v19 = [v18 committedSearchQueryKind];
+    asYouTypeSearchQueryKind = [v18 committedSearchQueryKind];
   }
 
-  [(SPUISearchHeader *)self textDidChange:v16 whyQuery:v7 allowZKW:1 sourcePreference:v6 searchEntities:v10 queryKind:v19];
+  [(SPUISearchHeader *)self textDidChange:v16 whyQuery:v7 allowZKW:1 sourcePreference:v6 searchEntities:searchEntities queryKind:asYouTypeSearchQueryKind];
 }
 
-- (void)performTestSearchWithQuery:(id)a3 event:(unint64_t)a4 queryKind:(unint64_t)a5
+- (void)performTestSearchWithQuery:(id)query event:(unint64_t)event queryKind:(unint64_t)kind
 {
-  v8 = a3;
-  [(SPUISearchHeader *)self textDidChange:v8 whyQuery:a4 allowZKW:1 sourcePreference:0 searchEntities:0 queryKind:a5];
-  v9 = [(SPUISearchHeader *)self searchField];
-  [v9 setText:v8];
+  queryCopy = query;
+  [(SPUISearchHeader *)self textDidChange:queryCopy whyQuery:event allowZKW:1 sourcePreference:0 searchEntities:0 queryKind:kind];
+  searchField = [(SPUISearchHeader *)self searchField];
+  [searchField setText:queryCopy];
 }
 
 - (BOOL)completionResultIsPotentiallyPunchout
 {
-  v2 = [(SPUISearchHeader *)self searchField];
-  v3 = [v2 completionResultIsPotentiallyPunchout];
+  searchField = [(SPUISearchHeader *)self searchField];
+  completionResultIsPotentiallyPunchout = [searchField completionResultIsPotentiallyPunchout];
 
-  return v3;
+  return completionResultIsPotentiallyPunchout;
 }
 
-- (void)performTransition:(int64_t)a3 willBeDisplayed:(BOOL)a4
+- (void)performTransition:(int64_t)transition willBeDisplayed:(BOOL)displayed
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SPUISearchHeader_performTransition_willBeDisplayed___block_invoke;
   v4[3] = &unk_279D06D68;
-  v5 = a4;
+  displayedCopy = displayed;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = transition;
   [MEMORY[0x277D75D18] performWithoutAnimation:v4];
 }
 

@@ -1,9 +1,9 @@
 @interface CKRecordObserverManager
 + (CKRecordObserverManager)sharedManager;
 - (CKRecordObserverManager)init;
-- (void)addRecordObserver:(id)a3 block:(id)a4;
-- (void)handleRecordChange:(id)a3 container:(id)a4 completionHandler:(id)a5;
-- (void)removeRecordObserver:(id)a3;
+- (void)addRecordObserver:(id)observer block:(id)block;
+- (void)handleRecordChange:(id)change container:(id)container completionHandler:(id)handler;
+- (void)removeRecordObserver:(id)observer;
 @end
 
 @implementation CKRecordObserverManager
@@ -39,11 +39,11 @@
   return v2;
 }
 
-- (void)addRecordObserver:(id)a3 block:(id)a4
+- (void)addRecordObserver:(id)observer block:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  blockCopy = block;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -53,15 +53,15 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = observerCopy;
     _os_log_impl(&dword_1883EA000, v8, OS_LOG_TYPE_DEFAULT, "Adding record observer: %@", &v15, 0xCu);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    recordObservers = v9->_recordObservers;
+    recordObservers = selfCopy->_recordObservers;
   }
 
   else
@@ -70,17 +70,17 @@
   }
 
   v11 = recordObservers;
-  v12 = _Block_copy(v7);
-  objc_msgSend_setObject_forKey_(v11, v13, v12, v6);
+  v12 = _Block_copy(blockCopy);
+  objc_msgSend_setObject_forKey_(v11, v13, v12, observerCopy);
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeRecordObserver:(id)a3
+- (void)removeRecordObserver:(id)observer
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -90,15 +90,15 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = observerCopy;
     _os_log_impl(&dword_1883EA000, v5, OS_LOG_TYPE_DEFAULT, "Removing record observer: %@", &v11, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    recordObservers = v6->_recordObservers;
+    recordObservers = selfCopy->_recordObservers;
   }
 
   else
@@ -107,25 +107,25 @@
   }
 
   v8 = recordObservers;
-  objc_msgSend_removeObjectForKey_(v8, v9, v4);
+  objc_msgSend_removeObjectForKey_(v8, v9, observerCopy);
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRecordChange:(id)a3 container:(id)a4 completionHandler:(id)a5
+- (void)handleRecordChange:(id)change container:(id)container completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v27 = a4;
-  v28 = a5;
-  if (v8)
+  changeCopy = change;
+  containerCopy = container;
+  handlerCopy = handler;
+  if (changeCopy)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    if (v9)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy)
     {
-      recordObservers = v9->_recordObservers;
+      recordObservers = selfCopy->_recordObservers;
     }
 
     else
@@ -138,12 +138,12 @@
     v40[1] = 3221225472;
     v40[2] = sub_188644268;
     v40[3] = &unk_1E70BFCD8;
-    v41 = v27;
-    v12 = v8;
+    v41 = containerCopy;
+    v12 = changeCopy;
     v42 = v12;
     v14 = objc_msgSend_CKFlatMap_(v11, v13, v40);
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
     v15 = dispatch_group_create();
     v36 = 0u;
     v37 = 0u;
@@ -166,9 +166,9 @@
 
           v20 = *(*(&v36 + 1) + 8 * v19);
           dispatch_group_enter(v15);
-          if (v9)
+          if (selfCopy)
           {
-            queue = v9->_queue;
+            queue = selfCopy->_queue;
           }
 
           else
@@ -196,19 +196,19 @@
       while (v23);
     }
 
-    if (v28)
+    if (handlerCopy)
     {
-      if (v9)
+      if (selfCopy)
       {
-        v9 = v9->_queue;
+        selfCopy = selfCopy->_queue;
       }
 
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = sub_1886445C0;
       v30[3] = &unk_1E70BC2C0;
-      v31 = v28;
-      dispatch_group_notify(v15, &v9->super, v30);
+      v31 = handlerCopy;
+      dispatch_group_notify(v15, &selfCopy->super, v30);
     }
   }
 
@@ -226,9 +226,9 @@
       _os_log_impl(&dword_1883EA000, v24, OS_LOG_TYPE_INFO, "Received a nil recordChange", buf, 2u);
     }
 
-    if (v28)
+    if (handlerCopy)
     {
-      (*(v28 + 2))(v28, v25);
+      (*(handlerCopy + 2))(handlerCopy, v25);
     }
   }
 

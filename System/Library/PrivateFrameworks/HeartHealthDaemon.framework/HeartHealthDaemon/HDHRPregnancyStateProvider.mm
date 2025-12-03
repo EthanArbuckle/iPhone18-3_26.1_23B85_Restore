@@ -1,26 +1,26 @@
 @interface HDHRPregnancyStateProvider
-- (HDHRPregnancyStateProvider)initWithPregnancySampleProvider:(id)a3;
-- (id)latestWashoutEndDateWithError:(id *)a3;
+- (HDHRPregnancyStateProvider)initWithPregnancySampleProvider:(id)provider;
+- (id)latestWashoutEndDateWithError:(id *)error;
 @end
 
 @implementation HDHRPregnancyStateProvider
 
-- (HDHRPregnancyStateProvider)initWithPregnancySampleProvider:(id)a3
+- (HDHRPregnancyStateProvider)initWithPregnancySampleProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = HDHRPregnancyStateProvider;
   v6 = [(HDHRPregnancyStateProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pregnancySampleProvider, a3);
+    objc_storeStrong(&v6->_pregnancySampleProvider, provider);
   }
 
   return v7;
 }
 
-- (id)latestWashoutEndDateWithError:(id *)a3
+- (id)latestWashoutEndDateWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   pregnancySampleProvider = self->_pregnancySampleProvider;
@@ -29,25 +29,25 @@
   v7 = v25;
   if (!v7)
   {
-    v9 = [v6 firstObject];
-    v10 = v9;
-    if (v9)
+    firstObject = [v6 firstObject];
+    v10 = firstObject;
+    if (firstObject)
     {
-      v11 = [v9 endDate];
-      v12 = [MEMORY[0x277CBEAA8] distantFuture];
+      endDate = [firstObject endDate];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
 
-      if (v11 != v12)
+      if (endDate != distantFuture)
       {
-        v13 = [v10 endDate];
-        v14 = [v10 startDate];
-        [v13 timeIntervalSinceDate:v14];
+        endDate2 = [v10 endDate];
+        startDate = [v10 startDate];
+        [endDate2 timeIntervalSinceDate:startDate];
         v16 = v15;
 
         if (v16 >= 12096000.0)
         {
           v23 = MEMORY[0x277CBEAA8];
-          v24 = [v10 endDate];
-          v18 = [v23 dateWithTimeInterval:v24 sinceDate:7257600.0];
+          endDate3 = [v10 endDate];
+          v18 = [v23 dateWithTimeInterval:endDate3 sinceDate:7257600.0];
 
           goto LABEL_18;
         }
@@ -88,7 +88,7 @@ LABEL_16:
     v19 = v17;
     v20 = HKSensitiveLogItem();
     *buf = 138543618;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v20;
     _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] %@", buf, 0x16u);
@@ -96,10 +96,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (error)
   {
     v8 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   else

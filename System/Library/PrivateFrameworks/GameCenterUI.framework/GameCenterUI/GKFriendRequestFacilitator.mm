@@ -1,19 +1,19 @@
 @interface GKFriendRequestFacilitator
-+ (void)makeViewControllerForInviteWithRecipients:(id)a3 chatGUID:(id)a4 resultHandler:(id)a5;
++ (void)makeViewControllerForInviteWithRecipients:(id)recipients chatGUID:(id)d resultHandler:(id)handler;
 @end
 
 @implementation GKFriendRequestFacilitator
 
-+ (void)makeViewControllerForInviteWithRecipients:(id)a3 chatGUID:(id)a4 resultHandler:(id)a5
++ (void)makeViewControllerForInviteWithRecipients:(id)recipients chatGUID:(id)d resultHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__GKFriendRequestFacilitator_makeViewControllerForInviteWithRecipients_chatGUID_resultHandler___block_invoke;
   v9[3] = &unk_27966A668;
-  v10 = v7;
-  v8 = v7;
-  [_TtC12GameCenterUI24FriendRequestFacilitator makeViewControllerForRemoteInviteWithRecipients:a3 chatGUID:a4 resultHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [_TtC12GameCenterUI24FriendRequestFacilitator makeViewControllerForRemoteInviteWithRecipients:recipients chatGUID:d resultHandler:v9];
 }
 
 void __95__GKFriendRequestFacilitator_makeViewControllerForInviteWithRecipients_chatGUID_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -9,36 +9,36 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 typeIdentifier];
-  if (v5 == @"ConfiguredShortcut")
+  identifier = [v3 identifier];
+  typeIdentifier = [identifier typeIdentifier];
+  if (typeIdentifier == @"ConfiguredShortcut")
   {
   }
 
   else
   {
-    v6 = v5;
-    if (!v5)
+    v6 = typeIdentifier;
+    if (!typeIdentifier)
     {
 
 LABEL_10:
-      v9 = getWFGeneralLogObject();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      instanceIdentifier = getWFGeneralLogObject();
+      if (os_log_type_enabled(instanceIdentifier, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v3 identifier];
-        v14 = [v13 typeIdentifier];
+        identifier2 = [v3 identifier];
+        typeIdentifier2 = [identifier2 typeIdentifier];
         v17 = 136315394;
         v18 = "+[WFConfiguredSystemAction(WidgetConversion) systemActionWithLegacyEntity:]";
         v19 = 2114;
-        v20 = v14;
-        _os_log_impl(&dword_1C830A000, v9, OS_LOG_TYPE_ERROR, "%s Could not create system action from entity because the type identifier is of %{public}@ and not ConfiguredShortcut", &v17, 0x16u);
+        v20 = typeIdentifier2;
+        _os_log_impl(&dword_1C830A000, instanceIdentifier, OS_LOG_TYPE_ERROR, "%s Could not create system action from entity because the type identifier is of %{public}@ and not ConfiguredShortcut", &v17, 0x16u);
       }
 
       v12 = 0;
       goto LABEL_21;
     }
 
-    v7 = [@"ConfiguredShortcut" isEqualToString:v5];
+    v7 = [@"ConfiguredShortcut" isEqualToString:typeIdentifier];
 
     if ((v7 & 1) == 0)
     {
@@ -46,13 +46,13 @@ LABEL_10:
     }
   }
 
-  v8 = [v3 identifier];
-  v9 = [v8 instanceIdentifier];
+  identifier3 = [v3 identifier];
+  instanceIdentifier = [identifier3 instanceIdentifier];
 
-  if (v9)
+  if (instanceIdentifier)
   {
     v10 = +[WFWidgetCache sharedCache];
-    v11 = [v10 widgetWorkflowWithIdentifier:v9];
+    v11 = [v10 widgetWorkflowWithIdentifier:instanceIdentifier];
     if (v11)
     {
       v12 = [objc_alloc(MEMORY[0x1E69E0A10]) initWithWorkflow:v11 shortcutsMetadata:0];
@@ -66,7 +66,7 @@ LABEL_10:
         v17 = 136315394;
         v18 = "+[WFConfiguredSystemAction(WidgetConversion) systemActionWithLegacyEntity:]";
         v19 = 2112;
-        v20 = v9;
+        v20 = instanceIdentifier;
         _os_log_impl(&dword_1C830A000, v15, OS_LOG_TYPE_ERROR, "%s Could not create reference for workflowID: %@", &v17, 0x16u);
       }
 
@@ -96,20 +96,20 @@ LABEL_21:
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 value];
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [v4 value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 properties];
-    v7 = [v6 if_firstObjectPassingTest:&__block_literal_global_3621];
+    properties = [value properties];
+    v7 = [properties if_firstObjectPassingTest:&__block_literal_global_3621];
 
     if (v7)
     {
-      v8 = [v7 value];
-      v9 = [v8 value];
+      value2 = [v7 value];
+      v8Value = [value2 value];
 
-      if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (v8Value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v9 options:0];
+        v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8Value options:0];
         v16 = 0;
         v11 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:&v16];
         v12 = v16;
@@ -133,14 +133,14 @@ LABEL_21:
       else
       {
 
-        v9 = getWFGeneralLogObject();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        v8Value = getWFGeneralLogObject();
+        if (os_log_type_enabled(v8Value, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315394;
           v18 = "+[WFConfiguredSystemAction(WidgetConversion) systemActionWithValue:]";
           v19 = 2112;
           v20 = v7;
-          _os_log_impl(&dword_1C830A000, v9, OS_LOG_TYPE_ERROR, "%s Could not create system action from property: %@", buf, 0x16u);
+          _os_log_impl(&dword_1C830A000, v8Value, OS_LOG_TYPE_ERROR, "%s Could not create system action from property: %@", buf, 0x16u);
         }
 
         v11 = 0;
@@ -155,25 +155,25 @@ LABEL_21:
         *buf = 136315394;
         v18 = "+[WFConfiguredSystemAction(WidgetConversion) systemActionWithValue:]";
         v19 = 2112;
-        v20 = v5;
+        v20 = value;
         _os_log_impl(&dword_1C830A000, v14, OS_LOG_TYPE_DEFAULT, "%s Could not create system action from LNEntity: %@, attempting legacy deserialization", buf, 0x16u);
       }
 
-      v11 = [a1 systemActionWithLegacyEntity:v5];
+      v11 = [self systemActionWithLegacyEntity:value];
     }
   }
 
   else
   {
 
-    v5 = getWFGeneralLogObject();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    value = getWFGeneralLogObject();
+    if (os_log_type_enabled(value, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v18 = "+[WFConfiguredSystemAction(WidgetConversion) systemActionWithValue:]";
       v19 = 2112;
       v20 = v4;
-      _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_ERROR, "%s Could not create system action from value: %@", buf, 0x16u);
+      _os_log_impl(&dword_1C830A000, value, OS_LOG_TYPE_ERROR, "%s Could not create system action from value: %@", buf, 0x16u);
     }
 
     v11 = 0;

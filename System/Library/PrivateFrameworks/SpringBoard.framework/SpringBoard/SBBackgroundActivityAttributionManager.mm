@@ -1,20 +1,20 @@
 @interface SBBackgroundActivityAttributionManager
 + (id)sharedInstance;
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4;
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene;
 - (SBBackgroundActivityAttributionManager)init;
-- (id)_applicationForBackgroundActivityAttribution:(id)a3;
-- (id)_statusStringsByIdentifierForActiveAttributionsByBackgroundActivityIdentifier:(id)a3 inactiveAttributionsByBackgroundActivityIdentifier:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_applicationForBackgroundActivityAttribution:(id)attribution;
+- (id)_statusStringsByIdentifierForActiveAttributionsByBackgroundActivityIdentifier:(id)identifier inactiveAttributionsByBackgroundActivityIdentifier:(id)activityIdentifier;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:(id)a3 withHandler:(id)a4;
-- (void)_postStatusStringsByIdentifier:(id)a3;
-- (void)_queue_updateWithData:(id)a3 andOverrides:(id)a4;
+- (void)_mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:(id)handles withHandler:(id)handler;
+- (void)_postStatusStringsByIdentifier:(id)identifier;
+- (void)_queue_updateWithData:(id)data andOverrides:(id)overrides;
 - (void)_registerHandlerAndHandleExistingState;
-- (void)_updateAppSceneSettingsForForegroundAppsAndPostAddedBackgroundActivityIdentifiers:(id)a3 removedBackgroundActivityIdentifiers:(id)a4;
+- (void)_updateAppSceneSettingsForForegroundAppsAndPostAddedBackgroundActivityIdentifiers:(id)identifiers removedBackgroundActivityIdentifiers:(id)activityIdentifiers;
 - (void)dealloc;
-- (void)statusBarAssertionManager:(id)a3 statusBarSettingsDidChange:(id)a4;
-- (void)updateForegroundApplicationSceneHandles:(id)a3 withOptions:(unint64_t)a4 completion:(id)a5;
+- (void)statusBarAssertionManager:(id)manager statusBarSettingsDidChange:(id)change;
+- (void)updateForegroundApplicationSceneHandles:(id)handles withOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation SBBackgroundActivityAttributionManager
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __56__SBBackgroundActivityAttributionManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_19 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_19, block);
@@ -80,13 +80,13 @@ uint64_t __56__SBBackgroundActivityAttributionManager_sharedInstance__block_invo
   v3 = [(SBBackgroundActivityAttributionManager *)&v35 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     attributionsByBackgroundActivityIdentifier = v3->_attributionsByBackgroundActivityIdentifier;
-    v3->_attributionsByBackgroundActivityIdentifier = v4;
+    v3->_attributionsByBackgroundActivityIdentifier = strongToStrongObjectsMapTable;
 
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     suspendedAttributionsByBackgroundActivityIdentifier = v3->_suspendedAttributionsByBackgroundActivityIdentifier;
-    v3->_suspendedAttributionsByBackgroundActivityIdentifier = v6;
+    v3->_suspendedAttributionsByBackgroundActivityIdentifier = strongToStrongObjectsMapTable2;
 
     Serial = BSDispatchQueueCreateSerial();
     internalQueue = v3->_internalQueue;
@@ -97,13 +97,13 @@ uint64_t __56__SBBackgroundActivityAttributionManager_sharedInstance__block_invo
     eventQueue = v3->_eventQueue;
     v3->_eventQueue = v11;
 
-    v13 = [SBApp windowSceneManager];
-    v14 = [v13 embeddedDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-    v15 = [v14 statusBarManager];
-    v16 = [v15 assertionManager];
+    statusBarManager = [embeddedDisplayWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
     appStatusBarAssertionManager = v3->_appStatusBarAssertionManager;
-    v3->_appStatusBarAssertionManager = v16;
+    v3->_appStatusBarAssertionManager = assertionManager;
 
     [(SBWindowSceneStatusBarAssertionManager *)v3->_appStatusBarAssertionManager addObserver:v3];
     v18 = [MEMORY[0x277CBEB58] set];
@@ -118,18 +118,18 @@ uint64_t __56__SBBackgroundActivityAttributionManager_sharedInstance__block_invo
     v32 = MEMORY[0x277D85DD0];
     objc_copyWeak(&v33, &location);
     v22 = BSLogAddStateCaptureBlockWithTitle();
-    v23 = [SBApp systemStatusServer];
-    if (!v23)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
-      v31 = [MEMORY[0x277CCA890] currentHandler];
-      [v31 handleFailureInMethod:a2 object:v3 file:@"SBBackgroundActivityAttributionManager.m" lineNumber:102 description:@"SBBackgroundActivityAttributionManager is being created before the system status server"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"SBBackgroundActivityAttributionManager.m" lineNumber:102 description:@"SBBackgroundActivityAttributionManager is being created before the system status server"];
     }
 
-    v24 = [objc_alloc(MEMORY[0x277D6B8F8]) initWithServerHandle:v23];
+    v24 = [objc_alloc(MEMORY[0x277D6B8F8]) initWithServerHandle:systemStatusServer];
     backgroundActivitiesDomain = v3->_backgroundActivitiesDomain;
     v3->_backgroundActivitiesDomain = v24;
 
-    v26 = [objc_alloc(MEMORY[0x277D6BB28]) initWithServerHandle:v23];
+    v26 = [objc_alloc(MEMORY[0x277D6BB28]) initWithServerHandle:systemStatusServer];
     overridesDomain = v3->_overridesDomain;
     v3->_overridesDomain = v26;
 
@@ -163,10 +163,10 @@ id __46__SBBackgroundActivityAttributionManager_init__block_invoke(uint64_t a1)
   [(SBBackgroundActivityAttributionManager *)&v3 dealloc];
 }
 
-- (void)updateForegroundApplicationSceneHandles:(id)a3 withOptions:(unint64_t)a4 completion:(id)a5
+- (void)updateForegroundApplicationSceneHandles:(id)handles withOptions:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  handlesCopy = handles;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBBackgroundActivityAttributionManager updateForegroundApplicationSceneHandles:withOptions:completion:];
@@ -177,11 +177,11 @@ id __46__SBBackgroundActivityAttributionManager_init__block_invoke(uint64_t a1)
   v12[2] = __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSceneHandles_withOptions_completion___block_invoke;
   v12[3] = &unk_2783B5580;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = handlesCopy;
+  v14 = completionCopy;
+  optionsCopy = options;
+  v10 = completionCopy;
+  v11 = handlesCopy;
   [(SBBackgroundActivityAttributionManager *)self _mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:v11 withHandler:v12];
 }
 
@@ -237,54 +237,54 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
   }
 }
 
-- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)a3 windowScene:(id)a4
+- (BOOL)handleTapForBackgroundActivityWithIdentifier:(id)identifier windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBBackgroundActivityAssertionServiceManager *)self->_assertionServiceManager handleTapForBackgroundActivityWithIdentifier:v6 windowScene:v7]|| [(SBStatusBarTapManager *)self->_statusBarTapManager handleTapForBackgroundActivityWithIdentifier:v6 windowScene:v7];
+  identifierCopy = identifier;
+  sceneCopy = scene;
+  v8 = [(SBBackgroundActivityAssertionServiceManager *)self->_assertionServiceManager handleTapForBackgroundActivityWithIdentifier:identifierCopy windowScene:sceneCopy]|| [(SBStatusBarTapManager *)self->_statusBarTapManager handleTapForBackgroundActivityWithIdentifier:identifierCopy windowScene:sceneCopy];
 
   return v8;
 }
 
-- (id)_applicationForBackgroundActivityAttribution:(id)a3
+- (id)_applicationForBackgroundActivityAttribution:(id)attribution
 {
-  v3 = a3;
-  v4 = [v3 activityAttribution];
-  v5 = [v4 attributedEntity];
-  v6 = [v5 bundleIdentifier];
+  attributionCopy = attribution;
+  activityAttribution = [attributionCopy activityAttribution];
+  attributedEntity = [activityAttribution attributedEntity];
+  bundleIdentifier = [attributedEntity bundleIdentifier];
 
   v7 = +[SBApplicationController sharedInstance];
   v8 = v7;
-  if (v6)
+  if (bundleIdentifier)
   {
-    v9 = [v7 applicationWithBundleIdentifier:v6];
+    v9 = [v7 applicationWithBundleIdentifier:bundleIdentifier];
   }
 
   else
   {
-    v10 = [v3 activityAttribution];
-    v9 = [v8 applicationWithPid:{objc_msgSend(v10, "pid")}];
+    activityAttribution2 = [attributionCopy activityAttribution];
+    v9 = [v8 applicationWithPid:{objc_msgSend(activityAttribution2, "pid")}];
   }
 
   return v9;
 }
 
-- (void)_mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:(id)a3 withHandler:(id)a4
+- (void)_mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:(id)handles withHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v25 = a4;
+  handlesCopy = handles;
+  handlerCopy = handler;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBBackgroundActivityAttributionManager _mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles:withHandler:];
   }
 
-  v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = handlesCopy;
   v28 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v28)
   {
@@ -301,14 +301,14 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
 
         v29 = v7;
         v31 = *(*(&v43 + 1) + 8 * v7);
-        v8 = [v31 application];
-        v9 = [v8 backgroundActivityAttributionsByIdentifier];
+        application = [v31 application];
+        backgroundActivityAttributionsByIdentifier = [application backgroundActivityAttributionsByIdentifier];
 
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v10 = v9;
+        v10 = backgroundActivityAttributionsByIdentifier;
         v11 = [v10 countByEnumeratingWithState:&v39 objects:v47 count:16];
         if (v11)
         {
@@ -332,7 +332,7 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
               v38[4] = self;
               v38[5] = v31;
               v17 = [v16 objectsPassingTest:v38];
-              v18 = [v6 objectForKey:v15];
+              v18 = [strongToStrongObjectsMapTable objectForKey:v15];
               v19 = [v18 mutableCopy];
 
               if (v19)
@@ -342,7 +342,7 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
 
               else
               {
-                [v6 setObject:v17 forKey:v15];
+                [strongToStrongObjectsMapTable setObject:v17 forKey:v15];
               }
             }
 
@@ -367,9 +367,9 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__54;
   v36[4] = __Block_byref_object_dispose__54;
-  v20 = [(SBWindowSceneStatusBarAssertionManager *)self->_appStatusBarAssertionManager currentStatusBarSettings];
-  v21 = [v20 backgroundActivitiesToSuppress];
-  v37 = [v21 mutableCopy];
+  currentStatusBarSettings = [(SBWindowSceneStatusBarAssertionManager *)self->_appStatusBarAssertionManager currentStatusBarSettings];
+  backgroundActivitiesToSuppress = [currentStatusBarSettings backgroundActivitiesToSuppress];
+  v37 = [backgroundActivitiesToSuppress mutableCopy];
 
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -377,11 +377,11 @@ void __105__SBBackgroundActivityAttributionManager_updateForegroundApplicationSc
   block[2] = __172__SBBackgroundActivityAttributionManager__mainQueue_getBackgroundActivityIdentifiersToSuppressAndStatusStringsByIdentifierForForegroundApplicationSceneHandles_withHandler___block_invoke_33;
   block[3] = &unk_2783B55F8;
   block[4] = self;
-  v33 = v6;
-  v34 = v25;
+  v33 = strongToStrongObjectsMapTable;
+  v34 = handlerCopy;
   v35 = v36;
-  v23 = v25;
-  v24 = v6;
+  v23 = handlerCopy;
+  v24 = strongToStrongObjectsMapTable;
   dispatch_async(internalQueue, block);
 
   _Block_object_dispose(v36, 8);
@@ -467,24 +467,24 @@ void __172__SBBackgroundActivityAttributionManager__mainQueue_getBackgroundActiv
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)_statusStringsByIdentifierForActiveAttributionsByBackgroundActivityIdentifier:(id)a3 inactiveAttributionsByBackgroundActivityIdentifier:(id)a4
+- (id)_statusStringsByIdentifierForActiveAttributionsByBackgroundActivityIdentifier:(id)identifier inactiveAttributionsByBackgroundActivityIdentifier:(id)activityIdentifier
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  identifierCopy = identifier;
+  activityIdentifierCopy = activityIdentifier;
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v9 = v6;
+  v9 = identifierCopy;
   v10 = [v9 countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v10)
   {
     v11 = v10;
     v56 = *v66;
-    v52 = v7;
-    v53 = v8;
+    v52 = activityIdentifierCopy;
+    v53 = strongToStrongObjectsMapTable;
     v49 = v9;
     do
     {
@@ -499,7 +499,7 @@ void __172__SBBackgroundActivityAttributionManager__mainQueue_getBackgroundActiv
 
         v13 = *(*(&v65 + 1) + 8 * v12);
         v14 = [v9 objectForKey:v13];
-        v15 = [v7 objectForKey:v13];
+        v15 = [activityIdentifierCopy objectForKey:v13];
         v16 = STUIStyleOverrideForBackgroundActivityIdentifier();
         if (v16 == 4)
         {
@@ -508,8 +508,8 @@ void __172__SBBackgroundActivityAttributionManager__mainQueue_getBackgroundActiv
 
         if (v16 != 2048)
         {
-          v30 = [(SBBackgroundActivityAssertionServiceManager *)self->_assertionServiceManager statusStringForBackgroundActivityWithIdentifier:v13 activeAttributions:v14];
-          if (v30)
+          null = [(SBBackgroundActivityAssertionServiceManager *)self->_assertionServiceManager statusStringForBackgroundActivityWithIdentifier:v13 activeAttributions:v14];
+          if (null)
           {
             goto LABEL_40;
           }
@@ -524,34 +524,34 @@ LABEL_34:
           v60 = v15;
           v40 = v12;
           v41 = v14;
-          v42 = [v14 anyObject];
-          v43 = [(SBBackgroundActivityAttributionManager *)self _applicationForBackgroundActivityAttribution:v42];
-          v44 = [v43 displayName];
-          if (v44)
+          anyObject = [v14 anyObject];
+          v43 = [(SBBackgroundActivityAttributionManager *)self _applicationForBackgroundActivityAttribution:anyObject];
+          displayName = [v43 displayName];
+          if (displayName)
           {
             v45 = MEMORY[0x277CCACA8];
-            v46 = [MEMORY[0x277CCA8D8] mainBundle];
-            v47 = [v46 localizedStringForKey:@"STATUS_BAR_BACKGROUND_ACTIVITY_SINGLE_APP_WITH_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
-            v30 = [v45 stringWithFormat:v47, v44];
+            mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+            v47 = [mainBundle localizedStringForKey:@"STATUS_BAR_BACKGROUND_ACTIVITY_SINGLE_APP_WITH_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+            null = [v45 stringWithFormat:v47, displayName];
 
             v11 = v51;
           }
 
           else
           {
-            v30 = 0;
+            null = 0;
           }
 
           v12 = v40;
           v14 = v41;
           v13 = v58;
           v15 = v60;
-          v7 = v52;
-          v8 = v53;
-          if (!v30)
+          activityIdentifierCopy = v52;
+          strongToStrongObjectsMapTable = v53;
+          if (!null)
           {
 LABEL_39:
-            v30 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
           }
 
           goto LABEL_40;
@@ -583,11 +583,11 @@ LABEL_39:
               }
 
               v23 = *(*(&v61 + 1) + 8 * i);
-              v24 = [v23 activityAttribution];
-              v25 = [v24 attributedEntity];
-              v26 = [v25 isSystemService];
+              activityAttribution = [v23 activityAttribution];
+              attributedEntity = [activityAttribution attributedEntity];
+              isSystemService = [attributedEntity isSystemService];
 
-              if ((v26 & 1) == 0)
+              if ((isSystemService & 1) == 0)
               {
                 v27 = [(SBBackgroundActivityAttributionManager *)self _applicationForBackgroundActivityAttribution:v23];
                 if (v27)
@@ -615,27 +615,27 @@ LABEL_39:
         }
 
         v29 = [v17 count];
-        v30 = v29;
+        null = v29;
         if (v29)
         {
           if (v29 == 1)
           {
-            v31 = [v17 anyObject];
-            v32 = [v31 displayName];
+            anyObject2 = [v17 anyObject];
+            displayName2 = [anyObject2 displayName];
 
             v33 = MEMORY[0x277CCACA8];
-            v34 = [MEMORY[0x277CCA8D8] mainBundle];
-            v35 = [v34 localizedStringForKey:@"STATUS_BAR_BACKGROUND_LOCATION_SINGLE_APP_WITH_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
-            v30 = [v33 stringWithFormat:v35, v32];
+            mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+            v35 = [mainBundle2 localizedStringForKey:@"STATUS_BAR_BACKGROUND_LOCATION_SINGLE_APP_WITH_NAME_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+            null = [v33 stringWithFormat:v35, displayName2];
 
-            v36 = v32;
+            v36 = displayName2;
           }
 
           else
           {
             v37 = MEMORY[0x277CCACA8];
-            v38 = [MEMORY[0x277CCA8D8] mainBundle];
-            v36 = v38;
+            mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+            v36 = mainBundle3;
             if (v50)
             {
               v39 = @"STATUS_BAR_BACKGROUND_LOCATION_MULTIPLE_OTHER_APPS_WITH_COUNT_FORMAT";
@@ -646,12 +646,12 @@ LABEL_39:
               v39 = @"STATUS_BAR_BACKGROUND_LOCATION_MULTIPLE_APPS_WITH_COUNT_FORMAT";
             }
 
-            v34 = [v38 localizedStringForKey:v39 value:&stru_283094718 table:@"SpringBoardPlurals"];
-            v30 = [v37 stringWithFormat:v34, v30];
+            mainBundle2 = [mainBundle3 localizedStringForKey:v39 value:&stru_283094718 table:@"SpringBoardPlurals"];
+            null = [v37 stringWithFormat:mainBundle2, null];
           }
 
-          v7 = v52;
-          v8 = v53;
+          activityIdentifierCopy = v52;
+          strongToStrongObjectsMapTable = v53;
           v9 = v49;
           v13 = v57;
           v15 = v59;
@@ -662,8 +662,8 @@ LABEL_39:
 
         else
         {
-          v7 = v52;
-          v8 = v53;
+          activityIdentifierCopy = v52;
+          strongToStrongObjectsMapTable = v53;
           v9 = v49;
           v11 = v51;
           v14 = v55;
@@ -672,13 +672,13 @@ LABEL_39:
         }
 
         v12 = v54;
-        if (!v30)
+        if (!null)
         {
           goto LABEL_34;
         }
 
 LABEL_40:
-        [v8 setObject:v30 forKey:v13];
+        [strongToStrongObjectsMapTable setObject:null forKey:v13];
 
         ++v12;
       }
@@ -690,22 +690,22 @@ LABEL_40:
     while (v11);
   }
 
-  return v8;
+  return strongToStrongObjectsMapTable;
 }
 
-- (void)_updateAppSceneSettingsForForegroundAppsAndPostAddedBackgroundActivityIdentifiers:(id)a3 removedBackgroundActivityIdentifiers:(id)a4
+- (void)_updateAppSceneSettingsForForegroundAppsAndPostAddedBackgroundActivityIdentifiers:(id)identifiers removedBackgroundActivityIdentifiers:(id)activityIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  activityIdentifiersCopy = activityIdentifiers;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __161__SBBackgroundActivityAttributionManager__updateAppSceneSettingsForForegroundAppsAndPostAddedBackgroundActivityIdentifiers_removedBackgroundActivityIdentifiers___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = activityIdentifiersCopy;
+  v12 = identifiersCopy;
+  v8 = identifiersCopy;
+  v9 = activityIdentifiersCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -788,15 +788,15 @@ uint64_t __161__SBBackgroundActivityAttributionManager__updateAppSceneSettingsFo
   return [*(*(a1 + 40) + 72) relinquishLock:*(a1 + 48)];
 }
 
-- (void)_postStatusStringsByIdentifier:(id)a3
+- (void)_postStatusStringsByIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [identifierCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -807,13 +807,13 @@ uint64_t __161__SBBackgroundActivityAttributionManager__updateAppSceneSettingsFo
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifierCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v3 objectForKey:v8];
-        v10 = [MEMORY[0x277CBEB68] null];
-        if (v9 == v10)
+        v9 = [identifierCopy objectForKey:v8];
+        null = [MEMORY[0x277CBEB68] null];
+        if (v9 == null)
         {
           v11 = &stru_283094718;
         }
@@ -832,7 +832,7 @@ uint64_t __161__SBBackgroundActivityAttributionManager__updateAppSceneSettingsFo
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [identifierCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -912,52 +912,52 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
   }
 }
 
-- (void)_queue_updateWithData:(id)a3 andOverrides:(id)a4
+- (void)_queue_updateWithData:(id)data andOverrides:(id)overrides
 {
   v120 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  overridesCopy = overrides;
   BSDispatchQueueAssert();
-  v9 = [(STBackgroundActivitiesStatusDomainData *)self->_queue_processedData attributions];
-  v10 = v9;
-  if (v9)
+  attributions = [(STBackgroundActivitiesStatusDomainData *)self->_queue_processedData attributions];
+  v10 = attributions;
+  if (attributions)
   {
-    v11 = v9;
+    array = attributions;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v12 = v11;
+  v12 = array;
 
-  v13 = [v7 attributions];
-  v14 = v13;
-  v80 = v7;
-  if (v13)
+  attributions2 = [dataCopy attributions];
+  v14 = attributions2;
+  v80 = dataCopy;
+  if (attributions2)
   {
-    v15 = v13;
+    array2 = attributions2;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
   }
 
-  v16 = v15;
+  v16 = array2;
 
   v17 = [v16 bs_differenceWithArray:v12];
   v18 = [v12 bs_differenceWithArray:v16];
-  objc_storeStrong(&self->_queue_processedData, a3);
+  objc_storeStrong(&self->_queue_processedData, data);
   v19 = [MEMORY[0x277CBEB58] set];
   v84 = [MEMORY[0x277CBEB58] set];
-  v20 = [(STStatusBarOverridesStatusDomainData *)self->_queue_processedOverrides suppressedBackgroundActivityIdentifiers];
-  v21 = v20;
+  suppressedBackgroundActivityIdentifiers = [(STStatusBarOverridesStatusDomainData *)self->_queue_processedOverrides suppressedBackgroundActivityIdentifiers];
+  v21 = suppressedBackgroundActivityIdentifiers;
   v78 = v12;
-  if (v20)
+  if (suppressedBackgroundActivityIdentifiers)
   {
-    v22 = v20;
+    v22 = suppressedBackgroundActivityIdentifiers;
   }
 
   else
@@ -967,14 +967,14 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
 
   v83 = v22;
 
-  v23 = [v8 suppressedBackgroundActivityIdentifiers];
-  v24 = v23;
-  v79 = v8;
+  suppressedBackgroundActivityIdentifiers2 = [overridesCopy suppressedBackgroundActivityIdentifiers];
+  v24 = suppressedBackgroundActivityIdentifiers2;
+  v79 = overridesCopy;
   v77 = v16;
   v85 = v19;
-  if (v23)
+  if (suppressedBackgroundActivityIdentifiers2)
   {
-    v25 = v23;
+    v25 = suppressedBackgroundActivityIdentifiers2;
   }
 
   else
@@ -987,7 +987,7 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
   v28 = __77__SBBackgroundActivityAttributionManager__queue_updateWithData_andOverrides___block_invoke(v27, v26, v83);
   v82 = v26;
   v75 = __77__SBBackgroundActivityAttributionManager__queue_updateWithData_andOverrides___block_invoke(v28, v83, v26);
-  objc_storeStrong(&self->_queue_processedOverrides, a4);
+  objc_storeStrong(&self->_queue_processedOverrides, overrides);
   v112 = 0u;
   v113 = 0u;
   v110 = 0u;
@@ -1009,15 +1009,15 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
         }
 
         v35 = *(*(&v110 + 1) + 8 * i);
-        v36 = [v35 backgroundActivityIdentifier];
-        if ([v83 containsObject:v36])
+        backgroundActivityIdentifier = [v35 backgroundActivityIdentifier];
+        if ([v83 containsObject:backgroundActivityIdentifier])
         {
           SBRemoveBackgroundActivityAttributionByIdentifier(v35, self->_suspendedAttributionsByBackgroundActivityIdentifier);
         }
 
         else if (SBRemoveBackgroundActivityAttributionByIdentifier(v35, self->_attributionsByBackgroundActivityIdentifier))
         {
-          [v84 addObject:v36];
+          [v84 addObject:backgroundActivityIdentifier];
         }
       }
 
@@ -1048,15 +1048,15 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
         }
 
         v42 = *(*(&v106 + 1) + 8 * j);
-        v43 = [v42 backgroundActivityIdentifier];
-        if ([v82 containsObject:v43])
+        backgroundActivityIdentifier2 = [v42 backgroundActivityIdentifier];
+        if ([v82 containsObject:backgroundActivityIdentifier2])
         {
           SBAddBackgroundActivityAttributionByIdentifier(v42, self->_suspendedAttributionsByBackgroundActivityIdentifier);
         }
 
         else if (SBAddBackgroundActivityAttributionByIdentifier(v42, self->_attributionsByBackgroundActivityIdentifier))
         {
-          [v85 addObject:v43];
+          [v85 addObject:backgroundActivityIdentifier2];
         }
       }
 
@@ -1089,12 +1089,12 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
 
         v49 = *(*(&v102 + 1) + 8 * v47);
         v50 = [(NSMapTable *)self->_attributionsByBackgroundActivityIdentifier objectForKey:v49, v75];
-        v51 = [v50 allObjects];
+        allObjects = [v50 allObjects];
 
         [(NSMapTable *)self->_attributionsByBackgroundActivityIdentifier removeObjectForKey:v49];
-        v31 = [v48 arrayByAddingObjectsFromArray:v51];
+        v31 = [v48 arrayByAddingObjectsFromArray:allObjects];
 
-        if ([v51 count])
+        if ([allObjects count])
         {
           [v85 removeObject:v49];
           [v84 addObject:v49];
@@ -1104,7 +1104,7 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
         v101 = 0u;
         v98 = 0u;
         v99 = 0u;
-        v52 = v51;
+        v52 = allObjects;
         v53 = [v52 countByEnumeratingWithState:&v98 objects:v116 count:16];
         if (v53)
         {
@@ -1164,12 +1164,12 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
 
         v63 = *(*(&v94 + 1) + 8 * v61);
         v64 = [(NSMapTable *)self->_suspendedAttributionsByBackgroundActivityIdentifier objectForKey:v63, v75];
-        v65 = [v64 allObjects];
+        allObjects2 = [v64 allObjects];
 
         [(NSMapTable *)self->_suspendedAttributionsByBackgroundActivityIdentifier removeObjectForKey:v63];
-        v37 = [v62 arrayByAddingObjectsFromArray:v65];
+        v37 = [v62 arrayByAddingObjectsFromArray:allObjects2];
 
-        if ([v65 count])
+        if ([allObjects2 count])
         {
           [v84 removeObject:v63];
           [v85 addObject:v63];
@@ -1179,7 +1179,7 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
         v93 = 0u;
         v90 = 0u;
         v91 = 0u;
-        v66 = v65;
+        v66 = allObjects2;
         v67 = [v66 countByEnumeratingWithState:&v90 objects:v114 count:16];
         if (v67)
         {
@@ -1225,7 +1225,7 @@ void __80__SBBackgroundActivityAttributionManager__registerHandlerAndHandleExist
   block[2] = __77__SBBackgroundActivityAttributionManager__queue_updateWithData_andOverrides___block_invoke_2;
   block[3] = &unk_2783A8ED8;
   v87 = v76;
-  v88 = self;
+  selfCopy = self;
   v89 = v37;
   v73 = v37;
   v74 = v76;
@@ -1309,7 +1309,7 @@ void __77__SBBackgroundActivityAttributionManager__queue_updateWithData_andOverr
   }
 }
 
-- (void)statusBarAssertionManager:(id)a3 statusBarSettingsDidChange:(id)a4
+- (void)statusBarAssertionManager:(id)manager statusBarSettingsDidChange:(id)change
 {
   v5 = SBWorkspaceApplicationSceneHandlesInLockedOrUnlockedEnvironmentLayoutState();
   [(SBBackgroundActivityAttributionManager *)self updateForegroundApplicationSceneHandles:v5 withOptions:2 completion:0];
@@ -1317,33 +1317,33 @@ void __77__SBBackgroundActivityAttributionManager__queue_updateWithData_andOverr
 
 - (id)succinctDescription
 {
-  v2 = [(SBBackgroundActivityAttributionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBBackgroundActivityAttributionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBBackgroundActivityAttributionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBBackgroundActivityAttributionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBBackgroundActivityAttributionManager *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBBackgroundActivityAttributionManager *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__SBBackgroundActivityAttributionManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_2783A92D8;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;

@@ -21,7 +21,7 @@
     }
 
     LODWORD(v10[2]) = 0;
-    [a1 decimalValue];
+    [self decimalValue];
     (*(v7 + 2))(v7, v10, 20);
     if ((a3 & 1) == 0)
     {

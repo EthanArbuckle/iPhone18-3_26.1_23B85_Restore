@@ -1,13 +1,13 @@
 @interface SFDefaultStartPageVisualStyleProvider
 + (SFDefaultStartPageVisualStyleProvider)sharedProvider;
 - (NSDirectionalEdgeInsets)sectionContentInsetsWithViewLayoutMargins:(NSDirectionalEdgeInsets)result;
-- (UIEdgeInsets)collectionViewContentInsetsWithNavigationBarPosition:(int64_t)a3 traitCollection:(id)a4;
+- (UIEdgeInsets)collectionViewContentInsetsWithNavigationBarPosition:(int64_t)position traitCollection:(id)collection;
 - (UIFont)sectionHeaderLargeTitleFont;
-- (double)rowSpacingForSectionItemType:(int64_t)a3 containerSize:(CGSize)a4;
-- (double)siteIconSizeForContainerSize:(CGSize)a3;
-- (id)interItemSpacingForSectionItemType:(int64_t)a3;
-- (int64_t)numberOfColumnsForSectionItemType:(int64_t)a3 sectionWidth:(double)a4 traitCollection:(id)a5;
-- (int64_t)numberOfRowsForSection:(int64_t)a3 traitCollectionIsHorizontalCompact:(BOOL)a4;
+- (double)rowSpacingForSectionItemType:(int64_t)type containerSize:(CGSize)size;
+- (double)siteIconSizeForContainerSize:(CGSize)size;
+- (id)interItemSpacingForSectionItemType:(int64_t)type;
+- (int64_t)numberOfColumnsForSectionItemType:(int64_t)type sectionWidth:(double)width traitCollection:(id)collection;
+- (int64_t)numberOfRowsForSection:(int64_t)section traitCollectionIsHorizontalCompact:(BOOL)compact;
 @end
 
 @implementation SFDefaultStartPageVisualStyleProvider
@@ -31,10 +31,10 @@ void __55__SFDefaultStartPageVisualStyleProvider_sharedProvider__block_invoke()
   sharedProvider_sharedProvider = v0;
 }
 
-- (double)siteIconSizeForContainerSize:(CGSize)a3
+- (double)siteIconSizeForContainerSize:(CGSize)size
 {
-  width = a3.width;
-  if (a3.width > 500.0 && a3.height > 428.0)
+  width = size.width;
+  if (size.width > 500.0 && size.height > 428.0)
   {
     goto LABEL_6;
   }
@@ -67,20 +67,20 @@ LABEL_6:
   return v4;
 }
 
-- (double)rowSpacingForSectionItemType:(int64_t)a3 containerSize:(CGSize)a4
+- (double)rowSpacingForSectionItemType:(int64_t)type containerSize:(CGSize)size
 {
   result = 20.0;
-  if ((a3 - 2) <= 3)
+  if ((type - 2) <= 3)
   {
-    return dbl_18BC3DC70[a3 - 2];
+    return dbl_18BC3DC70[type - 2];
   }
 
   return result;
 }
 
-- (id)interItemSpacingForSectionItemType:(int64_t)a3
+- (id)interItemSpacingForSectionItemType:(int64_t)type
 {
-  if ((a3 - 3) > 1)
+  if ((type - 3) > 1)
   {
     v5 = 0;
   }
@@ -102,10 +102,10 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)collectionViewContentInsetsWithNavigationBarPosition:(int64_t)a3 traitCollection:(id)a4
+- (UIEdgeInsets)collectionViewContentInsetsWithNavigationBarPosition:(int64_t)position traitCollection:(id)collection
 {
   v4 = 20.0;
-  if (a3 == 3)
+  if (position == 3)
   {
     v4 = 4.0;
   }
@@ -120,35 +120,35 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)numberOfColumnsForSectionItemType:(int64_t)a3 sectionWidth:(double)a4 traitCollection:(id)a5
+- (int64_t)numberOfColumnsForSectionItemType:(int64_t)type sectionWidth:(double)width traitCollection:(id)collection
 {
-  v7 = [a5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v9 = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
+  is2024FavoritesEnabled = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
   v10 = 1010.0;
-  if (!v9)
+  if (!is2024FavoritesEnabled)
   {
     v10 = 900.0;
   }
 
-  if (v10 <= a4)
+  if (v10 <= width)
   {
-    v14 = (a4 / 350.0);
+    v14 = (width / 350.0);
     v15 = 4 * v14;
     v13 = 6;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
+    is2024FavoritesEnabled2 = [MEMORY[0x1E69C8880] is2024FavoritesEnabled];
     v12 = 700.0;
-    if (!v11)
+    if (!is2024FavoritesEnabled2)
     {
       v12 = 900.0;
     }
 
-    if (v12 <= a4)
+    if (v12 <= width)
     {
       if ([MEMORY[0x1E69C8880] is2024FavoritesEnabled])
       {
@@ -164,7 +164,7 @@ LABEL_6:
       v14 = 2;
     }
 
-    else if (a4 >= 500.0)
+    else if (width >= 500.0)
     {
       v13 = 3;
       v14 = 2;
@@ -175,7 +175,7 @@ LABEL_6:
     {
       if ([MEMORY[0x1E69C8880] is2024SuggestionsEnabled])
       {
-        if (a4 < 300.0)
+        if (width < 300.0)
         {
           v13 = 1;
         }
@@ -197,11 +197,11 @@ LABEL_6:
   }
 
   result = 1;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         return result;
       }
@@ -222,9 +222,9 @@ LABEL_6:
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         return result;
       }
@@ -244,26 +244,26 @@ LABEL_6:
   }
 }
 
-- (int64_t)numberOfRowsForSection:(int64_t)a3 traitCollectionIsHorizontalCompact:(BOOL)a4
+- (int64_t)numberOfRowsForSection:(int64_t)section traitCollectionIsHorizontalCompact:(BOOL)compact
 {
   v4 = 1;
   v5 = 2;
-  if (a4)
+  if (compact)
   {
     v5 = 3;
   }
 
-  if (a3 == 4)
+  if (section == 4)
   {
     v4 = 2;
   }
 
-  if (a3 == 5)
+  if (section == 5)
   {
     v4 = 3;
   }
 
-  if (a3 == 3)
+  if (section == 3)
   {
     return v5;
   }

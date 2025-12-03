@@ -2,11 +2,11 @@
 - (BOOL)isOriginalResource;
 - (NSString)debugDescription;
 - (NSURL)fileURL;
-- (PLVirtualResource)initWithAsset:(id)a3 resourceType:(unsigned int)a4 version:(unsigned int)a5 recipeID:(unsigned int)a6;
-- (PLVirtualResource)initWithRecipe:(id)a3 forAsset:(id)a4;
+- (PLVirtualResource)initWithAsset:(id)asset resourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d;
+- (PLVirtualResource)initWithRecipe:(id)recipe forAsset:(id)asset;
 - (id)photosCTLJSONDict;
 - (id)singleLineDescription;
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4;
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity;
 - (int)qualitySortValue;
 - (int64_t)orientedHeight;
 - (int64_t)orientedWidth;
@@ -19,44 +19,44 @@
 - (NSString)debugDescription
 {
   v3 = [[PLDescriptionBuilder alloc] initWithObject:self style:3 indent:0];
-  v4 = [(PLVirtualResource *)self resourceType];
-  if (v4 > 0x1F)
+  resourceType = [(PLVirtualResource *)self resourceType];
+  if (resourceType > 0x1F)
   {
     v5 = @"invalid";
   }
 
   else
   {
-    v5 = off_1E75663B0[v4];
+    v5 = off_1E75663B0[resourceType];
   }
 
   v6 = v5;
   [(PLDescriptionBuilder *)v3 appendName:@"resourceType" object:v6];
 
-  v7 = [(PLVirtualResource *)self version];
-  if (v7 > 2)
+  version = [(PLVirtualResource *)self version];
+  if (version > 2)
   {
     v8 = @"cur";
   }
 
   else
   {
-    v8 = off_1E75664B0[v7];
+    v8 = off_1E75664B0[version];
   }
 
   v9 = v8;
   [(PLDescriptionBuilder *)v3 appendName:@"version" object:v9];
 
-  v10 = [(PLVirtualResource *)self dataStore];
-  v11 = [objc_opt_class() storeClassID];
-  v12 = [v10 name];
-  v13 = [v12 stringByAppendingFormat:@" (%ld)", v11];
+  dataStore = [(PLVirtualResource *)self dataStore];
+  storeClassID = [objc_opt_class() storeClassID];
+  name = [dataStore name];
+  v13 = [name stringByAppendingFormat:@" (%ld)", storeClassID];
 
   [(PLDescriptionBuilder *)v3 appendName:@"dataStore" object:v13];
-  v14 = [(PLVirtualResource *)self dataStoreSubtype];
-  v15 = [(PLVirtualResource *)self dataStore];
-  v16 = [v15 descriptionForSubtype:v14];
-  v17 = [v16 stringByAppendingFormat:@" (%ld)", v14];
+  dataStoreSubtype = [(PLVirtualResource *)self dataStoreSubtype];
+  dataStore2 = [(PLVirtualResource *)self dataStore];
+  v16 = [dataStore2 descriptionForSubtype:dataStoreSubtype];
+  v17 = [v16 stringByAppendingFormat:@" (%ld)", dataStoreSubtype];
 
   [(PLDescriptionBuilder *)v3 appendName:@"dataStoreSubtype" object:v17];
   if ([(PLVirtualResource *)self recipeID])
@@ -66,12 +66,12 @@
     [(PLDescriptionBuilder *)v3 appendName:@"recipeID" object:v19];
   }
 
-  v20 = [(PLVirtualResource *)self dataStoreKey];
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
 
-  if (v20)
+  if (dataStoreKey)
   {
-    v21 = [(PLVirtualResource *)self dataStoreKey];
-    v22 = [v21 descriptionForAssetID:self->_assetID];
+    dataStoreKey2 = [(PLVirtualResource *)self dataStoreKey];
+    v22 = [dataStoreKey2 descriptionForAssetID:self->_assetID];
     [(PLDescriptionBuilder *)v3 appendName:@"dataStoreKey" object:v22];
   }
 
@@ -81,8 +81,8 @@
   v24 = PLResourceLocalAvailabilityTargetName([(PLVirtualResource *)self localAvailabilityTarget]);
   [(PLDescriptionBuilder *)v3 appendName:@"localAvailabilityTarget" object:v24];
 
-  v25 = [(PLVirtualResource *)self remoteAvailability];
-  if (v25 == 1)
+  remoteAvailability = [(PLVirtualResource *)self remoteAvailability];
+  if (remoteAvailability == 1)
   {
     v26 = @"available";
   }
@@ -92,7 +92,7 @@
     v26 = @"missing";
   }
 
-  if (!v25)
+  if (!remoteAvailability)
   {
     v26 = @"unavailable";
   }
@@ -100,8 +100,8 @@
   v27 = v26;
   [(PLDescriptionBuilder *)v3 appendName:@"remoteAvailability" object:v27];
 
-  v28 = [(PLVirtualResource *)self remoteAvailabilityTarget];
-  if (v28 == 1)
+  remoteAvailabilityTarget = [(PLVirtualResource *)self remoteAvailabilityTarget];
+  if (remoteAvailabilityTarget == 1)
   {
     v29 = @"available";
   }
@@ -111,7 +111,7 @@
     v29 = @"missing";
   }
 
-  if (!v28)
+  if (!remoteAvailabilityTarget)
   {
     v29 = @"unavailable";
   }
@@ -124,16 +124,16 @@
   [(PLDescriptionBuilder *)v3 appendName:@"unorientedHeight" integerValue:[(PLVirtualResource *)self unorientedHeight]];
   [(PLDescriptionBuilder *)v3 appendName:@"orientation" integerValue:[(PLVirtualResource *)self orientation]];
   [(PLDescriptionBuilder *)v3 appendName:@"qualitySortValue" integerValue:[(PLVirtualResource *)self qualitySortValue]];
-  v31 = [(PLVirtualResource *)self uniformTypeIdentifier];
-  v32 = [v31 identifier];
-  [(PLDescriptionBuilder *)v3 appendName:@"uniformTypeIdentifier" object:v32];
+  uniformTypeIdentifier = [(PLVirtualResource *)self uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  [(PLDescriptionBuilder *)v3 appendName:@"uniformTypeIdentifier" object:identifier];
 
-  v33 = [(PLVirtualResource *)self codecFourCharCodeName];
-  [(PLDescriptionBuilder *)v3 appendName:@"codecFourCharCodeName" object:v33];
+  codecFourCharCodeName = [(PLVirtualResource *)self codecFourCharCodeName];
+  [(PLDescriptionBuilder *)v3 appendName:@"codecFourCharCodeName" object:codecFourCharCodeName];
 
-  v34 = [(PLDescriptionBuilder *)v3 build];
+  build = [(PLDescriptionBuilder *)v3 build];
 
-  return v34;
+  return build;
 }
 
 - (id)singleLineDescription
@@ -143,15 +143,15 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@ %p>", v5, self];
 
-  v7 = [(PLVirtualResource *)self resourceType];
-  if (v7 > 0x1F)
+  resourceType = [(PLVirtualResource *)self resourceType];
+  if (resourceType > 0x1F)
   {
     v8 = @"invalid";
   }
 
   else
   {
-    v8 = off_1E75663B0[v7];
+    v8 = off_1E75663B0[resourceType];
   }
 
   v9 = v8;
@@ -161,28 +161,28 @@
   v11 = [v10 description];
   [v6 appendFormat:@" recipeID: %@", v11];
 
-  v12 = [(PLVirtualResource *)self version];
-  if (v12 > 2)
+  version = [(PLVirtualResource *)self version];
+  if (version > 2)
   {
     v13 = @"cur";
   }
 
   else
   {
-    v13 = off_1E75664B0[v12];
+    v13 = off_1E75664B0[version];
   }
 
   v14 = v13;
   [v6 appendFormat:@" ver: %@", v14];
 
-  v15 = [(PLVirtualResource *)self dataStore];
-  v16 = [v15 descriptionForSubtype:{-[PLVirtualResource dataStoreSubtype](self, "dataStoreSubtype")}];
+  dataStore = [(PLVirtualResource *)self dataStore];
+  v16 = [dataStore descriptionForSubtype:{-[PLVirtualResource dataStoreSubtype](self, "dataStoreSubtype")}];
   [v6 appendFormat:@" subtype: %@", v16];
 
   [v6 appendFormat:@" size: (%ld, %ld)", -[PLVirtualResource unorientedWidth](self, "unorientedWidth"), -[PLVirtualResource unorientedHeight](self, "unorientedHeight")];
-  v17 = [(PLVirtualResource *)self uniformTypeIdentifier];
-  v18 = [v17 identifier];
-  [v6 appendFormat:@" uti: %@", v18];
+  uniformTypeIdentifier = [(PLVirtualResource *)self uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
+  [v6 appendFormat:@" uti: %@", identifier];
 
   if ([(PLVirtualResource *)self localAvailability]== 1)
   {
@@ -206,8 +206,8 @@
   }
 
   [v6 appendFormat:@" remote: %@", v20];
-  v21 = [(PLVirtualResource *)self dataStoreKey];
-  v22 = [v21 fileURLForAssetID:self->_assetID];
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
+  v22 = [dataStoreKey fileURLForAssetID:self->_assetID];
 
   if (v22)
   {
@@ -220,35 +220,35 @@
 - (id)photosCTLJSONDict
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PLVirtualResource *)self codecFourCharCodeName];
+  codecFourCharCodeName = [(PLVirtualResource *)self codecFourCharCodeName];
 
-  if (v4)
+  if (codecFourCharCodeName)
   {
-    v5 = [(PLVirtualResource *)self codecFourCharCodeName];
+    codecFourCharCodeName2 = [(PLVirtualResource *)self codecFourCharCodeName];
   }
 
   else
   {
-    v5 = @"none";
+    codecFourCharCodeName2 = @"none";
   }
 
-  v6 = [(PLVirtualResource *)self uniformTypeIdentifier];
-  v7 = v6;
-  if (v6)
+  uniformTypeIdentifier = [(PLVirtualResource *)self uniformTypeIdentifier];
+  v7 = uniformTypeIdentifier;
+  if (uniformTypeIdentifier)
   {
-    v8 = [v6 identifier];
+    identifier = [uniformTypeIdentifier identifier];
   }
 
   else
   {
-    v8 = @"none";
+    identifier = @"none";
   }
 
-  v9 = [(PLVirtualResource *)self dataStore];
-  v10 = [objc_opt_class() storeClassID];
+  dataStore = [(PLVirtualResource *)self dataStore];
+  storeClassID = [objc_opt_class() storeClassID];
 
-  [v3 setObject:v8 forKeyedSubscript:@"uti"];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v10];
+  [v3 setObject:identifier forKeyedSubscript:@"uti"];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:storeClassID];
   [v3 setObject:v11 forKeyedSubscript:@"store"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PLVirtualResource dataStoreSubtype](self, "dataStoreSubtype")}];
@@ -260,7 +260,7 @@
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLVirtualResource recipeID](self, "recipeID")}];
   [v3 setObject:v14 forKeyedSubscript:@"recipe"];
 
-  [v3 setObject:v5 forKeyedSubscript:@"codec"];
+  [v3 setObject:codecFourCharCodeName2 forKeyedSubscript:@"codec"];
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLVirtualResource orientation](self, "orientation")}];
   [v3 setObject:v15 forKeyedSubscript:@"orientation"];
 
@@ -276,8 +276,8 @@
   v19 = [MEMORY[0x1E696AD98] numberWithShort:{-[PLVirtualResource remoteAvailability](self, "remoteAvailability")}];
   [v3 setObject:v19 forKeyedSubscript:@"remoteAvailability"];
 
-  v20 = [(PLVirtualResource *)self dataStoreKey];
-  v21 = [v20 descriptionForAssetID:self->_assetID];
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
+  v21 = [dataStoreKey descriptionForAssetID:self->_assetID];
   [v3 setObject:v21 forKeyedSubscript:@"dataStoreKey"];
 
   return v3;
@@ -285,9 +285,9 @@
 
 - (NSURL)fileURL
 {
-  v3 = [(PLVirtualResource *)self dataStoreKey];
-  v4 = [(PLVirtualResource *)self assetID];
-  v5 = [v3 fileURLForAssetID:v4];
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
+  assetID = [(PLVirtualResource *)self assetID];
+  v5 = [dataStoreKey fileURLForAssetID:assetID];
 
   return v5;
 }
@@ -296,37 +296,37 @@
 {
   assetWidth = self->_assetWidth;
   assetHeight = self->_assetHeight;
-  v5 = [(PLVirtualResource *)self orientedWidth];
-  v6 = [(PLVirtualResource *)self orientedHeight];
+  orientedWidth = [(PLVirtualResource *)self orientedWidth];
+  orientedHeight = [(PLVirtualResource *)self orientedHeight];
   isLosslessEncoded = self->_isLosslessEncoded;
   if (self->_isMarkedFullSize)
   {
     isLosslessEncoded |= 2u;
   }
 
-  return isLosslessEncoded | ((fmin(sqrt((v6 * v5)) / sqrt((assetHeight * assetWidth)), 1.0) * 32767.0) << 16);
+  return isLosslessEncoded | ((fmin(sqrt((orientedHeight * orientedWidth)) / sqrt((assetHeight * assetWidth)), 1.0) * 32767.0) << 16);
 }
 
 - (signed)utiConformanceHint
 {
-  v2 = [(PLVirtualResource *)self uniformTypeIdentifier];
-  v3 = [v2 conformanceHint];
+  uniformTypeIdentifier = [(PLVirtualResource *)self uniformTypeIdentifier];
+  conformanceHint = [uniformTypeIdentifier conformanceHint];
 
-  return v3;
+  return conformanceHint;
 }
 
 - (int64_t)orientedHeight
 {
-  v3 = [(PLVirtualResource *)self unorientedWidth];
-  v4 = [(PLVirtualResource *)self unorientedHeight];
+  unorientedWidth = [(PLVirtualResource *)self unorientedWidth];
+  unorientedHeight = [(PLVirtualResource *)self unorientedHeight];
   if ([(PLVirtualResource *)self orientation]- 5 >= 4)
   {
-    v5 = v4;
+    v5 = unorientedHeight;
   }
 
   else
   {
-    v5 = v3;
+    v5 = unorientedWidth;
   }
 
   return v5;
@@ -334,16 +334,16 @@
 
 - (int64_t)orientedWidth
 {
-  v3 = [(PLVirtualResource *)self unorientedWidth];
-  v4 = [(PLVirtualResource *)self unorientedHeight];
+  unorientedWidth = [(PLVirtualResource *)self unorientedWidth];
+  unorientedHeight = [(PLVirtualResource *)self unorientedHeight];
   if ([(PLVirtualResource *)self orientation]- 5 >= 4)
   {
-    v5 = v3;
+    v5 = unorientedWidth;
   }
 
   else
   {
-    v5 = v4;
+    v5 = unorientedHeight;
   }
 
   return v5;
@@ -351,9 +351,9 @@
 
 - (signed)localAvailability
 {
-  v2 = [(PLVirtualResource *)self dataStoreKey];
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
 
-  if (v2)
+  if (dataStoreKey)
   {
     return 1;
   }
@@ -366,55 +366,55 @@
 
 - (BOOL)isOriginalResource
 {
-  v2 = self;
-  if ([(PLVirtualResource *)v2 version])
+  selfCopy = self;
+  if ([(PLVirtualResource *)selfCopy version])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = ([(PLVirtualResource *)v2 recipeID]& 1) == 0;
+    v3 = ([(PLVirtualResource *)selfCopy recipeID]& 1) == 0;
   }
 
   return v3;
 }
 
-- (id)validateForAssetID:(id)a3 resourceIdentity:(id)a4
+- (id)validateForAssetID:(id)d resourceIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLVirtualResource *)self dataStoreKey];
-  v9 = [v8 validateForAssetID:v7 resourceIdentity:v6];
+  identityCopy = identity;
+  dCopy = d;
+  dataStoreKey = [(PLVirtualResource *)self dataStoreKey];
+  v9 = [dataStoreKey validateForAssetID:dCopy resourceIdentity:identityCopy];
 
   v10 = [MEMORY[0x1E695E0F0] arrayByAddingObjectsFromArray:v9];
 
   return v10;
 }
 
-- (PLVirtualResource)initWithRecipe:(id)a3 forAsset:(id)a4
+- (PLVirtualResource)initWithRecipe:(id)recipe forAsset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  recipeCopy = recipe;
+  assetCopy = asset;
+  if (!recipeCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLVirtualResource.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"recipe"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLVirtualResource.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"recipe"}];
   }
 
-  v9 = -[PLVirtualResource initWithAsset:resourceType:version:recipeID:](self, "initWithAsset:resourceType:version:recipeID:", v8, 0, 3, [v7 recipeID]);
+  v9 = -[PLVirtualResource initWithAsset:resourceType:version:recipeID:](self, "initWithAsset:resourceType:version:recipeID:", assetCopy, 0, 3, [recipeCopy recipeID]);
 
   return v9;
 }
 
-- (PLVirtualResource)initWithAsset:(id)a3 resourceType:(unsigned int)a4 version:(unsigned int)a5 recipeID:(unsigned int)a6
+- (PLVirtualResource)initWithAsset:(id)asset resourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d
 {
-  v6 = *&a6;
-  v11 = a3;
+  v6 = *&d;
+  assetCopy = asset;
   if ([(PLVirtualResource *)self isMemberOfClass:objc_opt_class()])
   {
     [(PLVirtualResource *)self doesNotRecognizeSelector:a2];
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -424,31 +424,31 @@
     v13 = [(PLVirtualResource *)&v19 init];
     if (v13)
     {
-      if (!v11)
+      if (!assetCopy)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:v13 file:@"PLVirtualResource.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v13 file:@"PLVirtualResource.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
       }
 
-      v14 = [v11 assetID];
+      assetID = [assetCopy assetID];
       assetID = v13->_assetID;
-      v13->_assetID = v14;
+      v13->_assetID = assetID;
 
-      v13->_version = a5;
-      v13->_resourceType = a4;
+      v13->_version = version;
+      v13->_resourceType = type;
       v13->_recipeID = v6;
-      v13->_assetWidth = [v11 width];
-      v13->_assetHeight = [v11 height];
+      v13->_assetWidth = [assetCopy width];
+      v13->_assetHeight = [assetCopy height];
       v13->_isMarkedFullSize = PLIsResourceMarkedFullSizeFromRecipeID(v6);
-      v16 = [(PLVirtualResource *)v13 uniformTypeIdentifier];
-      v13->_isLosslessEncoded = [v16 isLosslessEncoding];
+      uniformTypeIdentifier = [(PLVirtualResource *)v13 uniformTypeIdentifier];
+      v13->_isLosslessEncoded = [uniformTypeIdentifier isLosslessEncoding];
     }
 
     self = v13;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

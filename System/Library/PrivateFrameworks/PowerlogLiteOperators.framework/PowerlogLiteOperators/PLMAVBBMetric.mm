@@ -1,12 +1,12 @@
 @interface PLMAVBBMetric
 + (id)sharedInstance;
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4;
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile;
 - (void)flushPeriodicMetrics;
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
 - (void)modelProdMetricsNotify;
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 profileId:(id)a5;
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5;
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload profileId:(id)profileId;
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger;
 @end
 
 @implementation PLMAVBBMetric
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __31__PLMAVBBMetric_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2811F70D8 != -1)
   {
     dispatch_once(&qword_2811F70D8, block);
@@ -58,21 +58,21 @@
         if (v10)
         {
           v11 = [v9 objectForKeyedSubscript:@"duration"];
-          v12 = [v11 intValue];
+          intValue = [v11 intValue];
 
-          if (v12 >= v7)
+          if (intValue >= v7)
           {
             v13 = v7;
           }
 
           else
           {
-            v13 = v12;
+            v13 = intValue;
           }
 
           if (v7 == -1)
           {
-            v7 = v12;
+            v7 = intValue;
           }
 
           else
@@ -80,19 +80,19 @@
             v7 = v13;
           }
 
-          if (v12 <= v6)
+          if (intValue <= v6)
           {
             v14 = v6;
           }
 
           else
           {
-            v14 = v12;
+            v14 = intValue;
           }
 
           if (v6 == -1)
           {
-            v6 = v12;
+            v6 = intValue;
           }
 
           else
@@ -127,9 +127,9 @@
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad metrics channel: !PROD"];
     v17 = MEMORY[0x277D3F178];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KMAV/PLMAVBBMetric.m"];
-    v19 = [v18 lastPathComponent];
+    lastPathComponent = [v18 lastPathComponent];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMAVBBMetric modelProdMetricsNotify]"];
-    [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:268];
+    [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:268];
 
     v21 = PLLogCommon();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -155,11 +155,11 @@ uint64_t __31__PLMAVBBMetric_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [a4 integerValue];
-  if (v5 == 1)
+  integerValue = [profile integerValue];
+  if (integerValue == 1)
   {
     notifyTitle = self->_notifyTitle;
     self->_notifyTitle = @"MAV_METRIC_PROD";
@@ -170,9 +170,9 @@ uint64_t __31__PLMAVBBMetric_sharedInstance__block_invoke(uint64_t a1)
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** error *** unsupported profile"];
     v8 = MEMORY[0x277D3F178];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KMAV/PLMAVBBMetric.m"];
-    v10 = [v9 lastPathComponent];
+    lastPathComponent = [v9 lastPathComponent];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLMAVBBMetric registerForNotifClient:andProfile:]"];
-    [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:62];
+    [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:62];
 
     v12 = PLLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -183,38 +183,38 @@ uint64_t __31__PLMAVBBMetric_sharedInstance__block_invoke(uint64_t a1)
     }
   }
 
-  result = v5 == 1;
+  result = integerValue == 1;
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  triggerCopy = trigger;
   v11 = PLLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v22 = v9;
+    v22 = payloadCopy;
     _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "BB Agent: queuePeriodicMetricId : %@", buf, 0xCu);
   }
 
   logAgent = self->_logAgent;
   if (logAgent && ([(PLAgent *)logAgent workQueue], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [(PLAgent *)self->_logAgent workQueue];
+    workQueue = [(PLAgent *)self->_logAgent workQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __58__PLMAVBBMetric_queuePeriodicMetricId_payload_forTrigger___block_invoke;
     v16[3] = &unk_2782591A8;
-    v17 = v9;
-    v18 = v8;
-    v19 = self;
-    v20 = v10;
-    dispatch_async(v14, v16);
+    v17 = payloadCopy;
+    v18 = idCopy;
+    selfCopy = self;
+    v20 = triggerCopy;
+    dispatch_async(workQueue, v16);
   }
 
   else
@@ -455,17 +455,17 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v4 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (v4)
+  if (workQueue)
   {
-    v5 = [(PLAgent *)self->_logAgent workQueue];
+    workQueue2 = [(PLAgent *)self->_logAgent workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__PLMAVBBMetric_flushPeriodicMetrics__block_invoke;
     block[3] = &unk_2782591D0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(workQueue2, block);
 
     return;
   }
@@ -500,24 +500,24 @@ uint64_t __37__PLMAVBBMetric_flushPeriodicMetrics__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 profileId:(id)a5
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload profileId:(id)profileId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  profileIdCopy = profileId;
   logAgent = self->_logAgent;
   if (logAgent && ([(PLAgent *)logAgent workQueue], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [(PLAgent *)self->_logAgent workQueue];
+    workQueue = [(PLAgent *)self->_logAgent workQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __58__PLMAVBBMetric_queueAperiodicMetricId_payload_profileId___block_invoke;
     v14[3] = &unk_2782591A8;
-    v15 = v9;
-    v16 = self;
-    v17 = v8;
-    v18 = v10;
-    dispatch_async(v13, v14);
+    v15 = payloadCopy;
+    selfCopy = self;
+    v17 = idCopy;
+    v18 = profileIdCopy;
+    dispatch_async(workQueue, v14);
   }
 
   else
@@ -649,34 +649,34 @@ uint64_t __58__PLMAVBBMetric_queueAperiodicMetricId_payload_profileId___block_in
   return result;
 }
 
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  cntCopy = cnt;
+  sCopy = s;
   v11 = objc_opt_new();
   prodMetrics = self->_prodMetrics;
   self->_prodMetrics = v11;
 
-  v15 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "integerValue")}];
-  v13 = [v15 convertFromBasebandToMonotonic];
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v13 forKeyedSubscript:@"timestamp"];
+  v15 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(sCopy, "integerValue")}];
+  convertFromBasebandToMonotonic = [v15 convertFromBasebandToMonotonic];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:convertFromBasebandToMonotonic forKeyedSubscript:@"timestamp"];
 
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v10 forKeyedSubscript:@"bbtimestamp"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:sCopy forKeyedSubscript:@"bbtimestamp"];
   [(NSMutableDictionary *)self->_prodMetrics setObject:&unk_282C0CBD0 forKeyedSubscript:@"duration"];
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v9 forKeyedSubscript:@"seqnum"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:cntCopy forKeyedSubscript:@"seqnum"];
 
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v8 forKeyedSubscript:@"triggerId"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:idCopy forKeyedSubscript:@"triggerId"];
   v14 = objc_opt_new();
   [(NSMutableDictionary *)self->_prodMetrics setObject:v14 forKeyedSubscript:@"arr"];
 }
 
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PLMAVBBHardwareMessage alloc] initEntryWithBBTS:v10 triggerId:v8 seqnum:v9 payload:0 logAgent:self->_logAgent];
+  idCopy = id;
+  cntCopy = cnt;
+  sCopy = s;
+  v11 = [[PLMAVBBHardwareMessage alloc] initEntryWithBBTS:sCopy triggerId:idCopy seqnum:cntCopy payload:0 logAgent:self->_logAgent];
 
   storeMetricsLogger = self->_storeMetricsLogger;
   self->_storeMetricsLogger = v11;

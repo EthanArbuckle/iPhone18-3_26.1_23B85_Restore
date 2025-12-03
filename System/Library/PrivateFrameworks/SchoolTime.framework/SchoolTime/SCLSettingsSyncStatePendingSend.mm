@@ -1,8 +1,8 @@
 @interface SCLSettingsSyncStatePendingSend
 - (void)commitSettings;
-- (void)didEnqueueMessage:(id)a3;
-- (void)didEnterWithPreviousState:(id)a3;
-- (void)enqueueFailedWithError:(id)a3;
+- (void)didEnqueueMessage:(id)message;
+- (void)didEnterWithPreviousState:(id)state;
+- (void)enqueueFailedWithError:(id)error;
 - (void)settingsDidChange;
 - (void)significantUserInteractionOccurred;
 - (void)xpcActivityStarted;
@@ -10,17 +10,17 @@
 
 @implementation SCLSettingsSyncStatePendingSend
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
   v7.receiver = self;
   v7.super_class = SCLSettingsSyncStatePendingSend;
-  [(SCLSettingsSyncState *)&v7 didEnterWithPreviousState:a3];
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 context];
-  [v5 setMessageIdentifier:0];
+  [(SCLSettingsSyncState *)&v7 didEnterWithPreviousState:state];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  context = [stateMachine context];
+  [context setMessageIdentifier:0];
 
-  v6 = [(SCLSettingsSyncState *)self stateMachine];
-  [v6 scheduleCommitTimerWithInterval:30.0];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine2 scheduleCommitTimerWithInterval:30.0];
 }
 
 - (void)settingsDidChange
@@ -28,8 +28,8 @@
   v4.receiver = self;
   v4.super_class = SCLSettingsSyncStatePendingSend;
   [(SCLSettingsSyncState *)&v4 settingsDidChange];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  [v3 scheduleCommitTimerWithInterval:30.0];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine scheduleCommitTimerWithInterval:30.0];
 }
 
 - (void)xpcActivityStarted
@@ -37,8 +37,8 @@
   v4.receiver = self;
   v4.super_class = SCLSettingsSyncStatePendingSend;
   [(SCLSettingsSyncState *)&v4 xpcActivityStarted];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  [v3 performSync];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine performSync];
 }
 
 - (void)commitSettings
@@ -46,8 +46,8 @@
   v4.receiver = self;
   v4.super_class = SCLSettingsSyncStatePendingSend;
   [(SCLSettingsSyncState *)&v4 commitSettings];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  [v3 performSync];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine performSync];
 }
 
 - (void)significantUserInteractionOccurred
@@ -55,43 +55,43 @@
   v5.receiver = self;
   v5.super_class = SCLSettingsSyncStatePendingSend;
   [(SCLSettingsSyncState *)&v5 significantUserInteractionOccurred];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  [v3 cancelCommitTimer];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine cancelCommitTimer];
 
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  [v4 performSync];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine2 performSync];
 }
 
-- (void)enqueueFailedWithError:(id)a3
+- (void)enqueueFailedWithError:(id)error
 {
   v10.receiver = self;
   v10.super_class = SCLSettingsSyncStatePendingSend;
-  v4 = a3;
-  [(SCLSettingsSyncState *)&v10 enqueueFailedWithError:v4];
+  errorCopy = error;
+  [(SCLSettingsSyncState *)&v10 enqueueFailedWithError:errorCopy];
   v5 = [(SCLSettingsSyncState *)self stateMachine:v10.receiver];
-  v6 = [v5 context];
-  [v6 setError:v4];
+  context = [v5 context];
+  [context setError:errorCopy];
 
-  v7 = [(SCLSettingsSyncState *)self stateMachine];
-  v8 = [(SCLSettingsSyncState *)self stateMachine];
-  v9 = [v8 failedState];
-  [v7 transitionToState:v9];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  failedState = [stateMachine2 failedState];
+  [stateMachine transitionToState:failedState];
 }
 
-- (void)didEnqueueMessage:(id)a3
+- (void)didEnqueueMessage:(id)message
 {
   v10.receiver = self;
   v10.super_class = SCLSettingsSyncStatePendingSend;
-  v4 = a3;
-  [(SCLSettingsSyncState *)&v10 didEnqueueMessage:v4];
+  messageCopy = message;
+  [(SCLSettingsSyncState *)&v10 didEnqueueMessage:messageCopy];
   v5 = [(SCLSettingsSyncState *)self stateMachine:v10.receiver];
-  v6 = [v5 context];
-  [v6 setMessageIdentifier:v4];
+  context = [v5 context];
+  [context setMessageIdentifier:messageCopy];
 
-  v7 = [(SCLSettingsSyncState *)self stateMachine];
-  v8 = [(SCLSettingsSyncState *)self stateMachine];
-  v9 = [v8 sendingState];
-  [v7 transitionToState:v9];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  sendingState = [stateMachine2 sendingState];
+  [stateMachine transitionToState:sendingState];
 }
 
 @end

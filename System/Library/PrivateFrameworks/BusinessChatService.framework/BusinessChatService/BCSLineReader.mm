@@ -1,5 +1,5 @@
 @interface BCSLineReader
-- (BCSLineReader)initWithFileURL:(id)a3 bufferSize:(unint64_t)a4 maxLineSize:(unint64_t)a5;
+- (BCSLineReader)initWithFileURL:(id)l bufferSize:(unint64_t)size maxLineSize:(unint64_t)lineSize;
 - (BOOL)hasValidURL;
 - (NSInputStream)inputStream;
 - (id)readLine;
@@ -9,28 +9,28 @@
 
 @implementation BCSLineReader
 
-- (BCSLineReader)initWithFileURL:(id)a3 bufferSize:(unint64_t)a4 maxLineSize:(unint64_t)a5
+- (BCSLineReader)initWithFileURL:(id)l bufferSize:(unint64_t)size maxLineSize:(unint64_t)lineSize
 {
-  v9 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = BCSLineReader;
   v10 = [(BCSLineReader *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_URL, a3);
-    v11->_bufferSize = a4;
-    v11->_maxLineSize = a5;
-    v12 = [MEMORY[0x277CBEB28] dataWithLength:a4];
+    objc_storeStrong(&v10->_URL, l);
+    v11->_bufferSize = size;
+    v11->_maxLineSize = lineSize;
+    v12 = [MEMORY[0x277CBEB28] dataWithLength:size];
     readBuffer = v11->_readBuffer;
     v11->_readBuffer = v12;
 
     v11->_beginLine = [(NSMutableData *)v11->_readBuffer mutableBytes];
     v11->_endLine = [(NSMutableData *)v11->_readBuffer mutableBytes];
     v11->_endBuffer = [(NSMutableData *)v11->_readBuffer mutableBytes];
-    v14 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     lineBuffer = v11->_lineBuffer;
-    v11->_lineBuffer = v14;
+    v11->_lineBuffer = data;
   }
 
   return v11;
@@ -48,13 +48,13 @@
     {
       while (1)
       {
-        v5 = [(BCSLineReader *)self beginLine];
-        if (v5 == [(BCSLineReader *)self endBuffer])
+        beginLine = [(BCSLineReader *)self beginLine];
+        if (beginLine == [(BCSLineReader *)self endBuffer])
         {
-          v6 = [(BCSLineReader *)self inputStream];
-          v7 = [v6 hasBytesAvailable];
+          inputStream = [(BCSLineReader *)self inputStream];
+          hasBytesAvailable = [inputStream hasBytesAvailable];
 
-          if (!v7)
+          if (!hasBytesAvailable)
           {
             v28 = 0;
             goto LABEL_23;
@@ -64,8 +64,8 @@
         for (i = [(BCSLineReader *)self beginLine]; ; i = [(BCSLineReader *)self endLine]+ 1)
         {
           [(BCSLineReader *)self setEndLine:i];
-          v9 = [(BCSLineReader *)self endLine];
-          if (v9 >= [(BCSLineReader *)self endBuffer]|| *[(BCSLineReader *)self endLine]== 10)
+          endLine = [(BCSLineReader *)self endLine];
+          if (endLine >= [(BCSLineReader *)self endBuffer]|| *[(BCSLineReader *)self endLine]== 10)
           {
             break;
           }
@@ -89,28 +89,28 @@
         }
       }
 
-      v10 = [(BCSLineReader *)self lineBuffer];
-      v11 = [v10 length];
-      v12 = [(BCSLineReader *)self endLine];
-      v13 = &v12[v11 - [(BCSLineReader *)self beginLine]];
-      v14 = [(BCSLineReader *)self maxLineSize];
+      lineBuffer = [(BCSLineReader *)self lineBuffer];
+      v11 = [lineBuffer length];
+      endLine2 = [(BCSLineReader *)self endLine];
+      v13 = &endLine2[v11 - [(BCSLineReader *)self beginLine]];
+      maxLineSize = [(BCSLineReader *)self maxLineSize];
 
-      if (v13 <= v14)
+      if (v13 <= maxLineSize)
       {
         break;
       }
 
-      v15 = [(BCSLineReader *)self lineBuffer];
-      [v15 setLength:0];
+      lineBuffer2 = [(BCSLineReader *)self lineBuffer];
+      [lineBuffer2 setLength:0];
 
       v16 = ABSLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(BCSLineReader *)self maxLineSize];
+        maxLineSize2 = [(BCSLineReader *)self maxLineSize];
         *buf = v31;
         v33 = "[BCSLineReader readLine]";
         v34 = 2048;
-        v35 = v22;
+        v35 = maxLineSize2;
         _os_log_error_impl(&dword_242072000, v16, OS_LOG_TYPE_ERROR, "%s Dropping line since it exceeds max size limit of %ld", buf, 0x16u);
       }
 
@@ -118,40 +118,40 @@
       v4 = *[(BCSLineReader *)self endLine]!= 10;
     }
 
-    v17 = [(BCSLineReader *)self endLine];
-    if (&v17[[(BCSLineReader *)self]] >= 1)
+    endLine3 = [(BCSLineReader *)self endLine];
+    if (&endLine3[[(BCSLineReader *)self]] >= 1)
     {
-      v18 = [(BCSLineReader *)self lineBuffer];
-      [v18 appendBytes:-[BCSLineReader beginLine](self length:{"beginLine"), -[BCSLineReader endLine](self, "endLine") - -[BCSLineReader beginLine](self, "beginLine")}];
+      lineBuffer3 = [(BCSLineReader *)self lineBuffer];
+      [lineBuffer3 appendBytes:-[BCSLineReader beginLine](self length:{"beginLine"), -[BCSLineReader endLine](self, "endLine") - -[BCSLineReader beginLine](self, "beginLine")}];
     }
 
-    v19 = [(BCSLineReader *)self endLine];
-    if (v19 != [(BCSLineReader *)self endBuffer])
+    endLine4 = [(BCSLineReader *)self endLine];
+    if (endLine4 != [(BCSLineReader *)self endBuffer])
     {
       break;
     }
 
     [(BCSLineReader *)self refillReadBuffer];
-    v20 = [(BCSLineReader *)self inputStream];
-    v21 = [v20 hasBytesAvailable];
+    inputStream2 = [(BCSLineReader *)self inputStream];
+    hasBytesAvailable2 = [inputStream2 hasBytesAvailable];
 
     v4 = 0;
-    if ((v21 & 1) == 0)
+    if ((hasBytesAvailable2 & 1) == 0)
     {
       v26 = objc_alloc(MEMORY[0x277CCACA8]);
-      v27 = [(BCSLineReader *)self lineBuffer];
-      v28 = [v26 initWithData:v27 encoding:4];
+      lineBuffer4 = [(BCSLineReader *)self lineBuffer];
+      v28 = [v26 initWithData:lineBuffer4 encoding:4];
 
       goto LABEL_23;
     }
   }
 
   v23 = objc_alloc(MEMORY[0x277CCACA8]);
-  v24 = [(BCSLineReader *)self lineBuffer];
-  v28 = [v23 initWithData:v24 encoding:4];
+  lineBuffer5 = [(BCSLineReader *)self lineBuffer];
+  v28 = [v23 initWithData:lineBuffer5 encoding:4];
 
-  v25 = [(BCSLineReader *)self lineBuffer];
-  [v25 setLength:0];
+  lineBuffer6 = [(BCSLineReader *)self lineBuffer];
+  [lineBuffer6 setLength:0];
 
   [(BCSLineReader *)self setBeginLine:[(BCSLineReader *)self endLine]+ 1];
 LABEL_23:
@@ -162,15 +162,15 @@ LABEL_23:
 
 - (void)refillReadBuffer
 {
-  v3 = [(BCSLineReader *)self readBuffer];
-  v4 = [v3 mutableBytes];
+  readBuffer = [(BCSLineReader *)self readBuffer];
+  mutableBytes = [readBuffer mutableBytes];
 
-  v5 = [(BCSLineReader *)self inputStream];
-  v6 = [v5 read:v4 maxLength:{-[BCSLineReader bufferSize](self, "bufferSize") - 1}];
+  inputStream = [(BCSLineReader *)self inputStream];
+  v6 = [inputStream read:mutableBytes maxLength:{-[BCSLineReader bufferSize](self, "bufferSize") - 1}];
 
-  [(BCSLineReader *)self setEndBuffer:v4 + v6];
+  [(BCSLineReader *)self setEndBuffer:mutableBytes + v6];
 
-  [(BCSLineReader *)self setBeginLine:v4];
+  [(BCSLineReader *)self setBeginLine:mutableBytes];
 }
 
 - (NSInputStream)inputStream
@@ -194,9 +194,9 @@ LABEL_23:
 - (BOOL)hasValidURL
 {
   v2 = [(BCSLineReader *)self URL];
-  v3 = [v2 isFileURL];
+  isFileURL = [v2 isFileURL];
 
-  return v3;
+  return isFileURL;
 }
 
 - (void)dealloc

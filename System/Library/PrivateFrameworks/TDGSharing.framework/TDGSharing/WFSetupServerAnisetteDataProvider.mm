@@ -3,13 +3,13 @@
 - (AKDevice)companionAuthDevice;
 - (CUMessageSession)session;
 - (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)init;
-- (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation WFSetupServerAnisetteDataProvider
@@ -35,17 +35,17 @@
   return *(&self->super.isa + v3);
 }
 
-- (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)initWithCoder:(id)a3
+- (_TtC10TDGSharing33WFSetupServerAnisetteDataProvider)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_26C6D7B44();
 
   return v4;
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -60,19 +60,19 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_26C6D08DC(v7, v6);
   sub_26C676904(v7);
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v5 = _Block_copy(a4);
-  if (a3)
+  v5 = _Block_copy(completion);
+  if (data)
   {
-    v6 = self;
-    v7 = a3;
-    a3 = sub_26C6D87A8();
+    selfCopy = self;
+    dataCopy = data;
+    data = sub_26C6D87A8();
     v9 = v8;
 
     if (v5)
@@ -87,7 +87,7 @@ LABEL_3:
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
     v9 = 0xF000000000000000;
     if (v5)
     {
@@ -98,14 +98,14 @@ LABEL_3:
   v11 = 0;
   v10 = 0;
 LABEL_6:
-  sub_26C6D1B00(a3, v9, v11, v10);
+  sub_26C6D1B00(data, v9, v11, v10);
   sub_26C676904(v11);
-  sub_26C67EE70(a3, v9);
+  sub_26C67EE70(data, v9);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -120,14 +120,14 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_26C6D2BA4(v7, v6);
   sub_26C676904(v7);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -140,19 +140,19 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = self;
-  sub_26C6D3BA4(a3, v6, v7);
+  selfCopy = self;
+  sub_26C6D3BA4(necessary, v6, v7);
   sub_26C676904(v6);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (a3)
+  if (d)
   {
     v8 = sub_26C6D8A08();
-    a3 = v9;
+    d = v9;
     if (v7)
     {
 LABEL_3:
@@ -174,8 +174,8 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  sub_26C6D4DC8(v8, a3, v7, v10);
+  selfCopy = self;
+  sub_26C6D4DC8(v8, d, v7, v10);
   sub_26C676904(v7);
 }
 
@@ -186,11 +186,11 @@ LABEL_6:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WFSetupServerAnisetteDataProvider.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WFSetupServerAnisetteDataProvider.encode(with:)(coderCopy);
 }
 
 @end

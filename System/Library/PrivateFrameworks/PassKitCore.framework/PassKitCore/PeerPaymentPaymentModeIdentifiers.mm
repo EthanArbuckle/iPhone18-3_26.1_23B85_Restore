@@ -1,22 +1,22 @@
 @interface PeerPaymentPaymentModeIdentifiers
-+ (id)_predicateForAccountPID:(int64_t)a3;
++ (id)_predicateForAccountPID:(int64_t)d;
 + (id)_propertySettersForPeerPaymentPaymentModeIdentifiers;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertPeerPaymentPaymentModeIdentifiers:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)peerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deletePeerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updatePeerPaymentPaymentModeIdentifiers:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5;
-- (PeerPaymentPaymentModeIdentifiers)initWithPeerPaymentPaymentModeIdentifiers:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5;
-- (id)_commonDictionaryForPaymentModeIdentifiers:(id)a3;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertPeerPaymentPaymentModeIdentifiers:(id)identifiers forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database;
++ (id)peerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)deletePeerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)d inDatabase:(id)database;
++ (void)updatePeerPaymentPaymentModeIdentifiers:(id)identifiers forAccountPID:(int64_t)d inDatabase:(id)database;
+- (PeerPaymentPaymentModeIdentifiers)initWithPeerPaymentPaymentModeIdentifiers:(id)identifiers forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database;
+- (id)_commonDictionaryForPaymentModeIdentifiers:(id)identifiers;
 - (id)peerPaymentPaymentModeIdentifiers;
-- (void)updatePeerPaymentPaymentModeIdentifiers:(id)a3;
+- (void)updatePeerPaymentPaymentModeIdentifiers:(id)identifiers;
 @end
 
 @implementation PeerPaymentPaymentModeIdentifiers
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -27,85 +27,85 @@
   }
 }
 
-+ (id)peerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (id)peerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 peerPaymentPaymentModeIdentifiers];
+  peerPaymentPaymentModeIdentifiers = [v8 peerPaymentPaymentModeIdentifiers];
 
-  return v9;
+  return peerPaymentPaymentModeIdentifiers;
 }
 
-- (PeerPaymentPaymentModeIdentifiers)initWithPeerPaymentPaymentModeIdentifiers:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5
+- (PeerPaymentPaymentModeIdentifiers)initWithPeerPaymentPaymentModeIdentifiers:(id)identifiers forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [(PeerPaymentPaymentModeIdentifiers *)self _commonDictionaryForPaymentModeIdentifiers:a3];
-  v10 = [NSNumber numberWithLongLong:a4];
+  databaseCopy = database;
+  v9 = [(PeerPaymentPaymentModeIdentifiers *)self _commonDictionaryForPaymentModeIdentifiers:identifiers];
+  v10 = [NSNumber numberWithLongLong:d];
   [v9 setObjectOrNull:v10 forKey:@"a"];
 
-  v11 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:v8];
+  v11 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:databaseCopy];
   return v11;
 }
 
-+ (id)insertPeerPaymentPaymentModeIdentifiers:(id)a3 forPeerPaymentAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertPeerPaymentPaymentModeIdentifiers:(id)identifiers forPeerPaymentAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPeerPaymentPaymentModeIdentifiers:v9 forPeerPaymentAccountPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  identifiersCopy = identifiers;
+  v10 = [[self alloc] initWithPeerPaymentPaymentModeIdentifiers:identifiersCopy forPeerPaymentAccountPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (void)deletePeerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deletePeerPaymentPaymentModeIdentifiersForAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
-+ (void)updatePeerPaymentPaymentModeIdentifiers:(id)a3 forAccountPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updatePeerPaymentPaymentModeIdentifiers:(id)identifiers forAccountPID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [a1 _predicateForAccountPID:a4];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  identifiersCopy = identifiers;
+  databaseCopy = database;
+  v9 = [self _predicateForAccountPID:d];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   if (v10)
   {
-    [v10 updatePeerPaymentPaymentModeIdentifiers:v12];
+    [v10 updatePeerPaymentPaymentModeIdentifiers:identifiersCopy];
   }
 
   else
   {
-    v11 = [PeerPaymentPaymentModeIdentifiers insertPeerPaymentPaymentModeIdentifiers:v12 forPeerPaymentAccountPID:a4 inDatabase:v8];
+    v11 = [PeerPaymentPaymentModeIdentifiers insertPeerPaymentPaymentModeIdentifiers:identifiersCopy forPeerPaymentAccountPID:d inDatabase:databaseCopy];
   }
 }
 
-- (void)updatePeerPaymentPaymentModeIdentifiers:(id)a3
+- (void)updatePeerPaymentPaymentModeIdentifiers:(id)identifiers
 {
-  v4 = [(PeerPaymentPaymentModeIdentifiers *)self _commonDictionaryForPaymentModeIdentifiers:a3];
+  v4 = [(PeerPaymentPaymentModeIdentifiers *)self _commonDictionaryForPaymentModeIdentifiers:identifiers];
   [(SQLiteEntity *)self setValuesWithDictionary:v4];
 }
 
-+ (id)_predicateForAccountPID:(int64_t)a3
++ (id)_predicateForAccountPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-- (id)_commonDictionaryForPaymentModeIdentifiers:(id)a3
+- (id)_commonDictionaryForPaymentModeIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 deviceTap];
+  deviceTap = [identifiersCopy deviceTap];
 
-  [v4 setObjectOrNull:v5 forKey:@"b"];
+  [v4 setObjectOrNull:deviceTap forKey:@"b"];
 
   return v4;
 }
@@ -122,18 +122,18 @@
 - (id)peerPaymentPaymentModeIdentifiers
 {
   v3 = objc_alloc_init(PKPeerPaymentPaymentModeIdentifiers);
-  v4 = [objc_opt_class() _propertySettersForPeerPaymentPaymentModeIdentifiers];
-  v5 = [v4 allKeys];
+  _propertySettersForPeerPaymentPaymentModeIdentifiers = [objc_opt_class() _propertySettersForPeerPaymentPaymentModeIdentifiers];
+  allKeys = [_propertySettersForPeerPaymentPaymentModeIdentifiers allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100118FB0;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForPeerPaymentPaymentModeIdentifiers;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForPeerPaymentPaymentModeIdentifiers;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;

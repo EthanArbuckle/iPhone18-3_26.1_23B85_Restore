@@ -6,14 +6,14 @@
 
 - (id)hmd_pairingIdentity
 {
-  v2 = [a1 hasAdministratorPrivileges];
+  hasAdministratorPrivileges = [self hasAdministratorPrivileges];
   v3 = objc_alloc(MEMORY[0x277D0F8B0]);
-  v4 = [a1 publicKey];
-  v5 = [v3 initWithPairingKeyData:v4];
+  publicKey = [self publicKey];
+  v5 = [v3 initWithPairingKeyData:publicKey];
 
   v6 = objc_alloc(MEMORY[0x277CFEC20]);
-  v7 = [a1 peerID];
-  v8 = [v6 initWithIdentifier:v7 publicKey:v5 privateKey:0 permissions:v2];
+  peerID = [self peerID];
+  v8 = [v6 initWithIdentifier:peerID publicKey:v5 privateKey:0 permissions:hasAdministratorPrivileges];
 
   return v8;
 }

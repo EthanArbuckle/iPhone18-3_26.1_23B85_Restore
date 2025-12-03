@@ -1,15 +1,15 @@
 @interface THAspectFitImageView
 - (CGSize)intrinsicContentSize;
-- (THAspectFitImageView)initWithFrame:(CGRect)a3;
+- (THAspectFitImageView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation THAspectFitImageView
 
-- (THAspectFitImageView)initWithFrame:(CGRect)a3
+- (THAspectFitImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = THAspectFitImageView;
-  v3 = [(THAspectFitImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(THAspectFitImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,10 +26,10 @@
   [(THAspectFitImageView *)&v16 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(THAspectFitImageView *)self image];
-  if (v7)
+  image = [(THAspectFitImageView *)self image];
+  if (image)
   {
-    [v7 size];
+    [image size];
     v9 = v8;
     v11 = v10;
     [(THAspectFitImageView *)self preferredMaxLayoutHeight];

@@ -1,14 +1,14 @@
 @interface SkipContentSkipDurationResolutionResult
-+ (id)unsupportedForReason:(int64_t)a3;
++ (id)unsupportedForReason:(int64_t)reason;
 @end
 
 @implementation SkipContentSkipDurationResolutionResult
 
-+ (id)unsupportedForReason:(int64_t)a3
++ (id)unsupportedForReason:(int64_t)reason
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___SkipContentSkipDurationResolutionResult;
-  v3 = objc_msgSendSuper2(&v5, sel_unsupportedWithReason_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_unsupportedWithReason_, reason);
 
   return v3;
 }

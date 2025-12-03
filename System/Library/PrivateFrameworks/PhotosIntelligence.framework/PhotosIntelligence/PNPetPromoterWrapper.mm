@@ -1,19 +1,19 @@
 @interface PNPetPromoterWrapper
-- (PNPetPromoterWrapper)initWithLibrary:(id)a3 andDelegate:(id)a4;
+- (PNPetPromoterWrapper)initWithLibrary:(id)library andDelegate:(id)delegate;
 @end
 
 @implementation PNPetPromoterWrapper
 
-- (PNPetPromoterWrapper)initWithLibrary:(id)a3 andDelegate:(id)a4
+- (PNPetPromoterWrapper)initWithLibrary:(id)library andDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PNPetPromoterWrapper;
   v8 = [(PNPetPromoterWrapper *)&v12 init];
   if (v8)
   {
-    v9 = [[PNPetPromoter alloc] initWithPhotoLibrary:v6 andDelegate:v7];
+    v9 = [[PNPetPromoter alloc] initWithPhotoLibrary:libraryCopy andDelegate:delegateCopy];
     petPromoter = v8->_petPromoter;
     v8->_petPromoter = v9;
   }

@@ -1,34 +1,34 @@
 @interface TAEventBuffer
-+ (id)getExpiredElementKeyForClass:(Class)a3 andEventSubtype:(unint64_t)a4;
-- (TAEventBuffer)initWithSettings:(id)a3;
-- (id)getAllTAEventsBetween:(id)a3;
-- (id)getAllTAEventsMatchingCompoundPredicate:(id)a3;
-- (id)getAllTAEventsOf:(Class)a3;
-- (id)getAllTAEventsOf:(Class)a3 andEventSubtype:(unint64_t)a4;
-- (id)getAllTAEventsOf:(Class)a3 andEventSubtype:(unint64_t)a4 between:(id)a5;
-- (id)getAllTAEventsOf:(Class)a3 between:(id)a4;
++ (id)getExpiredElementKeyForClass:(Class)class andEventSubtype:(unint64_t)subtype;
+- (TAEventBuffer)initWithSettings:(id)settings;
+- (id)getAllTAEventsBetween:(id)between;
+- (id)getAllTAEventsMatchingCompoundPredicate:(id)predicate;
+- (id)getAllTAEventsOf:(Class)of;
+- (id)getAllTAEventsOf:(Class)of andEventSubtype:(unint64_t)subtype;
+- (id)getAllTAEventsOf:(Class)of andEventSubtype:(unint64_t)subtype between:(id)between;
+- (id)getAllTAEventsOf:(Class)of between:(id)between;
 - (id)getEarliestEventDate;
-- (id)getLatestElementOf:(Class)a3;
-- (id)getLatestElementOf:(Class)a3 andEventSubtype:(unint64_t)a4;
-- (void)_updateLatestElement:(id)a3;
-- (void)_updateLatestElement:(id)a3 withKey:(id)a4;
-- (void)ingestTAEvent:(id)a3;
-- (void)purgeWithClock:(id)a3;
-- (void)updateLatestExpiredElements:(id)a3;
+- (id)getLatestElementOf:(Class)of;
+- (id)getLatestElementOf:(Class)of andEventSubtype:(unint64_t)subtype;
+- (void)_updateLatestElement:(id)element;
+- (void)_updateLatestElement:(id)element withKey:(id)key;
+- (void)ingestTAEvent:(id)event;
+- (void)purgeWithClock:(id)clock;
+- (void)updateLatestExpiredElements:(id)elements;
 @end
 
 @implementation TAEventBuffer
 
-- (TAEventBuffer)initWithSettings:(id)a3
+- (TAEventBuffer)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v15.receiver = self;
   v15.super_class = TAEventBuffer;
   v6 = [(TAEventBuffer *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = [[TACircularBuffer alloc] initWithCapacity:[(TAEventBufferSettings *)v7->_settings bufferCapacity]];
     eventBuffer = v7->_eventBuffer;
     v7->_eventBuffer = v8;
@@ -45,12 +45,12 @@
   return v7;
 }
 
-- (void)purgeWithClock:(id)a3
+- (void)purgeWithClock:(id)clock
 {
-  v4 = a3;
-  v5 = [(TACircularBuffer *)self->_eventBuffer firstObject];
-  v6 = [v5 getDate];
-  [v4 timeIntervalSinceDate:v6];
+  clockCopy = clock;
+  firstObject = [(TACircularBuffer *)self->_eventBuffer firstObject];
+  getDate = [firstObject getDate];
+  [clockCopy timeIntervalSinceDate:getDate];
   v8 = v7;
   [(TAEventBufferSettings *)self->_settings bufferTimeIntervalOfRetention];
   v10 = v9;
@@ -62,8 +62,8 @@
     v15[1] = 3221225472;
     v15[2] = __32__TAEventBuffer_purgeWithClock___block_invoke;
     v15[3] = &unk_279DD1E98;
-    v16 = v4;
-    v17 = self;
+    v16 = clockCopy;
+    selfCopy = self;
     v12 = [v11 predicateWithBlock:v15];
     v13 = [(TACircularBuffer *)self->_eventBuffer removeUntilFirstPredicateFail:v12];
     v14[0] = MEMORY[0x277D85DD0];
@@ -87,21 +87,21 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-+ (id)getExpiredElementKeyForClass:(Class)a3 andEventSubtype:(unint64_t)a4
++ (id)getExpiredElementKeyForClass:(Class)class andEventSubtype:(unint64_t)subtype
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 stringWithFormat:@"%@:%lu", v7, a4];
+  subtype = [v5 stringWithFormat:@"%@:%lu", v7, subtype];
 
-  return v8;
+  return subtype;
 }
 
-- (id)getAllTAEventsOf:(Class)a3
+- (id)getAllTAEventsOf:(Class)of
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA920];
-  v5 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:a3];
+  v5 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:of];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v7 = [v4 andPredicateWithSubpredicates:v6];
@@ -113,11 +113,11 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)getAllTAEventsOf:(Class)a3 andEventSubtype:(unint64_t)a4
+- (id)getAllTAEventsOf:(Class)of andEventSubtype:(unint64_t)subtype
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA920];
-  v6 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:a3 andEventSubtype:a4];
+  v6 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:of andEventSubtype:subtype];
   v12[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
   v8 = [v5 andPredicateWithSubpredicates:v7];
@@ -129,13 +129,13 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (id)getAllTAEventsOf:(Class)a3 between:(id)a4
+- (id)getAllTAEventsOf:(Class)of between:(id)between
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA920];
-  v7 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:a4];
+  v7 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:between];
   v14[0] = v7;
-  v8 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:a3];
+  v8 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:of];
   v14[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v10 = [v6 andPredicateWithSubpredicates:v9];
@@ -147,13 +147,13 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v11;
 }
 
-- (id)getAllTAEventsOf:(Class)a3 andEventSubtype:(unint64_t)a4 between:(id)a5
+- (id)getAllTAEventsOf:(Class)of andEventSubtype:(unint64_t)subtype between:(id)between
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCA920];
-  v9 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:a5];
+  v9 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:between];
   v16[0] = v9;
-  v10 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:a3 andEventSubtype:a4];
+  v10 = [MEMORY[0x277CCAC30] predicateForTAEventsClass:of andEventSubtype:subtype];
   v16[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v12 = [v8 andPredicateWithSubpredicates:v11];
@@ -165,11 +165,11 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (id)getAllTAEventsBetween:(id)a3
+- (id)getAllTAEventsBetween:(id)between
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA920];
-  v5 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:a3];
+  v5 = [MEMORY[0x277CCAC30] predicateForTAEventsInDateInterval:between];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v7 = [v4 andPredicateWithSubpredicates:v6];
@@ -181,10 +181,10 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)getAllTAEventsMatchingCompoundPredicate:(id)a3
+- (id)getAllTAEventsMatchingCompoundPredicate:(id)predicate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
@@ -215,9 +215,9 @@ BOOL __32__TAEventBuffer_purgeWithClock___block_invoke(uint64_t a1, void *a2)
     while (v8);
   }
 
-  [v5 filterUsingPredicate:v4];
+  [v5 filterUsingPredicate:predicateCopy];
   [v5 sortUsingComparator:&__block_literal_global_4];
-  v12 = [(TACircularBuffer *)self->_eventBuffer objectsMatchingPredicate:v4];
+  v12 = [(TACircularBuffer *)self->_eventBuffer objectsMatchingPredicate:predicateCopy];
   v13 = [v5 arrayByAddingObjectsFromArray:v12];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -235,34 +235,34 @@ uint64_t __57__TAEventBuffer_getAllTAEventsMatchingCompoundPredicate___block_inv
   return v7;
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TACircularBuffer *)self->_eventBuffer lastObject];
-  v6 = v5;
-  if (!v5 || ([v5 getDate], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "getDate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "compare:", v8), v8, v7, v9 != 1))
+  eventCopy = event;
+  lastObject = [(TACircularBuffer *)self->_eventBuffer lastObject];
+  v6 = lastObject;
+  if (!lastObject || ([lastObject getDate], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(eventCopy, "getDate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "compare:", v8), v8, v7, v9 != 1))
   {
     v19 = TAStatusLog;
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v4 description];
+      v21 = [eventCopy description];
       v24 = 136642819;
-      v25 = [v21 UTF8String];
+      uTF8String = [v21 UTF8String];
       _os_log_impl(&dword_26F2E2000, v20, OS_LOG_TYPE_DEFAULT, "#TAStore adding:%{sensitive}s", &v24, 0xCu);
     }
 
-    v18 = [(TACircularBuffer *)self->_eventBuffer add:v4];
+    v18 = [(TACircularBuffer *)self->_eventBuffer add:eventCopy];
     goto LABEL_10;
   }
 
-  v10 = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
-  v11 = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
-  v12 = [v10 indexOfObject:v4 inSortedRange:0 options:objc_msgSend(v11 usingComparator:{"count"), 1024, &__block_literal_global_30}];
+  bufferCopy = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
+  bufferCopy2 = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
+  v12 = [bufferCopy indexOfObject:eventCopy inSortedRange:0 options:objc_msgSend(bufferCopy2 usingComparator:{"count"), 1024, &__block_literal_global_30}];
 
-  v13 = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
-  v14 = [v13 count];
+  bufferCopy3 = [(TACircularBuffer *)self->_eventBuffer bufferCopy];
+  v14 = [bufferCopy3 count];
 
   v15 = TAStatusLog;
   if (v12 < v14)
@@ -270,13 +270,13 @@ uint64_t __57__TAEventBuffer_getAllTAEventsMatchingCompoundPredicate___block_inv
     if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v4 description];
+      v17 = [eventCopy description];
       v24 = 136642819;
-      v25 = [v17 UTF8String];
+      uTF8String = [v17 UTF8String];
       _os_log_impl(&dword_26F2E2000, v16, OS_LOG_TYPE_DEFAULT, "#TAStore inserting OOO event:%{sensitive}s", &v24, 0xCu);
     }
 
-    v18 = [(TACircularBuffer *)self->_eventBuffer insert:v4 at:v12];
+    v18 = [(TACircularBuffer *)self->_eventBuffer insert:eventCopy at:v12];
 LABEL_10:
     v22 = v18;
     if (v18)
@@ -289,11 +289,11 @@ LABEL_10:
 
   if (os_log_type_enabled(TAStatusLog, OS_LOG_TYPE_FAULT))
   {
-    [(TAEventBuffer *)v15 ingestTAEvent:v4];
+    [(TAEventBuffer *)v15 ingestTAEvent:eventCopy];
   }
 
 LABEL_14:
-  [(TAEventBuffer *)self _updateLatestElement:v4];
+  [(TAEventBuffer *)self _updateLatestElement:eventCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -308,12 +308,12 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-- (void)updateLatestExpiredElements:(id)a3
+- (void)updateLatestExpiredElements:(id)elements
 {
-  v4 = a3;
-  if (v4)
+  elementsCopy = elements;
+  if (elementsCopy)
   {
-    v7 = v4;
+    v7 = elementsCopy;
     if (objc_opt_respondsToSelector())
     {
       +[TAEventBuffer getExpiredElementKeyForClass:andEventSubtype:](TAEventBuffer, "getExpiredElementKeyForClass:andEventSubtype:", objc_opt_class(), [v7 getEventSubtype]);
@@ -330,7 +330,7 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
       [(NSMutableDictionary *)self->_latestExpiredElements setValue:v7 forKey:v6];
     }
 
-    v4 = v7;
+    elementsCopy = v7;
   }
 }
 
@@ -348,7 +348,7 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
     if (v4)
     {
       v5 = v4;
-      v6 = 0;
+      getDate2 = 0;
       v7 = *v17;
       do
       {
@@ -360,18 +360,18 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
           }
 
           v9 = [(NSMutableDictionary *)self->_latestExpiredElements objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i), v16];
-          v10 = [v9 getDate];
-          v11 = v10;
-          if (v6)
+          getDate = [v9 getDate];
+          v11 = getDate;
+          if (getDate2)
           {
-            v12 = [v6 earlierDate:v10];
+            v12 = [getDate2 earlierDate:getDate];
 
-            v6 = v12;
+            getDate2 = v12;
           }
 
           else
           {
-            v6 = v10;
+            getDate2 = getDate;
           }
         }
 
@@ -383,74 +383,74 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
 
     else
     {
-      v6 = 0;
+      getDate2 = 0;
     }
   }
 
   else if ([(TACircularBuffer *)self->_eventBuffer count])
   {
-    v13 = [(TACircularBuffer *)self->_eventBuffer firstObject];
-    v6 = [v13 getDate];
+    firstObject = [(TACircularBuffer *)self->_eventBuffer firstObject];
+    getDate2 = [firstObject getDate];
   }
 
   else
   {
-    v6 = 0;
+    getDate2 = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return getDate2;
 }
 
-- (void)_updateLatestElement:(id)a3 withKey:(id)a4
+- (void)_updateLatestElement:(id)element withKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_latestElements objectForKeyedSubscript:v6];
+  elementCopy = element;
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_latestElements objectForKeyedSubscript:keyCopy];
 
   latestElements = self->_latestElements;
   if (v7)
   {
-    v9 = [(NSMutableDictionary *)latestElements objectForKeyedSubscript:v6];
-    v10 = [v9 getDate];
-    v11 = [v13 getDate];
-    v12 = [v10 compare:v11];
+    v9 = [(NSMutableDictionary *)latestElements objectForKeyedSubscript:keyCopy];
+    getDate = [v9 getDate];
+    getDate2 = [elementCopy getDate];
+    v12 = [getDate compare:getDate2];
 
     if (v12 == -1)
     {
-      [(NSMutableDictionary *)self->_latestElements setObject:v13 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_latestElements setObject:elementCopy forKeyedSubscript:keyCopy];
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)latestElements setObject:v13 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)latestElements setObject:elementCopy forKeyedSubscript:keyCopy];
   }
 }
 
-- (void)_updateLatestElement:(id)a3
+- (void)_updateLatestElement:(id)element
 {
-  v8 = a3;
-  if (v8)
+  elementCopy = element;
+  if (elementCopy)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     if (objc_opt_respondsToSelector())
     {
-      v6 = +[TAEventBuffer getExpiredElementKeyForClass:andEventSubtype:](TAEventBuffer, "getExpiredElementKeyForClass:andEventSubtype:", objc_opt_class(), [v8 getEventSubtype]);
+      v6 = +[TAEventBuffer getExpiredElementKeyForClass:andEventSubtype:](TAEventBuffer, "getExpiredElementKeyForClass:andEventSubtype:", objc_opt_class(), [elementCopy getEventSubtype]);
       if (v6)
       {
         v7 = v6;
-        [(TAEventBuffer *)self _updateLatestElement:v8 withKey:v6];
+        [(TAEventBuffer *)self _updateLatestElement:elementCopy withKey:v6];
       }
     }
 
-    [(TAEventBuffer *)self _updateLatestElement:v8 withKey:v5];
+    [(TAEventBuffer *)self _updateLatestElement:elementCopy withKey:v5];
   }
 }
 
-- (id)getLatestElementOf:(Class)a3
+- (id)getLatestElementOf:(Class)of
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -459,9 +459,9 @@ uint64_t __31__TAEventBuffer_ingestTAEvent___block_invoke(uint64_t a1, void *a2,
   return v6;
 }
 
-- (id)getLatestElementOf:(Class)a3 andEventSubtype:(unint64_t)a4
+- (id)getLatestElementOf:(Class)of andEventSubtype:(unint64_t)subtype
 {
-  v5 = [TAEventBuffer getExpiredElementKeyForClass:a3 andEventSubtype:a4];
+  v5 = [TAEventBuffer getExpiredElementKeyForClass:of andEventSubtype:subtype];
   v6 = [(NSMutableDictionary *)self->_latestElements objectForKeyedSubscript:v5];
 
   return v6;

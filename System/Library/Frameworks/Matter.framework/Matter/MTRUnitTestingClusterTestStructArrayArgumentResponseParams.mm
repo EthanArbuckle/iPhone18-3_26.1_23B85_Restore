@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestStructArrayArgumentResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)init;
-- (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,21 +16,21 @@
   v2 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     arg1 = v2->_arg1;
-    v2->_arg1 = v3;
+    v2->_arg1 = array;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     arg2 = v2->_arg2;
-    v2->_arg2 = v5;
+    v2->_arg2 = array2;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     arg3 = v2->_arg3;
-    v2->_arg3 = v7;
+    v2->_arg3 = array3;
 
-    v9 = [MEMORY[0x277CBEA60] array];
+    array4 = [MEMORY[0x277CBEA60] array];
     arg4 = v2->_arg4;
-    v2->_arg4 = v9;
+    v2->_arg4 = array4;
 
     arg5 = v2->_arg5;
     v2->_arg5 = &unk_284C3E4C8;
@@ -45,29 +45,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestStructArrayArgumentResponseParams);
-  v5 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg1];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg1];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg2];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg2:v6];
+  arg2 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg2];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg2:arg2];
 
-  v7 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg3];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg3:v7];
+  arg3 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg3];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg3:arg3];
 
-  v8 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg4];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg4:v8];
+  arg4 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg4];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg4:arg4];
 
-  v9 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg5];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg5:v9];
+  arg5 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg5];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg5:arg5];
 
-  v10 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg6];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg6:v10];
+  arg6 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self arg6];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setArg6:arg6];
 
-  v11 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -134,7 +134,7 @@ LABEL_10:
   return v11;
 }
 
-- (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRUnitTestingClusterTestStructArrayArgumentResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestStructArrayArgumentResponseParams;
@@ -142,7 +142,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -158,12 +158,12 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v4 = objc_opt_new();
-  v69 = a3;
+  structCopy = struct;
   v71 = v4;
-  sub_238EA4A78(&v85, a3);
+  sub_238EA4A78(&v85, struct);
   while (2)
   {
     if (sub_238EA1A80(&v85) && sub_238EA4B40(&v85))
@@ -373,7 +373,7 @@ LABEL_38:
       [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self setArg1:v4];
 
       v71 = objc_opt_new();
-      sub_238EA4C98(&v85, a3 + 72);
+      sub_238EA4C98(&v85, struct + 72);
       while (sub_238EA1A80(&v85) && sub_238EA4CF8(&v85))
       {
         v51 = objc_opt_new();
@@ -442,7 +442,7 @@ LABEL_38:
       sub_2393C5AAC(v87);
       v85 = 0;
       v86 = 0;
-      sub_2393C5BDC(v87, a3 + 144);
+      sub_2393C5BDC(v87, struct + 144);
       while (sub_238E8A35C(&v85))
       {
         v63 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v88];
@@ -468,7 +468,7 @@ LABEL_60:
       sub_2393C5AAC(v87);
       v85 = 0;
       v86 = 0;
-      sub_2393C5BDC(v87, a3 + 216);
+      sub_2393C5BDC(v87, struct + 216);
       while (1)
       {
         v64 = sub_238EA1A80(&v85);
@@ -509,10 +509,10 @@ LABEL_42:
       {
         [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self setArg4:v4];
 
-        v68 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 288)];
+        v68 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 288)];
         [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self setArg5:v68];
 
-        v4 = [MEMORY[0x277CCABB0] numberWithBool:v69[289]];
+        v4 = [MEMORY[0x277CCABB0] numberWithBool:structCopy[289]];
         [(MTRUnitTestingClusterTestStructArrayArgumentResponseParams *)self setArg6:v4];
         v47 = 0;
         v43 = 0;

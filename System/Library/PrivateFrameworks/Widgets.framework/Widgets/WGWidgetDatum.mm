@@ -1,37 +1,37 @@
 @interface WGWidgetDatum
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (WGWidgetDatum)initWithExtension:(id)a3;
+- (WGWidgetDatum)initWithExtension:(id)extension;
 @end
 
 @implementation WGWidgetDatum
 
-- (WGWidgetDatum)initWithExtension:(id)a3
+- (WGWidgetDatum)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v9.receiver = self;
   v9.super_class = WGWidgetDatum;
   v6 = [(WGWidgetDatum *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_representedExtension, a3);
+    objc_storeStrong(&v6->_representedExtension, extension);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
+  equalCopy = equal;
+  selfCopy = self;
+  v6 = equalCopy;
   v7 = v6;
-  if (v5 && v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (selfCopy && v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [(WGWidgetDatum *)v5 datumIdentifier];
-    v9 = [v7 datumIdentifier];
-    v10 = [v8 isEqual:v9];
+    datumIdentifier = [(WGWidgetDatum *)selfCopy datumIdentifier];
+    datumIdentifier2 = [v7 datumIdentifier];
+    v10 = [datumIdentifier isEqual:datumIdentifier2];
 
     if (!v10)
     {
@@ -39,9 +39,9 @@
       goto LABEL_8;
     }
 
-    representedExtension = v5->_representedExtension;
-    v5 = [v7 representedExtension];
-    v12 = [(NSExtension *)representedExtension isEqual:v5];
+    representedExtension = selfCopy->_representedExtension;
+    selfCopy = [v7 representedExtension];
+    v12 = [(NSExtension *)representedExtension isEqual:selfCopy];
   }
 
   else
@@ -58,8 +58,8 @@ LABEL_8:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSExtension *)self->_representedExtension wg_description];
-  v6 = [v3 stringWithFormat:@"<%@: %p representedExtension: %@>", v4, self, v5];;
+  wg_description = [(NSExtension *)self->_representedExtension wg_description];
+  v6 = [v3 stringWithFormat:@"<%@: %p representedExtension: %@>", v4, self, wg_description];;
 
   return v6;
 }

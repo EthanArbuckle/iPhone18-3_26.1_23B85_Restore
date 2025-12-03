@@ -1,17 +1,17 @@
 @interface NTKCCFaceAddedInfoViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKCCFaceAddedInfoViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceVariable:@"_header" withType:"UILabel"];
-  [v3 validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceVariable:@"_close" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceVariable:@"_header" withType:"UILabel"];
+  [validationsCopy validateClass:@"NTKCCFaceAddedInfoViewController" hasInstanceVariable:@"_close" withType:"UIButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,7 +1,7 @@
 @interface NDAnalyticsPayloadUploader
 - (NDAnalyticsPayloadUploader)init;
-- (NDAnalyticsPayloadUploader)initWithAppConfigurationManager:(id)a3;
-- (void)uploadPayloadsForInfos:(id)a3 withEnvelopeStore:(id)a4 perPayloadCompletion:(id)a5 completion:(id)a6;
+- (NDAnalyticsPayloadUploader)initWithAppConfigurationManager:(id)manager;
+- (void)uploadPayloadsForInfos:(id)infos withEnvelopeStore:(id)store perPayloadCompletion:(id)completion completion:(id)a6;
 @end
 
 @implementation NDAnalyticsPayloadUploader
@@ -32,10 +32,10 @@
   objc_exception_throw(v6);
 }
 
-- (NDAnalyticsPayloadUploader)initWithAppConfigurationManager:(id)a3
+- (NDAnalyticsPayloadUploader)initWithAppConfigurationManager:(id)manager
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadUploader initWithAppConfigurationManager:];
   }
@@ -58,23 +58,23 @@
   return v5;
 }
 
-- (void)uploadPayloadsForInfos:(id)a3 withEnvelopeStore:(id)a4 perPayloadCompletion:(id)a5 completion:(id)a6
+- (void)uploadPayloadsForInfos:(id)infos withEnvelopeStore:(id)store perPayloadCompletion:(id)completion completion:(id)a6
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v23 = a5;
+  infosCopy = infos;
+  storeCopy = store;
+  completionCopy = completion;
   v20 = a6;
-  if (!v10 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!infosCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadUploader uploadPayloadsForInfos:withEnvelopeStore:perPayloadCompletion:completion:];
-    if (v11)
+    if (storeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v11)
+  else if (storeCopy)
   {
     goto LABEL_6;
   }
@@ -85,18 +85,18 @@
   }
 
 LABEL_6:
-  v12 = v11;
-  if (!v23 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  v12 = storeCopy;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsPayloadUploader uploadPayloadsForInfos:withEnvelopeStore:perPayloadCompletion:completion:];
   }
 
-  v13 = [(NDAnalyticsPayloadUploader *)self uploadQueue];
+  uploadQueue = [(NDAnalyticsPayloadUploader *)self uploadQueue];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v10;
+  obj = infosCopy;
   v14 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v14)
   {
@@ -118,9 +118,9 @@ LABEL_6:
         v26[3] = &unk_27997A908;
         v27 = v12;
         v28 = v18;
-        v29 = self;
-        v30 = v23;
-        [v13 enqueueBlock:v26];
+        selfCopy = self;
+        v30 = completionCopy;
+        [uploadQueue enqueueBlock:v26];
       }
 
       v15 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -136,7 +136,7 @@ LABEL_6:
     v24[2] = __103__NDAnalyticsPayloadUploader_uploadPayloadsForInfos_withEnvelopeStore_perPayloadCompletion_completion___block_invoke_4;
     v24[3] = &unk_27997A930;
     v25 = v21;
-    [v13 enqueueBlock:v24];
+    [uploadQueue enqueueBlock:v24];
   }
 
   v19 = *MEMORY[0x277D85DE8];

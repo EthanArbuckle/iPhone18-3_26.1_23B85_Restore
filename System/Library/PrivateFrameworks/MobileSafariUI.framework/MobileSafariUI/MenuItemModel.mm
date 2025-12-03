@@ -1,28 +1,28 @@
 @interface MenuItemModel
-- (MenuItemModel)initWithTitle:(id)a3 subtitle:(id)a4 payload:(id)a5;
+- (MenuItemModel)initWithTitle:(id)title subtitle:(id)subtitle payload:(id)payload;
 @end
 
 @implementation MenuItemModel
 
-- (MenuItemModel)initWithTitle:(id)a3 subtitle:(id)a4 payload:(id)a5
+- (MenuItemModel)initWithTitle:(id)title subtitle:(id)subtitle payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  payloadCopy = payload;
   v18.receiver = self;
   v18.super_class = MenuItemModel;
   v11 = [(MenuItemModel *)&v18 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [subtitleCopy copy];
     subtitle = v11->_subtitle;
     v11->_subtitle = v14;
 
-    objc_storeStrong(&v11->_payload, a5);
+    objc_storeStrong(&v11->_payload, payload);
     v16 = v11;
   }
 

@@ -1,12 +1,12 @@
 @interface HAP2TLVParamCharacteristicSignature
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVParamCharacteristicSignature)init;
-- (HAP2TLVParamCharacteristicSignature)initWithInstanceID:(id)a3 characteristicType:(id)a4 characteristicProperties:(id)a5 userDescription:(id)a6 bluetoothFormat:(id)a7 validRange:(id)a8 stepValue:(id)a9 validValues:(id)a10 validValuesRange:(id)a11;
+- (HAP2TLVParamCharacteristicSignature)initWithInstanceID:(id)d characteristicType:(id)type characteristicProperties:(id)properties userDescription:(id)description bluetoothFormat:(id)format validRange:(id)range stepValue:(id)value validValues:(id)self0 validValuesRange:(id)self1;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVParamCharacteristicSignature
@@ -14,24 +14,24 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
-  v5 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
-  v6 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
-  v7 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
-  v8 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
-  v9 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
-  v10 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
-  v11 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
-  v12 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
-  v13 = [v3 stringWithFormat:@"<HAP2TLVParamCharacteristicSignature instanceID=%@, characteristicType=%@, characteristicProperties=%@, userDescription=%@, bluetoothFormat=%@, validRange=%@, stepValue=%@, validValues=%@, validValuesRange=%@>", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  instanceID = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+  characteristicType = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+  characteristicProperties = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+  userDescription = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+  bluetoothFormat = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+  validRange = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+  stepValue = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+  validValues = [(HAP2TLVParamCharacteristicSignature *)self validValues];
+  validValuesRange = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+  v13 = [v3 stringWithFormat:@"<HAP2TLVParamCharacteristicSignature instanceID=%@, characteristicType=%@, characteristicProperties=%@, userDescription=%@, bluetoothFormat=%@, validRange=%@, stepValue=%@, validValues=%@, validValuesRange=%@>", instanceID, characteristicType, characteristicProperties, userDescription, bluetoothFormat, validRange, stepValue, validValues, validValuesRange];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -41,37 +41,37 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
-      v7 = [(HAP2TLVParamCharacteristicSignature *)v5 instanceID];
-      if (v6 != v7)
+      v5 = equalCopy;
+      instanceID = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+      instanceID2 = [(HAP2TLVParamCharacteristicSignature *)v5 instanceID];
+      if (instanceID != instanceID2)
       {
-        v8 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
-        v9 = [(HAP2TLVParamCharacteristicSignature *)v5 instanceID];
-        v74 = v8;
-        if (![v8 isEqual:v9])
+        instanceID3 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+        instanceID4 = [(HAP2TLVParamCharacteristicSignature *)v5 instanceID];
+        v74 = instanceID3;
+        if (![instanceID3 isEqual:instanceID4])
         {
           v10 = 0;
           goto LABEL_54;
         }
 
-        v73 = v9;
+        v73 = instanceID4;
       }
 
-      v11 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
-      v12 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicType];
-      if (v11 != v12)
+      characteristicType = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+      characteristicType2 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicType];
+      if (characteristicType != characteristicType2)
       {
-        v13 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
-        v14 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicType];
-        if (![v13 isEqual:v14])
+        characteristicType3 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+        characteristicType4 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicType];
+        if (![characteristicType3 isEqual:characteristicType4])
         {
           v10 = 0;
 LABEL_52:
 
 LABEL_53:
-          v9 = v73;
-          if (v6 == v7)
+          instanceID4 = v73;
+          if (instanceID == instanceID2)
           {
 LABEL_55:
 
@@ -83,32 +83,32 @@ LABEL_54:
           goto LABEL_55;
         }
 
-        v71 = v14;
-        v72 = v13;
+        v71 = characteristicType4;
+        v72 = characteristicType3;
       }
 
-      v15 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
-      v16 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicProperties];
-      if (v15 == v16)
+      characteristicProperties = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+      characteristicProperties2 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicProperties];
+      if (characteristicProperties == characteristicProperties2)
       {
-        v67 = v12;
-        v18 = v11;
+        v67 = characteristicType2;
+        v18 = characteristicType;
       }
 
       else
       {
-        v17 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
-        v65 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicProperties];
-        v66 = v17;
-        if (![v17 isEqual:v65])
+        characteristicProperties3 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+        characteristicProperties4 = [(HAP2TLVParamCharacteristicSignature *)v5 characteristicProperties];
+        v66 = characteristicProperties3;
+        if (![characteristicProperties3 isEqual:characteristicProperties4])
         {
           v10 = 0;
 LABEL_50:
 
 LABEL_51:
-          v14 = v71;
-          v13 = v72;
-          if (v11 == v12)
+          characteristicType4 = v71;
+          characteristicType3 = v72;
+          if (characteristicType == characteristicType2)
           {
             goto LABEL_53;
           }
@@ -116,32 +116,32 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v67 = v12;
-        v18 = v11;
+        v67 = characteristicType2;
+        v18 = characteristicType;
       }
 
-      v19 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
-      v20 = [(HAP2TLVParamCharacteristicSignature *)v5 userDescription];
-      v69 = v16;
-      v70 = v19;
-      v68 = v15;
-      if (v19 != v20)
+      userDescription = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+      userDescription2 = [(HAP2TLVParamCharacteristicSignature *)v5 userDescription];
+      v69 = characteristicProperties2;
+      v70 = userDescription;
+      v68 = characteristicProperties;
+      if (userDescription != userDescription2)
       {
-        v21 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
-        v61 = [(HAP2TLVParamCharacteristicSignature *)v5 userDescription];
-        v62 = v21;
-        if (![v21 isEqual:?])
+        userDescription3 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+        userDescription4 = [(HAP2TLVParamCharacteristicSignature *)v5 userDescription];
+        v62 = userDescription3;
+        if (![userDescription3 isEqual:?])
         {
           v10 = 0;
-          v22 = v20;
+          v22 = userDescription2;
           v23 = v70;
-          v11 = v18;
-          v12 = v67;
+          characteristicType = v18;
+          characteristicType2 = v67;
 LABEL_48:
 
 LABEL_49:
-          v15 = v68;
-          v16 = v69;
+          characteristicProperties = v68;
+          characteristicProperties2 = v69;
           if (v68 == v69)
           {
             goto LABEL_51;
@@ -151,21 +151,21 @@ LABEL_49:
         }
       }
 
-      v24 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
-      v63 = [(HAP2TLVParamCharacteristicSignature *)v5 bluetoothFormat];
-      v64 = v24;
-      if (v24 != v63)
+      bluetoothFormat = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+      bluetoothFormat2 = [(HAP2TLVParamCharacteristicSignature *)v5 bluetoothFormat];
+      v64 = bluetoothFormat;
+      if (bluetoothFormat != bluetoothFormat2)
       {
-        v25 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
-        v57 = [(HAP2TLVParamCharacteristicSignature *)v5 bluetoothFormat];
-        v58 = v25;
-        if (![v25 isEqual:?])
+        bluetoothFormat3 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+        bluetoothFormat4 = [(HAP2TLVParamCharacteristicSignature *)v5 bluetoothFormat];
+        v58 = bluetoothFormat3;
+        if (![bluetoothFormat3 isEqual:?])
         {
-          v22 = v20;
+          v22 = userDescription2;
           v10 = 0;
-          v26 = v63;
-          v11 = v18;
-          v12 = v67;
+          v26 = bluetoothFormat2;
+          characteristicType = v18;
+          characteristicType2 = v67;
 LABEL_46:
 
 LABEL_47:
@@ -179,61 +179,61 @@ LABEL_47:
         }
       }
 
-      v27 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
-      v59 = [(HAP2TLVParamCharacteristicSignature *)v5 validRange];
-      v60 = v27;
-      if (v27 == v59)
+      validRange = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+      validRange2 = [(HAP2TLVParamCharacteristicSignature *)v5 validRange];
+      v60 = validRange;
+      if (validRange == validRange2)
       {
-        v55 = v20;
+        v55 = userDescription2;
       }
 
       else
       {
-        v28 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
-        v52 = [(HAP2TLVParamCharacteristicSignature *)v5 validRange];
-        v53 = v28;
-        v29 = [v28 isEqual:?];
-        v30 = v20;
+        validRange3 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+        validRange4 = [(HAP2TLVParamCharacteristicSignature *)v5 validRange];
+        v53 = validRange3;
+        v29 = [validRange3 isEqual:?];
+        v30 = userDescription2;
         if (!v29)
         {
           v10 = 0;
-          v11 = v18;
-          v12 = v67;
-          v34 = v59;
+          characteristicType = v18;
+          characteristicType2 = v67;
+          v34 = validRange2;
           v35 = v60;
           goto LABEL_43;
         }
 
-        v55 = v20;
+        v55 = userDescription2;
       }
 
-      v11 = v18;
-      v31 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
-      v54 = [(HAP2TLVParamCharacteristicSignature *)v5 stepValue];
-      v56 = v31;
-      v12 = v67;
-      if (v31 != v54)
+      characteristicType = v18;
+      stepValue = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+      stepValue2 = [(HAP2TLVParamCharacteristicSignature *)v5 stepValue];
+      v56 = stepValue;
+      characteristicType2 = v67;
+      if (stepValue != stepValue2)
       {
-        v32 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
-        v48 = [(HAP2TLVParamCharacteristicSignature *)v5 stepValue];
-        v49 = v32;
-        if (![v32 isEqual:v48])
+        stepValue3 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+        stepValue4 = [(HAP2TLVParamCharacteristicSignature *)v5 stepValue];
+        v49 = stepValue3;
+        if (![stepValue3 isEqual:stepValue4])
         {
           v10 = 0;
-          v33 = v54;
+          v33 = stepValue2;
 LABEL_41:
 
 LABEL_42:
-          v34 = v59;
+          v34 = validRange2;
           v35 = v60;
           v30 = v55;
-          if (v60 == v59)
+          if (v60 == validRange2)
           {
             v22 = v55;
 LABEL_45:
 
-            v26 = v63;
-            if (v64 == v63)
+            v26 = bluetoothFormat2;
+            if (v64 == bluetoothFormat2)
             {
               goto LABEL_47;
             }
@@ -248,14 +248,14 @@ LABEL_43:
         }
       }
 
-      v36 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
-      v50 = [(HAP2TLVParamCharacteristicSignature *)v5 validValues];
-      v51 = v36;
-      if (v36 == v50 || (-[HAP2TLVParamCharacteristicSignature validValues](self, "validValues"), v37 = objc_claimAutoreleasedReturnValue(), -[HAP2TLVParamCharacteristicSignature validValues](v5, "validValues"), v46 = objc_claimAutoreleasedReturnValue(), v47 = v37, [v37 isEqual:?]))
+      validValues = [(HAP2TLVParamCharacteristicSignature *)self validValues];
+      validValues2 = [(HAP2TLVParamCharacteristicSignature *)v5 validValues];
+      v51 = validValues;
+      if (validValues == validValues2 || (-[HAP2TLVParamCharacteristicSignature validValues](self, "validValues"), v37 = objc_claimAutoreleasedReturnValue(), -[HAP2TLVParamCharacteristicSignature validValues](v5, "validValues"), v46 = objc_claimAutoreleasedReturnValue(), v47 = v37, [v37 isEqual:?]))
       {
-        v39 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
-        v40 = [(HAP2TLVParamCharacteristicSignature *)v5 validValuesRange];
-        if (v39 == v40)
+        validValuesRange = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+        validValuesRange2 = [(HAP2TLVParamCharacteristicSignature *)v5 validValuesRange];
+        if (validValuesRange == validValuesRange2)
         {
 
           v10 = 1;
@@ -263,20 +263,20 @@ LABEL_43:
 
         else
         {
-          v45 = v40;
-          v43 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+          v45 = validValuesRange2;
+          validValuesRange3 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
           [(HAP2TLVParamCharacteristicSignature *)v5 validValuesRange];
-          v41 = v44 = v39;
-          v10 = [v43 isEqual:v41];
+          v41 = v44 = validValuesRange;
+          v10 = [validValuesRange3 isEqual:v41];
         }
 
-        v38 = v50;
-        if (v51 == v50)
+        v38 = validValues2;
+        if (v51 == validValues2)
         {
 LABEL_40:
 
-          v33 = v54;
-          if (v56 == v54)
+          v33 = stepValue2;
+          if (v56 == stepValue2)
           {
             goto LABEL_42;
           }
@@ -288,7 +288,7 @@ LABEL_40:
       else
       {
         v10 = 0;
-        v38 = v50;
+        v38 = validValues2;
       }
 
       goto LABEL_40;
@@ -302,24 +302,24 @@ LABEL_56:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVParamCharacteristicSignature allocWithZone:a3];
-  v5 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
-  v6 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
-  v7 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
-  v8 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
-  v9 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
-  v10 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
-  v11 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
-  v12 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
-  v13 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
-  v14 = [(HAP2TLVParamCharacteristicSignature *)v4 initWithInstanceID:v5 characteristicType:v6 characteristicProperties:v7 userDescription:v8 bluetoothFormat:v9 validRange:v10 stepValue:v11 validValues:v12 validValuesRange:v13];
+  v4 = [HAP2TLVParamCharacteristicSignature allocWithZone:zone];
+  instanceID = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+  characteristicType = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+  characteristicProperties = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+  userDescription = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+  bluetoothFormat = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+  validRange = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+  stepValue = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+  validValues = [(HAP2TLVParamCharacteristicSignature *)self validValues];
+  validValuesRange = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+  v14 = [(HAP2TLVParamCharacteristicSignature *)v4 initWithInstanceID:instanceID characteristicType:characteristicType characteristicProperties:characteristicProperties userDescription:userDescription bluetoothFormat:bluetoothFormat validRange:validRange stepValue:stepValue validValues:validValues validValuesRange:validValuesRange];
 
   return v14;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v85 = *MEMORY[0x277D85DE8];
   v83 = 0u;
@@ -344,13 +344,13 @@ LABEL_56:
   v64 = 0u;
   v65 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+  instanceID = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
 
-  if (v5)
+  if (instanceID)
   {
-    v6 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
+    instanceID2 = [(HAP2TLVParamCharacteristicSignature *)self instanceID];
     v63 = 0;
-    v7 = [v6 serializeWithError:&v63];
+    v7 = [instanceID2 serializeWithError:&v63];
     v8 = v63;
 
     if (v8)
@@ -367,11 +367,11 @@ LABEL_4:
       v10 = v9;
 
 LABEL_5:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v10);
         v8 = 0;
-        *a3 = v11 = 0;
+        *error = v11 = 0;
         goto LABEL_72;
       }
 
@@ -382,30 +382,30 @@ LABEL_71:
     }
   }
 
-  v12 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+  characteristicType = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
 
-  if (v12)
+  if (characteristicType)
   {
-    v13 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
+    characteristicType2 = [(HAP2TLVParamCharacteristicSignature *)self characteristicType];
     v62 = 0;
-    v7 = [v13 serializeWithError:&v62];
+    v7 = [characteristicType2 serializeWithError:&v62];
     v8 = v62;
 
     if (!v8)
     {
-      v14 = [v7 bytes];
-      v15 = v14 + [v7 length];
+      bytes = [v7 bytes];
+      v15 = bytes + [v7 length];
       while (1)
       {
-        v16 = (v15 - v14) >= 255 ? 255 : v15 - v14;
+        v16 = (v15 - bytes) >= 255 ? 255 : v15 - bytes;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v14 += v16;
-        if (v14 >= v15)
+        bytes += v16;
+        if (bytes >= v15)
         {
 
           goto LABEL_18;
@@ -417,13 +417,13 @@ LABEL_71:
   }
 
 LABEL_18:
-  v17 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+  characteristicProperties = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
 
-  if (v17)
+  if (characteristicProperties)
   {
-    v18 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
+    characteristicProperties2 = [(HAP2TLVParamCharacteristicSignature *)self characteristicProperties];
     v61 = 0;
-    v7 = [v18 serializeWithError:&v61];
+    v7 = [characteristicProperties2 serializeWithError:&v61];
     v8 = v61;
 
     if (v8)
@@ -440,30 +440,30 @@ LABEL_18:
     }
   }
 
-  v19 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+  userDescription = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
 
-  if (v19)
+  if (userDescription)
   {
-    v20 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
+    userDescription2 = [(HAP2TLVParamCharacteristicSignature *)self userDescription];
     v60 = 0;
-    v7 = [v20 serializeWithError:&v60];
+    v7 = [userDescription2 serializeWithError:&v60];
     v8 = v60;
 
     if (!v8)
     {
-      v21 = [v7 bytes];
-      v22 = v21 + [v7 length];
+      bytes2 = [v7 bytes];
+      v22 = bytes2 + [v7 length];
       while (1)
       {
-        v23 = (v22 - v21) >= 255 ? 255 : v22 - v21;
+        v23 = (v22 - bytes2) >= 255 ? 255 : v22 - bytes2;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v21 += v23;
-        if (v21 >= v22)
+        bytes2 += v23;
+        if (bytes2 >= v22)
         {
 
           goto LABEL_31;
@@ -475,30 +475,30 @@ LABEL_18:
   }
 
 LABEL_31:
-  v24 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+  bluetoothFormat = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
 
-  if (v24)
+  if (bluetoothFormat)
   {
-    v25 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
+    bluetoothFormat2 = [(HAP2TLVParamCharacteristicSignature *)self bluetoothFormat];
     v59 = 0;
-    v7 = [v25 serializeWithError:&v59];
+    v7 = [bluetoothFormat2 serializeWithError:&v59];
     v8 = v59;
 
     if (!v8)
     {
-      v26 = [v7 bytes];
-      v27 = v26 + [v7 length];
+      bytes3 = [v7 bytes];
+      v27 = bytes3 + [v7 length];
       while (1)
       {
-        v28 = (v27 - v26) >= 255 ? 255 : v27 - v26;
+        v28 = (v27 - bytes3) >= 255 ? 255 : v27 - bytes3;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v26 += v28;
-        if (v26 >= v27)
+        bytes3 += v28;
+        if (bytes3 >= v27)
         {
 
           goto LABEL_40;
@@ -510,30 +510,30 @@ LABEL_31:
   }
 
 LABEL_40:
-  v29 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+  validRange = [(HAP2TLVParamCharacteristicSignature *)self validRange];
 
-  if (v29)
+  if (validRange)
   {
-    v30 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
+    validRange2 = [(HAP2TLVParamCharacteristicSignature *)self validRange];
     v58 = 0;
-    v7 = [v30 serializeWithError:&v58];
+    v7 = [validRange2 serializeWithError:&v58];
     v8 = v58;
 
     if (!v8)
     {
-      v31 = [v7 bytes];
-      v32 = v31 + [v7 length];
+      bytes4 = [v7 bytes];
+      v32 = bytes4 + [v7 length];
       while (1)
       {
-        v33 = (v32 - v31) >= 255 ? 255 : v32 - v31;
+        v33 = (v32 - bytes4) >= 255 ? 255 : v32 - bytes4;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v31 += v33;
-        if (v31 >= v32)
+        bytes4 += v33;
+        if (bytes4 >= v32)
         {
 
           goto LABEL_49;
@@ -545,30 +545,30 @@ LABEL_40:
   }
 
 LABEL_49:
-  v34 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+  stepValue = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
 
-  if (v34)
+  if (stepValue)
   {
-    v35 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
+    stepValue2 = [(HAP2TLVParamCharacteristicSignature *)self stepValue];
     v57 = 0;
-    v7 = [v35 serializeWithError:&v57];
+    v7 = [stepValue2 serializeWithError:&v57];
     v8 = v57;
 
     if (!v8)
     {
-      v36 = [v7 bytes];
-      v37 = v36 + [v7 length];
+      bytes5 = [v7 bytes];
+      v37 = bytes5 + [v7 length];
       while (1)
       {
-        v38 = (v37 - v36) >= 255 ? 255 : v37 - v36;
+        v38 = (v37 - bytes5) >= 255 ? 255 : v37 - bytes5;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v36 += v38;
-        if (v36 >= v37)
+        bytes5 += v38;
+        if (bytes5 >= v37)
         {
 
           goto LABEL_58;
@@ -580,30 +580,30 @@ LABEL_49:
   }
 
 LABEL_58:
-  v39 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
+  validValues = [(HAP2TLVParamCharacteristicSignature *)self validValues];
 
-  if (v39)
+  if (validValues)
   {
-    v40 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
+    validValues2 = [(HAP2TLVParamCharacteristicSignature *)self validValues];
     v56 = 0;
-    v7 = [v40 serializeWithError:&v56];
+    v7 = [validValues2 serializeWithError:&v56];
     v8 = v56;
 
     if (!v8)
     {
-      v41 = [v7 bytes];
-      v42 = v41 + [v7 length];
+      bytes6 = [v7 bytes];
+      v42 = bytes6 + [v7 length];
       while (1)
       {
-        v43 = (v42 - v41) >= 255 ? 255 : v42 - v41;
+        v43 = (v42 - bytes6) >= 255 ? 255 : v42 - bytes6;
         v9 = TLV8BufferAppend();
         if (v9)
         {
           goto LABEL_4;
         }
 
-        v41 += v43;
-        if (v41 >= v42)
+        bytes6 += v43;
+        if (bytes6 >= v42)
         {
 
           goto LABEL_67;
@@ -613,11 +613,11 @@ LABEL_58:
 
 LABEL_69:
 
-    if (a3)
+    if (error)
     {
       v46 = v8;
       v11 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_72;
     }
 
@@ -625,13 +625,13 @@ LABEL_69:
   }
 
 LABEL_67:
-  v44 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+  validValuesRange = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
 
-  if (v44)
+  if (validValuesRange)
   {
-    v45 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
+    validValuesRange2 = [(HAP2TLVParamCharacteristicSignature *)self validValuesRange];
     v55 = 0;
-    v7 = [v45 serializeWithError:&v55];
+    v7 = [validValuesRange2 serializeWithError:&v55];
     v8 = v55;
 
     if (v8)
@@ -639,18 +639,18 @@ LABEL_67:
       goto LABEL_69;
     }
 
-    v49 = [v7 bytes];
-    v50 = v49 + [v7 length];
+    bytes7 = [v7 bytes];
+    v50 = bytes7 + [v7 length];
     do
     {
-      if ((v50 - v49) >= 255)
+      if ((v50 - bytes7) >= 255)
       {
         v51 = 255;
       }
 
       else
       {
-        v51 = v50 - v49;
+        v51 = v50 - bytes7;
       }
 
       v52 = TLV8BufferAppend();
@@ -664,7 +664,7 @@ LABEL_67:
         v53 = v51;
       }
 
-      v49 += v53;
+      bytes7 += v53;
       if (v52)
       {
         v54 = 1;
@@ -672,7 +672,7 @@ LABEL_67:
 
       else
       {
-        v54 = v49 >= v50;
+        v54 = bytes7 >= v50;
       }
     }
 
@@ -695,12 +695,12 @@ LABEL_72:
   return v11;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v48 = v6;
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v48 = dataCopy;
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v27 = 0;
@@ -738,7 +738,7 @@ LABEL_47:
   v41 = 0;
   v42 = 0;
   v43 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v67 = 0;
@@ -750,10 +750,10 @@ LABEL_47:
     {
       v29 = v11;
       v27 = v10;
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus(Next);
-        *a4 = v36 = 0;
+        *error = v36 = 0;
       }
 
       else
@@ -796,7 +796,7 @@ LABEL_28:
         if (v67 == 11)
         {
           v60 = v9;
-          v14 = HAPTLVParseContiguousTlvs(11, v7, v12, v65, &v60);
+          v14 = HAPTLVParseContiguousTlvs(11, bytes, v12, v65, &v60);
           v15 = v60;
 
           if (!v15)
@@ -818,7 +818,7 @@ LABEL_28:
         if (v67 == 4)
         {
           v63 = v9;
-          v14 = HAPTLVParseContiguousTlvs(4, v7, v12, v65, &v63);
+          v14 = HAPTLVParseContiguousTlvs(4, bytes, v12, v65, &v63);
           v15 = v63;
 
           if (v15)
@@ -853,7 +853,7 @@ LABEL_28:
       if (v67 == 12)
       {
         v58 = v9;
-        v14 = HAPTLVParseContiguousTlvs(12, v7, v12, v65, &v58);
+        v14 = HAPTLVParseContiguousTlvs(12, bytes, v12, v65, &v58);
         v15 = v58;
 
         if (v15)
@@ -872,7 +872,7 @@ LABEL_28:
       if (v67 == 13)
       {
         v56 = v9;
-        v14 = HAPTLVParseContiguousTlvs(13, v7, v12, v65, &v56);
+        v14 = HAPTLVParseContiguousTlvs(13, bytes, v12, v65, &v56);
         v15 = v56;
 
         if (!v15)
@@ -897,7 +897,7 @@ LABEL_35:
       {
         case 0xEu:
           v54 = v9;
-          v14 = HAPTLVParseContiguousTlvs(14, v7, v12, v65, &v54);
+          v14 = HAPTLVParseContiguousTlvs(14, bytes, v12, v65, &v54);
           v15 = v54;
 
           if (v15)
@@ -913,7 +913,7 @@ LABEL_35:
           goto LABEL_28;
         case 0x11u:
           v52 = v9;
-          v14 = HAPTLVParseContiguousTlvs(17, v7, v12, v65, &v52);
+          v14 = HAPTLVParseContiguousTlvs(17, bytes, v12, v65, &v52);
           v15 = v52;
 
           if (v15)
@@ -929,7 +929,7 @@ LABEL_35:
           goto LABEL_28;
         case 0x12u:
           v50 = v9;
-          v14 = HAPTLVParseContiguousTlvs(18, v7, v12, v65, &v50);
+          v14 = HAPTLVParseContiguousTlvs(18, bytes, v12, v65, &v50);
           v15 = v50;
 
           if (!v15)
@@ -946,7 +946,7 @@ LABEL_35:
       }
     }
 
-    v7 = v65[0];
+    bytes = v65[0];
     if (v65[0] >= v12)
     {
       goto LABEL_43;
@@ -976,11 +976,11 @@ LABEL_43:
   v28 = v47;
   v35 = v44;
   v31 = v45;
-  if (a4)
+  if (error)
   {
     v38 = v9;
     v36 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -997,32 +997,32 @@ LABEL_52:
   return v36;
 }
 
-- (HAP2TLVParamCharacteristicSignature)initWithInstanceID:(id)a3 characteristicType:(id)a4 characteristicProperties:(id)a5 userDescription:(id)a6 bluetoothFormat:(id)a7 validRange:(id)a8 stepValue:(id)a9 validValues:(id)a10 validValuesRange:(id)a11
+- (HAP2TLVParamCharacteristicSignature)initWithInstanceID:(id)d characteristicType:(id)type characteristicProperties:(id)properties userDescription:(id)description bluetoothFormat:(id)format validRange:(id)range stepValue:(id)value validValues:(id)self0 validValuesRange:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  dCopy = d;
+  typeCopy = type;
+  propertiesCopy = properties;
+  descriptionCopy = description;
+  formatCopy = format;
+  rangeCopy = range;
+  valueCopy = value;
+  valuesCopy = values;
+  valuesRangeCopy = valuesRange;
   v30.receiver = self;
   v30.super_class = HAP2TLVParamCharacteristicSignature;
   v19 = [(HAP2TLVParamCharacteristicSignature *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_instanceID, a3);
-    objc_storeStrong(&v20->_characteristicType, a4);
-    objc_storeStrong(&v20->_characteristicProperties, a5);
-    objc_storeStrong(&v20->_userDescription, a6);
-    objc_storeStrong(&v20->_bluetoothFormat, a7);
-    objc_storeStrong(&v20->_validRange, a8);
-    objc_storeStrong(&v20->_stepValue, a9);
-    objc_storeStrong(&v20->_validValues, a10);
-    objc_storeStrong(&v20->_validValuesRange, a11);
+    objc_storeStrong(&v19->_instanceID, d);
+    objc_storeStrong(&v20->_characteristicType, type);
+    objc_storeStrong(&v20->_characteristicProperties, properties);
+    objc_storeStrong(&v20->_userDescription, description);
+    objc_storeStrong(&v20->_bluetoothFormat, format);
+    objc_storeStrong(&v20->_validRange, range);
+    objc_storeStrong(&v20->_stepValue, value);
+    objc_storeStrong(&v20->_validValues, values);
+    objc_storeStrong(&v20->_validValuesRange, valuesRange);
   }
 
   return v20;
@@ -1035,24 +1035,24 @@ LABEL_52:
   return [(HAP2TLVParamCharacteristicSignature *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVParamCharacteristicSignature);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVParamCharacteristicSignature *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVParamCharacteristicSignature *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

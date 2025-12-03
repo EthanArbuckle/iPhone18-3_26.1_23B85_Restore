@@ -1,24 +1,24 @@
 @interface DOCTagStringRenderingRequest
-+ (id)requestForChainedTags:(id)a3 tagDimension:(double)a4 text:(id)a5 textAttributes:(id)a6;
-+ (id)requestForTag:(id)a3 tagDimension:(double)a4 text:(id)a5 textAttributes:(id)a6 variant:(unint64_t)a7;
++ (id)requestForChainedTags:(id)tags tagDimension:(double)dimension text:(id)text textAttributes:(id)attributes;
++ (id)requestForTag:(id)tag tagDimension:(double)dimension text:(id)text textAttributes:(id)attributes variant:(unint64_t)variant;
 - (DOCTagStringRenderingRequest)init;
-- (id)_UIImageCacheKeyWithAdditionalComponents:(id)a3;
+- (id)_UIImageCacheKeyWithAdditionalComponents:(id)components;
 @end
 
 @implementation DOCTagStringRenderingRequest
 
-+ (id)requestForTag:(id)a3 tagDimension:(double)a4 text:(id)a5 textAttributes:(id)a6 variant:(unint64_t)a7
++ (id)requestForTag:(id)tag tagDimension:(double)dimension text:(id)text textAttributes:(id)attributes variant:(unint64_t)variant
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [objc_opt_class() requestForTag:v13 tagDimension:a7 variant:a4];
+  textCopy = text;
+  attributesCopy = attributes;
+  tagCopy = tag;
+  v14 = [objc_opt_class() requestForTag:tagCopy tagDimension:variant variant:dimension];
 
   if (v14)
   {
-    if (v11)
+    if (textCopy)
     {
-      v15 = v11;
+      v15 = textCopy;
     }
 
     else
@@ -27,9 +27,9 @@
     }
 
     [v14 setText:v15];
-    if (v12)
+    if (attributesCopy)
     {
-      v16 = v12;
+      v16 = attributesCopy;
     }
 
     else
@@ -43,18 +43,18 @@
   return v14;
 }
 
-+ (id)requestForChainedTags:(id)a3 tagDimension:(double)a4 text:(id)a5 textAttributes:(id)a6
++ (id)requestForChainedTags:(id)tags tagDimension:(double)dimension text:(id)text textAttributes:(id)attributes
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [objc_opt_class() requestForChainedTags:v11 tagDimension:a4];
+  textCopy = text;
+  attributesCopy = attributes;
+  tagsCopy = tags;
+  v12 = [objc_opt_class() requestForChainedTags:tagsCopy tagDimension:dimension];
 
   if (v12)
   {
-    if (v9)
+    if (textCopy)
     {
-      v13 = v9;
+      v13 = textCopy;
     }
 
     else
@@ -63,9 +63,9 @@
     }
 
     [v12 setText:v13];
-    if (v10)
+    if (attributesCopy)
     {
-      v14 = v10;
+      v14 = attributesCopy;
     }
 
     else
@@ -93,26 +93,26 @@
   return result;
 }
 
-- (id)_UIImageCacheKeyWithAdditionalComponents:(id)a3
+- (id)_UIImageCacheKeyWithAdditionalComponents:(id)components
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  componentsCopy = components;
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_tagBaselineAdjustment];
   v13[0] = v5;
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_tagBaselineAdjustment];
   v13[1] = v6;
-  v7 = [(DOCTagStringRenderingRequest *)self text];
-  v13[2] = v7;
-  v8 = [(DOCTagStringRenderingRequest *)self textAttributes];
-  v13[3] = v8;
+  text = [(DOCTagStringRenderingRequest *)self text];
+  v13[2] = text;
+  textAttributes = [(DOCTagStringRenderingRequest *)self textAttributes];
+  v13[3] = textAttributes;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:4];
   v12.receiver = self;
   v12.super_class = DOCTagStringRenderingRequest;
   v10 = [(DOCTagRenderingRequest *)&v12 _UIImageCacheKeyWithAdditionalComponents:v9];
 
-  if ([v4 count])
+  if ([componentsCopy count])
   {
-    [v10 addObjectsFromArray:v4];
+    [v10 addObjectsFromArray:componentsCopy];
   }
 
   return v10;

@@ -1,45 +1,45 @@
 @interface BCSVisualCodeAppClip
-- (BCSVisualCodeAppClip)initWithCoder:(id)a3;
-- (BCSVisualCodeAppClip)initWithPayloadString:(id)a3 version:(unint64_t)a4;
-- (BCSVisualCodeAppClip)initWithRawPayload:(id)a3 version:(unint64_t)a4;
+- (BCSVisualCodeAppClip)initWithCoder:(id)coder;
+- (BCSVisualCodeAppClip)initWithPayloadString:(id)string version:(unint64_t)version;
+- (BCSVisualCodeAppClip)initWithRawPayload:(id)payload version:(unint64_t)version;
 - (CGRect)boundingBox;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSVisualCodeAppClip
 
-- (BCSVisualCodeAppClip)initWithPayloadString:(id)a3 version:(unint64_t)a4
+- (BCSVisualCodeAppClip)initWithPayloadString:(id)string version:(unint64_t)version
 {
-  v6 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = BCSVisualCodeAppClip;
   v7 = [(BCSVisualCodeAppClip *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     payloadString = v7->_payloadString;
     v7->_payloadString = v8;
 
-    v7->_codeVersion = a4;
+    v7->_codeVersion = version;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (BCSVisualCodeAppClip)initWithRawPayload:(id)a3 version:(unint64_t)a4
+- (BCSVisualCodeAppClip)initWithRawPayload:(id)payload version:(unint64_t)version
 {
-  v6 = a3;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = BCSVisualCodeAppClip;
   v7 = [(BCSVisualCodeAppClip *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [payloadCopy copy];
     rawDataPayload = v7->_rawDataPayload;
     v7->_rawDataPayload = v8;
 
-    v7->_codeVersion = a4;
+    v7->_codeVersion = version;
     v10 = v7;
   }
 
@@ -104,49 +104,49 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   payloadString = self->_payloadString;
-  v5 = a3;
-  [v5 encodeObject:payloadString forKey:@"payloadString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:payloadString forKey:@"payloadString"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_codeVersion];
-  [v5 encodeObject:v6 forKey:@"codeVersion"];
+  [coderCopy encodeObject:v6 forKey:@"codeVersion"];
 
-  [v5 encodeObject:self->_rawDataPayload forKey:@"rawDataPayload"];
+  [coderCopy encodeObject:self->_rawDataPayload forKey:@"rawDataPayload"];
   v7 = MEMORY[0x277CCAE60];
   [(BCSVisualCode *)self topLeft];
   v26[0] = v8;
   v26[1] = v9;
   v10 = [v7 valueWithBytes:v26 objCType:"{CGPoint=dd}"];
-  [v5 encodeObject:v10 forKey:@"topLeft"];
+  [coderCopy encodeObject:v10 forKey:@"topLeft"];
 
   v11 = MEMORY[0x277CCAE60];
   [(BCSVisualCode *)self topRight];
   v25[0] = v12;
   v25[1] = v13;
   v14 = [v11 valueWithBytes:v25 objCType:"{CGPoint=dd}"];
-  [v5 encodeObject:v14 forKey:@"topRight"];
+  [coderCopy encodeObject:v14 forKey:@"topRight"];
 
   v15 = MEMORY[0x277CCAE60];
   [(BCSVisualCode *)self bottomRight];
   v24[0] = v16;
   v24[1] = v17;
   v18 = [v15 valueWithBytes:v24 objCType:"{CGPoint=dd}"];
-  [v5 encodeObject:v18 forKey:@"bottomRight"];
+  [coderCopy encodeObject:v18 forKey:@"bottomRight"];
 
   v19 = MEMORY[0x277CCAE60];
   [(BCSVisualCode *)self bottomLeft];
   v23[0] = v20;
   v23[1] = v21;
   v22 = [v19 valueWithBytes:v23 objCType:"{CGPoint=dd}"];
-  [v5 encodeObject:v22 forKey:@"bottomLeft"];
+  [coderCopy encodeObject:v22 forKey:@"bottomLeft"];
 }
 
-- (BCSVisualCodeAppClip)initWithCoder:(id)a3
+- (BCSVisualCodeAppClip)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"codeVersion"];
-  v6 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"payloadString"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"codeVersion"];
+  v6 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"payloadString"];
   if (v6)
   {
     v7 = -[BCSVisualCodeAppClip initWithPayloadString:version:]([BCSVisualCodeAppClip alloc], "initWithPayloadString:version:", v6, [v5 unsignedIntegerValue]);
@@ -157,7 +157,7 @@
     v7 = 0;
   }
 
-  v8 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"rawDataPayload"];
+  v8 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"rawDataPayload"];
   if (v8)
   {
     v9 = -[BCSVisualCodeAppClip initWithRawPayload:version:]([BCSVisualCodeAppClip alloc], "initWithRawPayload:version:", v8, [v5 unsignedIntegerValue]);
@@ -165,19 +165,19 @@
     v7 = v9;
   }
 
-  v10 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"topLeft"];
+  v10 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"topLeft"];
   [v10 CGPointValue];
   [(BCSVisualCode *)v7 setTopLeft:?];
 
-  v11 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"topRight"];
+  v11 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"topRight"];
   [v11 CGPointValue];
   [(BCSVisualCode *)v7 setTopRight:?];
 
-  v12 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"bottomRight"];
+  v12 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"bottomRight"];
   [v12 CGPointValue];
   [(BCSVisualCode *)v7 setBottomRight:?];
 
-  v13 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"bottomLeft"];
+  v13 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"bottomLeft"];
   [v13 CGPointValue];
   [(BCSVisualCode *)v7 setBottomLeft:?];
 

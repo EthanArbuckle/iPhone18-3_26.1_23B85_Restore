@@ -1,8 +1,8 @@
 @interface PGTitleGenerator
 - (PGTitle)subtitle;
 - (PGTitle)title;
-- (PGTitleGenerator)initWithMomentNode:(id)a3 referenceDateInterval:(id)a4 keyAsset:(id)a5 curatedAssetCollection:(id)a6 assetCollection:(id)a7 type:(int64_t)a8 titleGenerationContext:(id)a9;
-- (PGTitleGenerator)initWithMomentNodes:(id)a3 referenceDateInterval:(id)a4 keyAsset:(id)a5 curatedAssetCollection:(id)a6 assetCollection:(id)a7 type:(int64_t)a8 titleGenerationContext:(id)a9;
+- (PGTitleGenerator)initWithMomentNode:(id)node referenceDateInterval:(id)interval keyAsset:(id)asset curatedAssetCollection:(id)collection assetCollection:(id)assetCollection type:(int64_t)type titleGenerationContext:(id)context;
+- (PGTitleGenerator)initWithMomentNodes:(id)nodes referenceDateInterval:(id)interval keyAsset:(id)asset curatedAssetCollection:(id)collection assetCollection:(id)assetCollection type:(int64_t)type titleGenerationContext:(id)context;
 - (double)_ratioOfAssetsWithoutLocation;
 - (id)_addressNodeFromKeyAsset;
 - (id)_addressNodesFromCuratedAssetCollection;
@@ -13,7 +13,7 @@
 - (id)_splitTimeTitles;
 - (unint64_t)_allowedTimeTitleFormats;
 - (void)_generateTitleAndSubtitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGTitleGenerator
@@ -45,10 +45,10 @@
 
           v9 = *(*(&v15 + 1) + 8 * i);
           v10 = objc_autoreleasePoolPush();
-          v11 = [v9 location];
-          if (v11)
+          location = [v9 location];
+          if (location)
           {
-            v12 = [PGAssetLocationResolver closestAddressNodeFromMomentNodes:self->_momentNodes toLocation:v11 withMaximumDistance:0 allowRemoteLocations:30000.0];
+            v12 = [PGAssetLocationResolver closestAddressNodeFromMomentNodes:self->_momentNodes toLocation:location withMaximumDistance:0 allowRemoteLocations:30000.0];
             if (v12)
             {
               [v3 addObject:v12];
@@ -78,8 +78,8 @@
 - (double)_ratioOfAssetsWithoutLocation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(PGTitleGenerator *)self _fetchAssetsFromCuratedAssetCollection];
-  v3 = [v2 count];
+  _fetchAssetsFromCuratedAssetCollection = [(PGTitleGenerator *)self _fetchAssetsFromCuratedAssetCollection];
+  v3 = [_fetchAssetsFromCuratedAssetCollection count];
   if (v3)
   {
     v4 = v3;
@@ -87,7 +87,7 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v2;
+    v5 = _fetchAssetsFromCuratedAssetCollection;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -140,11 +140,11 @@
     curatedAssets = self->_curatedAssets;
     if (!curatedAssets)
     {
-      v5 = [(PHAssetCollection *)curatedAssetCollection photoLibrary];
-      v6 = [v5 librarySpecificFetchOptions];
+      photoLibrary = [(PHAssetCollection *)curatedAssetCollection photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      [v6 setIncludeGuestAssets:1];
-      v7 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:self->_curatedAssetCollection options:v6];
+      [librarySpecificFetchOptions setIncludeGuestAssets:1];
+      v7 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:self->_curatedAssetCollection options:librarySpecificFetchOptions];
       v8 = self->_curatedAssets;
       self->_curatedAssets = v7;
 
@@ -179,14 +179,14 @@
     if (!v6)
     {
       v7 = +[PGLogging sharedLogging];
-      v8 = [v7 loggingConnection];
+      loggingConnection = [v7 loggingConnection];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         v9 = self->_momentNodes;
         v12 = 138412290;
         v13 = v9;
-        _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_INFO, "Cannot find address node in moment node %@.", &v12, 0xCu);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Cannot find address node in moment node %@.", &v12, 0xCu);
       }
     }
   }
@@ -277,10 +277,10 @@
     v17 = __Block_byref_object_copy__42818;
     v18 = __Block_byref_object_dispose__42819;
     v19 = 0;
-    v4 = [(PGTitleGenerator *)self _addressNodeFromKeyAsset];
-    v5 = [(PGTitleGenerator *)self _addressNodesFromCuratedAssetCollection];
-    v6 = v5;
-    if (self->_curatedAssetCollection && ![v5 count] || (-[PGTitleGenerator _ratioOfAssetsWithoutLocation](self, "_ratioOfAssetsWithoutLocation"), v7 >= 0.9))
+    _addressNodeFromKeyAsset = [(PGTitleGenerator *)self _addressNodeFromKeyAsset];
+    _addressNodesFromCuratedAssetCollection = [(PGTitleGenerator *)self _addressNodesFromCuratedAssetCollection];
+    v6 = _addressNodesFromCuratedAssetCollection;
+    if (self->_curatedAssetCollection && ![_addressNodesFromCuratedAssetCollection count] || (-[PGTitleGenerator _ratioOfAssetsWithoutLocation](self, "_ratioOfAssetsWithoutLocation"), v7 >= 0.9))
     {
       v2 = 0;
     }
@@ -289,7 +289,7 @@
     {
       v8 = objc_alloc_init(PGLocationTitleOptions);
       [(PGLocationTitleOptions *)v8 setMomentNodes:self->_momentNodes];
-      [(PGLocationTitleOptions *)v8 setKeyAssetAddressNode:v4];
+      [(PGLocationTitleOptions *)v8 setKeyAssetAddressNode:_addressNodeFromKeyAsset];
       [(PGLocationTitleOptions *)v8 setCurationAddressNodes:v6];
       [(PGLocationTitleOptions *)v8 setLineBreakBehavior:self->_lineBreakBehavior];
       if (self->_isForHighlight)
@@ -305,15 +305,15 @@
         [(PGLocationTitleOptions *)v8 setShowAllCities:1];
       }
 
-      v9 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-      v10 = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
+      locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+      serviceManager = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __41__PGTitleGenerator__defaultLocationTitle__block_invoke;
       v13[3] = &unk_278888460;
       v13[4] = self;
       v13[5] = &v14;
-      [PGLocationTitleUtility generateLocationTitleWithOptions:v8 locationHelper:v9 serviceManager:v10 result:v13];
+      [PGLocationTitleUtility generateLocationTitleWithOptions:v8 locationHelper:locationHelper serviceManager:serviceManager result:v13];
 
       v11 = v15[5];
       if (v11 && [v11 length])
@@ -354,24 +354,24 @@ void __41__PGTitleGenerator__defaultLocationTitle__block_invoke(uint64_t a1, voi
   {
     if (self->_preferredTitleType == 3)
     {
-      v4 = [(PGTitleGenerator *)self _defaultLocationTitle];
+      _defaultLocationTitle = [(PGTitleGenerator *)self _defaultLocationTitle];
     }
 
     else
     {
-      v7 = [(PGTitleGenerator *)self dateMatching];
+      dateMatching = [(PGTitleGenerator *)self dateMatching];
       v8 = [PGTitleGeneratorDateMatching alloc];
-      v9 = [v7 type];
-      v10 = [v7 referenceDateInterval];
-      v11 = [(PGTitleGeneratorDateMatching *)v8 initWithType:v9 referenceDateInterval:v10 momentNodes:self->_momentNodes lineBreakBehavior:[(PGTitleGenerator *)self lineBreakBehavior] isForHighlight:self->_isForHighlight titleGenerationContext:self->_titleGenerationContext];
+      type = [dateMatching type];
+      referenceDateInterval = [dateMatching referenceDateInterval];
+      v11 = [(PGTitleGeneratorDateMatching *)v8 initWithType:type referenceDateInterval:referenceDateInterval momentNodes:self->_momentNodes lineBreakBehavior:[(PGTitleGenerator *)self lineBreakBehavior] isForHighlight:self->_isForHighlight titleGenerationContext:self->_titleGenerationContext];
 
-      v12 = [(PGTitleGeneratorDateMatching *)v11 title];
-      v4 = v12;
-      if (!v12 || ([v12 stringValue], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
+      title = [(PGTitleGeneratorDateMatching *)v11 title];
+      _defaultLocationTitle = title;
+      if (!title || ([title stringValue], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
       {
-        v15 = [(PGTitleGenerator *)self _defaultLocationTitle];
+        _defaultLocationTitle2 = [(PGTitleGenerator *)self _defaultLocationTitle];
 
-        v4 = v15;
+        _defaultLocationTitle = _defaultLocationTitle2;
       }
     }
   }
@@ -379,28 +379,28 @@ void __41__PGTitleGenerator__defaultLocationTitle__block_invoke(uint64_t a1, voi
   else
   {
     v5 = +[PGLogging sharedLogging];
-    v6 = [v5 loggingConnection];
+    loggingConnection = [v5 loggingConnection];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v17 = 0;
-      _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "Cannot generate title with no Moment Nodes", v17, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot generate title with no Moment Nodes", v17, 2u);
     }
 
-    v4 = 0;
+    _defaultLocationTitle = 0;
   }
 
-  return v4;
+  return _defaultLocationTitle;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v6 = a3;
-  v4 = [(PGTitleGenerator *)self _defaultTitle];
-  v5 = [(PGTitleGenerator *)self _defaultTimeTitle];
-  if (v6)
+  resultCopy = result;
+  _defaultTitle = [(PGTitleGenerator *)self _defaultTitle];
+  _defaultTimeTitle = [(PGTitleGenerator *)self _defaultTimeTitle];
+  if (resultCopy)
   {
-    v6[2](v6, v4, v5);
+    resultCopy[2](resultCopy, _defaultTitle, _defaultTimeTitle);
   }
 }
 
@@ -426,12 +426,12 @@ void __41__PGTitleGenerator__defaultLocationTitle__block_invoke(uint64_t a1, voi
   v25[4] = &v32;
   v25[5] = &v26;
   [(PGTitleGenerator *)self _generateTitleAndSubtitleWithResult:v25];
-  v3 = [v33[5] stringValue];
-  v4 = [v27[5] stringValue];
-  if (v3 && [v3 length] || -[PGTitleGenerator _triggerDefaultTitleGenerationIfNil](self, "_triggerDefaultTitleGenerationIfNil"))
+  stringValue = [v33[5] stringValue];
+  stringValue2 = [v27[5] stringValue];
+  if (stringValue && [stringValue length] || -[PGTitleGenerator _triggerDefaultTitleGenerationIfNil](self, "_triggerDefaultTitleGenerationIfNil"))
   {
     objc_storeStrong(&self->_subtitle, v27[5]);
-    if (v3 && [v3 length])
+    if (stringValue && [stringValue length])
     {
       v5 = v33;
 LABEL_7:
@@ -445,15 +445,15 @@ LABEL_8:
 
     if ([(PGTitleGenerator *)self _triggerDefaultTitleGenerationIfNil])
     {
-      v8 = [(PGTitleGenerator *)self _defaultTitle];
+      _defaultTitle = [(PGTitleGenerator *)self _defaultTitle];
       v9 = self->_title;
-      self->_title = v8;
+      self->_title = _defaultTitle;
 
-      if (![v4 length])
+      if (![stringValue2 length])
       {
-        v10 = [(PGTitleGenerator *)self _defaultTimeTitle];
+        _defaultTimeTitle = [(PGTitleGenerator *)self _defaultTimeTitle];
         title = self->_subtitle;
-        self->_subtitle = v10;
+        self->_subtitle = _defaultTimeTitle;
         goto LABEL_8;
       }
     }
@@ -466,15 +466,15 @@ LABEL_8:
       title = [(PGTitleGenerator *)self _splitTimeTitles];
       if ([title count])
       {
-        v11 = [title firstObject];
-        v12 = [PGTitle titleWithString:v11 category:5];
+        firstObject = [title firstObject];
+        v12 = [PGTitle titleWithString:firstObject category:5];
         v13 = self->_title;
         self->_title = v12;
 
         if ([title count] >= 2)
         {
-          v14 = [title lastObject];
-          v15 = [PGTitle titleWithString:v14 category:5];
+          lastObject = [title lastObject];
+          v15 = [PGTitle titleWithString:lastObject category:5];
           subtitle = self->_subtitle;
           self->_subtitle = v15;
         }
@@ -483,7 +483,7 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    if (v4 && [v4 length])
+    if (stringValue2 && [stringValue2 length])
     {
       v5 = v27;
       goto LABEL_7;
@@ -494,9 +494,9 @@ LABEL_19:
   if (!self->_title && (self->_preferredTitleType & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v17 = +[PGLogging sharedLogging];
-    v18 = [v17 loggingConnection];
+    loggingConnection = [v17 loggingConnection];
 
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v23 = v33[5];
       v24 = v27[5];
@@ -504,7 +504,7 @@ LABEL_19:
       v39 = v23;
       v40 = 2112;
       v41 = v24;
-      _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Title and subtitle are nil, which should never happen. %@ %@. Will use empty string for title", buf, 0x16u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Title and subtitle are nil, which should never happen. %@ %@. Will use empty string for title", buf, 0x16u);
     }
 
     v19 = [PGTitle titleWithString:&stru_2843F5C58 category:0];
@@ -559,14 +559,14 @@ void __45__PGTitleGenerator__generateTitleAndSubtitle__block_invoke(uint64_t a1,
   return title;
 }
 
-- (PGTitleGenerator)initWithMomentNodes:(id)a3 referenceDateInterval:(id)a4 keyAsset:(id)a5 curatedAssetCollection:(id)a6 assetCollection:(id)a7 type:(int64_t)a8 titleGenerationContext:(id)a9
+- (PGTitleGenerator)initWithMomentNodes:(id)nodes referenceDateInterval:(id)interval keyAsset:(id)asset curatedAssetCollection:(id)collection assetCollection:(id)assetCollection type:(int64_t)type titleGenerationContext:(id)context
 {
-  v15 = a3;
-  v16 = a4;
-  v26 = a5;
-  v25 = a6;
-  v17 = a7;
-  v18 = a9;
+  nodesCopy = nodes;
+  intervalCopy = interval;
+  assetCopy = asset;
+  collectionCopy = collection;
+  assetCollectionCopy = assetCollection;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = PGTitleGenerator;
   v19 = [(PGTitleGenerator *)&v27 init];
@@ -574,32 +574,32 @@ void __45__PGTitleGenerator__generateTitleAndSubtitle__block_invoke(uint64_t a1,
   if (v19)
   {
     v19->_lineBreakBehavior = 1;
-    objc_storeStrong(&v19->_momentNodes, a3);
-    objc_storeStrong(&v20->_assetCollection, a7);
-    objc_storeStrong(&v20->_keyAsset, a5);
-    objc_storeStrong(&v20->_curatedAssetCollection, a6);
-    v21 = [[PGTitleGeneratorDateMatching alloc] initWithType:a8 referenceDateInterval:v16 momentNodes:v15 titleGenerationContext:v18];
+    objc_storeStrong(&v19->_momentNodes, nodes);
+    objc_storeStrong(&v20->_assetCollection, assetCollection);
+    objc_storeStrong(&v20->_keyAsset, asset);
+    objc_storeStrong(&v20->_curatedAssetCollection, collection);
+    v21 = [[PGTitleGeneratorDateMatching alloc] initWithType:type referenceDateInterval:intervalCopy momentNodes:nodesCopy titleGenerationContext:contextCopy];
     dateMatching = v20->_dateMatching;
     v20->_dateMatching = v21;
 
     v20->_preferredTitleType = 0;
-    objc_storeStrong(&v20->_titleGenerationContext, a9);
+    objc_storeStrong(&v20->_titleGenerationContext, context);
   }
 
   return v20;
 }
 
-- (PGTitleGenerator)initWithMomentNode:(id)a3 referenceDateInterval:(id)a4 keyAsset:(id)a5 curatedAssetCollection:(id)a6 assetCollection:(id)a7 type:(int64_t)a8 titleGenerationContext:(id)a9
+- (PGTitleGenerator)initWithMomentNode:(id)node referenceDateInterval:(id)interval keyAsset:(id)asset curatedAssetCollection:(id)collection assetCollection:(id)assetCollection type:(int64_t)type titleGenerationContext:(id)context
 {
   v16 = MEMORY[0x277CBEB98];
-  v17 = a9;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  if (a3)
+  contextCopy = context;
+  assetCollectionCopy = assetCollection;
+  collectionCopy = collection;
+  assetCopy = asset;
+  intervalCopy = interval;
+  if (node)
   {
-    [v16 setWithObject:a3];
+    [v16 setWithObject:node];
   }
 
   else
@@ -607,7 +607,7 @@ void __45__PGTitleGenerator__generateTitleAndSubtitle__block_invoke(uint64_t a1,
     [v16 set];
   }
   v22 = ;
-  v23 = [(PGTitleGenerator *)self initWithMomentNodes:v22 referenceDateInterval:v21 keyAsset:v20 curatedAssetCollection:v19 assetCollection:v18 type:a8 titleGenerationContext:v17];
+  v23 = [(PGTitleGenerator *)self initWithMomentNodes:v22 referenceDateInterval:intervalCopy keyAsset:assetCopy curatedAssetCollection:collectionCopy assetCollection:assetCollectionCopy type:type titleGenerationContext:contextCopy];
 
   return v23;
 }

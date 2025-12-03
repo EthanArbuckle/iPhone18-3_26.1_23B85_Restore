@@ -1,17 +1,17 @@
 @interface IOSCardTestContext
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectLabelMarker:(id)a3;
+- (BOOL)chromeDidSelectLabelMarker:(id)marker;
 - (CardTestPopoverContainee)popover;
 - (ChromeViewController)chromeViewController;
 - (IOSCardTestContext)init;
-- (IOSCardTestContext)initWithFloatingControlsOptions:(int64_t)a3;
+- (IOSCardTestContext)initWithFloatingControlsOptions:(int64_t)options;
 - (unint64_t)indexOfContext;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
 - (void)popContainee;
 - (void)popContext;
 - (void)pushContainee;
-- (void)pushContext:(Class)a3;
-- (void)pushContextWithFloatingControls:(int64_t)a3;
+- (void)pushContext:(Class)context;
+- (void)pushContextWithFloatingControls:(int64_t)controls;
 @end
 
 @implementation IOSCardTestContext
@@ -32,100 +32,100 @@
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v3 = [(IOSCardTestContext *)self popover];
-  if (v3)
+  popover = [(IOSCardTestContext *)self popover];
+  if (popover)
   {
-    [(NSMutableArray *)self->_containees removeObject:v3];
-    v4 = [(IOSCardTestContext *)self chromeViewController];
-    [v4 setNeedsUpdateComponent:@"cards" animated:1];
+    [(NSMutableArray *)self->_containees removeObject:popover];
+    chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
   }
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectLabelMarker:(id)a3
+- (BOOL)chromeDidSelectLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(IOSCardTestContext *)self chromeViewController];
-  v6 = sub_10000FA08(v5);
+  markerCopy = marker;
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  v6 = sub_10000FA08(chromeViewController);
 
   if (v6 == 5)
   {
-    v7 = [(IOSCardTestContext *)self popover];
-    if (v7)
+    popover = [(IOSCardTestContext *)self popover];
+    if (popover)
     {
-      [(NSMutableArray *)self->_containees removeObject:v7];
+      [(NSMutableArray *)self->_containees removeObject:popover];
     }
 
-    v8 = [[CardTestPopoverContainee alloc] initWithContext:self forLabelMarker:v4];
+    v8 = [[CardTestPopoverContainee alloc] initWithContext:self forLabelMarker:markerCopy];
     [(NSMutableArray *)self->_containees addObject:v8];
     [(IOSCardTestContext *)self setPopover:v8];
-    v9 = [(IOSCardTestContext *)self chromeViewController];
-    [v9 setNeedsUpdateComponent:@"cards" animated:1];
+    chromeViewController2 = [(IOSCardTestContext *)self chromeViewController];
+    [chromeViewController2 setNeedsUpdateComponent:@"cards" animated:1];
   }
 
   return v6 == 5;
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  v13 = a3;
-  v5 = [(NSMutableArray *)self->_containees containsObject:v13];
-  v6 = v13;
+  stateCopy = state;
+  v5 = [(NSMutableArray *)self->_containees containsObject:stateCopy];
+  v6 = stateCopy;
   if (v5)
   {
-    [(NSMutableArray *)self->_containees removeObject:v13];
-    v7 = [(IOSCardTestContext *)self popover];
+    [(NSMutableArray *)self->_containees removeObject:stateCopy];
+    popover = [(IOSCardTestContext *)self popover];
 
-    if (v7)
+    if (popover)
     {
-      v8 = [(IOSCardTestContext *)self chromeViewController];
-      v9 = [v8 mapSelectionManager];
-      [v9 clearSelectionAnimated:1];
+      chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+      mapSelectionManager = [chromeViewController mapSelectionManager];
+      [mapSelectionManager clearSelectionAnimated:1];
     }
 
     v10 = [(NSMutableArray *)self->_containees count];
-    v11 = [(IOSCardTestContext *)self chromeViewController];
-    v12 = v11;
+    chromeViewController2 = [(IOSCardTestContext *)self chromeViewController];
+    v12 = chromeViewController2;
     if (v10)
     {
-      [v11 setNeedsUpdateComponent:@"cards" animated:1];
+      [chromeViewController2 setNeedsUpdateComponent:@"cards" animated:1];
     }
 
     else
     {
-      [v11 popContext:self animated:1 completion:0];
+      [chromeViewController2 popContext:self animated:1 completion:0];
     }
 
-    v6 = v13;
+    v6 = stateCopy;
   }
 }
 
 - (void)popContext
 {
-  v3 = [(IOSCardTestContext *)self chromeViewController];
-  v4 = [v3 contexts];
-  v5 = [v4 count];
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  contexts = [chromeViewController contexts];
+  v5 = [contexts count];
 
   if (v5 >= 2)
   {
-    v6 = [(IOSCardTestContext *)self chromeViewController];
-    [v6 popContextAnimated:1 completion:0];
+    chromeViewController2 = [(IOSCardTestContext *)self chromeViewController];
+    [chromeViewController2 popContextAnimated:1 completion:0];
   }
 }
 
-- (void)pushContextWithFloatingControls:(int64_t)a3
+- (void)pushContextWithFloatingControls:(int64_t)controls
 {
-  v5 = [(IOSCardTestContext *)self chromeViewController];
-  v4 = [[IOSCardTestContext alloc] initWithFloatingControlsOptions:a3];
-  [v5 pushContext:v4 animated:1 completion:0];
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  v4 = [[IOSCardTestContext alloc] initWithFloatingControlsOptions:controls];
+  [chromeViewController pushContext:v4 animated:1 completion:0];
 }
 
-- (void)pushContext:(Class)a3
+- (void)pushContext:(Class)context
 {
-  v5 = [(IOSCardTestContext *)self chromeViewController];
-  v4 = objc_alloc_init(a3);
-  [v5 pushContext:v4 animated:1 completion:0];
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  v4 = objc_alloc_init(context);
+  [chromeViewController pushContext:v4 animated:1 completion:0];
 }
 
 - (void)popContainee
@@ -133,8 +133,8 @@
   if ([(NSMutableArray *)self->_containees count]>= 2)
   {
     [(NSMutableArray *)self->_containees removeLastObject];
-    v3 = [(IOSCardTestContext *)self chromeViewController];
-    [v3 setNeedsUpdateComponent:@"cards" animated:1];
+    chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
   }
 }
 
@@ -142,15 +142,15 @@
 {
   v4 = [[CardTestContainee alloc] initWithContext:self];
   [(NSMutableArray *)self->_containees addObject:v4];
-  v3 = [(IOSCardTestContext *)self chromeViewController];
-  [v3 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (unint64_t)indexOfContext
 {
-  v3 = [(IOSCardTestContext *)self chromeViewController];
-  v4 = [v3 contexts];
-  v5 = [v4 indexOfObject:self];
+  chromeViewController = [(IOSCardTestContext *)self chromeViewController];
+  contexts = [chromeViewController contexts];
+  v5 = [contexts indexOfObject:self];
 
   return v5;
 }
@@ -173,12 +173,12 @@
   return v2;
 }
 
-- (IOSCardTestContext)initWithFloatingControlsOptions:(int64_t)a3
+- (IOSCardTestContext)initWithFloatingControlsOptions:(int64_t)options
 {
   result = [(IOSCardTestContext *)self init];
   if (result)
   {
-    result->_floatingControls = a3;
+    result->_floatingControls = options;
   }
 
   return result;

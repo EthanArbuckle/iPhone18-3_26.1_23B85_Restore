@@ -1,8 +1,8 @@
 @interface PNRPhoneNumberResolutionResultSet
 - (PNRPhoneNumberResolutionResultSet)init;
-- (void)enumerateResolutionsUsingBlock:(id)a3;
-- (void)setError:(id)a3 forPhoneNumber:(id)a4;
-- (void)setResult:(id)a3 resultDataSource:(int64_t)a4 forPhoneNumber:(id)a5;
+- (void)enumerateResolutionsUsingBlock:(id)block;
+- (void)setError:(id)error forPhoneNumber:(id)number;
+- (void)setResult:(id)result resultDataSource:(int64_t)source forPhoneNumber:(id)number;
 @end
 
 @implementation PNRPhoneNumberResolutionResultSet
@@ -24,17 +24,17 @@
   return v2;
 }
 
-- (void)enumerateResolutionsUsingBlock:(id)a3
+- (void)enumerateResolutionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_resultsLock);
   results = self->_results;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__PNRPhoneNumberResolutionResultSet_enumerateResolutionsUsingBlock___block_invoke;
   v7[3] = &unk_279A240A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)results enumerateKeysAndObjectsUsingBlock:v7];
   os_unfair_lock_unlock(&self->_resultsLock);
 }
@@ -71,24 +71,24 @@ void __68__PNRPhoneNumberResolutionResultSet_enumerateResolutionsUsingBlock___bl
   v13(v12, v8, v10, v11, a4);
 }
 
-- (void)setResult:(id)a3 resultDataSource:(int64_t)a4 forPhoneNumber:(id)a5
+- (void)setResult:(id)result resultDataSource:(int64_t)source forPhoneNumber:(id)number
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[PNRPhoneNumberResolutionResult alloc] initWithLocationName:v9 locationDataSource:a4];
+  numberCopy = number;
+  resultCopy = result;
+  v10 = [[PNRPhoneNumberResolutionResult alloc] initWithLocationName:resultCopy locationDataSource:source];
 
   os_unfair_lock_lock(&self->_resultsLock);
-  [(NSMutableDictionary *)self->_results setObject:v10 forKey:v8];
+  [(NSMutableDictionary *)self->_results setObject:v10 forKey:numberCopy];
 
   os_unfair_lock_unlock(&self->_resultsLock);
 }
 
-- (void)setError:(id)a3 forPhoneNumber:(id)a4
+- (void)setError:(id)error forPhoneNumber:(id)number
 {
-  v6 = a4;
-  v7 = a3;
+  numberCopy = number;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_resultsLock);
-  [(NSMutableDictionary *)self->_results setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_results setObject:errorCopy forKey:numberCopy];
 
   os_unfair_lock_unlock(&self->_resultsLock);
 }

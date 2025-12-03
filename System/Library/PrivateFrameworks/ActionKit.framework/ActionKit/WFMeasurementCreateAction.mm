@@ -1,12 +1,12 @@
 @interface WFMeasurementCreateAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (id)currentUnit;
 - (id)currentUnitTypeState;
 - (id)currentValue;
-- (id)parametersRequiringUserInputAlongsideParameter:(id)a3;
+- (id)parametersRequiringUserInputAlongsideParameter:(id)parameter;
 - (id)unitParameter;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFMeasurementCreateAction
@@ -14,9 +14,9 @@
 - (id)currentUnitTypeState
 {
   v2 = [(WFMeasurementCreateAction *)self parameterStateForKey:@"WFMeasurementUnitType"];
-  v3 = [v2 value];
+  value = [v2 value];
 
-  return v3;
+  return value;
 }
 
 - (id)unitParameter
@@ -55,10 +55,10 @@
   return v5;
 }
 
-- (id)parametersRequiringUserInputAlongsideParameter:(id)a3
+- (id)parametersRequiringUserInputAlongsideParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [v4 key];
+  parameterCopy = parameter;
+  v5 = [parameterCopy key];
   v6 = [v5 isEqualToString:@"WFMeasurementUnitType"];
 
   if (v6)
@@ -72,29 +72,29 @@
   {
     v11.receiver = self;
     v11.super_class = WFMeasurementCreateAction;
-    v9 = [(WFMeasurementCreateAction *)&v11 parametersRequiringUserInputAlongsideParameter:v4];
+    v9 = [(WFMeasurementCreateAction *)&v11 parametersRequiringUserInputAlongsideParameter:parameterCopy];
   }
 
   return v9;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = WFMeasurementCreateAction;
-  v7 = [(WFMeasurementCreateAction *)&v11 setParameterState:a3 forKey:v6];
+  v7 = [(WFMeasurementCreateAction *)&v11 setParameterState:state forKey:keyCopy];
   if (v7)
   {
-    if ([v6 isEqualToString:@"WFMeasurementUnitType"])
+    if ([keyCopy isEqualToString:@"WFMeasurementUnitType"])
     {
-      v8 = [(WFMeasurementCreateAction *)self currentUnitTypeState];
-      v9 = [(WFMeasurementCreateAction *)self unitParameter];
-      [v9 setUnitType:v8];
-      [v9 setHidden:v8 == 0];
+      currentUnitTypeState = [(WFMeasurementCreateAction *)self currentUnitTypeState];
+      unitParameter = [(WFMeasurementCreateAction *)self unitParameter];
+      [unitParameter setUnitType:currentUnitTypeState];
+      [unitParameter setHidden:currentUnitTypeState == 0];
     }
 
-    else if ([v6 isEqualToString:@"WFMeasurementUnit"])
+    else if ([keyCopy isEqualToString:@"WFMeasurementUnit"])
     {
       [(WFMeasurementCreateAction *)self outputDetailsUpdated];
     }
@@ -108,12 +108,12 @@
   v6.receiver = self;
   v6.super_class = WFMeasurementCreateAction;
   [(WFMeasurementCreateAction *)&v6 initializeParameters];
-  v3 = [(WFMeasurementCreateAction *)self currentUnitTypeState];
-  v4 = [(WFMeasurementCreateAction *)self unitParameter];
-  [v4 setUnitType:v3];
+  currentUnitTypeState = [(WFMeasurementCreateAction *)self currentUnitTypeState];
+  unitParameter = [(WFMeasurementCreateAction *)self unitParameter];
+  [unitParameter setUnitType:currentUnitTypeState];
 
-  v5 = [(WFMeasurementCreateAction *)self unitParameter];
-  [v5 setHidden:v3 == 0];
+  unitParameter2 = [(WFMeasurementCreateAction *)self unitParameter];
+  [unitParameter2 setHidden:currentUnitTypeState == 0];
 }
 
 - (id)currentValue
@@ -122,15 +122,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 magnitude];
+    magnitude = [v2 magnitude];
   }
 
   else
   {
-    v4 = 0;
+    magnitude = 0;
   }
 
-  return v4;
+  return magnitude;
 }
 
 - (id)currentUnit
@@ -140,8 +140,8 @@
   {
     v4 = [(WFMeasurementCreateAction *)self parameterValueForKey:@"WFMeasurementUnitType" ofClass:objc_opt_class()];
     v5 = [MEMORY[0x277D7A050] availableUnitsForUnitType:v4];
-    v6 = [v3 unitString];
-    v7 = [v5 objectMatchingKey:@"symbol" value:v6];
+    unitString = [v3 unitString];
+    v7 = [v5 objectMatchingKey:@"symbol" value:unitString];
   }
 
   else
@@ -152,17 +152,17 @@
   return v7;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [(WFMeasurementCreateAction *)self currentUnit];
-  v5 = [(WFMeasurementCreateAction *)self currentValue];
-  if (v4)
+  currentUnit = [(WFMeasurementCreateAction *)self currentUnit];
+  currentValue = [(WFMeasurementCreateAction *)self currentValue];
+  if (currentUnit)
   {
     v6 = MEMORY[0x277CFC2F8];
     v7 = objc_alloc(MEMORY[0x277CCAB10]);
-    [v5 doubleValue];
-    v8 = [v7 initWithDoubleValue:v4 unit:?];
+    [currentValue doubleValue];
+    v8 = [v7 initWithDoubleValue:currentUnit unit:?];
     v9 = [v6 itemWithObject:v8];
 
     v10 = MEMORY[0x277CFC2E0];

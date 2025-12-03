@@ -1,32 +1,32 @@
 @interface INSaveHealthSampleIntent
 - (HKUnit)unit;
 - (INDateComponentsRange)recordDate;
-- (INSaveHealthSampleIntent)initWithRecordDate:(id)a3 objectType:(int64_t)a4 values:(id)a5 unit:(id)a6 sampleMetadatas:(id)a7;
+- (INSaveHealthSampleIntent)initWithRecordDate:(id)date objectType:(int64_t)type values:(id)values unit:(id)unit sampleMetadatas:(id)metadatas;
 - (NSArray)sampleMetadatas;
 - (NSArray)values;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)objectType;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setObjectType:(int64_t)a3;
-- (void)setRecordDate:(id)a3;
-- (void)setSampleMetadatas:(id)a3;
-- (void)setUnit:(id)a3;
-- (void)setValues:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setObjectType:(int64_t)type;
+- (void)setRecordDate:(id)date;
+- (void)setSampleMetadatas:(id)metadatas;
+- (void)setUnit:(id)unit;
+- (void)setValues:(id)values;
 @end
 
 @implementation INSaveHealthSampleIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 recordDate];
-  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v9, a3);
+  idCopy = id;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  recordDate = [_typedBackingStore recordDate];
+  v10 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(recordDate, options);
 
   [v8 setRecordDate:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -36,69 +36,69 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"recordDate";
-  v3 = [(INSaveHealthSampleIntent *)self recordDate];
-  v4 = v3;
-  if (!v3)
+  recordDate = [(INSaveHealthSampleIntent *)self recordDate];
+  null = recordDate;
+  if (!recordDate)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"objectType";
-  v5 = [(INSaveHealthSampleIntent *)self objectType];
-  if ((v5 - 1) > 0x49)
+  objectType = [(INSaveHealthSampleIntent *)self objectType];
+  if ((objectType - 1) > 0x49)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_1E727FAC8[v5 - 1];
+    v6 = off_1E727FAC8[objectType - 1];
   }
 
   v7 = v6;
   v18[1] = v7;
   v17[2] = @"values";
-  v8 = [(INSaveHealthSampleIntent *)self values];
-  v9 = v8;
-  if (!v8)
+  values = [(INSaveHealthSampleIntent *)self values];
+  null2 = values;
+  if (!values)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v9;
+  v18[2] = null2;
   v17[3] = @"unit";
-  v10 = [(INSaveHealthSampleIntent *)self unit];
-  v11 = v10;
-  if (!v10)
+  unit = [(INSaveHealthSampleIntent *)self unit];
+  null3 = unit;
+  if (!unit)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v11;
+  v18[3] = null3;
   v17[4] = @"sampleMetadatas";
-  v12 = [(INSaveHealthSampleIntent *)self sampleMetadatas];
-  v13 = v12;
-  if (!v12)
+  sampleMetadatas = [(INSaveHealthSampleIntent *)self sampleMetadatas];
+  null4 = sampleMetadatas;
+  if (!sampleMetadatas)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v13;
+  v18[4] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v12)
+  if (!sampleMetadatas)
   {
   }
 
-  if (!v10)
+  if (!unit)
   {
   }
 
-  if (!v8)
+  if (!values)
   {
   }
 
-  if (!v3)
+  if (!recordDate)
   {
   }
 
@@ -107,84 +107,84 @@
   return v14;
 }
 
-- (void)setSampleMetadatas:(id)a3
+- (void)setSampleMetadatas:(id)metadatas
 {
-  v4 = a3;
-  v6 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToWellnessMetadataPairs(v4);
+  metadatasCopy = metadatas;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToWellnessMetadataPairs(metadatasCopy);
 
-  [v6 setSampleMetadatas:v5];
+  [_typedBackingStore setSampleMetadatas:v5];
 }
 
 - (NSArray)sampleMetadatas
 {
-  v2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v3 = [v2 sampleMetadatas];
-  v4 = INIntentSlotValueTransformFromWellnessMetadataPairs(v3);
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  sampleMetadatas = [_typedBackingStore sampleMetadatas];
+  v4 = INIntentSlotValueTransformFromWellnessMetadataPairs(sampleMetadatas);
 
   return v4;
 }
 
-- (void)setUnit:(id)a3
+- (void)setUnit:(id)unit
 {
-  v4 = a3;
-  v6 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToWellnessUnitType(v4);
+  unitCopy = unit;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToWellnessUnitType(unitCopy);
 
-  [v6 setUnit:v5];
+  [_typedBackingStore setUnit:v5];
 }
 
 - (HKUnit)unit
 {
-  v2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v3 = [v2 unit];
-  v4 = INIntentSlotValueTransformFromWellnessUnitType(v3);
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  unit = [_typedBackingStore unit];
+  v4 = INIntentSlotValueTransformFromWellnessUnitType(unit);
 
   return v4;
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v4 = a3;
-  v6 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToWellnessValues(v4);
+  valuesCopy = values;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToWellnessValues(valuesCopy);
 
-  [v6 setValues:v5];
+  [_typedBackingStore setValues:v5];
 }
 
 - (NSArray)values
 {
-  v2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v3 = [v2 values];
-  v4 = INIntentSlotValueTransformFromWellnessValues(v3);
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  values = [_typedBackingStore values];
+  v4 = INIntentSlotValueTransformFromWellnessValues(values);
 
   return v4;
 }
 
-- (void)setObjectType:(int64_t)a3
+- (void)setObjectType:(int64_t)type
 {
-  v4 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 0x4A)
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (type > 0x4A)
   {
-    [v4 setHasObjectType:0];
+    [_typedBackingStore setHasObjectType:0];
   }
 
   else
   {
-    [v4 setObjectType:a3];
+    [_typedBackingStore setObjectType:type];
   }
 }
 
 - (int64_t)objectType
 {
-  v3 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v4 = [v3 hasObjectType];
-  v5 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v6 = [v5 objectType];
-  if (((v6 - 1 < 0x4A) & v4) != 0)
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  hasObjectType = [_typedBackingStore hasObjectType];
+  _typedBackingStore2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  objectType = [_typedBackingStore2 objectType];
+  if (((objectType - 1 < 0x4A) & hasObjectType) != 0)
   {
-    v7 = v6;
+    v7 = objectType;
   }
 
   else
@@ -195,68 +195,68 @@
   return v7;
 }
 
-- (void)setRecordDate:(id)a3
+- (void)setRecordDate:(id)date
 {
-  v4 = a3;
-  v6 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  dateCopy = date;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(dateCopy);
 
-  [v6 setRecordDate:v5];
+  [_typedBackingStore setRecordDate:v5];
 }
 
 - (INDateComponentsRange)recordDate
 {
-  v2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v3 = [v2 recordDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  recordDate = [_typedBackingStore recordDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(recordDate);
 
   return v4;
 }
 
-- (INSaveHealthSampleIntent)initWithRecordDate:(id)a3 objectType:(int64_t)a4 values:(id)a5 unit:(id)a6 sampleMetadatas:(id)a7
+- (INSaveHealthSampleIntent)initWithRecordDate:(id)date objectType:(int64_t)type values:(id)values unit:(id)unit sampleMetadatas:(id)metadatas
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dateCopy = date;
+  valuesCopy = values;
+  unitCopy = unit;
+  metadatasCopy = metadatas;
   v19.receiver = self;
   v19.super_class = INSaveHealthSampleIntent;
   v16 = [(INIntent *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(INSaveHealthSampleIntent *)v16 setRecordDate:v12];
-    [(INSaveHealthSampleIntent *)v17 setObjectType:a4];
-    [(INSaveHealthSampleIntent *)v17 setValues:v13];
-    [(INSaveHealthSampleIntent *)v17 setUnit:v14];
-    [(INSaveHealthSampleIntent *)v17 setSampleMetadatas:v15];
+    [(INSaveHealthSampleIntent *)v16 setRecordDate:dateCopy];
+    [(INSaveHealthSampleIntent *)v17 setObjectType:type];
+    [(INSaveHealthSampleIntent *)v17 setValues:valuesCopy];
+    [(INSaveHealthSampleIntent *)v17 setUnit:unitCopy];
+    [(INSaveHealthSampleIntent *)v17 setSampleMetadatas:metadatasCopy];
   }
 
   return v17;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSaveHealthSampleIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSaveHealthSampleIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

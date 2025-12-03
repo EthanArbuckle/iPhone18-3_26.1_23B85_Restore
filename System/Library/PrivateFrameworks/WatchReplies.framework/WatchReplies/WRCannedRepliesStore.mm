@@ -3,22 +3,22 @@
 + (id)supportedLanguages;
 - (BOOL)includeSmartReplies;
 - (BOOL)usesFormalReplies;
-- (WRCannedRepliesStore)initWithCategory:(unint64_t)a3;
+- (WRCannedRepliesStore)initWithCategory:(unint64_t)category;
 - (id)cannedReplies;
 - (id)domainAccessor;
-- (id)keyForDefaultReply:(id)a3;
-- (id)localizedDefaultReply:(id)a3;
-- (id)localizedFormalDefaultReply:(id)a3;
-- (id)migrateRepliesIfNeeded:(id)a3;
+- (id)keyForDefaultReply:(id)reply;
+- (id)localizedDefaultReply:(id)reply;
+- (id)localizedFormalDefaultReply:(id)reply;
+- (id)migrateRepliesIfNeeded:(id)needed;
 - (id)npsManager;
-- (id)repliesForLanguage:(id)a3;
+- (id)repliesForLanguage:(id)language;
 - (void)dealloc;
 - (void)handleStoreChange;
-- (void)invalidateCachesIfNeededForLanguage:(id)a3;
+- (void)invalidateCachesIfNeededForLanguage:(id)language;
 - (void)loadCannedRepliesIfNeeded;
 - (void)localizeDefaultRepliesIfNeeded;
-- (void)saveReplies:(id)a3;
-- (void)setCannedReplies:(id)a3;
+- (void)saveReplies:(id)replies;
+- (void)setCannedReplies:(id)replies;
 @end
 
 @implementation WRCannedRepliesStore
@@ -34,16 +34,16 @@
 
 + (BOOL)supportsEnhancedEditing
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
   v4 = *MEMORY[0x277CF3440];
-  LOBYTE(v2) = BPSDeviceHasCapabilityForString();
+  LOBYTE(mEMORY[0x277D2BCF8]) = BPSDeviceHasCapabilityForString();
 
-  return v2;
+  return mEMORY[0x277D2BCF8];
 }
 
-- (WRCannedRepliesStore)initWithCategory:(unint64_t)a3
+- (WRCannedRepliesStore)initWithCategory:(unint64_t)category
 {
   v15.receiver = self;
   v15.super_class = WRCannedRepliesStore;
@@ -51,8 +51,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_category = a3;
-    v6 = [WRReplyStoreInfo infoForCategory:a3];
+    v4->_category = category;
+    v6 = [WRReplyStoreInfo infoForCategory:category];
     info = v5->_info;
     v5->_info = v6;
 
@@ -64,11 +64,11 @@
     lock = v5->_lock;
     v5->_lock = v10;
 
-    v12 = [(WRReplyStoreInfo *)v5->_info defaultsChangedNotificationName];
-    if (v12)
+    defaultsChangedNotificationName = [(WRReplyStoreInfo *)v5->_info defaultsChangedNotificationName];
+    if (defaultsChangedNotificationName)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, _WRCannedRepliesStore_handleStoreChange, v12, v5, CFNotificationSuspensionBehaviorDeliverImmediately);
+      CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, _WRCannedRepliesStore_handleStoreChange, defaultsChangedNotificationName, v5, CFNotificationSuspensionBehaviorDeliverImmediately);
     }
   }
 
@@ -80,14 +80,14 @@
   domainAccessor = self->_domainAccessor;
   if (!domainAccessor)
   {
-    v4 = [(WRReplyStoreInfo *)self->_info defaultsDomain];
-    if (v4)
+    defaultsDomain = [(WRReplyStoreInfo *)self->_info defaultsDomain];
+    if (defaultsDomain)
     {
-      v5 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:v4];
+      v5 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:defaultsDomain];
       v6 = self->_domainAccessor;
       self->_domainAccessor = v5;
 
-      v7 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+      synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
     }
 
     domainAccessor = self->_domainAccessor;
@@ -111,18 +111,18 @@
   return npsManager;
 }
 
-- (id)repliesForLanguage:(id)a3
+- (id)repliesForLanguage:(id)language
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(WRCannedRepliesStore *)self invalidateCachesIfNeededForLanguage:v4];
-  v23 = v4;
+  languageCopy = language;
+  [(WRCannedRepliesStore *)self invalidateCachesIfNeededForLanguage:languageCopy];
+  v23 = languageCopy;
   [(NSRecursiveLock *)self->_lock lock];
   if (!self->_cachedLocalizedReplies)
   {
     [(WRCannedRepliesStore *)self loadCannedRepliesIfNeeded];
     v7 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{-[NSArray count](self->_cannedReplies, "count")}];
-    v8 = [(WRCannedRepliesStore *)self usesFormalReplies];
+    usesFormalReplies = [(WRCannedRepliesStore *)self usesFormalReplies];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -145,14 +145,14 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 defaultReplyKey];
+        defaultReplyKey = [v13 defaultReplyKey];
 
-        if (v14)
+        if (defaultReplyKey)
         {
           v15 = [(WRCannedRepliesStore *)self localizedDefaultReply:v13];
           [v7 addObject:v15];
 
-          if (!v8)
+          if (!usesFormalReplies)
           {
             continue;
           }
@@ -163,8 +163,8 @@
 
         else
         {
-          v17 = [v13 defaultReplyText];
-          v18 = [v17 isEqualToString:@"SMART_REPLIES_MARKER"];
+          defaultReplyText = [v13 defaultReplyText];
+          v18 = [defaultReplyText isEqualToString:@"SMART_REPLIES_MARKER"];
 
           if (v18)
           {
@@ -185,9 +185,9 @@
       {
 LABEL_20:
 
-        v19 = [v7 array];
+        array = [v7 array];
         cachedLocalizedReplies = self->_cachedLocalizedReplies;
-        self->_cachedLocalizedReplies = v19;
+        self->_cachedLocalizedReplies = array;
 
         v6 = self->_cachedLocalizedReplies;
         goto LABEL_21;
@@ -210,11 +210,11 @@ LABEL_21:
   return v6;
 }
 
-- (id)keyForDefaultReply:(id)a3
+- (id)keyForDefaultReply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WRCannedRepliesStore *)self usesFormalReplies];
+  replyCopy = reply;
+  usesFormalReplies = [(WRCannedRepliesStore *)self usesFormalReplies];
   [(NSRecursiveLock *)self->_lock lock];
   v22 = 0u;
   v23 = 0u;
@@ -235,28 +235,28 @@ LABEL_21:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 defaultReplyKey];
+        defaultReplyKey = [v10 defaultReplyKey];
 
-        if (v11)
+        if (defaultReplyKey)
         {
           v12 = [(WRCannedRepliesStore *)self localizedDefaultReply:v10];
-          v13 = [v12 isEqualToString:v4];
+          v13 = [v12 isEqualToString:replyCopy];
 
           if (v13)
           {
-            v16 = [v10 defaultReplyKey];
+            defaultReplyKey2 = [v10 defaultReplyKey];
             goto LABEL_15;
           }
 
-          if (v5)
+          if (usesFormalReplies)
           {
             v14 = [(WRCannedRepliesStore *)self localizedFormalDefaultReply:v10];
-            v15 = [v14 isEqualToString:v4];
+            v15 = [v14 isEqualToString:replyCopy];
 
             if (v15)
             {
-              v17 = [v10 defaultReplyKey];
-              v16 = [v17 stringByAppendingString:@"_FORMAL"];
+              defaultReplyKey3 = [v10 defaultReplyKey];
+              defaultReplyKey2 = [defaultReplyKey3 stringByAppendingString:@"_FORMAL"];
 
               goto LABEL_15;
             }
@@ -274,21 +274,21 @@ LABEL_21:
     }
   }
 
-  v16 = 0;
+  defaultReplyKey2 = 0;
 LABEL_15:
 
   [(NSRecursiveLock *)self->_lock unlock];
   v18 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return defaultReplyKey2;
 }
 
 + (id)supportedLanguages
 {
   v2 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchReplies"];
-  v3 = [v2 localizations];
+  localizations = [v2 localizations];
 
-  return v3;
+  return localizations;
 }
 
 - (id)cannedReplies
@@ -301,21 +301,21 @@ LABEL_15:
   return cannedReplies;
 }
 
-- (void)setCannedReplies:(id)a3
+- (void)setCannedReplies:(id)replies
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  repliesCopy = replies;
   [(NSRecursiveLock *)self->_lock lock];
-  objc_storeStrong(&self->_cannedReplies, a3);
-  v23 = self;
+  objc_storeStrong(&self->_cannedReplies, replies);
+  selfCopy = self;
   [(NSRecursiveLock *)self->_lock unlock];
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(repliesCopy, "count")}];
   v24 = +[WRCannedRepliesStore supportsEnhancedEditing];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = repliesCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
@@ -332,41 +332,41 @@ LABEL_15:
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
-        v13 = [v12 defaultReplyText];
-        v14 = [v13 isEqualToString:@"SMART_REPLIES_MARKER"];
+        defaultReplyText = [v12 defaultReplyText];
+        v14 = [defaultReplyText isEqualToString:@"SMART_REPLIES_MARKER"];
 
         if (v14)
         {
-          v15 = [v12 defaultReplyText];
+          defaultReplyText2 = [v12 defaultReplyText];
 LABEL_10:
-          v18 = v15;
+          defaultReplyKey2 = defaultReplyText2;
           goto LABEL_11;
         }
 
-        v16 = [v12 text];
-        v17 = [v16 length];
+        text = [v12 text];
+        v17 = [text length];
 
         if (v17)
         {
-          v15 = [v12 text];
+          defaultReplyText2 = [v12 text];
           goto LABEL_10;
         }
 
-        v19 = [v12 defaultReplyKey];
+        defaultReplyKey = [v12 defaultReplyKey];
 
-        if (v19)
+        if (defaultReplyKey)
         {
-          v18 = [v12 defaultReplyKey];
-          if (([(__CFString *)v18 hasSuffix:@"_FORMAL"]& 1) == 0)
+          defaultReplyKey2 = [v12 defaultReplyKey];
+          if (([(__CFString *)defaultReplyKey2 hasSuffix:@"_FORMAL"]& 1) == 0)
           {
             if (!v24)
             {
 
-              v18 = &stru_288224B90;
+              defaultReplyKey2 = &stru_288224B90;
             }
 
 LABEL_11:
-            [v6 addObject:v18];
+            [v6 addObject:defaultReplyKey2];
           }
         }
 
@@ -381,7 +381,7 @@ LABEL_11:
     while (v20);
   }
 
-  log = v23->_log;
+  log = selfCopy->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
@@ -389,7 +389,7 @@ LABEL_11:
     _os_log_impl(&dword_272AC2000, log, OS_LOG_TYPE_DEFAULT, "saving canned replies: %{public}@", buf, 0xCu);
   }
 
-  [(WRCannedRepliesStore *)v23 saveReplies:v6];
+  [(WRCannedRepliesStore *)selfCopy saveReplies:v6];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -397,8 +397,8 @@ LABEL_11:
 - (BOOL)includeSmartReplies
 {
   v6 = 0;
-  v3 = [(WRCannedRepliesStore *)self domainAccessor];
-  v4 = [v3 BOOLForKey:@"IncludeSmartRepliesKey" keyExistsAndHasValidFormat:&v6];
+  domainAccessor = [(WRCannedRepliesStore *)self domainAccessor];
+  v4 = [domainAccessor BOOLForKey:@"IncludeSmartRepliesKey" keyExistsAndHasValidFormat:&v6];
 
   if ((v6 & 1) == 0)
   {
@@ -411,23 +411,23 @@ LABEL_11:
 - (BOOL)usesFormalReplies
 {
   v2 = WRLocalizedCategoryString(@"USES_FORMAL_REPLIES", self->_category, self->_cachedLanguage);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)localizedDefaultReply:(id)a3
+- (id)localizedDefaultReply:(id)reply
 {
-  v4 = [a3 defaultReplyKey];
-  v5 = WRLocalizedCategoryString(v4, self->_category, self->_cachedLanguage);
+  defaultReplyKey = [reply defaultReplyKey];
+  v5 = WRLocalizedCategoryString(defaultReplyKey, self->_category, self->_cachedLanguage);
 
   return v5;
 }
 
-- (id)localizedFormalDefaultReply:(id)a3
+- (id)localizedFormalDefaultReply:(id)reply
 {
-  v4 = [a3 defaultReplyKey];
-  v5 = [v4 stringByAppendingString:@"_FORMAL"];
+  defaultReplyKey = [reply defaultReplyKey];
+  v5 = [defaultReplyKey stringByAppendingString:@"_FORMAL"];
 
   v6 = WRLocalizedCategoryString(v5, self->_category, self->_cachedLanguage);
 
@@ -443,17 +443,17 @@ LABEL_11:
     v25 = &v24;
     v26 = 0x2020000000;
     v27 = 0;
-    v3 = [(WRReplyStoreInfo *)self->_info defaultsKey];
-    v4 = [(WRCannedRepliesStore *)self domainAccessor];
+    defaultsKey = [(WRReplyStoreInfo *)self->_info defaultsKey];
+    domainAccessor = [(WRCannedRepliesStore *)self domainAccessor];
 
-    if (!v4 || !v3)
+    if (!domainAccessor || !defaultsKey)
     {
       goto LABEL_14;
     }
 
-    v5 = [(WRCannedRepliesStore *)self domainAccessor];
-    v6 = [(WRReplyStoreInfo *)self->_info defaultsKey];
-    v7 = [v5 objectForKey:v6];
+    domainAccessor2 = [(WRCannedRepliesStore *)self domainAccessor];
+    defaultsKey2 = [(WRReplyStoreInfo *)self->_info defaultsKey];
+    v7 = [domainAccessor2 objectForKey:defaultsKey2];
 
     v8 = [(WRCannedRepliesStore *)self migrateRepliesIfNeeded:v7];
 
@@ -572,12 +572,12 @@ LABEL_14:
           }
 
           v7 = *(*(&v12 + 1) + 8 * i);
-          v8 = [v7 defaultReplyKey];
+          defaultReplyKey = [v7 defaultReplyKey];
 
-          if (v8)
+          if (defaultReplyKey)
           {
-            v9 = [v7 defaultReplyKey];
-            v10 = WRLocalizedCategoryString(v9, self->_category, self->_cachedLanguage);
+            defaultReplyKey2 = [v7 defaultReplyKey];
+            v10 = WRLocalizedCategoryString(defaultReplyKey2, self->_category, self->_cachedLanguage);
             [v7 setDefaultReplyText:v10];
           }
         }
@@ -595,9 +595,9 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateCachesIfNeededForLanguage:(id)a3
+- (void)invalidateCachesIfNeededForLanguage:(id)language
 {
-  obj = a3;
+  obj = language;
   if (!obj)
   {
     obj = WRDeviceLanguage();
@@ -616,70 +616,70 @@ LABEL_14:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)saveReplies:(id)a3
+- (void)saveReplies:(id)replies
 {
-  v4 = a3;
-  v5 = [(WRCannedRepliesStore *)self domainAccessor];
+  repliesCopy = replies;
+  domainAccessor = [(WRCannedRepliesStore *)self domainAccessor];
 
-  if (v5)
+  if (domainAccessor)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
-      [(WRCannedRepliesStore *)v4 saveReplies:?];
+      [(WRCannedRepliesStore *)repliesCopy saveReplies:?];
     }
 
-    v7 = [(WRCannedRepliesStore *)self domainAccessor];
-    v8 = [(WRReplyStoreInfo *)self->_info defaultsKey];
-    [v7 setObject:v4 forKey:v8];
+    domainAccessor2 = [(WRCannedRepliesStore *)self domainAccessor];
+    defaultsKey = [(WRReplyStoreInfo *)self->_info defaultsKey];
+    [domainAccessor2 setObject:repliesCopy forKey:defaultsKey];
 
-    v9 = [(WRCannedRepliesStore *)self domainAccessor];
-    v10 = [v9 synchronize];
+    domainAccessor3 = [(WRCannedRepliesStore *)self domainAccessor];
+    synchronize = [domainAccessor3 synchronize];
 
     v11 = MEMORY[0x277CBEB98];
-    v12 = [(WRReplyStoreInfo *)self->_info defaultsKey];
-    v13 = [v11 setWithObjects:{v12, @"WatchRepliesVersion", 0}];
+    defaultsKey2 = [(WRReplyStoreInfo *)self->_info defaultsKey];
+    v13 = [v11 setWithObjects:{defaultsKey2, @"WatchRepliesVersion", 0}];
 
-    v14 = [(WRCannedRepliesStore *)self npsManager];
-    v15 = [(WRReplyStoreInfo *)self->_info defaultsDomain];
-    [v14 synchronizeNanoDomain:v15 keys:v13];
+    npsManager = [(WRCannedRepliesStore *)self npsManager];
+    defaultsDomain = [(WRReplyStoreInfo *)self->_info defaultsDomain];
+    [npsManager synchronizeNanoDomain:defaultsDomain keys:v13];
 
-    v16 = [(WRReplyStoreInfo *)self->_info defaultsChangedNotificationName];
-    if (v16)
+    defaultsChangedNotificationName = [(WRReplyStoreInfo *)self->_info defaultsChangedNotificationName];
+    if (defaultsChangedNotificationName)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-      CFNotificationCenterPostNotification(DarwinNotifyCenter, v16, 0, 0, 1u);
+      CFNotificationCenterPostNotification(DarwinNotifyCenter, defaultsChangedNotificationName, 0, 0, 1u);
     }
   }
 }
 
-- (id)migrateRepliesIfNeeded:(id)a3
+- (id)migrateRepliesIfNeeded:(id)needed
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  neededCopy = needed;
+  v5 = neededCopy;
   if (self->_didMigrationCheck)
   {
-    v6 = v4;
+    v6 = neededCopy;
     goto LABEL_59;
   }
 
-  v7 = [(WRCannedRepliesStore *)self domainAccessor];
-  v8 = [v7 objectForKey:@"WatchRepliesVersion"];
+  domainAccessor = [(WRCannedRepliesStore *)self domainAccessor];
+  v8 = [domainAccessor objectForKey:@"WatchRepliesVersion"];
 
   if (!v8)
   {
-    v9 = [(WRCannedRepliesStore *)self domainAccessor];
+    domainAccessor2 = [(WRCannedRepliesStore *)self domainAccessor];
     v8 = &unk_288225938;
-    [v9 setObject:&unk_288225938 forKey:@"WatchRepliesVersion"];
+    [domainAccessor2 setObject:&unk_288225938 forKey:@"WatchRepliesVersion"];
   }
 
-  v10 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   v11 = +[WRCannedRepliesStore supportsEnhancedEditing];
-  v39 = self;
-  if (!v10 || v11)
+  selfCopy = self;
+  if (!unsignedIntegerValue || v11)
   {
-    if (v10 == 0 && v11)
+    if (unsignedIntegerValue == 0 && v11)
     {
       if (!v5)
       {
@@ -718,8 +718,8 @@ LABEL_14:
       [v19 enumerateObjectsUsingBlock:v44];
       if ([v23 count])
       {
-        v24 = [(WRCannedRepliesStore *)self domainAccessor];
-        [v24 setObject:&unk_288225950 forKey:@"WatchRepliesVersion"];
+        domainAccessor3 = [(WRCannedRepliesStore *)self domainAccessor];
+        [domainAccessor3 setObject:&unk_288225950 forKey:@"WatchRepliesVersion"];
 
         [(WRCannedRepliesStore *)self saveReplies:v23];
       }
@@ -763,7 +763,7 @@ LABEL_14:
             [v15 addObject:v16];
           }
 
-          self = v39;
+          self = selfCopy;
         }
 
         ++v13;
@@ -774,8 +774,8 @@ LABEL_14:
 
     if ([v12 count])
     {
-      v17 = [(WRCannedRepliesStore *)self domainAccessor];
-      [v17 setObject:&unk_288225938 forKey:@"WatchRepliesVersion"];
+      domainAccessor4 = [(WRCannedRepliesStore *)self domainAccessor];
+      [domainAccessor4 setObject:&unk_288225938 forKey:@"WatchRepliesVersion"];
 
       [(WRCannedRepliesStore *)self saveReplies:v12];
     }
@@ -785,7 +785,7 @@ LABEL_14:
 
   v12 = v5;
 LABEL_34:
-  if (v10 <= 1 && self->_category == 1 && (-[WRCannedRepliesStore domainAccessor](self, "domainAccessor"), v25 = objc_claimAutoreleasedReturnValue(), [v25 setObject:&unk_288225968 forKey:@"WatchRepliesVersion"], v25, objc_msgSend(v12, "count")))
+  if (unsignedIntegerValue <= 1 && self->_category == 1 && (-[WRCannedRepliesStore domainAccessor](self, "domainAccessor"), v25 = objc_claimAutoreleasedReturnValue(), [v25 setObject:&unk_288225968 forKey:@"WatchRepliesVersion"], v25, objc_msgSend(v12, "count")))
   {
     v38 = v8;
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -833,7 +833,7 @@ LABEL_34:
               [v26 addObject:v32];
             }
 
-            self = v39;
+            self = selfCopy;
           }
         }
 
@@ -887,8 +887,8 @@ void __47__WRCannedRepliesStore_migrateRepliesIfNeeded___block_invoke(uint64_t a
     _os_log_impl(&dword_272AC2000, log, OS_LOG_TYPE_DEFAULT, "canned replies did change", v11, 2u);
   }
 
-  v4 = [(WRCannedRepliesStore *)self domainAccessor];
-  v5 = [v4 synchronize];
+  domainAccessor = [(WRCannedRepliesStore *)self domainAccessor];
+  synchronize = [domainAccessor synchronize];
 
   [(NSRecursiveLock *)self->_lock lock];
   cachedLanguage = self->_cachedLanguage;
@@ -902,9 +902,9 @@ void __47__WRCannedRepliesStore_migrateRepliesIfNeeded___block_invoke(uint64_t a
 
   self->_didMigrationCheck = 0;
   [(NSRecursiveLock *)self->_lock unlock];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  v10 = [(WRReplyStoreInfo *)self->_info defaultsChangedNotificationName];
-  [v9 postNotificationName:v10 object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultsChangedNotificationName = [(WRReplyStoreInfo *)self->_info defaultsChangedNotificationName];
+  [defaultCenter postNotificationName:defaultsChangedNotificationName object:self];
 }
 
 - (void)repliesForLanguage:(os_log_t)log .cold.1(uint8_t *buf, uint64_t a2, os_log_t log)

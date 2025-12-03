@@ -1,15 +1,15 @@
 @interface MPSNNLanczosScaleNode
-- (MPSNNLanczosScaleNode)initWithSource:(id)a3 transformProvider:(id)a4 outputSize:(id *)a5;
+- (MPSNNLanczosScaleNode)initWithSource:(id)source transformProvider:(id)provider outputSize:(id *)size;
 @end
 
 @implementation MPSNNLanczosScaleNode
 
-- (MPSNNLanczosScaleNode)initWithSource:(id)a3 transformProvider:(id)a4 outputSize:(id *)a5
+- (MPSNNLanczosScaleNode)initWithSource:(id)source transformProvider:(id)provider outputSize:(id *)size
 {
-  v7 = *a5;
+  v7 = *size;
   v6.receiver = self;
   v6.super_class = MPSNNLanczosScaleNode;
-  return [(MPSNNScaleNode *)&v6 privateInitWithSource:a3 transformProvider:a4 outputSize:&v7];
+  return [(MPSNNScaleNode *)&v6 privateInitWithSource:source transformProvider:provider outputSize:&v7];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface DOMDocumentFragment
 - (id)children;
 - (id)firstElementChild;
-- (id)getElementById:(id)a3;
+- (id)getElementById:(id)id;
 - (id)lastElementChild;
-- (id)querySelector:(id)a3;
-- (id)querySelectorAll:(id)a3;
+- (id)querySelector:(id)selector;
+- (id)querySelectorAll:(id)all;
 - (unsigned)childElementCount;
 @end
 
@@ -60,10 +60,10 @@
   return self;
 }
 
-- (id)getElementById:(id)a3
+- (id)getElementById:(id)id
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
-  WTF::AtomStringImpl::add(&v11, a3, v4);
+  WTF::AtomStringImpl::add(&v11, id, v4);
   v9 = v11;
   ElementById = WebCore::DocumentFragment::getElementById();
   v7 = kit(ElementById);
@@ -76,11 +76,11 @@
   return v7;
 }
 
-- (id)querySelector:(id)a3
+- (id)querySelector:(id)selector
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v17);
   internal = self->super.super._internal;
-  MEMORY[0x1CCA63A40](&v13, a3);
+  MEMORY[0x1CCA63A40](&v13, selector);
   Selector = WebCore::ContainerNode::querySelector(&v14, internal, &v13);
   if (v16)
   {
@@ -125,11 +125,11 @@
   return v8;
 }
 
-- (id)querySelectorAll:(id)a3
+- (id)querySelectorAll:(id)all
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v20);
   internal = self->super.super._internal;
-  MEMORY[0x1CCA63A40](&v16, a3);
+  MEMORY[0x1CCA63A40](&v16, all);
   SelectorAll = WebCore::ContainerNode::querySelectorAll(&v17, internal, &v16);
   if (v19)
   {

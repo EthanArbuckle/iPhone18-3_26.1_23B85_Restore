@@ -1,17 +1,17 @@
 @interface GAXSBMainDisplaySystemGestureManagerOverride
-- (void)_gaxDeviceWasUnlocked:(id)a3;
+- (void)_gaxDeviceWasUnlocked:(id)unlocked;
 - (void)_gaxInitializeOverride;
 - (void)dealloc;
 @end
 
 @implementation GAXSBMainDisplaySystemGestureManagerOverride
 
-- (void)_gaxDeviceWasUnlocked:(id)a3
+- (void)_gaxDeviceWasUnlocked:(id)unlocked
 {
   v4 = +[GAXSpringboard sharedInstance];
-  v5 = [v4 isActive];
+  isActive = [v4 isActive];
 
-  if (v5)
+  if (isActive)
   {
 
     [(GAXSBMainDisplaySystemGestureManagerOverride *)self setSystemGesturesDisabledForAccessibility:1];

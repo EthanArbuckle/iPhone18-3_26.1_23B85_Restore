@@ -1,13 +1,13 @@
 @interface _BMIPBridgeLibrary
-+ (void)addToUnifiedLibraryWithBiomeLibraryNode:(id)a3;
++ (void)addToUnifiedLibraryWithBiomeLibraryNode:(id)node;
 @end
 
 @implementation _BMIPBridgeLibrary
 
-+ (void)addToUnifiedLibraryWithBiomeLibraryNode:(id)a3
++ (void)addToUnifiedLibraryWithBiomeLibraryNode:(id)node
 {
   swift_unknownObjectRetain();
-  static _BMIPBridgeLibrary.addToUnifiedLibrary(biomeLibraryNode:)(a3);
+  static _BMIPBridgeLibrary.addToUnifiedLibrary(biomeLibraryNode:)(node);
 
   swift_unknownObjectRelease();
 }

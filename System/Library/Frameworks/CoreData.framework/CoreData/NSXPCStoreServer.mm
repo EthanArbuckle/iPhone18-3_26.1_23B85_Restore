@@ -1,18 +1,18 @@
 @interface NSXPCStoreServer
 + (void)initialize;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NSQueryGenerationToken)retainedXPCEncodableGenerationTokenForOriginal:(NSQueryGenerationToken *)a1 inContext:(void *)a2;
-- (NSQueryGenerationToken)unpackQueryGeneration:(uint64_t)a1 withContext:(void *)a2;
-- (id)initForStoreWithURL:(id)a3 usingModel:(id)a4 options:(id)a5 policy:(id)a6;
-- (id)initForStoreWithURL:(id)a3 usingModelAtURL:(id)a4 options:(id)a5 policy:(id)a6;
-- (id)replacementObjectForXPCConnection:(id)a3 encoder:(id)a4 object:(id)a5;
-- (uint64_t)_populateObject:(void *)a1 withValuesFromClient:(void *)a2;
-- (uint64_t)setupRecoveryForConnectionContext:(uint64_t)a3 ifNecessary:;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NSQueryGenerationToken)retainedXPCEncodableGenerationTokenForOriginal:(NSQueryGenerationToken *)original inContext:(void *)context;
+- (NSQueryGenerationToken)unpackQueryGeneration:(uint64_t)generation withContext:(void *)context;
+- (id)initForStoreWithURL:(id)l usingModel:(id)model options:(id)options policy:(id)policy;
+- (id)initForStoreWithURL:(id)l usingModelAtURL:(id)rL options:(id)options policy:(id)policy;
+- (id)replacementObjectForXPCConnection:(id)connection encoder:(id)encoder object:(id)object;
+- (uint64_t)_populateObject:(void *)object withValuesFromClient:(void *)client;
+- (uint64_t)setupRecoveryForConnectionContext:(uint64_t)context ifNecessary:;
 - (void)dealloc;
-- (void)errorIsPlausiblyAnSQLiteIssue:(uint64_t)a1;
-- (void)handleRequest:(id)a3 reply:(id)a4;
+- (void)errorIsPlausiblyAnSQLiteIssue:(uint64_t)issue;
+- (void)handleRequest:(id)request reply:(id)reply;
 - (void)removeCachesForConnection:(void *)result;
-- (void)setErrorHandlingDelegate:(id)a3;
+- (void)setErrorHandlingDelegate:(id)delegate;
 - (void)startListening;
 @end
 
@@ -21,20 +21,20 @@
 + (void)initialize
 {
   objc_opt_self();
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _CoreData_XPCDebug = [_PFRoutines integerValueForOverride:?];
   }
 }
 
-- (id)initForStoreWithURL:(id)a3 usingModel:(id)a4 options:(id)a5 policy:(id)a6
+- (id)initForStoreWithURL:(id)l usingModel:(id)model options:(id)options policy:(id)policy
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!l || !model)
   {
 
     v14 = @"model";
-    if (!a3)
+    if (!l)
     {
       v14 = @"storeURL";
     }
@@ -43,7 +43,7 @@
     goto LABEL_14;
   }
 
-  v11 = [a5 valueForKey:@"NSXPCStoreEntitlementNames"];
+  v11 = [options valueForKey:@"NSXPCStoreEntitlementNames"];
   if (!v11)
   {
     v56[0] = @"application-identifier";
@@ -59,8 +59,8 @@ LABEL_10:
     v12 = v13;
   }
 
-  v16 = [a5 valueForKey:@"NSXPCStoreServiceName"];
-  v17 = [objc_msgSend(a5 valueForKey:{@"NSXPCStoreDaemonize", "BOOLValue"}];
+  v16 = [options valueForKey:@"NSXPCStoreServiceName"];
+  v17 = [objc_msgSend(options valueForKey:{@"NSXPCStoreDaemonize", "BOOLValue"}];
   v18 = v17;
   if (!v16 && v17)
   {
@@ -72,7 +72,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v22 = [a5 valueForKey:@"NSXPCStoreListener"];
+  v22 = [options valueForKey:@"NSXPCStoreListener"];
   if (v22 && v16)
   {
     +[_NSXPCStoreUtilities logMessage:forComponent:](_NSXPCStoreUtilities, [MEMORY[0x1E696AEC0] stringWithFormat:@"Options dictionary contains service name and anonymous listener, defaulting to service name"]);
@@ -87,9 +87,9 @@ LABEL_14:
   {
     v45 = v18;
     v46 = v16;
-    v23 = a4;
-    v19->_model = v23;
-    if (!v23)
+    modelCopy = model;
+    v19->_model = modelCopy;
+    if (!modelCopy)
     {
       +[_NSXPCStoreUtilities logMessage:forComponent:](_NSXPCStoreUtilities, [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't create server - unable to load model"]);
       abort();
@@ -128,26 +128,26 @@ LABEL_14:
       while (v26);
     }
 
-    v19->_storeURL = a3;
+    v19->_storeURL = l;
     v19->_entitlementNames = [v12 copy];
-    if (a6)
+    if (policy)
     {
-      v30 = a6;
+      policyCopy = policy;
     }
 
     else
     {
-      v30 = objc_alloc_init(NSXPCStoreServerRequestHandlingPolicy);
+      policyCopy = objc_alloc_init(NSXPCStoreServerRequestHandlingPolicy);
     }
 
-    v19->_policy = v30;
-    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a5];
+    v19->_policy = policyCopy;
+    v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:options];
     v54[0] = @"NSPersistentStoreDeferredLightweightMigrationOptionKey";
     v54[1] = @"NSMigratePersistentStoresAutomaticallyOption";
     v54[2] = @"NSInferMappingModelAutomaticallyOption";
     v54[3] = @"NSPersistentStoreForceLightweightMigrationOption";
     -[NSDictionary removeObjectsForKeys:](v31, "removeObjectsForKeys:", [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:4]);
-    if ([(NSDictionary *)v31 isEqualToDictionary:a5])
+    if ([(NSDictionary *)v31 isEqualToDictionary:options])
     {
       goto LABEL_44;
     }
@@ -162,7 +162,7 @@ LABEL_14:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v53 = a5;
+          optionsCopy2 = options;
           v34 = "CoreData: error: XPC Store Server - Migration keys have been removed from %@\n";
 LABEL_63:
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, v34, buf, 0xCu);
@@ -175,7 +175,7 @@ LABEL_63:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v53 = a5;
+          optionsCopy2 = options;
           v34 = "CoreData: warning: XPC Store Server - Migration keys have been removed from %@\n";
           goto LABEL_63;
         }
@@ -192,7 +192,7 @@ LABEL_63:
       v35 = 2;
     }
 
-    _NSCoreDataLog_console(v35, "XPC Store Server - Migration keys have been removed from %@", a5);
+    _NSCoreDataLog_console(v35, "XPC Store Server - Migration keys have been removed from %@", options);
     objc_autoreleasePoolPop(v32);
 LABEL_44:
     v19->_storeOptions = v31;
@@ -200,7 +200,7 @@ LABEL_44:
     {
       if (v45)
       {
-        v36 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v46];
+        serviceListener = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v46];
       }
 
       else
@@ -215,7 +215,7 @@ LABEL_44:
             if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
-              v53 = v46;
+              optionsCopy2 = v46;
               _os_log_error_impl(&dword_18565F000, v38, OS_LOG_TYPE_ERROR, "CoreData: error: Attempting to create non-mach listener with service name: %@\n", buf, 0xCu);
             }
           }
@@ -226,7 +226,7 @@ LABEL_44:
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v53 = v46;
+              optionsCopy2 = v46;
               _os_log_impl(&dword_18565F000, v39, OS_LOG_TYPE_DEFAULT, "CoreData: XPC: Attempting to create non-mach listener with service name: %@\n", buf, 0xCu);
             }
           }
@@ -244,22 +244,22 @@ LABEL_44:
 
         _NSCoreDataLog_console(v40, "Attempting to create non-mach listener with service name: %@", v46);
         objc_autoreleasePoolPop(v37);
-        v36 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithServiceName:v46];
+        serviceListener = [objc_alloc(MEMORY[0x1E696B0D8]) initWithServiceName:v46];
       }
     }
 
     else if (v44)
     {
-      v36 = v44;
+      serviceListener = v44;
     }
 
     else
     {
-      v36 = [MEMORY[0x1E696B0D8] serviceListener];
+      serviceListener = [MEMORY[0x1E696B0D8] serviceListener];
     }
 
-    v19->_listener = v36;
-    [(NSXPCListener *)v36 setDelegate:v19];
+    v19->_listener = serviceListener;
+    [(NSXPCListener *)serviceListener setDelegate:v19];
     v41 = [objc_alloc(MEMORY[0x1E696AE10]) initWithOptions:0];
     v42 = [objc_alloc(MEMORY[0x1E696AE10]) initWithOptions:0];
     v19->_connectionToCoordinatorMap = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyPointerFunctions:v41 valuePointerFunctions:v42 capacity:10];
@@ -272,15 +272,15 @@ LABEL_15:
   return v19;
 }
 
-- (id)initForStoreWithURL:(id)a3 usingModelAtURL:(id)a4 options:(id)a5 policy:(id)a6
+- (id)initForStoreWithURL:(id)l usingModelAtURL:(id)rL options:(id)options policy:(id)policy
 {
-  if (a3 && a4)
+  if (l && rL)
   {
-    v11 = [[NSManagedObjectModel alloc] initWithContentsOfURL:a4];
-    v12 = [(NSXPCStoreServer *)self initForStoreWithURL:a3 usingModel:v11 options:a5 policy:a6];
+    v11 = [[NSManagedObjectModel alloc] initWithContentsOfURL:rL];
+    v12 = [(NSXPCStoreServer *)self initForStoreWithURL:l usingModel:v11 options:options policy:policy];
     if (v12)
     {
-      v12[2] = a4;
+      v12[2] = rL;
     }
   }
 
@@ -288,7 +288,7 @@ LABEL_15:
   {
 
     v13 = @"storeURL";
-    if (!a4)
+    if (!rL)
     {
       v13 = @"modelURL";
     }
@@ -315,7 +315,7 @@ LABEL_15:
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v9 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: %@: Listening\n", buf, 0xCu);
         }
       }
@@ -326,7 +326,7 @@ LABEL_15:
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v9 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_18565F000, v5, OS_LOG_TYPE_DEFAULT, "CoreData: XPC: %@: Listening\n", buf, 0xCu);
         }
       }
@@ -373,20 +373,20 @@ LABEL_15:
   [(NSXPCStoreServer *)&v3 dealloc];
 }
 
-- (void)setErrorHandlingDelegate:(id)a3
+- (void)setErrorHandlingDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    v5 = a3;
+    delegateCopy = delegate;
 
-    self->_delegate = a3;
+    self->_delegate = delegate;
   }
 }
 
-- (void)errorIsPlausiblyAnSQLiteIssue:(uint64_t)a1
+- (void)errorIsPlausiblyAnSQLiteIssue:(uint64_t)issue
 {
   result = 0;
-  if (a1 && a2)
+  if (issue && a2)
   {
     result = [objc_msgSend(a2 "userInfo")];
     if (result)
@@ -413,15 +413,15 @@ LABEL_15:
     if (result)
     {
 LABEL_8:
-      v6 = [result intValue];
-      return (v6 == 11 || v6 == 26);
+      intValue = [result intValue];
+      return (intValue == 11 || intValue == 26);
     }
   }
 
   return result;
 }
 
-- (uint64_t)setupRecoveryForConnectionContext:(uint64_t)a3 ifNecessary:
+- (uint64_t)setupRecoveryForConnectionContext:(uint64_t)context ifNecessary:
 {
   if (result)
   {
@@ -434,7 +434,7 @@ LABEL_8:
         return 0;
       }
 
-      result = [*(v3 + 8) willPerformRecoveryForError:a3 fromContext:a2];
+      result = [*(v3 + 8) willPerformRecoveryForError:context fromContext:a2];
       if (!result)
       {
         return result;
@@ -443,7 +443,7 @@ LABEL_8:
       v6 = *(v3 + 8);
       if (objc_opt_respondsToSelector())
       {
-        [*(v3 + 8) performRecoveryForError:a3 fromContext:a2];
+        [*(v3 + 8) performRecoveryForError:context fromContext:a2];
         return 1;
       }
 
@@ -572,13 +572,13 @@ void *__47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84(uint64
   return [(NSXPCStoreServer *)*(a1 + 32) removeCachesForConnection:?];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v38 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
-  if (a4)
+  if (connection)
   {
-    [a4 auditToken];
+    [connection auditToken];
   }
 
   if (+[NSXPCStoreServer debugDefault])
@@ -595,7 +595,7 @@ void *__47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84(uint64
           *buf = 138412546;
           *&buf[4] = self;
           *&buf[12] = 2112;
-          *&buf[14] = a4;
+          *&buf[14] = connection;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: %@ - Incoming connection: %@\n", buf, 0x16u);
         }
       }
@@ -608,7 +608,7 @@ void *__47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84(uint64
           *buf = 138412546;
           *&buf[4] = self;
           *&buf[12] = 2112;
-          *&buf[14] = a4;
+          *&buf[14] = connection;
           _os_log_impl(&dword_18565F000, v9, OS_LOG_TYPE_DEFAULT, "CoreData: XPC: %@ - Incoming connection: %@\n", buf, 0x16u);
         }
       }
@@ -624,7 +624,7 @@ void *__47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84(uint64
       v10 = 8;
     }
 
-    _NSCoreDataLog_console(v10, "%@ - Incoming connection: %@", self, a4);
+    _NSCoreDataLog_console(v10, "%@ - Incoming connection: %@", self, connection);
     objc_autoreleasePoolPop(v7);
   }
 
@@ -633,32 +633,32 @@ void *__47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84(uint64
     v11 = objc_autoreleasePoolPush();
     if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v12 = [self->_delegate identifierForConnection:a4];
+      v12 = [self->_delegate identifierForConnection:connection];
       objc_sync_enter(self);
       if (v12)
       {
         v13 = [(NSMutableDictionary *)self->_cacheIDtoCoordinatorMap objectForKey:v12];
         if (v13)
         {
-          if (!NSMapGet(self->_connectionToCoordinatorMap, a4))
+          if (!NSMapGet(self->_connectionToCoordinatorMap, connection))
           {
-            NSMapInsert(self->_connectionToCoordinatorMap, a4, v13);
+            NSMapInsert(self->_connectionToCoordinatorMap, connection, v13);
             atomic_fetch_add_explicit(&v13->_connections, 1uLL, memory_order_relaxed);
 LABEL_32:
             *buf = MEMORY[0x1E69E9820];
             *&buf[8] = 3221225472;
             *&buf[16] = __47__NSXPCStoreServer_retainedCacheForConnection___block_invoke;
             *&buf[24] = &unk_1E6EC1600;
-            v36 = self;
-            v37 = a4;
-            [a4 setInterruptionHandler:buf];
+            selfCopy = self;
+            connectionCopy = connection;
+            [connection setInterruptionHandler:buf];
             v34[0] = MEMORY[0x1E69E9820];
             v34[1] = 3221225472;
             v34[2] = __47__NSXPCStoreServer_retainedCacheForConnection___block_invoke_84;
             v34[3] = &unk_1E6EC1600;
             v34[4] = self;
-            v34[5] = a4;
-            [a4 setInvalidationHandler:v34];
+            v34[5] = connection;
+            [connection setInvalidationHandler:v34];
           }
 
 LABEL_61:
@@ -670,7 +670,7 @@ LABEL_61:
 
         v14 = 0;
 LABEL_24:
-        v13 = NSMapGet(self->_connectionToCoordinatorMap, a4);
+        v13 = NSMapGet(self->_connectionToCoordinatorMap, connection);
         if (v13)
         {
           goto LABEL_61;
@@ -700,7 +700,7 @@ LABEL_24:
                 }
               }
 
-              NSMapInsert(self->_connectionToCoordinatorMap, a4, v13);
+              NSMapInsert(self->_connectionToCoordinatorMap, connection, v13);
 
               goto LABEL_32;
             }
@@ -842,14 +842,14 @@ LABEL_67:
     goto LABEL_67;
   }
 
-  [a4 setDelegate:self];
-  [a4 setExportedObject:self];
-  [a4 setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1EF440870)}];
+  [connection setDelegate:self];
+  [connection setExportedObject:self];
+  [connection setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1EF440870)}];
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v30 setValue:v29 forKey:@"NSConnectionInfo"];
 
-  [a4 setUserInfo:v30];
-  [a4 resume];
+  [connection setUserInfo:v30];
+  [connection resume];
   v31 = 1;
 LABEL_68:
   objc_autoreleasePoolPop(v6);
@@ -857,12 +857,12 @@ LABEL_68:
   return v31;
 }
 
-- (void)handleRequest:(id)a3 reply:(id)a4
+- (void)handleRequest:(id)request reply:(id)reply
 {
   v45 = *MEMORY[0x1E69E9840];
   v29 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v31 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = [objc_msgSend(v31 "userInfo")];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = [objc_msgSend(currentConnection "userInfo")];
   v7 = [[NSXPCStoreServerConnectionContext alloc] initWithConnectionInfo:v6];
   v39 = 0;
   v40 = &v39;
@@ -927,7 +927,7 @@ LABEL_68:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v44 = a3;
+          requestCopy2 = request;
           _os_log_error_impl(&dword_18565F000, v13, OS_LOG_TYPE_ERROR, "CoreData: error: XPCStore server handling request: %@\n", buf, 0xCu);
         }
       }
@@ -938,7 +938,7 @@ LABEL_68:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v44 = a3;
+          requestCopy2 = request;
           _os_log_impl(&dword_18565F000, v14, OS_LOG_TYPE_DEFAULT, "CoreData: XPC: XPCStore server handling request: %@\n", buf, 0xCu);
         }
       }
@@ -954,7 +954,7 @@ LABEL_68:
       v15 = 8;
     }
 
-    _NSCoreDataLog_console(v15, "XPCStore server handling request: %@", a3);
+    _NSCoreDataLog_console(v15, "XPCStore server handling request: %@", request);
     objc_autoreleasePoolPop(v12);
   }
 
@@ -964,17 +964,17 @@ LABEL_68:
   v34[5] = 0;
   if ((v17[3] & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Policy rejected connection from client: %@", v31];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Policy rejected connection from client: %@", currentConnection];
     v34[5] = v18;
     [_NSXPCStoreUtilities logMessage:v18 forComponent:?];
   }
 
-  v19 = [(NSXPCStoreServerConnectionContext *)v7 persistentStoreCoordinator];
-  v20 = [(NSXPCStoreServerConnectionContext *)v7 managedObjectContext];
-  if (!v20)
+  persistentStoreCoordinator = [(NSXPCStoreServerConnectionContext *)v7 persistentStoreCoordinator];
+  managedObjectContext = [(NSXPCStoreServerConnectionContext *)v7 managedObjectContext];
+  if (!managedObjectContext)
   {
     v21 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    [(NSManagedObjectContext *)v21 setPersistentStoreCoordinator:v19];
+    [(NSManagedObjectContext *)v21 setPersistentStoreCoordinator:persistentStoreCoordinator];
     [(NSManagedObjectContext *)v21 _setDelegate:self];
     if (v21)
     {
@@ -984,46 +984,46 @@ LABEL_68:
     v22 = [objc_msgSend(v6 "entitlements")];
     if (v22)
     {
-      [(NSPersistentStoreCoordinator *)v19 _setXPCBundleIdentifier:v22];
+      [(NSPersistentStoreCoordinator *)persistentStoreCoordinator _setXPCBundleIdentifier:v22];
     }
 
-    if (a3)
+    if (request)
     {
-      v23 = *(a3 + 7);
+      v23 = *(request + 7);
       if (v23)
       {
-        [(NSPersistentStoreCoordinator *)v19 _setXPCProcessName:v23];
+        [(NSPersistentStoreCoordinator *)persistentStoreCoordinator _setXPCProcessName:v23];
       }
     }
 
     [(NSManagedObjectContext *)v21 setMergePolicy:NSErrorMergePolicy];
     [(NSManagedObjectContext *)v21 setUndoManager:0];
-    if (a3 && *(a3 + 5))
+    if (request && *(request + 5))
     {
       [(NSManagedObjectContext *)v21 setName:?];
     }
 
     [(NSXPCStoreServerConnectionContext *)v7 setManagedObjectContext:v21];
-    v20 = v21;
+    managedObjectContext = v21;
   }
 
-  if (a3)
+  if (request)
   {
-    v24 = *(a3 + 5);
-    if (v24 && ([v24 isEqual:{-[NSManagedObjectContext name](v20, "name")}] & 1) == 0)
+    v24 = *(request + 5);
+    if (v24 && ([v24 isEqual:{-[NSManagedObjectContext name](managedObjectContext, "name")}] & 1) == 0)
     {
-      [(NSManagedObjectContext *)v20 setName:*(a3 + 5)];
+      [(NSManagedObjectContext *)managedObjectContext setName:*(request + 5)];
     }
 
-    v25 = *(a3 + 6);
-    if (v25 && ([v25 isEqual:{-[NSManagedObjectContext transactionAuthor](v20, "transactionAuthor")}] & 1) == 0)
+    v25 = *(request + 6);
+    if (v25 && ([v25 isEqual:{-[NSManagedObjectContext transactionAuthor](managedObjectContext, "transactionAuthor")}] & 1) == 0)
     {
-      [(NSManagedObjectContext *)v20 setTransactionAuthor:*(a3 + 6)];
+      [(NSManagedObjectContext *)managedObjectContext setTransactionAuthor:*(request + 6)];
     }
 
-    if (*(a3 + 16) == 1)
+    if (*(request + 16) == 1)
     {
-      [(NSManagedObjectContext *)v20 _setAllowAncillaryEntities:1];
+      [(NSManagedObjectContext *)managedObjectContext _setAllowAncillaryEntities:1];
     }
   }
 
@@ -1032,20 +1032,20 @@ LABEL_68:
   block[2] = __40__NSXPCStoreServer_handleRequest_reply___block_invoke;
   block[3] = &unk_1E6EC15D8;
   block[4] = 0;
-  block[5] = a3;
-  block[6] = v20;
+  block[5] = request;
+  block[6] = managedObjectContext;
   block[7] = v7;
   block[12] = &v39;
   block[13] = &v33;
   block[8] = self;
-  block[9] = v31;
-  block[10] = v19;
-  block[11] = a4;
+  block[9] = currentConnection;
+  block[10] = persistentStoreCoordinator;
+  block[11] = reply;
   v26 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   v27 = v26;
-  if (v20)
+  if (managedObjectContext)
   {
-    [(NSManagedObjectContext *)v20 performBlockAndWait:v26];
+    [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v26];
   }
 
   else
@@ -5691,16 +5691,16 @@ LABEL_661:
   }
 }
 
-- (id)replacementObjectForXPCConnection:(id)a3 encoder:(id)a4 object:(id)a5
+- (id)replacementObjectForXPCConnection:(id)connection encoder:(id)encoder object:(id)object
 {
   v6 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = [NSXPCStoreManagedObjectArchivingToken alloc];
-    a5 = [a5 objectID];
+    object = [object objectID];
 LABEL_5:
-    v8 = -[NSXPCStoreManagedObjectArchivingToken initWithURI:](v7, "initWithURI:", [a5 URIRepresentation]);
+    v8 = -[NSXPCStoreManagedObjectArchivingToken initWithURI:](v7, "initWithURI:", [object URIRepresentation]);
     objc_autoreleasePoolPop(v6);
 
     return v8;
@@ -5716,14 +5716,14 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (+[NSQueryGenerationToken currentQueryGenerationToken]== a5)
+    if (+[NSQueryGenerationToken currentQueryGenerationToken]== object)
     {
-      a5 = @"current";
+      object = @"current";
     }
 
-    else if (+[NSQueryGenerationToken unpinnedQueryGenerationToken]== a5)
+    else if (+[NSQueryGenerationToken unpinnedQueryGenerationToken]== object)
     {
-      a5 = @"unpinned";
+      object = @"unpinned";
     }
 
     else
@@ -5733,27 +5733,27 @@ LABEL_5:
   }
 
   objc_autoreleasePoolPop(v6);
-  return a5;
+  return object;
 }
 
-- (NSQueryGenerationToken)retainedXPCEncodableGenerationTokenForOriginal:(NSQueryGenerationToken *)a1 inContext:(void *)a2
+- (NSQueryGenerationToken)retainedXPCEncodableGenerationTokenForOriginal:(NSQueryGenerationToken *)original inContext:(void *)context
 {
   v4 = objc_autoreleasePoolPush();
-  if (+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken, "currentQueryGenerationToken") == a1 || +[NSQueryGenerationToken unpinnedQueryGenerationToken]== a1)
+  if (+[NSQueryGenerationToken currentQueryGenerationToken](NSQueryGenerationToken, "currentQueryGenerationToken") == original || +[NSQueryGenerationToken unpinnedQueryGenerationToken]== original)
   {
-    v9 = a1;
+    originalCopy = original;
     goto LABEL_13;
   }
 
-  if (+[NSQueryGenerationToken nostoresQueryGenerationToken]== a1)
+  if (+[NSQueryGenerationToken nostoresQueryGenerationToken]== original)
   {
-    v9 = 0;
+    originalCopy = 0;
     goto LABEL_13;
   }
 
-  if (a1)
+  if (original)
   {
-    isa = a1[2].super.isa;
+    isa = original[2].super.isa;
     if (isa)
     {
       WeakRetained = objc_loadWeakRetained(isa + 1);
@@ -5765,14 +5765,14 @@ LABEL_5:
     }
 
     v7 = [_NSXPCQueryGenerationToken alloc];
-    v8 = a1[3].super.isa;
+    v8 = original[3].super.isa;
     if (v7)
     {
       goto LABEL_8;
     }
 
 LABEL_16:
-    v9 = 0;
+    originalCopy = 0;
     goto LABEL_9;
   }
 
@@ -5785,13 +5785,13 @@ LABEL_16:
   }
 
 LABEL_8:
-  v9 = [(_NSQueryGenerationToken *)v7 initWithValue:v8 store:WeakRetained freeValueOnDealloc:0];
+  originalCopy = [(_NSQueryGenerationToken *)v7 initWithValue:v8 store:WeakRetained freeValueOnDealloc:0];
 LABEL_9:
 
-  v10 = [a2 cache];
-  if (a1)
+  cache = [context cache];
+  if (original)
   {
-    v11 = a1[3].super.isa;
+    v11 = original[3].super.isa;
   }
 
   else
@@ -5799,22 +5799,22 @@ LABEL_9:
     v11 = 0;
   }
 
-  [(NSXPCStoreServerPerConnectionCache *)v10 registerQueryGeneration:a1 forRemoteGeneration:v11];
+  [(NSXPCStoreServerPerConnectionCache *)cache registerQueryGeneration:original forRemoteGeneration:v11];
 LABEL_13:
   objc_autoreleasePoolPop(v4);
-  return v9;
+  return originalCopy;
 }
 
-- (NSQueryGenerationToken)unpackQueryGeneration:(uint64_t)a1 withContext:(void *)a2
+- (NSQueryGenerationToken)unpackQueryGeneration:(uint64_t)generation withContext:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = objc_autoreleasePoolPush();
-  if ([@"current" isEqual:a1])
+  if ([@"current" isEqual:generation])
   {
     v5 = +[NSQueryGenerationToken currentQueryGenerationToken];
   }
 
-  else if ([@"unpinned" isEqual:a1])
+  else if ([@"unpinned" isEqual:generation])
   {
     v5 = +[NSQueryGenerationToken unpinnedQueryGenerationToken];
   }
@@ -5822,9 +5822,9 @@ LABEL_13:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    if (a1)
+    if (generation)
     {
-      v7 = *(a1 + 24);
+      v7 = *(generation + 24);
     }
 
     else
@@ -5832,16 +5832,16 @@ LABEL_13:
       v7 = 0;
     }
 
-    v8 = -[NSXPCStoreServerPerConnectionCache localGenerationForRemoteGeneration:]([a2 cache], v7);
+    v8 = -[NSXPCStoreServerPerConnectionCache localGenerationForRemoteGeneration:]([context cache], v7);
     if (!v8)
     {
-      v9 = [a2 persistentStoreCoordinator];
-      v10 = a1 ? *(a1 + 8) : 0;
-      v8 = [(NSPersistentStoreCoordinator *)v9 _reopenQueryGenerationWithIdentifier:v7 inStoreWithIdentifier:v10 error:0];
+      persistentStoreCoordinator = [context persistentStoreCoordinator];
+      v10 = generation ? *(generation + 8) : 0;
+      v8 = [(NSPersistentStoreCoordinator *)persistentStoreCoordinator _reopenQueryGenerationWithIdentifier:v7 inStoreWithIdentifier:v10 error:0];
       if (v8)
       {
-        -[NSXPCStoreServerPerConnectionCache registerQueryGeneration:forRemoteGeneration:]([a2 cache], v8, v7);
-        v8 = -[NSXPCStoreServerPerConnectionCache localGenerationForRemoteGeneration:]([a2 cache], v7);
+        -[NSXPCStoreServerPerConnectionCache registerQueryGeneration:forRemoteGeneration:]([context cache], v8, v7);
+        v8 = -[NSXPCStoreServerPerConnectionCache localGenerationForRemoteGeneration:]([context cache], v7);
       }
     }
 
@@ -5854,7 +5854,7 @@ LABEL_13:
   if (v5)
   {
     v20 = 0;
-    if (([objc_msgSend(a2 "managedObjectContext")] & 1) == 0 && +[NSXPCStoreServer debugDefault](NSXPCStoreServer, "debugDefault"))
+    if (([objc_msgSend(context "managedObjectContext")] & 1) == 0 && +[NSXPCStoreServer debugDefault](NSXPCStoreServer, "debugDefault"))
     {
       v13 = objc_autoreleasePoolPush();
       _pflogInitialize(8);
@@ -5866,7 +5866,7 @@ LABEL_13:
           if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v22 = a1;
+            generationCopy2 = generation;
             v23 = 2112;
             v24 = v12;
             v25 = 2112;
@@ -5881,7 +5881,7 @@ LABEL_13:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
-            v22 = a1;
+            generationCopy2 = generation;
             v23 = 2112;
             v24 = v12;
             v25 = 2112;
@@ -5901,7 +5901,7 @@ LABEL_13:
         v17 = 8;
       }
 
-      _NSCoreDataLog_console(v17, "Failed to set query generation on context: %@ -> %@ (%@)", a1, v12, v20);
+      _NSCoreDataLog_console(v17, "Failed to set query generation on context: %@ -> %@ (%@)", generation, v12, v20);
       objc_autoreleasePoolPop(v13);
       v12 = 0;
     }
@@ -5921,19 +5921,19 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_populateObject:(void *)a1 withValuesFromClient:(void *)a2
+- (uint64_t)_populateObject:(void *)object withValuesFromClient:(void *)client
 {
   v72 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v5 = [a1 managedObjectContext];
-  v6 = [a1 entity];
-  [a1 _setVersionReference__:{objc_msgSend(objc_msgSend(a2, "objectAtIndex:", 1), "longLongValue")}];
-  v61 = a2;
-  v60 = [a2 objectAtIndex:2];
+  managedObjectContext = [object managedObjectContext];
+  entity = [object entity];
+  [object _setVersionReference__:{objc_msgSend(objc_msgSend(client, "objectAtIndex:", 1), "longLongValue")}];
+  clientCopy = client;
+  v60 = [client objectAtIndex:2];
   v52 = v4;
-  if (v6)
+  if (entity)
   {
-    v7 = v6[14];
+    v7 = entity[14];
   }
 
   else
@@ -5941,10 +5941,10 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [objc_msgSend(v6 "propertiesByName")];
+  v8 = [objc_msgSend(entity "propertiesByName")];
   v9 = v7[6];
   v10 = v7[7];
-  v58 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v11 = v9 < v10 + v9;
   v54 = v8;
   if (v9 < v10 + v9)
@@ -5957,12 +5957,12 @@ LABEL_13:
     v16 = (v12 + 8 * v9);
     while (1)
     {
-      v17 = [*v16 name];
-      v18 = [v61 objectAtIndex:v15];
+      name = [*v16 name];
+      v18 = [clientCopy objectAtIndex:v15];
       if (v18 != v60)
       {
         v19 = v18;
-        v20 = [a1 valueForKey:v17];
+        v20 = [object valueForKey:name];
         if (v20 != v19 && ([v20 isEqual:v19] & 1) == 0)
         {
           break;
@@ -5971,9 +5971,9 @@ LABEL_13:
 
       if ((v13 & 1) == 0)
       {
-        v21 = [a1 valueForKey:v17];
+        v21 = [object valueForKey:name];
 LABEL_14:
-        [a1 setValue:v21 forKey:v17];
+        [object setValue:v21 forKey:name];
       }
 
       ++v15;
@@ -5987,7 +5987,7 @@ LABEL_14:
       }
     }
 
-    if (v58 == v19)
+    if (null == v19)
     {
       v21 = 0;
     }
@@ -6004,7 +6004,7 @@ LABEL_14:
 LABEL_18:
   v22 = v7[12];
   v23 = v7[13];
-  v53 = a1;
+  objectCopy = object;
   if (v22 >= v23 + v22)
   {
     goto LABEL_32;
@@ -6014,32 +6014,32 @@ LABEL_18:
   v24 = (v8 + 8 * v22);
   do
   {
-    v25 = [*v24 name];
-    v26 = [v61 objectAtIndex:v14];
-    if (v26 == v60 || (v27 = v26, v28 = [a1 valueForKey:v25], v28 == v27) || (objc_msgSend(v28, "isEqual:", v27) & 1) != 0)
+    name2 = [*v24 name];
+    v26 = [clientCopy objectAtIndex:v14];
+    if (v26 == v60 || (v27 = v26, v28 = [object valueForKey:name2], v28 == v27) || (objc_msgSend(v28, "isEqual:", v27) & 1) != 0)
     {
       if (v11)
       {
         goto LABEL_29;
       }
 
-      v29 = [a1 valueForKey:v25];
+      v29 = [object valueForKey:name2];
     }
 
     else
     {
-      if (v58 == v27)
+      if (null == v27)
       {
         v30 = 0;
         goto LABEL_28;
       }
 
-      v29 = [v5 existingObjectWithID:v27 error:0];
+      v29 = [managedObjectContext existingObjectWithID:v27 error:0];
     }
 
     v30 = v29;
 LABEL_28:
-    [a1 setValue:v30 forKey:v25];
+    [object setValue:v30 forKey:name2];
 LABEL_29:
     ++v14;
     ++v24;
@@ -6058,13 +6058,13 @@ LABEL_32:
     do
     {
       v33 = objc_autoreleasePoolPush();
-      v34 = [*(v8 + 8 * v32) name];
-      v35 = [v61 objectAtIndex:v14];
+      name3 = [*(v8 + 8 * v32) name];
+      v35 = [clientCopy objectAtIndex:v14];
       if (v60 == [v35 objectAtIndex:0])
       {
         if (!v11)
         {
-          [v53 setValue:objc_msgSend(v53 forKey:{"valueForKey:", v34), v34}];
+          [objectCopy setValue:objc_msgSend(objectCopy forKey:{"valueForKey:", name3), name3}];
         }
 
         v11 = 1;
@@ -6074,7 +6074,7 @@ LABEL_32:
       {
         v36 = [v35 objectAtIndex:0];
         v37 = [v35 objectAtIndex:1];
-        v59 = [v53 mutableSetValueForKey:v34];
+        v59 = [objectCopy mutableSetValueForKey:name3];
         if ([v36 count])
         {
           v38 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -6097,7 +6097,7 @@ LABEL_32:
                   objc_enumerationMutation(v36);
                 }
 
-                v43 = [v5 existingObjectWithID:*(*(&v66 + 1) + 8 * v42) error:0];
+                v43 = [managedObjectContext existingObjectWithID:*(*(&v66 + 1) + 8 * v42) error:0];
                 if (v43)
                 {
                   [v38 addObject:v43];
@@ -6141,7 +6141,7 @@ LABEL_32:
                   objc_enumerationMutation(v37);
                 }
 
-                v49 = [v5 existingObjectWithID:*(*(&v62 + 1) + 8 * v48) error:0];
+                v49 = [managedObjectContext existingObjectWithID:*(*(&v62 + 1) + 8 * v48) error:0];
                 if (v49)
                 {
                   [v44 addObject:v49];

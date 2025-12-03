@@ -1,22 +1,22 @@
 @interface RMModelConfigurationSchema
 + (id)_processManagedSettingsSchemas;
-+ (void)_loadDynamicSchemaFromDictionary:(id)a3 into:(id)a4 fileURL:(id)a5;
-+ (void)_loadDynamicSchemaFromDirectory:(id)a3 into:(id)a4;
-+ (void)_loadDynamicSchemaFromFile:(id)a3 into:(id)a4;
-+ (void)loadDynamicSchemaFromDirectory:(id)a3;
-+ (void)loadDynamicSchemaFromFiles:(id)a3;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5;
-- (id)_parseAssetReferences:(id)a3;
-- (id)_parseManagedSettings:(id)a3;
-- (id)initFromDictionary:(id)a3;
++ (void)_loadDynamicSchemaFromDictionary:(id)dictionary into:(id)into fileURL:(id)l;
++ (void)_loadDynamicSchemaFromDirectory:(id)directory into:(id)into;
++ (void)_loadDynamicSchemaFromFile:(id)file into:(id)into;
++ (void)loadDynamicSchemaFromDirectory:(id)directory;
++ (void)loadDynamicSchemaFromFiles:(id)files;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type;
+- (id)_parseAssetReferences:(id)references;
+- (id)_parseManagedSettings:(id)settings;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation RMModelConfigurationSchema
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = RMModelConfigurationSchema;
   v5 = [(RMModelConfigurationSchema *)&v20 init];
@@ -25,7 +25,7 @@
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"version"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 intValue] != 1)
   {
@@ -36,9 +36,9 @@ LABEL_9:
   }
 
   objc_storeStrong(&v5->_version, v6);
-  v7 = [v4 objectForKeyedSubscript:@"configuration-type"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"configuration-type"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_storeStrong(&v5->_configurationType, v7), [v4 objectForKeyedSubscript:@"supported-os"], v8 = objc_claimAutoreleasedReturnValue(), +[RMModelSchemaParser loadSupportedOSFromDictionary:](RMModelSchemaParser, "loadSupportedOSFromDictionary:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_storeStrong(&v5->_configurationType, v7), [dictionaryCopy objectForKeyedSubscript:@"supported-os"], v8 = objc_claimAutoreleasedReturnValue(), +[RMModelSchemaParser loadSupportedOSFromDictionary:](RMModelSchemaParser, "loadSupportedOSFromDictionary:", v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
 
     goto LABEL_9;
@@ -48,12 +48,12 @@ LABEL_9:
   v5->_supportedOS = v9;
   v11 = v9;
 
-  v12 = [v4 objectForKeyedSubscript:@"asset-references"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"asset-references"];
   v13 = [(RMModelConfigurationSchema *)v5 _parseAssetReferences:v12];
   assetReferences = v5->_assetReferences;
   v5->_assetReferences = v13;
 
-  v15 = [v4 objectForKeyedSubscript:@"managed-settings"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"managed-settings"];
   v16 = [(RMModelConfigurationSchema *)v5 _parseManagedSettings:v15];
   managedSettings = v5->_managedSettings;
   v5->_managedSettings = v16;
@@ -65,47 +65,47 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope
 {
-  v6 = [(RMModelConfigurationSchema *)self supportedOS];
-  LOBYTE(a4) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 supportedOS:v6];
+  supportedOS = [(RMModelConfigurationSchema *)self supportedOS];
+  LOBYTE(scope) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope supportedOS:supportedOS];
 
-  return a4;
+  return scope;
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type
 {
-  v8 = [(RMModelConfigurationSchema *)self supportedOS];
-  LOBYTE(a5) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 enrollmentType:a5 supportedOS:v8];
+  supportedOS = [(RMModelConfigurationSchema *)self supportedOS];
+  LOBYTE(type) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope enrollmentType:type supportedOS:supportedOS];
 
-  return a5;
+  return type;
 }
 
-+ (void)loadDynamicSchemaFromDirectory:(id)a3
++ (void)loadDynamicSchemaFromDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v9 = objc_opt_new();
-  [a1 _loadDynamicSchemaFromDirectory:v4 into:v9];
+  [self _loadDynamicSchemaFromDirectory:directoryCopy into:v9];
 
   v5 = [v9 copy];
   v6 = _schemas;
   _schemas = v5;
 
-  v7 = [a1 _processManagedSettingsSchemas];
+  _processManagedSettingsSchemas = [self _processManagedSettingsSchemas];
   v8 = _managedSettingsSchemas;
-  _managedSettingsSchemas = v7;
+  _managedSettingsSchemas = _processManagedSettingsSchemas;
 }
 
-+ (void)loadDynamicSchemaFromFiles:(id)a3
++ (void)loadDynamicSchemaFromFiles:(id)files
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filesCopy = files;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = filesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -121,7 +121,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        [a1 _loadDynamicSchemaFromFile:*(*(&v16 + 1) + 8 * v10++) into:{v5, v16}];
+        [self _loadDynamicSchemaFromFile:*(*(&v16 + 1) + 8 * v10++) into:{v5, v16}];
       }
 
       while (v8 != v10);
@@ -135,22 +135,22 @@ LABEL_10:
   v12 = _schemas;
   _schemas = v11;
 
-  v13 = [a1 _processManagedSettingsSchemas];
+  _processManagedSettingsSchemas = [self _processManagedSettingsSchemas];
   v14 = _managedSettingsSchemas;
-  _managedSettingsSchemas = v13;
+  _managedSettingsSchemas = _processManagedSettingsSchemas;
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_loadDynamicSchemaFromDirectory:(id)a3 into:(id)a4
++ (void)_loadDynamicSchemaFromDirectory:(id)directory into:(id)into
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = v5;
-  v9 = [v5 path];
-  v10 = [v7 contentsOfDirectoryAtPath:v9 error:0];
+  directoryCopy = directory;
+  intoCopy = into;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = directoryCopy;
+  path = [directoryCopy path];
+  v10 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v24 = 0u;
   v25 = 0u;
@@ -172,13 +172,13 @@ LABEL_10:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 pathExtension];
-        v18 = [v17 isEqualToString:@"json"];
+        pathExtension = [v16 pathExtension];
+        v18 = [pathExtension isEqualToString:@"json"];
 
         if (v18)
         {
           v19 = [v8 URLByAppendingPathComponent:v16];
-          [a1 _loadDynamicSchemaFromFile:v19 into:v6];
+          [self _loadDynamicSchemaFromFile:v19 into:intoCopy];
         }
       }
 
@@ -191,12 +191,12 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_loadDynamicSchemaFromFile:(id)a3 into:(id)a4
++ (void)_loadDynamicSchemaFromFile:(id)file into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  intoCopy = into;
   v13 = 0;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6 options:0 error:&v13];
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileCopy options:0 error:&v13];
   v9 = v13;
   if (v8)
   {
@@ -206,7 +206,7 @@ LABEL_10:
 
     if (v10)
     {
-      [a1 _loadDynamicSchemaFromDictionary:v10 into:v7 fileURL:v6];
+      [self _loadDynamicSchemaFromDictionary:v10 into:intoCopy fileURL:fileCopy];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -226,18 +226,18 @@ LABEL_10:
   }
 }
 
-+ (void)_loadDynamicSchemaFromDictionary:(id)a3 into:(id)a4 fileURL:(id)a5
++ (void)_loadDynamicSchemaFromDictionary:(id)dictionary into:(id)into fileURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[RMModelConfigurationSchema alloc] initFromDictionary:v9];
+  intoCopy = into;
+  lCopy = l;
+  dictionaryCopy = dictionary;
+  v10 = [[RMModelConfigurationSchema alloc] initFromDictionary:dictionaryCopy];
 
   if (v10)
   {
-    v11 = [v10 configurationType];
-    v12 = [v7 objectForKeyedSubscript:v11];
+    configurationType = [v10 configurationType];
+    v12 = [intoCopy objectForKeyedSubscript:configurationType];
 
     if (v12)
     {
@@ -251,19 +251,19 @@ LABEL_10:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 configurationType];
+        configurationType2 = [v10 configurationType];
         v16 = 138543362;
-        v17 = v13;
+        v17 = configurationType2;
         _os_log_impl(&dword_261DAE000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Loaded configuration schema: %{public}@", &v16, 0xCu);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        [RMModelConfigurationSchema _loadDynamicSchemaFromDictionary:v10 into:v8 fileURL:?];
+        [RMModelConfigurationSchema _loadDynamicSchemaFromDictionary:v10 into:lCopy fileURL:?];
       }
 
-      v14 = [v10 configurationType];
-      [v7 setObject:v10 forKeyedSubscript:v14];
+      configurationType3 = [v10 configurationType];
+      [intoCopy setObject:v10 forKeyedSubscript:configurationType3];
     }
   }
 
@@ -302,10 +302,10 @@ void __60__RMModelConfigurationSchema__processManagedSettingsSchemas__block_invo
   }
 }
 
-- (id)_parseAssetReferences:(id)a3
+- (id)_parseAssetReferences:(id)references
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  referencesCopy = references;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -314,7 +314,7 @@ void __60__RMModelConfigurationSchema__processManagedSettingsSchemas__block_invo
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = referencesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -374,11 +374,11 @@ LABEL_17:
   return v12;
 }
 
-- (id)_parseManagedSettings:(id)a3
+- (id)_parseManagedSettings:(id)settings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
 LABEL_14:
     v13 = 0;
@@ -401,7 +401,7 @@ LABEL_14:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = settingsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {

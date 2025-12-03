@@ -8,20 +8,20 @@
 - (void)effectivePreferredImageDynamicRangeDidChange;
 - (void)imageDidChange;
 - (void)imageProgressDidChange;
-- (void)imageRequesterDidChange:(unint64_t)a3;
+- (void)imageRequesterDidChange:(unint64_t)change;
 - (void)isDisplayingFullQualityContentDidChange;
 - (void)placeholderImageFiltersDidChange;
 @end
 
 @implementation PXDisplayAssetImageContentView
 
-- (void)imageRequesterDidChange:(unint64_t)a3
+- (void)imageRequesterDidChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = PXDisplayAssetImageContentView;
   [(PXDisplayAssetContentView *)&v5 imageRequesterDidChange:?];
-  if ((v3 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
     [(PXDisplayAssetImageContentView *)self isDisplayingFullQualityContentDidChange];
   }
@@ -29,44 +29,44 @@
 
 - (void)_updateImageViewFilters
 {
-  v4 = [(PXDisplayAssetImageContentView *)self isDisplayingFullQualityContent];
-  if (!v4)
+  isDisplayingFullQualityContent = [(PXDisplayAssetImageContentView *)self isDisplayingFullQualityContent];
+  if (!isDisplayingFullQualityContent)
   {
-    v2 = [(PXDisplayAssetContentView *)self placeholderImageFilters];
-    if ([v2 count])
+    placeholderImageFilters = [(PXDisplayAssetContentView *)self placeholderImageFilters];
+    if ([placeholderImageFilters count])
     {
 
 LABEL_7:
-      v7 = [(PXDisplayAssetContentView *)self placeholderImageFilters];
-      v8 = [(UIImageView *)self->_imageView layer];
-      [v8 setFilters:v7];
+      placeholderImageFilters2 = [(PXDisplayAssetContentView *)self placeholderImageFilters];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer setFilters:placeholderImageFilters2];
 
-      v9 = [(UIImageView *)self->_imageView layer];
-      [v9 setShouldRasterize:1];
+      layer2 = [(UIImageView *)self->_imageView layer];
+      [layer2 setShouldRasterize:1];
 
-      v11 = [(UIImageView *)self->_imageView layer];
-      [v11 setRasterizationScale:0.5];
+      layer3 = [(UIImageView *)self->_imageView layer];
+      [layer3 setRasterizationScale:0.5];
       goto LABEL_9;
     }
   }
 
   v5 = +[PXForYouSettings sharedInstance];
-  v6 = [v5 alwaysShowSuggestionRenderingOverlay];
+  alwaysShowSuggestionRenderingOverlay = [v5 alwaysShowSuggestionRenderingOverlay];
 
-  if (!v4)
+  if (!isDisplayingFullQualityContent)
   {
   }
 
-  if (v6)
+  if (alwaysShowSuggestionRenderingOverlay)
   {
     goto LABEL_7;
   }
 
-  v10 = [(UIImageView *)self->_imageView layer];
-  [v10 setFilters:0];
+  layer4 = [(UIImageView *)self->_imageView layer];
+  [layer4 setFilters:0];
 
-  v11 = [(UIImageView *)self->_imageView layer];
-  [v11 setShouldRasterize:0];
+  layer3 = [(UIImageView *)self->_imageView layer];
+  [layer3 setShouldRasterize:0];
 LABEL_9:
 }
 
@@ -80,10 +80,10 @@ LABEL_9:
 
 - (BOOL)isDisplayingFullQualityContent
 {
-  v2 = [(PXDisplayAssetContentView *)self imageRequester];
-  v3 = [v2 hasFullQuality];
+  imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
+  hasFullQuality = [imageRequester hasFullQuality];
 
-  return v3;
+  return hasFullQuality;
 }
 
 - (void)contentsRectDidChange
@@ -96,8 +96,8 @@ LABEL_9:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIImageView *)self->_imageView layer];
-  [v11 setContentsRect:{v4, v6, v8, v10}];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setContentsRect:{v4, v6, v8, v10}];
 }
 
 - (void)placeholderImageFiltersDidChange
@@ -129,12 +129,12 @@ LABEL_9:
   v12.receiver = self;
   v12.super_class = PXDisplayAssetImageContentView;
   [(PXDisplayAssetContentView *)&v12 imageDidChange];
-  v3 = [(UIImageView *)self->_imageView image];
-  if (v3)
+  image = [(UIImageView *)self->_imageView image];
+  if (image)
   {
-    v4 = v3;
-    v5 = [(PXDisplayAssetContentView *)self imageRequester];
-    if ([v5 hasFullQuality])
+    v4 = image;
+    imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
+    if ([imageRequester hasFullQuality])
     {
       [(PXDisplayAssetContentView *)self placeholderTransitionDuration];
       v7 = v6;
@@ -159,8 +159,8 @@ LABEL_9:
     }
   }
 
-  v10 = [(PXDisplayAssetContentView *)self image];
-  [(UIImageView *)self->_imageView setImage:v10];
+  image2 = [(PXDisplayAssetContentView *)self image];
+  [(UIImageView *)self->_imageView setImage:image2];
 }
 
 uint64_t __48__PXDisplayAssetImageContentView_imageDidChange__block_invoke(uint64_t a1)
@@ -175,10 +175,10 @@ uint64_t __48__PXDisplayAssetImageContentView_imageDidChange__block_invoke(uint6
 
 - (void)_updateImageViewContentMode
 {
-  v3 = [(PXDisplayAssetImageContentView *)self contentMode];
+  contentMode = [(PXDisplayAssetImageContentView *)self contentMode];
   imageView = self->_imageView;
 
-  [(UIImageView *)imageView setContentMode:v3];
+  [(UIImageView *)imageView setContentMode:contentMode];
 }
 
 - (void)contentModeDidChange

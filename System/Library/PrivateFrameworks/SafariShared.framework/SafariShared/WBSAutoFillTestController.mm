@@ -1,20 +1,20 @@
 @interface WBSAutoFillTestController
-- (void)cleanSuiteWithCompletionHandler:(id)a3;
-- (void)prepareSuiteWithCompletionHandler:(id)a3;
-- (void)runTest:(id)a3 bundle:(id)a4 storeResultsIn:(id)a5 tryCount:(unint64_t)a6 completionHandler:(id)a7;
+- (void)cleanSuiteWithCompletionHandler:(id)handler;
+- (void)prepareSuiteWithCompletionHandler:(id)handler;
+- (void)runTest:(id)test bundle:(id)bundle storeResultsIn:(id)in tryCount:(unint64_t)count completionHandler:(id)handler;
 @end
 
 @implementation WBSAutoFillTestController
 
-- (void)runTest:(id)a3 bundle:(id)a4 storeResultsIn:(id)a5 tryCount:(unint64_t)a6 completionHandler:(id)a7
+- (void)runTest:(id)test bundle:(id)bundle storeResultsIn:(id)in tryCount:(unint64_t)count completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v12;
-  v17 = [(WBSPageTestController *)self delegate];
-  if (v17)
+  testCopy = test;
+  bundleCopy = bundle;
+  inCopy = in;
+  handlerCopy = handler;
+  v16 = testCopy;
+  delegate = [(WBSPageTestController *)self delegate];
+  if (delegate)
   {
     [v16 viewportSize];
     v19 = v18;
@@ -23,20 +23,20 @@
     v22[1] = 3221225472;
     v22[2] = __86__WBSAutoFillTestController_runTest_bundle_storeResultsIn_tryCount_completionHandler___block_invoke;
     v22[3] = &unk_1E7FB6AD0;
-    v29 = v15;
-    v23 = v17;
-    v24 = self;
+    v29 = handlerCopy;
+    v23 = delegate;
+    selfCopy = self;
     v25 = v16;
-    v26 = v13;
+    v26 = bundleCopy;
     v27 = v25;
-    v30 = a6;
-    v28 = v14;
+    countCopy = count;
+    v28 = inCopy;
     [v23 pageTestController:self resizeViewport:v22 completionHandler:{v19, v21}];
   }
 
   else
   {
-    (*(v15 + 2))(v15, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -226,29 +226,29 @@ LABEL_18:
 LABEL_21:
 }
 
-- (void)prepareSuiteWithCompletionHandler:(id)a3
+- (void)prepareSuiteWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSPageTestController *)self delegate];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  delegate = [(WBSPageTestController *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    [v5 pageTestControllerInitializeApp:self completionHandler:v4];
+    [delegate pageTestControllerInitializeApp:self completionHandler:handlerCopy];
   }
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)cleanSuiteWithCompletionHandler:(id)a3
+- (void)cleanSuiteWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(WBSPageTestController *)self delegate];
-  [v4 pageTestControllerTerminateApp:self];
+  handlerCopy = handler;
+  delegate = [(WBSPageTestController *)self delegate];
+  [delegate pageTestControllerTerminateApp:self];
 
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 void __86__WBSAutoFillTestController_runTest_bundle_storeResultsIn_tryCount_completionHandler___block_invoke_2_cold_1(uint64_t a1, void *a2, uint64_t a3)

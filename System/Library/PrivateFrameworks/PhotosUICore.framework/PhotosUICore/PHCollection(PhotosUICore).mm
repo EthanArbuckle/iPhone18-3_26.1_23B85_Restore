@@ -21,7 +21,7 @@
 - (id)px_navigationURLWithSelectedObject:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 px_navigationURLComponents];
+  px_navigationURLComponents = [self px_navigationURLComponents];
   v6 = v4;
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -34,32 +34,32 @@ LABEL_8:
 
   v7 = v6;
 
-  if (v5 && v7)
+  if (px_navigationURLComponents && v7)
   {
-    v8 = [v5 queryItems];
-    v9 = [v8 mutableCopy];
+    queryItems = [px_navigationURLComponents queryItems];
+    v9 = [queryItems mutableCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      array = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v12 = v11;
+    v12 = array;
 
     v15 = [v7 px_navigationURLQueryItemWithPrefix:@"revealasset"];
     [v12 addObject:v15];
 
-    [v5 setQueryItems:v12];
+    [px_navigationURLComponents setQueryItems:v12];
     goto LABEL_8;
   }
 
 LABEL_9:
-  v13 = [v5 URL];
+  v13 = [px_navigationURLComponents URL];
 
   return v13;
 }
@@ -67,14 +67,14 @@ LABEL_9:
 - (id)px_navigationURLComponents
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 px_navigationURLQueryItemWithPrefix:0];
-  v3 = [v2 value];
+  v2 = [self px_navigationURLQueryItemWithPrefix:0];
+  value = [v2 value];
 
-  if (v3)
+  if (value)
   {
     v4 = MEMORY[0x1E696AF20];
-    v5 = [a1 px_navigationURLHost];
-    v6 = [@"photos://" stringByAppendingString:v5];
+    px_navigationURLHost = [self px_navigationURLHost];
+    v6 = [@"photos://" stringByAppendingString:px_navigationURLHost];
     v7 = [v4 componentsWithString:v6];
 
     v10[0] = v2;
@@ -93,15 +93,15 @@ LABEL_9:
 - (id)px_navigationURLQueryItemWithPrefix:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 px_navigationWellKnownName];
-  if ([a1 isTransient])
+  px_navigationWellKnownName = [self px_navigationWellKnownName];
+  if ([self isTransient])
   {
-    v6 = 0;
+    uuid = 0;
   }
 
   else
   {
-    v6 = [a1 uuid];
+    uuid = [self uuid];
   }
 
   v7 = &stru_1F1741150;
@@ -110,12 +110,12 @@ LABEL_9:
     v7 = v4;
   }
 
-  if (v5)
+  if (px_navigationWellKnownName)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"name"];
     v9 = MEMORY[0x1E696AF60];
     v10 = v8;
-    v11 = v5;
+    v11 = px_navigationWellKnownName;
   }
 
   else
@@ -123,7 +123,7 @@ LABEL_9:
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"uuid"];
     v9 = MEMORY[0x1E696AF60];
     v10 = v8;
-    v11 = v6;
+    v11 = uuid;
   }
 
   v12 = [v9 queryItemWithName:v10 value:v11];
@@ -133,48 +133,48 @@ LABEL_9:
 
 - (void)px_navigationWellKnownName
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PHCollection+PhotosUICore.m" lineNumber:264 description:{@"Method %s is a responsibility of subclass %@", "-[PHCollection(PhotosUICore) px_navigationWellKnownName]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHCollection+PhotosUICore.m" lineNumber:264 description:{@"Method %s is a responsibility of subclass %@", "-[PHCollection(PhotosUICore) px_navigationWellKnownName]", v6}];
 
   abort();
 }
 
 - (void)px_navigationURLHost
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PHCollection+PhotosUICore.m" lineNumber:260 description:{@"Method %s is a responsibility of subclass %@", "-[PHCollection(PhotosUICore) px_navigationURLHost]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHCollection+PhotosUICore.m" lineNumber:260 description:{@"Method %s is a responsibility of subclass %@", "-[PHCollection(PhotosUICore) px_navigationURLHost]", v6}];
 
   abort();
 }
 
 - (id)px_exportFolderName
 {
-  v1 = [a1 localizedTitle];
-  v2 = [v1 stringByDeletingPathExtension];
+  localizedTitle = [self localizedTitle];
+  stringByDeletingPathExtension = [localizedTitle stringByDeletingPathExtension];
 
-  return v2;
+  return stringByDeletingPathExtension;
 }
 
 - (id)px_debugDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"localizedTitle";
-  v2 = [a1 localizedTitle];
-  v3 = v2;
+  localizedTitle = [self localizedTitle];
+  v3 = localizedTitle;
   v4 = @"nil";
-  if (v2)
+  if (localizedTitle)
   {
-    v4 = v2;
+    v4 = localizedTitle;
   }
 
   v13[0] = v4;
   v12[1] = @"canContainAssets";
   v5 = v4;
-  if ([a1 canContainAssets])
+  if ([self canContainAssets])
   {
     v6 = @"YES";
   }
@@ -187,7 +187,7 @@ LABEL_9:
   v7 = v6;
   v13[1] = v7;
   v12[2] = @"canContainCollections";
-  if ([a1 canContainCollections])
+  if ([self canContainCollections])
   {
     v8 = @"YES";
   }
@@ -206,10 +206,10 @@ LABEL_9:
 
 - (uint64_t)px_fetchIsEmpty
 {
-  v2 = [a1 photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v4 = [a1 px_fetchIsEmptyWithOptions:v3];
+  v4 = [self px_fetchIsEmptyWithOptions:librarySpecificFetchOptions];
   return v4;
 }
 
@@ -217,52 +217,52 @@ LABEL_9:
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6[0] = a1;
+  v6[0] = self;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   PXCollectAssetCollectionsInCollections(v3, v2);
 
-  v4 = [v2 objectEnumerator];
+  objectEnumerator = [v2 objectEnumerator];
 
-  return v4;
+  return objectEnumerator;
 }
 
 - (id)px_fetchAncestryIncludingRoot:()PhotosUICore
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
-  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:a1 options:0];
-  v7 = [v6 firstObject];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{self, 0}];
+  v6 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:self options:0];
+  firstObject = [v6 firstObject];
 
-  v8 = [a1 px_rootCollectionList];
-  if (v7)
+  px_rootCollectionList = [self px_rootCollectionList];
+  if (firstObject)
   {
     do
     {
-      if ([v7 isEqual:v8])
+      if ([firstObject isEqual:px_rootCollectionList])
       {
         break;
       }
 
-      [v5 insertObject:v7 atIndex:0];
-      v9 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:v7 options:0];
-      v10 = [v9 firstObject];
+      [v5 insertObject:firstObject atIndex:0];
+      v9 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:firstObject options:0];
+      firstObject2 = [v9 firstObject];
 
-      v7 = v10;
+      firstObject = firstObject2;
     }
 
-    while (v10);
+    while (firstObject2);
   }
 
   if (a3)
   {
-    if (v8)
+    if (px_rootCollectionList)
     {
-      v11 = v8;
+      px_rootAssetCollection = px_rootCollectionList;
     }
 
     else
     {
-      v11 = [a1 px_rootAssetCollection];
-      if (!v11)
+      px_rootAssetCollection = [self px_rootAssetCollection];
+      if (!px_rootAssetCollection)
       {
 LABEL_11:
 
@@ -270,9 +270,9 @@ LABEL_11:
       }
     }
 
-    if (([a1 isEqual:v11] & 1) == 0)
+    if (([self isEqual:px_rootAssetCollection] & 1) == 0)
     {
-      [v5 insertObject:v11 atIndex:0];
+      [v5 insertObject:px_rootAssetCollection atIndex:0];
     }
 
     goto LABEL_11;
@@ -285,11 +285,11 @@ LABEL_12:
 
 - (id)px_fetchContainerTitle
 {
-  v1 = [a1 px_fetchContainer];
-  v2 = [v1 px_localizedTitle];
-  if ([v2 length])
+  px_fetchContainer = [self px_fetchContainer];
+  px_localizedTitle = [px_fetchContainer px_localizedTitle];
+  if ([px_localizedTitle length])
   {
-    v3 = v2;
+    v3 = px_localizedTitle;
   }
 
   else
@@ -304,64 +304,64 @@ LABEL_12:
 
 - (id)px_fetchContainerIncludingVirtualCollections:()PhotosUICore
 {
-  v5 = [a1 photoLibrary];
+  photoLibrary = [self photoLibrary];
   if (a3)
   {
-    if ([a1 px_isMediaTypeSmartAlbum])
+    if ([self px_isMediaTypeSmartAlbum])
     {
-      v6 = [v5 px_virtualCollections];
-      v7 = [v6 mediaTypesCollectionList];
+      px_virtualCollections = [photoLibrary px_virtualCollections];
+      mediaTypesCollectionList = [px_virtualCollections mediaTypesCollectionList];
 LABEL_6:
-      v8 = v7;
+      firstObject = mediaTypesCollectionList;
       goto LABEL_8;
     }
 
-    if ([a1 px_isLemonadeUtilitiesAlbum])
+    if ([self px_isLemonadeUtilitiesAlbum])
     {
-      v6 = [v5 px_virtualCollections];
-      v7 = [v6 utilitiesCollectionList];
+      px_virtualCollections = [photoLibrary px_virtualCollections];
+      mediaTypesCollectionList = [px_virtualCollections utilitiesCollectionList];
       goto LABEL_6;
     }
   }
 
-  v6 = [v5 librarySpecificFetchOptions];
-  [v6 setIncludeRootFolder:1];
-  v9 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:a1 options:v6];
-  v8 = [v9 firstObject];
+  px_virtualCollections = [photoLibrary librarySpecificFetchOptions];
+  [px_virtualCollections setIncludeRootFolder:1];
+  v9 = [MEMORY[0x1E6978760] fetchCollectionListsContainingCollection:self options:px_virtualCollections];
+  firstObject = [v9 firstObject];
 
 LABEL_8:
 
-  return v8;
+  return firstObject;
 }
 
 - (id)px_rootAssetCollection
 {
-  v2 = [a1 photoLibrary];
-  v3 = [v2 px_virtualCollections];
+  photoLibrary = [self photoLibrary];
+  px_virtualCollections = [photoLibrary px_virtualCollections];
 
-  if ([a1 px_isEvent])
+  if ([self px_isEvent])
   {
-    v4 = [v3 eventsCollection];
+    eventsCollection = [px_virtualCollections eventsCollection];
 LABEL_9:
-    v5 = v4;
+    v5 = eventsCollection;
     goto LABEL_10;
   }
 
-  if ([a1 px_isTrip])
+  if ([self px_isTrip])
   {
-    v4 = [v3 tripsCollection];
+    eventsCollection = [px_virtualCollections tripsCollection];
     goto LABEL_9;
   }
 
-  if ([a1 px_isMemory])
+  if ([self px_isMemory])
   {
-    v4 = [v3 memoriesCollection];
+    eventsCollection = [px_virtualCollections memoriesCollection];
     goto LABEL_9;
   }
 
-  if ([a1 px_isMapVirtualCollection])
+  if ([self px_isMapVirtualCollection])
   {
-    v4 = [v3 mapCollection];
+    eventsCollection = [px_virtualCollections mapCollection];
     goto LABEL_9;
   }
 
@@ -374,51 +374,51 @@ LABEL_10:
 - (id)px_rootCollectionList
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 photoLibrary];
-  v3 = [v2 px_virtualCollections];
+  photoLibrary = [self photoLibrary];
+  px_virtualCollections = [photoLibrary px_virtualCollections];
 
-  if (([a1 px_isSharedAlbumsFolder] & 1) != 0 || (objc_msgSend(a1, "px_isMediaTypesFolder") & 1) != 0 || (objc_msgSend(a1, "px_isTopLevelFolder") & 1) != 0 || objc_msgSend(a1, "px_isProjectsFolder"))
+  if (([self px_isSharedAlbumsFolder] & 1) != 0 || (objc_msgSend(self, "px_isMediaTypesFolder") & 1) != 0 || (objc_msgSend(self, "px_isTopLevelFolder") & 1) != 0 || objc_msgSend(self, "px_isProjectsFolder"))
   {
-    v4 = a1;
+    selfCopy = self;
 LABEL_6:
-    v5 = v4;
+    v5 = selfCopy;
     goto LABEL_7;
   }
 
-  if ([a1 px_isStreamSharedAlbum])
+  if ([self px_isStreamSharedAlbum])
   {
     goto LABEL_11;
   }
 
-  if ([a1 px_isMediaTypeSmartAlbum])
+  if ([self px_isMediaTypeSmartAlbum])
   {
-    v4 = [v3 mediaTypesCollectionList];
+    selfCopy = [px_virtualCollections mediaTypesCollectionList];
     goto LABEL_6;
   }
 
-  if ([a1 px_isLemonadeUtilitiesAlbum])
+  if ([self px_isLemonadeUtilitiesAlbum])
   {
-    v4 = [v3 utilitiesCollectionList];
+    selfCopy = [px_virtualCollections utilitiesCollectionList];
     goto LABEL_6;
   }
 
-  if ([a1 px_isUserCreated])
+  if ([self px_isUserCreated])
   {
-    v4 = [v3 rootAlbumCollectionList];
+    selfCopy = [px_virtualCollections rootAlbumCollectionList];
     goto LABEL_6;
   }
 
-  if ([a1 px_isSharedActivityVirtualCollection])
+  if ([self px_isSharedActivityVirtualCollection])
   {
 LABEL_11:
-    v4 = [v3 sharedAlbumsCollectionList];
+    selfCopy = [px_virtualCollections sharedAlbumsCollectionList];
     goto LABEL_6;
   }
 
-  if ([a1 px_isContentSyndicationAlbum])
+  if ([self px_isContentSyndicationAlbum])
   {
     v7 = MEMORY[0x1E6978760];
-    v9[0] = a1;
+    v9[0] = self;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     v5 = [v7 transientCollectionListWithCollections:v8 title:@"SomeTitle"];
   }
@@ -435,12 +435,12 @@ LABEL_7:
 
 - (uint64_t)px_allowsSpringLoading
 {
-  if ([a1 px_assetsDropMode])
+  if ([self px_assetsDropMode])
   {
     return 1;
   }
 
-  return [a1 px_isFolder];
+  return [self px_isFolder];
 }
 
 @end

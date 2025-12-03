@@ -1,7 +1,7 @@
 @interface SANDoubleHalfPressRecognizer
 - (BOOL)invalidate;
 - (BOOL)reset;
-- (BOOL)update:(id)a3 forceStageEvent:(id)a4 isDoubleHalfPress:(BOOL *)a5;
+- (BOOL)update:(id)update forceStageEvent:(id)event isDoubleHalfPress:(BOOL *)press;
 - (SANDoubleHalfPressRecognizer)init;
 @end
 
@@ -19,37 +19,37 @@
   return 0;
 }
 
-- (BOOL)update:(id)a3 forceStageEvent:(id)a4 isDoubleHalfPress:(BOOL *)a5
+- (BOOL)update:(id)update forceStageEvent:(id)event isDoubleHalfPress:(BOOL *)press
 {
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  eventCopy = event;
   if (self->_double_half_press_recognizer.__ptr_)
   {
-    v28 = [v8 timestamp];
-    [v8 positionY];
+    timestamp = [updateCopy timestamp];
+    [updateCopy positionY];
     v29 = v10;
-    [v8 positionDeltaY];
+    [updateCopy positionDeltaY];
     v30 = v11;
-    [v8 majorRadius];
+    [updateCopy majorRadius];
     v31 = v12;
-    v32 = [v8 eventMask];
-    v33 = [v8 phase];
-    v34 = [v8 isTouching];
-    [v8 liftoffVelocity];
+    eventMask = [updateCopy eventMask];
+    phase = [updateCopy phase];
+    isTouching = [updateCopy isTouching];
+    [updateCopy liftoffVelocity];
     v35 = v13;
-    v20 = [v9 timestamp];
-    [v9 forceProgress];
+    timestamp2 = [eventCopy timestamp];
+    [eventCopy forceProgress];
     v21 = v14;
-    [v9 nextThreshold];
+    [eventCopy nextThreshold];
     v22 = v15;
-    [v9 nextThreshold];
+    [eventCopy nextThreshold];
     v23 = v16;
-    [v9 releasedThreshold];
+    [eventCopy releasedThreshold];
     v24 = v17;
-    v25 = [v9 forceStage];
-    v26 = [v9 forceStageTransition];
-    v27 = [v9 phase];
-    v18 = NovaHost::DoubleHalfPressRecognizer::update(self->_double_half_press_recognizer.__ptr_, &v28, &v20, a5);
+    forceStage = [eventCopy forceStage];
+    forceStageTransition = [eventCopy forceStageTransition];
+    phase2 = [eventCopy phase];
+    v18 = NovaHost::DoubleHalfPressRecognizer::update(self->_double_half_press_recognizer.__ptr_, &timestamp, &timestamp2, press);
   }
 
   else

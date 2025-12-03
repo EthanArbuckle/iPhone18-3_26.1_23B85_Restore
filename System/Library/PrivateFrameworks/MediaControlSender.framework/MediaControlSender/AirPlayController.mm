@@ -1,31 +1,31 @@
 @interface AirPlayController
 - (AirPlayController)init;
 - (id)_setupConnection;
-- (id)getProperty:(id)a3 qualifier:(id)a4 status:(int *)a5;
-- (int)performCommand:(id)a3 qualifier:(id)a4 params:(id)a5 response:(id *)a6;
-- (int)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5;
+- (id)getProperty:(id)property qualifier:(id)qualifier status:(int *)status;
+- (int)performCommand:(id)command qualifier:(id)qualifier params:(id)params response:(id *)response;
+- (int)setProperty:(id)property qualifier:(id)qualifier value:(id)value;
 - (void)dealloc;
-- (void)getProperty:(id)a3 qualifier:(id)a4 completion:(id)a5;
-- (void)performCommand:(id)a3 qualifier:(id)a4 params:(id)a5 completion:(id)a6;
-- (void)postEvent:(id)a3 qualifier:(id)a4 params:(id)a5;
-- (void)postEvent:(id)a3 qualifier:(id)a4 params:(id)a5 completion:(id)a6;
-- (void)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5 completion:(id)a6;
+- (void)getProperty:(id)property qualifier:(id)qualifier completion:(id)completion;
+- (void)performCommand:(id)command qualifier:(id)qualifier params:(id)params completion:(id)completion;
+- (void)postEvent:(id)event qualifier:(id)qualifier params:(id)params;
+- (void)postEvent:(id)event qualifier:(id)qualifier params:(id)params completion:(id)completion;
+- (void)setProperty:(id)property qualifier:(id)qualifier value:(id)value completion:(id)completion;
 @end
 
 @implementation AirPlayController
 
-- (void)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5 completion:(id)a6
+- (void)setProperty:(id)property qualifier:(id)qualifier value:(id)value completion:(id)completion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__AirPlayController_setProperty_qualifier_value_completion___block_invoke;
   block[3] = &unk_27989A848;
-  block[7] = a5;
-  block[8] = a6;
+  block[7] = value;
+  block[8] = completion;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = property;
+  block[6] = qualifier;
   dispatch_async(queue, block);
 }
 
@@ -68,7 +68,7 @@ uint64_t __60__AirPlayController_setProperty_qualifier_value_completion___block_
   return v4(v2, v3);
 }
 
-- (int)setProperty:(id)a3 qualifier:(id)a4 value:(id)a5
+- (int)setProperty:(id)property qualifier:(id)qualifier value:(id)value
 {
   v12 = 0;
   v13 = &v12;
@@ -81,7 +81,7 @@ uint64_t __60__AirPlayController_setProperty_qualifier_value_completion___block_
   v11[3] = &unk_27989A780;
   v11[4] = v9;
   v11[5] = &v12;
-  [(AirPlayController *)self setProperty:a3 qualifier:a4 value:a5 completion:v11];
+  [(AirPlayController *)self setProperty:property qualifier:qualifier value:value completion:v11];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v9);
   LODWORD(v9) = *(v13 + 6);
@@ -89,7 +89,7 @@ uint64_t __60__AirPlayController_setProperty_qualifier_value_completion___block_
   return v9;
 }
 
-- (void)getProperty:(id)a3 qualifier:(id)a4 completion:(id)a5
+- (void)getProperty:(id)property qualifier:(id)qualifier completion:(id)completion
 {
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
@@ -97,9 +97,9 @@ uint64_t __60__AirPlayController_setProperty_qualifier_value_completion___block_
   v6[2] = __54__AirPlayController_getProperty_qualifier_completion___block_invoke;
   v6[3] = &unk_27989A8C0;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = property;
+  v6[6] = qualifier;
+  v6[7] = completion;
   dispatch_async(queue, v6);
 }
 
@@ -136,7 +136,7 @@ uint64_t __54__AirPlayController_getProperty_qualifier_completion___block_invoke
   return v4(v2, v3, 0);
 }
 
-- (id)getProperty:(id)a3 qualifier:(id)a4 status:(int *)a5
+- (id)getProperty:(id)property qualifier:(id)qualifier status:(int *)status
 {
   v14 = 0;
   v15 = &v14;
@@ -150,9 +150,9 @@ uint64_t __54__AirPlayController_getProperty_qualifier_completion___block_invoke
   v13[2] = __50__AirPlayController_getProperty_qualifier_status___block_invoke;
   v13[3] = &unk_27989A730;
   v13[5] = &v14;
-  v13[6] = a5;
+  v13[6] = status;
   v13[4] = v9;
-  [(AirPlayController *)self getProperty:a3 qualifier:a4 completion:v13];
+  [(AirPlayController *)self getProperty:property qualifier:qualifier completion:v13];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v9);
   v10 = v15[5];
@@ -175,18 +175,18 @@ intptr_t __50__AirPlayController_getProperty_qualifier_status___block_invoke(voi
   return dispatch_semaphore_signal(v5);
 }
 
-- (void)postEvent:(id)a3 qualifier:(id)a4 params:(id)a5 completion:(id)a6
+- (void)postEvent:(id)event qualifier:(id)qualifier params:(id)params completion:(id)completion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__AirPlayController_postEvent_qualifier_params_completion___block_invoke;
   block[3] = &unk_27989A848;
-  block[7] = a5;
-  block[8] = a6;
+  block[7] = params;
+  block[8] = completion;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = event;
+  block[6] = qualifier;
   dispatch_async(queue, block);
 }
 
@@ -220,7 +220,7 @@ uint64_t __59__AirPlayController_postEvent_qualifier_params_completion___block_i
   return [v3 postEvent:v4 qualifier:v5 params:v6 completion:v8];
 }
 
-- (void)postEvent:(id)a3 qualifier:(id)a4 params:(id)a5
+- (void)postEvent:(id)event qualifier:(id)qualifier params:(id)params
 {
   v9 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x277D85DD0];
@@ -228,23 +228,23 @@ uint64_t __59__AirPlayController_postEvent_qualifier_params_completion___block_i
   v10[2] = __48__AirPlayController_postEvent_qualifier_params___block_invoke;
   v10[3] = &unk_27989A7D0;
   v10[4] = v9;
-  [(AirPlayController *)self postEvent:a3 qualifier:a4 params:a5 completion:v10];
+  [(AirPlayController *)self postEvent:event qualifier:qualifier params:params completion:v10];
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v9);
 }
 
-- (void)performCommand:(id)a3 qualifier:(id)a4 params:(id)a5 completion:(id)a6
+- (void)performCommand:(id)command qualifier:(id)qualifier params:(id)params completion:(id)completion
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__AirPlayController_performCommand_qualifier_params_completion___block_invoke;
   block[3] = &unk_27989A848;
-  block[7] = a5;
-  block[8] = a6;
+  block[7] = params;
+  block[8] = completion;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = command;
+  block[6] = qualifier;
   dispatch_async(queue, block);
 }
 
@@ -287,7 +287,7 @@ uint64_t __64__AirPlayController_performCommand_qualifier_params_completion___bl
   return v4(v2, v3, 0);
 }
 
-- (int)performCommand:(id)a3 qualifier:(id)a4 params:(id)a5 response:(id *)a6
+- (int)performCommand:(id)command qualifier:(id)qualifier params:(id)params response:(id *)response
 {
   v23 = 0;
   v24 = &v23;
@@ -307,13 +307,13 @@ uint64_t __64__AirPlayController_performCommand_qualifier_params_completion___bl
   v16[5] = &v23;
   v16[6] = &v17;
   v16[4] = v11;
-  [(AirPlayController *)self performCommand:a3 qualifier:a4 params:a5 completion:v16];
+  [(AirPlayController *)self performCommand:command qualifier:qualifier params:params completion:v16];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v11);
   v12 = v18[5];
-  if (a6)
+  if (response)
   {
-    *a6 = v12;
+    *response = v12;
   }
 
   v13 = v12;

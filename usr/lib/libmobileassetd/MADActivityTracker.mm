@@ -1,42 +1,42 @@
 @interface MADActivityTracker
-+ (BOOL)persistedCommand:(int)a3;
-+ (id)nameOfLayer:(unint64_t)a3;
-+ (id)nameOfStatus:(unint64_t)a3;
-+ (unint64_t)categoryForCommand:(int)a3;
-+ (unint64_t)topLevelActivityForCommand:(int)a3;
-- (BOOL)associateEventualReply:(id)a3 withCommand:(int)a4;
-- (id)init:(unint64_t)a3 fromInitiator:(unint64_t)a4 ofName:(id)a5 withCategory:(unint64_t)a6 forAssetType:(id)a7 associatedWith:(id)a8;
-- (void)assignParentTracker:(id)a3;
-- (void)associateActivityName:(id)a3;
-- (void)associateCommandRequest:(id)a3;
-- (void)associateDownloadInfo:(id)a3;
-- (void)associateXPCConnection:(id)a3;
-- (void)extendLogLeader:(id)a3 withValue:(id)a4;
-- (void)failureResult:(int)a3 ofResultName:(id)a4 forReason:(id)a5;
++ (BOOL)persistedCommand:(int)command;
++ (id)nameOfLayer:(unint64_t)layer;
++ (id)nameOfStatus:(unint64_t)status;
++ (unint64_t)categoryForCommand:(int)command;
++ (unint64_t)topLevelActivityForCommand:(int)command;
+- (BOOL)associateEventualReply:(id)reply withCommand:(int)command;
+- (id)init:(unint64_t)init fromInitiator:(unint64_t)initiator ofName:(id)name withCategory:(unint64_t)category forAssetType:(id)type associatedWith:(id)with;
+- (void)assignParentTracker:(id)tracker;
+- (void)associateActivityName:(id)name;
+- (void)associateCommandRequest:(id)request;
+- (void)associateDownloadInfo:(id)info;
+- (void)associateXPCConnection:(id)connection;
+- (void)extendLogLeader:(id)leader withValue:(id)value;
+- (void)failureResult:(int)result ofResultName:(id)name forReason:(id)reason;
 - (void)sendReply;
-- (void)successWithIssue:(id)a3;
+- (void)successWithIssue:(id)issue;
 - (void)usesChildDict;
-- (void)warningNote:(id)a3 fromMethod:(id)a4 warning:(id)a5;
+- (void)warningNote:(id)note fromMethod:(id)method warning:(id)warning;
 @end
 
 @implementation MADActivityTracker
 
-- (id)init:(unint64_t)a3 fromInitiator:(unint64_t)a4 ofName:(id)a5 withCategory:(unint64_t)a6 forAssetType:(id)a7 associatedWith:(id)a8
+- (id)init:(unint64_t)init fromInitiator:(unint64_t)initiator ofName:(id)name withCategory:(unint64_t)category forAssetType:(id)type associatedWith:(id)with
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  typeCopy = type;
+  withCopy = with;
   v44.receiver = self;
   v44.super_class = MADActivityTracker;
   v18 = [(MADActivityTracker *)&v44 init];
   v19 = v18;
   if (v18)
   {
-    v18->_topLevel = a3;
-    v18->_initiatorType = a4;
-    objc_storeStrong(&v18->_initiatorName, a5);
-    v19->_category = a6;
-    objc_storeStrong(&v19->_assetType, a7);
+    v18->_topLevel = init;
+    v18->_initiatorType = initiator;
+    objc_storeStrong(&v18->_initiatorName, name);
+    v19->_category = category;
+    objc_storeStrong(&v19->_assetType, type);
     scopeActivity = v19->_scopeActivity;
     v19->_scopeActivity = 0;
 
@@ -54,34 +54,34 @@
     stats = v19->_stats;
     v19->_stats = v25;
 
-    if (v17)
+    if (withCopy)
     {
-      v27 = [v17 activityUUID];
+      activityUUID = [withCopy activityUUID];
       activityUUID = v19->_activityUUID;
-      v19->_activityUUID = v27;
+      v19->_activityUUID = activityUUID;
 
-      v29 = [v17 xpcConnection];
+      xpcConnection = [withCopy xpcConnection];
       xpcConnection = v19->_xpcConnection;
-      v19->_xpcConnection = v29;
+      v19->_xpcConnection = xpcConnection;
 
-      v31 = [v17 downloadInfo];
+      downloadInfo = [withCopy downloadInfo];
     }
 
     else
     {
       v32 = +[NSUUID UUID];
-      v33 = [v32 UUIDString];
+      uUIDString = [v32 UUIDString];
       v34 = v19->_activityUUID;
-      v19->_activityUUID = v33;
+      v19->_activityUUID = uUIDString;
 
       v35 = v19->_xpcConnection;
       v19->_xpcConnection = 0;
 
-      v31 = 0;
+      downloadInfo = 0;
     }
 
     downloadInfo = v19->_downloadInfo;
-    v19->_downloadInfo = v31;
+    v19->_downloadInfo = downloadInfo;
 
     v37 = v19->_xpcConnection;
     v19->_xpcConnection = 0;
@@ -109,42 +109,42 @@
   return v19;
 }
 
-- (void)associateXPCConnection:(id)a3
+- (void)associateXPCConnection:(id)connection
 {
-  v5 = a3;
-  v4 = [(MADActivityTracker *)self xpcConnection];
+  connectionCopy = connection;
+  xpcConnection = [(MADActivityTracker *)self xpcConnection];
 
-  if (!v4)
+  if (!xpcConnection)
   {
-    [(MADActivityTracker *)self setXpcConnection:v5];
+    [(MADActivityTracker *)self setXpcConnection:connectionCopy];
   }
 }
 
-- (void)associateActivityName:(id)a3
+- (void)associateActivityName:(id)name
 {
-  v5 = a3;
-  v4 = [(MADActivityTracker *)self activityName];
+  nameCopy = name;
+  activityName = [(MADActivityTracker *)self activityName];
 
-  if (!v4)
+  if (!activityName)
   {
-    [(MADActivityTracker *)self setActivityName:v5];
+    [(MADActivityTracker *)self setActivityName:nameCopy];
   }
 }
 
-- (BOOL)associateEventualReply:(id)a3 withCommand:(int)a4
+- (BOOL)associateEventualReply:(id)reply withCommand:(int)command
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(MADActivityTracker *)self reply];
+  v4 = *&command;
+  replyCopy = reply;
+  reply = [(MADActivityTracker *)self reply];
 
-  if (v7)
+  if (reply)
   {
     LOBYTE(v8) = 0;
   }
 
   else
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(replyCopy);
     v8 = reply != 0;
     if (reply)
     {
@@ -156,39 +156,39 @@
   return v8;
 }
 
-- (void)associateCommandRequest:(id)a3
+- (void)associateCommandRequest:(id)request
 {
-  v5 = a3;
-  v4 = [(MADActivityTracker *)self request];
+  requestCopy = request;
+  request = [(MADActivityTracker *)self request];
 
-  if (!v4)
+  if (!request)
   {
-    [(MADActivityTracker *)self setRequest:v5];
+    [(MADActivityTracker *)self setRequest:requestCopy];
   }
 }
 
-- (void)associateDownloadInfo:(id)a3
+- (void)associateDownloadInfo:(id)info
 {
-  v24 = a3;
-  v4 = [(MADActivityTracker *)self downloadInfo];
+  infoCopy = info;
+  downloadInfo = [(MADActivityTracker *)self downloadInfo];
 
-  if (!v4)
+  if (!downloadInfo)
   {
     v5 = [NSString alloc];
-    v6 = [v24 originalUrl];
-    v7 = [v24 options];
-    v8 = [v7 tightSummaryIncludingAdditional:0];
-    v9 = [v5 initWithFormat:@"url:%@ initOpts:%@ size(dl:%llu, ex:%llu)", v6, v8, objc_msgSend(v24, "downloadSize"), objc_msgSend(v24, "totalExpectedBytes")];
+    originalUrl = [infoCopy originalUrl];
+    options = [infoCopy options];
+    v8 = [options tightSummaryIncludingAdditional:0];
+    v9 = [v5 initWithFormat:@"url:%@ initOpts:%@ size(dl:%llu, ex:%llu)", originalUrl, v8, objc_msgSend(infoCopy, "downloadSize"), objc_msgSend(infoCopy, "totalExpectedBytes")];
 
-    v10 = [v24 task];
+    task = [infoCopy task];
 
-    if (!v10)
+    if (!task)
     {
       goto LABEL_13;
     }
 
-    v11 = [v24 task];
-    v12 = [v11 description];
+    task2 = [infoCopy task];
+    v12 = [task2 description];
     v13 = [v12 componentsSeparatedByString:@" "];
 
     v14 = [v13 count];
@@ -225,10 +225,10 @@ LABEL_12:
         }
 
 LABEL_13:
-        v23 = [(MADActivityTracker *)self logLeader];
-        [v23 appendFormat:@"%@%@", v9, @"|"];
+        logLeader = [(MADActivityTracker *)self logLeader];
+        [logLeader appendFormat:@"%@%@", v9, @"|"];
 
-        [(MADActivityTracker *)self setDownloadInfo:v24];
+        [(MADActivityTracker *)self setDownloadInfo:infoCopy];
         goto LABEL_14;
       }
 
@@ -245,154 +245,154 @@ LABEL_14:
 
 - (void)usesChildDict
 {
-  v3 = [(MADActivityTracker *)self childDict];
+  childDict = [(MADActivityTracker *)self childDict];
 
-  if (!v3)
+  if (!childDict)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     [(MADActivityTracker *)self setChildDict:v4];
   }
 }
 
-- (void)assignParentTracker:(id)a3
+- (void)assignParentTracker:(id)tracker
 {
-  v5 = a3;
-  v4 = [(MADActivityTracker *)self parentTracker];
+  trackerCopy = tracker;
+  parentTracker = [(MADActivityTracker *)self parentTracker];
 
-  if (!v4)
+  if (!parentTracker)
   {
-    [(MADActivityTracker *)self setParentTracker:v5];
+    [(MADActivityTracker *)self setParentTracker:trackerCopy];
   }
 }
 
-- (void)successWithIssue:(id)a3
+- (void)successWithIssue:(id)issue
 {
-  v9 = a3;
-  v4 = [(MADActivityTracker *)self stats];
-  [v4 setSuccessWithIssues:{objc_msgSend(v4, "successWithIssues") + 1}];
+  issueCopy = issue;
+  stats = [(MADActivityTracker *)self stats];
+  [stats setSuccessWithIssues:{objc_msgSend(stats, "successWithIssues") + 1}];
 
-  v5 = [(MADActivityTracker *)self stats];
-  v6 = [v5 firstSuccessIssue];
+  stats2 = [(MADActivityTracker *)self stats];
+  firstSuccessIssue = [stats2 firstSuccessIssue];
 
-  if (!v6)
+  if (!firstSuccessIssue)
   {
-    v7 = [(MADActivityTracker *)self stats];
-    [v7 setFirstSuccessIssue:v9];
+    stats3 = [(MADActivityTracker *)self stats];
+    [stats3 setFirstSuccessIssue:issueCopy];
   }
 
-  v8 = [(MADActivityTracker *)self stats];
-  [v8 setLastSuccessIssue:v9];
+  stats4 = [(MADActivityTracker *)self stats];
+  [stats4 setLastSuccessIssue:issueCopy];
 }
 
-- (void)warningNote:(id)a3 fromMethod:(id)a4 warning:(id)a5
+- (void)warningNote:(id)note fromMethod:(id)method warning:(id)warning
 {
-  v22 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[NSString alloc] initWithFormat:@"%@[%@]", @"!W", v9];
+  methodCopy = method;
+  warningCopy = warning;
+  noteCopy = note;
+  noteCopy = [[NSString alloc] initWithFormat:@"%@[%@]", @"!W", noteCopy];
 
-  v11 = [(MADActivityTracker *)self logLeader];
-  LOBYTE(v9) = [v11 containsString:v10];
+  logLeader = [(MADActivityTracker *)self logLeader];
+  LOBYTE(noteCopy) = [logLeader containsString:noteCopy];
 
-  if ((v9 & 1) == 0)
+  if ((noteCopy & 1) == 0)
   {
-    v12 = [(MADActivityTracker *)self logLeader];
-    [v12 appendFormat:@"%@%@", v10, @"|"];
+    logLeader2 = [(MADActivityTracker *)self logLeader];
+    [logLeader2 appendFormat:@"%@%@", noteCopy, @"|"];
   }
 
-  v13 = [(MADActivityTracker *)self stats];
-  [v13 setTotalWarnings:{objc_msgSend(v13, "totalWarnings") + 1}];
+  stats = [(MADActivityTracker *)self stats];
+  [stats setTotalWarnings:{objc_msgSend(stats, "totalWarnings") + 1}];
 
-  v14 = [(MADActivityTracker *)self stats];
-  v15 = [v14 firstWarningMethod];
+  stats2 = [(MADActivityTracker *)self stats];
+  firstWarningMethod = [stats2 firstWarningMethod];
 
-  if (!v15)
+  if (!firstWarningMethod)
   {
-    v16 = [(MADActivityTracker *)self stats];
-    [v16 setFirstWarningMethod:v22];
+    stats3 = [(MADActivityTracker *)self stats];
+    [stats3 setFirstWarningMethod:methodCopy];
   }
 
-  v17 = [(MADActivityTracker *)self stats];
-  v18 = [v17 firstWarningMessage];
+  stats4 = [(MADActivityTracker *)self stats];
+  firstWarningMessage = [stats4 firstWarningMessage];
 
-  if (!v18)
+  if (!firstWarningMessage)
   {
-    v19 = [(MADActivityTracker *)self stats];
-    [v19 setFirstWarningMessage:v22];
+    stats5 = [(MADActivityTracker *)self stats];
+    [stats5 setFirstWarningMessage:methodCopy];
   }
 
-  v20 = [(MADActivityTracker *)self stats];
-  [v20 setLastWarningMethod:v22];
+  stats6 = [(MADActivityTracker *)self stats];
+  [stats6 setLastWarningMethod:methodCopy];
 
-  v21 = [(MADActivityTracker *)self stats];
-  [v21 setLastWarningMessage:v8];
+  stats7 = [(MADActivityTracker *)self stats];
+  [stats7 setLastWarningMessage:warningCopy];
 }
 
-- (void)failureResult:(int)a3 ofResultName:(id)a4 forReason:(id)a5
+- (void)failureResult:(int)result ofResultName:(id)name forReason:(id)reason
 {
-  v6 = *&a3;
-  v18 = a4;
-  v8 = a5;
-  v9 = [(MADActivityTracker *)self stats];
-  v10 = [v9 failureResult];
+  v6 = *&result;
+  nameCopy = name;
+  reasonCopy = reason;
+  stats = [(MADActivityTracker *)self stats];
+  failureResult = [stats failureResult];
 
-  v11 = [(MADActivityTracker *)self stats];
-  v12 = v11;
-  if (v10)
+  stats2 = [(MADActivityTracker *)self stats];
+  v12 = stats2;
+  if (failureResult)
   {
-    [v11 setAdditionalFailures:{objc_msgSend(v11, "additionalFailures") + 1}];
+    [stats2 setAdditionalFailures:{objc_msgSend(stats2, "additionalFailures") + 1}];
 
-    v13 = [(MADActivityTracker *)self stats];
-    v14 = [v13 firstAdditionalFailure];
+    stats3 = [(MADActivityTracker *)self stats];
+    firstAdditionalFailure = [stats3 firstAdditionalFailure];
 
-    if (!v14)
+    if (!firstAdditionalFailure)
     {
-      v15 = [(MADActivityTracker *)self stats];
-      [v15 setFirstAdditionalFailure:v8];
+      stats4 = [(MADActivityTracker *)self stats];
+      [stats4 setFirstAdditionalFailure:reasonCopy];
     }
 
-    v16 = [(MADActivityTracker *)self stats];
-    [v16 setLastAdditionalFailure:v8];
+    stats5 = [(MADActivityTracker *)self stats];
+    [stats5 setLastAdditionalFailure:reasonCopy];
   }
 
   else
   {
-    [v11 setFailureResult:v6];
+    [stats2 setFailureResult:v6];
 
-    v17 = [(MADActivityTracker *)self stats];
-    [v17 setFailureResultName:v18];
+    stats6 = [(MADActivityTracker *)self stats];
+    [stats6 setFailureResultName:nameCopy];
 
-    v16 = [(MADActivityTracker *)self stats];
-    [v16 setFailureReason:v8];
+    stats5 = [(MADActivityTracker *)self stats];
+    [stats5 setFailureReason:reasonCopy];
   }
 }
 
-- (void)extendLogLeader:(id)a3 withValue:(id)a4
+- (void)extendLogLeader:(id)leader withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADActivityTracker *)self logLeader];
-  [v8 appendFormat:@"%@:%@%@", v7, v6, @"|"];
+  valueCopy = value;
+  leaderCopy = leader;
+  logLeader = [(MADActivityTracker *)self logLeader];
+  [logLeader appendFormat:@"%@:%@%@", leaderCopy, valueCopy, @"|"];
 }
 
 - (void)sendReply
 {
-  v3 = [(MADActivityTracker *)self reply];
-  if (v3)
+  reply = [(MADActivityTracker *)self reply];
+  if (reply)
   {
-    message = v3;
-    v4 = [(MADActivityTracker *)self xpcConnection];
-    xpc_connection_send_message(v4, message);
+    message = reply;
+    xpcConnection = [(MADActivityTracker *)self xpcConnection];
+    xpc_connection_send_message(xpcConnection, message);
 
     [(MADActivityTracker *)self setReply:0];
-    v3 = message;
+    reply = message;
   }
 }
 
-+ (unint64_t)topLevelActivityForCommand:(int)a3
++ (unint64_t)topLevelActivityForCommand:(int)command
 {
-  v4 = a3 - 1;
-  if (a3 - 1) < 0x2C && ((0x801FFFFF7FFuLL >> v4))
+  v4 = command - 1;
+  if (command - 1) < 0x2C && ((0x801FFFFF7FFuLL >> v4))
   {
     return qword_33BCC0[v4];
   }
@@ -400,7 +400,7 @@ LABEL_14:
   v6 = _MADLog(@"Activity");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = stringForMAXpcCommand(a3);
+    v7 = stringForMAXpcCommand(command);
     v8 = 138543362;
     v9 = v7;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "{topLevelActivityForCommand} unknown command:%{public}@", &v8, 0xCu);
@@ -409,10 +409,10 @@ LABEL_14:
   return 3;
 }
 
-+ (unint64_t)categoryForCommand:(int)a3
++ (unint64_t)categoryForCommand:(int)command
 {
-  v4 = a3 - 1;
-  if (a3 - 1) < 0x2C && ((0x801FFFFF7FFuLL >> v4))
+  v4 = command - 1;
+  if (command - 1) < 0x2C && ((0x801FFFFF7FFuLL >> v4))
   {
     return qword_33BE20[v4];
   }
@@ -420,7 +420,7 @@ LABEL_14:
   v6 = _MADLog(@"Activity");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = stringForMAXpcCommand(a3);
+    v7 = stringForMAXpcCommand(command);
     v8 = 138543362;
     v9 = v7;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "{categoryForCommand} unknown command:%{public}@", &v8, 0xCu);
@@ -429,7 +429,7 @@ LABEL_14:
   return 2;
 }
 
-+ (BOOL)persistedCommand:(int)a3
++ (BOOL)persistedCommand:(int)command
 {
   v4 = [MADActivityTracker categoryForCommand:?];
   if (v4 - 1 >= 0xA)
@@ -438,7 +438,7 @@ LABEL_14:
     v7 = _MADLog(@"Activity");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = stringForMAXpcCommand(a3);
+      v8 = stringForMAXpcCommand(command);
       v10 = 134218242;
       v11 = v6;
       v12 = 2114;
@@ -457,34 +457,34 @@ LABEL_14:
   return v5 & 1;
 }
 
-+ (id)nameOfLayer:(unint64_t)a3
++ (id)nameOfLayer:(unint64_t)layer
 {
-  if (a3 >= 3)
+  if (layer >= 3)
   {
-    v4 = [NSString stringWithFormat:@"UnknownLayer(%lld)", a3];
+    layer = [NSString stringWithFormat:@"UnknownLayer(%lld)", layer];
   }
 
   else
   {
-    v4 = *(&off_4B3A38 + a3);
+    layer = *(&off_4B3A38 + layer);
   }
 
-  return v4;
+  return layer;
 }
 
-+ (id)nameOfStatus:(unint64_t)a3
++ (id)nameOfStatus:(unint64_t)status
 {
-  if (a3 >= 4)
+  if (status >= 4)
   {
-    v4 = [NSString stringWithFormat:@"UnknownStatusChange(%lld)", a3];
+    status = [NSString stringWithFormat:@"UnknownStatusChange(%lld)", status];
   }
 
   else
   {
-    v4 = *(&off_4B3A50 + a3);
+    status = *(&off_4B3A50 + status);
   }
 
-  return v4;
+  return status;
 }
 
 @end

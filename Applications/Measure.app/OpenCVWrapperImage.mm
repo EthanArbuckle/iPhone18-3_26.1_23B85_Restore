@@ -1,18 +1,18 @@
 @interface OpenCVWrapperImage
 - (CGSize)getSize;
-- (OpenCVWrapperImage)initWithImage:(Mat *)a3;
-- (OpenCVWrapperImage)initWithSizeOf:(id)a3 pixelFormat:(int64_t)a4;
-- (OpenCVWrapperImage)initWithUIImage:(id)a3;
-- (OpenCVWrapperImage)initWithWidth:(int)a3 height:(int)a4 pixelFormat:(int64_t)a5 pixelData:(void *)a6 bytesPerRow:(unint64_t)a7 scaleFactor:(float)a8;
+- (OpenCVWrapperImage)initWithImage:(Mat *)image;
+- (OpenCVWrapperImage)initWithSizeOf:(id)of pixelFormat:(int64_t)format;
+- (OpenCVWrapperImage)initWithUIImage:(id)image;
+- (OpenCVWrapperImage)initWithWidth:(int)width height:(int)height pixelFormat:(int64_t)format pixelData:(void *)data bytesPerRow:(unint64_t)row scaleFactor:(float)factor;
 - (id).cxx_construct;
 - (id)clone;
 - (void)convertTo8U;
-- (void)imWrite:(id)a3;
+- (void)imWrite:(id)write;
 @end
 
 @implementation OpenCVWrapperImage
 
-- (OpenCVWrapperImage)initWithImage:(Mat *)a3
+- (OpenCVWrapperImage)initWithImage:(Mat *)image
 {
   v17.receiver = self;
   v17.super_class = OpenCVWrapperImage;
@@ -21,7 +21,7 @@
   p_image = &v4->_image;
   if (v4)
   {
-    v7 = p_image == a3;
+    v7 = p_image == image;
   }
 
   else
@@ -31,7 +31,7 @@
 
   if (!v7)
   {
-    u = a3->u;
+    u = image->u;
     if (u)
     {
       atomic_fetch_add(u + 5, 1u);
@@ -48,7 +48,7 @@
     *&v5->_image.dataend = 0u;
     if (v5->_image.dims <= 0)
     {
-      p_image->flags = a3->flags;
+      p_image->flags = image->flags;
     }
 
     else
@@ -62,42 +62,42 @@
       }
 
       while (v10 < dims);
-      p_image->flags = a3->flags;
+      p_image->flags = image->flags;
       if (dims > 2)
       {
         goto LABEL_18;
       }
     }
 
-    v13 = a3->dims;
+    v13 = image->dims;
     if (v13 <= 2)
     {
       v5->_image.dims = v13;
-      *&v5->_image.rows = *&a3->rows;
-      v14 = a3->step.p;
+      *&v5->_image.rows = *&image->rows;
+      v14 = image->step.p;
       v15 = v5->_image.step.p;
       *v15 = *v14;
       v15[1] = v14[1];
 LABEL_19:
-      *&v5->_image.data = *&a3->data;
-      *&v5->_image.dataend = *&a3->dataend;
-      *&v5->_image.allocator = *&a3->allocator;
+      *&v5->_image.data = *&image->data;
+      *&v5->_image.dataend = *&image->dataend;
+      *&v5->_image.allocator = *&image->allocator;
       return v5;
     }
 
 LABEL_18:
-    sub_100269B58(p_image, a3);
+    sub_100269B58(p_image, image);
     goto LABEL_19;
   }
 
   return v5;
 }
 
-- (OpenCVWrapperImage)initWithWidth:(int)a3 height:(int)a4 pixelFormat:(int64_t)a5 pixelData:(void *)a6 bytesPerRow:(unint64_t)a7 scaleFactor:(float)a8
+- (OpenCVWrapperImage)initWithWidth:(int)width height:(int)height pixelFormat:(int64_t)format pixelData:(void *)data bytesPerRow:(unint64_t)row scaleFactor:(float)factor
 {
-  v14 = sub_100008958(a5);
-  sub_10000A690(v27, a4, a3, v14, a6, a7);
-  if (a8 != 1.0)
+  v14 = sub_100008958(format);
+  sub_10000A690(v27, height, width, v14, data, row);
+  if (factor != 1.0)
   {
     v26 = 0;
     v24 = 16842752;
@@ -106,7 +106,7 @@ LABEL_18:
     v22 = v27;
     v23 = 0;
     v20 = 0;
-    if (a8 >= 1.0)
+    if (factor >= 1.0)
     {
       v15 = 1;
     }
@@ -116,7 +116,7 @@ LABEL_18:
       v15 = 3;
     }
 
-    sub_10033AE18(&v24, &v21, &v20, v15, a8, a8);
+    sub_10033AE18(&v24, &v21, &v20, v15, factor, factor);
   }
 
   v16 = [(OpenCVWrapperImage *)self initWithImage:v27];
@@ -148,9 +148,9 @@ LABEL_18:
   return v16;
 }
 
-- (OpenCVWrapperImage)initWithUIImage:(id)a3
+- (OpenCVWrapperImage)initWithUIImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   LODWORD(v9[0]) = 1124007936;
   memset(v9 + 4, 0, 48);
   v9[3] = 0u;
@@ -158,7 +158,7 @@ LABEL_18:
   v11 = v12;
   v12[0] = 0;
   v12[1] = 0;
-  sub_1002C13D4(v4, v9, 0);
+  sub_1002C13D4(imageCopy, v9, 0);
   v5 = [(OpenCVWrapperImage *)self initWithImage:v9];
   if (*(&v9[3] + 1) && atomic_fetch_add((*(&v9[3] + 1) + 20), 0xFFFFFFFF) == 1)
   {
@@ -187,11 +187,11 @@ LABEL_18:
   return v5;
 }
 
-- (OpenCVWrapperImage)initWithSizeOf:(id)a3 pixelFormat:(int64_t)a4
+- (OpenCVWrapperImage)initWithSizeOf:(id)of pixelFormat:(int64_t)format
 {
-  v6 = a3;
-  *v12 = vrev64_s32(**([v6 image] + 8));
-  v7 = sub_100008958(a4);
+  ofCopy = of;
+  *v12 = vrev64_s32(**([ofCopy image] + 8));
+  v7 = sub_100008958(format);
   sub_100266EA8(v12, v7, v16);
   *v12 = 1124007936;
   memset(&v12[4], 0, 60);
@@ -271,9 +271,9 @@ LABEL_18:
   return v2;
 }
 
-- (void)imWrite:(id)a3
+- (void)imWrite:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   v5 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
   v6 = [v5 objectAtIndex:0];
   LODWORD(v17[0]) = 1124007936;
@@ -284,31 +284,31 @@ LABEL_18:
   v20[0] = 0;
   v20[1] = 0;
   self = (self + 16);
-  v15 = self;
+  selfCopy4 = self;
   v16 = 0;
   v14 = 16842752;
   LODWORD(__p) = 50397184;
-  v12 = self;
+  selfCopy2 = self;
   v13 = 0;
   v7 = sub_100276DA4();
   sub_10020F504(&v14, &__p, 32, 5, v7, 0.0, 255.0);
   v14 = 33619968;
-  v15 = self;
+  selfCopy4 = self;
   v16 = 0;
   sub_10020EF14(self, &v14, 0, 1.0, 0.0);
   v10[0] = 0;
   v10[1] = 0;
   qmemcpy(sub_1002A80E0(v10, 44), "/var/mobile/Library/Measure/image_scaled.png", 44);
-  v15 = self;
+  selfCopy4 = self;
   v16 = 0;
   v14 = 16842752;
   __p = 0;
-  v12 = 0;
+  selfCopy2 = 0;
   v13 = 0;
   sub_1002C15A4(v10, &v14, &__p);
   if (__p)
   {
-    v12 = __p;
+    selfCopy2 = __p;
     operator delete(__p);
   }
 

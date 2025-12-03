@@ -1,10 +1,10 @@
 @interface TrafficIncidentContaineeViewController
 - (_TtC4Maps38TrafficIncidentContaineeViewController)init;
-- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation TrafficIncidentContaineeViewController
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -32,23 +32,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B8F5C();
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
-  v4 = self;
-  sub_1002B90B8(a3);
+  selfCopy = self;
+  sub_1002B90B8(current);
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
-  v4 = self;
-  sub_1002B922C(a3);
+  selfCopy = self;
+  sub_1002B922C(current);
 }
 
-- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps38TrafficIncidentContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,39 +1,39 @@
 @interface DMDEmergencyModeListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (DMDEmergencyModeListenerDelegate)initWithPolicyPersistence:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (DMDEmergencyModeListenerDelegate)initWithPolicyPersistence:(id)persistence;
 @end
 
 @implementation DMDEmergencyModeListenerDelegate
 
-- (DMDEmergencyModeListenerDelegate)initWithPolicyPersistence:(id)a3
+- (DMDEmergencyModeListenerDelegate)initWithPolicyPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = DMDEmergencyModeListenerDelegate;
   v6 = [(DMDEmergencyModeListenerDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_policyPersistence, a3);
+    objc_storeStrong(&v6->_policyPersistence, persistence);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.dmd.emergency-mode"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.dmd.emergency-mode"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
     v7 = +[DMFEmergencyModeMonitor remoteInterface];
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    v8 = [(DMDEmergencyModeListenerDelegate *)self policyPersistence];
-    [v5 setExportedObject:v8];
+    policyPersistence = [(DMDEmergencyModeListenerDelegate *)self policyPersistence];
+    [connectionCopy setExportedObject:policyPersistence];
 
-    [v5 resume];
+    [connectionCopy resume];
     v9 = 1;
   }
 
@@ -42,7 +42,7 @@
     v10 = DMFEmergencyModeLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_1000829C8(v5, v10);
+      sub_1000829C8(connectionCopy, v10);
     }
 
     v9 = 0;

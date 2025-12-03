@@ -1,28 +1,28 @@
 @interface SBHintInteractor
-- (SBHintInteractor)initWithInteractionProgress:(id)a3 maxHintProgress:(double)a4;
-- (void)_updateInteractionPercentComplete:(double)a3;
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4;
-- (void)interactionProgressDidUpdate:(id)a3;
-- (void)startInteractiveTransition:(id)a3;
+- (SBHintInteractor)initWithInteractionProgress:(id)progress maxHintProgress:(double)hintProgress;
+- (void)_updateInteractionPercentComplete:(double)complete;
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end;
+- (void)interactionProgressDidUpdate:(id)update;
+- (void)startInteractiveTransition:(id)transition;
 @end
 
 @implementation SBHintInteractor
 
-- (SBHintInteractor)initWithInteractionProgress:(id)a3 maxHintProgress:(double)a4
+- (SBHintInteractor)initWithInteractionProgress:(id)progress maxHintProgress:(double)hintProgress
 {
-  v7 = a3;
+  progressCopy = progress;
   v11.receiver = self;
   v11.super_class = SBHintInteractor;
   v8 = [(SBHintInteractor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_interactionProgress, a3);
+    objc_storeStrong(&v8->_interactionProgress, progress);
     v9->_hintInterval.start.value = 0.0;
     v9->_hintInterval.start.inclusive = 1;
     *(&v9->_hintInterval.start.inclusive + 1) = 0;
     *(&v9->_hintInterval.start.inclusive + 1) = 0;
-    v9->_hintInterval.end.value = a4;
+    v9->_hintInterval.end.value = hintProgress;
     v9->_hintInterval.end.inclusive = 1;
     *(&v9->_hintInterval.end.inclusive + 1) = 0;
     *(&v9->_hintInterval.end.inclusive + 1) = 0;
@@ -31,30 +31,30 @@
   return v9;
 }
 
-- (void)startInteractiveTransition:(id)a3
+- (void)startInteractiveTransition:(id)transition
 {
-  objc_storeStrong(&self->_transitionContext, a3);
-  v4 = [(SBHintInteractor *)self interactionProgress];
-  [v4 addProgressObserver:self];
-  [v4 percentComplete];
+  objc_storeStrong(&self->_transitionContext, transition);
+  interactionProgress = [(SBHintInteractor *)self interactionProgress];
+  [interactionProgress addProgressObserver:self];
+  [interactionProgress percentComplete];
   [(SBHintInteractor *)self _updateInteractionPercentComplete:?];
 }
 
-- (void)interactionProgressDidUpdate:(id)a3
+- (void)interactionProgressDidUpdate:(id)update
 {
-  [a3 percentComplete];
+  [update percentComplete];
 
   [(SBHintInteractor *)self _updateInteractionPercentComplete:?];
 }
 
-- (void)interactionProgress:(id)a3 didEnd:(BOOL)a4
+- (void)interactionProgress:(id)progress didEnd:(BOOL)end
 {
-  v4 = a4;
-  v6 = a3;
+  endCopy = end;
+  progressCopy = progress;
   if ([(SBViewControllerContextTransitioning *)self->_transitionContext isInteractive])
   {
-    [v6 removeProgressObserver:self];
-    if (v4)
+    [progressCopy removeProgressObserver:self];
+    if (endCopy)
     {
       [(SBHintInteractor *)self finishInteractiveTransition];
     }
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)_updateInteractionPercentComplete:(double)a3
+- (void)_updateInteractionPercentComplete:(double)complete
 {
   hintInterval = self->_hintInterval;
   BSIntervalValueForFraction();

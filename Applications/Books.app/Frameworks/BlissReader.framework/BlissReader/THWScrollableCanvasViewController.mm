@@ -1,5 +1,5 @@
 @interface THWScrollableCanvasViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (id)backgroundColorForMagnifier;
 - (void)dealloc;
 - (void)teardown;
@@ -14,9 +14,9 @@
   [(THWScrollableCanvasViewController *)&v3 dealloc];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if ("menuCopy:" != a3)
+  if ("menuCopy:" != action)
   {
     return 0;
   }

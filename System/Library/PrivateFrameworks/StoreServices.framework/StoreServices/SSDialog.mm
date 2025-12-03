@@ -2,13 +2,13 @@
 - (NSArray)buttons;
 - (NSDictionary)dialogDictionary;
 - (SSDialog)init;
-- (SSDialog)initWithDialogDictionary:(id)a3;
+- (SSDialog)initWithDialogDictionary:(id)dictionary;
 - (SSDialogButton)defaultButton;
-- (id)valueForProperty:(id)a3;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
+- (id)valueForProperty:(id)property;
+- (void)_setValue:(id)value forProperty:(id)property;
 - (void)dealloc;
-- (void)setButtons:(id)a3;
-- (void)setDefaultButton:(id)a3;
+- (void)setButtons:(id)buttons;
+- (void)setDefaultButton:(id)button;
 @end
 
 @implementation SSDialog
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (SSDialog)initWithDialogDictionary:(id)a3
+- (SSDialog)initWithDialogDictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = SSDialog;
   v4 = [(SSDialog *)&v8 init];
   if (v4)
   {
-    v5 = [[SSProtocolConditionalEvaluator alloc] initWithDictionary:a3];
-    v6 = [(SSProtocolConditionalEvaluator *)v5 dictionaryByEvaluatingConditions];
+    v5 = [[SSProtocolConditionalEvaluator alloc] initWithDictionary:dictionary];
+    dictionaryByEvaluatingConditions = [(SSProtocolConditionalEvaluator *)v5 dictionaryByEvaluatingConditions];
 
-    v4->_dialogDictionary = [v6 mutableCopy];
+    v4->_dialogDictionary = [dictionaryByEvaluatingConditions mutableCopy];
     if (![(NSString *)[(SSDialog *)v4 title] length]&& ![(NSString *)[(SSDialog *)v4 message] length]&& ![(NSArray *)[(SSDialog *)v4 buttons] count])
     {
 
@@ -101,12 +101,12 @@
     return 0;
   }
 
-  v10 = [(SSDialog *)self buttons];
+  buttons = [(SSDialog *)self buttons];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v11 = [(NSArray *)buttons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v11)
   {
     return 0;
@@ -120,7 +120,7 @@ LABEL_4:
   {
     if (*v18 != v13)
     {
-      objc_enumerationMutation(v10);
+      objc_enumerationMutation(buttons);
     }
 
     v15 = *(*(&v17 + 1) + 8 * v14);
@@ -131,7 +131,7 @@ LABEL_4:
 
     if (v12 == ++v14)
     {
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [(NSArray *)buttons countByEnumeratingWithState:&v17 objects:v21 count:16];
       v15 = 0;
       if (v12)
       {
@@ -143,16 +143,16 @@ LABEL_4:
   }
 }
 
-- (void)setDefaultButton:(id)a3
+- (void)setDefaultButton:(id)button
 {
-  v4 = [a3 buttonTitle];
+  buttonTitle = [button buttonTitle];
 
-  [(SSDialog *)self _setValue:v4 forProperty:@"defaultButton"];
+  [(SSDialog *)self _setValue:buttonTitle forProperty:@"defaultButton"];
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_dialogDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_dialogDictionary objectForKey:property];
 
   return v3;
 }
@@ -164,11 +164,11 @@ LABEL_4:
   return v2;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  if ([a3 count])
+  if ([buttons count])
   {
-    v5 = [objc_msgSend(a3 objectAtIndex:{0), "buttonTitle"}];
+    v5 = [objc_msgSend(buttons objectAtIndex:{0), "buttonTitle"}];
   }
 
   else
@@ -176,14 +176,14 @@ LABEL_4:
     v5 = 0;
   }
 
-  if ([a3 count] < 2)
+  if ([buttons count] < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [objc_msgSend(a3 objectAtIndex:{1), "buttonTitle"}];
+    v6 = [objc_msgSend(buttons objectAtIndex:{1), "buttonTitle"}];
   }
 
   [(SSDialog *)self _setValue:v5 forProperty:@"cancelButtonString"];
@@ -191,10 +191,10 @@ LABEL_4:
   [(SSDialog *)self _setValue:v6 forProperty:@"okButtonString"];
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
   dialogDictionary = self->_dialogDictionary;
-  if (a3)
+  if (value)
   {
     if (!dialogDictionary)
     {
@@ -202,13 +202,13 @@ LABEL_4:
       self->_dialogDictionary = dialogDictionary;
     }
 
-    [(NSMutableDictionary *)dialogDictionary setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)dialogDictionary setObject:value forKey:property];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)dialogDictionary removeObjectForKey:a4];
+    [(NSMutableDictionary *)dialogDictionary removeObjectForKey:property];
   }
 }
 

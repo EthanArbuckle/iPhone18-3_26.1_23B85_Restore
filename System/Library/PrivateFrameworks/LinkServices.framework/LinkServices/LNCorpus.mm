@@ -1,10 +1,10 @@
 @interface LNCorpus
-- (LNCorpus)initWithContents:(id)a3 capacity:(int64_t)a4;
+- (LNCorpus)initWithContents:(id)contents capacity:(int64_t)capacity;
 - (LNCorpusObserver)observer;
 - (id)getTerms;
 - (unint64_t)count;
-- (void)changeWithBlock:(id)a3 completionHandler:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)changeWithBlock:(id)block completionHandler:(id)handler;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation LNCorpus
@@ -16,12 +16,12 @@
   return WeakRetained;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == observerCopy)
   {
 
     objc_storeWeak(&self->_observer, 0);
@@ -86,20 +86,20 @@ uint64_t __17__LNCorpus_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)changeWithBlock:(id)a3 completionHandler:(id)a4
+- (void)changeWithBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__LNCorpus_changeWithBlock_completionHandler___block_invoke;
   block[3] = &unk_1E74B09C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
   dispatch_async(queue, block);
 }
 
@@ -144,13 +144,13 @@ LABEL_6:
   }
 }
 
-- (LNCorpus)initWithContents:(id)a3 capacity:(int64_t)a4
+- (LNCorpus)initWithContents:(id)contents capacity:(int64_t)capacity
 {
-  v7 = a3;
-  if (!v7)
+  contentsCopy = contents;
+  if (!contentsCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"LNCorpus.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"contents"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNCorpus.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"contents"}];
   }
 
   v22.receiver = self;
@@ -159,23 +159,23 @@ LABEL_6:
   v9 = v8;
   if (v8)
   {
-    v10 = a4 & ~(a4 >> 63);
+    v10 = capacity & ~(capacity >> 63);
     if (v10 >= 1000)
     {
       v10 = 1000;
     }
 
     v8->_capacity = v10;
-    if ([v7 count] <= a4)
+    if ([contentsCopy count] <= capacity)
     {
-      v14 = [v7 copy];
+      v14 = [contentsCopy copy];
       terms = v9->_terms;
       v9->_terms = v14;
     }
 
     else
     {
-      terms = [v7 subarrayWithRange:{0, a4}];
+      terms = [contentsCopy subarrayWithRange:{0, capacity}];
       v12 = [terms copy];
       v13 = v9->_terms;
       v9->_terms = v12;

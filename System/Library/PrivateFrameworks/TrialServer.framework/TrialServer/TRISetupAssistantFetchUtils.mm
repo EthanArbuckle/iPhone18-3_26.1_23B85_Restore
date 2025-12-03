@@ -1,29 +1,29 @@
 @interface TRISetupAssistantFetchUtils
-+ (BOOL)removeNamespaceNamesWithRolloutForServerContext:(id)a3 namespaceNames:(id)a4;
-+ (BOOL)setValueInKeyValueStore:(id)a3 key:(id)a4 value:(id)a5 error:(id *)a6;
-+ (BOOL)stopSetupAssistantFetchWithServerContext:(id)a3 namespaceNames:(id)a4 error:(id *)a5;
-+ (id)getIncompatibleNamespaceNamesForTriClientRollout:(id)a3 namespaceDescriptorProvider:(id)a4;
-+ (id)getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:(id)a3;
-+ (id)getValueInKeyValueStore:(id)a3 key:(id)a4 error:(id *)a5;
-+ (id)registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:(id)a3;
++ (BOOL)removeNamespaceNamesWithRolloutForServerContext:(id)context namespaceNames:(id)names;
++ (BOOL)setValueInKeyValueStore:(id)store key:(id)key value:(id)value error:(id *)error;
++ (BOOL)stopSetupAssistantFetchWithServerContext:(id)context namespaceNames:(id)names error:(id *)error;
++ (id)getIncompatibleNamespaceNamesForTriClientRollout:(id)rollout namespaceDescriptorProvider:(id)provider;
++ (id)getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:(id)paths;
++ (id)getValueInKeyValueStore:(id)store key:(id)key error:(id *)error;
++ (id)registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:(id)context;
 @end
 
 @implementation TRISetupAssistantFetchUtils
 
-+ (BOOL)stopSetupAssistantFetchWithServerContext:(id)a3 namespaceNames:(id)a4 error:(id *)a5
++ (BOOL)stopSetupAssistantFetchWithServerContext:(id)context namespaceNames:(id)names error:(id *)error
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  contextCopy = context;
+  namesCopy = names;
+  if (namesCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v9];
+    v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:namesCopy];
   }
 
   else
   {
-    v21 = [v8 paths];
-    v11 = [a1 getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:v21];
+    paths = [contextCopy paths];
+    v11 = [self getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:paths];
 
     if (!v11 || ![v11 count])
     {
@@ -41,7 +41,7 @@
   }
 
   v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v10];
-  if (([a1 removeNamespaceNamesWithRolloutForServerContext:v8 namespaceNames:v11] & 1) == 0)
+  if (([self removeNamespaceNamesWithRolloutForServerContext:contextCopy namespaceNames:v11] & 1) == 0)
   {
     v15 = TRILogCategory_Server();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -56,10 +56,10 @@
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
     v18 = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:1 userInfo:v17];
 
-    if (a5)
+    if (error)
     {
       v19 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     goto LABEL_13;
@@ -70,9 +70,9 @@
     v22 = TRILogCategory_Server();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v10 allObjects];
+      allObjects = [v10 allObjects];
       v26 = 138543362;
-      v27 = v23;
+      v27 = allObjects;
       _os_log_impl(&dword_26F567000, v22, OS_LOG_TYPE_DEFAULT, "setup-assistant-fetch is not needed, ncv-compatible rollout v2 are present for namespaces names: %{public}@", &v26, 0xCu);
     }
 
@@ -85,12 +85,12 @@ LABEL_22:
   v12 = TRILogCategory_Server();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 allObjects];
-    v14 = [v10 allObjects];
+    allObjects2 = [v11 allObjects];
+    allObjects3 = [v10 allObjects];
     v26 = 138412546;
-    v27 = v13;
+    v27 = allObjects2;
     v28 = 2112;
-    v29 = v14;
+    v29 = allObjects3;
     _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "setup-assistant-fetch is needed, ncv-compatible rollout v2 are not present for namespace names: %@ and are present for namespace names: {public}%@", &v26, 0x16u);
   }
 
@@ -102,11 +102,11 @@ LABEL_23:
   return v20;
 }
 
-+ (id)getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:(id)a3
++ (id)getNamespaceNamesWithFetchDuringSetupAssistantEnabledWithTRIPaths:(id)paths
 {
   v3 = MEMORY[0x277D73750];
-  v4 = [a3 namespaceDescriptorsDefaultDir];
-  v5 = [v3 descriptorsForDirectory:v4 filterBlock:&__block_literal_global_47];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v5 = [v3 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:&__block_literal_global_47];
 
   if ([v5 count])
   {
@@ -123,27 +123,27 @@ LABEL_23:
   return v8;
 }
 
-+ (BOOL)removeNamespaceNamesWithRolloutForServerContext:(id)a3 namespaceNames:(id)a4
++ (BOOL)removeNamespaceNamesWithRolloutForServerContext:(id)context namespaceNames:(id)names
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 namespaceDatabase];
-  v9 = [v7 paths];
-  v10 = [v9 namespaceDescriptorsDefaultDir];
-  v11 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v8 defaultDescriptorDirectoryPath:v10];
+  namesCopy = names;
+  contextCopy = context;
+  namespaceDatabase = [contextCopy namespaceDatabase];
+  paths = [contextCopy paths];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v11 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-  v12 = [v7 rolloutDatabase];
+  rolloutDatabase = [contextCopy rolloutDatabase];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerContext_namespaceNames___block_invoke;
   v16[3] = &unk_279DE5590;
-  v18 = v6;
-  v19 = a1;
+  v18 = namesCopy;
+  selfCopy = self;
   v17 = v11;
-  v13 = v6;
+  v13 = namesCopy;
   v14 = v11;
-  LOBYTE(v11) = [v12 enumerateActiveRecordsUsingTransaction:0 block:v16];
+  LOBYTE(v11) = [rolloutDatabase enumerateActiveRecordsUsingTransaction:0 block:v16];
 
   return v11;
 }
@@ -191,18 +191,18 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getIncompatibleNamespaceNamesForTriClientRollout:(id)a3 namespaceDescriptorProvider:(id)a4
++ (id)getIncompatibleNamespaceNamesForTriClientRollout:(id)rollout namespaceDescriptorProvider:(id)provider
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  rolloutCopy = rollout;
+  providerCopy = provider;
   v26 = objc_opt_new();
-  v27 = v5;
+  v27 = rolloutCopy;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = [v5 selectedNamespaceArray];
+  obj = [rolloutCopy selectedNamespaceArray];
   v7 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v7)
   {
@@ -219,8 +219,8 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
 
         v10 = *(*(&v35 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 name];
-        v13 = [v6 descriptorWithNamespaceName:v12];
+        name = [v10 name];
+        v13 = [providerCopy descriptorWithNamespaceName:name];
 
         if (v13)
         {
@@ -229,7 +229,7 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
           *&buf[16] = 0x2020000000;
           buf[24] = 0;
           v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "compatibilityVersionArray_Count")}];
-          v15 = [v10 compatibilityVersionArray];
+          compatibilityVersionArray = [v10 compatibilityVersionArray];
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __108__TRISetupAssistantFetchUtils_getIncompatibleNamespaceNamesForTriClientRollout_namespaceDescriptorProvider___block_invoke;
@@ -238,7 +238,7 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
           v34 = buf;
           v16 = v14;
           v33 = v16;
-          [v15 enumerateValuesWithBlock:v31];
+          [compatibilityVersionArray enumerateValuesWithBlock:v31];
 
           if (*(*&buf[8] + 24))
           {
@@ -247,8 +247,8 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
 
           else
           {
-            v21 = [v10 name];
-            [v26 addObject:v21];
+            name2 = [v10 name];
+            [v26 addObject:name2];
           }
 
           _Block_object_dispose(buf, 8);
@@ -259,15 +259,15 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
           v17 = TRILogCategory_Server();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v27 rolloutId];
-            v19 = [v27 deploymentId];
-            v20 = [v10 name];
+            rolloutId = [v27 rolloutId];
+            deploymentId = [v27 deploymentId];
+            name3 = [v10 name];
             *buf = 138543874;
-            *&buf[4] = v18;
+            *&buf[4] = rolloutId;
             *&buf[12] = 1024;
-            *&buf[14] = v19;
+            *&buf[14] = deploymentId;
             *&buf[18] = 2114;
-            *&buf[20] = v20;
+            *&buf[20] = name3;
             _os_log_impl(&dword_26F567000, v17, OS_LOG_TYPE_DEFAULT, "Note: Rollout %{public}@.%u involves namespace %{public}@ but it is not registered with Trial. Factor packs for this namespace shall not be downloaded.", buf, 0x1Cu);
           }
         }
@@ -288,13 +288,13 @@ void __94__TRISetupAssistantFetchUtils_removeNamespaceNamesWithRolloutForServerC
 
   if (!(([v26 count] != 0) | v25 & 1))
   {
-    v22 = [v27 selectedNamespaceArray];
+    selectedNamespaceArray = [v27 selectedNamespaceArray];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __108__TRISetupAssistantFetchUtils_getIncompatibleNamespaceNamesForTriClientRollout_namespaceDescriptorProvider___block_invoke_2;
     v29[3] = &unk_279DDF680;
     v30 = v26;
-    [v22 enumerateObjectsUsingBlock:v29];
+    [selectedNamespaceArray enumerateObjectsUsingBlock:v29];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -321,38 +321,38 @@ void __108__TRISetupAssistantFetchUtils_getIncompatibleNamespaceNamesForTriClien
   [v2 addObject:v3];
 }
 
-+ (BOOL)setValueInKeyValueStore:(id)a3 key:(id)a4 value:(id)a5 error:(id *)a6
++ (BOOL)setValueInKeyValueStore:(id)store key:(id)key value:(id)value error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  storeCopy = store;
+  keyCopy = key;
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"TRISetupAssistantFetchUtils.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"value != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISetupAssistantFetchUtils.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"value != nil"}];
   }
 
   v20 = 0;
-  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v20];
+  v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:&v20];
   v15 = v20;
   v16 = v15;
   if (v14)
   {
-    [v11 setBlob:v14 forKey:v12 usingTransaction:0];
+    [storeCopy setBlob:v14 forKey:keyCopy usingTransaction:0];
   }
 
-  else if (a6)
+  else if (error)
   {
     v17 = v15;
-    *a6 = v16;
+    *error = v16;
   }
 
   return v14 != 0;
 }
 
-+ (id)getValueInKeyValueStore:(id)a3 key:(id)a4 error:(id *)a5
++ (id)getValueInKeyValueStore:(id)store key:(id)key error:(id *)error
 {
-  v6 = [a3 blobForKey:a4 usingTransaction:0];
+  v6 = [store blobForKey:key usingTransaction:0];
   if (v6)
   {
     v13 = 0;
@@ -364,32 +364,32 @@ void __108__TRISetupAssistantFetchUtils_getIncompatibleNamespaceNamesForTriClien
       v10 = v7;
     }
 
-    else if (a5)
+    else if (error)
     {
       v11 = v8;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
   else
   {
     v7 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
   return v7;
 }
 
-+ (id)registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:(id)a3
++ (id)registerFinalizeBlockForDownloadLatencyTelemetryWithServerContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [TRILatencyMetricTelemetryValidator alloc];
-  v5 = [v3 rolloutDatabase];
-  v6 = [v3 paths];
-  v7 = [(TRILatencyMetricTelemetryValidator *)v4 initWithRolloutDatabase:v5 paths:v6];
+  rolloutDatabase = [contextCopy rolloutDatabase];
+  paths = [contextCopy paths];
+  v7 = [(TRILatencyMetricTelemetryValidator *)v4 initWithRolloutDatabase:rolloutDatabase paths:paths];
 
   v8 = [[TRIDownloadLatencyTaskResultTelemetryBuilder alloc] initWithTelemetryValidator:v7];
   v14[0] = MEMORY[0x277D85DD0];
@@ -399,9 +399,9 @@ void __108__TRISetupAssistantFetchUtils_getIncompatibleNamespaceNamesForTriClien
   v9 = v8;
   v15 = v9;
   v10 = MEMORY[0x2743948D0](v14);
-  v11 = [v3 taskQueue];
+  taskQueue = [contextCopy taskQueue];
 
-  [v11 registerFinalizeBlock:v10];
+  [taskQueue registerFinalizeBlock:v10];
   v12 = v9;
 
   return v9;

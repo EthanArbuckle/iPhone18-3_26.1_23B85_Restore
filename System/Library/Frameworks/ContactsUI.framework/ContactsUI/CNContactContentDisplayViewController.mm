@@ -1,22 +1,22 @@
 @interface CNContactContentDisplayViewController
-+ (BOOL)actionModelIncludesTTY:(id)a3;
-+ (BOOL)shouldShowGeminiForResult:(id)a3 contact:(id)a4;
-+ (CNContactContentDisplayViewController)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (BOOL)actionModelIncludesTTY:(id)y;
++ (BOOL)shouldShowGeminiForResult:(id)result contact:(id)contact;
++ (CNContactContentDisplayViewController)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 + (id)descriptorForRequiredKeys;
-+ (id)descriptorForRequiredKeysForContact:(id)a3;
-+ (id)descriptorForRequiredKeysWithDescription:(id)a3;
-- (BOOL)_indexPathIsActionItem:(id)a3;
-- (BOOL)contactDisplayViewController:(id)a3 shouldPerformDefaultActionForContact:(id)a4 propertyKey:(id)a5 propertyIdentifier:(id)a6;
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldPerformActionOfType:(id)a4 withContactProperty:(id)a5;
++ (id)descriptorForRequiredKeysForContact:(id)contact;
++ (id)descriptorForRequiredKeysWithDescription:(id)description;
+- (BOOL)_indexPathIsActionItem:(id)item;
+- (BOOL)contactDisplayViewController:(id)controller shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier;
+- (BOOL)contactInlineActionsViewController:(id)controller shouldPerformActionOfType:(id)type withContactProperty:(id)property;
 - (BOOL)hasTableViewHeaderFirstSection;
 - (BOOL)isHeaderViewPhotoProhibited;
 - (BOOL)isNicknameProhibited;
 - (BOOL)isOutOfProcess;
 - (BOOL)isPresentingModalViewController;
-- (BOOL)isScrollViewControllingHeaderResizeAnimation:(id)a3;
-- (BOOL)isStandardGroup:(id)a3;
+- (BOOL)isScrollViewControllingHeaderResizeAnimation:(id)animation;
+- (BOOL)isStandardGroup:(id)group;
 - (BOOL)isSuggestedContact;
-- (BOOL)isTableViewHeaderFirstSectionIndexPath:(id)a3;
+- (BOOL)isTableViewHeaderFirstSectionIndexPath:(id)path;
 - (BOOL)reloadDataIfNeeded;
 - (BOOL)saveWasAuthorized;
 - (BOOL)shouldAddFaceTimeGroup;
@@ -24,207 +24,207 @@
 - (BOOL)shouldDisplayAvatarHeaderView;
 - (BOOL)shouldReallyShowLinkedContacts;
 - (BOOL)shouldShowGemini;
-- (BOOL)shouldShowVerifiedFooterInSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4;
-- (CGRect)centeredSourceRect:(CGRect)a3 inContactView:(id)a4;
+- (BOOL)shouldShowVerifiedFooterInSection:(int64_t)section;
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path;
+- (CGRect)centeredSourceRect:(CGRect)rect inContactView:(id)view;
 - (CGSize)requiredSizeForVisibleTableView;
 - (CGSize)setupTableHeaderView;
-- (CNContactContentDisplayViewController)initWithContact:(id)a3 contactViewConfiguration:(id)a4;
-- (CNContactContentDisplayViewController)initWithEnvironment:(id)a3;
-- (CNContactContentDisplayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNContactContentDisplayViewController)initWithContact:(id)contact contactViewConfiguration:(id)configuration;
+- (CNContactContentDisplayViewController)initWithEnvironment:(id)environment;
+- (CNContactContentDisplayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CNContactContentDisplayViewControllerDelegate)delegate;
 - (CNContactContentNavigationItemDelegate)navigationItemDelegate;
 - (CNContactHeaderDisplayView)contactHeaderView;
 - (CNContactView)contactView;
 - (CNPresenterDelegate)presentingDelegate;
 - (CNShareLocationController)shareLocationController;
-- (Class)groupClassForProperty:(id)a3;
+- (Class)groupClassForProperty:(id)property;
 - (NSArray)cardActions;
 - (NSArray)originalContacts;
 - (UIEdgeInsets)headerViewSafeAreaInsets;
-- (UIEdgeInsets)insetsForContactTableView:(id)a3;
-- (UIEdgeInsets)scrollIndicatorInsetsForContactTableView:(id)a3 withContentInsets:(UIEdgeInsets)a4;
+- (UIEdgeInsets)insetsForContactTableView:(id)view;
+- (UIEdgeInsets)scrollIndicatorInsetsForContactTableView:(id)view withContentInsets:(UIEdgeInsets)insets;
 - (UINavigationItem)effectiveNavigationItem;
-- (double)desiredHeightForWidth:(double)a3;
-- (double)globalHeaderHeightForContentOffset:(double)a3 contentInset:(UIEdgeInsets)a4;
+- (double)desiredHeightForWidth:(double)width;
+- (double)globalHeaderHeightForContentOffset:(double)offset contentInset:(UIEdgeInsets)inset;
 - (double)navigationBarHeight;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)updateHeaderConstraintForGlobalHeaderHeight:(double)a3 direction:(int64_t)a4 animated:(BOOL)a5;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)updateHeaderConstraintForGlobalHeaderHeight:(double)height direction:(int64_t)direction animated:(BOOL)animated;
 - (id)_addNewFieldAction;
-- (id)_cardGroupAtTableViewSectionIndex:(int64_t)a3;
-- (id)_cellForIndexPath:(id)a3;
-- (id)_cellIdentifierForIndexPath:(id)a3;
+- (id)_cardGroupAtTableViewSectionIndex:(int64_t)index;
+- (id)_cellForIndexPath:(id)path;
+- (id)_cellIdentifierForIndexPath:(id)path;
 - (id)_clearRecentsDataAction;
-- (id)_currentTopVisibleGroupInContactView:(id)a3;
-- (id)_itemAtIndexPath:(id)a3;
-- (id)_labelWidthKeyForGroup:(id)a3;
+- (id)_currentTopVisibleGroupInContactView:(id)view;
+- (id)_itemAtIndexPath:(id)path;
+- (id)_labelWidthKeyForGroup:(id)group;
 - (id)_loadDisplayGroups;
 - (id)_loadPropertyGroups;
-- (id)_phoneticNameForValue:(id)a3 currentPhoneticName:(id)a4 property:(id)a5;
-- (id)_policyForContact:(id)a3 mode:(int64_t)a4;
-- (id)_propertyGroupsForKeys:(id)a3;
-- (id)_removeUnauthorizedKeysFromContact:(id)a3;
-- (id)_updateContact:(id)a3 withMissingKeysFromRequiredKeys:(id)a4;
+- (id)_phoneticNameForValue:(id)value currentPhoneticName:(id)name property:(id)property;
+- (id)_policyForContact:(id)contact mode:(int64_t)mode;
+- (id)_propertyGroupsForKeys:(id)keys;
+- (id)_removeUnauthorizedKeysFromContact:(id)contact;
+- (id)_updateContact:(id)contact withMissingKeysFromRequiredKeys:(id)keys;
 - (id)_updateExistingContactAction;
 - (id)applyContactStyle;
-- (id)cardGroupForProperty:(id)a3;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)cardGroupForProperty:(id)property;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (id)createActionsController;
 - (id)currentNavigationController;
-- (id)indexPathOfPropertyItem:(id)a3;
-- (id)saveDescriptionForRemovingLinkedContact:(id)a3 keys:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)indexPathOfPropertyItem:(id)item;
+- (id)saveDescriptionForRemovingLinkedContact:(id)contact keys:(id)keys;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)tableViewHeaderFirstSectionCell;
-- (int64_t)_modalPresentationStyleForViewController:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)sectionOfGroup:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addFaceTimeGroupAnimated:(BOOL)a3;
-- (void)_addGroup:(id)a3 afterGroup:(id)a4 animated:(BOOL)a5;
-- (void)_addMedicalIDGroupAnimated:(BOOL)a3;
-- (void)_addShareLocationGroupAnimated:(BOOL)a3;
-- (void)_didCompleteWithContact:(id)a3;
+- (int64_t)_modalPresentationStyleForViewController:(id)controller;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)sectionOfGroup:(id)group;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addFaceTimeGroupAnimated:(BOOL)animated;
+- (void)_addGroup:(id)group afterGroup:(id)afterGroup animated:(BOOL)animated;
+- (void)_addMedicalIDGroupAnimated:(BOOL)animated;
+- (void)_addShareLocationGroupAnimated:(BOOL)animated;
+- (void)_didCompleteWithContact:(id)contact;
 - (void)_handleCoalescedBlockListDidChange;
 - (void)_refetchContact;
 - (void)_reloadAlertGroups;
 - (void)_reloadFaceTimeGroup;
-- (void)_reloadGeminiGroupPreservingChanges:(BOOL)a3;
+- (void)_reloadGeminiGroupPreservingChanges:(BOOL)changes;
 - (void)_reloadLinkedCardsGroup;
 - (void)_reloadMedicalIDGroup;
-- (void)_reloadPropertyGroupsPreservingChanges:(BOOL)a3;
-- (void)_retrieveActionsModelPreservingChanges:(BOOL)a3;
-- (void)_saveChangesForGroups:(id)a3;
-- (void)_scrollContactView:(id)a3 toVisibleGroup:(id)a4;
+- (void)_reloadPropertyGroupsPreservingChanges:(BOOL)changes;
+- (void)_retrieveActionsModelPreservingChanges:(BOOL)changes;
+- (void)_saveChangesForGroups:(id)groups;
+- (void)_scrollContactView:(id)view toVisibleGroup:(id)group;
 - (void)_setNeedsUpdateCachedLabelWidths;
 - (void)_setupAddToAddressBookActions;
 - (void)_setupCardActions;
-- (void)_setupContactBlockingActionPreservingChanges:(BOOL)a3 withUpdate:(BOOL)a4;
-- (void)_setupContactBlockingReportingActionPreservingChanges:(BOOL)a3 withUpdate:(BOOL)a4;
+- (void)_setupContactBlockingActionPreservingChanges:(BOOL)changes withUpdate:(BOOL)update;
+- (void)_setupContactBlockingReportingActionPreservingChanges:(BOOL)changes withUpdate:(BOOL)update;
 - (void)_setupCustomActions;
 - (void)_setupSuggestionActions;
 - (void)_updateAvailableTransports;
-- (void)_updateAvailableTransportsForItems:(id)a3;
+- (void)_updateAvailableTransportsForItems:(id)items;
 - (void)_updateCachedLabelWidths;
-- (void)_updateCachedLabelWidthsForGroup:(id)a3;
-- (void)_updateCachedLabelWidthsForItem:(id)a3;
+- (void)_updateCachedLabelWidthsForGroup:(id)group;
+- (void)_updateCachedLabelWidthsForItem:(id)item;
 - (void)_updateCachedLabelWidthsIfNeeded;
-- (void)_updateEmailTransportButtonsForItems:(id)a3;
-- (void)_updateIMessageTransportButtonsForItems:(id)a3;
-- (void)_updateLabelWidthForCell:(id)a3;
-- (void)_updateLabelWidthForCellsInGroup:(id)a3 reset:(BOOL)a4;
+- (void)_updateEmailTransportButtonsForItems:(id)items;
+- (void)_updateIMessageTransportButtonsForItems:(id)items;
+- (void)_updateLabelWidthForCell:(id)cell;
+- (void)_updateLabelWidthForCellsInGroup:(id)group reset:(BOOL)reset;
 - (void)_updateLabelWidthsForAllVisibleCells;
-- (void)_updatePhoneTransportButtonsForItems:(id)a3;
-- (void)_updateTTYTransportButtonsForItems:(id)a3;
+- (void)_updatePhoneTransportButtonsForItems:(id)items;
+- (void)_updateTTYTransportButtonsForItems:(id)items;
 - (void)_updateUserActivity;
-- (void)_validateGroup:(id)a3;
-- (void)action:(id)a3 dismissViewController:(id)a4 sender:(id)a5;
-- (void)action:(id)a3 prepareChildContactViewController:(id)a4 sender:(id)a5;
-- (void)action:(id)a3 presentViewController:(id)a4 sender:(id)a5;
-- (void)action:(id)a3 pushViewController:(id)a4 sender:(id)a5;
-- (void)actionDidFinish:(id)a3;
-- (void)actionDidUpdate:(id)a3;
-- (void)actionWasCanceled:(id)a3;
-- (void)addActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 menuProvider:(id)a6 inGroup:(id)a7 destructive:(BOOL)a8;
-- (void)adjustInsetsForKeyboardOverlap:(double)a3;
+- (void)_validateGroup:(id)group;
+- (void)action:(id)action dismissViewController:(id)controller sender:(id)sender;
+- (void)action:(id)action prepareChildContactViewController:(id)controller sender:(id)sender;
+- (void)action:(id)action presentViewController:(id)controller sender:(id)sender;
+- (void)action:(id)action pushViewController:(id)controller sender:(id)sender;
+- (void)actionDidFinish:(id)finish;
+- (void)actionDidUpdate:(id)update;
+- (void)actionWasCanceled:(id)canceled;
+- (void)addActionWithTitle:(id)title target:(id)target selector:(SEL)selector menuProvider:(id)provider inGroup:(id)group destructive:(BOOL)destructive;
+- (void)adjustInsetsForKeyboardOverlap:(double)overlap;
 - (void)adjustPreferredContentSize;
-- (void)blockListDidChange:(id)a3;
+- (void)blockListDidChange:(id)change;
 - (void)cancelAsyncLookups;
-- (void)contactInlineActionsViewControllerDidDismissDisambiguationUI:(id)a3;
-- (void)contactInlineActionsViewControllerWillPresentDisambiguationUI:(id)a3;
-- (void)contactStoreDidChangeWithNotification:(id)a3;
+- (void)contactInlineActionsViewControllerDidDismissDisambiguationUI:(id)i;
+- (void)contactInlineActionsViewControllerWillPresentDisambiguationUI:(id)i;
+- (void)contactStoreDidChangeWithNotification:(id)notification;
 - (void)contactViewConfigurationDidUpdate;
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)createdNewContact:(id)a3;
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)createdNewContact:(id)contact;
 - (void)dealloc;
-- (void)didChangeToShowTitle:(BOOL)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)geminiDataSourceDidUpdate:(id)a3;
+- (void)didChangeToShowTitle:(BOOL)title;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)geminiDataSourceDidUpdate:(id)update;
 - (void)headerPhotoDidUpdate;
-- (void)headerViewDidChangeHeight:(id)a3;
-- (void)headerViewDidPickPreferredChannel:(id)a3;
-- (void)headerViewDidTapNameLabel:(id)a3;
+- (void)headerViewDidChangeHeight:(id)height;
+- (void)headerViewDidPickPreferredChannel:(id)channel;
+- (void)headerViewDidTapNameLabel:(id)label;
 - (void)initializeTableViewsForHeaderHeight;
-- (void)keyboardDidShowNotification:(id)a3;
+- (void)keyboardDidShowNotification:(id)notification;
 - (void)loadContactViewControllerViews;
 - (void)loadView;
-- (void)prepareCell:(id)a3;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)propertyCell:(id)a3 didDeleteLabel:(id)a4 forGroup:(id)a5;
-- (void)propertyCell:(id)a3 didUpdateItem:(id)a4 withNewLabel:(id)a5;
-- (void)propertyCell:(id)a3 didUpdateItem:(id)a4 withNewValue:(id)a5;
-- (void)propertyCell:(id)a3 performActionForItem:(id)a4 withTransportType:(int64_t)a5;
-- (void)propertyCellDidChangeLayout:(id)a3;
-- (void)reloadCardActionsForBlockState:(BOOL)a3 preservingChanges:(BOOL)a4;
-- (void)reloadCardGroup:(id)a3;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
+- (void)prepareCell:(id)cell;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)propertyCell:(id)cell didDeleteLabel:(id)label forGroup:(id)group;
+- (void)propertyCell:(id)cell didUpdateItem:(id)item withNewLabel:(id)label;
+- (void)propertyCell:(id)cell didUpdateItem:(id)item withNewValue:(id)value;
+- (void)propertyCell:(id)cell performActionForItem:(id)item withTransportType:(int64_t)type;
+- (void)propertyCellDidChangeLayout:(id)layout;
+- (void)reloadCardActionsForBlockState:(BOOL)state preservingChanges:(BOOL)changes;
+- (void)reloadCardGroup:(id)group;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
 - (void)reloadUnifiedContact;
-- (void)removeActionWithTarget:(id)a3 selector:(SEL)a4 inGroup:(id)a5;
+- (void)removeActionWithTarget:(id)target selector:(SEL)selector inGroup:(id)group;
 - (void)removeFirstSectionHeaderViewControllerFromHierarchy;
-- (void)removeLinkedContact:(id)a3;
+- (void)removeLinkedContact:(id)contact;
 - (void)requestFavoritesUpdateWithGemini;
-- (void)scrollScrollViewAllTheWayUp:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (void)sender:(id)a3 presentViewController:(id)a4;
-- (void)setBackgroundColorIfNeededForPresentedViewController:(id)a3;
-- (void)setCancelKeyboardShortcutEnabled:(BOOL)a3;
-- (void)setContact:(id)a3;
-- (void)setContactStore:(id)a3;
-- (void)setEditKeyboardShortcutEnabled:(BOOL)a3;
-- (void)setForcesTransparentBackground:(BOOL)a3;
-- (void)setMenuProviderForCell:(id)a3 forActionGroupItem:(id)a4;
+- (void)scrollScrollViewAllTheWayUp:(id)up;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler;
+- (void)sender:(id)sender presentViewController:(id)controller;
+- (void)setBackgroundColorIfNeededForPresentedViewController:(id)controller;
+- (void)setCancelKeyboardShortcutEnabled:(BOOL)enabled;
+- (void)setContact:(id)contact;
+- (void)setContactStore:(id)store;
+- (void)setEditKeyboardShortcutEnabled:(BOOL)enabled;
+- (void)setForcesTransparentBackground:(BOOL)background;
+- (void)setMenuProviderForCell:(id)cell forActionGroupItem:(id)item;
 - (void)setNeedsReload;
-- (void)setPersonHeaderViewController:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setupActionsPreservingChanges:(BOOL)a3;
+- (void)setPersonHeaderViewController:(id)controller;
+- (void)setTitle:(id)title;
+- (void)setupActionsPreservingChanges:(BOOL)changes;
 - (void)setupConstraints;
-- (void)setupShareLocationActionReload:(BOOL)a3;
+- (void)setupShareLocationActionReload:(BOOL)reload;
 - (void)setupTableFooterView;
-- (void)setupViewHierarchyIncludingAvatarHeader:(BOOL)a3;
-- (void)shouldPresentFullscreen:(BOOL)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)toggleEditing:(id)a3;
-- (void)updateContact:(id)a3;
-- (void)updateContactsViewWithBlock:(id)a3 completion:(id)a4;
-- (void)updateEditNavigationItemsAnimated:(BOOL)a3;
-- (void)updateHeaderHeightToMatchScrollViewState:(id)a3 scrollDirection:(int64_t)a4 animated:(BOOL)a5;
+- (void)setupViewHierarchyIncludingAvatarHeader:(BOOL)header;
+- (void)shouldPresentFullscreen:(BOOL)fullscreen;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)toggleEditing:(id)editing;
+- (void)updateContact:(id)contact;
+- (void)updateContactsViewWithBlock:(id)block completion:(id)completion;
+- (void)updateEditNavigationItemsAnimated:(BOOL)animated;
+- (void)updateHeaderHeightToMatchScrollViewState:(id)state scrollDirection:(int64_t)direction animated:(BOOL)animated;
 - (void)updateInsetsIfNeeded;
 - (void)updateOutOfProcessFullscreenPresentationIfNeeded;
-- (void)updateTableView:(id)a3 contentInsetsTo:(UIEdgeInsets)a4 withScrollIndicatorInsets:(UIEdgeInsets)a5;
-- (void)updateUserActivityState:(id)a3;
+- (void)updateTableView:(id)view contentInsetsTo:(UIEdgeInsets)to withScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)updateUserActivityState:(id)state;
 - (void)updateViewConstraints;
-- (void)updateWindowTitleForAppearing:(BOOL)a3;
-- (void)updateWithContactViewConfiguration:(id)a3;
-- (void)updatedExistingContact:(id)a3;
-- (void)viewController:(id)a3 presentationControllerWillDismiss:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateWindowTitleForAppearing:(BOOL)appearing;
+- (void)updateWithContactViewConfiguration:(id)configuration;
+- (void)updatedExistingContact:(id)contact;
+- (void)viewController:(id)controller presentationControllerWillDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CNContactContentDisplayViewController
@@ -256,55 +256,55 @@
   v3 = +[CNContactStyle currentStyle];
   if ([(CNContactContentDisplayViewController *)self forcesTransparentBackground])
   {
-    v4 = +[CNUIColorRepository transparentBackgroundColor];
+    backgroundColor2 = +[CNUIColorRepository transparentBackgroundColor];
   }
 
   else
   {
-    v5 = [v3 backgroundColor];
+    backgroundColor = [v3 backgroundColor];
 
-    if (!v5)
+    if (!backgroundColor)
     {
       goto LABEL_6;
     }
 
-    v4 = [v3 backgroundColor];
+    backgroundColor2 = [v3 backgroundColor];
   }
 
-  v6 = v4;
-  v7 = [(CNContactContentDisplayViewController *)self contactView];
-  [v7 setBackgroundColor:v6];
+  v6 = backgroundColor2;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView setBackgroundColor:v6];
 
 LABEL_6:
-  v8 = [v3 sectionBackgroundColor];
-  v9 = [(CNContactContentDisplayViewController *)self contactView];
-  [v9 setSectionBackgroundColor:v8];
+  sectionBackgroundColor = [v3 sectionBackgroundColor];
+  contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView2 setSectionBackgroundColor:sectionBackgroundColor];
 
-  v10 = [v3 separatorColor];
-  v11 = [(CNContactContentDisplayViewController *)self contactView];
-  [v11 setSeparatorColor:v10];
+  separatorColor = [v3 separatorColor];
+  contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView3 setSeparatorColor:separatorColor];
 
-  v12 = [v3 selectedCellBackgroundColor];
-  v13 = [(CNContactContentDisplayViewController *)self contactView];
-  [v13 setSelectedCellBackgroundColor:v12];
+  selectedCellBackgroundColor = [v3 selectedCellBackgroundColor];
+  contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView4 setSelectedCellBackgroundColor:selectedCellBackgroundColor];
 
   v14 = MEMORY[0x1E695DF90];
-  v15 = [(CNContactContentDisplayViewController *)self contactView];
-  v16 = [v15 valueTextAttributes];
-  v17 = [v14 dictionaryWithDictionary:v16];
+  contactView5 = [(CNContactContentDisplayViewController *)self contactView];
+  valueTextAttributes = [contactView5 valueTextAttributes];
+  v17 = [v14 dictionaryWithDictionary:valueTextAttributes];
 
   v18 = *MEMORY[0x1E69DB650];
   v48[0] = *MEMORY[0x1E69DB650];
-  v19 = [v3 textColor];
+  textColor = [v3 textColor];
   v48[1] = @"ABNotesTextColorAttributeName";
-  v49[0] = v19;
-  v20 = [v3 notesTextColor];
-  v49[1] = v20;
+  v49[0] = textColor;
+  notesTextColor = [v3 notesTextColor];
+  v49[1] = notesTextColor;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
   [v17 addEntriesFromDictionary:v21];
 
-  v22 = [(CNContactContentDisplayViewController *)self contactView];
-  [v22 setValueTextAttributes:v17];
+  contactView6 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView6 setValueTextAttributes:v17];
 
   if ([(CNContactContentDisplayViewController *)self forcesTransparentBackground])
   {
@@ -316,10 +316,10 @@ LABEL_6:
 
   else
   {
-    v25 = [(CNContactContentDisplayViewController *)self environment];
-    v26 = [v25 runningInContactsAppOniPad];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-    if (v26)
+    if (runningInContactsAppOniPad)
     {
       v27 = +[CNUIColorRepository contactCardBackgroundiPadOverwriteColor];
       [(CNContactHeaderDisplayView *)self->_contactHeaderView setBackgroundColor:v27];
@@ -329,8 +329,8 @@ LABEL_6:
 
     else
     {
-      v28 = [v3 contactHeaderBackgroundColor];
-      [(CNContactHeaderDisplayView *)self->_contactHeaderView setBackgroundColor:v28];
+      contactHeaderBackgroundColor = [v3 contactHeaderBackgroundColor];
+      [(CNContactHeaderDisplayView *)self->_contactHeaderView setBackgroundColor:contactHeaderBackgroundColor];
 
       [v3 contactHeaderBackgroundColor];
     }
@@ -342,71 +342,71 @@ LABEL_6:
 
   contactHeaderView = self->_contactHeaderView;
   v46 = v18;
-  v31 = [v3 taglineTextColor];
-  v47 = v31;
+  taglineTextColor = [v3 taglineTextColor];
+  v47 = taglineTextColor;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
   [contactHeaderView cn_updateDictionaryForKey:@"taglineTextAttributes" withChanges:v32];
 
-  v33 = [(CNContactContentDisplayViewController *)self actionsViewController];
-  [v33 setViewStyle:{objc_msgSend(v3, "topActionsViewStyle")}];
+  actionsViewController = [(CNContactContentDisplayViewController *)self actionsViewController];
+  [actionsViewController setViewStyle:{objc_msgSend(v3, "topActionsViewStyle")}];
 
   v34 = 0;
   if ([v3 usesOpaqueBackground])
   {
-    v35 = [(CNContactContentDisplayViewController *)self actionsViewController];
-    v36 = [v35 view];
-    v37 = [v36 layer];
-    [v37 setShadowRadius:8.0];
+    actionsViewController2 = [(CNContactContentDisplayViewController *)self actionsViewController];
+    view = [actionsViewController2 view];
+    layer = [view layer];
+    [layer setShadowRadius:8.0];
 
-    v38 = [(CNContactContentDisplayViewController *)self actionsViewController];
-    v39 = [v38 view];
-    v40 = [v39 layer];
-    [v40 setShadowOffset:{0.0, 2.0}];
+    actionsViewController3 = [(CNContactContentDisplayViewController *)self actionsViewController];
+    view2 = [actionsViewController3 view];
+    layer2 = [view2 layer];
+    [layer2 setShadowOffset:{0.0, 2.0}];
 
     v34 = 1025758986;
   }
 
-  v41 = [(CNContactContentDisplayViewController *)self actionsViewController];
-  v42 = [v41 view];
-  v43 = [v42 layer];
+  actionsViewController4 = [(CNContactContentDisplayViewController *)self actionsViewController];
+  view3 = [actionsViewController4 view];
+  layer3 = [view3 layer];
   LODWORD(v44) = v34;
-  [v43 setShadowOpacity:v44];
+  [layer3 setShadowOpacity:v44];
 
   return v3;
 }
 
-- (void)updateTableView:(id)a3 contentInsetsTo:(UIEdgeInsets)a4 withScrollIndicatorInsets:(UIEdgeInsets)a5
+- (void)updateTableView:(id)view contentInsetsTo:(UIEdgeInsets)to withScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  bottom = a5.bottom;
-  right = a5.right;
-  left = a5.left;
-  top = a5.top;
-  v7 = a4.right;
-  v8 = a4.bottom;
-  v9 = a4.left;
-  v10 = a4.top;
-  v19 = a3;
-  [v19 contentInset];
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  v7 = to.right;
+  v8 = to.bottom;
+  v9 = to.left;
+  v10 = to.top;
+  viewCopy = view;
+  [viewCopy contentInset];
   v12 = v10 - v11;
-  [v19 contentOffset];
+  [viewCopy contentOffset];
   v14 = v13;
   v16 = v15 - v12;
-  [v19 setContentInset:{v10, v9, v8, v7}];
-  [v19 setScrollIndicatorInsets:{top, left, bottom, right}];
-  [v19 setContentOffset:{v14, v16}];
+  [viewCopy setContentInset:{v10, v9, v8, v7}];
+  [viewCopy setScrollIndicatorInsets:{top, left, bottom, right}];
+  [viewCopy setContentOffset:{v14, v16}];
 }
 
-- (UIEdgeInsets)scrollIndicatorInsetsForContactTableView:(id)a3 withContentInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)scrollIndicatorInsetsForContactTableView:(id)view withContentInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  left = a4.left;
-  top = a4.top;
-  v8 = a3;
-  [v8 _systemContentInset];
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  viewCopy = view;
+  [viewCopy _systemContentInset];
   v10 = top + v9;
   [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
   v12 = v11;
-  [v8 _systemContentInset];
+  [viewCopy _systemContentInset];
   v14 = v13;
 
   v15 = fmax(v12 - v14, 0.0);
@@ -420,15 +420,15 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)insetsForContactTableView:(id)a3
+- (UIEdgeInsets)insetsForContactTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v5 minHeight];
+  viewCopy = view;
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView minHeight];
   v7 = v6;
 
-  v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v8 maxHeight];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView2 maxHeight];
   v10 = v9;
 
   if (v10 == 0.0)
@@ -443,18 +443,18 @@ LABEL_6:
   v11 = 0.0;
   if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
   {
-    v12 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-    [v12 frame];
+    actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+    [actionsWrapperView frame];
     v11 = v13;
   }
 
-  [v4 _systemContentInset];
+  [viewCopy _systemContentInset];
   v15 = v10 + v11 - v14;
-  [v4 bounds];
+  [viewCopy bounds];
   v17 = v10 - v7 + v16;
-  [v4 _systemContentInset];
+  [viewCopy _systemContentInset];
   v19 = v17 - v18 - v15;
-  [v4 _systemContentInset];
+  [viewCopy _systemContentInset];
   v21 = v20;
   [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
   if (v21 >= v22)
@@ -463,7 +463,7 @@ LABEL_6:
   }
 
   v23 = v19 - v22;
-  [v4 contentSize];
+  [viewCopy contentSize];
   if (v23 - v24 >= 0.0)
   {
     v25 = v23 - v24;
@@ -474,41 +474,41 @@ LABEL_6:
     v25 = 0.0;
   }
 
-  [v4 contentInset];
+  [viewCopy contentInset];
   v27 = v26;
   v29 = v28;
   [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
   if (v30 <= 0.0)
   {
-    [v4 _systemContentInset];
+    [viewCopy _systemContentInset];
     v47 = -v46;
     goto LABEL_18;
   }
 
-  v31 = [(CNContactContentDisplayViewController *)self view];
-  v32 = [v31 window];
-  if (!v32)
+  view = [(CNContactContentDisplayViewController *)self view];
+  window = [view window];
+  if (!window)
   {
     v40 = 0.0;
     goto LABEL_16;
   }
 
-  v33 = v32;
-  v34 = [(CNContactContentDisplayViewController *)self view];
-  v35 = [v34 window];
-  [v35 bounds];
+  v33 = window;
+  view2 = [(CNContactContentDisplayViewController *)self view];
+  window2 = [view2 window];
+  [window2 bounds];
   v37 = v36;
-  [v4 bounds];
+  [viewCopy bounds];
   v39 = v38;
 
   v40 = 0.0;
   if (v37 > v39)
   {
-    v31 = [(CNContactContentDisplayViewController *)self view];
-    v41 = [v31 window];
-    [v41 bounds];
+    view = [(CNContactContentDisplayViewController *)self view];
+    window3 = [view window];
+    [window3 bounds];
     v43 = v42;
-    [v4 bounds];
+    [viewCopy bounds];
     v40 = v43 - v44;
 
 LABEL_16:
@@ -516,7 +516,7 @@ LABEL_16:
 
   [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
   v49 = v48;
-  [v4 _systemContentInset];
+  [viewCopy _systemContentInset];
   v47 = v40 + v49 - v50;
 LABEL_18:
   if (v25 >= v47)
@@ -544,136 +544,136 @@ LABEL_21:
 
 - (void)initializeTableViewsForHeaderHeight
 {
-  v7 = [(CNContactContentDisplayViewController *)self contactView];
-  [v7 layoutIfNeeded];
-  v3 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-  [v3 setNeedsLayout];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView layoutIfNeeded];
+  actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+  [actionsWrapperView setNeedsLayout];
 
-  v4 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-  [v4 layoutIfNeeded];
+  actionsWrapperView2 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+  [actionsWrapperView2 layoutIfNeeded];
 
-  v5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v5 calculateLabelSizesIfNeeded];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView calculateLabelSizesIfNeeded];
 
-  v6 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-  [v6 setAlpha:1.0];
+  headerDropShadowView = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+  [headerDropShadowView setAlpha:1.0];
 
   [(CNContactContentDisplayViewController *)self updateInsetsIfNeeded];
-  [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:v7 scrollDirection:2 animated:0];
+  [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:contactView scrollDirection:2 animated:0];
 }
 
 - (void)updateInsetsIfNeeded
 {
-  v45 = [(CNContactContentDisplayViewController *)self contactView];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
   [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
   if (v3 <= 0.0 || (-[CNContactContentDisplayViewController view](self, "view"), v4 = objc_claimAutoreleasedReturnValue(), [v4 bounds], v6 = v5, v4, v6 <= 0.0))
   {
-    v13 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v14 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    [v14 maxHeight];
-    v17 = v13;
+    contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    [contactHeaderView2 maxHeight];
+    v17 = contactHeaderView;
     v16 = 0;
   }
 
   else
   {
-    v7 = [(CNContactContentDisplayViewController *)self view];
-    [v7 bounds];
+    view = [(CNContactContentDisplayViewController *)self view];
+    [view bounds];
     v9 = v8;
     [(CNContactContentDisplayViewController *)self keyboardVerticalOverlap];
     v11 = v9 - v10 + -64.0;
 
     v12 = fmax(v11, 0.0);
-    v13 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v14 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    [v14 maxHeight];
+    contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    [contactHeaderView2 maxHeight];
     v16 = v12 <= v15;
-    v17 = v13;
+    v17 = contactHeaderView;
     v18 = v12;
   }
 
   [v17 setConstrainedMaxHeight:v16 enabled:v18];
 
-  [v45 contentInset];
+  [contactView contentInset];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [(CNContactContentDisplayViewController *)self insetsForContactTableView:v45];
+  [(CNContactContentDisplayViewController *)self insetsForContactTableView:contactView];
   v30 = v27;
   v32 = v31;
   v33 = v28;
   v34 = v29;
   if (v31 != v22 || v27 != v20 || v29 != v26 || v28 != v24)
   {
-    v35 = [(CNContactContentDisplayViewController *)self contactView];
-    [(CNContactContentDisplayViewController *)self scrollIndicatorInsetsForContactTableView:v35 withContentInsets:v30, v32, v33, v34];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    [(CNContactContentDisplayViewController *)self scrollIndicatorInsetsForContactTableView:contactView2 withContentInsets:v30, v32, v33, v34];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
 
-    v44 = [(CNContactContentDisplayViewController *)self contactView];
-    [(CNContactContentDisplayViewController *)self updateTableView:v44 contentInsetsTo:v30 withScrollIndicatorInsets:v32, v33, v34, v37, v39, v41, v43];
+    contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+    [(CNContactContentDisplayViewController *)self updateTableView:contactView3 contentInsetsTo:v30 withScrollIndicatorInsets:v32, v33, v34, v37, v39, v41, v43];
   }
 }
 
-- (void)scrollScrollViewAllTheWayUp:(id)a3
+- (void)scrollScrollViewAllTheWayUp:(id)up
 {
-  v8 = a3;
-  [v8 contentOffset];
+  upCopy = up;
+  [upCopy contentOffset];
   v4 = v3;
-  [v8 contentInset];
+  [upCopy contentInset];
   v6 = v5;
-  [v8 _systemContentInset];
-  [v8 setContentOffset:{v4, -(v6 + v7)}];
+  [upCopy _systemContentInset];
+  [upCopy setContentOffset:{v4, -(v6 + v7)}];
 }
 
-- (BOOL)isScrollViewControllingHeaderResizeAnimation:(id)a3
+- (BOOL)isScrollViewControllingHeaderResizeAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self contactView];
+  animationCopy = animation;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
 
-  return v5 == v4;
+  return contactView == animationCopy;
 }
 
-- (double)updateHeaderConstraintForGlobalHeaderHeight:(double)a3 direction:(int64_t)a4 animated:(BOOL)a5
+- (double)updateHeaderConstraintForGlobalHeaderHeight:(double)height direction:(int64_t)direction animated:(BOOL)animated
 {
   v8 = 0.0;
   if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
   {
-    v9 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-    [v9 frame];
+    actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+    [actionsWrapperView frame];
     v8 = v10;
   }
 
-  v11 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
-  [v11 constant];
+  headerHeightConstraint = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
+  [headerHeightConstraint constant];
   v13 = v12;
 
-  if (a3 - v8 == v13 || !a4 && a3 - v8 <= v13)
+  if (height - v8 == v13 || !direction && height - v8 <= v13)
   {
     return v8 + v13;
   }
 
-  v14 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
-  [v14 setConstant:a3 - v8];
+  headerHeightConstraint2 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
+  [headerHeightConstraint2 setConstant:height - v8];
 
-  return a3;
+  return height;
 }
 
-- (void)updateHeaderHeightToMatchScrollViewState:(id)a3 scrollDirection:(int64_t)a4 animated:(BOOL)a5
+- (void)updateHeaderHeightToMatchScrollViewState:(id)state scrollDirection:(int64_t)direction animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  [v8 contentOffset];
+  animatedCopy = animated;
+  stateCopy = state;
+  [stateCopy contentOffset];
   v10 = v9;
-  [v8 contentInset];
+  [stateCopy contentInset];
   [(CNContactContentDisplayViewController *)self globalHeaderHeightForContentOffset:v10 contentInset:v11, v12, v13, v14];
-  [(CNContactContentDisplayViewController *)self updateHeaderConstraintForGlobalHeaderHeight:a4 direction:v5 animated:?];
+  [(CNContactContentDisplayViewController *)self updateHeaderConstraintForGlobalHeaderHeight:direction direction:animatedCopy animated:?];
   v16 = v15;
   objc_opt_class();
-  v19 = v8;
+  v19 = stateCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v19;
@@ -689,24 +689,24 @@ LABEL_21:
   [v18 setMaskingInset:v16];
 }
 
-- (double)globalHeaderHeightForContentOffset:(double)a3 contentInset:(UIEdgeInsets)a4
+- (double)globalHeaderHeightForContentOffset:(double)offset contentInset:(UIEdgeInsets)inset
 {
-  top = a4.top;
+  top = inset.top;
   v7 = 0.0;
   if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
   {
-    v8 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-    [v8 frame];
+    actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+    [actionsWrapperView frame];
     v7 = v9;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self contactView];
-  [v10 _systemContentInset];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView _systemContentInset];
   v12 = top + v11;
 
-  if (-v12 <= a3)
+  if (-v12 <= offset)
   {
-    v13 = -a3;
+    v13 = -offset;
   }
 
   else
@@ -714,8 +714,8 @@ LABEL_21:
     v13 = v12;
   }
 
-  v14 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v14 minHeight];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView minHeight];
   v16 = v7 + v15;
 
   if (v13 >= v16)
@@ -729,28 +729,28 @@ LABEL_21:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  v25 = a3;
-  v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v8 minHeight];
+  y = velocity.y;
+  draggingCopy = dragging;
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView minHeight];
   v10 = v9;
 
-  v11 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v11 maxHeight];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView2 maxHeight];
   v13 = v12;
 
-  if ([(CNContactContentDisplayViewController *)self isScrollViewControllingHeaderResizeAnimation:v25])
+  if ([(CNContactContentDisplayViewController *)self isScrollViewControllingHeaderResizeAnimation:draggingCopy])
   {
-    v14 = v13 - a5->y;
-    [v25 contentInset];
+    v14 = v13 - offset->y;
+    [draggingCopy contentInset];
     v16 = v14 - v15;
-    [v25 _systemContentInset];
+    [draggingCopy _systemContentInset];
     v18 = v16 - v17;
     if (y <= 0.0)
     {
-      v19 = v25;
+      v19 = draggingCopy;
       if (y >= 0.0)
       {
         if (v18 > v10 && v18 < v13)
@@ -775,7 +775,7 @@ LABEL_21:
 
     else
     {
-      v19 = v25;
+      v19 = draggingCopy;
       if (v18 > v10)
       {
         v18 = v10;
@@ -785,84 +785,84 @@ LABEL_21:
     v21 = v13 - v18;
     [v19 contentInset];
     v23 = v21 - v22;
-    [v25 _systemContentInset];
-    a5->y = v23 - v24;
+    [draggingCopy _systemContentInset];
+    offset->y = v23 - v24;
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   if ([(CNContactContentDisplayViewController *)self isScrollViewControllingHeaderResizeAnimation:?])
   {
-    [v5 _verticalVelocity];
-    [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:v5 scrollDirection:v4 >= 0.0 animated:1];
+    [scrollCopy _verticalVelocity];
+    [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:scrollCopy scrollDirection:v4 >= 0.0 animated:1];
   }
 }
 
-- (void)setEditKeyboardShortcutEnabled:(BOOL)a3
+- (void)setEditKeyboardShortcutEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self editCommand];
+  enabledCopy = enabled;
+  editCommand = [(CNContactContentDisplayViewController *)self editCommand];
 
-  if (v3)
+  if (enabledCopy)
   {
-    if (!v5)
+    if (!editCommand)
     {
       v6 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"l" modifierFlags:0x100000 action:sel_toggleEditing_];
       [(CNContactContentDisplayViewController *)self setEditCommand:v6];
 
       v7 = CNContactsUIBundle();
       v8 = [v7 localizedStringForKey:@"EDIT_CONTACT_KEYBOARD_DISCOVERY" value:&stru_1F0CE7398 table:@"Localized"];
-      v9 = [(CNContactContentDisplayViewController *)self editCommand];
-      [v9 setDiscoverabilityTitle:v8];
+      editCommand2 = [(CNContactContentDisplayViewController *)self editCommand];
+      [editCommand2 setDiscoverabilityTitle:v8];
 
-      v11 = [(CNContactContentDisplayViewController *)self editCommand];
-      [(CNContactContentDisplayViewController *)self addKeyCommand:v11];
+      editCommand3 = [(CNContactContentDisplayViewController *)self editCommand];
+      [(CNContactContentDisplayViewController *)self addKeyCommand:editCommand3];
     }
   }
 
-  else if (v5)
+  else if (editCommand)
   {
-    v10 = [(CNContactContentDisplayViewController *)self editCommand];
-    [(CNContactContentDisplayViewController *)self removeKeyCommand:v10];
+    editCommand4 = [(CNContactContentDisplayViewController *)self editCommand];
+    [(CNContactContentDisplayViewController *)self removeKeyCommand:editCommand4];
 
     [(CNContactContentDisplayViewController *)self setEditCommand:0];
   }
 }
 
-- (void)setCancelKeyboardShortcutEnabled:(BOOL)a3
+- (void)setCancelKeyboardShortcutEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self cancelCommand];
+  enabledCopy = enabled;
+  cancelCommand = [(CNContactContentDisplayViewController *)self cancelCommand];
 
-  if (v3)
+  if (enabledCopy)
   {
-    if (!v5)
+    if (!cancelCommand)
     {
       v6 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:sel_editCancel_];
       [(CNContactContentDisplayViewController *)self setCancelCommand:v6];
 
-      v8 = [(CNContactContentDisplayViewController *)self cancelCommand];
-      [(CNContactContentDisplayViewController *)self addKeyCommand:v8];
+      cancelCommand2 = [(CNContactContentDisplayViewController *)self cancelCommand];
+      [(CNContactContentDisplayViewController *)self addKeyCommand:cancelCommand2];
     }
   }
 
-  else if (v5)
+  else if (cancelCommand)
   {
-    v7 = [(CNContactContentDisplayViewController *)self cancelCommand];
-    [(CNContactContentDisplayViewController *)self removeKeyCommand:v7];
+    cancelCommand3 = [(CNContactContentDisplayViewController *)self cancelCommand];
+    [(CNContactContentDisplayViewController *)self removeKeyCommand:cancelCommand3];
 
     [(CNContactContentDisplayViewController *)self setCancelCommand:0];
   }
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v4 = a3;
-  v6 = [(CNContactContentDisplayViewController *)self activityManager];
-  v5 = [(CNContactContentDisplayViewController *)self contact];
-  [v6 updateUserActivityState:v4 withContentsOfContact:v5];
+  stateCopy = state;
+  activityManager = [(CNContactContentDisplayViewController *)self activityManager];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  [activityManager updateUserActivityState:stateCopy withContentsOfContact:contact];
 }
 
 - (void)_updateUserActivity
@@ -873,56 +873,56 @@ LABEL_21:
     v3 = CNUILogContactCard();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [MEMORY[0x1E696AAE8] mainBundle];
-      v5 = [v4 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
       v17 = 138412290;
-      v18 = v5;
+      selfCopy2 = bundleIdentifier;
       _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_INFO, "Activity continuity - running in %@", &v17, 0xCu);
     }
 
-    v6 = [(CNContactContentDisplayViewController *)self activityManager];
-    v7 = [(CNContactContentDisplayViewController *)self contact];
-    v8 = [v6 makeActivityAdvertisingViewingOfContact:v7];
+    activityManager = [(CNContactContentDisplayViewController *)self activityManager];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    v8 = [activityManager makeActivityAdvertisingViewingOfContact:contact];
 
-    v9 = [(CNContactContentDisplayViewController *)self userActivity];
-    v10 = v9;
+    userActivity = [(CNContactContentDisplayViewController *)self userActivity];
+    v10 = userActivity;
     if (v8)
     {
 
       if (!v10)
       {
         [(CNContactContentDisplayViewController *)self setUserActivity:v8];
-        v11 = [(CNContactContentDisplayViewController *)self userActivity];
-        [v11 becomeCurrent];
+        userActivity2 = [(CNContactContentDisplayViewController *)self userActivity];
+        [userActivity2 becomeCurrent];
 
         v12 = CNUILogContactCard();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [(CNContactContentDisplayViewController *)self userActivity];
+          userActivity3 = [(CNContactContentDisplayViewController *)self userActivity];
           v17 = 138412546;
-          v18 = self;
+          selfCopy2 = self;
           v19 = 2112;
-          v20 = v13;
+          v20 = userActivity3;
           _os_log_impl(&dword_199A75000, v12, OS_LOG_TYPE_INFO, "Activity continuity -  %@ created %@", &v17, 0x16u);
         }
       }
 
-      v14 = [(CNContactContentDisplayViewController *)self userActivity];
-      [v14 setNeedsSave:1];
+      userActivity4 = [(CNContactContentDisplayViewController *)self userActivity];
+      [userActivity4 setNeedsSave:1];
     }
 
     else
     {
-      [v9 resignCurrent];
+      [userActivity resignCurrent];
 
       v15 = CNUILogContactCard();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [(CNContactContentDisplayViewController *)self userActivity];
+        userActivity5 = [(CNContactContentDisplayViewController *)self userActivity];
         v17 = 138412546;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2112;
-        v20 = v16;
+        v20 = userActivity5;
         _os_log_impl(&dword_199A75000, v15, OS_LOG_TYPE_INFO, "Activity continuity -  %@ removed %@", &v17, 0x16u);
       }
 
@@ -931,13 +931,13 @@ LABEL_21:
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CNContactContentDisplayViewController;
-  [(CNContactContentDisplayViewController *)&v18 encodeRestorableStateWithCoder:v4];
+  [(CNContactContentDisplayViewController *)&v18 encodeRestorableStateWithCoder:coderCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -961,7 +961,7 @@ LABEL_21:
         v11 = [(CNContactContentDisplayViewController *)self valueForKey:v10];
         if (v11)
         {
-          [v4 encodeObject:v11 forKey:v10];
+          [coderCopy encodeObject:v11 forKey:v10];
         }
       }
 
@@ -971,23 +971,23 @@ LABEL_21:
     while (v7);
   }
 
-  v12 = [(CNContactContentDisplayViewController *)self contact];
-  v13 = [v12 identifier];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  identifier = [contact identifier];
 
-  if (v13)
+  if (identifier)
   {
-    [v4 encodeObject:v13 forKey:@"Identifier"];
+    [coderCopy encodeObject:identifier forKey:@"Identifier"];
   }
 }
 
-- (BOOL)_indexPathIsActionItem:(id)a3
+- (BOOL)_indexPathIsActionItem:(id)item
 {
-  v4 = a3;
-  v5 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [v4 section]);
+  itemCopy = item;
+  v5 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [itemCopy section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v4];
+    v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:itemCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1010,23 +1010,23 @@ LABEL_21:
   return isKindOfClass & 1;
 }
 
-- (id)_itemAtIndexPath:(id)a3
+- (id)_itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [pathCopy section]);
   if ([(CNContactContentDisplayViewController *)self isStandardGroup:v5])
   {
-    v6 = [v5 displayItems];
+    displayItems = [v5 displayItems];
 LABEL_5:
-    v7 = v6;
-    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v7 = displayItems;
+    v8 = [displayItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     goto LABEL_7;
   }
 
-  if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:v4])
+  if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:pathCopy])
   {
-    v6 = [v5 actionItems];
+    displayItems = [v5 actionItems];
     goto LABEL_5;
   }
 
@@ -1036,32 +1036,32 @@ LABEL_7:
   return v8;
 }
 
-- (id)_cardGroupAtTableViewSectionIndex:(int64_t)a3
+- (id)_cardGroupAtTableViewSectionIndex:(int64_t)index
 {
-  v4 = [(CNContactContentDisplayViewController *)self groupIndexFromTableViewSectionIndex:a3];
-  v5 = [(CNContactContentDisplayViewController *)self _currentGroups];
-  if ([v5 count] <= v4)
+  v4 = [(CNContactContentDisplayViewController *)self groupIndexFromTableViewSectionIndex:index];
+  _currentGroups = [(CNContactContentDisplayViewController *)self _currentGroups];
+  if ([_currentGroups count] <= v4)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:v4];
+    v6 = [_currentGroups objectAtIndexedSubscript:v4];
   }
 
   return v6;
 }
 
-- (void)_saveChangesForGroups:(id)a3
+- (void)_saveChangesForGroups:(id)groups
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [groupsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1073,7 +1073,7 @@ LABEL_7:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(groupsCopy);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -1087,27 +1087,27 @@ LABEL_7:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [groupsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_validateGroup:(id)a3
+- (void)_validateGroup:(id)group
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 propertyItems];
+  groupCopy = group;
+  propertyItems = [groupCopy propertyItems];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [propertyItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
-    v18 = self;
+    selfCopy = self;
     v8 = 0;
     v9 = *v20;
     do
@@ -1116,71 +1116,71 @@ LABEL_7:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(propertyItems);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 labeledValue];
-        v13 = [v12 value];
-        v14 = [v11 isValidValue:v13];
+        labeledValue = [v11 labeledValue];
+        value = [labeledValue value];
+        v14 = [v11 isValidValue:value];
 
         if ((v14 & 1) == 0)
         {
-          v15 = [v11 labeledValue];
-          v16 = [v15 value];
-          v17 = [v11 replacementForInvalidValue:v16];
+          labeledValue2 = [v11 labeledValue];
+          value2 = [labeledValue2 value];
+          v17 = [v11 replacementForInvalidValue:value2];
           [v11 updateLabeledValueWithValue:v17];
 
           v8 = 1;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [propertyItems countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
     if (v8)
     {
-      [(CNContactContentDisplayViewController *)v18 reloadCardGroup:v4];
+      [(CNContactContentDisplayViewController *)selfCopy reloadCardGroup:groupCopy];
     }
   }
 }
 
-- (void)_reloadGeminiGroupPreservingChanges:(BOOL)a3
+- (void)_reloadGeminiGroupPreservingChanges:(BOOL)changes
 {
-  if (!a3)
+  if (!changes)
   {
-    v6 = [(CNContactContentDisplayViewController *)self geminiDataSource];
-    [v6 resetDataSource];
-    v5 = [(CNContactContentDisplayViewController *)self contact];
-    [v6 setContact:v5];
+    geminiDataSource = [(CNContactContentDisplayViewController *)self geminiDataSource];
+    [geminiDataSource resetDataSource];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    [geminiDataSource setContact:contact];
   }
 }
 
 - (id)_loadDisplayGroups
 {
   v81 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNContactContentDisplayViewController *)self cardTopGroup];
-  v5 = [v4 actions];
-  v6 = [v5 count];
+  array = [MEMORY[0x1E695DF70] array];
+  cardTopGroup = [(CNContactContentDisplayViewController *)self cardTopGroup];
+  actions = [cardTopGroup actions];
+  v6 = [actions count];
 
   if (v6)
   {
-    v7 = [(CNContactContentDisplayViewController *)self cardTopGroup];
-    [v3 addObject:v7];
+    cardTopGroup2 = [(CNContactContentDisplayViewController *)self cardTopGroup];
+    [array addObject:cardTopGroup2];
   }
 
-  v68 = v3;
+  v68 = array;
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v8 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v9 = [v8 displayedProperties];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  displayedProperties = [contactViewConfiguration displayedProperties];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v75 objects:v80 count:16];
+  obj = displayedProperties;
+  v10 = [displayedProperties countByEnumeratingWithState:&v75 objects:v80 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1195,16 +1195,16 @@ LABEL_7:
         }
 
         v13 = *(*(&v75 + 1) + 8 * i);
-        v14 = [(CNContactContentDisplayViewController *)self propertyGroups];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+        v15 = [propertyGroups objectForKeyedSubscript:v13];
 
-        v16 = [v15 displayItems];
-        if ([v16 count])
+        displayItems = [v15 displayItems];
+        if ([displayItems count])
         {
-          v17 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-          v18 = [v17 primaryProperty];
-          v19 = [v15 property];
-          v20 = [v18 isEqualToString:v19];
+          contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+          primaryProperty = [contactViewConfiguration2 primaryProperty];
+          property = [v15 property];
+          v20 = [primaryProperty isEqualToString:property];
 
           if (v20)
           {
@@ -1216,8 +1216,8 @@ LABEL_7:
           v74 = 0u;
           v71 = 0u;
           v72 = 0u;
-          v16 = [v15 displayItems];
-          v21 = [v16 countByEnumeratingWithState:&v71 objects:v79 count:16];
+          displayItems = [v15 displayItems];
+          v21 = [displayItems countByEnumeratingWithState:&v71 objects:v79 count:16];
           if (v21)
           {
             v22 = v21;
@@ -1228,7 +1228,7 @@ LABEL_7:
               {
                 if (*v72 != v23)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(displayItems);
                 }
 
                 v25 = *(*(&v71 + 1) + 8 * j);
@@ -1239,7 +1239,7 @@ LABEL_7:
                 }
               }
 
-              v22 = [v16 countByEnumeratingWithState:&v71 objects:v79 count:16];
+              v22 = [displayItems countByEnumeratingWithState:&v71 objects:v79 count:16];
             }
 
             while (v22);
@@ -1255,120 +1255,120 @@ LABEL_20:
     while (v11);
   }
 
-  v26 = [(CNContactContentDisplayViewController *)self cardBottomGroup];
-  v27 = [v26 actions];
-  v28 = [v27 count];
+  cardBottomGroup = [(CNContactContentDisplayViewController *)self cardBottomGroup];
+  actions2 = [cardBottomGroup actions];
+  v28 = [actions2 count];
 
   if (v28)
   {
-    v29 = [(CNContactContentDisplayViewController *)self cardBottomGroup];
-    [v68 addObject:v29];
+    cardBottomGroup2 = [(CNContactContentDisplayViewController *)self cardBottomGroup];
+    [v68 addObject:cardBottomGroup2];
   }
 
-  v30 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if ([v30 hideCardActions])
+  contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if ([contactViewConfiguration3 hideCardActions])
   {
     goto LABEL_33;
   }
 
-  v31 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-  v32 = [v31 actions];
-  v33 = [v32 count];
+  cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+  actions3 = [cardActionsGroup actions];
+  v33 = [actions3 count];
 
   if (v33)
   {
-    v34 = [(CNContactContentDisplayViewController *)self cardBottomGroup];
-    v35 = [v34 actions];
-    if ([v35 count])
+    cardBottomGroup3 = [(CNContactContentDisplayViewController *)self cardBottomGroup];
+    actions4 = [cardBottomGroup3 actions];
+    if ([actions4 count])
     {
-      v36 = 1;
+      isSuggested = 1;
     }
 
     else
     {
-      v37 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-      v38 = [v37 primaryProperty];
-      if (v38)
+      contactViewConfiguration4 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+      primaryProperty2 = [contactViewConfiguration4 primaryProperty];
+      if (primaryProperty2)
       {
-        v39 = v38;
-        v36 = 1;
+        contact = primaryProperty2;
+        isSuggested = 1;
       }
 
       else
       {
-        v39 = [(CNContactContentDisplayViewController *)self contact];
-        v36 = [v39 isSuggested];
+        contact = [(CNContactContentDisplayViewController *)self contact];
+        isSuggested = [contact isSuggested];
       }
     }
 
-    v40 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    [v40 setAddSpacerFromPreviousGroup:v36];
+    cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    [cardActionsGroup2 setAddSpacerFromPreviousGroup:isSuggested];
 
-    v30 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    [v68 addObject:v30];
+    contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    [v68 addObject:contactViewConfiguration3];
 LABEL_33:
   }
 
-  v41 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-  if (v41)
+  cardMedicalIDGroup = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+  if (cardMedicalIDGroup)
   {
-    v42 = v41;
-    v43 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-    v44 = [v43 actionItems];
-    v45 = [v44 count];
+    v42 = cardMedicalIDGroup;
+    cardMedicalIDGroup2 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+    actionItems = [cardMedicalIDGroup2 actionItems];
+    v45 = [actionItems count];
 
     if (v45)
     {
-      v46 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-      [v68 addObject:v46];
+      cardMedicalIDGroup3 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+      [v68 addObject:cardMedicalIDGroup3];
     }
   }
 
-  v47 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (([v47 hideCardActions] & 1) == 0)
+  contactViewConfiguration5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (([contactViewConfiguration5 hideCardActions] & 1) == 0)
   {
-    v48 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-    v49 = [v48 actionItems];
-    v50 = [v49 count];
+    cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+    actionItems2 = [cardShareLocationGroup actionItems];
+    v50 = [actionItems2 count];
 
     if (!v50)
     {
       goto LABEL_41;
     }
 
-    v47 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-    [v68 addObject:v47];
+    contactViewConfiguration5 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+    [v68 addObject:contactViewConfiguration5];
   }
 
 LABEL_41:
-  v51 = [(CNContactContentDisplayViewController *)self cardFooterGroup];
-  v52 = [v51 actions];
-  v53 = [v52 count];
+  cardFooterGroup = [(CNContactContentDisplayViewController *)self cardFooterGroup];
+  actions5 = [cardFooterGroup actions];
+  contactViewConfiguration6 = [actions5 count];
 
-  if (v53)
+  if (contactViewConfiguration6)
   {
-    v51 = [(CNContactContentDisplayViewController *)self cardFooterGroup];
-    [v68 addObject:v51];
+    cardFooterGroup = [(CNContactContentDisplayViewController *)self cardFooterGroup];
+    [v68 addObject:cardFooterGroup];
   }
 
-  v54 = [(CNContactContentDisplayViewController *)self isSuggestedContact];
-  if (v54)
+  isSuggestedContact = [(CNContactContentDisplayViewController *)self isSuggestedContact];
+  if (isSuggestedContact)
   {
     v55 = 0;
   }
 
   else
   {
-    v51 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    if ([v51 allowsContactBlocking])
+    cardFooterGroup = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    if ([cardFooterGroup allowsContactBlocking])
     {
       v55 = 0;
     }
 
     else
     {
-      v53 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-      if (([v53 allowsContactBlockingAndReporting] & 1) == 0)
+      contactViewConfiguration6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+      if (([contactViewConfiguration6 allowsContactBlockingAndReporting] & 1) == 0)
       {
 
 LABEL_59:
@@ -1379,14 +1379,14 @@ LABEL_59:
     }
   }
 
-  v56 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-  v57 = [v56 actions];
-  v58 = [v57 count];
+  cardBlockContactGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+  actions6 = [cardBlockContactGroup actions];
+  v58 = [actions6 count];
 
   if (v55)
   {
 
-    if (!v54)
+    if (!isSuggestedContact)
     {
       goto LABEL_49;
     }
@@ -1400,7 +1400,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if (v54)
+  if (isSuggestedContact)
   {
     goto LABEL_52;
   }
@@ -1410,43 +1410,43 @@ LABEL_49:
   if (v58)
   {
 LABEL_53:
-    v59 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v60 = [v59 showContactBlockingFirst];
+    contactViewConfiguration7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    showContactBlockingFirst = [contactViewConfiguration7 showContactBlockingFirst];
 
-    v61 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-    v51 = v61;
-    if (v60)
+    cardBlockContactGroup2 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+    cardFooterGroup = cardBlockContactGroup2;
+    if (showContactBlockingFirst)
     {
-      [v61 setAddSpacerFromPreviousGroup:0];
+      [cardBlockContactGroup2 setAddSpacerFromPreviousGroup:0];
 
-      v51 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v68 insertObject:v51 atIndex:0];
+      cardFooterGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [v68 insertObject:cardFooterGroup atIndex:0];
     }
 
     else
     {
-      [v68 addObject:v61];
+      [v68 addObject:cardBlockContactGroup2];
     }
 
     goto LABEL_59;
   }
 
 LABEL_60:
-  v62 = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
+  cardLinkedCardsGroup = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
 
-  if (v62)
+  if (cardLinkedCardsGroup)
   {
-    v63 = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
-    [v68 addObject:v63];
+    cardLinkedCardsGroup2 = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
+    [v68 addObject:cardLinkedCardsGroup2];
   }
 
-  v64 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v65 = [v64 allowsNamePicking];
+  contactViewConfiguration8 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsNamePicking = [contactViewConfiguration8 allowsNamePicking];
 
-  if (v65)
+  if (allowsNamePicking)
   {
-    v66 = [(CNContactContentDisplayViewController *)self namePickingGroup];
-    [v68 addObject:v66];
+    namePickingGroup = [(CNContactContentDisplayViewController *)self namePickingGroup];
+    [v68 addObject:namePickingGroup];
   }
 
   return v68;
@@ -1457,37 +1457,37 @@ LABEL_60:
   v26 = *MEMORY[0x1E69E9840];
   if ([(CNContactContentDisplayViewController *)self shouldReallyShowLinkedContacts])
   {
-    v3 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v4 = [v3 linkedCardsAction];
+    actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+    linkedCardsAction = [actionProvider linkedCardsAction];
 
-    if (!v4)
+    if (!linkedCardsAction)
     {
-      v5 = [(CNContactContentDisplayViewController *)self actionProvider];
-      [v5 buildLinkedContactActions];
+      actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+      [actionProvider2 buildLinkedContactActions];
     }
 
-    v6 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v7 = [v6 linkedCardsAction];
-    [v7 setContactDelegate:self];
+    actionProvider3 = [(CNContactContentDisplayViewController *)self actionProvider];
+    linkedCardsAction2 = [actionProvider3 linkedCardsAction];
+    [linkedCardsAction2 setContactDelegate:self];
 
     v8 = [CNCardLinkedCardsGroup alloc];
-    v9 = [(CNContactContentDisplayViewController *)self mutableContact];
-    v10 = [(CNCardGroup *)v8 initWithContact:v9];
+    mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+    v10 = [(CNCardGroup *)v8 initWithContact:mutableContact];
     [(CNContactContentDisplayViewController *)self setCardLinkedCardsGroup:v10];
 
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [(CNContactContentDisplayViewController *)self contact];
-    v13 = [v12 mainStoreLinkedContacts];
+    array = [MEMORY[0x1E695DF70] array];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    mainStoreLinkedContacts = [contact mainStoreLinkedContacts];
 
-    v14 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
+    shadowCopyOfReadonlyContact = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
 
-    if (!v14)
+    if (!shadowCopyOfReadonlyContact)
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v15 = v13;
+      v15 = mainStoreLinkedContacts;
       v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v16)
       {
@@ -1502,7 +1502,7 @@ LABEL_60:
               objc_enumerationMutation(v15);
             }
 
-            [v11 addObject:{*(*(&v21 + 1) + 8 * i), v21}];
+            [array addObject:{*(*(&v21 + 1) + 8 * i), v21}];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1512,15 +1512,15 @@ LABEL_60:
       }
     }
 
-    if ([v11 count] < 2)
+    if ([array count] < 2)
     {
       [(CNContactContentDisplayViewController *)self setCardLinkedCardsGroup:0];
     }
 
     else
     {
-      v20 = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
-      [v20 setLinkedContacts:v11];
+      cardLinkedCardsGroup = [(CNContactContentDisplayViewController *)self cardLinkedCardsGroup];
+      [cardLinkedCardsGroup setLinkedContacts:array];
     }
   }
 
@@ -1533,28 +1533,28 @@ LABEL_60:
 
 - (BOOL)shouldReallyShowLinkedContacts
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if ([v3 shouldShowLinkedContacts])
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if ([contactViewConfiguration shouldShowLinkedContacts])
   {
-    v4 = [(CNContactContentDisplayViewController *)self contact];
-    v5 = [v4 mainStoreLinkedContacts];
-    if ([v5 count] < 2)
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    mainStoreLinkedContacts = [contact mainStoreLinkedContacts];
+    if ([mainStoreLinkedContacts count] < 2)
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v6 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
-      if (v6)
+      shadowCopyOfReadonlyContact = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
+      if (shadowCopyOfReadonlyContact)
       {
         LOBYTE(v7) = 0;
       }
 
       else
       {
-        v8 = [(CNContactContentDisplayViewController *)self contact];
-        v7 = [v8 isSuggestedMe] ^ 1;
+        contact2 = [(CNContactContentDisplayViewController *)self contact];
+        v7 = [contact2 isSuggestedMe] ^ 1;
       }
     }
   }
@@ -1569,42 +1569,42 @@ LABEL_60:
 
 - (void)_reloadAlertGroups
 {
-  v3 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E695C1E0]];
-  v5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v4 setAllowsDisplayModePickerActions:{objc_msgSend(v5, "allowsDisplayModePickerActions")}];
+  propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+  v4 = [propertyGroups objectForKeyedSubscript:*MEMORY[0x1E695C1E0]];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [v4 setAllowsDisplayModePickerActions:{objc_msgSend(contactViewConfiguration, "allowsDisplayModePickerActions")}];
 
-  v8 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v6 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695C3F8]];
-  v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v6 setAllowsDisplayModePickerActions:{objc_msgSend(v7, "allowsDisplayModePickerActions")}];
+  propertyGroups2 = [(CNContactContentDisplayViewController *)self propertyGroups];
+  v6 = [propertyGroups2 objectForKeyedSubscript:*MEMORY[0x1E695C3F8]];
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [v6 setAllowsDisplayModePickerActions:{objc_msgSend(contactViewConfiguration2, "allowsDisplayModePickerActions")}];
 }
 
 - (void)_reloadMedicalIDGroup
 {
-  v3 = [(CNContactContentDisplayViewController *)self environment];
-  v4 = [v3 healthStoreManager];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  healthStoreManager = [environment healthStoreManager];
 
-  v5 = [(CNContactContentDisplayViewController *)self medicalIDLookupToken];
-  [v5 cancel];
+  medicalIDLookupToken = [(CNContactContentDisplayViewController *)self medicalIDLookupToken];
+  [medicalIDLookupToken cancel];
 
   [(CNContactContentDisplayViewController *)self setMedicalIDLookupToken:0];
   [(CNContactContentDisplayViewController *)self setMedicalIDRegistrationToken:0];
   [(CNContactContentDisplayViewController *)self setCardMedicalIDGroup:0];
-  v6 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v6 setIsEmergencyContact:0];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView setIsEmergencyContact:0];
 
-  v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (([v7 allowsActions] & 1) == 0)
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (([contactViewConfiguration allowsActions] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v9 = [v8 allowsCardActions];
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsCardActions = [contactViewConfiguration2 allowsCardActions];
 
-  if (!v9)
+  if (!allowsCardActions)
   {
 LABEL_6:
     [(CNContactContentDisplayViewController *)self setCardMedicalIDGroup:0];
@@ -1622,7 +1622,7 @@ LABEL_6:
     v22[2] = __62__CNContactContentDisplayViewController__reloadMedicalIDGroup__block_invoke;
     v22[3] = &unk_1E74E7268;
     objc_copyWeak(&v24, &location);
-    v10 = v4;
+    v10 = healthStoreManager;
     v23 = v10;
     v11 = [v10 registerMedicalIDDataHandler:v22];
     [(CNContactContentDisplayViewController *)self setMedicalIDRegistrationToken:v11];
@@ -1893,27 +1893,27 @@ void __62__CNContactContentDisplayViewController__reloadMedicalIDGroup__block_in
   }
 }
 
-- (void)_addMedicalIDGroupAnimated:(BOOL)a3
+- (void)_addMedicalIDGroupAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self displayGroups];
+  animatedCopy = animated;
+  displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___block_invoke;
   aBlock[3] = &unk_1E74E7218;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [v5 indexOfObjectPassingTest:v6];
+  v7 = [displayGroups indexOfObjectPassingTest:v6];
   if (v7)
   {
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 lastObject];
+      [displayGroups lastObject];
     }
 
     else
     {
-      [v5 objectAtIndexedSubscript:v7 - 1];
+      [displayGroups objectAtIndexedSubscript:v7 - 1];
     }
     v8 = ;
   }
@@ -1923,8 +1923,8 @@ void __62__CNContactContentDisplayViewController__reloadMedicalIDGroup__block_in
     v8 = 0;
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-  [(CNContactContentDisplayViewController *)self _addGroup:v9 afterGroup:v8 animated:v3];
+  cardMedicalIDGroup = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+  [(CNContactContentDisplayViewController *)self _addGroup:cardMedicalIDGroup afterGroup:v8 animated:animatedCopy];
 }
 
 BOOL __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___block_invoke(uint64_t a1, void *a2)
@@ -1963,14 +1963,14 @@ BOOL __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___bl
   return v8;
 }
 
-- (void)_addGroup:(id)a3 afterGroup:(id)a4 animated:(BOOL)a5
+- (void)_addGroup:(id)group afterGroup:(id)afterGroup animated:(BOOL)animated
 {
-  v5 = a5;
-  v16 = a4;
-  v8 = a3;
-  v9 = [(CNContactContentDisplayViewController *)self contactView];
-  v10 = [(CNContactContentDisplayViewController *)self displayGroups];
-  if (v16 && (v11 = [v10 indexOfObject:v16], v11 != 0x7FFFFFFFFFFFFFFFLL))
+  animatedCopy = animated;
+  afterGroupCopy = afterGroup;
+  groupCopy = group;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
+  if (afterGroupCopy && (v11 = [displayGroups indexOfObject:afterGroupCopy], v11 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v12 = v11 + 1;
   }
@@ -1980,12 +1980,12 @@ BOOL __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___bl
     v12 = 0;
   }
 
-  [v9 beginUpdates];
-  [v10 insertObject:v8 atIndex:v12];
+  [contactView beginUpdates];
+  [displayGroups insertObject:groupCopy atIndex:v12];
 
   v13 = [(CNContactContentDisplayViewController *)self tableViewSectionIndexFromGroupIndex:v12];
   v14 = [MEMORY[0x1E696AC90] indexSetWithIndex:v13];
-  if (v5)
+  if (animatedCopy)
   {
     v15 = 6;
   }
@@ -1995,9 +1995,9 @@ BOOL __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___bl
     v15 = 5;
   }
 
-  [v9 insertSections:v14 withRowAnimation:v15];
+  [contactView insertSections:v14 withRowAnimation:v15];
 
-  [v9 endUpdates];
+  [contactView endUpdates];
   [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
 }
 
@@ -2013,62 +2013,62 @@ BOOL __68__CNContactContentDisplayViewController__addMedicalIDGroupAnimated___bl
     return 0;
   }
 
-  v3 = [(CNContactContentDisplayViewController *)self displayGroups];
+  displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
 
-  if (!v3)
+  if (!displayGroups)
   {
     return 0;
   }
 
-  v4 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+  cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
 
-  if (!v4)
+  if (!cardShareLocationGroup)
   {
     return 0;
   }
 
-  v5 = [(CNContactContentDisplayViewController *)self displayGroups];
-  v6 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-  v7 = [v5 _cn_containsObject:v6];
+  displayGroups2 = [(CNContactContentDisplayViewController *)self displayGroups];
+  cardShareLocationGroup2 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+  v7 = [displayGroups2 _cn_containsObject:cardShareLocationGroup2];
 
   return v7 ^ 1;
 }
 
-- (void)_addShareLocationGroupAnimated:(BOOL)a3
+- (void)_addShareLocationGroupAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CNContactContentDisplayViewController *)self shouldAddShareLocationGroup])
   {
     if (([(CNContactContentDisplayViewController *)self isEditing]& 1) == 0)
     {
-      v5 = [(CNContactContentDisplayViewController *)self displayGroups];
+      displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
 
-      if (v5)
+      if (displayGroups)
       {
-        v6 = [(CNContactContentDisplayViewController *)self displayGroups];
+        displayGroups2 = [(CNContactContentDisplayViewController *)self displayGroups];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __72__CNContactContentDisplayViewController__addShareLocationGroupAnimated___block_invoke;
         v12[3] = &unk_1E74E6B20;
         v12[4] = self;
-        v7 = [v6 _cn_indexOfFirstObjectPassingTest:v12];
+        v7 = [displayGroups2 _cn_indexOfFirstObjectPassingTest:v12];
 
         if (v7 && v7 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v8 = [(CNContactContentDisplayViewController *)self displayGroups];
-          v9 = [v8 objectAtIndexedSubscript:v7 - 1];
+          displayGroups3 = [(CNContactContentDisplayViewController *)self displayGroups];
+          lastObject = [displayGroups3 objectAtIndexedSubscript:v7 - 1];
         }
 
         else
         {
-          v8 = [(CNContactContentDisplayViewController *)self displayGroups];
-          v9 = [v8 lastObject];
+          displayGroups3 = [(CNContactContentDisplayViewController *)self displayGroups];
+          lastObject = [displayGroups3 lastObject];
         }
 
-        v10 = v9;
+        v10 = lastObject;
 
-        v11 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-        [(CNContactContentDisplayViewController *)self _addGroup:v11 afterGroup:v10 animated:v3];
+        cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+        [(CNContactContentDisplayViewController *)self _addGroup:cardShareLocationGroup afterGroup:v10 animated:animatedCopy];
       }
     }
   }
@@ -2108,42 +2108,42 @@ BOOL __72__CNContactContentDisplayViewController__addShareLocationGroupAnimated_
     return 0;
   }
 
-  v3 = [(CNContactContentDisplayViewController *)self displayGroups];
+  displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
 
-  if (!v3)
+  if (!displayGroups)
   {
     return 0;
   }
 
-  v4 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
+  cardFaceTimeGroup = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
 
-  if (!v4)
+  if (!cardFaceTimeGroup)
   {
     return 0;
   }
 
-  v5 = [(CNContactContentDisplayViewController *)self displayGroups];
-  v6 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
-  v7 = [v5 containsObject:v6];
+  displayGroups2 = [(CNContactContentDisplayViewController *)self displayGroups];
+  cardFaceTimeGroup2 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
+  v7 = [displayGroups2 containsObject:cardFaceTimeGroup2];
 
   if (v7)
   {
     return 0;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
-  v11 = [v10 contact];
+  cardFaceTimeGroup3 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
+  contact = [cardFaceTimeGroup3 contact];
 
-  v12 = [(CNContactContentDisplayViewController *)self displayGroups];
+  displayGroups3 = [(CNContactContentDisplayViewController *)self displayGroups];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__block_invoke;
   v14[3] = &unk_1E74E71A8;
-  v15 = v11;
-  v13 = v11;
-  LOBYTE(v11) = [v12 _cn_any:v14];
+  v15 = contact;
+  v13 = contact;
+  LOBYTE(contact) = [displayGroups3 _cn_any:v14];
 
-  v8 = v11 ^ 1;
+  v8 = contact ^ 1;
   return v8;
 }
 
@@ -2179,9 +2179,9 @@ uint64_t __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__blo
   return v9;
 }
 
-- (void)_addFaceTimeGroupAnimated:(BOOL)a3
+- (void)_addFaceTimeGroupAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v10[2] = *MEMORY[0x1E69E9840];
   if (([(CNContactContentDisplayViewController *)self isEditing]& 1) == 0)
   {
@@ -2193,23 +2193,23 @@ uint64_t __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__blo
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
       v7 = [(CNContactContentDisplayViewController *)self _propertyGroupsForKeys:v6];
 
-      v8 = [v7 firstObject];
-      v9 = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
-      [(CNContactContentDisplayViewController *)self _addGroup:v9 afterGroup:v8 animated:v3];
+      firstObject = [v7 firstObject];
+      cardFaceTimeGroup = [(CNContactContentDisplayViewController *)self cardFaceTimeGroup];
+      [(CNContactContentDisplayViewController *)self _addGroup:cardFaceTimeGroup afterGroup:firstObject animated:animatedCopy];
     }
   }
 }
 
-- (id)_propertyGroupsForKeys:(id)a3
+- (id)_propertyGroupsForKeys:(id)keys
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  keysCopy = keys;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2225,8 +2225,8 @@ uint64_t __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__blo
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(CNContactContentDisplayViewController *)self propertyGroups];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+        v13 = [propertyGroups objectForKeyedSubscript:v11];
 
         if (v13)
         {
@@ -2257,41 +2257,41 @@ uint64_t __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__blo
     v4 = 1;
   }
 
-  v5 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
+  propertyGroupsDataSource = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
   v6 = *MEMORY[0x1E695C208];
   v26[0] = *MEMORY[0x1E695C330];
   v26[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-  v8 = [v5 allDisplayPropertyItemsForPropertyKeys:v7];
+  v8 = [propertyGroupsDataSource allDisplayPropertyItemsForPropertyKeys:v7];
 
-  v9 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (![v9 allowsActions])
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (![contactViewConfiguration allowsActions])
   {
     goto LABEL_12;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (([v10 allowsConferencing] & 1) == 0)
-  {
-
-    goto LABEL_12;
-  }
-
-  v11 = [(CNContactContentDisplayViewController *)self contact];
-  if ((([v11 isSuggested] | v4) & 1) != 0 || !objc_msgSend(v8, "count"))
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (([contactViewConfiguration2 allowsConferencing] & 1) == 0)
   {
 
     goto LABEL_12;
   }
 
-  v12 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v13 = [v12 primaryProperty];
-  v14 = v13 == 0;
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  if ((([contact isSuggested] | v4) & 1) != 0 || !objc_msgSend(v8, "count"))
+  {
+
+    goto LABEL_12;
+  }
+
+  contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  primaryProperty = [contactViewConfiguration3 primaryProperty];
+  v14 = primaryProperty == 0;
 
   if (v14)
   {
     v15 = [v8 _cn_filter:&__block_literal_global_3_58876];
-    v9 = [v15 _cn_map:&__block_literal_global_58871];
+    contactViewConfiguration = [v15 _cn_map:&__block_literal_global_58871];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -2301,11 +2301,11 @@ uint64_t __63__CNContactContentDisplayViewController_shouldAddFaceTimeGroup__blo
     objc_copyWeak(&v24, &location);
     v16 = _Block_copy(aBlock);
     v17 = MEMORY[0x1E6996B68];
-    v18 = [(CNContactContentDisplayViewController *)self environment];
-    v19 = [v18 idsAvailabilityProvider];
-    v20 = [(CNContactContentDisplayViewController *)self environment];
-    v21 = [v20 defaultSchedulerProvider];
-    v22 = [v17 validateHandlesForFaceTime:v9 availabilityProvider:v19 schedulerProvider:v21 handler:v16];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    idsAvailabilityProvider = [environment idsAvailabilityProvider];
+    environment2 = [(CNContactContentDisplayViewController *)self environment];
+    defaultSchedulerProvider = [environment2 defaultSchedulerProvider];
+    v22 = [v17 validateHandlesForFaceTime:contactViewConfiguration availabilityProvider:idsAvailabilityProvider schedulerProvider:defaultSchedulerProvider handler:v16];
     [(CNContactContentDisplayViewController *)self setFaceTimeIDSLookupToken:v22];
 
     objc_destroyWeak(&v24);
@@ -2343,18 +2343,18 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
   }
 }
 
-- (void)_reloadPropertyGroupsPreservingChanges:(BOOL)a3
+- (void)_reloadPropertyGroupsPreservingChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v5 = [v4 allValues];
+  propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+  allValues = [propertyGroups allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2366,14 +2366,14 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) reloadDataPreservingChanges:v3];
+        [*(*(&v10 + 1) + 8 * v9++) reloadDataPreservingChanges:changesCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -2383,45 +2383,45 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
 - (id)_loadPropertyGroups
 {
   v3 = [CNPropertyGroupsDataSource alloc];
-  v4 = [(CNContactContentDisplayViewController *)self mutableContact];
-  v5 = [(CNContactContentDisplayViewController *)self contactStore];
-  v6 = [(CNContactContentDisplayViewController *)self policy];
-  v7 = [(CNContactContentDisplayViewController *)self linkedPoliciesByContactIdentifier];
-  v8 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
-  v9 = [(CNPropertyGroupsDataSource *)v3 initWithMutableContact:v4 contactStore:v5 policy:v6 linkedPolicies:v7 prohibitedKeys:v8];
+  mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+  contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+  policy = [(CNContactContentDisplayViewController *)self policy];
+  linkedPoliciesByContactIdentifier = [(CNContactContentDisplayViewController *)self linkedPoliciesByContactIdentifier];
+  prohibitedPropertyKeys = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
+  v9 = [(CNPropertyGroupsDataSource *)v3 initWithMutableContact:mutableContact contactStore:contactStore policy:policy linkedPolicies:linkedPoliciesByContactIdentifier prohibitedKeys:prohibitedPropertyKeys];
   propertyGroupsDataSource = self->_propertyGroupsDataSource;
   self->_propertyGroupsDataSource = v9;
 
-  v11 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
-  [v11 buildPropertyGroups];
+  propertyGroupsDataSource = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
+  [propertyGroupsDataSource buildPropertyGroups];
 
-  v12 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
-  v13 = [v12 propertyGroups];
+  propertyGroupsDataSource2 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
+  propertyGroups = [propertyGroupsDataSource2 propertyGroups];
 
-  return v13;
+  return propertyGroups;
 }
 
 - (BOOL)shouldShowGemini
 {
-  v3 = [(CNContactContentDisplayViewController *)self geminiDataSource];
-  v4 = [v3 geminiResult];
+  geminiDataSource = [(CNContactContentDisplayViewController *)self geminiDataSource];
+  geminiResult = [geminiDataSource geminiResult];
 
-  if (v4 && ![(CNContactContentDisplayViewController *)self showingMeContact])
+  if (geminiResult && ![(CNContactContentDisplayViewController *)self showingMeContact])
   {
-    v6 = [(CNContactContentDisplayViewController *)self contact];
-    if ([v6 isSuggested])
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    if ([contact isSuggested])
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-      v8 = [v7 displayedProperties];
-      if ([v8 containsObject:*MEMORY[0x1E695C330]])
+      contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+      displayedProperties = [contactViewConfiguration displayedProperties];
+      if ([displayedProperties containsObject:*MEMORY[0x1E695C330]])
       {
-        v9 = [(CNContactContentDisplayViewController *)self contact];
-        v5 = [CNContactContentDisplayViewController shouldShowGeminiForResult:v4 contact:v9];
+        contact2 = [(CNContactContentDisplayViewController *)self contact];
+        v5 = [CNContactContentDisplayViewController shouldShowGeminiForResult:geminiResult contact:contact2];
       }
 
       else
@@ -2439,12 +2439,12 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
   return v5;
 }
 
-- (Class)groupClassForProperty:(id)a3
+- (Class)groupClassForProperty:(id)property
 {
-  v3 = a3;
-  if (([v3 isEqualToString:*MEMORY[0x1E695C1E0]] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C370]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0)
+  propertyCopy = property;
+  if (([propertyCopy isEqualToString:*MEMORY[0x1E695C1E0]] & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C3F8]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C370]) & 1) == 0 && (objc_msgSend(propertyCopy, "isEqualToString:", *MEMORY[0x1E695C200]) & 1) == 0)
   {
-    [v3 isEqualToString:*MEMORY[0x1E695C1C0]];
+    [propertyCopy isEqualToString:*MEMORY[0x1E695C1C0]];
   }
 
   v4 = objc_opt_class();
@@ -2452,15 +2452,15 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
   return v4;
 }
 
-- (void)_updateTTYTransportButtonsForItems:(id)a3
+- (void)_updateTTYTransportButtonsForItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2472,12 +2472,12 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 property];
-        v12 = [v11 isEqualToString:v8];
+        property = [v10 property];
+        v12 = [property isEqualToString:v8];
 
         if (v12)
         {
@@ -2485,22 +2485,22 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateEmailTransportButtonsForItems:(id)a3
+- (void)_updateEmailTransportButtonsForItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2512,12 +2512,12 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 property];
-        v11 = [v10 isEqualToString:v7];
+        property = [v9 property];
+        v11 = [property isEqualToString:v7];
 
         if (v11)
         {
@@ -2525,22 +2525,22 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updatePhoneTransportButtonsForItems:(id)a3
+- (void)_updatePhoneTransportButtonsForItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2552,12 +2552,12 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 property];
-        v11 = [v10 isEqualToString:v7];
+        property = [v9 property];
+        v11 = [property isEqualToString:v7];
 
         if (v11)
         {
@@ -2567,30 +2567,30 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updateIMessageTransportButtonsForItems:(id)a3
+- (void)_updateIMessageTransportButtonsForItems:(id)items
 {
-  v26 = self;
+  selfCopy = self;
   v38[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v27 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
+  itemsCopy = items;
+  v27 = [MEMORY[0x1E695DF70] arrayWithArray:itemsCopy];
   v4 = *MEMORY[0x1E695CBC0];
   v38[0] = *MEMORY[0x1E695CB90];
   v38[1] = v4;
   v38[2] = *MEMORY[0x1E695CB70];
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
-  v28 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v6)
   {
@@ -2607,17 +2607,17 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 property];
-        if ([v12 isEqualToString:v9])
+        property = [v11 property];
+        if ([property isEqualToString:v9])
         {
-          v13 = [v11 labeledValue];
-          v14 = [v13 label];
-          v15 = [v29 containsObject:v14];
+          labeledValue = [v11 labeledValue];
+          label = [labeledValue label];
+          v15 = [v29 containsObject:label];
 
           if (v15)
           {
             [v11 setAllowsIMessage:1];
-            [v28 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -2632,7 +2632,7 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
     while (v7);
   }
 
-  [v27 removeObjectsInArray:v28];
+  [v27 removeObjectsInArray:array];
   if ([v27 count])
   {
     v16 = [v27 _cn_filter:&__block_literal_global_3_58876];
@@ -2647,12 +2647,12 @@ void __61__CNContactContentDisplayViewController__reloadFaceTimeGroup__block_inv
     v18 = v17;
     v19 = _Block_copy(aBlock);
     v20 = MEMORY[0x1E6996B68];
-    v21 = [(CNContactContentDisplayViewController *)v26 environment];
-    v22 = [v21 idsAvailabilityProvider];
-    v23 = [(CNContactContentDisplayViewController *)v26 environment];
-    v24 = [v23 defaultSchedulerProvider];
-    v25 = [v20 validateHandlesForIMessage:v18 availabilityProvider:v22 schedulerProvider:v24 handler:v19];
-    [(CNContactContentDisplayViewController *)v26 setIMessageIDSLookupToken:v25];
+    environment = [(CNContactContentDisplayViewController *)selfCopy environment];
+    idsAvailabilityProvider = [environment idsAvailabilityProvider];
+    environment2 = [(CNContactContentDisplayViewController *)selfCopy environment];
+    defaultSchedulerProvider = [environment2 defaultSchedulerProvider];
+    v25 = [v20 validateHandlesForIMessage:v18 availabilityProvider:idsAvailabilityProvider schedulerProvider:defaultSchedulerProvider handler:v19];
+    [(CNContactContentDisplayViewController *)selfCopy setIMessageIDSLookupToken:v25];
   }
 }
 
@@ -2703,52 +2703,52 @@ uint64_t __81__CNContactContentDisplayViewController__updateIMessageTransportBut
   return v5;
 }
 
-- (void)_updateAvailableTransportsForItems:(id)a3
+- (void)_updateAvailableTransportsForItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v4 = +[CNCapabilitiesManager defaultCapabilitiesManager];
   if ([v4 isMessagesAppAvailable])
   {
-    [(CNContactContentDisplayViewController *)self _updateIMessageTransportButtonsForItems:v5];
+    [(CNContactContentDisplayViewController *)self _updateIMessageTransportButtonsForItems:itemsCopy];
   }
 
   if ([v4 isPhoneAppAvailable])
   {
-    [(CNContactContentDisplayViewController *)self _updatePhoneTransportButtonsForItems:v5];
+    [(CNContactContentDisplayViewController *)self _updatePhoneTransportButtonsForItems:itemsCopy];
   }
 
   if ([v4 isMailAppAvailable])
   {
-    [(CNContactContentDisplayViewController *)self _updateEmailTransportButtonsForItems:v5];
+    [(CNContactContentDisplayViewController *)self _updateEmailTransportButtonsForItems:itemsCopy];
   }
 
-  [(CNContactContentDisplayViewController *)self _updateTTYTransportButtonsForItems:v5];
+  [(CNContactContentDisplayViewController *)self _updateTTYTransportButtonsForItems:itemsCopy];
 }
 
 - (void)_updateAvailableTransports
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
+  propertyGroupsDataSource = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
   v4 = *MEMORY[0x1E695C208];
   v7[0] = *MEMORY[0x1E695C330];
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  v6 = [v3 allDisplayPropertyItemsForPropertyKeys:v5];
+  v6 = [propertyGroupsDataSource allDisplayPropertyItemsForPropertyKeys:v5];
 
   [(CNContactContentDisplayViewController *)self _updateAvailableTransportsForItems:v6];
 }
 
 - (id)_clearRecentsDataAction
 {
-  v3 = [(CNContactContentDisplayViewController *)self recentsData];
+  recentsData = [(CNContactContentDisplayViewController *)self recentsData];
 
-  if (v3 && ![(CNContactContentDisplayViewController *)self isSuggestedContact])
+  if (recentsData && ![(CNContactContentDisplayViewController *)self isSuggestedContact])
   {
     v5 = [CNContactClearRecentsDataAction alloc];
-    v6 = [(CNContactContentDisplayViewController *)self recentsData];
-    v7 = [(CNContactContentDisplayViewController *)self environment];
-    v8 = [v7 recentsManager];
-    v4 = [(CNContactClearRecentsDataAction *)v5 initWithRecentsData:v6 coreRecentsManager:v8];
+    recentsData2 = [(CNContactContentDisplayViewController *)self recentsData];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    recentsManager = [environment recentsManager];
+    v4 = [(CNContactClearRecentsDataAction *)v5 initWithRecentsData:recentsData2 coreRecentsManager:recentsManager];
   }
 
   else
@@ -2762,17 +2762,17 @@ uint64_t __81__CNContactContentDisplayViewController__updateIMessageTransportBut
 - (id)_updateExistingContactAction
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactContentDisplayViewController *)self contactFormatter];
-  v4 = [(CNContactContentDisplayViewController *)self contact];
-  v5 = [v3 stringFromContact:v4];
+  contactFormatter = [(CNContactContentDisplayViewController *)self contactFormatter];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  v5 = [contactFormatter stringFromContact:contact];
 
   if (v5)
   {
     v6 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:v5];
     v7 = objc_alloc(MEMORY[0x1E695CD78]);
-    v8 = [(CNContactContentDisplayViewController *)self contactFormatter];
-    v9 = [v8 descriptorForRequiredKeys];
-    v26[0] = v9;
+    contactFormatter2 = [(CNContactContentDisplayViewController *)self contactFormatter];
+    descriptorForRequiredKeys = [contactFormatter2 descriptorForRequiredKeys];
+    v26[0] = descriptorForRequiredKeys;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v11 = [v7 initWithKeysToFetch:v10];
 
@@ -2785,21 +2785,21 @@ uint64_t __81__CNContactContentDisplayViewController__updateIMessageTransportBut
     v23 = __Block_byref_object_copy__59503;
     v24 = __Block_byref_object_dispose__59504;
     v25 = 0;
-    v12 = [(CNContactContentDisplayViewController *)self contactStore];
+    contactStore = [(CNContactContentDisplayViewController *)self contactStore];
     v18[4] = &v20;
     v19 = 0;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__CNContactContentDisplayViewController__updateExistingContactAction__block_invoke;
     v18[3] = &unk_1E74E6F60;
-    [v12 enumerateContactsWithFetchRequest:v11 error:&v19 usingBlock:v18];
+    [contactStore enumerateContactsWithFetchRequest:v11 error:&v19 usingBlock:v18];
     v13 = v19;
 
     if (v21[5])
     {
       v14 = [CNContactUpdateExistingContactAction alloc];
-      v15 = [(CNContactContentDisplayViewController *)self contact];
-      v16 = [(CNContactAction *)v14 initWithContact:v15];
+      contact2 = [(CNContactContentDisplayViewController *)self contact];
+      v16 = [(CNContactAction *)v14 initWithContact:contact2];
 
       [(CNContactUpdateExistingContactAction *)v16 setExistingContact:v21[5]];
       [(CNContactAction *)v16 setDelegate:self];
@@ -2847,9 +2847,9 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
   if (!shareLocationController)
   {
     v4 = [CNShareLocationController alloc];
-    v5 = [(CNContactContentDisplayViewController *)self environment];
-    v6 = [v5 idsAvailabilityProvider];
-    v7 = [(CNShareLocationController *)v4 initWithIDSAvailabilityProvider:v6];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    idsAvailabilityProvider = [environment idsAvailabilityProvider];
+    v7 = [(CNShareLocationController *)v4 initWithIDSAvailabilityProvider:idsAvailabilityProvider];
     v8 = self->_shareLocationController;
     self->_shareLocationController = v7;
 
@@ -2863,11 +2863,11 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
 - (id)_addNewFieldAction
 {
   v3 = [CNContactAddNewFieldAction alloc];
-  v4 = [(CNContactContentDisplayViewController *)self contact];
-  v5 = [(CNContactAction *)v3 initWithContact:v4];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  v5 = [(CNContactAction *)v3 initWithContact:contact];
 
-  v6 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
-  [(CNContactAddNewFieldAction *)v5 setProhibitedPropertyKeys:v6];
+  prohibitedPropertyKeys = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
+  [(CNContactAddNewFieldAction *)v5 setProhibitedPropertyKeys:prohibitedPropertyKeys];
 
   [(CNContactAction *)v5 setDelegate:self];
   [(CNContactAddNewFieldAction *)v5 setGroupPickerDelegate:self];
@@ -2880,19 +2880,19 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
   v28 = *MEMORY[0x1E69E9840];
   if ([(CNContactContentDisplayViewController *)self allowsEditInApp])
   {
-    v3 = [(CNContactContentDisplayViewController *)self contact];
-    v4 = [v3 isSuggested];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    isSuggested = [contact isSuggested];
 
-    if ((v4 & 1) == 0)
+    if ((isSuggested & 1) == 0)
     {
       v5 = [CNEditInAppAction alloc];
-      v6 = [(CNContactContentDisplayViewController *)self contact];
-      v7 = [(CNContactContentDisplayViewController *)self activityManager];
-      v8 = [(CNEditInAppAction *)v5 initWithContact:v6 activityManager:v7];
+      contact2 = [(CNContactContentDisplayViewController *)self contact];
+      activityManager = [(CNContactContentDisplayViewController *)self activityManager];
+      v8 = [(CNEditInAppAction *)v5 initWithContact:contact2 activityManager:activityManager];
 
-      v9 = [(CNContactContentDisplayViewController *)self cardFooterGroup];
-      v10 = [(CNEditInAppAction *)v8 title];
-      [v9 addAction:v8 withTitle:v10];
+      cardFooterGroup = [(CNContactContentDisplayViewController *)self cardFooterGroup];
+      title = [(CNEditInAppAction *)v8 title];
+      [cardFooterGroup addAction:v8 withTitle:title];
     }
   }
 
@@ -2900,8 +2900,8 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [(CNContactContentDisplayViewController *)self customActions];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  customActions = [(CNContactContentDisplayViewController *)self customActions];
+  v12 = [customActions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2912,30 +2912,30 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(customActions);
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
         v17 = +[CNCustomCardAction groupForActionGivenPlacement:inContactContentViewController:](CNCustomCardAction, "groupForActionGivenPlacement:inContactContentViewController:", [v16 placement], self);
-        v18 = [v16 menuProvider];
+        menuProvider = [v16 menuProvider];
 
-        if (v18)
+        if (menuProvider)
         {
           [v17 setDisplaysDropdownMenu:1];
-          v19 = [v16 title];
-          v20 = [v16 menuProvider];
-          v21 = [v17 addActionWithTitle:v19 menuProvider:v20 destructive:{objc_msgSend(v16, "isDestructive")}];
+          title2 = [v16 title];
+          menuProvider2 = [v16 menuProvider];
+          v21 = [v17 addActionWithTitle:title2 menuProvider:menuProvider2 destructive:{objc_msgSend(v16, "isDestructive")}];
         }
 
         else
         {
-          v19 = [v16 title];
-          v20 = [v16 targetActionWrapper];
-          v22 = [v17 addActionWithTitle:v19 target:v20 selector:sel_performActionWithSender_ destructive:{objc_msgSend(v16, "isDestructive")}];
+          title2 = [v16 title];
+          menuProvider2 = [v16 targetActionWrapper];
+          v22 = [v17 addActionWithTitle:title2 target:menuProvider2 selector:sel_performActionWithSender_ destructive:{objc_msgSend(v16, "isDestructive")}];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [customActions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
@@ -2944,72 +2944,72 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
 
 - (void)_setupAddToAddressBookActions
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v4 = [v3 allowsAddingToAddressBook];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsAddingToAddressBook = [contactViewConfiguration allowsAddingToAddressBook];
 
-  if (v4)
+  if (allowsAddingToAddressBook)
   {
-    v5 = [(CNContactContentDisplayViewController *)self actionProvider];
-    [v5 buildAddContactActions];
+    actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+    [actionProvider buildAddContactActions];
 
-    v6 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    v7 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v8 = [v7 createNewContactAction];
+    cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+    createNewContactAction = [actionProvider2 createNewContactAction];
     v9 = CNContactsUIBundle();
     v10 = [v9 localizedStringForKey:@"UNKNOWN_CARD_CREATE_NEW_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-    [v6 addAction:v8 withTitle:v10];
+    [cardActionsGroup addAction:createNewContactAction withTitle:v10];
 
-    v11 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    v12 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v13 = [v12 addToExistingContactAction];
+    cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    actionProvider3 = [(CNContactContentDisplayViewController *)self actionProvider];
+    addToExistingContactAction = [actionProvider3 addToExistingContactAction];
     v14 = CNContactsUIBundle();
     v15 = [v14 localizedStringForKey:@"UNKNOWN_CARD_ADD_TO_EXISTING_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-    [v11 addAction:v13 withTitle:v15];
+    [cardActionsGroup2 addAction:addToExistingContactAction withTitle:v15];
 
-    v30 = [(CNContactContentDisplayViewController *)self _updateExistingContactAction];
-    if (v30)
+    _updateExistingContactAction = [(CNContactContentDisplayViewController *)self _updateExistingContactAction];
+    if (_updateExistingContactAction)
     {
-      [(CNContactContentDisplayViewController *)self setUpdateExistingContactAction:v30];
+      [(CNContactContentDisplayViewController *)self setUpdateExistingContactAction:_updateExistingContactAction];
       v16 = MEMORY[0x1E696AEC0];
       v17 = CNContactsUIBundle();
       v18 = [v17 localizedStringForKey:@"UNKNOWN_CARD_ADD_UPDATE_CONTACT-%@" value:&stru_1F0CE7398 table:@"Localized"];
-      v19 = [(CNContactContentDisplayViewController *)self contactFormatter];
-      v20 = [v30 existingContact];
-      v21 = [v19 stringFromContact:v20];
+      contactFormatter = [(CNContactContentDisplayViewController *)self contactFormatter];
+      existingContact = [_updateExistingContactAction existingContact];
+      v21 = [contactFormatter stringFromContact:existingContact];
       v22 = [v16 stringWithFormat:v18, v21];
 
-      v23 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-      [v23 addAction:v30 withTitle:v22];
+      cardActionsGroup3 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+      [cardActionsGroup3 addAction:_updateExistingContactAction withTitle:v22];
     }
 
-    v24 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+    suggestedContactAction = [(CNContactContentDisplayViewController *)self suggestedContactAction];
 
-    if (v24)
+    if (suggestedContactAction)
     {
-      v25 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      v26 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+      cardBlockContactGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      suggestedContactAction2 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
       v27 = CNContactsUIBundle();
       v28 = [v27 localizedStringForKey:@"SUGGESTION_IGNORE_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
       v29 = +[CNUIColorRepository contactCardDestructiveActionTitleTextColor];
-      [v25 addAction:v26 withTitle:v28 color:v29 transportType:0];
+      [cardBlockContactGroup addAction:suggestedContactAction2 withTitle:v28 color:v29 transportType:0];
     }
   }
 }
 
 - (void)_setupSuggestionActions
 {
-  v3 = [(CNContactContentDisplayViewController *)self originalContacts];
-  v8 = [v3 _cn_filter:&__block_literal_global_652];
+  originalContacts = [(CNContactContentDisplayViewController *)self originalContacts];
+  v8 = [originalContacts _cn_filter:&__block_literal_global_652];
 
   if ([v8 count] == 1)
   {
     v4 = [CNContactSuggestionAction alloc];
-    v5 = [v8 firstObject];
-    v6 = [(CNContactAction *)v4 initWithContact:v5];
+    firstObject = [v8 firstObject];
+    v6 = [(CNContactAction *)v4 initWithContact:firstObject];
     [(CNContactContentDisplayViewController *)self setSuggestedContactAction:v6];
 
-    v7 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
-    [v7 setDelegate:self];
+    suggestedContactAction = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+    [suggestedContactAction setDelegate:self];
   }
 
   else
@@ -3018,22 +3018,22 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
   }
 }
 
-- (void)reloadCardActionsForBlockState:(BOOL)a3 preservingChanges:(BOOL)a4
+- (void)reloadCardActionsForBlockState:(BOOL)state preservingChanges:(BOOL)changes
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  changesCopy = changes;
+  stateCopy = state;
+  if (!state)
   {
     v7 = +[CNSafetyCheckHelper shared];
     [v7 fetchSharing];
   }
 
-  if ([(CNContactContentDisplayViewController *)self isContactBlocked]!= v5)
+  if ([(CNContactContentDisplayViewController *)self isContactBlocked]!= stateCopy)
   {
-    [(CNContactContentDisplayViewController *)self setIsContactBlocked:v5];
-    v8 = [(CNContactContentDisplayViewController *)self actionsViewController];
-    v9 = [v8 supportedActionTypes];
-    v10 = [v9 count];
+    [(CNContactContentDisplayViewController *)self setIsContactBlocked:stateCopy];
+    actionsViewController = [(CNContactContentDisplayViewController *)self actionsViewController];
+    supportedActionTypes = [actionsViewController supportedActionTypes];
+    v10 = [supportedActionTypes count];
 
     if (v10)
     {
@@ -3047,50 +3047,50 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
         [MEMORY[0x1E6996BE8] allSupportedActionTypes];
       }
       v11 = ;
-      v12 = [(CNContactContentDisplayViewController *)self actionsViewController];
-      [v12 setSupportedActionTypes:v11];
+      actionsViewController2 = [(CNContactContentDisplayViewController *)self actionsViewController];
+      [actionsViewController2 setSupportedActionTypes:v11];
     }
 
-    [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:v4];
+    [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:changesCopy];
   }
 }
 
-- (void)_setupContactBlockingReportingActionPreservingChanges:(BOOL)a3 withUpdate:(BOOL)a4
+- (void)_setupContactBlockingReportingActionPreservingChanges:(BOOL)changes withUpdate:(BOOL)update
 {
-  v4 = a4;
-  v5 = a3;
-  v41 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if ([v41 allowsContactBlockingAndReporting])
+  updateCopy = update;
+  changesCopy = changes;
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if ([contactViewConfiguration allowsContactBlockingAndReporting])
   {
-    v7 = [(CNContactContentDisplayViewController *)self showingMeContact];
+    showingMeContact = [(CNContactContentDisplayViewController *)self showingMeContact];
 
-    if (v7)
+    if (showingMeContact)
     {
       return;
     }
 
-    v8 = [(CNContactContentDisplayViewController *)self blockReportAction];
+    blockReportAction = [(CNContactContentDisplayViewController *)self blockReportAction];
 
-    v9 = [(CNContactContentDisplayViewController *)self blockReportAction];
+    blockReportAction2 = [(CNContactContentDisplayViewController *)self blockReportAction];
 
-    if (!v9)
+    if (!blockReportAction2)
     {
       v10 = [CNContactToggleBlockReportCallerAction alloc];
-      v11 = [(CNContactContentDisplayViewController *)self contact];
-      v12 = [(CNContactAction *)v10 initWithContact:v11];
+      contact = [(CNContactContentDisplayViewController *)self contact];
+      v12 = [(CNContactAction *)v10 initWithContact:contact];
       [(CNContactContentDisplayViewController *)self setBlockReportAction:v12];
 
-      v13 = [(CNContactContentDisplayViewController *)self blockReportAction];
-      [v13 setDelegate:self];
+      blockReportAction3 = [(CNContactContentDisplayViewController *)self blockReportAction];
+      [blockReportAction3 setDelegate:self];
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:self selector:sel_blockListDidChange_ name:*MEMORY[0x1E6995900] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_blockListDidChange_ name:*MEMORY[0x1E6995900] object:0];
     }
 
-    v15 = [(CNContactContentDisplayViewController *)self blockReportAction];
-    v16 = [v15 isContactBlockedPreservingChanges:v5];
+    blockReportAction4 = [(CNContactContentDisplayViewController *)self blockReportAction];
+    v16 = [blockReportAction4 isContactBlockedPreservingChanges:changesCopy];
 
-    if (v8)
+    if (blockReportAction)
     {
       v17 = CNContactsUIBundle();
       v18 = v17;
@@ -3106,105 +3106,105 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
 
       v20 = [v17 localizedStringForKey:v19 value:&stru_1F0CE7398 table:@"Localized"];
 
-      v21 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v21 removeActionWithTitle:v20];
+      cardBlockContactGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup removeActionWithTitle:v20];
     }
 
     v22 = CNContactsUIBundle();
     v23 = v22;
     if (v16)
     {
-      v41 = [v22 localizedStringForKey:@"UNBLOCK_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
+      contactViewConfiguration = [v22 localizedStringForKey:@"UNBLOCK_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
 
-      v24 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v24 removeActionWithTitle:v41];
+      cardBlockContactGroup2 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup2 removeActionWithTitle:contactViewConfiguration];
 
       +[CNUIColorRepository contactsApplicationTintColor];
     }
 
     else
     {
-      v41 = [v22 localizedStringForKey:@"BLOCK_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
+      contactViewConfiguration = [v22 localizedStringForKey:@"BLOCK_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
 
-      v25 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v25 removeActionWithTitle:v41];
+      cardBlockContactGroup3 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup3 removeActionWithTitle:contactViewConfiguration];
 
       +[CNUIColorRepository contactCardDestructiveActionTitleTextColor];
     }
     v26 = ;
-    v27 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-    v28 = [(CNContactContentDisplayViewController *)self blockReportAction];
-    [v27 addAction:v28 withTitle:v41 color:v26 transportType:0];
+    cardBlockContactGroup4 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+    blockReportAction5 = [(CNContactContentDisplayViewController *)self blockReportAction];
+    [cardBlockContactGroup4 addAction:blockReportAction5 withTitle:contactViewConfiguration color:v26 transportType:0];
 
-    if (v4)
+    if (updateCopy)
     {
-      v29 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      v30 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v29];
+      cardBlockContactGroup5 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      v30 = [(CNContactContentDisplayViewController *)self sectionOfGroup:cardBlockContactGroup5];
 
       if (v30 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v31 = [(CNContactContentDisplayViewController *)self contactView];
-        [v31 contentOffset];
+        contactView = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView contentOffset];
         v33 = v32;
         v35 = v34;
 
-        v36 = [(CNContactContentDisplayViewController *)self contactView];
-        [v36 beginUpdates];
+        contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView2 beginUpdates];
 
-        v37 = [(CNContactContentDisplayViewController *)self contactView];
+        contactView3 = [(CNContactContentDisplayViewController *)self contactView];
         v38 = [MEMORY[0x1E696AC90] indexSetWithIndex:v30];
-        [v37 reloadSections:v38 withRowAnimation:0];
+        [contactView3 reloadSections:v38 withRowAnimation:0];
 
-        v39 = [(CNContactContentDisplayViewController *)self contactView];
-        [v39 endUpdates];
+        contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView4 endUpdates];
 
-        v40 = [(CNContactContentDisplayViewController *)self contactView];
-        [v40 setContentOffset:{v33, v35}];
+        contactView5 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView5 setContentOffset:{v33, v35}];
 
         [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
       }
     }
 
-    [(CNContactContentDisplayViewController *)self reloadCardActionsForBlockState:v16 preservingChanges:v5];
+    [(CNContactContentDisplayViewController *)self reloadCardActionsForBlockState:v16 preservingChanges:changesCopy];
   }
 }
 
-- (void)_setupContactBlockingActionPreservingChanges:(BOOL)a3 withUpdate:(BOOL)a4
+- (void)_setupContactBlockingActionPreservingChanges:(BOOL)changes withUpdate:(BOOL)update
 {
-  v4 = a4;
-  v5 = a3;
-  v41 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if ([v41 allowsContactBlocking])
+  updateCopy = update;
+  changesCopy = changes;
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if ([contactViewConfiguration allowsContactBlocking])
   {
-    v7 = [(CNContactContentDisplayViewController *)self showingMeContact];
+    showingMeContact = [(CNContactContentDisplayViewController *)self showingMeContact];
 
-    if (v7)
+    if (showingMeContact)
     {
       return;
     }
 
-    v8 = [(CNContactContentDisplayViewController *)self blockAction];
+    blockAction = [(CNContactContentDisplayViewController *)self blockAction];
 
-    v9 = [(CNContactContentDisplayViewController *)self blockAction];
+    blockAction2 = [(CNContactContentDisplayViewController *)self blockAction];
 
-    if (!v9)
+    if (!blockAction2)
     {
       v10 = [CNContactToggleBlockCallerAction alloc];
-      v11 = [(CNContactContentDisplayViewController *)self contact];
-      v12 = [(CNContactAction *)v10 initWithContact:v11];
+      contact = [(CNContactContentDisplayViewController *)self contact];
+      v12 = [(CNContactAction *)v10 initWithContact:contact];
       [(CNContactContentDisplayViewController *)self setBlockAction:v12];
 
-      v13 = [(CNContactContentDisplayViewController *)self blockAction];
-      [v13 setDelegate:self];
+      blockAction3 = [(CNContactContentDisplayViewController *)self blockAction];
+      [blockAction3 setDelegate:self];
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:self selector:sel_blockListDidChange_ name:*MEMORY[0x1E6995900] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_blockListDidChange_ name:*MEMORY[0x1E6995900] object:0];
     }
 
-    v15 = [(CNContactContentDisplayViewController *)self blockAction];
-    v16 = [v15 isContactBlockedPreservingChanges:v5];
+    blockAction4 = [(CNContactContentDisplayViewController *)self blockAction];
+    v16 = [blockAction4 isContactBlockedPreservingChanges:changesCopy];
 
-    if (v8)
+    if (blockAction)
     {
       v17 = CNContactsUIBundle();
       v18 = v17;
@@ -3220,89 +3220,89 @@ void __69__CNContactContentDisplayViewController__updateExistingContactAction__b
 
       v20 = [v17 localizedStringForKey:v19 value:&stru_1F0CE7398 table:@"Localized"];
 
-      v21 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v21 removeActionWithTitle:v20];
+      cardBlockContactGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup removeActionWithTitle:v20];
     }
 
     v22 = CNContactsUIBundle();
     v23 = v22;
     if (v16)
     {
-      v41 = [v22 localizedStringForKey:@"UNBLOCK_THIS_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
+      contactViewConfiguration = [v22 localizedStringForKey:@"UNBLOCK_THIS_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
 
-      v24 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v24 removeActionWithTitle:v41];
+      cardBlockContactGroup2 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup2 removeActionWithTitle:contactViewConfiguration];
 
       +[CNUIColorRepository contactsApplicationTintColor];
     }
 
     else
     {
-      v41 = [v22 localizedStringForKey:@"BLOCK_THIS_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
+      contactViewConfiguration = [v22 localizedStringForKey:@"BLOCK_THIS_CALLER" value:&stru_1F0CE7398 table:@"Localized"];
 
-      v25 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      [v25 removeActionWithTitle:v41];
+      cardBlockContactGroup3 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      [cardBlockContactGroup3 removeActionWithTitle:contactViewConfiguration];
 
       +[CNUIColorRepository contactCardDestructiveActionTitleTextColor];
     }
     v26 = ;
-    v27 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-    v28 = [(CNContactContentDisplayViewController *)self blockAction];
-    [v27 addAction:v28 withTitle:v41 color:v26 transportType:0];
+    cardBlockContactGroup4 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+    blockAction5 = [(CNContactContentDisplayViewController *)self blockAction];
+    [cardBlockContactGroup4 addAction:blockAction5 withTitle:contactViewConfiguration color:v26 transportType:0];
 
-    if (v4)
+    if (updateCopy)
     {
-      v29 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-      v30 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v29];
+      cardBlockContactGroup5 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+      v30 = [(CNContactContentDisplayViewController *)self sectionOfGroup:cardBlockContactGroup5];
 
       if (v30 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v31 = [(CNContactContentDisplayViewController *)self contactView];
-        [v31 contentOffset];
+        contactView = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView contentOffset];
         v33 = v32;
         v35 = v34;
 
-        v36 = [(CNContactContentDisplayViewController *)self contactView];
-        [v36 beginUpdates];
+        contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView2 beginUpdates];
 
-        v37 = [(CNContactContentDisplayViewController *)self contactView];
+        contactView3 = [(CNContactContentDisplayViewController *)self contactView];
         v38 = [MEMORY[0x1E696AC90] indexSetWithIndex:v30];
-        [v37 reloadSections:v38 withRowAnimation:0];
+        [contactView3 reloadSections:v38 withRowAnimation:0];
 
-        v39 = [(CNContactContentDisplayViewController *)self contactView];
-        [v39 endUpdates];
+        contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView4 endUpdates];
 
-        v40 = [(CNContactContentDisplayViewController *)self contactView];
-        [v40 setContentOffset:{v33, v35}];
+        contactView5 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView5 setContentOffset:{v33, v35}];
 
         [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
       }
     }
 
-    [(CNContactContentDisplayViewController *)self reloadCardActionsForBlockState:v16 preservingChanges:v5];
+    [(CNContactContentDisplayViewController *)self reloadCardActionsForBlockState:v16 preservingChanges:changesCopy];
   }
 }
 
-- (void)setupShareLocationActionReload:(BOOL)a3
+- (void)setupShareLocationActionReload:(BOOL)reload
 {
   if (![(CNContactContentDisplayViewController *)self showingMeContact]&& !CNUIIsMessages())
   {
-    v5 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-    [v5 setDisplaysDropdownMenu:1];
+    cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+    [cardShareLocationGroup setDisplaysDropdownMenu:1];
 
-    v6 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
-    v7 = [(CNContactContentDisplayViewController *)self shareLocationController];
-    [v6 removeActionWithTarget:v7 selector:sel_perform_];
+    cardShareLocationGroup2 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+    shareLocationController = [(CNContactContentDisplayViewController *)self shareLocationController];
+    [cardShareLocationGroup2 removeActionWithTarget:shareLocationController selector:sel_perform_];
 
     objc_initWeak(&location, self);
-    v8 = [(CNContactContentDisplayViewController *)self shareLocationController];
+    shareLocationController2 = [(CNContactContentDisplayViewController *)self shareLocationController];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__CNContactContentDisplayViewController_setupShareLocationActionReload___block_invoke;
     v9[3] = &unk_1E74E7098;
     objc_copyWeak(&v10, &location);
-    v11 = a3;
-    [v8 canShareWithCompletion:v9];
+    reloadCopy = reload;
+    [shareLocationController2 canShareWithCompletion:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -3371,37 +3371,37 @@ void __72__CNContactContentDisplayViewController_setupShareLocationActionReload_
 
 - (void)_setupCardActions
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v4 = [v3 allowsActions];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsActions = [contactViewConfiguration allowsActions];
 
-  if (!v4)
+  if (!allowsActions)
   {
     return;
   }
 
-  v5 = [(CNContactContentDisplayViewController *)self actionProvider];
-  [v5 buildStandardActions];
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  [actionProvider buildStandardActions];
 
-  v6 = [(CNContactContentDisplayViewController *)self actionProvider];
-  [v6 buildCommunicationLimitsActions];
+  actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+  [actionProvider2 buildCommunicationLimitsActions];
 
-  v7 = [(CNContactContentDisplayViewController *)self actionProvider];
-  [v7 buildStaticIdentityActions];
+  actionProvider3 = [(CNContactContentDisplayViewController *)self actionProvider];
+  [actionProvider3 buildStaticIdentityActions];
 
-  v8 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (![v8 allowsCardActions])
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (![contactViewConfiguration2 allowsCardActions])
   {
     goto LABEL_7;
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self contact];
-  if ([v9 isSuggested])
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  if ([contact isSuggested])
   {
     goto LABEL_6;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self contact];
-  if ([v10 isCoreRecentsAccepted])
+  contact2 = [(CNContactContentDisplayViewController *)self contact];
+  if ([contact2 isCoreRecentsAccepted])
   {
 
 LABEL_6:
@@ -3410,100 +3410,100 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v17 = [(CNContactContentDisplayViewController *)self isContactBlocked];
+  isContactBlocked = [(CNContactContentDisplayViewController *)self isContactBlocked];
 
-  if (!v17)
+  if (!isContactBlocked)
   {
-    v18 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    if ([v18 allowsSendMessage])
+    contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    if ([contactViewConfiguration3 allowsSendMessage])
     {
-      v19 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v20 = [v19 sendMessageAction];
-      if (v20)
+      actionProvider4 = [(CNContactContentDisplayViewController *)self actionProvider];
+      sendMessageAction = [actionProvider4 sendMessageAction];
+      if (sendMessageAction)
       {
-        v21 = v20;
-        v22 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-        v23 = [v22 primaryProperty];
+        v21 = sendMessageAction;
+        contactViewConfiguration4 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+        primaryProperty = [contactViewConfiguration4 primaryProperty];
 
-        if (v23)
+        if (primaryProperty)
         {
           goto LABEL_20;
         }
 
-        v18 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-        v19 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v24 = [v19 sendMessageAction];
+        contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+        actionProvider4 = [(CNContactContentDisplayViewController *)self actionProvider];
+        sendMessageAction2 = [actionProvider4 sendMessageAction];
         v25 = CNContactsUIBundle();
         v26 = [v25 localizedStringForKey:@"PHONE_ACTION_TEXT" value:&stru_1F0CE7398 table:@"Localized"];
-        [v18 addAction:v24 withTitle:v26];
+        [contactViewConfiguration3 addAction:sendMessageAction2 withTitle:v26];
       }
     }
 
 LABEL_20:
-    v27 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v28 = [v27 createReminderAction];
+    actionProvider5 = [(CNContactContentDisplayViewController *)self actionProvider];
+    createReminderAction = [actionProvider5 createReminderAction];
 
-    if (v28)
+    if (createReminderAction)
     {
-      v29 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-      v30 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v31 = [v30 createReminderAction];
+      cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+      actionProvider6 = [(CNContactContentDisplayViewController *)self actionProvider];
+      createReminderAction2 = [actionProvider6 createReminderAction];
       v32 = CNContactsUIBundle();
       v33 = [v32 localizedStringForKey:@"CREATE_REMINDER_ACTION" value:&stru_1F0CE7398 table:@"Localized"];
-      [v29 addAction:v31 withTitle:v33];
+      [cardActionsGroup addAction:createReminderAction2 withTitle:v33];
     }
 
-    v34 = [(CNContactContentDisplayViewController *)self isHeaderViewPhotoProhibited];
-    v35 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    if ([v35 allowsSharing] && !v34)
+    isHeaderViewPhotoProhibited = [(CNContactContentDisplayViewController *)self isHeaderViewPhotoProhibited];
+    contactViewConfiguration5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    if ([contactViewConfiguration5 allowsSharing] && !isHeaderViewPhotoProhibited)
     {
-      v36 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v37 = [v36 shareContactAction];
+      actionProvider7 = [(CNContactContentDisplayViewController *)self actionProvider];
+      shareContactAction = [actionProvider7 shareContactAction];
 
-      if (!v37)
+      if (!shareContactAction)
       {
 LABEL_27:
-        v42 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v43 = [v42 addFavoriteAction];
+        actionProvider8 = [(CNContactContentDisplayViewController *)self actionProvider];
+        addFavoriteAction = [actionProvider8 addFavoriteAction];
 
-        if (v43)
+        if (addFavoriteAction)
         {
-          v44 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-          v45 = [(CNContactContentDisplayViewController *)self actionProvider];
-          v46 = [v45 addFavoriteAction];
+          cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+          actionProvider9 = [(CNContactContentDisplayViewController *)self actionProvider];
+          addFavoriteAction2 = [actionProvider9 addFavoriteAction];
           v47 = CNContactsUIBundle();
           v48 = [v47 localizedStringForKey:@"PHONE_ACTION_ADD_TO_FAVORITES" value:&stru_1F0CE7398 table:@"Localized"];
-          [v44 addAction:v46 withTitle:v48];
+          [cardActionsGroup2 addAction:addFavoriteAction2 withTitle:v48];
         }
 
-        v49 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v8 = [v49 shareWithFamilyAction];
+        actionProvider10 = [(CNContactContentDisplayViewController *)self actionProvider];
+        contactViewConfiguration2 = [actionProvider10 shareWithFamilyAction];
 
-        if (v8 && [v8 canPerformAction])
+        if (contactViewConfiguration2 && [contactViewConfiguration2 canPerformAction])
         {
-          v50 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-          v51 = [v8 title];
-          [v50 addAction:v8 withTitle:v51];
+          cardActionsGroup3 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+          title = [contactViewConfiguration2 title];
+          [cardActionsGroup3 addAction:contactViewConfiguration2 withTitle:title];
         }
 
-        v52 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v53 = [v52 stopSharingWithFamilyAction];
-        v54 = [v53 canPerformAction];
+        actionProvider11 = [(CNContactContentDisplayViewController *)self actionProvider];
+        stopSharingWithFamilyAction = [actionProvider11 stopSharingWithFamilyAction];
+        canPerformAction = [stopSharingWithFamilyAction canPerformAction];
 
-        if (v54)
+        if (canPerformAction)
         {
-          v55 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-          v56 = [v55 ignoresParentalRestrictions];
+          contactViewConfiguration6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+          ignoresParentalRestrictions = [contactViewConfiguration6 ignoresParentalRestrictions];
 
-          if (v56)
+          if (ignoresParentalRestrictions)
           {
-            v57 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-            v58 = [(CNContactContentDisplayViewController *)self actionProvider];
-            v59 = [v58 stopSharingWithFamilyAction];
-            v60 = [(CNContactContentDisplayViewController *)self actionProvider];
-            v61 = [v60 stopSharingWithFamilyAction];
-            v62 = [v61 title];
-            [v57 addAction:v59 withTitle:v62];
+            cardActionsGroup4 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+            actionProvider12 = [(CNContactContentDisplayViewController *)self actionProvider];
+            stopSharingWithFamilyAction2 = [actionProvider12 stopSharingWithFamilyAction];
+            actionProvider13 = [(CNContactContentDisplayViewController *)self actionProvider];
+            stopSharingWithFamilyAction3 = [actionProvider13 stopSharingWithFamilyAction];
+            title2 = [stopSharingWithFamilyAction3 title];
+            [cardActionsGroup4 addAction:stopSharingWithFamilyAction2 withTitle:title2];
           }
         }
 
@@ -3511,53 +3511,53 @@ LABEL_27:
         goto LABEL_7;
       }
 
-      v35 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-      v38 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v39 = [v38 shareContactAction];
+      contactViewConfiguration5 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+      actionProvider14 = [(CNContactContentDisplayViewController *)self actionProvider];
+      shareContactAction2 = [actionProvider14 shareContactAction];
       v40 = CNContactsUIBundle();
       v41 = [v40 localizedStringForKey:@"SHARE_CONTACT_ACTION_BUTTON_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
-      [v35 addAction:v39 withTitle:v41];
+      [contactViewConfiguration5 addAction:shareContactAction2 withTitle:v41];
     }
 
     goto LABEL_27;
   }
 
 LABEL_8:
-  v11 = [(CNContactContentDisplayViewController *)self _clearRecentsDataAction];
-  [(CNContactContentDisplayViewController *)self setClearRecentsDataAction:v11];
+  _clearRecentsDataAction = [(CNContactContentDisplayViewController *)self _clearRecentsDataAction];
+  [(CNContactContentDisplayViewController *)self setClearRecentsDataAction:_clearRecentsDataAction];
 
-  v12 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
+  clearRecentsDataAction = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
 
-  if (v12)
+  if (clearRecentsDataAction)
   {
-    v13 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
-    [v13 setDelegate:self];
+    clearRecentsDataAction2 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
+    [clearRecentsDataAction2 setDelegate:self];
 
-    v63 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    v14 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
+    cardActionsGroup5 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    clearRecentsDataAction3 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
     v15 = CNContactsUIBundle();
     v16 = [v15 localizedStringForKey:@"CLEAR_RECENTS" value:&stru_1F0CE7398 table:@"Localized"];
-    [v63 addAction:v14 withTitle:v16];
+    [cardActionsGroup5 addAction:clearRecentsDataAction3 withTitle:v16];
   }
 }
 
-- (void)_retrieveActionsModelPreservingChanges:(BOOL)a3
+- (void)_retrieveActionsModelPreservingChanges:(BOOL)changes
 {
-  v5 = [(CNContactContentDisplayViewController *)self contact];
+  contact = [(CNContactContentDisplayViewController *)self contact];
 
-  if (v5)
+  if (contact)
   {
-    if (!a3)
+    if (!changes)
     {
       objc_initWeak(&location, self);
-      v6 = [MEMORY[0x1E6996BE8] allActionTypes];
+      allActionTypes = [MEMORY[0x1E6996BE8] allActionTypes];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __80__CNContactContentDisplayViewController__retrieveActionsModelPreservingChanges___block_invoke;
       v7[3] = &unk_1E74E7000;
       v7[4] = self;
       objc_copyWeak(&v8, &location);
-      [v6 enumerateObjectsUsingBlock:v7];
+      [allActionTypes enumerateObjectsUsingBlock:v7];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -3606,53 +3606,53 @@ void __80__CNContactContentDisplayViewController__retrieveActionsModelPreserving
   [WeakRetained _updateAvailableTransports];
 }
 
-- (void)setupActionsPreservingChanges:(BOOL)a3
+- (void)setupActionsPreservingChanges:(BOOL)changes
 {
-  v29 = a3;
+  changesCopy = changes;
   v27 = [CNContactActionProvider alloc];
-  v26 = [(CNContactContentDisplayViewController *)self mutableContact];
-  v28 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  v4 = [(CNContactContentDisplayViewController *)self contact];
-  v5 = [v28 containerForContact:v4];
-  v6 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  v7 = [v6 contactStore];
-  v8 = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
-  v9 = [(CNContactContentDisplayViewController *)self actionsDataSource];
+  mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+  contactViewCache = [(CNContactContentDisplayViewController *)self contactViewCache];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  v5 = [contactViewCache containerForContact:contact];
+  contactViewCache2 = [(CNContactContentDisplayViewController *)self contactViewCache];
+  contactStore = [contactViewCache2 contactStore];
+  propertyGroupsDataSource = [(CNContactContentDisplayViewController *)self propertyGroupsDataSource];
+  actionsDataSource = [(CNContactContentDisplayViewController *)self actionsDataSource];
   v10 = +[CNCapabilitiesManager defaultCapabilitiesManager];
-  v11 = [(CNContactContentDisplayViewController *)self environment];
-  v12 = [(CNContactActionProvider *)v27 initWithContact:v26 inContainer:v5 contactStore:v7 propertyGroupsDataSource:v8 actionsDataSource:v9 capabilities:v10 environment:v11];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  v12 = [(CNContactActionProvider *)v27 initWithContact:mutableContact inContainer:v5 contactStore:contactStore propertyGroupsDataSource:propertyGroupsDataSource actionsDataSource:actionsDataSource capabilities:v10 environment:environment];
   [(CNContactContentDisplayViewController *)self setActionProvider:v12];
 
-  v13 = [(CNContactContentDisplayViewController *)self actionProvider];
-  [v13 setActionDelegate:self];
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  [actionProvider setActionDelegate:self];
 
-  v14 = [(CNCardGroup *)self->_cardActionsGroup actions];
-  v15 = [v14 count];
+  actions = [(CNCardGroup *)self->_cardActionsGroup actions];
+  v15 = [actions count];
 
   if (v15)
   {
     v16 = [CNCardGroup alloc];
-    v17 = [(CNContactContentDisplayViewController *)self mutableContact];
-    v18 = [(CNCardGroup *)v16 initWithContact:v17];
+    mutableContact2 = [(CNContactContentDisplayViewController *)self mutableContact];
+    v18 = [(CNCardGroup *)v16 initWithContact:mutableContact2];
     cardActionsGroup = self->_cardActionsGroup;
     self->_cardActionsGroup = v18;
   }
 
-  v20 = [(CNCardGroup *)self->_cardShareLocationGroup actions];
-  v21 = [v20 count];
+  actions2 = [(CNCardGroup *)self->_cardShareLocationGroup actions];
+  v21 = [actions2 count];
 
   if (v21)
   {
     v22 = [CNCardGroup alloc];
-    v23 = [(CNContactContentDisplayViewController *)self mutableContact];
-    v24 = [(CNCardGroup *)v22 initWithContact:v23];
+    mutableContact3 = [(CNContactContentDisplayViewController *)self mutableContact];
+    v24 = [(CNCardGroup *)v22 initWithContact:mutableContact3];
     cardShareLocationGroup = self->_cardShareLocationGroup;
     self->_cardShareLocationGroup = v24;
   }
 
-  [(CNContactContentDisplayViewController *)self _retrieveActionsModelPreservingChanges:v29];
+  [(CNContactContentDisplayViewController *)self _retrieveActionsModelPreservingChanges:changesCopy];
   [(CNContactContentDisplayViewController *)self _setupCardActions];
-  [(CNContactContentDisplayViewController *)self _setupContactBlockingActionPreservingChanges:v29 withUpdate:!v29];
+  [(CNContactContentDisplayViewController *)self _setupContactBlockingActionPreservingChanges:changesCopy withUpdate:!changesCopy];
   [(CNContactContentDisplayViewController *)self _setupSuggestionActions];
   [(CNContactContentDisplayViewController *)self _setupAddToAddressBookActions];
 
@@ -3674,33 +3674,33 @@ void __80__CNContactContentDisplayViewController__retrieveActionsModelPreserving
   }
 }
 
-- (void)blockListDidChange:(id)a3
+- (void)blockListDidChange:(id)change
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__handleCoalescedBlockListDidChange object:0];
 
   [(CNContactContentDisplayViewController *)self performSelector:sel__handleCoalescedBlockListDidChange withObject:0 afterDelay:0.1];
 }
 
-- (void)updateContactsViewWithBlock:(id)a3 completion:(id)a4
+- (void)updateContactsViewWithBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   ++self->_animating;
-  v8 = [(CNContactContentDisplayViewController *)self contactView];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__CNContactContentDisplayViewController_updateContactsViewWithBlock_completion___block_invoke;
   v13[3] = &unk_1E74E6F88;
-  v14 = v6;
+  v14 = blockCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__CNContactContentDisplayViewController_updateContactsViewWithBlock_completion___block_invoke_2;
   v11[3] = &unk_1E74E6FB0;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBatchUpdates:v13 completion:v11];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  v10 = blockCopy;
+  [contactView performBatchUpdates:v13 completion:v11];
 }
 
 uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock_completion___block_invoke_2(uint64_t a1)
@@ -3719,10 +3719,10 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 
 - (CGSize)requiredSizeForVisibleTableView
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactView];
-  [v3 contentSize];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView contentSize];
   v5 = v4;
-  [v3 contentInset];
+  [contactView contentInset];
   v7 = v6;
   if ([(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection]&& [(UIViewController *)self ab_isInPopover])
   {
@@ -3741,112 +3741,112 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
   return result;
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(CNContactContentDisplayViewController *)self view];
-  [v4 frame];
-  [v4 setFrame:?];
+  view = [(CNContactContentDisplayViewController *)self view];
+  [view frame];
+  [view setFrame:?];
   [(CNContactContentDisplayViewController *)self reloadDataIfNeeded];
-  v5 = [(CNContactContentDisplayViewController *)self contactView];
-  v6 = [v5 visibleCells];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  visibleCells = [contactView visibleCells];
 
-  v7 = [(CNContactContentDisplayViewController *)self view];
-  [v7 layoutIfNeeded];
+  view2 = [(CNContactContentDisplayViewController *)self view];
+  [view2 layoutIfNeeded];
 
-  v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v8 setNeedsLayout];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView setNeedsLayout];
 
   [(CNContactContentDisplayViewController *)self requiredSizeForVisibleTableView];
   v10 = v9;
-  v11 = [v4 superview];
-  [v11 frame];
-  [v4 setFrame:?];
+  superview = [view superview];
+  [superview frame];
+  [view setFrame:?];
 
   return v10;
 }
 
 - (void)reloadUnifiedContact
 {
-  v3 = [(CNContactContentDisplayViewController *)self contact];
+  contact = [(CNContactContentDisplayViewController *)self contact];
   v4 = objc_opt_class();
 
-  v5 = [(CNContactContentDisplayViewController *)self contact];
-  v8 = [v5 linkedContacts];
+  contact2 = [(CNContactContentDisplayViewController *)self contact];
+  linkedContacts = [contact2 linkedContacts];
 
-  v6 = v8;
-  if (v8)
+  v6 = linkedContacts;
+  if (linkedContacts)
   {
-    v7 = [v4 unifyContacts:v8];
+    v7 = [v4 unifyContacts:linkedContacts];
     [(CNContactContentDisplayViewController *)self setContact:v7];
 
-    v6 = v8;
+    v6 = linkedContacts;
   }
 }
 
-- (void)removeLinkedContact:(id)a3
+- (void)removeLinkedContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v9 = v4;
-    v5 = [(CNContactContentDisplayViewController *)self contact];
-    v6 = [v5 mainStoreLinkedContacts];
-    v7 = [v6 containsObject:v9];
+    v9 = contactCopy;
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    mainStoreLinkedContacts = [contact mainStoreLinkedContacts];
+    v7 = [mainStoreLinkedContacts containsObject:v9];
 
-    v4 = v9;
+    contactCopy = v9;
     if (v7)
     {
       [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:1];
       v8 = +[CNUIDataCollector sharedCollector];
       [v8 logContactActionType:CNUIContactActionTypeUnlink attributes:0];
 
-      v4 = v9;
+      contactCopy = v9;
     }
   }
 }
 
-- (void)updatedExistingContact:(id)a3
+- (void)updatedExistingContact:(id)contact
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  contactCopy = contact;
+  v7 = contactCopy;
+  if (contactCopy)
   {
-    v5 = v4;
+    contact = contactCopy;
   }
 
   else
   {
-    v5 = [(CNContactContentDisplayViewController *)self contact];
+    contact = [(CNContactContentDisplayViewController *)self contact];
   }
 
-  v6 = v5;
-  [(CNContactContentDisplayViewController *)self setContact:v5];
+  v6 = contact;
+  [(CNContactContentDisplayViewController *)self setContact:contact];
   [(CNContactContentDisplayViewController *)self _didCompleteWithContact:v6];
 }
 
-- (void)createdNewContact:(id)a3
+- (void)createdNewContact:(id)contact
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  contactCopy = contact;
+  v6 = contactCopy;
+  if (contactCopy)
   {
-    [(CNContactContentDisplayViewController *)self setContact:v4];
+    [(CNContactContentDisplayViewController *)self setContact:contactCopy];
     [(CNContactContentDisplayViewController *)self setMode:1];
-    v5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    [v5 setAllowsAddingToAddressBook:0];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    [contactViewConfiguration setAllowsAddingToAddressBook:0];
 
-    v4 = v6;
+    contactCopy = v6;
   }
 
-  [(CNContactContentDisplayViewController *)self _didCompleteWithContact:v4];
+  [(CNContactContentDisplayViewController *)self _didCompleteWithContact:contactCopy];
 }
 
-- (void)updateContact:(id)a3
+- (void)updateContact:(id)contact
 {
   if ([(CNContactContentDisplayViewController *)self saveChanges])
   {
-    v4 = [(CNContactContentDisplayViewController *)self mutableContact];
-    [(CNContactContentDisplayViewController *)self _didCompleteWithContact:v4];
+    mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+    [(CNContactContentDisplayViewController *)self _didCompleteWithContact:mutableContact];
   }
 
   else
@@ -3857,13 +3857,13 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
   [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:0];
 }
 
-- (void)_didCompleteWithContact:(id)a3
+- (void)_didCompleteWithContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v5 = v4;
-    v16 = [(CNContactContentDisplayViewController *)self _removeUnauthorizedKeysFromContact:v4];
+    v5 = contactCopy;
+    v16 = [(CNContactContentDisplayViewController *)self _removeUnauthorizedKeysFromContact:contactCopy];
 
     if (self->_contact != &self->_mutableContact->super)
     {
@@ -3876,8 +3876,8 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
       }
     }
 
-    v7 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
-    [v7 confirmSuggestion];
+    suggestedContactAction = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+    [suggestedContactAction confirmSuggestion];
   }
 
   else
@@ -3887,68 +3887,68 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 
   if ([(CNContactContentDisplayViewController *)self mode]== 3)
   {
-    v8 = [(CNContactContentDisplayViewController *)self originalContacts];
-    v9 = [v8 count];
+    originalContacts = [(CNContactContentDisplayViewController *)self originalContacts];
+    v9 = [originalContacts count];
 
     if (v9 == 1)
     {
       if (v16)
       {
         v10 = +[CNUIDataCollector sharedCollector];
-        v11 = [(CNContactContentDisplayViewController *)self originalContacts];
-        v12 = [v11 objectAtIndexedSubscript:0];
+        originalContacts2 = [(CNContactContentDisplayViewController *)self originalContacts];
+        v12 = [originalContacts2 objectAtIndexedSubscript:0];
         [v10 logContactCreated:v16 originalContact:v12];
       }
     }
   }
 
-  v13 = [(CNContactContentDisplayViewController *)self delegate];
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CNContactContentDisplayViewController *)self delegate];
-    [v15 contactDisplayViewController:self didCompleteWithContact:v16];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    [delegate2 contactDisplayViewController:self didCompleteWithContact:v16];
   }
 }
 
-- (id)_removeUnauthorizedKeysFromContact:(id)a3
+- (id)_removeUnauthorizedKeysFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
-  v6 = [v5 count];
+  contactCopy = contact;
+  missingRequiredKeys = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
+  v6 = [missingRequiredKeys count];
 
   if (v6)
   {
-    v7 = [v4 mutableCopy];
-    v8 = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
-    [v7 removeKeys:v8];
+    v7 = [contactCopy mutableCopy];
+    missingRequiredKeys2 = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
+    [v7 removeKeys:missingRequiredKeys2];
 
     [v7 setFrozenSelfAsSnapshot];
-    v4 = v7;
+    contactCopy = v7;
   }
 
-  return v4;
+  return contactCopy;
 }
 
-- (id)_updateContact:(id)a3 withMissingKeysFromRequiredKeys:(id)a4
+- (id)_updateContact:(id)contact withMissingKeysFromRequiredKeys:(id)keys
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 areKeysAvailable:v7 useIgnorableKeys:0 findMissingKeys:1];
-  v9 = [v8 first];
-  v10 = [v9 BOOLValue];
+  contactCopy = contact;
+  keysCopy = keys;
+  v8 = [contactCopy areKeysAvailable:keysCopy useIgnorableKeys:0 findMissingKeys:1];
+  first = [v8 first];
+  bOOLValue = [first BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v11 = v6;
+    freeze = contactCopy;
   }
 
   else
   {
-    v12 = [v8 second];
-    [(CNContactContentDisplayViewController *)self setMissingRequiredKeys:v12];
+    second = [v8 second];
+    [(CNContactContentDisplayViewController *)self setMissingRequiredKeys:second];
 
     v24 = 0;
     v25 = &v24;
@@ -3957,68 +3957,68 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
     v28 = __Block_byref_object_dispose__59504;
     v29 = 0;
     v13 = objc_alloc(MEMORY[0x1E695CD78]);
-    v14 = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
-    v15 = [v13 initWithKeysToFetch:v14];
+    missingRequiredKeys = [(CNContactContentDisplayViewController *)self missingRequiredKeys];
+    v15 = [v13 initWithKeysToFetch:missingRequiredKeys];
 
     v16 = MEMORY[0x1E695CD58];
-    v17 = [v6 identifier];
-    v30[0] = v17;
+    identifier = [contactCopy identifier];
+    v30[0] = identifier;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     v19 = [v16 predicateForContactsWithIdentifiers:v18];
     [v15 setPredicate:v19];
 
-    [v15 setUnifyResults:{objc_msgSend(v6, "isUnified")}];
-    v20 = [(CNContactContentDisplayViewController *)self contactStore];
+    [v15 setUnifyResults:{objc_msgSend(contactCopy, "isUnified")}];
+    contactStore = [(CNContactContentDisplayViewController *)self contactStore];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __88__CNContactContentDisplayViewController__updateContact_withMissingKeysFromRequiredKeys___block_invoke;
     v23[3] = &unk_1E74E6F60;
     v23[4] = &v24;
-    [v20 enumerateContactsWithFetchRequest:v15 error:0 usingBlock:v23];
+    [contactStore enumerateContactsWithFetchRequest:v15 error:0 usingBlock:v23];
 
-    v21 = [v6 mutableCopy];
+    v21 = [contactCopy mutableCopy];
     [v21 overwriteStateFromContact:v25[5]];
-    v11 = [v21 freeze];
+    freeze = [v21 freeze];
 
     _Block_object_dispose(&v24, 8);
   }
 
-  return v11;
+  return freeze;
 }
 
-- (id)saveDescriptionForRemovingLinkedContact:(id)a3 keys:(id)a4
+- (id)saveDescriptionForRemovingLinkedContact:(id)contact keys:(id)keys
 {
-  v5 = a4;
-  v6 = [(CNContactContentDisplayViewController *)self contact];
-  v7 = [v6 isUnified];
+  keysCopy = keys;
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  isUnified = [contact isUnified];
 
-  if (v7)
+  if (isUnified)
   {
-    v8 = [(CNContactContentDisplayViewController *)self contact];
-    v9 = [v8 mainStoreLinkedContacts];
-    v10 = [v9 mutableCopy];
+    contact2 = [(CNContactContentDisplayViewController *)self contact];
+    mainStoreLinkedContacts = [contact2 mainStoreLinkedContacts];
+    v10 = [mainStoreLinkedContacts mutableCopy];
   }
 
   else
   {
     v11 = MEMORY[0x1E695DF70];
-    v8 = [(CNContactContentDisplayViewController *)self contact];
-    v9 = [v8 copyWithPropertyKeys:v5];
-    v10 = [v11 arrayWithObject:v9];
+    contact2 = [(CNContactContentDisplayViewController *)self contact];
+    mainStoreLinkedContacts = [contact2 copyWithPropertyKeys:keysCopy];
+    v10 = [v11 arrayWithObject:mainStoreLinkedContacts];
   }
 
   v12 = v10;
 
   v13 = [CNUIContactSaveConfiguration alloc];
-  v14 = [(CNContactContentDisplayViewController *)self contact];
-  v15 = [(CNContactContentDisplayViewController *)self mutableContact];
-  v16 = [(CNContactContentDisplayViewController *)self originalContacts];
-  v17 = [(CNContactContentDisplayViewController *)self contactStore];
-  v18 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v19 = [v18 ignoresParentalRestrictions];
-  v20 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  LOBYTE(v23) = [v20 saveWasAuthorized];
-  v21 = [(CNUIContactSaveConfiguration *)v13 initWithContact:v14 mutableContact:v15 originalContacts:v16 editingLinkedContacts:v12 contactStore:v17 ignoresParentalRestrictions:v19 saveWasAuthorized:v23];
+  contact3 = [(CNContactContentDisplayViewController *)self contact];
+  mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+  originalContacts = [(CNContactContentDisplayViewController *)self originalContacts];
+  contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  ignoresParentalRestrictions = [contactViewConfiguration ignoresParentalRestrictions];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  LOBYTE(v23) = [editAuthorizationManager saveWasAuthorized];
+  v21 = [(CNUIContactSaveConfiguration *)v13 initWithContact:contact3 mutableContact:mutableContact originalContacts:originalContacts editingLinkedContacts:v12 contactStore:contactStore ignoresParentalRestrictions:ignoresParentalRestrictions saveWasAuthorized:v23];
 
   return v21;
 }
@@ -4026,16 +4026,16 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 - (void)_updateLabelWidthsForAllVisibleCells
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactContentDisplayViewController *)self contactView];
-  [v3 contentOffset];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView contentOffset];
   v5 = v4;
   v7 = v6;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v3 visibleCells];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleCells = [contactView visibleCells];
+  v9 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -4047,83 +4047,83 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(CNContactContentDisplayViewController *)self _updateLabelWidthForCell:*(*(&v13 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  [v3 setContentOffset:{v5, v7}];
+  [contactView setContentOffset:{v5, v7}];
   [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
 }
 
-- (void)_updateLabelWidthForCellsInGroup:(id)a3 reset:(BOOL)a4
+- (void)_updateLabelWidthForCellsInGroup:(id)group reset:(BOOL)reset
 {
-  v4 = a4;
-  v14 = a3;
-  v6 = [(CNContactContentDisplayViewController *)self contactView];
-  if (v4)
+  resetCopy = reset;
+  groupCopy = group;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  if (resetCopy)
   {
-    v7 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:v14];
-    v8 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
-    [v8 removeObjectForKey:v7];
+    v7 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:groupCopy];
+    cachedLabelWidths = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+    [cachedLabelWidths removeObjectForKey:v7];
   }
 
-  [(CNContactContentDisplayViewController *)self _updateCachedLabelWidthsForGroup:v14];
-  v9 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v14];
-  v10 = [v14 displayItems];
-  if ([v10 count])
+  [(CNContactContentDisplayViewController *)self _updateCachedLabelWidthsForGroup:groupCopy];
+  v9 = [(CNContactContentDisplayViewController *)self sectionOfGroup:groupCopy];
+  displayItems = [groupCopy displayItems];
+  if ([displayItems count])
   {
     v11 = 0;
     do
     {
       v12 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:v9];
-      v13 = [v6 cellForRowAtIndexPath:v12];
+      v13 = [contactView cellForRowAtIndexPath:v12];
       [(CNContactContentDisplayViewController *)self _updateLabelWidthForCell:v13];
 
       ++v11;
     }
 
-    while (v11 < [v10 count]);
+    while (v11 < [displayItems count]);
   }
 }
 
-- (void)_updateLabelWidthForCell:(id)a3
+- (void)_updateLabelWidthForCell:(id)cell
 {
-  v15 = a3;
+  cellCopy = cell;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v15;
+  v5 = cellCopy;
   if (isKindOfClass)
   {
-    v6 = v15;
-    v7 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-    v8 = [v6 propertyItem];
-    v9 = v8;
-    if (v7)
+    v6 = cellCopy;
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    propertyItem = [v6 propertyItem];
+    v9 = propertyItem;
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
-      v10 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForItem:v8];
+      v10 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForItem:propertyItem];
     }
 
     else
     {
-      v11 = [v8 group];
-      v10 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:v11];
+      group = [propertyItem group];
+      v10 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:group];
     }
 
-    v12 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
-    v13 = [v12 objectForKey:v10];
+    cachedLabelWidths = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+    v13 = [cachedLabelWidths objectForKey:v10];
     [v13 floatValue];
     [v6 setLabelWidth:v14];
 
-    v5 = v15;
+    v5 = cellCopy;
   }
 
   MEMORY[0x1EEE66BB8](isKindOfClass, v5);
@@ -4131,14 +4131,14 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 
 - (void)_updateCachedLabelWidthsIfNeeded
 {
-  v3 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+  cachedLabelWidths = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
 
-  if (!v3)
+  if (!cachedLabelWidths)
   {
-    v4 = [(CNContactContentDisplayViewController *)self traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [(CNContactContentDisplayViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v5 == 3)
+    if (userInterfaceIdiom == 3)
     {
 
       [(CNContactContentDisplayViewController *)self _updateCachedLabelWidths];
@@ -4151,31 +4151,31 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
   [(CNContactContentDisplayViewController *)self setCachedLabelWidths:0];
   if ([(CNContactContentDisplayViewController *)self isViewLoaded])
   {
-    v3 = [(CNContactContentDisplayViewController *)self view];
-    [v3 setNeedsLayout];
+    view = [(CNContactContentDisplayViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)_updateCachedLabelWidths
 {
-  v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-  [(CNContactContentDisplayViewController *)self setCachedLabelWidths:v3];
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  [(CNContactContentDisplayViewController *)self setCachedLabelWidths:weakToStrongObjectsMapTable];
 
-  v4 = [(CNContactContentDisplayViewController *)self displayGroups];
-  v5 = [v4 count];
+  displayGroups = [(CNContactContentDisplayViewController *)self displayGroups];
+  v5 = [displayGroups count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(CNContactContentDisplayViewController *)self displayGroups];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      displayGroups2 = [(CNContactContentDisplayViewController *)self displayGroups];
+      v8 = [displayGroups2 objectAtIndexedSubscript:v6];
 
       [(CNContactContentDisplayViewController *)self _updateCachedLabelWidthsForGroup:v8];
       ++v6;
-      v9 = [(CNContactContentDisplayViewController *)self displayGroups];
-      v10 = [v9 count];
+      displayGroups3 = [(CNContactContentDisplayViewController *)self displayGroups];
+      v10 = [displayGroups3 count];
     }
 
     while (v6 < v10);
@@ -4184,15 +4184,15 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
   [(CNContactContentDisplayViewController *)self _updateLabelWidthsForAllVisibleCells];
 }
 
-- (void)_updateCachedLabelWidthsForGroup:(id)a3
+- (void)_updateCachedLabelWidthsForGroup:(id)group
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 displayItems];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  displayItems = [group displayItems];
+  v5 = [displayItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4204,25 +4204,25 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(displayItems);
         }
 
         [(CNContactContentDisplayViewController *)self _updateCachedLabelWidthsForItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [displayItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateCachedLabelWidthsForItem:(id)a3
+- (void)_updateCachedLabelWidthsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v37 = v4;
+  v37 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v37;
@@ -4237,10 +4237,10 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 
   if (v6 && [v6 supportsLabel])
   {
-    v7 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
-    v8 = [(CNContactContentDisplayViewController *)self contactView];
-    v9 = [v8 labelTextAttributes];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+    ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    labelTextAttributes = [contactView labelTextAttributes];
+    v10 = [labelTextAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
 
     if (v10)
     {
@@ -4253,13 +4253,13 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
       v12 = 44.0;
     }
 
-    v13 = [(CNContactContentDisplayViewController *)self contactView];
-    [v13 frame];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    [contactView2 frame];
     Width = CGRectGetWidth(v39);
-    if (v7)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
-      v15 = [(CNContactContentDisplayViewController *)self contactView];
-      [v15 _marginWidth];
+      contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+      [contactView3 _marginWidth];
       v17 = Width - v16;
     }
 
@@ -4268,16 +4268,16 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
       v17 = Width / 3.0;
     }
 
-    if (v7)
+    if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
     {
       v17 = v17 + -53.0;
     }
 
     v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v19 = [v6 displayLabel];
-    v20 = [(CNContactContentDisplayViewController *)self contactView];
-    v21 = [v20 labelTextAttributes];
-    v22 = [v18 initWithString:v19 attributes:v21];
+    displayLabel = [v6 displayLabel];
+    contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+    labelTextAttributes2 = [contactView4 labelTextAttributes];
+    v22 = [v18 initWithString:displayLabel attributes:labelTextAttributes2];
 
     [v22 boundingRectWithSize:3 options:0 context:{v17, 10000.0}];
     v23 = CGRectGetWidth(v40);
@@ -4288,7 +4288,7 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
 
     else
     {
-      v24 = v7;
+      v24 = ab_preferredContentSizeCategoryIsAccessibilityCategory;
     }
 
     if (!v24)
@@ -4302,48 +4302,48 @@ uint64_t __80__CNContactContentDisplayViewController_updateContactsViewWithBlock
     }
 
     v25 = ceil(v23);
-    v26 = [v6 group];
-    v27 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:v26];
+    group = [v6 group];
+    v27 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForGroup:group];
     v28 = [(CNContactContentDisplayViewController *)self _labelWidthKeyForItem:v6];
-    v29 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
-    v30 = [v29 objectForKey:v27];
+    cachedLabelWidths = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+    v30 = [cachedLabelWidths objectForKey:v27];
     [v30 floatValue];
     v32 = v31;
 
     if (v25 > 0.0)
     {
-      v33 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+      cachedLabelWidths2 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
       v34 = [MEMORY[0x1E696AD98] numberWithDouble:v25];
-      [v33 setObject:v34 forKey:v28];
+      [cachedLabelWidths2 setObject:v34 forKey:v28];
 
       if (v25 > v32)
       {
-        v35 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
+        cachedLabelWidths3 = [(CNContactContentDisplayViewController *)self cachedLabelWidths];
         v36 = [MEMORY[0x1E696AD98] numberWithDouble:v25];
-        [v35 setObject:v36 forKey:v27];
+        [cachedLabelWidths3 setObject:v36 forKey:v27];
       }
     }
   }
 }
 
-- (id)_labelWidthKeyForGroup:(id)a3
+- (id)_labelWidthKeyForGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   objc_opt_class();
-  v4 = v3;
+  v4 = groupCopy;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(__CFString *)v3 property];
-    if ([v5 isEqualToString:*MEMORY[0x1E695C3F8]])
+    property = [(__CFString *)groupCopy property];
+    if ([property isEqualToString:*MEMORY[0x1E695C3F8]])
     {
     }
 
     else
     {
-      v6 = [(__CFString *)v3 property];
-      v7 = [v6 isEqualToString:*MEMORY[0x1E695C1E0]];
+      property2 = [(__CFString *)groupCopy property];
+      v7 = [property2 isEqualToString:*MEMORY[0x1E695C1E0]];
 
-      v4 = v3;
+      v4 = groupCopy;
       if (!v7)
       {
         goto LABEL_6;
@@ -4360,35 +4360,35 @@ LABEL_6:
 
 - (void)removeFirstSectionHeaderViewControllerFromHierarchy
 {
-  v3 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-  v4 = [v3 parentViewController];
+  personHeaderViewController = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+  parentViewController = [personHeaderViewController parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
-    v5 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-    [v5 willMoveToParentViewController:0];
+    personHeaderViewController2 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+    [personHeaderViewController2 willMoveToParentViewController:0];
 
-    v6 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-    v7 = [v6 isViewLoaded];
+    personHeaderViewController3 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+    isViewLoaded = [personHeaderViewController3 isViewLoaded];
 
-    if (v7)
+    if (isViewLoaded)
     {
-      v8 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-      v9 = [v8 view];
-      [v9 removeFromSuperview];
+      personHeaderViewController4 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+      view = [personHeaderViewController4 view];
+      [view removeFromSuperview];
     }
 
-    v10 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-    [v10 removeFromParentViewController];
+    personHeaderViewController5 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+    [personHeaderViewController5 removeFromParentViewController];
   }
 }
 
-- (BOOL)isTableViewHeaderFirstSectionIndexPath:(id)a3
+- (BOOL)isTableViewHeaderFirstSectionIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection])
   {
-    v5 = [v4 section] == 0;
+    v5 = [pathCopy section] == 0;
   }
 
   else
@@ -4402,8 +4402,8 @@ LABEL_6:
 - (id)tableViewHeaderFirstSectionCell
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactContentDisplayViewController *)self contactView];
-  v4 = [v3 dequeueReusableCellWithIdentifier:@"FirstSectionCellIdentifier"];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  v4 = [contactView dequeueReusableCellWithIdentifier:@"FirstSectionCellIdentifier"];
   if (!v4)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"FirstSectionCellIdentifier"];
@@ -4412,40 +4412,40 @@ LABEL_6:
     [v4 _cnui_applyContactStyle];
   }
 
-  v5 = self;
-  v6 = [(CNContactContentDisplayViewController *)v5 personHeaderViewController];
-  v7 = [v6 parentViewController];
+  selfCopy = self;
+  personHeaderViewController = [(CNContactContentDisplayViewController *)selfCopy personHeaderViewController];
+  parentViewController = [personHeaderViewController parentViewController];
 
-  if (v7 != v5)
+  if (parentViewController != selfCopy)
   {
-    [(CNContactContentDisplayViewController *)v5 removeFirstSectionHeaderViewControllerFromHierarchy];
-    v8 = [(CNContactContentDisplayViewController *)v5 personHeaderViewController];
-    [(CNContactContentDisplayViewController *)v5 addChildViewController:v8];
+    [(CNContactContentDisplayViewController *)selfCopy removeFirstSectionHeaderViewControllerFromHierarchy];
+    personHeaderViewController2 = [(CNContactContentDisplayViewController *)selfCopy personHeaderViewController];
+    [(CNContactContentDisplayViewController *)selfCopy addChildViewController:personHeaderViewController2];
 
-    v9 = [(CNContactContentDisplayViewController *)v5 personHeaderViewController];
-    v10 = [v9 view];
+    personHeaderViewController3 = [(CNContactContentDisplayViewController *)selfCopy personHeaderViewController];
+    view = [personHeaderViewController3 view];
 
-    v11 = [v4 contentView];
-    [v11 addSubview:v10];
+    contentView = [v4 contentView];
+    [contentView addSubview:view];
 
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [v4 contentView];
-    v13 = [v12 layoutMarginsGuide];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentView2 = [v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
     v20 = @"personHeaderView";
-    v21[0] = v10;
+    v21[0] = view;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:[personHeaderView]|" options:0 metrics:0 views:v14];
-    [v15 addObjectsFromArray:v16];
+    [array addObjectsFromArray:v16];
 
-    v17 = [MEMORY[0x1E696ACD8] constraintWithItem:v10 attribute:5 relatedBy:0 toItem:v13 attribute:5 multiplier:1.0 constant:0.0];
-    [v15 addObject:v17];
+    v17 = [MEMORY[0x1E696ACD8] constraintWithItem:view attribute:5 relatedBy:0 toItem:layoutMarginsGuide attribute:5 multiplier:1.0 constant:0.0];
+    [array addObject:v17];
 
     v18 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[personHeaderView]|" options:0 metrics:0 views:v14];
-    [v15 addObjectsFromArray:v18];
+    [array addObjectsFromArray:v18];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v15];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v4;
@@ -4453,45 +4453,45 @@ LABEL_6:
 
 - (BOOL)hasTableViewHeaderFirstSection
 {
-  v2 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-  v3 = v2 != 0;
+  personHeaderViewController = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+  v3 = personHeaderViewController != 0;
 
   return v3;
 }
 
-- (void)geminiDataSourceDidUpdate:(id)a3
+- (void)geminiDataSourceDidUpdate:(id)update
 {
-  v7 = [a3 geminiResult];
-  v4 = [(CNContactContentDisplayViewController *)self shouldShowGemini];
-  v5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v5 updateGeminiResult:v7];
+  geminiResult = [update geminiResult];
+  shouldShowGemini = [(CNContactContentDisplayViewController *)self shouldShowGemini];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView updateGeminiResult:geminiResult];
 
-  v6 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v6 setShouldShowGemini:v4];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView2 setShouldShowGemini:shouldShowGemini];
 }
 
-- (void)setMenuProviderForCell:(id)a3 forActionGroupItem:(id)a4
+- (void)setMenuProviderForCell:(id)cell forActionGroupItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (-[CNContactContentDisplayViewController cardShareLocationGroup](self, "cardShareLocationGroup"), v8 = objc_claimAutoreleasedReturnValue(), [v8 actions], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "actions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToArray:", v10), v10, v9, v8, v11))
+  cellCopy = cell;
+  itemCopy = item;
+  if (cellCopy && (-[CNContactContentDisplayViewController cardShareLocationGroup](self, "cardShareLocationGroup"), v8 = objc_claimAutoreleasedReturnValue(), [v8 actions], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(itemCopy, "actions"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToArray:", v10), v10, v9, v8, v11))
   {
-    v12 = [(CNContactContentDisplayViewController *)self shareLocationController];
+    shareLocationController = [(CNContactContentDisplayViewController *)self shareLocationController];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __83__CNContactContentDisplayViewController_setMenuProviderForCell_forActionGroupItem___block_invoke;
     v23[3] = &unk_1E74E6E70;
-    v24 = v6;
-    [v12 actionsMenuProviderWithCompletion:v23];
+    v24 = cellCopy;
+    [shareLocationController actionsMenuProviderWithCompletion:v23];
   }
 
   else
   {
-    v13 = [v7 actions];
-    v14 = [v13 firstObject];
+    actions = [itemCopy actions];
+    firstObject = [actions firstObject];
 
     objc_opt_class();
-    v15 = v14;
+    v15 = firstObject;
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
@@ -4506,16 +4506,16 @@ LABEL_6:
 
     if (v17)
     {
-      v18 = [v17 menuProvider];
-      [v6 setMenuProvider:v18];
+      menuProvider = [v17 menuProvider];
+      [cellCopy setMenuProvider:menuProvider];
     }
 
     else
     {
-      v19 = [v15 target];
-      if ([v19 conformsToProtocol:&unk_1F0D822B0])
+      target = [v15 target];
+      if ([target conformsToProtocol:&unk_1F0D822B0])
       {
-        v20 = v19;
+        v20 = target;
       }
 
       else
@@ -4523,13 +4523,13 @@ LABEL_6:
         v20 = 0;
       }
 
-      v18 = v20;
+      menuProvider = v20;
 
-      if (v18)
+      if (menuProvider)
       {
-        v21 = [v6 contextMenuInteraction];
-        v22 = [v18 menuProviderForContextMenuInteraction:v21];
-        [v6 setMenuProvider:v22];
+        contextMenuInteraction = [cellCopy contextMenuInteraction];
+        v22 = [menuProvider menuProviderForContextMenuInteraction:contextMenuInteraction];
+        [cellCopy setMenuProvider:v22];
       }
     }
   }
@@ -4548,28 +4548,28 @@ void __83__CNContactContentDisplayViewController_setMenuProviderForCell_forActio
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (id)_cellForIndexPath:(id)a3
+- (id)_cellForIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v5];
-  v7 = [(CNContactContentDisplayViewController *)self _cellIdentifierForIndexPath:v5];
-  v8 = [(CNContactContentDisplayViewController *)self noteCell];
-  if (v8 && (v9 = v8, -[CNContactContentDisplayViewController contactView](self, "contactView"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), [v11 cellIdentifierForClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v7, "isEqualToString:", v12), v12, v10, v9, v13))
+  pathCopy = path;
+  v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
+  v7 = [(CNContactContentDisplayViewController *)self _cellIdentifierForIndexPath:pathCopy];
+  noteCell = [(CNContactContentDisplayViewController *)self noteCell];
+  if (noteCell && (v9 = noteCell, -[CNContactContentDisplayViewController contactView](self, "contactView"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), [v11 cellIdentifierForClass:objc_opt_class()], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v7, "isEqualToString:", v12), v12, v10, v9, v13))
   {
-    v14 = [(CNContactContentDisplayViewController *)self noteCell];
+    noteCell2 = [(CNContactContentDisplayViewController *)self noteCell];
     [(CNContactContentDisplayViewController *)self setNoteCell:0];
   }
 
   else
   {
-    v15 = [(CNContactContentDisplayViewController *)self contactView];
-    v14 = [v15 dequeueReusableCellWithIdentifier:v7];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    noteCell2 = [contactView dequeueReusableCellWithIdentifier:v7];
   }
 
-  if (!v14)
+  if (!noteCell2)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:3089 description:{@"We couldn’t create a cell with identifier: %@ indexPath: %@", v7, v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:3089 description:{@"We couldn’t create a cell with identifier: %@ indexPath: %@", v7, pathCopy}];
   }
 
   if ([(CNContactContentDisplayViewController *)self mode]== 5)
@@ -4590,16 +4590,16 @@ void __83__CNContactContentDisplayViewController_setMenuProviderForCell_forActio
 
     if (v18)
     {
-      v19 = [(CNContactContentDisplayViewController *)self highlightedProperties];
-      if ([v19 count])
+      highlightedProperties = [(CNContactContentDisplayViewController *)self highlightedProperties];
+      if ([highlightedProperties count])
       {
-        v20 = [(CNContactContentDisplayViewController *)self highlightedProperties];
-        v21 = [v18 contactProperty];
-        v22 = [v20 containsObject:v21];
+        highlightedProperties2 = [(CNContactContentDisplayViewController *)self highlightedProperties];
+        contactProperty = [v18 contactProperty];
+        v22 = [highlightedProperties2 containsObject:contactProperty];
 
         if (v22 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v14 setForceSuggested:1];
+          [noteCell2 setForceSuggested:1];
         }
       }
 
@@ -4611,44 +4611,44 @@ void __83__CNContactContentDisplayViewController_setMenuProviderForCell_forActio
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 setDelegate:self];
+    [noteCell2 setDelegate:self];
   }
 
-  [v14 setCardGroupItem:v6];
+  [noteCell2 setCardGroupItem:v6];
   if (objc_opt_respondsToSelector())
   {
-    v23 = [(CNContactContentDisplayViewController *)self presentingDelegate];
-    [v14 setPresentingDelegate:v23];
+    presentingDelegate = [(CNContactContentDisplayViewController *)self presentingDelegate];
+    [noteCell2 setPresentingDelegate:presentingDelegate];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v24 = [(CNContactContentDisplayViewController *)self contactView];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
     v25 = objc_opt_class();
     v26 = [v25 cellIdentifierForClass:objc_opt_class()];
     v27 = [v7 isEqualToString:v26];
 
-    v28 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v29 = [v28 allowsEditing];
-    v30 = v29;
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    allowsEditing = [contactViewConfiguration allowsEditing];
+    v30 = allowsEditing;
     if (v27)
     {
-      if (v29)
+      if (allowsEditing)
       {
-        v31 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-        [v14 setAllowsEditing:{objc_msgSend(v31, "shouldPromptForPasscodeAuthorization") ^ 1}];
+        editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+        [noteCell2 setAllowsEditing:{objc_msgSend(editAuthorizationManager, "shouldPromptForPasscodeAuthorization") ^ 1}];
 
 LABEL_29:
         goto LABEL_30;
       }
 
-      v32 = v14;
+      v32 = noteCell2;
       v30 = 0;
     }
 
     else
     {
-      v32 = v14;
+      v32 = noteCell2;
     }
 
     [v32 setAllowsEditing:v30];
@@ -4658,25 +4658,25 @@ LABEL_29:
 LABEL_30:
   if (objc_opt_respondsToSelector())
   {
-    v33 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    [v14 setAllowsActions:{objc_msgSend(v33, "allowsActions")}];
+    contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    [noteCell2 setAllowsActions:{objc_msgSend(contactViewConfiguration2, "allowsActions")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v34 = v14;
-    v35 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    [v34 setVIP:{objc_msgSend(v35, "isMailVIP")}];
+    v34 = noteCell2;
+    contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    [v34 setVIP:{objc_msgSend(contactViewConfiguration3, "isMailVIP")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v36 = v14;
-    v37 = [(CNContactContentDisplayViewController *)self emergencyNumberIdentifier];
-    v38 = [v36 propertyItem];
-    v39 = [v38 contactProperty];
-    v40 = [v39 identifier];
-    [v36 setEmergencyPhoneNumber:{objc_msgSend(v37, "isEqualToString:", v40)}];
+    v36 = noteCell2;
+    emergencyNumberIdentifier = [(CNContactContentDisplayViewController *)self emergencyNumberIdentifier];
+    propertyItem = [v36 propertyItem];
+    contactProperty2 = [propertyItem contactProperty];
+    identifier = [contactProperty2 identifier];
+    [v36 setEmergencyPhoneNumber:{objc_msgSend(emergencyNumberIdentifier, "isEqualToString:", identifier)}];
   }
 
   objc_opt_class();
@@ -4697,7 +4697,7 @@ LABEL_30:
     v43 = v42;
 
     objc_opt_class();
-    v44 = v14;
+    v44 = noteCell2;
     if (objc_opt_isKindOfClass())
     {
       v45 = v44;
@@ -4713,18 +4713,18 @@ LABEL_30:
     [(CNContactContentDisplayViewController *)self setMenuProviderForCell:v46 forActionGroupItem:v43];
   }
 
-  return v14;
+  return noteCell2;
 }
 
-- (id)_cellIdentifierForIndexPath:(id)a3
+- (id)_cellIdentifierForIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 property];
-    v8 = [CNContactView cellIdentifierForProperty:v7];
+    property = [v6 property];
+    v8 = [CNContactView cellIdentifierForProperty:property];
     goto LABEL_3;
   }
 
@@ -4738,15 +4738,15 @@ LABEL_30:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [v5 section]);
-    if ([v7 useSplitActions])
+    property = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [pathCopy section]);
+    if ([property useSplitActions])
     {
       v8 = +[CNContactView cellIdentifierForSplitActions];
     }
 
     else
     {
-      if ([v7 displaysDropdownMenu])
+      if ([property displaysDropdownMenu])
       {
         +[CNContactView cellIdentifierForDropdownMenuActions];
       }
@@ -4803,8 +4803,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:3069 description:{@"Unknown group item: %@", v6}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:3069 description:{@"Unknown group item: %@", v6}];
 
   v9 = 0;
 LABEL_8:
@@ -4812,26 +4812,26 @@ LABEL_8:
   return v9;
 }
 
-- (void)_scrollContactView:(id)a3 toVisibleGroup:(id)a4
+- (void)_scrollContactView:(id)view toVisibleGroup:(id)group
 {
-  v16 = a3;
-  v6 = a4;
-  [v16 _effectiveContentInset];
-  [v16 setContentOffset:{0.0, -v7}];
-  if (v6)
+  viewCopy = view;
+  groupCopy = group;
+  [viewCopy _effectiveContentInset];
+  [viewCopy setContentOffset:{0.0, -v7}];
+  if (groupCopy)
   {
-    v8 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v6];
+    v8 = [(CNContactContentDisplayViewController *)self sectionOfGroup:groupCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
-      v10 = [v6 displayItems];
-      v11 = ([v10 count] >> 1);
+      displayItems = [groupCopy displayItems];
+      v11 = ([displayItems count] >> 1);
 
       v12 = [MEMORY[0x1E696AC88] indexPathForRow:v11 inSection:v9];
-      v13 = [v16 numberOfSections];
-      if (v13 > [v12 section])
+      numberOfSections = [viewCopy numberOfSections];
+      if (numberOfSections > [v12 section])
       {
-        v14 = [v16 numberOfRowsInSection:{objc_msgSend(v12, "section")}];
+        v14 = [viewCopy numberOfRowsInSection:{objc_msgSend(v12, "section")}];
         if (v14 > [v12 row])
         {
 LABEL_7:
@@ -4840,11 +4840,11 @@ LABEL_7:
             goto LABEL_10;
           }
 
-          [v16 scrollToRowAtIndexPath:v12 atScrollPosition:2 animated:0];
+          [viewCopy scrollToRowAtIndexPath:v12 atScrollPosition:2 animated:0];
           goto LABEL_9;
         }
 
-        if ([v16 numberOfRowsInSection:{objc_msgSend(v12, "section")}] >= 1)
+        if ([viewCopy numberOfRowsInSection:{objc_msgSend(v12, "section")}] >= 1)
         {
           v15 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v9];
 
@@ -4860,16 +4860,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_currentTopVisibleGroupInContactView:(id)a3
+- (id)_currentTopVisibleGroupInContactView:(id)view
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 contentOffset];
+  viewCopy = view;
+  [viewCopy contentOffset];
   v6 = v5;
-  v7 = [v4 tableHeaderView];
-  [v7 bounds];
+  tableHeaderView = [viewCopy tableHeaderView];
+  [tableHeaderView bounds];
   v9 = v8;
-  [v4 estimatedRowHeight];
+  [viewCopy estimatedRowHeight];
   v11 = v9 - v10;
 
   if (v6 <= v11)
@@ -4884,8 +4884,8 @@ LABEL_14:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v4 visibleCells];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v13 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -4896,7 +4896,7 @@ LABEL_4:
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(visibleCells);
         }
 
         v17 = *(*(&v23 + 1) + 8 * v16);
@@ -4908,7 +4908,7 @@ LABEL_4:
 
         if (v14 == ++v16)
         {
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v14 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
           if (v14)
           {
             goto LABEL_4;
@@ -4925,11 +4925,11 @@ LABEL_4:
         goto LABEL_14;
       }
 
-      v20 = [v19 propertyItem];
-      v21 = [v20 property];
-      v18 = [(CNContactContentDisplayViewController *)self cardGroupForProperty:v21];
+      propertyItem = [v19 propertyItem];
+      property = [propertyItem property];
+      v18 = [(CNContactContentDisplayViewController *)self cardGroupForProperty:property];
 
-      v12 = v19;
+      visibleCells = v19;
     }
 
     else
@@ -4966,24 +4966,24 @@ LABEL_10:
 
 - (BOOL)isSuggestedContact
 {
-  v2 = [(CNContactContentDisplayViewController *)self contact];
-  v3 = [v2 isSuggested];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  isSuggested = [contact isSuggested];
 
-  return v3;
+  return isSuggested;
 }
 
-- (BOOL)contactDisplayViewController:(id)a3 shouldPerformDefaultActionForContact:(id)a4 propertyKey:(id)a5 propertyIdentifier:(id)a6
+- (BOOL)contactDisplayViewController:(id)controller shouldPerformDefaultActionForContact:(id)contact propertyKey:(id)key propertyIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CNContactContentDisplayViewController *)self delegate];
+  contactCopy = contact;
+  keyCopy = key;
+  identifierCopy = identifier;
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(CNContactContentDisplayViewController *)self delegate];
-    v15 = [v14 contactDisplayViewController:self shouldPerformDefaultActionForContact:v9 propertyKey:v10 propertyIdentifier:v11];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    v15 = [delegate2 contactDisplayViewController:self shouldPerformDefaultActionForContact:contactCopy propertyKey:keyCopy propertyIdentifier:identifierCopy];
   }
 
   else
@@ -4994,44 +4994,44 @@ LABEL_10:
   return v15;
 }
 
-- (void)contactViewController:(id)a3 didDeleteContact:(id)a4
+- (void)contactViewController:(id)controller didDeleteContact:(id)contact
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(CNContactContentDisplayViewController *)self contact];
-  v7 = [v6 mainStoreLinkedContacts];
-  v8 = [v7 containsObject:v5];
+  contactCopy = contact;
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  mainStoreLinkedContacts = [contact mainStoreLinkedContacts];
+  v8 = [mainStoreLinkedContacts containsObject:contactCopy];
 
   if (v8)
   {
-    [(CNContactContentDisplayViewController *)self removeLinkedContact:v5];
-    v9 = [(CNContactContentDisplayViewController *)self saveLinkedContactsExecutor];
-    v10 = [(CNContactContentDisplayViewController *)self contact];
-    v11 = [v10 availableKeyDescriptor];
-    v19[0] = v11;
+    [(CNContactContentDisplayViewController *)self removeLinkedContact:contactCopy];
+    saveLinkedContactsExecutor = [(CNContactContentDisplayViewController *)self saveLinkedContactsExecutor];
+    contact2 = [(CNContactContentDisplayViewController *)self contact];
+    availableKeyDescriptor = [contact2 availableKeyDescriptor];
+    v19[0] = availableKeyDescriptor;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v13 = [(CNContactContentDisplayViewController *)self saveDescriptionForRemovingLinkedContact:v5 keys:v12];
-    v14 = [v9 executeSaveWithConfiguration:v13 saveDelegate:self];
+    v13 = [(CNContactContentDisplayViewController *)self saveDescriptionForRemovingLinkedContact:contactCopy keys:v12];
+    v14 = [saveLinkedContactsExecutor executeSaveWithConfiguration:v13 saveDelegate:self];
 
-    v15 = [(CNContactContentDisplayViewController *)self issuedSaveRequestIdentifiers];
-    v16 = [v14 identifiersOfIssuedSaveRequests];
-    [v15 addObjectsFromArray:v16];
+    issuedSaveRequestIdentifiers = [(CNContactContentDisplayViewController *)self issuedSaveRequestIdentifiers];
+    identifiersOfIssuedSaveRequests = [v14 identifiersOfIssuedSaveRequests];
+    [issuedSaveRequestIdentifiers addObjectsFromArray:identifiersOfIssuedSaveRequests];
 
-    v17 = [v14 contact];
+    contact3 = [v14 contact];
 
-    if (v17)
+    if (contact3)
     {
-      v18 = [v14 contact];
-      [(CNContactContentDisplayViewController *)self setContact:v18];
+      contact4 = [v14 contact];
+      [(CNContactContentDisplayViewController *)self setContact:contact4];
     }
   }
 }
 
 - (double)navigationBarHeight
 {
-  v2 = [(CNContactContentDisplayViewController *)self currentNavigationController];
-  v3 = [v2 navigationBar];
-  [v3 frame];
+  currentNavigationController = [(CNContactContentDisplayViewController *)self currentNavigationController];
+  navigationBar = [currentNavigationController navigationBar];
+  [navigationBar frame];
   v5 = v4;
 
   return v5;
@@ -5039,8 +5039,8 @@ LABEL_10:
 
 - (UIEdgeInsets)headerViewSafeAreaInsets
 {
-  v3 = [(CNContactContentDisplayViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(CNContactContentDisplayViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -5057,24 +5057,24 @@ LABEL_10:
   return result;
 }
 
-- (void)headerViewDidTapNameLabel:(id)a3
+- (void)headerViewDidTapNameLabel:(id)label
 {
-  v4 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v5 = [v4 allowsNamePicking];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsNamePicking = [contactViewConfiguration allowsNamePicking];
 
-  if (v5)
+  if (allowsNamePicking)
   {
 
     [(CNContactContentDisplayViewController *)self _pickName];
   }
 }
 
-- (void)headerViewDidChangeHeight:(id)a3
+- (void)headerViewDidChangeHeight:(id)height
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  heightCopy = height;
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
 
-  if (v5 == v4)
+  if (contactHeaderView == heightCopy)
   {
     [(CNContactContentDisplayViewController *)self viewDidLayoutSubviews];
     [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:1];
@@ -5085,18 +5085,18 @@ LABEL_10:
 
 - (BOOL)isNicknameProhibited
 {
-  v2 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
-  v3 = [v2 containsObject:*MEMORY[0x1E695C310]];
+  prohibitedPropertyKeys = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
+  v3 = [prohibitedPropertyKeys containsObject:*MEMORY[0x1E695C310]];
 
   return v3;
 }
 
 - (void)requestFavoritesUpdateWithGemini
 {
-  v3 = [(CNContactContentDisplayViewController *)self environment];
-  v4 = [v3 inProcessFavorites];
-  v5 = [(CNContactContentDisplayViewController *)self contact];
-  v6 = [v4 entriesForContact:v5];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  inProcessFavorites = [environment inProcessFavorites];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  v6 = [inProcessFavorites entriesForContact:contact];
 
   if (v6)
   {
@@ -5106,29 +5106,29 @@ LABEL_10:
   }
 }
 
-- (void)headerViewDidPickPreferredChannel:(id)a3
+- (void)headerViewDidPickPreferredChannel:(id)channel
 {
-  v13 = a3;
-  v4 = [(CNContactContentDisplayViewController *)self contact];
-  v5 = [v4 preferredChannel];
-  v6 = [v5 isEqualToString:v13];
+  channelCopy = channel;
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  preferredChannel = [contact preferredChannel];
+  v6 = [preferredChannel isEqualToString:channelCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CNContactContentDisplayViewController *)self contact];
-    v8 = [v7 mutableCopy];
+    contact2 = [(CNContactContentDisplayViewController *)self contact];
+    v8 = [contact2 mutableCopy];
 
-    [v8 setPreferredChannel:v13];
+    [v8 setPreferredChannel:channelCopy];
     v9 = objc_alloc_init(MEMORY[0x1E695CF88]);
     [v9 setIgnoresGuardianRestrictions:1];
     [v9 setIgnoresContactProviderRestrictions:1];
-    v10 = [(CNContactContentDisplayViewController *)self issuedSaveRequestIdentifiers];
-    v11 = [v9 saveRequestIdentifier];
-    [v10 addObject:v11];
+    issuedSaveRequestIdentifiers = [(CNContactContentDisplayViewController *)self issuedSaveRequestIdentifiers];
+    saveRequestIdentifier = [v9 saveRequestIdentifier];
+    [issuedSaveRequestIdentifiers addObject:saveRequestIdentifier];
 
     [v9 updateContact:v8];
-    v12 = [(CNContactContentDisplayViewController *)self contactStore];
-    [v12 executeSaveRequest:v9 error:0];
+    contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+    [contactStore executeSaveRequest:v9 error:0];
 
     [(CNContactContentDisplayViewController *)self setContact:v8];
     [(CNContactContentDisplayViewController *)self requestFavoritesUpdateWithGemini];
@@ -5138,24 +5138,24 @@ LABEL_10:
 
 - (void)headerPhotoDidUpdate
 {
-  v7 = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
-  v3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v4 = [v3 allowsEditing];
-  v5 = [(CNContactContentDisplayViewController *)self mode];
-  v6 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  [v7 updateDisplayDoneButtonForController:self allowsEditing:v4 viewMode:v5 editRequiresAuthorization:{objc_msgSend(v6, "shouldPromptForPasscodeAuthorization")}];
+  contactNavigationItemUpdater = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsEditing = [contactViewConfiguration allowsEditing];
+  mode = [(CNContactContentDisplayViewController *)self mode];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  [contactNavigationItemUpdater updateDisplayDoneButtonForController:self allowsEditing:allowsEditing viewMode:mode editRequiresAuthorization:{objc_msgSend(editAuthorizationManager, "shouldPromptForPasscodeAuthorization")}];
 }
 
-- (id)_phoneticNameForValue:(id)a3 currentPhoneticName:(id)a4 property:(id)a5
+- (id)_phoneticNameForValue:(id)value currentPhoneticName:(id)name property:(id)property
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 cnui_stringByTransliteratingToPhoneticCharactersForProperty:a5];
-  v10 = [v9 _cn_trimmedString];
-  v11 = [v8 _cn_trimmedString];
+  nameCopy = name;
+  valueCopy = value;
+  v9 = [valueCopy cnui_stringByTransliteratingToPhoneticCharactersForProperty:property];
+  _cn_trimmedString = [v9 _cn_trimmedString];
+  _cn_trimmedString2 = [valueCopy _cn_trimmedString];
 
-  v12 = [v10 isEqualToString:v11];
-  v13 = [v7 length];
+  v12 = [_cn_trimmedString isEqualToString:_cn_trimmedString2];
+  v13 = [nameCopy length];
 
   if (v13)
   {
@@ -5183,24 +5183,24 @@ LABEL_7:
   return v9;
 }
 
-- (void)propertyCellDidChangeLayout:(id)a3
+- (void)propertyCellDidChangeLayout:(id)layout
 {
-  v6 = a3;
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
-  v5 = [v4 indexPathForCell:v6];
+  layoutCopy = layout;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  v5 = [contactView indexPathForCell:layoutCopy];
   if (v5)
   {
-    [v6 setValue:MEMORY[0x1E695E118] forKey:@"needsHeightCalculation"];
-    [v4 _heightForRowAtIndexPath:v5];
-    [v4 _setHeight:v5 forRowAtIndexPath:?];
+    [layoutCopy setValue:MEMORY[0x1E695E118] forKey:@"needsHeightCalculation"];
+    [contactView _heightForRowAtIndexPath:v5];
+    [contactView _setHeight:v5 forRowAtIndexPath:?];
   }
 }
 
-- (void)propertyCell:(id)a3 didDeleteLabel:(id)a4 forGroup:(id)a5
+- (void)propertyCell:(id)cell didDeleteLabel:(id)label forGroup:(id)group
 {
   v37 = *MEMORY[0x1E69E9840];
-  v25 = a5;
-  [v25 itemsUsingLabel:a4];
+  groupCopy = group;
+  [groupCopy itemsUsingLabel:label];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -5220,16 +5220,16 @@ LABEL_7:
         }
 
         v7 = *(*(&v31 + 1) + 8 * v6);
-        v8 = [v25 nextAvailableLabel];
-        [v7 updateLabeledValueWithLabel:v8];
+        nextAvailableLabel = [groupCopy nextAvailableLabel];
+        [v7 updateLabeledValueWithLabel:nextAvailableLabel];
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v9 = [(CNContactContentDisplayViewController *)self contactView];
-        v10 = [v9 visibleCells];
+        contactView = [(CNContactContentDisplayViewController *)self contactView];
+        visibleCells = [contactView visibleCells];
 
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v11 = [visibleCells countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -5241,16 +5241,16 @@ LABEL_7:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(visibleCells);
               }
 
               v15 = *(*(&v27 + 1) + 8 * v14);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v16 = [v15 propertyItem];
+                propertyItem = [v15 propertyItem];
 
-                if (v16 == v7)
+                if (propertyItem == v7)
                 {
                   [v15 updateWithPropertyItem:v7];
                 }
@@ -5260,7 +5260,7 @@ LABEL_7:
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [visibleCells countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v12);
@@ -5276,20 +5276,20 @@ LABEL_7:
     while (v26);
   }
 
-  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:v25 reset:1];
-  v17 = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
-  v18 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v19 = [v18 allowsEditing];
-  v20 = [(CNContactContentDisplayViewController *)self mode];
-  v21 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  [v17 updateDisplayDoneButtonForController:self allowsEditing:v19 viewMode:v20 editRequiresAuthorization:{objc_msgSend(v21, "shouldPromptForPasscodeAuthorization")}];
+  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:groupCopy reset:1];
+  contactNavigationItemUpdater = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsEditing = [contactViewConfiguration allowsEditing];
+  mode = [(CNContactContentDisplayViewController *)self mode];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  [contactNavigationItemUpdater updateDisplayDoneButtonForController:self allowsEditing:allowsEditing viewMode:mode editRequiresAuthorization:{objc_msgSend(editAuthorizationManager, "shouldPromptForPasscodeAuthorization")}];
 }
 
-- (void)propertyCell:(id)a3 performActionForItem:(id)a4 withTransportType:(int64_t)a5
+- (void)propertyCell:(id)cell performActionForItem:(id)item withTransportType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 1)
+  cellCopy = cell;
+  itemCopy = item;
+  if (type == 1)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -5298,32 +5298,32 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v11 = [v10 linkedCardsAction];
+        actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+        linkedCardsAction = [actionProvider linkedCardsAction];
         goto LABEL_9;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v14 = [v10 addLinkedCardAction];
-        [v14 performActionWithSender:v8];
+        actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+        addLinkedCardAction = [actionProvider addLinkedCardAction];
+        [addLinkedCardAction performActionWithSender:cellCopy];
         goto LABEL_10;
       }
 
-      if ([v8 isSuggested])
+      if ([cellCopy isSuggested])
       {
         v15 = [CNPropertySuggestionAction alloc];
-        v16 = [(CNContactContentDisplayViewController *)self contact];
-        v17 = [(CNPropertyAction *)v15 initWithContact:v16 propertyItem:v9];
+        contact = [(CNContactContentDisplayViewController *)self contact];
+        v17 = [(CNPropertyAction *)v15 initWithContact:contact propertyItem:itemCopy];
 
         [(CNContactAction *)v17 setDelegate:self];
       }
 
       else
       {
-        if (a5 == 7)
+        if (type == 7)
         {
           v17 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
           v18 = MEMORY[0x1E69DC648];
@@ -5334,9 +5334,9 @@ LABEL_7:
           v42[2] = __93__CNContactContentDisplayViewController_propertyCell_performActionForItem_withTransportType___block_invoke;
           v42[3] = &unk_1E74E6E20;
           v42[4] = self;
-          v21 = v9;
+          v21 = itemCopy;
           v43 = v21;
-          v22 = v8;
+          v22 = cellCopy;
           v44 = v22;
           v23 = [v18 actionWithTitle:v20 style:0 handler:v42];
           [(CNPropertySuggestionAction *)v17 addAction:v23];
@@ -5348,12 +5348,12 @@ LABEL_7:
           v36 = 3221225472;
           v37 = __93__CNContactContentDisplayViewController_propertyCell_performActionForItem_withTransportType___block_invoke_2;
           v38 = &unk_1E74E6E20;
-          v39 = self;
+          selfCopy = self;
           v40 = v21;
           v27 = v22;
           v41 = v27;
           v28 = [v24 actionWithTitle:v26 style:0 handler:&v35];
-          [(CNPropertySuggestionAction *)v17 addAction:v28, v35, v36, v37, v38, v39];
+          [(CNPropertySuggestionAction *)v17 addAction:v28, v35, v36, v37, v38, selfCopy];
 
           v29 = MEMORY[0x1E69DC648];
           v30 = CNContactsUIBundle();
@@ -5368,46 +5368,46 @@ LABEL_7:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [CNPropertyAction performDefaultActionForItem:v9 sender:v8];
+          [CNPropertyAction performDefaultActionForItem:itemCopy sender:cellCopy];
           goto LABEL_11;
         }
 
         v33 = [CNPropertyPostalAddressAction alloc];
-        v34 = [(CNContactContentDisplayViewController *)self contact];
-        v17 = [(CNPropertyAction *)v33 initWithContact:v34 propertyItem:v9];
+        contact2 = [(CNContactContentDisplayViewController *)self contact];
+        v17 = [(CNPropertyAction *)v33 initWithContact:contact2 propertyItem:itemCopy];
       }
 
-      [(CNPropertySuggestionAction *)v17 performActionForItem:v9 sender:v8];
+      [(CNPropertySuggestionAction *)v17 performActionForItem:itemCopy sender:cellCopy];
 LABEL_19:
 
       goto LABEL_11;
     }
 
 LABEL_6:
-    v12 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v13 = [v12 faceTimeAction];
-    [v13 setType:a5];
+    actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+    faceTimeAction = [actionProvider2 faceTimeAction];
+    [faceTimeAction setType:type];
 
-    v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v11 = [v10 faceTimeAction];
+    actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+    linkedCardsAction = [actionProvider faceTimeAction];
     goto LABEL_9;
   }
 
-  if (a5 == 3)
+  if (type == 3)
   {
     goto LABEL_6;
   }
 
-  if (a5 != 2)
+  if (type != 2)
   {
     goto LABEL_7;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v11 = [v10 sendMessageAction];
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  linkedCardsAction = [actionProvider sendMessageAction];
 LABEL_9:
-  v14 = v11;
-  [v11 performActionForItem:v9 sender:v8];
+  addLinkedCardAction = linkedCardsAction;
+  [linkedCardsAction performActionForItem:itemCopy sender:cellCopy];
 LABEL_10:
 
 LABEL_11:
@@ -5433,22 +5433,22 @@ void __93__CNContactContentDisplayViewController_propertyCell_performActionForIt
   [(CNPropertyTTYRelayAction *)v4 performActionForItem:*(a1 + 40) sender:*(a1 + 48)];
 }
 
-- (void)propertyCell:(id)a3 didUpdateItem:(id)a4 withNewValue:(id)a5
+- (void)propertyCell:(id)cell didUpdateItem:(id)item withNewValue:(id)value
 {
-  v24 = a3;
-  v8 = a4;
-  [v8 updateLabeledValueWithValue:a5];
+  cellCopy = cell;
+  itemCopy = item;
+  [itemCopy updateLabeledValueWithValue:value];
   if (objc_opt_respondsToSelector())
   {
-    [v24 updateWithPropertyItem:v8];
+    [cellCopy updateWithPropertyItem:itemCopy];
   }
 
-  v9 = [v8 group];
-  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:v9 reset:1];
+  group = [itemCopy group];
+  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:group reset:1];
 
-  v10 = [v8 property];
+  property = [itemCopy property];
   v11 = *MEMORY[0x1E695C1E0];
-  if ([v10 isEqualToString:*MEMORY[0x1E695C1E0]])
+  if ([property isEqualToString:*MEMORY[0x1E695C1E0]])
   {
 
     v12 = *MEMORY[0x1E695C3F8];
@@ -5456,9 +5456,9 @@ void __93__CNContactContentDisplayViewController_propertyCell_performActionForIt
 
   else
   {
-    v13 = [v8 property];
+    property2 = [itemCopy property];
     v12 = *MEMORY[0x1E695C3F8];
-    v14 = [v13 isEqualToString:*MEMORY[0x1E695C3F8]];
+    v14 = [property2 isEqualToString:*MEMORY[0x1E695C3F8]];
 
     if (!v14)
     {
@@ -5466,263 +5466,263 @@ void __93__CNContactContentDisplayViewController_propertyCell_performActionForIt
     }
   }
 
-  v15 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v16 = [v15 objectForKeyedSubscript:v11];
+  propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+  v16 = [propertyGroups objectForKeyedSubscript:v11];
   [(CNContactContentDisplayViewController *)self _validateGroup:v16];
 
-  v17 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v18 = [v17 objectForKeyedSubscript:v12];
+  propertyGroups2 = [(CNContactContentDisplayViewController *)self propertyGroups];
+  v18 = [propertyGroups2 objectForKeyedSubscript:v12];
   [(CNContactContentDisplayViewController *)self _validateGroup:v18];
 
 LABEL_7:
-  v19 = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
-  v20 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v21 = [v20 allowsEditing];
-  v22 = [(CNContactContentDisplayViewController *)self mode];
-  v23 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  [v19 updateDisplayDoneButtonForController:self allowsEditing:v21 viewMode:v22 editRequiresAuthorization:{objc_msgSend(v23, "shouldPromptForPasscodeAuthorization")}];
+  contactNavigationItemUpdater = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsEditing = [contactViewConfiguration allowsEditing];
+  mode = [(CNContactContentDisplayViewController *)self mode];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  [contactNavigationItemUpdater updateDisplayDoneButtonForController:self allowsEditing:allowsEditing viewMode:mode editRequiresAuthorization:{objc_msgSend(editAuthorizationManager, "shouldPromptForPasscodeAuthorization")}];
 }
 
-- (void)propertyCell:(id)a3 didUpdateItem:(id)a4 withNewLabel:(id)a5
+- (void)propertyCell:(id)cell didUpdateItem:(id)item withNewLabel:(id)label
 {
-  v8 = a4;
-  v9 = a3;
-  [v8 updateLabeledValueWithLabel:a5];
-  [v9 updateWithPropertyItem:v8];
+  itemCopy = item;
+  cellCopy = cell;
+  [itemCopy updateLabeledValueWithLabel:label];
+  [cellCopy updateWithPropertyItem:itemCopy];
 
-  v10 = [v8 group];
+  group = [itemCopy group];
 
-  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:v10 reset:1];
-  v15 = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
-  v11 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v12 = [v11 allowsEditing];
-  v13 = [(CNContactContentDisplayViewController *)self mode];
-  v14 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  [v15 updateDisplayDoneButtonForController:self allowsEditing:v12 viewMode:v13 editRequiresAuthorization:{objc_msgSend(v14, "shouldPromptForPasscodeAuthorization")}];
+  [(CNContactContentDisplayViewController *)self _updateLabelWidthForCellsInGroup:group reset:1];
+  contactNavigationItemUpdater = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsEditing = [contactViewConfiguration allowsEditing];
+  mode = [(CNContactContentDisplayViewController *)self mode];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  [contactNavigationItemUpdater updateDisplayDoneButtonForController:self allowsEditing:allowsEditing viewMode:mode editRequiresAuthorization:{objc_msgSend(editAuthorizationManager, "shouldPromptForPasscodeAuthorization")}];
 }
 
-- (void)actionWasCanceled:(id)a3
+- (void)actionWasCanceled:(id)canceled
 {
-  v6 = [(CNContactContentDisplayViewController *)self contactView];
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
-  v5 = [v4 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+  indexPathForSelectedRow = [contactView2 indexPathForSelectedRow];
+  [contactView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)actionDidFinish:(id)a3
+- (void)actionDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self contactView];
-  v6 = [(CNContactContentDisplayViewController *)self contactView];
-  v7 = [v6 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v7 animated:1];
+  finishCopy = finish;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+  indexPathForSelectedRow = [contactView2 indexPathForSelectedRow];
+  [contactView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  v8 = [(CNContactContentDisplayViewController *)self ignoreContactAction];
+  ignoreContactAction = [(CNContactContentDisplayViewController *)self ignoreContactAction];
 
-  if (v8 == v4)
+  if (ignoreContactAction == finishCopy)
   {
-    v18 = [(CNContactContentDisplayViewController *)self delegate];
+    delegate = [(CNContactContentDisplayViewController *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(CNContactContentDisplayViewController *)self delegate];
-      v21 = [(CNContactContentDisplayViewController *)self contact];
-      [v20 contactDisplayViewController:self didDeleteContact:v21];
+      delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+      contact = [(CNContactContentDisplayViewController *)self contact];
+      [delegate2 contactDisplayViewController:self didDeleteContact:contact];
 LABEL_10:
     }
 
 LABEL_11:
-    v15 = [(CNContactContentDisplayViewController *)self navigationController];
-    v22 = [v15 popViewControllerAnimated:1];
+    navigationController = [(CNContactContentDisplayViewController *)self navigationController];
+    v22 = [navigationController popViewControllerAnimated:1];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v10 = [v9 addFavoriteAction];
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  addFavoriteAction = [actionProvider addFavoriteAction];
 
-  v11 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v12 = v11;
-  if (v10 == v4)
+  actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+  v12 = actionProvider2;
+  if (addFavoriteAction == finishCopy)
   {
-    v23 = [v11 addFavoriteAction];
-    v24 = [v23 canPerformAction];
+    addFavoriteAction2 = [actionProvider2 addFavoriteAction];
+    canPerformAction = [addFavoriteAction2 canPerformAction];
 
-    if ((v24 & 1) == 0)
+    if ((canPerformAction & 1) == 0)
     {
-      v25 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+      cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
       v26 = CNContactsUIBundle();
       v27 = [v26 localizedStringForKey:@"PHONE_ACTION_ADD_TO_FAVORITES" value:&stru_1F0CE7398 table:@"Localized"];
-      [v25 removeActionWithTitle:v27];
+      [cardActionsGroup removeActionWithTitle:v27];
     }
 
-    v28 = self;
+    selfCopy2 = self;
     v29 = 0;
     goto LABEL_15;
   }
 
-  v13 = [v11 createNewContactAction];
+  createNewContactAction = [actionProvider2 createNewContactAction];
 
-  v14 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v15 = v14;
-  if (v13 == v4)
+  actionProvider3 = [(CNContactContentDisplayViewController *)self actionProvider];
+  navigationController = actionProvider3;
+  if (createNewContactAction == finishCopy)
   {
-    v30 = [v14 createNewContactAction];
-    v31 = [v30 createdContact];
-    [(CNContactContentDisplayViewController *)self createdNewContact:v31];
+    createNewContactAction2 = [actionProvider3 createNewContactAction];
+    createdContact = [createNewContactAction2 createdContact];
+    [(CNContactContentDisplayViewController *)self createdNewContact:createdContact];
     goto LABEL_18;
   }
 
-  v16 = [v14 addToExistingContactAction];
+  addToExistingContactAction = [actionProvider3 addToExistingContactAction];
 
-  if (v16 == v4)
+  if (addToExistingContactAction == finishCopy)
   {
-    v15 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v30 = [v15 addToExistingContactAction];
-    v31 = [v30 chosenContact];
-    [(CNContactContentDisplayViewController *)self updatedExistingContact:v31];
+    navigationController = [(CNContactContentDisplayViewController *)self actionProvider];
+    createNewContactAction2 = [navigationController addToExistingContactAction];
+    createdContact = [createNewContactAction2 chosenContact];
+    [(CNContactContentDisplayViewController *)self updatedExistingContact:createdContact];
     goto LABEL_18;
   }
 
-  v17 = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
+  updateExistingContactAction = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
 
-  if (v17 == v4)
+  if (updateExistingContactAction == finishCopy)
   {
-    v15 = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
-    v30 = [v15 existingContact];
-    [(CNContactContentDisplayViewController *)self updatedExistingContact:v30];
+    navigationController = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
+    createNewContactAction2 = [navigationController existingContact];
+    [(CNContactContentDisplayViewController *)self updatedExistingContact:createNewContactAction2];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [(CNContactContentDisplayViewController *)self blockAction];
+    blockAction = [(CNContactContentDisplayViewController *)self blockAction];
 
-    if (v32 == v4)
+    if (blockAction == finishCopy)
     {
       [(CNContactContentDisplayViewController *)self setShouldIgnoreBlockListChange:1];
       [(CNContactContentDisplayViewController *)self _setupContactBlockingActionPreservingChanges:1 withUpdate:1];
       goto LABEL_21;
     }
 
-    v33 = [(CNContactContentDisplayViewController *)self blockReportAction];
+    blockReportAction = [(CNContactContentDisplayViewController *)self blockReportAction];
 
-    if (v33 == v4)
+    if (blockReportAction == finishCopy)
     {
       [(CNContactContentDisplayViewController *)self setShouldIgnoreBlockListChange:1];
       [(CNContactContentDisplayViewController *)self _setupContactBlockingReportingActionPreservingChanges:1 withUpdate:1];
-      v15 = [(CNContactContentDisplayViewController *)self delegate];
-      v30 = [(CNContactContentDisplayViewController *)self contact];
-      [v15 didTapBlockAndReportForContact:v30];
+      navigationController = [(CNContactContentDisplayViewController *)self delegate];
+      createNewContactAction2 = [(CNContactContentDisplayViewController *)self contact];
+      [navigationController didTapBlockAndReportForContact:createNewContactAction2];
       goto LABEL_19;
     }
 
-    v34 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v35 = [v34 shareWithFamilyAction];
+    actionProvider4 = [(CNContactContentDisplayViewController *)self actionProvider];
+    shareWithFamilyAction = [actionProvider4 shareWithFamilyAction];
 
-    if (v35 == v4)
+    if (shareWithFamilyAction == finishCopy)
     {
-      [(CNContactContentDisplayViewController *)self updateContact:v4];
+      [(CNContactContentDisplayViewController *)self updateContact:finishCopy];
       goto LABEL_21;
     }
 
-    v36 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v37 = [v36 stopSharingWithFamilyAction];
+    actionProvider5 = [(CNContactContentDisplayViewController *)self actionProvider];
+    stopSharingWithFamilyAction = [actionProvider5 stopSharingWithFamilyAction];
 
-    if (v37 == v4)
+    if (stopSharingWithFamilyAction == finishCopy)
     {
-      v45 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-      v46 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v47 = [v46 stopSharingWithFamilyAction];
-      v48 = [v47 title];
-      [v45 removeActionWithTitle:v48];
+      cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+      actionProvider6 = [(CNContactContentDisplayViewController *)self actionProvider];
+      stopSharingWithFamilyAction2 = [actionProvider6 stopSharingWithFamilyAction];
+      title = [stopSharingWithFamilyAction2 title];
+      [cardActionsGroup2 removeActionWithTitle:title];
 
       [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:0];
-      v15 = [(CNContactContentDisplayViewController *)self delegate];
-      [v15 contactDisplayViewControllerDidExecuteDeleteFromDowntimeWhitelistAction:self];
+      navigationController = [(CNContactContentDisplayViewController *)self delegate];
+      [navigationController contactDisplayViewControllerDidExecuteDeleteFromDowntimeWhitelistAction:self];
       goto LABEL_20;
     }
 
-    v38 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+    suggestedContactAction = [(CNContactContentDisplayViewController *)self suggestedContactAction];
 
-    if (v38 != v4)
+    if (suggestedContactAction != finishCopy)
     {
-      v39 = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
+      clearRecentsDataAction = [(CNContactContentDisplayViewController *)self clearRecentsDataAction];
 
-      if (v39 == v4)
+      if (clearRecentsDataAction == finishCopy)
       {
-        v15 = [(CNContactContentDisplayViewController *)self delegate];
-        [v15 contactDisplayViewControllerDidExecuteClearRecentsDataAction:self];
+        navigationController = [(CNContactContentDisplayViewController *)self delegate];
+        [navigationController contactDisplayViewControllerDidExecuteClearRecentsDataAction:self];
         goto LABEL_20;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v4;
-        v40 = [v15 propertyItem];
-        v30 = [v40 group];
+        navigationController = finishCopy;
+        propertyItem = [navigationController propertyItem];
+        createNewContactAction2 = [propertyItem group];
 
-        v41 = [v15 selectedChoice];
-        if (v41 == 2)
+        selectedChoice = [navigationController selectedChoice];
+        if (selectedChoice == 2)
         {
-          [v15 reject];
-          [v30 reloadDataPreservingChanges:0];
+          [navigationController reject];
+          [createNewContactAction2 reloadDataPreservingChanges:0];
           goto LABEL_19;
         }
 
-        if (v41 != 1)
+        if (selectedChoice != 1)
         {
 LABEL_19:
 
           goto LABEL_20;
         }
 
-        v42 = [v15 propertyItem];
-        v31 = [(CNContactContentDisplayViewController *)self indexPathOfDisplayedPropertyItem:v42];
+        propertyItem2 = [navigationController propertyItem];
+        createdContact = [(CNContactContentDisplayViewController *)self indexPathOfDisplayedPropertyItem:propertyItem2];
 
-        v43 = [(CNContactContentDisplayViewController *)self contactView];
-        [v43 selectRowAtIndexPath:v31 animated:0 scrollPosition:0];
+        contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView3 selectRowAtIndexPath:createdContact animated:0 scrollPosition:0];
 
         v44 = dispatch_time(0, 500000000);
         v53 = MEMORY[0x1E69E9820];
         v54 = 3221225472;
         v55 = __57__CNContactContentDisplayViewController_actionDidFinish___block_invoke;
         v56 = &unk_1E74E77C0;
-        v57 = v15;
-        v58 = v30;
+        v57 = navigationController;
+        v58 = createNewContactAction2;
         dispatch_after(v44, MEMORY[0x1E69E96A0], &v53);
 
 LABEL_18:
         goto LABEL_19;
       }
 
-      v52 = [(CNContactContentDisplayViewController *)self selectContainersAction];
+      selectContainersAction = [(CNContactContentDisplayViewController *)self selectContainersAction];
 
-      if (v52 != v4)
+      if (selectContainersAction != finishCopy)
       {
         goto LABEL_21;
       }
 
-      v28 = self;
+      selfCopy2 = self;
       v29 = 1;
 LABEL_15:
-      [(CNContactContentDisplayViewController *)v28 reloadDataPreservingChanges:v29];
+      [(CNContactContentDisplayViewController *)selfCopy2 reloadDataPreservingChanges:v29];
       goto LABEL_21;
     }
 
-    v49 = [(CNContactContentDisplayViewController *)self delegate];
+    delegate3 = [(CNContactContentDisplayViewController *)self delegate];
     v50 = objc_opt_respondsToSelector();
 
     if (v50)
     {
-      v20 = [(CNContactContentDisplayViewController *)self delegate];
-      v21 = [(CNContactContentDisplayViewController *)self suggestedContactAction];
-      v51 = [v21 contact];
-      [v20 contactDisplayViewController:self didDeleteContact:v51];
+      delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+      contact = [(CNContactContentDisplayViewController *)self suggestedContactAction];
+      v21Contact = [contact contact];
+      [delegate2 contactDisplayViewController:self didDeleteContact:v21Contact];
 
       goto LABEL_10;
     }
@@ -5743,23 +5743,23 @@ uint64_t __57__CNContactContentDisplayViewController_actionDidFinish___block_inv
   return [v2 reloadDataPreservingChanges:0];
 }
 
-- (void)actionDidUpdate:(id)a3
+- (void)actionDidUpdate:(id)update
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v6 = [v5 addFavoriteAction];
+  updateCopy = update;
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  addFavoriteAction = [actionProvider addFavoriteAction];
 
-  if (v6 == v4)
+  if (addFavoriteAction == updateCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    v8 = [v7 actions];
+    cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    actions = [cardActionsGroup actions];
 
-    v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v9 = [actions countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v9)
     {
       v10 = v9;
@@ -5770,21 +5770,21 @@ LABEL_5:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * v12) target];
-        v14 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v15 = [v14 addFavoriteAction];
+        target = [*(*(&v28 + 1) + 8 * v12) target];
+        actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+        addFavoriteAction2 = [actionProvider2 addFavoriteAction];
 
-        if (v13 == v15)
+        if (target == addFavoriteAction2)
         {
           break;
         }
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v10 = [actions countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v10)
           {
             goto LABEL_5;
@@ -5796,15 +5796,15 @@ LABEL_5:
 
       if (![(CNContactContentDisplayViewController *)self isContactBlocked])
       {
-        v24 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v25 = [v24 addFavoriteAction];
-        v26 = [v25 canPerformAction];
+        actionProvider3 = [(CNContactContentDisplayViewController *)self actionProvider];
+        addFavoriteAction3 = [actionProvider3 addFavoriteAction];
+        canPerformAction = [addFavoriteAction3 canPerformAction];
 
-        if ((v26 & 1) == 0)
+        if ((canPerformAction & 1) == 0)
         {
-          v19 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-          v20 = [v4 target];
-          [v19 removeActionWithTarget:v20 selector:{objc_msgSend(v4, "selector")}];
+          cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+          target2 = [updateCopy target];
+          [cardActionsGroup2 removeActionWithTarget:target2 selector:{objc_msgSend(updateCopy, "selector")}];
           goto LABEL_16;
         }
       }
@@ -5814,56 +5814,56 @@ LABEL_5:
     {
 LABEL_11:
 
-      v16 = [(CNContactContentDisplayViewController *)self actionProvider];
-      v17 = [v16 addFavoriteAction];
-      v18 = [v17 canPerformAction];
+      actionProvider4 = [(CNContactContentDisplayViewController *)self actionProvider];
+      addFavoriteAction4 = [actionProvider4 addFavoriteAction];
+      canPerformAction2 = [addFavoriteAction4 canPerformAction];
 
-      if (v18)
+      if (canPerformAction2)
       {
-        v19 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-        v20 = [(CNContactContentDisplayViewController *)self actionProvider];
-        v21 = [v20 addFavoriteAction];
+        cardActionsGroup2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+        target2 = [(CNContactContentDisplayViewController *)self actionProvider];
+        addFavoriteAction5 = [target2 addFavoriteAction];
         v22 = CNContactsUIBundle();
         v23 = [v22 localizedStringForKey:@"PHONE_ACTION_ADD_TO_FAVORITES" value:&stru_1F0CE7398 table:@"Localized"];
-        [v19 addAction:v21 withTitle:v23];
+        [cardActionsGroup2 addAction:addFavoriteAction5 withTitle:v23];
 
 LABEL_16:
-        v27 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-        [(CNContactContentDisplayViewController *)self reloadCardGroup:v27];
+        cardActionsGroup3 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+        [(CNContactContentDisplayViewController *)self reloadCardGroup:cardActionsGroup3];
       }
     }
   }
 }
 
-- (void)action:(id)a3 pushViewController:(id)a4 sender:(id)a5
+- (void)action:(id)action pushViewController:(id)controller sender:(id)sender
 {
-  v6 = a4;
-  [(CNContactContentDisplayViewController *)self setBackgroundColorIfNeededForPresentedViewController:v6];
-  v7 = [(CNContactContentDisplayViewController *)self navigationItem];
-  v8 = [v7 prompt];
-  v9 = [v6 navigationItem];
-  [v9 setPrompt:v8];
+  controllerCopy = controller;
+  [(CNContactContentDisplayViewController *)self setBackgroundColorIfNeededForPresentedViewController:controllerCopy];
+  navigationItem = [(CNContactContentDisplayViewController *)self navigationItem];
+  prompt = [navigationItem prompt];
+  navigationItem2 = [controllerCopy navigationItem];
+  [navigationItem2 setPrompt:prompt];
 
-  v10 = [(CNContactContentDisplayViewController *)self navigationController];
-  [v10 pushViewController:v6 animated:1];
+  navigationController = [(CNContactContentDisplayViewController *)self navigationController];
+  [navigationController pushViewController:controllerCopy animated:1];
 }
 
-- (void)action:(id)a3 dismissViewController:(id)a4 sender:(id)a5
+- (void)action:(id)action dismissViewController:(id)controller sender:(id)sender
 {
-  v21 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v11 = [v10 createNewContactAction];
-  if (v11 != v21)
+  actionCopy = action;
+  senderCopy = sender;
+  controllerCopy = controller;
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  createNewContactAction = [actionProvider createNewContactAction];
+  if (createNewContactAction != actionCopy)
   {
-    v12 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v13 = [v12 addToExistingContactAction];
-    if (v13 != v21)
+    actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+    addToExistingContactAction = [actionProvider2 addToExistingContactAction];
+    if (addToExistingContactAction != actionCopy)
     {
-      v14 = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
+      updateExistingContactAction = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
 
-      if (v14 != v21)
+      if (updateExistingContactAction != actionCopy)
       {
         goto LABEL_10;
       }
@@ -5873,41 +5873,41 @@ LABEL_16:
   }
 
 LABEL_7:
-  v15 = [(CNContactContentDisplayViewController *)self delegate];
-  if (v15)
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
+  if (delegate)
   {
-    v16 = v15;
-    v17 = [(CNContactContentDisplayViewController *)self delegate];
+    v16 = delegate;
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(CNContactContentDisplayViewController *)self delegate];
-      [v19 contactDisplayViewControllerIsDismissingEditingController:self];
+      delegate3 = [(CNContactContentDisplayViewController *)self delegate];
+      [delegate3 contactDisplayViewControllerIsDismissingEditingController:self];
     }
   }
 
 LABEL_10:
-  v20 = [(CNContactContentDisplayViewController *)self presentingDelegate];
-  [v20 sender:v8 dismissViewController:v9];
+  presentingDelegate = [(CNContactContentDisplayViewController *)self presentingDelegate];
+  [presentingDelegate sender:senderCopy dismissViewController:controllerCopy];
 }
 
-- (void)action:(id)a3 presentViewController:(id)a4 sender:(id)a5
+- (void)action:(id)action presentViewController:(id)controller sender:(id)sender
 {
-  v21 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(CNContactContentDisplayViewController *)self actionProvider];
-  v11 = [v10 createNewContactAction];
-  if (v11 != v21)
+  actionCopy = action;
+  senderCopy = sender;
+  controllerCopy = controller;
+  actionProvider = [(CNContactContentDisplayViewController *)self actionProvider];
+  createNewContactAction = [actionProvider createNewContactAction];
+  if (createNewContactAction != actionCopy)
   {
-    v12 = [(CNContactContentDisplayViewController *)self actionProvider];
-    v13 = [v12 addToExistingContactAction];
-    if (v13 != v21)
+    actionProvider2 = [(CNContactContentDisplayViewController *)self actionProvider];
+    addToExistingContactAction = [actionProvider2 addToExistingContactAction];
+    if (addToExistingContactAction != actionCopy)
     {
-      v14 = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
+      updateExistingContactAction = [(CNContactContentDisplayViewController *)self updateExistingContactAction];
 
-      if (v14 != v21)
+      if (updateExistingContactAction != actionCopy)
       {
         goto LABEL_10;
       }
@@ -5917,102 +5917,102 @@ LABEL_10:
   }
 
 LABEL_7:
-  v15 = [(CNContactContentDisplayViewController *)self delegate];
-  if (v15)
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
+  if (delegate)
   {
-    v16 = v15;
-    v17 = [(CNContactContentDisplayViewController *)self delegate];
+    v16 = delegate;
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(CNContactContentDisplayViewController *)self delegate];
-      [v19 contactDisplayViewControllerIsPresentingEditingController:self];
+      delegate3 = [(CNContactContentDisplayViewController *)self delegate];
+      [delegate3 contactDisplayViewControllerIsPresentingEditingController:self];
     }
   }
 
 LABEL_10:
-  v20 = [(CNContactContentDisplayViewController *)self presentingDelegate];
-  [v20 sender:v8 presentViewController:v9];
+  presentingDelegate = [(CNContactContentDisplayViewController *)self presentingDelegate];
+  [presentingDelegate sender:senderCopy presentViewController:controllerCopy];
 }
 
-- (void)action:(id)a3 prepareChildContactViewController:(id)a4 sender:(id)a5
+- (void)action:(id)action prepareChildContactViewController:(id)controller sender:(id)sender
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNContactContentDisplayViewController *)self delegate];
-  [v9 contactDisplayViewController:self prepareChildContactViewController:v7 forAction:v8];
+  controllerCopy = controller;
+  actionCopy = action;
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
+  [delegate contactDisplayViewController:self prepareChildContactViewController:controllerCopy forAction:actionCopy];
 }
 
-- (void)contactInlineActionsViewControllerDidDismissDisambiguationUI:(id)a3
+- (void)contactInlineActionsViewControllerDidDismissDisambiguationUI:(id)i
 {
-  v4 = [(CNContactContentDisplayViewController *)self delegate];
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactContentDisplayViewController *)self delegate];
-    [v6 contactDisplayViewControllerDidDismissDisambiguationUI:self];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    [delegate2 contactDisplayViewControllerDidDismissDisambiguationUI:self];
   }
 }
 
-- (void)contactInlineActionsViewControllerWillPresentDisambiguationUI:(id)a3
+- (void)contactInlineActionsViewControllerWillPresentDisambiguationUI:(id)i
 {
-  v4 = [(CNContactContentDisplayViewController *)self delegate];
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactContentDisplayViewController *)self delegate];
-    [v6 contactDisplayViewControllerWillPresentDisambiguationUI:self];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    [delegate2 contactDisplayViewControllerWillPresentDisambiguationUI:self];
   }
 }
 
-- (BOOL)contactInlineActionsViewController:(id)a3 shouldPerformActionOfType:(id)a4 withContactProperty:(id)a5
+- (BOOL)contactInlineActionsViewController:(id)controller shouldPerformActionOfType:(id)type withContactProperty:(id)property
 {
-  v6 = a5;
-  v7 = [v6 contact];
-  v8 = [v6 key];
-  v9 = [v6 identifier];
+  propertyCopy = property;
+  contact = [propertyCopy contact];
+  v8 = [propertyCopy key];
+  identifier = [propertyCopy identifier];
 
-  LOBYTE(self) = [(CNContactContentDisplayViewController *)self contactDisplayViewController:self shouldPerformDefaultActionForContact:v7 propertyKey:v8 propertyIdentifier:v9];
+  LOBYTE(self) = [(CNContactContentDisplayViewController *)self contactDisplayViewController:self shouldPerformDefaultActionForContact:contact propertyKey:v8 propertyIdentifier:identifier];
   return self;
 }
 
-- (void)viewController:(id)a3 presentationControllerWillDismiss:(id)a4
+- (void)viewController:(id)controller presentationControllerWillDismiss:(id)dismiss
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(CNContactContentDisplayViewController *)self presentedViewController];
+  dismissCopy = dismiss;
+  controllerCopy = controller;
+  presentedViewController = [(CNContactContentDisplayViewController *)self presentedViewController];
 
-  if (v7 == v6)
+  if (presentedViewController == controllerCopy)
   {
-    [(CNContactContentDisplayViewController *)self presentationControllerWillDismiss:v8];
+    [(CNContactContentDisplayViewController *)self presentationControllerWillDismiss:dismissCopy];
   }
 }
 
 - (BOOL)isPresentingModalViewController
 {
-  v2 = [(CNContactContentDisplayViewController *)self presentedViewController];
-  v3 = v2 != 0;
+  presentedViewController = [(CNContactContentDisplayViewController *)self presentedViewController];
+  v3 = presentedViewController != 0;
 
   return v3;
 }
 
-- (void)sender:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (void)sender:(id)sender dismissViewController:(id)controller completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
   if ([(CNContactContentDisplayViewController *)self isOutOfProcess])
   {
-    v9 = [(CNContactContentDisplayViewController *)self delegate];
+    delegate = [(CNContactContentDisplayViewController *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
       [(CNContactContentDisplayViewController *)self setIsPresentingFullscreenForOutOfProcess:0];
-      v11 = [(CNContactContentDisplayViewController *)self delegate];
-      [v11 contactDisplayViewControllerWillDismissFullscreen:self];
+      delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+      [delegate2 contactDisplayViewControllerWillDismissFullscreen:self];
     }
   }
 
@@ -6021,9 +6021,9 @@ LABEL_10:
   v13[2] = __88__CNContactContentDisplayViewController_sender_dismissViewController_completionHandler___block_invoke;
   v13[3] = &unk_1E74E6DD0;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v7 dismissViewControllerAnimated:1 completion:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [controllerCopy dismissViewControllerAnimated:1 completion:v13];
 }
 
 uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewController_completionHandler___block_invoke(uint64_t a1)
@@ -6046,17 +6046,17 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
   return result;
 }
 
-- (void)setBackgroundColorIfNeededForPresentedViewController:(id)a3
+- (void)setBackgroundColorIfNeededForPresentedViewController:(id)controller
 {
-  v20 = a3;
+  controllerCopy = controller;
   v4 = +[CNContactStyle currentStyle];
-  v5 = [v4 backgroundColor];
-  if (v5)
+  backgroundColor = [v4 backgroundColor];
+  if (backgroundColor)
   {
     v6 = +[CNContactStyle currentStyle];
-    v7 = [v6 backgroundColor];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [v7 isEqual:v8];
+    backgroundColor2 = [v6 backgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v9 = [backgroundColor2 isEqual:clearColor];
 
     v10 = v9 ^ 1;
   }
@@ -6066,32 +6066,32 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
     v10 = 1;
   }
 
-  v11 = [(CNContactContentDisplayViewController *)self view];
-  v12 = [v11 superview];
-  v13 = [v12 backgroundColor];
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  v15 = [v13 isEqual:v14];
+  view = [(CNContactContentDisplayViewController *)self view];
+  superview = [view superview];
+  backgroundColor3 = [superview backgroundColor];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  v15 = [backgroundColor3 isEqual:clearColor2];
 
   if ((v10 & 1) == 0 && (v15 & 1) == 0)
   {
-    v16 = [(CNContactContentDisplayViewController *)self view];
-    v17 = [v16 superview];
-    v18 = [v17 backgroundColor];
-    v19 = [v20 view];
-    [v19 setBackgroundColor:v18];
+    view2 = [(CNContactContentDisplayViewController *)self view];
+    superview2 = [view2 superview];
+    backgroundColor4 = [superview2 backgroundColor];
+    view3 = [controllerCopy view];
+    [view3 setBackgroundColor:backgroundColor4];
   }
 }
 
-- (int64_t)_modalPresentationStyleForViewController:(id)a3
+- (int64_t)_modalPresentationStyleForViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (NSClassFromString(&cfstr_Qlpreviewcontr.isa) && (objc_opt_isKindOfClass() & 1) != 0)
   {
     goto LABEL_29;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![v5 modalPresentationStyle])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![controllerCopy modalPresentationStyle])
   {
     goto LABEL_29;
   }
@@ -6099,24 +6099,24 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 modalPresentationStyle];
+    modalPresentationStyle = [controllerCopy modalPresentationStyle];
     goto LABEL_30;
   }
 
-  v7 = [v5 view];
+  view = [controllerCopy view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = 7;
+    modalPresentationStyle = 7;
     goto LABEL_30;
   }
 
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
-  v9 = getSLComposeViewControllerClass_softClass_59566;
+  viewControllers = getSLComposeViewControllerClass_softClass_59566;
   v28 = getSLComposeViewControllerClass_softClass_59566;
   if (!getSLComposeViewControllerClass_softClass_59566)
   {
@@ -6126,15 +6126,15 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
     v24[3] = &unk_1E74E7518;
     v24[4] = &v25;
     __getSLComposeViewControllerClass_block_invoke_59567(v24);
-    v9 = v26[3];
+    viewControllers = v26[3];
   }
 
-  v10 = v9;
+  v10 = viewControllers;
   _Block_object_dispose(&v25, 8);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = 5;
+    modalPresentationStyle = 5;
     goto LABEL_30;
   }
 
@@ -6142,8 +6142,8 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
   v11 = objc_opt_isKindOfClass();
   if (v11)
   {
-    v9 = [v5 viewControllers];
-    v3 = [v9 firstObject];
+    viewControllers = [controllerCopy viewControllers];
+    firstObject = [viewControllers firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -6151,19 +6151,19 @@ uint64_t __88__CNContactContentDisplayViewController_sender_dismissViewControlle
 LABEL_19:
       if ([(UIViewController *)self ab_isInPopover])
       {
-        v6 = 2;
+        modalPresentationStyle = 2;
         goto LABEL_30;
       }
 
       if ([(CNContactContentDisplayViewController *)self isOutOfProcess]|| CNUIIsDDActionsService())
       {
-        v17 = [MEMORY[0x1E69DC938] currentDevice];
-        v18 = [v17 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if ((v18 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
 LABEL_29:
-          v6 = 0;
+          modalPresentationStyle = 0;
           goto LABEL_30;
         }
       }
@@ -6171,22 +6171,22 @@ LABEL_29:
       v16 = +[CNContactStyle currentStyle];
       if ([v16 shouldPresentInCurrentContext])
       {
-        v6 = 3;
+        modalPresentationStyle = 3;
       }
 
       else
       {
-        v21 = [MEMORY[0x1E69DC938] currentDevice];
-        v22 = [v21 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-        if ((v22 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+        if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
-          v6 = 2;
+          modalPresentationStyle = 2;
         }
 
         else
         {
-          v6 = -2;
+          modalPresentationStyle = -2;
         }
       }
 
@@ -6210,8 +6210,8 @@ LABEL_40:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v5 viewControllers];
-    v14 = [v13 firstObject];
+    viewControllers2 = [controllerCopy viewControllers];
+    firstObject2 = [viewControllers2 firstObject];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
 
@@ -6220,12 +6220,12 @@ LABEL_40:
       v16 = +[CNContactStyle currentStyle];
       if ([v16 shouldPresentInCurrentContext])
       {
-        v6 = 6;
+        modalPresentationStyle = 6;
       }
 
       else
       {
-        v6 = -2;
+        modalPresentationStyle = -2;
       }
 
       goto LABEL_40;
@@ -6235,7 +6235,7 @@ LABEL_40:
   if ([(UIViewController *)self ab_isInPopover]|| [(UIViewController *)self ab_isInSheet])
   {
 LABEL_42:
-    v6 = 3;
+    modalPresentationStyle = 3;
     goto LABEL_30;
   }
 
@@ -6255,69 +6255,69 @@ LABEL_42:
 
   if (_CFMZEnabled())
   {
-    v6 = 3;
+    modalPresentationStyle = 3;
   }
 
   else
   {
-    v6 = 7;
+    modalPresentationStyle = 7;
   }
 
 LABEL_30:
 
-  return v6;
+  return modalPresentationStyle;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   if ([(CNContactContentDisplayViewController *)self isOutOfProcess])
   {
-    v4 = [(CNContactContentDisplayViewController *)self delegate];
+    delegate = [(CNContactContentDisplayViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
       [(CNContactContentDisplayViewController *)self setIsPresentingFullscreenForOutOfProcess:0];
-      v6 = [(CNContactContentDisplayViewController *)self delegate];
-      [v6 contactDisplayViewControllerWillDismissFullscreen:self];
+      delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+      [delegate2 contactDisplayViewControllerWillDismissFullscreen:self];
     }
   }
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v14 = a3;
-  v8 = a5;
-  if (a4 != 5)
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  if (style != 5)
   {
     if ([(CNContactContentDisplayViewController *)self isOutOfProcess])
     {
-      v9 = [(CNContactContentDisplayViewController *)self delegate];
+      delegate = [(CNContactContentDisplayViewController *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v11 = [v14 presentedViewController];
+        presentedViewController = [controllerCopy presentedViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
         {
           [(CNContactContentDisplayViewController *)self setIsPresentingFullscreenForOutOfProcess:1];
-          v13 = [(CNContactContentDisplayViewController *)self delegate];
-          [v13 contactDisplayViewControllerWillPresentFullscreen:self];
+          delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+          [delegate2 contactDisplayViewControllerWillPresentFullscreen:self];
         }
       }
     }
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1 && CNUIIsDDActionsService())
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && CNUIIsDDActionsService())
   {
     return -1;
   }
@@ -6334,7 +6334,7 @@ LABEL_30:
   {
     if ([(CNContactContentDisplayViewController *)self isPresentingModalViewController])
     {
-      v3 = [(CNContactContentDisplayViewController *)self presentedViewController];
+      presentedViewController = [(CNContactContentDisplayViewController *)self presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6342,8 +6342,8 @@ LABEL_30:
       {
         if ([(CNContactContentDisplayViewController *)self isPresentingFullscreenForOutOfProcess]&& ([(CNContactContentDisplayViewController *)self delegate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
         {
-          v9 = [(CNContactContentDisplayViewController *)self delegate];
-          [v9 contactDisplayViewControllerWillPresentFullscreen:self];
+          delegate = [(CNContactContentDisplayViewController *)self delegate];
+          [delegate contactDisplayViewControllerWillPresentFullscreen:self];
         }
 
         else
@@ -6353,7 +6353,7 @@ LABEL_30:
             return;
           }
 
-          v7 = [(CNContactContentDisplayViewController *)self delegate];
+          delegate2 = [(CNContactContentDisplayViewController *)self delegate];
           v8 = objc_opt_respondsToSelector();
 
           if ((v8 & 1) == 0)
@@ -6361,34 +6361,34 @@ LABEL_30:
             return;
           }
 
-          v9 = [(CNContactContentDisplayViewController *)self delegate];
-          [v9 contactDisplayViewControllerWillDismissFullscreen:self];
+          delegate = [(CNContactContentDisplayViewController *)self delegate];
+          [delegate contactDisplayViewControllerWillDismissFullscreen:self];
         }
       }
     }
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = CNContactContentDisplayViewController;
-  [(CNContactContentDisplayViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(CNContactContentDisplayViewController *)self presentedViewController];
-  v9 = [v8 popoverPresentationController];
-  v10 = [v9 sourceView];
+  [(CNContactContentDisplayViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  presentedViewController = [(CNContactContentDisplayViewController *)self presentedViewController];
+  popoverPresentationController = [presentedViewController popoverPresentationController];
+  sourceView = [popoverPresentationController sourceView];
 
-  if (v10)
+  if (sourceView)
   {
-    v11 = [v10 superview];
-    v12 = [(CNContactContentDisplayViewController *)self contactView];
+    superview = [sourceView superview];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
 
-    if (v11 == v12)
+    if (superview == contactView)
     {
-      v13 = [(CNContactContentDisplayViewController *)self presentedViewController];
+      presentedViewController2 = [(CNContactContentDisplayViewController *)self presentedViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6399,8 +6399,8 @@ LABEL_30:
         v15[2] = __92__CNContactContentDisplayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
         v15[3] = &unk_1E74E6330;
         v15[4] = self;
-        v16 = v10;
-        [v7 animateAlongsideTransition:0 completion:v15];
+        v16 = sourceView;
+        [coordinatorCopy animateAlongsideTransition:0 completion:v15];
       }
     }
   }
@@ -6413,32 +6413,32 @@ void __92__CNContactContentDisplayViewController_viewWillTransitionToSize_withTr
   [v2 scrollRectToVisible:0 animated:?];
 }
 
-- (void)shouldPresentFullscreen:(BOOL)a3
+- (void)shouldPresentFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
+  fullscreenCopy = fullscreen;
   [(CNContactContentDisplayViewController *)self setIsPresentingFullscreenForOutOfProcess:?];
-  v5 = [(CNContactContentDisplayViewController *)self delegate];
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNContactContentDisplayViewController *)self delegate];
-    [v7 contactDisplayViewController:self isPresentingFullscreen:v3];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    [delegate2 contactDisplayViewController:self isPresentingFullscreen:fullscreenCopy];
   }
 }
 
-- (CGRect)centeredSourceRect:(CGRect)a3 inContactView:(id)a4
+- (CGRect)centeredSourceRect:(CGRect)rect inContactView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [v8 layoutMargins];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  [viewCopy layoutMargins];
   v10 = v9;
-  [v8 layoutMargins];
+  [viewCopy layoutMargins];
   v12 = width - (v10 + v11);
-  [v8 layoutMargins];
+  [viewCopy layoutMargins];
   v14 = v13;
 
   v15 = +[CNContactStyle currentStyle];
@@ -6456,16 +6456,16 @@ void __92__CNContactContentDisplayViewController_viewWillTransitionToSize_withTr
   return result;
 }
 
-- (void)sender:(id)a3 presentViewController:(id)a4
+- (void)sender:(id)sender presentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setModalPresentationStyle:{-[CNContactContentDisplayViewController _modalPresentationStyleForViewController:](self, "_modalPresentationStyleForViewController:", v7)}];
+  senderCopy = sender;
+  controllerCopy = controller;
+  [controllerCopy setModalPresentationStyle:{-[CNContactContentDisplayViewController _modalPresentationStyleForViewController:](self, "_modalPresentationStyleForViewController:", controllerCopy)}];
   v8 = +[CNContactStyle currentStyle];
-  [v7 setModalTransitionStyle:{objc_msgSend(v8, "modalTransitionStyle")}];
+  [controllerCopy setModalTransitionStyle:{objc_msgSend(v8, "modalTransitionStyle")}];
 
   objc_opt_class();
-  v36 = v6;
+  v36 = senderCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v36;
@@ -6478,55 +6478,55 @@ void __92__CNContactContentDisplayViewController_viewWillTransitionToSize_withTr
 
   v10 = v9;
 
-  v11 = [v7 popoverPresentationController];
-  [v11 setSourceView:v10];
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  [popoverPresentationController setSourceView:v10];
 
   [v10 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CNContactContentDisplayViewController *)self contactView];
-  [(CNContactContentDisplayViewController *)self centeredSourceRect:v20 inContactView:v13, v15, v17, v19];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [(CNContactContentDisplayViewController *)self centeredSourceRect:contactView inContactView:v13, v15, v17, v19];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v7 popoverPresentationController];
-  [v29 setSourceRect:{v22, v24, v26, v28}];
+  popoverPresentationController2 = [controllerCopy popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v22, v24, v26, v28}];
 
-  v30 = [v7 popoverPresentationController];
-  [v30 setPermittedArrowDirections:15];
+  popoverPresentationController3 = [controllerCopy popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:15];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v31 = [v7 presentationController];
-    [v31 setDelegate:self];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setDelegate:self];
   }
 
   if (!self->_disablingRotation)
   {
-    v32 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v32 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v33 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v33 _referenceBounds];
-    if (CGRectGetHeight(v38) <= 667.0 || [v7 modalPresentationStyle])
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
+    if (CGRectGetHeight(v38) <= 667.0 || [controllerCopy modalPresentationStyle])
     {
 
       goto LABEL_11;
     }
 
-    v34 = [v7 supportedInterfaceOrientations];
-    v35 = [(CNContactContentDisplayViewController *)self supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [controllerCopy supportedInterfaceOrientations];
+    supportedInterfaceOrientations2 = [(CNContactContentDisplayViewController *)self supportedInterfaceOrientations];
 
-    if (v34 != v35)
+    if (supportedInterfaceOrientations != supportedInterfaceOrientations2)
     {
       [(CNContactContentDisplayViewController *)self _beginDisablingInterfaceAutorotation];
       self->_disablingRotation = 1;
@@ -6534,17 +6534,17 @@ LABEL_11:
   }
 
 LABEL_12:
-  [(CNContactContentDisplayViewController *)self setBackgroundColorIfNeededForPresentedViewController:v7];
-  [(CNContactContentDisplayViewController *)self presentViewController:v7 animated:1 completion:0];
+  [(CNContactContentDisplayViewController *)self setBackgroundColorIfNeededForPresentedViewController:controllerCopy];
+  [(CNContactContentDisplayViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  if (![(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v6])
+  viewCopy = view;
+  pathCopy = path;
+  if (![(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
-    v7 = [v8 cellForRowAtIndexPath:v6];
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 shouldPerformAccessoryAction])
     {
       [v7 performAccessoryAction];
@@ -6552,17 +6552,17 @@ LABEL_12:
   }
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v5])
+  pathCopy = path;
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v5];
+    v7 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v9 = CNContactsUIBundle();
@@ -6583,42 +6583,42 @@ LABEL_12:
   return v6;
 }
 
-- (void)tableView:(id)a3 performAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (void)tableView:(id)view performAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  if (sel_copy_ == a4)
+  if (sel_copy_ == action)
   {
-    v8 = [a3 cellForRowAtIndexPath:a5];
-    [v8 a4];
+    v8 = [view cellForRowAtIndexPath:path];
+    [v8 action];
   }
 }
 
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  v8 = a5;
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v8])
+  pathCopy = path;
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = (sel_copy_ == a4) & ~[(CNContactContentDisplayViewController *)self _indexPathIsActionItem:v8];
+    v9 = (sel_copy_ == action) & ~[(CNContactContentDisplayViewController *)self _indexPathIsActionItem:pathCopy];
   }
 
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldShowMenuForRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldShowMenuForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v5])
+  pathCopy = path;
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v5];
+    v7 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       objc_opt_class();
@@ -6634,65 +6634,65 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v15 = a4;
-  [v15 updateConstraintsIfNeeded];
-  v6 = [v15 backgroundView];
-  v7 = [(CNContactContentDisplayViewController *)self contactView];
-  v8 = [v7 sectionBackgroundColor];
-  if (v8)
+  footerViewCopy = footerView;
+  [footerViewCopy updateConstraintsIfNeeded];
+  backgroundView = [footerViewCopy backgroundView];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  sectionBackgroundColor = [contactView sectionBackgroundColor];
+  if (sectionBackgroundColor)
   {
-    v9 = 1;
+    runningInContactsAppOniPad = 1;
   }
 
   else
   {
-    v10 = [(CNContactContentDisplayViewController *)self environment];
-    v9 = [v10 runningInContactsAppOniPad];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
   }
 
-  if (v9 && !v6)
+  if (runningInContactsAppOniPad && !backgroundView)
   {
     v11 = objc_alloc(MEMORY[0x1E69DD250]);
-    v6 = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    backgroundView = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   }
 
-  v12 = [(CNContactContentDisplayViewController *)self environment];
-  if ([v12 runningInContactsAppOniPad])
+  environment2 = [(CNContactContentDisplayViewController *)self environment];
+  if ([environment2 runningInContactsAppOniPad])
   {
-    v13 = +[CNUIColorRepository contactCardBackgroundiPadOverwriteColor];
-    [v6 setBackgroundColor:v13];
+    contactView2 = +[CNUIColorRepository contactCardBackgroundiPadOverwriteColor];
+    [backgroundView setBackgroundColor:contactView2];
   }
 
   else
   {
-    v13 = [(CNContactContentDisplayViewController *)self contactView];
-    v14 = [v13 sectionBackgroundColor];
-    [v6 setBackgroundColor:v14];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    sectionBackgroundColor2 = [contactView2 sectionBackgroundColor];
+    [backgroundView setBackgroundColor:sectionBackgroundColor2];
   }
 
-  [v15 setBackgroundView:v6];
+  [footerViewCopy setBackgroundView:backgroundView];
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v16 = a4;
-  [(CNContactContentDisplayViewController *)self tableView:a3 willDisplayFooterView:v16 forSection:a5];
-  [v16 _cnui_applyContactStyle];
-  v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a5];
+  headerViewCopy = headerView;
+  [(CNContactContentDisplayViewController *)self tableView:view willDisplayFooterView:headerViewCopy forSection:section];
+  [headerViewCopy _cnui_applyContactStyle];
+  v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = +[CNContactStyle currentStyle];
-    v10 = [v9 backgroundColor];
+    backgroundColor = [v9 backgroundColor];
 
-    if (v10)
+    if (backgroundColor)
     {
       v11 = +[CNContactStyle currentStyle];
-      v12 = [v11 backgroundColor];
-      v13 = [v16 backgroundView];
-      [v13 setBackgroundColor:v12];
+      backgroundColor2 = [v11 backgroundColor];
+      backgroundView = [headerViewCopy backgroundView];
+      [backgroundView setBackgroundColor:backgroundColor2];
 
 LABEL_7:
       goto LABEL_8;
@@ -6702,14 +6702,14 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(CNContactContentDisplayViewController *)self environment];
-    v15 = [v14 runningInContactsAppOniPad];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-    if (v15)
+    if (runningInContactsAppOniPad)
     {
       v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
-      v12 = [v16 textLabel];
-      [v12 setFont:v11];
+      backgroundColor2 = [headerViewCopy textLabel];
+      [backgroundColor2 setFont:v11];
       goto LABEL_7;
     }
   }
@@ -6717,34 +6717,34 @@ LABEL_7:
 LABEL_8:
 }
 
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section
 {
-  v5 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
-  v6 = [(CNContactContentDisplayViewController *)self environment];
-  v7 = [v6 runningInContactsAppOniPad];
+  v5 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-  if (v7)
+  if (runningInContactsAppOniPad)
   {
     goto LABEL_2;
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+  cardMedicalIDGroup = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
 
-  v10 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+  cardMedicalIDGroup2 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
 
-  v11 = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
-  v12 = v11;
-  if (v5 == v11)
+  cardBlockContactGroup = [(CNContactContentDisplayViewController *)self cardBlockContactGroup];
+  v12 = cardBlockContactGroup;
+  if (v5 == cardBlockContactGroup)
   {
 
     goto LABEL_20;
   }
 
-  v13 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+  cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
 
-  if (v9)
+  if (cardMedicalIDGroup)
   {
-    v14 = v5 == v10;
+    v14 = v5 == cardMedicalIDGroup2;
   }
 
   else
@@ -6754,18 +6754,18 @@ LABEL_8:
 
   v15 = !v14;
   isKindOfClass = 1;
-  if (v5 != v13 && v15)
+  if (v5 != cardShareLocationGroup && v15)
   {
-    if (v9 && [v5 isMemberOfClass:objc_opt_class()])
+    if (cardMedicalIDGroup && [v5 isMemberOfClass:objc_opt_class()])
     {
-      v16 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-      v17 = [v16 actionItems];
-      if ([v17 count])
+      cardMedicalIDGroup3 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+      actionItems = [cardMedicalIDGroup3 actionItems];
+      if ([actionItems count])
       {
-        v18 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
-        v19 = [v18 addSpacerFromPreviousGroup];
+        cardMedicalIDGroup4 = [(CNContactContentDisplayViewController *)self cardMedicalIDGroup];
+        addSpacerFromPreviousGroup = [cardMedicalIDGroup4 addSpacerFromPreviousGroup];
 
-        if (!v19)
+        if (!addSpacerFromPreviousGroup)
         {
 LABEL_2:
           isKindOfClass = 0;
@@ -6794,14 +6794,14 @@ LABEL_22:
   return isKindOfClass & 1;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section
 {
-  v6 = [(CNContactContentDisplayViewController *)self environment];
-  v7 = [v6 runningInContactsAppOniPad];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-  if (v7)
+  if (runningInContactsAppOniPad)
   {
-    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
+    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
     objc_opt_class();
     v9 = v8;
     if (objc_opt_isKindOfClass())
@@ -6860,8 +6860,8 @@ LABEL_22:
 
     if (v11)
     {
-      v21 = [v11 property];
-      v22 = [v21 isEqualToString:*MEMORY[0x1E695C320]] ^ 1;
+      property = [v11 property];
+      v22 = [property isEqualToString:*MEMORY[0x1E695C320]] ^ 1;
     }
 
     else if (v14)
@@ -6883,9 +6883,9 @@ LABEL_22:
   return v22;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section
 {
-  v5 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
+  v5 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (-[CNContactContentDisplayViewController contact](self, "contact"), v6 = objc_claimAutoreleasedReturnValue(), [v6 mainStoreLinkedContacts], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8 > 1))
   {
@@ -6894,12 +6894,12 @@ LABEL_22:
 
   else
   {
-    v10 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+    cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
 
-    if (v5 == v10)
+    if (v5 == cardShareLocationGroup)
     {
-      v11 = [(CNContactContentDisplayViewController *)self environment];
-      v9 = [v11 runningInContactsAppOniPad] ^ 1;
+      environment = [(CNContactContentDisplayViewController *)self environment];
+      v9 = [environment runningInContactsAppOniPad] ^ 1;
     }
 
     else
@@ -6911,9 +6911,9 @@ LABEL_22:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (((a4 == 0) & [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection]) != 0)
+  if (((section == 0) & [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection]) != 0)
   {
     return 0;
   }
@@ -6924,44 +6924,44 @@ LABEL_22:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection];
-  if (a4 || !v6)
+  hasTableViewHeaderFirstSection = [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection];
+  if (section || !hasTableViewHeaderFirstSection)
   {
-    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
+    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (-[CNContactContentDisplayViewController contact](self, "contact"), v9 = objc_claimAutoreleasedReturnValue(), [v9 mainStoreLinkedContacts], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v9, v11 >= 2))
     {
-      v7 = [v8 title];
+      title = [v8 title];
     }
 
     else
     {
-      v7 = 0;
+      title = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    title = 0;
   }
 
-  return v7;
+  return title;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(CNContactContentDisplayViewController *)self shouldShowVerifiedFooterInSection:a4])
+  viewCopy = view;
+  if ([(CNContactContentDisplayViewController *)self shouldShowVerifiedFooterInSection:section])
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v8];
+    v9 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v8];
 
-    v10 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v11 = [v10 verifiedInfoMessage];
-    [v9 setAttributedString:v11];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    verifiedInfoMessage = [contactViewConfiguration verifiedInfoMessage];
+    [v9 setAttributedString:verifiedInfoMessage];
   }
 
   else
@@ -6972,21 +6972,21 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)shouldShowVerifiedFooterInSection:(int64_t)a3
+- (BOOL)shouldShowVerifiedFooterInSection:(int64_t)section
 {
-  v6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v7 = [v6 verifiedInfoMessage];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  verifiedInfoMessage = [contactViewConfiguration verifiedInfoMessage];
 
-  if (v7)
+  if (verifiedInfoMessage)
   {
-    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a3];
-    v9 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-    if (v8 == v9 || (-[CNContactContentDisplayViewController cardMedicalIDGroup](self, "cardMedicalIDGroup"), v3 = objc_claimAutoreleasedReturnValue(), v8 == v3) && ([v8 addSpacerFromPreviousGroup] & 1) == 0)
+    v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
+    cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+    if (v8 == cardActionsGroup || (-[CNContactContentDisplayViewController cardMedicalIDGroup](self, "cardMedicalIDGroup"), v3 = objc_claimAutoreleasedReturnValue(), v8 == v3) && ([v8 addSpacerFromPreviousGroup] & 1) == 0)
     {
-      v11 = [(CNContactContentDisplayViewController *)self contactView];
-      v10 = [(CNContactContentDisplayViewController *)self tableView:v11 shouldHaveFullLengthBottomSeparatorForSection:a3];
+      contactView = [(CNContactContentDisplayViewController *)self contactView];
+      v10 = [(CNContactContentDisplayViewController *)self tableView:contactView shouldHaveFullLengthBottomSeparatorForSection:section];
 
-      if (v8 == v9)
+      if (v8 == cardActionsGroup)
       {
 LABEL_9:
 
@@ -7005,19 +7005,19 @@ LABEL_9:
   return 0;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
+  viewCopy = view;
+  v7 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (-[CNContactContentDisplayViewController contact](self, "contact"), v8 = objc_claimAutoreleasedReturnValue(), [v8 mainStoreLinkedContacts], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v11 = 16.0, v10 <= 1))
   {
-    if ([v6 numberOfSections] - 1 == a4)
+    if ([viewCopy numberOfSections] - 1 == section)
     {
-      v12 = [(CNContactContentDisplayViewController *)self contact];
-      v13 = [v12 phonemeData];
+      contact = [(CNContactContentDisplayViewController *)self contact];
+      phonemeData = [contact phonemeData];
 
-      if (v13)
+      if (phonemeData)
       {
         v11 = 0.0;
       }
@@ -7028,7 +7028,7 @@ LABEL_9:
       }
     }
 
-    else if ([(CNContactContentDisplayViewController *)self shouldShowVerifiedFooterInSection:a4])
+    else if ([(CNContactContentDisplayViewController *)self shouldShowVerifiedFooterInSection:section])
     {
       v11 = *MEMORY[0x1E69DE3D0];
     }
@@ -7042,20 +7042,20 @@ LABEL_9:
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
-  v7 = [v6 title];
+  v6 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
+  title = [v6 title];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v9 = +[CNContactStyle currentStyle];
-  v10 = [v9 usesInsetPlatterStyle];
+  usesInsetPlatterStyle = [v9 usesInsetPlatterStyle];
 
   v11 = 0.0;
-  if (v10)
+  if (usesInsetPlatterStyle)
   {
-    v12 = (v10 & isKindOfClass) == 0;
+    v12 = (usesInsetPlatterStyle & isKindOfClass) == 0;
   }
 
   else
@@ -7065,7 +7065,7 @@ LABEL_9:
 
   if (!v12)
   {
-    if (((v7 != 0) & isKindOfClass) == 1 && (-[CNContactContentDisplayViewController contact](self, "contact"), v13 = objc_claimAutoreleasedReturnValue(), [v13 mainStoreLinkedContacts], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15 >= 2))
+    if (((title != 0) & isKindOfClass) == 1 && (-[CNContactContentDisplayViewController contact](self, "contact"), v13 = objc_claimAutoreleasedReturnValue(), [v13 mainStoreLinkedContacts], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15 >= 2))
     {
       v16 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
       [v16 _scaledValueForValue:44.0];
@@ -7074,14 +7074,14 @@ LABEL_9:
 
     else
     {
-      v18 = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
+      cardShareLocationGroup = [(CNContactContentDisplayViewController *)self cardShareLocationGroup];
 
-      if (v6 == v18)
+      if (v6 == cardShareLocationGroup)
       {
         v11 = 55.0;
       }
 
-      else if (((a4 != 1) & [v6 addSpacerFromPreviousGroup]) != 0)
+      else if (((section != 1) & [v6 addSpacerFromPreviousGroup]) != 0)
       {
         v11 = 55.0;
       }
@@ -7096,46 +7096,46 @@ LABEL_9:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v19 = a3;
-  v6 = a4;
-  if (![(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v6])
+  viewCopy = view;
+  pathCopy = path;
+  if (![(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
-    v7 = [v19 cellForRowAtIndexPath:v6];
-    if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:v6])
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:pathCopy])
     {
-      v8 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v6];
-      v9 = [v8 actions];
-      v10 = [v9 objectAtIndexedSubscript:0];
+      v8 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
+      actions = [v8 actions];
+      v10 = [actions objectAtIndexedSubscript:0];
 
       [v10 performActionWithSender:v7];
-      v11 = [v19 indexPathForSelectedRow];
-      [v19 deselectRowAtIndexPath:v11 animated:1];
+      indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+      [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
     }
 
     else if (objc_opt_respondsToSelector())
     {
       if ([v7 shouldPerformDefaultAction])
       {
-        v12 = 1;
+        allowsPropertyActions = 1;
       }
 
       else
       {
-        v13 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-        v12 = [v13 allowsPropertyActions];
+        contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+        allowsPropertyActions = [contactViewConfiguration allowsPropertyActions];
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ([v7 isSuggested] & 1) == 0)
       {
-        v14 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:v6];
-        v15 = [v14 contact];
-        v16 = [v14 property];
-        v17 = [v14 labeledValue];
-        v18 = [v17 identifier];
-        v12 = [(CNContactContentDisplayViewController *)self contactDisplayViewController:self shouldPerformDefaultActionForContact:v15 propertyKey:v16 propertyIdentifier:v18];
+        v14 = [(CNContactContentDisplayViewController *)self _itemAtIndexPath:pathCopy];
+        contact = [v14 contact];
+        property = [v14 property];
+        labeledValue = [v14 labeledValue];
+        identifier = [labeledValue identifier];
+        allowsPropertyActions = [(CNContactContentDisplayViewController *)self contactDisplayViewController:self shouldPerformDefaultActionForContact:contact propertyKey:property propertyIdentifier:identifier];
       }
 
       objc_opt_class();
@@ -7144,19 +7144,19 @@ LABEL_9:
         [(CNContactContentDisplayViewController *)self _pickName];
       }
 
-      if (v12)
+      if (allowsPropertyActions)
       {
         [v7 performDefaultAction];
       }
 
-      [v19 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -7175,26 +7175,26 @@ LABEL_9:
   return v8;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:a5, a4])
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:path, cell])
   {
 
     [(CNContactContentDisplayViewController *)self removeFirstSectionHeaderViewControllerFromHierarchy];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:a5])
+  cellCopy = cell;
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:path])
   {
-    v8 = [(CNContactContentDisplayViewController *)self personHeaderViewController];
-    [v8 didMoveToParentViewController:self];
+    personHeaderViewController = [(CNContactContentDisplayViewController *)self personHeaderViewController];
+    [personHeaderViewController didMoveToParentViewController:self];
   }
 
   objc_opt_class();
-  v12 = v7;
+  v12 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v12;
@@ -7209,96 +7209,96 @@ LABEL_9:
 
   if (v10)
   {
-    v11 = [(CNContactContentDisplayViewController *)self environment];
-    [v10 setShowSeparator:{objc_msgSend(v11, "runningInContactsAppOniPad")}];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    [v10 setShowSeparator:{objc_msgSend(environment, "runningInContactsAppOniPad")}];
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [a4 section];
-  v8 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-  v9 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v8];
+  viewCopy = view;
+  section = [path section];
+  cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+  v9 = [(CNContactContentDisplayViewController *)self sectionOfGroup:cardActionsGroup];
 
-  if (v7 == v9)
+  if (section == v9)
   {
     v10 = 150.0;
   }
 
   else
   {
-    [v6 estimatedRowHeight];
+    [viewCopy estimatedRowHeight];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:v6])
+  pathCopy = path;
+  if ([(CNContactContentDisplayViewController *)self isTableViewHeaderFirstSectionIndexPath:pathCopy])
   {
-    v7 = [(CNContactContentDisplayViewController *)self tableViewHeaderFirstSectionCell];
+    tableViewHeaderFirstSectionCell = [(CNContactContentDisplayViewController *)self tableViewHeaderFirstSectionCell];
   }
 
   else
   {
-    if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:v6])
+    if ([(CNContactContentDisplayViewController *)self _indexPathIsActionItem:pathCopy])
     {
-      v7 = [(CNContactContentDisplayViewController *)self _cellForIndexPath:v6];
+      tableViewHeaderFirstSectionCell = [(CNContactContentDisplayViewController *)self _cellForIndexPath:pathCopy];
     }
 
     else
     {
-      v8 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [v6 section]);
+      v8 = -[CNContactContentDisplayViewController _cardGroupAtTableViewSectionIndex:](self, "_cardGroupAtTableViewSectionIndex:", [pathCopy section]);
       if ([(CNContactContentDisplayViewController *)self isStandardGroup:v8])
       {
-        v7 = [(CNContactContentDisplayViewController *)self _cellForIndexPath:v6];
+        tableViewHeaderFirstSectionCell = [(CNContactContentDisplayViewController *)self _cellForIndexPath:pathCopy];
       }
 
       else
       {
-        v7 = 0;
+        tableViewHeaderFirstSectionCell = 0;
       }
     }
 
-    [(CNContactContentDisplayViewController *)self _updateLabelWidthForCell:v7];
+    [(CNContactContentDisplayViewController *)self _updateLabelWidthForCell:tableViewHeaderFirstSectionCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CNContactContentDisplayViewController *)self prepareCell:v7];
+      [(CNContactContentDisplayViewController *)self prepareCell:tableViewHeaderFirstSectionCell];
     }
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self environment];
-  v10 = [v9 runningInContactsAppOniPad];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-  if (v10)
+  if (runningInContactsAppOniPad)
   {
     v11 = +[CNUIColorRepository contactCardBackgroundiPadOverwriteColor];
-    [v7 setBackgroundColor:v11];
+    [tableViewHeaderFirstSectionCell setBackgroundColor:v11];
   }
 
-  if (!v7)
+  if (!tableViewHeaderFirstSectionCell)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:1881 description:@"We have no cell to return!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CNContactContentDisplayViewController.m" lineNumber:1881 description:@"We have no cell to return!"];
   }
 
-  return v7;
+  return tableViewHeaderFirstSectionCell;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection];
-  if (!a4 && v6)
+  hasTableViewHeaderFirstSection = [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection];
+  if (!section && hasTableViewHeaderFirstSection)
   {
     return 1;
   }
 
-  v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:a4];
+  v8 = [(CNContactContentDisplayViewController *)self _cardGroupAtTableViewSectionIndex:section];
   if ([(CNContactContentDisplayViewController *)self isStandardGroup:v8])
   {
     [v8 displayItems];
@@ -7314,9 +7314,9 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)isStandardGroup:(id)a3
+- (BOOL)isStandardGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -7332,71 +7332,71 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(CNContactContentDisplayViewController *)self _currentGroups];
-  v5 = [v4 count];
+  _currentGroups = [(CNContactContentDisplayViewController *)self _currentGroups];
+  v5 = [_currentGroups count];
   v6 = v5 + [(CNContactContentDisplayViewController *)self hasTableViewHeaderFirstSection];
 
   return v6;
 }
 
-- (void)didChangeToShowTitle:(BOOL)a3
+- (void)didChangeToShowTitle:(BOOL)title
 {
-  v3 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v5 setLayoutPositionallyAfterNavBar:v3];
+  titleCopy = title;
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [contactViewConfiguration setLayoutPositionallyAfterNavBar:titleCopy];
 
-  v7 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v7 updateForShowingNavBar:{objc_msgSend(v6, "layoutPositionallyAfterNavBar")}];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [contactHeaderView updateForShowingNavBar:{objc_msgSend(contactViewConfiguration2, "layoutPositionallyAfterNavBar")}];
 }
 
-- (void)updateWithContactViewConfiguration:(id)a3
+- (void)updateWithContactViewConfiguration:(id)configuration
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = CNUILogContactCard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = configurationCopy;
     _os_log_debug_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEBUG, "display updateWithContactViewConfiguration: %@", &v13, 0xCu);
   }
 
   [(CNContactContentDisplayViewController *)self reloadDataIfNeeded];
-  v6 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v6 updateForShowingNavBar:{objc_msgSend(v7, "layoutPositionallyAfterNavBar")}];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [contactHeaderView updateForShowingNavBar:{objc_msgSend(contactViewConfiguration, "layoutPositionallyAfterNavBar")}];
 
-  v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v9 = [(CNContactContentDisplayViewController *)self mutableContact];
-  [v8 updateWithNewContact:v9];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+  [contactHeaderView2 updateWithNewContact:mutableContact];
 
-  v10 = [(CNContactContentDisplayViewController *)self shouldShowGemini];
-  v11 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v11 setShouldShowGemini:v10];
+  shouldShowGemini = [(CNContactContentDisplayViewController *)self shouldShowGemini];
+  contactHeaderView3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView3 setShouldShowGemini:shouldShowGemini];
 
   [(CNContactContentDisplayViewController *)self updateEditNavigationItemsAnimated:0];
-  v12 = [(CNContactContentDisplayViewController *)self applyContactStyle];
+  applyContactStyle = [(CNContactContentDisplayViewController *)self applyContactStyle];
 }
 
 - (void)setupTableFooterView
 {
   if ((-[CNContactContentDisplayViewController isEditing](self, "isEditing") & 1) != 0 || (-[CNContactContentDisplayViewController contact](self, "contact"), v3 = objc_claimAutoreleasedReturnValue(), [v3 phonemeData], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, !v4))
   {
-    v19 = [(CNContactContentDisplayViewController *)self contactView];
-    [(CNContactViewFooterView *)v19 setTableFooterView:0];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    [(CNContactViewFooterView *)contactView setTableFooterView:0];
   }
 
   else
   {
     objc_opt_class();
-    v5 = [(CNContactContentDisplayViewController *)self contactView];
-    v19 = [v5 tableFooterView];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    contactView = [contactView2 tableFooterView];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v19;
+      v6 = contactView;
     }
 
     else
@@ -7408,27 +7408,27 @@ LABEL_9:
 
     if (!v7)
     {
-      v19 = objc_alloc_init(CNContactViewFooterView);
-      v8 = [(CNContactContentDisplayViewController *)self contactView];
-      [v8 setTableFooterView:v19];
+      contactView = objc_alloc_init(CNContactViewFooterView);
+      contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+      [contactView3 setTableFooterView:contactView];
     }
 
-    v9 = [(CNContactContentDisplayViewController *)self contact];
-    [(CNContactViewFooterView *)v19 setContact:v9];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    [(CNContactViewFooterView *)contactView setContact:contact];
 
-    v10 = [(CNContactViewFooterView *)v19 label];
-    v11 = [(CNContactContentDisplayViewController *)self view];
-    [v11 bounds];
+    label = [(CNContactViewFooterView *)contactView label];
+    view = [(CNContactContentDisplayViewController *)self view];
+    [view bounds];
     v13 = v12;
-    v14 = [(CNContactContentDisplayViewController *)self view];
-    [v14 layoutMargins];
+    view2 = [(CNContactContentDisplayViewController *)self view];
+    [view2 layoutMargins];
     v16 = v13 - v15;
-    v17 = [(CNContactContentDisplayViewController *)self view];
-    [v17 layoutMargins];
-    [v10 sizeThatFits:{v16 - v18, 1.79769313e308}];
+    view3 = [(CNContactContentDisplayViewController *)self view];
+    [view3 layoutMargins];
+    [label sizeThatFits:{v16 - v18, 1.79769313e308}];
 
-    [(CNContactViewFooterView *)v19 frame];
-    [(CNContactViewFooterView *)v19 setFrame:?];
+    [(CNContactViewFooterView *)contactView frame];
+    [(CNContactViewFooterView *)contactView setFrame:?];
   }
 }
 
@@ -7438,40 +7438,40 @@ LABEL_9:
   {
     if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
     {
-      v3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-      v4 = [v3 backgroundColor];
-      v5 = [(CNContactContentDisplayViewController *)self actionsViewController];
-      v6 = [v5 view];
-      [v6 setBackgroundColor:v4];
+      contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+      backgroundColor = [contactHeaderView backgroundColor];
+      actionsViewController = [(CNContactContentDisplayViewController *)self actionsViewController];
+      view = [actionsViewController view];
+      [view setBackgroundColor:backgroundColor];
 
-      v7 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+      actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
       goto LABEL_7;
     }
   }
 
   else
   {
-    v8 = [(CNContactContentDisplayViewController *)self contactView];
-    v9 = [v8 customHeaderView];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    customHeaderView = [contactView customHeaderView];
 
-    if (v9)
+    if (customHeaderView)
     {
-      v10 = [(CNContactContentDisplayViewController *)self contactView];
-      v7 = [v10 customHeaderView];
+      contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+      actionsWrapperView = [contactView2 customHeaderView];
 
       goto LABEL_7;
     }
   }
 
-  v7 = 0;
+  actionsWrapperView = 0;
 LABEL_7:
-  v11 = [(CNContactContentDisplayViewController *)self contactView];
-  v12 = [v11 tableHeaderView];
-  v13 = [v12 needsUpdateConstraints];
+  contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+  tableHeaderView = [contactView3 tableHeaderView];
+  needsUpdateConstraints = [tableHeaderView needsUpdateConstraints];
 
-  if (v7)
+  if (actionsWrapperView)
   {
-    [v7 frame];
+    [actionsWrapperView frame];
     v15 = v14;
     v17 = v16;
   }
@@ -7482,20 +7482,20 @@ LABEL_7:
     v17 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v18 = [(CNContactContentDisplayViewController *)self contactView];
-  [v18 setTableHeaderView:v7];
+  contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView4 setTableHeaderView:actionsWrapperView];
 
-  if ((v13 & 1) == 0)
+  if ((needsUpdateConstraints & 1) == 0)
   {
-    v19 = [(CNContactContentDisplayViewController *)self contactView];
-    v20 = [v19 tableHeaderView];
-    v21 = [v20 needsUpdateConstraints];
+    contactView5 = [(CNContactContentDisplayViewController *)self contactView];
+    tableHeaderView2 = [contactView5 tableHeaderView];
+    needsUpdateConstraints2 = [tableHeaderView2 needsUpdateConstraints];
 
-    if (v21)
+    if (needsUpdateConstraints2)
     {
-      v22 = [(CNContactContentDisplayViewController *)self contactView];
-      v23 = [v22 tableHeaderView];
-      [v23 updateConstraints];
+      contactView6 = [(CNContactContentDisplayViewController *)self contactView];
+      tableHeaderView3 = [contactView6 tableHeaderView];
+      [tableHeaderView3 updateConstraints];
     }
   }
 
@@ -7517,16 +7517,16 @@ LABEL_7:
   v6 = v5;
   [(CNContactContentDisplayViewController *)self initializeTableViewsForHeaderHeight];
   [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
-  v7 = [(CNContactContentDisplayViewController *)self contactView];
-  v8 = [v7 tableHeaderView];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  tableHeaderView = [contactView tableHeaderView];
 
-  if (v8)
+  if (tableHeaderView)
   {
-    [v8 frame];
+    [tableHeaderView frame];
     if (v4 != v10 || v6 != v9)
     {
-      v11 = [(CNContactContentDisplayViewController *)self contactView];
-      [v11 setTableHeaderView:v8];
+      contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+      [contactView2 setTableHeaderView:tableHeaderView];
     }
   }
 
@@ -7538,40 +7538,40 @@ LABEL_7:
   v4.receiver = self;
   v4.super_class = CNContactContentDisplayViewController;
   [(CNContactContentDisplayViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v3 calculateLabelSizesIfNeeded];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView calculateLabelSizesIfNeeded];
 
   [(CNContactContentDisplayViewController *)self updateOutOfProcessFullscreenPresentationIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CNContactContentDisplayViewController;
-  [(CNContactContentDisplayViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(CNContactContentDisplayViewController *)self siriContextProvider];
-  [v4 setEnabled:0];
+  [(CNContactContentDisplayViewController *)&v6 viewWillDisappear:disappear];
+  siriContextProvider = [(CNContactContentDisplayViewController *)self siriContextProvider];
+  [siriContextProvider setEnabled:0];
 
   [(CNContactContentDisplayViewController *)self updateWindowTitleForAppearing:0];
-  v5 = [(CNContactContentDisplayViewController *)self shareLocationController];
-  [v5 stopUpdatingFriends];
+  shareLocationController = [(CNContactContentDisplayViewController *)self shareLocationController];
+  [shareLocationController stopUpdatingFriends];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CNContactContentDisplayViewController;
-  [(CNContactContentDisplayViewController *)&v6 viewDidAppear:a3];
+  [(CNContactContentDisplayViewController *)&v6 viewDidAppear:appear];
   if (self->_needsRefetch)
   {
     [(CNContactContentDisplayViewController *)self _refetchContact];
     self->_needsRefetch = 0;
   }
 
-  v4 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v5 = [v4 alwaysEditing];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  alwaysEditing = [contactViewConfiguration alwaysEditing];
 
-  if ((v5 & 1) == 0)
+  if ((alwaysEditing & 1) == 0)
   {
     [(CNContactContentDisplayViewController *)self becomeFirstResponder];
   }
@@ -7579,9 +7579,9 @@ LABEL_7:
   [(CNContactContentDisplayViewController *)self updateWindowTitleForAppearing:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(CNContactContentDisplayViewController *)self forcesTransparentBackground])
   {
     v5 = +[CNUIColorRepository transparentBackgroundColor];
@@ -7594,10 +7594,10 @@ LABEL_7:
 
   else
   {
-    v6 = [(CNContactContentDisplayViewController *)self environment];
-    v7 = [v6 runningInContactsAppOniPad];
+    environment = [(CNContactContentDisplayViewController *)self environment];
+    runningInContactsAppOniPad = [environment runningInContactsAppOniPad];
 
-    if (!v7)
+    if (!runningInContactsAppOniPad)
     {
       goto LABEL_8;
     }
@@ -7606,26 +7606,26 @@ LABEL_7:
   }
 
   v8 = v5;
-  v9 = [(CNContactContentDisplayViewController *)self contactView];
-  [v9 setBackgroundColor:v8];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView setBackgroundColor:v8];
 
 LABEL_8:
   v18.receiver = self;
   v18.super_class = CNContactContentDisplayViewController;
-  [(CNContactContentDisplayViewController *)&v18 viewWillAppear:v3];
+  [(CNContactContentDisplayViewController *)&v18 viewWillAppear:appearCopy];
   v10 = +[CNContactStyle currentStyle];
-  v11 = [v10 backgroundColor];
+  backgroundColor = [v10 backgroundColor];
 
-  if (v11)
+  if (backgroundColor)
   {
     v12 = +[CNContactStyle currentStyle];
-    v13 = [v12 backgroundColor];
-    v14 = [(CNContactContentDisplayViewController *)self view];
-    [v14 setBackgroundColor:v13];
+    backgroundColor2 = [v12 backgroundColor];
+    view = [(CNContactContentDisplayViewController *)self view];
+    [view setBackgroundColor:backgroundColor2];
   }
 
-  v15 = [(CNContactContentDisplayViewController *)self contactView];
-  [v15 _cnui_applyContactStyle];
+  contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView2 _cnui_applyContactStyle];
 
   if (![(CNContactContentDisplayViewController *)self reloadDataIfNeeded])
   {
@@ -7633,11 +7633,11 @@ LABEL_8:
   }
 
   [(CNContactContentDisplayViewController *)self updateEditNavigationItemsAnimated:0];
-  v16 = [(CNContactContentDisplayViewController *)self siriContextProvider];
-  [v16 setEnabled:1];
+  siriContextProvider = [(CNContactContentDisplayViewController *)self siriContextProvider];
+  [siriContextProvider setEnabled:1];
 
-  v17 = [(CNContactContentDisplayViewController *)self shareLocationController];
-  [v17 startUpdatingFriends];
+  shareLocationController = [(CNContactContentDisplayViewController *)self shareLocationController];
+  [shareLocationController startUpdatingFriends];
 }
 
 - (void)updateViewConstraints
@@ -7650,99 +7650,99 @@ LABEL_8:
 
 - (void)setupConstraints
 {
-  v3 = [(CNContactContentDisplayViewController *)self shouldDisplayAvatarHeaderView];
-  [(CNContactContentDisplayViewController *)self setupViewHierarchyIncludingAvatarHeader:v3];
+  shouldDisplayAvatarHeaderView = [(CNContactContentDisplayViewController *)self shouldDisplayAvatarHeaderView];
+  [(CNContactContentDisplayViewController *)self setupViewHierarchyIncludingAvatarHeader:shouldDisplayAvatarHeaderView];
   [(CNContactContentDisplayViewController *)self setupTableHeaderView];
   [(CNContactContentDisplayViewController *)self setupTableFooterView];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(CNContactContentDisplayViewController *)self activatedConstraints];
-  [v4 deactivateConstraints:v5];
+  activatedConstraints = [(CNContactContentDisplayViewController *)self activatedConstraints];
+  [v4 deactivateConstraints:activatedConstraints];
 
-  v101 = [MEMORY[0x1E695DF70] array];
-  if (v3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (shouldDisplayAvatarHeaderView)
   {
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    [v8 maxHeight];
-    v10 = [v6 constraintWithItem:v7 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v9];
+    contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    [contactHeaderView2 maxHeight];
+    v10 = [v6 constraintWithItem:contactHeaderView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v9];
     [(CNContactContentDisplayViewController *)self setHeaderHeightConstraint:v10];
 
-    v11 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
-    [v101 addObject:v11];
+    headerHeightConstraint = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
+    [array addObject:headerHeightConstraint];
 
-    v12 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v13 = [v12 topAnchor];
-    v14 = [(CNContactContentDisplayViewController *)self view];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
-    [v101 addObject:v16];
+    contactHeaderView3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    topAnchor = [contactHeaderView3 topAnchor];
+    view = [(CNContactContentDisplayViewController *)self view];
+    topAnchor2 = [view topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v16];
 
-    v17 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v18 = [v17 leftAnchor];
-    v19 = [(CNContactContentDisplayViewController *)self view];
-    v20 = [v19 leftAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
-    [v101 addObject:v21];
+    contactHeaderView4 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    leftAnchor = [contactHeaderView4 leftAnchor];
+    view2 = [(CNContactContentDisplayViewController *)self view];
+    leftAnchor2 = [view2 leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [array addObject:v21];
 
-    v22 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v23 = [v22 rightAnchor];
-    v24 = [(CNContactContentDisplayViewController *)self view];
-    v25 = [v24 rightAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
-    [v101 addObject:v26];
+    contactHeaderView5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    rightAnchor = [contactHeaderView5 rightAnchor];
+    view3 = [(CNContactContentDisplayViewController *)self view];
+    rightAnchor2 = [view3 rightAnchor];
+    v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+    [array addObject:v26];
 
-    v27 = [(CNContactContentDisplayViewController *)self contactView];
-    v28 = [v27 topAnchor];
-    v29 = [(CNContactContentDisplayViewController *)self view];
-    v30 = [v29 topAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30];
-    [v101 addObject:v31];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    topAnchor3 = [contactView topAnchor];
+    view4 = [(CNContactContentDisplayViewController *)self view];
+    topAnchor4 = [view4 topAnchor];
+    v31 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
+    [array addObject:v31];
 
-    v32 = [(CNContactContentDisplayViewController *)self contactView];
-    v33 = [v32 bottomAnchor];
-    v34 = [(CNContactContentDisplayViewController *)self view];
-    v35 = [v34 bottomAnchor];
-    v36 = [v33 constraintEqualToAnchor:v35];
-    [v101 addObject:v36];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    bottomAnchor = [contactView2 bottomAnchor];
+    view5 = [(CNContactContentDisplayViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v36];
 
-    v37 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-    v38 = [v37 superview];
+    headerDropShadowView = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+    superview = [headerDropShadowView superview];
 
-    if (v38)
+    if (superview)
     {
-      v39 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v39 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v41 = v40;
 
-      v42 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v43 = [v42 heightAnchor];
-      v44 = [v43 constraintEqualToConstant:1.0 / v41];
-      [v101 addObject:v44];
+      headerDropShadowView2 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      heightAnchor = [headerDropShadowView2 heightAnchor];
+      v44 = [heightAnchor constraintEqualToConstant:1.0 / v41];
+      [array addObject:v44];
 
-      v45 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v46 = [v45 bottomAnchor];
-      v47 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v48 = [v47 superview];
-      v49 = [v48 bottomAnchor];
-      v50 = [v46 constraintEqualToAnchor:v49];
-      [v101 addObject:v50];
+      headerDropShadowView3 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      bottomAnchor3 = [headerDropShadowView3 bottomAnchor];
+      headerDropShadowView4 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      superview2 = [headerDropShadowView4 superview];
+      bottomAnchor4 = [superview2 bottomAnchor];
+      v50 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
+      [array addObject:v50];
 
-      v51 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v52 = [v51 leftAnchor];
-      v53 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v54 = [v53 superview];
-      v55 = [v54 leftAnchor];
-      v56 = [v52 constraintEqualToAnchor:v55];
-      [v101 addObject:v56];
+      headerDropShadowView5 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      leftAnchor3 = [headerDropShadowView5 leftAnchor];
+      headerDropShadowView6 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      superview3 = [headerDropShadowView6 superview];
+      leftAnchor4 = [superview3 leftAnchor];
+      v56 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
+      [array addObject:v56];
 
-      v57 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v58 = [v57 rightAnchor];
-      v59 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-      v60 = [v59 superview];
-      v61 = [v60 rightAnchor];
-      v62 = [v58 constraintEqualToAnchor:v61];
-      [v101 addObject:v62];
+      headerDropShadowView7 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      rightAnchor3 = [headerDropShadowView7 rightAnchor];
+      headerDropShadowView8 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+      superview4 = [headerDropShadowView8 superview];
+      rightAnchor4 = [superview4 rightAnchor];
+      v62 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
+      [array addObject:v62];
     }
 
     v63 = +[CNContactStyle currentStyle];
@@ -7767,70 +7767,70 @@ LABEL_8:
       v66 = 15.0;
     }
 
-    v67 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v68 = [v67 allowsActionsModel];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    allowsActionsModel = [contactViewConfiguration allowsActionsModel];
 
-    if (v68)
+    if (allowsActionsModel)
     {
-      v69 = [(CNContactContentDisplayViewController *)self view];
-      v70 = [v69 leadingAnchor];
-      v71 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-      v72 = [v71 leadingAnchor];
-      v73 = [v70 constraintEqualToAnchor:v72];
-      [v101 addObject:v73];
+      view6 = [(CNContactContentDisplayViewController *)self view];
+      leadingAnchor = [view6 leadingAnchor];
+      actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+      leadingAnchor2 = [actionsWrapperView leadingAnchor];
+      v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+      [array addObject:v73];
 
-      v74 = [(CNContactContentDisplayViewController *)self view];
-      v75 = [v74 trailingAnchor];
-      v76 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-      v77 = [v76 trailingAnchor];
-      v78 = [v75 constraintEqualToAnchor:v77];
-      [v101 addObject:v78];
+      view7 = [(CNContactContentDisplayViewController *)self view];
+      trailingAnchor = [view7 trailingAnchor];
+      actionsWrapperView2 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+      trailingAnchor2 = [actionsWrapperView2 trailingAnchor];
+      v78 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+      [array addObject:v78];
 
       if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
       {
-        v79 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-        v80 = [v79 topAnchor];
-        v81 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-        v82 = [v81 bottomAnchor];
-        v83 = [v80 constraintEqualToAnchor:v82];
-        [v101 addObject:v83];
+        actionsWrapperView3 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+        topAnchor5 = [actionsWrapperView3 topAnchor];
+        contactHeaderView6 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+        bottomAnchor5 = [contactHeaderView6 bottomAnchor];
+        v83 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5];
+        [array addObject:v83];
       }
 
-      v84 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-      [v84 setLayoutMargins:{v64, 8.0, v66, 8.0}];
+      actionsWrapperView4 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+      [actionsWrapperView4 setLayoutMargins:{v64, 8.0, v66, 8.0}];
 
-      v85 = [(CNContactContentDisplayViewController *)self view];
-      v86 = [v85 _cnui_contactStyle];
-      [v86 sectionMaximumPlatterWidth];
+      view8 = [(CNContactContentDisplayViewController *)self view];
+      _cnui_contactStyle = [view8 _cnui_contactStyle];
+      [_cnui_contactStyle sectionMaximumPlatterWidth];
       v88 = v87;
       v89 = *MEMORY[0x1E698B6F8];
-      v90 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
-      [v90 setMinimumLayoutSize:{v88, v89}];
+      view9 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
+      [view9 setMinimumLayoutSize:{v88, v89}];
     }
   }
 
-  v91 = [(CNContactContentDisplayViewController *)self contactView];
-  v92 = [v91 leftAnchor];
-  v93 = [(CNContactContentDisplayViewController *)self view];
-  v94 = [v93 leftAnchor];
-  v95 = [v92 constraintEqualToAnchor:v94];
-  [v101 addObject:v95];
+  contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+  leftAnchor5 = [contactView3 leftAnchor];
+  view10 = [(CNContactContentDisplayViewController *)self view];
+  leftAnchor6 = [view10 leftAnchor];
+  v95 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
+  [array addObject:v95];
 
-  v96 = [(CNContactContentDisplayViewController *)self contactView];
-  v97 = [v96 rightAnchor];
-  v98 = [(CNContactContentDisplayViewController *)self view];
-  v99 = [v98 rightAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99];
-  [v101 addObject:v100];
+  contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+  rightAnchor5 = [contactView4 rightAnchor];
+  view11 = [(CNContactContentDisplayViewController *)self view];
+  rightAnchor6 = [view11 rightAnchor];
+  v100 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
+  [array addObject:v100];
 
-  [(CNContactContentDisplayViewController *)self setActivatedConstraints:v101];
-  [MEMORY[0x1E696ACD8] activateConstraints:v101];
+  [(CNContactContentDisplayViewController *)self setActivatedConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
 - (BOOL)shouldDisplayAvatarHeaderView
 {
-  v2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v3 = v2 != 0;
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  v3 = contactHeaderView != 0;
 
   return v3;
 }
@@ -7841,53 +7841,53 @@ LABEL_8:
   v10.super_class = CNContactContentDisplayViewController;
   [(CNContactContentDisplayViewController *)&v10 viewDidLoad];
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNContactContentDisplayViewController *)self initialPrompt];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v4);
+  initialPrompt = [(CNContactContentDisplayViewController *)self initialPrompt];
+  LOBYTE(v3) = (*(v3 + 16))(v3, initialPrompt);
 
   if ((v3 & 1) == 0)
   {
-    v5 = [(CNContactContentDisplayViewController *)self initialPrompt];
-    v6 = [(CNContactContentDisplayViewController *)self navigationItem];
-    [v6 setPrompt:v5];
+    initialPrompt2 = [(CNContactContentDisplayViewController *)self initialPrompt];
+    navigationItem = [(CNContactContentDisplayViewController *)self navigationItem];
+    [navigationItem setPrompt:initialPrompt2];
   }
 
   if ([(CNContactContentDisplayViewController *)self shouldDrawNavigationBar])
   {
-    v7 = [(CNContactContentDisplayViewController *)self navigationItem];
-    [v7 _setBackgroundHidden:0];
+    navigationItem2 = [(CNContactContentDisplayViewController *)self navigationItem];
+    [navigationItem2 _setBackgroundHidden:0];
   }
 
   [(CNContactContentDisplayViewController *)self reloadDataIfNeeded];
   v8 = objc_alloc_init(CNContactContentNavigationItemUpdater);
   [(CNContactContentDisplayViewController *)self setContactNavigationItemUpdater:v8];
 
-  v9 = [(CNContactContentDisplayViewController *)self view];
-  [v9 setNeedsUpdateConstraints];
+  view = [(CNContactContentDisplayViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)setupViewHierarchyIncludingAvatarHeader:(BOOL)a3
+- (void)setupViewHierarchyIncludingAvatarHeader:(BOOL)header
 {
-  v3 = a3;
+  headerCopy = header;
   v43[1] = *MEMORY[0x1E69E9840];
   if ([(CNContactContentDisplayViewController *)self isViewLoaded])
   {
-    v5 = [(CNContactContentDisplayViewController *)self view];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-    v9 = v8;
-    if (v3)
+    view = [(CNContactContentDisplayViewController *)self view];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+    v9 = contactHeaderView;
+    if (headerCopy)
     {
-      v43[0] = v8;
+      v43[0] = contactHeaderView;
       v10 = v43;
-      v11 = v7;
+      v11 = array2;
     }
 
     else
     {
-      v42 = v8;
+      v42 = contactHeaderView;
       v10 = &v42;
-      v11 = v6;
+      v11 = array;
     }
 
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -7895,77 +7895,77 @@ LABEL_8:
 
     if (([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory] & 1) == 0)
     {
-      v13 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-      [v7 addObject:v13];
+      actionsWrapperView = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+      [array2 addObject:actionsWrapperView];
 
-      v14 = [(CNContactContentDisplayViewController *)self view];
-      v15 = [v14 _cnui_contactStyle];
-      v16 = [v15 usesOpaqueBackground];
+      view2 = [(CNContactContentDisplayViewController *)self view];
+      _cnui_contactStyle = [view2 _cnui_contactStyle];
+      usesOpaqueBackground = [_cnui_contactStyle usesOpaqueBackground];
 
-      if (v16)
+      if (usesOpaqueBackground)
       {
-        v17 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
-        v18 = [(CNContactContentDisplayViewController *)self headerDropShadowView];
-        [v17 addSubview:v18];
+        actionsWrapperView2 = [(CNContactContentDisplayViewController *)self actionsWrapperView];
+        headerDropShadowView = [(CNContactContentDisplayViewController *)self headerDropShadowView];
+        [actionsWrapperView2 addSubview:headerDropShadowView];
       }
     }
 
-    v19 = [(CNContactContentDisplayViewController *)self contactView];
-    [v7 addObject:v19];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    [array2 addObject:contactView];
 
-    v20 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v21 = [v20 allowsActionsModel];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    allowsActionsModel = [contactViewConfiguration allowsActionsModel];
 
-    if ((v21 & 1) == 0)
+    if ((allowsActionsModel & 1) == 0)
     {
-      v22 = [(CNContactContentDisplayViewController *)self actionsViewController];
-      v23 = [v22 view];
-      [v23 removeFromSuperview];
+      actionsViewController = [(CNContactContentDisplayViewController *)self actionsViewController];
+      view3 = [actionsViewController view];
+      [view3 removeFromSuperview];
     }
 
-    v24 = [(CNContactContentDisplayViewController *)self contactView];
-    v25 = [v24 panGestureRecognizer];
-    v26 = [v25 view];
-    v27 = [(CNContactContentDisplayViewController *)self view];
+    contactView2 = [(CNContactContentDisplayViewController *)self contactView];
+    panGestureRecognizer = [contactView2 panGestureRecognizer];
+    view4 = [panGestureRecognizer view];
+    view5 = [(CNContactContentDisplayViewController *)self view];
 
-    if (v26 != v27)
+    if (view4 != view5)
     {
-      v28 = [(CNContactContentDisplayViewController *)self contactView];
-      v29 = [v28 panGestureRecognizer];
-      v30 = [v29 view];
-      v31 = [(CNContactContentDisplayViewController *)self contactView];
-      v32 = [v31 panGestureRecognizer];
-      [v30 removeGestureRecognizer:v32];
+      contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+      panGestureRecognizer2 = [contactView3 panGestureRecognizer];
+      view6 = [panGestureRecognizer2 view];
+      contactView4 = [(CNContactContentDisplayViewController *)self contactView];
+      panGestureRecognizer3 = [contactView4 panGestureRecognizer];
+      [view6 removeGestureRecognizer:panGestureRecognizer3];
 
-      v33 = [(CNContactContentDisplayViewController *)self view];
-      v34 = [(CNContactContentDisplayViewController *)self contactView];
-      v35 = [v34 panGestureRecognizer];
-      [v33 addGestureRecognizer:v35];
+      view7 = [(CNContactContentDisplayViewController *)self view];
+      contactView5 = [(CNContactContentDisplayViewController *)self contactView];
+      panGestureRecognizer4 = [contactView5 panGestureRecognizer];
+      [view7 addGestureRecognizer:panGestureRecognizer4];
     }
 
     v37 = MEMORY[0x1E69E9820];
     v38 = 3221225472;
     v39 = __81__CNContactContentDisplayViewController_setupViewHierarchyIncludingAvatarHeader___block_invoke;
     v40 = &unk_1E74E6C50;
-    v41 = v5;
-    v36 = v5;
-    [v7 enumerateObjectsUsingBlock:&v37];
-    [v6 enumerateObjectsUsingBlock:{&__block_literal_global_395, v37, v38, v39, v40}];
+    v41 = view;
+    v36 = view;
+    [array2 enumerateObjectsUsingBlock:&v37];
+    [array enumerateObjectsUsingBlock:{&__block_literal_global_395, v37, v38, v39, v40}];
   }
 }
 
 - (void)loadContactViewControllerViews
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactView];
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  contactView2 = [(CNContactContentDisplayViewController *)self contactView];
   v5 = objc_opt_class();
   v6 = [v5 cellIdentifierForClass:objc_opt_class()];
-  v7 = [v3 dequeueReusableCellWithIdentifier:v6];
+  v7 = [contactView dequeueReusableCellWithIdentifier:v6];
   [(CNContactContentDisplayViewController *)self setNoteCell:v7];
 
-  v9 = [(CNContactContentDisplayViewController *)self view];
-  v8 = [(CNContactContentDisplayViewController *)self contactView];
-  [v9 addSubview:v8];
+  view = [(CNContactContentDisplayViewController *)self view];
+  contactView3 = [(CNContactContentDisplayViewController *)self contactView];
+  [view addSubview:contactView3];
 }
 
 - (void)loadView
@@ -7976,177 +7976,177 @@ LABEL_8:
   [(CNContactContentDisplayViewController *)self loadContactViewControllerViews];
 }
 
-- (void)toggleEditing:(id)a3
+- (void)toggleEditing:(id)editing
 {
-  v4 = [(CNContactContentDisplayViewController *)self delegate];
+  delegate = [(CNContactContentDisplayViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNContactContentDisplayViewController *)self delegate];
-    [v6 contactDisplayViewController:self didChangeToEditMode:1];
+    delegate2 = [(CNContactContentDisplayViewController *)self delegate];
+    [delegate2 contactDisplayViewController:self didChangeToEditMode:1];
   }
 }
 
 - (BOOL)saveWasAuthorized
 {
-  v2 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  v3 = [v2 saveWasAuthorized];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  saveWasAuthorized = [editAuthorizationManager saveWasAuthorized];
 
-  return v3;
+  return saveWasAuthorized;
 }
 
 - (void)cancelAsyncLookups
 {
-  v3 = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
-  [v3 cancel];
+  faceTimeIDSLookupToken = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
+  [faceTimeIDSLookupToken cancel];
 
   [(CNContactContentDisplayViewController *)self setFaceTimeIDSLookupToken:0];
-  v4 = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
-  [v4 cancel];
+  iMessageIDSLookupToken = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
+  [iMessageIDSLookupToken cancel];
 
   [(CNContactContentDisplayViewController *)self setIMessageIDSLookupToken:0];
-  v5 = [(CNContactContentDisplayViewController *)self medicalIDLookupToken];
-  [v5 cancel];
+  medicalIDLookupToken = [(CNContactContentDisplayViewController *)self medicalIDLookupToken];
+  [medicalIDLookupToken cancel];
 
   [(CNContactContentDisplayViewController *)self setMedicalIDLookupToken:0];
 }
 
-- (void)updateWindowTitleForAppearing:(BOOL)a3
+- (void)updateWindowTitleForAppearing:(BOOL)appearing
 {
-  if (a3)
+  if (appearing)
   {
-    v4 = [(CNContactContentDisplayViewController *)self title];
-    if (v4)
+    title = [(CNContactContentDisplayViewController *)self title];
+    if (title)
     {
-      v11 = v4;
+      title2 = title;
     }
 
     else
     {
-      v7 = [(CNContactContentDisplayViewController *)self navigationController];
-      v11 = [v7 title];
+      navigationController = [(CNContactContentDisplayViewController *)self navigationController];
+      title2 = [navigationController title];
 
-      if (!v11)
+      if (!title2)
       {
-        v8 = [(CNContactContentDisplayViewController *)self contactFormatter];
-        v9 = [(CNContactContentDisplayViewController *)self contact];
-        v11 = [v8 stringFromContact:v9];
+        contactFormatter = [(CNContactContentDisplayViewController *)self contactFormatter];
+        contact = [(CNContactContentDisplayViewController *)self contact];
+        title2 = [contactFormatter stringFromContact:contact];
       }
     }
 
-    v5 = [(CNContactContentDisplayViewController *)self view];
-    v6 = [v5 window];
-    v10 = [v6 windowScene];
-    [v10 setTitle:v11];
+    view = [(CNContactContentDisplayViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    [windowScene setTitle:title2];
   }
 
   else
   {
-    v11 = [(CNContactContentDisplayViewController *)self view];
-    v5 = [v11 window];
-    v6 = [v5 windowScene];
-    [v6 setTitle:0];
+    title2 = [(CNContactContentDisplayViewController *)self view];
+    view = [title2 window];
+    window = [view windowScene];
+    [window setTitle:0];
   }
 }
 
 - (id)currentNavigationController
 {
-  v2 = [(CNContactContentDisplayViewController *)self navigationItemController];
-  v3 = [v2 navigationController];
+  navigationItemController = [(CNContactContentDisplayViewController *)self navigationItemController];
+  navigationController = [navigationItemController navigationController];
 
-  v4 = [v3 navigationBar];
-  v5 = [v4 backItem];
-  if (v5)
+  navigationBar = [navigationController navigationBar];
+  backItem = [navigationBar backItem];
+  if (backItem)
   {
 
 LABEL_3:
-    v6 = v3;
+    v3NavigationController2 = navigationController;
     goto LABEL_6;
   }
 
-  v7 = [v3 navigationController];
-  v8 = [v7 navigationBar];
-  v9 = [v8 backItem];
+  v3NavigationController = [navigationController navigationController];
+  navigationBar2 = [v3NavigationController navigationBar];
+  backItem2 = [navigationBar2 backItem];
 
-  if (!v9)
+  if (!backItem2)
   {
     goto LABEL_3;
   }
 
-  v6 = [v3 navigationController];
+  v3NavigationController2 = [navigationController navigationController];
 LABEL_6:
-  v10 = v6;
+  v10 = v3NavigationController2;
 
   return v10;
 }
 
-- (void)updateEditNavigationItemsAnimated:(BOOL)a3
+- (void)updateEditNavigationItemsAnimated:(BOOL)animated
 {
   [(CNContactContentDisplayViewController *)self isOutOfProcess];
-  v4 = [(CNContactContentDisplayViewController *)self currentNavigationController];
-  v5 = [v4 navigationBar];
-  v6 = [v5 backItem];
-  v7 = v6 != 0;
+  currentNavigationController = [(CNContactContentDisplayViewController *)self currentNavigationController];
+  navigationBar = [currentNavigationController navigationBar];
+  backItem = [navigationBar backItem];
+  v7 = backItem != 0;
 
-  v8 = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
-  v9 = [(CNContactContentDisplayViewController *)self navigationItemController];
-  v10 = [(CNContactContentDisplayViewController *)self mode];
-  v11 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v12 = [v11 allowsEditing];
-  v13 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  v14 = [v13 shouldPromptForPasscodeAuthorization];
-  v15 = [(UIViewController *)self ab_isInSheet];
-  LOBYTE(v21) = a3;
+  contactNavigationItemUpdater = [(CNContactContentDisplayViewController *)self contactNavigationItemUpdater];
+  navigationItemController = [(CNContactContentDisplayViewController *)self navigationItemController];
+  mode = [(CNContactContentDisplayViewController *)self mode];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  allowsEditing = [contactViewConfiguration allowsEditing];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  shouldPromptForPasscodeAuthorization = [editAuthorizationManager shouldPromptForPasscodeAuthorization];
+  ab_isInSheet = [(UIViewController *)self ab_isInSheet];
+  LOBYTE(v21) = animated;
   BYTE2(v20) = 0;
   BYTE1(v20) = v7;
   LOBYTE(v20) = [(CNContactContentDisplayViewController *)self shouldDrawNavigationBar];
-  v23 = [v8 updateDisplayNavigationItemsForController:v9 mode:v10 actionTarget:self allowsEditing:v12 editRequiresAuthorization:v14 isInSheet:v15 isShowingNavBar:v20 shouldShowBackButton:0 shouldUsePlatterStyle:v21 platterBackBarButtonItem:? animated:?];
+  v23 = [contactNavigationItemUpdater updateDisplayNavigationItemsForController:navigationItemController mode:mode actionTarget:self allowsEditing:allowsEditing editRequiresAuthorization:shouldPromptForPasscodeAuthorization isInSheet:ab_isInSheet isShowingNavBar:v20 shouldShowBackButton:0 shouldUsePlatterStyle:v21 platterBackBarButtonItem:? animated:?];
 
   -[CNContactContentDisplayViewController setEditKeyboardShortcutEnabled:](self, "setEditKeyboardShortcutEnabled:", [v23 enableEditShortcut]);
   -[CNContactContentDisplayViewController setCancelKeyboardShortcutEnabled:](self, "setCancelKeyboardShortcutEnabled:", [v23 enableCancelShortcut]);
-  v16 = [(CNContactContentDisplayViewController *)self navigationItemDelegate];
-  v17 = [(CNContactContentDisplayViewController *)self navigationItemController];
-  v18 = [v17 navigationItem];
-  v19 = [(CNContactContentDisplayViewController *)self doneButtonItem];
-  [v16 contactNavigationItemProvider:self didUpdateNavigationItem:v18 doneButtonItem:v19];
+  navigationItemDelegate = [(CNContactContentDisplayViewController *)self navigationItemDelegate];
+  navigationItemController2 = [(CNContactContentDisplayViewController *)self navigationItemController];
+  navigationItem = [navigationItemController2 navigationItem];
+  doneButtonItem = [(CNContactContentDisplayViewController *)self doneButtonItem];
+  [navigationItemDelegate contactNavigationItemProvider:self didUpdateNavigationItem:navigationItem doneButtonItem:doneButtonItem];
 }
 
 - (UINavigationItem)effectiveNavigationItem
 {
-  v2 = [(CNContactContentDisplayViewController *)self navigationItemController];
-  v3 = [v2 navigationItem];
+  navigationItemController = [(CNContactContentDisplayViewController *)self navigationItemController];
+  navigationItem = [navigationItemController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  if (a3 == 4)
+  if (edge == 4)
   {
-    v5 = [(CNContactContentDisplayViewController *)self contactView];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
   }
 
   else
   {
-    v5 = 0;
+    contactView = 0;
   }
 
-  return v5;
+  return contactView;
 }
 
-- (id)_policyForContact:(id)a3 mode:(int64_t)a4
+- (id)_policyForContact:(id)contact mode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if (![v7 allowsAddingToAddressBook])
+  contactCopy = contact;
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if (![contactViewConfiguration allowsAddingToAddressBook])
   {
-    v12 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    if ([v12 allowsEditing])
+    contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    if ([contactViewConfiguration2 allowsEditing])
     {
-      v13 = [v6 hasBeenPersisted];
+      hasBeenPersisted = [contactCopy hasBeenPersisted];
 
-      if (v13)
+      if (hasBeenPersisted)
       {
         goto LABEL_3;
       }
@@ -8157,36 +8157,36 @@ LABEL_6:
     }
 
 LABEL_12:
-    v11 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
+    mEMORY[0x1E695CF48] = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
     goto LABEL_13;
   }
 
 LABEL_3:
-  if (a4 > 5 || (v8 = 1 << a4, v9 = v6, (v8 & 0x32) == 0))
+  if (mode > 5 || (v8 = 1 << mode, v9 = contactCopy, (v8 & 0x32) == 0))
   {
     v9 = 0;
   }
 
-  v10 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  v11 = [v10 policyForContact:v9];
+  contactViewCache = [(CNContactContentDisplayViewController *)self contactViewCache];
+  mEMORY[0x1E695CF48] = [contactViewCache policyForContact:v9];
 
-  if (!v11)
+  if (!mEMORY[0x1E695CF48])
   {
     goto LABEL_12;
   }
 
 LABEL_13:
 
-  return v11;
+  return mEMORY[0x1E695CF48];
 }
 
-- (id)indexPathOfPropertyItem:(id)a3
+- (id)indexPathOfPropertyItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 group];
-  v6 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v5];
-  v7 = [v5 displayItems];
-  v8 = [v7 indexOfObject:v4];
+  itemCopy = item;
+  group = [itemCopy group];
+  v6 = [(CNContactContentDisplayViewController *)self sectionOfGroup:group];
+  displayItems = [group displayItems];
+  v8 = [displayItems indexOfObject:itemCopy];
 
   v9 = 0;
   if (v6 != 0x7FFFFFFFFFFFFFFFLL && v8 != 0x7FFFFFFFFFFFFFFFLL)
@@ -8206,85 +8206,85 @@ LABEL_13:
   if (v4 != v8 || v6 != v7)
   {
     [(CNContactContentDisplayViewController *)self setPreferredContentSize:v4, v6];
-    v10 = [(CNContactContentDisplayViewController *)self delegate];
+    delegate = [(CNContactContentDisplayViewController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CNContactContentDisplayViewController *)self delegate];
+      delegate2 = [(CNContactContentDisplayViewController *)self delegate];
       [(CNContactContentDisplayViewController *)self preferredContentSize];
-      [v12 contactDisplayViewController:self didChangePreferredContentSize:?];
+      [delegate2 contactDisplayViewController:self didChangePreferredContentSize:?];
     }
   }
 }
 
-- (void)reloadCardGroup:(id)a3
+- (void)reloadCardGroup:(id)group
 {
-  v8 = a3;
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
+  groupCopy = group;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
   if ([(CNContactContentDisplayViewController *)self isViewLoaded])
   {
     if (![(CNContactContentDisplayViewController *)self needsReload])
     {
-      v5 = [(CNContactContentDisplayViewController *)self sectionOfGroup:v8];
+      v5 = [(CNContactContentDisplayViewController *)self sectionOfGroup:groupCopy];
       if (v5 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v6 = v5;
-        [v4 beginUpdates];
+        [contactView beginUpdates];
         v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:v6];
-        [v4 reloadSections:v7 withRowAnimation:0];
+        [contactView reloadSections:v7 withRowAnimation:0];
 
-        [v4 endUpdates];
-        [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:v4 scrollDirection:2 animated:0];
+        [contactView endUpdates];
+        [(CNContactContentDisplayViewController *)self updateHeaderHeightToMatchScrollViewState:contactView scrollDirection:2 animated:0];
         [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
       }
     }
   }
 }
 
-- (void)removeActionWithTarget:(id)a3 selector:(SEL)a4 inGroup:(id)a5
+- (void)removeActionWithTarget:(id)target selector:(SEL)selector inGroup:(id)group
 {
-  v8 = a3;
-  v9 = a5;
-  [v9 removeActionWithTarget:v8 selector:a4];
-  v10 = [(CNContactContentDisplayViewController *)self customActions];
+  targetCopy = target;
+  groupCopy = group;
+  [groupCopy removeActionWithTarget:targetCopy selector:selector];
+  customActions = [(CNContactContentDisplayViewController *)self customActions];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __81__CNContactContentDisplayViewController_removeActionWithTarget_selector_inGroup___block_invoke;
   v17 = &unk_1E74E6BB8;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v21 = a4;
-  v11 = v9;
-  v12 = v8;
-  v13 = [v10 _cn_filter:&v14];
+  v18 = targetCopy;
+  v19 = groupCopy;
+  selfCopy = self;
+  selectorCopy = selector;
+  v11 = groupCopy;
+  v12 = targetCopy;
+  v13 = [customActions _cn_filter:&v14];
   [(CNContactContentDisplayViewController *)self setCustomActions:v13, v14, v15, v16, v17];
 
   [(CNContactContentDisplayViewController *)self setNeedsReload];
 }
 
-- (void)addActionWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5 menuProvider:(id)a6 inGroup:(id)a7 destructive:(BOOL)a8
+- (void)addActionWithTitle:(id)title target:(id)target selector:(SEL)selector menuProvider:(id)provider inGroup:(id)group destructive:(BOOL)destructive
 {
-  v8 = a8;
+  destructiveCopy = destructive;
   v31 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a4;
-  v18 = [[CNContactTargetActionWrapper alloc] initWithTarget:v17 action:a5];
+  titleCopy = title;
+  providerCopy = provider;
+  groupCopy = group;
+  targetCopy = target;
+  v18 = [[CNContactTargetActionWrapper alloc] initWithTarget:targetCopy action:selector];
 
-  v19 = [CNCustomCardAction placementForGroup:v16 inContactContentViewController:self];
+  v19 = [CNCustomCardAction placementForGroup:groupCopy inContactContentViewController:self];
   if (v19)
   {
     v20 = v19;
     v21 = [CNCustomCardAction alloc];
-    v22 = [(CNContactContentDisplayViewController *)self contact];
-    v23 = [v22 identifier];
-    v24 = [(CNCustomCardAction *)v21 initWithTitle:v14 targetActionWrapper:v18 contactIdentifier:v23 placement:v20 isDestructive:v8 menuProvider:v15];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    identifier = [contact identifier];
+    v24 = [(CNCustomCardAction *)v21 initWithTitle:titleCopy targetActionWrapper:v18 contactIdentifier:identifier placement:v20 isDestructive:destructiveCopy menuProvider:providerCopy];
 
-    v25 = [(CNContactContentDisplayViewController *)self customActions];
-    v26 = [v25 arrayByAddingObject:v24];
+    customActions = [(CNContactContentDisplayViewController *)self customActions];
+    v26 = [customActions arrayByAddingObject:v24];
     [(CNContactContentDisplayViewController *)self setCustomActions:v26];
   }
 
@@ -8294,33 +8294,33 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v29 = 138412290;
-      v30 = v14;
+      v30 = titleCopy;
       _os_log_impl(&dword_199A75000, v24, OS_LOG_TYPE_INFO, "Found undefined placement for action with title %@", &v29, 0xCu);
     }
   }
 
-  if (v15)
+  if (providerCopy)
   {
-    v27 = [v16 addActionWithTitle:v14 menuProvider:v15 destructive:v8];
+    v27 = [groupCopy addActionWithTitle:titleCopy menuProvider:providerCopy destructive:destructiveCopy];
   }
 
   else
   {
-    v28 = [v16 addActionWithTitle:v14 target:v18 selector:sel_performActionWithSender_ destructive:v8];
+    v28 = [groupCopy addActionWithTitle:titleCopy target:v18 selector:sel_performActionWithSender_ destructive:destructiveCopy];
   }
 
   [(CNContactContentDisplayViewController *)self setNeedsReload];
 }
 
-- (int64_t)sectionOfGroup:(id)a3
+- (int64_t)sectionOfGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self _currentGroups];
-  v6 = v5;
+  groupCopy = group;
+  _currentGroups = [(CNContactContentDisplayViewController *)self _currentGroups];
+  v6 = _currentGroups;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5)
+  if (_currentGroups)
   {
-    v8 = [v5 indexOfObject:v4];
+    v8 = [_currentGroups indexOfObject:groupCopy];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = [(CNContactContentDisplayViewController *)self tableViewSectionIndexFromGroupIndex:v8];
@@ -8330,18 +8330,18 @@ LABEL_13:
   return v7;
 }
 
-- (id)cardGroupForProperty:(id)a3
+- (id)cardGroupForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(CNContactContentDisplayViewController *)self propertyGroups];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  propertyGroups = [(CNContactContentDisplayViewController *)self propertyGroups];
+  v6 = [propertyGroups objectForKeyedSubscript:propertyCopy];
 
   return v6;
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v51 = *MEMORY[0x1E69E9840];
   if (![(CNContactContentDisplayViewController *)self isViewLoaded])
   {
@@ -8350,25 +8350,25 @@ LABEL_13:
 
   [(CNContactContentDisplayViewController *)self isOutOfProcess];
   self->_needsReload = 0;
-  v5 = [(CNContactContentDisplayViewController *)self contactStore];
+  contactStore = [(CNContactContentDisplayViewController *)self contactStore];
 
-  if (!v5)
+  if (!contactStore)
   {
-    v6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v7 = [v6 contactStore];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    contactStore2 = [contactViewConfiguration contactStore];
 
-    if (v7)
+    if (contactStore2)
     {
-      v8 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-      v9 = [v8 contactStore];
+      contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+      contactStore3 = [contactViewConfiguration2 contactStore];
     }
 
     else
     {
-      v11 = [(CNContactContentDisplayViewController *)self originalContacts];
-      v8 = [v11 _cn_filter:&__block_literal_global_59599];
+      originalContacts = [(CNContactContentDisplayViewController *)self originalContacts];
+      contactViewConfiguration2 = [originalContacts _cn_filter:&__block_literal_global_59599];
 
-      if ([v8 count])
+      if ([contactViewConfiguration2 count])
       {
         v12 = 7;
       }
@@ -8378,31 +8378,31 @@ LABEL_13:
         v12 = 1;
       }
 
-      v13 = [(CNContactContentDisplayViewController *)self managedConfiguration];
+      managedConfiguration = [(CNContactContentDisplayViewController *)self managedConfiguration];
 
-      if (v13)
+      if (managedConfiguration)
       {
         v14 = objc_alloc(MEMORY[0x1E695CE18]);
-        v10 = [(CNContactContentDisplayViewController *)self environment];
-        v15 = [v10 cnEnvironment];
-        v16 = [(CNContactContentDisplayViewController *)self managedConfiguration];
-        v17 = [v14 initWithEnvironment:v15 options:v12 managedConfiguration:v16];
+        environment = [(CNContactContentDisplayViewController *)self environment];
+        cnEnvironment = [environment cnEnvironment];
+        managedConfiguration2 = [(CNContactContentDisplayViewController *)self managedConfiguration];
+        v17 = [v14 initWithEnvironment:cnEnvironment options:v12 managedConfiguration:managedConfiguration2];
         [(CNContactContentDisplayViewController *)self setContactStore:v17];
 
         goto LABEL_11;
       }
 
-      v9 = [MEMORY[0x1E695CE18] storeWithOptions:v12];
+      contactStore3 = [MEMORY[0x1E695CE18] storeWithOptions:v12];
     }
 
-    v10 = v9;
-    [(CNContactContentDisplayViewController *)self setContactStore:v9];
+    environment = contactStore3;
+    [(CNContactContentDisplayViewController *)self setContactStore:contactStore3];
 LABEL_11:
   }
 
   if (![(CNContactContentDisplayViewController *)self mode])
   {
-    v18 = [(CNContactContentDisplayViewController *)self parentViewController];
+    parentViewController = [(CNContactContentDisplayViewController *)self parentViewController];
     objc_getClass("ABNewPersonViewController");
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -8422,29 +8422,29 @@ LABEL_11:
     }
   }
 
-  v21 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
+  shadowCopyOfReadonlyContact = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
 
-  if (!v21)
+  if (!shadowCopyOfReadonlyContact)
   {
-    v22 = [(CNContactContentDisplayViewController *)self contact];
-    v23 = [(CNContactContentDisplayViewController *)self _policyForContact:v22 mode:[(CNContactContentDisplayViewController *)self mode]];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    v23 = [(CNContactContentDisplayViewController *)self _policyForContact:contact mode:[(CNContactContentDisplayViewController *)self mode]];
     [(CNContactContentDisplayViewController *)self setPolicy:v23];
   }
 
-  v24 = [(CNContactContentDisplayViewController *)self contact];
-  v25 = [v24 isUnified];
+  contact2 = [(CNContactContentDisplayViewController *)self contact];
+  isUnified = [contact2 isUnified];
 
-  if (v25)
+  if (isUnified)
   {
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v27 = [(CNContactContentDisplayViewController *)self contact];
-    v28 = [v27 linkedContacts];
+    contact3 = [(CNContactContentDisplayViewController *)self contact];
+    linkedContacts = [contact3 linkedContacts];
 
-    v29 = [v28 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    v29 = [linkedContacts countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v29)
     {
       v30 = v29;
@@ -8455,39 +8455,39 @@ LABEL_11:
         {
           if (*v46 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(linkedContacts);
           }
 
           v33 = *(*(&v45 + 1) + 8 * i);
           v34 = [(CNContactContentDisplayViewController *)self _policyForContact:v33 mode:[(CNContactContentDisplayViewController *)self mode]];
           if (v34)
           {
-            v35 = [v33 identifier];
-            [v26 setObject:v34 forKey:v35];
+            identifier = [v33 identifier];
+            [dictionary setObject:v34 forKey:identifier];
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v30 = [linkedContacts countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v30);
     }
 
-    v36 = [v26 copy];
+    v36 = [dictionary copy];
     [(CNContactContentDisplayViewController *)self setLinkedPoliciesByContactIdentifier:v36];
   }
 
-  v37 = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
-  [v37 cancel];
+  iMessageIDSLookupToken = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
+  [iMessageIDSLookupToken cancel];
 
-  v38 = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
-  [v38 cancel];
+  faceTimeIDSLookupToken = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
+  [faceTimeIDSLookupToken cancel];
 
   if (!self->_propertyGroups)
   {
-    v39 = [(CNContactContentDisplayViewController *)self _loadPropertyGroups];
+    _loadPropertyGroups = [(CNContactContentDisplayViewController *)self _loadPropertyGroups];
     propertyGroups = self->_propertyGroups;
-    self->_propertyGroups = v39;
+    self->_propertyGroups = _loadPropertyGroups;
   }
 
   if (([MEMORY[0x1E695CD58] quickActionsEnabled] & 1) == 0)
@@ -8495,22 +8495,22 @@ LABEL_11:
     [(CNContactContentDisplayViewController *)self _reloadFaceTimeGroup];
   }
 
-  [(CNContactContentDisplayViewController *)self _reloadGeminiGroupPreservingChanges:v3];
-  [(CNContactContentDisplayViewController *)self _reloadPropertyGroupsPreservingChanges:v3];
+  [(CNContactContentDisplayViewController *)self _reloadGeminiGroupPreservingChanges:changesCopy];
+  [(CNContactContentDisplayViewController *)self _reloadPropertyGroupsPreservingChanges:changesCopy];
   [(CNContactContentDisplayViewController *)self _reloadMedicalIDGroup];
   [(CNContactContentDisplayViewController *)self _reloadAlertGroups];
-  [(CNContactContentDisplayViewController *)self setupActionsPreservingChanges:v3];
+  [(CNContactContentDisplayViewController *)self setupActionsPreservingChanges:changesCopy];
   [(CNContactContentDisplayViewController *)self _reloadLinkedCardsGroup];
-  v41 = [(CNContactContentDisplayViewController *)self _loadDisplayGroups];
-  [(CNContactContentDisplayViewController *)self setDisplayGroups:v41];
+  _loadDisplayGroups = [(CNContactContentDisplayViewController *)self _loadDisplayGroups];
+  [(CNContactContentDisplayViewController *)self setDisplayGroups:_loadDisplayGroups];
 
   [(CNContactContentDisplayViewController *)self _setNeedsUpdateCachedLabelWidths];
   [(CNContactContentDisplayViewController *)self _updateAvailableTransports];
-  v42 = [(CNContactContentDisplayViewController *)self contactView];
-  [v42 reloadData];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView reloadData];
 
-  v43 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v43 reloadDataPreservingChanges:v3];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView reloadDataPreservingChanges:changesCopy];
 
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
@@ -8522,15 +8522,15 @@ LABEL_11:
   [(CNContactContentDisplayViewController *)self adjustPreferredContentSize];
 }
 
-- (void)setPersonHeaderViewController:(id)a3
+- (void)setPersonHeaderViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   personHeaderViewController = self->_personHeaderViewController;
-  if (v5 | personHeaderViewController)
+  if (controllerCopy | personHeaderViewController)
   {
-    v8 = v5;
-    personHeaderViewController = [personHeaderViewController isEqual:v5];
-    v5 = v8;
+    v8 = controllerCopy;
+    personHeaderViewController = [personHeaderViewController isEqual:controllerCopy];
+    controllerCopy = v8;
     if ((personHeaderViewController & 1) == 0)
     {
       if (self->_personHeaderViewController)
@@ -8538,20 +8538,20 @@ LABEL_11:
         [(CNContactContentDisplayViewController *)self removeFirstSectionHeaderViewControllerFromHierarchy];
       }
 
-      objc_storeStrong(&self->_personHeaderViewController, a3);
+      objc_storeStrong(&self->_personHeaderViewController, controller);
       personHeaderViewController = [(CNContactContentDisplayViewController *)self isViewLoaded];
-      v5 = v8;
+      controllerCopy = v8;
       if (personHeaderViewController)
       {
-        v7 = [(CNContactContentDisplayViewController *)self contactView];
-        [v7 reloadData];
+        contactView = [(CNContactContentDisplayViewController *)self contactView];
+        [contactView reloadData];
 
-        v5 = v8;
+        controllerCopy = v8;
       }
     }
   }
 
-  MEMORY[0x1EEE66BB8](personHeaderViewController, v5);
+  MEMORY[0x1EEE66BB8](personHeaderViewController, controllerCopy);
 }
 
 - (NSArray)originalContacts
@@ -8580,12 +8580,12 @@ LABEL_11:
 - (void)_refetchContact
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactContentDisplayViewController *)self contact];
-  if (v3)
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  if (contact)
   {
-    v4 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-    v5 = [(CNContactContentDisplayViewController *)self contact];
-    v6 = [v4 isMeContact:v5];
+    unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+    contact2 = [(CNContactContentDisplayViewController *)self contact];
+    v6 = [unifiedMeContactMonitor isMeContact:contact2];
 
     v7 = CNUILogContactCard();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -8593,18 +8593,18 @@ LABEL_11:
     {
       if (v8)
       {
-        v9 = [v3 identifier];
+        identifier = [contact identifier];
         *buf = 138543362;
-        v23 = v9;
+        v23 = identifier;
         _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEFAULT, "Refetching contact, is it the me card, identifier %{public}@", buf, 0xCu);
       }
 
-      v10 = [(CNContactContentDisplayViewController *)self contactStore];
-      v11 = [objc_opt_class() descriptorForRequiredKeysForContact:v3];
-      v31[0] = v11;
+      contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+      identifier3 = [objc_opt_class() descriptorForRequiredKeysForContact:contact];
+      v31[0] = identifier3;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
       v21 = 0;
-      v13 = [v10 _crossPlatformUnifiedMeContactWithKeysToFetch:v12 error:&v21];
+      v13 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v12 error:&v21];
       v14 = v21;
     }
 
@@ -8612,19 +8612,19 @@ LABEL_11:
     {
       if (v8)
       {
-        v15 = [v3 identifier];
+        identifier2 = [contact identifier];
         *buf = 138543362;
-        v23 = v15;
+        v23 = identifier2;
         _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEFAULT, "Refetching contact, is it not the me card, identifier %{public}@", buf, 0xCu);
       }
 
-      v10 = [(CNContactContentDisplayViewController *)self contactStore];
-      v11 = [v3 identifier];
-      v12 = [objc_opt_class() descriptorForRequiredKeysForContact:v3];
+      contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+      identifier3 = [contact identifier];
+      v12 = [objc_opt_class() descriptorForRequiredKeysForContact:contact];
       v30 = v12;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
       v20 = 0;
-      v13 = [v10 unifiedContactWithIdentifier:v11 keysToFetch:v16 error:&v20];
+      v13 = [contactStore unifiedContactWithIdentifier:identifier3 keysToFetch:v16 error:&v20];
       v14 = v20;
     }
 
@@ -8633,41 +8633,41 @@ LABEL_11:
       v17 = CNUILogContactCard();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v3 identifier];
-        v19 = [(CNContactContentDisplayViewController *)self contactStore];
+        identifier4 = [contact identifier];
+        contactStore2 = [(CNContactContentDisplayViewController *)self contactStore];
         *buf = 138413058;
-        v23 = v18;
+        v23 = identifier4;
         v24 = 2112;
         v25 = v14;
         v26 = 2112;
-        v27 = v19;
+        v27 = contactStore2;
         v28 = 2112;
-        v29 = v3;
+        v29 = contact;
         _os_log_error_impl(&dword_199A75000, v17, OS_LOG_TYPE_ERROR, "Error refetching contact with identifier %@, %@, store %@, full contact %@", buf, 0x2Au);
       }
     }
 
-    else if (([v13 isEqual:v3] & 1) == 0)
+    else if (([v13 isEqual:contact] & 1) == 0)
     {
       [(CNContactContentDisplayViewController *)self setContact:v13];
     }
   }
 }
 
-- (void)contactStoreDidChangeWithNotification:(id)a3
+- (void)contactStoreDidChangeWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CNUIContactsEnvironment *)self->_environment defaultSchedulerProvider];
-  v6 = [v5 mainThreadScheduler];
+  notificationCopy = notification;
+  defaultSchedulerProvider = [(CNUIContactsEnvironment *)self->_environment defaultSchedulerProvider];
+  mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotification___block_invoke;
   v8[3] = &unk_1E74E77C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBlock:v8];
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotification___block_invoke(uint64_t a1)
@@ -8707,37 +8707,37 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
   }
 }
 
-- (void)adjustInsetsForKeyboardOverlap:(double)a3
+- (void)adjustInsetsForKeyboardOverlap:(double)overlap
 {
-  [(CNContactContentDisplayViewController *)self setKeyboardVerticalOverlap:a3];
+  [(CNContactContentDisplayViewController *)self setKeyboardVerticalOverlap:overlap];
 
   [(CNContactContentDisplayViewController *)self updateInsetsIfNeeded];
 }
 
-- (void)keyboardDidShowNotification:(id)a3
+- (void)keyboardDidShowNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v31 = [(CNContactContentDisplayViewController *)self view];
-  v14 = [v31 window];
-  [v14 convertRect:0 fromWindow:{v7, v9, v11, v13}];
+  view = [(CNContactContentDisplayViewController *)self view];
+  window = [view window];
+  [window convertRect:0 fromWindow:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v31 convertRect:0 fromView:{v16, v18, v20, v22}];
+  [view convertRect:0 fromView:{v16, v18, v20, v22}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  [v31 bounds];
+  [view bounds];
   v35.origin.x = v24;
   v35.origin.y = v26;
   v35.size.width = v28;
@@ -8746,48 +8746,48 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
   [(CNContactContentDisplayViewController *)self adjustInsetsForKeyboardOverlap:CGRectGetHeight(v34)];
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v109[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  contactCopy = contact;
+  v5 = contactCopy;
   self->_needsRefetch = 0;
-  if (self->_contact == v4)
+  if (self->_contact == contactCopy)
   {
     goto LABEL_40;
   }
 
-  v6 = [(CNContact *)v4 identifier];
-  v7 = [(CNContact *)self->_contact identifier];
-  v8 = [v6 isEqualToString:v7];
+  identifier = [(CNContact *)contactCopy identifier];
+  identifier2 = [(CNContact *)self->_contact identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if ((v8 & 1) == 0)
   {
     [(CNContactContentDisplayViewController *)self setDidSetNewContact:1];
   }
 
-  v9 = [(CNContactContentDisplayViewController *)self environment];
-  v10 = [v9 defaultSchedulerProvider];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  defaultSchedulerProvider = [environment defaultSchedulerProvider];
 
-  [v10 suspendBackgroundScheduler];
-  v11 = [v10 afterCACommitScheduler];
+  [defaultSchedulerProvider suspendBackgroundScheduler];
+  afterCACommitScheduler = [defaultSchedulerProvider afterCACommitScheduler];
   v99[0] = MEMORY[0x1E69E9820];
   v99[1] = 3221225472;
   v99[2] = __52__CNContactContentDisplayViewController_setContact___block_invoke;
   v99[3] = &unk_1E74E6A88;
-  v12 = v10;
+  v12 = defaultSchedulerProvider;
   v100 = v12;
-  [v11 performBlock:v99];
+  [afterCACommitScheduler performBlock:v99];
 
-  v13 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  [v13 resetCache];
+  contactViewCache = [(CNContactContentDisplayViewController *)self contactViewCache];
+  [contactViewCache resetCache];
 
-  LODWORD(v11) = [(CNContactContentDisplayViewController *)self isOutOfProcess];
-  v14 = [objc_opt_class() descriptorForRequiredKeys];
-  v15 = v14;
-  if (v11)
+  LODWORD(afterCACommitScheduler) = [(CNContactContentDisplayViewController *)self isOutOfProcess];
+  descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+  v15 = descriptorForRequiredKeys;
+  if (afterCACommitScheduler)
   {
-    v109[0] = v14;
+    v109[0] = descriptorForRequiredKeys;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v109 count:1];
     v17 = [(CNContactContentDisplayViewController *)self _updateContact:v5 withMissingKeysFromRequiredKeys:v16];
 
@@ -8796,43 +8796,43 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
 
   else
   {
-    v108 = v14;
+    v108 = descriptorForRequiredKeys;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v108 count:1];
     [v5 assertKeysAreAvailable:v16];
   }
 
-  v18 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  [v18 updateWithContact:v5];
+  editAuthorizationManager = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  [editAuthorizationManager updateWithContact:v5];
 
-  v19 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  v20 = [v19 policyForContact:v5];
+  contactViewCache2 = [(CNContactContentDisplayViewController *)self contactViewCache];
+  v20 = [contactViewCache2 policyForContact:v5];
 
   if ([v20 isReadonly])
   {
     v92 = v12;
-    v21 = [(CNContactContentDisplayViewController *)self contactStore];
-    v22 = [v5 identifier];
+    contactStore = [(CNContactContentDisplayViewController *)self contactStore];
+    identifier3 = [v5 identifier];
     v23 = [objc_opt_class() descriptorForRequiredKeysForContact:v5];
     v107 = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
     v98 = 0;
-    v25 = [v21 unifiedContactWithIdentifier:v22 keysToFetch:v24 error:&v98];
+    v25 = [contactStore unifiedContactWithIdentifier:identifier3 keysToFetch:v24 error:&v98];
     v91 = v98;
 
     if (v25)
     {
       v26 = v25;
 
-      v27 = [(CNContactContentDisplayViewController *)self contactViewCache];
-      v28 = [v27 policyForContact:v26];
+      contactViewCache3 = [(CNContactContentDisplayViewController *)self contactViewCache];
+      v28 = [contactViewCache3 policyForContact:v26];
 
       v20 = v28;
       if ([v28 isReadonly])
       {
         v90 = v28;
         v29 = objc_alloc_init(MEMORY[0x1E695CF18]);
-        v30 = [v26 availableKeyDescriptor];
-        v106 = v30;
+        availableKeyDescriptor = [v26 availableKeyDescriptor];
+        v106 = availableKeyDescriptor;
         v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v106 count:1];
         v32 = [v29 copyWithPropertyKeys:v31];
         v33 = [v32 mutableCopy];
@@ -8860,9 +8860,9 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
               v39 = *(*(&v94 + 1) + 8 * i);
               if ([v26 isKeyAvailable:v39])
               {
-                v40 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
+                shadowCopyOfReadonlyContact = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
                 v41 = [v26 valueForKey:v39];
-                [v40 setValue:v41 forKey:v39];
+                [shadowCopyOfReadonlyContact setValue:v41 forKey:v39];
               }
             }
 
@@ -8873,14 +8873,14 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
         }
 
         v42 = MEMORY[0x1E695DF70];
-        v43 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
-        v44 = [v42 arrayWithObject:v43];
+        shadowCopyOfReadonlyContact2 = [(CNContactContentDisplayViewController *)self shadowCopyOfReadonlyContact];
+        v44 = [v42 arrayWithObject:shadowCopyOfReadonlyContact2];
 
         v45 = v91;
         if ([v26 isUnified])
         {
-          v46 = [v26 linkedContacts];
-          [v44 addObjectsFromArray:v46];
+          linkedContacts = [v26 linkedContacts];
+          [v44 addObjectsFromArray:linkedContacts];
         }
 
         else
@@ -8891,16 +8891,16 @@ void __79__CNContactContentDisplayViewController_contactStoreDidChangeWithNotifi
         v12 = v92;
         v5 = [MEMORY[0x1E695CD58] unifyContacts:v44];
 
-        v47 = [(CNContactContentDisplayViewController *)self contactViewCache];
-        v48 = [v47 policyForDefaultContainer];
-        [(CNContactContentDisplayViewController *)self setPolicy:v48];
+        contactViewCache4 = [(CNContactContentDisplayViewController *)self contactViewCache];
+        policyForDefaultContainer = [contactViewCache4 policyForDefaultContainer];
+        [(CNContactContentDisplayViewController *)self setPolicy:policyForDefaultContainer];
 
-        v49 = [(CNContactContentDisplayViewController *)self policy];
+        policy = [(CNContactContentDisplayViewController *)self policy];
 
-        if (!v49 || v91)
+        if (!policy || v91)
         {
-          v50 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
-          [(CNContactContentDisplayViewController *)self setPolicy:v50];
+          mEMORY[0x1E695CF48] = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
+          [(CNContactContentDisplayViewController *)self setPolicy:mEMORY[0x1E695CF48]];
         }
 
         v20 = v90;
@@ -8932,22 +8932,22 @@ LABEL_28:
   v53 = CNUILogContactCard();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
   {
-    v54 = [v5 identifier];
+    identifier4 = [v5 identifier];
     mutableContact = self->_mutableContact;
     *buf = 138543618;
-    v102 = v54;
+    v102 = identifier4;
     v103 = 2050;
     v104 = mutableContact;
     _os_log_impl(&dword_199A75000, v53, OS_LOG_TYPE_DEFAULT, "[CNContactContentViewController] setting contact with identifier %{public}@, mutable contact %{public}p", buf, 0x16u);
   }
 
-  v56 = [(CNContactContentDisplayViewController *)self customActions];
+  customActions = [(CNContactContentDisplayViewController *)self customActions];
   v93[0] = MEMORY[0x1E69E9820];
   v93[1] = 3221225472;
   v93[2] = __52__CNContactContentDisplayViewController_setContact___block_invoke_368;
   v93[3] = &unk_1E74E6AF8;
   v93[4] = self;
-  v57 = [v56 _cn_filter:v93];
+  v57 = [customActions _cn_filter:v93];
   [(CNContactContentDisplayViewController *)self setCustomActions:v57];
 
   v58 = [[CNCardGroup alloc] initWithContact:self->_mutableContact];
@@ -8984,18 +8984,18 @@ LABEL_28:
   propertyGroups = self->_propertyGroups;
   self->_propertyGroups = 0;
 
-  v73 = [(CNContactContentDisplayViewController *)self siriContextProvider];
-  LODWORD(v57) = [v73 isEnabled];
+  siriContextProvider = [(CNContactContentDisplayViewController *)self siriContextProvider];
+  LODWORD(v57) = [siriContextProvider isEnabled];
 
   v74 = [CNSiriContactContextProvider alloc];
-  v75 = [(CNContactContentDisplayViewController *)self contactStore];
-  v76 = [(CNSiriContactContextProvider *)v74 initWithContact:v5 store:v75];
+  contactStore2 = [(CNContactContentDisplayViewController *)self contactStore];
+  v76 = [(CNSiriContactContextProvider *)v74 initWithContact:v5 store:contactStore2];
   [(CNContactContentDisplayViewController *)self setSiriContextProvider:v76];
 
   if (v57)
   {
-    v77 = [(CNContactContentDisplayViewController *)self siriContextProvider];
-    [v77 setEnabled:1];
+    siriContextProvider2 = [(CNContactContentDisplayViewController *)self siriContextProvider];
+    [siriContextProvider2 setEnabled:1];
   }
 
   [(CNContactContentDisplayViewController *)self setActionProvider:0];
@@ -9005,50 +9005,50 @@ LABEL_28:
   [(CNContactContentDisplayViewController *)self setCardMedicalIDGroup:0];
   [(CNContactContentDisplayViewController *)self setMedicalIDAction:0];
   [(CNContactContentDisplayViewController *)self setEmergencyContactAction:0];
-  v78 = [(CNContactContentDisplayViewController *)self geminiDataSource];
-  [v78 setContact:v5];
+  geminiDataSource = [(CNContactContentDisplayViewController *)self geminiDataSource];
+  [geminiDataSource setContact:v5];
 
   [(CNContactContentDisplayViewController *)self isOutOfProcess];
-  v79 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
-  v80 = [v79 shouldPromptForPasscodeAuthorization];
-  v81 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v81 setIsRestrictedContact:v80];
+  editAuthorizationManager2 = [(CNContactContentDisplayViewController *)self editAuthorizationManager];
+  shouldPromptForPasscodeAuthorization = [editAuthorizationManager2 shouldPromptForPasscodeAuthorization];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView setIsRestrictedContact:shouldPromptForPasscodeAuthorization];
 
   v82 = [MEMORY[0x1E695CE70] isWhitelistedContact:self->_mutableContact];
-  v83 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v83 setIsDowntimeContact:v82];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView2 setIsDowntimeContact:v82];
 
-  v84 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v84 updateWithNewContact:self->_mutableContact];
+  contactHeaderView3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView3 updateWithNewContact:self->_mutableContact];
 
   [(CNContactContentDisplayViewController *)self updateEditNavigationItemsAnimated:0];
   [(CNContactContentDisplayViewController *)self setContactSupportsTTYCalls:0];
-  v85 = [(CNContactContentDisplayViewController *)self shareLocationController];
-  [v85 setContact:v5];
+  shareLocationController = [(CNContactContentDisplayViewController *)self shareLocationController];
+  [shareLocationController setContact:v5];
 
-  v86 = [(CNContactContentDisplayViewController *)self actionsViewController];
-  [v86 setContact:v5];
+  actionsViewController = [(CNContactContentDisplayViewController *)self actionsViewController];
+  [actionsViewController setContact:v5];
 
   [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:0];
   if ([(CNContactContentDisplayViewController *)self isViewLoaded])
   {
-    v87 = [(CNContactContentDisplayViewController *)self contactView];
-    [(CNContactContentDisplayViewController *)self scrollScrollViewAllTheWayUp:v87];
+    contactView = [(CNContactContentDisplayViewController *)self contactView];
+    [(CNContactContentDisplayViewController *)self scrollScrollViewAllTheWayUp:contactView];
   }
 
   v88 = +[CNUIDataCollector sharedCollector];
-  v89 = [(CNContactContentDisplayViewController *)self contact];
-  [v88 logContactShown:v89];
+  contact = [(CNContactContentDisplayViewController *)self contact];
+  [v88 logContactShown:contact];
 
   [(CNContactContentDisplayViewController *)self prepareContactDidAppearForPPT];
 LABEL_40:
 }
 
-- (void)prepareCell:(id)a3
+- (void)prepareCell:(id)cell
 {
-  v41 = a3;
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
-  [v4 applyCellAppearance:v41];
+  cellCopy = cell;
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView applyCellAppearance:cellCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -9056,7 +9056,7 @@ LABEL_40:
   }
 
   objc_opt_class();
-  v5 = v41;
+  v5 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -9080,16 +9080,16 @@ LABEL_40:
   }
 
   [v7 setSelectionStyle:v8];
-  v9 = [v4 labelTextAttributes];
-  v10 = [v4 valueTextAttributes];
+  labelTextAttributes = [contactView labelTextAttributes];
+  valueTextAttributes = [contactView valueTextAttributes];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v12 = [v4 actionTextAttributes];
+    actionTextAttributes = [contactView actionTextAttributes];
 LABEL_15:
 
-    v9 = v12;
+    labelTextAttributes = actionTextAttributes;
     goto LABEL_16;
   }
 
@@ -9110,15 +9110,15 @@ LABEL_15:
 
     v15 = v14;
 
-    v16 = [(CNContactContentDisplayViewController *)self actionsDataSource];
-    [v15 setActionsDataSource:v16];
+    actionsDataSource = [(CNContactContentDisplayViewController *)self actionsDataSource];
+    [v15 setActionsDataSource:actionsDataSource];
 
-    v17 = [(CNContactContentDisplayViewController *)self contact];
-    [v15 setContact:v17];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    [v15 setContact:contact];
 
-    v12 = [v4 valueTextAttributes];
+    actionTextAttributes = [contactView valueTextAttributes];
 
-    v9 = v15;
+    labelTextAttributes = v15;
     goto LABEL_15;
   }
 
@@ -9126,9 +9126,9 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v18 = [(CNContactContentDisplayViewController *)self view];
-    v19 = [v18 tintColorOverride];
-    v20 = 0;
+    view = [(CNContactContentDisplayViewController *)self view];
+    tintColorOverride = [view tintColorOverride];
+    suggestedLabelTextColor = 0;
     goto LABEL_20;
   }
 
@@ -9139,26 +9139,26 @@ LABEL_16:
     if ([v26 supportsValueColorUsesLabelColor])
     {
       v27 = +[CNContactStyle currentStyle];
-      v19 = [v27 textColor];
+      tintColorOverride = [v27 textColor];
     }
 
     else
     {
-      v19 = 0;
+      tintColorOverride = 0;
     }
 
-    v28 = [(CNContactContentDisplayViewController *)self highlightedProperties];
-    if ([v28 count])
+    highlightedProperties = [(CNContactContentDisplayViewController *)self highlightedProperties];
+    if ([highlightedProperties count])
     {
-      v29 = [(CNContactContentDisplayViewController *)self highlightedProperties];
-      v39 = [v26 propertyItem];
-      v40 = v28;
-      [v39 contactProperty];
+      highlightedProperties2 = [(CNContactContentDisplayViewController *)self highlightedProperties];
+      propertyItem = [v26 propertyItem];
+      v40 = highlightedProperties;
+      [propertyItem contactProperty];
       v31 = v30 = v26;
-      [v30 setHighlightedProperty:{objc_msgSend(v29, "containsObject:", v31)}];
+      [v30 setHighlightedProperty:{objc_msgSend(highlightedProperties2, "containsObject:", v31)}];
 
       v26 = v30;
-      v28 = v40;
+      highlightedProperties = v40;
     }
 
     else
@@ -9169,10 +9169,10 @@ LABEL_16:
     if ([v26 isSuggested])
     {
       v32 = +[CNContactStyle currentStyle];
-      v20 = [v32 suggestedLabelTextColor];
+      suggestedLabelTextColor = [v32 suggestedLabelTextColor];
 
-      v33 = +[CNContactStyle currentStyle];
-      v34 = [v33 suggestedValueTextColor];
+      view2 = +[CNContactStyle currentStyle];
+      suggestedValueTextColor = [view2 suggestedValueTextColor];
     }
 
     else
@@ -9180,17 +9180,17 @@ LABEL_16:
       if ([v26 isHighlightedProperty] && -[CNContactContentDisplayViewController highlightedPropertyImportant](self, "highlightedPropertyImportant"))
       {
         [v26 setImportant:{-[CNContactContentDisplayViewController highlightedPropertyImportant](self, "highlightedPropertyImportant")}];
-        v34 = [MEMORY[0x1E69DC888] redColor];
-        v20 = 0;
+        suggestedValueTextColor = [MEMORY[0x1E69DC888] redColor];
+        suggestedLabelTextColor = 0;
 LABEL_49:
 
-        v19 = v34;
+        tintColorOverride = suggestedValueTextColor;
         goto LABEL_50;
       }
 
       if (![v26 supportsTintColorValue])
       {
-        v20 = 0;
+        suggestedLabelTextColor = 0;
 LABEL_50:
         if ([v26 isHighlightedProperty])
         {
@@ -9218,15 +9218,15 @@ LABEL_50:
           }
         }
 
-        if (!v20)
+        if (!suggestedLabelTextColor)
         {
 LABEL_21:
-          if (v19)
+          if (tintColorOverride)
           {
-            v21 = [v10 mutableCopy];
-            [v21 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+            v21 = [valueTextAttributes mutableCopy];
+            [v21 setObject:tintColorOverride forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-            v10 = v21;
+            valueTextAttributes = v21;
           }
 
           if (isKindOfClass)
@@ -9237,118 +9237,118 @@ LABEL_21:
           goto LABEL_24;
         }
 
-        v38 = [v9 mutableCopy];
-        [v38 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69DB650]];
-        v18 = v9;
-        v9 = v38;
+        v38 = [labelTextAttributes mutableCopy];
+        [v38 setObject:suggestedLabelTextColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
+        view = labelTextAttributes;
+        labelTextAttributes = v38;
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v33 = [(CNContactContentDisplayViewController *)self view];
-      v34 = [v33 tintColorOverride];
+      view2 = [(CNContactContentDisplayViewController *)self view];
+      suggestedValueTextColor = [view2 tintColorOverride];
 
-      v20 = 0;
+      suggestedLabelTextColor = 0;
     }
 
-    v19 = v33;
+    tintColorOverride = view2;
     goto LABEL_49;
   }
 
-  v20 = 0;
+  suggestedLabelTextColor = 0;
   if (isKindOfClass)
   {
     goto LABEL_25;
   }
 
 LABEL_24:
-  v22 = [v7 labelTextAttributes];
-  v23 = [v22 isEqual:v9];
+  labelTextAttributes2 = [v7 labelTextAttributes];
+  v23 = [labelTextAttributes2 isEqual:labelTextAttributes];
 
   if ((v23 & 1) == 0)
   {
 LABEL_25:
-    [v7 setLabelTextAttributes:v9];
+    [v7 setLabelTextAttributes:labelTextAttributes];
   }
 
-  v24 = [v7 valueTextAttributes];
-  v25 = [v24 isEqual:v10];
+  valueTextAttributes2 = [v7 valueTextAttributes];
+  v25 = [valueTextAttributes2 isEqual:valueTextAttributes];
 
   if ((v25 & 1) == 0)
   {
-    [v7 setValueTextAttributes:v10];
+    [v7 setValueTextAttributes:valueTextAttributes];
   }
 
 LABEL_29:
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(CNContactContentDisplayViewController *)self contactView];
-  [v4 updateFontSizes];
+  contactView = [(CNContactContentDisplayViewController *)self contactView];
+  [contactView updateFontSizes];
 
-  v5 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v5 updateFontSizes];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView updateFontSizes];
 
   [(CNContactView *)self->_contactView setTableHeaderView:0];
   [(CNContactInlineActionsViewController *)self->_actionsViewController willMoveToParentViewController:0];
   [(CNContactInlineActionsViewController *)self->_actionsViewController removeFromParentViewController];
-  v6 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
-  [v6 removeFromSuperview];
+  view = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
+  [view removeFromSuperview];
 
-  v7 = [(CNContactContentDisplayViewController *)self createActionsController];
+  createActionsController = [(CNContactContentDisplayViewController *)self createActionsController];
   actionsViewController = self->_actionsViewController;
-  self->_actionsViewController = v7;
+  self->_actionsViewController = createActionsController;
 
   [(CNContactInlineActionsViewController *)self->_actionsViewController setObjectViewControllerDelegate:self];
   [(CNContactInlineActionsViewController *)self->_actionsViewController setDelegate:self];
   [(CNContactContentDisplayViewController *)self addChildViewController:self->_actionsViewController];
   [(CNContactInlineActionsViewController *)self->_actionsViewController didMoveToParentViewController:self];
   actionsWrapperView = self->_actionsWrapperView;
-  v10 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
-  [(CNContactActionsContainerView *)actionsWrapperView addArrangedSubview:v10];
+  view2 = [(CNContactInlineActionsViewController *)self->_actionsViewController view];
+  [(CNContactActionsContainerView *)actionsWrapperView addArrangedSubview:view2];
 
   [(CNContactContentDisplayViewController *)self viewDidLayoutSubviews];
   [(CNContactContentDisplayViewController *)self reloadDataPreservingChanges:1];
   [(CNContactContentDisplayViewController *)self setupConstraints];
-  v11 = [(CNContactContentDisplayViewController *)self applyContactStyle];
+  applyContactStyle = [(CNContactContentDisplayViewController *)self applyContactStyle];
 }
 
 - (NSArray)cardActions
 {
-  v2 = [(CNContactContentDisplayViewController *)self cardActionsGroup];
-  v3 = [v2 actions];
+  cardActionsGroup = [(CNContactContentDisplayViewController *)self cardActionsGroup];
+  actions = [cardActionsGroup actions];
 
-  return v3;
+  return actions;
 }
 
 - (BOOL)isOutOfProcess
 {
-  v2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v3 = [v2 isOutOfProcess];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  isOutOfProcess = [contactViewConfiguration isOutOfProcess];
 
-  return v3;
+  return isOutOfProcess;
 }
 
 - (id)createActionsController
 {
   v3 = [CNContactInlineActionsViewController alloc];
   actionsDataSource = self->_actionsDataSource;
-  v5 = [(CNContactContentDisplayViewController *)self environment];
-  v6 = [(CNContactInlineActionsViewController *)v3 initWithActionListDataSource:actionsDataSource environment:v5];
+  environment = [(CNContactContentDisplayViewController *)self environment];
+  v6 = [(CNContactInlineActionsViewController *)v3 initWithActionListDataSource:actionsDataSource environment:environment];
 
   [(CNContactInlineActionsViewController *)v6 setDisplaysTitles:1];
   [(CNContactInlineActionsViewController *)v6 setDisplaysUnavailableActionTypes:1];
-  v7 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  if ([v7 showsInlineActions])
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  if ([contactViewConfiguration showsInlineActions])
   {
-    v8 = [(CNContactContentDisplayViewController *)self isContactBlocked];
+    isContactBlocked = [(CNContactContentDisplayViewController *)self isContactBlocked];
 
-    if (!v8)
+    if (!isContactBlocked)
     {
-      v9 = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
-      [(CNContactInlineActionsViewController *)v6 setSupportedActionTypes:v9];
+      allSupportedActionTypes = [MEMORY[0x1E6996BE8] allSupportedActionTypes];
+      [(CNContactInlineActionsViewController *)v6 setSupportedActionTypes:allSupportedActionTypes];
 
       goto LABEL_6;
     }
@@ -9360,25 +9360,25 @@ LABEL_29:
 
   [(CNContactInlineActionsViewController *)v6 setSupportedActionTypes:MEMORY[0x1E695E0F0]];
 LABEL_6:
-  v10 = [(CNContactInlineActionsViewController *)v6 view];
+  view = [(CNContactInlineActionsViewController *)v6 view];
   LODWORD(v11) = 1148846080;
-  [v10 setContentCompressionResistancePriority:0 forAxis:v11];
+  [view setContentCompressionResistancePriority:0 forAxis:v11];
 
   return v6;
 }
 
 - (BOOL)isHeaderViewPhotoProhibited
 {
-  v3 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
-  if ([v3 containsObject:*MEMORY[0x1E695C278]])
+  prohibitedPropertyKeys = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
+  if ([prohibitedPropertyKeys containsObject:*MEMORY[0x1E695C278]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
-    v4 = [v5 containsObject:*MEMORY[0x1E695C400]];
+    prohibitedPropertyKeys2 = [(CNContactContentDisplayViewController *)self prohibitedPropertyKeys];
+    v4 = [prohibitedPropertyKeys2 containsObject:*MEMORY[0x1E695C400]];
   }
 
   return v4;
@@ -9390,9 +9390,9 @@ LABEL_6:
   if (!contactView)
   {
     v4 = [CNContactView alloc];
-    v5 = [objc_opt_class() tableViewStyle];
-    v6 = [(CNContactContentDisplayViewController *)self contact];
-    v7 = [(CNContactView *)v4 initWithFrame:v5 style:v6 contact:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    tableViewStyle = [objc_opt_class() tableViewStyle];
+    contact = [(CNContactContentDisplayViewController *)self contact];
+    v7 = [(CNContactView *)v4 initWithFrame:tableViewStyle style:contact contact:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     v8 = self->_contactView;
     self->_contactView = v7;
 
@@ -9411,37 +9411,37 @@ LABEL_6:
   contactHeaderView = self->_contactHeaderView;
   if (!contactHeaderView)
   {
-    v4 = [(CNContactContentDisplayViewController *)self isHeaderViewPhotoProhibited];
-    v5 = [(CNContactContentDisplayViewController *)self mutableContact];
-    v6 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v7 = +[CNContactHeaderDisplayView contactHeaderViewWithContact:showingNavBar:monogramOnly:delegate:](CNContactHeaderDisplayView, "contactHeaderViewWithContact:showingNavBar:monogramOnly:delegate:", v5, [v6 layoutPositionallyAfterNavBar], v4, self);
+    isHeaderViewPhotoProhibited = [(CNContactContentDisplayViewController *)self isHeaderViewPhotoProhibited];
+    mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+    contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    v7 = +[CNContactHeaderDisplayView contactHeaderViewWithContact:showingNavBar:monogramOnly:delegate:](CNContactHeaderDisplayView, "contactHeaderViewWithContact:showingNavBar:monogramOnly:delegate:", mutableContact, [contactViewConfiguration layoutPositionallyAfterNavBar], isHeaderViewPhotoProhibited, self);
     v8 = self->_contactHeaderView;
     self->_contactHeaderView = v7;
 
     [(CNContactHeaderView *)self->_contactHeaderView setAlwaysShowsMonogram:1];
-    v9 = [(CNContactContentDisplayViewController *)self contactFormatter];
-    [(CNContactHeaderDisplayView *)self->_contactHeaderView setContactFormatter:v9];
+    contactFormatter = [(CNContactContentDisplayViewController *)self contactFormatter];
+    [(CNContactHeaderDisplayView *)self->_contactHeaderView setContactFormatter:contactFormatter];
 
-    v10 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v11 = [v10 alternateName];
-    [(CNContactHeaderDisplayView *)self->_contactHeaderView setAlternateName:v11];
+    contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    alternateName = [contactViewConfiguration2 alternateName];
+    [(CNContactHeaderDisplayView *)self->_contactHeaderView setAlternateName:alternateName];
 
-    v12 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v13 = [v12 message];
-    [(CNContactHeaderDisplayView *)self->_contactHeaderView setMessage:v13];
+    contactViewConfiguration3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    message = [contactViewConfiguration3 message];
+    [(CNContactHeaderDisplayView *)self->_contactHeaderView setMessage:message];
 
-    v14 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    v15 = [v14 importantMessage];
-    [(CNContactHeaderDisplayView *)self->_contactHeaderView setImportantMessage:v15];
+    contactViewConfiguration4 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    importantMessage = [contactViewConfiguration4 importantMessage];
+    [(CNContactHeaderDisplayView *)self->_contactHeaderView setImportantMessage:importantMessage];
 
-    v16 = [(CNContactContentDisplayViewController *)self presentingDelegate];
-    [(CNContactHeaderView *)self->_contactHeaderView setPresenterDelegate:v16];
+    presentingDelegate = [(CNContactContentDisplayViewController *)self presentingDelegate];
+    [(CNContactHeaderView *)self->_contactHeaderView setPresenterDelegate:presentingDelegate];
 
     [(CNContactHeaderDisplayView *)self->_contactHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-    -[CNContactHeaderDisplayView setAllowsPickerActions:](self->_contactHeaderView, "setAllowsPickerActions:", [v17 allowsDisplayModePickerActions]);
+    contactViewConfiguration5 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+    -[CNContactHeaderDisplayView setAllowsPickerActions:](self->_contactHeaderView, "setAllowsPickerActions:", [contactViewConfiguration5 allowsDisplayModePickerActions]);
 
-    v18 = [(CNContactContentDisplayViewController *)self applyContactStyle];
+    applyContactStyle = [(CNContactContentDisplayViewController *)self applyContactStyle];
     contactHeaderView = self->_contactHeaderView;
   }
 
@@ -9450,14 +9450,14 @@ LABEL_6:
 
 - (void)contactViewConfigurationDidUpdate
 {
-  v3 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  v4 = [v3 contactStore];
+  contactViewConfiguration = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  contactStore = [contactViewConfiguration contactStore];
 
-  v5 = [(CNContactContentDisplayViewController *)self actionsDataSource];
-  [v5 setContactStore:v4];
+  actionsDataSource = [(CNContactContentDisplayViewController *)self actionsDataSource];
+  [actionsDataSource setContactStore:contactStore];
 
-  v6 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  [v6 setContactStore:v4];
+  contactViewCache = [(CNContactContentDisplayViewController *)self contactViewCache];
+  [contactViewCache setContactStore:contactStore];
 
   v7 = CNUILogContactCard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -9467,20 +9467,20 @@ LABEL_6:
   }
 
   [(CNContactContentDisplayViewController *)self reloadDataIfNeeded];
-  v8 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v9 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
-  [v8 updateForShowingNavBar:{objc_msgSend(v9, "layoutPositionallyAfterNavBar")}];
+  contactHeaderView = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  contactViewConfiguration2 = [(CNContactContentDisplayViewController *)self contactViewConfiguration];
+  [contactHeaderView updateForShowingNavBar:{objc_msgSend(contactViewConfiguration2, "layoutPositionallyAfterNavBar")}];
 
-  v10 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  v11 = [(CNContactContentDisplayViewController *)self mutableContact];
-  [v10 updateWithNewContact:v11];
+  contactHeaderView2 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  mutableContact = [(CNContactContentDisplayViewController *)self mutableContact];
+  [contactHeaderView2 updateWithNewContact:mutableContact];
 
-  v12 = [(CNContactContentDisplayViewController *)self shouldShowGemini];
-  v13 = [(CNContactContentDisplayViewController *)self contactHeaderView];
-  [v13 setShouldShowGemini:v12];
+  shouldShowGemini = [(CNContactContentDisplayViewController *)self shouldShowGemini];
+  contactHeaderView3 = [(CNContactContentDisplayViewController *)self contactHeaderView];
+  [contactHeaderView3 setShouldShowGemini:shouldShowGemini];
 
   [(CNContactContentDisplayViewController *)self updateEditNavigationItemsAnimated:0];
-  v14 = [(CNContactContentDisplayViewController *)self applyContactStyle];
+  applyContactStyle = [(CNContactContentDisplayViewController *)self applyContactStyle];
 }
 
 - (void)dealloc
@@ -9490,13 +9490,13 @@ LABEL_6:
   [(CNContactView *)self->_contactView setDataSource:0];
   [(CNContactHeaderView *)self->_contactHeaderView setDelegate:0];
   [(CNContactHeaderDisplayView *)self->_contactHeaderView didFinishUsing];
-  v3 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
+  headerHeightConstraint = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
 
-  if (v3)
+  if (headerHeightConstraint)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
-    v13[0] = v5;
+    headerHeightConstraint2 = [(CNContactContentDisplayViewController *)self headerHeightConstraint];
+    v13[0] = headerHeightConstraint2;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [v4 deactivateConstraints:v6];
   }
@@ -9507,48 +9507,48 @@ LABEL_6:
   actionProvider = self->_actionProvider;
   self->_actionProvider = 0;
 
-  v9 = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
-  [v9 cancel];
+  iMessageIDSLookupToken = [(CNContactContentDisplayViewController *)self iMessageIDSLookupToken];
+  [iMessageIDSLookupToken cancel];
 
-  v10 = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
-  [v10 cancel];
+  faceTimeIDSLookupToken = [(CNContactContentDisplayViewController *)self faceTimeIDSLookupToken];
+  [faceTimeIDSLookupToken cancel];
 
-  v11 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v11 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v12.receiver = self;
   v12.super_class = CNContactContentDisplayViewController;
   [(CNContactContentDisplayViewController *)&v12 dealloc];
 }
 
-- (void)setForcesTransparentBackground:(BOOL)a3
+- (void)setForcesTransparentBackground:(BOOL)background
 {
-  if (self->_forcesTransparentBackground != a3)
+  if (self->_forcesTransparentBackground != background)
   {
     v9[9] = v3;
     v9[10] = v4;
-    self->_forcesTransparentBackground = a3;
-    v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v7 = [v6 schedulerProvider];
-    v8 = [v7 mainThreadScheduler];
+    self->_forcesTransparentBackground = background;
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    schedulerProvider = [currentEnvironment schedulerProvider];
+    mainThreadScheduler = [schedulerProvider mainThreadScheduler];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__CNContactContentDisplayViewController_setForcesTransparentBackground___block_invoke;
     v9[3] = &unk_1E74E6A88;
     v9[4] = self;
-    [v8 performBlock:v9];
+    [mainThreadScheduler performBlock:v9];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (v5 || ([(CNContactContentDisplayViewController *)self title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  titleCopy = title;
+  if (titleCopy || ([(CNContactContentDisplayViewController *)self title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(CNContactContentDisplayViewController *)self title];
-    v7 = [v5 isEqual:v6];
+    title = [(CNContactContentDisplayViewController *)self title];
+    v7 = [titleCopy isEqual:title];
 
-    if (!v5)
+    if (!titleCopy)
     {
 
       if (v7)
@@ -9564,49 +9564,49 @@ LABEL_6:
 LABEL_5:
       v8.receiver = self;
       v8.super_class = CNContactContentDisplayViewController;
-      [(CNContactContentDisplayViewController *)&v8 setTitle:v5];
-      [(CNContactContentDisplayViewController *)self didChangeToShowTitle:v5 != 0];
+      [(CNContactContentDisplayViewController *)&v8 setTitle:titleCopy];
+      [(CNContactContentDisplayViewController *)self didChangeToShowTitle:titleCopy != 0];
     }
   }
 
 LABEL_6:
 }
 
-- (void)setContactStore:(id)a3
+- (void)setContactStore:(id)store
 {
-  objc_storeStrong(&self->_contactStore, a3);
-  v5 = a3;
-  v6 = [(CNContactContentDisplayViewController *)self actionsDataSource];
-  [v6 setContactStore:v5];
+  objc_storeStrong(&self->_contactStore, store);
+  storeCopy = store;
+  actionsDataSource = [(CNContactContentDisplayViewController *)self actionsDataSource];
+  [actionsDataSource setContactStore:storeCopy];
 
-  v7 = [(CNContactContentDisplayViewController *)self contactViewCache];
-  [v7 setContactStore:v5];
+  contactViewCache = [(CNContactContentDisplayViewController *)self contactViewCache];
+  [contactViewCache setContactStore:storeCopy];
 }
 
-- (CNContactContentDisplayViewController)initWithContact:(id)a3 contactViewConfiguration:(id)a4
+- (CNContactContentDisplayViewController)initWithContact:(id)contact contactViewConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  configurationCopy = configuration;
   v8 = [(CNContactContentDisplayViewController *)self initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(CNContactContentDisplayViewController *)v8 setContact:v6];
-    [(CNContactContentDisplayViewController *)v9 setContactViewConfiguration:v7];
+    [(CNContactContentDisplayViewController *)v8 setContact:contactCopy];
+    [(CNContactContentDisplayViewController *)v9 setContactViewConfiguration:configurationCopy];
     [(CNContactContentDisplayViewController *)v9 contactViewConfigurationDidUpdate];
   }
 
   return v9;
 }
 
-- (CNContactContentDisplayViewController)initWithEnvironment:(id)a3
+- (CNContactContentDisplayViewController)initWithEnvironment:(id)environment
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  environmentCopy = environment;
   v53.receiver = self;
   v53.super_class = CNContactContentDisplayViewController;
   v6 = [(CNContactContentDisplayViewController *)&v53 initWithNibName:0 bundle:0];
-  objc_storeStrong(&v6->_environment, a3);
+  objc_storeStrong(&v6->_environment, environment);
   v7 = objc_alloc_init(CNContactViewCache);
   contactViewCache = v6->_contactViewCache;
   v6->_contactViewCache = v7;
@@ -9615,8 +9615,8 @@ LABEL_6:
   {
     v9 = objc_alloc(MEMORY[0x1E6996B60]);
     v10 = +[CNUIContactsEnvironment currentEnvironment];
-    v11 = [v10 geminiManager];
-    v12 = [v9 initWithGeminiManager:v11];
+    geminiManager = [v10 geminiManager];
+    v12 = [v9 initWithGeminiManager:geminiManager];
     geminiDataSource = v6->_geminiDataSource;
     v6->_geminiDataSource = v12;
 
@@ -9624,31 +9624,31 @@ LABEL_6:
   }
 
   objc_storeWeak(&v6->_presentingDelegate, v6);
-  v14 = [MEMORY[0x1E695CD80] sharedFullNameFormatter];
+  mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatter];
   contactFormatter = v6->_contactFormatter;
-  v6->_contactFormatter = v14;
+  v6->_contactFormatter = mEMORY[0x1E695CD80];
 
   v16 = +[CNContactView allCardProperties];
   displayedProperties = v6->_displayedProperties;
   v6->_displayedProperties = v16;
 
   v18 = objc_alloc(MEMORY[0x1E6996BE8]);
-  v19 = [v5 actionDiscoveringEnvironment];
-  v20 = [v18 initWithDiscoveringEnvironment:v19];
+  actionDiscoveringEnvironment = [environmentCopy actionDiscoveringEnvironment];
+  v20 = [v18 initWithDiscoveringEnvironment:actionDiscoveringEnvironment];
   actionsDataSource = v6->_actionsDataSource;
   v6->_actionsDataSource = v20;
 
-  v22 = [(CNContactContentDisplayViewController *)v6 createActionsController];
+  createActionsController = [(CNContactContentDisplayViewController *)v6 createActionsController];
   actionsViewController = v6->_actionsViewController;
-  v6->_actionsViewController = v22;
+  v6->_actionsViewController = createActionsController;
 
   [(CNContactInlineActionsViewController *)v6->_actionsViewController setObjectViewControllerDelegate:v6];
   [(CNContactInlineActionsViewController *)v6->_actionsViewController setDelegate:v6];
   [(CNContactContentDisplayViewController *)v6 addChildViewController:v6->_actionsViewController];
   [(CNContactInlineActionsViewController *)v6->_actionsViewController didMoveToParentViewController:v6];
   v24 = [CNContactActionsContainerView alloc];
-  v25 = [(CNContactInlineActionsViewController *)v6->_actionsViewController view];
-  v54[0] = v25;
+  view = [(CNContactInlineActionsViewController *)v6->_actionsViewController view];
+  v54[0] = view;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
   v27 = [(CNContactActionsContainerView *)v24 initWithArrangedSubviews:v26];
   actionsWrapperView = v6->_actionsWrapperView;
@@ -9656,92 +9656,92 @@ LABEL_6:
 
   [(CNContactActionsContainerView *)v6->_actionsWrapperView setTranslatesAutoresizingMaskIntoConstraints:0];
   v29 = *MEMORY[0x1E698B6F8];
-  v30 = [(CNContactInlineActionsViewController *)v6->_actionsViewController view];
-  [v30 setMinimumLayoutSize:{v29, 35.0}];
+  view2 = [(CNContactInlineActionsViewController *)v6->_actionsViewController view];
+  [view2 setMinimumLayoutSize:{v29, 35.0}];
 
   v31 = objc_opt_new();
   headerDropShadowView = v6->_headerDropShadowView;
   v6->_headerDropShadowView = v31;
 
   [(UIView *)v6->_headerDropShadowView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v33 = [(CNContactContentDisplayViewController *)v6 environment];
-  if ([v33 runningInContactsAppOniPad])
+  environment = [(CNContactContentDisplayViewController *)v6 environment];
+  if ([environment runningInContactsAppOniPad])
   {
-    v34 = [(UIView *)v6->_headerDropShadowView backgroundColor];
-    [(UIView *)v6->_headerDropShadowView setBackgroundColor:v34];
+    backgroundColor = [(UIView *)v6->_headerDropShadowView backgroundColor];
+    [(UIView *)v6->_headerDropShadowView setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v34 = +[CNContactStyle currentStyle];
-    v35 = [v34 contactHeaderDropShadowColor];
-    [(UIView *)v6->_headerDropShadowView setBackgroundColor:v35];
+    backgroundColor = +[CNContactStyle currentStyle];
+    contactHeaderDropShadowColor = [backgroundColor contactHeaderDropShadowColor];
+    [(UIView *)v6->_headerDropShadowView setBackgroundColor:contactHeaderDropShadowColor];
   }
 
-  v36 = [v5 inProcessActivityManager];
+  inProcessActivityManager = [environmentCopy inProcessActivityManager];
   activityManager = v6->_activityManager;
-  v6->_activityManager = v36;
+  v6->_activityManager = inProcessActivityManager;
 
-  v38 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   customActions = v6->_customActions;
-  v6->_customActions = v38;
+  v6->_customActions = array;
 
   v40 = objc_alloc_init(CNUIContactStoreLinkedContactSaveExecutor);
   saveLinkedContactsExecutor = v6->_saveLinkedContactsExecutor;
   v6->_saveLinkedContactsExecutor = v40;
 
   [(CNContactContentDisplayViewController *)v6 setNeedsReloadLazy];
-  v42 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v42 addObserver:v6 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v6 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
-  v43 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v43 addObserver:v6 selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v6 selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-  v44 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v44 addObserver:v6 selector:sel_contactStoreDidChangeWithNotification_ name:*MEMORY[0x1E695C3D8] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:v6 selector:sel_contactStoreDidChangeWithNotification_ name:*MEMORY[0x1E695C3D8] object:0];
 
-  v45 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v45 addObserver:v6 selector:sel_contactStoreDidChangeWithNotification_ name:*MEMORY[0x1E6996440] object:0 suspensionBehavior:4];
+  defaultCenter4 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter4 addObserver:v6 selector:sel_contactStoreDidChangeWithNotification_ name:*MEMORY[0x1E6996440] object:0 suspensionBehavior:4];
 
-  v46 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v46 addObserver:v6 selector:sel_keyboardDidShowNotification_ name:*MEMORY[0x1E69DDF78] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:v6 selector:sel_keyboardDidShowNotification_ name:*MEMORY[0x1E69DDF78] object:0];
 
-  v47 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v47 addObserver:v6 selector:sel_keyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:v6 selector:sel_keyboardWillHideNotification_ name:*MEMORY[0x1E69DE078] object:0];
 
-  v48 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v48 addObserver:v6 selector:sel_favoritesDidChangeWithNotification_ name:*MEMORY[0x1E695C458] object:0];
+  defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter7 addObserver:v6 selector:sel_favoritesDidChangeWithNotification_ name:*MEMORY[0x1E695C458] object:0];
 
   [(CNContactContentDisplayViewController *)v6 setRestorationIdentifier:@"ContactCard"];
   [(CNContactContentDisplayViewController *)v6 setRestorationClass:objc_opt_class()];
-  v49 = [(CNContactContentDisplayViewController *)v6 navigationItem];
-  [v49 _setBackgroundHidden:1];
+  navigationItem = [(CNContactContentDisplayViewController *)v6 navigationItem];
+  [navigationItem _setBackgroundHidden:1];
 
-  v50 = [(CNContactContentDisplayViewController *)v6 navigationItem];
-  [v50 setLargeTitleDisplayMode:2];
+  navigationItem2 = [(CNContactContentDisplayViewController *)v6 navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:2];
 
-  v51 = [(CNContactContentDisplayViewController *)v6 applyContactStyle];
+  applyContactStyle = [(CNContactContentDisplayViewController *)v6 applyContactStyle];
   return v6;
 }
 
-- (CNContactContentDisplayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNContactContentDisplayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = [CNUIContactsEnvironment currentEnvironment:a3];
+  v5 = [CNUIContactsEnvironment currentEnvironment:name];
   v6 = [(CNContactContentDisplayViewController *)self initWithEnvironment:v5];
 
   return v6;
 }
 
-+ (CNContactContentDisplayViewController)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (CNContactContentDisplayViewController)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  coderCopy = coder;
   v6 = objc_alloc_init(MEMORY[0x1E695CE18]);
   v7 = MEMORY[0x1E695CD58];
   v8 = +[CNContactContentViewController descriptorForRequiredKeys];
   v26[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v10 = [v7 contactWithStateRestorationCoder:v5 store:v6 keys:v9];
+  v10 = [v7 contactWithStateRestorationCoder:coderCopy store:v6 keys:v9];
 
   if (v10)
   {
@@ -9751,8 +9751,8 @@ LABEL_6:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [a1 BOOLStateRestorationProperties];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    bOOLStateRestorationProperties = [self BOOLStateRestorationProperties];
+    v13 = [bOOLStateRestorationProperties countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -9763,18 +9763,18 @@ LABEL_6:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(bOOLStateRestorationProperties);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          v18 = [v5 decodeObjectOfClass:objc_opt_class() forKey:v17];
+          v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v17];
           if (v18)
           {
             [(CNContactContentViewController *)v11 setValue:v18 forKey:v17];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [bOOLStateRestorationProperties countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
@@ -9791,16 +9791,16 @@ LABEL_6:
   return v11;
 }
 
-+ (BOOL)shouldShowGeminiForResult:(id)a3 contact:(id)a4
++ (BOOL)shouldShowGeminiForResult:(id)result contact:(id)contact
 {
-  v7 = a3;
-  if (v7)
+  resultCopy = result;
+  if (resultCopy)
   {
-    v8 = [a4 phoneNumbers];
-    if ([v8 count] && objc_msgSend(MEMORY[0x1E695CEB0], "deviceSupportsGemini"))
+    phoneNumbers = [contact phoneNumbers];
+    if ([phoneNumbers count] && objc_msgSend(MEMORY[0x1E695CEB0], "deviceSupportsGemini"))
     {
-      v4 = [v7 availableChannels];
-      if ([v4 count] > 1)
+      availableChannels = [resultCopy availableChannels];
+      if ([availableChannels count] > 1)
       {
         v9 = 1;
 LABEL_13:
@@ -9809,10 +9809,10 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v5 = [v7 channel];
+      channel = [resultCopy channel];
       v10 = 1;
       v9 = 1;
-      if (![v5 isAvailable])
+      if (![channel isAvailable])
       {
 LABEL_12:
 
@@ -9825,8 +9825,8 @@ LABEL_12:
       v10 = 0;
     }
 
-    v11 = [v7 channel];
-    v9 = ([v11 isAvailable] & 1) == 0 && objc_msgSend(v7, "usage") == 1;
+    channel2 = [resultCopy channel];
+    v9 = ([channel2 isAvailable] & 1) == 0 && objc_msgSend(resultCopy, "usage") == 1;
 
     if (!v10)
     {
@@ -9842,10 +9842,10 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)actionModelIncludesTTY:(id)a3
++ (BOOL)actionModelIncludesTTY:(id)y
 {
-  v3 = [a3 allActions];
-  v4 = [v3 _cn_any:&__block_literal_global_673];
+  allActions = [y allActions];
+  v4 = [allActions _cn_any:&__block_literal_global_673];
 
   return v4;
 }
@@ -9868,16 +9868,16 @@ uint64_t __64__CNContactContentDisplayViewController_actionModelIncludesTTY___bl
   return v4;
 }
 
-+ (id)descriptorForRequiredKeysWithDescription:(id)a3
++ (id)descriptorForRequiredKeysWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__CNContactContentDisplayViewController_descriptorForRequiredKeysWithDescription___block_invoke;
   block[3] = &unk_1E74E6A88;
-  v10 = v3;
+  v10 = descriptionCopy;
   v4 = descriptorForRequiredKeysWithDescription__cn_once_token_13_59654;
-  v5 = v3;
+  v5 = descriptionCopy;
   if (v4 != -1)
   {
     dispatch_once(&descriptorForRequiredKeysWithDescription__cn_once_token_13_59654, block);
@@ -9921,20 +9921,20 @@ void __82__CNContactContentDisplayViewController_descriptorForRequiredKeysWithDe
 + (id)descriptorForRequiredKeys
 {
   v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactContentDisplayViewController descriptorForRequiredKeys]"];
-  v4 = [a1 descriptorForRequiredKeysWithDescription:v3];
+  v4 = [self descriptorForRequiredKeysWithDescription:v3];
 
   return v4;
 }
 
-+ (id)descriptorForRequiredKeysForContact:(id)a3
++ (id)descriptorForRequiredKeysForContact:(id)contact
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 descriptorForRequiredKeys];
-  v6 = [v4 availableKeyDescriptor];
+  contactCopy = contact;
+  descriptorForRequiredKeys = [self descriptorForRequiredKeys];
+  availableKeyDescriptor = [contactCopy availableKeyDescriptor];
 
-  v12[0] = v5;
-  v12[1] = v6;
+  v12[0] = descriptorForRequiredKeys;
+  v12[1] = availableKeyDescriptor;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v8 = MEMORY[0x1E695CD58];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNContactContentDisplayViewController descriptorForRequiredKeysForContact:]"];

@@ -1,24 +1,24 @@
 @interface UIKitScrollableTextView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation UIKitScrollableTextView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_216AE5D1C(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_216AE5D1C(window);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_216AE5DE8(width, height);
   v8 = v7;
 
@@ -31,13 +31,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_216AE5E94();
 }
 
 - (void)safeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_216AE5F58();
 }
 

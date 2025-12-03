@@ -1,36 +1,36 @@
 @interface VideoDeghostingDetectionV3
 - ($43C834F0531B50B92CAF4577069D180C)configuration;
-- (VideoDeghostingDetectionV3)initWithMetalContext:(id)a3 config:(id *)a4 tuningParamDict:(id)a5 imageDimensions:(id)a6;
-- (float)getWeightsOriginalFromInfo:(id)a3;
-- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV3 *)self BoxCount:(SEL)a2;
-- (id)process:(__CVBuffer *)a3 metaData:(id)a4 ispTimeStamp:(id *)a5 keypoints:(__CVBuffer *)a6 lightSourceMask:(__CVBuffer *)a7 futureFrames:(id *)a8;
+- (VideoDeghostingDetectionV3)initWithMetalContext:(id)context config:(id *)config tuningParamDict:(id)dict imageDimensions:(id)dimensions;
+- (float)getWeightsOriginalFromInfo:(id)info;
+- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV3 *)self BoxCount:(SEL)count;
+- (id)process:(__CVBuffer *)process metaData:(id)data ispTimeStamp:(id *)stamp keypoints:(__CVBuffer *)keypoints lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames;
 - (int)allocateHWMetadata;
-- (int64_t)_initDetection:(__CVBuffer *)a3 metaData:(id)a4 futureFrames:(id *)a5;
+- (int64_t)_initDetection:(__CVBuffer *)detection metaData:(id)data futureFrames:(id *)frames;
 - (uint64_t)allocateHWMetadata;
-- (void)_getProbMapInput:(id)a3 motionCueRef:(id)a4 motionCueRefRepaired:(id)a5 trackingRef:(id)a6 trackingRefProb:(id)a7 trackingRefSpaProb:(id)a8 trackingRefLs:(id)a9 probMapRepairRef0:(id)a10 probMapRepairRef1:(id)a11 metaBuf:(id)a12 metaBufArray:(id *)a13 trackingRefMetaBuf:(id)a14 motionCueRefMetaBuf:(id)a15 probMap:(id)a16 rawRefinedProbMap:(id)a17 refinedProbMap:(id)a18 refinedReflLs:(id)a19 probMapStash4FutureTracking:(id)a20 commandBuffer:(id)a21;
-- (void)_getProbMapsLiteTarget:(id)a3 refProbMap:(id)a4 refProbMapStash4FutureTracking:(id)a5 refRawRefinedProbMap:(id)a6 refRefinedProbMap:(id)a7 probMap:(id)a8 refinedLsMap:(id)a9 probMapStash4FutureTracking:(id)a10 rawRefinedProbMap:(id)a11 refinedProbMap:(id)a12 probMapRepairRef0:(id)a13 probMapRepairRef1:(id)a14 metaBuf:(id)a15 metaBufArray:(id *)a16 commandBuffer:(id)a17;
-- (void)_getRefinedLsMapsTarget:(id)a3 refLsMap:(id)a4 refRefinedLsMap:(id)a5 lsMap:(id)a6 refinedLsMap:(id)a7 metaBuf:(id)a8 metaBufArray:(id *)a9 doLite:(BOOL)a10 commandBuffer:(id)a11;
-- (void)_initParamsWithTuningParamsDict:(id)a3 isLowLight:(BOOL)a4;
+- (void)_getProbMapInput:(id)input motionCueRef:(id)ref motionCueRefRepaired:(id)repaired trackingRef:(id)trackingRef trackingRefProb:(id)prob trackingRefSpaProb:(id)spaProb trackingRefLs:(id)ls probMapRepairRef0:(id)self0 probMapRepairRef1:(id)self1 metaBuf:(id)self2 metaBufArray:(id *)self3 trackingRefMetaBuf:(id)self4 motionCueRefMetaBuf:(id)self5 probMap:(id)self6 rawRefinedProbMap:(id)self7 refinedProbMap:(id)self8 refinedReflLs:(id)self9 probMapStash4FutureTracking:(id)tracking commandBuffer:(id)buffer;
+- (void)_getProbMapsLiteTarget:(id)target refProbMap:(id)map refProbMapStash4FutureTracking:(id)tracking refRawRefinedProbMap:(id)probMap refRefinedProbMap:(id)refinedProbMap probMap:(id)a8 refinedLsMap:(id)lsMap probMapStash4FutureTracking:(id)self0 rawRefinedProbMap:(id)self1 refinedProbMap:(id)self2 probMapRepairRef0:(id)self3 probMapRepairRef1:(id)self4 metaBuf:(id)self5 metaBufArray:(id *)self6 commandBuffer:(id)self7;
+- (void)_getRefinedLsMapsTarget:(id)target refLsMap:(id)map refRefinedLsMap:(id)lsMap lsMap:(id)a6 refinedLsMap:(id)refinedLsMap metaBuf:(id)buf metaBufArray:(id *)array doLite:(BOOL)self0 commandBuffer:(id)self1;
+- (void)_initParamsWithTuningParamsDict:(id)dict isLowLight:(BOOL)light;
 - (void)_resetIntermediateVariables;
 - (void)_resetTrackingRoiAvoidList;
 - (void)dealloc;
-- (void)getMvfToNextFrameForTrackingCurrMeta:(id)a3 lsMap:(id)a4 futureLsMap:(id)a5 commandBuffer:(id)a6;
-- (void)getProbMapsTarget:(id)a3 rawProbMap:(id)a4 probMap:(id)a5 rawRefinedProbMap:(id)a6 refinedProbMap:(id)a7 refinedReflLsMap:(id)a8 reflLsMap4TrackingRef:(id)a9 probMapRepairRef0:(id)a10 probMapRepairRef1:(id)a11 metaBuf:(id)a12 metaBufArray:(id *)a13 commandBuffer:(id)a14;
-- (void)prepareDataForNextFrameWithFrameData:(id *)a3 outputFutureOpticalCenter:outputFutureLightSourceMaskTotalArea:doLite:;
-- (void)processPackedHwLsMaskNormalizedCenter:(id)a3 input:(id)a4 lowResOutput:(id)a5 highResOutput:(id)a6 commandBuffer:;
+- (void)getMvfToNextFrameForTrackingCurrMeta:(id)meta lsMap:(id)map futureLsMap:(id)lsMap commandBuffer:(id)buffer;
+- (void)getProbMapsTarget:(id)target rawProbMap:(id)map probMap:(id)probMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a7 refinedReflLsMap:(id)lsMap reflLsMap4TrackingRef:(id)ref probMapRepairRef0:(id)self0 probMapRepairRef1:(id)self1 metaBuf:(id)self2 metaBufArray:(id *)self3 commandBuffer:(id)self4;
+- (void)prepareDataForNextFrameWithFrameData:(id *)data outputFutureOpticalCenter:outputFutureLightSourceMaskTotalArea:doLite:;
+- (void)processPackedHwLsMaskNormalizedCenter:(id)center input:(id)input lowResOutput:(id)output highResOutput:(id)resOutput commandBuffer:;
 - (void)releaseHWMetadata;
-- (void)repairTarget:(id)a3 frRef0:(id)a4 frRef1:(id)a5 trRef0:(id)a6 trRef1:(id)a7 hwSimRef0:(id)a8 hwSimRef1:(id)a9 probMap:(id)a10 refinedProbMap:(id)a11 rawRefinedProbMap:(id)a12 metaBuf:(id)a13 metaRef0Buf:(id)a14 metaRef1Buf:(id)a15 metaBufArray:(id *)a16 trOutput:(id)a17 hwSimOutput:(id)a18 commandBuffer:(id)a19 addEndOfDetectionSignPost:(BOOL)a20;
+- (void)repairTarget:(id)target frRef0:(id)ref0 frRef1:(id)ref1 trRef0:(id)trRef0 trRef1:(id)trRef1 hwSimRef0:(id)simRef0 hwSimRef1:(id)simRef1 probMap:(id)self0 refinedProbMap:(id)self1 rawRefinedProbMap:(id)self2 metaBuf:(id)self3 metaRef0Buf:(id)self4 metaRef1Buf:(id)self5 metaBufArray:(id *)self6 trOutput:(id)self7 hwSimOutput:(id)self8 commandBuffer:(id)self9 addEndOfDetectionSignPost:(BOOL)post;
 - (void)reset;
-- (void)setConfiguration:(id *)a3;
-- (void)warpTrackingRefProbMap:(id)a3 refSpaProbMap:(id)a4 refReflLs:(id)a5 refinedReflLsMap:(id)a6 target:(id)a7 motionCueRef:(id)a8 motionCueRepairedRef:(id)a9 metaBuf:(id)a10 motionCueRefMetaBuf:(id)a11 metaBufArray:(id *)a12 commandBuffer:(id)a13;
+- (void)setConfiguration:(id *)configuration;
+- (void)warpTrackingRefProbMap:(id)map refSpaProbMap:(id)probMap refReflLs:(id)ls refinedReflLsMap:(id)lsMap target:(id)target motionCueRef:(id)ref motionCueRepairedRef:(id)repairedRef metaBuf:(id)self0 motionCueRefMetaBuf:(id)self1 metaBufArray:(id *)self2 commandBuffer:(id)self3;
 @end
 
 @implementation VideoDeghostingDetectionV3
 
-- (VideoDeghostingDetectionV3)initWithMetalContext:(id)a3 config:(id *)a4 tuningParamDict:(id)a5 imageDimensions:(id)a6
+- (VideoDeghostingDetectionV3)initWithMetalContext:(id)context config:(id *)config tuningParamDict:(id)dict imageDimensions:(id)dimensions
 {
-  v10 = a3;
-  v11 = a5;
+  contextCopy = context;
+  dictCopy = dict;
   v180.receiver = self;
   v180.super_class = VideoDeghostingDetectionV3;
   v12 = [(VideoDeghostingDetectionV3 *)&v180 init];
@@ -43,10 +43,10 @@ LABEL_74:
     goto LABEL_91;
   }
 
-  v12->_hwMode = a4->var1.var11 != 0;
+  v12->_hwMode = config->var1.var11 != 0;
   v12->_processedFrameCnt = 0;
   LOBYTE(v12->_trackingRoiAvoidListBuf) = 0;
-  v14 = [[GGMMetalToolBox alloc] initWithMetalContext:v10 tuningParamDict:v11];
+  v14 = [[GGMMetalToolBox alloc] initWithMetalContext:contextCopy tuningParamDict:dictCopy];
   metalToolBox = v13->_metalToolBox;
   v13->_metalToolBox = v14;
 
@@ -56,10 +56,10 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v16 = *&a4->var0.var0;
-  v17 = *&a4->var0.var7;
-  v18 = *&a4->var1.var4;
-  *&v13->_configuration.externalCfg.detectionType = *&a4->var1.var0;
+  v16 = *&config->var0.var0;
+  v17 = *&config->var0.var7;
+  v18 = *&config->var1.var4;
+  *&v13->_configuration.externalCfg.detectionType = *&config->var1.var0;
   *&v13->_configuration.externalCfg.luxLevelGating = v18;
   *&v13->_configuration.internalCfg.antiFlareSize = v16;
   *&v13->_configuration.internalCfg.initGGarray = v17;
@@ -73,8 +73,8 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  [(VideoDeghostingDetectionV3 *)v13 _initParamsWithTuningParamsDict:v11 isLowLight:1];
-  v13->_imageDimensions = a6;
+  [(VideoDeghostingDetectionV3 *)v13 _initParamsWithTuningParamsDict:dictCopy isLowLight:1];
+  v13->_imageDimensions = dimensions;
   *&v13->_params.lightSourceGatingThresholdON = 0x100000001;
   v21 = [[MaskToRoi alloc] initWithMetalToolBox:v13->_metalToolBox];
   maskToRoi = v13->_maskToRoi;
@@ -86,7 +86,7 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v23 = [[VDGDetectionUtilsV3 alloc] initWithConfiguration:a4];
+  v23 = [[VDGDetectionUtilsV3 alloc] initWithConfiguration:config];
   detectionUtils = v13->_detectionUtils;
   v13->_detectionUtils = v23;
 
@@ -106,7 +106,7 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v26 = [[RepairWeightsGenerator alloc] initWithConfiguration:a4 withToolBox:v13->_metalToolBox homographyHandle:v13->_calcTransform imageDimensions:a6 tuningParameters:v11];
+  v26 = [[RepairWeightsGenerator alloc] initWithConfiguration:config withToolBox:v13->_metalToolBox homographyHandle:v13->_calcTransform imageDimensions:dimensions tuningParameters:dictCopy];
   repairWeightsGenerator = v13->_repairWeightsGenerator;
   v13->_repairWeightsGenerator = v26;
 
@@ -129,8 +129,8 @@ LABEL_74:
       goto LABEL_74;
     }
 
-    v32 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
-    v33 = [v32 newBufferWithBytesNoCopy:objc_msgSend(v30[143] length:"mutableBytes") options:10192 deallocator:{0, 0}];
+    getDevice = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
+    v33 = [getDevice newBufferWithBytesNoCopy:objc_msgSend(v30[143] length:"mutableBytes") options:10192 deallocator:{0, 0}];
     v34 = v30[77];
     v30[77] = v33;
 
@@ -141,7 +141,7 @@ LABEL_74:
     }
   }
 
-  v179 = v10;
+  v179 = contextCopy;
   for (j = 1672; j != 1696; j += 8)
   {
     PixelBuffer = CreatePixelBuffer();
@@ -153,9 +153,9 @@ LABEL_74:
     }
 
     v37 = PixelBuffer;
-    v38 = [(GGMMetalToolBox *)v13->_metalToolBox cvMetalTextureCacheRef];
-    v39 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-    v40 = createSingleCachedTextureFromPixelBuffer(v37, v38, v39, 0, 0);
+    cvMetalTextureCacheRef = [(GGMMetalToolBox *)v13->_metalToolBox cvMetalTextureCacheRef];
+    metalContext = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+    v40 = createSingleCachedTextureFromPixelBuffer(v37, cvMetalTextureCacheRef, metalContext, 0, 0);
     v41 = *(&v13->_calcTransform + j);
     *(&v13->_calcTransform + j) = v40;
 
@@ -174,9 +174,9 @@ LABEL_74:
     }
 
     v43 = v42;
-    v44 = [(GGMMetalToolBox *)v13->_metalToolBox cvMetalTextureCacheRef];
-    v45 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-    v46 = createSingleCachedTextureFromPixelBuffer(v43, v44, v45, 0, 0);
+    cvMetalTextureCacheRef2 = [(GGMMetalToolBox *)v13->_metalToolBox cvMetalTextureCacheRef];
+    metalContext2 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+    v46 = createSingleCachedTextureFromPixelBuffer(v43, cvMetalTextureCacheRef2, metalContext2, 0, 0);
     v47 = *(&v13->_frameTPlus2Buf + j);
     *(&v13->_frameTPlus2Buf + j) = v46;
 
@@ -194,15 +194,15 @@ LABEL_74:
 
   else
   {
-    *v13->_frameDim = a6;
+    *v13->_frameDim = dimensions;
     v13->_processedFrameCnt = 0;
     v48 = CreatePixelBuffer();
     v13->_warpedReflTrackingRef = v48;
     if (v48)
     {
       v49 = v48;
-      v50 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-      v51 = createSingleTextureFromYuvBuffer(v49, v50, 0, 0);
+      metalContext3 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+      v51 = createSingleTextureFromYuvBuffer(v49, metalContext3, 0, 0);
       warpedReflTrackingRefTexture = v13->_warpedReflTrackingRefTexture;
       v13->_warpedReflTrackingRefTexture = v51;
 
@@ -213,8 +213,8 @@ LABEL_74:
         if (v53)
         {
           v54 = v53;
-          v55 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-          v56 = createTextureFromCVPixelBuffer(v54, v55, 0);
+          metalContext4 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+          v56 = createTextureFromCVPixelBuffer(v54, metalContext4, 0);
           warpedRefProbMapTexture = v13->_warpedRefProbMapTexture;
           v13->_warpedRefProbMapTexture = v56;
 
@@ -225,8 +225,8 @@ LABEL_74:
             if (v58)
             {
               v59 = v58;
-              v60 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-              v61 = createTextureFromCVPixelBuffer(v59, v60, 0);
+              metalContext5 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+              v61 = createTextureFromCVPixelBuffer(v59, metalContext5, 0);
               rawWarpedRefProbMapTexture = v13->_rawWarpedRefProbMapTexture;
               v13->_rawWarpedRefProbMapTexture = v61;
 
@@ -237,8 +237,8 @@ LABEL_74:
                 if (v63)
                 {
                   v64 = v63;
-                  v65 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                  v66 = createTextureFromCVPixelBuffer(v64, v65, 0);
+                  metalContext6 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                  v66 = createTextureFromCVPixelBuffer(v64, metalContext6, 0);
                   rawWarpedRefSpaProbMapTexture = v13->_rawWarpedRefSpaProbMapTexture;
                   v13->_rawWarpedRefSpaProbMapTexture = v66;
 
@@ -249,8 +249,8 @@ LABEL_74:
                     if (v68)
                     {
                       v69 = v68;
-                      v70 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                      v71 = createTextureFromCVPixelBuffer(v69, v70, 0);
+                      metalContext7 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                      v71 = createTextureFromCVPixelBuffer(v69, metalContext7, 0);
                       warpedRefSpatialProbMapTexture = v13->_warpedRefSpatialProbMapTexture;
                       v13->_warpedRefSpatialProbMapTexture = v71;
 
@@ -261,8 +261,8 @@ LABEL_74:
                         if (v73)
                         {
                           v74 = v73;
-                          v75 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                          v76 = createTextureFromCVPixelBuffer(v74, v75, 0);
+                          metalContext8 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                          v76 = createTextureFromCVPixelBuffer(v74, metalContext8, 0);
                           refinedReflLs4trackingRefWarpedTexture = v13->_refinedReflLs4trackingRefWarpedTexture;
                           v13->_refinedReflLs4trackingRefWarpedTexture = v76;
 
@@ -273,8 +273,8 @@ LABEL_74:
                             if (v78)
                             {
                               v79 = v78;
-                              v80 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                              v81 = createTextureFromCVPixelBuffer(v79, v80, 0);
+                              metalContext9 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                              v81 = createTextureFromCVPixelBuffer(v79, metalContext9, 0);
                               reflHwLsMask0Texture = v13->_reflHwLsMask0Texture;
                               v13->_reflHwLsMask0Texture = v81;
 
@@ -285,8 +285,8 @@ LABEL_74:
                                 if (v83)
                                 {
                                   v84 = v83;
-                                  v85 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                  v86 = createTextureFromCVPixelBuffer(v84, v85, 0);
+                                  metalContext10 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                  v86 = createTextureFromCVPixelBuffer(v84, metalContext10, 0);
                                   reflHwLsMask1Texture = v13->_reflHwLsMask1Texture;
                                   v13->_reflHwLsMask1Texture = v86;
 
@@ -297,8 +297,8 @@ LABEL_74:
                                     if (v88)
                                     {
                                       v89 = v88;
-                                      v90 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                      v91 = createTextureFromCVPixelBuffer(v89, v90, 0);
+                                      metalContext11 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                      v91 = createTextureFromCVPixelBuffer(v89, metalContext11, 0);
                                       dilatedLsMapTexture = v13->_dilatedLsMapTexture;
                                       v13->_dilatedLsMapTexture = v91;
 
@@ -309,8 +309,8 @@ LABEL_74:
                                         if (v93)
                                         {
                                           v94 = v93;
-                                          v95 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                          v96 = createSingleTextureFromYuvBuffer(v94, v95, 0, 0);
+                                          metalContext12 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                          v96 = createSingleTextureFromYuvBuffer(v94, metalContext12, 0, 0);
                                           temporalMitigatedTexture = v13->_temporalMitigatedTexture;
                                           v13->_temporalMitigatedTexture = v96;
 
@@ -321,8 +321,8 @@ LABEL_74:
                                             if (v98)
                                             {
                                               v99 = v98;
-                                              v100 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                              v101 = createSingleTextureFromYuvBuffer(v99, v100, 0, 0);
+                                              metalContext13 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                              v101 = createSingleTextureFromYuvBuffer(v99, metalContext13, 0, 0);
                                               hwSimTemporalMitigatedTexture = v13->_hwSimTemporalMitigatedTexture;
                                               v13->_hwSimTemporalMitigatedTexture = v101;
 
@@ -333,8 +333,8 @@ LABEL_74:
                                                 if (v103)
                                                 {
                                                   v104 = v103;
-                                                  v105 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                  v106 = createSingleTextureFromYuvBuffer(v104, v105, 0, 0);
+                                                  metalContext14 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                  v106 = createSingleTextureFromYuvBuffer(v104, metalContext14, 0, 0);
                                                   hwSimTemporalMitigatedOriRefTexture = v13->_hwSimTemporalMitigatedOriRefTexture;
                                                   v13->_hwSimTemporalMitigatedOriRefTexture = v106;
 
@@ -345,8 +345,8 @@ LABEL_74:
                                                     if (v108)
                                                     {
                                                       v109 = v108;
-                                                      v110 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                      v111 = createSingleTextureFromYuvBuffer(v109, v110, 0, 0);
+                                                      metalContext15 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                      v111 = createSingleTextureFromYuvBuffer(v109, metalContext15, 0, 0);
                                                       inputCopyTexture = v13->_inputCopyTexture;
                                                       v13->_inputCopyTexture = v111;
 
@@ -357,8 +357,8 @@ LABEL_74:
                                                         if (v113)
                                                         {
                                                           v114 = v113;
-                                                          v115 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                          v116 = createSingleTextureFromYuvBuffer(v114, v115, 0, 0);
+                                                          metalContext16 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                          v116 = createSingleTextureFromYuvBuffer(v114, metalContext16, 0, 0);
                                                           fullResInputCopyTexture = v13->_fullResInputCopyTexture;
                                                           v13->_fullResInputCopyTexture = v116;
 
@@ -369,8 +369,8 @@ LABEL_74:
                                                             if (v118)
                                                             {
                                                               v119 = v118;
-                                                              v120 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                              v121 = createSingleTextureFromYuvBuffer(v119, v120, 0, 0);
+                                                              metalContext17 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                              v121 = createSingleTextureFromYuvBuffer(v119, metalContext17, 0, 0);
                                                               input4MotionCueTexture = v13->_input4MotionCueTexture;
                                                               v13->_input4MotionCueTexture = v121;
 
@@ -381,8 +381,8 @@ LABEL_74:
                                                                 if (v123)
                                                                 {
                                                                   v124 = v123;
-                                                                  v125 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                  v126 = createSingleTextureFromYuvBuffer(v124, v125, 0, 0);
+                                                                  metalContext18 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                  v126 = createSingleTextureFromYuvBuffer(v124, metalContext18, 0, 0);
                                                                   ref4MotionCueTexture = v13->_ref4MotionCueTexture;
                                                                   v13->_ref4MotionCueTexture = v126;
 
@@ -393,8 +393,8 @@ LABEL_74:
                                                                     if (v128)
                                                                     {
                                                                       v129 = v128;
-                                                                      v130 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                      v131 = createSingleTextureFromYuvBuffer(v129, v130, 0, 0);
+                                                                      metalContext19 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                      v131 = createSingleTextureFromYuvBuffer(v129, metalContext19, 0, 0);
                                                                       spatialMitigatedLlTexture = v13->_spatialMitigatedLlTexture;
                                                                       v13->_spatialMitigatedLlTexture = v131;
 
@@ -405,29 +405,29 @@ LABEL_74:
                                                                         if (v133)
                                                                         {
                                                                           v134 = v133;
-                                                                          v135 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                          v136 = createTextureFromCVPixelBuffer(v134, v135, 0);
+                                                                          metalContext20 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                          v136 = createTextureFromCVPixelBuffer(v134, metalContext20, 0);
                                                                           warpedHwLsMask4TrackTexture = v13->_warpedHwLsMask4TrackTexture;
                                                                           v13->_warpedHwLsMask4TrackTexture = v136;
 
                                                                           if (v13->_warpedHwLsMask4TrackTexture)
                                                                           {
-                                                                            v138 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
-                                                                            v139 = [v138 newBufferWithLength:10192 options:0];
+                                                                            getDevice2 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
+                                                                            v139 = [getDevice2 newBufferWithLength:10192 options:0];
                                                                             futureMetaTmp = v13->_futureMetaTmp;
                                                                             v13->_futureMetaTmp = v139;
 
                                                                             if (v13->_futureMetaTmp)
                                                                             {
-                                                                              v141 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
-                                                                              v142 = [v141 newBufferWithLength:10192 options:0];
+                                                                              getDevice3 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
+                                                                              v142 = [getDevice3 newBufferWithLength:10192 options:0];
                                                                               futureMeta4LsCheck = v13->_futureMeta4LsCheck;
                                                                               v13->_futureMeta4LsCheck = v142;
 
                                                                               if (v13->_futureMeta4LsCheck)
                                                                               {
-                                                                                v144 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
-                                                                                v145 = [v144 newBufferWithLength:10192 options:0];
+                                                                                getDevice4 = [(GGMMetalToolBox *)v13->_metalToolBox getDevice];
+                                                                                v145 = [getDevice4 newBufferWithLength:10192 options:0];
                                                                                 futureMeta4RedoTracking = v13->_futureMeta4RedoTracking;
                                                                                 v13->_futureMeta4RedoTracking = v145;
 
@@ -435,9 +435,9 @@ LABEL_74:
                                                                                 {
                                                                                   *&v13->_estOpticalCenterOffset[7] = 0;
                                                                                   *&v13->_prevOpticalCenterEstConf = 0;
-                                                                                  v147 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                  v148 = [v147 device];
-                                                                                  v149 = [v148 newBufferWithLength:264 options:0];
+                                                                                  metalContext21 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                  device = [metalContext21 device];
+                                                                                  v149 = [device newBufferWithLength:264 options:0];
                                                                                   v150 = *&v13->_lightweightDetectorInputs.scaleAdjustedTotalClippedPixelsCount;
                                                                                   *&v13->_lightweightDetectorInputs.scaleAdjustedTotalClippedPixelsCount = v149;
 
@@ -456,8 +456,8 @@ LABEL_74:
                                                                                       }
 
                                                                                       v153 = v152;
-                                                                                      v154 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                      v155 = createTextureFromCVPixelBuffer(v153, v154, 0);
+                                                                                      metalContext22 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                      v155 = createTextureFromCVPixelBuffer(v153, metalContext22, 0);
                                                                                       v156 = *(&v13->_calcTransform + v151);
                                                                                       *(&v13->_calcTransform + v151) = v155;
 
@@ -476,8 +476,8 @@ LABEL_74:
                                                                                       }
 
                                                                                       v158 = v157;
-                                                                                      v159 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                      v160 = createTextureFromCVPixelBuffer(v158, v159, 0);
+                                                                                      metalContext23 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                      v160 = createTextureFromCVPixelBuffer(v158, metalContext23, 0);
                                                                                       v161 = *(&v13->_frameTPlus2Buf + v151);
                                                                                       *(&v13->_frameTPlus2Buf + v151) = v160;
 
@@ -496,8 +496,8 @@ LABEL_74:
                                                                                       }
 
                                                                                       v163 = v162;
-                                                                                      v164 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                      v165 = createTextureFromCVPixelBuffer(v163, v164, 0);
+                                                                                      metalContext24 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                      v165 = createTextureFromCVPixelBuffer(v163, metalContext24, 0);
                                                                                       v166 = *&v13->_anon_64[v151 + 20];
                                                                                       *&v13->_anon_64[v151 + 20] = v165;
 
@@ -516,8 +516,8 @@ LABEL_74:
                                                                                       }
 
                                                                                       v168 = v167;
-                                                                                      v169 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                      v170 = createSingleTextureFromYuvBuffer(v168, v169, 0, 0);
+                                                                                      metalContext25 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                      v170 = createSingleTextureFromYuvBuffer(v168, metalContext25, 0, 0);
                                                                                       v171 = *&v13->_anon_a4[v151 + 4];
                                                                                       *&v13->_anon_a4[v151 + 4] = v170;
 
@@ -536,8 +536,8 @@ LABEL_74:
                                                                                       }
 
                                                                                       v173 = v172;
-                                                                                      v174 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
-                                                                                      v175 = createSingleTextureFromYuvBuffer(v173, v174, 0, 0);
+                                                                                      metalContext26 = [(GGMMetalToolBox *)v13->_metalToolBox metalContext];
+                                                                                      v175 = createSingleTextureFromYuvBuffer(v173, metalContext26, 0, 0);
                                                                                       v176 = *&v13->_anon_a4[v151 + 52];
                                                                                       *&v13->_anon_a4[v151 + 52] = v175;
 
@@ -800,7 +800,7 @@ LABEL_74:
 LABEL_89:
   v177 = 0;
 LABEL_90:
-  v10 = v179;
+  contextCopy = v179;
 LABEL_91:
 
   return v177;
@@ -865,13 +865,13 @@ LABEL_91:
     v6 = metaArray_HW[v3];
     metaArray_HW[v3] = v5;
 
-    v7 = [(NSMutableData *)metaArray_HW[v3] bytes];
+    bytes = [(NSMutableData *)metaArray_HW[v3] bytes];
     if (!metaArray_HW[v3])
     {
       break;
     }
 
-    v8 = v7;
+    v8 = bytes;
     if ([(RepairWeightsGenerator *)self->_repairWeightsGenerator borderPixelBufferPool])
     {
       CVPixelBufferPoolCreatePixelBuffer(0, [(RepairWeightsGenerator *)self->_repairWeightsGenerator borderPixelBufferPool], v8 + 321);
@@ -984,29 +984,29 @@ LABEL_91:
 
 - (void)_resetTrackingRoiAvoidList
 {
-  v2 = [*&self->_lightweightDetectorInputs.scaleAdjustedTotalClippedPixelsCount contents];
-  memset_pattern16(v2, &unk_43810, 0x100uLL);
-  *(v2 + 64) = 0;
-  *(v2 + 260) = 0;
+  contents = [*&self->_lightweightDetectorInputs.scaleAdjustedTotalClippedPixelsCount contents];
+  memset_pattern16(contents, &unk_43810, 0x100uLL);
+  *(contents + 64) = 0;
+  *(contents + 260) = 0;
 }
 
-- (void)_initParamsWithTuningParamsDict:(id)a3 isLowLight:(BOOL)a4
+- (void)_initParamsWithTuningParamsDict:(id)dict isLowLight:(BOOL)light
 {
-  v26 = a3;
-  v5 = [v26 objectForKeyedSubscript:@"DetectionAndTracking"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"DetectionAndTracking"];
   if (!v5)
   {
     goto LABEL_15;
   }
 
-  v6 = [v26 objectForKeyedSubscript:@"LuxLevelThresholdON"];
+  v6 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdON"];
   if (!v6)
   {
     goto LABEL_15;
   }
 
   v7 = v6;
-  v8 = [v26 objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
+  v8 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
   if (!v8)
   {
     goto LABEL_14;
@@ -1053,10 +1053,10 @@ LABEL_11:
 
   if (v18)
   {
-    v19 = [v26 objectForKeyedSubscript:@"LuxLevelThresholdON"];
+    v19 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdON"];
     LODWORD(self->_params.lightSourceBoxSizeThreshold) = [v19 intValue];
 
-    v20 = [v26 objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
+    v20 = [dictCopy objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
     self->_configuration.internalCfg.clipThreshold = [v20 intValue];
 
     v21 = [v5 objectForKeyedSubscript:@"LSGatingThresholdON"];
@@ -1084,18 +1084,18 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)prepareDataForNextFrameWithFrameData:(id *)a3 outputFutureOpticalCenter:outputFutureLightSourceMaskTotalArea:doLite:
+- (void)prepareDataForNextFrameWithFrameData:(id *)data outputFutureOpticalCenter:outputFutureLightSourceMaskTotalArea:doLite:
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  self->_futurePackedLsMask = a3->var5;
+  self->_futurePackedLsMask = data->var5;
   p_futureInfo = &self->_futureInfo;
-  objc_storeStrong(&self->_futureInfo, a3->var1);
-  var0 = a3->var0;
-  v13 = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
-  v14 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v15 = createSingleCachedTextureFromPixelBuffer(var0, v13, v14, 0, 0);
+  objc_storeStrong(&self->_futureInfo, data->var1);
+  var0 = data->var0;
+  cvMetalTextureCacheRef = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
+  metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  v15 = createSingleCachedTextureFromPixelBuffer(var0, cvMetalTextureCacheRef, metalContext, 0, 0);
   frameTPlus1Texture = self->_frameTPlus1Texture;
   self->_frameTPlus1Texture = v15;
 
@@ -1200,31 +1200,31 @@ LABEL_16:
       lightSourceHeight = self->_futureSimParams.lightSourceHeight;
       PixelBuffer = CreatePixelBuffer();
       *(&self->super.isa + v24) = PixelBuffer;
-      v31 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-      v32 = createTextureFromCVPixelBuffer(PixelBuffer, v31, 0);
+      metalContext2 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+      v32 = createTextureFromCVPixelBuffer(PixelBuffer, metalContext2, 0);
       v33 = *(&self->super.isa + v25);
       *(&self->super.isa + v25) = v32;
     }
 
     futurePackedLsMask = self->_futurePackedLsMask;
-    v35 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v36 = createTextureFromCVPixelBufferWithReadFmt(futurePackedLsMask, v35, 0, 0);
+    metalContext3 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    v36 = createTextureFromCVPixelBufferWithReadFmt(futurePackedLsMask, metalContext3, 0, 0);
     futurePackedLsMaskTex = self->_futurePackedLsMaskTex;
     self->_futurePackedLsMaskTex = v36;
   }
 
-  __destructor_8_s8_s16_s24_s32(a3);
+  __destructor_8_s8_s16_s24_s32(data);
 }
 
-- (void)getMvfToNextFrameForTrackingCurrMeta:(id)a3 lsMap:(id)a4 futureLsMap:(id)a5 commandBuffer:(id)a6
+- (void)getMvfToNextFrameForTrackingCurrMeta:(id)meta lsMap:(id)map futureLsMap:(id)lsMap commandBuffer:(id)buffer
 {
-  v8 = a3;
-  v9 = [a6 computeCommandEncoder];
-  [(GGMMetalToolBox *)self->_metalToolBox encodeGetTrackingHmgrphyAlignmentErrorYUVToCommandEncoder:v9 target:self->_inputTexture ref:self->_frameTPlus1Texture meta:v8];
-  [(GGMMetalToolBox *)self->_metalToolBox encodeBMSearch1RefToCommandEncoder:v9 target:self->_inputTexture ref:self->_frameTPlus1Texture meta:v8];
-  [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMvToFuture:v9 metaBuf:v8];
+  metaCopy = meta;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeGetTrackingHmgrphyAlignmentErrorYUVToCommandEncoder:computeCommandEncoder target:self->_inputTexture ref:self->_frameTPlus1Texture meta:metaCopy];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeBMSearch1RefToCommandEncoder:computeCommandEncoder target:self->_inputTexture ref:self->_frameTPlus1Texture meta:metaCopy];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeCollectMvToFuture:computeCommandEncoder metaBuf:metaCopy];
 
-  [v9 endEncoding];
+  [computeCommandEncoder endEncoding];
 }
 
 uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMeta_doLite_commandBuffer___block_invoke(uint64_t a1)
@@ -1234,18 +1234,18 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
   return kdebug_trace();
 }
 
-- (float)getWeightsOriginalFromInfo:(id)a3
+- (float)getWeightsOriginalFromInfo:(id)info
 {
   v4 = kFigCaptureStreamMetadata_LuxLevel;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 intValue];
+  infoCopy = info;
+  v6 = [infoCopy objectForKeyedSubscript:v4];
+  intValue = [v6 intValue];
 
   clipThreshold = self->_configuration.internalCfg.clipThreshold;
   v9 = clipThreshold + ((SLODWORD(self->_params.lightSourceBoxSizeThreshold) - clipThreshold) * 0.5);
-  v10 = fminf(fmaxf((v7 - v9) / (clipThreshold - v9), 0.0), 1.0);
-  self->_trackID = v7;
-  v11 = [v5 objectForKeyedSubscript:kFigCaptureStreamMetadata_ExposureTime];
+  v10 = fminf(fmaxf((intValue - v9) / (clipThreshold - v9), 0.0), 1.0);
+  self->_trackID = intValue;
+  v11 = [infoCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_ExposureTime];
 
   [v11 floatValue];
   self->_LSTrackID = v12;
@@ -1253,20 +1253,20 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
   return v10;
 }
 
-- (id)process:(__CVBuffer *)a3 metaData:(id)a4 ispTimeStamp:(id *)a5 keypoints:(__CVBuffer *)a6 lightSourceMask:(__CVBuffer *)a7 futureFrames:(id *)a8
+- (id)process:(__CVBuffer *)process metaData:(id)data ispTimeStamp:(id *)stamp keypoints:(__CVBuffer *)keypoints lightSourceMask:(__CVBuffer *)mask futureFrames:(id *)frames
 {
-  v13 = a4;
+  dataCopy = data;
   if (self->_trackingRoiAvoidListBuf)
   {
     v14 = 0;
     goto LABEL_69;
   }
 
-  v149 = a7;
-  v144 = a5;
+  maskCopy = mask;
+  stampCopy = stamp;
   kdebug_trace();
-  v158 = isLowLightingCondition(self->_configuration.externalCfg.detectionType, v13);
-  [(VDGDetectionUtilsV3 *)self->_detectionUtils calcOpticalCenterFromMetaData:v13];
+  v158 = isLowLightingCondition(self->_configuration.externalCfg.detectionType, dataCopy);
+  [(VDGDetectionUtilsV3 *)self->_detectionUtils calcOpticalCenterFromMetaData:dataCopy];
   v147 = v15;
   v148 = v16;
   processedFrameCnt = self->_processedFrameCnt;
@@ -1282,16 +1282,16 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
   v21 = self->_metaBufferArray[(self->_processedFrameCnt + 1) % 0x42];
   v22 = self->_currSegmentProcessedFrameCnt;
   self->_useContainer0ForNextFrame = currSegmentProcessedFrameCnt & 1;
-  var2 = a8->var2;
+  var2 = frames->var2;
   self->_isFirstFrameOfEntireVideo = self->_processedFrameCnt == 0;
   self->_isFirstFrameOfCurrSegment = v22 == 0;
-  v142 = a3;
-  v153 = a8;
-  [(VideoDeghostingDetectionV3 *)self _initDetection:a3 metaData:v13 futureFrames:a8];
+  processCopy = process;
+  framesCopy = frames;
+  [(VideoDeghostingDetectionV3 *)self _initDetection:process metaData:dataCopy futureFrames:frames];
   v154 = v20;
-  v24 = [(MTLBuffer *)v20 contents];
+  contents = [(MTLBuffer *)v20 contents];
   v25 = v157;
-  v155 = v13;
+  v155 = dataCopy;
   v143 = v21;
   v152 = var2;
   v151 = currSegmentProcessedFrameCnt;
@@ -1302,7 +1302,7 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
   }
 
   v26 = v157;
-  [(VDGDetectionUtilsV3 *)self->_detectionUtils setSimParams:&self->_futureSimParams withMetaData:v13];
+  [(VDGDetectionUtilsV3 *)self->_detectionUtils setSimParams:&self->_futureSimParams withMetaData:dataCopy];
   v193 = 0u;
   v194 = 0u;
   v191 = 0u;
@@ -1335,7 +1335,7 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
   v166 = 0u;
   v163 = 0u;
   v164 = 0u;
-  v27 = [v13 objectForKeyedSubscript:@"IspScalerInfo"];
+  v27 = [dataCopy objectForKeyedSubscript:@"IspScalerInfo"];
   [v27 getBytes:&v163 length:576];
   v28 = (self->_futureSimParams.lsMaskMapping[0] * HIDWORD(v174)) * self->_futureSimParams.lsMaskMapping[1];
   if (v28 > 1.0)
@@ -1350,30 +1350,30 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
       lightSourceHeight = self->_futureSimParams.lightSourceHeight;
       PixelBuffer = CreatePixelBuffer();
       self->_lrHwLsMask0 = PixelBuffer;
-      v36 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-      v37 = createTextureFromCVPixelBuffer(PixelBuffer, v36, 0);
+      metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+      v37 = createTextureFromCVPixelBuffer(PixelBuffer, metalContext, 0);
       lrHwLsMask0Texture = self->_lrHwLsMask0Texture;
       self->_lrHwLsMask0Texture = v37;
     }
 
-    v39 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v40 = createTextureFromCVPixelBufferWithReadFmt(v149, v39, 0, 0);
+    metalContext2 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    v40 = createTextureFromCVPixelBufferWithReadFmt(maskCopy, metalContext2, 0, 0);
     futurePackedLsMaskTex = self->_futurePackedLsMaskTex;
     self->_futurePackedLsMaskTex = v40;
 
-    v42 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v43 = [v42 commandQueue];
-    v44 = [v43 commandBuffer];
+    metalContext3 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    commandQueue = [metalContext3 commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    [v44 setLabel:@"detection"];
-    v139 = [(MTLTexture *)self->_inputTexture width];
-    v45 = [(MTLTexture *)self->_inputTexture height];
-    v46.f32[0] = v139;
-    v46.f32[1] = v45;
-    [(VideoDeghostingDetectionV3 *)self processPackedHwLsMaskNormalizedCenter:self->_futurePackedLsMaskTex input:self->_lrHwLsMask0Texture lowResOutput:self->_reflHwLsMask0Texture highResOutput:v44 commandBuffer:COERCE_DOUBLE(vdiv_f32(v30, v46))];
-    commitCommandBuffer(v44, 1);
+    [commandBuffer setLabel:@"detection"];
+    width = [(MTLTexture *)self->_inputTexture width];
+    height = [(MTLTexture *)self->_inputTexture height];
+    v46.f32[0] = width;
+    v46.f32[1] = height;
+    [(VideoDeghostingDetectionV3 *)self processPackedHwLsMaskNormalizedCenter:self->_futurePackedLsMaskTex input:self->_lrHwLsMask0Texture lowResOutput:self->_reflHwLsMask0Texture highResOutput:commandBuffer commandBuffer:COERCE_DOUBLE(vdiv_f32(v30, v46))];
+    commitCommandBuffer(commandBuffer, 1);
     *&v47 = v28;
-    v48 = [(VideoDeghostingDetectionV3 *)self getRoisFromPackedHwLsMask:v149 opticalCenter:0 prevMetaContainer:0 considerDist2PrevGhostWhenSort:*&v30 lightSourceMaskTotalArea:v47];
+    v48 = [(VideoDeghostingDetectionV3 *)self getRoisFromPackedHwLsMask:maskCopy opticalCenter:0 prevMetaContainer:0 considerDist2PrevGhostWhenSort:*&v30 lightSourceMaskTotalArea:v47];
     v49 = +[NSMutableArray array];
     v50 = 0;
     v51 = (fminf(fmaxf((v28 + -65536.0) / 196610.0, 0.0), 1.0) * -12000.0) + 18000.0;
@@ -1396,13 +1396,13 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
     }
 
     v56 = [(VDGDetectionUtilsV3 *)self->_detectionUtils generateDetectionRoiList:v49];
-    bzero(v24, 0x27D0uLL);
+    bzero(contents, 0x27D0uLL);
     *&v57 = self->_prevOpticalCenterEstConf;
     *&v58 = v28;
     [(GGMMetalToolBox *)self->_metalToolBox updateMetaContainerBuffer:v154 withDetectedROI:v56 isLowLight:v158 opticalCenter:*&v30 ispBaseOpticalCenter:*&v30 opticalCenterEstConf:v57 frameDim:*self->_frameDim lightSourceMaskTotalArea:v58];
     [(VideoDeghostingDetectionV3 *)self getWeightsOriginalFromInfo:v155];
-    v24[1189].i32[0] = v59;
-    v60 = v24->i16[0];
+    contents[1189].i32[0] = v59;
+    v60 = contents->i16[0];
     v25 = v157;
     if (v60 >= 1)
     {
@@ -1416,7 +1416,7 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
         v61 = 0;
       }
 
-      v62 = v24;
+      v62 = contents;
       do
       {
         lightSourceGatingThresholdOFF = self->_params.lightSourceGatingThresholdOFF;
@@ -1430,7 +1430,7 @@ uint64_t __92__VideoDeghostingDetectionV3_doTrackingToNextFrameCurrMeta_futureMe
       while (v60);
     }
 
-    v13 = v155;
+    dataCopy = v155;
     currSegmentProcessedFrameCnt = v151;
     v22 = v145;
 LABEL_25:
@@ -1439,58 +1439,58 @@ LABEL_25:
     v159 = (currSegmentProcessedFrameCnt - 2) % 3;
     v150 = (currSegmentProcessedFrameCnt + 1) % 6;
     v138 = v22 % 3;
-    v65 = [v13 objectForKeyedSubscript:@"ScalingFactor"];
+    v65 = [dataCopy objectForKeyedSubscript:@"ScalingFactor"];
     [v65 doubleValue];
     *&v66 = v66;
-    v24[1203].i32[0] = LODWORD(v66);
+    contents[1203].i32[0] = LODWORD(v66);
 
-    v24[1203].i32[1] = *([(MTLBuffer *)v25 contents]+ 2406);
+    contents[1203].i32[1] = *([(MTLBuffer *)v25 contents]+ 2406);
     v67 = *&self->_hmgrphyTMinus1ToT.confidence;
     v68 = *&self->_anon_64[12];
-    *v24[1194].f32 = *&self->_anon_64[28];
-    *v24[1192].f32 = v68;
-    *v24[1190].f32 = v67;
-    v24[1202].i32[0] = *&self->_anon_64[44];
+    *contents[1194].f32 = *&self->_anon_64[28];
+    *contents[1192].f32 = v68;
+    *contents[1190].f32 = v67;
+    contents[1202].i32[0] = *&self->_anon_64[44];
     v70 = *&self->_anon_e4[12];
     v69 = *&self->_anon_e4[28];
-    *v24[1196].f32 = *&self->_hmgrphyTMinus2ToT.confidence;
-    *v24[1198].f32 = v70;
-    *v24[1200].f32 = v69;
-    v24[1202].i32[1] = *&self->_anon_e4[44];
-    v24[1212].i8[1] = self->_isFirstFrameOfEntireVideo;
-    v24[1212].i8[0] = self->_isFirstFrameOfCurrSegment;
+    *contents[1196].f32 = *&self->_hmgrphyTMinus2ToT.confidence;
+    *contents[1198].f32 = v70;
+    *contents[1200].f32 = v69;
+    contents[1202].i32[1] = *&self->_anon_e4[44];
+    contents[1212].i8[1] = self->_isFirstFrameOfEntireVideo;
+    contents[1212].i8[0] = self->_isFirstFrameOfCurrSegment;
     v71 = *&self->_localMotionRefHomography.confidence;
     v72 = *&self->_anon_124[12];
-    *v24[1210].f32 = *&self->_anon_124[28];
-    *v24[1208].f32 = v72;
-    *v24[1206].f32 = v71;
-    v24[1220].i8[4] = currSegmentProcessedFrameCnt < 2;
+    *contents[1210].f32 = *&self->_anon_124[28];
+    *contents[1208].f32 = v72;
+    *contents[1206].f32 = v71;
+    contents[1220].i8[4] = currSegmentProcessedFrameCnt < 2;
     v162 = 0.0;
     v161 = 0;
     if (var2 >= 1)
     {
-      __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v160, *v153);
+      __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v160, *framesCopy);
       [(VideoDeghostingDetectionV3 *)self prepareDataForNextFrameWithFrameData:v160 outputFutureOpticalCenter:&v162 outputFutureLightSourceMaskTotalArea:&v161 doLite:v150 != 0];
       v73 = *&self->_hmgrphyTPlus1ToT.confidence;
       v74 = *&self->_anon_1a4[12];
-      *v24[1218].f32 = *&self->_anon_1a4[28];
-      *v24[1216].f32 = v74;
-      *v24[1214].f32 = v73;
-      v24[1220].i32[0] = *&self->_anon_1a4[44];
+      *contents[1218].f32 = *&self->_anon_1a4[28];
+      *contents[1216].f32 = v74;
+      *contents[1214].f32 = v73;
+      contents[1220].i32[0] = *&self->_anon_1a4[44];
       *&v73 = v162;
-      *&v24[275] = v162;
-      v24[276] = vdiv_f32(*&v73, vcvt_f32_u32(v24[1204]));
+      *&contents[275] = v162;
+      contents[276] = vdiv_f32(*&v73, vcvt_f32_u32(contents[1204]));
     }
 
     v75 = v22 % 6 != 0;
     v76 = v154;
     v77 = [(GGMMetalToolBox *)self->_metalToolBox generateMetaContainerArrayBufFromMetaContainerBuf:v154 imageRect:0.0, 0.0, [(MTLTexture *)self->_inputTexture width], [(MTLTexture *)self->_inputTexture height]];
-    v78 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v79 = [v78 commandQueue];
-    v80 = [v79 commandBuffer];
+    metalContext4 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    commandQueue2 = [metalContext4 commandQueue];
+    commandBuffer2 = [commandQueue2 commandBuffer];
 
     v81 = v77;
-    [v80 setLabel:@"detection"];
+    [commandBuffer2 setLabel:@"detection"];
     v82 = 2896;
     if (v145)
     {
@@ -1510,7 +1510,7 @@ LABEL_25:
     }
 
     LOBYTE(v132) = v75;
-    [(VideoDeghostingDetectionV3 *)self _getRefinedLsMapsTarget:self->_inputTexture refLsMap:*(&self->super.isa + v83) refRefinedLsMap:self->_lsMapTexQueue[v140] lsMap:*(&self->super.isa + v82) refinedLsMap:lsMapTexQueue[v64] metaBuf:v154 metaBufArray:v81 doLite:v132 commandBuffer:v80];
+    [(VideoDeghostingDetectionV3 *)self _getRefinedLsMapsTarget:self->_inputTexture refLsMap:*(&self->super.isa + v83) refRefinedLsMap:self->_lsMapTexQueue[v140] lsMap:*(&self->super.isa + v82) refinedLsMap:lsMapTexQueue[v64] metaBuf:v154 metaBufArray:v81 doLite:v132 commandBuffer:commandBuffer2];
     inputTexture = self->_inputTexture;
     v87 = &self->super.isa + v64;
     if (v138)
@@ -1519,7 +1519,7 @@ LABEL_25:
       v89 = self->_probMap4SpatialRepairTexQueue[v140];
       v90 = self->_probMap4RepairTexQueue[v64];
       v91 = v81;
-      [VideoDeghostingDetectionV3 _getProbMapsLiteTarget:"_getProbMapsLiteTarget:refProbMap:refProbMapStash4FutureTracking:refRawRefinedProbMap:refRefinedProbMap:probMap:refinedLsMap:probMapStash4FutureTracking:rawRefinedProbMap:refinedProbMap:probMapRepairRef0:probMapRepairRef1:metaBuf:metaBufArray:commandBuffer:" refProbMap:inputTexture refProbMapStash4FutureTracking:self->_probMap4RepairTexQueue[v140] refRawRefinedProbMap:lsMapTexQueue[v64] refRefinedProbMap:self->_probMapTexQueue[v64] probMap:self->_spaProbMapTexQueue[v64] refinedLsMap:self->_probMap4SpatialRepairTexQueue[v64] probMapStash4FutureTracking:self->_probMapTexQueue[v140] rawRefinedProbMap:self->_probMapTexQueue[v159] refinedProbMap:v154 probMapRepairRef0:v81 probMapRepairRef1:v80 metaBuf:? metaBufArray:? commandBuffer:?];
+      [VideoDeghostingDetectionV3 _getProbMapsLiteTarget:"_getProbMapsLiteTarget:refProbMap:refProbMapStash4FutureTracking:refRawRefinedProbMap:refRefinedProbMap:probMap:refinedLsMap:probMapStash4FutureTracking:rawRefinedProbMap:refinedProbMap:probMapRepairRef0:probMapRepairRef1:metaBuf:metaBufArray:commandBuffer:" refProbMap:inputTexture refProbMapStash4FutureTracking:self->_probMap4RepairTexQueue[v140] refRawRefinedProbMap:lsMapTexQueue[v64] refRefinedProbMap:self->_probMapTexQueue[v64] probMap:self->_spaProbMapTexQueue[v64] refinedLsMap:self->_probMap4SpatialRepairTexQueue[v64] probMapStash4FutureTracking:self->_probMapTexQueue[v140] rawRefinedProbMap:self->_probMapTexQueue[v159] refinedProbMap:v154 probMapRepairRef0:v81 probMapRepairRef1:commandBuffer2 metaBuf:? metaBufArray:? commandBuffer:?];
       v92 = v152;
     }
 
@@ -1535,7 +1535,7 @@ LABEL_25:
 
       v94 = self->_probMapTexQueue[v140];
       v95 = self->_spaProbMapTexQueue[v140];
-      [VideoDeghostingDetectionV3 _getProbMapInput:"_getProbMapInput:motionCueRef:motionCueRefRepaired:trackingRef:trackingRefProb:trackingRefSpaProb:trackingRefLs:probMapRepairRef0:probMapRepairRef1:metaBuf:metaBufArray:trackingRefMetaBuf:motionCueRefMetaBuf:probMap:rawRefinedProbMap:refinedProbMap:refinedReflLs:probMapStash4FutureTracking:commandBuffer:" motionCueRef:inputTexture motionCueRefRepaired:self->_localMotionReferenceTexture trackingRef:localMotionReferenceTexture trackingRefProb:self->_frameTMinus1Texture trackingRefSpaProb:lsMapTexQueue[v140] trackingRefLs:v94 probMapRepairRef0:self->_probMapTexQueue[v159] probMapRepairRef1:v154 metaBuf:v91 metaBufArray:v157 trackingRefMetaBuf:v156 motionCueRefMetaBuf:v87[212] probMap:self->_spaProbMapTexQueue[v64] rawRefinedProbMap:v87[218] refinedProbMap:lsMapTexQueue[v64] refinedReflLs:self->_probMapTexQueue[v64] probMapStash4FutureTracking:v80 commandBuffer:?];
+      [VideoDeghostingDetectionV3 _getProbMapInput:"_getProbMapInput:motionCueRef:motionCueRefRepaired:trackingRef:trackingRefProb:trackingRefSpaProb:trackingRefLs:probMapRepairRef0:probMapRepairRef1:metaBuf:metaBufArray:trackingRefMetaBuf:motionCueRefMetaBuf:probMap:rawRefinedProbMap:refinedProbMap:refinedReflLs:probMapStash4FutureTracking:commandBuffer:" motionCueRef:inputTexture motionCueRefRepaired:self->_localMotionReferenceTexture trackingRef:localMotionReferenceTexture trackingRefProb:self->_frameTMinus1Texture trackingRefSpaProb:lsMapTexQueue[v140] trackingRefLs:v94 probMapRepairRef0:self->_probMapTexQueue[v159] probMapRepairRef1:v154 metaBuf:v91 metaBufArray:v157 trackingRefMetaBuf:v156 motionCueRefMetaBuf:v87[212] probMap:self->_spaProbMapTexQueue[v64] rawRefinedProbMap:v87[218] refinedProbMap:lsMapTexQueue[v64] refinedReflLs:self->_probMapTexQueue[v64] probMapStash4FutureTracking:commandBuffer2 commandBuffer:?];
     }
 
     v96 = v151;
@@ -1544,10 +1544,10 @@ LABEL_25:
       if (!v150)
       {
         v97 = *&v162;
-        v146 = [(MTLTexture *)self->_inputTexture width];
-        v98 = [(MTLTexture *)self->_inputTexture height];
-        v99.f32[0] = v146;
-        v99.f32[1] = v98;
+        width2 = [(MTLTexture *)self->_inputTexture width];
+        height2 = [(MTLTexture *)self->_inputTexture height];
+        v99.f32[0] = width2;
+        v99.f32[1] = height2;
         v100 = COERCE_DOUBLE(vdiv_f32(v97, v99));
         v101 = 2880;
         if (self->_useContainer0ForNextFrame)
@@ -1562,15 +1562,15 @@ LABEL_25:
           v103 = 2896;
         }
 
-        [(VideoDeghostingDetectionV3 *)self processPackedHwLsMaskNormalizedCenter:self->_futurePackedLsMaskTex input:v102 lowResOutput:*(&self->super.isa + v103) highResOutput:v80 commandBuffer:v100];
-        commitCommandBuffer(v80, 1);
-        v104 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-        v105 = [v104 commandQueue];
-        v106 = [v105 commandBuffer];
+        [(VideoDeghostingDetectionV3 *)self processPackedHwLsMaskNormalizedCenter:self->_futurePackedLsMaskTex input:v102 lowResOutput:*(&self->super.isa + v103) highResOutput:commandBuffer2 commandBuffer:v100];
+        commitCommandBuffer(commandBuffer2, 1);
+        metalContext5 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+        commandQueue3 = [metalContext5 commandQueue];
+        commandBuffer3 = [commandQueue3 commandBuffer];
 
         v96 = v151;
-        [v106 setLabel:@"detection"];
-        v80 = v106;
+        [commandBuffer3 setLabel:@"detection"];
+        commandBuffer2 = commandBuffer3;
         v85 = v140;
         v92 = v152;
       }
@@ -1591,7 +1591,7 @@ LABEL_25:
         v107 = 2880;
       }
 
-      [(VideoDeghostingDetectionV3 *)self getMvfToNextFrameForTrackingCurrMeta:v154 lsMap:*(&self->super.isa + v108) futureLsMap:*(&self->super.isa + v107) commandBuffer:v80];
+      [(VideoDeghostingDetectionV3 *)self getMvfToNextFrameForTrackingCurrMeta:v154 lsMap:*(&self->super.isa + v108) futureLsMap:*(&self->super.isa + v107) commandBuffer:commandBuffer2];
     }
 
     frameTMinus1Texture = self->_inputTexture;
@@ -1645,36 +1645,36 @@ LABEL_25:
     }
 
     LOBYTE(v134) = v92 < 1;
-    [(VideoDeghostingDetectionV3 *)self updateRepairedRefYUVInput:self->_inputTexture prob:v87[212] refinedProb:v87[218] rawRefinedProb:v87[387] frRef0:frameTMinus1Texture frRef1:*(&self->super.isa + v112) trRef0:*p_inputTexture trRef1:*v115 hwSimRef0:*v117 hwSimRef1:*v118 metaBuf:v154 metaBufArray:v91 metaRef0Buf:v110 metaRef1Buf:v111 trOutput:trRepairedRefTexQueue[v64] hwSimOutput:hwSimRepairedRefTexQueue[v64] commandBuffer:v80 addEndOfDetectionSignPost:v134];
+    [(VideoDeghostingDetectionV3 *)self updateRepairedRefYUVInput:self->_inputTexture prob:v87[212] refinedProb:v87[218] rawRefinedProb:v87[387] frRef0:frameTMinus1Texture frRef1:*(&self->super.isa + v112) trRef0:*p_inputTexture trRef1:*v115 hwSimRef0:*v117 hwSimRef1:*v118 metaBuf:v154 metaBufArray:v91 metaRef0Buf:v110 metaRef1Buf:v111 trOutput:trRepairedRefTexQueue[v64] hwSimOutput:hwSimRepairedRefTexQueue[v64] commandBuffer:commandBuffer2 addEndOfDetectionSignPost:v134];
     v21 = v143;
     if (v92 >= 1)
     {
       LODWORD(v119) = v161;
-      [(VideoDeghostingDetectionV3 *)self getFutureRoisFutureOpticalCenter:v24 futureLightSourceMaskTotalArea:v143 currFrameMetaContainer:v162 futureFrameMetaBuf:v119];
-      [(VideoDeghostingDetectionV3 *)self doTrackingToNextFrameCurrMeta:v154 futureMeta:v143 doLite:v150 != 0 commandBuffer:v80];
+      [(VideoDeghostingDetectionV3 *)self getFutureRoisFutureOpticalCenter:contents futureLightSourceMaskTotalArea:v143 currFrameMetaContainer:v162 futureFrameMetaBuf:v119];
+      [(VideoDeghostingDetectionV3 *)self doTrackingToNextFrameCurrMeta:v154 futureMeta:v143 doLite:v150 != 0 commandBuffer:commandBuffer2];
     }
 
-    commitCommandBuffer(v80, 1);
+    commitCommandBuffer(commandBuffer2, 1);
     v120 = &self->super.isa + v141;
     v121 = v120[143];
     v122 = v120[287];
     v123 = v122;
     v124 = v121;
-    [(RepairWeightsGenerator *)self->_repairWeightsGenerator process:v142 info:v155 metaContainerBuffer:v154 computeBlendingWeights:v24->i16[0] > 0 futureFrames:v153 metaContainerBuffer_HW:[(objc_class *)v122 mutableBytes]];
+    [(RepairWeightsGenerator *)self->_repairWeightsGenerator process:processCopy info:v155 metaContainerBuffer:v154 computeBlendingWeights:contents->i16[0] > 0 futureFrames:framesCopy metaContainerBuffer_HW:[(objc_class *)v122 mutableBytes]];
     v125 = self->_configuration.externalCfg.forceLosslessFormat != 0;
     v126 = *(&self->_configuration.externalCfg.reportProcessingTime + 2) != 0;
     v127 = LOBYTE(self[1].super.isa) != 0;
     v128 = v120[287];
     prevOpticalCenterEstConf = self->_prevOpticalCenterEstConf;
     v130 = *&self->_estOpticalCenterOffset[7];
-    v163 = *&v144->var0;
-    *&v164 = v144->var3;
+    v163 = *&stampCopy->var0;
+    *&v164 = stampCopy->var3;
     LSTrackID = self->_LSTrackID;
     v14 = packDetectionResult(v124, 0, v147, v148, prevOpticalCenterEstConf, v130, 0, v125, v155, &v163, v126, v127, 0, v128, *&self->_lightweightDetectorInputs.exposureTime);
     ++self->_processedFrameCnt;
     ++self->_currSegmentProcessedFrameCnt;
 
-    v13 = v155;
+    dataCopy = v155;
     v26 = v157;
     goto LABEL_68;
   }
@@ -1688,36 +1688,36 @@ LABEL_69:
   return v14;
 }
 
-- (void)processPackedHwLsMaskNormalizedCenter:(id)a3 input:(id)a4 lowResOutput:(id)a5 highResOutput:(id)a6 commandBuffer:
+- (void)processPackedHwLsMaskNormalizedCenter:(id)center input:(id)input lowResOutput:(id)output highResOutput:(id)resOutput commandBuffer:
 {
   v10 = v6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [a6 computeCommandEncoder];
-  [(GGMMetalToolBox *)self->_metalToolBox encodeUnpackLsMask:v15 input:v14 normalizedCenter:v13 output:v10];
+  outputCopy = output;
+  inputCopy = input;
+  centerCopy = center;
+  computeCommandEncoder = [resOutput computeCommandEncoder];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeUnpackLsMask:computeCommandEncoder input:centerCopy normalizedCenter:inputCopy output:v10];
 
-  [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleThenReflectLsMap:v15 input:v13 normalizedCenter:v12 output:v10];
-  [v15 endEncoding];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeUpscaleThenReflectLsMap:computeCommandEncoder input:inputCopy normalizedCenter:outputCopy output:v10];
+  [computeCommandEncoder endEncoding];
 }
 
-- (void)warpTrackingRefProbMap:(id)a3 refSpaProbMap:(id)a4 refReflLs:(id)a5 refinedReflLsMap:(id)a6 target:(id)a7 motionCueRef:(id)a8 motionCueRepairedRef:(id)a9 metaBuf:(id)a10 motionCueRefMetaBuf:(id)a11 metaBufArray:(id *)a12 commandBuffer:(id)a13
+- (void)warpTrackingRefProbMap:(id)map refSpaProbMap:(id)probMap refReflLs:(id)ls refinedReflLsMap:(id)lsMap target:(id)target motionCueRef:(id)ref motionCueRepairedRef:(id)repairedRef metaBuf:(id)self0 motionCueRefMetaBuf:(id)self1 metaBufArray:(id *)self2 commandBuffer:(id)self3
 {
-  v19 = a12;
-  v57 = a3;
-  v20 = a4;
-  v21 = a5;
-  v48 = a6;
-  v56 = a7;
-  v22 = a8;
-  v23 = v21;
-  v55 = v22;
-  v54 = a9;
-  v24 = a11;
-  v51 = a13;
-  v25 = [v51 computeCommandEncoderWithDispatchType:1];
+  arrayCopy2 = array;
+  mapCopy = map;
+  probMapCopy = probMap;
+  lsCopy = ls;
+  lsMapCopy = lsMap;
+  targetCopy = target;
+  refCopy = ref;
+  v23 = lsCopy;
+  v55 = refCopy;
+  repairedRefCopy = repairedRef;
+  metaBufCopy = metaBuf;
+  bufferCopy = buffer;
+  v25 = [bufferCopy computeCommandEncoderWithDispatchType:1];
   v53 = v25;
-  if (a12->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v26 = 0;
     do
@@ -1725,27 +1725,27 @@ LABEL_69:
       metalToolBox = self->_metalToolBox;
       rawWarpedRefProbMapTexture = self->_rawWarpedRefProbMapTexture;
       rawWarpedRefSpaProbMapTexture = self->_rawWarpedRefSpaProbMapTexture;
-      v30 = a12->var0[v26];
+      v30 = array->var0[v26];
       v46 = rawWarpedRefSpaProbMapTexture;
       v25 = v53;
-      [(GGMMetalToolBox *)metalToolBox encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v53 ref0:v57 ref1:v20 ref2:0 ref3:0 warpedRef0:rawWarpedRefProbMapTexture warpedRef1:v46 warpedRef2:0 warpedRef3:0 meta:v30];
+      [(GGMMetalToolBox *)metalToolBox encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v53 ref0:mapCopy ref1:probMapCopy ref2:0 ref3:0 warpedRef0:rawWarpedRefProbMapTexture warpedRef1:v46 warpedRef2:0 warpedRef3:0 meta:v30];
       [(GGMMetalToolBox *)self->_metalToolBox encodeBMTransferGrayToCommandEncoder:v53 ref:v23 warpedRef:self->_refinedReflLs4trackingRefWarpedTexture meta:v30];
 
       ++v26;
     }
 
-    while (v26 < a12->var1);
+    while (v26 < array->var1);
   }
 
   v49 = v23;
-  v50 = v20;
+  v50 = probMapCopy;
   [v25 endEncoding];
-  v31 = [v51 computeCommandEncoderWithDispatchType:1];
+  v31 = [bufferCopy computeCommandEncoderWithDispatchType:1];
   v33 = v55;
-  v32 = v56;
-  v34 = v54;
-  v35 = v24;
-  if (a12->var1 >= 1)
+  v32 = targetCopy;
+  v34 = repairedRefCopy;
+  v35 = metaBufCopy;
+  if (array->var1 >= 1)
   {
     v36 = 0;
     v52 = v35;
@@ -1757,47 +1757,47 @@ LABEL_69:
       warpedRefProbMapTexture = self->_warpedRefProbMapTexture;
       warpedRefSpatialProbMapTexture = self->_warpedRefSpatialProbMapTexture;
       dilatedLsMapTexture = self->_dilatedLsMapTexture;
-      v42 = v19->var0[v36];
+      v42 = arrayCopy2->var0[v36];
       v47 = dilatedLsMapTexture;
       v43 = v38;
       v44 = v39;
       v33 = v55;
-      v32 = v56;
-      v34 = v54;
+      v32 = targetCopy;
+      v34 = repairedRefCopy;
       v45 = warpedRefSpatialProbMapTexture;
       v35 = v52;
-      [(GGMMetalToolBox *)v37 encodeDilate3ProbMapsHardR2SoftR2:v31 input0:v43 input1:v44 input2:v48 output0:warpedRefProbMapTexture output1:v45 output2:v47 meta:v42];
-      [(GGMMetalToolBox *)self->_metalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:v31 input:v56 ref:v55 repairedRef:v54 output:self->_input4MotionCueTexture refOutput:self->_ref4MotionCueTexture metaBuf:v42 refMeta:v52];
+      [(GGMMetalToolBox *)v37 encodeDilate3ProbMapsHardR2SoftR2:v31 input0:v43 input1:v44 input2:lsMapCopy output0:warpedRefProbMapTexture output1:v45 output2:v47 meta:v42];
+      [(GGMMetalToolBox *)self->_metalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:v31 input:targetCopy ref:v55 repairedRef:repairedRefCopy output:self->_input4MotionCueTexture refOutput:self->_ref4MotionCueTexture metaBuf:v42 refMeta:v52];
 
-      v19 = a12;
+      arrayCopy2 = array;
       ++v36;
     }
 
-    while (v36 < a12->var1);
+    while (v36 < array->var1);
   }
 
   [v31 endEncoding];
 }
 
-- (void)_getRefinedLsMapsTarget:(id)a3 refLsMap:(id)a4 refRefinedLsMap:(id)a5 lsMap:(id)a6 refinedLsMap:(id)a7 metaBuf:(id)a8 metaBufArray:(id *)a9 doLite:(BOOL)a10 commandBuffer:(id)a11
+- (void)_getRefinedLsMapsTarget:(id)target refLsMap:(id)map refRefinedLsMap:(id)lsMap lsMap:(id)a6 refinedLsMap:(id)refinedLsMap metaBuf:(id)buf metaBufArray:(id *)array doLite:(BOOL)self0 commandBuffer:(id)self1
 {
-  v23 = a4;
-  v15 = a5;
+  mapCopy = map;
+  lsMapCopy = lsMap;
   v16 = a6;
-  v17 = a7;
-  v18 = [a11 computeCommandEncoderWithDispatchType:1];
-  var1 = a9->var1;
-  if (a10)
+  refinedLsMapCopy = refinedLsMap;
+  v18 = [buffer computeCommandEncoderWithDispatchType:1];
+  var1 = array->var1;
+  if (lite)
   {
     if (var1 >= 1)
     {
       v20 = 0;
       do
       {
-        [(GGMMetalToolBox *)self->_metalToolBox encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v18 ref0:v15 ref1:v23 ref2:0 ref3:0 warpedRef0:v17 warpedRef1:v16 warpedRef2:0 warpedRef3:0 meta:a9->var0[v20++]];
+        [(GGMMetalToolBox *)self->_metalToolBox encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v18 ref0:lsMapCopy ref1:mapCopy ref2:0 ref3:0 warpedRef0:refinedLsMapCopy warpedRef1:v16 warpedRef2:0 warpedRef3:0 meta:array->var0[v20++]];
       }
 
-      while (v20 < a9->var1);
+      while (v20 < array->var1);
     }
   }
 
@@ -1807,161 +1807,161 @@ LABEL_69:
     v22 = (llroundf((fminf(fmaxf(*&self->_gateOutFrame / 0.9, 0.0), 1.0) * -4.0) + 16.0) / 2);
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeDilateReflLsMap:v18 lsMap:v16 dilatedLsMap:v17 hardDilationRadius:v22 softDilationRadius:2 meta:a9->var0[v21++]];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeDilateReflLsMap:v18 lsMap:v16 dilatedLsMap:refinedLsMapCopy hardDilationRadius:v22 softDilationRadius:2 meta:array->var0[v21++]];
     }
 
-    while (v21 < a9->var1);
+    while (v21 < array->var1);
   }
 
   [v18 endEncoding];
 }
 
-- (void)_getProbMapsLiteTarget:(id)a3 refProbMap:(id)a4 refProbMapStash4FutureTracking:(id)a5 refRawRefinedProbMap:(id)a6 refRefinedProbMap:(id)a7 probMap:(id)a8 refinedLsMap:(id)a9 probMapStash4FutureTracking:(id)a10 rawRefinedProbMap:(id)a11 refinedProbMap:(id)a12 probMapRepairRef0:(id)a13 probMapRepairRef1:(id)a14 metaBuf:(id)a15 metaBufArray:(id *)a16 commandBuffer:(id)a17
+- (void)_getProbMapsLiteTarget:(id)target refProbMap:(id)map refProbMapStash4FutureTracking:(id)tracking refRawRefinedProbMap:(id)probMap refRefinedProbMap:(id)refinedProbMap probMap:(id)a8 refinedLsMap:(id)lsMap probMapStash4FutureTracking:(id)self0 rawRefinedProbMap:(id)self1 refinedProbMap:(id)self2 probMapRepairRef0:(id)self3 probMapRepairRef1:(id)self4 metaBuf:(id)self5 metaBufArray:(id *)self6 commandBuffer:(id)self7
 {
-  v52 = a3;
-  v23 = a4;
-  v51 = a5;
-  v50 = a6;
-  v24 = a7;
+  targetCopy = target;
+  mapCopy = map;
+  trackingCopy = tracking;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
   v25 = a8;
-  v26 = a9;
-  v47 = a10;
-  v46 = a11;
+  lsMapCopy = lsMap;
+  futureTrackingCopy = futureTracking;
+  rawRefinedProbMapCopy = rawRefinedProbMap;
   v49 = a12;
-  v45 = a13;
-  v44 = a14;
-  v48 = a15;
-  v43 = a17;
-  v27 = [v43 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  bufCopy = buf;
+  bufferCopy = buffer;
+  v27 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v28 = 0;
     do
     {
       v29 = v25;
-      v30 = v24;
-      v31 = v23;
+      v30 = refinedProbMapCopy;
+      v31 = mapCopy;
       metalToolBox = self->_metalToolBox;
-      v33 = a16->var0[v28];
+      v33 = array->var0[v28];
       v34 = metalToolBox;
-      v23 = v31;
-      v24 = v30;
+      mapCopy = v31;
+      refinedProbMapCopy = v30;
       v25 = v29;
-      [(GGMMetalToolBox *)v34 encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v27 ref0:v23 ref1:v50 ref2:v51 ref3:v24 warpedRef0:v29 warpedRef1:v46 warpedRef2:v47 warpedRef3:v49 meta:v33];
-      [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:v27 target:v52 lsMap:v26 meta:v33];
+      [(GGMMetalToolBox *)v34 encodeBMTransferGrayMultiRefsLowLightToCommandEncoder:v27 ref0:mapCopy ref1:probMapCopy ref2:trackingCopy ref3:refinedProbMapCopy warpedRef0:v29 warpedRef1:rawRefinedProbMapCopy warpedRef2:futureTrackingCopy warpedRef3:v49 meta:v33];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:v27 target:targetCopy lsMap:lsMapCopy meta:v33];
 
       ++v28;
     }
 
-    while (v28 < a16->var1);
+    while (v28 < array->var1);
   }
 
-  v41 = v26;
-  v42 = v23;
+  v41 = lsMapCopy;
+  v42 = mapCopy;
   [v27 endEncoding];
-  v35 = [v43 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  v35 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v36 = 0;
     do
     {
       v37 = self->_metalToolBox;
-      v38 = a16->var0[v36];
-      [(GGMMetalToolBox *)v37 encodeCollectClusterMaxAndAvgLuma:v35 clusterMetaBuf:v38 metaBuf:v48];
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapLiteToEncoder:v35 probMap:v47 spatialProbMap:v46 probMapRepairRef0:v45 probMapRepairRef1:v44 meta:v38];
+      v38 = array->var0[v36];
+      [(GGMMetalToolBox *)v37 encodeCollectClusterMaxAndAvgLuma:v35 clusterMetaBuf:v38 metaBuf:bufCopy];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapLiteToEncoder:v35 probMap:futureTrackingCopy spatialProbMap:rawRefinedProbMapCopy probMapRepairRef0:ref0Copy probMapRepairRef1:ref1Copy meta:v38];
 
       ++v36;
     }
 
-    while (v36 < a16->var1);
+    while (v36 < array->var1);
   }
 
   [v35 endEncoding];
-  v39 = [v43 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  v39 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v40 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterMaxProb:v39 clusterMetaBuf:a16->var0[v40++] metaBuf:v48];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterMaxProb:v39 clusterMetaBuf:array->var0[v40++] metaBuf:bufCopy];
     }
 
-    while (v40 < a16->var1);
+    while (v40 < array->var1);
   }
 
   [v39 endEncoding];
 }
 
-- (void)getProbMapsTarget:(id)a3 rawProbMap:(id)a4 probMap:(id)a5 rawRefinedProbMap:(id)a6 refinedProbMap:(id)a7 refinedReflLsMap:(id)a8 reflLsMap4TrackingRef:(id)a9 probMapRepairRef0:(id)a10 probMapRepairRef1:(id)a11 metaBuf:(id)a12 metaBufArray:(id *)a13 commandBuffer:(id)a14
+- (void)getProbMapsTarget:(id)target rawProbMap:(id)map probMap:(id)probMap rawRefinedProbMap:(id)refinedProbMap refinedProbMap:(id)a7 refinedReflLsMap:(id)lsMap reflLsMap4TrackingRef:(id)ref probMapRepairRef0:(id)self0 probMapRepairRef1:(id)self1 metaBuf:(id)self2 metaBufArray:(id *)self3 commandBuffer:(id)self4
 {
-  v20 = a3;
-  v52 = a4;
-  v51 = a5;
-  v50 = a6;
+  targetCopy = target;
+  mapCopy = map;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
   v21 = a7;
-  v22 = a8;
-  v56 = a9;
-  v23 = a10;
-  v24 = a11;
-  v58 = a12;
-  v25 = a14;
-  v26 = [v25 computeCommandEncoderWithDispatchType:1];
-  v27 = a13;
+  lsMapCopy = lsMap;
+  refCopy = ref;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  bufCopy = buf;
+  bufferCopy = buffer;
+  v26 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  arrayCopy2 = array;
   v60 = v26;
-  if (a13->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v28 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:v60 target:v20 lsMap:v22 meta:a13->var0[v28]];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeGetRoiMaxAndAvgLumaYUV:v60 target:targetCopy lsMap:lsMapCopy meta:array->var0[v28]];
       v26 = v60;
       ++v28;
     }
 
-    while (v28 < a13->var1);
+    while (v28 < array->var1);
   }
 
-  v54 = v24;
-  v55 = v23;
+  v54 = ref1Copy;
+  v55 = ref0Copy;
   v48 = v21;
   [v26 endEncoding];
-  v29 = [v25 computeCommandEncoderWithDispatchType:1];
-  if (a13->var1 >= 1)
+  v29 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v30 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterMaxAndAvgLuma:v29 clusterMetaBuf:a13->var0[v30++] metaBuf:v58];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterMaxAndAvgLuma:v29 clusterMetaBuf:array->var0[v30++] metaBuf:bufCopy];
     }
 
-    while (v30 < a13->var1);
+    while (v30 < array->var1);
   }
 
   v47 = v29;
   [v29 endEncoding];
-  v53 = v25;
-  v31 = [v25 computeCommandEncoderWithDispatchType:1];
+  v53 = bufferCopy;
+  v31 = [bufferCopy computeCommandEncoderWithDispatchType:1];
   v59 = v31;
-  if (a13->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v32 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapToEncoder:v59 ref:self->_rawWarpedRefProbMapTexture dilatedRef:self->_warpedRefProbMapTexture lsMap:v22 dilatedLsMap:self->_dilatedLsMapTexture refLsMap:v56 targetFrameYUV:self->_inputTexture spaRef:self->_rawWarpedRefSpaProbMapTexture dilatedSpatialRef:self->_warpedRefSpatialProbMapTexture motionRef:self->_ref4MotionCueTexture motionTarget:self->_input4MotionCueTexture probMapRepairRef0:v23 probMapRepairRef1:v24 output:v52 spaOutput:v50 meta:a13->var0[v32]];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCombineMapWithRefMapToEncoder:v59 ref:self->_rawWarpedRefProbMapTexture dilatedRef:self->_warpedRefProbMapTexture lsMap:lsMapCopy dilatedLsMap:self->_dilatedLsMapTexture refLsMap:refCopy targetFrameYUV:self->_inputTexture spaRef:self->_rawWarpedRefSpaProbMapTexture dilatedSpatialRef:self->_warpedRefSpatialProbMapTexture motionRef:self->_ref4MotionCueTexture motionTarget:self->_input4MotionCueTexture probMapRepairRef0:ref0Copy probMapRepairRef1:ref1Copy output:mapCopy spaOutput:refinedProbMapCopy meta:array->var0[v32]];
       v31 = v59;
       ++v32;
     }
 
-    while (v32 < a13->var1);
+    while (v32 < array->var1);
   }
 
-  v49 = v22;
+  v49 = lsMapCopy;
   [v31 endEncoding];
-  v57 = [v25 computeCommandEncoderWithDispatchType:1];
-  v33 = v20;
-  v34 = v52;
-  v35 = v51;
-  if (a13->var1 >= 1)
+  v57 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  v33 = targetCopy;
+  v34 = mapCopy;
+  v35 = probMapCopy;
+  if (array->var1 >= 1)
   {
     v36 = 0;
     do
@@ -1970,34 +1970,34 @@ LABEL_69:
       v38 = v34;
       v39 = v33;
       metalToolBox = self->_metalToolBox;
-      v41 = v27->var0[v36];
-      [(GGMMetalToolBox *)metalToolBox encodeCollectClusterMaxProb:v57 clusterMetaBuf:v41 metaBuf:v58];
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterOpticalCenterEstStats:v57 clusterMetaBuf:v41 metaBuf:v58];
+      v41 = arrayCopy2->var0[v36];
+      [(GGMMetalToolBox *)metalToolBox encodeCollectClusterMaxProb:v57 clusterMetaBuf:v41 metaBuf:bufCopy];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterOpticalCenterEstStats:v57 clusterMetaBuf:v41 metaBuf:bufCopy];
       v33 = v39;
       v42 = v39;
       v34 = v38;
       v43 = v38;
       v35 = v37;
-      [(GGMMetalToolBox *)self->_metalToolBox encodeConditionalDilate2ProbMapsYUVHardR2SoftR2Simd:v57 inputYUV:v42 probMap0:v50 probMap1:v43 dilatedProbMap0:v48 dilatedProbMap1:v37 meta:v41];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeConditionalDilate2ProbMapsYUVHardR2SoftR2Simd:v57 inputYUV:v42 probMap0:refinedProbMapCopy probMap1:v43 dilatedProbMap0:v48 dilatedProbMap1:v37 meta:v41];
 
       ++v36;
-      v27 = a13;
+      arrayCopy2 = array;
     }
 
-    while (v36 < a13->var1);
+    while (v36 < array->var1);
   }
 
   [v57 endEncoding];
-  v44 = [v53 computeCommandEncoder];
-  [(GGMMetalToolBox *)self->_metalToolBox encodeUpdateEstOpticalCenterOffset:v44 meta:v58];
-  [v44 endEncoding];
+  computeCommandEncoder = [v53 computeCommandEncoder];
+  [(GGMMetalToolBox *)self->_metalToolBox encodeUpdateEstOpticalCenterOffset:computeCommandEncoder meta:bufCopy];
+  [computeCommandEncoder endEncoding];
   v61[0] = _NSConcreteStackBlock;
   v61[1] = 3221225472;
   v61[2] = __210__VideoDeghostingDetectionV3_getProbMapsTarget_rawProbMap_probMap_rawRefinedProbMap_refinedProbMap_refinedReflLsMap_reflLsMap4TrackingRef_probMapRepairRef0_probMapRepairRef1_metaBuf_metaBufArray_commandBuffer___block_invoke;
   v61[3] = &unk_48A38;
-  v62 = v58;
-  v63 = self;
-  v45 = v58;
+  v62 = bufCopy;
+  selfCopy = self;
+  v45 = bufCopy;
   v46 = objc_retainBlock(v61);
   [v53 addCompletedHandler:v46];
 }
@@ -2011,160 +2011,160 @@ float __210__VideoDeghostingDetectionV3_getProbMapsTarget_rawProbMap_probMap_raw
   return result;
 }
 
-- (void)_getProbMapInput:(id)a3 motionCueRef:(id)a4 motionCueRefRepaired:(id)a5 trackingRef:(id)a6 trackingRefProb:(id)a7 trackingRefSpaProb:(id)a8 trackingRefLs:(id)a9 probMapRepairRef0:(id)a10 probMapRepairRef1:(id)a11 metaBuf:(id)a12 metaBufArray:(id *)a13 trackingRefMetaBuf:(id)a14 motionCueRefMetaBuf:(id)a15 probMap:(id)a16 rawRefinedProbMap:(id)a17 refinedProbMap:(id)a18 refinedReflLs:(id)a19 probMapStash4FutureTracking:(id)a20 commandBuffer:(id)a21
+- (void)_getProbMapInput:(id)input motionCueRef:(id)ref motionCueRefRepaired:(id)repaired trackingRef:(id)trackingRef trackingRefProb:(id)prob trackingRefSpaProb:(id)spaProb trackingRefLs:(id)ls probMapRepairRef0:(id)self0 probMapRepairRef1:(id)self1 metaBuf:(id)self2 metaBufArray:(id *)self3 trackingRefMetaBuf:(id)self4 motionCueRefMetaBuf:(id)self5 probMap:(id)self6 rawRefinedProbMap:(id)self7 refinedProbMap:(id)self8 refinedReflLs:(id)self9 probMapStash4FutureTracking:(id)tracking commandBuffer:(id)buffer
 {
-  v22 = a21;
-  v30 = a20;
-  v23 = a19;
-  v24 = a18;
-  v25 = a17;
-  v26 = a16;
-  v27 = a12;
-  v28 = a11;
-  v29 = a10;
-  v36 = a3;
-  [(VideoDeghostingDetectionV3 *)self warpTrackingRefProbMap:a7 refSpaProbMap:a8 refReflLs:a9 refinedReflLsMap:v23 target:v36 motionCueRef:a4 motionCueRepairedRef:a5 metaBuf:v27 motionCueRefMetaBuf:a15 metaBufArray:a13 commandBuffer:v22];
-  [(VideoDeghostingDetectionV3 *)self getProbMapsTarget:v36 rawProbMap:v30 probMap:v26 rawRefinedProbMap:v25 refinedProbMap:v24 refinedReflLsMap:v23 reflLsMap4TrackingRef:self->_refinedReflLs4trackingRefWarpedTexture probMapRepairRef0:v29 probMapRepairRef1:v28 metaBuf:v27 metaBufArray:a13 commandBuffer:v22];
+  bufferCopy = buffer;
+  trackingCopy = tracking;
+  reflLsCopy = reflLs;
+  refinedProbMapCopy = refinedProbMap;
+  probMapCopy = probMap;
+  mapCopy = map;
+  bufCopy = buf;
+  ref1Copy = ref1;
+  ref0Copy = ref0;
+  inputCopy = input;
+  [(VideoDeghostingDetectionV3 *)self warpTrackingRefProbMap:prob refSpaProbMap:spaProb refReflLs:ls refinedReflLsMap:reflLsCopy target:inputCopy motionCueRef:ref motionCueRepairedRef:repaired metaBuf:bufCopy motionCueRefMetaBuf:refMetaBuf metaBufArray:array commandBuffer:bufferCopy];
+  [(VideoDeghostingDetectionV3 *)self getProbMapsTarget:inputCopy rawProbMap:trackingCopy probMap:mapCopy rawRefinedProbMap:probMapCopy refinedProbMap:refinedProbMapCopy refinedReflLsMap:reflLsCopy reflLsMap4TrackingRef:self->_refinedReflLs4trackingRefWarpedTexture probMapRepairRef0:ref0Copy probMapRepairRef1:ref1Copy metaBuf:bufCopy metaBufArray:array commandBuffer:bufferCopy];
 }
 
-- (void)repairTarget:(id)a3 frRef0:(id)a4 frRef1:(id)a5 trRef0:(id)a6 trRef1:(id)a7 hwSimRef0:(id)a8 hwSimRef1:(id)a9 probMap:(id)a10 refinedProbMap:(id)a11 rawRefinedProbMap:(id)a12 metaBuf:(id)a13 metaRef0Buf:(id)a14 metaRef1Buf:(id)a15 metaBufArray:(id *)a16 trOutput:(id)a17 hwSimOutput:(id)a18 commandBuffer:(id)a19 addEndOfDetectionSignPost:(BOOL)a20
+- (void)repairTarget:(id)target frRef0:(id)ref0 frRef1:(id)ref1 trRef0:(id)trRef0 trRef1:(id)trRef1 hwSimRef0:(id)simRef0 hwSimRef1:(id)simRef1 probMap:(id)self0 refinedProbMap:(id)self1 rawRefinedProbMap:(id)self2 metaBuf:(id)self3 metaRef0Buf:(id)self4 metaRef1Buf:(id)self5 metaBufArray:(id *)self6 trOutput:(id)self7 hwSimOutput:(id)self8 commandBuffer:(id)self9 addEndOfDetectionSignPost:(BOOL)post
 {
-  v26 = a3;
-  v76 = a4;
-  v75 = a5;
-  v74 = a6;
-  v73 = a7;
-  v27 = a8;
-  v28 = a9;
-  v77 = a10;
-  v29 = a11;
-  v30 = a12;
-  v67 = a13;
-  v31 = a14;
-  v32 = a15;
-  v72 = a17;
-  v71 = a18;
-  v68 = a19;
-  v33 = [v68 computeCommandEncoderWithDispatchType:1];
+  targetCopy = target;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  trRef0Copy = trRef0;
+  trRef1Copy = trRef1;
+  simRef0Copy = simRef0;
+  simRef1Copy = simRef1;
+  mapCopy = map;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
+  bufCopy = buf;
+  ref0BufCopy = ref0Buf;
+  ref1BufCopy = ref1Buf;
+  outputCopy = output;
+  simOutputCopy = simOutput;
+  bufferCopy = buffer;
+  v33 = [bufferCopy computeCommandEncoderWithDispatchType:1];
   v79 = v33;
-  if (a16->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v34 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:v79 input:v26 frRef0:v76 frRef1:v75 trRef0:v74 trRef1:v73 hwSimRef0:v27 hwSimRef1:v28 rawProbMap4Spatial:v30 probMap4Spatial:v29 spatialOutput:self->_spatialMitigatedLlTexture temporalOutput:self->_temporalMitigatedTexture hwSimTemporalOutput:self->_hwSimTemporalMitigatedTexture hwSimTemporalOriRefOutput:self->_hwSimTemporalMitigatedOriRefTexture inputCopy:self->_inputCopyTexture metaBuf:a16->var0[v34] ref0MetaBuf:v31 ref1MetaBuf:v32];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:v79 input:targetCopy frRef0:ref0Copy frRef1:ref1Copy trRef0:trRef0Copy trRef1:trRef1Copy hwSimRef0:simRef0Copy hwSimRef1:simRef1Copy rawProbMap4Spatial:refinedProbMapCopy probMap4Spatial:probMapCopy spatialOutput:self->_spatialMitigatedLlTexture temporalOutput:self->_temporalMitigatedTexture hwSimTemporalOutput:self->_hwSimTemporalMitigatedTexture hwSimTemporalOriRefOutput:self->_hwSimTemporalMitigatedOriRefTexture inputCopy:self->_inputCopyTexture metaBuf:array->var0[v34] ref0MetaBuf:ref0BufCopy ref1MetaBuf:ref1BufCopy];
       v33 = v79;
       ++v34;
     }
 
-    while (v34 < a16->var1);
+    while (v34 < array->var1);
   }
 
-  v62 = v32;
-  v63 = v31;
-  v64 = v30;
+  v62 = ref1BufCopy;
+  v63 = ref0BufCopy;
+  v64 = refinedProbMapCopy;
   [v33 endEncoding];
-  v35 = [v68 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  v35 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v36 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:v35 target:self->_inputCopyTexture hwSimTempRepaired:self->_hwSimTemporalMitigatedTexture hwSimTempRepairedOriRef:self->_hwSimTemporalMitigatedOriRefTexture probMap:v77 spaProbMap:v29 meta:a16->var0[v36++]];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:v35 target:self->_inputCopyTexture hwSimTempRepaired:self->_hwSimTemporalMitigatedTexture hwSimTempRepairedOriRef:self->_hwSimTemporalMitigatedOriRefTexture probMap:mapCopy spaProbMap:probMapCopy meta:array->var0[v36++]];
     }
 
-    while (v36 < a16->var1);
+    while (v36 < array->var1);
   }
 
   [v35 endEncoding];
-  v37 = [v68 computeCommandEncoderWithDispatchType:1];
+  v37 = [bufferCopy computeCommandEncoderWithDispatchType:1];
   v78 = v37;
-  if (a16->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v38 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterTempRepairErr:v78 clusterMetaBuf:a16->var0[v38] metaBuf:v67];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCollectClusterTempRepairErr:v78 clusterMetaBuf:array->var0[v38] metaBuf:bufCopy];
       v37 = v78;
       ++v38;
     }
 
-    while (v38 < a16->var1);
+    while (v38 < array->var1);
   }
 
-  v65 = v28;
-  v66 = v27;
+  v65 = simRef1Copy;
+  v66 = simRef0Copy;
   [v37 endEncoding];
-  v39 = [v68 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  v39 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v40 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeSyncStats:v39 clusterMeta:a16->var0[v40++] meta:v67];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeSyncStats:v39 clusterMeta:array->var0[v40++] meta:bufCopy];
     }
 
-    while (v40 < a16->var1);
+    while (v40 < array->var1);
   }
 
   v60 = v39;
   v61 = v35;
   [v39 endEncoding];
-  v41 = [v68 computeCommandEncoderWithDispatchType:1];
-  v42 = v77;
-  if (a16->var1 >= 1)
+  v41 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  v42 = mapCopy;
+  if (array->var1 >= 1)
   {
     v43 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeSetWOriToCommandEncoder:v41 clusterMetaBuf:a16->var0[v43++] metaBuf:v67];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeSetWOriToCommandEncoder:v41 clusterMetaBuf:array->var0[v43++] metaBuf:bufCopy];
     }
 
-    while (v43 < a16->var1);
+    while (v43 < array->var1);
   }
 
   v59 = v41;
   [v41 endEncoding];
-  v44 = [v68 computeCommandEncoderWithDispatchType:1];
-  v69 = v29;
+  v44 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  v69 = probMapCopy;
   v70 = v44;
-  if (a16->var1 >= 1)
+  if (array->var1 >= 1)
   {
     v45 = 0;
     do
     {
       metalToolBox = self->_metalToolBox;
-      v47 = v26;
+      v47 = targetCopy;
       inputCopyTexture = self->_inputCopyTexture;
       temporalMitigatedTexture = self->_temporalMitigatedTexture;
       hwSimTemporalMitigatedTexture = self->_hwSimTemporalMitigatedTexture;
       spatialMitigatedLlTexture = self->_spatialMitigatedLlTexture;
-      v52 = a16->var0[v45];
+      v52 = array->var0[v45];
       v53 = metalToolBox;
       v44 = v70;
       v54 = inputCopyTexture;
-      v26 = v47;
-      v42 = v77;
-      [(GGMMetalToolBox *)v53 encodeFuse4DetectionYUVToCommandEncoder:v70 inputTexture:v54 probMapTexture:v77 probMap4SpatialTexture:v69 temporalMitTexture:temporalMitigatedTexture hwSimTemporalMitTexture:hwSimTemporalMitigatedTexture spatialMitTexture:spatialMitigatedLlTexture trOutputTexture:v72 hwSimOutputTexture:v71 metaBuf:v52];
-      [(GGMMetalToolBox *)self->_metalToolBox encodeCopyInput4DetectionYUVToCommandEncoder:v70 inputTexture:v26 outputTexture:self->_fullResInputCopyTexture metaBuf:v52];
+      targetCopy = v47;
+      v42 = mapCopy;
+      [(GGMMetalToolBox *)v53 encodeFuse4DetectionYUVToCommandEncoder:v70 inputTexture:v54 probMapTexture:mapCopy probMap4SpatialTexture:v69 temporalMitTexture:temporalMitigatedTexture hwSimTemporalMitTexture:hwSimTemporalMitigatedTexture spatialMitTexture:spatialMitigatedLlTexture trOutputTexture:outputCopy hwSimOutputTexture:simOutputCopy metaBuf:v52];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeCopyInput4DetectionYUVToCommandEncoder:v70 inputTexture:targetCopy outputTexture:self->_fullResInputCopyTexture metaBuf:v52];
 
       ++v45;
     }
 
-    while (v45 < a16->var1);
+    while (v45 < array->var1);
   }
 
   [v44 endEncoding];
-  v55 = [v68 computeCommandEncoderWithDispatchType:1];
-  if (a16->var1 >= 1)
+  v55 = [bufferCopy computeCommandEncoderWithDispatchType:1];
+  if (array->var1 >= 1)
   {
     v56 = 0;
     do
     {
-      [(GGMMetalToolBox *)self->_metalToolBox encodeFuseSpatialOnly4DetectionYUVToCommandEncoder:v55 inputTexture:self->_fullResInputCopyTexture probMapTexture:v42 probMap4SpatialTexture:v69 temporalMitTexture:v72 spatialMitTexture:self->_spatialMitigatedLlTexture outputTexture:v26 metaBuf:a16->var0[v56++]];
+      [(GGMMetalToolBox *)self->_metalToolBox encodeFuseSpatialOnly4DetectionYUVToCommandEncoder:v55 inputTexture:self->_fullResInputCopyTexture probMapTexture:v42 probMap4SpatialTexture:v69 temporalMitTexture:outputCopy spatialMitTexture:self->_spatialMitigatedLlTexture outputTexture:targetCopy metaBuf:array->var0[v56++]];
     }
 
-    while (v56 < a16->var1);
+    while (v56 < array->var1);
   }
 
   [v55 endEncoding];
@@ -2172,11 +2172,11 @@ float __210__VideoDeghostingDetectionV3_getProbMapsTarget_rawProbMap_probMap_raw
   v80[1] = 3221225472;
   v80[2] = __238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef1_hwSimRef0_hwSimRef1_probMap_refinedProbMap_rawRefinedProbMap_metaBuf_metaRef0Buf_metaRef1Buf_metaBufArray_trOutput_hwSimOutput_commandBuffer_addEndOfDetectionSignPost___block_invoke;
   v80[3] = &unk_48A60;
-  v81 = v67;
-  v82 = a20;
-  v57 = v67;
+  v81 = bufCopy;
+  postCopy = post;
+  v57 = bufCopy;
   v58 = objc_retainBlock(v80);
-  [v68 addCompletedHandler:v58];
+  [bufferCopy addCompletedHandler:v58];
 }
 
 _BYTE *__238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef1_hwSimRef0_hwSimRef1_probMap_refinedProbMap_rawRefinedProbMap_metaBuf_metaRef0Buf_metaRef1Buf_metaBufArray_trOutput_hwSimOutput_commandBuffer_addEndOfDetectionSignPost___block_invoke(uint64_t a1)
@@ -2192,22 +2192,22 @@ _BYTE *__238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef
   return result;
 }
 
-- (int64_t)_initDetection:(__CVBuffer *)a3 metaData:(id)a4 futureFrames:(id *)a5
+- (int64_t)_initDetection:(__CVBuffer *)detection metaData:(id)data futureFrames:(id *)frames
 {
   v8 = &self->_anon_e4[28];
-  v9 = a4;
+  dataCopy = data;
   kdebug_trace();
   CVPixelBufferRelease(self->_frameTMinus2);
   self->_frameTMinus2 = self->_frameTMinus1;
   objc_storeStrong(&self->_frameTMinus2Texture, self->_frameTMinus1Texture);
   self->_frameTMinus1 = self->_frameT;
   objc_storeStrong(&self->_frameTMinus1Texture, self->_inputTexture);
-  CVPixelBufferRetain(a3);
+  CVPixelBufferRetain(detection);
   if (self->_isFirstFrameOfCurrSegment)
   {
-    v10 = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
-    v11 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-    v12 = createSingleCachedTextureFromPixelBuffer(a3, v10, v11, 0, 0);
+    cvMetalTextureCacheRef = [(GGMMetalToolBox *)self->_metalToolBox cvMetalTextureCacheRef];
+    metalContext = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+    v12 = createSingleCachedTextureFromPixelBuffer(detection, cvMetalTextureCacheRef, metalContext, 0, 0);
     inputTexture = self->_inputTexture;
     self->_inputTexture = v12;
   }
@@ -2215,12 +2215,12 @@ _BYTE *__238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef
   else
   {
     v14 = self->_frameTPlus1Texture;
-    v11 = self->_inputTexture;
+    metalContext = self->_inputTexture;
     self->_inputTexture = v14;
   }
 
   v15 = 0;
-  self->_frameT = a3;
+  self->_frameT = detection;
   v16 = *&self->_anon_64[12];
   *&self->_hmgrphyTMinus2ToTMinus1.confidence = *&self->_hmgrphyTMinus1ToT.confidence;
   *&self->_anon_a4[12] = v16;
@@ -2273,9 +2273,9 @@ _BYTE *__238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef
     goto LABEL_19;
   }
 
-  if (a5->var2 < 2)
+  if (frames->var2 < 2)
   {
-    self->_localMotionReference = a3;
+    self->_localMotionReference = detection;
     objc_storeStrong(&self->_localMotionReferenceTexture, self->_inputTexture);
     v40 = matrix_identity_float3x3.columns[1];
     *&self->_localMotionRefHomography.confidence = matrix_identity_float3x3.columns[0];
@@ -2287,9 +2287,9 @@ _BYTE *__238__VideoDeghostingDetectionV3_repairTarget_frRef0_frRef1_trRef0_trRef
   }
 
   memset(v54, 0, sizeof(v54));
-  __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v54, a5->var0);
+  __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v54, frames->var0);
   memset(v53, 0, sizeof(v53));
-  __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v53, a5->var0 + 48);
+  __copy_constructor_8_8_t0w8_s8_s16_s24_s32_t40w8(v53, frames->var0 + 48);
   self->_frameTPlus2Buf = *&v53[0];
   v31 = *(&v54[0] + 1);
   v32 = *(&v53[0] + 1);
@@ -2343,8 +2343,8 @@ LABEL_16:
   v48 = __invert_f3(v51);
   frameTPlus2Buf = self->_frameTPlus2Buf;
   self->_localMotionReference = frameTPlus2Buf;
-  v43 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
-  v44 = createSingleTextureFromYuvBuffer(frameTPlus2Buf, v43, 0, 1);
+  metalContext2 = [(GGMMetalToolBox *)self->_metalToolBox metalContext];
+  v44 = createSingleTextureFromYuvBuffer(frameTPlus2Buf, metalContext2, 0, 1);
   localMotionReferenceTexture = self->_localMotionReferenceTexture;
   self->_localMotionReferenceTexture = v44;
 
@@ -2368,7 +2368,7 @@ LABEL_19:
   return 0;
 }
 
-- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV3 *)self BoxCount:(SEL)a2
+- (id)extractLightSourceBBoxFromBuffer:(VideoDeghostingDetectionV3 *)self BoxCount:(SEL)count
 {
   v4 = v3;
   v5 = v2;
@@ -2410,12 +2410,12 @@ LABEL_19:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.detectionType = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.detectionType = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.luxLevelGating = v5;
   *&self->_configuration.internalCfg.antiFlareSize = v3;
   *&self->_configuration.internalCfg.initGGarray = v4;

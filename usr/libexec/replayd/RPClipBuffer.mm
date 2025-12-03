@@ -1,8 +1,8 @@
 @interface RPClipBuffer
-- (BOOL)getSamplesForDuration:(double)a3 latestSeconds:(double)a4 withOutputArray:(id)a5;
+- (BOOL)getSamplesForDuration:(double)duration latestSeconds:(double)seconds withOutputArray:(id)array;
 - (RPClipBuffer)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForVideo:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForVideo:(BOOL)video;
 - (opaqueCMFormatDescription)getFormatDescription;
 - (void)flushBuffer;
 @end
@@ -28,7 +28,7 @@
   return v2;
 }
 
-- (id)initForVideo:(BOOL)a3
+- (id)initForVideo:(BOOL)video
 {
   v8.receiver = self;
   v8.super_class = RPClipBuffer;
@@ -39,7 +39,7 @@
     bufferArray = v4->_bufferArray;
     v4->_bufferArray = v5;
 
-    v4->_isVideo = a3;
+    v4->_isVideo = video;
   }
 
   return v4;
@@ -62,10 +62,10 @@
   return FormatDescription;
 }
 
-- (BOOL)getSamplesForDuration:(double)a3 latestSeconds:(double)a4 withOutputArray:(id)a5
+- (BOOL)getSamplesForDuration:(double)duration latestSeconds:(double)seconds withOutputArray:(id)array
 {
-  v8 = a5;
-  v9 = a4 - a3;
+  arrayCopy = array;
+  v9 = seconds - duration;
   if ([(NSMutableArray *)self->_bufferArray count])
   {
     v10 = [(NSMutableArray *)self->_bufferArray objectAtIndex:0];
@@ -86,7 +86,7 @@
         *&buf[12] = 1024;
         *&buf[14] = 141;
         *&buf[18] = 2048;
-        *&buf[20] = a4;
+        *&buf[20] = seconds;
         v42 = 2048;
         v43 = v9;
         v44 = 2048;
@@ -147,7 +147,7 @@
 
         else if ((v23 & 1) != 0 || [v26 isKeyFrame])
         {
-          [v8 addObject:{objc_msgSend(v26, "sampleBuffer")}];
+          [arrayCopy addObject:{objc_msgSend(v26, "sampleBuffer")}];
           v23 = 1;
         }
 
@@ -169,9 +169,9 @@
       CMSampleBufferGetPresentationTimeStamp(&v35, [v22 sampleBuffer]);
       memset(&v34, 0, sizeof(v34));
       CMTimeMakeWithSeconds(&v34, v9, v35.timescale);
-      v31 = [v22 sampleBuffer];
+      sampleBuffer = [v22 sampleBuffer];
       *buf = v34;
-      v32 = sub_100057350(v31, buf);
+      v32 = sub_100057350(sampleBuffer, buf);
       if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136446978;
@@ -185,7 +185,7 @@
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d appending first sample %p at timestamp:%f", buf, 0x26u);
       }
 
-      [v8 insertObject:v32 atIndex:0];
+      [arrayCopy insertObject:v32 atIndex:0];
 
       v22 = 0;
       v30 = 1;
@@ -224,10 +224,10 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) sampleBuffer];
-        if (v8)
+        sampleBuffer = [*(*(&v9 + 1) + 8 * v7) sampleBuffer];
+        if (sampleBuffer)
         {
-          CFRelease(v8);
+          CFRelease(sampleBuffer);
         }
 
         v7 = v7 + 1;
@@ -246,7 +246,7 @@
   self->_firstSampleReceived = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RPClipBuffer);
   v5 = [[NSMutableArray alloc] initWithArray:self->_bufferArray];
@@ -256,8 +256,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(RPClipBuffer *)v4 bufferArray];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  bufferArray = [(RPClipBuffer *)v4 bufferArray];
+  v7 = [bufferArray countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -269,7 +269,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bufferArray);
         }
 
         CFRetain([*(*(&v14 + 1) + 8 * v10) sampleBuffer]);
@@ -277,7 +277,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [bufferArray countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

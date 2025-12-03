@@ -1,18 +1,18 @@
 @interface FocusBannerView
-- (FocusBannerView)initWithDelegate:(id)a3;
+- (FocusBannerView)initWithDelegate:(id)delegate;
 - (FocusBannerViewDelegate)delegate;
 - (double)preferredHeight;
 - (id)_focusButtonConfiguration;
 - (void)_focusFilterToggleButtonSelected;
 - (void)_updateTitleAndImage;
-- (void)setFocusFilterEnabled:(BOOL)a3;
+- (void)setFocusFilterEnabled:(BOOL)enabled;
 @end
 
 @implementation FocusBannerView
 
-- (FocusBannerView)initWithDelegate:(id)a3
+- (FocusBannerView)initWithDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   v67.receiver = self;
   v67.super_class = FocusBannerView;
   v4 = [(FocusBannerView *)&v67 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -58,14 +58,14 @@
 
     [p_isa[4] setAdjustsFontForContentSizeCategory:1];
     objc_initWeak(&location, v6);
-    v21 = [(FocusBannerView *)v6 _focusButtonConfiguration];
+    _focusButtonConfiguration = [(FocusBannerView *)v6 _focusButtonConfiguration];
     v64[0] = _NSConcreteStackBlock;
     v64[1] = 3221225472;
     v64[2] = sub_1000BB034;
     v64[3] = &unk_10064F278;
     objc_copyWeak(&v65, &location);
     v22 = [UIAction actionWithHandler:v64];
-    v23 = [UIButton buttonWithConfiguration:v21 primaryAction:v22];
+    v23 = [UIButton buttonWithConfiguration:_focusButtonConfiguration primaryAction:v22];
     v24 = p_isa[5];
     p_isa[5] = v23;
 
@@ -73,8 +73,8 @@
     [p_isa[5] setContentCompressionResistancePriority:0 forAxis:v25];
     LODWORD(v26) = 1148846080;
     [(UIButton *)v6->_focusFilterToggleButton setContentHuggingPriority:0 forAxis:v26];
-    v27 = [(UIButton *)v6->_focusFilterToggleButton titleLabel];
-    [v27 setNumberOfLines:1];
+    titleLabel = [(UIButton *)v6->_focusFilterToggleButton titleLabel];
+    [titleLabel setNumberOfLines:1];
 
     v28 = [UIStackView alloc];
     v69[0] = v6->_focusIconView;
@@ -95,39 +95,39 @@
     [v32 scale];
     v34 = v33;
 
-    v57 = [(UIView *)v6->_topSeparatorView heightAnchor];
-    v56 = [v57 constraintEqualToConstant:1.0 / v34];
+    heightAnchor = [(UIView *)v6->_topSeparatorView heightAnchor];
+    v56 = [heightAnchor constraintEqualToConstant:1.0 / v34];
     v68[0] = v56;
-    v62 = [(UIView *)v6->_topSeparatorView topAnchor];
-    v55 = [(FocusBannerView *)v6 topAnchor];
-    v54 = [v62 constraintEqualToAnchor:?];
+    topAnchor = [(UIView *)v6->_topSeparatorView topAnchor];
+    topAnchor2 = [(FocusBannerView *)v6 topAnchor];
+    v54 = [topAnchor constraintEqualToAnchor:?];
     v68[1] = v54;
-    v61 = [(UIView *)v6->_topSeparatorView leadingAnchor];
-    v53 = [(FocusBannerView *)v6 focusFilterStateDescriptionLabel];
-    v52 = [v53 leadingAnchor];
-    v51 = [v61 constraintEqualToAnchor:?];
+    leadingAnchor = [(UIView *)v6->_topSeparatorView leadingAnchor];
+    focusFilterStateDescriptionLabel = [(FocusBannerView *)v6 focusFilterStateDescriptionLabel];
+    leadingAnchor2 = [focusFilterStateDescriptionLabel leadingAnchor];
+    v51 = [leadingAnchor constraintEqualToAnchor:?];
     v68[2] = v51;
-    v60 = [(UIView *)v6->_topSeparatorView trailingAnchor];
-    v50 = [(FocusBannerView *)v6 trailingAnchor];
-    v49 = [v60 constraintEqualToAnchor:?];
+    trailingAnchor = [(UIView *)v6->_topSeparatorView trailingAnchor];
+    trailingAnchor2 = [(FocusBannerView *)v6 trailingAnchor];
+    v49 = [trailingAnchor constraintEqualToAnchor:?];
     v68[3] = v49;
-    v59 = [(UIStackView *)v6->_stackView leadingAnchor];
-    v48 = [(FocusBannerView *)v6 layoutMarginsGuide];
-    v47 = [v48 leadingAnchor];
-    v46 = [v59 constraintEqualToAnchor:?];
+    leadingAnchor3 = [(UIStackView *)v6->_stackView leadingAnchor];
+    layoutMarginsGuide = [(FocusBannerView *)v6 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v46 = [leadingAnchor3 constraintEqualToAnchor:?];
     v68[4] = v46;
-    v58 = [(UIStackView *)v6->_stackView trailingAnchor];
-    v45 = [(FocusBannerView *)v6 layoutMarginsGuide];
-    v44 = [v45 trailingAnchor];
-    v35 = [v58 constraintEqualToAnchor:?];
+    trailingAnchor3 = [(UIStackView *)v6->_stackView trailingAnchor];
+    layoutMarginsGuide2 = [(FocusBannerView *)v6 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide2 trailingAnchor];
+    v35 = [trailingAnchor3 constraintEqualToAnchor:?];
     v68[5] = v35;
-    v36 = [(UIStackView *)v6->_stackView topAnchor];
-    v37 = [(FocusBannerView *)v6 topAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:11.0];
+    topAnchor3 = [(UIStackView *)v6->_stackView topAnchor];
+    topAnchor4 = [(FocusBannerView *)v6 topAnchor];
+    v38 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:11.0];
     v68[6] = v38;
-    v39 = [(UIStackView *)v6->_stackView bottomAnchor];
-    v40 = [(FocusBannerView *)v6 bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:-11.0];
+    bottomAnchor = [(UIStackView *)v6->_stackView bottomAnchor];
+    bottomAnchor2 = [(FocusBannerView *)v6 bottomAnchor];
+    v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
     v68[7] = v41;
     v42 = [NSArray arrayWithObjects:v68 count:8];
     [NSLayoutConstraint activateConstraints:v42];
@@ -139,11 +139,11 @@
   return v6;
 }
 
-- (void)setFocusFilterEnabled:(BOOL)a3
+- (void)setFocusFilterEnabled:(BOOL)enabled
 {
-  if (self->_focusFilterEnabled != a3)
+  if (self->_focusFilterEnabled != enabled)
   {
-    self->_focusFilterEnabled = a3;
+    self->_focusFilterEnabled = enabled;
     [(FocusBannerView *)self _updateTitleAndImage];
   }
 }
@@ -163,22 +163,22 @@
   }
   v4 = ;
   v14 = v3;
-  v5 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
-  [v5 setText:v14];
+  focusFilterStateDescriptionLabel = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
+  [focusFilterStateDescriptionLabel setText:v14];
 
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  v7 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
-  [v7 setFont:v6];
+  focusFilterStateDescriptionLabel2 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
+  [focusFilterStateDescriptionLabel2 setFont:v6];
 
-  v8 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
-  [v8 setTextColor:v4];
+  focusFilterStateDescriptionLabel3 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
+  [focusFilterStateDescriptionLabel3 setTextColor:v4];
 
-  v9 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
-  [v9 setLargeContentTitle:v14];
+  focusFilterStateDescriptionLabel4 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
+  [focusFilterStateDescriptionLabel4 setLargeContentTitle:v14];
 
-  v10 = [(FocusBannerView *)self _focusButtonConfiguration];
-  v11 = [(FocusBannerView *)self focusFilterToggleButton];
-  [v11 setConfiguration:v10];
+  _focusButtonConfiguration = [(FocusBannerView *)self _focusButtonConfiguration];
+  focusFilterToggleButton = [(FocusBannerView *)self focusFilterToggleButton];
+  [focusFilterToggleButton setConfiguration:_focusButtonConfiguration];
 
   if ([(FocusBannerView *)self isFocusFilterEnabled])
   {
@@ -190,21 +190,21 @@
     +[UIColor secondaryLabelColor];
   }
   v12 = ;
-  v13 = [(FocusBannerView *)self focusIconView];
-  [v13 setTintColor:v12];
+  focusIconView = [(FocusBannerView *)self focusIconView];
+  [focusIconView setTintColor:v12];
 }
 
 - (void)_focusFilterToggleButtonSelected
 {
   [(FocusBannerView *)self setFocusFilterEnabled:[(FocusBannerView *)self isFocusFilterEnabled]^ 1];
-  v3 = [(FocusBannerView *)self delegate];
-  [v3 focusBannerView:self stateDidChange:{-[FocusBannerView isFocusFilterEnabled](self, "isFocusFilterEnabled")}];
+  delegate = [(FocusBannerView *)self delegate];
+  [delegate focusBannerView:self stateDidChange:{-[FocusBannerView isFocusFilterEnabled](self, "isFocusFilterEnabled")}];
 }
 
 - (double)preferredHeight
 {
-  v2 = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
-  [v2 intrinsicContentSize];
+  focusFilterStateDescriptionLabel = [(FocusBannerView *)self focusFilterStateDescriptionLabel];
+  [focusFilterStateDescriptionLabel intrinsicContentSize];
   v4 = v3 + 11.0 + 11.0;
 
   return v4;
@@ -212,12 +212,12 @@
 
 - (id)_focusButtonConfiguration
 {
-  v3 = [(FocusBannerView *)self focusFilterToggleButton];
-  v4 = [v3 configuration];
-  v5 = v4;
-  if (v4)
+  focusFilterToggleButton = [(FocusBannerView *)self focusFilterToggleButton];
+  configuration = [focusFilterToggleButton configuration];
+  v5 = configuration;
+  if (configuration)
   {
-    v6 = v4;
+    v6 = configuration;
   }
 
   else

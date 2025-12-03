@@ -1,26 +1,26 @@
 @interface HMIVideoAnalyzerClient
-- (HMIVideoAnalyzerClient)initWithConfiguration:(id)a3 identifier:(id)a4;
+- (HMIVideoAnalyzerClient)initWithConfiguration:(id)configuration identifier:(id)identifier;
 - (id)ensureSession;
-- (void)_didFailWithError:(id)a3;
-- (void)_sendMessage:(SEL)a3 arguments:(id)a4 asynchronous:(BOOL)a5 completionHandler:(id)a6;
-- (void)_sendMessageWithOptions:(id)a3 asynchronous:(BOOL)a4 completionHandler:(id)a5;
-- (void)analyzeFragment:(id)a3 configuration:(id)a4;
+- (void)_didFailWithError:(id)error;
+- (void)_sendMessage:(SEL)message arguments:(id)arguments asynchronous:(BOOL)asynchronous completionHandler:(id)handler;
+- (void)_sendMessageWithOptions:(id)options asynchronous:(BOOL)asynchronous completionHandler:(id)handler;
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration;
 - (void)dealloc;
-- (void)finishWithCompletionHandler:(id)a3;
-- (void)setAnalysisFPS:(double)a3;
-- (void)setBoosted:(BOOL)a3;
-- (void)setDecodeMode:(int64_t)a3;
-- (void)setEncode:(BOOL)a3;
-- (void)setMonitored:(BOOL)a3;
+- (void)finishWithCompletionHandler:(id)handler;
+- (void)setAnalysisFPS:(double)s;
+- (void)setBoosted:(BOOL)boosted;
+- (void)setDecodeMode:(int64_t)mode;
+- (void)setEncode:(BOOL)encode;
+- (void)setMonitored:(BOOL)monitored;
 @end
 
 @implementation HMIVideoAnalyzerClient
 
-- (HMIVideoAnalyzerClient)initWithConfiguration:(id)a3 identifier:(id)a4
+- (HMIVideoAnalyzerClient)initWithConfiguration:(id)configuration identifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = HMIVideoAnalyzerClient;
-  v4 = [(HMIVideoAnalyzer *)&v10 initWithConfiguration:a3 identifier:a4];
+  v4 = [(HMIVideoAnalyzer *)&v10 initWithConfiguration:configuration identifier:identifier];
   if (v4)
   {
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -41,12 +41,12 @@
 - (id)ensureSession
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HMIVideoAnalyzerClient *)self session];
-  if (v3)
+  session = [(HMIVideoAnalyzerClient *)self session];
+  if (session)
   {
 
 LABEL_4:
-    v4 = [(HMIVideoAnalyzerClient *)self session];
+    session2 = [(HMIVideoAnalyzerClient *)self session];
     goto LABEL_5;
   }
 
@@ -56,7 +56,7 @@ LABEL_4:
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -67,7 +67,7 @@ LABEL_4:
   }
 
   objc_autoreleasePoolPop(v6);
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, selfCopy);
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -87,11 +87,11 @@ LABEL_4:
   v11 = v10;
   _Block_object_dispose(&v28, 8);
   v32[0] = @"configuration";
-  v12 = [(HMIVideoAnalyzer *)v7 configuration];
+  configuration = [(HMIVideoAnalyzer *)selfCopy configuration];
   v32[1] = @"identifier";
-  v33[0] = v12;
-  v13 = [(HMIVideoAnalyzer *)v7 identifier];
-  v33[1] = v13;
+  v33[0] = configuration;
+  identifier = [(HMIVideoAnalyzer *)selfCopy identifier];
+  v33[1] = identifier;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -104,40 +104,40 @@ LABEL_4:
   v23[3] = &unk_278755D48;
   objc_copyWeak(&v24, &location);
   v15 = [v10 sessionWithProperties:v14 withResultsHandler:v25 andInterruptionHandler:v23];
-  [(HMIVideoAnalyzerClient *)v7 setSession:v15];
+  [(HMIVideoAnalyzerClient *)selfCopy setSession:v15];
 
-  v16 = [(HMIVideoAnalyzerClient *)v7 session];
-  LODWORD(v12) = v16 == 0;
+  session3 = [(HMIVideoAnalyzerClient *)selfCopy session];
+  LODWORD(configuration) = session3 == 0;
 
-  if (v12)
+  if (configuration)
   {
     v17 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:-1 description:@"VCPHomeKitAnalysisSession connection failed."];
-    [(HMIVideoAnalyzerClient *)v7 _didFailWithError:v17];
+    [(HMIVideoAnalyzerClient *)selfCopy _didFailWithError:v17];
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = v7;
+  v19 = selfCopy;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [(HMIVideoAnalyzerClient *)v19 session];
+    session4 = [(HMIVideoAnalyzerClient *)v19 session];
     *buf = 138543618;
     *&buf[4] = v21;
     *&buf[12] = 2112;
-    *&buf[14] = v22;
+    *&buf[14] = session4;
     _os_log_impl(&dword_22D12F000, v20, OS_LOG_TYPE_DEBUG, "%{public}@Created Remote Session %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
   [(HMIVideoAnalyzerClient *)v19 setSessionCreationAttempted:1];
-  v4 = [(HMIVideoAnalyzerClient *)v19 session];
+  session2 = [(HMIVideoAnalyzerClient *)v19 session];
   objc_destroyWeak(&v24);
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
 LABEL_5:
 
-  return v4;
+  return session2;
 }
 
 void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke(uint64_t a1, void *a2)
@@ -251,14 +251,14 @@ void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke_228(uint64_t a1)
   [WeakRetained _didFailWithError:v1];
 }
 
-- (void)_didFailWithError:(id)a3
+- (void)_didFailWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([(HMIVideoAnalyzerClient *)self hasFailed])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -273,25 +273,25 @@ void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke_228(uint64_t a1)
 
   else
   {
-    HMIErrorLog(self, v4);
-    v9 = [(HMIVideoAnalyzer *)self delegate];
+    HMIErrorLog(self, errorCopy);
+    delegate = [(HMIVideoAnalyzer *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 analyzer:self didFailWithError:v4];
+      [delegate analyzer:self didFailWithError:errorCopy];
     }
 
     [(HMIVideoAnalyzerClient *)self setHasFailed:1];
   }
 }
 
-- (void)_sendMessageWithOptions:(id)a3 asynchronous:(BOOL)a4 completionHandler:(id)a5
+- (void)_sendMessageWithOptions:(id)options asynchronous:(BOOL)asynchronous completionHandler:(id)handler
 {
-  v6 = a4;
+  asynchronousCopy = asynchronous;
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -299,25 +299,25 @@ void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke_228(uint64_t a1)
     *buf = 138543618;
     v27 = v13;
     v28 = 2112;
-    v29 = v8;
+    v29 = optionsCopy;
     _os_log_impl(&dword_22D12F000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Sending Message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(HMIVideoAnalyzerClient *)v11 ensureSession];
-  v15 = v14;
-  if (v14)
+  ensureSession = [(HMIVideoAnalyzerClient *)selfCopy ensureSession];
+  v15 = ensureSession;
+  if (ensureSession)
   {
-    workQueue = v11->_workQueue;
-    if (v6)
+    workQueue = selfCopy->_workQueue;
+    if (asynchronousCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __81__HMIVideoAnalyzerClient__sendMessageWithOptions_asynchronous_completionHandler___block_invoke;
       block[3] = &unk_2787526C0;
-      v23 = v14;
-      v24 = v8;
-      v25 = v9;
+      v23 = ensureSession;
+      v24 = optionsCopy;
+      v25 = handlerCopy;
       dispatch_async(workQueue, block);
 
       v17 = v23;
@@ -329,9 +329,9 @@ void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke_228(uint64_t a1)
       v18[1] = 3221225472;
       v18[2] = __81__HMIVideoAnalyzerClient__sendMessageWithOptions_asynchronous_completionHandler___block_invoke_3;
       v18[3] = &unk_2787526C0;
-      v19 = v14;
-      v20 = v8;
-      v21 = v9;
+      v19 = ensureSession;
+      v20 = optionsCopy;
+      v21 = handlerCopy;
       dispatch_sync(workQueue, v18);
 
       v17 = v19;
@@ -341,9 +341,9 @@ void __39__HMIVideoAnalyzerClient_ensureSession__block_invoke_228(uint64_t a1)
   else
   {
     v17 = [MEMORY[0x277CCA9B8] hmiErrorWithCode:-1 description:@"VCPHomeKitAnalysisSession is not available."];
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, v17);
     }
   }
 }
@@ -401,91 +401,91 @@ intptr_t __81__HMIVideoAnalyzerClient__sendMessageWithOptions_asynchronous_compl
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)_sendMessage:(SEL)a3 arguments:(id)a4 asynchronous:(BOOL)a5 completionHandler:(id)a6
+- (void)_sendMessage:(SEL)message arguments:(id)arguments asynchronous:(BOOL)asynchronous completionHandler:(id)handler
 {
-  v7 = a5;
+  asynchronousCopy = asynchronous;
   v16[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  argumentsCopy = arguments;
+  handlerCopy = handler;
   v15 = @"selector";
-  v12 = NSStringFromSelector(a3);
+  v12 = NSStringFromSelector(message);
   v16[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v14 = [v13 mutableCopy];
 
-  if (v10)
+  if (argumentsCopy)
   {
-    [v14 setObject:v10 forKey:@"arguments"];
+    [v14 setObject:argumentsCopy forKey:@"arguments"];
   }
 
-  [(HMIVideoAnalyzerClient *)self _sendMessageWithOptions:v14 asynchronous:v7 completionHandler:v11];
+  [(HMIVideoAnalyzerClient *)self _sendMessageWithOptions:v14 asynchronous:asynchronousCopy completionHandler:handlerCopy];
 }
 
-- (void)analyzeFragment:(id)a3 configuration:(id)a4
+- (void)analyzeFragment:(id)fragment configuration:(id)configuration
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v11[0] = a3;
-  v11[1] = a4;
+  v11[0] = fragment;
+  v11[1] = configuration;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = a3;
+  configurationCopy = configuration;
+  fragmentCopy = fragment;
   v10 = [v7 arrayWithObjects:v11 count:2];
 
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v10 asynchronous:0 completionHandler:0];
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HMIVideoAnalyzerClient_finishWithCompletionHandler___block_invoke;
   v7[3] = &unk_278753FB8;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:0 asynchronous:1 completionHandler:v7];
 }
 
-- (void)setAnalysisFPS:(double)a3
+- (void)setAnalysisFPS:(double)s
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:s];
   v7[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v6 asynchronous:0];
 }
 
-- (void)setMonitored:(BOOL)a3
+- (void)setMonitored:(BOOL)monitored
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:monitored];
   v7[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v6 asynchronous:0];
 }
 
-- (void)setEncode:(BOOL)a3
+- (void)setEncode:(BOOL)encode
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:encode];
   v7[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v6 asynchronous:0];
 }
 
-- (void)setDecodeMode:(int64_t)a3
+- (void)setDecodeMode:(int64_t)mode
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v7[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v6 asynchronous:0];
 }
 
-- (void)setBoosted:(BOOL)a3
+- (void)setBoosted:(BOOL)boosted
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:boosted];
   v7[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   [(HMIVideoAnalyzerClient *)self _sendMessage:a2 arguments:v6 asynchronous:0];
@@ -495,7 +495,7 @@ intptr_t __81__HMIVideoAnalyzerClient__sendMessageWithOptions_asynchronous_compl
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -506,15 +506,15 @@ intptr_t __81__HMIVideoAnalyzerClient__sendMessageWithOptions_asynchronous_compl
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMIVideoAnalyzerClient *)v4 session];
+  session = [(HMIVideoAnalyzerClient *)selfCopy session];
 
-  if (v7)
+  if (session)
   {
-    v8 = [(HMIVideoAnalyzerClient *)v4 session];
-    [v8 invalidate];
+    session2 = [(HMIVideoAnalyzerClient *)selfCopy session];
+    [session2 invalidate];
   }
 
-  v9.receiver = v4;
+  v9.receiver = selfCopy;
   v9.super_class = HMIVideoAnalyzerClient;
   [(HMIVideoAnalyzer *)&v9 dealloc];
 }

@@ -1,13 +1,13 @@
 @interface IMRichCards
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMRichCards)init;
-- (IMRichCards)initWithCardArray:(id)a3;
-- (IMRichCards)initWithCards:(id)a3;
+- (IMRichCards)initWithCardArray:(id)array;
+- (IMRichCards)initWithCards:(id)cards;
 - (NSArray)cards;
 - (id)expandToIndividualCard;
 - (id)previewText;
 - (int64_t)hash;
-- (void)updateUrlToTransferMap:(id)a3;
+- (void)updateUrlToTransferMap:(id)map;
 @end
 
 @implementation IMRichCards
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (IMRichCards)initWithCards:(id)a3
+- (IMRichCards)initWithCards:(id)cards
 {
   type metadata accessor for IMRichCard(0);
   *(self + OBJC_IVAR___IMRichCards_cards) = sub_1A88C85F8();
@@ -30,23 +30,23 @@
   return [(IMRichCards *)&v5 init];
 }
 
-- (IMRichCards)initWithCardArray:(id)a3
+- (IMRichCards)initWithCardArray:(id)array
 {
   sub_1A870CCE0(&unk_1EB3091D0);
   v3 = sub_1A88C85F8();
   return sub_1A88B8C74(v3);
 }
 
-- (void)updateUrlToTransferMap:(id)a3
+- (void)updateUrlToTransferMap:(id)map
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A88B9904(v4);
+  mapCopy = map;
+  selfCopy = self;
+  sub_1A88B9904(mapCopy);
 }
 
 - (id)previewText
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A88B9A78();
   v4 = v3;
 
@@ -65,7 +65,7 @@
 
 - (id)expandToIndividualCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A88B9C68();
 
   type metadata accessor for IMRichCards();
@@ -74,11 +74,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A88C8CB8();
     swift_unknownObjectRelease();
@@ -87,7 +87,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IMRichCards.isEqual(_:)(v8);
@@ -99,8 +99,8 @@
 - (int64_t)hash
 {
   sub_1A88C9588();
-  v3 = self;
-  v4 = [(IMRichCards *)v3 cards];
+  selfCopy = self;
+  cards = [(IMRichCards *)selfCopy cards];
   type metadata accessor for IMRichCard(0);
   v5 = sub_1A88C85F8();
 

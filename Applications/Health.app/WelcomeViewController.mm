@@ -1,8 +1,8 @@
 @interface WelcomeViewController
-- (_TtC6Health21WelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)didSaveFirstLastNameFor:(id)a3;
-- (void)didTapContinueButtonWithCompletion:(id)a3;
-- (void)didTapNext:(id)a3;
+- (_TtC6Health21WelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)didSaveFirstLastNameFor:(id)for;
+- (void)didTapContinueButtonWithCompletion:(id)completion;
+- (void)didTapNext:(id)next;
 - (void)viewDidLoad;
 @end
 
@@ -14,10 +14,10 @@
   v6.super_class = type metadata accessor for WelcomeViewController();
   v2 = v6.receiver;
   [(WelcomeViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     v5 = String._bridgeToObjectiveC()();
     [v4 setAccessibilityIdentifier:v5];
 
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)didTapNext:(id)a3
+- (void)didTapNext:(id)next
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006FF80(v4);
+  nextCopy = next;
+  selfCopy = self;
+  sub_10006FF80(nextCopy);
   v7 = 0;
   v6[3] = type metadata accessor for AnalyticsSender();
   v6[4] = &protocol witness table for AnalyticsSender;
@@ -45,27 +45,27 @@
   sub_100003B90(v6);
 }
 
-- (_TtC6Health21WelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6Health21WelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)didTapContinueButtonWithCompletion:(id)a3
+- (void)didTapContinueButtonWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1000728B4(sub_100074BE4, v5);
 }
 
-- (void)didSaveFirstLastNameFor:(id)a3
+- (void)didSaveFirstLastNameFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_100072A64(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_100072A64(forCopy);
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface CKUnavailableSatelliteForServiceChatItem
-+ (id)newComposeTranscriptTextForiMessage:(BOOL)a3 isGroupChat:(BOOL)a4;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
++ (id)newComposeTranscriptTextForiMessage:(BOOL)message isGroupChat:(BOOL)chat;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKUnavailableSatelliteForServiceChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [(CKUnavailableSatelliteForServiceChatItem *)self loadTranscriptText];
-  [v9 boundingRectWithSize:1 options:0 context:{width, height}];
+  loadTranscriptText = [(CKUnavailableSatelliteForServiceChatItem *)self loadTranscriptText];
+  [loadTranscriptText boundingRectWithSize:1 options:0 context:{width, height}];
   v11 = v10;
 
   [v8 smallTranscriptSpace];
   v13 = v12;
   [v8 transcriptBoldTextAlignmentInsets];
-  if (a4)
+  if (insets)
   {
-    a4->top = v14;
-    a4->left = v15;
-    a4->bottom = v16;
-    a4->right = v17;
+    insets->top = v14;
+    insets->left = v15;
+    insets->bottom = v16;
+    insets->right = v17;
   }
 
   v18 = v11 - v14 + v13 + v11 - v16;
@@ -38,19 +38,19 @@
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v3 transcriptEmphasizedFontAttributes];
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v25 = [v5 transcriptRegularFontAttributes];
+  transcriptRegularFontAttributes = [v5 transcriptRegularFontAttributes];
 
-  v6 = [(CKChatItem *)self IMChatItem];
-  v7 = [v6 service];
-  v8 = [v6 isGroupChat];
-  v9 = [MEMORY[0x1E69A5CA0] iMessageService];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  service = [iMChatItem service];
+  isGroupChat = [iMChatItem isGroupChat];
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
 
   v10 = CKFrameworkBundle();
   v11 = v10;
-  if (v7 == v9)
+  if (service == iMessageService)
   {
     v12 = @"PLACEHOLDER_TEXT_VIEW_SATELLITE_MESSAGE";
   }
@@ -60,7 +60,7 @@
     v12 = @"PLACEHOLDER_TEXT_VIEW_SATELLITE_MESSAGE_SMS";
   }
 
-  if (v7 == v9)
+  if (service == iMessageService)
   {
     v13 = @"IMESSAGE_SATELLITE_NOT_AVAILABLE";
   }
@@ -70,14 +70,14 @@
     v13 = @"SMS_SATELLITE_NOT_AVAILABLE";
   }
 
-  v14 = [v10 localizedStringForKey:v12 value:&stru_1F04268F8 table:{@"ChatKit-CarrierPigeon", v4}];
+  v14 = [v10 localizedStringForKey:v12 value:&stru_1F04268F8 table:{@"ChatKit-CarrierPigeon", transcriptEmphasizedFontAttributes}];
 
-  v15 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v14 attributes:v4];
+  v15 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v14 attributes:transcriptEmphasizedFontAttributes];
   v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   v17 = objc_alloc(MEMORY[0x1E696AD40]);
   v18 = CKFrameworkBundle();
   v19 = v18;
-  if (v8)
+  if (isGroupChat)
   {
     v20 = @"GROUP_CHATS_SENDING_DISABLED";
   }
@@ -88,7 +88,7 @@
   }
 
   v21 = [v18 localizedStringForKey:v20 value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
-  v22 = [v17 initWithString:v21 attributes:v25];
+  v22 = [v17 initWithString:v21 attributes:transcriptRegularFontAttributes];
 
   [v15 appendLocalizedFormat:v16];
   [v15 appendLocalizedFormat:v22];
@@ -96,19 +96,19 @@
   return v15;
 }
 
-+ (id)newComposeTranscriptTextForiMessage:(BOOL)a3 isGroupChat:(BOOL)a4
++ (id)newComposeTranscriptTextForiMessage:(BOOL)message isGroupChat:(BOOL)chat
 {
-  v4 = a4;
-  v5 = a3;
+  chatCopy = chat;
+  messageCopy = message;
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v6 transcriptEmphasizedFontAttributes];
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 transcriptRegularFontAttributes];
+  transcriptRegularFontAttributes = [v8 transcriptRegularFontAttributes];
 
   v10 = CKFrameworkBundle();
   v11 = v10;
-  if (v5)
+  if (messageCopy)
   {
     v12 = @"PLACEHOLDER_TEXT_VIEW_SATELLITE_MESSAGE";
   }
@@ -120,10 +120,10 @@
 
   v13 = [v10 localizedStringForKey:v12 value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
 
-  v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v13 attributes:v7];
+  v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v13 attributes:transcriptEmphasizedFontAttributes];
   v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
   v16 = objc_alloc(MEMORY[0x1E696AD40]);
-  if (v4)
+  if (chatCopy)
   {
     v17 = @"GROUP_CHATS_SENDING_DISABLED";
   }
@@ -135,7 +135,7 @@
 
   v18 = CKFrameworkBundle();
   v19 = [v18 localizedStringForKey:v17 value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
-  v20 = [v16 initWithString:v19 attributes:v9];
+  v20 = [v16 initWithString:v19 attributes:transcriptRegularFontAttributes];
 
   [v14 appendAttributedString:v15];
   [v14 appendAttributedString:v20];

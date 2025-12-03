@@ -1,6 +1,6 @@
 @interface MessageServiceReachabilityDelegate
 - (_TtC8iMessage34MessageServiceReachabilityDelegate)init;
-- (_TtC8iMessage34MessageServiceReachabilityDelegate)initWithServiceSession:(id)a3;
+- (_TtC8iMessage34MessageServiceReachabilityDelegate)initWithServiceSession:(id)session;
 - (uint64_t)maxChatParticipantsForContext:;
 @end
 
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC8iMessage34MessageServiceReachabilityDelegate)initWithServiceSession:(id)a3
+- (_TtC8iMessage34MessageServiceReachabilityDelegate)initWithServiceSession:(id)session
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

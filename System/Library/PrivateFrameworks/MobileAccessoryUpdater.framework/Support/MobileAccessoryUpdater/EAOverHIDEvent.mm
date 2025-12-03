@@ -1,5 +1,5 @@
 @interface EAOverHIDEvent
-- (EAOverHIDEvent)initWithName:(id)a3 info:(id)a4;
+- (EAOverHIDEvent)initWithName:(id)name info:(id)info;
 - (void)dealloc;
 @end
 
@@ -22,15 +22,15 @@
   [(EAOverHIDEvent *)&v5 dealloc];
 }
 
-- (EAOverHIDEvent)initWithName:(id)a3 info:(id)a4
+- (EAOverHIDEvent)initWithName:(id)name info:(id)info
 {
   v8.receiver = self;
   v8.super_class = EAOverHIDEvent;
   v6 = [(EAOverHIDEvent *)&v8 init];
   if (v6)
   {
-    [(EAOverHIDEvent *)v6 setFilterName:a3];
-    [(EAOverHIDEvent *)v6 setInfo:a4];
+    [(EAOverHIDEvent *)v6 setFilterName:name];
+    [(EAOverHIDEvent *)v6 setInfo:info];
   }
 
   return v6;

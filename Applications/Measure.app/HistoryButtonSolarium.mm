@@ -1,6 +1,6 @@
 @interface HistoryButtonSolarium
 - (_TtC7Measure21HistoryButtonSolarium)init;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)showHistory;
 @end
 
@@ -15,15 +15,15 @@
 
 - (void)showHistory
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008A204();
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = sub_10008A624();
 
   return v9;
